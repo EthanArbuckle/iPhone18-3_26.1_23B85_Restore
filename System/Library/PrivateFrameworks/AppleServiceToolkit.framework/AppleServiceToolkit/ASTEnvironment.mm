@@ -3,22 +3,22 @@
 + (BOOL)isInternalBuild;
 + (BOOL)isServicePart;
 + (id)currentEnvironment;
-+ (id)environmentWithEnvironmentType:(unint64_t)a3;
++ (id)environmentWithEnvironmentType:(unint64_t)type;
 + (id)protocolVersion;
 - (ASTEnvironment)init;
-- (ASTEnvironment)initWithEnvironmentType:(unint64_t)a3;
+- (ASTEnvironment)initWithEnvironmentType:(unint64_t)type;
 - (BOOL)isDiagnosticsMode;
 - (id)_defaultServerURL;
 - (id)_generateServerURL;
 - (id)environmentServerString;
 - (unint64_t)_defaultServerSelection;
 - (void)_generateServerURL;
-- (void)setAssetURL:(id)a3;
-- (void)setConfigCode:(id)a3;
-- (void)setDiagsChannel:(id)a3;
-- (void)setEnvironmentType:(unint64_t)a3;
-- (void)setServer:(unint64_t)a3;
-- (void)setServerURL:(id)a3;
+- (void)setAssetURL:(id)l;
+- (void)setConfigCode:(id)code;
+- (void)setDiagsChannel:(id)channel;
+- (void)setEnvironmentType:(unint64_t)type;
+- (void)setServer:(unint64_t)server;
+- (void)setServerURL:(id)l;
 @end
 
 @implementation ASTEnvironment
@@ -30,7 +30,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2080;
     v9 = "[ASTEnvironment init]";
     _os_log_impl(&dword_240F3C000, v3, OS_LOG_TYPE_DEFAULT, "[%@] %s", &v6, 0x16u);
@@ -41,14 +41,14 @@
   return result;
 }
 
-- (ASTEnvironment)initWithEnvironmentType:(unint64_t)a3
+- (ASTEnvironment)initWithEnvironmentType:(unint64_t)type
 {
   v17 = *MEMORY[0x277D85DE8];
   v5 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v14 = self;
+    selfCopy = self;
     v15 = 2080;
     v16 = "[ASTEnvironment initWithEnvironmentType:]";
     _os_log_impl(&dword_240F3C000, v5, OS_LOG_TYPE_DEFAULT, "[%@] %s", buf, 0x16u);
@@ -60,31 +60,31 @@
   v7 = v6;
   if (v6)
   {
-    v6->_environmentType = a3;
+    v6->_environmentType = type;
     v6->_server = [(ASTEnvironment *)v6 _defaultServerSelection];
-    v8 = [(ASTEnvironment *)v7 _generateServerURL];
+    _generateServerURL = [(ASTEnvironment *)v7 _generateServerURL];
     serverURL = v7->_serverURL;
-    v7->_serverURL = v8;
+    v7->_serverURL = _generateServerURL;
   }
 
   v10 = *MEMORY[0x277D85DE8];
   return v7;
 }
 
-+ (id)environmentWithEnvironmentType:(unint64_t)a3
++ (id)environmentWithEnvironmentType:(unint64_t)type
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = a1;
+    selfCopy = self;
     v11 = 2080;
     v12 = "+[ASTEnvironment environmentWithEnvironmentType:]";
     _os_log_impl(&dword_240F3C000, v5, OS_LOG_TYPE_DEFAULT, "[%@] %s", &v9, 0x16u);
   }
 
-  v6 = [[a1 alloc] initWithEnvironmentType:a3];
+  v6 = [[self alloc] initWithEnvironmentType:type];
   v7 = *MEMORY[0x277D85DE8];
 
   return v6;
@@ -97,7 +97,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
-    v8 = a1;
+    selfCopy = self;
     v9 = 2080;
     v10 = "+[ASTEnvironment currentEnvironment]";
     _os_log_impl(&dword_240F3C000, v3, OS_LOG_TYPE_DEFAULT, "[%@] %s", &v7, 0x16u);
@@ -238,157 +238,157 @@ void *__48__ASTEnvironment_isCoreRepairFrameworkAvailable__block_invoke(uint64_t
   return v4;
 }
 
-- (void)setServerURL:(id)a3
+- (void)setServerURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   if ([objc_opt_class() isInternalBuild])
   {
     self->_server = 5;
-    objc_storeStrong(&self->_serverURL, a3);
+    objc_storeStrong(&self->_serverURL, l);
   }
 }
 
-- (void)setServer:(unint64_t)a3
+- (void)setServer:(unint64_t)server
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2080;
     v12 = "[ASTEnvironment setServer:]";
     _os_log_impl(&dword_240F3C000, v5, OS_LOG_TYPE_DEFAULT, "[%@] %s", &v9, 0x16u);
   }
 
-  self->_server = a3;
-  v6 = [(ASTEnvironment *)self _generateServerURL];
+  self->_server = server;
+  _generateServerURL = [(ASTEnvironment *)self _generateServerURL];
   serverURL = self->_serverURL;
-  self->_serverURL = v6;
+  self->_serverURL = _generateServerURL;
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setEnvironmentType:(unint64_t)a3
+- (void)setEnvironmentType:(unint64_t)type
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2080;
     v12 = "[ASTEnvironment setEnvironmentType:]";
     _os_log_impl(&dword_240F3C000, v5, OS_LOG_TYPE_DEFAULT, "[%@] %s", &v9, 0x16u);
   }
 
-  self->_environmentType = a3;
-  v6 = [(ASTEnvironment *)self _generateServerURL];
+  self->_environmentType = type;
+  _generateServerURL = [(ASTEnvironment *)self _generateServerURL];
   serverURL = self->_serverURL;
-  self->_serverURL = v6;
+  self->_serverURL = _generateServerURL;
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDiagsChannel:(id)a3
+- (void)setDiagsChannel:(id)channel
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  channelCopy = channel;
   v6 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = self;
+    selfCopy2 = self;
     v13 = 2080;
     v14 = "[ASTEnvironment setDiagsChannel:]";
     _os_log_impl(&dword_240F3C000, v6, OS_LOG_TYPE_DEFAULT, "[%@] %s", &v11, 0x16u);
   }
 
-  if (([ASTCurrentDiagsChannel isEqualToString:v5] & 1) == 0)
+  if (([ASTCurrentDiagsChannel isEqualToString:channelCopy] & 1) == 0)
   {
     v7 = ASTLogHandleForCategory(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412546;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2112;
-      v14 = v5;
+      v14 = channelCopy;
       _os_log_impl(&dword_240F3C000, v7, OS_LOG_TYPE_DEFAULT, "[%@] Updating diags channel to: %@", &v11, 0x16u);
     }
 
-    objc_storeStrong(&ASTCurrentDiagsChannel, a3);
-    v8 = [(ASTEnvironment *)self _generateServerURL];
+    objc_storeStrong(&ASTCurrentDiagsChannel, channel);
+    _generateServerURL = [(ASTEnvironment *)self _generateServerURL];
     serverURL = self->_serverURL;
-    self->_serverURL = v8;
+    self->_serverURL = _generateServerURL;
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setConfigCode:(id)a3
+- (void)setConfigCode:(id)code
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  codeCopy = code;
   v6 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = self;
+    selfCopy2 = self;
     v11 = 2080;
     v12 = "[ASTEnvironment setConfigCode:]";
     _os_log_impl(&dword_240F3C000, v6, OS_LOG_TYPE_DEFAULT, "[%@] %s", &v9, 0x16u);
   }
 
-  if (([ASTConfigCode isEqualToString:v5] & 1) == 0)
+  if (([ASTConfigCode isEqualToString:codeCopy] & 1) == 0)
   {
     v7 = ASTLogHandleForCategory(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412546;
-      v10 = self;
+      selfCopy2 = self;
       v11 = 2112;
-      v12 = v5;
+      v12 = codeCopy;
       _os_log_impl(&dword_240F3C000, v7, OS_LOG_TYPE_DEFAULT, "[%@] Updating config code to: %@", &v9, 0x16u);
     }
 
-    objc_storeStrong(&ASTConfigCode, a3);
+    objc_storeStrong(&ASTConfigCode, code);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAssetURL:(id)a3
+- (void)setAssetURL:(id)l
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  lCopy = l;
   v6 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412546;
-    v14 = self;
+    selfCopy2 = self;
     v15 = 2080;
     v16 = "[ASTEnvironment setAssetURL:]";
     _os_log_impl(&dword_240F3C000, v6, OS_LOG_TYPE_DEFAULT, "[%@] %s", &v13, 0x16u);
   }
 
-  v7 = [ASTAssetURL absoluteString];
-  v8 = [v5 absoluteString];
-  v9 = [v7 isEqualToString:v8];
+  absoluteString = [ASTAssetURL absoluteString];
+  absoluteString2 = [lCopy absoluteString];
+  v9 = [absoluteString isEqualToString:absoluteString2];
 
   if ((v9 & 1) == 0)
   {
     v10 = ASTLogHandleForCategory(0);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v5 absoluteString];
+      absoluteString3 = [lCopy absoluteString];
       v13 = 138412546;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2112;
-      v16 = v11;
+      v16 = absoluteString3;
       _os_log_impl(&dword_240F3C000, v10, OS_LOG_TYPE_DEFAULT, "[%@] Updating asset URL to: %@", &v13, 0x16u);
     }
 
-    objc_storeStrong(&ASTAssetURL, a3);
+    objc_storeStrong(&ASTAssetURL, l);
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -396,15 +396,15 @@ void *__48__ASTEnvironment_isCoreRepairFrameworkAvailable__block_invoke(uint64_t
 
 - (id)environmentServerString
 {
-  v2 = [(ASTEnvironment *)self environmentType];
-  if (v2 - 8 > 2)
+  environmentType = [(ASTEnvironment *)self environmentType];
+  if (environmentType - 8 > 2)
   {
     return @"ios";
   }
 
   else
   {
-    return off_278CBD960[v2 - 8];
+    return off_278CBD960[environmentType - 8];
   }
 }
 
@@ -413,15 +413,15 @@ void *__48__ASTEnvironment_isCoreRepairFrameworkAvailable__block_invoke(uint64_t
   v2 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.AppleServiceToolkit"];
   if ([v2 BOOLForKey:@"DiagnosticMode"])
   {
-    v3 = 1;
+    isCheckerBoardActive = 1;
   }
 
   else
   {
-    v3 = [MEMORY[0x277CF97E8] isCheckerBoardActive];
+    isCheckerBoardActive = [MEMORY[0x277CF97E8] isCheckerBoardActive];
   }
 
-  return v3;
+  return isCheckerBoardActive;
 }
 
 - (id)_generateServerURL
@@ -431,7 +431,7 @@ void *__48__ASTEnvironment_isCoreRepairFrameworkAvailable__block_invoke(uint64_t
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v24 = self;
+    selfCopy2 = self;
     v25 = 2080;
     v26 = "[ASTEnvironment _generateServerURL]";
     _os_log_impl(&dword_240F3C000, v3, OS_LOG_TYPE_DEFAULT, "[%@] %s", buf, 0x16u);
@@ -455,10 +455,10 @@ void *__48__ASTEnvironment_isCoreRepairFrameworkAvailable__block_invoke(uint64_t
       v4 = @"https://idiagnostics.apple.com/%@/v%@/";
       if ([objc_opt_class() isInternalBuild])
       {
-        v5 = [(ASTEnvironment *)self _defaultServerURL];
-        if (v5)
+        _defaultServerURL = [(ASTEnvironment *)self _defaultServerURL];
+        if (_defaultServerURL)
         {
-          v4 = v5;
+          v4 = _defaultServerURL;
         }
       }
 
@@ -519,14 +519,14 @@ void *__48__ASTEnvironment_isCoreRepairFrameworkAvailable__block_invoke(uint64_t
       break;
   }
 
-  v6 = [(ASTEnvironment *)self diagsChannel];
-  v7 = [v6 length];
+  diagsChannel = [(ASTEnvironment *)self diagsChannel];
+  v7 = [diagsChannel length];
 
   if (v7)
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = [(ASTEnvironment *)self diagsChannel];
-    v10 = [v8 stringWithFormat:@"%@/", v9];
+    diagsChannel2 = [(ASTEnvironment *)self diagsChannel];
+    v10 = [v8 stringWithFormat:@"%@/", diagsChannel2];
     v11 = [(__CFString *)v4 stringByAppendingString:v10];
 
     v4 = v11;
@@ -534,9 +534,9 @@ void *__48__ASTEnvironment_isCoreRepairFrameworkAvailable__block_invoke(uint64_t
 
   v12 = MEMORY[0x277CCACA8];
   v22 = 0;
-  v13 = [(ASTEnvironment *)self environmentServerString];
+  environmentServerString = [(ASTEnvironment *)self environmentServerString];
   v14 = +[ASTEnvironment protocolVersion];
-  v15 = [v12 stringWithValidatedFormat:v4 validFormatSpecifiers:@"%@%@" error:&v22, v13, v14];
+  v15 = [v12 stringWithValidatedFormat:v4 validFormatSpecifiers:@"%@%@" error:&v22, environmentServerString, v14];
   v16 = v22;
 
   if (v16)
@@ -553,7 +553,7 @@ void *__48__ASTEnvironment_isCoreRepairFrameworkAvailable__block_invoke(uint64_t
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v24 = self;
+    selfCopy2 = self;
     v25 = 2112;
     v26 = v18;
     _os_log_impl(&dword_240F3C000, v19, OS_LOG_TYPE_DEFAULT, "[%@] New server URL: %@", buf, 0x16u);
@@ -633,7 +633,7 @@ uint64_t __35__ASTEnvironment__defaultServerURL__block_invoke()
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_240F3C000, a2, OS_LOG_TYPE_FAULT, "Invalid server format string: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

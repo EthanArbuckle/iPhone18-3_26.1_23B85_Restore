@@ -1,15 +1,15 @@
 @interface AMSActionContext
-- (AMSActionContext)initWithAccount:(id)a3 bag:(id)a4 processInfo:(id)a5;
+- (AMSActionContext)initWithAccount:(id)account bag:(id)bag processInfo:(id)info;
 @end
 
 @implementation AMSActionContext
 
-- (AMSActionContext)initWithAccount:(id)a3 bag:(id)a4 processInfo:(id)a5
+- (AMSActionContext)initWithAccount:(id)account bag:(id)bag processInfo:(id)info
 {
-  v8 = a3;
+  accountCopy = account;
   swift_unknownObjectRetain();
-  v9 = a5;
-  return ActionContext.init(account:bag:processInfo:)(a3, a4, a5);
+  infoCopy = info;
+  return ActionContext.init(account:bag:processInfo:)(account, bag, info);
 }
 
 @end

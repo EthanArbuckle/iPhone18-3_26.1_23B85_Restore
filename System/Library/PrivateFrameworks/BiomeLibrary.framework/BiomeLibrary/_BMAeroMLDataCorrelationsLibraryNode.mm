@@ -2,7 +2,7 @@
 + (id)PhotosSearchDataCorrelations;
 + (id)configurationForPhotosSearchDataCorrelations;
 + (id)storeConfigurationForPhotosSearchDataCorrelations;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -11,7 +11,7 @@
 + (id)PhotosSearchDataCorrelations
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForPhotosSearchDataCorrelations];
+  configurationForPhotosSearchDataCorrelations = [self configurationForPhotosSearchDataCorrelations];
   v3 = +[BMAeroMLPhotosSearchDataCorrelations columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -23,7 +23,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"AeroML.DataCorrelations.PhotosSearchDataCorrelations" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"AeroML.DataCorrelations.PhotosSearchDataCorrelations" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"AeroML.DataCorrelations.PhotosSearchDataCorrelations" schema:v9 configuration:configurationForPhotosSearchDataCorrelations];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -32,13 +32,13 @@
 
 + (id)configurationForPhotosSearchDataCorrelations
 {
-  v3 = [a1 storeConfigurationForPhotosSearchDataCorrelations];
-  v4 = [a1 syncPolicyForPhotosSearchDataCorrelations];
+  storeConfigurationForPhotosSearchDataCorrelations = [self storeConfigurationForPhotosSearchDataCorrelations];
+  syncPolicyForPhotosSearchDataCorrelations = [self syncPolicyForPhotosSearchDataCorrelations];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"5540EC28-64FD-40C0-86E9-776F3DAE062E"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"AeroML.DataCorrelations.PhotosSearchDataCorrelations" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"AeroML.DataCorrelations.PhotosSearchDataCorrelations" eventClass:objc_opt_class() storeConfig:storeConfigurationForPhotosSearchDataCorrelations syncPolicy:syncPolicyForPhotosSearchDataCorrelations legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -51,19 +51,19 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"PhotosSearchDataCorrelations"])
+  if ([name isEqualToString:@"PhotosSearchDataCorrelations"])
   {
-    v4 = [a1 PhotosSearchDataCorrelations];
+    photosSearchDataCorrelations = [self PhotosSearchDataCorrelations];
   }
 
   else
   {
-    v4 = 0;
+    photosSearchDataCorrelations = 0;
   }
 
-  return v4;
+  return photosSearchDataCorrelations;
 }
 
 + (id)validKeyPaths

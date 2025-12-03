@@ -1,5 +1,5 @@
 @interface PIVideoStabilizeRequest
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newRenderJob;
 - (void)_commonInit;
 @end
@@ -11,18 +11,18 @@
   v3 = [(NURenderJob *)[PIVideoStabilizeRenderJob alloc] initWithRequest:self];
   [(PIVideoStabilizeRequest *)self allowedCropFraction];
   [(PIVideoStabilizeRenderJob *)v3 setAllowedCropFraction:?];
-  v4 = [(PIVideoStabilizeRequest *)self progressHandler];
-  [(PIVideoStabilizeRenderJob *)v3 setProgressHandler:v4];
+  progressHandler = [(PIVideoStabilizeRequest *)self progressHandler];
+  [(PIVideoStabilizeRenderJob *)v3 setProgressHandler:progressHandler];
 
   [(PIVideoStabilizeRenderJob *)v3 setAllowedAnalysisTypes:[(PIVideoStabilizeRequest *)self allowedAnalysisTypes]];
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PIVideoStabilizeRequest;
-  v4 = [(NURenderRequest *)&v6 copyWithZone:a3];
+  v4 = [(NURenderRequest *)&v6 copyWithZone:zone];
   [v4 setAllowedCropFraction:self->_allowedCropFraction];
   [v4 setProgressHandler:self->_progressHandler];
   [v4 setAllowedAnalysisTypes:self->_allowedAnalysisTypes];

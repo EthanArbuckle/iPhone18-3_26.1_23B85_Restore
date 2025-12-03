@@ -1,6 +1,6 @@
 @interface AccessoryUSBBillboardDevice
-+ (unint64_t)getRegistryEntryIDFromService:(unsigned int)a3;
-+ (unsigned)parentServiceVidPid:(unsigned int)a3;
++ (unint64_t)getRegistryEntryIDFromService:(unsigned int)service;
++ (unsigned)parentServiceVidPid:(unsigned int)pid;
 - (void)dismissNotSupportNotification;
 - (void)presentNotSupportNotification;
 @end
@@ -45,7 +45,7 @@
     vid = self->_vid;
     pid = self->_pid;
     registryEntryID = self->_registryEntryID;
-    v11 = [v3 groupIdentifier];
+    groupIdentifier = [v3 groupIdentifier];
     v14 = 136316418;
     v15 = "[AccessoryUSBBillboardDevice presentNotSupportNotification]";
     v16 = 1024;
@@ -55,7 +55,7 @@
     v20 = 2048;
     v21 = registryEntryID;
     v22 = 2112;
-    v23 = v11;
+    v23 = groupIdentifier;
     v24 = 2112;
     v25 = v3;
     _os_log_impl(&dword_2336F5000, v7, OS_LOG_TYPE_DEFAULT, "%s: vid/pid 0x%X/0x%X, registryID 0x%llx, groupidentifer %@, pAccErrorNotification %@", &v14, 0x36u);
@@ -121,10 +121,10 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (unint64_t)getRegistryEntryIDFromService:(unsigned int)a3
++ (unint64_t)getRegistryEntryIDFromService:(unsigned int)service
 {
   entryID = 0;
-  if (IORegistryEntryGetRegistryEntryID(a3, &entryID))
+  if (IORegistryEntryGetRegistryEntryID(service, &entryID))
   {
     return 0;
   }
@@ -135,14 +135,14 @@
   }
 }
 
-+ (unsigned)parentServiceVidPid:(unsigned int)a3
++ (unsigned)parentServiceVidPid:(unsigned int)pid
 {
   v31 = *MEMORY[0x277D85DE8];
   parent = 0;
-  ParentEntry = IORegistryEntryGetParentEntry(a3, "IOService", &parent);
+  ParentEntry = IORegistryEntryGetParentEntry(pid, "IOService", &parent);
   if (ParentEntry)
   {
-    [(AccessoryUSBBillboardDevice *)&parent parentServiceVidPid:a3, ParentEntry];
+    [(AccessoryUSBBillboardDevice *)&parent parentServiceVidPid:pid, ParentEntry];
     v5 = 0;
     v8 = 0;
     CFProperty = 0;
@@ -167,8 +167,8 @@
       CFProperty = 0;
     }
 
-    v9 = [CFProperty unsignedShortValue];
-    v10 = [v8 unsignedShortValue] | (v9 << 16);
+    unsignedShortValue = [CFProperty unsignedShortValue];
+    v10 = [v8 unsignedShortValue] | (unsignedShortValue << 16);
   }
 
   if (gLogObjects)
@@ -202,7 +202,7 @@
     *buf = 136316674;
     v18 = "+[AccessoryUSBBillboardDevice parentServiceVidPid:]";
     v19 = 1024;
-    v20 = a3;
+    pidCopy = pid;
     v21 = 1024;
     v22 = parent;
     v23 = 2112;

@@ -1,12 +1,12 @@
 @interface BWDockKitNode
-- (BWDockKitNode)initWithIsRunningForContinuityCapture:(BOOL)a3 cinematicVideoEnabled:(BOOL)a4 captureDevice:(id)a5;
+- (BWDockKitNode)initWithIsRunningForContinuityCapture:(BOOL)capture cinematicVideoEnabled:(BOOL)enabled captureDevice:(id)device;
 - (void)dealloc;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWDockKitNode
 
-- (BWDockKitNode)initWithIsRunningForContinuityCapture:(BOOL)a3 cinematicVideoEnabled:(BOOL)a4 captureDevice:(id)a5
+- (BWDockKitNode)initWithIsRunningForContinuityCapture:(BOOL)capture cinematicVideoEnabled:(BOOL)enabled captureDevice:(id)device
 {
   v14.receiver = self;
   v14.super_class = BWDockKitNode;
@@ -28,12 +28,12 @@
     [(BWNode *)v8 addOutput:v11];
 
     v8->_deviceOrientationMonitor = objc_alloc_init(BWDeviceOrientationMonitor);
-    v8->_isRunningForContinuityCapture = a3;
-    v8->_cinematicVideoEnabled = a4;
+    v8->_isRunningForContinuityCapture = capture;
+    v8->_cinematicVideoEnabled = enabled;
     v8->_dockingNotificationAgent = 0;
     [(BWNode *)v8 setSupportsLiveReconfiguration:1];
     [(BWNode *)v8 setSupportsPrepareWhileRunning:1];
-    v8->_captureDevice = a5;
+    v8->_captureDevice = device;
   }
 
   return v8;
@@ -51,7 +51,7 @@
   [(BWNode *)&v3 dealloc];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   if (DockKitCoreLibraryCore() && getDKTrackingAgentClass())
   {
@@ -131,18 +131,18 @@
         [(BWMemoryAnalyticsPayload *)[(BWGraph *)[(BWNode *)self graph] memoryAnalyticsPayload] setDockKitDeviceConnected:1];
       }
 
-      ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+      ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
       if (ImageBuffer)
       {
         v15 = ImageBuffer;
-        v16 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+        v16 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
         if (v16)
         {
           v17 = v16;
           v83 = 0u;
           v84 = 0u;
           v82 = 0u;
-          v18 = CMGetAttachment(a3, *MEMORY[0x1E6960470], 0);
+          v18 = CMGetAttachment(buffer, *MEMORY[0x1E6960470], 0);
           if (v18)
           {
             v19 = v18;
@@ -216,28 +216,28 @@
               }
 
               v41 = [v17 objectForKeyedSubscript:*off_1E798B540];
-              v42 = [(BWDeviceOrientationMonitor *)self->_deviceOrientationMonitor mostRecentPortraitLandscapeOrientation];
+              mostRecentPortraitLandscapeOrientation = [(BWDeviceOrientationMonitor *)self->_deviceOrientationMonitor mostRecentPortraitLandscapeOrientation];
               v43 = [MEMORY[0x1E695F658] imageWithCVImageBuffer:v15];
               if (v43)
               {
                 v44 = v43;
                 if (self->_cinematicVideoEnabled && objc_loadWeak(&self->_cinematicVideoFocusDetectionsProvider) && [objc_loadWeak(&self->_cinematicVideoFocusDetectionsProvider) focusDetectionProviderEnabled])
                 {
-                  v67 = [objc_loadWeak(&self->_cinematicVideoFocusDetectionsProvider) copyCinematicVideoFocusDetections];
-                  v45 = [v67 firstObject];
-                  if (v45)
+                  copyCinematicVideoFocusDetections = [objc_loadWeak(&self->_cinematicVideoFocusDetectionsProvider) copyCinematicVideoFocusDetections];
+                  firstObject = [copyCinematicVideoFocusDetections firstObject];
+                  if (firstObject)
                   {
-                    v46 = v45;
+                    v46 = firstObject;
                     v64 = objc_alloc(getDKFocusObservationClass());
-                    v62 = [v46 identifier];
+                    identifier = [v46 identifier];
                     [v46 rect];
-                    v51 = [v64 initWithIdentifier:v62 rect:objc_msgSend(v46 focusStrong:{"userFocusStrong"), v47, v48, v49, v50}];
+                    v51 = [v64 initWithIdentifier:identifier rect:objc_msgSend(v46 focusStrong:{"userFocusStrong"), v47, v48, v49, v50}];
                     v63 = self->_agent;
                     v65 = v51;
                     v69 = v51;
                     v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v69 count:1];
                     [v44 extent];
-                    [(DKTrackingAgent *)v63 trackWithFocusObservations:v52 detectedObjectsInfo:v25 cameraPortType:v41 cameraIntrinsics:v68 referenceDimensions:v42 orientation:&__block_literal_global_117 completionHandler:v53, v54];
+                    [(DKTrackingAgent *)v63 trackWithFocusObservations:v52 detectedObjectsInfo:v25 cameraPortType:v41 cameraIntrinsics:v68 referenceDimensions:mostRecentPortraitLandscapeOrientation orientation:&__block_literal_global_117 completionHandler:v53, v54];
                   }
                 }
 
@@ -245,7 +245,7 @@
                 {
                   v55 = self->_agent;
                   [v44 extent];
-                  [(DKTrackingAgent *)v55 trackWithDetectedObjectsInfo:v25 image:v44 cameraPortType:v41 cameraIntrinsics:v68 referenceDimensions:v42 orientation:&__block_literal_global_33 completionHandler:v56, v57];
+                  [(DKTrackingAgent *)v55 trackWithDetectedObjectsInfo:v25 image:v44 cameraPortType:v41 cameraIntrinsics:v68 referenceDimensions:mostRecentPortraitLandscapeOrientation orientation:&__block_literal_global_33 completionHandler:v56, v57];
                 }
 
                 if (*v40 == 1)
@@ -257,12 +257,12 @@
                 v59 = [MEMORY[0x1E695DFD8] setWithArray:{-[DKTrackingAgent getSelectedBodyIds](self->_agent, "getSelectedBodyIds")}];
                 if ([v58 count])
                 {
-                  CMSetAttachment(a3, *off_1E798A350, v58, 1u);
+                  CMSetAttachment(buffer, *off_1E798A350, v58, 1u);
                 }
 
                 if ([v59 count])
                 {
-                  CMSetAttachment(a3, *off_1E798A348, v59, 1u);
+                  CMSetAttachment(buffer, *off_1E798A348, v59, 1u);
                 }
               }
             }
@@ -271,14 +271,14 @@
       }
     }
 
-    [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+    [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
   }
 
   else
   {
     output = self->super._output;
 
-    [(BWNodeOutput *)output emitSampleBuffer:a3];
+    [(BWNodeOutput *)output emitSampleBuffer:buffer];
   }
 }
 

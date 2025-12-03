@@ -1,33 +1,33 @@
 @interface PPConnectionsMetricsTracker
 + (PPConnectionsMetricsTracker)sharedInstance;
-+ (id)consumerStringForConsumerType:(unint64_t)a3;
-+ (id)donationSourceFromBundleID:(id)a3;
-+ (id)triggerFromCriteria:(id)a3;
++ (id)consumerStringForConsumerType:(unint64_t)type;
++ (id)donationSourceFromBundleID:(id)d;
++ (id)triggerFromCriteria:(id)criteria;
 - (PPConnectionsMetricsTracker)init;
-- (__CFString)privacyFriendlyBundleIdentifierWith:(__CFString *)a1;
-- (void)trackConversionGoalForConsumer:(id)a3 source:(id)a4 trigger:(id)a5 originatingApp:(id)a6 targetApp:(id)a7 converted:(BOOL)a8;
-- (void)trackDismissalForConsumer:(id)a3 source:(id)a4 trigger:(id)a5 originatingApp:(id)a6 targetApp:(id)a7;
-- (void)trackDonationFromBundleId:(id)a3 source:(id)a4 hasLatLon:(BOOL)a5 isEligible:(BOOL)a6;
-- (void)trackOpportunityForConsumer:(id)a3 trigger:(id)a4 targetApp:(id)a5;
-- (void)trackPasteboardItemFromBundleId:(id)a3 hasAddress:(BOOL)a4 isEligible:(BOOL)a5;
-- (void)trackTimingForConsumer:(id)a3 time:(unint64_t)a4;
+- (__CFString)privacyFriendlyBundleIdentifierWith:(__CFString *)with;
+- (void)trackConversionGoalForConsumer:(id)consumer source:(id)source trigger:(id)trigger originatingApp:(id)app targetApp:(id)targetApp converted:(BOOL)converted;
+- (void)trackDismissalForConsumer:(id)consumer source:(id)source trigger:(id)trigger originatingApp:(id)app targetApp:(id)targetApp;
+- (void)trackDonationFromBundleId:(id)id source:(id)source hasLatLon:(BOOL)lon isEligible:(BOOL)eligible;
+- (void)trackOpportunityForConsumer:(id)consumer trigger:(id)trigger targetApp:(id)app;
+- (void)trackPasteboardItemFromBundleId:(id)id hasAddress:(BOOL)address isEligible:(BOOL)eligible;
+- (void)trackTimingForConsumer:(id)consumer time:(unint64_t)time;
 @end
 
 @implementation PPConnectionsMetricsTracker
 
-- (void)trackPasteboardItemFromBundleId:(id)a3 hasAddress:(BOOL)a4 isEligible:(BOOL)a5
+- (void)trackPasteboardItemFromBundleId:(id)id hasAddress:(BOOL)address isEligible:(BOOL)eligible
 {
-  v8 = a3;
+  idCopy = id;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __85__PPConnectionsMetricsTracker_trackPasteboardItemFromBundleId_hasAddress_isEligible___block_invoke;
   block[3] = &unk_278978AD0;
   block[4] = self;
-  v12 = v8;
-  v13 = a4;
-  v14 = a5;
-  v10 = v8;
+  v12 = idCopy;
+  addressCopy = address;
+  eligibleCopy = eligible;
+  v10 = idCopy;
   dispatch_async(queue, block);
 }
 
@@ -68,9 +68,9 @@ void __85__PPConnectionsMetricsTracker_trackPasteboardItemFromBundleId_hasAddres
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (__CFString)privacyFriendlyBundleIdentifierWith:(__CFString *)a1
+- (__CFString)privacyFriendlyBundleIdentifierWith:(__CFString *)with
 {
-  if (a1)
+  if (with)
   {
     v3 = @"unknown";
     if (a2)
@@ -78,29 +78,29 @@ void __85__PPConnectionsMetricsTracker_trackPasteboardItemFromBundleId_hasAddres
       v3 = a2;
     }
 
-    a1 = v3;
+    with = v3;
     v2 = vars8;
   }
 
-  return a1;
+  return with;
 }
 
-- (void)trackDonationFromBundleId:(id)a3 source:(id)a4 hasLatLon:(BOOL)a5 isEligible:(BOOL)a6
+- (void)trackDonationFromBundleId:(id)id source:(id)source hasLatLon:(BOOL)lon isEligible:(BOOL)eligible
 {
-  v10 = a3;
-  v11 = a4;
+  idCopy = id;
+  sourceCopy = source;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __85__PPConnectionsMetricsTracker_trackDonationFromBundleId_source_hasLatLon_isEligible___block_invoke;
   v15[3] = &unk_278978AA8;
   v15[4] = self;
-  v16 = v10;
-  v17 = v11;
-  v18 = a5;
-  v19 = a6;
-  v13 = v11;
-  v14 = v10;
+  v16 = idCopy;
+  v17 = sourceCopy;
+  lonCopy = lon;
+  eligibleCopy = eligible;
+  v13 = sourceCopy;
+  v14 = idCopy;
   dispatch_async(queue, v15);
 }
 
@@ -146,18 +146,18 @@ void __85__PPConnectionsMetricsTracker_trackDonationFromBundleId_source_hasLatLo
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)trackTimingForConsumer:(id)a3 time:(unint64_t)a4
+- (void)trackTimingForConsumer:(id)consumer time:(unint64_t)time
 {
-  v6 = a3;
+  consumerCopy = consumer;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__PPConnectionsMetricsTracker_trackTimingForConsumer_time___block_invoke;
   block[3] = &unk_278978A80;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = consumerCopy;
+  timeCopy = time;
+  v8 = consumerCopy;
   dispatch_async(queue, block);
 }
 
@@ -179,29 +179,29 @@ void __59__PPConnectionsMetricsTracker_trackTimingForConsumer_time___block_invok
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)trackDismissalForConsumer:(id)a3 source:(id)a4 trigger:(id)a5 originatingApp:(id)a6 targetApp:(id)a7
+- (void)trackDismissalForConsumer:(id)consumer source:(id)source trigger:(id)trigger originatingApp:(id)app targetApp:(id)targetApp
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  consumerCopy = consumer;
+  sourceCopy = source;
+  triggerCopy = trigger;
+  appCopy = app;
+  targetAppCopy = targetApp;
   queue = self->_queue;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __97__PPConnectionsMetricsTracker_trackDismissalForConsumer_source_trigger_originatingApp_targetApp___block_invoke;
   v23[3] = &unk_278978A58;
-  v24 = v12;
-  v25 = self;
-  v26 = v13;
-  v27 = v14;
-  v28 = v15;
-  v29 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
+  v24 = consumerCopy;
+  selfCopy = self;
+  v26 = sourceCopy;
+  v27 = triggerCopy;
+  v28 = appCopy;
+  v29 = targetAppCopy;
+  v18 = targetAppCopy;
+  v19 = appCopy;
+  v20 = triggerCopy;
+  v21 = sourceCopy;
+  v22 = consumerCopy;
   dispatch_async(queue, v23);
 }
 
@@ -229,23 +229,23 @@ void __97__PPConnectionsMetricsTracker_trackDismissalForConsumer_source_trigger_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)trackOpportunityForConsumer:(id)a3 trigger:(id)a4 targetApp:(id)a5
+- (void)trackOpportunityForConsumer:(id)consumer trigger:(id)trigger targetApp:(id)app
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  consumerCopy = consumer;
+  triggerCopy = trigger;
+  appCopy = app;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __77__PPConnectionsMetricsTracker_trackOpportunityForConsumer_trigger_targetApp___block_invoke;
   v15[3] = &unk_2789799D0;
-  v16 = v8;
-  v17 = self;
-  v18 = v10;
-  v19 = v9;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = consumerCopy;
+  selfCopy = self;
+  v18 = appCopy;
+  v19 = triggerCopy;
+  v12 = triggerCopy;
+  v13 = appCopy;
+  v14 = consumerCopy;
   dispatch_async(queue, v15);
 }
 
@@ -273,30 +273,30 @@ void __77__PPConnectionsMetricsTracker_trackOpportunityForConsumer_trigger_targe
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)trackConversionGoalForConsumer:(id)a3 source:(id)a4 trigger:(id)a5 originatingApp:(id)a6 targetApp:(id)a7 converted:(BOOL)a8
+- (void)trackConversionGoalForConsumer:(id)consumer source:(id)source trigger:(id)trigger originatingApp:(id)app targetApp:(id)targetApp converted:(BOOL)converted
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  consumerCopy = consumer;
+  sourceCopy = source;
+  triggerCopy = trigger;
+  appCopy = app;
+  targetAppCopy = targetApp;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __112__PPConnectionsMetricsTracker_trackConversionGoalForConsumer_source_trigger_originatingApp_targetApp_converted___block_invoke;
   block[3] = &unk_278978A30;
-  v32 = a8;
-  v26 = v14;
-  v27 = self;
-  v28 = v17;
-  v29 = v18;
-  v30 = v15;
-  v31 = v16;
-  v20 = v16;
-  v21 = v15;
-  v22 = v18;
-  v23 = v17;
-  v24 = v14;
+  convertedCopy = converted;
+  v26 = consumerCopy;
+  selfCopy = self;
+  v28 = appCopy;
+  v29 = targetAppCopy;
+  v30 = sourceCopy;
+  v31 = triggerCopy;
+  v20 = triggerCopy;
+  v21 = sourceCopy;
+  v22 = targetAppCopy;
+  v23 = appCopy;
+  v24 = consumerCopy;
   dispatch_async(queue, block);
 }
 
@@ -439,22 +439,22 @@ void __112__PPConnectionsMetricsTracker_trackConversionGoalForConsumer_source_tr
   return v2;
 }
 
-+ (id)triggerFromCriteria:(id)a3
++ (id)triggerFromCriteria:(id)criteria
 {
-  v3 = a3;
-  if ([PPConnectionsUtils isValidLinguisticQuery:v3])
+  criteriaCopy = criteria;
+  if ([PPConnectionsUtils isValidLinguisticQuery:criteriaCopy])
   {
-    if ([v3 fields])
+    if ([criteriaCopy fields])
     {
       v4 = @"ling_phone";
     }
 
-    else if ([v3 subtype] == 6)
+    else if ([criteriaCopy subtype] == 6)
     {
       v4 = @"ling_location";
     }
 
-    else if ([v3 subtype] == 7)
+    else if ([criteriaCopy subtype] == 7)
     {
       v4 = @"ling_address";
     }
@@ -468,7 +468,7 @@ void __112__PPConnectionsMetricsTracker_trackConversionGoalForConsumer_source_tr
   else
   {
     v5 = +[PPConnectionsUtils supportedLocationSemanticTypes];
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(v3, "semanticTag")}];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(criteriaCopy, "semanticTag")}];
     v7 = [v5 containsObject:v6];
 
     if (v7)
@@ -485,15 +485,15 @@ void __112__PPConnectionsMetricsTracker_trackConversionGoalForConsumer_source_tr
   return v4;
 }
 
-+ (id)donationSourceFromBundleID:(id)a3
++ (id)donationSourceFromBundleID:(id)d
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277D3A6A0]])
+  dCopy = d;
+  if ([dCopy isEqualToString:*MEMORY[0x277D3A6A0]])
   {
     v4 = @"siri";
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D3A698]])
+  else if ([dCopy isEqualToString:*MEMORY[0x277D3A698]])
   {
     v4 = @"schemaorg";
   }
@@ -506,27 +506,27 @@ void __112__PPConnectionsMetricsTracker_trackConversionGoalForConsumer_source_tr
   return v4;
 }
 
-+ (id)consumerStringForConsumerType:(unint64_t)a3
++ (id)consumerStringForConsumerType:(unint64_t)type
 {
   v3 = @"maps";
   v4 = @"mapsWidget";
   v5 = @"quicktype";
-  if ((a3 & 1) == 0)
+  if ((type & 1) == 0)
   {
     v5 = @"unknown";
   }
 
-  if ((a3 & 4) == 0)
+  if ((type & 4) == 0)
   {
     v4 = v5;
   }
 
-  if ((a3 & 2) == 0)
+  if ((type & 2) == 0)
   {
     v3 = v4;
   }
 
-  if ((a3 & 8) != 0)
+  if ((type & 8) != 0)
   {
     return @"springboard";
   }
@@ -543,7 +543,7 @@ void __112__PPConnectionsMetricsTracker_trackConversionGoalForConsumer_source_tr
   block[1] = 3221225472;
   block[2] = __45__PPConnectionsMetricsTracker_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);

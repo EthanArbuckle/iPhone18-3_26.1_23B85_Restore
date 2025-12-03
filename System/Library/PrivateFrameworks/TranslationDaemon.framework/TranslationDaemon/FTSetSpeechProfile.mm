@@ -1,20 +1,20 @@
 @interface FTSetSpeechProfile
-- (FTSetSpeechProfile)initWithFlatbuffData:(id)a3 root:(const SetSpeechProfile *)a4 verify:(BOOL)a5;
+- (FTSetSpeechProfile)initWithFlatbuffData:(id)data root:(const SetSpeechProfile *)root verify:(BOOL)verify;
 - (FTUserAcousticProfile)user_acoustic_profile;
 - (FTUserLanguageProfile)user_language_profile;
 - (NSString)language;
 - (NSString)session_id;
 - (NSString)speech_id;
-- (Offset<siri::speech::schema_fb::SetSpeechProfile>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::SetSpeechProfile>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 @end
 
 @implementation FTSetSpeechProfile
 
-- (FTSetSpeechProfile)initWithFlatbuffData:(id)a3 root:(const SetSpeechProfile *)a4 verify:(BOOL)a5
+- (FTSetSpeechProfile)initWithFlatbuffData:(id)data root:(const SetSpeechProfile *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTSetSpeechProfile;
   v10 = [(FTSetSpeechProfile *)&v25 init];
@@ -23,35 +23,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -196,57 +196,57 @@ LABEL_13:
   return v6;
 }
 
-- (Offset<siri::speech::schema_fb::SetSpeechProfile>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::SetSpeechProfile>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FTSetSpeechProfile *)self speech_id];
-  v6 = v5;
-  if (!v5)
+  speech_id = [(FTSetSpeechProfile *)self speech_id];
+  v6 = speech_id;
+  if (!speech_id)
   {
-    v5 = &stru_284834138;
+    speech_id = &stru_284834138;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)speech_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v10 = [(FTSetSpeechProfile *)self session_id];
-  v11 = v10;
-  if (!v10)
+  session_id = [(FTSetSpeechProfile *)self session_id];
+  v11 = session_id;
+  if (!session_id)
   {
-    v10 = &stru_284834138;
+    session_id = &stru_284834138;
   }
 
-  v12 = [(__CFString *)v10 UTF8String];
-  v13 = strlen(v12);
-  v14 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v12, v13);
+  uTF8String2 = [(__CFString *)session_id UTF8String];
+  v13 = strlen(uTF8String2);
+  v14 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String2, v13);
 
-  v15 = [(FTSetSpeechProfile *)self user_language_profile];
-  v16 = [v15 addObjectToBuffer:a3];
+  user_language_profile = [(FTSetSpeechProfile *)self user_language_profile];
+  v16 = [user_language_profile addObjectToBuffer:buffer];
 
-  v17 = [(FTSetSpeechProfile *)self user_acoustic_profile];
-  v18 = [v17 addObjectToBuffer:a3];
+  user_acoustic_profile = [(FTSetSpeechProfile *)self user_acoustic_profile];
+  v18 = [user_acoustic_profile addObjectToBuffer:buffer];
 
-  v19 = [(FTSetSpeechProfile *)self language];
-  v20 = v19;
-  if (!v19)
+  language = [(FTSetSpeechProfile *)self language];
+  v20 = language;
+  if (!language)
   {
-    v19 = &stru_284834138;
+    language = &stru_284834138;
   }
 
-  v21 = [(__CFString *)v19 UTF8String];
-  v22 = strlen(v21);
-  LODWORD(v21) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v21, v22);
+  uTF8String3 = [(__CFString *)language UTF8String];
+  v22 = strlen(uTF8String3);
+  LODWORD(uTF8String3) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String3, v22);
 
-  *(a3 + 70) = 1;
-  v23 = *(a3 + 10);
-  v24 = *(a3 + 8) - *(a3 + 12);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 4, String);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v14);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 8, v16);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v18);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 12, v21);
+  *(buffer + 70) = 1;
+  v23 = *(buffer + 10);
+  v24 = *(buffer + 8) - *(buffer + 12);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 4, String);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v14);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 8, v16);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v18);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 12, uTF8String3);
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v24 + v23);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v24 + v23);
 }
 
 - (id)flatbuffData

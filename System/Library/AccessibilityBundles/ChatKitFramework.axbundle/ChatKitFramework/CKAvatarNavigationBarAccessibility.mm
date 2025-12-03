@@ -1,17 +1,17 @@
 @interface CKAvatarNavigationBarAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 @end
 
 @implementation CKAvatarNavigationBarAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKAvatarNavigationBar" isKindOfClass:@"UINavigationBar"];
-  [v3 validateClass:@"CKNavigationBarCanvasView"];
-  [v3 validateClass:@"CKNavigationBarCanvasView" hasInstanceMethod:@"leftItemView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKCanvasBackButtonView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKAvatarNavigationBar" isKindOfClass:@"UINavigationBar"];
+  [validationsCopy validateClass:@"CKNavigationBarCanvasView"];
+  [validationsCopy validateClass:@"CKNavigationBarCanvasView" hasInstanceMethod:@"leftItemView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKCanvasBackButtonView"];
 }
 
 - (BOOL)accessibilityPerformEscape
@@ -31,7 +31,7 @@
 LABEL_5:
     v8.receiver = self;
     v8.super_class = CKAvatarNavigationBarAccessibility;
-    v6 = [(CKAvatarNavigationBarAccessibility *)&v8 accessibilityPerformEscape];
+    accessibilityPerformEscape = [(CKAvatarNavigationBarAccessibility *)&v8 accessibilityPerformEscape];
     goto LABEL_6;
   }
 
@@ -40,10 +40,10 @@ LABEL_5:
   v5 = __UIAccessibilityCastAsClass();
   [v5 sendActionsForControlEvents:64];
 
-  v6 = 1;
+  accessibilityPerformEscape = 1;
 LABEL_6:
 
-  return v6;
+  return accessibilityPerformEscape;
 }
 
 @end

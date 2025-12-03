@@ -1,19 +1,19 @@
 @interface WidgetRendererClient
 - (_TtC14WidgetRenderer20WidgetRendererClient)init;
 - (uint64_t)flushPowerlog;
-- (void)clientConfigurationsDidChange:(id)a3 forHost:(id)a4;
-- (void)extensionsDidChange:(id)a3;
-- (void)initializeConnection:(id)a3;
-- (void)systemEnvironmentDidChange:(id)a3;
+- (void)clientConfigurationsDidChange:(id)change forHost:(id)host;
+- (void)extensionsDidChange:(id)change;
+- (void)initializeConnection:(id)connection;
+- (void)systemEnvironmentDidChange:(id)change;
 @end
 
 @implementation WidgetRendererClient
 
-- (void)initializeConnection:(id)a3
+- (void)initializeConnection:(id)connection
 {
-  v4 = a3;
-  v5 = self;
-  sub_1DAD6FB3C(v4);
+  connectionCopy = connection;
+  selfCopy = self;
+  sub_1DAD6FB3C(connectionCopy);
 }
 
 - (_TtC14WidgetRenderer20WidgetRendererClient)init
@@ -23,26 +23,26 @@
   return result;
 }
 
-- (void)clientConfigurationsDidChange:(id)a3 forHost:(id)a4
+- (void)clientConfigurationsDidChange:(id)change forHost:(id)host
 {
   v6 = sub_1DAED1CEC();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
-  sub_1DAEB6A98(a3, v6, v8);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1DAEB6A98(change, v6, v8);
 }
 
-- (void)extensionsDidChange:(id)a3
+- (void)extensionsDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_1DAEB6FD4(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1DAEB6FD4(changeCopy);
 }
 
-- (void)systemEnvironmentDidChange:(id)a3
+- (void)systemEnvironmentDidChange:(id)change
 {
-  v4 = a3;
-  v8 = self;
+  changeCopy = change;
+  selfCopy = self;
   v5 = sub_1DAECDC1C();
   v7 = v6;
 

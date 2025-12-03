@@ -1,51 +1,51 @@
 @interface WebBundleManager
 - (WKProcessPool)pool;
-- (WebBundleManager)initWithConfiguration:(id)a3 delegate:(id)a4;
+- (WebBundleManager)initWithConfiguration:(id)configuration delegate:(id)delegate;
 - (id)_newConfiguredWebView;
 - (void)_cancelPageLoadTimerIfNeeded;
 - (void)_pageLoadFailureOccurred;
 - (void)_startPageLoadTimer;
 - (void)cancelLoadRequest;
 - (void)dealloc;
-- (void)didLoadPageWithSuccess:(BOOL)a3;
+- (void)didLoadPageWithSuccess:(BOOL)success;
 - (void)loadRequest;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
-- (void)webView:(id)a3 didStartProvisionalNavigation:(id)a4;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
+- (void)webView:(id)view didStartProvisionalNavigation:(id)navigation;
 @end
 
 @implementation WebBundleManager
 
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error
 {
-  if (self->_currentNavigation == a4)
+  if (self->_currentNavigation == navigation)
   {
     [(WebBundleManager *)self _pageLoadFailureOccurred];
   }
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
-  if (self->_currentNavigation == a4)
+  if (self->_currentNavigation == navigation)
   {
     [(WebBundleManager *)self _pageLoadFailureOccurred];
   }
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  if (self->_currentNavigation == a4)
+  if (self->_currentNavigation == navigation)
   {
-    v6 = a3;
+    viewCopy = view;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained webViewDidFinishNavigation:v6];
+    [WeakRetained webViewDidFinishNavigation:viewCopy];
   }
 }
 
-- (void)webView:(id)a3 didStartProvisionalNavigation:(id)a4
+- (void)webView:(id)view didStartProvisionalNavigation:(id)navigation
 {
-  objc_storeStrong(&self->_currentNavigation, a4);
+  objc_storeStrong(&self->_currentNavigation, navigation);
 
   [(WebBundleManager *)self _startPageLoadTimer];
 }
@@ -56,9 +56,9 @@
   v3 = sub_100038318();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(WebBundleConfiguration *)self->_webBundleConfiguration temporarilyUseOnDeviceDirectory];
+    temporarilyUseOnDeviceDirectory = [(WebBundleConfiguration *)self->_webBundleConfiguration temporarilyUseOnDeviceDirectory];
     v5 = @"YES";
-    if (v4)
+    if (temporarilyUseOnDeviceDirectory)
     {
       v5 = @"NO";
     }
@@ -72,18 +72,18 @@
   if ([(WebBundleConfiguration *)self->_webBundleConfiguration temporarilyUseOnDeviceDirectory])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v8 = [(WebBundleManager *)self webView];
-    [WeakRetained webView:v8 didFinishLoadingWithError:0];
+    webView = [(WebBundleManager *)self webView];
+    [WeakRetained webView:webView didFinishLoadingWithError:0];
   }
 
   else
   {
     [(WebBundleConfiguration *)self->_webBundleConfiguration setTemporarilyUseOnDeviceDirectory:1];
-    v9 = [(WebBundleManager *)self webView];
-    [v9 stopLoading];
+    webView2 = [(WebBundleManager *)self webView];
+    [webView2 stopLoading];
 
     WeakRetained = [(WebBundleManager *)self webView];
-    v10 = [WeakRetained reloadFromOrigin];
+    reloadFromOrigin = [WeakRetained reloadFromOrigin];
   }
 }
 
@@ -117,19 +117,19 @@
   v8 = [(WebBundleScriptMessageHandlerWithReply *)v6 initWithDelegate:v7];
 
   v9 = objc_alloc_init(WKWebViewConfiguration);
-  v10 = [(WebBundleConfiguration *)self->_webBundleConfiguration urlScheme];
-  [(WKWebViewConfiguration *)v9 setURLSchemeHandler:v5 forURLScheme:v10];
+  urlScheme = [(WebBundleConfiguration *)self->_webBundleConfiguration urlScheme];
+  [(WKWebViewConfiguration *)v9 setURLSchemeHandler:v5 forURLScheme:urlScheme];
 
-  v11 = [(WebBundleManager *)self pool];
-  [(WKWebViewConfiguration *)v9 setProcessPool:v11];
+  pool = [(WebBundleManager *)self pool];
+  [(WKWebViewConfiguration *)v9 setProcessPool:pool];
 
   v12 = objc_alloc_init(WKUserContentController);
   [(WKWebViewConfiguration *)v9 setUserContentController:v12];
 
-  v13 = [(WKWebViewConfiguration *)v9 userContentController];
+  userContentController = [(WKWebViewConfiguration *)v9 userContentController];
   v14 = +[WKContentWorld pageWorld];
-  v15 = [(WebBundleConfiguration *)self->_webBundleConfiguration messageHandlerName];
-  [v13 addScriptMessageHandlerWithReply:v8 contentWorld:v14 name:v15];
+  messageHandlerName = [(WebBundleConfiguration *)self->_webBundleConfiguration messageHandlerName];
+  [userContentController addScriptMessageHandlerWithReply:v8 contentWorld:v14 name:messageHandlerName];
 
   webViewConfiguration = self->_webViewConfiguration;
   self->_webViewConfiguration = v9;
@@ -138,18 +138,18 @@
   v18 = [[NoKeyboardAccessoryWebView alloc] initWithFrame:v17 configuration:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(NoKeyboardAccessoryWebView *)v18 _setInputDelegate:self];
   [(NoKeyboardAccessoryWebView *)v18 setNavigationDelegate:self];
-  v19 = [(NoKeyboardAccessoryWebView *)v18 scrollView];
-  [v19 setScrollsToTop:0];
+  scrollView = [(NoKeyboardAccessoryWebView *)v18 scrollView];
+  [scrollView setScrollsToTop:0];
 
-  v20 = [(NoKeyboardAccessoryWebView *)v18 scrollView];
-  [v20 setMaximumZoomScale:1.0];
+  scrollView2 = [(NoKeyboardAccessoryWebView *)v18 scrollView];
+  [scrollView2 setMaximumZoomScale:1.0];
 
-  v21 = [(NoKeyboardAccessoryWebView *)v18 scrollView];
-  [v21 setMinimumZoomScale:1.0];
+  scrollView3 = [(NoKeyboardAccessoryWebView *)v18 scrollView];
+  [scrollView3 setMinimumZoomScale:1.0];
 
   [(NoKeyboardAccessoryWebView *)v18 setOpaque:0];
-  v22 = [(NoKeyboardAccessoryWebView *)v18 scrollView];
-  [v22 setZoomEnabled:0];
+  scrollView4 = [(NoKeyboardAccessoryWebView *)v18 scrollView];
+  [scrollView4 setZoomEnabled:0];
 
   [(NoKeyboardAccessoryWebView *)v18 _setUseSystemAppearance:1];
   return v18;
@@ -157,24 +157,24 @@
 
 - (void)dealloc
 {
-  v3 = [(WKWebViewConfiguration *)self->_webViewConfiguration userContentController];
-  v4 = [(WebBundleConfiguration *)self->_webBundleConfiguration messageHandlerName];
+  userContentController = [(WKWebViewConfiguration *)self->_webViewConfiguration userContentController];
+  messageHandlerName = [(WebBundleConfiguration *)self->_webBundleConfiguration messageHandlerName];
   v5 = +[WKContentWorld pageWorld];
-  [v3 removeScriptMessageHandlerForName:v4 contentWorld:v5];
+  [userContentController removeScriptMessageHandlerForName:messageHandlerName contentWorld:v5];
 
   v6.receiver = self;
   v6.super_class = WebBundleManager;
   [(WebBundleManager *)&v6 dealloc];
 }
 
-- (void)didLoadPageWithSuccess:(BOOL)a3
+- (void)didLoadPageWithSuccess:(BOOL)success
 {
-  v3 = a3;
+  successCopy = success;
   v5 = sub_100038318();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = @"NO";
-    if (v3)
+    if (successCopy)
     {
       v6 = @"YES";
     }
@@ -185,7 +185,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Did load page with success: %@", &v8, 0xCu);
   }
 
-  if (v3)
+  if (successCopy)
   {
     [(WebBundleManager *)self _cancelPageLoadTimerIfNeeded];
   }
@@ -199,46 +199,46 @@
 - (void)cancelLoadRequest
 {
   [(WebBundleManager *)self _cancelPageLoadTimerIfNeeded];
-  v3 = [(WebBundleManager *)self webView];
-  [v3 stopLoading];
+  webView = [(WebBundleManager *)self webView];
+  [webView stopLoading];
 }
 
 - (void)loadRequest
 {
-  v3 = [(WebBundleManager *)self entryPointString];
+  entryPointString = [(WebBundleManager *)self entryPointString];
   webBundleConfiguration = self->_webBundleConfiguration;
-  if (v3)
+  if (entryPointString)
   {
-    v5 = [(WebBundleConfiguration *)webBundleConfiguration entryPointUrlBase];
-    v6 = [(WebBundleManager *)self entryPointString];
-    v10 = [v5 URLByAppendingPathComponent:v6];
+    entryPointUrlBase = [(WebBundleConfiguration *)webBundleConfiguration entryPointUrlBase];
+    entryPointString2 = [(WebBundleManager *)self entryPointString];
+    entryPointUrl = [entryPointUrlBase URLByAppendingPathComponent:entryPointString2];
   }
 
   else
   {
-    v10 = [(WebBundleConfiguration *)webBundleConfiguration entryPointUrl];
+    entryPointUrl = [(WebBundleConfiguration *)webBundleConfiguration entryPointUrl];
   }
 
-  v7 = [(WebBundleManager *)self webView];
-  v8 = [[NSURLRequest alloc] initWithURL:v10];
-  v9 = [v7 loadRequest:v8];
+  webView = [(WebBundleManager *)self webView];
+  v8 = [[NSURLRequest alloc] initWithURL:entryPointUrl];
+  v9 = [webView loadRequest:v8];
 }
 
-- (WebBundleManager)initWithConfiguration:(id)a3 delegate:(id)a4
+- (WebBundleManager)initWithConfiguration:(id)configuration delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = WebBundleManager;
   v9 = [(WebBundleManager *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v8);
-    objc_storeStrong(&v10->_webBundleConfiguration, a3);
-    v11 = [(WebBundleManager *)v10 _newConfiguredWebView];
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    objc_storeStrong(&v10->_webBundleConfiguration, configuration);
+    _newConfiguredWebView = [(WebBundleManager *)v10 _newConfiguredWebView];
     webView = v10->_webView;
-    v10->_webView = v11;
+    v10->_webView = _newConfiguredWebView;
   }
 
   return v10;

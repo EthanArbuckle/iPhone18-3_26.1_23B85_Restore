@@ -1,6 +1,6 @@
 @interface FollowingCommandHandler
 - (_TtC8NewsFeed23FollowingCommandHandler)init;
-- (void)subscriptionController:(id)a3 didAddTags:(id)a4 changeTags:(id)a5 moveTags:(id)a6 removeTags:(id)a7 subscriptionType:(unint64_t)a8;
+- (void)subscriptionController:(id)controller didAddTags:(id)tags changeTags:(id)changeTags moveTags:(id)moveTags removeTags:(id)removeTags subscriptionType:(unint64_t)type;
 @end
 
 @implementation FollowingCommandHandler
@@ -12,13 +12,13 @@
   return result;
 }
 
-- (void)subscriptionController:(id)a3 didAddTags:(id)a4 changeTags:(id)a5 moveTags:(id)a6 removeTags:(id)a7 subscriptionType:(unint64_t)a8
+- (void)subscriptionController:(id)controller didAddTags:(id)tags changeTags:(id)changeTags moveTags:(id)moveTags removeTags:(id)removeTags subscriptionType:(unint64_t)type
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
     swift_getObjectType();
     v9 = qword_1EDF3AB00;
-    v10 = self;
+    selfCopy = self;
     if (v9 != -1)
     {
       swift_once();

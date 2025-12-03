@@ -1,28 +1,28 @@
 @interface ASTCEncoder
-- (ASTCEncoder)initWithDevice:(id)a3 blockWidth:(unsigned int)a4 blockHeight:(unsigned int)a5 rankModesCountRatio:(float)a6 fastSkipThreshold:(unsigned int)a7 collectStatistics:(BOOL)a8 error:(id *)a9;
-- (BOOL)finalizeStatistics:(const char *)a3 modesPath:(const char *)a4 errorsPath:(const char *)a5;
-- (void)encodeWithCommandBuffer:(id)a3 destTexture:(id)a4 destSlice:(unint64_t)a5 destLevel:(unint64_t)a6 srcTexture:(id)a7 srcSlice:(unint64_t)a8 srcLevel:(unint64_t)a9;
+- (ASTCEncoder)initWithDevice:(id)device blockWidth:(unsigned int)width blockHeight:(unsigned int)height rankModesCountRatio:(float)ratio fastSkipThreshold:(unsigned int)threshold collectStatistics:(BOOL)statistics error:(id *)error;
+- (BOOL)finalizeStatistics:(const char *)statistics modesPath:(const char *)path errorsPath:(const char *)errorsPath;
+- (void)encodeWithCommandBuffer:(id)buffer destTexture:(id)texture destSlice:(unint64_t)slice destLevel:(unint64_t)level srcTexture:(id)srcTexture srcSlice:(unint64_t)srcSlice srcLevel:(unint64_t)srcLevel;
 @end
 
 @implementation ASTCEncoder
 
-- (ASTCEncoder)initWithDevice:(id)a3 blockWidth:(unsigned int)a4 blockHeight:(unsigned int)a5 rankModesCountRatio:(float)a6 fastSkipThreshold:(unsigned int)a7 collectStatistics:(BOOL)a8 error:(id *)a9
+- (ASTCEncoder)initWithDevice:(id)device blockWidth:(unsigned int)width blockHeight:(unsigned int)height rankModesCountRatio:(float)ratio fastSkipThreshold:(unsigned int)threshold collectStatistics:(BOOL)statistics error:(id *)error
 {
-  v10 = a8;
+  statisticsCopy = statistics;
   v113 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v103 = a7;
+  deviceCopy = device;
+  thresholdCopy = threshold;
   v17 = _mxi_log();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109888;
-    v106 = a4;
+    widthCopy = width;
     v107 = 1024;
-    v108 = a5;
+    heightCopy = height;
     v109 = 2048;
-    v110 = a6;
+    ratioCopy = ratio;
     v111 = 1024;
-    v112 = a7;
+    thresholdCopy2 = threshold;
     _os_log_impl(&dword_22F9C3000, v17, OS_LOG_TYPE_DEFAULT, "[Image] [ASTCEncoder] Initializing with block width %u and height %u, rank modes count ratio %f fast skip threshold %u", buf, 0x1Eu);
   }
 
@@ -38,16 +38,16 @@
   *(v18 + 24) = 0u;
   *(v18 + 7) = 0;
   *(v18 + 40) = 0u;
-  if (v103 > 5)
+  if (thresholdCopy > 5)
   {
-    objc_msgSend_fillError_withDescription_(MXIInternalError, v19, a9, @"No implementation for fastThresholdCount > 5", v20);
+    objc_msgSend_fillError_withDescription_(MXIInternalError, v19, error, @"No implementation for fastThresholdCount > 5", v20);
     goto LABEL_12;
   }
 
   v22 = &xmmword_2788ADDD0;
   v23 = 6;
   v24 = @"Failed to look up ASTC shaders";
-  while (*v22 != a4 || *(v22 + 1) != a5 || *(v22 + 2) != v10)
+  while (*v22 != width || *(v22 + 1) != height || *(v22 + 2) != statisticsCopy)
   {
     v22 = (v22 + 40);
     if (!--v23)
@@ -62,12 +62,12 @@
   if (!*(v18 + 6))
   {
 LABEL_11:
-    objc_msgSend_fillError_withDescription_(MXIInternalError, v19, a9, @"Failed to look up ASTC shaders", v20);
+    objc_msgSend_fillError_withDescription_(MXIInternalError, v19, error, @"Failed to look up ASTC shaders", v20);
     goto LABEL_12;
   }
 
-  v18[148] = v10;
-  if (v10)
+  v18[148] = statisticsCopy;
+  if (statisticsCopy)
   {
     v26 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v27 = *(v21 + 8);
@@ -82,15 +82,15 @@ LABEL_11:
     *(v21 + 17) = v30;
   }
 
-  v21[36] = a6;
+  v21[36] = ratio;
   if (!*(v21 + 5))
   {
-    objc_msgSend_fillError_withDescription_(MXIInternalError, v19, a9, @"Unsupported ASTC block size", v20);
+    objc_msgSend_fillError_withDescription_(MXIInternalError, v19, error, @"Unsupported ASTC block size", v20);
     goto LABEL_12;
   }
 
   v32 = objc_msgSend_bundleWithIdentifier_(MEMORY[0x277CCA8D8], v19, @"com.apple.mxi", v24, v20);
-  v38 = objc_msgSend_newDefaultLibraryWithBundle_error_(v16, v33, v32, 0, v34);
+  v38 = objc_msgSend_newDefaultLibraryWithBundle_error_(deviceCopy, v33, v32, 0, v34);
   if (v38)
   {
     v101 = v32;
@@ -100,29 +100,29 @@ LABEL_11:
   {
     v101 = objc_msgSend_bundleWithIdentifier_(MEMORY[0x277CCA8D8], v35, @"com.apple.mxi.ImageTests", v36, v37);
 
-    v38 = objc_msgSend_newDefaultLibraryWithBundle_error_(v16, v39, v101, 0, v40);
+    v38 = objc_msgSend_newDefaultLibraryWithBundle_error_(deviceCopy, v39, v101, 0, v40);
   }
 
   v41 = objc_opt_new();
   v44 = objc_msgSend_URLForResource_withExtension_(v101, v42, @"mxi_archive", @"metallib", v43);
   objc_msgSend_setUrl_(v41, v45, v44, v46, v47);
 
-  v99 = objc_msgSend_newBinaryArchiveWithDescriptor_error_(v16, v48, v41, a9, v49);
+  v99 = objc_msgSend_newBinaryArchiveWithDescriptor_error_(deviceCopy, v48, v41, error, v49);
   v104 = v99;
   v100 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v50, &v104, 1, v51);
   *buf = 4;
   v52 = objc_opt_new();
   objc_msgSend_setConstantValue_type_atIndex_(v52, v53, buf, 33, 0);
-  objc_msgSend_setConstantValue_type_atIndex_(v52, v54, &v103, 33, 1);
+  objc_msgSend_setConstantValue_type_atIndex_(v52, v54, &thresholdCopy, 33, 1);
   v55 = MEMORY[0x277CCACA8];
   v56 = *(v21 + 7);
   v61 = objc_msgSend_defaultCStringEncoding(MEMORY[0x277CCACA8], v57, v58, v59, v60);
   v64 = objc_msgSend_stringWithCString_encoding_(v55, v62, v56, v61, v63);
-  v66 = objc_msgSend_newFunctionWithName_constantValues_error_(v38, v65, v64, v52, a9);
+  v66 = objc_msgSend_newFunctionWithName_constantValues_error_(v38, v65, v64, v52, error);
 
   if (!v66)
   {
-    objc_msgSend_fillError_withDescription_(MXIInternalError, v67, a9, @"Failed to create shader function without buffer", v70);
+    objc_msgSend_fillError_withDescription_(MXIInternalError, v67, error, @"Failed to create shader function without buffer", v70);
 
     goto LABEL_12;
   }
@@ -131,11 +131,11 @@ LABEL_11:
   v72 = *(v21 + 6);
   v73 = objc_msgSend_defaultCStringEncoding(MEMORY[0x277CCACA8], v67, v68, v69, v70);
   v76 = objc_msgSend_stringWithCString_encoding_(v71, v74, v72, v73, v75);
-  v78 = objc_msgSend_newFunctionWithName_constantValues_error_(v38, v77, v76, v52, a9);
+  v78 = objc_msgSend_newFunctionWithName_constantValues_error_(v38, v77, v76, v52, error);
 
   if (!v78)
   {
-    objc_msgSend_fillError_withDescription_(MXIInternalError, v79, a9, @"Failed to create shader function with buffer", v80);
+    objc_msgSend_fillError_withDescription_(MXIInternalError, v79, error, @"Failed to create shader function with buffer", v80);
 
     goto LABEL_12;
   }
@@ -143,7 +143,7 @@ LABEL_11:
   v81 = objc_opt_new();
   objc_msgSend_setBinaryArchives_(v81, v82, v100, v83, v84);
   objc_msgSend_setComputeFunction_(v81, v85, v66, v86, v87);
-  v89 = objc_msgSend_newComputePipelineStateWithDescriptor_options_reflection_error_(v16, v88, v81, 0, 0, a9);
+  v89 = objc_msgSend_newComputePipelineStateWithDescriptor_options_reflection_error_(deviceCopy, v88, v81, 0, 0, error);
   v90 = *(v21 + 1);
   *(v21 + 1) = v89;
 
@@ -154,7 +154,7 @@ LABEL_11:
   }
 
   objc_msgSend_setComputeFunction_(v81, v91, v78, v92, v93);
-  v95 = objc_msgSend_newComputePipelineStateWithDescriptor_options_reflection_error_(v16, v94, v81, 0, 0, a9);
+  v95 = objc_msgSend_newComputePipelineStateWithDescriptor_options_reflection_error_(deviceCopy, v94, v81, 0, 0, error);
   v96 = *(v21 + 2);
   *(v21 + 2) = v95;
 
@@ -173,43 +173,43 @@ LABEL_27:
   return v25;
 }
 
-- (void)encodeWithCommandBuffer:(id)a3 destTexture:(id)a4 destSlice:(unint64_t)a5 destLevel:(unint64_t)a6 srcTexture:(id)a7 srcSlice:(unint64_t)a8 srcLevel:(unint64_t)a9
+- (void)encodeWithCommandBuffer:(id)buffer destTexture:(id)texture destSlice:(unint64_t)slice destLevel:(unint64_t)level srcTexture:(id)srcTexture srcSlice:(unint64_t)srcSlice srcLevel:(unint64_t)srcLevel
 {
   v153 = *MEMORY[0x277D85DE8];
-  v142 = a3;
-  v145 = a4;
-  v146 = a7;
+  bufferCopy = buffer;
+  textureCopy = texture;
+  srcTextureCopy = srcTexture;
   v13 = _mxi_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218752;
-    *&buf[4] = a5;
+    *&buf[4] = slice;
     *&buf[12] = 2048;
-    *&buf[14] = a6;
+    *&buf[14] = level;
     *&buf[22] = 2048;
-    v150 = a8;
+    srcSliceCopy = srcSlice;
     v151 = 2048;
-    v152 = a9;
+    srcLevelCopy = srcLevel;
     _os_log_impl(&dword_22F9C3000, v13, OS_LOG_TYPE_DEBUG, "[Image] [ASTCEncoder] encoding with command buffer for destination slice %lu, level %lu and source slice %lu, level %lu", buf, 0x2Au);
   }
 
-  v140 = objc_msgSend_width(v146, v14, v15, v16, v17);
-  v22 = objc_msgSend_height(v146, v18, v19, v20, v21);
+  v140 = objc_msgSend_width(srcTextureCopy, v14, v15, v16, v17);
+  v22 = objc_msgSend_height(srcTextureCopy, v18, v19, v20, v21);
   width = self->_info.width;
-  v137 = v22 >> a9;
-  v138 = ((v22 >> a9) + self->_info.height - 1) / self->_info.height;
+  v137 = v22 >> srcLevel;
+  v138 = ((v22 >> srcLevel) + self->_info.height - 1) / self->_info.height;
   v26 = (v138 * v138);
   if (self->m_collectStatistics)
   {
-    v27 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v23, @"src_slice_%lu_mip_%lu_dst_slice_%lu_mip_%lu", v24, v25, a8, a9, a5, a6);
+    v27 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v23, @"src_slice_%lu_mip_%lu_dst_slice_%lu_mip_%lu", v24, v25, srcSlice, srcLevel, slice, level);
     v31 = objc_msgSend_numberWithUnsignedInt_(MEMORY[0x277CCABB0], v28, v26, v29, v30);
     objc_msgSend_setObject_forKeyedSubscript_(self->m_totalBlocks, v32, v31, v27, v33);
 
-    v38 = objc_msgSend_device(v146, v34, v35, v36, v37);
+    v38 = objc_msgSend_device(srcTextureCopy, v34, v35, v36, v37);
     v41 = objc_msgSend_newBufferWithLength_options_(v38, v39, (20 * v26), 0, v40);
     objc_msgSend_setObject_forKeyedSubscript_(self->m_modesErrorsBuffer, v42, v41, v27, v43);
 
-    v48 = objc_msgSend_device(v146, v44, v45, v46, v47);
+    v48 = objc_msgSend_device(srcTextureCopy, v44, v45, v46, v47);
     v51 = objc_msgSend_newBufferWithLength_options_(v48, v49, (20 * v26), 0, v50);
     objc_msgSend_setObject_forKeyedSubscript_(self->m_modesCounterBuffer, v52, v51, v27, v53);
   }
@@ -218,27 +218,27 @@ LABEL_27:
   v136 = (16 * v26);
   if (v58)
   {
-    v141 = objc_msgSend_newCompressedTextureViewWithPixelFormat_textureType_level_slice_(v145, v54, 123, 2, a6, a5);
+    v141 = objc_msgSend_newCompressedTextureViewWithPixelFormat_textureType_level_slice_(textureCopy, v54, 123, 2, level, slice);
     v59 = 0;
   }
 
   else
   {
-    v60 = objc_msgSend_device(v146, v54, v55, v56, v57);
+    v60 = objc_msgSend_device(srcTextureCopy, v54, v55, v56, v57);
     v59 = objc_msgSend_newBufferWithLength_options_(v60, v61, (16 * v26), 0, v62);
 
     v141 = 0;
   }
 
-  v63 = v146;
+  v63 = srcTextureCopy;
   v68 = objc_msgSend_textureType(v63, v64, v65, v66, v67);
-  if (a9 || (v73 = v63, v68 == 3))
+  if (srcLevel || (v73 = v63, v68 == 3))
   {
     v74 = objc_msgSend_pixelFormat(v63, v69, v70, v71, v72);
-    v73 = objc_msgSend_newTextureViewWithPixelFormat_textureType_levels_slices_(v63, v75, v74, 2, a9, 1, a8, 1);
+    v73 = objc_msgSend_newTextureViewWithPixelFormat_textureType_levels_slices_(v63, v75, v74, 2, srcLevel, 1, srcSlice, 1);
   }
 
-  v76 = objc_msgSend_computeCommandEncoder(v142, v69, v70, v71, v72);
+  v76 = objc_msgSend_computeCommandEncoder(bufferCopy, v69, v70, v71, v72);
   v80 = v76;
   v81 = 8;
   if (v58)
@@ -257,7 +257,7 @@ LABEL_27:
 
   if (self->m_collectStatistics)
   {
-    v90 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v87, @"src_slice_%lu_mip_%lu_dst_slice_%lu_mip_%lu", v88, v89, a8, a9, a5, a6);
+    v90 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v87, @"src_slice_%lu_mip_%lu_dst_slice_%lu_mip_%lu", v88, v89, srcSlice, srcLevel, slice, level);
     v94 = objc_msgSend_objectForKeyedSubscript_(self->m_modesErrorsBuffer, v91, v90, v92, v93);
     v95 = v94;
     v100 = objc_msgSend_contents(v94, v96, v97, v98, v99);
@@ -276,7 +276,7 @@ LABEL_27:
     objc_msgSend_setBuffer_offset_atIndex_(v80, v121, v120, 0, 2);
   }
 
-  *buf = ((v140 >> a9) + width - 1) / width;
+  *buf = ((v140 >> srcLevel) + width - 1) / width;
   *&buf[8] = v138;
   *&buf[16] = 1;
   v147 = vdupq_n_s64(8uLL);
@@ -285,23 +285,23 @@ LABEL_27:
   objc_msgSend_endEncoding(v80, v122, v123, v124, v125);
   if (!(v58 & 1 | (v59 == 0)))
   {
-    v130 = objc_msgSend_blitCommandEncoder(v142, v126, v127, v128, v129);
-    *buf = (v140 >> a9);
+    v130 = objc_msgSend_blitCommandEncoder(bufferCopy, v126, v127, v128, v129);
+    *buf = (v140 >> srcLevel);
     *&buf[8] = v137;
     *&buf[16] = 1;
     v147 = 0uLL;
     v148 = 0;
-    objc_msgSend_copyFromBuffer_sourceOffset_sourceBytesPerRow_sourceBytesPerImage_sourceSize_toTexture_destinationSlice_destinationLevel_destinationOrigin_(v130, v131, v59, 0, 16 * (((v140 >> a9) + width - 1) / width), v136, buf, v145, a5, a6, &v147);
+    objc_msgSend_copyFromBuffer_sourceOffset_sourceBytesPerRow_sourceBytesPerImage_sourceSize_toTexture_destinationSlice_destinationLevel_destinationOrigin_(v130, v131, v59, 0, 16 * (((v140 >> srcLevel) + width - 1) / width), v136, buf, textureCopy, slice, level, &v147);
     objc_msgSend_endEncoding(v130, v132, v133, v134, v135);
   }
 }
 
-- (BOOL)finalizeStatistics:(const char *)a3 modesPath:(const char *)a4 errorsPath:(const char *)a5
+- (BOOL)finalizeStatistics:(const char *)statistics modesPath:(const char *)path errorsPath:(const char *)errorsPath
 {
   v105 = *MEMORY[0x277D85DE8];
   __p = 0uLL;
   v98 = 0;
-  __ptr = objc_msgSend_count(self->m_modesCounterBuffer, a2, a3, a4, a5);
+  __ptr = objc_msgSend_count(self->m_modesCounterBuffer, a2, statistics, path, errorsPath);
   v96 = 5;
   sub_22F9E1D68(buf, __ptr);
   __p = *buf;
@@ -349,7 +349,7 @@ LABEL_27:
     v17 = 0;
   }
 
-  v36 = fopen(a3, "wb");
+  v36 = fopen(statistics, "wb");
   if (v36)
   {
     fwrite(&__ptr, 1uLL, 4uLL, v36);
@@ -400,12 +400,12 @@ LABEL_27:
       while (v45);
     }
 
-    v75 = fopen(a4, "wb");
+    v75 = fopen(path, "wb");
     if (v75)
     {
       fwrite(*buf, 1uLL, 4 * (v96 * v17), v75);
       fclose(v75);
-      v76 = fopen(a5, "wb");
+      v76 = fopen(errorsPath, "wb");
       if (v76)
       {
         fwrite(v90[0], 1uLL, 4 * (v96 * v17), v76);
@@ -431,7 +431,7 @@ LABEL_31:
       if (os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT))
       {
         *v99 = 136315138;
-        v100 = a5;
+        pathCopy = errorsPath;
         _os_log_impl(&dword_22F9C3000, v80, OS_LOG_TYPE_DEFAULT, "[Image] Could not create the binary file %s", v99, 0xCu);
       }
     }
@@ -442,7 +442,7 @@ LABEL_31:
       if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
       {
         *v99 = 136315138;
-        v100 = a4;
+        pathCopy = path;
         _os_log_impl(&dword_22F9C3000, v79, OS_LOG_TYPE_DEFAULT, "[Image] Could not create the binary file %s", v99, 0xCu);
       }
     }
@@ -455,7 +455,7 @@ LABEL_31:
   if (os_log_type_enabled(v78, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
-    *&buf[4] = a3;
+    *&buf[4] = statistics;
     _os_log_impl(&dword_22F9C3000, v78, OS_LOG_TYPE_DEFAULT, "[Image] Could not create the binary file %s", buf, 0xCu);
   }
 

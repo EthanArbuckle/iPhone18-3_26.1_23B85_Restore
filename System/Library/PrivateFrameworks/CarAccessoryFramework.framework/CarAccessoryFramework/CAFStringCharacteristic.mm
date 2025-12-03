@@ -2,14 +2,14 @@
 + (void)load;
 - (NSString)stringValue;
 - (id)formattedValue;
-- (void)setStringValue:(id)a3;
+- (void)setStringValue:(id)value;
 @end
 
 @implementation CAFStringCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFStringCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -17,10 +17,10 @@
 - (NSString)stringValue
 {
   objc_opt_class();
-  v3 = [(CAFCharacteristic *)self value];
-  if (v3 && (objc_opt_isKindOfClass() & 1) != 0)
+  value = [(CAFCharacteristic *)self value];
+  if (value && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v4 = v3;
+    v4 = value;
   }
 
   else
@@ -28,32 +28,32 @@
     v4 = 0;
   }
 
-  v5 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v6 = [v4 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v6;
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
-  v4 = [a3 copy];
+  v4 = [value copy];
   [(CAFCharacteristic *)self setValue:v4];
 }
 
 - (id)formattedValue
 {
-  v3 = [(CAFCharacteristic *)self value];
-  if (v3)
+  value = [(CAFCharacteristic *)self value];
+  if (value)
   {
-    v4 = [(CAFStringCharacteristic *)self stringValue];
+    stringValue = [(CAFStringCharacteristic *)self stringValue];
   }
 
   else
   {
-    v4 = @"(null)";
+    stringValue = @"(null)";
   }
 
-  v5 = v4;
+  v5 = stringValue;
 
   return v5;
 }

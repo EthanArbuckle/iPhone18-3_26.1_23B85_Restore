@@ -1,18 +1,18 @@
 @interface PXStoryConcreteMutableAutoEditClipCatalog
-- (void)addClip:(id)a3;
-- (void)composeClipsInRange:(_NSRange)a3;
-- (void)enumerateMutableClipsUsingBlock:(id)a3;
-- (void)enumeratePairsOfMutableClipsUsingBlock:(id)a3;
-- (void)updateClipAtIndex:(int64_t)a3 usingBlock:(id)a4;
-- (void)updateClipForDisplayAsset:(id)a3 usingBlock:(id)a4;
+- (void)addClip:(id)clip;
+- (void)composeClipsInRange:(_NSRange)range;
+- (void)enumerateMutableClipsUsingBlock:(id)block;
+- (void)enumeratePairsOfMutableClipsUsingBlock:(id)block;
+- (void)updateClipAtIndex:(int64_t)index usingBlock:(id)block;
+- (void)updateClipForDisplayAsset:(id)asset usingBlock:(id)block;
 @end
 
 @implementation PXStoryConcreteMutableAutoEditClipCatalog
 
-- (void)composeClipsInRange:(_NSRange)a3
+- (void)composeClipsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v26 = *MEMORY[0x1E69E9840];
   v18 = [(NSMutableArray *)self->super._orderedClips subarrayWithRange:?];
   v6 = [PXStoryConcreteAutoEditClip composedClipWithClips:?];
@@ -73,9 +73,9 @@
   }
 }
 
-- (void)enumeratePairsOfMutableClipsUsingBlock:(id)a3
+- (void)enumeratePairsOfMutableClipsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -91,7 +91,7 @@
   v7[1] = 3221225472;
   v7[2] = __84__PXStoryConcreteMutableAutoEditClipCatalog_enumeratePairsOfMutableClipsUsingBlock___block_invoke;
   v7[3] = &unk_1E7740ED8;
-  v6 = v4;
+  v6 = blockCopy;
   v8 = v6;
   v9 = &v15;
   v10 = &v11;
@@ -117,40 +117,40 @@ void __84__PXStoryConcreteMutableAutoEditClipCatalog_enumeratePairsOfMutableClip
   *(*(a1[6] + 8) + 24) = *a4;
 }
 
-- (void)enumerateMutableClipsUsingBlock:(id)a3
+- (void)enumerateMutableClipsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   orderedClips = self->super._orderedClips;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __77__PXStoryConcreteMutableAutoEditClipCatalog_enumerateMutableClipsUsingBlock___block_invoke;
   v7[3] = &unk_1E7740EB0;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableArray *)orderedClips enumerateObjectsUsingBlock:v7];
 }
 
-- (void)updateClipAtIndex:(int64_t)a3 usingBlock:(id)a4
+- (void)updateClipAtIndex:(int64_t)index usingBlock:(id)block
 {
   orderedClips = self->super._orderedClips;
-  v6 = a4;
-  v7 = [(NSMutableArray *)orderedClips objectAtIndexedSubscript:a3];
-  v6[2](v6, v7);
+  blockCopy = block;
+  v7 = [(NSMutableArray *)orderedClips objectAtIndexedSubscript:index];
+  blockCopy[2](blockCopy, v7);
 }
 
-- (void)updateClipForDisplayAsset:(id)a3 usingBlock:(id)a4
+- (void)updateClipForDisplayAsset:(id)asset usingBlock:(id)block
 {
-  v11 = a4;
+  blockCopy = block;
   clipIndicesByAssetUUID = self->super._clipIndicesByAssetUUID;
-  v7 = a3;
+  assetCopy = asset;
   if (objc_opt_respondsToSelector())
   {
-    [v7 alternateUUID];
+    [assetCopy alternateUUID];
   }
 
   else
   {
-    [v7 uuid];
+    [assetCopy uuid];
   }
   v8 = ;
 
@@ -159,19 +159,19 @@ void __84__PXStoryConcreteMutableAutoEditClipCatalog_enumeratePairsOfMutableClip
   if (v9)
   {
     v10 = -[NSMutableArray objectAtIndexedSubscript:](self->super._orderedClips, "objectAtIndexedSubscript:", [v9 unsignedIntegerValue]);
-    v11[2](v11, v10);
+    blockCopy[2](blockCopy, v10);
   }
 }
 
-- (void)addClip:(id)a3
+- (void)addClip:(id)clip
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v13 = a3;
-  obj = [v13 displayAssets];
+  clipCopy = clip;
+  obj = [clipCopy displayAssets];
   v4 = [obj countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
@@ -213,7 +213,7 @@ void __84__PXStoryConcreteMutableAutoEditClipCatalog_enumeratePairsOfMutableClip
     while (v5);
   }
 
-  [(NSMutableArray *)self->super._orderedClips addObject:v13];
+  [(NSMutableArray *)self->super._orderedClips addObject:clipCopy];
 }
 
 @end

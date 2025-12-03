@@ -1,8 +1,8 @@
 @interface VUIMediaEntityGroup
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VUIMediaEntityGroup)init;
-- (VUIMediaEntityGroup)initWithIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VUIMediaEntityGroup)initWithIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -19,10 +19,10 @@
   return 0;
 }
 
-- (VUIMediaEntityGroup)initWithIdentifier:(id)a3
+- (VUIMediaEntityGroup)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"identifier"}];
   }
@@ -32,7 +32,7 @@
   v5 = [(VUIMediaEntityGroup *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -40,7 +40,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[VUIMediaEntityGroup alloc] initWithIdentifier:self->_identifier];
   v5 = [(NSArray *)self->_mediaEntities copy];
@@ -56,39 +56,39 @@
 
 - (unint64_t)hash
 {
-  v3 = [(VUIMediaEntityGroup *)self identifier];
-  v4 = [v3 hash];
+  identifier = [(VUIMediaEntityGroup *)self identifier];
+  v4 = [identifier hash];
 
-  v5 = [(VUIMediaEntityGroup *)self mediaEntities];
-  v6 = [v5 hash] ^ v4;
+  mediaEntities = [(VUIMediaEntityGroup *)self mediaEntities];
+  v6 = [mediaEntities hash] ^ v4;
 
-  v7 = [(VUIMediaEntityGroup *)self sortIndexes];
-  v8 = [v7 hash];
+  sortIndexes = [(VUIMediaEntityGroup *)self sortIndexes];
+  v8 = [sortIndexes hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v6 = v5;
-        v7 = [(VUIMediaEntityGroup *)self identifier];
-        v8 = [(VUIMediaEntityGroup *)v6 identifier];
-        v9 = v7;
-        v10 = v8;
+        identifier = [(VUIMediaEntityGroup *)self identifier];
+        identifier2 = [(VUIMediaEntityGroup *)v6 identifier];
+        v9 = identifier;
+        v10 = identifier2;
         v11 = v10;
         if (v9 == v10)
         {
@@ -110,19 +110,19 @@
           }
         }
 
-        v14 = [(VUIMediaEntityGroup *)self mediaEntities];
-        v15 = [(VUIMediaEntityGroup *)v6 mediaEntities];
-        v9 = v14;
-        v16 = v15;
+        mediaEntities = [(VUIMediaEntityGroup *)self mediaEntities];
+        mediaEntities2 = [(VUIMediaEntityGroup *)v6 mediaEntities];
+        v9 = mediaEntities;
+        v16 = mediaEntities2;
         v11 = v16;
         if (v9 == v16)
         {
 
 LABEL_18:
-          v18 = [(VUIMediaEntityGroup *)self sortIndexes];
-          v19 = [(VUIMediaEntityGroup *)v6 sortIndexes];
-          v9 = v18;
-          v20 = v19;
+          sortIndexes = [(VUIMediaEntityGroup *)self sortIndexes];
+          sortIndexes2 = [(VUIMediaEntityGroup *)v6 sortIndexes];
+          v9 = sortIndexes;
+          v20 = sortIndexes2;
           v11 = v20;
           if (v9 == v20)
           {
@@ -181,18 +181,18 @@ LABEL_25:
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VUIMediaEntityGroup *)self identifier];
-  v7 = [v5 stringWithFormat:@"%@=%@", @"identifier", v6];
+  identifier = [(VUIMediaEntityGroup *)self identifier];
+  v7 = [v5 stringWithFormat:@"%@=%@", @"identifier", identifier];
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(VUIMediaEntityGroup *)self mediaEntities];
-  v10 = [v8 stringWithFormat:@"%@=%@", @"mediaEntities", v9];
+  mediaEntities = [(VUIMediaEntityGroup *)self mediaEntities];
+  v10 = [v8 stringWithFormat:@"%@=%@", @"mediaEntities", mediaEntities];
   [v3 addObject:v10];
 
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [(VUIMediaEntityGroup *)self sortIndexes];
-  v13 = [v11 stringWithFormat:@"%@=%@", @"sortIndexes", v12];
+  sortIndexes = [(VUIMediaEntityGroup *)self sortIndexes];
+  v13 = [v11 stringWithFormat:@"%@=%@", @"sortIndexes", sortIndexes];
   [v3 addObject:v13];
 
   v14 = MEMORY[0x1E696AEC0];

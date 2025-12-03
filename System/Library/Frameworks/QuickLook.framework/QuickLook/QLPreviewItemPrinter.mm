@@ -1,18 +1,18 @@
 @interface QLPreviewItemPrinter
-- (QLPreviewItemPrinter)initWithItem:(id)a3;
+- (QLPreviewItemPrinter)initWithItem:(id)item;
 - (int64_t)numberOfPages;
-- (void)_didReceivePrinter:(id)a3;
+- (void)_didReceivePrinter:(id)printer;
 - (void)_waitForPrinterSynchronously;
-- (void)drawPageAtIndex:(int64_t)a3 inRect:(CGRect)a4;
-- (void)prepareForDrawingPages:(_NSRange)a3;
+- (void)drawPageAtIndex:(int64_t)index inRect:(CGRect)rect;
+- (void)prepareForDrawingPages:(_NSRange)pages;
 @end
 
 @implementation QLPreviewItemPrinter
 
-- (QLPreviewItemPrinter)initWithItem:(id)a3
+- (QLPreviewItemPrinter)initWithItem:(id)item
 {
-  v4 = a3;
-  if (v4 && (v16.receiver = self, v16.super_class = QLPreviewItemPrinter, (self = [(QLPreviewItemPrinter *)&v16 init]) != 0))
+  itemCopy = item;
+  if (itemCopy && (v16.receiver = self, v16.super_class = QLPreviewItemPrinter, (self = [(QLPreviewItemPrinter *)&v16 init]) != 0))
   {
     v5 = [[QLItemPresenterViewController alloc] initForPrinting:1];
     [(QLPreviewItemPrinter *)self setPresenter:v5];
@@ -25,25 +25,25 @@
     waitForPrinterSemaphore = self->_waitForPrinterSemaphore;
     self->_waitForPrinterSemaphore = v8;
 
-    v10 = [(QLPreviewItemPrinter *)self presenter];
+    presenter = [(QLPreviewItemPrinter *)self presenter];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __37__QLPreviewItemPrinter_initWithItem___block_invoke;
     v14[3] = &unk_278B582B0;
-    v11 = self;
-    v15 = v11;
-    [v10 loadPreviewControllerWithContents:v4 context:0 completionHandler:v14];
+    selfCopy = self;
+    v15 = selfCopy;
+    [presenter loadPreviewControllerWithContents:itemCopy context:0 completionHandler:v14];
 
-    self = v11;
-    v12 = self;
+    self = selfCopy;
+    selfCopy2 = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy2 = 0;
   }
 
-  return v12;
+  return selfCopy2;
 }
 
 void __37__QLPreviewItemPrinter_initWithItem___block_invoke(uint64_t a1, uint64_t a2)
@@ -72,32 +72,32 @@ void __37__QLPreviewItemPrinter_initWithItem___block_invoke(uint64_t a1, uint64_
   return [(QLPreviewPrinter *)&v4 numberOfPages];
 }
 
-- (void)prepareForDrawingPages:(_NSRange)a3
+- (void)prepareForDrawingPages:(_NSRange)pages
 {
-  length = a3.length;
-  location = a3.location;
+  length = pages.length;
+  location = pages.location;
   [(QLPreviewItemPrinter *)self _waitForPrinterSynchronously];
   v6.receiver = self;
   v6.super_class = QLPreviewItemPrinter;
   [(QLPreviewPrinter *)&v6 prepareForDrawingPages:location, length];
 }
 
-- (void)drawPageAtIndex:(int64_t)a3 inRect:(CGRect)a4
+- (void)drawPageAtIndex:(int64_t)index inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(QLPreviewItemPrinter *)self _waitForPrinterSynchronously];
   v10.receiver = self;
   v10.super_class = QLPreviewItemPrinter;
-  [(QLPreviewPrinter *)&v10 drawPageAtIndex:a3 inRect:x, y, width, height];
+  [(QLPreviewPrinter *)&v10 drawPageAtIndex:index inRect:x, y, width, height];
 }
 
-- (void)_didReceivePrinter:(id)a3
+- (void)_didReceivePrinter:(id)printer
 {
-  objc_storeStrong(&self->_itemPrinter, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_itemPrinter, printer);
+  printerCopy = printer;
   self->_didReceivePrinter = 1;
   dispatch_semaphore_signal(self->_waitForPrinterSemaphore);
 }

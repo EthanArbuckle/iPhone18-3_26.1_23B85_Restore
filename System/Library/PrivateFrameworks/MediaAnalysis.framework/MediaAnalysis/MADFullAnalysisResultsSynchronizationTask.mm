@@ -1,26 +1,26 @@
 @interface MADFullAnalysisResultsSynchronizationTask
-+ (id)taskWithPhotoLibrary:(id)a3;
-- (MADFullAnalysisResultsSynchronizationTask)initWithPhotoLibrary:(id)a3;
++ (id)taskWithPhotoLibrary:(id)library;
+- (MADFullAnalysisResultsSynchronizationTask)initWithPhotoLibrary:(id)library;
 - (int)mainInternal;
 - (int)synchronizePhotosDatabaseForProcessedAssets;
-- (int)synchronizePhotosDatabaseForProcessedAssetsWithImageOnly:(BOOL)a3;
-- (unint64_t)versionResetOptionsForTaskID:(unint64_t)a3;
-- (void)resetAnalysisVersionForMediaProcessingTaskID:(unint64_t)a3 assetIdentifiers:(id)a4;
+- (int)synchronizePhotosDatabaseForProcessedAssetsWithImageOnly:(BOOL)only;
+- (unint64_t)versionResetOptionsForTaskID:(unint64_t)d;
+- (void)resetAnalysisVersionForMediaProcessingTaskID:(unint64_t)d assetIdentifiers:(id)identifiers;
 @end
 
 @implementation MADFullAnalysisResultsSynchronizationTask
 
-- (MADFullAnalysisResultsSynchronizationTask)initWithPhotoLibrary:(id)a3
+- (MADFullAnalysisResultsSynchronizationTask)initWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v15.receiver = self;
   v15.super_class = MADFullAnalysisResultsSynchronizationTask;
-  v5 = [(VCPTask *)&v15 initWithPhotoLibrary:v4];
+  v5 = [(VCPTask *)&v15 initWithPhotoLibrary:libraryCopy];
   v6 = v5;
   if (v5)
   {
     v5->_status = 0;
-    v7 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v4];
+    v7 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
     analysisDatabase = v6->_analysisDatabase;
     v6->_analysisDatabase = v7;
 
@@ -37,23 +37,23 @@
   return v6;
 }
 
-+ (id)taskWithPhotoLibrary:(id)a3
++ (id)taskWithPhotoLibrary:(id)library
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:v3];
+  libraryCopy = library;
+  v4 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:libraryCopy];
 
   return v4;
 }
 
-- (unint64_t)versionResetOptionsForTaskID:(unint64_t)a3
+- (unint64_t)versionResetOptionsForTaskID:(unint64_t)d
 {
-  if (a3 == 17)
+  if (d == 17)
   {
     return 4097;
   }
 
-  v3 = a3;
-  if (a3 == 1)
+  dCopy = d;
+  if (d == 1)
   {
     return 10241;
   }
@@ -64,7 +64,7 @@
     if (os_log_type_enabled(&_os_log_default, v5))
     {
       v6[0] = 67109120;
-      v6[1] = v3;
+      v6[1] = dCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "Unexpected taskID (%d), using PHMediaProcessingResetOption_Version option only", v6, 8u);
     }
   }
@@ -72,9 +72,9 @@
   return 1;
 }
 
-- (void)resetAnalysisVersionForMediaProcessingTaskID:(unint64_t)a3 assetIdentifiers:(id)a4
+- (void)resetAnalysisVersionForMediaProcessingTaskID:(unint64_t)d assetIdentifiers:(id)identifiers
 {
-  v6 = a4;
+  identifiersCopy = identifiers;
   if (MediaAnalysisLogLevel() >= 7)
   {
     v7 = VCPLogToOSLogType[7];
@@ -84,15 +84,15 @@
       *buf = 138412546;
       v30 = v8;
       v31 = 2048;
-      v32 = [v6 count];
+      dCopy = [identifiersCopy count];
       _os_log_impl(&_mh_execute_header, &_os_log_default, v7, "[%@] Resetting analysis version for %lu assets", buf, 0x16u);
     }
   }
 
   if (!self->_status)
   {
-    v9 = [(VCPTask *)self cancel];
-    if (v9 && ([(VCPTask *)self cancel], v10 = objc_claimAutoreleasedReturnValue(), v11 = v10[2](), v10, v9, v11))
+    cancel = [(VCPTask *)self cancel];
+    if (cancel && ([(VCPTask *)self cancel], v10 = objc_claimAutoreleasedReturnValue(), v11 = v10[2](), v10, cancel, v11))
     {
       self->_status = -128;
     }
@@ -115,15 +115,15 @@
       [v16 pet];
 
       v17 = +[MADStateHandler sharedStateHandler];
-      [v17 addBreadcrumb:{@"[%@] Resetting MediaAnalysis version for %lu assets in Photos DB", objc_opt_class(), objc_msgSend(v6, "count")}];
+      [v17 addBreadcrumb:{@"[%@] Resetting MediaAnalysis version for %lu assets in Photos DB", objc_opt_class(), objc_msgSend(identifiersCopy, "count")}];
 
-      v18 = [(VCPTask *)self photoLibrary];
+      photoLibrary = [(VCPTask *)self photoLibrary];
       v28 = 0;
-      v19 = [v18 resetStateForMediaProcessingTaskID:a3 assetIdentifiers:v6 resetOptions:-[MADFullAnalysisResultsSynchronizationTask versionResetOptionsForTaskID:](self error:{"versionResetOptionsForTaskID:", a3), &v28}];
+      v19 = [photoLibrary resetStateForMediaProcessingTaskID:d assetIdentifiers:identifiersCopy resetOptions:-[MADFullAnalysisResultsSynchronizationTask versionResetOptionsForTaskID:](self error:{"versionResetOptionsForTaskID:", d), &v28}];
       v20 = v28;
 
       v21 = +[MADStateHandler sharedStateHandler];
-      [v21 addBreadcrumb:{@"[%@] Finished resetting MediaAnalysis version for %lu assets in Photos DB", objc_opt_class(), objc_msgSend(v6, "count")}];
+      [v21 addBreadcrumb:{@"[%@] Finished resetting MediaAnalysis version for %lu assets in Photos DB", objc_opt_class(), objc_msgSend(identifiersCopy, "count")}];
 
       if ((v19 & 1) == 0)
       {
@@ -137,7 +137,7 @@
             *buf = 138412802;
             v30 = v23;
             v31 = 2048;
-            v32 = a3;
+            dCopy = d;
             v33 = 2112;
             v34 = v20;
             v24 = v23;
@@ -163,9 +163,9 @@
   }
 }
 
-- (int)synchronizePhotosDatabaseForProcessedAssetsWithImageOnly:(BOOL)a3
+- (int)synchronizePhotosDatabaseForProcessedAssetsWithImageOnly:(BOOL)only
 {
-  v73 = a3;
+  onlyCopy = only;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v4 = VCPLogToOSLogType[6];
@@ -174,7 +174,7 @@
       *buf = 138412546;
       v85 = objc_opt_class();
       v86 = 1024;
-      LODWORD(v87) = v73;
+      LODWORD(v87) = onlyCopy;
       v5 = v85;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v4, "[%@] Start synchronizing photos database for processed assets, imageOnly %d", buf, 0x12u);
     }
@@ -194,25 +194,25 @@
 
   context = objc_autoreleasePoolPush();
   v9 = 17;
-  if (!v73)
+  if (!onlyCopy)
   {
     v9 = 1;
   }
 
   v74 = v9;
-  v10 = [(VCPTask *)self photoLibrary];
-  v72 = [PHMediaProcessingAlgorithmVersionProvider mad_sharedVersionProviderWithPhotoLibrary:v10];
+  photoLibrary = [(VCPTask *)self photoLibrary];
+  v72 = [PHMediaProcessingAlgorithmVersionProvider mad_sharedVersionProviderWithPhotoLibrary:photoLibrary];
 
   [PHAsset mad_sceneConfidenceThresholdForTask:1];
   v12 = v11;
   v13 = +[VCPWatchdog sharedWatchdog];
   [v13 pet];
 
-  v14 = [(VCPTask *)self cancel];
-  if (v14)
+  cancel = [(VCPTask *)self cancel];
+  if (cancel)
   {
-    v15 = [(VCPTask *)self cancel];
-    v16 = v15[2]();
+    cancel2 = [(VCPTask *)self cancel];
+    v16 = cancel2[2]();
 
     if (v16)
     {
@@ -236,10 +236,10 @@
   v22 = +[MADStateHandler sharedStateHandler];
   [v22 addBreadcrumb:{@"[%@] Fetching processed assets from Photos DB", objc_opt_class()}];
 
-  v23 = [(VCPTask *)self photoLibrary];
+  photoLibrary2 = [(VCPTask *)self photoLibrary];
   v83 = 0;
   LODWORD(v24) = v12;
-  v25 = [v23 fetchProcessedAssetsForMediaProcessingTaskID:v74 priority:0 algorithmVersion:v72 sceneConfidenceThreshold:&v83 error:v24];
+  v25 = [photoLibrary2 fetchProcessedAssetsForMediaProcessingTaskID:v74 priority:0 algorithmVersion:v72 sceneConfidenceThreshold:&v83 error:v24];
   v69 = v83;
 
   v26 = +[MADStateHandler sharedStateHandler];
@@ -282,13 +282,13 @@
 
   if (+[MADManagedPhotosAsset isMACDReadEnabled])
   {
-    v32 = [(VCPTask *)self photoLibrary];
-    v67 = [v32 mad_fetchRequest];
+    photoLibrary3 = [(VCPTask *)self photoLibrary];
+    mad_fetchRequest = [photoLibrary3 mad_fetchRequest];
   }
 
   else
   {
-    v67 = 0;
+    mad_fetchRequest = 0;
   }
 
   v33 = 0;
@@ -301,42 +301,42 @@
     v36 = +[VCPWatchdog sharedWatchdog];
     [v36 pet];
 
-    v37 = [(VCPTask *)self cancel];
-    if (!v37 || ([(VCPTask *)self cancel], v38 = objc_claimAutoreleasedReturnValue(), v39 = v38[2](), v38, v37, (v39 & 1) == 0))
+    cancel3 = [(VCPTask *)self cancel];
+    if (!cancel3 || ([(VCPTask *)self cancel], v38 = objc_claimAutoreleasedReturnValue(), v39 = v38[2](), v38, cancel3, (v39 & 1) == 0))
     {
       v41 = [v25 objectAtIndexedSubscript:v33];
-      v42 = [v41 mediaAnalysisProperties];
+      mediaAnalysisProperties = [v41 mediaAnalysisProperties];
 
-      if (v42 && ([v25 objectAtIndexedSubscript:v33], v43 = objc_claimAutoreleasedReturnValue(), v44 = +[PHPhotoLibrary additionalCheckForProcessingNeededForAsset:taskID:priority:](PHPhotoLibrary, "additionalCheckForProcessingNeededForAsset:taskID:priority:", v43, v74, 0), v43, (v44 & 1) != 0))
+      if (mediaAnalysisProperties && ([v25 objectAtIndexedSubscript:v33], v43 = objc_claimAutoreleasedReturnValue(), v44 = +[PHPhotoLibrary additionalCheckForProcessingNeededForAsset:taskID:priority:](PHPhotoLibrary, "additionalCheckForProcessingNeededForAsset:taskID:priority:", v43, v74, 0), v43, (v44 & 1) != 0))
       {
         if (!v34)
         {
           v34 = objc_alloc_init(NSMutableArray);
         }
 
-        if (v73)
+        if (onlyCopy)
         {
-          v45 = [v42 mediaAnalysisImageVersion];
+          mediaAnalysisImageVersion = [mediaAnalysisProperties mediaAnalysisImageVersion];
         }
 
         else
         {
-          v45 = [v42 mediaAnalysisVersion];
+          mediaAnalysisImageVersion = [mediaAnalysisProperties mediaAnalysisVersion];
         }
 
         v46 = [v25 objectAtIndexedSubscript:v33];
-        v47 = [v46 localIdentifier];
+        localIdentifier = [v46 localIdentifier];
 
         if (+[MADManagedPhotosAsset isMACDReadEnabled])
         {
-          v48 = [v67 fetchAnalysisWithLocalIdentifier:v47 predicate:0];
-          v49 = [v48 vcp_version];
+          v48 = [mad_fetchRequest fetchAnalysisWithLocalIdentifier:localIdentifier predicate:0];
+          vcp_version = [v48 vcp_version];
           goto LABEL_49;
         }
 
         analysisDatabase = self->_analysisDatabase;
         v82 = 0;
-        v51 = [(VCPDatabaseWriter *)analysisDatabase queryAssetWithLocalIdentifier:v47 forMediaAnalysisVersion:&v82];
+        v51 = [(VCPDatabaseWriter *)analysisDatabase queryAssetWithLocalIdentifier:localIdentifier forMediaAnalysisVersion:&v82];
         v52 = v82;
         v48 = v52;
         if (v51)
@@ -347,7 +347,7 @@
             *buf = 138412546;
             v85 = v53;
             v86 = 2112;
-            v87 = v47;
+            v87 = localIdentifier;
             v54 = v53;
             _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[%@][%@] Failed to query mediaanalysis version", buf, 0x16u);
           }
@@ -357,13 +357,13 @@
 
         else
         {
-          v49 = [v52 intValue];
+          vcp_version = [v52 intValue];
 LABEL_49:
-          v55 = v49;
+          v55 = vcp_version;
 
-          if (v45 > v55)
+          if (mediaAnalysisImageVersion > v55)
           {
-            [v34 addObject:v47];
+            [v34 addObject:localIdentifier];
           }
 
           if ([v34 count] < 0x64)
@@ -480,9 +480,9 @@ LABEL_65:
   v3 = VCPPhotosDatabaseSyncTimestampKeyForTask();
   if (+[MADManagedKeyValueStore isMACDReadEnabled])
   {
-    v4 = [(VCPTask *)self photoLibrary];
-    v5 = [v4 mad_fetchRequest];
-    v6 = [v5 dataStoreValueForKey:v3];
+    photoLibrary = [(VCPTask *)self photoLibrary];
+    mad_fetchRequest = [photoLibrary mad_fetchRequest];
+    v6 = [mad_fetchRequest dataStoreValueForKey:v3];
   }
 
   else
@@ -515,15 +515,15 @@ LABEL_65:
   [v12 timeIntervalSinceReferenceDate];
   v14 = v13;
 
-  v11 = [(MADFullAnalysisResultsSynchronizationTask *)self synchronizePhotosDatabaseForProcessedAssetsWithImageOnly:1];
-  if (!v11)
+  code = [(MADFullAnalysisResultsSynchronizationTask *)self synchronizePhotosDatabaseForProcessedAssetsWithImageOnly:1];
+  if (!code)
   {
-    v11 = [(MADFullAnalysisResultsSynchronizationTask *)self synchronizePhotosDatabaseForProcessedAssetsWithImageOnly:0];
-    if (!v11)
+    code = [(MADFullAnalysisResultsSynchronizationTask *)self synchronizePhotosDatabaseForProcessedAssetsWithImageOnly:0];
+    if (!code)
     {
       if (+[MADManagedKeyValueStore isMACDPersistEnabled])
       {
-        v16 = [(VCPTask *)self photoLibrary];
+        photoLibrary2 = [(VCPTask *)self photoLibrary];
         v21[0] = _NSConcreteStackBlock;
         v21[1] = 3221225472;
         v21[2] = sub_1000A4D10;
@@ -531,12 +531,12 @@ LABEL_65:
         v23 = v14;
         v22 = v3;
         v20 = 0;
-        v17 = [v16 mad_performAnalysisDataStoreChanges:v21 error:&v20];
+        v17 = [photoLibrary2 mad_performAnalysisDataStoreChanges:v21 error:&v20];
         v18 = v20;
 
         if (!v17)
         {
-          v11 = [v18 code];
+          code = [v18 code];
 
           goto LABEL_12;
         }
@@ -544,28 +544,28 @@ LABEL_65:
         goto LABEL_9;
       }
 
-      v11 = [(VCPDatabaseWriter *)self->_analysisDatabase setValue:v14 forKey:v3];
-      if (!v11)
+      code = [(VCPDatabaseWriter *)self->_analysisDatabase setValue:v14 forKey:v3];
+      if (!code)
       {
-        v19 = [(VCPDatabaseWriter *)self->_analysisDatabase commit];
-        if (v19 == -108 || v19 == -36)
+        commit = [(VCPDatabaseWriter *)self->_analysisDatabase commit];
+        if (commit == -108 || commit == -36)
         {
-          v11 = v19;
+          code = commit;
         }
 
         else
         {
-          v11 = v19;
-          if (v19 != -23)
+          code = commit;
+          if (commit != -23)
           {
-            v11 = 0;
+            code = 0;
           }
         }
 
-        if (v19 != -108 && v19 != -23 && v19 != -36)
+        if (commit != -108 && commit != -23 && commit != -36)
         {
 LABEL_9:
-          v11 = 0;
+          code = 0;
         }
       }
     }
@@ -573,7 +573,7 @@ LABEL_9:
 
 LABEL_12:
 
-  return v11;
+  return code;
 }
 
 - (int)mainInternal
@@ -590,8 +590,8 @@ LABEL_12:
     }
   }
 
-  v5 = [(MADFullAnalysisResultsSynchronizationTask *)self synchronizePhotosDatabaseForProcessedAssets];
-  if (!v5 && MediaAnalysisLogLevel() >= 6)
+  synchronizePhotosDatabaseForProcessedAssets = [(MADFullAnalysisResultsSynchronizationTask *)self synchronizePhotosDatabaseForProcessedAssets];
+  if (!synchronizePhotosDatabaseForProcessedAssets && MediaAnalysisLogLevel() >= 6)
   {
     v6 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v6))
@@ -604,7 +604,7 @@ LABEL_12:
     }
   }
 
-  return v5;
+  return synchronizePhotosDatabaseForProcessedAssets;
 }
 
 @end

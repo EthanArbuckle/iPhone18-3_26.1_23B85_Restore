@@ -1,7 +1,7 @@
 @interface TVShowPlayBarViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilityPerformMoreAction:(id)a3;
-- (BOOL)_accessibilityPerformPlayAction:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilityPerformMoreAction:(id)action;
+- (BOOL)_accessibilityPerformPlayAction:(id)action;
 - (id)_axContextActionButton;
 - (id)_axPlayButton;
 - (id)accessibilityCustomActions;
@@ -10,12 +10,12 @@
 
 @implementation TVShowPlayBarViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.TVShowPlayBarView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.TVShowPlayBarView" hasInstanceMethod:@"accessibilityPlayButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.TVShowPlayBarView" hasInstanceMethod:@"accessibilityContextualActionsButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.TVShowPlayBarView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.TVShowPlayBarView" hasInstanceMethod:@"accessibilityPlayButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.TVShowPlayBarView" hasInstanceMethod:@"accessibilityContextualActionsButton" withFullSignature:{"@", 0}];
 }
 
 - (id)_axPlayButton
@@ -42,51 +42,51 @@
   return v4;
 }
 
-- (BOOL)_accessibilityPerformMoreAction:(id)a3
+- (BOOL)_accessibilityPerformMoreAction:(id)action
 {
-  v3 = [(TVShowPlayBarViewAccessibility *)self _axContextActionButton];
-  [v3 accessibilityActivate];
+  _axContextActionButton = [(TVShowPlayBarViewAccessibility *)self _axContextActionButton];
+  [_axContextActionButton accessibilityActivate];
 
   return 1;
 }
 
-- (BOOL)_accessibilityPerformPlayAction:(id)a3
+- (BOOL)_accessibilityPerformPlayAction:(id)action
 {
-  v3 = [(TVShowPlayBarViewAccessibility *)self _axPlayButton];
-  [v3 accessibilityActivate];
+  _axPlayButton = [(TVShowPlayBarViewAccessibility *)self _axPlayButton];
+  [_axPlayButton accessibilityActivate];
 
   return 1;
 }
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
-  v4 = [(TVShowPlayBarViewAccessibility *)self _axPlayButton];
+  array = [MEMORY[0x29EDB8DE8] array];
+  _axPlayButton = [(TVShowPlayBarViewAccessibility *)self _axPlayButton];
 
-  if (v4)
+  if (_axPlayButton)
   {
     v5 = objc_alloc(MEMORY[0x29EDC78E0]);
     v6 = accessibilityMusicLocalizedString(@"play.button");
     v7 = [v5 initWithName:v6 target:self selector:sel__accessibilityPerformPlayAction_];
 
-    [v3 addObject:v7];
+    [array addObject:v7];
   }
 
-  v8 = [(TVShowPlayBarViewAccessibility *)self _axContextActionButton];
+  _axContextActionButton = [(TVShowPlayBarViewAccessibility *)self _axContextActionButton];
 
-  if (v8)
+  if (_axContextActionButton)
   {
     v9 = objc_alloc(MEMORY[0x29EDC78E0]);
     v10 = accessibilityMusicLocalizedString(@"more.button");
     v11 = [v9 initWithName:v10 target:self selector:sel__accessibilityPerformMoreAction_];
 
-    [v3 addObject:v11];
+    [array addObject:v11];
   }
 
   v15.receiver = self;
   v15.super_class = TVShowPlayBarViewAccessibility;
-  v12 = [(TVShowPlayBarViewAccessibility *)&v15 accessibilityCustomActions];
-  v13 = [v3 arrayByAddingObjectsFromArray:v12];
+  accessibilityCustomActions = [(TVShowPlayBarViewAccessibility *)&v15 accessibilityCustomActions];
+  v13 = [array arrayByAddingObjectsFromArray:accessibilityCustomActions];
 
   return v13;
 }
@@ -95,26 +95,26 @@
 {
   v11.receiver = self;
   v11.super_class = TVShowPlayBarViewAccessibility;
-  v3 = [(TVShowPlayBarViewAccessibility *)&v11 automationElements];
-  v4 = [v3 mutableCopy];
+  automationElements = [(TVShowPlayBarViewAccessibility *)&v11 automationElements];
+  v4 = [automationElements mutableCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    array = v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
   }
 
-  v7 = v6;
+  v7 = array;
 
-  v8 = [(TVShowPlayBarViewAccessibility *)self _axPlayButton];
-  [v7 axSafelyAddObject:v8];
+  _axPlayButton = [(TVShowPlayBarViewAccessibility *)self _axPlayButton];
+  [v7 axSafelyAddObject:_axPlayButton];
 
-  v9 = [(TVShowPlayBarViewAccessibility *)self _axContextActionButton];
-  [v7 axSafelyAddObject:v9];
+  _axContextActionButton = [(TVShowPlayBarViewAccessibility *)self _axContextActionButton];
+  [v7 axSafelyAddObject:_axContextActionButton];
 
   return v7;
 }

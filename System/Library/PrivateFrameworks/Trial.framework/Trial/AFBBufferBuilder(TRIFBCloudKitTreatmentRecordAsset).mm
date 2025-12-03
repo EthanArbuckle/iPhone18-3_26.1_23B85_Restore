@@ -16,13 +16,13 @@
   v6 = objc_autoreleasePoolPush();
   if (!v5)
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:a1 file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:662 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:662 description:{@"Invalid parameter not satisfying: %@", @"block"}];
   }
 
-  [a1 throwIfFinalizedWithSelector:a2];
+  [self throwIfFinalizedWithSelector:a2];
   v7 = [TRIFBCloudKitTreatmentRecordAssetBuilder alloc];
-  v8 = a1;
+  selfCopy = self;
   if (v7)
   {
     v26.receiver = v7;
@@ -31,9 +31,9 @@
     v7 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_owner, a1);
-      v10 = [v8 firstError];
-      v11 = v10 == 0;
+      objc_storeStrong(&v9->_owner, self);
+      firstError = [selfCopy firstError];
+      v11 = firstError == 0;
 
       if (v11)
       {
@@ -45,8 +45,8 @@
   v5[2](v5, v7);
   if (v7)
   {
-    v12 = [(AFBBufferBuilder *)v7->_owner firstError];
-    v13 = v12 == 0;
+    firstError2 = [(AFBBufferBuilder *)v7->_owner firstError];
+    v13 = firstError2 == 0;
 
     if (v13)
     {
@@ -60,8 +60,8 @@
         goto LABEL_14;
       }
 
-      v19 = [MEMORY[0x277CCA890] currentHandler];
-      [v19 handleFailureInMethod:sel__finish object:v7 file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:606 description:{@"%@", @"Failed to set required field treatmentId on a table of type: TRIFBCloudKitTreatmentRecordAssetBuilder"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:sel__finish object:v7 file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:606 description:{@"%@", @"Failed to set required field treatmentId on a table of type: TRIFBCloudKitTreatmentRecordAssetBuilder"}];
 
       v27[0] = *MEMORY[0x277CCA450];
       v26.receiver = @"Failed to set required field treatmentId on a table of type: TRIFBCloudKitTreatmentRecordAssetBuilder";
@@ -90,7 +90,7 @@ LABEL_14:
 - (id)trifbCreateVectorOfCloudKitTreatmentRecordAssetWithOffsets:()TRIFBCloudKitTreatmentRecordAsset
 {
   *a2 = &unk_28435E028;
-  result = *(a1 + 8);
+  result = *(self + 8);
   a2[1] = result;
   return result;
 }
@@ -100,18 +100,18 @@ LABEL_14:
   v7 = a3;
   if (!v7)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:a1 file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:684 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:684 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
   }
 
-  [a1 throwIfFinalizedWithSelector:a2];
-  v8 = [a1 firstError];
+  [self throwIfFinalizedWithSelector:a2];
+  firstError = [self firstError];
 
-  if (v8)
+  if (firstError)
   {
     if (a4)
     {
-      [a1 firstError];
+      [self firstError];
       *a4 = v9 = 0;
     }
 
@@ -124,23 +124,23 @@ LABEL_14:
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = [a1 path];
-    if (!v11)
+    path = [self path];
+    if (!path)
     {
-      v15 = [v7 unsignedIntValue];
-      v16 = [a1 fbb];
-      apple::aiml::flatbuffers2::FlatBufferBuilder::Finish(v16, v15, v17);
-      [a1 finalizeWithSelector:a2];
+      unsignedIntValue = [v7 unsignedIntValue];
+      v16 = [self fbb];
+      apple::aiml::flatbuffers2::FlatBufferBuilder::Finish(v16, unsignedIntValue, v17);
+      [self finalizeWithSelector:a2];
       operator new();
     }
 
     v22 = 0;
-    v12 = [a1 trifbFinishBufferWithRootCloudKitTreatmentRecordAssetOfs:v7 error:&v22];
+    v12 = [self trifbFinishBufferWithRootCloudKitTreatmentRecordAssetOfs:v7 error:&v22];
     v13 = v22;
     if (v12)
     {
       v21 = v13;
-      v9 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:v11 options:8 error:&v21];
+      v9 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:path options:8 error:&v21];
       v14 = v21;
 
       v13 = v14;
@@ -167,18 +167,18 @@ LABEL_14:
   v7 = a3;
   if (!v7)
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:a1 file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:718 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:718 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
   }
 
-  [a1 throwIfFinalizedWithSelector:a2];
-  v8 = [a1 firstError];
+  [self throwIfFinalizedWithSelector:a2];
+  firstError = [self firstError];
 
-  if (v8)
+  if (firstError)
   {
     if (a4)
     {
-      [a1 firstError];
+      [self firstError];
       *a4 = v9 = 0;
     }
 
@@ -192,18 +192,18 @@ LABEL_14:
   {
     v10 = objc_autoreleasePoolPush();
     v11 = v7;
-    v12 = [v11 unsignedIntValue];
-    v13 = [a1 fbb];
-    apple::aiml::flatbuffers2::FlatBufferBuilder::Finish(v13, v12, v14);
-    BufferPointer = apple::aiml::flatbuffers2::FlatBufferBuilder::GetBufferPointer([a1 fbb]);
-    v16 = [a1 fbb];
+    unsignedIntValue = [v11 unsignedIntValue];
+    v13 = [self fbb];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::Finish(v13, unsignedIntValue, v14);
+    BufferPointer = apple::aiml::flatbuffers2::FlatBufferBuilder::GetBufferPointer([self fbb]);
+    v16 = [self fbb];
     v17 = v16[8];
     v18 = v16[12];
     v19 = v16[10];
-    apple::aiml::flatbuffers2::FlatBufferBuilder::Release(v25, [a1 fbb]);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::Release(v25, [self fbb]);
     apple::aiml::flatbuffers2::DetachedBuffer::~DetachedBuffer(v25);
     v24 = 0;
-    v9 = [a1 finalizeWithSelector:a2 allocatorBufferAddr:BufferPointer size:(v17 - v18 + v19) error:&v24];
+    v9 = [self finalizeWithSelector:a2 allocatorBufferAddr:BufferPointer size:(v17 - v18 + v19) error:&v24];
     v20 = v24;
 
     objc_autoreleasePoolPop(v10);
@@ -220,7 +220,7 @@ LABEL_14:
 - (void)trifbCreateVectorOfCloudKitTreatmentRecordAssetWithOffsets:()TRIFBCloudKitTreatmentRecordAsset
 {
 
-  operator delete(a1);
+  operator delete(self);
 }
 
 - (uint64_t)trifbCreateVectorOfCloudKitTreatmentRecordAssetWithOffsets:()TRIFBCloudKitTreatmentRecordAsset
@@ -228,7 +228,7 @@ LABEL_14:
   v3 = *(a2 + 8);
   if (v3 == "Z114[AFBBufferBuilder(TRIFBCloudKitTreatmentRecordAsset) trifbCreateVectorOfCloudKitTreatmentRecordAssetWithOffsets:]E3$_0" || ((v3 & "Z114[AFBBufferBuilder(TRIFBCloudKitTreatmentRecordAsset) trifbCreateVectorOfCloudKitTreatmentRecordAssetWithOffsets:]E3$_0" & 0x8000000000000000) != 0) != __OFSUB__(v3, "Z114[AFBBufferBuilder(TRIFBCloudKitTreatmentRecordAsset) trifbCreateVectorOfCloudKitTreatmentRecordAssetWithOffsets:]E3$_0") && !strcmp((v3 & 0x7FFFFFFFFFFFFFFFLL), ("Z114[AFBBufferBuilder(TRIFBCloudKitTreatmentRecordAsset) trifbCreateVectorOfCloudKitTreatmentRecordAssetWithOffsets:]E3$_0" & 0x7FFFFFFFFFFFFFFFLL)))
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else

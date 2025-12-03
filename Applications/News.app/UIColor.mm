@@ -1,37 +1,37 @@
 @interface UIColor
-+ (UIColor)colorWithContentColorPair:(id)a3;
++ (UIColor)colorWithContentColorPair:(id)pair;
 @end
 
 @implementation UIColor
 
-+ (UIColor)colorWithContentColorPair:(id)a3
++ (UIColor)colorWithContentColorPair:(id)pair
 {
-  v3 = a3;
-  v4 = [v3 lightColor];
-  [v4 red];
+  pairCopy = pair;
+  lightColor = [pairCopy lightColor];
+  [lightColor red];
   v6 = v5;
-  v7 = [v3 lightColor];
-  [v7 green];
+  lightColor2 = [pairCopy lightColor];
+  [lightColor2 green];
   v9 = v8;
-  v10 = [v3 lightColor];
-  [v10 blue];
+  lightColor3 = [pairCopy lightColor];
+  [lightColor3 blue];
   v12 = v11;
-  v13 = [v3 lightColor];
-  [v13 alpha];
+  lightColor4 = [pairCopy lightColor];
+  [lightColor4 alpha];
   v15 = [UIColor colorWithRed:v6 green:v9 blue:v12 alpha:v14];
 
-  v16 = [v3 darkColor];
-  [v16 red];
+  darkColor = [pairCopy darkColor];
+  [darkColor red];
   v18 = v17;
-  v19 = [v3 darkColor];
-  [v19 green];
+  darkColor2 = [pairCopy darkColor];
+  [darkColor2 green];
   v21 = v20;
-  v22 = [v3 darkColor];
-  [v22 blue];
+  darkColor3 = [pairCopy darkColor];
+  [darkColor3 blue];
   v24 = v23;
-  v25 = [v3 darkColor];
+  darkColor4 = [pairCopy darkColor];
 
-  [v25 alpha];
+  [darkColor4 alpha];
   v27 = [UIColor colorWithRed:v18 green:v21 blue:v24 alpha:v26];
 
   v32[0] = _NSConcreteStackBlock;

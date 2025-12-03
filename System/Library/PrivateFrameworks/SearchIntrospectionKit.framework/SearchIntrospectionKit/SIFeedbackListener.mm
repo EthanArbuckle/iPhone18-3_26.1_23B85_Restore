@@ -1,6 +1,6 @@
 @interface SIFeedbackListener
 - (SIFeedbackListener)init;
-- (void)sendResultSectionsDidLoadFeedback:(id)a3;
+- (void)sendResultSectionsDidLoadFeedback:(id)feedback;
 @end
 
 @implementation SIFeedbackListener
@@ -12,11 +12,11 @@
   return [(SIFeedbackListener *)&v3 init];
 }
 
-- (void)sendResultSectionsDidLoadFeedback:(id)a3
+- (void)sendResultSectionsDidLoadFeedback:(id)feedback
 {
-  v4 = a3;
-  v5 = self;
-  _sSo18SIFeedbackListenerC22SearchIntrospectionKitE4sendyySo31SFResultSectionsDidLoadFeedbackCF_0(v4);
+  feedbackCopy = feedback;
+  selfCopy = self;
+  _sSo18SIFeedbackListenerC22SearchIntrospectionKitE4sendyySo31SFResultSectionsDidLoadFeedbackCF_0(feedbackCopy);
 }
 
 @end

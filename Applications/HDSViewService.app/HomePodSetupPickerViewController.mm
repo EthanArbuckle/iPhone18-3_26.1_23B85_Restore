@@ -1,6 +1,6 @@
 @interface HomePodSetupPickerViewController
-- (_TtC14HDSViewService32HomePodSetupPickerViewController)initWithContentView:(id)a3;
-- (id)pickerView:(id)a3 viewForRow:(int64_t)a4 forComponent:(int64_t)a5 reusingView:(id)a6;
+- (_TtC14HDSViewService32HomePodSetupPickerViewController)initWithContentView:(id)view;
+- (id)pickerView:(id)view viewForRow:(int64_t)row forComponent:(int64_t)component reusingView:(id)reusingView;
 - (void)viewDidLoad;
 @end
 
@@ -8,22 +8,22 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10006310C();
 }
 
-- (id)pickerView:(id)a3 viewForRow:(int64_t)a4 forComponent:(int64_t)a5 reusingView:(id)a6
+- (id)pickerView:(id)view viewForRow:(int64_t)row forComponent:(int64_t)component reusingView:(id)reusingView
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = self;
-  sub_100064748(a4);
+  viewCopy = view;
+  reusingViewCopy = reusingView;
+  selfCopy = self;
+  sub_100064748(row);
   v13 = v12;
 
   return v13;
 }
 
-- (_TtC14HDSViewService32HomePodSetupPickerViewController)initWithContentView:(id)a3
+- (_TtC14HDSViewService32HomePodSetupPickerViewController)initWithContentView:(id)view
 {
   *&self->presenter[OBJC_IVAR____TtC14HDSViewService32HomePodSetupPickerViewController_presenter] = 0;
   swift_unknownObjectWeakInit();
@@ -34,7 +34,7 @@
   *&self->PRXPickerContentViewController_opaque[OBJC_IVAR____TtC14HDSViewService32HomePodSetupPickerViewController_defaultIconImage] = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for HomePodSetupPickerViewController();
-  return [(HomePodSetupPickerViewController *)&v8 initWithContentView:a3];
+  return [(HomePodSetupPickerViewController *)&v8 initWithContentView:view];
 }
 
 @end

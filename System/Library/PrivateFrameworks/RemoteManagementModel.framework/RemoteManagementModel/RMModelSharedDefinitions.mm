@@ -1,5 +1,5 @@
 @interface RMModelSharedDefinitions
-+ (BOOL)allowedValueType:(id)a3;
++ (BOOL)allowedValueType:(id)type;
 + (int64_t)currentPlatform;
 @end
 
@@ -18,16 +18,16 @@
   }
 }
 
-+ (BOOL)allowedValueType:(id)a3
++ (BOOL)allowedValueType:(id)type
 {
   v3 = allowedValueType__onceToken;
-  v4 = a3;
+  typeCopy = type;
   if (v3 != -1)
   {
     +[RMModelSharedDefinitions allowedValueType:];
   }
 
-  v5 = [allowedValueType__allowedValueTypes containsObject:v4];
+  v5 = [allowedValueType__allowedValueTypes containsObject:typeCopy];
 
   return v5;
 }

@@ -1,14 +1,14 @@
 @interface VNFaceLandmarks
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isUserFacingBBoxEquivalentToAlignedBBox;
 - (CGRect)userFacingBBox;
-- (VNFaceLandmarks)initWithCoder:(id)a3;
-- (VNFaceLandmarks)initWithOriginatingRequestSpecifier:(id)a3 pointsData:(id)a4 pointCount:(unint64_t)a5 userFacingBBox:(CGRect)a6 alignedBBox:(_Geometry2D_rect2D_)a7 landmarkScore:(float)a8;
+- (VNFaceLandmarks)initWithCoder:(id)coder;
+- (VNFaceLandmarks)initWithOriginatingRequestSpecifier:(id)specifier pointsData:(id)data pointCount:(unint64_t)count userFacingBBox:(CGRect)box alignedBBox:(_Geometry2D_rect2D_)bBox landmarkScore:(float)score;
 - (_Geometry2D_rect2D_)alignedBBox;
 - (id)description;
 - (unint64_t)hash;
 - (unint64_t)requestRevision;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNFaceLandmarks
@@ -52,10 +52,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v32 = 1;
   }
@@ -65,7 +65,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(VNFaceLandmarks *)self confidence];
       v7 = v6;
       [(VNFaceLandmarks *)v5 confidence];
@@ -116,12 +116,12 @@
         goto LABEL_16;
       }
 
-      v34 = [(VNFaceLandmarks *)self pointCount];
-      if (v34 == [(VNFaceLandmarks *)v5 pointCount]&& ([(VNFaceLandmarks *)self pointsData], v35 = objc_claimAutoreleasedReturnValue(), [(VNFaceLandmarks *)v5 pointsData], v36 = objc_claimAutoreleasedReturnValue(), v37 = VisionCoreEqualOrNilObjects(), v36, v35, (v37 & 1) != 0))
+      pointCount = [(VNFaceLandmarks *)self pointCount];
+      if (pointCount == [(VNFaceLandmarks *)v5 pointCount]&& ([(VNFaceLandmarks *)self pointsData], v35 = objc_claimAutoreleasedReturnValue(), [(VNFaceLandmarks *)v5 pointsData], v36 = objc_claimAutoreleasedReturnValue(), v37 = VisionCoreEqualOrNilObjects(), v36, v35, (v37 & 1) != 0))
       {
-        v38 = [(VNFaceLandmarks *)self originatingRequestSpecifier];
-        v39 = [(VNFaceLandmarks *)v5 originatingRequestSpecifier];
-        v32 = [v38 isEqual:v39];
+        originatingRequestSpecifier = [(VNFaceLandmarks *)self originatingRequestSpecifier];
+        originatingRequestSpecifier2 = [(VNFaceLandmarks *)v5 originatingRequestSpecifier];
+        v32 = [originatingRequestSpecifier isEqual:originatingRequestSpecifier2];
       }
 
       else
@@ -213,22 +213,22 @@ LABEL_17:
   return [(VNRequestSpecifier *)self->_originatingRequestSpecifier hash]^ __ROR8__(v22 ^ __ROR8__(v21, 51) ^ __ROR8__(v13, 51), 51);
 }
 
-- (VNFaceLandmarks)initWithOriginatingRequestSpecifier:(id)a3 pointsData:(id)a4 pointCount:(unint64_t)a5 userFacingBBox:(CGRect)a6 alignedBBox:(_Geometry2D_rect2D_)a7 landmarkScore:(float)a8
+- (VNFaceLandmarks)initWithOriginatingRequestSpecifier:(id)specifier pointsData:(id)data pointCount:(unint64_t)count userFacingBBox:(CGRect)box alignedBBox:(_Geometry2D_rect2D_)bBox landmarkScore:(float)score
 {
-  width = a7.size.width;
-  height = a7.size.height;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v12 = a6.size.height;
-  v13 = a6.size.width;
-  v14 = a6.origin.y;
-  v15 = a6.origin.x;
-  v20 = a3;
-  v21 = a4;
-  if (v21 && (v27.receiver = self, v27.super_class = VNFaceLandmarks, (self = -[VNFaceLandmarks init](&v27, sel_init)) != 0) && (v22 = [v21 length], v22 == objc_msgSend(objc_opt_class(), "landmarkPointSizeInBytes") * a5))
+  width = bBox.size.width;
+  height = bBox.size.height;
+  y = bBox.origin.y;
+  x = bBox.origin.x;
+  v12 = box.size.height;
+  v13 = box.size.width;
+  v14 = box.origin.y;
+  v15 = box.origin.x;
+  specifierCopy = specifier;
+  dataCopy = data;
+  if (dataCopy && (v27.receiver = self, v27.super_class = VNFaceLandmarks, (self = -[VNFaceLandmarks init](&v27, sel_init)) != 0) && (v22 = [dataCopy length], v22 == objc_msgSend(objc_opt_class(), "landmarkPointSizeInBytes") * count))
   {
-    self->_pointCount = a5;
-    v23 = [v21 copy];
+    self->_pointCount = count;
+    v23 = [dataCopy copy];
     pointsData = self->_pointsData;
     self->_pointsData = v23;
 
@@ -240,18 +240,18 @@ LABEL_17:
     self->_alignedBBox.origin.y = y;
     self->_alignedBBox.size.height = height;
     self->_alignedBBox.size.width = width;
-    self->_confidence = a8;
-    objc_storeStrong(&self->_originatingRequestSpecifier, a3);
+    self->_confidence = score;
+    objc_storeStrong(&self->_originatingRequestSpecifier, specifier);
     self = self;
-    v25 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v25 = 0;
+    selfCopy = 0;
   }
 
-  return v25;
+  return selfCopy;
 }
 
 - (BOOL)isUserFacingBBoxEquivalentToAlignedBBox
@@ -265,82 +265,82 @@ LABEL_17:
   return vabdd_f64(v14, v4) < 0.0000999999975 && vabdd_f64(v11, v6) < 0.0000999999975 && vabdd_f64(v13, v8) < 0.0000999999975 && vabdd_f64(v12, v10) < 0.0000999999975;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInt32:0 forKey:@"VNFaceLandmarks"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:0 forKey:@"VNFaceLandmarks"];
   *&v4 = self->_confidence;
-  [v5 encodeFloat:@"FLMs_Conf" forKey:v4];
-  [v5 encodeInteger:self->_pointCount forKey:@"FLMs_PtsCnt"];
-  [v5 encodeObject:self->_pointsData forKey:@"FLMs_PtsData"];
-  [v5 encodeDouble:@"FLMs_AlgnBBoxX" forKey:self->_alignedBBox.origin.x];
-  [v5 encodeDouble:@"FLMs_AlgnBBoxY" forKey:self->_alignedBBox.origin.y];
-  [v5 encodeDouble:@"FLMs_AlgnBBoxW" forKey:self->_alignedBBox.size.width];
-  [v5 encodeDouble:@"FLMs_AlgnBBoxH" forKey:self->_alignedBBox.size.height];
-  [v5 encodeDouble:@"FLMs_UsrFacingBBoxX" forKey:self->_userFacingBBox.origin.x];
-  [v5 encodeDouble:@"FLMs_UsrFacingBBoxY" forKey:self->_userFacingBBox.origin.y];
-  [v5 encodeDouble:@"FLMs_UsrFacingBBoxW" forKey:self->_userFacingBBox.size.width];
-  [v5 encodeDouble:@"FLMs_UsrFacingBBoxH" forKey:self->_userFacingBBox.size.height];
-  [v5 encodeObject:self->_originatingRequestSpecifier forKey:@"FLMs_OReq"];
+  [coderCopy encodeFloat:@"FLMs_Conf" forKey:v4];
+  [coderCopy encodeInteger:self->_pointCount forKey:@"FLMs_PtsCnt"];
+  [coderCopy encodeObject:self->_pointsData forKey:@"FLMs_PtsData"];
+  [coderCopy encodeDouble:@"FLMs_AlgnBBoxX" forKey:self->_alignedBBox.origin.x];
+  [coderCopy encodeDouble:@"FLMs_AlgnBBoxY" forKey:self->_alignedBBox.origin.y];
+  [coderCopy encodeDouble:@"FLMs_AlgnBBoxW" forKey:self->_alignedBBox.size.width];
+  [coderCopy encodeDouble:@"FLMs_AlgnBBoxH" forKey:self->_alignedBBox.size.height];
+  [coderCopy encodeDouble:@"FLMs_UsrFacingBBoxX" forKey:self->_userFacingBBox.origin.x];
+  [coderCopy encodeDouble:@"FLMs_UsrFacingBBoxY" forKey:self->_userFacingBBox.origin.y];
+  [coderCopy encodeDouble:@"FLMs_UsrFacingBBoxW" forKey:self->_userFacingBBox.size.width];
+  [coderCopy encodeDouble:@"FLMs_UsrFacingBBoxH" forKey:self->_userFacingBBox.size.height];
+  [coderCopy encodeObject:self->_originatingRequestSpecifier forKey:@"FLMs_OReq"];
 }
 
-- (VNFaceLandmarks)initWithCoder:(id)a3
+- (VNFaceLandmarks)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt32ForKey:@"VNFaceLandmarks"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt32ForKey:@"VNFaceLandmarks"];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to unarchive VNFaceLandmarks object due to coding version mismatch: Currently supported: %u; encoded: %u", 0, v5];
     v7 = [VNError errorForInternalErrorWithLocalizedDescription:v6];
-    [v4 failWithError:v7];
+    [coderCopy failWithError:v7];
 LABEL_8:
 
 LABEL_9:
-    v33 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
-  [v4 decodeFloatForKey:@"FLMs_Conf"];
+  [coderCopy decodeFloatForKey:@"FLMs_Conf"];
   v9 = v8;
-  v10 = [v4 decodeIntegerForKey:@"FLMs_PtsCnt"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FLMs_PtsData"];
+  v10 = [coderCopy decodeIntegerForKey:@"FLMs_PtsCnt"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FLMs_PtsData"];
   v11 = objc_opt_class();
   v12 = [v6 length];
   if (v12 != [v11 landmarkPointSizeInBytes] * v10)
   {
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Data integrity check failed when unarchiving an object of type: %@", v11];
     v34 = [VNError errorForInternalErrorWithLocalizedDescription:v7];
-    [v4 failWithError:v34];
+    [coderCopy failWithError:v34];
     goto LABEL_7;
   }
 
-  [v4 decodeDoubleForKey:@"FLMs_AlgnBBoxX"];
+  [coderCopy decodeDoubleForKey:@"FLMs_AlgnBBoxX"];
   v44 = v13;
-  [v4 decodeDoubleForKey:@"FLMs_AlgnBBoxY"];
+  [coderCopy decodeDoubleForKey:@"FLMs_AlgnBBoxY"];
   v15 = v14;
-  [v4 decodeDoubleForKey:@"FLMs_AlgnBBoxW"];
+  [coderCopy decodeDoubleForKey:@"FLMs_AlgnBBoxW"];
   v17 = v16;
-  [v4 decodeDoubleForKey:@"FLMs_AlgnBBoxH"];
+  [coderCopy decodeDoubleForKey:@"FLMs_AlgnBBoxH"];
   v19 = v18;
-  [v4 decodeDoubleForKey:@"FLMs_UsrFacingBBoxX"];
+  [coderCopy decodeDoubleForKey:@"FLMs_UsrFacingBBoxX"];
   v21 = v20;
-  [v4 decodeDoubleForKey:@"FLMs_UsrFacingBBoxY"];
+  [coderCopy decodeDoubleForKey:@"FLMs_UsrFacingBBoxY"];
   v23 = v22;
-  [v4 decodeDoubleForKey:@"FLMs_UsrFacingBBoxW"];
+  [coderCopy decodeDoubleForKey:@"FLMs_UsrFacingBBoxW"];
   v25 = v24;
-  [v4 decodeDoubleForKey:@"FLMs_UsrFacingBBoxH"];
+  [coderCopy decodeDoubleForKey:@"FLMs_UsrFacingBBoxH"];
   v27 = v26;
-  v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FLMs_OReq"];
+  v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FLMs_OReq"];
   if (!v28)
   {
-    if (([v4 containsValueForKey:@"FLMs_Rev"] & 1) == 0)
+    if (([coderCopy containsValueForKey:@"FLMs_Rev"] & 1) == 0)
     {
       v7 = [VNError errorWithCode:6 message:@"could not decode originating request"];
-      [v4 failWithError:v7];
+      [coderCopy failWithError:v7];
       goto LABEL_8;
     }
 
-    v36 = [v4 decodeIntegerForKey:@"FLMs_Rev"];
+    v36 = [coderCopy decodeIntegerForKey:@"FLMs_Rev"];
     v7 = [objc_opt_class() defaultOriginatingRequestClassNameForRequestRevision:v36];
     if (!v7)
     {
@@ -350,7 +350,7 @@ LABEL_9:
       v41 = [v38 stringWithFormat:@"%@ does not provide a default originating request class", v40];
 
       v42 = [VNError errorForInternalErrorWithLocalizedDescription:v41];
-      [v4 failWithError:v42];
+      [coderCopy failWithError:v42];
 
       goto LABEL_9;
     }
@@ -365,7 +365,7 @@ LABEL_9:
       goto LABEL_5;
     }
 
-    [v4 failWithError:v37];
+    [coderCopy failWithError:v37];
 LABEL_7:
 
     goto LABEL_8;
@@ -379,18 +379,18 @@ LABEL_5:
   LODWORD(v43) = v9;
   self = [(VNFaceLandmarks *)self initWithOriginatingRequestSpecifier:v28 pointsData:v6 pointCount:v10 userFacingBBox:v21 alignedBBox:v23 landmarkScore:v25, v27, v29, v30, v31, v32, v43];
 
-  v33 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v33;
+  return selfCopy;
 }
 
 - (unint64_t)requestRevision
 {
-  v2 = [(VNFaceLandmarks *)self originatingRequestSpecifier];
-  v3 = [v2 requestRevision];
+  originatingRequestSpecifier = [(VNFaceLandmarks *)self originatingRequestSpecifier];
+  requestRevision = [originatingRequestSpecifier requestRevision];
 
-  return v3;
+  return requestRevision;
 }
 
 @end

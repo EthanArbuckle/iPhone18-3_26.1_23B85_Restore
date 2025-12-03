@@ -1,27 +1,27 @@
 @interface UpdatesService
 - (UpdatesService)init;
-- (void)autoUpdateEnabled:(id)a3;
-- (void)compatibilityUpdateForBundleIDs:(id)a3 userInitiated:(BOOL)a4 withReplyHandler:(id)a5;
-- (void)getManagedUpdatesWithReplyHandler:(id)a3;
-- (void)getMetricsWithReplyHandler:(id)a3;
-- (void)getUpdateMetadataForBundleID:(id)a3 withReplyHandler:(id)a4;
-- (void)getUpdateMetricsEventsWithReplyHandler:(id)a3;
-- (void)getUpdatesIncludingMetricsWithReplyHandler:(id)a3;
-- (void)getUpdatesWithReplyHandler:(id)a3;
+- (void)autoUpdateEnabled:(id)enabled;
+- (void)compatibilityUpdateForBundleIDs:(id)ds userInitiated:(BOOL)initiated withReplyHandler:(id)handler;
+- (void)getManagedUpdatesWithReplyHandler:(id)handler;
+- (void)getMetricsWithReplyHandler:(id)handler;
+- (void)getUpdateMetadataForBundleID:(id)d withReplyHandler:(id)handler;
+- (void)getUpdateMetricsEventsWithReplyHandler:(id)handler;
+- (void)getUpdatesIncludingMetricsWithReplyHandler:(id)handler;
+- (void)getUpdatesWithReplyHandler:(id)handler;
 - (void)hideApplicationBadgeForPendingUpdates;
-- (void)refreshUpdateCountWithReplyHandler:(id)a3;
-- (void)refreshUpdateForApp:(int64_t)a3 reply:(id)a4;
-- (void)reloadForSettingsFromServerWithReplyHandler:(id)a3;
-- (void)reloadFromServerInBackgroundWithCompletionBlock:(id)a3;
-- (void)reloadFromServerWithReplyHandler:(id)a3;
-- (void)reloadManagedUpdatesWithReplyHandler:(id)a3;
-- (void)requestAutomaticUpdateAuthorizationIfNecessaryForProcessHandle:(id)a3 completion:(id)a4;
-- (void)setAutoUpdateEnabled:(BOOL)a3 withReplyHandler:(id)a4;
-- (void)shouldUseModernUpdatesWithReplyHandler:(id)a3;
+- (void)refreshUpdateCountWithReplyHandler:(id)handler;
+- (void)refreshUpdateForApp:(int64_t)app reply:(id)reply;
+- (void)reloadForSettingsFromServerWithReplyHandler:(id)handler;
+- (void)reloadFromServerInBackgroundWithCompletionBlock:(id)block;
+- (void)reloadFromServerWithReplyHandler:(id)handler;
+- (void)reloadManagedUpdatesWithReplyHandler:(id)handler;
+- (void)requestAutomaticUpdateAuthorizationIfNecessaryForProcessHandle:(id)handle completion:(id)completion;
+- (void)setAutoUpdateEnabled:(BOOL)enabled withReplyHandler:(id)handler;
+- (void)shouldUseModernUpdatesWithReplyHandler:(id)handler;
 - (void)showApplicationBadgeForPendingUpdates;
-- (void)updateAllGettingJobResultsWithReplyHandler:(id)a3;
-- (void)updateAllWithOrder:(id)a3 replyHandler:(id)a4;
-- (void)updateAllWithReplyHandler:(id)a3;
+- (void)updateAllGettingJobResultsWithReplyHandler:(id)handler;
+- (void)updateAllWithOrder:(id)order replyHandler:(id)handler;
+- (void)updateAllWithReplyHandler:(id)handler;
 @end
 
 @implementation UpdatesService
@@ -46,42 +46,42 @@
   return v2;
 }
 
-- (void)autoUpdateEnabled:(id)a3
+- (void)autoUpdateEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1003A0B08;
   v7[3] = &unk_10051B2D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = enabledCopy;
+  v6 = enabledCopy;
   sub_100005D90(dispatchQueue, v7);
 }
 
-- (void)compatibilityUpdateForBundleIDs:(id)a3 userInitiated:(BOOL)a4 withReplyHandler:(id)a5
+- (void)compatibilityUpdateForBundleIDs:(id)ds userInitiated:(BOOL)initiated withReplyHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  dsCopy = ds;
+  handlerCopy = handler;
   v9 = sub_100003B90();
   dispatchQueue = self->_dispatchQueue;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1003A0C98;
   v14[3] = &unk_10051C078;
-  v15 = v7;
+  v15 = dsCopy;
   v16 = v9;
-  v17 = v8;
-  v11 = v8;
+  v17 = handlerCopy;
+  v11 = handlerCopy;
   v12 = v9;
-  v13 = v7;
+  v13 = dsCopy;
   sub_100005D90(dispatchQueue, v14);
 }
 
-- (void)getManagedUpdatesWithReplyHandler:(id)a3
+- (void)getManagedUpdatesWithReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = sub_100003B90();
   dispatchQueue = self->_dispatchQueue;
   v9[0] = _NSConcreteStackBlock;
@@ -89,17 +89,17 @@
   v9[2] = sub_1003A0E84;
   v9[3] = &unk_10051C078;
   v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = handlerCopy;
+  v7 = handlerCopy;
   v8 = v5;
   sub_100005D90(dispatchQueue, v9);
 }
 
-- (void)getUpdateMetadataForBundleID:(id)a3 withReplyHandler:(id)a4
+- (void)getUpdateMetadataForBundleID:(id)d withReplyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = sub_100003B90();
   dispatchQueue = self->_dispatchQueue;
   v13[0] = _NSConcreteStackBlock;
@@ -107,18 +107,18 @@
   v13[2] = sub_1003A11EC;
   v13[3] = &unk_10051C7A8;
   v14 = v8;
-  v15 = v6;
-  v16 = self;
-  v17 = v7;
-  v10 = v7;
-  v11 = v6;
+  v15 = dCopy;
+  selfCopy = self;
+  v17 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = dCopy;
   v12 = v8;
   sub_100005D90(dispatchQueue, v13);
 }
 
-- (void)getUpdatesWithReplyHandler:(id)a3
+- (void)getUpdatesWithReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = sub_100003B90();
   dispatchQueue = self->_dispatchQueue;
   v9[0] = _NSConcreteStackBlock;
@@ -126,16 +126,16 @@
   v9[2] = sub_1003A1508;
   v9[3] = &unk_10051C078;
   v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = handlerCopy;
+  v7 = handlerCopy;
   v8 = v5;
   sub_100005D90(dispatchQueue, v9);
 }
 
-- (void)refreshUpdateCountWithReplyHandler:(id)a3
+- (void)refreshUpdateCountWithReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = sub_100003B90();
   dispatchQueue = self->_dispatchQueue;
   v9[0] = _NSConcreteStackBlock;
@@ -143,16 +143,16 @@
   v9[2] = sub_1003A181C;
   v9[3] = &unk_10051C078;
   v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = handlerCopy;
+  v7 = handlerCopy;
   v8 = v5;
   sub_100005D90(dispatchQueue, v9);
 }
 
-- (void)refreshUpdateForApp:(int64_t)a3 reply:(id)a4
+- (void)refreshUpdateForApp:(int64_t)app reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = sub_100003B90();
   dispatchQueue = self->_dispatchQueue;
   v11[0] = _NSConcreteStackBlock;
@@ -160,17 +160,17 @@
   v11[2] = sub_1003A1BB4;
   v11[3] = &unk_100523400;
   v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v15 = a3;
-  v9 = v6;
+  selfCopy = self;
+  v14 = replyCopy;
+  appCopy = app;
+  v9 = replyCopy;
   v10 = v7;
   sub_100005D90(dispatchQueue, v11);
 }
 
-- (void)reloadFromServerWithReplyHandler:(id)a3
+- (void)reloadFromServerWithReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = sub_100003B90();
   dispatchQueue = self->_dispatchQueue;
   v9[0] = _NSConcreteStackBlock;
@@ -178,16 +178,16 @@
   v9[2] = sub_1003A1F74;
   v9[3] = &unk_10051C078;
   v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = handlerCopy;
+  v7 = handlerCopy;
   v8 = v5;
   sub_100005D90(dispatchQueue, v9);
 }
 
-- (void)reloadManagedUpdatesWithReplyHandler:(id)a3
+- (void)reloadManagedUpdatesWithReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = sub_100003B90();
   dispatchQueue = self->_dispatchQueue;
   v9[0] = _NSConcreteStackBlock;
@@ -195,30 +195,30 @@
   v9[2] = sub_1003A230C;
   v9[3] = &unk_10051C078;
   v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = handlerCopy;
+  v7 = handlerCopy;
   v8 = v5;
   sub_100005D90(dispatchQueue, v9);
 }
 
-- (void)requestAutomaticUpdateAuthorizationIfNecessaryForProcessHandle:(id)a3 completion:(id)a4
+- (void)requestAutomaticUpdateAuthorizationIfNecessaryForProcessHandle:(id)handle completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  completionCopy = completion;
   v8 = sub_100003B90();
   v9 = [[_TtC9appstored6LogKey alloc] initWithCode:@"AUAT"];
   v10 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 processInfo];
-    v12 = [v11 bundleIdentifier];
+    processInfo = [v8 processInfo];
+    bundleIdentifier = [processInfo bundleIdentifier];
     *buf = 138412802;
     v22 = v9;
     v23 = 2114;
-    v24 = v6;
+    v24 = handleCopy;
     v25 = 2114;
-    v26 = v12;
+    v26 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[%@] requestAutomaticUpdateAuthorizationIfNecessaryForProcessHandle: %{public}@ for client: %{public}@", buf, 0x20u);
   }
 
@@ -228,36 +228,36 @@
   v17[2] = sub_1003A2754;
   v17[3] = &unk_10051BB18;
   v19 = v9;
-  v20 = v7;
-  v18 = v6;
+  v20 = completionCopy;
+  v18 = handleCopy;
   v14 = v9;
-  v15 = v7;
-  v16 = v6;
+  v15 = completionCopy;
+  v16 = handleCopy;
   sub_100005D90(dispatchQueue, v17);
 }
 
-- (void)setAutoUpdateEnabled:(BOOL)a3 withReplyHandler:(id)a4
+- (void)setAutoUpdateEnabled:(BOOL)enabled withReplyHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = sub_100003B90();
   dispatchQueue = self->_dispatchQueue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1003A290C;
   v11[3] = &unk_100526230;
-  v14 = a3;
+  enabledCopy = enabled;
   v11[4] = self;
   v12 = v7;
-  v13 = v6;
-  v9 = v6;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
   v10 = v7;
   sub_100005D90(dispatchQueue, v11);
 }
 
-- (void)updateAllWithOrder:(id)a3 replyHandler:(id)a4
+- (void)updateAllWithOrder:(id)order replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  orderCopy = order;
+  handlerCopy = handler;
   v8 = sub_100003B90();
   dispatchQueue = self->_dispatchQueue;
   v13[0] = _NSConcreteStackBlock;
@@ -265,18 +265,18 @@
   v13[2] = sub_1003A2BD0;
   v13[3] = &unk_10051C7A8;
   v14 = v8;
-  v15 = self;
-  v16 = v6;
-  v17 = v7;
-  v10 = v7;
-  v11 = v6;
+  selfCopy = self;
+  v16 = orderCopy;
+  v17 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = orderCopy;
   v12 = v8;
   sub_100005D90(dispatchQueue, v13);
 }
 
-- (void)reloadFromServerInBackgroundWithCompletionBlock:(id)a3
+- (void)reloadFromServerInBackgroundWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = sub_100003B90();
   dispatchQueue = self->_dispatchQueue;
   v9[0] = _NSConcreteStackBlock;
@@ -284,15 +284,15 @@
   v9[2] = sub_1003A2F7C;
   v9[3] = &unk_10051B2D0;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = blockCopy;
+  v7 = blockCopy;
   v8 = v5;
   sub_100005D90(dispatchQueue, v9);
 }
 
-- (void)shouldUseModernUpdatesWithReplyHandler:(id)a3
+- (void)shouldUseModernUpdatesWithReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = sub_100003B90();
   dispatchQueue = self->_dispatchQueue;
   v9[0] = _NSConcreteStackBlock;
@@ -300,32 +300,32 @@
   v9[2] = sub_1003A3324;
   v9[3] = &unk_10051B2D0;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = handlerCopy;
+  v7 = handlerCopy;
   v8 = v5;
   sub_100005D90(dispatchQueue, v9);
 }
 
-- (void)getUpdateMetricsEventsWithReplyHandler:(id)a3
+- (void)getUpdateMetricsEventsWithReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = sub_100003B90();
   dispatchQueue = self->_dispatchQueue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1003A3504;
   v9[3] = &unk_10051BB18;
-  v11 = self;
-  v12 = v4;
+  selfCopy = self;
+  v12 = handlerCopy;
   v10 = v5;
-  v7 = v4;
+  v7 = handlerCopy;
   v8 = v5;
   sub_100005D90(dispatchQueue, v9);
 }
 
-- (void)getMetricsWithReplyHandler:(id)a3
+- (void)getMetricsWithReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -355,8 +355,8 @@
 
   v8 = v7;
   _Block_object_dispose(&v23, 8);
-  v9 = [v7 sharedScheduler];
-  [v9 submittedActivities];
+  sharedScheduler = [v7 sharedScheduler];
+  [sharedScheduler submittedActivities];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
@@ -375,10 +375,10 @@
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
-        v15 = [v14 name];
-        if ([v15 hasPrefix:@"com.apple.appstored.AutoUpdates"])
+        name = [v14 name];
+        if ([name hasPrefix:@"com.apple.appstored.AutoUpdates"])
         {
-          v16 = [v14 predictedOptimalStartDate];
+          predictedOptimalStartDate = [v14 predictedOptimalStartDate];
 
           goto LABEL_15;
         }
@@ -394,25 +394,25 @@
     }
   }
 
-  v16 = 0;
+  predictedOptimalStartDate = 0;
 LABEL_15:
 
-  [v6 setNextUpdateCheck:v16];
+  [v6 setNextUpdateCheck:predictedOptimalStartDate];
   v17 = sub_1003D6078();
   if (v17)
   {
     [v6 setLastUpdateCheck:v17];
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, v6, 0);
+    handlerCopy[2](handlerCopy, v6, 0);
   }
 }
 
-- (void)getUpdatesIncludingMetricsWithReplyHandler:(id)a3
+- (void)getUpdatesIncludingMetricsWithReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -423,14 +423,14 @@ LABEL_15:
   }
 
   LOBYTE(v11) = 0;
-  v6 = [[_TtC9appstored14UpdatesContext alloc] initWithReason:0 requestToken:0 logKey:0 callbackHandler:v4 includeMetrics:1 isVPPLookup:0 userInitiated:v11 targetedItemID:0];
+  v6 = [[_TtC9appstored14UpdatesContext alloc] initWithReason:0 requestToken:0 logKey:0 callbackHandler:handlerCopy includeMetrics:1 isVPPLookup:0 userInitiated:v11 targetedItemID:0];
 
   v7 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(UpdatesContext *)v6 logKey];
+    logKey = [(UpdatesContext *)v6 logKey];
     *buf = 138412290;
-    v13 = v8;
+    v13 = logKey;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[%@] Get updates including metrics with reply handler", buf, 0xCu);
   }
 
@@ -453,9 +453,9 @@ LABEL_15:
   [v4 hidePendingUpdatesBadge];
 }
 
-- (void)reloadForSettingsFromServerWithReplyHandler:(id)a3
+- (void)reloadForSettingsFromServerWithReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -486,7 +486,7 @@ LABEL_15:
   }
 
   v11 = +[UpdatesManager sharedManager];
-  [v11 reloadFromServerInBackgroundWithToken:v6 completionBlock:v4];
+  [v11 reloadFromServerInBackgroundWithToken:v6 completionBlock:handlerCopy];
 }
 
 - (void)showApplicationBadgeForPendingUpdates
@@ -505,9 +505,9 @@ LABEL_15:
   [v5 showPendingUpdatesBadgeWithRequestToken:v4];
 }
 
-- (void)updateAllWithReplyHandler:(id)a3
+- (void)updateAllWithReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -523,14 +523,14 @@ LABEL_15:
   v10[1] = 3221225472;
   v10[2] = sub_1003A41FC;
   v10[3] = &unk_100526600;
-  v11 = v4;
-  v8 = v4;
+  v11 = handlerCopy;
+  v8 = handlerCopy;
   [v7 updateAllWithOrder:&__NSArray0__struct requestToken:v6 replyHandler:v10];
 }
 
-- (void)updateAllGettingJobResultsWithReplyHandler:(id)a3
+- (void)updateAllGettingJobResultsWithReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -542,7 +542,7 @@ LABEL_15:
 
   v6 = sub_100003B90();
   v7 = +[UpdatesManager sharedManager];
-  [v7 updateAllWithOrder:&__NSArray0__struct requestToken:v6 replyHandler:v4];
+  [v7 updateAllWithOrder:&__NSArray0__struct requestToken:v6 replyHandler:handlerCopy];
 }
 
 @end

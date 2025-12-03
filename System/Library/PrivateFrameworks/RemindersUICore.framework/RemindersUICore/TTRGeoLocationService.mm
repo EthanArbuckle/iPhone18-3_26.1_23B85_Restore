@@ -1,7 +1,7 @@
 @interface TTRGeoLocationService
 - (_TtC15RemindersUICore21TTRGeoLocationService)init;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 @end
 
 @implementation TTRGeoLocationService
@@ -13,21 +13,21 @@
   return result;
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
+  authorizationCopy = authorization;
   v5._internal = self;
   internal = v5._internal;
-  v5.super.isa = v4;
+  v5.super.isa = authorizationCopy;
   TTRGeoLocationService.locationManagerDidChangeAuthorization(_:)(v5);
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   sub_21D0D8CF0(0, &qword_280D17890);
   v6 = sub_21DBFA5EC();
-  v7 = a3;
-  v8 = self;
+  managerCopy = manager;
+  selfCopy = self;
   sub_21D88FB80(v6);
 }
 

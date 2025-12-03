@@ -1,9 +1,9 @@
 @interface ATXPredictionDeviceStateContext
-- (ATXPredictionDeviceStateContext)initWithProto:(id)a3;
-- (ATXPredictionDeviceStateContext)initWithProtoData:(id)a3;
-- (ATXPredictionDeviceStateContext)initWithWifiSSID:(id)a3 onWifi:(BOOL)a4 inAirplaneMode:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXPredictionDeviceStateContext:(id)a3;
+- (ATXPredictionDeviceStateContext)initWithProto:(id)proto;
+- (ATXPredictionDeviceStateContext)initWithProtoData:(id)data;
+- (ATXPredictionDeviceStateContext)initWithWifiSSID:(id)d onWifi:(BOOL)wifi inAirplaneMode:(BOOL)mode;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXPredictionDeviceStateContext:(id)context;
 - (id)description;
 - (id)encodeAsProto;
 - (id)jsonDict;
@@ -12,20 +12,20 @@
 
 @implementation ATXPredictionDeviceStateContext
 
-- (ATXPredictionDeviceStateContext)initWithWifiSSID:(id)a3 onWifi:(BOOL)a4 inAirplaneMode:(BOOL)a5
+- (ATXPredictionDeviceStateContext)initWithWifiSSID:(id)d onWifi:(BOOL)wifi inAirplaneMode:(BOOL)mode
 {
-  v8 = a3;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = ATXPredictionDeviceStateContext;
   v9 = [(ATXPredictionDeviceStateContext *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [dCopy copy];
     wifiSSID = v9->_wifiSSID;
     v9->_wifiSSID = v10;
 
-    v9->_onWifi = a4;
-    v9->_inAirplaneMode = a5;
+    v9->_onWifi = wifi;
+    v9->_inAirplaneMode = mode;
   }
 
   return v9;
@@ -33,8 +33,8 @@
 
 - (id)description
 {
-  v2 = [(ATXPredictionDeviceStateContext *)self jsonDict];
-  v3 = [v2 description];
+  jsonDict = [(ATXPredictionDeviceStateContext *)self jsonDict];
+  v3 = [jsonDict description];
 
   return v3;
 }
@@ -76,40 +76,40 @@
   return v6;
 }
 
-- (ATXPredictionDeviceStateContext)initWithProtoData:(id)a3
+- (ATXPredictionDeviceStateContext)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBPredictionDeviceStateContext alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBPredictionDeviceStateContext alloc] initWithData:dataCopy];
 
     self = [(ATXPredictionDeviceStateContext *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXPredictionDeviceStateContext *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXPredictionDeviceStateContext *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXPredictionDeviceStateContext)initWithProto:(id)a3
+- (ATXPredictionDeviceStateContext)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -125,16 +125,16 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v6 = [v5 wifiSSID];
-  v7 = [v5 onWifi];
-  v8 = [v5 inAirplaneMode];
+  v5 = protoCopy;
+  wifiSSID = [v5 wifiSSID];
+  onWifi = [v5 onWifi];
+  inAirplaneMode = [v5 inAirplaneMode];
 
-  self = [(ATXPredictionDeviceStateContext *)self initWithWifiSSID:v6 onWifi:v7 inAirplaneMode:v8];
-  v9 = self;
+  self = [(ATXPredictionDeviceStateContext *)self initWithWifiSSID:wifiSSID onWifi:onWifi inAirplaneMode:inAirplaneMode];
+  selfCopy = self;
 LABEL_8:
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)proto
@@ -147,29 +147,29 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXPredictionDeviceStateContext *)self isEqualToATXPredictionDeviceStateContext:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXPredictionDeviceStateContext *)self isEqualToATXPredictionDeviceStateContext:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXPredictionDeviceStateContext:(id)a3
+- (BOOL)isEqualToATXPredictionDeviceStateContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = self->_wifiSSID;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == contextCopy[2])
   {
   }
 
@@ -183,14 +183,14 @@ LABEL_8:
     }
   }
 
-  if (self->_onWifi != *(v4 + 8))
+  if (self->_onWifi != *(contextCopy + 8))
   {
 LABEL_7:
     v8 = 0;
     goto LABEL_8;
   }
 
-  v8 = self->_inAirplaneMode == *(v4 + 9);
+  v8 = self->_inAirplaneMode == *(contextCopy + 9);
 LABEL_8:
 
   return v8;

@@ -1,8 +1,8 @@
 @interface PPMaintenance
 + (id)singletonWarmupQueue;
 + (uint64_t)_kValue;
-+ (uint64_t)_logEngagementMetricsForDomain:(void *)a3 feedback:(int)a4 count:(void *)a5 shouldContinue:;
-+ (void)_logDonationIntervalStatsForSource:(uint64_t)a3 domain:(void *)a4 lastDonationTimes:(void *)a5 lastBatchDonationTimes:;
++ (uint64_t)_logEngagementMetricsForDomain:(void *)domain feedback:(int)feedback count:(void *)count shouldContinue:;
++ (void)_logDonationIntervalStatsForSource:(uint64_t)source domain:(void *)domain lastDonationTimes:(void *)times lastBatchDonationTimes:;
 + (void)registerMaintenanceTasksInternal;
 @end
 
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __49__PPMaintenance_registerMaintenanceTasksInternal__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (registerMaintenanceTasksInternal_onceToken != -1)
   {
     dispatch_once(&registerMaintenanceTasksInternal_onceToken, block);
@@ -3819,46 +3819,46 @@ void __47__PPMaintenance__registerLogLocationPerplexity__block_invoke_385(uint64
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_logDonationIntervalStatsForSource:(uint64_t)a3 domain:(void *)a4 lastDonationTimes:(void *)a5 lastBatchDonationTimes:
++ (void)_logDonationIntervalStatsForSource:(uint64_t)source domain:(void *)domain lastDonationTimes:(void *)times lastBatchDonationTimes:
 {
   v34 = a2;
-  v8 = a4;
-  v9 = a5;
+  domainCopy = domain;
+  timesCopy = times;
   objc_opt_self();
   v10 = objc_opt_new();
-  [v10 setDomain:{+[PPMetricsUtils mapDomainForPET2:](PPMetricsUtils, "mapDomainForPET2:", a3)}];
-  v11 = [v34 bundleId];
-  [v10 setSource:{+[PPMetricsUtils sourceForBundleId:](PPMetricsUtils, "sourceForBundleId:", v11)}];
+  [v10 setDomain:{+[PPMetricsUtils mapDomainForPET2:](PPMetricsUtils, "mapDomainForPET2:", source)}];
+  bundleId = [v34 bundleId];
+  [v10 setSource:{+[PPMetricsUtils sourceForBundleId:](PPMetricsUtils, "sourceForBundleId:", bundleId)}];
 
-  v12 = [v34 bundleId];
-  v13 = [v8 objectForKeyedSubscript:v12];
+  bundleId2 = [v34 bundleId];
+  v13 = [domainCopy objectForKeyedSubscript:bundleId2];
 
   if (v13)
   {
-    v14 = [v34 date];
-    v15 = [v34 bundleId];
-    v16 = [v8 objectForKeyedSubscript:v15];
-    [v14 timeIntervalSinceDate:v16];
+    date = [v34 date];
+    bundleId3 = [v34 bundleId];
+    v16 = [domainCopy objectForKeyedSubscript:bundleId3];
+    [date timeIntervalSinceDate:v16];
     v18 = fabs(v17);
 
     if (v18 >= 600.0)
     {
       [v10 setIsFirstDonation:0];
-      v26 = [v34 date];
-      v27 = [v34 bundleId];
-      v28 = [v9 objectForKeyedSubscript:v27];
-      [v26 timeIntervalSinceDate:v28];
+      date2 = [v34 date];
+      bundleId4 = [v34 bundleId];
+      v28 = [timesCopy objectForKeyedSubscript:bundleId4];
+      [date2 timeIntervalSinceDate:v28];
       LODWORD(v30) = vcvtad_u64_f64(v29 / 3600.0);
       [v10 setInterval:v30];
 
-      v21 = [v34 bundleId];
-      [v9 removeObjectForKey:v21];
+      bundleId5 = [v34 bundleId];
+      [timesCopy removeObjectForKey:bundleId5];
     }
 
     else
     {
-      v19 = [v34 bundleId];
-      v20 = [v9 valueForKey:v19];
+      bundleId6 = [v34 bundleId];
+      v20 = [timesCopy valueForKey:bundleId6];
 
       [v10 setIsFirstDonation:v20 == 0];
       if (!v20)
@@ -3866,10 +3866,10 @@ void __47__PPMaintenance__registerLogLocationPerplexity__block_invoke_385(uint64
         goto LABEL_9;
       }
 
-      v21 = [v34 date];
-      v22 = [v34 bundleId];
-      v23 = [v9 objectForKeyedSubscript:v22];
-      [v21 timeIntervalSinceDate:v23];
+      bundleId5 = [v34 date];
+      bundleId7 = [v34 bundleId];
+      v23 = [timesCopy objectForKeyedSubscript:bundleId7];
+      [bundleId5 timeIntervalSinceDate:v23];
       LODWORD(v25) = vcvtad_u64_f64(v24 / 3600.0);
       [v10 setInterval:v25];
     }
@@ -3880,13 +3880,13 @@ void __47__PPMaintenance__registerLogLocationPerplexity__block_invoke_385(uint64
     [v10 setIsFirstDonation:1];
   }
 
-  v31 = [v34 date];
-  v32 = [v34 bundleId];
-  [v8 setObject:v31 forKeyedSubscript:v32];
+  date3 = [v34 date];
+  bundleId8 = [v34 bundleId];
+  [domainCopy setObject:date3 forKeyedSubscript:bundleId8];
 
 LABEL_9:
-  v33 = [MEMORY[0x277D41DA8] sharedInstance];
-  [v33 trackScalarForMessage:v10];
+  mEMORY[0x277D41DA8] = [MEMORY[0x277D41DA8] sharedInstance];
+  [mEMORY[0x277D41DA8] trackScalarForMessage:v10];
 }
 
 void __44__PPMaintenance__registerLogTopicPerplexity__block_invoke(uint64_t a1, void *a2)
@@ -6458,11 +6458,11 @@ uint64_t __63__PPMaintenance__logDailyMetricsWithError_shouldContinueBlock___blo
   return [_kValue__pasExprOnceResult unsignedIntegerValue];
 }
 
-+ (uint64_t)_logEngagementMetricsForDomain:(void *)a3 feedback:(int)a4 count:(void *)a5 shouldContinue:
++ (uint64_t)_logEngagementMetricsForDomain:(void *)domain feedback:(int)feedback count:(void *)count shouldContinue:
 {
   v45 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  domainCopy = domain;
+  countCopy = count;
   objc_opt_self();
   v10 = pp_default_log_handle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -6472,7 +6472,7 @@ uint64_t __63__PPMaintenance__logDailyMetricsWithError_shouldContinueBlock___blo
     _os_log_impl(&dword_23224A000, v10, OS_LOG_TYPE_INFO, "PPMaintenance: beginning logging of daily engagement statistics for domain %d", buf, 8u);
   }
 
-  if (v9[2](v9))
+  if (countCopy[2](countCopy))
   {
     v11 = +[PPMaintenance _kValue];
     if (v11 > 4)
@@ -6483,22 +6483,22 @@ uint64_t __63__PPMaintenance__logDailyMetricsWithError_shouldContinueBlock___blo
       v35[1] = 3221225472;
       v35[2] = __78__PPMaintenance__logEngagementMetricsForDomain_feedback_count_shouldContinue___block_invoke;
       v35[3] = &unk_278975ED0;
-      v16 = v9;
+      v16 = countCopy;
       v38 = v16;
       v41 = a2;
       v39 = v14;
-      v36 = v8;
-      v40 = a4;
+      v36 = domainCopy;
+      feedbackCopy = feedback;
       v12 = v15;
       v37 = v12;
       [v36 enumerateObjectsUsingBlock:v35];
-      v17 = v9[2](v16);
+      v17 = countCopy[2](v16);
       v13 = v17;
       if (v17)
       {
         v27 = a2;
         v28 = v17;
-        v29 = v8;
+        v29 = domainCopy;
         v33 = 0u;
         v34 = 0u;
         v31 = 0u;
@@ -6537,7 +6537,7 @@ uint64_t __63__PPMaintenance__logDailyMetricsWithError_shouldContinueBlock___blo
           _os_log_impl(&dword_23224A000, v24, OS_LOG_TYPE_INFO, "PPMaintenance: completed logging of daily engagement statistics for domain %d.", buf, 8u);
         }
 
-        v8 = v29;
+        domainCopy = v29;
         v13 = v28;
       }
 

@@ -1,30 +1,30 @@
 @interface ICAttachmentTableModel
-+ (id)tableFromAttributedString:(id)a3 managedObjectContext:(id)a4 replicaID:(id)a5;
-- (BOOL)mergeWithMergeableData:(id)a3 mergeableFieldState:(id)a4;
-- (BOOL)usesChildAttachment:(id)a3;
++ (id)tableFromAttributedString:(id)string managedObjectContext:(id)context replicaID:(id)d;
+- (BOOL)mergeWithMergeableData:(id)data mergeableFieldState:(id)state;
+- (BOOL)usesChildAttachment:(id)attachment;
 - (ICTable)table;
 - (ICTableVersionedDocument)tableDocument;
 - (id)csvData;
 - (id)csvString;
-- (id)mergeableDataForCopying:(id *)a3;
+- (id)mergeableDataForCopying:(id *)copying;
 - (id)searchableTextContent;
 - (id)searchableTextContentInNote;
-- (id)stringsAtRow:(unint64_t)a3;
+- (id)stringsAtRow:(unint64_t)row;
 - (id)textContentInNote;
-- (void)addMergeableDataToCloudKitRecord:(id)a3 approach:(int64_t)a4 mergeableFieldState:(id)a5;
+- (void)addMergeableDataToCloudKitRecord:(id)record approach:(int64_t)approach mergeableFieldState:(id)state;
 - (void)attachmentAwakeFromFetch;
-- (void)attachmentDidRefresh:(BOOL)a3;
-- (void)attachmentWillRefresh:(BOOL)a3;
+- (void)attachmentDidRefresh:(BOOL)refresh;
+- (void)attachmentWillRefresh:(BOOL)refresh;
 - (void)attachmentWillTurnIntoFault;
 - (void)mergeTablePrimitiveData;
 - (void)persistPendingChanges;
 - (void)regenerateTextContentInNote;
-- (void)removeTimestampsForReplicaID:(id)a3;
-- (void)replaceChildInlineAttachment:(id)a3 withText:(id)a4;
-- (void)updateAfterLoadWithInlineAttachmentIdentifierMap:(id)a3;
-- (void)updateAttachmentByMergingWithTableData:(id)a3;
+- (void)removeTimestampsForReplicaID:(id)d;
+- (void)replaceChildInlineAttachment:(id)attachment withText:(id)text;
+- (void)updateAfterLoadWithInlineAttachmentIdentifierMap:(id)map;
+- (void)updateAttachmentByMergingWithTableData:(id)data;
 - (void)willMarkAttachmentForDeletion;
-- (void)writeCurrentTimestampToMergeableFieldStateIfNecessary:(id)a3;
+- (void)writeCurrentTimestampToMergeableFieldStateIfNecessary:(id)necessary;
 - (void)writeMergeableData;
 @end
 
@@ -37,19 +37,19 @@
   [(ICAttachmentModel *)&v8 attachmentAwakeFromFetch];
   if (self->_tableDocument)
   {
-    v3 = [(ICAttachmentModel *)self attachment];
+    attachment = [(ICAttachmentModel *)self attachment];
     v4 = objc_opt_respondsToSelector();
 
     if (v4)
     {
-      v5 = [(ICAttachmentModel *)self attachment];
-      v6 = [v5 documentMergeController];
+      attachment2 = [(ICAttachmentModel *)self attachment];
+      documentMergeController = [attachment2 documentMergeController];
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __50__ICAttachmentTableModel_attachmentAwakeFromFetch__block_invoke;
       v7[3] = &unk_278194B00;
       v7[4] = self;
-      [v6 requestMergeWithBlock:v7];
+      [documentMergeController requestMergeWithBlock:v7];
     }
 
     else
@@ -68,7 +68,7 @@
   }
 }
 
-- (void)attachmentWillRefresh:(BOOL)a3
+- (void)attachmentWillRefresh:(BOOL)refresh
 {
   if (![(ICAttachmentModel *)self isMergeableDataDirty])
   {
@@ -77,10 +77,10 @@
   }
 }
 
-- (void)attachmentDidRefresh:(BOOL)a3
+- (void)attachmentDidRefresh:(BOOL)refresh
 {
-  v4 = [(ICAttachmentModel *)self attachment];
-  [ICTableAttachmentProvider notifyProviderForRefreshToAttachment:v4];
+  attachment = [(ICAttachmentModel *)self attachment];
+  [ICTableAttachmentProvider notifyProviderForRefreshToAttachment:attachment];
 
   if (self->_tableDocument && [(ICAttachmentModel *)self isMergeableDataDirty])
   {
@@ -90,12 +90,12 @@
       [(ICAttachmentTableModel *)self attachmentDidRefresh:v5];
     }
 
-    v6 = [(ICAttachmentModel *)self attachment];
-    v7 = [v6 identifier];
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    identifier = [attachment2 identifier];
 
     v8 = os_log_create("com.apple.notes", "CoreData");
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
-    if (v7)
+    if (identifier)
     {
       if (v9)
       {
@@ -110,25 +110,25 @@
   }
 }
 
-- (id)stringsAtRow:(unint64_t)a3
+- (id)stringsAtRow:(unint64_t)row
 {
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [(ICAttachmentTableModel *)self table];
-  v7 = [v6 rowCount];
+  array = [MEMORY[0x277CBEB18] array];
+  table = [(ICAttachmentTableModel *)self table];
+  rowCount = [table rowCount];
 
-  if (v7 > a3)
+  if (rowCount > row)
   {
-    v8 = [(ICAttachmentTableModel *)self table];
-    v9 = [MEMORY[0x277CCAA78] indexSetWithIndex:a3];
+    table2 = [(ICAttachmentTableModel *)self table];
+    v9 = [MEMORY[0x277CCAA78] indexSetWithIndex:row];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __39__ICAttachmentTableModel_stringsAtRow___block_invoke;
     v12[3] = &unk_278197710;
-    v13 = v5;
-    [v8 enumerateCellObjectsInCellSelectionContainingColumnIndices:0 rowIndices:v9 copyItems:0 usingBlock:v12];
+    v13 = array;
+    [table2 enumerateCellObjectsInCellSelectionContainingColumnIndices:0 rowIndices:v9 copyItems:0 usingBlock:v12];
   }
 
-  v10 = [v5 copy];
+  v10 = [array copy];
 
   return v10;
 }
@@ -144,38 +144,38 @@ uint64_t __39__ICAttachmentTableModel_stringsAtRow___block_invoke(uint64_t a1, v
 
 - (id)searchableTextContent
 {
-  v2 = [(ICAttachmentTableModel *)self searchableTextContentInNote];
-  v3 = [v2 string];
+  searchableTextContentInNote = [(ICAttachmentTableModel *)self searchableTextContentInNote];
+  string = [searchableTextContentInNote string];
 
-  return v3;
+  return string;
 }
 
 - (id)searchableTextContentInNote
 {
   v3 = objc_alloc_init(MEMORY[0x277CCAB48]);
-  v4 = [(ICAttachmentModel *)self attachment];
-  v5 = [v4 identifier];
+  attachment = [(ICAttachmentModel *)self attachment];
+  identifier = [attachment identifier];
 
-  v6 = [(ICAttachmentModel *)self attachment];
-  v7 = [v6 managedObjectContext];
+  attachment2 = [(ICAttachmentModel *)self attachment];
+  managedObjectContext = [attachment2 managedObjectContext];
 
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x2020000000;
   v20[3] = 0;
-  v8 = [(ICAttachmentTableModel *)self table];
+  table = [(ICAttachmentTableModel *)self table];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __53__ICAttachmentTableModel_searchableTextContentInNote__block_invoke;
   v15[3] = &unk_278197738;
-  v9 = v7;
+  v9 = managedObjectContext;
   v16 = v9;
-  v10 = v5;
+  v10 = identifier;
   v17 = v10;
   v11 = v3;
   v18 = v11;
   v19 = v20;
-  [v8 enumerateCellObjectsInCellSelectionContainingColumnIndices:0 rowIndices:0 copyItems:0 usingBlock:v15];
+  [table enumerateCellObjectsInCellSelectionContainingColumnIndices:0 rowIndices:0 copyItems:0 usingBlock:v15];
 
   v12 = v18;
   v13 = v11;
@@ -217,32 +217,32 @@ uint64_t __53__ICAttachmentTableModel_searchableTextContentInNote__block_invoke(
 
 - (id)textContentInNote
 {
-  v2 = [(ICAttachmentModel *)self attachment];
-  v3 = [v2 summary];
+  attachment = [(ICAttachmentModel *)self attachment];
+  summary = [attachment summary];
 
-  return v3;
+  return summary;
 }
 
 - (void)regenerateTextContentInNote
 {
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 managedObjectContext];
+  attachment = [(ICAttachmentModel *)self attachment];
+  managedObjectContext = [attachment managedObjectContext];
 
   v5 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v6 = [(ICAttachmentTableModel *)self table];
+  table = [(ICAttachmentTableModel *)self table];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __53__ICAttachmentTableModel_regenerateTextContentInNote__block_invoke;
   v14 = &unk_278197760;
-  v15 = v4;
+  v15 = managedObjectContext;
   v16 = v5;
   v7 = v5;
-  v8 = v4;
-  [v6 enumerateCellObjectsInCellSelectionContainingColumnIndices:0 rowIndices:0 copyItems:0 usingBlock:&v11];
+  v8 = managedObjectContext;
+  [table enumerateCellObjectsInCellSelectionContainingColumnIndices:0 rowIndices:0 copyItems:0 usingBlock:&v11];
 
   v9 = [MEMORY[0x277CCACA8] stringWithString:{v7, v11, v12, v13, v14}];
-  v10 = [(ICAttachmentModel *)self attachment];
-  [v10 setSummary:v9];
+  attachment2 = [(ICAttachmentModel *)self attachment];
+  [attachment2 setSummary:v9];
 }
 
 uint64_t __53__ICAttachmentTableModel_regenerateTextContentInNote__block_invoke(uint64_t a1, void *a2)
@@ -264,7 +264,7 @@ uint64_t __53__ICAttachmentTableModel_regenerateTextContentInNote__block_invoke(
 - (id)csvString
 {
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v4 = [(ICAttachmentTableModel *)self table];
+  table = [(ICAttachmentTableModel *)self table];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __35__ICAttachmentTableModel_csvString__block_invoke;
@@ -272,7 +272,7 @@ uint64_t __53__ICAttachmentTableModel_regenerateTextContentInNote__block_invoke(
   v9[4] = self;
   v5 = v3;
   v10 = v5;
-  [v4 enumerateRowsWithBlock:v9];
+  [table enumerateRowsWithBlock:v9];
 
   v6 = v10;
   v7 = v5;
@@ -348,8 +348,8 @@ id __35__ICAttachmentTableModel_csvString__block_invoke_2(uint64_t a1, void *a2)
 
 - (id)csvData
 {
-  v2 = [(ICAttachmentTableModel *)self csvString];
-  v3 = [v2 dataUsingEncoding:4];
+  csvString = [(ICAttachmentTableModel *)self csvString];
+  v3 = [csvString dataUsingEncoding:4];
 
   return v3;
 }
@@ -363,43 +363,43 @@ id __35__ICAttachmentTableModel_csvString__block_invoke_2(uint64_t a1, void *a2)
 
 - (void)persistPendingChanges
 {
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 managedObjectContext];
-  v5 = [v4 concurrencyType];
+  attachment = [(ICAttachmentModel *)self attachment];
+  managedObjectContext = [attachment managedObjectContext];
+  concurrencyType = [managedObjectContext concurrencyType];
 
-  if (v5 == 2)
+  if (concurrencyType == 2)
   {
-    v6 = [(ICAttachmentModel *)self attachment];
-    [ICTableAttachmentProvider saveAttachmentOnMainThread:v6];
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    [ICTableAttachmentProvider saveAttachmentOnMainThread:attachment2];
   }
 }
 
-- (BOOL)usesChildAttachment:(id)a3
+- (BOOL)usesChildAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v5 = [(ICAttachmentModel *)self attachment];
-  v6 = [v5 managedObjectContext];
+  attachment = [(ICAttachmentModel *)self attachment];
+  managedObjectContext = [attachment managedObjectContext];
 
-  v7 = [(ICAttachmentTableModel *)self table];
+  table = [(ICAttachmentTableModel *)self table];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __46__ICAttachmentTableModel_usesChildAttachment___block_invoke;
   v11[3] = &unk_2781977D8;
-  v8 = v6;
+  v8 = managedObjectContext;
   v12 = v8;
-  v9 = v4;
+  v9 = attachmentCopy;
   v13 = v9;
   v14 = &v15;
-  [v7 enumerateCellObjectsInCellSelectionContainingColumnIndices:0 rowIndices:0 copyItems:0 usingBlock:v11];
+  [table enumerateCellObjectsInCellSelectionContainingColumnIndices:0 rowIndices:0 copyItems:0 usingBlock:v11];
 
-  LOBYTE(v7) = *(v16 + 24);
+  LOBYTE(table) = *(v16 + 24);
   _Block_object_dispose(&v15, 8);
 
-  return v7;
+  return table;
 }
 
 uint64_t __46__ICAttachmentTableModel_usesChildAttachment___block_invoke(uint64_t a1, void *a2)
@@ -434,13 +434,13 @@ uint64_t __46__ICAttachmentTableModel_usesChildAttachment___block_invoke_2(uint6
   return result;
 }
 
-- (void)replaceChildInlineAttachment:(id)a3 withText:(id)a4
+- (void)replaceChildInlineAttachment:(id)attachment withText:(id)text
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICAttachmentTableModel *)self table];
-  v9 = [(ICAttachmentModel *)self attachment];
-  v10 = [v9 managedObjectContext];
+  attachmentCopy = attachment;
+  textCopy = text;
+  table = [(ICAttachmentTableModel *)self table];
+  attachment = [(ICAttachmentModel *)self attachment];
+  managedObjectContext = [attachment managedObjectContext];
 
   v24 = 0;
   v25 = &v24;
@@ -450,22 +450,22 @@ uint64_t __46__ICAttachmentTableModel_usesChildAttachment___block_invoke_2(uint6
   v17 = 3221225472;
   v18 = __64__ICAttachmentTableModel_replaceChildInlineAttachment_withText___block_invoke;
   v19 = &unk_278197738;
-  v11 = v10;
+  v11 = managedObjectContext;
   v20 = v11;
-  v12 = v6;
+  v12 = attachmentCopy;
   v21 = v12;
-  v13 = v7;
+  v13 = textCopy;
   v22 = v13;
   v23 = &v24;
-  [v8 enumerateCellObjectsInCellSelectionContainingColumnIndices:0 rowIndices:0 copyItems:0 usingBlock:&v16];
+  [table enumerateCellObjectsInCellSelectionContainingColumnIndices:0 rowIndices:0 copyItems:0 usingBlock:&v16];
   if (*(v25 + 24) == 1)
   {
     [(ICAttachmentModel *)self setMergeableDataDirty:1, v16, v17, v18, v19, v20, v21];
-    v14 = [(ICAttachmentModel *)self attachment];
-    [v14 saveMergeableDataIfNeeded];
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    [attachment2 saveMergeableDataIfNeeded];
 
-    v15 = [(ICAttachmentModel *)self attachment];
-    [v15 updateChangeCountWithReason:@"Replaced inline attachment"];
+    attachment3 = [(ICAttachmentModel *)self attachment];
+    [attachment3 updateChangeCountWithReason:@"Replaced inline attachment"];
   }
 
   _Block_object_dispose(&v24, 8);
@@ -519,10 +519,10 @@ void __64__ICAttachmentTableModel_replaceChildInlineAttachment_withText___block_
 
 - (ICTable)table
 {
-  v2 = [(ICAttachmentTableModel *)self tableDocument];
-  v3 = [v2 table];
+  tableDocument = [(ICAttachmentTableModel *)self tableDocument];
+  table = [tableDocument table];
 
-  return v3;
+  return table;
 }
 
 - (ICTableVersionedDocument)tableDocument
@@ -542,8 +542,8 @@ void __64__ICAttachmentTableModel_replaceChildInlineAttachment_withText___block_
     v14 = __Block_byref_object_copy__32;
     v15 = __Block_byref_object_dispose__32;
     v16 = 0;
-    v4 = [(ICAttachmentModel *)self attachment];
-    v5 = [v4 managedObjectContext];
+    attachment = [(ICAttachmentModel *)self attachment];
+    managedObjectContext = [attachment managedObjectContext];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __39__ICAttachmentTableModel_tableDocument__block_invoke;
@@ -551,7 +551,7 @@ void __64__ICAttachmentTableModel_replaceChildInlineAttachment_withText___block_
     v10[4] = self;
     v10[5] = &v17;
     v10[6] = &v11;
-    [v5 performBlockAndWait:v10];
+    [managedObjectContext performBlockAndWait:v10];
 
     v6 = [ICTableVersionedDocument alloc];
     v7 = [(ICTTVersionedDocument *)v6 initWithData:v18[5] replicaID:v12[5]];
@@ -581,7 +581,7 @@ void __39__ICAttachmentTableModel_tableDocument__block_invoke(uint64_t a1)
   *(v7 + 40) = v6;
 }
 
-- (id)mergeableDataForCopying:(id *)a3
+- (id)mergeableDataForCopying:(id *)copying
 {
   v28.receiver = self;
   v28.super_class = ICAttachmentTableModel;
@@ -589,20 +589,20 @@ void __39__ICAttachmentTableModel_tableDocument__block_invoke(uint64_t a1)
   if (v5)
   {
     v6 = [ICTableVersionedDocument alloc];
-    v7 = [(ICAttachmentTableModel *)self table];
-    v8 = [v7 columnCount];
-    v9 = [(ICAttachmentTableModel *)self table];
-    v10 = [v9 rowCount];
-    v11 = [(ICAttachmentModel *)self currentReplicaID];
-    v12 = [(ICTableVersionedDocument *)v6 initWithColumnCount:v8 rowCount:v10 replicaID:v11];
+    table = [(ICAttachmentTableModel *)self table];
+    columnCount = [table columnCount];
+    table2 = [(ICAttachmentTableModel *)self table];
+    rowCount = [table2 rowCount];
+    currentReplicaID = [(ICAttachmentModel *)self currentReplicaID];
+    v12 = [(ICTableVersionedDocument *)v6 initWithColumnCount:columnCount rowCount:rowCount replicaID:currentReplicaID];
 
-    v13 = [(ICAttachmentTableModel *)self table];
-    LODWORD(v8) = [v13 isRightToLeft];
+    table3 = [(ICAttachmentTableModel *)self table];
+    LODWORD(columnCount) = [table3 isRightToLeft];
 
-    if (v8)
+    if (columnCount)
     {
-      v14 = [(ICTableVersionedDocument *)v12 table];
-      [v14 reverseColumnDirection];
+      table4 = [(ICTableVersionedDocument *)v12 table];
+      [table4 reverseColumnDirection];
     }
 
     v22 = 0;
@@ -611,7 +611,7 @@ void __39__ICAttachmentTableModel_tableDocument__block_invoke(uint64_t a1)
     v25 = __Block_byref_object_copy__32;
     v26 = __Block_byref_object_dispose__32;
     v27 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    v15 = [(ICAttachmentTableModel *)self table];
+    table5 = [(ICAttachmentTableModel *)self table];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __50__ICAttachmentTableModel_mergeableDataForCopying___block_invoke;
@@ -620,24 +620,24 @@ void __39__ICAttachmentTableModel_tableDocument__block_invoke(uint64_t a1)
     v16 = v12;
     v20 = v16;
     v21 = &v22;
-    [v15 enumerateCellObjectsInCellSelectionContainingColumnIndices:0 rowIndices:0 copyItems:0 usingBlock:v19];
+    [table5 enumerateCellObjectsInCellSelectionContainingColumnIndices:0 rowIndices:0 copyItems:0 usingBlock:v19];
 
-    if (a3)
+    if (copying)
     {
-      *a3 = [v23[5] copy];
+      *copying = [v23[5] copy];
     }
 
-    v17 = [(ICTTVersionedDocument *)v16 serialize];
+    serialize = [(ICTTVersionedDocument *)v16 serialize];
 
     _Block_object_dispose(&v22, 8);
   }
 
   else
   {
-    v17 = 0;
+    serialize = 0;
   }
 
-  return v17;
+  return serialize;
 }
 
 uint64_t __50__ICAttachmentTableModel_mergeableDataForCopying___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4)
@@ -672,12 +672,12 @@ void __50__ICAttachmentTableModel_mergeableDataForCopying___block_invoke_2(uint6
   }
 }
 
-- (BOOL)mergeWithMergeableData:(id)a3 mergeableFieldState:(id)a4
+- (BOOL)mergeWithMergeableData:(id)data mergeableFieldState:(id)state
 {
-  v6 = a4;
-  if (a3)
+  stateCopy = state;
+  if (data)
   {
-    v7 = a3;
+    dataCopy = data;
     v8 = os_log_create("com.apple.notes", "Topotext");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
@@ -685,11 +685,11 @@ void __50__ICAttachmentTableModel_mergeableDataForCopying___block_invoke_2(uint6
     }
 
     v9 = [ICTableVersionedDocument alloc];
-    v10 = [(ICAttachmentModel *)self currentReplicaID];
-    v11 = [(ICTTVersionedDocument *)v9 initWithData:v7 replicaID:v10];
+    currentReplicaID = [(ICAttachmentModel *)self currentReplicaID];
+    v11 = [(ICTTVersionedDocument *)v9 initWithData:dataCopy replicaID:currentReplicaID];
 
-    v12 = [(ICAttachmentTableModel *)self tableDocument];
-    v13 = [v12 mergeWithTableVersionedDocument:v11];
+    tableDocument = [(ICAttachmentTableModel *)self tableDocument];
+    v13 = [tableDocument mergeWithTableVersionedDocument:v11];
 
     v14 = v13 == 2;
     if (v13 == 2)
@@ -701,7 +701,7 @@ void __50__ICAttachmentTableModel_mergeableDataForCopying___block_invoke_2(uint6
       }
 
       [(ICAttachmentModel *)self setMergeableDataDirty:1];
-      [(ICAttachmentTableModel *)self writeCurrentTimestampToMergeableFieldStateIfNecessary:v6];
+      [(ICAttachmentTableModel *)self writeCurrentTimestampToMergeableFieldStateIfNecessary:stateCopy];
     }
   }
 
@@ -713,20 +713,20 @@ void __50__ICAttachmentTableModel_mergeableDataForCopying___block_invoke_2(uint6
   return v14;
 }
 
-- (void)writeCurrentTimestampToMergeableFieldStateIfNecessary:(id)a3
+- (void)writeCurrentTimestampToMergeableFieldStateIfNecessary:(id)necessary
 {
-  v4 = a3;
-  if (v4)
+  necessaryCopy = necessary;
+  if (necessaryCopy)
   {
     v5 = [MEMORY[0x277CBC5A0] ic_encryptedKeyForKeyPrefix:@"MergeableData"];
-    v6 = [(ICAttachmentTableModel *)self table];
-    v7 = [v6 ttDocument];
-    v8 = [v7 sharedTopotextTimestamp];
+    table = [(ICAttachmentTableModel *)self table];
+    ttDocument = [table ttDocument];
+    sharedTopotextTimestamp = [ttDocument sharedTopotextTimestamp];
 
-    v9 = [v8 serialize];
-    if ([v9 length])
+    serialize = [sharedTopotextTimestamp serialize];
+    if ([serialize length])
     {
-      [v4 setObject:v9 forKey:v5];
+      [necessaryCopy setObject:serialize forKey:v5];
     }
 
     else
@@ -747,31 +747,31 @@ void __50__ICAttachmentTableModel_mergeableDataForCopying___block_invoke_2(uint6
     [(ICAttachmentModel *)self setMergeableDataDirty:0];
   }
 
-  v5 = [(ICAttachmentTableModel *)self tableDocument];
-  v3 = [v5 serialize];
-  v4 = [(ICAttachmentModel *)self attachment];
-  [v4 setMergeableData:v3];
+  tableDocument = [(ICAttachmentTableModel *)self tableDocument];
+  serialize = [tableDocument serialize];
+  attachment = [(ICAttachmentModel *)self attachment];
+  [attachment setMergeableData:serialize];
 }
 
-- (void)updateAttachmentByMergingWithTableData:(id)a3
+- (void)updateAttachmentByMergingWithTableData:(id)data
 {
-  v4 = a3;
-  v5 = [(ICAttachmentTableModel *)self table];
-  v6 = [v5 document];
-  v7 = [v6 mergeWithData:v4];
+  dataCopy = data;
+  table = [(ICAttachmentTableModel *)self table];
+  document = [table document];
+  v7 = [document mergeWithData:dataCopy];
 
   if (v7 == 2)
   {
     [(ICAttachmentModel *)self setMergeableDataDirty:1];
-    v8 = [(ICAttachmentModel *)self attachment];
-    [v8 attachmentDidChange];
+    attachment = [(ICAttachmentModel *)self attachment];
+    [attachment attachmentDidChange];
   }
 }
 
 - (void)mergeTablePrimitiveData
 {
-  v3 = [(ICAttachmentModel *)self attachment];
-  v5 = [v3 primitiveValueForEncryptableKey:@"mergeableData"];
+  attachment = [(ICAttachmentModel *)self attachment];
+  v5 = [attachment primitiveValueForEncryptableKey:@"mergeableData"];
 
   v4 = v5;
   if (v5)
@@ -781,35 +781,35 @@ void __50__ICAttachmentTableModel_mergeableDataForCopying___block_invoke_2(uint6
   }
 }
 
-- (void)addMergeableDataToCloudKitRecord:(id)a3 approach:(int64_t)a4 mergeableFieldState:(id)a5
+- (void)addMergeableDataToCloudKitRecord:(id)record approach:(int64_t)approach mergeableFieldState:(id)state
 {
-  v22 = a3;
-  v8 = a5;
-  v9 = [(ICAttachmentModel *)self attachment];
-  v10 = [v9 isPasswordProtected];
+  recordCopy = record;
+  stateCopy = state;
+  attachment = [(ICAttachmentModel *)self attachment];
+  isPasswordProtected = [attachment isPasswordProtected];
 
-  if (v10)
+  if (isPasswordProtected)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"!self.attachment.isPasswordProtected" functionName:"-[ICAttachmentTableModel addMergeableDataToCloudKitRecord:approach:mergeableFieldState:]" simulateCrash:1 showAlert:0 format:@"Locked notes should use encrypted values JSON instead"];
   }
 
-  if (v8)
+  if (stateCopy)
   {
     v11 = [MEMORY[0x277CBC5A0] ic_encryptedKeyForKeyPrefix:@"MergeableData"];
     objc_opt_class();
-    v12 = [v8 objectForKey:v11];
+    v12 = [stateCopy objectForKey:v11];
     v13 = ICDynamicCast();
 
     if ([v13 length])
     {
       v14 = [ICCRTTCompatibleDocument makeSharedTopotextTimestampFromData:v13];
-      v15 = [(ICAttachmentTableModel *)self table];
-      v16 = [v15 ttDocument];
-      v17 = [v16 sharedTopotextTimestamp];
+      table = [(ICAttachmentTableModel *)self table];
+      ttDocument = [table ttDocument];
+      sharedTopotextTimestamp = [ttDocument sharedTopotextTimestamp];
 
       if (v14)
       {
-        v18 = [v14 compareTo:v17];
+        v18 = [v14 compareTo:sharedTopotextTimestamp];
 
         if (!v18)
         {
@@ -822,46 +822,46 @@ void __50__ICAttachmentTableModel_mergeableDataForCopying___block_invoke_2(uint6
   }
 
 LABEL_10:
-  v19 = [(ICAttachmentModel *)self attachment];
-  v20 = [v19 mergeableData];
+  attachment2 = [(ICAttachmentModel *)self attachment];
+  mergeableData = [attachment2 mergeableData];
 
-  if (v20)
+  if (mergeableData)
   {
-    v21 = [(ICAttachmentModel *)self attachment];
-    [v22 ic_setEncryptedInlineableDataAsset:v20 forKeyPrefix:@"MergeableData" approach:a4 withObject:v21];
+    attachment3 = [(ICAttachmentModel *)self attachment];
+    [recordCopy ic_setEncryptedInlineableDataAsset:mergeableData forKeyPrefix:@"MergeableData" approach:approach withObject:attachment3];
   }
 
 LABEL_13:
-  [(ICAttachmentTableModel *)self writeCurrentTimestampToMergeableFieldStateIfNecessary:v8];
+  [(ICAttachmentTableModel *)self writeCurrentTimestampToMergeableFieldStateIfNecessary:stateCopy];
 }
 
-+ (id)tableFromAttributedString:(id)a3 managedObjectContext:(id)a4 replicaID:(id)a5
++ (id)tableFromAttributedString:(id)string managedObjectContext:(id)context replicaID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 length])
+  stringCopy = string;
+  contextCopy = context;
+  dCopy = d;
+  if ([stringCopy length])
   {
     v10 = MEMORY[0x277CCABB0];
     v11 = [MEMORY[0x277CBEAA8] now];
-    v12 = [v11 ic_truncated];
-    [v12 timeIntervalSince1970];
+    ic_truncated = [v11 ic_truncated];
+    [ic_truncated timeIntervalSince1970];
     v13 = [v10 numberWithDouble:?];
 
-    v14 = [(ICTTVersionedDocument *)[ICTableVersionedDocument alloc] initWithData:0 replicaID:v9];
-    v15 = [(ICTableVersionedDocument *)v14 table];
-    v16 = [v15 insertColumnAtIndex:0];
-    v17 = [v7 length];
+    v14 = [(ICTTVersionedDocument *)[ICTableVersionedDocument alloc] initWithData:0 replicaID:dCopy];
+    table = [(ICTableVersionedDocument *)v14 table];
+    v16 = [table insertColumnAtIndex:0];
+    v17 = [stringCopy length];
     v22 = MEMORY[0x277D85DD0];
     v23 = 3221225472;
     v24 = __83__ICAttachmentTableModel_tableFromAttributedString_managedObjectContext_replicaID___block_invoke;
     v25 = &unk_278197850;
-    v26 = v7;
-    v18 = v15;
+    v26 = stringCopy;
+    v18 = table;
     v27 = v18;
     v19 = v13;
     v28 = v19;
-    v29 = v8;
+    v29 = contextCopy;
     [v26 enumerateAttribute:@"NSAttachment" inRange:0 options:v17 usingBlock:{0, &v22}];
     if (![v18 rowCount])
     {
@@ -1055,10 +1055,10 @@ void __83__ICAttachmentTableModel_tableFromAttributedString_managedObjectContext
   }
 }
 
-- (void)updateAfterLoadWithInlineAttachmentIdentifierMap:(id)a3
+- (void)updateAfterLoadWithInlineAttachmentIdentifierMap:(id)map
 {
-  v4 = a3;
-  v5 = [(ICAttachmentTableModel *)self table];
+  mapCopy = map;
+  table = [(ICAttachmentTableModel *)self table];
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -1067,17 +1067,17 @@ void __83__ICAttachmentTableModel_tableFromAttributedString_managedObjectContext
   v9[1] = 3221225472;
   v9[2] = __75__ICAttachmentTableModel_updateAfterLoadWithInlineAttachmentIdentifierMap___block_invoke;
   v9[3] = &unk_278197788;
-  v6 = v4;
+  v6 = mapCopy;
   v10 = v6;
   v12 = &v13;
-  v7 = v5;
+  v7 = table;
   v11 = v7;
   [v7 enumerateCellObjectsInCellSelectionContainingColumnIndices:0 rowIndices:0 copyItems:0 usingBlock:v9];
   if (*(v14 + 24) == 1)
   {
     [(ICAttachmentModel *)self setMergeableDataDirty:1];
-    v8 = [(ICAttachmentModel *)self attachment];
-    [v8 saveMergeableDataIfNeeded];
+    attachment = [(ICAttachmentModel *)self attachment];
+    [attachment saveMergeableDataIfNeeded];
   }
 
   _Block_object_dispose(&v13, 8);
@@ -1152,17 +1152,17 @@ void __75__ICAttachmentTableModel_updateAfterLoadWithInlineAttachmentIdentifierM
   }
 }
 
-- (void)removeTimestampsForReplicaID:(id)a3
+- (void)removeTimestampsForReplicaID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICAttachmentTableModel *)self table];
+  dCopy = d;
+  table = [(ICAttachmentTableModel *)self table];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__ICAttachmentTableModel_removeTimestampsForReplicaID___block_invoke;
   v7[3] = &unk_278197710;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateCellObjectsInCellSelectionContainingColumnIndices:0 rowIndices:0 copyItems:0 usingBlock:v7];
+  v8 = dCopy;
+  v6 = dCopy;
+  [table enumerateCellObjectsInCellSelectionContainingColumnIndices:0 rowIndices:0 copyItems:0 usingBlock:v7];
 
   [(ICAttachmentModel *)self setMergeableDataDirty:1];
   [(ICAttachmentTableModel *)self writeMergeableData];

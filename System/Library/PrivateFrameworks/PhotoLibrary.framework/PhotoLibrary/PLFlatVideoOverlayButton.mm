@@ -1,13 +1,13 @@
 @interface PLFlatVideoOverlayButton
-- (PLFlatVideoOverlayButton)initWithStyle:(int64_t)a3;
-- (id)_createOverlayImageWithBackgroundWhite:(double)a3 backgroundAlpha:(double)a4 glyphAlpha:(double)a5;
-- (void)_handleTap:(id)a3;
-- (void)setTarget:(id)a3 action:(SEL)a4;
+- (PLFlatVideoOverlayButton)initWithStyle:(int64_t)style;
+- (id)_createOverlayImageWithBackgroundWhite:(double)white backgroundAlpha:(double)alpha glyphAlpha:(double)glyphAlpha;
+- (void)_handleTap:(id)tap;
+- (void)setTarget:(id)target action:(SEL)action;
 @end
 
 @implementation PLFlatVideoOverlayButton
 
-- (id)_createOverlayImageWithBackgroundWhite:(double)a3 backgroundAlpha:(double)a4 glyphAlpha:(double)a5
+- (id)_createOverlayImageWithBackgroundWhite:(double)white backgroundAlpha:(double)alpha glyphAlpha:(double)glyphAlpha
 {
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v9 = [MEMORY[0x277D755B8] imageNamed:@"PLVideoOverlayBackgroundMask" inBundle:v8];
@@ -19,7 +19,7 @@
   height = v18.height;
   UIGraphicsBeginImageContextWithOptions(v18, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
-  CGContextSetGrayFillColor(CurrentContext, a3, a4);
+  CGContextSetGrayFillColor(CurrentContext, white, alpha);
   v19.origin.x = v11;
   v19.origin.y = v12;
   v19.size.width = width;
@@ -27,7 +27,7 @@
   CGContextFillRect(CurrentContext, v19);
   [v9 drawAtPoint:23 blendMode:v11 alpha:{v12, 1.0}];
   [v10 drawAtPoint:23 blendMode:v11 alpha:{v12, 1.0}];
-  [v10 drawAtPoint:0 blendMode:v11 alpha:{v12, a5}];
+  [v10 drawAtPoint:0 blendMode:v11 alpha:{v12, glyphAlpha}];
   v16 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   return v16;
@@ -47,7 +47,7 @@ uint64_t __46__PLFlatVideoOverlayButton__normalButtonImage__block_invoke(uint64_
   return result;
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
   if (objc_opt_respondsToSelector())
   {
@@ -66,23 +66,23 @@ uint64_t __46__PLFlatVideoOverlayButton__normalButtonImage__block_invoke(uint64_
   }
 }
 
-- (void)setTarget:(id)a3 action:(SEL)a4
+- (void)setTarget:(id)target action:(SEL)action
 {
-  self->_target = a3;
-  if (a4)
+  self->_target = target;
+  if (action)
   {
-    v4 = a4;
+    actionCopy = action;
   }
 
   else
   {
-    v4 = 0;
+    actionCopy = 0;
   }
 
-  self->_action = v4;
+  self->_action = actionCopy;
 }
 
-- (PLFlatVideoOverlayButton)initWithStyle:(int64_t)a3
+- (PLFlatVideoOverlayButton)initWithStyle:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = PLFlatVideoOverlayButton;
@@ -90,7 +90,7 @@ uint64_t __46__PLFlatVideoOverlayButton__normalButtonImage__block_invoke(uint64_
   v5 = v4;
   if (v4)
   {
-    v4->_style = a3;
+    v4->_style = style;
     [(PLFlatVideoOverlayButton *)v4 setImage:[(PLFlatVideoOverlayButton *)v4 _normalButtonImage] forState:0];
     [(PLFlatVideoOverlayButton *)v5 setImage:[(PLFlatVideoOverlayButton *)v5 _highlightedButtonImage] forState:1];
     [(PLFlatVideoOverlayButton *)v5 sizeToFit];

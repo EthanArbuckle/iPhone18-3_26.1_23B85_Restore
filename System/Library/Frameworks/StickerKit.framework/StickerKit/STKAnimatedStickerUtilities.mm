@@ -1,14 +1,14 @@
 @interface STKAnimatedStickerUtilities
-+ (id)downSampledHeicsDataFromData:(id)a3 maxLength:(unint64_t)a4;
++ (id)downSampledHeicsDataFromData:(id)data maxLength:(unint64_t)length;
 @end
 
 @implementation STKAnimatedStickerUtilities
 
-+ (id)downSampledHeicsDataFromData:(id)a3 maxLength:(unint64_t)a4
++ (id)downSampledHeicsDataFromData:(id)data maxLength:(unint64_t)length
 {
   v18[8] = *MEMORY[0x1E69E9840];
   v16 = 0;
-  v4 = a3;
+  dataCopy = data;
   v18[0] = 0;
   if (CMPhotoDecompressionSessionCreate() || (CFAutorelease(v18[0]), arg[0] = 0, CMPhotoDecompressionSessionCreateContainer()) || (CFAutorelease(arg[0]), CMPhotoDecompressionContainerCreateSequenceContainer()))
   {

@@ -1,18 +1,18 @@
 @interface FAChecklistCustomCellTableViewCell
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation FAChecklistCustomCellTableViewCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v43[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  specifierCopy = specifier;
   v39.receiver = self;
   v39.super_class = FAChecklistCustomCellTableViewCell;
-  [(PSTableCell *)&v39 refreshCellContentsWithSpecifier:v4];
+  [(PSTableCell *)&v39 refreshCellContentsWithSpecifier:specifierCopy];
   v5 = objc_alloc_init(MEMORY[0x277CCAB48]);
-  [v4 propertyForKey:*MEMORY[0x277D3FFA8]];
+  [specifierCopy propertyForKey:*MEMORY[0x277D3FFA8]];
   v38 = v6 = 0x277CCA000uLL;
   if (v38)
   {
@@ -36,7 +36,7 @@
   }
 
   v13 = v5;
-  v37 = [v4 propertyForKey:{*MEMORY[0x277D40160], v4}];
+  v37 = [specifierCopy propertyForKey:{*MEMORY[0x277D40160], specifierCopy}];
   v14 = objc_alloc(*(v6 + 2200));
   v40 = v8;
   v15 = [MEMORY[0x277D74300] preferredFontForTextStyle:v9];
@@ -45,44 +45,44 @@
   v17 = [v14 initWithString:v37 attributes:v16];
 
   [v13 appendAttributedString:v17];
-  v18 = [(FAChecklistCustomCellTableViewCell *)self imageView];
-  [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
+  imageView = [(FAChecklistCustomCellTableViewCell *)self imageView];
+  [imageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v19 = [(FAChecklistCustomCellTableViewCell *)self imageView];
-  v20 = [v19 topAnchor];
-  v21 = [(FAChecklistCustomCellTableViewCell *)self contentView];
-  v22 = [v21 topAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  imageView2 = [(FAChecklistCustomCellTableViewCell *)self imageView];
+  topAnchor = [imageView2 topAnchor];
+  contentView = [(FAChecklistCustomCellTableViewCell *)self contentView];
+  topAnchor2 = [contentView topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v23 setActive:1];
 
-  v24 = [(FAChecklistCustomCellTableViewCell *)self imageView];
-  [v24 setContentMode:9];
+  imageView3 = [(FAChecklistCustomCellTableViewCell *)self imageView];
+  [imageView3 setContentMode:9];
 
-  v25 = [(FAChecklistCustomCellTableViewCell *)self imageView];
-  [v25 setContentMode:1];
+  imageView4 = [(FAChecklistCustomCellTableViewCell *)self imageView];
+  [imageView4 setContentMode:1];
 
-  v26 = [(FAChecklistCustomCellTableViewCell *)self detailTextLabel];
-  [v26 setAttributedText:v13];
+  detailTextLabel = [(FAChecklistCustomCellTableViewCell *)self detailTextLabel];
+  [detailTextLabel setAttributedText:v13];
 
-  v27 = [(FAChecklistCustomCellTableViewCell *)self detailTextLabel];
-  [v27 setLineBreakMode:0];
+  detailTextLabel2 = [(FAChecklistCustomCellTableViewCell *)self detailTextLabel];
+  [detailTextLabel2 setLineBreakMode:0];
 
-  v28 = [(FAChecklistCustomCellTableViewCell *)self detailTextLabel];
-  [v28 setNumberOfLines:0];
+  detailTextLabel3 = [(FAChecklistCustomCellTableViewCell *)self detailTextLabel];
+  [detailTextLabel3 setNumberOfLines:0];
 
-  v29 = [(FAChecklistCustomCellTableViewCell *)self textLabel];
+  textLabel = [(FAChecklistCustomCellTableViewCell *)self textLabel];
   v30 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
-  [v29 setFont:v30];
+  [textLabel setFont:v30];
 
-  v31 = [(FAChecklistCustomCellTableViewCell *)self textLabel];
+  textLabel2 = [(FAChecklistCustomCellTableViewCell *)self textLabel];
   v32 = [v36 propertyForKey:*MEMORY[0x277D40170]];
-  [v31 setText:v32];
+  [textLabel2 setText:v32];
 
-  v33 = [(FAChecklistCustomCellTableViewCell *)self textLabel];
-  [v33 setLineBreakMode:0];
+  textLabel3 = [(FAChecklistCustomCellTableViewCell *)self textLabel];
+  [textLabel3 setLineBreakMode:0];
 
-  v34 = [(FAChecklistCustomCellTableViewCell *)self textLabel];
-  [v34 setNumberOfLines:0];
+  textLabel4 = [(FAChecklistCustomCellTableViewCell *)self textLabel];
+  [textLabel4 setNumberOfLines:0];
 
   [(FAChecklistCustomCellTableViewCell *)self setNeedsLayout];
   v35 = *MEMORY[0x277D85DE8];

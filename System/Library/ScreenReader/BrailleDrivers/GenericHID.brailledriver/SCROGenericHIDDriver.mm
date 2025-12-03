@@ -1,7 +1,7 @@
 @interface SCROGenericHIDDriver
-- (BOOL)_HIDSetMainCells:(const char *)a3 length:(int64_t)a4;
-- (BOOL)_HIDSetMainCells_Legacy:(const char *)a3 length:(int64_t)a4;
-- (BOOL)setMainCells:(const char *)a3 length:(int64_t)a4;
+- (BOOL)_HIDSetMainCells:(const char *)cells length:(int64_t)length;
+- (BOOL)_HIDSetMainCells_Legacy:(const char *)legacy length:(int64_t)length;
+- (BOOL)setMainCells:(const char *)cells length:(int64_t)length;
 - (BOOL)unloadDriver;
 - (SCROGenericHIDDriver)init;
 - (id)_HIDGetInputEvents;
@@ -9,21 +9,21 @@
 - (id)getInputEvents;
 - (id)getRevelantHIDElementsFromRoot;
 - (id)rowSizeArray;
-- (int)_HIDLoadDriverWithIOElement:(id)a3;
+- (int)_HIDLoadDriverWithIOElement:(id)element;
 - (int)brailleInputMode;
-- (int)loadDriverWithIOElement:(id)a3;
-- (int64_t)_calculateMinRowSize:(id)a3;
+- (int)loadDriverWithIOElement:(id)element;
+- (int64_t)_calculateMinRowSize:(id)size;
 - (int64_t)_mainSizeLegacy;
 - (int64_t)mainSize;
 - (int64_t)rowSize;
-- (unsigned)_eventForGenericControl:(__IOHIDValue *)a3;
-- (unsigned)_eventForScreenReaderControl:(__IOHIDValue *)a3;
+- (unsigned)_eventForGenericControl:(__IOHIDValue *)control;
+- (unsigned)_eventForScreenReaderControl:(__IOHIDValue *)control;
 - (void)_buildRankingTable;
-- (void)_flushCells:(const char *)a3 withLength:(int64_t)a4 forElement:(__IOHIDElement *)a5;
-- (void)_parseElementsForUsages:(id)a3 intoArray:(id)a4;
+- (void)_flushCells:(const char *)cells withLength:(int64_t)length forElement:(__IOHIDElement *)element;
+- (void)_parseElementsForUsages:(id)usages intoArray:(id)array;
 - (void)_parseRowConfiguration;
 - (void)dealloc;
-- (void)setMainCellsArray:(id)a3;
+- (void)setMainCellsArray:(id)array;
 @end
 
 @implementation SCROGenericHIDDriver
@@ -87,26 +87,26 @@
   [(SCROGenericHIDDriver *)&v3 dealloc];
 }
 
-- (int)loadDriverWithIOElement:(id)a3
+- (int)loadDriverWithIOElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 transport];
+  elementCopy = element;
+  transport = [elementCopy transport];
   v6 = _SCROD_LOG();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [NSNumber numberWithUnsignedInt:v5];
+    v7 = [NSNumber numberWithUnsignedInt:transport];
     v10 = 138412546;
-    v11 = v4;
+    v11 = elementCopy;
     v12 = 2112;
     v13 = v7;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Loading IO element %@ - transport: %@", &v10, 0x16u);
   }
 
-  if (v5 == 8 || v5 == 4)
+  if (transport == 8 || transport == 4)
   {
-    if ([v4 conformsToProtocol:&OBJC_PROTOCOL___SCROIOHIDElementProtocol])
+    if ([elementCopy conformsToProtocol:&OBJC_PROTOCOL___SCROIOHIDElementProtocol])
     {
-      v8 = [(SCROGenericHIDDriver *)self _HIDLoadDriverWithIOElement:v4];
+      v8 = [(SCROGenericHIDDriver *)self _HIDLoadDriverWithIOElement:elementCopy];
     }
 
     else
@@ -325,7 +325,7 @@ LABEL_11:
   return (self->_getInputEventsIMP)();
 }
 
-- (BOOL)setMainCells:(const char *)a3 length:(int64_t)a4
+- (BOOL)setMainCells:(const char *)cells length:(int64_t)length
 {
   if (self->_setMainCellsSEL)
   {
@@ -335,34 +335,34 @@ LABEL_11:
   return (self->_setMainCellsIMP)();
 }
 
-- (int)_HIDLoadDriverWithIOElement:(id)a3
+- (int)_HIDLoadDriverWithIOElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
-  v6 = [v5 bundleIdentifier];
-  if (v6)
+  bundleIdentifier = [v5 bundleIdentifier];
+  if (bundleIdentifier)
   {
     if (self->_isDriverLoaded)
     {
       [(SCROGenericHIDDriver *)self unloadDriver];
     }
 
-    v7 = [v4 hidDevice];
-    if (v7)
+    hidDevice = [elementCopy hidDevice];
+    if (hidDevice)
     {
-      self->_hidDevice = v7;
-      device = v7;
-      v8 = IOHIDDeviceGetProperty(v7, @"DeviceUsagePairs");
-      -[SCROGenericHIDDriver setVendorId:](self, "setVendorId:", [v4 vendorId]);
-      -[SCROGenericHIDDriver setProductId:](self, "setProductId:", [v4 productId]);
+      self->_hidDevice = hidDevice;
+      device = hidDevice;
+      v8 = IOHIDDeviceGetProperty(hidDevice, @"DeviceUsagePairs");
+      -[SCROGenericHIDDriver setVendorId:](self, "setVendorId:", [elementCopy vendorId]);
+      -[SCROGenericHIDDriver setProductId:](self, "setProductId:", [elementCopy productId]);
       v9 = _SCROD_LOG();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v10 = [NSNumber numberWithUnsignedInt:[(SCROGenericHIDDriver *)self vendorId]];
         v11 = [NSNumber numberWithUnsignedInt:[(SCROGenericHIDDriver *)self productId]];
-        [v4 manufacturerName];
+        [elementCopy manufacturerName];
         v13 = v12 = self;
-        v14 = [v4 productName];
+        productName = [elementCopy productName];
         *buf = 138413058;
         v60 = v10;
         v61 = 2112;
@@ -370,7 +370,7 @@ LABEL_11:
         v63 = 2112;
         v64 = v13;
         v65 = 2112;
-        v66 = v14;
+        v66 = productName;
         _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "HID braille display: VendorID %@ and product id: %@, maker %@, product %@", buf, 0x2Au);
 
         self = v12;
@@ -385,10 +385,10 @@ LABEL_11:
       if (v16)
       {
         v17 = v16;
-        v48 = self;
-        v44 = v6;
+        selfCopy = self;
+        v44 = bundleIdentifier;
         v45 = v5;
-        v46 = v4;
+        v46 = elementCopy;
         v18 = 0;
         v19 = *v54;
         do
@@ -408,13 +408,13 @@ LABEL_11:
             {
               if ([v24 isEqual:&off_8620])
               {
-                v48->_isLegacy = 1;
+                selfCopy->_isLegacy = 1;
               }
 
               if (([v24 isEqual:&off_8620] & 1) != 0 || objc_msgSend(v24, "isEqual:", &off_8638))
               {
                 v18 = 1;
-                v48->_keyboardInputSupported = 1;
+                selfCopy->_keyboardInputSupported = 1;
               }
             }
           }
@@ -425,7 +425,7 @@ LABEL_11:
 
         while (v17);
 
-        v4 = v46;
+        elementCopy = v46;
         if (v18)
         {
           v25 = IOHIDDeviceOpen(device, 0);
@@ -445,15 +445,15 @@ LABEL_11:
 
           else
           {
-            [(SCROGenericHIDDriver *)v48 _buildRankingTable];
+            [(SCROGenericHIDDriver *)selfCopy _buildRankingTable];
             Current = CFRunLoopGetCurrent();
             IOHIDDeviceScheduleWithRunLoop(device, Current, kCFRunLoopDefaultMode);
-            IOHIDDeviceRegisterRemovalCallback(device, sub_1F60, v48);
-            IOHIDDeviceRegisterInputValueCallback(v48->_hidDevice, sub_2048, v48);
-            v48->_hidDevice = device;
+            IOHIDDeviceRegisterRemovalCallback(device, sub_1F60, selfCopy);
+            IOHIDDeviceRegisterInputValueCallback(selfCopy->_hidDevice, sub_2048, selfCopy);
+            selfCopy->_hidDevice = device;
             CFRetain(device);
-            v48->_isDriverLoaded = 1;
-            v32 = IOHIDDeviceCopyMatchingElements(v48->_hidDevice, &off_8C28, 0);
+            selfCopy->_isDriverLoaded = 1;
+            v32 = IOHIDDeviceCopyMatchingElements(selfCopy->_hidDevice, &off_8C28, 0);
             v49 = 0u;
             v50 = 0u;
             v51 = 0u;
@@ -489,7 +489,7 @@ LABEL_11:
                         _os_log_impl(&dword_0, v41, OS_LOG_TYPE_DEFAULT, "Reported back screen reader: %@", buf, 0xCu);
                       }
 
-                      IOHIDDeviceSetValue(v48->_hidDevice, v37, v40);
+                      IOHIDDeviceSetValue(selfCopy->_hidDevice, v37, v40);
                       CFRelease(v40);
                     }
                   }
@@ -501,11 +501,11 @@ LABEL_11:
               while (v34);
             }
 
-            [(SCROGenericHIDDriver *)v48 _parseRowConfiguration];
-            v48->_ioSystemFilterClient = IOHIDEventSystemClientCreate();
+            [(SCROGenericHIDDriver *)selfCopy _parseRowConfiguration];
+            selfCopy->_ioSystemFilterClient = IOHIDEventSystemClientCreate();
             CFRunLoopGetCurrent();
             IOHIDEventSystemClientScheduleWithRunLoop();
-            ioSystemFilterClient = v48->_ioSystemFilterClient;
+            ioSystemFilterClient = selfCopy->_ioSystemFilterClient;
             IOHIDEventSystemClientRegisterEventFilterCallbackWithPriority();
             v43 = _SCROD_LOG();
             if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
@@ -517,8 +517,8 @@ LABEL_11:
 
             v28 = 0;
             v5 = v45;
-            v4 = v46;
-            v6 = v44;
+            elementCopy = v46;
+            bundleIdentifier = v44;
           }
 
 LABEL_35:
@@ -570,7 +570,7 @@ LABEL_36:
   return v28;
 }
 
-- (BOOL)_HIDSetMainCells_Legacy:(const char *)a3 length:(int64_t)a4
+- (BOOL)_HIDSetMainCells_Legacy:(const char *)legacy length:(int64_t)length
 {
   v6 = IOHIDDeviceCopyMatchingElements(self->_hidDevice, &off_8C50, 0);
   v29 = 0u;
@@ -606,19 +606,19 @@ LABEL_36:
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134217984;
-              v34 = v17;
+              lengthCopy = v17;
               _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "Braille display does not support 8 dots, has maximum range of - %ld", buf, 0xCu);
             }
           }
 
-          if (IOHIDElementGetReportCount(v13) < a4)
+          if (IOHIDElementGetReportCount(v13) < length)
           {
             v19 = _SCROD_LOG();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
             {
               v20 = IOHIDElementGetReportCount(v13);
               *buf = 134218240;
-              v34 = a4;
+              lengthCopy = length;
               v35 = 2048;
               v36 = v20;
               _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "Braille display does not support writing %ld cells -- truncating to %ld", buf, 0x16u);
@@ -627,7 +627,7 @@ LABEL_36:
 
           v10 = ReportCount;
           v21 = mach_absolute_time();
-          v22 = IOHIDValueCreateWithBytes(0, v13, v21, a3, a4);
+          v22 = IOHIDValueCreateWithBytes(0, v13, v21, legacy, length);
           if (v22)
           {
             v23 = v22;
@@ -659,7 +659,7 @@ LABEL_36:
   return 1;
 }
 
-- (BOOL)_HIDSetMainCells:(const char *)a3 length:(int64_t)a4
+- (BOOL)_HIDSetMainCells:(const char *)cells length:(int64_t)length
 {
   if (self->_isLegacy)
   {
@@ -729,13 +729,13 @@ LABEL_36:
                       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
                       {
                         *buf = 134217984;
-                        v43 = v19;
+                        lengthCopy2 = v19;
                         _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "Braille display does not support 8 dots, has maximum range of - %ld", buf, 0xCu);
                       }
                     }
 
                     v21 = IOHIDElementGetReportCount(v15);
-                    v22 = self;
+                    selfCopy2 = self;
                     numberOfBrailleCells = self->_numberOfBrailleCells;
                     if (numberOfBrailleCells >= v21)
                     {
@@ -750,17 +750,17 @@ LABEL_36:
                     v25 = v24 & ~(v24 >> 63);
                     if (numberOfBrailleCells == 0x7FFFFFFFFFFFFFFFLL)
                     {
-                      v26 = v21;
+                      lengthCopy = v21;
                     }
 
                     else
                     {
-                      v26 = v25;
+                      lengthCopy = v25;
                     }
 
-                    if (a4 <= v26)
+                    if (length <= lengthCopy)
                     {
-                      v26 = a4;
+                      lengthCopy = length;
                     }
 
                     else
@@ -769,19 +769,19 @@ LABEL_36:
                       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
                       {
                         *buf = 134218240;
-                        v43 = a4;
+                        lengthCopy2 = length;
                         v44 = 2048;
-                        v45 = v26;
+                        v45 = lengthCopy;
                         _os_log_impl(&dword_0, v27, OS_LOG_TYPE_DEFAULT, "Braille display does not support writing %ld cells -- truncating to %ld", buf, 0x16u);
                       }
 
-                      a4 = v26;
-                      v22 = self;
+                      length = lengthCopy;
+                      selfCopy2 = self;
                     }
 
                     v12 = ReportCount;
-                    [(SCROGenericHIDDriver *)v22 _flushCells:a3 withLength:v26 forElement:v15];
-                    a3 += v26;
+                    [(SCROGenericHIDDriver *)selfCopy2 _flushCells:cells withLength:lengthCopy forElement:v15];
+                    cells += lengthCopy;
                   }
                 }
 
@@ -816,16 +816,16 @@ LABEL_36:
   return v3;
 }
 
-- (unsigned)_eventForScreenReaderControl:(__IOHIDValue *)a3
+- (unsigned)_eventForScreenReaderControl:(__IOHIDValue *)control
 {
-  Element = IOHIDValueGetElement(a3);
+  Element = IOHIDValueGetElement(control);
   Usage = IOHIDElementGetUsage(Element);
   if (!Usage)
   {
     return 0;
   }
 
-  if (IOHIDValueGetIntegerValue(a3) <= 0)
+  if (IOHIDValueGetIntegerValue(control) <= 0)
   {
     v6 = 6;
   }
@@ -838,9 +838,9 @@ LABEL_36:
   return v6 | (16 * Usage) | 0x3000;
 }
 
-- (unsigned)_eventForGenericControl:(__IOHIDValue *)a3
+- (unsigned)_eventForGenericControl:(__IOHIDValue *)control
 {
-  Element = IOHIDValueGetElement(a3);
+  Element = IOHIDValueGetElement(control);
   Cookie = IOHIDElementGetCookie(Element);
   if (qword_CF78 != -1)
   {
@@ -874,7 +874,7 @@ LABEL_36:
     v10 = 0x20000;
   }
 
-  if (IOHIDValueGetIntegerValue(a3) <= 0)
+  if (IOHIDValueGetIntegerValue(control) <= 0)
   {
     v12 = 6;
   }
@@ -884,8 +884,8 @@ LABEL_36:
     v12 = 65542;
   }
 
-  v13 = [v9 finalRank];
-  v14 = v12 | (16 * sub_2EEC(v13, v13, v11)) & 0xF9FFF0;
+  finalRank = [v9 finalRank];
+  v14 = v12 | (16 * sub_2EEC(finalRank, finalRank, v11)) & 0xF9FFF0;
   v15 = (v14 | ([v9 finalRank] << 24)) + v10 + 0x1000000;
 LABEL_15:
 
@@ -901,7 +901,7 @@ LABEL_15:
     self->_genericControlRanking = v3;
 
     v75 = +[NSMutableArray array];
-    v71 = self;
+    selfCopy = self;
     [(SCROGenericHIDDriver *)self getRevelantHIDElementsFromRoot];
     v87 = 0u;
     v88 = 0u;
@@ -1055,14 +1055,14 @@ LABEL_15:
     v37 = [v75 objectsAtIndexes:v32];
     v38 = [v37 mutableCopy];
 
-    v39 = [(SCROGenericHIDDriver *)v71 genericControlRankComparator];
-    [v34 sortUsingComparator:v39];
+    genericControlRankComparator = [(SCROGenericHIDDriver *)selfCopy genericControlRankComparator];
+    [v34 sortUsingComparator:genericControlRankComparator];
 
-    v40 = [(SCROGenericHIDDriver *)v71 genericControlRankComparator];
-    [v36 sortUsingComparator:v40];
+    genericControlRankComparator2 = [(SCROGenericHIDDriver *)selfCopy genericControlRankComparator];
+    [v36 sortUsingComparator:genericControlRankComparator2];
 
-    v41 = [(SCROGenericHIDDriver *)v71 genericControlRankComparator];
-    [v38 sortUsingComparator:v41];
+    genericControlRankComparator3 = [(SCROGenericHIDDriver *)selfCopy genericControlRankComparator];
+    [v38 sortUsingComparator:genericControlRankComparator3];
 
     if ([v34 count])
     {
@@ -1074,7 +1074,7 @@ LABEL_15:
         v45 = [v34 objectAtIndexedSubscript:v42];
         [v45 setFinalRank:v44 + ~v42];
 
-        v46 = v71->_genericControlRanking;
+        v46 = selfCopy->_genericControlRanking;
         v47 = [v34 objectAtIndexedSubscript:v42];
         v48 = [v34 objectAtIndexedSubscript:v42];
         v49 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v48 cookie]);
@@ -1097,7 +1097,7 @@ LABEL_15:
         v54 = [v36 objectAtIndexedSubscript:v51];
         [v54 setFinalRank:v53 + ~v51];
 
-        v55 = v71->_genericControlRanking;
+        v55 = selfCopy->_genericControlRanking;
         v56 = [v36 objectAtIndexedSubscript:v51];
         v57 = [v36 objectAtIndexedSubscript:v51];
         v58 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v57 cookie]);
@@ -1118,21 +1118,21 @@ LABEL_15:
       {
         v61 = [v38 count] + ~v59;
         v62 = [v38 objectAtIndexedSubscript:v59];
-        v63 = [v62 usage];
+        usage = [v62 usage];
 
-        if (v63 - 533 >= 5)
+        if (usage - 533 >= 5)
         {
           v64 = 0;
         }
 
         else
         {
-          v64 = v63 - 533;
+          v64 = usage - 533;
         }
 
-        if (v63 - 528 <= 4)
+        if (usage - 528 <= 4)
         {
-          v65 = v63 - 528;
+          v65 = usage - 528;
         }
 
         else
@@ -1143,7 +1143,7 @@ LABEL_15:
         v66 = [v38 objectAtIndexedSubscript:v59];
         [v66 setFinalRank:5 * (v61 / 5) + v65];
 
-        v67 = v71->_genericControlRanking;
+        v67 = selfCopy->_genericControlRanking;
         v68 = [v38 objectAtIndexedSubscript:v59];
         v69 = [v38 objectAtIndexedSubscript:v59];
         v70 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v69 cookie]);
@@ -1187,9 +1187,9 @@ LABEL_15:
         [v6 addObject:v5];
         while ([v6 count])
         {
-          v7 = [v6 firstObject];
+          firstObject = [v6 firstObject];
           [v6 removeObjectAtIndex:0];
-          v8 = IOHIDElementGetChildren(v7);
+          v8 = IOHIDElementGetChildren(firstObject);
           v24 = 0u;
           v25 = 0u;
           v26 = 0u;
@@ -1267,15 +1267,15 @@ LABEL_15:
   self->_physicalRowSize = v6;
 }
 
-- (void)_parseElementsForUsages:(id)a3 intoArray:(id)a4
+- (void)_parseElementsForUsages:(id)usages intoArray:(id)array
 {
-  v5 = a3;
-  v6 = a4;
+  usagesCopy = usages;
+  arrayCopy = array;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v22 = [v5 countByEnumeratingWithState:&v29 objects:v38 count:16];
+  v22 = [usagesCopy countByEnumeratingWithState:&v29 objects:v38 count:16];
   if (v22)
   {
     v20 = *v30;
@@ -1286,7 +1286,7 @@ LABEL_15:
       {
         if (*v30 != v20)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(usagesCopy);
         }
 
         v24 = v7;
@@ -1331,7 +1331,7 @@ LABEL_15:
               }
 
               v19 = [NSNumber numberWithUnsignedInt:IOHIDElementGetReportCount(v15)];
-              [v6 addObject:v19];
+              [arrayCopy addObject:v19];
             }
 
             v12 = [(__CFArray *)v10 countByEnumeratingWithState:&v25 objects:v35 count:16];
@@ -1344,26 +1344,26 @@ LABEL_15:
       }
 
       while ((v24 + 1) != v22);
-      v22 = [v5 countByEnumeratingWithState:&v29 objects:v38 count:16];
+      v22 = [usagesCopy countByEnumeratingWithState:&v29 objects:v38 count:16];
     }
 
     while (v22);
   }
 }
 
-- (int64_t)_calculateMinRowSize:(id)a3
+- (int64_t)_calculateMinRowSize:(id)size
 {
-  v3 = a3;
-  if ([v3 count])
+  sizeCopy = size;
+  if ([sizeCopy count])
   {
-    v4 = [v3 firstObject];
-    v5 = [v4 integerValue];
+    firstObject = [sizeCopy firstObject];
+    integerValue = [firstObject integerValue];
 
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v3;
+    v6 = sizeCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -1379,10 +1379,10 @@ LABEL_15:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v13 + 1) + 8 * v10) integerValue];
-          if (v11 < v5)
+          integerValue2 = [*(*(&v13 + 1) + 8 * v10) integerValue];
+          if (integerValue2 < integerValue)
           {
-            v5 = v11;
+            integerValue = integerValue2;
           }
 
           v10 = v10 + 1;
@@ -1398,10 +1398,10 @@ LABEL_15:
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
-  return v5;
+  return integerValue;
 }
 
 - (id)rowSizeArray
@@ -1433,11 +1433,11 @@ LABEL_15:
             objc_enumerationMutation(v4);
           }
 
-          v9 = [*(*(&v13 + 1) + 8 * i) integerValue];
+          integerValue = [*(*(&v13 + 1) + 8 * i) integerValue];
           numberOfBrailleCells = self->_numberOfBrailleCells;
-          if (v9 < numberOfBrailleCells)
+          if (integerValue < numberOfBrailleCells)
           {
-            numberOfBrailleCells = v9;
+            numberOfBrailleCells = integerValue;
           }
 
           v11 = [NSNumber numberWithInteger:numberOfBrailleCells & ~(numberOfBrailleCells >> 63)];
@@ -1479,9 +1479,9 @@ LABEL_15:
   }
 }
 
-- (void)setMainCellsArray:(id)a3
+- (void)setMainCellsArray:(id)array
 {
-  v28 = a3;
+  arrayCopy = array;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
@@ -1543,17 +1543,17 @@ LABEL_15:
                 goto LABEL_29;
               }
 
-              v11 = [v28 objectAtIndex:v4];
-              v12 = [(SCROGenericHIDDriver *)self rowSize];
+              v11 = [arrayCopy objectAtIndex:v4];
+              rowSize = [(SCROGenericHIDDriver *)self rowSize];
               ReportCount = IOHIDElementGetReportCount(v10);
-              if (v12 > ReportCount)
+              if (rowSize > ReportCount)
               {
-                v12 = ReportCount;
+                rowSize = ReportCount;
                 v14 = _SCROD_LOG();
                 if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
                 {
                   v15 = [NSNumber numberWithInteger:v4];
-                  v16 = [NSNumber numberWithInteger:v12];
+                  v16 = [NSNumber numberWithInteger:rowSize];
                   *buf = 138412546;
                   v40 = v15;
                   v41 = 2112;
@@ -1562,10 +1562,10 @@ LABEL_15:
                 }
               }
 
-              v17 = malloc_type_calloc(v12, 1uLL, 0x100004077774924uLL);
-              if (v12 >= 1)
+              v17 = malloc_type_calloc(rowSize, 1uLL, 0x100004077774924uLL);
+              if (rowSize >= 1)
               {
-                for (j = 0; j != v12; ++j)
+                for (j = 0; j != rowSize; ++j)
                 {
                   if (j >= [v11 length])
                   {
@@ -1585,7 +1585,7 @@ LABEL_15:
                 }
               }
 
-              [(SCROGenericHIDDriver *)self _flushCells:v17 withLength:v12 forElement:v10];
+              [(SCROGenericHIDDriver *)self _flushCells:v17 withLength:rowSize forElement:v10];
               free(v17);
               ++v4;
             }
@@ -1613,11 +1613,11 @@ LABEL_29:
   }
 }
 
-- (void)_flushCells:(const char *)a3 withLength:(int64_t)a4 forElement:(__IOHIDElement *)a5
+- (void)_flushCells:(const char *)cells withLength:(int64_t)length forElement:(__IOHIDElement *)element
 {
-  keys = a5;
+  keys = element;
   v9 = mach_absolute_time();
-  v11 = IOHIDValueCreateWithBytes(0, a5, v9, a3, a4);
+  v11 = IOHIDValueCreateWithBytes(0, element, v9, cells, length);
   if (v11)
   {
     v10 = CFDictionaryCreate(kCFAllocatorDefault, &keys, &v11, 1, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);

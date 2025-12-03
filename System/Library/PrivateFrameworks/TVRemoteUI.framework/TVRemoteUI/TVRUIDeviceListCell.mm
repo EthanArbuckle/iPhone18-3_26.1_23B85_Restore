@@ -1,38 +1,38 @@
 @interface TVRUIDeviceListCell
-- (TVRUIDeviceListCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (TVRUIDeviceListCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_configureViews;
 - (void)_setupConstraints;
 - (void)_updateConnectionStatus;
 - (void)_updateDeviceName;
 - (void)_updateFindMyButton;
 - (void)prepareForReuse;
-- (void)setDevice:(id)a3;
-- (void)setFindButtonTapAction:(id)a3;
-- (void)setShowSeparator:(BOOL)a3;
-- (void)setStyleProvider:(id)a3;
+- (void)setDevice:(id)device;
+- (void)setFindButtonTapAction:(id)action;
+- (void)setShowSeparator:(BOOL)separator;
+- (void)setStyleProvider:(id)provider;
 @end
 
 @implementation TVRUIDeviceListCell
 
-- (TVRUIDeviceListCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (TVRUIDeviceListCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v29.receiver = self;
   v29.super_class = TVRUIDeviceListCell;
-  v4 = [(TVRUIDeviceListCell *)&v29 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(TVRUIDeviceListCell *)&v29 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(TVRUIDeviceListCell *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(TVRUIDeviceListCell *)v4 setBackgroundColor:clearColor];
 
-    v6 = [MEMORY[0x277D75348] whiteColor];
-    [(TVRUIDeviceListCell *)v4 setTintColor:v6];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(TVRUIDeviceListCell *)v4 setTintColor:whiteColor];
 
     v7 = objc_alloc_init(MEMORY[0x277D755E8]);
     checkmarkImageView = v4->_checkmarkImageView;
     v4->_checkmarkImageView = v7;
 
-    v9 = [(TVRUIDeviceListCell *)v4 contentView];
-    [v9 addSubview:v4->_checkmarkImageView];
+    contentView = [(TVRUIDeviceListCell *)v4 contentView];
+    [contentView addSubview:v4->_checkmarkImageView];
 
     [(UIImageView *)v4->_checkmarkImageView setContentMode:4];
     [(UIImageView *)v4->_checkmarkImageView setAdjustsImageSizeForAccessibilityContentSizeCategory:1];
@@ -41,8 +41,8 @@
     modelImageView = v4->_modelImageView;
     v4->_modelImageView = v10;
 
-    v12 = [(TVRUIDeviceListCell *)v4 contentView];
-    [v12 addSubview:v4->_modelImageView];
+    contentView2 = [(TVRUIDeviceListCell *)v4 contentView];
+    [contentView2 addSubview:v4->_modelImageView];
 
     [(UIImageView *)v4->_modelImageView setContentMode:4];
     [(UIImageView *)v4->_modelImageView setAdjustsImageSizeForAccessibilityContentSizeCategory:1];
@@ -51,8 +51,8 @@
     deviceLabel = v4->_deviceLabel;
     v4->_deviceLabel = v13;
 
-    v15 = [(TVRUIDeviceListCell *)v4 contentView];
-    [v15 addSubview:v4->_deviceLabel];
+    contentView3 = [(TVRUIDeviceListCell *)v4 contentView];
+    [contentView3 addSubview:v4->_deviceLabel];
 
     [(UILabel *)v4->_deviceLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v16) = 1132068864;
@@ -61,24 +61,24 @@
     [(UILabel *)v4->_deviceLabel setContentHuggingPriority:0 forAxis:v17];
     [(UILabel *)v4->_deviceLabel setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)v4->_deviceLabel setMinimumScaleFactor:0.4];
-    v18 = [MEMORY[0x277D75230] filledButtonConfiguration];
-    [v18 setImagePlacement:2];
+    filledButtonConfiguration = [MEMORY[0x277D75230] filledButtonConfiguration];
+    [filledButtonConfiguration setImagePlacement:2];
     v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v20 = [v19 localizedStringForKey:@"TVRemoteFindButtonTitle" value:&stru_287E6AEF8 table:@"Localizable"];
-    [v18 setTitle:v20];
+    [filledButtonConfiguration setTitle:v20];
 
-    [v18 setCornerStyle:4];
-    [v18 setButtonSize:1];
-    [v18 setTitleLineBreakMode:4];
-    v21 = [MEMORY[0x277D75348] clearColor];
-    [v18 setBaseBackgroundColor:v21];
+    [filledButtonConfiguration setCornerStyle:4];
+    [filledButtonConfiguration setButtonSize:1];
+    [filledButtonConfiguration setTitleLineBreakMode:4];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [filledButtonConfiguration setBaseBackgroundColor:clearColor2];
 
-    v22 = [MEMORY[0x277D75220] buttonWithConfiguration:v18 primaryAction:0];
+    v22 = [MEMORY[0x277D75220] buttonWithConfiguration:filledButtonConfiguration primaryAction:0];
     findMyButton = v4->_findMyButton;
     v4->_findMyButton = v22;
 
-    v24 = [(TVRUIDeviceListCell *)v4 contentView];
-    [v24 addSubview:v4->_findMyButton];
+    contentView4 = [(TVRUIDeviceListCell *)v4 contentView];
+    [contentView4 addSubview:v4->_findMyButton];
 
     [(UIButton *)v4->_findMyButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIButton *)v4->_findMyButton setHidden:1];
@@ -87,8 +87,8 @@
     separator = v4->_separator;
     v4->_separator = v25;
 
-    v27 = [(TVRUIDeviceListCell *)v4 contentView];
-    [v27 addSubview:v4->_separator];
+    contentView5 = [(TVRUIDeviceListCell *)v4 contentView];
+    [contentView5 addSubview:v4->_separator];
 
     [(UIView *)v4->_separator setTranslatesAutoresizingMaskIntoConstraints:0];
     v4->_showSeparator = 1;
@@ -105,80 +105,80 @@
   [(TVRUIDeviceListCell *)self setFindButtonTapAction:0];
 }
 
-- (void)setStyleProvider:(id)a3
+- (void)setStyleProvider:(id)provider
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_styleProvider != v5)
+  providerCopy = provider;
+  if (self->_styleProvider != providerCopy)
   {
     v6 = _TVRUIDevicePickerLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v29 = v5;
+      v29 = providerCopy;
       _os_log_impl(&dword_26CFEB000, v6, OS_LOG_TYPE_DEFAULT, "Setting new styleProvider: %@", buf, 0xCu);
     }
 
-    objc_storeStrong(&self->_styleProvider, a3);
+    objc_storeStrong(&self->_styleProvider, provider);
     v7 = _UISolariumEnabled();
-    v8 = [(TVRUIDeviceListCell *)self findMyButton];
-    v9 = [v8 configuration];
+    findMyButton = [(TVRUIDeviceListCell *)self findMyButton];
+    configuration = [findMyButton configuration];
 
-    v10 = [(TVRUIDeviceListCell *)self styleProvider];
-    v11 = v10;
+    styleProvider = [(TVRUIDeviceListCell *)self styleProvider];
+    v11 = styleProvider;
     if (v7)
     {
-      [v10 solariumLightButtonBackgroundColor];
+      [styleProvider solariumLightButtonBackgroundColor];
     }
 
     else
     {
-      [v10 buttonBackgroundColor];
+      [styleProvider buttonBackgroundColor];
     }
     v12 = ;
-    [v9 setBaseBackgroundColor:v12];
+    [configuration setBaseBackgroundColor:v12];
 
-    v13 = [(TVRUIDeviceListCell *)self styleProvider];
-    v14 = [v13 tvRemoteImage];
-    [v9 setImage:v14];
+    styleProvider2 = [(TVRUIDeviceListCell *)self styleProvider];
+    tvRemoteImage = [styleProvider2 tvRemoteImage];
+    [configuration setImage:tvRemoteImage];
 
-    [v9 setImagePadding:10.0];
+    [configuration setImagePadding:10.0];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __40__TVRUIDeviceListCell_setStyleProvider___block_invoke;
     v27[3] = &unk_279D88740;
     v27[4] = self;
-    [v9 setTitleTextAttributesTransformer:v27];
-    v15 = [(TVRUIDeviceListCell *)self findMyButton];
-    [v15 setConfiguration:v9];
+    [configuration setTitleTextAttributesTransformer:v27];
+    findMyButton2 = [(TVRUIDeviceListCell *)self findMyButton];
+    [findMyButton2 setConfiguration:configuration];
 
-    v16 = [(TVRUIDeviceListCell *)self styleProvider];
-    v17 = [v16 cellSeparatorBackgroundColor];
-    v18 = [(TVRUIDeviceListCell *)self separator];
-    [v18 setBackgroundColor:v17];
+    styleProvider3 = [(TVRUIDeviceListCell *)self styleProvider];
+    cellSeparatorBackgroundColor = [styleProvider3 cellSeparatorBackgroundColor];
+    separator = [(TVRUIDeviceListCell *)self separator];
+    [separator setBackgroundColor:cellSeparatorBackgroundColor];
 
     if (_UISolariumEnabled())
     {
-      v19 = [MEMORY[0x277D75348] clearColor];
-      [(TVRUIDeviceListCell *)self setBackgroundColor:v19];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(TVRUIDeviceListCell *)self setBackgroundColor:clearColor];
     }
 
     else
     {
-      v19 = [(TVRUIDeviceListCell *)self styleProvider];
-      v20 = [v19 cellBackgroundColor];
-      [(TVRUIDeviceListCell *)self setBackgroundColor:v20];
+      clearColor = [(TVRUIDeviceListCell *)self styleProvider];
+      cellBackgroundColor = [clearColor cellBackgroundColor];
+      [(TVRUIDeviceListCell *)self setBackgroundColor:cellBackgroundColor];
     }
 
-    v21 = [(TVRUIDeviceListCell *)self styleProvider];
-    v22 = [v21 fontForDeviceListRow];
-    v23 = [(TVRUIDeviceListCell *)self deviceLabel];
-    [v23 setFont:v22];
+    styleProvider4 = [(TVRUIDeviceListCell *)self styleProvider];
+    fontForDeviceListRow = [styleProvider4 fontForDeviceListRow];
+    deviceLabel = [(TVRUIDeviceListCell *)self deviceLabel];
+    [deviceLabel setFont:fontForDeviceListRow];
 
-    v24 = [(TVRUIDeviceListCell *)self styleProvider];
-    v25 = [v24 checkmarkImage];
-    v26 = [(TVRUIDeviceListCell *)self checkmarkImageView];
-    [v26 setImage:v25];
+    styleProvider5 = [(TVRUIDeviceListCell *)self styleProvider];
+    checkmarkImage = [styleProvider5 checkmarkImage];
+    checkmarkImageView = [(TVRUIDeviceListCell *)self checkmarkImageView];
+    [checkmarkImageView setImage:checkmarkImage];
 
     [(TVRUIDeviceListCell *)self _setupConstraints];
   }
@@ -194,55 +194,55 @@ id __40__TVRUIDeviceListCell_setStyleProvider___block_invoke(uint64_t a1, void *
   return v3;
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_device != v5)
+  deviceCopy = device;
+  v6 = deviceCopy;
+  if (self->_device != deviceCopy)
   {
-    objc_storeStrong(&self->_device, a3);
+    objc_storeStrong(&self->_device, device);
     [(TVRUIDeviceListCell *)self _configureViews];
-    v5 = v6;
+    deviceCopy = v6;
   }
 
-  if (v5)
+  if (deviceCopy)
   {
     [(TVRUIDeviceListCell *)self _updateConnectionStatus];
     [(TVRUIDeviceListCell *)self _updateDeviceName];
-    v5 = v6;
+    deviceCopy = v6;
   }
 }
 
-- (void)setShowSeparator:(BOOL)a3
+- (void)setShowSeparator:(BOOL)separator
 {
-  if (self->_showSeparator != a3)
+  if (self->_showSeparator != separator)
   {
-    v4 = a3;
-    self->_showSeparator = a3;
-    v5 = [(TVRUIDeviceListCell *)self separator];
-    [v5 setHidden:!v4];
+    separatorCopy = separator;
+    self->_showSeparator = separator;
+    separator = [(TVRUIDeviceListCell *)self separator];
+    [separator setHidden:!separatorCopy];
   }
 }
 
-- (void)setFindButtonTapAction:(id)a3
+- (void)setFindButtonTapAction:(id)action
 {
-  v5 = a3;
-  if (self->_findButtonTapAction != v5)
+  actionCopy = action;
+  if (self->_findButtonTapAction != actionCopy)
   {
-    v8 = v5;
-    v6 = [(TVRUIDeviceListCell *)self findMyButton];
-    v7 = v6;
+    v8 = actionCopy;
+    findMyButton = [(TVRUIDeviceListCell *)self findMyButton];
+    v7 = findMyButton;
     if (v8)
     {
-      [v6 addAction:v8 forControlEvents:64];
+      [findMyButton addAction:v8 forControlEvents:64];
     }
 
     else
     {
-      [v6 removeAction:self->_findButtonTapAction forControlEvents:64];
+      [findMyButton removeAction:self->_findButtonTapAction forControlEvents:64];
     }
 
-    objc_storeStrong(&self->_findButtonTapAction, a3);
+    objc_storeStrong(&self->_findButtonTapAction, action);
   }
 
   MEMORY[0x2821F96F8]();
@@ -250,19 +250,19 @@ id __40__TVRUIDeviceListCell_setStyleProvider___block_invoke(uint64_t a1, void *
 
 - (void)_configureViews
 {
-  v3 = [(TVRUIDeviceListCell *)self device];
+  device = [(TVRUIDeviceListCell *)self device];
 
-  if (v3)
+  if (device)
   {
     [(TVRUIDeviceListCell *)self _updateDeviceName];
-    v4 = [(TVRUIDeviceListCell *)self device];
-    v8 = [v4 model];
+    device2 = [(TVRUIDeviceListCell *)self device];
+    model = [device2 model];
 
-    v5 = [(TVRUIDeviceListCell *)self styleProvider];
-    v6 = [v5 devicePickerIconForDeviceModel:v8];
+    styleProvider = [(TVRUIDeviceListCell *)self styleProvider];
+    v6 = [styleProvider devicePickerIconForDeviceModel:model];
 
-    v7 = [(TVRUIDeviceListCell *)self modelImageView];
-    [v7 setImage:v6];
+    modelImageView = [(TVRUIDeviceListCell *)self modelImageView];
+    [modelImageView setImage:v6];
 
     [(TVRUIDeviceListCell *)self _updateFindMyButton];
   }
@@ -271,21 +271,21 @@ id __40__TVRUIDeviceListCell_setStyleProvider___block_invoke(uint64_t a1, void *
 - (void)_updateDeviceName
 {
   v3 = +[TVRUIFeatures isPickerDebugUIEnabled];
-  v4 = [(TVRUIDeviceListCell *)self device];
-  v5 = v4;
+  device = [(TVRUIDeviceListCell *)self device];
+  v5 = device;
   if (v3)
   {
-    [v4 debugName];
+    [device debugName];
   }
 
   else
   {
-    [v4 name];
+    [device name];
   }
   v7 = ;
 
-  v6 = [(TVRUIDeviceListCell *)self deviceLabel];
-  [v6 setText:v7];
+  deviceLabel = [(TVRUIDeviceListCell *)self deviceLabel];
+  [deviceLabel setText:v7];
 }
 
 - (void)_setupConstraints
@@ -312,113 +312,113 @@ id __40__TVRUIDeviceListCell_setStyleProvider___block_invoke(uint64_t a1, void *
     v5 = 0.0;
   }
 
-  v6 = [(TVRUIDeviceListCell *)self checkmarkImageView];
-  v7 = [v6 leadingAnchor];
-  v8 = [(TVRUIDeviceListCell *)self contentView];
-  v9 = [v8 leadingAnchor];
-  v10 = [(TVRUIDeviceListCell *)self styleProvider];
-  [v10 touchpadInsets];
-  v12 = [v7 constraintEqualToAnchor:v9 constant:v5 + v11];
+  checkmarkImageView = [(TVRUIDeviceListCell *)self checkmarkImageView];
+  leadingAnchor = [checkmarkImageView leadingAnchor];
+  contentView = [(TVRUIDeviceListCell *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
+  styleProvider = [(TVRUIDeviceListCell *)self styleProvider];
+  [styleProvider touchpadInsets];
+  v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v5 + v11];
   [v99 addObject:v12];
 
-  v13 = [(TVRUIDeviceListCell *)self checkmarkImageView];
-  v14 = [v13 centerYAnchor];
-  v15 = [(TVRUIDeviceListCell *)self contentView];
-  v16 = [v15 centerYAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  checkmarkImageView2 = [(TVRUIDeviceListCell *)self checkmarkImageView];
+  centerYAnchor = [checkmarkImageView2 centerYAnchor];
+  contentView2 = [(TVRUIDeviceListCell *)self contentView];
+  centerYAnchor2 = [contentView2 centerYAnchor];
+  v17 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v99 addObject:v17];
 
-  v18 = [(TVRUIDeviceListCell *)self checkmarkImageView];
-  v19 = [v18 widthAnchor];
-  v20 = [v19 constraintEqualToConstant:25.0];
+  checkmarkImageView3 = [(TVRUIDeviceListCell *)self checkmarkImageView];
+  widthAnchor = [checkmarkImageView3 widthAnchor];
+  v20 = [widthAnchor constraintEqualToConstant:25.0];
   [v99 addObject:v20];
 
-  v21 = [(TVRUIDeviceListCell *)self modelImageView];
-  v22 = [v21 leadingAnchor];
-  v23 = [(TVRUIDeviceListCell *)self checkmarkImageView];
-  v24 = [v23 trailingAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24 constant:v4];
+  modelImageView = [(TVRUIDeviceListCell *)self modelImageView];
+  leadingAnchor3 = [modelImageView leadingAnchor];
+  checkmarkImageView4 = [(TVRUIDeviceListCell *)self checkmarkImageView];
+  trailingAnchor = [checkmarkImageView4 trailingAnchor];
+  v25 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:v4];
   [v99 addObject:v25];
 
-  v26 = [(TVRUIDeviceListCell *)self modelImageView];
-  v27 = [v26 centerYAnchor];
-  v28 = [(TVRUIDeviceListCell *)self contentView];
-  v29 = [v28 centerYAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29];
+  modelImageView2 = [(TVRUIDeviceListCell *)self modelImageView];
+  centerYAnchor3 = [modelImageView2 centerYAnchor];
+  contentView3 = [(TVRUIDeviceListCell *)self contentView];
+  centerYAnchor4 = [contentView3 centerYAnchor];
+  v30 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   [v99 addObject:v30];
 
-  v31 = [(TVRUIDeviceListCell *)self modelImageView];
-  v32 = [v31 widthAnchor];
-  v33 = [v32 constraintEqualToConstant:44.0];
+  modelImageView3 = [(TVRUIDeviceListCell *)self modelImageView];
+  widthAnchor2 = [modelImageView3 widthAnchor];
+  v33 = [widthAnchor2 constraintEqualToConstant:44.0];
   [v99 addObject:v33];
 
-  v34 = [(TVRUIDeviceListCell *)self deviceLabel];
-  v35 = [v34 leadingAnchor];
-  v36 = [(TVRUIDeviceListCell *)self modelImageView];
-  v37 = [v36 trailingAnchor];
-  v38 = [v35 constraintEqualToAnchor:v37 constant:v4];
+  deviceLabel = [(TVRUIDeviceListCell *)self deviceLabel];
+  leadingAnchor4 = [deviceLabel leadingAnchor];
+  modelImageView4 = [(TVRUIDeviceListCell *)self modelImageView];
+  trailingAnchor2 = [modelImageView4 trailingAnchor];
+  v38 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor2 constant:v4];
   [v99 addObject:v38];
 
-  v39 = [(TVRUIDeviceListCell *)self deviceLabel];
-  v40 = [v39 centerYAnchor];
-  v41 = [(TVRUIDeviceListCell *)self contentView];
-  v42 = [v41 centerYAnchor];
-  v43 = [v40 constraintEqualToAnchor:v42];
+  deviceLabel2 = [(TVRUIDeviceListCell *)self deviceLabel];
+  centerYAnchor5 = [deviceLabel2 centerYAnchor];
+  contentView4 = [(TVRUIDeviceListCell *)self contentView];
+  centerYAnchor6 = [contentView4 centerYAnchor];
+  v43 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   [v99 addObject:v43];
 
-  v44 = [(TVRUIDeviceListCell *)self findMyButton];
-  v45 = [v44 trailingAnchor];
-  v46 = [(TVRUIDeviceListCell *)self contentView];
-  v47 = [v46 trailingAnchor];
-  v48 = [(TVRUIDeviceListCell *)self styleProvider];
-  [v48 touchpadInsets];
-  v50 = [v45 constraintEqualToAnchor:v47 constant:-(v5 + v49)];
+  findMyButton = [(TVRUIDeviceListCell *)self findMyButton];
+  trailingAnchor3 = [findMyButton trailingAnchor];
+  contentView5 = [(TVRUIDeviceListCell *)self contentView];
+  trailingAnchor4 = [contentView5 trailingAnchor];
+  styleProvider2 = [(TVRUIDeviceListCell *)self styleProvider];
+  [styleProvider2 touchpadInsets];
+  v50 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-(v5 + v49)];
   [v99 addObject:v50];
 
-  v51 = [(TVRUIDeviceListCell *)self findMyButton];
-  v52 = [v51 centerYAnchor];
-  v53 = [(TVRUIDeviceListCell *)self contentView];
-  v54 = [v53 centerYAnchor];
-  v55 = [v52 constraintEqualToAnchor:v54];
+  findMyButton2 = [(TVRUIDeviceListCell *)self findMyButton];
+  centerYAnchor7 = [findMyButton2 centerYAnchor];
+  contentView6 = [(TVRUIDeviceListCell *)self contentView];
+  centerYAnchor8 = [contentView6 centerYAnchor];
+  v55 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
   [v99 addObject:v55];
 
-  v56 = [(TVRUIDeviceListCell *)self findMyButton];
-  v57 = [v56 topAnchor];
-  v58 = [(TVRUIDeviceListCell *)self contentView];
-  v59 = [v58 topAnchor];
-  v60 = [v57 constraintGreaterThanOrEqualToAnchor:v59 constant:5.0];
+  findMyButton3 = [(TVRUIDeviceListCell *)self findMyButton];
+  topAnchor = [findMyButton3 topAnchor];
+  contentView7 = [(TVRUIDeviceListCell *)self contentView];
+  topAnchor2 = [contentView7 topAnchor];
+  v60 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:5.0];
   [v99 addObject:v60];
 
-  v61 = [(TVRUIDeviceListCell *)self findMyButton];
-  v62 = [v61 bottomAnchor];
-  v63 = [(TVRUIDeviceListCell *)self contentView];
-  v64 = [v63 bottomAnchor];
-  v65 = [v62 constraintLessThanOrEqualToAnchor:v64 constant:-5.0];
+  findMyButton4 = [(TVRUIDeviceListCell *)self findMyButton];
+  bottomAnchor = [findMyButton4 bottomAnchor];
+  contentView8 = [(TVRUIDeviceListCell *)self contentView];
+  bottomAnchor2 = [contentView8 bottomAnchor];
+  v65 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:-5.0];
   [v99 addObject:v65];
 
-  v66 = [(TVRUIDeviceListCell *)self deviceLabel];
-  v67 = [v66 trailingAnchor];
-  v68 = [(TVRUIDeviceListCell *)self findMyButton];
-  v69 = [v68 leadingAnchor];
+  deviceLabel3 = [(TVRUIDeviceListCell *)self deviceLabel];
+  trailingAnchor5 = [deviceLabel3 trailingAnchor];
+  findMyButton5 = [(TVRUIDeviceListCell *)self findMyButton];
+  leadingAnchor5 = [findMyButton5 leadingAnchor];
   v70 = -v4;
-  v71 = [v67 constraintLessThanOrEqualToAnchor:v69 constant:v70];
+  v71 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:leadingAnchor5 constant:v70];
   deviceLabelTrailingFindMyButtonConstraint = self->_deviceLabelTrailingFindMyButtonConstraint;
   self->_deviceLabelTrailingFindMyButtonConstraint = v71;
 
-  v73 = [(TVRUIDeviceListCell *)self deviceLabel];
-  v74 = [v73 trailingAnchor];
-  v75 = [(TVRUIDeviceListCell *)self contentView];
-  v76 = [v75 trailingAnchor];
-  v77 = [v74 constraintLessThanOrEqualToAnchor:v76 constant:v70];
+  deviceLabel4 = [(TVRUIDeviceListCell *)self deviceLabel];
+  trailingAnchor6 = [deviceLabel4 trailingAnchor];
+  contentView9 = [(TVRUIDeviceListCell *)self contentView];
+  trailingAnchor7 = [contentView9 trailingAnchor];
+  v77 = [trailingAnchor6 constraintLessThanOrEqualToAnchor:trailingAnchor7 constant:v70];
   deviceLabelTrailingContentViewConstraint = self->_deviceLabelTrailingContentViewConstraint;
   self->_deviceLabelTrailingContentViewConstraint = v77;
 
   [v99 addObject:self->_deviceLabelTrailingContentViewConstraint];
   [v99 addObject:self->_deviceLabelTrailingFindMyButtonConstraint];
-  v79 = [(TVRUIDeviceListCell *)self findMyButton];
-  LODWORD(v74) = [v79 isHidden];
+  findMyButton6 = [(TVRUIDeviceListCell *)self findMyButton];
+  LODWORD(trailingAnchor6) = [findMyButton6 isHidden];
 
-  if (v74)
+  if (trailingAnchor6)
   {
     [(TVRUIDeviceListCell *)self deviceLabelTrailingContentViewConstraint];
   }
@@ -430,30 +430,30 @@ id __40__TVRUIDeviceListCell_setStyleProvider___block_invoke(uint64_t a1, void *
   v80 = ;
   [v80 setActive:0];
 
-  v81 = [(TVRUIDeviceListCell *)self separator];
-  v82 = [v81 bottomAnchor];
-  v83 = [(TVRUIDeviceListCell *)self contentView];
-  v84 = [v83 bottomAnchor];
-  v85 = [v82 constraintEqualToAnchor:v84];
+  separator = [(TVRUIDeviceListCell *)self separator];
+  bottomAnchor3 = [separator bottomAnchor];
+  contentView10 = [(TVRUIDeviceListCell *)self contentView];
+  bottomAnchor4 = [contentView10 bottomAnchor];
+  v85 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   [v99 addObject:v85];
 
-  v86 = [(TVRUIDeviceListCell *)self separator];
-  v87 = [v86 leadingAnchor];
-  v88 = [(TVRUIDeviceListCell *)self modelImageView];
-  v89 = [v88 leadingAnchor];
-  v90 = [v87 constraintEqualToAnchor:v89];
+  separator2 = [(TVRUIDeviceListCell *)self separator];
+  leadingAnchor6 = [separator2 leadingAnchor];
+  modelImageView5 = [(TVRUIDeviceListCell *)self modelImageView];
+  leadingAnchor7 = [modelImageView5 leadingAnchor];
+  v90 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
   [v99 addObject:v90];
 
-  v91 = [(TVRUIDeviceListCell *)self separator];
-  v92 = [v91 trailingAnchor];
-  v93 = [(TVRUIDeviceListCell *)self findMyButton];
-  v94 = [v93 trailingAnchor];
-  v95 = [v92 constraintEqualToAnchor:v94];
+  separator3 = [(TVRUIDeviceListCell *)self separator];
+  trailingAnchor8 = [separator3 trailingAnchor];
+  findMyButton7 = [(TVRUIDeviceListCell *)self findMyButton];
+  trailingAnchor9 = [findMyButton7 trailingAnchor];
+  v95 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9];
   [v99 addObject:v95];
 
-  v96 = [(TVRUIDeviceListCell *)self separator];
-  v97 = [v96 heightAnchor];
-  v98 = [v97 constraintEqualToConstant:1.0];
+  separator4 = [(TVRUIDeviceListCell *)self separator];
+  heightAnchor = [separator4 heightAnchor];
+  v98 = [heightAnchor constraintEqualToConstant:1.0];
   [v99 addObject:v98];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v99];
@@ -461,36 +461,36 @@ id __40__TVRUIDeviceListCell_setStyleProvider___block_invoke(uint64_t a1, void *
 
 - (void)_updateConnectionStatus
 {
-  v3 = [(TVRUIDeviceListCell *)self device];
-  v4 = [v3 isConnected];
+  device = [(TVRUIDeviceListCell *)self device];
+  isConnected = [device isConnected];
 
-  v5 = [(TVRUIDeviceListCell *)self styleProvider];
-  v6 = v5;
-  if (v4)
+  styleProvider = [(TVRUIDeviceListCell *)self styleProvider];
+  v6 = styleProvider;
+  if (isConnected)
   {
-    v7 = [v5 colorForConnectedDevice];
-    v8 = [(TVRUIDeviceListCell *)self deviceLabel];
-    [v8 setTextColor:v7];
+    colorForConnectedDevice = [styleProvider colorForConnectedDevice];
+    deviceLabel = [(TVRUIDeviceListCell *)self deviceLabel];
+    [deviceLabel setTextColor:colorForConnectedDevice];
 
-    v9 = [(TVRUIDeviceListCell *)self styleProvider];
-    [v9 colorForConnectedDevice];
+    styleProvider2 = [(TVRUIDeviceListCell *)self styleProvider];
+    [styleProvider2 colorForConnectedDevice];
   }
 
   else
   {
-    v10 = [v5 colorForDisconnectedDevice];
-    v11 = [(TVRUIDeviceListCell *)self deviceLabel];
-    [v11 setTextColor:v10];
+    colorForDisconnectedDevice = [styleProvider colorForDisconnectedDevice];
+    deviceLabel2 = [(TVRUIDeviceListCell *)self deviceLabel];
+    [deviceLabel2 setTextColor:colorForDisconnectedDevice];
 
-    v9 = [(TVRUIDeviceListCell *)self styleProvider];
-    [v9 colorForDisconnectedDevice];
+    styleProvider2 = [(TVRUIDeviceListCell *)self styleProvider];
+    [styleProvider2 colorForDisconnectedDevice];
   }
   v12 = ;
-  v13 = [(TVRUIDeviceListCell *)self modelImageView];
-  [v13 setTintColor:v12];
+  modelImageView = [(TVRUIDeviceListCell *)self modelImageView];
+  [modelImageView setTintColor:v12];
 
-  v14 = [(TVRUIDeviceListCell *)self checkmarkImageView];
-  [v14 setHidden:v4 ^ 1u];
+  checkmarkImageView = [(TVRUIDeviceListCell *)self checkmarkImageView];
+  [checkmarkImageView setHidden:isConnected ^ 1u];
 }
 
 - (void)_updateFindMyButton
@@ -499,18 +499,18 @@ id __40__TVRUIDeviceListCell_setStyleProvider___block_invoke(uint64_t a1, void *
   v3 = _TVRUIDevicePickerLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(TVRUIDeviceListCell *)self device];
-    v5 = [v4 name];
-    v6 = [(TVRUIDeviceListCell *)self device];
-    v7 = [v6 supportsFindMyRemote];
+    device = [(TVRUIDeviceListCell *)self device];
+    name = [device name];
+    device2 = [(TVRUIDeviceListCell *)self device];
+    supportsFindMyRemote = [device2 supportsFindMyRemote];
     v8 = "no";
-    if (v7)
+    if (supportsFindMyRemote)
     {
       v8 = "yes";
     }
 
     v17 = 138543618;
-    v18 = v5;
+    v18 = name;
     v19 = 2080;
     v20 = v8;
     _os_log_impl(&dword_26CFEB000, v3, OS_LOG_TYPE_DEFAULT, "device - %{public}@ supportsFindMy: %s", &v17, 0x16u);
@@ -518,20 +518,20 @@ id __40__TVRUIDeviceListCell_setStyleProvider___block_invoke(uint64_t a1, void *
 
   if (GestaltGetDeviceClass() != 3)
   {
-    v9 = [(TVRUIDeviceListCell *)self device];
-    v10 = [v9 supportsFindMyRemote];
-    v11 = [(TVRUIDeviceListCell *)self deviceLabelTrailingContentViewConstraint];
-    [v11 setActive:v10 ^ 1u];
+    device3 = [(TVRUIDeviceListCell *)self device];
+    supportsFindMyRemote2 = [device3 supportsFindMyRemote];
+    deviceLabelTrailingContentViewConstraint = [(TVRUIDeviceListCell *)self deviceLabelTrailingContentViewConstraint];
+    [deviceLabelTrailingContentViewConstraint setActive:supportsFindMyRemote2 ^ 1u];
 
-    v12 = [(TVRUIDeviceListCell *)self device];
-    v13 = [v12 supportsFindMyRemote];
-    v14 = [(TVRUIDeviceListCell *)self deviceLabelTrailingFindMyButtonConstraint];
-    [v14 setActive:v13];
+    device4 = [(TVRUIDeviceListCell *)self device];
+    supportsFindMyRemote3 = [device4 supportsFindMyRemote];
+    deviceLabelTrailingFindMyButtonConstraint = [(TVRUIDeviceListCell *)self deviceLabelTrailingFindMyButtonConstraint];
+    [deviceLabelTrailingFindMyButtonConstraint setActive:supportsFindMyRemote3];
 
-    v15 = [(TVRUIDeviceListCell *)self device];
-    LODWORD(v13) = [v15 supportsFindMyRemote];
-    v16 = [(TVRUIDeviceListCell *)self findMyButton];
-    [v16 setHidden:v13 ^ 1];
+    device5 = [(TVRUIDeviceListCell *)self device];
+    LODWORD(supportsFindMyRemote3) = [device5 supportsFindMyRemote];
+    findMyButton = [(TVRUIDeviceListCell *)self findMyButton];
+    [findMyButton setHidden:supportsFindMyRemote3 ^ 1];
   }
 }
 

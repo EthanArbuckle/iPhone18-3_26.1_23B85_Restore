@@ -5,19 +5,19 @@
 - (NSString)derivedDefaultRole;
 - (NSString)pf_defaultRole;
 - (NSString)rawSpecifiedDefaultRole;
-- (_PFRoleManifest)initWithInfoDictionary:(id)a3;
-- (_PFRoleManifest)initWithPropertyList:(id)a3;
-- (id)objectForKey:(id)a3 ofClass:(Class)a4;
+- (_PFRoleManifest)initWithInfoDictionary:(id)dictionary;
+- (_PFRoleManifest)initWithPropertyList:(id)list;
+- (id)objectForKey:(id)key ofClass:(Class)class;
 - (void)_hydrate;
 @end
 
 @implementation _PFRoleManifest
 
-- (_PFRoleManifest)initWithPropertyList:(id)a3
+- (_PFRoleManifest)initWithPropertyList:(id)list
 {
-  v5 = a3;
+  listCopy = list;
   NSClassFromString(&cfstr_Lspropertylist.isa);
-  if (!v5)
+  if (!listCopy)
   {
     [_PFRoleManifest initWithPropertyList:a2];
   }
@@ -33,7 +33,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_propertyList, v5);
+    objc_storeWeak(&v6->_propertyList, listCopy);
     v8 = *MEMORY[0x1E695E4F0];
     v9 = objc_opt_self();
     v10 = [(_PFRoleManifest *)v7 objectForKey:v8 ofClass:v9];
@@ -56,11 +56,11 @@ LABEL_8:
   return v12;
 }
 
-- (_PFRoleManifest)initWithInfoDictionary:(id)a3
+- (_PFRoleManifest)initWithInfoDictionary:(id)dictionary
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   NSClassFromString(&cfstr_Nsdictionary.isa);
-  if (!v6)
+  if (!dictionaryCopy)
   {
     [_PFRoleManifest initWithInfoDictionary:a2];
   }
@@ -76,7 +76,7 @@ LABEL_8:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_infoDictionary, a3);
+    objc_storeStrong(&v7->_infoDictionary, dictionary);
     v9 = *MEMORY[0x1E695E4F0];
     v10 = objc_opt_self();
     v11 = [(_PFRoleManifest *)v8 objectForKey:v9 ofClass:v10];
@@ -93,11 +93,11 @@ LABEL_8:
 
 - (NSSet)pf_supportedRoles
 {
-  v3 = [(_PFRoleManifest *)self rawSpecifiedDefaultRole];
-  v4 = [(_PFRoleManifest *)self rawSupportedRoles];
-  if ([v4 count])
+  rawSpecifiedDefaultRole = [(_PFRoleManifest *)self rawSpecifiedDefaultRole];
+  rawSupportedRoles = [(_PFRoleManifest *)self rawSupportedRoles];
+  if ([rawSupportedRoles count])
   {
-    if (!v3)
+    if (!rawSpecifiedDefaultRole)
     {
       goto LABEL_8;
     }
@@ -105,36 +105,36 @@ LABEL_8:
 
   else
   {
-    v5 = [(_PFRoleManifest *)self knownSupportedRoles];
-    if ([v5 count])
+    knownSupportedRoles = [(_PFRoleManifest *)self knownSupportedRoles];
+    if ([knownSupportedRoles count])
     {
-      v6 = v5;
+      v6 = knownSupportedRoles;
 
-      v4 = v6;
+      rawSupportedRoles = v6;
     }
 
-    if (!v3)
+    if (!rawSpecifiedDefaultRole)
     {
       goto LABEL_8;
     }
   }
 
-  if ([v4 containsObject:v3])
+  if ([rawSupportedRoles containsObject:rawSpecifiedDefaultRole])
   {
 LABEL_8:
-    v7 = v4;
+    v7 = rawSupportedRoles;
     goto LABEL_13;
   }
 
-  v8 = v4;
-  if (!v4)
+  v8 = rawSupportedRoles;
+  if (!rawSupportedRoles)
   {
     v8 = [MEMORY[0x1E695DFD8] set];
   }
 
-  v7 = [v8 setByAddingObject:v3];
+  v7 = [v8 setByAddingObject:rawSpecifiedDefaultRole];
 
-  if (!v4)
+  if (!rawSupportedRoles)
   {
   }
 
@@ -145,36 +145,36 @@ LABEL_13:
 
 - (NSString)pf_defaultRole
 {
-  v3 = [(_PFRoleManifest *)self rawSpecifiedDefaultRole];
-  if (!v3)
+  rawSpecifiedDefaultRole = [(_PFRoleManifest *)self rawSpecifiedDefaultRole];
+  if (!rawSpecifiedDefaultRole)
   {
-    v4 = [(_PFRoleManifest *)self rawSupportedRoles];
-    v5 = [v4 count];
+    rawSupportedRoles = [(_PFRoleManifest *)self rawSupportedRoles];
+    v5 = [rawSupportedRoles count];
 
     if (v5 == 1)
     {
-      v6 = [(_PFRoleManifest *)self rawSupportedRoles];
-      v7 = [v6 anyObject];
+      rawSupportedRoles2 = [(_PFRoleManifest *)self rawSupportedRoles];
+      anyObject = [rawSupportedRoles2 anyObject];
 
-      if (v7)
+      if (anyObject)
       {
         goto LABEL_7;
       }
     }
 
-    v7 = [(_PFRoleManifest *)self derivedDefaultRole];
+    anyObject = [(_PFRoleManifest *)self derivedDefaultRole];
 
-    if (!v7)
+    if (!anyObject)
     {
       goto LABEL_7;
     }
 
-    v3 = [(_PFRoleManifest *)self derivedDefaultRole];
+    rawSpecifiedDefaultRole = [(_PFRoleManifest *)self derivedDefaultRole];
   }
 
-  v7 = v3;
+  anyObject = rawSpecifiedDefaultRole;
 LABEL_7:
-  v8 = v7;
+  v8 = anyObject;
 
   return v8;
 }
@@ -184,7 +184,7 @@ LABEL_7:
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_3();
     v4 = NSStringFromClass(v3);
@@ -290,35 +290,35 @@ LABEL_7:
 
 - (NSString)derivedDefaultRole
 {
-  v3 = [(_PFRoleManifest *)self knownSupportedRoles];
-  if ([v3 count] == 1)
+  knownSupportedRoles = [(_PFRoleManifest *)self knownSupportedRoles];
+  if ([knownSupportedRoles count] == 1)
   {
-    v4 = [(_PFRoleManifest *)self knownSupportedRoles];
-    v5 = [v4 anyObject];
+    knownSupportedRoles2 = [(_PFRoleManifest *)self knownSupportedRoles];
+    anyObject = [knownSupportedRoles2 anyObject];
   }
 
   else
   {
-    v5 = 0;
+    anyObject = 0;
   }
 
-  return v5;
+  return anyObject;
 }
 
-- (id)objectForKey:(id)a3 ofClass:(Class)a4
+- (id)objectForKey:(id)key ofClass:(Class)class
 {
-  v6 = a3;
+  keyCopy = key;
   WeakRetained = objc_loadWeakRetained(&self->_propertyList);
 
   if (WeakRetained)
   {
     v8 = objc_loadWeakRetained(&self->_propertyList);
-    v9 = [v8 objectForKey:v6 ofClass:a4];
+    v9 = [v8 objectForKey:keyCopy ofClass:class];
   }
 
   else
   {
-    v9 = [(NSDictionary *)self->_infoDictionary bs_safeObjectForKey:v6 ofType:a4];
+    v9 = [(NSDictionary *)self->_infoDictionary bs_safeObjectForKey:keyCopy ofType:class];
   }
 
   return v9;

@@ -2,11 +2,11 @@
 - (_TtC23ActivitySharingServices22SecureCloudKitDelegate)init;
 - (id)copySecureCloudChangeTokenCache;
 - (id)sharedLegacyZoneIDsToSkip;
-- (void)cloudKitManager:(ASCloudKitManager *)a3 fetchPrivateDatabaseChangesWithCache:(ASCloudKitServerChangeTokenCache *)a4 priority:(int64_t)a5 activity:(OS_xpc_object *)a6 group:(CKOperationGroup *)a7 fetchConfigurations:(NSDictionary *)a8 completion:(id)a9;
-- (void)cloudKitManager:(ASCloudKitManager *)a3 fetchSharedDatabaseChangesWithCache:(ASCloudKitServerChangeTokenCache *)a4 priority:(int64_t)a5 activity:(OS_xpc_object *)a6 group:(CKOperationGroup *)a7 completion:(id)a8;
-- (void)cloudKitManagerDidClearServerChangeToken:(id)a3;
+- (void)cloudKitManager:(ASCloudKitManager *)manager fetchPrivateDatabaseChangesWithCache:(ASCloudKitServerChangeTokenCache *)cache priority:(int64_t)priority activity:(OS_xpc_object *)activity group:(CKOperationGroup *)group fetchConfigurations:(NSDictionary *)configurations completion:(id)completion;
+- (void)cloudKitManager:(ASCloudKitManager *)manager fetchSharedDatabaseChangesWithCache:(ASCloudKitServerChangeTokenCache *)cache priority:(int64_t)priority activity:(OS_xpc_object *)activity group:(CKOperationGroup *)group completion:(id)completion;
+- (void)cloudKitManagerDidClearServerChangeToken:(id)token;
 - (void)persistCurrentSecureCloudChangeTokenCache;
-- (void)updateSecureCloudChangeTokenCache:(id)a3;
+- (void)updateSecureCloudChangeTokenCache:(id)cache;
 @end
 
 @implementation SecureCloudKitDelegate
@@ -18,17 +18,17 @@
   return result;
 }
 
-- (void)cloudKitManagerDidClearServerChangeToken:(id)a3
+- (void)cloudKitManagerDidClearServerChangeToken:(id)token
 {
   v4 = *__swift_project_boxed_opaque_existential_0Tm((&self->super.isa + OBJC_IVAR____TtC23ActivitySharingServices22SecureCloudKitDelegate_serverChangeTokenCacheStore), *&self->secureCloudFetchService[OBJC_IVAR____TtC23ActivitySharingServices22SecureCloudKitDelegate_serverChangeTokenCacheStore + 8]);
-  v5 = self;
+  selfCopy = self;
   sub_221F3CD44();
 }
 
 - (void)persistCurrentSecureCloudChangeTokenCache
 {
   v3 = *(*__swift_project_boxed_opaque_existential_0Tm((&self->super.isa + OBJC_IVAR____TtC23ActivitySharingServices22SecureCloudKitDelegate_serverChangeTokenCacheStore), *&self->secureCloudFetchService[OBJC_IVAR____TtC23ActivitySharingServices22SecureCloudKitDelegate_serverChangeTokenCacheStore + 8]) + 16);
-  v4 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock((v3 + 24));
   v5 = *(v3 + 16);
@@ -37,16 +37,16 @@
   [v5 persistToUserDefaults];
 }
 
-- (void)updateSecureCloudChangeTokenCache:(id)a3
+- (void)updateSecureCloudChangeTokenCache:(id)cache
 {
-  v4 = a3;
-  v5 = self;
+  cacheCopy = cache;
+  selfCopy = self;
   sub_221FB155C();
 }
 
 - (id)copySecureCloudChangeTokenCache
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_221FB16FC();
 
   return v3;
@@ -55,11 +55,11 @@
 - (id)sharedLegacyZoneIDsToSkip
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC23ActivitySharingServices22SecureCloudKitDelegate_contactsManager);
-  v3 = self;
-  v4 = [v2 contacts];
-  if (v4)
+  selfCopy = self;
+  contacts = [v2 contacts];
+  if (contacts)
   {
-    v5 = v4;
+    v5 = contacts;
     sub_221E9D138(0, &qword_281306E50, 0x277CE90E8);
     sub_221F10D6C();
     v6 = sub_221FB64F8();
@@ -73,20 +73,20 @@
   return v7;
 }
 
-- (void)cloudKitManager:(ASCloudKitManager *)a3 fetchPrivateDatabaseChangesWithCache:(ASCloudKitServerChangeTokenCache *)a4 priority:(int64_t)a5 activity:(OS_xpc_object *)a6 group:(CKOperationGroup *)a7 fetchConfigurations:(NSDictionary *)a8 completion:(id)a9
+- (void)cloudKitManager:(ASCloudKitManager *)manager fetchPrivateDatabaseChangesWithCache:(ASCloudKitServerChangeTokenCache *)cache priority:(int64_t)priority activity:(OS_xpc_object *)activity group:(CKOperationGroup *)group fetchConfigurations:(NSDictionary *)configurations completion:(id)completion
 {
   v16 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CFEC3A0, &qword_221FB8B70);
   v17 = *(*(v16 - 8) + 64);
   MEMORY[0x28223BE20](v16 - 8);
   v19 = &v30 - v18;
-  v20 = _Block_copy(a9);
+  v20 = _Block_copy(completion);
   v21 = swift_allocObject();
-  v21[2] = a3;
-  v21[3] = a4;
-  v21[4] = a5;
-  v21[5] = a6;
-  v21[6] = a7;
-  v21[7] = a8;
+  v21[2] = manager;
+  v21[3] = cache;
+  v21[4] = priority;
+  v21[5] = activity;
+  v21[6] = group;
+  v21[7] = configurations;
   v21[8] = v20;
   v21[9] = self;
   v22 = sub_221FB64C8();
@@ -101,28 +101,28 @@
   v24[3] = 0;
   v24[4] = &unk_221FC06D8;
   v24[5] = v23;
-  v25 = a3;
-  v26 = a4;
+  managerCopy = manager;
+  cacheCopy = cache;
   swift_unknownObjectRetain();
-  v27 = a7;
-  v28 = a8;
-  v29 = self;
+  groupCopy = group;
+  configurationsCopy = configurations;
+  selfCopy = self;
   sub_221FB26AC(0, 0, v19, &unk_221FC06E0, v24);
 }
 
-- (void)cloudKitManager:(ASCloudKitManager *)a3 fetchSharedDatabaseChangesWithCache:(ASCloudKitServerChangeTokenCache *)a4 priority:(int64_t)a5 activity:(OS_xpc_object *)a6 group:(CKOperationGroup *)a7 completion:(id)a8
+- (void)cloudKitManager:(ASCloudKitManager *)manager fetchSharedDatabaseChangesWithCache:(ASCloudKitServerChangeTokenCache *)cache priority:(int64_t)priority activity:(OS_xpc_object *)activity group:(CKOperationGroup *)group completion:(id)completion
 {
   v15 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CFEC3A0, &qword_221FB8B70);
   v16 = *(*(v15 - 8) + 64);
   MEMORY[0x28223BE20](v15 - 8);
   v18 = &v28 - v17;
-  v19 = _Block_copy(a8);
+  v19 = _Block_copy(completion);
   v20 = swift_allocObject();
-  v20[2] = a3;
-  v20[3] = a4;
-  v20[4] = a5;
-  v20[5] = a6;
-  v20[6] = a7;
+  v20[2] = manager;
+  v20[3] = cache;
+  v20[4] = priority;
+  v20[5] = activity;
+  v20[6] = group;
   v20[7] = v19;
   v20[8] = self;
   v21 = sub_221FB64C8();
@@ -137,11 +137,11 @@
   v23[3] = 0;
   v23[4] = &unk_221FC0690;
   v23[5] = v22;
-  v24 = a3;
-  v25 = a4;
+  managerCopy = manager;
+  cacheCopy = cache;
   swift_unknownObjectRetain();
-  v26 = a7;
-  v27 = self;
+  groupCopy = group;
+  selfCopy = self;
   sub_221FB26AC(0, 0, v18, &unk_221FB9B70, v23);
 }
 

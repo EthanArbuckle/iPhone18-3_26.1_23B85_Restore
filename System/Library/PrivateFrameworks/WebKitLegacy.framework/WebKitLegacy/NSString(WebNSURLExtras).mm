@@ -11,7 +11,7 @@
 
 - (id)_webkit_stringByReplacingValidPercentEscapes
 {
-  v1 = MEMORY[0x1CCA63A40](&v11, a1);
+  v1 = MEMORY[0x1CCA63A40](&v11, self);
   PAL::UTF8Encoding(v1);
   PAL::decodeURLEscapeSequences();
   v2 = v12;
@@ -62,47 +62,47 @@
 
 - (uint64_t)_webkit_scriptIfJavaScriptURL
 {
-  if (![a1 _webkit_isJavaScriptURL])
+  if (![self _webkit_isJavaScriptURL])
   {
     return 0;
   }
 
-  v2 = [a1 substringFromIndex:11];
+  v2 = [self substringFromIndex:11];
 
   return [v2 _webkit_stringByReplacingValidPercentEscapes];
 }
 
 - (WTF)_web_decodeHostName
 {
-  v2 = a1;
-  v3 = WTF::decodeHostName(a1, a2);
+  selfCopy = self;
+  v3 = WTF::decodeHostName(self, a2);
   if (v3)
   {
-    v2 = v3;
+    selfCopy = v3;
     v4 = v3;
-    v5 = v2;
+    v5 = selfCopy;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (WTF)_web_encodeHostName
 {
-  v2 = a1;
-  v3 = WTF::encodeHostName(a1, a2);
+  selfCopy = self;
+  v3 = WTF::encodeHostName(self, a2);
   if (v3)
   {
-    v2 = v3;
+    selfCopy = v3;
     v4 = v3;
-    v5 = v2;
+    v5 = selfCopy;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (uint64_t)_webkit_rangeOfURLScheme
 {
-  v2 = [a1 rangeOfString:@":"];
+  v2 = [self rangeOfString:@":"];
   if (v2)
   {
     v3 = v2 == 0x7FFFFFFFFFFFFFFFLL;
@@ -132,7 +132,7 @@
     _MergedGlobals_22 = 1;
   }
 
-  v7 = [a1 rangeOfCharacterFromSet:v6 options:0 range:{0, v5}];
+  v7 = [self rangeOfCharacterFromSet:v6 options:0 range:{0, v5}];
   result = 0;
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -145,7 +145,7 @@
 - (id)_webkit_rangeOfURLScheme
 {
   result = [objc_msgSend(MEMORY[0x1E696AB08] characterSetWithCharactersInString:{@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+.-", "invertedSet"}];
-  *a1 = result;
+  *self = result;
   if (result)
   {
 

@@ -1,26 +1,26 @@
 @interface INCAppLaunchRequest
-+ (id)removeDenyListedApplicationProxies:(id)a3;
-+ (id)specialElementIdentifierForBundleIdentifier:(id)a3;
++ (id)removeDenyListedApplicationProxies:(id)proxies;
++ (id)specialElementIdentifierForBundleIdentifier:(id)identifier;
 + (void)initialize;
 - (BOOL)_retainsSiri;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSupportedInCarPlay;
-- (INCAppLaunchRequest)initWithAudioCallIntentForCarousel:(id)a3 error:(id *)p_isa;
-- (INCAppLaunchRequest)initWithBundleIdentifier:(id)a3 options:(id)a4 URL:(id)a5 userActivity:(id)a6;
-- (INCAppLaunchRequest)initWithBundleIdentifier:(id)a3 options:(id)a4 URL:(id)a5 userActivity:(id)a6 retainsSiri:(BOOL)a7;
-- (INCAppLaunchRequest)initWithURL:(id)a3 error:(id *)a4;
-- (id)URLOverrideForURL:(id)a3;
+- (INCAppLaunchRequest)initWithAudioCallIntentForCarousel:(id)carousel error:(id *)p_isa;
+- (INCAppLaunchRequest)initWithBundleIdentifier:(id)identifier options:(id)options URL:(id)l userActivity:(id)activity;
+- (INCAppLaunchRequest)initWithBundleIdentifier:(id)identifier options:(id)options URL:(id)l userActivity:(id)activity retainsSiri:(BOOL)siri;
+- (INCAppLaunchRequest)initWithURL:(id)l error:(id *)error;
+- (id)URLOverrideForURL:(id)l;
 - (id)description;
 - (unint64_t)hash;
-- (void)observeForAppLaunchWithTimeout:(double)a3 completionHandler:(id)a4;
-- (void)performWithCompletionHandler:(id)a3;
+- (void)observeForAppLaunchWithTimeout:(double)timeout completionHandler:(id)handler;
+- (void)performWithCompletionHandler:(id)handler;
 @end
 
 @implementation INCAppLaunchRequest
 
-- (void)observeForAppLaunchWithTimeout:(double)a3 completionHandler:(id)a4
+- (void)observeForAppLaunchWithTimeout:(double)timeout completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = objc_alloc_init(INCDisplayLayoutMonitor);
   v27[0] = 0;
   v27[1] = v27;
@@ -34,18 +34,18 @@
   v24[3] = &unk_2797E8068;
   v9 = v7;
   v25 = v9;
-  v10 = v6;
+  v10 = handlerCopy;
   v26 = v10;
-  v28 = [v8 initWithTimeoutInterval:v24 timeoutHandler:a3];
+  v28 = [v8 initWithTimeoutInterval:v24 timeoutHandler:timeout];
   v11 = objc_opt_class();
-  v12 = [(INCAppLaunchRequest *)self bundleIdentifier];
-  v13 = [v11 specialElementIdentifierForBundleIdentifier:v12];
+  bundleIdentifier = [(INCAppLaunchRequest *)self bundleIdentifier];
+  v13 = [v11 specialElementIdentifierForBundleIdentifier:bundleIdentifier];
 
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __72__INCAppLaunchRequest_observeForAppLaunchWithTimeout_completionHandler___block_invoke_2;
   v19 = &unk_2797E8090;
-  v20 = self;
+  selfCopy = self;
   v14 = v13;
   v21 = v14;
   v15 = v10;
@@ -162,15 +162,15 @@ void __72__INCAppLaunchRequest_performWithService_retainsSiri_completionHandler_
   }
 }
 
-- (void)performWithCompletionHandler:(id)a3
+- (void)performWithCompletionHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
-  v6 = [objc_alloc(getCARSessionStatusClass_870()) initAndWaitUntilSessionUpdated];
-  v7 = [v6 currentSession];
+  handlerCopy = handler;
+  serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+  initAndWaitUntilSessionUpdated = [objc_alloc(getCARSessionStatusClass_870()) initAndWaitUntilSessionUpdated];
+  currentSession = [initAndWaitUntilSessionUpdated currentSession];
 
-  if (!v7 || ![(INCAppLaunchRequest *)self isSupportedInCarPlay])
+  if (!currentSession || ![(INCAppLaunchRequest *)self isSupportedInCarPlay])
   {
     goto LABEL_11;
   }
@@ -205,13 +205,13 @@ void __72__INCAppLaunchRequest_performWithService_retainsSiri_completionHandler_
   }
 
 LABEL_6:
-  v9 = [MEMORY[0x277D0AD78] dashboardService];
-  v10 = v9;
-  if (v9)
+  dashboardService = [MEMORY[0x277D0AD78] dashboardService];
+  v10 = dashboardService;
+  if (dashboardService)
   {
-    v11 = v9;
+    v11 = dashboardService;
 
-    v5 = v11;
+    serviceWithDefaultShellEndpoint = v11;
   }
 
   else
@@ -226,42 +226,42 @@ LABEL_6:
   }
 
 LABEL_11:
-  [(INCAppLaunchRequest *)self performWithService:v5 retainsSiri:[(INCAppLaunchRequest *)self retainsSiri] completionHandler:v4];
+  [(INCAppLaunchRequest *)self performWithService:serviceWithDefaultShellEndpoint retainsSiri:[(INCAppLaunchRequest *)self retainsSiri] completionHandler:handlerCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)isSupportedInCarPlay
 {
-  v3 = [(INCAppLaunchRequest *)self bundleIdentifier];
+  bundleIdentifier = [(INCAppLaunchRequest *)self bundleIdentifier];
   v4 = [(INCAppLaunchRequest *)self URL];
   if (v4)
   {
-    v5 = [INCCarPlayUtils appIsSupportedInCarPlayWithBundleId:v3 hasPayload:1];
+    v5 = [INCCarPlayUtils appIsSupportedInCarPlayWithBundleId:bundleIdentifier hasPayload:1];
   }
 
   else
   {
-    v6 = [(INCAppLaunchRequest *)self userActivity];
-    v5 = [INCCarPlayUtils appIsSupportedInCarPlayWithBundleId:v3 hasPayload:v6 != 0];
+    userActivity = [(INCAppLaunchRequest *)self userActivity];
+    v5 = [INCCarPlayUtils appIsSupportedInCarPlayWithBundleId:bundleIdentifier hasPayload:userActivity != 0];
   }
 
   return v5;
 }
 
-- (id)URLOverrideForURL:(id)a3
+- (id)URLOverrideForURL:(id)l
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 scheme];
-  if ([v4 isEqualToString:@"https"])
+  lCopy = l;
+  scheme = [lCopy scheme];
+  if ([scheme isEqualToString:@"https"])
   {
   }
 
   else
   {
-    v5 = [v3 scheme];
-    v6 = [v5 isEqualToString:@"http"];
+    scheme2 = [lCopy scheme];
+    v6 = [scheme2 isEqualToString:@"http"];
 
     if (!v6)
     {
@@ -269,16 +269,16 @@ LABEL_11:
     }
   }
 
-  v7 = [v3 host];
-  v8 = [v7 isEqualToString:@"facetime.apple.com"];
+  host = [lCopy host];
+  v8 = [host isEqualToString:@"facetime.apple.com"];
 
   if (v8)
   {
     v9 = objc_opt_new();
     [v9 setScheme:@"facetime-open-link"];
     v10 = objc_alloc(MEMORY[0x277CCAD18]);
-    v11 = [v3 absoluteString];
-    v12 = [v10 initWithName:@"link" value:v11];
+    absoluteString = [lCopy absoluteString];
+    v12 = [v10 initWithName:@"link" value:absoluteString];
     v17[0] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
     [v9 setQueryItems:v13];
@@ -297,10 +297,10 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -310,7 +310,7 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(NSString *)self->_bundleIdentifier isEqual:v5->_bundleIdentifier]&& [(NSDictionary *)self->_options isEqual:v5->_options]&& ((URL = self->_URL, URL == v5->_URL) || [(NSURL *)URL isEqual:?]))
       {
         userActivity = self->_userActivity;
@@ -389,22 +389,22 @@ LABEL_7:
   return v2();
 }
 
-- (INCAppLaunchRequest)initWithBundleIdentifier:(id)a3 options:(id)a4 URL:(id)a5 userActivity:(id)a6 retainsSiri:(BOOL)a7
+- (INCAppLaunchRequest)initWithBundleIdentifier:(id)identifier options:(id)options URL:(id)l userActivity:(id)activity retainsSiri:(BOOL)siri
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  lCopy = l;
+  activityCopy = activity;
   v26.receiver = self;
   v26.super_class = INCAppLaunchRequest;
   v16 = [(INCAppLaunchRequest *)&v26 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [identifierCopy copy];
     bundleIdentifier = v16->_bundleIdentifier;
     v16->_bundleIdentifier = v17;
 
-    v19 = [v13 copy];
+    v19 = [optionsCopy copy];
     v20 = v19;
     if (v19)
     {
@@ -418,80 +418,80 @@ LABEL_7:
 
     objc_storeStrong(&v16->_options, v21);
 
-    v22 = [v14 copy];
+    v22 = [lCopy copy];
     URL = v16->_URL;
     v16->_URL = v22;
 
-    objc_storeStrong(&v16->_userActivity, a6);
-    v16->_retainsSiri = a7;
+    objc_storeStrong(&v16->_userActivity, activity);
+    v16->_retainsSiri = siri;
     v24 = v16;
   }
 
   return v16;
 }
 
-- (INCAppLaunchRequest)initWithBundleIdentifier:(id)a3 options:(id)a4 URL:(id)a5 userActivity:(id)a6
+- (INCAppLaunchRequest)initWithBundleIdentifier:(id)identifier options:(id)options URL:(id)l userActivity:(id)activity
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(INCAppLaunchRequest *)self initWithBundleIdentifier:v13 options:v12 URL:v11 userActivity:v10 retainsSiri:[(INCAppLaunchRequest *)self _retainsSiri]];
+  activityCopy = activity;
+  lCopy = l;
+  optionsCopy = options;
+  identifierCopy = identifier;
+  v14 = [(INCAppLaunchRequest *)self initWithBundleIdentifier:identifierCopy options:optionsCopy URL:lCopy userActivity:activityCopy retainsSiri:[(INCAppLaunchRequest *)self _retainsSiri]];
 
   return v14;
 }
 
-- (INCAppLaunchRequest)initWithURL:(id)a3 error:(id *)a4
+- (INCAppLaunchRequest)initWithURL:(id)l error:(id *)error
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  v8 = [v7 URLOverrideForURL:v6];
+  lCopy = l;
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  v8 = [defaultWorkspace URLOverrideForURL:lCopy];
   v9 = v8;
   if (v8)
   {
     v10 = v8;
 
-    v6 = v10;
+    lCopy = v10;
   }
 
-  v11 = [(INCAppLaunchRequest *)self URLOverrideForURL:v6];
+  v11 = [(INCAppLaunchRequest *)self URLOverrideForURL:lCopy];
 
   if (v11)
   {
     v12 = v11;
 
-    v6 = v12;
+    lCopy = v12;
   }
 
   v40 = 0;
-  v13 = [MEMORY[0x277CC1E48] appLinksWithURL:v6 limit:2 error:&v40];
+  v13 = [MEMORY[0x277CC1E48] appLinksWithURL:lCopy limit:2 error:&v40];
   v14 = v40;
   if ([v13 count])
   {
-    v15 = [v13 firstObject];
+    firstObject = [v13 firstObject];
     if ([v13 count] >= 2)
     {
       v16 = *MEMORY[0x277CD38C8];
       if (os_log_type_enabled(*MEMORY[0x277CD38C8], OS_LOG_TYPE_ERROR))
       {
         v30 = v16;
-        v31 = [v15 targetApplicationProxy];
-        v32 = [v31 bundleIdentifier];
+        targetApplicationProxy = [firstObject targetApplicationProxy];
+        bundleIdentifier = [targetApplicationProxy bundleIdentifier];
         *buf = 136315394;
         v42 = "[INCAppLaunchRequest initWithURL:error:]";
         v43 = 2114;
-        v44 = v32;
+        v44 = bundleIdentifier;
         _os_log_error_impl(&dword_255503000, v30, OS_LOG_TYPE_ERROR, "%s Multiple app links are available to handle the URL, picking the first one: %{public}@", buf, 0x16u);
       }
     }
 
-    v17 = [v15 targetApplicationProxy];
-    v18 = [v17 bundleIdentifier];
-    v19 = [v15 URL];
-    self = [(INCAppLaunchRequest *)self initWithBundleIdentifier:v18 options:0 URL:v19 userActivity:0];
+    targetApplicationProxy2 = [firstObject targetApplicationProxy];
+    bundleIdentifier2 = [targetApplicationProxy2 bundleIdentifier];
+    v19 = [firstObject URL];
+    self = [(INCAppLaunchRequest *)self initWithBundleIdentifier:bundleIdentifier2 options:0 URL:v19 userActivity:0];
 
-    v20 = self;
+    selfCopy2 = self;
     goto LABEL_21;
   }
 
@@ -508,33 +508,33 @@ LABEL_7:
     }
   }
 
-  v22 = [v7 applicationsAvailableForOpeningURL:v6];
-  v15 = [INCAppLaunchRequest removeDenyListedApplicationProxies:v22];
+  v22 = [defaultWorkspace applicationsAvailableForOpeningURL:lCopy];
+  firstObject = [INCAppLaunchRequest removeDenyListedApplicationProxies:v22];
 
-  if ([v15 count])
+  if ([firstObject count])
   {
-    v17 = [v15 firstObject];
-    if ([v15 count] >= 2)
+    targetApplicationProxy2 = [firstObject firstObject];
+    if ([firstObject count] >= 2)
     {
       v23 = *MEMORY[0x277CD38C8];
       if (os_log_type_enabled(*MEMORY[0x277CD38C8], OS_LOG_TYPE_ERROR))
       {
         log = v23;
-        v37 = [v6 scheme];
-        v35 = [v17 bundleIdentifier];
+        scheme = [lCopy scheme];
+        bundleIdentifier3 = [targetApplicationProxy2 bundleIdentifier];
         *buf = 136315650;
         v42 = "[INCAppLaunchRequest initWithURL:error:]";
         v43 = 2114;
-        v44 = v37;
+        v44 = scheme;
         v45 = 2114;
-        v46 = v35;
+        v46 = bundleIdentifier3;
         _os_log_error_impl(&dword_255503000, log, OS_LOG_TYPE_ERROR, "%s Multiple applications are available to handle the %{public}@ scheme, picking the first one: %{public}@", buf, 0x20u);
       }
     }
 
-    v18 = [v17 bundleIdentifier];
-    self = [(INCAppLaunchRequest *)self initWithBundleIdentifier:v18 options:0 URL:v6 userActivity:0];
-    v20 = self;
+    bundleIdentifier2 = [targetApplicationProxy2 bundleIdentifier];
+    self = [(INCAppLaunchRequest *)self initWithBundleIdentifier:bundleIdentifier2 options:0 URL:lCopy userActivity:0];
+    selfCopy2 = self;
     goto LABEL_21;
   }
 
@@ -542,68 +542,68 @@ LABEL_7:
   if (os_log_type_enabled(*MEMORY[0x277CD38C8], OS_LOG_TYPE_ERROR))
   {
     v33 = v24;
-    v34 = [v6 scheme];
+    scheme2 = [lCopy scheme];
     *buf = 136315394;
     v42 = "[INCAppLaunchRequest initWithURL:error:]";
     v43 = 2114;
-    v44 = v34;
+    v44 = scheme2;
     _os_log_error_impl(&dword_255503000, v33, OS_LOG_TYPE_ERROR, "%s No applications are available to handle the %{public}@ scheme", buf, 0x16u);
 
-    if (a4)
+    if (error)
     {
       goto LABEL_20;
     }
 
 LABEL_24:
-    v20 = 0;
+    selfCopy2 = 0;
     goto LABEL_22;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_24;
   }
 
 LABEL_20:
   v25 = MEMORY[0x277CCACA8];
-  [v6 scheme];
-  v26 = loga = a4;
-  v17 = [v25 stringWithFormat:@"No applications are available to handle the %@ scheme", v26];
+  [lCopy scheme];
+  v26 = loga = error;
+  targetApplicationProxy2 = [v25 stringWithFormat:@"No applications are available to handle the %@ scheme", v26];
 
   v36 = MEMORY[0x277CCA9B8];
   v27 = *MEMORY[0x277CD3848];
   v47 = *MEMORY[0x277CCA068];
-  v48[0] = v17;
-  v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:&v47 count:1];
-  [v36 errorWithDomain:v27 code:2005 userInfo:v18];
-  loga->isa = v20 = 0;
+  v48[0] = targetApplicationProxy2;
+  bundleIdentifier2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:&v47 count:1];
+  [v36 errorWithDomain:v27 code:2005 userInfo:bundleIdentifier2];
+  loga->isa = selfCopy2 = 0;
 LABEL_21:
 
 LABEL_22:
   v28 = *MEMORY[0x277D85DE8];
-  return v20;
+  return selfCopy2;
 }
 
-- (INCAppLaunchRequest)initWithAudioCallIntentForCarousel:(id)a3 error:(id *)p_isa
+- (INCAppLaunchRequest)initWithAudioCallIntentForCarousel:(id)carousel error:(id *)p_isa
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 contacts];
-  v8 = [v7 firstObject];
+  carouselCopy = carousel;
+  contacts = [carouselCopy contacts];
+  firstObject = [contacts firstObject];
 
-  v9 = [v8 personHandle];
-  v10 = v9;
-  if (!v9)
+  personHandle = [firstObject personHandle];
+  v10 = personHandle;
+  if (!personHandle)
   {
     v19 = *MEMORY[0x277CD38C8];
     if (os_log_type_enabled(*MEMORY[0x277CD38C8], OS_LOG_TYPE_ERROR))
     {
       v25 = v19;
-      v26 = [v6 _className];
+      _className = [carouselCopy _className];
       *buf = 136315394;
       v30 = "[INCAppLaunchRequest initWithAudioCallIntentForCarousel:error:]";
       v31 = 2114;
-      v32 = v26;
+      v32 = _className;
       _os_log_error_impl(&dword_255503000, v25, OS_LOG_TYPE_ERROR, "%s %{public}@ is missing a personHandle to call", buf, 0x16u);
 
       if (!p_isa)
@@ -628,13 +628,13 @@ LABEL_22:
     goto LABEL_9;
   }
 
-  v11 = [v9 value];
-  v12 = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
-  v13 = [v11 stringByAddingPercentEncodingWithAllowedCharacters:v12];
+  value = [personHandle value];
+  uRLPathAllowedCharacterSet = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
+  v13 = [value stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
 
-  v14 = [v6 preferredCallProvider];
+  preferredCallProvider = [carouselCopy preferredCallProvider];
   v15 = MEMORY[0x277CBEBC0];
-  if (v14 == 2)
+  if (preferredCallProvider == 2)
   {
     v16 = @"facetime://%@";
   }
@@ -655,16 +655,16 @@ LABEL_9:
   return p_isa;
 }
 
-+ (id)removeDenyListedApplicationProxies:(id)a3
++ (id)removeDenyListedApplicationProxies:(id)proxies
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 mutableCopy];
+  proxiesCopy = proxies;
+  v4 = [proxiesCopy mutableCopy];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = proxiesCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -680,8 +680,8 @@ LABEL_9:
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 bundleIdentifier];
-        v12 = [&unk_28676D670 containsObject:v11];
+        bundleIdentifier = [v10 bundleIdentifier];
+        v12 = [&unk_28676D670 containsObject:bundleIdentifier];
 
         if (v12)
         {
@@ -701,10 +701,10 @@ LABEL_9:
   return v13;
 }
 
-+ (id)specialElementIdentifierForBundleIdentifier:(id)a3
++ (id)specialElementIdentifierForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [&unk_28676D648 objectForKey:v3];
+  identifierCopy = identifier;
+  v4 = [&unk_28676D648 objectForKey:identifierCopy];
   v5 = v4;
   if (v4)
   {
@@ -713,7 +713,7 @@ LABEL_9:
 
   else
   {
-    v6 = v3;
+    v6 = identifierCopy;
   }
 
   v7 = v6;
@@ -723,7 +723,7 @@ LABEL_9:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     INLogInitIfNeeded();

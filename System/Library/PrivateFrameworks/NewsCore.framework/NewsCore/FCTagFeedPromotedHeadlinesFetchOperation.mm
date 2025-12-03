@@ -1,27 +1,27 @@
 @interface FCTagFeedPromotedHeadlinesFetchOperation
 - (BOOL)validateOperation;
-- (FCTagFeedPromotedHeadlinesFetchOperation)initWithConfiguration:(id)a3 cloudContext:(id)a4 tagID:(id)a5 expireAfterTimeWindow:(double)a6;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCTagFeedPromotedHeadlinesFetchOperation)initWithConfiguration:(id)configuration cloudContext:(id)context tagID:(id)d expireAfterTimeWindow:(double)window;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
 @implementation FCTagFeedPromotedHeadlinesFetchOperation
 
-- (FCTagFeedPromotedHeadlinesFetchOperation)initWithConfiguration:(id)a3 cloudContext:(id)a4 tagID:(id)a5 expireAfterTimeWindow:(double)a6
+- (FCTagFeedPromotedHeadlinesFetchOperation)initWithConfiguration:(id)configuration cloudContext:(id)context tagID:(id)d expireAfterTimeWindow:(double)window
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  configurationCopy = configuration;
+  contextCopy = context;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = FCTagFeedPromotedHeadlinesFetchOperation;
   v14 = [(FCOperation *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_configuration, a3);
-    objc_storeStrong(&v15->_cloudContext, a4);
-    objc_storeStrong(&v15->_tagID, a5);
-    v15->_expireAfterTimeWindow = a6;
+    objc_storeStrong(&v14->_configuration, configuration);
+    objc_storeStrong(&v15->_cloudContext, context);
+    objc_storeStrong(&v15->_tagID, d);
+    v15->_expireAfterTimeWindow = window;
   }
 
   return v15;
@@ -138,10 +138,10 @@ void __60__FCTagFeedPromotedHeadlinesFetchOperation_performOperation__block_invo
   [v7 finishedPerformingOperationWithError:v8];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(FCTagFeedPromotedHeadlinesFetchOperation *)self fetchCompletionHandler];
+  errorCopy = error;
+  fetchCompletionHandler = [(FCTagFeedPromotedHeadlinesFetchOperation *)self fetchCompletionHandler];
   if (self)
   {
     resultHeadlines = self->_resultHeadlines;
@@ -162,8 +162,8 @@ void __60__FCTagFeedPromotedHeadlinesFetchOperation_performOperation__block_invo
     v7 = MEMORY[0x1E695E0F0];
   }
 
-  v8 = v5;
-  (*(v5 + 16))(v5, v7, v4);
+  v8 = fetchCompletionHandler;
+  (*(fetchCompletionHandler + 16))(fetchCompletionHandler, v7, errorCopy);
 }
 
 void __87__FCTagFeedPromotedHeadlinesFetchOperation__fetchPinnedHeadlinesWithCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)

@@ -1,12 +1,12 @@
 @interface PKCloudRecordTransaction
 + (id)dateFormatter;
-- (PKCloudRecordTransaction)initWithCoder:(id)a3;
-- (id)_descriptionWithIncludeItem:(BOOL)a3;
+- (PKCloudRecordTransaction)initWithCoder:(id)coder;
+- (id)_descriptionWithIncludeItem:(BOOL)item;
 - (id)description;
-- (id)descriptionWithItem:(BOOL)a3;
-- (int64_t)compare:(id)a3;
-- (void)applyCloudRecordObject:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)descriptionWithItem:(BOOL)item;
+- (int64_t)compare:(id)compare;
+- (void)applyCloudRecordObject:(id)object;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCloudRecordTransaction
@@ -34,15 +34,15 @@ uint64_t __41__PKCloudRecordTransaction_dateFormatter__block_invoke()
   return [v2 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
 }
 
-- (PKCloudRecordTransaction)initWithCoder:(id)a3
+- (PKCloudRecordTransaction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKCloudRecordTransaction;
-  v5 = [(PKCloudRecordObject *)&v9 initWithCoder:v4];
+  v5 = [(PKCloudRecordObject *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transaction"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transaction"];
     transaction = v5->_transaction;
     v5->_transaction = v6;
   }
@@ -50,25 +50,25 @@ uint64_t __41__PKCloudRecordTransaction_dateFormatter__block_invoke()
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKCloudRecordTransaction;
-  v4 = a3;
-  [(PKCloudRecordObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_transaction forKey:{@"transaction", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PKCloudRecordObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_transaction forKey:{@"transaction", v5.receiver, v5.super_class}];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  compareCopy = compare;
+  if (compareCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [(PKCloudRecordTransaction *)self transaction];
-    v6 = [v5 transactionDate];
-    v7 = [v4 transaction];
-    v8 = [v7 transactionDate];
-    v9 = [v6 compare:v8];
+    transaction = [(PKCloudRecordTransaction *)self transaction];
+    transactionDate = [transaction transactionDate];
+    transaction2 = [compareCopy transaction];
+    transactionDate2 = [transaction2 transactionDate];
+    v9 = [transactionDate compare:transactionDate2];
   }
 
   else
@@ -79,13 +79,13 @@ uint64_t __41__PKCloudRecordTransaction_dateFormatter__block_invoke()
   return v9;
 }
 
-- (id)descriptionWithItem:(BOOL)a3
+- (id)descriptionWithItem:(BOOL)item
 {
-  v3 = a3;
+  itemCopy = item;
   v5 = [(PKCloudRecordTransaction *)self _descriptionWithIncludeItem:?];
   v8.receiver = self;
   v8.super_class = PKCloudRecordTransaction;
-  v6 = [(PKCloudRecordObject *)&v8 descriptionWithItem:v3];
+  v6 = [(PKCloudRecordObject *)&v8 descriptionWithItem:itemCopy];
   [v5 appendFormat:@"\n%@", v6];
 
   return v5;
@@ -102,18 +102,18 @@ uint64_t __41__PKCloudRecordTransaction_dateFormatter__block_invoke()
   return v3;
 }
 
-- (id)_descriptionWithIncludeItem:(BOOL)a3
+- (id)_descriptionWithIncludeItem:(BOOL)item
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E696AD60] string];
-  v6 = v5;
+  itemCopy = item;
+  string = [MEMORY[0x1E696AD60] string];
+  v6 = string;
   if (self->_transaction)
   {
-    if (v3)
+    if (itemCopy)
     {
-      v7 = [objc_opt_class() dateFormatter];
-      v8 = [(PKPaymentTransaction *)self->_transaction transactionDate];
-      v9 = [v7 stringFromDate:v8];
+      dateFormatter = [objc_opt_class() dateFormatter];
+      transactionDate = [(PKPaymentTransaction *)self->_transaction transactionDate];
+      v9 = [dateFormatter stringFromDate:transactionDate];
 
       [v6 appendFormat:@"transaction: (%@)\n%@\n", v9, self->_transaction];
     }
@@ -121,32 +121,32 @@ uint64_t __41__PKCloudRecordTransaction_dateFormatter__block_invoke()
 
   else
   {
-    [v5 appendFormat:@"No associated transaction in database\n"];
+    [string appendFormat:@"No associated transaction in database\n"];
   }
 
   return v6;
 }
 
-- (void)applyCloudRecordObject:(id)a3
+- (void)applyCloudRecordObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v10.receiver = self;
     v10.super_class = PKCloudRecordTransaction;
-    [(PKCloudRecordObject *)&v10 applyCloudRecordObject:v4];
-    v5 = v4;
+    [(PKCloudRecordObject *)&v10 applyCloudRecordObject:objectCopy];
+    v5 = objectCopy;
     v6 = v5;
     if (!self->_transaction)
     {
-      v7 = [v5 transaction];
+      transaction = [v5 transaction];
 
-      if (v7)
+      if (transaction)
       {
-        v8 = [v6 transaction];
+        transaction2 = [v6 transaction];
         transaction = self->_transaction;
-        self->_transaction = v8;
+        self->_transaction = transaction2;
       }
     }
   }

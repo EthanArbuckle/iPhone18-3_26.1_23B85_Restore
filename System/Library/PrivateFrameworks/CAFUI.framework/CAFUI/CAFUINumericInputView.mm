@@ -1,17 +1,17 @@
 @interface CAFUINumericInputView
-- (_TtC5CAFUI21CAFUINumericInputView)initWithCoder:(id)a3;
-- (_TtC5CAFUI21CAFUINumericInputView)initWithFrame:(CGRect)a3;
-- (id)focusItemsInRect:(CGRect)a3;
-- (void)controlTouchCancelWithSender:(id)a3 forEvent:(id)a4;
-- (void)controlTouchDownWithSender:(id)a3;
-- (void)controlTouchUpWithSender:(id)a3;
-- (void)sliderChangedWithSender:(id)a3;
-- (void)stopTrackingControlWithSender:(id)a3;
+- (_TtC5CAFUI21CAFUINumericInputView)initWithCoder:(id)coder;
+- (_TtC5CAFUI21CAFUINumericInputView)initWithFrame:(CGRect)frame;
+- (id)focusItemsInRect:(CGRect)rect;
+- (void)controlTouchCancelWithSender:(id)sender forEvent:(id)event;
+- (void)controlTouchDownWithSender:(id)sender;
+- (void)controlTouchUpWithSender:(id)sender;
+- (void)sliderChangedWithSender:(id)sender;
+- (void)stopTrackingControlWithSender:(id)sender;
 @end
 
 @implementation CAFUINumericInputView
 
-- (_TtC5CAFUI21CAFUINumericInputView)initWithCoder:(id)a3
+- (_TtC5CAFUI21CAFUINumericInputView)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC5CAFUI21CAFUINumericInputView_cancellableTimer;
   *v3 = 0u;
@@ -22,55 +22,55 @@
   return result;
 }
 
-- (void)controlTouchDownWithSender:(id)a3
+- (void)controlTouchDownWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  CAFUINumericInputView.controlTouchDown(sender:)(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  CAFUINumericInputView.controlTouchDown(sender:)(senderCopy);
 }
 
-- (void)controlTouchUpWithSender:(id)a3
+- (void)controlTouchUpWithSender:(id)sender
 {
   objc_opt_self();
   v5 = swift_dynamicCastObjCClass();
-  v6 = a3;
-  v7 = self;
+  senderCopy = sender;
+  selfCopy = self;
   if (v5)
   {
     CAFUINumericInputView.buttonValueChanged(sender:)(v5);
   }
 
-  CAFUINumericInputView.stopTrackingControl(sender:)(v6);
+  CAFUINumericInputView.stopTrackingControl(sender:)(senderCopy);
 }
 
-- (void)controlTouchCancelWithSender:(id)a3 forEvent:(id)a4
+- (void)controlTouchCancelWithSender:(id)sender forEvent:(id)event
 {
-  v5 = a3;
-  v6 = self;
-  CAFUINumericInputView.stopTrackingControl(sender:)(v5);
+  senderCopy = sender;
+  selfCopy = self;
+  CAFUINumericInputView.stopTrackingControl(sender:)(senderCopy);
 }
 
-- (void)stopTrackingControlWithSender:(id)a3
+- (void)stopTrackingControlWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  CAFUINumericInputView.stopTrackingControl(sender:)(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  CAFUINumericInputView.stopTrackingControl(sender:)(senderCopy);
 }
 
-- (void)sliderChangedWithSender:(id)a3
+- (void)sliderChangedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  CAFUINumericInputView.sliderChanged(sender:)(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  CAFUINumericInputView.sliderChanged(sender:)(senderCopy);
 }
 
-- (id)focusItemsInRect:(CGRect)a3
+- (id)focusItemsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   CAFUINumericInputView.focusItems(in:)(x, y, width, height);
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&_sSo11UIFocusItem_pMd);
@@ -79,7 +79,7 @@
   return v8.super.isa;
 }
 
-- (_TtC5CAFUI21CAFUINumericInputView)initWithFrame:(CGRect)a3
+- (_TtC5CAFUI21CAFUINumericInputView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

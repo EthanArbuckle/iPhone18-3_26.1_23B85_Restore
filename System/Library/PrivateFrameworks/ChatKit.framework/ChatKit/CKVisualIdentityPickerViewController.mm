@@ -1,49 +1,49 @@
 @interface CKVisualIdentityPickerViewController
-+ (id)imagePickerForContact:(id)a3;
-+ (id)imagePickerForGroupIdentity:(id)a3 withConversation:(id)a4;
++ (id)imagePickerForContact:(id)contact;
++ (id)imagePickerForGroupIdentity:(id)identity withConversation:(id)conversation;
 - (CKVisualIdentityPickerViewControllerDelegate)presentationDelegate;
-- (void)visualIdentityPicker:(id)a3 didUpdatePhotoForVisualIdentity:(id)a4 withContactImage:(id)a5;
-- (void)visualIdentityPickerDidCancel:(id)a3;
+- (void)visualIdentityPicker:(id)picker didUpdatePhotoForVisualIdentity:(id)identity withContactImage:(id)image;
+- (void)visualIdentityPickerDidCancel:(id)cancel;
 @end
 
 @implementation CKVisualIdentityPickerViewController
 
-+ (id)imagePickerForGroupIdentity:(id)a3 withConversation:(id)a4
++ (id)imagePickerForGroupIdentity:(id)identity withConversation:(id)conversation
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___CKVisualIdentityPickerViewController;
-  v5 = a4;
-  v6 = objc_msgSendSuper2(&v8, sel_imagePickerForGroupIdentity_, a3);
-  [v6 setConversation:{v5, v8.receiver, v8.super_class}];
+  conversationCopy = conversation;
+  v6 = objc_msgSendSuper2(&v8, sel_imagePickerForGroupIdentity_, identity);
+  [v6 setConversation:{conversationCopy, v8.receiver, v8.super_class}];
 
   [v6 setDelegate:v6];
 
   return v6;
 }
 
-+ (id)imagePickerForContact:(id)a3
++ (id)imagePickerForContact:(id)contact
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CKVisualIdentityPickerViewController;
-  v3 = objc_msgSendSuper2(&v5, sel_imagePickerForContact_, a3);
+  v3 = objc_msgSendSuper2(&v5, sel_imagePickerForContact_, contact);
   [v3 setDelegate:v3];
 
   return v3;
 }
 
-- (void)visualIdentityPicker:(id)a3 didUpdatePhotoForVisualIdentity:(id)a4 withContactImage:(id)a5
+- (void)visualIdentityPicker:(id)picker didUpdatePhotoForVisualIdentity:(id)identity withContactImage:(id)image
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [MEMORY[0x1E695D1E0] descriptorForRequiredKeys];
-  v25[0] = v7;
+  identityCopy = identity;
+  descriptorForRequiredKeys = [MEMORY[0x1E695D1E0] descriptorForRequiredKeys];
+  v25[0] = descriptorForRequiredKeys;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
 
-  v9 = [(CKVisualIdentityPickerViewController *)self conversation];
-  v10 = [v9 conversationVisualIdentityWithKeys:v8 requestedNumberOfContactsToFetch:{objc_msgSend(MEMORY[0x1E695D0C0], "maxContactAvatars")}];
-  v11 = [v6 thumbnailImageData];
-  v12 = [v10 groupPhoto];
-  v13 = [v11 isEqualToData:v12];
+  conversation = [(CKVisualIdentityPickerViewController *)self conversation];
+  v10 = [conversation conversationVisualIdentityWithKeys:v8 requestedNumberOfContactsToFetch:{objc_msgSend(MEMORY[0x1E695D0C0], "maxContactAvatars")}];
+  thumbnailImageData = [identityCopy thumbnailImageData];
+  groupPhoto = [v10 groupPhoto];
+  v13 = [thumbnailImageData isEqualToData:groupPhoto];
 
   if ((v13 & 1) == 0)
   {
@@ -54,21 +54,21 @@
       _os_log_impl(&dword_19020E000, v14, OS_LOG_TYPE_INFO, "Updating visual identity.", v24, 2u);
     }
 
-    v15 = [v9 chat];
-    v16 = [v15 isGroupChat];
+    chat = [conversation chat];
+    isGroupChat = [chat isGroupChat];
 
-    if (v16)
+    if (isGroupChat)
     {
-      v17 = [v6 thumbnailImageData];
-      [CKDetailsController saveGroupPhotoDataAndUpdateParticipants:v17 forConversation:v9];
+      thumbnailImageData2 = [identityCopy thumbnailImageData];
+      [CKDetailsController saveGroupPhotoDataAndUpdateParticipants:thumbnailImageData2 forConversation:conversation];
     }
 
-    [v9 setNeedsUpdatedGroupPhotoForVisualIdentity];
+    [conversation setNeedsUpdatedGroupPhotoForVisualIdentity];
   }
 
-  v18 = [v6 name];
-  v19 = [v9 displayName];
-  v20 = [v18 isEqualToString:v19];
+  name = [identityCopy name];
+  displayName = [conversation displayName];
+  v20 = [name isEqualToString:displayName];
 
   if (v20)
   {
@@ -87,22 +87,22 @@
       _os_log_impl(&dword_19020E000, v21, OS_LOG_TYPE_INFO, "Updating display name.", v24, 2u);
     }
 
-    v22 = [v6 name];
-    [v9 setDisplayName:v22];
+    name2 = [identityCopy name];
+    [conversation setDisplayName:name2];
 
-    [v9 setNeedsUpdatedGroupNameForVisualIdentity];
+    [conversation setNeedsUpdatedGroupNameForVisualIdentity];
   }
 
-  [v9 setGroupIdentityUpdateHandleID:0];
+  [conversation setGroupIdentityUpdateHandleID:0];
 LABEL_14:
-  v23 = [(CKVisualIdentityPickerViewController *)self presentationDelegate];
-  [v23 visualIdentityPickerDidFinish:self];
+  presentationDelegate = [(CKVisualIdentityPickerViewController *)self presentationDelegate];
+  [presentationDelegate visualIdentityPickerDidFinish:self];
 }
 
-- (void)visualIdentityPickerDidCancel:(id)a3
+- (void)visualIdentityPickerDidCancel:(id)cancel
 {
-  v4 = [(CKVisualIdentityPickerViewController *)self presentationDelegate];
-  [v4 visualIdentityPickerDidFinish:self];
+  presentationDelegate = [(CKVisualIdentityPickerViewController *)self presentationDelegate];
+  [presentationDelegate visualIdentityPickerDidFinish:self];
 }
 
 - (CKVisualIdentityPickerViewControllerDelegate)presentationDelegate

@@ -1,20 +1,20 @@
 @interface SATimerGet
 - (id)_ad_timerRequestRepresentation;
-- (id)_ad_timerResponseForResponse:(id)a3;
+- (id)_ad_timerResponseForResponse:(id)response;
 @end
 
 @implementation SATimerGet
 
-- (id)_ad_timerResponseForResponse:(id)a3
+- (id)_ad_timerResponseForResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = objc_alloc_init(SATimerGetCompleted);
     v5 = objc_alloc_init(SATimerObject);
-    v6 = [v3 timer];
-    [v5 _ad_setTimer:v6];
+    timer = [responseCopy timer];
+    [v5 _ad_setTimer:timer];
 
     [v4 setTimer:v5];
   }

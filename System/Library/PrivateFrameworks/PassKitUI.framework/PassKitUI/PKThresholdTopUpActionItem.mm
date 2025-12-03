@@ -1,21 +1,21 @@
 @interface PKThresholdTopUpActionItem
-- (PKThresholdTopUpActionItem)initWithIdentifier:(id)a3 cancelInProgress:(BOOL)a4 cancelAutoReloadUnavailable:(BOOL)a5;
+- (PKThresholdTopUpActionItem)initWithIdentifier:(id)identifier cancelInProgress:(BOOL)progress cancelAutoReloadUnavailable:(BOOL)unavailable;
 @end
 
 @implementation PKThresholdTopUpActionItem
 
-- (PKThresholdTopUpActionItem)initWithIdentifier:(id)a3 cancelInProgress:(BOOL)a4 cancelAutoReloadUnavailable:(BOOL)a5
+- (PKThresholdTopUpActionItem)initWithIdentifier:(id)identifier cancelInProgress:(BOOL)progress cancelAutoReloadUnavailable:(BOOL)unavailable
 {
-  v9 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = PKThresholdTopUpActionItem;
   v10 = [(PKThresholdTopUpActionItem *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_identifier, a3);
-    v11->_cancelInProgress = a4;
-    v11->_cancelAutoReloadUnavailable = a5;
+    objc_storeStrong(&v10->_identifier, identifier);
+    v11->_cancelInProgress = progress;
+    v11->_cancelAutoReloadUnavailable = unavailable;
   }
 
   return v11;

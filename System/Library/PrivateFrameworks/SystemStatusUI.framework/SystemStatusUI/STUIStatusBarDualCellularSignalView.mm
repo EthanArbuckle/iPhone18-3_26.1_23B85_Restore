@@ -1,14 +1,14 @@
 @interface STUIStatusBarDualCellularSignalView
-+ (double)_interspaceForIconSize:(int64_t)a3;
++ (double)_interspaceForIconSize:(int64_t)size;
 - (CGSize)intrinsicContentSize;
-- (STUIStatusBarDualCellularSignalView)initWithCoder:(id)a3;
-- (STUIStatusBarDualCellularSignalView)initWithFrame:(CGRect)a3;
+- (STUIStatusBarDualCellularSignalView)initWithCoder:(id)coder;
+- (STUIStatusBarDualCellularSignalView)initWithFrame:(CGRect)frame;
 - (UIAccessibilityHUDItem)accessibilityHUDRepresentation;
 - (UIEdgeInsets)alignmentRectInsets;
 - (id)viewForLastBaselineLayout;
 - (void)_commonInit;
 - (void)_iconSizeDidChange;
-- (void)applyStyleAttributes:(id)a3;
+- (void)applyStyleAttributes:(id)attributes;
 @end
 
 @implementation STUIStatusBarDualCellularSignalView
@@ -29,61 +29,61 @@
   self->_iconSize = -1;
   [(STUIStatusBarDualCellularSignalView *)self addSubview:self->_topSignalView];
   [(STUIStatusBarDualCellularSignalView *)self addSubview:self->_bottomSignalView];
-  v7 = [(STUIStatusBarCellularSignalView *)self->_topSignalView topAnchor];
-  v8 = [(STUIStatusBarDualCellularSignalView *)self topAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8 constant:0.0];
+  topAnchor = [(STUIStatusBarCellularSignalView *)self->_topSignalView topAnchor];
+  topAnchor2 = [(STUIStatusBarDualCellularSignalView *)self topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
   topConstraint = self->_topConstraint;
   self->_topConstraint = v9;
 
   [(NSLayoutConstraint *)self->_topConstraint setIdentifier:@"dualCellularTopBarConstraint"];
-  v11 = [(STUIStatusBarCellularSignalView *)self->_bottomSignalView topAnchor];
-  v12 = [(STUIStatusBarCellularSignalView *)self->_topSignalView bottomAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12 constant:0.0];
+  topAnchor3 = [(STUIStatusBarCellularSignalView *)self->_bottomSignalView topAnchor];
+  bottomAnchor = [(STUIStatusBarCellularSignalView *)self->_topSignalView bottomAnchor];
+  v13 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:0.0];
   verticalInterspaceConstraint = self->_verticalInterspaceConstraint;
   self->_verticalInterspaceConstraint = v13;
 
   [(NSLayoutConstraint *)self->_verticalInterspaceConstraint setIdentifier:@"dualCellularBarSeparationConstraint"];
   v23[0] = self->_topConstraint;
-  v15 = [(STUIStatusBarCellularSignalView *)self->_topSignalView centerXAnchor];
-  v16 = [(STUIStatusBarDualCellularSignalView *)self centerXAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  centerXAnchor = [(STUIStatusBarCellularSignalView *)self->_topSignalView centerXAnchor];
+  centerXAnchor2 = [(STUIStatusBarDualCellularSignalView *)self centerXAnchor];
+  v17 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v18 = self->_verticalInterspaceConstraint;
   v23[1] = v17;
   v23[2] = v18;
-  v19 = [(STUIStatusBarCellularSignalView *)self->_bottomSignalView centerXAnchor];
-  v20 = [(STUIStatusBarDualCellularSignalView *)self centerXAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  centerXAnchor3 = [(STUIStatusBarCellularSignalView *)self->_bottomSignalView centerXAnchor];
+  centerXAnchor4 = [(STUIStatusBarDualCellularSignalView *)self centerXAnchor];
+  v21 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v23[3] = v21;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:4];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v22];
 }
 
-+ (double)_interspaceForIconSize:(int64_t)a3
++ (double)_interspaceForIconSize:(int64_t)size
 {
   result = 0.0;
-  if ((a3 - 1) <= 0x10)
+  if ((size - 1) <= 0x10)
   {
-    return dbl_26C581E30[a3 - 1];
+    return dbl_26C581E30[size - 1];
   }
 
   return result;
 }
 
-- (STUIStatusBarDualCellularSignalView)initWithFrame:(CGRect)a3
+- (STUIStatusBarDualCellularSignalView)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = STUIStatusBarDualCellularSignalView;
-  v3 = [(STUIStatusBarDualCellularSignalView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(STUIStatusBarDualCellularSignalView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(STUIStatusBarDualCellularSignalView *)v3 _commonInit];
   return v3;
 }
 
-- (STUIStatusBarDualCellularSignalView)initWithCoder:(id)a3
+- (STUIStatusBarDualCellularSignalView)initWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STUIStatusBarDualCellularSignalView;
-  v3 = [(STUIStatusBarDualCellularSignalView *)&v5 initWithCoder:a3];
+  v3 = [(STUIStatusBarDualCellularSignalView *)&v5 initWithCoder:coder];
   [(STUIStatusBarDualCellularSignalView *)v3 _commonInit];
   return v3;
 }
@@ -112,10 +112,10 @@
 - (id)viewForLastBaselineLayout
 {
   v3 = +[STUIStatusBarSettingsDomain rootSettings];
-  v4 = [v3 itemSettings];
-  v5 = [v4 secondarySIMUnderBaseline];
+  itemSettings = [v3 itemSettings];
+  secondarySIMUnderBaseline = [itemSettings secondarySIMUnderBaseline];
 
-  if (v5)
+  if (secondarySIMUnderBaseline)
   {
     self = self->_topSignalView;
   }
@@ -123,23 +123,23 @@
   return self;
 }
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
-  v6 = a3;
-  -[STUIStatusBarCellularSignalView setNeedsLargerScale:](self->_topSignalView, "setNeedsLargerScale:", [v6 isScaledFixedWidthBar]);
-  -[STUIStatusBarCellularSignalView setNeedsLargerScale:](self->_bottomSignalView, "setNeedsLargerScale:", [v6 isScaledFixedWidthBar]);
-  v4 = [v6 isRounded];
-  if (self->_iconSize != [v6 iconSize])
+  attributesCopy = attributes;
+  -[STUIStatusBarCellularSignalView setNeedsLargerScale:](self->_topSignalView, "setNeedsLargerScale:", [attributesCopy isScaledFixedWidthBar]);
+  -[STUIStatusBarCellularSignalView setNeedsLargerScale:](self->_bottomSignalView, "setNeedsLargerScale:", [attributesCopy isScaledFixedWidthBar]);
+  isRounded = [attributesCopy isRounded];
+  if (self->_iconSize != [attributesCopy iconSize])
   {
-    -[STUIStatusBarDualCellularSignalView setRounded:](self, "setRounded:", [v6 isRounded]);
-    -[STUIStatusBarDualCellularSignalView setIconSize:](self, "setIconSize:", [v6 iconSize]);
+    -[STUIStatusBarDualCellularSignalView setRounded:](self, "setRounded:", [attributesCopy isRounded]);
+    -[STUIStatusBarDualCellularSignalView setIconSize:](self, "setIconSize:", [attributesCopy iconSize]);
     goto LABEL_5;
   }
 
   rounded = self->_rounded;
-  -[STUIStatusBarDualCellularSignalView setRounded:](self, "setRounded:", [v6 isRounded]);
-  -[STUIStatusBarDualCellularSignalView setIconSize:](self, "setIconSize:", [v6 iconSize]);
-  if (rounded != v4)
+  -[STUIStatusBarDualCellularSignalView setRounded:](self, "setRounded:", [attributesCopy isRounded]);
+  -[STUIStatusBarDualCellularSignalView setIconSize:](self, "setIconSize:", [attributesCopy iconSize]);
+  if (rounded != isRounded)
   {
 LABEL_5:
     [(STUIStatusBarDualCellularSignalView *)self _iconSizeDidChange];
@@ -148,10 +148,10 @@ LABEL_5:
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(STUIStatusBarSignalView *)self->_topSignalView numberOfBars];
-  v4 = [(STUIStatusBarDualCellularSignalView *)self iconSize];
+  numberOfBars = [(STUIStatusBarSignalView *)self->_topSignalView numberOfBars];
+  iconSize = [(STUIStatusBarDualCellularSignalView *)self iconSize];
 
-  [STUIStatusBarCellularSignalView _intrinsicContentSizeForNumberOfBars:v3 iconSize:v4];
+  [STUIStatusBarCellularSignalView _intrinsicContentSizeForNumberOfBars:numberOfBars iconSize:iconSize];
   result.height = v6;
   result.width = v5;
   return result;
@@ -165,11 +165,11 @@ LABEL_5:
   }
 
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(STUIStatusBarDualCellularSignalView *)self topSignalView];
-  if ([v4 signalMode] == 2)
+  topSignalView = [(STUIStatusBarDualCellularSignalView *)self topSignalView];
+  if ([topSignalView signalMode] == 2)
   {
-    v5 = [(STUIStatusBarDualCellularSignalView *)self topSignalView];
-    v6 = [v3 stringWithFormat:@"AXHUD_Cellular_%d", objc_msgSend(v5, "numberOfActiveBars")];
+    topSignalView2 = [(STUIStatusBarDualCellularSignalView *)self topSignalView];
+    v6 = [v3 stringWithFormat:@"AXHUD_Cellular_%d", objc_msgSend(topSignalView2, "numberOfActiveBars")];
   }
 
   else
@@ -178,11 +178,11 @@ LABEL_5:
   }
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(STUIStatusBarDualCellularSignalView *)self bottomSignalView];
-  if ([v8 signalMode] == 2)
+  bottomSignalView = [(STUIStatusBarDualCellularSignalView *)self bottomSignalView];
+  if ([bottomSignalView signalMode] == 2)
   {
-    v9 = [(STUIStatusBarDualCellularSignalView *)self bottomSignalView];
-    v10 = [v7 stringWithFormat:@"AXHUD_Cellular_%d", objc_msgSend(v9, "numberOfActiveBars")];
+    bottomSignalView2 = [(STUIStatusBarDualCellularSignalView *)self bottomSignalView];
+    v10 = [v7 stringWithFormat:@"AXHUD_Cellular_%d", objc_msgSend(bottomSignalView2, "numberOfActiveBars")];
   }
 
   else
@@ -190,8 +190,8 @@ LABEL_5:
     v10 = [v7 stringWithFormat:@"AXHUD_Cellular_%d", 0];
   }
 
-  v11 = [(STUIStatusBarDualCellularSignalView *)self _screen];
-  [v11 scale];
+  _screen = [(STUIStatusBarDualCellularSignalView *)self _screen];
+  [_screen scale];
   v13 = v12;
 
   v14 = [v6 stringByAppendingString:v10];

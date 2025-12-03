@@ -1,11 +1,11 @@
 @interface MPSMatrixCopy
-- (MPSMatrixCopy)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (MPSMatrixCopy)copyWithZone:(_NSZone *)zone device:(id)device;
 - (MPSMatrixCopy)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSMatrixCopy)initWithDevice:(id)device copyRows:(NSUInteger)copyRows copyColumns:(NSUInteger)copyColumns sourcesAreTransposed:(BOOL)sourcesAreTransposed destinationsAreTransposed:(BOOL)destinationsAreTransposed;
 - (id)debugDescription;
-- (void)encodeToCommandBuffer:(id)a3 encoder:(id)a4 copyDescriptor:(id)a5 rowPermuteIndices:(id)a6 rowPermuteOffset:(unint64_t)a7 columnPermuteIndices:(id)a8 columnPermuteOffset:(unint64_t)a9;
+- (void)encodeToCommandBuffer:(id)buffer encoder:(id)encoder copyDescriptor:(id)descriptor rowPermuteIndices:(id)indices rowPermuteOffset:(unint64_t)offset columnPermuteIndices:(id)permuteIndices columnPermuteOffset:(unint64_t)permuteOffset;
 - (void)encodeToCommandBuffer:(id)commandBuffer copyDescriptor:(MPSMatrixCopyDescriptor *)copyDescriptor rowPermuteIndices:(MPSVector *)rowPermuteIndices rowPermuteOffset:(NSUInteger)rowPermuteOffset columnPermuteIndices:(MPSVector *)columnPermuteIndices columnPermuteOffset:(NSUInteger)columnPermuteOffset;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSMatrixCopy
@@ -19,7 +19,7 @@
 
   if (!copyRows)
   {
-    v12 = self;
+    selfCopy2 = self;
     if (MTLReportFailureTypeEnabled())
     {
       goto LABEL_10;
@@ -30,7 +30,7 @@
 
   if (!copyColumns)
   {
-    v12 = self;
+    selfCopy2 = self;
     if (MTLReportFailureTypeEnabled())
     {
 LABEL_10:
@@ -110,29 +110,29 @@ LABEL_4:
   }
 }
 
-- (void)encodeToCommandBuffer:(id)a3 encoder:(id)a4 copyDescriptor:(id)a5 rowPermuteIndices:(id)a6 rowPermuteOffset:(unint64_t)a7 columnPermuteIndices:(id)a8 columnPermuteOffset:(unint64_t)a9
+- (void)encodeToCommandBuffer:(id)buffer encoder:(id)encoder copyDescriptor:(id)descriptor rowPermuteIndices:(id)indices rowPermuteOffset:(unint64_t)offset columnPermuteIndices:(id)permuteIndices columnPermuteOffset:(unint64_t)permuteOffset
 {
   v357 = *MEMORY[0x277D85DE8];
-  v337 = objc_msgSend_filledCount(a5, a2, a3, a4, a5, a6, a7, a8);
+  v337 = objc_msgSend_filledCount(descriptor, a2, buffer, encoder, descriptor, indices, offset, permuteIndices);
   if (v337)
   {
-    v313 = a4;
-    v326 = objc_msgSend_sourceMatrices(a5, v14, v15, v16, v17, v18, v19, v20);
-    v333 = objc_msgSend_destinationMatrices(a5, v21, v22, v23, v24, v25, v26, v27);
-    v334 = objc_msgSend_cpuOffsetsVector(a5, v28, v29, v30, v31, v32, v33, v34);
-    v335 = self;
-    v314 = a6;
-    v315 = a8;
+    encoderCopy = encoder;
+    v326 = objc_msgSend_sourceMatrices(descriptor, v14, v15, v16, v17, v18, v19, v20);
+    v333 = objc_msgSend_destinationMatrices(descriptor, v21, v22, v23, v24, v25, v26, v27);
+    v334 = objc_msgSend_cpuOffsetsVector(descriptor, v28, v29, v30, v31, v32, v33, v34);
+    selfCopy = self;
+    indicesCopy = indices;
+    permuteIndicesCopy = permuteIndices;
     if ((*(&self->super.super.isa + *MEMORY[0x277CD7378]) & 1) == 0)
     {
-      if (objc_msgSend_allocCount(a5, v35, v36, v37, v38, v39, v40, v41) != v337 && MTLReportFailureTypeEnabled())
+      if (objc_msgSend_allocCount(descriptor, v35, v36, v37, v38, v39, v40, v41) != v337 && MTLReportFailureTypeEnabled())
       {
         v303 = objc_opt_class();
         v307 = NSStringFromClass(v303);
         MTLReportFailure();
       }
 
-      if (!a3 && MTLReportFailureTypeEnabled())
+      if (!buffer && MTLReportFailureTypeEnabled())
       {
         v304 = objc_opt_class();
         v307 = NSStringFromClass(v304);
@@ -188,7 +188,7 @@ LABEL_4:
         v49 = objc_msgSend_columns(v48, v35, v36, v37, v38, v39, v40, v41, v307);
         v57 = objc_msgSend_rows(v48, v50, v51, v52, v53, v54, v55, v56);
         objc_msgSend_matrices(v48, v58, v59, v60, v61, v62, v63, v64);
-        if (v335->_destinationsAreTransposed)
+        if (selfCopy->_destinationsAreTransposed)
         {
           v72 = v44;
         }
@@ -198,7 +198,7 @@ LABEL_4:
           v72 = v45;
         }
 
-        if (v335->_destinationsAreTransposed)
+        if (selfCopy->_destinationsAreTransposed)
         {
           v73 = v45;
         }
@@ -208,10 +208,10 @@ LABEL_4:
           v73 = v44;
         }
 
-        destinationsAreTransposed = v335->_destinationsAreTransposed;
-        v75 = *(&v335->super.super.isa + OBJC_IVAR___MPSMatrixCopy__copyColumns[destinationsAreTransposed]);
-        v76 = !v335->_destinationsAreTransposed;
-        v77 = *(&v335->super.super.isa + OBJC_IVAR___MPSMatrixCopy__copyColumns[v76]);
+        destinationsAreTransposed = selfCopy->_destinationsAreTransposed;
+        v75 = *(&selfCopy->super.super.isa + OBJC_IVAR___MPSMatrixCopy__copyColumns[destinationsAreTransposed]);
+        v76 = !selfCopy->_destinationsAreTransposed;
+        v77 = *(&selfCopy->super.super.isa + OBJC_IVAR___MPSMatrixCopy__copyColumns[v76]);
         v324 = v75;
         if (v72 + v75 > v49)
         {
@@ -235,7 +235,7 @@ LABEL_4:
           MTLReportFailure();
         }
 
-        if (v335->_sourcesAreTransposed)
+        if (selfCopy->_sourcesAreTransposed)
         {
           v78 = v331;
         }
@@ -245,7 +245,7 @@ LABEL_4:
           v78 = v329;
         }
 
-        if (v335->_sourcesAreTransposed)
+        if (selfCopy->_sourcesAreTransposed)
         {
           v79 = v329;
         }
@@ -259,14 +259,14 @@ LABEL_4:
         v88 = objc_msgSend_rows(v47, v81, v82, v83, v84, v85, v86, v87);
         objc_msgSend_matrices(v47, v89, v90, v91, v92, v93, v94, v95);
         v96 = 1;
-        sourcesAreTransposed = v335->_sourcesAreTransposed;
-        v98 = *(&v335->super.super.isa + OBJC_IVAR___MPSMatrixCopy__copyColumns[sourcesAreTransposed]);
-        if (v335->_sourcesAreTransposed)
+        sourcesAreTransposed = selfCopy->_sourcesAreTransposed;
+        v98 = *(&selfCopy->super.super.isa + OBJC_IVAR___MPSMatrixCopy__copyColumns[sourcesAreTransposed]);
+        if (selfCopy->_sourcesAreTransposed)
         {
           v96 = 0;
         }
 
-        v99 = *(&v335->super.super.isa + OBJC_IVAR___MPSMatrixCopy__copyColumns[v96]);
+        v99 = *(&selfCopy->super.super.isa + OBJC_IVAR___MPSMatrixCopy__copyColumns[v96]);
         if (v98 + v78 > v80 && MTLReportFailureTypeEnabled())
         {
           v105 = objc_opt_class();
@@ -281,14 +281,14 @@ LABEL_4:
           MTLReportFailure();
         }
 
-        if (v315 && v324 + a9 > objc_msgSend_length(v315, v35, v36, v37, v38, v39, v40, v41) && MTLReportFailureTypeEnabled())
+        if (permuteIndicesCopy && v324 + permuteOffset > objc_msgSend_length(permuteIndicesCopy, v35, v36, v37, v38, v39, v40, v41) && MTLReportFailureTypeEnabled())
         {
           v107 = objc_opt_class();
           v307 = NSStringFromClass(v107);
           MTLReportFailure();
         }
 
-        if (v314 && v327 + a7 > objc_msgSend_length(v314, v35, v36, v37, v38, v39, v40, v41) && MTLReportFailureTypeEnabled())
+        if (indicesCopy && v327 + offset > objc_msgSend_length(indicesCopy, v35, v36, v37, v38, v39, v40, v41) && MTLReportFailureTypeEnabled())
         {
           v100 = objc_opt_class();
           v307 = NSStringFromClass(v100);
@@ -302,13 +302,13 @@ LABEL_4:
       while (v337 != v42);
     }
 
-    v312 = objc_msgSend_gpuOffsetsVector(a5, v35, v36, v37, v38, v39, v40, v41, v307);
-    v310 = objc_msgSend_gpuBufferOffset(a5, v108, v109, v110, v111, v112, v113, v114);
-    v311 = *(&v335->super.super.isa + *MEMORY[0x277CD7370]);
-    v115 = v335->_destinationsAreTransposed;
-    v116 = v335->_sourcesAreTransposed;
-    copyRows = v335->_copyRows;
-    copyColumns = v335->_copyColumns;
+    v312 = objc_msgSend_gpuOffsetsVector(descriptor, v35, v36, v37, v38, v39, v40, v41, v307);
+    v310 = objc_msgSend_gpuBufferOffset(descriptor, v108, v109, v110, v111, v112, v113, v114);
+    v311 = *(&selfCopy->super.super.isa + *MEMORY[0x277CD7370]);
+    v115 = selfCopy->_destinationsAreTransposed;
+    v116 = selfCopy->_sourcesAreTransposed;
+    copyRows = selfCopy->_copyRows;
+    copyColumns = selfCopy->_copyColumns;
     v345 = copyRows;
     v346 = objc_msgSend_matrices(*v326, v118, v119, v120, v121, v122, v123, v124);
     v332 = v115;
@@ -327,7 +327,7 @@ LABEL_4:
 
     v328 = v139;
     v140 = 0;
-    v309 = 4 * a7;
+    v309 = 4 * offset;
     v141 = (v334 + 8);
     v142 = MEMORY[0x277CD7388];
     v143 = v337;
@@ -561,7 +561,7 @@ LABEL_105:
 
       v192 = *(*v161 + v168) >> 3;
       ComputeState = MPSLibrary::GetComputeState();
-      objc_msgSend_setComputePipelineState_(v313, v194, ComputeState, v195, v196, v197, v198, v199);
+      objc_msgSend_setComputePipelineState_(encoderCopy, v194, ComputeState, v195, v196, v197, v198, v199);
       v207 = objc_msgSend_threadExecutionWidth(ComputeState, v200, v201, v202, v203, v204, v205, v206);
       if (v207 <= 1)
       {
@@ -596,21 +596,21 @@ LABEL_105:
         v215 = v208;
       }
 
-      objc_msgSend_setBuffers_offsets_withRange_(v313, v209, v354, v355, 1, 13, v210, v211);
-      objc_msgSend_setBuffers_offsets_withRange_(v313, v216, v351, v352, 14, 13, v217, v218);
+      objc_msgSend_setBuffers_offsets_withRange_(encoderCopy, v209, v354, v355, 1, 13, v210, v211);
+      objc_msgSend_setBuffers_offsets_withRange_(encoderCopy, v216, v351, v352, 14, 13, v217, v218);
       if (!v312)
       {
-        objc_msgSend_setBuffer_offset_atIndex_(v313, v219, v354[0], 0, 27, v220, v221, v222);
+        objc_msgSend_setBuffer_offset_atIndex_(encoderCopy, v219, v354[0], 0, 27, v220, v221, v222);
         v350 = 0;
-        if (v314)
+        if (indicesCopy)
         {
           goto LABEL_123;
         }
 
 LABEL_129:
-        objc_msgSend_setBuffer_offset_atIndex_(v313, v235, v354[0], 0, 28, v239, v240, v241);
+        objc_msgSend_setBuffer_offset_atIndex_(encoderCopy, v235, v354[0], 0, 28, v239, v240, v241);
         v269 = v325;
-        if (!v315)
+        if (!permuteIndicesCopy)
         {
           goto LABEL_62;
         }
@@ -628,9 +628,9 @@ LABEL_129:
         v226 = atomic_load_explicit(v225, memory_order_acquire);
       }
 
-      objc_msgSend_setBuffer_offset_atIndex_(v313, v219, v226, v310 + 16 * v325, 27, v220, v221, v222);
+      objc_msgSend_setBuffer_offset_atIndex_(encoderCopy, v219, v226, v310 + 16 * v325, 27, v220, v221, v222);
       v350 = 1;
-      v234 = objc_msgSend_retainedReferences(a3, v227, v228, v229, v230, v231, v232, v233);
+      v234 = objc_msgSend_retainedReferences(buffer, v227, v228, v229, v230, v231, v232, v233);
       v214 = v223;
       if (!v325 && (v234 & 1) == 0)
       {
@@ -640,63 +640,63 @@ LABEL_129:
         v342[2] = sub_2399DB2D8;
         v342[3] = &unk_278AFD238;
         v342[4] = v226;
-        objc_msgSend_addCompletedHandler_(a3, v243, v342, v244, v245, v246, v247, v248);
+        objc_msgSend_addCompletedHandler_(buffer, v243, v342, v244, v245, v246, v247, v248);
       }
 
-      if (!v314)
+      if (!indicesCopy)
       {
         goto LABEL_129;
       }
 
 LABEL_123:
-      v249 = objc_msgSend_data(v314, v235, v236, v237, v238, v239, v240, v241);
-      objc_msgSend_setBuffer_offset_atIndex_(v313, v250, v249, v309, 28, v251, v252, v253);
-      v261 = objc_msgSend_retainedReferences(a3, v254, v255, v256, v257, v258, v259, v260);
+      v249 = objc_msgSend_data(indicesCopy, v235, v236, v237, v238, v239, v240, v241);
+      objc_msgSend_setBuffer_offset_atIndex_(encoderCopy, v250, v249, v309, 28, v251, v252, v253);
+      v261 = objc_msgSend_retainedReferences(buffer, v254, v255, v256, v257, v258, v259, v260);
       v269 = v325;
       if (!v325 && (v261 & 1) == 0)
       {
-        v270 = objc_msgSend_data(v314, v262, v263, v264, v265, v266, v267, v268);
+        v270 = objc_msgSend_data(indicesCopy, v262, v263, v264, v265, v266, v267, v268);
         v271 = v270;
         v341[0] = MEMORY[0x277D85DD0];
         v341[1] = 3221225472;
         v341[2] = sub_2399DB2E0;
         v341[3] = &unk_278AFD238;
         v341[4] = v270;
-        objc_msgSend_addCompletedHandler_(a3, v272, v341, v273, v274, v275, v276, v277);
+        objc_msgSend_addCompletedHandler_(buffer, v272, v341, v273, v274, v275, v276, v277);
       }
 
-      if (!v315)
+      if (!permuteIndicesCopy)
       {
 LABEL_62:
-        objc_msgSend_setBuffer_offset_atIndex_(v313, v262, v354[0], 0, 29, v266, v267, v268);
+        objc_msgSend_setBuffer_offset_atIndex_(encoderCopy, v262, v354[0], 0, 29, v266, v267, v268);
         goto LABEL_63;
       }
 
 LABEL_130:
-      v278 = objc_msgSend_data(v315, v262, v263, v264, v265, v266, v267, v268);
-      objc_msgSend_setBuffer_offset_atIndex_(v313, v279, v278, 4 * a9, 29, v280, v281, v282);
-      v290 = objc_msgSend_retainedReferences(a3, v283, v284, v285, v286, v287, v288, v289);
+      v278 = objc_msgSend_data(permuteIndicesCopy, v262, v263, v264, v265, v266, v267, v268);
+      objc_msgSend_setBuffer_offset_atIndex_(encoderCopy, v279, v278, 4 * permuteOffset, 29, v280, v281, v282);
+      v290 = objc_msgSend_retainedReferences(buffer, v283, v284, v285, v286, v287, v288, v289);
       if (!v269 && (v290 & 1) == 0)
       {
-        v294 = objc_msgSend_data(v315, v144, v291, v292, v293, v145, v146, v147);
+        v294 = objc_msgSend_data(permuteIndicesCopy, v144, v291, v292, v293, v145, v146, v147);
         v295 = v294;
         v340[0] = MEMORY[0x277D85DD0];
         v340[1] = 3221225472;
         v340[2] = sub_2399DB2E8;
         v340[3] = &unk_278AFD238;
         v340[4] = v294;
-        objc_msgSend_addCompletedHandler_(a3, v296, v340, v297, v298, v299, v300, v301);
+        objc_msgSend_addCompletedHandler_(buffer, v296, v340, v297, v298, v299, v300, v301);
       }
 
 LABEL_63:
-      objc_msgSend_setBytes_length_atIndex_(v313, v144, v343, 332, 0, v145, v146, v147);
+      objc_msgSend_setBytes_length_atIndex_(encoderCopy, v144, v343, 332, 0, v145, v146, v147);
       v339[0] = (v213 + v215 - 1) / v215;
       v339[1] = (v212 + v214 - 1) / v214;
       v339[2] = v319;
       v338[0] = v215;
       v338[1] = v214;
       v338[2] = 1;
-      objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(v313, v148, v339, v338, v149, v150, v151, v152);
+      objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(encoderCopy, v148, v339, v338, v149, v150, v151, v152);
       v140 = v269 + 13;
       v143 = v320;
       v141 = v322 + 52;
@@ -709,16 +709,16 @@ LABEL_63:
   v302 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.isa + *MEMORY[0x277CD7358]) = *(&self->super.super.isa + *MEMORY[0x277CD7358]) | 0x10100;
   v25.receiver = self;
   v25.super_class = MPSMatrixCopy;
   [(MPSKernel *)&v25 encodeWithCoder:?];
-  objc_msgSend_encodeBool_forKey_(a3, v5, self->_sourcesAreTransposed, @"MPSMatrixLookUpAndCopy.transposeSource", v6, v7, v8, v9);
-  objc_msgSend_encodeBool_forKey_(a3, v10, self->_destinationsAreTransposed, @"MPSMatrixLookUpAndCopy.transposeDestination", v11, v12, v13, v14);
-  objc_msgSend_encodeInt64_forKey_(a3, v15, self->_copyRows, @"MPSMatrixLookUpAndCopy.copyRows", v16, v17, v18, v19);
-  objc_msgSend_encodeInt64_forKey_(a3, v20, self->_copyColumns, @"MPSMatrixLookUpAndCopy.copyColumns", v21, v22, v23, v24);
+  objc_msgSend_encodeBool_forKey_(coder, v5, self->_sourcesAreTransposed, @"MPSMatrixLookUpAndCopy.transposeSource", v6, v7, v8, v9);
+  objc_msgSend_encodeBool_forKey_(coder, v10, self->_destinationsAreTransposed, @"MPSMatrixLookUpAndCopy.transposeDestination", v11, v12, v13, v14);
+  objc_msgSend_encodeInt64_forKey_(coder, v15, self->_copyRows, @"MPSMatrixLookUpAndCopy.copyRows", v16, v17, v18, v19);
+  objc_msgSend_encodeInt64_forKey_(coder, v20, self->_copyColumns, @"MPSMatrixLookUpAndCopy.copyColumns", v21, v22, v23, v24);
 }
 
 - (MPSMatrixCopy)initWithCoder:(NSCoder *)aDecoder device:(id)device
@@ -744,15 +744,15 @@ LABEL_63:
   {
     if ((*(&self->super.super.isa + *MEMORY[0x277CD7358]) & 0xFF00) != 0x100)
     {
-      v32 = self;
+      selfCopy = self;
       v33 = MTLReportFailureTypeEnabled();
-      self = v32;
+      self = selfCopy;
       if (v33)
       {
         v34 = objc_opt_class();
         NSStringFromClass(v34);
         MTLReportFailure();
-        self = v32;
+        self = selfCopy;
       }
     }
 
@@ -795,11 +795,11 @@ LABEL_63:
   }
 }
 
-- (MPSMatrixCopy)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (MPSMatrixCopy)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSMatrixCopy;
-  result = [(MPSKernel *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSKernel *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     result->_destinationsAreTransposed = self->_destinationsAreTransposed;

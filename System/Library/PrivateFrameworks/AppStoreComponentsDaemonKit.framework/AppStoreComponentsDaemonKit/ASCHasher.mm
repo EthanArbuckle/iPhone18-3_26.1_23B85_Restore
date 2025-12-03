@@ -2,10 +2,10 @@
 + (unint64_t)executionSeed;
 - (ASCHasher)init;
 - (unint64_t)finalizeHash;
-- (void)combineBytes:(const void *)a3 length:(unint64_t)a4;
-- (void)combineDouble:(double)a3;
-- (void)combineInteger:(int64_t)a3;
-- (void)combineUnsignedInteger:(unint64_t)a3;
+- (void)combineBytes:(const void *)bytes length:(unint64_t)length;
+- (void)combineDouble:(double)double;
+- (void)combineInteger:(int64_t)integer;
+- (void)combineUnsignedInteger:(unint64_t)integer;
 @end
 
 @implementation ASCHasher
@@ -38,7 +38,7 @@
   return v2;
 }
 
-- (void)combineBytes:(const void *)a3 length:(unint64_t)a4
+- (void)combineBytes:(const void *)bytes length:(unint64_t)length
 {
   if ([(ASCHasher *)self isFinalized])
   {
@@ -46,25 +46,25 @@
     objc_exception_throw([v7 initWithName:*MEMORY[0x277CBE658] reason:@"Cannot combine additional values into finalized hasher" userInfo:0]);
   }
 
-  v8 = [(ASCHasher *)self buffer];
-  [v8 appendBytes:a3 length:a4];
+  buffer = [(ASCHasher *)self buffer];
+  [buffer appendBytes:bytes length:length];
 }
 
-- (void)combineDouble:(double)a3
+- (void)combineDouble:(double)double
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:double];
   [(ASCHasher *)self combineObject:v4];
 }
 
-- (void)combineInteger:(int64_t)a3
+- (void)combineInteger:(int64_t)integer
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:integer];
   [(ASCHasher *)self combineObject:v4];
 }
 
-- (void)combineUnsignedInteger:(unint64_t)a3
+- (void)combineUnsignedInteger:(unint64_t)integer
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:integer];
   [(ASCHasher *)self combineObject:v4];
 }
 
@@ -76,12 +76,12 @@
     objc_exception_throw([v7 initWithName:*MEMORY[0x277CBE658] reason:@"Cannot finalize hasher multiple times" userInfo:0]);
   }
 
-  v3 = [(ASCHasher *)self buffer];
-  v4 = [v3 hash];
+  buffer = [(ASCHasher *)self buffer];
+  v4 = [buffer hash];
 
   [(ASCHasher *)self setIsFinalized:1];
-  v5 = [(ASCHasher *)self buffer];
-  [v5 setLength:0];
+  buffer2 = [(ASCHasher *)self buffer];
+  [buffer2 setLength:0];
 
   return v4;
 }

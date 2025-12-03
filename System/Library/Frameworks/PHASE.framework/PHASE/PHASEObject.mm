@@ -1,19 +1,19 @@
 @interface PHASEObject
-+ (void)deRegisterSubTree:(id)a3 engine:(id)a4;
-+ (void)registerSubTree:(id)a3 engine:(id)a4;
++ (void)deRegisterSubTree:(id)tree engine:(id)engine;
++ (void)registerSubTree:(id)tree engine:(id)engine;
 - (BOOL)addChild:(PHASEObject *)child error:(NSError *)error;
 - (BOOL)isConnectedToRoot;
-- (BOOL)isUnderTarget:(id)a3;
-- (BOOL)validateTransform:(__n128)a3 outAffine:(__n128)a4;
+- (BOOL)isUnderTarget:(id)target;
+- (BOOL)validateTransform:(__n128)transform outAffine:(__n128)affine;
 - (NSArray)children;
 - (PHASEEngine)engine;
 - (PHASEObject)init;
 - (PHASEObject)initWithEngine:(PHASEEngine *)engine;
-- (PHASEObject)initWithEngine:(id)a3 entityType:(unsigned int)a4 shapes:(id)a5;
+- (PHASEObject)initWithEngine:(id)engine entityType:(unsigned int)type shapes:(id)shapes;
 - (PHASEObject)parent;
-- (__n128)_convertTransform:(__n128)a3 fromObject:(__n128)a4;
-- (__n128)_storeTransform:(__n128)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (__n128)_convertTransform:(__n128)transform fromObject:(__n128)object;
+- (__n128)_storeTransform:(__n128)transform;
+- (id)copyWithZone:(_NSZone *)zone;
 - (simd_float4x4)transform;
 - (simd_float4x4)worldTransform;
 - (void)dealloc;
@@ -32,11 +32,11 @@
   return 0;
 }
 
-- (PHASEObject)initWithEngine:(id)a3 entityType:(unsigned int)a4 shapes:(id)a5
+- (PHASEObject)initWithEngine:(id)engine entityType:(unsigned int)type shapes:(id)shapes
 {
   v68 = *MEMORY[0x277D85DE8];
-  obj = a3;
-  v48 = a5;
+  obj = engine;
+  shapesCopy = shapes;
   v58.receiver = self;
   v58.super_class = PHASEObject;
   v7 = [(PHASEObject *)&v58 init];
@@ -53,15 +53,15 @@ LABEL_44:
   __p = 0;
   v56 = 0;
   v57 = 0;
-  if (!v48 || ![v48 count])
+  if (!shapesCopy || ![shapesCopy count])
   {
     goto LABEL_34;
   }
 
-  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v48, "count")}];
+  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(shapesCopy, "count")}];
   [(PHASEObject *)v8 setGeoShapeHandles:v9];
 
-  v10 = [v48 count];
+  v10 = [shapesCopy count];
   if (v10 > (v57 - __p) >> 3)
   {
     if (!(v10 >> 61))
@@ -76,7 +76,7 @@ LABEL_44:
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v44 = v48;
+  v44 = shapesCopy;
   v11 = [v44 countByEnumeratingWithState:&v51 objects:v67 count:16];
   if (!v11)
   {
@@ -95,9 +95,9 @@ LABEL_44:
       }
 
       v50 = *(*(&v51 + 1) + 8 * i);
-      v13 = [v50 engine];
+      engine = [v50 engine];
       WeakRetained = objc_loadWeakRetained(&v8->_engine);
-      v15 = v13 == WeakRetained;
+      v15 = engine == WeakRetained;
 
       if (!v15)
       {
@@ -105,7 +105,7 @@ LABEL_44:
         if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
         {
           v40 = objc_loadWeakRetained(&v8->_engine);
-          v41 = [v50 engine];
+          engine2 = [v50 engine];
           *buf = 136315906;
           v60 = "PHASEObject.mm";
           v61 = 1024;
@@ -113,14 +113,14 @@ LABEL_44:
           v63 = 2048;
           v64 = v40;
           v65 = 2048;
-          v66 = v41;
+          v66 = engine2;
           _os_log_impl(&dword_23A302000, v39, OS_LOG_TYPE_ERROR, "%25s:%-5d engine@%p: Error: Attempting to use a shape initialized with a different PHASEEngine instance @%p", buf, 0x26u);
         }
 
         goto LABEL_51;
       }
 
-      v17 = [v50 geoShapeHandlesForEntityType:a4];
+      v17 = [v50 geoShapeHandlesForEntityType:type];
       if (!v17)
       {
         v39 = **(Phase::Logger::GetInstance(0) + 448);
@@ -134,7 +134,7 @@ LABEL_44:
           v63 = 2048;
           v64 = v42;
           v65 = 1024;
-          LODWORD(v66) = a4;
+          LODWORD(v66) = type;
           _os_log_impl(&dword_23A302000, v39, OS_LOG_TYPE_ERROR, "%25s:%-5d engine@%p: Error: could not create shape handles for entity type %d!", buf, 0x22u);
         }
 
@@ -146,9 +146,9 @@ LABEL_51:
       for (j = 0; [v17 count] > j; ++j)
       {
         v19 = [v17 objectAtIndexedSubscript:j];
-        v20 = [v19 unsignedLongLongValue];
+        unsignedLongLongValue = [v19 unsignedLongLongValue];
 
-        if (v20)
+        if (unsignedLongLongValue)
         {
           v21 = v56;
           if (v56 >= v57)
@@ -183,7 +183,7 @@ LABEL_51:
               std::__allocate_at_least[abi:ne200100]<std::allocator<unsigned long>>(&__p, v28);
             }
 
-            *(8 * v25) = v20;
+            *(8 * v25) = unsignedLongLongValue;
             v22 = 8 * v25 + 8;
             memcpy(0, v23, v24);
             v29 = __p;
@@ -198,14 +198,14 @@ LABEL_51:
 
           else
           {
-            *v56 = v20;
+            *v56 = unsignedLongLongValue;
             v22 = (v21 + 8);
           }
 
           v56 = v22;
-          v30 = [(PHASEObject *)v8 geoShapeHandles];
+          geoShapeHandles = [(PHASEObject *)v8 geoShapeHandles];
           v31 = [v17 objectAtIndexedSubscript:j];
-          [v30 addObject:v31];
+          [geoShapeHandles addObject:v31];
         }
       }
     }
@@ -222,7 +222,7 @@ LABEL_51:
 LABEL_33:
 
 LABEL_34:
-  if (!a4)
+  if (!type)
   {
 LABEL_38:
     objc_opt_class();
@@ -251,8 +251,8 @@ LABEL_38:
     goto LABEL_44;
   }
 
-  v32 = [obj implementation];
-  [(PHASEObject *)v8 setGeoEntityHandle:(*(**(v32 + 368) + 16))(*(v32 + 368), a4)];
+  implementation = [obj implementation];
+  [(PHASEObject *)v8 setGeoEntityHandle:(*(**(implementation + 368) + 16))(*(implementation + 368), type)];
   if ([(PHASEObject *)v8 geoEntityHandle])
   {
     if (v56 != __p)
@@ -275,7 +275,7 @@ LABEL_38:
     v63 = 2048;
     v64 = v38;
     v65 = 1024;
-    LODWORD(v66) = a4;
+    LODWORD(v66) = type;
     _os_log_impl(&dword_23A302000, v44, OS_LOG_TYPE_ERROR, "%25s:%-5d engine@%p: Error: could not create geometry entity handle for type %d!", buf, 0x22u);
   }
 
@@ -309,8 +309,8 @@ LABEL_55:
   objc_storeWeak(&v5->_engine, v4);
   objc_storeWeak(&v6->_parent, 0);
   WeakRetained = objc_loadWeakRetained(&v6->_engine);
-  v8 = [WeakRetained implementation];
-  [(PHASEObject *)v6 setGeoEntityHandle:(*(**(v8 + 368) + 16))(*(v8 + 368), 1)];
+  implementation = [WeakRetained implementation];
+  [(PHASEObject *)v6 setGeoEntityHandle:(*(**(implementation + 368) + 16))(*(implementation + 368), 1)];
 
   if ([(PHASEObject *)v6 geoEntityHandle])
   {
@@ -368,8 +368,8 @@ LABEL_10:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [(PHASEObject *)self geoShapeHandles];
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v26 count:16];
+    geoShapeHandles = [(PHASEObject *)self geoShapeHandles];
+    v6 = [geoShapeHandles countByEnumeratingWithState:&v16 objects:v26 count:16];
     if (v6)
     {
       v7 = *v17;
@@ -380,17 +380,17 @@ LABEL_10:
         {
           if (*v17 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(geoShapeHandles);
           }
 
-          v9 = [*(*(&v16 + 1) + 8 * v8) unsignedLongLongValue];
-          v10 = [v4 implementation];
-          (*(**(v10 + 368) + 344))(*(v10 + 368), v9);
+          unsignedLongLongValue = [*(*(&v16 + 1) + 8 * v8) unsignedLongLongValue];
+          implementation = [v4 implementation];
+          (*(**(implementation + 368) + 344))(*(implementation + 368), unsignedLongLongValue);
           ++v8;
         }
 
         while (v6 != v8);
-        v6 = [v5 countByEnumeratingWithState:&v16 objects:v26 count:16];
+        v6 = [geoShapeHandles countByEnumeratingWithState:&v16 objects:v26 count:16];
       }
 
       while (v6);
@@ -408,7 +408,7 @@ LABEL_10:
         v22 = 1024;
         v23 = 198;
         v24 = 2112;
-        v25 = self;
+        selfCopy = self;
         _os_log_impl(&dword_23A302000, v12, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Destroyed %@", buf, 0x1Cu);
       }
     }
@@ -416,8 +416,8 @@ LABEL_10:
     v13 = *([v4 implementation] + 368);
     (*(*v13 + 320))(v13, [(PHASEObject *)self geoEntityHandle]);
     [(PHASEObject *)self setGeoEntityHandle:0];
-    v14 = [(PHASEObject *)self geoShapeHandles];
-    [v14 removeAllObjects];
+    geoShapeHandles2 = [(PHASEObject *)self geoShapeHandles];
+    [geoShapeHandles2 removeAllObjects];
   }
 
   v15.receiver = self;
@@ -439,29 +439,29 @@ LABEL_10:
     return 1;
   }
 
-  for (i = self; ; i = v12)
+  for (i = self; ; i = parent6)
   {
-    v5 = [(PHASEObject *)i parent];
-    v3 = v5 != 0;
+    parent = [(PHASEObject *)i parent];
+    isConnectedToRoot = parent != 0;
 
-    if (!v5)
+    if (!parent)
     {
       break;
     }
 
-    v6 = [(PHASEObject *)i parent];
+    parent2 = [(PHASEObject *)i parent];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v13 = [(PHASEObject *)i parent];
-      v3 = [v13 isConnectedToRoot];
+      parent3 = [(PHASEObject *)i parent];
+      isConnectedToRoot = [parent3 isConnectedToRoot];
 
       break;
     }
 
-    v8 = [(PHASEObject *)i parent];
+    parent4 = [(PHASEObject *)i parent];
     objc_opt_class();
     v9 = objc_opt_isKindOfClass();
 
@@ -470,7 +470,7 @@ LABEL_10:
       break;
     }
 
-    v10 = [(PHASEObject *)i parent];
+    parent5 = [(PHASEObject *)i parent];
     objc_opt_class();
     v11 = objc_opt_isKindOfClass();
 
@@ -479,26 +479,26 @@ LABEL_10:
       break;
     }
 
-    v12 = [(PHASEObject *)i parent];
+    parent6 = [(PHASEObject *)i parent];
   }
 
-  return v3;
+  return isConnectedToRoot;
 }
 
-+ (void)registerSubTree:(id)a3 engine:(id)a4
++ (void)registerSubTree:(id)tree engine:(id)engine
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = *([v6 implementation] + 368);
-  WeakRetained = objc_loadWeakRetained(v5 + 10);
-  (*(*v7 + 280))(v7, WeakRetained[12], v5[12]);
+  treeCopy = tree;
+  engineCopy = engine;
+  v7 = *([engineCopy implementation] + 368);
+  WeakRetained = objc_loadWeakRetained(treeCopy + 10);
+  (*(*v7 + 280))(v7, WeakRetained[12], treeCopy[12]);
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = v5[1];
+  v9 = treeCopy[1];
   v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
@@ -514,7 +514,7 @@ LABEL_10:
         }
 
         v13 = *(*(&v14 + 1) + 8 * v12);
-        [PHASEObject registerSubTree:v13 engine:v6, v14];
+        [PHASEObject registerSubTree:v13 engine:engineCopy, v14];
 
         ++v12;
       }
@@ -527,16 +527,16 @@ LABEL_10:
   }
 }
 
-+ (void)deRegisterSubTree:(id)a3 engine:(id)a4
++ (void)deRegisterSubTree:(id)tree engine:(id)engine
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  treeCopy = tree;
+  engineCopy = engine;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = v5[1];
+  v7 = treeCopy[1];
   v8 = [v7 countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v8)
   {
@@ -551,7 +551,7 @@ LABEL_10:
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
-        [PHASEObject deRegisterSubTree:v11 engine:v6, v23];
+        [PHASEObject deRegisterSubTree:v11 engine:engineCopy, v23];
       }
 
       v8 = [v7 countByEnumeratingWithState:&v23 objects:v29 count:16];
@@ -563,10 +563,10 @@ LABEL_10:
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v12 = Phase::Controller::TaskManager::GetService<Phase::Controller::AssetUnloader>(([v6 implementation] + 48), 12);
-    WeakRetained = objc_loadWeakRetained(v5 + 10);
+    v12 = Phase::Controller::TaskManager::GetService<Phase::Controller::AssetUnloader>(([engineCopy implementation] + 48), 12);
+    WeakRetained = objc_loadWeakRetained(treeCopy + 10);
     v14 = WeakRetained[12];
-    v15 = v5[12];
+    v15 = treeCopy[12];
     v16 = **(v12 + 8);
     v28 = 0;
     v27 = 1;
@@ -616,36 +616,36 @@ LABEL_10:
 
   else
   {
-    v19 = *([v6 implementation] + 368);
-    WeakRetained = objc_loadWeakRetained(v5 + 10);
-    (*(*v19 + 288))(v19, WeakRetained[12], v5[12]);
+    v19 = *([engineCopy implementation] + 368);
+    WeakRetained = objc_loadWeakRetained(treeCopy + 10);
+    (*(*v19 + 288))(v19, WeakRetained[12], treeCopy[12]);
   }
 }
 
-- (BOOL)isUnderTarget:(id)a3
+- (BOOL)isUnderTarget:(id)target
 {
-  v4 = self;
+  selfCopy = self;
   while (1)
   {
-    v5 = v4;
-    if (v4 == a3)
+    v5 = selfCopy;
+    if (selfCopy == target)
     {
       break;
     }
 
-    v4 = [(PHASEObject *)v4 parent];
+    selfCopy = [(PHASEObject *)selfCopy parent];
 
-    if (!v4)
+    if (!selfCopy)
     {
       v6 = 0;
       goto LABEL_6;
     }
   }
 
-  v6 = v4;
+  v6 = selfCopy;
 LABEL_6:
 
-  return v5 == a3;
+  return v5 == target;
 }
 
 - (BOOL)addChild:(PHASEObject *)child error:(NSError *)error
@@ -677,7 +677,7 @@ LABEL_6:
       v80 = 1024;
       v81 = 310;
       v82 = 2080;
-      v83 = [v20 UTF8String];
+      uTF8String = [v20 UTF8String];
       _os_log_impl(&dword_23A302000, v19, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
     }
 
@@ -707,7 +707,7 @@ LABEL_6:
       v80 = 1024;
       v81 = 322;
       v82 = 2080;
-      v83 = [v26 UTF8String];
+      uTF8String = [v26 UTF8String];
       _os_log_impl(&dword_23A302000, v25, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
     }
 
@@ -737,7 +737,7 @@ LABEL_6:
       v80 = 1024;
       v81 = 334;
       v82 = 2080;
-      v83 = [v32 UTF8String];
+      uTF8String = [v32 UTF8String];
       _os_log_impl(&dword_23A302000, v31, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
     }
 
@@ -767,7 +767,7 @@ LABEL_6:
       v80 = 1024;
       v81 = 348;
       v82 = 2080;
-      v83 = [v14 UTF8String];
+      uTF8String = [v14 UTF8String];
       _os_log_impl(&dword_23A302000, v13, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
     }
 
@@ -782,9 +782,9 @@ LABEL_67:
     goto LABEL_68;
   }
 
-  v34 = [(PHASEObject *)v6 engine];
+  engine = [(PHASEObject *)v6 engine];
 
-  if (v8 != v34)
+  if (v8 != engine)
   {
     v35 = *MEMORY[0x277CCA450];
     v96 = *MEMORY[0x277CCA450];
@@ -802,7 +802,7 @@ LABEL_67:
       v80 = 1024;
       v81 = 362;
       v82 = 2080;
-      v83 = [v39 UTF8String];
+      uTF8String = [v39 UTF8String];
       _os_log_impl(&dword_23A302000, v38, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
     }
 
@@ -833,7 +833,7 @@ LABEL_67:
       v80 = 1024;
       v81 = 375;
       v82 = 2080;
-      v83 = [v46 UTF8String];
+      uTF8String = [v46 UTF8String];
       _os_log_impl(&dword_23A302000, v45, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
     }
 
@@ -868,7 +868,7 @@ LABEL_67:
         v80 = 1024;
         v81 = 388;
         v82 = 2112;
-        v83 = v62;
+        uTF8String = v62;
         _os_log_impl(&dword_23A302000, v61, OS_LOG_TYPE_ERROR, "%25s:%-5d %@", buf, 0x1Cu);
       }
 
@@ -897,7 +897,7 @@ LABEL_67:
       v80 = 1024;
       v81 = 403;
       v82 = 2112;
-      v83 = v50;
+      uTF8String = v50;
       _os_log_impl(&dword_23A302000, v49, OS_LOG_TYPE_ERROR, "%25s:%-5d %@", buf, 0x1Cu);
     }
 
@@ -916,9 +916,9 @@ LABEL_67:
     self->_children = v51;
   }
 
-  v53 = [(PHASEObject *)v6 parent];
+  parent = [(PHASEObject *)v6 parent];
 
-  if (v53)
+  if (parent)
   {
     v54 = *MEMORY[0x277CCA450];
     v88 = *MEMORY[0x277CCA450];
@@ -936,7 +936,7 @@ LABEL_67:
       v80 = 1024;
       v81 = 424;
       v82 = 2080;
-      v83 = [v58 UTF8String];
+      uTF8String = [v58 UTF8String];
       _os_log_impl(&dword_23A302000, v57, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
     }
 
@@ -948,17 +948,17 @@ LABEL_67:
     goto LABEL_67;
   }
 
-  v63 = [(PHASEObject *)self engine];
-  v64 = [(PHASEObject *)v6 engine];
+  engine2 = [(PHASEObject *)self engine];
+  engine3 = [(PHASEObject *)v6 engine];
 
-  if (v63 != v64)
+  if (engine2 != engine3)
   {
     v65 = *MEMORY[0x277CCA450];
     v86 = *MEMORY[0x277CCA450];
     v66 = MEMORY[0x277CCACA8];
-    v67 = [(PHASEObject *)self engine];
-    v68 = [(PHASEObject *)v6 engine];
-    v69 = [v66 stringWithFormat:@"PHASEObject child is registered with a different engine instance than the parent @%p - @%p", v67, v68];
+    engine4 = [(PHASEObject *)self engine];
+    engine5 = [(PHASEObject *)v6 engine];
+    v69 = [v66 stringWithFormat:@"PHASEObject child is registered with a different engine instance than the parent @%p - @%p", engine4, engine5];
     v87 = v69;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v87 forKeys:&v86 count:1];
 
@@ -972,7 +972,7 @@ LABEL_67:
       v80 = 1024;
       v81 = 441;
       v82 = 2080;
-      v83 = [v72 UTF8String];
+      uTF8String = [v72 UTF8String];
       _os_log_impl(&dword_23A302000, v71, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
     }
 
@@ -1003,9 +1003,9 @@ LABEL_67:
       v80 = 1024;
       v81 = 460;
       v82 = 2112;
-      v83 = v6;
+      uTF8String = v6;
       v84 = 2112;
-      v85 = self;
+      selfCopy = self;
       _os_log_impl(&dword_23A302000, v77, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Added child %@ to parent %@", buf, 0x26u);
     }
   }
@@ -1038,7 +1038,7 @@ LABEL_68:
         v16 = 2112;
         v17 = v4;
         v18 = 2112;
-        v19 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_23A302000, v11, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Removed child %@ from parent %@", &v12, 0x26u);
       }
     }
@@ -1057,7 +1057,7 @@ LABEL_68:
     v8 = **(Phase::Logger::GetInstance(WeakRetained) + 448);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(PHASEObject *)v4 parent];
+      parent = [(PHASEObject *)v4 parent];
       v12 = 136316418;
       v13 = "PHASEObject.mm";
       v14 = 1024;
@@ -1065,11 +1065,11 @@ LABEL_68:
       v16 = 2048;
       v17 = v6;
       v18 = 2048;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2048;
       v21 = v4;
       v22 = 2048;
-      v23 = v9;
+      v23 = parent;
       _os_log_impl(&dword_23A302000, v8, OS_LOG_TYPE_ERROR, "%25s:%-5d engine@%p: Error: object@%p, cannot remove the child@%p with parent@%p!", &v12, 0x3Au);
     }
   }
@@ -1123,31 +1123,31 @@ LABEL_68:
   if (children && [(NSMutableSet *)children count])
   {
     v4 = MEMORY[0x277CBEA60];
-    v5 = [(NSMutableSet *)self->_children allObjects];
-    v6 = [v4 arrayWithArray:v5];
+    allObjects = [(NSMutableSet *)self->_children allObjects];
+    array = [v4 arrayWithArray:allObjects];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  return v6;
+  return array;
 }
 
-- (BOOL)validateTransform:(__n128)a3 outAffine:(__n128)a4
+- (BOOL)validateTransform:(__n128)transform outAffine:(__n128)affine
 {
   v7 = a2.n128_f32[0];
   v139 = *MEMORY[0x277D85DE8];
   v8 = a2.n128_f32[1];
   v9 = a2.n128_f32[2];
-  v10 = a3.n128_f32[1];
-  v11 = a3.n128_f32[2];
-  v90 = a3.n128_f32[3];
+  v10 = transform.n128_f32[1];
+  v11 = transform.n128_f32[2];
+  v90 = transform.n128_f32[3];
   v91 = a2.n128_f32[3];
-  v12 = a4.n128_f32[1];
-  v13 = a4.n128_f32[2];
-  v89 = a4.n128_f32[3];
+  v12 = affine.n128_f32[1];
+  v13 = affine.n128_f32[2];
+  v89 = affine.n128_f32[3];
   v87 = a5.n128_f32[1];
   v14 = a5.n128_f32[2];
   v15 = a5.n128_f32[3];
@@ -1161,8 +1161,8 @@ LABEL_68:
   }
 
   v88 = a5.n128_u64[0];
-  v85 = a3.n128_f32[0];
-  v86 = a4.n128_f32[0];
+  v85 = transform.n128_f32[0];
+  v86 = affine.n128_f32[0];
   v84 = v7;
   if (v16 <= 0.00000011921)
   {
@@ -1172,21 +1172,21 @@ LABEL_68:
   v99[0] = v7 / a5.n128_f32[3];
   v99[1] = a2.n128_f32[1] / a5.n128_f32[3];
   v99[2] = a2.n128_f32[2] / a5.n128_f32[3];
-  v99[4] = a3.n128_f32[0] / a5.n128_f32[3];
-  v99[5] = a3.n128_f32[1] / a5.n128_f32[3];
-  v99[6] = a3.n128_f32[2] / a5.n128_f32[3];
-  v99[8] = a4.n128_f32[0] / a5.n128_f32[3];
-  v99[9] = a4.n128_f32[1] / a5.n128_f32[3];
-  v99[10] = a4.n128_f32[2] / a5.n128_f32[3];
+  v99[4] = transform.n128_f32[0] / a5.n128_f32[3];
+  v99[5] = transform.n128_f32[1] / a5.n128_f32[3];
+  v99[6] = transform.n128_f32[2] / a5.n128_f32[3];
+  v99[8] = affine.n128_f32[0] / a5.n128_f32[3];
+  v99[9] = affine.n128_f32[1] / a5.n128_f32[3];
+  v99[10] = affine.n128_f32[2] / a5.n128_f32[3];
   v95[0] = v7 / a5.n128_f32[3];
   v95[1] = a2.n128_f32[1] / a5.n128_f32[3];
   v95[2] = a2.n128_f32[2] / a5.n128_f32[3];
-  v95[4] = a3.n128_f32[0] / a5.n128_f32[3];
-  v95[5] = a3.n128_f32[1] / a5.n128_f32[3];
-  v95[6] = a3.n128_f32[2] / a5.n128_f32[3];
-  v95[8] = a4.n128_f32[0] / a5.n128_f32[3];
-  v95[9] = a4.n128_f32[1] / a5.n128_f32[3];
-  v95[10] = a4.n128_f32[2] / a5.n128_f32[3];
+  v95[4] = transform.n128_f32[0] / a5.n128_f32[3];
+  v95[5] = transform.n128_f32[1] / a5.n128_f32[3];
+  v95[6] = transform.n128_f32[2] / a5.n128_f32[3];
+  v95[8] = affine.n128_f32[0] / a5.n128_f32[3];
+  v95[9] = affine.n128_f32[1] / a5.n128_f32[3];
+  v95[10] = affine.n128_f32[2] / a5.n128_f32[3];
   v96 = a5.n128_u64[0];
   v97 = a5.n128_u32[2];
   v95[3] = 0.0;
@@ -1202,7 +1202,7 @@ LABEL_68:
   if (v18 <= 0.00000011921)
   {
 LABEL_37:
-    v61 = **(Phase::Logger::GetInstance(a1) + 448);
+    v61 = **(Phase::Logger::GetInstance(self) + 448);
     result = os_log_type_enabled(v61, OS_LOG_TYPE_ERROR);
     if (!result)
     {
@@ -1453,7 +1453,7 @@ LABEL_16:
   if (v73 > 0.0001)
   {
 LABEL_51:
-    v61 = **(Phase::Logger::GetInstance(a1) + 448);
+    v61 = **(Phase::Logger::GetInstance(self) + 448);
     result = os_log_type_enabled(v61, OS_LOG_TYPE_ERROR);
     if (!result)
     {
@@ -1525,7 +1525,7 @@ LABEL_51:
     if (fabsf(*&v88) >= 1000000000.0 || fabsf(v87) >= 1000000000.0 || fabsf(v83) >= 1000000000.0)
     {
       v79 = v74;
-      v80 = **(Phase::Logger::GetInstance(a1) + 448);
+      v80 = **(Phase::Logger::GetInstance(self) + 448);
       v81 = os_log_type_enabled(v80, OS_LOG_TYPE_ERROR);
       v74 = v79;
       v78 = v88;
@@ -1560,7 +1560,7 @@ LABEL_51:
   else
   {
 LABEL_61:
-    v61 = **(Phase::Logger::GetInstance(a1) + 448);
+    v61 = **(Phase::Logger::GetInstance(self) + 448);
     result = os_log_type_enabled(v61, OS_LOG_TYPE_ERROR);
     if (result)
     {
@@ -1610,10 +1610,10 @@ LABEL_53:
   return result;
 }
 
-- (__n128)_storeTransform:(__n128)a3
+- (__n128)_storeTransform:(__n128)transform
 {
   result[1] = a2;
-  result[2] = a3;
+  result[2] = transform;
   result[3] = a4;
   result[4] = a5;
   return result;
@@ -1647,7 +1647,7 @@ LABEL_53:
             {
               v11.mData = [(PHASEObject *)self geoEntityHandle];
               *buf = 134220032;
-              v25 = self;
+              selfCopy = self;
               v26 = 2048;
               mData = v11.mData;
               v28 = 2048;
@@ -1680,7 +1680,7 @@ LABEL_53:
   }
 }
 
-- (__n128)_convertTransform:(__n128)a3 fromObject:(__n128)a4
+- (__n128)_convertTransform:(__n128)transform fromObject:(__n128)object
 {
   v8 = a7;
   v9 = v8;
@@ -1691,15 +1691,15 @@ LABEL_53:
 
   else
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 11);
-    v12 = [WeakRetained rootObject];
+    WeakRetained = objc_loadWeakRetained(self + 11);
+    rootObject = [WeakRetained rootObject];
 
-    v10 = v12;
+    v10 = rootObject;
   }
 
-  if (v10 != a1)
+  if (v10 != self)
   {
-    [a1 worldTransform];
+    [self worldTransform];
     v36 = __invert_f4(v35);
     v22 = v36.columns[1];
     v23 = v36.columns[0];
@@ -1710,8 +1710,8 @@ LABEL_53:
       [v9 worldTransform];
       v13 = 0;
       v30 = v14;
-      v31 = v15;
-      v32 = v16;
+      transformCopy = v15;
+      objectCopy = v16;
       v33 = v17;
       do
       {
@@ -1734,8 +1734,8 @@ LABEL_53:
 
     v20 = 0;
     v30 = a2;
-    v31 = a3;
-    v32 = a4;
+    transformCopy = transform;
+    objectCopy = object;
     v33 = a5;
     do
     {
@@ -1756,11 +1756,11 @@ LABEL_53:
   v11 = *worldTransform.columns[1].i64;
   v12 = *worldTransform.columns[2].i64;
   v10 = *worldTransform.columns[0].i64;
-  v9 = [(PHASEObject *)self parent];
-  if (v9)
+  parent = [(PHASEObject *)self parent];
+  if (parent)
   {
-    v3 = [(PHASEObject *)self parent];
-    [v3 _convertTransform:0 fromObject:{v10, v11, v12, v13}];
+    parent2 = [(PHASEObject *)self parent];
+    [parent2 _convertTransform:0 fromObject:{v10, v11, v12, v13}];
     v10 = v5;
     v11 = v6;
     v12 = v7;
@@ -1768,18 +1768,18 @@ LABEL_53:
   }
 
   [(PHASEObject *)self setTransform:v10, v11, v12, v13];
-  if (v9)
+  if (parent)
   {
   }
 }
 
 - (simd_float4x4)worldTransform
 {
-  v3 = [(PHASEObject *)self parent];
-  v4 = v3;
-  if (v3)
+  parent = [(PHASEObject *)self parent];
+  v4 = parent;
+  if (parent)
   {
-    [v3 worldTransform];
+    [parent worldTransform];
     v26 = v6;
     v28 = v5;
     v22 = v8;
@@ -1823,16 +1823,16 @@ LABEL_53:
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (([(PHASEObject *)self isMemberOfClass:objc_opt_class()]& 1) == 0)
   {
     std::terminate();
   }
 
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(PHASEObject *)self engine];
-  v7 = [v5 initWithEngine:v6];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  engine = [(PHASEObject *)self engine];
+  v7 = [v5 initWithEngine:engine];
 
   [(PHASEObject *)self transform];
   [v7 setTransform:?];

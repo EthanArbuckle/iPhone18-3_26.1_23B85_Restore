@@ -24,7 +24,7 @@
     }
 
 LABEL_8:
-    v6 = [a1 imageByPreparingThumbnailOfSize:{29.0, 29.0}];
+    v6 = [self imageByPreparingThumbnailOfSize:{29.0, 29.0}];
 LABEL_10:
     v5 = v6;
     goto LABEL_11;
@@ -33,12 +33,12 @@ LABEL_10:
   switch(a4)
   {
     case 4:
-      v8 = [a1 CGImage];
-      if (v8)
+      cGImage = [self CGImage];
+      if (cGImage)
       {
-        v9 = v8;
-        v10 = [a1 traitCollection];
-        [v10 displayScale];
+        v9 = cGImage;
+        traitCollection = [self traitCollection];
+        [traitCollection displayScale];
         v12 = v11;
 
         v13 = [objc_alloc(MEMORY[0x277D1B160]) initWithCGImage:v9 scale:v12];
@@ -64,22 +64,22 @@ LABEL_10:
 
       if (v20)
       {
-        v21 = v20;
+        selfCopy = v20;
       }
 
       else
       {
-        v21 = a1;
+        selfCopy = self;
       }
 
-      v5 = [v21 imageByPreparingThumbnailOfSize:{29.0, 29.0}];
+      v5 = [selfCopy imageByPreparingThumbnailOfSize:{29.0, 29.0}];
 
       break;
     case 3:
       goto LABEL_8;
     case 2:
 LABEL_9:
-      v6 = [a1 _applicationIconImageForFormat:0 precomposed:a3];
+      v6 = [self _applicationIconImageForFormat:0 precomposed:a3];
       goto LABEL_10;
   }
 
@@ -92,9 +92,9 @@ LABEL_11:
 {
   v4 = MEMORY[0x277D759A0];
   v5 = a3;
-  v6 = [v4 mainScreen];
-  [v6 scale];
-  v7 = [a1 _applicationIconImageForBundleIdentifier:v5 format:0 scale:?];
+  mainScreen = [v4 mainScreen];
+  [mainScreen scale];
+  v7 = [self _applicationIconImageForBundleIdentifier:v5 format:0 scale:?];
 
   return v7;
 }
@@ -102,13 +102,13 @@ LABEL_11:
 + (id)blankIcon
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v0 = [MEMORY[0x277D1B1A8] genericApplicationIcon];
+  genericApplicationIcon = [MEMORY[0x277D1B1A8] genericApplicationIcon];
   v1 = [objc_alloc(MEMORY[0x277D1B1C8]) initWithSize:29.0 scale:{29.0, 2.0}];
   v6[0] = v1;
   v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  [v0 prepareImagesForImageDescriptors:v2];
+  [genericApplicationIcon prepareImagesForImageDescriptors:v2];
 
-  v3 = [v0 CGImageForDescriptor:v1];
+  v3 = [genericApplicationIcon CGImageForDescriptor:v1];
   v4 = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:v3 scale:0 orientation:2.0];
 
   return v4;
@@ -116,7 +116,7 @@ LABEL_11:
 
 + (id)blankSpaceImageWithSize:()STImageAdditions
 {
-  v2 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:{a1, a2}];
+  v2 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:{self, a2}];
   v3 = [v2 imageWithActions:&__block_literal_global_2];
 
   return v3;

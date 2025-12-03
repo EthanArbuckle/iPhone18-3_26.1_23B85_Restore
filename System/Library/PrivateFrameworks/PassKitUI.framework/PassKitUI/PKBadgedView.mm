@@ -1,27 +1,27 @@
 @interface PKBadgedView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)text;
-- (PKBadgedView)initWithView:(id)a3 text:(id)a4;
+- (PKBadgedView)initWithView:(id)view text:(id)text;
 - (UIEdgeInsets)alignmentRectInsets;
 - (uint64_t)_updateBadgeSize;
 - (void)layoutSubviews;
-- (void)setText:(id)a3;
+- (void)setText:(id)text;
 - (void)sizeToFit;
 @end
 
 @implementation PKBadgedView
 
-- (PKBadgedView)initWithView:(id)a3 text:(id)a4
+- (PKBadgedView)initWithView:(id)view text:(id)text
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  viewCopy = view;
+  textCopy = text;
+  if (!viewCopy)
   {
     __break(1u);
   }
 
-  v9 = v8;
+  v9 = textCopy;
   v34.receiver = self;
   v34.super_class = PKBadgedView;
   v10 = *MEMORY[0x1E695F058];
@@ -32,7 +32,7 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_view, a3);
+    objc_storeStrong(&v14->_view, view);
     [(PKBadgedView *)v15 addSubview:v15->_view];
     v16 = [PKButtonBadgeView alloc];
     v17 = v9;
@@ -53,8 +53,8 @@
 
         [(PKButtonBadgeView *)v18->_badge setText:*&v18->_alignmentInsets.top];
         v23 = v18->_badge;
-        v24 = [MEMORY[0x1E69DC888] whiteColor];
-        [(PKButtonBadgeView *)v23 setTextColor:v24];
+        whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+        [(PKButtonBadgeView *)v23 setTextColor:whiteColor];
 
         v25 = v18->_badge;
         v26 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:10.0];
@@ -62,15 +62,15 @@
 
         [(PKButtonBadgeView *)v18->_badge setTextAlignment:1];
         [(PKBadgedView *)v18 addSubview:v18->_badge];
-        v27 = [MEMORY[0x1E69DC888] systemRedColor];
-        [(PKBadgedView *)v18 setBackgroundColor:v27];
+        systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+        [(PKBadgedView *)v18 setBackgroundColor:systemRedColor];
 
-        v28 = [(PKBadgedView *)v18 layer];
-        v29 = [MEMORY[0x1E69DC888] whiteColor];
-        [v28 setBorderColor:{objc_msgSend(v29, "CGColor")}];
+        layer = [(PKBadgedView *)v18 layer];
+        whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+        [layer setBorderColor:{objc_msgSend(whiteColor2, "CGColor")}];
 
-        [v28 setBorderWidth:1.0];
-        [v28 setMasksToBounds:1];
+        [layer setBorderWidth:1.0];
+        [layer setMasksToBounds:1];
       }
     }
 
@@ -99,11 +99,11 @@
     v1 = result;
     [*(result + 408) sizeToFit];
     [*(v1 + 408) frame];
-    v2 = [v1 effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [v1 effectiveUserInterfaceLayoutDirection];
     PKFloatRoundToPixel();
     v4 = v3;
     PKFloatRoundToPixel();
-    if (v2 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v6 = v4;
     }
@@ -115,7 +115,7 @@
 
     *(v1 + 416) = v5;
     *(v1 + 424) = v6;
-    if (v2 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v7 = 0.0;
     }
@@ -180,12 +180,12 @@
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   badge = self->_badge;
   if (badge)
   {
-    v5 = [a3 copy];
+    v5 = [text copy];
     text = badge->_text;
     badge->_text = v5;
 
@@ -211,10 +211,10 @@
   [(PKBadgedView *)self setAnchorPoint:COERCE_DOUBLE(*&vdivq_f64(vsubq_f64(vmlaq_f64(v6, _Q4, v9), v5), v8).f64[1])];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   view = self->_view;
-  [(UIView *)view frame:a3.width];
+  [(UIView *)view frame:fits.width];
   [(UIView *)view alignmentRectForFrame:?];
   v6 = self->_alignmentInsets.left + v5 + self->_alignmentInsets.right;
   v8 = v7 + self->_alignmentInsets.top + self->_alignmentInsets.bottom;

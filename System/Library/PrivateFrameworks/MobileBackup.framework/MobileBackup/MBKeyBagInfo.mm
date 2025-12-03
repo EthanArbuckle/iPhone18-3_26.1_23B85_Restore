@@ -1,12 +1,12 @@
 @interface MBKeyBagInfo
-- (BOOL)isEqual:(id)a3;
-- (MBKeyBagInfo)initWithID:(unsigned int)a3 uuid:(const char *)a4;
-- (void)setUUID:(const char *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MBKeyBagInfo)initWithID:(unsigned int)d uuid:(const char *)uuid;
+- (void)setUUID:(const char *)d;
 @end
 
 @implementation MBKeyBagInfo
 
-- (MBKeyBagInfo)initWithID:(unsigned int)a3 uuid:(const char *)a4
+- (MBKeyBagInfo)initWithID:(unsigned int)d uuid:(const char *)uuid
 {
   v9.receiver = self;
   v9.super_class = MBKeyBagInfo;
@@ -14,18 +14,18 @@
   v7 = v6;
   if (v6)
   {
-    v6->_bagID = a3;
-    [(MBKeyBagInfo *)v6 setUUID:a4];
+    v6->_bagID = d;
+    [(MBKeyBagInfo *)v6 setUUID:uuid];
   }
 
   return v7;
 }
 
-- (void)setUUID:(const char *)a3
+- (void)setUUID:(const char *)d
 {
-  if (a3)
+  if (d)
   {
-    *self->_uuid = *a3;
+    *self->_uuid = *d;
   }
 
   else
@@ -35,7 +35,7 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -43,7 +43,7 @@
     return 0;
   }
 
-  return *self->_uuid == *(a3 + 1) && *&self->_uuid[8] == *(a3 + 2);
+  return *self->_uuid == *(equal + 1) && *&self->_uuid[8] == *(equal + 2);
 }
 
 @end

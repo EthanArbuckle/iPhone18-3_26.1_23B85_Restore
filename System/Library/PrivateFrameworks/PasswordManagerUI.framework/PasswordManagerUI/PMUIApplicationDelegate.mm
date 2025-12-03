@@ -1,7 +1,7 @@
 @interface PMUIApplicationDelegate
 - (_TtC17PasswordManagerUI23PMUIApplicationDelegate)init;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
-- (void)applicationWillTerminate:(id)a3;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
+- (void)applicationWillTerminate:(id)terminate;
 @end
 
 @implementation PMUIApplicationDelegate
@@ -13,11 +13,11 @@
   return [(PMUIApplicationDelegate *)&v3 init];
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v5 = a4;
-  v6 = [v5 role];
-  v7 = [objc_allocWithZone(MEMORY[0x277D75958]) initWithName:0 sessionRole:v6];
+  sessionCopy = session;
+  role = [sessionCopy role];
+  v7 = [objc_allocWithZone(MEMORY[0x277D75958]) initWithName:0 sessionRole:role];
 
   type metadata accessor for PMSceneDelegate();
   [v7 setDelegateClass_];
@@ -25,10 +25,10 @@
   return v7;
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
-  v3 = [objc_opt_self() sharedStore];
-  [v3 savePendingChangesBeforeTermination];
+  sharedStore = [objc_opt_self() sharedStore];
+  [sharedStore savePendingChangesBeforeTermination];
 }
 
 @end

@@ -18,8 +18,8 @@
   v7 = objc_alloc_init(GEOURLOptions);
   [(MapsActivity *)v6 setDisplayOptions:v7];
 
-  v8 = [(MapsActivity *)v6 displayOptions];
-  [v8 setUserTrackingMode:1];
+  displayOptions = [(MapsActivity *)v6 displayOptions];
+  [displayOptions setUserTrackingMode:1];
 
   v9 = [[RichMapsActivity alloc] initWithMapsActivity:v6 mapsAction:v5];
   [(RichMapsActivityCreatingTaskImpl *)self taskFinished:v9];

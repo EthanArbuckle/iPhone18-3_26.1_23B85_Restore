@@ -1,11 +1,11 @@
 @interface _PSPhotoUtils
-+ (id)assetsWithIdentifiers:(id)a3;
-+ (id)attachmentsEligibleForPhotoProcessingFromAttachments:(id)a3;
-+ (id)candidateContactsIdentifiersFromPhotoSuggestedPeople:(id)a3;
-+ (id)candidateLocalIdentifiersFromPhotoSuggestedPeople:(id)a3;
-+ (id)personIdentifiersForPeopleInPicturesWithIdentifiers:(id)a3;
-+ (id)sceneAnalysisFromAssets:(id)a3;
-+ (id)sceneTagsForPhotosWithIdentifiers:(id)a3;
++ (id)assetsWithIdentifiers:(id)identifiers;
++ (id)attachmentsEligibleForPhotoProcessingFromAttachments:(id)attachments;
++ (id)candidateContactsIdentifiersFromPhotoSuggestedPeople:(id)people;
++ (id)candidateLocalIdentifiersFromPhotoSuggestedPeople:(id)people;
++ (id)personIdentifiersForPeopleInPicturesWithIdentifiers:(id)identifiers;
++ (id)sceneAnalysisFromAssets:(id)assets;
++ (id)sceneTagsForPhotosWithIdentifiers:(id)identifiers;
 + (id)sharedMADService;
 + (void)prewarmPhotosFrameworks;
 @end
@@ -32,24 +32,24 @@
   }
 }
 
-+ (id)attachmentsEligibleForPhotoProcessingFromAttachments:(id)a3
++ (id)attachmentsEligibleForPhotoProcessingFromAttachments:(id)attachments
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [a3 _pas_filteredArrayWithTest:&__block_literal_global_215];
+  v3 = [attachments _pas_filteredArrayWithTest:&__block_literal_global_215];
   if ([v3 count])
   {
-    v4 = [v3 firstObject];
-    v9[0] = v4;
+    firstObject = [v3 firstObject];
+    v9[0] = firstObject;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   }
 
   else
   {
-    v4 = +[_PSLogging generalChannel];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+    firstObject = +[_PSLogging generalChannel];
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_INFO))
     {
       *v8 = 0;
-      _os_log_impl(&dword_1B5ED1000, v4, OS_LOG_TYPE_INFO, "No photo attachments in the prediction context for media analysis and scene processing", v8, 2u);
+      _os_log_impl(&dword_1B5ED1000, firstObject, OS_LOG_TYPE_INFO, "No photo attachments in the prediction context for media analysis and scene processing", v8, 2u);
     }
 
     v5 = MEMORY[0x1E695E0F0];
@@ -60,10 +60,10 @@
   return v5;
 }
 
-+ (id)assetsWithIdentifiers:(id)a3
++ (id)assetsWithIdentifiers:(id)identifiers
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifiersCopy = identifiers;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2050000000;
@@ -84,7 +84,7 @@
 
   v5 = v4;
   _Block_object_dispose(&v23, 8);
-  v6 = [v4 fetchOptionsWithInclusiveDefaults];
+  fetchOptionsWithInclusiveDefaults = [v4 fetchOptionsWithInclusiveDefaults];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -113,7 +113,7 @@
   v9 = v27[0];
   v10 = [v8 arrayWithObjects:v27 count:1];
 
-  [v6 setFetchPropertySets:v10];
+  [fetchOptionsWithInclusiveDefaults setFetchPropertySets:v10];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2050000000;
@@ -135,18 +135,18 @@
 
   v13 = v11;
   _Block_object_dispose(&v23, 8);
-  v14 = [v11 fetchAssetsWithLocalIdentifiers:v3 options:v6];
-  v15 = [v14 fetchedObjects];
+  v14 = [v11 fetchAssetsWithLocalIdentifiers:identifiersCopy options:fetchOptionsWithInclusiveDefaults];
+  fetchedObjects = [v14 fetchedObjects];
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v15;
+  return fetchedObjects;
 }
 
-+ (id)sceneAnalysisFromAssets:(id)a3
++ (id)sceneAnalysisFromAssets:(id)assets
 {
   v49 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  assetsCopy = assets;
   v4 = MEMORY[0x1E695DEC8];
   v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v6 = [v5 URLForResource:@"blacklistedScenes" withExtension:@"plist"];
@@ -162,7 +162,7 @@
       [(_PSPhotoUtils *)v8 sceneAnalysisFromAssets:v9];
     }
 
-    v10 = MEMORY[0x1E695E0F0];
+    allObjects = MEMORY[0x1E695E0F0];
   }
 
   else
@@ -172,8 +172,8 @@
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v32 = v3;
-    obj = v3;
+    v32 = assetsCopy;
+    obj = assetsCopy;
     v35 = [obj countByEnumeratingWithState:&v42 objects:v48 count:16];
     if (v35)
     {
@@ -189,12 +189,12 @@
           }
 
           v36 = v11;
-          v12 = [*(*(&v42 + 1) + 8 * v11) sceneClassifications];
+          sceneClassifications = [*(*(&v42 + 1) + 8 * v11) sceneClassifications];
           v38 = 0u;
           v39 = 0u;
           v40 = 0u;
           v41 = 0u;
-          v13 = [v12 countByEnumeratingWithState:&v38 objects:v47 count:16];
+          v13 = [sceneClassifications countByEnumeratingWithState:&v38 objects:v47 count:16];
           if (v13)
           {
             v14 = v13;
@@ -205,20 +205,20 @@
               {
                 if (*v39 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(sceneClassifications);
                 }
 
                 v17 = *(*(&v38 + 1) + 8 * i);
                 [v17 confidence];
                 v19 = v18;
-                v20 = [v17 sceneIdentifier];
-                v21 = [getPFSceneTaxonomyClass() sharedTaxonomy];
-                v22 = [v21 nodeForSceneClassId:v20];
+                sceneIdentifier = [v17 sceneIdentifier];
+                sharedTaxonomy = [getPFSceneTaxonomyClass() sharedTaxonomy];
+                v22 = [sharedTaxonomy nodeForSceneClassId:sceneIdentifier];
 
                 if (v22)
                 {
-                  v23 = [v22 name];
-                  v24 = [v7 containsObject:v23];
+                  name = [v22 name];
+                  v24 = [v7 containsObject:name];
 
                   if ((v24 & 1) == 0)
                   {
@@ -227,19 +227,19 @@
                     {
                       [v22 highPrecisionThreshold];
                       v27 = v26;
-                      v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v20];
-                      v29 = [v28 stringValue];
+                      v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:sceneIdentifier];
+                      stringValue = [v28 stringValue];
 
-                      if (v29 && v19 >= v27)
+                      if (stringValue && v19 >= v27)
                       {
-                        [v37 addObject:v29];
+                        [v37 addObject:stringValue];
                       }
                     }
                   }
                 }
               }
 
-              v14 = [v12 countByEnumeratingWithState:&v38 objects:v47 count:16];
+              v14 = [sceneClassifications countByEnumeratingWithState:&v38 objects:v47 count:16];
             }
 
             while (v14);
@@ -256,28 +256,28 @@
     }
 
     v9 = v37;
-    v10 = [v37 allObjects];
+    allObjects = [v37 allObjects];
     v8 = 0;
-    v3 = v32;
+    assetsCopy = v32;
   }
 
   v30 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return allObjects;
 }
 
-+ (id)candidateContactsIdentifiersFromPhotoSuggestedPeople:(id)a3
++ (id)candidateContactsIdentifiersFromPhotoSuggestedPeople:(id)people
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  if ([v3 count])
+  peopleCopy = people;
+  array = [MEMORY[0x1E695DF70] array];
+  if ([peopleCopy count])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v3;
+    v5 = peopleCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
@@ -298,7 +298,7 @@
           if (v11)
           {
             v12 = [v10 objectForKeyedSubscript:@"contactIdentifier"];
-            [v4 addObject:v12];
+            [array addObject:v12];
           }
         }
 
@@ -311,21 +311,21 @@
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return array;
 }
 
-+ (id)candidateLocalIdentifiersFromPhotoSuggestedPeople:(id)a3
++ (id)candidateLocalIdentifiersFromPhotoSuggestedPeople:(id)people
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  if ([v3 count])
+  peopleCopy = people;
+  array = [MEMORY[0x1E695DF70] array];
+  if ([peopleCopy count])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v3;
+    v5 = peopleCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
@@ -346,7 +346,7 @@
           if (v11)
           {
             v12 = [v10 objectForKeyedSubscript:@"localIdentifier"];
-            [v4 addObject:v12];
+            [array addObject:v12];
           }
         }
 
@@ -359,17 +359,17 @@
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return array;
 }
 
-+ (id)sceneTagsForPhotosWithIdentifiers:(id)a3
++ (id)sceneTagsForPhotosWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  identifiersCopy = identifiers;
+  v5 = identifiersCopy;
+  if (identifiersCopy && [identifiersCopy count])
   {
-    v6 = [a1 assetsWithIdentifiers:v5];
-    v7 = [a1 sceneAnalysisFromAssets:v6];
+    v6 = [self assetsWithIdentifiers:v5];
+    v7 = [self sceneAnalysisFromAssets:v6];
   }
 
   else
@@ -380,10 +380,10 @@
   return v7;
 }
 
-+ (id)personIdentifiersForPeopleInPicturesWithIdentifiers:(id)a3
++ (id)personIdentifiersForPeopleInPicturesWithIdentifiers:(id)identifiers
 {
   v63 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifiersCopy = identifiers;
   v52 = 0;
   v53 = &v52;
   v54 = 0x2050000000;
@@ -416,7 +416,7 @@
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v3;
+  obj = identifiersCopy;
   v34 = [obj countByEnumeratingWithState:&v48 objects:v59 count:16];
   if (v34)
   {
@@ -438,23 +438,23 @@
 
         v35 = v9;
         v11 = *(*(&v48 + 1) + 8 * v9);
-        v12 = [a1 sharedMADService];
+        sharedMADService = [self sharedMADService];
         v58 = v37;
         v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v58 count:1];
-        v14 = [getPHPhotoLibraryClass() systemPhotoLibraryURL];
+        systemPhotoLibraryURL = [getPHPhotoLibraryClass() systemPhotoLibraryURL];
         v47 = v36;
-        v15 = [v12 performRequests:v13 assetLocalIdentifier:v11 photoLibraryURL:v14 error:&v47];
+        v15 = [sharedMADService performRequests:v13 assetLocalIdentifier:v11 photoLibraryURL:systemPhotoLibraryURL error:&v47];
         v16 = v47;
 
         v36 = v16;
         if (v15)
         {
-          v38 = [v37 results];
+          results = [v37 results];
           v45 = 0u;
           v46 = 0u;
           v43 = 0u;
           v44 = 0u;
-          v17 = [v38 countByEnumeratingWithState:&v43 objects:v57 count:16];
+          v17 = [results countByEnumeratingWithState:&v43 objects:v57 count:16];
           if (v17)
           {
             v18 = *v44;
@@ -464,7 +464,7 @@
               {
                 if (*v44 != v18)
                 {
-                  objc_enumerationMutation(v38);
+                  objc_enumerationMutation(results);
                 }
 
                 v20 = *(*(&v43 + 1) + 8 * i);
@@ -472,8 +472,8 @@
                 v40 = 0u;
                 v41 = 0u;
                 v42 = 0u;
-                v21 = [v20 resultItems];
-                v22 = [v21 countByEnumeratingWithState:&v39 objects:v56 count:16];
+                resultItems = [v20 resultItems];
+                v22 = [resultItems countByEnumeratingWithState:&v39 objects:v56 count:16];
                 if (v22)
                 {
                   v23 = *v40;
@@ -483,24 +483,24 @@
                     {
                       if (*v40 != v23)
                       {
-                        objc_enumerationMutation(v21);
+                        objc_enumerationMutation(resultItems);
                       }
 
-                      v25 = [*(*(&v39 + 1) + 8 * j) personIdentifier];
-                      if (v25)
+                      personIdentifier = [*(*(&v39 + 1) + 8 * j) personIdentifier];
+                      if (personIdentifier)
                       {
-                        [v7 addObject:v25];
+                        [v7 addObject:personIdentifier];
                       }
                     }
 
-                    v22 = [v21 countByEnumeratingWithState:&v39 objects:v56 count:16];
+                    v22 = [resultItems countByEnumeratingWithState:&v39 objects:v56 count:16];
                   }
 
                   while (v22);
                 }
               }
 
-              v17 = [v38 countByEnumeratingWithState:&v43 objects:v57 count:16];
+              v17 = [results countByEnumeratingWithState:&v43 objects:v57 count:16];
             }
 
             while (v17);
@@ -514,15 +514,15 @@
             goto LABEL_30;
           }
 
-          v38 = +[_PSLogging mediaAnalysisChannel];
-          if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
+          results = +[_PSLogging mediaAnalysisChannel];
+          if (os_log_type_enabled(results, OS_LOG_TYPE_ERROR))
           {
-            v26 = [v16 localizedDescription];
+            localizedDescription = [v16 localizedDescription];
             *buf = v30;
             *&buf[4] = v11;
             *&buf[12] = 2112;
-            *&buf[14] = v26;
-            _os_log_error_impl(&dword_1B5ED1000, v38, OS_LOG_TYPE_ERROR, "PhotoId: %@, person identification error: %@", buf, 0x16u);
+            *&buf[14] = localizedDescription;
+            _os_log_error_impl(&dword_1B5ED1000, results, OS_LOG_TYPE_ERROR, "PhotoId: %@, person identification error: %@", buf, 0x16u);
           }
         }
 
@@ -540,11 +540,11 @@ LABEL_30:
     }
   }
 
-  v27 = [v7 allObjects];
+  allObjects = [v7 allObjects];
 
   v28 = *MEMORY[0x1E69E9840];
 
-  return v27;
+  return allObjects;
 }
 
 + (void)sceneAnalysisFromAssets:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

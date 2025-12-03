@@ -1,9 +1,9 @@
 @interface VCPacketBundler
-- (BOOL)_copyInputBytes:(void *)a3 numInputBytes:(unsigned int)a4 payloadType:(int)a5 timestamp:(unsigned int)a6;
-- (BOOL)bundleAudioLegacy:(void *)a3 numInputBytes:(unsigned int)a4 payloadType:(int)a5 timestamp:(unsigned int)a6;
-- (BOOL)bundleAudioRFC3640:(void *)a3 numInputBytes:(unsigned int)a4 payloadType:(int)a5 timestamp:(unsigned int)a6;
-- (BOOL)reallocateBufferWithMaxPacketSize:(unsigned int)a3 maxPacketCount:(unsigned int)a4;
-- (VCPacketBundler)initWithOperatingMode:(int)a3 bundlingScheme:(int)a4;
+- (BOOL)_copyInputBytes:(void *)bytes numInputBytes:(unsigned int)inputBytes payloadType:(int)type timestamp:(unsigned int)timestamp;
+- (BOOL)bundleAudioLegacy:(void *)legacy numInputBytes:(unsigned int)bytes payloadType:(int)type timestamp:(unsigned int)timestamp;
+- (BOOL)bundleAudioRFC3640:(void *)c3640 numInputBytes:(unsigned int)bytes payloadType:(int)type timestamp:(unsigned int)timestamp;
+- (BOOL)reallocateBufferWithMaxPacketSize:(unsigned int)size maxPacketCount:(unsigned int)count;
+- (VCPacketBundler)initWithOperatingMode:(int)mode bundlingScheme:(int)scheme;
 - (char)encodedBuffer;
 - (char)encodedBufferForRFC3640;
 - (unsigned)accessUnitHeaderSectionSize;
@@ -11,12 +11,12 @@
 - (void)dealloc;
 - (void)initLock;
 - (void)resetBuffer;
-- (void)setMaxPacketSize:(unsigned int)a3;
+- (void)setMaxPacketSize:(unsigned int)size;
 @end
 
 @implementation VCPacketBundler
 
-- (VCPacketBundler)initWithOperatingMode:(int)a3 bundlingScheme:(int)a4
+- (VCPacketBundler)initWithOperatingMode:(int)mode bundlingScheme:(int)scheme
 {
   v14 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
@@ -34,9 +34,9 @@
   v6->_maxPacketSize = 512;
   v9 = 1;
   v6->_allowLargePackets = 1;
-  v6->_operatingMode = a3;
-  v6->_bundlingScheme = a4;
-  if (a4 != 3)
+  v6->_operatingMode = mode;
+  v6->_bundlingScheme = scheme;
+  if (scheme != 3)
   {
     goto LABEL_5;
   }
@@ -99,10 +99,10 @@ LABEL_8:
   [(VCPacketBundler *)&v4 dealloc];
 }
 
-- (BOOL)reallocateBufferWithMaxPacketSize:(unsigned int)a3 maxPacketCount:(unsigned int)a4
+- (BOOL)reallocateBufferWithMaxPacketSize:(unsigned int)size maxPacketCount:(unsigned int)count
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&count;
+  v5 = *&size;
   [(VCPacketBundler *)self lock];
   v7 = [(VCPacketBundler *)self bundleBufferSizeWidthMaxPacketSize:v5 maxPacketCount:v4];
   if (v7 > self->_bufferSize)
@@ -135,9 +135,9 @@ LABEL_8:
   return v11;
 }
 
-- (void)setMaxPacketSize:(unsigned int)a3
+- (void)setMaxPacketSize:(unsigned int)size
 {
-  if (self->_maxPacketSize != a3)
+  if (self->_maxPacketSize != size)
   {
     [VCPacketBundler reallocateBufferWithMaxPacketSize:"reallocateBufferWithMaxPacketSize:maxPacketCount:" maxPacketCount:?];
   }
@@ -171,17 +171,17 @@ LABEL_8:
 
 - (char)encodedBufferForRFC3640
 {
-  v3 = [(VCPacketBundler *)self accessUnitHeaderSectionSize];
+  accessUnitHeaderSectionSize = [(VCPacketBundler *)self accessUnitHeaderSectionSize];
   result = [(VCPacketBundler *)self accessUnitDataSectionHead];
   v5 = result;
-  if (v3)
+  if (accessUnitHeaderSectionSize)
   {
-    result -= v3;
+    result -= accessUnitHeaderSectionSize;
     *result = bswap32(16 * self->_accessUnitHeaderInfo.accessUnitCount) >> 16;
     if (self->_accessUnitHeaderInfo.accessUnitCount)
     {
       v6 = 0;
-      v7 = &v5[-v3 + 2];
+      v7 = &v5[-accessUnitHeaderSectionSize + 2];
       do
       {
         *(v7 + 2 * v6) = bswap32(8 * self->_accessUnitHeaderInfo.accessUnitSize[v6]) >> 16;
@@ -208,14 +208,14 @@ LABEL_8:
   }
 }
 
-- (BOOL)bundleAudioRFC3640:(void *)a3 numInputBytes:(unsigned int)a4 payloadType:(int)a5 timestamp:(unsigned int)a6
+- (BOOL)bundleAudioRFC3640:(void *)c3640 numInputBytes:(unsigned int)bytes payloadType:(int)type timestamp:(unsigned int)timestamp
 {
-  v7 = *&a5;
+  v7 = *&type;
   v45 = *MEMORY[0x1E69E9840];
-  v11 = [(VCPacketBundler *)self accessUnitDataSectionHead];
+  accessUnitDataSectionHead = [(VCPacketBundler *)self accessUnitDataSectionHead];
   accessUnitDataSectionSize = self->_accessUnitDataSectionSize;
   v13 = [VCPayloadUtils canBundleExternallyForPayload:v7 forBundlingScheme:2 operatingMode:self->_operatingMode];
-  v14 = self->_accessUnitDataSectionSize + a4;
+  v14 = self->_accessUnitDataSectionSize + bytes;
   if (v13)
   {
     if (v14 + [(VCPacketBundler *)self accessUnitHeaderSectionSizeMaximum]> self->_bufferSize)
@@ -237,7 +237,7 @@ LABEL_8:
           v35 = 1024;
           v36 = 263;
           v37 = 1024;
-          v38 = a4;
+          bytesCopy2 = bytes;
           v39 = 1024;
           v40 = bufferSize;
           v41 = 1024;
@@ -259,16 +259,16 @@ LABEL_11:
     }
 
     accessUnitCount = self->_accessUnitHeaderInfo.accessUnitCount;
-    self->_accessUnitHeaderInfo.accessUnitSize[accessUnitCount] = a4;
+    self->_accessUnitHeaderInfo.accessUnitSize[accessUnitCount] = bytes;
     self->_accessUnitHeaderInfo.accessUnitCount = accessUnitCount + 1;
 LABEL_13:
-    memcpy(&v11[accessUnitDataSectionSize], a3, a4);
+    memcpy(&accessUnitDataSectionHead[accessUnitDataSectionSize], c3640, bytes);
     v27 = self->_bundledPackets;
-    self->_accessUnitDataSectionSize += a4;
+    self->_accessUnitDataSectionSize += bytes;
     if (!v27)
     {
       self->_payload = v7;
-      self->_timestamp = a6;
+      self->_timestamp = timestamp;
     }
 
     v28 = v27 + 1;
@@ -304,7 +304,7 @@ LABEL_13:
     v35 = 1024;
     v36 = 270;
     v37 = 1024;
-    v38 = a4;
+    bytesCopy2 = bytes;
     v39 = 1024;
     v40 = v23;
     v41 = 1024;
@@ -318,10 +318,10 @@ LABEL_13:
   return v17;
 }
 
-- (BOOL)_copyInputBytes:(void *)a3 numInputBytes:(unsigned int)a4 payloadType:(int)a5 timestamp:(unsigned int)a6
+- (BOOL)_copyInputBytes:(void *)bytes numInputBytes:(unsigned int)inputBytes payloadType:(int)type timestamp:(unsigned int)timestamp
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = self->_encodedBufferSize + a4;
+  v8 = self->_encodedBufferSize + inputBytes;
   bufferSize = self->_bufferSize;
   if (v8 > bufferSize)
   {
@@ -341,7 +341,7 @@ LABEL_13:
         v22 = 1024;
         v23 = 360;
         v24 = 1024;
-        v25 = a4;
+        inputBytesCopy = inputBytes;
         v26 = 1024;
         v27 = v15;
         v28 = 1024;
@@ -355,10 +355,10 @@ LABEL_13:
 
   else
   {
-    memcpy(self->_buffer, a3, a4);
-    self->_timestamp = a6;
-    self->_encodedBufferSize = a4;
-    self->_payload = a5;
+    memcpy(self->_buffer, bytes, inputBytes);
+    self->_timestamp = timestamp;
+    self->_encodedBufferSize = inputBytes;
+    self->_payload = type;
     self->_bundledPackets = 1;
     self->_isFull = 1;
   }
@@ -366,14 +366,14 @@ LABEL_13:
   return v8 <= bufferSize;
 }
 
-- (BOOL)bundleAudioLegacy:(void *)a3 numInputBytes:(unsigned int)a4 payloadType:(int)a5 timestamp:(unsigned int)a6
+- (BOOL)bundleAudioLegacy:(void *)legacy numInputBytes:(unsigned int)bytes payloadType:(int)type timestamp:(unsigned int)timestamp
 {
   v49 = *MEMORY[0x1E69E9840];
   v11 = &self->_buffer[self->_encodedBufferSize];
-  v12 = [VCPayloadUtils canBundleExternallyForPayload:*&a5 forBundlingScheme:1 operatingMode:self->_operatingMode];
+  v12 = [VCPayloadUtils canBundleExternallyForPayload:*&type forBundlingScheme:1 operatingMode:self->_operatingMode];
   if (v12)
   {
-    if (a4 >= 0x100 && self->_allowLargePackets)
+    if (bytes >= 0x100 && self->_allowLargePackets)
     {
       maxPacketSize = self->_maxPacketSize;
       if (maxPacketSize >= 0x2FF)
@@ -381,7 +381,7 @@ LABEL_13:
         maxPacketSize = 767;
       }
 
-      if (maxPacketSize < a4 || a4 + self->_encodedBufferSize + 2 > self->_bufferSize)
+      if (maxPacketSize < bytes || bytes + self->_encodedBufferSize + 2 > self->_bufferSize)
       {
         if (VRTraceGetErrorLogLevelForModule() >= 3)
         {
@@ -400,7 +400,7 @@ LABEL_13:
             v39 = 1024;
             v40 = 383;
             v41 = 1024;
-            v42 = a4;
+            bytesCopy3 = bytes;
             v43 = 1024;
             v44 = bufferSize;
             v45 = 1024;
@@ -421,14 +421,14 @@ LABEL_21:
         return v16;
       }
 
-      *v11 = a4 & 1;
-      v11[1] = (a4 >> 1) ^ 0x80;
+      *v11 = bytes & 1;
+      v11[1] = (bytes >> 1) ^ 0x80;
       v11 += 2;
     }
 
     else
     {
-      if (a4 - 256 < 0xFFFFFF02 || a4 + self->_encodedBufferSize + 1 > self->_bufferSize)
+      if (bytes - 256 < 0xFFFFFF02 || bytes + self->_encodedBufferSize + 1 > self->_bufferSize)
       {
         if (VRTraceGetErrorLogLevelForModule() >= 3)
         {
@@ -447,7 +447,7 @@ LABEL_21:
             v39 = 1024;
             v40 = 391;
             v41 = 1024;
-            v42 = a4;
+            bytesCopy3 = bytes;
             v43 = 1024;
             v44 = v26;
             v45 = 1024;
@@ -464,28 +464,28 @@ LABEL_21:
         goto LABEL_21;
       }
 
-      *v11++ = a4;
+      *v11++ = bytes;
     }
 
 LABEL_24:
-    memcpy(v11, a3, a4);
-    self->_encodedBufferSize = v11 + a4 - LODWORD(self->_buffer);
+    memcpy(v11, legacy, bytes);
+    self->_encodedBufferSize = v11 + bytes - LODWORD(self->_buffer);
     v29 = self->_bundledPackets;
     if (!v29)
     {
-      self->_payload = a5;
-      self->_timestamp = a6;
+      self->_payload = type;
+      self->_timestamp = timestamp;
     }
 
     v30 = v29 + 1;
     self->_bundledPackets = v30;
-    v33 = !v12 || a4 < 7 && a5 == 108 || v30 == self->_packetsPerBundle;
+    v33 = !v12 || bytes < 7 && type == 108 || v30 == self->_packetsPerBundle;
     self->_isFull = v33;
     LOBYTE(v16) = 1;
     return v16;
   }
 
-  if (self->_encodedBufferSize + a4 <= self->_bufferSize)
+  if (self->_encodedBufferSize + bytes <= self->_bufferSize)
   {
     goto LABEL_24;
   }
@@ -510,7 +510,7 @@ LABEL_24:
     v39 = 1024;
     v40 = 397;
     v41 = 1024;
-    v42 = a4;
+    bytesCopy3 = bytes;
     v43 = 1024;
     v44 = v22;
     v45 = 1024;

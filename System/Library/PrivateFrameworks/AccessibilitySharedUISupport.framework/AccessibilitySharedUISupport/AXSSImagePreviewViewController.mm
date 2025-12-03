@@ -1,40 +1,40 @@
 @interface AXSSImagePreviewViewController
-- (AXSSImagePreviewViewController)initWithContentSnapshot:(id)a3;
+- (AXSSImagePreviewViewController)initWithContentSnapshot:(id)snapshot;
 - (AXSSImagePreviewViewControllerDelegate)delegate;
 - (BOOL)_isSnapshotViewAttached;
 - (CGSize)_scrollViewClippedSize;
 - (UIEdgeInsets)edgeInsets;
-- (id)viewForZoomingInScrollView:(id)a3;
+- (id)viewForZoomingInScrollView:(id)view;
 - (void)_addGestureRecognizers;
 - (void)_centerImageIfNeeded;
-- (void)_doubleTapGestureRecognized:(id)a3;
+- (void)_doubleTapGestureRecognized:(id)recognized;
 - (void)_imagePreviewViewControllerSetupUI;
-- (void)_pinchGestureRecognized:(id)a3;
+- (void)_pinchGestureRecognized:(id)recognized;
 - (void)_removeGestureRecognizers;
 - (void)_stopScrollViewAnimations;
-- (void)_swipeGestureRecognized:(id)a3;
+- (void)_swipeGestureRecognized:(id)recognized;
 - (void)_toggleManualZoomMode;
 - (void)_viewShouldExpand;
-- (void)_zoomImage:(double)a3 withContentOffset:(CGPoint)a4 animated:(BOOL)a5;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewDidZoom:(id)a3;
-- (void)setEdgeInsets:(UIEdgeInsets)a3;
+- (void)_zoomImage:(double)image withContentOffset:(CGPoint)offset animated:(BOOL)animated;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewDidZoom:(id)zoom;
+- (void)setEdgeInsets:(UIEdgeInsets)insets;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation AXSSImagePreviewViewController
 
-- (AXSSImagePreviewViewController)initWithContentSnapshot:(id)a3
+- (AXSSImagePreviewViewController)initWithContentSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   v8.receiver = self;
   v8.super_class = AXSSImagePreviewViewController;
   v5 = [(AXSSImagePreviewViewController *)&v8 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(AXSSImagePreviewViewController *)v5 setContentSnapshot:v4];
+    [(AXSSImagePreviewViewController *)v5 setContentSnapshot:snapshotCopy];
   }
 
   return v6;
@@ -45,23 +45,23 @@
   v8.receiver = self;
   v8.super_class = AXSSImagePreviewViewController;
   [(AXSSImagePreviewViewController *)&v8 viewWillLayoutSubviews];
-  v3 = [(AXSSImagePreviewViewController *)self scrollView];
-  [v3 bounds];
+  scrollView = [(AXSSImagePreviewViewController *)self scrollView];
+  [scrollView bounds];
   Height = CGRectGetHeight(v9);
 
   if (Height <= 1.0)
   {
-    v7 = [(AXSSImagePreviewViewController *)self contentSnapshot];
-    [v7 removeFromSuperview];
+    contentSnapshot = [(AXSSImagePreviewViewController *)self contentSnapshot];
+    [contentSnapshot removeFromSuperview];
   }
 
   else
   {
     if (![(AXSSImagePreviewViewController *)self _isSnapshotViewAttached])
     {
-      v5 = [(AXSSImagePreviewViewController *)self scrollView];
-      v6 = [(AXSSImagePreviewViewController *)self contentSnapshot];
-      [v5 addSubview:v6];
+      scrollView2 = [(AXSSImagePreviewViewController *)self scrollView];
+      contentSnapshot2 = [(AXSSImagePreviewViewController *)self contentSnapshot];
+      [scrollView2 addSubview:contentSnapshot2];
     }
 
     [(AXSSImagePreviewViewController *)self _fitImageIfNeeded:0];
@@ -76,38 +76,38 @@
   [(AXSSImagePreviewViewController *)self _imagePreviewViewControllerSetupUI];
 }
 
-- (void)setEdgeInsets:(UIEdgeInsets)a3
+- (void)setEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_edgeInsets.top, v3), vceqq_f64(*&self->_edgeInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_edgeInsets = a3;
-    right = a3.right;
-    left = a3.left;
-    bottom = a3.bottom;
-    top = a3.top;
-    v6 = [(AXSSImagePreviewViewController *)self scrollView];
-    [v6 setScrollIndicatorInsets:{top, left, bottom, right}];
+    self->_edgeInsets = insets;
+    right = insets.right;
+    left = insets.left;
+    bottom = insets.bottom;
+    top = insets.top;
+    scrollView = [(AXSSImagePreviewViewController *)self scrollView];
+    [scrollView setScrollIndicatorInsets:{top, left, bottom, right}];
 
     [(AXSSImagePreviewViewController *)self _centerImageIfNeeded];
   }
 }
 
-- (id)viewForZoomingInScrollView:(id)a3
+- (id)viewForZoomingInScrollView:(id)view
 {
-  v4 = a3;
-  v5 = [(AXSSImagePreviewViewController *)self scrollView];
+  viewCopy = view;
+  scrollView = [(AXSSImagePreviewViewController *)self scrollView];
 
-  if (v5 == v4)
+  if (scrollView == viewCopy)
   {
-    v6 = [(AXSSImagePreviewViewController *)self _isSnapshotViewAttached];
+    _isSnapshotViewAttached = [(AXSSImagePreviewViewController *)self _isSnapshotViewAttached];
 
-    if (v6)
+    if (_isSnapshotViewAttached)
     {
-      v7 = [(AXSSImagePreviewViewController *)self contentSnapshot];
+      contentSnapshot = [(AXSSImagePreviewViewController *)self contentSnapshot];
       goto LABEL_6;
     }
   }
@@ -116,18 +116,18 @@
   {
   }
 
-  v7 = 0;
+  contentSnapshot = 0;
 LABEL_6:
 
-  return v7;
+  return contentSnapshot;
 }
 
-- (void)scrollViewDidZoom:(id)a3
+- (void)scrollViewDidZoom:(id)zoom
 {
-  v4 = a3;
-  v5 = [(AXSSImagePreviewViewController *)self scrollView];
+  zoomCopy = zoom;
+  scrollView = [(AXSSImagePreviewViewController *)self scrollView];
 
-  if (v5 == v4)
+  if (scrollView == zoomCopy)
   {
     if ([(AXSSImagePreviewViewController *)self isManualZoomActive])
     {
@@ -138,50 +138,50 @@ LABEL_6:
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = [(AXSSImagePreviewViewController *)self scrollView];
+  scrollCopy = scroll;
+  scrollView = [(AXSSImagePreviewViewController *)self scrollView];
 
-  if (v5 == v4)
+  if (scrollView == scrollCopy)
   {
 
     [(AXSSImagePreviewViewController *)self _centerImageIfNeeded];
   }
 }
 
-- (void)_doubleTapGestureRecognized:(id)a3
+- (void)_doubleTapGestureRecognized:(id)recognized
 {
-  v6 = a3;
-  v4 = [(AXSSImagePreviewViewController *)self doubleTapGestureRecognizer];
-  if (v4 == v6)
+  recognizedCopy = recognized;
+  doubleTapGestureRecognizer = [(AXSSImagePreviewViewController *)self doubleTapGestureRecognizer];
+  if (doubleTapGestureRecognizer == recognizedCopy)
   {
 
     goto LABEL_5;
   }
 
-  v5 = [v6 state];
+  state = [recognizedCopy state];
 
-  if (v5 == 3)
+  if (state == 3)
   {
 LABEL_5:
     [(AXSSImagePreviewViewController *)self _toggleManualZoomMode];
   }
 }
 
-- (void)_pinchGestureRecognized:(id)a3
+- (void)_pinchGestureRecognized:(id)recognized
 {
-  v6 = a3;
-  v4 = [(AXSSImagePreviewViewController *)self pinchGestureRecognizer];
-  if (v4 == v6)
+  recognizedCopy = recognized;
+  pinchGestureRecognizer = [(AXSSImagePreviewViewController *)self pinchGestureRecognizer];
+  if (pinchGestureRecognizer == recognizedCopy)
   {
   }
 
   else
   {
-    v5 = [v6 state];
+    state = [recognizedCopy state];
 
-    if (v5 != 1)
+    if (state != 1)
     {
       goto LABEL_7;
     }
@@ -195,19 +195,19 @@ LABEL_5:
 LABEL_7:
 }
 
-- (void)_swipeGestureRecognized:(id)a3
+- (void)_swipeGestureRecognized:(id)recognized
 {
-  v6 = a3;
-  v4 = [(AXSSImagePreviewViewController *)self swipeGestureRecognizer];
-  if (v4 == v6)
+  recognizedCopy = recognized;
+  swipeGestureRecognizer = [(AXSSImagePreviewViewController *)self swipeGestureRecognizer];
+  if (swipeGestureRecognizer == recognizedCopy)
   {
 
     goto LABEL_5;
   }
 
-  v5 = [v6 state];
+  state = [recognizedCopy state];
 
-  if (v5 == 3)
+  if (state == 3)
   {
 LABEL_5:
     [(AXSSImagePreviewViewController *)self _viewShouldExpand];
@@ -216,9 +216,9 @@ LABEL_5:
 
 - (BOOL)_isSnapshotViewAttached
 {
-  v2 = [(AXSSImagePreviewViewController *)self contentSnapshot];
-  v3 = [v2 superview];
-  v4 = v3 != 0;
+  contentSnapshot = [(AXSSImagePreviewViewController *)self contentSnapshot];
+  superview = [contentSnapshot superview];
+  v4 = superview != 0;
 
   return v4;
 }
@@ -246,8 +246,8 @@ LABEL_5:
 
 - (CGSize)_scrollViewClippedSize
 {
-  v3 = [(AXSSImagePreviewViewController *)self scrollView];
-  [v3 bounds];
+  scrollView = [(AXSSImagePreviewViewController *)self scrollView];
+  [scrollView bounds];
   v5 = v4;
   v7 = v6;
 
@@ -267,8 +267,8 @@ LABEL_5:
     [(AXSSImagePreviewViewController *)self _scrollViewClippedSize];
     v4 = v3;
     v6 = v5;
-    v7 = [(AXSSImagePreviewViewController *)self scrollView];
-    [v7 contentSize];
+    scrollView = [(AXSSImagePreviewViewController *)self scrollView];
+    [scrollView contentSize];
     v9 = v8;
     v11 = v10;
 
@@ -321,29 +321,29 @@ LABEL_5:
       v27 = v14;
     }
 
-    v28 = [(AXSSImagePreviewViewController *)self scrollView];
-    [v28 setContentInset:{v26, v21, v27, v20}];
+    scrollView2 = [(AXSSImagePreviewViewController *)self scrollView];
+    [scrollView2 setContentInset:{v26, v21, v27, v20}];
   }
 }
 
-- (void)_zoomImage:(double)a3 withContentOffset:(CGPoint)a4 animated:(BOOL)a5
+- (void)_zoomImage:(double)image withContentOffset:(CGPoint)offset animated:(BOOL)animated
 {
-  v5 = a5;
-  y = a4.y;
-  x = a4.x;
-  v9 = [(AXSSImagePreviewViewController *)self scrollView];
-  [v9 zoomScale];
-  if (v10 != a3 || (([v9 contentOffset], v12 == x) ? (v13 = v11 == y) : (v13 = 0), !v13))
+  animatedCopy = animated;
+  y = offset.y;
+  x = offset.x;
+  scrollView = [(AXSSImagePreviewViewController *)self scrollView];
+  [scrollView zoomScale];
+  if (v10 != image || (([scrollView contentOffset], v12 == x) ? (v13 = v11 == y) : (v13 = 0), !v13))
   {
-    if (v5)
+    if (animatedCopy)
     {
       v14 = MEMORY[0x277D75D18];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __72__AXSSImagePreviewViewController__zoomImage_withContentOffset_animated___block_invoke;
       v15[3] = &unk_278BF0440;
-      v16 = v9;
-      v17 = a3;
+      v16 = scrollView;
+      imageCopy = image;
       v18 = x;
       v19 = y;
       [v14 animateWithDuration:0x20000 delay:v15 usingSpringWithDamping:0 initialSpringVelocity:0.5 options:0.0 animations:0.800000012 completion:5.0];
@@ -351,8 +351,8 @@ LABEL_5:
 
     else
     {
-      [v9 setZoomScale:0 animated:a3];
-      [v9 setContentOffset:0 animated:{x, y}];
+      [scrollView setZoomScale:0 animated:image];
+      [scrollView setContentOffset:0 animated:{x, y}];
     }
   }
 }
@@ -369,22 +369,22 @@ uint64_t __72__AXSSImagePreviewViewController__zoomImage_withContentOffset_anima
 
 - (void)_stopScrollViewAnimations
 {
-  v2 = [(AXSSImagePreviewViewController *)self scrollView];
-  [v2 zoomScale];
-  [v2 setZoomScale:0 animated:?];
-  [v2 contentOffset];
-  [v2 setContentOffset:0 animated:?];
+  scrollView = [(AXSSImagePreviewViewController *)self scrollView];
+  [scrollView zoomScale];
+  [scrollView setZoomScale:0 animated:?];
+  [scrollView contentOffset];
+  [scrollView setContentOffset:0 animated:?];
 }
 
 - (void)_imagePreviewViewControllerSetupUI
 {
-  v3 = [(AXSSImagePreviewViewController *)self scrollView];
+  scrollView = [(AXSSImagePreviewViewController *)self scrollView];
 
-  if (!v3)
+  if (!scrollView)
   {
     v4 = objc_alloc(MEMORY[0x277D759D8]);
-    v5 = [(AXSSImagePreviewViewController *)self view];
-    [v5 bounds];
+    view = [(AXSSImagePreviewViewController *)self view];
+    [view bounds];
     v7 = [v4 initWithFrame:?];
 
     [v7 setAutoresizingMask:18];
@@ -393,8 +393,8 @@ uint64_t __72__AXSSImagePreviewViewController__zoomImage_withContentOffset_anima
     [v7 setAlwaysBounceHorizontal:1];
     [(AXSSImagePreviewViewController *)self edgeInsets];
     [v7 setScrollIndicatorInsets:?];
-    v6 = [(AXSSImagePreviewViewController *)self view];
-    [v6 addSubview:v7];
+    view2 = [(AXSSImagePreviewViewController *)self view];
+    [view2 addSubview:v7];
 
     [(AXSSImagePreviewViewController *)self setScrollView:v7];
   }
@@ -402,41 +402,41 @@ uint64_t __72__AXSSImagePreviewViewController__zoomImage_withContentOffset_anima
 
 - (void)_addGestureRecognizers
 {
-  v3 = [(AXSSImagePreviewViewController *)self doubleTapGestureRecognizer];
+  doubleTapGestureRecognizer = [(AXSSImagePreviewViewController *)self doubleTapGestureRecognizer];
 
-  if (!v3)
+  if (!doubleTapGestureRecognizer)
   {
     v4 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__doubleTapGestureRecognized_];
     [v4 setNumberOfTapsRequired:2];
     [v4 setNumberOfTouchesRequired:1];
     [v4 setDelegate:self];
-    v5 = [(AXSSImagePreviewViewController *)self scrollView];
-    [v5 addGestureRecognizer:v4];
+    scrollView = [(AXSSImagePreviewViewController *)self scrollView];
+    [scrollView addGestureRecognizer:v4];
 
     [(AXSSImagePreviewViewController *)self setDoubleTapGestureRecognizer:v4];
   }
 
-  v6 = [(AXSSImagePreviewViewController *)self pinchGestureRecognizer];
+  pinchGestureRecognizer = [(AXSSImagePreviewViewController *)self pinchGestureRecognizer];
 
-  if (!v6)
+  if (!pinchGestureRecognizer)
   {
     v7 = [objc_alloc(MEMORY[0x277D75848]) initWithTarget:self action:sel__pinchGestureRecognized_];
     [v7 setDelegate:self];
-    v8 = [(AXSSImagePreviewViewController *)self scrollView];
-    [v8 addGestureRecognizer:v7];
+    scrollView2 = [(AXSSImagePreviewViewController *)self scrollView];
+    [scrollView2 addGestureRecognizer:v7];
 
     [(AXSSImagePreviewViewController *)self setPinchGestureRecognizer:v7];
   }
 
-  v9 = [(AXSSImagePreviewViewController *)self swipeGestureRecognizer];
+  swipeGestureRecognizer = [(AXSSImagePreviewViewController *)self swipeGestureRecognizer];
 
-  if (!v9)
+  if (!swipeGestureRecognizer)
   {
     v11 = [objc_alloc(MEMORY[0x277D75AE0]) initWithTarget:self action:sel__swipeGestureRecognized_];
     [v11 setDelegate:self];
     [v11 setDirection:8];
-    v10 = [(AXSSImagePreviewViewController *)self scrollView];
-    [v10 addGestureRecognizer:v11];
+    scrollView3 = [(AXSSImagePreviewViewController *)self scrollView];
+    [scrollView3 addGestureRecognizer:v11];
 
     [(AXSSImagePreviewViewController *)self setSwipeGestureRecognizer:v11];
   }
@@ -444,29 +444,29 @@ uint64_t __72__AXSSImagePreviewViewController__zoomImage_withContentOffset_anima
 
 - (void)_removeGestureRecognizers
 {
-  v8 = [(AXSSImagePreviewViewController *)self doubleTapGestureRecognizer];
-  if (v8)
+  doubleTapGestureRecognizer = [(AXSSImagePreviewViewController *)self doubleTapGestureRecognizer];
+  if (doubleTapGestureRecognizer)
   {
-    v3 = [(AXSSImagePreviewViewController *)self scrollView];
-    [v3 removeGestureRecognizer:v8];
+    scrollView = [(AXSSImagePreviewViewController *)self scrollView];
+    [scrollView removeGestureRecognizer:doubleTapGestureRecognizer];
 
     [(AXSSImagePreviewViewController *)self setDoubleTapGestureRecognizer:0];
   }
 
-  v4 = [(AXSSImagePreviewViewController *)self pinchGestureRecognizer];
-  if (v4)
+  pinchGestureRecognizer = [(AXSSImagePreviewViewController *)self pinchGestureRecognizer];
+  if (pinchGestureRecognizer)
   {
-    v5 = [(AXSSImagePreviewViewController *)self scrollView];
-    [v5 removeGestureRecognizer:v4];
+    scrollView2 = [(AXSSImagePreviewViewController *)self scrollView];
+    [scrollView2 removeGestureRecognizer:pinchGestureRecognizer];
 
     [(AXSSImagePreviewViewController *)self setPinchGestureRecognizer:0];
   }
 
-  v6 = [(AXSSImagePreviewViewController *)self swipeGestureRecognizer];
-  if (v6)
+  swipeGestureRecognizer = [(AXSSImagePreviewViewController *)self swipeGestureRecognizer];
+  if (swipeGestureRecognizer)
   {
-    v7 = [(AXSSImagePreviewViewController *)self scrollView];
-    [v7 removeGestureRecognizer:v6];
+    scrollView3 = [(AXSSImagePreviewViewController *)self scrollView];
+    [scrollView3 removeGestureRecognizer:swipeGestureRecognizer];
 
     [(AXSSImagePreviewViewController *)self setSwipeGestureRecognizer:0];
   }
@@ -474,10 +474,10 @@ uint64_t __72__AXSSImagePreviewViewController__zoomImage_withContentOffset_anima
 
 - (void)_viewShouldExpand
 {
-  v3 = [(AXSSImagePreviewViewController *)self delegate];
+  delegate = [(AXSSImagePreviewViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 imagePreviewShouldExpand:self];
+    [delegate imagePreviewShouldExpand:self];
   }
 }
 

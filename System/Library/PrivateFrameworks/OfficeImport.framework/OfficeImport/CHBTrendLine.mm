@@ -1,69 +1,69 @@
 @interface CHBTrendLine
-+ (id)readTrendlineGraphicProperties:(const XlChartSeriesFormat *)a3 forStyleIndex:(unint64_t)a4 state:(id)a5;
-+ (int)edTrendLineTypeFrom:(int)a3 order:(int)a4;
-+ (int)xlTrendLineRegressionTypeFrom:(int)a3;
-+ (void)readFrom:(void *)a3 toSeries:(id)a4 state:(id)a5;
++ (id)readTrendlineGraphicProperties:(const XlChartSeriesFormat *)properties forStyleIndex:(unint64_t)index state:(id)state;
++ (int)edTrendLineTypeFrom:(int)from order:(int)order;
++ (int)xlTrendLineRegressionTypeFrom:(int)from;
++ (void)readFrom:(void *)from toSeries:(id)series state:(id)state;
 @end
 
 @implementation CHBTrendLine
 
-+ (void)readFrom:(void *)a3 toSeries:(id)a4 state:(id)a5
++ (void)readFrom:(void *)from toSeries:(id)series state:(id)state
 {
-  v21 = a4;
-  v8 = a5;
-  if (a3)
+  seriesCopy = series;
+  stateCopy = state;
+  if (from)
   {
-    v9 = [v21 objectWithKey:(*(*a3 + 24))(a3)];
-    v10 = [a1 edTrendLineTypeFrom:*(a3 + 60) order:*(a3 + 244)];
+    v9 = [seriesCopy objectWithKey:(*(*from + 24))(from)];
+    v10 = [self edTrendLineTypeFrom:*(from + 60) order:*(from + 244)];
     v11 = objc_alloc_init(CHDTrendline);
     [(CHDTrendline *)v11 setType:v10];
-    v12 = [CHBTrendLineLabel readFrom:a3 state:v8];
+    v12 = [CHBTrendLineLabel readFrom:from state:stateCopy];
     [(CHDTrendline *)v11 setLabel:v12];
 
-    [(CHDTrendline *)v11 setDisplayEquation:*(a3 + 245) != 0];
-    [(CHDTrendline *)v11 setDisplayRSquaredValue:*(a3 + 246) != 0];
-    [(CHDTrendline *)v11 setBackward:*(a3 + 29)];
-    [(CHDTrendline *)v11 setForward:*(a3 + 28)];
-    [(CHDTrendline *)v11 setInterceptYAxis:*(a3 + 27)];
+    [(CHDTrendline *)v11 setDisplayEquation:*(from + 245) != 0];
+    [(CHDTrendline *)v11 setDisplayRSquaredValue:*(from + 246) != 0];
+    [(CHDTrendline *)v11 setBackward:*(from + 29)];
+    [(CHDTrendline *)v11 setForward:*(from + 28)];
+    [(CHDTrendline *)v11 setInterceptYAxis:*(from + 27)];
     if (v10 == 3)
     {
-      [(CHDTrendline *)v11 setMovingAveragePeriod:*(a3 + 244)];
+      [(CHDTrendline *)v11 setMovingAveragePeriod:*(from + 244)];
     }
 
     else if (v10 == 4)
     {
-      [(CHDTrendline *)v11 setPolynomialOrder:*(a3 + 244)];
+      [(CHDTrendline *)v11 setPolynomialOrder:*(from + 244)];
     }
 
-    v13 = [CHBData readFrom:*(a3 + 18) state:v8];
-    v14 = [v13 dataValues];
-    if ([v14 count])
+    v13 = [CHBData readFrom:*(from + 18) state:stateCopy];
+    dataValues = [v13 dataValues];
+    if ([dataValues count])
     {
-      v15 = [v14 dataPointAtIndex:0];
+      v15 = [dataValues dataPointAtIndex:0];
       v16 = v15;
       if (v15)
       {
         if (EDValue::isStringType((v15 + 8)))
         {
-          v17 = [v8 resources];
-          v18 = EDValue::resolvedEDStringValue((v16 + 8), v17);
+          resources = [stateCopy resources];
+          v18 = EDValue::resolvedEDStringValue((v16 + 8), resources);
           [(CHDTrendline *)v11 setName:v18];
         }
       }
     }
 
-    v19 = [a1 readTrendlineGraphicProperties:objc_msgSend(v8 forStyleIndex:"defaultFormatForXlSeries:" state:{a3), objc_msgSend(v9, "styleIndex"), v8}];
+    v19 = [self readTrendlineGraphicProperties:objc_msgSend(stateCopy forStyleIndex:"defaultFormatForXlSeries:" state:{from), objc_msgSend(v9, "styleIndex"), stateCopy}];
     [(CHDTrendline *)v11 setGraphicProperties:v19];
 
-    v20 = [v9 trendlineCollection];
-    [v20 addObject:v11];
+    trendlineCollection = [v9 trendlineCollection];
+    [trendlineCollection addObject:v11];
   }
 }
 
-+ (int)edTrendLineTypeFrom:(int)a3 order:(int)a4
++ (int)edTrendLineTypeFrom:(int)from order:(int)order
 {
-  v4 = a3 != 4;
-  if (a3 == 4)
+  v4 = from != 4;
+  if (from == 4)
   {
     v5 = 3;
   }
@@ -73,7 +73,7 @@
     v5 = 4;
   }
 
-  if (a3 == 3)
+  if (from == 3)
   {
     v4 = 0;
     v6 = 5;
@@ -84,8 +84,8 @@
     v6 = v5;
   }
 
-  v7 = a3 != 2;
-  if (a3 == 2)
+  v7 = from != 2;
+  if (from == 2)
   {
     v8 = 2;
   }
@@ -95,19 +95,19 @@
     v8 = 4;
   }
 
-  if (a3 == 1)
+  if (from == 1)
   {
     v7 = 0;
     v8 = 0;
   }
 
-  if (a3 > 2)
+  if (from > 2)
   {
     v7 = v4;
     v8 = v6;
   }
 
-  if (a4 == 1 && v7)
+  if (order == 1 && v7)
   {
     return 1;
   }
@@ -118,25 +118,25 @@
   }
 }
 
-+ (int)xlTrendLineRegressionTypeFrom:(int)a3
++ (int)xlTrendLineRegressionTypeFrom:(int)from
 {
-  if (a3 > 5)
+  if (from > 5)
   {
     return 0;
   }
 
   else
   {
-    return dword_25D6FE580[a3];
+    return dword_25D6FE580[from];
   }
 }
 
-+ (id)readTrendlineGraphicProperties:(const XlChartSeriesFormat *)a3 forStyleIndex:(unint64_t)a4 state:(id)a5
++ (id)readTrendlineGraphicProperties:(const XlChartSeriesFormat *)properties forStyleIndex:(unint64_t)index state:(id)state
 {
-  v7 = a5;
-  v8 = [CHBGraphicProperties oadGraphicPropertiesFromXlChartSeriesFormat:a3 state:v7];
-  v9 = [v7 autoStyling];
-  [v9 resolveGraphicPropertiesOfTrendline:v8 forSeriesIndex:a4];
+  stateCopy = state;
+  v8 = [CHBGraphicProperties oadGraphicPropertiesFromXlChartSeriesFormat:properties state:stateCopy];
+  autoStyling = [stateCopy autoStyling];
+  [autoStyling resolveGraphicPropertiesOfTrendline:v8 forSeriesIndex:index];
 
   return v8;
 }

@@ -1,9 +1,9 @@
 @interface BITensor
-+ (BOOL)verifyArraysHaveSameCount:(id)a3;
-+ (id)create3DMultiArrayFromFeatureArrays:(id)a3 withInputShape:(id)a4 usingFeatureDimensionsDict:(id)a5;
-+ (id)createSubArraysFromArrays:(id)a3 fromStartIndex:(unint64_t)a4 withSize:(unint64_t)a5;
-+ (id)getValuesFrom2DMultiArray:(id)a3 withFeatureNamesForDimensions:(id)a4;
-+ (id)getValuesFrom3DMultiArray:(id)a3 withFeatureNamesForDimensions:(id)a4;
++ (BOOL)verifyArraysHaveSameCount:(id)count;
++ (id)create3DMultiArrayFromFeatureArrays:(id)arrays withInputShape:(id)shape usingFeatureDimensionsDict:(id)dict;
++ (id)createSubArraysFromArrays:(id)arrays fromStartIndex:(unint64_t)index withSize:(unint64_t)size;
++ (id)getValuesFrom2DMultiArray:(id)array withFeatureNamesForDimensions:(id)dimensions;
++ (id)getValuesFrom3DMultiArray:(id)array withFeatureNamesForDimensions:(id)dimensions;
 + (id)log;
 @end
 
@@ -24,11 +24,11 @@
   return v2;
 }
 
-+ (BOOL)verifyArraysHaveSameCount:(id)a3
++ (BOOL)verifyArraysHaveSameCount:(id)count
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  countCopy = count;
+  v4 = countCopy;
+  if (countCopy && [countCopy count])
   {
     if ([v4 count] == 1)
     {
@@ -71,7 +71,7 @@
       }
 
       v15 = [v6 objectAtIndex:0];
-      v16 = [v15 unsignedIntValue];
+      unsignedIntValue = [v15 unsignedIntValue];
 
       if ([v6 count] >= 2)
       {
@@ -79,10 +79,10 @@
         do
         {
           v18 = [v6 objectAtIndex:{v17, v21}];
-          v19 = [v18 unsignedIntValue];
+          unsignedIntValue2 = [v18 unsignedIntValue];
 
-          v5 = v19 == v16;
-          if (v19 != v16)
+          v5 = unsignedIntValue2 == unsignedIntValue;
+          if (unsignedIntValue2 != unsignedIntValue)
           {
             break;
           }
@@ -108,14 +108,14 @@
   return v5;
 }
 
-+ (id)create3DMultiArrayFromFeatureArrays:(id)a3 withInputShape:(id)a4 usingFeatureDimensionsDict:(id)a5
++ (id)create3DMultiArrayFromFeatureArrays:(id)arrays withInputShape:(id)shape usingFeatureDimensionsDict:(id)dict
 {
-  v8 = a3;
-  v9 = a4;
-  v51 = a5;
-  if (![BITensor verifyArraysHaveSameCount:v8])
+  arraysCopy = arrays;
+  shapeCopy = shape;
+  dictCopy = dict;
+  if (![BITensor verifyArraysHaveSameCount:arraysCopy])
   {
-    v11 = [a1 log];
+    v11 = [self log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       sub_10002FFE0();
@@ -124,12 +124,12 @@
     goto LABEL_58;
   }
 
-  if ([v9 count] != 3)
+  if ([shapeCopy count] != 3)
   {
-    v11 = [a1 log];
+    v11 = [self log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      sub_100030020(v9, v11);
+      sub_100030020(shapeCopy, v11);
     }
 
 LABEL_58:
@@ -137,12 +137,12 @@ LABEL_58:
     goto LABEL_59;
   }
 
-  if ([v9 count])
+  if ([shapeCopy count])
   {
     v10 = 0;
     while (1)
     {
-      v11 = [v9 objectAtIndexedSubscript:v10];
+      v11 = [shapeCopy objectAtIndexedSubscript:v10];
       if ([v11 intValue]<= 0)
       {
         break;
@@ -150,7 +150,7 @@ LABEL_58:
 
       if (!v10 && [v11 intValue]!= 1)
       {
-        v42 = [a1 log];
+        v42 = [self log];
         if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
         {
           sub_1000300A8();
@@ -159,13 +159,13 @@ LABEL_58:
         goto LABEL_57;
       }
 
-      if (++v10 >= [v9 count])
+      if (++v10 >= [shapeCopy count])
       {
         goto LABEL_9;
       }
     }
 
-    v42 = [a1 log];
+    v42 = [self log];
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
     {
       sub_100030118(v11, v10, v42);
@@ -178,17 +178,17 @@ LABEL_57:
 
 LABEL_9:
   v70 = 0;
-  v60 = [[MLMultiArray alloc] initWithShape:v9 dataType:65568 error:&v70];
+  v60 = [[MLMultiArray alloc] initWithShape:shapeCopy dataType:65568 error:&v70];
   v47 = v70;
-  v61 = [v9 objectAtIndexedSubscript:1];
-  v48 = v9;
-  v12 = [v9 objectAtIndexedSubscript:2];
+  v61 = [shapeCopy objectAtIndexedSubscript:1];
+  v48 = shapeCopy;
+  v12 = [shapeCopy objectAtIndexedSubscript:2];
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v49 = v8;
-  obj = v8;
+  v49 = arraysCopy;
+  obj = arraysCopy;
   v13 = [obj countByEnumeratingWithState:&v66 objects:v80 count:16];
   v50 = v12;
   if (v13)
@@ -197,8 +197,8 @@ LABEL_9:
     v53 = 0;
     v15 = &IOConnectCallMethod_ptr;
     v57 = *v67;
-    v16 = v51;
-    v52 = a1;
+    v16 = dictCopy;
+    selfCopy = self;
     do
     {
       v17 = 0;
@@ -211,20 +211,20 @@ LABEL_9:
         }
 
         v18 = *(*(&v66 + 1) + 8 * v17);
-        v19 = [v16 allKeys];
-        v20 = [v15[196] null];
-        v21 = [v16 objectsForKeys:v19 notFoundMarker:v20];
+        allKeys = [v16 allKeys];
+        null = [v15[196] null];
+        v21 = [v16 objectsForKeys:allKeys notFoundMarker:null];
 
-        v22 = v19;
+        v22 = allKeys;
         v59 = v21;
-        v58 = [NSDictionary dictionaryWithObjects:v19 forKeys:v21];
+        v58 = [NSDictionary dictionaryWithObjects:allKeys forKeys:v21];
         v23 = [v58 objectForKey:v18];
         v24 = v23;
         if (v23)
         {
           if (([v23 intValue] & 0x80000000) != 0)
           {
-            v27 = [a1 log];
+            v27 = [self log];
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
             {
               sub_1000301A0(v78, v24, &v79, v27);
@@ -234,22 +234,22 @@ LABEL_9:
           else
           {
             v56 = v22;
-            v25 = [v24 intValue];
-            v26 = [v12 unsignedIntValue];
-            v27 = [a1 log];
+            intValue = [v24 intValue];
+            unsignedIntValue = [v12 unsignedIntValue];
+            v27 = [self log];
             v28 = os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG);
-            if (v25 >= v26)
+            if (intValue >= unsignedIntValue)
             {
               v22 = v56;
               if (v28)
               {
-                v39 = [v24 intValue];
-                v40 = [v12 unsignedIntValue];
+                intValue2 = [v24 intValue];
+                unsignedIntValue2 = [v12 unsignedIntValue];
                 *buf = 67109376;
-                *v72 = v39;
+                *v72 = intValue2;
                 v22 = v56;
                 *&v72[4] = 1024;
-                *&v72[6] = v40;
+                *&v72[6] = unsignedIntValue2;
                 _os_log_debug_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEBUG, "Found feature dimension of %d but specified an inputShape to create a multiarray with only %i features, skipping.", buf, 0xEu);
               }
 
@@ -292,8 +292,8 @@ LABEL_9:
                     v35 = *(*(&v62 + 1) + 8 * i);
                     if (v32 >= [v61 unsignedIntValue])
                     {
-                      a1 = v52;
-                      v38 = [v52 log];
+                      self = selfCopy;
+                      v38 = [selfCopy log];
                       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
                       {
                         v41 = [v27 count];
@@ -318,7 +318,7 @@ LABEL_9:
                   }
 
                   v31 = [v27 countByEnumeratingWithState:&v62 objects:v77 count:16];
-                  a1 = v52;
+                  self = selfCopy;
                   if (v31)
                   {
                     continue;
@@ -332,7 +332,7 @@ LABEL_38:
 
               ++v53;
               v12 = v50;
-              v16 = v51;
+              v16 = dictCopy;
               v14 = v54;
               v15 = &IOConnectCallMethod_ptr;
               v22 = v56;
@@ -342,7 +342,7 @@ LABEL_38:
 
         else
         {
-          v27 = [a1 log];
+          v27 = [self log];
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
@@ -370,16 +370,16 @@ LABEL_38:
   {
     v44 = v60;
     v45 = v60;
-    v9 = v48;
-    v8 = v49;
+    shapeCopy = v48;
+    arraysCopy = v49;
     v11 = v47;
   }
 
   else
   {
-    v43 = [a1 log];
-    v9 = v48;
-    v8 = v49;
+    v43 = [self log];
+    shapeCopy = v48;
+    arraysCopy = v49;
     v11 = v47;
     v44 = v60;
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -401,29 +401,29 @@ LABEL_59:
   return v45;
 }
 
-+ (id)getValuesFrom2DMultiArray:(id)a3 withFeatureNamesForDimensions:(id)a4
++ (id)getValuesFrom2DMultiArray:(id)array withFeatureNamesForDimensions:(id)dimensions
 {
-  v6 = a3;
-  v7 = a4;
+  arrayCopy = array;
+  dimensionsCopy = dimensions;
   v8 = objc_alloc_init(NSMutableDictionary);
-  v22 = [v6 shape];
-  v9 = [v22 objectAtIndex:1];
-  v10 = [v9 unsignedIntValue];
+  shape = [arrayCopy shape];
+  v9 = [shape objectAtIndex:1];
+  unsignedIntValue = [v9 unsignedIntValue];
 
-  v11 = [a1 log];
+  v11 = [self log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    sub_10003020C(v10, v11);
+    sub_10003020C(unsignedIntValue, v11);
   }
 
-  if (v10)
+  if (unsignedIntValue)
   {
     v12 = 0;
-    v13 = v10;
+    v13 = unsignedIntValue;
     while (1)
     {
       v14 = [NSNumber numberWithUnsignedInteger:v12];
-      v15 = [v7 objectForKey:v14];
+      v15 = [dimensionsCopy objectForKey:v14];
 
       if (!v15)
       {
@@ -434,7 +434,7 @@ LABEL_59:
       v16 = [NSNumber numberWithUnsignedInteger:v12];
       v23[1] = v16;
       v17 = [NSArray arrayWithObjects:v23 count:2];
-      v18 = [v6 objectForKeyedSubscript:v17];
+      v18 = [arrayCopy objectForKeyedSubscript:v17];
 
       [v8 setObject:v18 forKeyedSubscript:v15];
       if (v13 == ++v12)
@@ -443,7 +443,7 @@ LABEL_59:
       }
     }
 
-    v20 = [a1 log];
+    v20 = [self log];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       sub_100030284();
@@ -461,46 +461,46 @@ LABEL_7:
   return v19;
 }
 
-+ (id)getValuesFrom3DMultiArray:(id)a3 withFeatureNamesForDimensions:(id)a4
++ (id)getValuesFrom3DMultiArray:(id)array withFeatureNamesForDimensions:(id)dimensions
 {
-  v6 = a3;
-  v39 = a4;
+  arrayCopy = array;
+  dimensionsCopy = dimensions;
   v7 = objc_alloc_init(NSMutableDictionary);
-  v38 = v6;
-  v8 = [v6 shape];
-  v9 = [v8 objectAtIndex:1];
-  v37 = [v9 unsignedIntValue];
+  v38 = arrayCopy;
+  shape = [arrayCopy shape];
+  v9 = [shape objectAtIndex:1];
+  unsignedIntValue = [v9 unsignedIntValue];
 
-  v34 = v8;
-  v10 = [v8 objectAtIndex:2];
-  v11 = [v10 unsignedIntValue];
+  v34 = shape;
+  v10 = [shape objectAtIndex:2];
+  unsignedIntValue2 = [v10 unsignedIntValue];
 
-  v33 = a1;
-  v12 = [a1 log];
+  selfCopy = self;
+  v12 = [self log];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000302F4(v37, v11, v12);
+    sub_1000302F4(unsignedIntValue, unsignedIntValue2, v12);
   }
 
-  if (v11)
+  if (unsignedIntValue2)
   {
     v13 = 0;
-    v35 = v11;
+    v35 = unsignedIntValue2;
     v36 = v7;
     v14 = &IOConnectCallMethod_ptr;
-    v15 = v37;
+    v15 = unsignedIntValue;
     while (1)
     {
       v16 = objc_alloc_init(NSMutableArray);
       v17 = [v14[169] numberWithUnsignedInteger:v13];
-      v18 = [v39 objectForKey:v17];
+      v18 = [dimensionsCopy objectForKey:v17];
 
       if (!v18)
       {
         break;
       }
 
-      if (v37)
+      if (unsignedIntValue)
       {
         v19 = 0;
         do
@@ -537,7 +537,7 @@ LABEL_7:
       }
     }
 
-    v31 = [v33 log];
+    v31 = [selfCopy log];
     v29 = v34;
     v30 = v38;
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -559,30 +559,30 @@ LABEL_10:
   return v28;
 }
 
-+ (id)createSubArraysFromArrays:(id)a3 fromStartIndex:(unint64_t)a4 withSize:(unint64_t)a5
++ (id)createSubArraysFromArrays:(id)arrays fromStartIndex:(unint64_t)index withSize:(unint64_t)size
 {
-  v7 = a3;
-  if ([BITensor verifyArraysHaveSameCount:v7])
+  arraysCopy = arrays;
+  if ([BITensor verifyArraysHaveSameCount:arraysCopy])
   {
-    v8 = [v7 allValues];
-    v9 = [v8 objectAtIndex:0];
+    allValues = [arraysCopy allValues];
+    v9 = [allValues objectAtIndex:0];
 
-    if ([v9 count]>= a4)
+    if ([v9 count]>= index)
     {
-      if ([v9 count]- a4 >= a5)
+      if ([v9 count]- index >= size)
       {
         v26 = objc_alloc_init(NSMutableDictionary);
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v10 = v7;
+        v10 = arraysCopy;
         v12 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
         if (v12)
         {
           v13 = v12;
           v23 = v9;
-          v24 = v7;
+          v24 = arraysCopy;
           v14 = *v28;
           do
           {
@@ -595,25 +595,25 @@ LABEL_10:
 
               v16 = *(*(&v27 + 1) + 8 * i);
               v17 = [v10 objectForKey:v16, v23, v24];
-              v18 = a4;
-              v19 = [v17 subarrayWithRange:{a4, a5}];
+              indexCopy = index;
+              v19 = [v17 subarrayWithRange:{index, size}];
               v20 = [v19 mutableCopy];
 
               [v26 setValue:v20 forKey:v16];
-              v21 = [a1 log];
+              v21 = [self log];
               if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
               {
                 v22 = [v20 count];
                 *buf = 134218498;
-                v33 = v22;
+                sizeCopy = v22;
                 v34 = 2112;
-                v35 = v16;
+                indexCopy2 = v16;
                 v36 = 2112;
                 v37 = v20;
                 _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "Creating subarray of size %lu from array.. Subarray %@ values: %@ ", buf, 0x20u);
               }
 
-              a4 = v18;
+              index = indexCopy;
             }
 
             v13 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -621,19 +621,19 @@ LABEL_10:
 
           while (v13);
           v9 = v23;
-          v7 = v24;
+          arraysCopy = v24;
         }
 
         goto LABEL_12;
       }
 
-      v10 = [a1 log];
+      v10 = [self log];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218496;
-        v33 = a5;
+        sizeCopy = size;
         v34 = 2048;
-        v35 = a4;
+        indexCopy2 = index;
         v36 = 2048;
         v37 = [v9 count];
         _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Can't create subarray with length %lu starting from index %lu when array size is %lu", buf, 0x20u);
@@ -642,10 +642,10 @@ LABEL_10:
 
     else
     {
-      v10 = [a1 log];
+      v10 = [self log];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        sub_1000303BC(v9, a4, v10);
+        sub_1000303BC(v9, index, v10);
       }
     }
 
@@ -655,7 +655,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v9 = [a1 log];
+  v9 = [self log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     sub_10003037C();

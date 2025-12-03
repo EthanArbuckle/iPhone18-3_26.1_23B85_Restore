@@ -1,27 +1,27 @@
 @interface CNContactClearRecentsDataAction
-- (CNContactClearRecentsDataAction)initWithRecentsData:(id)a3 coreRecentsManager:(id)a4;
+- (CNContactClearRecentsDataAction)initWithRecentsData:(id)data coreRecentsManager:(id)manager;
 - (id)title;
-- (void)performActionWithSender:(id)a3;
+- (void)performActionWithSender:(id)sender;
 @end
 
 @implementation CNContactClearRecentsDataAction
 
-- (void)performActionWithSender:(id)a3
+- (void)performActionWithSender:(id)sender
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = [(CNContactClearRecentsDataAction *)self coreRecentsManager];
-  v5 = [(CNContactClearRecentsDataAction *)self recentsData];
-  v6 = [v5 recentContactID];
-  v11[0] = v6;
+  coreRecentsManager = [(CNContactClearRecentsDataAction *)self coreRecentsManager];
+  recentsData = [(CNContactClearRecentsDataAction *)self recentsData];
+  recentContactID = [recentsData recentContactID];
+  v11[0] = recentContactID;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  v8 = [(CNContactClearRecentsDataAction *)self recentsData];
-  v9 = [v8 domain];
+  recentsData2 = [(CNContactClearRecentsDataAction *)self recentsData];
+  domain = [recentsData2 domain];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __59__CNContactClearRecentsDataAction_performActionWithSender___block_invoke;
   v10[3] = &unk_1E74E5200;
   v10[4] = self;
-  [v4 removeRecentsWithIdentifiers:v7 domain:v9 completionHandler:v10];
+  [coreRecentsManager removeRecentsWithIdentifiers:v7 domain:domain completionHandler:v10];
 }
 
 void __59__CNContactClearRecentsDataAction_performActionWithSender___block_invoke(uint64_t a1)
@@ -49,18 +49,18 @@ void __59__CNContactClearRecentsDataAction_performActionWithSender___block_invok
   return v3;
 }
 
-- (CNContactClearRecentsDataAction)initWithRecentsData:(id)a3 coreRecentsManager:(id)a4
+- (CNContactClearRecentsDataAction)initWithRecentsData:(id)data coreRecentsManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = CNContactClearRecentsDataAction;
   v9 = [(CNContactAction *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_recentsData, a3);
-    objc_storeStrong(&v10->_coreRecentsManager, a4);
+    objc_storeStrong(&v9->_recentsData, data);
+    objc_storeStrong(&v10->_coreRecentsManager, manager);
     v11 = v10;
   }
 

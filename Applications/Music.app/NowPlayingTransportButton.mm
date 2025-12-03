@@ -1,8 +1,8 @@
 @interface NowPlayingTransportButton
 - (CGSize)intrinsicContentSize;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)tintColorDidChange;
 @end
 
@@ -10,7 +10,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100050DA0();
 }
 
@@ -24,32 +24,32 @@
   if (v3)
   {
     v4 = v3;
-    v5 = [v2 tintColor];
-    (*((swift_isaMask & *v4) + 0xD8))(v5);
+    tintColor = [v2 tintColor];
+    (*((swift_isaMask & *v4) + 0xD8))(tintColor);
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = type metadata accessor for NowPlayingTransportButton();
   v11.receiver = self;
   v11.super_class = v5;
-  v6 = self;
-  v7 = [(NowPlayingTransportButton *)&v11 isEnabled];
-  v10.receiver = v6;
+  selfCopy = self;
+  isEnabled = [(NowPlayingTransportButton *)&v11 isEnabled];
+  v10.receiver = selfCopy;
   v10.super_class = v5;
-  [(NowPlayingTransportButton *)&v10 setEnabled:v3];
-  if (v7 != [(NowPlayingTransportButton *)v6 isEnabled])
+  [(NowPlayingTransportButton *)&v10 setEnabled:enabledCopy];
+  if (isEnabled != [(NowPlayingTransportButton *)selfCopy isEnabled])
   {
-    v8 = [(NowPlayingTransportButton *)v6 isEnabled];
+    isEnabled2 = [(NowPlayingTransportButton *)selfCopy isEnabled];
     v9 = 0.5;
-    if (v8)
+    if (isEnabled2)
     {
       v9 = 1.0;
     }
 
-    [(NowPlayingTransportButton *)v6 setAlpha:v9];
+    [(NowPlayingTransportButton *)selfCopy setAlpha:v9];
   }
 }
 
@@ -88,13 +88,13 @@
   return result;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = type metadata accessor for NowPlayingTransportButton();
   v4 = v5.receiver;
-  [(NowPlayingTransportButton *)&v5 setHighlighted:v3];
+  [(NowPlayingTransportButton *)&v5 setHighlighted:highlightedCopy];
   sub_10040F18C();
 }
 

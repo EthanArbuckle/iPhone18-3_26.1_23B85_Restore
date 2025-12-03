@@ -1,37 +1,37 @@
 @interface MADVIMachineReadableCodeDetectionResult
-- (MADVIMachineReadableCodeDetectionResult)initWithCoder:(id)a3;
-- (MADVIMachineReadableCodeDetectionResult)initWithObservations:(id)a3;
+- (MADVIMachineReadableCodeDetectionResult)initWithCoder:(id)coder;
+- (MADVIMachineReadableCodeDetectionResult)initWithObservations:(id)observations;
 - (NSArray)resultItems;
 - (double)executionTimeInterval;
 - (id)description;
 - (unint64_t)executionNanoseconds;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADVIMachineReadableCodeDetectionResult
 
-- (MADVIMachineReadableCodeDetectionResult)initWithObservations:(id)a3
+- (MADVIMachineReadableCodeDetectionResult)initWithObservations:(id)observations
 {
-  v5 = a3;
+  observationsCopy = observations;
   v9.receiver = self;
   v9.super_class = MADVIMachineReadableCodeDetectionResult;
   v6 = [(MADResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_observations, a3);
+    objc_storeStrong(&v6->_observations, observations);
   }
 
   return v7;
 }
 
-- (MADVIMachineReadableCodeDetectionResult)initWithCoder:(id)a3
+- (MADVIMachineReadableCodeDetectionResult)initWithCoder:(id)coder
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = MADVIMachineReadableCodeDetectionResult;
-  v5 = [(MADResult *)&v14 initWithCoder:v4];
+  v5 = [(MADResult *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -58,7 +58,7 @@
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
     v10 = [v6 setWithArray:v9];
 
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"Observations"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"Observations"];
     observations = v5->_observations;
     v5->_observations = v11;
   }
@@ -66,13 +66,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MADVIMachineReadableCodeDetectionResult;
-  v4 = a3;
-  [(MADResult *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_observations forKey:{@"Observations", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(MADResult *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_observations forKey:{@"Observations", v5.receiver, v5.super_class}];
 }
 
 - (unint64_t)executionNanoseconds
@@ -92,20 +92,20 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"observations: %@>", self->_observations];
+  [string appendFormat:@"observations: %@>", self->_observations];
 
-  return v3;
+  return string;
 }
 
 - (NSArray)resultItems
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -139,11 +139,11 @@
         [v9 bottomRight];
         v24 = v23;
         v26 = v25;
-        v27 = [v9 symbology];
-        v28 = [v9 payloadStringValue];
-        v29 = [v9 barcodeDescriptor];
-        v30 = [(MADVIMachineReadableCodeDetectionResultItem *)v10 initWithTopLeft:v27 topRight:v28 bottomLeft:v29 bottomRight:v12 symbology:v14 payload:v16 andDescriptor:v18, v20, v22, v24, v26];
-        [v3 addObject:v30];
+        symbology = [v9 symbology];
+        payloadStringValue = [v9 payloadStringValue];
+        barcodeDescriptor = [v9 barcodeDescriptor];
+        v30 = [(MADVIMachineReadableCodeDetectionResultItem *)v10 initWithTopLeft:symbology topRight:payloadStringValue bottomLeft:barcodeDescriptor bottomRight:v12 symbology:v14 payload:v16 andDescriptor:v18, v20, v22, v24, v26];
+        [array addObject:v30];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v32 objects:v36 count:16];
@@ -152,7 +152,7 @@
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 @end

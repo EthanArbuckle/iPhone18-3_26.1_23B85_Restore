@@ -1,29 +1,29 @@
 @interface HUAssociatedSceneListItem
-- (HUAssociatedSceneListItem)initWithHome:(id)a3 serviceLikeItem:(id)a4 context:(unint64_t)a5;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HUAssociatedSceneListItem)initWithHome:(id)home serviceLikeItem:(id)item context:(unint64_t)context;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUAssociatedSceneListItem
 
-- (HUAssociatedSceneListItem)initWithHome:(id)a3 serviceLikeItem:(id)a4 context:(unint64_t)a5
+- (HUAssociatedSceneListItem)initWithHome:(id)home serviceLikeItem:(id)item context:(unint64_t)context
 {
-  v9 = a3;
-  v10 = a4;
+  homeCopy = home;
+  itemCopy = item;
   v14.receiver = self;
   v14.super_class = HUAssociatedSceneListItem;
   v11 = [(HUAssociatedSceneListItem *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_home, a3);
-    objc_storeStrong(&v12->_serviceLikeItem, a4);
-    v12->_context = a5;
+    objc_storeStrong(&v11->_home, home);
+    objc_storeStrong(&v12->_serviceLikeItem, item);
+    v12->_context = context;
   }
 
   return v12;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = MEMORY[0x277D2C900];
   v10[0] = MEMORY[0x277D85DD0];

@@ -1,34 +1,34 @@
 @interface _CDDataCollectionAnonymizer
-- (id)anonymizeArray:(uint64_t)a1;
-- (id)anonymizeDictionary:(void *)a1;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initWithSalt:(id *)a1;
-- (void)anonymizeObject:(void *)a1;
+- (id)anonymizeArray:(uint64_t)array;
+- (id)anonymizeDictionary:(void *)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initWithSalt:(id *)salt;
+- (void)anonymizeObject:(void *)object;
 @end
 
 @implementation _CDDataCollectionAnonymizer
 
-- (id)initWithSalt:(id *)a1
+- (id)initWithSalt:(id *)salt
 {
   v4 = a2;
-  if (a1)
+  if (salt)
   {
-    v7.receiver = a1;
+    v7.receiver = salt;
     v7.super_class = _CDDataCollectionAnonymizer;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    salt = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
     }
   }
 
-  return a1;
+  return salt;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_CDDataCollectionAnonymizer allocWithZone:a3];
+  v4 = [_CDDataCollectionAnonymizer allocWithZone:zone];
   if (self)
   {
     salt = self->_salt;
@@ -42,12 +42,12 @@
   return [(_CDDataCollectionAnonymizer *)&v4->super.isa initWithSalt:?];
 }
 
-- (id)anonymizeArray:(uint64_t)a1
+- (id)anonymizeArray:(uint64_t)array
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (array)
   {
     v5 = MEMORY[0x1E695DF70];
     [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
@@ -67,7 +67,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [(_CDDataCollectionAnonymizer *)a1 anonymizeObject:?];
+          v11 = [(_CDDataCollectionAnonymizer *)array anonymizeObject:?];
           if (v11)
           {
             [v5 addObject:v11];
@@ -91,17 +91,17 @@
   return v5;
 }
 
-- (void)anonymizeObject:(void *)a1
+- (void)anonymizeObject:(void *)object
 {
   v3 = a2;
-  if (a1)
+  if (object)
   {
     objc_opt_class();
     if (OUTLINED_FUNCTION_8_5())
     {
-      v4 = [_CDHashUtilities sha256Hash:v3 withSalt:a1[1]];
+      v4 = [_CDHashUtilities sha256Hash:v3 withSalt:object[1]];
 LABEL_6:
-      a1 = v4;
+      object = v4;
       goto LABEL_10;
     }
 
@@ -115,31 +115,31 @@ LABEL_6:
     objc_opt_class();
     if (OUTLINED_FUNCTION_8_5())
     {
-      v4 = [(_CDDataCollectionAnonymizer *)a1 anonymizeArray:v3];
+      v4 = [(_CDDataCollectionAnonymizer *)object anonymizeArray:v3];
       goto LABEL_6;
     }
 
     objc_opt_class();
     if (OUTLINED_FUNCTION_8_5())
     {
-      v4 = [(_CDDataCollectionAnonymizer *)a1 anonymizeDictionary:v3];
+      v4 = [(_CDDataCollectionAnonymizer *)object anonymizeDictionary:v3];
       goto LABEL_6;
     }
 
-    a1 = 0;
+    object = 0;
   }
 
 LABEL_10:
 
-  return a1;
+  return object;
 }
 
-- (id)anonymizeDictionary:(void *)a1
+- (id)anonymizeDictionary:(void *)dictionary
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (dictionary)
   {
     v5 = MEMORY[0x1E695DF90];
     [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
@@ -161,7 +161,7 @@ LABEL_10:
 
           v11 = *(v16[1] + 8 * i);
           v12 = [v6 objectForKeyedSubscript:v11];
-          v13 = [(_CDDataCollectionAnonymizer *)a1 anonymizeObject:v12];
+          v13 = [(_CDDataCollectionAnonymizer *)dictionary anonymizeObject:v12];
 
           if (v13)
           {

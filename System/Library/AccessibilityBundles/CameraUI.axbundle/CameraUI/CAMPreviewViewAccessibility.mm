@@ -1,10 +1,10 @@
 @interface CAMPreviewViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsBackFacing;
 - (BOOL)_axIsFocusLocked;
 - (BOOL)_axIsPortraitMode;
 - (BOOL)isAccessibilityElement;
-- (CAMPreviewViewAccessibility)initWithFrame:(CGRect)a3 initialPreviewAspectMode:(int64_t)a4 initialWindowedPreviewAspectMode:(int64_t)a5;
+- (CAMPreviewViewAccessibility)initWithFrame:(CGRect)frame initialPreviewAspectMode:(int64_t)mode initialWindowedPreviewAspectMode:(int64_t)aspectMode;
 - (CGPoint)accessibilityActivationPoint;
 - (CGRect)accessibilityFrame;
 - (id)_accessibilitySupplementaryFooterViews;
@@ -12,49 +12,49 @@
 - (id)accessibilityValue;
 - (unsigned)_accessibilityMediaAnalysisOptions;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_accessibilityZoomIn:(BOOL)a3;
-- (void)_showFocusAtPoint:(CGPoint)a3 startAnimating:(BOOL)a4;
+- (void)_accessibilityZoomIn:(BOOL)in;
+- (void)_showFocusAtPoint:(CGPoint)point startAnimating:(BOOL)animating;
 @end
 
 @implementation CAMPreviewViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMPreviewView" hasInstanceVariable:@"_indicatorContainerView" withType:"UIView"];
-  [v3 validateClass:@"CAMPreviewView" hasInstanceMethod:@"initWithFrame:initialPreviewAspectMode:initialWindowedPreviewAspectMode:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "q", "q", 0}];
-  [v3 validateClass:@"CAMPreviewView" hasInstanceMethod:@"videoPreviewView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMPreviewView" hasInstanceMethod:@"videoPreviewLayer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMViewfinderView"];
-  [v3 validateClass:@"CAMViewfinderViewController"];
-  [v3 validateClass:@"CAMShallowDepthOfFieldBadge"];
-  [v3 validateClass:@"CAMPortraitModeInstructionLabel"];
-  [v3 validateClass:@"CAMFullscreenViewfinder"];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_cachedVideoZoomFactor" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_currentMaximumZoomFactor" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_setCachedVideoZoomFactor:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_updateZoomUIWithZoomFactor: animated:" withFullSignature:{"v", "d", "B", 0}];
-  [v3 validateClass:@"CUCaptureController" hasInstanceMethod:@"changeToVideoZoomFactor:graphConfiguration:" withFullSignature:{"v", "d", "@", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_currentGraphConfiguration" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMViewfinderView" hasInstanceMethod:@"bottomBar" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMViewfinderView" hasInstanceMethod:@"shallowDepthOfFieldBadge" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMViewfinderView" hasInstanceMethod:@"portraitModeInstructionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMModeDial" hasInstanceMethod:@"selectedMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_shallowDepthOfFieldStatus" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_targetPortraitModeInstructionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMInstructionLabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_captureController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMPortraitModeInstructionLabel" isKindOfClass:@"CAMInstructionLabel"];
-  [v3 validateClass:@"CUCaptureController" hasInstanceMethod:@"isCapturingVideo" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CUCaptureController" hasInstanceMethod:@"isCapturingStandardVideo" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CAMPreviewView" hasInstanceMethod:@"viewportFrame" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_zoomControl" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMZoomControl" hasInstanceMethod:@"_buttonPlatter" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_modeDial" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_primaryShutterControl" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMZoomControl" hasInstanceMethod:@"_zoomDial" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMZoomDial" hasInstanceMethod:@"_contentMaskView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMPreviewView" hasInstanceMethod:@"frontPIPVideoPreviewView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMPreviewView" hasInstanceVariable:@"_indicatorContainerView" withType:"UIView"];
+  [validationsCopy validateClass:@"CAMPreviewView" hasInstanceMethod:@"initWithFrame:initialPreviewAspectMode:initialWindowedPreviewAspectMode:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "q", "q", 0}];
+  [validationsCopy validateClass:@"CAMPreviewView" hasInstanceMethod:@"videoPreviewView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMPreviewView" hasInstanceMethod:@"videoPreviewLayer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderView"];
+  [validationsCopy validateClass:@"CAMViewfinderViewController"];
+  [validationsCopy validateClass:@"CAMShallowDepthOfFieldBadge"];
+  [validationsCopy validateClass:@"CAMPortraitModeInstructionLabel"];
+  [validationsCopy validateClass:@"CAMFullscreenViewfinder"];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_cachedVideoZoomFactor" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_currentMaximumZoomFactor" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_setCachedVideoZoomFactor:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_updateZoomUIWithZoomFactor: animated:" withFullSignature:{"v", "d", "B", 0}];
+  [validationsCopy validateClass:@"CUCaptureController" hasInstanceMethod:@"changeToVideoZoomFactor:graphConfiguration:" withFullSignature:{"v", "d", "@", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_currentGraphConfiguration" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderView" hasInstanceMethod:@"bottomBar" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderView" hasInstanceMethod:@"shallowDepthOfFieldBadge" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderView" hasInstanceMethod:@"portraitModeInstructionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMModeDial" hasInstanceMethod:@"selectedMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_shallowDepthOfFieldStatus" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_targetPortraitModeInstructionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMInstructionLabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_captureController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMPortraitModeInstructionLabel" isKindOfClass:@"CAMInstructionLabel"];
+  [validationsCopy validateClass:@"CUCaptureController" hasInstanceMethod:@"isCapturingVideo" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CUCaptureController" hasInstanceMethod:@"isCapturingStandardVideo" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CAMPreviewView" hasInstanceMethod:@"viewportFrame" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_zoomControl" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMZoomControl" hasInstanceMethod:@"_buttonPlatter" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_modeDial" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_primaryShutterControl" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMZoomControl" hasInstanceMethod:@"_zoomDial" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMZoomDial" hasInstanceMethod:@"_contentMaskView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMPreviewView" hasInstanceMethod:@"frontPIPVideoPreviewView" withFullSignature:{"@", 0}];
 }
 
 - (CGPoint)accessibilityActivationPoint
@@ -113,10 +113,10 @@
     v3 = [(CAMPreviewViewAccessibility *)self _accessibilityAncestorIsKindOf:MEMORY[0x29C2CF1C0](@"CAMFullscreenViewfinder")];
     v4 = __UIAccessibilitySafeClass();
 
-    v5 = [v4 _accessibilityViewController];
-    if (v5 && (MEMORY[0x29C2CF1C0](@"CAMViewfinderViewController"), (objc_opt_isKindOfClass() & 1) != 0))
+    _accessibilityViewController = [v4 _accessibilityViewController];
+    if (_accessibilityViewController && (MEMORY[0x29C2CF1C0](@"CAMViewfinderViewController"), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      if (([v5 safeIntegerForKey:@"_shallowDepthOfFieldStatus"] & 0xFFFFFFFFFFFFFFF7) == 1)
+      if (([_accessibilityViewController safeIntegerForKey:@"_shallowDepthOfFieldStatus"] & 0xFFFFFFFFFFFFFFF7) == 1)
       {
         v6 = accessibilityCameraUILocalizedString(@"depth.enabled");
       }
@@ -124,7 +124,7 @@
       else
       {
         objc_opt_class();
-        v11 = [v5 safeValueForKeyPath:@"_targetPortraitModeInstructionLabel.text"];
+        v11 = [_accessibilityViewController safeValueForKeyPath:@"_targetPortraitModeInstructionLabel.text"];
         v12 = __UIAccessibilityCastAsClass();
 
         v13 = accessibilityCameraUILocalizedString(@"depth.disabled");
@@ -177,8 +177,8 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(CAMPreviewViewAccessibility *)self accessibilityElements];
-  v3 = [v2 count] == 0;
+  accessibilityElements = [(CAMPreviewViewAccessibility *)self accessibilityElements];
+  v3 = [accessibilityElements count] == 0;
 
   return v3;
 }
@@ -191,30 +191,30 @@
   if (v3)
   {
     v9[0] = v3;
-    v5 = [MEMORY[0x29EDB8D80] arrayWithObjects:v9 count:1];
+    _accessibilitySupplementaryFooterViews = [MEMORY[0x29EDB8D80] arrayWithObjects:v9 count:1];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CAMPreviewViewAccessibility;
-    v5 = [(CAMPreviewViewAccessibility *)&v8 _accessibilitySupplementaryFooterViews];
+    _accessibilitySupplementaryFooterViews = [(CAMPreviewViewAccessibility *)&v8 _accessibilitySupplementaryFooterViews];
   }
 
-  v6 = v5;
+  v6 = _accessibilitySupplementaryFooterViews;
 
   return v6;
 }
 
-- (void)_showFocusAtPoint:(CGPoint)a3 startAnimating:(BOOL)a4
+- (void)_showFocusAtPoint:(CGPoint)point startAnimating:(BOOL)animating
 {
   v13.receiver = self;
   v13.super_class = CAMPreviewViewAccessibility;
-  [(CAMPreviewViewAccessibility *)&v13 _showFocusAtPoint:a4 startAnimating:a3.x, a3.y];
-  v6 = [(CAMPreviewViewAccessibility *)self window];
-  if (v6)
+  [(CAMPreviewViewAccessibility *)&v13 _showFocusAtPoint:animating startAnimating:point.x, point.y];
+  window = [(CAMPreviewViewAccessibility *)self window];
+  if (window)
   {
-    v7 = v6;
+    v7 = window;
     v8 = [(CAMPreviewViewAccessibility *)self safeValueForKey:@"_continuousAutoFocusView"];
     if (!v8)
     {
@@ -259,17 +259,17 @@ LABEL_9:
   [v3 setAccessibilityViewIsModal:0];
 }
 
-- (CAMPreviewViewAccessibility)initWithFrame:(CGRect)a3 initialPreviewAspectMode:(int64_t)a4 initialWindowedPreviewAspectMode:(int64_t)a5
+- (CAMPreviewViewAccessibility)initWithFrame:(CGRect)frame initialPreviewAspectMode:(int64_t)mode initialWindowedPreviewAspectMode:(int64_t)aspectMode
 {
   v7.receiver = self;
   v7.super_class = CAMPreviewViewAccessibility;
-  v5 = [(CAMPreviewViewAccessibility *)&v7 initWithFrame:a4 initialPreviewAspectMode:a5 initialWindowedPreviewAspectMode:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(CAMPreviewViewAccessibility *)&v7 initWithFrame:mode initialPreviewAspectMode:aspectMode initialWindowedPreviewAspectMode:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(CAMPreviewViewAccessibility *)v5 _accessibilityLoadAccessibilityInformation];
 
   return v5;
 }
 
-- (void)_accessibilityZoomIn:(BOOL)a3
+- (void)_accessibilityZoomIn:(BOOL)in
 {
   v3 = [(CAMPreviewViewAccessibility *)self _accessibilityAncestorIsKindOf:MEMORY[0x29C2CF1C0](@"CAMViewfinderView", a2)];
   v4 = __UIAccessibilitySafeClass();
@@ -310,8 +310,8 @@ void __52__CAMPreviewViewAccessibility__accessibilityZoomIn___block_invoke_2()
   v3 = [(CAMPreviewViewAccessibility *)self _accessibilityValueForKey:@"AXCameraIsFocusedKey"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
 - (BOOL)_axIsBackFacing
@@ -320,8 +320,8 @@ void __52__CAMPreviewViewAccessibility__accessibilityZoomIn___block_invoke_2()
   v3 = [(CAMPreviewViewAccessibility *)self _accessibilityValueForKey:@"AXIsBackCamera"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
 - (unsigned)_accessibilityMediaAnalysisOptions
@@ -359,18 +359,18 @@ void __52__CAMPreviewViewAccessibility__accessibilityZoomIn___block_invoke_2()
   v8 = v7;
   v10 = v9;
   v11 = [(CAMPreviewViewAccessibility *)self _accessibilityFindViewAncestor:&__block_literal_global_15 startWithSelf:1];
-  v12 = [v11 _accessibilityViewController];
+  _accessibilityViewController = [v11 _accessibilityViewController];
 
-  if (v12)
+  if (_accessibilityViewController)
   {
-    v13 = [v12 safeValueForKeyPath:@"_zoomControl"];
+    v13 = [_accessibilityViewController safeValueForKeyPath:@"_zoomControl"];
     [v13 accessibilityFrame];
     v15 = v14;
     v17 = v16;
 
     if (AXDeviceIsPhone())
     {
-      v18 = [v12 safeIntegerForKey:@"_currentMode"];
+      v18 = [_accessibilityViewController safeIntegerForKey:@"_currentMode"];
       v19 = v18 == 6 || v18 == 0;
       v20 = 60.0;
       if (v19)
@@ -384,7 +384,7 @@ void __52__CAMPreviewViewAccessibility__accessibilityZoomIn___block_invoke_2()
 
     else
     {
-      v25 = [v12 safeValueForKeyPath:@"_primaryShutterControl"];
+      v25 = [_accessibilityViewController safeValueForKeyPath:@"_primaryShutterControl"];
       [v25 accessibilityFrame];
       v27 = v26;
 

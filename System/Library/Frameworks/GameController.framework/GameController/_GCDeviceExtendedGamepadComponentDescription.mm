@@ -1,24 +1,24 @@
 @interface _GCDeviceExtendedGamepadComponentDescription
-- (id)createWithContext:(id)a3;
+- (id)createWithContext:(id)context;
 @end
 
 @implementation _GCDeviceExtendedGamepadComponentDescription
 
-- (id)createWithContext:(id)a3
+- (id)createWithContext:(id)context
 {
   v70 = *MEMORY[0x1E69E9840];
-  v63 = a3;
+  contextCopy = context;
   bzero(v68, 0x638uLL);
   v4 = [GCExtendedGamepad alloc];
-  v5 = [(_GCDevicePhysicalInputComponentDescription *)self identifier];
-  v6 = [(GCExtendedGamepad *)v4 initWithIdentifier:v5 info:v68];
+  identifier = [(_GCDevicePhysicalInputComponentDescription *)self identifier];
+  v6 = [(GCExtendedGamepad *)v4 initWithIdentifier:identifier info:v68];
 
   v66 = 0u;
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v7 = [(_GCDevicePhysicalInputComponentDescription *)self elementDescriptions];
-  v8 = [v7 countByEnumeratingWithState:&v64 objects:v69 count:16];
+  elementDescriptions = [(_GCDevicePhysicalInputComponentDescription *)self elementDescriptions];
+  v8 = [elementDescriptions countByEnumeratingWithState:&v64 objects:v69 count:16];
   if (v8)
   {
     v9 = *v65;
@@ -29,12 +29,12 @@
       {
         if (*v65 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(elementDescriptions);
         }
 
         v11 = *(*(&v64 + 1) + 8 * v10);
-        v12 = [v11 name];
-        v13 = [v12 isEqualToString:@"Button A"];
+        name = [v11 name];
+        v13 = [name isEqualToString:@"Button A"];
 
         if (v13)
         {
@@ -45,8 +45,8 @@ LABEL_38:
           goto LABEL_39;
         }
 
-        v15 = [v11 name];
-        v16 = [v15 isEqualToString:@"Button B"];
+        name2 = [v11 name];
+        v16 = [name2 isEqualToString:@"Button B"];
 
         if (v16)
         {
@@ -55,8 +55,8 @@ LABEL_38:
           goto LABEL_38;
         }
 
-        v17 = [v11 name];
-        v18 = [v17 isEqualToString:@"Button X"];
+        name3 = [v11 name];
+        v18 = [name3 isEqualToString:@"Button X"];
 
         if (v18)
         {
@@ -65,8 +65,8 @@ LABEL_38:
           goto LABEL_38;
         }
 
-        v19 = [v11 name];
-        v20 = [v19 isEqualToString:@"Button Y"];
+        name4 = [v11 name];
+        v20 = [name4 isEqualToString:@"Button Y"];
 
         if (v20)
         {
@@ -75,8 +75,8 @@ LABEL_38:
           goto LABEL_38;
         }
 
-        v21 = [v11 name];
-        v22 = [v21 isEqualToString:@"Left Shoulder"];
+        name5 = [v11 name];
+        v22 = [name5 isEqualToString:@"Left Shoulder"];
 
         if (v22)
         {
@@ -85,8 +85,8 @@ LABEL_38:
           goto LABEL_38;
         }
 
-        v23 = [v11 name];
-        v24 = [v23 isEqualToString:@"Right Shoulder"];
+        name6 = [v11 name];
+        v24 = [name6 isEqualToString:@"Right Shoulder"];
 
         if (v24)
         {
@@ -95,8 +95,8 @@ LABEL_38:
           goto LABEL_38;
         }
 
-        v25 = [v11 name];
-        v26 = [v25 isEqualToString:@"Left Trigger"];
+        name7 = [v11 name];
+        v26 = [name7 isEqualToString:@"Left Trigger"];
 
         if (v26)
         {
@@ -105,8 +105,8 @@ LABEL_38:
           goto LABEL_38;
         }
 
-        v27 = [v11 name];
-        v28 = [v27 isEqualToString:@"Right Trigger"];
+        name8 = [v11 name];
+        v28 = [name8 isEqualToString:@"Right Trigger"];
 
         if (v28)
         {
@@ -115,8 +115,8 @@ LABEL_38:
           goto LABEL_38;
         }
 
-        v29 = [v11 name];
-        v30 = [v29 isEqualToString:@"Left Thumbstick Button"];
+        name9 = [v11 name];
+        v30 = [name9 isEqualToString:@"Left Thumbstick Button"];
 
         if (v30)
         {
@@ -125,8 +125,8 @@ LABEL_38:
           goto LABEL_38;
         }
 
-        v31 = [v11 name];
-        v32 = [v31 isEqualToString:@"Right Thumbstick Button"];
+        name10 = [v11 name];
+        v32 = [name10 isEqualToString:@"Right Thumbstick Button"];
 
         if (v32)
         {
@@ -135,8 +135,8 @@ LABEL_38:
           goto LABEL_38;
         }
 
-        v33 = [v11 name];
-        v34 = [v33 isEqualToString:@"Direction Pad"];
+        name11 = [v11 name];
+        v34 = [name11 isEqualToString:@"Direction Pad"];
 
         if (v34)
         {
@@ -145,8 +145,8 @@ LABEL_38:
           goto LABEL_38;
         }
 
-        v35 = [v11 name];
-        v36 = [v35 isEqualToString:@"Left Thumbstick"];
+        name12 = [v11 name];
+        v36 = [name12 isEqualToString:@"Left Thumbstick"];
 
         if (v36)
         {
@@ -155,8 +155,8 @@ LABEL_38:
           goto LABEL_38;
         }
 
-        v37 = [v11 name];
-        v38 = [v37 isEqualToString:@"Right Thumbstick"];
+        name13 = [v11 name];
+        v38 = [name13 isEqualToString:@"Right Thumbstick"];
 
         if (v38)
         {
@@ -165,8 +165,8 @@ LABEL_38:
           goto LABEL_38;
         }
 
-        v39 = [v11 name];
-        v40 = [v39 isEqualToString:@"Button Menu"];
+        name14 = [v11 name];
+        v40 = [name14 isEqualToString:@"Button Menu"];
 
         if (v40)
         {
@@ -175,8 +175,8 @@ LABEL_38:
           goto LABEL_38;
         }
 
-        v41 = [v11 name];
-        v42 = [v41 isEqualToString:@"Button Options"];
+        name15 = [v11 name];
+        v42 = [name15 isEqualToString:@"Button Options"];
 
         if (v42)
         {
@@ -185,8 +185,8 @@ LABEL_38:
           goto LABEL_38;
         }
 
-        v43 = [v11 name];
-        v44 = [v43 isEqualToString:@"Button Home"];
+        name16 = [v11 name];
+        v44 = [name16 isEqualToString:@"Button Home"];
 
         if (v44)
         {
@@ -195,40 +195,40 @@ LABEL_38:
           goto LABEL_38;
         }
 
-        v45 = [v11 name];
-        v46 = [v45 isEqualToString:@"Left Bumper"];
+        name17 = [v11 name];
+        v46 = [name17 isEqualToString:@"Left Bumper"];
 
         if (v46)
         {
           goto LABEL_48;
         }
 
-        v47 = [v11 name];
-        v48 = [v47 isEqualToString:@"Right Bumper"];
+        name18 = [v11 name];
+        v48 = [name18 isEqualToString:@"Right Bumper"];
 
         if (v48)
         {
           goto LABEL_48;
         }
 
-        v49 = [v11 name];
-        v50 = [v49 isEqualToString:@"Back Left Button 0"];
+        name19 = [v11 name];
+        v50 = [name19 isEqualToString:@"Back Left Button 0"];
 
         if (v50)
         {
           goto LABEL_48;
         }
 
-        v51 = [v11 name];
-        v52 = [v51 isEqualToString:@"Back Right Button 0"];
+        name20 = [v11 name];
+        v52 = [name20 isEqualToString:@"Back Right Button 0"];
 
         if (v52)
         {
           goto LABEL_48;
         }
 
-        v53 = [v11 name];
-        v54 = [v53 isEqualToString:@"Back Left Button 1"];
+        name21 = [v11 name];
+        v54 = [name21 isEqualToString:@"Back Left Button 1"];
 
         if (v54 & 1) != 0 || ([v11 name], v55 = objc_claimAutoreleasedReturnValue(), v56 = objc_msgSend(v55, "isEqualToString:", @"Back Right Button 1"), v55, (v56) || (objc_opt_class(), (objc_opt_isKindOfClass()))
         {
@@ -250,7 +250,7 @@ LABEL_39:
       }
 
       while (v8 != v10);
-      v59 = [v7 countByEnumeratingWithState:&v64 objects:v69 count:16];
+      v59 = [elementDescriptions countByEnumeratingWithState:&v64 objects:v69 count:16];
       v8 = v59;
     }
 

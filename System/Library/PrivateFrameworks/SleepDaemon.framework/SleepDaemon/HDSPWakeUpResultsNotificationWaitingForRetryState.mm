@@ -9,38 +9,38 @@
 
 - (id)expirationDate
 {
-  v3 = [(HDSPWakeUpResultsNotificationStateMachineState *)self infoProvider];
-  v4 = [(HDSPWakeUpResultsNotificationStateMachineState *)self infoProvider];
-  v5 = [v4 currentDate];
-  v6 = [v3 notificationAttemptWindowForWakeUpBeforeDate:v5];
-  v7 = [v6 endDate];
+  infoProvider = [(HDSPWakeUpResultsNotificationStateMachineState *)self infoProvider];
+  infoProvider2 = [(HDSPWakeUpResultsNotificationStateMachineState *)self infoProvider];
+  currentDate = [infoProvider2 currentDate];
+  v6 = [infoProvider notificationAttemptWindowForWakeUpBeforeDate:currentDate];
+  endDate = [v6 endDate];
 
-  return v7;
+  return endDate;
 }
 
 - (void)didEnter
 {
-  v3 = [(HKSPStateMachineState *)self stateMachine];
-  v4 = [v3 currentContext];
-  v5 = [v4 hasStateTransitionOrInitializing];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  currentContext = [stateMachine currentContext];
+  hasStateTransitionOrInitializing = [currentContext hasStateTransitionOrInitializing];
 
-  if (v5)
+  if (hasStateTransitionOrInitializing)
   {
-    v6 = [(HKSPStateMachineState *)self stateMachine];
-    [v6 scheduleRetryAttempt];
+    stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+    [stateMachine2 scheduleRetryAttempt];
   }
 }
 
 - (void)didExit
 {
-  v3 = [(HKSPStateMachineState *)self stateMachine];
-  v4 = [v3 currentContext];
-  v5 = [v4 hasStateTransitionOrInitializing];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  currentContext = [stateMachine currentContext];
+  hasStateTransitionOrInitializing = [currentContext hasStateTransitionOrInitializing];
 
-  if (v5)
+  if (hasStateTransitionOrInitializing)
   {
-    v6 = [(HKSPStateMachineState *)self stateMachine];
-    [v6 unscheduleRetryAttempt];
+    stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+    [stateMachine2 unscheduleRetryAttempt];
   }
 }
 
@@ -56,10 +56,10 @@
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received retry event", &v9, 0xCu);
   }
 
-  v5 = [(HKSPStateMachineState *)self stateMachine];
-  v6 = [(HKSPStateMachineState *)self stateMachine];
-  v7 = [v6 queryingState];
-  [v5 enterState:v7];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+  queryingState = [stateMachine2 queryingState];
+  [stateMachine enterState:queryingState];
 
   v8 = *MEMORY[0x277D85DE8];
 }

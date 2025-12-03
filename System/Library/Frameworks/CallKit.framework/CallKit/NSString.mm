@@ -1,10 +1,10 @@
 @interface NSString
-+ (__CFString)cx_stringWithCXActionOriginator:(uint64_t)a1;
++ (__CFString)cx_stringWithCXActionOriginator:(uint64_t)originator;
 @end
 
 @implementation NSString
 
-+ (__CFString)cx_stringWithCXActionOriginator:(uint64_t)a1
++ (__CFString)cx_stringWithCXActionOriginator:(uint64_t)originator
 {
   objc_opt_self();
   if (a2 > 4)

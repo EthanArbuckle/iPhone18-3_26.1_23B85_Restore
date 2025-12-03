@@ -1,39 +1,39 @@
 @interface CACDisambiguationHandler
-- (CACDisambiguationHandler)initWithLabeledElements:(id)a3;
-- (void)handleChosenLabeledElement:(id)a3;
+- (CACDisambiguationHandler)initWithLabeledElements:(id)elements;
+- (void)handleChosenLabeledElement:(id)element;
 @end
 
 @implementation CACDisambiguationHandler
 
-- (CACDisambiguationHandler)initWithLabeledElements:(id)a3
+- (CACDisambiguationHandler)initWithLabeledElements:(id)elements
 {
-  v5 = a3;
+  elementsCopy = elements;
   v9.receiver = self;
   v9.super_class = CACDisambiguationHandler;
   v6 = [(CACDisambiguationHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_labeledElements, a3);
+    objc_storeStrong(&v6->_labeledElements, elements);
   }
 
   return v7;
 }
 
-- (void)handleChosenLabeledElement:(id)a3
+- (void)handleChosenLabeledElement:(id)element
 {
-  v4 = a3;
-  v5 = [(CACDisambiguationHandler *)self chosenLabeledElementHandler];
+  elementCopy = element;
+  chosenLabeledElementHandler = [(CACDisambiguationHandler *)self chosenLabeledElementHandler];
 
-  if (v5)
+  if (chosenLabeledElementHandler)
   {
-    v6 = [(CACDisambiguationHandler *)self chosenLabeledElementHandler];
-    (v6)[2](v6, v4);
+    chosenLabeledElementHandler2 = [(CACDisambiguationHandler *)self chosenLabeledElementHandler];
+    (chosenLabeledElementHandler2)[2](chosenLabeledElementHandler2, elementCopy);
   }
 
   else
   {
-    v7 = [v4 element];
+    element = [elementCopy element];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
@@ -42,7 +42,7 @@
       block[1] = 3221225472;
       block[2] = __55__CACDisambiguationHandler_handleChosenLabeledElement___block_invoke;
       block[3] = &unk_279CEB2D0;
-      v10 = v4;
+      v10 = elementCopy;
       dispatch_async(MEMORY[0x277D85CD0], block);
     }
   }

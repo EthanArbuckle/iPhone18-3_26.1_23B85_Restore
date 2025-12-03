@@ -1,36 +1,36 @@
 @interface IFTSchemaIFTActionSuccess
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTActionSuccess)initWithDictionary:(id)a3;
-- (IFTSchemaIFTActionSuccess)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTActionSuccess)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTActionSuccess)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAppLaunched:(BOOL)a3;
-- (void)setHasDidShowInAppResult:(BOOL)a3;
-- (void)setHasShouldOpen:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAppLaunched:(BOOL)launched;
+- (void)setHasDidShowInAppResult:(BOOL)result;
+- (void)setHasShouldOpen:(BOOL)open;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTActionSuccess
 
-- (IFTSchemaIFTActionSuccess)initWithDictionary:(id)a3
+- (IFTSchemaIFTActionSuccess)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = IFTSchemaIFTActionSuccess;
   v5 = [(IFTSchemaIFTActionSuccess *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"exists"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"exists"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTActionSuccess setExists:](v5, "setExists:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"returnValue"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"returnValue"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,21 +38,21 @@
       [(IFTSchemaIFTActionSuccess *)v5 setReturnValue:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"appLaunched"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"appLaunched"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTActionSuccess setAppLaunched:](v5, "setAppLaunched:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"didShowInAppResult"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"didShowInAppResult"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTActionSuccess setDidShowInAppResult:](v5, "setDidShowInAppResult:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"followUpAction"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"followUpAction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -60,7 +60,7 @@
       [(IFTSchemaIFTActionSuccess *)v5 setFollowUpAction:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"shouldOpen"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"shouldOpen"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,30 +73,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTActionSuccess)initWithJSON:(id)a3
+- (IFTSchemaIFTActionSuccess)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTActionSuccess *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTActionSuccess *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTActionSuccess *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -109,12 +109,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_shouldOpen + 1);
   if ((v4 & 2) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionSuccess appLaunched](self, "appLaunched")}];
-    [v3 setObject:v8 forKeyedSubscript:@"appLaunched"];
+    [dictionary setObject:v8 forKeyedSubscript:@"appLaunched"];
 
     v4 = *(&self->_shouldOpen + 1);
     if ((v4 & 4) == 0)
@@ -135,57 +135,57 @@ LABEL_3:
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionSuccess didShowInAppResult](self, "didShowInAppResult")}];
-  [v3 setObject:v9 forKeyedSubscript:@"didShowInAppResult"];
+  [dictionary setObject:v9 forKeyedSubscript:@"didShowInAppResult"];
 
   if (*(&self->_shouldOpen + 1))
   {
 LABEL_4:
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionSuccess exists](self, "exists")}];
-    [v3 setObject:v5 forKeyedSubscript:@"exists"];
+    [dictionary setObject:v5 forKeyedSubscript:@"exists"];
   }
 
 LABEL_5:
   if (self->_followUpAction)
   {
-    v6 = [(IFTSchemaIFTActionSuccess *)self followUpAction];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    followUpAction = [(IFTSchemaIFTActionSuccess *)self followUpAction];
+    dictionaryRepresentation = [followUpAction dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"followUpAction"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"followUpAction"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"followUpAction"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"followUpAction"];
     }
   }
 
   if (self->_returnValue)
   {
-    v11 = [(IFTSchemaIFTActionSuccess *)self returnValue];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    returnValue = [(IFTSchemaIFTActionSuccess *)self returnValue];
+    dictionaryRepresentation2 = [returnValue dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"returnValue"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"returnValue"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"returnValue"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"returnValue"];
     }
   }
 
   if ((*(&self->_shouldOpen + 1) & 8) != 0)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionSuccess shouldOpen](self, "shouldOpen")}];
-    [v3 setObject:v14 forKeyedSubscript:@"shouldOpen"];
+    [dictionary setObject:v14 forKeyedSubscript:@"shouldOpen"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -237,15 +237,15 @@ LABEL_9:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  if (*(&self->_shouldOpen + 1) != (v4[41] & 1))
+  if (*(&self->_shouldOpen + 1) != (equalCopy[41] & 1))
   {
     goto LABEL_22;
   }
@@ -253,26 +253,26 @@ LABEL_9:
   if (*(&self->_shouldOpen + 1))
   {
     exists = self->_exists;
-    if (exists != [v4 exists])
+    if (exists != [equalCopy exists])
     {
       goto LABEL_22;
     }
   }
 
-  v6 = [(IFTSchemaIFTActionSuccess *)self returnValue];
-  v7 = [v4 returnValue];
-  if ((v6 != 0) == (v7 == 0))
+  returnValue = [(IFTSchemaIFTActionSuccess *)self returnValue];
+  returnValue2 = [equalCopy returnValue];
+  if ((returnValue != 0) == (returnValue2 == 0))
   {
     goto LABEL_21;
   }
 
-  v8 = [(IFTSchemaIFTActionSuccess *)self returnValue];
-  if (v8)
+  returnValue3 = [(IFTSchemaIFTActionSuccess *)self returnValue];
+  if (returnValue3)
   {
-    v9 = v8;
-    v10 = [(IFTSchemaIFTActionSuccess *)self returnValue];
-    v11 = [v4 returnValue];
-    v12 = [v10 isEqual:v11];
+    v9 = returnValue3;
+    returnValue4 = [(IFTSchemaIFTActionSuccess *)self returnValue];
+    returnValue5 = [equalCopy returnValue];
+    v12 = [returnValue4 isEqual:returnValue5];
 
     if (!v12)
     {
@@ -286,7 +286,7 @@ LABEL_9:
 
   v13 = *(&self->_shouldOpen + 1);
   v14 = (v13 >> 1) & 1;
-  v15 = v4[41];
+  v15 = equalCopy[41];
   if (v14 != ((v15 >> 1) & 1))
   {
     goto LABEL_22;
@@ -295,13 +295,13 @@ LABEL_9:
   if (v14)
   {
     appLaunched = self->_appLaunched;
-    if (appLaunched != [v4 appLaunched])
+    if (appLaunched != [equalCopy appLaunched])
     {
       goto LABEL_22;
     }
 
     v13 = *(&self->_shouldOpen + 1);
-    v15 = v4[41];
+    v15 = equalCopy[41];
   }
 
   v17 = (v13 >> 2) & 1;
@@ -313,28 +313,28 @@ LABEL_9:
   if (v17)
   {
     didShowInAppResult = self->_didShowInAppResult;
-    if (didShowInAppResult != [v4 didShowInAppResult])
+    if (didShowInAppResult != [equalCopy didShowInAppResult])
     {
       goto LABEL_22;
     }
   }
 
-  v6 = [(IFTSchemaIFTActionSuccess *)self followUpAction];
-  v7 = [v4 followUpAction];
-  if ((v6 != 0) == (v7 == 0))
+  returnValue = [(IFTSchemaIFTActionSuccess *)self followUpAction];
+  returnValue2 = [equalCopy followUpAction];
+  if ((returnValue != 0) == (returnValue2 == 0))
   {
 LABEL_21:
 
     goto LABEL_22;
   }
 
-  v19 = [(IFTSchemaIFTActionSuccess *)self followUpAction];
-  if (v19)
+  followUpAction = [(IFTSchemaIFTActionSuccess *)self followUpAction];
+  if (followUpAction)
   {
-    v20 = v19;
-    v21 = [(IFTSchemaIFTActionSuccess *)self followUpAction];
-    v22 = [v4 followUpAction];
-    v23 = [v21 isEqual:v22];
+    v20 = followUpAction;
+    followUpAction2 = [(IFTSchemaIFTActionSuccess *)self followUpAction];
+    followUpAction3 = [equalCopy followUpAction];
+    v23 = [followUpAction2 isEqual:followUpAction3];
 
     if (!v23)
     {
@@ -347,9 +347,9 @@ LABEL_21:
   }
 
   v26 = (*(&self->_shouldOpen + 1) >> 3) & 1;
-  if (v26 == ((v4[41] >> 3) & 1))
+  if (v26 == ((equalCopy[41] >> 3) & 1))
   {
-    if (!v26 || (shouldOpen = self->_shouldOpen, shouldOpen == [v4 shouldOpen]))
+    if (!v26 || (shouldOpen = self->_shouldOpen, shouldOpen == [equalCopy shouldOpen]))
     {
       v24 = 1;
       goto LABEL_23;
@@ -363,19 +363,19 @@ LABEL_23:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (*(&self->_shouldOpen + 1))
   {
     PBDataWriterWriteBOOLField();
   }
 
-  v4 = [(IFTSchemaIFTActionSuccess *)self returnValue];
+  returnValue = [(IFTSchemaIFTActionSuccess *)self returnValue];
 
-  if (v4)
+  if (returnValue)
   {
-    v5 = [(IFTSchemaIFTActionSuccess *)self returnValue];
+    returnValue2 = [(IFTSchemaIFTActionSuccess *)self returnValue];
     PBDataWriterWriteSubmessage();
   }
 
@@ -391,11 +391,11 @@ LABEL_23:
     PBDataWriterWriteBOOLField();
   }
 
-  v7 = [(IFTSchemaIFTActionSuccess *)self followUpAction];
+  followUpAction = [(IFTSchemaIFTActionSuccess *)self followUpAction];
 
-  if (v7)
+  if (followUpAction)
   {
-    v8 = [(IFTSchemaIFTActionSuccess *)self followUpAction];
+    followUpAction2 = [(IFTSchemaIFTActionSuccess *)self followUpAction];
     PBDataWriterWriteSubmessage();
   }
 
@@ -405,9 +405,9 @@ LABEL_23:
   }
 }
 
-- (void)setHasShouldOpen:(BOOL)a3
+- (void)setHasShouldOpen:(BOOL)open
 {
-  if (a3)
+  if (open)
   {
     v3 = 8;
   }
@@ -420,9 +420,9 @@ LABEL_23:
   *(&self->_shouldOpen + 1) = *(&self->_shouldOpen + 1) & 0xF7 | v3;
 }
 
-- (void)setHasDidShowInAppResult:(BOOL)a3
+- (void)setHasDidShowInAppResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 4;
   }
@@ -435,9 +435,9 @@ LABEL_23:
   *(&self->_shouldOpen + 1) = *(&self->_shouldOpen + 1) & 0xFB | v3;
 }
 
-- (void)setHasAppLaunched:(BOOL)a3
+- (void)setHasAppLaunched:(BOOL)launched
 {
-  if (a3)
+  if (launched)
   {
     v3 = 2;
   }
@@ -450,26 +450,26 @@ LABEL_23:
   *(&self->_shouldOpen + 1) = *(&self->_shouldOpen + 1) & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = IFTSchemaIFTActionSuccess;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(IFTSchemaIFTActionSuccess *)self returnValue];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  returnValue = [(IFTSchemaIFTActionSuccess *)self returnValue];
+  v7 = [returnValue applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTActionSuccess *)self deleteReturnValue];
   }
 
-  v9 = [(IFTSchemaIFTActionSuccess *)self followUpAction];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  followUpAction = [(IFTSchemaIFTActionSuccess *)self followUpAction];
+  v10 = [followUpAction applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(IFTSchemaIFTActionSuccess *)self deleteFollowUpAction];
   }

@@ -1,56 +1,56 @@
 @interface GQHPagesState
-- ($0AC6E346AE4835514AAA8AC86D8F4844)rangeForSectionStyleAtPageIndex:(int)a3;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)rangeForSectionStyleAtPageIndex:(int)index;
 - (CGSize)pageSize;
-- (GQHPagesState)initWithState:(id)a3 documentSize:(CGSize)a4;
-- (__CFString)cssZOrderClassForDrawable:(id)a3;
-- (__CFString)cssZOrderClassForDrawablePagesOrder:(int)a3;
+- (GQHPagesState)initWithState:(id)state documentSize:(CGSize)size;
+- (__CFString)cssZOrderClassForDrawable:(id)drawable;
+- (__CFString)cssZOrderClassForDrawablePagesOrder:(int)order;
 - (const)wrapPoints;
 - (double)currentAttachmentPosition;
 - (double)moveToNextAttachmentPosition;
-- (id)drawableAtIndex:(int)a3;
-- (id)footerForName:(__CFString *)a3;
-- (id)headerForName:(__CFString *)a3;
-- (id)sectionStyleRunForRunBeforePageIndex:(int)a3;
+- (id)drawableAtIndex:(int)index;
+- (id)footerForName:(__CFString *)name;
+- (id)headerForName:(__CFString *)name;
+- (id)sectionStyleRunForRunBeforePageIndex:(int)index;
 - (int)floatingDrawablesCount;
 - (int64_t)nextAttachmentId;
 - (unsigned)tocDepth;
-- (void)addAttachmentPosition:(double)a3;
-- (void)addFloatingDrawable:(id)a3;
-- (void)addSectionStyle:(id)a3 pageIndex:(int)a4 numPages:(int)a5;
-- (void)addStyle:(__CFString *)a3 className:(__CFString *)a4 srcStyle:(id)a5;
-- (void)addWrapPoint:(id)a3;
+- (void)addAttachmentPosition:(double)position;
+- (void)addFloatingDrawable:(id)drawable;
+- (void)addSectionStyle:(id)style pageIndex:(int)index numPages:(int)pages;
+- (void)addStyle:(__CFString *)style className:(__CFString *)name srcStyle:(id)srcStyle;
+- (void)addWrapPoint:(id)point;
 - (void)clearFloatingDrawables;
 - (void)closeStateLayoutElementsAndStyles;
 - (void)dealloc;
 - (void)endSection;
 - (void)endWrapPointSet;
-- (void)handleContainerHint:(id)a3;
+- (void)handleContainerHint:(id)hint;
 - (void)inContent;
 - (void)insertAttachmentPlaceholder;
-- (void)mapFloatingDrawablesForPageAtIndex:(unint64_t)a3;
+- (void)mapFloatingDrawablesForPageAtIndex:(unint64_t)index;
 - (void)openStateLayoutElementsAndStyles;
-- (void)overrideSectionStyle:(id)a3;
+- (void)overrideSectionStyle:(id)style;
 - (void)popTocHref;
-- (void)pushTocHref:(__CFString *)a3;
-- (void)resolveHeaderName:(const __CFString *)a3 footerName:(const __CFString *)a4;
-- (void)setCurrentLayoutStyle:(id)a3;
-- (void)setCurrentParagraphStyle:(id)a3 baseStyle:(id)a4 cachedClass:(__CFString *)a5;
-- (void)setCurrentSpanStyle:(id)a3 baseStyle:(id)a4 cachedClass:(__CFString *)a5;
-- (void)setFooters:(__CFArray *)a3;
-- (void)setHeaders:(__CFArray *)a3;
-- (void)setOutlineLevel:(int)a3;
-- (void)setOutlineStyleType:(int)a3;
+- (void)pushTocHref:(__CFString *)href;
+- (void)resolveHeaderName:(const __CFString *)name footerName:(const __CFString *)footerName;
+- (void)setCurrentLayoutStyle:(id)style;
+- (void)setCurrentParagraphStyle:(id)style baseStyle:(id)baseStyle cachedClass:(__CFString *)class;
+- (void)setCurrentSpanStyle:(id)style baseStyle:(id)baseStyle cachedClass:(__CFString *)class;
+- (void)setFooters:(__CFArray *)footers;
+- (void)setHeaders:(__CFArray *)headers;
+- (void)setOutlineLevel:(int)level;
+- (void)setOutlineStyleType:(int)type;
 - (void)startLayout;
 - (void)startSection;
 @end
 
 @implementation GQHPagesState
 
-- (GQHPagesState)initWithState:(id)a3 documentSize:(CGSize)a4
+- (GQHPagesState)initWithState:(id)state documentSize:(CGSize)size
 {
   v6.receiver = self;
   v6.super_class = GQHPagesState;
-  v4 = [(GQHState *)&v6 initWithState:a3 documentSize:a4.width, a4.height];
+  v4 = [(GQHState *)&v6 initWithState:state documentSize:size.width, size.height];
   if (v4)
   {
     v4->mFloatingDrawables = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
@@ -128,7 +128,7 @@
   return v2;
 }
 
-- (void)addFloatingDrawable:(id)a3
+- (void)addFloatingDrawable:(id)drawable
 {
   v5 = [[NSNumber alloc] initWithInt:self->mCurrentPageIndex];
   Value = CFDictionaryGetValue(self->mFloatingDrawables, v5);
@@ -139,16 +139,16 @@
     CFRelease(Value);
   }
 
-  CFArrayAppendValue(Value, a3);
+  CFArrayAppendValue(Value, drawable);
 }
 
-- (id)drawableAtIndex:(int)a3
+- (id)drawableAtIndex:(int)index
 {
   result = [(GQHPagesState *)self pageDrawables:self->mCurrentPageIndex];
   if (result)
   {
 
-    return CFArrayGetValueAtIndex(result, a3);
+    return CFArrayGetValueAtIndex(result, index);
   }
 
   return result;
@@ -166,18 +166,18 @@
   CFDictionaryRemoveValue(self->mFloatingDrawables, key);
 }
 
-- (id)headerForName:(__CFString *)a3
+- (id)headerForName:(__CFString *)name
 {
   result = self->mHeaders;
   if (result)
   {
-    return CFDictionaryGetValue(result, a3);
+    return CFDictionaryGetValue(result, name);
   }
 
   return result;
 }
 
-- (void)setHeaders:(__CFArray *)a3
+- (void)setHeaders:(__CFArray *)headers
 {
   mHeaders = self->mHeaders;
   if (mHeaders)
@@ -187,16 +187,16 @@
   }
 
   Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-  if (a3)
+  if (headers)
   {
-    Count = CFArrayGetCount(a3);
+    Count = CFArrayGetCount(headers);
     v8 = Count;
     if (Count)
     {
       v9 = 0;
       do
       {
-        ValueAtIndex = CFArrayGetValueAtIndex(a3, v9);
+        ValueAtIndex = CFArrayGetValueAtIndex(headers, v9);
         CFDictionarySetValue(Mutable, [ValueAtIndex name], ValueAtIndex);
         ++v9;
       }
@@ -208,18 +208,18 @@
   self->mHeaders = Mutable;
 }
 
-- (id)footerForName:(__CFString *)a3
+- (id)footerForName:(__CFString *)name
 {
   result = self->mFooters;
   if (result)
   {
-    return CFDictionaryGetValue(result, a3);
+    return CFDictionaryGetValue(result, name);
   }
 
   return result;
 }
 
-- (void)setFooters:(__CFArray *)a3
+- (void)setFooters:(__CFArray *)footers
 {
   mFooters = self->mFooters;
   if (mFooters)
@@ -229,16 +229,16 @@
   }
 
   Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-  if (a3)
+  if (footers)
   {
-    Count = CFArrayGetCount(a3);
+    Count = CFArrayGetCount(footers);
     v8 = Count;
     if (Count)
     {
       v9 = 0;
       do
       {
-        ValueAtIndex = CFArrayGetValueAtIndex(a3, v9);
+        ValueAtIndex = CFArrayGetValueAtIndex(footers, v9);
         CFDictionarySetValue(Mutable, [ValueAtIndex name], ValueAtIndex);
         ++v9;
       }
@@ -250,14 +250,14 @@
   self->mFooters = Mutable;
 }
 
-- (void)addSectionStyle:(id)a3 pageIndex:(int)a4 numPages:(int)a5
+- (void)addSectionStyle:(id)style pageIndex:(int)index numPages:(int)pages
 {
-  if (a4 < 0)
+  if (index < 0)
   {
     return;
   }
 
-  LODWORD(v6) = a4;
+  LODWORD(v6) = index;
   Count = CFArrayGetCount(self->mSectionStyles);
   v10 = v6 - Count;
   if (v6 <= Count)
@@ -265,10 +265,10 @@
     if (v6)
     {
       ValueAtIndex = CFArrayGetValueAtIndex(self->mSectionStyles, (v6 - 1));
-      if (ValueAtIndex->mStyle == a3)
+      if (ValueAtIndex->mStyle == style)
       {
-        v14 = a5 + v6;
-        ValueAtIndex->mPageRange.length = a5 + v6 - ValueAtIndex->mPageRange.location;
+        v14 = pages + v6;
+        ValueAtIndex->mPageRange.length = pages + v6 - ValueAtIndex->mPageRange.location;
         valueb = ValueAtIndex;
         v15 = ValueAtIndex;
         v13 = valueb;
@@ -289,14 +289,14 @@
   }
 
   valuea = objc_alloc_init(GQHSectionStyleRun);
-  v12 = a3;
+  styleCopy = style;
   v13 = valuea;
-  valuea->mStyle = v12;
+  valuea->mStyle = styleCopy;
   valuea->mPageRange.location = v6;
-  valuea->mPageRange.length = a5;
-  v14 = a5 + v6;
+  valuea->mPageRange.length = pages;
+  v14 = pages + v6;
 LABEL_9:
-  if (a5 >= 1)
+  if (pages >= 1)
   {
     v6 = v6;
     value = v13;
@@ -311,15 +311,15 @@ LABEL_9:
   _objc_release_x1();
 }
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)rangeForSectionStyleAtPageIndex:(int)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)rangeForSectionStyleAtPageIndex:(int)index
 {
-  if (a3 < 0)
+  if (index < 0)
   {
     v8 = 0;
     v7 = 0;
   }
 
-  else if (CFArrayGetCount(self->mSectionStyles) <= a3 || (ValueAtIndex = CFArrayGetValueAtIndex(self->mSectionStyles, a3), ValueAtIndex == kCFNull))
+  else if (CFArrayGetCount(self->mSectionStyles) <= index || (ValueAtIndex = CFArrayGetValueAtIndex(self->mSectionStyles, index), ValueAtIndex == kCFNull))
   {
     v8 = 0;
     v7 = 0;
@@ -337,37 +337,37 @@ LABEL_9:
   return result;
 }
 
-- (void)overrideSectionStyle:(id)a3
+- (void)overrideSectionStyle:(id)style
 {
-  CFRetain(a3);
+  CFRetain(style);
   mCurrentSectionStyle = self->mCurrentSectionStyle;
   if (mCurrentSectionStyle)
   {
     CFRelease(mCurrentSectionStyle);
   }
 
-  self->mCurrentSectionStyle = a3;
+  self->mCurrentSectionStyle = style;
 }
 
-- (void)setCurrentLayoutStyle:(id)a3
+- (void)setCurrentLayoutStyle:(id)style
 {
   if (!self->mMappingFloatingDrawables)
   {
-    v5 = a3;
+    styleCopy = style;
 
-    self->mCurrentLayoutStyle = a3;
+    self->mCurrentLayoutStyle = style;
   }
 }
 
-- (void)setCurrentParagraphStyle:(id)a3 baseStyle:(id)a4 cachedClass:(__CFString *)a5
+- (void)setCurrentParagraphStyle:(id)style baseStyle:(id)baseStyle cachedClass:(__CFString *)class
 {
   if (!self->mMappingFloatingDrawables && !self->mIsMappingHeadersFooters)
   {
-    v9 = a3;
-    v10 = a4;
-    if (a5)
+    styleCopy = style;
+    baseStyleCopy = baseStyle;
+    if (class)
     {
-      CFRetain(a5);
+      CFRetain(class);
     }
 
     mCurrentCachedParagraphClass = self->mCurrentCachedParagraphClass;
@@ -379,31 +379,31 @@ LABEL_9:
     self->mCurrentParagraphStyle = 0;
     self->mCurrentBaseParagraphStyle = 0;
     self->mCurrentCachedParagraphClass = 0;
-    if (a5)
+    if (class)
     {
-      self->mCurrentCachedParagraphClass = a5;
+      self->mCurrentCachedParagraphClass = class;
     }
 
-    else if (a3)
+    else if (style)
     {
-      if (a4)
+      if (baseStyle)
       {
-        self->mCurrentParagraphStyle = a3;
-        self->mCurrentBaseParagraphStyle = a4;
+        self->mCurrentParagraphStyle = style;
+        self->mCurrentBaseParagraphStyle = baseStyle;
       }
     }
   }
 }
 
-- (void)setCurrentSpanStyle:(id)a3 baseStyle:(id)a4 cachedClass:(__CFString *)a5
+- (void)setCurrentSpanStyle:(id)style baseStyle:(id)baseStyle cachedClass:(__CFString *)class
 {
   if (!self->mMappingFloatingDrawables && !self->mIsMappingHeadersFooters)
   {
-    v9 = a3;
-    v10 = a4;
-    if (a5)
+    styleCopy = style;
+    baseStyleCopy = baseStyle;
+    if (class)
     {
-      CFRetain(a5);
+      CFRetain(class);
     }
 
     mCurrentCachedSpanClass = self->mCurrentCachedSpanClass;
@@ -415,26 +415,26 @@ LABEL_9:
     self->mCurrentSpanStyle = 0;
     self->mCurrentBaseSpanStyle = 0;
     self->mCurrentCachedSpanClass = 0;
-    if (a5)
+    if (class)
     {
-      self->mCurrentCachedSpanClass = a5;
+      self->mCurrentCachedSpanClass = class;
     }
 
-    else if (a3)
+    else if (style)
     {
-      if (a4)
+      if (baseStyle)
       {
-        self->mCurrentSpanStyle = a3;
-        self->mCurrentBaseSpanStyle = a4;
+        self->mCurrentSpanStyle = style;
+        self->mCurrentBaseSpanStyle = baseStyle;
       }
     }
   }
 }
 
-- (void)mapFloatingDrawablesForPageAtIndex:(unint64_t)a3
+- (void)mapFloatingDrawablesForPageAtIndex:(unint64_t)index
 {
   self->mMappingFloatingDrawables = 1;
-  v4 = [(GQHPagesState *)self pageDrawables:a3];
+  v4 = [(GQHPagesState *)self pageDrawables:index];
   if (v4)
   {
     v5 = v4;
@@ -471,9 +471,9 @@ LABEL_9:
   self->mMappingFloatingDrawables = 0;
 }
 
-- (void)addAttachmentPosition:(double)a3
+- (void)addAttachmentPosition:(double)position
 {
-  valuePtr = a3;
+  valuePtr = position;
   v4 = CFNumberCreate(0, kCFNumberDoubleType, &valuePtr);
   CFArrayAppendValue(self->mAttachmentPositions, v4);
   CFRelease(v4);
@@ -525,16 +525,16 @@ LABEL_9:
   [(GQHXML *)mHtmlDoc endElementWithExpectedName:"div"];
 }
 
-- (void)handleContainerHint:(id)a3
+- (void)handleContainerHint:(id)hint
 {
   [(GQHPagesState *)self setDidInsertPageHeader:1];
   if (self->mMode != 2)
   {
-    v5 = [a3 pageIndex];
-    v6 = [a3 cIndex];
-    [a3 attachmentPosition];
+    pageIndex = [hint pageIndex];
+    cIndex = [hint cIndex];
+    [hint attachmentPosition];
     v8 = v7;
-    [a3 frame];
+    [hint frame];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -553,7 +553,7 @@ LABEL_9:
       }
     }
 
-    if (v5 == self->mCurrentHintPageIndex && v6 && v6 != self->mCurrentHintColumnIndex)
+    if (pageIndex == self->mCurrentHintPageIndex && cIndex && cIndex != self->mCurrentHintColumnIndex)
     {
       if (!self->mStartedPage)
       {
@@ -563,22 +563,22 @@ LABEL_9:
 
       [(GQHPagesState *)self closeStateLayoutElementsAndStyles];
       [(GQHXML *)self->super.mHtmlDoc endElement];
-      self->mCurrentPageIndex = v5;
+      self->mCurrentPageIndex = pageIndex;
       self->mLastFrame.origin.x = v10;
       self->mLastFrame.origin.y = v12 + 10.0;
       self->mLastFrame.size.width = v14;
       self->mLastFrame.size.height = v16 + 20.0;
       [(GQHPagesState *)self startLayout];
-      self->mCurrentHintPageIndex = v5;
-      self->mCurrentHintColumnIndex = v6;
+      self->mCurrentHintPageIndex = pageIndex;
+      self->mCurrentHintColumnIndex = cIndex;
     }
 
     else
     {
-      self->mCurrentHintPageIndex = v5;
-      self->mCurrentHintColumnIndex = v6;
+      self->mCurrentHintPageIndex = pageIndex;
+      self->mCurrentHintColumnIndex = cIndex;
       [(GQHPagesState *)self closeStateLayoutElementsAndStyles];
-      if (v5)
+      if (pageIndex)
       {
         [(GQHPagesState *)self endSection];
         if (self->mStartedPage)
@@ -587,11 +587,11 @@ LABEL_9:
         }
 
         +[GQHPages mapCurrentHiddenPositioningFooterFromPublication:state:](GQHPages, "mapCurrentHiddenPositioningFooterFromPublication:state:", [-[GQHState processorState](self "processorState")], -[GQHState processorState](self, "processorState"));
-        [(GQHPagesState *)self mapFloatingDrawablesForPageAtIndex:v5 - 1];
+        [(GQHPagesState *)self mapFloatingDrawablesForPageAtIndex:pageIndex - 1];
         [(GQHXML *)self->super.mHtmlDoc endElementWithExpectedName:"div"];
       }
 
-      self->mCurrentPageIndex = v5;
+      self->mCurrentPageIndex = pageIndex;
       self->mLastFrame.origin.x = v10;
       self->mLastFrame.origin.y = v12 + 10.0;
       self->mLastFrame.size.width = v14;
@@ -616,18 +616,18 @@ LABEL_9:
   }
 }
 
-- (void)resolveHeaderName:(const __CFString *)a3 footerName:(const __CFString *)a4
+- (void)resolveHeaderName:(const __CFString *)name footerName:(const __CFString *)footerName
 {
-  if (a3 | a4)
+  if (name | footerName)
   {
-    if (a3)
+    if (name)
     {
-      *a3 = 0;
+      *name = 0;
     }
 
-    if (a4)
+    if (footerName)
     {
-      *a4 = 0;
+      *footerName = 0;
     }
 
     mCurrentPageIndex = self->mCurrentPageIndex;
@@ -760,18 +760,18 @@ LABEL_60:
         }
       }
 
-      v20 = [v15 headerIdentifier];
-      if (a3 && v20)
+      headerIdentifier = [v15 headerIdentifier];
+      if (name && headerIdentifier)
       {
-        *a3 = [v15 headerIdentifier];
+        *name = [v15 headerIdentifier];
       }
 
-      v21 = [v15 footerIdentifier];
-      if (a4)
+      footerIdentifier = [v15 footerIdentifier];
+      if (footerName)
       {
-        if (v21)
+        if (footerIdentifier)
         {
-          *a4 = [v15 footerIdentifier];
+          *footerName = [v15 footerIdentifier];
         }
       }
     }
@@ -786,12 +786,12 @@ LABEL_60:
   self->mCurrentWrapPointSet = 0;
 }
 
-- (void)addWrapPoint:(id)a3
+- (void)addWrapPoint:(id)point
 {
   mWrapPointSet = self->mCurrentWrapPointSet->mWrapPointSet;
-  v5 = a3;
-  v4 = a3;
-  sub_9828(mWrapPointSet, &v5);
+  pointCopy = point;
+  pointCopy2 = point;
+  sub_9828(mWrapPointSet, &pointCopy);
 }
 
 - (const)wrapPoints
@@ -812,39 +812,39 @@ LABEL_60:
     if (!self->mDidFindContainerHint && !self->mDidInsertPageHeader)
     {
       [(GQHPagesState *)self setDidInsertPageHeader:1];
-      v3 = [(GQSDocument *)self->super.mProcessorState root];
-      v4 = [v3 pageMargins];
-      [v4 left];
+      root = [(GQSDocument *)self->super.mProcessorState root];
+      pageMargins = [root pageMargins];
+      [pageMargins left];
       v6 = v5;
-      [v4 top];
+      [pageMargins top];
       v8 = v7;
-      [v3 pageSize];
+      [root pageSize];
       v10 = v9;
       v12 = v11;
-      [v4 left];
+      [pageMargins left];
       v14 = v10 - v13;
-      [v4 right];
+      [pageMargins right];
       v16 = v14 - v15;
-      [v4 top];
+      [pageMargins top];
       v18 = v12 - v17;
-      [v4 bottom];
+      [pageMargins bottom];
       v20 = v18 - v19;
       mLastInsertedContainerHint = self->mLastInsertedContainerHint;
       if (mLastInsertedContainerHint)
       {
         v22 = [(GQDWPContainerHint *)mLastInsertedContainerHint pageIndex]+ 1;
         v23 = [(GQDWPContainerHint *)self->mLastInsertedContainerHint cIndex]+ 1;
-        v24 = [(GQDWPContainerHint *)self->mLastInsertedContainerHint anchorLocation];
+        anchorLocation = [(GQDWPContainerHint *)self->mLastInsertedContainerHint anchorLocation];
       }
 
       else
       {
         v22 = 0;
         v23 = 0;
-        v24 = 0;
+        anchorLocation = 0;
       }
 
-      v25 = [[GQDWPContainerHint alloc] initWithPageIndex:v22 cIndex:v23 sIndex:0 lIndex:0 anchorLocation:v24 frame:v6, v8, v16, v20];
+      v25 = [[GQDWPContainerHint alloc] initWithPageIndex:v22 cIndex:v23 sIndex:0 lIndex:0 anchorLocation:anchorLocation frame:v6, v8, v16, v20];
       self->mLastInsertedContainerHint = v25;
       [(GQHPagesState *)self handleContainerHint:v25];
     }
@@ -857,49 +857,49 @@ LABEL_60:
   }
 }
 
-- (void)setOutlineLevel:(int)a3
+- (void)setOutlineLevel:(int)level
 {
   if (self->mMode == 2)
   {
-    self->super.mOutlineLevel = a3;
+    self->super.mOutlineLevel = level;
   }
 }
 
-- (void)setOutlineStyleType:(int)a3
+- (void)setOutlineStyleType:(int)type
 {
   if (self->mMode == 2)
   {
-    self->super.mOutlineStyleType = a3;
+    self->super.mOutlineStyleType = type;
   }
 }
 
-- (void)addStyle:(__CFString *)a3 className:(__CFString *)a4 srcStyle:(id)a5
+- (void)addStyle:(__CFString *)style className:(__CFString *)name srcStyle:(id)srcStyle
 {
-  if (a5)
+  if (srcStyle)
   {
     v7.receiver = self;
     v7.super_class = GQHPagesState;
-    [(GQHState *)&v7 addStyle:a3 className:a4 srcStyle:?];
+    [(GQHState *)&v7 addStyle:style className:name srcStyle:?];
   }
 
   else
   {
     mHtmlDoc = self->super.mHtmlDoc;
 
-    [(GQHXML *)mHtmlDoc addStyleClass:a3, a4];
+    [(GQHXML *)mHtmlDoc addStyleClass:style, name];
   }
 }
 
-- (__CFString)cssZOrderClassForDrawable:(id)a3
+- (__CFString)cssZOrderClassForDrawable:(id)drawable
 {
-  v4 = [a3 pagesOrder];
+  pagesOrder = [drawable pagesOrder];
 
-  return [(GQHPagesState *)self cssZOrderClassForDrawablePagesOrder:v4];
+  return [(GQHPagesState *)self cssZOrderClassForDrawablePagesOrder:pagesOrder];
 }
 
-- (__CFString)cssZOrderClassForDrawablePagesOrder:(int)a3
+- (__CFString)cssZOrderClassForDrawablePagesOrder:(int)order
 {
-  valuePtr = a3;
+  valuePtr = order;
   v4 = CFNumberCreate(0, kCFNumberIntType, &valuePtr);
   Value = CFDictionaryGetValue(self->mDrawablePagesOrderToCssZOrderClassMap, v4);
   if (!Value)
@@ -945,7 +945,7 @@ LABEL_60:
   return mTocHrefStack;
 }
 
-- (void)pushTocHref:(__CFString *)a3
+- (void)pushTocHref:(__CFString *)href
 {
   mTocHrefStack = self->mTocHrefStack;
   if (!mTocHrefStack)
@@ -954,15 +954,15 @@ LABEL_60:
     self->mTocHrefStack = mTocHrefStack;
   }
 
-  CFArrayAppendValue(mTocHrefStack, a3);
+  CFArrayAppendValue(mTocHrefStack, href);
 }
 
 - (void)popTocHref
 {
-  v3 = [(GQHPagesState *)self tocDepth];
-  if (v3)
+  tocDepth = [(GQHPagesState *)self tocDepth];
+  if (tocDepth)
   {
-    v4 = v3;
+    v4 = tocDepth;
     mTocHrefStack = self->mTocHrefStack;
 
     CFArrayRemoveValueAtIndex(mTocHrefStack, v4 - 1);
@@ -977,12 +977,12 @@ LABEL_60:
     self->mStartedSection = 0;
     if ([(GQHXML *)self->super.mHtmlDoc isProgressive])
     {
-      v3 = [(GQHXML *)self->super.mHtmlDoc createProgressiveHtml];
+      createProgressiveHtml = [(GQHXML *)self->super.mHtmlDoc createProgressiveHtml];
       v4 = [(GQHXML *)self->super.mHtmlDoc createProgressiveeCSSwithStyleTags:1];
-      [(__CFData *)v3 appendData:v4];
+      [(__CFData *)createProgressiveHtml appendData:v4];
       CFRelease(v4);
       [-[GQSDocument outputBundle](self->super.mProcessorState "outputBundle")];
-      CFRelease(v3);
+      CFRelease(createProgressiveHtml);
       self->mProgressiveIndex = 2 * self->mCurrentPageIndex + 4;
     }
   }
@@ -1027,10 +1027,10 @@ LABEL_60:
 
 - (void)closeStateLayoutElementsAndStyles
 {
-  v3 = [(GQHPagesState *)self tocDepth];
-  if (v3)
+  tocDepth = [(GQHPagesState *)self tocDepth];
+  if (tocDepth)
   {
-    v4 = v3;
+    v4 = tocDepth;
     do
     {
       [(GQHXML *)self->super.mHtmlDoc endElementWithExpectedName:"a"];
@@ -1071,11 +1071,11 @@ LABEL_60:
     [(GQHStyle *)self->mCurrentLayoutStyle setStyleOnCurrentNode:self];
   }
 
-  v3 = [(GQHPagesState *)self tocDepth];
-  if (v3)
+  tocDepth = [(GQHPagesState *)self tocDepth];
+  if (tocDepth)
   {
     v4 = 0;
-    v5 = v3;
+    v5 = tocDepth;
     do
     {
       [(GQHXML *)self->super.mHtmlDoc startElement:"a"];
@@ -1121,18 +1121,18 @@ LABEL_60:
   }
 }
 
-- (id)sectionStyleRunForRunBeforePageIndex:(int)a3
+- (id)sectionStyleRunForRunBeforePageIndex:(int)index
 {
-  if (a3 < 0)
+  if (index < 0)
   {
     return 0;
   }
 
   Count = CFArrayGetCount(self->mSectionStyles);
   v6 = Count;
-  if (Count > a3)
+  if (Count > index)
   {
-    ValueAtIndex = CFArrayGetValueAtIndex(self->mSectionStyles, a3);
+    ValueAtIndex = CFArrayGetValueAtIndex(self->mSectionStyles, index);
     if (ValueAtIndex == kCFNull)
     {
       return 0;

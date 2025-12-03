@@ -1,13 +1,13 @@
 @interface ARCoachingHeuristicHasActiveFrames
-- (void)updateWithFrame:(id)a3 cache:(id)a4;
+- (void)updateWithFrame:(id)frame cache:(id)cache;
 @end
 
 @implementation ARCoachingHeuristicHasActiveFrames
 
-- (void)updateWithFrame:(id)a3 cache:(id)a4
+- (void)updateWithFrame:(id)frame cache:(id)cache
 {
   v23 = *MEMORY[0x277D85DE8];
-  [a3 timestamp];
+  [frame timestamp];
   v6 = v5;
   if (self->_frameCount && v5 - self->_lastFrameTimestamp > 1.0)
   {
@@ -27,10 +27,10 @@
   }
 
   self->_lastFrameTimestamp = v6;
-  v10 = [(ARCoachingHeuristic *)self satisfied];
+  satisfied = [(ARCoachingHeuristic *)self satisfied];
   frameCount = self->_frameCount;
   self->_frameCount = frameCount + 1;
-  if (!v10 && frameCount >= 4)
+  if (!satisfied && frameCount >= 4)
   {
     v12 = _ARLogCoaching_3();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -56,7 +56,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (v10 && frameCount <= 3)
+  if (satisfied && frameCount <= 3)
   {
     v12 = _ARLogCoaching_3();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))

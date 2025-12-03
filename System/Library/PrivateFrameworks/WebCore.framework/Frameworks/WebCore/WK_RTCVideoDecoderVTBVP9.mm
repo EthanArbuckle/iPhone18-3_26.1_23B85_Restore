@@ -1,15 +1,15 @@
 @interface WK_RTCVideoDecoderVTBVP9
 - (WK_RTCVideoDecoderVTBVP9)init;
 - (int)resetDecompressionSession;
-- (int64_t)decode:(id)a3 missingFrames:(BOOL)a4 codecSpecificInfo:(id)a5 renderTimeMs:(int64_t)a6;
-- (int64_t)decodeData:(const char *)a3 size:(unint64_t)a4 timeStamp:(int64_t)a5;
+- (int64_t)decode:(id)decode missingFrames:(BOOL)frames codecSpecificInfo:(id)info renderTimeMs:(int64_t)ms;
+- (int64_t)decodeData:(const char *)data size:(unint64_t)size timeStamp:(int64_t)stamp;
 - (int64_t)releaseDecoder;
 - (void)dealloc;
 - (void)destroyDecompressionSession;
 - (void)flush;
-- (void)setCallback:(id)a3;
-- (void)setVideoFormat:(opaqueCMFormatDescription *)a3;
-- (void)setWidth:(unsigned __int16)a3 height:(unsigned __int16)a4;
+- (void)setCallback:(id)callback;
+- (void)setVideoFormat:(opaqueCMFormatDescription *)format;
+- (void)setWidth:(unsigned __int16)width height:(unsigned __int16)height;
 @end
 
 @implementation WK_RTCVideoDecoderVTBVP9
@@ -42,30 +42,30 @@
   [(WK_RTCVideoDecoderVTBVP9 *)&v3 dealloc];
 }
 
-- (int64_t)decode:(id)a3 missingFrames:(BOOL)a4 codecSpecificInfo:(id)a5 renderTimeMs:(int64_t)a6
+- (int64_t)decode:(id)decode missingFrames:(BOOL)frames codecSpecificInfo:(id)info renderTimeMs:(int64_t)ms
 {
-  v7 = a3;
-  if ([v7 frameType] == 3)
+  decodeCopy = decode;
+  if ([decodeCopy frameType] == 3)
   {
-    -[WK_RTCVideoDecoderVTBVP9 setWidth:height:](self, "setWidth:height:", [v7 encodedWidth], objc_msgSend(v7, "encodedHeight"));
+    -[WK_RTCVideoDecoderVTBVP9 setWidth:height:](self, "setWidth:height:", [decodeCopy encodedWidth], objc_msgSend(decodeCopy, "encodedHeight"));
   }
 
-  v8 = [v7 buffer];
-  v9 = [v8 bytes];
-  v10 = [v7 buffer];
-  v11 = -[WK_RTCVideoDecoderVTBVP9 decodeData:size:timeStamp:](self, "decodeData:size:timeStamp:", v9, [v10 length], objc_msgSend(v7, "timeStamp"));
+  buffer = [decodeCopy buffer];
+  bytes = [buffer bytes];
+  buffer2 = [decodeCopy buffer];
+  v11 = -[WK_RTCVideoDecoderVTBVP9 decodeData:size:timeStamp:](self, "decodeData:size:timeStamp:", bytes, [buffer2 length], objc_msgSend(decodeCopy, "timeStamp"));
 
   return v11;
 }
 
-- (void)setWidth:(unsigned __int16)a3 height:(unsigned __int16)a4
+- (void)setWidth:(unsigned __int16)width height:(unsigned __int16)height
 {
-  self->_width = a3;
-  self->_height = a4;
+  self->_width = width;
+  self->_height = height;
   self->_shouldCheckFormat = 1;
 }
 
-- (int64_t)decodeData:(const char *)a3 size:(unint64_t)a4 timeStamp:(int64_t)a5
+- (int64_t)decodeData:(const char *)data size:(unint64_t)size timeStamp:(int64_t)stamp
 {
   v79 = *MEMORY[0x277D85DE8];
   if (self->_error)
@@ -83,8 +83,8 @@
   {
     width = self->_width;
     height = self->_height;
-    v21 = a4 ? a3 : 0;
-    webrtc::ParseUncompressedVp9Header(v21, a4, a5, v5, v6, v7, &destinationBuffer);
+    v21 = size ? data : 0;
+    webrtc::ParseUncompressedVp9Header(v21, size, stamp, v5, v6, v7, &destinationBuffer);
     if (v73)
     {
       if (v70 <= 3)
@@ -188,13 +188,13 @@ LABEL_28:
           {
             [(WK_RTCVideoDecoderVTBVP9 *)self setVideoFormat:v29];
             self->_isVideoFullRange = v64;
-            v30 = [(WK_RTCVideoDecoderVTBVP9 *)self resetDecompressionSession];
-            if (v30)
+            resetDecompressionSession = [(WK_RTCVideoDecoderVTBVP9 *)self resetDecompressionSession];
+            if (resetDecompressionSession)
             {
               [(WK_RTCVideoDecoderVTBVP9 *)self setVideoFormat:0];
               CFRelease(v29);
               CFRelease(v29);
-              return v30;
+              return resetDecompressionSession;
             }
           }
 
@@ -217,7 +217,7 @@ LABEL_40:
   {
     destinationBuffer = 0;
     v32 = *MEMORY[0x277CBECE8];
-    if (CMBlockBufferCreateWithMemoryBlock(*MEMORY[0x277CBECE8], 0, a4, *MEMORY[0x277CBECE8], 0, 0, a4, 1u, &destinationBuffer))
+    if (CMBlockBufferCreateWithMemoryBlock(*MEMORY[0x277CBECE8], 0, size, *MEMORY[0x277CBECE8], 0, 0, size, 1u, &destinationBuffer))
     {
       if ((webrtc::LogMessage::IsNoop<(webrtc::LoggingSeverity)3>() & 1) == 0)
       {
@@ -228,7 +228,7 @@ LABEL_40:
     else
     {
       v47 = destinationBuffer;
-      if (CMBlockBufferReplaceDataBytes(a3, destinationBuffer, 0, a4))
+      if (CMBlockBufferReplaceDataBytes(data, destinationBuffer, 0, size))
       {
         if ((webrtc::LogMessage::IsNoop<(webrtc::LoggingSeverity)3>() & 1) == 0)
         {
@@ -279,9 +279,9 @@ LABEL_40:
   return -1;
 }
 
-- (void)setCallback:(id)a3
+- (void)setCallback:(id)callback
 {
-  self->_callback = MEMORY[0x2743DACF0](a3, a2);
+  self->_callback = MEMORY[0x2743DACF0](callback, a2);
 
   MEMORY[0x2821F96F8]();
 }
@@ -379,21 +379,21 @@ LABEL_40:
   }
 }
 
-- (void)setVideoFormat:(opaqueCMFormatDescription *)a3
+- (void)setVideoFormat:(opaqueCMFormatDescription *)format
 {
   videoFormat = self->_videoFormat;
-  if (videoFormat != a3)
+  if (videoFormat != format)
   {
     if (videoFormat)
     {
       CFRelease(videoFormat);
     }
 
-    self->_videoFormat = a3;
-    if (a3)
+    self->_videoFormat = format;
+    if (format)
     {
 
-      CFRetain(a3);
+      CFRetain(format);
     }
   }
 }

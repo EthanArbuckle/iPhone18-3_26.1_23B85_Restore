@@ -3,7 +3,7 @@
 + (id)easeQuadInOutTimingFunction;
 + (id)easeQuadInTimingFunction;
 + (id)easeQuadOutTimingFunction;
-+ (id)factoryWithTimingFunction:(id)a3;
++ (id)factoryWithTimingFunction:(id)function;
 @end
 
 @implementation SUUISimpleAnimationFactory
@@ -40,12 +40,12 @@
   return [MEMORY[0x277CD9EF8] functionWithControlPoints:v2 :v3 :v4 :v5];
 }
 
-+ (id)factoryWithTimingFunction:(id)a3
++ (id)factoryWithTimingFunction:(id)function
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
+  functionCopy = function;
+  v5 = objc_alloc_init(self);
   v6 = v5[1];
-  v5[1] = v4;
+  v5[1] = functionCopy;
 
   return v5;
 }

@@ -1,19 +1,19 @@
 @interface VMUProgressBar
 - (VMUProgressBar)init;
-- (void)colorize:(unsigned int)a3;
-- (void)itemCompleteWithStatus:(BOOL)a3;
-- (void)setTitle:(id)a3 withTotalItems:(unint64_t)a4;
-- (void)updateItemName:(id)a3;
+- (void)colorize:(unsigned int)colorize;
+- (void)itemCompleteWithStatus:(BOOL)status;
+- (void)setTitle:(id)title withTotalItems:(unint64_t)items;
+- (void)updateItemName:(id)name;
 @end
 
 @implementation VMUProgressBar
 
-- (void)setTitle:(id)a3 withTotalItems:(unint64_t)a4
+- (void)setTitle:(id)title withTotalItems:(unint64_t)items
 {
-  objc_storeStrong(&self->_title, a3);
-  v7 = a3;
+  objc_storeStrong(&self->_title, title);
+  titleCopy = title;
   itemName = self->_itemName;
-  self->_totalItems = a4;
+  self->_totalItems = items;
   self->_itemName = 0;
 
   self->_itemsDone = 0;
@@ -41,20 +41,20 @@
   return v2;
 }
 
-- (void)updateItemName:(id)a3
+- (void)updateItemName:(id)name
 {
-  objc_storeStrong(&self->_itemName, a3);
+  objc_storeStrong(&self->_itemName, name);
 
   [(VMUProgressBar *)self _printProgressBar];
 }
 
-- (void)itemCompleteWithStatus:(BOOL)a3
+- (void)itemCompleteWithStatus:(BOOL)status
 {
-  v3 = a3;
+  statusCopy = status;
   [(NSLock *)self->_itemCompletionLock lock];
   ++self->_itemsDone;
   v5 = 48;
-  if (v3)
+  if (statusCopy)
   {
     v5 = 40;
   }
@@ -66,9 +66,9 @@
   [(NSLock *)itemCompletionLock unlock];
 }
 
-- (void)colorize:(unsigned int)a3
+- (void)colorize:(unsigned int)colorize
 {
-  self->_color = a3;
+  self->_color = colorize;
   v3 = *MEMORY[0x1E69E9848];
   v5 = [VMUTerminalColorizer startColorCodeString:238];
   v4 = v5;

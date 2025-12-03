@@ -1,11 +1,11 @@
 @interface PHCountingLayer
-+ (BOOL)needsDisplayForKey:(id)a3;
++ (BOOL)needsDisplayForKey:(id)key;
 - (_TtC11MobilePhone15PHCountingLayer)init;
-- (_TtC11MobilePhone15PHCountingLayer)initWithCoder:(id)a3;
-- (_TtC11MobilePhone15PHCountingLayer)initWithLayer:(id)a3;
-- (id)actionForKey:(id)a3;
+- (_TtC11MobilePhone15PHCountingLayer)initWithCoder:(id)coder;
+- (_TtC11MobilePhone15PHCountingLayer)initWithLayer:(id)layer;
+- (id)actionForKey:(id)key;
 - (int64_t)value;
-- (void)setValue:(int64_t)a3;
+- (void)setValue:(int64_t)value;
 @end
 
 @implementation PHCountingLayer
@@ -17,13 +17,13 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setValue:(int64_t)a3
+- (void)setValue:(int64_t)value
 {
-  v4 = self;
-  PHCountingLayer.value.setter(a3);
+  selfCopy = self;
+  PHCountingLayer.value.setter(value);
 }
 
-+ (BOOL)needsDisplayForKey:(id)a3
++ (BOOL)needsDisplayForKey:(id)key
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
@@ -37,7 +37,7 @@
   else
   {
     v8 = _stringCompareWithSmolCheck(_:_:expecting:)();
-    v9 = a3;
+    keyCopy = key;
 
     if (v8)
     {
@@ -49,18 +49,18 @@
     {
       v11.receiver = swift_getObjCClassFromMetadata();
       v11.super_class = &OBJC_METACLASS____TtC11MobilePhone15PHCountingLayer;
-      v10 = objc_msgSendSuper2(&v11, "needsDisplayForKey:", v9);
+      v10 = objc_msgSendSuper2(&v11, "needsDisplayForKey:", keyCopy);
 
       return v10;
     }
   }
 }
 
-- (id)actionForKey:(id)a3
+- (id)actionForKey:(id)key
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = PHCountingLayer.action(forKey:)(v4, v6);
 
   return v8;
@@ -74,7 +74,7 @@
   return [(PHCountingLayer *)&v3 init];
 }
 
-- (_TtC11MobilePhone15PHCountingLayer)initWithLayer:(id)a3
+- (_TtC11MobilePhone15PHCountingLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();
@@ -90,13 +90,13 @@
   return v5;
 }
 
-- (_TtC11MobilePhone15PHCountingLayer)initWithCoder:(id)a3
+- (_TtC11MobilePhone15PHCountingLayer)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11MobilePhone15PHCountingLayer_value) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for PHCountingLayer();
-  v4 = a3;
-  v5 = [(PHCountingLayer *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(PHCountingLayer *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

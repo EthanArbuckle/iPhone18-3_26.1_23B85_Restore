@@ -1,9 +1,9 @@
 @interface SRAuthorizationConfirmationViewController
 + (void)initialize;
-- (void)addHeaderToStackView:(id)a3 withSpacing:(double)a4 text:(id)a5;
-- (void)addLabelToStackView:(id)a3 withSpacing:(double)a4 text:(id)a5 font:(id)a6;
+- (void)addHeaderToStackView:(id)view withSpacing:(double)spacing text:(id)text;
+- (void)addLabelToStackView:(id)view withSpacing:(double)spacing text:(id)text font:(id)font;
 - (void)cancelPrompt;
-- (void)changeAuthorization:(id)a3;
+- (void)changeAuthorization:(id)authorization;
 - (void)dealloc;
 - (void)prepareContentView;
 - (void)viewDidLoad;
@@ -13,7 +13,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100015F20 = os_log_create("com.apple.SensorKit", "SRAuthorizationConfirmationViewController");
   }
@@ -53,7 +53,7 @@
   v9[1] = 3221225472;
   v10 = sub_100001A78;
   v11 = &unk_100010408;
-  v12 = self;
+  selfCopy = self;
   v13 = v5;
   v14 = +[UIImage skui_bulletImage];
   if ([v3 count])
@@ -102,7 +102,7 @@
   [(SRAuthorizationConfirmationViewController *)&v3 dealloc];
 }
 
-- (void)changeAuthorization:(id)a3
+- (void)changeAuthorization:(id)authorization
 {
   v5 = qword_100015F20;
   if (os_log_type_enabled(qword_100015F20, OS_LOG_TYPE_INFO))
@@ -111,7 +111,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Button pressed to confirm authorization changes. Updating TCC...", buf, 2u);
   }
 
-  [a3 setUserInteractionEnabled:0];
+  [authorization setUserInteractionEnabled:0];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100001ED8;
@@ -143,23 +143,23 @@
   v2();
 }
 
-- (void)addHeaderToStackView:(id)a3 withSpacing:(double)a4 text:(id)a5
+- (void)addHeaderToStackView:(id)view withSpacing:(double)spacing text:(id)text
 {
   v9 = [UIFont fontWithDescriptor:[[UIFontDescriptor preferredFontDescriptorWithTextStyle:?] size:"fontDescriptorWithSymbolicTraits:", 2], 0.0];
 
-  [(SRAuthorizationConfirmationViewController *)self addLabelToStackView:a3 withSpacing:a5 text:v9 font:a4];
+  [(SRAuthorizationConfirmationViewController *)self addLabelToStackView:view withSpacing:text text:v9 font:spacing];
 }
 
-- (void)addLabelToStackView:(id)a3 withSpacing:(double)a4 text:(id)a5 font:(id)a6
+- (void)addLabelToStackView:(id)view withSpacing:(double)spacing text:(id)text font:(id)font
 {
   v10 = objc_alloc_init(UILabel);
-  [v10 setText:a5];
+  [v10 setText:text];
   [v10 setTextAlignment:4];
   [v10 setLineBreakMode:0];
   [v10 setNumberOfLines:0];
-  [v10 setFont:a6];
-  [a3 addArrangedSubview:v10];
-  [a3 setCustomSpacing:v10 afterView:a4];
+  [v10 setFont:font];
+  [view addArrangedSubview:v10];
+  [view setCustomSpacing:v10 afterView:spacing];
 }
 
 @end

@@ -1,62 +1,62 @@
 @interface CKDPMergeableDelta
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)payloadAsString:(int)a3;
-- (int)StringAsPayload:(id)a3;
+- (id)payloadAsString:(int)string;
+- (int)StringAsPayload:(id)payload;
 - (int)payload;
 - (unint64_t)hash;
 - (void)clearOneofValuesForPayload;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setAsset:(id)a3;
-- (void)setData:(id)a3;
-- (void)setEncryptedAsset:(id)a3;
-- (void)setEncryptedData:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setAsset:(id)asset;
+- (void)setData:(id)data;
+- (void)setEncryptedAsset:(id)asset;
+- (void)setEncryptedData:(id)data;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPMergeableDelta
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_msgSend_clearOneofValuesForPayload(self, v5, v6);
   *&self->_has |= 1u;
   self->_payload = 1;
   data = self->_data;
-  self->_data = v4;
+  self->_data = dataCopy;
 }
 
-- (void)setEncryptedData:(id)a3
+- (void)setEncryptedData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_msgSend_clearOneofValuesForPayload(self, v5, v6);
   *&self->_has |= 1u;
   self->_payload = 2;
   encryptedData = self->_encryptedData;
-  self->_encryptedData = v4;
+  self->_encryptedData = dataCopy;
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   objc_msgSend_clearOneofValuesForPayload(self, v5, v6);
   *&self->_has |= 1u;
   self->_payload = 3;
   asset = self->_asset;
-  self->_asset = v4;
+  self->_asset = assetCopy;
 }
 
-- (void)setEncryptedAsset:(id)a3
+- (void)setEncryptedAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   objc_msgSend_clearOneofValuesForPayload(self, v5, v6);
   *&self->_has |= 1u;
   self->_payload = 4;
   encryptedAsset = self->_encryptedAsset;
-  self->_encryptedAsset = v4;
+  self->_encryptedAsset = assetCopy;
 }
 
 - (int)payload
@@ -72,45 +72,45 @@
   }
 }
 
-- (id)payloadAsString:(int)a3
+- (id)payloadAsString:(int)string
 {
-  if (a3 >= 5)
+  if (string >= 5)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_27854C8A0[a3];
+    v4 = off_27854C8A0[string];
   }
 
   return v4;
 }
 
-- (int)StringAsPayload:(id)a3
+- (int)StringAsPayload:(id)payload
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"PBUNSET"))
+  payloadCopy = payload;
+  if (objc_msgSend_isEqualToString_(payloadCopy, v4, @"PBUNSET"))
   {
     v6 = 0;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"data"))
+  else if (objc_msgSend_isEqualToString_(payloadCopy, v5, @"data"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"encryptedData"))
+  else if (objc_msgSend_isEqualToString_(payloadCopy, v7, @"encryptedData"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v8, @"asset"))
+  else if (objc_msgSend_isEqualToString_(payloadCopy, v8, @"asset"))
   {
     v6 = 3;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v9, @"encryptedAsset"))
+  else if (objc_msgSend_isEqualToString_(payloadCopy, v9, @"encryptedAsset"))
   {
     v6 = 4;
   }
@@ -207,91 +207,91 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_metadata)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_data)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_encryptedData)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_asset)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_encryptedAsset)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[12] = self->_payload;
-    *(v4 + 52) |= 1u;
+    toCopy[12] = self->_payload;
+    *(toCopy + 52) |= 1u;
   }
 
   metadata = self->_metadata;
-  v11 = v4;
+  v11 = toCopy;
   if (metadata)
   {
-    objc_msgSend_setMetadata_(v4, v5, metadata);
-    v4 = v11;
+    objc_msgSend_setMetadata_(toCopy, v5, metadata);
+    toCopy = v11;
   }
 
   data = self->_data;
   if (data)
   {
     objc_msgSend_setData_(v11, v5, data);
-    v4 = v11;
+    toCopy = v11;
   }
 
   encryptedData = self->_encryptedData;
   if (encryptedData)
   {
     objc_msgSend_setEncryptedData_(v11, v5, encryptedData);
-    v4 = v11;
+    toCopy = v11;
   }
 
   asset = self->_asset;
   if (asset)
   {
     objc_msgSend_setAsset_(v11, v5, asset);
-    v4 = v11;
+    toCopy = v11;
   }
 
   encryptedAsset = self->_encryptedAsset;
   if (encryptedAsset)
   {
     objc_msgSend_setEncryptedAsset_(v11, v5, encryptedAsset);
-    v4 = v11;
+    toCopy = v11;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v12 = v10;
   if (*&self->_has)
@@ -300,48 +300,48 @@
     *(v10 + 52) |= 1u;
   }
 
-  v13 = objc_msgSend_copyWithZone_(self->_metadata, v11, a3);
+  v13 = objc_msgSend_copyWithZone_(self->_metadata, v11, zone);
   v14 = v12[5];
   v12[5] = v13;
 
-  v16 = objc_msgSend_copyWithZone_(self->_data, v15, a3);
+  v16 = objc_msgSend_copyWithZone_(self->_data, v15, zone);
   v17 = v12[2];
   v12[2] = v16;
 
-  v19 = objc_msgSend_copyWithZone_(self->_encryptedData, v18, a3);
+  v19 = objc_msgSend_copyWithZone_(self->_encryptedData, v18, zone);
   v20 = v12[4];
   v12[4] = v19;
 
-  v22 = objc_msgSend_copyWithZone_(self->_asset, v21, a3);
+  v22 = objc_msgSend_copyWithZone_(self->_asset, v21, zone);
   v23 = v12[1];
   v12[1] = v22;
 
-  v25 = objc_msgSend_copyWithZone_(self->_encryptedAsset, v24, a3);
+  v25 = objc_msgSend_copyWithZone_(self->_encryptedAsset, v24, zone);
   v26 = v12[3];
   v12[3] = v25;
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_17;
   }
 
-  v8 = *(v4 + 52);
+  v8 = *(equalCopy + 52);
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_payload != *(v4 + 12))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_payload != *(equalCopy + 12))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
 LABEL_17:
     isEqual = 0;
@@ -349,14 +349,14 @@ LABEL_17:
   }
 
   metadata = self->_metadata;
-  v10 = v4[5];
+  v10 = equalCopy[5];
   if (metadata | v10 && !objc_msgSend_isEqual_(metadata, v7, v10))
   {
     goto LABEL_17;
   }
 
   data = self->_data;
-  v12 = v4[2];
+  v12 = equalCopy[2];
   if (data | v12)
   {
     if (!objc_msgSend_isEqual_(data, v7, v12))
@@ -366,7 +366,7 @@ LABEL_17:
   }
 
   encryptedData = self->_encryptedData;
-  v14 = v4[4];
+  v14 = equalCopy[4];
   if (encryptedData | v14)
   {
     if (!objc_msgSend_isEqual_(encryptedData, v7, v14))
@@ -376,7 +376,7 @@ LABEL_17:
   }
 
   asset = self->_asset;
-  v16 = v4[1];
+  v16 = equalCopy[1];
   if (asset | v16)
   {
     if (!objc_msgSend_isEqual_(asset, v7, v16))
@@ -386,7 +386,7 @@ LABEL_17:
   }
 
   encryptedAsset = self->_encryptedAsset;
-  v18 = v4[3];
+  v18 = equalCopy[3];
   if (encryptedAsset | v18)
   {
     isEqual = objc_msgSend_isEqual_(encryptedAsset, v7, v18);
@@ -421,13 +421,13 @@ LABEL_18:
   return v11 ^ v14 ^ objc_msgSend_hash(self->_encryptedAsset, v15, v16);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[13])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[13])
   {
-    self->_payload = v4[12];
+    self->_payload = fromCopy[12];
     *&self->_has |= 1u;
   }
 

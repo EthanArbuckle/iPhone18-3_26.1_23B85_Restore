@@ -1,7 +1,7 @@
 @interface AVCaptureExternalDisplayConfigurator
 + (void)initialize;
-+ (void)registerConfigurator:(id)a3 withDisplayIdentifier:(id)a4;
-- (AVCaptureExternalDisplayConfigurator)initWithDevice:(id)a3 previewLayer:(id)a4 configuration:(id)a5;
++ (void)registerConfigurator:(id)configurator withDisplayIdentifier:(id)identifier;
+- (AVCaptureExternalDisplayConfigurator)initWithDevice:(id)device previewLayer:(id)layer configuration:(id)configuration;
 - (BOOL)externalDisplayAndCaptureDeviceSynchronized;
 - (void)_configureExternalDisplay;
 - (void)_configureExternalDisplayColorspace;
@@ -14,25 +14,25 @@
 - (void)_displayConfigurationChangedMonitorConfigure;
 - (void)_displayConfigurationChangedMonitorTeardown;
 - (void)_externalDisplayConfigurationChangedHandler;
-- (void)_getConfigurationWithCompletion:(id)a3;
+- (void)_getConfigurationWithCompletion:(id)completion;
 - (void)_makeInActive;
 - (void)_setup;
 - (void)dealloc;
 - (void)dispatchConfiguration;
-- (void)externalDisplayConfigurationChangedNotification:(id)a3;
-- (void)externalDisplayLayerObserver:(id)a3 visibiltyChanged:(BOOL)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)registerSelfForDisplay:(id)a3;
+- (void)externalDisplayConfigurationChangedNotification:(id)notification;
+- (void)externalDisplayLayerObserver:(id)observer visibiltyChanged:(BOOL)changed;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)registerSelfForDisplay:(id)display;
 - (void)stop;
 @end
 
 @implementation AVCaptureExternalDisplayConfigurator
 
-+ (void)registerConfigurator:(id)a3 withDisplayIdentifier:(id)a4
++ (void)registerConfigurator:(id)configurator withDisplayIdentifier:(id)identifier
 {
   if (registerConfigurator_withDisplayIdentifier__onceToken == -1)
   {
-    if (a4)
+    if (identifier)
     {
       goto LABEL_3;
     }
@@ -41,19 +41,19 @@
   else
   {
     +[AVCaptureExternalDisplayConfigurator registerConfigurator:withDisplayIdentifier:];
-    if (a4)
+    if (identifier)
     {
 LABEL_3:
       v6 = objc_opt_class();
       objc_sync_enter(v6);
-      v7 = [registerConfigurator_withDisplayIdentifier__configuratorRegistry objectForKey:a4];
+      v7 = [registerConfigurator_withDisplayIdentifier__configuratorRegistry objectForKey:identifier];
       if (v7)
       {
-        v8 = [v7 referencedObject];
-        v9 = v8;
-        if (v8)
+        referencedObject = [v7 referencedObject];
+        v9 = referencedObject;
+        if (referencedObject)
         {
-          if ([v8 isActive])
+          if ([referencedObject isActive])
           {
             if (dword_1EB3859D8)
             {
@@ -78,7 +78,7 @@ LABEL_3:
         fig_log_call_emit_and_clean_up_after_send_and_compose();
       }
 
-      [registerConfigurator_withDisplayIdentifier__configuratorRegistry setObject:*(a3 + 1) forKey:{a4, v13, v14}];
+      [registerConfigurator_withDisplayIdentifier__configuratorRegistry setObject:*(configurator + 1) forKey:{identifier, v13, v14}];
       objc_sync_exit(v6);
       return;
     }
@@ -101,7 +101,7 @@ id __83__AVCaptureExternalDisplayConfigurator_registerConfigurator_withDisplayId
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -110,19 +110,19 @@ id __83__AVCaptureExternalDisplayConfigurator_registerConfigurator_withDisplayId
   }
 }
 
-- (AVCaptureExternalDisplayConfigurator)initWithDevice:(id)a3 previewLayer:(id)a4 configuration:(id)a5
+- (AVCaptureExternalDisplayConfigurator)initWithDevice:(id)device previewLayer:(id)layer configuration:(id)configuration
 {
-  if (a3)
+  if (device)
   {
-    if (a4)
+    if (layer)
     {
-      if ([a5 shouldMatchFrameRate] && !+[AVCaptureExternalDisplayConfigurator isMatchingFrameRateSupported](AVCaptureExternalDisplayConfigurator, "isMatchingFrameRateSupported"))
+      if ([configuration shouldMatchFrameRate] && !+[AVCaptureExternalDisplayConfigurator isMatchingFrameRateSupported](AVCaptureExternalDisplayConfigurator, "isMatchingFrameRateSupported"))
       {
         v11 = MEMORY[0x1E695DF30];
         v12 = *MEMORY[0x1E695D940];
       }
 
-      else if ([a5 bypassColorSpaceConversion] && !+[AVCaptureExternalDisplayConfigurator isBypassingColorSpaceConversionSupported](AVCaptureExternalDisplayConfigurator, "isBypassingColorSpaceConversionSupported"))
+      else if ([configuration bypassColorSpaceConversion] && !+[AVCaptureExternalDisplayConfigurator isBypassingColorSpaceConversionSupported](AVCaptureExternalDisplayConfigurator, "isBypassingColorSpaceConversionSupported"))
       {
         v11 = MEMORY[0x1E695DF30];
         v12 = *MEMORY[0x1E695D940];
@@ -130,7 +130,7 @@ id __83__AVCaptureExternalDisplayConfigurator_registerConfigurator_withDisplayId
 
       else
       {
-        [a5 preferredResolution];
+        [configuration preferredResolution];
         if (CMVideoDimensionsAreEqual())
         {
           goto LABEL_8;
@@ -138,7 +138,7 @@ id __83__AVCaptureExternalDisplayConfigurator_registerConfigurator_withDisplayId
 
         if (+[AVCaptureExternalDisplayConfigurator isPreferredResolutionSupported])
         {
-          if (([a5 preferredResolution] & 0x80000000) == 0 && (objc_msgSend(a5, "preferredResolution") & 0x8000000000000000) == 0)
+          if (([configuration preferredResolution] & 0x80000000) == 0 && (objc_msgSend(configuration, "preferredResolution") & 0x8000000000000000) == 0)
           {
 LABEL_8:
             v22.receiver = self;
@@ -147,10 +147,10 @@ LABEL_8:
             if (v9)
             {
               v9->_configuratorWeakReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:v9];
-              v9->_deviceWeakReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:a3];
-              v9->_previewLayerWeakReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:a4];
+              v9->_deviceWeakReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:device];
+              v9->_previewLayerWeakReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:layer];
               v9->_queue = dispatch_queue_create("com.apple.avcaptureexternaldisplayconfigurator", 0);
-              v9->_configuration = a5;
+              v9->_configuration = configuration;
               v9->_identifier = objc_alloc_init(MEMORY[0x1E696AFB0]);
               if (dword_1EB3859D8)
               {
@@ -167,8 +167,8 @@ LABEL_8:
               v9->_active = 1;
               v15 = [[AVCaptureVisibilityHelperLayer alloc] initWithDelegate:v9];
               v9->_observationLayer = v15;
-              [a4 addSublayer:v15];
-              if ([a4 context])
+              [layer addSublayer:v15];
+              if ([layer context])
               {
                 queue = v9->_queue;
                 block[0] = MEMORY[0x1E69E9820];
@@ -412,7 +412,7 @@ LABEL_8:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   configuratorWeakReference = self->_configuratorWeakReference;
   queue = self->_queue;
@@ -421,9 +421,9 @@ LABEL_8:
   v8[2] = __87__AVCaptureExternalDisplayConfigurator_observeValueForKeyPath_ofObject_change_context___block_invoke;
   v8[3] = &unk_1E786EDF0;
   v8[4] = configuratorWeakReference;
-  v8[5] = a4;
-  v8[6] = a3;
-  v8[7] = a6;
+  v8[5] = object;
+  v8[6] = path;
+  v8[7] = context;
   dispatch_async(queue, v8);
 }
 
@@ -479,9 +479,9 @@ uint64_t __87__AVCaptureExternalDisplayConfigurator_observeValueForKeyPath_ofObj
   return result;
 }
 
-- (void)registerSelfForDisplay:(id)a3
+- (void)registerSelfForDisplay:(id)display
 {
-  if (a3)
+  if (display)
   {
     configuratorWeakReference = self->_configuratorWeakReference;
     queue = self->_queue;
@@ -490,7 +490,7 @@ uint64_t __87__AVCaptureExternalDisplayConfigurator_observeValueForKeyPath_ofObj
     block[2] = __63__AVCaptureExternalDisplayConfigurator_registerSelfForDisplay___block_invoke;
     block[3] = &unk_1E786EAA8;
     block[4] = configuratorWeakReference;
-    block[5] = a3;
+    block[5] = display;
     dispatch_async(queue, block);
   }
 
@@ -615,7 +615,7 @@ LABEL_7:
       v12 = 136315650;
       v13 = "[AVCaptureExternalDisplayConfigurator _dispatchConfiguration]";
       v14 = 2114;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
       v17 = configurationBlock;
       _os_log_send_and_compose_impl();
@@ -663,7 +663,7 @@ uint64_t __62__AVCaptureExternalDisplayConfigurator__dispatchConfiguration__bloc
 - (void)_configureExternalDisplay
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(AVCaptureExternalDisplayConfigurator *)self externalDisplayAndCaptureDeviceSynchronized];
+  externalDisplayAndCaptureDeviceSynchronized = [(AVCaptureExternalDisplayConfigurator *)self externalDisplayAndCaptureDeviceSynchronized];
   if (dword_1EB3859D8)
   {
     v9 = 0;
@@ -673,7 +673,7 @@ uint64_t __62__AVCaptureExternalDisplayConfigurator__dispatchConfiguration__bloc
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  if (!v3)
+  if (!externalDisplayAndCaptureDeviceSynchronized)
   {
     [(AVCaptureExternalDisplayConfigurator *)self _configureExternalDisplayColorspace];
     [(AVCaptureExternalDisplayConfigurator *)self _configureExternalDisplayFrameRate];
@@ -709,9 +709,9 @@ uint64_t __65__AVCaptureExternalDisplayConfigurator__configureExternalDisplay__b
   }
 }
 
-- (void)externalDisplayConfigurationChangedNotification:(id)a3
+- (void)externalDisplayConfigurationChangedNotification:(id)notification
 {
-  v4 = [a3 userInfo];
+  userInfo = [notification userInfo];
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -736,7 +736,7 @@ uint64_t __65__AVCaptureExternalDisplayConfigurator__configureExternalDisplay__b
     [AVCaptureExternalDisplayConfigurator externalDisplayConfigurationChangedNotification:];
   }
 
-  v7 = [v4 objectForKey:*v5];
+  v7 = [userInfo objectForKey:*v5];
   v8 = [-[CALayer context](-[AVCaptureExternalDisplayConfigurator previewLayer](self "previewLayer")];
   if ([v7 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v8)}])
   {
@@ -824,7 +824,7 @@ uint64_t __88__AVCaptureExternalDisplayConfigurator_externalDisplayConfiguration
   }
 }
 
-- (void)_getConfigurationWithCompletion:(id)a3
+- (void)_getConfigurationWithCompletion:(id)completion
 {
   v4 = [-[CALayer context](-[AVCaptureExternalDisplayConfigurator previewLayer](self "previewLayer")];
   if (v4)
@@ -834,7 +834,7 @@ uint64_t __88__AVCaptureExternalDisplayConfigurator_externalDisplayConfiguration
     block[2] = __72__AVCaptureExternalDisplayConfigurator__getConfigurationWithCompletion___block_invoke;
     block[3] = &unk_1E786EE18;
     v7 = v4;
-    block[4] = a3;
+    block[4] = completion;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
@@ -849,7 +849,7 @@ uint64_t __88__AVCaptureExternalDisplayConfigurator_externalDisplayConfiguration
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    (*(a3 + 2))(a3, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 
@@ -922,13 +922,13 @@ uint64_t __72__AVCaptureExternalDisplayConfigurator__getConfigurationWithComplet
 
     if (v7)
     {
-      v8 = [(AVCaptureExternalDisplayConfigurator *)self externalDisplayAndCaptureDeviceSynchronized];
+      externalDisplayAndCaptureDeviceSynchronized = [(AVCaptureExternalDisplayConfigurator *)self externalDisplayAndCaptureDeviceSynchronized];
       v11 = 136315650;
       v12 = "[AVCaptureExternalDisplayConfigurator _externalDisplayConfigurationChangedHandler]";
       v13 = 2114;
-      v14 = self;
+      selfCopy = self;
       v15 = 1026;
-      v16 = v8;
+      v16 = externalDisplayAndCaptureDeviceSynchronized;
       _os_log_send_and_compose_impl();
     }
 
@@ -938,10 +938,10 @@ uint64_t __72__AVCaptureExternalDisplayConfigurator__getConfigurationWithComplet
 
 - (BOOL)externalDisplayAndCaptureDeviceSynchronized
 {
-  v3 = [(AVCaptureExternalDisplayConfigurator *)self device];
-  if (v3)
+  device = [(AVCaptureExternalDisplayConfigurator *)self device];
+  if (device)
   {
-    [(AVCaptureDevice *)v3 activeVideoMinFrameDuration];
+    [(AVCaptureDevice *)device activeVideoMinFrameDuration];
     v4 = v13;
   }
 
@@ -953,10 +953,10 @@ uint64_t __72__AVCaptureExternalDisplayConfigurator__getConfigurationWithComplet
     v14 = 0;
   }
 
-  v5 = [(AVCaptureExternalDisplayConfigurator *)self device];
-  if (v5)
+  device2 = [(AVCaptureExternalDisplayConfigurator *)self device];
+  if (device2)
   {
-    [(AVCaptureDevice *)v5 activeVideoMinFrameDuration];
+    [(AVCaptureDevice *)device2 activeVideoMinFrameDuration];
     v6 = v9;
   }
 
@@ -1031,14 +1031,14 @@ uint64_t __75__AVCaptureExternalDisplayConfigurator__configureExternalDisplayCol
 {
   if ([(AVCaptureExternalDisplayConfiguration *)self->_configuration shouldMatchFrameRate])
   {
-    v3 = [(AVWeakReference *)self->_previewLayerWeakReference referencedObject];
-    if (v3)
+    referencedObject = [(AVWeakReference *)self->_previewLayerWeakReference referencedObject];
+    if (referencedObject)
     {
-      v4 = v3;
-      v5 = [(AVCaptureExternalDisplayConfigurator *)self device];
-      if (v5)
+      v4 = referencedObject;
+      device = [(AVCaptureExternalDisplayConfigurator *)self device];
+      if (device)
       {
-        [(AVCaptureDevice *)v5 activeVideoMinFrameDuration];
+        [(AVCaptureDevice *)device activeVideoMinFrameDuration];
         v6 = v21;
       }
 
@@ -1050,10 +1050,10 @@ uint64_t __75__AVCaptureExternalDisplayConfigurator__configureExternalDisplayCol
         v22 = 0;
       }
 
-      v7 = [(AVCaptureExternalDisplayConfigurator *)self device];
-      if (v7)
+      device2 = [(AVCaptureExternalDisplayConfigurator *)self device];
+      if (device2)
       {
-        [(AVCaptureDevice *)v7 activeVideoMinFrameDuration];
+        [(AVCaptureDevice *)device2 activeVideoMinFrameDuration];
         v8 = v17;
       }
 
@@ -1205,7 +1205,7 @@ uint64_t __44__AVCaptureExternalDisplayConfigurator_stop__block_invoke(uint64_t 
   }
 }
 
-- (void)externalDisplayLayerObserver:(id)a3 visibiltyChanged:(BOOL)a4
+- (void)externalDisplayLayerObserver:(id)observer visibiltyChanged:(BOOL)changed
 {
   if (dword_1EB3859D8)
   {
@@ -1223,7 +1223,7 @@ uint64_t __44__AVCaptureExternalDisplayConfigurator_stop__block_invoke(uint64_t 
   block[2] = __86__AVCaptureExternalDisplayConfigurator_externalDisplayLayerObserver_visibiltyChanged___block_invoke;
   block[3] = &unk_1E786EE40;
   block[4] = configuratorWeakReference;
-  v10 = a4;
+  changedCopy = changed;
   dispatch_async(queue, block);
 }
 

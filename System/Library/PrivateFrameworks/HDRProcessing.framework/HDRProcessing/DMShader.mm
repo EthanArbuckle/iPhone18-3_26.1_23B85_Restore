@@ -1,13 +1,13 @@
 @interface DMShader
-+ (id)createShaderWithName:(id)a3;
++ (id)createShaderWithName:(id)name;
 @end
 
 @implementation DMShader
 
-+ (id)createShaderWithName:(id)a3
++ (id)createShaderWithName:(id)name
 {
-  v3 = a3;
-  v4 = [(ForwardDmShader *)[DMShader alloc] initShaderWithName:v3];
+  nameCopy = name;
+  v4 = [(ForwardDmShader *)[DMShader alloc] initShaderWithName:nameCopy];
 
   return v4;
 }

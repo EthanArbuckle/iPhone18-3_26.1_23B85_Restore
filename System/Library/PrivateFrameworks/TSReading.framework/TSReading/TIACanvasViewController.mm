@@ -1,5 +1,5 @@
 @interface TIACanvasViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (TSAInteractiveCanvasController)interactiveCanvasController;
 - (id)commonGestureRecognizers;
 - (id)p_LocalGestureRecognizers;
@@ -36,7 +36,7 @@
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -52,7 +52,7 @@
 
   v8.receiver = self;
   v8.super_class = TIACanvasViewController;
-  return [(TSDiOSCanvasViewController *)&v8 gestureRecognizer:a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:a4];
+  return [(TSDiOSCanvasViewController *)&v8 gestureRecognizer:recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:gestureRecognizer];
 }
 
 - (TSAInteractiveCanvasController)interactiveCanvasController

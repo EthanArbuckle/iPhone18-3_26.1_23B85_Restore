@@ -1,53 +1,53 @@
 @interface FMDEventLoggerEventScalar
-- (FMDEventLoggerEventScalar)initWithCoder:(id)a3;
-- (FMDEventLoggerEventScalar)initWithEventName:(id)a3;
+- (FMDEventLoggerEventScalar)initWithCoder:(id)coder;
+- (FMDEventLoggerEventScalar)initWithEventName:(id)name;
 - (NSString)description;
 - (id)userInfo;
-- (void)encodeWithCoder:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation FMDEventLoggerEventScalar
 
-- (FMDEventLoggerEventScalar)initWithEventName:(id)a3
+- (FMDEventLoggerEventScalar)initWithEventName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = FMDEventLoggerEventScalar;
   v5 = [(FMDEventLoggerEventScalar *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(FMDEventLoggerEventScalar *)v5 setEventName:v4];
+    [(FMDEventLoggerEventScalar *)v5 setEventName:nameCopy];
     v7 = +[NSMutableDictionary dictionary];
     [(FMDEventLoggerEventScalar *)v6 setMutableDictionary:v7];
 
-    v8 = [(FMDEventLoggerEventScalar *)v6 mutableDictionary];
-    [v8 setObject:&off_1002E7C60 forKeyedSubscript:@"FMDEventLoggerFacilityDataPeekCompoundScalarValue"];
+    mutableDictionary = [(FMDEventLoggerEventScalar *)v6 mutableDictionary];
+    [mutableDictionary setObject:&off_1002E7C60 forKeyedSubscript:@"FMDEventLoggerFacilityDataPeekCompoundScalarValue"];
   }
 
   return v6;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  if (v8 || !v6)
+  objectCopy = object;
+  keyCopy = key;
+  if (objectCopy || !keyCopy)
   {
-    if (!v6)
+    if (!keyCopy)
     {
       goto LABEL_7;
     }
 
-    v7 = [(FMDEventLoggerEventScalar *)self mutableDictionary];
-    [v7 fm_safelySetObject:v8 forKey:v6];
+    mutableDictionary = [(FMDEventLoggerEventScalar *)self mutableDictionary];
+    [mutableDictionary fm_safelySetObject:objectCopy forKey:keyCopy];
   }
 
   else
   {
-    v7 = [(FMDEventLoggerEventScalar *)self mutableDictionary];
-    [v7 removeObjectForKey:v6];
+    mutableDictionary = [(FMDEventLoggerEventScalar *)self mutableDictionary];
+    [mutableDictionary removeObjectForKey:keyCopy];
   }
 
 LABEL_7:
@@ -55,46 +55,46 @@ LABEL_7:
 
 - (id)userInfo
 {
-  v2 = [(FMDEventLoggerEventScalar *)self mutableDictionary];
-  v3 = [v2 copy];
+  mutableDictionary = [(FMDEventLoggerEventScalar *)self mutableDictionary];
+  v3 = [mutableDictionary copy];
 
   return v3;
 }
 
 - (NSString)description
 {
-  v2 = [(FMDEventLoggerEventScalar *)self mutableDictionary];
-  v3 = [v2 description];
+  mutableDictionary = [(FMDEventLoggerEventScalar *)self mutableDictionary];
+  v3 = [mutableDictionary description];
 
   return v3;
 }
 
-- (FMDEventLoggerEventScalar)initWithCoder:(id)a3
+- (FMDEventLoggerEventScalar)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = FMDEventLoggerEventScalar;
   v5 = [(FMDEventLoggerEventScalar *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mutableDictionary"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mutableDictionary"];
     [(FMDEventLoggerEventScalar *)v5 setMutableDictionary:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eventName"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eventName"];
     [(FMDEventLoggerEventScalar *)v5 setEventName:v7];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FMDEventLoggerEventScalar *)self eventName];
-  [v4 encodeObject:v5 forKey:@"eventName"];
+  coderCopy = coder;
+  eventName = [(FMDEventLoggerEventScalar *)self eventName];
+  [coderCopy encodeObject:eventName forKey:@"eventName"];
 
-  v6 = [(FMDEventLoggerEventScalar *)self mutableDictionary];
-  [v4 encodeObject:v6 forKey:@"mutableDictionary"];
+  mutableDictionary = [(FMDEventLoggerEventScalar *)self mutableDictionary];
+  [coderCopy encodeObject:mutableDictionary forKey:@"mutableDictionary"];
 }
 
 @end

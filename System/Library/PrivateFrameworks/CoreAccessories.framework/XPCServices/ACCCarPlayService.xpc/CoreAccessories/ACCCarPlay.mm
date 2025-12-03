@@ -1,12 +1,12 @@
 @interface ACCCarPlay
 + (id)sharedManager;
 - (id)_init;
-- (void)carPlayAppLinksStateForCertSerial:(id)a3 withReply:(id)a4;
-- (void)carPlayIconStateForCertSerial:(id)a3 andAppCategories:(unint64_t)a4 withReply:(id)a5;
-- (void)carPlaySendConnectionTimeEvent:(int64_t)a3 connectionType:(int64_t)a4 eventTime:(id)a5;
-- (void)filterMatchingDigitalCarKeys:(id)a3 forAccessory:(id)a4 withCompletionHandler:(id)a5;
-- (void)isCarPlayPairedWithCertSerial:(id)a3 withReply:(id)a4;
-- (void)isWirelessCarPlayAllowedForCertSerial:(id)a3 withReply:(id)a4;
+- (void)carPlayAppLinksStateForCertSerial:(id)serial withReply:(id)reply;
+- (void)carPlayIconStateForCertSerial:(id)serial andAppCategories:(unint64_t)categories withReply:(id)reply;
+- (void)carPlaySendConnectionTimeEvent:(int64_t)event connectionType:(int64_t)type eventTime:(id)time;
+- (void)filterMatchingDigitalCarKeys:(id)keys forAccessory:(id)accessory withCompletionHandler:(id)handler;
+- (void)isCarPlayPairedWithCertSerial:(id)serial withReply:(id)reply;
+- (void)isWirelessCarPlayAllowedForCertSerial:(id)serial withReply:(id)reply;
 @end
 
 @implementation ACCCarPlay
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __27__ACCCarPlay_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_once != -1)
   {
     dispatch_once(&sharedManager_once, block);
@@ -56,25 +56,25 @@ uint64_t __27__ACCCarPlay_sharedManager__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)isCarPlayPairedWithCertSerial:(id)a3 withReply:(id)a4
+- (void)isCarPlayPairedWithCertSerial:(id)serial withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ACCCarPlay *)self xpcConnection];
+  replyCopy = reply;
+  serialCopy = serial;
+  xpcConnection = [(ACCCarPlay *)self xpcConnection];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = __54__ACCCarPlay_isCarPlayPairedWithCertSerial_withReply___block_invoke;
   v14[3] = &unk_100008340;
-  v9 = v6;
+  v9 = replyCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v14];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __54__ACCCarPlay_isCarPlayPairedWithCertSerial_withReply___block_invoke_22;
   v12[3] = &unk_100008368;
   v13 = v9;
   v11 = v9;
-  [v10 isCarPlayPairedWithCertSerial:v7 withReply:v12];
+  [v10 isCarPlayPairedWithCertSerial:serialCopy withReply:v12];
 }
 
 void __54__ACCCarPlay_isCarPlayPairedWithCertSerial_withReply___block_invoke(uint64_t a1, void *a2)
@@ -159,25 +159,25 @@ void __54__ACCCarPlay_isCarPlayPairedWithCertSerial_withReply___block_invoke_22(
   }
 }
 
-- (void)isWirelessCarPlayAllowedForCertSerial:(id)a3 withReply:(id)a4
+- (void)isWirelessCarPlayAllowedForCertSerial:(id)serial withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ACCCarPlay *)self xpcConnection];
+  replyCopy = reply;
+  serialCopy = serial;
+  xpcConnection = [(ACCCarPlay *)self xpcConnection];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = __62__ACCCarPlay_isWirelessCarPlayAllowedForCertSerial_withReply___block_invoke;
   v14[3] = &unk_100008340;
-  v9 = v6;
+  v9 = replyCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v14];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __62__ACCCarPlay_isWirelessCarPlayAllowedForCertSerial_withReply___block_invoke_24;
   v12[3] = &unk_100008368;
   v13 = v9;
   v11 = v9;
-  [v10 isWirelessCarPlayAllowedForCertSerial:v7 withReply:v12];
+  [v10 isWirelessCarPlayAllowedForCertSerial:serialCopy withReply:v12];
 }
 
 void __62__ACCCarPlay_isWirelessCarPlayAllowedForCertSerial_withReply___block_invoke(uint64_t a1, void *a2)
@@ -262,25 +262,25 @@ void __62__ACCCarPlay_isWirelessCarPlayAllowedForCertSerial_withReply___block_in
   }
 }
 
-- (void)carPlayAppLinksStateForCertSerial:(id)a3 withReply:(id)a4
+- (void)carPlayAppLinksStateForCertSerial:(id)serial withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ACCCarPlay *)self xpcConnection];
+  replyCopy = reply;
+  serialCopy = serial;
+  xpcConnection = [(ACCCarPlay *)self xpcConnection];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = __58__ACCCarPlay_carPlayAppLinksStateForCertSerial_withReply___block_invoke;
   v14[3] = &unk_100008340;
-  v9 = v6;
+  v9 = replyCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v14];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __58__ACCCarPlay_carPlayAppLinksStateForCertSerial_withReply___block_invoke_25;
   v12[3] = &unk_100008390;
   v13 = v9;
   v11 = v9;
-  [v10 carPlayAppLinksStateForCertSerial:v7 withReply:v12];
+  [v10 carPlayAppLinksStateForCertSerial:serialCopy withReply:v12];
 }
 
 void __58__ACCCarPlay_carPlayAppLinksStateForCertSerial_withReply___block_invoke(uint64_t a1, void *a2)
@@ -365,25 +365,25 @@ void __58__ACCCarPlay_carPlayAppLinksStateForCertSerial_withReply___block_invoke
   }
 }
 
-- (void)carPlayIconStateForCertSerial:(id)a3 andAppCategories:(unint64_t)a4 withReply:(id)a5
+- (void)carPlayIconStateForCertSerial:(id)serial andAppCategories:(unint64_t)categories withReply:(id)reply
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(ACCCarPlay *)self xpcConnection];
+  replyCopy = reply;
+  serialCopy = serial;
+  xpcConnection = [(ACCCarPlay *)self xpcConnection];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = __71__ACCCarPlay_carPlayIconStateForCertSerial_andAppCategories_withReply___block_invoke;
   v16[3] = &unk_100008340;
-  v11 = v8;
+  v11 = replyCopy;
   v17 = v11;
-  v12 = [v10 remoteObjectProxyWithErrorHandler:v16];
+  v12 = [xpcConnection remoteObjectProxyWithErrorHandler:v16];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = __71__ACCCarPlay_carPlayIconStateForCertSerial_andAppCategories_withReply___block_invoke_27;
   v14[3] = &unk_1000083B8;
   v15 = v11;
   v13 = v11;
-  [v12 carPlayIconStateForCertSerial:v9 andAppCategories:a4 withReply:v14];
+  [v12 carPlayIconStateForCertSerial:serialCopy andAppCategories:categories withReply:v14];
 }
 
 void __71__ACCCarPlay_carPlayIconStateForCertSerial_andAppCategories_withReply___block_invoke(uint64_t a1, void *a2)
@@ -540,20 +540,20 @@ void __60__ACCCarPlay_carPlayStartSessionForConnectionID_properties___block_invo
   }
 }
 
-- (void)filterMatchingDigitalCarKeys:(id)a3 forAccessory:(id)a4 withCompletionHandler:(id)a5
+- (void)filterMatchingDigitalCarKeys:(id)keys forAccessory:(id)accessory withCompletionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ACCCarPlay *)self xpcConnection];
-  v12 = [v11 remoteObjectProxyWithErrorHandler:&__block_literal_global_34];
+  handlerCopy = handler;
+  accessoryCopy = accessory;
+  keysCopy = keys;
+  xpcConnection = [(ACCCarPlay *)self xpcConnection];
+  v12 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_34];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = __78__ACCCarPlay_filterMatchingDigitalCarKeys_forAccessory_withCompletionHandler___block_invoke_35;
   v14[3] = &unk_100008480;
-  v15 = v8;
-  v13 = v8;
-  [v12 filterMatchingDigitalCarKeys:v10 forAccessory:v9 withReply:v14];
+  v15 = handlerCopy;
+  v13 = handlerCopy;
+  [v12 filterMatchingDigitalCarKeys:keysCopy forAccessory:accessoryCopy withReply:v14];
 }
 
 void __78__ACCCarPlay_filterMatchingDigitalCarKeys_forAccessory_withCompletionHandler___block_invoke(id a1, NSError *a2)
@@ -636,9 +636,9 @@ void __78__ACCCarPlay_filterMatchingDigitalCarKeys_forAccessory_withCompletionHa
   }
 }
 
-- (void)carPlaySendConnectionTimeEvent:(int64_t)a3 connectionType:(int64_t)a4 eventTime:(id)a5
+- (void)carPlaySendConnectionTimeEvent:(int64_t)event connectionType:(int64_t)type eventTime:(id)time
 {
-  v8 = a5;
+  timeCopy = time;
   if (gLogObjects)
   {
     v9 = gNumLogObjects < 7;
@@ -667,22 +667,22 @@ void __78__ACCCarPlay_filterMatchingDigitalCarKeys_forAccessory_withCompletionHa
 
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    [v8 timeIntervalSinceReferenceDate];
+    [timeCopy timeIntervalSinceReferenceDate];
     v15 = 134218754;
-    v16 = a3;
+    eventCopy = event;
     v17 = 2048;
-    v18 = a4;
+    typeCopy = type;
     v19 = 2048;
     v20 = v12;
     v21 = 2112;
-    v22 = v8;
+    v22 = timeCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "CarPlay Connection Event: %ld, %ld, %f, %@", &v15, 0x2Au);
   }
 
-  v13 = [(ACCCarPlay *)self xpcConnection];
-  v14 = [v13 remoteObjectProxyWithErrorHandler:&__block_literal_global_38];
+  xpcConnection = [(ACCCarPlay *)self xpcConnection];
+  v14 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_38];
 
-  [v14 carPlaySendConnectionTimeEvent:a3 connectionType:a4 eventTime:v8 withReply:&__block_literal_global_41];
+  [v14 carPlaySendConnectionTimeEvent:event connectionType:type eventTime:timeCopy withReply:&__block_literal_global_41];
 }
 
 void __70__ACCCarPlay_carPlaySendConnectionTimeEvent_connectionType_eventTime___block_invoke(id a1, NSError *a2)

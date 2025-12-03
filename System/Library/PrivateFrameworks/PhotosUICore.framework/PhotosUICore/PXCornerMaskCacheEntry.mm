@@ -1,6 +1,6 @@
 @interface PXCornerMaskCacheEntry
 - (CGSize)size;
-- (PXCornerMaskCacheEntry)initWithCornerRadius:(PXCornerRadius)a3 size:(CGSize)a4 image:(id)a5;
+- (PXCornerMaskCacheEntry)initWithCornerRadius:(PXCornerRadius)radius size:(CGSize)size image:(id)image;
 - (PXCornerRadius)cornerRadius;
 - (id)description;
 @end
@@ -41,15 +41,15 @@
   PXCornerRadiusDescription();
 }
 
-- (PXCornerMaskCacheEntry)initWithCornerRadius:(PXCornerRadius)a3 size:(CGSize)a4 image:(id)a5
+- (PXCornerMaskCacheEntry)initWithCornerRadius:(PXCornerRadius)radius size:(CGSize)size image:(id)image
 {
-  height = a4.height;
-  width = a4.width;
-  bottomRight = a3.bottomRight;
-  bottomLeft = a3.bottomLeft;
-  topRight = a3.topRight;
-  topLeft = a3.topLeft;
-  v13 = a5;
+  height = size.height;
+  width = size.width;
+  bottomRight = radius.bottomRight;
+  bottomLeft = radius.bottomLeft;
+  topRight = radius.topRight;
+  topLeft = radius.topLeft;
+  imageCopy = image;
   v17.receiver = self;
   v17.super_class = PXCornerMaskCacheEntry;
   v14 = [(PXCornerMaskCacheEntry *)&v17 init];
@@ -62,7 +62,7 @@
     v14->_cornerRadius.bottomRight = bottomRight;
     v14->_size.width = width;
     v14->_size.height = height;
-    objc_storeStrong(&v14->_image, a5);
+    objc_storeStrong(&v14->_image, image);
   }
 
   return v15;

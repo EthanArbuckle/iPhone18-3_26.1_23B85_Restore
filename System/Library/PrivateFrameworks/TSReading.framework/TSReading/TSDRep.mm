@@ -1,21 +1,21 @@
 @interface TSDRep
 - (BOOL)canClipThemeContentToCanvas;
-- (BOOL)canDrawTilingLayerInBackground:(id)a3;
-- (BOOL)containsPoint:(CGPoint)a3;
-- (BOOL)containsPoint:(CGPoint)a3 withSlop:(CGSize)a4;
-- (BOOL)intersectsUnscaledRect:(CGRect)a3;
+- (BOOL)canDrawTilingLayerInBackground:(id)background;
+- (BOOL)containsPoint:(CGPoint)point;
+- (BOOL)containsPoint:(CGPoint)point withSlop:(CGSize)slop;
+- (BOOL)intersectsUnscaledRect:(CGRect)rect;
 - (BOOL)isDrawingInFlippedContext;
 - (BOOL)isLocked;
 - (BOOL)isSelected;
 - (BOOL)isSelectedIgnoringLocking;
 - (BOOL)isVisibleOnCanvas;
-- (BOOL)mustDrawTilingLayerOnMainThread:(id)a3;
-- (BOOL)shouldBeginDrawingTilingLayerInBackground:(id)a3 returningToken:(id *)a4 andQueue:(id *)a5;
+- (BOOL)mustDrawTilingLayerOnMainThread:(id)thread;
+- (BOOL)shouldBeginDrawingTilingLayerInBackground:(id)background returningToken:(id *)token andQueue:(id *)queue;
 - (BOOL)shouldCreateCommentKnob;
 - (BOOL)shouldCreateLockedKnobs;
 - (BOOL)shouldCreateSelectionKnobs;
 - (BOOL)shouldDisplayHyperlinkUI;
-- (BOOL)shouldLayoutTilingLayer:(id)a3;
+- (BOOL)shouldLayoutTilingLayer:(id)layer;
 - (BOOL)shouldShowCommentHighlight;
 - (BOOL)shouldShowSelectionHighlight;
 - (CGAffineTransform)layerTransform;
@@ -24,29 +24,29 @@
 - (CGAffineTransform)transformForHighlightLayer;
 - (CGAffineTransform)transformToConvertNaturalFromLayerRelative;
 - (CGAffineTransform)transformToConvertNaturalToLayerRelative;
-- (CGAffineTransform)unRotatedTransform:(SEL)a3;
+- (CGAffineTransform)unRotatedTransform:(SEL)transform;
 - (CGColor)selectionHighlightColor;
-- (CGPath)newPathInScaledCanvasFromNaturalRect:(CGRect)a3;
+- (CGPath)newPathInScaledCanvasFromNaturalRect:(CGRect)rect;
 - (CGPoint)centerForRotation;
-- (CGPoint)convertKnobPositionToUnscaledCanvas:(CGPoint)a3;
-- (CGPoint)convertNaturalPointFromLayerRelative:(CGPoint)a3;
-- (CGPoint)convertNaturalPointFromUnscaledCanvas:(CGPoint)a3;
-- (CGPoint)convertNaturalPointToLayerRelative:(CGPoint)a3;
-- (CGPoint)convertNaturalPointToUnscaledCanvas:(CGPoint)a3;
-- (CGPoint)convertUnscaledPointFromLayerRelative:(CGPoint)a3;
-- (CGPoint)convertUnscaledPointToLayerRelative:(CGPoint)a3;
+- (CGPoint)convertKnobPositionToUnscaledCanvas:(CGPoint)canvas;
+- (CGPoint)convertNaturalPointFromLayerRelative:(CGPoint)relative;
+- (CGPoint)convertNaturalPointFromUnscaledCanvas:(CGPoint)canvas;
+- (CGPoint)convertNaturalPointToLayerRelative:(CGPoint)relative;
+- (CGPoint)convertNaturalPointToUnscaledCanvas:(CGPoint)canvas;
+- (CGPoint)convertUnscaledPointFromLayerRelative:(CGPoint)relative;
+- (CGPoint)convertUnscaledPointToLayerRelative:(CGPoint)relative;
 - (CGPoint)i_dragOffset;
 - (CGPoint)layerOffsetForDragging;
-- (CGPoint)p_positionOfActionGhostKnobForBounds:(CGRect)a3;
+- (CGPoint)p_positionOfActionGhostKnobForBounds:(CGRect)bounds;
 - (CGPoint)positionOfActionGhostKnob;
 - (CGPoint)positionOfHyperlinkKnob;
-- (CGPoint)positionOfStandardKnob:(id)a3 forBounds:(CGRect)a4;
+- (CGPoint)positionOfStandardKnob:(id)knob forBounds:(CGRect)bounds;
 - (CGPoint)unscaledGuidePosition;
 - (CGRect)boundsForStandardKnobs;
-- (CGRect)convertNaturalRectFromLayerRelative:(CGRect)a3;
-- (CGRect)convertNaturalRectFromUnscaledCanvas:(CGRect)a3;
-- (CGRect)convertNaturalRectToLayerRelative:(CGRect)a3;
-- (CGRect)convertNaturalRectToUnscaledCanvas:(CGRect)a3;
+- (CGRect)convertNaturalRectFromLayerRelative:(CGRect)relative;
+- (CGRect)convertNaturalRectFromUnscaledCanvas:(CGRect)canvas;
+- (CGRect)convertNaturalRectToLayerRelative:(CGRect)relative;
+- (CGRect)convertNaturalRectToUnscaledCanvas:(CGRect)canvas;
 - (CGRect)frameInScreenSpace;
 - (CGRect)frameInUnscaledCanvas;
 - (CGRect)i_layerFrameInScaledCanvasIgnoringDragging;
@@ -57,13 +57,13 @@
 - (CGRect)naturalBounds;
 - (CGRect)targetRectForEditMenu;
 - (CGRect)trackingBoundsForStandardKnobs;
-- (CGRect)visibleBoundsForTilingLayer:(id)a3;
+- (CGRect)visibleBoundsForTilingLayer:(id)layer;
 - (NSArray)hyperlinkRegions;
 - (NSArray)knobs;
 - (NSString)description;
 - (TSDInteractiveCanvasController)interactiveCanvasController;
 - (TSDLayout)layout;
-- (TSDRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (TSDRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (double)additionalRotationForKnobOrientation;
 - (double)angleForRotation;
 - (double)angleInRoot;
@@ -73,45 +73,45 @@
 - (id)additionalLayersOverLayer;
 - (id)allLayers;
 - (id)connectedReps;
-- (id)hitRep:(CGPoint)a3;
-- (id)hitRep:(CGPoint)a3 withGesture:(id)a4 passingTest:(id)a5;
-- (id)hitRepChrome:(CGPoint)a3;
-- (id)hitRepChrome:(CGPoint)a3 passingTest:(id)a4;
-- (id)hitReps:(CGPoint)a3 withSlop:(CGSize)a4;
-- (id)hitReps:(CGPoint)a3 withSlopBlock:(id)a4;
+- (id)hitRep:(CGPoint)rep;
+- (id)hitRep:(CGPoint)rep withGesture:(id)gesture passingTest:(id)test;
+- (id)hitRepChrome:(CGPoint)chrome;
+- (id)hitRepChrome:(CGPoint)chrome passingTest:(id)test;
+- (id)hitReps:(CGPoint)reps withSlop:(CGSize)slop;
+- (id)hitReps:(CGPoint)reps withSlopBlock:(id)block;
 - (id)i_queueForTileProvider;
 - (id)i_tileQueue;
 - (id)info;
-- (id)knobForTag:(unint64_t)a3;
-- (id)newSelectionKnobForType:(int)a3 tag:(unint64_t)a4;
+- (id)knobForTag:(unint64_t)tag;
+- (id)newSelectionKnobForType:(int)type tag:(unint64_t)tag;
 - (id)overlayLayers;
-- (id)p_addLayersForKnobsToArray:(id)a3 withDelegate:(id)a4 isOverlay:(BOOL)a5;
+- (id)p_addLayersForKnobsToArray:(id)array withDelegate:(id)delegate isOverlay:(BOOL)overlay;
 - (id)parentRepToPerformSelecting;
 - (id)popoutLayers;
-- (id)queueForDrawingTilingLayerInBackground:(id)a3;
+- (id)queueForDrawingTilingLayerInBackground:(id)background;
 - (id)repForDragging;
 - (id)repForRotating;
 - (id)repForSelecting;
 - (id)selectionHighlightLayer;
 - (id)subviewsController;
-- (id)textureForContext:(id)a3;
-- (int)dragTypeAtCanvasPoint:(CGPoint)a3;
-- (unint64_t)adjustedKnobForComputingResizeGeometry:(unint64_t)a3;
+- (id)textureForContext:(id)context;
+- (int)dragTypeAtCanvasPoint:(CGPoint)point;
+- (unint64_t)adjustedKnobForComputingResizeGeometry:(unint64_t)geometry;
 - (unint64_t)enabledKnobMask;
-- (void)addActionGhostKnobToArrayIfNecessary:(id)a3;
-- (void)addKnobsToArray:(id)a3;
-- (void)addLockedKnobsToArray:(id)a3;
-- (void)addSelectionKnobsToArray:(id)a3;
-- (void)antiAliasDefeatLayerFrame:(CGRect *)a3 forTransform:(CGAffineTransform *)a4;
-- (void)antiAliasDefeatLayerTransform:(CGAffineTransform *)a3 forFrame:(CGRect)a4;
+- (void)addActionGhostKnobToArrayIfNecessary:(id)necessary;
+- (void)addKnobsToArray:(id)array;
+- (void)addLockedKnobsToArray:(id)array;
+- (void)addSelectionKnobsToArray:(id)array;
+- (void)antiAliasDefeatLayerFrame:(CGRect *)frame forTransform:(CGAffineTransform *)transform;
+- (void)antiAliasDefeatLayerTransform:(CGAffineTransform *)transform forFrame:(CGRect)frame;
 - (void)becameNotSelected;
 - (void)becameSelected;
-- (void)computeDirectLayerFrame:(CGRect *)a3 andTransform:(CGAffineTransform *)a4;
-- (void)computeDirectLayerFrame:(CGRect *)a3 andTransform:(CGAffineTransform *)a4 basedOnLayoutGeometry:(id)a5;
-- (void)computeDirectLayerFrame:(CGRect *)a3 andTransform:(CGAffineTransform *)a4 basedOnTransform:(CGAffineTransform *)a5 andSize:(CGSize)a6;
+- (void)computeDirectLayerFrame:(CGRect *)frame andTransform:(CGAffineTransform *)transform;
+- (void)computeDirectLayerFrame:(CGRect *)frame andTransform:(CGAffineTransform *)transform basedOnLayoutGeometry:(id)geometry;
+- (void)computeDirectLayerFrame:(CGRect *)frame andTransform:(CGAffineTransform *)transform basedOnTransform:(CGAffineTransform *)onTransform andSize:(CGSize)size;
 - (void)dealloc;
-- (void)didDrawInLayer:(id)a3 context:(CGContext *)a4;
-- (void)didEndDrawingTilingLayerInBackground:(id)a3 withToken:(id)a4;
+- (void)didDrawInLayer:(id)layer context:(CGContext *)context;
+- (void)didEndDrawingTilingLayerInBackground:(id)background withToken:(id)token;
 - (void)dynamicRotateDidBegin;
 - (void)fadeKnobsIn;
 - (void)fadeKnobsOut;
@@ -119,48 +119,48 @@
 - (void)invalidateAnnotationColor;
 - (void)invalidateKnobPositions;
 - (void)invalidateKnobs;
-- (void)layoutInRootChangedFrom:(id)a3 to:(id)a4 translatedOnly:(BOOL)a5;
+- (void)layoutInRootChangedFrom:(id)from to:(id)to translatedOnly:(BOOL)only;
 - (void)markTextureDirty;
 - (void)p_actionGhostKnobHit;
 - (void)p_dynamicRotateDidBegin;
-- (void)p_setMagicMoveTextureAttributes:(id)a3;
+- (void)p_setMagicMoveTextureAttributes:(id)attributes;
 - (void)p_toggleHyperlinkUIVisibility;
 - (void)pauseLayerUpdates;
-- (void)processChangedProperty:(int)a3;
-- (void)processChanges:(id)a3;
-- (void)recursivelyDrawChildrenInContext:(CGContext *)a3;
-- (void)recursivelyDrawInContext:(CGContext *)a3;
-- (void)recursivelyPerformSelector:(SEL)a3;
-- (void)recursivelyPerformSelector:(SEL)a3 withObject:(id)a4;
-- (void)recursivelyPerformSelectorIfImplemented:(SEL)a3;
-- (void)recursivelyPerformSelectorIfImplemented:(SEL)a3 withObject:(id)a4;
-- (void)recursivelyPerformSelectorIfImplemented:(SEL)a3 withObject:(id)a4 withObject:(id)a5;
-- (void)replaceContentsFromRep:(id)a3;
+- (void)processChangedProperty:(int)property;
+- (void)processChanges:(id)changes;
+- (void)recursivelyDrawChildrenInContext:(CGContext *)context;
+- (void)recursivelyDrawInContext:(CGContext *)context;
+- (void)recursivelyPerformSelector:(SEL)selector;
+- (void)recursivelyPerformSelector:(SEL)selector withObject:(id)object;
+- (void)recursivelyPerformSelectorIfImplemented:(SEL)implemented;
+- (void)recursivelyPerformSelectorIfImplemented:(SEL)implemented withObject:(id)object;
+- (void)recursivelyPerformSelectorIfImplemented:(SEL)implemented withObject:(id)object withObject:(id)withObject;
+- (void)replaceContentsFromRep:(id)rep;
 - (void)resumeLayerUpdates;
 - (void)resumeLayerUpdatesAndLayoutImmediately;
 - (void)screenScaleDidChange;
-- (void)scrollRectToVisible:(CGRect)a3 animated:(BOOL)a4;
+- (void)scrollRectToVisible:(CGRect)visible animated:(BOOL)animated;
 - (void)setNeedsDisplay;
-- (void)setNeedsDisplayInRect:(CGRect)a3;
-- (void)setParentRep:(id)a3;
-- (void)setSelectionHighlightColor:(CGColor *)a3;
-- (void)setTexture:(id)a3;
-- (void)setTextureActionAttributes:(id)a3;
-- (void)setTextureByGlyphStyle:(int)a3;
-- (void)setTextureDeliveryStyle:(unint64_t)a3;
-- (void)setupForDrawingInLayer:(id)a3 context:(CGContext *)a4;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
+- (void)setParentRep:(id)rep;
+- (void)setSelectionHighlightColor:(CGColor *)color;
+- (void)setTexture:(id)texture;
+- (void)setTextureActionAttributes:(id)attributes;
+- (void)setTextureByGlyphStyle:(int)style;
+- (void)setTextureDeliveryStyle:(unint64_t)style;
+- (void)setupForDrawingInLayer:(id)layer context:(CGContext *)context;
 - (void)turnKnobsOn;
 - (void)updateFromLayout;
-- (void)updateLayerGeometryFromLayout:(id)a3;
-- (void)updatePositionsOfKnobs:(id)a3;
+- (void)updateLayerGeometryFromLayout:(id)layout;
+- (void)updatePositionsOfKnobs:(id)knobs;
 - (void)viewScaleDidChange;
-- (void)willReplaceContentsFromRep:(id)a3;
-- (void)willUpdateLayer:(id)a3;
+- (void)willReplaceContentsFromRep:(id)rep;
+- (void)willUpdateLayer:(id)layer;
 @end
 
 @implementation TSDRep
 
-- (TSDRep)initWithLayout:(id)a3 canvas:(id)a4
+- (TSDRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v9.receiver = self;
   v9.super_class = TSDRep;
@@ -168,11 +168,11 @@
   v7 = v6;
   if (v6)
   {
-    if (a3)
+    if (layout)
     {
-      v6->mLayout = a3;
-      v7->mCanvas = a4;
-      [a4 i_registerRep:v7];
+      v6->mLayout = layout;
+      v7->mCanvas = canvas;
+      [canvas i_registerRep:v7];
       v7->mShowKnobsWhenManipulated = 0;
     }
 
@@ -214,22 +214,22 @@
   [(TSDRep *)self info];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [(TSDRep *)self info];
+  info = [(TSDRep *)self info];
   [(TSDRep *)self layout];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  v11 = [(TSDRep *)self layout];
+  layout = [(TSDRep *)self layout];
   [(TSDRep *)self frameInUnscaledCanvas];
-  return [v3 stringWithFormat:@"<%@ %p info=<%@ %p> layout=<%@ %p> frameInUnscaledCanvas=%@>", v5, self, v7, v8, v10, v11, NSStringFromCGRect(v13)];
+  return [v3 stringWithFormat:@"<%@ %p info=<%@ %p> layout=<%@ %p> frameInUnscaledCanvas=%@>", v5, self, v7, info, v10, layout, NSStringFromCGRect(v13)];
 }
 
 - (TSDInteractiveCanvasController)interactiveCanvasController
 {
   if (![(TSDCanvas *)self->mCanvas canvasController])
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDRep interactiveCanvasController]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDRep.m"), 181, @"no ICC for this rep; consider asking self.canvas instead"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDRep.m"), 181, @"no ICC for this rep; consider asking self.canvas instead"}];
   }
 
   mCanvas = self->mCanvas;
@@ -250,9 +250,9 @@
 
 - (id)info
 {
-  v2 = [(TSDRep *)self layout];
+  layout = [(TSDRep *)self layout];
 
-  return [(TSDLayout *)v2 info];
+  return [(TSDLayout *)layout info];
 }
 
 - (void)pauseLayerUpdates
@@ -260,9 +260,9 @@
   v4 = objc_opt_class();
   if ([v4 tsu_overridesSelector:a2 ofBaseClass:objc_opt_class()])
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDRep pauseLayerUpdates]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDRep.m"), 206, @"-pushLayerUpdatesPaused won't work correctly if -layerUpdatesPaused is overridden"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDRep.m"), 206, @"-pushLayerUpdatesPaused won't work correctly if -layerUpdatesPaused is overridden"}];
   }
 
   ++self->mLayerUpdatesPausedCount;
@@ -273,39 +273,39 @@
   v4 = objc_opt_class();
   if ([v4 tsu_overridesSelector:a2 ofBaseClass:objc_opt_class()])
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDRep resumeLayerUpdates]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDRep.m"), 212, @"-resumeLayerUpdates won't work correctly if -layerUpdatesPaused is overridden"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDRep.m"), 212, @"-resumeLayerUpdates won't work correctly if -layerUpdatesPaused is overridden"}];
   }
 
   mLayerUpdatesPausedCount = self->mLayerUpdatesPausedCount;
   if (mLayerUpdatesPausedCount || (v8 = [MEMORY[0x277D6C290] currentHandler], v9 = objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", "-[TSDRep resumeLayerUpdates]"), objc_msgSend(v8, "handleFailureInFunction:file:lineNumber:description:", v9, objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", "/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDRep.m"), 213, @"unbalanced calls to push/resumeLayerUpdates"), (mLayerUpdatesPausedCount = self->mLayerUpdatesPausedCount) != 0))
   {
     self->mLayerUpdatesPausedCount = mLayerUpdatesPausedCount - 1;
-    v10 = [(TSDRep *)self interactiveCanvasController];
+    interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-    [(TSDInteractiveCanvasController *)v10 invalidateLayers];
+    [(TSDInteractiveCanvasController *)interactiveCanvasController invalidateLayers];
   }
 }
 
 - (void)resumeLayerUpdatesAndLayoutImmediately
 {
   [(TSDRep *)self resumeLayerUpdates];
-  v3 = [(TSDRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-  [(TSDInteractiveCanvasController *)v3 layoutIfNeeded];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController layoutIfNeeded];
 }
 
 - (id)connectedReps
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(TSDLayout *)[(TSDRep *)self layout] connectedLayouts];
+  connectedLayouts = [(TSDLayout *)[(TSDRep *)self layout] connectedLayouts];
   v4 = [MEMORY[0x277CBEB58] set];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(NSSet *)v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [(NSSet *)connectedLayouts countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -317,7 +317,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(connectedLayouts);
         }
 
         v9 = [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] repForLayout:*(*(&v11 + 1) + 8 * v8)];
@@ -330,7 +330,7 @@
       }
 
       while (v6 != v8);
-      v6 = [(NSSet *)v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [(NSSet *)connectedLayouts countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -339,18 +339,18 @@
   return v4;
 }
 
-- (void)setParentRep:(id)a3
+- (void)setParentRep:(id)rep
 {
   mParentRep = self->mParentRep;
-  if (mParentRep != a3)
+  if (mParentRep != rep)
   {
     if (mParentRep)
     {
       [(TSDRep *)self willBeRemovedFromParent];
     }
 
-    self->mParentRep = a3;
-    if (a3)
+    self->mParentRep = rep;
+    if (rep)
     {
 
       [(TSDRep *)self wasAddedToParent];
@@ -358,20 +358,20 @@
   }
 }
 
-- (void)recursivelyPerformSelectorIfImplemented:(SEL)a3
+- (void)recursivelyPerformSelectorIfImplemented:(SEL)implemented
 {
   v15 = *MEMORY[0x277D85DE8];
   if (objc_opt_respondsToSelector())
   {
-    [(TSDRep *)self performSelector:a3];
+    [(TSDRep *)self performSelector:implemented];
   }
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [TSUProtocolCast() childReps];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  childReps = [TSUProtocolCast() childReps];
+  v6 = [childReps countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -383,34 +383,34 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(childReps);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) recursivelyPerformSelectorIfImplemented:a3];
+        [*(*(&v10 + 1) + 8 * v9++) recursivelyPerformSelectorIfImplemented:implemented];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [childReps countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)recursivelyPerformSelectorIfImplemented:(SEL)a3 withObject:(id)a4
+- (void)recursivelyPerformSelectorIfImplemented:(SEL)implemented withObject:(id)object
 {
   v17 = *MEMORY[0x277D85DE8];
   if (objc_opt_respondsToSelector())
   {
-    [(TSDRep *)self performSelector:a3 withObject:a4];
+    [(TSDRep *)self performSelector:implemented withObject:object];
   }
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [TSUProtocolCast() childReps];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  childReps = [TSUProtocolCast() childReps];
+  v8 = [childReps countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -422,30 +422,30 @@
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(childReps);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) recursivelyPerformSelectorIfImplemented:a3 withObject:a4];
+        [*(*(&v12 + 1) + 8 * v11++) recursivelyPerformSelectorIfImplemented:implemented withObject:object];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [childReps countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)recursivelyPerformSelectorIfImplemented:(SEL)a3 withObject:(id)a4 withObject:(id)a5
+- (void)recursivelyPerformSelectorIfImplemented:(SEL)implemented withObject:(id)object withObject:(id)withObject
 {
   if (objc_opt_respondsToSelector())
   {
 
-    [(TSDRep *)self performSelector:a3 withObject:a4 withObject:a5];
+    [(TSDRep *)self performSelector:implemented withObject:object withObject:withObject];
   }
 }
 
-- (void)recursivelyPerformSelector:(SEL)a3
+- (void)recursivelyPerformSelector:(SEL)selector
 {
   v14 = *MEMORY[0x277D85DE8];
   [(TSDRep *)self performSelector:?];
@@ -453,8 +453,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [TSUProtocolCast() childReps];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  childReps = [TSUProtocolCast() childReps];
+  v5 = [childReps countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -466,21 +466,21 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(childReps);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) recursivelyPerformSelector:a3];
+        [*(*(&v9 + 1) + 8 * v8++) recursivelyPerformSelector:selector];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [childReps countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)recursivelyPerformSelector:(SEL)a3 withObject:(id)a4
+- (void)recursivelyPerformSelector:(SEL)selector withObject:(id)object
 {
   v16 = *MEMORY[0x277D85DE8];
   [TSDRep performSelector:"performSelector:withObject:" withObject:?];
@@ -488,8 +488,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [TSUProtocolCast() childReps];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  childReps = [TSUProtocolCast() childReps];
+  v7 = [childReps countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -501,14 +501,14 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(childReps);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) recursivelyPerformSelector:a3 withObject:a4];
+        [*(*(&v11 + 1) + 8 * v10++) recursivelyPerformSelector:selector withObject:object];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [childReps countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -531,12 +531,12 @@
 
 - (id)parentRepToPerformSelecting
 {
-  v2 = self;
+  selfCopy = self;
   while (1)
   {
-    v3 = [(TSDRep *)self parentRep];
-    p_super = &v3->super;
-    if (!v3 || [(TSDContainerRep *)v3 canSelectChildRep:v2])
+    parentRep = [(TSDRep *)self parentRep];
+    p_super = &parentRep->super;
+    if (!parentRep || [(TSDContainerRep *)parentRep canSelectChildRep:selfCopy])
     {
       break;
     }
@@ -583,8 +583,8 @@
 
 - (BOOL)isVisibleOnCanvas
 {
-  v3 = [(TSDRep *)self interactiveCanvasController];
-  if (v3)
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
+  if (interactiveCanvasController)
   {
     [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] visibleUnscaledRect];
     v5 = v4;
@@ -601,22 +601,22 @@
     v22 = v9;
     v23 = v11;
 
-    LOBYTE(v3) = CGRectIntersectsRect(*&v20, *&v13);
+    LOBYTE(interactiveCanvasController) = CGRectIntersectsRect(*&v20, *&v13);
   }
 
-  return v3;
+  return interactiveCanvasController;
 }
 
-- (CGRect)convertNaturalRectToUnscaledCanvas:(CGRect)a3
+- (CGRect)convertNaturalRectToUnscaledCanvas:(CGRect)canvas
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(TSDRep *)self layout];
-  if (v7)
+  height = canvas.size.height;
+  width = canvas.size.width;
+  y = canvas.origin.y;
+  x = canvas.origin.x;
+  layout = [(TSDRep *)self layout];
+  if (layout)
   {
-    [(TSDAbstractLayout *)v7 transformInRoot];
+    [(TSDAbstractLayout *)layout transformInRoot];
   }
 
   else
@@ -631,16 +631,16 @@
   return CGRectApplyAffineTransform(v9, &v8);
 }
 
-- (CGRect)convertNaturalRectFromUnscaledCanvas:(CGRect)a3
+- (CGRect)convertNaturalRectFromUnscaledCanvas:(CGRect)canvas
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(TSDRep *)self layout];
-  if (v7)
+  height = canvas.size.height;
+  width = canvas.size.width;
+  y = canvas.origin.y;
+  x = canvas.origin.x;
+  layout = [(TSDRep *)self layout];
+  if (layout)
   {
-    [(TSDAbstractLayout *)v7 transformInRoot];
+    [(TSDAbstractLayout *)layout transformInRoot];
   }
 
   else
@@ -656,20 +656,20 @@
   return CGRectApplyAffineTransform(v10, &v9);
 }
 
-- (CGPath)newPathInScaledCanvasFromNaturalRect:(CGRect)a3
+- (CGPath)newPathInScaledCanvasFromNaturalRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   Mutable = CGPathCreateMutable();
   v30 = 0u;
   v31 = 0u;
   v29 = 0u;
-  v9 = [(TSDRep *)self layout];
-  if (v9)
+  layout = [(TSDRep *)self layout];
+  if (layout)
   {
-    [(TSDAbstractLayout *)v9 transformInRoot];
+    [(TSDAbstractLayout *)layout transformInRoot];
   }
 
   else
@@ -737,14 +737,14 @@
   return Mutable;
 }
 
-- (CGPoint)convertNaturalPointToUnscaledCanvas:(CGPoint)a3
+- (CGPoint)convertNaturalPointToUnscaledCanvas:(CGPoint)canvas
 {
-  y = a3.y;
-  x = a3.x;
-  v3 = [(TSDRep *)self layout];
-  if (v3)
+  y = canvas.y;
+  x = canvas.x;
+  layout = [(TSDRep *)self layout];
+  if (layout)
   {
-    [(TSDAbstractLayout *)v3 transformInRoot];
+    [(TSDAbstractLayout *)layout transformInRoot];
     v4 = v11;
     v5 = v12;
     v6 = v13;
@@ -764,14 +764,14 @@
   return result;
 }
 
-- (CGPoint)convertNaturalPointFromUnscaledCanvas:(CGPoint)a3
+- (CGPoint)convertNaturalPointFromUnscaledCanvas:(CGPoint)canvas
 {
-  y = a3.y;
-  x = a3.x;
-  v3 = [(TSDRep *)self layout];
-  if (v3)
+  y = canvas.y;
+  x = canvas.x;
+  layout = [(TSDRep *)self layout];
+  if (layout)
   {
-    [(TSDAbstractLayout *)v3 transformInRoot];
+    [(TSDAbstractLayout *)layout transformInRoot];
   }
 
   else
@@ -789,9 +789,9 @@
 
 - (CGRect)frameInUnscaledCanvas
 {
-  v2 = [(TSDRep *)self layout];
+  layout = [(TSDRep *)self layout];
 
-  [(TSDAbstractLayout *)v2 frameInRoot];
+  [(TSDAbstractLayout *)layout frameInRoot];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -801,22 +801,22 @@
 
 - (CGRect)frameInScreenSpace
 {
-  v3 = [(TSDRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
   [(TSDRep *)self frameInUnscaledCanvas];
-  [(TSDInteractiveCanvasController *)v3 convertUnscaledToBoundsRect:?];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController convertUnscaledToBoundsRect:?];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(TSDInteractiveCanvasController *)v3 canvasView];
-  [(TSDCanvasView *)v12 convertRect:0 toView:v5, v7, v9, v11];
+  canvasView = [(TSDInteractiveCanvasController *)interactiveCanvasController canvasView];
+  [(TSDCanvasView *)canvasView convertRect:0 toView:v5, v7, v9, v11];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(TSDCanvasView *)v12 window];
+  window = [(TSDCanvasView *)canvasView window];
 
-  [v21 convertRect:0 toWindow:{v14, v16, v18, v20}];
+  [window convertRect:0 toWindow:{v14, v16, v18, v20}];
   result.size.height = v25;
   result.size.width = v24;
   result.origin.y = v23;
@@ -863,12 +863,12 @@
 {
   if ([(TSDRep *)self isBeingRotated])
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDRep i_layerFrameInScaledCanvasIgnoringDragging]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDRep.m"), 546, @"i_layerFrameInScaledCanvasIgnoringDragging is invalid in this state"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDRep.m"), 546, @"i_layerFrameInScaledCanvasIgnoringDragging is invalid in this state"}];
   }
 
-  v5 = [(TSDRep *)self directlyManagesLayerContent];
+  directlyManagesLayerContent = [(TSDRep *)self directlyManagesLayerContent];
   mCanvas = self->mCanvas;
   [(TSDRep *)self frameInUnscaledCanvas];
   [(TSDCanvas *)mCanvas convertUnscaledToBoundsRect:?];
@@ -876,7 +876,7 @@
   v12 = v8;
   v13 = v9;
   v14 = v10;
-  if (v5)
+  if (directlyManagesLayerContent)
   {
     [(TSDCanvas *)[(TSDRep *)self canvas] contentsScale];
     v16 = TSDRoundedRectForScale(v11, v12, v13, v14, v15);
@@ -935,10 +935,10 @@
 - (CGAffineTransform)transformToConvertNaturalToLayerRelative
 {
   memset(&v14, 0, sizeof(v14));
-  v5 = [(TSDRep *)self layout];
-  if (v5)
+  layout = [(TSDRep *)self layout];
+  if (layout)
   {
-    [(TSDAbstractLayout *)v5 transformInRoot];
+    [(TSDAbstractLayout *)layout transformInRoot];
   }
 
   else
@@ -977,15 +977,15 @@
   return CGAffineTransformInvert(retstr, &v5);
 }
 
-- (CGPoint)convertNaturalPointToLayerRelative:(CGPoint)a3
+- (CGPoint)convertNaturalPointToLayerRelative:(CGPoint)relative
 {
   if (self)
   {
-    y = a3.y;
-    x = a3.x;
+    y = relative.y;
+    x = relative.x;
     [(TSDRep *)self transformToConvertNaturalToLayerRelative];
-    a3.y = y;
-    a3.x = x;
+    relative.y = y;
+    relative.x = x;
     v4 = v10;
     v3 = v11;
     v5 = v12;
@@ -998,22 +998,22 @@
     v3 = 0uLL;
   }
 
-  v6 = vaddq_f64(v5, vmlaq_n_f64(vmulq_n_f64(v3, a3.y), v4, a3.x));
+  v6 = vaddq_f64(v5, vmlaq_n_f64(vmulq_n_f64(v3, relative.y), v4, relative.x));
   v7 = v6.f64[1];
   result.x = v6.f64[0];
   result.y = v7;
   return result;
 }
 
-- (CGPoint)convertNaturalPointFromLayerRelative:(CGPoint)a3
+- (CGPoint)convertNaturalPointFromLayerRelative:(CGPoint)relative
 {
   if (self)
   {
-    y = a3.y;
-    x = a3.x;
+    y = relative.y;
+    x = relative.x;
     [(TSDRep *)self transformToConvertNaturalFromLayerRelative];
-    a3.y = y;
-    a3.x = x;
+    relative.y = y;
+    relative.x = x;
     v4 = v10;
     v3 = v11;
     v5 = v12;
@@ -1026,19 +1026,19 @@
     v3 = 0uLL;
   }
 
-  v6 = vaddq_f64(v5, vmlaq_n_f64(vmulq_n_f64(v3, a3.y), v4, a3.x));
+  v6 = vaddq_f64(v5, vmlaq_n_f64(vmulq_n_f64(v3, relative.y), v4, relative.x));
   v7 = v6.f64[1];
   result.x = v6.f64[0];
   result.y = v7;
   return result;
 }
 
-- (CGRect)convertNaturalRectToLayerRelative:(CGRect)a3
+- (CGRect)convertNaturalRectToLayerRelative:(CGRect)relative
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = relative.size.height;
+  width = relative.size.width;
+  y = relative.origin.y;
+  x = relative.origin.x;
   if (self)
   {
     [(TSDRep *)self transformToConvertNaturalToLayerRelative];
@@ -1056,12 +1056,12 @@
   return CGRectApplyAffineTransform(v8, &v7);
 }
 
-- (CGRect)convertNaturalRectFromLayerRelative:(CGRect)a3
+- (CGRect)convertNaturalRectFromLayerRelative:(CGRect)relative
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = relative.size.height;
+  width = relative.size.width;
+  y = relative.origin.y;
+  x = relative.origin.x;
   if (self)
   {
     [(TSDRep *)self transformToConvertNaturalFromLayerRelative];
@@ -1079,9 +1079,9 @@
   return CGRectApplyAffineTransform(v8, &v7);
 }
 
-- (CGPoint)convertUnscaledPointToLayerRelative:(CGPoint)a3
+- (CGPoint)convertUnscaledPointToLayerRelative:(CGPoint)relative
 {
-  [(TSDRep *)self convertNaturalPointFromUnscaledCanvas:a3.x, a3.y];
+  [(TSDRep *)self convertNaturalPointFromUnscaledCanvas:relative.x, relative.y];
 
   [(TSDRep *)self convertNaturalPointToLayerRelative:?];
   result.y = v5;
@@ -1089,9 +1089,9 @@
   return result;
 }
 
-- (CGPoint)convertUnscaledPointFromLayerRelative:(CGPoint)a3
+- (CGPoint)convertUnscaledPointFromLayerRelative:(CGPoint)relative
 {
-  [(TSDRep *)self convertNaturalPointFromLayerRelative:a3.x, a3.y];
+  [(TSDRep *)self convertNaturalPointFromLayerRelative:relative.x, relative.y];
 
   [(TSDRep *)self convertNaturalPointToUnscaledCanvas:?];
   result.y = v5;
@@ -1114,22 +1114,22 @@
   return TSDTransformScale(v3);
 }
 
-- (void)scrollRectToVisible:(CGRect)a3 animated:(BOOL)a4
+- (void)scrollRectToVisible:(CGRect)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(TSDRep *)self interactiveCanvasController];
+  animatedCopy = animated;
+  height = visible.size.height;
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-  [(TSDInteractiveCanvasController *)v9 scrollRectToVisible:v4 animated:x, y, width, height];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController scrollRectToVisible:animatedCopy animated:x, y, width, height];
 }
 
-- (BOOL)containsPoint:(CGPoint)a3
+- (BOOL)containsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(TSDRep *)self naturalBounds];
   v9 = x;
   v10 = y;
@@ -1137,9 +1137,9 @@
   return CGRectContainsPoint(*&v5, *&v9);
 }
 
-- (BOOL)containsPoint:(CGPoint)a3 withSlop:(CGSize)a4
+- (BOOL)containsPoint:(CGPoint)point withSlop:(CGSize)slop
 {
-  v5 = TSDRectWithCenterAndSize(a3.x, a3.y, a4.width + a4.width);
+  v5 = TSDRectWithCenterAndSize(point.x, point.y, slop.width + slop.width);
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1152,11 +1152,11 @@
   return CGRectIntersectsRect(*&v12, *&v16);
 }
 
-- (id)hitRep:(CGPoint)a3 withGesture:(id)a4 passingTest:(id)a5
+- (id)hitRep:(CGPoint)rep withGesture:(id)gesture passingTest:(id)test
 {
-  v6 = [(TSDRep *)self hitRep:a4, a3.x, a3.y];
+  v6 = [(TSDRep *)self hitRep:gesture, rep.x, rep.y];
   v7 = v6;
-  if (a5 && v6 && !(*(a5 + 2))(a5, v6))
+  if (test && v6 && !(*(test + 2))(test, v6))
   {
     return 0;
   }
@@ -1164,9 +1164,9 @@
   return v7;
 }
 
-- (id)hitRep:(CGPoint)a3
+- (id)hitRep:(CGPoint)rep
 {
-  if ([(TSDRep *)self containsPoint:a3.x, a3.y])
+  if ([(TSDRep *)self containsPoint:rep.x, rep.y])
   {
     return self;
   }
@@ -1177,23 +1177,23 @@
   }
 }
 
-- (id)hitReps:(CGPoint)a3 withSlop:(CGSize)a4
+- (id)hitReps:(CGPoint)reps withSlop:(CGSize)slop
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __27__TSDRep_hitReps_withSlop___block_invoke;
   v5[3] = &__block_descriptor_48_e26__CGSize_dd_16__0__TSDRep_8l;
-  v6 = a4;
-  return [(TSDRep *)self hitReps:v5 withSlopBlock:a3.x, a3.y];
+  slopCopy = slop;
+  return [(TSDRep *)self hitReps:v5 withSlopBlock:reps.x, reps.y];
 }
 
-- (id)hitReps:(CGPoint)a3 withSlopBlock:(id)a4
+- (id)hitReps:(CGPoint)reps withSlopBlock:(id)block
 {
-  y = a3.y;
-  x = a3.x;
-  if (a4)
+  y = reps.y;
+  x = reps.x;
+  if (block)
   {
-    v7 = (*(a4 + 2))(a4, self);
+    v7 = (*(block + 2))(block, self);
     v9 = v8;
   }
 
@@ -1213,11 +1213,11 @@
   return [v10 arrayWithObject:self];
 }
 
-- (id)hitRepChrome:(CGPoint)a3 passingTest:(id)a4
+- (id)hitRepChrome:(CGPoint)chrome passingTest:(id)test
 {
-  v5 = [(TSDRep *)self hitRepChrome:a3.x, a3.y];
+  v5 = [(TSDRep *)self hitRepChrome:chrome.x, chrome.y];
   v6 = v5;
-  if (a4 && v5 && !(*(a4 + 2))(a4, v5))
+  if (test && v5 && !(*(test + 2))(test, v5))
   {
     return 0;
   }
@@ -1225,10 +1225,10 @@
   return v6;
 }
 
-- (id)hitRepChrome:(CGPoint)a3
+- (id)hitRepChrome:(CGPoint)chrome
 {
-  y = a3.y;
-  x = a3.x;
+  y = chrome.y;
+  x = chrome.x;
   if (![(TSDCanvas *)[(TSDRep *)self canvas] isCanvasInteractive])
   {
     return 0;
@@ -1237,23 +1237,23 @@
   [(TSDRep *)self convertNaturalPointToUnscaledCanvas:x, y];
   v7 = v6;
   v9 = v8;
-  v10 = [(TSDRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-  return [(TSDInteractiveCanvasController *)v10 hitRepChromeAtUnscaledPoint:v7, v9];
+  return [(TSDInteractiveCanvasController *)interactiveCanvasController hitRepChromeAtUnscaledPoint:v7, v9];
 }
 
-- (BOOL)intersectsUnscaledRect:(CGRect)a3
+- (BOOL)intersectsUnscaledRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(TSDLayoutGeometry *)[(TSDAbstractLayout *)[(TSDRep *)self layout] geometry] size];
   v8 = [TSDBezierPath bezierPathWithRect:TSDRectWithSize()];
-  v9 = [(TSDRep *)self layout];
-  if (v9)
+  layout = [(TSDRep *)self layout];
+  if (layout)
   {
-    [(TSDAbstractLayout *)v9 transformInRoot];
+    [(TSDAbstractLayout *)layout transformInRoot];
   }
 
   else
@@ -1272,9 +1272,9 @@
     return self;
   }
 
-  v3 = [(TSDRep *)self parentRep];
+  parentRep = [(TSDRep *)self parentRep];
 
-  return [(TSDRep *)v3 repForDragging];
+  return [(TSDRep *)parentRep repForDragging];
 }
 
 - (id)repForSelecting
@@ -1284,9 +1284,9 @@
     return self;
   }
 
-  v4 = [(TSDRep *)self parentRep];
+  parentRep = [(TSDRep *)self parentRep];
 
-  return [(TSDRep *)v4 repForSelecting];
+  return [(TSDRep *)parentRep repForSelecting];
 }
 
 - (id)repForRotating
@@ -1296,19 +1296,19 @@
     return self;
   }
 
-  v3 = [(TSDRep *)self parentRep];
+  parentRep = [(TSDRep *)self parentRep];
 
-  return [(TSDRep *)v3 repForRotating];
+  return [(TSDRep *)parentRep repForRotating];
 }
 
 - (void)updateFromLayout
 {
-  v3 = [(TSDAbstractLayout *)[(TSDRep *)self layout] geometryInRoot];
-  if (([v3 isEqual:self->mLastGeometryInRoot] & 1) == 0)
+  geometryInRoot = [(TSDAbstractLayout *)[(TSDRep *)self layout] geometryInRoot];
+  if (([geometryInRoot isEqual:self->mLastGeometryInRoot] & 1) == 0)
   {
-    -[TSDRep layoutInRootChangedFrom:to:translatedOnly:](self, "layoutInRootChangedFrom:to:translatedOnly:", self->mLastGeometryInRoot, v3, [v3 differsInMoreThanTranslationFrom:self->mLastGeometryInRoot] ^ 1);
+    -[TSDRep layoutInRootChangedFrom:to:translatedOnly:](self, "layoutInRootChangedFrom:to:translatedOnly:", self->mLastGeometryInRoot, geometryInRoot, [geometryInRoot differsInMoreThanTranslationFrom:self->mLastGeometryInRoot] ^ 1);
 
-    self->mLastGeometryInRoot = [v3 copy];
+    self->mLastGeometryInRoot = [geometryInRoot copy];
   }
 
   [(TSDLayout *)[(TSDRep *)self layout] i_takeDirtyRect];
@@ -1317,17 +1317,17 @@
   [(TSDRep *)self i_invalidateSelectionHighlightLayer];
 }
 
-- (void)layoutInRootChangedFrom:(id)a3 to:(id)a4 translatedOnly:(BOOL)a5
+- (void)layoutInRootChangedFrom:(id)from to:(id)to translatedOnly:(BOOL)only
 {
-  if (a5)
+  if (only)
   {
     mCanvas = self->mCanvas;
     v9 = 0uLL;
     v10 = 0uLL;
     v11 = 0uLL;
-    if (a3)
+    if (from)
     {
-      [a3 transform];
+      [from transform];
       v10 = v30;
       v11 = v31;
       v9 = v32;
@@ -1340,9 +1340,9 @@
     v15 = 0uLL;
     v16 = 0uLL;
     v17 = 0uLL;
-    if (a4)
+    if (to)
     {
-      [a4 transform];
+      [to transform];
       v15 = v30;
       v16 = v31;
       v17 = v32;
@@ -1364,7 +1364,7 @@
 
   else
   {
-    [(TSDRep *)self setNeedsDisplay:a3];
+    [(TSDRep *)self setNeedsDisplay:from];
 
     [(TSDRep *)self invalidateKnobPositions];
   }
@@ -1384,10 +1384,10 @@
     if ((result & 1) == 0)
     {
       memset(&v23, 0, sizeof(v23));
-      v8 = [(TSDRep *)self layout];
-      if (v8)
+      layout = [(TSDRep *)self layout];
+      if (layout)
       {
-        [(TSDLayout *)v8 originalPureTransformInRoot];
+        [(TSDLayout *)layout originalPureTransformInRoot];
       }
 
       else
@@ -1396,10 +1396,10 @@
       }
 
       memset(&v22, 0, sizeof(v22));
-      v9 = [(TSDRep *)self layout];
-      if (v9)
+      layout2 = [(TSDRep *)self layout];
+      if (layout2)
       {
-        [(TSDLayout *)v9 pureTransformInRoot];
+        [(TSDLayout *)layout2 pureTransformInRoot];
       }
 
       else
@@ -1442,10 +1442,10 @@
   result = [(TSDRep *)self parentRep];
   if (result)
   {
-    v8 = [(TSDRep *)self parentRep];
-    if (v8)
+    parentRep = [(TSDRep *)self parentRep];
+    if (parentRep)
     {
-      [(TSDRep *)v8 layerTransformInRootForZeroAnchor];
+      [(TSDRep *)parentRep layerTransformInRootForZeroAnchor];
     }
 
     else
@@ -1476,16 +1476,16 @@
   *&retstr->tx = *(v4 + 32);
   if (self)
   {
-    v6 = self;
+    selfCopy2 = self;
     do
     {
-      [(CGAffineTransform *)v6 layerFrameInScaledCanvasRelativeToParent];
+      [(CGAffineTransform *)selfCopy2 layerFrameInScaledCanvasRelativeToParent];
       v8 = v7;
       v10 = v9;
       v12 = v11;
       v14 = v13;
       memset(&v21, 0, sizeof(v21));
-      [(CGAffineTransform *)v6 layerTransform];
+      [(CGAffineTransform *)selfCopy2 layerTransform];
       t2 = v21;
       TSDTransformConvertForNewOrigin(&t2, &t1, v12 * -0.5, v14 * -0.5);
       v21 = t1;
@@ -1503,8 +1503,8 @@
       *&t2.c = *&v21.c;
       *&t2.tx = v16;
       CGAffineTransformConcat(retstr, &t1, &t2);
-      self = [(CGAffineTransform *)v6 parentRep];
-      v6 = self;
+      self = [(CGAffineTransform *)selfCopy2 parentRep];
+      selfCopy2 = self;
     }
 
     while (self);
@@ -1513,7 +1513,7 @@
   return self;
 }
 
-- (void)updateLayerGeometryFromLayout:(id)a3
+- (void)updateLayerGeometryFromLayout:(id)layout
 {
   [(TSDRep *)self layerFrameInScaledCanvasRelativeToParent];
   v6 = v5;
@@ -1531,26 +1531,26 @@
   v13[0] = v14;
   v13[1] = v15;
   v13[2] = v16;
-  [a3 setIfDifferentFrame:v13 orTransform:{v6, v8, v10, v12}];
+  [layout setIfDifferentFrame:v13 orTransform:{v6, v8, v10, v12}];
 }
 
-- (void)antiAliasDefeatLayerTransform:(CGAffineTransform *)a3 forFrame:(CGRect)a4
+- (void)antiAliasDefeatLayerTransform:(CGAffineTransform *)transform forFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = *&a3->c;
-  *&v36.a = *&a3->a;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v10 = *&transform->c;
+  *&v36.a = *&transform->a;
   *&v36.c = v10;
-  *&v36.tx = *&a3->tx;
-  if (TSDIsTransformAxisAlignedWithObjectSize(&v36.a, a4.size.width, a4.size.height))
+  *&v36.tx = *&transform->tx;
+  if (TSDIsTransformAxisAlignedWithObjectSize(&v36.a, frame.size.width, frame.size.height))
   {
     memset(&v36, 0, sizeof(v36));
-    v11 = *&a3->c;
-    *&v35.a = *&a3->a;
+    v11 = *&transform->c;
+    *&v35.a = *&transform->a;
     *&v35.c = v11;
-    *&v35.tx = *&a3->tx;
+    *&v35.tx = *&transform->tx;
     TSDTransformConvertForNewOrigin(&v35, &v36, width * -0.5, height * -0.5);
     v35 = v36;
     v37.origin.x = x;
@@ -1602,37 +1602,37 @@
     t2 = v34;
     TSDTransformConvertForNewOrigin(&t2, &v34, width * 0.5, v31 * 0.5);
     v35 = v34;
-    v27 = *&a3->c;
-    *&t2.a = *&a3->a;
+    v27 = *&transform->c;
+    *&t2.a = *&transform->a;
     *&t2.c = v27;
-    *&t2.tx = *&a3->tx;
+    *&t2.tx = *&transform->tx;
     t1 = v34;
     CGAffineTransformConcat(&v34, &t2, &t1);
     v28 = *&v34.c;
-    *&a3->a = *&v34.a;
-    *&a3->c = v28;
-    *&a3->tx = *&v34.tx;
+    *&transform->a = *&v34.a;
+    *&transform->c = v28;
+    *&transform->tx = *&v34.tx;
   }
 }
 
-- (void)antiAliasDefeatLayerFrame:(CGRect *)a3 forTransform:(CGAffineTransform *)a4
+- (void)antiAliasDefeatLayerFrame:(CGRect *)frame forTransform:(CGAffineTransform *)transform
 {
-  v7 = *&a4->c;
-  *&v29.a = *&a4->a;
+  v7 = *&transform->c;
+  *&v29.a = *&transform->a;
   *&v29.c = v7;
-  *&v29.tx = *&a4->tx;
-  if (TSDIsTransformAxisAlignedWithObjectSize(&v29.a, a3->size.width, a3->size.height))
+  *&v29.tx = *&transform->tx;
+  if (TSDIsTransformAxisAlignedWithObjectSize(&v29.a, frame->size.width, frame->size.height))
   {
     __asm { FMOV            V1.2D, #-0.5 }
 
-    v13 = vmulq_f64(a3->size, _Q1);
-    v14 = *&a4->c;
-    *&v28.a = *&a4->a;
+    v13 = vmulq_f64(frame->size, _Q1);
+    v14 = *&transform->c;
+    *&v28.a = *&transform->a;
     *&v28.c = v14;
-    *&v28.tx = *&a4->tx;
+    *&v28.tx = *&transform->tx;
     memset(&v29, 0, sizeof(v29));
     TSDTransformConvertForNewOrigin(&v28, &v29, v13.f64[0], v13.f64[1]);
-    v30 = *a3;
+    v30 = *frame;
     v28 = v29;
     v31 = CGRectApplyAffineTransform(v30, &v28);
     x = v31.origin.x;
@@ -1650,11 +1650,11 @@
     v32.origin.y = v22;
     v32.size.width = v24;
     v32.size.height = v26;
-    *a3 = CGRectApplyAffineTransform(v32, &v28);
+    *frame = CGRectApplyAffineTransform(v32, &v28);
   }
 }
 
-- (void)computeDirectLayerFrame:(CGRect *)a3 andTransform:(CGAffineTransform *)a4 basedOnTransform:(CGAffineTransform *)a5 andSize:(CGSize)a6
+- (void)computeDirectLayerFrame:(CGRect *)frame andTransform:(CGAffineTransform *)transform basedOnTransform:(CGAffineTransform *)onTransform andSize:(CGSize)size
 {
   objc_opt_class();
   [(TSDAbstractLayout *)[(TSDRep *)self layout] parent];
@@ -1673,16 +1673,16 @@
       [v11 transformInRoot];
     }
 
-    v12 = *&a5->c;
-    *&t1.a = *&a5->a;
+    v12 = *&onTransform->c;
+    *&t1.a = *&onTransform->a;
     *&t1.c = v12;
-    *&t1.tx = *&a5->tx;
+    *&t1.tx = *&onTransform->tx;
     v46 = v49;
     CGAffineTransformConcat(&v48, &t1, &v46);
     v13 = *&v48.c;
-    *&a5->a = *&v48.a;
-    *&a5->c = v13;
-    *&a5->tx = *&v48.tx;
+    *&onTransform->a = *&v48.a;
+    *&onTransform->c = v13;
+    *&onTransform->tx = *&v48.tx;
   }
 
   v14 = TSDRectWithSize();
@@ -1691,77 +1691,77 @@
   v20 = v19;
   [(TSDCanvas *)self->mCanvas viewScale];
   v22 = v21;
-  v23 = *&a5->c;
-  *&v49.a = *&a5->a;
+  v23 = *&onTransform->c;
+  *&v49.a = *&onTransform->a;
   *&v49.c = v23;
-  *&v49.tx = *&a5->tx;
+  *&v49.tx = *&onTransform->tx;
   v24 = TSDTransformScale(&v49.a);
   v25 = TSDMultiplyRectScalar(v14, v16, v18, v20, v22 * fabs(v24));
   v27 = v26;
   v29 = v28;
   v31 = v30;
-  v32 = *&a5->c;
-  *&v49.a = *&a5->a;
+  v32 = *&onTransform->c;
+  *&v49.a = *&onTransform->a;
   *&v49.c = v32;
-  *&v49.tx = *&a5->tx;
+  *&v49.tx = *&onTransform->tx;
   v33 = TSDTransformScale(&v49.a);
-  v34 = *&a5->c;
-  *&v49.a = *&a5->a;
+  v34 = *&onTransform->c;
+  *&v49.a = *&onTransform->a;
   *&v49.c = v34;
-  *&v49.tx = *&a5->tx;
+  *&v49.tx = *&onTransform->tx;
   v35 = 1.0 / v33;
   v36 = TSDTransformScale(&v49.a);
-  v37 = *&a5->c;
-  *&v48.a = *&a5->a;
+  v37 = *&onTransform->c;
+  *&v48.a = *&onTransform->a;
   *&v48.c = v37;
-  *&v48.tx = *&a5->tx;
+  *&v48.tx = *&onTransform->tx;
   CGAffineTransformScale(&v49, &v48, v35, 1.0 / v36);
   v38 = *&v49.c;
-  *&a5->a = *&v49.a;
-  *&a5->c = v38;
-  *&a5->tx = *&v49.tx;
+  *&onTransform->a = *&v49.a;
+  *&onTransform->c = v38;
+  *&onTransform->tx = *&v49.tx;
   [(TSDCanvas *)self->mCanvas viewScale];
-  v39 = *&a5->c;
-  *&a5->tx = vmulq_n_f64(*&a5->tx, v40);
-  *&v48.a = *&a5->a;
+  v39 = *&onTransform->c;
+  *&onTransform->tx = vmulq_n_f64(*&onTransform->tx, v40);
+  *&v48.a = *&onTransform->a;
   *&v48.c = v39;
-  *&v48.tx = *&a5->tx;
+  *&v48.tx = *&onTransform->tx;
   TSDTransformConvertForNewOrigin(&v48, &v49, v29 * 0.5, v31 * 0.5);
   v41 = *&v49.c;
-  *&a5->a = *&v49.a;
-  *&a5->c = v41;
-  *&a5->tx = *&v49.tx;
+  *&onTransform->a = *&v49.a;
+  *&onTransform->c = v41;
+  *&onTransform->tx = *&v49.tx;
   if ([(TSDRep *)self parentRep])
   {
     [[(TSDRep *)self parentRep] layerFrameInScaledCanvas];
     v43.f64[1] = v42;
-    *&a5->tx = vsubq_f64(*&a5->tx, v43);
+    *&onTransform->tx = vsubq_f64(*&onTransform->tx, v43);
   }
 
-  if (a3)
+  if (frame)
   {
-    a3->origin.x = v25;
-    a3->origin.y = v27;
-    a3->size.width = v29;
-    a3->size.height = v31;
+    frame->origin.x = v25;
+    frame->origin.y = v27;
+    frame->size.width = v29;
+    frame->size.height = v31;
   }
 
-  if (a4)
+  if (transform)
   {
-    v44 = *&a5->a;
-    v45 = *&a5->tx;
-    *&a4->c = *&a5->c;
-    *&a4->tx = v45;
-    *&a4->a = v44;
+    v44 = *&onTransform->a;
+    v45 = *&onTransform->tx;
+    *&transform->c = *&onTransform->c;
+    *&transform->tx = v45;
+    *&transform->a = v44;
   }
 }
 
-- (void)computeDirectLayerFrame:(CGRect *)a3 andTransform:(CGAffineTransform *)a4
+- (void)computeDirectLayerFrame:(CGRect *)frame andTransform:(CGAffineTransform *)transform
 {
-  v7 = [(TSDAbstractLayout *)[(TSDRep *)self layout] geometry];
-  if (v7)
+  geometry = [(TSDAbstractLayout *)[(TSDRep *)self layout] geometry];
+  if (geometry)
   {
-    [(TSDLayoutGeometry *)v7 transform];
+    [(TSDLayoutGeometry *)geometry transform];
   }
 
   else
@@ -1772,14 +1772,14 @@
   }
 
   [(TSDLayoutGeometry *)[(TSDAbstractLayout *)[(TSDRep *)self layout:v8] geometry] size];
-  [(TSDRep *)self computeDirectLayerFrame:a3 andTransform:a4 basedOnTransform:&v8 andSize:?];
+  [(TSDRep *)self computeDirectLayerFrame:frame andTransform:transform basedOnTransform:&v8 andSize:?];
 }
 
-- (void)computeDirectLayerFrame:(CGRect *)a3 andTransform:(CGAffineTransform *)a4 basedOnLayoutGeometry:(id)a5
+- (void)computeDirectLayerFrame:(CGRect *)frame andTransform:(CGAffineTransform *)transform basedOnLayoutGeometry:(id)geometry
 {
-  if (a5)
+  if (geometry)
   {
-    [a5 transform];
+    [geometry transform];
   }
 
   else
@@ -1789,18 +1789,18 @@
     v9 = 0u;
   }
 
-  [a5 size];
-  [(TSDRep *)self computeDirectLayerFrame:a3 andTransform:a4 basedOnTransform:&v9 andSize:?];
+  [geometry size];
+  [(TSDRep *)self computeDirectLayerFrame:frame andTransform:transform basedOnTransform:&v9 andSize:?];
 }
 
-- (void)processChanges:(id)a3
+- (void)processChanges:(id)changes
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [changes countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1812,7 +1812,7 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(changes);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
@@ -1821,13 +1821,13 @@
         v10 = TSUDynamicCast();
         if (v10)
         {
-          v11 = [v10 changedProperties];
+          changedProperties = [v10 changedProperties];
           v12[0] = MEMORY[0x277D85DD0];
           v12[1] = 3221225472;
           v12[2] = __25__TSDRep_processChanges___block_invoke;
           v12[3] = &unk_279D47F10;
           v12[4] = self;
-          [v11 enumeratePropertiesUsingBlock:v12];
+          [changedProperties enumeratePropertiesUsingBlock:v12];
         }
 
         else if ([v9 kind] == 5 || objc_msgSend(v9, "kind") == 6)
@@ -1840,7 +1840,7 @@
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [changes countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -1851,18 +1851,18 @@
 {
   if ([(TSDCanvas *)[(TSDRep *)self canvas] isCanvasInteractive]&& ![(TSDRep *)self directlyManagesLayerContent])
   {
-    v3 = [(TSDRep *)self interactiveCanvasController];
+    interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-    [(TSDInteractiveCanvasController *)v3 i_repNeedsDisplay:self];
+    [(TSDInteractiveCanvasController *)interactiveCanvasController i_repNeedsDisplay:self];
   }
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ([(TSDCanvas *)[(TSDRep *)self canvas] isCanvasInteractive])
   {
     if (![(TSDRep *)self directlyManagesLayerContent])
@@ -1879,9 +1879,9 @@
         v11.size.height = height;
         if (!CGRectIsEmpty(v11))
         {
-          v8 = [(TSDRep *)self interactiveCanvasController];
+          interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-          [(TSDInteractiveCanvasController *)v8 i_repNeedsDisplay:self inRect:x, y, width, height];
+          [(TSDInteractiveCanvasController *)interactiveCanvasController i_repNeedsDisplay:self inRect:x, y, width, height];
         }
       }
     }
@@ -1904,18 +1904,18 @@
   [(TSDRep *)self i_invalidateSelectionHighlightLayer];
 }
 
-- (void)setupForDrawingInLayer:(id)a3 context:(CGContext *)a4
+- (void)setupForDrawingInLayer:(id)layer context:(CGContext *)context
 {
   [(TSDRep *)self layerFrameInScaledCanvas];
-  CGContextTranslateCTM(a4, -v7, -v8);
+  CGContextTranslateCTM(context, -v7, -v8);
   [(TSDCanvas *)self->mCanvas viewScale];
-  CGContextScaleCTM(a4, v9, v9);
+  CGContextScaleCTM(context, v9, v9);
   if (![(TSDRep *)self isBeingRotated])
   {
-    v11 = [(TSDRep *)self layout];
-    if (v11)
+    layout = [(TSDRep *)self layout];
+    if (layout)
     {
-      [(TSDAbstractLayout *)v11 transformInRoot];
+      [(TSDAbstractLayout *)layout transformInRoot];
       goto LABEL_7;
     }
 
@@ -1924,36 +1924,36 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v10 = [(TSDRep *)self layout];
-  if (!v10)
+  layout2 = [(TSDRep *)self layout];
+  if (!layout2)
   {
     goto LABEL_6;
   }
 
-  [(TSDLayout *)v10 originalTransformInRoot];
+  [(TSDLayout *)layout2 originalTransformInRoot];
 LABEL_7:
-  CGContextConcatCTM(a4, &v15);
-  if (a3 && [a3 contentsAreFlipped])
+  CGContextConcatCTM(context, &v15);
+  if (layer && [layer contentsAreFlipped])
   {
     v12 = [objc_msgSend(MEMORY[0x277CCACC8] "currentThread")];
     v13 = [MEMORY[0x277CCABB0] numberWithBool:1];
     [v12 setObject:v13 forKey:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithPointer:", self)}];
   }
 
-  [(TSDRep *)self i_configureFontSmoothingForContext:a4 layer:a3, *&v15.a, *&v15.c, *&v15.tx];
+  [(TSDRep *)self i_configureFontSmoothingForContext:context layer:layer, *&v15.a, *&v15.c, *&v15.tx];
   if (![(TSDCanvas *)[(TSDRep *)self canvas] allowsFontSubpixelQuantization])
   {
-    CGContextSetAllowsFontSubpixelQuantization(a4, 0);
-    CGContextSetShouldSubpixelQuantizeFonts(a4, 0);
+    CGContextSetAllowsFontSubpixelQuantization(context, 0);
+    CGContextSetShouldSubpixelQuantizeFonts(context, 0);
   }
 
   [(TSDCanvas *)[(TSDRep *)self canvas] contentsScale];
-  TSDSetCGContextInfo(a4, 0, 0, a3 != 0, 0, v14);
+  TSDSetCGContextInfo(context, 0, 0, layer != 0, 0, v14);
 }
 
-- (void)didDrawInLayer:(id)a3 context:(CGContext *)a4
+- (void)didDrawInLayer:(id)layer context:(CGContext *)context
 {
-  TSDClearCGContextInfo(a4);
+  TSDClearCGContextInfo(context);
   v5 = [objc_msgSend(MEMORY[0x277CCACC8] "currentThread")];
   v6 = [MEMORY[0x277CCAE60] valueWithPointer:self];
 
@@ -1973,12 +1973,12 @@ LABEL_7:
   return v4;
 }
 
-- (void)recursivelyDrawInContext:(CGContext *)a3
+- (void)recursivelyDrawInContext:(CGContext *)context
 {
-  v5 = [(TSDAbstractLayout *)[(TSDRep *)self layout] geometry];
-  if (v5)
+  geometry = [(TSDAbstractLayout *)[(TSDRep *)self layout] geometry];
+  if (geometry)
   {
-    [(TSDLayoutGeometry *)v5 transform];
+    [(TSDLayoutGeometry *)geometry transform];
   }
 
   else
@@ -1986,48 +1986,48 @@ LABEL_7:
     memset(&v16, 0, sizeof(v16));
   }
 
-  CGContextConcatCTM(a3, &v16);
+  CGContextConcatCTM(context, &v16);
   [(TSDRep *)self clipRect];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(TSDRep *)self masksToBounds];
-  v15 = v14;
-  if (v14)
+  masksToBounds = [(TSDRep *)self masksToBounds];
+  v15 = masksToBounds;
+  if (masksToBounds)
   {
     v17.origin.x = v7;
     v17.origin.y = v9;
     v17.size.width = v11;
     v17.size.height = v13;
-    CGContextClipToRect(a3, v17);
+    CGContextClipToRect(context, v17);
   }
 
-  ClipBoundingBox = CGContextGetClipBoundingBox(a3);
+  ClipBoundingBox = CGContextGetClipBoundingBox(context);
   v18.origin.x = v7;
   v18.origin.y = v9;
   v18.size.width = v11;
   v18.size.height = v13;
   if (CGRectIntersectsRect(v18, ClipBoundingBox))
   {
-    CGContextSaveGState(a3);
+    CGContextSaveGState(context);
     if (!v15)
     {
       v19.origin.x = v7;
       v19.origin.y = v9;
       v19.size.width = v11;
       v19.size.height = v13;
-      CGContextClipToRect(a3, v19);
+      CGContextClipToRect(context, v19);
     }
 
-    [(TSDRep *)self drawInContext:a3, *&v16.a, *&v16.c, *&v16.tx];
-    CGContextRestoreGState(a3);
+    [(TSDRep *)self drawInContext:context, *&v16.a, *&v16.c, *&v16.tx];
+    CGContextRestoreGState(context);
   }
 
-  [(TSDRep *)self recursivelyDrawChildrenInContext:a3, *&v16.a, *&v16.c, *&v16.tx];
+  [(TSDRep *)self recursivelyDrawChildrenInContext:context, *&v16.a, *&v16.c, *&v16.tx];
 }
 
-- (void)recursivelyDrawChildrenInContext:(CGContext *)a3
+- (void)recursivelyDrawChildrenInContext:(CGContext *)context
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = TSUProtocolCast();
@@ -2037,8 +2037,8 @@ LABEL_7:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [v4 childReps];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    childReps = [v4 childReps];
+    v6 = [childReps countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -2050,18 +2050,18 @@ LABEL_7:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(childReps);
           }
 
           v10 = *(*(&v11 + 1) + 8 * v9);
-          CGContextSaveGState(a3);
-          [v10 recursivelyDrawInContext:a3];
-          CGContextRestoreGState(a3);
+          CGContextSaveGState(context);
+          [v10 recursivelyDrawInContext:context];
+          CGContextRestoreGState(context);
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [childReps countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -2076,21 +2076,21 @@ LABEL_7:
     return 0;
   }
 
-  v3 = [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] canvasEditor];
-  v4 = [(TSDRep *)self info];
+  canvasEditor = [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] canvasEditor];
+  info = [(TSDRep *)self info];
 
-  return [(TSDCanvasEditor *)v3 isSelectedInfo:v4];
+  return [(TSDCanvasEditor *)canvasEditor isSelectedInfo:info];
 }
 
 - (BOOL)isSelected
 {
-  v3 = [(TSDRep *)self isSelectedIgnoringLocking];
-  if (v3)
+  isSelectedIgnoringLocking = [(TSDRep *)self isSelectedIgnoringLocking];
+  if (isSelectedIgnoringLocking)
   {
-    LOBYTE(v3) = ![(TSDRep *)self isLocked];
+    LOBYTE(isSelectedIgnoringLocking) = ![(TSDRep *)self isLocked];
   }
 
-  return v3;
+  return isSelectedIgnoringLocking;
 }
 
 - (void)becameSelected
@@ -2120,14 +2120,14 @@ LABEL_7:
   {
     if ([(TSDRep *)self shouldCreateKnobs])
     {
-      v4 = [MEMORY[0x277CBEB18] array];
-      [(TSDRep *)self addKnobsToArray:v4];
-      if ([v4 count])
+      array = [MEMORY[0x277CBEB18] array];
+      [(TSDRep *)self addKnobsToArray:array];
+      if ([array count])
       {
         self->mKnobPositionsInvalid = 1;
       }
 
-      mKnobs = v4;
+      mKnobs = array;
       self->mKnobs = mKnobs;
     }
 
@@ -2147,13 +2147,13 @@ LABEL_7:
   mKnobTracker = self->mKnobTracker;
   if (mKnobTracker && [(TSDKnobTracker *)mKnobTracker didBegin]&& !self->mShowKnobsWhenManipulated)
   {
-    v8 = [(TSDKnobTracker *)self->mKnobTracker enabledKnobMask];
+    enabledKnobMask = [(TSDKnobTracker *)self->mKnobTracker enabledKnobMask];
     v7 = v13;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __15__TSDRep_knobs__block_invoke;
     v13[3] = &unk_279D48590;
-    v13[5] = v8;
+    v13[5] = enabledKnobMask;
   }
 
   else
@@ -2212,9 +2212,9 @@ uint64_t __15__TSDRep_knobs__block_invoke(uint64_t a1, void *a2)
   {
 
     self->mKnobs = 0;
-    v4 = [(TSDRep *)self canvas];
+    canvas = [(TSDRep *)self canvas];
 
-    [(TSDCanvas *)v4 invalidateLayers];
+    [(TSDCanvas *)canvas invalidateLayers];
   }
 }
 
@@ -2253,10 +2253,10 @@ uint64_t __15__TSDRep_knobs__block_invoke(uint64_t a1, void *a2)
 
   if ([-[TSDRep info](self "info")])
   {
-    v13 = [(TSDAbstractLayout *)[(TSDRep *)self layout] geometryInRoot];
-    if (v13)
+    geometryInRoot = [(TSDAbstractLayout *)[(TSDRep *)self layout] geometryInRoot];
+    if (geometryInRoot)
     {
-      [v13 transform];
+      [geometryInRoot transform];
     }
 
     else
@@ -2274,10 +2274,10 @@ uint64_t __15__TSDRep_knobs__block_invoke(uint64_t a1, void *a2)
       if ((TSDMaskForKnob(i) & v12) != 0)
       {
         v16 = TSDKnobTagByRotatingKnobByAngle(i);
-        v17 = [(TSDAbstractLayout *)[(TSDRep *)self layout] geometry];
-        if (v17)
+        geometry = [(TSDAbstractLayout *)[(TSDRep *)self layout] geometry];
+        if (geometry)
         {
-          [(TSDLayoutGeometry *)v17 transform];
+          [(TSDLayoutGeometry *)geometry transform];
         }
 
         else
@@ -2305,69 +2305,69 @@ uint64_t __15__TSDRep_knobs__block_invoke(uint64_t a1, void *a2)
   return v12;
 }
 
-- (void)addKnobsToArray:(id)a3
+- (void)addKnobsToArray:(id)array
 {
   if ([(TSDRep *)self shouldCreateSelectionKnobs])
   {
-    [(TSDRep *)self addSelectionKnobsToArray:a3];
+    [(TSDRep *)self addSelectionKnobsToArray:array];
   }
 
   else if ([(TSDRep *)self shouldCreateLockedKnobs])
   {
-    [(TSDRep *)self addLockedKnobsToArray:a3];
+    [(TSDRep *)self addLockedKnobsToArray:array];
   }
 
   if ([(TSDRep *)self shouldCreateCommentKnob])
   {
-    [(TSDRep *)self addCommentKnobToArray:a3];
+    [(TSDRep *)self addCommentKnobToArray:array];
   }
 
   if ([(TSDRep *)self shouldDisplayHyperlinkUI])
   {
-    [(TSDRep *)self addHyperlinkKnobToArray:a3];
+    [(TSDRep *)self addHyperlinkKnobToArray:array];
   }
 
-  [(TSDRep *)self addActionGhostKnobToArrayIfNecessary:a3];
+  [(TSDRep *)self addActionGhostKnobToArrayIfNecessary:array];
 }
 
-- (id)newSelectionKnobForType:(int)a3 tag:(unint64_t)a4
+- (id)newSelectionKnobForType:(int)type tag:(unint64_t)tag
 {
-  v5 = *&a3;
+  v5 = *&type;
   v7 = [TSDKnob alloc];
   v8 = *MEMORY[0x277CBF348];
   v9 = *(MEMORY[0x277CBF348] + 8);
 
-  return [(TSDKnob *)v7 initWithType:v5 position:a4 radius:self tag:v8 onRep:v9, 15.0];
+  return [(TSDKnob *)v7 initWithType:v5 position:tag radius:self tag:v8 onRep:v9, 15.0];
 }
 
-- (void)addSelectionKnobsToArray:(id)a3
+- (void)addSelectionKnobsToArray:(id)array
 {
-  v5 = [(TSDRep *)self enabledKnobMask];
-  if (v5)
+  enabledKnobMask = [(TSDRep *)self enabledKnobMask];
+  if (enabledKnobMask)
   {
-    v6 = v5;
+    v6 = enabledKnobMask;
     v7 = [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] defaultKnobTypeForRep:self];
     for (i = 1; i != 10; ++i)
     {
       if ((TSDMaskForKnob(i) & v6) != 0)
       {
         v9 = [(TSDRep *)self newSelectionKnobForType:v7 tag:i];
-        [a3 addObject:v9];
+        [array addObject:v9];
       }
     }
   }
 }
 
-- (void)addLockedKnobsToArray:(id)a3
+- (void)addLockedKnobsToArray:(id)array
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
-  [(TSDRep *)self addSelectionKnobsToArray:v5];
+  array = [MEMORY[0x277CBEB18] array];
+  [(TSDRep *)self addSelectionKnobsToArray:array];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [array countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2379,37 +2379,37 @@ uint64_t __15__TSDRep_knobs__block_invoke(uint64_t a1, void *a2)
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(array);
         }
 
         [*(*(&v10 + 1) + 8 * v9++) setType:4];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [array countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 
-  [a3 addObjectsFromArray:v5];
+  [array addObjectsFromArray:array];
 }
 
-- (void)addActionGhostKnobToArrayIfNecessary:(id)a3
+- (void)addActionGhostKnobToArrayIfNecessary:(id)necessary
 {
   v4 = [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] actionGhostKnobForRep:self];
   if (v4)
   {
 
-    [a3 addObject:v4];
+    [necessary addObject:v4];
   }
 }
 
 - (CGRect)boundsForStandardKnobs
 {
-  v2 = [(TSDRep *)self layout];
+  layout = [(TSDRep *)self layout];
 
-  [(TSDLayout *)v2 boundsForStandardKnobs];
+  [(TSDLayout *)layout boundsForStandardKnobs];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -2437,7 +2437,7 @@ uint64_t __15__TSDRep_knobs__block_invoke(uint64_t a1, void *a2)
   return result;
 }
 
-- (void)updatePositionsOfKnobs:(id)a3
+- (void)updatePositionsOfKnobs:(id)knobs
 {
   v44 = *MEMORY[0x277D85DE8];
   [(TSDRep *)self trackingBoundsForStandardKnobs];
@@ -2449,7 +2449,7 @@ uint64_t __15__TSDRep_knobs__block_invoke(uint64_t a1, void *a2)
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v13 = [a3 countByEnumeratingWithState:&v39 objects:v43 count:16];
+  v13 = [knobs countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v13)
   {
     v14 = v13;
@@ -2460,7 +2460,7 @@ uint64_t __15__TSDRep_knobs__block_invoke(uint64_t a1, void *a2)
       {
         if (*v40 != v15)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(knobs);
         }
 
         v17 = *(*(&v39 + 1) + 8 * i);
@@ -2527,7 +2527,7 @@ LABEL_8:
         }
       }
 
-      v14 = [a3 countByEnumeratingWithState:&v39 objects:v43 count:16];
+      v14 = [knobs countByEnumeratingWithState:&v39 objects:v43 count:16];
     }
 
     while (v14);
@@ -2573,12 +2573,12 @@ LABEL_8:
   return result;
 }
 
-- (CGPoint)p_positionOfActionGhostKnobForBounds:(CGRect)a3
+- (CGPoint)p_positionOfActionGhostKnobForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [objc_msgSend(MEMORY[0x277D6C2F8] imageNamed:@"sf-mac_canvas_btn_actionAdd-N" inBundle:{TSDBundle()), "size"}];
   v9 = v8;
   [(TSDCanvas *)[(TSDRep *)self canvas] viewScale];
@@ -2599,34 +2599,34 @@ LABEL_8:
   return result;
 }
 
-- (CGPoint)positionOfStandardKnob:(id)a3 forBounds:(CGRect)a4
+- (CGPoint)positionOfStandardKnob:(id)knob forBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if (![a3 tag] || objc_msgSend(a3, "tag") >= 0xA)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (![knob tag] || objc_msgSend(knob, "tag") >= 0xA)
   {
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDRep positionOfStandardKnob:forBounds:]"];
-    [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDRep.m"), 1626, @"-positionOfStandardKnob:forBounds: works for standard knobs only"}];
+    [currentHandler handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDRep.m"), 1626, @"-positionOfStandardKnob:forBounds: works for standard knobs only"}];
   }
 
-  [a3 offset];
+  [knob offset];
   v13 = v12;
   v15 = v14;
-  if (![a3 offsetValid])
+  if (![knob offsetValid])
   {
     [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] viewScale];
     if (width * v16 <= 16.0)
     {
-      if ([a3 tag] == 1 || objc_msgSend(a3, "tag") == 4 || objc_msgSend(a3, "tag") == 7)
+      if ([knob tag] == 1 || objc_msgSend(knob, "tag") == 4 || objc_msgSend(knob, "tag") == 7)
       {
         [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] viewScale];
         v13 = v13 - (8.0 / v17 + width * -0.5);
       }
 
-      else if ([a3 tag] == 3 || objc_msgSend(a3, "tag") == 6 || objc_msgSend(a3, "tag") == 9)
+      else if ([knob tag] == 3 || objc_msgSend(knob, "tag") == 6 || objc_msgSend(knob, "tag") == 9)
       {
         [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] viewScale];
         v13 = v13 + 8.0 / v24 + width * -0.5;
@@ -2636,24 +2636,24 @@ LABEL_8:
     [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] viewScale];
     if (height * v18 <= 16.0)
     {
-      if ([a3 tag] == 1 || objc_msgSend(a3, "tag") == 2 || objc_msgSend(a3, "tag") == 3)
+      if ([knob tag] == 1 || objc_msgSend(knob, "tag") == 2 || objc_msgSend(knob, "tag") == 3)
       {
         [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] viewScale];
         v15 = v15 - (8.0 / v19 + height * -0.5);
       }
 
-      else if ([a3 tag] == 7 || objc_msgSend(a3, "tag") == 8 || objc_msgSend(a3, "tag") == 9)
+      else if ([knob tag] == 7 || objc_msgSend(knob, "tag") == 8 || objc_msgSend(knob, "tag") == 9)
       {
         [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] viewScale];
         v15 = v15 + 8.0 / v25 + height * -0.5;
       }
     }
 
-    [a3 setOffset:{v13, v15}];
-    [a3 setOffsetValid:1];
+    [knob setOffset:{v13, v15}];
+    [knob setOffsetValid:1];
   }
 
-  v20 = TSDPositionOfKnobOnRectangle([a3 tag], x, y, width, height);
+  v20 = TSDPositionOfKnobOnRectangle([knob tag], x, y, width, height);
 
   v22 = TSDAddPoints(v20, v21, v13);
   result.y = v23;
@@ -2672,27 +2672,27 @@ LABEL_8:
 
 - (void)p_toggleHyperlinkUIVisibility
 {
-  v3 = [(TSDRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-  [(TSDInteractiveCanvasController *)v3 toggleHyperlinkUIForRep:self];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController toggleHyperlinkUIForRep:self];
 }
 
 - (void)p_actionGhostKnobHit
 {
-  v3 = [(TSDRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-  [(TSDInteractiveCanvasController *)v3 actionGhostKnobHitForRep:self];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController actionGhostKnobHitForRep:self];
 }
 
-- (id)knobForTag:(unint64_t)a3
+- (id)knobForTag:(unint64_t)tag
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(TSDRep *)self knobs];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  knobs = [(TSDRep *)self knobs];
+  v5 = [(NSArray *)knobs countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (!v5)
   {
     return 0;
@@ -2706,18 +2706,18 @@ LABEL_3:
   {
     if (*v12 != v7)
     {
-      objc_enumerationMutation(v4);
+      objc_enumerationMutation(knobs);
     }
 
     v9 = *(*(&v11 + 1) + 8 * v8);
-    if ([v9 tag] == a3)
+    if ([v9 tag] == tag)
     {
       return v9;
     }
 
     if (v6 == ++v8)
     {
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [(NSArray *)knobs countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         goto LABEL_3;
@@ -2730,10 +2730,10 @@ LABEL_3:
 
 - (double)additionalRotationForKnobOrientation
 {
-  v2 = [(TSDRep *)self layout];
-  if (v2)
+  layout = [(TSDRep *)self layout];
+  if (layout)
   {
-    [(TSDAbstractLayout *)v2 transformInRoot];
+    [(TSDAbstractLayout *)layout transformInRoot];
   }
 
   else
@@ -2746,44 +2746,44 @@ LABEL_3:
 
 - (BOOL)shouldShowSelectionHighlight
 {
-  v3 = [(TSDRep *)self isSelectedIgnoringLocking];
-  if (v3)
+  isSelectedIgnoringLocking = [(TSDRep *)self isSelectedIgnoringLocking];
+  if (isSelectedIgnoringLocking)
   {
     if (![(TSDRep *)self isInDynamicOperation]|| self->mShowKnobsWhenManipulated && self->mKnobsAreShowing)
     {
-      LOBYTE(v3) = ![(TSDKnobTracker *)self->mKnobTracker shouldHideSelectionHighlight];
+      LOBYTE(isSelectedIgnoringLocking) = ![(TSDKnobTracker *)self->mKnobTracker shouldHideSelectionHighlight];
     }
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(isSelectedIgnoringLocking) = 0;
     }
   }
 
-  return v3;
+  return isSelectedIgnoringLocking;
 }
 
 - (BOOL)shouldCreateSelectionKnobs
 {
-  v3 = [(TSDRep *)self isSelected];
-  if (v3)
+  isSelected = [(TSDRep *)self isSelected];
+  if (isSelected)
   {
-    LOBYTE(v3) = ![(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] usesAlternateDrawableSelectionHighlight];
+    LOBYTE(isSelected) = ![(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] usesAlternateDrawableSelectionHighlight];
   }
 
-  return v3;
+  return isSelected;
 }
 
 - (BOOL)shouldCreateLockedKnobs
 {
-  v3 = [(TSDRep *)self isSelectedIgnoringLocking];
-  if (v3)
+  isSelectedIgnoringLocking = [(TSDRep *)self isSelectedIgnoringLocking];
+  if (isSelectedIgnoringLocking)
   {
 
-    LOBYTE(v3) = [(TSDRep *)self isLocked];
+    LOBYTE(isSelectedIgnoringLocking) = [(TSDRep *)self isLocked];
   }
 
-  return v3;
+  return isSelectedIgnoringLocking;
 }
 
 - (BOOL)shouldCreateCommentKnob
@@ -2793,15 +2793,15 @@ LABEL_3:
   v3 = TSUDynamicCast();
   if ([(TSDInteractiveCanvasController *)[(TSDCanvas *)[(TSDRep *)self canvas] canvasController] shouldDisplayCommentUIForInfo:v3])
   {
-    v4 = [(TSDRep *)self shouldShowCommentHighlight];
+    shouldShowCommentHighlight = [(TSDRep *)self shouldShowCommentHighlight];
   }
 
   else
   {
-    v4 = 0;
+    shouldShowCommentHighlight = 0;
   }
 
-  return [v3 comment] != 0 && v4;
+  return [v3 comment] != 0 && shouldShowCommentHighlight;
 }
 
 - (BOOL)shouldDisplayHyperlinkUI
@@ -2856,9 +2856,9 @@ LABEL_3:
         [objc_msgSend(v8 "layer")];
         if (v9 != 1.0 && ![(TSDRep *)self directlyManagesVisibilityOfKnob:v8])
         {
-          v10 = [v8 layer];
+          layer = [v8 layer];
           LODWORD(v11) = 1.0;
-          [v10 setOpacity:v11];
+          [layer setOpacity:v11];
         }
       }
 
@@ -2904,9 +2904,9 @@ LABEL_3:
           v12 = MEMORY[0x277CCABB0];
           [objc_msgSend(v10 "layer")];
           [v3 setFromValue:{objc_msgSend(v12, "numberWithFloat:")}];
-          v13 = [v10 layer];
+          layer = [v10 layer];
           LODWORD(v14) = 1.0;
-          [v13 setOpacity:v14];
+          [layer setOpacity:v14];
           [objc_msgSend(v10 "layer")];
         }
       }
@@ -2965,9 +2965,9 @@ LABEL_3:
 
 - (double)selectionHighlightWidth
 {
-  v2 = [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] usesAlternateDrawableSelectionHighlight];
+  usesAlternateDrawableSelectionHighlight = [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] usesAlternateDrawableSelectionHighlight];
   result = 1.0;
-  if (v2)
+  if (usesAlternateDrawableSelectionHighlight)
   {
     return 5.0;
   }
@@ -2975,9 +2975,9 @@ LABEL_3:
   return result;
 }
 
-- (void)setSelectionHighlightColor:(CGColor *)a3
+- (void)setSelectionHighlightColor:(CGColor *)color
 {
-  Copy = CGColorCreateCopy(a3);
+  Copy = CGColorCreateCopy(color);
   CGColorRelease(self->mDefaultSelectionHighlightColor);
   self->mDefaultSelectionHighlightColor = Copy;
 }
@@ -3087,16 +3087,16 @@ CGColorRef __33__TSDRep_selectionHighlightColor__block_invoke()
   return mSelectionHighlightLayer;
 }
 
-- (CGPoint)convertKnobPositionToUnscaledCanvas:(CGPoint)a3
+- (CGPoint)convertKnobPositionToUnscaledCanvas:(CGPoint)canvas
 {
   if (self->mKnobTracker)
   {
-    [(TSDKnobTracker *)self->mKnobTracker convertKnobPositionToUnscaledCanvas:a3.x, a3.y];
+    [(TSDKnobTracker *)self->mKnobTracker convertKnobPositionToUnscaledCanvas:canvas.x, canvas.y];
   }
 
   else
   {
-    [(TSDRep *)self convertNaturalPointToUnscaledCanvas:a3.x, a3.y];
+    [(TSDRep *)self convertNaturalPointToUnscaledCanvas:canvas.x, canvas.y];
   }
 
   result.y = v4;
@@ -3104,19 +3104,19 @@ CGColorRef __33__TSDRep_selectionHighlightColor__block_invoke()
   return result;
 }
 
-- (id)p_addLayersForKnobsToArray:(id)a3 withDelegate:(id)a4 isOverlay:(BOOL)a5
+- (id)p_addLayersForKnobsToArray:(id)array withDelegate:(id)delegate isOverlay:(BOOL)overlay
 {
-  v9 = [(TSDRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v10 = __60__TSDRep_p_addLayersForKnobsToArray_withDelegate_isOverlay___block_invoke;
   v14 = __60__TSDRep_p_addLayersForKnobsToArray_withDelegate_isOverlay___block_invoke;
   v15 = &unk_279D485E0;
-  v16 = self;
-  v17 = a5;
-  if (!a3)
+  selfCopy = self;
+  overlayCopy = overlay;
+  if (!array)
   {
-    a3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v10 = v14;
   }
 
@@ -3124,12 +3124,12 @@ CGColorRef __33__TSDRep_selectionHighlightColor__block_invoke()
   v12[1] = 3221225472;
   v12[2] = __60__TSDRep_p_addLayersForKnobsToArray_withDelegate_isOverlay___block_invoke_2;
   v12[3] = &unk_279D48608;
-  v12[4] = a4;
-  v12[5] = v9;
+  v12[4] = delegate;
+  v12[5] = interactiveCanvasController;
   v12[6] = self;
-  v12[7] = a3;
+  v12[7] = array;
   v10(v13, v12);
-  return a3;
+  return array;
 }
 
 uint64_t __60__TSDRep_p_addLayersForKnobsToArray_withDelegate_isOverlay___block_invoke(uint64_t a1, uint64_t a2)
@@ -3234,23 +3234,23 @@ uint64_t __60__TSDRep_p_addLayersForKnobsToArray_withDelegate_isOverlay___block_
 
 - (id)overlayLayers
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(TSDRep *)self interactiveCanvasController];
+  array = [MEMORY[0x277CBEB18] array];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
   if ([(TSDRep *)self shouldShowSelectionHighlight])
   {
-    v5 = [(TSDRep *)self selectionHighlightLayer];
-    if (v5)
+    selectionHighlightLayer = [(TSDRep *)self selectionHighlightLayer];
+    if (selectionHighlightLayer)
     {
-      [v3 addObject:v5];
+      [array addObject:selectionHighlightLayer];
     }
   }
 
-  if ([(TSDInteractiveCanvasController *)v4 shouldPopKnobsOutsideEnclosingScrollView])
+  if ([(TSDInteractiveCanvasController *)interactiveCanvasController shouldPopKnobsOutsideEnclosingScrollView])
   {
-    return v3;
+    return array;
   }
 
-  return [(TSDRep *)self p_addLayersForKnobsToArray:v3 withDelegate:v4 isOverlay:1];
+  return [(TSDRep *)self p_addLayersForKnobsToArray:array withDelegate:interactiveCanvasController isOverlay:1];
 }
 
 - (id)popoutLayers
@@ -3260,9 +3260,9 @@ uint64_t __60__TSDRep_p_addLayersForKnobsToArray_withDelegate_isOverlay___block_
     return 0;
   }
 
-  v3 = [(TSDRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-  return [(TSDRep *)self p_addLayersForKnobsToArray:0 withDelegate:v3 isOverlay:1];
+  return [(TSDRep *)self p_addLayersForKnobsToArray:0 withDelegate:interactiveCanvasController isOverlay:1];
 }
 
 - (CGPoint)i_dragOffset
@@ -3303,14 +3303,14 @@ uint64_t __60__TSDRep_p_addLayersForKnobsToArray_withDelegate_isOverlay___block_
 {
   if (![(TSDRep *)self isInDynamicOperation])
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDRep p_dynamicRotateDidBegin]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDRep.m"), 2354, @"dynamic rotate began outside of dynamic operation"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDRep.m"), 2354, @"dynamic rotate began outside of dynamic operation"}];
   }
 
-  v5 = [(TSDRep *)self layout];
+  layout = [(TSDRep *)self layout];
 
-  [(TSDLayout *)v5 beginRotate];
+  [(TSDLayout *)layout beginRotate];
 }
 
 - (double)angleForRotation
@@ -3348,28 +3348,28 @@ uint64_t __60__TSDRep_p_addLayersForKnobsToArray_withDelegate_isOverlay___block_
     return 0;
   }
 
-  v4 = [(TSDRep *)self info];
+  info = [(TSDRep *)self info];
 
-  return [v4 isThemeContent];
+  return [info isThemeContent];
 }
 
-- (void)setTexture:(id)a3
+- (void)setTexture:(id)texture
 {
   mTexture = self->mTexture;
-  if (mTexture != a3)
+  if (mTexture != texture)
   {
     [(TSDTextureSet *)mTexture teardown];
 
-    self->mTexture = a3;
+    self->mTexture = texture;
   }
 }
 
 - (double)textureAngle
 {
-  v3 = [(TSDRep *)self layout];
-  if (v3)
+  layout = [(TSDRep *)self layout];
+  if (layout)
   {
-    [(TSDAbstractLayout *)v3 transformInRoot];
+    [(TSDAbstractLayout *)layout transformInRoot];
   }
 
   else
@@ -3399,37 +3399,37 @@ uint64_t __60__TSDRep_p_addLayersForKnobsToArray_withDelegate_isOverlay___block_
   self->mTextureContext = 0;
 }
 
-- (void)setTextureDeliveryStyle:(unint64_t)a3
+- (void)setTextureDeliveryStyle:(unint64_t)style
 {
-  if (self->mTextureDeliveryStyle != a3)
+  if (self->mTextureDeliveryStyle != style)
   {
     [(TSDRep *)self markTextureDirty];
   }
 
-  self->mTextureDeliveryStyle = a3;
+  self->mTextureDeliveryStyle = style;
 }
 
-- (void)setTextureByGlyphStyle:(int)a3
+- (void)setTextureByGlyphStyle:(int)style
 {
-  if (self->mTextureByGlyphStyle != a3)
+  if (self->mTextureByGlyphStyle != style)
   {
     [(TSDRep *)self markTextureDirty];
   }
 
-  self->mTextureByGlyphStyle = a3;
+  self->mTextureByGlyphStyle = style;
 }
 
-- (void)setTextureActionAttributes:(id)a3
+- (void)setTextureActionAttributes:(id)attributes
 {
-  if (a3 || self->mTextureActionAttributes)
+  if (attributes || self->mTextureActionAttributes)
   {
     mTexture = self->mTexture;
-    if ((!mTexture || !-[TSDTextureSet alternateLayer](mTexture, "alternateLayer")) && ([a3 isEqualToDictionary:self->mTextureActionAttributes] & 1) == 0)
+    if ((!mTexture || !-[TSDTextureSet alternateLayer](mTexture, "alternateLayer")) && ([attributes isEqualToDictionary:self->mTextureActionAttributes] & 1) == 0)
     {
 
-      if (a3)
+      if (attributes)
       {
-        v6 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:a3];
+        v6 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:attributes];
       }
 
       else
@@ -3444,7 +3444,7 @@ uint64_t __60__TSDRep_p_addLayersForKnobsToArray_withDelegate_isOverlay___block_
   }
 }
 
-- (CGAffineTransform)unRotatedTransform:(SEL)a3
+- (CGAffineTransform)unRotatedTransform:(SEL)transform
 {
   v7 = *&a4->c;
   *&v21.a = *&a4->a;
@@ -3496,32 +3496,32 @@ uint64_t __60__TSDRep_p_addLayersForKnobsToArray_withDelegate_isOverlay___block_
   return CGAffineTransformConcat(retstr, &t1, &v19);
 }
 
-- (void)p_setMagicMoveTextureAttributes:(id)a3
+- (void)p_setMagicMoveTextureAttributes:(id)attributes
 {
   [objc_msgSend(-[TSDRep info](self "info")];
-  [a3 setTextureAngle:v5 * 0.0174532925];
+  [attributes setTextureAngle:v5 * 0.0174532925];
   [(TSDRep *)self naturalBounds];
-  [a3 setTextureContentRect:?];
+  [attributes setTextureContentRect:?];
   v6 = [-[TSDCanvas topLevelReps](-[TSDRep canvas](self "canvas")];
 
-  [a3 setTextureZOrder:v6];
+  [attributes setTextureZOrder:v6];
 }
 
-- (id)textureForContext:(id)a3
+- (id)textureForContext:(id)context
 {
   v65 = *MEMORY[0x277D85DE8];
-  if (self->mTexture && [a3 isEqual:self->mTextureContext] && !-[TSDRep temporaryMixingLayout](self, "temporaryMixingLayout"))
+  if (self->mTexture && [context isEqual:self->mTextureContext] && !-[TSDRep temporaryMixingLayout](self, "temporaryMixingLayout"))
   {
     return self->mTexture;
   }
 
-  v5 = [a3 isMagicMove];
+  isMagicMove = [context isMagicMove];
   v6 = TSUProtocolCast();
   memset(&v63, 0, sizeof(v63));
-  v7 = [(TSDRep *)self layout];
-  if (v7)
+  layout = [(TSDRep *)self layout];
+  if (layout)
   {
-    [(TSDAbstractLayout *)v7 transformInRoot];
+    [(TSDAbstractLayout *)layout transformInRoot];
   }
 
   else
@@ -3552,7 +3552,7 @@ uint64_t __60__TSDRep_p_addLayersForKnobsToArray_withDelegate_isOverlay___block_
     }
   }
 
-  if (v5)
+  if (isMagicMove)
   {
     v61 = v63;
     [(TSDRep *)self unRotatedTransform:&v61];
@@ -3596,29 +3596,29 @@ uint64_t __60__TSDRep_p_addLayersForKnobsToArray_withDelegate_isOverlay___block_
   v58 = height;
   v59 = v17;
   v60 = v63;
-  v48 = a3;
-  v53[4] = a3;
+  contextCopy = context;
+  v53[4] = context;
   v53[5] = self;
   v53[6] = v6;
   v32 = objc_alloc_init(TSDTextureSet);
   v33 = [TSDTexturedRectangle alloc];
   v34 = TSDSubtractPoints(v28, v29, v46);
   v36 = [(TSDTexturedRectangle *)v33 initWithSize:v53 offset:v30 renderBlock:v31, v34, v35];
-  v37 = v5;
-  if (v5)
+  v37 = isMagicMove;
+  if (isMagicMove)
   {
-    if (([v48 shouldNotAddContainedReps] & 1) == 0)
+    if (([contextCopy shouldNotAddContainedReps] & 1) == 0)
     {
-      v38 = [MEMORY[0x277CCAB68] string];
+      string = [MEMORY[0x277CCAB68] string];
       if (v6)
       {
-        v39 = v38;
+        v39 = string;
         v51 = 0u;
         v52 = 0u;
         v49 = 0u;
         v50 = 0u;
-        v40 = [v6 childReps];
-        v41 = [v40 countByEnumeratingWithState:&v49 objects:v64 count:16];
+        childReps = [v6 childReps];
+        v41 = [childReps countByEnumeratingWithState:&v49 objects:v64 count:16];
         if (v41)
         {
           v42 = v41;
@@ -3629,13 +3629,13 @@ uint64_t __60__TSDRep_p_addLayersForKnobsToArray_withDelegate_isOverlay___block_
             {
               if (*v50 != v43)
               {
-                objc_enumerationMutation(v40);
+                objc_enumerationMutation(childReps);
               }
 
               [v39 appendFormat:@"%@ ", objc_opt_class()];
             }
 
-            v42 = [v40 countByEnumeratingWithState:&v49 objects:v64 count:16];
+            v42 = [childReps countByEnumeratingWithState:&v49 objects:v64 count:16];
           }
 
           while (v42);
@@ -3653,9 +3653,9 @@ uint64_t __60__TSDRep_p_addLayersForKnobsToArray_withDelegate_isOverlay___block_
   [(TSDTextureSet *)v32 setTextureOpacity:?];
   [(TSDRep *)self centerForRotation];
   [(TSDTextureSet *)v32 setCenter:?];
-  if (([v48 shouldNotCacheTexture] & 1) == 0)
+  if (([contextCopy shouldNotCacheTexture] & 1) == 0)
   {
-    [(TSDRep *)self setTextureContext:v48];
+    [(TSDRep *)self setTextureContext:contextCopy];
     [(TSDRep *)self setTexture:v32];
   }
 
@@ -3737,37 +3737,37 @@ uint64_t __28__TSDRep_textureForContext___block_invoke(uint64_t a1, CGContextRef
   return result;
 }
 
-- (BOOL)shouldLayoutTilingLayer:(id)a3
+- (BOOL)shouldLayoutTilingLayer:(id)layer
 {
-  v4 = [(TSDRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-  return [(TSDInteractiveCanvasController *)v4 shouldLayoutTilingLayer:a3];
+  return [(TSDInteractiveCanvasController *)interactiveCanvasController shouldLayoutTilingLayer:layer];
 }
 
-- (BOOL)canDrawTilingLayerInBackground:(id)a3
+- (BOOL)canDrawTilingLayerInBackground:(id)background
 {
-  if ([(TSDRep *)self mustDrawTilingLayerOnMainThread:a3]|| ![(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] supportsBackgroundTileRendering])
+  if ([(TSDRep *)self mustDrawTilingLayerOnMainThread:background]|| ![(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] supportsBackgroundTileRendering])
   {
     return 0;
   }
 
-  v4 = [(TSDRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-  return [(TSDInteractiveCanvasController *)v4 currentlyScrolling];
+  return [(TSDInteractiveCanvasController *)interactiveCanvasController currentlyScrolling];
 }
 
-- (BOOL)mustDrawTilingLayerOnMainThread:(id)a3
+- (BOOL)mustDrawTilingLayerOnMainThread:(id)thread
 {
-  v4 = [(TSDRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-  return [(TSDInteractiveCanvasController *)v4 mustDrawTilingLayerOnMainThread:a3];
+  return [(TSDInteractiveCanvasController *)interactiveCanvasController mustDrawTilingLayerOnMainThread:thread];
 }
 
-- (CGRect)visibleBoundsForTilingLayer:(id)a3
+- (CGRect)visibleBoundsForTilingLayer:(id)layer
 {
-  v4 = [(TSDRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-  [(TSDInteractiveCanvasController *)v4 visibleBoundsForTilingLayer:a3];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController visibleBoundsForTilingLayer:layer];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -3775,37 +3775,37 @@ uint64_t __28__TSDRep_textureForContext___block_invoke(uint64_t a1, CGContextRef
   return result;
 }
 
-- (id)queueForDrawingTilingLayerInBackground:(id)a3
+- (id)queueForDrawingTilingLayerInBackground:(id)background
 {
-  v4 = [(TSDRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
   v5 = [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] layerForRep:self];
 
-  return [(TSDInteractiveCanvasController *)v4 queueForDrawingTilingLayerInBackground:v5];
+  return [(TSDInteractiveCanvasController *)interactiveCanvasController queueForDrawingTilingLayerInBackground:v5];
 }
 
-- (BOOL)shouldBeginDrawingTilingLayerInBackground:(id)a3 returningToken:(id *)a4 andQueue:(id *)a5
+- (BOOL)shouldBeginDrawingTilingLayerInBackground:(id)background returningToken:(id *)token andQueue:(id *)queue
 {
-  v8 = [(TSDRep *)self interactiveCanvasController];
-  v9 = [(TSDInteractiveCanvasController *)v8 layerForRep:self];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
+  v9 = [(TSDInteractiveCanvasController *)interactiveCanvasController layerForRep:self];
 
-  return [(TSDInteractiveCanvasController *)v8 shouldBeginDrawingTilingLayerInBackground:v9 returningToken:a4 andQueue:a5];
+  return [(TSDInteractiveCanvasController *)interactiveCanvasController shouldBeginDrawingTilingLayerInBackground:v9 returningToken:token andQueue:queue];
 }
 
-- (void)didEndDrawingTilingLayerInBackground:(id)a3 withToken:(id)a4
+- (void)didEndDrawingTilingLayerInBackground:(id)background withToken:(id)token
 {
-  v6 = [(TSDRep *)self interactiveCanvasController];
-  v7 = [(TSDInteractiveCanvasController *)v6 layerForRep:self];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
+  v7 = [(TSDInteractiveCanvasController *)interactiveCanvasController layerForRep:self];
 
-  [(TSDInteractiveCanvasController *)v6 didEndDrawingTilingLayerInBackground:v7 withToken:a4];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController didEndDrawingTilingLayerInBackground:v7 withToken:token];
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
-  if (a3 <= 520)
+  if (property <= 520)
   {
-    if (a3 != 512)
+    if (property != 512)
     {
-      if (a3 == 513)
+      if (property == 513)
       {
         [(TSDRep *)self invalidateKnobPositions];
       }
@@ -3818,25 +3818,25 @@ LABEL_7:
     return;
   }
 
-  if (a3 == 521 || a3 == 524)
+  if (property == 521 || property == 524)
   {
     goto LABEL_7;
   }
 }
 
-- (void)willUpdateLayer:(id)a3
+- (void)willUpdateLayer:(id)layer
 {
-  v5 = ([a3 shouldRasterize] & 1) != 0 || -[TSDRep forceRasterization](self, "forceRasterization");
+  v5 = ([layer shouldRasterize] & 1) != 0 || -[TSDRep forceRasterization](self, "forceRasterization");
 
-  [a3 setShouldRasterize:v5];
+  [layer setShouldRasterize:v5];
 }
 
 - (id)additionalLayersOverLayer
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(TSDRep *)self interactiveCanvasController];
+  array = [MEMORY[0x277CBEB18] array];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-  return [(TSDRep *)self p_addLayersForKnobsToArray:v3 withDelegate:v4 isOverlay:0];
+  return [(TSDRep *)self p_addLayersForKnobsToArray:array withDelegate:interactiveCanvasController isOverlay:0];
 }
 
 - (BOOL)shouldShowCommentHighlight
@@ -3849,8 +3849,8 @@ LABEL_7:
   {
     do
     {
-      v5 = [(TSDRep *)self isBeingRotated];
-      if (v5)
+      isBeingRotated = [(TSDRep *)self isBeingRotated];
+      if (isBeingRotated)
       {
         break;
       }
@@ -3859,7 +3859,7 @@ LABEL_7:
     }
 
     while (self);
-    v6 = !v5;
+    v6 = !isBeingRotated;
     if (v3)
     {
       return ([v3 comment] != 0) & v4 & v6;
@@ -3897,7 +3897,7 @@ LABEL_7:
   return v3;
 }
 
-- (int)dragTypeAtCanvasPoint:(CGPoint)a3
+- (int)dragTypeAtCanvasPoint:(CGPoint)point
 {
   if ([-[TSDRep repForSelecting](self repForSelecting])
   {
@@ -3920,9 +3920,9 @@ LABEL_7:
     return 1;
   }
 
-  v5 = [(TSDRep *)self parentRep];
+  parentRep = [(TSDRep *)self parentRep];
 
-  return [(TSDRep *)v5 isLocked];
+  return [(TSDRep *)parentRep isLocked];
 }
 
 - (CGRect)targetRectForEditMenu
@@ -3938,35 +3938,35 @@ LABEL_7:
   return result;
 }
 
-- (unint64_t)adjustedKnobForComputingResizeGeometry:(unint64_t)a3
+- (unint64_t)adjustedKnobForComputingResizeGeometry:(unint64_t)geometry
 {
   if ([-[TSDRep info](self "info")] && (objc_opt_class(), -[TSDRep info](self, "info"), (objc_msgSend(objc_msgSend(TSUDynamicCast(), "exteriorTextWrap"), "isHTMLWrap") & 1) != 0) || objc_msgSend(-[TSDRep info](self, "info"), "isInlineWithText"))
   {
-    v5 = 9;
-    if (a3 != 7)
+    geometryCopy = 9;
+    if (geometry != 7)
     {
-      v5 = a3;
+      geometryCopy = geometry;
     }
 
-    if (a3 == 4)
+    if (geometry == 4)
     {
       return 6;
     }
 
     else
     {
-      return v5;
+      return geometryCopy;
     }
   }
 
-  return a3;
+  return geometry;
 }
 
 - (CGPoint)centerForRotation
 {
-  v2 = [(TSDRep *)self layout];
+  layout = [(TSDRep *)self layout];
 
-  [(TSDLayout *)v2 centerForRotation];
+  [(TSDLayout *)layout centerForRotation];
   result.y = v4;
   result.x = v3;
   return result;
@@ -4065,25 +4065,25 @@ TSDTilingBackgroundQueue *__21__TSDRep_i_tileQueue__block_invoke(uint64_t a1)
   return [v7 arrayWithObject:v6];
 }
 
-- (void)willReplaceContentsFromRep:(id)a3
+- (void)willReplaceContentsFromRep:(id)rep
 {
-  v5 = [(TSDRep *)self info];
-  if (v5 != [a3 info])
+  info = [(TSDRep *)self info];
+  if (info != [rep info])
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDRep willReplaceContentsFromRep:]"];
-    [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDRep.m"), 3350, @"Reps do not share a common info:\n%@\n%@", self, a3}];
+    [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDRep.m"), 3350, @"Reps do not share a common info:\n%@\n%@", self, rep}];
   }
 }
 
-- (void)replaceContentsFromRep:(id)a3
+- (void)replaceContentsFromRep:(id)rep
 {
-  v5 = [(TSDRep *)self info];
-  if (v5 != [a3 info])
+  info = [(TSDRep *)self info];
+  if (info != [rep info])
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDRep replaceContentsFromRep:]"];
-    [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDRep.m"), 3357, @"Reps do not share a common info:\n%@\n%@", self, a3}];
+    [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDRep.m"), 3357, @"Reps do not share a common info:\n%@\n%@", self, rep}];
   }
 }
 
@@ -4091,15 +4091,15 @@ TSDTilingBackgroundQueue *__21__TSDRep_i_tileQueue__block_invoke(uint64_t a1)
 {
   if ([(TSDRep *)self parentRep])
   {
-    v3 = [(TSDRep *)self parentRep];
+    parentRep = [(TSDRep *)self parentRep];
   }
 
   else
   {
-    v3 = [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] layerHost];
+    parentRep = [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] layerHost];
   }
 
-  return [(TSDRep *)v3 subviewsController];
+  return [(TSDRep *)parentRep subviewsController];
 }
 
 - (CGRect)i_partition_deepClipRect
@@ -4117,8 +4117,8 @@ TSDTilingBackgroundQueue *__21__TSDRep_i_tileQueue__block_invoke(uint64_t a1)
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v11 = [v10 childReps];
-    v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    childReps = [v10 childReps];
+    v12 = [childReps countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v12)
     {
       v13 = v12;
@@ -4130,7 +4130,7 @@ TSDTilingBackgroundQueue *__21__TSDRep_i_tileQueue__block_invoke(uint64_t a1)
         {
           if (*v25 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(childReps);
           }
 
           v16 = *(*(&v24 + 1) + 8 * v15);
@@ -4163,7 +4163,7 @@ TSDTilingBackgroundQueue *__21__TSDRep_i_tileQueue__block_invoke(uint64_t a1)
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v13 = [childReps countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v13);

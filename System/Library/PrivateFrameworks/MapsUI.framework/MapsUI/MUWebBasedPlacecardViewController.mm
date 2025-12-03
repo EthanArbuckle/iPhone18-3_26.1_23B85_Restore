@@ -1,13 +1,13 @@
 @interface MUWebBasedPlacecardViewController
 - (WKWebView)webView;
-- (_TtC6MapsUI33MUWebBasedPlacecardViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC6MapsUI33MUWebBasedPlacecardViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)closeButtonTapped;
 - (void)loadDidFinish;
 - (void)loadDidStart;
 - (void)removeInitialView;
 - (void)resetOverlayViews;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setWebView:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setWebView:(id)view;
 - (void)updateHeight;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -22,18 +22,18 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setWebView:(id)a3
+- (void)setWebView:(id)view
 {
   v5 = OBJC_IVAR____TtC6MapsUI33MUWebBasedPlacecardViewController_webView;
   swift_beginAccess();
   v6 = *(&self->super.super.super.isa + v5);
-  *(&self->super.super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.super.isa + v5) = view;
+  viewCopy = view;
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   MUWebBasedPlacecardViewController.viewDidLoad()();
 }
 
@@ -53,25 +53,25 @@
 
 - (void)resetOverlayViews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5718C3C();
 }
 
 - (void)updateHeight
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5717E48();
 }
 
 - (void)loadDidStart
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5718EA0();
 }
 
 - (void)loadDidFinish
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5719014();
 }
 
@@ -79,7 +79,7 @@
 {
   v3 = OBJC_IVAR____TtC6MapsUI33MUWebBasedPlacecardViewController_loadingOverlayController;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC6MapsUI33MUWebBasedPlacecardViewController_loadingOverlayController);
-  v5 = self;
+  selfCopy = self;
   if (v4)
   {
     [v4 removeLoadingOverlayAnimated:1 completion:0];
@@ -103,20 +103,20 @@
     v4 = *(v3 + 1);
     swift_getObjectType();
     v5 = *(v4 + 8);
-    v6 = self;
+    selfCopy = self;
     v5();
     swift_unknownObjectRelease();
   }
 }
 
-- (_TtC6MapsUI33MUWebBasedPlacecardViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC6MapsUI33MUWebBasedPlacecardViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v5 = self + OBJC_IVAR____TtC6MapsUI33MUWebBasedPlacecardViewController_viewControllerDelegate;
   swift_beginAccess();
@@ -125,8 +125,8 @@
     v6 = *(v5 + 1);
     swift_getObjectType();
     v7 = *(v6 + 40);
-    v8 = a3;
-    v9 = self;
+    scrollCopy = scroll;
+    selfCopy = self;
     v7();
     swift_unknownObjectRelease();
   }

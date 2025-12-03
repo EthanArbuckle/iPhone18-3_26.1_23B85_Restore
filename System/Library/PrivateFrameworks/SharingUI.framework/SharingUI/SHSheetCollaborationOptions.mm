@@ -1,15 +1,15 @@
 @interface SHSheetCollaborationOptions
 + (BOOL)supportsBSXPCSecureCoding;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation SHSheetCollaborationOptions
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   swift_unknownObjectRetain();
   MEMORY[0x1E69E5928](self);
-  sub_1B9ECE6E0(a3);
+  sub_1B9ECE6E0(coder);
   MEMORY[0x1E69E5920](self);
   swift_unknownObjectRelease();
 }

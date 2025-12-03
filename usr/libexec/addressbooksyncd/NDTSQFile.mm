@@ -1,69 +1,69 @@
 @interface NDTSQFile
-- (NDTSQFile)initWithPath:(id)a3;
-- (NDTSQFile)initWithPath:(id)a3 queue:(id)a4;
-- (NDTSQFile)initWithURL:(id)a3;
+- (NDTSQFile)initWithPath:(id)path;
+- (NDTSQFile)initWithPath:(id)path queue:(id)queue;
+- (NDTSQFile)initWithURL:(id)l;
 - (NDTSQFileDelegate)delegate;
-- (id)_loadCache:(id)a3 sqlErr:(int *)a4;
-- (id)_makeSqlErrorReasonString:(id)a3;
+- (id)_loadCache:(id)cache sqlErr:(int *)err;
+- (id)_makeSqlErrorReasonString:(id)string;
 - (int64_t)changes;
-- (void)_addSchema:(id)a3;
+- (void)_addSchema:(id)schema;
 - (void)_bootstrap;
 - (void)_createParentDirectory;
 - (void)_databaseChangedExternally;
-- (void)_executeSql:(id)a3;
+- (void)_executeSql:(id)sql;
 - (void)_newPath;
 - (void)_openDatabase;
-- (void)_parseSql:(id)a3 andRun:(id)a4;
+- (void)_parseSql:(id)sql andRun:(id)run;
 - (void)_prepDatabase;
 - (void)_recreatePath;
 - (void)_watchWalFile;
-- (void)addSchema:(id)a3;
+- (void)addSchema:(id)schema;
 - (void)begin;
 - (void)commit;
-- (void)executeSql:(id)a3;
-- (void)parseSql:(id)a3 andRun:(id)a4;
+- (void)executeSql:(id)sql;
+- (void)parseSql:(id)sql andRun:(id)run;
 - (void)rollback;
 @end
 
 @implementation NDTSQFile
 
-- (NDTSQFile)initWithURL:(id)a3
+- (NDTSQFile)initWithURL:(id)l
 {
-  v4 = [a3 path];
-  v5 = [(NDTSQFile *)self initWithPath:v4];
+  path = [l path];
+  v5 = [(NDTSQFile *)self initWithPath:path];
 
   return v5;
 }
 
-- (NDTSQFile)initWithPath:(id)a3
+- (NDTSQFile)initWithPath:(id)path
 {
-  v4 = a3;
-  v5 = [NSString stringWithFormat:@"NDTSQFile.%@", v4];
-  v6 = [v5 UTF8String];
+  pathCopy = path;
+  pathCopy = [NSString stringWithFormat:@"NDTSQFile.%@", pathCopy];
+  uTF8String = [pathCopy UTF8String];
   v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v8 = dispatch_queue_create(v6, v7);
+  v8 = dispatch_queue_create(uTF8String, v7);
 
-  v9 = [(NDTSQFile *)self initWithPath:v4 queue:v8];
+  v9 = [(NDTSQFile *)self initWithPath:pathCopy queue:v8];
   return v9;
 }
 
-- (NDTSQFile)initWithPath:(id)a3 queue:(id)a4
+- (NDTSQFile)initWithPath:(id)path queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = NDTSQFile;
   v9 = [(NDTSQFile *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_pathTemplate, a3);
+    objc_storeStrong(&v9->_pathTemplate, path);
     v11 = [[NSHashTable alloc] initWithOptions:5 capacity:4];
     memberSchemas = v10->_memberSchemas;
     v10->_memberSchemas = v11;
 
     v10->_memberSchemasLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v10->_q, a4);
+    objc_storeStrong(&v10->_q, queue);
     [(NDTSQFile *)v10 _bootstrap];
   }
 
@@ -97,10 +97,10 @@
 
 - (void)_recreatePath
 {
-  v4 = [(NDTSQFile *)self delegate];
-  if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(NDTSQFile *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v3 = [v4 newFileName:self];
+    v3 = [delegate newFileName:self];
     if (v3)
     {
       objc_storeStrong(&self->_pathTemplate, v3);
@@ -112,16 +112,16 @@
 
 - (void)_createParentDirectory
 {
-  v3 = [(NDTSQFile *)self path];
-  v4 = [v3 isEqual:@":memory:"];
+  path = [(NDTSQFile *)self path];
+  v4 = [path isEqual:@":memory:"];
 
   if ((v4 & 1) == 0)
   {
     v5 = +[NSFileManager defaultManager];
-    v6 = [(NDTSQFile *)self path];
-    v7 = [v6 stringByDeletingLastPathComponent];
+    path2 = [(NDTSQFile *)self path];
+    stringByDeletingLastPathComponent = [path2 stringByDeletingLastPathComponent];
 
-    if (v7 && [v7 length])
+    if (stringByDeletingLastPathComponent && [stringByDeletingLastPathComponent length])
     {
       v15[0] = NSFileOwnerAccountName;
       v15[1] = NSFileGroupOwnerAccountName;
@@ -135,7 +135,7 @@
       {
 
         v14 = 0;
-        v10 = [v5 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:v8 error:&v14];
+        v10 = [v5 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:v8 error:&v14];
         v11 = v14;
         v9 = v11;
         if (v10)
@@ -143,25 +143,25 @@
           break;
         }
 
-        v12 = [v11 domain];
-        if (![v12 isEqualToString:NSCocoaErrorDomain])
+        domain = [v11 domain];
+        if (![domain isEqualToString:NSCocoaErrorDomain])
         {
 
           break;
         }
 
-        v13 = [v9 code];
+        code = [v9 code];
       }
 
-      while (v13 == 516);
+      while (code == 516);
     }
   }
 }
 
 - (void)_openDatabase
 {
-  v3 = [(NDTSQFile *)self path];
-  v4 = sqlite3_open_v2([v3 UTF8String], &self->_db, 4194310, 0);
+  path = [(NDTSQFile *)self path];
+  v4 = sqlite3_open_v2([path UTF8String], &self->_db, 4194310, 0);
 
   if (v4)
   {
@@ -186,8 +186,8 @@
 - (void)_watchWalFile
 {
   objc_initWeak(&location, self);
-  v3 = [(NDTSQFile *)self path];
-  v4 = [NSString stringWithFormat:@"%@-wal", v3];
+  path = [(NDTSQFile *)self path];
+  v4 = [NSString stringWithFormat:@"%@-wal", path];
   v5 = open([v4 UTF8String], 0x8000);
 
   if (v5 != -1)
@@ -269,66 +269,66 @@
   }
 }
 
-- (void)_addSchema:(id)a3
+- (void)_addSchema:(id)schema
 {
-  v8 = a3;
-  [v8 setDb:self];
-  [v8 createTables];
-  v4 = [v8 instanceName];
-  v5 = [v8 currentVersion];
-  v6 = [(NDTSQFile *)self _instanceVersion:v4];
-  if (v6 != v5)
+  schemaCopy = schema;
+  [schemaCopy setDb:self];
+  [schemaCopy createTables];
+  instanceName = [schemaCopy instanceName];
+  currentVersion = [schemaCopy currentVersion];
+  v6 = [(NDTSQFile *)self _instanceVersion:instanceName];
+  if (v6 != currentVersion)
   {
-    [v8 migrateFrom:v6];
-    [(NDTSQFile *)self _setInstance:v4 version:v5];
+    [schemaCopy migrateFrom:v6];
+    [(NDTSQFile *)self _setInstance:instanceName version:currentVersion];
   }
 
-  v7 = [(NSHashTable *)self->_memberSchemas member:v8];
+  v7 = [(NSHashTable *)self->_memberSchemas member:schemaCopy];
 
   if (!v7)
   {
-    [(NSHashTable *)self->_memberSchemas addObject:v8];
+    [(NSHashTable *)self->_memberSchemas addObject:schemaCopy];
   }
 }
 
-- (void)addSchema:(id)a3
+- (void)addSchema:(id)schema
 {
-  v4 = a3;
+  schemaCopy = schema;
   os_unfair_lock_lock(&self->_memberSchemasLock);
-  [(NDTSQFile *)self _addSchema:v4];
+  [(NDTSQFile *)self _addSchema:schemaCopy];
 
   os_unfair_lock_unlock(&self->_memberSchemasLock);
 }
 
-- (id)_makeSqlErrorReasonString:(id)a3
+- (id)_makeSqlErrorReasonString:(id)string
 {
   db = self->_db;
-  v4 = a3;
+  stringCopy = string;
   v5 = sqlite3_errcode(db);
-  v6 = [NSString stringWithFormat:@"%@: %s", v4, sqlite3_errstr(v5)];
+  v6 = [NSString stringWithFormat:@"%@: %s", stringCopy, sqlite3_errstr(v5)];
 
   return v6;
 }
 
-- (void)executeSql:(id)a3
+- (void)executeSql:(id)sql
 {
-  v4 = a3;
+  sqlCopy = sql;
   q = self->_q;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100012C20;
   v7[3] = &unk_10005CFC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sqlCopy;
+  v6 = sqlCopy;
   dispatch_sync(q, v7);
 }
 
-- (void)_executeSql:(id)a3
+- (void)_executeSql:(id)sql
 {
-  v4 = a3;
+  sqlCopy = sql;
   ppStmt = 0;
-  if (sqlite3_prepare_v2(-[NDTSQFile db](self, "db"), [v4 UTF8String], -1, &ppStmt, 0) || ((v5 = sqlite3_step(ppStmt), (v5 - 100) >= 2) ? (v6 = v5 == 0) : (v6 = 1), !v6))
+  if (sqlite3_prepare_v2(-[NDTSQFile db](self, "db"), [sqlCopy UTF8String], -1, &ppStmt, 0) || ((v5 = sqlite3_step(ppStmt), (v5 - 100) >= 2) ? (v6 = v5 == 0) : (v6 = 1), !v6))
   {
     [(NDTSQFile *)self _makeSqlErrorReasonString:@"_executeSql(1)"];
     v7 = [NDTSQException exceptionWithName:@"NDTSQError" reason:objc_claimAutoreleasedReturnValue() userInfo:0];
@@ -338,28 +338,28 @@
   sqlite3_finalize(ppStmt);
 }
 
-- (void)parseSql:(id)a3 andRun:(id)a4
+- (void)parseSql:(id)sql andRun:(id)run
 {
-  v6 = a3;
-  v7 = a4;
+  sqlCopy = sql;
+  runCopy = run;
   q = self->_q;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100012DC0;
   block[3] = &unk_10005CFF0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = sqlCopy;
+  v13 = runCopy;
+  v9 = runCopy;
+  v10 = sqlCopy;
   dispatch_sync(q, block);
 }
 
-- (id)_loadCache:(id)a3 sqlErr:(int *)a4
+- (id)_loadCache:(id)cache sqlErr:(int *)err
 {
-  v6 = a3;
-  *a4 = 0;
-  v7 = [[NDTSQStatement alloc] initWithQueue:self->_q text:v6];
+  cacheCopy = cache;
+  *err = 0;
+  v7 = [[NDTSQStatement alloc] initWithQueue:self->_q text:cacheCopy];
   v8 = [(NSMutableOrderedSet *)self->_statementCache indexOfObject:v7];
   statementCache = self->_statementCache;
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
@@ -369,19 +369,19 @@
       do
       {
         v10 = self->_statementCache;
-        v11 = [(NSMutableOrderedSet *)v10 lastObject];
-        [(NSMutableOrderedSet *)v10 removeObject:v11];
+        lastObject = [(NSMutableOrderedSet *)v10 lastObject];
+        [(NSMutableOrderedSet *)v10 removeObject:lastObject];
       }
 
       while ([(NSMutableOrderedSet *)self->_statementCache count]> 0x31);
     }
 
     ppStmt = 0;
-    v12 = sqlite3_prepare_v2(-[NDTSQFile db](self, "db"), [v6 UTF8String], -1, &ppStmt, 0);
+    v12 = sqlite3_prepare_v2(-[NDTSQFile db](self, "db"), [cacheCopy UTF8String], -1, &ppStmt, 0);
     if (v12)
     {
       v13 = 0;
-      *a4 = v12;
+      *err = v12;
       goto LABEL_9;
     }
 
@@ -406,12 +406,12 @@ LABEL_9:
   return v13;
 }
 
-- (void)_parseSql:(id)a3 andRun:(id)a4
+- (void)_parseSql:(id)sql andRun:(id)run
 {
-  v6 = a3;
-  v7 = a4;
+  sqlCopy = sql;
+  runCopy = run;
   v15 = 0;
-  v8 = [(NDTSQFile *)self _loadCache:v6 sqlErr:&v15];
+  v8 = [(NDTSQFile *)self _loadCache:sqlCopy sqlErr:&v15];
   if (v15)
   {
     v9 = 1;
@@ -432,7 +432,7 @@ LABEL_12:
   }
 
   v10 = v8;
-  v11 = v7[2](v7, v8);
+  v11 = runCopy[2](runCopy, v8);
   v15 = v11;
   if ((v11 - 100) >= 2 && v11 != 0)
   {

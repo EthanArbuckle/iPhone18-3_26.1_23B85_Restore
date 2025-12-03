@@ -1,11 +1,11 @@
 @interface VFXMTLREContext
-- (BufferSlice)_buffer:(int)a3 :(id)a4;
-- (BufferSlice)_buffer:(int)a3 :(id)a4 fallback:(id)a5;
+- (BufferSlice)_buffer:(int)_buffer :(id)a4;
+- (BufferSlice)_buffer:(int)_buffer :(id)a4 fallback:(id)fallback;
 - (VFXMTLREContext)init;
 - (VFX_RE_C_EntityConstants_s)_computeEntityData;
 - (VFX_RE_C_GlobalConstants_s)_computeGlobalData;
 - (id).cxx_construct;
-- (id)_texture:(int)a3 :(id)a4 fallback:(id)a5 fallbackScope:(int)a6;
+- (id)_texture:(int)_texture :(id)a4 fallback:(id)fallback fallbackScope:(int)scope;
 - (re_vfx_object_constants)_computeVFXObjectConstants;
 - (void)_computeViewData;
 - (void)_updateAvailableSelectors;
@@ -147,7 +147,7 @@
 
 - (void)_computeViewData
 {
-  sub_1AF22BD6C((a1 + 624), &off_1E7A7D5D8, 9, *(a1 + 8), &v16);
+  sub_1AF22BD6C((self + 624), &off_1E7A7D5D8, 9, *(self + 8), &v16);
   bzero(a2, 0x400uLL);
   sub_1AF22C3D0(&v16, a2);
   sub_1AF22C3D0(&v17, (a2 + 256));
@@ -274,12 +274,12 @@
   }
 }
 
-- (BufferSlice)_buffer:(int)a3 :(id)a4 fallback:(id)a5
+- (BufferSlice)_buffer:(int)_buffer :(id)a4 fallback:(id)fallback
 {
   v12 = 0;
   v13 = 0;
-  v8 = objc_msgSend_buffer__::(self->_drawCallContext, a2, *&a3, a4, &v13, &v12);
-  if (a5 && !v8)
+  v8 = objc_msgSend_buffer__::(self->_drawCallContext, a2, *&_buffer, a4, &v13, &v12);
+  if (fallback && !v8)
   {
     objc_msgSend_buffer__::(self->_drawCallContext, v9, 0, a4, &v13, &v12);
   }
@@ -290,23 +290,23 @@
   return result;
 }
 
-- (BufferSlice)_buffer:(int)a3 :(id)a4
+- (BufferSlice)_buffer:(int)_buffer :(id)a4
 {
-  v4 = objc_msgSend__buffer::fallback_(self, a2, *&a3, a4, 0);
+  v4 = objc_msgSend__buffer::fallback_(self, a2, *&_buffer, a4, 0);
   *&result.impl._offset = v5;
   result.impl._buffer = v4;
   return result;
 }
 
-- (id)_texture:(int)a3 :(id)a4 fallback:(id)a5 fallbackScope:(int)a6
+- (id)_texture:(int)_texture :(id)a4 fallback:(id)fallback fallbackScope:(int)scope
 {
-  v6 = *&a6;
-  result = objc_msgSend_texture::(self->_drawCallContext, a2, *&a3, a4);
-  if (a5 && !result)
+  v6 = *&scope;
+  result = objc_msgSend_texture::(self->_drawCallContext, a2, *&_texture, a4);
+  if (fallback && !result)
   {
     drawCallContext = self->_drawCallContext;
 
-    return objc_msgSend_texture::(drawCallContext, v10, v6, a5);
+    return objc_msgSend_texture::(drawCallContext, v10, v6, fallback);
   }
 
   return result;

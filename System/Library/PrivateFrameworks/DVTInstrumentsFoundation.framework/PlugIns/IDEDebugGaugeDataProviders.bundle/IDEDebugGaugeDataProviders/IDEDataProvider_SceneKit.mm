@@ -1,11 +1,11 @@
 @interface IDEDataProvider_SceneKit
 + (id)sharedDataProvider;
-- (BOOL)captureAttributes:(id)a3 toDictionary:(id)a4 forPID:(id)a5;
-- (BOOL)captureShadersToDictionary:(id)a3 forPID:(id)a4;
+- (BOOL)captureAttributes:(id)attributes toDictionary:(id)dictionary forPID:(id)d;
+- (BOOL)captureShadersToDictionary:(id)dictionary forPID:(id)d;
 - (IDEDataProvider_SceneKit)init;
-- (id)captureAttributes:(id)a3 forPIDs:(id)a4;
-- (id)startSamplingForPIDs:(id)a3;
-- (id)stopSamplingForPIDs:(id)a3;
+- (id)captureAttributes:(id)attributes forPIDs:(id)ds;
+- (id)startSamplingForPIDs:(id)ds;
+- (id)stopSamplingForPIDs:(id)ds;
 - (id)supportedAttributes;
 @end
 
@@ -54,20 +54,20 @@
   return v3;
 }
 
-- (id)startSamplingForPIDs:(id)a3
+- (id)startSamplingForPIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = +[NSMutableSet set];
   capture_lock = self->_capture_lock;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_5F18;
   block[3] = &unk_10470;
-  v13 = v4;
-  v14 = self;
+  v13 = dsCopy;
+  selfCopy = self;
   v7 = v5;
   v15 = v7;
-  v8 = v4;
+  v8 = dsCopy;
   dispatch_sync(capture_lock, block);
   v9 = v15;
   v10 = v7;
@@ -75,21 +75,21 @@
   return v7;
 }
 
-- (BOOL)captureAttributes:(id)a3 toDictionary:(id)a4 forPID:(id)a5
+- (BOOL)captureAttributes:(id)attributes toDictionary:(id)dictionary forPID:(id)d
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(NSMutableDictionary *)self->_collectionStartedForPidDictionary objectForKey:v8];
+  dictionaryCopy = dictionary;
+  dCopy = d;
+  v9 = [(NSMutableDictionary *)self->_collectionStartedForPidDictionary objectForKey:dCopy];
   if ([v9 BOOLValue])
   {
-    [v8 intValue];
+    [dCopy intValue];
     v10 = _SCNGetPerformanceStatisticsForPid();
     v11 = v10 != 0;
     if (v10)
     {
-      [v7 addEntriesFromDictionary:v10];
-      v12 = [(IDEDataProvider *)self initialQueryTimeForPidDictionary];
-      v13 = [v12 objectForKeyedSubscript:v8];
+      [dictionaryCopy addEntriesFromDictionary:v10];
+      initialQueryTimeForPidDictionary = [(IDEDataProvider *)self initialQueryTimeForPidDictionary];
+      v13 = [initialQueryTimeForPidDictionary objectForKeyedSubscript:dCopy];
       +[NSDate date];
       if (v13)
         v14 = {;
@@ -97,13 +97,13 @@
         v16 = v15;
 
         v17 = [NSNumber numberWithUnsignedInteger:vcvtpd_u64_f64(v16)];
-        [v7 setObject:v17 forKeyedSubscript:@"kIDEGaugeSecondsSinceInitialQueryKey"];
+        [dictionaryCopy setObject:v17 forKeyedSubscript:@"kIDEGaugeSecondsSinceInitialQueryKey"];
       }
 
       else
         v13 = {;
-        [v12 setObject:v13 forKeyedSubscript:v8];
-        [v7 setObject:&off_11958 forKeyedSubscript:@"kIDEGaugeSecondsSinceInitialQueryKey"];
+        [initialQueryTimeForPidDictionary setObject:v13 forKeyedSubscript:dCopy];
+        [dictionaryCopy setObject:&off_11958 forKeyedSubscript:@"kIDEGaugeSecondsSinceInitialQueryKey"];
       }
     }
   }
@@ -116,19 +116,19 @@
   return v11;
 }
 
-- (BOOL)captureShadersToDictionary:(id)a3 forPID:(id)a4
+- (BOOL)captureShadersToDictionary:(id)dictionary forPID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_collectionStartedForPidDictionary objectForKey:v7];
+  dictionaryCopy = dictionary;
+  dCopy = d;
+  v8 = [(NSMutableDictionary *)self->_collectionStartedForPidDictionary objectForKey:dCopy];
   if ([v8 BOOLValue])
   {
-    [v7 intValue];
+    [dCopy intValue];
     v9 = _SCNGetCollectedShadersForPid();
     v10 = v9 != 0;
     if (v9)
     {
-      [v6 addEntriesFromDictionary:v9];
+      [dictionaryCopy addEntriesFromDictionary:v9];
     }
   }
 
@@ -140,40 +140,40 @@
   return v10;
 }
 
-- (id)stopSamplingForPIDs:(id)a3
+- (id)stopSamplingForPIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   capture_lock = self->_capture_lock;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_644C;
   v9[3] = &unk_10498;
-  v6 = v4;
+  v6 = dsCopy;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   dispatch_sync(capture_lock, v9);
   v7 = v6;
 
   return v6;
 }
 
-- (id)captureAttributes:(id)a3 forPIDs:(id)a4
+- (id)captureAttributes:(id)attributes forPIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  dsCopy = ds;
   v8 = +[NSMutableDictionary dictionary];
   capture_lock = self->_capture_lock;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_66D8;
   v16[3] = &unk_104C0;
-  v17 = v7;
-  v18 = v6;
-  v19 = self;
+  v17 = dsCopy;
+  v18 = attributesCopy;
+  selfCopy = self;
   v10 = v8;
   v20 = v10;
-  v11 = v6;
-  v12 = v7;
+  v11 = attributesCopy;
+  v12 = dsCopy;
   dispatch_sync(capture_lock, v16);
   v13 = v20;
   v14 = v10;

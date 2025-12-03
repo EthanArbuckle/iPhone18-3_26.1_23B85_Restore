@@ -1,9 +1,9 @@
 @interface MTRCommodityPriceClusterGetDetailedForecastResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRCommodityPriceClusterGetDetailedForecastResponseParams)init;
-- (MTRCommodityPriceClusterGetDetailedForecastResponseParams)initWithDecodableStruct:(const void *)a3;
-- (MTRCommodityPriceClusterGetDetailedForecastResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTRCommodityPriceClusterGetDetailedForecastResponseParams)initWithDecodableStruct:(const void *)struct;
+- (MTRCommodityPriceClusterGetDetailedForecastResponseParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -16,19 +16,19 @@
   v2 = [(MTRCommodityPriceClusterGetDetailedForecastResponseParams *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     priceForecast = v2->_priceForecast;
-    v2->_priceForecast = v3;
+    v2->_priceForecast = array;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCommodityPriceClusterGetDetailedForecastResponseParams);
-  v5 = [(MTRCommodityPriceClusterGetDetailedForecastResponseParams *)self priceForecast];
-  [(MTRCommodityPriceClusterGetDetailedForecastResponseParams *)v4 setPriceForecast:v5];
+  priceForecast = [(MTRCommodityPriceClusterGetDetailedForecastResponseParams *)self priceForecast];
+  [(MTRCommodityPriceClusterGetDetailedForecastResponseParams *)v4 setPriceForecast:priceForecast];
 
   return v4;
 }
@@ -43,9 +43,9 @@
   return v6;
 }
 
-- (MTRCommodityPriceClusterGetDetailedForecastResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTRCommodityPriceClusterGetDetailedForecastResponseParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v15.receiver = self;
   v15.super_class = MTRCommodityPriceClusterGetDetailedForecastResponseParams;
   v7 = [(MTRCommodityPriceClusterGetDetailedForecastResponseParams *)&v15 init];
@@ -55,7 +55,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:149 commandID:3 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:149 commandID:3 error:error];
   if (v14)
   {
     sub_2393C5AAC(v13);
@@ -77,7 +77,7 @@
       }
     }
 
-    sub_238DD3F98(v8, v9, a4);
+    sub_238DD3F98(v8, v9, error);
   }
 
   v10 = 0;
@@ -88,7 +88,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRCommodityPriceClusterGetDetailedForecastResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRCommodityPriceClusterGetDetailedForecastResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRCommodityPriceClusterGetDetailedForecastResponseParams;
@@ -96,7 +96,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRCommodityPriceClusterGetDetailedForecastResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRCommodityPriceClusterGetDetailedForecastResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -112,11 +112,11 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v25 = self;
+  selfCopy = self;
   v27 = objc_opt_new();
-  sub_238EA275C(v35, a3);
+  sub_238EA275C(v35, struct);
   v26 = "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm";
   while (sub_238EA1A80(v35) && sub_238EA27B8(v35))
   {
@@ -163,9 +163,9 @@ LABEL_6:
       v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v9 length:v9[1] encoding:4];
       [v4 setDescriptionString:v10];
 
-      v11 = [v4 descriptionString];
+      descriptionString = [v4 descriptionString];
 
-      if (!v11)
+      if (!descriptionString)
       {
         v23 = 0x410A00000000;
         v24 = 47;
@@ -205,9 +205,9 @@ LABEL_6:
           v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v17 length:v17[1] encoding:4];
           [v14 setDescriptionString:v18];
 
-          v19 = [v14 descriptionString];
+          descriptionString2 = [v14 descriptionString];
 
-          if (!v19)
+          if (!descriptionString2)
           {
 
             v23 = 0x411D00000000;
@@ -233,12 +233,12 @@ LABEL_6:
           [v14 setTariffComponentID:0];
         }
 
-        [v12 addObject:{v14, v25}];
+        [v12 addObject:{v14, selfCopy}];
       }
 
       if (v28 == 33 || (v24 = v28, !v28))
       {
-        [v4 setComponents:{v12, v25}];
+        [v4 setComponents:{v12, selfCopy}];
 
         goto LABEL_33;
       }
@@ -257,7 +257,7 @@ LABEL_36:
 
     [v4 setComponents:0];
 LABEL_33:
-    [v27 addObject:{v4, v25}];
+    [v27 addObject:{v4, selfCopy}];
   }
 
   if (LODWORD(v35[0]) != 33)
@@ -271,7 +271,7 @@ LABEL_33:
     }
   }
 
-  [(MTRCommodityPriceClusterGetDetailedForecastResponseParams *)v25 setPriceForecast:v27, v25];
+  [(MTRCommodityPriceClusterGetDetailedForecastResponseParams *)selfCopy setPriceForecast:v27, selfCopy];
 
   v22 = 0;
   v21 = 0;

@@ -1,20 +1,20 @@
 @interface SSADEventReporter
-+ (void)reportBadDirectivesForModelType:(unint64_t)a3;
-+ (void)reportModelDeletionForType:(unint64_t)a3;
-+ (void)reportModelUnpackageEventWithType:(unint64_t)a3;
++ (void)reportBadDirectivesForModelType:(unint64_t)type;
++ (void)reportModelDeletionForType:(unint64_t)type;
++ (void)reportModelUnpackageEventWithType:(unint64_t)type;
 @end
 
 @implementation SSADEventReporter
 
-+ (void)reportModelUnpackageEventWithType:(unint64_t)a3
++ (void)reportModelUnpackageEventWithType:(unint64_t)type
 {
   v3 = @"com.apple.searchd.models.unpackage.experimental";
-  if (a3 != 2)
+  if (type != 2)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = @"com.apple.searchd.models.unpackage.default";
   }
@@ -31,15 +31,15 @@
   }
 }
 
-+ (void)reportModelDeletionForType:(unint64_t)a3
++ (void)reportModelDeletionForType:(unint64_t)type
 {
   v3 = @"com.apple.searchd.models.deletion.experimental";
-  if (a3 != 2)
+  if (type != 2)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = @"com.apple.searchd.models.deletion.default";
   }
@@ -56,9 +56,9 @@
   }
 }
 
-+ (void)reportBadDirectivesForModelType:(unint64_t)a3
++ (void)reportBadDirectivesForModelType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0;
   }

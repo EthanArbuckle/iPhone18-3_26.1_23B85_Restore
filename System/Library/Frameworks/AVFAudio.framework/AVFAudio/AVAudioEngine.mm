@@ -40,7 +40,7 @@
 - (void)pause;
 - (void)prepare;
 - (void)reset;
-- (void)setAudioSession:(id)a3;
+- (void)setAudioSession:(id)session;
 - (void)setAutoShutdownEnabled:(BOOL)autoShutdownEnabled;
 - (void)setMusicSequence:(MusicSequence)musicSequence;
 - (void)stop;
@@ -404,15 +404,15 @@
   std::recursive_mutex::unlock((impl + 112));
 }
 
-- (void)setAudioSession:(id)a3
+- (void)setAudioSession:(id)session
 {
   v31 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
   std::recursive_mutex::lock((impl + 112));
   v6 = self->_impl;
-  if (a3)
+  if (session)
   {
-    v10 = [a3 opaqueSessionID];
+    opaqueSessionID = [session opaqueSessionID];
     if (*(*(v6 + 1) + 187) == 1)
     {
       if (AVAudioEngineLogCategory(void)::once != -1)
@@ -431,7 +431,7 @@
         v27 = 2048;
         v28 = v12;
         v29 = 1024;
-        v30 = v10;
+        v30 = opaqueSessionID;
         v13 = "%25s:%-5d Engine@%p: not associating with an audio session (0x%x) in manual rendering mode";
 LABEL_17:
         v16 = v11;
@@ -444,7 +444,7 @@ LABEL_17:
     else
     {
       v19 = *(v6 + 2);
-      if (v19 && [v19 opaqueSessionID] == v10)
+      if (v19 && [v19 opaqueSessionID] == opaqueSessionID)
       {
         if (AVAudioEngineLogCategory(void)::once != -1)
         {
@@ -462,7 +462,7 @@ LABEL_17:
           v27 = 2048;
           v28 = v20;
           v29 = 1024;
-          v30 = v10;
+          v30 = opaqueSessionID;
           v13 = "%25s:%-5d Engine@%p: already associated with audio session (0x%x), no-op";
           goto LABEL_17;
         }
@@ -473,7 +473,7 @@ LABEL_17:
         v21 = *(v6 + 7);
         if (v21)
         {
-          if (AVAudioIOUnit::OverrideAudioSession(v21, a3))
+          if (AVAudioIOUnit::OverrideAudioSession(v21, session))
           {
             goto LABEL_24;
           }
@@ -481,10 +481,10 @@ LABEL_17:
 
         else
         {
-          AVAudioEngineImpl::GetIOUnit(v6, a3, v7, v8, v9);
+          AVAudioEngineImpl::GetIOUnit(v6, session, v7, v8, v9);
         }
 
-        *(v6 + 2) = a3;
+        *(v6 + 2) = session;
       }
     }
   }
@@ -626,16 +626,16 @@ LABEL_24:
   v4 = self->_impl;
   if (*(*(v4 + 1) + 187) == 1)
   {
-    v5 = [AVAudioEngineImpl::GetOutputNode(v4) manualRenderingMaximumFrameCount];
+    manualRenderingMaximumFrameCount = [AVAudioEngineImpl::GetOutputNode(v4) manualRenderingMaximumFrameCount];
   }
 
   else
   {
-    v5 = 0;
+    manualRenderingMaximumFrameCount = 0;
   }
 
   std::recursive_mutex::unlock((impl + 112));
-  return v5;
+  return manualRenderingMaximumFrameCount;
 }
 
 - (AVAudioFormat)manualRenderingFormat
@@ -658,12 +658,12 @@ LABEL_24:
 
 - (BOOL)isInManualRenderingMode
 {
-  v2 = self;
+  selfCopy = self;
   impl = self->_impl;
   std::recursive_mutex::lock((impl + 112));
-  LOBYTE(v2) = *(*(v2->_impl + 1) + 187);
+  LOBYTE(selfCopy) = *(*(selfCopy->_impl + 1) + 187);
   std::recursive_mutex::unlock((impl + 112));
-  return v2;
+  return selfCopy;
 }
 
 - (void)setAutoShutdownEnabled:(BOOL)autoShutdownEnabled
@@ -1008,11 +1008,11 @@ LABEL_25:
             v26 = (*v22)();
             if (v26)
             {
-              v27 = [v26 streamDescription];
-              v28 = *(v27 + 16);
-              *&v75.var0 = *v27;
+              streamDescription = [v26 streamDescription];
+              v28 = *(streamDescription + 16);
+              *&v75.var0 = *streamDescription;
               *&v75.var3 = v28;
-              *&v75.var7 = *(v27 + 32);
+              *&v75.var7 = *(streamDescription + 32);
             }
           }
 
@@ -1105,11 +1105,11 @@ LABEL_41:
             v44 = (*v40)();
             if (v44)
             {
-              v45 = [v44 streamDescription];
-              v46 = *(v45 + 16);
-              *&v75.var0 = *v45;
+              streamDescription2 = [v44 streamDescription];
+              v46 = *(streamDescription2 + 16);
+              *&v75.var0 = *streamDescription2;
               *&v75.var3 = v46;
-              *&v75.var7 = *(v45 + 32);
+              *&v75.var7 = *(streamDescription2 + 32);
             }
           }
 
@@ -1334,15 +1334,15 @@ LABEL_51:
     v4 = *AVAudioEngineLogCategory(void)::category;
     if (os_log_type_enabled(*AVAudioEngineLogCategory(void)::category, OS_LOG_TYPE_ERROR))
     {
-      v5 = [(NSError *)v7 code];
+      code = [(NSError *)v7 code];
       *buf = 136315906;
       v9 = "AVAudioEngine.mm";
       v10 = 1024;
       v11 = 192;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       v14 = 1024;
-      v15 = v5;
+      v15 = code;
       _os_log_impl(&dword_1BA5AC000, v4, OS_LOG_TYPE_ERROR, "%25s:%-5d Engine@%p: could not initialize, error = %d", buf, 0x22u);
     }
   }
@@ -1577,8 +1577,8 @@ LABEL_25:
     [MEMORY[0x1E695DF30] raise:@"com.apple.coreaudio.avfaudio" format:{@"required condition is false: %s", "inAVNode"}];
   }
 
-  v12 = [(AVAudioNode *)node impl];
-  if (!v12)
+  impl = [(AVAudioNode *)node impl];
+  if (!impl)
   {
     if (AVAudioEngineLogCategory(void)::once != -1)
     {
@@ -1608,7 +1608,7 @@ LABEL_25:
 
   v14 = *v10;
   std::recursive_mutex::lock((*v10 + 112));
-  if (!AVAudioEngineGraph::IsNodeInGraph(v10, v12))
+  if (!AVAudioEngineGraph::IsNodeInGraph(v10, impl))
   {
     if (AVAudioEngineLogCategory(void)::once != -1)
     {
@@ -1636,7 +1636,7 @@ LABEL_25:
     [MEMORY[0x1E695DF30] raise:@"com.apple.coreaudio.avfaudio" format:{@"required condition is false: %s", "IsNodeInGraph(inImpl)"}];
   }
 
-  NodeFromMap = AVAudioEngineGraph::GetNodeFromMap(v10, v12);
+  NodeFromMap = AVAudioEngineGraph::GetNodeFromMap(v10, impl);
   v24 = &v24;
   v25 = &v24;
   v26 = 0;
@@ -1838,8 +1838,8 @@ LABEL_25:
     [MEMORY[0x1E695DF30] raise:@"com.apple.coreaudio.avfaudio" format:{@"required condition is false: %s", "inAVNode"}];
   }
 
-  v12 = [(AVAudioNode *)node impl];
-  if (!v12)
+  impl = [(AVAudioNode *)node impl];
+  if (!impl)
   {
     if (AVAudioEngineLogCategory(void)::once != -1)
     {
@@ -1869,7 +1869,7 @@ LABEL_25:
 
   v14 = *v10;
   std::recursive_mutex::lock((*v10 + 112));
-  if (!AVAudioEngineGraph::IsNodeInGraph(v10, v12))
+  if (!AVAudioEngineGraph::IsNodeInGraph(v10, impl))
   {
     if (AVAudioEngineLogCategory(void)::once != -1)
     {
@@ -1897,7 +1897,7 @@ LABEL_25:
     [MEMORY[0x1E695DF30] raise:@"com.apple.coreaudio.avfaudio" format:{@"required condition is false: %s", "IsNodeInGraph(inImpl)"}];
   }
 
-  NodeFromMap = AVAudioEngineGraph::GetNodeFromMap(v10, v12);
+  NodeFromMap = AVAudioEngineGraph::GetNodeFromMap(v10, impl);
   v24 = &v24;
   v25 = &v24;
   v26 = 0;
@@ -2101,8 +2101,8 @@ LABEL_25:
     [MEMORY[0x1E695DF30] raise:@"com.apple.coreaudio.avfaudio" format:{@"required condition is false: %s", "inSrcAVNode"}];
   }
 
-  v15 = [(AVAudioNode *)node impl];
-  if (!v15)
+  impl = [(AVAudioNode *)node impl];
+  if (!impl)
   {
     if (AVAudioEngineLogCategory(void)::once != -1)
     {
@@ -2130,10 +2130,10 @@ LABEL_25:
     [MEMORY[0x1E695DF30] raise:@"com.apple.coreaudio.avfaudio" format:{@"required condition is false: %s", "inSrcImpl"}];
   }
 
-  v17 = (*(*v15 + 240))(v15, bus);
+  v17 = (*(*impl + 240))(impl, bus);
   v18 = *v13;
   std::recursive_mutex::lock((*v13 + 112));
-  if (!AVAudioEngineGraph::IsNodeInGraph(v13, v15))
+  if (!AVAudioEngineGraph::IsNodeInGraph(v13, impl))
   {
     if (AVAudioEngineLogCategory(void)::once != -1)
     {
@@ -2161,7 +2161,7 @@ LABEL_25:
     [MEMORY[0x1E695DF30] raise:@"com.apple.coreaudio.avfaudio" format:{@"required condition is false: %s", "IsNodeInGraph(inSrcImpl)"}];
   }
 
-  NodeFromMap = AVAudioEngineGraph::GetNodeFromMap(v13, v15);
+  NodeFromMap = AVAudioEngineGraph::GetNodeFromMap(v13, impl);
   *buf = 0;
   *&buf[8] = -1;
   if ((*(*NodeFromMap + 40))(NodeFromMap, 0, v17, buf))
@@ -2322,8 +2322,8 @@ LABEL_25:
     [MEMORY[0x1E695DF30] raise:@"com.apple.coreaudio.avfaudio" format:{@"required condition is false: %s", "inDestAVNode"}];
   }
 
-  v15 = [(AVAudioNode *)node impl];
-  if (!v15)
+  impl = [(AVAudioNode *)node impl];
+  if (!impl)
   {
     if (AVAudioEngineLogCategory(void)::once != -1)
     {
@@ -2351,8 +2351,8 @@ LABEL_25:
     [MEMORY[0x1E695DF30] raise:@"com.apple.coreaudio.avfaudio" format:{@"required condition is false: %s", "inDestImpl"}];
   }
 
-  v17 = (*(*v15 + 240))(v15, bus);
-  v18 = AVAudioEngineGraph::_DisconnectInput(v13, v15, v17);
+  v17 = (*(*impl + 240))(impl, bus);
+  v18 = AVAudioEngineGraph::_DisconnectInput(v13, impl, v17);
   if (v18)
   {
     if (AVAudioEngineLogCategory(void)::once != -1)
@@ -2404,15 +2404,15 @@ LABEL_25:
   v10 = self->_impl;
   if (node2 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v11 = [(AVAudioNode *)node2 nextAvailableInputBus];
+    nextAvailableInputBus = [(AVAudioNode *)node2 nextAvailableInputBus];
   }
 
   else
   {
-    v11 = 0;
+    nextAvailableInputBus = 0;
   }
 
-  AVAudioEngineImpl::Connect(v10, node1, node2, 0, v11, format);
+  AVAudioEngineImpl::Connect(v10, node1, node2, 0, nextAvailableInputBus, format);
 
   std::recursive_mutex::unlock((impl + 112));
 }
@@ -2484,8 +2484,8 @@ LABEL_25:
   if (v5)
   {
     v6 = *(*(v4 + 1) + 187);
-    v7 = [*(v4 + 4) isInManualRenderingMode];
-    if ((v7 & v6) == 1)
+    isInManualRenderingMode = [*(v4 + 4) isInManualRenderingMode];
+    if ((isInManualRenderingMode & v6) == 1)
     {
       if ([v5 manualRenderingMode] == *(*(v4 + 1) + 192))
       {
@@ -2493,7 +2493,7 @@ LABEL_25:
       }
     }
 
-    else if (v7 == v6)
+    else if (isInManualRenderingMode == v6)
     {
       goto LABEL_12;
     }
@@ -2595,13 +2595,13 @@ LABEL_12:
 
     while (1)
     {
-      v7 = [*(impl + 3) anyObject];
-      if (!v7)
+      anyObject = [*(impl + 3) anyObject];
+      if (!anyObject)
       {
         break;
       }
 
-      AVAudioEngineImpl::DetachNode(impl, v7, 0, &v12);
+      AVAudioEngineImpl::DetachNode(impl, anyObject, 0, &v12);
     }
 
     std::recursive_mutex::lock((impl + 112));

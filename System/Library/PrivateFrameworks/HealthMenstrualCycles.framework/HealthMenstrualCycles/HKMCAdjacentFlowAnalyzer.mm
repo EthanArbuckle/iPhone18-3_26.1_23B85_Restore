@@ -1,31 +1,31 @@
 @interface HKMCAdjacentFlowAnalyzer
 - ($0AC6E346AE4835514AAA8AC86D8F4844)flowDayIndexRange;
-- (HKMCAdjacentFlowAnalyzer)initWithFlowDayIndex:(int64_t)a3;
-- (void)addNextAscendingDay:(id)a3 shouldStop:(BOOL *)a4;
-- (void)addNextDescendingDay:(id)a3 shouldStop:(BOOL *)a4;
+- (HKMCAdjacentFlowAnalyzer)initWithFlowDayIndex:(int64_t)index;
+- (void)addNextAscendingDay:(id)day shouldStop:(BOOL *)stop;
+- (void)addNextDescendingDay:(id)day shouldStop:(BOOL *)stop;
 @end
 
 @implementation HKMCAdjacentFlowAnalyzer
 
-- (HKMCAdjacentFlowAnalyzer)initWithFlowDayIndex:(int64_t)a3
+- (HKMCAdjacentFlowAnalyzer)initWithFlowDayIndex:(int64_t)index
 {
   v5.receiver = self;
   v5.super_class = HKMCAdjacentFlowAnalyzer;
   result = [(HKMCAdjacentFlowAnalyzer *)&v5 init];
   if (result)
   {
-    result->_flowDayIndex = a3;
-    result->_futureFlowDay = a3;
-    result->_pastFlowDay = a3;
+    result->_flowDayIndex = index;
+    result->_futureFlowDay = index;
+    result->_pastFlowDay = index;
   }
 
   return result;
 }
 
-- (void)addNextAscendingDay:(id)a3 shouldStop:(BOOL *)a4
+- (void)addNextAscendingDay:(id)day shouldStop:(BOOL *)stop
 {
-  v8 = a3;
-  if ([v8 dayIndex] <= self->_futureFlowDay)
+  dayCopy = day;
+  if ([dayCopy dayIndex] <= self->_futureFlowDay)
   {
     [HKMCAdjacentFlowAnalyzer addNextAscendingDay:a2 shouldStop:self];
   }
@@ -36,39 +36,39 @@
     goto LABEL_4;
   }
 
-  if (([v8 isFetched] & 1) == 0)
+  if (([dayCopy isFetched] & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  if ([v8 hasFlow])
+  if ([dayCopy hasFlow])
   {
-    self->_futureFlowDay = [v8 dayIndex];
+    self->_futureFlowDay = [dayCopy dayIndex];
     LOBYTE(unsuitableForRange) = 1;
 LABEL_4:
-    *a4 = unsuitableForRange;
+    *stop = unsuitableForRange;
     goto LABEL_10;
   }
 
-  if (![v8 hasConfirmedNoFlow])
+  if (![dayCopy hasConfirmedNoFlow])
   {
-    *a4 = 0;
+    *stop = 0;
   }
 
   else
   {
 LABEL_9:
-    *a4 = 1;
+    *stop = 1;
     self->_unsuitableForRange = 1;
   }
 
 LABEL_10:
 }
 
-- (void)addNextDescendingDay:(id)a3 shouldStop:(BOOL *)a4
+- (void)addNextDescendingDay:(id)day shouldStop:(BOOL *)stop
 {
-  v8 = a3;
-  if ([v8 dayIndex] >= self->_pastFlowDay)
+  dayCopy = day;
+  if ([dayCopy dayIndex] >= self->_pastFlowDay)
   {
     [HKMCAdjacentFlowAnalyzer addNextDescendingDay:a2 shouldStop:self];
   }
@@ -79,29 +79,29 @@ LABEL_10:
     goto LABEL_4;
   }
 
-  if (([v8 isFetched] & 1) == 0)
+  if (([dayCopy isFetched] & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  if ([v8 hasFlow])
+  if ([dayCopy hasFlow])
   {
-    self->_pastFlowDay = [v8 dayIndex];
+    self->_pastFlowDay = [dayCopy dayIndex];
     LOBYTE(unsuitableForRange) = 1;
 LABEL_4:
-    *a4 = unsuitableForRange;
+    *stop = unsuitableForRange;
     goto LABEL_10;
   }
 
-  if (![v8 hasConfirmedNoFlow])
+  if (![dayCopy hasConfirmedNoFlow])
   {
-    *a4 = 0;
+    *stop = 0;
   }
 
   else
   {
 LABEL_9:
-    *a4 = 1;
+    *stop = 1;
     self->_unsuitableForRange = 1;
   }
 

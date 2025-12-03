@@ -1,28 +1,28 @@
 @interface MCMCommandOperationDelete
-+ (BOOL)deleteContainerRootURL:(id)a3 userIdentity:(id)a4 containerClass:(unint64_t)a5 containerPathIdentifier:(id)a6 preferDirectDelete:(BOOL)a7 error:(id *)a8;
++ (BOOL)deleteContainerRootURL:(id)l userIdentity:(id)identity containerClass:(unint64_t)class containerPathIdentifier:(id)identifier preferDirectDelete:(BOOL)delete error:(id *)error;
 + (Class)incomingMessageClass;
 + (unint64_t)command;
-- (BOOL)_writeDeleteManifestsForItems:(id)a3 error:(id *)a4;
+- (BOOL)_writeDeleteManifestsForItems:(id)items error:(id *)error;
 - (BOOL)preflightClientAllowed;
 - (BOOL)removeAllCodeSignInfo;
 - (BOOL)waitForDiskSpaceReclaim;
-- (MCMCommandOperationDelete)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5;
+- (MCMCommandOperationDelete)initWithMessage:(id)message context:(id)context reply:(id)reply;
 - (MCMXPCMessageOperationDelete)message;
 - (NSArray)concreteContainerIdentities;
 - (NSArray)containerIdentities;
 - (NSMutableSet)manifests;
-- (id)_codeSignIdentifiersToRemoveFor:(id)a3 amendingCumulativeIdentifiers:(id)a4;
+- (id)_codeSignIdentifiersToRemoveFor:(id)for amendingCumulativeIdentifiers:(id)identifiers;
 - (id)_containerIdentities;
-- (id)_containersToDeleteRecursivelyStartingWithContainerIdentities:(id)a3 error:(id *)a4;
-- (id)_deleteManifest:(id)a3;
-- (id)_getManifestWithContainerIdentity:(id)a3;
-- (id)_getOrCreateManifestWithContainerIdentity:(id)a3;
-- (id)_groupContainersToDeleteWhenReconcilingRemovalOfIdentifiers:(id)a3;
-- (id)_initWithContainerIdentities:(id)a3 manifests:(id)a4 waitForDiskSpaceReclaim:(BOOL)a5 removeAllCodeSignInfo:(BOOL)a6 context:(id)a7 resultPromise:(id)a8;
-- (id)_replyFromRelayToDaemonWithContainerIdentities:(id)a3;
-- (void)_deleteManifestForContainerIdentity:(id)a3;
-- (void)_relayContainerIdentities:(id)a3 andAmendResult:(id)a4;
-- (void)_routeContainersToHandle:(id *)a3 toRelay:(id *)a4;
+- (id)_containersToDeleteRecursivelyStartingWithContainerIdentities:(id)identities error:(id *)error;
+- (id)_deleteManifest:(id)manifest;
+- (id)_getManifestWithContainerIdentity:(id)identity;
+- (id)_getOrCreateManifestWithContainerIdentity:(id)identity;
+- (id)_groupContainersToDeleteWhenReconcilingRemovalOfIdentifiers:(id)identifiers;
+- (id)_initWithContainerIdentities:(id)identities manifests:(id)manifests waitForDiskSpaceReclaim:(BOOL)reclaim removeAllCodeSignInfo:(BOOL)info context:(id)context resultPromise:(id)promise;
+- (id)_replyFromRelayToDaemonWithContainerIdentities:(id)identities;
+- (void)_deleteManifestForContainerIdentity:(id)identity;
+- (void)_relayContainerIdentities:(id)identities andAmendResult:(id)result;
+- (void)_routeContainersToHandle:(id *)handle toRelay:(id *)relay;
 - (void)execute;
 @end
 
@@ -76,20 +76,20 @@
   return result;
 }
 
-- (BOOL)_writeDeleteManifestsForItems:(id)a3 error:(id *)a4
+- (BOOL)_writeDeleteManifestsForItems:(id)items error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v37 objects:v36 count:16];
+  itemsCopy = items;
+  v6 = [itemsCopy countByEnumeratingWithState:&v37 objects:v36 count:16];
   if (v6)
   {
     v7 = v6;
-    v28 = a4;
-    obj = v5;
+    errorCopy = error;
+    obj = itemsCopy;
     v8 = 0;
     v9 = *v38;
     while (2)
@@ -104,17 +104,17 @@
         }
 
         v12 = *(*(&v37 + 1) + 8 * v10);
-        v13 = [v12 cacheEntry];
-        v14 = [v13 containerPath];
-        v15 = [v14 userIdentity];
+        cacheEntry = [v12 cacheEntry];
+        containerPath = [cacheEntry containerPath];
+        userIdentity = [containerPath userIdentity];
 
-        v16 = [(MCMCommand *)self context];
-        v17 = [v16 userIdentityCache];
-        v18 = [v17 libraryRepairForUserIdentity:v15];
+        context = [(MCMCommand *)self context];
+        userIdentityCache = [context userIdentityCache];
+        v18 = [userIdentityCache libraryRepairForUserIdentity:userIdentity];
 
-        v19 = [v12 manifest];
+        manifest = [v12 manifest];
         v31 = v11;
-        v20 = [v19 deleteManifestAfterWritingUsingLibraryRepairForUser:v18 error:&v31];
+        v20 = [manifest deleteManifestAfterWritingUsingLibraryRepairForUser:v18 error:&v31];
         v8 = v31;
 
         v21 = v20 != 0;
@@ -123,16 +123,16 @@
           v22 = container_log_handle_for_category();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
-            v26 = [v12 cacheEntry];
-            v27 = [v26 containerIdentity];
+            cacheEntry2 = [v12 cacheEntry];
+            containerIdentity = [cacheEntry2 containerIdentity];
             *buf = 138412546;
             v33 = v8;
             v34 = 2112;
-            v35 = v27;
+            v35 = containerIdentity;
             _os_log_error_impl(&dword_1DF2C3000, v22, OS_LOG_TYPE_ERROR, "Failed to write delete manifest; error = %@, identity = %@", buf, 0x16u);
           }
 
-          v5 = obj;
+          itemsCopy = obj;
           goto LABEL_13;
         }
 
@@ -143,7 +143,7 @@
       }
 
       while (v7 != v10);
-      v5 = obj;
+      itemsCopy = obj;
       v7 = [obj countByEnumeratingWithState:&v37 objects:v36 count:16];
       if (v7)
       {
@@ -155,10 +155,10 @@
 
 LABEL_13:
 
-    if (v28 && v8)
+    if (errorCopy && v8)
     {
       v23 = v8;
-      *v28 = v8;
+      *errorCopy = v8;
     }
   }
 
@@ -173,26 +173,26 @@ LABEL_13:
   return v21;
 }
 
-- (void)_deleteManifestForContainerIdentity:(id)a3
+- (void)_deleteManifestForContainerIdentity:(id)identity
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v4 = [(MCMCommandOperationDelete *)self manifests];
-  v5 = [v4 count];
+  identityCopy = identity;
+  manifests = [(MCMCommandOperationDelete *)self manifests];
+  v5 = [manifests count];
 
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(MCMCommandOperationDelete *)self _getManifestWithContainerIdentity:v10];
+      v6 = [(MCMCommandOperationDelete *)self _getManifestWithContainerIdentity:identityCopy];
       if (v6)
       {
         v7 = [(MCMCommandOperationDelete *)self _deleteManifest:v6];
         if (v7)
         {
-          v8 = [(MCMCommandOperationDelete *)self manifests];
-          [v8 removeObject:v6];
+          manifests2 = [(MCMCommandOperationDelete *)self manifests];
+          [manifests2 removeObject:v6];
         }
       }
     }
@@ -201,29 +201,29 @@ LABEL_13:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_deleteManifest:(id)a3
+- (id)_deleteManifest:(id)manifest
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MCMCommand *)self context];
-  v6 = [v5 userIdentityCache];
-  v7 = [v4 concreteContainerIdentity];
-  v8 = [v7 userIdentity];
-  v9 = [v6 libraryRepairForUserIdentity:v8];
+  manifestCopy = manifest;
+  context = [(MCMCommand *)self context];
+  userIdentityCache = [context userIdentityCache];
+  concreteContainerIdentity = [manifestCopy concreteContainerIdentity];
+  userIdentity = [concreteContainerIdentity userIdentity];
+  v9 = [userIdentityCache libraryRepairForUserIdentity:userIdentity];
 
   v16 = 0;
-  v10 = [v4 deleteManifestAfterRemovingUsingLibraryRepairForUser:v9 error:&v16];
+  v10 = [manifestCopy deleteManifestAfterRemovingUsingLibraryRepairForUser:v9 error:&v16];
   v11 = v16;
   if (!v10)
   {
     v12 = container_log_handle_for_category();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v15 = [v4 concreteContainerIdentity];
+      concreteContainerIdentity2 = [manifestCopy concreteContainerIdentity];
       *buf = 138412546;
       v18 = v11;
       v19 = 2112;
-      v20 = v15;
+      v20 = concreteContainerIdentity2;
       _os_log_error_impl(&dword_1DF2C3000, v12, OS_LOG_TYPE_ERROR, "Could not remove delete manifest; error = %@, identity = %@", buf, 0x16u);
     }
   }
@@ -233,17 +233,17 @@ LABEL_13:
   return v10;
 }
 
-- (id)_getOrCreateManifestWithContainerIdentity:(id)a3
+- (id)_getOrCreateManifestWithContainerIdentity:(id)identity
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MCMCommandOperationDelete *)self _getManifestWithContainerIdentity:v4];
+  identityCopy = identity;
+  v5 = [(MCMCommandOperationDelete *)self _getManifestWithContainerIdentity:identityCopy];
   if (!v5)
   {
     v6 = [MCMDeleteManifest alloc];
-    v7 = [(MCMCommand *)self context];
-    v8 = [v7 userIdentityCache];
-    v5 = [(MCMDeleteManifest *)v6 initWithConcreteContainerIdentity:v4 userIdentityCache:v8];
+    context = [(MCMCommand *)self context];
+    userIdentityCache = [context userIdentityCache];
+    v5 = [(MCMDeleteManifest *)v6 initWithConcreteContainerIdentity:identityCopy userIdentityCache:userIdentityCache];
   }
 
   v9 = *MEMORY[0x1E69E9840];
@@ -251,16 +251,16 @@ LABEL_13:
   return v5;
 }
 
-- (id)_getManifestWithContainerIdentity:(id)a3
+- (id)_getManifestWithContainerIdentity:(id)identity
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identityCopy = identity;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(MCMCommandOperationDelete *)self manifests];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v14 count:16];
+  manifests = [(MCMCommandOperationDelete *)self manifests];
+  v6 = [manifests countByEnumeratingWithState:&v15 objects:v14 count:16];
   if (v6)
   {
     v7 = *v16;
@@ -270,12 +270,12 @@ LABEL_13:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(manifests);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 concreteContainerIdentity];
-        v11 = [v10 isEqualToContainerIdentity:v4];
+        concreteContainerIdentity = [v9 concreteContainerIdentity];
+        v11 = [concreteContainerIdentity isEqualToContainerIdentity:identityCopy];
 
         if (v11)
         {
@@ -284,7 +284,7 @@ LABEL_13:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v15 objects:v14 count:16];
+      v6 = [manifests countByEnumeratingWithState:&v15 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -301,17 +301,17 @@ LABEL_11:
   return v6;
 }
 
-- (id)_groupContainersToDeleteWhenReconcilingRemovalOfIdentifiers:(id)a3
+- (id)_groupContainersToDeleteWhenReconcilingRemovalOfIdentifiers:(id)identifiers
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v26 = objc_opt_new();
   v5 = [gCodeSigningMapping copyReferenceCountSetForContainerClass:7];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v4;
+  obj = identifiersCopy;
   v24 = [obj countByEnumeratingWithState:&v42 objects:v41 count:16];
   if (v24)
   {
@@ -368,8 +368,8 @@ LABEL_11:
 
               else
               {
-                v17 = [(MCMCommand *)self context];
-                v18 = [v17 userIdentityCache];
+                context = [(MCMCommand *)self context];
+                userIdentityCache = [context userIdentityCache];
                 v27[0] = MEMORY[0x1E69E9820];
                 v27[1] = 3221225472;
                 v27[2] = __89__MCMCommandOperationDelete__groupContainersToDeleteWhenReconcilingRemovalOfIdentifiers___block_invoke;
@@ -379,7 +379,7 @@ LABEL_11:
                 v29 = 7;
                 v27[6] = v7;
                 v28 = v26;
-                [v18 forEachAccessibleUserIdentitySynchronouslyExecuteBlock:v27];
+                [userIdentityCache forEachAccessibleUserIdentitySynchronouslyExecuteBlock:v27];
               }
             }
 
@@ -461,48 +461,48 @@ void __89__MCMCommandOperationDelete__groupContainersToDeleteWhenReconcilingRemo
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_containersToDeleteRecursivelyStartingWithContainerIdentities:(id)a3 error:(id *)a4
+- (id)_containersToDeleteRecursivelyStartingWithContainerIdentities:(id)identities error:(id *)error
 {
   v46 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v5, "count")}];
-  v7 = [v5 allObjects];
-  v8 = [v7 mutableCopy];
+  identitiesCopy = identities;
+  v6 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(identitiesCopy, "count")}];
+  allObjects = [identitiesCopy allObjects];
+  v8 = [allObjects mutableCopy];
 
-  v35 = v5;
-  v9 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v5, "count")}];
+  v35 = identitiesCopy;
+  v9 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(identitiesCopy, "count")}];
   v39 = [MEMORY[0x1E695DFA8] set];
   v37 = v8;
   v38 = v9;
-  v36 = self;
+  selfCopy = self;
   while (1)
   {
-    v10 = [v8 lastObject];
+    lastObject = [v8 lastObject];
     [v8 removeLastObject];
-    if (v10)
+    if (lastObject)
     {
       do
       {
-        v11 = [v10 containerIdentity];
-        v12 = [v9 containsObject:v11];
+        containerIdentity = [lastObject containerIdentity];
+        v12 = [v9 containsObject:containerIdentity];
 
         if ((v12 & 1) == 0)
         {
-          v13 = [v10 containerIdentity];
-          [v9 addObject:v13];
+          containerIdentity2 = [lastObject containerIdentity];
+          [v9 addObject:containerIdentity2];
 
-          v14 = [(MCMCommand *)self context];
-          v15 = [v14 containerCache];
+          context = [(MCMCommand *)self context];
+          containerCache = [context containerCache];
           v41 = 0;
-          v16 = [v15 entryForContainerIdentity:v10 error:&v41];
+          v16 = [containerCache entryForContainerIdentity:lastObject error:&v41];
           v40 = v41;
 
           if (v16 && ([v16 metadataMinimal], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
           {
             v18 = v17;
             v19 = [(MCMCommandOperationDelete *)self _codeSignIdentifiersToRemoveFor:v17 amendingCumulativeIdentifiers:v39];
-            v20 = [v16 containerIdentity];
-            v21 = [(MCMCommandOperationDelete *)self _getOrCreateManifestWithContainerIdentity:v20];
+            containerIdentity3 = [v16 containerIdentity];
+            v21 = [(MCMCommandOperationDelete *)self _getOrCreateManifestWithContainerIdentity:containerIdentity3];
 
             do
             {
@@ -517,21 +517,21 @@ void __89__MCMCommandOperationDelete__groupContainersToDeleteWhenReconcilingRemo
                 v23 = container_log_handle_for_category();
                 if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
                 {
-                  v25 = [v18 shortDescription];
+                  shortDescription = [v18 shortDescription];
                   *buf = 138412290;
-                  v43 = v25;
+                  v43 = shortDescription;
                   _os_log_error_impl(&dword_1DF2C3000, v23, OS_LOG_TYPE_ERROR, "Could not create delete item; metadata = %@", buf, 0xCu);
                 }
               }
 
-              v24 = [v16 next];
+              next = [v16 next];
 
-              v16 = v24;
+              v16 = next;
             }
 
-            while (v24);
+            while (next);
 
-            self = v36;
+            self = selfCopy;
             v8 = v37;
             v9 = v38;
             v27 = v40;
@@ -546,24 +546,24 @@ void __89__MCMCommandOperationDelete__groupContainersToDeleteWhenReconcilingRemo
               *buf = 138412546;
               v43 = v40;
               v44 = 2112;
-              v45 = v10;
+              v45 = lastObject;
               _os_log_error_impl(&dword_1DF2C3000, v26, OS_LOG_TYPE_ERROR, "Could not find container from container identity queued for delete; error = %@, identity = %@", buf, 0x16u);
             }
 
             if ([v40 type] == 21)
             {
-              [(MCMCommandOperationDelete *)self _deleteManifestForContainerIdentity:v10];
+              [(MCMCommandOperationDelete *)self _deleteManifestForContainerIdentity:lastObject];
             }
           }
         }
 
-        v28 = [v8 lastObject];
+        lastObject2 = [v8 lastObject];
 
         [v8 removeLastObject];
-        v10 = v28;
+        lastObject = lastObject2;
       }
 
-      while (v28);
+      while (lastObject2);
     }
 
     if (!v39)
@@ -586,8 +586,8 @@ void __89__MCMCommandOperationDelete__groupContainersToDeleteWhenReconcilingRemo
       goto LABEL_28;
     }
 
-    v31 = [v29 allObjects];
-    [v8 addObjectsFromArray:v31];
+    allObjects2 = [v29 allObjects];
+    [v8 addObjectsFromArray:allObjects2];
 
     v9 = v38;
     v39 = v30;
@@ -602,26 +602,26 @@ LABEL_28:
   return v32;
 }
 
-- (id)_codeSignIdentifiersToRemoveFor:(id)a3 amendingCumulativeIdentifiers:(id)a4
+- (id)_codeSignIdentifiersToRemoveFor:(id)for amendingCumulativeIdentifiers:(id)identifiers
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 containerClass];
-  if (v8 > 0xB || ((1 << v8) & 0xED4) == 0)
+  forCopy = for;
+  identifiersCopy = identifiers;
+  containerClass = [forCopy containerClass];
+  if (containerClass > 0xB || ((1 << containerClass) & 0xED4) == 0)
   {
     goto LABEL_8;
   }
 
-  v10 = [v6 containerClass];
+  containerClass2 = [forCopy containerClass];
   v11 = 0;
   v12 = 0;
-  if (v10 != 7 && v10 != 13)
+  if (containerClass2 != 7 && containerClass2 != 13)
   {
-    v13 = [(MCMCommand *)self context];
-    v14 = [v13 containerCache];
-    v15 = [v6 containerIdentity];
-    v16 = [v14 countContainersForOtherUserIdentitiesWithIdentity:v15 error:0];
+    context = [(MCMCommand *)self context];
+    containerCache = [context containerCache];
+    containerIdentity = [forCopy containerIdentity];
+    v16 = [containerCache countContainersForOtherUserIdentitiesWithIdentity:containerIdentity error:0];
 
     if (v16)
     {
@@ -633,12 +633,12 @@ LABEL_9:
     }
 
     v20 = MEMORY[0x1E695DFA8];
-    v21 = [v6 identifier];
-    v12 = [v20 setWithObject:v21];
+    identifier = [forCopy identifier];
+    v12 = [v20 setWithObject:identifier];
 
-    v22 = [gCodeSigningMapping childParentMapCache];
-    v23 = [v6 identifier];
-    v24 = [v22 childBundleIdentifiersForParentIdentifier:v23];
+    childParentMapCache = [gCodeSigningMapping childParentMapCache];
+    identifier2 = [forCopy identifier];
+    v24 = [childParentMapCache childBundleIdentifiersForParentIdentifier:identifier2];
 
     if (v24)
     {
@@ -651,24 +651,24 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    if ([v6 transient])
+    if ([forCopy transient])
     {
       v44 = 1;
-      v25 = [v6 userIdentity];
-      v26 = [v6 identifier];
-      v41 = [v6 containerIdentity];
-      v27 = [v41 containerConfig];
-      v28 = [v6 platform];
-      v29 = [(MCMCommand *)self context];
-      v30 = [v29 userIdentityCache];
-      v31 = [MCMContainerIdentity containerIdentityWithUserIdentity:v25 identifier:v26 containerConfig:v27 platform:v28 transient:0 userIdentityCache:v30 error:&v44];
+      userIdentity = [forCopy userIdentity];
+      identifier3 = [forCopy identifier];
+      containerIdentity2 = [forCopy containerIdentity];
+      containerConfig = [containerIdentity2 containerConfig];
+      platform = [forCopy platform];
+      context2 = [(MCMCommand *)self context];
+      userIdentityCache = [context2 userIdentityCache];
+      v31 = [MCMContainerIdentity containerIdentityWithUserIdentity:userIdentity identifier:identifier3 containerConfig:containerConfig platform:platform transient:0 userIdentityCache:userIdentityCache error:&v44];
 
       if (v31)
       {
-        v32 = [(MCMCommand *)self context];
-        v33 = [v32 containerCache];
+        context3 = [(MCMCommand *)self context];
+        containerCache2 = [context3 containerCache];
         v43 = 0;
-        v34 = [v33 entryForContainerIdentity:v31 error:&v43];
+        v34 = [containerCache2 entryForContainerIdentity:v31 error:&v43];
         v35 = v43;
 
         if (v34)
@@ -682,9 +682,9 @@ LABEL_9:
             v37 = container_log_handle_for_category();
             if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
             {
-              v40 = [v6 identifier];
+              identifier4 = [forCopy identifier];
               *buf = 138412546;
-              v46 = v40;
+              v46 = identifier4;
               v47 = 2112;
               v48 = 0;
               _os_log_debug_impl(&dword_1DF2C3000, v37, OS_LOG_TYPE_DEBUG, "Skipping removal of code sign mapping since container to be deleted [%@] is transient and there's a permanent one; error = %@", buf, 0x16u);
@@ -705,9 +705,9 @@ LABEL_9:
       v38 = container_log_handle_for_category();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
       {
-        v39 = [v6 shortDescription];
+        shortDescription = [forCopy shortDescription];
         *buf = 138412546;
-        v46 = v39;
+        v46 = shortDescription;
         v47 = 2048;
         v48 = v44;
         _os_log_error_impl(&dword_1DF2C3000, v38, OS_LOG_TYPE_ERROR, "Could not construct container identity from %@ to check for permanent copy: %llu", buf, 0x16u);
@@ -718,7 +718,7 @@ LABEL_9:
 LABEL_30:
     if ([v12 count])
     {
-      [v7 unionSet:v12];
+      [identifiersCopy unionSet:v12];
     }
   }
 
@@ -733,12 +733,12 @@ LABEL_10:
 - (id)_containerIdentities
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(MCMCommandOperationDelete *)self containerIdentities];
-  v4 = v3;
+  containerIdentities = [(MCMCommandOperationDelete *)self containerIdentities];
+  v4 = containerIdentities;
   v5 = MEMORY[0x1E695E0F0];
-  if (v3)
+  if (containerIdentities)
   {
-    v5 = v3;
+    v5 = containerIdentities;
   }
 
   v6 = v5;
@@ -748,8 +748,8 @@ LABEL_10:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [(MCMCommandOperationDelete *)self manifests];
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v17 count:16];
+  manifests = [(MCMCommandOperationDelete *)self manifests];
+  v9 = [manifests countByEnumeratingWithState:&v18 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -760,14 +760,14 @@ LABEL_10:
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(manifests);
         }
 
-        v13 = [*(*(&v18 + 1) + 8 * i) concreteContainerIdentity];
-        [v7 addObject:v13];
+        concreteContainerIdentity = [*(*(&v18 + 1) + 8 * i) concreteContainerIdentity];
+        [v7 addObject:concreteContainerIdentity];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v17 count:16];
+      v10 = [manifests countByEnumeratingWithState:&v18 objects:v17 count:16];
     }
 
     while (v10);
@@ -779,17 +779,17 @@ LABEL_10:
   return v14;
 }
 
-- (id)_replyFromRelayToDaemonWithContainerIdentities:(id)a3
+- (id)_replyFromRelayToDaemonWithContainerIdentities:(id)identities
 {
   v82 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identitiesCopy = identities;
   __s[1] = 0;
   v4 = xpc_array_create(0, 0);
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v5 = v3;
+  v5 = identitiesCopy;
   v6 = [v5 countByEnumeratingWithState:&v78 objects:v77 count:16];
   if (v6)
   {
@@ -856,11 +856,11 @@ LABEL_10:
     while (v7);
   }
 
-  v17 = self;
-  v18 = [(MCMCommandOperationDelete *)self waitForDiskSpaceReclaim];
+  selfCopy2 = self;
+  waitForDiskSpaceReclaim = [(MCMCommandOperationDelete *)self waitForDiskSpaceReclaim];
   v19 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_uint64(v19, "Command", 3uLL);
-  xpc_dictionary_set_uint64(v19, "Flags", v18);
+  xpc_dictionary_set_uint64(v19, "Flags", waitForDiskSpaceReclaim);
   xpc_dictionary_set_value(v19, "ContainersArray", v4);
   v20 = container_log_handle_for_category();
   v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
@@ -925,7 +925,7 @@ LABEL_10:
       v55 = v28;
       v56 = 1024;
       v57 = v45;
-      v17 = self;
+      selfCopy2 = self;
       v58 = 1024;
       v59 = v29;
       v60 = 1024;
@@ -948,9 +948,9 @@ LABEL_10:
 
   *v49 = 1;
   container_xpc_set_use_shared_connection();
-  v32 = [(MCMCommand *)v17 context];
-  v33 = [v32 clientIdentity];
-  [v33 createLibsystemClient];
+  context = [(MCMCommand *)selfCopy2 context];
+  clientIdentity = [context clientIdentity];
+  [clientIdentity createLibsystemClient];
 
   v34 = container_client_copy_encoded_xpc_object();
   if (v34)
@@ -992,17 +992,17 @@ LABEL_10:
   return v35;
 }
 
-- (void)_routeContainersToHandle:(id *)a3 toRelay:(id *)a4
+- (void)_routeContainersToHandle:(id *)handle toRelay:(id *)relay
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = [(MCMCommandOperationDelete *)self _containerIdentities];
+  _containerIdentities = [(MCMCommandOperationDelete *)self _containerIdentities];
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = v4;
+  v7 = _containerIdentities;
   v8 = [v7 countByEnumeratingWithState:&v27 objects:v26 count:16];
   if (v8)
   {
@@ -1018,17 +1018,17 @@ LABEL_10:
         }
 
         v12 = *(*(&v27 + 1) + 8 * i);
-        v13 = [v12 disposition];
-        if (v13)
+        disposition = [v12 disposition];
+        if (disposition)
         {
-          if (v13 == 2)
+          if (disposition == 2)
           {
             v14 = v6;
           }
 
           else
           {
-            if (v13 != 1)
+            if (disposition != 1)
             {
               continue;
             }
@@ -1044,12 +1044,12 @@ LABEL_10:
           v15 = container_log_handle_for_category();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
           {
-            v16 = [(MCMCommand *)self context];
-            v17 = [v16 clientIdentity];
+            context = [(MCMCommand *)self context];
+            clientIdentity = [context clientIdentity];
             *buf = 138412546;
             v23 = v12;
             v24 = 2112;
-            v25 = v17;
+            v25 = clientIdentity;
             _os_log_fault_impl(&dword_1DF2C3000, v15, OS_LOG_TYPE_FAULT, "Attempt to delete container for different user or container class not supported, ignored: %@; client: %@", buf, 0x16u);
           }
         }
@@ -1061,30 +1061,30 @@ LABEL_10:
     while (v9);
   }
 
-  if (a3)
+  if (handle)
   {
-    *a3 = [v5 copy];
+    *handle = [v5 copy];
   }
 
-  if (a4)
+  if (relay)
   {
-    *a4 = [v6 copy];
+    *relay = [v6 copy];
   }
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_relayContainerIdentities:(id)a3 andAmendResult:(id)a4
+- (void)_relayContainerIdentities:(id)identities andAmendResult:(id)result
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v6 = a4;
-  if ([v9 count])
+  identitiesCopy = identities;
+  resultCopy = result;
+  if ([identitiesCopy count])
   {
-    v7 = [(MCMCommandOperationDelete *)self _replyFromRelayToDaemonWithContainerIdentities:v9];
+    v7 = [(MCMCommandOperationDelete *)self _replyFromRelayToDaemonWithContainerIdentities:identitiesCopy];
     if (v7)
     {
-      [v6 mergeWithXPCResult:v7];
+      [resultCopy mergeWithXPCResult:v7];
     }
   }
 
@@ -1167,8 +1167,8 @@ LABEL_10:
     goto LABEL_45;
   }
 
-  v7 = [(MCMCommandOperationDelete *)self manifests];
-  v8 = [(MCMCommandOperationReclaimDiskSpace *)v7 count];
+  manifests = [(MCMCommandOperationDelete *)self manifests];
+  v8 = [(MCMCommandOperationReclaimDiskSpace *)manifests count];
   v9 = v8 == 0;
   if (v8)
   {
@@ -1183,17 +1183,17 @@ LABEL_7:
   {
     v52 = v6;
     v15 = [(MCMCommandOperationDelete *)self _writeDeleteManifestsForItems:v5 error:&v52];
-    v7 = v52;
+    manifests = v52;
 
     if (!v15)
     {
-      if ([(MCMCommandOperationReclaimDiskSpace *)v7 category]!= 1 || [(MCMCommandOperationReclaimDiskSpace *)v7 POSIXerrno]!= 28)
+      if ([(MCMCommandOperationReclaimDiskSpace *)manifests category]!= 1 || [(MCMCommandOperationReclaimDiskSpace *)manifests POSIXerrno]!= 28)
       {
         v22 = container_log_handle_for_category();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v62 = v7;
+          v62 = manifests;
           v63 = 2112;
           v64 = v5;
           _os_log_error_impl(&dword_1DF2C3000, v22, OS_LOG_TYPE_ERROR, "Failed to write manifest for deletion; error = %@, containers = %@", buf, 0x16u);
@@ -1215,7 +1215,7 @@ LABEL_7:
     }
 
     v9 = 0;
-    v6 = v7;
+    v6 = manifests;
   }
 
   else
@@ -1234,7 +1234,7 @@ LABEL_23:
 
   v51 = v6;
   v11 = [(MCMCommandOperationDelete *)self _deleteItems:v5 directDelete:v9 error:&v51];
-  v7 = v51;
+  manifests = v51;
 
   if (!v11)
   {
@@ -1242,7 +1242,7 @@ LABEL_23:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v62 = v7;
+      v62 = manifests;
       v63 = 2112;
       v64 = v5;
       _os_log_error_impl(&dword_1DF2C3000, v18, OS_LOG_TYPE_ERROR, "Failed to delete containers; error = %@, containers = %@", buf, 0x16u);
@@ -1259,7 +1259,7 @@ LABEL_34:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v62 = v7;
+      v62 = manifests;
       v63 = 2112;
       v64 = v5;
       _os_log_error_impl(&dword_1DF2C3000, v17, OS_LOG_TYPE_ERROR, "Deleted zero containers; error = %@, containers = %@", buf, 0x16u);
@@ -1267,8 +1267,8 @@ LABEL_34:
   }
 
 LABEL_35:
-  v6 = v7;
-  if (v7)
+  v6 = manifests;
+  if (manifests)
   {
 LABEL_36:
     v19 = [(MCMResultBase *)[MCMResultOperationDelete alloc] initWithError:v6];
@@ -1298,11 +1298,11 @@ LABEL_45:
         }
 
         v28 = *(*(&v57 + 1) + 8 * i);
-        v29 = [v28 containerPath];
-        [v23 addObject:v29];
+        containerPath = [v28 containerPath];
+        [v23 addObject:containerPath];
 
-        v30 = [v28 containerIdentity];
-        [v24 addObject:v30];
+        containerIdentity = [v28 containerIdentity];
+        [v24 addObject:containerIdentity];
       }
 
       v25 = [v11 countByEnumeratingWithState:&v57 objects:v56 count:16];
@@ -1312,9 +1312,9 @@ LABEL_45:
   }
 
   v31 = [MCMResultOperationDelete alloc];
-  v32 = [(MCMCommand *)self context];
-  v33 = [v32 clientIdentity];
-  v34 = [(MCMResultWithContainersArrayBase *)v31 initWithContainerPaths:v23 containerIdentities:v24 includePath:1 clientIdentity:v33 skipSandboxExtensions:1];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
+  v34 = [(MCMResultWithContainersArrayBase *)v31 initWithContainerPaths:v23 containerIdentities:v24 includePath:1 clientIdentity:clientIdentity skipSandboxExtensions:1];
 
   [(MCMCommandOperationDelete *)self _relayContainerIdentities:v47 andAmendResult:v34];
   v35 = [MCMResultPromise alloc];
@@ -1328,18 +1328,18 @@ LABEL_45:
   v36 = [(MCMResultPromise *)v35 initWithCompletion:v49];
   v37 = [MCMCommandOperationReclaimDiskSpace alloc];
   LODWORD(v31) = [(MCMCommandOperationDelete *)self waitForDiskSpaceReclaim];
-  v38 = [(MCMCommand *)self context];
-  v39 = [(MCMCommand *)self reply];
-  v40 = [(MCMCommandOperationReclaimDiskSpace *)v37 initWithAsynchronously:v31 ^ 1 context:v38 resultPromise:v36 handoffForReply:v39];
+  context2 = [(MCMCommand *)self context];
+  reply = [(MCMCommand *)self reply];
+  v40 = [(MCMCommandOperationReclaimDiskSpace *)v37 initWithAsynchronously:v31 ^ 1 context:context2 resultPromise:v36 handoffForReply:reply];
 
   v41 = container_log_handle_for_category();
   if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
   {
-    v45 = [objc_opt_class() command];
+    command = [objc_opt_class() command];
     *buf = 134218240;
     v62 = v40;
     v63 = 2048;
-    v64 = v45;
+    v64 = command;
     _os_log_debug_impl(&dword_1DF2C3000, v41, OS_LOG_TYPE_DEBUG, "Completed delete, executing command <%p; %llu>...", buf, 0x16u);
   }
 
@@ -1352,8 +1352,8 @@ LABEL_55:
 
   if (!v20 || ![(MCMCommandOperationDelete *)self waitForDiskSpaceReclaim])
   {
-    v43 = [(MCMCommand *)self resultPromise];
-    [v43 completeWithResult:v19];
+    resultPromise = [(MCMCommand *)self resultPromise];
+    [resultPromise completeWithResult:v19];
   }
 
   objc_autoreleasePoolPop(context);
@@ -1378,15 +1378,15 @@ id __36__MCMCommandOperationDelete_execute__block_invoke(uint64_t a1, void *a2)
 - (BOOL)preflightClientAllowed
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(MCMCommand *)self context];
-  v4 = [v3 clientIdentity];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(MCMCommandOperationDelete *)self containerIdentities];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v13 count:16];
+  containerIdentities = [(MCMCommandOperationDelete *)self containerIdentities];
+  v6 = [containerIdentities countByEnumeratingWithState:&v14 objects:v13 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1397,17 +1397,17 @@ id __36__MCMCommandOperationDelete_execute__block_invoke(uint64_t a1, void *a2)
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(containerIdentities);
         }
 
-        if (![v4 isAllowedToPerformOperationType:2 containerIdentity:*(*(&v14 + 1) + 8 * i) part:0 partDomain:0 access:0])
+        if (![clientIdentity isAllowedToPerformOperationType:2 containerIdentity:*(*(&v14 + 1) + 8 * i) part:0 partDomain:0 access:0])
         {
           v10 = 0;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v13 count:16];
+      v7 = [containerIdentities countByEnumeratingWithState:&v14 objects:v13 count:16];
       if (v7)
       {
         continue;
@@ -1424,46 +1424,46 @@ LABEL_11:
   return v10;
 }
 
-- (MCMCommandOperationDelete)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5
+- (MCMCommandOperationDelete)initWithMessage:(id)message context:(id)context reply:(id)reply
 {
   v18 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  messageCopy = message;
   v17.receiver = self;
   v17.super_class = MCMCommandOperationDelete;
-  v10 = [(MCMCommand *)&v17 initWithMessage:v9 context:a4 reply:a5];
+  v10 = [(MCMCommand *)&v17 initWithMessage:messageCopy context:context reply:reply];
   if (v10)
   {
-    v11 = [v9 concreteContainerIdentities];
+    concreteContainerIdentities = [messageCopy concreteContainerIdentities];
     containerIdentities = v10->_containerIdentities;
-    v10->_containerIdentities = v11;
+    v10->_containerIdentities = concreteContainerIdentities;
 
     v13 = [MEMORY[0x1E695DFA8] set];
     manifests = v10->_manifests;
     v10->_manifests = v13;
 
     v10->_removeAllCodeSignInfo = 0;
-    v10->_waitForDiskSpaceReclaim = [v9 waitForDiskSpaceReclaim];
-    objc_storeStrong(&v10->_message, a3);
+    v10->_waitForDiskSpaceReclaim = [messageCopy waitForDiskSpaceReclaim];
+    objc_storeStrong(&v10->_message, message);
   }
 
   v15 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-- (id)_initWithContainerIdentities:(id)a3 manifests:(id)a4 waitForDiskSpaceReclaim:(BOOL)a5 removeAllCodeSignInfo:(BOOL)a6 context:(id)a7 resultPromise:(id)a8
+- (id)_initWithContainerIdentities:(id)identities manifests:(id)manifests waitForDiskSpaceReclaim:(BOOL)reclaim removeAllCodeSignInfo:(BOOL)info context:(id)context resultPromise:(id)promise
 {
   v25 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
+  identitiesCopy = identities;
+  manifestsCopy = manifests;
   v24.receiver = self;
   v24.super_class = MCMCommandOperationDelete;
-  v16 = [(MCMCommand *)&v24 initWithContext:a7 resultPromise:a8];
+  v16 = [(MCMCommand *)&v24 initWithContext:context resultPromise:promise];
   v17 = v16;
   if (v16)
   {
-    if (v14)
+    if (identitiesCopy)
     {
-      v18 = v14;
+      v18 = identitiesCopy;
     }
 
     else
@@ -1472,7 +1472,7 @@ LABEL_11:
     }
 
     objc_storeStrong(&v16->_containerIdentities, v18);
-    v19 = [v15 mutableCopy];
+    v19 = [manifestsCopy mutableCopy];
     v20 = v19;
     if (!v19)
     {
@@ -1484,8 +1484,8 @@ LABEL_11:
     {
     }
 
-    v17->_removeAllCodeSignInfo = a6;
-    v17->_waitForDiskSpaceReclaim = a5;
+    v17->_removeAllCodeSignInfo = info;
+    v17->_waitForDiskSpaceReclaim = reclaim;
     message = v17->_message;
     v17->_message = 0;
   }
@@ -1509,14 +1509,14 @@ LABEL_11:
   return 3;
 }
 
-+ (BOOL)deleteContainerRootURL:(id)a3 userIdentity:(id)a4 containerClass:(unint64_t)a5 containerPathIdentifier:(id)a6 preferDirectDelete:(BOOL)a7 error:(id *)a8
++ (BOOL)deleteContainerRootURL:(id)l userIdentity:(id)identity containerClass:(unint64_t)class containerPathIdentifier:(id)identifier preferDirectDelete:(BOOL)delete error:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  lCopy = l;
+  identityCopy = identity;
+  identifierCopy = identifier;
   v15 = +[MCMFileManager defaultManager];
-  if (a7)
+  if (delete)
   {
     v16 = 0;
 LABEL_3:
@@ -1524,9 +1524,9 @@ LABEL_3:
     goto LABEL_14;
   }
 
-  v43 = v14;
-  v18 = v13;
-  v19 = a8;
+  v43 = identifierCopy;
+  v18 = identityCopy;
+  errorCopy = error;
   v20 = v18;
   v21 = [MCMContainerClassDeletedPath containerPathForUserIdentity:"containerPathForUserIdentity:containerClass:" containerClass:?];
   v47 = 0;
@@ -1547,21 +1547,21 @@ LABEL_3:
     v23 = 0;
   }
 
-  v25 = [v21 classURL];
+  classURL = [v21 classURL];
   v46 = v23;
-  v26 = [v15 createTemporaryDirectoryInDirectoryURL:v25 withNamePrefix:@"deleting." error:&v46];
+  v26 = [v15 createTemporaryDirectoryInDirectoryURL:classURL withNamePrefix:@"deleting." error:&v46];
   v17 = v46;
 
   if (v26)
   {
     v27 = v22 ^ 1;
-    a8 = v19;
+    error = errorCopy;
   }
 
   else
   {
     v28 = container_log_handle_for_category();
-    a8 = v19;
+    error = errorCopy;
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
@@ -1575,14 +1575,14 @@ LABEL_3:
     v27 = 1;
   }
 
-  v13 = v20;
-  v14 = v43;
+  identityCopy = v20;
+  identifierCopy = v43;
   v16 = [v26 URLByAppendingPathComponent:v43 isDirectory:1];
 
   if ((v27 & 1) == 0)
   {
     v45 = v17;
-    v36 = [v15 moveItemAtURL:v12 toURL:v16 error:&v45];
+    v36 = [v15 moveItemAtURL:lCopy toURL:v16 error:&v45];
     v30 = v45;
 
     if (v36)
@@ -1593,12 +1593,12 @@ LABEL_3:
     v39 = container_log_handle_for_category();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
     {
-      v41 = [v12 path];
-      v42 = [v16 path];
+      path = [lCopy path];
+      path2 = [v16 path];
       *buf = 138412802;
-      v49 = v41;
+      v49 = path;
       v50 = 2112;
-      v51 = v42;
+      v51 = path2;
       v52 = 2112;
       v53 = v30;
       _os_log_error_impl(&dword_1DF2C3000, v39, OS_LOG_TYPE_ERROR, "Couldn't stage for deletion from [%@] to [%@]; trying a direct delete instead: %@", buf, 0x20u);
@@ -1609,7 +1609,7 @@ LABEL_3:
 
 LABEL_14:
   v44 = v17;
-  v29 = [v15 removeItemAtURL:v12 error:&v44];
+  v29 = [v15 removeItemAtURL:lCopy error:&v44];
   v30 = v44;
 
   if (v29)
@@ -1623,21 +1623,21 @@ LABEL_20:
   v31 = container_log_handle_for_category();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
   {
-    v40 = [v12 path];
+    path3 = [lCopy path];
     *buf = 138412546;
-    v49 = v40;
+    v49 = path3;
     v50 = 2112;
     v51 = v30;
     _os_log_error_impl(&dword_1DF2C3000, v31, OS_LOG_TYPE_ERROR, "Failed to delete container at %@: %@", buf, 0x16u);
   }
 
-  v32 = [[MCMError alloc] initWithNSError:v30 url:v12 defaultErrorType:28];
+  v32 = [[MCMError alloc] initWithNSError:v30 url:lCopy defaultErrorType:28];
   v33 = v32;
-  if (a8)
+  if (error)
   {
     v34 = v32;
     v35 = 0;
-    *a8 = v33;
+    *error = v33;
   }
 
   else

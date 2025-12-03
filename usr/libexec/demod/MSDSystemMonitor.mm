@@ -4,7 +4,7 @@
 - (unint64_t)systemIdleDuration;
 - (void)processCoreDuetCallBack;
 - (void)processDiskSpaceMonitorCallback;
-- (void)registerObserver:(id)a3;
+- (void)registerObserver:(id)observer;
 - (void)startDiskSpaceMonitoring;
 - (void)startPowerForegroundAppMonitoring;
 - (void)startSystemIdleDetection;
@@ -28,9 +28,9 @@
 
 - (unint64_t)systemIdleDuration
 {
-  v3 = [(MSDSystemMonitor *)self coreDuetContext];
+  coreDuetContext = [(MSDSystemMonitor *)self coreDuetContext];
   v4 = +[_CDContextQueries keyPathForInUseStatus];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [coreDuetContext objectForKeyedSubscript:v4];
 
   if ([v5 BOOLValue])
   {
@@ -39,9 +39,9 @@
 
   else
   {
-    v7 = [(MSDSystemMonitor *)self coreDuetContext];
+    coreDuetContext2 = [(MSDSystemMonitor *)self coreDuetContext];
     v8 = +[_CDContextQueries keyPathForLastUseDate];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    v9 = [coreDuetContext2 objectForKeyedSubscript:v8];
 
     v10 = +[NSDate now];
     [v10 timeIntervalSinceDate:v9];
@@ -59,15 +59,15 @@
   return v6;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v5 = a3;
-  if (([v5 conformsToProtocol:&OBJC_PROTOCOL___MSDSystemMonitorObserver] & 1) == 0)
+  observerCopy = observer;
+  if (([observerCopy conformsToProtocol:&OBJC_PROTOCOL___MSDSystemMonitorObserver] & 1) == 0)
   {
     sub_1000DF0EC(a2, self);
   }
 
-  [(MSDSystemMonitor *)self setObserver:v5];
+  [(MSDSystemMonitor *)self setObserver:observerCopy];
 }
 
 - (void)startSystemIdleDetection
@@ -83,9 +83,9 @@
 {
   [(MSDSystemMonitor *)self setCoreDuetTriggeredPause:0];
   [(MSDSystemMonitor *)self setDiskSpaceTriggeredPause:0];
-  v3 = [(MSDSystemMonitor *)self coreDuetContext];
-  v4 = [(MSDSystemMonitor *)self applicationRegistration];
-  [v3 deregisterCallback:v4];
+  coreDuetContext = [(MSDSystemMonitor *)self coreDuetContext];
+  applicationRegistration = [(MSDSystemMonitor *)self applicationRegistration];
+  [coreDuetContext deregisterCallback:applicationRegistration];
 
   [(MSDSystemMonitor *)self stopDiskSpaceMonitoring];
 }
@@ -121,9 +121,9 @@
   obj = self;
   objc_sync_enter(obj);
   v2 = +[MSDTargetDevice sharedInstance];
-  v3 = [v2 getFreeSpace];
+  getFreeSpace = [v2 getFreeSpace];
 
-  if (v3 + 0xFFFFF > 0x1FFFFE)
+  if (getFreeSpace + 0xFFFFF > 0x1FFFFE)
   {
     [(MSDSystemMonitor *)obj setDiskSpaceTriggeredPause:0];
     v4 = 0;
@@ -135,13 +135,13 @@
     v4 = @"diskSpaceTriggeredPause";
   }
 
-  v5 = [(MSDSystemMonitor *)obj observer];
+  observer = [(MSDSystemMonitor *)obj observer];
 
-  if (v5)
+  if (observer)
   {
-    v6 = [(MSDSystemMonitor *)obj observer];
-    v7 = [(MSDSystemMonitor *)obj coreDuetTriggeredPause]|| [(MSDSystemMonitor *)obj diskSpaceTriggeredPause];
-    [v6 didReceiveNewPauseStatus:v7 forReason:v4];
+    observer2 = [(MSDSystemMonitor *)obj observer];
+    diskSpaceTriggeredPause = [(MSDSystemMonitor *)obj coreDuetTriggeredPause]|| [(MSDSystemMonitor *)obj diskSpaceTriggeredPause];
+    [observer2 didReceiveNewPauseStatus:diskSpaceTriggeredPause forReason:v4];
   }
 
   objc_sync_exit(obj);
@@ -170,9 +170,9 @@
   v10 = [_CDContextualChangeRegistration localWakingRegistrationWithIdentifier:@"com.apple.mobilestoredemo" contextualPredicate:v8 callback:v9];
   [(MSDSystemMonitor *)self setApplicationRegistration:v10];
 
-  v11 = [(MSDSystemMonitor *)self coreDuetContext];
-  v12 = [(MSDSystemMonitor *)self applicationRegistration];
-  [v11 registerCallback:v12];
+  coreDuetContext = [(MSDSystemMonitor *)self coreDuetContext];
+  applicationRegistration = [(MSDSystemMonitor *)self applicationRegistration];
+  [coreDuetContext registerCallback:applicationRegistration];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -180,25 +180,25 @@
 
 - (void)processCoreDuetCallBack
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MSDSystemMonitor *)v2 coreDuetContext];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  coreDuetContext = [(MSDSystemMonitor *)selfCopy coreDuetContext];
   v4 = +[_CDContextQueries keyPathForForegroundApp];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [coreDuetContext objectForKeyedSubscript:v4];
 
-  v6 = [(MSDSystemMonitor *)v2 coreDuetContext];
+  coreDuetContext2 = [(MSDSystemMonitor *)selfCopy coreDuetContext];
   v7 = +[_CDContextQueries keyPathForInUseStatus];
-  v8 = [v6 objectForKeyedSubscript:v7];
-  v9 = [v8 BOOLValue];
+  v8 = [coreDuetContext2 objectForKeyedSubscript:v7];
+  bOOLValue = [v8 BOOLValue];
 
-  v10 = [(MSDSystemMonitor *)v2 coreDuetContext];
+  coreDuetContext3 = [(MSDSystemMonitor *)selfCopy coreDuetContext];
   v11 = +[_CDContextQueries keyPathForBatteryLevel];
-  v12 = [v10 objectForKeyedSubscript:v11];
-  v13 = [v12 unsignedIntegerValue];
+  v12 = [coreDuetContext3 objectForKeyedSubscript:v11];
+  unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-  v14 = [(MSDSystemMonitor *)v2 coreDuetContext];
+  coreDuetContext4 = [(MSDSystemMonitor *)selfCopy coreDuetContext];
   v15 = +[_CDContextQueries keyPathForBatteryStateDataDictionary];
-  v16 = [v14 objectForKeyedSubscript:v15];
+  v16 = [coreDuetContext4 objectForKeyedSubscript:v15];
 
   v17 = +[MSDPlatform sharedInstance];
   LOBYTE(v15) = [v17 tvOS];
@@ -208,7 +208,7 @@
 LABEL_2:
     v18 = 0;
     v19 = 0;
-    if (!v9)
+    if (!bOOLValue)
     {
       goto LABEL_13;
     }
@@ -217,21 +217,21 @@ LABEL_2:
   }
 
   v19 = @"batteryLevelTriggeredPause";
-  if (v13 >= 0x15)
+  if (unsignedIntegerValue >= 0x15)
   {
-    if (v13 <= 0x31)
+    if (unsignedIntegerValue <= 0x31)
     {
       v23 = +[_CDContextQueries batteryExternalConnectedKey];
       v24 = [v16 objectForKey:v23];
-      v25 = [v24 BOOLValue];
+      bOOLValue2 = [v24 BOOLValue];
 
-      v18 = v25 ^ 1;
-      if (v25)
+      v18 = bOOLValue2 ^ 1;
+      if (bOOLValue2)
       {
         v19 = 0;
       }
 
-      if (!v9)
+      if (!bOOLValue)
       {
         goto LABEL_13;
       }
@@ -243,7 +243,7 @@ LABEL_2:
   }
 
   v18 = 1;
-  if (!v9)
+  if (!bOOLValue)
   {
 LABEL_13:
     v22 = 0;
@@ -251,8 +251,8 @@ LABEL_13:
   }
 
 LABEL_6:
-  v20 = [(MSDSystemMonitor *)v2 foregroundAllowedApps];
-  v21 = [v20 containsObject:v5];
+  foregroundAllowedApps = [(MSDSystemMonitor *)selfCopy foregroundAllowedApps];
+  v21 = [foregroundAllowedApps containsObject:v5];
 
   v22 = v21 ^ 1;
   if (!v21)
@@ -264,20 +264,20 @@ LABEL_14:
   v26 = sub_100063A54();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000DF160(v5, v9, v26);
+    sub_1000DF160(v5, bOOLValue, v26);
   }
 
-  [(MSDSystemMonitor *)v2 setCoreDuetTriggeredPause:v18 | v22];
-  v27 = [(MSDSystemMonitor *)v2 observer];
+  [(MSDSystemMonitor *)selfCopy setCoreDuetTriggeredPause:v18 | v22];
+  observer = [(MSDSystemMonitor *)selfCopy observer];
 
-  if (v27)
+  if (observer)
   {
-    v28 = [(MSDSystemMonitor *)v2 observer];
-    v29 = [(MSDSystemMonitor *)v2 coreDuetTriggeredPause]|| [(MSDSystemMonitor *)v2 diskSpaceTriggeredPause];
-    [v28 didReceiveNewPauseStatus:v29 forReason:v19];
+    observer2 = [(MSDSystemMonitor *)selfCopy observer];
+    diskSpaceTriggeredPause = [(MSDSystemMonitor *)selfCopy coreDuetTriggeredPause]|| [(MSDSystemMonitor *)selfCopy diskSpaceTriggeredPause];
+    [observer2 didReceiveNewPauseStatus:diskSpaceTriggeredPause forReason:v19];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (MSDSystemMonitorObserver)observer

@@ -10,8 +10,8 @@
 
 - (id)contactKey
 {
-  v1 = [a1 kind];
-  v2 = CNAutocompleteContactKeyForRecentsKind(v1);
+  kind = [self kind];
+  v2 = CNAutocompleteContactKeyForRecentsKind(kind);
 
   return v2;
 }
@@ -20,7 +20,7 @@
 {
   v4 = a3;
   v5 = CNAutocompleteSharedContactStore();
-  v6 = [a1 existingContactWithKeysToFetch:v4 contactStore:v5];
+  v6 = [self existingContactWithKeysToFetch:v4 contactStore:v5];
 
   return v6;
 }
@@ -30,22 +30,22 @@
   v33[1] = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v8 = [a1 _contactContext];
-  v9 = [(_CNAUICRRecentContactCNContext *)v8 existingContact];
+  _contactContext = [self _contactContext];
+  existingContact = [(_CNAUICRRecentContactCNContext *)_contactContext existingContact];
 
-  if (v9)
+  if (existingContact)
   {
-    v10 = [(_CNAUICRRecentContactCNContext *)v8 existingContact];
-    v11 = [v10 areKeysAvailable:v6];
+    existingContact2 = [(_CNAUICRRecentContactCNContext *)_contactContext existingContact];
+    v11 = [existingContact2 areKeysAvailable:v6];
 
     if (v11)
     {
       goto LABEL_12;
     }
 
-    v12 = [(_CNAUICRRecentContactCNContext *)v8 existingContact];
-    v13 = [v12 availableKeyDescriptor];
-    v32 = v13;
+    existingContact3 = [(_CNAUICRRecentContactCNContext *)_contactContext existingContact];
+    availableKeyDescriptor = [existingContact3 availableKeyDescriptor];
+    v32 = availableKeyDescriptor;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v32 count:1];
 
     if (v6)
@@ -56,57 +56,57 @@
     }
 
     v16 = MEMORY[0x1E695CD58];
-    v17 = [(_CNAUICRRecentContactCNContext *)v8 existingContact];
-    v18 = [v17 identifier];
-    v31 = v18;
+    existingContact4 = [(_CNAUICRRecentContactCNContext *)_contactContext existingContact];
+    identifier = [existingContact4 identifier];
+    v31 = identifier;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1];
     v20 = [v16 predicateForContactsWithIdentifiers:v19];
     v21 = CNAutocompleteFetchNonUnifiedContactsForPredicate(v7, v20, v14, 0);
 
-    v22 = [v21 firstObject];
-    [(_CNAUICRRecentContactCNContext *)v8 setExistingContact:v22];
+    firstObject = [v21 firstObject];
+    [(_CNAUICRRecentContactCNContext *)_contactContext setExistingContact:firstObject];
   }
 
   else
   {
-    v23 = [MEMORY[0x1E6996648] sharedInstance];
-    v24 = [v23 isAccessGranted];
+    mEMORY[0x1E6996648] = [MEMORY[0x1E6996648] sharedInstance];
+    isAccessGranted = [mEMORY[0x1E6996648] isAccessGranted];
 
-    if (!v24)
+    if (!isAccessGranted)
     {
       goto LABEL_12;
     }
 
-    v25 = [a1 address];
-    v33[0] = v25;
+    address = [self address];
+    v33[0] = address;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
-    v27 = [a1 contactKey];
-    v28 = [a1 displayName];
-    v14 = CNAutocompleteCopyClosestMatchingExistingContactUsingAddressesAndDisplayName(v7, v26, v27, v28, v6);
+    contactKey = [self contactKey];
+    displayName = [self displayName];
+    v14 = CNAutocompleteCopyClosestMatchingExistingContactUsingAddressesAndDisplayName(v7, v26, contactKey, displayName, v6);
 
     if (v14)
     {
-      if (!v8)
+      if (!_contactContext)
       {
-        v8 = objc_alloc_init(_CNAUICRRecentContactCNContext);
-        [a1 _setContactContext:v8];
+        _contactContext = objc_alloc_init(_CNAUICRRecentContactCNContext);
+        [self _setContactContext:_contactContext];
       }
 
-      [(_CNAUICRRecentContactCNContext *)v8 setExistingContact:v14];
+      [(_CNAUICRRecentContactCNContext *)_contactContext setExistingContact:v14];
     }
   }
 
 LABEL_12:
-  v29 = [(_CNAUICRRecentContactCNContext *)v8 existingContact];
+  existingContact5 = [(_CNAUICRRecentContactCNContext *)_contactContext existingContact];
 
-  return v29;
+  return existingContact5;
 }
 
 - (id)contactWithKeysToFetch:()CloudRecentsExtensions
 {
   v4 = a3;
   v5 = CNAutocompleteSharedContactStore();
-  v6 = [a1 contactWithKeysToFetch:v4 contactStore:v5];
+  v6 = [self contactWithKeysToFetch:v4 contactStore:v5];
 
   return v6;
 }
@@ -116,52 +116,52 @@ LABEL_12:
   v29[1] = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v8 = [a1 _contactContext];
-  v9 = [v8 interimContact];
-  if (v9 || ([a1 existingContactWithKeysToFetch:v6 contactStore:v7], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  _contactContext = [self _contactContext];
+  interimContact = [_contactContext interimContact];
+  if (interimContact || ([self existingContactWithKeysToFetch:v6 contactStore:v7], (interimContact = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v10 = v9;
+    v10 = interimContact;
     goto LABEL_4;
   }
 
   v10 = objc_alloc_init(MEMORY[0x1E695CF18]);
-  v12 = [a1 kind];
-  v13 = [v12 isEqualToString:*MEMORY[0x1E6998F60]];
+  kind = [self kind];
+  v13 = [kind isEqualToString:*MEMORY[0x1E6998F60]];
 
-  v14 = [a1 displayName];
-  v15 = v14;
+  displayName = [self displayName];
+  v15 = displayName;
   if (v13)
   {
-    [v10 setGivenName:v14];
+    [v10 setGivenName:displayName];
   }
 
   else
   {
-    v16 = [v14 ea_personNameComponents];
+    ea_personNameComponents = [displayName ea_personNameComponents];
 
-    v17 = [v16 namePrefix];
-    [v10 setNamePrefix:v17];
+    namePrefix = [ea_personNameComponents namePrefix];
+    [v10 setNamePrefix:namePrefix];
 
-    v18 = [v16 givenName];
-    [v10 setGivenName:v18];
+    givenName = [ea_personNameComponents givenName];
+    [v10 setGivenName:givenName];
 
-    v19 = [v16 middleName];
-    [v10 setMiddleName:v19];
+    middleName = [ea_personNameComponents middleName];
+    [v10 setMiddleName:middleName];
 
-    v20 = [v16 familyName];
-    [v10 setFamilyName:v20];
+    familyName = [ea_personNameComponents familyName];
+    [v10 setFamilyName:familyName];
 
-    v21 = [v16 nameSuffix];
-    [v10 setNameSuffix:v21];
+    nameSuffix = [ea_personNameComponents nameSuffix];
+    [v10 setNameSuffix:nameSuffix];
 
-    v15 = v16;
+    v15 = ea_personNameComponents;
   }
 
-  v22 = [a1 contactKey];
-  if ([v22 isEqualToString:*MEMORY[0x1E695C208]])
+  contactKey = [self contactKey];
+  if ([contactKey isEqualToString:*MEMORY[0x1E695C208]])
   {
-    v23 = [a1 address];
-    if (!v23)
+    address = [self address];
+    if (!address)
     {
       goto LABEL_16;
     }
@@ -169,33 +169,33 @@ LABEL_12:
 
   else
   {
-    if (![v22 isEqualToString:*MEMORY[0x1E695C330]])
+    if (![contactKey isEqualToString:*MEMORY[0x1E695C330]])
     {
       goto LABEL_16;
     }
 
     v24 = MEMORY[0x1E695CF50];
-    v25 = [a1 address];
-    v23 = [v24 phoneNumberWithStringValue:v25];
+    address2 = [self address];
+    address = [v24 phoneNumberWithStringValue:address2];
 
-    if (!v23)
+    if (!address)
     {
       goto LABEL_16;
     }
   }
 
-  v26 = [MEMORY[0x1E695CEE0] labeledValueWithLabel:*MEMORY[0x1E695CB68] value:v23];
+  v26 = [MEMORY[0x1E695CEE0] labeledValueWithLabel:*MEMORY[0x1E695CB68] value:address];
   v29[0] = v26;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
-  [v10 setValue:v27 forKey:v22];
+  [v10 setValue:v27 forKey:contactKey];
 
 LABEL_16:
   v28 = objc_alloc_init(_CNAUICRRecentContactCNContext);
 
   [(_CNAUICRRecentContactCNContext *)v28 setInterimContact:v10];
-  [a1 _setContactContext:v28];
+  [self _setContactContext:v28];
 
-  v8 = v28;
+  _contactContext = v28;
 LABEL_4:
 
   return v10;

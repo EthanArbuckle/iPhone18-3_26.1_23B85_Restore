@@ -1,7 +1,7 @@
 @interface GQDWPTextList
 - (BOOL)isBlank;
 - (void)dealloc;
-- (void)setChildren:(__CFArray *)a3;
+- (void)setChildren:(__CFArray *)children;
 @end
 
 @implementation GQDWPTextList
@@ -19,11 +19,11 @@
   [(GQDWPTextList *)&v4 dealloc];
 }
 
-- (void)setChildren:(__CFArray *)a3
+- (void)setChildren:(__CFArray *)children
 {
-  if (a3)
+  if (children)
   {
-    CFRetain(a3);
+    CFRetain(children);
   }
 
   mChildren = self->mChildren;
@@ -32,7 +32,7 @@
     CFRelease(mChildren);
   }
 
-  self->mChildren = a3;
+  self->mChildren = children;
 }
 
 - (BOOL)isBlank

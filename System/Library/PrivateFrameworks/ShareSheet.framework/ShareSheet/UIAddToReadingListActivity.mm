@@ -1,9 +1,9 @@
 @interface UIAddToReadingListActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (id)_heroActionTitle;
 - (id)activityTitle;
-- (void)_addToReadingList:(id)a3 withTitle:(id)a4;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)_addToReadingList:(id)list withTitle:(id)title;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation UIAddToReadingListActivity
@@ -24,10 +24,10 @@
   return v3;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v3 = [objc_opt_class() applicationBundleID];
-  CanDisplayActivityForApplicationWithBundleID = _UIActivityCanDisplayActivityForApplicationWithBundleID(v3);
+  applicationBundleID = [objc_opt_class() applicationBundleID];
+  CanDisplayActivityForApplicationWithBundleID = _UIActivityCanDisplayActivityForApplicationWithBundleID(applicationBundleID);
 
   if (CanDisplayActivityForApplicationWithBundleID)
   {
@@ -49,15 +49,15 @@
   return v5;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [itemsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -69,7 +69,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
@@ -84,26 +84,26 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [itemsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_addToReadingList:(id)a3 withTitle:(id)a4
+- (void)_addToReadingList:(id)list withTitle:(id)title
 {
-  v7 = a3;
-  v5 = a4;
-  if (v7 && [v7 isHTTPOrHTTPSURL])
+  listCopy = list;
+  titleCopy = title;
+  if (listCopy && [listCopy isHTTPOrHTTPSURL])
   {
-    if (!v5)
+    if (!titleCopy)
     {
-      v5 = [v7 absoluteString];
+      titleCopy = [listCopy absoluteString];
     }
 
-    v6 = [(objc_class *)getSSReadingListClass() defaultReadingList];
-    [v6 addReadingListItemWithURL:v7 title:v5 previewText:0 error:0];
+    defaultReadingList = [(objc_class *)getSSReadingListClass() defaultReadingList];
+    [defaultReadingList addReadingListItemWithURL:listCopy title:titleCopy previewText:0 error:0];
   }
 }
 

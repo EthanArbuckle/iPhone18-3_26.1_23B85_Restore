@@ -1,22 +1,22 @@
 @interface NTKFaceViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)configureWithDuration:(double)a3 block:(id)a4;
-- (void)faceViewWantsCustomKeylineFramesReloadedForEditMode:(int64_t)a3;
+- (void)configureWithDuration:(double)duration block:(id)block;
+- (void)faceViewWantsCustomKeylineFramesReloadedForEditMode:(int64_t)mode;
 @end
 
 @implementation NTKFaceViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKFaceViewController" hasInstanceMethod:@"configureWithDuration: block:" withFullSignature:{"v", "d", "@?", 0}];
-  [v3 validateClass:@"NTKFaceViewController" hasInstanceMethod:@"enumerateComplicationControllersAndDisplaysWithBlock:" withFullSignature:{"v", "@?", 0}];
-  [v3 validateClass:@"NTKFaceViewController" hasInstanceVariable:@"_editView" withType:"NTKFaceEditView"];
-  [v3 validateClass:@"NTKFaceViewController" hasInstanceVariable:@"_faceView" withType:"NTKFaceView"];
-  [v3 validateClass:@"NTKFaceViewController" hasInstanceMethod:@"faceViewWantsCustomKeylineFramesReloadedForEditMode:" withFullSignature:{"v", "q", 0}];
-  [v3 validateClass:@"_NTKKeylineImageView"];
-  [v3 validateClass:@"NTKComplication" hasInstanceMethod:@"localizedKeylineLabelText" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKFaceViewController" hasInstanceMethod:@"configureWithDuration: block:" withFullSignature:{"v", "d", "@?", 0}];
+  [validationsCopy validateClass:@"NTKFaceViewController" hasInstanceMethod:@"enumerateComplicationControllersAndDisplaysWithBlock:" withFullSignature:{"v", "@?", 0}];
+  [validationsCopy validateClass:@"NTKFaceViewController" hasInstanceVariable:@"_editView" withType:"NTKFaceEditView"];
+  [validationsCopy validateClass:@"NTKFaceViewController" hasInstanceVariable:@"_faceView" withType:"NTKFaceView"];
+  [validationsCopy validateClass:@"NTKFaceViewController" hasInstanceMethod:@"faceViewWantsCustomKeylineFramesReloadedForEditMode:" withFullSignature:{"v", "q", 0}];
+  [validationsCopy validateClass:@"_NTKKeylineImageView"];
+  [validationsCopy validateClass:@"NTKComplication" hasInstanceMethod:@"localizedKeylineLabelText" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -26,19 +26,19 @@
   [(NTKFaceViewControllerAccessibility *)&v2 _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)configureWithDuration:(double)a3 block:(id)a4
+- (void)configureWithDuration:(double)duration block:(id)block
 {
   v5.receiver = self;
   v5.super_class = NTKFaceViewControllerAccessibility;
-  [(NTKFaceViewControllerAccessibility *)&v5 configureWithDuration:a4 block:a3];
+  [(NTKFaceViewControllerAccessibility *)&v5 configureWithDuration:block block:duration];
   [(NTKFaceViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)faceViewWantsCustomKeylineFramesReloadedForEditMode:(int64_t)a3
+- (void)faceViewWantsCustomKeylineFramesReloadedForEditMode:(int64_t)mode
 {
   v3.receiver = self;
   v3.super_class = NTKFaceViewControllerAccessibility;
-  [(NTKFaceViewControllerAccessibility *)&v3 faceViewWantsCustomKeylineFramesReloadedForEditMode:a3];
+  [(NTKFaceViewControllerAccessibility *)&v3 faceViewWantsCustomKeylineFramesReloadedForEditMode:mode];
   UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, 0);
 }
 

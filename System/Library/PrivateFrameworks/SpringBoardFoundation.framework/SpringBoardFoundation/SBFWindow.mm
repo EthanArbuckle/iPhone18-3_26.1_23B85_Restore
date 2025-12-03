@@ -5,7 +5,7 @@
 - (void)dealloc;
 - (void)makeKeyWindow;
 - (void)resignAsKeyWindow;
-- (void)setHidden:(BOOL)a3;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation SBFWindow
@@ -14,8 +14,8 @@
 {
   if (__sb__runningInSpringBoard())
   {
-    v3 = [(SBFWindow *)self _keyWindowStack];
-    [v3 pushKeyWindow:self];
+    _keyWindowStack = [(SBFWindow *)self _keyWindowStack];
+    [_keyWindowStack pushKeyWindow:self];
   }
 
   else
@@ -65,37 +65,37 @@
 {
   if (__sb__runningInSpringBoard())
   {
-    v3 = [(SBFWindow *)self _keyWindowStack];
-    [v3 popKeyWindow:self];
+    _keyWindowStack = [(SBFWindow *)self _keyWindowStack];
+    [_keyWindowStack popKeyWindow:self];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(SBFWindow *)self _keyWindowStack];
-  [v3 noteWindowDeallocated:self];
+  _keyWindowStack = [(SBFWindow *)self _keyWindowStack];
+  [_keyWindowStack noteWindowDeallocated:self];
 
   v4.receiver = self;
   v4.super_class = SBFWindow;
   [(SBFWindow *)&v4 dealloc];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   if (__sb__runningInSpringBoard())
   {
-    v5 = [(SBFWindow *)self isHidden];
-    if (v3)
+    isHidden = [(SBFWindow *)self isHidden];
+    if (hiddenCopy)
     {
-      if ((v5 & 1) == 0)
+      if ((isHidden & 1) == 0)
       {
         p_isHiddenOverride = &self->_isHiddenOverride;
         isHiddenOverride = self->_isHiddenOverride;
         self->_isHiddenOverride = MEMORY[0x1E695E118];
 
-        v8 = [(SBFWindow *)self _keyWindowStack];
-        [v8 noteWindowHidden:self];
+        _keyWindowStack = [(SBFWindow *)self _keyWindowStack];
+        [_keyWindowStack noteWindowHidden:self];
 LABEL_7:
 
         v10 = *p_isHiddenOverride;
@@ -103,21 +103,21 @@ LABEL_7:
       }
     }
 
-    else if (v5)
+    else if (isHidden)
     {
       p_isHiddenOverride = &self->_isHiddenOverride;
       v9 = self->_isHiddenOverride;
       self->_isHiddenOverride = MEMORY[0x1E695E110];
 
-      v8 = [(SBFWindow *)self _keyWindowStack];
-      [v8 noteWindowUnhidden:self];
+      _keyWindowStack = [(SBFWindow *)self _keyWindowStack];
+      [_keyWindowStack noteWindowUnhidden:self];
       goto LABEL_7;
     }
   }
 
   v11.receiver = self;
   v11.super_class = SBFWindow;
-  [(SBFWindow *)&v11 setHidden:v3];
+  [(SBFWindow *)&v11 setHidden:hiddenCopy];
 }
 
 @end

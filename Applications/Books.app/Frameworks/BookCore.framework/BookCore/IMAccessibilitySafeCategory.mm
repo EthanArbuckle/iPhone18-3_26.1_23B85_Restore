@@ -1,32 +1,32 @@
 @interface IMAccessibilitySafeCategory
 + (Class)imaxTargetClass;
-+ (void)_imaxAddCategoryMethod:(objc_method *)a3 toClass:(Class)a4 isClass:(BOOL)a5;
++ (void)_imaxAddCategoryMethod:(objc_method *)method toClass:(Class)class isClass:(BOOL)isClass;
 + (void)_imaxInitializeSafeCategory;
-+ (void)_imaxInstallSafeCategoryOnClass:(Class)a3;
-+ (void)_imaxInstallSafeCategoryOnClassNamed:(id)a3;
++ (void)_imaxInstallSafeCategoryOnClass:(Class)class;
++ (void)_imaxInstallSafeCategoryOnClassNamed:(id)named;
 @end
 
 @implementation IMAccessibilitySafeCategory
 
 + (Class)imaxTargetClass
 {
-  v2 = [a1 imaxTargetClassName];
-  v3 = NSClassFromString(v2);
+  imaxTargetClassName = [self imaxTargetClassName];
+  v3 = NSClassFromString(imaxTargetClassName);
 
   return v3;
 }
 
 + (void)_imaxInitializeSafeCategory
 {
-  v3 = [a1 imaxTargetClassName];
-  [a1 _imaxInstallSafeCategoryOnClassNamed:v3];
+  imaxTargetClassName = [self imaxTargetClassName];
+  [self _imaxInstallSafeCategoryOnClassNamed:imaxTargetClassName];
 }
 
-+ (void)_imaxAddCategoryMethod:(objc_method *)a3 toClass:(Class)a4 isClass:(BOOL)a5
++ (void)_imaxAddCategoryMethod:(objc_method *)method toClass:(Class)class isClass:(BOOL)isClass
 {
-  v5 = a5;
-  Name = method_getName(a3);
-  InstanceMethod = class_getInstanceMethod(a4, Name);
+  isClassCopy = isClass;
+  Name = method_getName(method);
+  InstanceMethod = class_getInstanceMethod(class, Name);
   v11 = InstanceMethod;
   if (InstanceMethod)
   {
@@ -38,11 +38,11 @@
     Implementation = 0;
   }
 
-  v13 = method_getImplementation(a3);
-  TypeEncoding = method_getTypeEncoding(a3);
-  if (!class_addMethod(a4, Name, v13, TypeEncoding))
+  v13 = method_getImplementation(method);
+  TypeEncoding = method_getTypeEncoding(method);
+  if (!class_addMethod(class, Name, v13, TypeEncoding))
   {
-    v15 = method_getImplementation(a3);
+    v15 = method_getImplementation(method);
     method_setImplementation(v11, v15);
   }
 
@@ -50,14 +50,14 @@
   {
     if (Implementation)
     {
-      Superclass = class_getSuperclass(a1);
+      Superclass = class_getSuperclass(self);
       if (Superclass)
       {
         Class = Superclass;
         v18 = class_getSuperclass(Superclass);
-        if (v18 == [a1 imaxBaseSafeCategoryClass])
+        if (v18 == [self imaxBaseSafeCategoryClass])
         {
-          if (v5)
+          if (isClassCopy)
           {
             Class = object_getClass(Class);
           }
@@ -77,7 +77,7 @@
             }
 
             v21 = byte_345F20;
-            if (v5)
+            if (isClassCopy)
             {
               v22 = @"+";
             }
@@ -87,7 +87,7 @@
               v22 = @"-";
             }
 
-            v23 = NSStringFromClass(a4);
+            v23 = NSStringFromClass(class);
             v30 = NSStringFromSelector(Name);
             v29 = __IMAccessibilityHandleValidationErrorWithDescription(v21, 1, @"Failed adding %@[%@ %@]", v24, v25, v26, v27, v28, v22);
 
@@ -102,10 +102,10 @@
   }
 }
 
-+ (void)_imaxInstallSafeCategoryOnClassNamed:(id)a3
++ (void)_imaxInstallSafeCategoryOnClassNamed:(id)named
 {
-  v14 = a3;
-  v4 = NSClassFromString(v14);
+  namedCopy = named;
+  v4 = NSClassFromString(namedCopy);
   if (qword_345F18 != -1)
   {
     sub_1EB088();
@@ -119,7 +119,7 @@
     }
 
     v6 = byte_345F20;
-    v7 = NSStringFromClass(a1);
+    v7 = NSStringFromClass(self);
     v13 = __IMAccessibilityHandleValidationErrorWithDescription(v6, 1, @"Failed installing %@ on %@. %@ does not exist in runtime.", v8, v9, v10, v11, v12, v7);
 
     if (v13)
@@ -130,16 +130,16 @@
 
   else if (v4)
   {
-    [a1 _imaxInstallSafeCategoryOnClass:v4];
+    [self _imaxInstallSafeCategoryOnClass:v4];
   }
 }
 
-+ (void)_imaxInstallSafeCategoryOnClass:(Class)a3
++ (void)_imaxInstallSafeCategoryOnClass:(Class)class
 {
-  if (a3)
+  if (class)
   {
     outCount = 0;
-    v5 = class_copyProtocolList(a1, &outCount);
+    v5 = class_copyProtocolList(self, &outCount);
     if (v5)
     {
       v6 = v5;
@@ -150,7 +150,7 @@
         do
         {
           v9 = v6[v7];
-          v10 = class_addProtocol(a3, v9);
+          v10 = class_addProtocol(class, v9);
           if (v8[483] != -1)
           {
             sub_1EB0B0();
@@ -165,8 +165,8 @@
 
             v11 = byte_345F20;
             v12 = NSStringFromProtocol(v9);
-            v13 = NSStringFromClass(a1);
-            v29 = NSStringFromClass(a3);
+            v13 = NSStringFromClass(self);
+            v29 = NSStringFromClass(class);
             v19 = __IMAccessibilityHandleValidationErrorWithDescription(v11, 1, @"Failed adding protocol %@ from safe category %@ to target class %@.", v14, v15, v16, v17, v18, v12);
 
             v8 = &qword_345000;
@@ -186,7 +186,7 @@
     }
 
     v30 = 0;
-    v20 = class_copyMethodList(a1, &v30);
+    v20 = class_copyMethodList(self, &v30);
     if (v20)
     {
       v21 = v20;
@@ -200,14 +200,14 @@
             break;
           }
 
-          [a1 _imaxAddCategoryMethod:v23 toClass:a3 isClass:0];
+          [self _imaxAddCategoryMethod:v23 toClass:class isClass:0];
         }
       }
 
       free(v21);
     }
 
-    Class = object_getClass(a1);
+    Class = object_getClass(self);
     v25 = class_copyMethodList(Class, &v30);
     if (v25)
     {
@@ -224,7 +224,7 @@
 
           if (method_getName(v28) != "load")
           {
-            [a1 _imaxAddCategoryMethod:v26[j] toClass:object_getClass(a3) isClass:1];
+            [self _imaxAddCategoryMethod:v26[j] toClass:object_getClass(class) isClass:1];
           }
         }
       }

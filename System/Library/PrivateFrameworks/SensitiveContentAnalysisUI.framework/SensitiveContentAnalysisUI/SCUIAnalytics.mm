@@ -1,19 +1,19 @@
 @interface SCUIAnalytics
-+ (id)getAnalyticsUIContextByIdentifierWithIdentifier:(id)a3;
-+ (id)getAnalyticsUIContextWith:(id)a3;
-+ (void)contextMenuButtonTappedWithContentType:(int64_t)a3 subContentType:(int64_t)a4 direction:(int64_t)a5 options:(int64_t)a6 isBlurred:(BOOL)a7 identifier:(id)a8;
-+ (void)deleteAnalyticsUIContextWithContextKey:(id)a3;
-+ (void)insertNewAnalyticsUIContextWithContextKey:(id)a3 analyticsContextWrapper:(id)a4;
-+ (void)insertNewOptionsToContextMenuWith:(id)a3 value:(id)a4;
-+ (void)obscuredViewRemovedWithIdentifier:(id)a3;
-+ (void)obscuredViewShownWithContentType:(int64_t)a3 subcontentType:(int64_t)a4 identifier:(id)a5;
-+ (void)waysToGetHelpTappedWithContentType:(int64_t)a3 isBlurred:(BOOL)a4;
++ (id)getAnalyticsUIContextByIdentifierWithIdentifier:(id)identifier;
++ (id)getAnalyticsUIContextWith:(id)with;
++ (void)contextMenuButtonTappedWithContentType:(int64_t)type subContentType:(int64_t)contentType direction:(int64_t)direction options:(int64_t)options isBlurred:(BOOL)blurred identifier:(id)identifier;
++ (void)deleteAnalyticsUIContextWithContextKey:(id)key;
++ (void)insertNewAnalyticsUIContextWithContextKey:(id)key analyticsContextWrapper:(id)wrapper;
++ (void)insertNewOptionsToContextMenuWith:(id)with value:(id)value;
++ (void)obscuredViewRemovedWithIdentifier:(id)identifier;
++ (void)obscuredViewShownWithContentType:(int64_t)type subcontentType:(int64_t)subcontentType identifier:(id)identifier;
++ (void)waysToGetHelpTappedWithContentType:(int64_t)type isBlurred:(BOOL)blurred;
 - (SCUIAnalytics)init;
 @end
 
 @implementation SCUIAnalytics
 
-+ (void)obscuredViewShownWithContentType:(int64_t)a3 subcontentType:(int64_t)a4 identifier:(id)a5
++ (void)obscuredViewShownWithContentType:(int64_t)type subcontentType:(int64_t)subcontentType identifier:(id)identifier
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBCDBB20, &qword_1BC75F0D0);
   v8 = *(*(v7 - 8) + 64);
@@ -30,14 +30,14 @@
   v14[2] = v13;
   v14[3] = v15;
   v14[4] = ObjCClassMetadata;
-  v14[5] = a3;
-  v14[6] = a5;
+  v14[5] = type;
+  v14[6] = identifier;
   sub_1BC652910(0, 0, v10, &unk_1BC75F7F0, v14);
 
   swift_unknownObjectRelease();
 }
 
-+ (void)obscuredViewRemovedWithIdentifier:(id)a3
++ (void)obscuredViewRemovedWithIdentifier:(id)identifier
 {
   swift_unknownObjectRetain();
   sub_1BC65D5BC();
@@ -45,7 +45,7 @@
   swift_unknownObjectRelease();
 }
 
-+ (void)contextMenuButtonTappedWithContentType:(int64_t)a3 subContentType:(int64_t)a4 direction:(int64_t)a5 options:(int64_t)a6 isBlurred:(BOOL)a7 identifier:(id)a8
++ (void)contextMenuButtonTappedWithContentType:(int64_t)type subContentType:(int64_t)contentType direction:(int64_t)direction options:(int64_t)options isBlurred:(BOOL)blurred identifier:(id)identifier
 {
   v14 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBCDBB20, &qword_1BC75F0D0);
   v15 = *(*(v14 - 8) + 64);
@@ -62,18 +62,18 @@
   *(v21 + 16) = v20;
   *(v21 + 24) = v22;
   *(v21 + 32) = ObjCClassMetadata;
-  *(v21 + 40) = a3;
-  *(v21 + 48) = a4;
-  *(v21 + 56) = a5;
-  *(v21 + 64) = a6;
-  *(v21 + 72) = a7;
-  *(v21 + 80) = a8;
+  *(v21 + 40) = type;
+  *(v21 + 48) = contentType;
+  *(v21 + 56) = direction;
+  *(v21 + 64) = options;
+  *(v21 + 72) = blurred;
+  *(v21 + 80) = identifier;
   sub_1BC652910(0, 0, v17, &unk_1BC75F7E8, v21);
 
   swift_unknownObjectRelease();
 }
 
-+ (void)waysToGetHelpTappedWithContentType:(int64_t)a3 isBlurred:(BOOL)a4
++ (void)waysToGetHelpTappedWithContentType:(int64_t)type isBlurred:(BOOL)blurred
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBCDBB20, &qword_1BC75F0D0);
   v7 = *(*(v6 - 8) + 64);
@@ -87,8 +87,8 @@
   v13 = MEMORY[0x1E69E85E0];
   *(v12 + 16) = v11;
   *(v12 + 24) = v13;
-  *(v12 + 32) = a3;
-  *(v12 + 40) = a4;
+  *(v12 + 32) = type;
+  *(v12 + 40) = blurred;
   sub_1BC652910(0, 0, v9, &unk_1BC75F7E0, v12);
 }
 
@@ -99,19 +99,19 @@
   return [(SCUIAnalytics *)&v3 init];
 }
 
-+ (void)insertNewOptionsToContextMenuWith:(id)a3 value:(id)a4
++ (void)insertNewOptionsToContextMenuWith:(id)with value:(id)value
 {
   v5 = sub_1BC75BB60();
   v7 = v6;
   v8 = qword_1EBCDF9C0;
-  v9 = a4;
+  valueCopy = value;
   if (v8 != -1)
   {
     swift_once();
   }
 
   swift_beginAccess();
-  v10 = v9;
+  v10 = valueCopy;
   isUniquelyReferenced_nonNull_native = swift_isUniquelyReferenced_nonNull_native();
   v12 = qword_1EBCDF9C8;
   qword_1EBCDF9C8 = 0x8000000000000000;
@@ -121,9 +121,9 @@
   swift_endAccess();
 }
 
-+ (id)getAnalyticsUIContextWith:(id)a3
++ (id)getAnalyticsUIContextWith:(id)with
 {
-  if (a3)
+  if (with)
   {
     v3 = sub_1BC75BA40();
   }
@@ -138,23 +138,23 @@
   return v4;
 }
 
-+ (void)insertNewAnalyticsUIContextWithContextKey:(id)a3 analyticsContextWrapper:(id)a4
++ (void)insertNewAnalyticsUIContextWithContextKey:(id)key analyticsContextWrapper:(id)wrapper
 {
-  v6 = a3;
-  v7 = a4;
-  _sSo13SCUIAnalyticsC26SensitiveContentAnalysisUIE27insertNewAnalyticsUIContext4With23analyticsContextWrapperySo8NSObjectCSg_AC0hlM0CSgtFZ_0(a3, a4);
+  keyCopy = key;
+  wrapperCopy = wrapper;
+  _sSo13SCUIAnalyticsC26SensitiveContentAnalysisUIE27insertNewAnalyticsUIContext4With23analyticsContextWrapperySo8NSObjectCSg_AC0hlM0CSgtFZ_0(key, wrapper);
 }
 
-+ (void)deleteAnalyticsUIContextWithContextKey:(id)a3
++ (void)deleteAnalyticsUIContextWithContextKey:(id)key
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBCDBC50, &qword_1BC762D70);
   v5 = *(*(v4 - 8) + 64);
   MEMORY[0x1EEE9AC00](v4 - 8);
   v7 = v11 - v6;
-  if (a3)
+  if (key)
   {
     v8 = qword_1EBCDF9B0;
-    v9 = a3;
+    keyCopy = key;
     if (v8 != -1)
     {
       swift_once();
@@ -162,13 +162,13 @@
 
     sub_1BC75C7B0();
     v10 = (*(*v11[0] + 104))(v11);
-    sub_1BC65B838(v9, v7);
+    sub_1BC65B838(keyCopy, v7);
     sub_1BC66008C(v7, &qword_1EBCDBC50, &qword_1BC762D70);
     v10(v11, 0);
   }
 }
 
-+ (id)getAnalyticsUIContextByIdentifierWithIdentifier:(id)a3
++ (id)getAnalyticsUIContextByIdentifierWithIdentifier:(id)identifier
 {
   swift_unknownObjectRetain();
   v3 = _sSo13SCUIAnalyticsC26SensitiveContentAnalysisUIE33getAnalyticsUIContextByIdentifier10identifierAC0G14ContextWrapperCSgSo9NSCopying_So14NSSecureCodingSo8NSObjectp_tFZ_0();

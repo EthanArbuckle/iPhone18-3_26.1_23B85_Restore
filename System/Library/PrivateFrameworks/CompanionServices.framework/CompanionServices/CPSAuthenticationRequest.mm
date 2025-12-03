@@ -1,6 +1,6 @@
 @interface CPSAuthenticationRequest
 - (CPSAuthenticationRequest)init;
-- (CPSAuthenticationRequest)initWithCoder:(id)a3;
+- (CPSAuthenticationRequest)initWithCoder:(id)coder;
 @end
 
 @implementation CPSAuthenticationRequest
@@ -12,25 +12,25 @@
   v2 = [(CPSAuthenticationRequest *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v2->_identifier;
-    v2->_identifier = v4;
+    v2->_identifier = uUIDString;
   }
 
   return v2;
 }
 
-- (CPSAuthenticationRequest)initWithCoder:(id)a3
+- (CPSAuthenticationRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CPSAuthenticationRequest;
   v5 = [(CPSAuthenticationRequest *)&v10 init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"identifier"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v7;
   }

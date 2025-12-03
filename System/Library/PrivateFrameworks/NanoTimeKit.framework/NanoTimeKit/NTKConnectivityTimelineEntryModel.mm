@@ -1,30 +1,30 @@
 @interface NTKConnectivityTimelineEntryModel
 - (id)_newUtilitarianLargeTemplate;
-- (id)templateForComplicationFamily:(int64_t)a3;
+- (id)templateForComplicationFamily:(int64_t)family;
 @end
 
 @implementation NTKConnectivityTimelineEntryModel
 
-- (id)templateForComplicationFamily:(int64_t)a3
+- (id)templateForComplicationFamily:(int64_t)family
 {
-  if (a3 == 3 || a3 == 104)
+  if (family == 3 || family == 104)
   {
-    v5 = [(NTKConnectivityTimelineEntryModel *)self _newUtilitarianLargeTemplate];
+    _newUtilitarianLargeTemplate = [(NTKConnectivityTimelineEntryModel *)self _newUtilitarianLargeTemplate];
   }
 
   else
   {
-    v5 = 0;
+    _newUtilitarianLargeTemplate = 0;
   }
 
-  return v5;
+  return _newUtilitarianLargeTemplate;
 }
 
 - (id)_newUtilitarianLargeTemplate
 {
   v2 = MEMORY[0x277CBBB88];
-  v3 = [(NTKConnectivityTimelineEntryModel *)self connectivity];
-  v4 = [v2 textProviderWithText:v3];
+  connectivity = [(NTKConnectivityTimelineEntryModel *)self connectivity];
+  v4 = [v2 textProviderWithText:connectivity];
 
   v5 = [MEMORY[0x277CBBA80] templateWithTextProvider:v4];
   [v5 finalize];

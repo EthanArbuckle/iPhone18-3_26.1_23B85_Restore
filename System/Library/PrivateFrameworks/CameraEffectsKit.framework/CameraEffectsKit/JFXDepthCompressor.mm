@@ -1,38 +1,38 @@
 @interface JFXDepthCompressor
-+ (id)NSDataFromDepthMapInsideAVDepthData:(id)a3;
-+ (id)NSDataFromFloatDepth32:(__CVBuffer *)a3;
-+ (id)decapsulatePayload:(id)a3;
-+ (id)encapsulatePayload:(id)a3;
-+ (id)fakeAuxDepthInfoDictionaryForCVPixelBuffer:(__CVBuffer *)a3;
-- (JFXDepthCompressor)initWithDepthCodecType:(int)a3;
-- (__CVBuffer)copyDepthBufferAsBGRA:(__CVBuffer *)a3;
-- (id)compressAVDepthData:(id)a3 timingInfo:(id *)a4 error:(id *)a5;
-- (id)compressAVDepthData_BGRA:(id)a3 timingInfo:(id *)a4 error:(id *)a5;
-- (id)compressAVDepthData_HEVC10:(id)a3 timingInfo:(id *)a4 error:(id *)a5;
-- (id)compressAVDepthData_LZ:(id)a3 timingInfo:(id *)a4 error:(id *)a5;
-- (id)compressAVDepthData_Photo:(id)a3 timingInfo:(id *)a4 error:(id *)a5;
-- (id)compressDepthMapCVPixelBuffer:(__CVBuffer *)a3 timingInfo:(id *)a4 error:(id *)a5;
-- (id)depthSampleBufferAppendingDepthMetadata:(id)a3 depthSampleBufferFromCodec:(opaqueCMSampleBuffer *)a4;
-- (id)depthSampleBufferWithNewHVCCWithDepthMetadata:(id)a3 depthSampleBufferFromCodec:(opaqueCMSampleBuffer *)a4;
-- (id)hevcSEIMessageDataWithDepthXMPMetadata:(id)a3 isPrefixSEI:(BOOL)a4 nuh_layer_id:(int)a5 nuh_temporal_id_plus1:(int)a6;
-- (id)hevcSEIPayload:(id)a3;
-- (id)hevcSEIPayloadHeaderForPayloadType:(int)a3 payloadSize:(unint64_t)a4;
-- (id)mutableCopyExtensionsDictionaryCopyFromAVDepthData:(id)a3;
-- (opaqueCMFormatDescription)depthFormatDescriptionForDepthDimensions:(id)a3;
-- (unsigned)getPayloadTypeOrSize:(id)a3 offsetPointer:(unint64_t *)a4;
++ (id)NSDataFromDepthMapInsideAVDepthData:(id)data;
++ (id)NSDataFromFloatDepth32:(__CVBuffer *)depth32;
++ (id)decapsulatePayload:(id)payload;
++ (id)encapsulatePayload:(id)payload;
++ (id)fakeAuxDepthInfoDictionaryForCVPixelBuffer:(__CVBuffer *)buffer;
+- (JFXDepthCompressor)initWithDepthCodecType:(int)type;
+- (__CVBuffer)copyDepthBufferAsBGRA:(__CVBuffer *)a;
+- (id)compressAVDepthData:(id)data timingInfo:(id *)info error:(id *)error;
+- (id)compressAVDepthData_BGRA:(id)a timingInfo:(id *)info error:(id *)error;
+- (id)compressAVDepthData_HEVC10:(id)c10 timingInfo:(id *)info error:(id *)error;
+- (id)compressAVDepthData_LZ:(id)z timingInfo:(id *)info error:(id *)error;
+- (id)compressAVDepthData_Photo:(id)photo timingInfo:(id *)info error:(id *)error;
+- (id)compressDepthMapCVPixelBuffer:(__CVBuffer *)buffer timingInfo:(id *)info error:(id *)error;
+- (id)depthSampleBufferAppendingDepthMetadata:(id)metadata depthSampleBufferFromCodec:(opaqueCMSampleBuffer *)codec;
+- (id)depthSampleBufferWithNewHVCCWithDepthMetadata:(id)metadata depthSampleBufferFromCodec:(opaqueCMSampleBuffer *)codec;
+- (id)hevcSEIMessageDataWithDepthXMPMetadata:(id)metadata isPrefixSEI:(BOOL)i nuh_layer_id:(int)nuh_layer_id nuh_temporal_id_plus1:(int)nuh_temporal_id_plus1;
+- (id)hevcSEIPayload:(id)payload;
+- (id)hevcSEIPayloadHeaderForPayloadType:(int)type payloadSize:(unint64_t)size;
+- (id)mutableCopyExtensionsDictionaryCopyFromAVDepthData:(id)data;
+- (opaqueCMFormatDescription)depthFormatDescriptionForDepthDimensions:(id)dimensions;
+- (unsigned)getPayloadTypeOrSize:(id)size offsetPointer:(unint64_t *)pointer;
 - (void)dealloc;
 @end
 
 @implementation JFXDepthCompressor
 
-- (JFXDepthCompressor)initWithDepthCodecType:(int)a3
+- (JFXDepthCompressor)initWithDepthCodecType:(int)type
 {
   v5.receiver = self;
   v5.super_class = JFXDepthCompressor;
   result = [(JFXDepthCompressor *)&v5 init];
   if (result)
   {
-    result->_depthCodecType = a3;
+    result->_depthCodecType = type;
     result->_previousFormatDescription = 0;
   }
 
@@ -50,10 +50,10 @@
   [(JFXDepthCompressor *)&v4 dealloc];
 }
 
-- (opaqueCMFormatDescription)depthFormatDescriptionForDepthDimensions:(id)a3
+- (opaqueCMFormatDescription)depthFormatDescriptionForDepthDimensions:(id)dimensions
 {
   v45[4] = *MEMORY[0x277D85DE8];
-  var1 = a3.var1;
+  var1 = dimensions.var1;
   pixelBufferOut = 0;
   formatDescriptionOut = 0;
   v6 = [MEMORY[0x277CCABB0] numberWithInt:?];
@@ -74,8 +74,8 @@
   v45[3] = &unk_28556D5F0;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:4];
   v14 = *MEMORY[0x277CBECE8];
-  var0 = a3.var0;
-  v16 = *&a3 >> 32;
+  var0 = dimensions.var0;
+  v16 = *&dimensions >> 32;
   v31 = v13;
   CVPixelBufferCreate(*MEMORY[0x277CBECE8], var0, v16, 0x66646570u, v13, &pixelBufferOut);
   if (pixelBufferOut)
@@ -205,71 +205,71 @@ LABEL_25:
   return v27;
 }
 
-- (id)compressAVDepthData:(id)a3 timingInfo:(id *)a4 error:(id *)a5
+- (id)compressAVDepthData:(id)data timingInfo:(id *)info error:(id *)error
 {
-  v8 = a3;
+  dataCopy = data;
   depthCodecType = self->_depthCodecType;
   if (depthCodecType <= 1280992881)
   {
     if (depthCodecType == 1111970369)
     {
-      v19 = *&a4->var2.var0;
-      v25 = *&a4->var1.var1;
+      v19 = *&info->var2.var0;
+      v25 = *&info->var1.var1;
       v26 = v19;
-      var3 = a4->var2.var3;
-      v20 = *&a4->var0.var3;
-      v23 = *&a4->var0.var0;
+      var3 = info->var2.var3;
+      v20 = *&info->var0.var3;
+      v23 = *&info->var0.var0;
       v24 = v20;
-      v14 = [(JFXDepthCompressor *)self compressAVDepthData_BGRA:v8 timingInfo:&v23 error:a5];
+      v14 = [(JFXDepthCompressor *)self compressAVDepthData_BGRA:dataCopy timingInfo:&v23 error:error];
       goto LABEL_11;
     }
 
     if (depthCodecType == 1212494384)
     {
-      v17 = *&a4->var2.var0;
-      v25 = *&a4->var1.var1;
+      v17 = *&info->var2.var0;
+      v25 = *&info->var1.var1;
       v26 = v17;
-      var3 = a4->var2.var3;
-      v18 = *&a4->var0.var3;
-      v23 = *&a4->var0.var0;
+      var3 = info->var2.var3;
+      v18 = *&info->var0.var3;
+      v23 = *&info->var0.var0;
       v24 = v18;
-      v14 = [(JFXDepthCompressor *)self compressAVDepthData_Photo:v8 timingInfo:&v23 error:a5];
+      v14 = [(JFXDepthCompressor *)self compressAVDepthData_Photo:dataCopy timingInfo:&v23 error:error];
       goto LABEL_11;
     }
   }
 
   else if ((depthCodecType - 1280992882) < 2 || depthCodecType == 1280994657 || depthCodecType == 1280997986)
   {
-    v12 = *&a4->var2.var0;
-    v25 = *&a4->var1.var1;
+    v12 = *&info->var2.var0;
+    v25 = *&info->var1.var1;
     v26 = v12;
-    var3 = a4->var2.var3;
-    v13 = *&a4->var0.var3;
-    v23 = *&a4->var0.var0;
+    var3 = info->var2.var3;
+    v13 = *&info->var0.var3;
+    v23 = *&info->var0.var0;
     v24 = v13;
-    v14 = [(JFXDepthCompressor *)self compressAVDepthData_LZ:v8 timingInfo:&v23 error:a5];
+    v14 = [(JFXDepthCompressor *)self compressAVDepthData_LZ:dataCopy timingInfo:&v23 error:error];
     goto LABEL_11;
   }
 
-  v21 = *&a4->var2.var0;
-  v25 = *&a4->var1.var1;
+  v21 = *&info->var2.var0;
+  v25 = *&info->var1.var1;
   v26 = v21;
-  var3 = a4->var2.var3;
-  v22 = *&a4->var0.var3;
-  v23 = *&a4->var0.var0;
+  var3 = info->var2.var3;
+  v22 = *&info->var0.var3;
+  v23 = *&info->var0.var0;
   v24 = v22;
-  v14 = [(JFXDepthCompressor *)self compressAVDepthData_HEVC10:v8 timingInfo:&v23 error:a5];
+  v14 = [(JFXDepthCompressor *)self compressAVDepthData_HEVC10:dataCopy timingInfo:&v23 error:error];
 LABEL_11:
   v15 = v14;
 
   return v15;
 }
 
-+ (id)encapsulatePayload:(id)a3
++ (id)encapsulatePayload:(id)payload
 {
-  v3 = a3;
-  v4 = [v3 length];
-  v5 = [v3 bytes];
+  payloadCopy = payload;
+  v4 = [payloadCopy length];
+  bytes = [payloadCopy bytes];
   v6 = malloc_type_malloc(v4, 0x100004077774924uLL);
   v7 = v6;
   v8 = 0;
@@ -278,7 +278,7 @@ LABEL_11:
     v9 = 0;
     do
     {
-      v11 = *v5++;
+      v11 = *bytes++;
       v10 = v11;
       if (v9 == 2)
       {
@@ -312,11 +312,11 @@ LABEL_11:
   return v12;
 }
 
-+ (id)decapsulatePayload:(id)a3
++ (id)decapsulatePayload:(id)payload
 {
-  v3 = a3;
-  v4 = [v3 length];
-  v5 = [v3 bytes];
+  payloadCopy = payload;
+  v4 = [payloadCopy length];
+  bytes = [payloadCopy bytes];
   v6 = malloc_type_malloc(v4, 0x100004077774924uLL);
   v7 = v6;
   v8 = 0;
@@ -325,7 +325,7 @@ LABEL_11:
     v9 = 0;
     do
     {
-      v11 = *v5++;
+      v11 = *bytes++;
       v10 = v11;
       if (v9 == 2 && v10 == 3)
       {
@@ -359,18 +359,18 @@ LABEL_11:
   return v12;
 }
 
-- (unsigned)getPayloadTypeOrSize:(id)a3 offsetPointer:(unint64_t *)a4
+- (unsigned)getPayloadTypeOrSize:(id)size offsetPointer:(unint64_t *)pointer
 {
-  v5 = a3;
-  v6 = [v5 length];
-  if (a4)
+  sizeCopy = size;
+  v6 = [sizeCopy length];
+  if (pointer)
   {
-    v7 = *a4;
+    v7 = *pointer;
     v13 = 0;
     v8 = v6;
     if (v6)
     {
-      [v5 getBytes:&v13 range:{v7, 1}];
+      [sizeCopy getBytes:&v13 range:{v7, 1}];
       v9 = 0;
       v10 = v13;
       if (v13 == 255 && v7 < v8)
@@ -379,7 +379,7 @@ LABEL_11:
         do
         {
           v9 += 255;
-          [v5 getBytes:&v13 range:{v7++, 1}];
+          [sizeCopy getBytes:&v13 range:{v7++, 1}];
           v10 = v13;
         }
 
@@ -389,7 +389,7 @@ LABEL_11:
       LODWORD(v8) = v9 + v10;
     }
 
-    *a4 = v7;
+    *pointer = v7;
   }
 
   else
@@ -400,16 +400,16 @@ LABEL_11:
   return v8;
 }
 
-- (id)hevcSEIPayload:(id)a3
+- (id)hevcSEIPayload:(id)payload
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  payloadCopy = payload;
   v16 = 0;
-  v5 = [v4 length];
+  v5 = [payloadCopy length];
   v6 = v5 - 4;
   if (v5 >= 4)
   {
-    [v4 getBytes:&v16 range:{0, 4}];
+    [payloadCopy getBytes:&v16 range:{0, 4}];
     v7 = bswap32(v16);
     v16 = v7;
     if (v7 > v5)
@@ -417,7 +417,7 @@ LABEL_11:
       v8 = JFXLog_DebugDepthCodec();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        [(JFXDepthCompressor *)&v16 hevcSEIPayload:v4];
+        [(JFXDepthCompressor *)&v16 hevcSEIPayload:payloadCopy];
       }
 
       v16 = v6;
@@ -426,10 +426,10 @@ LABEL_11:
 
     if (v7 >= 6)
     {
-      [v4 getBytes:v15 range:{4, 1}];
+      [payloadCopy getBytes:v15 range:{4, 1}];
       if (((v15[0] >> 1) & 0x3Fu) - 39 <= 1)
       {
-        v9 = [objc_opt_class() decapsulatePayload:v4];
+        v9 = [objc_opt_class() decapsulatePayload:payloadCopy];
         v16 = [v9 length];
         if (v16)
         {
@@ -439,11 +439,11 @@ LABEL_11:
             [(JFXDepthCompressor *)self getPayloadTypeOrSize:v9 offsetPointer:&v14];
             v17 = 0;
             v18 = 0;
-            [v4 getBytes:&v17 range:{v14, 16}];
+            [payloadCopy getBytes:&v17 range:{v14, 16}];
             if (v17 == 0x6C7070612E6D6F63 && v18 == 0x7370696C432E65)
             {
               v14 += 16;
-              v11 = [v9 subdataWithRange:?];
+              data = [v9 subdataWithRange:?];
 
               goto LABEL_21;
             }
@@ -462,52 +462,52 @@ LABEL_11:
     }
   }
 
-  v11 = [MEMORY[0x277CBEA90] data];
+  data = [MEMORY[0x277CBEA90] data];
 LABEL_21:
 
-  return v11;
+  return data;
 }
 
-- (id)hevcSEIPayloadHeaderForPayloadType:(int)a3 payloadSize:(unint64_t)a4
+- (id)hevcSEIPayloadHeaderForPayloadType:(int)type payloadSize:(unint64_t)size
 {
-  v4 = a4;
+  sizeCopy = size;
   v12 = -1;
-  v6 = [MEMORY[0x277CBEB28] data];
-  if (a3 >= 255)
+  data = [MEMORY[0x277CBEB28] data];
+  if (type >= 255)
   {
-    v7 = a3 / 255;
+    v7 = type / 255;
     do
     {
-      [v6 appendBytes:&v12 length:1];
+      [data appendBytes:&v12 length:1];
       --v7;
     }
 
     while (v7);
   }
 
-  v11 = a3 + a3 / 255;
-  [v6 appendBytes:&v11 length:1];
-  if (v4 >= 255)
+  v11 = type + type / 255;
+  [data appendBytes:&v11 length:1];
+  if (sizeCopy >= 255)
   {
-    v8 = v4 / 255;
+    v8 = sizeCopy / 255;
     do
     {
-      [v6 appendBytes:&v12 length:1];
+      [data appendBytes:&v12 length:1];
       --v8;
     }
 
     while (v8);
   }
 
-  v10 = v4 + v4 / 255;
-  [v6 appendBytes:&v10 length:1];
+  v10 = sizeCopy + sizeCopy / 255;
+  [data appendBytes:&v10 length:1];
 
-  return v6;
+  return data;
 }
 
-- (id)hevcSEIMessageDataWithDepthXMPMetadata:(id)a3 isPrefixSEI:(BOOL)a4 nuh_layer_id:(int)a5 nuh_temporal_id_plus1:(int)a6
+- (id)hevcSEIMessageDataWithDepthXMPMetadata:(id)metadata isPrefixSEI:(BOOL)i nuh_layer_id:(int)nuh_layer_id nuh_temporal_id_plus1:(int)nuh_temporal_id_plus1
 {
-  if (a4)
+  if (i)
   {
     v7 = 78;
   }
@@ -517,40 +517,40 @@ LABEL_21:
     v7 = 80;
   }
 
-  v15[0] = v7 & 0xFE | ((a5 & 0x20) != 0);
-  v15[1] = a6 | (8 * a5);
+  v15[0] = v7 & 0xFE | ((nuh_layer_id & 0x20) != 0);
+  v15[1] = nuh_temporal_id_plus1 | (8 * nuh_layer_id);
   v8 = MEMORY[0x277CBEB28];
-  v9 = a3;
-  v10 = [v8 data];
-  [v10 appendBytes:v15 length:2];
-  v11 = [MEMORY[0x277CBEB28] data];
-  [v11 appendBytes:"com.apple.Clips" length:16];
-  [v11 appendData:v9];
+  metadataCopy = metadata;
+  data = [v8 data];
+  [data appendBytes:v15 length:2];
+  data2 = [MEMORY[0x277CBEB28] data];
+  [data2 appendBytes:"com.apple.Clips" length:16];
+  [data2 appendData:metadataCopy];
 
-  v12 = -[JFXDepthCompressor hevcSEIPayloadHeaderForPayloadType:payloadSize:](self, "hevcSEIPayloadHeaderForPayloadType:payloadSize:", 4, [v11 length]);
-  [v10 appendData:v12];
-  [v10 appendData:v11];
-  [v10 appendBytes:&trailingByte length:1];
-  v13 = [objc_opt_class() encapsulatePayload:v10];
+  v12 = -[JFXDepthCompressor hevcSEIPayloadHeaderForPayloadType:payloadSize:](self, "hevcSEIPayloadHeaderForPayloadType:payloadSize:", 4, [data2 length]);
+  [data appendData:v12];
+  [data appendData:data2];
+  [data appendBytes:&trailingByte length:1];
+  v13 = [objc_opt_class() encapsulatePayload:data];
 
   return v13;
 }
 
-- (id)depthSampleBufferAppendingDepthMetadata:(id)a3 depthSampleBufferFromCodec:(opaqueCMSampleBuffer *)a4
+- (id)depthSampleBufferAppendingDepthMetadata:(id)metadata depthSampleBufferFromCodec:(opaqueCMSampleBuffer *)codec
 {
   v29 = 0;
   *&timingInfoOut.duration.value = *MEMORY[0x277CC0898];
   timingInfoOut.duration.epoch = *(MEMORY[0x277CC0898] + 16);
   timingInfoOut.presentationTimeStamp = timingInfoOut.duration;
   timingInfoOut.decodeTimeStamp = timingInfoOut.duration;
-  v5 = a3;
-  CMSampleBufferGetSampleTimingInfo(a4, 0, &timingInfoOut);
-  DataBuffer = CMSampleBufferGetDataBuffer(a4);
-  FormatDescription = CMSampleBufferGetFormatDescription(a4);
+  metadataCopy = metadata;
+  CMSampleBufferGetSampleTimingInfo(codec, 0, &timingInfoOut);
+  DataBuffer = CMSampleBufferGetDataBuffer(codec);
+  FormatDescription = CMSampleBufferGetFormatDescription(codec);
   theBuffer = 0;
-  LODWORD(a4) = createReadonlyCMBlockBufferFromNSData(&theBuffer, v5);
+  LODWORD(codec) = createReadonlyCMBlockBufferFromNSData(&theBuffer, metadataCopy);
 
-  if (a4)
+  if (codec)
   {
     v8 = JFXLog_DebugDepthCodec();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -646,19 +646,19 @@ LABEL_29:
   return v10;
 }
 
-- (id)depthSampleBufferWithNewHVCCWithDepthMetadata:(id)a3 depthSampleBufferFromCodec:(opaqueCMSampleBuffer *)a4
+- (id)depthSampleBufferWithNewHVCCWithDepthMetadata:(id)metadata depthSampleBufferFromCodec:(opaqueCMSampleBuffer *)codec
 {
   v73 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  metadataCopy = metadata;
   formatDescriptionOut = 0;
   v67 = 0;
-  DataBuffer = CMSampleBufferGetDataBuffer(a4);
+  DataBuffer = CMSampleBufferGetDataBuffer(codec);
   *&timingInfoOut.duration.value = *MEMORY[0x277CC0898];
   timingInfoOut.duration.epoch = *(MEMORY[0x277CC0898] + 16);
   timingInfoOut.presentationTimeStamp = timingInfoOut.duration;
   timingInfoOut.decodeTimeStamp = timingInfoOut.duration;
-  CMSampleBufferGetSampleTimingInfo(a4, 0, &timingInfoOut);
-  FormatDescription = CMSampleBufferGetFormatDescription(a4);
+  CMSampleBufferGetSampleTimingInfo(codec, 0, &timingInfoOut);
+  FormatDescription = CMSampleBufferGetFormatDescription(codec);
   parameterSetCountOut = 0;
   NALUnitHeaderLengthOut = 0;
   if (CMVideoFormatDescriptionGetHEVCParameterSetAtIndex(FormatDescription, 0, 0, 0, &parameterSetCountOut, &NALUnitHeaderLengthOut) || !parameterSetCountOut)
@@ -712,7 +712,7 @@ LABEL_13:
 
       if (v19)
       {
-        v20 = v5;
+        v20 = metadataCopy;
         v21 = [v19 length];
         v56 = v20;
         v55 = v21 + [v20 length];
@@ -746,7 +746,7 @@ LABEL_13:
         }
 
         v57 = v15;
-        v58 = v5;
+        v58 = metadataCopy;
         v61 = v8;
 
         if (v25)
@@ -846,7 +846,7 @@ LABEL_43:
         v15 = v57;
         [v57 setObject:v44 forKeyedSubscript:@"hvcC"];
 
-        v5 = v58;
+        metadataCopy = v58;
         v10 = v60;
         v8 = v61;
       }
@@ -855,16 +855,16 @@ LABEL_43:
       v46 = v45;
       if (v45)
       {
-        v47 = [v45 mutableCopy];
+        dictionary = [v45 mutableCopy];
       }
 
       else
       {
-        v47 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
       }
 
-      v48 = v47;
-      [v47 setObject:v15 forKeyedSubscript:@"SampleDescriptionExtensionAtoms"];
+      v48 = dictionary;
+      [dictionary setObject:v15 forKeyedSubscript:@"SampleDescriptionExtensionAtoms"];
       v49 = *MEMORY[0x277CBECE8];
       if (CMVideoFormatDescriptionCreateFromHEVCParameterSets(*MEMORY[0x277CBECE8], parameterSetCountOut, v8, v10, NALUnitHeaderLengthOut, v48, &formatDescriptionOut))
       {
@@ -923,13 +923,13 @@ LABEL_60:
   return v53;
 }
 
-- (id)compressAVDepthData_HEVC10:(id)a3 timingInfo:(id *)a4 error:(id *)a5
+- (id)compressAVDepthData_HEVC10:(id)c10 timingInfo:(id *)info error:(id *)error
 {
   v45[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [v8 depthDataMap];
-  Width = CVPixelBufferGetWidth(v9);
-  Height = CVPixelBufferGetHeight(v9);
+  c10Copy = c10;
+  depthDataMap = [c10Copy depthDataMap];
+  Width = CVPixelBufferGetWidth(depthDataMap);
+  Height = CVPixelBufferGetHeight(depthDataMap);
   if (!self->_videoEncoderInterface)
   {
     v12 = Height;
@@ -948,10 +948,10 @@ LABEL_60:
 
 LABEL_24:
 
-      if (a5)
+      if (error)
       {
         [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:0];
-        *a5 = v29 = 0;
+        *error = v29 = 0;
         goto LABEL_33;
       }
 
@@ -959,7 +959,7 @@ LABEL_24:
     }
   }
 
-  v15 = copyFloatDepthBufferToL010(v9, 0);
+  v15 = copyFloatDepthBufferToL010(depthDataMap, 0);
   if (!v15)
   {
     v26 = JFXLog_DebugDepthCodec();
@@ -976,8 +976,8 @@ LABEL_24:
   v45[0] = MEMORY[0x277CBEC38];
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:&v44 count:1];
   v18 = self->_videoEncoderInterface;
-  *parameterSetCountOut = *&a4->var1.var0;
-  var3 = a4->var1.var3;
+  *parameterSetCountOut = *&info->var1.var0;
+  var3 = info->var1.var3;
   v19 = [(JFXVideoEncoderInterface *)v18 encodeFrame:v16 presentationTime:parameterSetCountOut frameProperties:v17];
   CVPixelBufferRelease(v16);
   if (!v19)
@@ -988,9 +988,9 @@ LABEL_24:
       [JFXDepthCompressor compressAVDepthData_HEVC10:timingInfo:error:];
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:0];
     }
 
     goto LABEL_21;
@@ -1044,7 +1044,7 @@ LABEL_26:
   }
 
 LABEL_30:
-  v31 = [(JFXDepthCompressor *)self mutableCopyExtensionsDictionaryCopyFromAVDepthData:v8];
+  v31 = [(JFXDepthCompressor *)self mutableCopyExtensionsDictionaryCopyFromAVDepthData:c10Copy];
   v32 = (*v21)[1];
   v33 = (v32 >> 3) & 0xFFFFFFDF | (32 * (**v21 & 1));
   free(v21);
@@ -1066,24 +1066,24 @@ LABEL_33:
   return v29;
 }
 
-- (__CVBuffer)copyDepthBufferAsBGRA:(__CVBuffer *)a3
+- (__CVBuffer)copyDepthBufferAsBGRA:(__CVBuffer *)a
 {
   pixelBufferOut = 0;
-  if (a3)
+  if (a)
   {
     v4 = *MEMORY[0x277CBECE8];
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
+    Width = CVPixelBufferGetWidth(a);
+    Height = CVPixelBufferGetHeight(a);
     v7 = CVPixelBufferCreate(v4, Width, Height, 0x42475241u, 0, &pixelBufferOut) || pixelBufferOut == 0;
     if (!v7 && CVPixelBufferGetPixelFormatType(pixelBufferOut) == 1111970369)
     {
-      v8 = CVPixelBufferGetWidth(a3);
-      v9 = CVPixelBufferGetHeight(a3);
-      BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+      v8 = CVPixelBufferGetWidth(a);
+      v9 = CVPixelBufferGetHeight(a);
+      BytesPerRow = CVPixelBufferGetBytesPerRow(a);
       v11 = CVPixelBufferGetBytesPerRow(pixelBufferOut);
-      CVPixelBufferLockBaseAddress(a3, 1uLL);
+      CVPixelBufferLockBaseAddress(a, 1uLL);
       CVPixelBufferLockBaseAddress(pixelBufferOut, 0);
-      BaseAddress = CVPixelBufferGetBaseAddress(a3);
+      BaseAddress = CVPixelBufferGetBaseAddress(a);
       v13 = CVPixelBufferGetBaseAddress(pixelBufferOut);
       if (v9)
       {
@@ -1100,7 +1100,7 @@ LABEL_33:
         while (v9);
       }
 
-      CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+      CVPixelBufferUnlockBaseAddress(a, 1uLL);
       CVPixelBufferUnlockBaseAddress(pixelBufferOut, 0);
     }
   }
@@ -1108,9 +1108,9 @@ LABEL_33:
   return pixelBufferOut;
 }
 
-- (id)compressAVDepthData_BGRA:(id)a3 timingInfo:(id *)a4 error:(id *)a5
+- (id)compressAVDepthData_BGRA:(id)a timingInfo:(id *)info error:(id *)error
 {
-  Float32DepthImageForAVDepthData = createFloat32DepthImageForAVDepthData(a3);
+  Float32DepthImageForAVDepthData = createFloat32DepthImageForAVDepthData(a);
   if (Float32DepthImageForAVDepthData)
   {
     v9 = Float32DepthImageForAVDepthData;
@@ -1132,7 +1132,7 @@ LABEL_33:
       if (formatDescription)
       {
         sampleBufferOut = 0;
-        CMSampleBufferCreateReadyWithImageBuffer(v11, v10, formatDescription, a4, &sampleBufferOut);
+        CMSampleBufferCreateReadyWithImageBuffer(v11, v10, formatDescription, info, &sampleBufferOut);
         if (sampleBufferOut)
         {
           v17 = objc_alloc(MEMORY[0x277D415D8]);
@@ -1164,9 +1164,9 @@ LABEL_33:
         }
       }
 
-      if (a5)
+      if (error)
       {
-        *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:0];
+        *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:0];
       }
     }
   }
@@ -1187,11 +1187,11 @@ LABEL_17:
   return v18;
 }
 
-- (id)compressAVDepthData_Photo:(id)a3 timingInfo:(id *)a4 error:(id *)a5
+- (id)compressAVDepthData_Photo:(id)photo timingInfo:(id *)info error:(id *)error
 {
   v71[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  ContiguousFloat32DepthImageForAVDepthData = createContiguousFloat32DepthImageForAVDepthData(v8);
+  photoCopy = photo;
+  ContiguousFloat32DepthImageForAVDepthData = createContiguousFloat32DepthImageForAVDepthData(photoCopy);
   if (!ContiguousFloat32DepthImageForAVDepthData)
   {
     v18 = JFXLog_DebugDepthCodec();
@@ -1215,9 +1215,9 @@ LABEL_36:
 
 LABEL_38:
 
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:0];
     }
 
     goto LABEL_68;
@@ -1286,9 +1286,9 @@ LABEL_13:
       [JFXDepthCompressor compressAVDepthData_Photo:timingInfo:error:];
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:0];
     }
 
     goto LABEL_67;
@@ -1304,9 +1304,9 @@ LABEL_13:
       [JFXDepthCompressor compressAVDepthData_Photo:timingInfo:error:];
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:0];
     }
 
     goto LABEL_66;
@@ -1315,7 +1315,7 @@ LABEL_13:
   v28 = v27;
   CGImageDestinationAddImage(v27, v17, properties);
   v65 = 0;
-  v61 = [v8 dictionaryRepresentationForAuxiliaryDataType:&v65];
+  v61 = [photoCopy dictionaryRepresentationForAuxiliaryDataType:&v65];
   v62 = v65;
   if (([(__CFString *)v62 isEqualToString:*MEMORY[0x277CD2C88]]& 1) == 0)
   {
@@ -1329,9 +1329,9 @@ LABEL_13:
 
     v28 = v30;
     v26 = v29;
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:0];
     }
   }
 
@@ -1346,9 +1346,9 @@ LABEL_13:
     }
 
     v47 = v60;
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:0];
     }
 
     goto LABEL_65;
@@ -1357,7 +1357,7 @@ LABEL_13:
   width = CVPixelBufferGetWidth(ContiguousFloat32DepthImageForAVDepthData);
   v32 = v26;
   v33 = MEMORY[0x277CBEAC0];
-  v34 = [(JFXDepthCompressor *)self mutableCopyExtensionsDictionaryCopyFromAVDepthData:v8];
+  v34 = [(JFXDepthCompressor *)self mutableCopyExtensionsDictionaryCopyFromAVDepthData:photoCopy];
   v35 = [v33 dictionaryWithDictionary:v34];
 
   v59 = v35;
@@ -1372,12 +1372,12 @@ LABEL_13:
     goto LABEL_54;
   }
 
-  v36 = *&a4->var2.var0;
-  *&sampleTimingArray.presentationTimeStamp.timescale = *&a4->var1.var1;
+  v36 = *&info->var2.var0;
+  *&sampleTimingArray.presentationTimeStamp.timescale = *&info->var1.var1;
   *&sampleTimingArray.decodeTimeStamp.value = v36;
-  sampleTimingArray.decodeTimeStamp.epoch = a4->var2.var3;
-  v37 = *&a4->var0.var3;
-  *&sampleTimingArray.duration.value = *&a4->var0.var0;
+  sampleTimingArray.decodeTimeStamp.epoch = info->var2.var3;
+  v37 = *&info->var0.var3;
+  *&sampleTimingArray.duration.value = *&info->var0.var0;
   *&sampleTimingArray.duration.epoch = v37;
   v38 = v32;
   sampleBufferOut = 0;
@@ -1446,7 +1446,7 @@ LABEL_59:
     }
 
     v47 = v60;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_64;
     }
@@ -1469,7 +1469,7 @@ LABEL_59:
 LABEL_54:
 
     v47 = v60;
-    if (!a5)
+    if (!error)
     {
 LABEL_64:
 
@@ -1491,7 +1491,7 @@ LABEL_68:
     v50 = *MEMORY[0x277CCA590];
     v51 = -50;
 LABEL_63:
-    *a5 = [v49 errorWithDomain:v50 code:v51 userInfo:0];
+    *error = [v49 errorWithDomain:v50 code:v51 userInfo:0];
     goto LABEL_64;
   }
 
@@ -1507,16 +1507,16 @@ LABEL_69:
   return v54;
 }
 
-+ (id)NSDataFromFloatDepth32:(__CVBuffer *)a3
++ (id)NSDataFromFloatDepth32:(__CVBuffer *)depth32
 {
-  if (a3)
+  if (depth32)
   {
-    DataSize = CVPixelBufferGetDataSize(a3);
-    Width = CVPixelBufferGetWidth(a3);
-    if (DataSize == 4 * Width * CVPixelBufferGetHeight(a3))
+    DataSize = CVPixelBufferGetDataSize(depth32);
+    Width = CVPixelBufferGetWidth(depth32);
+    if (DataSize == 4 * Width * CVPixelBufferGetHeight(depth32))
     {
-      CVPixelBufferLockBaseAddress(a3, 1uLL);
-      BaseAddress = CVPixelBufferGetBaseAddress(a3);
+      CVPixelBufferLockBaseAddress(depth32, 1uLL);
+      BaseAddress = CVPixelBufferGetBaseAddress(depth32);
       if (BaseAddress)
       {
         v7 = [MEMORY[0x277CBEA90] dataWithBytes:BaseAddress length:DataSize];
@@ -1527,7 +1527,7 @@ LABEL_69:
         v7 = 0;
       }
 
-      CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+      CVPixelBufferUnlockBaseAddress(depth32, 1uLL);
       goto LABEL_11;
     }
 
@@ -1544,19 +1544,19 @@ LABEL_11:
   return v7;
 }
 
-+ (id)NSDataFromDepthMapInsideAVDepthData:(id)a3
++ (id)NSDataFromDepthMapInsideAVDepthData:(id)data
 {
-  ContiguousFloat32DepthImageForAVDepthData = createContiguousFloat32DepthImageForAVDepthData(a3);
+  ContiguousFloat32DepthImageForAVDepthData = createContiguousFloat32DepthImageForAVDepthData(data);
   v4 = [objc_opt_class() NSDataFromFloatDepth32:ContiguousFloat32DepthImageForAVDepthData];
   CVPixelBufferRelease(ContiguousFloat32DepthImageForAVDepthData);
 
   return v4;
 }
 
-- (id)mutableCopyExtensionsDictionaryCopyFromAVDepthData:(id)a3
+- (id)mutableCopyExtensionsDictionaryCopyFromAVDepthData:(id)data
 {
   v24[7] = *MEMORY[0x277D85DE8];
-  v3 = [a3 depthDataByConvertingToDepthDataType:1717855600];
+  v3 = [data depthDataByConvertingToDepthDataType:1717855600];
   v4 = [v3 dictionaryRepresentationForAuxiliaryDataType:0];
   v5 = [v4 mutableCopy];
 
@@ -1579,9 +1579,9 @@ LABEL_11:
     err = 0;
     if (CGImageMetadataRegisterNamespaceForPrefix(MutableCopy, @"http://ns.apple.com/pixeldatainfo/1.0/", @"apdi", &err))
     {
-      v10 = [v3 depthDataType];
-      v11 = v10;
-      v12 = v10 == 1751410032 || v10 == 1717855600;
+      depthDataType = [v3 depthDataType];
+      v11 = depthDataType;
+      v12 = depthDataType == 1751410032 || depthDataType == 1717855600;
       v13 = @"disparity";
       if (v12)
       {
@@ -1689,7 +1689,7 @@ LABEL_11:
 LABEL_12:
 }
 
-- (id)compressAVDepthData_LZ:(id)a3 timingInfo:(id *)a4 error:(id *)a5
+- (id)compressAVDepthData_LZ:(id)z timingInfo:(id *)info error:(id *)error
 {
   depthCodecType = self->_depthCodecType;
   switch(depthCodecType)
@@ -1708,7 +1708,7 @@ LABEL_12:
       break;
   }
 
-  v9 = [a3 depthDataByConvertingToDepthDataType:1717855600];
+  v9 = [z depthDataByConvertingToDepthDataType:1717855600];
   v10 = [v9 dictionaryRepresentationForAuxiliaryDataType:0];
   v11 = [v10 mutableCopy];
 
@@ -1735,10 +1735,10 @@ LABEL_12:
 
       if (v19)
       {
-        if (a5)
+        if (error)
         {
           v30 = v19;
-          *a5 = v19;
+          *error = v19;
         }
 
         goto LABEL_46;
@@ -1751,16 +1751,16 @@ LABEL_12:
       createReadonlyCMBlockBufferFromNSData(&theBuffer, v17);
       if (theBuffer)
       {
-        sampleTimingArray = a4;
-        v37 = a5;
+        sampleTimingArray = info;
+        errorCopy = error;
         formatDescriptionOut = 0;
         sampleSizeArray = CMBlockBufferGetDataLength(theBuffer);
         [v11 removeObjectForKey:v12];
         [v11 removeObjectForKey:*MEMORY[0x277CD2C60]];
-        v20 = [v9 depthDataMap];
+        depthDataMap = [v9 depthDataMap];
         v21 = *MEMORY[0x277CBECE8];
-        Width = CVPixelBufferGetWidth(v20);
-        Height = CVPixelBufferGetHeight(v20);
+        Width = CVPixelBufferGetWidth(depthDataMap);
+        Height = CVPixelBufferGetHeight(depthDataMap);
         if (CMVideoFormatDescriptionCreate(v21, depthCodecType, Width, Height, v11, &formatDescriptionOut) || !formatDescriptionOut)
         {
           v32 = JFXLog_DebugDepthCodec();
@@ -1782,9 +1782,9 @@ LABEL_12:
               [JFXDepthCompressor compressAVDepthData_LZ:timingInfo:error:];
             }
 
-            if (v37)
+            if (errorCopy)
             {
-              *v37 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v24 userInfo:0];
+              *errorCopy = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v24 userInfo:0];
             }
           }
 
@@ -1808,9 +1808,9 @@ LABEL_12:
               [JFXDepthCompressor compressAVDepthData_LZ:timingInfo:error:];
             }
 
-            if (v37)
+            if (errorCopy)
             {
-              *v37 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:0 userInfo:0];
+              *errorCopy = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:0 userInfo:0];
             }
 
             CFRelease(sampleBufferOut);
@@ -1830,9 +1830,9 @@ LABEL_12:
       }
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:0];
     }
 
 LABEL_46:
@@ -1846,10 +1846,10 @@ LABEL_46:
     [JFXDepthCompressor compressAVDepthData_LZ:timingInfo:error:];
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:0];
-    *a5 = v27 = 0;
+    *error = v27 = 0;
     goto LABEL_48;
   }
 
@@ -1860,15 +1860,15 @@ LABEL_48:
   return v27;
 }
 
-+ (id)fakeAuxDepthInfoDictionaryForCVPixelBuffer:(__CVBuffer *)a3
++ (id)fakeAuxDepthInfoDictionaryForCVPixelBuffer:(__CVBuffer *)buffer
 {
   v24[4] = *MEMORY[0x277D85DE8];
   v4 = +[JFXDepthCompressor fakeXMPDataIfNotFound];
   v5 = CGImageMetadataCreateFromXMPData(v4);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   v23[0] = @"Width";
   v10 = [MEMORY[0x277CCABB0] numberWithInt:Width];
   v24[0] = v10;
@@ -1883,10 +1883,10 @@ LABEL_48:
   v24[3] = v13;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:4];
 
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
+  CVPixelBufferLockBaseAddress(buffer, 1uLL);
   v15 = MEMORY[0x277CBEA90];
-  BaseAddress = CVPixelBufferGetBaseAddress(a3);
-  v17 = [v15 dataWithBytes:BaseAddress length:CVPixelBufferGetDataSize(a3)];
+  BaseAddress = CVPixelBufferGetBaseAddress(buffer);
+  v17 = [v15 dataWithBytes:BaseAddress length:CVPixelBufferGetDataSize(buffer)];
   v18 = *MEMORY[0x277CD2C68];
   v21[0] = *MEMORY[0x277CD2C60];
   v21[1] = v18;
@@ -1896,27 +1896,27 @@ LABEL_48:
   v22[2] = v5;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:3];
 
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+  CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
 
   return v19;
 }
 
-- (id)compressDepthMapCVPixelBuffer:(__CVBuffer *)a3 timingInfo:(id *)a4 error:(id *)a5
+- (id)compressDepthMapCVPixelBuffer:(__CVBuffer *)buffer timingInfo:(id *)info error:(id *)error
 {
   v9 = [JFXDepthCompressor fakeAuxDepthInfoDictionaryForCVPixelBuffer:?];
-  v10 = [MEMORY[0x277CE5B70] depthDataFromDictionaryRepresentation:v9 error:a5];
+  v10 = [MEMORY[0x277CE5B70] depthDataFromDictionaryRepresentation:v9 error:error];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 depthDataByReplacingDepthDataMapWithPixelBuffer:a3 error:a5];
-    v13 = *&a4->var2.var0;
-    v17[2] = *&a4->var1.var1;
+    v12 = [v10 depthDataByReplacingDepthDataMapWithPixelBuffer:buffer error:error];
+    v13 = *&info->var2.var0;
+    v17[2] = *&info->var1.var1;
     v17[3] = v13;
-    var3 = a4->var2.var3;
-    v14 = *&a4->var0.var3;
-    v17[0] = *&a4->var0.var0;
+    var3 = info->var2.var3;
+    v14 = *&info->var0.var3;
+    v17[0] = *&info->var0.var0;
     v17[1] = v14;
-    v15 = [(JFXDepthCompressor *)self compressAVDepthData:v12 timingInfo:v17 error:a5];
+    v15 = [(JFXDepthCompressor *)self compressAVDepthData:v12 timingInfo:v17 error:error];
   }
 
   else

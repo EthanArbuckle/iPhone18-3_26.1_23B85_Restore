@@ -1,24 +1,24 @@
 @interface CKCDPCodeServiceRequest
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dataProtectionAsString:(int)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dataProtectionAsString:(int)string;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)serializationFormatAsString:(int)a3;
-- (int)StringAsDataProtection:(id)a3;
-- (int)StringAsSerializationFormat:(id)a3;
+- (id)serializationFormatAsString:(int)string;
+- (int)StringAsDataProtection:(id)protection;
+- (int)StringAsSerializationFormat:(id)format;
 - (int)dataProtection;
 - (int)serializationFormat;
 - (unint64_t)hash;
-- (void)addClientConfig:(id)a3;
+- (void)addClientConfig:(id)config;
 - (void)clearOneofValuesForDataProtection;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSerializationFormat:(BOOL)a3;
-- (void)setProtectedCloudComputeMetadata:(id)a3;
-- (void)setTrustedTargetCryptoMetadata:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSerializationFormat:(BOOL)format;
+- (void)setProtectedCloudComputeMetadata:(id)metadata;
+- (void)setTrustedTargetCryptoMetadata:(id)metadata;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKCDPCodeServiceRequest
@@ -36,9 +36,9 @@
   }
 }
 
-- (void)setHasSerializationFormat:(BOOL)a3
+- (void)setHasSerializationFormat:(BOOL)format
 {
-  if (a3)
+  if (format)
   {
     v3 = 2;
   }
@@ -51,33 +51,33 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)serializationFormatAsString:(int)a3
+- (id)serializationFormatAsString:(int)string
 {
-  if (a3 == 1)
+  if (string == 1)
   {
     v4 = @"PROTO";
   }
 
-  else if (a3 == 2)
+  else if (string == 2)
   {
     v4 = @"JSON";
   }
 
   else
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   return v4;
 }
 
-- (int)StringAsSerializationFormat:(id)a3
+- (int)StringAsSerializationFormat:(id)format
 {
-  v3 = a3;
+  formatCopy = format;
   v6 = 1;
-  if ((objc_msgSend_isEqualToString_(v3, v4, @"PROTO") & 1) == 0)
+  if ((objc_msgSend_isEqualToString_(formatCopy, v4, @"PROTO") & 1) == 0)
   {
-    if (objc_msgSend_isEqualToString_(v3, v5, @"JSON"))
+    if (objc_msgSend_isEqualToString_(formatCopy, v5, @"JSON"))
     {
       v6 = 2;
     }
@@ -91,42 +91,42 @@
   return v6;
 }
 
-- (void)addClientConfig:(id)a3
+- (void)addClientConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   clientConfigs = self->_clientConfigs;
-  v8 = v4;
+  v8 = configCopy;
   if (!clientConfigs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_clientConfigs;
     self->_clientConfigs = v6;
 
-    v4 = v8;
+    configCopy = v8;
     clientConfigs = self->_clientConfigs;
   }
 
-  objc_msgSend_addObject_(clientConfigs, v4, v4);
+  objc_msgSend_addObject_(clientConfigs, configCopy, configCopy);
 }
 
-- (void)setProtectedCloudComputeMetadata:(id)a3
+- (void)setProtectedCloudComputeMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   objc_msgSend_clearOneofValuesForDataProtection(self, v5, v6);
   *&self->_has |= 1u;
   self->_dataProtection = 1;
   protectedCloudComputeMetadata = self->_protectedCloudComputeMetadata;
-  self->_protectedCloudComputeMetadata = v4;
+  self->_protectedCloudComputeMetadata = metadataCopy;
 }
 
-- (void)setTrustedTargetCryptoMetadata:(id)a3
+- (void)setTrustedTargetCryptoMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   objc_msgSend_clearOneofValuesForDataProtection(self, v5, v6);
   *&self->_has |= 1u;
   self->_dataProtection = 2;
   trustedTargetCryptoMetadata = self->_trustedTargetCryptoMetadata;
-  self->_trustedTargetCryptoMetadata = v4;
+  self->_trustedTargetCryptoMetadata = metadataCopy;
 }
 
 - (int)dataProtection
@@ -142,35 +142,35 @@
   }
 }
 
-- (id)dataProtectionAsString:(int)a3
+- (id)dataProtectionAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_27854C708[a3];
+    v4 = off_27854C708[string];
   }
 
   return v4;
 }
 
-- (int)StringAsDataProtection:(id)a3
+- (int)StringAsDataProtection:(id)protection
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"PBUNSET"))
+  protectionCopy = protection;
+  if (objc_msgSend_isEqualToString_(protectionCopy, v4, @"PBUNSET"))
   {
     v6 = 0;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"protectedCloudComputeMetadata"))
+  else if (objc_msgSend_isEqualToString_(protectionCopy, v5, @"protectedCloudComputeMetadata"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"trustedTargetCryptoMetadata"))
+  else if (objc_msgSend_isEqualToString_(protectionCopy, v7, @"trustedTargetCryptoMetadata"))
   {
     v6 = 2;
   }
@@ -358,19 +358,19 @@
   return v6;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = objc_msgSend_position(a3, a2, a3);
-  if (v5 >= objc_msgSend_length(a3, v6, v7))
+  v5 = objc_msgSend_position(from, a2, from);
+  if (v5 >= objc_msgSend_length(from, v6, v7))
   {
-    return objc_msgSend_hasError(a3, v8, v9) ^ 1;
+    return objc_msgSend_hasError(from, v8, v9) ^ 1;
   }
 
   while (2)
   {
-    if (objc_msgSend_hasError(a3, v8, v9))
+    if (objc_msgSend_hasError(from, v8, v9))
     {
-      return objc_msgSend_hasError(a3, v8, v9) ^ 1;
+      return objc_msgSend_hasError(from, v8, v9) ^ 1;
     }
 
     v10 = 0;
@@ -379,20 +379,20 @@
     while (1)
     {
       LOBYTE(v90) = 0;
-      v13 = objc_msgSend_position(a3, v8, v9, v90) + 1;
-      if (v13 >= objc_msgSend_position(a3, v14, v15) && (v18 = objc_msgSend_position(a3, v16, v17) + 1, v18 <= objc_msgSend_length(a3, v19, v20)))
+      v13 = objc_msgSend_position(from, v8, v9, v90) + 1;
+      if (v13 >= objc_msgSend_position(from, v14, v15) && (v18 = objc_msgSend_position(from, v16, v17) + 1, v18 <= objc_msgSend_length(from, v19, v20)))
       {
-        v21 = objc_msgSend_data(a3, v16, v17);
-        v24 = objc_msgSend_position(a3, v22, v23);
+        v21 = objc_msgSend_data(from, v16, v17);
+        v24 = objc_msgSend_position(from, v22, v23);
         objc_msgSend_getBytes_range_(v21, v25, &v90, v24, 1);
 
-        v28 = objc_msgSend_position(a3, v26, v27);
-        objc_msgSend_setPosition_(a3, v29, v28 + 1);
+        v28 = objc_msgSend_position(from, v26, v27);
+        objc_msgSend_setPosition_(from, v29, v28 + 1);
       }
 
       else
       {
-        objc_msgSend__setError(a3, v16, v17);
+        objc_msgSend__setError(from, v16, v17);
       }
 
       v12 |= (v90 & 0x7F) << v10;
@@ -410,17 +410,17 @@
       }
     }
 
-    v31 = objc_msgSend_hasError(a3, v8, v9) ? 0 : v12;
+    v31 = objc_msgSend_hasError(from, v8, v9) ? 0 : v12;
 LABEL_15:
-    if (objc_msgSend_hasError(a3, v8, v9))
+    if (objc_msgSend_hasError(from, v8, v9))
     {
-      return objc_msgSend_hasError(a3, v8, v9) ^ 1;
+      return objc_msgSend_hasError(from, v8, v9) ^ 1;
     }
 
     v9 = v31 & 7;
     if (v9 == 4)
     {
-      return objc_msgSend_hasError(a3, v8, v9) ^ 1;
+      return objc_msgSend_hasError(from, v8, v9) ^ 1;
     }
 
     v32 = (v31 >> 3);
@@ -431,20 +431,20 @@ LABEL_15:
         while (1)
         {
           LOBYTE(v90) = 0;
-          v34 = objc_msgSend_position(a3, v32, v9, v90) + 1;
-          if (v34 >= objc_msgSend_position(a3, v35, v36) && (v39 = objc_msgSend_position(a3, v37, v38) + 1, v39 <= objc_msgSend_length(a3, v40, v41)))
+          v34 = objc_msgSend_position(from, v32, v9, v90) + 1;
+          if (v34 >= objc_msgSend_position(from, v35, v36) && (v39 = objc_msgSend_position(from, v37, v38) + 1, v39 <= objc_msgSend_length(from, v40, v41)))
           {
-            v42 = objc_msgSend_data(a3, v37, v38);
-            v45 = objc_msgSend_position(a3, v43, v44);
+            v42 = objc_msgSend_data(from, v37, v38);
+            v45 = objc_msgSend_position(from, v43, v44);
             objc_msgSend_getBytes_range_(v42, v46, &v90, v45, 1);
 
-            v49 = objc_msgSend_position(a3, v47, v48);
-            objc_msgSend_setPosition_(a3, v50, v49 + 1);
+            v49 = objc_msgSend_position(from, v47, v48);
+            objc_msgSend_setPosition_(from, v50, v49 + 1);
           }
 
           else
           {
-            objc_msgSend__setError(a3, v37, v38);
+            objc_msgSend__setError(from, v37, v38);
           }
 
           if ((v90 & 0x80000000) == 0)
@@ -458,7 +458,7 @@ LABEL_15:
           }
         }
 
-        objc_msgSend_hasError(a3, v32, v9);
+        objc_msgSend_hasError(from, v32, v9);
         goto LABEL_66;
       case 4u:
         v79 = PBReaderReadString();
@@ -484,20 +484,20 @@ LABEL_53:
         while (1)
         {
           LOBYTE(v90) = 0;
-          v57 = objc_msgSend_position(a3, v32, v9, v90) + 1;
-          if (v57 >= objc_msgSend_position(a3, v58, v59) && (v62 = objc_msgSend_position(a3, v60, v61) + 1, v62 <= objc_msgSend_length(a3, v63, v64)))
+          v57 = objc_msgSend_position(from, v32, v9, v90) + 1;
+          if (v57 >= objc_msgSend_position(from, v58, v59) && (v62 = objc_msgSend_position(from, v60, v61) + 1, v62 <= objc_msgSend_length(from, v63, v64)))
           {
-            v65 = objc_msgSend_data(a3, v60, v61);
-            v68 = objc_msgSend_position(a3, v66, v67);
+            v65 = objc_msgSend_data(from, v60, v61);
+            v68 = objc_msgSend_position(from, v66, v67);
             objc_msgSend_getBytes_range_(v65, v69, &v90, v68, 1);
 
-            v72 = objc_msgSend_position(a3, v70, v71);
-            objc_msgSend_setPosition_(a3, v73, v72 + 1);
+            v72 = objc_msgSend_position(from, v70, v71);
+            objc_msgSend_setPosition_(from, v73, v72 + 1);
           }
 
           else
           {
-            objc_msgSend__setError(a3, v60, v61);
+            objc_msgSend__setError(from, v60, v61);
           }
 
           v56 |= (v90 & 0x7F) << v54;
@@ -515,7 +515,7 @@ LABEL_53:
           }
         }
 
-        if (objc_msgSend_hasError(a3, v32, v9))
+        if (objc_msgSend_hasError(from, v32, v9))
         {
           v74 = 0;
         }
@@ -533,7 +533,7 @@ LABEL_71:
         objc_msgSend_addClientConfig_(self, v76, v52);
         v90 = 0;
         v91 = 0;
-        if (!PBReaderPlaceMark() || !sub_2252C66B4(v52, a3, v77))
+        if (!PBReaderPlaceMark() || !sub_2252C66B4(v52, from, v77))
         {
           goto LABEL_74;
         }
@@ -544,7 +544,7 @@ LABEL_71:
         objc_storeStrong(&self->_accountConfig, v52);
         v90 = 0;
         v91 = 0;
-        if (!PBReaderPlaceMark() || !sub_2252C3AA4(v52, a3, v82))
+        if (!PBReaderPlaceMark() || !sub_2252C3AA4(v52, from, v82))
         {
           goto LABEL_74;
         }
@@ -555,7 +555,7 @@ LABEL_71:
         objc_storeStrong(&self->_requestContext, v52);
         v90 = 0;
         v91 = 0;
-        if (!PBReaderPlaceMark() || !sub_2252C9B00(v52, a3, v83))
+        if (!PBReaderPlaceMark() || !sub_2252C9B00(v52, from, v83))
         {
           goto LABEL_74;
         }
@@ -566,7 +566,7 @@ LABEL_71:
         objc_storeStrong(&self->_assetAuthorizeGetRequestOptions, v52);
         v90 = 0;
         v91 = 0;
-        if (PBReaderPlaceMark() && sub_2252C4A74(v52, a3, v85))
+        if (PBReaderPlaceMark() && sub_2252C4A74(v52, from, v85))
         {
           goto LABEL_65;
         }
@@ -580,7 +580,7 @@ LABEL_71:
         objc_storeStrong(&self->_protectedCloudComputeMetadata, v52);
         v90 = 0;
         v91 = 0;
-        if (!PBReaderPlaceMark() || !sub_2252C87C0(v52, a3, v84))
+        if (!PBReaderPlaceMark() || !sub_2252C87C0(v52, from, v84))
         {
           goto LABEL_74;
         }
@@ -591,7 +591,7 @@ LABEL_71:
         objc_storeStrong(&self->_attestationRequest, v52);
         v90 = 0;
         v91 = 0;
-        if (!PBReaderPlaceMark() || !sub_2252C5B84(v52, a3, v53))
+        if (!PBReaderPlaceMark() || !sub_2252C5B84(v52, from, v53))
         {
           goto LABEL_74;
         }
@@ -605,7 +605,7 @@ LABEL_71:
         objc_storeStrong(&self->_trustedTargetCryptoMetadata, v52);
         v90 = 0;
         v91 = 0;
-        if (!PBReaderPlaceMark() || !sub_2252D4660(v52, a3, v78))
+        if (!PBReaderPlaceMark() || !sub_2252D4660(v52, from, v78))
         {
           goto LABEL_74;
         }
@@ -616,16 +616,16 @@ LABEL_71:
         objc_storeStrong(&self->_authInformation, v52);
         v90 = 0;
         v91 = 0;
-        if (PBReaderPlaceMark() && sub_2252C5FF0(v52, a3, v75))
+        if (PBReaderPlaceMark() && sub_2252C5FF0(v52, from, v75))
         {
 LABEL_65:
           PBReaderRecallMark();
 
 LABEL_66:
-          v86 = objc_msgSend_position(a3, v32, v9);
-          if (v86 >= objc_msgSend_length(a3, v87, v88))
+          v86 = objc_msgSend_position(from, v32, v9);
+          if (v86 >= objc_msgSend_length(from, v87, v88))
           {
-            return objc_msgSend_hasError(a3, v8, v9) ^ 1;
+            return objc_msgSend_hasError(from, v8, v9) ^ 1;
           }
 
           continue;
@@ -645,10 +645,10 @@ LABEL_74:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_serviceName)
   {
     PBDataWriterWriteStringField();
@@ -740,41 +740,41 @@ LABEL_74:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[12] = self->_dataProtection;
-    *(v4 + 112) |= 1u;
+    toCopy[12] = self->_dataProtection;
+    *(toCopy + 112) |= 1u;
   }
 
   serviceName = self->_serviceName;
-  v26 = v4;
+  v26 = toCopy;
   if (serviceName)
   {
-    objc_msgSend_setServiceName_(v4, v5, serviceName);
-    v4 = v26;
+    objc_msgSend_setServiceName_(toCopy, v5, serviceName);
+    toCopy = v26;
   }
 
   functionName = self->_functionName;
   if (functionName)
   {
     objc_msgSend_setFunctionName_(v26, v5, functionName);
-    v4 = v26;
+    toCopy = v26;
   }
 
   serializedParameters = self->_serializedParameters;
   if (serializedParameters)
   {
     objc_msgSend_setSerializedParameters_(v26, v5, serializedParameters);
-    v4 = v26;
+    toCopy = v26;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    v4[20] = self->_serializationFormat;
-    *(v4 + 112) |= 2u;
+    toCopy[20] = self->_serializationFormat;
+    *(toCopy + 112) |= 2u;
   }
 
   if (objc_msgSend_clientConfigsCount(self, v5, serializedParameters))
@@ -842,11 +842,11 @@ LABEL_74:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v58 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v12 = v10;
   if (*&self->_has)
@@ -855,15 +855,15 @@ LABEL_74:
     *(v10 + 112) |= 1u;
   }
 
-  v13 = objc_msgSend_copyWithZone_(self->_serviceName, v11, a3);
+  v13 = objc_msgSend_copyWithZone_(self->_serviceName, v11, zone);
   v14 = *(v12 + 96);
   *(v12 + 96) = v13;
 
-  v16 = objc_msgSend_copyWithZone_(self->_functionName, v15, a3);
+  v16 = objc_msgSend_copyWithZone_(self->_functionName, v15, zone);
   v17 = *(v12 + 56);
   *(v12 + 56) = v16;
 
-  v19 = objc_msgSend_copyWithZone_(self->_serializedParameters, v18, a3);
+  v19 = objc_msgSend_copyWithZone_(self->_serializedParameters, v18, zone);
   v20 = *(v12 + 88);
   *(v12 + 88) = v19;
 
@@ -892,7 +892,7 @@ LABEL_74:
           objc_enumerationMutation(v21);
         }
 
-        v28 = objc_msgSend_copyWithZone_(*(*(&v53 + 1) + 8 * i), v24, a3, v53);
+        v28 = objc_msgSend_copyWithZone_(*(*(&v53 + 1) + 8 * i), v24, zone, v53);
         objc_msgSend_addClientConfig_(v12, v29, v28);
       }
 
@@ -902,31 +902,31 @@ LABEL_74:
     while (v25);
   }
 
-  v31 = objc_msgSend_copyWithZone_(self->_accountConfig, v30, a3);
+  v31 = objc_msgSend_copyWithZone_(self->_accountConfig, v30, zone);
   v32 = *(v12 + 8);
   *(v12 + 8) = v31;
 
-  v34 = objc_msgSend_copyWithZone_(self->_requestContext, v33, a3);
+  v34 = objc_msgSend_copyWithZone_(self->_requestContext, v33, zone);
   v35 = *(v12 + 72);
   *(v12 + 72) = v34;
 
-  v37 = objc_msgSend_copyWithZone_(self->_assetAuthorizeGetRequestOptions, v36, a3);
+  v37 = objc_msgSend_copyWithZone_(self->_assetAuthorizeGetRequestOptions, v36, zone);
   v38 = *(v12 + 16);
   *(v12 + 16) = v37;
 
-  v40 = objc_msgSend_copyWithZone_(self->_protectedCloudComputeMetadata, v39, a3);
+  v40 = objc_msgSend_copyWithZone_(self->_protectedCloudComputeMetadata, v39, zone);
   v41 = *(v12 + 64);
   *(v12 + 64) = v40;
 
-  v43 = objc_msgSend_copyWithZone_(self->_attestationRequest, v42, a3);
+  v43 = objc_msgSend_copyWithZone_(self->_attestationRequest, v42, zone);
   v44 = *(v12 + 24);
   *(v12 + 24) = v43;
 
-  v46 = objc_msgSend_copyWithZone_(self->_trustedTargetCryptoMetadata, v45, a3);
+  v46 = objc_msgSend_copyWithZone_(self->_trustedTargetCryptoMetadata, v45, zone);
   v47 = *(v12 + 104);
   *(v12 + 104) = v46;
 
-  v49 = objc_msgSend_copyWithZone_(self->_authInformation, v48, a3);
+  v49 = objc_msgSend_copyWithZone_(self->_authInformation, v48, zone);
   v50 = *(v12 + 32);
   *(v12 + 32) = v49;
 
@@ -934,25 +934,25 @@ LABEL_74:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_34;
   }
 
-  v8 = *(v4 + 112);
+  v8 = *(equalCopy + 112);
   if (*&self->_has)
   {
-    if ((v4[14] & 1) == 0 || self->_dataProtection != *(v4 + 12))
+    if ((equalCopy[14] & 1) == 0 || self->_dataProtection != *(equalCopy + 12))
     {
       goto LABEL_34;
     }
   }
 
-  else if (v4[14])
+  else if (equalCopy[14])
   {
 LABEL_34:
     isEqual = 0;
@@ -960,14 +960,14 @@ LABEL_34:
   }
 
   serviceName = self->_serviceName;
-  v10 = v4[12];
+  v10 = equalCopy[12];
   if (serviceName | v10 && !objc_msgSend_isEqual_(serviceName, v7, v10))
   {
     goto LABEL_34;
   }
 
   functionName = self->_functionName;
-  v12 = v4[7];
+  v12 = equalCopy[7];
   if (functionName | v12)
   {
     if (!objc_msgSend_isEqual_(functionName, v7, v12))
@@ -977,7 +977,7 @@ LABEL_34:
   }
 
   serializedParameters = self->_serializedParameters;
-  v14 = v4[11];
+  v14 = equalCopy[11];
   if (serializedParameters | v14)
   {
     if (!objc_msgSend_isEqual_(serializedParameters, v7, v14))
@@ -986,29 +986,29 @@ LABEL_34:
     }
   }
 
-  v15 = *(v4 + 112);
+  v15 = *(equalCopy + 112);
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[14] & 2) == 0 || self->_serializationFormat != *(v4 + 20))
+    if ((equalCopy[14] & 2) == 0 || self->_serializationFormat != *(equalCopy + 20))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((v4[14] & 2) != 0)
+  else if ((equalCopy[14] & 2) != 0)
   {
     goto LABEL_34;
   }
 
   clientConfigs = self->_clientConfigs;
-  v17 = v4[5];
+  v17 = equalCopy[5];
   if (clientConfigs | v17 && !objc_msgSend_isEqual_(clientConfigs, v7, v17))
   {
     goto LABEL_34;
   }
 
   accountConfig = self->_accountConfig;
-  v19 = v4[1];
+  v19 = equalCopy[1];
   if (accountConfig | v19)
   {
     if (!objc_msgSend_isEqual_(accountConfig, v7, v19))
@@ -1018,7 +1018,7 @@ LABEL_34:
   }
 
   requestContext = self->_requestContext;
-  v21 = v4[9];
+  v21 = equalCopy[9];
   if (requestContext | v21)
   {
     if (!objc_msgSend_isEqual_(requestContext, v7, v21))
@@ -1028,7 +1028,7 @@ LABEL_34:
   }
 
   assetAuthorizeGetRequestOptions = self->_assetAuthorizeGetRequestOptions;
-  v23 = v4[2];
+  v23 = equalCopy[2];
   if (assetAuthorizeGetRequestOptions | v23)
   {
     if (!objc_msgSend_isEqual_(assetAuthorizeGetRequestOptions, v7, v23))
@@ -1038,7 +1038,7 @@ LABEL_34:
   }
 
   protectedCloudComputeMetadata = self->_protectedCloudComputeMetadata;
-  v25 = v4[8];
+  v25 = equalCopy[8];
   if (protectedCloudComputeMetadata | v25)
   {
     if (!objc_msgSend_isEqual_(protectedCloudComputeMetadata, v7, v25))
@@ -1048,7 +1048,7 @@ LABEL_34:
   }
 
   attestationRequest = self->_attestationRequest;
-  v27 = v4[3];
+  v27 = equalCopy[3];
   if (attestationRequest | v27)
   {
     if (!objc_msgSend_isEqual_(attestationRequest, v7, v27))
@@ -1058,7 +1058,7 @@ LABEL_34:
   }
 
   trustedTargetCryptoMetadata = self->_trustedTargetCryptoMetadata;
-  v29 = v4[13];
+  v29 = equalCopy[13];
   if (trustedTargetCryptoMetadata | v29)
   {
     if (!objc_msgSend_isEqual_(trustedTargetCryptoMetadata, v7, v29))
@@ -1068,7 +1068,7 @@ LABEL_34:
   }
 
   authInformation = self->_authInformation;
-  v31 = v4[4];
+  v31 = equalCopy[4];
   if (authInformation | v31)
   {
     isEqual = objc_msgSend_isEqual_(authInformation, v7, v31);
@@ -1120,18 +1120,18 @@ LABEL_35:
   return v31 ^ v34 ^ objc_msgSend_hash(self->_authInformation, v35, v36);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 112))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 112))
   {
-    self->_dataProtection = *(v4 + 12);
+    self->_dataProtection = *(fromCopy + 12);
     *&self->_has |= 1u;
   }
 
-  v7 = *(v4 + 12);
+  v7 = *(fromCopy + 12);
   if (v7)
   {
     objc_msgSend_setServiceName_(self, v5, v7);

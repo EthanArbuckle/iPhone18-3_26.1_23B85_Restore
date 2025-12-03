@@ -7,7 +7,7 @@
 - (void)horizontalSizeClassDidChange
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC7Journal28ConfettiHostingIndicatorView_sizeType);
-  v3 = self;
+  selfCopy = self;
   sub_1001627EC(v2);
 }
 

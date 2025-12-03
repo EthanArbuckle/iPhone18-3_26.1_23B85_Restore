@@ -1,19 +1,19 @@
 @interface ASDObject
 - (ASDObject)init;
-- (ASDObject)initWithPlugin:(id)a3;
+- (ASDObject)initWithPlugin:(id)plugin;
 - (ASDObject)owner;
 - (ASDPlugin)plugin;
 - (ASDPropertyChangedDelegate)propertyChangedDelegate;
-- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)a3;
-- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)a3;
+- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)property;
+- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)settable;
 - (NSArray)customProperties;
-- (id)customPropertyWithAddress:(const AudioObjectPropertyAddress *)a3;
-- (id)diagnosticDescriptionWithIndent:(id)a3 walkTree:(BOOL)a4;
-- (int)addPassthroughPropertyWithUnderlyingObject:(id)a3 andPropertyAddress:(AudioObjectPropertyAddress)a4;
-- (void)addCustomProperty:(id)a3;
+- (id)customPropertyWithAddress:(const AudioObjectPropertyAddress *)address;
+- (id)diagnosticDescriptionWithIndent:(id)indent walkTree:(BOOL)tree;
+- (int)addPassthroughPropertyWithUnderlyingObject:(id)object andPropertyAddress:(AudioObjectPropertyAddress)address;
+- (void)addCustomProperty:(id)property;
 - (void)dealloc;
-- (void)removeCustomProperty:(id)a3;
-- (void)setupDiagnosticStateDumpHandlerWithTreeWalk:(BOOL)a3;
+- (void)removeCustomProperty:(id)property;
+- (void)setupDiagnosticStateDumpHandlerWithTreeWalk:(BOOL)walk;
 @end
 
 @implementation ASDObject
@@ -84,23 +84,23 @@ uint64_t __29__ASDObject_customProperties__block_invoke(uint64_t a1)
   }
 }
 
-- (ASDObject)initWithPlugin:(id)a3
+- (ASDObject)initWithPlugin:(id)plugin
 {
-  v4 = a3;
+  pluginCopy = plugin;
   v14.receiver = self;
   v14.super_class = ASDObject;
   v5 = [(ASDObject *)&v14 init];
   if (v5)
   {
-    [v4 addCAObject:v5];
+    [pluginCopy addCAObject:v5];
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v7 = [v6 bundleIdentifier];
-    objc_storeWeak(&v5->_propertyChangedDelegate, v4);
+    bundleIdentifier = [v6 bundleIdentifier];
+    objc_storeWeak(&v5->_propertyChangedDelegate, pluginCopy);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     customProperties = v5->_customProperties;
     v5->_customProperties = v8;
 
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.object.%u.customProperties", v7, -[ASDObject objectID](v5, "objectID")];
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.object.%u.customProperties", bundleIdentifier, -[ASDObject objectID](v5, "objectID")];
     v11 = dispatch_queue_create([v10 UTF8String], 0);
     customPropertyQueue = v5->_customPropertyQueue;
     v5->_customPropertyQueue = v11;
@@ -109,15 +109,15 @@ uint64_t __29__ASDObject_customProperties__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)customPropertyWithAddress:(const AudioObjectPropertyAddress *)a3
+- (id)customPropertyWithAddress:(const AudioObjectPropertyAddress *)address
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(ASDObject *)self customProperties];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  customProperties = [(ASDObject *)self customProperties];
+  v5 = [customProperties countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -128,17 +128,17 @@ uint64_t __29__ASDObject_customProperties__block_invoke(uint64_t a1)
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(customProperties);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        mSelector = a3->mSelector;
+        mSelector = address->mSelector;
         if (mSelector == [v9 selector])
         {
-          mScope = a3->mScope;
+          mScope = address->mScope;
           if (mScope == [v9 scope])
           {
-            mElement = a3->mElement;
+            mElement = address->mElement;
             if (mElement == [v9 element])
             {
               v13 = v9;
@@ -148,7 +148,7 @@ uint64_t __29__ASDObject_customProperties__block_invoke(uint64_t a1)
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [customProperties countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v6)
       {
         continue;
@@ -166,16 +166,16 @@ LABEL_13:
   return v13;
 }
 
-- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)a3
+- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)property
 {
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  if (a3)
+  if (property)
   {
-    mSelector = a3->mSelector;
-    if (a3->mSelector <= 1668641651)
+    mSelector = property->mSelector;
+    if (property->mSelector <= 1668641651)
     {
       v4 = mSelector == 1650682995;
       v5 = 1668047219;
@@ -225,15 +225,15 @@ uint64_t __25__ASDObject_hasProperty___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)a3
+- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)settable
 {
-  if (!a3)
+  if (!settable)
   {
     return 0;
   }
 
-  mSelector = a3->mSelector;
-  if (a3->mSelector <= 1668641651)
+  mSelector = settable->mSelector;
+  if (settable->mSelector <= 1668641651)
   {
     v4 = mSelector == 1650682995;
     v5 = 1668047219;
@@ -251,9 +251,9 @@ uint64_t __25__ASDObject_hasProperty___block_invoke(uint64_t a1)
   }
 
   v7 = [(ASDObject *)self customPropertyWithAddress:?];
-  v8 = [v7 isSettable];
+  isSettable = [v7 isSettable];
 
-  return v8;
+  return isSettable;
 }
 
 uint64_t __68__ASDObject_dataSizeForProperty_withQualifierSize_andQualifierData___block_invoke(uint64_t a1)
@@ -263,20 +263,20 @@ uint64_t __68__ASDObject_dataSizeForProperty_withQualifierSize_andQualifierData_
   return result;
 }
 
-- (void)addCustomProperty:(id)a3
+- (void)addCustomProperty:(id)property
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  propertyCopy = property;
+  v6 = propertyCopy;
+  if (propertyCopy)
   {
-    if (![v5 selector])
+    if (![propertyCopy selector])
     {
       [ASDObject addCustomProperty:];
     }
 
-    v7 = [v6 owner];
+    owner = [v6 owner];
 
-    if (v7)
+    if (owner)
     {
       [ASDObject addCustomProperty:];
     }
@@ -303,8 +303,8 @@ uint64_t __68__ASDObject_dataSizeForProperty_withQualifierSize_andQualifierData_
     dispatch_sync(customPropertyQueue, block);
     v11 = 0;
     v10 = 0x676C6F6263757374;
-    v9 = [(ASDObject *)self propertyChangedDelegate];
-    [v9 changedProperty:&v10 forObject:self];
+    propertyChangedDelegate = [(ASDObject *)self propertyChangedDelegate];
+    [propertyChangedDelegate changedProperty:&v10 forObject:self];
   }
 }
 
@@ -321,11 +321,11 @@ uint64_t __31__ASDObject_addCustomProperty___block_invoke(uint64_t a1)
   return [v3 addObject:v2];
 }
 
-- (void)removeCustomProperty:(id)a3
+- (void)removeCustomProperty:(id)property
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  propertyCopy = property;
+  v6 = propertyCopy;
+  if (propertyCopy)
   {
     customPropertyQueue = self->_customPropertyQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -333,15 +333,15 @@ uint64_t __31__ASDObject_addCustomProperty___block_invoke(uint64_t a1)
     block[2] = __34__ASDObject_removeCustomProperty___block_invoke;
     block[3] = &unk_278CE3EA0;
     block[4] = self;
-    v8 = v5;
+    v8 = propertyCopy;
     v13 = v8;
     v14 = a2;
     dispatch_sync(customPropertyQueue, block);
     [v8 setOwner:0];
     v11 = 0;
     v10 = 0x676C6F6263757374;
-    v9 = [(ASDObject *)self propertyChangedDelegate];
-    [v9 changedProperty:&v10 forObject:self];
+    propertyChangedDelegate = [(ASDObject *)self propertyChangedDelegate];
+    [propertyChangedDelegate changedProperty:&v10 forObject:self];
   }
 }
 
@@ -358,12 +358,12 @@ uint64_t __34__ASDObject_removeCustomProperty___block_invoke(uint64_t a1)
   return [v3 removeObject:v2];
 }
 
-- (void)setupDiagnosticStateDumpHandlerWithTreeWalk:(BOOL)a3
+- (void)setupDiagnosticStateDumpHandlerWithTreeWalk:(BOOL)walk
 {
   objc_initWeak(&location, self);
   v5 = dispatch_get_global_queue(0, 0);
   objc_copyWeak(&v6, &location);
-  v7 = a3;
+  walkCopy = walk;
   self->_stateDumpHandler = os_state_add_handler();
 
   objc_destroyWeak(&v6);
@@ -411,18 +411,18 @@ _DWORD *__57__ASDObject_setupDiagnosticStateDumpHandlerWithTreeWalk___block_invo
   return v10;
 }
 
-- (id)diagnosticDescriptionWithIndent:(id)a3 walkTree:(BOOL)a4
+- (id)diagnosticDescriptionWithIndent:(id)indent walkTree:(BOOL)tree
 {
   v5 = MEMORY[0x277CCAB68];
-  v6 = a3;
-  v7 = [v5 string];
-  v8 = [(ASDObject *)self driverClassName];
-  [v7 appendFormat:@"%@+%s\n", v6, objc_msgSend(v8, "UTF8String")];
+  indentCopy = indent;
+  string = [v5 string];
+  driverClassName = [(ASDObject *)self driverClassName];
+  [string appendFormat:@"%@+%s\n", indentCopy, objc_msgSend(driverClassName, "UTF8String")];
 
-  [v7 appendFormat:@"%@|    Object ID: %u\n", v6, -[ASDObject objectID](self, "objectID")];
-  v9 = [(ASDObject *)self baseClass];
-  LODWORD(v10) = v9 >> 24;
-  if (((v9 >> 24) - 32) >= 0x5F)
+  [string appendFormat:@"%@|    Object ID: %u\n", indentCopy, -[ASDObject objectID](self, "objectID")];
+  baseClass = [(ASDObject *)self baseClass];
+  LODWORD(v10) = baseClass >> 24;
+  if (((baseClass >> 24) - 32) >= 0x5F)
   {
     v10 = 32;
   }
@@ -432,7 +432,7 @@ _DWORD *__57__ASDObject_setupDiagnosticStateDumpHandlerWithTreeWalk___block_invo
     v10 = v10;
   }
 
-  LODWORD(v11) = v9 << 8 >> 24;
+  LODWORD(v11) = baseClass << 8 >> 24;
   if ((v11 - 32) >= 0x5F)
   {
     v11 = 32;
@@ -443,7 +443,7 @@ _DWORD *__57__ASDObject_setupDiagnosticStateDumpHandlerWithTreeWalk___block_invo
     v11 = v11;
   }
 
-  LODWORD(v12) = v9 >> 8;
+  LODWORD(v12) = baseClass >> 8;
   if ((v12 - 32) >= 0x5F)
   {
     v12 = 32;
@@ -454,20 +454,20 @@ _DWORD *__57__ASDObject_setupDiagnosticStateDumpHandlerWithTreeWalk___block_invo
     v12 = v12;
   }
 
-  if ((v9 - 32) >= 0x5F)
+  if ((baseClass - 32) >= 0x5F)
   {
     v13 = 32;
   }
 
   else
   {
-    v13 = v9;
+    v13 = baseClass;
   }
 
-  [v7 appendFormat:@"%@|    Base Class: %c%c%c%c\n", v6, v10, v11, v12, v13];
-  v14 = [(ASDObject *)self objectClass];
-  LODWORD(v15) = v14 >> 24;
-  if (((v14 >> 24) - 32) >= 0x5F)
+  [string appendFormat:@"%@|    Base Class: %c%c%c%c\n", indentCopy, v10, v11, v12, v13];
+  objectClass = [(ASDObject *)self objectClass];
+  LODWORD(v15) = objectClass >> 24;
+  if (((objectClass >> 24) - 32) >= 0x5F)
   {
     v15 = 32;
   }
@@ -477,7 +477,7 @@ _DWORD *__57__ASDObject_setupDiagnosticStateDumpHandlerWithTreeWalk___block_invo
     v15 = v15;
   }
 
-  LODWORD(v16) = v14 << 8 >> 24;
+  LODWORD(v16) = objectClass << 8 >> 24;
   if ((v16 - 32) >= 0x5F)
   {
     v16 = 32;
@@ -488,7 +488,7 @@ _DWORD *__57__ASDObject_setupDiagnosticStateDumpHandlerWithTreeWalk___block_invo
     v16 = v16;
   }
 
-  LODWORD(v17) = v14 >> 8;
+  LODWORD(v17) = objectClass >> 8;
   if ((v17 - 32) >= 0x5F)
   {
     v17 = 32;
@@ -499,21 +499,21 @@ _DWORD *__57__ASDObject_setupDiagnosticStateDumpHandlerWithTreeWalk___block_invo
     v17 = v17;
   }
 
-  if ((v14 - 32) >= 0x5F)
+  if ((objectClass - 32) >= 0x5F)
   {
     v18 = 32;
   }
 
   else
   {
-    v18 = v14;
+    v18 = objectClass;
   }
 
-  [v7 appendFormat:@"%@|    Object Class: %c%c%c%c\n", v6, v15, v16, v17, v18];
-  v19 = [(ASDObject *)self owner];
-  [v7 appendFormat:@"%@|    Owner ID: %u\n", v6, objc_msgSend(v19, "objectID")];
+  [string appendFormat:@"%@|    Object Class: %c%c%c%c\n", indentCopy, v15, v16, v17, v18];
+  owner = [(ASDObject *)self owner];
+  [string appendFormat:@"%@|    Owner ID: %u\n", indentCopy, objc_msgSend(owner, "objectID")];
 
-  return v7;
+  return string;
 }
 
 - (void)dealloc
@@ -531,14 +531,14 @@ _DWORD *__57__ASDObject_setupDiagnosticStateDumpHandlerWithTreeWalk___block_invo
   [(ASDObject *)&v4 dealloc];
 }
 
-- (int)addPassthroughPropertyWithUnderlyingObject:(id)a3 andPropertyAddress:(AudioObjectPropertyAddress)a4
+- (int)addPassthroughPropertyWithUnderlyingObject:(id)object andPropertyAddress:(AudioObjectPropertyAddress)address
 {
-  v10 = a4;
-  v5 = a3;
-  if ([v5 hasProperty:&v10])
+  addressCopy = address;
+  objectCopy = object;
+  if ([objectCopy hasProperty:&addressCopy])
   {
     v6 = [ASDPassthroughProperty alloc];
-    v7 = [(ASDPassthroughProperty *)v6 initWithUnderlyingObject:v5 andPropertyAddress:*&v10.mSelector, v10.mElement];
+    v7 = [(ASDPassthroughProperty *)v6 initWithUnderlyingObject:objectCopy andPropertyAddress:*&addressCopy.mSelector, addressCopy.mElement];
     if (v7)
     {
       [(ASDObject *)self addCustomProperty:v7];

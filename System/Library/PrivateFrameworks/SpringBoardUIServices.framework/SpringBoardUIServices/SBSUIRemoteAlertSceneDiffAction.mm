@@ -1,53 +1,53 @@
 @interface SBSUIRemoteAlertSceneDiffAction
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 @end
 
 @implementation SBSUIRemoteAlertSceneDiffAction
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v22 = v11;
-  v15 = [v22 delegate];
-  if ([v14 isInvalidatedForHostInvalidation])
+  sceneCopy = scene;
+  sSceneCopy = sScene;
+  diffCopy = diff;
+  contextCopy = context;
+  v22 = sceneCopy;
+  delegate = [v22 delegate];
+  if ([contextCopy isInvalidatedForHostInvalidation])
   {
     if (objc_opt_respondsToSelector())
     {
-      [v15 remoteAlertSceneDidInvalidateForRemoteAlertServiceInvalidation:v22];
+      [delegate remoteAlertSceneDidInvalidateForRemoteAlertServiceInvalidation:v22];
     }
   }
 
   else
   {
-    v16 = [v14 remoteAlertActivationContext];
+    remoteAlertActivationContext = [contextCopy remoteAlertActivationContext];
 
-    if (v16)
+    if (remoteAlertActivationContext)
     {
-      v17 = [v12 SBSUI_remoteAlertComponent];
-      v18 = [v14 remoteAlertActivationContext];
-      [v17 setActivationContext:v18];
+      sBSUI_remoteAlertComponent = [sSceneCopy SBSUI_remoteAlertComponent];
+      remoteAlertActivationContext2 = [contextCopy remoteAlertActivationContext];
+      [sBSUI_remoteAlertComponent setActivationContext:remoteAlertActivationContext2];
 
       if (objc_opt_respondsToSelector())
       {
-        [v15 remoteAlertSceneDidUpdateActivationContext:v22];
+        [delegate remoteAlertSceneDidUpdateActivationContext:v22];
       }
     }
 
-    v19 = [v14 buttonActions];
-    if (v19 && (objc_opt_respondsToSelector() & 1) != 0)
+    buttonActions = [contextCopy buttonActions];
+    if (buttonActions && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v15 remoteAlertScene:v22 handleButtonActions:v19];
+      [delegate remoteAlertScene:v22 handleButtonActions:buttonActions];
     }
 
-    if ([v13 containsProperty:sel_isAttachedToWindowedAccessory] && (objc_opt_respondsToSelector() & 1) != 0)
+    if ([diffCopy containsProperty:sel_isAttachedToWindowedAccessory] && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v20 = [v12 settings];
-      v21 = [v20 isAttachedToWindowedAccessory];
-      [v20 windowedAccessoryCutoutFrameInScreen];
-      [v15 remoteAlertScene:v22 didTransitionToAttachedToWindowedAccessory:v21 windowedAccessoryCutoutFrameInScreen:?];
+      settings = [sSceneCopy settings];
+      isAttachedToWindowedAccessory = [settings isAttachedToWindowedAccessory];
+      [settings windowedAccessoryCutoutFrameInScreen];
+      [delegate remoteAlertScene:v22 didTransitionToAttachedToWindowedAccessory:isAttachedToWindowedAccessory windowedAccessoryCutoutFrameInScreen:?];
     }
   }
 }

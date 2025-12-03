@@ -1,24 +1,24 @@
 @interface TSTPivotGroupingColumnOptionsMap
 - (TSKUIDStructVectorTemplate<TSKUIDStruct>)keys;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)pivotOptionsForUID:(TSKUIDStruct)a3;
-- (id)prunedCopyWithUids:(void *)a3;
+- (id)pivotOptionsForUID:(TSKUIDStruct)d;
+- (id)prunedCopyWithUids:(void *)uids;
 - (void)clear;
-- (void)enumerateOptionsUsingBlock:(id)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setPivotOptions:(id)a3 forUid:(TSKUIDStruct)a4;
+- (void)enumerateOptionsUsingBlock:(id)block;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setPivotOptions:(id)options forUid:(TSKUIDStruct)uid;
 @end
 
 @implementation TSTPivotGroupingColumnOptionsMap
 
-- (id)pivotOptionsForUID:(TSKUIDStruct)a3
+- (id)pivotOptionsForUID:(TSKUIDStruct)d
 {
-  v11 = a3;
+  dCopy = d;
   p_optionsForUidMap = &self->_optionsForUidMap;
-  v4 = sub_22112C8D0(&self->_optionsForUidMap, &v11._lower);
+  v4 = sub_22112C8D0(&self->_optionsForUidMap, &dCopy._lower);
   if (&p_optionsForUidMap->__tree_.__end_node_ == v4)
   {
     v9 = objc_msgSend_emptyOptions(TSTPivotGroupingColumnOptions, v5, v6, v7, v8);
@@ -32,22 +32,22 @@
   return v9;
 }
 
-- (void)setPivotOptions:(id)a3 forUid:(TSKUIDStruct)a4
+- (void)setPivotOptions:(id)options forUid:(TSKUIDStruct)uid
 {
-  v17 = a4;
-  v6 = a3;
-  objc_msgSend_willModify(self, v7, v8, v9, v10, v17._lower, v17._upper);
+  uidCopy = uid;
+  optionsCopy = options;
+  objc_msgSend_willModify(self, v7, v8, v9, v10, uidCopy._lower, uidCopy._upper);
   p_optionsForUidMap = &self->_optionsForUidMap;
-  if (objc_msgSend_isNotEmpty(v6, v11, v12, v13, v14))
+  if (objc_msgSend_isNotEmpty(optionsCopy, v11, v12, v13, v14))
   {
-    v18 = &v17;
-    v16 = sub_2213D96C4(p_optionsForUidMap, &v17._lower);
-    objc_storeStrong((v16 + 48), a3);
+    v18 = &uidCopy;
+    v16 = sub_2213D96C4(p_optionsForUidMap, &uidCopy._lower);
+    objc_storeStrong((v16 + 48), options);
   }
 
-  else if (&p_optionsForUidMap->__tree_.__end_node_ != sub_22112C8D0(p_optionsForUidMap, &v17._lower))
+  else if (&p_optionsForUidMap->__tree_.__end_node_ != sub_22112C8D0(p_optionsForUidMap, &uidCopy._lower))
   {
-    sub_2213D977C(p_optionsForUidMap, &v17._lower);
+    sub_2213D977C(p_optionsForUidMap, &uidCopy._lower);
   }
 }
 
@@ -159,9 +159,9 @@
   return self;
 }
 
-- (void)enumerateOptionsUsingBlock:(id)a3
+- (void)enumerateOptionsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v13 = 0;
   p_end_node = &self->_optionsForUidMap.__tree_.__end_node_;
   begin_node = self->_optionsForUidMap.__tree_.__begin_node_;
@@ -171,7 +171,7 @@
     {
       v12 = *&begin_node[4].__left_;
       v7 = begin_node[6].__left_;
-      v4[2](v4, &v12, v7, &v13);
+      blockCopy[2](blockCopy, &v12, v7, &v13);
       v8 = v13;
 
       if (v8)
@@ -210,7 +210,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSTPivotGroupingColumnOptionsMap alloc];
   v9 = objc_msgSend_context(self, v5, v6, v7, v8);
@@ -258,14 +258,14 @@
   return v13;
 }
 
-- (id)prunedCopyWithUids:(void *)a3
+- (id)prunedCopyWithUids:(void *)uids
 {
   v5 = [TSTPivotGroupingColumnOptionsMap alloc];
   v10 = objc_msgSend_context(self, v6, v7, v8, v9);
   v14 = objc_msgSend_initWithContext_(v5, v11, v10, v12, v13);
 
-  v17 = *a3;
-  v18 = *(a3 + 1);
+  v17 = *uids;
+  v18 = *(uids + 1);
   while (v17 != v18)
   {
     v19 = *v17;
@@ -279,11 +279,11 @@
   return v14;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v8 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812E4498[280], v6, v7);
+  v8 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812E4498[280], v6, v7);
 
   v10 = *(v8 + 24);
   if (v10 >= 1)
@@ -310,11 +310,11 @@
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_2213D985C, off_2812E4498[280], v6);
+  v7 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_2213D985C, off_2812E4498[280], v6);
 
   p_end_node = &self->_optionsForUidMap.__tree_.__end_node_;
   begin_node = self->_optionsForUidMap.__tree_.__begin_node_;

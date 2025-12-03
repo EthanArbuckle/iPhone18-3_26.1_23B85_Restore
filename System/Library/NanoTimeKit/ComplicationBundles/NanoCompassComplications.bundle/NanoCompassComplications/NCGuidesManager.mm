@@ -1,7 +1,7 @@
 @interface NCGuidesManager
 + (NCGuidesManager)sharedManager;
-- (BOOL)guideEnabled:(id)a3;
-- (BOOL)guideWithIdentifierEnabled:(id)a3;
+- (BOOL)guideEnabled:(id)enabled;
+- (BOOL)guideWithIdentifierEnabled:(id)enabled;
 - (NCGuidesManager)init;
 - (NSArray)allEnabledWaypoints;
 - (NSArray)allEnabledWaypointsLimitedByDistance;
@@ -12,11 +12,11 @@
 - (NSArray)systemWaypointsLimitedByDistance;
 - (id)_allSystemWaypoints;
 - (id)_currentlyDisabledGuides;
-- (id)_enabledCompassWaypointsRestrictedTo:(double)a3 ofLocation:(id)a4 maxCount:(unint64_t)a5;
-- (id)_enabledWaypointsForGuideType:(int64_t)a3 subType:(id)a4 restrictedTo:(double)a5 ofLocation:(id)a6 maxCount:(unint64_t)a7;
-- (id)_getUpdatedDatabaseWaypoints:(id)a3;
-- (id)_systemWaypointsRestrictedTo:(double)a3 ofLocation:(id)a4;
-- (id)_waypointWithUUID:(id)a3;
+- (id)_enabledCompassWaypointsRestrictedTo:(double)to ofLocation:(id)location maxCount:(unint64_t)count;
+- (id)_enabledWaypointsForGuideType:(int64_t)type subType:(id)subType restrictedTo:(double)to ofLocation:(id)location maxCount:(unint64_t)count;
+- (id)_getUpdatedDatabaseWaypoints:(id)waypoints;
+- (id)_systemWaypointsRestrictedTo:(double)to ofLocation:(id)location;
+- (id)_waypointWithUUID:(id)d;
 - (id)fetchTargetedWaypoint;
 - (id)userGuides;
 - (int64_t)numDisabledGuides;
@@ -26,30 +26,30 @@
 - (int64_t)numTotalPOIs;
 - (unint64_t)maxAllowedWaypoints;
 - (unint64_t)maxPriorityCompassWaypoints;
-- (void)_addEnabledWaypointsForGuide:(id)a3;
-- (void)_fetchAllPlaceItemsRestrictingMapGuidesTo:(double)a3 ofLocation:(id)a4 handler:(id)a5;
-- (void)_fetchAllWaypointsRestrictingMapGuidesTo:(double)a3 ofLocation:(id)a4 handler:(id)a5;
-- (void)_fetchEnabledWaypointsForUserGuidesRestrictedToRadius:(double)a3 around:(id)a4 maximumCount:(unint64_t)a5 handler:(id)a6;
-- (void)_fetchEnabledWaypointsRestrictingMapGuidesTo:(double)a3 ofLocation:(id)a4 maxCount:(unint64_t)a5 handler:(id)a6;
+- (void)_addEnabledWaypointsForGuide:(id)guide;
+- (void)_fetchAllPlaceItemsRestrictingMapGuidesTo:(double)to ofLocation:(id)location handler:(id)handler;
+- (void)_fetchAllWaypointsRestrictingMapGuidesTo:(double)to ofLocation:(id)location handler:(id)handler;
+- (void)_fetchEnabledWaypointsForUserGuidesRestrictedToRadius:(double)radius around:(id)around maximumCount:(unint64_t)count handler:(id)handler;
+- (void)_fetchEnabledWaypointsRestrictingMapGuidesTo:(double)to ofLocation:(id)location maxCount:(unint64_t)count handler:(id)handler;
 - (void)_handleFirstUnlock;
-- (void)_handleWaypointListChanged:(id)a3;
+- (void)_handleWaypointListChanged:(id)changed;
 - (void)_loadDisabledGuidesFromDefaults;
 - (void)_loadGuides;
 - (void)_refreshAllWaypoints;
 - (void)_refreshGuides;
 - (void)_refreshNonDistanceLimitedWaypoints;
-- (void)_removeDisabledWaypointsForGuide:(id)a3;
+- (void)_removeDisabledWaypointsForGuide:(id)guide;
 - (void)_saveDisabledGuidesToDefaults;
-- (void)_updateUserGuidesUsingCollections:(id)a3;
-- (void)enableWaypoints:(BOOL)a3 forGuide:(id)a4;
+- (void)_updateUserGuidesUsingCollections:(id)collections;
+- (void)enableWaypoints:(BOOL)waypoints forGuide:(id)guide;
 - (void)loadGuides;
-- (void)refreshWaypointsWithCenterLocation:(id)a3 maxDiameterInMeters:(double)a4 completion:(id)a5;
-- (void)registerGuideProviders:(id)a3;
+- (void)refreshWaypointsWithCenterLocation:(id)location maxDiameterInMeters:(double)meters completion:(id)completion;
+- (void)registerGuideProviders:(id)providers;
 - (void)reloadWaypoints;
-- (void)setGlobalEnabledState:(BOOL)a3 forGuideType:(int64_t)a4;
-- (void)storeControllerWithDataChanged:(id)a3;
-- (void)storeControllerWithDidLoad:(id)a3;
-- (void)storeControllerWithFailedToLoad:(id)a3;
+- (void)setGlobalEnabledState:(BOOL)state forGuideType:(int64_t)type;
+- (void)storeControllerWithDataChanged:(id)changed;
+- (void)storeControllerWithDidLoad:(id)load;
+- (void)storeControllerWithFailedToLoad:(id)load;
 @end
 
 @implementation NCGuidesManager
@@ -181,14 +181,14 @@
   return v5;
 }
 
-- (void)registerGuideProviders:(id)a3
+- (void)registerGuideProviders:(id)providers
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  objc_msgSend_setGuideProviders_(v5, v6, v4, v7);
-  objc_sync_exit(v5);
+  providersCopy = providers;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_msgSend_setGuideProviders_(selfCopy, v6, providersCopy, v7);
+  objc_sync_exit(selfCopy);
 
   v8 = NCLogForCategory(9uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -196,11 +196,11 @@
     v20 = 136315394;
     v21 = "[NCGuidesManager registerGuideProviders:]";
     v22 = 2048;
-    v23 = objc_msgSend_count(v4, v9, v10, v11);
+    v23 = objc_msgSend_count(providersCopy, v9, v10, v11);
     _os_log_impl(&dword_23BD26000, v8, OS_LOG_TYPE_DEFAULT, "%s: Registered %lu app-specific guide providers.", &v20, 0x16u);
   }
 
-  v15 = objc_msgSend_store(v5, v12, v13, v14);
+  v15 = objc_msgSend_store(selfCopy, v12, v13, v14);
 
   if (v15)
   {
@@ -212,7 +212,7 @@
       _os_log_impl(&dword_23BD26000, v16, OS_LOG_TYPE_DEFAULT, "%s: Store is already available. Triggering refresh.", &v20, 0xCu);
     }
 
-    objc_msgSend__refreshGuides(v5, v17, v18, v19);
+    objc_msgSend__refreshGuides(selfCopy, v17, v18, v19);
   }
 }
 
@@ -243,80 +243,80 @@
 
 - (id)userGuides
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_userGuides;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_userGuides;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSArray)allEnabledWaypoints
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_allEnabledWaypoints;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_allEnabledWaypoints;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSArray)allEnabledWaypointsLimitedByDistance
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_allEnabledWaypointsLimitedByDistance;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_allEnabledWaypointsLimitedByDistance;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSArray)nonSystemEnabledWaypointsLimitedByDistance
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_nonSystemEnabledWaypointsLimitedByDistance;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_nonSystemEnabledWaypointsLimitedByDistance;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSArray)allWaypoints
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_allWaypoints;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_allWaypoints;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSArray)allProviderAndMapsDatabaseWaypoints
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_allProviderAndMapsDatabaseWaypoints;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_allProviderAndMapsDatabaseWaypoints;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSArray)systemWaypoints
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_systemWaypoints;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_systemWaypoints;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSArray)systemWaypointsLimitedByDistance
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_systemWaypointsLimitedByDistance;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_systemWaypointsLimitedByDistance;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -342,15 +342,15 @@
   return v20;
 }
 
-- (id)_waypointWithUUID:(id)a3
+- (id)_waypointWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8 = objc_msgSend_allWaypoints(self, v5, v6, v7);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_23BD5CCF8;
   v17[3] = &unk_278B949B0;
-  v9 = v4;
+  v9 = dCopy;
   v18 = v9;
   v12 = objc_msgSend_indexOfObjectPassingTest_(v8, v10, v17, v11);
   if (v12 == 0x7FFFFFFFFFFFFFFFLL)
@@ -366,20 +366,20 @@
   return v15;
 }
 
-- (id)_enabledWaypointsForGuideType:(int64_t)a3 subType:(id)a4 restrictedTo:(double)a5 ofLocation:(id)a6 maxCount:(unint64_t)a7
+- (id)_enabledWaypointsForGuideType:(int64_t)type subType:(id)subType restrictedTo:(double)to ofLocation:(id)location maxCount:(unint64_t)count
 {
   v109 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a6;
+  subTypeCopy = subType;
+  locationCopy = location;
   v94 = objc_opt_new();
   v14 = objc_opt_new();
   v18 = v14;
-  if (a7)
+  if (count)
   {
-    v93 = a7;
+    countCopy = count;
     v96 = objc_msgSend__currentlyDisabledGuides(self, v15, v16, v17);
     v22 = objc_msgSend_loadedProviderGuidesByType(self, v19, v20, v21);
-    v25 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v23, a3, v24);
+    v25 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v23, type, v24);
     v28 = objc_msgSend_objectForKeyedSubscript_(v22, v26, v25, v27);
 
     v105 = 0u;
@@ -402,7 +402,7 @@
           }
 
           v35 = *(*(&v103 + 1) + 8 * i);
-          if (v12)
+          if (subTypeCopy)
           {
             NSClassFromString(&cfstr_Ncmapsdatabase.isa);
             if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -411,7 +411,7 @@
             }
 
             v36 = objc_msgSend_valueForKey_(v35, v31, @"databaseGuideType", v33);
-            isEqualToNumber = objc_msgSend_isEqualToNumber_(v36, v37, v12, v38);
+            isEqualToNumber = objc_msgSend_isEqualToNumber_(v36, v37, subTypeCopy, v38);
 
             if (!isEqualToNumber)
             {
@@ -425,10 +425,10 @@
           v48 = objc_msgSend_uuid(v35, v45, v46, v47);
           objc_msgSend_UUIDString(v48, v49, v50, v51);
           v52 = v18;
-          v54 = v53 = v12;
+          v54 = v53 = subTypeCopy;
           v57 = objc_msgSend_containsObject_(v96, v55, v54, v56);
 
-          v12 = v53;
+          subTypeCopy = v53;
           v18 = v52;
 
           v29 = v95;
@@ -480,10 +480,10 @@
 
           v74 = *(*(&v99 + 1) + 8 * j);
           v75 = objc_msgSend_location(v74, v68, v69, v70);
-          objc_msgSend_distanceFromLocation_(v75, v76, v13, v77);
+          objc_msgSend_distanceFromLocation_(v75, v76, locationCopy, v77);
           v79 = v78;
 
-          if (v79 < a5)
+          if (v79 < to)
           {
             v80 = [NCWaypointWithDistance alloc];
             v83 = objc_msgSend_initWithWaypoint_distance_(v80, v81, v74, v82, v79);
@@ -498,10 +498,10 @@
     }
 
     objc_msgSend_sortUsingSelector_(v18, v68, sel_compare_, v70);
-    if (objc_msgSend_count(v18, v86, v87, v88) > v93)
+    if (objc_msgSend_count(v18, v86, v87, v88) > countCopy)
     {
       v89 = objc_msgSend_count(v18, v59, v60, v61);
-      objc_msgSend_removeObjectsInRange_(v18, v90, v93, v89 - v93);
+      objc_msgSend_removeObjectsInRange_(v18, v90, countCopy, v89 - countCopy);
     }
 
     v29 = v95;
@@ -517,14 +517,14 @@ LABEL_30:
   return v91;
 }
 
-- (void)refreshWaypointsWithCenterLocation:(id)a3 maxDiameterInMeters:(double)a4 completion:(id)a5
+- (void)refreshWaypointsWithCenterLocation:(id)location maxDiameterInMeters:(double)meters completion:(id)completion
 {
   v81 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  locationCopy = location;
+  completionCopy = completion;
   v10 = NCLogForCategory(9uLL);
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (locationCopy)
   {
     if (v11)
     {
@@ -533,7 +533,7 @@ LABEL_30:
       _os_log_impl(&dword_23BD26000, v10, OS_LOG_TYPE_DEFAULT, "%{public}s: Refreshing.", &buf, 0xCu);
     }
 
-    v14 = objc_msgSend__systemWaypointsRestrictedTo_ofLocation_(self, v12, v8, v13, a4);
+    v14 = objc_msgSend__systemWaypointsRestrictedTo_ofLocation_(self, v12, locationCopy, v13, meters);
     v18 = objc_msgSend_count(v14, v15, v16, v17);
     if (v18 >= objc_msgSend_maxAllowedWaypoints(self, v19, v20, v21) || (v25 = objc_msgSend_maxAllowedWaypoints(self, v22, v23, v24), v26 = v25 - v18, v25 == v18))
     {
@@ -551,16 +551,16 @@ LABEL_30:
       systemWaypointsLimitedByDistance = self->_systemWaypointsLimitedByDistance;
       self->_systemWaypointsLimitedByDistance = v35;
 
-      v9[2](v9);
+      completionCopy[2](completionCopy);
     }
 
     else
     {
-      v37 = a4 * 0.5;
+      v37 = meters * 0.5;
       v38 = dispatch_group_create();
-      v40 = objc_msgSend__enabledCompassWaypointsRestrictedTo_ofLocation_maxCount_(self, v39, v8, v26, v37);
-      v42 = objc_msgSend__enabledWaypointsForGuideType_subType_restrictedTo_ofLocation_maxCount_(self, v41, 3, &unk_284E8B040, v8, v26, v37);
-      v59 = objc_msgSend__enabledWaypointsForGuideType_subType_restrictedTo_ofLocation_maxCount_(self, v43, 3, &unk_284E8B058, v8, v26, v37);
+      v40 = objc_msgSend__enabledCompassWaypointsRestrictedTo_ofLocation_maxCount_(self, v39, locationCopy, v26, v37);
+      v42 = objc_msgSend__enabledWaypointsForGuideType_subType_restrictedTo_ofLocation_maxCount_(self, v41, 3, &unk_284E8B040, locationCopy, v26, v37);
+      v59 = objc_msgSend__enabledWaypointsForGuideType_subType_restrictedTo_ofLocation_maxCount_(self, v43, 3, &unk_284E8B058, locationCopy, v26, v37);
       *&buf = 0;
       *(&buf + 1) = &buf;
       v77 = 0x3032000000;
@@ -575,11 +575,11 @@ LABEL_30:
       p_buf = &buf;
       group = v38;
       v74 = group;
-      objc_msgSend__fetchEnabledWaypointsForUserGuidesRestrictedToRadius_around_maximumCount_handler_(self, v44, v8, v26, v73, v37);
-      v46 = objc_msgSend__enabledWaypointsForGuideType_subType_restrictedTo_ofLocation_maxCount_(self, v45, 2, 0, v8, v26, v37);
+      objc_msgSend__fetchEnabledWaypointsForUserGuidesRestrictedToRadius_around_maximumCount_handler_(self, v44, locationCopy, v26, v73, v37);
+      v46 = objc_msgSend__enabledWaypointsForGuideType_subType_restrictedTo_ofLocation_maxCount_(self, v45, 2, 0, locationCopy, v26, v37);
       v58 = v14;
       v47 = v42;
-      v49 = objc_msgSend__enabledWaypointsForGuideType_subType_restrictedTo_ofLocation_maxCount_(self, v48, 3, &unk_284E8B070, v8, v26, v37);
+      v49 = objc_msgSend__enabledWaypointsForGuideType_subType_restrictedTo_ofLocation_maxCount_(self, v48, 3, &unk_284E8B070, locationCopy, v26, v37);
       queue = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
@@ -591,12 +591,12 @@ LABEL_30:
       v65 = v49;
       v50 = v46;
       v66 = v40;
-      v67 = self;
+      selfCopy = self;
       v70 = &buf;
       v71 = v26;
       v68 = v58;
       v72 = v18;
-      v69 = v9;
+      v69 = completionCopy;
       v51 = v40;
       v52 = v49;
       v53 = v50;
@@ -619,18 +619,18 @@ LABEL_30:
       _os_log_impl(&dword_23BD26000, v10, OS_LOG_TYPE_DEFAULT, "%{public}s: Unable to calculate waypoints within range as location is nil", &buf, 0xCu);
     }
 
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (id)_getUpdatedDatabaseWaypoints:(id)a3
+- (id)_getUpdatedDatabaseWaypoints:(id)waypoints
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  waypointsCopy = waypoints;
   v7 = objc_msgSend_sharedAppManager(NCWaypointManager, v4, v5, v6);
   v11 = objc_msgSend_fetchDatabaseWaypointsWithElevation(v7, v8, v9, v10);
 
-  v12 = convertWaypointArrayToDict(v3);
+  v12 = convertWaypointArrayToDict(waypointsCopy);
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
@@ -673,19 +673,19 @@ LABEL_30:
   return v41;
 }
 
-- (void)_fetchEnabledWaypointsForUserGuidesRestrictedToRadius:(double)a3 around:(id)a4 maximumCount:(unint64_t)a5 handler:(id)a6
+- (void)_fetchEnabledWaypointsForUserGuidesRestrictedToRadius:(double)radius around:(id)around maximumCount:(unint64_t)count handler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a6;
-  v12 = v11;
-  if (v10)
+  aroundCopy = around;
+  handlerCopy = handler;
+  v12 = handlerCopy;
+  if (aroundCopy)
   {
-    v13 = self;
-    objc_sync_enter(v13);
-    if (v13->_loadedGuides && v13->_store)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy->_loadedGuides && selfCopy->_store)
     {
-      objc_sync_exit(v13);
+      objc_sync_exit(selfCopy);
 
       v14 = NCLogForCategory(9uLL);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -700,17 +700,17 @@ LABEL_30:
       v21[2] = sub_23BD5E070;
       v21[3] = &unk_278B94B70;
       v23 = v12;
-      v21[4] = v13;
-      v22 = v10;
-      v24 = a3;
-      v25 = a5;
+      v21[4] = selfCopy;
+      v22 = aroundCopy;
+      radiusCopy = radius;
+      countCopy = count;
       v15 = MEMORY[0x23EEBBDF0](v21);
       v16 = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = sub_23BD5E7B4;
       block[3] = &unk_278B94718;
-      block[4] = v13;
+      block[4] = selfCopy;
       v20 = v15;
       v17 = v15;
       dispatch_async(v16, block);
@@ -727,47 +727,47 @@ LABEL_30:
       }
 
       v12[2](v12, MEMORY[0x277CBEBF8]);
-      objc_sync_exit(v13);
+      objc_sync_exit(selfCopy);
     }
   }
 
   else
   {
-    (*(v11 + 2))(v11, MEMORY[0x277CBEBF8]);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x277CBEBF8]);
   }
 }
 
-- (void)_addEnabledWaypointsForGuide:(id)a3
+- (void)_addEnabledWaypointsForGuide:(id)guide
 {
-  v21 = a3;
+  guideCopy = guide;
   v7 = objc_msgSend_mutableCopy(self->_allEnabledWaypoints, v4, v5, v6);
-  v11 = objc_msgSend_fetchWaypoints(v21, v8, v9, v10);
+  v11 = objc_msgSend_fetchWaypoints(guideCopy, v8, v9, v10);
   objc_msgSend_addObjectsFromArray_(v7, v12, v11, v13);
 
-  v14 = self;
-  objc_sync_enter(v14);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v17 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEA60], v15, v7, v16);
   allEnabledWaypoints = self->_allEnabledWaypoints;
   self->_allEnabledWaypoints = v17;
 
-  objc_sync_exit(v14);
-  objc_msgSend__postNotification_(v14, v19, @"GuideEnabledListChangedNotification", v20);
+  objc_sync_exit(selfCopy);
+  objc_msgSend__postNotification_(selfCopy, v19, @"GuideEnabledListChangedNotification", v20);
 }
 
-- (void)_removeDisabledWaypointsForGuide:(id)a3
+- (void)_removeDisabledWaypointsForGuide:(id)guide
 {
-  v21 = a3;
+  guideCopy = guide;
   v7 = objc_msgSend_mutableCopy(self->_allEnabledWaypoints, v4, v5, v6);
-  v11 = objc_msgSend_fetchWaypoints(v21, v8, v9, v10);
+  v11 = objc_msgSend_fetchWaypoints(guideCopy, v8, v9, v10);
   objc_msgSend_removeObjectsInArray_(v7, v12, v11, v13);
-  v14 = self;
-  objc_sync_enter(v14);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v17 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEA60], v15, v7, v16);
   allEnabledWaypoints = self->_allEnabledWaypoints;
   self->_allEnabledWaypoints = v17;
 
-  objc_sync_exit(v14);
-  objc_msgSend__postNotification_(v14, v19, @"GuideEnabledListChangedNotification", v20);
+  objc_sync_exit(selfCopy);
+  objc_msgSend__postNotification_(selfCopy, v19, @"GuideEnabledListChangedNotification", v20);
 }
 
 - (void)_refreshAllWaypoints
@@ -938,25 +938,25 @@ LABEL_30:
     _os_log_impl(&dword_23BD26000, v130, OS_LOG_TYPE_DEFAULT, "%{public}s: setting allWaypoints with %lu items", buf, 0x16u);
   }
 
-  v135 = self;
-  objc_sync_enter(v135);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v138 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEA60], v136, v79, v137);
-  allEnabledWaypoints = v135->_allEnabledWaypoints;
-  v135->_allEnabledWaypoints = v138;
+  allEnabledWaypoints = selfCopy->_allEnabledWaypoints;
+  selfCopy->_allEnabledWaypoints = v138;
 
   v142 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEA60], v140, v119, v141);
-  allWaypoints = v135->_allWaypoints;
-  v135->_allWaypoints = v142;
+  allWaypoints = selfCopy->_allWaypoints;
+  selfCopy->_allWaypoints = v142;
 
   v146 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEA60], v144, v74, v145);
-  allProviderAndMapsDatabaseWaypoints = v135->_allProviderAndMapsDatabaseWaypoints;
-  v135->_allProviderAndMapsDatabaseWaypoints = v146;
+  allProviderAndMapsDatabaseWaypoints = selfCopy->_allProviderAndMapsDatabaseWaypoints;
+  selfCopy->_allProviderAndMapsDatabaseWaypoints = v146;
 
   v150 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEA60], v148, v127, v149);
-  systemWaypoints = v135->_systemWaypoints;
-  v135->_systemWaypoints = v150;
+  systemWaypoints = selfCopy->_systemWaypoints;
+  selfCopy->_systemWaypoints = v150;
 
-  objc_sync_exit(v135);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)_allSystemWaypoints
@@ -1000,10 +1000,10 @@ LABEL_30:
   return v25;
 }
 
-- (id)_enabledCompassWaypointsRestrictedTo:(double)a3 ofLocation:(id)a4 maxCount:(unint64_t)a5
+- (id)_enabledCompassWaypointsRestrictedTo:(double)to ofLocation:(id)location maxCount:(unint64_t)count
 {
   v93 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  locationCopy = location;
   v9 = NCLogForCategory(9uLL);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -1014,7 +1014,7 @@ LABEL_30:
   v14 = objc_msgSend_type(self->_compassGuide, v11, v12, v13);
   if (objc_msgSend_isEnabledForGuideType_(guidesEnabledState, v15, v14, v16) && (objc_msgSend_guideEnabled_(self, v17, self->_compassGuide, v18) & 1) != 0)
   {
-    v79 = a5;
+    countCopy = count;
     v22 = objc_msgSend_enabledWaypoints(self->_compassGuide, v19, v20, v21);
     v23 = objc_opt_new();
     v80 = 0u;
@@ -1041,11 +1041,11 @@ LABEL_30:
 
         v33 = *(*(&v80 + 1) + 8 * i);
         v34 = objc_msgSend_location(v33, v27, v28, v29);
-        objc_msgSend_distanceFromLocation_(v34, v35, v8, v36);
+        objc_msgSend_distanceFromLocation_(v34, v35, locationCopy, v36);
         v38 = v37;
 
         v39 = allowVerboseLog();
-        if (v38 >= a3)
+        if (v38 >= to)
         {
           if (!v39)
           {
@@ -1107,15 +1107,15 @@ LABEL_22:
           v88 = 2048;
           v89 = *&v63;
           v90 = 2048;
-          v91 = v79;
+          v91 = countCopy;
           _os_log_impl(&dword_23BD26000, v55, OS_LOG_TYPE_INFO, "%{public}s: found %lu of %lu compass waypoints in range.  Max allowed is: %lu", buf, 0x2Au);
         }
 
         objc_msgSend_sortUsingSelector_(v23, v64, sel_compare_, v65);
-        if (objc_msgSend_count(v23, v66, v67, v68) > v79)
+        if (objc_msgSend_count(v23, v66, v67, v68) > countCopy)
         {
           v72 = objc_msgSend_count(v23, v69, v70, v71);
-          v74 = objc_msgSend_indexSetWithIndexesInRange_(MEMORY[0x277CCAA78], v73, v79, v72 - v79);
+          v74 = objc_msgSend_indexSetWithIndexesInRange_(MEMORY[0x277CCAA78], v73, countCopy, v72 - countCopy);
           objc_msgSend_removeObjectsAtIndexes_(v23, v75, v74, v76);
         }
 
@@ -1140,10 +1140,10 @@ LABEL_30:
   return v77;
 }
 
-- (id)_systemWaypointsRestrictedTo:(double)a3 ofLocation:(id)a4
+- (id)_systemWaypointsRestrictedTo:(double)to ofLocation:(id)location
 {
   v69 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  locationCopy = location;
   v7 = NCLogForCategory(9uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -1175,12 +1175,12 @@ LABEL_30:
 
         v23 = *(*(&v58 + 1) + 8 * i);
         v24 = objc_msgSend_location(v23, v16, v17, v18, v57, v58);
-        objc_msgSend_distanceFromLocation_(v24, v25, v6, v26);
+        objc_msgSend_distanceFromLocation_(v24, v25, locationCopy, v26);
         v28 = v27;
 
         v29 = NCLogForCategory(9uLL);
         v30 = os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG);
-        if (v28 >= a3)
+        if (v28 >= to)
         {
           if (v30)
           {
@@ -1241,26 +1241,26 @@ LABEL_30:
   return v55;
 }
 
-- (void)_fetchEnabledWaypointsRestrictingMapGuidesTo:(double)a3 ofLocation:(id)a4 maxCount:(unint64_t)a5 handler:(id)a6
+- (void)_fetchEnabledWaypointsRestrictingMapGuidesTo:(double)to ofLocation:(id)location maxCount:(unint64_t)count handler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a6;
-  v12 = self;
-  objc_sync_enter(v12);
-  if (v12->_loadedGuides)
+  locationCopy = location;
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_loadedGuides)
   {
-    objc_sync_exit(v12);
+    objc_sync_exit(selfCopy);
 
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = sub_23BD5FC28;
     v15[3] = &unk_278B94BC0;
-    v15[4] = v12;
-    v16 = v10;
-    v18 = a5;
-    v17 = v11;
-    objc_msgSend__fetchAllPlaceItemsRestrictingMapGuidesTo_ofLocation_handler_(v12, v13, v16, v15, a3);
+    v15[4] = selfCopy;
+    v16 = locationCopy;
+    countCopy = count;
+    v17 = handlerCopy;
+    objc_msgSend__fetchAllPlaceItemsRestrictingMapGuidesTo_ofLocation_handler_(selfCopy, v13, v16, v15, to);
   }
 
   else
@@ -1273,29 +1273,29 @@ LABEL_30:
       _os_log_impl(&dword_23BD26000, v14, OS_LOG_TYPE_DEFAULT, "%{public}s: returning empty list, guides are not loaded", buf, 0xCu);
     }
 
-    (*(v11 + 2))(v11, MEMORY[0x277CBEBF8]);
-    objc_sync_exit(v12);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x277CBEBF8]);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)_fetchAllWaypointsRestrictingMapGuidesTo:(double)a3 ofLocation:(id)a4 handler:(id)a5
+- (void)_fetchAllWaypointsRestrictingMapGuidesTo:(double)to ofLocation:(id)location handler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
-  if (v10->_loadedGuides)
+  locationCopy = location;
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_loadedGuides)
   {
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
 
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = sub_23BD60270;
     v13[3] = &unk_278B94BE8;
-    v14 = v9;
-    objc_msgSend__fetchAllPlaceItemsRestrictingMapGuidesTo_ofLocation_handler_(v10, v11, v8, v13, a3);
-    v10 = v14;
+    v14 = handlerCopy;
+    objc_msgSend__fetchAllPlaceItemsRestrictingMapGuidesTo_ofLocation_handler_(selfCopy, v11, locationCopy, v13, to);
+    selfCopy = v14;
   }
 
   else
@@ -1308,16 +1308,16 @@ LABEL_30:
       _os_log_impl(&dword_23BD26000, v12, OS_LOG_TYPE_DEFAULT, "%{public}s: returning empty list, guides are not loaded", buf, 0xCu);
     }
 
-    (*(v9 + 2))(v9, MEMORY[0x277CBEBF8]);
-    objc_sync_exit(v10);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x277CBEBF8]);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)_fetchAllPlaceItemsRestrictingMapGuidesTo:(double)a3 ofLocation:(id)a4 handler:(id)a5
+- (void)_fetchAllPlaceItemsRestrictingMapGuidesTo:(double)to ofLocation:(id)location handler:(id)handler
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
+  handlerCopy = handler;
+  locationCopy = location;
   v10 = NCLogForCategory(9uLL);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -1327,12 +1327,12 @@ LABEL_30:
   }
 
   v11 = objc_alloc(MEMORY[0x277D26680]);
-  objc_msgSend_coordinate(v9, v12, v13, v14);
+  objc_msgSend_coordinate(locationCopy, v12, v13, v14);
   v16 = v15;
-  objc_msgSend_coordinate(v9, v17, v18, v19);
+  objc_msgSend_coordinate(locationCopy, v17, v18, v19);
   v21 = v20;
 
-  v25 = objc_msgSend_initWithCenterLatitude_centerLongitude_squareSideLengthMeters_(v11, v22, v23, v24, v16, v21, a3);
+  v25 = objc_msgSend_initWithCenterLatitude_centerLongitude_squareSideLengthMeters_(v11, v22, v23, v24, v16, v21, to);
   v26 = objc_alloc(MEMORY[0x277D26678]);
   v28 = objc_msgSend_initWithPredicate_sortDescriptors_range_(v26, v27, v25, 0, 0);
   v29 = dispatch_get_global_queue(2, 0);
@@ -1342,8 +1342,8 @@ LABEL_30:
   block[3] = &unk_278B94920;
   block[4] = self;
   v33 = v28;
-  v34 = v8;
-  v30 = v8;
+  v34 = handlerCopy;
+  v30 = handlerCopy;
   v31 = v28;
   dispatch_async(v29, block);
 }
@@ -1359,17 +1359,17 @@ LABEL_30:
   dispatch_async(v3, block);
 }
 
-- (BOOL)guideEnabled:(id)a3
+- (BOOL)guideEnabled:(id)enabled
 {
-  v5 = objc_msgSend_uuid(a3, a2, a3, v3);
+  v5 = objc_msgSend_uuid(enabled, a2, enabled, v3);
   LOBYTE(self) = objc_msgSend_guideWithIdentifierEnabled_(self, v6, v5, v7);
 
   return self;
 }
 
-- (BOOL)guideWithIdentifierEnabled:(id)a3
+- (BOOL)guideWithIdentifierEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1379,10 +1379,10 @@ LABEL_30:
   block[1] = 3221225472;
   block[2] = sub_23BD609D4;
   block[3] = &unk_278B94C10;
-  v9 = v4;
+  v9 = enabledCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = enabledCopy;
   dispatch_sync(disabledGuidesQueue, block);
   LOBYTE(disabledGuidesQueue) = *(v12 + 24);
 
@@ -1390,38 +1390,38 @@ LABEL_30:
   return disabledGuidesQueue;
 }
 
-- (void)enableWaypoints:(BOOL)a3 forGuide:(id)a4
+- (void)enableWaypoints:(BOOL)waypoints forGuide:(id)guide
 {
-  v6 = a4;
+  guideCopy = guide;
   disabledGuidesQueue = self->_disabledGuidesQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23BD60AE8;
   block[3] = &unk_278B94080;
-  v12 = a3;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
+  waypointsCopy = waypoints;
+  v10 = guideCopy;
+  selfCopy = self;
+  v8 = guideCopy;
   dispatch_async(disabledGuidesQueue, block);
 }
 
-- (void)setGlobalEnabledState:(BOOL)a3 forGuideType:(int64_t)a4
+- (void)setGlobalEnabledState:(BOOL)state forGuideType:(int64_t)type
 {
-  v5 = a3;
+  stateCopy = state;
   v20 = *MEMORY[0x277D85DE8];
-  isEnabledForGuideType = objc_msgSend_isEnabledForGuideType_(self->_guidesEnabledState, a2, a4, a4);
+  isEnabledForGuideType = objc_msgSend_isEnabledForGuideType_(self->_guidesEnabledState, a2, type, type);
   v8 = NCLogForCategory(9uLL);
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
-  if (isEnabledForGuideType == v5)
+  if (isEnabledForGuideType == stateCopy)
   {
     if (v9)
     {
       v14 = 136315650;
       v15 = "[NCGuidesManager setGlobalEnabledState:forGuideType:]";
       v16 = 2048;
-      v17 = a4;
+      typeCopy2 = type;
       v18 = 1024;
-      v19 = v5;
+      v19 = stateCopy;
       _os_log_impl(&dword_23BD26000, v8, OS_LOG_TYPE_INFO, "%s: No change needed. Global enabled state for type %ld is already %d.", &v14, 0x1Cu);
     }
   }
@@ -1433,13 +1433,13 @@ LABEL_30:
       v14 = 136315650;
       v15 = "[NCGuidesManager setGlobalEnabledState:forGuideType:]";
       v16 = 2048;
-      v17 = a4;
+      typeCopy2 = type;
       v18 = 1024;
-      v19 = v5;
+      v19 = stateCopy;
       _os_log_impl(&dword_23BD26000, v8, OS_LOG_TYPE_INFO, "%s: Setting global enabled state for guide type %ld to %d", &v14, 0x1Cu);
     }
 
-    objc_msgSend_setEnabled_forGuideType_(self->_guidesEnabledState, v10, v5, a4);
+    objc_msgSend_setEnabled_forGuideType_(self->_guidesEnabledState, v10, stateCopy, type);
     objc_msgSend__refreshNonDistanceLimitedWaypoints(self, v11, v12, v13);
   }
 }
@@ -1448,7 +1448,7 @@ LABEL_30:
 {
   v48 = *MEMORY[0x277D85DE8];
   v42 = objc_msgSend__currentlyDisabledGuides(self, a2, v2, v3);
-  v40 = self;
+  selfCopy = self;
   objc_msgSend_userGuides(self, v5, v6, v7);
   v43 = 0u;
   v44 = 0u;
@@ -1474,7 +1474,7 @@ LABEL_30:
         if (objc_opt_isKindOfClass())
         {
           v16 = v14;
-          guidesEnabledState = v40->_guidesEnabledState;
+          guidesEnabledState = selfCopy->_guidesEnabledState;
           v21 = objc_msgSend_type(v16, v18, v19, v20);
           isEnabledForGuideType = objc_msgSend_isEnabledForGuideType_(guidesEnabledState, v22, v21, v23);
           v28 = objc_msgSend_uuid(v16, v25, v26, v27);
@@ -1704,23 +1704,23 @@ LABEL_30:
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_hasBeenUnlockedSinceBoot)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_hasBeenUnlockedSinceBoot)
   {
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v5->_hasBeenUnlockedSinceBoot = 1;
-    objc_sync_exit(v5);
+    selfCopy->_hasBeenUnlockedSinceBoot = 1;
+    objc_sync_exit(selfCopy);
 
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = sub_23BD615B0;
     block[3] = &unk_278B93FB0;
-    block[4] = v5;
+    block[4] = selfCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
@@ -1812,9 +1812,9 @@ LABEL_30:
 - (void)_loadGuides
 {
   v39 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_hasBeenUnlockedSinceBoot)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_hasBeenUnlockedSinceBoot)
   {
     v3 = NCLogForCategory(9uLL);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -1827,12 +1827,12 @@ LABEL_30:
 
 LABEL_14:
 
-    objc_sync_exit(v2);
-    v5 = v2;
+    objc_sync_exit(selfCopy);
+    v5 = selfCopy;
     goto LABEL_15;
   }
 
-  if (!v2->_store)
+  if (!selfCopy->_store)
   {
     v3 = NCLogForCategory(9uLL);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -1846,7 +1846,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (v2->_loadingGuides)
+  if (selfCopy->_loadingGuides)
   {
     v3 = NCLogForCategory(9uLL);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -1862,7 +1862,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (v2->_loadedGuides)
+  if (selfCopy->_loadedGuides)
   {
     v3 = NCLogForCategory(9uLL);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -1876,7 +1876,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v6 = NCLogForCategory(9uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1886,9 +1886,9 @@ LABEL_13:
     _os_log_impl(&dword_23BD26000, v6, OS_LOG_TYPE_DEFAULT, "%s: Fetching map guide collections", buf, 0xCu);
   }
 
-  v7 = v2;
+  v7 = selfCopy;
   objc_sync_enter(v7);
-  v2->_loadingGuides = 1;
+  selfCopy->_loadingGuides = 1;
   objc_sync_exit(v7);
 
   v11 = objc_msgSend_storeGroup(v7, v8, v9, v10);
@@ -1904,7 +1904,7 @@ LABEL_13:
   objc_msgSend__updateUserGuidesUsingCollections_(v7, v23, v22, v24);
   v25 = v7;
   objc_sync_enter(v25);
-  v2->_loadingGuides = 0;
+  selfCopy->_loadingGuides = 0;
   objc_sync_exit(v25);
 
   v26 = NCLogForCategory(9uLL);
@@ -1931,7 +1931,7 @@ LABEL_13:
   {
     v32 = v25;
     objc_sync_enter(v32);
-    v2->_loadedGuides = 1;
+    selfCopy->_loadedGuides = 1;
     objc_sync_exit(v32);
 
     v33[0] = MEMORY[0x277D85DD0];
@@ -1948,15 +1948,15 @@ LABEL_15:
 - (void)_refreshGuides
 {
   v52 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_store)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_store)
   {
-    v2->_loadedGuides = 0;
-    objc_sync_exit(v2);
+    selfCopy->_loadedGuides = 0;
+    objc_sync_exit(selfCopy);
 
-    objc_msgSend_loadGuides(v2, v3, v4, v5);
-    v9 = objc_msgSend_guideProviders(v2, v6, v7, v8);
+    objc_msgSend_loadGuides(selfCopy, v3, v4, v5);
+    v9 = objc_msgSend_guideProviders(selfCopy, v6, v7, v8);
     v13 = objc_msgSend_count(v9, v10, v11, v12);
 
     if (!v13)
@@ -1967,7 +1967,7 @@ LABEL_15:
     v14 = NCLogForCategory(9uLL);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = objc_msgSend_guideProviders(v2, v15, v16, v17);
+      v18 = objc_msgSend_guideProviders(selfCopy, v15, v16, v17);
       *buf = 136315394;
       *&buf[4] = "[NCGuidesManager _refreshGuides]";
       *&buf[12] = 2048;
@@ -1986,7 +1986,7 @@ LABEL_15:
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v26 = objc_msgSend_guideProviders(v2, v23, v24, v25);
+    v26 = objc_msgSend_guideProviders(selfCopy, v23, v24, v25);
     v28 = objc_msgSend_countByEnumeratingWithState_objects_count_(v26, v27, &v43, v47, 16);
     if (v28)
     {
@@ -2002,7 +2002,7 @@ LABEL_15:
 
           v31 = *(*(&v43 + 1) + 8 * i);
           dispatch_group_enter(p_super);
-          v35 = objc_msgSend_store(v2, v32, v33, v34);
+          v35 = objc_msgSend_store(selfCopy, v32, v33, v34);
           v40[0] = MEMORY[0x277D85DD0];
           v40[1] = 3221225472;
           v40[2] = sub_23BD62368;
@@ -2023,7 +2023,7 @@ LABEL_15:
     block[2] = sub_23BD62404;
     block[3] = &unk_278B94C38;
     block[5] = buf;
-    block[4] = v2;
+    block[4] = selfCopy;
     dispatch_group_notify(p_super, MEMORY[0x277D85CD0], block);
     _Block_object_dispose(buf, 8);
   }
@@ -2038,21 +2038,21 @@ LABEL_15:
       _os_log_impl(&dword_23BD26000, v38, OS_LOG_TYPE_INFO, "%s: Aborting refresh because the store is not available.", buf, 0xCu);
     }
 
-    p_super = &v2->super;
-    objc_sync_exit(v2);
+    p_super = &selfCopy->super;
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)_updateUserGuidesUsingCollections:(id)a3
+- (void)_updateUserGuidesUsingCollections:(id)collections
 {
   v106 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  collectionsCopy = collections;
   v86 = objc_opt_new();
   v94 = 0u;
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
-  obj = v3;
+  obj = collectionsCopy;
   v88 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v4, &v94, v105, 16);
   if (v88)
   {
@@ -2174,8 +2174,8 @@ LABEL_15:
     while (v88);
   }
 
-  v77 = self;
-  objc_sync_enter(v77);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v78 = NCLogForCategory(9uLL);
   if (os_log_type_enabled(v78, OS_LOG_TYPE_INFO))
   {
@@ -2187,10 +2187,10 @@ LABEL_15:
     _os_log_impl(&dword_23BD26000, v78, OS_LOG_TYPE_INFO, "%s: setting _userGuides with %lu guides", buf, 0x16u);
   }
 
-  userGuides = v77->_userGuides;
-  v77->_userGuides = v86;
+  userGuides = selfCopy->_userGuides;
+  selfCopy->_userGuides = v86;
 
-  objc_sync_exit(v77);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_refreshNonDistanceLimitedWaypoints
@@ -2208,14 +2208,14 @@ LABEL_15:
   objc_msgSend__postNotification_(self, v7, @"GuideWaypointsChangedNotification", v8);
 }
 
-- (void)_handleWaypointListChanged:(id)a3
+- (void)_handleWaypointListChanged:(id)changed
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = NCLogForCategory(9uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v9 = objc_msgSend_name(v4, v6, v7, v8);
+    v9 = objc_msgSend_name(changedCopy, v6, v7, v8);
     *buf = 136315394;
     v13 = "[NCGuidesManager _handleWaypointListChanged:]";
     v14 = 2112;
@@ -2252,16 +2252,16 @@ LABEL_15:
   dispatch_async(disabledGuidesQueue, block);
 }
 
-- (void)storeControllerWithDidLoad:(id)a3
+- (void)storeControllerWithDidLoad:(id)load
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  objc_msgSend_setStore_(v5, v6, v4, v7);
-  objc_sync_exit(v5);
+  loadCopy = load;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_msgSend_setStore_(selfCopy, v6, loadCopy, v7);
+  objc_sync_exit(selfCopy);
 
-  v11 = objc_msgSend_storeGroup(v5, v8, v9, v10);
+  v11 = objc_msgSend_storeGroup(selfCopy, v8, v9, v10);
   dispatch_group_leave(v11);
 
   v12 = NCLogForCategory(9uLL);
@@ -2272,20 +2272,20 @@ LABEL_15:
     _os_log_impl(&dword_23BD26000, v12, OS_LOG_TYPE_DEFAULT, "%s: storeControllerWithDidLoad completed, loading guides", &v16, 0xCu);
   }
 
-  objc_msgSend__refreshGuides(v5, v13, v14, v15);
+  objc_msgSend__refreshGuides(selfCopy, v13, v14, v15);
 }
 
-- (void)storeControllerWithFailedToLoad:(id)a3
+- (void)storeControllerWithFailedToLoad:(id)load
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  loadCopy = load;
   v5 = NCLogForCategory(9uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315394;
     v11 = "[NCGuidesManager storeControllerWithFailedToLoad:]";
     v12 = 2114;
-    v13 = v4;
+    v13 = loadCopy;
     _os_log_impl(&dword_23BD26000, v5, OS_LOG_TYPE_DEFAULT, "%s: storeControllerWithFailedToLoad, error is %{public}@", &v10, 0x16u);
   }
 
@@ -2293,17 +2293,17 @@ LABEL_15:
   dispatch_group_leave(v9);
 }
 
-- (void)storeControllerWithDataChanged:(id)a3
+- (void)storeControllerWithDataChanged:(id)changed
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = NCLogForCategory(9uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[NCGuidesManager storeControllerWithDataChanged:]";
     v11 = 2114;
-    v12 = v4;
+    v12 = changedCopy;
     _os_log_impl(&dword_23BD26000, v5, OS_LOG_TYPE_DEFAULT, "%s: storeControllerWithDataChanged, error is %{public}@", &v9, 0x16u);
   }
 

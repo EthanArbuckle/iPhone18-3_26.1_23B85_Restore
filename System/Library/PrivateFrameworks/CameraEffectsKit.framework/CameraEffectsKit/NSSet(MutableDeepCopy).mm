@@ -7,20 +7,20 @@
 - (id)mutableDeepCopy
 {
   v2 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v3 = [a1 objectEnumerator];
-  v4 = [v3 nextObject];
-  if (v4)
+  objectEnumerator = [self objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v5 = v4;
+    nextObject2 = nextObject;
     do
     {
-      v6 = [v5 mutableDeepCopy];
+      mutableDeepCopy = [nextObject2 mutableDeepCopy];
 
-      [v2 addObject:v6];
-      v5 = [v3 nextObject];
+      [v2 addObject:mutableDeepCopy];
+      nextObject2 = [objectEnumerator nextObject];
     }
 
-    while (v5);
+    while (nextObject2);
   }
 
   return v2;

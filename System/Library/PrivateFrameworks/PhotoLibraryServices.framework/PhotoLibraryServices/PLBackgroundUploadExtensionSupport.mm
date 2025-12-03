@@ -1,34 +1,34 @@
 @interface PLBackgroundUploadExtensionSupport
-+ (BOOL)_containsValidExtensionForApplicationRecord:(id)a3 extensionPointLabel:(id)a4;
-+ (BOOL)_containsValidExtensionFromExtensionRecord:(id)a3 extensionPointLabel:(id)a4;
-+ (BOOL)_validInfoDictionaryFromExtensionRecord:(id)a3 extensionPointLabel:(id)a4;
-+ (id)_baseURLFromExtensionRecord:(id)a3;
-+ (int64_t)containsValidExtensionFromAuditToken:(id *)a3 extensionPointLabel:(id)a4;
-- (id)_validatedBundleIdentifierWithClientAuthorization:(id)a3;
-- (id)backgroundUploadJobConfigurationPredicateWithClientAuthorization:(id)a3;
-- (id)backgroundUploadJobPredicateWithClientAuthorization:(id)a3 managedObjectContext:(id)a4;
++ (BOOL)_containsValidExtensionForApplicationRecord:(id)record extensionPointLabel:(id)label;
++ (BOOL)_containsValidExtensionFromExtensionRecord:(id)record extensionPointLabel:(id)label;
++ (BOOL)_validInfoDictionaryFromExtensionRecord:(id)record extensionPointLabel:(id)label;
++ (id)_baseURLFromExtensionRecord:(id)record;
++ (int64_t)containsValidExtensionFromAuditToken:(id *)token extensionPointLabel:(id)label;
+- (id)_validatedBundleIdentifierWithClientAuthorization:(id)authorization;
+- (id)backgroundUploadJobConfigurationPredicateWithClientAuthorization:(id)authorization;
+- (id)backgroundUploadJobPredicateWithClientAuthorization:(id)authorization managedObjectContext:(id)context;
 @end
 
 @implementation PLBackgroundUploadExtensionSupport
 
-+ (id)_baseURLFromExtensionRecord:(id)a3
++ (id)_baseURLFromExtensionRecord:(id)record
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [a3 infoDictionary];
-  v4 = [v3 objectForKey:@"BackgroundUploadURLBase" ofClass:objc_opt_class()];
+  infoDictionary = [record infoDictionary];
+  v4 = [infoDictionary objectForKey:@"BackgroundUploadURLBase" ofClass:objc_opt_class()];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v4];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 scheme];
-      if (v7)
+      scheme = [v5 scheme];
+      if (scheme)
       {
-        v8 = v7;
-        v9 = [v6 host];
+        v8 = scheme;
+        host = [v6 host];
 
-        if (v9)
+        if (host)
         {
           v6 = v6;
           v10 = v6;
@@ -63,12 +63,12 @@ LABEL_12:
   return v10;
 }
 
-+ (BOOL)_validInfoDictionaryFromExtensionRecord:(id)a3 extensionPointLabel:(id)a4
++ (BOOL)_validInfoDictionaryFromExtensionRecord:(id)record extensionPointLabel:(id)label
 {
-  v6 = a3;
-  if ([a4 isEqualToString:@"com.apple.photos.background-upload"])
+  recordCopy = record;
+  if ([label isEqualToString:@"com.apple.photos.background-upload"])
   {
-    v7 = [a1 _baseURLFromExtensionRecord:v6];
+    v7 = [self _baseURLFromExtensionRecord:recordCopy];
     v8 = v7 != 0;
   }
 
@@ -80,13 +80,13 @@ LABEL_12:
   return v8;
 }
 
-+ (BOOL)_containsValidExtensionForApplicationRecord:(id)a3 extensionPointLabel:(id)a4
++ (BOOL)_containsValidExtensionForApplicationRecord:(id)record extensionPointLabel:(id)label
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (a3)
+  labelCopy = label;
+  if (record)
   {
-    [a3 applicationExtensionRecords];
+    [record applicationExtensionRecords];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -105,7 +105,7 @@ LABEL_12:
             objc_enumerationMutation(v7);
           }
 
-          if ([a1 _containsValidExtensionFromExtensionRecord:*(*(&v14 + 1) + 8 * i) extensionPointLabel:{v6, v14}])
+          if ([self _containsValidExtensionFromExtensionRecord:*(*(&v14 + 1) + 8 * i) extensionPointLabel:{labelCopy, v14}])
           {
             v12 = 1;
             goto LABEL_12;
@@ -141,11 +141,11 @@ LABEL_12:
   return v12;
 }
 
-+ (BOOL)_containsValidExtensionFromExtensionRecord:(id)a3 extensionPointLabel:(id)a4
++ (BOOL)_containsValidExtensionFromExtensionRecord:(id)record extensionPointLabel:(id)label
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  recordCopy = record;
+  labelCopy = label;
+  if (!recordCopy)
   {
     v9 = PLBackendGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -158,17 +158,17 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  if ([a1 _validInfoDictionaryFromExtensionRecord:v6 extensionPointLabel:v7])
+  if ([self _validInfoDictionaryFromExtensionRecord:recordCopy extensionPointLabel:labelCopy])
   {
-    v8 = [v6 extensionPointRecord];
-    v9 = v8;
-    if (v8)
+    extensionPointRecord = [recordCopy extensionPointRecord];
+    v9 = extensionPointRecord;
+    if (extensionPointRecord)
     {
-      v10 = [v8 identifier];
-      if (v10)
+      identifier = [extensionPointRecord identifier];
+      if (identifier)
       {
-        v11 = v10;
-        v12 = [v10 isEqualToString:v7];
+        v11 = identifier;
+        v12 = [identifier isEqualToString:labelCopy];
 LABEL_16:
 
 LABEL_17:
@@ -205,13 +205,13 @@ LABEL_18:
   return v12;
 }
 
-+ (int64_t)containsValidExtensionFromAuditToken:(id *)a3 extensionPointLabel:(id)a4
++ (int64_t)containsValidExtensionFromAuditToken:(id *)token extensionPointLabel:(id)label
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  labelCopy = label;
   v17 = 0;
-  v7 = *&a3->var0[4];
-  *buf = *a3->var0;
+  v7 = *&token->var0[4];
+  *buf = *token->var0;
   v19 = v7;
   v8 = [MEMORY[0x1E6963620] bundleRecordForAuditToken:buf error:&v17];
   v9 = v17;
@@ -234,7 +234,7 @@ LABEL_18:
 
       v12 = v11;
 
-      v13 = [a1 _containsValidExtensionForApplicationRecord:v12 extensionPointLabel:v6];
+      v13 = [self _containsValidExtensionForApplicationRecord:v12 extensionPointLabel:labelCopy];
     }
 
     else
@@ -260,7 +260,7 @@ LABEL_18:
 
       v12 = v15;
 
-      if ([a1 _containsValidExtensionFromExtensionRecord:v12 extensionPointLabel:v6])
+      if ([self _containsValidExtensionFromExtensionRecord:v12 extensionPointLabel:labelCopy])
       {
         v13 = 2;
       }
@@ -289,28 +289,28 @@ LABEL_18:
   return v13;
 }
 
-- (id)_validatedBundleIdentifierWithClientAuthorization:(id)a3
+- (id)_validatedBundleIdentifierWithClientAuthorization:(id)authorization
 {
-  v3 = a3;
-  if ([v3 isBackgroundResourceUploadExtensionClient])
+  authorizationCopy = authorization;
+  if ([authorizationCopy isBackgroundResourceUploadExtensionClient])
   {
-    v4 = [v3 fetchFilterIdentifier];
+    fetchFilterIdentifier = [authorizationCopy fetchFilterIdentifier];
   }
 
   else
   {
-    v4 = 0;
+    fetchFilterIdentifier = 0;
   }
 
-  return v4;
+  return fetchFilterIdentifier;
 }
 
-- (id)backgroundUploadJobPredicateWithClientAuthorization:(id)a3 managedObjectContext:(id)a4
+- (id)backgroundUploadJobPredicateWithClientAuthorization:(id)authorization managedObjectContext:(id)context
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a3;
+  authorizationCopy = authorization;
   v7 = [v5 predicateWithValue:0];
-  v8 = [(PLBackgroundUploadExtensionSupport *)self _validatedBundleIdentifierWithClientAuthorization:v6];
+  v8 = [(PLBackgroundUploadExtensionSupport *)self _validatedBundleIdentifierWithClientAuthorization:authorizationCopy];
 
   if (v8)
   {
@@ -322,12 +322,12 @@ LABEL_18:
   return v7;
 }
 
-- (id)backgroundUploadJobConfigurationPredicateWithClientAuthorization:(id)a3
+- (id)backgroundUploadJobConfigurationPredicateWithClientAuthorization:(id)authorization
 {
   v4 = MEMORY[0x1E696AE18];
-  v5 = a3;
+  authorizationCopy = authorization;
   v6 = [v4 predicateWithValue:0];
-  v7 = [(PLBackgroundUploadExtensionSupport *)self _validatedBundleIdentifierWithClientAuthorization:v5];
+  v7 = [(PLBackgroundUploadExtensionSupport *)self _validatedBundleIdentifierWithClientAuthorization:authorizationCopy];
 
   if (v7)
   {

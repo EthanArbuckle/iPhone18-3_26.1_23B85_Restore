@@ -1,7 +1,7 @@
 @interface VCSessionBandwidthAllocationTableStreamInfo
-- (BOOL)addTableEntry:(id)a3;
+- (BOOL)addTableEntry:(id)entry;
 - (VCSessionBandwidthAllocationTableStreamInfo)init;
-- (id)entryForQualityIndex:(unsigned int)a3;
+- (id)entryForQualityIndex:(unsigned int)index;
 - (void)dealloc;
 @end
 
@@ -31,13 +31,13 @@
   [(VCSessionBandwidthAllocationTableStreamInfo *)&v3 dealloc];
 }
 
-- (BOOL)addTableEntry:(id)a3
+- (BOOL)addTableEntry:(id)entry
 {
-  v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_qualityIndexToTableEntry, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a3, "qualityIndex")}]);
+  v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_qualityIndexToTableEntry, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(entry, "qualityIndex")}]);
   if (!v5)
   {
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_qualityIndexToTableEntry, "setObject:forKeyedSubscript:", a3, [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a3, "qualityIndex")}]);
-    [(NSMutableArray *)self->_sortedEntries addObject:a3];
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_qualityIndexToTableEntry, "setObject:forKeyedSubscript:", entry, [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(entry, "qualityIndex")}]);
+    [(NSMutableArray *)self->_sortedEntries addObject:entry];
     [(NSMutableArray *)self->_sortedEntries sortUsingComparator:&__block_literal_global_114];
   }
 
@@ -56,10 +56,10 @@ uint64_t __61__VCSessionBandwidthAllocationTableStreamInfo_addTableEntry___block
   return v7 > [a3 qualityIndex];
 }
 
-- (id)entryForQualityIndex:(unsigned int)a3
+- (id)entryForQualityIndex:(unsigned int)index
 {
   qualityIndexToTableEntry = self->_qualityIndexToTableEntry;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&index];
 
   return [(NSMutableDictionary *)qualityIndexToTableEntry objectForKeyedSubscript:v4];
 }

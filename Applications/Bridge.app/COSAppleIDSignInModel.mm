@@ -1,6 +1,6 @@
 @interface COSAppleIDSignInModel
-+ (id)accountForServiceType:(int64_t)a3;
-+ (id)aidaServiceTypeFromAppleIDServiceType:(int64_t)a3;
++ (id)accountForServiceType:(int64_t)type;
++ (id)aidaServiceTypeFromAppleIDServiceType:(int64_t)type;
 - (BOOL)hasSignedInToFaceTime;
 - (BOOL)hasSignedInToiCloud;
 - (BOOL)hasSignedInToiMessage;
@@ -10,10 +10,10 @@
 - (BOOL)waitingForAnySilentSignInToComplete;
 - (COSAppleIDSignInModel)init;
 - (id)description;
-- (void)setHasSignedInToFaceTime:(BOOL)a3;
-- (void)setHasSignedInToiCloud:(BOOL)a3;
-- (void)setHasSignedInToiMessage:(BOOL)a3;
-- (void)setHasSignedInToiTunesStore:(BOOL)a3;
+- (void)setHasSignedInToFaceTime:(BOOL)time;
+- (void)setHasSignedInToiCloud:(BOOL)cloud;
+- (void)setHasSignedInToiMessage:(BOOL)message;
+- (void)setHasSignedInToiTunesStore:(BOOL)store;
 @end
 
 @implementation COSAppleIDSignInModel
@@ -39,64 +39,64 @@
   return v2;
 }
 
-- (void)setHasSignedInToiCloud:(BOOL)a3
+- (void)setHasSignedInToiCloud:(BOOL)cloud
 {
-  v3 = a3;
+  cloudCopy = cloud;
   v4 = [(NSMutableArray *)self->_services objectAtIndexedSubscript:0];
-  [v4 setSignedIn:v3];
+  [v4 setSignedIn:cloudCopy];
 }
 
 - (BOOL)hasSignedInToiCloud
 {
   v2 = [(NSMutableArray *)self->_services objectAtIndexedSubscript:0];
-  v3 = [v2 signedIn];
+  signedIn = [v2 signedIn];
 
-  return v3;
+  return signedIn;
 }
 
-- (void)setHasSignedInToiMessage:(BOOL)a3
+- (void)setHasSignedInToiMessage:(BOOL)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [(NSMutableArray *)self->_services objectAtIndexedSubscript:2];
-  [v4 setSignedIn:v3];
+  [v4 setSignedIn:messageCopy];
 }
 
 - (BOOL)hasSignedInToiMessage
 {
   v2 = [(NSMutableArray *)self->_services objectAtIndexedSubscript:2];
-  v3 = [v2 signedIn];
+  signedIn = [v2 signedIn];
 
-  return v3;
+  return signedIn;
 }
 
-- (void)setHasSignedInToFaceTime:(BOOL)a3
+- (void)setHasSignedInToFaceTime:(BOOL)time
 {
-  v3 = a3;
+  timeCopy = time;
   v4 = [(NSMutableArray *)self->_services objectAtIndexedSubscript:3];
-  [v4 setSignedIn:v3];
+  [v4 setSignedIn:timeCopy];
 }
 
 - (BOOL)hasSignedInToFaceTime
 {
   v2 = [(NSMutableArray *)self->_services objectAtIndexedSubscript:3];
-  v3 = [v2 signedIn];
+  signedIn = [v2 signedIn];
 
-  return v3;
+  return signedIn;
 }
 
-- (void)setHasSignedInToiTunesStore:(BOOL)a3
+- (void)setHasSignedInToiTunesStore:(BOOL)store
 {
-  v3 = a3;
+  storeCopy = store;
   v4 = [(NSMutableArray *)self->_services objectAtIndexedSubscript:1];
-  [v4 setSignedIn:v3];
+  [v4 setSignedIn:storeCopy];
 }
 
 - (BOOL)hasSignedInToiTunesStore
 {
   v2 = [(NSMutableArray *)self->_services objectAtIndexedSubscript:1];
-  v3 = [v2 signedIn];
+  signedIn = [v2 signedIn];
 
-  return v3;
+  return signedIn;
 }
 
 - (BOOL)hasSignedIntoAllServices
@@ -111,27 +111,27 @@
       if ([v5 signedIn])
       {
         v6 = [(NSMutableArray *)self->_services objectAtIndexedSubscript:3];
-        v7 = [v6 signedIn];
+        signedIn = [v6 signedIn];
       }
 
       else
       {
-        v7 = 0;
+        signedIn = 0;
       }
     }
 
     else
     {
-      v7 = 0;
+      signedIn = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    signedIn = 0;
   }
 
-  return v7;
+  return signedIn;
 }
 
 - (BOOL)waitingForAnySilentSignInToComplete
@@ -139,30 +139,30 @@
   v3 = [(NSMutableArray *)self->_services objectAtIndexedSubscript:0];
   if ([v3 waitingForSilentSigninToComplete])
   {
-    v4 = 1;
+    waitingForSilentSigninToComplete = 1;
   }
 
   else
   {
-    v4 = 1;
+    waitingForSilentSigninToComplete = 1;
     v5 = [(NSMutableArray *)self->_services objectAtIndexedSubscript:1];
     if (([v5 waitingForSilentSigninToComplete] & 1) == 0)
     {
       v6 = [(NSMutableArray *)self->_services objectAtIndexedSubscript:2];
       if ([v6 waitingForSilentSigninToComplete])
       {
-        v4 = 1;
+        waitingForSilentSigninToComplete = 1;
       }
 
       else
       {
         v7 = [(NSMutableArray *)self->_services objectAtIndexedSubscript:3];
-        v4 = [v7 waitingForSilentSigninToComplete];
+        waitingForSilentSigninToComplete = [v7 waitingForSilentSigninToComplete];
       }
     }
   }
 
-  return v4;
+  return waitingForSilentSigninToComplete;
 }
 
 - (BOOL)silentSignInSuccessfulForAll
@@ -170,30 +170,30 @@
   v3 = [(NSMutableArray *)self->_services objectAtIndexedSubscript:0];
   if ([v3 silentSignInSuccessful])
   {
-    v4 = 1;
+    silentSignInSuccessful = 1;
   }
 
   else
   {
-    v4 = 1;
+    silentSignInSuccessful = 1;
     v5 = [(NSMutableArray *)self->_services objectAtIndexedSubscript:1];
     if (([v5 silentSignInSuccessful] & 1) == 0)
     {
       v6 = [(NSMutableArray *)self->_services objectAtIndexedSubscript:2];
       if ([v6 silentSignInSuccessful])
       {
-        v4 = 1;
+        silentSignInSuccessful = 1;
       }
 
       else
       {
         v7 = [(NSMutableArray *)self->_services objectAtIndexedSubscript:3];
-        v4 = [v7 silentSignInSuccessful];
+        silentSignInSuccessful = [v7 silentSignInSuccessful];
       }
     }
   }
 
-  return v4;
+  return silentSignInSuccessful;
 }
 
 - (id)description
@@ -209,25 +209,25 @@
   return v3;
 }
 
-+ (id)aidaServiceTypeFromAppleIDServiceType:(int64_t)a3
++ (id)aidaServiceTypeFromAppleIDServiceType:(int64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = **(&off_10026A0D0 + a3);
+    v4 = **(&off_10026A0D0 + type);
   }
 
   return v4;
 }
 
-+ (id)accountForServiceType:(int64_t)a3
++ (id)accountForServiceType:(int64_t)type
 {
   v4 = sub_10002C8C8();
-  v5 = [objc_opt_class() aidaServiceTypeFromAppleIDServiceType:a3];
+  v5 = [objc_opt_class() aidaServiceTypeFromAppleIDServiceType:type];
   v6 = [v4 accountForService:v5];
 
   return v6;

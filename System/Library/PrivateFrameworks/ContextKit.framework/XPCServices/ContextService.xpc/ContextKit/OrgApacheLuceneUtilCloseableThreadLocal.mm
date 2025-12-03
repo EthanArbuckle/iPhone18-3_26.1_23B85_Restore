@@ -3,7 +3,7 @@
 - (void)close;
 - (void)dealloc;
 - (void)maybePurge;
-- (void)setWithId:(id)a3;
+- (void)setWithId:(id)id;
 @end
 
 @implementation OrgApacheLuceneUtilCloseableThreadLocal
@@ -35,16 +35,16 @@ LABEL_12:
     JreThrowNullPointerException();
   }
 
-  v8 = [(OrgApacheLuceneUtilCloseableThreadLocal *)self initialValue];
-  if (v8)
+  initialValue = [(OrgApacheLuceneUtilCloseableThreadLocal *)self initialValue];
+  if (initialValue)
   {
-    [(OrgApacheLuceneUtilCloseableThreadLocal *)self setWithId:v8];
+    [(OrgApacheLuceneUtilCloseableThreadLocal *)self setWithId:initialValue];
   }
 
-  return v8;
+  return initialValue;
 }
 
-- (void)setWithId:(id)a3
+- (void)setWithId:(id)id
 {
   t = self->t_;
   if (!t)
@@ -52,11 +52,11 @@ LABEL_12:
     JreThrowNullPointerException();
   }
 
-  [(JavaLangThreadLocal *)t setWithId:new_JavaLangRefWeakReference_initWithId_(a3)];
+  [(JavaLangThreadLocal *)t setWithId:new_JavaLangRefWeakReference_initWithId_(id)];
   hardRefs = self->hardRefs_;
   objc_sync_enter(hardRefs);
   v7 = self->hardRefs_;
-  if (!v7 || ([(JavaUtilMap *)v7 putWithId:JavaLangThread_currentThread() withId:a3], (countUntilPurge = self->countUntilPurge_) == 0))
+  if (!v7 || ([(JavaUtilMap *)v7 putWithId:JavaLangThread_currentThread() withId:id], (countUntilPurge = self->countUntilPurge_) == 0))
   {
     JreThrowNullPointerException();
   }

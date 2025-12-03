@@ -1,31 +1,31 @@
 @interface CKDAnonymousSharingManager
-- (CKDAnonymousSharingManager)initWithContainer:(id)a3;
+- (CKDAnonymousSharingManager)initWithContainer:(id)container;
 - (CKDContainer)container;
-- (id)_generateHashIdentifierForAnonymousShareTuple:(id)a3;
+- (id)_generateHashIdentifierForAnonymousShareTuple:(id)tuple;
 - (id)pcsCache;
-- (void)_lockedFetchSystemZonePCSDataWithCompletion:(id)a3;
-- (void)_locked_decryptShareTuple:(id)a3 withCompletionBlock:(id)a4;
-- (void)_locked_encryptShareTuples:(id)a3 withCompletionBlock:(id)a4;
-- (void)addAnonymousSharesToSharedDB:(id)a3 operation:(id)a4 withCompletionBlock:(id)a5;
-- (void)decryptShareTuple:(id)a3 withCompletionBlock:(id)a4;
-- (void)encryptShareTuples:(id)a3 withCompletionBlock:(id)a4;
-- (void)removeAnonymousSharesFromSharedDB:(id)a3 operation:(id)a4 withCompletionBlock:(id)a5;
+- (void)_lockedFetchSystemZonePCSDataWithCompletion:(id)completion;
+- (void)_locked_decryptShareTuple:(id)tuple withCompletionBlock:(id)block;
+- (void)_locked_encryptShareTuples:(id)tuples withCompletionBlock:(id)block;
+- (void)addAnonymousSharesToSharedDB:(id)b operation:(id)operation withCompletionBlock:(id)block;
+- (void)decryptShareTuple:(id)tuple withCompletionBlock:(id)block;
+- (void)encryptShareTuples:(id)tuples withCompletionBlock:(id)block;
+- (void)removeAnonymousSharesFromSharedDB:(id)b operation:(id)operation withCompletionBlock:(id)block;
 @end
 
 @implementation CKDAnonymousSharingManager
 
-- (CKDAnonymousSharingManager)initWithContainer:(id)a3
+- (CKDAnonymousSharingManager)initWithContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v21.receiver = self;
   v21.super_class = CKDAnonymousSharingManager;
   v5 = [(CKDAnonymousSharingManager *)&v21 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_container, v4);
+    objc_storeWeak(&v5->_container, containerCopy);
     v7 = MEMORY[0x277CCACA8];
-    v10 = objc_msgSend_containerID(v4, v8, v9);
+    v10 = objc_msgSend_containerID(containerCopy, v8, v9);
     v12 = objc_msgSend_stringWithFormat_(v7, v11, @"%s.%@", "com.apple.cloudkit.anonymousSharingManager.queue", v10);
     v13 = v12;
     v16 = objc_msgSend_UTF8String(v13, v14, v15);
@@ -40,17 +40,17 @@
   return v6;
 }
 
-- (id)_generateHashIdentifierForAnonymousShareTuple:(id)a3
+- (id)_generateHashIdentifierForAnonymousShareTuple:(id)tuple
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = objc_msgSend_zoneID(v4, v5, v6);
+  tupleCopy = tuple;
+  v7 = objc_msgSend_zoneID(tupleCopy, v5, v6);
   v10 = objc_msgSend_zoneName(v7, v8, v9);
 
-  v13 = objc_msgSend_zoneID(v4, v11, v12);
+  v13 = objc_msgSend_zoneID(tupleCopy, v11, v12);
   v16 = objc_msgSend_ownerName(v13, v14, v15);
 
-  v19 = objc_msgSend_zoneID(v4, v17, v18);
+  v19 = objc_msgSend_zoneID(tupleCopy, v17, v18);
 
   v22 = objc_msgSend_anonymousCKUserID(v19, v20, v21);
 
@@ -97,68 +97,68 @@
   return v37;
 }
 
-- (void)addAnonymousSharesToSharedDB:(id)a3 operation:(id)a4 withCompletionBlock:(id)a5
+- (void)addAnonymousSharesToSharedDB:(id)b operation:(id)operation withCompletionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  bCopy = b;
+  operationCopy = operation;
+  blockCopy = block;
   v13 = objc_msgSend_synchronizeQueue(self, v11, v12);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_2253B6858;
   v17[3] = &unk_27854D2E8;
-  v18 = v8;
-  v19 = self;
-  v20 = v9;
-  v21 = v10;
-  v14 = v9;
-  v15 = v10;
-  v16 = v8;
+  v18 = bCopy;
+  selfCopy = self;
+  v20 = operationCopy;
+  v21 = blockCopy;
+  v14 = operationCopy;
+  v15 = blockCopy;
+  v16 = bCopy;
   dispatch_async(v13, v17);
 }
 
-- (void)removeAnonymousSharesFromSharedDB:(id)a3 operation:(id)a4 withCompletionBlock:(id)a5
+- (void)removeAnonymousSharesFromSharedDB:(id)b operation:(id)operation withCompletionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  bCopy = b;
+  operationCopy = operation;
+  blockCopy = block;
   v13 = objc_msgSend_synchronizeQueue(self, v11, v12);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_2253B6E8C;
   v17[3] = &unk_27854D2E8;
-  v18 = v8;
-  v19 = self;
-  v20 = v9;
-  v21 = v10;
-  v14 = v9;
-  v15 = v10;
-  v16 = v8;
+  v18 = bCopy;
+  selfCopy = self;
+  v20 = operationCopy;
+  v21 = blockCopy;
+  v14 = operationCopy;
+  v15 = blockCopy;
+  v16 = bCopy;
   dispatch_async(v13, v17);
 }
 
-- (void)encryptShareTuples:(id)a3 withCompletionBlock:(id)a4
+- (void)encryptShareTuples:(id)tuples withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  tuplesCopy = tuples;
+  blockCopy = block;
   v10 = objc_msgSend_synchronizeQueue(self, v8, v9);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2253B75CC;
   block[3] = &unk_278546C30;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = tuplesCopy;
+  v15 = blockCopy;
+  v11 = blockCopy;
+  v12 = tuplesCopy;
   dispatch_async(v10, block);
 }
 
-- (void)_locked_encryptShareTuples:(id)a3 withCompletionBlock:(id)a4
+- (void)_locked_encryptShareTuples:(id)tuples withCompletionBlock:(id)block
 {
   v83 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  tuplesCopy = tuples;
+  blockCopy = block;
   v10 = objc_msgSend_synchronizeQueue(self, v8, v9);
   dispatch_assert_queue_V2(v10);
 
@@ -166,15 +166,15 @@
 
   if (v13)
   {
-    v69 = v7;
+    v69 = blockCopy;
     v71 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v74 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v76 = 0u;
     v77 = 0u;
     v78 = 0u;
     v79 = 0u;
-    v70 = v6;
-    obj = v6;
+    v70 = tuplesCopy;
+    obj = tuplesCopy;
     v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v14, &v76, v82, 16);
     if (!v15)
     {
@@ -276,8 +276,8 @@ LABEL_23:
           v64 = 0;
         }
 
-        v7 = v69;
-        v6 = v70;
+        blockCopy = v69;
+        tuplesCopy = v70;
         v67 = v71;
         if (v69)
         {
@@ -302,9 +302,9 @@ LABEL_23:
   }
 
   v67 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v66, *MEMORY[0x277CBBF50], 1000, @"_locked_encryptShareTuples zonePCSData is still not available. Terminating without additional retry.");
-  if (v7)
+  if (blockCopy)
   {
-    v7[2](v7, 0, v67);
+    blockCopy[2](blockCopy, 0, v67);
   }
 
 LABEL_35:
@@ -312,28 +312,28 @@ LABEL_35:
   v68 = *MEMORY[0x277D85DE8];
 }
 
-- (void)decryptShareTuple:(id)a3 withCompletionBlock:(id)a4
+- (void)decryptShareTuple:(id)tuple withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  tupleCopy = tuple;
+  blockCopy = block;
   v10 = objc_msgSend_synchronizeQueue(self, v8, v9);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2253B7E98;
   block[3] = &unk_278546C30;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = tupleCopy;
+  v15 = blockCopy;
+  v11 = blockCopy;
+  v12 = tupleCopy;
   dispatch_async(v10, block);
 }
 
-- (void)_locked_decryptShareTuple:(id)a3 withCompletionBlock:(id)a4
+- (void)_locked_decryptShareTuple:(id)tuple withCompletionBlock:(id)block
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  tupleCopy = tuple;
+  blockCopy = block;
   v10 = objc_msgSend_synchronizeQueue(self, v8, v9);
   dispatch_assert_queue_V2(v10);
 
@@ -358,7 +358,7 @@ LABEL_35:
       if (os_log_type_enabled(*v16, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v47 = v6;
+        v47 = tupleCopy;
         v48 = 2112;
         v49 = cf;
         _os_log_error_impl(&dword_22506F000, v21, OS_LOG_TYPE_ERROR, "Failed to get keyID from encrypted data %@. PCS error: %@.", buf, 0x16u);
@@ -392,9 +392,9 @@ LABEL_35:
       v31 = objc_opt_class();
       v44 = 0;
       v33 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v30, v32, v31, v25, &v44);
-      if (v7)
+      if (blockCopy)
       {
-        v7[2](v7, v33, 0);
+        blockCopy[2](blockCopy, v33, 0);
       }
     }
 
@@ -413,9 +413,9 @@ LABEL_35:
       }
 
       v33 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v35, *MEMORY[0x277CBBF50], 1000, @"_locked_decryptShareTuple Unable to decrypt share tuple data.");
-      if (v7)
+      if (blockCopy)
       {
-        (v7)[2](v7, 0, v33);
+        (blockCopy)[2](blockCopy, 0, v33);
       }
     }
   }
@@ -435,9 +435,9 @@ LABEL_35:
     }
 
     v19 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v28, *MEMORY[0x277CBBF50], 1000, @"_locked_decryptShareTuple zonePCSData is still not available. Terminating without additional retry.");
-    if (v7)
+    if (blockCopy)
     {
-      (v7)[2](v7, 0, v19);
+      (blockCopy)[2](blockCopy, 0, v19);
     }
   }
 
@@ -452,10 +452,10 @@ LABEL_35:
   return v6;
 }
 
-- (void)_lockedFetchSystemZonePCSDataWithCompletion:(id)a3
+- (void)_lockedFetchSystemZonePCSDataWithCompletion:(id)completion
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v7 = objc_msgSend_synchronizeQueue(self, v5, v6);
   dispatch_assert_queue_V2(v7);
 
@@ -501,11 +501,11 @@ LABEL_35:
   objc_copyWeak(&v42, &location);
   v31 = v20;
   v37 = v31;
-  v38 = self;
+  selfCopy = self;
   v32 = v26;
   v39 = v32;
   v41 = v43;
-  v33 = v4;
+  v33 = completionCopy;
   v40 = v33;
   objc_msgSend_fetchPCSForZoneWithID_forOperation_options_withCompletionHandler_(v30, v34, v32, v31, 8, v36);
 

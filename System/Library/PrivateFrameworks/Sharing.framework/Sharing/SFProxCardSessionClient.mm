@@ -1,20 +1,20 @@
 @interface SFProxCardSessionClient
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (SFProxCardSessionClient)init;
-- (void)_activateWithCompletion:(id)a3;
+- (void)_activateWithCompletion:(id)completion;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_reportError:(id)a3;
+- (void)_reportError:(id)error;
 - (void)_xpcCheckinTimerFired;
-- (void)_xpcConnectionInvalidated:(id)a3;
-- (void)activateWithCompletion:(id)a3;
+- (void)_xpcConnectionInvalidated:(id)invalidated;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)xpcCheckinWithCompletion:(id)a3;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
+- (void)setLabel:(id)label;
+- (void)xpcCheckinWithCompletion:(id)completion;
 @end
 
 @implementation SFProxCardSessionClient
@@ -51,26 +51,26 @@
   [(SFProxCardSessionClient *)&v4 dealloc];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v5 = a3;
-  v4 = v5;
-  [v5 UTF8String];
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
+  v4 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF();
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__SFProxCardSessionClient_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E788B210;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -109,9 +109,9 @@ LABEL_9:
   [v2 _activateWithCompletion:v6];
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
@@ -124,13 +124,13 @@ LABEL_9:
   aBlock[3] = &unk_1E788CD48;
   v41 = &v42;
   aBlock[4] = self;
-  v5 = v4;
+  v5 = completionCopy;
   v40 = v5;
   v6 = _Block_copy(aBlock);
   if (self->_activateCalled)
   {
     v29 = SFErrorF();
-    v11 = v43[5];
+    _endpoint = v43[5];
     v43[5] = v29;
     goto LABEL_24;
   }
@@ -154,17 +154,17 @@ LABEL_4:
   }
 
 LABEL_6:
-  v8 = [MEMORY[0x1E696B0D8] anonymousListener];
+  anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
   xpcListener = self->_xpcListener;
-  self->_xpcListener = v8;
+  self->_xpcListener = anonymousListener;
 
   [(NSXPCListener *)self->_xpcListener _setQueue:self->_dispatchQueue];
   [(NSXPCListener *)self->_xpcListener setDelegate:self];
   [(NSXPCListener *)self->_xpcListener resume];
-  v10 = [(NSXPCListener *)self->_xpcListener endpoint];
-  v11 = [v10 _endpoint];
+  endpoint = [(NSXPCListener *)self->_xpcListener endpoint];
+  _endpoint = [endpoint _endpoint];
 
-  if (!v11)
+  if (!_endpoint)
   {
     v30 = SFErrorF();
     v12 = v43[5];
@@ -208,7 +208,7 @@ LABEL_6:
     goto LABEL_21;
   }
 
-  [v16 setXpcEndpoint:v11];
+  [v16 setXpcEndpoint:_endpoint];
   v18 = [(NSDictionary *)self->_userInfo mutableCopy];
   v19 = v18;
   if (v18)
@@ -443,9 +443,9 @@ LABEL_6:
   }
 }
 
-- (void)_reportError:(id)a3
+- (void)_reportError:(id)error
 {
-  v11 = a3;
+  errorCopy = error;
   var0 = self->_ucat->var0;
   if (var0 <= 90)
   {
@@ -468,7 +468,7 @@ LABEL_5:
   v6 = v5;
   if (v5)
   {
-    (*(v5 + 2))(v5, v11);
+    (*(v5 + 2))(v5, errorCopy);
   }
 
   activateCompletion = self->_activateCompletion;
@@ -478,13 +478,13 @@ LABEL_5:
   v9 = v8;
   if (v8)
   {
-    (*(v8 + 2))(v8, v11);
+    (*(v8 + 2))(v8, errorCopy);
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   p_xpcCnx = &self->_xpcCnx;
   if (self->_xpcCnx)
@@ -503,7 +503,7 @@ LABEL_5:
         v18 = self->_ucat;
       }
 
-      v19 = [v6 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       LogPrintF();
     }
 
@@ -527,24 +527,24 @@ LABEL_6:
       v17 = self->_ucat;
     }
 
-    [v6 processIdentifier];
+    [connectionCopy processIdentifier];
     LogPrintF();
   }
 
 LABEL_11:
-  objc_storeStrong(&self->_xpcCnx, a4);
-  [v6 _setQueue:self->_dispatchQueue];
+  objc_storeStrong(&self->_xpcCnx, connection);
+  [connectionCopy _setQueue:self->_dispatchQueue];
   v13 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F1D8ABC8];
-  [v6 setExportedInterface:v13];
+  [connectionCopy setExportedInterface:v13];
 
-  [v6 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __62__SFProxCardSessionClient_listener_shouldAcceptNewConnection___block_invoke;
   v20[3] = &unk_1E788A658;
   v20[4] = self;
-  v21 = v6;
-  v14 = v6;
+  v21 = connectionCopy;
+  v14 = connectionCopy;
   [v14 setInvalidationHandler:v20];
   v15 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F1DAEA20];
   [v14 setRemoteObjectInterface:v15];
@@ -553,17 +553,17 @@ LABEL_11:
   return 1;
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
-  v4 = a3;
+  activateCopy = activate;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__SFProxCardSessionClient_remoteAlertHandleDidActivate___block_invoke;
   v7[3] = &unk_1E788A658;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = activateCopy;
+  selfCopy = self;
+  v6 = activateCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -598,17 +598,17 @@ uint64_t __56__SFProxCardSessionClient_remoteAlertHandleDidActivate___block_invo
   return result;
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
+  deactivateCopy = deactivate;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__SFProxCardSessionClient_remoteAlertHandleDidDeactivate___block_invoke;
   v7[3] = &unk_1E788A658;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = deactivateCopy;
+  selfCopy = self;
+  v6 = deactivateCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -664,20 +664,20 @@ int *__58__SFProxCardSessionClient_remoteAlertHandleDidDeactivate___block_invoke
   return LogPrintF();
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  errorCopy = error;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__SFProxCardSessionClient_remoteAlertHandle_didInvalidateWithError___block_invoke;
   block[3] = &unk_1E788BD88;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = handleCopy;
+  selfCopy = self;
+  v14 = errorCopy;
+  v9 = errorCopy;
+  v10 = handleCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -740,9 +740,9 @@ LABEL_14:
   return [v8 _invalidated];
 }
 
-- (void)_xpcConnectionInvalidated:(id)a3
+- (void)_xpcConnectionInvalidated:(id)invalidated
 {
-  v11 = a3;
+  invalidatedCopy = invalidated;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (!self->_invalidateCalled && !self->_dismissCalled)
   {
@@ -753,11 +753,11 @@ LABEL_14:
   var0 = self->_ucat->var0;
   if (var0 <= 20)
   {
-    v6 = v11;
+    v6 = invalidatedCopy;
     if (var0 != -1)
     {
 LABEL_6:
-      v10 = [(NSXPCConnection *)v6 processIdentifier];
+      processIdentifier = [(NSXPCConnection *)v6 processIdentifier];
       LogPrintF();
       goto LABEL_8;
     }
@@ -766,14 +766,14 @@ LABEL_6:
     if (_LogCategory_Initialize())
     {
       v9 = self->_ucat;
-      v6 = v11;
+      v6 = invalidatedCopy;
       goto LABEL_6;
     }
   }
 
 LABEL_8:
   xpcCnx = self->_xpcCnx;
-  if (xpcCnx == v11)
+  if (xpcCnx == invalidatedCopy)
   {
     self->_xpcCnx = 0;
   }
@@ -796,10 +796,10 @@ LABEL_8:
   [(SFProxCardSessionClient *)self _reportError:v6];
 }
 
-- (void)xpcCheckinWithCompletion:(id)a3
+- (void)xpcCheckinWithCompletion:(id)completion
 {
   dispatchQueue = self->_dispatchQueue;
-  v13 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(dispatchQueue);
   var0 = self->_ucat->var0;
   if (var0 <= 30)
@@ -838,7 +838,7 @@ LABEL_5:
   activateCompletion = self->_activateCompletion;
   self->_activateCompletion = 0;
 
-  v13[2](v13, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
 uint64_t __56__SFProxCardSessionClient_remoteAlertHandleDidActivate___block_invoke_cold_1(uint64_t result, int a2, uint64_t a3, uint64_t a4)

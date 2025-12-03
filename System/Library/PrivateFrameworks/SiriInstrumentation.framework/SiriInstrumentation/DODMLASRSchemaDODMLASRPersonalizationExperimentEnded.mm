@@ -1,33 +1,33 @@
 @interface DODMLASRSchemaDODMLASRPersonalizationExperimentEnded
-- (BOOL)isEqual:(id)a3;
-- (DODMLASRSchemaDODMLASRPersonalizationExperimentEnded)initWithDictionary:(id)a3;
-- (DODMLASRSchemaDODMLASRPersonalizationExperimentEnded)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DODMLASRSchemaDODMLASRPersonalizationExperimentEnded)initWithDictionary:(id)dictionary;
+- (DODMLASRSchemaDODMLASRPersonalizationExperimentEnded)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addAudioFileResults:(id)a3;
-- (void)setHasDeviceThermalState:(BOOL)a3;
-- (void)setHasExperimentStatusCode:(BOOL)a3;
-- (void)setHasNumAudioFilesSelected:(BOOL)a3;
-- (void)setHasTextFetchDurationInNs:(BOOL)a3;
-- (void)setHasTextProcessingDurationInNs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAudioFileResults:(id)results;
+- (void)setHasDeviceThermalState:(BOOL)state;
+- (void)setHasExperimentStatusCode:(BOOL)code;
+- (void)setHasNumAudioFilesSelected:(BOOL)selected;
+- (void)setHasTextFetchDurationInNs:(BOOL)ns;
+- (void)setHasTextProcessingDurationInNs:(BOOL)ns;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DODMLASRSchemaDODMLASRPersonalizationExperimentEnded
 
-- (DODMLASRSchemaDODMLASRPersonalizationExperimentEnded)initWithDictionary:(id)a3
+- (DODMLASRSchemaDODMLASRPersonalizationExperimentEnded)initWithDictionary:(id)dictionary
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = DODMLASRSchemaDODMLASRPersonalizationExperimentEnded;
   v5 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)&v37 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"datapackVersion"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"datapackVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,14 +35,14 @@
       [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)v5 setDatapackVersion:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"numAudioFilesAvailable"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"numAudioFilesAvailable"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRPersonalizationExperimentEnded setNumAudioFilesAvailable:](v5, "setNumAudioFilesAvailable:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"numAudioFilesSelected"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"numAudioFilesSelected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
 
     v31 = v9;
     v32 = v8;
-    v10 = [v4 objectForKeyedSubscript:@"experimentStatusCode"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"experimentStatusCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,7 +59,7 @@
     }
 
     v30 = v10;
-    v11 = [v4 objectForKeyedSubscript:@"audioFileResults"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"audioFileResults"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -105,7 +105,7 @@
       v6 = v29;
     }
 
-    v19 = [v4 objectForKeyedSubscript:{@"personalizedLanguageModelMetrics", v29}];
+    v19 = [dictionaryCopy objectForKeyedSubscript:{@"personalizedLanguageModelMetrics", v29}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -113,28 +113,28 @@
       [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)v5 setPersonalizedLanguageModelMetrics:v20];
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"textFetchDurationInNs"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"textFetchDurationInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRPersonalizationExperimentEnded setTextFetchDurationInNs:](v5, "setTextFetchDurationInNs:", [v21 unsignedLongLongValue]);
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"textProcessingDurationInNs"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"textProcessingDurationInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRPersonalizationExperimentEnded setTextProcessingDurationInNs:](v5, "setTextProcessingDurationInNs:", [v22 unsignedLongLongValue]);
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"deviceThermalState"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"deviceThermalState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRPersonalizationExperimentEnded setDeviceThermalState:](v5, "setDeviceThermalState:", [v23 intValue]);
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"audioFileResult"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"audioFileResult"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -151,30 +151,30 @@
   return v5;
 }
 
-- (DODMLASRSchemaDODMLASRPersonalizationExperimentEnded)initWithJSON:(id)a3
+- (DODMLASRSchemaDODMLASRPersonalizationExperimentEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -188,26 +188,26 @@
 - (id)dictionaryRepresentation
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_audioFileResult)
   {
-    v4 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self audioFileResult];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    audioFileResult = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self audioFileResult];
+    dictionaryRepresentation = [audioFileResult dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"audioFileResult"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"audioFileResult"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"audioFileResult"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"audioFileResult"];
     }
   }
 
   if ([(NSArray *)self->_audioFileResults count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -227,16 +227,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v30 + 1) + 8 * i) dictionaryRepresentation];
-          if (v13)
+          dictionaryRepresentation2 = [*(*(&v30 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v7 addObject:v13];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v14 = [MEMORY[0x1E695DFB0] null];
-            [v7 addObject:v14];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -246,14 +246,14 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"audioFileResults"];
+    [dictionary setObject:array forKeyedSubscript:@"audioFileResults"];
   }
 
   if (self->_datapackVersion)
   {
-    v15 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self datapackVersion];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"datapackVersion"];
+    datapackVersion = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self datapackVersion];
+    v16 = [datapackVersion copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"datapackVersion"];
   }
 
   has = self->_has;
@@ -270,14 +270,14 @@
       v19 = off_1E78D4210[v18];
     }
 
-    [v3 setObject:v19 forKeyedSubscript:{@"deviceThermalState", v30}];
+    [dictionary setObject:v19 forKeyedSubscript:{@"deviceThermalState", v30}];
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
     v23 = [MEMORY[0x1E696AD98] numberWithInt:{-[DODMLASRSchemaDODMLASRPersonalizationExperimentEnded experimentStatusCode](self, "experimentStatusCode")}];
-    [v3 setObject:v23 forKeyedSubscript:@"experimentStatusCode"];
+    [dictionary setObject:v23 forKeyedSubscript:@"experimentStatusCode"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -298,29 +298,29 @@ LABEL_27:
   }
 
   v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRPersonalizationExperimentEnded numAudioFilesAvailable](self, "numAudioFilesAvailable", v30)}];
-  [v3 setObject:v24 forKeyedSubscript:@"numAudioFilesAvailable"];
+  [dictionary setObject:v24 forKeyedSubscript:@"numAudioFilesAvailable"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_28:
     v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRPersonalizationExperimentEnded numAudioFilesSelected](self, "numAudioFilesSelected", v30)}];
-    [v3 setObject:v20 forKeyedSubscript:@"numAudioFilesSelected"];
+    [dictionary setObject:v20 forKeyedSubscript:@"numAudioFilesSelected"];
   }
 
 LABEL_29:
   if (self->_personalizedLanguageModelMetrics)
   {
-    v21 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self personalizedLanguageModelMetrics];
-    v22 = [v21 dictionaryRepresentation];
-    if (v22)
+    personalizedLanguageModelMetrics = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self personalizedLanguageModelMetrics];
+    dictionaryRepresentation3 = [personalizedLanguageModelMetrics dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v22 forKeyedSubscript:@"personalizedLanguageModelMetrics"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"personalizedLanguageModelMetrics"];
     }
 
     else
     {
-      v25 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v25 forKeyedSubscript:@"personalizedLanguageModelMetrics"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"personalizedLanguageModelMetrics"];
     }
   }
 
@@ -328,7 +328,7 @@ LABEL_29:
   if ((v26 & 8) != 0)
   {
     v27 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[DODMLASRSchemaDODMLASRPersonalizationExperimentEnded textFetchDurationInNs](self, "textFetchDurationInNs")}];
-    [v3 setObject:v27 forKeyedSubscript:@"textFetchDurationInNs"];
+    [dictionary setObject:v27 forKeyedSubscript:@"textFetchDurationInNs"];
 
     v26 = self->_has;
   }
@@ -336,12 +336,12 @@ LABEL_29:
   if ((v26 & 0x10) != 0)
   {
     v28 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[DODMLASRSchemaDODMLASRPersonalizationExperimentEnded textProcessingDurationInNs](self, "textProcessingDurationInNs")}];
-    [v3 setObject:v28 forKeyedSubscript:@"textProcessingDurationInNs"];
+    [dictionary setObject:v28 forKeyedSubscript:@"textProcessingDurationInNs"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v30];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v30];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -423,28 +423,28 @@ LABEL_11:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ [(DODMLASRSchemaDODMLASRAudioFileResult *)self->_audioFileResult hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_44;
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self datapackVersion];
-  v6 = [v4 datapackVersion];
-  if ((v5 != 0) == (v6 == 0))
+  datapackVersion = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self datapackVersion];
+  datapackVersion2 = [equalCopy datapackVersion];
+  if ((datapackVersion != 0) == (datapackVersion2 == 0))
   {
     goto LABEL_43;
   }
 
-  v7 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self datapackVersion];
-  if (v7)
+  datapackVersion3 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self datapackVersion];
+  if (datapackVersion3)
   {
-    v8 = v7;
-    v9 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self datapackVersion];
-    v10 = [v4 datapackVersion];
-    v11 = [v9 isEqual:v10];
+    v8 = datapackVersion3;
+    datapackVersion4 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self datapackVersion];
+    datapackVersion5 = [equalCopy datapackVersion];
+    v11 = [datapackVersion4 isEqual:datapackVersion5];
 
     if (!v11)
     {
@@ -457,7 +457,7 @@ LABEL_11:
   }
 
   has = self->_has;
-  v13 = v4[80];
+  v13 = equalCopy[80];
   if ((*&has & 1) != (v13 & 1))
   {
     goto LABEL_44;
@@ -466,13 +466,13 @@ LABEL_11:
   if (*&has)
   {
     numAudioFilesAvailable = self->_numAudioFilesAvailable;
-    if (numAudioFilesAvailable != [v4 numAudioFilesAvailable])
+    if (numAudioFilesAvailable != [equalCopy numAudioFilesAvailable])
     {
       goto LABEL_44;
     }
 
     has = self->_has;
-    v13 = v4[80];
+    v13 = equalCopy[80];
   }
 
   v15 = (*&has >> 1) & 1;
@@ -484,13 +484,13 @@ LABEL_11:
   if (v15)
   {
     numAudioFilesSelected = self->_numAudioFilesSelected;
-    if (numAudioFilesSelected != [v4 numAudioFilesSelected])
+    if (numAudioFilesSelected != [equalCopy numAudioFilesSelected])
     {
       goto LABEL_44;
     }
 
     has = self->_has;
-    v13 = v4[80];
+    v13 = equalCopy[80];
   }
 
   v17 = (*&has >> 2) & 1;
@@ -502,26 +502,26 @@ LABEL_11:
   if (v17)
   {
     experimentStatusCode = self->_experimentStatusCode;
-    if (experimentStatusCode != [v4 experimentStatusCode])
+    if (experimentStatusCode != [equalCopy experimentStatusCode])
     {
       goto LABEL_44;
     }
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self audioFileResults];
-  v6 = [v4 audioFileResults];
-  if ((v5 != 0) == (v6 == 0))
+  datapackVersion = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self audioFileResults];
+  datapackVersion2 = [equalCopy audioFileResults];
+  if ((datapackVersion != 0) == (datapackVersion2 == 0))
   {
     goto LABEL_43;
   }
 
-  v19 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self audioFileResults];
-  if (v19)
+  audioFileResults = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self audioFileResults];
+  if (audioFileResults)
   {
-    v20 = v19;
-    v21 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self audioFileResults];
-    v22 = [v4 audioFileResults];
-    v23 = [v21 isEqual:v22];
+    v20 = audioFileResults;
+    audioFileResults2 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self audioFileResults];
+    audioFileResults3 = [equalCopy audioFileResults];
+    v23 = [audioFileResults2 isEqual:audioFileResults3];
 
     if (!v23)
     {
@@ -533,20 +533,20 @@ LABEL_11:
   {
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self personalizedLanguageModelMetrics];
-  v6 = [v4 personalizedLanguageModelMetrics];
-  if ((v5 != 0) == (v6 == 0))
+  datapackVersion = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self personalizedLanguageModelMetrics];
+  datapackVersion2 = [equalCopy personalizedLanguageModelMetrics];
+  if ((datapackVersion != 0) == (datapackVersion2 == 0))
   {
     goto LABEL_43;
   }
 
-  v24 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self personalizedLanguageModelMetrics];
-  if (v24)
+  personalizedLanguageModelMetrics = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self personalizedLanguageModelMetrics];
+  if (personalizedLanguageModelMetrics)
   {
-    v25 = v24;
-    v26 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self personalizedLanguageModelMetrics];
-    v27 = [v4 personalizedLanguageModelMetrics];
-    v28 = [v26 isEqual:v27];
+    v25 = personalizedLanguageModelMetrics;
+    personalizedLanguageModelMetrics2 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self personalizedLanguageModelMetrics];
+    personalizedLanguageModelMetrics3 = [equalCopy personalizedLanguageModelMetrics];
+    v28 = [personalizedLanguageModelMetrics2 isEqual:personalizedLanguageModelMetrics3];
 
     if (!v28)
     {
@@ -560,7 +560,7 @@ LABEL_11:
 
   v29 = self->_has;
   v30 = (*&v29 >> 3) & 1;
-  v31 = v4[80];
+  v31 = equalCopy[80];
   if (v30 != ((v31 >> 3) & 1))
   {
     goto LABEL_44;
@@ -569,13 +569,13 @@ LABEL_11:
   if (v30)
   {
     textFetchDurationInNs = self->_textFetchDurationInNs;
-    if (textFetchDurationInNs != [v4 textFetchDurationInNs])
+    if (textFetchDurationInNs != [equalCopy textFetchDurationInNs])
     {
       goto LABEL_44;
     }
 
     v29 = self->_has;
-    v31 = v4[80];
+    v31 = equalCopy[80];
   }
 
   v33 = (*&v29 >> 4) & 1;
@@ -587,13 +587,13 @@ LABEL_11:
   if (v33)
   {
     textProcessingDurationInNs = self->_textProcessingDurationInNs;
-    if (textProcessingDurationInNs != [v4 textProcessingDurationInNs])
+    if (textProcessingDurationInNs != [equalCopy textProcessingDurationInNs])
     {
       goto LABEL_44;
     }
 
     v29 = self->_has;
-    v31 = v4[80];
+    v31 = equalCopy[80];
   }
 
   v35 = (*&v29 >> 5) & 1;
@@ -605,23 +605,23 @@ LABEL_11:
   if (v35)
   {
     deviceThermalState = self->_deviceThermalState;
-    if (deviceThermalState != [v4 deviceThermalState])
+    if (deviceThermalState != [equalCopy deviceThermalState])
     {
       goto LABEL_44;
     }
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self audioFileResult];
-  v6 = [v4 audioFileResult];
-  if ((v5 != 0) == (v6 == 0))
+  datapackVersion = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self audioFileResult];
+  datapackVersion2 = [equalCopy audioFileResult];
+  if ((datapackVersion != 0) == (datapackVersion2 == 0))
   {
 LABEL_43:
 
     goto LABEL_44;
   }
 
-  v37 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self audioFileResult];
-  if (!v37)
+  audioFileResult = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self audioFileResult];
+  if (!audioFileResult)
   {
 
 LABEL_47:
@@ -629,10 +629,10 @@ LABEL_47:
     goto LABEL_45;
   }
 
-  v38 = v37;
-  v39 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self audioFileResult];
-  v40 = [v4 audioFileResult];
-  v41 = [v39 isEqual:v40];
+  v38 = audioFileResult;
+  audioFileResult2 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self audioFileResult];
+  audioFileResult3 = [equalCopy audioFileResult];
+  v41 = [audioFileResult2 isEqual:audioFileResult3];
 
   if (v41)
   {
@@ -646,13 +646,13 @@ LABEL_45:
   return v42;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self datapackVersion];
+  toCopy = to;
+  datapackVersion = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self datapackVersion];
 
-  if (v5)
+  if (datapackVersion)
   {
     PBDataWriterWriteStringField();
   }
@@ -715,11 +715,11 @@ LABEL_7:
     while (v9);
   }
 
-  v12 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self personalizedLanguageModelMetrics];
+  personalizedLanguageModelMetrics = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self personalizedLanguageModelMetrics];
 
-  if (v12)
+  if (personalizedLanguageModelMetrics)
   {
-    v13 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self personalizedLanguageModelMetrics];
+    personalizedLanguageModelMetrics2 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self personalizedLanguageModelMetrics];
     PBDataWriterWriteSubmessage();
   }
 
@@ -753,18 +753,18 @@ LABEL_19:
   }
 
 LABEL_20:
-  v15 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self audioFileResult];
+  audioFileResult = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self audioFileResult];
 
-  if (v15)
+  if (audioFileResult)
   {
-    v16 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self audioFileResult];
+    audioFileResult2 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self audioFileResult];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setHasDeviceThermalState:(BOOL)a3
+- (void)setHasDeviceThermalState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 32;
   }
@@ -777,9 +777,9 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasTextProcessingDurationInNs:(BOOL)a3
+- (void)setHasTextProcessingDurationInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 16;
   }
@@ -792,9 +792,9 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasTextFetchDurationInNs:(BOOL)a3
+- (void)setHasTextFetchDurationInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 8;
   }
@@ -807,27 +807,27 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)addAudioFileResults:(id)a3
+- (void)addAudioFileResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   audioFileResults = self->_audioFileResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!audioFileResults)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_audioFileResults;
-    self->_audioFileResults = v6;
+    self->_audioFileResults = array;
 
-    v4 = v8;
+    resultsCopy = v8;
     audioFileResults = self->_audioFileResults;
   }
 
-  [(NSArray *)audioFileResults addObject:v4];
+  [(NSArray *)audioFileResults addObject:resultsCopy];
 }
 
-- (void)setHasExperimentStatusCode:(BOOL)a3
+- (void)setHasExperimentStatusCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 4;
   }
@@ -840,9 +840,9 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasNumAudioFilesSelected:(BOOL)a3
+- (void)setHasNumAudioFilesSelected:(BOOL)selected
 {
-  if (a3)
+  if (selected)
   {
     v3 = 2;
   }
@@ -855,30 +855,30 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v15.receiver = self;
   v15.super_class = DODMLASRSchemaDODMLASRPersonalizationExperimentEnded;
-  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:v4];
-  v6 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self audioFileResults];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:policyCopy];
+  audioFileResults = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self audioFileResults];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:audioFileResults underConditions:policyCopy];
   [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self setAudioFileResults:v7];
 
-  v8 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self personalizedLanguageModelMetrics];
-  v9 = [v8 applySensitiveConditionsPolicy:v4];
-  v10 = [v9 suppressMessage];
+  personalizedLanguageModelMetrics = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self personalizedLanguageModelMetrics];
+  v9 = [personalizedLanguageModelMetrics applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v9 suppressMessage];
 
-  if (v10)
+  if (suppressMessage)
   {
     [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self deletePersonalizedLanguageModelMetrics];
   }
 
-  v11 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self audioFileResult];
-  v12 = [v11 applySensitiveConditionsPolicy:v4];
-  v13 = [v12 suppressMessage];
+  audioFileResult = [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self audioFileResult];
+  v12 = [audioFileResult applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v12 suppressMessage];
 
-  if (v13)
+  if (suppressMessage2)
   {
     [(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded *)self deleteAudioFileResult];
   }

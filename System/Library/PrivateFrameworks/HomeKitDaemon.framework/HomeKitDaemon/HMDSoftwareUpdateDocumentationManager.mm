@@ -2,26 +2,26 @@
 + (HMDSoftwareUpdateDocumentationManager)sharedManager;
 + (id)logCategory;
 - (HMDSoftwareUpdateDocumentationManager)init;
-- (HMDSoftwareUpdateDocumentationManager)initWithFileManager:(id)a3;
+- (HMDSoftwareUpdateDocumentationManager)initWithFileManager:(id)manager;
 - (NSArray)assets;
-- (id)assetForDocumentationMetadata:(id)a3;
-- (void)addAsset:(id)a3;
-- (void)auditAsset:(id)a3;
-- (void)networkMonitorIsReachable:(id)a3;
+- (id)assetForDocumentationMetadata:(id)metadata;
+- (void)addAsset:(id)asset;
+- (void)auditAsset:(id)asset;
+- (void)networkMonitorIsReachable:(id)reachable;
 - (void)parseCachedAssets;
-- (void)registerDocumentationMetadata:(id)a3;
-- (void)removeAsset:(id)a3;
-- (void)unregisterDocumentationMetadata:(id)a3;
+- (void)registerDocumentationMetadata:(id)metadata;
+- (void)removeAsset:(id)asset;
+- (void)unregisterDocumentationMetadata:(id)metadata;
 @end
 
 @implementation HMDSoftwareUpdateDocumentationManager
 
-- (void)networkMonitorIsReachable:(id)a3
+- (void)networkMonitorIsReachable:(id)reachable
 {
   v29 = *MEMORY[0x277D85DE8];
-  v19 = a3;
+  reachableCopy = reachable;
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -36,8 +36,8 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [(HMDSoftwareUpdateDocumentationManager *)v5 assets];
-  v9 = [v8 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  assets = [(HMDSoftwareUpdateDocumentationManager *)selfCopy assets];
+  v9 = [assets countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v9)
   {
     v10 = v9;
@@ -48,14 +48,14 @@
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(assets);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
         if ([v13 shouldAutomaticallyCache] && objc_msgSend(v13, "state") <= 3)
         {
           v14 = objc_autoreleasePoolPush();
-          v15 = v5;
+          v15 = selfCopy;
           v16 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
           {
@@ -72,7 +72,7 @@
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v10 = [assets countByEnumeratingWithState:&v20 objects:v28 count:16];
     }
 
     while (v10);
@@ -81,15 +81,15 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)auditAsset:(id)a3
+- (void)auditAsset:(id)asset
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetCopy = asset;
   dispatch_assert_queue_V2(self->_queue);
-  if (v4)
+  if (assetCopy)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -97,7 +97,7 @@
       *buf = 138543618;
       v32 = v8;
       v33 = 2112;
-      v34 = v4;
+      v34 = assetCopy;
       _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Auditing asset: %@", buf, 0x16u);
     }
 
@@ -106,8 +106,8 @@
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v9 = [(HMDSoftwareUpdateDocumentationManager *)v6 registeredMetadata];
-    v10 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    registeredMetadata = [(HMDSoftwareUpdateDocumentationManager *)selfCopy registeredMetadata];
+    v10 = [registeredMetadata countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v10)
     {
       v11 = v10;
@@ -119,18 +119,18 @@
         {
           if (*v27 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(registeredMetadata);
           }
 
-          v14 = [*(*(&v26 + 1) + 8 * v13) observedObject];
-          v15 = [v4 metadata];
-          v16 = [v14 isEqual:v15];
+          observedObject = [*(*(&v26 + 1) + 8 * v13) observedObject];
+          metadata = [assetCopy metadata];
+          v16 = [observedObject isEqual:metadata];
 
           if (v16)
           {
 
             v21 = objc_autoreleasePoolPush();
-            v22 = v6;
+            v22 = selfCopy;
             v23 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
             {
@@ -138,7 +138,7 @@
               *buf = 138543618;
               v32 = v24;
               v33 = 2112;
-              v34 = v4;
+              v34 = assetCopy;
               _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_INFO, "%{public}@Asset still in use: %@", buf, 0x16u);
             }
 
@@ -150,7 +150,7 @@
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v11 = [registeredMetadata countByEnumeratingWithState:&v26 objects:v30 count:16];
         if (v11)
         {
           continue;
@@ -161,7 +161,7 @@
     }
 
     v17 = objc_autoreleasePoolPush();
-    v18 = v6;
+    v18 = selfCopy;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
@@ -169,13 +169,13 @@
       *buf = 138543618;
       v32 = v20;
       v33 = 2112;
-      v34 = v4;
+      v34 = assetCopy;
       _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@Asset no longer in use, removing: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v17);
-    [v4 purgeWithError:0];
-    [(HMDSoftwareUpdateDocumentationManager *)v18 removeAsset:v4];
+    [assetCopy purgeWithError:0];
+    [(HMDSoftwareUpdateDocumentationManager *)v18 removeAsset:assetCopy];
   }
 
 LABEL_18:
@@ -183,16 +183,16 @@ LABEL_18:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (id)assetForDocumentationMetadata:(id)a3
+- (id)assetForDocumentationMetadata:(id)metadata
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metadataCopy = metadata;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(HMDSoftwareUpdateDocumentationManager *)self assets];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  assets = [(HMDSoftwareUpdateDocumentationManager *)self assets];
+  v6 = [assets countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -202,12 +202,12 @@ LABEL_18:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(assets);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 metadata];
-        v11 = [v10 isEqual:v4];
+        metadata = [v9 metadata];
+        v11 = [metadata isEqual:metadataCopy];
 
         if (v11)
         {
@@ -216,7 +216,7 @@ LABEL_18:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [assets countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -233,12 +233,12 @@ LABEL_11:
   return v6;
 }
 
-- (void)removeAsset:(id)a3
+- (void)removeAsset:(id)asset
 {
-  v4 = a3;
-  if (v4)
+  assetCopy = asset;
+  if (assetCopy)
   {
-    v9 = v4;
+    v9 = assetCopy;
     os_unfair_recursive_lock_lock_with_options();
     v5 = [(NSMutableOrderedSet *)self->_assets indexOfObject:v9];
     if (v5 != 0x7FFFFFFFFFFFFFFFLL)
@@ -253,16 +253,16 @@ LABEL_11:
     }
 
     os_unfair_recursive_lock_unlock();
-    v4 = v9;
+    assetCopy = v9;
   }
 }
 
-- (void)addAsset:(id)a3
+- (void)addAsset:(id)asset
 {
-  v4 = a3;
-  if (v4)
+  assetCopy = asset;
+  if (assetCopy)
   {
-    v8 = v4;
+    v8 = assetCopy;
     os_unfair_recursive_lock_lock_with_options();
     if (([(NSMutableOrderedSet *)self->_assets containsObject:v8]& 1) == 0)
     {
@@ -276,26 +276,26 @@ LABEL_11:
     }
 
     os_unfair_recursive_lock_unlock();
-    v4 = v8;
+    assetCopy = v8;
   }
 }
 
 - (NSArray)assets
 {
   os_unfair_recursive_lock_lock_with_options();
-  v3 = [(NSMutableOrderedSet *)self->_assets array];
-  v4 = [v3 copy];
+  array = [(NSMutableOrderedSet *)self->_assets array];
+  v4 = [array copy];
 
   os_unfair_recursive_lock_unlock();
 
   return v4;
 }
 
-- (void)unregisterDocumentationMetadata:(id)a3
+- (void)unregisterDocumentationMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  metadataCopy = metadata;
+  v5 = metadataCopy;
+  if (metadataCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -303,7 +303,7 @@ LABEL_11:
     v7[2] = __73__HMDSoftwareUpdateDocumentationManager_unregisterDocumentationMetadata___block_invoke;
     v7[3] = &unk_27868A750;
     v7[4] = self;
-    v8 = v4;
+    v8 = metadataCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -381,19 +381,19 @@ LABEL_14:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerDocumentationMetadata:(id)a3
+- (void)registerDocumentationMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  metadataCopy = metadata;
+  v5 = metadataCopy;
+  if (metadataCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __71__HMDSoftwareUpdateDocumentationManager_registerDocumentationMetadata___block_invoke;
     v7[3] = &unk_27868A750;
-    v8 = v4;
-    v9 = self;
+    v8 = metadataCopy;
+    selfCopy = self;
     dispatch_async(queue, v7);
   }
 }
@@ -721,25 +721,25 @@ void __58__HMDSoftwareUpdateDocumentationManager_parseCachedAssets__block_invoke
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDSoftwareUpdateDocumentationManager)initWithFileManager:(id)a3
+- (HMDSoftwareUpdateDocumentationManager)initWithFileManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = HMDSoftwareUpdateDocumentationManager;
   v6 = [(HMDSoftwareUpdateDocumentationManager *)&v19 init];
   if (v6)
   {
     v7 = HMDispatchQueueNameString();
-    v8 = [v7 UTF8String];
+    uTF8String = [v7 UTF8String];
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v10 = dispatch_queue_create(v8, v9);
+    v10 = dispatch_queue_create(uTF8String, v9);
     queue = v6->_queue;
     v6->_queue = v10;
 
-    objc_storeStrong(&v6->_fileManager, a3);
-    v12 = [MEMORY[0x277CBEB40] orderedSet];
+    objc_storeStrong(&v6->_fileManager, manager);
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     assets = v6->_assets;
-    v6->_assets = v12;
+    v6->_assets = orderedSet;
 
     v14 = [MEMORY[0x277CBEB58] set];
     registeredMetadata = v6->_registeredMetadata;
@@ -790,7 +790,7 @@ void __52__HMDSoftwareUpdateDocumentationManager_logCategory__block_invoke()
   block[1] = 3221225472;
   block[2] = __54__HMDSoftwareUpdateDocumentationManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken_200064 != -1)
   {
     dispatch_once(&sharedManager_onceToken_200064, block);

@@ -1,14 +1,14 @@
 @interface PSSGMessageRequestResourcesWithStrides
-+ (id)messageWithResourceRequest:(id)a3 sender:(id)a4;
++ (id)messageWithResourceRequest:(id)request sender:(id)sender;
 @end
 
 @implementation PSSGMessageRequestResourcesWithStrides
 
-+ (id)messageWithResourceRequest:(id)a3 sender:(id)a4
++ (id)messageWithResourceRequest:(id)request sender:(id)sender
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(PSSGMessageRequestResourcesBase *)[PSSGMessageRequestResourcesWithStrides alloc] initWithType:26 sender:v5 request:v6];
+  senderCopy = sender;
+  requestCopy = request;
+  v7 = [(PSSGMessageRequestResourcesBase *)[PSSGMessageRequestResourcesWithStrides alloc] initWithType:26 sender:senderCopy request:requestCopy];
 
   return v7;
 }

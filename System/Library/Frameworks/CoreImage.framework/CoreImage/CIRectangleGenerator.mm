@@ -25,7 +25,7 @@
   v15 = v14;
   v16 = [CIVector vectorWithX:-v14 Y:v15 Z:-v14 W:v15];
   v17 = [CIVector vectorWithX:v4 * v15 + 0.5 Y:0.5 - (v4 + v8) * v15 Z:v6 * v15 + 0.5 W:0.5 - (v6 + v10) * v15];
-  v18 = [(CIRectangleGenerator *)self _CIRectangle];
+  _CIRectangle = [(CIRectangleGenerator *)self _CIRectangle];
   v21.origin.x = v4;
   v21.origin.y = v6;
   v21.size.width = v8;
@@ -34,7 +34,7 @@
   v20[0] = v16;
   v20[1] = v17;
   v20[2] = self->inputColor;
-  return [v18 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v20, 3), v22.origin.x, v22.origin.y, v22.size.width, v22.size.height}];
+  return [_CIRectangle applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v20, 3), v22.origin.x, v22.origin.y, v22.size.width, v22.size.height}];
 }
 
 + (id)customAttributes

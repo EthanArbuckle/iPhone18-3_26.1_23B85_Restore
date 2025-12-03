@@ -1,12 +1,12 @@
 @interface TPSSizes
-- (BOOL)isEqual:(id)a3;
-- (TPSSizes)initWithCoder:(id)a3;
-- (TPSSizes)initWithDictionary:(id)a3;
-- (double)heightToWidthRatioForViewMode:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TPSSizes)initWithCoder:(id)coder;
+- (TPSSizes)initWithDictionary:(id)dictionary;
+- (double)heightToWidthRatioForViewMode:(int64_t)mode;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSSizes
@@ -42,15 +42,15 @@ id __23__TPSSizes_na_identity__block_invoke_3()
   return v3;
 }
 
-- (TPSSizes)initWithDictionary:(id)a3
+- (TPSSizes)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = TPSSizes;
-  v5 = [(TPSSerializableObject *)&v19 initWithDictionary:v4];
+  v5 = [(TPSSerializableObject *)&v19 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 TPSSafeDictionaryForKey:@"compact"];
+    v6 = [dictionaryCopy TPSSafeDictionaryForKey:@"compact"];
     v7 = v6;
     if (v6)
     {
@@ -59,7 +59,7 @@ id __23__TPSSizes_na_identity__block_invoke_3()
 
     else
     {
-      v8 = v4;
+      v8 = dictionaryCopy;
     }
 
     v9 = v8;
@@ -68,7 +68,7 @@ id __23__TPSSizes_na_identity__block_invoke_3()
     compact = v5->_compact;
     v5->_compact = v10;
 
-    v12 = [v4 TPSSafeDictionaryForKey:@"regular"];
+    v12 = [dictionaryCopy TPSSafeDictionaryForKey:@"regular"];
     v13 = v12;
     if (v12)
     {
@@ -77,7 +77,7 @@ id __23__TPSSizes_na_identity__block_invoke_3()
 
     else
     {
-      v14 = v4;
+      v14 = dictionaryCopy;
     }
 
     v15 = v14;
@@ -90,33 +90,33 @@ id __23__TPSSizes_na_identity__block_invoke_3()
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = TPSSizes;
-  v4 = [(TPSSerializableObject *)&v8 copyWithZone:a3];
-  v5 = [(TPSSizes *)self compact];
-  [v4 setCompact:v5];
+  v4 = [(TPSSerializableObject *)&v8 copyWithZone:zone];
+  compact = [(TPSSizes *)self compact];
+  [v4 setCompact:compact];
 
-  v6 = [(TPSSizes *)self regular];
-  [v4 setRegular:v6];
+  regular = [(TPSSizes *)self regular];
+  [v4 setRegular:regular];
 
   return v4;
 }
 
-- (TPSSizes)initWithCoder:(id)a3
+- (TPSSizes)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = TPSSizes;
-  v5 = [(TPSSerializableObject *)&v11 initWithCoder:v4];
+  v5 = [(TPSSerializableObject *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"compact"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"compact"];
     compact = v5->_compact;
     v5->_compact = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"regular"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"regular"];
     regular = v5->_regular;
     v5->_regular = v8;
   }
@@ -124,39 +124,39 @@ id __23__TPSSizes_na_identity__block_invoke_3()
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = TPSSizes;
-  v4 = a3;
-  [(TPSSerializableObject *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(TPSSerializableObject *)&v7 encodeWithCoder:coderCopy];
   v5 = [(TPSSizes *)self compact:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"compact"];
+  [coderCopy encodeObject:v5 forKey:@"compact"];
 
-  v6 = [(TPSSizes *)self regular];
-  [v4 encodeObject:v6 forKey:@"regular"];
+  regular = [(TPSSizes *)self regular];
+  [coderCopy encodeObject:regular forKey:@"regular"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
 
-- (double)heightToWidthRatioForViewMode:(int64_t)a3
+- (double)heightToWidthRatioForViewMode:(int64_t)mode
 {
-  if (a3)
+  if (mode)
   {
     [(TPSSizes *)self regular];
   }
@@ -169,11 +169,11 @@ id __23__TPSSizes_na_identity__block_invoke_3()
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 height];
-    [v5 doubleValue];
+    height = [v3 height];
+    [height doubleValue];
     v7 = v6;
-    v8 = [v4 width];
-    [v8 doubleValue];
+    width = [v4 width];
+    [width doubleValue];
     v10 = v7 / v9;
   }
 
@@ -193,11 +193,11 @@ id __23__TPSSizes_na_identity__block_invoke_3()
   v4 = [(TPSSizes *)&v9 description];
   v5 = [v3 initWithString:v4];
 
-  v6 = [(TPSSizes *)self compact];
-  [v5 appendFormat:@" %@ = %@, ", @"compact", v6];
+  compact = [(TPSSizes *)self compact];
+  [v5 appendFormat:@" %@ = %@, ", @"compact", compact];
 
-  v7 = [(TPSSizes *)self regular];
-  [v5 appendFormat:@" %@ = %@", @"regular", v7];
+  regular = [(TPSSizes *)self regular];
+  [v5 appendFormat:@" %@ = %@", @"regular", regular];
 
   return v5;
 }

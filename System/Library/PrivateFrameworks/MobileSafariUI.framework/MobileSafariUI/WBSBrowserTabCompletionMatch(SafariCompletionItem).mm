@@ -15,11 +15,11 @@
 
 - (id)searchFieldIconForCompletionList:()SafariCompletionItem
 {
-  v1 = [a1 _favicon];
-  v2 = v1;
-  if (v1)
+  _favicon = [self _favicon];
+  v2 = _favicon;
+  if (_favicon)
   {
-    v3 = v1;
+    v3 = _favicon;
   }
 
   else
@@ -35,23 +35,23 @@
 - (void)acceptCompletionWithActionHandler:()SafariCompletionItem
 {
   v4 = a3;
-  v7 = [a1 tabUUID];
-  v5 = [a1 windowUUID];
-  v6 = [a1 tabGroupUUID];
-  [v4 switchToTabWithUUID:v7 inWindowWithUUID:v5 forTabGroupWithUUID:v6];
+  tabUUID = [self tabUUID];
+  windowUUID = [self windowUUID];
+  tabGroupUUID = [self tabGroupUUID];
+  [v4 switchToTabWithUUID:tabUUID inWindowWithUUID:windowUUID forTabGroupWithUUID:tabGroupUUID];
 }
 
 - (void)auditAcceptedCompletionWithRank:()SafariCompletionItem
 {
-  v4 = [MEMORY[0x277D499B8] sharedLogger];
-  [v4 didAcceptCompletionItemOfType:8 atRank:a3];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] didAcceptCompletionItemOfType:8 atRank:a3];
 }
 
 - (PageTitleAndAddressTableViewCell)completionTableViewCellForCompletionList:()SafariCompletionItem
 {
   v2 = [PageTitleAndAddressTableViewCell alloc];
-  v3 = [a1 completionTableViewCellReuseIdentifier];
-  v4 = [(PageTitleAndAddressTableViewCell *)v2 initWithStyle:3 reuseIdentifier:v3];
+  completionTableViewCellReuseIdentifier = [self completionTableViewCellReuseIdentifier];
+  v4 = [(PageTitleAndAddressTableViewCell *)v2 initWithStyle:3 reuseIdentifier:completionTableViewCellReuseIdentifier];
 
   return v4;
 }
@@ -60,28 +60,28 @@
 {
   v20 = a3;
   v6 = a4;
-  v7 = [a1 url];
+  v7 = [self url];
   v8 = [v7 safari_stringForListDisplayWithAdditionalSimplificationOptions:48];
 
-  v9 = [a1 alternativeDisplayTextForURL];
-  if ([v9 length])
+  alternativeDisplayTextForURL = [self alternativeDisplayTextForURL];
+  if ([alternativeDisplayTextForURL length])
   {
-    v10 = [a1 alternativeDisplayTextForURL];
+    alternativeDisplayTextForURL2 = [self alternativeDisplayTextForURL];
   }
 
   else
   {
-    v10 = v8;
+    alternativeDisplayTextForURL2 = v8;
   }
 
-  v11 = v10;
+  v11 = alternativeDisplayTextForURL2;
 
-  v12 = [a1 tabGroupTitle];
-  if (v12)
+  tabGroupTitle = [self tabGroupTitle];
+  if (tabGroupTitle)
   {
     v13 = MEMORY[0x277CCACA8];
     v14 = _WBSLocalizedString();
-    v15 = [v13 stringWithFormat:v14, v12];
+    v15 = [v13 stringWithFormat:v14, tabGroupTitle];
   }
 
   else
@@ -89,15 +89,15 @@
     v15 = _WBSLocalizedString();
   }
 
-  v16 = [a1 title];
-  v17 = [v6 query];
+  title = [self title];
+  query = [v6 query];
 
-  [v20 setTitle:v16 address:v11 prompt:v15 withQuery:v17];
-  v18 = [a1 _favicon];
-  if (v18)
+  [v20 setTitle:title address:v11 prompt:v15 withQuery:query];
+  _favicon = [self _favicon];
+  if (_favicon)
   {
-    v19 = [v20 imageView];
-    [v19 setImage:v18];
+    imageView = [v20 imageView];
+    [imageView setImage:_favicon];
   }
 
   else
@@ -111,20 +111,20 @@
 - (id)_favicon
 {
   v2 = +[Application sharedApplication];
-  v3 = [v2 browserWindowController];
-  v4 = [a1 tabUUID];
-  v5 = [v3 tabWithUUID:v4];
+  browserWindowController = [v2 browserWindowController];
+  tabUUID = [self tabUUID];
+  v5 = [browserWindowController tabWithUUID:tabUUID];
 
-  v6 = [v5 tabCollectionItem];
-  v7 = [v6 icon];
+  tabCollectionItem = [v5 tabCollectionItem];
+  icon = [tabCollectionItem icon];
 
-  if (v7 && ([v7 isSymbolImage] & 1) == 0)
+  if (icon && ([icon isSymbolImage] & 1) == 0)
   {
-    v9 = [MEMORY[0x277D4A780] resizedImage:v7 withSize:{24.0, 24.0}];
+    v9 = [MEMORY[0x277D4A780] resizedImage:icon withSize:{24.0, 24.0}];
 
     [v9 sf_registerFaviconForDarkUserInterfaceStyleWithSize:{24.0, 24.0}];
     v8 = v9;
-    v7 = v8;
+    icon = v8;
   }
 
   else
@@ -142,16 +142,16 @@
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
-    v6 = [a1 title];
-    v7 = [v5 title];
+    title = [self title];
+    title2 = [v5 title];
     v8 = WBSIsEqual();
 
     if (v8)
     {
-      v9 = [a1 url];
-      v10 = [v9 absoluteString];
+      v9 = [self url];
+      absoluteString = [v9 absoluteString];
       v11 = [v5 url];
-      v12 = [v11 absoluteString];
+      absoluteString2 = [v11 absoluteString];
       v13 = WBSIsEqual();
     }
 
@@ -171,35 +171,35 @@
 
 - (id)tableItemEqualityInfo
 {
-  v2 = [a1 alternativeDisplayTextForURL];
-  v3 = [a1 tabGroupTitle];
-  v4 = [a1 title];
-  v5 = [a1 url];
-  v15 = [v5 absoluteString];
-  v13 = CompletionListTableItemEqualityInfo(4, v6, v7, v8, v9, v10, v11, v12, v2);
+  alternativeDisplayTextForURL = [self alternativeDisplayTextForURL];
+  tabGroupTitle = [self tabGroupTitle];
+  title = [self title];
+  v5 = [self url];
+  absoluteString = [v5 absoluteString];
+  v13 = CompletionListTableItemEqualityInfo(4, v6, v7, v8, v9, v10, v11, v12, alternativeDisplayTextForURL);
 
   return v13;
 }
 
 - (id)matchedTextForInputAnalytics
 {
-  if ([a1 matchLocationIsInURL])
+  if ([self matchLocationIsInURL])
   {
-    v2 = [a1 url];
-    v3 = [v2 absoluteString];
+    v2 = [self url];
+    absoluteString = [v2 absoluteString];
   }
 
   else
   {
-    v3 = [a1 title];
+    absoluteString = [self title];
   }
 
-  return v3;
+  return absoluteString;
 }
 
 - (uint64_t)matchTypeForInputAnalytics
 {
-  if ([a1 matchLocationIsInURL])
+  if ([self matchLocationIsInURL])
   {
     return 1;
   }

@@ -1,20 +1,20 @@
 @interface ATXPBFaceGallerySection
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)semanticTypeAsString:(int)a3;
-- (id)typeAsString:(int)a3;
-- (int)StringAsSemanticType:(id)a3;
-- (int)StringAsType:(id)a3;
+- (id)semanticTypeAsString:(int)string;
+- (id)typeAsString:(int)string;
+- (int)StringAsSemanticType:(id)type;
+- (int)StringAsType:(id)type;
 - (int)semanticType;
 - (int)type;
 - (unint64_t)hash;
-- (void)addItems:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addItems:(id)items;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBFaceGallerySection
@@ -32,9 +32,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -47,45 +47,45 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)typeAsString:(int)a3
+- (id)typeAsString:(int)string
 {
-  if (a3 >= 5)
+  if (string >= 5)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E80C3E08[a3];
+    v4 = off_1E80C3E08[string];
   }
 
   return v4;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Full"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Full"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Scrollable"])
+  else if ([typeCopy isEqualToString:@"Scrollable"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Unity"])
+  else if ([typeCopy isEqualToString:@"Unity"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ScrollableSquares"])
+  else if ([typeCopy isEqualToString:@"ScrollableSquares"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Tall"])
+  else if ([typeCopy isEqualToString:@"Tall"])
   {
     v4 = 4;
   }
@@ -98,22 +98,22 @@
   return v4;
 }
 
-- (void)addItems:(id)a3
+- (void)addItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   items = self->_items;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!items)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_items;
     self->_items = v6;
 
-    v4 = v8;
+    itemsCopy = v8;
     items = self->_items;
   }
 
-  [(NSMutableArray *)items addObject:v4];
+  [(NSMutableArray *)items addObject:itemsCopy];
 }
 
 - (int)semanticType
@@ -129,95 +129,95 @@
   }
 }
 
-- (id)semanticTypeAsString:(int)a3
+- (id)semanticTypeAsString:(int)string
 {
-  if (a3 >= 0xF)
+  if (string >= 0xF)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E80C3E30[a3];
+    v4 = off_1E80C3E30[string];
   }
 
   return v4;
 }
 
-- (int)StringAsSemanticType:(id)a3
+- (int)StringAsSemanticType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Default"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Default"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"FeaturedFaces"])
+  else if ([typeCopy isEqualToString:@"FeaturedFaces"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"FeaturedPhotos"])
+  else if ([typeCopy isEqualToString:@"FeaturedPhotos"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Focus"])
+  else if ([typeCopy isEqualToString:@"Focus"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Hero"])
+  else if ([typeCopy isEqualToString:@"Hero"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"PhotoShuffle"])
+  else if ([typeCopy isEqualToString:@"PhotoShuffle"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"WeatherAndAstronomy"])
+  else if ([typeCopy isEqualToString:@"WeatherAndAstronomy"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Kaleidoscope"])
+  else if ([typeCopy isEqualToString:@"Kaleidoscope"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Emoji"])
+  else if ([typeCopy isEqualToString:@"Emoji"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Unity"])
+  else if ([typeCopy isEqualToString:@"Unity"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"Pride"])
+  else if ([typeCopy isEqualToString:@"Pride"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"OSVersion"])
+  else if ([typeCopy isEqualToString:@"OSVersion"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"Collections"])
+  else if ([typeCopy isEqualToString:@"Collections"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"Color"])
+  else if ([typeCopy isEqualToString:@"Color"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"SpatialPhotos"])
+  else if ([typeCopy isEqualToString:@"SpatialPhotos"])
   {
     v4 = 14;
   }
@@ -236,8 +236,8 @@
   v8.receiver = self;
   v8.super_class = ATXPBFaceGallerySection;
   v4 = [(ATXPBFaceGallerySection *)&v8 description];
-  v5 = [(ATXPBFaceGallerySection *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBFaceGallerySection *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -245,7 +245,7 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     type = self->_type;
@@ -259,7 +259,7 @@
       v5 = off_1E80C3E08[type];
     }
 
-    [v3 setObject:v5 forKey:@"type"];
+    [dictionary setObject:v5 forKey:@"type"];
   }
 
   if ([(NSMutableArray *)self->_items count])
@@ -284,8 +284,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -294,7 +294,7 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"items"];
+    [dictionary setObject:v6 forKey:@"items"];
   }
 
   if (*&self->_has)
@@ -310,16 +310,16 @@
       v14 = off_1E80C3E30[semanticType];
     }
 
-    [v3 setObject:v14 forKey:@"semanticType"];
+    [dictionary setObject:v14 forKey:@"semanticType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
@@ -362,23 +362,23 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[5] = self->_type;
-    *(v4 + 24) |= 2u;
+    toCopy[5] = self->_type;
+    *(toCopy + 24) |= 2u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(ATXPBFaceGallerySection *)self itemsCount])
   {
     [v9 clearItems];
-    v5 = [(ATXPBFaceGallerySection *)self itemsCount];
-    if (v5)
+    itemsCount = [(ATXPBFaceGallerySection *)self itemsCount];
+    if (itemsCount)
     {
-      v6 = v5;
+      v6 = itemsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(ATXPBFaceGallerySection *)self itemsAtIndex:i];
@@ -394,10 +394,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -425,7 +425,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v11) copyWithZone:{a3, v14}];
+        v12 = [*(*(&v14 + 1) + 8 * v11) copyWithZone:{zone, v14}];
         [v6 addItems:v12];
 
         ++v11;
@@ -447,10 +447,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
@@ -458,19 +458,19 @@
   has = self->_has;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0 || self->_type != *(v4 + 5))
+    if ((*(equalCopy + 24) & 2) == 0 || self->_type != *(equalCopy + 5))
     {
       goto LABEL_14;
     }
   }
 
-  else if ((*(v4 + 24) & 2) != 0)
+  else if ((*(equalCopy + 24) & 2) != 0)
   {
     goto LABEL_14;
   }
 
   items = self->_items;
-  if (items | *(v4 + 1))
+  if (items | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)items isEqual:?])
     {
@@ -482,10 +482,10 @@ LABEL_14:
     has = self->_has;
   }
 
-  v7 = (*(v4 + 24) & 1) == 0;
+  v7 = (*(equalCopy + 24) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_semanticType != *(v4 + 4))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_semanticType != *(equalCopy + 4))
     {
       goto LABEL_14;
     }
@@ -524,14 +524,14 @@ LABEL_15:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if ((*(v4 + 24) & 2) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((*(fromCopy + 24) & 2) != 0)
   {
-    self->_type = *(v4 + 5);
+    self->_type = *(fromCopy + 5);
     *&self->_has |= 2u;
   }
 
@@ -539,7 +539,7 @@ LABEL_15:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {

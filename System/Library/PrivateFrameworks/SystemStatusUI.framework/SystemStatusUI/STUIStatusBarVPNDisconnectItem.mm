@@ -1,15 +1,15 @@
 @interface STUIStatusBarVPNDisconnectItem
-- (BOOL)canEnableDisplayItem:(id)a3 fromData:(id)a4;
+- (BOOL)canEnableDisplayItem:(id)item fromData:(id)data;
 - (STUIStatusBarVPNDisconnectView)disconnectView;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
 - (void)_create_disconnectView;
 @end
 
 @implementation STUIStatusBarVPNDisconnectItem
 
-- (BOOL)canEnableDisplayItem:(id)a3 fromData:(id)a4
+- (BOOL)canEnableDisplayItem:(id)item fromData:(id)data
 {
-  v4 = [a4 valueForKey:*MEMORY[0x277D6BE78]];
+  v4 = [data valueForKey:*MEMORY[0x277D6BE78]];
   v5 = v4;
   if (v4)
   {
@@ -46,22 +46,22 @@
   MEMORY[0x2821F96F8](v4, disconnectView);
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a3;
+  updateCopy = update;
   v13.receiver = self;
   v13.super_class = STUIStatusBarVPNDisconnectItem;
-  v7 = a4;
-  v8 = [(STUIStatusBarItem *)&v13 applyUpdate:v6 toDisplayItem:v7];
-  v9 = [v7 isEnabled];
+  itemCopy = item;
+  v8 = [(STUIStatusBarItem *)&v13 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  isEnabled = [itemCopy isEnabled];
 
-  if (v9 && [v6 dataChanged])
+  if (isEnabled && [updateCopy dataChanged])
   {
-    v10 = [(STUIStatusBarVPNDisconnectItem *)self disconnectView];
-    [v10 resetSlashForUpdate:v6];
+    disconnectView = [(STUIStatusBarVPNDisconnectItem *)self disconnectView];
+    [disconnectView resetSlashForUpdate:updateCopy];
 
-    v11 = [(STUIStatusBarVPNDisconnectItem *)self disconnectView];
-    [v11 animateSlashForUpdate:v6];
+    disconnectView2 = [(STUIStatusBarVPNDisconnectItem *)self disconnectView];
+    [disconnectView2 animateSlashForUpdate:updateCopy];
   }
 
   return v8;

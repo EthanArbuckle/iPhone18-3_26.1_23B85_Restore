@@ -1,9 +1,9 @@
 @interface AnimojiMessagesViewController
-- (BOOL)shouldPerformSegueWithIdentifier:(id)a3 sender:(id)a4;
+- (BOOL)shouldPerformSegueWithIdentifier:(id)identifier sender:(id)sender;
 - (UIView)launchViewContainer;
 - (UIView)messagesViewContainer;
 - (id)landscapeOverlayMessage;
-- (void)prepareForSegue:(id)a3 sender:(id)a4;
+- (void)prepareForSegue:(id)segue sender:(id)sender;
 @end
 
 @implementation AnimojiMessagesViewController
@@ -16,58 +16,58 @@
   return v3;
 }
 
-- (void)prepareForSegue:(id)a3 sender:(id)a4
+- (void)prepareForSegue:(id)segue sender:(id)sender
 {
-  v6 = a3;
+  segueCopy = segue;
   v16.receiver = self;
   v16.super_class = AnimojiMessagesViewController;
-  v7 = a4;
-  [(AnimojiMessagesViewController *)&v16 prepareForSegue:v6 sender:v7];
-  v8 = [v6 identifier];
-  v9 = [v8 isEqualToString:@"MessagesViewController"];
+  senderCopy = sender;
+  [(AnimojiMessagesViewController *)&v16 prepareForSegue:segueCopy sender:senderCopy];
+  identifier = [segueCopy identifier];
+  v9 = [identifier isEqualToString:@"MessagesViewController"];
 
   if (v9)
   {
-    v10 = [v6 destinationViewController];
-    [(BaseMessagesViewController *)self setBaseMessagesViewController:v10];
+    destinationViewController = [segueCopy destinationViewController];
+    [(BaseMessagesViewController *)self setBaseMessagesViewController:destinationViewController];
 
     byte_10003E028 = 1;
   }
 
   else
   {
-    v11 = [v6 identifier];
-    v12 = [v11 isEqualToString:@"LaunchViewController"];
+    identifier2 = [segueCopy identifier];
+    v12 = [identifier2 isEqualToString:@"LaunchViewController"];
 
     if (v12)
     {
-      v13 = [v6 destinationViewController];
+      destinationViewController2 = [segueCopy destinationViewController];
       launchViewController = self->_launchViewController;
-      self->_launchViewController = v13;
+      self->_launchViewController = destinationViewController2;
     }
   }
 
-  v15 = [(BaseMessagesViewController *)self baseMessagesViewController];
-  [v15 prepareForSegue:v6 sender:v7];
+  baseMessagesViewController = [(BaseMessagesViewController *)self baseMessagesViewController];
+  [baseMessagesViewController prepareForSegue:segueCopy sender:senderCopy];
 }
 
-- (BOOL)shouldPerformSegueWithIdentifier:(id)a3 sender:(id)a4
+- (BOOL)shouldPerformSegueWithIdentifier:(id)identifier sender:(id)sender
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  senderCopy = sender;
   v11.receiver = self;
   v11.super_class = AnimojiMessagesViewController;
-  if ([(AnimojiMessagesViewController *)&v11 shouldPerformSegueWithIdentifier:v6 sender:v7])
+  if ([(AnimojiMessagesViewController *)&v11 shouldPerformSegueWithIdentifier:identifierCopy sender:senderCopy])
   {
-    if ([v6 isEqualToString:@"MessagesViewController"])
+    if ([identifierCopy isEqualToString:@"MessagesViewController"])
     {
       v8 = byte_10003E028 ^ 1;
     }
 
     else
     {
-      v9 = [(BaseMessagesViewController *)self baseMessagesViewController];
-      v8 = [v9 shouldPerformSegueWithIdentifier:v6 sender:v7];
+      baseMessagesViewController = [(BaseMessagesViewController *)self baseMessagesViewController];
+      v8 = [baseMessagesViewController shouldPerformSegueWithIdentifier:identifierCopy sender:senderCopy];
     }
   }
 

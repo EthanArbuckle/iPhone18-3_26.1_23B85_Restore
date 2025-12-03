@@ -1,179 +1,179 @@
 @interface MIOSpecificationFileModel
-- (BOOL)isEqual:(id)a3;
-- (BOOL)writeToURL:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)writeToURL:(id)l error:(id *)error;
 - (MIOModelDescription)modelDescription;
-- (MIOSpecificationFileModel)initWithContentsOfURL:(id)a3 error:(id *)a4;
-- (MIOSpecificationFileModel)initWithModel:(id)a3;
+- (MIOSpecificationFileModel)initWithContentsOfURL:(id)l error:(id *)error;
+- (MIOSpecificationFileModel)initWithModel:(id)model;
 - (MIOVersionInfo)specificationVersion;
 - (NSArray)layers;
 - (NSArray)subModels;
 - (NSString)modelTypeName;
-- (id)computePrecisionForFunctionNamed:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)neuralNetworkLayerHistogramForFunctionNamed:(id)a3;
-- (id)programOperationHistogramForFunctionNamed:(id)a3;
-- (id)storagePrecisionForFunctionNamed:(id)a3;
+- (id)computePrecisionForFunctionNamed:(id)named;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)neuralNetworkLayerHistogramForFunctionNamed:(id)named;
+- (id)programOperationHistogramForFunctionNamed:(id)named;
+- (id)storagePrecisionForFunctionNamed:(id)named;
 - (unint64_t)hash;
 - (void)irProgram;
-- (void)setModelDescription:(id)a3;
+- (void)setModelDescription:(id)description;
 @end
 
 @implementation MIOSpecificationFileModel
 
-- (MIOSpecificationFileModel)initWithContentsOfURL:(id)a3 error:(id *)a4
+- (MIOSpecificationFileModel)initWithContentsOfURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 copy];
+  lCopy = l;
+  v7 = [lCopy copy];
   modelURL = self->_modelURL;
   self->_modelURL = v7;
 
   v9 = objc_alloc(MEMORY[0x1E695DEF0]);
-  v10 = [v6 path];
-  v11 = [v9 initWithContentsOfFile:v10 options:1 error:a4];
+  path = [lCopy path];
+  v11 = [v9 initWithContentsOfFile:path options:1 error:error];
 
   if (v11)
   {
-    v12 = [[MIOParserContext alloc] initWithModelSpecificationFileURL:v6];
-    v13 = [[MIOSpecificationModel alloc] initWithSpecificationData:v11 parserContext:v12 error:a4];
+    v12 = [[MIOParserContext alloc] initWithModelSpecificationFileURL:lCopy];
+    v13 = [[MIOSpecificationModel alloc] initWithSpecificationData:v11 parserContext:v12 error:error];
     if (v13)
     {
       self = [(MIOSpecificationFileModel *)self initWithModel:v13];
-      v14 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v14 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (MIOSpecificationFileModel)initWithModel:(id)a3
+- (MIOSpecificationFileModel)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = MIOSpecificationFileModel;
   v6 = [(MIOSpecificationFileModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_specificationModel, a3);
+    objc_storeStrong(&v6->_specificationModel, model);
   }
 
   return v7;
 }
 
-- (BOOL)writeToURL:(id)a3 error:(id *)a4
+- (BOOL)writeToURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MIOSpecificationFileModel *)self specificationModel];
-  LOBYTE(a4) = [v7 writeToURL:v6 error:a4];
+  lCopy = l;
+  specificationModel = [(MIOSpecificationFileModel *)self specificationModel];
+  LOBYTE(error) = [specificationModel writeToURL:lCopy error:error];
 
-  return a4;
+  return error;
 }
 
 - (MIOVersionInfo)specificationVersion
 {
-  v2 = [(MIOSpecificationFileModel *)self specificationModel];
-  v3 = [v2 specificationVersion];
+  specificationModel = [(MIOSpecificationFileModel *)self specificationModel];
+  specificationVersion = [specificationModel specificationVersion];
 
-  return v3;
+  return specificationVersion;
 }
 
 - (NSString)modelTypeName
 {
-  v2 = [(MIOSpecificationFileModel *)self specificationModel];
-  v3 = [v2 modelTypeName];
+  specificationModel = [(MIOSpecificationFileModel *)self specificationModel];
+  modelTypeName = [specificationModel modelTypeName];
 
-  return v3;
+  return modelTypeName;
 }
 
 - (MIOModelDescription)modelDescription
 {
-  v2 = [(MIOSpecificationFileModel *)self specificationModel];
-  v3 = [v2 modelDescription];
+  specificationModel = [(MIOSpecificationFileModel *)self specificationModel];
+  modelDescription = [specificationModel modelDescription];
 
-  return v3;
+  return modelDescription;
 }
 
-- (void)setModelDescription:(id)a3
+- (void)setModelDescription:(id)description
 {
-  v5 = a3;
-  v4 = [(MIOSpecificationFileModel *)self specificationModel];
-  [v4 setModelDescription:v5];
+  descriptionCopy = description;
+  specificationModel = [(MIOSpecificationFileModel *)self specificationModel];
+  [specificationModel setModelDescription:descriptionCopy];
 }
 
 - (NSArray)layers
 {
-  v2 = [(MIOSpecificationFileModel *)self specificationModel];
-  v3 = [v2 layers];
+  specificationModel = [(MIOSpecificationFileModel *)self specificationModel];
+  layers = [specificationModel layers];
 
-  return v3;
+  return layers;
 }
 
 - (NSArray)subModels
 {
-  v2 = [(MIOSpecificationFileModel *)self specificationModel];
-  v3 = [v2 subModels];
+  specificationModel = [(MIOSpecificationFileModel *)self specificationModel];
+  subModels = [specificationModel subModels];
 
-  return v3;
+  return subModels;
 }
 
-- (id)neuralNetworkLayerHistogramForFunctionNamed:(id)a3
+- (id)neuralNetworkLayerHistogramForFunctionNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(MIOSpecificationFileModel *)self specificationModel];
-  v6 = [v5 neuralNetworkLayerHistogramForFunctionNamed:v4];
+  namedCopy = named;
+  specificationModel = [(MIOSpecificationFileModel *)self specificationModel];
+  v6 = [specificationModel neuralNetworkLayerHistogramForFunctionNamed:namedCopy];
 
   return v6;
 }
 
-- (id)programOperationHistogramForFunctionNamed:(id)a3
+- (id)programOperationHistogramForFunctionNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(MIOSpecificationFileModel *)self specificationModel];
-  v6 = [v5 programOperationHistogramForFunctionNamed:v4];
+  namedCopy = named;
+  specificationModel = [(MIOSpecificationFileModel *)self specificationModel];
+  v6 = [specificationModel programOperationHistogramForFunctionNamed:namedCopy];
 
   return v6;
 }
 
-- (id)computePrecisionForFunctionNamed:(id)a3
+- (id)computePrecisionForFunctionNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(MIOSpecificationFileModel *)self specificationModel];
-  v6 = [v5 computePrecisionForFunctionNamed:v4];
+  namedCopy = named;
+  specificationModel = [(MIOSpecificationFileModel *)self specificationModel];
+  v6 = [specificationModel computePrecisionForFunctionNamed:namedCopy];
 
   return v6;
 }
 
-- (id)storagePrecisionForFunctionNamed:(id)a3
+- (id)storagePrecisionForFunctionNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(MIOSpecificationFileModel *)self specificationModel];
-  v6 = [v5 storagePrecisionForFunctionNamed:v4];
+  namedCopy = named;
+  specificationModel = [(MIOSpecificationFileModel *)self specificationModel];
+  v6 = [specificationModel storagePrecisionForFunctionNamed:namedCopy];
 
   return v6;
 }
 
 - (void)irProgram
 {
-  v2 = [(MIOSpecificationFileModel *)self specificationModel];
-  v3 = [v2 irProgram];
+  specificationModel = [(MIOSpecificationFileModel *)self specificationModel];
+  irProgram = [specificationModel irProgram];
 
-  return v3;
+  return irProgram;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -183,9 +183,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(MIOSpecificationFileModel *)self specificationModel];
-      v6 = [(MIOSpecificationFileModel *)v4 specificationModel];
-      v7 = [v5 isEqual:v6];
+      specificationModel = [(MIOSpecificationFileModel *)self specificationModel];
+      specificationModel2 = [(MIOSpecificationFileModel *)equalCopy specificationModel];
+      v7 = [specificationModel isEqual:specificationModel2];
     }
 
     else
@@ -199,21 +199,21 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MIOSpecificationFileModel *)self specificationModel];
-  v3 = [v2 hash];
+  specificationModel = [(MIOSpecificationFileModel *)self specificationModel];
+  v3 = [specificationModel hash];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MIOSpecificationFileModel alloc];
-  v5 = [(MIOSpecificationFileModel *)self specificationModel];
-  v6 = [v5 copy];
+  specificationModel = [(MIOSpecificationFileModel *)self specificationModel];
+  v6 = [specificationModel copy];
   v7 = [(MIOSpecificationFileModel *)v4 initWithModel:v6];
 
-  v8 = [(MIOSpecificationFileModel *)self modelURL];
-  [(MIOSpecificationFileModel *)v7 setModelURL:v8];
+  modelURL = [(MIOSpecificationFileModel *)self modelURL];
+  [(MIOSpecificationFileModel *)v7 setModelURL:modelURL];
 
   return v7;
 }

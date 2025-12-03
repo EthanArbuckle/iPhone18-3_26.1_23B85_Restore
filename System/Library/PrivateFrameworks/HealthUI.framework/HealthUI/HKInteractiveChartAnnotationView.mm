@@ -1,8 +1,8 @@
 @interface HKInteractiveChartAnnotationView
 - (BOOL)_dataSourceHasNoData;
 - (CGSize)intrinsicContentSize;
-- (HKInteractiveChartAnnotationView)initWithCoder:(id)a3;
-- (HKInteractiveChartAnnotationView)initWithContext:(int64_t)a3;
+- (HKInteractiveChartAnnotationView)initWithCoder:(id)coder;
+- (HKInteractiveChartAnnotationView)initWithContext:(int64_t)context;
 - (HKInteractiveChartAnnotationViewDataSourceProtocol)dataSource;
 - (HKInteractiveChartAnnotationViewDelegate)delegate;
 - (NSTimer)deferredNoDataTimer;
@@ -14,18 +14,18 @@
 - (void)_invalidateLayout;
 - (void)_removeViewsForRebuild;
 - (void)_updateRightMarginViewWithInfoButton;
-- (void)handleCurrentTimeGesture:(id)a3;
-- (void)infoButtonPressed:(id)a3;
+- (void)handleCurrentTimeGesture:(id)gesture;
+- (void)infoButtonPressed:(id)pressed;
 - (void)layoutSubviews;
 - (void)reloadData;
 - (void)scheduleDeferredDataReload;
-- (void)setShowsInfoButton:(BOOL)a3;
+- (void)setShowsInfoButton:(BOOL)button;
 - (void)showNoDataStatus;
 @end
 
 @implementation HKInteractiveChartAnnotationView
 
-- (HKInteractiveChartAnnotationView)initWithContext:(int64_t)a3
+- (HKInteractiveChartAnnotationView)initWithContext:(int64_t)context
 {
   v8.receiver = self;
   v8.super_class = HKInteractiveChartAnnotationView;
@@ -33,10 +33,10 @@
   v5 = v4;
   if (v4)
   {
-    [(HKInteractiveChartAnnotationView *)v4 setContext:a3];
-    [(HKInteractiveChartAnnotationView *)v5 setTranslatesAutoresizingMaskIntoConstraints:a3 == 0];
-    v6 = [(HKInteractiveChartAnnotationView *)v5 layer];
-    [v6 setCornerRadius:10.0];
+    [(HKInteractiveChartAnnotationView *)v4 setContext:context];
+    [(HKInteractiveChartAnnotationView *)v5 setTranslatesAutoresizingMaskIntoConstraints:context == 0];
+    layer = [(HKInteractiveChartAnnotationView *)v5 layer];
+    [layer setCornerRadius:10.0];
 
     [(HKInteractiveChartAnnotationView *)v5 setClipsToBounds:1];
     v5->_showsInfoButton = 0;
@@ -48,11 +48,11 @@
   return v5;
 }
 
-- (HKInteractiveChartAnnotationView)initWithCoder:(id)a3
+- (HKInteractiveChartAnnotationView)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = HKInteractiveChartAnnotationView;
-  return [(HKInteractiveChartAnnotationView *)&v4 initWithFrame:a3, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  return [(HKInteractiveChartAnnotationView *)&v4 initWithFrame:coder, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 }
 
 - (UIButton)infoButton
@@ -80,46 +80,46 @@
   [(HKInteractiveChartAnnotationView *)self setColumnLayout:v3];
 
   v4 = [MEMORY[0x1E696AEC0] hk_chartLollipopAccessibilityIdentifier:@"Columns"];
-  v5 = [(HKInteractiveChartAnnotationView *)self columnLayout];
-  [v5 setAccessibilityIdentifier:v4];
+  columnLayout = [(HKInteractiveChartAnnotationView *)self columnLayout];
+  [columnLayout setAccessibilityIdentifier:v4];
 
   v6 = objc_alloc_init(_HKDateContentLayout);
   [(HKInteractiveChartAnnotationView *)self setDateContentLayout:v6];
 
-  v7 = [(HKInteractiveChartAnnotationView *)self columnLayout];
-  v8 = [(HKInteractiveChartAnnotationView *)self dateContentLayout];
-  [v8 setContentView:v7];
+  columnLayout2 = [(HKInteractiveChartAnnotationView *)self columnLayout];
+  dateContentLayout = [(HKInteractiveChartAnnotationView *)self dateContentLayout];
+  [dateContentLayout setContentView:columnLayout2];
 
   v9 = [MEMORY[0x1E696AEC0] hk_chartLollipopAccessibilityIdentifier:@"DateAndContent"];
-  v10 = [(HKInteractiveChartAnnotationView *)self dateContentLayout];
-  [v10 setAccessibilityIdentifier:v9];
+  dateContentLayout2 = [(HKInteractiveChartAnnotationView *)self dateContentLayout];
+  [dateContentLayout2 setAccessibilityIdentifier:v9];
 
   v11 = objc_alloc_init(_HKBodyMarginsLayout);
   [(HKInteractiveChartAnnotationView *)self setBodyMarginsLayout:v11];
 
-  v12 = [(HKInteractiveChartAnnotationView *)self dateContentLayout];
-  v13 = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
-  [v13 setBodyView:v12];
+  dateContentLayout3 = [(HKInteractiveChartAnnotationView *)self dateContentLayout];
+  bodyMarginsLayout = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
+  [bodyMarginsLayout setBodyView:dateContentLayout3];
 
-  v14 = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:1];
+  bodyMarginsLayout2 = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
+  [bodyMarginsLayout2 setTranslatesAutoresizingMaskIntoConstraints:1];
 
   v15 = [MEMORY[0x1E696AEC0] hk_chartLollipopAccessibilityIdentifier:@"BodyMargins"];
-  v16 = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
-  [v16 setAccessibilityIdentifier:v15];
+  bodyMarginsLayout3 = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
+  [bodyMarginsLayout3 setAccessibilityIdentifier:v15];
 
-  v17 = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
-  [(HKInteractiveChartAnnotationView *)self addSubview:v17];
+  bodyMarginsLayout4 = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
+  [(HKInteractiveChartAnnotationView *)self addSubview:bodyMarginsLayout4];
 }
 
-- (void)setShowsInfoButton:(BOOL)a3
+- (void)setShowsInfoButton:(BOOL)button
 {
-  if (self->_showsInfoButton != a3)
+  if (self->_showsInfoButton != button)
   {
-    v4 = a3;
-    self->_showsInfoButton = a3;
-    v5 = [(HKInteractiveChartAnnotationView *)self infoButton];
-    [v5 setHidden:!v4];
+    buttonCopy = button;
+    self->_showsInfoButton = button;
+    infoButton = [(HKInteractiveChartAnnotationView *)self infoButton];
+    [infoButton setHidden:!buttonCopy];
   }
 }
 
@@ -147,8 +147,8 @@
   [(HKInteractiveChartAnnotationView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
-  [v7 systemLayoutSizeFittingSize:{1.79769313e308, 1.79769313e308}];
+  bodyMarginsLayout = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
+  [bodyMarginsLayout systemLayoutSizeFittingSize:{1.79769313e308, 1.79769313e308}];
   v9 = v8;
 
   [(HKInteractiveChartAnnotationView *)self _leadingMargin];
@@ -158,14 +158,14 @@
     v9 = v6 + -4.0;
   }
 
-  v12 = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
-  [v12 setFrame:{v11, v6 + -2.0 - v9, v4 + v11 * -2.0, v9}];
+  bodyMarginsLayout2 = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
+  [bodyMarginsLayout2 setFrame:{v11, v6 + -2.0 - v9, v4 + v11 * -2.0, v9}];
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
-  [v3 systemLayoutSizeFittingSize:{1.79769313e308, 1.79769313e308}];
+  bodyMarginsLayout = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
+  [bodyMarginsLayout systemLayoutSizeFittingSize:{1.79769313e308, 1.79769313e308}];
   v5 = v4;
   v7 = v6;
 
@@ -196,73 +196,73 @@
 
 - (void)_updateRightMarginViewWithInfoButton
 {
-  v3 = [(HKInteractiveChartAnnotationView *)self showsInfoButton];
-  if (v3)
+  showsInfoButton = [(HKInteractiveChartAnnotationView *)self showsInfoButton];
+  if (showsInfoButton)
   {
-    v5 = [(HKInteractiveChartAnnotationView *)self infoButton];
+    infoButton = [(HKInteractiveChartAnnotationView *)self infoButton];
   }
 
   else
   {
-    v5 = 0;
+    infoButton = 0;
   }
 
-  v4 = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
-  [v4 setRightMarginView:v5];
+  bodyMarginsLayout = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
+  [bodyMarginsLayout setRightMarginView:infoButton];
 
-  if (v3)
+  if (showsInfoButton)
   {
   }
 }
 
 - (void)_buildStandardAnnotationViews
 {
-  v3 = [(HKInteractiveChartAnnotationView *)self dataSource];
-  v4 = [v3 showSeparators];
-  v5 = [(HKInteractiveChartAnnotationView *)self columnLayout];
-  [v5 setIncludeSeparators:v4];
+  dataSource = [(HKInteractiveChartAnnotationView *)self dataSource];
+  showSeparators = [dataSource showSeparators];
+  columnLayout = [(HKInteractiveChartAnnotationView *)self columnLayout];
+  [columnLayout setIncludeSeparators:showSeparators];
 
-  v6 = [(HKInteractiveChartAnnotationView *)self dataSource];
-  LOBYTE(v4) = objc_opt_respondsToSelector();
+  dataSource2 = [(HKInteractiveChartAnnotationView *)self dataSource];
+  LOBYTE(showSeparators) = objc_opt_respondsToSelector();
 
-  if (v4)
+  if (showSeparators)
   {
-    v7 = [(HKInteractiveChartAnnotationView *)self dataSource];
-    v8 = [v7 reverseColumnsInRightToLeftLayoutDirection];
-    v9 = [(HKInteractiveChartAnnotationView *)self columnLayout];
-    [v9 setReverseColumnsInRightToLeftLayoutDirection:v8];
+    dataSource3 = [(HKInteractiveChartAnnotationView *)self dataSource];
+    reverseColumnsInRightToLeftLayoutDirection = [dataSource3 reverseColumnsInRightToLeftLayoutDirection];
+    columnLayout2 = [(HKInteractiveChartAnnotationView *)self columnLayout];
+    [columnLayout2 setReverseColumnsInRightToLeftLayoutDirection:reverseColumnsInRightToLeftLayoutDirection];
   }
 
-  v10 = [(HKInteractiveChartAnnotationView *)self dataSource];
-  v11 = [v10 numberOfValuesForAnnotationView:self];
+  dataSource4 = [(HKInteractiveChartAnnotationView *)self dataSource];
+  v11 = [dataSource4 numberOfValuesForAnnotationView:self];
 
   if (v11 >= 1)
   {
     for (i = 0; i != v11; ++i)
     {
-      v13 = [(HKInteractiveChartAnnotationView *)self dataSource];
-      v14 = [v13 valueViewForColumnAtIndex:i orientation:0];
+      dataSource5 = [(HKInteractiveChartAnnotationView *)self dataSource];
+      v14 = [dataSource5 valueViewForColumnAtIndex:i orientation:0];
 
-      v15 = [(HKInteractiveChartAnnotationView *)self columnLayout];
-      [v15 setColumnView:v14 atIndex:i];
+      columnLayout3 = [(HKInteractiveChartAnnotationView *)self columnLayout];
+      [columnLayout3 setColumnView:v14 atIndex:i];
     }
   }
 
-  v16 = [(HKInteractiveChartAnnotationView *)self columnLayout];
-  [v16 clearViewsFromIndex:v11];
+  columnLayout4 = [(HKInteractiveChartAnnotationView *)self columnLayout];
+  [columnLayout4 clearViewsFromIndex:v11];
 
-  v17 = [(HKInteractiveChartAnnotationView *)self columnLayout];
-  v18 = [(HKInteractiveChartAnnotationView *)self dateContentLayout];
-  [v18 setContentView:v17];
+  columnLayout5 = [(HKInteractiveChartAnnotationView *)self columnLayout];
+  dateContentLayout = [(HKInteractiveChartAnnotationView *)self dateContentLayout];
+  [dateContentLayout setContentView:columnLayout5];
 
-  v19 = [(HKInteractiveChartAnnotationView *)self dataSource];
-  v28 = [v19 dateViewWithOrientation:1];
+  dataSource6 = [(HKInteractiveChartAnnotationView *)self dataSource];
+  v28 = [dataSource6 dateViewWithOrientation:1];
 
-  v20 = [(HKInteractiveChartAnnotationView *)self dateContentLayout];
-  v21 = v20;
+  dateContentLayout2 = [(HKInteractiveChartAnnotationView *)self dateContentLayout];
+  v21 = dateContentLayout2;
   if (v28)
   {
-    [v20 setDateView:v28];
+    [dateContentLayout2 setDateView:v28];
 
     [v28 removeAllGestureRecognizers];
     v21 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_handleCurrentTimeGesture_];
@@ -274,18 +274,18 @@
 
   else
   {
-    [v20 setDateView:0];
+    [dateContentLayout2 setDateView:0];
   }
 
-  v23 = [(HKInteractiveChartAnnotationView *)self dataSource];
-  v24 = [v23 leftMarginViewWithOrientation:0];
+  dataSource7 = [(HKInteractiveChartAnnotationView *)self dataSource];
+  v24 = [dataSource7 leftMarginViewWithOrientation:0];
 
-  v25 = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
-  [v25 setLeftMarginView:v24];
+  bodyMarginsLayout = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
+  [bodyMarginsLayout setLeftMarginView:v24];
 
-  v26 = [(HKInteractiveChartAnnotationView *)self dateContentLayout];
-  v27 = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
-  [v27 setBodyView:v26];
+  dateContentLayout3 = [(HKInteractiveChartAnnotationView *)self dateContentLayout];
+  bodyMarginsLayout2 = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
+  [bodyMarginsLayout2 setBodyView:dateContentLayout3];
 
   [(HKInteractiveChartAnnotationView *)self _updateRightMarginViewWithInfoButton];
   [(HKInteractiveChartAnnotationView *)self _invalidateLayout];
@@ -300,23 +300,23 @@
 
 - (void)_removeViewsForRebuild
 {
-  v3 = [(HKInteractiveChartAnnotationView *)self columnLayout];
-  [v3 clearViews];
+  columnLayout = [(HKInteractiveChartAnnotationView *)self columnLayout];
+  [columnLayout clearViews];
 
-  v4 = [(HKInteractiveChartAnnotationView *)self dateContentLayout];
-  [v4 setContentView:0];
+  dateContentLayout = [(HKInteractiveChartAnnotationView *)self dateContentLayout];
+  [dateContentLayout setContentView:0];
 
-  v5 = [(HKInteractiveChartAnnotationView *)self dateContentLayout];
-  [v5 setDateView:0];
+  dateContentLayout2 = [(HKInteractiveChartAnnotationView *)self dateContentLayout];
+  [dateContentLayout2 setDateView:0];
 
-  v6 = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
-  [v6 setLeftMarginView:0];
+  bodyMarginsLayout = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
+  [bodyMarginsLayout setLeftMarginView:0];
 
-  v7 = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
-  [v7 setBodyView:0];
+  bodyMarginsLayout2 = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
+  [bodyMarginsLayout2 setBodyView:0];
 
-  v8 = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
-  [v8 setRightMarginView:0];
+  bodyMarginsLayout3 = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
+  [bodyMarginsLayout3 setRightMarginView:0];
 }
 
 - (void)scheduleDeferredDataReload
@@ -358,12 +358,12 @@ void __62__HKInteractiveChartAnnotationView_scheduleDeferredDataReload__block_in
 
 - (void)_cancelDeferredDataReload
 {
-  v3 = [(HKInteractiveChartAnnotationView *)self deferredNoDataTimer];
+  deferredNoDataTimer = [(HKInteractiveChartAnnotationView *)self deferredNoDataTimer];
 
-  if (v3)
+  if (deferredNoDataTimer)
   {
-    v4 = [(HKInteractiveChartAnnotationView *)self deferredNoDataTimer];
-    [v4 invalidate];
+    deferredNoDataTimer2 = [(HKInteractiveChartAnnotationView *)self deferredNoDataTimer];
+    [deferredNoDataTimer2 invalidate];
 
     [(HKInteractiveChartAnnotationView *)self setDeferredNoDataTimer:0];
   }
@@ -371,17 +371,17 @@ void __62__HKInteractiveChartAnnotationView_scheduleDeferredDataReload__block_in
 
 - (BOOL)_dataSourceHasNoData
 {
-  v2 = self;
-  v3 = [(HKInteractiveChartAnnotationView *)self dataSource];
-  LOBYTE(v2) = [v3 numberOfValuesForAnnotationView:v2] == 0;
+  selfCopy = self;
+  dataSource = [(HKInteractiveChartAnnotationView *)self dataSource];
+  LOBYTE(selfCopy) = [dataSource numberOfValuesForAnnotationView:selfCopy] == 0;
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)showNoDataStatus
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v3 = [(HKInteractiveChartAnnotationView *)self dataSource];
+  dataSource = [(HKInteractiveChartAnnotationView *)self dataSource];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0 || (-[HKInteractiveChartAnnotationView dataSource](self, "dataSource"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 pendingData], v5, (v6 & 1) == 0))
@@ -390,11 +390,11 @@ void __62__HKInteractiveChartAnnotationView_scheduleDeferredDataReload__block_in
     v7 = objc_alloc(MEMORY[0x1E69DCC10]);
     v8 = [v7 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     v26[0] = *MEMORY[0x1E69DB648];
-    v9 = [MEMORY[0x1E69DB878] hk_chartCurrentValueValueFont];
-    v27[0] = v9;
+    hk_chartCurrentValueValueFont = [MEMORY[0x1E69DB878] hk_chartCurrentValueValueFont];
+    v27[0] = hk_chartCurrentValueValueFont;
     v26[1] = *MEMORY[0x1E69DB650];
-    v10 = [MEMORY[0x1E69DC888] hk_chartLollipopValueColor];
-    v27[1] = v10;
+    hk_chartLollipopValueColor = [MEMORY[0x1E69DC888] hk_chartLollipopValueColor];
+    v27[1] = hk_chartLollipopValueColor;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:2];
 
     v12 = objc_alloc(MEMORY[0x1E696AAB0]);
@@ -405,20 +405,20 @@ void __62__HKInteractiveChartAnnotationView_scheduleDeferredDataReload__block_in
     [v8 setAttributedText:v15];
     [v8 setAdjustsFontSizeToFitWidth:1];
     [v8 setMinimumScaleFactor:0.1];
-    v16 = [(HKInteractiveChartAnnotationView *)self columnLayout];
-    [v16 addColumnView:v8];
+    columnLayout = [(HKInteractiveChartAnnotationView *)self columnLayout];
+    [columnLayout addColumnView:v8];
 
-    v17 = [(HKInteractiveChartAnnotationView *)self columnLayout];
-    v18 = [(HKInteractiveChartAnnotationView *)self dateContentLayout];
-    [v18 setContentView:v17];
+    columnLayout2 = [(HKInteractiveChartAnnotationView *)self columnLayout];
+    dateContentLayout = [(HKInteractiveChartAnnotationView *)self dateContentLayout];
+    [dateContentLayout setContentView:columnLayout2];
 
-    v19 = [(HKInteractiveChartAnnotationView *)self dataSource];
-    v20 = [v19 dateViewWithOrientation:1];
+    dataSource2 = [(HKInteractiveChartAnnotationView *)self dataSource];
+    v20 = [dataSource2 dateViewWithOrientation:1];
 
     if (v20)
     {
-      v21 = [(HKInteractiveChartAnnotationView *)self dateContentLayout];
-      [v21 setDateView:v20];
+      dateContentLayout2 = [(HKInteractiveChartAnnotationView *)self dateContentLayout];
+      [dateContentLayout2 setDateView:v20];
 
       [v20 removeAllGestureRecognizers];
       v22 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_handleCurrentTimeGesture_];
@@ -428,25 +428,25 @@ void __62__HKInteractiveChartAnnotationView_scheduleDeferredDataReload__block_in
       [v20 setAccessibilityIdentifier:v23];
     }
 
-    v24 = [(HKInteractiveChartAnnotationView *)self dateContentLayout];
-    v25 = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
-    [v25 setBodyView:v24];
+    dateContentLayout3 = [(HKInteractiveChartAnnotationView *)self dateContentLayout];
+    bodyMarginsLayout = [(HKInteractiveChartAnnotationView *)self bodyMarginsLayout];
+    [bodyMarginsLayout setBodyView:dateContentLayout3];
 
     [(HKInteractiveChartAnnotationView *)self _updateRightMarginViewWithInfoButton];
     [(HKInteractiveChartAnnotationView *)self _invalidateLayout];
   }
 }
 
-- (void)infoButtonPressed:(id)a3
+- (void)infoButtonPressed:(id)pressed
 {
-  v4 = [(HKInteractiveChartAnnotationView *)self delegate];
-  [v4 didTapOnInfoButtonFromCurrentValueView:self];
+  delegate = [(HKInteractiveChartAnnotationView *)self delegate];
+  [delegate didTapOnInfoButtonFromCurrentValueView:self];
 }
 
-- (void)handleCurrentTimeGesture:(id)a3
+- (void)handleCurrentTimeGesture:(id)gesture
 {
-  v4 = [(HKInteractiveChartAnnotationView *)self delegate];
-  [v4 didTapOnDateFromCurrentValueView:self];
+  delegate = [(HKInteractiveChartAnnotationView *)self delegate];
+  [delegate didTapOnDateFromCurrentValueView:self];
 }
 
 - (HKInteractiveChartAnnotationViewDataSourceProtocol)dataSource

@@ -1,42 +1,42 @@
 @interface CKStickerDetailViewController
-+ (BOOL)isGenmojiBundleIDFromFileTransfer:(id)a3;
-+ (id)localizedAppNameForStickerDetailsFromFileTransfer:(id)a3;
-+ (id)stickerBundleIDFromFileTransfer:(id)a3;
-- (BOOL)canSaveStickerForItem:(id)a3;
-- (BOOL)canViewStickerPackForItem:(id)a3;
-- (BOOL)shouldHideViewButtonInStickerDetailsForIdentifier:(id)a3;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (CKStickerDetailViewController)initWithEmojiImageMediaObjects:(id)a3;
-- (CKStickerDetailViewController)initWithStickerChatItems:(id)a3;
++ (BOOL)isGenmojiBundleIDFromFileTransfer:(id)transfer;
++ (id)localizedAppNameForStickerDetailsFromFileTransfer:(id)transfer;
++ (id)stickerBundleIDFromFileTransfer:(id)transfer;
+- (BOOL)canSaveStickerForItem:(id)item;
+- (BOOL)canViewStickerPackForItem:(id)item;
+- (BOOL)shouldHideViewButtonInStickerDetailsForIdentifier:(id)identifier;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (CKStickerDetailViewController)initWithEmojiImageMediaObjects:(id)objects;
+- (CKStickerDetailViewController)initWithStickerChatItems:(id)items;
 - (CKStickerDetailViewControllerDelegate)delegate;
-- (id)_adamIDForStickersDetailItem:(id)a3;
-- (id)_deleteSwipeActionForIndexPath:(id)a3;
-- (id)_indexPathForTransferGUID:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (void)_adaptiveImageGlyphWasGeneratedNotification:(id)a3;
-- (void)_previewDidChangeNotification:(id)a3;
-- (void)_reloadCellWithTransferGUID:(id)a3;
-- (void)deleteStickerSelectedAtIndexPath:(id)a3;
+- (id)_adamIDForStickersDetailItem:(id)item;
+- (id)_deleteSwipeActionForIndexPath:(id)path;
+- (id)_indexPathForTransferGUID:(id)d;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (void)_adaptiveImageGlyphWasGeneratedNotification:(id)notification;
+- (void)_previewDidChangeNotification:(id)notification;
+- (void)_reloadCellWithTransferGUID:(id)d;
+- (void)deleteStickerSelectedAtIndexPath:(id)path;
 - (void)loadView;
-- (void)saveStickerButtonSelectedAtIndexPath:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (void)saveStickerButtonSelectedAtIndexPath:(id)path;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 - (void)viewDidLayoutSubviews;
-- (void)viewStickerAppButtonSelectedAtIndexPath:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewStickerAppButtonSelectedAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CKStickerDetailViewController
 
-- (CKStickerDetailViewController)initWithEmojiImageMediaObjects:(id)a3
+- (CKStickerDetailViewController)initWithEmojiImageMediaObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   v9.receiver = self;
   v9.super_class = CKStickerDetailViewController;
   v5 = [(CKStickerDetailViewController *)&v9 initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [objectsCopy copy];
     stickerDetailsItems = v5->_stickerDetailsItems;
     v5->_stickerDetailsItems = v6;
 
@@ -46,15 +46,15 @@
   return v5;
 }
 
-- (CKStickerDetailViewController)initWithStickerChatItems:(id)a3
+- (CKStickerDetailViewController)initWithStickerChatItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v9.receiver = self;
   v9.super_class = CKStickerDetailViewController;
   v5 = [(CKStickerDetailViewController *)&v9 initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [itemsCopy copy];
     stickerDetailsItems = v5->_stickerDetailsItems;
     v5->_stickerDetailsItems = v6;
 
@@ -69,11 +69,11 @@
   v19.receiver = self;
   v19.super_class = CKStickerDetailViewController;
   [(CKStickerDetailViewController *)&v19 loadView];
-  v3 = [(CKStickerDetailViewController *)self view];
-  [v3 setLayoutMarginsFollowReadableWidth:1];
+  view = [(CKStickerDetailViewController *)self view];
+  [view setLayoutMarginsFollowReadableWidth:1];
 
-  v4 = [(CKStickerDetailViewController *)self view];
-  [v4 setBackgroundColor:0];
+  view2 = [(CKStickerDetailViewController *)self view];
+  [view2 setBackgroundColor:0];
 
   v5 = objc_alloc(MEMORY[0x1E69DD020]);
   v6 = *MEMORY[0x1E695F058];
@@ -86,13 +86,13 @@
   [v10 setAutoresizingMask:18];
   [v10 setRowHeight:*MEMORY[0x1E69DE3D0]];
   [(CKStickerDetailViewController *)self setTableView:v10];
-  v11 = [(CKStickerDetailViewController *)self view];
-  [v11 addSubview:v10];
+  view3 = [(CKStickerDetailViewController *)self view];
+  [view3 addSubview:v10];
 
   if (CKIsRunningInMacCatalyst())
   {
-    v12 = [MEMORY[0x1E69DC888] clearColor];
-    [v10 setBackgroundColor:v12];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v10 setBackgroundColor:clearColor];
   }
 
   v13 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v6, v7, v8, v9}];
@@ -102,14 +102,14 @@
   [v10 registerClass:v14 forCellReuseIdentifier:v15];
 
   [v10 __ck_scrollToTop:0];
-  v16 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v16 addObserver:self selector:sel__previewDidChangeNotification_ name:@"CKPreviewDidChangeNotification" object:0];
-  [v16 addObserver:self selector:sel__adaptiveImageGlyphWasGeneratedNotification_ name:@"CKAdaptiveImageGlyphGeneratedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__previewDidChangeNotification_ name:@"CKPreviewDidChangeNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__adaptiveImageGlyphWasGeneratedNotification_ name:@"CKAdaptiveImageGlyphGeneratedNotification" object:0];
   if (!CKIsRunningInMacCatalyst())
   {
     v17 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel_stickerDetailViewControllerCloseButtonPressed_];
-    v18 = [(CKStickerDetailViewController *)self navigationItem];
-    [v18 setRightBarButtonItem:v17];
+    navigationItem = [(CKStickerDetailViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v17];
   }
 }
 
@@ -118,10 +118,10 @@
   v10.receiver = self;
   v10.super_class = CKStickerDetailViewController;
   [(CKStickerDetailViewController *)&v10 viewDidLayoutSubviews];
-  v3 = [(CKStickerDetailViewController *)self tableView];
-  v4 = [(CKStickerDetailViewController *)self view];
-  [v4 bounds];
-  [v3 setFrame:?];
+  tableView = [(CKStickerDetailViewController *)self tableView];
+  view = [(CKStickerDetailViewController *)self view];
+  [view bounds];
+  [tableView setFrame:?];
 
   stickerDetailsItemType = self->_stickerDetailsItemType;
   if (stickerDetailsItemType == 1)
@@ -144,36 +144,36 @@
   v8 = [v7 localizedStringForKey:v6 value:&stru_1F04268F8 table:@"ChatKit"];
 
 LABEL_7:
-  v9 = [(CKStickerDetailViewController *)self navigationItem];
-  [v9 setTitle:v8];
+  navigationItem = [(CKStickerDetailViewController *)self navigationItem];
+  [navigationItem setTitle:v8];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CKStickerDetailViewController;
-  [(CKStickerDetailViewController *)&v5 viewWillAppear:a3];
-  v4 = [(CKStickerDetailViewController *)self tableView];
-  [v4 __ck_scrollToTop:0];
+  [(CKStickerDetailViewController *)&v5 viewWillAppear:appear];
+  tableView = [(CKStickerDetailViewController *)self tableView];
+  [tableView __ck_scrollToTop:0];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[CKStickerDetailCell identifier];
-  v9 = [v7 dequeueReusableCellWithIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8 forIndexPath:pathCopy];
 
   [v9 setDelegate:self];
-  v10 = [v6 item];
+  item = [pathCopy item];
 
-  v11 = [(NSArray *)self->_stickerDetailsItems objectAtIndex:v10];
-  v12 = [v11 stickerDetailsPreview];
-  [v9 setStickerPreview:v12];
-  v13 = [v11 stickerDetailsTitleText];
-  [v9 setTitleText:v13];
-  v14 = [v11 stickerDetailsSubtitleText];
-  [v9 setSubtitleText:v14];
+  v11 = [(NSArray *)self->_stickerDetailsItems objectAtIndex:item];
+  stickerDetailsPreview = [v11 stickerDetailsPreview];
+  [v9 setStickerPreview:stickerDetailsPreview];
+  stickerDetailsTitleText = [v11 stickerDetailsTitleText];
+  [v9 setTitleText:stickerDetailsTitleText];
+  stickerDetailsSubtitleText = [v11 stickerDetailsSubtitleText];
+  [v9 setSubtitleText:stickerDetailsSubtitleText];
 
   if ([(CKStickerDetailViewController *)self canSaveStickerForItem:v11])
   {
@@ -186,64 +186,64 @@ LABEL_7:
   }
 
   [v9 setAdditionalActionType:v15];
-  v16 = [v11 stickerDetailsDateAdded];
-  [v9 setTimestampDate:v16];
+  stickerDetailsDateAdded = [v11 stickerDetailsDateAdded];
+  [v9 setTimestampDate:stickerDetailsDateAdded];
 
   return v9;
 }
 
-- (BOOL)shouldHideViewButtonInStickerDetailsForIdentifier:(id)a3
+- (BOOL)shouldHideViewButtonInStickerDetailsForIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E69A68F8]])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:*MEMORY[0x1E69A68F8]])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:*MEMORY[0x1E69A6980]];
+    v4 = [identifierCopy isEqualToString:*MEMORY[0x1E69A6980]];
   }
 
   return v4;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v4 = -[NSArray objectAtIndex:](self->_stickerDetailsItems, "objectAtIndex:", [a4 item]);
-  v5 = [v4 canDeleteFromStickerDetails];
+  v4 = -[NSArray objectAtIndex:](self->_stickerDetailsItems, "objectAtIndex:", [path item]);
+  canDeleteFromStickerDetails = [v4 canDeleteFromStickerDetails];
 
-  return v5;
+  return canDeleteFromStickerDetails;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    [(CKStickerDetailViewController *)self deleteStickerSelectedAtIndexPath:a5];
+    [(CKStickerDetailViewController *)self deleteStickerSelectedAtIndexPath:path];
   }
 }
 
-- (void)deleteStickerSelectedAtIndexPath:(id)a3
+- (void)deleteStickerSelectedAtIndexPath:(id)path
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = -[NSArray objectAtIndex:](self->_stickerDetailsItems, "objectAtIndex:", [v4 item]);
-  v6 = [v5 stickerDetailsTransferGUID];
+  pathCopy = path;
+  v5 = -[NSArray objectAtIndex:](self->_stickerDetailsItems, "objectAtIndex:", [pathCopy item]);
+  stickerDetailsTransferGUID = [v5 stickerDetailsTransferGUID];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained stickerDetailViewController:self deletedStickerWithTransferGUID:v6];
+  [WeakRetained stickerDetailViewController:self deletedStickerWithTransferGUID:stickerDetailsTransferGUID];
 
-  v8 = [(CKStickerDetailViewController *)self stickerDetailsItems];
-  v9 = [v8 mutableCopy];
+  stickerDetailsItems = [(CKStickerDetailViewController *)self stickerDetailsItems];
+  v9 = [stickerDetailsItems mutableCopy];
 
   [v9 removeObject:v5];
   v10 = [v9 copy];
   [(CKStickerDetailViewController *)self setStickerDetailsItems:v10];
 
-  v11 = [(CKStickerDetailViewController *)self tableView];
-  v15[0] = v4;
+  tableView = [(CKStickerDetailViewController *)self tableView];
+  v15[0] = pathCopy;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  [v11 deleteRowsAtIndexPaths:v12 withRowAnimation:100];
+  [tableView deleteRowsAtIndexPaths:v12 withRowAnimation:100];
 
   if (![(NSArray *)self->_stickerDetailsItems count])
   {
@@ -257,14 +257,14 @@ LABEL_7:
   }
 }
 
-- (void)saveStickerButtonSelectedAtIndexPath:(id)a3
+- (void)saveStickerButtonSelectedAtIndexPath:(id)path
 {
-  v8 = -[NSArray objectAtIndex:](self->_stickerDetailsItems, "objectAtIndex:", [a3 item]);
+  v8 = -[NSArray objectAtIndex:](self->_stickerDetailsItems, "objectAtIndex:", [path item]);
   [(CKStickerDetailViewController *)self dismissModalViewControllerAnimated:1];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v8;
+    saveableSticker = v8;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v6 = objc_opt_respondsToSelector();
 
@@ -274,27 +274,27 @@ LABEL_7:
     }
 
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 saveStickerFromDetailViewController:self chatItemContainingSticker:v4];
+    [v7 saveStickerFromDetailViewController:self chatItemContainingSticker:saveableSticker];
   }
 
   else
   {
-    v4 = [v8 saveableSticker];
-    if (!v4)
+    saveableSticker = [v8 saveableSticker];
+    if (!saveableSticker)
     {
       goto LABEL_7;
     }
 
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 stickerDetailViewController:self didRequestSaveSticker:v4];
+    [v7 stickerDetailViewController:self didRequestSaveSticker:saveableSticker];
   }
 
 LABEL_7:
 }
 
-- (void)viewStickerAppButtonSelectedAtIndexPath:(id)a3
+- (void)viewStickerAppButtonSelectedAtIndexPath:(id)path
 {
-  v6 = -[NSArray objectAtIndex:](self->_stickerDetailsItems, "objectAtIndex:", [a3 item]);
+  v6 = -[NSArray objectAtIndex:](self->_stickerDetailsItems, "objectAtIndex:", [path item]);
   v4 = [(CKStickerDetailViewController *)self _adamIDForStickersDetailItem:?];
   if (v4)
   {
@@ -303,14 +303,14 @@ LABEL_7:
   }
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = -[NSArray objectAtIndex:](self->_stickerDetailsItems, "objectAtIndex:", [v5 item]);
+  pathCopy = path;
+  v6 = -[NSArray objectAtIndex:](self->_stickerDetailsItems, "objectAtIndex:", [pathCopy item]);
   if ([v6 canDeleteFromStickerDetails])
   {
-    v7 = [(CKStickerDetailViewController *)self _deleteSwipeActionForIndexPath:v5];
+    v7 = [(CKStickerDetailViewController *)self _deleteSwipeActionForIndexPath:pathCopy];
     v8 = MEMORY[0x1E69DCFC0];
     v12[0] = v7;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
@@ -327,9 +327,9 @@ LABEL_7:
   return v10;
 }
 
-- (id)_deleteSwipeActionForIndexPath:(id)a3
+- (id)_deleteSwipeActionForIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = MEMORY[0x1E69DC8E8];
   v6 = CKFrameworkBundle();
   v7 = [v6 localizedStringForKey:@"DELETE" value:&stru_1F04268F8 table:@"ChatKit"];
@@ -337,29 +337,29 @@ LABEL_7:
   v13 = 3221225472;
   v14 = __64__CKStickerDetailViewController__deleteSwipeActionForIndexPath___block_invoke;
   v15 = &unk_1E72F3A70;
-  v16 = self;
-  v17 = v4;
-  v8 = v4;
+  selfCopy = self;
+  v17 = pathCopy;
+  v8 = pathCopy;
   v9 = [v5 contextualActionWithStyle:1 title:v7 handler:&v12];
 
-  v10 = [MEMORY[0x1E69DCAB8] systemImageNamed:{@"trash.fill", v12, v13, v14, v15, v16}];
+  v10 = [MEMORY[0x1E69DCAB8] systemImageNamed:{@"trash.fill", v12, v13, v14, v15, selfCopy}];
   [v9 setImage:v10];
 
   return v9;
 }
 
-- (id)_adamIDForStickersDetailItem:(id)a3
+- (id)_adamIDForStickersDetailItem:(id)item
 {
-  v3 = [a3 stickerDetailsTransferGUID];
-  if ([v3 length])
+  stickerDetailsTransferGUID = [item stickerDetailsTransferGUID];
+  if ([stickerDetailsTransferGUID length])
   {
-    v4 = [MEMORY[0x1E69A5B80] sharedInstance];
-    v5 = [v4 transferForGUID:v3];
+    mEMORY[0x1E69A5B80] = [MEMORY[0x1E69A5B80] sharedInstance];
+    v5 = [mEMORY[0x1E69A5B80] transferForGUID:stickerDetailsTransferGUID];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 attributionInfo];
-      v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69A6FA0]];
+      attributionInfo = [v5 attributionInfo];
+      v8 = [attributionInfo objectForKeyedSubscript:*MEMORY[0x1E69A6FA0]];
       v9 = v8;
       if (v8 && [v8 integerValue])
       {
@@ -386,25 +386,25 @@ LABEL_7:
   return v10;
 }
 
-- (BOOL)canViewStickerPackForItem:(id)a3
+- (BOOL)canViewStickerPackForItem:(id)item
 {
-  v3 = [(CKStickerDetailViewController *)self _adamIDForStickersDetailItem:a3];
+  v3 = [(CKStickerDetailViewController *)self _adamIDForStickersDetailItem:item];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (BOOL)canSaveStickerForItem:(id)a3
+- (BOOL)canSaveStickerForItem:(id)item
 {
-  v3 = [a3 saveableSticker];
-  v4 = v3 != 0;
+  saveableSticker = [item saveableSticker];
+  v4 = saveableSticker != 0;
 
   return v4;
 }
 
-- (id)_indexPathForTransferGUID:(id)a3
+- (id)_indexPathForTransferGUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -414,7 +414,7 @@ LABEL_7:
   v11 = 3221225472;
   v12 = __59__CKStickerDetailViewController__indexPathForTransferGUID___block_invoke;
   v13 = &unk_1E72F3A98;
-  v6 = v4;
+  v6 = dCopy;
   v14 = v6;
   v15 = &v16;
   [(NSArray *)stickerDetailsItems enumerateObjectsUsingBlock:&v10];
@@ -444,10 +444,10 @@ void __59__CKStickerDetailViewController__indexPathForTransferGUID___block_invok
   }
 }
 
-- (void)_reloadCellWithTransferGUID:(id)a3
+- (void)_reloadCellWithTransferGUID:(id)d
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v4 = [(CKStickerDetailViewController *)self _indexPathForTransferGUID:a3];
+  v4 = [(CKStickerDetailViewController *)self _indexPathForTransferGUID:d];
   v5 = v4;
   if (v4)
   {
@@ -457,73 +457,73 @@ void __59__CKStickerDetailViewController__indexPathForTransferGUID___block_invok
   }
 }
 
-- (void)_adaptiveImageGlyphWasGeneratedNotification:(id)a3
+- (void)_adaptiveImageGlyphWasGeneratedNotification:(id)notification
 {
-  v5 = [a3 object];
+  object = [notification object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v5 transferGUID];
-    [(CKStickerDetailViewController *)self _reloadCellWithTransferGUID:v4];
+    transferGUID = [object transferGUID];
+    [(CKStickerDetailViewController *)self _reloadCellWithTransferGUID:transferGUID];
   }
 }
 
-- (void)_previewDidChangeNotification:(id)a3
+- (void)_previewDidChangeNotification:(id)notification
 {
-  v5 = [a3 object];
+  object = [notification object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v5 transferGUID];
-    [(CKStickerDetailViewController *)self _reloadCellWithTransferGUID:v4];
+    transferGUID = [object transferGUID];
+    [(CKStickerDetailViewController *)self _reloadCellWithTransferGUID:transferGUID];
   }
 }
 
-+ (id)stickerBundleIDFromFileTransfer:(id)a3
++ (id)stickerBundleIDFromFileTransfer:(id)transfer
 {
-  v3 = a3;
-  v4 = [v3 attributionInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69A6FB0]];
+  transferCopy = transfer;
+  attributionInfo = [transferCopy attributionInfo];
+  v5 = [attributionInfo objectForKeyedSubscript:*MEMORY[0x1E69A6FB0]];
   v6 = [v5 componentsSeparatedByString:@":"];
-  v7 = [v6 lastObject];
+  lastObject = [v6 lastObject];
 
-  if (![v7 length])
+  if (![lastObject length])
   {
-    v8 = [v3 stickerUserInfo];
-    v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69A7CB0]];
+    stickerUserInfo = [transferCopy stickerUserInfo];
+    v9 = [stickerUserInfo objectForKeyedSubscript:*MEMORY[0x1E69A7CB0]];
     v10 = [v9 componentsSeparatedByString:@":"];
-    v11 = [v10 lastObject];
+    lastObject2 = [v10 lastObject];
 
-    v7 = v11;
+    lastObject = lastObject2;
   }
 
-  return v7;
+  return lastObject;
 }
 
-+ (BOOL)isGenmojiBundleIDFromFileTransfer:(id)a3
++ (BOOL)isGenmojiBundleIDFromFileTransfer:(id)transfer
 {
-  v3 = [a1 stickerBundleIDFromFileTransfer:a3];
+  v3 = [self stickerBundleIDFromFileTransfer:transfer];
   v4 = [v3 isEqualToString:*MEMORY[0x1E69A69D8]];
 
   return v4;
 }
 
-+ (id)localizedAppNameForStickerDetailsFromFileTransfer:(id)a3
++ (id)localizedAppNameForStickerDetailsFromFileTransfer:(id)transfer
 {
-  v4 = a3;
-  v5 = [v4 attributionInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69A6FA8]];
-  v7 = [a1 stickerBundleIDFromFileTransfer:v4];
+  transferCopy = transfer;
+  attributionInfo = [transferCopy attributionInfo];
+  v6 = [attributionInfo objectForKeyedSubscript:*MEMORY[0x1E69A6FA8]];
+  v7 = [self stickerBundleIDFromFileTransfer:transferCopy];
 
   if ([v7 length])
   {
     v8 = [MEMORY[0x1E69635E0] bundleProxyForIdentifier:v7];
-    v9 = [v8 localizedName];
+    localizedName = [v8 localizedName];
   }
 
   else
   {
-    v9 = 0;
+    localizedName = 0;
   }
 
   v10 = [v7 isEqualToString:*MEMORY[0x1E69A6A20]];
@@ -542,7 +542,7 @@ void __59__CKStickerDetailViewController__indexPathForTransferGUID___block_invok
     {
       if (!v12)
       {
-        if (![v9 length])
+        if (![localizedName length])
         {
           if ([v6 length])
           {
@@ -553,7 +553,7 @@ void __59__CKStickerDetailViewController__indexPathForTransferGUID___block_invok
         }
 
 LABEL_15:
-        v13 = v9;
+        v13 = localizedName;
         goto LABEL_16;
       }
 
@@ -570,7 +570,7 @@ LABEL_13:
 
   if (![v6 length])
   {
-    if (![v9 length])
+    if (![localizedName length])
     {
 LABEL_12:
       v14 = CKFrameworkBundle();

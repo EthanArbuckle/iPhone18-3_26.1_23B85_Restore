@@ -1,22 +1,22 @@
 @interface HFCameraSmartDetectionCondition
-+ (BOOL)_predicateIsValidForPersonFamiliarityKeyPath:(id)a3;
-+ (BOOL)_predicateIsValidForSignificantEventKeyPath:(id)a3;
-- (HFCameraSmartDetectionCondition)initWithPredicate:(id)a3;
-- (id)hf_naturalLanguageSummaryWithOptions:(id)a3;
++ (BOOL)_predicateIsValidForPersonFamiliarityKeyPath:(id)path;
++ (BOOL)_predicateIsValidForSignificantEventKeyPath:(id)path;
+- (HFCameraSmartDetectionCondition)initWithPredicate:(id)predicate;
+- (id)hf_naturalLanguageSummaryWithOptions:(id)options;
 @end
 
 @implementation HFCameraSmartDetectionCondition
 
-- (HFCameraSmartDetectionCondition)initWithPredicate:(id)a3
+- (HFCameraSmartDetectionCondition)initWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v31.receiver = self;
   v31.super_class = HFCameraSmartDetectionCondition;
-  v5 = [(HFCondition *)&v31 initWithPredicate:v4];
+  v5 = [(HFCondition *)&v31 initWithPredicate:predicateCopy];
   if (v5)
   {
     objc_opt_class();
-    v6 = v4;
+    v6 = predicateCopy;
     if (objc_opt_isKindOfClass())
     {
       v7 = v6;
@@ -31,21 +31,21 @@
 
     if (v8)
     {
-      v9 = [v8 subpredicates];
-      v10 = [v9 count];
+      subpredicates = [v8 subpredicates];
+      v10 = [subpredicates count];
 
       if (v10 != 2)
       {
         goto LABEL_26;
       }
 
-      v11 = [v8 subpredicates];
-      v12 = [v11 objectAtIndexedSubscript:0];
+      subpredicates2 = [v8 subpredicates];
+      v12 = [subpredicates2 objectAtIndexedSubscript:0];
       v13 = [HFCameraSmartDetectionCondition _predicateIsValidForSignificantEventKeyPath:v12];
       if (v13)
       {
-        v14 = [v8 subpredicates];
-        v15 = [v14 objectAtIndexedSubscript:1];
+        subpredicates3 = [v8 subpredicates];
+        v15 = [subpredicates3 objectAtIndexedSubscript:1];
         if ([HFCameraSmartDetectionCondition _predicateIsValidForPersonFamiliarityKeyPath:v15])
         {
 
@@ -57,20 +57,20 @@ LABEL_27:
         }
 
         v29 = v15;
-        v26 = v14;
+        v26 = subpredicates3;
       }
 
       v30 = v12;
-      v17 = [v8 subpredicates];
-      v18 = [v17 objectAtIndexedSubscript:1];
+      subpredicates4 = [v8 subpredicates];
+      v18 = [subpredicates4 objectAtIndexedSubscript:1];
       if ([HFCameraSmartDetectionCondition _predicateIsValidForSignificantEventKeyPath:v18])
       {
-        v19 = [v8 subpredicates];
-        [v19 objectAtIndexedSubscript:0];
-        v20 = v28 = v11;
+        subpredicates5 = [v8 subpredicates];
+        [subpredicates5 objectAtIndexedSubscript:0];
+        v20 = v28 = subpredicates2;
         v21 = [HFCameraSmartDetectionCondition _predicateIsValidForPersonFamiliarityKeyPath:v20];
 
-        v11 = v28;
+        subpredicates2 = v28;
       }
 
       else
@@ -120,11 +120,11 @@ LABEL_28:
   return v16;
 }
 
-+ (BOOL)_predicateIsValidForSignificantEventKeyPath:(id)a3
++ (BOOL)_predicateIsValidForSignificantEventKeyPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   objc_opt_class();
-  v4 = v3;
+  v4 = pathCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -137,14 +137,14 @@ LABEL_28:
 
   v6 = v5;
 
-  v7 = [v6 leftExpression];
-  if ([v7 expressionType] == 4)
+  leftExpression = [v6 leftExpression];
+  if ([leftExpression expressionType] == 4)
   {
-    v8 = [v6 leftExpression];
-    v9 = [v8 arguments];
-    v10 = [v9 firstObject];
-    v11 = [v10 keyPath];
-    v12 = [v11 isEqualToString:*MEMORY[0x277CCF598]];
+    leftExpression2 = [v6 leftExpression];
+    arguments = [leftExpression2 arguments];
+    firstObject = [arguments firstObject];
+    keyPath = [firstObject keyPath];
+    v12 = [keyPath isEqualToString:*MEMORY[0x277CCF598]];
   }
 
   else
@@ -155,11 +155,11 @@ LABEL_28:
   return v12;
 }
 
-+ (BOOL)_predicateIsValidForPersonFamiliarityKeyPath:(id)a3
++ (BOOL)_predicateIsValidForPersonFamiliarityKeyPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   objc_opt_class();
-  v4 = v3;
+  v4 = pathCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -172,14 +172,14 @@ LABEL_28:
 
   v6 = v5;
 
-  v7 = [v6 leftExpression];
-  if ([v7 expressionType] == 4)
+  leftExpression = [v6 leftExpression];
+  if ([leftExpression expressionType] == 4)
   {
-    v8 = [v6 leftExpression];
-    v9 = [v8 arguments];
-    v10 = [v9 firstObject];
-    v11 = [v10 keyPath];
-    v12 = [v11 isEqualToString:*MEMORY[0x277CCF5A0]];
+    leftExpression2 = [v6 leftExpression];
+    arguments = [leftExpression2 arguments];
+    firstObject = [arguments firstObject];
+    keyPath = [firstObject keyPath];
+    v12 = [keyPath isEqualToString:*MEMORY[0x277CCF5A0]];
   }
 
   else
@@ -190,7 +190,7 @@ LABEL_28:
   return v12;
 }
 
-- (id)hf_naturalLanguageSummaryWithOptions:(id)a3
+- (id)hf_naturalLanguageSummaryWithOptions:(id)options
 {
   v3 = [[HFConditionUISummary alloc] initWithCondition:self title:0 description:0];
 

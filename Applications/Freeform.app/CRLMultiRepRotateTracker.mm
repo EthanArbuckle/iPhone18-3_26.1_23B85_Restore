@@ -1,30 +1,30 @@
 @interface CRLMultiRepRotateTracker
 - (BOOL)isEnqueueingCommandsInRealTime;
 - (CGPoint)unscaledCenterForRotation;
-- (CGRect)p_unscaledBoundingRectForReps:(id)a3;
-- (CRLMultiRepRotateTracker)initWithReps:(id)a3;
+- (CGRect)p_unscaledBoundingRectForReps:(id)reps;
+- (CRLMultiRepRotateTracker)initWithReps:(id)reps;
 - (NSSet)repsBeingRotated;
 - (double)currentTotalAngleOfRotationInRadians;
-- (id)p_trackersForReps:(id)a3;
-- (void)addRotateDelta:(double)a3;
-- (void)changeDynamicLayoutsForReps:(id)a3;
-- (void)commitChangesForReps:(id)a3;
-- (void)setScaledHUDPosition:(CGPoint)a3;
-- (void)setUnscaledCenterForRotation:(CGPoint)a3;
+- (id)p_trackersForReps:(id)reps;
+- (void)addRotateDelta:(double)delta;
+- (void)changeDynamicLayoutsForReps:(id)reps;
+- (void)commitChangesForReps:(id)reps;
+- (void)setScaledHUDPosition:(CGPoint)position;
+- (void)setUnscaledCenterForRotation:(CGPoint)rotation;
 @end
 
 @implementation CRLMultiRepRotateTracker
 
-- (CRLMultiRepRotateTracker)initWithReps:(id)a3
+- (CRLMultiRepRotateTracker)initWithReps:(id)reps
 {
-  v4 = a3;
+  repsCopy = reps;
   v10.receiver = self;
   v10.super_class = CRLMultiRepRotateTracker;
   v5 = [(CRLMultiRepRotateTracker *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(CRLMultiRepRotateTracker *)v5 p_trackersForReps:v4];
+    v7 = [(CRLMultiRepRotateTracker *)v5 p_trackersForReps:repsCopy];
     trackers = v6->_trackers;
     v6->_trackers = v7;
   }
@@ -98,8 +98,8 @@
     [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:45 isFatal:0 description:"Must have at least one tracker to ask for its center of rotation"];
   }
 
-  v6 = [(NSArray *)self->_trackers firstObject];
-  [v6 unscaledCenterForRotation];
+  firstObject = [(NSArray *)self->_trackers firstObject];
+  [firstObject unscaledCenterForRotation];
   v8 = v7;
   v10 = v9;
 
@@ -110,10 +110,10 @@
   return result;
 }
 
-- (void)setUnscaledCenterForRotation:(CGPoint)a3
+- (void)setUnscaledCenterForRotation:(CGPoint)rotation
 {
-  y = a3.y;
-  x = a3.x;
+  y = rotation.y;
+  x = rotation.x;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -177,18 +177,18 @@
     [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:58 isFatal:0 description:"Must have at least one tracker to ask for its total angle of rotation"];
   }
 
-  v6 = [(NSArray *)self->_trackers firstObject];
-  [v6 currentTotalAngleOfRotationInRadians];
+  firstObject = [(NSArray *)self->_trackers firstObject];
+  [firstObject currentTotalAngleOfRotationInRadians];
   v8 = v7;
 
   return v8;
 }
 
-- (id)p_trackersForReps:(id)a3
+- (id)p_trackersForReps:(id)reps
 {
-  v4 = a3;
+  repsCopy = reps;
   v5 = +[NSMutableArray array];
-  [(CRLMultiRepRotateTracker *)self p_unscaledBoundingRectForReps:v4];
+  [(CRLMultiRepRotateTracker *)self p_unscaledBoundingRectForReps:repsCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -197,7 +197,7 @@
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v14 = v4;
+  v14 = repsCopy;
   v15 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v15)
   {
@@ -239,9 +239,9 @@
   return v26;
 }
 
-- (CGRect)p_unscaledBoundingRectForReps:(id)a3
+- (CGRect)p_unscaledBoundingRectForReps:(id)reps
 {
-  v3 = a3;
+  repsCopy = reps;
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
@@ -250,7 +250,7 @@
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v8 = [v3 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  v8 = [repsCopy countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v8)
   {
     v9 = v8;
@@ -261,7 +261,7 @@
       {
         if (*v35 != v10)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(repsCopy);
         }
 
         v12 = *(*(&v34 + 1) + 8 * i);
@@ -295,7 +295,7 @@
         height = v25;
       }
 
-      v9 = [v3 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      v9 = [repsCopy countByEnumeratingWithState:&v34 objects:v38 count:16];
     }
 
     while (v9);
@@ -312,7 +312,7 @@
   return result;
 }
 
-- (void)addRotateDelta:(double)a3
+- (void)addRotateDelta:(double)delta
 {
   v9 = 0u;
   v10 = 0u;
@@ -334,7 +334,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v9 + 1) + 8 * v8) addRotateDelta:{a3, v9}];
+        [*(*(&v9 + 1) + 8 * v8) addRotateDelta:{delta, v9}];
         v8 = v8 + 1;
       }
 
@@ -346,22 +346,22 @@
   }
 }
 
-- (void)setScaledHUDPosition:(CGPoint)a3
+- (void)setScaledHUDPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(NSArray *)self->_trackers firstObject];
-  [v5 setScaledHUDPosition:{x, y}];
+  y = position.y;
+  x = position.x;
+  firstObject = [(NSArray *)self->_trackers firstObject];
+  [firstObject setScaledHUDPosition:{x, y}];
 }
 
 - (BOOL)isEnqueueingCommandsInRealTime
 {
-  v3 = [(NSArray *)self->_trackers firstObject];
-  v4 = [v3 rep];
-  v5 = [v4 interactiveCanvasController];
-  v6 = [v5 shouldSupportedDynamicOperationsEnqueueCommandsInRealTime];
+  firstObject = [(NSArray *)self->_trackers firstObject];
+  v4 = [firstObject rep];
+  interactiveCanvasController = [v4 interactiveCanvasController];
+  shouldSupportedDynamicOperationsEnqueueCommandsInRealTime = [interactiveCanvasController shouldSupportedDynamicOperationsEnqueueCommandsInRealTime];
 
-  if (!v6)
+  if (!shouldSupportedDynamicOperationsEnqueueCommandsInRealTime)
   {
     return 0;
   }
@@ -386,9 +386,9 @@
         }
 
         v12 = [*(*(&v16 + 1) + 8 * i) rep];
-        v13 = [v12 allowsSupportedDynamicOperationsToBeRealTime];
+        allowsSupportedDynamicOperationsToBeRealTime = [v12 allowsSupportedDynamicOperationsToBeRealTime];
 
-        if (!v13)
+        if (!allowsSupportedDynamicOperationsToBeRealTime)
         {
           v14 = 0;
           goto LABEL_13;
@@ -411,7 +411,7 @@ LABEL_13:
   return v14;
 }
 
-- (void)changeDynamicLayoutsForReps:(id)a3
+- (void)changeDynamicLayoutsForReps:(id)reps
 {
   v11 = 0u;
   v12 = 0u;
@@ -445,7 +445,7 @@ LABEL_13:
   }
 }
 
-- (void)commitChangesForReps:(id)a3
+- (void)commitChangesForReps:(id)reps
 {
   v11 = 0u;
   v12 = 0u;

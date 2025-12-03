@@ -11,8 +11,8 @@
   v2 = [TPSAnalyticsPersistenceController persistedObjectForKey:@"TPSLastNotificationTime"];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
-    [v3 timeIntervalSinceDate:v2];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceDate:v2];
     v5 = v4;
   }
 
@@ -26,21 +26,21 @@
 
 - (id)mutableAnalyticsEventRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(TPSAnalyticsEventAppDeleted *)self appLaunches];
-  [v3 setObject:v4 forKeyedSubscript:@"launches_count"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  appLaunches = [(TPSAnalyticsEventAppDeleted *)self appLaunches];
+  [dictionary setObject:appLaunches forKeyedSubscript:@"launches_count"];
 
-  v5 = [(TPSAnalyticsEventAppDeleted *)self tipViewTotal];
-  [v3 setObject:v5 forKeyedSubscript:@"content_views"];
+  tipViewTotal = [(TPSAnalyticsEventAppDeleted *)self tipViewTotal];
+  [dictionary setObject:tipViewTotal forKeyedSubscript:@"content_views"];
 
-  v6 = [(TPSAnalyticsEventAppDeleted *)self desiredOutcomeTotal];
-  [v3 setObject:v6 forKeyedSubscript:@"desired_outcome_count"];
+  desiredOutcomeTotal = [(TPSAnalyticsEventAppDeleted *)self desiredOutcomeTotal];
+  [dictionary setObject:desiredOutcomeTotal forKeyedSubscript:@"desired_outcome_count"];
 
-  v7 = [(TPSAnalyticsEventAppDeleted *)self notificationsPosted];
-  v8 = v7;
-  if (v7)
+  notificationsPosted = [(TPSAnalyticsEventAppDeleted *)self notificationsPosted];
+  v8 = notificationsPosted;
+  if (notificationsPosted)
   {
-    v9 = v7;
+    v9 = notificationsPosted;
   }
 
   else
@@ -48,33 +48,33 @@
     v9 = &unk_1F3F41DB8;
   }
 
-  [v3 setObject:v9 forKeyedSubscript:@"notifications_count"];
+  [dictionary setObject:v9 forKeyedSubscript:@"notifications_count"];
 
   v10 = MEMORY[0x1E696AD98];
   v11 = +[TPSCommonDefines sharedInstance];
   v12 = [v10 numberWithInteger:{objc_msgSend(v11, "daysSinceLastMajorVersionUpdate")}];
-  [v3 setObject:v12 forKeyedSubscript:@"time_since_os_install"];
+  [dictionary setObject:v12 forKeyedSubscript:@"time_since_os_install"];
 
   v13 = [MEMORY[0x1E696AD98] numberWithBool:{+[TPSCommonDefines isSeniorUser](TPSCommonDefines, "isSeniorUser")}];
-  [v3 setObject:v13 forKeyedSubscript:@"u65_flag"];
+  [dictionary setObject:v13 forKeyedSubscript:@"u65_flag"];
 
-  v14 = [(TPSAnalyticsEventAppDeleted *)self notificationsPosted];
-  LODWORD(v11) = [v14 intValue];
+  notificationsPosted2 = [(TPSAnalyticsEventAppDeleted *)self notificationsPosted];
+  LODWORD(v11) = [notificationsPosted2 intValue];
 
   if (v11 >= 1)
   {
     v15 = MEMORY[0x1E696AD98];
     [(TPSAnalyticsEventAppDeleted *)self timeSinceLastNotification];
     v16 = [v15 numberWithDouble:?];
-    [v3 setObject:v16 forKeyedSubscript:@"time_since_last_notification"];
+    [dictionary setObject:v16 forKeyedSubscript:@"time_since_last_notification"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 + (id)event
 {
-  v2 = [[a1 alloc] initWithDate:0];
+  v2 = [[self alloc] initWithDate:0];
 
   return v2;
 }

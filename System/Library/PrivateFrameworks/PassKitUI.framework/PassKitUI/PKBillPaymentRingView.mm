@@ -1,47 +1,47 @@
 @interface PKBillPaymentRingView
-- (BOOL)_isAmount:(id)a3 withinRoundingUnitOfAmount:(id)a4;
-- (BOOL)_setDisplayAmount:(id)a3;
+- (BOOL)_isAmount:(id)amount withinRoundingUnitOfAmount:(id)ofAmount;
+- (BOOL)_setDisplayAmount:(id)amount;
 - (BOOL)_updateEffectiveDisplayAmount;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (CGPoint)_center;
-- (CGPoint)_centerPointAtAngle:(double)a3 adjustToCover:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGPoint)_centerPointAtAngle:(double)angle adjustToCover:(BOOL)cover;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSDecimalNumber)amount;
-- (PKBillPaymentRingView)initWithSuggestedAmountList:(id)a3 delegate:(id)a4 dataSource:(id)a5;
+- (PKBillPaymentRingView)initWithSuggestedAmountList:(id)list delegate:(id)delegate dataSource:(id)source;
 - (PKBillPaymentRingViewDataSource)dataSource;
 - (PKBillPaymentRingViewDelegate)delegate;
 - (UIColor)currentEndColor;
 - (UIColor)currentStartColor;
 - (double)_amountLabelMaximumFontSize;
-- (double)_angleForAmount:(id)a3;
-- (double)_angleForAngleIndex:(unint64_t)a3;
-- (double)_angleForPosition:(CGPoint)a3;
-- (double)_angleForRecognizer:(id)a3;
-- (id)_blendFromGradientState:(id)a3 toState:(id)a4 withProgress:(double)a5;
-- (id)_gradientStateForSuggestedAmount:(id)a3;
-- (id)_roundedAmountForAngle:(double)a3;
+- (double)_angleForAmount:(id)amount;
+- (double)_angleForAngleIndex:(unint64_t)index;
+- (double)_angleForPosition:(CGPoint)position;
+- (double)_angleForRecognizer:(id)recognizer;
+- (id)_blendFromGradientState:(id)state toState:(id)toState withProgress:(double)progress;
+- (id)_gradientStateForSuggestedAmount:(id)amount;
+- (id)_roundedAmountForAngle:(double)angle;
 - (id)_stickySuggestedAmountForCurrentAngle;
-- (id)_suggestedAmountForAngleIndex:(unint64_t)a3;
-- (id)_suggestedAmountImageForSuggestedAmount:(id)a3;
-- (id)_targetGradientStateForAngle:(double)a3;
-- (unint64_t)_segmentEndAngleIndexForAngle:(double)a3;
-- (unint64_t)_unnormalizedAngleIndexForAngle:(double)a3;
+- (id)_suggestedAmountForAngleIndex:(unint64_t)index;
+- (id)_suggestedAmountImageForSuggestedAmount:(id)amount;
+- (id)_targetGradientStateForAngle:(double)angle;
+- (unint64_t)_segmentEndAngleIndexForAngle:(double)angle;
+- (unint64_t)_unnormalizedAngleIndexForAngle:(double)angle;
 - (void)_createStandardColors;
 - (void)_createSuggestedAmountAngles;
 - (void)_createSuggestedAmountRingColorStops;
 - (void)_createSuggestedAmountsImageDictionary;
-- (void)_dragEnded:(id)a3;
-- (void)_dragMoved:(id)a3;
-- (void)_dragMovedToAngle:(double)a3 normalizedRadius:(double)a4;
-- (void)_dragRecognizerChanged:(id)a3;
-- (void)_dragStarted:(id)a3;
+- (void)_dragEnded:(id)ended;
+- (void)_dragMoved:(id)moved;
+- (void)_dragMovedToAngle:(double)angle normalizedRadius:(double)radius;
+- (void)_dragRecognizerChanged:(id)changed;
+- (void)_dragStarted:(id)started;
 - (void)_pauseRenderLoop;
-- (void)_pressRecognized:(id)a3;
-- (void)_setDotsVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)_setHighlightedSuggestedAmount:(id)a3;
-- (void)_setResponse:(double)a3;
-- (void)_setSelectedSuggestedAmount:(id)a3;
-- (void)_tapRecognized:(id)a3;
+- (void)_pressRecognized:(id)recognized;
+- (void)_setDotsVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)_setHighlightedSuggestedAmount:(id)amount;
+- (void)_setResponse:(double)response;
+- (void)_setSelectedSuggestedAmount:(id)amount;
+- (void)_tapRecognized:(id)recognized;
 - (void)_updateCurvedText;
 - (void)_updateForEnabledState;
 - (void)_updateHandleImage;
@@ -49,43 +49,43 @@
 - (void)_updateInitialDisplayState;
 - (void)_updateInterestText;
 - (void)_updatePausedState;
-- (void)completeInitialDisplayAnimated:(BOOL)a3;
+- (void)completeInitialDisplayAnimated:(BOOL)animated;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)didUpdateAngleSpringPosition;
 - (void)didUpdateAngleSpringTarget;
 - (void)didUpdateScaleSpringPosition;
 - (void)layoutSubviews;
-- (void)prepareForInitialDisplayWithAmount:(id)a3;
-- (void)renderLoop:(id)a3 drawAtTime:(double)a4;
-- (void)setAmount:(id)a3 animated:(BOOL)a4 userInitiatedWithKeypad:(BOOL)a5;
-- (void)setAngle:(double)a3 animated:(BOOL)a4 forExplicitAmount:(id)a5 userInitiatedWithRing:(BOOL)a6 userInitiatedWithKeypad:(BOOL)a7;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHandleScale:(double)a3 animated:(BOOL)a4;
-- (void)setIsSmall:(BOOL)a3;
+- (void)prepareForInitialDisplayWithAmount:(id)amount;
+- (void)renderLoop:(id)loop drawAtTime:(double)time;
+- (void)setAmount:(id)amount animated:(BOOL)animated userInitiatedWithKeypad:(BOOL)keypad;
+- (void)setAngle:(double)angle animated:(BOOL)animated forExplicitAmount:(id)amount userInitiatedWithRing:(BOOL)ring userInitiatedWithKeypad:(BOOL)keypad;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHandleScale:(double)scale animated:(BOOL)animated;
+- (void)setIsSmall:(BOOL)small;
 @end
 
 @implementation PKBillPaymentRingView
 
-- (PKBillPaymentRingView)initWithSuggestedAmountList:(id)a3 delegate:(id)a4 dataSource:(id)a5
+- (PKBillPaymentRingView)initWithSuggestedAmountList:(id)list delegate:(id)delegate dataSource:(id)source
 {
   v87 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  listCopy = list;
+  delegateCopy = delegate;
+  sourceCopy = source;
   v85.receiver = self;
   v85.super_class = PKBillPaymentRingView;
   v12 = [(PKBillPaymentRingView *)&v85 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v13 = v12;
   if (v12)
   {
-    v78 = v9;
+    v78 = listCopy;
     v12->_enabled = 1;
     v12->_needsInitialDisplay = 1;
-    objc_storeStrong(&v12->_suggestedAmountList, a3);
-    v77 = v10;
-    objc_storeWeak(&v13->_delegate, v10);
-    objc_storeWeak(&v13->_dataSource, v11);
+    objc_storeStrong(&v12->_suggestedAmountList, list);
+    v77 = delegateCopy;
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    objc_storeWeak(&v13->_dataSource, sourceCopy);
     v13->_pinnedAmountAngleIndex = 0x7FFFFFFFFFFFFFFFLL;
     v13->_dragCapture = 0;
     [(PKBillPaymentRingView *)v13 _createSuggestedAmountsImageDictionary];
@@ -97,12 +97,12 @@
     v13->_ringView = v14;
 
     v16 = v13->_ringView;
-    v17 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(PKRingGradientView *)v16 setStrokeColor:v17];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(PKRingGradientView *)v16 setStrokeColor:systemBackgroundColor];
 
     v18 = v13->_ringView;
-    v19 = [MEMORY[0x1E69DC888] systemGray5Color];
-    [(PKRingGradientView *)v18 setFillColor:v19];
+    systemGray5Color = [MEMORY[0x1E69DC888] systemGray5Color];
+    [(PKRingGradientView *)v18 setFillColor:systemGray5Color];
 
     [(PKRingGradientView *)v13->_ringView setMinimumAngle:0.523598776];
     v20 = objc_alloc_init(PKBillPaymentCircularView);
@@ -111,9 +111,9 @@
     v13->_handleView = v20;
 
     v22 = [PKEnterCurrencyAmountView alloc];
-    v23 = [(PKBillPaymentSuggestedAmountList *)v13->_suggestedAmountList currencyCode];
+    currencyCode = [(PKBillPaymentSuggestedAmountList *)v13->_suggestedAmountList currencyCode];
     v24 = [(PKBillPaymentRingView *)v13 _roundedAmountForAngle:0.0];
-    v25 = [(PKEnterCurrencyAmountView *)v22 initWithCurrency:v23 amount:v24];
+    v25 = [(PKEnterCurrencyAmountView *)v22 initWithCurrency:currencyCode amount:v24];
     enterCurrencyAmountView = v13->_enterCurrencyAmountView;
     v13->_enterCurrencyAmountView = v25;
 
@@ -222,7 +222,7 @@
       v13->_responseSpring.dirty = 1;
     }
 
-    v10 = v77;
+    delegateCopy = v77;
     if (v13->_scaleSpring.mass != 1.0)
     {
       v13->_scaleSpring.mass = 1.0;
@@ -291,10 +291,10 @@
     LODWORD(v65) = 1123024896;
     LODWORD(v66) = 1123024896;
     [(PKRenderLoop *)v13->_renderLoop setPreferredFrameRateRange:v64, v65, v66];
-    v67 = [(PKBillPaymentRingView *)v13 traitCollection];
-    v68 = [v67 userInterfaceIdiom];
+    traitCollection = [(PKBillPaymentRingView *)v13 traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (!v68)
+    if (!userInterfaceIdiom)
     {
       [(PKRenderLoop *)v13->_renderLoop setHighFrameRateReason:2162690];
     }
@@ -308,14 +308,14 @@
     v80 = v70;
     [v69 performWithoutAnimation:v79];
     [(PKBillPaymentRingView *)v70 setOpaque:0];
-    v71 = [(PKBillPaymentSuggestedAmountList *)v13->_suggestedAmountList minimumAmount];
-    v72 = [(PKBillPaymentSuggestedAmountList *)v13->_suggestedAmountList remainingStatementAmount];
-    v73 = [(PKBillPaymentSuggestedAmountList *)v13->_suggestedAmountList sortedSuggestedAmounts];
-    if ([v73 count] == 1 && v71 && v72)
+    minimumAmount = [(PKBillPaymentSuggestedAmountList *)v13->_suggestedAmountList minimumAmount];
+    remainingStatementAmount = [(PKBillPaymentSuggestedAmountList *)v13->_suggestedAmountList remainingStatementAmount];
+    sortedSuggestedAmounts = [(PKBillPaymentSuggestedAmountList *)v13->_suggestedAmountList sortedSuggestedAmounts];
+    if ([sortedSuggestedAmounts count] == 1 && minimumAmount && remainingStatementAmount)
     {
       v74 = PKEqualObjects();
 
-      v9 = v78;
+      listCopy = v78;
       if (v74)
       {
         v70->_ignoreTouches = 1;
@@ -325,7 +325,7 @@
     else
     {
 
-      v9 = v78;
+      listCopy = v78;
     }
   }
 
@@ -370,8 +370,8 @@ uint64_t __73__PKBillPaymentRingView_initWithSuggestedAmountList_delegate_dataSo
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(PKRenderLoop *)self->_renderLoop invalidate];
   v4.receiver = self;
@@ -384,10 +384,10 @@ uint64_t __73__PKBillPaymentRingView_initWithSuggestedAmountList_delegate_dataSo
   v6.receiver = self;
   v6.super_class = PKBillPaymentRingView;
   [(PKBillPaymentRingView *)&v6 didMoveToWindow];
-  v3 = [(PKBillPaymentRingView *)self window];
+  window = [(PKBillPaymentRingView *)self window];
   renderLoop = self->_renderLoop;
-  v5 = [v3 windowScene];
-  [(PKRenderLoop *)renderLoop attachToWindowScene:v5];
+  windowScene = [window windowScene];
+  [(PKRenderLoop *)renderLoop attachToWindowScene:windowScene];
 }
 
 - (void)layoutSubviews
@@ -449,29 +449,29 @@ uint64_t __73__PKBillPaymentRingView_initWithSuggestedAmountList_delegate_dataSo
     v27 = v26;
     v28 = *MEMORY[0x1E69DB970];
     v29 = PKRoundedSystemFontOfSizeAndWeight(v26, *MEMORY[0x1E69DB970]);
-    v30 = [v29 pk_fixedWidthFont];
+    pk_fixedWidthFont = [v29 pk_fixedWidthFont];
 
     v31 = PKRoundedSystemFontOfSizeAndWeight(v27 * 0.5, v28);
-    v32 = [v31 pk_fixedWidthFont];
+    pk_fixedWidthFont2 = [v31 pk_fixedWidthFont];
 
-    [(PKEnterCurrencyAmountView *)self->_enterCurrencyAmountView setAmountFont:v30];
-    [(PKEnterCurrencyAmountView *)self->_enterCurrencyAmountView setCurrencySymbolFont:v32];
-    v33 = [(PKEnterCurrencyAmountView *)self->_enterCurrencyAmountView currentAmount];
+    [(PKEnterCurrencyAmountView *)self->_enterCurrencyAmountView setAmountFont:pk_fixedWidthFont];
+    [(PKEnterCurrencyAmountView *)self->_enterCurrencyAmountView setCurrencySymbolFont:pk_fixedWidthFont2];
+    currentAmount = [(PKEnterCurrencyAmountView *)self->_enterCurrencyAmountView currentAmount];
     enterCurrencyAmountView = self->_enterCurrencyAmountView;
-    v35 = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList maximumAmount];
-    [(PKEnterCurrencyAmountView *)enterCurrencyAmountView setCurrentAmount:v35];
+    maximumAmount = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList maximumAmount];
+    [(PKEnterCurrencyAmountView *)enterCurrencyAmountView setCurrentAmount:maximumAmount];
 
     [(PKEnterCurrencyAmountView *)self->_enterCurrencyAmountView sizeThatFits:v24, 1.79769313e308];
     v37 = fmax(v27 * fmin(v24 / v36, 1.0), 12.0);
     v38 = PKRoundedSystemFontOfSizeAndWeight(v37, v28);
-    v39 = [v38 pk_fixedWidthFont];
+    pk_fixedWidthFont3 = [v38 pk_fixedWidthFont];
 
     v40 = PKRoundedSystemFontOfSizeAndWeight(v37 * 0.5, v28);
-    v41 = [v40 pk_fixedWidthFont];
+    pk_fixedWidthFont4 = [v40 pk_fixedWidthFont];
 
-    [(PKEnterCurrencyAmountView *)self->_enterCurrencyAmountView setAmountFont:v39];
-    [(PKEnterCurrencyAmountView *)self->_enterCurrencyAmountView setCurrencySymbolFont:v41];
-    [(PKEnterCurrencyAmountView *)self->_enterCurrencyAmountView setCurrentAmount:v33];
+    [(PKEnterCurrencyAmountView *)self->_enterCurrencyAmountView setAmountFont:pk_fixedWidthFont3];
+    [(PKEnterCurrencyAmountView *)self->_enterCurrencyAmountView setCurrencySymbolFont:pk_fixedWidthFont4];
+    [(PKEnterCurrencyAmountView *)self->_enterCurrencyAmountView setCurrentAmount:currentAmount];
     [(PKEnterCurrencyAmountView *)self->_enterCurrencyAmountView sizeThatFits:v24, 1.79769313e308];
     v43 = v42;
     v44 = v25 * 0.5;
@@ -481,9 +481,9 @@ uint64_t __73__PKBillPaymentRingView_initWithSuggestedAmountList_delegate_dataSo
     v46 = acos(1.0 - (v44 - (v43 * 0.5 + 10.0)) / v44);
     v47 = sin((v46 + v46) * 0.5);
     v48 = PKRoundedSystemFontOfSizeAndWeight(fmax(fmin((v44 + v44) * v47 * 0.0856, 22.0), 2.0), v28);
-    v49 = [v48 pk_fixedWidthFont];
+    pk_fixedWidthFont5 = [v48 pk_fixedWidthFont];
 
-    [(UILabel *)self->_interestLabel setFont:v49];
+    [(UILabel *)self->_interestLabel setFont:pk_fixedWidthFont5];
   }
 
   [(PKBillPaymentCircularView *)self->_handleView sizeThatFits:v22, v22];
@@ -533,9 +533,9 @@ uint64_t __73__PKBillPaymentRingView_initWithSuggestedAmountList_delegate_dataSo
   CGAffineTransformMakeScale(&v125, v67, v68);
   [(PKEnterCurrencyAmountView *)v66 setTransform:&v125];
   [(PKCurvedTextLabel *)self->_topCurvedTextLabel frame];
-  v69 = [(PKCurvedTextLabel *)self->_topCurvedTextLabel text];
-  v70 = [(PKCurvedTextLabel *)self->_topCurvedTextLabel textAttributes];
-  [v69 sizeWithAttributes:v70];
+  text = [(PKCurvedTextLabel *)self->_topCurvedTextLabel text];
+  textAttributes = [(PKCurvedTextLabel *)self->_topCurvedTextLabel textAttributes];
+  [text sizeWithAttributes:textAttributes];
   v72 = v71;
 
   v109 = v117 * 0.5 - v22;
@@ -544,9 +544,9 @@ uint64_t __73__PKBillPaymentRingView_initWithSuggestedAmountList_delegate_dataSo
   PKRectCenteredXInRect();
   [(PKCurvedTextLabel *)self->_topCurvedTextLabel setFrame:?];
   [(PKCurvedTextLabel *)self->_bottomCurvedTextLabel frame];
-  v73 = [(PKCurvedTextLabel *)self->_bottomCurvedTextLabel text];
-  v74 = [(PKCurvedTextLabel *)self->_bottomCurvedTextLabel textAttributes];
-  [v73 sizeWithAttributes:v74];
+  text2 = [(PKCurvedTextLabel *)self->_bottomCurvedTextLabel text];
+  textAttributes2 = [(PKCurvedTextLabel *)self->_bottomCurvedTextLabel textAttributes];
+  [text2 sizeWithAttributes:textAttributes2];
   v76 = v75;
 
   [(PKCurvedTextLabel *)self->_bottomCurvedTextLabel setCircleRadius:v109 - v76 * 0.5 + -7.0];
@@ -610,9 +610,9 @@ LABEL_16:
         }
 
         v85 = *(*(&v121 + 1) + 8 * i);
-        v86 = [v85 suggestedAmount];
-        v87 = [v86 amount];
-        [(PKBillPaymentRingView *)self _angleForAmount:v87];
+        suggestedAmount = [v85 suggestedAmount];
+        amount = [suggestedAmount amount];
+        [(PKBillPaymentRingView *)self _angleForAmount:amount];
         [(PKBillPaymentRingView *)self _offsetAngle:?];
         [(PKBillPaymentRingView *)self _centerPointAtAngle:0 adjustToCover:?];
         v89 = v88;
@@ -626,9 +626,9 @@ LABEL_16:
         PKPointRoundToPixel(v96, v97, v98);
         v100 = v99;
         v102 = v101;
-        v103 = [v85 layer];
-        [v103 anchorPoint];
-        [v103 setPosition:{v100 + v104 * v93, v102 + v105 * v95}];
+        layer = [v85 layer];
+        [layer anchorPoint];
+        [layer setPosition:{v100 + v104 * v93, v102 + v105 * v95}];
         [v85 setAlpha:v78];
         v120 = v125;
         [v85 setTransform:&v120];
@@ -665,9 +665,9 @@ LABEL_16:
   objc_autoreleasePoolPop(context);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  if ([(UIView *)self pkui_userInterfaceIdiomSupportsLargeLayouts:a3.width])
+  if ([(UIView *)self pkui_userInterfaceIdiomSupportsLargeLayouts:fits.width])
   {
     v3 = 280.0;
   }
@@ -692,12 +692,12 @@ LABEL_16:
   return result;
 }
 
-- (void)renderLoop:(id)a3 drawAtTime:(double)a4
+- (void)renderLoop:(id)loop drawAtTime:(double)time
 {
-  v61 = a3;
+  loopCopy = loop;
   lastDrawTime = self->_lastDrawTime;
-  v7 = fmax(a4 - lastDrawTime, 0.0);
-  self->_lastDrawTime = a4;
+  v7 = fmax(time - lastDrawTime, 0.0);
+  self->_lastDrawTime = time;
   if (lastDrawTime <= 0.0)
   {
     v8 = 0.0;
@@ -878,7 +878,7 @@ LABEL_48:
   v11 = v60;
 LABEL_49:
   SpringStatesUpdate(&self->_scaleSpring, &self->_scaleState, v8);
-  v38 = [(PKBillPaymentRingView *)self _preferredPausedState];
+  _preferredPausedState = [(PKBillPaymentRingView *)self _preferredPausedState];
   if (!self->_angleState.running)
   {
     overrideGradientState = self->_overrideGradientState;
@@ -966,7 +966,7 @@ LABEL_87:
   }
 
   objc_autoreleasePoolPop(v41);
-  if (v38)
+  if (_preferredPausedState)
   {
     [(PKBillPaymentRingView *)self _pauseRenderLoop];
   }
@@ -974,13 +974,13 @@ LABEL_87:
   [(PKBillPaymentRingView *)self layoutIfNeeded];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  [a4 locationInView:self];
+  recognizerCopy = recognizer;
+  [touch locationInView:self];
   v8 = v7;
   v10 = v9;
-  if (self->_tapRecognizer == v6)
+  if (self->_tapRecognizer == recognizerCopy)
   {
     [(PKBillPaymentRingView *)self _ringWidth];
     v30 = v29;
@@ -992,16 +992,16 @@ LABEL_87:
     v11 = v36 <= v33 + v32 && v36 >= v32 - v33;
   }
 
-  else if (self->_dragRecognizer == v6 || self->_pressRecognizer == v6)
+  else if (self->_dragRecognizer == recognizerCopy || self->_pressRecognizer == recognizerCopy)
   {
-    v12 = [(PKBillPaymentCircularView *)self->_handleView layer];
-    [v12 anchorPoint];
+    layer = [(PKBillPaymentCircularView *)self->_handleView layer];
+    [layer anchorPoint];
     v14 = v13;
     v16 = v15;
-    [v12 position];
+    [layer position];
     v18 = v17;
     v20 = v19;
-    [v12 bounds];
+    [layer bounds];
     width = v38.size.width;
     height = v38.size.height;
     v23 = v18 - v14 * v38.size.width;
@@ -1036,18 +1036,18 @@ LABEL_87:
   return v11;
 }
 
-- (double)_angleForRecognizer:(id)a3
+- (double)_angleForRecognizer:(id)recognizer
 {
-  [a3 locationInView:self];
+  [recognizer locationInView:self];
 
   [(PKBillPaymentRingView *)self _angleForPosition:?];
   return result;
 }
 
-- (double)_angleForPosition:(CGPoint)a3
+- (double)_angleForPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   [(PKBillPaymentRingView *)self _center];
   v7 = atan2(y - v6, x - v5);
   result = fmod(v7 + -4.71238898, 6.28318531);
@@ -1064,9 +1064,9 @@ LABEL_87:
   return result;
 }
 
-- (void)_tapRecognized:(id)a3
+- (void)_tapRecognized:(id)recognized
 {
-  [(PKBillPaymentRingView *)self _angleForRecognizer:a3];
+  [(PKBillPaymentRingView *)self _angleForRecognizer:recognized];
   if (v4 < 0.523598776)
   {
     v4 = 6.28318531;
@@ -1075,11 +1075,11 @@ LABEL_87:
   [(PKBillPaymentRingView *)self setAngle:1 animated:0 forExplicitAmount:1 userInitiatedWithRing:0 userInitiatedWithKeypad:v4];
 }
 
-- (void)_pressRecognized:(id)a3
+- (void)_pressRecognized:(id)recognized
 {
-  v4 = [a3 state];
-  v5 = v4 - 1;
-  if (v4 - 1) <= 4 && ((0x1Du >> v5))
+  state = [recognized state];
+  v5 = state - 1;
+  if (state - 1) <= 4 && ((0x1Du >> v5))
   {
     self->_pressed = 0x101uLL >> (8 * v5);
 
@@ -1087,40 +1087,40 @@ LABEL_87:
   }
 }
 
-- (void)_dragRecognizerChanged:(id)a3
+- (void)_dragRecognizerChanged:(id)changed
 {
-  v7 = a3;
-  v4 = [v7 state];
-  if ((v4 - 3) < 3)
+  changedCopy = changed;
+  state = [changedCopy state];
+  if ((state - 3) < 3)
   {
-    [(PKBillPaymentRingView *)self _dragMoved:v7];
-    [(PKBillPaymentRingView *)self _dragEnded:v7];
+    [(PKBillPaymentRingView *)self _dragMoved:changedCopy];
+    [(PKBillPaymentRingView *)self _dragEnded:changedCopy];
 LABEL_8:
-    v6 = v7;
+    v6 = changedCopy;
     goto LABEL_9;
   }
 
-  if (v4 == 2)
+  if (state == 2)
   {
 LABEL_7:
-    [(PKBillPaymentRingView *)self _dragMoved:v7];
+    [(PKBillPaymentRingView *)self _dragMoved:changedCopy];
     goto LABEL_8;
   }
 
-  v5 = v4 == 1;
-  v6 = v7;
+  v5 = state == 1;
+  v6 = changedCopy;
   if (v5)
   {
-    [(PKBillPaymentRingView *)self _dragStarted:v7];
+    [(PKBillPaymentRingView *)self _dragStarted:changedCopy];
     goto LABEL_7;
   }
 
 LABEL_9:
 }
 
-- (void)_dragMoved:(id)a3
+- (void)_dragMoved:(id)moved
 {
-  [a3 locationInView:self];
+  [moved locationInView:self];
   v5 = v4;
   v7 = v6;
   [(PKRingGradientView *)self->_ringView radius];
@@ -1130,7 +1130,7 @@ LABEL_9:
   [PKBillPaymentRingView _dragMovedToAngle:"_dragMovedToAngle:normalizedRadius:" normalizedRadius:?];
 }
 
-- (void)_dragStarted:(id)a3
+- (void)_dragStarted:(id)started
 {
   self->_dragging = 1;
   [(PKBillPaymentRingView *)self _updateHandleState];
@@ -1142,7 +1142,7 @@ LABEL_9:
   }
 }
 
-- (void)_dragEnded:(id)a3
+- (void)_dragEnded:(id)ended
 {
   self->_dragging = 0;
   self->_dragCapture = 0;
@@ -1159,19 +1159,19 @@ LABEL_9:
   }
 }
 
-- (void)_dragMovedToAngle:(double)a3 normalizedRadius:(double)a4
+- (void)_dragMovedToAngle:(double)angle normalizedRadius:(double)radius
 {
   dragCapture = self->_dragCapture;
   if ((dragCapture - 1) >= 2)
   {
     if (!dragCapture)
     {
-      if (a4 <= 0.25)
+      if (radius <= 0.25)
       {
 LABEL_17:
         self->_dragCapture = 3;
 LABEL_18:
-        if (a4 <= 0.25)
+        if (radius <= 0.25)
         {
           target = self->_angleState.target;
           goto LABEL_24;
@@ -1180,7 +1180,7 @@ LABEL_18:
         goto LABEL_22;
       }
 
-      if (a3 < 6.28318531 && a3 > 0.523598776)
+      if (angle < 6.28318531 && angle > 0.523598776)
       {
         goto LABEL_23;
       }
@@ -1195,7 +1195,7 @@ LABEL_18:
     }
   }
 
-  else if (a4 <= 0.25)
+  else if (radius <= 0.25)
   {
     goto LABEL_17;
   }
@@ -1203,7 +1203,7 @@ LABEL_18:
   if (dragCapture == 1)
   {
     target = 0.523598776;
-    if (a3 <= 0.523598776 || a3 > 0.696386372)
+    if (angle <= 0.523598776 || angle > 0.696386372)
     {
       goto LABEL_24;
     }
@@ -1221,12 +1221,12 @@ LABEL_22:
   if (dragCapture != 2)
   {
 LABEL_23:
-    target = a3;
+    target = angle;
     goto LABEL_24;
   }
 
   target = 6.28318531;
-  if (a3 >= 6.11039771 && a3 < 6.28318531)
+  if (angle >= 6.11039771 && angle < 6.28318531)
   {
     goto LABEL_22;
   }
@@ -1254,25 +1254,25 @@ LABEL_24:
   [(PKBillPaymentRingView *)self setHandleScale:1 animated:v2];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(PKBillPaymentRingView *)self _updateForEnabledState];
     [(PKBillPaymentRingView *)self _updateCurvedText];
     enabled = self->_enabled;
     if (enabled)
     {
-      v5 = 0;
+      zero = 0;
     }
 
     else
     {
-      v5 = [MEMORY[0x1E696AB90] zero];
+      zero = [MEMORY[0x1E696AB90] zero];
     }
 
-    objc_storeStrong(&self->_overrideDisplayAmount, v5);
+    objc_storeStrong(&self->_overrideDisplayAmount, zero);
     if (!enabled)
     {
     }
@@ -1281,11 +1281,11 @@ LABEL_24:
   }
 }
 
-- (void)prepareForInitialDisplayWithAmount:(id)a3
+- (void)prepareForInitialDisplayWithAmount:(id)amount
 {
   if (self->_needsInitialDisplay)
   {
-    v4 = [a3 copy];
+    v4 = [amount copy];
     initialDisplayAmount = self->_initialDisplayAmount;
     self->_initialDisplayAmount = v4;
 
@@ -1327,18 +1327,18 @@ LABEL_24:
   }
 }
 
-- (void)completeInitialDisplayAnimated:(BOOL)a3
+- (void)completeInitialDisplayAnimated:(BOOL)animated
 {
   if (self->_needsInitialDisplay)
   {
-    v3 = a3;
+    animatedCopy = animated;
     if (!self->_preparedForInitialDisplay)
     {
       [(PKBillPaymentRingView *)self prepareForInitialDisplayWithAmount:0];
     }
 
     self->_needsInitialDisplay = 0;
-    [(PKBillPaymentRingView *)self _setDotsVisible:1 animated:v3];
+    [(PKBillPaymentRingView *)self _setDotsVisible:1 animated:animatedCopy];
     if (self->_initialDisplayAmount)
     {
 
@@ -1347,24 +1347,24 @@ LABEL_24:
   }
 }
 
-- (void)setAmount:(id)a3 animated:(BOOL)a4 userInitiatedWithKeypad:(BOOL)a5
+- (void)setAmount:(id)amount animated:(BOOL)animated userInitiatedWithKeypad:(BOOL)keypad
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = v8;
-  if (v8)
+  keypadCopy = keypad;
+  animatedCopy = animated;
+  amountCopy = amount;
+  v9 = amountCopy;
+  if (amountCopy)
   {
-    v10 = v8;
+    v10 = amountCopy;
     if (self->_needsInitialDisplay)
     {
-      [(PKBillPaymentRingView *)self prepareForInitialDisplayWithAmount:v8];
+      [(PKBillPaymentRingView *)self prepareForInitialDisplayWithAmount:amountCopy];
     }
 
     else
     {
-      [(PKBillPaymentRingView *)self _angleForAmount:v8];
-      [(PKBillPaymentRingView *)self setAngle:v6 animated:v10 forExplicitAmount:0 userInitiatedWithRing:v5 userInitiatedWithKeypad:?];
+      [(PKBillPaymentRingView *)self _angleForAmount:amountCopy];
+      [(PKBillPaymentRingView *)self setAngle:animatedCopy animated:v10 forExplicitAmount:0 userInitiatedWithRing:keypadCopy userInitiatedWithKeypad:?];
     }
 
     v9 = v10;
@@ -1390,25 +1390,25 @@ LABEL_24:
 - (UIColor)currentStartColor
 {
   v2 = [(PKBillPaymentRingView *)self _targetGradientStateForAngle:self->_angleState.target];
-  v3 = [v2 startColor];
+  startColor = [v2 startColor];
 
-  return v3;
+  return startColor;
 }
 
 - (UIColor)currentEndColor
 {
   v2 = [(PKBillPaymentRingView *)self _targetGradientStateForAngle:self->_angleState.target];
-  v3 = [v2 endColor];
+  endColor = [v2 endColor];
 
-  return v3;
+  return endColor;
 }
 
-- (void)setIsSmall:(BOOL)a3
+- (void)setIsSmall:(BOOL)small
 {
-  if (self->_isSmall != a3)
+  if (self->_isSmall != small)
   {
     [(PKBillPaymentRingView *)self layoutIfNeeded];
-    self->_isSmall = a3;
+    self->_isSmall = small;
     [(PKBillPaymentRingView *)self setNeedsLayout];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -1476,8 +1476,8 @@ LABEL_4:
 
   else
   {
-    v5 = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList initialSuggestedAmount];
-    [(PKBillPaymentRingView *)self _setSelectedSuggestedAmount:v5];
+    initialSuggestedAmount = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList initialSuggestedAmount];
+    [(PKBillPaymentRingView *)self _setSelectedSuggestedAmount:initialSuggestedAmount];
   }
 
   if (self->_isSmall)
@@ -1596,12 +1596,12 @@ LABEL_24:
     v14 = v18;
   }
 
-  v19 = [v14 startColor];
-  v20 = [v14 endColor];
-  [(PKRingGradientView *)self->_ringView setGradientStartColor:v19];
-  [(PKRingGradientView *)self->_ringView setGradientEndColor:v20];
-  [(PKBillPaymentCircularView *)self->_handleView setPrimaryColor:v20];
-  [(UILabel *)self->_interestLabel setTextColor:v19];
+  startColor = [v14 startColor];
+  endColor = [v14 endColor];
+  [(PKRingGradientView *)self->_ringView setGradientStartColor:startColor];
+  [(PKRingGradientView *)self->_ringView setGradientEndColor:endColor];
+  [(PKBillPaymentCircularView *)self->_handleView setPrimaryColor:endColor];
+  [(UILabel *)self->_interestLabel setTextColor:startColor];
   v21 = [(PKBillPaymentRingView *)self _suggestedAmountForAngleIndex:pinnedAmountAngleIndex];
   if (v21)
   {
@@ -1610,8 +1610,8 @@ LABEL_24:
 
   else
   {
-    v22 = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList initialSuggestedAmount];
-    [(PKBillPaymentRingView *)self _setHighlightedSuggestedAmount:v22];
+    initialSuggestedAmount = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList initialSuggestedAmount];
+    [(PKBillPaymentRingView *)self _setHighlightedSuggestedAmount:initialSuggestedAmount];
   }
 
   if (![(PKBillPaymentRingView *)self _setDisplayAmount:v23])
@@ -1623,26 +1623,26 @@ LABEL_24:
 - (void)didUpdateScaleSpringPosition
 {
   v3 = exp(self->_scaleState.position);
-  v4 = [(PKBillPaymentCircularView *)self->_handleView layer];
+  layer = [(PKBillPaymentCircularView *)self->_handleView layer];
   CATransform3DMakeScale(&v5, v3, v3, 1.0);
-  [v4 setTransform:&v5];
+  [layer setTransform:&v5];
 }
 
-- (void)setAngle:(double)a3 animated:(BOOL)a4 forExplicitAmount:(id)a5 userInitiatedWithRing:(BOOL)a6 userInitiatedWithKeypad:(BOOL)a7
+- (void)setAngle:(double)angle animated:(BOOL)animated forExplicitAmount:(id)amount userInitiatedWithRing:(BOOL)ring userInitiatedWithKeypad:(BOOL)keypad
 {
-  v8 = a6;
-  v9 = a4;
-  v12 = a5;
-  v13 = v9 && self->_enabled;
-  self->_userSelectedAngleChange = v8;
-  self->_userEnteredAmountWithKeypad = a7;
+  ringCopy = ring;
+  animatedCopy = animated;
+  amountCopy = amount;
+  v13 = animatedCopy && self->_enabled;
+  self->_userSelectedAngleChange = ringCopy;
+  self->_userEnteredAmountWithKeypad = keypad;
   p_angleState = &self->_angleState;
   target = self->_angleState.target;
   position = self->_angleState.position;
-  v69 = v12;
-  if (v12)
+  v69 = amountCopy;
+  if (amountCopy)
   {
-    v17 = v12;
+    amount2 = amountCopy;
     v18 = [(NSArray *)self->_suggestedAmountAngles count];
     if (!v18)
     {
@@ -1650,8 +1650,8 @@ LABEL_24:
       initialDisplayAmount = self->_initialDisplayAmount;
       needsInitialDisplay = initialDisplayAmount == 0;
       v20 = 0x7FFFFFFFFFFFFFFFLL;
-      v26 = a3;
-      if (!initialDisplayAmount || v8)
+      angleCopy2 = angle;
+      if (!initialDisplayAmount || ringCopy)
       {
         goto LABEL_40;
       }
@@ -1667,7 +1667,7 @@ LABEL_24:
       suggestedAmountsForAngle = self->_suggestedAmountsForAngle;
       v22 = [(NSArray *)self->_suggestedAmountAngles objectAtIndexedSubscript:v20];
       v23 = [(NSDictionary *)suggestedAmountsForAngle objectForKeyedSubscript:v22];
-      v24 = [v23 amount];
+      amount = [v23 amount];
       v25 = PKEqualObjects();
 
       if (v25)
@@ -1682,22 +1682,22 @@ LABEL_24:
       }
     }
 
-    v26 = a3;
+    angleCopy2 = angle;
     p_angleState = &self->_angleState;
     v13 = v68;
   }
 
   else
   {
-    v17 = [(NSArray *)self->_suggestedAmountAngles count];
-    if (!v17)
+    amount2 = [(NSArray *)self->_suggestedAmountAngles count];
+    if (!amount2)
     {
       p_initialDisplayAmount = &self->_initialDisplayAmount;
       v42 = self->_initialDisplayAmount;
       needsInitialDisplay = v42 == 0;
       v20 = 0x7FFFFFFFFFFFFFFFLL;
-      v26 = 0.0;
-      if (!v42 || v8)
+      angleCopy2 = 0.0;
+      if (!v42 || ringCopy)
       {
         goto LABEL_40;
       }
@@ -1714,8 +1714,8 @@ LABEL_24:
     {
       v31 = [(NSArray *)self->_suggestedAmountAngles objectAtIndexedSubscript:v29];
       [v31 doubleValue];
-      v33 = v32 + -0.172787596 > a3 || v32 + 0.172787596 < a3;
-      v34 = vabdd_f64(a3, v32);
+      v33 = v32 + -0.172787596 > angle || v32 + 0.172787596 < angle;
+      v34 = vabdd_f64(angle, v32);
       if (!v33 && v34 <= v30)
       {
         v36 = v31;
@@ -1728,21 +1728,21 @@ LABEL_24:
       ++v29;
     }
 
-    while (v17 != v29);
+    while (amount2 != v29);
     if (v28)
     {
       [v28 doubleValue];
-      v26 = v37;
+      angleCopy2 = v37;
       v38 = [(NSDictionary *)self->_suggestedAmountsForAngle objectForKeyedSubscript:v28];
-      v17 = [v38 amount];
+      amount2 = [v38 amount];
 
-      a3 = v26;
+      angle = angleCopy2;
     }
 
     else
     {
-      v17 = 0;
-      v26 = 0.0;
+      amount2 = 0;
+      angleCopy2 = 0.0;
       v20 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
@@ -1752,7 +1752,7 @@ LABEL_24:
   p_initialDisplayAmount = &self->_initialDisplayAmount;
   v43 = self->_initialDisplayAmount;
   needsInitialDisplay = v43 == 0;
-  if (!v43 || v8)
+  if (!v43 || ringCopy)
   {
     goto LABEL_40;
   }
@@ -1794,7 +1794,7 @@ LABEL_39:
 
   v45 = 1;
 LABEL_42:
-  if (PKEqualObjects() && self->_pinnedAmountAngle == v26)
+  if (PKEqualObjects() && self->_pinnedAmountAngle == angleCopy2)
   {
     if (self->_pinnedAmountAngleIndex == v20)
     {
@@ -1806,7 +1806,7 @@ LABEL_42:
       v46 = 1;
     }
 
-    if (target == a3 && v46 == 0)
+    if (target == angle && v46 == 0)
     {
       v46 = 0;
       if (v13)
@@ -1823,26 +1823,26 @@ LABEL_42:
     v46 = 1;
   }
 
-  p_angleState->target = a3;
-  if (!p_angleState->running && p_angleState->position != a3)
+  p_angleState->target = angle;
+  if (!p_angleState->running && p_angleState->position != angle)
   {
     p_angleState->running = 1;
   }
 
-  v47 = [v17 copy];
+  v47 = [amount2 copy];
   pinnedAmount = self->_pinnedAmount;
   self->_pinnedAmount = v47;
 
-  self->_pinnedAmountAngle = v26;
+  self->_pinnedAmountAngle = angleCopy2;
   self->_pinnedAmountAngleIndex = v20;
   if (self->_overrideGradientState)
   {
-    v49 = [(PKRingGradientView *)self->_ringView gradientStartColor];
-    v50 = [(PKRingGradientView *)self->_ringView gradientEndColor];
-    v51 = v50;
-    if (v49 && v50)
+    gradientStartColor = [(PKRingGradientView *)self->_ringView gradientStartColor];
+    gradientEndColor = [(PKRingGradientView *)self->_ringView gradientEndColor];
+    v51 = gradientEndColor;
+    if (gradientStartColor && gradientEndColor)
     {
-      v52 = [[PKBillPaymentRingGradientState alloc] initWithStartColor:v49 endColor:v50];
+      v52 = [[PKBillPaymentRingGradientState alloc] initWithStartColor:gradientStartColor endColor:gradientEndColor];
       overrideGradientState = self->_overrideGradientState;
       self->_overrideGradientState = v52;
 
@@ -1879,14 +1879,14 @@ LABEL_57:
 
   if (p_angleState->running)
   {
-    if (target != a3)
+    if (target != angle)
     {
-      if (v13 && v8)
+      if (v13 && ringCopy)
       {
         if (!self->_feedbackGenerator)
         {
-          v56 = [MEMORY[0x1E69DD6E8] defaultConfiguration];
-          v57 = [v56 tweakedConfigurationForCaller:self usage:@"majorSelection"];
+          defaultConfiguration = [MEMORY[0x1E69DD6E8] defaultConfiguration];
+          v57 = [defaultConfiguration tweakedConfigurationForCaller:self usage:@"majorSelection"];
 
           v58 = [MEMORY[0x1E69DD470] feedbackWithDictionaryRepresentation:&unk_1F3CC8870];
           [v57 setFeedback:v58];
@@ -1935,11 +1935,11 @@ LABEL_77:
   [(PKBillPaymentRingView *)self _updatePausedState];
 }
 
-- (void)setHandleScale:(double)a3 animated:(BOOL)a4
+- (void)setHandleScale:(double)scale animated:(BOOL)animated
 {
   p_scaleState = &self->_scaleState;
   position = self->_scaleState.position;
-  v8 = log(a3);
+  v8 = log(scale);
   p_scaleState->target = v8;
   if (p_scaleState->running || position == v8)
   {
@@ -1956,7 +1956,7 @@ LABEL_77:
   }
 
   v9 = position;
-  if (!a4)
+  if (!animated)
   {
     p_scaleState->running = 0;
     p_scaleState->position = v8;
@@ -1999,21 +1999,21 @@ LABEL_7:
   }
 }
 
-- (id)_blendFromGradientState:(id)a3 toState:(id)a4 withProgress:(double)a5
+- (id)_blendFromGradientState:(id)state toState:(id)toState withProgress:(double)progress
 {
   v7 = MEMORY[0x1E69DC888];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 startColor];
-  v11 = [v8 startColor];
-  v12 = [v7 pkui_blendFromColor:v10 toColor:v11 withProgress:a5];
+  toStateCopy = toState;
+  stateCopy = state;
+  startColor = [stateCopy startColor];
+  startColor2 = [toStateCopy startColor];
+  v12 = [v7 pkui_blendFromColor:startColor toColor:startColor2 withProgress:progress];
 
   v13 = MEMORY[0x1E69DC888];
-  v14 = [v9 endColor];
+  endColor = [stateCopy endColor];
 
-  v15 = [v8 endColor];
+  endColor2 = [toStateCopy endColor];
 
-  v16 = [v13 pkui_blendFromColor:v14 toColor:v15 withProgress:a5];
+  v16 = [v13 pkui_blendFromColor:endColor toColor:endColor2 withProgress:progress];
 
   v17 = [[PKBillPaymentRingGradientState alloc] initWithStartColor:v12 endColor:v16];
 
@@ -2077,27 +2077,27 @@ LABEL_7:
   [(PKCurvedTextLabel *)self->_bottomCurvedTextLabel setText:v7];
 }
 
-- (void)_setResponse:(double)a3
+- (void)_setResponse:(double)response
 {
-  if (self->_responseState.target != a3)
+  if (self->_responseState.target != response)
   {
     self->_responseSpringElapsedDuration = 0.0;
-    self->_responseState.target = a3;
-    if (!self->_responseState.running && self->_responseState.position != a3)
+    self->_responseState.target = response;
+    if (!self->_responseState.running && self->_responseState.position != response)
     {
       self->_responseState.running = 1;
     }
   }
 }
 
-- (void)_setDotsVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)_setDotsVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_dotsVisible == !a3)
+  if (self->_dotsVisible == !visible)
   {
-    if (a4)
+    if (animated)
     {
       [(PKBillPaymentRingView *)self layoutIfNeeded];
-      self->_dotsVisible = a3;
+      self->_dotsVisible = visible;
       [(PKBillPaymentRingView *)self setNeedsLayout];
       v6 = [objc_alloc(MEMORY[0x1E69BC7A0]) initWithMass:3.0 stiffness:1000.0 damping:500.0];
       v7 = v6;
@@ -2121,7 +2121,7 @@ LABEL_7:
 
     else
     {
-      self->_dotsVisible = a3;
+      self->_dotsVisible = visible;
 
       [(PKBillPaymentRingView *)self setNeedsLayout];
     }
@@ -2145,24 +2145,24 @@ double __50__PKBillPaymentRingView__setDotsVisible_animated___block_invoke(uint6
   return v7;
 }
 
-- (BOOL)_setDisplayAmount:(id)a3
+- (BOOL)_setDisplayAmount:(id)amount
 {
-  v4 = a3;
+  amountCopy = amount;
   if (PKEqualObjects())
   {
-    v5 = 0;
+    _updateEffectiveDisplayAmount = 0;
   }
 
   else
   {
-    v6 = [v4 copy];
+    v6 = [amountCopy copy];
     displayAmount = self->_displayAmount;
     self->_displayAmount = v6;
 
-    v5 = [(PKBillPaymentRingView *)self _updateEffectiveDisplayAmount];
+    _updateEffectiveDisplayAmount = [(PKBillPaymentRingView *)self _updateEffectiveDisplayAmount];
   }
 
-  return v5;
+  return _updateEffectiveDisplayAmount;
 }
 
 - (BOOL)_updateEffectiveDisplayAmount
@@ -2193,10 +2193,10 @@ double __50__PKBillPaymentRingView__setDotsVisible_animated___block_invoke(uint6
   return v5 ^ 1;
 }
 
-- (void)_setSelectedSuggestedAmount:(id)a3
+- (void)_setSelectedSuggestedAmount:(id)amount
 {
-  v12 = a3;
-  if (v12)
+  amountCopy = amount;
+  if (amountCopy)
   {
     pinnedAmountAngleIndex = self->_pinnedAmountAngleIndex;
     if (pinnedAmountAngleIndex != 0x7FFFFFFFFFFFFFFFLL)
@@ -2204,7 +2204,7 @@ double __50__PKBillPaymentRingView__setDotsVisible_animated___block_invoke(uint6
       suggestedAmountsForAngle = self->_suggestedAmountsForAngle;
       v3 = [(NSArray *)self->_suggestedAmountAngles objectAtIndexedSubscript:self->_pinnedAmountAngleIndex];
       v4 = [(NSDictionary *)suggestedAmountsForAngle objectForKeyedSubscript:v3];
-      if (v4 == v12)
+      if (v4 == amountCopy)
       {
         LODWORD(initialDisplayAmount) = 1;
       }
@@ -2227,7 +2227,7 @@ LABEL_11:
     if (initialDisplayAmount)
     {
 LABEL_8:
-      v10 = [v12 amount];
+      amount = [amountCopy amount];
       LODWORD(initialDisplayAmount) = PKEqualObjects();
 
       if (pinnedAmountAngleIndex == 0x7FFFFFFFFFFFFFFFLL)
@@ -2248,18 +2248,18 @@ LABEL_12:
   if (!PKEqualObjects() || self->_needsInitialDisplay || self->_selectedSuggestedAmountIsTarget == (initialDisplayAmount ^ 1))
   {
     self->_selectedSuggestedAmountIsTarget = initialDisplayAmount;
-    objc_storeStrong(&self->_selectedSuggestedAmount, a3);
+    objc_storeStrong(&self->_selectedSuggestedAmount, amount);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained billPaymentRingView:self selectedSuggestedAmount:self->_selectedSuggestedAmount selectedSuggestedAmountIsTarget:self->_selectedSuggestedAmountIsTarget userInitiatedChange:self->_userSelectedAngleChange];
   }
 }
 
-- (void)_setHighlightedSuggestedAmount:(id)a3
+- (void)_setHighlightedSuggestedAmount:(id)amount
 {
-  v5 = a3;
+  amountCopy = amount;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_highlightedSuggestedAmount, a3);
+    objc_storeStrong(&self->_highlightedSuggestedAmount, amount);
     if (self->_enabled)
     {
       [(PKBillPaymentRingView *)self _updateCurvedText];
@@ -2300,10 +2300,10 @@ LABEL_12:
 
   else
   {
-    v4 = [(PKBillPaymentRingView *)self _stickySuggestedAmountForCurrentAngle];
-    if (v4)
+    _stickySuggestedAmountForCurrentAngle = [(PKBillPaymentRingView *)self _stickySuggestedAmountForCurrentAngle];
+    if (_stickySuggestedAmountForCurrentAngle)
     {
-      v5 = [(PKBillPaymentRingView *)self _suggestedAmountImageForSuggestedAmount:v4];
+      v5 = [(PKBillPaymentRingView *)self _suggestedAmountImageForSuggestedAmount:_stickySuggestedAmountForCurrentAngle];
     }
 
     else
@@ -2330,7 +2330,7 @@ LABEL_12:
 
   v6 = [WeakRetained billPaymentRingView:self interestTextForAmount:initialDisplayAmount];
 
-  v7 = [(UILabel *)self->_interestLabel text];
+  text = [(UILabel *)self->_interestLabel text];
   v8 = objc_loadWeakRetained(&self->_dataSource);
   v9 = [v8 billPaymentRingViewZeroInterestText:self];
 
@@ -2445,11 +2445,11 @@ double __44__PKBillPaymentRingView__updateInterestText__block_invoke(uint64_t a1
   }
 }
 
-- (double)_angleForAmount:(id)a3
+- (double)_angleForAmount:(id)amount
 {
-  v4 = a3;
+  amountCopy = amount;
   v5 = [(NSArray *)self->_suggestedAmountAngles count];
-  [v4 doubleValue];
+  [amountCopy doubleValue];
   v7 = v6;
   minimumPaymentAmount = self->_minimumPaymentAmount;
   if (v6 >= minimumPaymentAmount)
@@ -2462,8 +2462,8 @@ double __44__PKBillPaymentRingView__updateInterestText__block_invoke(uint64_t a1
       {
         v13 = [(NSArray *)self->_suggestedAmountAngles objectAtIndexedSubscript:v11];
         v14 = [(NSDictionary *)self->_suggestedAmountsForAngle objectForKeyedSubscript:v13];
-        v15 = [v14 amount];
-        [v15 doubleValue];
+        amount = [v14 amount];
+        [amount doubleValue];
         v17 = v16;
 
         [v13 doubleValue];
@@ -2513,7 +2513,7 @@ LABEL_14:
   return v10;
 }
 
-- (id)_roundedAmountForAngle:(double)a3
+- (id)_roundedAmountForAngle:(double)angle
 {
   v5 = [(NSArray *)self->_suggestedAmountAngles count];
   maximumPaymentAmount = self->_maximumPaymentAmount;
@@ -2521,7 +2521,7 @@ LABEL_14:
   if (!v5)
   {
     v9 = self->_maximumPaymentAmount;
-    if (a3 >= 0.523598776)
+    if (angle >= 0.523598776)
     {
       v9 = self->_maximumPaymentAmount;
       goto LABEL_14;
@@ -2532,12 +2532,12 @@ LABEL_14:
 
   v8 = 0.523598776;
   v9 = self->_minimumPaymentAmount;
-  if (a3 < 0.523598776)
+  if (angle < 0.523598776)
   {
 LABEL_8:
     if (self->_isSmall)
     {
-      v18 = fmin(fmax((a3 + -0.226892803) / 0.296705973, 0.0), 1.0);
+      v18 = fmin(fmax((angle + -0.226892803) / 0.296705973, 0.0), 1.0);
       v9 = v18 * minimumPaymentAmount + minimumPaymentAmount * (1.0 - v18);
     }
 
@@ -2550,13 +2550,13 @@ LABEL_8:
   {
     v12 = [(NSArray *)self->_suggestedAmountAngles objectAtIndexedSubscript:v11];
     v13 = [(NSDictionary *)self->_suggestedAmountsForAngle objectForKeyedSubscript:v12];
-    v14 = [v13 amount];
-    [v14 doubleValue];
+    amount = [v13 amount];
+    [amount doubleValue];
     v9 = v15;
 
     [v12 doubleValue];
     v17 = v16;
-    if (v16 > a3)
+    if (v16 > angle)
     {
       break;
     }
@@ -2574,7 +2574,7 @@ LABEL_8:
   v19 = minimumPaymentAmount;
   if (v16 != v8)
   {
-    v20 = fmin(fmax((a3 - v8) / (v16 - v8), 0.0), 1.0);
+    v20 = fmin(fmax((angle - v8) / (v16 - v8), 0.0), 1.0);
     v19 = v9 * v20 + minimumPaymentAmount * (1.0 - v20);
   }
 
@@ -2602,21 +2602,21 @@ LABEL_14:
   return v25;
 }
 
-- (BOOL)_isAmount:(id)a3 withinRoundingUnitOfAmount:(id)a4
+- (BOOL)_isAmount:(id)amount withinRoundingUnitOfAmount:(id)ofAmount
 {
-  v6 = a4;
-  [a3 doubleValue];
+  ofAmountCopy = ofAmount;
+  [amount doubleValue];
   v8 = v7;
-  [v6 doubleValue];
+  [ofAmountCopy doubleValue];
   v10 = v9;
 
   amountRoundingUnit = self->_amountRoundingUnit;
   return v8 <= v10 + amountRoundingUnit && v8 >= v10 - amountRoundingUnit;
 }
 
-- (CGPoint)_centerPointAtAngle:(double)a3 adjustToCover:(BOOL)a4
+- (CGPoint)_centerPointAtAngle:(double)angle adjustToCover:(BOOL)cover
 {
-  v4 = a4;
+  coverCopy = cover;
   [(PKBillPaymentRingView *)self _center];
   v8 = v7;
   v10 = v9;
@@ -2624,14 +2624,14 @@ LABEL_14:
   v11 = CGRectGetWidth(v20) * 0.5;
   [(PKBillPaymentRingView *)self _ringWidth];
   v13 = v11 - v12 * 0.5;
-  if (v4)
+  if (coverCopy)
   {
     v14 = PKUIPixelLength();
-    a3 = a3 + asin(v14 / v13) * -5.0;
+    angle = angle + asin(v14 / v13) * -5.0;
   }
 
-  v15 = a3;
-  v16 = __sincosf_stret(v15);
+  angleCopy = angle;
+  v16 = __sincosf_stret(angleCopy);
   v17 = v10 + v13 * v16.__sinval;
   v18 = v8 + v13 * v16.__cosval;
   result.y = v17;
@@ -2670,7 +2670,7 @@ LABEL_14:
   return result;
 }
 
-- (unint64_t)_unnormalizedAngleIndexForAngle:(double)a3
+- (unint64_t)_unnormalizedAngleIndexForAngle:(double)angle
 {
   v5 = [(NSArray *)self->_suggestedAmountAngles count];
   if (!v5)
@@ -2680,7 +2680,7 @@ LABEL_14:
 
   v6 = v5;
   v7 = 0;
-  v8 = fmax(a3, 0.523598776);
+  v8 = fmax(angle, 0.523598776);
   v9 = 0x7FFFFFFFFFFFFFFFLL;
   do
   {
@@ -2698,13 +2698,13 @@ LABEL_14:
   return v9;
 }
 
-- (unint64_t)_segmentEndAngleIndexForAngle:(double)a3
+- (unint64_t)_segmentEndAngleIndexForAngle:(double)angle
 {
   result = [(NSArray *)self->_suggestedAmountAngles count];
   if (result)
   {
     v6 = result;
-    v7 = [(PKBillPaymentRingView *)self _unnormalizedAngleIndexForAngle:a3];
+    v7 = [(PKBillPaymentRingView *)self _unnormalizedAngleIndexForAngle:angle];
     if (v7 + 1 < v6 - 1)
     {
       v8 = v7 + 1;
@@ -2729,23 +2729,23 @@ LABEL_14:
   return result;
 }
 
-- (double)_angleForAngleIndex:(unint64_t)a3
+- (double)_angleForAngleIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_suggestedAmountAngles count]<= a3)
+  if ([(NSArray *)self->_suggestedAmountAngles count]<= index)
   {
     return 0.0;
   }
 
-  v5 = [(NSArray *)self->_suggestedAmountAngles objectAtIndexedSubscript:a3];
+  v5 = [(NSArray *)self->_suggestedAmountAngles objectAtIndexedSubscript:index];
   [v5 doubleValue];
   v7 = v6;
 
   return v7;
 }
 
-- (id)_suggestedAmountForAngleIndex:(unint64_t)a3
+- (id)_suggestedAmountForAngleIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_suggestedAmountAngles count]<= a3)
+  if ([(NSArray *)self->_suggestedAmountAngles count]<= index)
   {
     v7 = 0;
   }
@@ -2753,20 +2753,20 @@ LABEL_14:
   else
   {
     suggestedAmountsForAngle = self->_suggestedAmountsForAngle;
-    v6 = [(NSArray *)self->_suggestedAmountAngles objectAtIndexedSubscript:a3];
+    v6 = [(NSArray *)self->_suggestedAmountAngles objectAtIndexedSubscript:index];
     v7 = [(NSDictionary *)suggestedAmountsForAngle objectForKeyedSubscript:v6];
   }
 
   return v7;
 }
 
-- (id)_suggestedAmountImageForSuggestedAmount:(id)a3
+- (id)_suggestedAmountImageForSuggestedAmount:(id)amount
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  amountCopy = amount;
+  v5 = amountCopy;
+  if (amountCopy)
   {
-    if ([v4 category] == 1)
+    if ([amountCopy category] == 1)
     {
       suggestedAmoutImages = self->_suggestedAmoutImages;
       v7 = &unk_1F3CC74C0;
@@ -2804,7 +2804,7 @@ LABEL_12:
   return v9;
 }
 
-- (id)_targetGradientStateForAngle:(double)a3
+- (id)_targetGradientStateForAngle:(double)angle
 {
   v5 = [(PKBillPaymentRingView *)self _segmentEndAngleIndexForAngle:?];
   v6 = v5;
@@ -2825,10 +2825,10 @@ LABEL_12:
 
   if (v7 == v6)
   {
-    v12 = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList smalllestSuggestionAmountBelowRemainingStatementAmount];
-    v13 = [v12 pk_isPositiveNumber];
+    smalllestSuggestionAmountBelowRemainingStatementAmount = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList smalllestSuggestionAmountBelowRemainingStatementAmount];
+    pk_isPositiveNumber = [smalllestSuggestionAmountBelowRemainingStatementAmount pk_isPositiveNumber];
 
-    if (v13)
+    if (pk_isPositiveNumber)
     {
       standardRingStates = self->_standardRingStates;
       v15 = &unk_1F3CC74C0;
@@ -2836,10 +2836,10 @@ LABEL_12:
 
     else
     {
-      v20 = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList remainingStatementAmount];
+      remainingStatementAmount = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList remainingStatementAmount];
 
       standardRingStates = self->_standardRingStates;
-      if (v20)
+      if (remainingStatementAmount)
       {
         v15 = &unk_1F3CC74F0;
       }
@@ -2863,19 +2863,19 @@ LABEL_12:
   }
 
   v21 = fmin(v9 - v17, 0.172787596);
-  if (v9 - v21 >= a3)
+  if (v9 - v21 >= angle)
   {
     v22 = v19;
   }
 
-  else if (v9 <= a3)
+  else if (v9 <= angle)
   {
     v22 = v11;
   }
 
   else
   {
-    v22 = [(PKBillPaymentRingView *)self _blendFromGradientState:v19 toState:v11 withProgress:(a3 - (v9 - v21)) / v21];
+    v22 = [(PKBillPaymentRingView *)self _blendFromGradientState:v19 toState:v11 withProgress:(angle - (v9 - v21)) / v21];
   }
 
   v23 = v22;
@@ -2883,15 +2883,15 @@ LABEL_12:
   return v23;
 }
 
-- (id)_gradientStateForSuggestedAmount:(id)a3
+- (id)_gradientStateForSuggestedAmount:(id)amount
 {
-  v4 = [a3 amount];
+  amount = [amount amount];
   v5 = [(NSDictionary *)self->_colorStops objectForKeyedSubscript:&unk_1F3CC74C0];
   v6 = [(NSDictionary *)self->_colorStops objectForKeyedSubscript:&unk_1F3CC74D8];
   v7 = [(NSDictionary *)self->_colorStops objectForKeyedSubscript:&unk_1F3CC7508];
   if (v5)
   {
-    v8 = v4 == 0;
+    v8 = amount == 0;
   }
 
   else
@@ -2907,12 +2907,12 @@ LABEL_12:
 
   else
   {
-    v10 = [v4 compare:v5];
+    v10 = [amount compare:v5];
   }
 
   if (v6)
   {
-    v11 = v4 == 0;
+    v11 = amount == 0;
   }
 
   else
@@ -2928,12 +2928,12 @@ LABEL_12:
 
   else
   {
-    v13 = [v4 compare:v6];
+    v13 = [amount compare:v6];
   }
 
   if (v7)
   {
-    v14 = v4 == 0;
+    v14 = amount == 0;
   }
 
   else
@@ -2950,7 +2950,7 @@ LABEL_12:
 
   else
   {
-    v16 = [v4 compare:v7] != -1;
+    v16 = [amount compare:v7] != -1;
     v17 = v16;
   }
 
@@ -3066,13 +3066,13 @@ LABEL_12:
 - (void)_createSuggestedAmountAngles
 {
   v64 = *MEMORY[0x1E69E9840];
-  v3 = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList minimumAmount];
-  v54 = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList maximumAmount];
-  [v54 doubleValue];
+  minimumAmount = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList minimumAmount];
+  maximumAmount = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList maximumAmount];
+  [maximumAmount doubleValue];
   v5 = v4;
-  if (v3)
+  if (minimumAmount)
   {
-    [v3 doubleValue];
+    [minimumAmount doubleValue];
   }
 
   else
@@ -3082,7 +3082,7 @@ LABEL_12:
 
   v7 = v5 - v6;
   v8 = 0.01;
-  v55 = v3;
+  v55 = minimumAmount;
   if (v7 != 0.0)
   {
     v9 = 0;
@@ -3113,32 +3113,32 @@ LABEL_12:
   }
 
 LABEL_16:
-  if (v3)
+  if (minimumAmount)
   {
-    [v3 doubleValue];
+    [minimumAmount doubleValue];
     v16 = v15;
   }
 
   else
   {
-    v17 = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList remainingStatementAmount];
-    v18 = v17;
+    remainingStatementAmount = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList remainingStatementAmount];
+    v18 = remainingStatementAmount;
     v16 = v8;
-    if (v17)
+    if (remainingStatementAmount)
     {
-      [v17 doubleValue];
+      [remainingStatementAmount doubleValue];
       v16 = fmin(v19, v8);
     }
 
-    v20 = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList maximumAmount];
+    maximumAmount2 = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList maximumAmount];
 
-    if (v20)
+    if (maximumAmount2)
     {
-      [v20 doubleValue];
+      [maximumAmount2 doubleValue];
       v16 = fmin(v21, v16);
     }
 
-    v3 = v55;
+    minimumAmount = v55;
   }
 
   self->_amountRoundingUnit = v8;
@@ -3146,13 +3146,13 @@ LABEL_16:
   self->_maximumPaymentAmount = v5;
   v22 = vabdd_f64(v5, v16);
   v23 = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList suggestedAmountWithCategory:18];
-  v24 = [v23 amount];
+  amount = [v23 amount];
 
-  [v24 doubleValue];
+  [amount doubleValue];
   v26 = v25;
   v57 = 0;
   v56 = 0.0;
-  if (v24)
+  if (amount)
   {
     v27 = 0.0;
     if (v5 - v16 == 0.0)
@@ -3162,9 +3162,9 @@ LABEL_16:
 
     v28 = fmin(fmax((v25 - v16) / v22, 0.0), 1.0);
     v29 = v28 * 6.28318531 + (1.0 - v28) * 0.523598776;
-    if (v3)
+    if (minimumAmount)
     {
-      v30 = [v24 isEqual:v3];
+      v30 = [amount isEqual:minimumAmount];
     }
 
     else
@@ -3172,7 +3172,7 @@ LABEL_16:
       v30 = 0;
     }
 
-    v31 = [v24 isEqual:v54];
+    v31 = [amount isEqual:maximumAmount];
     v27 = 5.75958653;
     if (v29 > 5.75958653 && (v31 & 1) == 0)
     {
@@ -3181,7 +3181,7 @@ LABEL_16:
 
     v57 = 0;
     v56 = 0.0;
-    if (v3)
+    if (minimumAmount)
     {
       v27 = 1.04719755;
       if (v29 < 1.04719755)
@@ -3202,15 +3202,15 @@ LABEL_30:
 
   v27 = 0.0;
 LABEL_36:
-  v53 = v24;
+  v53 = amount;
   v32 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v58 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v33 = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList sortedSuggestedAmounts];
-  v34 = [v33 countByEnumeratingWithState:&v59 objects:v63 count:16];
+  sortedSuggestedAmounts = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList sortedSuggestedAmounts];
+  v34 = [sortedSuggestedAmounts countByEnumeratingWithState:&v59 objects:v63 count:16];
   if (v34)
   {
     v35 = v34;
@@ -3221,12 +3221,12 @@ LABEL_36:
       {
         if (*v60 != v36)
         {
-          objc_enumerationMutation(v33);
+          objc_enumerationMutation(sortedSuggestedAmounts);
         }
 
         v38 = *(*(&v59 + 1) + 8 * i);
-        v39 = [v38 amount];
-        [v39 doubleValue];
+        amount2 = [v38 amount];
+        [amount2 doubleValue];
         v41 = v40;
 
         if (v41 >= self->_minimumPaymentAmount && v41 <= self->_maximumPaymentAmount)
@@ -3289,7 +3289,7 @@ LABEL_55:
         }
       }
 
-      v35 = [v33 countByEnumeratingWithState:&v59 objects:v63 count:16];
+      v35 = [sortedSuggestedAmounts countByEnumeratingWithState:&v59 objects:v63 count:16];
     }
 
     while (v35);
@@ -3366,7 +3366,7 @@ uint64_t __53__PKBillPaymentRingView__createSuggestedAmountAngles__block_invoke(
     v7 = CGColorCreate(v6, &components);
     v8 = [MEMORY[0x1E69DC888] colorWithCGColor:v7];
     CGColorRelease(v7);
-    v9 = [v8 pkui_extendedLinearColor];
+    pkui_extendedLinearColor = [v8 pkui_extendedLinearColor];
 
     if (v3 > 1)
     {
@@ -3401,9 +3401,9 @@ uint64_t __53__PKBillPaymentRingView__createSuggestedAmountAngles__block_invoke(
     v12 = CGColorCreate(v11, &components);
     v13 = [MEMORY[0x1E69DC888] colorWithCGColor:v12];
     CGColorRelease(v12);
-    v14 = [v13 pkui_extendedLinearColor];
+    pkui_extendedLinearColor2 = [v13 pkui_extendedLinearColor];
 
-    v15 = [(PKBillPaymentRingGradientState *)v4 initWithStartColor:v9 endColor:v14];
+    v15 = [(PKBillPaymentRingGradientState *)v4 initWithStartColor:pkui_extendedLinearColor endColor:pkui_extendedLinearColor2];
     v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v3];
     [v2 setObject:v15 forKeyedSubscript:v16];
 
@@ -3419,27 +3419,27 @@ uint64_t __53__PKBillPaymentRingView__createSuggestedAmountAngles__block_invoke(
 - (void)_createSuggestedAmountRingColorStops
 {
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v3 = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList minimumAmount];
-  v4 = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList remainingStatementAmount];
-  v5 = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList maximumAmount];
+  minimumAmount = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList minimumAmount];
+  remainingStatementAmount = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList remainingStatementAmount];
+  maximumAmount = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList maximumAmount];
   v6 = [(PKBillPaymentSuggestedAmountList *)self->_suggestedAmountList suggestedAmountWithCategory:30];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 amount];
+    amount = [v6 amount];
 
-    v5 = v8;
+    maximumAmount = amount;
   }
 
   if (PKEqualObjects())
   {
 
-    v5 = 0;
+    maximumAmount = 0;
   }
 
-  [v11 setObject:v3 forKeyedSubscript:&unk_1F3CC74C0];
-  [v11 setObject:v4 forKeyedSubscript:&unk_1F3CC74D8];
-  [v11 setObject:v5 forKeyedSubscript:&unk_1F3CC7508];
+  [v11 setObject:minimumAmount forKeyedSubscript:&unk_1F3CC74C0];
+  [v11 setObject:remainingStatementAmount forKeyedSubscript:&unk_1F3CC74D8];
+  [v11 setObject:maximumAmount forKeyedSubscript:&unk_1F3CC7508];
   v9 = [v11 copy];
   colorStops = self->_colorStops;
   self->_colorStops = v9;

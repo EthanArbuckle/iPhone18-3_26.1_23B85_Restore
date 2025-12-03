@@ -1,11 +1,11 @@
 @interface _MRRequestGroupSessionMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRRequestGroupSessionMessageProtobuf
@@ -16,26 +16,26 @@
   v8.receiver = self;
   v8.super_class = _MRRequestGroupSessionMessageProtobuf;
   v4 = [(_MRRequestGroupSessionMessageProtobuf *)&v8 description];
-  v5 = [(_MRRequestGroupSessionMessageProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRRequestGroupSessionMessageProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   details = self->_details;
   if (details)
   {
-    v5 = [(_MRRequestDetailsProtobuf *)details dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"details"];
+    dictionaryRepresentation = [(_MRRequestDetailsProtobuf *)details dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"details"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_details)
   {
@@ -43,32 +43,32 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   details = self->_details;
   if (details)
   {
-    [a3 setDetails:details];
+    [to setDetails:details];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(_MRRequestDetailsProtobuf *)self->_details copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(_MRRequestDetailsProtobuf *)self->_details copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     details = self->_details;
-    if (details | v4[1])
+    if (details | equalCopy[1])
     {
       v6 = [(_MRRequestDetailsProtobuf *)details isEqual:?];
     }
@@ -87,11 +87,11 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   details = self->_details;
-  v6 = v4[1];
+  v6 = fromCopy[1];
   if (details)
   {
     if (!v6)
@@ -99,7 +99,7 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(_MRRequestDetailsProtobuf *)details mergeFrom:?];
   }
 
@@ -110,11 +110,11 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(_MRRequestGroupSessionMessageProtobuf *)self setDetails:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
 }
 

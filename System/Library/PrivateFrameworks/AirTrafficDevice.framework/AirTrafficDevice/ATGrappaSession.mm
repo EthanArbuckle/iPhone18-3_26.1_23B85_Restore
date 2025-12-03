@@ -1,32 +1,32 @@
 @interface ATGrappaSession
-- (ATGrappaSession)initWithType:(unint64_t)a3;
-- (id)_deviceCreateSignature:(id *)a3 forData:(id)a4;
-- (id)_deviceVerifySignature:(id)a3 forData:(id)a4;
-- (id)_hostCreateSignature:(id *)a3 forData:(id)a4;
-- (id)_hostVerifySignature:(id)a3 forData:(id)a4;
-- (id)beginHostSessionWithDeviceResponseData:(id)a3;
-- (id)createSignature:(id *)a3 forData:(id)a4;
+- (ATGrappaSession)initWithType:(unint64_t)type;
+- (id)_deviceCreateSignature:(id *)signature forData:(id)data;
+- (id)_deviceVerifySignature:(id)signature forData:(id)data;
+- (id)_hostCreateSignature:(id *)signature forData:(id)data;
+- (id)_hostVerifySignature:(id)signature forData:(id)data;
+- (id)beginHostSessionWithDeviceResponseData:(id)data;
+- (id)createSignature:(id *)signature forData:(id)data;
 - (id)deviceInfo;
-- (id)establishDeviceSessionWithRequestData:(id)a3 responseData:(id *)a4;
-- (id)establishHostSessionWithDeviceInfo:(id)a3 clientRequestData:(id *)a4;
-- (id)verifySignature:(id)a3 forData:(id)a4;
+- (id)establishDeviceSessionWithRequestData:(id)data responseData:(id *)responseData;
+- (id)establishHostSessionWithDeviceInfo:(id)info clientRequestData:(id *)data;
+- (id)verifySignature:(id)signature forData:(id)data;
 @end
 
 @implementation ATGrappaSession
 
-- (id)_hostVerifySignature:(id)a3 forData:(id)a4
+- (id)_hostVerifySignature:(id)signature forData:(id)data
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length] && objc_msgSend(v6, "length"))
+  signatureCopy = signature;
+  dataCopy = data;
+  if ([dataCopy length] && objc_msgSend(signatureCopy, "length"))
   {
     sessionId = self->_sessionId;
-    v9 = [v7 bytes];
-    v10 = [v7 length];
-    v11 = [v6 bytes];
-    [v6 length];
-    tTA34a4tbgsKsWljx9Ip(sessionId, v9, v10, v11);
+    bytes = [dataCopy bytes];
+    v10 = [dataCopy length];
+    bytes2 = [signatureCopy bytes];
+    [signatureCopy length];
+    tTA34a4tbgsKsWljx9Ip(sessionId, bytes, v10, bytes2);
     if (v12)
     {
       v13 = v12;
@@ -43,7 +43,7 @@
     }
   }
 
-  else if ([v7 length] || objc_msgSend(v6, "length"))
+  else if ([dataCopy length] || objc_msgSend(signatureCopy, "length"))
   {
     v15 = 4;
 LABEL_10:
@@ -57,17 +57,17 @@ LABEL_12:
   return v16;
 }
 
-- (id)_hostCreateSignature:(id *)a3 forData:(id)a4
+- (id)_hostCreateSignature:(id *)signature forData:(id)data
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if ([(__CFData *)v6 length])
+  dataCopy = data;
+  if ([(__CFData *)dataCopy length])
   {
     v16 = 0;
     v15 = 0;
     sessionId = self->_sessionId;
-    BytePtr = CFDataGetBytePtr(v6);
-    Length = CFDataGetLength(v6);
+    BytePtr = CFDataGetBytePtr(dataCopy);
+    Length = CFDataGetLength(dataCopy);
     qk82YWRPNDt4yUtuP3cY(sessionId, BytePtr, Length, &v16, &v15);
     if (v10)
     {
@@ -85,7 +85,7 @@ LABEL_12:
 
     else
     {
-      *a3 = [MEMORY[0x277CBEA90] dataWithBytes:v16 length:v15];
+      *signature = [MEMORY[0x277CBEA90] dataWithBytes:v16 length:v15];
       X5EvIJWqdcALcjaxX6Pl(v16);
       v13 = 0;
     }
@@ -94,23 +94,23 @@ LABEL_12:
   else
   {
     v13 = 0;
-    *a3 = 0;
+    *signature = 0;
   }
 
   return v13;
 }
 
-- (id)_deviceVerifySignature:(id)a3 forData:(id)a4
+- (id)_deviceVerifySignature:(id)signature forData:(id)data
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 length] && objc_msgSend(v5, "length"))
+  signatureCopy = signature;
+  dataCopy = data;
+  if ([dataCopy length] && objc_msgSend(signatureCopy, "length"))
   {
-    [v6 bytes];
-    [v6 length];
-    [v5 bytes];
-    [v5 length];
+    [dataCopy bytes];
+    [dataCopy length];
+    [signatureCopy bytes];
+    [signatureCopy length];
     CFUnnB0JdUjJ5CNJMkDS();
     if (v7)
     {
@@ -127,7 +127,7 @@ LABEL_12:
     }
   }
 
-  else if ([v6 length] || objc_msgSend(v5, "length"))
+  else if ([dataCopy length] || objc_msgSend(signatureCopy, "length"))
   {
 LABEL_9:
     v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ATError" code:0 userInfo:0];
@@ -140,16 +140,16 @@ LABEL_11:
   return v10;
 }
 
-- (id)_deviceCreateSignature:(id *)a3 forData:(id)a4
+- (id)_deviceCreateSignature:(id *)signature forData:(id)data
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if ([(__CFData *)v6 length])
+  dataCopy = data;
+  if ([(__CFData *)dataCopy length])
   {
     v15 = 0;
     sessionId = self->_sessionId;
-    BytePtr = CFDataGetBytePtr(v6);
-    Length = CFDataGetLength(v6);
+    BytePtr = CFDataGetBytePtr(dataCopy);
+    Length = CFDataGetLength(dataCopy);
     jumT7rcoieclCtxS2rgJ(sessionId, BytePtr, Length, &v15);
     if (v10)
     {
@@ -167,7 +167,7 @@ LABEL_11:
 
     else
     {
-      *a3 = [MEMORY[0x277CBEA90] dataWithBytes:v15 length:0];
+      *signature = [MEMORY[0x277CBEA90] dataWithBytes:v15 length:0];
       X5EvIJWqdcALcjaxX6Pl(v15);
       v13 = 0;
     }
@@ -176,55 +176,55 @@ LABEL_11:
   else
   {
     v13 = 0;
-    *a3 = 0;
+    *signature = 0;
   }
 
   return v13;
 }
 
-- (id)verifySignature:(id)a3 forData:(id)a4
+- (id)verifySignature:(id)signature forData:(id)data
 {
   if (self->_sessionType)
   {
-    [(ATGrappaSession *)self _hostVerifySignature:a3 forData:a4];
+    [(ATGrappaSession *)self _hostVerifySignature:signature forData:data];
   }
 
   else
   {
-    [(ATGrappaSession *)self _deviceVerifySignature:a3 forData:a4];
+    [(ATGrappaSession *)self _deviceVerifySignature:signature forData:data];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)createSignature:(id *)a3 forData:(id)a4
+- (id)createSignature:(id *)signature forData:(id)data
 {
   if (self->_sessionType)
   {
-    [(ATGrappaSession *)self _hostCreateSignature:a3 forData:a4];
+    [(ATGrappaSession *)self _hostCreateSignature:signature forData:data];
   }
 
   else
   {
-    [(ATGrappaSession *)self _deviceCreateSignature:a3 forData:a4];
+    [(ATGrappaSession *)self _deviceCreateSignature:signature forData:data];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)beginHostSessionWithDeviceResponseData:(id)a3
+- (id)beginHostSessionWithDeviceResponseData:(id)data
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dataCopy = data;
   if (self->_sessionType != 1)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"ATGrappa.m" lineNumber:109 description:@"function is host-only"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATGrappa.m" lineNumber:109 description:@"function is host-only"];
   }
 
-  LainiFYJT9auDqhZYWzW(self->_sessionId, [v5 bytes], objc_msgSend(v5, "length"));
+  LainiFYJT9auDqhZYWzW(self->_sessionId, [dataCopy bytes], objc_msgSend(dataCopy, "length"));
   if (v6)
   {
     v7 = v6;
@@ -247,23 +247,23 @@ LABEL_11:
   return v9;
 }
 
-- (id)establishHostSessionWithDeviceInfo:(id)a3 clientRequestData:(id *)a4
+- (id)establishHostSessionWithDeviceInfo:(id)info clientRequestData:(id *)data
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  infoCopy = info;
   if (self->_sessionType != 1)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"ATGrappa.m" lineNumber:85 description:@"function is host-only"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATGrappa.m" lineNumber:85 description:@"function is host-only"];
   }
 
-  v8 = [v7 objectForKey:@"version"];
+  v8 = [infoCopy objectForKey:@"version"];
   v20[0] = [v8 unsignedCharValue];
 
-  v9 = [v7 objectForKey:@"deviceType"];
+  v9 = [infoCopy objectForKey:@"deviceType"];
   v20[1] = [v9 unsignedIntValue];
 
-  v10 = [v7 objectForKey:@"protocolVersion"];
+  v10 = [infoCopy objectForKey:@"protocolVersion"];
   v20[2] = [v10 unsignedCharValue];
 
   memset(length, 0, sizeof(length));
@@ -288,35 +288,35 @@ LABEL_11:
     rpY4QOlsWsxk0fLzfV8h(*&length[1]);
     v16 = v15;
     v14 = 0;
-    *a4 = v15;
+    *data = v15;
   }
 
   return v14;
 }
 
-- (id)establishDeviceSessionWithRequestData:(id)a3 responseData:(id *)a4
+- (id)establishDeviceSessionWithRequestData:(id)data responseData:(id *)responseData
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = v7;
+  dataCopy = data;
+  v8 = dataCopy;
   if (!self->_sessionType)
   {
-    if (v7)
+    if (dataCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_14:
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"ATGrappa.m" lineNumber:66 description:@"no session request data"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATGrappa.m" lineNumber:66 description:@"no session request data"];
 
 LABEL_9:
     v12 = 0;
     goto LABEL_10;
   }
 
-  v14 = [MEMORY[0x277CCA890] currentHandler];
-  [v14 handleFailureInMethod:a2 object:self file:@"ATGrappa.m" lineNumber:65 description:@"function is client-only"];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"ATGrappa.m" lineNumber:65 description:@"function is client-only"];
 
   if (!v8)
   {
@@ -330,7 +330,7 @@ LABEL_3:
   {
     if (v16)
     {
-      *a4 = [MEMORY[0x277CBEA90] dataWithBytes:v16 length:0];
+      *responseData = [MEMORY[0x277CBEA90] dataWithBytes:v16 length:0];
       X5EvIJWqdcALcjaxX6Pl(v16);
     }
 
@@ -382,14 +382,14 @@ LABEL_10:
   return v5;
 }
 
-- (ATGrappaSession)initWithType:(unint64_t)a3
+- (ATGrappaSession)initWithType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = ATGrappaSession;
   result = [(ATGrappaSession *)&v5 init];
   if (result)
   {
-    result->_sessionType = a3;
+    result->_sessionType = type;
   }
 
   return result;

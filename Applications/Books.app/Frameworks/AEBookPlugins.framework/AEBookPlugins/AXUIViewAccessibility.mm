@@ -8,8 +8,8 @@
 
 - (BOOL)accessibilityPerformEscape
 {
-  v3 = [(AXUIViewAccessibility *)self imaxIdentification];
-  v4 = [v3 isEqualToString:@"EscapableWindow"];
+  imaxIdentification = [(AXUIViewAccessibility *)self imaxIdentification];
+  v4 = [imaxIdentification isEqualToString:@"EscapableWindow"];
 
   if (v4)
   {
@@ -29,8 +29,8 @@
 
 - (BOOL)_accessibilityReadAllOnFocus
 {
-  v3 = [(AXUIViewAccessibility *)self imaxIdentification];
-  v4 = [v3 isEqualToString:@"PreviewContentView"];
+  imaxIdentification = [(AXUIViewAccessibility *)self imaxIdentification];
+  v4 = [imaxIdentification isEqualToString:@"PreviewContentView"];
 
   if (v4)
   {
@@ -44,8 +44,8 @@
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(AXUIViewAccessibility *)self imaxIdentification];
-  v4 = [v3 isEqualToString:@"EscapableWindow"];
+  imaxIdentification = [(AXUIViewAccessibility *)self imaxIdentification];
+  v4 = [imaxIdentification isEqualToString:@"EscapableWindow"];
 
   if (v4)
   {

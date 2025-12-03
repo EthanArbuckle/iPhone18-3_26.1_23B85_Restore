@@ -2,19 +2,19 @@
 - (_UIControlEventsGestureRecognizerDelegate)controlEventsDelegate;
 - (void)gestureRecognizerFailed;
 - (void)reset;
-- (void)sendControlEvent:(unint64_t)a3 withEvent:(id)a4;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)sendControlEvent:(unint64_t)event withEvent:(id)withEvent;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation _UIControlEventsGestureRecognizer
 
-- (void)sendControlEvent:(unint64_t)a3 withEvent:(id)a4
+- (void)sendControlEvent:(unint64_t)event withEvent:(id)withEvent
 {
-  v7 = [(_UIControlEventsGestureRecognizer *)self controlEventsDelegate];
-  [v7 controlEventsGestureRecognizer:self recognizedControlEvent:a3 withEvent:a4];
+  controlEventsDelegate = [(_UIControlEventsGestureRecognizer *)self controlEventsDelegate];
+  [controlEventsDelegate controlEventsGestureRecognizer:self recognizedControlEvent:event withEvent:withEvent];
 }
 
 - (void)gestureRecognizerFailed
@@ -41,52 +41,52 @@
   self->_activeTouch = 0;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v8 = [a3 anyObject];
-  objc_storeStrong(&self->_activeTouch, v8);
-  v6 = v8;
-  if (v8)
+  anyObject = [began anyObject];
+  objc_storeStrong(&self->_activeTouch, anyObject);
+  v6 = anyObject;
+  if (anyObject)
   {
     *&self->_flags = *&self->_flags & 0xFC | 1;
-    [(_UIControlEventsGestureRecognizer *)self sendControlEvent:1 withEvent:a4];
-    v7 = [v8 tapCount] >= 2;
-    v6 = v8;
+    [(_UIControlEventsGestureRecognizer *)self sendControlEvent:1 withEvent:event];
+    v7 = [anyObject tapCount] >= 2;
+    v6 = anyObject;
     if (v7)
     {
-      [(_UIControlEventsGestureRecognizer *)self sendControlEvent:2 withEvent:a4];
-      v6 = v8;
+      [(_UIControlEventsGestureRecognizer *)self sendControlEvent:2 withEvent:event];
+      v6 = anyObject;
     }
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v21 = [a3 anyObject];
-  objc_storeStrong(&self->_activeTouch, v21);
-  v6 = v21;
-  if (v21)
+  anyObject = [moved anyObject];
+  objc_storeStrong(&self->_activeTouch, anyObject);
+  v6 = anyObject;
+  if (anyObject)
   {
-    v7 = [(UIGestureRecognizer *)self view];
-    [v21 locationInView:v7];
+    view = [(UIGestureRecognizer *)self view];
+    [anyObject locationInView:view];
     v9 = v8;
     v11 = v10;
 
     flags = self->_flags;
-    v13 = [(UIGestureRecognizer *)self view];
+    view2 = [(UIGestureRecognizer *)self view];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v15 = [(UIGestureRecognizer *)self view];
-    v16 = v15;
+    view3 = [(UIGestureRecognizer *)self view];
+    v16 = view3;
     if (isKindOfClass)
     {
-      v17 = [v15 pointMostlyInside:a4 withEvent:{v9, v11}];
+      v17 = [view3 pointMostlyInside:event withEvent:{v9, v11}];
     }
 
     else
     {
-      v17 = [v15 pointInside:a4 withEvent:{v9, v11}];
+      v17 = [view3 pointInside:event withEvent:{v9, v11}];
     }
 
     v18 = v17;
@@ -104,7 +104,7 @@
         v19 = 32;
       }
 
-      [(_UIControlEventsGestureRecognizer *)self sendControlEvent:v19 withEvent:a4];
+      [(_UIControlEventsGestureRecognizer *)self sendControlEvent:v19 withEvent:event];
     }
 
     if (v18)
@@ -117,37 +117,37 @@
       v20 = 8;
     }
 
-    [(_UIControlEventsGestureRecognizer *)self sendControlEvent:v20 withEvent:a4];
-    v6 = v21;
+    [(_UIControlEventsGestureRecognizer *)self sendControlEvent:v20 withEvent:event];
+    v6 = anyObject;
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = [a3 anyObject];
-  if (v6)
+  anyObject = [ended anyObject];
+  if (anyObject)
   {
-    v23 = v6;
-    v7 = [(UIGestureRecognizer *)self view];
-    [v23 locationInView:v7];
+    v23 = anyObject;
+    view = [(UIGestureRecognizer *)self view];
+    [v23 locationInView:view];
     v9 = v8;
     v11 = v10;
 
     flags = self->_flags;
-    v13 = [(UIGestureRecognizer *)self view];
+    view2 = [(UIGestureRecognizer *)self view];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v15 = [(UIGestureRecognizer *)self view];
-    v16 = v15;
+    view3 = [(UIGestureRecognizer *)self view];
+    v16 = view3;
     if (isKindOfClass)
     {
-      v17 = [v15 pointMostlyInside:a4 withEvent:{v9, v11}];
+      v17 = [view3 pointMostlyInside:event withEvent:{v9, v11}];
     }
 
     else
     {
-      v17 = [v15 pointInside:a4 withEvent:{v9, v11}];
+      v17 = [view3 pointInside:event withEvent:{v9, v11}];
     }
 
     v18 = v17;
@@ -165,7 +165,7 @@
         v19 = 32;
       }
 
-      [(_UIControlEventsGestureRecognizer *)self sendControlEvent:v19 withEvent:a4];
+      [(_UIControlEventsGestureRecognizer *)self sendControlEvent:v19 withEvent:event];
     }
 
     if (v18)
@@ -178,22 +178,22 @@
       v20 = 128;
     }
 
-    [(_UIControlEventsGestureRecognizer *)self sendControlEvent:v20 withEvent:a4];
-    v21 = [(UIGestureRecognizer *)self _allActiveTouches];
-    v22 = [v21 count];
+    [(_UIControlEventsGestureRecognizer *)self sendControlEvent:v20 withEvent:event];
+    _allActiveTouches = [(UIGestureRecognizer *)self _allActiveTouches];
+    v22 = [_allActiveTouches count];
 
-    v6 = v23;
+    anyObject = v23;
     if (!v22)
     {
       [(UIGestureRecognizer *)self setState:3];
-      v6 = v23;
+      anyObject = v23;
     }
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  [(_UIControlEventsGestureRecognizer *)self sendControlEvent:256 withEvent:a4];
+  [(_UIControlEventsGestureRecognizer *)self sendControlEvent:256 withEvent:event];
   *&self->_flags |= 4u;
 
   [(UIGestureRecognizer *)self setState:5];

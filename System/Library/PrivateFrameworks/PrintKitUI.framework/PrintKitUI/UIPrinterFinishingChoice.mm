@@ -1,22 +1,22 @@
 @interface UIPrinterFinishingChoice
-- (UIPrinterFinishingChoice)initWithTitle:(id)a3 finishingChoiceID:(int64_t)a4 finishingChoiceInfo:(id)a5;
+- (UIPrinterFinishingChoice)initWithTitle:(id)title finishingChoiceID:(int64_t)d finishingChoiceInfo:(id)info;
 @end
 
 @implementation UIPrinterFinishingChoice
 
-- (UIPrinterFinishingChoice)initWithTitle:(id)a3 finishingChoiceID:(int64_t)a4 finishingChoiceInfo:(id)a5
+- (UIPrinterFinishingChoice)initWithTitle:(id)title finishingChoiceID:(int64_t)d finishingChoiceInfo:(id)info
 {
-  v9 = a3;
-  v10 = a5;
+  titleCopy = title;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = UIPrinterFinishingChoice;
   v11 = [(UIPrinterFinishingChoice *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_title, a3);
-    v12->_finishingChoiceID = a4;
-    objc_storeStrong(&v12->_finishingChoiceInfo, a5);
+    objc_storeStrong(&v11->_title, title);
+    v12->_finishingChoiceID = d;
+    objc_storeStrong(&v12->_finishingChoiceInfo, info);
   }
 
   return v12;

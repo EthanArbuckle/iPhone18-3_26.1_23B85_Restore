@@ -1,16 +1,16 @@
 @interface PXPhotoKitHideAssetsActionPerformer
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4;
-+ (id)systemImageNameForActionManager:(id)a3;
-- (void)_setupActionWithAssets:(id)a3;
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager;
++ (id)systemImageNameForActionManager:(id)manager;
+- (void)_setupActionWithAssets:(id)assets;
 - (void)performBackgroundTask;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitHideAssetsActionPerformer
 
-+ (id)systemImageNameForActionManager:(id)a3
++ (id)systemImageNameForActionManager:(id)manager
 {
-  v3 = [PXPhotoKitAssetActionManager selectedAssetForActionManager:a3];
+  v3 = [PXPhotoKitAssetActionManager selectedAssetForActionManager:manager];
   if ([v3 isHidden])
   {
     v4 = @"eye";
@@ -26,9 +26,9 @@
   return v4;
 }
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager
 {
-  v4 = [PXPhotoKitAssetActionManager selectedAssetForActionManager:a4];
+  v4 = [PXPhotoKitAssetActionManager selectedAssetForActionManager:manager];
   if ([v4 isHidden])
   {
     v5 = @"UNHIDE_ASSET_SHORTCUT";
@@ -48,14 +48,14 @@
 {
   [(PXPhotoKitAssetActionPerformer *)self instantlyExcludeAssetsFromDataSource];
   [(PXActionPerformer *)self completeBackgroundTaskWithSuccess:1 error:0];
-  v3 = [(PXPhotoKitHideAssetsActionPerformer *)self _action];
-  v4 = [(PXActionPerformer *)self undoManager];
+  _action = [(PXPhotoKitHideAssetsActionPerformer *)self _action];
+  undoManager = [(PXActionPerformer *)self undoManager];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __60__PXPhotoKitHideAssetsActionPerformer_performBackgroundTask__block_invoke;
   v5[3] = &unk_1E774C5C0;
   v5[4] = self;
-  [v3 executeWithUndoManager:v4 completionHandler:v5];
+  [_action executeWithUndoManager:undoManager completionHandler:v5];
 }
 
 uint64_t __60__PXPhotoKitHideAssetsActionPerformer_performBackgroundTask__block_invoke(uint64_t result, char a2)
@@ -71,14 +71,14 @@ uint64_t __60__PXPhotoKitHideAssetsActionPerformer_performBackgroundTask__block_
 - (void)performUserInteractionTask
 {
   objc_initWeak(&location, self);
-  v3 = [(PXPhotoKitAssetActionPerformer *)self assets];
-  v4 = [(PXActionPerformer *)self presentationEnvironment];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+  presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __65__PXPhotoKitHideAssetsActionPerformer_performUserInteractionTask__block_invoke;
   v5[3] = &unk_1E77482C8;
   objc_copyWeak(&v6, &location);
-  PXPromptToSaveUnsavedSyndicatedAssetsIfNecessary(v3, v4, v5);
+  PXPromptToSaveUnsavedSyndicatedAssetsIfNecessary(assets, presentationEnvironment, v5);
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -102,21 +102,21 @@ void __65__PXPhotoKitHideAssetsActionPerformer_performUserInteractionTask__block
   }
 }
 
-- (void)_setupActionWithAssets:(id)a3
+- (void)_setupActionWithAssets:(id)assets
 {
-  v4 = a3;
-  v5 = [[PXHideAssetsAction alloc] initWithAssets:v4];
+  assetsCopy = assets;
+  v5 = [[PXHideAssetsAction alloc] initWithAssets:assetsCopy];
   [(PXPhotoKitHideAssetsActionPerformer *)self set_action:v5];
   if ([(PXHideAssetsAction *)v5 isHidden])
   {
-    v6 = [(PXActionPerformer *)self presentationEnvironment];
+    presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __62__PXPhotoKitHideAssetsActionPerformer__setupActionWithAssets___block_invoke;
     v8[3] = &unk_1E77482A0;
-    v9 = v4;
-    v10 = self;
-    v7 = [v6 presentAlertWithConfigurationHandler:v8];
+    v9 = assetsCopy;
+    selfCopy = self;
+    v7 = [presentationEnvironment presentAlertWithConfigurationHandler:v8];
 
     if (!v7)
     {

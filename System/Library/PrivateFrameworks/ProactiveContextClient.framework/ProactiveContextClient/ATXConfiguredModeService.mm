@@ -1,21 +1,21 @@
 @interface ATXConfiguredModeService
 - (ATXConfiguredModeService)init;
-- (BOOL)_isActivityTypeConfigured:(unint64_t)a3 uuid:(id *)a4 allowsSmartEntry:(BOOL *)a5 userModeName:(id *)a6 dndConfigs:(id)a7;
-- (BOOL)_isActivityWithUUIDConfigured:(id)a3 activityType:(unint64_t *)a4 allowsSmartEntry:(BOOL *)a5 userModeName:(id *)a6 dndConfigs:(id)a7;
-- (BOOL)_isSmartActivationEnabled:(id)a3;
-- (BOOL)isActivityTypeConfigured:(unint64_t)a3 uuid:(id *)a4 allowsSmartEntry:(BOOL *)a5 userModeName:(id *)a6;
-- (BOOL)isActivityWithUUIDConfigured:(id)a3 activityType:(unint64_t *)a4 allowsSmartEntry:(BOOL *)a5 userModeName:(id *)a6;
-- (id)DNDModeConfigurationForActivityWithUUID:(id)a3;
-- (id)_DNDModeConfigurationForActivityWithUUID:(id)a3 dndConfigs:(id)a4;
+- (BOOL)_isActivityTypeConfigured:(unint64_t)configured uuid:(id *)uuid allowsSmartEntry:(BOOL *)entry userModeName:(id *)name dndConfigs:(id)configs;
+- (BOOL)_isActivityWithUUIDConfigured:(id)configured activityType:(unint64_t *)type allowsSmartEntry:(BOOL *)entry userModeName:(id *)name dndConfigs:(id)configs;
+- (BOOL)_isSmartActivationEnabled:(id)enabled;
+- (BOOL)isActivityTypeConfigured:(unint64_t)configured uuid:(id *)uuid allowsSmartEntry:(BOOL *)entry userModeName:(id *)name;
+- (BOOL)isActivityWithUUIDConfigured:(id)configured activityType:(unint64_t *)type allowsSmartEntry:(BOOL *)entry userModeName:(id *)name;
+- (id)DNDModeConfigurationForActivityWithUUID:(id)d;
+- (id)_DNDModeConfigurationForActivityWithUUID:(id)d dndConfigs:(id)configs;
 - (id)_cacheAndReturnDNDModeConfigurationDictionary;
-- (id)_modeConfigurationsReturningError:(id *)a3;
+- (id)_modeConfigurationsReturningError:(id *)error;
 - (id)_retrieveCachedDNDModeConfigurationDictionary;
-- (void)_cacheDNDModeConfigurationDictionary:(id)a3;
-- (void)_checkIfConfigurationOfCurrentModeChangedWithDNDConfigs:(id)a3;
+- (void)_cacheDNDModeConfigurationDictionary:(id)dictionary;
+- (void)_checkIfConfigurationOfCurrentModeChangedWithDNDConfigs:(id)configs;
 - (void)_createServiceIfNeeded;
-- (void)_updateUserDefaultsForAnyNewlyAddedModesWithDNDConfigs:(id)a3;
-- (void)_updateUserDefaultsWithAnySmartActivationUpdatesWithDNDConfigs:(id)a3;
-- (void)modeConfigurationService:(id)a3 didReceiveAvailableModesUpdate:(id)a4;
+- (void)_updateUserDefaultsForAnyNewlyAddedModesWithDNDConfigs:(id)configs;
+- (void)_updateUserDefaultsWithAnySmartActivationUpdatesWithDNDConfigs:(id)configs;
+- (void)modeConfigurationService:(id)service didReceiveAvailableModesUpdate:(id)update;
 @end
 
 @implementation ATXConfiguredModeService
@@ -35,7 +35,7 @@
     v2->_cache = v6;
 
     [(ATXConfiguredModeService *)v2 _createServiceIfNeeded];
-    v8 = [(ATXConfiguredModeService *)v2 _cacheAndReturnDNDModeConfigurationDictionary];
+    _cacheAndReturnDNDModeConfigurationDictionary = [(ATXConfiguredModeService *)v2 _cacheAndReturnDNDModeConfigurationDictionary];
   }
 
   return v2;
@@ -109,9 +109,9 @@ void __50__ATXConfiguredModeService__createServiceIfNeeded__block_invoke(uint64_
   return v3;
 }
 
-- (void)_cacheDNDModeConfigurationDictionary:(id)a3
+- (void)_cacheDNDModeConfigurationDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_autoreleasePoolPush();
   v6 = __atxlog_handle_modes();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -120,9 +120,9 @@ void __50__ATXConfiguredModeService__createServiceIfNeeded__block_invoke(uint64_
     _os_log_impl(&dword_260C9F000, v6, OS_LOG_TYPE_INFO, "ATXConfiguredModeService: Caching DND mode configs as a backup", v7, 2u);
   }
 
-  if (v4)
+  if (dictionaryCopy)
   {
-    [(ATXGenericFileBasedCache *)self->_cache storeSecureCodedObject:v4 error:0];
+    [(ATXGenericFileBasedCache *)self->_cache storeSecureCodedObject:dictionaryCopy error:0];
   }
 
   objc_autoreleasePoolPop(v5);
@@ -172,18 +172,18 @@ void __50__ATXConfiguredModeService__createServiceIfNeeded__block_invoke(uint64_
   return v9;
 }
 
-- (BOOL)isActivityTypeConfigured:(unint64_t)a3 uuid:(id *)a4 allowsSmartEntry:(BOOL *)a5 userModeName:(id *)a6
+- (BOOL)isActivityTypeConfigured:(unint64_t)configured uuid:(id *)uuid allowsSmartEntry:(BOOL *)entry userModeName:(id *)name
 {
   v11 = [(ATXConfiguredModeService *)self _modeConfigurationsReturningError:0];
-  LOBYTE(a6) = [(ATXConfiguredModeService *)self _isActivityTypeConfigured:a3 uuid:a4 allowsSmartEntry:a5 userModeName:a6 dndConfigs:v11];
+  LOBYTE(name) = [(ATXConfiguredModeService *)self _isActivityTypeConfigured:configured uuid:uuid allowsSmartEntry:entry userModeName:name dndConfigs:v11];
 
-  return a6;
+  return name;
 }
 
-- (BOOL)_isActivityTypeConfigured:(unint64_t)a3 uuid:(id *)a4 allowsSmartEntry:(BOOL *)a5 userModeName:(id *)a6 dndConfigs:(id)a7
+- (BOOL)_isActivityTypeConfigured:(unint64_t)configured uuid:(id *)uuid allowsSmartEntry:(BOOL *)entry userModeName:(id *)name dndConfigs:(id)configs
 {
-  v11 = a7;
-  if (v11)
+  configsCopy = configs;
+  if (configsCopy)
   {
     v12 = __atxlog_handle_modes();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -191,11 +191,11 @@ void __50__ATXConfiguredModeService__createServiceIfNeeded__block_invoke(uint64_
       [ATXConfiguredModeService _isActivityTypeConfigured:uuid:allowsSmartEntry:userModeName:dndConfigs:];
     }
 
-    v13 = ATXActivityTypeToModeSemanticType(a3);
+    v13 = ATXActivityTypeToModeSemanticType(configured);
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 integerValue];
+      integerValue = [v13 integerValue];
       v29 = 0;
       v30 = &v29;
       v31 = 0x3032000000;
@@ -219,21 +219,21 @@ void __50__ATXConfiguredModeService__createServiceIfNeeded__block_invoke(uint64_
       v18[4] = &v29;
       v18[5] = &v23;
       v18[6] = &v19;
-      v18[7] = v15;
-      [v11 enumerateKeysAndObjectsUsingBlock:v18];
-      if (a4)
+      v18[7] = integerValue;
+      [configsCopy enumerateKeysAndObjectsUsingBlock:v18];
+      if (uuid)
       {
-        *a4 = v30[5];
+        *uuid = v30[5];
       }
 
-      if (a6)
+      if (name)
       {
-        *a6 = v24[5];
+        *name = v24[5];
       }
 
-      if (a5)
+      if (entry)
       {
-        *a5 = *(v20 + 24);
+        *entry = *(v20 + 24);
       }
 
       v16 = v30[5] != 0;
@@ -284,14 +284,14 @@ void __100__ATXConfiguredModeService__isActivityTypeConfigured_uuid_allowsSmartE
   }
 }
 
-- (BOOL)isActivityWithUUIDConfigured:(id)a3 activityType:(unint64_t *)a4 allowsSmartEntry:(BOOL *)a5 userModeName:(id *)a6
+- (BOOL)isActivityWithUUIDConfigured:(id)configured activityType:(unint64_t *)type allowsSmartEntry:(BOOL *)entry userModeName:(id *)name
 {
-  v9 = [(ATXConfiguredModeService *)self DNDModeConfigurationForActivityWithUUID:a3];
+  v9 = [(ATXConfiguredModeService *)self DNDModeConfigurationForActivityWithUUID:configured];
   v10 = v9;
-  if (!a4)
+  if (!type)
   {
 LABEL_4:
-    if (!a5)
+    if (!entry)
     {
       goto LABEL_6;
     }
@@ -301,37 +301,37 @@ LABEL_4:
 
   if (v9)
   {
-    v11 = [v9 mode];
-    *a4 = DNDModeSemanticTypeToATXActivityType([v11 semanticType]);
+    mode = [v9 mode];
+    *type = DNDModeSemanticTypeToATXActivityType([mode semanticType]);
 
     goto LABEL_4;
   }
 
-  *a4 = 0;
-  if (a5)
+  *type = 0;
+  if (entry)
   {
 LABEL_5:
-    *a5 = [v10 allowSmartEntry] == 2;
+    *entry = [v10 allowSmartEntry] == 2;
   }
 
 LABEL_6:
-  if (a6)
+  if (name)
   {
-    v12 = [v10 mode];
-    *a6 = [v12 name];
+    mode2 = [v10 mode];
+    *name = [mode2 name];
   }
 
   return v10 != 0;
 }
 
-- (BOOL)_isActivityWithUUIDConfigured:(id)a3 activityType:(unint64_t *)a4 allowsSmartEntry:(BOOL *)a5 userModeName:(id *)a6 dndConfigs:(id)a7
+- (BOOL)_isActivityWithUUIDConfigured:(id)configured activityType:(unint64_t *)type allowsSmartEntry:(BOOL *)entry userModeName:(id *)name dndConfigs:(id)configs
 {
-  v10 = [(ATXConfiguredModeService *)self _DNDModeConfigurationForActivityWithUUID:a3 dndConfigs:a7];
+  v10 = [(ATXConfiguredModeService *)self _DNDModeConfigurationForActivityWithUUID:configured dndConfigs:configs];
   v11 = v10;
-  if (!a4)
+  if (!type)
   {
 LABEL_4:
-    if (!a5)
+    if (!entry)
     {
       goto LABEL_6;
     }
@@ -341,43 +341,43 @@ LABEL_4:
 
   if (v10)
   {
-    v12 = [v10 mode];
-    *a4 = DNDModeSemanticTypeToATXActivityType([v12 semanticType]);
+    mode = [v10 mode];
+    *type = DNDModeSemanticTypeToATXActivityType([mode semanticType]);
 
     goto LABEL_4;
   }
 
-  *a4 = 0;
-  if (a5)
+  *type = 0;
+  if (entry)
   {
 LABEL_5:
-    *a5 = [v11 allowSmartEntry] == 2;
+    *entry = [v11 allowSmartEntry] == 2;
   }
 
 LABEL_6:
-  if (a6)
+  if (name)
   {
-    v13 = [v11 mode];
-    *a6 = [v13 name];
+    mode2 = [v11 mode];
+    *name = [mode2 name];
   }
 
   return v11 != 0;
 }
 
-- (id)DNDModeConfigurationForActivityWithUUID:(id)a3
+- (id)DNDModeConfigurationForActivityWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [(ATXConfiguredModeService *)self _modeConfigurationsReturningError:0];
-  v6 = [(ATXConfiguredModeService *)self _DNDModeConfigurationForActivityWithUUID:v4 dndConfigs:v5];
+  v6 = [(ATXConfiguredModeService *)self _DNDModeConfigurationForActivityWithUUID:dCopy dndConfigs:v5];
 
   return v6;
 }
 
-- (id)_DNDModeConfigurationForActivityWithUUID:(id)a3 dndConfigs:(id)a4
+- (id)_DNDModeConfigurationForActivityWithUUID:(id)d dndConfigs:(id)configs
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dCopy = d;
+  configsCopy = configs;
+  if (configsCopy)
   {
     v7 = __atxlog_handle_modes();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -395,9 +395,9 @@ LABEL_6:
     v10[1] = 3221225472;
     v10[2] = __80__ATXConfiguredModeService__DNDModeConfigurationForActivityWithUUID_dndConfigs___block_invoke;
     v10[3] = &unk_279AB8168;
-    v11 = v5;
+    v11 = dCopy;
     v12 = &v13;
-    [v6 enumerateKeysAndObjectsUsingBlock:v10];
+    [configsCopy enumerateKeysAndObjectsUsingBlock:v10];
     v8 = v14[5];
 
     _Block_object_dispose(&v13, 8);
@@ -426,10 +426,10 @@ void __80__ATXConfiguredModeService__DNDModeConfigurationForActivityWithUUID_dnd
   }
 }
 
-- (void)_checkIfConfigurationOfCurrentModeChangedWithDNDConfigs:(id)a3
+- (void)_checkIfConfigurationOfCurrentModeChangedWithDNDConfigs:(id)configs
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configsCopy = configs;
   v5 = +[ATXUserFocusInferredMode currentMode];
   v6 = v5;
   if (!v5 || ([v5 isAutomationEnabled] & 1) != 0)
@@ -438,17 +438,17 @@ void __80__ATXConfiguredModeService__DNDModeConfigurationForActivityWithUUID_dnd
   }
 
   v34 = 0;
-  v7 = [v6 modeIdentifier];
+  modeIdentifier = [v6 modeIdentifier];
   v8 = BMUserFocusInferredModeTypeToActivity([v6 modeType]);
   v33 = v8;
-  v9 = [v6 userModeName];
-  v10 = v9;
-  if (!v7)
+  userModeName = [v6 userModeName];
+  v10 = userModeName;
+  if (!modeIdentifier)
   {
-    v30 = v9;
+    v30 = userModeName;
     v31 = 0;
-    [(ATXConfiguredModeService *)self _isActivityTypeConfigured:v8 uuid:&v31 allowsSmartEntry:&v34 userModeName:&v30 dndConfigs:v4];
-    v7 = v31;
+    [(ATXConfiguredModeService *)self _isActivityTypeConfigured:v8 uuid:&v31 allowsSmartEntry:&v34 userModeName:&v30 dndConfigs:configsCopy];
+    modeIdentifier = v31;
     v14 = v30;
     v12 = v10;
 LABEL_9:
@@ -457,8 +457,8 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v32 = v9;
-  v11 = [(ATXConfiguredModeService *)self _isActivityWithUUIDConfigured:v7 activityType:&v33 allowsSmartEntry:&v34 userModeName:&v32 dndConfigs:v4];
+  v32 = userModeName;
+  v11 = [(ATXConfiguredModeService *)self _isActivityWithUUIDConfigured:modeIdentifier activityType:&v33 allowsSmartEntry:&v34 userModeName:&v32 dndConfigs:configsCopy];
   v12 = v32;
 
   if (!v11)
@@ -471,7 +471,7 @@ LABEL_9:
     }
 
     v14 = 0;
-    v7 = 0;
+    modeIdentifier = 0;
     goto LABEL_9;
   }
 
@@ -484,32 +484,32 @@ LABEL_10:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v36 = v7;
+      v36 = modeIdentifier;
       v37 = 2048;
       v38 = v15;
       _os_log_impl(&dword_260C9F000, v16, OS_LOG_TYPE_DEFAULT, "ATXConfiguredModeService: New mode (modeUUID: %{public}@, type: %lu) was updated to now allow smart trigger. Updating mode inference with smart entry enabled", buf, 0x16u);
     }
 
     [v6 origin];
-    v28 = [v6 originAnchorType];
-    v17 = [v6 originBundleID];
+    originAnchorType = [v6 originAnchorType];
+    originBundleID = [v6 originBundleID];
     [v6 confidenceScore];
     v19 = v18;
-    v20 = [v6 serializedTriggers];
+    serializedTriggers = [v6 serializedTriggers];
     v21 = v34;
     v22 = BiomeLibrary();
-    v23 = [v22 UserFocus];
-    v24 = [v23 InferredMode];
+    userFocus = [v22 UserFocus];
+    inferredMode = [userFocus InferredMode];
     LOWORD(v27) = v21;
     v12 = v29;
-    v25 = [ATXModeClassifier updateModeWithUUID:"updateModeWithUUID:userModeName:modeType:modeOrigin:originAnchorType:originBundleId:uiLocation:confidenceScore:serializedTriggers:allowsSmartEntry:shouldSuggestTriggers:currentMode:stream:" userModeName:v7 modeType:v19 modeOrigin:1 originAnchorType:v20 originBundleId:v27 uiLocation:v6 confidenceScore:v24 serializedTriggers:? allowsSmartEntry:? shouldSuggestTriggers:? currentMode:? stream:?];
+    v25 = [ATXModeClassifier updateModeWithUUID:"updateModeWithUUID:userModeName:modeType:modeOrigin:originAnchorType:originBundleId:uiLocation:confidenceScore:serializedTriggers:allowsSmartEntry:shouldSuggestTriggers:currentMode:stream:" userModeName:modeIdentifier modeType:v19 modeOrigin:1 originAnchorType:serializedTriggers originBundleId:v27 uiLocation:v6 confidenceScore:inferredMode serializedTriggers:? allowsSmartEntry:? shouldSuggestTriggers:? currentMode:? stream:?];
   }
 
 LABEL_15:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_modeConfigurationsReturningError:(id *)a3
+- (id)_modeConfigurationsReturningError:(id *)error
 {
   [(ATXConfiguredModeService *)self _createServiceIfNeeded];
   service = self->_service;
@@ -535,27 +535,27 @@ LABEL_15:
       [ATXConfiguredModeService _modeConfigurationsReturningError:];
     }
 
-    v11 = [(ATXConfiguredModeService *)self _retrieveCachedDNDModeConfigurationDictionary];
+    _retrieveCachedDNDModeConfigurationDictionary = [(ATXConfiguredModeService *)self _retrieveCachedDNDModeConfigurationDictionary];
 
-    v6 = v11;
+    v6 = _retrieveCachedDNDModeConfigurationDictionary;
   }
 
-  if (a3)
+  if (error)
   {
     v12 = v8;
-    *a3 = v8;
+    *error = v8;
   }
 
   return v6;
 }
 
-- (void)_updateUserDefaultsForAnyNewlyAddedModesWithDNDConfigs:(id)a3
+- (void)_updateUserDefaultsForAnyNewlyAddedModesWithDNDConfigs:(id)configs
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (configs)
   {
     v3 = MEMORY[0x277CBEBD0];
-    v4 = a3;
+    configsCopy = configs;
     v5 = [v3 alloc];
     v6 = [v5 initWithSuiteName:*MEMORY[0x277CEBD00]];
     v7 = *MEMORY[0x277CEBD28];
@@ -576,7 +576,7 @@ LABEL_15:
     v14[3] = &unk_279AB8190;
     v10 = v9;
     v15 = v10;
-    [v4 enumerateKeysAndObjectsUsingBlock:v14];
+    [configsCopy enumerateKeysAndObjectsUsingBlock:v14];
 
     v11 = __atxlog_handle_modes();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -586,8 +586,8 @@ LABEL_15:
       _os_log_impl(&dword_260C9F000, v11, OS_LOG_TYPE_DEFAULT, "ATXConfiguredModeService: historically configured mode semantic types: %@", buf, 0xCu);
     }
 
-    v12 = [v10 allObjects];
-    [v6 setObject:v12 forKey:v7];
+    allObjects = [v10 allObjects];
+    [v6 setObject:allObjects forKey:v7];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -603,13 +603,13 @@ void __83__ATXConfiguredModeService__updateUserDefaultsForAnyNewlyAddedModesWith
   [v6 addObject:v7];
 }
 
-- (void)_updateUserDefaultsWithAnySmartActivationUpdatesWithDNDConfigs:(id)a3
+- (void)_updateUserDefaultsWithAnySmartActivationUpdatesWithDNDConfigs:(id)configs
 {
   v23 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (configs)
   {
     v4 = MEMORY[0x277CBEBD0];
-    v5 = a3;
+    configsCopy = configs;
     v6 = [v4 alloc];
     v7 = [v6 initWithSuiteName:*MEMORY[0x277CEBD00]];
     v8 = *MEMORY[0x277CEBD30];
@@ -628,10 +628,10 @@ void __83__ATXConfiguredModeService__updateUserDefaultsForAnyNewlyAddedModesWith
     v16 = 3221225472;
     v17 = __91__ATXConfiguredModeService__updateUserDefaultsWithAnySmartActivationUpdatesWithDNDConfigs___block_invoke;
     v18 = &unk_279AB81B8;
-    v19 = self;
+    selfCopy = self;
     v11 = v10;
     v20 = v11;
-    [v5 enumerateKeysAndObjectsUsingBlock:&v15];
+    [configsCopy enumerateKeysAndObjectsUsingBlock:&v15];
 
     v12 = __atxlog_handle_modes();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -641,8 +641,8 @@ void __83__ATXConfiguredModeService__updateUserDefaultsForAnyNewlyAddedModesWith
       _os_log_impl(&dword_260C9F000, v12, OS_LOG_TYPE_DEFAULT, "ATXConfiguredModeService: smart activation was enabled at some point for these modes: %@", buf, 0xCu);
     }
 
-    v13 = [v11 allObjects];
-    [v7 setObject:v13 forKey:v8];
+    allObjects = [v11 allObjects];
+    [v7 setObject:allObjects forKey:v8];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -663,16 +663,16 @@ void __91__ATXConfiguredModeService__updateUserDefaultsWithAnySmartActivationUpd
   }
 }
 
-- (BOOL)_isSmartActivationEnabled:(id)a3
+- (BOOL)_isSmartActivationEnabled:(id)enabled
 {
   v23 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v12 = a3;
-  v3 = [v12 triggers];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v22 count:16];
+  enabledCopy = enabled;
+  triggers = [enabledCopy triggers];
+  v4 = [triggers countByEnumeratingWithState:&v13 objects:v22 count:16];
   if (v4)
   {
     v5 = *v14;
@@ -682,7 +682,7 @@ void __91__ATXConfiguredModeService__updateUserDefaultsWithAnySmartActivationUpd
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(triggers);
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
@@ -711,7 +711,7 @@ void __91__ATXConfiguredModeService__updateUserDefaultsWithAnySmartActivationUpd
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v13 objects:v22 count:16];
+      v4 = [triggers countByEnumeratingWithState:&v13 objects:v22 count:16];
       if (v4)
       {
         continue;
@@ -727,7 +727,7 @@ LABEL_13:
   return v4;
 }
 
-- (void)modeConfigurationService:(id)a3 didReceiveAvailableModesUpdate:(id)a4
+- (void)modeConfigurationService:(id)service didReceiveAvailableModesUpdate:(id)update
 {
   v5 = __atxlog_handle_modes();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -736,10 +736,10 @@ LABEL_13:
     _os_log_impl(&dword_260C9F000, v5, OS_LOG_TYPE_DEFAULT, "ATXConfiguredModeService: mode configuration did change. Checking if this affects the current mode and if any new modes were added", v7, 2u);
   }
 
-  v6 = [(ATXConfiguredModeService *)self _cacheAndReturnDNDModeConfigurationDictionary];
-  [(ATXConfiguredModeService *)self _updateUserDefaultsForAnyNewlyAddedModesWithDNDConfigs:v6];
-  [(ATXConfiguredModeService *)self _updateUserDefaultsWithAnySmartActivationUpdatesWithDNDConfigs:v6];
-  [(ATXConfiguredModeService *)self _checkIfConfigurationOfCurrentModeChangedWithDNDConfigs:v6];
+  _cacheAndReturnDNDModeConfigurationDictionary = [(ATXConfiguredModeService *)self _cacheAndReturnDNDModeConfigurationDictionary];
+  [(ATXConfiguredModeService *)self _updateUserDefaultsForAnyNewlyAddedModesWithDNDConfigs:_cacheAndReturnDNDModeConfigurationDictionary];
+  [(ATXConfiguredModeService *)self _updateUserDefaultsWithAnySmartActivationUpdatesWithDNDConfigs:_cacheAndReturnDNDModeConfigurationDictionary];
+  [(ATXConfiguredModeService *)self _checkIfConfigurationOfCurrentModeChangedWithDNDConfigs:_cacheAndReturnDNDModeConfigurationDictionary];
 }
 
 void __50__ATXConfiguredModeService__createServiceIfNeeded__block_invoke_cold_1()

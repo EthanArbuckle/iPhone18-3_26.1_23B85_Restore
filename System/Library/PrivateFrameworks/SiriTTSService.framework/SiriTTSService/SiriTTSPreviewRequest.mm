@@ -8,13 +8,13 @@
 - (id)siriAceViewId;
 - (id)siriRequestId;
 - (unsigned)audioSessionId;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAudibleContext:(id)a3;
-- (void)setDidStartSpeaking:(id)a3;
-- (void)setPlaybackVolume:(float)a3;
-- (void)setSiriAceViewId:(id)a3;
-- (void)setSiriRequestId:(id)a3;
-- (void)setVoice:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAudibleContext:(id)context;
+- (void)setDidStartSpeaking:(id)speaking;
+- (void)setPlaybackVolume:(float)volume;
+- (void)setSiriAceViewId:(id)id;
+- (void)setSiriRequestId:(id)id;
+- (void)setVoice:(id)voice;
 @end
 
 @implementation SiriTTSPreviewRequest
@@ -26,10 +26,10 @@
   return v2;
 }
 
-- (void)setAudibleContext:(id)a3
+- (void)setAudibleContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
+  contextCopy = context;
+  selfCopy = self;
   sub_1B1B1233C();
 }
 
@@ -40,10 +40,10 @@
   return v2;
 }
 
-- (void)setVoice:(id)a3
+- (void)setVoice:(id)voice
 {
-  v4 = a3;
-  v5 = self;
+  voiceCopy = voice;
+  selfCopy = self;
   sub_1B1B124C8();
 }
 
@@ -53,7 +53,7 @@
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x1EEE9AC00](v3 - 8);
   v6 = &v11 - v5;
-  v7 = self;
+  selfCopy = self;
   sub_1B1B12A30();
 
   v8 = sub_1B1C2C1C8();
@@ -67,20 +67,20 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B1B12B98(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1B1B12B98(coderCopy);
 }
 
-- (void)setSiriAceViewId:(id)a3
+- (void)setSiriAceViewId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SiriTTSBaseRequest *)self setInteractionLinkId:v4];
+    [(SiriTTSBaseRequest *)self setInteractionLinkId:idCopy];
   }
 }
 
@@ -89,24 +89,24 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(SiriTTSBaseRequest *)self interactionLinkId];
+    interactionLinkId = [(SiriTTSBaseRequest *)self interactionLinkId];
   }
 
   else
   {
-    v3 = 0;
+    interactionLinkId = 0;
   }
 
-  return v3;
+  return interactionLinkId;
 }
 
-- (void)setSiriRequestId:(id)a3
+- (void)setSiriRequestId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SiriTTSBaseRequest *)self setLogLinkId:v4];
+    [(SiriTTSBaseRequest *)self setLogLinkId:idCopy];
   }
 }
 
@@ -115,43 +115,43 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(SiriTTSBaseRequest *)self logLinkId];
+    logLinkId = [(SiriTTSBaseRequest *)self logLinkId];
   }
 
   else
   {
-    v3 = 0;
+    logLinkId = 0;
   }
 
-  return v3;
+  return logLinkId;
 }
 
-- (void)setDidStartSpeaking:(id)a3
+- (void)setDidStartSpeaking:(id)speaking
 {
-  v4 = a3;
-  v5 = [(SiriTTSPreviewRequest *)self audibleContext];
-  [v5 setDidStartSpeaking:v4];
+  speakingCopy = speaking;
+  audibleContext = [(SiriTTSPreviewRequest *)self audibleContext];
+  [audibleContext setDidStartSpeaking:speakingCopy];
 }
 
 - (id)didStartSpeaking
 {
-  v2 = [(SiriTTSPreviewRequest *)self audibleContext];
-  v3 = [v2 didStartSpeaking];
+  audibleContext = [(SiriTTSPreviewRequest *)self audibleContext];
+  didStartSpeaking = [audibleContext didStartSpeaking];
 
-  return v3;
+  return didStartSpeaking;
 }
 
-- (void)setPlaybackVolume:(float)a3
+- (void)setPlaybackVolume:(float)volume
 {
-  v5 = [(SiriTTSPreviewRequest *)self audibleContext];
-  *&v4 = a3;
-  [v5 setPlaybackVolume:v4];
+  audibleContext = [(SiriTTSPreviewRequest *)self audibleContext];
+  *&v4 = volume;
+  [audibleContext setPlaybackVolume:v4];
 }
 
 - (float)playbackVolume
 {
-  v2 = [(SiriTTSPreviewRequest *)self audibleContext];
-  [v2 playbackVolume];
+  audibleContext = [(SiriTTSPreviewRequest *)self audibleContext];
+  [audibleContext playbackVolume];
   v4 = v3;
 
   return v4;
@@ -159,18 +159,18 @@
 
 - (BOOL)immediate
 {
-  v2 = [(SiriTTSPreviewRequest *)self audibleContext];
-  v3 = [v2 immediate];
+  audibleContext = [(SiriTTSPreviewRequest *)self audibleContext];
+  immediate = [audibleContext immediate];
 
-  return v3;
+  return immediate;
 }
 
 - (unsigned)audioSessionId
 {
-  v2 = [(SiriTTSPreviewRequest *)self audibleContext];
-  v3 = [v2 audioSessionId];
+  audibleContext = [(SiriTTSPreviewRequest *)self audibleContext];
+  audioSessionId = [audibleContext audioSessionId];
 
-  return v3;
+  return audioSessionId;
 }
 
 @end

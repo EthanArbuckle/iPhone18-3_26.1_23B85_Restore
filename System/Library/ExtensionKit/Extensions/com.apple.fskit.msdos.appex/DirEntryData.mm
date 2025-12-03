@@ -1,15 +1,15 @@
 @interface DirEntryData
-+ (id)dynamicCast:(id)a3;
++ (id)dynamicCast:(id)cast;
 @end
 
 @implementation DirEntryData
 
-+ (id)dynamicCast:(id)a3
++ (id)dynamicCast:(id)cast
 {
-  v3 = a3;
+  castCopy = cast;
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = castCopy;
   }
 
   else

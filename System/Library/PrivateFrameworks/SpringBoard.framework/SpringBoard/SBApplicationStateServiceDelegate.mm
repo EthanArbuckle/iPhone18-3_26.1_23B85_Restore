@@ -1,25 +1,25 @@
 @interface SBApplicationStateServiceDelegate
-- (id)dataSourceForApplicationBundleIdentifier:(id)a3;
+- (id)dataSourceForApplicationBundleIdentifier:(id)identifier;
 @end
 
 @implementation SBApplicationStateServiceDelegate
 
-- (id)dataSourceForApplicationBundleIdentifier:(id)a3
+- (id)dataSourceForApplicationBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[SBApplicationController sharedInstanceIfExists];
-  v5 = [v4 applicationWithBundleIdentifier:v3];
+  v5 = [v4 applicationWithBundleIdentifier:identifierCopy];
 
   if (!v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v3 allowPlaceholder:1 error:0];
+    v6 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:identifierCopy allowPlaceholder:1 error:0];
     if ([v6 isWebAppPlaceholder])
     {
       v7 = +[SBIconController sharedIconRepository];
-      v8 = [v7 bookmarkIconForWebClipPlaceholderBundleIdentifier:v3];
+      v8 = [v7 bookmarkIconForWebClipPlaceholderBundleIdentifier:identifierCopy];
       v9 = objc_opt_self();
-      v10 = [v8 bookmark];
-      v5 = SBSafeCast(v9, v10);
+      bookmark = [v8 bookmark];
+      v5 = SBSafeCast(v9, bookmark);
     }
   }
 

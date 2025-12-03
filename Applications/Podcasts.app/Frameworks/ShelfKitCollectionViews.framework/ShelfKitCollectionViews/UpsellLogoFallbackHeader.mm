@@ -1,10 +1,10 @@
 @interface UpsellLogoFallbackHeader
-- (_TtC23ShelfKitCollectionViews24UpsellLogoFallbackHeader)initWithCoder:(id)a3;
+- (_TtC23ShelfKitCollectionViews24UpsellLogoFallbackHeader)initWithCoder:(id)coder;
 @end
 
 @implementation UpsellLogoFallbackHeader
 
-- (_TtC23ShelfKitCollectionViews24UpsellLogoFallbackHeader)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews24UpsellLogoFallbackHeader)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC23ShelfKitCollectionViews24UpsellLogoFallbackHeader_backgroundArtworkView;
   *(&self->super.super.super.super.isa + v4) = sub_2DE0A4();

@@ -2,68 +2,68 @@
 + (BOOL)doesSyncSidecarExist;
 + (id)mergeSyncSidecarFileName;
 + (id)mergeSyncSidecarPath;
-- (BKDatabaseBackupFileManager)initWithLibraryManager:(id)a3 annotationProvider:(id)a4;
+- (BKDatabaseBackupFileManager)initWithLibraryManager:(id)manager annotationProvider:(id)provider;
 - (BOOL)canModifyBackupFiles;
-- (id)newBookmarkDictionarysArray:(id)a3;
-- (void)mergeSyncSidecarWithCompletionBlock:(id)a3;
-- (void)rewriteBackupFileWithCompletionBlock:(id)a3;
-- (void)rewriteSyncSidecarWithCompletionBlock:(id)a3;
+- (id)newBookmarkDictionarysArray:(id)array;
+- (void)mergeSyncSidecarWithCompletionBlock:(id)block;
+- (void)rewriteBackupFileWithCompletionBlock:(id)block;
+- (void)rewriteSyncSidecarWithCompletionBlock:(id)block;
 @end
 
 @implementation BKDatabaseBackupFileManager
 
-- (BKDatabaseBackupFileManager)initWithLibraryManager:(id)a3 annotationProvider:(id)a4
+- (BKDatabaseBackupFileManager)initWithLibraryManager:(id)manager annotationProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  providerCopy = provider;
   v9 = [(BKDatabaseBackupFileManager *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_libraryManager, a3);
-    objc_storeStrong(&v10->_annotationProvider, a4);
+    objc_storeStrong(&v9->_libraryManager, manager);
+    objc_storeStrong(&v10->_annotationProvider, provider);
   }
 
   return v10;
 }
 
-- (void)rewriteBackupFileWithCompletionBlock:(id)a3
+- (void)rewriteBackupFileWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(BKDatabaseBackupFileManager *)self canModifyBackupFiles])
   {
-    v5 = [(BKDatabaseBackupFileManager *)self annotationProvider];
-    v6 = [objc_opt_class() ubiquityQueue];
+    annotationProvider = [(BKDatabaseBackupFileManager *)self annotationProvider];
+    ubiquityQueue = [objc_opt_class() ubiquityQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100154CC4;
     block[3] = &unk_100A033C8;
     block[4] = self;
-    dispatch_async(v6, block);
+    dispatch_async(ubiquityQueue, block);
   }
 
-  if (v4)
+  if (blockCopy)
   {
     v7 = +[AEAnnotationProvider ubiquityQueue];
-    dispatch_async(v7, v4);
+    dispatch_async(v7, blockCopy);
   }
 }
 
 + (BOOL)doesSyncSidecarExist
 {
   v2 = +[NSBundle mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 lowercaseString];
+  bundleIdentifier = [v2 bundleIdentifier];
+  lowercaseString = [bundleIdentifier lowercaseString];
 
-  v5 = [v4 stringByAppendingString:@"-sync.plist"];
+  v5 = [lowercaseString stringByAppendingString:@"-sync.plist"];
   if ([v5 length])
   {
     v6 = objc_alloc_init(NSFileManager);
     v7 = +[NSURL bu_booksRepositoryURL];
     v8 = [v7 URLByAppendingPathComponent:v5];
-    v9 = [v8 path];
+    path = [v8 path];
 
-    v10 = [v6 fileExistsAtPath:v9];
+    v10 = [v6 fileExistsAtPath:path];
   }
 
   else
@@ -77,44 +77,44 @@
 - (BOOL)canModifyBackupFiles
 {
   v2 = +[AEAssetEngine appInfoMgr];
-  v3 = [v2 isRunningInStoreDemoMode];
+  isRunningInStoreDemoMode = [v2 isRunningInStoreDemoMode];
 
-  return v3 ^ 1;
+  return isRunningInStoreDemoMode ^ 1;
 }
 
-- (id)newBookmarkDictionarysArray:(id)a3
+- (id)newBookmarkDictionarysArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = objc_autoreleasePoolPush();
-  v5 = [AEAnnotation modernDictionaryRepresentationForAnnotationsMatchingPredicate:0 inManagedObjectContext:v3];
+  v5 = [AEAnnotation modernDictionaryRepresentationForAnnotationsMatchingPredicate:0 inManagedObjectContext:arrayCopy];
   objc_autoreleasePoolPop(v4);
 
   return v5;
 }
 
-- (void)rewriteSyncSidecarWithCompletionBlock:(id)a3
+- (void)rewriteSyncSidecarWithCompletionBlock:(id)block
 {
-  v10 = a3;
+  blockCopy = block;
   v4 = +[NSBundle mainBundle];
-  v5 = [v4 bundleIdentifier];
-  v6 = [v5 lowercaseString];
+  bundleIdentifier = [v4 bundleIdentifier];
+  lowercaseString = [bundleIdentifier lowercaseString];
 
-  v7 = [v6 stringByAppendingString:@"-sync.plist"];
+  v7 = [lowercaseString stringByAppendingString:@"-sync.plist"];
   if ([v7 length])
   {
     v8 = [[AEAnnotationSidecarProducer alloc] initWithName:v7];
-    v9 = [(BKDatabaseBackupFileManager *)self annotationProvider];
-    [v8 rewriteWithAnnotationProvider:v9 completionBlock:v10];
+    annotationProvider = [(BKDatabaseBackupFileManager *)self annotationProvider];
+    [v8 rewriteWithAnnotationProvider:annotationProvider completionBlock:blockCopy];
   }
 }
 
 + (id)mergeSyncSidecarFileName
 {
   v2 = +[NSBundle mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 lowercaseString];
+  bundleIdentifier = [v2 bundleIdentifier];
+  lowercaseString = [bundleIdentifier lowercaseString];
 
-  if ([v4 isEqualToString:@"com.apple.ibooks"])
+  if ([lowercaseString isEqualToString:@"com.apple.ibooks"])
   {
     v5 = @"com.apple.itunesu";
 LABEL_5:
@@ -122,7 +122,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"com.apple.itunesu"])
+  if ([lowercaseString isEqualToString:@"com.apple.itunesu"])
   {
     v5 = @"com.apple.ibooks";
     goto LABEL_5;
@@ -139,29 +139,29 @@ LABEL_7:
   v2 = +[NSURL bu_booksRepositoryURL];
   v3 = +[BKDatabaseBackupFileManager mergeSyncSidecarFileName];
   v4 = [v2 URLByAppendingPathComponent:v3];
-  v5 = [v4 path];
+  path = [v4 path];
 
-  return v5;
+  return path;
 }
 
-- (void)mergeSyncSidecarWithCompletionBlock:(id)a3
+- (void)mergeSyncSidecarWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(BKDatabaseBackupFileManager *)self annotationProvider];
-  v6 = [(BKDatabaseBackupFileManager *)self annotationProvider];
-  v7 = [objc_opt_class() ubiquityQueue];
+  blockCopy = block;
+  annotationProvider = [(BKDatabaseBackupFileManager *)self annotationProvider];
+  annotationProvider2 = [(BKDatabaseBackupFileManager *)self annotationProvider];
+  ubiquityQueue = [objc_opt_class() ubiquityQueue];
 
-  if (v7)
+  if (ubiquityQueue)
   {
-    v8 = [(BKDatabaseBackupFileManager *)self annotationProvider];
-    v9 = [objc_opt_class() ubiquityQueue];
+    annotationProvider3 = [(BKDatabaseBackupFileManager *)self annotationProvider];
+    ubiquityQueue2 = [objc_opt_class() ubiquityQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10015525C;
     block[3] = &unk_100A03788;
-    v13 = v5;
-    v14 = v4;
-    dispatch_async(v9, block);
+    v13 = annotationProvider;
+    v14 = blockCopy;
+    dispatch_async(ubiquityQueue2, block);
 
     v10 = v13;
   }

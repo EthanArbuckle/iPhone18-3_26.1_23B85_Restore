@@ -1,16 +1,16 @@
 @interface MCMLibraryRepair
 - (BOOL)_canRepairLocally;
-- (BOOL)createPathsIfNecessaryWithError:(id *)a3;
-- (BOOL)fixAndRetryIfPermissionsErrorWithURL:(id)a3 error:(id *)a4 duringBlock:(id)a5;
+- (BOOL)createPathsIfNecessaryWithError:(id *)error;
+- (BOOL)fixAndRetryIfPermissionsErrorWithURL:(id)l error:(id *)error duringBlock:(id)block;
 - (BOOL)managedPathsHaveChanged;
 - (BOOL)pathsCreated;
-- (BOOL)performGenericRepairWithError:(id *)a3;
+- (BOOL)performGenericRepairWithError:(id *)error;
 - (MCMContainerClassIterator)classIterator;
 - (MCMFileManager)fileManager;
-- (MCMLibraryRepair)initWithManagedPathRegistry:(id)a3 fileManager:(id)a4 classIterator:(id)a5;
+- (MCMLibraryRepair)initWithManagedPathRegistry:(id)registry fileManager:(id)manager classIterator:(id)iterator;
 - (MCMManagedPathRegistry)registry;
 - (id)_managedPathsForGenericRepair;
-- (void)setPathsCreated:(BOOL)a3;
+- (void)setPathsCreated:(BOOL)created;
 @end
 
 @implementation MCMLibraryRepair
@@ -31,10 +31,10 @@
   return result;
 }
 
-- (void)setPathsCreated:(BOOL)a3
+- (void)setPathsCreated:(BOOL)created
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_pathsCreated = a3;
+  self->_pathsCreated = created;
   v3 = *MEMORY[0x1E69E9840];
 }
 
@@ -78,20 +78,20 @@ void __37__MCMLibraryRepair__canRepairLocally__block_invoke()
 - (id)_managedPathsForGenericRepair
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMLibraryRepair *)self registry];
-  v3 = [v2 paths];
+  registry = [(MCMLibraryRepair *)self registry];
+  paths = [registry paths];
 
   v4 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return paths;
 }
 
 - (BOOL)managedPathsHaveChanged
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = [(MCMLibraryRepair *)self _managedPathsForGenericRepair];
-  v4 = [(MCMLibraryRepair *)self registry];
-  v5 = [v4 orderedPathsFromPaths:v3];
+  _managedPathsForGenericRepair = [(MCMLibraryRepair *)self _managedPathsForGenericRepair];
+  registry = [(MCMLibraryRepair *)self registry];
+  v5 = [registry orderedPathsFromPaths:_managedPathsForGenericRepair];
 
   v39 = 0u;
   v40 = 0u;
@@ -106,7 +106,7 @@ void __37__MCMLibraryRepair__canRepairLocally__block_invoke()
   }
 
   v8 = v7;
-  v28 = v3;
+  v28 = _managedPathsForGenericRepair;
   v9 = *v38;
   while (2)
   {
@@ -118,9 +118,9 @@ void __37__MCMLibraryRepair__canRepairLocally__block_invoke()
       }
 
       v11 = *(*(&v37 + 1) + 8 * i);
-      v12 = [v11 fsNode];
+      fsNode = [v11 fsNode];
 
-      if (v12)
+      if (fsNode)
       {
         v13 = +[MCMFileManager defaultManager];
         v14 = [v11 url];
@@ -130,8 +130,8 @@ void __37__MCMLibraryRepair__canRepairLocally__block_invoke()
 
         if (v15)
         {
-          v17 = [v11 fsNode];
-          v18 = [v17 isEqual:v15];
+          fsNode2 = [v11 fsNode];
+          v18 = [fsNode2 isEqual:v15];
 
           if (v18)
           {
@@ -143,12 +143,12 @@ void __37__MCMLibraryRepair__canRepairLocally__block_invoke()
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
             v21 = [v11 url];
-            v22 = [v21 path];
-            v23 = [v11 fsNode];
+            path = [v21 path];
+            fsNode3 = [v11 fsNode];
             *buf = 138543874;
-            v31 = v22;
+            v31 = path;
             v32 = 2114;
-            v33 = v23;
+            v33 = fsNode3;
             v34 = 2114;
             v35 = v15;
             _os_log_impl(&dword_1DF2C3000, v20, OS_LOG_TYPE_DEFAULT, "Path [%{public}@] changed: old = %{public}@, new = %{public}@", buf, 0x20u);
@@ -161,9 +161,9 @@ void __37__MCMLibraryRepair__canRepairLocally__block_invoke()
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
           {
             v26 = [v11 url];
-            v27 = [v26 path];
+            path2 = [v26 path];
             *buf = 138543618;
-            v31 = v27;
+            v31 = path2;
             v32 = 2114;
             v33 = v16;
             _os_log_error_impl(&dword_1DF2C3000, v20, OS_LOG_TYPE_ERROR, "Failed to get fsNode for [%{public}@] when checking for file system changes: %{public}@", buf, 0x16u);
@@ -172,7 +172,7 @@ void __37__MCMLibraryRepair__canRepairLocally__block_invoke()
           v15 = 0;
         }
 
-        v3 = v28;
+        _managedPathsForGenericRepair = v28;
 
         v19 = 1;
         goto LABEL_20;
@@ -189,28 +189,28 @@ void __37__MCMLibraryRepair__canRepairLocally__block_invoke()
   }
 
   v19 = 0;
-  v3 = v28;
+  _managedPathsForGenericRepair = v28;
 LABEL_20:
 
   v24 = *MEMORY[0x1E69E9840];
   return v19;
 }
 
-- (BOOL)createPathsIfNecessaryWithError:(id *)a3
+- (BOOL)createPathsIfNecessaryWithError:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = self;
-  objc_sync_enter(v4);
-  if ([(MCMLibraryRepair *)v4 pathsCreated])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(MCMLibraryRepair *)selfCopy pathsCreated])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(MCMLibraryRepair *)v4 _managedPathsForGenericRepair];
-    v7 = [(MCMLibraryRepair *)v4 registry];
-    v8 = [v7 orderedPathsFromPaths:v6];
+    _managedPathsForGenericRepair = [(MCMLibraryRepair *)selfCopy _managedPathsForGenericRepair];
+    registry = [(MCMLibraryRepair *)selfCopy registry];
+    v8 = [registry orderedPathsFromPaths:_managedPathsForGenericRepair];
 
     v27 = 0u;
     v28 = 0u;
@@ -220,7 +220,7 @@ LABEL_20:
     v10 = [v9 countByEnumeratingWithState:&v25 objects:v24 count:16];
     if (v10)
     {
-      v21 = a3;
+      errorCopy = error;
       v5 = 0;
       v11 = *v26;
       while (2)
@@ -242,18 +242,18 @@ LABEL_20:
             v22[1] = 3221225472;
             v22[2] = __52__MCMLibraryRepair_createPathsIfNecessaryWithError___block_invoke;
             v22[3] = &unk_1E86B10B8;
-            v15 = [(MCMLibraryRepair *)v4 fixAndRetryIfPermissionsErrorWithURL:v14 error:&v23 duringBlock:v22];
+            v15 = [(MCMLibraryRepair *)selfCopy fixAndRetryIfPermissionsErrorWithURL:v14 error:&v23 duringBlock:v22];
             v16 = v23;
 
             if (!v15)
             {
 
-              objc_sync_exit(v4);
-              if (v21)
+              objc_sync_exit(selfCopy);
+              if (errorCopy)
               {
                 v17 = v16;
                 v18 = 0;
-                *v21 = v16;
+                *errorCopy = v16;
               }
 
               else
@@ -283,10 +283,10 @@ LABEL_20:
       v5 = 0;
     }
 
-    [(MCMLibraryRepair *)v4 setPathsCreated:1];
+    [(MCMLibraryRepair *)selfCopy setPathsCreated:1];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v18 = 1;
   v16 = v5;
@@ -309,22 +309,22 @@ uint64_t __52__MCMLibraryRepair_createPathsIfNecessaryWithError___block_invoke(u
   return v9;
 }
 
-- (BOOL)fixAndRetryIfPermissionsErrorWithURL:(id)a3 error:(id *)a4 duringBlock:(id)a5
+- (BOOL)fixAndRetryIfPermissionsErrorWithURL:(id)l error:(id *)error duringBlock:(id)block
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (v8)
+  lCopy = l;
+  blockCopy = block;
+  v9 = blockCopy;
+  if (blockCopy)
   {
     v13[0] = 0;
-    v10 = (*(v8 + 2))(v8, v7, v13);
-    v8 = v13[0];
-    if (a4 && (v10 & 1) == 0)
+    v10 = (*(blockCopy + 2))(blockCopy, lCopy, v13);
+    blockCopy = v13[0];
+    if (error && (v10 & 1) == 0)
     {
-      v8 = v8;
+      blockCopy = blockCopy;
       v10 = 0;
-      *a4 = v8;
+      *error = blockCopy;
     }
   }
 
@@ -337,13 +337,13 @@ uint64_t __52__MCMLibraryRepair_createPathsIfNecessaryWithError___block_invoke(u
   return v10;
 }
 
-- (BOOL)performGenericRepairWithError:(id *)a3
+- (BOOL)performGenericRepairWithError:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = [(MCMLibraryRepair *)self registry];
-  v29 = [(MCMLibraryRepair *)self _managedPathsForGenericRepair];
-  v30 = v5;
-  [v5 orderedPathsFromPaths:?];
+  registry = [(MCMLibraryRepair *)self registry];
+  _managedPathsForGenericRepair = [(MCMLibraryRepair *)self _managedPathsForGenericRepair];
+  v30 = registry;
+  [registry orderedPathsFromPaths:?];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
@@ -352,7 +352,7 @@ uint64_t __52__MCMLibraryRepair_createPathsIfNecessaryWithError___block_invoke(u
   if (v7)
   {
     v8 = v7;
-    v28 = a3;
+    errorCopy = error;
     v9 = 0;
     v10 = *v40;
     v31 = *MEMORY[0x1E696A798];
@@ -377,18 +377,18 @@ uint64_t __52__MCMLibraryRepair_createPathsIfNecessaryWithError___block_invoke(u
           _os_log_debug_impl(&dword_1DF2C3000, v14, OS_LOG_TYPE_DEBUG, "Examining %@ for repair.", buf, 0xCu);
         }
 
-        v15 = [v13 owner];
-        v16 = [v15 UID];
-        v17 = [v13 owner];
-        v18 = [v17 primaryGID];
+        owner = [v13 owner];
+        v16 = [owner UID];
+        owner2 = [v13 owner];
+        primaryGID = [owner2 primaryGID];
         v33 = v12;
-        v19 = [(MCMLibraryRepair *)self fixPermissionsWithManagedPath:v13 uid:v16 gid:v18 error:&v33];
+        v19 = [(MCMLibraryRepair *)self fixPermissionsWithManagedPath:v13 uid:v16 gid:primaryGID error:&v33];
         v9 = v33;
 
         if (!v19)
         {
-          v20 = [v9 domain];
-          if (![v20 isEqualToString:v31])
+          domain = [v9 domain];
+          if (![domain isEqualToString:v31])
           {
 
 LABEL_20:
@@ -403,11 +403,11 @@ LABEL_20:
             }
 
             v6 = obj;
-            if (v28)
+            if (errorCopy)
             {
               v25 = v9;
               v23 = 0;
-              *v28 = v9;
+              *errorCopy = v9;
             }
 
             else
@@ -418,9 +418,9 @@ LABEL_20:
             goto LABEL_25;
           }
 
-          v21 = [v9 code];
+          code = [v9 code];
 
-          if (v21 != 2)
+          if (code != 2)
           {
             goto LABEL_20;
           }
@@ -462,22 +462,22 @@ LABEL_25:
   return v23;
 }
 
-- (MCMLibraryRepair)initWithManagedPathRegistry:(id)a3 fileManager:(id)a4 classIterator:(id)a5
+- (MCMLibraryRepair)initWithManagedPathRegistry:(id)registry fileManager:(id)manager classIterator:(id)iterator
 {
   v17 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  registryCopy = registry;
+  managerCopy = manager;
+  iteratorCopy = iterator;
   v16.receiver = self;
   v16.super_class = MCMLibraryRepair;
   v12 = [(MCMLibraryRepair *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_registry, a3);
+    objc_storeStrong(&v12->_registry, registry);
     v13->_pathsCreated = 0;
-    objc_storeStrong(&v13->_fileManager, a4);
-    objc_storeStrong(&v13->_classIterator, a5);
+    objc_storeStrong(&v13->_fileManager, manager);
+    objc_storeStrong(&v13->_classIterator, iterator);
   }
 
   v14 = *MEMORY[0x1E69E9840];

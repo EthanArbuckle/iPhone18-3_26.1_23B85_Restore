@@ -1,31 +1,31 @@
 @interface CRLBufferedReadChannel
-- (CRLBufferedReadChannel)initWithReadChannel:(id)a3 sourceReadBufferSize:(unint64_t)a4 blockInfos:(id)a5 streamReadChannelBlock:(id)a6;
-- (id)_currentDataIntersectionWithOffset:(int64_t)a3 length:(unint64_t)a4 isReadDone:(BOOL *)a5;
+- (CRLBufferedReadChannel)initWithReadChannel:(id)channel sourceReadBufferSize:(unint64_t)size blockInfos:(id)infos streamReadChannelBlock:(id)block;
+- (id)_currentDataIntersectionWithOffset:(int64_t)offset length:(unint64_t)length isReadDone:(BOOL *)done;
 - (void)_close;
 - (void)_closeStreamReadChannel;
-- (void)_readFromOffset:(int64_t)a3 length:(unint64_t)a4 handler:(id)a5;
-- (void)_resetStreamReadChannelIfNeededForOffset:(int64_t)a3 length:(unint64_t)a4;
+- (void)_readFromOffset:(int64_t)offset length:(unint64_t)length handler:(id)handler;
+- (void)_resetStreamReadChannelIfNeededForOffset:(int64_t)offset length:(unint64_t)length;
 - (void)close;
 - (void)dealloc;
-- (void)readFromOffset:(int64_t)a3 length:(unint64_t)a4 handler:(id)a5;
-- (void)setStreamReadChannelSourceHandler:(id)a3;
+- (void)readFromOffset:(int64_t)offset length:(unint64_t)length handler:(id)handler;
+- (void)setStreamReadChannelSourceHandler:(id)handler;
 @end
 
 @implementation CRLBufferedReadChannel
 
-- (CRLBufferedReadChannel)initWithReadChannel:(id)a3 sourceReadBufferSize:(unint64_t)a4 blockInfos:(id)a5 streamReadChannelBlock:(id)a6
+- (CRLBufferedReadChannel)initWithReadChannel:(id)channel sourceReadBufferSize:(unint64_t)size blockInfos:(id)infos streamReadChannelBlock:(id)block
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  channelCopy = channel;
+  infosCopy = infos;
+  blockCopy = block;
   v32.receiver = self;
   v32.super_class = CRLBufferedReadChannel;
   v14 = [(CRLBufferedReadChannel *)&v32 init];
   if (v14)
   {
-    if (v11)
+    if (channelCopy)
     {
-      if (v13)
+      if (blockCopy)
       {
         goto LABEL_4;
       }
@@ -59,10 +59,10 @@
       v24 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLUtility/IO/CRLBufferedReadChannel.m"];
       [CRLAssertionHandler handleFailureInFunction:v23 file:v24 lineNumber:68 isFatal:0 description:"invalid nil value for '%{public}s'", "sourceReadChannel"];
 
-      if (v13)
+      if (blockCopy)
       {
 LABEL_4:
-        if (a4)
+        if (size)
         {
           goto LABEL_5;
         }
@@ -97,10 +97,10 @@ LABEL_4:
     v27 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLUtility/IO/CRLBufferedReadChannel.m"];
     [CRLAssertionHandler handleFailureInFunction:v26 file:v27 lineNumber:69 isFatal:0 description:"invalid nil value for '%{public}s'", "streamReadChannelBlock"];
 
-    if (a4)
+    if (size)
     {
 LABEL_5:
-      if (v11 && v13)
+      if (channelCopy && blockCopy)
       {
         v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
         v16 = dispatch_queue_create("CRLBufferedReadChannel.Read", v15);
@@ -108,14 +108,14 @@ LABEL_5:
         *(v14 + 1) = v16;
 
         dispatch_queue_set_specific(*(v14 + 1), off_1019EDE30, off_1019EDE30, 0);
-        objc_storeStrong(v14 + 2, a3);
-        *(v14 + 3) = a4;
+        objc_storeStrong(v14 + 2, channel);
+        *(v14 + 3) = size;
         *(v14 + 4) = 0x7FFFFFFFFFFFFFFFLL;
-        v18 = [v12 copy];
+        v18 = [infosCopy copy];
         v19 = *(v14 + 7);
         *(v14 + 7) = v18;
 
-        v20 = objc_retainBlock(v13);
+        v20 = objc_retainBlock(blockCopy);
         v21 = *(v14 + 8);
         *(v14 + 8) = v20;
 
@@ -211,15 +211,15 @@ LABEL_36:
   self->_streamReadChannel = 0;
 }
 
-- (void)_resetStreamReadChannelIfNeededForOffset:(int64_t)a3 length:(unint64_t)a4
+- (void)_resetStreamReadChannelIfNeededForOffset:(int64_t)offset length:(unint64_t)length
 {
-  v5 = a3;
+  offsetCopy = offset;
   streamOutputOffset = self->_streamOutputOffset;
-  if (streamOutputOffset <= a3)
+  if (streamOutputOffset <= offset)
   {
     streamOutputOutstandingLength = self->_streamOutputOutstandingLength;
     v9 = streamOutputOutstandingLength + streamOutputOffset;
-    if (streamOutputOutstandingLength == -1 || v9 > a3)
+    if (streamOutputOutstandingLength == -1 || v9 > offset)
     {
       return;
     }
@@ -250,12 +250,12 @@ LABEL_36:
   }
 
   v14 = v13;
-  v15 = 0;
+  decodedLength = 0;
   v16 = 0;
   v17 = 0;
   v40 = *v43;
-  v37 = a4;
-  v38 = v5;
+  lengthCopy = length;
+  v38 = offsetCopy;
   do
   {
     v18 = 0;
@@ -268,20 +268,20 @@ LABEL_36:
 
       v19 = *(*(&v42 + 1) + 8 * v18);
       v16 += [v19 decodedLength];
-      if (v15)
+      if (decodedLength)
       {
         [v17 addObject:v19];
         self->_sourceLength += [v19 encodedLength];
-        v15 = &v15[[v19 decodedLength]];
-        v20 = [v19 decodedLength] + self->_streamOutputOutstandingLength;
+        decodedLength = &decodedLength[[v19 decodedLength]];
+        decodedLength2 = [v19 decodedLength] + self->_streamOutputOutstandingLength;
       }
 
       else
       {
-        if (v16 <= v5)
+        if (v16 <= offsetCopy)
         {
           self->_sourceOffset += [v19 encodedLength];
-          v15 = 0;
+          decodedLength = 0;
           self->_streamOutputOffset += [v19 decodedLength];
           goto LABEL_27;
         }
@@ -331,21 +331,21 @@ LABEL_36:
           v25 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLUtility/IO/CRLBufferedReadChannel.m"];
           [CRLAssertionHandler handleFailureInFunction:v24 file:v25 lineNumber:147 isFatal:0 description:"expected nil value for '%{public}s'", "blockInfos"];
 
-          a4 = v37;
+          length = lengthCopy;
         }
 
         v26 = [[NSMutableArray alloc] initWithCapacity:v12];
 
         [v26 addObject:v19];
         self->_sourceLength = [v19 encodedLength];
-        v15 = [v19 decodedLength];
-        v20 = [v19 decodedLength];
+        decodedLength = [v19 decodedLength];
+        decodedLength2 = [v19 decodedLength];
         v17 = v26;
-        v5 = v38;
+        offsetCopy = v38;
       }
 
-      self->_streamOutputOutstandingLength = v20;
-      if (v15 > a4)
+      self->_streamOutputOutstandingLength = decodedLength2;
+      if (decodedLength > length)
       {
         goto LABEL_36;
       }
@@ -391,34 +391,34 @@ LABEL_37:
   [(CRLStreamReadChannel *)v35 readWithHandler:v41];
 }
 
-- (void)setStreamReadChannelSourceHandler:(id)a3
+- (void)setStreamReadChannelSourceHandler:(id)handler
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(handler);
   streamReadChannelSourceHandler = self->_streamReadChannelSourceHandler;
   self->_streamReadChannelSourceHandler = v4;
 }
 
-- (void)readFromOffset:(int64_t)a3 length:(unint64_t)a4 handler:(id)a5
+- (void)readFromOffset:(int64_t)offset length:(unint64_t)length handler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   readQueue = self->_readQueue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10018D398;
   v11[3] = &unk_101843310;
-  v13 = a3;
-  v14 = a4;
+  offsetCopy = offset;
+  lengthCopy = length;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   dispatch_async(readQueue, v11);
 }
 
-- (void)_readFromOffset:(int64_t)a3 length:(unint64_t)a4 handler:(id)a5
+- (void)_readFromOffset:(int64_t)offset length:(unint64_t)length handler:(id)handler
 {
-  v8 = a5;
-  v9 = (a3 & (a3 >> 63)) + a4;
-  v10 = a3 & ~(a3 >> 63);
+  handlerCopy = handler;
+  v9 = (offset & (offset >> 63)) + length;
+  v10 = offset & ~(offset >> 63);
   [(CRLBufferedReadChannel *)self _resetStreamReadChannelIfNeededForOffset:v10 length:v9];
   v31 = 0;
   v11 = [(CRLBufferedReadChannel *)self _currentDataIntersectionWithOffset:v10 length:v9 isReadDone:&v31];
@@ -436,13 +436,13 @@ LABEL_37:
   }
 
   v14 = +[NSThread currentThread];
-  v15 = [v14 threadDictionary];
-  [v15 setObject:&__kCFBooleanTrue forKeyedSubscript:@"CRLBufferedReadChannelInvokingHandler"];
+  threadDictionary = [v14 threadDictionary];
+  [threadDictionary setObject:&__kCFBooleanTrue forKeyedSubscript:@"CRLBufferedReadChannelInvokingHandler"];
 
-  (*(v8 + 2))(v8, v31, v12, 0);
+  (*(handlerCopy + 2))(handlerCopy, v31, v12, 0);
   v16 = +[NSThread currentThread];
-  v17 = [v16 threadDictionary];
-  [v17 setObject:&__kCFBooleanFalse forKeyedSubscript:@"CRLBufferedReadChannelInvokingHandler"];
+  threadDictionary2 = [v16 threadDictionary];
+  [threadDictionary2 setObject:&__kCFBooleanFalse forKeyedSubscript:@"CRLBufferedReadChannelInvokingHandler"];
 
   if (v31)
   {
@@ -485,7 +485,7 @@ LABEL_6:
   v24[2] = sub_10018D758;
   v24[3] = &unk_101843438;
   v24[4] = self;
-  v25 = v8;
+  v25 = handlerCopy;
   v26 = v30;
   v27 = sourceReadBufferSize;
   v28 = v10;
@@ -496,16 +496,16 @@ LABEL_6:
 LABEL_12:
 }
 
-- (id)_currentDataIntersectionWithOffset:(int64_t)a3 length:(unint64_t)a4 isReadDone:(BOOL *)a5
+- (id)_currentDataIntersectionWithOffset:(int64_t)offset length:(unint64_t)length isReadDone:(BOOL *)done
 {
-  if (__CFADD__(a3, a4))
+  if (__CFADD__(offset, length))
   {
     v8 = -1;
   }
 
   else
   {
-    v8 = a3 + a4;
+    v8 = offset + length;
   }
 
   streamOutputOffset = self->_streamOutputOffset;
@@ -557,14 +557,14 @@ LABEL_12:
     streamOutputLength = self->_streamOutputLength;
   }
 
-  if (streamOutputOffset <= a3)
+  if (streamOutputOffset <= offset)
   {
-    v16 = a3;
+    offsetCopy = offset;
   }
 
   else
   {
-    v16 = streamOutputOffset;
+    offsetCopy = streamOutputOffset;
   }
 
   v17 = streamOutputLength + streamOutputOffset;
@@ -578,10 +578,10 @@ LABEL_12:
     v18 = v8;
   }
 
-  if (v18 <= v16)
+  if (v18 <= offsetCopy)
   {
     subrange = 0;
-    if (!a5)
+    if (!done)
     {
       goto LABEL_25;
     }
@@ -589,11 +589,11 @@ LABEL_12:
     goto LABEL_24;
   }
 
-  subrange = dispatch_data_create_subrange(self->_currentStreamOutputData, v16 - streamOutputOffset, v18 - v16);
-  if (a5)
+  subrange = dispatch_data_create_subrange(self->_currentStreamOutputData, offsetCopy - streamOutputOffset, v18 - offsetCopy);
+  if (done)
   {
 LABEL_24:
-    *a5 = v8 <= v17 || self->_isStreamOutputDone;
+    *done = v8 <= v17 || self->_isStreamOutputDone;
   }
 
 LABEL_25:

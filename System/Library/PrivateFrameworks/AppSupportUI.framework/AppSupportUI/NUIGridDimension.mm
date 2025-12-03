@@ -3,14 +3,14 @@
 - (NSArray)arrangedSubviews;
 - (double)length;
 - (double)spacingAfter;
-- (id)initWithContainerGridView:(int)a3 isRow:;
+- (id)initWithContainerGridView:(int)view isRow:;
 - (int64_t)alignment;
 - (void)dealloc;
 - (void)invalidateArrangedSubviews;
-- (void)setAlignment:(int64_t)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setLength:(double)a3;
-- (void)setSpacingAfter:(double)a3;
+- (void)setAlignment:(int64_t)alignment;
+- (void)setHidden:(BOOL)hidden;
+- (void)setLength:(double)length;
+- (void)setSpacingAfter:(double)after;
 @end
 
 @implementation NUIGridDimension
@@ -113,9 +113,9 @@ LABEL_22:
   [(NUIGridDimension *)&v3 dealloc];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v32 = *MEMORY[0x277D85DE8];
   if ((*&self->_flags & 0x400) != 0)
   {
@@ -124,9 +124,9 @@ LABEL_22:
 
   [NUIContainerView _assertNotInLayoutPass:?];
   flags = self->_flags;
-  if (((((flags & 0x200) == 0) ^ v3) & 1) == 0)
+  if (((((flags & 0x200) == 0) ^ hiddenCopy) & 1) == 0)
   {
-    if (v3)
+    if (hiddenCopy)
     {
       v6 = 512;
     }
@@ -157,7 +157,7 @@ LABEL_22:
 
           v8 = *(*(&v27 + 1) + 8 * i);
           [(NUIContainerGridView *)self->_gridView getColumnRange:&v25 rowRange:&v23 forArrangedSubview:v8];
-          v9 = [v8 isHidden];
+          isHidden = [v8 isHidden];
           v10 = v25;
           do
           {
@@ -189,7 +189,7 @@ LABEL_22:
 
           while ((*(v17 + 40) & 0x200) != 0);
           v19 = v11 >= v12 || v15 >= v16;
-          if (v9 != v19)
+          if (isHidden != v19)
           {
             [v8 setHidden:?];
           }
@@ -215,7 +215,7 @@ LABEL_22:
   return self->_length;
 }
 
-- (void)setLength:(double)a3
+- (void)setLength:(double)length
 {
   if ((*&self->_flags & 0x400) != 0)
   {
@@ -223,9 +223,9 @@ LABEL_22:
   }
 
   [NUIContainerView _assertNotInLayoutPass:?];
-  if (self->_length != a3)
+  if (self->_length != length)
   {
-    self->_length = a3;
+    self->_length = length;
     gridView = self->_gridView;
 
     [(NUIContainerView *)gridView invalidateIntrinsicContentSize];
@@ -242,7 +242,7 @@ LABEL_22:
   return self->_spacing;
 }
 
-- (void)setSpacingAfter:(double)a3
+- (void)setSpacingAfter:(double)after
 {
   if ((*&self->_flags & 0x400) != 0)
   {
@@ -250,9 +250,9 @@ LABEL_22:
   }
 
   [NUIContainerView _assertNotInLayoutPass:?];
-  if (self->_spacing != a3)
+  if (self->_spacing != after)
   {
-    self->_spacing = a3;
+    self->_spacing = after;
     gridView = self->_gridView;
 
     [(NUIContainerView *)gridView setNeedsInvalidation:2];
@@ -271,7 +271,7 @@ LABEL_22:
   return flags;
 }
 
-- (void)setAlignment:(int64_t)a3
+- (void)setAlignment:(int64_t)alignment
 {
   if ((*&self->_flags & 0x400) != 0)
   {
@@ -280,9 +280,9 @@ LABEL_22:
 
   [NUIContainerView _assertNotInLayoutPass:?];
   flags = self->_flags;
-  if (a3 != flags)
+  if (alignment != flags)
   {
-    *&self->_flags = flags & 0xFF00 | a3;
+    *&self->_flags = flags & 0xFF00 | alignment;
     gridView = self->_gridView;
 
     [(NUIContainerView *)gridView setNeedsInvalidation:4];
@@ -291,14 +291,14 @@ LABEL_22:
 
 - (void)invalidateArrangedSubviews
 {
-  if (a1)
+  if (self)
   {
 
-    *(a1 + 16) = 0;
+    *(self + 16) = 0;
   }
 }
 
-- (id)initWithContainerGridView:(int)a3 isRow:
+- (id)initWithContainerGridView:(int)view isRow:
 {
   if (result)
   {
@@ -311,7 +311,7 @@ LABEL_22:
       *(result + 4) = 0x7FEFFFFFFFFFFFFFLL;
       v5 = *(result + 20);
       *(result + 1) = a2;
-      if (a3)
+      if (view)
       {
         v6 = 256;
       }

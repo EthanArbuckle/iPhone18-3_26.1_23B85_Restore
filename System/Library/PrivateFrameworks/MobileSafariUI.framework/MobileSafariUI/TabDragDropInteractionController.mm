@@ -1,64 +1,64 @@
 @interface TabDragDropInteractionController
-+ (BOOL)canDelegateDragDropForTabCollectionView:(id)a3;
-- (BOOL)_canOpenInCurrentTabForSession:(id)a3 tabView:(id)a4;
-- (BOOL)_shouldMovePlaceholderItem:(id)a3 overTargetItem:(id)a4 withDropLocation:(CGPoint)a5 interaction:(id)a6;
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4;
++ (BOOL)canDelegateDragDropForTabCollectionView:(id)view;
+- (BOOL)_canOpenInCurrentTabForSession:(id)session tabView:(id)view;
+- (BOOL)_shouldMovePlaceholderItem:(id)item overTargetItem:(id)targetItem withDropLocation:(CGPoint)location interaction:(id)interaction;
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session;
 - (TabDragDropDataSource)dataSource;
-- (TabDragDropInteractionController)initWithDataSource:(id)a3 dropHandler:(id)a4;
-- (id)_insertPlaceholderIfNeededForSession:(id)a3 interaction:(id)a4;
-- (id)_newDragItemsAtPoint:(CGPoint)a3 excludingTabUUIDs:(id)a4 interaction:(id)a5 session:(id)a6;
-- (id)_tabCollectionItemAtPoint:(CGPoint)a3 interaction:(id)a4;
-- (id)_viewForTransitionToItem:(id)a3 withTabCollectionView:(id)a4;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 dismissalPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)dragInteraction:(id)a3 itemsForAddingToSession:(id)a4 withTouchAtPoint:(CGPoint)a5;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (id)dropInteraction:(id)a3 previewForDroppingItem:(id)a4 withDefault:(id)a5;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
-- (void)_cleanUpDragPreviewForSesssion:(id)a3;
-- (void)_cleanUpDropPlaceholderForSession:(id)a3 interaction:(id)a4;
-- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)a3;
-- (void)_transitionToDragState:(int64_t)a3 fromDragState:(int64_t)a4 forTabCollectionItemsInSession:(id)a5 interaction:(id)a6;
-- (void)_unhideTabsForLocalDragSession:(id)a3;
-- (void)_updatePreviewsForInteraction:(id)a3 session:(id)a4 pinned:(BOOL)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)dragInteraction:(id)a3 session:(id)a4 willAddItems:(id)a5 forInteraction:(id)a6;
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4;
-- (void)dropInteraction:(id)a3 item:(id)a4 willAnimateDropWithAnimator:(id)a5;
-- (void)dropInteraction:(id)a3 performDrop:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4;
+- (TabDragDropInteractionController)initWithDataSource:(id)source dropHandler:(id)handler;
+- (id)_insertPlaceholderIfNeededForSession:(id)session interaction:(id)interaction;
+- (id)_newDragItemsAtPoint:(CGPoint)point excludingTabUUIDs:(id)ds interaction:(id)interaction session:(id)session;
+- (id)_tabCollectionItemAtPoint:(CGPoint)point interaction:(id)interaction;
+- (id)_viewForTransitionToItem:(id)item withTabCollectionView:(id)view;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration dismissalPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)dragInteraction:(id)interaction itemsForAddingToSession:(id)session withTouchAtPoint:(CGPoint)point;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (id)dropInteraction:(id)interaction previewForDroppingItem:(id)item withDefault:(id)default;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
+- (void)_cleanUpDragPreviewForSesssion:(id)sesssion;
+- (void)_cleanUpDropPlaceholderForSession:(id)session interaction:(id)interaction;
+- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)dragging;
+- (void)_transitionToDragState:(int64_t)state fromDragState:(int64_t)dragState forTabCollectionItemsInSession:(id)session interaction:(id)interaction;
+- (void)_unhideTabsForLocalDragSession:(id)session;
+- (void)_updatePreviewsForInteraction:(id)interaction session:(id)session pinned:(BOOL)pinned;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)dragInteraction:(id)interaction session:(id)session willAddItems:(id)items forInteraction:(id)forInteraction;
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin;
+- (void)dropInteraction:(id)interaction item:(id)item willAnimateDropWithAnimator:(id)animator;
+- (void)dropInteraction:(id)interaction performDrop:(id)drop;
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end;
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter;
 @end
 
 @implementation TabDragDropInteractionController
 
-- (TabDragDropInteractionController)initWithDataSource:(id)a3 dropHandler:(id)a4
+- (TabDragDropInteractionController)initWithDataSource:(id)source dropHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = TabDragDropInteractionController;
   v8 = [(TabDragDropInteractionController *)&v20 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_dataSource, v6);
-    objc_storeStrong(&v9->_dropHandler, a4);
-    v10 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    objc_storeWeak(&v8->_dataSource, sourceCopy);
+    objc_storeStrong(&v9->_dropHandler, handler);
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     sessionToPlaceholderItemMap = v9->_sessionToPlaceholderItemMap;
-    v9->_sessionToPlaceholderItemMap = v10;
+    v9->_sessionToPlaceholderItemMap = strongToStrongObjectsMapTable;
 
-    v12 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     insertedTabsForDragItems = v9->_insertedTabsForDragItems;
-    v9->_insertedTabsForDragItems = v12;
+    v9->_insertedTabsForDragItems = strongToStrongObjectsMapTable2;
 
-    v14 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     hasHiddenDocumentsForDragSessions = v9->_hasHiddenDocumentsForDragSessions;
-    v9->_hasHiddenDocumentsForDragSessions = v14;
+    v9->_hasHiddenDocumentsForDragSessions = strongToStrongObjectsMapTable3;
 
     v16 = [MEMORY[0x277CBEB58] set];
     tabViewsPendingActivation = v9->_tabViewsPendingActivation;
@@ -70,13 +70,13 @@
   return v9;
 }
 
-+ (BOOL)canDelegateDragDropForTabCollectionView:(id)a3
++ (BOOL)canDelegateDragDropForTabCollectionView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    v4 = [v3 view];
-    v5 = v4 != 0;
+    view = [viewCopy view];
+    v5 = view != 0;
   }
 
   else
@@ -87,18 +87,18 @@
   return v5;
 }
 
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session
 {
-  v5 = a4;
-  v6 = tabViewFromInteraction(a3);
+  sessionCopy = session;
+  v6 = tabViewFromInteraction(interaction);
   if ((objc_opt_respondsToSelector() & 1) != 0 && [v6 hidesInactiveTabs])
   {
-    v7 = [MEMORY[0x277D28F40] canCreateNavigationIntentForDropSession:v5];
+    v7 = [MEMORY[0x277D28F40] canCreateNavigationIntentForDropSession:sessionCopy];
   }
 
   else
   {
-    v7 = [TabDocumentDropHandler canHandleSession:v5];
+    v7 = [TabDocumentDropHandler canHandleSession:sessionCopy];
   }
 
   v8 = v7;
@@ -106,18 +106,18 @@
   return v8;
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter
 {
-  v5 = a4;
+  enterCopy = enter;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  [WeakRetained didBeginTrackingSession:v5];
+  [WeakRetained didBeginTrackingSession:enterCopy];
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = tabViewFromInteraction(v6);
+  interactionCopy = interaction;
+  updateCopy = update;
+  v8 = tabViewFromInteraction(interactionCopy);
   if (!v8 || (objc_opt_respondsToSelector() & 1) != 0 && [v8 presentationState] != 2)
   {
     v13 = [objc_alloc(MEMORY[0x277D754A8]) initWithDropOperation:0];
@@ -126,13 +126,13 @@
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && [v8 hidesInactiveTabs])
   {
-    v9 = [v7 items];
+    items = [updateCopy items];
     v56[0] = MEMORY[0x277D85DD0];
     v56[1] = 3221225472;
     v56[2] = __69__TabDragDropInteractionController_dropInteraction_sessionDidUpdate___block_invoke;
     v56[3] = &unk_2781DBB28;
     v57 = v8;
-    v10 = [v9 safari_containsObjectPassingTest:v56];
+    v10 = [items safari_containsObjectPassingTest:v56];
 
     v11 = objc_alloc(MEMORY[0x277D754A8]);
     if (v10)
@@ -150,18 +150,18 @@
     goto LABEL_30;
   }
 
-  v14 = [v8 view];
-  [v7 locationInView:v14];
+  view = [v8 view];
+  [updateCopy locationInView:view];
   v16 = v15;
   v18 = v17;
 
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v20 = +[TabDocumentDropHandler proposedOperationForSession:intoWindowWithPrivateBrowsingEnabled:](TabDocumentDropHandler, "proposedOperationForSession:intoWindowWithPrivateBrowsingEnabled:", v7, [WeakRetained privateBrowsingEnabled]);
+  v20 = +[TabDocumentDropHandler proposedOperationForSession:intoWindowWithPrivateBrowsingEnabled:](TabDocumentDropHandler, "proposedOperationForSession:intoWindowWithPrivateBrowsingEnabled:", updateCopy, [WeakRetained privateBrowsingEnabled]);
   v13 = [objc_alloc(MEMORY[0x277D754A8]) initWithDropOperation:v20];
   if (v20 != 1)
   {
-    v21 = [TabDocumentDropHandler canPinAllItemsInSession:v7];
-    v22 = [(NSMapTable *)self->_sessionToPlaceholderItemMap objectForKey:v7];
+    v21 = [TabDocumentDropHandler canPinAllItemsInSession:updateCopy];
+    v22 = [(NSMapTable *)self->_sessionToPlaceholderItemMap objectForKey:updateCopy];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __69__TabDragDropInteractionController_dropInteraction_sessionDidUpdate___block_invoke_2;
@@ -176,10 +176,10 @@
     v48 = v45;
     v43 = WeakRetained;
     v49 = v43;
-    v24 = v7;
+    v24 = updateCopy;
     v50 = v24;
-    v51 = self;
-    v25 = v6;
+    selfCopy = self;
+    v25 = interactionCopy;
     v52 = v25;
     v26 = _Block_copy(aBlock);
     if ([(TabDragDropInteractionController *)self _canOpenInCurrentTabForSession:v24 tabView:v23])
@@ -336,51 +336,51 @@ LABEL_11:
   }
 }
 
-- (BOOL)_canOpenInCurrentTabForSession:(id)a3 tabView:(id)a4
+- (BOOL)_canOpenInCurrentTabForSession:(id)session tabView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 items];
-  v9 = [v8 count];
+  sessionCopy = session;
+  viewCopy = view;
+  items = [sessionCopy items];
+  v9 = [items count];
 
-  if (v9 == 1 && (objc_opt_respondsToSelector() & 1) != 0 && [v7 canDragOntoActiveTab])
+  if (v9 == 1 && (objc_opt_respondsToSelector() & 1) != 0 && [viewCopy canDragOntoActiveTab])
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    if (+[TabDocumentDropHandler proposedOperationForSession:intoWindowWithPrivateBrowsingEnabled:](TabDocumentDropHandler, "proposedOperationForSession:intoWindowWithPrivateBrowsingEnabled:", v6, [WeakRetained privateBrowsingEnabled]) == 2)
+    if (+[TabDocumentDropHandler proposedOperationForSession:intoWindowWithPrivateBrowsingEnabled:](TabDocumentDropHandler, "proposedOperationForSession:intoWindowWithPrivateBrowsingEnabled:", sessionCopy, [WeakRetained privateBrowsingEnabled]) == 2)
     {
-      v11 = [v7 view];
-      [v6 locationInView:v11];
+      view = [viewCopy view];
+      [sessionCopy locationInView:view];
       v13 = v12;
       v15 = v14;
 
-      v16 = [v7 targetItemForDropAtPoint:{v13, v15}];
-      v17 = [v16 UUID];
-      v18 = [WeakRetained tabWithUUID:v17];
+      v16 = [viewCopy targetItemForDropAtPoint:{v13, v15}];
+      uUID = [v16 UUID];
+      v18 = [WeakRetained tabWithUUID:uUID];
 
-      v19 = [v18 isActive];
+      isActive = [v18 isActive];
     }
 
     else
     {
-      v19 = 0;
+      isActive = 0;
     }
   }
 
   else
   {
-    v19 = 0;
+    isActive = 0;
   }
 
-  return v19;
+  return isActive;
 }
 
-- (BOOL)_shouldMovePlaceholderItem:(id)a3 overTargetItem:(id)a4 withDropLocation:(CGPoint)a5 interaction:(id)a6
+- (BOOL)_shouldMovePlaceholderItem:(id)item overTargetItem:(id)targetItem withDropLocation:(CGPoint)location interaction:(id)interaction
 {
-  y = a5.y;
-  x = a5.x;
-  v10 = a3;
-  v11 = a4;
-  v12 = tabViewFromInteraction(a6);
+  y = location.y;
+  x = location.x;
+  itemCopy = item;
+  targetItemCopy = targetItem;
+  v12 = tabViewFromInteraction(interaction);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -389,23 +389,23 @@ LABEL_11:
     {
       if ([v12 isStandalone])
       {
-        v13 = [v10 secondaryItem];
+        secondaryItem = [itemCopy secondaryItem];
 
-        v10 = v13;
+        itemCopy = secondaryItem;
       }
     }
   }
 
   v14 = 0;
-  if (v11 && v10 != v11)
+  if (targetItemCopy && itemCopy != targetItemCopy)
   {
     v14 = 0;
     if ((objc_opt_respondsToSelector() & 1) == 0 || [v12 presentationState] == 2)
     {
       v52 = x;
       v53 = y;
-      [v12 frameForItem:v10];
-      [v12 frameForItem:v11];
+      [v12 frameForItem:itemCopy];
+      [v12 frameForItem:targetItemCopy];
       v16 = v15;
       v18 = v17;
       v20 = v19;
@@ -437,10 +437,10 @@ LABEL_11:
   return v14;
 }
 
-- (void)_cleanUpDropPlaceholderForSession:(id)a3 interaction:(id)a4
+- (void)_cleanUpDropPlaceholderForSession:(id)session interaction:(id)interaction
 {
-  v5 = a3;
-  v6 = [(NSMapTable *)self->_sessionToPlaceholderItemMap objectForKey:v5];
+  sessionCopy = session;
+  v6 = [(NSMapTable *)self->_sessionToPlaceholderItemMap objectForKey:sessionCopy];
   if (v6)
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
@@ -450,7 +450,7 @@ LABEL_11:
     v9[3] = &unk_2781D58E8;
     v9[4] = self;
     v10 = v6;
-    v8 = v5;
+    v8 = sessionCopy;
     v11 = v8;
     [WeakRetained performBatchUpdatesWithBlock:v9];
 
@@ -468,23 +468,23 @@ void __82__TabDragDropInteractionController__cleanUpDropPlaceholderForSession_in
   [v3 _unhideTabsForLocalDragSession:v4];
 }
 
-- (void)dropInteraction:(id)a3 performDrop:(id)a4
+- (void)dropInteraction:(id)interaction performDrop:(id)drop
 {
-  v6 = a4;
-  v7 = tabViewFromInteraction(a3);
+  dropCopy = drop;
+  v7 = tabViewFromInteraction(interaction);
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 hidesInactiveTabs];
+    hidesInactiveTabs = [v7 hidesInactiveTabs];
   }
 
   else
   {
-    v8 = 0;
+    hidesInactiveTabs = 0;
   }
 
-  if ([(TabDragDropInteractionController *)self _canOpenInCurrentTabForSession:v6 tabView:v7])
+  if ([(TabDragDropInteractionController *)self _canOpenInCurrentTabForSession:dropCopy tabView:v7])
   {
-    v9 = [(NSMapTable *)self->_sessionToPlaceholderItemMap objectForKey:v6];
+    v9 = [(NSMapTable *)self->_sessionToPlaceholderItemMap objectForKey:dropCopy];
     v10 = v9 == 0;
   }
 
@@ -493,15 +493,15 @@ void __82__TabDragDropInteractionController__cleanUpDropPlaceholderForSession_in
     v10 = 0;
   }
 
-  if ((v8 | v10))
+  if ((hidesInactiveTabs | v10))
   {
-    v11 = [MEMORY[0x277D28F40] builder];
+    builder = [MEMORY[0x277D28F40] builder];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __64__TabDragDropInteractionController_dropInteraction_performDrop___block_invoke;
     v16[3] = &unk_2781D5D00;
     v17 = v7;
-    [v11 buildNavigationIntentForDropSession:v6 completionHandler:v16];
+    [builder buildNavigationIntentForDropSession:dropCopy completionHandler:v16];
 
     v12 = v17;
   }
@@ -514,7 +514,7 @@ void __82__TabDragDropInteractionController__cleanUpDropPlaceholderForSession_in
     v14[2] = __64__TabDragDropInteractionController_dropInteraction_performDrop___block_invoke_2;
     v14[3] = &unk_2781D85C0;
     v14[4] = self;
-    v15 = v6;
+    v15 = dropCopy;
     [(TabDocumentDropHandler *)dropHandler dropItemsForSession:v15 withInsertionHandler:v14];
     v12 = v15;
   }
@@ -718,21 +718,21 @@ void __64__TabDragDropInteractionController_dropInteraction_performDrop___block_
   [*(*(a1 + 40) + 16) setObject:v9 forKey:v6];
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  endCopy = end;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  [WeakRetained didEndTrackingSession:v7];
+  [WeakRetained didEndTrackingSession:endCopy];
 
-  [(TabDragDropInteractionController *)self _cleanUpDropPlaceholderForSession:v7 interaction:v6];
+  [(TabDragDropInteractionController *)self _cleanUpDropPlaceholderForSession:endCopy interaction:interactionCopy];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = [v7 items];
-  v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  items = [endCopy items];
+  v10 = [items countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
     v11 = v10;
@@ -744,36 +744,36 @@ void __64__TabDragDropInteractionController_dropInteraction_performDrop___block_
       {
         if (*v15 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(items);
         }
 
         [(NSMapTable *)self->_insertedTabsForDragItems removeObjectForKey:*(*(&v14 + 1) + 8 * v13++)];
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v11 = [items countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v11);
   }
 }
 
-- (id)dropInteraction:(id)a3 previewForDroppingItem:(id)a4 withDefault:(id)a5
+- (id)dropInteraction:(id)interaction previewForDroppingItem:(id)item withDefault:(id)default
 {
   v53 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = tabViewFromInteraction(a3);
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v10 hidesInactiveTabs] & 1) != 0 || (-[NSMapTable objectForKey:](self->_insertedTabsForDragItems, "objectForKey:", v8), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, !v12))
+  itemCopy = item;
+  defaultCopy = default;
+  v10 = tabViewFromInteraction(interaction);
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v10 hidesInactiveTabs] & 1) != 0 || (-[NSMapTable objectForKey:](self->_insertedTabsForDragItems, "objectForKey:", itemCopy), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, !v12))
   {
     v41 = 0;
   }
 
   else
   {
-    v13 = [(NSMapTable *)self->_insertedTabsForDragItems objectForKey:v8];
-    v14 = [v13 firstObject];
-    v15 = [v14 itemForTabCollectionView:v10];
+    v13 = [(NSMapTable *)self->_insertedTabsForDragItems objectForKey:itemCopy];
+    firstObject = [v13 firstObject];
+    v15 = [firstObject itemForTabCollectionView:v10];
 
     if ([v13 count] < 2)
     {
@@ -785,8 +785,8 @@ void __64__TabDragDropInteractionController_dropInteraction_performDrop___block_
           if (v42)
           {
             v43 = objc_alloc_init(MEMORY[0x277D75480]);
-            v44 = [MEMORY[0x277D75348] clearColor];
-            [v43 setBackgroundColor:v44];
+            clearColor = [MEMORY[0x277D75348] clearColor];
+            [v43 setBackgroundColor:clearColor];
 
             v41 = [objc_alloc(MEMORY[0x277D75B88]) initWithView:v42 parameters:v43];
           }
@@ -859,25 +859,25 @@ void __64__TabDragDropInteractionController_dropInteraction_performDrop___block_
       memset(&v47, 0, sizeof(v47));
       CGAffineTransformMakeScale(&v47, 0.0, 0.0);
       v38 = objc_alloc(MEMORY[0x277D75488]);
-      v39 = [v10 view];
+      view = [v10 view];
       v46 = v47;
-      v40 = [v38 initWithContainer:v39 center:&v46 transform:{v35, v37}];
-      v41 = [v9 retargetedPreviewWithTarget:v40];
+      v40 = [v38 initWithContainer:view center:&v46 transform:{v35, v37}];
+      v41 = [defaultCopy retargetedPreviewWithTarget:v40];
     }
   }
 
   return v41;
 }
 
-- (void)dropInteraction:(id)a3 item:(id)a4 willAnimateDropWithAnimator:(id)a5
+- (void)dropInteraction:(id)interaction item:(id)item willAnimateDropWithAnimator:(id)animator
 {
   v46 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = tabViewFromInteraction(a3);
-  v33 = self;
-  v31 = v8;
-  v11 = [(NSMapTable *)self->_insertedTabsForDragItems objectForKey:v8];
+  itemCopy = item;
+  animatorCopy = animator;
+  v10 = tabViewFromInteraction(interaction);
+  selfCopy = self;
+  v31 = itemCopy;
+  v11 = [(NSMapTable *)self->_insertedTabsForDragItems objectForKey:itemCopy];
   v12 = [v11 count];
   v41 = 0u;
   v42 = 0u;
@@ -907,10 +907,10 @@ void __64__TabDragDropInteractionController_dropInteraction_performDrop___block_
         v40[2] = __85__TabDragDropInteractionController_dropInteraction_item_willAnimateDropWithAnimator___block_invoke;
         v40[3] = v14;
         v40[4] = v18;
-        [v9 addCompletion:v40];
+        [animatorCopy addCompletion:v40];
         if (v12 <= 1)
         {
-          v20 = [(TabDragDropInteractionController *)v33 _viewForTransitionToItem:v19 withTabCollectionView:v10];
+          v20 = [(TabDragDropInteractionController *)selfCopy _viewForTransitionToItem:v19 withTabCollectionView:v10];
           v21 = v20;
           if (v20)
           {
@@ -922,7 +922,7 @@ void __64__TabDragDropInteractionController_dropInteraction_performDrop___block_
             v38[3] = &unk_2781D4D40;
             v24 = v16;
             v25 = v14;
-            v26 = v9;
+            v26 = animatorCopy;
             v27 = v12;
             v28 = v20;
             v39 = v28;
@@ -935,12 +935,12 @@ void __64__TabDragDropInteractionController_dropInteraction_performDrop___block_
             v36[3] = &unk_2781D4D40;
             v30 = v28;
             v12 = v27;
-            v9 = v26;
+            animatorCopy = v26;
             v14 = v25;
             v16 = v24;
             v10 = v32;
             v37 = v30;
-            [v9 addAnimations:v36];
+            [animatorCopy addAnimations:v36];
           }
         }
       }
@@ -951,13 +951,13 @@ void __64__TabDragDropInteractionController_dropInteraction_performDrop___block_
     while (v15);
   }
 
-  ++v33->_dropAnimationCount;
+  ++selfCopy->_dropAnimationCount;
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __85__TabDragDropInteractionController_dropInteraction_item_willAnimateDropWithAnimator___block_invoke_4;
   v35[3] = v14;
-  v35[4] = v33;
-  [v9 addCompletion:v35];
+  v35[4] = selfCopy;
+  [animatorCopy addCompletion:v35];
 }
 
 void __85__TabDragDropInteractionController_dropInteraction_item_willAnimateDropWithAnimator___block_invoke(uint64_t a1)
@@ -994,39 +994,39 @@ void __85__TabDragDropInteractionController_dropInteraction_item_willAnimateDrop
   }
 }
 
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin
 {
-  v6 = a4;
-  v7 = a3;
-  v17 = tabViewFromInteraction(v7);
+  beginCopy = begin;
+  interactionCopy = interaction;
+  v17 = tabViewFromInteraction(interactionCopy);
   if (v17)
   {
-    v8 = [MEMORY[0x277D499B8] sharedLogger];
-    [v8 didStartDragWithDragContentType:{objc_msgSend(v17, "itemDragContentType")}];
+    mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+    [mEMORY[0x277D499B8] didStartDragWithDragContentType:{objc_msgSend(v17, "itemDragContentType")}];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  [WeakRetained willBeginDragSession:v6];
+  [WeakRetained willBeginDragSession:beginCopy];
 
-  v10 = [v6 items];
-  v11 = [TabDocumentDropHandler tabsForDragItems:v10];
+  items = [beginCopy items];
+  v11 = [TabDocumentDropHandler tabsForDragItems:items];
 
   v12 = [MEMORY[0x277D4A8B0] tabIDToTabPositionDictionaryForTabs:v11];
   v13 = [v12 mutableCopy];
-  v14 = [v11 firstObject];
-  v15 = [v14 webExtensionsController];
-  [v15 setTabIDToTabPositionForTabsInTransit:v13];
+  firstObject = [v11 firstObject];
+  webExtensionsController = [firstObject webExtensionsController];
+  [webExtensionsController setTabIDToTabPositionForTabsInTransit:v13];
 
   pendingDragSession = self->_pendingDragSession;
   self->_pendingDragSession = 0;
 
-  [(TabDragDropInteractionController *)self _transitionToDragState:1 fromDragState:-1 forTabCollectionItemsInSession:v6 interaction:v7];
+  [(TabDragDropInteractionController *)self _transitionToDragState:1 fromDragState:-1 forTabCollectionItemsInSession:beginCopy interaction:interactionCopy];
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  sessionCopy = session;
   if (self->_pendingDragSession || self->_dropAnimationCount)
   {
     v8 = MEMORY[0x277CBEBF8];
@@ -1034,7 +1034,7 @@ void __85__TabDragDropInteractionController_dropInteraction_item_willAnimateDrop
 
   else
   {
-    v10 = tabViewFromInteraction(v6);
+    v10 = tabViewFromInteraction(interactionCopy);
     if (([(NSMutableSet *)self->_tabViewsPendingActivation containsObject:v10]& 1) != 0)
     {
       v8 = MEMORY[0x277CBEBF8];
@@ -1042,34 +1042,34 @@ void __85__TabDragDropInteractionController_dropInteraction_item_willAnimateDrop
 
     else
     {
-      objc_storeStrong(&self->_pendingDragSession, a4);
-      v11 = [v10 view];
-      [v7 locationInView:v11];
-      v8 = [(TabDragDropInteractionController *)self _newDragItemsAtPoint:0 excludingTabUUIDs:v6 interaction:v7 session:?];
+      objc_storeStrong(&self->_pendingDragSession, session);
+      view = [v10 view];
+      [sessionCopy locationInView:view];
+      v8 = [(TabDragDropInteractionController *)self _newDragItemsAtPoint:0 excludingTabUUIDs:interactionCopy interaction:sessionCopy session:?];
     }
   }
 
   return v8;
 }
 
-- (id)dragInteraction:(id)a3 itemsForAddingToSession:(id)a4 withTouchAtPoint:(CGPoint)a5
+- (id)dragInteraction:(id)interaction itemsForAddingToSession:(id)session withTouchAtPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
+  y = point.y;
+  x = point.x;
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 view];
+  interactionCopy = interaction;
+  sessionCopy = session;
+  view = [interactionCopy view];
   v11 = MEMORY[0x277CBEB58];
-  v12 = [v9 items];
-  v13 = [v11 setWithCapacity:{objc_msgSend(v12, "count")}];
+  items = [sessionCopy items];
+  v13 = [v11 setWithCapacity:{objc_msgSend(items, "count")}];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v14 = [v9 items];
-  v15 = [v14 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  items2 = [sessionCopy items];
+  v15 = [items2 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v15)
   {
     v16 = v15;
@@ -1080,126 +1080,126 @@ void __85__TabDragDropInteractionController_dropInteraction_item_willAnimateDrop
       {
         if (*v27 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(items2);
         }
 
         v19 = *(*(&v26 + 1) + 8 * i);
-        v20 = [v19 safari_localWBTab];
+        safari_localWBTab = [v19 safari_localWBTab];
 
-        if (v20)
+        if (safari_localWBTab)
         {
-          v21 = [v19 safari_localWBTab];
-          v22 = [v21 uuid];
-          [v13 addObject:v22];
+          safari_localWBTab2 = [v19 safari_localWBTab];
+          uuid = [safari_localWBTab2 uuid];
+          [v13 addObject:uuid];
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v16 = [items2 countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v16);
   }
 
-  [v10 convertPoint:v10 toView:{x, y}];
-  v23 = [(TabDragDropInteractionController *)self _newDragItemsAtPoint:v13 excludingTabUUIDs:v8 interaction:v9 session:?];
+  [view convertPoint:view toView:{x, y}];
+  v23 = [(TabDragDropInteractionController *)self _newDragItemsAtPoint:v13 excludingTabUUIDs:interactionCopy interaction:sessionCopy session:?];
 
   return v23;
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 safari_localWBTab];
-  v9 = [v7 safari_localTabItem];
+  interactionCopy = interaction;
+  itemCopy = item;
+  safari_localWBTab = [itemCopy safari_localWBTab];
+  safari_localTabItem = [itemCopy safari_localTabItem];
 
-  v10 = 0;
-  if (v8 && v9)
+  window = 0;
+  if (safari_localWBTab && safari_localTabItem)
   {
-    v11 = tabViewFromInteraction(v6);
-    if ((objc_opt_respondsToSelector() & 1) == 0 || ([v11 targetedDragPreviewForLiftingItem:v9], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+    v11 = tabViewFromInteraction(interactionCopy);
+    if ((objc_opt_respondsToSelector() & 1) == 0 || ([v11 targetedDragPreviewForLiftingItem:safari_localTabItem], (window = objc_claimAutoreleasedReturnValue()) == 0))
     {
       if (objc_opt_respondsToSelector())
       {
-        v12 = [v11 viewForItem:v9];
-        v10 = [v12 window];
+        v12 = [v11 viewForItem:safari_localTabItem];
+        window = [v12 window];
 
-        if (v10)
+        if (window)
         {
-          v10 = [objc_alloc(MEMORY[0x277D75B88]) initWithView:v12];
+          window = [objc_alloc(MEMORY[0x277D75B88]) initWithView:v12];
         }
       }
 
       else
       {
-        v10 = 0;
+        window = 0;
       }
     }
   }
 
-  return v10;
+  return window;
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation
 {
-  v7 = a4;
-  v8 = a3;
+  sessionCopy = session;
+  interactionCopy = interaction;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  [WeakRetained willEndDragSession:v7];
+  [WeakRetained willEndDragSession:sessionCopy];
 
-  v10 = [v7 items];
-  v13 = [TabDocumentDropHandler tabsForDragItems:v10];
+  items = [sessionCopy items];
+  v13 = [TabDocumentDropHandler tabsForDragItems:items];
 
-  v11 = [v13 firstObject];
-  v12 = [v11 webExtensionsController];
-  [v12 setTabIDToTabPositionForTabsInTransit:0];
+  firstObject = [v13 firstObject];
+  webExtensionsController = [firstObject webExtensionsController];
+  [webExtensionsController setTabIDToTabPositionForTabsInTransit:0];
 
-  [(TabDragDropInteractionController *)self _transitionToDragState:0 fromDragState:1 forTabCollectionItemsInSession:v7 interaction:v8];
-  [(NSMapTable *)self->_hasHiddenDocumentsForDragSessions removeObjectForKey:v7];
-  [(TabDragDropInteractionController *)self _cleanUpDragPreviewForSesssion:v7];
+  [(TabDragDropInteractionController *)self _transitionToDragState:0 fromDragState:1 forTabCollectionItemsInSession:sessionCopy interaction:interactionCopy];
+  [(NSMapTable *)self->_hasHiddenDocumentsForDragSessions removeObjectForKey:sessionCopy];
+  [(TabDragDropInteractionController *)self _cleanUpDragPreviewForSesssion:sessionCopy];
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 willAddItems:(id)a5 forInteraction:(id)a6
+- (void)dragInteraction:(id)interaction session:(id)session willAddItems:(id)items forInteraction:(id)forInteraction
 {
-  v19 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 items];
-  v12 = [TabDocumentDropHandler tabsForDragItems:v11];
+  itemsCopy = items;
+  sessionCopy = session;
+  interactionCopy = interaction;
+  items = [sessionCopy items];
+  v12 = [TabDocumentDropHandler tabsForDragItems:items];
 
   v13 = [MEMORY[0x277D4A8B0] tabIDToTabPositionDictionaryForTabs:v12];
-  v14 = [v12 firstObject];
-  v15 = [v14 webExtensionsController];
-  v16 = [v15 tabIDToTabPositionForTabsInTransit];
-  [v16 addEntriesFromDictionary:v13];
+  firstObject = [v12 firstObject];
+  webExtensionsController = [firstObject webExtensionsController];
+  tabIDToTabPositionForTabsInTransit = [webExtensionsController tabIDToTabPositionForTabsInTransit];
+  [tabIDToTabPositionForTabsInTransit addEntriesFromDictionary:v13];
 
-  [(TabDragDropInteractionController *)self _transitionToDragState:1 fromDragState:-1 forTabCollectionItemsInSession:v9 interaction:v10];
-  v17 = [(NSMapTable *)self->_hasHiddenDocumentsForDragSessions objectForKey:v9];
+  [(TabDragDropInteractionController *)self _transitionToDragState:1 fromDragState:-1 forTabCollectionItemsInSession:sessionCopy interaction:interactionCopy];
+  v17 = [(NSMapTable *)self->_hasHiddenDocumentsForDragSessions objectForKey:sessionCopy];
 
-  LODWORD(v9) = [v17 BOOLValue];
-  if (v9)
+  LODWORD(sessionCopy) = [v17 BOOLValue];
+  if (sessionCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    [WeakRetained hideTabsForDragItems:v19];
+    [WeakRetained hideTabsForDragItems:itemsCopy];
   }
 }
 
-- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)a3
+- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)dragging
 {
   [(TabDragDropInteractionController *)self _cleanUpDragPreviewForSesssion:self->_pendingDragSession];
   pendingDragSession = self->_pendingDragSession;
   self->_pendingDragSession = 0;
 }
 
-- (void)_cleanUpDragPreviewForSesssion:(id)a3
+- (void)_cleanUpDragPreviewForSesssion:(id)sesssion
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [a3 items];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  items = [sesssion items];
+  v4 = [items countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1210,53 +1210,53 @@ void __85__TabDragDropInteractionController_dropInteraction_item_willAnimateDrop
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(items);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        v9 = [v8 safari_localSourceTabView];
+        safari_localSourceTabView = [v8 safari_localSourceTabView];
         if (objc_opt_respondsToSelector())
         {
-          v10 = [v8 safari_localTabItem];
-          [v9 cleanUpDragPreviewForItem:v10];
+          safari_localTabItem = [v8 safari_localTabItem];
+          [safari_localSourceTabView cleanUpDragPreviewForItem:safari_localTabItem];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [items countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
   }
 }
 
-- (id)_newDragItemsAtPoint:(CGPoint)a3 excludingTabUUIDs:(id)a4 interaction:(id)a5 session:(id)a6
+- (id)_newDragItemsAtPoint:(CGPoint)point excludingTabUUIDs:(id)ds interaction:(id)interaction session:(id)session
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v28[1] = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(TabDragDropInteractionController *)self _tabCollectionItemAtPoint:v12 interaction:x, y];
+  dsCopy = ds;
+  interactionCopy = interaction;
+  sessionCopy = session;
+  v14 = [(TabDragDropInteractionController *)self _tabCollectionItemAtPoint:interactionCopy interaction:x, y];
   v15 = v14;
   if (v14 && ![v14 dragState])
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v18 = [v15 UUID];
-    v19 = [WeakRetained tabWithUUID:v18];
-    v20 = [v19 wbTab];
+    uUID = [v15 UUID];
+    v19 = [WeakRetained tabWithUUID:uUID];
+    wbTab = [v19 wbTab];
 
-    if (v20 && ([v20 uuid], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v11, "containsObject:", v21), v21, (v22 & 1) == 0) && (objc_msgSend(v13, "items"), v23 = objc_claimAutoreleasedReturnValue(), v24 = +[TabDocumentDropHandler canAddTab:toSessionWithDragItems:](TabDocumentDropHandler, "canAddTab:toSessionWithDragItems:", v20, v23), v23, v24))
+    if (wbTab && ([wbTab uuid], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(dsCopy, "containsObject:", v21), v21, (v22 & 1) == 0) && (objc_msgSend(sessionCopy, "items"), v23 = objc_claimAutoreleasedReturnValue(), v24 = +[TabDocumentDropHandler canAddTab:toSessionWithDragItems:](TabDocumentDropHandler, "canAddTab:toSessionWithDragItems:", wbTab, v23), v23, v24))
     {
-      v25 = tabViewFromInteraction(v12);
-      if (objc_opt_respondsToSelector() & 1) != 0 && [v25 presentationState] != 2 || objc_msgSend(v20, "isBlank") && (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(v25, "hidesInactiveTabs"))
+      v25 = tabViewFromInteraction(interactionCopy);
+      if (objc_opt_respondsToSelector() & 1) != 0 && [v25 presentationState] != 2 || objc_msgSend(wbTab, "isBlank") && (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(v25, "hidesInactiveTabs"))
       {
         v16 = MEMORY[0x277CBEBF8];
       }
 
       else
       {
-        v27 = [WeakRetained dragItemForTab:v20 tabItem:v15];
+        v27 = [WeakRetained dragItemForTab:wbTab tabItem:v15];
         v28[0] = v27;
         v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
       }
@@ -1276,36 +1276,36 @@ void __85__TabDragDropInteractionController_dropInteraction_item_willAnimateDrop
   return v16;
 }
 
-- (id)_tabCollectionItemAtPoint:(CGPoint)a3 interaction:(id)a4
+- (id)_tabCollectionItemAtPoint:(CGPoint)point interaction:(id)interaction
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = tabViewFromInteraction(a4);
+  y = point.y;
+  x = point.x;
+  v6 = tabViewFromInteraction(interaction);
   v7 = [v6 itemAtPoint:{x, y}];
 
   return v7;
 }
 
-- (void)_unhideTabsForLocalDragSession:(id)a3
+- (void)_unhideTabsForLocalDragSession:(id)session
 {
-  if (a3)
+  if (session)
   {
-    v6 = a3;
+    sessionCopy = session;
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v5 = [v6 items];
-    [WeakRetained unhideTabsForDragItems:v5];
+    items = [sessionCopy items];
+    [WeakRetained unhideTabsForDragItems:items];
 
-    [(NSMapTable *)self->_hasHiddenDocumentsForDragSessions setObject:MEMORY[0x277CBEC28] forKey:v6];
+    [(NSMapTable *)self->_hasHiddenDocumentsForDragSessions setObject:MEMORY[0x277CBEC28] forKey:sessionCopy];
   }
 }
 
-- (id)_viewForTransitionToItem:(id)a3 withTabCollectionView:(id)a4
+- (id)_viewForTransitionToItem:(id)item withTabCollectionView:(id)view
 {
-  v5 = a3;
-  v6 = a4;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v6 supportsDropTransitionToItemView])
+  itemCopy = item;
+  viewCopy = view;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [viewCopy supportsDropTransitionToItemView])
   {
-    v7 = [v6 viewForItem:v5];
+    v7 = [viewCopy viewForItem:itemCopy];
   }
 
   else
@@ -1316,17 +1316,17 @@ void __85__TabDragDropInteractionController_dropInteraction_item_willAnimateDrop
   return v7;
 }
 
-- (id)_insertPlaceholderIfNeededForSession:(id)a3 interaction:(id)a4
+- (id)_insertPlaceholderIfNeededForSession:(id)session interaction:(id)interaction
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  interactionCopy = interaction;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__14;
   v22 = __Block_byref_object_dispose__14;
-  v23 = [(NSMapTable *)self->_sessionToPlaceholderItemMap objectForKey:v6];
+  v23 = [(NSMapTable *)self->_sessionToPlaceholderItemMap objectForKey:sessionCopy];
   if (v19[5] && [WeakRetained isPlaceholderItemValid:?])
   {
     v9 = v19[5];
@@ -1340,10 +1340,10 @@ void __85__TabDragDropInteractionController_dropInteraction_item_willAnimateDrop
     v12[3] = &unk_2781DBBA0;
     v17 = &v18;
     v13 = WeakRetained;
-    v14 = v7;
-    v10 = v6;
+    v14 = interactionCopy;
+    v10 = sessionCopy;
     v15 = v10;
-    v16 = self;
+    selfCopy = self;
     [v13 performBatchUpdatesWithBlock:v12];
     [(NSMapTable *)self->_sessionToPlaceholderItemMap setObject:v19[5] forKey:v10];
     v9 = v19[5];
@@ -1384,15 +1384,15 @@ void __85__TabDragDropInteractionController__insertPlaceholderIfNeededForSession
   *(v10 + 40) = v9;
 }
 
-- (void)_transitionToDragState:(int64_t)a3 fromDragState:(int64_t)a4 forTabCollectionItemsInSession:(id)a5 interaction:(id)a6
+- (void)_transitionToDragState:(int64_t)state fromDragState:(int64_t)dragState forTabCollectionItemsInSession:(id)session interaction:(id)interaction
 {
   v38 = *MEMORY[0x277D85DE8];
-  v24 = a6;
+  interactionCopy = interaction;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = [a5 items];
+  obj = [session items];
   v9 = [obj countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v9)
   {
@@ -1408,11 +1408,11 @@ void __85__TabDragDropInteractionController__insertPlaceholderIfNeededForSession
         }
 
         v13 = *(*(&v31 + 1) + 8 * i);
-        v14 = [v13 safari_localTabItem];
-        if (v14)
+        safari_localTabItem = [v13 safari_localTabItem];
+        if (safari_localTabItem)
         {
-          v15 = [v13 safari_localTabItem];
-          v36 = v15;
+          safari_localTabItem2 = [v13 safari_localTabItem];
+          v36 = safari_localTabItem2;
           v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v36 count:1];
         }
 
@@ -1441,9 +1441,9 @@ void __85__TabDragDropInteractionController__insertPlaceholderIfNeededForSession
               }
 
               v22 = *(*(&v27 + 1) + 8 * j);
-              if (a4 == -1 || [*(*(&v27 + 1) + 8 * j) dragState] == a4)
+              if (dragState == -1 || [*(*(&v27 + 1) + 8 * j) dragState] == dragState)
               {
-                [v22 setDragState:a3];
+                [v22 setDragState:state];
               }
             }
 
@@ -1460,27 +1460,27 @@ void __85__TabDragDropInteractionController__insertPlaceholderIfNeededForSession
     while (v10);
   }
 
-  v23 = [v24 view];
-  [v23 setNeedsLayout];
+  view = [interactionCopy view];
+  [view setNeedsLayout];
 }
 
-- (void)_updatePreviewsForInteraction:(id)a3 session:(id)a4 pinned:(BOOL)a5
+- (void)_updatePreviewsForInteraction:(id)interaction session:(id)session pinned:(BOOL)pinned
 {
-  v5 = a5;
+  pinnedCopy = pinned;
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = tabViewFromInteraction(a3);
+  sessionCopy = session;
+  v8 = tabViewFromInteraction(interaction);
   if (objc_opt_respondsToSelector())
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v21 = v7;
-    v9 = [v7 localDragSession];
-    v10 = [v9 items];
+    v21 = sessionCopy;
+    localDragSession = [sessionCopy localDragSession];
+    items = [localDragSession items];
 
-    v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    v11 = [items countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1491,18 +1491,18 @@ void __85__TabDragDropInteractionController__insertPlaceholderIfNeededForSession
         {
           if (*v25 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(items);
           }
 
           v15 = *(*(&v24 + 1) + 8 * i);
-          v16 = [v15 safari_localTabItem];
-          v17 = [v15 safari_localSourceTabView];
-          if (v16)
+          safari_localTabItem = [v15 safari_localTabItem];
+          safari_localSourceTabView = [v15 safari_localSourceTabView];
+          if (safari_localTabItem)
           {
             v18 = objc_opt_class();
             if (v18 == objc_opt_class())
             {
-              v19 = [v8 dragPreviewForItem:v16 pinned:v5];
+              v19 = [v8 dragPreviewForItem:safari_localTabItem pinned:pinnedCopy];
               v20 = v19;
               if (v19)
               {
@@ -1517,22 +1517,22 @@ void __85__TabDragDropInteractionController__insertPlaceholderIfNeededForSession
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v12 = [items countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v12);
     }
 
-    v7 = v21;
+    sessionCopy = v21;
   }
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = tabViewFromInteraction(v7);
+  y = location.y;
+  x = location.x;
+  interactionCopy = interaction;
+  v8 = tabViewFromInteraction(interactionCopy);
   if (([(NSMutableSet *)self->_tabViewsPendingActivation containsObject:v8]& 1) != 0)
   {
     v9 = 0;
@@ -1540,7 +1540,7 @@ void __85__TabDragDropInteractionController__insertPlaceholderIfNeededForSession
 
   else
   {
-    v10 = [(TabDragDropInteractionController *)self _tabCollectionItemAtPoint:v7 interaction:x, y];
+    v10 = [(TabDragDropInteractionController *)self _tabCollectionItemAtPoint:interactionCopy interaction:x, y];
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     if (!v10 || [v10 dragState] || (objc_opt_respondsToSelector() & 1) != 0 && objc_msgSend(v8, "presentationState") != 2)
     {
@@ -1549,15 +1549,15 @@ void __85__TabDragDropInteractionController__insertPlaceholderIfNeededForSession
 
     else
     {
-      v13 = [v10 UUID];
-      v14 = [WeakRetained tabWithUUID:v13];
+      uUID = [v10 UUID];
+      v14 = [WeakRetained tabWithUUID:uUID];
 
       if (v14)
       {
-        v15 = [WeakRetained tabMenuProviderDataSource];
+        tabMenuProviderDataSource = [WeakRetained tabMenuProviderDataSource];
         if ((objc_opt_respondsToSelector() & 1) != 0 && [v8 shouldUseAddressFieldContextMenuForItem:v10])
         {
-          v16 = [TabMenuProvider addressFieldActionProviderForTab:v14 dataSource:v15];
+          v16 = [TabMenuProvider addressFieldActionProviderForTab:v14 dataSource:tabMenuProviderDataSource];
         }
 
         else
@@ -1572,7 +1572,7 @@ void __85__TabDragDropInteractionController__insertPlaceholderIfNeededForSession
             v17 = 53622;
           }
 
-          v16 = [TabMenuProvider actionProviderForTab:v14 dataSource:v15 options:v17];
+          v16 = [TabMenuProvider actionProviderForTab:v14 dataSource:tabMenuProviderDataSource options:v17];
         }
 
         v18 = v16;
@@ -1584,8 +1584,8 @@ void __85__TabDragDropInteractionController__insertPlaceholderIfNeededForSession
           }
 
           v19 = [TabContextMenuIdentifier alloc];
-          v20 = [v10 UUID];
-          v21 = [(TabContextMenuIdentifier *)v19 initWithTabUUID:v20 sourceItem:v10];
+          uUID2 = [v10 UUID];
+          v21 = [(TabContextMenuIdentifier *)v19 initWithTabUUID:uUID2 sourceItem:v10];
 
           v9 = [MEMORY[0x277D753B0] configurationWithIdentifier:v21 previewProvider:0 actionProvider:v18];
         }
@@ -1606,69 +1606,69 @@ void __85__TabDragDropInteractionController__insertPlaceholderIfNeededForSession
   return v9;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
-  v6 = a5;
-  v7 = tabViewFromInteraction(a3);
-  v8 = [v6 sourceItem];
+  identifierCopy = identifier;
+  v7 = tabViewFromInteraction(interaction);
+  sourceItem = [identifierCopy sourceItem];
 
   if (objc_opt_respondsToSelector())
   {
-    if ((objc_opt_respondsToSelector() & 1) == 0 || ([v7 targetedDragPreviewForLiftingItem:v8], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+    if ((objc_opt_respondsToSelector() & 1) == 0 || ([v7 targetedDragPreviewForLiftingItem:sourceItem], (window = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v10 = [v7 viewForItem:v8];
-      v9 = [v10 window];
+      v10 = [v7 viewForItem:sourceItem];
+      window = [v10 window];
 
-      if (v9)
+      if (window)
       {
-        v9 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:v10];
+        window = [objc_alloc(MEMORY[0x277D75B90]) initWithView:v10];
       }
     }
   }
 
   else
   {
-    v9 = 0;
+    window = 0;
   }
 
-  return v9;
+  return window;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 dismissalPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration dismissalPreviewForItemWithIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = tabViewFromInteraction(v8);
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v10 sourceItem], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "targetedPreviewForDismissingMenuForItem:", v12), v13 = objc_claimAutoreleasedReturnValue(), v12, !v13))
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  v11 = tabViewFromInteraction(interactionCopy);
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([identifierCopy sourceItem], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "targetedPreviewForDismissingMenuForItem:", v12), v13 = objc_claimAutoreleasedReturnValue(), v12, !v13))
   {
-    v13 = [(TabDragDropInteractionController *)self contextMenuInteraction:v8 configuration:v9 highlightPreviewForItemWithIdentifier:v10];
+    v13 = [(TabDragDropInteractionController *)self contextMenuInteraction:interactionCopy configuration:configurationCopy highlightPreviewForItemWithIdentifier:identifierCopy];
   }
 
   return v13;
 }
 
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = tabViewFromInteraction(a3);
-  v11 = [v9 identifier];
+  animatorCopy = animator;
+  configurationCopy = configuration;
+  v10 = tabViewFromInteraction(interaction);
+  identifier = [configurationCopy identifier];
 
-  v12 = [v11 sourceItem];
+  sourceItem = [identifier sourceItem];
 
-  if (v12)
+  if (sourceItem)
   {
     [(NSMutableSet *)self->_tabViewsPendingActivation addObject:v10];
-    [v8 setPreferredCommitStyle:0];
+    [animatorCopy setPreferredCommitStyle:0];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __117__TabDragDropInteractionController_contextMenuInteraction_willPerformPreviewActionForMenuWithConfiguration_animator___block_invoke;
     v13[3] = &unk_2781D58E8;
     v13[4] = self;
     v14 = v10;
-    v15 = v12;
-    [v8 addCompletion:v13];
+    v15 = sourceItem;
+    [animatorCopy addCompletion:v13];
   }
 }
 
@@ -1681,25 +1681,25 @@ uint64_t __117__TabDragDropInteractionController_contextMenuInteraction_willPerf
   return [v2 activateItem:v3];
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = tabViewFromInteraction(a3);
+  configurationCopy = configuration;
+  animatorCopy = animator;
+  v9 = tabViewFromInteraction(interaction);
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v7 identifier];
-    v11 = [v10 sourceItem];
+    identifier = [configurationCopy identifier];
+    sourceItem = [identifier sourceItem];
 
-    if (v11)
+    if (sourceItem)
     {
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __92__TabDragDropInteractionController_contextMenuInteraction_willEndForConfiguration_animator___block_invoke;
       v12[3] = &unk_2781D4C88;
       v13 = v9;
-      v14 = v11;
-      [v8 addCompletion:v12];
+      v14 = sourceItem;
+      [animatorCopy addCompletion:v12];
     }
   }
 }

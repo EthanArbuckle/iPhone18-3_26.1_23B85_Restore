@@ -1,9 +1,9 @@
 @interface ClimateSeatHeatingCoolingServiceButton
 - (BOOL)isHighlighted;
 - (_TtC7Climate38ClimateSeatHeatingCoolingServiceButton)init;
-- (void)heatingCoolingService:(id)a3 didUpdateHeatingCoolingLevel:(int)a4;
-- (void)heatingCoolingService:(void *)a1 didUpdateAutoMode:;
-- (void)setHighlighted:(BOOL)a3;
+- (void)heatingCoolingService:(id)service didUpdateHeatingCoolingLevel:(int)level;
+- (void)heatingCoolingService:(void *)service didUpdateAutoMode:;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation ClimateSeatHeatingCoolingServiceButton
@@ -15,16 +15,16 @@
   return [(ClimateButton *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v7.receiver = self;
   v7.super_class = type metadata accessor for ClimateSeatHeatingCoolingServiceButton();
   v4 = v7.receiver;
-  [(ClimateButton *)&v7 setHighlighted:v3];
+  [(ClimateButton *)&v7 setHighlighted:highlightedCopy];
   v5 = *&v4[OBJC_IVAR____TtC7Climate38ClimateSeatHeatingCoolingServiceButton_progressView];
-  v6 = [v4 isHighlighted];
-  (*((swift_isaMask & *v5) + 0xB8))(v6);
+  isHighlighted = [v4 isHighlighted];
+  (*((swift_isaMask & *v5) + 0xB8))(isHighlighted);
 }
 
 - (_TtC7Climate38ClimateSeatHeatingCoolingServiceButton)init
@@ -37,15 +37,15 @@
   return result;
 }
 
-- (void)heatingCoolingService:(void *)a1 didUpdateAutoMode:
+- (void)heatingCoolingService:(void *)service didUpdateAutoMode:
 {
-  v1 = a1;
+  serviceCopy = service;
   sub_10006FBC4();
 }
 
-- (void)heatingCoolingService:(id)a3 didUpdateHeatingCoolingLevel:(int)a4
+- (void)heatingCoolingService:(id)service didUpdateHeatingCoolingLevel:(int)level
 {
-  v4 = self;
+  selfCopy = self;
   sub_10006FBC4();
 }
 

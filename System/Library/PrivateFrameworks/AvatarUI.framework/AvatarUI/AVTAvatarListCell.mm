@@ -1,34 +1,34 @@
 @interface AVTAvatarListCell
-- (AVTAvatarListCell)initWithFrame:(CGRect)a3;
+- (AVTAvatarListCell)initWithFrame:(CGRect)frame;
 - (CGSize)aspectRatio;
 - (UIImage)image;
 - (UIView)avtViewContainer;
 - (void)applyFullAlpha;
-- (void)beginUsingAVTViewFromSession:(id)a3;
-- (void)downcastWithCellHandler:(id)a3 listCellHandler:(id)a4;
+- (void)beginUsingAVTViewFromSession:(id)session;
+- (void)downcastWithCellHandler:(id)handler listCellHandler:(id)cellHandler;
 - (void)endUsingAVTView;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAspectRatio:(CGSize)a3;
-- (void)setImage:(id)a3;
-- (void)setImage:(id)a3 animated:(BOOL)a4;
-- (void)setImageViewVisible:(BOOL)a3;
+- (void)setAspectRatio:(CGSize)ratio;
+- (void)setImage:(id)image;
+- (void)setImage:(id)image animated:(BOOL)animated;
+- (void)setImageViewVisible:(BOOL)visible;
 - (void)transitionLiveViewToFront;
 - (void)transitionStaticViewToFront;
 @end
 
 @implementation AVTAvatarListCell
 
-- (AVTAvatarListCell)initWithFrame:(CGRect)a3
+- (AVTAvatarListCell)initWithFrame:(CGRect)frame
 {
   v18.receiver = self;
   v18.super_class = AVTAvatarListCell;
-  v3 = [(AVTAvatarListCell *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVTAvatarListCell *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(AVTAvatarListCell *)v3 contentView];
-    [v5 bounds];
+    contentView = [(AVTAvatarListCell *)v3 contentView];
+    [contentView bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -38,8 +38,8 @@
     containerView = v4->_containerView;
     v4->_containerView = v14;
 
-    v16 = [(AVTAvatarListCell *)v4 contentView];
-    [v16 addSubview:v4->_containerView];
+    contentView2 = [(AVTAvatarListCell *)v4 contentView];
+    [contentView2 addSubview:v4->_containerView];
   }
 
   return v4;
@@ -47,44 +47,44 @@
 
 - (UIImage)image
 {
-  v2 = [(AVTAvatarListCell *)self containerView];
-  v3 = [v2 staticImage];
+  containerView = [(AVTAvatarListCell *)self containerView];
+  staticImage = [containerView staticImage];
 
-  return v3;
+  return staticImage;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = [(AVTAvatarListCell *)self containerView];
-  [v5 setStaticImage:v4];
+  imageCopy = image;
+  containerView = [(AVTAvatarListCell *)self containerView];
+  [containerView setStaticImage:imageCopy];
 }
 
-- (void)setImage:(id)a3 animated:(BOOL)a4
+- (void)setImage:(id)image animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(AVTAvatarListCell *)self containerView];
-  [v7 setStaticImage:v6 animated:v4];
+  animatedCopy = animated;
+  imageCopy = image;
+  containerView = [(AVTAvatarListCell *)self containerView];
+  [containerView setStaticImage:imageCopy animated:animatedCopy];
 }
 
 - (UIView)avtViewContainer
 {
-  v2 = [(AVTAvatarListCell *)self containerView];
-  v3 = [v2 liveView];
+  containerView = [(AVTAvatarListCell *)self containerView];
+  liveView = [containerView liveView];
 
-  return v3;
+  return liveView;
 }
 
-- (void)setAspectRatio:(CGSize)a3
+- (void)setAspectRatio:(CGSize)ratio
 {
-  height = a3.height;
-  width = a3.width;
+  height = ratio.height;
+  width = ratio.width;
   [(AVTAvatarListCell *)self aspectRatio];
   if (v7 != width || v6 != height)
   {
-    v9 = [(AVTAvatarListCell *)self containerView];
-    [v9 setAspectRatio:{width, height}];
+    containerView = [(AVTAvatarListCell *)self containerView];
+    [containerView setAspectRatio:{width, height}];
 
     [(AVTAvatarListCell *)self setNeedsLayout];
   }
@@ -92,8 +92,8 @@
 
 - (CGSize)aspectRatio
 {
-  v2 = [(AVTAvatarListCell *)self containerView];
-  [v2 aspectRatio];
+  containerView = [(AVTAvatarListCell *)self containerView];
+  [containerView aspectRatio];
   v4 = v3;
   v6 = v5;
 
@@ -104,22 +104,22 @@
   return result;
 }
 
-- (void)beginUsingAVTViewFromSession:(id)a3
+- (void)beginUsingAVTViewFromSession:(id)session
 {
-  v4 = a3;
-  v5 = [v4 avtView];
-  [(AVTAvatarListCell *)self setAvtView:v5];
+  sessionCopy = session;
+  avtView = [sessionCopy avtView];
+  [(AVTAvatarListCell *)self setAvtView:avtView];
 
-  v7 = [(AVTAvatarListCell *)self containerView];
-  v6 = [v4 avtViewContainer];
+  containerView = [(AVTAvatarListCell *)self containerView];
+  avtViewContainer = [sessionCopy avtViewContainer];
 
-  [v7 setLiveView:v6];
+  [containerView setLiveView:avtViewContainer];
 }
 
 - (void)endUsingAVTView
 {
-  v3 = [(AVTAvatarListCell *)self containerView];
-  [v3 setLiveView:0];
+  containerView = [(AVTAvatarListCell *)self containerView];
+  [containerView setLiveView:0];
 
   [(AVTAvatarListCell *)self setAvtView:0];
 }
@@ -129,15 +129,15 @@
   v19.receiver = self;
   v19.super_class = AVTAvatarListCell;
   [(AVTAvatarListCell *)&v19 layoutSubviews];
-  v3 = [(AVTAvatarListCell *)self contentView];
-  [v3 bounds];
+  contentView = [(AVTAvatarListCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(AVTAvatarListCell *)self containerView];
-  [v12 frame];
+  containerView = [(AVTAvatarListCell *)self containerView];
+  [containerView frame];
   v21.origin.x = v13;
   v21.origin.y = v14;
   v21.size.width = v15;
@@ -150,8 +150,8 @@
 
   if (!v17)
   {
-    v18 = [(AVTAvatarListCell *)self containerView];
-    [v18 setFrame:{v5, v7, v9, v11}];
+    containerView2 = [(AVTAvatarListCell *)self containerView];
+    [containerView2 setFrame:{v5, v7, v9, v11}];
   }
 }
 
@@ -165,38 +165,38 @@
   [(AVTAvatarListCell *)&v3 prepareForReuse];
 }
 
-- (void)setImageViewVisible:(BOOL)a3
+- (void)setImageViewVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(AVTAvatarListCell *)self containerView];
-  [v4 setStaticViewVisible:v3];
+  visibleCopy = visible;
+  containerView = [(AVTAvatarListCell *)self containerView];
+  [containerView setStaticViewVisible:visibleCopy];
 }
 
 - (void)transitionStaticViewToFront
 {
-  v2 = [(AVTAvatarListCell *)self containerView];
-  [v2 transitionStaticViewToFront];
+  containerView = [(AVTAvatarListCell *)self containerView];
+  [containerView transitionStaticViewToFront];
 }
 
 - (void)transitionLiveViewToFront
 {
-  v2 = [(AVTAvatarListCell *)self containerView];
-  [v2 transitionLiveViewToFront];
+  containerView = [(AVTAvatarListCell *)self containerView];
+  [containerView transitionLiveViewToFront];
 }
 
 - (void)applyFullAlpha
 {
-  v2 = [(AVTAvatarListCell *)self containerView];
-  [v2 setAlpha:1.0];
+  containerView = [(AVTAvatarListCell *)self containerView];
+  [containerView setAlpha:1.0];
 }
 
-- (void)downcastWithCellHandler:(id)a3 listCellHandler:(id)a4
+- (void)downcastWithCellHandler:(id)handler listCellHandler:(id)cellHandler
 {
-  if (a4)
+  if (cellHandler)
   {
-    v6 = *(a4 + 2);
+    v6 = *(cellHandler + 2);
 
-    v6(a4, self);
+    v6(cellHandler, self);
   }
 
   else
@@ -205,7 +205,7 @@
     v9 = v5;
     v7.receiver = self;
     v7.super_class = AVTAvatarListCell;
-    [(UICollectionViewCell *)&v7 downcastWithCellHandler:a3 listCellHandler:?];
+    [(UICollectionViewCell *)&v7 downcastWithCellHandler:handler listCellHandler:?];
   }
 }
 

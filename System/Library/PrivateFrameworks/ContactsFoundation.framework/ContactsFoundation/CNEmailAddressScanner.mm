@@ -1,18 +1,18 @@
 @interface CNEmailAddressScanner
-- (id)firstEmailAddressInString:(id)a3;
-- (void)enumerateEmailAddressesInString:(id)a3 usingBlock:(id)a4;
-- (void)withEmailAddressesInString:(id)a3 each:(id)a4;
+- (id)firstEmailAddressInString:(id)string;
+- (void)enumerateEmailAddressesInString:(id)string usingBlock:(id)block;
+- (void)withEmailAddressesInString:(id)string each:(id)each;
 @end
 
 @implementation CNEmailAddressScanner
 
-- (id)firstEmailAddressInString:(id)a3
+- (id)firstEmailAddressInString:(id)string
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (off_1EF440708(&__block_literal_global_120, v3))
+  stringCopy = string;
+  if (off_1EF440708(&__block_literal_global_120, stringCopy))
   {
-    v4 = 0;
+    matchedString = 0;
   }
 
   else
@@ -21,7 +21,7 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [MEMORY[0x1E6999A88] scanString:{v3, 0}];
+    v5 = [MEMORY[0x1E6999A88] scanString:{stringCopy, 0}];
     v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
@@ -38,12 +38,12 @@
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          v12 = [v11 type];
-          v13 = [v12 isEqualToString:v9];
+          type = [v11 type];
+          v13 = [type isEqualToString:v9];
 
           if (v13)
           {
-            v4 = [v11 matchedString];
+            matchedString = [v11 matchedString];
             goto LABEL_13;
           }
         }
@@ -58,27 +58,27 @@
       }
     }
 
-    v4 = 0;
+    matchedString = 0;
 LABEL_13:
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return matchedString;
 }
 
-- (void)enumerateEmailAddressesInString:(id)a3 usingBlock:(id)a4
+- (void)enumerateEmailAddressesInString:(id)string usingBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  if (!off_1EF440708(&__block_literal_global_120, v5))
+  stringCopy = string;
+  blockCopy = block;
+  if (!off_1EF440708(&__block_literal_global_120, stringCopy))
   {
-    v7 = [CNObservable observableWithScannerResultsOfType:2 inString:v5];
+    v7 = [CNObservable observableWithScannerResultsOfType:2 inString:stringCopy];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __68__CNEmailAddressScanner_enumerateEmailAddressesInString_usingBlock___block_invoke;
     v8[3] = &unk_1E6ED60F0;
-    v9 = v6;
+    v9 = blockCopy;
     [v7 enumerateObjectsUsingBlock:v8];
   }
 }
@@ -94,16 +94,16 @@ void __68__CNEmailAddressScanner_enumerateEmailAddressesInString_usingBlock___bl
   (*(v5 + 16))(v5, v10, v7, v9, a4);
 }
 
-- (void)withEmailAddressesInString:(id)a3 each:(id)a4
+- (void)withEmailAddressesInString:(id)string each:(id)each
 {
-  v6 = a4;
+  eachCopy = each;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __57__CNEmailAddressScanner_withEmailAddressesInString_each___block_invoke;
   v8[3] = &unk_1E6ED6118;
-  v9 = v6;
-  v7 = v6;
-  [(CNEmailAddressScanner *)self enumerateEmailAddressesInString:a3 usingBlock:v8];
+  v9 = eachCopy;
+  v7 = eachCopy;
+  [(CNEmailAddressScanner *)self enumerateEmailAddressesInString:string usingBlock:v8];
 }
 
 @end

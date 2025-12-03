@@ -1,17 +1,17 @@
 @interface ARWorldTrackingOptions
 - (ARWorldTrackingOptions)init;
-- (ARWorldTrackingOptions)initWithImageSensorSettings:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ARWorldTrackingOptions)initWithImageSensorSettings:(id)settings;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)shouldUseUltraWide;
 - (NSDictionary)activeVideoFormatsMap;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int)createSLAMCalibration:(CV3DSLAMCalibration *)a3;
-- (int)setupCameraCalibration:(CV3DSLAMCalibration *)a3 forImageSensorSettings:(id)a4 deviceModel:(int)a5;
-- (unsigned)cameraIdForCaptureDeviceType:(id)a3;
-- (void)createSLAMConfig:(CV3DSLAMConfig *)a3 calibration:(CV3DSLAMCalibration *)a4;
-- (void)setImageSensorSettings:(id)a3;
-- (void)setImageSensorSettingsForUltraWide:(id)a3;
-- (void)setSlamConfiguration:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int)createSLAMCalibration:(CV3DSLAMCalibration *)calibration;
+- (int)setupCameraCalibration:(CV3DSLAMCalibration *)calibration forImageSensorSettings:(id)settings deviceModel:(int)model;
+- (unsigned)cameraIdForCaptureDeviceType:(id)type;
+- (void)createSLAMConfig:(CV3DSLAMConfig *)config calibration:(CV3DSLAMCalibration *)calibration;
+- (void)setImageSensorSettings:(id)settings;
+- (void)setImageSensorSettingsForUltraWide:(id)wide;
+- (void)setSlamConfiguration:(id)configuration;
 - (void)updateCameraMap;
 @end
 
@@ -21,8 +21,8 @@
 {
   v3 = +[ARWorldTrackingConfiguration supportedVideoFormats];
   v4 = [ARImageSensorSettings alloc];
-  v5 = [v3 firstObject];
-  v6 = [(ARImageSensorSettings *)v4 initWithVideoFormat:v5];
+  firstObject = [v3 firstObject];
+  v6 = [(ARImageSensorSettings *)v4 initWithVideoFormat:firstObject];
 
   [(ARImageSensorSettings *)v6 setSupportsCapturingHighResolutionFrames:1];
   v7 = [(ARWorldTrackingOptions *)self initWithImageSensorSettings:v6];
@@ -30,9 +30,9 @@
   return v7;
 }
 
-- (ARWorldTrackingOptions)initWithImageSensorSettings:(id)a3
+- (ARWorldTrackingOptions)initWithImageSensorSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v17.receiver = self;
   v17.super_class = ARWorldTrackingOptions;
   v6 = [(ARWorldTrackingOptions *)&v17 init];
@@ -40,7 +40,7 @@
   if (v6)
   {
     v6->_relocalizationEnabled = 1;
-    objc_storeStrong(&v6->_imageSensorSettings, a3);
+    objc_storeStrong(&v6->_imageSensorSettings, settings);
     [(ARImageSensorSettings *)v7->_imageSensorSettings setAutoFocusEnabled:1];
     v7->_planeDetection = 0;
     slamConfigurationPreset = v7->_slamConfigurationPreset;
@@ -72,9 +72,9 @@
   return v7;
 }
 
-- (void)setSlamConfiguration:(id)a3
+- (void)setSlamConfiguration:(id)configuration
 {
-  v6 = a3;
+  configurationCopy = configuration;
   v4 = [ARKitUserDefaults stringForKey:@"com.apple.arkit.worldtracking.slamConfiguration"];
   if ([v4 isEqualToString:&stru_1F4208A80])
   {
@@ -89,7 +89,7 @@
 
   else
   {
-    v5 = v6;
+    v5 = configurationCopy;
   }
 
   objc_storeStrong(&self->_slamConfigurationPreset, v5);
@@ -97,22 +97,22 @@
 
 - (BOOL)shouldUseUltraWide
 {
-  v2 = [(ARWorldTrackingOptions *)self imageSensorSettingsForUltraWide];
-  v3 = v2 != 0;
+  imageSensorSettingsForUltraWide = [(ARWorldTrackingOptions *)self imageSensorSettingsForUltraWide];
+  v3 = imageSensorSettingsForUltraWide != 0;
 
   return v3;
 }
 
-- (void)setImageSensorSettings:(id)a3
+- (void)setImageSensorSettings:(id)settings
 {
-  objc_storeStrong(&self->_imageSensorSettings, a3);
+  objc_storeStrong(&self->_imageSensorSettings, settings);
 
   [(ARWorldTrackingOptions *)self updateCameraMap];
 }
 
-- (void)setImageSensorSettingsForUltraWide:(id)a3
+- (void)setImageSensorSettingsForUltraWide:(id)wide
 {
-  objc_storeStrong(&self->_imageSensorSettingsForUltraWide, a3);
+  objc_storeStrong(&self->_imageSensorSettingsForUltraWide, wide);
 
   [(ARWorldTrackingOptions *)self updateCameraMap];
 }
@@ -121,30 +121,30 @@
 {
   dispatch_semaphore_wait(self->_activeVideoFormatsSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   [(NSMutableDictionary *)self->_activeVideoFormatsMap removeAllObjects];
-  v3 = [(ARImageSensorSettings *)self->_imageSensorSettings videoFormat];
+  videoFormat = [(ARImageSensorSettings *)self->_imageSensorSettings videoFormat];
 
-  if (v3)
+  if (videoFormat)
   {
-    v4 = [(ARImageSensorSettings *)self->_imageSensorSettings videoFormat];
+    videoFormat2 = [(ARImageSensorSettings *)self->_imageSensorSettings videoFormat];
     activeVideoFormatsMap = self->_activeVideoFormatsMap;
     v6 = MEMORY[0x1E696AD98];
-    v7 = [(ARImageSensorSettings *)self->_imageSensorSettings videoFormat];
-    v8 = [v7 captureDeviceType];
-    v9 = [v6 numberWithUnsignedInt:{-[ARWorldTrackingOptions cameraIdForCaptureDeviceType:](self, "cameraIdForCaptureDeviceType:", v8)}];
-    [(NSMutableDictionary *)activeVideoFormatsMap setObject:v4 forKeyedSubscript:v9];
+    videoFormat3 = [(ARImageSensorSettings *)self->_imageSensorSettings videoFormat];
+    captureDeviceType = [videoFormat3 captureDeviceType];
+    v9 = [v6 numberWithUnsignedInt:{-[ARWorldTrackingOptions cameraIdForCaptureDeviceType:](self, "cameraIdForCaptureDeviceType:", captureDeviceType)}];
+    [(NSMutableDictionary *)activeVideoFormatsMap setObject:videoFormat2 forKeyedSubscript:v9];
   }
 
-  v10 = [(ARImageSensorSettings *)self->_imageSensorSettingsForUltraWide videoFormat];
+  videoFormat4 = [(ARImageSensorSettings *)self->_imageSensorSettingsForUltraWide videoFormat];
 
-  if (v10)
+  if (videoFormat4)
   {
-    v11 = [(ARImageSensorSettings *)self->_imageSensorSettingsForUltraWide videoFormat];
+    videoFormat5 = [(ARImageSensorSettings *)self->_imageSensorSettingsForUltraWide videoFormat];
     v12 = self->_activeVideoFormatsMap;
     v13 = MEMORY[0x1E696AD98];
-    v14 = [(ARImageSensorSettings *)self->_imageSensorSettingsForUltraWide videoFormat];
-    v15 = [v14 captureDeviceType];
-    v16 = [v13 numberWithUnsignedInt:{-[ARWorldTrackingOptions cameraIdForCaptureDeviceType:](self, "cameraIdForCaptureDeviceType:", v15)}];
-    [(NSMutableDictionary *)v12 setObject:v11 forKeyedSubscript:v16];
+    videoFormat6 = [(ARImageSensorSettings *)self->_imageSensorSettingsForUltraWide videoFormat];
+    captureDeviceType2 = [videoFormat6 captureDeviceType];
+    v16 = [v13 numberWithUnsignedInt:{-[ARWorldTrackingOptions cameraIdForCaptureDeviceType:](self, "cameraIdForCaptureDeviceType:", captureDeviceType2)}];
+    [(NSMutableDictionary *)v12 setObject:videoFormat5 forKeyedSubscript:v16];
   }
 
   activeVideoFormatsSemaphore = self->_activeVideoFormatsSemaphore;
@@ -161,23 +161,23 @@
   return v3;
 }
 
-- (unsigned)cameraIdForCaptureDeviceType:(id)a3
+- (unsigned)cameraIdForCaptureDeviceType:(id)type
 {
-  v4 = a3;
-  v5 = -[ARWorldTrackingOptions shouldUseUltraWide](self, "shouldUseUltraWide") && ([v4 isEqualToString:*MEMORY[0x1E6986948]] & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E6986950]) & 1) != 0;
+  typeCopy = type;
+  v5 = -[ARWorldTrackingOptions shouldUseUltraWide](self, "shouldUseUltraWide") && ([typeCopy isEqualToString:*MEMORY[0x1E6986948]] & 1) == 0 && (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x1E6986950]) & 1) != 0;
 
   return v5;
 }
 
-- (int)createSLAMCalibration:(CV3DSLAMCalibration *)a3
+- (int)createSLAMCalibration:(CV3DSLAMCalibration *)calibration
 {
   v74 = *MEMORY[0x1E69E9840];
-  *a3 = CV3DSLAMCalibrationCreate();
-  v5 = [(ARWorldTrackingOptions *)self deviceModel];
-  if (v5)
+  *calibration = CV3DSLAMCalibrationCreate();
+  deviceModel = [(ARWorldTrackingOptions *)self deviceModel];
+  if (deviceModel)
   {
-    v6 = [(ARWorldTrackingOptions *)self deviceModel];
-    [v6 UTF8String];
+    deviceModel2 = [(ARWorldTrackingOptions *)self deviceModel];
+    [deviceModel2 UTF8String];
     v7 = CV3DSLAMCameraModelTypeFromString();
   }
 
@@ -201,7 +201,7 @@
         v68 = 138543618;
         v69 = v12;
         v70 = 2048;
-        v71 = self;
+        selfCopy15 = self;
         _os_log_impl(&dword_1C241C000, v10, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Parsing custom imu calibration parameters.", &v68, 0x16u);
       }
 
@@ -217,7 +217,7 @@
           v68 = 138543618;
           v69 = v29;
           v70 = 2048;
-          v71 = self;
+          selfCopy15 = self;
           _os_log_impl(&dword_1C241C000, v15, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Using custom imu calibration parameters.", &v68, 0x16u);
         }
 
@@ -231,7 +231,7 @@
         v68 = 138543618;
         v69 = v17;
         v70 = 2048;
-        v71 = self;
+        selfCopy15 = self;
         _os_log_impl(&dword_1C241C000, v15, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Error parsing custom imu calibration parameters, using default parameters", &v68, 0x16u);
       }
     }
@@ -259,7 +259,7 @@
         v68 = 138543874;
         v69 = v24;
         v70 = 2048;
-        v71 = self;
+        selfCopy15 = self;
         v72 = 2114;
         v73 = v25;
         v26 = "%{public}@ <%p>: Error setting default Imu calibration data: %{public}@";
@@ -286,7 +286,7 @@ LABEL_68:
     v68 = 138543874;
     v69 = v24;
     v70 = 2048;
-    v71 = self;
+    selfCopy15 = self;
     v72 = 2114;
     v73 = v25;
     v26 = "Error: %{public}@ <%p>: Error setting default Imu calibration data: %{public}@";
@@ -297,11 +297,11 @@ LABEL_67:
   }
 
 LABEL_23:
-  if (![(ARWorldTrackingOptions *)self shouldUseUltraWide]|| (v30 = [(ARWorldTrackingOptions *)self setupCameraCalibration:a3 forImageSensorSettings:self->_imageSensorSettingsForUltraWide deviceModel:v7]) == 0)
+  if (![(ARWorldTrackingOptions *)self shouldUseUltraWide]|| (v30 = [(ARWorldTrackingOptions *)self setupCameraCalibration:calibration forImageSensorSettings:self->_imageSensorSettingsForUltraWide deviceModel:v7]) == 0)
   {
     if (![(ARWorldTrackingOptions *)self shouldUseUltraWide]|| ![(ARWorldTrackingOptions *)self alwaysUsePrimaryCameraForTracking])
     {
-      v34 = [(ARWorldTrackingOptions *)self setupCameraCalibration:a3 forImageSensorSettings:self->_imageSensorSettings deviceModel:v7];
+      v34 = [(ARWorldTrackingOptions *)self setupCameraCalibration:calibration forImageSensorSettings:self->_imageSensorSettings deviceModel:v7];
       if (v34)
       {
         v19 = v34;
@@ -323,7 +323,7 @@ LABEL_23:
             v68 = 138543874;
             v69 = v24;
             v70 = 2048;
-            v71 = self;
+            selfCopy15 = self;
             v72 = 2114;
             v73 = v25;
             v26 = "%{public}@ <%p>: Error setting camera calibration for wide camera: %{public}@";
@@ -344,7 +344,7 @@ LABEL_23:
         v68 = 138543874;
         v69 = v24;
         v70 = 2048;
-        v71 = self;
+        selfCopy15 = self;
         v72 = 2114;
         v73 = v25;
         v26 = "Error: %{public}@ <%p>: Error setting camera calibration for wide camera: %{public}@";
@@ -376,7 +376,7 @@ LABEL_23:
             v68 = 138543874;
             v69 = v24;
             v70 = 2048;
-            v71 = self;
+            selfCopy15 = self;
             v72 = 2114;
             v73 = v25;
             v26 = "%{public}@ <%p>: Error setting jasper calibration data: %{public}@";
@@ -397,7 +397,7 @@ LABEL_23:
         v68 = 138543874;
         v69 = v24;
         v70 = 2048;
-        v71 = self;
+        selfCopy15 = self;
         v72 = 2114;
         v73 = v25;
         v26 = "Error: %{public}@ <%p>: Error setting jasper calibration data: %{public}@";
@@ -405,15 +405,15 @@ LABEL_23:
       }
     }
 
-    v44 = [(ARWorldTrackingOptions *)self shouldUseUltraWide];
-    v45 = [(ARWorldTrackingOptions *)self imageSensorSettings];
-    if ([v45 isBravoCameraEnabled])
+    shouldUseUltraWide = [(ARWorldTrackingOptions *)self shouldUseUltraWide];
+    imageSensorSettings = [(ARWorldTrackingOptions *)self imageSensorSettings];
+    if ([imageSensorSettings isBravoCameraEnabled])
     {
     }
 
     else
     {
-      if (v44)
+      if (shouldUseUltraWide)
       {
 
 LABEL_79:
@@ -421,10 +421,10 @@ LABEL_79:
         goto LABEL_70;
       }
 
-      v59 = [(ARWorldTrackingOptions *)self imageSensorSettings];
-      v60 = [v59 videoFormat];
-      v61 = [v60 device];
-      [v61 maxAvailableVideoZoomFactorOverride];
+      imageSensorSettings2 = [(ARWorldTrackingOptions *)self imageSensorSettings];
+      videoFormat = [imageSensorSettings2 videoFormat];
+      device = [videoFormat device];
+      [device maxAvailableVideoZoomFactorOverride];
       v63 = v62;
 
       if (v63 <= 1.0)
@@ -455,7 +455,7 @@ LABEL_79:
             v68 = 138543874;
             v69 = v50;
             v70 = 2048;
-            v71 = self;
+            selfCopy15 = self;
             v72 = 2112;
             v73 = v51;
             v52 = "%{public}@ <%p>: Error configuring SLAM calibration to use per-frame camera intrinsics: %@";
@@ -476,7 +476,7 @@ LABEL_76:
           v68 = 138543874;
           v69 = v50;
           v70 = 2048;
-          v71 = self;
+          selfCopy15 = self;
           v72 = 2112;
           v73 = v51;
           v52 = "Error: %{public}@ <%p>: Error configuring SLAM calibration to use per-frame camera intrinsics: %@";
@@ -501,7 +501,7 @@ LABEL_78:
       v68 = 138543618;
       v69 = v50;
       v70 = 2048;
-      v71 = self;
+      selfCopy15 = self;
       v58 = "%{public}@ <%p>: Configured SLAM calibration to use per-frame camera intrinsics.";
     }
 
@@ -518,7 +518,7 @@ LABEL_78:
       v68 = 138543618;
       v69 = v50;
       v70 = 2048;
-      v71 = self;
+      selfCopy15 = self;
       v58 = "%{public}@ <%p>: Disabled per-frame camera intrinsics through user defaults.";
     }
 
@@ -550,7 +550,7 @@ LABEL_77:
     v68 = 138543874;
     v69 = v24;
     v70 = 2048;
-    v71 = self;
+    selfCopy15 = self;
     v72 = 2114;
     v73 = v25;
     v26 = "Error: %{public}@ <%p>: Error setting camera calibration for ultra wide camera: %{public}@";
@@ -565,7 +565,7 @@ LABEL_77:
     v68 = 138543874;
     v69 = v24;
     v70 = 2048;
-    v71 = self;
+    selfCopy15 = self;
     v72 = 2114;
     v73 = v25;
     v26 = "%{public}@ <%p>: Error setting camera calibration for ultra wide camera: %{public}@";
@@ -575,41 +575,41 @@ LABEL_77:
 LABEL_69:
 
   CV3DSLAMCalibrationRelease();
-  *a3 = 0;
+  *calibration = 0;
 LABEL_70:
 
   return v19;
 }
 
-- (int)setupCameraCalibration:(CV3DSLAMCalibration *)a3 forImageSensorSettings:(id)a4 deviceModel:(int)a5
+- (int)setupCameraCalibration:(CV3DSLAMCalibration *)calibration forImageSensorSettings:(id)settings deviceModel:(int)model
 {
   v74 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [v7 videoFormat];
+  settingsCopy = settings;
+  videoFormat = [settingsCopy videoFormat];
 
-  if (v8)
+  if (videoFormat)
   {
-    v9 = [v7 videoFormat];
-    v10 = [v9 captureDeviceType];
+    videoFormat2 = [settingsCopy videoFormat];
+    captureDeviceType = [videoFormat2 captureDeviceType];
 
-    if (v10 == *MEMORY[0x1E6986950])
+    if (captureDeviceType == *MEMORY[0x1E6986950])
     {
       v13 = &ARWorldTrackingBackWideCalibrationParametersUserDefaultsKey;
     }
 
     else
     {
-      if (v10 != *MEMORY[0x1E6986948])
+      if (captureDeviceType != *MEMORY[0x1E6986948])
       {
         v11 = 0;
 LABEL_9:
-        v14 = [(ARWorldTrackingOptions *)self cameraIdForCaptureDeviceType:v10];
-        v15 = [v7 videoFormat];
-        [v15 imageResolution];
+        v14 = [(ARWorldTrackingOptions *)self cameraIdForCaptureDeviceType:captureDeviceType];
+        videoFormat3 = [settingsCopy videoFormat];
+        [videoFormat3 imageResolution];
         v17 = v16;
         v19 = v18;
 
-        v20 = CV3DSLAMCameraVideoModeForResolutionAndDeviceType(v10, v17, v19);
+        v20 = CV3DSLAMCameraVideoModeForResolutionAndDeviceType(captureDeviceType, v17, v19);
         if (!v11 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
 LABEL_28:
@@ -640,11 +640,11 @@ LABEL_46:
             v43 = objc_opt_class();
             v44 = NSStringFromClass(v43);
             NSStringFromCV3DSLAMCalibrationReturn(v12);
-            v46 = v45 = a5;
+            v46 = v45 = model;
             *buf = 138543874;
             v63 = v44;
             v64 = 2048;
-            v65 = self;
+            selfCopy8 = self;
             v66 = 2114;
             *v67 = v46;
             v47 = "%{public}@ <%p>: Error setting default camera calibration data: %{public}@";
@@ -662,11 +662,11 @@ LABEL_46:
             v50 = objc_opt_class();
             v44 = NSStringFromClass(v50);
             NSStringFromCV3DSLAMCalibrationReturn(v12);
-            v46 = v45 = a5;
+            v46 = v45 = model;
             *buf = 138543874;
             v63 = v44;
             v64 = 2048;
-            v65 = self;
+            selfCopy8 = self;
             v66 = 2114;
             *v67 = v46;
             v47 = "Error: %{public}@ <%p>: Error setting default camera calibration data: %{public}@";
@@ -676,7 +676,7 @@ LABEL_46:
 
           _os_log_impl(&dword_1C241C000, v48, v49, v47, buf, 0x20u);
 
-          a5 = v45;
+          model = v45;
 LABEL_37:
 
           if (ARShouldUseLogTypeError_onceToken_38 != -1)
@@ -696,9 +696,9 @@ LABEL_37:
               *buf = 138544899;
               v63 = v54;
               v64 = 2048;
-              v65 = self;
+              selfCopy8 = self;
               v66 = 1025;
-              *v67 = a5;
+              *v67 = model;
               *&v67[4] = 1025;
               *&v67[6] = v61;
               v68 = 1025;
@@ -722,9 +722,9 @@ LABEL_44:
             *buf = 138544899;
             v63 = v54;
             v64 = 2048;
-            v65 = self;
+            selfCopy8 = self;
             v66 = 1025;
-            *v67 = a5;
+            *v67 = model;
             *&v67[4] = 1025;
             *&v67[6] = v61;
             v68 = 1025;
@@ -745,7 +745,7 @@ LABEL_45:
         }
 
         v21 = v11;
-        v60 = a5;
+        modelCopy = model;
         if (_ARLogTechnique_onceToken_20 != -1)
         {
           [ARWorldTrackingOptions setupCameraCalibration:forImageSensorSettings:deviceModel:];
@@ -761,9 +761,9 @@ LABEL_45:
           *buf = 138543874;
           v63 = v26;
           v64 = 2048;
-          v65 = self;
+          selfCopy8 = self;
           v66 = 2112;
-          *v67 = v10;
+          *v67 = captureDeviceType;
           _os_log_impl(&dword_1C241C000, v23, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Parsing custom camera calibration parameters for device type %@.", buf, 0x20u);
 
           v20 = v25;
@@ -779,7 +779,7 @@ LABEL_45:
             *buf = 138543618;
             v63 = v38;
             v64 = 2048;
-            v65 = self;
+            selfCopy8 = self;
             _os_log_impl(&dword_1C241C000, v36, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Using custom camera calibration parameters.", buf, 0x16u);
           }
 
@@ -805,7 +805,7 @@ LABEL_45:
             *buf = 138543618;
             v63 = v32;
             v64 = 2048;
-            v65 = self;
+            selfCopy8 = self;
             v33 = "%{public}@ <%p>: Error parsing custom camera calibration parameters, using default parameters";
             v34 = v29;
             v35 = OS_LOG_TYPE_ERROR;
@@ -824,14 +824,14 @@ LABEL_26:
           *buf = 138543618;
           v63 = v32;
           v64 = 2048;
-          v65 = self;
+          selfCopy8 = self;
           v33 = "Error: %{public}@ <%p>: Error parsing custom camera calibration parameters, using default parameters";
           v34 = v29;
           v35 = OS_LOG_TYPE_INFO;
           goto LABEL_26;
         }
 
-        a5 = v60;
+        model = modelCopy;
         goto LABEL_28;
       }
 
@@ -848,43 +848,43 @@ LABEL_47:
   return v12;
 }
 
-- (void)createSLAMConfig:(CV3DSLAMConfig *)a3 calibration:(CV3DSLAMCalibration *)a4
+- (void)createSLAMConfig:(CV3DSLAMConfig *)config calibration:(CV3DSLAMCalibration *)calibration
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = [(ARWorldTrackingOptions *)self imageSensorSettings];
+  imageSensorSettings = [(ARWorldTrackingOptions *)self imageSensorSettings];
   if ([(ARWorldTrackingOptions *)self shouldUseUltraWide])
   {
-    v7 = [(ARWorldTrackingOptions *)self imageSensorSettingsForUltraWide];
+    imageSensorSettingsForUltraWide = [(ARWorldTrackingOptions *)self imageSensorSettingsForUltraWide];
 
-    v6 = v7;
+    imageSensorSettings = imageSensorSettingsForUltraWide;
   }
 
-  v8 = [v6 videoFormat];
+  videoFormat = [imageSensorSettings videoFormat];
 
-  if (!v8)
+  if (!videoFormat)
   {
-    *a3 = 0;
+    *config = 0;
     goto LABEL_58;
   }
 
-  v9 = [v6 videoFormat];
-  [v9 imageResolution];
+  videoFormat2 = [imageSensorSettings videoFormat];
+  [videoFormat2 imageResolution];
   v11 = v10;
   v13 = v12;
 
-  v14 = [v6 videoFormat];
-  v15 = [v14 captureDeviceType];
-  CV3DSLAMCameraVideoModeForResolutionAndDeviceType(v15, v11, v13);
+  videoFormat3 = [imageSensorSettings videoFormat];
+  captureDeviceType = [videoFormat3 captureDeviceType];
+  CV3DSLAMCameraVideoModeForResolutionAndDeviceType(captureDeviceType, v11, v13);
 
-  v16 = [(ARWorldTrackingOptions *)self slamConfiguration];
-  [v16 UTF8String];
+  slamConfiguration = [(ARWorldTrackingOptions *)self slamConfiguration];
+  [slamConfiguration UTF8String];
   CV3DSLAMConfigPresetFromString();
 
   [ARKitUserDefaults BOOLForKey:@"com.apple.arkit.worldTracking.simulateHWFeatureDetection"];
-  [v6 visionDataOutputEnabled];
+  [imageSensorSettings visionDataOutputEnabled];
   CV3DSLAMConfigCalcFeaturePointDetectionResolution();
   CV3DSLAMConfigCalcLineDetectionResolution();
-  *a3 = CV3DSLAMConfigCreate2();
+  *config = CV3DSLAMConfigCreate2();
   [(ARWorldTrackingOptions *)self relocalizationEnabled];
   CV3DSLAMConfigSetRelocalizationEnabled();
   CV3DSLAMConfigUseSWProxyFeaturePoints();
@@ -1008,12 +1008,12 @@ LABEL_34:
   v37 = v36;
   if (v36)
   {
-    v38 = [v36 BOOLValue];
+    bOOLValue = [v36 BOOLValue];
   }
 
   else
   {
-    v38 = 0;
+    bOOLValue = 0;
   }
 
   v39 = [ARKitUserDefaults valueForKey:@"com.apple.arkit.worldtracking.lineFeaturesAlwaysOn"];
@@ -1023,7 +1023,7 @@ LABEL_34:
     CV3DSLAMConfigEnableLineTrackingAlways();
   }
 
-  else if (v38)
+  else if (bOOLValue)
   {
     CV3DSLAMConfigEnableLineTracking();
   }
@@ -1048,12 +1048,12 @@ LABEL_34:
     CV3DSLAMConfigDisablePlaneTracking();
   }
 
-  v41 = [(ARWorldTrackingOptions *)self initialWorldMap];
+  initialWorldMap = [(ARWorldTrackingOptions *)self initialWorldMap];
 
-  if (v41)
+  if (initialWorldMap)
   {
-    v42 = [(ARWorldTrackingOptions *)self initialWorldMap];
-    v43 = [v42 trackingData];
+    initialWorldMap2 = [(ARWorldTrackingOptions *)self initialWorldMap];
+    trackingData = [initialWorldMap2 trackingData];
     CV3DSLAMConfigSetMapFromCFData();
   }
 
@@ -1062,12 +1062,12 @@ LABEL_34:
     CV3DSLAMConfigDisableCameraSwitchingAndUsePrimaryCamera();
   }
 
-  v44 = [(ARWorldTrackingOptions *)self vioSessionID];
+  vioSessionID = [(ARWorldTrackingOptions *)self vioSessionID];
 
-  if (v44)
+  if (vioSessionID)
   {
-    v45 = [(ARWorldTrackingOptions *)self vioSessionID];
-    [v45 unsignedIntegerValue];
+    vioSessionID2 = [(ARWorldTrackingOptions *)self vioSessionID];
+    [vioSessionID2 unsignedIntegerValue];
     CV3DSLAMConfigOverrideSessionID();
   }
 
@@ -1082,27 +1082,27 @@ LABEL_34:
 LABEL_58:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(ARImageSensorSettings *)self->_imageSensorSettings copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(ARImageSensorSettings *)self->_imageSensorSettings copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
-  v8 = [(ARImageSensorSettings *)self->_imageSensorSettingsForUltraWide copyWithZone:a3];
+  v8 = [(ARImageSensorSettings *)self->_imageSensorSettingsForUltraWide copyWithZone:zone];
   v9 = *(v5 + 56);
   *(v5 + 56) = v8;
 
-  v10 = [(NSString *)self->_deviceModel copyWithZone:a3];
+  v10 = [(NSString *)self->_deviceModel copyWithZone:zone];
   v11 = *(v5 + 64);
   *(v5 + 64) = v10;
 
   *(v5 + 32) = self->_relocalizationEnabled;
-  v12 = [(ARWorldMap *)self->_initialWorldMap copyWithZone:a3];
+  v12 = [(ARWorldMap *)self->_initialWorldMap copyWithZone:zone];
   v13 = *(v5 + 72);
   *(v5 + 72) = v12;
 
-  v14 = [(NSString *)self->_slamConfigurationPreset copyWithZone:a3];
+  v14 = [(NSString *)self->_slamConfigurationPreset copyWithZone:zone];
   v15 = *(v5 + 24);
   *(v5 + 24) = v14;
 
@@ -1116,7 +1116,7 @@ LABEL_58:
   *(v5 + 37) = self->_depthBuffersWillBeProvided;
   *(v5 + 38) = self->_visionDataWillBeReplayed;
   *(v5 + 96) = self->_sceneReconstruction;
-  v16 = [(ARSceneReconstructionOptions *)self->_sceneReconstructionOptions copyWithZone:a3];
+  v16 = [(ARSceneReconstructionOptions *)self->_sceneReconstructionOptions copyWithZone:zone];
   v17 = *(v5 + 104);
   *(v5 + 104) = v16;
 
@@ -1145,13 +1145,13 @@ LABEL_58:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     imageSensorSettings = self->_imageSensorSettings;
     v12 = (imageSensorSettings == v5[6] || [(ARImageSensorSettings *)imageSensorSettings isEqual:?]) && ((imageSensorSettingsForUltraWide = self->_imageSensorSettingsForUltraWide, imageSensorSettingsForUltraWide == v5[7]) || [(ARImageSensorSettings *)imageSensorSettingsForUltraWide isEqual:?]) && ((deviceModel = self->_deviceModel, deviceModel == v5[8]) || [(NSString *)deviceModel isEqualToString:?]) && self->_relocalizationEnabled == *(v5 + 32) && ((initialWorldMap = self->_initialWorldMap, initialWorldMap == v5[9]) || [(ARWorldMap *)initialWorldMap isEqual:?]) && ((slamConfigurationPreset = self->_slamConfigurationPreset, slamConfigurationPreset == v5[3]) || [(NSString *)slamConfigurationPreset isEqual:?]) && self->_deterministicMode == *(v5 + 33) && self->_planeDetection == v5[10] && self->_lowQosSchedulingEnabled == *(v5 + 34) && self->_minVergenceAngle == *(v5 + 11) && self->_mlModelEnabled == *(v5 + 35) && self->_collaborationEnabled == *(v5 + 36) && self->_vioSessionID == v5[14] && self->_depthBuffersWillBeProvided == *(v5 + 37) && self->_visionDataWillBeReplayed == *(v5 + 38) && self->_sceneReconstruction == v5[12] && ((sceneReconstructionOptions = self->_sceneReconstructionOptions, sceneReconstructionOptions == v5[13]) || [(ARSceneReconstructionOptions *)sceneReconstructionOptions isEqual:?]) && self->_planeEstimationShouldUseJasperData == *(v5 + 39) && self->_alwaysUsePrimaryCameraForTracking == *(v5 + 40) && self->_disableMLRelocalization == *(v5 + 41) && self->_recordForGeoTracking == *(v5 + 42) && self->_planeBundleAdjustmentEnabled == *(v5 + 43) && self->_singleShotPlaneCallback == v5[15] && self->_trackedPlaneCallback == v5[16] && self->_planeDetectionVIOPoseCallback == v5[17] && self->_planeDetectionPoseUpdateCallback == v5[18];
   }

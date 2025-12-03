@@ -1,15 +1,15 @@
 @interface LoopbackSocketTunnel
-- (LoopbackSocketTunnel)initWithPort:(unsigned __int16)a3 delegate:(id)a4 error:(id *)a5;
-- (int)sendPacketToVTP:(id)a3;
+- (LoopbackSocketTunnel)initWithPort:(unsigned __int16)port delegate:(id)delegate error:(id *)error;
+- (int)sendPacketToVTP:(id)p;
 - (int)serverLoopProc;
-- (void)setVTPIP:(tagIPPORT *)a3;
+- (void)setVTPIP:(tagIPPORT *)p;
 @end
 
 @implementation LoopbackSocketTunnel
 
-- (LoopbackSocketTunnel)initWithPort:(unsigned __int16)a3 delegate:(id)a4 error:(id *)a5
+- (LoopbackSocketTunnel)initWithPort:(unsigned __int16)port delegate:(id)delegate error:(id *)error
 {
-  v7 = a3;
+  portCopy = port;
   keys[2] = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = LoopbackSocketTunnel;
@@ -17,7 +17,7 @@
   v9 = v8;
   if (v8)
   {
-    v8->_port = v7;
+    v8->_port = portCopy;
     v10 = socket(2, 2, 17);
     *&v9->sa.sin_len = 0;
     v9->sockFD = v10;
@@ -25,9 +25,9 @@
     *v9->sa.sin_zero = 0;
     *&v9->sa.sin_len = 528;
     inet_aton("127.0.0.1", &v9->sa.sin_addr);
-    if (v7 > 0xFDE7)
+    if (portCopy > 0xFDE7)
     {
-      if (v7 != 65000)
+      if (portCopy != 65000)
       {
         v16 = v9;
         return 0;
@@ -38,17 +38,17 @@
     {
       do
       {
-        v9->sa.sin_port = bswap32(v7) >> 16;
+        v9->sa.sin_port = bswap32(portCopy) >> 16;
         if (!bind(v9->sockFD, &v9->sa, 0x10u))
         {
           break;
         }
       }
 
-      while (v7++ < 0xFDE7u);
+      while (portCopy++ < 0xFDE7u);
     }
 
-    v9->_delegate = a4;
+    v9->_delegate = delegate;
     v12 = *MEMORY[0x1E69631F8];
     keys[0] = *MEMORY[0x1E69631F0];
     keys[1] = v12;
@@ -81,7 +81,7 @@
         }
       }
 
-      [GKVoiceChatError getNSError:a5 code:32002 detailedCode:1 returnCode:v15 filePath:0 description:@"LoopbackSocketTunnel init failed" reason:@"FigThreadCreate failed"];
+      [GKVoiceChatError getNSError:error code:32002 detailedCode:1 returnCode:v15 filePath:0 description:@"LoopbackSocketTunnel init failed" reason:@"FigThreadCreate failed"];
       close(v9->sockFD);
 
       return 0;
@@ -91,19 +91,19 @@
   return v9;
 }
 
-- (int)sendPacketToVTP:(id)a3
+- (int)sendPacketToVTP:(id)p
 {
   if (!self->foundVTPIP)
   {
     return -1;
   }
 
-  v3 = sendto(self->sockFD, [a3 bytes], objc_msgSend(a3, "length"), 0, &self->vtpSA, 0x10u);
+  v3 = sendto(self->sockFD, [p bytes], objc_msgSend(p, "length"), 0, &self->vtpSA, 0x10u);
   kdebug_trace();
   return v3;
 }
 
-- (void)setVTPIP:(tagIPPORT *)a3
+- (void)setVTPIP:(tagIPPORT *)p
 {
   v13 = *MEMORY[0x1E69E9840];
   *&self->vtpSA.sin_len = 0;

@@ -1,17 +1,17 @@
 @interface AKAppleIDPasskeyStatusController
 - (AKAppleIDPasskeyStatusController)init;
-- (AKAppleIDPasskeyStatusController)initWithAccountManager:(id)a3;
+- (AKAppleIDPasskeyStatusController)initWithAccountManager:(id)manager;
 @end
 
 @implementation AKAppleIDPasskeyStatusController
 
-- (AKAppleIDPasskeyStatusController)initWithAccountManager:(id)a3
+- (AKAppleIDPasskeyStatusController)initWithAccountManager:(id)manager
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.isa + OBJC_IVAR___AKAppleIDPasskeyStatusController_accountManager) = a3;
+  *(&self->super.isa + OBJC_IVAR___AKAppleIDPasskeyStatusController_accountManager) = manager;
   v8.receiver = self;
   v8.super_class = ObjectType;
-  v6 = a3;
+  managerCopy = manager;
   return [(AKAppleIDPasskeyStatusController *)&v8 init];
 }
 

@@ -1,21 +1,21 @@
 @interface WFREPBRepeatedKeyValuePair
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addValue:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addValue:(id)value;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WFREPBRepeatedKeyValuePair
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(WFREPBRepeatedKeyValuePair *)self setKey:?];
   }
@@ -24,7 +24,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -51,13 +51,13 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((key = self->_key, !(key | v4[1])) || -[NSString isEqual:](key, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((key = self->_key, !(key | equalCopy[1])) || -[NSString isEqual:](key, "isEqual:")))
   {
     values = self->_values;
-    if (values | v4[2])
+    if (values | equalCopy[2])
     {
       v7 = [(NSMutableArray *)values isEqual:?];
     }
@@ -76,11 +76,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -104,7 +104,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addValue:v13];
 
         ++v12;
@@ -121,36 +121,36 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setKey:self->_key];
+  toCopy = to;
+  [toCopy setKey:self->_key];
   if ([(WFREPBRepeatedKeyValuePair *)self valuesCount])
   {
-    [v8 clearValues];
-    v4 = [(WFREPBRepeatedKeyValuePair *)self valuesCount];
-    if (v4)
+    [toCopy clearValues];
+    valuesCount = [(WFREPBRepeatedKeyValuePair *)self valuesCount];
+    if (valuesCount)
     {
-      v5 = v4;
+      v5 = valuesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(WFREPBRepeatedKeyValuePair *)self valueAtIndex:i];
-        [v8 addValue:v7];
+        [toCopy addValue:v7];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (!self->_key)
   {
     __assert_rtn("[WFREPBRepeatedKeyValuePair writeTo:]", "WFREPBRepeatedKeyValuePair.m", 110, "nil != self->_key");
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   v15 = 0u;
   v16 = 0u;
@@ -189,12 +189,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   values = self->_values;
@@ -212,28 +212,28 @@
   v8.receiver = self;
   v8.super_class = WFREPBRepeatedKeyValuePair;
   v4 = [(WFREPBRepeatedKeyValuePair *)&v8 description];
-  v5 = [(WFREPBRepeatedKeyValuePair *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WFREPBRepeatedKeyValuePair *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addValue:(id)a3
+- (void)addValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   values = self->_values;
-  v8 = v4;
+  v8 = valueCopy;
   if (!values)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_values;
     self->_values = v6;
 
-    v4 = v8;
+    valueCopy = v8;
     values = self->_values;
   }
 
-  [(NSMutableArray *)values addObject:v4];
+  [(NSMutableArray *)values addObject:valueCopy];
 }
 
 @end

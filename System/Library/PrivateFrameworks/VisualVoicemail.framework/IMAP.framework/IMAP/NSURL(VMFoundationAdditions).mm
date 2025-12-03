@@ -1,5 +1,4 @@
 @interface NSURL(VMFoundationAdditions)
-+ (id)vf_defaultAllowedCharacterSet;
 - (void)vf_hostNilForEmpty;
 @end
 
@@ -7,10 +6,10 @@
 
 - (void)vf_hostNilForEmpty
 {
-  v1 = [a1 host];
-  if ([v1 length])
+  host = [self host];
+  if ([host length])
   {
-    v2 = v1;
+    v2 = host;
   }
 
   else
@@ -21,13 +20,6 @@
   v3 = v2;
 
   return v2;
-}
-
-+ (id)vf_defaultAllowedCharacterSet
-  v0 = {;
-  v1 = [v0 invertedSet];
-
-  return v1;
 }
 
 @end

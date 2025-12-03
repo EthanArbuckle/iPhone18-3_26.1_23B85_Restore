@@ -1,20 +1,20 @@
 @interface PRWidgetEducationView
-- (PRWidgetEducationView)initWithFrame:(CGRect)a3;
+- (PRWidgetEducationView)initWithFrame:(CGRect)frame;
 - (PRWidgetEducationViewDelegate)delegate;
 @end
 
 @implementation PRWidgetEducationView
 
-- (PRWidgetEducationView)initWithFrame:(CGRect)a3
+- (PRWidgetEducationView)initWithFrame:(CGRect)frame
 {
   v64[4] = *MEMORY[0x1E69E9840];
   v62.receiver = self;
   v62.super_class = PRWidgetEducationView;
-  val = [(PRWidgetEducationView *)&v62 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  val = [(PRWidgetEducationView *)&v62 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (val)
   {
-    v3 = [MEMORY[0x1E69DC888] systemGray5Color];
-    [(PRWidgetEducationView *)val setBackgroundColor:v3];
+    systemGray5Color = [MEMORY[0x1E69DC888] systemGray5Color];
+    [(PRWidgetEducationView *)val setBackgroundColor:systemGray5Color];
 
     v53 = objc_alloc_init(_PRWidgetEducationHeaderView);
     v56 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -33,8 +33,8 @@
     [v57 setFont:v7];
 
     [v57 setAdjustsFontForContentSizeCategory:1];
-    v8 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v57 setTextColor:v8];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [v57 setTextColor:secondaryLabelColor];
 
     [v57 setTextAlignment:1];
     [v57 setNumberOfLines:0];
@@ -42,16 +42,16 @@
     v10 = [v9 localizedStringForKey:@"WIDGET_EDUCATION_BODY" value:&stru_1F1C13D90 table:@"PosterKit"];
     [v57 setText:v10];
 
-    v54 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-    [v54 setButtonSize:3];
+    filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+    [filledButtonConfiguration setButtonSize:3];
     v11 = PRBundle();
     v12 = [v11 localizedStringForKey:@"OK" value:&stru_1F1C13D90 table:@"PosterKit"];
-    [v54 setTitle:v12];
+    [filledButtonConfiguration setTitle:v12];
 
     v55 = objc_alloc_init(MEMORY[0x1E69DC738]);
-    [v55 setConfiguration:v54];
-    v13 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [v55 setTintColor:v13];
+    [v55 setConfiguration:filledButtonConfiguration];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [v55 setTintColor:systemBlueColor];
 
     objc_initWeak(&location, val);
     v14 = MEMORY[0x1E69DC628];
@@ -84,45 +84,45 @@
     [v18 addSubview:v17];
     objc_storeStrong(&val->_contentView, v17);
     v29 = MEMORY[0x1E696ACD8];
-    v52 = [v55 widthAnchor];
-    v51 = [(PRWidgetEducationView *)val widthAnchor];
-    v50 = [v52 constraintEqualToAnchor:v51 multiplier:0.6];
+    widthAnchor = [v55 widthAnchor];
+    widthAnchor2 = [(PRWidgetEducationView *)val widthAnchor];
+    v50 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:0.6];
     v63[0] = v50;
-    v49 = [v17 leadingAnchor];
-    v48 = [v18 leadingAnchor];
-    v47 = [v49 constraintEqualToAnchor:v48];
+    leadingAnchor = [v17 leadingAnchor];
+    leadingAnchor2 = [v18 leadingAnchor];
+    v47 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v63[1] = v47;
-    v46 = [v17 trailingAnchor];
-    v45 = [v18 trailingAnchor];
-    v44 = [v46 constraintEqualToAnchor:v45];
+    trailingAnchor = [v17 trailingAnchor];
+    trailingAnchor2 = [v18 trailingAnchor];
+    v44 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v63[2] = v44;
-    v43 = [v17 topAnchor];
-    v42 = [v18 topAnchor];
-    v41 = [v43 constraintEqualToAnchor:v42];
+    topAnchor = [v17 topAnchor];
+    topAnchor2 = [v18 topAnchor];
+    v41 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v63[3] = v41;
-    v40 = [v17 bottomAnchor];
-    v39 = [v18 bottomAnchor];
-    v38 = [v40 constraintEqualToAnchor:v39];
+    bottomAnchor = [v17 bottomAnchor];
+    bottomAnchor2 = [v18 bottomAnchor];
+    v38 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v63[4] = v38;
-    v37 = [v17 widthAnchor];
-    v36 = [v18 widthAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36];
+    widthAnchor3 = [v17 widthAnchor];
+    widthAnchor4 = [v18 widthAnchor];
+    v35 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
     v63[5] = v35;
-    v34 = [v18 leadingAnchor];
-    v33 = [(PRWidgetEducationView *)val leadingAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33];
+    leadingAnchor3 = [v18 leadingAnchor];
+    leadingAnchor4 = [(PRWidgetEducationView *)val leadingAnchor];
+    v32 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v63[6] = v32;
-    v31 = [v18 trailingAnchor];
-    v30 = [(PRWidgetEducationView *)val trailingAnchor];
-    v19 = [v31 constraintEqualToAnchor:v30];
+    trailingAnchor3 = [v18 trailingAnchor];
+    trailingAnchor4 = [(PRWidgetEducationView *)val trailingAnchor];
+    v19 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v63[7] = v19;
-    v20 = [v18 bottomAnchor];
-    v21 = [(PRWidgetEducationView *)val bottomAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    bottomAnchor3 = [v18 bottomAnchor];
+    bottomAnchor4 = [(PRWidgetEducationView *)val bottomAnchor];
+    v22 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v63[8] = v22;
-    v23 = [v18 topAnchor];
-    v24 = [(PRWidgetEducationView *)val topAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    topAnchor3 = [v18 topAnchor];
+    topAnchor4 = [(PRWidgetEducationView *)val topAnchor];
+    v25 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v63[9] = v25;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v63 count:10];
     [v29 activateConstraints:v26];

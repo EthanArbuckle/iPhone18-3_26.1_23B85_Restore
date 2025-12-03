@@ -16,8 +16,8 @@
     [(SDMAdviceChange *)v3 setDlPriorThroughputBps:0];
     [(SDMAdviceChange *)v3 setUlSubsequentThroughputBps:0];
     [(SDMAdviceChange *)v3 setDlSubsequentThroughputBps:0];
-    v4 = [MEMORY[0x277CBEB18] array];
-    [(SDMAdviceChange *)v3 setPreviousAdviceParticipants:v4];
+    array = [MEMORY[0x277CBEB18] array];
+    [(SDMAdviceChange *)v3 setPreviousAdviceParticipants:array];
   }
 
   return v3;

@@ -1,33 +1,33 @@
 @interface IMDCoreSpotlightMessageBalloonPluginIndexer
-+ (id)_newSummaryTextForPayloadData:(id)a3 item:(id)a4;
-+ (id)_pluginPayloadAttachmentPathsForItem:(id)a3;
-+ (id)_richLinkMetadataForItem:(id)a3 attachmentPaths:(id)a4 originalURL:(id)a5;
-+ (void)indexItem:(id)a3 withChat:(id)a4 context:(id)a5 metadataToUpdate:(id)a6 timingProfiler:(id)a7;
++ (id)_newSummaryTextForPayloadData:(id)data item:(id)item;
++ (id)_pluginPayloadAttachmentPathsForItem:(id)item;
++ (id)_richLinkMetadataForItem:(id)item attachmentPaths:(id)paths originalURL:(id)l;
++ (void)indexItem:(id)item withChat:(id)chat context:(id)context metadataToUpdate:(id)update timingProfiler:(id)profiler;
 @end
 
 @implementation IMDCoreSpotlightMessageBalloonPluginIndexer
 
-+ (void)indexItem:(id)a3 withChat:(id)a4 context:(id)a5 metadataToUpdate:(id)a6 timingProfiler:(id)a7
++ (void)indexItem:(id)item withChat:(id)chat context:(id)context metadataToUpdate:(id)update timingProfiler:(id)profiler
 {
   v114 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v108 = a4;
-  v109 = a5;
-  v111 = a6;
-  v110 = a7;
-  v14 = objc_msgSend_objectForKey_(v12, v13, @"balloonBundleID");
-  v16 = objc_msgSend_objectForKey_(v12, v15, @"payloadData");
-  v18 = objc_msgSend_objectForKey_(v12, v17, @"flags");
-  LOBYTE(a6) = objc_msgSend_unsignedLongLongValue(v18, v19, v20);
+  itemCopy = item;
+  chatCopy = chat;
+  contextCopy = context;
+  updateCopy = update;
+  profilerCopy = profiler;
+  v14 = objc_msgSend_objectForKey_(itemCopy, v13, @"balloonBundleID");
+  v16 = objc_msgSend_objectForKey_(itemCopy, v15, @"payloadData");
+  v18 = objc_msgSend_objectForKey_(itemCopy, v17, @"flags");
+  LOBYTE(update) = objc_msgSend_unsignedLongLongValue(v18, v19, v20);
 
-  if ((a6 & 4) != 0)
+  if ((update & 4) != 0)
   {
     IsKnownContact = 1;
   }
 
   else
   {
-    v23 = objc_msgSend_objectForKeyedSubscript_(v12, v21, @"handle");
+    v23 = objc_msgSend_objectForKeyedSubscript_(itemCopy, v21, @"handle");
     IsKnownContact = _IMDCoreSpotlightIsKnownContact(v23);
   }
 
@@ -88,11 +88,11 @@
             }
           }
 
-          v107 = objc_msgSend_objectForKey_(v12, v35, @"attributedBody");
+          v107 = objc_msgSend_objectForKey_(itemCopy, v35, @"attributedBody");
           v37 = IMDCoreSpotlightURLFromAttributedMessageBody(v107);
           v40 = objc_msgSend_absoluteString(v37, v38, v39);
 
-          v42 = objc_msgSend__newSummaryTextForPayloadData_item_(a1, v41, v16, v12);
+          v42 = objc_msgSend__newSummaryTextForPayloadData_item_(self, v41, v16, itemCopy);
           if (!objc_msgSend_length(v42, v43, v44) && v40)
           {
             v45 = v40;
@@ -100,27 +100,27 @@
             v42 = v45;
           }
 
-          v46 = _IMDCoreSpotlightStrippedBody(v12, @"plainBody", v40);
+          v46 = _IMDCoreSpotlightStrippedBody(itemCopy, @"plainBody", v40);
           v48 = objc_msgSend_URLWithString_(MEMORY[0x1E695DFF8], v47, v46);
-          v50 = objc_msgSend__pluginPayloadAttachmentPathsForItem_(a1, v49, v12);
-          v52 = objc_msgSend__richLinkMetadataForItem_attachmentPaths_originalURL_(a1, v51, v12, v50, v48);
+          v50 = objc_msgSend__pluginPayloadAttachmentPathsForItem_(self, v49, itemCopy);
+          v52 = objc_msgSend__richLinkMetadataForItem_attachmentPaths_originalURL_(self, v51, itemCopy, v50, v48);
           v54 = objc_msgSend_indexerForMetadata_(IMDCoreSpotlightRichLinkIndexer, v53, v52);
-          objc_msgSend_mapPropertiesFromMetadata_text_originalURL_attachmentPaths_toAttributes_(v54, v55, v52, v42, v48, v50, v111);
+          objc_msgSend_mapPropertiesFromMetadata_text_originalURL_attachmentPaths_toAttributes_(v54, v55, v52, v42, v48, v50, updateCopy);
 
           goto LABEL_54;
         }
 
 LABEL_53:
-        objc_msgSend_setMessageType_(v111, v33, @"op");
+        objc_msgSend_setMessageType_(updateCopy, v33, @"op");
         goto LABEL_54;
       }
     }
   }
 
-  v56 = objc_msgSend_objectForKey_(v12, v25, @"service");
+  v56 = objc_msgSend_objectForKey_(itemCopy, v25, @"service");
   isEqualToString = objc_msgSend_isEqualToString_(v56, v57, *MEMORY[0x1E69A7AE0]);
 
-  v60 = objc_msgSend_objectForKey_(v12, v59, @"attributedBody");
+  v60 = objc_msgSend_objectForKey_(itemCopy, v59, @"attributedBody");
   v63 = v60;
   if (isEqualToString)
   {
@@ -151,12 +151,12 @@ LABEL_53:
           v80 = MEMORY[0x1E695DFF8];
           v81 = objc_msgSend_absoluteString(v69, v77, v78);
           v83 = objc_msgSend_URLWithString_(v80, v82, v81);
-          objc_msgSend_setURL_(v111, v84, v83);
+          objc_msgSend_setURL_(updateCopy, v84, v83);
 
-          objc_msgSend_setMessageType_(v111, v85, @"lnk");
+          objc_msgSend_setMessageType_(updateCopy, v85, @"lnk");
           v87 = objc_msgSend_numberWithBool_(MEMORY[0x1E696AD98], v86, 0);
           v90 = objc_msgSend_lpHasRichMediaCustomKey(IMDCoreSpotlightRichLinkIndexer, v88, v89);
-          objc_msgSend_setValue_forCustomKey_(v111, v91, v87, v90);
+          objc_msgSend_setValue_forCustomKey_(updateCopy, v91, v87, v90);
 
           isDataDetectedLinkAllowedForSWY = 1;
         }
@@ -174,11 +174,11 @@ LABEL_53:
     v94 = IMDCoreSpotlightURLFromAttributedMessageBody(v60);
     if (v94 && (objc_msgSend_sharedManager(MEMORY[0x1E69A8288], v92, v93), v95 = objc_claimAutoreleasedReturnValue(), v97 = objc_msgSend_isDataDetectedLinkAllowedForSWY_(v95, v96, v94), v95, v97))
     {
-      objc_msgSend_setURL_(v111, v98, v94);
-      objc_msgSend_setMessageType_(v111, v99, @"lnk");
+      objc_msgSend_setURL_(updateCopy, v98, v94);
+      objc_msgSend_setMessageType_(updateCopy, v99, @"lnk");
       v101 = objc_msgSend_numberWithBool_(MEMORY[0x1E696AD98], v100, 0);
       v104 = objc_msgSend_lpHasRichMediaCustomKey(IMDCoreSpotlightRichLinkIndexer, v102, v103);
-      objc_msgSend_setValue_forCustomKey_(v111, v105, v101, v104);
+      objc_msgSend_setValue_forCustomKey_(updateCopy, v105, v101, v104);
 
       isDataDetectedLinkAllowedForSWY = 1;
     }
@@ -199,17 +199,17 @@ LABEL_54:
   v106 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_newSummaryTextForPayloadData:(id)a3 item:(id)a4
++ (id)_newSummaryTextForPayloadData:(id)data item:(id)item
 {
   v5 = MEMORY[0x1E69A8010];
-  v6 = a4;
-  v7 = a3;
+  itemCopy = item;
+  dataCopy = data;
   v8 = objc_alloc_init(v5);
-  objc_msgSend_setData_(v8, v9, v7);
+  objc_msgSend_setData_(v8, v9, dataCopy);
 
-  v11 = objc_msgSend_objectForKey_(v6, v10, @"guid");
+  v11 = objc_msgSend_objectForKey_(itemCopy, v10, @"guid");
   objc_msgSend_setMessageGUID_(v8, v12, v11);
-  v14 = objc_msgSend_objectForKey_(v6, v13, @"flags");
+  v14 = objc_msgSend_objectForKey_(itemCopy, v13, @"flags");
 
   v17 = (objc_msgSend_unsignedLongLongValue(v14, v15, v16) >> 2) & 1;
   objc_msgSend_setIsFromMe_(v8, v18, v17);
@@ -219,10 +219,10 @@ LABEL_54:
   return v23;
 }
 
-+ (id)_pluginPayloadAttachmentPathsForItem:(id)a3
++ (id)_pluginPayloadAttachmentPathsForItem:(id)item
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = objc_msgSend_objectForKeyedSubscript_(a3, a2, @"attachments");
+  v3 = objc_msgSend_objectForKeyedSubscript_(item, a2, @"attachments");
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v16 = 0u;
   v17 = 0u;
@@ -261,29 +261,29 @@ LABEL_54:
   return v4;
 }
 
-+ (id)_richLinkMetadataForItem:(id)a3 attachmentPaths:(id)a4 originalURL:(id)a5
++ (id)_richLinkMetadataForItem:(id)item attachmentPaths:(id)paths originalURL:(id)l
 {
   v50 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v11 = objc_msgSend_objectForKey_(v7, v10, @"payloadData");
+  itemCopy = item;
+  pathsCopy = paths;
+  lCopy = l;
+  v11 = objc_msgSend_objectForKey_(itemCopy, v10, @"payloadData");
   v12 = objc_alloc_init(MEMORY[0x1E69A8010]);
   v44 = v11;
   objc_msgSend_setData_(v12, v13, v11);
-  v15 = objc_msgSend_objectForKey_(v7, v14, @"guid");
+  v15 = objc_msgSend_objectForKey_(itemCopy, v14, @"guid");
   objc_msgSend_setMessageGUID_(v12, v16, v15);
-  v18 = objc_msgSend_objectForKey_(v7, v17, @"flags");
+  v18 = objc_msgSend_objectForKey_(itemCopy, v17, @"flags");
   v21 = (objc_msgSend_unsignedLongLongValue(v18, v19, v20) >> 2) & 1;
 
   objc_msgSend_setIsFromMe_(v12, v22, v21);
-  objc_msgSend_setUrl_(v12, v23, v9);
+  objc_msgSend_setUrl_(v12, v23, lCopy);
   v26 = objc_msgSend_array(MEMORY[0x1E695DF70], v24, v25);
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v27 = v8;
+  v27 = pathsCopy;
   v29 = objc_msgSend_countByEnumeratingWithState_objects_count_(v27, v28, &v45, v49, 16);
   if (v29)
   {

@@ -1,31 +1,31 @@
 @interface EPSagaTransactionPairedSync
-+ (id)currentActivityLabel:(id)a3;
++ (id)currentActivityLabel:(id)label;
 - (BOOL)supportsEarlyPairedSync;
 - (EPTransactionDelegate)delegate;
 - (id)registry;
 - (id)routingSlipEntry;
 - (id)serviceRegistry;
 - (id)unpairHelper;
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
-- (void)cancelWithError:(id)a3;
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
+- (void)cancelWithError:(id)error;
 - (void)deallocatePairedSyncNotifyToken;
 - (void)doneWaitingForPairedSync;
 - (void)evaluateWhetherToStartSync;
-- (void)forceSyncComplete:(id)a3;
+- (void)forceSyncComplete:(id)complete;
 - (void)forceSyncCompleteAndFinishTransaction;
-- (void)forceSyncStart:(id)a3;
+- (void)forceSyncStart:(id)start;
 - (void)forceSyncStartAndEndWithError;
-- (void)initialSyncStateObserver:(id)a3 initialSyncDidCompleteForPairingIdentifier:(id)a4;
-- (void)initialSyncStateObserver:(id)a3 syncDidCompleteForPairingIdentifier:(id)a4;
-- (void)initialSyncStateObserverClientCanRetryFailedRequests:(id)a3;
+- (void)initialSyncStateObserver:(id)observer initialSyncDidCompleteForPairingIdentifier:(id)identifier;
+- (void)initialSyncStateObserver:(id)observer syncDidCompleteForPairingIdentifier:(id)identifier;
+- (void)initialSyncStateObserverClientCanRetryFailedRequests:(id)requests;
 - (void)invalidate;
 - (void)postSyncCompleteNotification;
 - (void)querySyncStateForActiveDevice;
-- (void)syncSessionObserver:(id)a3 didInvalidateSyncSession:(id)a4;
-- (void)syncSessionObserver:(id)a3 didReceiveUpdate:(id)a4;
-- (void)syncSessionObserver:(id)a3 receivedSyncSession:(id)a4;
-- (void)updatePairedSyncNotifyToken:(unint64_t)a3 shouldPost:(BOOL)a4;
+- (void)syncSessionObserver:(id)observer didInvalidateSyncSession:(id)session;
+- (void)syncSessionObserver:(id)observer didReceiveUpdate:(id)update;
+- (void)syncSessionObserver:(id)observer receivedSyncSession:(id)session;
+- (void)updatePairedSyncNotifyToken:(unint64_t)token shouldPost:(BOOL)post;
 @end
 
 @implementation EPSagaTransactionPairedSync
@@ -83,9 +83,9 @@
   return v8 & 1;
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -95,12 +95,12 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138412290;
-      v20 = v4;
+      v20 = errorCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "EPSagaTransactionPairedSync: cancelWithError: %@", &v19, 0xCu);
     }
   }
 
-  v8 = [(EPSagaTransactionPairedSync *)self supportsEarlyPairedSync];
+  supportsEarlyPairedSync = [(EPSagaTransactionPairedSync *)self supportsEarlyPairedSync];
   v9 = nr_daemon_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -110,12 +110,12 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 67109120;
-      LODWORD(v20) = v8;
+      LODWORD(v20) = supportsEarlyPairedSync;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "EPSagaTransactionPairedSync: supportsEarlyPairedSync %d", &v19, 8u);
     }
   }
 
-  if (v8)
+  if (supportsEarlyPairedSync)
   {
     WeakRetained = objc_loadWeakRetained(&self->_serviceRegistry);
     v13 = [WeakRetained serviceFromClass:objc_opt_class()];
@@ -138,14 +138,14 @@
       }
     }
 
-    if (!v4)
+    if (!errorCopy)
     {
       goto LABEL_20;
     }
 
-    v17 = objc_loadWeakRetained(&self->_routingSlipEntry);
-    v18 = [v17 errors];
-    [v18 addObject:v4];
+    errors2 = objc_loadWeakRetained(&self->_routingSlipEntry);
+    errors = [errors2 errors];
+    [errors addObject:errorCopy];
 
 LABEL_19:
 LABEL_20:
@@ -153,11 +153,11 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (v4)
+  if (errorCopy)
   {
     v13 = objc_loadWeakRetained(&self->_routingSlipEntry);
-    v17 = [v13 errors];
-    [v17 addObject:v4];
+    errors2 = [v13 errors];
+    [errors2 addObject:errorCopy];
     goto LABEL_19;
   }
 
@@ -165,21 +165,21 @@ LABEL_21:
   [(EPSagaTransactionPairedSync *)self cancel];
 }
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v6 = a3;
-  v7 = a4;
+  entryCopy = entry;
+  registryCopy = registry;
   v8 = [[NRPreferences alloc] initWithDomain:@"com.apple.NanoRegistry"];
   v9 = [(NRPreferences *)v8 objectForKeyedSubscript:@"blockSyncTestMode"];
   if (_NRIsInternalInstall() && v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v9 BOOLValue])
   {
     WeakRetained = objc_loadWeakRetained(&self->_routingSlipEntry);
-    v11 = [WeakRetained errors];
+    errors = [WeakRetained errors];
     v24 = NSLocalizedDescriptionKey;
     v25 = @"PairedSync is disabled by the blockSyncTestMode internal preferences";
     v12 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
     v13 = [NSError errorWithDomain:@"pairedSyncErrorDomain" code:4 userInfo:v12];
-    [v11 addObject:v13];
+    [errors addObject:v13];
 
     v14 = objc_loadWeakRetained(&self->_routingSlipEntry);
     [v14 persist];
@@ -189,23 +189,23 @@ LABEL_21:
 
   else
   {
-    v15 = objc_storeWeak(&self->_routingSlipEntry, v6);
-    [v6 setTransactionBeganWithThisNR:1];
+    v15 = objc_storeWeak(&self->_routingSlipEntry, entryCopy);
+    [entryCopy setTransactionBeganWithThisNR:1];
 
-    objc_storeWeak(&self->_serviceRegistry, v7);
+    objc_storeWeak(&self->_serviceRegistry, registryCopy);
     self->_notifyToken = -1;
-    v16 = [v6 objectForKeyedSubscript:@"nrDeviceIdentifier"];
+    v16 = [entryCopy objectForKeyedSubscript:@"nrDeviceIdentifier"];
     pairingID = self->_pairingID;
     self->_pairingID = v16;
 
-    v18 = [v6 objectForKeyedSubscript:@"pairedSyncTypeKey"];
+    v18 = [entryCopy objectForKeyedSubscript:@"pairedSyncTypeKey"];
     syncType = self->_syncType;
     self->_syncType = v18;
 
-    v20 = [v6 objectForKeyedSubscript:@"extensiblePairingShouldFilePairingReport"];
-    v21 = [v20 BOOLValue];
-    v22 = [(EPSagaTransactionPairedSync *)self unpairHelper];
-    [v22 setShouldFilePairingReport:v21];
+    v20 = [entryCopy objectForKeyedSubscript:@"extensiblePairingShouldFilePairingReport"];
+    bOOLValue = [v20 BOOLValue];
+    unpairHelper = [(EPSagaTransactionPairedSync *)self unpairHelper];
+    [unpairHelper setShouldFilePairingReport:bOOLValue];
 
     v23 = objc_loadWeakRetained(&self->_serviceRegistry);
     [v23 addService:self];
@@ -218,13 +218,13 @@ LABEL_21:
 {
   if (MKBDeviceUnlockedSinceBoot())
   {
-    v3 = [(EPSagaTransactionPairedSync *)self registry];
+    registry = [(EPSagaTransactionPairedSync *)self registry];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_100062258;
     v5[3] = &unk_100175948;
     v5[4] = self;
-    [v3 grabRegistryWithReadBlockAsync:v5];
+    [registry grabRegistryWithReadBlockAsync:v5];
   }
 
   else
@@ -237,9 +237,9 @@ LABEL_21:
   }
 }
 
-- (void)updatePairedSyncNotifyToken:(unint64_t)a3 shouldPost:(BOOL)a4
+- (void)updatePairedSyncNotifyToken:(unint64_t)token shouldPost:(BOOL)post
 {
-  v4 = a4;
+  postCopy = post;
   p_notifyToken = &self->_notifyToken;
   if (self->_notifyToken != -1)
   {
@@ -249,9 +249,9 @@ LABEL_21:
   if (notify_register_check([NRPairedDeviceRegistryPairedSyncIsOkayToSyncDarwinNotification UTF8String], p_notifyToken))
   {
     WeakRetained = objc_loadWeakRetained(&self->_routingSlipEntry);
-    v9 = [WeakRetained errors];
+    errors = [WeakRetained errors];
     v10 = [NSError errorWithDomain:@"pairedSyncErrorDomain" code:3 userInfo:0];
-    [v9 addObject:v10];
+    [errors addObject:v10];
 
     v11 = objc_loadWeakRetained(&self->_routingSlipEntry);
     [v11 persist];
@@ -271,7 +271,7 @@ LABEL_5:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v15 = "YES";
-        if (!a3)
+        if (!token)
         {
           v15 = "NO";
         }
@@ -282,8 +282,8 @@ LABEL_5:
       }
     }
 
-    notify_set_state(*p_notifyToken, a3);
-    if (v4)
+    notify_set_state(*p_notifyToken, token);
+    if (postCopy)
     {
       notify_post([NRPairedDeviceRegistryPairedSyncIsOkayToSyncDarwinNotification UTF8String]);
     }
@@ -335,8 +335,8 @@ LABEL_5:
   if (!self->_transactionComplete)
   {
     self->_transactionComplete = 1;
-    v10 = [(EPSagaTransactionPairedSync *)self delegate];
-    [v10 transactionDidComplete:self];
+    delegate = [(EPSagaTransactionPairedSync *)self delegate];
+    [delegate transactionDidComplete:self];
 
     [(EPSagaTransactionPairedSync *)self postSyncCompleteNotification];
   }
@@ -354,11 +354,11 @@ LABEL_5:
   [(PSYInitialSyncStateObserver *)syncStateObserver requestSyncStateForPairingIdentifier:pairingID completion:v4];
 }
 
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v6 = a4;
-  objc_storeWeak(&self->_routingSlipEntry, a3);
-  objc_storeWeak(&self->_serviceRegistry, v6);
+  registryCopy = registry;
+  objc_storeWeak(&self->_routingSlipEntry, entry);
+  objc_storeWeak(&self->_serviceRegistry, registryCopy);
 
   [(EPSagaTransactionPairedSync *)self doneWaitingForPairedSync];
 }
@@ -373,18 +373,18 @@ LABEL_5:
   [(EPSagaTransactionPairedSync *)self forceSyncStart:v2];
 }
 
-- (void)forceSyncStart:(id)a3
+- (void)forceSyncStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   WeakRetained = objc_loadWeakRetained(&self->_serviceRegistry);
   v6 = [WeakRetained serviceFromClass:objc_opt_class()];
 
-  [v6 xpcFakePairedSyncStartWithCompletion:v4];
+  [v6 xpcFakePairedSyncStartWithCompletion:startCopy];
 }
 
-- (void)forceSyncComplete:(id)a3
+- (void)forceSyncComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -402,7 +402,7 @@ LABEL_5:
   WeakRetained = objc_loadWeakRetained(&self->_serviceRegistry);
   v9 = [WeakRetained serviceFromClass:objc_opt_class()];
 
-  [v9 xpcFakePairedSyncIsCompleteWithCompletion:v4];
+  [v9 xpcFakePairedSyncIsCompleteWithCompletion:completeCopy];
 }
 
 - (void)forceSyncCompleteAndFinishTransaction
@@ -415,80 +415,80 @@ LABEL_5:
   [(EPSagaTransactionPairedSync *)self forceSyncStart:v2];
 }
 
-- (void)initialSyncStateObserver:(id)a3 initialSyncDidCompleteForPairingIdentifier:(id)a4
+- (void)initialSyncStateObserver:(id)observer initialSyncDidCompleteForPairingIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_serviceRegistry);
-  v7 = [WeakRetained queue];
+  queue = [WeakRetained queue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000637D8;
   v9[3] = &unk_100175598;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
-  dispatch_async(v7, v9);
+  v10 = identifierCopy;
+  v8 = identifierCopy;
+  dispatch_async(queue, v9);
 }
 
-- (void)initialSyncStateObserver:(id)a3 syncDidCompleteForPairingIdentifier:(id)a4
+- (void)initialSyncStateObserver:(id)observer syncDidCompleteForPairingIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_serviceRegistry);
-  v7 = [WeakRetained queue];
+  queue = [WeakRetained queue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000638E8;
   v9[3] = &unk_100175598;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
-  dispatch_async(v7, v9);
+  v10 = identifierCopy;
+  v8 = identifierCopy;
+  dispatch_async(queue, v9);
 }
 
-- (void)initialSyncStateObserverClientCanRetryFailedRequests:(id)a3
+- (void)initialSyncStateObserverClientCanRetryFailedRequests:(id)requests
 {
   WeakRetained = objc_loadWeakRetained(&self->_serviceRegistry);
-  v5 = [WeakRetained queue];
+  queue = [WeakRetained queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000639D8;
   block[3] = &unk_100175660;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(queue, block);
 }
 
-+ (id)currentActivityLabel:(id)a3
++ (id)currentActivityLabel:(id)label
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
-  if (v4)
+  labelCopy = label;
+  label = [labelCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
+  if (label)
   {
     v5 = *v11;
     while (2)
     {
-      for (i = 0; i != v4; i = i + 1)
+      for (i = 0; i != label; i = i + 1)
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(labelCopy);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
         if ([v7 activityState] == 1)
         {
-          v8 = [v7 activityInfo];
-          v4 = [v8 label];
+          activityInfo = [v7 activityInfo];
+          label = [activityInfo label];
 
           goto LABEL_11;
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
-      if (v4)
+      label = [labelCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
+      if (label)
       {
         continue;
       }
@@ -499,52 +499,52 @@ LABEL_5:
 
 LABEL_11:
 
-  return v4;
+  return label;
 }
 
-- (void)syncSessionObserver:(id)a3 receivedSyncSession:(id)a4
+- (void)syncSessionObserver:(id)observer receivedSyncSession:(id)session
 {
-  v5 = a4;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_serviceRegistry);
-  v7 = [WeakRetained queue];
+  queue = [WeakRetained queue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100063BD4;
   v9[3] = &unk_100175598;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
-  dispatch_async(v7, v9);
+  v10 = sessionCopy;
+  v8 = sessionCopy;
+  dispatch_async(queue, v9);
 }
 
-- (void)syncSessionObserver:(id)a3 didReceiveUpdate:(id)a4
+- (void)syncSessionObserver:(id)observer didReceiveUpdate:(id)update
 {
-  v5 = a4;
+  updateCopy = update;
   WeakRetained = objc_loadWeakRetained(&self->_serviceRegistry);
-  v7 = [WeakRetained queue];
+  queue = [WeakRetained queue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100063D64;
   v9[3] = &unk_100175598;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
-  dispatch_async(v7, v9);
+  v10 = updateCopy;
+  v8 = updateCopy;
+  dispatch_async(queue, v9);
 }
 
-- (void)syncSessionObserver:(id)a3 didInvalidateSyncSession:(id)a4
+- (void)syncSessionObserver:(id)observer didInvalidateSyncSession:(id)session
 {
-  v5 = a4;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_serviceRegistry);
-  v7 = [WeakRetained queue];
+  queue = [WeakRetained queue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100063F14;
   v9[3] = &unk_100175598;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
-  dispatch_async(v7, v9);
+  v10 = sessionCopy;
+  v8 = sessionCopy;
+  dispatch_async(queue, v9);
 }
 
 - (void)postSyncCompleteNotification

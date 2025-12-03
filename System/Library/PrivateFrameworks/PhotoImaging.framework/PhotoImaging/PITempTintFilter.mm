@@ -1,7 +1,7 @@
 @interface PITempTintFilter
 + (id)customAttributes;
 - (id)outputImage;
-- (void)setInputVectorsForFilter:(id)a3;
+- (void)setInputVectorsForFilter:(id)filter;
 @end
 
 @implementation PITempTintFilter
@@ -63,10 +63,10 @@
   return v13;
 }
 
-- (void)setInputVectorsForFilter:(id)a3
+- (void)setInputVectorsForFilter:(id)filter
 {
   v68 = *MEMORY[0x1E69E9840];
-  v47 = a3;
+  filterCopy = filter;
   [(PITempTintFilter *)self inputTemperature];
   v5 = v4;
   [(PITempTintFilter *)self inputTint];
@@ -222,9 +222,9 @@
   v44 = [MEMORY[0x1E695F688] vectorWithX:v61 Y:*&v62 Z:0.0 W:?];
   v45 = [MEMORY[0x1E695F688] vectorWithX:*(&v40 + 1) Y:v41 Z:0.0 W:?];
   v46 = [MEMORY[0x1E695F688] vectorWithX:v42 Y:v43 Z:0.0 W:?];
-  [v47 setValue:v44 forKey:@"inputRVector"];
-  [v47 setValue:v45 forKey:@"inputGVector"];
-  [v47 setValue:v46 forKey:@"inputBVector"];
+  [filterCopy setValue:v44 forKey:@"inputRVector"];
+  [filterCopy setValue:v45 forKey:@"inputGVector"];
+  [filterCopy setValue:v46 forKey:@"inputBVector"];
 }
 
 - (id)outputImage
@@ -252,8 +252,8 @@
         v14 = dispatch_get_specific(*v8);
         v15 = MEMORY[0x1E696AF00];
         v16 = v14;
-        v17 = [v15 callStackSymbols];
-        v18 = [v17 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v15 callStackSymbols];
+        v18 = [callStackSymbols componentsJoinedByString:@"\n"];
         v19 = 138543618;
         v20 = v14;
         v21 = 2114;
@@ -264,8 +264,8 @@
 
     else if (v11)
     {
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       v19 = 138543362;
       v20 = v13;
       _os_log_error_impl(&dword_1C7694000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v19, 0xCu);
@@ -277,9 +277,9 @@
   v3 = [MEMORY[0x1E695F648] filterWithName:@"CIColorMatrix"];
   [v3 setValue:self->_inputImage forKey:@"inputImage"];
   [(PITempTintFilter *)self setInputVectorsForFilter:v3];
-  v4 = [v3 outputImage];
+  outputImage = [v3 outputImage];
 
-  return v4;
+  return outputImage;
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface ChromeHostView
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ChromeHostView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1B9F676E0(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1B9F676E0(change);
 }
 
 @end

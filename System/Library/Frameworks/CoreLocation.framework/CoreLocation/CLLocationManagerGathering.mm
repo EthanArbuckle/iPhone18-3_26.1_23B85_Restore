@@ -1,12 +1,12 @@
 @interface CLLocationManagerGathering
 - (CLLocationManagerGathering)init;
-- (CLLocationManagerGathering)initWithQueue:(id)a3;
+- (CLLocationManagerGathering)initWithQueue:(id)queue;
 - (id)getConnection;
 - (id)getRemoteObjectProxy;
-- (void)configure:(id)a3 withCompletionHandler:(id)a4;
+- (void)configure:(id)configure withCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)fetchAdvertisementsDetailedWithHandler:(id)a3;
-- (void)fetchAdvertisementsWithHandler:(id)a3;
+- (void)fetchAdvertisementsDetailedWithHandler:(id)handler;
+- (void)fetchAdvertisementsWithHandler:(id)handler;
 @end
 
 @implementation CLLocationManagerGathering
@@ -19,9 +19,9 @@
   return v4;
 }
 
-- (CLLocationManagerGathering)initWithQueue:(id)a3
+- (CLLocationManagerGathering)initWithQueue:(id)queue
 {
-  if (!a3)
+  if (!queue)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
@@ -31,7 +31,7 @@
   v5 = [(CLLocationManagerGathering *)&v7 init];
   if (v5)
   {
-    v5->_queue = a3;
+    v5->_queue = queue;
   }
 
   return v5;
@@ -97,21 +97,21 @@
       -[NSXPCConnection setExportedInterface:](self->_connection, "setExportedInterface:", [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F0EAC8C8]);
       [(NSXPCConnection *)self->_connection setExportedObject:self];
       -[NSXPCConnection setRemoteObjectInterface:](self->_connection, "setRemoteObjectInterface:", [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F0EAC928]);
-      v8 = [(NSXPCConnection *)self->_connection remoteObjectInterface];
+      remoteObjectInterface = [(NSXPCConnection *)self->_connection remoteObjectInterface];
       v9 = MEMORY[0x1E695DFD8];
       v10 = objc_opt_class();
-      -[NSXPCInterface setClasses:forSelector:argumentIndex:ofReply:](v8, "setClasses:forSelector:argumentIndex:ofReply:", [v9 setWithObjects:{v10, objc_opt_class(), 0}], sel_fetchAdvertisementsWithCompletion_, 0, 1);
-      v11 = [(NSXPCConnection *)self->_connection remoteObjectInterface];
+      -[NSXPCInterface setClasses:forSelector:argumentIndex:ofReply:](remoteObjectInterface, "setClasses:forSelector:argumentIndex:ofReply:", [v9 setWithObjects:{v10, objc_opt_class(), 0}], sel_fetchAdvertisementsWithCompletion_, 0, 1);
+      remoteObjectInterface2 = [(NSXPCConnection *)self->_connection remoteObjectInterface];
       v12 = MEMORY[0x1E695DFD8];
       v13 = objc_opt_class();
-      -[NSXPCInterface setClasses:forSelector:argumentIndex:ofReply:](v11, "setClasses:forSelector:argumentIndex:ofReply:", [v12 setWithObjects:{v13, objc_opt_class(), 0}], sel_fetchAdvertisementsDetailedWithCompletion_, 0, 1);
-      v14 = [(NSXPCConnection *)self->_connection serviceName];
+      -[NSXPCInterface setClasses:forSelector:argumentIndex:ofReply:](remoteObjectInterface2, "setClasses:forSelector:argumentIndex:ofReply:", [v12 setWithObjects:{v13, objc_opt_class(), 0}], sel_fetchAdvertisementsDetailedWithCompletion_, 0, 1);
+      serviceName = [(NSXPCConnection *)self->_connection serviceName];
       connection = self->_connection;
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = sub_19B8E23A4;
       v27[3] = &unk_1E753CC90;
-      v27[4] = v14;
+      v27[4] = serviceName;
       [(NSXPCConnection *)connection setInterruptionHandler:v27];
       objc_initWeak(&location, self);
       v16 = self->_connection;
@@ -119,7 +119,7 @@
       v24[1] = 3221225472;
       v24[2] = sub_19B8E2570;
       v24[3] = &unk_1E753D618;
-      v24[4] = v14;
+      v24[4] = serviceName;
       objc_copyWeak(&v25, &location);
       [(NSXPCConnection *)v16 setInvalidationHandler:v24];
       [(NSXPCConnection *)self->_connection activate];
@@ -199,12 +199,12 @@
 
 - (id)getRemoteObjectProxy
 {
-  v2 = [(CLLocationManagerGathering *)self getConnection];
+  getConnection = [(CLLocationManagerGathering *)self getConnection];
 
-  return [v2 remoteObjectProxyWithErrorHandler:&unk_1F0E6B940];
+  return [getConnection remoteObjectProxyWithErrorHandler:&unk_1F0E6B940];
 }
 
-- (void)fetchAdvertisementsWithHandler:(id)a3
+- (void)fetchAdvertisementsWithHandler:(id)handler
 {
   v14 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46D8 != -1)
@@ -249,12 +249,12 @@
   block[2] = sub_19B8E2CF4;
   block[3] = &unk_1E753D688;
   block[4] = self;
-  block[5] = a3;
+  block[5] = handler;
   dispatch_async(queue, block);
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchAdvertisementsDetailedWithHandler:(id)a3
+- (void)fetchAdvertisementsDetailedWithHandler:(id)handler
 {
   v14 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46D8 != -1)
@@ -299,12 +299,12 @@
   block[2] = sub_19B8E3284;
   block[3] = &unk_1E753D688;
   block[4] = self;
-  block[5] = a3;
+  block[5] = handler;
   dispatch_async(queue, block);
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)configure:(id)a3 withCompletionHandler:(id)a4
+- (void)configure:(id)configure withCompletionHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46D8 != -1)
@@ -349,8 +349,8 @@
   block[2] = sub_19B8E3844;
   block[3] = &unk_1E753D000;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a3;
+  block[5] = handler;
+  block[6] = configure;
   dispatch_async(queue, block);
   v12 = *MEMORY[0x1E69E9840];
 }

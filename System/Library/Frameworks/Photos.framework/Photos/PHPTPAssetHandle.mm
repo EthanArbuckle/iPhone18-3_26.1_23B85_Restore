@@ -1,7 +1,7 @@
 @interface PHPTPAssetHandle
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)auxiliaryResourceFilenameMarker;
-- (PHPTPAssetHandle)initWithResourceType:(int64_t)a3 orientation:(unsigned int)a4 localIdentifier:(id)a5 requiresConversion:(BOOL)a6;
+- (PHPTPAssetHandle)initWithResourceType:(int64_t)type orientation:(unsigned int)orientation localIdentifier:(id)identifier requiresConversion:(BOOL)conversion;
 - (id)description;
 @end
 
@@ -78,12 +78,12 @@ LABEL_18:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = self->_resourceType == v5[2] && [(NSString *)self->_localIdentifier isEqualToString:v5[3]]&& self->_requiresConversion == *(v5 + 8);
   }
 
@@ -101,27 +101,27 @@ LABEL_18:
   [v3 appendName:@"resourceType" typeCode:"q" value:&self->_resourceType];
   [v3 appendName:@"localIdentifier" typeCode:"@" value:&self->_localIdentifier];
   [v3 appendName:@"requiresConversion" typeCode:"B" value:&self->_requiresConversion];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (PHPTPAssetHandle)initWithResourceType:(int64_t)a3 orientation:(unsigned int)a4 localIdentifier:(id)a5 requiresConversion:(BOOL)a6
+- (PHPTPAssetHandle)initWithResourceType:(int64_t)type orientation:(unsigned int)orientation localIdentifier:(id)identifier requiresConversion:(BOOL)conversion
 {
-  v10 = a5;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = PHPTPAssetHandle;
   v11 = [(PHPTPAssetHandle *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_resourceType = a3;
-    v13 = [v10 copy];
+    v11->_resourceType = type;
+    v13 = [identifierCopy copy];
     localIdentifier = v12->_localIdentifier;
     v12->_localIdentifier = v13;
 
-    v12->_requiresConversion = a6;
-    v12->_orientation = a4;
+    v12->_requiresConversion = conversion;
+    v12->_orientation = orientation;
   }
 
   return v12;

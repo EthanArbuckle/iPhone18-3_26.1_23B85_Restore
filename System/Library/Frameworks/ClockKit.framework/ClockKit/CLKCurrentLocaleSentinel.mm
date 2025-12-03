@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __34__CLKCurrentLocaleSentinel_shared__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (shared_onceToken != -1)
   {
     dispatch_once(&shared_onceToken, block);
@@ -39,8 +39,8 @@ uint64_t __34__CLKCurrentLocaleSentinel_shared__block_invoke(uint64_t a1)
   v2 = [(CLKCurrentLocaleSentinel *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel__handleLocaleChange name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleLocaleChange name:*MEMORY[0x277CBE620] object:0];
   }
 
   return v2;
@@ -51,8 +51,8 @@ uint64_t __34__CLKCurrentLocaleSentinel_shared__block_invoke(uint64_t a1)
   _CLKUpdateIsLayoutRTL();
   _CLKUpdateLanguageIsTallScript();
   _CLKUpdateNumberSystem();
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"CLKLocaleNumberSystemChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"CLKLocaleNumberSystemChangedNotification" object:0];
 }
 
 @end

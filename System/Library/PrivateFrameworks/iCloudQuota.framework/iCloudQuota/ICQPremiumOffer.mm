@@ -1,27 +1,27 @@
 @interface ICQPremiumOffer
-- (BOOL)_hasFollowupEnabledFromServerDict:(id)a3;
-- (BOOL)getBadgeAppFromServerDict:(id)a3;
-- (ICQPremiumOffer)initWithServerDictionary:(id)a3 accountAltDSID:(id)a4 notificationID:(id)a5 retrievalDate:(id)a6 callbackInterval:(double)a7 appLaunchLink:(id)a8 bundleIdentifier:(id)a9;
-- (id)_ICQOpportunityBubbleSpecificationForServerDict:(id)a3 bundleId:(id)a4;
-- (id)_bundleStorageLevelFromServerDict:(id)a3;
-- (id)_commerceStorageLevelFromServerDict:(id)a3;
-- (id)_parseQuotaInfo:(id)a3;
+- (BOOL)_hasFollowupEnabledFromServerDict:(id)dict;
+- (BOOL)getBadgeAppFromServerDict:(id)dict;
+- (ICQPremiumOffer)initWithServerDictionary:(id)dictionary accountAltDSID:(id)d notificationID:(id)iD retrievalDate:(id)date callbackInterval:(double)interval appLaunchLink:(id)link bundleIdentifier:(id)identifier;
+- (id)_ICQOpportunityBubbleSpecificationForServerDict:(id)dict bundleId:(id)id;
+- (id)_bundleStorageLevelFromServerDict:(id)dict;
+- (id)_commerceStorageLevelFromServerDict:(id)dict;
+- (id)_parseQuotaInfo:(id)info;
 - (id)_serverUIURLFromOfferContents;
 - (id)serverUIURL;
-- (void)shouldShowOpportunityBubbleWithCompletion:(id)a3;
-- (void)shouldShowOpportunityBubbleWithDisplayRuleResult:(BOOL)a3 completion:(id)a4;
+- (void)shouldShowOpportunityBubbleWithCompletion:(id)completion;
+- (void)shouldShowOpportunityBubbleWithDisplayRuleResult:(BOOL)result completion:(id)completion;
 @end
 
 @implementation ICQPremiumOffer
 
-- (ICQPremiumOffer)initWithServerDictionary:(id)a3 accountAltDSID:(id)a4 notificationID:(id)a5 retrievalDate:(id)a6 callbackInterval:(double)a7 appLaunchLink:(id)a8 bundleIdentifier:(id)a9
+- (ICQPremiumOffer)initWithServerDictionary:(id)dictionary accountAltDSID:(id)d notificationID:(id)iD retrievalDate:(id)date callbackInterval:(double)interval appLaunchLink:(id)link bundleIdentifier:(id)identifier
 {
   v31 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a9;
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
   v28.receiver = self;
   v28.super_class = ICQPremiumOffer;
-  v18 = [(ICQOffer *)&v28 initWithServerDictionary:v16 accountAltDSID:a4 notificationID:a5 retrievalDate:a6 callbackInterval:a8 appLaunchLink:v17 bundleIdentifier:a7];
+  v18 = [(ICQOffer *)&v28 initWithServerDictionary:dictionaryCopy accountAltDSID:d notificationID:iD retrievalDate:date callbackInterval:link appLaunchLink:identifierCopy bundleIdentifier:interval];
   v19 = v18;
   if (!v18)
   {
@@ -33,17 +33,17 @@ LABEL_6:
   if ([(ICQOffer *)v18 offerType]== 8)
   {
     v19->_dismissed = 0;
-    [(ICQPremiumOffer *)v19 setIsBadgeApp:[(ICQPremiumOffer *)v19 getBadgeAppFromServerDict:v16]];
-    v20 = [(ICQPremiumOffer *)v19 _ICQOpportunityBubbleSpecificationForServerDict:v16 bundleId:v17];
+    [(ICQPremiumOffer *)v19 setIsBadgeApp:[(ICQPremiumOffer *)v19 getBadgeAppFromServerDict:dictionaryCopy]];
+    v20 = [(ICQPremiumOffer *)v19 _ICQOpportunityBubbleSpecificationForServerDict:dictionaryCopy bundleId:identifierCopy];
     [(ICQPremiumOffer *)v19 setOpportunityBubble:v20];
 
-    v21 = [(ICQPremiumOffer *)v19 _bundleStorageLevelFromServerDict:v16];
+    v21 = [(ICQPremiumOffer *)v19 _bundleStorageLevelFromServerDict:dictionaryCopy];
     [(ICQPremiumOffer *)v19 setBundleQuotaInfo:v21];
 
-    v22 = [(ICQPremiumOffer *)v19 _commerceStorageLevelFromServerDict:v16];
+    v22 = [(ICQPremiumOffer *)v19 _commerceStorageLevelFromServerDict:dictionaryCopy];
     [(ICQPremiumOffer *)v19 setCommerceQuotaInfo:v22];
 
-    [(ICQPremiumOffer *)v19 setShouldStartOnDeviceJourney:[(ICQPremiumOffer *)v19 _hasFollowupEnabledFromServerDict:v16]];
+    [(ICQPremiumOffer *)v19 setShouldStartOnDeviceJourney:[(ICQPremiumOffer *)v19 _hasFollowupEnabledFromServerDict:dictionaryCopy]];
     v23 = _ICQGetLogSystem();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
@@ -59,7 +59,7 @@ LABEL_6:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v30 = v16;
+    v30 = dictionaryCopy;
     _os_log_impl(&dword_275572000, v25, OS_LOG_TYPE_DEFAULT, "Cannot initialize premium offer from server dict due to invalid type: %@", buf, 0xCu);
   }
 
@@ -70,14 +70,14 @@ LABEL_10:
   return v24;
 }
 
-- (BOOL)getBadgeAppFromServerDict:(id)a3
+- (BOOL)getBadgeAppFromServerDict:(id)dict
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [a3 objectForKeyedSubscript:@"badgeApp"];
+  v3 = [dict objectForKeyedSubscript:@"badgeApp"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
@@ -96,17 +96,17 @@ LABEL_10:
       }
     }
 
-    v4 = 0;
+    bOOLValue = 0;
   }
 
   v7 = *MEMORY[0x277D85DE8];
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)_hasFollowupEnabledFromServerDict:(id)a3
+- (BOOL)_hasFollowupEnabledFromServerDict:(id)dict
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [a3 objectForKeyedSubscript:@"followUpEnabled"];
+  v3 = [dict objectForKeyedSubscript:@"followUpEnabled"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -136,23 +136,23 @@ LABEL_10:
   return v4;
 }
 
-- (id)_ICQOpportunityBubbleSpecificationForServerDict:(id)a3 bundleId:(id)a4
+- (id)_ICQOpportunityBubbleSpecificationForServerDict:(id)dict bundleId:(id)id
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:@"opportunityBubble"];
+  dictCopy = dict;
+  idCopy = id;
+  v7 = [dictCopy objectForKeyedSubscript:@"opportunityBubble"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = _ICQServerDictionaryForBundleIdentifier(v7, v6, 0, 0);
+    v8 = _ICQServerDictionaryForBundleIdentifier(v7, idCopy, 0, 0);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v5 objectForKeyedSubscript:@"opportunitySheet"];
+      v9 = [dictCopy objectForKeyedSubscript:@"opportunitySheet"];
       if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v10 = _ICQServerDictionaryForBundleIdentifier(v9, v6, 0, 0);
+        v10 = _ICQServerDictionaryForBundleIdentifier(v9, idCopy, 0, 0);
       }
 
       else
@@ -211,12 +211,12 @@ LABEL_18:
 
 - (id)serverUIURL
 {
-  v3 = [(ICQOffer *)self requestedServerUIURL];
+  requestedServerUIURL = [(ICQOffer *)self requestedServerUIURL];
 
-  if (v3)
+  if (requestedServerUIURL)
   {
-    v4 = [(ICQOffer *)self requestedServerUIURL];
-    if (v4)
+    requestedServerUIURL2 = [(ICQOffer *)self requestedServerUIURL];
+    if (requestedServerUIURL2)
     {
       goto LABEL_9;
     }
@@ -224,12 +224,12 @@ LABEL_18:
 
   else
   {
-    v5 = [(ICQPremiumOffer *)self _serverUIURLFromOfferContents];
+    _serverUIURLFromOfferContents = [(ICQPremiumOffer *)self _serverUIURLFromOfferContents];
 
-    if (v5)
+    if (_serverUIURLFromOfferContents)
     {
-      v4 = [(ICQPremiumOffer *)self _serverUIURLFromOfferContents];
-      if (v4)
+      requestedServerUIURL2 = [(ICQPremiumOffer *)self _serverUIURLFromOfferContents];
+      if (requestedServerUIURL2)
       {
         goto LABEL_9;
       }
@@ -242,45 +242,45 @@ LABEL_18:
     [(ICQPremiumOffer *)v6 serverUIURL];
   }
 
-  v4 = 0;
+  requestedServerUIURL2 = 0;
 LABEL_9:
 
-  return v4;
+  return requestedServerUIURL2;
 }
 
 - (id)_serverUIURLFromOfferContents
 {
-  v3 = [(ICQOffer *)self followupSpecification];
+  followupSpecification = [(ICQOffer *)self followupSpecification];
 
-  if (v3)
+  if (followupSpecification)
   {
-    v4 = [(ICQOffer *)self followupSpecification];
+    followupSpecification2 = [(ICQOffer *)self followupSpecification];
   }
 
   else
   {
-    v5 = [(ICQPremiumOffer *)self opportunityBubble];
+    opportunityBubble = [(ICQPremiumOffer *)self opportunityBubble];
 
-    if (!v5)
+    if (!opportunityBubble)
     {
       goto LABEL_6;
     }
 
-    v4 = [(ICQPremiumOffer *)self opportunityBubble];
+    followupSpecification2 = [(ICQPremiumOffer *)self opportunityBubble];
   }
 
-  v6 = v4;
-  v5 = [v4 serverUIURL];
+  v6 = followupSpecification2;
+  opportunityBubble = [followupSpecification2 serverUIURL];
 
 LABEL_6:
 
-  return v5;
+  return opportunityBubble;
 }
 
-- (id)_bundleStorageLevelFromServerDict:(id)a3
+- (id)_bundleStorageLevelFromServerDict:(id)dict
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKeyedSubscript:@"quotaInfo"];
+  v4 = [dict objectForKeyedSubscript:@"quotaInfo"];
   v5 = [v4 objectForKeyedSubscript:@"bundleQuotaInBytes"];
 
   v6 = [(ICQPremiumOffer *)self _parseQuotaInfo:v5];
@@ -297,10 +297,10 @@ LABEL_6:
   return v6;
 }
 
-- (id)_commerceStorageLevelFromServerDict:(id)a3
+- (id)_commerceStorageLevelFromServerDict:(id)dict
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKeyedSubscript:@"quotaInfo"];
+  v4 = [dict objectForKeyedSubscript:@"quotaInfo"];
   v5 = [v4 objectForKeyedSubscript:@"commerceQuotaInBytes"];
 
   v6 = [(ICQPremiumOffer *)self _parseQuotaInfo:v5];
@@ -317,18 +317,18 @@ LABEL_6:
   return v6;
 }
 
-- (id)_parseQuotaInfo:(id)a3
+- (id)_parseQuotaInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = infoCopy;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v3, "longLongValue")}];
+    v4 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(infoCopy, "longLongValue")}];
   }
 
   v5 = v4;
@@ -336,43 +336,43 @@ LABEL_6:
   return v5;
 }
 
-- (void)shouldShowOpportunityBubbleWithCompletion:(id)a3
+- (void)shouldShowOpportunityBubbleWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICQPremiumOffer *)self opportunityBubble];
-  v6 = [v5 reportingDetails];
+  completionCopy = completion;
+  opportunityBubble = [(ICQPremiumOffer *)self opportunityBubble];
+  reportingDetails = [opportunityBubble reportingDetails];
 
-  if (v6 && [v6 displayRuleType] == 2)
+  if (reportingDetails && [reportingDetails displayRuleType] == 2)
   {
-    -[ICQPremiumOffer shouldShowOpportunityBubbleWithDisplayRuleResult:completion:](self, "shouldShowOpportunityBubbleWithDisplayRuleResult:completion:", [v6 displayRuleServerAlwaysShow], v4);
+    -[ICQPremiumOffer shouldShowOpportunityBubbleWithDisplayRuleResult:completion:](self, "shouldShowOpportunityBubbleWithDisplayRuleResult:completion:", [reportingDetails displayRuleServerAlwaysShow], completionCopy);
   }
 
   else
   {
-    v7 = [(ICQOffer *)self bundleIdentifier];
+    bundleIdentifier = [(ICQOffer *)self bundleIdentifier];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __61__ICQPremiumOffer_shouldShowOpportunityBubbleWithCompletion___block_invoke;
     v8[3] = &unk_27A652DB0;
     v8[4] = self;
-    v9 = v4;
-    [ICQEngagementReporter shouldShowOpportunityBubbleWithBundleID:v7 completion:v8];
+    v9 = completionCopy;
+    [ICQEngagementReporter shouldShowOpportunityBubbleWithBundleID:bundleIdentifier completion:v8];
   }
 }
 
-- (void)shouldShowOpportunityBubbleWithDisplayRuleResult:(BOOL)a3 completion:(id)a4
+- (void)shouldShowOpportunityBubbleWithDisplayRuleResult:(BOOL)result completion:(id)completion
 {
-  v4 = a3;
+  resultCopy = result;
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(ICQPremiumOffer *)self opportunityBubble];
-  v8 = v7 != 0;
+  completionCopy = completion;
+  opportunityBubble = [(ICQPremiumOffer *)self opportunityBubble];
+  v8 = opportunityBubble != 0;
 
   v9 = _ICQGetLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = @"NO";
-    if (v7)
+    if (opportunityBubble)
     {
       v10 = @"YES";
     }
@@ -393,9 +393,9 @@ LABEL_6:
       _os_log_impl(&dword_275572000, v12, OS_LOG_TYPE_DEFAULT, "Using Unified Messaging based on Internal Settings", &v15, 2u);
     }
 
-    if (v7)
+    if (opportunityBubble)
     {
-      v8 = v4;
+      v8 = resultCopy;
     }
 
     else
@@ -413,7 +413,7 @@ LABEL_6:
     }
   }
 
-  v6[2](v6, v8);
+  completionCopy[2](completionCopy, v8);
 
   v14 = *MEMORY[0x277D85DE8];
 }

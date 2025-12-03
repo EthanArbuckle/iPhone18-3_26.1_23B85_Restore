@@ -1,7 +1,7 @@
 @interface MTRElectricalMeasurementClusterGetProfileInfoResponseCommandParams
 - (MTRElectricalMeasurementClusterGetProfileInfoResponseCommandParams)init;
 - (MTRElectricalMeasurementClusterGetProfileInfoResponseCommandParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,9 +24,9 @@
     maxNumberOfIntervals = v3->_maxNumberOfIntervals;
     v3->_maxNumberOfIntervals = &unk_284C40A48;
 
-    v7 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     listOfAttributes = v3->_listOfAttributes;
-    v3->_listOfAttributes = v7;
+    v3->_listOfAttributes = array;
 
     timedInvokeTimeoutMs = v3->_timedInvokeTimeoutMs;
     v3->_timedInvokeTimeoutMs = 0;
@@ -35,23 +35,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRElectricalMeasurementClusterGetProfileInfoResponseCommandParams);
-  v5 = [(MTRElectricalMeasurementClusterGetProfileInfoResponseCommandParams *)self profileCount];
-  [(MTRElectricalMeasurementClusterGetProfileInfoResponseCommandParams *)v4 setProfileCount:v5];
+  profileCount = [(MTRElectricalMeasurementClusterGetProfileInfoResponseCommandParams *)self profileCount];
+  [(MTRElectricalMeasurementClusterGetProfileInfoResponseCommandParams *)v4 setProfileCount:profileCount];
 
-  v6 = [(MTRElectricalMeasurementClusterGetProfileInfoResponseCommandParams *)self profileIntervalPeriod];
-  [(MTRElectricalMeasurementClusterGetProfileInfoResponseCommandParams *)v4 setProfileIntervalPeriod:v6];
+  profileIntervalPeriod = [(MTRElectricalMeasurementClusterGetProfileInfoResponseCommandParams *)self profileIntervalPeriod];
+  [(MTRElectricalMeasurementClusterGetProfileInfoResponseCommandParams *)v4 setProfileIntervalPeriod:profileIntervalPeriod];
 
-  v7 = [(MTRElectricalMeasurementClusterGetProfileInfoResponseCommandParams *)self maxNumberOfIntervals];
-  [(MTRElectricalMeasurementClusterGetProfileInfoResponseCommandParams *)v4 setMaxNumberOfIntervals:v7];
+  maxNumberOfIntervals = [(MTRElectricalMeasurementClusterGetProfileInfoResponseCommandParams *)self maxNumberOfIntervals];
+  [(MTRElectricalMeasurementClusterGetProfileInfoResponseCommandParams *)v4 setMaxNumberOfIntervals:maxNumberOfIntervals];
 
-  v8 = [(MTRElectricalMeasurementClusterGetProfileInfoResponseCommandParams *)self listOfAttributes];
-  [(MTRElectricalMeasurementClusterGetProfileInfoResponseCommandParams *)v4 setListOfAttributes:v8];
+  listOfAttributes = [(MTRElectricalMeasurementClusterGetProfileInfoResponseCommandParams *)self listOfAttributes];
+  [(MTRElectricalMeasurementClusterGetProfileInfoResponseCommandParams *)v4 setListOfAttributes:listOfAttributes];
 
-  v9 = [(MTRElectricalMeasurementClusterGetProfileInfoResponseCommandParams *)self timedInvokeTimeoutMs];
-  [(MTRElectricalMeasurementClusterGetProfileInfoResponseCommandParams *)v4 setTimedInvokeTimeoutMs:v9];
+  timedInvokeTimeoutMs = [(MTRElectricalMeasurementClusterGetProfileInfoResponseCommandParams *)self timedInvokeTimeoutMs];
+  [(MTRElectricalMeasurementClusterGetProfileInfoResponseCommandParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }

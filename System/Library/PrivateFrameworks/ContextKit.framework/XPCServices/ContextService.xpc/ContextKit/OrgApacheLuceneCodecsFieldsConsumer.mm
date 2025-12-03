@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneCodecsFieldsConsumer
-- (void)mergeWithOrgApacheLuceneIndexMergeState:(id)a3;
+- (void)mergeWithOrgApacheLuceneIndexMergeState:(id)state;
 @end
 
 @implementation OrgApacheLuceneCodecsFieldsConsumer
 
-- (void)mergeWithOrgApacheLuceneIndexMergeState:(id)a3
+- (void)mergeWithOrgApacheLuceneIndexMergeState:(id)state
 {
   v5 = new_JavaUtilArrayList_init();
   v6 = new_JavaUtilArrayList_init();
-  if (!a3 || (v7 = *(a3 + 10)) == 0)
+  if (!state || (v7 = *(state + 10)) == 0)
   {
 LABEL_11:
     JreThrowNullPointerException();
@@ -19,7 +19,7 @@ LABEL_11:
   v10 = 0;
   while (v10 < *(v7 + 8))
   {
-    v11 = *(a3 + 12);
+    v11 = *(state + 12);
     if (v11)
     {
       v12 = *(v7 + 24 + 8 * v10);
@@ -37,7 +37,7 @@ LABEL_11:
         [(JavaUtilArrayList *)v5 addWithId:v12];
         v9 += v14;
         ++v10;
-        v7 = *(a3 + 10);
+        v7 = *(state + 10);
         if (v7)
         {
           continue;
@@ -60,7 +60,7 @@ LABEL_11:
   }
 
   v16 = new_OrgApacheLuceneIndexMultiFields_initWithOrgApacheLuceneIndexFieldsArray_withOrgApacheLuceneIndexReaderSliceArray_(v15, [(JavaUtilArrayList *)v8 toArrayWithNSObjectArray:OrgApacheLuceneIndexReaderSlice_EMPTY_ARRAY_]);
-  v17 = new_OrgApacheLuceneIndexMappedMultiFields_initWithOrgApacheLuceneIndexMergeState_withOrgApacheLuceneIndexMultiFields_(a3, v16);
+  v17 = new_OrgApacheLuceneIndexMappedMultiFields_initWithOrgApacheLuceneIndexMergeState_withOrgApacheLuceneIndexMultiFields_(state, v16);
 
   [(OrgApacheLuceneCodecsFieldsConsumer *)self writeWithOrgApacheLuceneIndexFields:v17];
 }

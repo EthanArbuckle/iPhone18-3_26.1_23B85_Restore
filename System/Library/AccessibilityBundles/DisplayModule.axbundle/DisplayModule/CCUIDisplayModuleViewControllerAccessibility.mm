@@ -14,8 +14,8 @@
   v4 = accessibilityLocalizedString(@"brightness.button.label");
   [v3 setAccessibilityLabel:v4];
 
-  v5 = [v3 accessibilityTraits];
-  [v3 setAccessibilityTraits:*MEMORY[0x29EDC7FF0] | v5];
+  accessibilityTraits = [v3 accessibilityTraits];
+  [v3 setAccessibilityTraits:*MEMORY[0x29EDC7FF0] | accessibilityTraits];
 }
 
 - (void)loadView

@@ -1,41 +1,41 @@
 @interface TUIStructBuilder
-- (TUIStructBuilder)initWithClosure:(id)a3 basedOn:(id)a4 context:(id)a5;
+- (TUIStructBuilder)initWithClosure:(id)closure basedOn:(id)on context:(id)context;
 - (id)finalizeStruct;
-- (void)setStructValue:(id)a3 forKey:(id)a4;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)setStructValue:(id)value forKey:(id)key;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation TUIStructBuilder
 
-- (TUIStructBuilder)initWithClosure:(id)a3 basedOn:(id)a4 context:(id)a5
+- (TUIStructBuilder)initWithClosure:(id)closure basedOn:(id)on context:(id)context
 {
-  v9 = a4;
-  v10 = a5;
+  onCopy = on;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = TUIStructBuilder;
   v11 = [(TUIStructBuilder *)&v13 init];
   if (v11)
   {
-    v11->_context = [v10 _context];
-    v11->_closure.index = a3.var0;
-    objc_storeStrong(&v11->_basedOn, a4);
+    v11->_context = [contextCopy _context];
+    v11->_closure.index = closure.var0;
+    objc_storeStrong(&v11->_basedOn, on);
   }
 
   return v11;
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  TUI::Evaluation::Context::resolve(self->_context, a3.var0, v6);
-  TUI::Evaluation::Variables::Scope::define(&self->_scope, a4.var0 << 16, v6);
+  TUI::Evaluation::Context::resolve(self->_context, value.var0, v6);
+  TUI::Evaluation::Variables::Scope::define(&self->_scope, key.var0 << 16, v6);
 }
 
-- (void)setStructValue:(id)a3 forKey:(id)a4
+- (void)setStructValue:(id)value forKey:(id)key
 {
   LODWORD(v8) = 18;
-  v9 = a3;
-  v6 = a4.var0 << 16;
-  v7 = v9;
+  valueCopy = value;
+  v6 = key.var0 << 16;
+  v7 = valueCopy;
   TUI::Evaluation::Variables::Scope::define(&self->_scope, v6, &v8);
 }
 

@@ -1,16 +1,16 @@
 @interface MonthScrollViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation MonthScrollViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MonthScrollViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MonthScrollViewController" hasInstanceVariable:@"_scrollView" withType:"UIScrollView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MonthScrollViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MonthScrollViewController" hasInstanceVariable:@"_scrollView" withType:"UIScrollView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

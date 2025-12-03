@@ -1,17 +1,17 @@
 @interface PXStoryThumbnailImageGenerator
-+ (id)generateImageWithStoryConfiguration:(id)a3 size:(CGSize)a4 displayScale:(double)a5 convertToYUV:(BOOL)a6 storyLoadTimeOut:(double)a7 nonDegradedTimeout:(double)a8;
++ (id)generateImageWithStoryConfiguration:(id)configuration size:(CGSize)size displayScale:(double)scale convertToYUV:(BOOL)v storyLoadTimeOut:(double)out nonDegradedTimeout:(double)timeout;
 - (PXStoryThumbnailImageGenerator)init;
 @end
 
 @implementation PXStoryThumbnailImageGenerator
 
-+ (id)generateImageWithStoryConfiguration:(id)a3 size:(CGSize)a4 displayScale:(double)a5 convertToYUV:(BOOL)a6 storyLoadTimeOut:(double)a7 nonDegradedTimeout:(double)a8
++ (id)generateImageWithStoryConfiguration:(id)configuration size:(CGSize)size displayScale:(double)scale convertToYUV:(BOOL)v storyLoadTimeOut:(double)out nonDegradedTimeout:(double)timeout
 {
-  v10 = a6;
-  height = a4.height;
-  width = a4.width;
-  v14 = a3;
-  v15 = sub_1A44AB934(v14, v10, width, height, a5, a7, a8);
+  vCopy = v;
+  height = size.height;
+  width = size.width;
+  configurationCopy = configuration;
+  v15 = sub_1A44AB934(configurationCopy, vCopy, width, height, scale, out, timeout);
 
   return v15;
 }

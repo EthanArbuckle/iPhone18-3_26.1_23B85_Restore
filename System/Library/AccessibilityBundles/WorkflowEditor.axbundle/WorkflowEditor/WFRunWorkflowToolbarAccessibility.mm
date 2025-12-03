@@ -1,5 +1,5 @@
 @interface WFRunWorkflowToolbarAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 - (void)updateShareButtonVisibility;
@@ -7,13 +7,13 @@
 
 @implementation WFRunWorkflowToolbarAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WFRunWorkflowToolbar" hasInstanceMethod:@"toolbar" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIBarButtonItem" hasInstanceMethod:@"tintColor" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIBarButtonItem" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFRunWorkflowToolbar" hasInstanceMethod:@"shareItem" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WFRunWorkflowToolbar" hasInstanceMethod:@"toolbar" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIBarButtonItem" hasInstanceMethod:@"tintColor" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIBarButtonItem" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFRunWorkflowToolbar" hasInstanceMethod:@"shareItem" withFullSignature:{"@", 0}];
 }
 
 - (void)layoutSubviews
@@ -40,8 +40,8 @@
   v19 = 0u;
   v20 = 0u;
   v16 = v4;
-  v5 = [v4 items];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  items = [v4 items];
+  v6 = [items countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -52,13 +52,13 @@
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(items);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 tintColor];
-        v12 = [MEMORY[0x29EDC7A00] clearColor];
-        v13 = [v11 isEqual:v12];
+        tintColor = [v10 tintColor];
+        clearColor = [MEMORY[0x29EDC7A00] clearColor];
+        v13 = [tintColor isEqual:clearColor];
 
         if (v13)
         {
@@ -67,7 +67,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v23 count:16];
+      v7 = [items countByEnumeratingWithState:&v17 objects:v23 count:16];
     }
 
     while (v7);
@@ -86,8 +86,8 @@
   if (objc_opt_isKindOfClass())
   {
     v4 = [v3 safeValueForKey:@"tintColor"];
-    v5 = [MEMORY[0x29EDC7A00] clearColor];
-    v6 = [v4 isEqual:v5];
+    clearColor = [MEMORY[0x29EDC7A00] clearColor];
+    v6 = [v4 isEqual:clearColor];
 
     if (v6)
     {

@@ -1,9 +1,9 @@
 @interface VNContoursDetector
 + (id)configurationOptionKeysForDetectorKey;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 @end
 
 @implementation VNContoursDetector
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __59__VNContoursDetector_configurationOptionKeysForDetectorKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNContoursDetector configurationOptionKeysForDetectorKey]::onceToken != -1)
   {
     dispatch_once(&+[VNContoursDetector configurationOptionKeysForDetectorKey]::onceToken, block);
@@ -37,38 +37,38 @@ void __59__VNContoursDetector_configurationOptionKeysForDetectorKey__block_invok
   +[VNContoursDetector configurationOptionKeysForDetectorKey]::configurationOptionKeys = v3;
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities allCPUAndGPUComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities allCPUAndGPUComputeDevices:options];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   return v5;
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v18 = a5;
+  optionsCopy = options;
   v17 = [VNValidationUtilities originatingRequestSpecifierInOptions:"originatingRequestSpecifierInOptions:error:" error:?];
   if (v17)
   {
     v20 = 1;
-    if ([VNValidationUtilities getBOOLValue:&v20 forKey:@"VNContourDetectorProcessOption_DetectDarkOnLight" inOptions:v18 withDefaultValue:1 error:a8])
+    if ([VNValidationUtilities getBOOLValue:&v20 forKey:@"VNContourDetectorProcessOption_DetectDarkOnLight" inOptions:optionsCopy withDefaultValue:1 error:error])
     {
       v19 = 1;
-      if ([VNValidationUtilities getBOOLValue:&v19 forKey:@"VNContourDetectorProcessOption_InHierarchy" inOptions:v18 withDefaultValue:1 error:a8])
+      if ([VNValidationUtilities getBOOLValue:&v19 forKey:@"VNContourDetectorProcessOption_InHierarchy" inOptions:optionsCopy withDefaultValue:1 error:error])
       {
-        CVPixelBufferGetWidth(a4);
-        CVPixelBufferGetHeight(a4);
+        CVPixelBufferGetWidth(buffer);
+        CVPixelBufferGetHeight(buffer);
         if (self)
         {
-          pixelBuffer = a4;
-          if (a4)
+          pixelBuffer = buffer;
+          if (buffer)
           {
-            CVPixelBufferRetain(a4);
+            CVPixelBufferRetain(buffer);
             v11 = pixelBuffer;
           }
 
@@ -110,59 +110,59 @@ void __59__VNContoursDetector_configurationOptionKeysForDetectorKey__block_invok
   return 0;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
   v68[1] = *MEMORY[0x1E69E9840];
-  v16 = a4;
-  v17 = [VNValidationUtilities originatingRequestSpecifierInOptions:v16 error:a8];
+  optionsCopy = options;
+  v17 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   if (!v17)
   {
     v26 = 0;
     goto LABEL_11;
   }
 
-  v18 = [(VNDetector *)self validatedImageBufferFromOptions:v16 error:a8];
+  v18 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   v19 = v18;
   if (v18)
   {
-    v20 = [v18 width];
-    v21 = width * v20;
-    v22 = [v19 height];
-    v23 = height * v22;
+    width = [v18 width];
+    v21 = width * width;
+    height = [v19 height];
+    v23 = height * height;
     v60[0] = MEMORY[0x1E69E9820];
     v60[1] = 3221225472;
     v60[2] = __116__VNContoursDetector_createRegionOfInterestCrop_options_qosClass_warningRecorder_pixelBuffer_error_progressHandler___block_invoke;
     v60[3] = &unk_1E77B6810;
     v60[4] = self;
-    if ([VNValidationUtilities validateNonZeroImageWidth:v21 height:v23 componentNameProvidingBlock:v60 error:a8])
+    if ([VNValidationUtilities validateNonZeroImageWidth:v21 height:v23 componentNameProvidingBlock:v60 error:error])
     {
       v59 = 0;
-      if ([VNValidationUtilities getBOOLValue:&v59 forKey:@"VNContourDetectorProcessOption_ForceUseInputCVPixelBufferDirectly" inOptions:v16 withDefaultValue:0 error:a8])
+      if ([VNValidationUtilities getBOOLValue:&v59 forKey:@"VNContourDetectorProcessOption_ForceUseInputCVPixelBufferDirectly" inOptions:optionsCopy withDefaultValue:0 error:error])
       {
         if (v59 == 1)
         {
-          v24 = [v19 originalPixelBuffer];
-          if (v24)
+          originalPixelBuffer = [v19 originalPixelBuffer];
+          if (originalPixelBuffer)
           {
             v25 = 0;
-            *a7 = CVPixelBufferRetain(v24);
+            *buffer = CVPixelBufferRetain(originalPixelBuffer);
 LABEL_26:
-            [(VNDetector *)self recordImageCropQuickLookInfoToOptions:v16 cacheKey:v25 imageBuffer:v19];
+            [(VNDetector *)self recordImageCropQuickLookInfoToOptions:optionsCopy cacheKey:v25 imageBuffer:v19];
             v26 = 1;
 LABEL_31:
 
             goto LABEL_9;
           }
 
-          if (a8)
+          if (error)
           {
             [VNError errorForInternalErrorWithLocalizedDescription:@"VNContourDetector: Original buffer could not be found"];
             v25 = 0;
-            *a8 = v26 = 0;
+            *error = v26 = 0;
             goto LABEL_31;
           }
 
@@ -174,7 +174,7 @@ LABEL_30:
 
         v58 = 0;
         v28 = v19;
-        v29 = v16;
+        v29 = optionsCopy;
         v57 = v28;
         if (!self)
         {
@@ -182,7 +182,7 @@ LABEL_30:
 LABEL_25:
 
           v25 = v58;
-          *a7 = v34;
+          *buffer = v34;
           if (v34)
           {
             goto LABEL_26;
@@ -191,8 +191,8 @@ LABEL_25:
           goto LABEL_30;
         }
 
-        v30 = [objc_opt_class() computeDeviceForComputeStage:@"VNComputeStageMain" configurationOptions:v29 error:a8];
-        if (!v30 || (v66 = 512, ![VNValidationUtilities getNSUIntegerValue:&v66 forKey:@"VNContourDetectorProcessOption_MaximumImageDimension" inOptions:v29 withDefaultValue:512 error:a8]) || (v65 = 2.0, LODWORD(v31) = 2.0, ![VNValidationUtilities getFloatValue:&v65 forKey:@"VNContourDetectorProcessOption_ContrastAdjustment" inOptions:v29 withDefaultValue:a8 error:v31]))
+        v30 = [objc_opt_class() computeDeviceForComputeStage:@"VNComputeStageMain" configurationOptions:v29 error:error];
+        if (!v30 || (v66 = 512, ![VNValidationUtilities getNSUIntegerValue:&v66 forKey:@"VNContourDetectorProcessOption_MaximumImageDimension" inOptions:v29 withDefaultValue:512 error:error]) || (v65 = 2.0, LODWORD(v31) = 2.0, ![VNValidationUtilities getFloatValue:&v65 forKey:@"VNContourDetectorProcessOption_ContrastAdjustment" inOptions:v29 withDefaultValue:error error:v31]))
         {
           v34 = 0;
 LABEL_24:
@@ -207,7 +207,7 @@ LABEL_24:
         }
 
         v33 = fmin(v32, 1.0);
-        v34 = [v28 cropAndScaleBufferWithWidth:vcvtad_u64_f64(v21 * v33) height:vcvtad_u64_f64(v23 * v33) cropRect:1278226488 format:2 imageCropAndScaleOption:v29 options:a8 error:x * v20 calculatedNormalizedOriginOffset:y * v22 calculatedScaleX:v21 calculatedScaleY:v23 pixelBufferRepsCacheKey:{0, 0, 0, &v58}];
+        v34 = [v28 cropAndScaleBufferWithWidth:vcvtad_u64_f64(v21 * v33) height:vcvtad_u64_f64(v23 * v33) cropRect:1278226488 format:2 imageCropAndScaleOption:v29 options:error error:x * width calculatedNormalizedOriginOffset:y * height calculatedScaleX:v21 calculatedScaleY:v23 pixelBufferRepsCacheKey:{0, 0, 0, &v58}];
         if (!v34 || v65 == 1.0)
         {
           goto LABEL_24;
@@ -217,7 +217,7 @@ LABEL_24:
         CVPixelBufferRelease(v34);
         v64 = 0.5;
         LODWORD(v35) = 0.5;
-        if ([VNValidationUtilities getFloatValue:&v64 forKey:@"VNContourDetectorProcessOption_ContrastPivot" inOptions:v29 withDefaultValue:a8 error:v35])
+        if ([VNValidationUtilities getFloatValue:&v64 forKey:@"VNContourDetectorProcessOption_ContrastPivot" inOptions:v29 withDefaultValue:error error:v35])
         {
           *&v36 = v64;
           if (v64 == 0.5)
@@ -239,9 +239,9 @@ LABEL_24:
             v43 = [MEMORY[0x1E696AD98] numberWithFloat:v42];
             [(VNCIContrastFromAverageColorFilter *)self->_ciContrastFromAvgFilter setInputContrast:v43];
 
-            v44 = [(VNCIContrastFromAverageColorFilter *)self->_ciContrastFromAvgFilter outputImage];
+            outputImage = [(VNCIContrastFromAverageColorFilter *)self->_ciContrastFromAvgFilter outputImage];
 
-            v54 = v44;
+            v54 = outputImage;
             [(VNCIFilter *)self->_ciContrastFromAvgFilter setInputImage:0];
           }
 
@@ -256,20 +256,20 @@ LABEL_24:
             v40 = [MEMORY[0x1E696AD98] numberWithFloat:v39];
             [(VNCIContrastWithPivotColorFilter *)self->_ciContrastWithPivotFilter setInputPivot:v40];
 
-            v41 = [(VNCIContrastWithPivotColorFilter *)self->_ciContrastWithPivotFilter outputImage];
+            outputImage2 = [(VNCIContrastWithPivotColorFilter *)self->_ciContrastWithPivotFilter outputImage];
 
-            v54 = v41;
+            v54 = outputImage2;
             [(VNCIFilter *)self->_ciContrastWithPivotFilter setInputImage:0];
           }
 
           if (!v54)
           {
-            if (a8)
+            if (error)
             {
               v49 = [VNError errorForInternalErrorWithLocalizedDescription:@"VNContourDetector: Failed to adjust contrast"];
               v50 = 0;
               v34 = 0;
-              *a8 = v49;
+              *error = v49;
             }
 
             else
@@ -282,7 +282,7 @@ LABEL_24:
           }
 
           [v54 extent];
-          v34 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:v45 height:v46 pixelFormatType:1278226488 error:a8];
+          v34 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:v45 height:v46 pixelFormatType:1278226488 error:error];
           if (v34)
           {
             aBlock[0] = MEMORY[0x1E69E9820];
@@ -293,12 +293,12 @@ LABEL_24:
             v62 = v54;
             v63 = v34;
             v56 = _Block_copy(aBlock);
-            v47 = [VNValidationUtilities requiredSessionInOptions:v29 error:a8];
+            v47 = [VNValidationUtilities requiredSessionInOptions:v29 error:error];
             v48 = v47;
             if (v47)
             {
-              v53 = [v47 vnciContextManager];
-              if (([(VNCIContextManager *)v53 performBlock:v56 usingAvailableContextForComputeDevice:v30 error:a8]& 1) == 0)
+              vnciContextManager = [v47 vnciContextManager];
+              if (([(VNCIContextManager *)vnciContextManager performBlock:v56 usingAvailableContextForComputeDevice:v30 error:error]& 1) == 0)
               {
                 CVPixelBufferRelease(v34);
                 v34 = 0;
@@ -357,12 +357,12 @@ uint64_t __114__VNContoursDetector__highContastMonoCVPixelBufferFromImageBuffer_
   return 1;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
-  v6 = a3;
+  sessionCopy = session;
   v13.receiver = self;
   v13.super_class = VNContoursDetector;
-  if (![(VNDetector *)&v13 completeInitializationForSession:v6 error:a4])
+  if (![(VNDetector *)&v13 completeInitializationForSession:sessionCopy error:error])
   {
     goto LABEL_7;
   }
@@ -377,10 +377,10 @@ uint64_t __114__VNContoursDetector__highContastMonoCVPixelBufferFromImageBuffer_
 
   if (!self->_ciContrastWithPivotFilter || !self->_ciContrastFromAvgFilter)
   {
-    if (a4)
+    if (error)
     {
       [VNError errorForInternalErrorWithLocalizedDescription:@"VNContourDetector: Failed to create image filters"];
-      *a4 = v11 = 0;
+      *error = v11 = 0;
       goto LABEL_8;
     }
 

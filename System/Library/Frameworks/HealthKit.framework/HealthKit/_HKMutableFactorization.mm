@@ -1,13 +1,13 @@
 @interface _HKMutableFactorization
-- (void)divideByFactorization:(id)a3;
+- (void)divideByFactorization:(id)factorization;
 @end
 
 @implementation _HKMutableFactorization
 
-- (void)divideByFactorization:(id)a3
+- (void)divideByFactorization:(id)factorization
 {
-  v4 = [a3 reciprocal];
-  [(_HKFactorization *)self _multiplyByFactorization:v4];
+  reciprocal = [factorization reciprocal];
+  [(_HKFactorization *)self _multiplyByFactorization:reciprocal];
 }
 
 @end

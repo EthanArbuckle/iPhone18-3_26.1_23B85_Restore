@@ -1,26 +1,26 @@
 @interface MacTrackpadBridge
-- (MacTrackpadBridge)initWithService:(unsigned int)a3;
+- (MacTrackpadBridge)initWithService:(unsigned int)service;
 - (void)cancelDisablingDeviceMonitoring;
 - (void)cancelNotificationCenterSource;
 - (void)cancelPowerStateMonitoring;
-- (void)handleCancelEvent:(id)a3;
-- (void)handleHSTEvent:(id)a3;
-- (void)handlePowerState:(unsigned int)a3 messageArgument:(void *)a4;
-- (void)handleSetPropertyEvent:(id)a3;
-- (void)setQueue:(id)a3;
+- (void)handleCancelEvent:(id)event;
+- (void)handleHSTEvent:(id)event;
+- (void)handlePowerState:(unsigned int)state messageArgument:(void *)argument;
+- (void)handleSetPropertyEvent:(id)event;
+- (void)setQueue:(id)queue;
 - (void)startDisablingDeviceMonitoring;
 - (void)startForPowerStateMonitoring;
-- (void)startNotificationCenterMonitoring:(int)a3 queue:(id)a4;
+- (void)startNotificationCenterMonitoring:(int)monitoring queue:(id)queue;
 - (void)updateDisablerDeviceCount;
 @end
 
 @implementation MacTrackpadBridge
 
-- (MacTrackpadBridge)initWithService:(unsigned int)a3
+- (MacTrackpadBridge)initWithService:(unsigned int)service
 {
   v8.receiver = self;
   v8.super_class = MacTrackpadBridge;
-  v3 = [(TrackpadBridge *)&v8 initWithService:*&a3];
+  v3 = [(TrackpadBridge *)&v8 initWithService:*&service];
   v4 = v3;
   if (v3)
   {
@@ -37,13 +37,13 @@
   return v4;
 }
 
-- (void)handleHSTEvent:(id)a3
+- (void)handleHSTEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = eventCopy;
   }
 
   else
@@ -53,21 +53,21 @@
 
   if (v5)
   {
-    [(MacTrackpadBridge *)self handleCancelEvent:v4];
+    [(MacTrackpadBridge *)self handleCancelEvent:eventCopy];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = MacTrackpadBridge;
-    [(PointerBridge *)&v6 handleHSTEvent:v4];
+    [(PointerBridge *)&v6 handleHSTEvent:eventCopy];
   }
 }
 
-- (void)handleSetPropertyEvent:(id)a3
+- (void)handleSetPropertyEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4[5];
+  eventCopy = event;
+  v5 = eventCopy[5];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -79,9 +79,9 @@
     v6 = 0;
   }
 
-  if (*(v4 + 39) < 0 && v4[3] == &dword_1C + 1)
+  if (*(eventCopy + 39) < 0 && eventCopy[3] == &dword_1C + 1)
   {
-    v7 = v4[2];
+    v7 = eventCopy[2];
     v8 = *v7;
     v9 = v7[1];
     v10 = v7[2];
@@ -95,24 +95,24 @@
       v17 = [v6 objectForKeyedSubscript:@"AlwaysGenerateNotificationCenterGesture"];
       if (objc_opt_respondsToSelector())
       {
-        v18 = [v17 BOOLValue];
+        bOOLValue = [v17 BOOLValue];
       }
 
       else
       {
-        v18 = 0;
+        bOOLValue = 0;
       }
 
       v19 = [v6 objectForKeyedSubscript:@"ClientPID"];
       if (objc_opt_respondsToSelector())
       {
-        v20 = [v19 intValue];
-        if (!v18)
+        intValue = [v19 intValue];
+        if (!bOOLValue)
         {
 LABEL_27:
           [(MacTrackpadBridge *)self cancelNotificationCenterSource];
 LABEL_32:
-          v23 = [NSNumber numberWithBool:v18];
+          v23 = [NSNumber numberWithBool:bOOLValue];
           [(PointerBridge *)self updatePreference:@"NotificationCenterActive" to:v23];
 
           goto LABEL_33;
@@ -121,19 +121,19 @@ LABEL_32:
 
       else
       {
-        v20 = 0;
-        if (!v18)
+        intValue = 0;
+        if (!bOOLValue)
         {
           goto LABEL_27;
         }
       }
 
-      v21 = [(PointerBridge *)self queue];
+      queue = [(PointerBridge *)self queue];
 
-      if (v21 && v20)
+      if (queue && intValue)
       {
-        v22 = [(PointerBridge *)self queue];
-        [(MacTrackpadBridge *)self startNotificationCenterMonitoring:v20 queue:v22];
+        queue2 = [(PointerBridge *)self queue];
+        [(MacTrackpadBridge *)self startNotificationCenterMonitoring:intValue queue:queue2];
       }
 
       goto LABEL_32;
@@ -143,32 +143,32 @@ LABEL_32:
 LABEL_33:
   v24.receiver = self;
   v24.super_class = MacTrackpadBridge;
-  [(TrackpadBridge *)&v24 handleSetPropertyEvent:v4];
+  [(TrackpadBridge *)&v24 handleSetPropertyEvent:eventCopy];
 }
 
-- (void)handleCancelEvent:(id)a3
+- (void)handleCancelEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(MacTrackpadBridge *)self cancelDisablingDeviceMonitoring];
   [(MacTrackpadBridge *)self cancelPowerStateMonitoring];
   [(MacTrackpadBridge *)self cancelNotificationCenterSource];
-  [(PointerBridge *)self dispatch:v4];
+  [(PointerBridge *)self dispatch:eventCopy];
 }
 
-- (void)setQueue:(id)a3
+- (void)setQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5.receiver = self;
   v5.super_class = MacTrackpadBridge;
-  [(PointerBridge *)&v5 setQueue:v4];
+  [(PointerBridge *)&v5 setQueue:queueCopy];
   [(MacTrackpadBridge *)self startDisablingDeviceMonitoring];
   [(MacTrackpadBridge *)self startForPowerStateMonitoring];
 }
 
 - (void)startDisablingDeviceMonitoring
 {
-  v3 = [(MacTrackpadBridge *)self hidManager];
-  [v3 cancel];
+  hidManager = [(MacTrackpadBridge *)self hidManager];
+  [hidManager cancel];
 
   v4 = objc_opt_new();
   [(MacTrackpadBridge *)self setHidManager:v4];
@@ -187,32 +187,32 @@ LABEL_33:
   v23[1] = v6;
   v7 = [NSArray arrayWithObjects:v23 count:2];
 
-  v8 = [(MacTrackpadBridge *)self hidManager];
-  v9 = [(PointerBridge *)self queue];
-  [v8 setDispatchQueue:v9];
+  hidManager2 = [(MacTrackpadBridge *)self hidManager];
+  queue = [(PointerBridge *)self queue];
+  [hidManager2 setDispatchQueue:queue];
 
-  v10 = [(MacTrackpadBridge *)self hidManager];
-  [v10 setDeviceMatching:v7];
+  hidManager3 = [(MacTrackpadBridge *)self hidManager];
+  [hidManager3 setDeviceMatching:v7];
 
   objc_initWeak(&location, self);
-  v11 = [(MacTrackpadBridge *)self hidManager];
+  hidManager4 = [(MacTrackpadBridge *)self hidManager];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = __51__MacTrackpadBridge_startDisablingDeviceMonitoring__block_invoke;
   v16[3] = &unk_109178;
   objc_copyWeak(&v17, &location);
-  [v11 setDeviceNotificationHandler:v16];
+  [hidManager4 setDeviceNotificationHandler:v16];
 
-  v12 = [(MacTrackpadBridge *)self hidManager];
-  [v12 activate];
+  hidManager5 = [(MacTrackpadBridge *)self hidManager];
+  [hidManager5 activate];
 
-  v13 = [(PointerBridge *)self queue];
+  queue2 = [(PointerBridge *)self queue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = __51__MacTrackpadBridge_startDisablingDeviceMonitoring__block_invoke_2;
   v14[3] = &unk_1091A0;
   objc_copyWeak(&v15, &location);
-  dispatch_async(v13, v14);
+  dispatch_async(queue2, v14);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&v17);
@@ -264,8 +264,8 @@ void __51__MacTrackpadBridge_startDisablingDeviceMonitoring__block_invoke_2(uint
 
 - (void)cancelDisablingDeviceMonitoring
 {
-  v3 = [(MacTrackpadBridge *)self hidManager];
-  [v3 cancel];
+  hidManager = [(MacTrackpadBridge *)self hidManager];
+  [hidManager cancel];
 
   [(MacTrackpadBridge *)self setHidManager:0];
 }
@@ -279,9 +279,9 @@ void __51__MacTrackpadBridge_startDisablingDeviceMonitoring__block_invoke_2(uint
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = [v3 devices];
+    devices = [v3 devices];
     v5 = 0;
-    v6 = [v4 countByEnumeratingWithState:&v15 objects:v26 count:16];
+    v6 = [devices countByEnumeratingWithState:&v15 objects:v26 count:16];
     if (v6)
     {
       v7 = *v16;
@@ -291,7 +291,7 @@ void __51__MacTrackpadBridge_startDisablingDeviceMonitoring__block_invoke_2(uint
         {
           if (*v16 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(devices);
           }
 
           v9 = *(*(&v15 + 1) + 8 * i);
@@ -319,7 +319,7 @@ void __51__MacTrackpadBridge_startDisablingDeviceMonitoring__block_invoke_2(uint
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v15 objects:v26 count:16];
+        v6 = [devices countByEnumeratingWithState:&v15 objects:v26 count:16];
       }
 
       while (v6);
@@ -349,11 +349,11 @@ void __51__MacTrackpadBridge_startDisablingDeviceMonitoring__block_invoke_2(uint
   [(PointerBridge *)self updatePreference:@"DisablingDeviceCount" to:v12];
 }
 
-- (void)startNotificationCenterMonitoring:(int)a3 queue:(id)a4
+- (void)startNotificationCenterMonitoring:(int)monitoring queue:(id)queue
 {
-  v6 = a4;
+  queueCopy = queue;
   [(MacTrackpadBridge *)self cancelNotificationCenterSource];
-  v7 = dispatch_source_create(&_dispatch_source_type_proc, a3, 0x80000000uLL, v6);
+  v7 = dispatch_source_create(&_dispatch_source_type_proc, monitoring, 0x80000000uLL, queueCopy);
   v8 = *(&self->_powerNotifierObject + 1);
   *(&self->_powerNotifierObject + 1) = v7;
 
@@ -414,8 +414,8 @@ void __61__MacTrackpadBridge_startNotificationCenterMonitoring_queue___block_inv
   if (v3)
   {
     v4 = *(&self->_powerNofifierRootIOKitPort + 1);
-    v6 = [(PointerBridge *)self queue];
-    IONotificationPortSetDispatchQueue(v4, v6);
+    queue = [(PointerBridge *)self queue];
+    IONotificationPortSetDispatchQueue(v4, queue);
   }
 
   else
@@ -457,16 +457,16 @@ void __61__MacTrackpadBridge_startNotificationCenterMonitoring_queue___block_inv
   }
 }
 
-- (void)handlePowerState:(unsigned int)a3 messageArgument:(void *)a4
+- (void)handlePowerState:(unsigned int)state messageArgument:(void *)argument
 {
   [(PointerBridge *)self setSignpostBeginTime:mach_continuous_time()];
   v7 = objc_opt_new();
-  v7[2] = a3;
+  v7[2] = state;
   [(PointerBridge *)self dispatch:v7];
   v8 = v7[2];
   if (v8 == 3758097024 || v8 == 3758097008)
   {
-    v10 = IOAllowPowerChange(*(&self->super._deviceOrientation + 1), a4);
+    v10 = IOAllowPowerChange(*(&self->super._deviceOrientation + 1), argument);
     if (v10)
     {
       v11 = MTLoggingPlugin();

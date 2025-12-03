@@ -1,24 +1,24 @@
 @interface SpeexEndpointer
-- (BOOL)configureWithASBD:(AudioStreamBasicDescription *)a3 andFrameRate:(unsigned int)a4;
-- (BOOL)configureWithSampleRate:(double)a3 andFrameRate:(unsigned int)a4;
+- (BOOL)configureWithASBD:(AudioStreamBasicDescription *)d andFrameRate:(unsigned int)rate;
+- (BOOL)configureWithSampleRate:(double)rate andFrameRate:(unsigned int)frameRate;
 - (SpeexEndpointer)init;
-- (int)getStatus:(float *)a3 count:(unsigned int)a4;
+- (int)getStatus:(float *)status count:(unsigned int)count;
 - (void)dealloc;
 - (void)reset;
-- (void)setEndWaitTime:(double)a3;
-- (void)setEndpointMode:(int)a3;
-- (void)setInterspeechWaitTime:(double)a3;
-- (void)setStartWaitTime:(double)a3;
+- (void)setEndWaitTime:(double)time;
+- (void)setEndpointMode:(int)mode;
+- (void)setInterspeechWaitTime:(double)time;
+- (void)setStartWaitTime:(double)time;
 @end
 
 @implementation SpeexEndpointer
 
-- (void)setEndWaitTime:(double)a3
+- (void)setEndWaitTime:(double)time
 {
   v17 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
-  v5 = fmax(a3, 0.25);
-  if (a3 == -1.0)
+  v5 = fmax(time, 0.25);
+  if (time == -1.0)
   {
     v6 = 10000000.0;
   }
@@ -90,12 +90,12 @@ LABEL_17:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setInterspeechWaitTime:(double)a3
+- (void)setInterspeechWaitTime:(double)time
 {
   v17 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
-  v5 = fmax(a3, 0.25);
-  if (a3 == -1.0)
+  v5 = fmax(time, 0.25);
+  if (time == -1.0)
   {
     v6 = 10000000.0;
   }
@@ -167,12 +167,12 @@ LABEL_17:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setStartWaitTime:(double)a3
+- (void)setStartWaitTime:(double)time
 {
   v17 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
-  v5 = fmax(a3, 0.25);
-  if (a3 == -1.0)
+  v5 = fmax(time, 0.25);
+  if (time == -1.0)
   {
     v6 = 10000000.0;
   }
@@ -244,11 +244,11 @@ LABEL_17:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setEndpointMode:(int)a3
+- (void)setEndpointMode:(int)mode
 {
   v15 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
-  self->mEndpointMode = a3;
+  self->mEndpointMode = mode;
   if (kAVVCScope)
   {
     v6 = *kAVVCScope;
@@ -270,7 +270,7 @@ LABEL_17:
     v11 = 1024;
     v12 = 218;
     v13 = 1024;
-    v14 = a3;
+    modeCopy = mode;
     _os_log_impl(&dword_1BA5AC000, v6, OS_LOG_TYPE_DEBUG, "%25s:%-5d SpeexEndpointer setEndpointMode: %d", &v9, 0x18u);
   }
 
@@ -320,7 +320,7 @@ LABEL_7:
   *(var1 + 6) = 0;
 }
 
-- (BOOL)configureWithASBD:(AudioStreamBasicDescription *)a3 andFrameRate:(unsigned int)a4
+- (BOOL)configureWithASBD:(AudioStreamBasicDescription *)d andFrameRate:(unsigned int)rate
 {
   v17 = *MEMORY[0x1E69E9840];
   if (kAVVCScope)
@@ -348,7 +348,7 @@ LABEL_7:
     QualityDetectorDestroy(var0);
   }
 
-  if (!a4)
+  if (!rate)
   {
     if (kAVVCScope)
     {
@@ -375,15 +375,15 @@ LABEL_7:
   }
 
 LABEL_9:
-  self->mFrameRate = a4;
+  self->mFrameRate = rate;
   mInterspeechWaitTime = self->mInterspeechWaitTime;
-  v9 = (self->mStartWaitTime * a4);
-  v10 = (self->mEndWaitTime * a4);
+  v9 = (self->mStartWaitTime * rate);
+  v10 = (self->mEndWaitTime * rate);
   self->mEndpointMode;
   QualityDetectorCreate();
 }
 
-- (BOOL)configureWithSampleRate:(double)a3 andFrameRate:(unsigned int)a4
+- (BOOL)configureWithSampleRate:(double)rate andFrameRate:(unsigned int)frameRate
 {
   v17 = *MEMORY[0x1E69E9840];
   if (kAVVCScope)
@@ -411,7 +411,7 @@ LABEL_9:
     QualityDetectorDestroy(var0);
   }
 
-  if (!a4)
+  if (!frameRate)
   {
     if (kAVVCScope)
     {
@@ -438,10 +438,10 @@ LABEL_9:
   }
 
 LABEL_9:
-  self->mFrameRate = a4;
+  self->mFrameRate = frameRate;
   mInterspeechWaitTime = self->mInterspeechWaitTime;
-  v9 = (self->mStartWaitTime * a4);
-  v10 = (self->mEndWaitTime * a4);
+  v9 = (self->mStartWaitTime * frameRate);
+  v10 = (self->mEndWaitTime * frameRate);
   self->mEndpointMode;
   QualityDetectorCreate();
 }
@@ -533,7 +533,7 @@ LABEL_9:
   return 0;
 }
 
-- (int)getStatus:(float *)a3 count:(unsigned int)a4
+- (int)getStatus:(float *)status count:(unsigned int)count
 {
   v78 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
@@ -542,17 +542,17 @@ LABEL_9:
     CAVerboseAbort();
   }
 
-  if (a4)
+  if (count)
   {
     v6 = 0;
     v7 = 0;
-    v8 = a4;
+    countCopy = count;
     while (1)
     {
       v9 = 0;
       var1 = impl->var1;
       v11 = 0.0;
-      v12 = fmaxf(a3[v6], 0.0);
+      v12 = fmaxf(status[v6], 0.0);
       v13 = *var1;
       v14 = (*(var1 + 6) + 1) % v13;
       *(var1 + 6) = v14;
@@ -597,7 +597,7 @@ LABEL_9:
           {
             if (os_log_type_enabled(*kAVVCScope, OS_LOG_TYPE_DEBUG))
             {
-              v25 = a3[v6];
+              v25 = status[v6];
               *buf = 136316930;
               v63 = "SpeexEndpointer.mm";
               v64 = 1024;
@@ -605,7 +605,7 @@ LABEL_9:
               v66 = 1024;
               v67 = v6;
               v68 = 1024;
-              v69 = a4;
+              countCopy2 = count;
               v70 = 2048;
               v71 = v25;
               v72 = 2048;
@@ -646,7 +646,7 @@ LABEL_9:
                   v66 = 1024;
                   v67 = v39;
                   v68 = 1024;
-                  v69 = v40;
+                  countCopy2 = v40;
                   _os_log_impl(&dword_1BA5AC000, v38, OS_LOG_TYPE_DEBUG, "%25s:%-5d QualityDetector: Speech Ending; End Counter %u / %u", buf, 0x1Eu);
                 }
               }
@@ -770,7 +770,7 @@ LABEL_103:
                     v66 = 1024;
                     v67 = v34;
                     v68 = 1024;
-                    v69 = v35;
+                    countCopy2 = v35;
                     _os_log_impl(&dword_1BA5AC000, v36, OS_LOG_TYPE_DEBUG, "%25s:%-5d QualityDetector: Active; End Counter %u / %u", buf, 0x1Eu);
                     v34 = *(var0 + 52);
                   }
@@ -926,7 +926,7 @@ LABEL_96:
                     v66 = 1024;
                     v67 = v30;
                     v68 = 1024;
-                    v69 = v50;
+                    countCopy2 = v50;
                     _os_log_impl(&dword_1BA5AC000, v49, OS_LOG_TYPE_DEBUG, "%25s:%-5d QualityDetector: NoSpeech; End Counter %u / %u", buf, 0x1Eu);
                     v30 = *(var0 + 52);
                   }
@@ -1024,7 +1024,7 @@ LABEL_82:
           break;
       }
 
-      if (++v6 == v8)
+      if (++v6 == countCopy)
       {
         goto LABEL_117;
       }

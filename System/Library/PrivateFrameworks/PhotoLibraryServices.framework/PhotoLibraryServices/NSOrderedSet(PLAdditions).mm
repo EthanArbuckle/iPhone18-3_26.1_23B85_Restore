@@ -14,8 +14,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -29,7 +29,7 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         v12 = *(*(&v15 + 1) + 8 * v10);
@@ -46,7 +46,7 @@
       }
 
       while (v7 != v10);
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -71,8 +71,8 @@ LABEL_12:
 - (uint64_t)pl_indexOfObjectIdenticalTo:()PLAdditions
 {
   v4 = a3;
-  v5 = [a1 array];
-  v6 = [v5 indexOfObjectIdenticalTo:v4];
+  array = [self array];
+  v6 = [array indexOfObjectIdenticalTo:v4];
 
   return v6;
 }
@@ -82,13 +82,13 @@ LABEL_12:
   v18 = *MEMORY[0x1E69E9840];
   v2 = [MEMORY[0x1E696AD60] stringWithString:@"{"];
   v3 = objc_autoreleasePoolPush();
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -99,20 +99,20 @@ LABEL_12:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", *(*(&v13 + 1) + 8 * i)];
-        [v4 addObject:v10];
+        [array addObject:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [v4 componentsJoinedByString:{@", "}];
+  v11 = [array componentsJoinedByString:{@", "}];
   [v2 appendString:v11];
 
   objc_autoreleasePoolPop(v3);

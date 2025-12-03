@@ -8,10 +8,10 @@
 {
   if (a3 < 0)
   {
-    [(NSMutableIndexSet(HKDayIndex) *)a2 hk_addDayIndex:a1];
+    [(NSMutableIndexSet(HKDayIndex) *)a2 hk_addDayIndex:self];
   }
 
-  return [a1 addIndex:a3];
+  return [self addIndex:a3];
 }
 
 - (void)hk_addDayIndex:()HKDayIndex .cold.1(uint64_t a1, uint64_t a2)

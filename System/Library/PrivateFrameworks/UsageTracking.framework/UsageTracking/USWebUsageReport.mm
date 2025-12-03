@@ -1,35 +1,35 @@
 @interface USWebUsageReport
-- (USWebUsageReport)initWithCoder:(id)a3;
+- (USWebUsageReport)initWithCoder:(id)coder;
 - (id)description;
-- (void)_usWebUsageReportCommonInitWithDomainIdentifier:(id)a3 webUsageTrusted:(BOOL)a4 totalUsageTime:(double)a5 webUsageByDomain:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (void)_usWebUsageReportCommonInitWithDomainIdentifier:(id)identifier webUsageTrusted:(BOOL)trusted totalUsageTime:(double)time webUsageByDomain:(id)domain;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation USWebUsageReport
 
-- (void)_usWebUsageReportCommonInitWithDomainIdentifier:(id)a3 webUsageTrusted:(BOOL)a4 totalUsageTime:(double)a5 webUsageByDomain:(id)a6
+- (void)_usWebUsageReportCommonInitWithDomainIdentifier:(id)identifier webUsageTrusted:(BOOL)trusted totalUsageTime:(double)time webUsageByDomain:(id)domain
 {
-  v10 = a6;
-  v11 = [a3 copy];
+  domainCopy = domain;
+  v11 = [identifier copy];
   domainIdentifier = self->_domainIdentifier;
   self->_domainIdentifier = v11;
 
-  self->_webUsageTrusted = a4;
-  self->_totalUsageTime = a5;
-  v13 = [v10 copy];
+  self->_webUsageTrusted = trusted;
+  self->_totalUsageTime = time;
+  v13 = [domainCopy copy];
 
   webUsageByDomain = self->_webUsageByDomain;
   self->_webUsageByDomain = v13;
 }
 
-- (USWebUsageReport)initWithCoder:(id)a3
+- (USWebUsageReport)initWithCoder:(id)coder
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DomainIdentifier"];
-  if ([v4 containsValueForKey:@"WebUsageTrusted"])
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DomainIdentifier"];
+  if ([coderCopy containsValueForKey:@"WebUsageTrusted"])
   {
-    v6 = [v4 decodeBoolForKey:@"WebUsageTrusted"];
+    v6 = [coderCopy decodeBoolForKey:@"WebUsageTrusted"];
   }
 
   else
@@ -41,18 +41,18 @@
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = [v7 initWithObjects:{v8, v9, objc_opt_class(), 0}];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"WebUsageByDomain"];
-  v12 = [v4 containsValueForKey:@"TotalUsageTime"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"WebUsageByDomain"];
+  v12 = [coderCopy containsValueForKey:@"TotalUsageTime"];
   v13 = v12;
   if (v5 && v11 && v12)
   {
     v19.receiver = self;
     v19.super_class = USWebUsageReport;
     v14 = [(USWebUsageReport *)&v19 init];
-    [v4 decodeDoubleForKey:@"TotalUsageTime"];
+    [coderCopy decodeDoubleForKey:@"TotalUsageTime"];
     [(USWebUsageReport *)v14 _usWebUsageReportCommonInitWithDomainIdentifier:v5 webUsageTrusted:v6 totalUsageTime:v11 webUsageByDomain:?];
     self = v14;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
@@ -71,23 +71,23 @@
     }
 
     v16 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:4865 userInfo:0];
-    [v4 failWithError:v16];
+    [coderCopy failWithError:v16];
 
-    v15 = 0;
+    selfCopy = 0;
   }
 
   v17 = *MEMORY[0x277D85DE8];
-  return v15;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   domainIdentifier = self->_domainIdentifier;
-  v5 = a3;
-  [v5 encodeObject:domainIdentifier forKey:@"DomainIdentifier"];
-  [v5 encodeBool:self->_webUsageTrusted forKey:@"WebUsageTrusted"];
-  [v5 encodeDouble:@"TotalUsageTime" forKey:self->_totalUsageTime];
-  [v5 encodeObject:self->_webUsageByDomain forKey:@"WebUsageByDomain"];
+  coderCopy = coder;
+  [coderCopy encodeObject:domainIdentifier forKey:@"DomainIdentifier"];
+  [coderCopy encodeBool:self->_webUsageTrusted forKey:@"WebUsageTrusted"];
+  [coderCopy encodeDouble:@"TotalUsageTime" forKey:self->_totalUsageTime];
+  [coderCopy encodeObject:self->_webUsageByDomain forKey:@"WebUsageByDomain"];
 }
 
 - (id)description
@@ -96,16 +96,16 @@
   v17.receiver = self;
   v17.super_class = USWebUsageReport;
   v4 = [(USWebUsageReport *)&v17 description];
-  v5 = [(USWebUsageReport *)self domainIdentifier];
-  v6 = [(USWebUsageReport *)self webUsageTrusted];
+  domainIdentifier = [(USWebUsageReport *)self domainIdentifier];
+  webUsageTrusted = [(USWebUsageReport *)self webUsageTrusted];
   [(USWebUsageReport *)self totalUsageTime];
-  v8 = [v3 stringWithFormat:@"%@, DomainIdentifier: %@, WebUsageTrusted: %d, TotalUsageTime: %f, WebUsage: {", v4, v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"%@, DomainIdentifier: %@, WebUsageTrusted: %d, TotalUsageTime: %f, WebUsage: {", v4, domainIdentifier, webUsageTrusted, v7];
 
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x2020000000;
   v16 = 1;
-  v9 = [(USWebUsageReport *)self webUsageByDomain];
+  webUsageByDomain = [(USWebUsageReport *)self webUsageByDomain];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __31__USWebUsageReport_description__block_invoke;
@@ -113,7 +113,7 @@
   v14 = v15;
   v10 = v8;
   v13 = v10;
-  [v9 enumerateKeysAndObjectsUsingBlock:v12];
+  [webUsageByDomain enumerateKeysAndObjectsUsingBlock:v12];
 
   [v10 appendString:@"}"];
   _Block_object_dispose(v15, 8);

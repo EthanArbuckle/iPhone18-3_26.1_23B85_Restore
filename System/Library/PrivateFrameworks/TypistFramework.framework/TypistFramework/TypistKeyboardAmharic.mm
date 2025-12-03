@@ -1,28 +1,28 @@
 @interface TypistKeyboardAmharic
-- (BOOL)isPopoverCombo:(id)a3 withIndex:(int64_t)a4;
-- (BOOL)isTapKey:(id)a3;
-- (TypistKeyboardAmharic)initWithCoder:(id)a3;
-- (id)decomposeAmharicStrings:(id)a3;
-- (id)generateKeystrokeStream:(id)a3;
-- (id)init:(id)a3 options:(id)a4;
-- (id)setupKeyboardInfo:(id)a3 options:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isPopoverCombo:(id)combo withIndex:(int64_t)index;
+- (BOOL)isTapKey:(id)key;
+- (TypistKeyboardAmharic)initWithCoder:(id)coder;
+- (id)decomposeAmharicStrings:(id)strings;
+- (id)generateKeystrokeStream:(id)stream;
+- (id)init:(id)init options:(id)options;
+- (id)setupKeyboardInfo:(id)info options:(id)options;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TypistKeyboardAmharic
 
-- (id)init:(id)a3 options:(id)a4
+- (id)init:(id)init options:(id)options
 {
   v5.receiver = self;
   v5.super_class = TypistKeyboardAmharic;
-  return [(TypistKeyboard *)&v5 init:a3 options:a4 locale:@"am"];
+  return [(TypistKeyboard *)&v5 init:init options:options locale:@"am"];
 }
 
-- (id)setupKeyboardInfo:(id)a3 options:(id)a4
+- (id)setupKeyboardInfo:(id)info options:(id)options
 {
   v6 = MEMORY[0x277CCA900];
-  v7 = a4;
-  v8 = a3;
+  optionsCopy = options;
+  infoCopy = info;
   v9 = [v6 characterSetWithCharactersInString:@"እኡኢኦ"];
   [(TypistKeyboardAmharic *)self setKeycapAndPopoverVowels:v9];
 
@@ -31,23 +31,23 @@
 
   v13.receiver = self;
   v13.super_class = TypistKeyboardAmharic;
-  v11 = [(TypistKeyboard *)&v13 setupKeyboardInfo:v8 options:v7];
+  v11 = [(TypistKeyboard *)&v13 setupKeyboardInfo:infoCopy options:optionsCopy];
 
   return v11;
 }
 
-- (BOOL)isTapKey:(id)a3
+- (BOOL)isTapKey:(id)key
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [(TypistKeyboard *)self keyPlanes];
-  v6 = [v5 allKeys];
+  keyPlanes = [(TypistKeyboard *)self keyPlanes];
+  allKeys = [keyPlanes allKeys];
 
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v7 = [allKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -58,19 +58,19 @@
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
-        v12 = [(TypistKeyboard *)self keyPlanes];
-        v13 = [v12 objectForKeyedSubscript:v11];
-        v14 = [v13 objectForKeyedSubscript:v4];
+        keyPlanes2 = [(TypistKeyboard *)self keyPlanes];
+        v13 = [keyPlanes2 objectForKeyedSubscript:v11];
+        v14 = [v13 objectForKeyedSubscript:keyCopy];
 
         if (v14)
         {
-          v16 = [(TypistKeyboard *)self keyPlanes];
-          v17 = [v16 objectForKeyedSubscript:v11];
-          v18 = [v17 objectForKeyedSubscript:v4];
+          keyPlanes3 = [(TypistKeyboard *)self keyPlanes];
+          v17 = [keyPlanes3 objectForKeyedSubscript:v11];
+          v18 = [v17 objectForKeyedSubscript:keyCopy];
           v19 = [v18 objectForKeyedSubscript:@"action"];
           v15 = [v19 isEqualToString:@"tap"];
 
@@ -78,7 +78,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v8)
       {
         continue;
@@ -95,20 +95,20 @@ LABEL_11:
   return v15;
 }
 
-- (BOOL)isPopoverCombo:(id)a3 withIndex:(int64_t)a4
+- (BOOL)isPopoverCombo:(id)combo withIndex:(int64_t)index
 {
-  v6 = a3;
-  if (a4 < 1)
+  comboCopy = combo;
+  if (index < 1)
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(TypistKeyboardAmharic *)self keycapAndPopoverVowels];
-    if ([v7 characterIsMember:{objc_msgSend(v6, "characterAtIndex:", a4)}])
+    keycapAndPopoverVowels = [(TypistKeyboardAmharic *)self keycapAndPopoverVowels];
+    if ([keycapAndPopoverVowels characterIsMember:{objc_msgSend(comboCopy, "characterAtIndex:", index)}])
     {
-      v8 = -[TypistKeyboardAmharic isConsonant:](self, "isConsonant:", [v6 characterAtIndex:a4 - 1]);
+      v8 = -[TypistKeyboardAmharic isConsonant:](self, "isConsonant:", [comboCopy characterAtIndex:index - 1]);
     }
 
     else
@@ -120,61 +120,61 @@ LABEL_11:
   return v8;
 }
 
-- (id)decomposeAmharicStrings:(id)a3
+- (id)decomposeAmharicStrings:(id)strings
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCACA8] string];
-  if ([v4 length])
+  stringsCopy = strings;
+  string = [MEMORY[0x277CCACA8] string];
+  if ([stringsCopy length])
   {
     v6 = 0;
     while (1)
     {
-      v7 = [v4 characterAtIndex:v6];
-      if ([(TypistKeyboardAmharic *)self isPopoverCombo:v4 withIndex:v6])
+      v7 = [stringsCopy characterAtIndex:v6];
+      if ([(TypistKeyboardAmharic *)self isPopoverCombo:stringsCopy withIndex:v6])
       {
-        [v5 stringByAppendingFormat:@"%@%C", @"‍", v7];
+        [string stringByAppendingFormat:@"%@%C", @"‍", v7];
       }
 
       else
       {
         if ([(TypistKeyboardAmharic *)self isJoinedConsonantAndVowelCharacter:v7])
         {
-          v8 = [(TypistKeyboardAmharic *)self keycapAndPopoverConstants];
-          v9 = [v8 characterIsMember:v7];
+          keycapAndPopoverConstants = [(TypistKeyboardAmharic *)self keycapAndPopoverConstants];
+          v9 = [keycapAndPopoverConstants characterIsMember:v7];
 
           if ((v9 & 1) == 0)
           {
             v11 = [(TypistKeyboardAmharic *)self decomposeAmharicChar:v7];
-            v10 = [v5 stringByAppendingString:v11];
+            v10 = [string stringByAppendingString:v11];
 
-            v5 = v11;
+            string = v11;
             goto LABEL_9;
           }
         }
 
-        [v5 stringByAppendingFormat:@"%C", v7, v13];
+        [string stringByAppendingFormat:@"%C", v7, v13];
       }
       v10 = ;
 LABEL_9:
 
       ++v6;
-      v5 = v10;
-      if ([v4 length] <= v6)
+      string = v10;
+      if ([stringsCopy length] <= v6)
       {
         goto LABEL_13;
       }
     }
   }
 
-  v10 = v5;
+  v10 = string;
 LABEL_13:
 
   return v10;
 }
 
-- (id)generateKeystrokeStream:(id)a3
+- (id)generateKeystrokeStream:(id)stream
 {
-  v4 = [(TypistKeyboardAmharic *)self decomposeAmharicStrings:a3];
+  v4 = [(TypistKeyboardAmharic *)self decomposeAmharicStrings:stream];
   v7.receiver = self;
   v7.super_class = TypistKeyboardAmharic;
   v5 = [(TypistKeyboard *)&v7 generateKeystrokeStream:v4];
@@ -182,19 +182,19 @@ LABEL_13:
   return v5;
 }
 
-- (TypistKeyboardAmharic)initWithCoder:(id)a3
+- (TypistKeyboardAmharic)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = TypistKeyboardAmharic;
-  v5 = [(TypistKeyboard *)&v11 initWithCoder:v4];
+  v5 = [(TypistKeyboard *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keycapAndPopoverVowels"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keycapAndPopoverVowels"];
     keycapAndPopoverVowels = v5->_keycapAndPopoverVowels;
     v5->_keycapAndPopoverVowels = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keycapAndPopoverConstants"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keycapAndPopoverConstants"];
     keycapAndPopoverConstants = v5->_keycapAndPopoverConstants;
     v5->_keycapAndPopoverConstants = v8;
   }
@@ -202,22 +202,22 @@ LABEL_13:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = TypistKeyboardAmharic;
-  [(TypistKeyboard *)&v7 encodeWithCoder:v4];
+  [(TypistKeyboard *)&v7 encodeWithCoder:coderCopy];
   keycapAndPopoverVowels = self->_keycapAndPopoverVowels;
   if (keycapAndPopoverVowels)
   {
-    [v4 encodeObject:keycapAndPopoverVowels forKey:@"keycapAndPopoverVowels"];
+    [coderCopy encodeObject:keycapAndPopoverVowels forKey:@"keycapAndPopoverVowels"];
   }
 
   keycapAndPopoverConstants = self->_keycapAndPopoverConstants;
   if (keycapAndPopoverConstants)
   {
-    [v4 encodeObject:keycapAndPopoverConstants forKey:@"keycapAndPopoverConstants"];
+    [coderCopy encodeObject:keycapAndPopoverConstants forKey:@"keycapAndPopoverConstants"];
   }
 }
 

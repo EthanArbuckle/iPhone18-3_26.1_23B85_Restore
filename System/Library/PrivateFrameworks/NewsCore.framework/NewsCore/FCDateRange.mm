@@ -1,51 +1,51 @@
 @interface FCDateRange
-+ (FCDateRange)dateRangeWithEarlierDate:(id)a3 laterDate:(id)a4;
-+ (FCDateRange)dateRangeWithStartDate:(id)a3 endDate:(id)a4;
-- (BOOL)containsDate:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (FCDateRange)dateRangeWithEarlierDate:(id)date laterDate:(id)laterDate;
++ (FCDateRange)dateRangeWithStartDate:(id)date endDate:(id)endDate;
+- (BOOL)containsDate:(id)date;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFinite;
 - (BOOL)isFromInfinity;
 - (BOOL)isToInfinity;
-- (BOOL)isWithinTimeInterval:(double)a3 ofDateRange:(id)a4;
-- (BOOL)startsLaterThanDateRange:(id)a3;
+- (BOOL)isWithinTimeInterval:(double)interval ofDateRange:(id)range;
+- (BOOL)startsLaterThanDateRange:(id)range;
 - (FCDateRange)init;
-- (FCDateRange)initWithCoder:(id)a3;
-- (FCDateRange)initWithStartDate:(id)a3 endDate:(id)a4;
-- (FCDateRange)initWithStartDate:(id)a3 timeInterval:(double)a4;
+- (FCDateRange)initWithCoder:(id)coder;
+- (FCDateRange)initWithStartDate:(id)date endDate:(id)endDate;
+- (FCDateRange)initWithStartDate:(id)date timeInterval:(double)interval;
 - (NSDate)earlierDate;
 - (NSDate)laterDate;
 - (double)absoluteTimeInterval;
 - (double)timeInterval;
 - (id)description;
-- (id)intersectionWithDateRange:(id)a3;
-- (id)sliceForDate:(id)a3 withInterval:(double)a4;
-- (id)slicesWithTimeInterval:(double)a3;
+- (id)intersectionWithDateRange:(id)range;
+- (id)sliceForDate:(id)date withInterval:(double)interval;
+- (id)slicesWithTimeInterval:(double)interval;
 - (id)timestampDescription;
-- (int64_t)compare:(id)a3;
-- (int64_t)sliceIndexForDate:(id)a3 withInterval:(double)a4;
+- (int64_t)compare:(id)compare;
+- (int64_t)sliceIndexForDate:(id)date withInterval:(double)interval;
 - (unint64_t)hash;
 - (unint64_t)maxMillisecondsTimeIntervalSince1970;
 - (unint64_t)minMillisecondsTimeIntervalSince1970;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCDateRange
 
 - (NSDate)earlierDate
 {
-  v3 = [(FCDateRange *)self startDate];
-  if (v3 && (v4 = v3, [(FCDateRange *)self endDate], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  startDate = [(FCDateRange *)self startDate];
+  if (startDate && (v4 = startDate, [(FCDateRange *)self endDate], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
-    v6 = [(FCDateRange *)self startDate];
-    v7 = [(FCDateRange *)self endDate];
-    v8 = [v6 earlierDate:v7];
+    startDate2 = [(FCDateRange *)self startDate];
+    endDate = [(FCDateRange *)self endDate];
+    v8 = [startDate2 earlierDate:endDate];
   }
 
   else
   {
-    v9 = [(FCDateRange *)self startDate];
+    startDate3 = [(FCDateRange *)self startDate];
 
-    if (v9)
+    if (startDate3)
     {
       [(FCDateRange *)self startDate];
     }
@@ -62,19 +62,19 @@
 
 - (NSDate)laterDate
 {
-  v3 = [(FCDateRange *)self startDate];
-  if (v3 && (v4 = v3, [(FCDateRange *)self endDate], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  startDate = [(FCDateRange *)self startDate];
+  if (startDate && (v4 = startDate, [(FCDateRange *)self endDate], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
-    v6 = [(FCDateRange *)self startDate];
-    v7 = [(FCDateRange *)self endDate];
-    v8 = [v6 laterDate:v7];
+    startDate2 = [(FCDateRange *)self startDate];
+    endDate = [(FCDateRange *)self endDate];
+    v8 = [startDate2 laterDate:endDate];
   }
 
   else
   {
-    v9 = [(FCDateRange *)self startDate];
+    startDate3 = [(FCDateRange *)self startDate];
 
-    if (v9)
+    if (startDate3)
     {
       [(FCDateRange *)self startDate];
     }
@@ -89,20 +89,20 @@
   return v8;
 }
 
-+ (FCDateRange)dateRangeWithStartDate:(id)a3 endDate:(id)a4
++ (FCDateRange)dateRangeWithStartDate:(id)date endDate:(id)endDate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithStartDate:v7 endDate:v6];
+  endDateCopy = endDate;
+  dateCopy = date;
+  v8 = [[self alloc] initWithStartDate:dateCopy endDate:endDateCopy];
 
   return v8;
 }
 
-+ (FCDateRange)dateRangeWithEarlierDate:(id)a3 laterDate:(id)a4
++ (FCDateRange)dateRangeWithEarlierDate:(id)date laterDate:(id)laterDate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithEarlierDate:v7 laterDate:v6];
+  laterDateCopy = laterDate;
+  dateCopy = date;
+  v8 = [[self alloc] initWithEarlierDate:dateCopy laterDate:laterDateCopy];
 
   return v8;
 }
@@ -133,21 +133,21 @@
   objc_exception_throw(v6);
 }
 
-- (FCDateRange)initWithStartDate:(id)a3 endDate:(id)a4
+- (FCDateRange)initWithStartDate:(id)date endDate:(id)endDate
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v13.receiver = self;
   v13.super_class = FCDateRange;
   v9 = [(FCDateRange *)&v13 init];
   if (v9)
   {
-    if (v7 && v8 && [v7 compare:v8] == -1)
+    if (dateCopy && endDateCopy && [dateCopy compare:endDateCopy] == -1)
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Tried to create a date range with a startDate %@ earlier than the endDate %@", v7, v8];
+        endDateCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Tried to create a date range with a startDate %@ earlier than the endDate %@", dateCopy, endDateCopy];
         *buf = 136315906;
         v15 = "[FCDateRange initWithStartDate:endDate:]";
         v16 = 2080;
@@ -155,7 +155,7 @@
         v18 = 1024;
         v19 = 43;
         v20 = 2114;
-        v21 = v12;
+        v21 = endDateCopy;
         _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
       }
 
@@ -164,8 +164,8 @@
 
     else
     {
-      objc_storeStrong(&v9->_startDate, a3);
-      objc_storeStrong(&v9->_endDate, a4);
+      objc_storeStrong(&v9->_startDate, date);
+      objc_storeStrong(&v9->_endDate, endDate);
     }
   }
 
@@ -173,12 +173,12 @@
   return v9;
 }
 
-- (FCDateRange)initWithStartDate:(id)a3 timeInterval:(double)a4
+- (FCDateRange)initWithStartDate:(id)date timeInterval:(double)interval
 {
-  v5 = fabs(a4);
-  v6 = a3;
-  v7 = [v6 fc_dateBySubtractingTimeInterval:v5];
-  v8 = [(FCDateRange *)self initWithStartDate:v6 endDate:v7];
+  v5 = fabs(interval);
+  dateCopy = date;
+  v7 = [dateCopy fc_dateBySubtractingTimeInterval:v5];
+  v8 = [(FCDateRange *)self initWithStartDate:dateCopy endDate:v7];
 
   return v8;
 }
@@ -198,16 +198,16 @@
 
 - (BOOL)isFromInfinity
 {
-  v2 = [(FCDateRange *)self startDate];
-  v3 = v2 == 0;
+  startDate = [(FCDateRange *)self startDate];
+  v3 = startDate == 0;
 
   return v3;
 }
 
 - (BOOL)isToInfinity
 {
-  v2 = [(FCDateRange *)self endDate];
-  v3 = v2 == 0;
+  endDate = [(FCDateRange *)self endDate];
+  v3 = endDate == 0;
 
   return v3;
 }
@@ -219,9 +219,9 @@
     return 1.79769313e308;
   }
 
-  v3 = [(FCDateRange *)self endDate];
-  v4 = [(FCDateRange *)self startDate];
-  [v3 timeIntervalSinceDate:v4];
+  endDate = [(FCDateRange *)self endDate];
+  startDate = [(FCDateRange *)self startDate];
+  [endDate timeIntervalSinceDate:startDate];
   v6 = v5;
 
   return v6;
@@ -234,9 +234,9 @@
     return 1.79769313e308;
   }
 
-  v3 = [(FCDateRange *)self endDate];
-  v4 = [(FCDateRange *)self startDate];
-  [v3 timeIntervalSinceDate:v4];
+  endDate = [(FCDateRange *)self endDate];
+  startDate = [(FCDateRange *)self startDate];
+  [endDate timeIntervalSinceDate:startDate];
   v6 = fabs(v5);
 
   return v6;
@@ -244,31 +244,31 @@
 
 - (unint64_t)minMillisecondsTimeIntervalSince1970
 {
-  v2 = [(FCDateRange *)self earlierDate];
-  v3 = [v2 fc_millisecondTimeIntervalSince1970];
+  earlierDate = [(FCDateRange *)self earlierDate];
+  fc_millisecondTimeIntervalSince1970 = [earlierDate fc_millisecondTimeIntervalSince1970];
 
-  return v3;
+  return fc_millisecondTimeIntervalSince1970;
 }
 
 - (unint64_t)maxMillisecondsTimeIntervalSince1970
 {
-  v2 = [(FCDateRange *)self laterDate];
-  v3 = [v2 fc_millisecondTimeIntervalSince1970];
+  laterDate = [(FCDateRange *)self laterDate];
+  fc_millisecondTimeIntervalSince1970 = [laterDate fc_millisecondTimeIntervalSince1970];
 
-  return v3;
+  return fc_millisecondTimeIntervalSince1970;
 }
 
-- (BOOL)containsDate:(id)a3
+- (BOOL)containsDate:(id)date
 {
-  v4 = a3;
-  v5 = [(FCDateRange *)self startDate];
+  dateCopy = date;
+  startDate = [(FCDateRange *)self startDate];
 
-  if (v5)
+  if (startDate)
   {
-    v6 = [(FCDateRange *)self startDate];
-    [v6 timeIntervalSince1970];
+    startDate2 = [(FCDateRange *)self startDate];
+    [startDate2 timeIntervalSince1970];
     v8 = v7;
-    [v4 timeIntervalSince1970];
+    [dateCopy timeIntervalSince1970];
     v10 = v9;
 
     if (v8 < v10)
@@ -279,19 +279,19 @@ LABEL_3:
     }
   }
 
-  else if (!v4)
+  else if (!dateCopy)
   {
     goto LABEL_3;
   }
 
-  v12 = [(FCDateRange *)self endDate];
+  endDate = [(FCDateRange *)self endDate];
 
-  if (v12)
+  if (endDate)
   {
-    v13 = [(FCDateRange *)self endDate];
-    [v13 timeIntervalSince1970];
+    endDate2 = [(FCDateRange *)self endDate];
+    [endDate2 timeIntervalSince1970];
     v15 = v14;
-    [v4 timeIntervalSince1970];
+    [dateCopy timeIntervalSince1970];
     v11 = v15 < v16;
   }
 
@@ -305,20 +305,20 @@ LABEL_8:
   return v11;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   v5 = MEMORY[0x1E69E58C0];
-  v6 = [(FCDateRange *)self endDate];
-  v7 = [v4 endDate];
-  LODWORD(v5) = [v5 nf_object:v6 isEqualToObject:v7];
+  endDate = [(FCDateRange *)self endDate];
+  endDate2 = [compareCopy endDate];
+  LODWORD(v5) = [v5 nf_object:endDate isEqualToObject:endDate2];
 
   if (v5)
   {
     v8 = MEMORY[0x1E69E58C0];
-    v9 = [(FCDateRange *)self startDate];
-    v10 = [v4 startDate];
-    LOBYTE(v8) = [v8 nf_object:v9 isEqualToObject:v10];
+    startDate = [(FCDateRange *)self startDate];
+    startDate2 = [compareCopy startDate];
+    LOBYTE(v8) = [v8 nf_object:startDate isEqualToObject:startDate2];
 
     if (v8)
     {
@@ -326,49 +326,49 @@ LABEL_8:
       goto LABEL_16;
     }
 
-    v20 = [(FCDateRange *)self startDate];
-    if (v20)
+    startDate3 = [(FCDateRange *)self startDate];
+    if (startDate3)
     {
-      v21 = v20;
-      v22 = [v4 startDate];
+      v21 = startDate3;
+      startDate4 = [compareCopy startDate];
 
-      if (v22)
+      if (startDate4)
       {
-        v15 = [(FCDateRange *)self startDate];
-        v16 = [v4 startDate];
+        startDate5 = [(FCDateRange *)self startDate];
+        startDate6 = [compareCopy startDate];
         goto LABEL_11;
       }
     }
 
-    v24 = [(FCDateRange *)self startDate];
+    startDate7 = [(FCDateRange *)self startDate];
 
-    v18 = v24 == 0;
+    v18 = startDate7 == 0;
     v19 = 1;
   }
 
   else
   {
-    v12 = [(FCDateRange *)self endDate];
-    if (v12)
+    endDate3 = [(FCDateRange *)self endDate];
+    if (endDate3)
     {
-      v13 = v12;
-      v14 = [v4 endDate];
+      v13 = endDate3;
+      endDate4 = [compareCopy endDate];
 
-      if (v14)
+      if (endDate4)
       {
-        v15 = [(FCDateRange *)self endDate];
-        v16 = [v4 endDate];
+        startDate5 = [(FCDateRange *)self endDate];
+        startDate6 = [compareCopy endDate];
 LABEL_11:
-        v23 = v16;
-        v11 = [v15 compare:v16];
+        v23 = startDate6;
+        v11 = [startDate5 compare:startDate6];
 
         goto LABEL_16;
       }
     }
 
-    v17 = [(FCDateRange *)self endDate];
+    endDate5 = [(FCDateRange *)self endDate];
 
-    v18 = v17 == 0;
+    v18 = endDate5 == 0;
     v19 = -1;
   }
 
@@ -387,16 +387,16 @@ LABEL_16:
   return v11;
 }
 
-- (BOOL)isWithinTimeInterval:(double)a3 ofDateRange:(id)a4
+- (BOOL)isWithinTimeInterval:(double)interval ofDateRange:(id)range
 {
-  v6 = a4;
-  v7 = [(FCDateRange *)self startDate];
-  v8 = [v6 startDate];
-  if ([v7 fc_isWithinTimeInterval:v8 ofDate:a3])
+  rangeCopy = range;
+  startDate = [(FCDateRange *)self startDate];
+  startDate2 = [rangeCopy startDate];
+  if ([startDate fc_isWithinTimeInterval:startDate2 ofDate:interval])
   {
-    v9 = [(FCDateRange *)self endDate];
-    v10 = [v6 endDate];
-    v11 = [v9 fc_isWithinTimeInterval:v10 ofDate:a3];
+    endDate = [(FCDateRange *)self endDate];
+    endDate2 = [rangeCopy endDate];
+    v11 = [endDate fc_isWithinTimeInterval:endDate2 ofDate:interval];
   }
 
   else
@@ -407,23 +407,23 @@ LABEL_16:
   return v11;
 }
 
-- (BOOL)startsLaterThanDateRange:(id)a3
+- (BOOL)startsLaterThanDateRange:(id)range
 {
-  v4 = a3;
-  v5 = [(FCDateRange *)self startDate];
-  v6 = [v4 startDate];
+  rangeCopy = range;
+  startDate = [(FCDateRange *)self startDate];
+  startDate2 = [rangeCopy startDate];
 
-  LOBYTE(v4) = [v5 fc_isLaterThan:v6];
-  return v4;
+  LOBYTE(rangeCopy) = [startDate fc_isLaterThan:startDate2];
+  return rangeCopy;
 }
 
-- (id)slicesWithTimeInterval:(double)a3
+- (id)slicesWithTimeInterval:(double)interval
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __38__FCDateRange_slicesWithTimeInterval___block_invoke;
   v5[3] = &unk_1E7C450A8;
-  *&v5[5] = a3;
+  *&v5[5] = interval;
   v5[4] = self;
   v3 = [MEMORY[0x1E695DEC8] fc_array:v5];
 
@@ -489,38 +489,38 @@ BOOL __38__FCDateRange_slicesWithTimeInterval___block_invoke_2(uint64_t a1)
   return v2 - v3 <= v4 && v3 % v4 <= v2 % v4;
 }
 
-- (id)sliceForDate:(id)a3 withInterval:(double)a4
+- (id)sliceForDate:(id)date withInterval:(double)interval
 {
-  v6 = a3;
-  v7 = [(FCDateRange *)self containsDate:v6];
-  if (a4 <= 0.0 || !v7)
+  dateCopy = date;
+  v7 = [(FCDateRange *)self containsDate:dateCopy];
+  if (interval <= 0.0 || !v7)
   {
     v22 = 0;
   }
 
   else
   {
-    v9 = [(FCDateRange *)self startDate];
-    [v9 timeIntervalSince1970];
+    startDate = [(FCDateRange *)self startDate];
+    [startDate timeIntervalSince1970];
     v11 = v10;
-    [v6 timeIntervalSince1970];
+    [dateCopy timeIntervalSince1970];
     v13 = v11 - v12;
 
-    v14 = vcvtmd_s64_f64(v13 / a4) + 1;
+    v14 = vcvtmd_s64_f64(v13 / interval) + 1;
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __41__FCDateRange_sliceForDate_withInterval___block_invoke;
     v24[3] = &unk_1E7C450D0;
-    v15 = -(floor(v13 / a4) * a4);
+    v15 = -(floor(v13 / interval) * interval);
     v24[4] = self;
     v24[5] = v14;
-    *&v24[6] = a4;
+    *&v24[6] = interval;
     v16 = __41__FCDateRange_sliceForDate_withInterval___block_invoke(v24);
     v17 = [FCDateRange alloc];
-    v18 = [(FCDateRange *)self startDate];
-    v19 = [v18 dateByAddingTimeInterval:v15];
-    v20 = [(FCDateRange *)self startDate];
-    v21 = [v20 dateByAddingTimeInterval:v16];
+    startDate2 = [(FCDateRange *)self startDate];
+    v19 = [startDate2 dateByAddingTimeInterval:v15];
+    startDate3 = [(FCDateRange *)self startDate];
+    v21 = [startDate3 dateByAddingTimeInterval:v16];
     v22 = [(FCDateRange *)v17 initWithStartDate:v19 endDate:v21];
   }
 
@@ -550,84 +550,84 @@ double __41__FCDateRange_sliceForDate_withInterval___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (int64_t)sliceIndexForDate:(id)a3 withInterval:(double)a4
+- (int64_t)sliceIndexForDate:(id)date withInterval:(double)interval
 {
-  v6 = a3;
-  v7 = [(FCDateRange *)self containsDate:v6];
-  if (a4 <= 0.0 || !v7)
+  dateCopy = date;
+  v7 = [(FCDateRange *)self containsDate:dateCopy];
+  if (interval <= 0.0 || !v7)
   {
     v13 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v9 = [(FCDateRange *)self startDate];
-    [v9 timeIntervalSince1970];
+    startDate = [(FCDateRange *)self startDate];
+    [startDate timeIntervalSince1970];
     v11 = v10;
-    [v6 timeIntervalSince1970];
-    v13 = vcvtmd_s64_f64((v11 - v12) / a4);
+    [dateCopy timeIntervalSince1970];
+    v13 = vcvtmd_s64_f64((v11 - v12) / interval);
   }
 
   return v13;
 }
 
-- (id)intersectionWithDateRange:(id)a3
+- (id)intersectionWithDateRange:(id)range
 {
-  v4 = a3;
-  if (-[FCDateRange isFromInfinity](self, "isFromInfinity") && ([v4 isFromInfinity] & 1) != 0)
+  rangeCopy = range;
+  if (-[FCDateRange isFromInfinity](self, "isFromInfinity") && ([rangeCopy isFromInfinity] & 1) != 0)
   {
-    v5 = 0;
+    startDate = 0;
   }
 
   else if ([(FCDateRange *)self isFromInfinity])
   {
-    v5 = [v4 startDate];
+    startDate = [rangeCopy startDate];
   }
 
   else
   {
-    v6 = [v4 isFromInfinity];
-    v5 = [(FCDateRange *)self startDate];
-    if ((v6 & 1) == 0)
+    isFromInfinity = [rangeCopy isFromInfinity];
+    startDate = [(FCDateRange *)self startDate];
+    if ((isFromInfinity & 1) == 0)
     {
-      v7 = [v4 startDate];
-      v8 = [v5 earlierDate:v7];
+      startDate2 = [rangeCopy startDate];
+      v8 = [startDate earlierDate:startDate2];
 
-      v5 = v8;
+      startDate = v8;
     }
   }
 
-  if (-[FCDateRange isToInfinity](self, "isToInfinity") && ([v4 isToInfinity] & 1) != 0)
+  if (-[FCDateRange isToInfinity](self, "isToInfinity") && ([rangeCopy isToInfinity] & 1) != 0)
   {
-    v9 = 0;
+    endDate = 0;
   }
 
   else if ([(FCDateRange *)self isToInfinity])
   {
-    v9 = [v4 endDate];
+    endDate = [rangeCopy endDate];
   }
 
   else
   {
-    v10 = [v4 isToInfinity];
-    v9 = [(FCDateRange *)self endDate];
-    if ((v10 & 1) == 0)
+    isToInfinity = [rangeCopy isToInfinity];
+    endDate = [(FCDateRange *)self endDate];
+    if ((isToInfinity & 1) == 0)
     {
-      v11 = [v4 endDate];
-      v12 = [v9 laterDate:v11];
+      endDate2 = [rangeCopy endDate];
+      v12 = [endDate laterDate:endDate2];
 
-      v9 = v12;
+      endDate = v12;
     }
   }
 
-  if ([v9 fc_isLaterThan:v5])
+  if ([endDate fc_isLaterThan:startDate])
   {
-    v13 = v5;
+    v13 = startDate;
 
-    v9 = v13;
+    endDate = v13;
   }
 
-  v14 = [FCDateRange dateRangeWithStartDate:v5 endDate:v9];
+  v14 = [FCDateRange dateRangeWithStartDate:startDate endDate:endDate];
 
   return v14;
 }
@@ -643,38 +643,38 @@ double __41__FCDateRange_sliceForDate_withInterval___block_invoke(uint64_t a1)
   {
     v3 = MEMORY[0x1E696AEC0];
     v4 = _MergedGlobals_191;
-    v5 = [(FCDateRange *)self startDate];
-    v6 = [v4 stringFromDate:v5];
+    startDate = [(FCDateRange *)self startDate];
+    v6 = [v4 stringFromDate:startDate];
     v7 = _MergedGlobals_191;
-    v8 = [(FCDateRange *)self endDate];
-    v9 = [v7 stringFromDate:v8];
+    endDate = [(FCDateRange *)self endDate];
+    v9 = [v7 stringFromDate:endDate];
     v10 = [v3 stringWithFormat:@"<%@ to %@>", v6, v9];
 
 LABEL_10:
     goto LABEL_11;
   }
 
-  v11 = [(FCDateRange *)self startDate];
+  startDate2 = [(FCDateRange *)self startDate];
 
-  if (v11)
+  if (startDate2)
   {
     v12 = MEMORY[0x1E696AEC0];
     v13 = _MergedGlobals_191;
-    v5 = [(FCDateRange *)self startDate];
-    v6 = [v13 stringFromDate:v5];
+    startDate = [(FCDateRange *)self startDate];
+    v6 = [v13 stringFromDate:startDate];
     [v12 stringWithFormat:@"<Infinite from %@>", v6];
     v10 = LABEL_9:;
     goto LABEL_10;
   }
 
-  v14 = [(FCDateRange *)self endDate];
+  endDate2 = [(FCDateRange *)self endDate];
 
-  if (v14)
+  if (endDate2)
   {
     v15 = MEMORY[0x1E696AEC0];
     v16 = _MergedGlobals_191;
-    v5 = [(FCDateRange *)self endDate];
-    v6 = [v16 stringFromDate:v5];
+    startDate = [(FCDateRange *)self endDate];
+    v6 = [v16 stringFromDate:startDate];
     [v15 stringWithFormat:@"<Infinite to %@>", v6];
     goto LABEL_9;
   }
@@ -698,33 +698,33 @@ uint64_t __26__FCDateRange_description__block_invoke()
 
 - (id)timestampDescription
 {
-  v3 = [(FCDateRange *)self startDate];
-  v4 = v3;
-  if (v3)
+  startDate = [(FCDateRange *)self startDate];
+  v4 = startDate;
+  if (startDate)
   {
-    v5 = v3;
+    distantPast = startDate;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
   }
 
-  v6 = v5;
+  v6 = distantPast;
 
-  v7 = [(FCDateRange *)self endDate];
-  v8 = v7;
-  if (v7)
+  endDate = [(FCDateRange *)self endDate];
+  v8 = endDate;
+  if (endDate)
   {
-    v9 = v7;
+    distantFuture = endDate;
   }
 
   else
   {
-    v9 = [MEMORY[0x1E695DF00] distantFuture];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
   }
 
-  v10 = v9;
+  v10 = distantFuture;
 
   [v6 timeIntervalSince1970];
   v12 = (v11 * 1000.0);
@@ -736,31 +736,31 @@ uint64_t __26__FCDateRange_description__block_invoke()
 
 - (unint64_t)hash
 {
-  v3 = [(FCDateRange *)self startDate];
-  v4 = [v3 hash];
-  v5 = [(FCDateRange *)self endDate];
-  v6 = [v5 hash];
+  startDate = [(FCDateRange *)self startDate];
+  v4 = [startDate hash];
+  endDate = [(FCDateRange *)self endDate];
+  v6 = [endDate hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(FCDateRange *)self startDate];
-  v6 = [v4 startDate];
-  if (v5 | v6 && ![v5 isEqualToDate:v6])
+  equalCopy = equal;
+  startDate = [(FCDateRange *)self startDate];
+  startDate2 = [equalCopy startDate];
+  if (startDate | startDate2 && ![startDate isEqualToDate:startDate2])
   {
     v9 = 0;
   }
 
   else
   {
-    v7 = [(FCDateRange *)self endDate];
-    v8 = [v4 endDate];
-    if (v7 | v8)
+    endDate = [(FCDateRange *)self endDate];
+    endDate2 = [equalCopy endDate];
+    if (endDate | endDate2)
     {
-      v9 = [v7 isEqualToDate:v8];
+      v9 = [endDate isEqualToDate:endDate2];
     }
 
     else
@@ -772,12 +772,12 @@ uint64_t __26__FCDateRange_description__block_invoke()
   return v9;
 }
 
-- (FCDateRange)initWithCoder:(id)a3
+- (FCDateRange)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"startDate"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"startDate"])
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
   }
 
   else
@@ -785,9 +785,9 @@ uint64_t __26__FCDateRange_description__block_invoke()
     v5 = 0;
   }
 
-  if ([v4 containsValueForKey:@"endDate"])
+  if ([coderCopy containsValueForKey:@"endDate"])
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
   }
 
   else
@@ -800,23 +800,23 @@ uint64_t __26__FCDateRange_description__block_invoke()
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(FCDateRange *)self startDate];
+  coderCopy = coder;
+  startDate = [(FCDateRange *)self startDate];
 
-  if (v4)
+  if (startDate)
   {
-    v5 = [(FCDateRange *)self startDate];
-    [v8 encodeObject:v5 forKey:@"startDate"];
+    startDate2 = [(FCDateRange *)self startDate];
+    [coderCopy encodeObject:startDate2 forKey:@"startDate"];
   }
 
-  v6 = [(FCDateRange *)self endDate];
+  endDate = [(FCDateRange *)self endDate];
 
-  if (v6)
+  if (endDate)
   {
-    v7 = [(FCDateRange *)self endDate];
-    [v8 encodeObject:v7 forKey:@"endDate"];
+    endDate2 = [(FCDateRange *)self endDate];
+    [coderCopy encodeObject:endDate2 forKey:@"endDate"];
   }
 }
 

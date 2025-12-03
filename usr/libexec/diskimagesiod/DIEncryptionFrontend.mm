@@ -1,52 +1,52 @@
 @interface DIEncryptionFrontend
-- (BOOL)GUIAskForPassphraseWithPassphraseUsage:(int64_t)a3 error:(id *)a4;
-- (BOOL)addPassphraseEntryWithXpcHandler:(id)a3 flags:(unint64_t)a4 usage:(int64_t)a5 error:(id *)a6;
-- (BOOL)askPermissionWithRememberPassword:(BOOL *)a3 error:(id *)a4;
-- (BOOL)checkAuthEntriesWithHasPassphraseEntry:(BOOL *)a3 hasPublicKeyEntry:(BOOL *)a4 error:(id *)a5;
-- (BOOL)consoleAskForPassphraseWithUseStdin:(BOOL)a3 usage:(int64_t)a4 error:(id *)a5;
-- (BOOL)keychainUnlockWithError:(id *)a3;
-- (BOOL)keychainUnlockWithIsSystemKeychain:(BOOL)a3 error:(id *)a4;
-- (BOOL)setPassphrase:(const char *)a3 error:(id *)a4;
-- (BOOL)storeInKeychainWithPassphrase:(id)a3 forceSystemKeychain:(BOOL)a4 error:(id *)a5;
-- (BOOL)unlockUsingPublicKeyWithError:(id *)a3;
-- (BOOL)unlockUsingSaksWithError:(id *)a3;
-- (BOOL)unlockUsingSymmetricKeyWithError:(id *)a3;
-- (BOOL)unlockWithPassphrase:(const char *)a3 error:(id *)a4;
-- (BOOL)unlockWithXpcHandler:(id)a3 error:(id *)a4;
-- (BOOL)updateDiskImageParamsWithFrontend:(id)a3 error:(id *)a4;
-- (BOOL)validateDeserializationWithError:(id *)a3;
-- (DIEncryptionFrontend)initWithCoder:(id)a3;
-- (DIEncryptionFrontend)initWithParams:(id)a3;
+- (BOOL)GUIAskForPassphraseWithPassphraseUsage:(int64_t)usage error:(id *)error;
+- (BOOL)addPassphraseEntryWithXpcHandler:(id)handler flags:(unint64_t)flags usage:(int64_t)usage error:(id *)error;
+- (BOOL)askPermissionWithRememberPassword:(BOOL *)password error:(id *)error;
+- (BOOL)checkAuthEntriesWithHasPassphraseEntry:(BOOL *)entry hasPublicKeyEntry:(BOOL *)keyEntry error:(id *)error;
+- (BOOL)consoleAskForPassphraseWithUseStdin:(BOOL)stdin usage:(int64_t)usage error:(id *)error;
+- (BOOL)keychainUnlockWithError:(id *)error;
+- (BOOL)keychainUnlockWithIsSystemKeychain:(BOOL)keychain error:(id *)error;
+- (BOOL)setPassphrase:(const char *)passphrase error:(id *)error;
+- (BOOL)storeInKeychainWithPassphrase:(id)passphrase forceSystemKeychain:(BOOL)keychain error:(id *)error;
+- (BOOL)unlockUsingPublicKeyWithError:(id *)error;
+- (BOOL)unlockUsingSaksWithError:(id *)error;
+- (BOOL)unlockUsingSymmetricKeyWithError:(id *)error;
+- (BOOL)unlockWithPassphrase:(const char *)passphrase error:(id *)error;
+- (BOOL)unlockWithXpcHandler:(id)handler error:(id *)error;
+- (BOOL)updateDiskImageParamsWithFrontend:(id)frontend error:(id *)error;
+- (BOOL)validateDeserializationWithError:(id *)error;
+- (DIEncryptionFrontend)initWithCoder:(id)coder;
+- (DIEncryptionFrontend)initWithParams:(id)params;
 - (NSString)CLIPassphrasePromptCreate;
 - (NSString)CLIPassphrasePromptUnlock;
 - (NSString)GUIPassphrasePromptCreate;
 - (NSString)GUIPassphrasePromptUnlock;
 - (expected<crypto::crypto_serializer_t,)getSerializerWithAuthTable:(DIEncryptionFrontend *)self;
 - (id).cxx_construct;
-- (id)getCertificateWithCertificatePath:(id)a3 error:(id *)a4;
-- (id)getCertificateWithPublicKey:(id)a3 error:(id *)a4;
+- (id)getCertificateWithCertificatePath:(id)path error:(id *)error;
+- (id)getCertificateWithPublicKey:(id)key error:(id *)error;
 - (unint64_t)flags;
-- (void)encodeWithCoder:(id)a3;
-- (void)generateAuthTableWithError:(id *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)generateAuthTableWithError:(id *)error;
 @end
 
 @implementation DIEncryptionFrontend
 
-- (DIEncryptionFrontend)initWithParams:(id)a3
+- (DIEncryptionFrontend)initWithParams:(id)params
 {
-  v5 = a3;
+  paramsCopy = params;
   v11.receiver = self;
   v11.super_class = DIEncryptionFrontend;
   v6 = [(DIEncryptionFrontend *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_diParams, a3);
+    objc_storeStrong(&v6->_diParams, params);
     if ([(DIEncryptionFrontend *)v7 validateDeserializationWithError:0])
     {
-      v8 = [v5 encryptionUUID];
+      encryptionUUID = [paramsCopy encryptionUUID];
       encryptionUUID = v7->_encryptionUUID;
-      v7->_encryptionUUID = v8;
+      v7->_encryptionUUID = encryptionUUID;
     }
   }
 
@@ -55,48 +55,48 @@
 
 - (NSString)GUIPassphrasePromptCreate
 {
-  v2 = [(DIEncryptionFrontend *)self diParams];
-  v3 = [v2 inputURL];
-  v4 = [v3 lastPathComponent];
-  v5 = [NSString stringWithFormat:@"Enter a new password to secure “%@”", v4];
+  diParams = [(DIEncryptionFrontend *)self diParams];
+  inputURL = [diParams inputURL];
+  lastPathComponent = [inputURL lastPathComponent];
+  v5 = [NSString stringWithFormat:@"Enter a new password to secure “%@”", lastPathComponent];
 
   return v5;
 }
 
 - (NSString)GUIPassphrasePromptUnlock
 {
-  v2 = [(DIEncryptionFrontend *)self diParams];
-  v3 = [v2 inputURL];
-  v4 = [v3 lastPathComponent];
-  v5 = [NSString stringWithFormat:@"Enter password to access “%@”", v4];
+  diParams = [(DIEncryptionFrontend *)self diParams];
+  inputURL = [diParams inputURL];
+  lastPathComponent = [inputURL lastPathComponent];
+  v5 = [NSString stringWithFormat:@"Enter password to access “%@”", lastPathComponent];
 
   return v5;
 }
 
 - (NSString)CLIPassphrasePromptCreate
 {
-  v2 = [(DIEncryptionFrontend *)self diParams];
-  v3 = [v2 inputURL];
-  v4 = [v3 lastPathComponent];
-  v5 = [NSString stringWithFormat:@"Enter a new password to secure “%@”: ", v4];
+  diParams = [(DIEncryptionFrontend *)self diParams];
+  inputURL = [diParams inputURL];
+  lastPathComponent = [inputURL lastPathComponent];
+  v5 = [NSString stringWithFormat:@"Enter a new password to secure “%@”: ", lastPathComponent];
 
   return v5;
 }
 
 - (NSString)CLIPassphrasePromptUnlock
 {
-  v2 = [(DIEncryptionFrontend *)self diParams];
-  v3 = [v2 inputURL];
-  v4 = [v3 lastPathComponent];
-  v5 = [NSString stringWithFormat:@"Enter password to access “%@”: ", v4];
+  diParams = [(DIEncryptionFrontend *)self diParams];
+  inputURL = [diParams inputURL];
+  lastPathComponent = [inputURL lastPathComponent];
+  v5 = [NSString stringWithFormat:@"Enter password to access “%@”: ", lastPathComponent];
 
   return v5;
 }
 
 - (unint64_t)flags
 {
-  v2 = [(DIEncryptionFrontend *)self diParams];
-  v3 = [v2 readPassphraseFlags];
+  diParams = [(DIEncryptionFrontend *)self diParams];
+  readPassphraseFlags = [diParams readPassphraseFlags];
 
   v4 = isatty(0);
   v5 = 2;
@@ -105,13 +105,13 @@
     v5 = 8;
   }
 
-  v6 = v3 & 0xFFFFFFFFFFFFFFF5;
+  v6 = readPassphraseFlags & 0xFFFFFFFFFFFFFFF5;
   if (v4)
   {
-    v6 = v3;
+    v6 = readPassphraseFlags;
   }
 
-  if ((v3 & 8) != 0)
+  if ((readPassphraseFlags & 8) != 0)
   {
     v7 = v5;
   }
@@ -132,25 +132,25 @@
   }
 }
 
-- (id)getCertificateWithCertificatePath:(id)a3 error:(id *)a4
+- (id)getCertificateWithCertificatePath:(id)path error:(id *)error
 {
-  v5 = [NSData dataWithContentsOfFile:a3];
+  v5 = [NSData dataWithContentsOfFile:path];
   if (!v5)
   {
-    v5 = [DIError nilWithPOSIXCode:*__error() description:@"Failed to read from certificate file " error:a4];
+    v5 = [DIError nilWithPOSIXCode:*__error() description:@"Failed to read from certificate file " error:error];
   }
 
   return v5;
 }
 
-- (id)getCertificateWithPublicKey:(id)a3 error:(id *)a4
+- (id)getCertificateWithPublicKey:(id)key error:(id *)error
 {
-  v5 = a3;
+  keyCopy = key;
   v11 = 0;
   v12[0] = kSecClass;
   v12[1] = kSecAttrPublicKeyHash;
   v13[0] = kSecClassCertificate;
-  v13[1] = v5;
+  v13[1] = keyCopy;
   v12[2] = kSecReturnData;
   v13[2] = &__kCFBooleanTrue;
   v6 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:3];
@@ -159,7 +159,7 @@
   v8 = SecItemCopyMatching(v7, &v11);
   if (v8)
   {
-    v9 = [DIError nilWithOSStatus:v8 verboseInfo:@"Failed to find keychain item using hashed key" error:a4];
+    v9 = [DIError nilWithOSStatus:v8 verboseInfo:@"Failed to find keychain item using hashed key" error:error];
   }
 
   else
@@ -170,9 +170,9 @@
   return v9;
 }
 
-- (BOOL)consoleAskForPassphraseWithUseStdin:(BOOL)a3 usage:(int64_t)a4 error:(id *)a5
+- (BOOL)consoleAskForPassphraseWithUseStdin:(BOOL)stdin usage:(int64_t)usage error:(id *)error
 {
-  v7 = a3;
+  stdinCopy = stdin;
   v9 = *__error();
   if (sub_1000E95F0())
   {
@@ -205,12 +205,12 @@
   }
 
   *__error() = v9;
-  if (a4)
+  if (usage)
   {
-    v13 = [(DIEncryptionFrontend *)self CLIPassphrasePromptCreate];
-    v14 = v13;
-    v15 = [v13 UTF8String];
-    if (v7)
+    cLIPassphrasePromptCreate = [(DIEncryptionFrontend *)self CLIPassphrasePromptCreate];
+    v14 = cLIPassphrasePromptCreate;
+    uTF8String = [cLIPassphrasePromptCreate UTF8String];
+    if (stdinCopy)
     {
       v16 = 32;
     }
@@ -223,10 +223,10 @@
 
   else
   {
-    v13 = [(DIEncryptionFrontend *)self CLIPassphrasePromptUnlock];
-    v17 = v13;
-    v15 = [v13 UTF8String];
-    if (v7)
+    cLIPassphrasePromptCreate = [(DIEncryptionFrontend *)self CLIPassphrasePromptUnlock];
+    v17 = cLIPassphrasePromptCreate;
+    uTF8String = [cLIPassphrasePromptCreate UTF8String];
+    if (stdinCopy)
     {
       v16 = 32;
     }
@@ -237,59 +237,59 @@
     }
   }
 
-  v18 = readpassphrase(v15, __s1, 0x102uLL, v16);
+  v18 = readpassphrase(uTF8String, __s1, 0x102uLL, v16);
 
   if (v18)
   {
-    if (!a4)
+    if (!usage)
     {
       goto LABEL_21;
     }
 
-    if (v7)
+    if (stdinCopy)
     {
       goto LABEL_21;
     }
 
-    v19 = [(DIEncryptionFrontend *)self CLIVerifyPassphrasePromptCreate];
-    v20 = v19 == 0;
+    cLIVerifyPassphrasePromptCreate = [(DIEncryptionFrontend *)self CLIVerifyPassphrasePromptCreate];
+    v20 = cLIVerifyPassphrasePromptCreate == 0;
 
     if (v20)
     {
       goto LABEL_21;
     }
 
-    v21 = [(DIEncryptionFrontend *)self CLIVerifyPassphrasePromptCreate];
-    v22 = v21;
-    v23 = readpassphrase([v21 UTF8String], buf, 0x102uLL, 2);
+    cLIVerifyPassphrasePromptCreate2 = [(DIEncryptionFrontend *)self CLIVerifyPassphrasePromptCreate];
+    v22 = cLIVerifyPassphrasePromptCreate2;
+    v23 = readpassphrase([cLIVerifyPassphrasePromptCreate2 UTF8String], buf, 0x102uLL, 2);
 
     if (!v23)
     {
-      return [DIError failWithPOSIXCode:5 verboseInfo:@"Failed to read passphrase" error:a5];
+      return [DIError failWithPOSIXCode:5 verboseInfo:@"Failed to read passphrase" error:error];
     }
 
     if (!strncmp(__s1, buf, 0x101uLL))
     {
 LABEL_21:
-      if (a4 == 1)
+      if (usage == 1)
       {
-        return [(DIEncryptionFrontend *)self setPassphrase:__s1 error:a5];
+        return [(DIEncryptionFrontend *)self setPassphrase:__s1 error:error];
       }
 
-      if (a4)
+      if (usage)
       {
-        return [DIError failWithPOSIXCode:80 verboseInfo:@"Failed to use the passphrase that was given" error:a5];
+        return [DIError failWithPOSIXCode:80 verboseInfo:@"Failed to use the passphrase that was given" error:error];
       }
 
-      return [(DIEncryptionFrontend *)self unlockWithPassphrase:__s1 error:a5];
+      return [(DIEncryptionFrontend *)self unlockWithPassphrase:__s1 error:error];
     }
 
-    return [DIError failWithPOSIXCode:80 verboseInfo:@"Passphrases doesn't match" error:a5];
+    return [DIError failWithPOSIXCode:80 verboseInfo:@"Passphrases doesn't match" error:error];
   }
 
-  if (v7)
+  if (stdinCopy)
   {
-    return [DIError failWithPOSIXCode:25 verboseInfo:@"Failed to read passphrase from stdin" error:a5];
+    return [DIError failWithPOSIXCode:25 verboseInfo:@"Failed to read passphrase from stdin" error:error];
   }
 
   v25 = *__error();
@@ -325,34 +325,34 @@ LABEL_21:
 
   *__error() = v25;
   v29 = [NSError errorWithDomain:NSPOSIXErrorDomain code:25 userInfo:0];
-  v30 = [DIError failWithInError:v29 outError:a5];
+  v30 = [DIError failWithInError:v29 outError:error];
 
   return v30;
 }
 
-- (BOOL)storeInKeychainWithPassphrase:(id)a3 forceSystemKeychain:(BOOL)a4 error:(id *)a5
+- (BOOL)storeInKeychainWithPassphrase:(id)passphrase forceSystemKeychain:(BOOL)keychain error:(id *)error
 {
-  v8 = a3;
-  v9 = [(DIEncryptionFrontend *)self diParams];
-  v10 = [v9 inputURL];
-  v11 = [v10 path];
-  v12 = [v11 lastPathComponent];
+  passphraseCopy = passphrase;
+  diParams = [(DIEncryptionFrontend *)self diParams];
+  inputURL = [diParams inputURL];
+  path = [inputURL path];
+  lastPathComponent = [path lastPathComponent];
 
-  v13 = [v8 UTF8String];
-  if (v13 && *v13)
+  uTF8String = [passphraseCopy UTF8String];
+  if (uTF8String && *uTF8String)
   {
-    v14 = [[NSData alloc] initWithBytes:v13 length:strlen(v13)];
+    v14 = [[NSData alloc] initWithBytes:uTF8String length:strlen(uTF8String)];
     v36[0] = kSecClassGenericPassword;
     v35[0] = kSecClass;
     v35[1] = kSecAttrAccount;
-    v15 = [(DIEncryptionFrontend *)self encryptionUUID];
-    v16 = [v15 UUIDString];
-    v36[1] = v16;
+    encryptionUUID = [(DIEncryptionFrontend *)self encryptionUUID];
+    uUIDString = [encryptionUUID UUIDString];
+    v36[1] = uUIDString;
     v36[2] = @"disk image password";
     v35[2] = kSecAttrDescription;
     v35[3] = kSecAttrLabel;
-    v36[3] = v12;
-    v36[4] = v12;
+    v36[3] = lastPathComponent;
+    v36[4] = lastPathComponent;
     v35[4] = kSecAttrService;
     v35[5] = kSecAttrSynchronizable;
     v35[6] = kSecValueData;
@@ -362,12 +362,12 @@ LABEL_21:
     v18 = [NSMutableDictionary dictionaryWithDictionary:v17];
 
     v28 = 0;
-    if (a4)
+    if (keychain)
     {
       goto LABEL_28;
     }
 
-    if (![(DIEncryptionFrontend *)self checkWithHasIcloudKeychain:&v28 error:a5])
+    if (![(DIEncryptionFrontend *)self checkWithHasIcloudKeychain:&v28 error:error])
     {
 LABEL_14:
       v19 = 0;
@@ -379,7 +379,7 @@ LABEL_24:
     if ((v28 & 1) == 0)
     {
 LABEL_28:
-      if (![DIEncryptionFrontend updateSystemKeychainAttrWithDict:v18 isStoring:1 error:a5])
+      if (![DIEncryptionFrontend updateSystemKeychainAttrWithDict:v18 isStoring:1 error:error])
       {
         goto LABEL_14;
       }
@@ -440,7 +440,7 @@ LABEL_28:
     v26 = SecItemAdd(v18, 0);
     if (v26)
     {
-      v19 = [DIError failWithOSStatus:v26 description:@"Failed to store the passphrase in the keychain" error:a5];
+      v19 = [DIError failWithOSStatus:v26 description:@"Failed to store the passphrase in the keychain" error:error];
     }
 
     else
@@ -451,13 +451,13 @@ LABEL_28:
     goto LABEL_24;
   }
 
-  v19 = [DIError failWithEnumValue:154 verboseInfo:@"Cannot store an empty passphrase" error:a5];
+  v19 = [DIError failWithEnumValue:154 verboseInfo:@"Cannot store an empty passphrase" error:error];
 LABEL_25:
 
   return v19;
 }
 
-- (BOOL)askPermissionWithRememberPassword:(BOOL *)a3 error:(id *)a4
+- (BOOL)askPermissionWithRememberPassword:(BOOL *)password error:(id *)error
 {
   if (![(DIEncryptionFrontend *)self allowStoringInKeychain])
   {
@@ -512,7 +512,7 @@ LABEL_25:
   if (!v11)
   {
     v15 = [NSString stringWithFormat:@"CFUserNotificationCreate failed, error code %d", error[0]];
-    v14 = [DIError failWithEnumValue:154 verboseInfo:v15 error:a4];
+    v14 = [DIError failWithEnumValue:154 verboseInfo:v15 error:error];
 
     return v14;
   }
@@ -524,59 +524,59 @@ LABEL_25:
     {
       if (*buf)
       {
-        v13 = [DIError failWithPOSIXCode:89 description:@"The operation was cancelled by the user" error:a4];
+        v13 = [DIError failWithPOSIXCode:89 description:@"The operation was cancelled by the user" error:error];
         goto LABEL_11;
       }
 
-      *a3 = 1;
+      *password = 1;
     }
 
     return 1;
   }
 
-  v13 = [DIError failWithEnumValue:154 verboseInfo:@"CFUserNotificationReceiveResponse failed" error:a4];
+  v13 = [DIError failWithEnumValue:154 verboseInfo:@"CFUserNotificationReceiveResponse failed" error:error];
 LABEL_11:
   v14 = v13;
 
   return v14;
 }
 
-- (BOOL)GUIAskForPassphraseWithPassphraseUsage:(int64_t)a3 error:(id *)a4
+- (BOOL)GUIAskForPassphraseWithPassphraseUsage:(int64_t)usage error:(id *)error
 {
   error = 0;
-  if (a3)
+  if (usage)
   {
-    v7 = [(DIEncryptionFrontend *)self GUIPassphraseLabelCreate];
-    v8 = [NSMutableArray arrayWithObject:v7];
+    gUIPassphraseLabelCreate = [(DIEncryptionFrontend *)self GUIPassphraseLabelCreate];
+    v8 = [NSMutableArray arrayWithObject:gUIPassphraseLabelCreate];
 
-    v9 = [(DIEncryptionFrontend *)self GUIVerifyPassphraseLabelCreate];
+    gUIVerifyPassphraseLabelCreate = [(DIEncryptionFrontend *)self GUIVerifyPassphraseLabelCreate];
     v10 = 65539;
-    v11 = v9 != 0;
+    v11 = gUIVerifyPassphraseLabelCreate != 0;
 
-    if (v9)
+    if (gUIVerifyPassphraseLabelCreate)
     {
-      v12 = [(DIEncryptionFrontend *)self GUIVerifyPassphraseLabelCreate];
-      [v8 addObject:v12];
+      gUIVerifyPassphraseLabelCreate2 = [(DIEncryptionFrontend *)self GUIVerifyPassphraseLabelCreate];
+      [v8 addObject:gUIVerifyPassphraseLabelCreate2];
 
       v10 = 196611;
     }
 
     v31[0] = kCFUserNotificationAlertHeaderKey;
-    v13 = [(DIEncryptionFrontend *)self GUIPassphrasePromptCreate];
+    gUIPassphrasePromptCreate = [(DIEncryptionFrontend *)self GUIPassphrasePromptCreate];
   }
 
   else
   {
-    v14 = [(DIEncryptionFrontend *)self GUIPassphraseLabelUnlock];
-    v8 = [NSMutableArray arrayWithObject:v14];
+    gUIPassphraseLabelUnlock = [(DIEncryptionFrontend *)self GUIPassphraseLabelUnlock];
+    v8 = [NSMutableArray arrayWithObject:gUIPassphraseLabelUnlock];
 
     v31[0] = kCFUserNotificationAlertHeaderKey;
-    v13 = [(DIEncryptionFrontend *)self GUIPassphrasePromptUnlock];
+    gUIPassphrasePromptCreate = [(DIEncryptionFrontend *)self GUIPassphrasePromptUnlock];
     v11 = 0;
     v10 = 65539;
   }
 
-  v32[0] = v13;
+  v32[0] = gUIPassphrasePromptCreate;
   v32[1] = @"OK";
   v31[1] = kCFUserNotificationDefaultButtonTitleKey;
   v31[2] = kCFUserNotificationAlternateButtonTitleKey;
@@ -590,8 +590,8 @@ LABEL_11:
   v18 = v17;
   if (!v17)
   {
-    v20 = [NSString stringWithFormat:@"CFUserNotificationCreate failed, error code %d", error];
-    v19 = [DIError failWithEnumValue:154 verboseInfo:v20 error:a4];
+    error = [NSString stringWithFormat:@"CFUserNotificationCreate failed, error code %d", error];
+    v19 = [DIError failWithEnumValue:154 verboseInfo:error error:error];
 
     goto LABEL_14;
   }
@@ -603,7 +603,7 @@ LABEL_11:
     if ((responseFlags & 3) != 0)
     {
       v21 = 0;
-      v22 = [DIError failWithPOSIXCode:89 description:@"The operation was cancelled by the user" error:a4];
+      v22 = [DIError failWithPOSIXCode:89 description:@"The operation was cancelled by the user" error:error];
     }
 
     else
@@ -614,31 +614,31 @@ LABEL_11:
         v24 = CFUserNotificationGetResponseValue(v18, kCFUserNotificationTextFieldValuesKey, 1);
         if (![v21 isEqualToString:v24])
         {
-          v19 = [DIError failWithPOSIXCode:80 description:@"Passwords don’t match" error:a4];
+          v19 = [DIError failWithPOSIXCode:80 description:@"Passwords don’t match" error:error];
 
           goto LABEL_13;
         }
       }
 
-      if (a3 == 1)
+      if (usage == 1)
       {
         v27 = v21;
-        v26 = -[DIEncryptionFrontend setPassphrase:error:](self, "setPassphrase:error:", [v21 UTF8String], a4);
+        v26 = -[DIEncryptionFrontend setPassphrase:error:](self, "setPassphrase:error:", [v21 UTF8String], error);
       }
 
       else
       {
-        if (a3)
+        if (usage)
         {
-          v22 = [DIError failWithPOSIXCode:80 verboseInfo:@"Failed to use the passphrase that was given" error:a4];
+          v22 = [DIError failWithPOSIXCode:80 verboseInfo:@"Failed to use the passphrase that was given" error:error];
           goto LABEL_12;
         }
 
         v25 = v21;
-        v26 = -[DIEncryptionFrontend unlockWithPassphrase:error:](self, "unlockWithPassphrase:error:", [v21 UTF8String], a4);
+        v26 = -[DIEncryptionFrontend unlockWithPassphrase:error:](self, "unlockWithPassphrase:error:", [v21 UTF8String], error);
       }
 
-      if ((v26 & 1) == 0 || ![(DIEncryptionFrontend *)self askPermissionWithRememberPassword:&v28 error:a4])
+      if ((v26 & 1) == 0 || ![(DIEncryptionFrontend *)self askPermissionWithRememberPassword:&v28 error:error])
       {
         v19 = 0;
         goto LABEL_13;
@@ -650,7 +650,7 @@ LABEL_11:
         goto LABEL_13;
       }
 
-      v22 = [(DIEncryptionFrontend *)self storeInKeychainWithPassphrase:v21 forceSystemKeychain:0 error:a4];
+      v22 = [(DIEncryptionFrontend *)self storeInKeychainWithPassphrase:v21 forceSystemKeychain:0 error:error];
     }
 
 LABEL_12:
@@ -660,74 +660,74 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v19 = [DIError failWithEnumValue:154 verboseInfo:@"CFUserNotificationReceiveResponse failed" error:a4];
+  v19 = [DIError failWithEnumValue:154 verboseInfo:@"CFUserNotificationReceiveResponse failed" error:error];
 LABEL_14:
 
   return v19;
 }
 
-- (BOOL)updateDiskImageParamsWithFrontend:(id)a3 error:(id *)a4
+- (BOOL)updateDiskImageParamsWithFrontend:(id)frontend error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 validateDeserializationWithError:a4];
+  frontendCopy = frontend;
+  v7 = [frontendCopy validateDeserializationWithError:error];
   if (v7)
   {
-    v8 = [v6 diParams];
-    v9 = [v8 diskImageParamsXPC];
-    v10 = [(DIEncryptionFrontend *)self diParams];
-    [v10 setDiskImageParamsXPC:v9];
+    diParams = [frontendCopy diParams];
+    diskImageParamsXPC = [diParams diskImageParamsXPC];
+    diParams2 = [(DIEncryptionFrontend *)self diParams];
+    [diParams2 setDiskImageParamsXPC:diskImageParamsXPC];
 
-    -[DIEncryptionFrontend setAllowStoringInKeychain:](self, "setAllowStoringInKeychain:", [v6 allowStoringInKeychain]);
+    -[DIEncryptionFrontend setAllowStoringInKeychain:](self, "setAllowStoringInKeychain:", [frontendCopy allowStoringInKeychain]);
   }
 
   return v7;
 }
 
-- (DIEncryptionFrontend)initWithCoder:(id)a3
+- (DIEncryptionFrontend)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"diParams"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"diParams"];
   v6 = [(DIEncryptionFrontend *)self initWithParams:v5];
   if (v6)
   {
-    v6->_allowStoringInKeychain = [v4 decodeBoolForKey:@"allowStoringInKeychain"];
+    v6->_allowStoringInKeychain = [coderCopy decodeBoolForKey:@"allowStoringInKeychain"];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(DIEncryptionFrontend *)self diParams];
-  [v5 encodeObject:v4 forKey:@"diParams"];
+  coderCopy = coder;
+  diParams = [(DIEncryptionFrontend *)self diParams];
+  [coderCopy encodeObject:diParams forKey:@"diParams"];
 
-  [v5 encodeBool:-[DIEncryptionFrontend allowStoringInKeychain](self forKey:{"allowStoringInKeychain"), @"allowStoringInKeychain"}];
+  [coderCopy encodeBool:-[DIEncryptionFrontend allowStoringInKeychain](self forKey:{"allowStoringInKeychain"), @"allowStoringInKeychain"}];
 }
 
-- (BOOL)validateDeserializationWithError:(id *)a3
+- (BOOL)validateDeserializationWithError:(id *)error
 {
-  v4 = [(DIEncryptionFrontend *)self diParams];
-  LOBYTE(a3) = [v4 validateDeserializationWithError:a3];
+  diParams = [(DIEncryptionFrontend *)self diParams];
+  LOBYTE(error) = [diParams validateDeserializationWithError:error];
 
-  return a3;
+  return error;
 }
 
-- (void)generateAuthTableWithError:(id *)a3
+- (void)generateAuthTableWithError:(id *)error
 {
   p_auth_table = &self->auth_table;
   if (!self->auth_table.__engaged_)
   {
-    v5 = [(DIEncryptionFrontend *)self diParams];
-    v6 = [v5 diskImageParamsXPC];
-    v7 = [v6 backendXPC];
+    diParams = [(DIEncryptionFrontend *)self diParams];
+    diskImageParamsXPC = [diParams diskImageParamsXPC];
+    backendXPC = [diskImageParamsXPC backendXPC];
 
-    if (v7)
+    if (backendXPC)
     {
-      [v7 getCryptoHeaderBackend];
+      [backendXPC getCryptoHeaderBackend];
       if (v12)
       {
-        [v7 cryptoHeader];
+        [backendXPC cryptoHeader];
         sub_100180B50();
       }
     }
@@ -739,7 +739,7 @@ LABEL_14:
       v12 = 0;
     }
 
-    v8 = [DIError nilWithUnexpected:v10 verboseInfo:v11 error:@"Failed to open crypto header", a3];
+    error = [DIError nilWithUnexpected:v10 verboseInfo:v11 error:@"Failed to open crypto header", error];
     p_auth_table = 0;
     if (v12 == 1 && v11)
     {
@@ -752,13 +752,13 @@ LABEL_14:
 
 - (expected<crypto::crypto_serializer_t,)getSerializerWithAuthTable:(DIEncryptionFrontend *)self
 {
-  v7 = [(DIEncryptionFrontend *)self diParams];
-  v8 = [v7 diskImageParamsXPC];
-  v9 = [v8 backendXPC];
-  v10 = v9;
-  if (v9)
+  diParams = [(DIEncryptionFrontend *)self diParams];
+  diskImageParamsXPC = [diParams diskImageParamsXPC];
+  backendXPC = [diskImageParamsXPC backendXPC];
+  v10 = backendXPC;
+  if (backendXPC)
   {
-    [v9 getCryptoHeaderBackend];
+    [backendXPC getCryptoHeaderBackend];
   }
 
   else
@@ -769,11 +769,11 @@ LABEL_14:
 
   if (v21)
   {
-    v12 = [(DIEncryptionFrontend *)self diParams];
-    v13 = v12;
-    if (v12)
+    diParams2 = [(DIEncryptionFrontend *)self diParams];
+    v13 = diParams2;
+    if (diParams2)
     {
-      [v12 backend];
+      [diParams2 backend];
     }
 
     else
@@ -826,14 +826,14 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)unlockWithPassphrase:(const char *)a3 error:(id *)a4
+- (BOOL)unlockWithPassphrase:(const char *)passphrase error:(id *)error
 {
-  v7 = [(DIEncryptionFrontend *)self diParams];
-  v8 = [v7 diskImageParamsXPC];
+  diParams = [(DIEncryptionFrontend *)self diParams];
+  diskImageParamsXPC = [diParams diskImageParamsXPC];
 
-  v20 = v8;
-  v9 = [v8 backendXPC];
-  v10 = [(DIEncryptionFrontend *)self generateAuthTableWithError:a4];
+  v20 = diskImageParamsXPC;
+  backendXPC = [diskImageParamsXPC backendXPC];
+  v10 = [(DIEncryptionFrontend *)self generateAuthTableWithError:error];
   v11 = v10;
   if (v10)
   {
@@ -847,7 +847,7 @@ LABEL_14:
     {
 LABEL_20:
       sleep(2u);
-      v4 = [v13 + 478 failWithPOSIXCode:80 description:@"Incorrect passphrase" error:a4];
+      error = [v13 + 478 failWithPOSIXCode:80 description:@"Incorrect passphrase" error:error];
     }
 
     else
@@ -857,10 +857,10 @@ LABEL_20:
         v14 = sub_10003AA38(&v28);
         if (!*(v14 + 632))
         {
-          v15 = sub_100178AF0(v14, a3, &v21);
+          v15 = sub_100178AF0(v14, passphrase, &v21);
           if (v23 == 1)
           {
-            [v9 cryptoHeader];
+            [backendXPC cryptoHeader];
             sub_100040704();
           }
 
@@ -874,7 +874,7 @@ LABEL_20:
 
           else
           {
-            v4 = [DIError failWithUnexpected:v21 error:v22, a4];
+            error = [DIError failWithUnexpected:v21 error:v22, error];
             v17 = 0;
           }
 
@@ -917,15 +917,15 @@ LABEL_20:
 
   else
   {
-    v4 = 0;
+    error = 0;
   }
 
-  return v4 & 1;
+  return error & 1;
 }
 
-- (BOOL)setPassphrase:(const char *)a3 error:(id *)a4
+- (BOOL)setPassphrase:(const char *)passphrase error:(id *)error
 {
-  v7 = [(DIEncryptionFrontend *)self generateAuthTableWithError:a4];
+  v7 = [(DIEncryptionFrontend *)self generateAuthTableWithError:error];
   if (!v7)
   {
     LOBYTE(v10) = 0;
@@ -937,7 +937,7 @@ LABEL_20:
   if (v18)
   {
     LODWORD(v22) = 8;
-    sub_100178394(v8, a3, &v22, v17, &v26);
+    sub_100178394(v8, passphrase, &v22, v17, &v26);
     if (v28)
     {
       (*(v17[0] + 1))(v15, v17, &v27 + 4);
@@ -956,7 +956,7 @@ LABEL_20:
         }
 
         v11 = v25;
-        if (v25 & 1) != 0 || (LOBYTE(v10) = [DIError failWithUnexpected:v22 verboseInfo:v23 error:@"Failed to add passphrase entry to auth table", a4], (v25))
+        if (v25 & 1) != 0 || (LOBYTE(v10) = [DIError failWithUnexpected:v22 verboseInfo:v23 error:@"Failed to add passphrase entry to auth table", error], (v25))
         {
           if (v24[640] == 1)
           {
@@ -969,7 +969,7 @@ LABEL_20:
             v12 = v24[0];
             if ((v24[0] & 1) == 0)
             {
-              LOBYTE(v10) = [DIError failWithUnexpected:v22 verboseInfo:v23 error:@"Failed to update crypto header", a4];
+              LOBYTE(v10) = [DIError failWithUnexpected:v22 verboseInfo:v23 error:@"Failed to update crypto header", error];
             }
 
             LOBYTE(v10) = v12 | v10;
@@ -979,7 +979,7 @@ LABEL_20:
 
       else
       {
-        LOBYTE(v10) = [DIError failWithUnexpected:*&v15[0] verboseInfo:*(&v15[0] + 1) error:@"Failed to serialize passphrase to crypto header", a4];
+        LOBYTE(v10) = [DIError failWithUnexpected:*&v15[0] verboseInfo:*(&v15[0] + 1) error:@"Failed to serialize passphrase to crypto header", error];
       }
 
       if (v16 == 1)
@@ -990,15 +990,15 @@ LABEL_20:
       goto LABEL_19;
     }
 
-    v13 = [DIError failWithUnexpected:v26 verboseInfo:v27 error:@"Failed to create passphrase auth entry", a4];
+    error = [DIError failWithUnexpected:v26 verboseInfo:v27 error:@"Failed to create passphrase auth entry", error];
   }
 
   else
   {
-    v13 = [DIError failWithUnexpected:v17[0] verboseInfo:v17[1] error:@"Failed to create crypto serializer", a4];
+    error = [DIError failWithUnexpected:v17[0] verboseInfo:v17[1] error:@"Failed to create crypto serializer", error];
   }
 
-  LOBYTE(v10) = v13;
+  LOBYTE(v10) = error;
 LABEL_19:
   if (v18 == 1)
   {
@@ -1008,20 +1008,20 @@ LABEL_19:
   return v10 & 1;
 }
 
-- (BOOL)addPassphraseEntryWithXpcHandler:(id)a3 flags:(unint64_t)a4 usage:(int64_t)a5 error:(id *)a6
+- (BOOL)addPassphraseEntryWithXpcHandler:(id)handler flags:(unint64_t)flags usage:(int64_t)usage error:(id *)error
 {
-  v8 = a4;
-  v10 = a3;
-  if ((v8 & 8) != 0)
+  flagsCopy = flags;
+  handlerCopy = handler;
+  if ((flagsCopy & 8) != 0)
   {
-    v11 = [(DIEncryptionFrontend *)self consoleAskForPassphraseWithUseStdin:1 usage:a5 error:a6];
+    v11 = [(DIEncryptionFrontend *)self consoleAskForPassphraseWithUseStdin:1 usage:usage error:error];
     goto LABEL_14;
   }
 
   if (([(DIEncryptionFrontend *)self flags]& 2) != 0)
   {
     v19 = 0;
-    v12 = [(DIEncryptionFrontend *)self consoleAskForPassphraseWithUseStdin:0 usage:a5 error:&v19];
+    v12 = [(DIEncryptionFrontend *)self consoleAskForPassphraseWithUseStdin:0 usage:usage error:&v19];
     v13 = v19;
     v14 = v13;
     if (v12)
@@ -1031,43 +1031,43 @@ LABEL_19:
 
     else
     {
-      v16 = [v13 code];
-      if (v16 >= 0)
+      code = [v13 code];
+      if (code >= 0)
       {
-        v17 = v16;
+        v17 = code;
       }
 
       else
       {
-        v17 = -v16;
+        v17 = -code;
       }
 
       if (v17 == 25)
       {
 
-        if ((v8 & 4) == 0)
+        if ((flagsCopy & 4) == 0)
         {
           goto LABEL_4;
         }
 
 LABEL_13:
-        v11 = [v10 GUIAskForPassphraseWithEncryptionFrontend:self usage:a5 error:a6];
+        v11 = [handlerCopy GUIAskForPassphraseWithEncryptionFrontend:self usage:usage error:error];
         goto LABEL_14;
       }
 
-      v15 = [DIError failWithInError:v14 outError:a6];
+      v15 = [DIError failWithInError:v14 outError:error];
     }
 
     goto LABEL_15;
   }
 
-  if ((v8 & 4) != 0)
+  if ((flagsCopy & 4) != 0)
   {
     goto LABEL_13;
   }
 
 LABEL_4:
-  v11 = [DIError failWithPOSIXCode:25 verboseInfo:@"Cannot retrieve passphrase from user via TTY or GUI" error:a6];
+  v11 = [DIError failWithPOSIXCode:25 verboseInfo:@"Cannot retrieve passphrase from user via TTY or GUI" error:error];
 LABEL_14:
   v15 = v11;
 LABEL_15:
@@ -1075,32 +1075,32 @@ LABEL_15:
   return v15;
 }
 
-- (BOOL)unlockWithXpcHandler:(id)a3 error:(id *)a4
+- (BOOL)unlockWithXpcHandler:(id)handler error:(id *)error
 {
-  v6 = a3;
-  v7 = [(DIEncryptionFrontend *)self diParams];
-  v8 = [v7 mutableSymmetricKey];
+  handlerCopy = handler;
+  diParams = [(DIEncryptionFrontend *)self diParams];
+  mutableSymmetricKey = [diParams mutableSymmetricKey];
 
-  if (!v8)
+  if (!mutableSymmetricKey)
   {
-    v11 = [(DIEncryptionFrontend *)self flags];
+    flags = [(DIEncryptionFrontend *)self flags];
     v39 = 0;
-    if (![(DIEncryptionFrontend *)self checkAuthEntriesWithHasPassphraseEntry:&v39 + 1 hasPublicKeyEntry:&v39 error:a4])
+    if (![(DIEncryptionFrontend *)self checkAuthEntriesWithHasPassphraseEntry:&v39 + 1 hasPublicKeyEntry:&v39 error:error])
     {
       goto LABEL_25;
     }
 
-    if (v39 == 1 && (v11 & 1) != 0)
+    if (v39 == 1 && (flags & 1) != 0)
     {
-      if (![(DIEncryptionFrontend *)self unlockUsingPublicKeyWithError:a4])
+      if (![(DIEncryptionFrontend *)self unlockUsingPublicKeyWithError:error])
       {
         goto LABEL_25;
       }
 
-      v12 = [(DIEncryptionFrontend *)self diParams];
-      v13 = [v12 hasUnlockedBackend];
+      diParams2 = [(DIEncryptionFrontend *)self diParams];
+      hasUnlockedBackend = [diParams2 hasUnlockedBackend];
 
-      if (v13)
+      if (hasUnlockedBackend)
       {
 LABEL_9:
         v10 = 1;
@@ -1115,68 +1115,68 @@ LABEL_9:
       goto LABEL_28;
     }
 
-    if ((v11 & 8) != 0)
+    if ((flags & 8) != 0)
     {
-      v9 = [(DIEncryptionFrontend *)self consoleAskForPassphraseWithUseStdin:1 usage:0 error:a4];
+      v9 = [(DIEncryptionFrontend *)self consoleAskForPassphraseWithUseStdin:1 usage:0 error:error];
       goto LABEL_3;
     }
 
-    if (v11)
+    if (flags)
     {
-      if (![(DIEncryptionFrontend *)self unlockUsingPublicKeyWithError:a4])
+      if (![(DIEncryptionFrontend *)self unlockUsingPublicKeyWithError:error])
       {
         goto LABEL_25;
       }
 
-      v14 = [(DIEncryptionFrontend *)self diParams];
-      v15 = [v14 hasUnlockedBackend];
+      diParams3 = [(DIEncryptionFrontend *)self diParams];
+      hasUnlockedBackend2 = [diParams3 hasUnlockedBackend];
 
-      if (v15)
+      if (hasUnlockedBackend2)
       {
         goto LABEL_9;
       }
 
-      if (![v6 keychainUnlockWithEncryptionUnlocker:self error:a4])
+      if (![handlerCopy keychainUnlockWithEncryptionUnlocker:self error:error])
       {
         goto LABEL_25;
       }
 
-      v16 = [(DIEncryptionFrontend *)self diParams];
-      v17 = [v16 hasUnlockedBackend];
+      diParams4 = [(DIEncryptionFrontend *)self diParams];
+      hasUnlockedBackend3 = [diParams4 hasUnlockedBackend];
 
-      if (v17)
+      if (hasUnlockedBackend3)
       {
         goto LABEL_9;
       }
 
       if ([(DIEncryptionFrontend *)self allowStoringInKeychain])
       {
-        if (![(DIEncryptionFrontend *)self lookupLegacyKeychainWithXpcHandler:v6 error:a4])
+        if (![(DIEncryptionFrontend *)self lookupLegacyKeychainWithXpcHandler:handlerCopy error:error])
         {
           goto LABEL_25;
         }
 
-        v18 = [(DIEncryptionFrontend *)self diParams];
-        v19 = [v18 hasUnlockedBackend];
+        diParams5 = [(DIEncryptionFrontend *)self diParams];
+        hasUnlockedBackend4 = [diParams5 hasUnlockedBackend];
 
-        if (v19)
+        if (hasUnlockedBackend4)
         {
           goto LABEL_9;
         }
       }
     }
 
-    if ([(DIEncryptionFrontend *)self unlockUsingSaksWithError:a4])
+    if ([(DIEncryptionFrontend *)self unlockUsingSaksWithError:error])
     {
-      v20 = [(DIEncryptionFrontend *)self diParams];
-      v21 = [v20 hasUnlockedBackend];
+      diParams6 = [(DIEncryptionFrontend *)self diParams];
+      hasUnlockedBackend5 = [diParams6 hasUnlockedBackend];
 
-      if (v21)
+      if (hasUnlockedBackend5)
       {
         goto LABEL_9;
       }
 
-      if ((v11 & 2) != 0)
+      if ((flags & 2) != 0)
       {
         v38 = 0;
         v25 = [(DIEncryptionFrontend *)self consoleAskForPassphraseWithUseStdin:0 usage:0 error:&v38];
@@ -1191,38 +1191,38 @@ LABEL_50:
           goto LABEL_26;
         }
 
-        v28 = [v26 code];
-        if (v28 >= 0)
+        code = [v26 code];
+        if (code >= 0)
         {
-          v29 = v28;
+          v29 = code;
         }
 
         else
         {
-          v29 = -v28;
+          v29 = -code;
         }
 
         if (v29 != 25)
         {
-          v36 = [DIError failWithInError:v27 outError:a4];
+          v36 = [DIError failWithInError:v27 outError:error];
 LABEL_49:
           v10 = v36;
           goto LABEL_50;
         }
 
-        if ((v11 & 4) == 0)
+        if ((flags & 4) == 0)
         {
           goto LABEL_24;
         }
       }
 
-      else if ((v11 & 4) == 0)
+      else if ((flags & 4) == 0)
       {
 LABEL_24:
         v22 = @"Cannot retrieve passphrase from user via TTY or GUI";
         v23 = 25;
 LABEL_28:
-        v9 = [DIError failWithPOSIXCode:v23 verboseInfo:v22 error:a4];
+        v9 = [DIError failWithPOSIXCode:v23 verboseInfo:v22 error:error];
         goto LABEL_3;
       }
 
@@ -1231,7 +1231,7 @@ LABEL_28:
       while (1)
       {
         v37 = v30;
-        v32 = [v6 GUIAskForPassphraseWithEncryptionFrontend:self usage:0 error:&v37];
+        v32 = [handlerCopy GUIAskForPassphraseWithEncryptionFrontend:self usage:0 error:&v37];
         v27 = v37;
 
         if (v32)
@@ -1239,22 +1239,22 @@ LABEL_28:
           goto LABEL_31;
         }
 
-        v33 = [v27 code];
-        if (v33 >= 0)
+        code2 = [v27 code];
+        if (code2 >= 0)
         {
-          v34 = v33;
+          v34 = code2;
         }
 
         else
         {
-          v34 = -v33;
+          v34 = -code2;
         }
 
         v35 = v34 != 80 || v31-- == 0;
         v30 = v27;
         if (v35)
         {
-          v36 = [DIError failWithInError:v27 outError:a4];
+          v36 = [DIError failWithInError:v27 outError:error];
           goto LABEL_49;
         }
       }
@@ -1265,7 +1265,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v9 = [(DIEncryptionFrontend *)self unlockUsingSymmetricKeyWithError:a4];
+  v9 = [(DIEncryptionFrontend *)self unlockUsingSymmetricKeyWithError:error];
 LABEL_3:
   v10 = v9;
 LABEL_26:
@@ -1273,16 +1273,16 @@ LABEL_26:
   return v10;
 }
 
-- (BOOL)keychainUnlockWithIsSystemKeychain:(BOOL)a3 error:(id *)a4
+- (BOOL)keychainUnlockWithIsSystemKeychain:(BOOL)keychain error:(id *)error
 {
-  v5 = a3;
+  keychainCopy = keychain;
   result = 0;
   v48[0] = kSecClassGenericPassword;
   v47[0] = kSecClass;
   v47[1] = kSecAttrAccount;
-  v7 = [(DIEncryptionFrontend *)self encryptionUUID];
-  v8 = [v7 UUIDString];
-  v48[1] = v8;
+  encryptionUUID = [(DIEncryptionFrontend *)self encryptionUUID];
+  uUIDString = [encryptionUUID UUIDString];
+  v48[1] = uUIDString;
   v48[2] = kSecAttrSynchronizableAny;
   v47[2] = kSecAttrSynchronizable;
   v47[3] = kSecReturnData;
@@ -1292,7 +1292,7 @@ LABEL_26:
   v9 = [NSDictionary dictionaryWithObjects:v48 forKeys:v47 count:5];
   v10 = [NSMutableDictionary dictionaryWithDictionary:v9];
 
-  if (v5 && ![DIEncryptionFrontend updateSystemKeychainAttrWithDict:v10 isStoring:0 error:0])
+  if (keychainCopy && ![DIEncryptionFrontend updateSystemKeychainAttrWithDict:v10 isStoring:0 error:0])
   {
     goto LABEL_44;
   }
@@ -1308,7 +1308,7 @@ LABEL_26:
     v42 = 65;
     v44 = "[DIEncryptionFrontend keychainUnlockWithIsSystemKeychain:error:]";
     v43 = 2080;
-    if (v5)
+    if (keychainCopy)
     {
       v13 = "system";
     }
@@ -1336,7 +1336,7 @@ LABEL_26:
       v42 = 65;
       v44 = "[DIEncryptionFrontend keychainUnlockWithIsSystemKeychain:error:]";
       v43 = 2080;
-      if (v5)
+      if (keychainCopy)
       {
         v16 = "system";
       }
@@ -1507,17 +1507,17 @@ LABEL_44:
   *__error() = v22;
   v30 = result;
   v31 = result;
-  v32 = -[DIEncryptionFrontend unlockWithPassphrase:error:](self, "unlockWithPassphrase:error:", [v30 bytes], a4);
+  v32 = -[DIEncryptionFrontend unlockWithPassphrase:error:](self, "unlockWithPassphrase:error:", [v30 bytes], error);
 
 LABEL_45:
   return v32;
 }
 
-- (BOOL)keychainUnlockWithError:(id *)a3
+- (BOOL)keychainUnlockWithError:(id *)error
 {
   v7 = 0;
-  v5 = [(DIEncryptionFrontend *)self checkWithHasIcloudKeychain:&v7 error:a3];
-  if (v5 && (v7 != 1 || (v5 = [(DIEncryptionFrontend *)self keychainUnlockWithIsSystemKeychain:0 error:a3])))
+  v5 = [(DIEncryptionFrontend *)self checkWithHasIcloudKeychain:&v7 error:error];
+  if (v5 && (v7 != 1 || (v5 = [(DIEncryptionFrontend *)self keychainUnlockWithIsSystemKeychain:0 error:error])))
   {
     LOBYTE(v5) = 1;
   }
@@ -1525,7 +1525,7 @@ LABEL_45:
   return v5;
 }
 
-- (BOOL)unlockUsingSaksWithError:(id *)a3
+- (BOOL)unlockUsingSaksWithError:(id *)error
 {
   v30 = 0u;
   memset(v31, 0, sizeof(v31));
@@ -1559,13 +1559,13 @@ LABEL_45:
           sub_1000403D4(&__p, *(v9 + 16), *(v9 + 24), *(v9 + 24) - *(v9 + 16));
           v11 = [NSData dataWithBytes:__p length:v19 - __p];
           v12 = [[NSString alloc] initWithData:v11 encoding:4];
-          if ([DIKeyRetriever decryptKeyWithData:v12 destKey:&v27 destKeySize:88 error:a3]&& (v13 = [(DIEncryptionFrontend *)self unlockWithPassphrase:&v27 error:a3], v30 = 0u, memset(v31, 0, sizeof(v31)), v28 = 0u, v29 = 0u, v27 = 0u, (v13 & 1) != 0))
+          if ([DIKeyRetriever decryptKeyWithData:v12 destKey:&v27 destKeySize:88 error:error]&& (v13 = [(DIEncryptionFrontend *)self unlockWithPassphrase:&v27 error:error], v30 = 0u, memset(v31, 0, sizeof(v31)), v28 = 0u, v29 = 0u, v27 = 0u, (v13 & 1) != 0))
           {
-            v14 = [(DIEncryptionFrontend *)self diParams];
-            v15 = [v14 hasUnlockedBackend];
+            diParams = [(DIEncryptionFrontend *)self diParams];
+            hasUnlockedBackend = [diParams hasUnlockedBackend];
 
-            v16 = v15 ^ 1;
-            v3 |= v15;
+            v16 = hasUnlockedBackend ^ 1;
+            v3 |= hasUnlockedBackend;
           }
 
           else
@@ -1614,14 +1614,14 @@ LABEL_45:
   return v3 & 1;
 }
 
-- (BOOL)checkAuthEntriesWithHasPassphraseEntry:(BOOL *)a3 hasPublicKeyEntry:(BOOL *)a4 error:(id *)a5
+- (BOOL)checkAuthEntriesWithHasPassphraseEntry:(BOOL *)entry hasPublicKeyEntry:(BOOL *)keyEntry error:(id *)error
 {
-  v7 = [(DIEncryptionFrontend *)self generateAuthTableWithError:a5];
+  v7 = [(DIEncryptionFrontend *)self generateAuthTableWithError:error];
   v8 = v7;
   if (v7)
   {
-    *a3 = 0;
-    *a4 = 0;
+    *entry = 0;
+    *keyEntry = 0;
     v9 = *v7;
     v16 = v7;
     v17 = v9;
@@ -1631,8 +1631,8 @@ LABEL_45:
     {
       do
       {
-        v12[0] = a3;
-        v12[1] = a4;
+        v12[0] = entry;
+        v12[1] = keyEntry;
         v10 = *(sub_10003AA38(&v16) + 632);
         if (v10 == -1)
         {
@@ -1659,14 +1659,14 @@ LABEL_45:
   return v8 != 0;
 }
 
-- (BOOL)unlockUsingPublicKeyWithError:(id *)a3
+- (BOOL)unlockUsingPublicKeyWithError:(id *)error
 {
-  v6 = [(DIEncryptionFrontend *)self diParams];
-  v7 = [v6 diskImageParamsXPC];
+  diParams = [(DIEncryptionFrontend *)self diParams];
+  diskImageParamsXPC = [diParams diskImageParamsXPC];
 
-  v17 = v7;
-  v8 = [v7 backendXPC];
-  v9 = [(DIEncryptionFrontend *)self generateAuthTableWithError:a3];
+  v17 = diskImageParamsXPC;
+  backendXPC = [diskImageParamsXPC backendXPC];
+  v9 = [(DIEncryptionFrontend *)self generateAuthTableWithError:error];
   v10 = v9;
   if (v9)
   {
@@ -1677,7 +1677,7 @@ LABEL_45:
     v28 = 0;
     if (v11 == v9[1])
     {
-      v3 = 1;
+      error = 1;
     }
 
     else
@@ -1690,7 +1690,7 @@ LABEL_45:
           v13 = sub_100179E70(v12, &v18);
           if (v20 == 1)
           {
-            [v8 cryptoHeader];
+            [backendXPC cryptoHeader];
             sub_100040704();
           }
 
@@ -1704,7 +1704,7 @@ LABEL_45:
 
           else
           {
-            v3 = [DIError failWithUnexpected:v18 error:v19, a3];
+            error = [DIError failWithUnexpected:v18 error:v19, error];
             v15 = 0;
           }
 
@@ -1728,7 +1728,7 @@ LABEL_45:
 
         if (v25 == v10 && v26 == v10[1])
         {
-          v3 = 1;
+          error = 1;
           break;
         }
       }
@@ -1742,20 +1742,20 @@ LABEL_45:
 
   else
   {
-    v3 = 0;
+    error = 0;
   }
 
-  return v3 & 1;
+  return error & 1;
 }
 
-- (BOOL)unlockUsingSymmetricKeyWithError:(id *)a3
+- (BOOL)unlockUsingSymmetricKeyWithError:(id *)error
 {
-  v6 = [(DIEncryptionFrontend *)self diParams];
-  v7 = [v6 diskImageParamsXPC];
+  diParams = [(DIEncryptionFrontend *)self diParams];
+  diskImageParamsXPC = [diParams diskImageParamsXPC];
 
-  v18 = v7;
-  v8 = [v7 backendXPC];
-  v9 = [(DIEncryptionFrontend *)self generateAuthTableWithError:a3];
+  v18 = diskImageParamsXPC;
+  backendXPC = [diskImageParamsXPC backendXPC];
+  v9 = [(DIEncryptionFrontend *)self generateAuthTableWithError:error];
   v10 = v9;
   if (v9)
   {
@@ -1767,7 +1767,7 @@ LABEL_45:
     if (v11 == v9[1])
     {
 LABEL_19:
-      v3 = [DIError failWithPOSIXCode:80 verboseInfo:@"The symmteric key is wrong" error:a3];
+      error = [DIError failWithPOSIXCode:80 verboseInfo:@"The symmteric key is wrong" error:error];
     }
 
     else
@@ -1777,13 +1777,13 @@ LABEL_19:
         v12 = sub_10003AA38(&v26);
         if (v12[158] == 2)
         {
-          v13 = [(DIEncryptionFrontend *)self diParams];
-          v14 = [v13 mutableSymmetricKey];
-          sub_10017A370(v14, v12, &v19);
+          diParams2 = [(DIEncryptionFrontend *)self diParams];
+          mutableSymmetricKey = [diParams2 mutableSymmetricKey];
+          sub_10017A370(mutableSymmetricKey, v12, &v19);
 
           if (v21 == 1)
           {
-            [v8 cryptoHeader];
+            [backendXPC cryptoHeader];
             sub_100040704();
           }
 
@@ -1797,7 +1797,7 @@ LABEL_19:
 
           else
           {
-            v3 = [DIError failWithUnexpected:v19 error:v20, a3];
+            error = [DIError failWithUnexpected:v19 error:v20, error];
             v16 = 0;
           }
 
@@ -1839,10 +1839,10 @@ LABEL_19:
 
   else
   {
-    v3 = 0;
+    error = 0;
   }
 
-  return v3 & 1;
+  return error & 1;
 }
 
 - (id).cxx_construct

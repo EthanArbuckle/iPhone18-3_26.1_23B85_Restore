@@ -1,9 +1,9 @@
 @interface PKImageSetXPCContainer
-- (PKImageSetXPCContainer)initWithCoder:(id)a3;
-- (PKImageSetXPCContainer)initWithWithXPCObject:(id)a3 hash:(id)a4;
-- (PKImageSetXPCContainer)initWithWithXPCObject:(id)a3 length:(unint64_t)a4 isSharedMemory:(BOOL)a5 offset:(unint64_t)a6 hash:(id)a7;
+- (PKImageSetXPCContainer)initWithCoder:(id)coder;
+- (PKImageSetXPCContainer)initWithWithXPCObject:(id)object hash:(id)hash;
+- (PKImageSetXPCContainer)initWithWithXPCObject:(id)object length:(unint64_t)length isSharedMemory:(BOOL)memory offset:(unint64_t)offset hash:(id)hash;
 - (id)consumeImageSet;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
 @end
 
@@ -107,7 +107,7 @@ LABEL_26:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v30 = self;
+      selfCopy = self;
       v31 = 2112;
       v32 = v17;
       _os_log_impl(&dword_1AD337000, v21, OS_LOG_TYPE_DEFAULT, "PKImageSetXPCContainer (%p): failed to extract wrapped image set. %@.", buf, 0x16u);
@@ -167,13 +167,13 @@ void __41__PKImageSetXPCContainer_consumeImageSet__block_invoke(uint64_t a1)
   }
 }
 
-- (PKImageSetXPCContainer)initWithWithXPCObject:(id)a3 hash:(id)a4
+- (PKImageSetXPCContainer)initWithWithXPCObject:(id)object hash:(id)hash
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  objectCopy = object;
+  hashCopy = hash;
+  if (objectCopy)
   {
-    length = xpc_data_get_length(v6);
+    length = xpc_data_get_length(objectCopy);
   }
 
   else
@@ -181,30 +181,30 @@ void __41__PKImageSetXPCContainer_consumeImageSet__block_invoke(uint64_t a1)
     length = 0;
   }
 
-  v9 = [(PKImageSetXPCContainer *)self initWithWithXPCObject:v6 length:length isSharedMemory:0 offset:0 hash:v7];
+  v9 = [(PKImageSetXPCContainer *)self initWithWithXPCObject:objectCopy length:length isSharedMemory:0 offset:0 hash:hashCopy];
 
   return v9;
 }
 
-- (PKImageSetXPCContainer)initWithWithXPCObject:(id)a3 length:(unint64_t)a4 isSharedMemory:(BOOL)a5 offset:(unint64_t)a6 hash:(id)a7
+- (PKImageSetXPCContainer)initWithWithXPCObject:(id)object length:(unint64_t)length isSharedMemory:(BOOL)memory offset:(unint64_t)offset hash:(id)hash
 {
-  v13 = a3;
-  v14 = a7;
+  objectCopy = object;
+  hashCopy = hash;
   v20.receiver = self;
   v20.super_class = PKImageSetXPCContainer;
   v15 = [(PKImageSetXPCContainer *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    v15->_length = a4;
-    v15->_isShmem = a5;
-    if (v13)
+    v15->_length = length;
+    v15->_isShmem = memory;
+    if (objectCopy)
     {
-      objc_storeStrong(&v15->_data, a3);
+      objc_storeStrong(&v15->_data, object);
     }
 
-    v16->_offset = a6;
-    v17 = [v14 copy];
+    v16->_offset = offset;
+    v17 = [hashCopy copy];
     imageSetHash = v16->_imageSetHash;
     v16->_imageSetHash = v17;
   }
@@ -212,19 +212,19 @@ void __41__PKImageSetXPCContainer_consumeImageSet__block_invoke(uint64_t a1)
   return v16;
 }
 
-- (PKImageSetXPCContainer)initWithCoder:(id)a3
+- (PKImageSetXPCContainer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PKImageSetXPCContainer;
   v5 = [(PKImageSetXPCContainer *)&v17 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"length"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"length"];
     v5->_length = [v7 unsignedIntegerValue];
 
-    v8 = [v4 decodeBoolForKey:@"isShmem"];
+    v8 = [coderCopy decodeBoolForKey:@"isShmem"];
     v5->_isShmem = v8;
     if (v8)
     {
@@ -236,14 +236,14 @@ void __41__PKImageSetXPCContainer_consumeImageSet__block_invoke(uint64_t a1)
       v9 = MEMORY[0x1E69E9E70];
     }
 
-    v10 = [v4 decodeXPCObjectOfType:v9 forKey:@"data"];
+    v10 = [coderCopy decodeXPCObjectOfType:v9 forKey:@"data"];
     data = v5->_data;
     v5->_data = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"offset"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"offset"];
     v5->_offset = [v12 unsignedIntegerValue];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageSetHash"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageSetHash"];
     imageSetHash = v5->_imageSetHash;
     v5->_imageSetHash = v13;
 
@@ -261,20 +261,20 @@ void __41__PKImageSetXPCContainer_consumeImageSet__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   length = self->_length;
-  v8 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:length];
-  [v8 encodeObject:v6 forKey:@"length"];
+  [coderCopy encodeObject:v6 forKey:@"length"];
 
-  [v8 encodeBool:self->_isShmem forKey:@"isShmem"];
-  [v8 encodeXPCObject:self->_data forKey:@"data"];
+  [coderCopy encodeBool:self->_isShmem forKey:@"isShmem"];
+  [coderCopy encodeXPCObject:self->_data forKey:@"data"];
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_offset];
-  [v8 encodeObject:v7 forKey:@"offset"];
+  [coderCopy encodeObject:v7 forKey:@"offset"];
 
-  [v8 encodeObject:self->_imageSetHash forKey:@"imageSetHash"];
+  [coderCopy encodeObject:self->_imageSetHash forKey:@"imageSetHash"];
 }
 
 @end

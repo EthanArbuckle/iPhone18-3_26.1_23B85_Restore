@@ -1,20 +1,20 @@
 @interface PersonalHotspotBundleController
 - (PSListController)parentController;
-- (PersonalHotspotBundleController)initWithParentListController:(id)a3;
-- (id)_specifiersWithMainSpecifier:(id)a3;
-- (id)specifiersWithSpecifier:(id)a3;
+- (PersonalHotspotBundleController)initWithParentListController:(id)controller;
+- (id)_specifiersWithMainSpecifier:(id)specifier;
+- (id)specifiersWithSpecifier:(id)specifier;
 - (void)dealloc;
 @end
 
 @implementation PersonalHotspotBundleController
 
-- (PersonalHotspotBundleController)initWithParentListController:(id)a3
+- (PersonalHotspotBundleController)initWithParentListController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = PersonalHotspotBundleController;
-  v3 = a3;
-  v4 = [(PersonalHotspotBundleController *)&v6 initWithParentListController:v3];
-  objc_storeWeak(&v4->_parentController, v3);
+  controllerCopy = controller;
+  v4 = [(PersonalHotspotBundleController *)&v6 initWithParentListController:controllerCopy];
+  objc_storeWeak(&v4->_parentController, controllerCopy);
 
   return v4;
 }
@@ -29,9 +29,9 @@
   [(PersonalHotspotBundleController *)&v4 dealloc];
 }
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -40,7 +40,7 @@
   v17 = 0;
   if (+[NSThread isMainThread])
   {
-    v5 = [(PersonalHotspotBundleController *)self _specifiersWithMainSpecifier:v4];
+    v5 = [(PersonalHotspotBundleController *)self _specifiersWithMainSpecifier:specifierCopy];
     v6 = v13[5];
     v13[5] = v5;
   }
@@ -53,7 +53,7 @@
     block[3] = &unk_C490;
     v11 = &v12;
     block[4] = self;
-    v10 = v4;
+    v10 = specifierCopy;
     dispatch_sync(&_dispatch_main_q, block);
   }
 
@@ -63,7 +63,7 @@
   return v7;
 }
 
-- (id)_specifiersWithMainSpecifier:(id)a3
+- (id)_specifiersWithMainSpecifier:(id)specifier
 {
   v3 = objc_alloc_init(PersonalHotspotDataUsageRootSpecifier);
   v4 = v3;

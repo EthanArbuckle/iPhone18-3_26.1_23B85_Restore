@@ -12,7 +12,7 @@
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 objectForKey:v4];
+  v5 = [self objectForKey:v4];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
@@ -39,7 +39,7 @@
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 objectForKey:v4];
+  v5 = [self objectForKey:v4];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
@@ -66,7 +66,7 @@
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 objectForKey:v4];
+  v5 = [self objectForKey:v4];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
@@ -93,7 +93,7 @@
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 objectForKey:v4];
+  v5 = [self objectForKey:v4];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
@@ -120,7 +120,7 @@
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 objectForKey:v4];
+  v5 = [self objectForKey:v4];
   if (!v5 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     v8 = 138412290;

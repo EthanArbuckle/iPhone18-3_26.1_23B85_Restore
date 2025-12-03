@@ -1,11 +1,11 @@
 @interface UMEventCheckpoint
-+ (id)allocWithZone:(_NSZone *)a3;
-+ (id)lastSyncedNvram:(id)a3;
++ (id)allocWithZone:(_NSZone *)zone;
++ (id)lastSyncedNvram:(id)nvram;
 + (id)sharedInstance;
-- (BOOL)cleanupCheckpointsNvram:(id *)a3;
-- (BOOL)cleanupCheckpointsNvramReturnDirty:(BOOL *)a3 error:(id *)a4;
+- (BOOL)cleanupCheckpointsNvram:(id *)nvram;
+- (BOOL)cleanupCheckpointsNvramReturnDirty:(BOOL *)dirty error:(id *)error;
 - (id)_init;
-- (id)checkpointNvramInfo:(id)a3;
+- (id)checkpointNvramInfo:(id)info;
 @end
 
 @implementation UMEventCheckpoint
@@ -145,7 +145,7 @@
   block[1] = 3254779904;
   block[2] = __35__UMEventCheckpoint_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e8_32o_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -163,7 +163,7 @@ id __35__UMEventCheckpoint_sharedInstance__block_invoke(uint64_t a1)
   return result;
 }
 
-+ (id)lastSyncedNvram:(id)a3
++ (id)lastSyncedNvram:(id)nvram
 {
   properties = 0;
   logfunction(", 1, @"start\n"", v3, v4, v5, v6, v7, v43);
@@ -177,17 +177,17 @@ id __35__UMEventCheckpoint_sharedInstance__block_invoke(uint64_t a1)
     }
 
     v21 = properties;
-    if (a3)
+    if (nvram)
     {
-      v22 = a3;
+      nvramCopy = nvram;
     }
 
     else
     {
-      v22 = @"/private/var/MobileSoftwareUpdate/nvram.plist";
+      nvramCopy = @"/private/var/MobileSoftwareUpdate/nvram.plist";
     }
 
-    v23 = [NSMutableDictionary dictionaryWithContentsOfFile:v22];
+    v23 = [NSMutableDictionary dictionaryWithContentsOfFile:nvramCopy];
     if (v23)
     {
       v29 = v23;
@@ -249,12 +249,12 @@ LABEL_20:
   return 0;
 }
 
-- (id)checkpointNvramInfo:(id)a3
+- (id)checkpointNvramInfo:(id)info
 {
   v22 = +[NSMutableDictionary dictionary];
-  if (a3)
+  if (info)
   {
-    v21 = [a3 objectForKey:@"ramrod-stale-file-only-vars"];
+    v21 = [info objectForKey:@"ramrod-stale-file-only-vars"];
   }
 
   else
@@ -287,9 +287,9 @@ LABEL_20:
       v9 = *(*(&v24 + 1) + 8 * i);
       v10 = [(NSDictionary *)self->_nvramMapping objectForKey:v9];
       v11 = v10;
-      if (a3)
+      if (info)
       {
-        v12 = [a3 objectForKey:v10];
+        v12 = [info objectForKey:v10];
         if (v12)
         {
           v13 = v12;
@@ -353,7 +353,7 @@ LABEL_23:
   return result;
 }
 
-- (BOOL)cleanupCheckpointsNvram:(id *)a3
+- (BOOL)cleanupCheckpointsNvram:(id *)nvram
 {
   v20 = 0;
   v19 = 0;
@@ -362,7 +362,7 @@ LABEL_23:
   if (!v11)
   {
 LABEL_5:
-    if (!a3)
+    if (!nvram)
     {
       return result;
     }
@@ -380,17 +380,17 @@ LABEL_5:
   v18 = [NSError errorWithDomain:NSPOSIXErrorDomain code:5 userInfo:0];
   result = 0;
   v19 = v18;
-  if (!a3)
+  if (!nvram)
   {
     return result;
   }
 
 LABEL_6:
-  *a3 = v19;
+  *nvram = v19;
   return result;
 }
 
-- (BOOL)cleanupCheckpointsNvramReturnDirty:(BOOL *)a3 error:(id *)a4
+- (BOOL)cleanupCheckpointsNvramReturnDirty:(BOOL *)dirty error:(id *)error
 {
   v23 = 0u;
   v24 = 0u;
@@ -420,10 +420,10 @@ LABEL_6:
           logfunction(", 1, @"clearing NVRAM variable %@ failed\n"", v15, v16, v17, v18, v19, v14);
           v20 = [NSError errorWithDomain:NSPOSIXErrorDomain code:5 userInfo:0];
           result = 0;
-          if (a4 && v20)
+          if (error && v20)
           {
             result = 0;
-            *a4 = v20;
+            *error = v20;
           }
 
           return result;
@@ -447,15 +447,15 @@ LABEL_6:
     v10 = 0;
   }
 
-  if (a3)
+  if (dirty)
   {
-    *a3 = v10 & 1;
+    *dirty = v10 & 1;
   }
 
   return 1;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v3 = +[UMEventCheckpoint sharedInstance];
 

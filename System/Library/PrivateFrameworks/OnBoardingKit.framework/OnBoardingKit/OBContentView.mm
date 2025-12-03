@@ -1,57 +1,57 @@
 @interface OBContentView
-- (BOOL)_colorIsDefault:(id)a3;
-- (OBContentView)initWithFrame:(CGRect)a3 aboveHeaderLayout:(BOOL)a4;
+- (BOOL)_colorIsDefault:(id)default;
+- (OBContentView)initWithFrame:(CGRect)frame aboveHeaderLayout:(BOOL)layout;
 - (UIColor)darkColor;
 - (UIColor)lightColor;
 - (UIView)bleedView;
 - (id)_defaultColorForCurrentTraitCollection;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBleedView:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setBleedView:(id)view;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation OBContentView
 
-- (OBContentView)initWithFrame:(CGRect)a3 aboveHeaderLayout:(BOOL)a4
+- (OBContentView)initWithFrame:(CGRect)frame aboveHeaderLayout:(BOOL)layout
 {
-  v4 = a4;
+  layoutCopy = layout;
   v10.receiver = self;
   v10.super_class = OBContentView;
-  v5 = [(OBContentView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(OBContentView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_aboveHeaderLayout = v4;
+    v5->_aboveHeaderLayout = layoutCopy;
     v5->_customizedBackgroundColor = 0;
-    if (v4)
+    if (layoutCopy)
     {
-      v7 = [(OBContentView *)v5 _defaultColorForCurrentTraitCollection];
+      _defaultColorForCurrentTraitCollection = [(OBContentView *)v5 _defaultColorForCurrentTraitCollection];
       v9.receiver = v6;
       v9.super_class = OBContentView;
-      [(OBContentView *)&v9 setBackgroundColor:v7];
+      [(OBContentView *)&v9 setBackgroundColor:_defaultColorForCurrentTraitCollection];
     }
   }
 
   return v6;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   [(OBContentView *)self setCustomizedBackgroundColor:1];
   v6.receiver = self;
   v6.super_class = OBContentView;
-  [(OBContentView *)&v6 setBackgroundColor:v4];
-  v5 = [(OBContentView *)self bleedView];
-  [v5 setBackgroundColor:v4];
+  [(OBContentView *)&v6 setBackgroundColor:colorCopy];
+  bleedView = [(OBContentView *)self bleedView];
+  [bleedView setBackgroundColor:colorCopy];
 }
 
-- (void)setBleedView:(id)a3
+- (void)setBleedView:(id)view
 {
-  objc_storeWeak(&self->_bleedView, a3);
-  v5 = [(OBContentView *)self backgroundColor];
+  objc_storeWeak(&self->_bleedView, view);
+  backgroundColor = [(OBContentView *)self backgroundColor];
   WeakRetained = objc_loadWeakRetained(&self->_bleedView);
-  [WeakRetained setBackgroundColor:v5];
+  [WeakRetained setBackgroundColor:backgroundColor];
 }
 
 - (UIColor)darkColor
@@ -59,9 +59,9 @@
   darkColor = self->_darkColor;
   if (!darkColor)
   {
-    v4 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
     v5 = self->_darkColor;
-    self->_darkColor = v4;
+    self->_darkColor = secondarySystemBackgroundColor;
 
     darkColor = self->_darkColor;
   }
@@ -74,9 +74,9 @@
   lightColor = self->_lightColor;
   if (!lightColor)
   {
-    v4 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
     v5 = self->_lightColor;
-    self->_lightColor = v4;
+    self->_lightColor = secondarySystemBackgroundColor;
 
     lightColor = self->_lightColor;
   }
@@ -84,33 +84,33 @@
   return lightColor;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = OBContentView;
-  [(OBContentView *)&v8 traitCollectionDidChange:a3];
+  [(OBContentView *)&v8 traitCollectionDidChange:change];
   if (![(OBContentView *)self customizedBackgroundColor])
   {
     if ([(OBContentView *)self aboveHeaderLayout])
     {
-      v4 = [(OBContentView *)self _defaultColorForCurrentTraitCollection];
+      _defaultColorForCurrentTraitCollection = [(OBContentView *)self _defaultColorForCurrentTraitCollection];
       v7.receiver = self;
       v7.super_class = OBContentView;
-      [(OBContentView *)&v7 setBackgroundColor:v4];
+      [(OBContentView *)&v7 setBackgroundColor:_defaultColorForCurrentTraitCollection];
 
-      v5 = [(OBContentView *)self _defaultColorForCurrentTraitCollection];
-      v6 = [(OBContentView *)self bleedView];
-      [v6 setBackgroundColor:v5];
+      _defaultColorForCurrentTraitCollection2 = [(OBContentView *)self _defaultColorForCurrentTraitCollection];
+      bleedView = [(OBContentView *)self bleedView];
+      [bleedView setBackgroundColor:_defaultColorForCurrentTraitCollection2];
     }
   }
 }
 
 - (id)_defaultColorForCurrentTraitCollection
 {
-  v3 = [(OBContentView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(OBContentView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 == 2)
+  if (userInterfaceStyle == 2)
   {
     [(OBContentView *)self darkColor];
   }
@@ -124,19 +124,19 @@
   return v5;
 }
 
-- (BOOL)_colorIsDefault:(id)a3
+- (BOOL)_colorIsDefault:(id)default
 {
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 CGColor];
-  v8 = [(OBContentView *)self darkColor];
-  LOBYTE(v7) = CGColorEqualToColor(v7, [v8 CGColor]);
+  defaultCopy = default;
+  defaultCopy2 = default;
+  cGColor = [defaultCopy2 CGColor];
+  darkColor = [(OBContentView *)self darkColor];
+  LOBYTE(cGColor) = CGColorEqualToColor(cGColor, [darkColor CGColor]);
 
-  v9 = [v6 CGColor];
-  v10 = [(OBContentView *)self lightColor];
-  LOBYTE(self) = CGColorEqualToColor(v9, [v10 CGColor]);
+  cGColor2 = [defaultCopy2 CGColor];
+  lightColor = [(OBContentView *)self lightColor];
+  LOBYTE(self) = CGColorEqualToColor(cGColor2, [lightColor CGColor]);
 
-  return (v7 | self) & 1;
+  return (cGColor | self) & 1;
 }
 
 - (UIView)bleedView

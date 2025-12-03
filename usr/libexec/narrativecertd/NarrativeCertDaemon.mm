@@ -1,12 +1,12 @@
 @interface NarrativeCertDaemon
-- (void)configureAquariaHostIdentityWithSANs:(id)a3 reply:(id)a4;
+- (void)configureAquariaHostIdentityWithSANs:(id)ns reply:(id)reply;
 @end
 
 @implementation NarrativeCertDaemon
 
-- (void)configureAquariaHostIdentityWithSANs:(id)a3 reply:(id)a4
+- (void)configureAquariaHostIdentityWithSANs:(id)ns reply:(id)reply
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(reply);
   v6 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   _Block_copy(v5);
 

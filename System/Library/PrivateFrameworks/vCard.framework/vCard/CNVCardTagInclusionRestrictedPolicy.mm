@@ -1,11 +1,11 @@
 @interface CNVCardTagInclusionRestrictedPolicy
-- (BOOL)shouldParseTag:(id)a3;
+- (BOOL)shouldParseTag:(id)tag;
 - (_TtC5vCard35CNVCardTagInclusionRestrictedPolicy)init;
 @end
 
 @implementation CNVCardTagInclusionRestrictedPolicy
 
-- (BOOL)shouldParseTag:(id)a3
+- (BOOL)shouldParseTag:(id)tag
 {
   v4 = sub_27721ACE4();
   v6 = v5;
@@ -17,7 +17,7 @@
   else
   {
     v9 = *(&self->super.isa + OBJC_IVAR____TtC5vCard35CNVCardTagInclusionRestrictedPolicy_tags);
-    v10 = self;
+    selfCopy = self;
     v8 = sub_2772198F4(v7, v6, v9);
   }
 

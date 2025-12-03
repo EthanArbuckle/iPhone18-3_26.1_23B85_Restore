@@ -1,9 +1,9 @@
 @interface UIDropShadowViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsScrollAncestor;
 - (BOOL)accessibilityScrollDownPage;
 - (BOOL)accessibilityScrollDownPageSupported;
-- (BOOL)accessibilityScrollToVisibleWithChild:(id)a3;
+- (BOOL)accessibilityScrollToVisibleWithChild:(id)child;
 - (BOOL)accessibilityScrollUpPage;
 - (BOOL)accessibilityScrollUpPageSupported;
 - (id)_axSheetPresentationController;
@@ -11,26 +11,26 @@
 
 @implementation UIDropShadowViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"UIDropShadowView" hasInstanceMethod:@"_delegate" withFullSignature:{"@", 0}];
   objc_storeStrong(v4, obj);
 }
 
-- (BOOL)accessibilityScrollToVisibleWithChild:(id)a3
+- (BOOL)accessibilityScrollToVisibleWithChild:(id)child
 {
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v35 = [(UIDropShadowViewAccessibility *)v37 _axSheetPresentationController];
-  if (!v35)
+  objc_storeStrong(location, child);
+  _axSheetPresentationController = [(UIDropShadowViewAccessibility *)selfCopy _axSheetPresentationController];
+  if (!_axSheetPresentationController)
   {
     goto LABEL_7;
   }
@@ -46,7 +46,7 @@
     v30 = MEMORY[0x29EDC9748](v31);
     objc_storeStrong(&v31, 0);
     v33[0] = v30;
-    v29 = [location[0] _accessibilityParentView];
+    _accessibilityParentView = [location[0] _accessibilityParentView];
     [v33[0] bounds];
     v28.origin.x = v3;
     v28.origin.y = v4;
@@ -54,20 +54,20 @@
     v28.size.height = v6;
     *&v33[1] = v28;
     v24 = v33[0];
-    [v29 bounds];
-    [v24 convertRect:v29 fromView:{v7, v8, v9, v10}];
+    [_accessibilityParentView bounds];
+    [v24 convertRect:_accessibilityParentView fromView:{v7, v8, v9, v10}];
     v27.origin.x = v11;
     v27.origin.y = v12;
     v27.size.width = v13;
     v27.size.height = v14;
     v34 = v27;
-    objc_storeStrong(&v29, 0);
+    objc_storeStrong(&_accessibilityParentView, 0);
     objc_storeStrong(v33, 0);
   }
 
   else
   {
-    [(UIDropShadowViewAccessibility *)v37 accessibilityFrame];
+    [(UIDropShadowViewAccessibility *)selfCopy accessibilityFrame];
     v26.origin.x = v15;
     v26.origin.y = v16;
     v26.size.width = v17;
@@ -90,10 +90,10 @@ LABEL_7:
 
   else
   {
-    v38 = [v35 _accessibilityExpandSheet] & 1;
+    v38 = [_axSheetPresentationController _accessibilityExpandSheet] & 1;
   }
 
-  objc_storeStrong(&v35, 0);
+  objc_storeStrong(&_axSheetPresentationController, 0);
   objc_storeStrong(location, 0);
   return v38 & 1;
 }
@@ -118,135 +118,135 @@ LABEL_7:
     return 0;
   }
 
-  v4 = [(UIDropShadowViewAccessibility *)self _axSheetPresentationController];
+  _axSheetPresentationController = [(UIDropShadowViewAccessibility *)self _axSheetPresentationController];
   v7 = 0;
   v5 = 0;
-  if ([v4 _accessibilityIsInverted])
+  if ([_axSheetPresentationController _accessibilityIsInverted])
   {
-    v8 = [(UIDropShadowViewAccessibility *)self _axSheetPresentationController];
+    _axSheetPresentationController2 = [(UIDropShadowViewAccessibility *)self _axSheetPresentationController];
     v7 = 1;
-    v3 = [v8 _accessibilityCanExpandSheet];
+    _accessibilityCanExpandSheet = [_axSheetPresentationController2 _accessibilityCanExpandSheet];
   }
 
   else
   {
-    v6 = [(UIDropShadowViewAccessibility *)self _axSheetPresentationController];
+    _axSheetPresentationController3 = [(UIDropShadowViewAccessibility *)self _axSheetPresentationController];
     v5 = 1;
-    v3 = [v6 _accessibilityCanCollapseSheet];
+    _accessibilityCanExpandSheet = [_axSheetPresentationController3 _accessibilityCanCollapseSheet];
   }
 
-  v10 = v3 != 0;
+  v10 = _accessibilityCanExpandSheet != 0;
   if (v5)
   {
-    MEMORY[0x29EDC9740](v6);
+    MEMORY[0x29EDC9740](_axSheetPresentationController3);
   }
 
   if (v7)
   {
-    MEMORY[0x29EDC9740](v8);
+    MEMORY[0x29EDC9740](_axSheetPresentationController2);
   }
 
-  MEMORY[0x29EDC9740](v4);
+  MEMORY[0x29EDC9740](_axSheetPresentationController);
   return v10;
 }
 
 - (BOOL)accessibilityScrollUpPage
 {
-  v4 = [(UIDropShadowViewAccessibility *)self _axSheetPresentationController];
+  _axSheetPresentationController = [(UIDropShadowViewAccessibility *)self _axSheetPresentationController];
   v7 = 0;
   v5 = 0;
-  if ([v4 _accessibilityIsInverted])
+  if ([_axSheetPresentationController _accessibilityIsInverted])
   {
-    v8 = [(UIDropShadowViewAccessibility *)self _axSheetPresentationController];
+    _axSheetPresentationController2 = [(UIDropShadowViewAccessibility *)self _axSheetPresentationController];
     v7 = 1;
-    v3 = [v8 _accessibilityExpandSheet];
+    _accessibilityExpandSheet = [_axSheetPresentationController2 _accessibilityExpandSheet];
   }
 
   else
   {
-    v6 = [(UIDropShadowViewAccessibility *)self _axSheetPresentationController];
+    _axSheetPresentationController3 = [(UIDropShadowViewAccessibility *)self _axSheetPresentationController];
     v5 = 1;
-    v3 = [v6 _accessibilityCollapseSheet];
+    _accessibilityExpandSheet = [_axSheetPresentationController3 _accessibilityCollapseSheet];
   }
 
   if (v5)
   {
-    MEMORY[0x29EDC9740](v6);
+    MEMORY[0x29EDC9740](_axSheetPresentationController3);
   }
 
   if (v7)
   {
-    MEMORY[0x29EDC9740](v8);
+    MEMORY[0x29EDC9740](_axSheetPresentationController2);
   }
 
-  MEMORY[0x29EDC9740](v4);
-  return v3 != 0;
+  MEMORY[0x29EDC9740](_axSheetPresentationController);
+  return _accessibilityExpandSheet != 0;
 }
 
 - (BOOL)accessibilityScrollDownPageSupported
 {
-  v4 = [(UIDropShadowViewAccessibility *)self _axSheetPresentationController];
+  _axSheetPresentationController = [(UIDropShadowViewAccessibility *)self _axSheetPresentationController];
   v7 = 0;
   v5 = 0;
-  if ([v4 _accessibilityIsInverted])
+  if ([_axSheetPresentationController _accessibilityIsInverted])
   {
-    v8 = [(UIDropShadowViewAccessibility *)self _axSheetPresentationController];
+    _axSheetPresentationController2 = [(UIDropShadowViewAccessibility *)self _axSheetPresentationController];
     v7 = 1;
-    v3 = [v8 _accessibilityCanCollapseSheet];
+    _accessibilityCanCollapseSheet = [_axSheetPresentationController2 _accessibilityCanCollapseSheet];
   }
 
   else
   {
-    v6 = [(UIDropShadowViewAccessibility *)self _axSheetPresentationController];
+    _axSheetPresentationController3 = [(UIDropShadowViewAccessibility *)self _axSheetPresentationController];
     v5 = 1;
-    v3 = [v6 _accessibilityCanExpandSheet];
+    _accessibilityCanCollapseSheet = [_axSheetPresentationController3 _accessibilityCanExpandSheet];
   }
 
   if (v5)
   {
-    MEMORY[0x29EDC9740](v6);
+    MEMORY[0x29EDC9740](_axSheetPresentationController3);
   }
 
   if (v7)
   {
-    MEMORY[0x29EDC9740](v8);
+    MEMORY[0x29EDC9740](_axSheetPresentationController2);
   }
 
-  MEMORY[0x29EDC9740](v4);
-  return v3 != 0;
+  MEMORY[0x29EDC9740](_axSheetPresentationController);
+  return _accessibilityCanCollapseSheet != 0;
 }
 
 - (BOOL)accessibilityScrollDownPage
 {
-  v4 = [(UIDropShadowViewAccessibility *)self _axSheetPresentationController];
+  _axSheetPresentationController = [(UIDropShadowViewAccessibility *)self _axSheetPresentationController];
   v7 = 0;
   v5 = 0;
-  if ([v4 _accessibilityIsInverted])
+  if ([_axSheetPresentationController _accessibilityIsInverted])
   {
-    v8 = [(UIDropShadowViewAccessibility *)self _axSheetPresentationController];
+    _axSheetPresentationController2 = [(UIDropShadowViewAccessibility *)self _axSheetPresentationController];
     v7 = 1;
-    v3 = [v8 _accessibilityCollapseSheet];
+    _accessibilityCollapseSheet = [_axSheetPresentationController2 _accessibilityCollapseSheet];
   }
 
   else
   {
-    v6 = [(UIDropShadowViewAccessibility *)self _axSheetPresentationController];
+    _axSheetPresentationController3 = [(UIDropShadowViewAccessibility *)self _axSheetPresentationController];
     v5 = 1;
-    v3 = [v6 _accessibilityExpandSheet];
+    _accessibilityCollapseSheet = [_axSheetPresentationController3 _accessibilityExpandSheet];
   }
 
   if (v5)
   {
-    MEMORY[0x29EDC9740](v6);
+    MEMORY[0x29EDC9740](_axSheetPresentationController3);
   }
 
   if (v7)
   {
-    MEMORY[0x29EDC9740](v8);
+    MEMORY[0x29EDC9740](_axSheetPresentationController2);
   }
 
-  MEMORY[0x29EDC9740](v4);
-  return v3 != 0;
+  MEMORY[0x29EDC9740](_axSheetPresentationController);
+  return _accessibilityCollapseSheet != 0;
 }
 
 - (id)_axSheetPresentationController

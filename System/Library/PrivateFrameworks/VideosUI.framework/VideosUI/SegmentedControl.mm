@@ -1,16 +1,16 @@
 @interface SegmentedControl
-- (CGSize)vui_sizeThatFits:(CGSize)a3;
-- (_TtC8VideosUI16SegmentedControl)initWithItems:(id)a3;
+- (CGSize)vui_sizeThatFits:(CGSize)fits;
+- (_TtC8VideosUI16SegmentedControl)initWithItems:(id)items;
 - (void)segmentSelectionChanged;
 @end
 
 @implementation SegmentedControl
 
-- (CGSize)vui_sizeThatFits:(CGSize)a3
+- (CGSize)vui_sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_1E3EAF2CC(width, height);
   v7 = v6;
   v9 = v8;
@@ -24,13 +24,13 @@
 
 - (void)segmentSelectionChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3EAF384();
 }
 
-- (_TtC8VideosUI16SegmentedControl)initWithItems:(id)a3
+- (_TtC8VideosUI16SegmentedControl)initWithItems:(id)items
 {
-  if (a3)
+  if (items)
   {
     sub_1E42062B4();
   }

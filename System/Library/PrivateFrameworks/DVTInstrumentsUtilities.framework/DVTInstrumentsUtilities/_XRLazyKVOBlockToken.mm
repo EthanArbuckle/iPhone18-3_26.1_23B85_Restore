@@ -1,28 +1,28 @@
 @interface _XRLazyKVOBlockToken
-- (_XRLazyKVOBlockToken)initWithObject:(id)a3 observer:(id)a4;
-- (void)handleLazyKVOUpdate:(id)a3;
+- (_XRLazyKVOBlockToken)initWithObject:(id)object observer:(id)observer;
+- (void)handleLazyKVOUpdate:(id)update;
 @end
 
 @implementation _XRLazyKVOBlockToken
 
-- (_XRLazyKVOBlockToken)initWithObject:(id)a3 observer:(id)a4
+- (_XRLazyKVOBlockToken)initWithObject:(id)object observer:(id)observer
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  observerCopy = observer;
   v11.receiver = self;
   v11.super_class = _XRLazyKVOBlockToken;
   v8 = [(_XRLazyKVOBlockToken *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_object, v6);
-    objc_storeWeak(&v9->_observer, v7);
+    objc_storeWeak(&v8->_object, objectCopy);
+    objc_storeWeak(&v9->_observer, observerCopy);
   }
 
   return v9;
 }
 
-- (void)handleLazyKVOUpdate:(id)a3
+- (void)handleLazyKVOUpdate:(id)update
 {
   block = self->_block;
   if (block)

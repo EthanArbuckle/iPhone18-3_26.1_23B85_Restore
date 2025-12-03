@@ -1,21 +1,21 @@
 @interface SCMADVideoSessionResult
-- (SCMADVideoSessionResult)initWithAnalysis:(id)a3 confidenceScore:(id)a4;
+- (SCMADVideoSessionResult)initWithAnalysis:(id)analysis confidenceScore:(id)score;
 @end
 
 @implementation SCMADVideoSessionResult
 
-- (SCMADVideoSessionResult)initWithAnalysis:(id)a3 confidenceScore:(id)a4
+- (SCMADVideoSessionResult)initWithAnalysis:(id)analysis confidenceScore:(id)score
 {
-  v7 = a3;
-  v8 = a4;
+  analysisCopy = analysis;
+  scoreCopy = score;
   v14.receiver = self;
   v14.super_class = SCMADVideoSessionResult;
   v9 = [(SCMADVideoSessionResult *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_analysis, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_analysis, analysis);
+    v11 = [scoreCopy copy];
     confidenceScore = v10->_confidenceScore;
     v10->_confidenceScore = v11;
   }

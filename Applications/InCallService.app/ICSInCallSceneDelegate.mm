@@ -1,32 +1,32 @@
 @interface ICSInCallSceneDelegate
 - (BOOL)isDeviceAttachedToWindowedAccessory;
-- (BOOL)isDeviceAttachedToWindowedAccessoryForScene:(id)a3;
-- (BOOL)zombieDetectedForSession:(id)a3 scene:(id)a4 ofType:(unint64_t)a5;
+- (BOOL)isDeviceAttachedToWindowedAccessoryForScene:(id)scene;
+- (BOOL)zombieDetectedForSession:(id)session scene:(id)scene ofType:(unint64_t)type;
 - (CGRect)deviceWindowedAccessoryCutoutFrame;
-- (CGRect)deviceWindowedAccessoryCutoutFrameForScene:(id)a3;
+- (CGRect)deviceWindowedAccessoryCutoutFrameForScene:(id)scene;
 - (CGRect)windowedAccessoryCutoutFrameInScreen;
 - (ICSInCallSceneDelegate)init;
 - (NSMapTable)windowSceneToWindowMap;
-- (id)createCallDisplayStyleManagerForScene:(id)a3;
-- (id)createRootViewControllerForScene:(id)a3;
-- (id)inCallWindowSceneSystemApertureElementProvider:(id)a3;
-- (id)remoteAlertShellViewControllerForWindowScene:(id)a3;
-- (int64_t)callDisplayStyleForScene:(id)a3;
-- (void)_setupSceneIfNeeded:(id)a3 session:(id)a4;
-- (void)configureWindow:(id)a3 windowScene:(id)a4;
-- (void)configureWindowScene:(id)a3 forSceneType:(unint64_t)a4;
-- (void)handleHardwareButtonEvent:(id)a3 eventHandler:(id)a4;
-- (void)inCallWindowScene:(id)a3 didChangePresentationModeWithAnalyticsSource:(id)a4;
-- (void)inCallWindowScene:(id)a3 didReceiveDeviceLockEvent:(id)a4 withResultHandler:(id)a5;
-- (void)inCallWindowScene:(id)a3 didReceiveHardwareButtonEvents:(id)a4;
-- (void)inCallWindowScene:(id)a3 didTransitionToAttachedToWindowedAccessory:(BOOL)a4 windowedAccessoryCutoutFrameInScreen:(CGRect)a5;
-- (void)inCallWindowSceneHandleShowingNoticeForRevealingSystemControls:(id)a3;
-- (void)inCallWindowSceneHandleSilenceRingtone:(id)a3;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)updateSceneBackgroundMaterialWith:(id)a3;
-- (void)windowScene:(id)a3 didUpdateCoordinateSpace:(id)a4 interfaceOrientation:(int64_t)a5 traitCollection:(id)a6;
+- (id)createCallDisplayStyleManagerForScene:(id)scene;
+- (id)createRootViewControllerForScene:(id)scene;
+- (id)inCallWindowSceneSystemApertureElementProvider:(id)provider;
+- (id)remoteAlertShellViewControllerForWindowScene:(id)scene;
+- (int64_t)callDisplayStyleForScene:(id)scene;
+- (void)_setupSceneIfNeeded:(id)needed session:(id)session;
+- (void)configureWindow:(id)window windowScene:(id)scene;
+- (void)configureWindowScene:(id)scene forSceneType:(unint64_t)type;
+- (void)handleHardwareButtonEvent:(id)event eventHandler:(id)handler;
+- (void)inCallWindowScene:(id)scene didChangePresentationModeWithAnalyticsSource:(id)source;
+- (void)inCallWindowScene:(id)scene didReceiveDeviceLockEvent:(id)event withResultHandler:(id)handler;
+- (void)inCallWindowScene:(id)scene didReceiveHardwareButtonEvents:(id)events;
+- (void)inCallWindowScene:(id)scene didTransitionToAttachedToWindowedAccessory:(BOOL)accessory windowedAccessoryCutoutFrameInScreen:(CGRect)screen;
+- (void)inCallWindowSceneHandleShowingNoticeForRevealingSystemControls:(id)controls;
+- (void)inCallWindowSceneHandleSilenceRingtone:(id)ringtone;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)updateSceneBackgroundMaterialWith:(id)with;
+- (void)windowScene:(id)scene didUpdateCoordinateSpace:(id)space interfaceOrientation:(int64_t)orientation traitCollection:(id)collection;
 @end
 
 @implementation ICSInCallSceneDelegate
@@ -61,19 +61,19 @@
 - (BOOL)isDeviceAttachedToWindowedAccessory
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 delegate];
-  v5 = [v4 currentInCallScene];
-  LOBYTE(self) = [(ICSInCallSceneDelegate *)self isDeviceAttachedToWindowedAccessoryForScene:v5];
+  delegate = [v3 delegate];
+  currentInCallScene = [delegate currentInCallScene];
+  LOBYTE(self) = [(ICSInCallSceneDelegate *)self isDeviceAttachedToWindowedAccessoryForScene:currentInCallScene];
 
   return self;
 }
 
-- (BOOL)isDeviceAttachedToWindowedAccessoryForScene:(id)a3
+- (BOOL)isDeviceAttachedToWindowedAccessoryForScene:(id)scene
 {
-  v4 = a3;
-  [(ICSInCallSceneDelegate *)self deviceWindowedAccessoryCutoutFrameForScene:v4];
+  sceneCopy = scene;
+  [(ICSInCallSceneDelegate *)self deviceWindowedAccessoryCutoutFrameForScene:sceneCopy];
   v5 = !CGRectIsEmpty(v7);
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![v4 performSelector:"isDeviceAttachedToWindowedAccessory"])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![sceneCopy performSelector:"isDeviceAttachedToWindowedAccessory"])
   {
     LOBYTE(v5) = 0;
   }
@@ -84,9 +84,9 @@
 - (CGRect)deviceWindowedAccessoryCutoutFrame
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 delegate];
-  v5 = [v4 currentInCallScene];
-  [(ICSInCallSceneDelegate *)self deviceWindowedAccessoryCutoutFrameForScene:v5];
+  delegate = [v3 delegate];
+  currentInCallScene = [delegate currentInCallScene];
+  [(ICSInCallSceneDelegate *)self deviceWindowedAccessoryCutoutFrameForScene:currentInCallScene];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -103,12 +103,12 @@
   return result;
 }
 
-- (CGRect)deviceWindowedAccessoryCutoutFrameForScene:(id)a3
+- (CGRect)deviceWindowedAccessoryCutoutFrameForScene:(id)scene
 {
-  v3 = a3;
+  sceneCopy = scene;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 valueForKey:@"windowedAccessoryCutoutFrameInScreen"];
+    v4 = [sceneCopy valueForKey:@"windowedAccessoryCutoutFrameInScreen"];
     [v4 CGRectValue];
     x = v5;
     y = v7;
@@ -148,17 +148,17 @@
   return result;
 }
 
-- (void)inCallWindowScene:(id)a3 didReceiveHardwareButtonEvents:(id)a4
+- (void)inCallWindowScene:(id)scene didReceiveHardwareButtonEvents:(id)events
 {
-  v6 = a4;
-  v7 = [(ICSInCallSceneDelegate *)self remoteAlertShellViewControllerForWindowScene:a3];
+  eventsCopy = events;
+  v7 = [(ICSInCallSceneDelegate *)self remoteAlertShellViewControllerForWindowScene:scene];
   if ([v7 conformsToProtocol:&OBJC_PROTOCOL___PHInCallHardwareButtonEventHandlerProtocol])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v8 = v6;
+    v8 = eventsCopy;
     v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
@@ -187,18 +187,18 @@
   }
 }
 
-- (void)inCallWindowScene:(id)a3 didReceiveDeviceLockEvent:(id)a4 withResultHandler:(id)a5
+- (void)inCallWindowScene:(id)scene didReceiveDeviceLockEvent:(id)event withResultHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
+  sceneCopy = scene;
+  eventCopy = event;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1000A0944;
   v19[3] = &unk_100357CA0;
-  v10 = a5;
-  v20 = v10;
+  handlerCopy = handler;
+  v20 = handlerCopy;
   v11 = objc_retainBlock(v19);
-  if ([v8 ics_sceneType] == 6 && (-[ICSInCallSceneDelegate greenTea3PUIHardwareEventHandler](self, "greenTea3PUIHardwareEventHandler"), v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+  if ([sceneCopy ics_sceneType] == 6 && (-[ICSInCallSceneDelegate greenTea3PUIHardwareEventHandler](self, "greenTea3PUIHardwareEventHandler"), v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
   {
     v13 = sub_100009960();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -207,9 +207,9 @@
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Passing device lock event to GreenTea3P UI hardware event handler", v18, 2u);
     }
 
-    v14 = [(ICSInCallSceneDelegate *)self greenTea3PUIHardwareEventHandler];
-    v15 = [(ICSInCallSceneDelegate *)self callAnalyticsLogger];
-    [v14 handleDeviceLockEvent:v9 resultHandler:v10 callAnalyticsLogger:v15 completionHandler:&stru_100358528];
+    greenTea3PUIHardwareEventHandler = [(ICSInCallSceneDelegate *)self greenTea3PUIHardwareEventHandler];
+    callAnalyticsLogger = [(ICSInCallSceneDelegate *)self callAnalyticsLogger];
+    [greenTea3PUIHardwareEventHandler handleDeviceLockEvent:eventCopy resultHandler:handlerCopy callAnalyticsLogger:callAnalyticsLogger completionHandler:&stru_100358528];
   }
 
   else
@@ -221,10 +221,10 @@
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Received user-initiated device lock event, handing it off to the root view controller to handle", v18, 2u);
     }
 
-    v14 = [(ICSInCallSceneDelegate *)self remoteAlertShellViewControllerForWindowScene:v8];
-    if (v14)
+    greenTea3PUIHardwareEventHandler = [(ICSInCallSceneDelegate *)self remoteAlertShellViewControllerForWindowScene:sceneCopy];
+    if (greenTea3PUIHardwareEventHandler)
     {
-      [v14 handleDeviceLockEventWithSourceType:objc_msgSend(v9 resultHandler:{"sourceType"), v11}];
+      [greenTea3PUIHardwareEventHandler handleDeviceLockEventWithSourceType:objc_msgSend(eventCopy resultHandler:{"sourceType"), v11}];
     }
 
     else
@@ -241,20 +241,20 @@
   }
 }
 
-- (void)inCallWindowScene:(id)a3 didChangePresentationModeWithAnalyticsSource:(id)a4
+- (void)inCallWindowScene:(id)scene didChangePresentationModeWithAnalyticsSource:(id)source
 {
-  v6 = a3;
-  v53 = a4;
-  v7 = [v6 session];
-  [(ICSInCallSceneDelegate *)self _setupSceneIfNeeded:v6 session:v7];
+  sceneCopy = scene;
+  sourceCopy = source;
+  session = [sceneCopy session];
+  [(ICSInCallSceneDelegate *)self _setupSceneIfNeeded:sceneCopy session:session];
 
-  v8 = [(ICSInCallSceneDelegate *)self remoteAlertShellViewControllerForWindowScene:v6];
-  v9 = sub_100030C10([v6 ics_sceneType]);
+  v8 = [(ICSInCallSceneDelegate *)self remoteAlertShellViewControllerForWindowScene:sceneCopy];
+  v9 = sub_100030C10([sceneCopy ics_sceneType]);
   v10 = sub_100009960();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    [v6 presentationMode];
+    [sceneCopy presentationMode];
     v12 = SBSInCallPresentationModeDescription();
     *buf = 138543618;
     v55 = v9;
@@ -263,78 +263,78 @@
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Scene of type '%{public}@' changed presentation mode to %{public}@", buf, 0x16u);
   }
 
-  v13 = [v8 callDisplayStyleManager];
-  v14 = [v13 callDisplayStyle];
+  callDisplayStyleManager = [v8 callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  v15 = [v8 callDisplayStyleManager];
-  [(ICSInCallSceneDelegate *)self deviceWindowedAccessoryCutoutFrameForScene:v6];
-  [v15 updateMiniWindowCutoutFrame:-[ICSInCallSceneDelegate isDeviceAttachedToWindowedAccessoryForScene:](self attachedToWindowedAccessory:{"isDeviceAttachedToWindowedAccessoryForScene:", v6), v16, v17, v18, v19}];
+  callDisplayStyleManager2 = [v8 callDisplayStyleManager];
+  [(ICSInCallSceneDelegate *)self deviceWindowedAccessoryCutoutFrameForScene:sceneCopy];
+  [callDisplayStyleManager2 updateMiniWindowCutoutFrame:-[ICSInCallSceneDelegate isDeviceAttachedToWindowedAccessoryForScene:](self attachedToWindowedAccessory:{"isDeviceAttachedToWindowedAccessoryForScene:", sceneCopy), v16, v17, v18, v19}];
 
-  v20 = [(ICSInCallSceneDelegate *)self callDisplayStyleForScene:v6];
-  v21 = [v8 callDisplayStyleManager];
-  [v21 setCallDisplayStyle:v20];
+  v20 = [(ICSInCallSceneDelegate *)self callDisplayStyleForScene:sceneCopy];
+  callDisplayStyleManager3 = [v8 callDisplayStyleManager];
+  [callDisplayStyleManager3 setCallDisplayStyle:v20];
 
   BKSDisplayBrightnessGetCurrent();
   v23 = v22;
   v24 = +[TUCallCenter sharedInstance];
-  v25 = [v24 frontmostBargeCall];
+  frontmostBargeCall = [v24 frontmostBargeCall];
 
-  if (v25 && [v25 isPTT] && v20 == 4 && v23 > 0.0 && (SBUIIsSystemApertureEnabled() & 1) == 0)
+  if (frontmostBargeCall && [frontmostBargeCall isPTT] && v20 == 4 && v23 > 0.0 && (SBUIIsSystemApertureEnabled() & 1) == 0)
   {
     v26 = +[UIApplication sharedApplication];
-    v27 = [v26 delegate];
-    [v27 dismissPTTSessionPresentation];
+    delegate = [v26 delegate];
+    [delegate dismissPTTSessionPresentation];
   }
 
   v28 = +[TUCallCenter sharedInstance];
-  v29 = [v28 frontmostAudioOrVideoCall];
+  frontmostAudioOrVideoCall = [v28 frontmostAudioOrVideoCall];
 
-  v52 = v29;
-  v30 = [v29 uniqueProxyIdentifierUUID];
-  if (!v14)
+  v52 = frontmostAudioOrVideoCall;
+  uniqueProxyIdentifierUUID = [frontmostAudioOrVideoCall uniqueProxyIdentifierUUID];
+  if (!callDisplayStyle)
   {
-    v31 = [(ICSInCallSceneDelegate *)self callAnalyticsLogger];
+    callAnalyticsLogger = [(ICSInCallSceneDelegate *)self callAnalyticsLogger];
 
-    if (v31)
+    if (callAnalyticsLogger)
     {
       v32 = sub_100004F84();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v55 = v53;
+        v55 = sourceCopy;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "ICSCallAnalytics: analytcs source changed to %@", buf, 0xCu);
       }
 
-      v33 = [(ICSInCallSceneDelegate *)self callAnalyticsLogger];
-      [v33 setBannerDismissalReasonForAnalyticsSource:v53 callUUID:v30];
+      callAnalyticsLogger2 = [(ICSInCallSceneDelegate *)self callAnalyticsLogger];
+      [callAnalyticsLogger2 setBannerDismissalReasonForAnalyticsSource:sourceCopy callUUID:uniqueProxyIdentifierUUID];
     }
   }
 
-  v34 = [(ICSInCallSceneDelegate *)self callAnalyticsLogger];
-  v51 = v30;
-  [v34 setPresentationMode:objc_msgSend(v6 callUUID:{"presentationMode"), v30}];
+  callAnalyticsLogger3 = [(ICSInCallSceneDelegate *)self callAnalyticsLogger];
+  v51 = uniqueProxyIdentifierUUID;
+  [callAnalyticsLogger3 setPresentationMode:objc_msgSend(sceneCopy callUUID:{"presentationMode"), uniqueProxyIdentifierUUID}];
 
   v35 = +[UIApplication sharedApplication];
-  v36 = [v35 delegate];
-  v37 = [v36 sceneManager];
-  [v37 didUpdatePresentationMode:objc_msgSend(v6 forScene:{"presentationMode"), v6}];
+  delegate2 = [v35 delegate];
+  sceneManager = [delegate2 sceneManager];
+  [sceneManager didUpdatePresentationMode:objc_msgSend(sceneCopy forScene:{"presentationMode"), sceneCopy}];
 
-  v38 = [v6 presentationMode];
+  presentationMode = [sceneCopy presentationMode];
   v39 = +[UIApplication sharedApplication];
-  v40 = [v39 delegate];
-  v41 = [v40 bannerPresentationManager];
-  v42 = v41;
-  if (v38 == 2)
+  delegate3 = [v39 delegate];
+  bannerPresentationManager = [delegate3 bannerPresentationManager];
+  v42 = bannerPresentationManager;
+  if (presentationMode == 2)
   {
-    [v41 didUpdatePresentationModeToFullScreen];
+    [bannerPresentationManager didUpdatePresentationModeToFullScreen];
   }
 
   else
   {
-    [v41 didUpdatePresentationModeToDismissed];
+    [bannerPresentationManager didUpdatePresentationModeToDismissed];
   }
 
-  [(ICSInCallSceneDelegate *)self updateSceneBackgroundMaterialWith:v6];
+  [(ICSInCallSceneDelegate *)self updateSceneBackgroundMaterialWith:sceneCopy];
   if (![(CNKFeatures *)self->_features isIncomingCallBannerEnabled]&& v20 == 2)
   {
     v43 = sub_10010D6C4();
@@ -346,13 +346,13 @@
     }
 
     v44 = +[UIApplication sharedApplication];
-    v45 = [v44 delegate];
-    v46 = [v45 bannerPresentationManager];
-    [v46 dismissPresentedBannerForReason:@"InCallService is presenting full screen" animated:1];
+    delegate4 = [v44 delegate];
+    bannerPresentationManager2 = [delegate4 bannerPresentationManager];
+    [bannerPresentationManager2 dismissPresentedBannerForReason:@"InCallService is presenting full screen" animated:1];
   }
 
-  v47 = [v8 pipController];
-  if ([v47 isPipped] && v20 == 2)
+  pipController = [v8 pipController];
+  if ([pipController isPipped] && v20 == 2)
   {
     v48 = sub_100009960();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
@@ -362,26 +362,26 @@
       _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "Returning %{public}@ PiP to full screen since the associated scene is now full screen", buf, 0xCu);
     }
 
-    [v47 manuallyStopPIPWithCompletion:&stru_100358548];
+    [pipController manuallyStopPIPWithCompletion:&stru_100358548];
   }
 
-  v49 = [(ICSInCallSceneDelegate *)self greenTea3PPresentationStyleHandler];
+  greenTea3PPresentationStyleHandler = [(ICSInCallSceneDelegate *)self greenTea3PPresentationStyleHandler];
 
-  if (v49)
+  if (greenTea3PPresentationStyleHandler)
   {
-    v50 = [(ICSInCallSceneDelegate *)self greenTea3PPresentationStyleHandler];
-    [v50 handlePresentationModeChanged:objc_msgSend(v6 scene:{"presentationMode"), v6}];
+    greenTea3PPresentationStyleHandler2 = [(ICSInCallSceneDelegate *)self greenTea3PPresentationStyleHandler];
+    [greenTea3PPresentationStyleHandler2 handlePresentationModeChanged:objc_msgSend(sceneCopy scene:{"presentationMode"), sceneCopy}];
   }
 }
 
-- (void)inCallWindowScene:(id)a3 didTransitionToAttachedToWindowedAccessory:(BOOL)a4 windowedAccessoryCutoutFrameInScreen:(CGRect)a5
+- (void)inCallWindowScene:(id)scene didTransitionToAttachedToWindowedAccessory:(BOOL)accessory windowedAccessoryCutoutFrameInScreen:(CGRect)screen
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4;
-  v11 = a3;
+  height = screen.size.height;
+  width = screen.size.width;
+  y = screen.origin.y;
+  x = screen.origin.x;
+  accessoryCopy = accessory;
+  sceneCopy = scene;
   v12 = sub_100009960();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -399,17 +399,17 @@
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "In-call scene did transition to device attached to windowed accessory: %{public}@ with frame: %{public}@", &v20, 0x16u);
   }
 
-  v16 = [(ICSInCallSceneDelegate *)self remoteAlertShellViewControllerForWindowScene:v11];
-  v17 = [v16 callDisplayStyleManager];
-  [(ICSInCallSceneDelegate *)self deviceWindowedAccessoryCutoutFrameForScene:v11];
-  [v17 updateMiniWindowCutoutFrame:v9 attachedToWindowedAccessory:?];
+  v16 = [(ICSInCallSceneDelegate *)self remoteAlertShellViewControllerForWindowScene:sceneCopy];
+  callDisplayStyleManager = [v16 callDisplayStyleManager];
+  [(ICSInCallSceneDelegate *)self deviceWindowedAccessoryCutoutFrameForScene:sceneCopy];
+  [callDisplayStyleManager updateMiniWindowCutoutFrame:accessoryCopy attachedToWindowedAccessory:?];
 
-  v18 = [(ICSInCallSceneDelegate *)self callDisplayStyleForScene:v11];
-  v19 = [v16 callDisplayStyleManager];
-  [v19 setCallDisplayStyle:v18];
+  v18 = [(ICSInCallSceneDelegate *)self callDisplayStyleForScene:sceneCopy];
+  callDisplayStyleManager2 = [v16 callDisplayStyleManager];
+  [callDisplayStyleManager2 setCallDisplayStyle:v18];
 }
 
-- (void)inCallWindowSceneHandleShowingNoticeForRevealingSystemControls:(id)a3
+- (void)inCallWindowSceneHandleShowingNoticeForRevealingSystemControls:(id)controls
 {
   v3 = sub_10010D6C4();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -419,50 +419,50 @@
   }
 
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 delegate];
-  v6 = [v5 bannerPresentationManager];
-  [v6 presentReminderNotice];
+  delegate = [v4 delegate];
+  bannerPresentationManager = [delegate bannerPresentationManager];
+  [bannerPresentationManager presentReminderNotice];
 }
 
-- (id)remoteAlertShellViewControllerForWindowScene:(id)a3
+- (id)remoteAlertShellViewControllerForWindowScene:(id)scene
 {
-  v4 = a3;
-  v5 = [(ICSInCallSceneDelegate *)self windowSceneToWindowMap];
-  v6 = [v5 objectForKey:v4];
+  sceneCopy = scene;
+  windowSceneToWindowMap = [(ICSInCallSceneDelegate *)self windowSceneToWindowMap];
+  v6 = [windowSceneToWindowMap objectForKey:sceneCopy];
 
-  v7 = [v6 rootViewController];
+  rootViewController = [v6 rootViewController];
   objc_opt_class();
-  LOBYTE(v5) = objc_opt_isKindOfClass();
+  LOBYTE(windowSceneToWindowMap) = objc_opt_isKindOfClass();
 
-  if (v5)
+  if (windowSceneToWindowMap)
   {
-    v8 = [v6 rootViewController];
+    rootViewController2 = [v6 rootViewController];
   }
 
   else
   {
-    v8 = 0;
+    rootViewController2 = 0;
   }
 
-  return v8;
+  return rootViewController2;
 }
 
-- (id)inCallWindowSceneSystemApertureElementProvider:(id)a3
+- (id)inCallWindowSceneSystemApertureElementProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   if (([(CNKFeatures *)self->_features isSystemApertureEnabled]& 1) != 0)
   {
     v5 = +[UIApplication sharedApplication];
-    v6 = [v5 delegate];
-    v7 = [v6 bannerPresentationManager];
-    v8 = [v7 makeSystemApertureElementProvider];
+    delegate = [v5 delegate];
+    bannerPresentationManager = [delegate bannerPresentationManager];
+    makeSystemApertureElementProvider = [bannerPresentationManager makeSystemApertureElementProvider];
 
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
       v9 = sub_100009960();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
       {
-        sub_100255AD8(v8, v9);
+        sub_100255AD8(makeSystemApertureElementProvider, v9);
       }
     }
 
@@ -470,9 +470,9 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412546;
-      v14 = v8;
+      v14 = makeSystemApertureElementProvider;
       v15 = 2112;
-      v16 = v4;
+      v16 = providerCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Provided system aperture element %@ corresponding to scene %@", &v13, 0x16u);
     }
   }
@@ -485,19 +485,19 @@
       sub_100255A94(v11);
     }
 
-    v8 = 0;
+    makeSystemApertureElementProvider = 0;
   }
 
-  return v8;
+  return makeSystemApertureElementProvider;
 }
 
-- (void)inCallWindowSceneHandleSilenceRingtone:(id)a3
+- (void)inCallWindowSceneHandleSilenceRingtone:(id)ringtone
 {
   v3 = +[TUCallCenter sharedInstance];
-  v4 = [v3 incomingCall];
-  if (v4)
+  incomingCall = [v3 incomingCall];
+  if (incomingCall)
   {
-    v7 = v4;
+    v7 = incomingCall;
 
     v5 = v7;
   }
@@ -505,10 +505,10 @@
   else
   {
     v6 = +[TUCallCenter sharedInstance];
-    v8 = [v6 incomingVideoCall];
+    incomingVideoCall = [v6 incomingVideoCall];
 
-    v5 = v8;
-    if (!v8)
+    v5 = incomingVideoCall;
+    if (!incomingVideoCall)
     {
       goto LABEL_7;
     }
@@ -524,75 +524,75 @@
 LABEL_7:
 }
 
-- (void)windowScene:(id)a3 didUpdateCoordinateSpace:(id)a4 interfaceOrientation:(int64_t)a5 traitCollection:(id)a6
+- (void)windowScene:(id)scene didUpdateCoordinateSpace:(id)space interfaceOrientation:(int64_t)orientation traitCollection:(id)collection
 {
-  v7 = a3;
-  v8 = [(ICSInCallSceneDelegate *)self windowSceneToWindowMap];
-  v10 = [v8 objectForKey:v7];
+  sceneCopy = scene;
+  windowSceneToWindowMap = [(ICSInCallSceneDelegate *)self windowSceneToWindowMap];
+  v10 = [windowSceneToWindowMap objectForKey:sceneCopy];
 
-  v9 = [v7 coordinateSpace];
+  coordinateSpace = [sceneCopy coordinateSpace];
 
-  [v9 bounds];
+  [coordinateSpace bounds];
   [v10 setFrame:?];
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = [v4 session];
-  [(ICSInCallSceneDelegate *)self _setupSceneIfNeeded:v4 session:v5];
+  activeCopy = active;
+  session = [activeCopy session];
+  [(ICSInCallSceneDelegate *)self _setupSceneIfNeeded:activeCopy session:session];
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v6 = a3;
-  v7 = [v6 session];
-  [(ICSInCallSceneDelegate *)self _setupSceneIfNeeded:v6 session:v7];
+  sceneCopy = scene;
+  session = [sceneCopy session];
+  [(ICSInCallSceneDelegate *)self _setupSceneIfNeeded:sceneCopy session:session];
 }
 
-- (void)_setupSceneIfNeeded:(id)a3 session:(id)a4
+- (void)_setupSceneIfNeeded:(id)needed session:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  neededCopy = needed;
+  sessionCopy = session;
   if (![(ICSInCallSceneDelegate *)self hasSetupForScene])
   {
-    v8 = v6;
+    v8 = neededCopy;
     if ([v8 activationState] != -1 || objc_msgSend(v8, "presentationMode") || (objc_msgSend(v8, "requestedPresentationConfigurationIdentifier"), v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
     {
       [(ICSInCallSceneDelegate *)self setHasSetupForScene:1];
-      v10 = [v8 ics_sceneType];
+      ics_sceneType = [v8 ics_sceneType];
       v11 = sub_100009960();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v12 = v11;
-        v13 = sub_100030C10(v10);
+        v13 = sub_100030C10(ics_sceneType);
         *buf = 138543874;
         v78 = v13;
         v79 = 2114;
         v80 = v8;
         v81 = 2114;
-        v82 = v7;
+        v82 = sessionCopy;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Connecting new scene of type '%{public}@'; scene: %{public}@; to session: %{public}@", buf, 0x20u);
       }
 
-      if (![(ICSInCallSceneDelegate *)self zombieDetectedForSession:v7 scene:v8 ofType:v10])
+      if (![(ICSInCallSceneDelegate *)self zombieDetectedForSession:sessionCopy scene:v8 ofType:ics_sceneType])
       {
         v14 = +[TUCallCenter sharedInstance];
-        v15 = [v14 frontmostAudioOrVideoCall];
+        frontmostAudioOrVideoCall = [v14 frontmostAudioOrVideoCall];
 
-        if (v15)
+        if (frontmostAudioOrVideoCall)
         {
-          v16 = [v15 provider];
-          v17 = [v16 localizedName];
-          [v8 setTitle:v17];
+          provider = [frontmostAudioOrVideoCall provider];
+          localizedName = [provider localizedName];
+          [v8 setTitle:localizedName];
         }
 
-        v75 = v15;
-        v76 = v6;
+        v75 = frontmostAudioOrVideoCall;
+        v76 = neededCopy;
         v18 = +[UIApplication sharedApplication];
-        v19 = [v18 delegate];
-        v20 = [v19 sceneManager];
-        v21 = [v20 sceneOfType:v10];
+        delegate = [v18 delegate];
+        sceneManager = [delegate sceneManager];
+        v21 = [sceneManager sceneOfType:ics_sceneType];
 
         if (v21)
         {
@@ -600,7 +600,7 @@ LABEL_7:
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
             v71 = v22;
-            v72 = sub_100030C10(v10);
+            v72 = sub_100030C10(ics_sceneType);
             *buf = 138543874;
             v78 = v72;
             v79 = 2112;
@@ -613,46 +613,46 @@ LABEL_7:
 
         v74 = v21;
         v23 = [[ICSSecureWindow alloc] initWithWindowScene:v8];
-        v24 = [(ICSInCallSceneDelegate *)self windowSceneToWindowMap];
-        [v24 setObject:v23 forKey:v8];
+        windowSceneToWindowMap = [(ICSInCallSceneDelegate *)self windowSceneToWindowMap];
+        [windowSceneToWindowMap setObject:v23 forKey:v8];
 
         v25 = objc_alloc_init(ICSCallAnalyticsLogger);
         [(ICSInCallSceneDelegate *)self setCallAnalyticsLogger:v25];
 
         v73 = v23;
         [(ICSInCallSceneDelegate *)self configureWindow:v23 windowScene:v8];
-        [(ICSInCallSceneDelegate *)self configureWindowScene:v8 forSceneType:v10];
+        [(ICSInCallSceneDelegate *)self configureWindowScene:v8 forSceneType:ics_sceneType];
         v26 = +[UIApplication sharedApplication];
-        v27 = [v26 delegate];
-        v28 = [v27 allInCallScenes];
-        [v28 addObject:v8];
+        delegate2 = [v26 delegate];
+        allInCallScenes = [delegate2 allInCallScenes];
+        [allInCallScenes addObject:v8];
 
         v29 = +[UIApplication sharedApplication];
-        v30 = [v29 delegate];
-        v31 = [v30 connectedSceneSessionIdentifiers];
-        v32 = [v7 persistentIdentifier];
-        v33 = [v32 copy];
-        [v31 addObject:v33];
+        delegate3 = [v29 delegate];
+        connectedSceneSessionIdentifiers = [delegate3 connectedSceneSessionIdentifiers];
+        persistentIdentifier = [sessionCopy persistentIdentifier];
+        v33 = [persistentIdentifier copy];
+        [connectedSceneSessionIdentifiers addObject:v33];
 
         v34 = +[UIApplication sharedApplication];
-        v35 = [v34 delegate];
-        v36 = [v35 sceneManager];
-        [v36 registerScene:v8 ofType:v10];
+        delegate4 = [v34 delegate];
+        sceneManager2 = [delegate4 sceneManager];
+        [sceneManager2 registerScene:v8 ofType:ics_sceneType];
 
         v37 = sub_100009960();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
         {
           v38 = v37;
           v39 = +[UIApplication sharedApplication];
-          v40 = [v39 delegate];
-          v41 = [v40 currentInCallScene];
+          delegate5 = [v39 delegate];
+          currentInCallScene = [delegate5 currentInCallScene];
           v42 = +[UIApplication sharedApplication];
-          v43 = [v42 delegate];
-          v44 = [v43 allInCallScenes];
+          delegate6 = [v42 delegate];
+          allInCallScenes2 = [delegate6 allInCallScenes];
           *buf = 138543618;
-          v78 = v41;
+          v78 = currentInCallScene;
           v79 = 2114;
-          v80 = v44;
+          v80 = allInCallScenes2;
           _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "The current in-call scene is: %{public}@; the set of all tracked scenes is now: %{public}@", buf, 0x16u);
         }
 
@@ -661,9 +661,9 @@ LABEL_7:
         {
           v46 = v45;
           v47 = +[UIApplication sharedApplication];
-          v48 = [v47 delegate];
-          v49 = [v48 allInCallScenes];
-          v50 = [v49 count];
+          delegate7 = [v47 delegate];
+          allInCallScenes3 = [delegate7 allInCallScenes];
+          v50 = [allInCallScenes3 count];
           *buf = 134217984;
           v78 = v50;
           _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "Number of scenes tracked is %lu", buf, 0xCu);
@@ -674,28 +674,28 @@ LABEL_7:
         {
           v52 = v51;
           v53 = +[UIApplication sharedApplication];
-          v54 = [v53 delegate];
-          v55 = [v54 connectedSceneSessionIdentifiers];
+          delegate8 = [v53 delegate];
+          connectedSceneSessionIdentifiers2 = [delegate8 connectedSceneSessionIdentifiers];
           *buf = 138543362;
-          v78 = v55;
+          v78 = connectedSceneSessionIdentifiers2;
           _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "The set of all scene sessions that have ever connected is %{public}@", buf, 0xCu);
         }
 
         v56 = +[UIApplication sharedApplication];
-        v57 = [v56 delegate];
-        v58 = [v57 sceneManager];
-        [v58 didUpdatePresentationMode:objc_msgSend(v8 forScene:{"presentationMode"), v8}];
+        delegate9 = [v56 delegate];
+        sceneManager3 = [delegate9 sceneManager];
+        [sceneManager3 didUpdatePresentationMode:objc_msgSend(v8 forScene:{"presentationMode"), v8}];
 
-        v59 = [(ICSSecureWindow *)v73 rootViewController];
+        rootViewController = [(ICSSecureWindow *)v73 rootViewController];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v60 = v59;
+          v60 = rootViewController;
           v61 = v60;
           if (v60)
           {
-            v62 = [v60 pipController];
-            [v62 setWindowForTransitionAnimation:v73];
+            pipController = [v60 pipController];
+            [pipController setWindowForTransitionAnimation:v73];
 
             [v61 sceneSessionDidChange];
           }
@@ -719,49 +719,49 @@ LABEL_7:
           }
 
           v66 = +[UIApplication sharedApplication];
-          v67 = [v66 delegate];
-          v68 = [v67 bannerPresentationManager];
-          [v68 dismissPresentedBannerForReason:@"InCallService is connecting a new full screen scene" animated:1];
+          delegate10 = [v66 delegate];
+          bannerPresentationManager = [delegate10 bannerPresentationManager];
+          [bannerPresentationManager dismissPresentedBannerForReason:@"InCallService is connecting a new full screen scene" animated:1];
         }
 
         [CATransaction setFrameStallSkipRequest:1];
-        v69 = [(ICSInCallSceneDelegate *)self greenTea3PPresentationStyleHandler];
+        greenTea3PPresentationStyleHandler = [(ICSInCallSceneDelegate *)self greenTea3PPresentationStyleHandler];
 
-        if (v69)
+        if (greenTea3PPresentationStyleHandler)
         {
-          v70 = [(ICSInCallSceneDelegate *)self greenTea3PPresentationStyleHandler];
-          [v70 handlePresentationModeChanged:objc_msgSend(v8 scene:{"presentationMode"), v8}];
+          greenTea3PPresentationStyleHandler2 = [(ICSInCallSceneDelegate *)self greenTea3PPresentationStyleHandler];
+          [greenTea3PPresentationStyleHandler2 handlePresentationModeChanged:objc_msgSend(v8 scene:{"presentationMode"), v8}];
         }
 
-        v6 = v76;
+        neededCopy = v76;
       }
     }
   }
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = sub_100009960();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = sub_100030C10([v4 ics_sceneType]);
+    v7 = sub_100030C10([disconnectCopy ics_sceneType]);
     v39 = 138543618;
     v40 = v7;
     v41 = 2112;
-    v42 = v4;
+    v42 = disconnectCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Disconnected scene of type %{public}@: %@", &v39, 0x16u);
   }
 
-  v8 = [(ICSInCallSceneDelegate *)self remoteAlertShellViewControllerForWindowScene:v4];
-  v9 = [(ICSInCallSceneDelegate *)self windowSceneToWindowMap];
-  [v9 removeObjectForKey:v4];
+  v8 = [(ICSInCallSceneDelegate *)self remoteAlertShellViewControllerForWindowScene:disconnectCopy];
+  windowSceneToWindowMap = [(ICSInCallSceneDelegate *)self windowSceneToWindowMap];
+  [windowSceneToWindowMap removeObjectForKey:disconnectCopy];
 
   v10 = +[UIApplication sharedApplication];
-  v11 = [v10 delegate];
-  v12 = [v11 allInCallScenes];
-  v13 = [v12 containsObject:v4];
+  delegate = [v10 delegate];
+  allInCallScenes = [delegate allInCallScenes];
+  v13 = [allInCallScenes containsObject:disconnectCopy];
 
   v14 = sub_100009960();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
@@ -770,20 +770,20 @@ LABEL_7:
     if (v15)
     {
       v39 = 138412290;
-      v40 = v4;
+      v40 = disconnectCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Removing scene %@ from the set of all tracked scenes", &v39, 0xCu);
     }
 
     v16 = +[UIApplication sharedApplication];
-    v17 = [v16 delegate];
-    v18 = [v17 allInCallScenes];
-    [v18 removeObject:v4];
+    delegate2 = [v16 delegate];
+    allInCallScenes2 = [delegate2 allInCallScenes];
+    [allInCallScenes2 removeObject:disconnectCopy];
   }
 
   else if (v15)
   {
     v39 = 138412290;
-    v40 = v4;
+    v40 = disconnectCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[Warning]: Not removing scene %@ from the set of all tracked scenes because it was already untracked", &v39, 0xCu);
   }
 
@@ -792,10 +792,10 @@ LABEL_7:
   {
     v20 = v19;
     v21 = +[UIApplication sharedApplication];
-    v22 = [v21 delegate];
-    v23 = [v22 allInCallScenes];
+    delegate3 = [v21 delegate];
+    allInCallScenes3 = [delegate3 allInCallScenes];
     v39 = 138412290;
-    v40 = v23;
+    v40 = allInCallScenes3;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "The set of all tracked scenes is now %@", &v39, 0xCu);
   }
 
@@ -804,42 +804,42 @@ LABEL_7:
   {
     v25 = v24;
     v26 = +[UIApplication sharedApplication];
-    v27 = [v26 delegate];
-    v28 = [v27 allInCallScenes];
-    v29 = [v28 count];
+    delegate4 = [v26 delegate];
+    allInCallScenes4 = [delegate4 allInCallScenes];
+    v29 = [allInCallScenes4 count];
     v39 = 134217984;
     v40 = v29;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Number of scenes tracked is %lu", &v39, 0xCu);
   }
 
-  v30 = [(ICSInCallSceneDelegate *)self sceneDidDisconnectBlock];
+  sceneDidDisconnectBlock = [(ICSInCallSceneDelegate *)self sceneDidDisconnectBlock];
 
-  if (v30)
+  if (sceneDidDisconnectBlock)
   {
-    v31 = [(ICSInCallSceneDelegate *)self sceneDidDisconnectBlock];
-    v31[2]();
+    sceneDidDisconnectBlock2 = [(ICSInCallSceneDelegate *)self sceneDidDisconnectBlock];
+    sceneDidDisconnectBlock2[2]();
 
     [(ICSInCallSceneDelegate *)self setSceneDidDisconnectBlock:0];
   }
 
-  if ([v4 presentationMode] == 1)
+  if ([disconnectCopy presentationMode] == 1)
   {
-    v32 = [(ICSInCallSceneDelegate *)self callAnalyticsLogger];
-    [v32 bannerDidDisconnect];
+    callAnalyticsLogger = [(ICSInCallSceneDelegate *)self callAnalyticsLogger];
+    [callAnalyticsLogger bannerDidDisconnect];
   }
 
   [(ICSInCallSceneDelegate *)self setCallAnalyticsLogger:0];
   [v8 sceneSessionDidChange];
-  v33 = [v4 requestedPresentationConfigurationIdentifier];
+  requestedPresentationConfigurationIdentifier = [disconnectCopy requestedPresentationConfigurationIdentifier];
 
-  if (v33)
+  if (requestedPresentationConfigurationIdentifier)
   {
     v34 = +[UIApplication sharedApplication];
-    v35 = [v34 delegate];
-    v36 = [v35 sceneManager];
-    v37 = [v4 ics_sceneType];
-    v38 = [v4 requestedPresentationConfigurationIdentifier];
-    [v36 didDisconnectSceneOfType:v37 withIdentifier:v38];
+    delegate5 = [v34 delegate];
+    sceneManager = [delegate5 sceneManager];
+    ics_sceneType = [disconnectCopy ics_sceneType];
+    requestedPresentationConfigurationIdentifier2 = [disconnectCopy requestedPresentationConfigurationIdentifier];
+    [sceneManager didDisconnectSceneOfType:ics_sceneType withIdentifier:requestedPresentationConfigurationIdentifier2];
   }
 
   else
@@ -847,75 +847,75 @@ LABEL_7:
     v34 = sub_100004F84();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_FAULT))
     {
-      sub_100255B50(v4, v34);
+      sub_100255B50(disconnectCopy, v34);
     }
   }
 }
 
-- (void)handleHardwareButtonEvent:(id)a3 eventHandler:(id)a4
+- (void)handleHardwareButtonEvent:(id)event eventHandler:(id)handler
 {
-  v8 = a4;
-  v5 = [a3 buttonEventType];
-  if (v5 <= 2)
+  handlerCopy = handler;
+  buttonEventType = [event buttonEventType];
+  if (buttonEventType <= 2)
   {
-    if (v5 == 1)
+    if (buttonEventType == 1)
     {
-      [v8 handleVolumeUpButtonPressed];
+      [handlerCopy handleVolumeUpButtonPressed];
     }
 
     else
     {
-      v6 = v5 == 2;
-      v7 = v8;
+      v6 = buttonEventType == 2;
+      v7 = handlerCopy;
       if (!v6)
       {
         goto LABEL_13;
       }
 
-      [v8 handleVolumeDownButtonPressed];
+      [handlerCopy handleVolumeDownButtonPressed];
     }
 
 LABEL_12:
-    v7 = v8;
+    v7 = handlerCopy;
     goto LABEL_13;
   }
 
-  if (v5 == 3)
+  if (buttonEventType == 3)
   {
-    [v8 handleHeadsetButtonPressed];
+    [handlerCopy handleHeadsetButtonPressed];
     goto LABEL_12;
   }
 
-  v6 = v5 == 4;
-  v7 = v8;
+  v6 = buttonEventType == 4;
+  v7 = handlerCopy;
   if (v6)
   {
-    [v8 handleHeadsetButtonLongPressed];
+    [handlerCopy handleHeadsetButtonLongPressed];
     goto LABEL_12;
   }
 
 LABEL_13:
 }
 
-- (BOOL)zombieDetectedForSession:(id)a3 scene:(id)a4 ofType:(unint64_t)a5
+- (BOOL)zombieDetectedForSession:(id)session scene:(id)scene ofType:(unint64_t)type
 {
-  v7 = a4;
-  v8 = a3;
+  sceneCopy = scene;
+  sessionCopy = session;
   v9 = +[UIApplication sharedApplication];
-  v10 = [v9 delegate];
-  v11 = [v10 connectedSceneSessionIdentifiers];
-  v12 = [v8 persistentIdentifier];
+  delegate = [v9 delegate];
+  connectedSceneSessionIdentifiers = [delegate connectedSceneSessionIdentifiers];
+  persistentIdentifier = [sessionCopy persistentIdentifier];
 
-  v13 = [v11 containsObject:v12];
+  v13 = [connectedSceneSessionIdentifiers containsObject:persistentIdentifier];
   v14 = +[UIApplication sharedApplication];
-  v15 = [v14 delegate];
-  v16 = [v15 sceneManager];
-  v17 = [v16 hasPendingSceneOfType:a5];
+  delegate2 = [v14 delegate];
+  sceneManager = [delegate2 sceneManager];
+  v17 = [sceneManager hasPendingSceneOfType:type];
 
   if (objc_opt_respondsToSelector())
   {
-    v18 = [v7 requestedPresentationConfigurationIdentifier];
-    v19 = v18 == 0;
+    requestedPresentationConfigurationIdentifier = [sceneCopy requestedPresentationConfigurationIdentifier];
+    v19 = requestedPresentationConfigurationIdentifier == 0;
   }
 
   else
@@ -937,19 +937,19 @@ LABEL_13:
   return v21 & 1;
 }
 
-- (void)configureWindowScene:(id)a3 forSceneType:(unint64_t)a4
+- (void)configureWindowScene:(id)scene forSceneType:(unint64_t)type
 {
-  v6 = a3;
-  [(ICSInCallSceneDelegate *)self updateSceneBackgroundMaterialWith:v6];
-  v7 = sub_1000EDC00(a4);
-  [v6 setPreferredBackgroundActivitiesToSuppress:v7];
+  sceneCopy = scene;
+  [(ICSInCallSceneDelegate *)self updateSceneBackgroundMaterialWith:sceneCopy];
+  v7 = sub_1000EDC00(type);
+  [sceneCopy setPreferredBackgroundActivitiesToSuppress:v7];
 
-  [v6 setShouldBecomeVisibleWhenWakingDisplay:0];
+  [sceneCopy setShouldBecomeVisibleWhenWakingDisplay:0];
   v8 = +[UIApplication sharedApplication];
-  v9 = [v8 delegate];
-  v10 = [v9 shouldActivateSOS];
+  delegate = [v8 delegate];
+  shouldActivateSOS = [delegate shouldActivateSOS];
 
-  if (v10)
+  if (shouldActivateSOS)
   {
     v11 = sub_100009960();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -959,18 +959,18 @@ LABEL_13:
     }
 
     v12 = +[UIApplication sharedApplication];
-    v13 = [v12 delegate];
-    [v13 transitionSceneToOverlayForSOS];
+    delegate2 = [v12 delegate];
+    [delegate2 transitionSceneToOverlayForSOS];
   }
 
   else
   {
     v14 = +[UIApplication sharedApplication];
-    v15 = [v14 delegate];
-    v16 = [v15 activationContext];
-    v17 = [v16 pendingRestrictedScreenTimeRequest];
+    delegate3 = [v14 delegate];
+    activationContext = [delegate3 activationContext];
+    pendingRestrictedScreenTimeRequest = [activationContext pendingRestrictedScreenTimeRequest];
 
-    if (!v17)
+    if (!pendingRestrictedScreenTimeRequest)
     {
       goto LABEL_10;
     }
@@ -983,33 +983,33 @@ LABEL_13:
     }
 
     v12 = +[UIApplication sharedApplication];
-    v13 = [v12 delegate];
-    [v13 transitionSceneToOverlayForScreenTime];
+    delegate2 = [v12 delegate];
+    [delegate2 transitionSceneToOverlayForScreenTime];
   }
 
 LABEL_10:
-  if ([v6 isScreenSharingPresentation])
+  if ([sceneCopy isScreenSharingPresentation])
   {
-    [v6 setSupportsDeviceLockEvents:0];
-    [v6 setIdleTimerDisabled:1];
-    [v6 setCallConnected:0];
-    [v6 setPreferredHardwareButtonEventTypes:0];
+    [sceneCopy setSupportsDeviceLockEvents:0];
+    [sceneCopy setIdleTimerDisabled:1];
+    [sceneCopy setCallConnected:0];
+    [sceneCopy setPreferredHardwareButtonEventTypes:0];
   }
 
-  if (a4 == 6)
+  if (type == 6)
   {
-    [v6 setSupportsDeviceLockEvents:1];
-    [v6 setShouldBecomeVisibleWhenWakingDisplay:0];
-    [v6 setPrefersHiddenWhenDismissed:1];
+    [sceneCopy setSupportsDeviceLockEvents:1];
+    [sceneCopy setShouldBecomeVisibleWhenWakingDisplay:0];
+    [sceneCopy setPrefersHiddenWhenDismissed:1];
   }
 }
 
-- (void)updateSceneBackgroundMaterialWith:(id)a3
+- (void)updateSceneBackgroundMaterialWith:(id)with
 {
-  v16 = a3;
+  withCopy = with;
   v4 = +[TUCallCenter sharedInstance];
-  v5 = [v4 frontmostCall];
-  if ([v5 isRTT])
+  frontmostCall = [v4 frontmostCall];
+  if ([frontmostCall isRTT])
   {
     LOBYTE(v6) = 0;
   }
@@ -1017,16 +1017,16 @@ LABEL_10:
   else
   {
     v7 = +[TUCallCenter sharedInstance];
-    v8 = [v7 frontmostCall];
-    v6 = [v8 isTTY] ^ 1;
+    frontmostCall2 = [v7 frontmostCall];
+    v6 = [frontmostCall2 isTTY] ^ 1;
   }
 
-  if ([v16 presentationMode] != 1 && -[CNKFeatures isHeroImageEnabled](self->_features, "isHeroImageEnabled") && (+[TUCallCenter sharedInstance](TUCallCenter, "sharedInstance"), v9 = objc_claimAutoreleasedReturnValue(), v10 = (objc_msgSend(v9, "currentCallCount") != 0) & v6, v9, v10 == 1))
+  if ([withCopy presentationMode] != 1 && -[CNKFeatures isHeroImageEnabled](self->_features, "isHeroImageEnabled") && (+[TUCallCenter sharedInstance](TUCallCenter, "sharedInstance"), v9 = objc_claimAutoreleasedReturnValue(), v10 = (objc_msgSend(v9, "currentCallCount") != 0) & v6, v9, v10 == 1))
   {
     v11 = +[TUCallCenter sharedInstance];
     v12 = +[TUCallCenter sharedInstance];
-    v13 = [v12 frontmostAudioOrVideoCall];
-    v14 = [v11 activeConversationForCall:v13];
+    frontmostAudioOrVideoCall = [v12 frontmostAudioOrVideoCall];
+    v14 = [v11 activeConversationForCall:frontmostAudioOrVideoCall];
 
     if (v14 && ![v14 avMode])
     {
@@ -1038,61 +1038,61 @@ LABEL_10:
       v15 = 1;
     }
 
-    [v16 _setBackgroundStyle:v15];
+    [withCopy _setBackgroundStyle:v15];
   }
 
   else
   {
-    [v16 _setBackgroundStyle:4];
+    [withCopy _setBackgroundStyle:4];
   }
 }
 
-- (void)configureWindow:(id)a3 windowScene:(id)a4
+- (void)configureWindow:(id)window windowScene:(id)scene
 {
-  v6 = a4;
-  v9 = a3;
-  v7 = [v6 coordinateSpace];
-  [v7 bounds];
-  [v9 setFrame:?];
+  sceneCopy = scene;
+  windowCopy = window;
+  coordinateSpace = [sceneCopy coordinateSpace];
+  [coordinateSpace bounds];
+  [windowCopy setFrame:?];
 
-  v8 = [(ICSInCallSceneDelegate *)self createRootViewControllerForScene:v6];
+  v8 = [(ICSInCallSceneDelegate *)self createRootViewControllerForScene:sceneCopy];
 
-  [v9 setRootViewController:v8];
-  [v9 makeKeyAndVisible];
+  [windowCopy setRootViewController:v8];
+  [windowCopy makeKeyAndVisible];
 }
 
-- (id)createRootViewControllerForScene:(id)a3
+- (id)createRootViewControllerForScene:(id)scene
 {
-  v3 = [(ICSInCallSceneDelegate *)self createCallDisplayStyleManagerForScene:a3];
+  v3 = [(ICSInCallSceneDelegate *)self createCallDisplayStyleManagerForScene:scene];
   v4 = [[PHInCallRemoteAlertShellViewController alloc] initWithCallDisplayStyleManager:v3];
 
   return v4;
 }
 
-- (id)createCallDisplayStyleManagerForScene:(id)a3
+- (id)createCallDisplayStyleManagerForScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v5 = objc_alloc_init(ICSCallDisplayStyleManager);
-  [(ICSInCallSceneDelegate *)self deviceWindowedAccessoryCutoutFrameForScene:v4];
-  [(ICSCallDisplayStyleManager *)v5 updateMiniWindowCutoutFrame:[(ICSInCallSceneDelegate *)self isDeviceAttachedToWindowedAccessoryForScene:v4] attachedToWindowedAccessory:v6, v7, v8, v9];
-  [(ICSCallDisplayStyleManager *)v5 setCallDisplayStyle:[(ICSInCallSceneDelegate *)self callDisplayStyleForScene:v4]];
-  v10 = [v4 session];
-  v11 = [v10 persistentIdentifier];
-  [(ICSCallDisplayStyleManager *)v5 setSceneSessionIdentifier:v11];
+  [(ICSInCallSceneDelegate *)self deviceWindowedAccessoryCutoutFrameForScene:sceneCopy];
+  [(ICSCallDisplayStyleManager *)v5 updateMiniWindowCutoutFrame:[(ICSInCallSceneDelegate *)self isDeviceAttachedToWindowedAccessoryForScene:sceneCopy] attachedToWindowedAccessory:v6, v7, v8, v9];
+  [(ICSCallDisplayStyleManager *)v5 setCallDisplayStyle:[(ICSInCallSceneDelegate *)self callDisplayStyleForScene:sceneCopy]];
+  session = [sceneCopy session];
+  persistentIdentifier = [session persistentIdentifier];
+  [(ICSCallDisplayStyleManager *)v5 setSceneSessionIdentifier:persistentIdentifier];
 
-  v12 = [v4 ics_sceneType];
-  [(ICSCallDisplayStyleManager *)v5 setSceneType:v12];
+  ics_sceneType = [sceneCopy ics_sceneType];
+  [(ICSCallDisplayStyleManager *)v5 setSceneType:ics_sceneType];
 
   return v5;
 }
 
-- (int64_t)callDisplayStyleForScene:(id)a3
+- (int64_t)callDisplayStyleForScene:(id)scene
 {
-  v4 = a3;
-  v5 = [v4 presentationMode];
-  if ((v5 - 2) >= 2)
+  sceneCopy = scene;
+  presentationMode = [sceneCopy presentationMode];
+  if ((presentationMode - 2) >= 2)
   {
-    if (v5 == 1)
+    if (presentationMode == 1)
     {
       v7 = +[ICSPreferences sharedPreferences];
       if ([v7 hasBannersEnabled])
@@ -1112,7 +1112,7 @@ LABEL_10:
     }
   }
 
-  else if ([(ICSInCallSceneDelegate *)self isDeviceAttachedToWindowedAccessoryForScene:v4])
+  else if ([(ICSInCallSceneDelegate *)self isDeviceAttachedToWindowedAccessoryForScene:sceneCopy])
   {
     v6 = 1;
   }

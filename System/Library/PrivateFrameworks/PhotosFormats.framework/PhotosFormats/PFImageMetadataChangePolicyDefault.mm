@@ -1,18 +1,18 @@
 @interface PFImageMetadataChangePolicyDefault
-+ (id)policyWithLossyCompressionQuality:(float)a3;
++ (id)policyWithLossyCompressionQuality:(float)quality;
 + (id)standardPolicy;
-- (PFImageMetadataChangePolicyDefault)initWithCoder:(id)a3;
-- (PFImageMetadataChangePolicyDefault)initWithLossyCompressionQuality:(float)a3;
-- (id)processMetadata:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PFImageMetadataChangePolicyDefault)initWithCoder:(id)coder;
+- (PFImageMetadataChangePolicyDefault)initWithLossyCompressionQuality:(float)quality;
+- (id)processMetadata:(id)metadata;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PFImageMetadataChangePolicyDefault
 
-- (id)processMetadata:(id)a3
+- (id)processMetadata:(id)metadata
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = MEMORY[0x1E695DF90];
   v6 = MEMORY[0x1E696AD98];
   [(PFImageMetadataChangePolicyDefault *)self lossyCompressionQuality];
@@ -39,7 +39,7 @@
         }
 
         v14 = *(*(&v32 + 1) + 8 * i);
-        v15 = [v4 objectForKey:v14];
+        v15 = [metadataCopy objectForKey:v14];
         if (v15)
         {
           [v8 setObject:v15 forKey:v14];
@@ -53,7 +53,7 @@
   }
 
   v16 = *MEMORY[0x1E696DD90];
-  v17 = [v4 objectForKey:*MEMORY[0x1E696DD90]];
+  v17 = [metadataCopy objectForKey:*MEMORY[0x1E696DD90]];
   if (v17)
   {
     v18 = v17;
@@ -64,7 +64,7 @@
   }
 
   v20 = *MEMORY[0x1E696DF28];
-  v21 = [v4 objectForKey:*MEMORY[0x1E696DF28]];
+  v21 = [metadataCopy objectForKey:*MEMORY[0x1E696DF28]];
   if (v21)
   {
     v22 = v21;
@@ -80,7 +80,7 @@
   }
 
   v24 = *MEMORY[0x1E696DE30];
-  v25 = [v4 objectForKey:*MEMORY[0x1E696DE30]];
+  v25 = [metadataCopy objectForKey:*MEMORY[0x1E696DE30]];
   if (v25)
   {
     v26 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:2];
@@ -100,19 +100,19 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(PFImageMetadataChangePolicyDefault *)self lossyCompressionQuality];
-  [v4 encodeFloat:@"lossyCompressionQuality" forKey:?];
+  [coderCopy encodeFloat:@"lossyCompressionQuality" forKey:?];
 }
 
-- (PFImageMetadataChangePolicyDefault)initWithCoder:(id)a3
+- (PFImageMetadataChangePolicyDefault)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"lossyCompressionQuality"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"lossyCompressionQuality"])
   {
-    [v4 decodeFloatForKey:@"lossyCompressionQuality"];
+    [coderCopy decodeFloatForKey:@"lossyCompressionQuality"];
     v5 = [(PFImageMetadataChangePolicyDefault *)self initWithLossyCompressionQuality:?];
   }
 
@@ -126,7 +126,7 @@
   return v6;
 }
 
-- (PFImageMetadataChangePolicyDefault)initWithLossyCompressionQuality:(float)a3
+- (PFImageMetadataChangePolicyDefault)initWithLossyCompressionQuality:(float)quality
 {
   v8.receiver = self;
   v8.super_class = PFImageMetadataChangePolicyDefault;
@@ -134,17 +134,17 @@
   v6 = v4;
   if (v4)
   {
-    *&v5 = a3;
+    *&v5 = quality;
     [(PFImageMetadataChangePolicyDefault *)v4 setLossyCompressionQuality:v5];
   }
 
   return v6;
 }
 
-+ (id)policyWithLossyCompressionQuality:(float)a3
++ (id)policyWithLossyCompressionQuality:(float)quality
 {
-  v4 = [a1 alloc];
-  *&v5 = a3;
+  v4 = [self alloc];
+  *&v5 = quality;
   v6 = [v4 initWithLossyCompressionQuality:v5];
 
   return v6;

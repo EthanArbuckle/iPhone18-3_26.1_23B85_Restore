@@ -1,112 +1,112 @@
 @interface FlexSong
-+ (BOOL)_transitionIsPossibleFromSegment:(id)a3 toSegment:(id)a4 forBodyClipPlaylist:(id)a5;
-+ (id)loadSongInFolderWithPath:(id)a3;
-+ (id)numberToString:(int64_t)a3;
-+ (id)outroInfoForClipPlaylist:(id)a3;
-+ (int64_t)_durationInSamplesToReserveForOutroSegment:(id)a3 withOptions:(id)a4;
-+ (int64_t)_findEarlyFadeStartOffsetInSamplesForOutroSegment:(id)a3 withOptions:(id)a4;
-+ (int64_t)_findMaxLengthInSamplesToReserveForOutroSegment:(id)a3 withOptions:(id)a4;
-+ (int64_t)_findMinLengthInSamplesForEarlyFadeOutForOutroSegment:(id)a3 withOptions:(id)a4;
++ (BOOL)_transitionIsPossibleFromSegment:(id)segment toSegment:(id)toSegment forBodyClipPlaylist:(id)playlist;
++ (id)loadSongInFolderWithPath:(id)path;
++ (id)numberToString:(int64_t)string;
++ (id)outroInfoForClipPlaylist:(id)playlist;
++ (int64_t)_durationInSamplesToReserveForOutroSegment:(id)segment withOptions:(id)options;
++ (int64_t)_findEarlyFadeStartOffsetInSamplesForOutroSegment:(id)segment withOptions:(id)options;
++ (int64_t)_findMaxLengthInSamplesToReserveForOutroSegment:(id)segment withOptions:(id)options;
++ (int64_t)_findMinLengthInSamplesForEarlyFadeOutForOutroSegment:(id)segment withOptions:(id)options;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)minimumDuration;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)naturalDuration;
-- (BOOL)_addBodySegmentsForAssemblyList:(id)a3 forDuration:(int64_t)a4 unusedDuration:(int64_t *)a5 testingContext:(id)a6 timedOut:(BOOL *)a7;
-- (BOOL)_addIntroSegmentsToAssemblyList:(id)a3 forDuration:(int64_t)a4 testingContext:(id)a5;
-- (BOOL)_addOutroSegmentsToAssemblyList:(id)a3 forDuration:(int64_t)a4 allowTrim:(BOOL)a5 testingContext:(id)a6;
-- (BOOL)_addSegment:(id)a3 withDuration:(int64_t)a4 toAssemblyList:(id)a5 timeRemaining:(int64_t)a6 reusedSegment:(id *)a7 indexofNewSegment:(int64_t *)a8;
-- (BOOL)_buildIntroAndOutroOnlySegmentAssemblyList:(id)a3 forDuration:(int64_t)a4 testingContext:(id)a5;
-- (BOOL)_buildSegmentAssemblyList:(id)a3 forDuration:(int64_t)a4 withOptions:(id)a5 testingContext:(id)a6;
-- (BOOL)_rebuildBodySegmentsInAssemblyList:(id)a3 forDuration:(int64_t)a4 unusedDuration:(int64_t *)a5 testingContext:(id)a6;
-- (BOOL)_removeUnpermittedTransitionsInAssemblyList:(id)a3 final:(BOOL)a4 testingContext:(id)a5 removedIndexes:(id)a6 conflictList:(id)a7;
-- (BOOL)_updateTransitionBodySegmentsForAssemblyList:(id)a3 usingNewSegment:(id)a4 indexOfNewTransitionSegment:(id)a5;
-- (BOOL)_validateAuthoringIssuesInRendition:(id)a3 failureReason:(id *)a4;
-- (BOOL)_validateStructureForRendition:(id)a3 failureReason:(id *)a4;
-- (BOOL)_validateTransitionsInRendition:(id)a3 failureReason:(id *)a4;
-- (BOOL)_verifyAssetsForSegment:(id)a3 withFailureReason:(id *)a4;
-- (BOOL)verifyAssetsWithFailureReason:(id *)a3;
-- (BOOL)verifyRendition:(id)a3 forDuration:(id *)a4 failureReason:(id *)a5;
-- (FlexSong)initWithDictionary:(id)a3 assets:(id)a4;
-- (FlexSong)initWithUID:(id)a3 songName:(id)a4 artistName:(id)a5 tagIDs:(id)a6 keywords:(id)a7 weightedKeywords:(id)a8 hidden:(BOOL)a9 sampleRate:(int64_t)a10 mainSegments:(id)a11 crossFadeSegments:(id)a12 assets:(id)a13 audioFileExtension:(id)a14 audioEncoderPresetName:(id)a15 metadataVersion:(int64_t)a16 customOptions:(id)a17;
-- (id)_cacheObjectForKey:(id)a3;
-- (id)_clipPlaylistForDuration:(id *)a3 withOptions:(id)a4 testingContext:(id)a5;
-- (id)_fullSongLoopedClipPlaylistForDuration:(id *)a3 withOptions:(id)a4 testingContext:(id)a5;
-- (id)_longestSegmentForType:(unint64_t)a3;
-- (id)_longestSegmentsForType:(unint64_t)a3;
+- (BOOL)_addBodySegmentsForAssemblyList:(id)list forDuration:(int64_t)duration unusedDuration:(int64_t *)unusedDuration testingContext:(id)context timedOut:(BOOL *)out;
+- (BOOL)_addIntroSegmentsToAssemblyList:(id)list forDuration:(int64_t)duration testingContext:(id)context;
+- (BOOL)_addOutroSegmentsToAssemblyList:(id)list forDuration:(int64_t)duration allowTrim:(BOOL)trim testingContext:(id)context;
+- (BOOL)_addSegment:(id)segment withDuration:(int64_t)duration toAssemblyList:(id)list timeRemaining:(int64_t)remaining reusedSegment:(id *)reusedSegment indexofNewSegment:(int64_t *)newSegment;
+- (BOOL)_buildIntroAndOutroOnlySegmentAssemblyList:(id)list forDuration:(int64_t)duration testingContext:(id)context;
+- (BOOL)_buildSegmentAssemblyList:(id)list forDuration:(int64_t)duration withOptions:(id)options testingContext:(id)context;
+- (BOOL)_rebuildBodySegmentsInAssemblyList:(id)list forDuration:(int64_t)duration unusedDuration:(int64_t *)unusedDuration testingContext:(id)context;
+- (BOOL)_removeUnpermittedTransitionsInAssemblyList:(id)list final:(BOOL)final testingContext:(id)context removedIndexes:(id)indexes conflictList:(id)conflictList;
+- (BOOL)_updateTransitionBodySegmentsForAssemblyList:(id)list usingNewSegment:(id)segment indexOfNewTransitionSegment:(id)transitionSegment;
+- (BOOL)_validateAuthoringIssuesInRendition:(id)rendition failureReason:(id *)reason;
+- (BOOL)_validateStructureForRendition:(id)rendition failureReason:(id *)reason;
+- (BOOL)_validateTransitionsInRendition:(id)rendition failureReason:(id *)reason;
+- (BOOL)_verifyAssetsForSegment:(id)segment withFailureReason:(id *)reason;
+- (BOOL)verifyAssetsWithFailureReason:(id *)reason;
+- (BOOL)verifyRendition:(id)rendition forDuration:(id *)duration failureReason:(id *)reason;
+- (FlexSong)initWithDictionary:(id)dictionary assets:(id)assets;
+- (FlexSong)initWithUID:(id)d songName:(id)name artistName:(id)artistName tagIDs:(id)ds keywords:(id)keywords weightedKeywords:(id)weightedKeywords hidden:(BOOL)hidden sampleRate:(int64_t)self0 mainSegments:(id)self1 crossFadeSegments:(id)self2 assets:(id)self3 audioFileExtension:(id)self4 audioEncoderPresetName:(id)self5 metadataVersion:(int64_t)self6 customOptions:(id)self7;
+- (id)_cacheObjectForKey:(id)key;
+- (id)_clipPlaylistForDuration:(id *)duration withOptions:(id)options testingContext:(id)context;
+- (id)_fullSongLoopedClipPlaylistForDuration:(id *)duration withOptions:(id)options testingContext:(id)context;
+- (id)_longestSegmentForType:(unint64_t)type;
+- (id)_longestSegmentsForType:(unint64_t)type;
 - (id)_naturalDurationAssemblyList;
-- (id)_segmentsForIndex:(unint64_t)a3 andType:(unint64_t)a4;
-- (id)_segmentsforType:(unint64_t)a3;
-- (id)_shortestSegmentForType:(unint64_t)a3;
-- (id)_shortestSegmentsForType:(unint64_t)a3;
-- (id)_transitionSegmentForSegmentInfo:(id)a3 toSegmentInfo:(id)a4 fromBarIndex:(int64_t)a5 inSegmentList:(id)a6;
+- (id)_segmentsForIndex:(unint64_t)index andType:(unint64_t)type;
+- (id)_segmentsforType:(unint64_t)type;
+- (id)_shortestSegmentForType:(unint64_t)type;
+- (id)_shortestSegmentsForType:(unint64_t)type;
+- (id)_transitionSegmentForSegmentInfo:(id)info toSegmentInfo:(id)segmentInfo fromBarIndex:(int64_t)index inSegmentList:(id)list;
 - (id)analysisData;
 - (id)description;
 - (id)encodeAsDictionary;
-- (id)initCommonWithUID:(id)a3 songName:(id)a4 artistName:(id)a5 tagIDs:(id)a6 keywords:(id)a7 weightedKeywords:(id)a8 hidden:(BOOL)a9 sampleRate:(int64_t)a10 mainSegments:(id)a11 crossFadeSegments:(id)a12 audioFileExtension:(id)a13 audioEncoderPresetName:(id)a14 metadataVersion:(int64_t)a15 customOptions:(id)a16;
-- (id)renditionForDuration:(id *)a3 withOptions:(id)a4 testingContext:(id)a5;
-- (id)timedMetadataItemsWithIdentifier:(id)a3 forRendition:(id)a4;
-- (int64_t)_actualOutroDurationForAssemblyList:(id)a3 currentDuration:(int64_t)a4;
+- (id)initCommonWithUID:(id)d songName:(id)name artistName:(id)artistName tagIDs:(id)ds keywords:(id)keywords weightedKeywords:(id)weightedKeywords hidden:(BOOL)hidden sampleRate:(int64_t)self0 mainSegments:(id)self1 crossFadeSegments:(id)self2 audioFileExtension:(id)self3 audioEncoderPresetName:(id)self4 metadataVersion:(int64_t)self5 customOptions:(id)self6;
+- (id)renditionForDuration:(id *)duration withOptions:(id)options testingContext:(id)context;
+- (id)timedMetadataItemsWithIdentifier:(id)identifier forRendition:(id)rendition;
+- (int64_t)_actualOutroDurationForAssemblyList:(id)list currentDuration:(int64_t)duration;
 - (int64_t)_maxIntroDuration;
 - (int64_t)_maxOutroDuration;
 - (int64_t)_minBodySegmentDuration;
 - (int64_t)_minIntroDuration;
 - (int64_t)_minOutroDuration;
 - (int64_t)_minimumPermittedIntroAndOutroDuration;
-- (int64_t)_sampleDurationOfClipPlaylist:(id)a3;
-- (int64_t)_samplesForDuration:(id *)a3;
-- (unint64_t)_highestIndexForSegmentType:(unint64_t)a3;
+- (int64_t)_sampleDurationOfClipPlaylist:(id)playlist;
+- (int64_t)_samplesForDuration:(id *)duration;
+- (unint64_t)_highestIndexForSegmentType:(unint64_t)type;
 - (void)_destroyCache;
 - (void)_loadAnalysisData;
 - (void)_populateCache;
-- (void)_removeSegmentInfo:(id)a3 fromAssemblyList:(id)a4;
-- (void)_sequenceBodySegmentList:(id)a3 forIndexes:(id)a4;
-- (void)_setupInitialAssets:(id)a3;
+- (void)_removeSegmentInfo:(id)info fromAssemblyList:(id)list;
+- (void)_sequenceBodySegmentList:(id)list forIndexes:(id)indexes;
+- (void)_setupInitialAssets:(id)assets;
 @end
 
 @implementation FlexSong
 
-- (id)initCommonWithUID:(id)a3 songName:(id)a4 artistName:(id)a5 tagIDs:(id)a6 keywords:(id)a7 weightedKeywords:(id)a8 hidden:(BOOL)a9 sampleRate:(int64_t)a10 mainSegments:(id)a11 crossFadeSegments:(id)a12 audioFileExtension:(id)a13 audioEncoderPresetName:(id)a14 metadataVersion:(int64_t)a15 customOptions:(id)a16
+- (id)initCommonWithUID:(id)d songName:(id)name artistName:(id)artistName tagIDs:(id)ds keywords:(id)keywords weightedKeywords:(id)weightedKeywords hidden:(BOOL)hidden sampleRate:(int64_t)self0 mainSegments:(id)self1 crossFadeSegments:(id)self2 audioFileExtension:(id)self3 audioEncoderPresetName:(id)self4 metadataVersion:(int64_t)self5 customOptions:(id)self6
 {
-  v44 = a3;
-  v43 = a4;
-  v46 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v42 = a11;
-  v41 = a12;
-  v40 = a13;
-  v45 = a14;
-  v28 = a16;
-  v29 = v21;
-  if (!v21)
+  dCopy = d;
+  nameCopy = name;
+  artistNameCopy = artistName;
+  dsCopy = ds;
+  keywordsCopy = keywords;
+  weightedKeywordsCopy = weightedKeywords;
+  segmentsCopy = segments;
+  fadeSegmentsCopy = fadeSegments;
+  extensionCopy = extension;
+  presetNameCopy = presetName;
+  optionsCopy = options;
+  v29 = dsCopy;
+  if (!dsCopy)
   {
     v29 = objc_msgSend_set(MEMORY[0x277CBEB98], v24, v25, v26, v27);
   }
 
-  v30 = v22;
-  if (!v22)
+  v30 = keywordsCopy;
+  if (!keywordsCopy)
   {
     v30 = objc_msgSend_set(MEMORY[0x277CBEB98], v24, v25, v26, v27);
   }
 
-  v31 = v23;
-  if (!v23)
+  v31 = weightedKeywordsCopy;
+  if (!weightedKeywordsCopy)
   {
     v31 = objc_msgSend_dictionary(MEMORY[0x277CBEAC0], v24, v25, v26, v27);
   }
 
   v47.receiver = self;
   v47.super_class = FlexSong;
-  v32 = [(FlexSongBackend *)&v47 initWithUID:v44 songName:v43 artistName:v46 tagIDs:v29 keywords:v30 weightedKeywords:v31 hidden:a9 recalled:v45 audioEncoderPresetName:a15 metadataVersion:@"LG" songFormat:a10 sampleRate:v28 customOptions:?];
-  if (v23)
+  v32 = [(FlexSongBackend *)&v47 initWithUID:dCopy songName:nameCopy artistName:artistNameCopy tagIDs:v29 keywords:v30 weightedKeywords:v31 hidden:hidden recalled:presetNameCopy audioEncoderPresetName:version metadataVersion:@"LG" songFormat:rate sampleRate:optionsCopy customOptions:?];
+  if (weightedKeywordsCopy)
   {
-    if (v22)
+    if (keywordsCopy)
     {
       goto LABEL_9;
     }
 
 LABEL_15:
 
-    if (v21)
+    if (dsCopy)
     {
       goto LABEL_10;
     }
@@ -116,13 +116,13 @@ LABEL_16:
     goto LABEL_10;
   }
 
-  if (!v22)
+  if (!keywordsCopy)
   {
     goto LABEL_15;
   }
 
 LABEL_9:
-  if (!v21)
+  if (!dsCopy)
   {
     goto LABEL_16;
   }
@@ -130,11 +130,11 @@ LABEL_9:
 LABEL_10:
   if (v32)
   {
-    objc_storeStrong(v32 + 19, a13);
+    objc_storeStrong(v32 + 19, extension);
     v37 = MEMORY[0x277CC0898];
     *(v32 + 120) = *MEMORY[0x277CC0898];
     *(v32 + 17) = *(v37 + 16);
-    if (v42)
+    if (segmentsCopy)
     {
       objc_msgSend__cacheSegmentsByType(v32, v33, v34, v35, v36);
     }
@@ -143,30 +143,30 @@ LABEL_10:
   return v32;
 }
 
-- (FlexSong)initWithUID:(id)a3 songName:(id)a4 artistName:(id)a5 tagIDs:(id)a6 keywords:(id)a7 weightedKeywords:(id)a8 hidden:(BOOL)a9 sampleRate:(int64_t)a10 mainSegments:(id)a11 crossFadeSegments:(id)a12 assets:(id)a13 audioFileExtension:(id)a14 audioEncoderPresetName:(id)a15 metadataVersion:(int64_t)a16 customOptions:(id)a17
+- (FlexSong)initWithUID:(id)d songName:(id)name artistName:(id)artistName tagIDs:(id)ds keywords:(id)keywords weightedKeywords:(id)weightedKeywords hidden:(BOOL)hidden sampleRate:(int64_t)self0 mainSegments:(id)self1 crossFadeSegments:(id)self2 assets:(id)self3 audioFileExtension:(id)self4 audioEncoderPresetName:(id)self5 metadataVersion:(int64_t)self6 customOptions:(id)self7
 {
-  v22 = a13;
-  inited = objc_msgSend_initCommonWithUID_songName_artistName_tagIDs_keywords_weightedKeywords_hidden_sampleRate_mainSegments_crossFadeSegments_audioFileExtension_audioEncoderPresetName_metadataVersion_customOptions_(self, v23, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a14, a15, a16, a17);
+  assetsCopy = assets;
+  inited = objc_msgSend_initCommonWithUID_songName_artistName_tagIDs_keywords_weightedKeywords_hidden_sampleRate_mainSegments_crossFadeSegments_audioFileExtension_audioEncoderPresetName_metadataVersion_customOptions_(self, v23, d, name, artistName, ds, keywords, weightedKeywords, hidden, rate, segments, fadeSegments, extension, presetName, version, options);
   v28 = inited;
   if (inited)
   {
-    objc_msgSend__setupInitialAssets_(inited, v25, v22, v26, v27);
+    objc_msgSend__setupInitialAssets_(inited, v25, assetsCopy, v26, v27);
   }
 
   return v28;
 }
 
-- (FlexSong)initWithDictionary:(id)a3 assets:(id)a4
+- (FlexSong)initWithDictionary:(id)dictionary assets:(id)assets
 {
-  v5 = a3;
-  v62 = a4;
-  v65 = objc_msgSend_objectForKey_(v5, v6, @"uuid", v7, v8);
-  v64 = objc_msgSend_objectForKey_(v5, v9, @"songName", v10, v11);
-  v63 = objc_msgSend_objectForKey_(v5, v12, @"artistName", v13, v14);
-  v18 = objc_msgSend_objectForKey_(v5, v15, @"sampleRate", v16, v17);
+  dictionaryCopy = dictionary;
+  assetsCopy = assets;
+  v65 = objc_msgSend_objectForKey_(dictionaryCopy, v6, @"uuid", v7, v8);
+  v64 = objc_msgSend_objectForKey_(dictionaryCopy, v9, @"songName", v10, v11);
+  v63 = objc_msgSend_objectForKey_(dictionaryCopy, v12, @"artistName", v13, v14);
+  v18 = objc_msgSend_objectForKey_(dictionaryCopy, v15, @"sampleRate", v16, v17);
   v23 = objc_msgSend_intValue(v18, v19, v20, v21, v22);
 
-  v27 = objc_msgSend_objectForKey_(v5, v24, @"tagIDs", v25, v26);
+  v27 = objc_msgSend_objectForKey_(dictionaryCopy, v24, @"tagIDs", v25, v26);
   v32 = objc_msgSend_firstObject(v27, v28, v29, v30, v31);
 
   if (v32)
@@ -179,25 +179,25 @@ LABEL_10:
     v36 = 0;
   }
 
-  v37 = objc_msgSend_objectForKey_(v5, v33, @"audioEncoderPresetName", v34, v35);
-  v41 = objc_msgSend_objectForKey_(v5, v38, @"audioFileExtension", v39, v40);
-  v45 = objc_msgSend_objectForKey_(v5, v42, @"customOptions", v43, v44);
-  v49 = objc_msgSend_objectForKey_(v5, v46, @"crossFadeSegments", v47, v48);
+  v37 = objc_msgSend_objectForKey_(dictionaryCopy, v33, @"audioEncoderPresetName", v34, v35);
+  v41 = objc_msgSend_objectForKey_(dictionaryCopy, v38, @"audioFileExtension", v39, v40);
+  v45 = objc_msgSend_objectForKey_(dictionaryCopy, v42, @"customOptions", v43, v44);
+  v49 = objc_msgSend_objectForKey_(dictionaryCopy, v46, @"crossFadeSegments", v47, v48);
   v50 = objc_opt_class();
   v53 = objc_msgSend_decodeItemsInArray_asClass_(FlexUtilities, v51, v49, v50, v52);
   inited = objc_msgSend_initCommonWithUID_songName_artistName_tagIDs_keywords_weightedKeywords_hidden_sampleRate_mainSegments_crossFadeSegments_audioFileExtension_audioEncoderPresetName_metadataVersion_customOptions_(self, v54, v65, v64, v63, v36, 0, 0, 0, v23, 0, v53, v41, v37, 0, v45);
   v59 = inited;
   if (inited)
   {
-    objc_msgSend__setupInitialAssets_(inited, v56, v62, v57, v58);
+    objc_msgSend__setupInitialAssets_(inited, v56, assetsCopy, v57, v58);
   }
 
   return v59;
 }
 
-- (void)_setupInitialAssets:(id)a3
+- (void)_setupInitialAssets:(id)assets
 {
-  objc_msgSend_updateAssets_(self, a2, a3, v3, v4);
+  objc_msgSend_updateAssets_(self, a2, assets, v3, v4);
   v9 = objc_msgSend_existingAssetWithID_(self, v6, @"FMSongBundleAssetID", v7, v8);
   v31 = v9;
   if (v9)
@@ -240,7 +240,7 @@ LABEL_10:
 {
   v91 = *MEMORY[0x277D85DE8];
   v77 = objc_opt_new();
-  v79 = self;
+  selfCopy = self;
   v80 = objc_msgSend_existingAssetWithID_(self, v3, @"FMSongBundleAssetID", v4, v5);
   v78 = objc_msgSend_localURL(v80, v6, v7, v8, v9);
   v14 = objc_msgSend_path(v78, v10, v11, v12, v13);
@@ -321,24 +321,24 @@ LABEL_10:
   }
 
   objc_msgSend_setObject_forKey_(v77, v72, v81, @"onsets", v73);
-  analysisData = v79->_analysisData;
-  v79->_analysisData = v77;
+  analysisData = selfCopy->_analysisData;
+  selfCopy->_analysisData = v77;
 
   v75 = *MEMORY[0x277D85DE8];
 }
 
 - (id)analysisData
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_analysisData)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_analysisData)
   {
-    objc_msgSend__loadAnalysisData(v2, v3, v4, v5, v6);
+    objc_msgSend__loadAnalysisData(selfCopy, v3, v4, v5, v6);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  analysisData = v2->_analysisData;
+  analysisData = selfCopy->_analysisData;
 
   return analysisData;
 }
@@ -436,25 +436,25 @@ LABEL_10:
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)naturalDuration
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  p_cachedNaturalDuration = &v4->_cachedNaturalDuration;
-  if ((v4->_cachedNaturalDuration.flags & 1) == 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  p_cachedNaturalDuration = &selfCopy->_cachedNaturalDuration;
+  if ((selfCopy->_cachedNaturalDuration.flags & 1) == 0)
   {
-    v10 = objc_msgSend__naturalDurationAssemblyList(v4, v5, v6, v7, v8);
-    v14 = objc_msgSend__sampleDurationOfClipPlaylist_(v4, v11, v10, v12, v13);
+    v10 = objc_msgSend__naturalDurationAssemblyList(selfCopy, v5, v6, v7, v8);
+    v14 = objc_msgSend__sampleDurationOfClipPlaylist_(selfCopy, v11, v10, v12, v13);
 
-    v19 = objc_msgSend_sampleRate(v4, v15, v16, v17, v18);
+    v19 = objc_msgSend_sampleRate(selfCopy, v15, v16, v17, v18);
     CMTimeMake(&v22, 9600 * vcvtpd_s64_f64(v14 / 9600.0), v19);
     v20 = *&v22.value;
-    v4->_cachedNaturalDuration.epoch = v22.epoch;
+    selfCopy->_cachedNaturalDuration.epoch = v22.epoch;
     *&p_cachedNaturalDuration->value = v20;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   *&retstr->var0 = *&p_cachedNaturalDuration->value;
-  retstr->var3 = v4->_cachedNaturalDuration.epoch;
+  retstr->var3 = selfCopy->_cachedNaturalDuration.epoch;
   return result;
 }
 
@@ -483,9 +483,9 @@ LABEL_10:
   objc_autoreleasePoolPop(v3);
 }
 
-- (id)_cacheObjectForKey:(id)a3
+- (id)_cacheObjectForKey:(id)key
 {
-  v7 = a3;
+  keyCopy = key;
   segmentCache = self->_segmentCache;
   if (!segmentCache)
   {
@@ -497,11 +497,11 @@ LABEL_10:
     segmentCache = self->_segmentCache;
   }
 
-  v19 = objc_msgSend_objectForKey_(segmentCache, v4, v7, v5, v6);
+  v19 = objc_msgSend_objectForKey_(segmentCache, v4, keyCopy, v5, v6);
   if (!v19)
   {
     objc_msgSend__populateCache(self, v15, v16, v17, v18);
-    v19 = objc_msgSend_objectForKey_(self->_segmentCache, v20, v7, v21, v22);
+    v19 = objc_msgSend_objectForKey_(self->_segmentCache, v20, keyCopy, v21, v22);
   }
 
   return v19;
@@ -514,9 +514,9 @@ LABEL_10:
   self->_segmentCache = 0;
 }
 
-- (id)_segmentsforType:(unint64_t)a3
+- (id)_segmentsforType:(unint64_t)type
 {
-  v11 = objc_msgSend__metadataDictFromCache(self, a2, a3, v3, v4);
+  v11 = objc_msgSend__metadataDictFromCache(self, a2, type, v3, v4);
   if (!v11)
   {
     v12 = FlexLogForCategory(0);
@@ -538,23 +538,23 @@ LABEL_10:
     }
   }
 
-  if (a3 - 1 > 3)
+  if (type - 1 > 3)
   {
     v17 = 0;
   }
 
   else
   {
-    v17 = objc_msgSend_segmentsWithType_inSegments_(FlexSegment, v13, a3, v15, v14);
+    v17 = objc_msgSend_segmentsWithType_inSegments_(FlexSegment, v13, type, v15, v14);
   }
 
   return v17;
 }
 
-- (id)_segmentsForIndex:(unint64_t)a3 andType:(unint64_t)a4
+- (id)_segmentsForIndex:(unint64_t)index andType:(unint64_t)type
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = objc_msgSend__segmentsforType_(self, a2, a4, a4, v4);
+  v6 = objc_msgSend__segmentsforType_(self, a2, type, type, v4);
   v11 = objc_msgSend_array(MEMORY[0x277CBEB18], v7, v8, v9, v10);
   v31 = 0u;
   v32 = 0u;
@@ -579,7 +579,7 @@ LABEL_10:
         v23 = objc_msgSend_nameIndex(v22, v15, v16, v17, v18, v31);
         v28 = objc_msgSend_integerValue(v23, v24, v25, v26, v27);
 
-        if (v28 == a3)
+        if (v28 == index)
         {
           objc_msgSend_addObject_(v11, v15, v22, v17, v18);
         }
@@ -596,15 +596,15 @@ LABEL_10:
   return v11;
 }
 
-- (id)_shortestSegmentsForType:(unint64_t)a3
+- (id)_shortestSegmentsForType:(unint64_t)type
 {
   v51 = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, a3, v3, v4);
-  v13 = objc_msgSend__highestIndexForSegmentType_(self, v8, a3, v9, v10);
+  v7 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, type, v3, v4);
+  v13 = objc_msgSend__highestIndexForSegmentType_(self, v8, type, v9, v10);
   v14 = 0;
   do
   {
-    v15 = objc_msgSend__segmentsForIndex_andType_(self, v11, v14, a3, v12);
+    v15 = objc_msgSend__segmentsForIndex_andType_(self, v11, v14, type, v12);
     v19 = objc_msgSend__sortFlexSegmentsShortestToLongest_(self, v16, v15, v17, v18);
 
     if (objc_msgSend_count(v19, v20, v21, v22, v23))
@@ -617,7 +617,7 @@ LABEL_10:
   }
 
   while (v14 <= v13);
-  if (a3 == 2)
+  if (type == 2)
   {
     v48 = 0u;
     v49 = 0u;
@@ -657,9 +657,9 @@ LABEL_10:
   return v7;
 }
 
-- (id)_shortestSegmentForType:(unint64_t)a3
+- (id)_shortestSegmentForType:(unint64_t)type
 {
-  v6 = objc_msgSend__shortestSegmentsForType_(self, a2, a3, v3, v4);
+  v6 = objc_msgSend__shortestSegmentsForType_(self, a2, type, v3, v4);
   v10 = objc_msgSend__sortFlexSegmentsShortestToLongest_(self, v7, v6, v8, v9);
 
   v15 = objc_msgSend_firstObject(v10, v11, v12, v13, v14);
@@ -667,14 +667,14 @@ LABEL_10:
   return v15;
 }
 
-- (id)_longestSegmentsForType:(unint64_t)a3
+- (id)_longestSegmentsForType:(unint64_t)type
 {
-  v7 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, a3, v3, v4);
-  v13 = objc_msgSend__highestIndexForSegmentType_(self, v8, a3, v9, v10);
+  v7 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, type, v3, v4);
+  v13 = objc_msgSend__highestIndexForSegmentType_(self, v8, type, v9, v10);
   v14 = 0;
   do
   {
-    v15 = objc_msgSend__segmentsForIndex_andType_(self, v11, v14, a3, v12);
+    v15 = objc_msgSend__segmentsForIndex_andType_(self, v11, v14, type, v12);
     v19 = objc_msgSend__sortFlexSegmentsShortestToLongest_(self, v16, v15, v17, v18);
 
     if (objc_msgSend_count(v19, v20, v21, v22, v23))
@@ -691,9 +691,9 @@ LABEL_10:
   return v7;
 }
 
-- (id)_longestSegmentForType:(unint64_t)a3
+- (id)_longestSegmentForType:(unint64_t)type
 {
-  v6 = objc_msgSend__segmentsforType_(self, a2, a3, v3, v4);
+  v6 = objc_msgSend__segmentsforType_(self, a2, type, v3, v4);
   v10 = objc_msgSend__sortFlexSegmentsShortestToLongest_(self, v7, v6, v8, v9);
 
   v15 = objc_msgSend_lastObject(v10, v11, v12, v13, v14);
@@ -701,10 +701,10 @@ LABEL_10:
   return v15;
 }
 
-- (unint64_t)_highestIndexForSegmentType:(unint64_t)a3
+- (unint64_t)_highestIndexForSegmentType:(unint64_t)type
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = objc_msgSend__segmentsforType_(self, a2, a3, v3, v4);
+  v5 = objc_msgSend__segmentsforType_(self, a2, type, v3, v4);
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -748,44 +748,44 @@ LABEL_10:
   return v13;
 }
 
-- (id)_transitionSegmentForSegmentInfo:(id)a3 toSegmentInfo:(id)a4 fromBarIndex:(int64_t)a5 inSegmentList:(id)a6
+- (id)_transitionSegmentForSegmentInfo:(id)info toSegmentInfo:(id)segmentInfo fromBarIndex:(int64_t)index inSegmentList:(id)list
 {
   v87 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v16 = objc_msgSend_indexOfObject_(v12, v13, v10, v14, v15);
-  if (v16 == 0x7FFFFFFFFFFFFFFFLL || (v21 = v16, v16 >= objc_msgSend_count(v12, v17, v18, v19, v20) - 1))
+  infoCopy = info;
+  segmentInfoCopy = segmentInfo;
+  listCopy = list;
+  v16 = objc_msgSend_indexOfObject_(listCopy, v13, infoCopy, v14, v15);
+  if (v16 == 0x7FFFFFFFFFFFFFFFLL || (v21 = v16, v16 >= objc_msgSend_count(listCopy, v17, v18, v19, v20) - 1))
   {
     v30 = 0;
   }
 
   else
   {
-    v81 = v11;
-    if (v11)
+    v81 = segmentInfoCopy;
+    if (segmentInfoCopy)
     {
-      v25 = v11;
+      v25 = segmentInfoCopy;
     }
 
     else
     {
-      v25 = objc_msgSend_objectAtIndexedSubscript_(v12, v22, v21 + 1, v23, v24);
+      v25 = objc_msgSend_objectAtIndexedSubscript_(listCopy, v22, v21 + 1, v23, v24);
     }
 
     v31 = v25;
-    v32 = objc_msgSend_segment(v10, v26, v27, v28, v29);
+    v32 = objc_msgSend_segment(infoCopy, v26, v27, v28, v29);
     v80 = v31;
     v37 = objc_msgSend_segment(v31, v33, v34, v35, v36);
     v42 = objc_msgSend_name(v37, v38, v39, v40, v41);
-    v45 = objc_msgSend_transitionToSegmentNamed_fromBarIndex_(v32, v43, v42, a5, v44);
+    v45 = objc_msgSend_transitionToSegmentNamed_fromBarIndex_(v32, v43, v42, index, v44);
 
     v50 = objc_msgSend_transitionSegmentName(v45, v46, v47, v48, v49);
 
     if (v50)
     {
-      v78 = v12;
-      v79 = v10;
+      v78 = listCopy;
+      v79 = infoCopy;
       v54 = objc_msgSend__segmentsforType_(self, v51, 3, v52, v53);
       v82 = 0u;
       v83 = 0u;
@@ -830,8 +830,8 @@ LABEL_10:
         v30 = 0;
       }
 
-      v12 = v78;
-      v10 = v79;
+      listCopy = v78;
+      infoCopy = v79;
     }
 
     else
@@ -839,7 +839,7 @@ LABEL_10:
       v30 = 0;
     }
 
-    v11 = v81;
+    segmentInfoCopy = v81;
   }
 
   v76 = *MEMORY[0x277D85DE8];
@@ -847,15 +847,15 @@ LABEL_10:
   return v30;
 }
 
-- (int64_t)_sampleDurationOfClipPlaylist:(id)a3
+- (int64_t)_sampleDurationOfClipPlaylist:(id)playlist
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  playlistCopy = playlist;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v4, &v16, v20, 16);
+  v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(playlistCopy, v4, &v16, v20, 16);
   if (v5)
   {
     v10 = v5;
@@ -867,13 +867,13 @@ LABEL_10:
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(playlistCopy);
         }
 
         v11 += objc_msgSend_duration(*(*(&v16 + 1) + 8 * i), v6, v7, v8, v9);
       }
 
-      v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v6, &v16, v20, 16);
+      v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(playlistCopy, v6, &v16, v20, 16);
     }
 
     while (v10);
@@ -928,11 +928,11 @@ LABEL_10:
   return v9;
 }
 
-- (int64_t)_actualOutroDurationForAssemblyList:(id)a3 currentDuration:(int64_t)a4
+- (int64_t)_actualOutroDurationForAssemblyList:(id)list currentDuration:(int64_t)duration
 {
   v71 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (objc_msgSend_indexOfObjectPassingTest_(v6, v7, &unk_285EA0550, v8, v9) == 0x7FFFFFFFFFFFFFFFLL)
+  listCopy = list;
+  if (objc_msgSend_indexOfObjectPassingTest_(listCopy, v7, &unk_285EA0550, v8, v9) == 0x7FFFFFFFFFFFFFFFLL)
   {
     v13 = FlexLogForCategory(1uLL);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -959,7 +959,7 @@ LABEL_10:
       v68[2] = 0x3032000000;
       v68[3] = sub_24B80429C;
       v68[4] = sub_24B8042AC;
-      v69 = objc_msgSend_lastObject(v6, v20, v21, v22, v23);
+      v69 = objc_msgSend_lastObject(listCopy, v20, v21, v22, v23);
       v67[0] = MEMORY[0x277D85DD0];
       v67[1] = 3221225472;
       v67[2] = sub_24B8042B4;
@@ -997,7 +997,7 @@ LABEL_10:
               }
 
               v55 = *(*(&v63 + 1) + 8 * v53);
-              if (objc_msgSend_sampleCount(v55, v47, v48, v49, v50) > a4)
+              if (objc_msgSend_sampleCount(v55, v47, v48, v49, v50) > duration)
               {
                 v13 = v54;
                 goto LABEL_19;
@@ -1125,21 +1125,21 @@ LABEL_19:
   return v8;
 }
 
-+ (id)numberToString:(int64_t)a3
++ (id)numberToString:(int64_t)string
 {
   if (qword_28151B380 != -1)
   {
     sub_24B80E55C();
   }
 
-  if (a3 > 0x63)
+  if (string > 0x63)
   {
-    objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"%ld", v3, v4, a3);
+    objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"%ld", v3, v4, string);
   }
 
   else
   {
-    objc_msgSend_objectAtIndexedSubscript_(qword_28151B378, a2, a3, v3, v4);
+    objc_msgSend_objectAtIndexedSubscript_(qword_28151B378, a2, string, v3, v4);
   }
   v6 = ;
 
@@ -1204,22 +1204,22 @@ LABEL_19:
   return v3;
 }
 
-- (void)_sequenceBodySegmentList:(id)a3 forIndexes:(id)a4
+- (void)_sequenceBodySegmentList:(id)list forIndexes:(id)indexes
 {
   v407 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v344 = a4;
-  if (objc_msgSend_count(v6, v7, v8, v9, v10) >= 2)
+  listCopy = list;
+  indexesCopy = indexes;
+  if (objc_msgSend_count(listCopy, v7, v8, v9, v10) >= 2)
   {
     v343 = objc_msgSend__highestIndexForSegmentType_(self, v11, 2, v12, v13);
     v21 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v14, v15, v16, v17);
     v22 = 0;
-    v345 = v6;
+    v345 = listCopy;
     v350 = v21;
     while (1)
     {
       v23 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v18, v22, v19, v20);
-      v27 = objc_msgSend_containsObject_(v344, v24, v23, v25, v26);
+      v27 = objc_msgSend_containsObject_(indexesCopy, v24, v23, v25, v26);
 
       if ((v27 & 1) == 0)
       {
@@ -1230,7 +1230,7 @@ LABEL_19:
         v397 = 0u;
         v398 = 0u;
         v399 = 0u;
-        v116 = v6;
+        v116 = listCopy;
         v118 = objc_msgSend_countByEnumeratingWithState_objects_count_(v116, v117, &v396, v406, 16);
         if (v118)
         {
@@ -1286,7 +1286,7 @@ LABEL_37:
           objc_msgSend_setObject_forKey_(v21, v142, v355, v364, v143);
         }
 
-        v6 = v345;
+        listCopy = v345;
         v144 = v343;
         v145 = v111;
         goto LABEL_94;
@@ -1299,7 +1299,7 @@ LABEL_37:
       v393 = 0u;
       v394 = 0u;
       v395 = 0u;
-      v36 = v6;
+      v36 = listCopy;
       v38 = objc_msgSend_countByEnumeratingWithState_objects_count_(v36, v37, &v392, v405, 16);
       if (v38)
       {
@@ -1542,7 +1542,7 @@ LABEL_69:
       }
 
       while (v353 != 1000);
-      v6 = v345;
+      listCopy = v345;
       v211 = v346;
       v21 = v350;
       v212 = 0x27900E000;
@@ -1656,7 +1656,7 @@ LABEL_90:
       while (v366);
 LABEL_92:
 
-      v6 = v345;
+      listCopy = v345;
       v211 = v346;
 LABEL_93:
       v145 = v356;
@@ -1679,7 +1679,7 @@ LABEL_94:
         }
 
         while (v329 < v343);
-        v6 = v345;
+        listCopy = v345;
         objc_msgSend_removeAllObjects(v345, v325, v338, v326, v327);
         objc_msgSend_addObjectsFromArray_(v345, v339, v328, v340, v341);
 
@@ -1691,16 +1691,16 @@ LABEL_94:
   v342 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_addSegment:(id)a3 withDuration:(int64_t)a4 toAssemblyList:(id)a5 timeRemaining:(int64_t)a6 reusedSegment:(id *)a7 indexofNewSegment:(int64_t *)a8
+- (BOOL)_addSegment:(id)segment withDuration:(int64_t)duration toAssemblyList:(id)list timeRemaining:(int64_t)remaining reusedSegment:(id *)reusedSegment indexofNewSegment:(int64_t *)newSegment
 {
   v195 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v18 = v13;
-  if (v12 && a4 && v13)
+  segmentCopy = segment;
+  listCopy = list;
+  v18 = listCopy;
+  if (segmentCopy && duration && listCopy)
   {
     v19 = objc_msgSend_assetProvider(self, v14, v15, v16, v17);
-    v23 = objc_msgSend_urlToAudioForSegment_(v19, v20, v12, v21, v22);
+    v23 = objc_msgSend_urlToAudioForSegment_(v19, v20, segmentCopy, v21, v22);
 
     if (!v23)
     {
@@ -1710,36 +1710,36 @@ LABEL_47:
       goto LABEL_48;
     }
 
-    v181 = a7;
+    reusedSegmentCopy = reusedSegment;
     v28 = 0;
     v29 = 1;
     do
     {
       v30 = v29;
-      if (v28 > a4)
+      if (v28 > duration)
       {
         break;
       }
 
-      if (objc_msgSend_bars(v12, v24, v25, v26, v27) <= v29)
+      if (objc_msgSend_bars(segmentCopy, v24, v25, v26, v27) <= v29)
       {
         break;
       }
 
-      v28 += objc_msgSend_barDurationForBarIndex_(v12, v24, v30 - 1, v26, v27);
+      v28 += objc_msgSend_barDurationForBarIndex_(segmentCopy, v24, v30 - 1, v26, v27);
       v29 = v30 + 1;
     }
 
-    while (v28 < a4);
-    if (objc_msgSend_sliceable(v12, v24, v25, v26, v27))
+    while (v28 < duration);
+    if (objc_msgSend_sliceable(segmentCopy, v24, v25, v26, v27))
     {
       v179 = v23;
-      v180 = a8;
+      newSegmentCopy = newSegment;
       v191[0] = MEMORY[0x277D85DD0];
       v191[1] = 3221225472;
       v191[2] = sub_24B805E38;
       v191[3] = &unk_27900F450;
-      v192 = v12;
+      v192 = segmentCopy;
       v34 = objc_msgSend_indexesOfObjectsPassingTest_(v18, v31, v191, v32, v33);
       objc_msgSend_objectsAtIndexes_(v18, v35, v34, v36, v37);
       v187 = 0u;
@@ -1751,8 +1751,8 @@ LABEL_47:
       {
         v44 = v39;
         v176 = v34;
-        v177 = a4;
-        v178 = v12;
+        durationCopy = duration;
+        v178 = segmentCopy;
         v186 = *v188;
         v182 = v18;
         while (2)
@@ -1765,7 +1765,7 @@ LABEL_47:
             }
 
             v46 = *(*(&v187 + 1) + 8 * i);
-            v47 = objc_msgSend_barsUsed(v46, v40, v41, v42, v43, v176, v177);
+            v47 = objc_msgSend_barsUsed(v46, v40, v41, v42, v43, v176, durationCopy);
             v52 = objc_msgSend_segment(v46, v48, v49, v50, v51);
             v57 = objc_msgSend_bars(v52, v53, v54, v55, v56);
 
@@ -1796,22 +1796,22 @@ LABEL_47:
               }
 
               objc_msgSend__sampleDurationOfClipPlaylist_(self, v74, v182, v76, v77);
-              if (v79 - objc_msgSend_duration(v46, v88, v89, v90, v91) <= a6)
+              if (v79 - objc_msgSend_duration(v46, v88, v89, v90, v91) <= remaining)
               {
                 v111 = objc_msgSend_barsUsed(v46, v40, v41, v42, v43);
                 objc_msgSend_setBarsUsed_(v46, v112, v111 + v30, v113, v114);
                 v93 = v46;
                 objc_msgSend_setDuration_(v93, v115, v79, v116, v117);
-                if (v181)
+                if (reusedSegmentCopy)
                 {
-                  *v181 = objc_msgSend_segment(v93, v118, v119, v120, v121);
+                  *reusedSegmentCopy = objc_msgSend_segment(v93, v118, v119, v120, v121);
                 }
 
                 v18 = v182;
-                a8 = v180;
-                *v180 = objc_msgSend_indexOfObject_(v182, v118, v93, v120, v121);
+                newSegment = newSegmentCopy;
+                *newSegmentCopy = objc_msgSend_indexOfObject_(v182, v118, v93, v120, v121);
                 v92 = 1;
-                v12 = v178;
+                segmentCopy = v178;
                 goto LABEL_38;
               }
             }
@@ -1828,13 +1828,13 @@ LABEL_47:
 
         v92 = 0;
         v93 = 0;
-        v12 = v178;
+        segmentCopy = v178;
         v18 = v182;
-        a8 = v180;
+        newSegment = newSegmentCopy;
 LABEL_38:
         v23 = v179;
         v34 = v176;
-        a4 = v177;
+        duration = durationCopy;
       }
 
       else
@@ -1857,15 +1857,15 @@ LABEL_38:
     v122 = v93;
     v93 = objc_alloc_init(FlexSegmentAssemblyInfo);
 
-    objc_msgSend_setSegment_(v93, v123, v12, v124, v125);
+    objc_msgSend_setSegment_(v93, v123, segmentCopy, v124, v125);
     objc_msgSend_setUrl_(v93, v126, v23, v127, v128);
-    objc_msgSend_setDuration_(v93, v129, a4, v130, v131);
+    objc_msgSend_setDuration_(v93, v129, duration, v130, v131);
     objc_msgSend_setBarsUsed_(v93, v132, v30, v133, v134);
-    if (objc_msgSend_type(v12, v135, v136, v137, v138) == 2 || objc_msgSend_type(v12, v139, v140, v141, v142) == 3)
+    if (objc_msgSend_type(segmentCopy, v135, v136, v137, v138) == 2 || objc_msgSend_type(segmentCopy, v139, v140, v141, v142) == 3)
     {
       objc_msgSend_addObject_(v18, v139, v93, v141, v142);
       v144 = MEMORY[0x277CCABB0];
-      v149 = objc_msgSend_nameIndex(v12, v145, v146, v147, v148);
+      v149 = objc_msgSend_nameIndex(segmentCopy, v145, v146, v147, v148);
       v154 = objc_msgSend_integerValue(v149, v150, v151, v152, v153);
       v158 = objc_msgSend_numberWithInteger_(v144, v155, v154, v156, v157);
       v193 = v158;
@@ -1873,14 +1873,14 @@ LABEL_38:
       objc_msgSend__sequenceBodySegmentList_forIndexes_(self, v162, v18, v161, v163);
     }
 
-    else if (objc_msgSend_type(v12, v139, v143, v141, v142) == 1)
+    else if (objc_msgSend_type(segmentCopy, v139, v143, v141, v142) == 1)
     {
       objc_msgSend_insertObject_atIndex_(v18, v169, v93, 0, v172);
     }
 
     else
     {
-      if (objc_msgSend_type(v12, v169, v170, v171, v172) != 4)
+      if (objc_msgSend_type(segmentCopy, v169, v170, v171, v172) != 4)
       {
         v94 = 0;
         goto LABEL_46;
@@ -1889,7 +1889,7 @@ LABEL_38:
       objc_msgSend_addObject_(v18, v173, v93, v174, v175);
     }
 
-    *a8 = objc_msgSend_indexOfObject_(v18, v164, v93, v165, v166);
+    *newSegment = objc_msgSend_indexOfObject_(v18, v164, v93, v165, v166);
 LABEL_45:
     v94 = 1;
 LABEL_46:
@@ -1898,12 +1898,12 @@ LABEL_46:
   }
 
   v94 = 0;
-  if (!v12 && a4 && v13)
+  if (!segmentCopy && duration && listCopy)
   {
     v95 = objc_alloc_init(FlexSegmentAssemblyInfo);
     objc_msgSend_setSegment_(v95, v96, 0, v97, v98);
     objc_msgSend_setUrl_(v95, v99, 0, v100, v101);
-    objc_msgSend_setDuration_(v95, v102, a4, v103, v104);
+    objc_msgSend_setDuration_(v95, v102, duration, v103, v104);
     v94 = 1;
     objc_msgSend_setBarsUsed_(v95, v105, 1, v106, v107);
     objc_msgSend_addObject_(v18, v108, v95, v109, v110);
@@ -1915,28 +1915,28 @@ LABEL_48:
   return v94;
 }
 
-- (void)_removeSegmentInfo:(id)a3 fromAssemblyList:(id)a4
+- (void)_removeSegmentInfo:(id)info fromAssemblyList:(id)list
 {
-  if (a3)
+  if (info)
   {
-    objc_msgSend_removeObject_(a4, a2, a3, a4, v4);
+    objc_msgSend_removeObject_(list, a2, info, list, v4);
   }
 }
 
-- (BOOL)_updateTransitionBodySegmentsForAssemblyList:(id)a3 usingNewSegment:(id)a4 indexOfNewTransitionSegment:(id)a5
+- (BOOL)_updateTransitionBodySegmentsForAssemblyList:(id)list usingNewSegment:(id)segment indexOfNewTransitionSegment:(id)transitionSegment
 {
   v266 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v242 = a5;
-  if (!objc_msgSend_count(v8, v10, v11, v12, v13))
+  listCopy = list;
+  segmentCopy = segment;
+  transitionSegmentCopy = transitionSegment;
+  if (!objc_msgSend_count(listCopy, v10, v11, v12, v13))
   {
     v33 = 1;
-    v231 = v242;
+    v231 = transitionSegmentCopy;
     goto LABEL_68;
   }
 
-  v241 = v9;
+  v241 = segmentCopy;
   v18 = objc_msgSend_set(MEMORY[0x277CBEB58], v14, v15, v16, v17);
   v23 = objc_msgSend_set(MEMORY[0x277CBEB58], v19, v20, v21, v22);
   v32 = objc_msgSend_set(MEMORY[0x277CBEB58], v24, v25, v26, v27);
@@ -1949,7 +1949,7 @@ LABEL_48:
 LABEL_3:
     objc_msgSend_removeAllObjects(v23, v28, v29, v30, v31);
     objc_msgSend_removeAllObjects(v18, v34, v35, v36, v37);
-    if (!objc_msgSend_count(v8, v38, v39, v40, v41))
+    if (!objc_msgSend_count(listCopy, v38, v39, v40, v41))
     {
       goto LABEL_27;
     }
@@ -1957,14 +1957,14 @@ LABEL_3:
     v46 = 0;
     while (1)
     {
-      v47 = objc_msgSend_objectAtIndexedSubscript_(v8, v42, v46, v44, v45);
+      v47 = objc_msgSend_objectAtIndexedSubscript_(listCopy, v42, v46, v44, v45);
       v48 = (v46 + 1);
-      if ((v46 + 1) < objc_msgSend_count(v8, v49, v50, v51, v52))
+      if ((v46 + 1) < objc_msgSend_count(listCopy, v49, v50, v51, v52))
       {
         break;
       }
 
-      if (v48 != objc_msgSend_count(v8, v53, v54, v55, v56))
+      if (v48 != objc_msgSend_count(listCopy, v53, v54, v55, v56))
       {
         goto LABEL_25;
       }
@@ -1980,14 +1980,14 @@ LABEL_3:
 LABEL_22:
 
       v46 = v48;
-      if (v48 >= objc_msgSend_count(v8, v167, v168, v169, v170))
+      if (v48 >= objc_msgSend_count(listCopy, v167, v168, v169, v170))
       {
         goto LABEL_26;
       }
     }
 
     v247 = v46 + 1;
-    v57 = objc_msgSend_objectAtIndexedSubscript_(v8, v53, (v46 + 1), v55, v56);
+    v57 = objc_msgSend_objectAtIndexedSubscript_(listCopy, v53, (v46 + 1), v55, v56);
     v62 = objc_msgSend_segment(v47, v58, v59, v60, v61);
     v249 = v57;
     objc_msgSend_segment(v57, v63, v64, v65, v66);
@@ -2016,7 +2016,7 @@ LABEL_21:
 
       if (v46)
       {
-        v46 = objc_msgSend_objectAtIndexedSubscript_(v8, v117, (v46 - 1), v119, v120);
+        v46 = objc_msgSend_objectAtIndexedSubscript_(listCopy, v117, (v46 - 1), v119, v120);
         objc_msgSend_segment(v46, v121, v122, v123, v124);
       }
 
@@ -2058,7 +2058,7 @@ LABEL_20:
 
     v91 = objc_msgSend_barsUsed(v67, v87, v88, v89, v90);
     v92 = v249;
-    v94 = objc_msgSend__transitionSegmentForSegmentInfo_toSegmentInfo_fromBarIndex_inSegmentList_(self, v93, v67, v249, v91 - 1, v8);
+    v94 = objc_msgSend__transitionSegmentForSegmentInfo_toSegmentInfo_fromBarIndex_inSegmentList_(self, v93, v67, v249, v91 - 1, listCopy);
     v47 = v67;
     if (v94)
     {
@@ -2098,7 +2098,7 @@ LABEL_27:
             v185 = objc_msgSend_copy(*(*(&v259 + 1) + 8 * i), v178, v179, v180, v181);
             v258 = 0x7FFFFFFFFFFFFFFFLL;
             v190 = objc_msgSend_sampleCount(v185, v186, v187, v188, v189);
-            v192 = objc_msgSend__addSegment_withDuration_toAssemblyList_indexOfNewSegment_(self, v191, v185, v190, v8, &v258);
+            v192 = objc_msgSend__addSegment_withDuration_toAssemblyList_indexOfNewSegment_(self, v191, v185, v190, listCopy, &v258);
             v33 = v192;
             if (v192)
             {
@@ -2112,7 +2112,7 @@ LABEL_27:
 
             if (!v196)
             {
-              v200 = objc_msgSend_objectAtIndex_(v8, v193, v258, v194, v195);
+              v200 = objc_msgSend_objectAtIndex_(listCopy, v193, v258, v194, v195);
               if (v200)
               {
                 objc_msgSend_addObject_(v32, v197, v200, v198, v199);
@@ -2151,7 +2151,7 @@ LABEL_27:
             }
 
             v213 = *(*(&v254 + 1) + 8 * j);
-            objc_msgSend__removeSegmentInfo_fromAssemblyList_(self, v208, v213, v8, v209);
+            objc_msgSend__removeSegmentInfo_fromAssemblyList_(self, v208, v213, listCopy, v209);
             if (objc_msgSend_containsObject_(v32, v214, v213, v215, v216))
             {
               objc_msgSend_removeObject_(v32, v208, v213, v217, v209);
@@ -2191,8 +2191,8 @@ LABEL_27:
   v251 = 0u;
   v225 = v32;
   v227 = objc_msgSend_countByEnumeratingWithState_objects_count_(v225, v226, &v250, v263, 16);
-  v9 = v241;
-  v231 = v242;
+  segmentCopy = v241;
+  v231 = transitionSegmentCopy;
   if (v227)
   {
     v232 = v227;
@@ -2206,8 +2206,8 @@ LABEL_27:
           objc_enumerationMutation(v225);
         }
 
-        v235 = objc_msgSend_indexOfObject_(v8, v228, *(*(&v250 + 1) + 8 * k), v229, v230);
-        objc_msgSend_addIndex_(v242, v236, v235, v237, v238);
+        v235 = objc_msgSend_indexOfObject_(listCopy, v228, *(*(&v250 + 1) + 8 * k), v229, v230);
+        objc_msgSend_addIndex_(transitionSegmentCopy, v236, v235, v237, v238);
       }
 
       v232 = objc_msgSend_countByEnumeratingWithState_objects_count_(v225, v228, &v250, v263, 16);
@@ -2221,18 +2221,18 @@ LABEL_68:
   return v33 & 1;
 }
 
-- (BOOL)_removeUnpermittedTransitionsInAssemblyList:(id)a3 final:(BOOL)a4 testingContext:(id)a5 removedIndexes:(id)a6 conflictList:(id)a7
+- (BOOL)_removeUnpermittedTransitionsInAssemblyList:(id)list final:(BOOL)final testingContext:(id)context removedIndexes:(id)indexes conflictList:(id)conflictList
 {
-  v438 = a4;
+  finalCopy = final;
   v472 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v440 = a5;
-  v12 = a6;
-  v439 = a7;
+  listCopy = list;
+  contextCopy = context;
+  indexesCopy = indexes;
+  conflictListCopy = conflictList;
   v21 = objc_msgSend_array(MEMORY[0x277CBEB18], v13, v14, v15, v16);
   v22 = 0;
   v23 = 0;
-  v459 = v12;
+  v459 = indexesCopy;
   v442 = v21;
   do
   {
@@ -2243,7 +2243,7 @@ LABEL_68:
     }
 
     v443 = v22;
-    v24 = objc_msgSend_count(v11, v17, v18, v19, v20);
+    v24 = objc_msgSend_count(listCopy, v17, v18, v19, v20);
     if (!v24)
     {
       goto LABEL_79;
@@ -2256,7 +2256,7 @@ LABEL_68:
     v444 = v24;
     while (1)
     {
-      v32 = objc_msgSend_objectAtIndexedSubscript_(v11, v25, v30, v27, v28);
+      v32 = objc_msgSend_objectAtIndexedSubscript_(listCopy, v25, v30, v27, v28);
       v37 = objc_msgSend_segment(v32, v33, v34, v35, v36);
       v42 = objc_msgSend_type(v37, v38, v39, v40, v41);
 
@@ -2317,7 +2317,7 @@ LABEL_26:
           v129 = objc_msgSend_barsUsed(v460, v125, v126, v127, v128);
           v132 = objc_msgSend_transitionToSegmentNamed_fromBarIndex_(v119, v130, v124, v129 - 1, v131);
 
-          v12 = v459;
+          indexesCopy = v459;
           if (!v132)
           {
             break;
@@ -2339,7 +2339,7 @@ LABEL_26:
             }
 
             v445 = v460;
-            v272 = objc_msgSend_removedConflicts(v440, v268, v269, v270, v271);
+            v272 = objc_msgSend_removedConflicts(contextCopy, v268, v269, v270, v271);
             v273 = MEMORY[0x277CCACA8];
             v278 = objc_msgSend_segment(v445, v274, v275, v276, v277);
             v283 = objc_msgSend_name(v278, v279, v280, v281, v282);
@@ -2348,11 +2348,11 @@ LABEL_26:
 
             v291 = MEMORY[0x277CCACA8];
             v32 = v460;
-            v12 = v459;
+            indexesCopy = v459;
             v296 = objc_msgSend_segment(v445, v292, v293, v294, v295);
             v301 = objc_msgSend_name(v296, v297, v298, v299, v300);
             v305 = objc_msgSend_stringWithFormat_(v291, v302, @"supply an outro for %@", v303, v304, v301);
-            objc_msgSend_addObject_(v439, v306, v305, v307, v308);
+            objc_msgSend_addObject_(conflictListCopy, v306, v305, v307, v308);
 
             v309 = v445;
             if (v445)
@@ -2371,12 +2371,12 @@ LABEL_26:
       goto LABEL_36;
     }
 
-    v46 = objc_msgSend_objectAtIndexedSubscript_(v11, v43, v30 + 1, v44, v45);
+    v46 = objc_msgSend_objectAtIndexedSubscript_(listCopy, v43, v30 + 1, v44, v45);
     obj = objc_msgSend_segment(v46, v47, v48, v49, v50);
     v54 = v454;
     while (1)
     {
-      v55 = objc_msgSend_objectAtIndexedSubscript_(v11, v51, v54, v52, v53);
+      v55 = objc_msgSend_objectAtIndexedSubscript_(listCopy, v51, v54, v52, v53);
       v60 = objc_msgSend_segment(v55, v56, v57, v58, v59);
       v65 = objc_msgSend_type(v60, v61, v62, v63, v64);
 
@@ -2409,7 +2409,7 @@ LABEL_14:
       v82 = 0;
     }
 
-    v83 = objc_msgSend_lastObject(v11, v78, v79, v80, v81);
+    v83 = objc_msgSend_lastObject(listCopy, v78, v79, v80, v81);
 
     v448 = objc_msgSend_type(obj, v84, v85, v86, v87);
     v92 = objc_msgSend_segment(v32, v88, v89, v90, v91);
@@ -2465,7 +2465,7 @@ LABEL_40:
       isEqualToString = objc_msgSend_isEqualToString_(v164, v176, v175, v177, v178);
 
       v32 = v174;
-      v12 = v459;
+      indexesCopy = v459;
     }
 
     else
@@ -2516,7 +2516,7 @@ LABEL_40:
         v260 = v461;
         v261 = v250 < v255;
         v32 = v461;
-        v12 = v459;
+        indexesCopy = v459;
         if (v261)
         {
           goto LABEL_69;
@@ -2565,7 +2565,7 @@ LABEL_40:
         v260 = v199;
       }
 
-      if (!v438)
+      if (!finalCopy)
       {
         v260 = v461;
       }
@@ -2599,7 +2599,7 @@ LABEL_70:
 
     if (v334 != 3)
     {
-      v339 = objc_msgSend_removedConflicts(v440, v335, v336, v337, v338);
+      v339 = objc_msgSend_removedConflicts(contextCopy, v335, v336, v337, v338);
       v340 = MEMORY[0x277CCACA8];
       v345 = objc_msgSend_segment(v32, v341, v342, v343, v344);
       v350 = objc_msgSend_name(v345, v346, v347, v348, v349);
@@ -2616,7 +2616,7 @@ LABEL_70:
       v383 = objc_msgSend_segment(v55, v379, v380, v381, v382);
       v388 = objc_msgSend_name(v383, v384, v385, v386, v387);
       v392 = objc_msgSend_stringWithFormat_(v368, v389, @"%@ -> %@", v390, v391, v378, v388);
-      objc_msgSend_addObject_(v439, v393, v392, v394, v395);
+      objc_msgSend_addObject_(conflictListCopy, v393, v392, v394, v395);
 
       v32 = v461;
       v309 = v446;
@@ -2652,13 +2652,13 @@ LABEL_79:
             }
 
             v408 = *(*(&v462 + 1) + 8 * i);
-            objc_msgSend__removeSegmentInfo_fromAssemblyList_(self, v403, v408, v11, v404);
+            objc_msgSend__removeSegmentInfo_fromAssemblyList_(self, v403, v408, listCopy, v404);
             v409 = MEMORY[0x277CCABB0];
             v414 = objc_msgSend_segment(v408, v410, v411, v412, v413);
             v419 = objc_msgSend_nameIndex(v414, v415, v416, v417, v418);
             v424 = objc_msgSend_integerValue(v419, v420, v421, v422, v423);
             v428 = objc_msgSend_numberWithInteger_(v409, v425, v424, v426, v427);
-            objc_msgSend_addObject_(v12, v429, v428, v430, v431);
+            objc_msgSend_addObject_(indexesCopy, v429, v428, v430, v431);
           }
 
           v405 = objc_msgSend_countByEnumeratingWithState_objects_count_(v400, v403, &v462, v470, 16);
@@ -2681,17 +2681,17 @@ LABEL_79:
   }
 
   while (v443 != 100);
-  objc_msgSend_addObject_(v439, v17, @"-", v19, v20);
+  objc_msgSend_addObject_(conflictListCopy, v17, @"-", v19, v20);
 
   v436 = *MEMORY[0x277D85DE8];
   return v441;
 }
 
-- (BOOL)_addBodySegmentsForAssemblyList:(id)a3 forDuration:(int64_t)a4 unusedDuration:(int64_t *)a5 testingContext:(id)a6 timedOut:(BOOL *)a7
+- (BOOL)_addBodySegmentsForAssemblyList:(id)list forDuration:(int64_t)duration unusedDuration:(int64_t *)unusedDuration testingContext:(id)context timedOut:(BOOL *)out
 {
   v430 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  listCopy = list;
+  contextCopy = context;
   v15 = objc_msgSend__segmentsforType_(self, v12, 2, v13, v14);
   v383 = objc_msgSend_sortedArrayUsingComparator_(v15, v16, &unk_285EA05B0, v17, v18);
   updated = objc_msgSend_count(v383, v19, v20, v21, v22) != 0;
@@ -2706,7 +2706,7 @@ LABEL_79:
   v425 = 0u;
   v37 = v426 = 0u;
   v39 = objc_msgSend_countByEnumeratingWithState_objects_count_(v37, v38, &v423, v429, 16);
-  v411 = self;
+  selfCopy = self;
   obj = v37;
   if (v39)
   {
@@ -2761,7 +2761,7 @@ LABEL_79:
 
     while (v44);
 
-    self = v411;
+    self = selfCopy;
     if (v46 != -1 && v46 < objc_msgSend_sampleCount(v382, v56, v57, v58, v59))
     {
       goto LABEL_22;
@@ -2774,20 +2774,20 @@ LABEL_79:
 
   v46 = objc_msgSend_sampleCount(v382, v56, v57, v58, v59);
 LABEL_22:
-  *a7 = 0;
+  *out = 0;
   v405 = objc_msgSend_array(MEMORY[0x277CBEB18], v56, v57, v58, v59);
   v392 = objc_msgSend_array(MEMORY[0x277CBEB18], v60, v61, v62, v63);
   v384 = 0;
   v68 = 0;
-  v381 = a4 + 1;
-  v69 = a4;
-  v397 = a4;
-  v393 = v11;
-  v391 = v10;
+  v381 = duration + 1;
+  durationCopy = duration;
+  durationCopy2 = duration;
+  v393 = contextCopy;
+  v391 = listCopy;
   do
   {
     v386 = v68;
-    if ((updated & 1) == 0 || v46 > v69)
+    if ((updated & 1) == 0 || v46 > durationCopy)
     {
       goto LABEL_142;
     }
@@ -2806,7 +2806,7 @@ LABEL_22:
     if (v90 - 2 >= 0)
     {
       v95 = v90 - 1;
-      v407 = v69;
+      v407 = durationCopy;
       while (1)
       {
         v96 = objc_msgSend_objectAtIndexedSubscript_(v405, v91, v94, v92, v93);
@@ -2837,27 +2837,27 @@ LABEL_22:
 
             isEqualToArray = objc_msgSend_isEqualToArray_(v126, v123, v104, v124, v125);
 
-            v10 = v391;
+            listCopy = v391;
             if (isEqualToArray)
             {
               ++v384;
 
-              v11 = v393;
-              self = v411;
-              v69 = v407;
+              contextCopy = v393;
+              self = selfCopy;
+              durationCopy = v407;
               break;
             }
           }
 
-          v11 = v393;
-          v69 = v407;
+          contextCopy = v393;
+          durationCopy = v407;
         }
 
         --v95;
         v266 = v94-- <= 0;
         if (v266)
         {
-          self = v411;
+          self = selfCopy;
           break;
         }
       }
@@ -2899,9 +2899,9 @@ LABEL_22:
         if (v150)
         {
           v399 = v141;
-          v155 = v11;
-          v408 = v69;
-          v156 = objc_msgSend_lastObject(v10, v151, v152, v153, v154);
+          v155 = contextCopy;
+          v408 = durationCopy;
+          v156 = objc_msgSend_lastObject(listCopy, v151, v152, v153, v154);
           v161 = objc_msgSend_lastObject(v394, v157, v158, v159, v160);
           v402 = objc_msgSend_firstObject(v394, v162, v163, v164, v165);
           v166 = v156;
@@ -2914,15 +2914,15 @@ LABEL_22:
           {
             v219 = 0;
             v133 = v406;
-            v69 = v408;
-            v11 = v155;
+            durationCopy = v408;
+            contextCopy = v155;
           }
 
           else
           {
-            v69 = v408;
-            v11 = v155;
-            if (objc_msgSend_count(v10, v185, v186, v187, v188))
+            durationCopy = v408;
+            contextCopy = v155;
+            if (objc_msgSend_count(listCopy, v185, v186, v187, v188))
             {
               v141 = v399;
               if (v184)
@@ -2940,7 +2940,7 @@ LABEL_22:
                     isEqualToString = objc_msgSend_isEqualToString_(v209, v215, v214, v216, v217);
 
                     v219 = isEqualToString ^ 1;
-                    v69 = v408;
+                    durationCopy = v408;
                   }
 
                   else
@@ -2978,15 +2978,15 @@ LABEL_63:
         v219 = 0;
         v133 = v406;
 LABEL_64:
-        if (v141 <= v69 && (v219 & 1) == 0)
+        if (v141 <= durationCopy && (v219 & 1) == 0)
         {
           v221 = objc_msgSend_sampleCount(v140, v151, v152, v153, v154);
 LABEL_67:
           v417 = 0;
           v418 = 0x7FFFFFFFFFFFFFFFLL;
-          self = v411;
-          v222 = v69;
-          v223 = objc_msgSend__addSegment_withDuration_toAssemblyList_timeRemaining_reusedSegment_indexofNewSegment_(v411, v220, v140, v221, v10, v69, &v417, &v418);
+          self = selfCopy;
+          v222 = durationCopy;
+          v223 = objc_msgSend__addSegment_withDuration_toAssemblyList_timeRemaining_reusedSegment_indexofNewSegment_(selfCopy, v220, v140, v221, listCopy, durationCopy, &v417, &v418);
           v224 = v417;
           if (!v223)
           {
@@ -2996,7 +2996,7 @@ LABEL_67:
           }
 
           v409 = v224;
-          v228 = objc_msgSend_objectAtIndex_(v10, v225, v418, v226, v227);
+          v228 = objc_msgSend_objectAtIndex_(listCopy, v225, v418, v226, v227);
           v416[0] = MEMORY[0x277D85DD0];
           v416[1] = 3221225472;
           v416[2] = sub_24B807E94;
@@ -3009,7 +3009,7 @@ LABEL_67:
             updated = 0;
 LABEL_137:
 
-            v69 = v222;
+            durationCopy = v222;
             goto LABEL_138;
           }
 
@@ -3029,14 +3029,14 @@ LABEL_137:
           if (v246 <= objc_msgSend_sampleCount(v241, v247, v248, v249, v250))
           {
             v251 = objc_opt_new();
-            v274 = objc_msgSend__removeUnpermittedTransitionsInAssemblyList_final_testingContext_removedIndexes_conflictList_(v411, v273, v10, 0, v11, v251, v392);
+            v274 = objc_msgSend__removeUnpermittedTransitionsInAssemblyList_final_testingContext_removedIndexes_conflictList_(selfCopy, v273, listCopy, 0, contextCopy, v251, v392);
             if (objc_msgSend_count(v251, v275, v276, v277, v278))
             {
               v283 = objc_msgSend_allObjects(v251, v279, v280, v281, v282);
-              objc_msgSend__sequenceBodySegmentList_forIndexes_(v411, v284, v10, v283, v285);
+              objc_msgSend__sequenceBodySegmentList_forIndexes_(selfCopy, v284, listCopy, v283, v285);
             }
 
-            if (objc_msgSend_indexOfObject_(v10, v279, v228, v281, v282) != 0x7FFFFFFFFFFFFFFFLL)
+            if (objc_msgSend_indexOfObject_(listCopy, v279, v228, v281, v282) != 0x7FFFFFFFFFFFFFFFLL)
             {
 
               if (v274)
@@ -3050,8 +3050,8 @@ LABEL_137:
             }
 
             v290 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], v286, v287, v288, v289);
-            objc_msgSend__updateTransitionBodySegmentsForAssemblyList_usingNewSegment_indexOfNewTransitionSegment_(v411, v291, v10, 0, v290);
-            v222 = v397 - objc_msgSend__sampleDurationOfClipPlaylist_(v411, v292, v10, v293, v294);
+            objc_msgSend__updateTransitionBodySegmentsForAssemblyList_usingNewSegment_indexOfNewTransitionSegment_(selfCopy, v291, listCopy, 0, v290);
+            v222 = durationCopy2 - objc_msgSend__sampleDurationOfClipPlaylist_(selfCopy, v292, listCopy, v293, v294);
             if (v222 < 0)
             {
               v299 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], v295, v296, v297, v298);
@@ -3060,7 +3060,7 @@ LABEL_137:
               {
                 for (k = Index; k != 0x7FFFFFFFFFFFFFFFLL; k = objc_msgSend_indexGreaterThanIndex_(v290, v310, k, v311, v312))
                 {
-                  if (k + 1 <= (objc_msgSend_count(v10, v305, v306, v307, v308) - 1))
+                  if (k + 1 <= (objc_msgSend_count(listCopy, v305, v306, v307, v308) - 1))
                   {
                     objc_msgSend_addIndex_(v299, v310, k + 1, v311, v312);
                   }
@@ -3068,9 +3068,9 @@ LABEL_137:
               }
 
               objc_msgSend_addIndexes_(v299, v305, v290, v307, v308);
-              objc_msgSend_removeObjectsAtIndexes_(v10, v313, v299, v314, v315);
-              self = v411;
-              v222 = v397 - objc_msgSend__sampleDurationOfClipPlaylist_(v411, v316, v10, v317, v318);
+              objc_msgSend_removeObjectsAtIndexes_(listCopy, v313, v299, v314, v315);
+              self = selfCopy;
+              v222 = durationCopy2 - objc_msgSend__sampleDurationOfClipPlaylist_(selfCopy, v316, listCopy, v317, v318);
             }
 
 LABEL_121:
@@ -3080,16 +3080,16 @@ LABEL_121:
           {
 LABEL_73:
             v251 = objc_opt_new();
-            if (objc_msgSend__updateTransitionBodySegmentsForAssemblyList_usingNewSegment_indexOfNewTransitionSegment_(v411, v252, v10, v140, v251))
+            if (objc_msgSend__updateTransitionBodySegmentsForAssemblyList_usingNewSegment_indexOfNewTransitionSegment_(selfCopy, v252, listCopy, v140, v251))
             {
               v400 = v251;
-              v260 = v397 - objc_msgSend__sampleDurationOfClipPlaylist_(v411, v253, v10, v254, v255);
+              v260 = durationCopy2 - objc_msgSend__sampleDurationOfClipPlaylist_(selfCopy, v253, listCopy, v254, v255);
               if (v260 >= 0)
               {
-                self = v411;
+                self = selfCopy;
 LABEL_76:
                 v261 = v403;
-                v222 = v397 - objc_msgSend__sampleDurationOfClipPlaylist_(self, v256, v10, v258, v259);
+                v222 = durationCopy2 - objc_msgSend__sampleDurationOfClipPlaylist_(self, v256, listCopy, v258, v259);
                 v390 = 1;
                 updated = 1;
                 v262 = v410;
@@ -3115,7 +3115,7 @@ LABEL_125:
                     break;
                   }
 
-                  v324 = v11;
+                  v324 = contextCopy;
                   v325 = 0;
                   v326 = 0;
                   do
@@ -3127,13 +3127,13 @@ LABEL_125:
                   }
 
                   while (v323 != v325);
-                  v11 = v324;
+                  contextCopy = v324;
                   if (v260 - v326 + objc_msgSend_duration(v228, v319, v320, v321, v322) >= 1)
                   {
                     objc_msgSend_setBarsUsed_(v228, v319, v323, v321, v322);
                     objc_msgSend_setDuration_(v228, v331, v326, v332, v333);
-                    self = v411;
-                    v46 = v381 - objc_msgSend__sampleDurationOfClipPlaylist_(v411, v334, v10, v335, v336);
+                    self = selfCopy;
+                    v46 = v381 - objc_msgSend__sampleDurationOfClipPlaylist_(selfCopy, v334, listCopy, v335, v336);
                     goto LABEL_76;
                   }
                 }
@@ -3142,8 +3142,8 @@ LABEL_125:
               v251 = v400;
               if (objc_msgSend_count(v400, v319, v320, v321, v322))
               {
-                v340 = objc_msgSend_objectsAtIndexes_(v10, v337, v400, v338, v339);
-                objc_msgSend__removeSegmentInfo_fromAssemblyList_(v411, v341, v228, v10, v342);
+                v340 = objc_msgSend_objectsAtIndexes_(listCopy, v337, v400, v338, v339);
+                objc_msgSend__removeSegmentInfo_fromAssemblyList_(selfCopy, v341, v228, listCopy, v342);
                 v414 = 0u;
                 v415 = 0u;
                 v412 = 0u;
@@ -3163,7 +3163,7 @@ LABEL_125:
                         objc_enumerationMutation(v290);
                       }
 
-                      objc_msgSend__removeSegmentInfo_fromAssemblyList_(v411, v345, *(*(&v412 + 1) + 8 * m), v10, v346);
+                      objc_msgSend__removeSegmentInfo_fromAssemblyList_(selfCopy, v345, *(*(&v412 + 1) + 8 * m), listCopy, v346);
                     }
 
                     v347 = objc_msgSend_countByEnumeratingWithState_objects_count_(v290, v345, &v412, v427, 16);
@@ -3172,14 +3172,14 @@ LABEL_125:
                   while (v347);
                 }
 
-                self = v411;
-                objc_msgSend__updateTransitionBodySegmentsForAssemblyList_usingNewSegment_indexOfNewTransitionSegment_(v411, v350, v10, 0, 0);
-                v222 = v397 - objc_msgSend__sampleDurationOfClipPlaylist_(v411, v351, v10, v352, v353);
+                self = selfCopy;
+                objc_msgSend__updateTransitionBodySegmentsForAssemblyList_usingNewSegment_indexOfNewTransitionSegment_(selfCopy, v350, listCopy, 0, 0);
+                v222 = durationCopy2 - objc_msgSend__sampleDurationOfClipPlaylist_(selfCopy, v351, listCopy, v352, v353);
                 goto LABEL_121;
               }
 
-              self = v411;
-              objc_msgSend__removeSegmentInfo_fromAssemblyList_(v411, v337, v228, v10, v339);
+              self = selfCopy;
+              objc_msgSend__removeSegmentInfo_fromAssemblyList_(selfCopy, v337, v228, listCopy, v339);
             }
           }
 
@@ -3198,7 +3198,7 @@ LABEL_125:
           v265 = 1;
         }
 
-        v266 = v265 || v69 < 1;
+        v266 = v265 || durationCopy < 1;
         if (!v266)
         {
           v267 = 0;
@@ -3208,7 +3208,7 @@ LABEL_125:
           {
             v272 = objc_msgSend_barDurationForBarIndex_(v140, v220, v267, v270, v271);
             v221 = v272 + v268;
-            if (v272 + v268 > v69)
+            if (v272 + v268 > durationCopy)
             {
               break;
             }
@@ -3216,7 +3216,7 @@ LABEL_125:
             ++v267;
             v269 = 1;
             v268 += v272;
-            if (v221 >= v69)
+            if (v221 >= durationCopy)
             {
               goto LABEL_67;
             }
@@ -3229,22 +3229,22 @@ LABEL_125:
           }
         }
 
-        v222 = v69;
+        v222 = durationCopy;
         v228 = 0;
         v262 = v410;
-        self = v411;
+        self = selfCopy;
 LABEL_126:
         if (v222 < v46)
         {
-          objc_msgSend__removeUnpermittedTransitionsInAssemblyList_final_testingContext_removedIndexes_(self, v220, v10, 1, v11, 0);
-          updated = objc_msgSend__updateTransitionBodySegmentsForAssemblyList_usingNewSegment_indexOfNewTransitionSegment_(self, v354, v10, 0, 0);
-          v360 = v397 - objc_msgSend__sampleDurationOfClipPlaylist_(self, v355, v10, v356, v357);
+          objc_msgSend__removeUnpermittedTransitionsInAssemblyList_final_testingContext_removedIndexes_(self, v220, listCopy, 1, contextCopy, 0);
+          updated = objc_msgSend__updateTransitionBodySegmentsForAssemblyList_usingNewSegment_indexOfNewTransitionSegment_(self, v354, listCopy, 0, 0);
+          v360 = durationCopy2 - objc_msgSend__sampleDurationOfClipPlaylist_(self, v355, listCopy, v356, v357);
           if (v360 < 0)
           {
-            objc_msgSend__removeSegmentInfo_fromAssemblyList_(self, v358, v228, v10, v359);
-            objc_msgSend__updateTransitionBodySegmentsForAssemblyList_usingNewSegment_indexOfNewTransitionSegment_(self, v361, v10, 0, 0);
-            objc_msgSend__removeUnpermittedTransitionsInAssemblyList_final_testingContext_removedIndexes_(self, v362, v10, 1, v11, 0);
-            v360 = v397 - objc_msgSend__sampleDurationOfClipPlaylist_(self, v363, v10, v364, v365);
+            objc_msgSend__removeSegmentInfo_fromAssemblyList_(self, v358, v228, listCopy, v359);
+            objc_msgSend__updateTransitionBodySegmentsForAssemblyList_usingNewSegment_indexOfNewTransitionSegment_(self, v361, listCopy, 0, 0);
+            objc_msgSend__removeUnpermittedTransitionsInAssemblyList_final_testingContext_removedIndexes_(self, v362, listCopy, 1, contextCopy, 0);
+            v360 = durationCopy2 - objc_msgSend__sampleDurationOfClipPlaylist_(self, v363, listCopy, v364, v365);
           }
 
           v222 = v360;
@@ -3255,7 +3255,7 @@ LABEL_126:
         }
 
         v139 = v262 + 1;
-        v69 = v222;
+        durationCopy = v222;
       }
 
       while (v139 != v404);
@@ -3267,7 +3267,7 @@ LABEL_126:
 LABEL_138:
 
     objc_autoreleasePoolPop(context);
-    a4 = v397;
+    duration = durationCopy2;
     if (v384 > 1)
     {
       break;
@@ -3279,15 +3279,15 @@ LABEL_138:
   while ((v390 & 1) != 0);
   if (v384 >= 2)
   {
-    *a7 = 1;
-    objc_msgSend__removeUnpermittedTransitionsInAssemblyList_final_testingContext_removedIndexes_(self, v64, v10, 1, v11, 0);
-    objc_msgSend__updateTransitionBodySegmentsForAssemblyList_usingNewSegment_indexOfNewTransitionSegment_(self, v367, v10, 0, 0);
+    *out = 1;
+    objc_msgSend__removeUnpermittedTransitionsInAssemblyList_final_testingContext_removedIndexes_(self, v64, listCopy, 1, contextCopy, 0);
+    objc_msgSend__updateTransitionBodySegmentsForAssemblyList_usingNewSegment_indexOfNewTransitionSegment_(self, v367, listCopy, 0, 0);
   }
 
 LABEL_142:
-  if (objc_msgSend_maxPassesToFit(v11, v64, v65, v66, v67) >= v386)
+  if (objc_msgSend_maxPassesToFit(contextCopy, v64, v65, v66, v67) >= v386)
   {
-    v372 = objc_msgSend_maxPassesToFit(v11, v368, v369, v370, v371);
+    v372 = objc_msgSend_maxPassesToFit(contextCopy, v368, v369, v370, v371);
   }
 
   else
@@ -3295,17 +3295,17 @@ LABEL_142:
     v372 = v386;
   }
 
-  objc_msgSend_setMaxPassesToFit_(v11, v368, v372, v370, v371);
-  *a5 = a4 - objc_msgSend__sampleDurationOfClipPlaylist_(self, v373, v10, v374, v375);
+  objc_msgSend_setMaxPassesToFit_(contextCopy, v368, v372, v370, v371);
+  *unusedDuration = duration - objc_msgSend__sampleDurationOfClipPlaylist_(self, v373, listCopy, v374, v375);
 
   v376 = *MEMORY[0x277D85DE8];
   return updated & 1;
 }
 
-- (BOOL)_addIntroSegmentsToAssemblyList:(id)a3 forDuration:(int64_t)a4 testingContext:(id)a5
+- (BOOL)_addIntroSegmentsToAssemblyList:(id)list forDuration:(int64_t)duration testingContext:(id)context
 {
   v49 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  listCopy = list;
   v11 = objc_msgSend__segmentsforType_(self, v8, 1, v9, v10);
   objc_msgSend_sortedArrayUsingComparator_(v11, v12, &unk_285EA05F0, v13, v14);
   v44 = 0u;
@@ -3328,9 +3328,9 @@ LABEL_142:
         }
 
         v25 = *(*(&v44 + 1) + 8 * i);
-        if (objc_msgSend_sampleCount(v25, v18, v19, v20, v21) <= a4)
+        if (objc_msgSend_sampleCount(v25, v18, v19, v20, v21) <= duration)
         {
-          v26 = objc_msgSend_firstObject(v7, v18, v19, v20, v21);
+          v26 = objc_msgSend_firstObject(listCopy, v18, v19, v20, v21);
           v31 = objc_msgSend_segment(v26, v27, v28, v29, v30);
 
           if (!v31 || (objc_msgSend_canTransitionFromSegment_toSegment_fromBarIndex_checkIfPrevented_(FlexSegment, v32, v25, v31, 0, 1) & 1) != 0)
@@ -3341,7 +3341,7 @@ LABEL_142:
             {
               v43 = 0x7FFFFFFFFFFFFFFFLL;
               v38 = objc_msgSend_sampleCount(v33, v34, v35, v36, v37);
-              objc_msgSend__addSegment_withDuration_toAssemblyList_indexOfNewSegment_(self, v39, v33, v38, v7, &v43);
+              objc_msgSend__addSegment_withDuration_toAssemblyList_indexOfNewSegment_(self, v39, v33, v38, listCopy, &v43);
             }
 
             goto LABEL_15;
@@ -3373,12 +3373,12 @@ LABEL_15:
   return 1;
 }
 
-- (BOOL)_addOutroSegmentsToAssemblyList:(id)a3 forDuration:(int64_t)a4 allowTrim:(BOOL)a5 testingContext:(id)a6
+- (BOOL)_addOutroSegmentsToAssemblyList:(id)list forDuration:(int64_t)duration allowTrim:(BOOL)trim testingContext:(id)context
 {
-  v101 = a5;
+  trimCopy = trim;
   v116 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v102 = a6;
+  listCopy = list;
+  contextCopy = context;
   v13 = objc_msgSend__segmentsforType_(self, v10, 4, v11, v12);
   if (objc_msgSend_count(v13, v14, v15, v16, v17))
   {
@@ -3386,7 +3386,7 @@ LABEL_15:
     {
       v26 = objc_msgSend_firstObject(v13, v22, v23, v24, v25);
       v31 = v26;
-      if (v101 || objc_msgSend_sampleCount(v26, v27, v28, v29, v30) <= a4)
+      if (trimCopy || objc_msgSend_sampleCount(v26, v27, v28, v29, v30) <= duration)
       {
         v32 = objc_msgSend_lastObject(v13, v27, v28, v29, v30);
         v33 = 1;
@@ -3401,14 +3401,14 @@ LABEL_15:
 
     else
     {
-      if (objc_msgSend_count(v9, v22, v23, v24, v25))
+      if (objc_msgSend_count(listCopy, v22, v23, v24, v25))
       {
         v112[0] = 0;
         v112[1] = v112;
         v112[2] = 0x3032000000;
         v112[3] = sub_24B80429C;
         v112[4] = sub_24B8042AC;
-        v113 = objc_msgSend_lastObject(v9, v35, v36, v37, v38);
+        v113 = objc_msgSend_lastObject(listCopy, v35, v36, v37, v38);
         v111[0] = MEMORY[0x277D85DD0];
         v111[1] = 3221225472;
         v111[2] = sub_24B808634;
@@ -3447,9 +3447,9 @@ LABEL_15:
                 }
 
                 v89 = *(*(&v107 + 1) + 8 * v87);
-                if (objc_msgSend_sampleCount(v89, v81, v82, v83, v84) > a4)
+                if (objc_msgSend_sampleCount(v89, v81, v82, v83, v84) > duration)
                 {
-                  if (!v101 || v88 && objc_msgSend_sampleCount(v88, v90, v91, v92, v93) >= a4)
+                  if (!trimCopy || v88 && objc_msgSend_sampleCount(v88, v90, v91, v92, v93) >= duration)
                   {
                     v32 = v88;
                   }
@@ -3514,9 +3514,9 @@ LABEL_41:
               }
 
               v74 = *(*(&v103 + 1) + 8 * v72);
-              if (objc_msgSend_sampleCount(v74, v66, v67, v68, v69) > a4)
+              if (objc_msgSend_sampleCount(v74, v66, v67, v68, v69) > duration)
               {
-                if (!v101 || v73 && objc_msgSend_sampleCount(v73, v75, v76, v77, v78) >= a4)
+                if (!trimCopy || v73 && objc_msgSend_sampleCount(v73, v75, v76, v77, v78) >= duration)
                 {
                   v32 = v73;
                 }
@@ -3556,18 +3556,18 @@ LABEL_39:
     if (v33 && v32)
     {
       v94 = objc_msgSend_sampleCount(v32, v55, v56, v57, v58);
-      if (v94 >= a4)
+      if (v94 >= duration)
       {
-        v96 = a4;
+        durationCopy = duration;
       }
 
       else
       {
-        v96 = v94;
+        durationCopy = v94;
       }
 
       v112[0] = 0x7FFFFFFFFFFFFFFFLL;
-      LOBYTE(v33) = objc_msgSend__addSegment_withDuration_toAssemblyList_indexOfNewSegment_(self, v95, v32, v96, v9, v112);
+      LOBYTE(v33) = objc_msgSend__addSegment_withDuration_toAssemblyList_indexOfNewSegment_(self, v95, v32, durationCopy, listCopy, v112);
       v34 = 1;
     }
   }
@@ -3583,45 +3583,45 @@ LABEL_39:
   return v34 & v33;
 }
 
-- (BOOL)_rebuildBodySegmentsInAssemblyList:(id)a3 forDuration:(int64_t)a4 unusedDuration:(int64_t *)a5 testingContext:(id)a6
+- (BOOL)_rebuildBodySegmentsInAssemblyList:(id)list forDuration:(int64_t)duration unusedDuration:(int64_t *)unusedDuration testingContext:(id)context
 {
-  v10 = a6;
-  v11 = a3;
-  objc_msgSend_removeAllObjects(v11, v12, v13, v14, v15);
+  contextCopy = context;
+  listCopy = list;
+  objc_msgSend_removeAllObjects(listCopy, v12, v13, v14, v15);
   v18 = 0;
-  LOBYTE(a5) = objc_msgSend__addBodySegmentsForAssemblyList_forDuration_unusedDuration_testingContext_timedOut_(self, v16, v11, a4, a5, v10, &v18);
+  LOBYTE(unusedDuration) = objc_msgSend__addBodySegmentsForAssemblyList_forDuration_unusedDuration_testingContext_timedOut_(self, v16, listCopy, duration, unusedDuration, contextCopy, &v18);
 
-  return a5;
+  return unusedDuration;
 }
 
-- (BOOL)_buildIntroAndOutroOnlySegmentAssemblyList:(id)a3 forDuration:(int64_t)a4 testingContext:(id)a5
+- (BOOL)_buildIntroAndOutroOnlySegmentAssemblyList:(id)list forDuration:(int64_t)duration testingContext:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  listCopy = list;
+  contextCopy = context;
   v14 = 0;
-  if (objc_msgSend__addOutroSegmentsToAssemblyList_forDuration_allowTrim_testingContext_(self, v10, v8, a4, 0, v9))
+  if (objc_msgSend__addOutroSegmentsToAssemblyList_forDuration_allowTrim_testingContext_(self, v10, listCopy, duration, 0, contextCopy))
   {
-    v15 = objc_msgSend__sampleDurationOfClipPlaylist_(self, v11, v8, v12, v13);
-    v14 = objc_msgSend__addIntroSegmentsToAssemblyList_forDuration_testingContext_(self, v16, v8, a4 - v15, v9);
+    v15 = objc_msgSend__sampleDurationOfClipPlaylist_(self, v11, listCopy, v12, v13);
+    v14 = objc_msgSend__addIntroSegmentsToAssemblyList_forDuration_testingContext_(self, v16, listCopy, duration - v15, contextCopy);
   }
 
   return v14;
 }
 
-+ (int64_t)_findMaxLengthInSamplesToReserveForOutroSegment:(id)a3 withOptions:(id)a4
++ (int64_t)_findMaxLengthInSamplesToReserveForOutroSegment:(id)segment withOptions:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  v10 = objc_msgSend_objectForKey_(v6, v7, @"OutroCanBeShortened", v8, v9);
+  segmentCopy = segment;
+  optionsCopy = options;
+  v10 = objc_msgSend_objectForKey_(optionsCopy, v7, @"OutroCanBeShortened", v8, v9);
   v15 = objc_msgSend_BOOLValue(v10, v11, v12, v13, v14);
 
   if (v15)
   {
-    v19 = objc_msgSend_objectForKey_(v6, v16, @"MaxOutroLengthToReserve", v17, v18);
+    v19 = objc_msgSend_objectForKey_(optionsCopy, v16, @"MaxOutroLengthToReserve", v17, v18);
     v24 = v19;
     if (v19 && (objc_msgSend_floatValue(v19, v20, v21, v22, v23), v29 >= 0.0))
     {
-      v30 = (v29 * objc_msgSend_sampleRate(v5, v25, v26, v27, v28));
+      v30 = (v29 * objc_msgSend_sampleRate(segmentCopy, v25, v26, v27, v28));
     }
 
     else
@@ -3638,35 +3638,35 @@ LABEL_39:
   return v30;
 }
 
-+ (int64_t)_findMinLengthInSamplesForEarlyFadeOutForOutroSegment:(id)a3 withOptions:(id)a4
++ (int64_t)_findMinLengthInSamplesForEarlyFadeOutForOutroSegment:(id)segment withOptions:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  v11 = objc_msgSend_sampleRate(v5, v7, v8, v9, v10);
-  v15 = objc_msgSend_objectForKey_(v6, v12, @"MinLengthForEarlyFade", v13, v14);
+  segmentCopy = segment;
+  optionsCopy = options;
+  v11 = objc_msgSend_sampleRate(segmentCopy, v7, v8, v9, v10);
+  v15 = objc_msgSend_objectForKey_(optionsCopy, v12, @"MinLengthForEarlyFade", v13, v14);
 
   if (v15)
   {
     objc_msgSend_floatValue(v15, v16, v17, v18, v19);
     if (v24 > 0.0)
     {
-      v11 = (v24 * objc_msgSend_sampleRate(v5, v20, v21, v22, v23));
+      v11 = (v24 * objc_msgSend_sampleRate(segmentCopy, v20, v21, v22, v23));
     }
   }
 
   return v11;
 }
 
-+ (int64_t)_findEarlyFadeStartOffsetInSamplesForOutroSegment:(id)a3 withOptions:(id)a4
++ (int64_t)_findEarlyFadeStartOffsetInSamplesForOutroSegment:(id)segment withOptions:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  v10 = objc_msgSend_objectForKey_(v6, v7, @"IgnoreEarlyFadeMarker", v8, v9);
+  segmentCopy = segment;
+  optionsCopy = options;
+  v10 = objc_msgSend_objectForKey_(optionsCopy, v7, @"IgnoreEarlyFadeMarker", v8, v9);
   v15 = objc_msgSend_BOOLValue(v10, v11, v12, v13, v14);
 
   if ((v15 & 1) == 0)
   {
-    v20 = objc_msgSend_markers(v5, v16, v17, v18, v19);
+    v20 = objc_msgSend_markers(segmentCopy, v16, v17, v18, v19);
     v24 = objc_msgSend_objectForKey_(v20, v21, @"OUTRO_EARLY_FADE", v22, v23);
 
     if (v24)
@@ -3675,7 +3675,7 @@ LABEL_39:
       if ((v29 & 0x8000000000000000) == 0)
       {
         v34 = v29;
-        if (v29 < objc_msgSend_sampleCount(v5, v30, v31, v32, v33))
+        if (v29 < objc_msgSend_sampleCount(segmentCopy, v30, v31, v32, v33))
         {
           goto LABEL_19;
         }
@@ -3683,7 +3683,7 @@ LABEL_39:
     }
   }
 
-  v35 = objc_msgSend_objectForKey_(v6, v16, @"IgnoreStingerMarkerForShortening", v18, v19);
+  v35 = objc_msgSend_objectForKey_(optionsCopy, v16, @"IgnoreStingerMarkerForShortening", v18, v19);
   v40 = objc_msgSend_BOOLValue(v35, v36, v37, v38, v39);
 
   if (v40)
@@ -3693,7 +3693,7 @@ LABEL_39:
 
   else
   {
-    v46 = objc_msgSend_markers(v5, v41, v42, v43, v44);
+    v46 = objc_msgSend_markers(segmentCopy, v41, v42, v43, v44);
     v50 = objc_msgSend_objectForKey_(v46, v47, @"OUTRO_STINGER", v48, v49);
 
     if (!v50 || (v55 = objc_msgSend_integerValue(v50, v51, v52, v53, v54), v55 < 0))
@@ -3704,22 +3704,22 @@ LABEL_39:
     else
     {
       v45 = v55;
-      if (v55 >= objc_msgSend_sampleCount(v5, v56, v57, v58, v59))
+      if (v55 >= objc_msgSend_sampleCount(segmentCopy, v56, v57, v58, v59))
       {
         v45 = 0;
       }
     }
   }
 
-  v60 = objc_msgSend_sampleRate(v5, v41, v42, v43, v44) / 2;
-  v64 = objc_msgSend_objectForKey_(v6, v61, @"DefaultEarlyFadeStartFromStinger", v62, v63);
+  v60 = objc_msgSend_sampleRate(segmentCopy, v41, v42, v43, v44) / 2;
+  v64 = objc_msgSend_objectForKey_(optionsCopy, v61, @"DefaultEarlyFadeStartFromStinger", v62, v63);
   v24 = v64;
   if (v64)
   {
     objc_msgSend_floatValue(v64, v65, v66, v67, v68);
     if (v73 >= 0.0)
     {
-      v60 = (v73 * objc_msgSend_sampleRate(v5, v69, v70, v71, v72));
+      v60 = (v73 * objc_msgSend_sampleRate(segmentCopy, v69, v70, v71, v72));
     }
   }
 
@@ -3729,17 +3729,17 @@ LABEL_19:
   return v34;
 }
 
-+ (int64_t)_durationInSamplesToReserveForOutroSegment:(id)a3 withOptions:(id)a4
++ (int64_t)_durationInSamplesToReserveForOutroSegment:(id)segment withOptions:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  v11 = objc_msgSend_sampleCount(v5, v7, v8, v9, v10);
-  v15 = objc_msgSend_objectForKey_(v6, v12, @"OutroCanBeShortened", v13, v14);
+  segmentCopy = segment;
+  optionsCopy = options;
+  v11 = objc_msgSend_sampleCount(segmentCopy, v7, v8, v9, v10);
+  v15 = objc_msgSend_objectForKey_(optionsCopy, v12, @"OutroCanBeShortened", v13, v14);
   v20 = objc_msgSend_BOOLValue(v15, v16, v17, v18, v19);
 
   if (v20)
   {
-    MaxLengthInSamplesToReserveForOutroSegment_withOptions = objc_msgSend__findMaxLengthInSamplesToReserveForOutroSegment_withOptions_(FlexSong, v21, v5, v6, v22);
+    MaxLengthInSamplesToReserveForOutroSegment_withOptions = objc_msgSend__findMaxLengthInSamplesToReserveForOutroSegment_withOptions_(FlexSong, v21, segmentCopy, optionsCopy, v22);
     if (v11 >= MaxLengthInSamplesToReserveForOutroSegment_withOptions)
     {
       v26 = MaxLengthInSamplesToReserveForOutroSegment_withOptions;
@@ -3752,8 +3752,8 @@ LABEL_19:
 
     if (MaxLengthInSamplesToReserveForOutroSegment_withOptions <= 0)
     {
-      EarlyFadeStartOffsetInSamplesForOutroSegment_withOptions = objc_msgSend__findEarlyFadeStartOffsetInSamplesForOutroSegment_withOptions_(FlexSong, v24, v5, v6, v25);
-      MinLengthInSamplesForEarlyFadeOutForOutroSegment_withOptions = objc_msgSend__findMinLengthInSamplesForEarlyFadeOutForOutroSegment_withOptions_(FlexSong, v28, v5, v6, v29);
+      EarlyFadeStartOffsetInSamplesForOutroSegment_withOptions = objc_msgSend__findEarlyFadeStartOffsetInSamplesForOutroSegment_withOptions_(FlexSong, v24, segmentCopy, optionsCopy, v25);
+      MinLengthInSamplesForEarlyFadeOutForOutroSegment_withOptions = objc_msgSend__findMinLengthInSamplesForEarlyFadeOutForOutroSegment_withOptions_(FlexSong, v28, segmentCopy, optionsCopy, v29);
       if (MinLengthInSamplesForEarlyFadeOutForOutroSegment_withOptions + EarlyFadeStartOffsetInSamplesForOutroSegment_withOptions < v11)
       {
         v11 = MinLengthInSamplesForEarlyFadeOutForOutroSegment_withOptions + EarlyFadeStartOffsetInSamplesForOutroSegment_withOptions;
@@ -3769,32 +3769,32 @@ LABEL_19:
   return v11;
 }
 
-- (BOOL)_buildSegmentAssemblyList:(id)a3 forDuration:(int64_t)a4 withOptions:(id)a5 testingContext:(id)a6
+- (BOOL)_buildSegmentAssemblyList:(id)list forDuration:(int64_t)duration withOptions:(id)options testingContext:(id)context
 {
   v145 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = 9600 * (a4 / 9600);
+  listCopy = list;
+  optionsCopy = options;
+  contextCopy = context;
+  v13 = 9600 * (duration / 9600);
   if (v13 >= objc_msgSend__minOutroDuration(self, v14, v15, v16, v17))
   {
     objc_msgSend_naturalDuration(self, v18, v19, v20, v21);
-    if (v143 == a4)
+    if (v143 == duration)
     {
       v26 = objc_msgSend__naturalDurationAssemblyList(self, v22, v23, v24, v25);
-      objc_msgSend_addObjectsFromArray_(v10, v27, v26, v28, v29);
+      objc_msgSend_addObjectsFromArray_(listCopy, v27, v26, v28, v29);
 
       goto LABEL_4;
     }
 
-    v35 = objc_msgSend_objectForKey_(v11, v22, @"OutroCanBeShortened", v24, v25);
+    v35 = objc_msgSend_objectForKey_(optionsCopy, v22, @"OutroCanBeShortened", v24, v25);
     v40 = objc_msgSend_BOOLValue(v35, v36, v37, v38, v39);
 
-    v136 = 9600 * (a4 / 9600);
+    v136 = 9600 * (duration / 9600);
     v135 = v40;
     if (v40)
     {
-      v134 = v12;
+      v134 = contextCopy;
       v45 = objc_msgSend__segmentsforType_(self, v41, 4, v43, v44);
       v139 = 0u;
       v140 = 0u;
@@ -3815,7 +3815,7 @@ LABEL_19:
               objc_enumerationMutation(v45);
             }
 
-            v54 = objc_msgSend__durationInSamplesToReserveForOutroSegment_withOptions_(FlexSong, v48, *(*(&v139 + 1) + 8 * i), v11, v49);
+            v54 = objc_msgSend__durationInSamplesToReserveForOutroSegment_withOptions_(FlexSong, v48, *(*(&v139 + 1) + 8 * i), optionsCopy, v49);
             if (v54 > v51)
             {
               v51 = v54;
@@ -3833,8 +3833,8 @@ LABEL_19:
         v51 = 0;
       }
 
-      v12 = v134;
-      v13 = 9600 * (a4 / 9600);
+      contextCopy = v134;
+      v13 = 9600 * (duration / 9600);
     }
 
     else
@@ -3854,7 +3854,7 @@ LABEL_19:
 
     else
     {
-      v59 = objc_msgSend__addBodySegmentsForAssemblyList_forDuration_unusedDuration_testingContext_timedOut_(self, v55, v10, v58, &v138, v12, &v137);
+      v59 = objc_msgSend__addBodySegmentsForAssemblyList_forDuration_unusedDuration_testingContext_timedOut_(self, v55, listCopy, v58, &v138, contextCopy, &v137);
       v60 = v138;
       v61 = v137;
     }
@@ -3865,8 +3865,8 @@ LABEL_19:
       v63 = 6;
       do
       {
-        objc_msgSend_removeAllObjects(v10, v55, v56, v58, v57);
-        v59 = objc_msgSend__addBodySegmentsForAssemblyList_forDuration_unusedDuration_testingContext_timedOut_(self, v64, v10, v62, &v138, v12, &v137);
+        objc_msgSend_removeAllObjects(listCopy, v55, v56, v58, v57);
+        v59 = objc_msgSend__addBodySegmentsForAssemblyList_forDuration_unusedDuration_testingContext_timedOut_(self, v64, listCopy, v62, &v138, contextCopy, &v137);
         if (!--v63)
         {
           break;
@@ -3878,36 +3878,36 @@ LABEL_19:
       while ((v137 & 1) != 0 || v138 > 192000);
     }
 
-    if (objc_msgSend_count(v10, v55, v56, v58, v57))
+    if (objc_msgSend_count(listCopy, v55, v56, v58, v57))
     {
       if (!v59)
       {
         goto LABEL_33;
       }
 
-      v68 = objc_msgSend__sampleDurationOfClipPlaylist_(self, v65, v10, v66, v67);
-      if ((objc_msgSend__addOutroSegmentsToAssemblyList_forDuration_allowTrim_testingContext_(self, v69, v10, v136 - v68, v135, v12) & 1) == 0)
+      v68 = objc_msgSend__sampleDurationOfClipPlaylist_(self, v65, listCopy, v66, v67);
+      if ((objc_msgSend__addOutroSegmentsToAssemblyList_forDuration_allowTrim_testingContext_(self, v69, listCopy, v136 - v68, v135, contextCopy) & 1) == 0)
       {
         goto LABEL_33;
       }
 
-      v73 = objc_msgSend__sampleDurationOfClipPlaylist_(self, v70, v10, v71, v72);
-      if (!objc_msgSend__addIntroSegmentsToAssemblyList_forDuration_testingContext_(self, v74, v10, v136 - v73, v12))
+      v73 = objc_msgSend__sampleDurationOfClipPlaylist_(self, v70, listCopy, v71, v72);
+      if (!objc_msgSend__addIntroSegmentsToAssemblyList_forDuration_testingContext_(self, v74, listCopy, v136 - v73, contextCopy))
       {
         goto LABEL_33;
       }
     }
 
-    else if ((objc_msgSend__buildIntroAndOutroOnlySegmentAssemblyList_forDuration_testingContext_(self, v65, v10, v136, v12) & 1) == 0)
+    else if ((objc_msgSend__buildIntroAndOutroOnlySegmentAssemblyList_forDuration_testingContext_(self, v65, listCopy, v136, contextCopy) & 1) == 0)
     {
 LABEL_33:
       v34 = 0;
       goto LABEL_44;
     }
 
-    v78 = objc_msgSend__sampleDurationOfClipPlaylist_(self, v75, v10, v76, v77);
-    v32 = a4 <= v78;
-    v33 = a4 - v78;
+    v78 = objc_msgSend__sampleDurationOfClipPlaylist_(self, v75, listCopy, v76, v77);
+    v32 = duration <= v78;
+    v33 = duration - v78;
     if (!v32)
     {
       if (!v135)
@@ -3915,7 +3915,7 @@ LABEL_33:
         goto LABEL_5;
       }
 
-      v81 = objc_msgSend_outroInfoForClipPlaylist_(FlexSong, v31, v10, v79, v80);
+      v81 = objc_msgSend_outroInfoForClipPlaylist_(FlexSong, v31, listCopy, v79, v80);
       v86 = v81;
       if (!v81)
       {
@@ -3923,13 +3923,13 @@ LABEL_33:
       }
 
       v87 = objc_msgSend_offset(v81, v82, v83, v84, v85);
-      v92 = v12;
+      v92 = contextCopy;
       v93 = objc_msgSend_duration(v86, v88, v89, v90, v91) + v87;
       v98 = objc_msgSend_segment(v86, v94, v95, v96, v97);
       v103 = objc_msgSend_sampleCount(v98, v99, v100, v101, v102);
 
       v32 = v93 < v103;
-      v12 = v92;
+      contextCopy = v92;
       if (!v32)
       {
 LABEL_45:
@@ -3950,7 +3950,7 @@ LABEL_45:
       v128 = objc_msgSend_duration(v86, v124, v125, v126, v127);
       objc_msgSend_setDuration_(v86, v129, v128 + v123, v130, v131);
       v33 -= v123;
-      v12 = v92;
+      contextCopy = v92;
 
       if (v33 >= 1)
       {
@@ -3964,9 +3964,9 @@ LABEL_43:
   }
 
 LABEL_4:
-  v30 = objc_msgSend__sampleDurationOfClipPlaylist_(self, v18, v10, v20, v21);
-  v32 = a4 <= v30;
-  v33 = a4 - v30;
+  v30 = objc_msgSend__sampleDurationOfClipPlaylist_(self, v18, listCopy, v20, v21);
+  v32 = duration <= v30;
+  v33 = duration - v30;
   if (v32)
   {
     goto LABEL_43;
@@ -3974,21 +3974,21 @@ LABEL_4:
 
 LABEL_5:
   v138 = 0x7FFFFFFFFFFFFFFFLL;
-  v34 = objc_msgSend__addSegment_withDuration_toAssemblyList_indexOfNewSegment_(self, v31, 0, v33, v10, &v138);
+  v34 = objc_msgSend__addSegment_withDuration_toAssemblyList_indexOfNewSegment_(self, v31, 0, v33, listCopy, &v138);
 LABEL_44:
 
   v132 = *MEMORY[0x277D85DE8];
   return v34;
 }
 
-- (id)_fullSongLoopedClipPlaylistForDuration:(id *)a3 withOptions:(id)a4 testingContext:(id)a5
+- (id)_fullSongLoopedClipPlaylistForDuration:(id *)duration withOptions:(id)options testingContext:(id)context
 {
   v137[2] = *MEMORY[0x277D85DE8];
-  v132 = a4;
-  v8 = a5;
-  objc_msgSend_setSequencingLongSong_(v8, v9, 1, v10, v11);
+  optionsCopy = options;
+  contextCopy = context;
+  objc_msgSend_setSequencingLongSong_(contextCopy, v9, 1, v10, v11);
   v16 = objc_msgSend_sampleRate(self, v12, v13, v14, v15);
-  time = *a3;
+  time = *duration;
   CMTimeConvertScale(&v135, &time, v16, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
   value = v135.value;
   v18 = objc_opt_new();
@@ -4019,14 +4019,14 @@ LABEL_44:
       v42 = v34;
       if (v36 == 1 && v28 < 0.25)
       {
-        v43 = v132;
+        v43 = optionsCopy;
 
         v42 = v43;
       }
 
       v44 = objc_msgSend_sampleRate(self, v38, v39, v40, v41);
       CMTimeMake(&v133, v25, v44);
-      v35 = objc_msgSend__clipPlaylistForDuration_withOptions_testingContext_(self, v45, &v133, v42, v8);
+      v35 = objc_msgSend__clipPlaylistForDuration_withOptions_testingContext_(self, v45, &v133, v42, contextCopy);
 
       objc_msgSend_addObjectsFromArray_(v19, v46, v35, v47, v48);
       --v36;
@@ -4047,7 +4047,7 @@ LABEL_44:
     v102 = v130 - objc_msgSend__sampleDurationOfClipPlaylist_(self, v30, v19, v32, v33);
     v107 = objc_msgSend_sampleRate(self, v103, v104, v105, v106);
     CMTimeMake(&v133, v102, v107);
-    v101 = objc_msgSend__clipPlaylistForDuration_withOptions_testingContext_(self, v108, &v133, v34, v8);
+    v101 = objc_msgSend__clipPlaylistForDuration_withOptions_testingContext_(self, v108, &v133, v34, contextCopy);
 
     objc_msgSend_addObjectsFromArray_(v20, v109, v101, v110, v111);
     v72 = objc_msgSend_indexesOfObjectsPassingTest_(v20, v112, &unk_285EA0630, v113, v114);
@@ -4056,14 +4056,14 @@ LABEL_44:
     objc_msgSend_addObjectsFromArray_(v18, v121, v20, v122, v123);
     objc_msgSend_addObjectsFromArray_(v18, v124, v19, v125, v126);
     v76 = v97;
-    v95 = v132;
+    v95 = optionsCopy;
   }
 
   else
   {
     v63 = objc_msgSend_sampleRate(self, v30, v31, v32, v33);
     CMTimeMake(&v133, v25, v63);
-    v65 = objc_msgSend__clipPlaylistForDuration_withOptions_testingContext_(self, v64, &v133, v34, v8);
+    v65 = objc_msgSend__clipPlaylistForDuration_withOptions_testingContext_(self, v64, &v133, v34, contextCopy);
 
     objc_msgSend_addObjectsFromArray_(v18, v66, v65, v67, v68);
     v72 = objc_msgSend_indexesOfObjectsPassingTest_(v18, v69, &unk_285EA0650, v70, v71);
@@ -4074,8 +4074,8 @@ LABEL_44:
     v89 = v130 - objc_msgSend__sampleDurationOfClipPlaylist_(self, v86, v18, v87, v88);
     v94 = objc_msgSend_sampleRate(self, v90, v91, v92, v93);
     CMTimeMake(&v133, v89, v94);
-    v95 = v132;
-    v97 = objc_msgSend__clipPlaylistForDuration_withOptions_testingContext_(self, v96, &v133, v132, v8);
+    v95 = optionsCopy;
+    v97 = objc_msgSend__clipPlaylistForDuration_withOptions_testingContext_(self, v96, &v133, optionsCopy, contextCopy);
 
     v20 = v131;
     v101 = v97;
@@ -4088,31 +4088,31 @@ LABEL_44:
   return v18;
 }
 
-- (id)renditionForDuration:(id *)a3 withOptions:(id)a4 testingContext:(id)a5
+- (id)renditionForDuration:(id *)duration withOptions:(id)options testingContext:(id)context
 {
   v103 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  contextCopy = context;
   v10 = FlexLogForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    time = *a3;
+    time = *duration;
     Seconds = CMTimeGetSeconds(&time);
     LODWORD(time.value) = 134217984;
     *(&time.value + 4) = Seconds;
     _os_log_impl(&dword_24B7E5000, v10, OS_LOG_TYPE_DEFAULT, "flex: Requesting legacy format rendition for duration %.2f", &time, 0xCu);
   }
 
-  v12 = v8;
+  v12 = optionsCopy;
   v17 = objc_msgSend_customOptions(self, v13, v14, v15, v16);
 
   v22 = v12;
   if (v17)
   {
-    v91 = a3;
-    v92 = v9;
+    durationCopy = duration;
+    v92 = contextCopy;
     v93 = objc_msgSend_mutableCopy(v12, v18, v19, v20, v21);
-    v94 = self;
+    selfCopy = self;
     v97 = 0u;
     v98 = 0u;
     v99 = 0u;
@@ -4140,7 +4140,7 @@ LABEL_44:
             v42 = v41 = v12;
             v47 = objc_msgSend_BOOLValue(v42, v43, v44, v45, v46);
 
-            v52 = objc_msgSend_customOptions(v94, v48, v49, v50, v51);
+            v52 = objc_msgSend_customOptions(selfCopy, v48, v49, v50, v51);
             v56 = objc_msgSend_objectForKeyedSubscript_(v52, v53, @"OutroCanBeShortened", v54, v55);
             v61 = objc_msgSend_BOOLValue(v56, v57, v58, v59, v60);
 
@@ -4158,26 +4158,26 @@ LABEL_44:
 
     v22 = objc_msgSend_dictionaryWithDictionary_(MEMORY[0x277CBEAC0], v68, v93, v69, v70);
 
-    a3 = v91;
-    v9 = v92;
-    self = v94;
+    duration = durationCopy;
+    contextCopy = v92;
+    self = selfCopy;
   }
 
   memset(&time, 0, sizeof(time));
   objc_msgSend_naturalDuration(self, v18, v19, v20, v21);
   CMTimeMultiplyByFloat64(&time, &time1, 1.5);
-  time1 = *a3;
+  time1 = *duration;
   time2 = time;
   if (CMTimeCompare(&time1, &time2) < 0 || (objc_msgSend_objectForKeyedSubscript_(v22, v71, @"LoopSongForLongDurations", v72, v73), v74 = objc_claimAutoreleasedReturnValue(), v79 = objc_msgSend_BOOLValue(v74, v75, v76, v77, v78), v74, !v79))
   {
-    time1 = *a3;
-    v80 = objc_msgSend__clipPlaylistForDuration_withOptions_testingContext_(self, v71, &time1, v22, v9);
+    time1 = *duration;
+    v80 = objc_msgSend__clipPlaylistForDuration_withOptions_testingContext_(self, v71, &time1, v22, contextCopy);
   }
 
   else
   {
-    time1 = *a3;
-    v80 = objc_msgSend__fullSongLoopedClipPlaylistForDuration_withOptions_testingContext_(self, v71, &time1, v22, v9);
+    time1 = *duration;
+    v80 = objc_msgSend__fullSongLoopedClipPlaylistForDuration_withOptions_testingContext_(self, v71, &time1, v22, contextCopy);
   }
 
   v81 = v80;
@@ -4198,17 +4198,17 @@ LABEL_44:
   return v84;
 }
 
-- (id)_clipPlaylistForDuration:(id *)a3 withOptions:(id)a4 testingContext:(id)a5
+- (id)_clipPlaylistForDuration:(id *)duration withOptions:(id)options testingContext:(id)context
 {
-  v8 = a4;
-  v9 = a5;
-  if ((a3->var2 & 1) != 0 && (time1 = *a3, time2 = **&MEMORY[0x277CC08F0], CMTimeCompare(&time1, &time2)))
+  optionsCopy = options;
+  contextCopy = context;
+  if ((duration->var2 & 1) != 0 && (time1 = *duration, time2 = **&MEMORY[0x277CC08F0], CMTimeCompare(&time1, &time2)))
   {
     v14 = objc_msgSend_array(MEMORY[0x277CBEB18], v10, v11, v12, v13);
     v19 = objc_msgSend_sampleRate(self, v15, v16, v17, v18);
-    time1 = *a3;
+    time1 = *duration;
     CMTimeConvertScale(&v22, &time1, v19, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
-    objc_msgSend__buildSegmentAssemblyList_forDuration_withOptions_testingContext_(self, v20, v14, v22.value, v8, v9);
+    objc_msgSend__buildSegmentAssemblyList_forDuration_withOptions_testingContext_(self, v20, v14, v22.value, optionsCopy, contextCopy);
   }
 
   else
@@ -4219,24 +4219,24 @@ LABEL_44:
   return v14;
 }
 
-- (BOOL)_validateStructureForRendition:(id)a3 failureReason:(id *)a4
+- (BOOL)_validateStructureForRendition:(id)rendition failureReason:(id *)reason
 {
   v409 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v11 = objc_msgSend_segments(v6, v7, v8, v9, v10);
+  renditionCopy = rendition;
+  v11 = objc_msgSend_segments(renditionCopy, v7, v8, v9, v10);
   v16 = objc_msgSend_firstObject(v11, v12, v13, v14, v15);
   v384 = v16 != 0;
 
   if (!v16)
   {
-    *a4 = @"empty playlist!";
+    *reason = @"empty playlist!";
   }
 
-  v386 = a4;
-  v21 = objc_msgSend_duration(v6, v17, v18, v19, v20);
+  reasonCopy = reason;
+  v21 = objc_msgSend_duration(renditionCopy, v17, v18, v19, v20);
   objc_msgSend_naturalDuration(self, v22, v23, v24, v25);
-  v387 = v6;
-  v385 = self;
+  v387 = renditionCopy;
+  selfCopy = self;
   if (v21 == v405)
   {
     v383 = v16;
@@ -4280,7 +4280,7 @@ LABEL_44:
 LABEL_41:
               v142 = 0;
               v141 = v387;
-              *v386 = @"invalid default duration playlist. there's a bug in the sequencer";
+              *reasonCopy = @"invalid default duration playlist. there's a bug in the sequencer";
               goto LABEL_86;
             }
 
@@ -4305,7 +4305,7 @@ LABEL_41:
   v397 = 0u;
   v398 = 0u;
   v399 = 0u;
-  v66 = objc_msgSend_segments(v6, v62, v63, v64, v65);
+  v66 = objc_msgSend_segments(renditionCopy, v62, v63, v64, v65);
   v68 = objc_msgSend_countByEnumeratingWithState_objects_count_(v66, v67, &v396, v407, 16);
   if (!v68)
   {
@@ -4377,12 +4377,12 @@ LABEL_34:
     {
       v143 = objc_msgSend_lastObject(v26, v110, v111, v112, v113);
       v148 = objc_msgSend_duration(v143, v144, v145, v146, v147);
-      if (v148 > objc_msgSend__minOutroDuration(v385, v149, v150, v151, v152))
+      if (v148 > objc_msgSend__minOutroDuration(selfCopy, v149, v150, v151, v152))
       {
         v157 = MEMORY[0x277CCACA8];
-        v158 = objc_msgSend_sampleRate(v385, v153, v154, v155, v156);
+        v158 = objc_msgSend_sampleRate(selfCopy, v153, v154, v155, v156);
         objc_msgSend_stringWithFormat_(v157, v159, @"excessive silence: %fs - check allowed transitions, priorities and which segments are sliceable.", v160, v161, (v148 / v158));
-        *v386 = v384 = 0;
+        *reasonCopy = v384 = 0;
       }
 
       goto LABEL_45;
@@ -4455,7 +4455,7 @@ LABEL_46:
 LABEL_84:
         v142 = 0;
         v141 = v387;
-        *v386 = v235;
+        *reasonCopy = v235;
         goto LABEL_85;
       }
 
@@ -4536,7 +4536,7 @@ LABEL_70:
     v204 -= objc_msgSend_duration(obj, v214, v215, v216, v217);
   }
 
-  if (v204 < objc_msgSend__minOutroDuration(v385, v214, v215, v216, v217))
+  if (v204 < objc_msgSend__minOutroDuration(selfCopy, v214, v215, v216, v217))
   {
     if (v173)
     {
@@ -4608,7 +4608,7 @@ LABEL_106:
 LABEL_112:
     v308 = v178;
     v142 = 0;
-    *v386 = v178;
+    *reasonCopy = v178;
     goto LABEL_85;
   }
 
@@ -4762,7 +4762,7 @@ LABEL_158:
   v313 = objc_msgSend_objectForKey_(v309, v310, @"LoopSongForLongDurations", v311, v312);
   v318 = objc_msgSend_BOOLValue(v313, v314, v315, v316, v317);
 
-  if (!v318 || (memset(&v391, 0, sizeof(v391)), objc_msgSend_naturalDuration(v385, v240, v241, v242, v243), CMTimeMultiplyByFloat64(&v391, &time, 1.5), v323 = objc_msgSend_duration(v141, v319, v320, v321, v322), CMTimeMake(&time, v323, 48000), time2 = v391, CMTimeCompare(&time, &time2) < 0))
+  if (!v318 || (memset(&v391, 0, sizeof(v391)), objc_msgSend_naturalDuration(selfCopy, v240, v241, v242, v243), CMTimeMultiplyByFloat64(&v391, &time, 1.5), v323 = objc_msgSend_duration(v141, v319, v320, v321, v322), CMTimeMake(&time, v323, 48000), time2 = v391, CMTimeCompare(&time, &time2) < 0))
   {
     if ((v174 & v199 & 1) == 0)
     {
@@ -4870,7 +4870,7 @@ LABEL_159:
 LABEL_160:
   v178 = &stru_285EA09B0;
   objc_msgSend_stringByAppendingString_(&stru_285EA09B0, v380, @"Outro segment is not after all Intro & Body segments", v381, v382);
-  *v386 = v142 = 0;
+  *reasonCopy = v142 = 0;
 LABEL_85:
 
 LABEL_86:
@@ -4880,9 +4880,9 @@ LABEL_87:
   return v142 & 1;
 }
 
-+ (id)outroInfoForClipPlaylist:(id)a3
++ (id)outroInfoForClipPlaylist:(id)playlist
 {
-  v3 = a3;
+  playlistCopy = playlist;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -4894,22 +4894,22 @@ LABEL_87:
   v8[2] = sub_24B80A924;
   v8[3] = &unk_27900F4C0;
   v8[4] = &v9;
-  objc_msgSend_enumerateObjectsWithOptions_usingBlock_(v3, v4, 2, v8, v5);
+  objc_msgSend_enumerateObjectsWithOptions_usingBlock_(playlistCopy, v4, 2, v8, v5);
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
 
   return v6;
 }
 
-- (BOOL)_validateTransitionsInRendition:(id)a3 failureReason:(id *)a4
+- (BOOL)_validateTransitionsInRendition:(id)rendition failureReason:(id *)reason
 {
-  v4 = a3;
-  v9 = objc_msgSend_segments(v4, v5, v6, v7, v8);
+  renditionCopy = rendition;
+  v9 = objc_msgSend_segments(renditionCopy, v5, v6, v7, v8);
   v14 = objc_msgSend_count(v9, v10, v11, v12, v13);
 
   if (v14 >= 3)
   {
-    v20 = objc_msgSend_segments(v4, v15, v16, v17, v18);
+    v20 = objc_msgSend_segments(renditionCopy, v15, v16, v17, v18);
     v408 = objc_msgSend_outroInfoForClipPlaylist_(FlexSong, v21, v20, v22, v23);
 
     v28 = 0;
@@ -4920,7 +4920,7 @@ LABEL_87:
     v409 = v14;
     while (1)
     {
-      v31 = objc_msgSend_segments(v4, v24, v25, v26, v27);
+      v31 = objc_msgSend_segments(renditionCopy, v24, v25, v26, v27);
       v35 = objc_msgSend_objectAtIndexedSubscript_(v31, v32, v28, v33, v34);
 
       v40 = objc_msgSend_segment(v35, v36, v37, v38, v39);
@@ -4948,7 +4948,7 @@ LABEL_87:
         v51 = v30;
         while (1)
         {
-          v52 = objc_msgSend_segments(v4, v46, v47, v48, v49);
+          v52 = objc_msgSend_segments(renditionCopy, v46, v47, v48, v49);
           v56 = objc_msgSend_objectAtIndexedSubscript_(v52, v53, v51, v54, v55);
 
           v61 = objc_msgSend_segment(v56, v57, v58, v59, v60);
@@ -5039,7 +5039,7 @@ LABEL_34:
                       }
 
 LABEL_88:
-                      v249 = objc_msgSend_song(v4, v366, v367, v368, v369);
+                      v249 = objc_msgSend_song(renditionCopy, v366, v367, v368, v369);
                       v378 = objc_msgSend_uid(v249, v374, v375, v376, v377);
                       if (objc_msgSend_isEqualToString_(v378, v379, @"89EE9F2B-CEB7-4B06-8388-D12A7BFF78A8", v380, v381))
                       {
@@ -5048,7 +5048,7 @@ LABEL_88:
                         goto LABEL_73;
                       }
 
-                      v407 = objc_msgSend_song(v4, v382, v383, v384, v385);
+                      v407 = objc_msgSend_song(renditionCopy, v382, v383, v384, v385);
                       v390 = objc_msgSend_uid(v407, v386, v387, v388, v389);
                       v414 = objc_msgSend_isEqualToString_(v390, v391, @"0B84454E-B24A-44BC-9068-F88B899EDD2F", v392, v393);
 
@@ -5063,7 +5063,7 @@ LABEL_88:
                       v249 = objc_msgSend_name(v45, v394, v395, v396, v397);
                       v254 = objc_msgSend_name(v61, v399, v400, v401, v402);
                       objc_msgSend_stringWithFormat_(v398, v403, @"transition from %@ to %@ should be permitted but is not. successive segments in the clipPlaylist should transition into another.", v404, v405, v249, v254);
-                      *a4 = LABEL_55:;
+                      *reason = LABEL_55:;
 
                       v411 = 0;
 LABEL_58:
@@ -5075,7 +5075,7 @@ LABEL_58:
 
                 else
                 {
-                  v225 = objc_msgSend_segments(v4, v165, v166, v167, v168);
+                  v225 = objc_msgSend_segments(renditionCopy, v165, v166, v167, v168);
                   v424[0] = MEMORY[0x277D85DD0];
                   v424[1] = 3221225472;
                   v424[2] = sub_24B80B550;
@@ -5097,7 +5097,7 @@ LABEL_58:
                       v413 = MEMORY[0x277CCACA8];
                       v357 = objc_msgSend_name(v226, v353, v354, v355, v356);
                       v362 = objc_msgSend_name(v61, v358, v359, v360, v361);
-                      *a4 = objc_msgSend_stringWithFormat_(v413, v363, @"transition from %@ to %@ should not occur. there is a problem with the playback sequencing algorithm.", v364, v365, v357, v362);
+                      *reason = objc_msgSend_stringWithFormat_(v413, v363, @"transition from %@ to %@ should not occur. there is a problem with the playback sequencing algorithm.", v364, v365, v357, v362);
 
                       v411 = 0;
                       v249 = v425;
@@ -5126,7 +5126,7 @@ LABEL_58:
 
       else
       {
-        v258 = objc_msgSend_segments(v4, v240, v241, v242, v243);
+        v258 = objc_msgSend_segments(renditionCopy, v240, v241, v242, v243);
         v249 = objc_msgSend_objectAtIndexedSubscript_(v258, v259, v28 + 1, v260, v261);
 
         v266 = objc_msgSend_segment(v249, v262, v263, v264, v265);
@@ -5135,7 +5135,7 @@ LABEL_58:
         if (v271 == 5)
         {
           v411 = 0;
-          *a4 = @"there should be no crossfade segments when using real-time crossfades.";
+          *reason = @"there should be no crossfade segments when using real-time crossfades.";
           goto LABEL_58;
         }
 
@@ -5158,7 +5158,7 @@ LABEL_65:
           v277 = 0;
           while (1)
           {
-            v278 = objc_msgSend_segments(v4, v273, v274, v275, v276);
+            v278 = objc_msgSend_segments(renditionCopy, v273, v274, v275, v276);
             v249 = objc_msgSend_objectAtIndexedSubscript_(v278, v279, v30 + v277, v280, v281);
 
             v286 = objc_msgSend_segment(v249, v282, v283, v284, v285);
@@ -5184,7 +5184,7 @@ LABEL_65:
           v321 = MEMORY[0x277CCACA8];
           v322 = objc_msgSend_name(v421, v298, v299, v300, v301);
           v327 = objc_msgSend_name(v61, v323, v324, v325, v326);
-          *a4 = objc_msgSend_stringWithFormat_(v321, v328, @"transition segment specified for %@ to %@ but not found", v329, v330, v322, v327);
+          *reason = objc_msgSend_stringWithFormat_(v321, v328, @"transition segment specified for %@ to %@ but not found", v329, v330, v322, v327);
           goto LABEL_72;
         }
 
@@ -5200,7 +5200,7 @@ LABEL_65:
           v327 = objc_msgSend_name(v61, v331, v332, v333, v334);
           v339 = objc_msgSend_segment(v249, v335, v336, v337, v338);
           v344 = objc_msgSend_name(v339, v340, v341, v342, v343);
-          *a4 = objc_msgSend_stringWithFormat_(v412, v345, @"transition segment specified for %@ to %@ but incorrect segment %@ was found instead. playback sequencing algorithm issue?", v346, v347, v322, v327, v344);
+          *reason = objc_msgSend_stringWithFormat_(v412, v345, @"transition segment specified for %@ to %@ but incorrect segment %@ was found instead. playback sequencing algorithm issue?", v346, v347, v322, v327, v344);
 
 LABEL_72:
           v411 = 0;
@@ -5256,7 +5256,7 @@ LABEL_17:
         while (1)
         {
           --v70;
-          v71 = objc_msgSend_segments(v4, v41, v42, v43, v44);
+          v71 = objc_msgSend_segments(renditionCopy, v41, v42, v43, v44);
           v75 = objc_msgSend_objectAtIndexedSubscript_(v71, v72, v70, v73, v74);
 
           v80 = objc_msgSend_segment(v75, v76, v77, v78, v79);
@@ -5286,7 +5286,7 @@ LABEL_22:
         v87 = v29;
         while (1)
         {
-          v88 = objc_msgSend_segments(v4, v41, v42, v43, v44);
+          v88 = objc_msgSend_segments(renditionCopy, v41, v42, v43, v44);
           v61 = objc_msgSend_objectAtIndexedSubscript_(v88, v89, v86, v90, v91);
 
           v96 = objc_msgSend_segment(v61, v92, v93, v94, v95);
@@ -5326,7 +5326,7 @@ LABEL_22:
         v215 = MEMORY[0x277CCACA8];
         v216 = objc_msgSend_segment(v75, v134, v135, v136, v137);
         v221 = objc_msgSend_name(v216, v217, v218, v219, v220);
-        *a4 = objc_msgSend_stringWithFormat_(v215, v222, @"incorrect transition segment found after %@. Bug in sequencing algorithm", v223, v224, v221);
+        *reason = objc_msgSend_stringWithFormat_(v215, v222, @"incorrect transition segment found after %@. Bug in sequencing algorithm", v223, v224, v221);
 
         v411 = 0;
         v138 = 1;
@@ -5340,7 +5340,7 @@ LABEL_22:
 
 LABEL_25:
     v139 = v45;
-    v140 = objc_msgSend_segments(v4, v41, v42, v43, v44);
+    v140 = objc_msgSend_segments(renditionCopy, v41, v42, v43, v44);
     v145 = objc_msgSend_lastObject(v140, v141, v142, v143, v144);
 
     if (v35 != v145)
@@ -5377,19 +5377,19 @@ LABEL_95:
   return v19 & 1;
 }
 
-+ (BOOL)_transitionIsPossibleFromSegment:(id)a3 toSegment:(id)a4 forBodyClipPlaylist:(id)a5
++ (BOOL)_transitionIsPossibleFromSegment:(id)segment toSegment:(id)toSegment forBodyClipPlaylist:(id)playlist
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v13 = objc_msgSend_sortedArrayUsingComparator_(v9, v10, &unk_285EA0670, v11, v12);
-  v17 = objc_msgSend_indexOfObject_(v13, v14, v7, v15, v16);
-  v21 = objc_msgSend_indexOfObject_(v13, v18, v8, v19, v20);
+  segmentCopy = segment;
+  toSegmentCopy = toSegment;
+  playlistCopy = playlist;
+  v13 = objc_msgSend_sortedArrayUsingComparator_(playlistCopy, v10, &unk_285EA0670, v11, v12);
+  v17 = objc_msgSend_indexOfObject_(v13, v14, segmentCopy, v15, v16);
+  v21 = objc_msgSend_indexOfObject_(v13, v18, toSegmentCopy, v19, v20);
   v26 = objc_msgSend_array(MEMORY[0x277CBEB18], v22, v23, v24, v25);
   v30 = 0;
   if (v17 != 0x7FFFFFFFFFFFFFFFLL && v21 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v100 = v9;
+    v100 = playlistCopy;
     if (v17 >= v21)
     {
       if (v17 > v21)
@@ -5405,11 +5405,11 @@ LABEL_95:
           }
 
           v69 = objc_msgSend_objectAtIndexedSubscript_(v13, v27, v67, v28, v29);
-          v74 = objc_msgSend_name(v7, v70, v71, v72, v73);
+          v74 = objc_msgSend_name(segmentCopy, v70, v71, v72, v73);
           v79 = objc_msgSend_name(v69, v75, v76, v77, v78);
           v82 = objc_msgSend_compare_options_(v74, v80, v79, 65, v81);
 
-          v87 = objc_msgSend_name(v8, v83, v84, v85, v86);
+          v87 = objc_msgSend_name(toSegmentCopy, v83, v84, v85, v86);
           v92 = objc_msgSend_name(v69, v88, v89, v90, v91);
           v95 = objc_msgSend_compare_options_(v87, v93, v92, 65, v94);
 
@@ -5435,7 +5435,7 @@ LABEL_95:
         v65 = v26;
       }
 
-      objc_msgSend_addObject_(v26, v27, v8, v28, v29);
+      objc_msgSend_addObject_(v26, v27, toSegmentCopy, v28, v29);
       v64 = 1;
     }
 
@@ -5447,7 +5447,7 @@ LABEL_95:
       do
       {
         v33 = objc_msgSend_objectAtIndexedSubscript_(v13, v27, v32, v28, v29);
-        v38 = objc_msgSend_name(v7, v34, v35, v36, v37);
+        v38 = objc_msgSend_name(segmentCopy, v34, v35, v36, v37);
         v43 = objc_msgSend_name(v33, v39, v40, v41, v42);
         v46 = objc_msgSend_compare_options_(v38, v44, v43, 65, v45);
 
@@ -5485,7 +5485,7 @@ LABEL_21:
     v102[1] = 3221225472;
     v102[2] = sub_24B80B9C0;
     v102[3] = &unk_27900F498;
-    v103 = v8;
+    v103 = toSegmentCopy;
     if (objc_msgSend_indexOfObjectPassingTest_(v65, v96, v102, v97, v98) == 0x7FFFFFFFFFFFFFFFLL)
     {
       v30 = 0;
@@ -5496,27 +5496,27 @@ LABEL_21:
       v30 = v64;
     }
 
-    v9 = v100;
+    playlistCopy = v100;
     v26 = v65;
   }
 
   return v30;
 }
 
-- (BOOL)_validateAuthoringIssuesInRendition:(id)a3 failureReason:(id *)a4
+- (BOOL)_validateAuthoringIssuesInRendition:(id)rendition failureReason:(id *)reason
 {
   v168 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v10 = objc_msgSend_segments(v5, v6, v7, v8, v9);
+  renditionCopy = rendition;
+  v10 = objc_msgSend_segments(renditionCopy, v6, v7, v8, v9);
   v15 = objc_msgSend_firstObject(v10, v11, v12, v13, v14);
   v16 = v15 != 0;
 
   if (!v15)
   {
-    *a4 = @"empty playlist!";
+    *reason = @"empty playlist!";
   }
 
-  v21 = objc_msgSend_segments(v5, v17, v18, v19, v20);
+  v21 = objc_msgSend_segments(renditionCopy, v17, v18, v19, v20);
   v26 = objc_msgSend_firstObject(v21, v22, v23, v24, v25);
 
   v31 = objc_msgSend_segment(v26, v27, v28, v29, v30);
@@ -5531,19 +5531,19 @@ LABEL_21:
     v37 = -1;
   }
 
-  v38 = objc_msgSend_segments(v5, v32, v33, v34, v35);
+  v38 = objc_msgSend_segments(renditionCopy, v32, v33, v34, v35);
   v43 = objc_msgSend_count(v38, v39, v40, v41, v42);
 
   if (v36 || v43 != 1)
   {
     v160 = v26;
-    v161 = v5;
-    v162 = a4;
+    v161 = renditionCopy;
+    reasonCopy = reason;
     v165 = 0u;
     v166 = 0u;
     v163 = 0u;
     v164 = 0u;
-    v48 = objc_msgSend_segments(v5, v44, v45, v46, v47);
+    v48 = objc_msgSend_segments(renditionCopy, v44, v45, v46, v47);
     v50 = objc_msgSend_countByEnumeratingWithState_objects_count_(v48, v49, &v163, v167, 16);
     if (!v50)
     {
@@ -5621,7 +5621,7 @@ LABEL_21:
 
             v141 = MEMORY[0x277CCACA8];
             v142 = objc_msgSend_name(v63, v109, v110, v111, v112);
-            *v162 = objc_msgSend_stringWithFormat_(v141, v143, @"custom barDuration should be less than sampleCount. please fix %@", v144, v145, v142);
+            *reasonCopy = objc_msgSend_stringWithFormat_(v141, v143, @"custom barDuration should be less than sampleCount. please fix %@", v144, v145, v142);
 
             v16 = 0;
             goto LABEL_33;
@@ -5658,7 +5658,7 @@ LABEL_27:
             v156 = @"samplesPerBar should equal sampleCount if we only have one bar. please fix %@";
 LABEL_43:
             objc_msgSend_stringWithFormat_(v151, v152, v156, v153, v154, v159);
-            *v162 = LABEL_44:;
+            *reasonCopy = LABEL_44:;
 
             v16 = 0;
             goto LABEL_45;
@@ -5704,7 +5704,7 @@ LABEL_33:
 LABEL_45:
 
         v26 = v160;
-        v5 = v161;
+        renditionCopy = v161;
         break;
       }
     }
@@ -5714,26 +5714,26 @@ LABEL_45:
   return v16;
 }
 
-- (int64_t)_samplesForDuration:(id *)a3
+- (int64_t)_samplesForDuration:(id *)duration
 {
-  v6 = objc_msgSend_sampleRate(self, a2, a3, v3, v4);
-  v8 = *a3;
+  v6 = objc_msgSend_sampleRate(self, a2, duration, v3, v4);
+  v8 = *duration;
   CMTimeConvertScale(&v9, &v8, v6, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
   return v9.value;
 }
 
-- (BOOL)verifyRendition:(id)a3 forDuration:(id *)a4 failureReason:(id *)a5
+- (BOOL)verifyRendition:(id)rendition forDuration:(id *)duration failureReason:(id *)reason
 {
-  v8 = a3;
+  renditionCopy = rendition;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = renditionCopy;
     v58.receiver = self;
     v58.super_class = FlexSong;
-    v56 = *&a4->var0;
-    var3 = a4->var3;
-    if (![(FlexSongBackend *)&v58 verifyRendition:v9 forDuration:&v56 failureReason:a5])
+    v56 = *&duration->var0;
+    var3 = duration->var3;
+    if (![(FlexSongBackend *)&v58 verifyRendition:v9 forDuration:&v56 failureReason:reason])
     {
       goto LABEL_9;
     }
@@ -5743,12 +5743,12 @@ LABEL_45:
     if (!v14)
     {
       v36 = 0;
-      *a5 = @"no playlist! The playback algorithm could not generate a playlist for this duration or there is an issue with the authoring tool";
+      *reason = @"no playlist! The playback algorithm could not generate a playlist for this duration or there is an issue with the authoring tool";
       goto LABEL_12;
     }
 
-    v56 = *&a4->var0;
-    var3 = a4->var3;
+    v56 = *&duration->var0;
+    var3 = duration->var3;
     v18 = objc_msgSend__samplesForDuration_(self, v15, &v56, v16, v17);
     v23 = objc_msgSend_segments(v9, v19, v20, v21, v22);
     v27 = objc_msgSend__sampleDurationOfClipPlaylist_(self, v24, v23, v25, v26);
@@ -5759,13 +5759,13 @@ LABEL_45:
       v46 = v18 / objc_msgSend_sampleRate(self, v28, v29, v30, v31);
       v51 = objc_msgSend_sampleRate(self, v47, v48, v49, v50);
       objc_msgSend_stringWithFormat_(v45, v52, @"expected duration (%.2fs, %lld) does not match duration (%.2fs, %lld) of clipPlaylist! Possibly no valid intro or outro valid for this duration?", v53, v54, *&v46, v18, v27 / v51, v27);
-      *a5 = v36 = 0;
+      *reason = v36 = 0;
       goto LABEL_12;
     }
 
-    if (objc_msgSend__validateAuthoringIssuesInRendition_failureReason_(self, v28, v9, a5, v31) && objc_msgSend__validateStructureForRendition_failureReason_(self, v32, v9, a5, v33))
+    if (objc_msgSend__validateAuthoringIssuesInRendition_failureReason_(self, v28, v9, reason, v31) && objc_msgSend__validateStructureForRendition_failureReason_(self, v32, v9, reason, v33))
     {
-      v36 = objc_msgSend__validateTransitionsInRendition_failureReason_(self, v34, v9, a5, v35);
+      v36 = objc_msgSend__validateTransitionsInRendition_failureReason_(self, v34, v9, reason, v35);
     }
 
     else
@@ -5784,7 +5784,7 @@ LABEL_12:
   v39 = NSStringFromClass(v38);
   v40 = objc_opt_class();
   v41 = NSStringFromClass(v40);
-  *a5 = objc_msgSend_stringWithFormat_(v37, v42, @"Expected a %@ class but found a %@", v43, v44, v39, v41);
+  *reason = objc_msgSend_stringWithFormat_(v37, v42, @"Expected a %@ class but found a %@", v43, v44, v39, v41);
 
   v36 = 0;
 LABEL_13:
@@ -5792,14 +5792,14 @@ LABEL_13:
   return v36;
 }
 
-- (BOOL)_verifyAssetsForSegment:(id)a3 withFailureReason:(id *)a4
+- (BOOL)_verifyAssetsForSegment:(id)segment withFailureReason:(id *)reason
 {
   v180[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  if (v10)
+  segmentCopy = segment;
+  if (segmentCopy)
   {
     v11 = objc_msgSend_assetProvider(self, v6, v7, v8, v9);
-    v15 = objc_msgSend_urlToAudioForSegment_(v11, v12, v10, v13, v14);
+    v15 = objc_msgSend_urlToAudioForSegment_(v11, v12, segmentCopy, v13, v14);
 
     if (v15)
     {
@@ -5816,22 +5816,22 @@ LABEL_13:
 
         if (v38)
         {
-          v43 = objc_msgSend_sampleRate(v10, v39, v40, v41, v42);
+          v43 = objc_msgSend_sampleRate(segmentCopy, v39, v40, v41, v42);
           if (v43 == objc_msgSend_sampleRate(v38, v44, v45, v46, v47))
           {
-            v52 = objc_msgSend_sampleCount(v10, v48, v49, v50, v51);
+            v52 = objc_msgSend_sampleCount(segmentCopy, v48, v49, v50, v51);
             if (v52 == objc_msgSend_sampleCount(v38, v53, v54, v55, v56))
             {
               goto LABEL_12;
             }
 
-            v61 = objc_msgSend_sampleCount(v10, v57, v58, v59, v60);
+            v61 = objc_msgSend_sampleCount(segmentCopy, v57, v58, v59, v60);
             if (v61 == objc_msgSend_sampleCount(v38, v62, v63, v64, v65) - 1)
             {
               v70 = FlexLogForCategory(1uLL);
               if (os_log_type_enabled(v70, OS_LOG_TYPE_DEBUG))
               {
-                sub_24B80E5B0(v15, v10, v70, v71, v72);
+                sub_24B80E5B0(v15, segmentCopy, v70, v71, v72);
               }
 
 LABEL_12:
@@ -5852,11 +5852,11 @@ LABEL_12:
               v82 = dispatch_time(0, 20000000000);
               if (dispatch_semaphore_wait(v79, v82))
               {
-                if (a4)
+                if (reason)
                 {
                   v87 = MEMORY[0x277CCACA8];
                   v88 = objc_msgSend_lastPathComponent(v15, v83, v84, v85, v86);
-                  *a4 = objc_msgSend_stringWithFormat_(v87, v89, @"Timed out waiting for %@ to load", v90, v91, v88);
+                  *reason = objc_msgSend_stringWithFormat_(v87, v89, @"Timed out waiting for %@ to load", v90, v91, v88);
                 }
 
                 goto LABEL_15;
@@ -5873,16 +5873,16 @@ LABEL_12:
                 memset(&time, 0, sizeof(time));
               }
 
-              v133 = objc_msgSend_sampleRate(v10, v83, v84, v85, v86);
+              v133 = objc_msgSend_sampleRate(segmentCopy, v83, v84, v85, v86);
               v92 = 1;
               CMTimeConvertScale(&v173, &time, v133, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
-              v138 = objc_msgSend_sampleCount(v10, v134, v135, v136, v137);
+              v138 = objc_msgSend_sampleCount(segmentCopy, v134, v135, v136, v137);
               if (v138 == v173.value)
               {
                 goto LABEL_40;
               }
 
-              v143 = objc_msgSend_sampleCount(v10, v139, v140, v141, v142);
+              v143 = objc_msgSend_sampleCount(segmentCopy, v139, v140, v141, v142);
               v92 = v143 == v173.value - 1;
               if (v143 == v173.value - 1)
               {
@@ -5891,7 +5891,7 @@ LABEL_12:
                 {
                   v153 = objc_msgSend_lastPathComponent(v15, v149, v150, v151, v152);
                   value = v173.value;
-                  v159 = objc_msgSend_sampleCount(v10, v155, v156, v157, v158);
+                  v159 = objc_msgSend_sampleCount(segmentCopy, v155, v156, v157, v158);
                   LODWORD(time.value) = 138412802;
                   *(&time.value + 4) = v153;
                   LOWORD(time.flags) = 2048;
@@ -5904,7 +5904,7 @@ LABEL_12:
 
               else
               {
-                if (!a4)
+                if (!reason)
                 {
 LABEL_15:
                   v92 = 0;
@@ -5916,19 +5916,19 @@ LABEL_40:
                 v160 = MEMORY[0x277CCACA8];
                 v148 = objc_msgSend_lastPathComponent(v15, v144, v145, v146, v147);
                 v161 = v173.value;
-                v166 = objc_msgSend_sampleCount(v10, v162, v163, v164, v165);
-                *a4 = objc_msgSend_stringWithFormat_(v160, v167, @"%@: asset.duration (%lld) does not match segment.sampleCount (%lld)", v168, v169, v148, v161, v166);
+                v166 = objc_msgSend_sampleCount(segmentCopy, v162, v163, v164, v165);
+                *reason = objc_msgSend_stringWithFormat_(v160, v167, @"%@: asset.duration (%lld) does not match segment.sampleCount (%lld)", v168, v169, v148, v161, v166);
               }
 
               goto LABEL_40;
             }
 
-            if (a4)
+            if (reason)
             {
               v120 = MEMORY[0x277CCACA8];
               v77 = objc_msgSend_lastPathComponent(v15, v66, v67, v68, v69);
               v125 = objc_msgSend_sampleCount(v38, v121, v122, v123, v124);
-              v172 = objc_msgSend_sampleCount(v10, v126, v127, v128, v129);
+              v172 = objc_msgSend_sampleCount(segmentCopy, v126, v127, v128, v129);
               objc_msgSend_stringWithFormat_(v120, v130, @"%@: kExtAudioFileProperty_FileLengthFrames (%lld) does not match segment.sampleCount (%lld)", v131, v132, v77, v125, v172);
               goto LABEL_26;
             }
@@ -5936,24 +5936,24 @@ LABEL_40:
             goto LABEL_31;
           }
 
-          if (a4)
+          if (reason)
           {
             v106 = MEMORY[0x277CCACA8];
             v107 = objc_msgSend_sampleRate(v38, v48, v49, v50, v51);
-            v112 = objc_msgSend_sampleRate(v10, v108, v109, v110, v111);
+            v112 = objc_msgSend_sampleRate(segmentCopy, v108, v109, v110, v111);
             v77 = objc_msgSend_lastPathComponent(v15, v113, v114, v115, v116);
             objc_msgSend_stringWithFormat_(v106, v117, @"audio file sample rate (%ld) does not match sample rate (%ld) of %@", v118, v119, v107, v112, v77);
             goto LABEL_26;
           }
         }
 
-        else if (a4)
+        else if (reason)
         {
           v102 = MEMORY[0x277CCACA8];
           v77 = objc_msgSend_path(v15, v39, v40, v41, v42);
           objc_msgSend_stringWithFormat_(v102, v103, @"could not read info for audio file: %@", v104, v105, v77);
 LABEL_26:
-          *a4 = v92 = 0;
+          *reason = v92 = 0;
 LABEL_41:
 
           goto LABEL_42;
@@ -5964,23 +5964,23 @@ LABEL_31:
         goto LABEL_42;
       }
 
-      if (a4)
+      if (reason)
       {
         v98 = MEMORY[0x277CCACA8];
-        v38 = objc_msgSend_name(v10, v30, v31, v32, v33);
+        v38 = objc_msgSend_name(segmentCopy, v30, v31, v32, v33);
         objc_msgSend_stringWithFormat_(v98, v99, @"audio file does not exist for segment %@", v100, v101, v38);
-        *a4 = v92 = 0;
+        *reason = v92 = 0;
 LABEL_42:
 
         goto LABEL_43;
       }
     }
 
-    else if (a4)
+    else if (reason)
     {
       v93 = MEMORY[0x277CCACA8];
-      v94 = objc_msgSend_name(v10, v16, v17, v18, v19);
-      *a4 = objc_msgSend_stringWithFormat_(v93, v95, @"could not determine url for segment %@", v96, v97, v94);
+      v94 = objc_msgSend_name(segmentCopy, v16, v17, v18, v19);
+      *reason = objc_msgSend_stringWithFormat_(v93, v95, @"could not determine url for segment %@", v96, v97, v94);
     }
 
     v92 = 0;
@@ -5996,10 +5996,10 @@ LABEL_44:
   return v92;
 }
 
-- (BOOL)verifyAssetsWithFailureReason:(id *)a3
+- (BOOL)verifyAssetsWithFailureReason:(id *)reason
 {
   v36 = *MEMORY[0x277D85DE8];
-  v11 = objc_msgSend__metadataDictFromCache(self, a2, a3, v3, v4);
+  v11 = objc_msgSend__metadataDictFromCache(self, a2, reason, v3, v4);
   if (!v11)
   {
     v12 = FlexLogForCategory(0);
@@ -6041,7 +6041,7 @@ LABEL_44:
           objc_enumerationMutation(v19);
         }
 
-        if (!objc_msgSend__verifyAssetsForSegment_withFailureReason_(self, v22, *(*(&v30 + 1) + 8 * i), a3, v23, v30))
+        if (!objc_msgSend__verifyAssetsForSegment_withFailureReason_(self, v22, *(*(&v30 + 1) + 8 * i), reason, v23, v30))
         {
           v27 = 0;
           goto LABEL_19;
@@ -6065,27 +6065,27 @@ LABEL_19:
   return v27;
 }
 
-- (id)timedMetadataItemsWithIdentifier:(id)a3 forRendition:(id)a4
+- (id)timedMetadataItemsWithIdentifier:(id)identifier forRendition:(id)rendition
 {
   v725 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  renditionCopy = rendition;
   objc_opt_class();
-  v636 = v7;
+  v636 = renditionCopy;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v401 = MEMORY[0x277CBEBF8];
     goto LABEL_160;
   }
 
-  v637 = v7;
+  v637 = renditionCopy;
   v12 = objc_msgSend_array(MEMORY[0x277CBEB18], v8, v9, v10, v11);
-  v646 = v6;
-  v680 = self;
+  v646 = identifierCopy;
+  selfCopy = self;
   v681 = v12;
-  if ((objc_msgSend_isEqualToString_(v6, v13, @"FMTimedMetadataIdentifierSection", v14, v15) & 1) != 0 || objc_msgSend_isEqualToString_(v6, v16, @"FMTimedMetadataIdentifierSegment", v17, v18))
+  if ((objc_msgSend_isEqualToString_(identifierCopy, v13, @"FMTimedMetadataIdentifierSection", v14, v15) & 1) != 0 || objc_msgSend_isEqualToString_(identifierCopy, v16, @"FMTimedMetadataIdentifierSegment", v17, v18))
   {
-    isEqualToString = objc_msgSend_isEqualToString_(v6, v16, @"FMTimedMetadataIdentifierSection", v17, v18);
+    isEqualToString = objc_msgSend_isEqualToString_(identifierCopy, v16, @"FMTimedMetadataIdentifierSection", v17, v18);
     v24 = objc_msgSend_segments(v637, v20, v21, v22, v23);
     v640 = objc_msgSend_lastObject(v24, v25, v26, v27, v28);
 
@@ -6224,7 +6224,7 @@ LABEL_19:
             if (v116 >= v99)
             {
               v673 = 0;
-              self = v680;
+              self = selfCopy;
               isEqualToString = v647;
             }
 
@@ -6257,7 +6257,7 @@ LABEL_19:
                 v668 = v179;
               }
 
-              self = v680;
+              self = selfCopy;
             }
 
             v45 = v677;
@@ -6520,7 +6520,7 @@ LABEL_52:
               }
             }
 
-            self = v680;
+            self = selfCopy;
           }
 
           if (v67)
@@ -6583,14 +6583,14 @@ LABEL_106:
       if (!v318)
       {
 
-        v6 = v646;
+        identifierCopy = v646;
         v12 = v681;
         goto LABEL_116;
       }
     }
   }
 
-  if (objc_msgSend_isEqualToString_(v6, v16, @"FMTimedMetadataIdentifierBar", v17, v18))
+  if (objc_msgSend_isEqualToString_(identifierCopy, v16, @"FMTimedMetadataIdentifierBar", v17, v18))
   {
     v705 = 0u;
     v706 = 0u;
@@ -6680,7 +6680,7 @@ LABEL_179:
                   objc_msgSend_addObject_(v681, v551, v550, v552, v553);
 
                   v500 = v675;
-                  self = v680;
+                  self = selfCopy;
                 }
 
                 v513 += objc_msgSend_barDurationForBarIndex_(v499, v519, v512++, v521, v522);
@@ -6708,7 +6708,7 @@ LABEL_190:
             v511 = 0;
           }
 
-          v6 = v646;
+          identifierCopy = v646;
           v12 = v681;
           v493 = v661;
           v492 = v665;
@@ -6732,7 +6732,7 @@ LABEL_194:
 
   else
   {
-    if (!objc_msgSend_isEqualToString_(v6, v483, @"FMTimedMetadataIdentifierBeat", v485, v486))
+    if (!objc_msgSend_isEqualToString_(identifierCopy, v483, @"FMTimedMetadataIdentifierBeat", v485, v486))
     {
       goto LABEL_118;
     }
@@ -6803,7 +6803,7 @@ LABEL_219:
                         if (v601 >= v577 && v601 < v679)
                         {
                           memset(&v709, 0, sizeof(v709));
-                          v602 = objc_msgSend_sampleRate(v680, v573, v574, v575, v576);
+                          v602 = objc_msgSend_sampleRate(selfCopy, v573, v574, v575, v576);
                           CMTimeMake(&start.start, v601, v602);
                           rhs = **&MEMORY[0x277CC08F0];
                           CMTimeRangeMake(&v709, &start.start, &rhs);
@@ -6887,7 +6887,7 @@ LABEL_226:
             }
 
             v565 = v645;
-            v6 = v646;
+            identifierCopy = v646;
           }
 
           else
@@ -6915,7 +6915,7 @@ LABEL_116:
   }
 
 LABEL_118:
-  if (objc_msgSend_isEqualToString_(v6, v319, @"FMTimedMetadataIdentifierOnset", v320, v321))
+  if (objc_msgSend_isEqualToString_(identifierCopy, v319, @"FMTimedMetadataIdentifierOnset", v320, v321))
   {
     v697 = 0u;
     v698 = 0u;
@@ -6948,7 +6948,7 @@ LABEL_118:
           {
             v669 = v338;
             v674 = v337;
-            v348 = objc_msgSend_objectForKeyedSubscript_(v680->_analysisData, v344, @"onsets", v346, v347);
+            v348 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_analysisData, v344, @"onsets", v346, v347);
             v671 = v339;
             v353 = objc_msgSend_name(v339, v349, v350, v351, v352);
             v357 = objc_msgSend_objectForKey_(v348, v354, v353, v355, v356);
@@ -6974,14 +6974,14 @@ LABEL_118:
 
                   v368 = *(*(&v691 + 1) + 8 * i);
                   memset(&rhs, 0, sizeof(rhs));
-                  v369 = objc_msgSend_sampleRate(v680, v361, v362, v363, v364);
+                  v369 = objc_msgSend_sampleRate(selfCopy, v361, v362, v363, v364);
                   CMTimeMake(&rhs, v333, v369);
                   v709.start = rhs;
                   Seconds = CMTimeGetSeconds(&v709.start);
                   objc_msgSend_floatValue(v368, v371, v372, v373, v374);
                   memset(&v709, 0, sizeof(v709));
                   v376 = (v375 + Seconds);
-                  v381 = objc_msgSend_sampleRate(v680, v377, v378, v379, v380);
+                  v381 = objc_msgSend_sampleRate(selfCopy, v377, v378, v379, v380);
                   CMTimeMakeWithSeconds(&start.start, v376, v381);
                   duration = *v335;
                   CMTimeRangeMake(&v709, &start.start, &duration);
@@ -6999,7 +6999,7 @@ LABEL_118:
               while (v365);
             }
 
-            v6 = v646;
+            identifierCopy = v646;
             v334 = v660;
             v332 = v664;
             v339 = v671;
@@ -7025,7 +7025,7 @@ LABEL_118:
 
   else
   {
-    if (objc_msgSend_isEqualToString_(v6, v322, @"FMTimedMetadataIdentifierLoopPoints", v324, v325))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v322, @"FMTimedMetadataIdentifierLoopPoints", v324, v325))
     {
       v689 = 0u;
       v690 = 0u;
@@ -7054,10 +7054,10 @@ LABEL_118:
             {
               memset(&rhs, 0, sizeof(rhs));
               v428 = objc_msgSend_duration(v418, v424, v425, v426, v427);
-              v433 = objc_msgSend_sampleRate(v680, v429, v430, v431, v432);
+              v433 = objc_msgSend_sampleRate(selfCopy, v429, v430, v431, v432);
               CMTimeMake(&rhs, v428, v433);
               memset(&duration, 0, sizeof(duration));
-              v438 = objc_msgSend_sampleRate(v680, v434, v435, v436, v437);
+              v438 = objc_msgSend_sampleRate(selfCopy, v434, v435, v436, v437);
               CMTimeMake(&duration, v414, v438);
               memset(&v686, 0, sizeof(v686));
               v709.start = duration;
@@ -7067,7 +7067,7 @@ LABEL_118:
               v439 = CMTimeGetSeconds(&v709.start);
               memset(&v709, 0, sizeof(v709));
               v440 = v439;
-              v445 = objc_msgSend_sampleRate(v680, v441, v442, v443, v444);
+              v445 = objc_msgSend_sampleRate(selfCopy, v441, v442, v443, v444);
               CMTimeMakeWithSeconds(&start.start, v440, v445);
               v685 = *v416;
               CMTimeRangeMake(&v709, &start.start, &v685);
@@ -7090,7 +7090,7 @@ LABEL_118:
 
       v12 = v681;
       objc_msgSend_removeLastObject(v681, v456, v457, v458, v459);
-      v6 = v646;
+      identifierCopy = v646;
     }
 
     v396 = objc_msgSend_count(v12, v402, v403, v404, v405);
@@ -7146,20 +7146,20 @@ LABEL_160:
   return v401;
 }
 
-+ (id)loadSongInFolderWithPath:(id)a3
++ (id)loadSongInFolderWithPath:(id)path
 {
-  v7 = a3;
-  if (v7)
+  pathCopy = path;
+  if (pathCopy)
   {
     v18 = 0;
     v8 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v3, v4, v5, v6);
-    isDirectory = objc_msgSend_fileExistsAtPath_isDirectory_(v8, v9, v7, &v18, v10);
+    isDirectory = objc_msgSend_fileExistsAtPath_isDirectory_(v8, v9, pathCopy, &v18, v10);
     v12 = v18;
 
     v16 = 0;
     if (isDirectory && (v12 & 1) != 0)
     {
-      v16 = objc_msgSend_songAtPath_(FlexSongMetaDataReader_V2, v13, v7, v14, v15);
+      v16 = objc_msgSend_songAtPath_(FlexSongMetaDataReader_V2, v13, pathCopy, v14, v15);
     }
   }
 

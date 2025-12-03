@@ -1,5 +1,5 @@
 @interface PFVideoExportRangeWaitingCaller
-+ (id)waitingCallerWithRequestedRange:(_NSRange)a3;
++ (id)waitingCallerWithRequestedRange:(_NSRange)range;
 - (PFVideoExportRangeWaitingCaller)init;
 - (_NSRange)requestedRange;
 @end
@@ -31,10 +31,10 @@
   return v2;
 }
 
-+ (id)waitingCallerWithRequestedRange:(_NSRange)a3
++ (id)waitingCallerWithRequestedRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v5 = objc_opt_new();
   [v5 setRequestedRange:{location, length}];
 

@@ -1,10 +1,10 @@
 @interface STConcretePrimitiveOSTransaction
-- (STConcretePrimitiveOSTransaction)initWithDescription:(const char *)a3;
+- (STConcretePrimitiveOSTransaction)initWithDescription:(const char *)description;
 @end
 
 @implementation STConcretePrimitiveOSTransaction
 
-- (STConcretePrimitiveOSTransaction)initWithDescription:(const char *)a3
+- (STConcretePrimitiveOSTransaction)initWithDescription:(const char *)description
 {
   v7.receiver = self;
   v7.super_class = STConcretePrimitiveOSTransaction;

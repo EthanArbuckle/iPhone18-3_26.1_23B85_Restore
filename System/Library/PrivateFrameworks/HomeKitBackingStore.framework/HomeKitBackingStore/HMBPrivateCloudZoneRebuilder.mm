@@ -2,13 +2,13 @@
 + (id)logCategory;
 - (BOOL)isZoneRebuildInProgress;
 - (HMBCloudZone)cloudZone;
-- (HMBPrivateCloudZoneRebuilder)initWithCloudZone:(id)a3;
+- (HMBPrivateCloudZoneRebuilder)initWithCloudZone:(id)zone;
 - (id)logIdentifier;
 - (id)zoneStartUp;
 - (void)handleIdentityLost;
 - (void)handleZoneChanged;
 - (void)rebuild;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMBPrivateCloudZoneRebuilder
@@ -22,23 +22,23 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMBPrivateCloudZoneRebuilder *)self cloudZone];
-  v3 = [v2 zoneID];
-  v4 = [v3 name];
+  cloudZone = [(HMBPrivateCloudZoneRebuilder *)self cloudZone];
+  zoneID = [cloudZone zoneID];
+  name = [zoneID name];
 
-  return v4;
+  return name;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMBPrivateCloudZoneRebuilder *)self uploadMonitorWatchdogTimer];
+  fireCopy = fire;
+  uploadMonitorWatchdogTimer = [(HMBPrivateCloudZoneRebuilder *)self uploadMonitorWatchdogTimer];
 
-  if (v5 != v4)
+  if (uploadMonitorWatchdogTimer != fireCopy)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy2 = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -55,20 +55,20 @@ LABEL_9:
   }
 
   os_unfair_lock_lock_with_options();
-  v10 = [(HMBPrivateCloudZoneRebuilder *)self rebuilderStatus];
-  v11 = [v10 rebuildState];
+  rebuilderStatus = [(HMBPrivateCloudZoneRebuilder *)self rebuilderStatus];
+  rebuildState = [rebuilderStatus rebuildState];
 
   [(HMBPrivateCloudZoneRebuilder *)self setUploadMonitorWatchdogTimer:0];
   os_unfair_lock_unlock(&self->_propertyLock);
-  if (v11 != 5)
+  if (rebuildState != 5)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy2 = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v18 = HMFGetLogIdentifier();
-      v19 = [HMBCloudZoneRebuilderStatus rebuilderStateString:v11];
+      v19 = [HMBCloudZoneRebuilderStatus rebuilderStateString:rebuildState];
       *v21 = 138543618;
       *&v21[4] = v18;
       v22 = 2112;
@@ -89,14 +89,14 @@ LABEL_10:
 {
   v21 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock_with_options();
-  v3 = [(HMBPrivateCloudZoneRebuilder *)self rebuilderStatus];
-  v4 = [v3 rebuildState];
+  rebuilderStatus = [(HMBPrivateCloudZoneRebuilder *)self rebuilderStatus];
+  rebuildState = [rebuilderStatus rebuildState];
 
   os_unfair_lock_unlock(&self->_propertyLock);
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((rebuildState & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v5 = [(HMBPrivateCloudZoneRebuilder *)self uploadMonitorWatchdogTimer];
-    [v5 setDelegate:0];
+    uploadMonitorWatchdogTimer = [(HMBPrivateCloudZoneRebuilder *)self uploadMonitorWatchdogTimer];
+    [uploadMonitorWatchdogTimer setDelegate:0];
 
     os_unfair_lock_lock_with_options();
     [(HMBPrivateCloudZoneRebuilder *)self setUploadMonitorWatchdogTimer:0];
@@ -107,26 +107,26 @@ LABEL_10:
     v16[2] = __49__HMBPrivateCloudZoneRebuilder_handleZoneChanged__block_invoke;
     v16[3] = &unk_2786E0BF8;
     v16[4] = self;
-    v16[5] = v4;
+    v16[5] = rebuildState;
     v7 = [v6 addFailureBlock:v16];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __49__HMBPrivateCloudZoneRebuilder_handleZoneChanged__block_invoke_20;
     v15[3] = &unk_2786E0C20;
     v15[4] = self;
-    v15[5] = v4;
+    v15[5] = rebuildState;
     v8 = [v6 addSuccessBlock:v15];
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [HMBCloudZoneRebuilderStatus rebuilderStateString:v4];
+      v13 = [HMBCloudZoneRebuilderStatus rebuilderStateString:rebuildState];
       *buf = 138543618;
       v18 = v12;
       v19 = 2112;
@@ -346,21 +346,21 @@ LABEL_20:
 
 - (BOOL)isZoneRebuildInProgress
 {
-  v2 = [(HMBPrivateCloudZoneRebuilder *)self rebuildCompleteFuture];
-  v3 = [v2 isFinished];
+  rebuildCompleteFuture = [(HMBPrivateCloudZoneRebuilder *)self rebuildCompleteFuture];
+  isFinished = [rebuildCompleteFuture isFinished];
 
-  return v3 ^ 1;
+  return isFinished ^ 1;
 }
 
 - (void)rebuild
 {
   v20 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock_with_options();
-  v3 = [(HMBPrivateCloudZoneRebuilder *)self rebuilderStatus];
-  v4 = [v3 rebuildState];
+  rebuilderStatus = [(HMBPrivateCloudZoneRebuilder *)self rebuilderStatus];
+  rebuildState = [rebuilderStatus rebuildState];
 
   os_unfair_lock_unlock(&self->_propertyLock);
-  if (v4 <= 7 && ((1 << v4) & 0x83) != 0)
+  if (rebuildState <= 7 && ((1 << rebuildState) & 0x83) != 0)
   {
     v10 = __transitionToState(self, 4, @"Attempting to acquire lock on zone.", v5, v6, v7, v8, v9, *v17);
   }
@@ -368,12 +368,12 @@ LABEL_20:
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [HMBCloudZoneRebuilderStatus rebuilderStateString:v4];
+      v15 = [HMBCloudZoneRebuilderStatus rebuilderStateString:rebuildState];
       *v17 = 138543618;
       *&v17[4] = v14;
       v18 = 2112;
@@ -391,11 +391,11 @@ LABEL_20:
 {
   v20 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock_with_options();
-  v3 = [(HMBPrivateCloudZoneRebuilder *)self rebuilderStatus];
-  v4 = [v3 rebuildState];
+  rebuilderStatus = [(HMBPrivateCloudZoneRebuilder *)self rebuilderStatus];
+  rebuildState = [rebuilderStatus rebuildState];
 
   os_unfair_lock_unlock(&self->_propertyLock);
-  if (v4 <= 7 && ((1 << v4) & 0x83) != 0)
+  if (rebuildState <= 7 && ((1 << rebuildState) & 0x83) != 0)
   {
     v10 = __transitionToState(self, 1, @"Received notification that zone has lost keys.", v5, v6, v7, v8, v9, *v17);
   }
@@ -403,12 +403,12 @@ LABEL_20:
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [HMBCloudZoneRebuilderStatus rebuilderStateString:v4];
+      v15 = [HMBCloudZoneRebuilderStatus rebuilderStateString:rebuildState];
       *v17 = 138543618;
       *&v17[4] = v14;
       v18 = 2112;
@@ -424,17 +424,17 @@ LABEL_20:
 
 - (id)zoneStartUp
 {
-  v3 = [(HMBPrivateCloudZoneRebuilder *)self cloudZone];
-  v4 = [v3 localZone];
+  cloudZone = [(HMBPrivateCloudZoneRebuilder *)self cloudZone];
+  localZone = [cloudZone localZone];
 
-  if (v4)
+  if (localZone)
   {
     objc_initWeak(&location, self);
     v10 = MEMORY[0x277D2C900];
     v14 = MEMORY[0x277D85DD0];
     objc_copyWeak(&v15, &location);
-    v11 = [v3 operationScheduler];
-    v12 = [v10 lazyFutureWithBlock:&v14 scheduler:v11];
+    operationScheduler = [cloudZone operationScheduler];
+    v12 = [v10 lazyFutureWithBlock:&v14 scheduler:operationScheduler];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
@@ -546,16 +546,16 @@ void __43__HMBPrivateCloudZoneRebuilder_zoneStartUp__block_invoke(uint64_t a1, v
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (HMBPrivateCloudZoneRebuilder)initWithCloudZone:(id)a3
+- (HMBPrivateCloudZoneRebuilder)initWithCloudZone:(id)zone
 {
-  v4 = a3;
+  zoneCopy = zone;
   v12.receiver = self;
   v12.super_class = HMBPrivateCloudZoneRebuilder;
   v5 = [(HMBPrivateCloudZoneRebuilder *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_cloudZone, v4);
+    objc_storeWeak(&v5->_cloudZone, zoneCopy);
     v7 = [[HMBCloudZoneRebuilderStatus alloc] initWithState:0 message:@"Rebuilder has not been started up yet."];
     rebuilderStatus = v6->_rebuilderStatus;
     v6->_rebuilderStatus = v7;

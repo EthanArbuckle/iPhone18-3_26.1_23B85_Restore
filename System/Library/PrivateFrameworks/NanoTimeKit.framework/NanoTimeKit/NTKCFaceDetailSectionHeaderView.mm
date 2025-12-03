@@ -4,13 +4,13 @@
 - (NSString)groupName;
 - (NSString)title;
 - (NTKCFaceDetailSectionHeaderView)init;
-- (NTKCFaceDetailSectionHeaderView)initWithReuseIdentifier:(id)a3;
+- (NTKCFaceDetailSectionHeaderView)initWithReuseIdentifier:(id)identifier;
 - (id)_traitCollectionAdjustedIfNeeded;
 - (void)_updateConfig;
 - (void)layoutSubviews;
-- (void)setGroupName:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setGroupName:(id)name;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 @end
 
 @implementation NTKCFaceDetailSectionHeaderView
@@ -24,38 +24,38 @@
 
 + (double)headerHeight
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  v3 = [v2 traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
   v5 = *MEMORY[0x277D76800];
-  if (UIContentSizeCategoryCompareToCategory(v4, *MEMORY[0x277D76800]) == NSOrderedDescending)
+  if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x277D76800]) == NSOrderedDescending)
   {
     v6 = v5;
 
-    v4 = v6;
+    preferredContentSizeCategory = v6;
   }
 
-  v7 = [MEMORY[0x277D75C80] traitCollectionWithPreferredContentSizeCategory:v4];
+  v7 = [MEMORY[0x277D75C80] traitCollectionWithPreferredContentSizeCategory:preferredContentSizeCategory];
   if (_os_feature_enabled_impl())
   {
-    v8 = [MEMORY[0x277D756E0] sidebarHeaderConfiguration];
+    sidebarHeaderConfiguration = [MEMORY[0x277D756E0] sidebarHeaderConfiguration];
     v9 = [objc_alloc(MEMORY[0x277D75D20]) initWithTraitCollection:v7];
-    v10 = [v8 updatedConfigurationForState:v9];
-    v11 = [v8 textProperties];
-    v12 = [v11 font];
+    v10 = [sidebarHeaderConfiguration updatedConfigurationForState:v9];
+    textProperties = [sidebarHeaderConfiguration textProperties];
+    font = [textProperties font];
 
-    [v12 _scaledValueForValue:6.0];
+    [font _scaledValueForValue:6.0];
     v14 = v13;
-    [v12 lineHeight];
+    [font lineHeight];
     UICeilToScale();
     v16 = v14 + v15;
   }
 
   else
   {
-    v8 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918] compatibleWithTraitCollection:v7];
-    [v8 _scaledValueForValue:32.0];
+    sidebarHeaderConfiguration = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918] compatibleWithTraitCollection:v7];
+    [sidebarHeaderConfiguration _scaledValueForValue:32.0];
     v16 = v17;
   }
 
@@ -64,24 +64,24 @@
 
 - (NTKCFaceDetailSectionHeaderView)init
 {
-  v3 = [objc_opt_class() reuseIdentifier];
-  v4 = [(NTKCFaceDetailSectionHeaderView *)self initWithReuseIdentifier:v3];
+  reuseIdentifier = [objc_opt_class() reuseIdentifier];
+  v4 = [(NTKCFaceDetailSectionHeaderView *)self initWithReuseIdentifier:reuseIdentifier];
 
   return v4;
 }
 
-- (NTKCFaceDetailSectionHeaderView)initWithReuseIdentifier:(id)a3
+- (NTKCFaceDetailSectionHeaderView)initWithReuseIdentifier:(id)identifier
 {
   v17.receiver = self;
   v17.super_class = NTKCFaceDetailSectionHeaderView;
-  v3 = [(NTKCFaceDetailSectionHeaderView *)&v17 initWithReuseIdentifier:a3];
+  v3 = [(NTKCFaceDetailSectionHeaderView *)&v17 initWithReuseIdentifier:identifier];
   if (v3)
   {
     if (_os_feature_enabled_impl())
     {
-      v4 = [MEMORY[0x277D756E0] sidebarHeaderConfiguration];
+      sidebarHeaderConfiguration = [MEMORY[0x277D756E0] sidebarHeaderConfiguration];
       configuration = v3->_configuration;
-      v3->_configuration = v4;
+      v3->_configuration = sidebarHeaderConfiguration;
     }
 
     else
@@ -110,16 +110,16 @@
     }
 
     [(UILabel *)v3->_detailLabel setTextAlignment:v11];
-    v12 = [(NTKCFaceDetailSectionHeaderView *)v3 contentView];
-    [v12 addSubview:v3->_detailLabel];
+    contentView = [(NTKCFaceDetailSectionHeaderView *)v3 contentView];
+    [contentView addSubview:v3->_detailLabel];
 
     v13 = objc_opt_new();
     separator = v3->_separator;
     v3->_separator = v13;
 
     [(NTKCFaceDetailSectionHeaderView *)v3 addSubview:v3->_separator];
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v3 selector:sel__fontSizeDidChange name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__fontSizeDidChange name:*MEMORY[0x277D76810] object:0];
 
     [(NTKCFaceDetailSectionHeaderView *)v3 _fontSizeDidChange];
   }
@@ -129,27 +129,27 @@
 
 - (NSString)title
 {
-  v2 = [(NTKCFaceDetailSectionHeaderView *)self textLabel];
-  v3 = [v2 text];
+  textLabel = [(NTKCFaceDetailSectionHeaderView *)self textLabel];
+  text = [textLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(NTKCFaceDetailSectionHeaderView *)self textLabel];
-  [v5 setText:v4];
+  titleCopy = title;
+  textLabel = [(NTKCFaceDetailSectionHeaderView *)self textLabel];
+  [textLabel setText:titleCopy];
 
-  v6 = [(NTKCFaceDetailSectionHeaderView *)self textLabel];
-  [v6 sizeToFit];
+  textLabel2 = [(NTKCFaceDetailSectionHeaderView *)self textLabel];
+  [textLabel2 sizeToFit];
 
   [(NTKCFaceDetailSectionHeaderView *)self setNeedsLayout];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  [(UILabel *)self->_detailLabel setText:a3];
+  [(UILabel *)self->_detailLabel setText:subtitle];
   [(UILabel *)self->_detailLabel sizeToFit];
 
   [(NTKCFaceDetailSectionHeaderView *)self setNeedsLayout];
@@ -159,25 +159,25 @@
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = 0;
+    _groupName = 0;
   }
 
   else
   {
-    v4 = [(NTKCFaceDetailSectionHeaderView *)self backgroundView];
-    v3 = [v4 _groupName];
+    backgroundView = [(NTKCFaceDetailSectionHeaderView *)self backgroundView];
+    _groupName = [backgroundView _groupName];
   }
 
-  return v3;
+  return _groupName;
 }
 
-- (void)setGroupName:(id)a3
+- (void)setGroupName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v4 = [(NTKCFaceDetailSectionHeaderView *)self backgroundView];
-    [v4 _setGroupName:v5];
+    backgroundView = [(NTKCFaceDetailSectionHeaderView *)self backgroundView];
+    [backgroundView _setGroupName:nameCopy];
   }
 }
 
@@ -187,8 +187,8 @@
   v69.super_class = NTKCFaceDetailSectionHeaderView;
   [(NTKCFaceDetailSectionHeaderView *)&v69 layoutSubviews];
   [(NTKCFaceDetailSectionHeaderView *)self _updateConfig];
-  v3 = [(NTKCFaceDetailSectionHeaderView *)self contentView];
-  [v3 bounds];
+  contentView = [(NTKCFaceDetailSectionHeaderView *)self contentView];
+  [contentView bounds];
   v66 = v4;
   v67 = v5;
   v7 = v6;
@@ -197,8 +197,8 @@
   v10 = NTKCScreenEdgeMargin();
   v11 = v10;
   IsRTL = CLKLayoutIsRTL();
-  v13 = [(NTKCFaceDetailSectionHeaderView *)self textLabel];
-  [v13 frame];
+  textLabel = [(NTKCFaceDetailSectionHeaderView *)self textLabel];
+  [textLabel frame];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -224,17 +224,17 @@
   v24 = 6.0;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v25 = [(UILabel *)self->_detailLabel font];
-    [v25 _scaledValueForValue:22.0];
+    font = [(UILabel *)self->_detailLabel font];
+    [font _scaledValueForValue:22.0];
     v27 = v26;
 
-    v28 = [(NTKCFaceDetailSectionHeaderView *)self textLabel];
-    [v28 _lastLineBaseline];
+    textLabel2 = [(NTKCFaceDetailSectionHeaderView *)self textLabel];
+    [textLabel2 _lastLineBaseline];
     v24 = v27 - v29;
   }
 
-  v30 = [(NTKCFaceDetailSectionHeaderView *)self textLabel];
-  [v30 setFrame:{v11, v24, v19, v21}];
+  textLabel3 = [(NTKCFaceDetailSectionHeaderView *)self textLabel];
+  [textLabel3 setFrame:{v11, v24, v19, v21}];
 
   [(UILabel *)self->_detailLabel frame];
   v61 = v32;
@@ -250,8 +250,8 @@
     v72.size.height = v21;
     v34 = v11;
     MinY = CGRectGetMinY(v72);
-    v36 = [(NTKCFaceDetailSectionHeaderView *)self textLabel];
-    [v36 _firstLineBaseline];
+    textLabel4 = [(NTKCFaceDetailSectionHeaderView *)self textLabel];
+    [textLabel4 _firstLineBaseline];
     v38 = MinY + v37;
     [(UILabel *)self->_detailLabel _lastLineBaseline];
     v40 = v38 - v39;
@@ -259,8 +259,8 @@
 
   else
   {
-    v41 = [(UILabel *)self->_detailLabel font];
-    [v41 _scaledValueForValue:22.0];
+    font2 = [(UILabel *)self->_detailLabel font];
+    [font2 _scaledValueForValue:22.0];
     v34 = v11;
     v43 = v42;
 
@@ -350,46 +350,46 @@
 
 - (void)_updateConfig
 {
-  v13 = [(NTKCFaceDetailSectionHeaderView *)self _traitCollectionAdjustedIfNeeded];
+  _traitCollectionAdjustedIfNeeded = [(NTKCFaceDetailSectionHeaderView *)self _traitCollectionAdjustedIfNeeded];
   if (_os_feature_enabled_impl())
   {
-    v3 = [objc_alloc(MEMORY[0x277D75D20]) initWithTraitCollection:v13];
+    v3 = [objc_alloc(MEMORY[0x277D75D20]) initWithTraitCollection:_traitCollectionAdjustedIfNeeded];
     v4 = [(UIListContentConfiguration *)self->_configuration updatedConfigurationForState:v3];
     configuration = self->_configuration;
     self->_configuration = v4;
 
-    v6 = [(UIListContentConfiguration *)self->_configuration textProperties];
-    v7 = [v6 font];
-    v8 = [(NTKCFaceDetailSectionHeaderView *)self textLabel];
-    [v8 setFont:v7];
+    textProperties = [(UIListContentConfiguration *)self->_configuration textProperties];
+    font = [textProperties font];
+    textLabel = [(NTKCFaceDetailSectionHeaderView *)self textLabel];
+    [textLabel setFont:font];
   }
 
   else
   {
-    v3 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988] compatibleWithTraitCollection:v13];
-    v6 = [(NTKCFaceDetailSectionHeaderView *)self textLabel];
-    [v6 setFont:v3];
+    v3 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988] compatibleWithTraitCollection:_traitCollectionAdjustedIfNeeded];
+    textProperties = [(NTKCFaceDetailSectionHeaderView *)self textLabel];
+    [textProperties setFont:v3];
   }
 
-  v9 = [(NTKCFaceDetailSectionHeaderView *)self textLabel];
-  [v9 sizeToFit];
+  textLabel2 = [(NTKCFaceDetailSectionHeaderView *)self textLabel];
+  [textLabel2 sizeToFit];
 
   v10 = BPSTextColor();
-  v11 = [(NTKCFaceDetailSectionHeaderView *)self textLabel];
-  [v11 setTextColor:v10];
+  textLabel3 = [(NTKCFaceDetailSectionHeaderView *)self textLabel];
+  [textLabel3 setTextColor:v10];
 
-  v12 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918] compatibleWithTraitCollection:v13];
+  v12 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918] compatibleWithTraitCollection:_traitCollectionAdjustedIfNeeded];
   [(UILabel *)self->_detailLabel setFont:v12];
   [(UILabel *)self->_detailLabel sizeToFit];
 }
 
 - (id)_traitCollectionAdjustedIfNeeded
 {
-  v3 = [(NTKCFaceDetailSectionHeaderView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(NTKCFaceDetailSectionHeaderView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
   v5 = *MEMORY[0x277D76800];
-  if (UIContentSizeCategoryCompareToCategory(v4, *MEMORY[0x277D76800]) == NSOrderedDescending)
+  if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x277D76800]) == NSOrderedDescending)
   {
     [MEMORY[0x277D75C80] traitCollectionWithPreferredContentSizeCategory:v5];
   }

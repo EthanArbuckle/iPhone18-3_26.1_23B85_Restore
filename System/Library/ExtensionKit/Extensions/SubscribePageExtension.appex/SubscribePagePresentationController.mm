@@ -1,7 +1,7 @@
 @interface SubscribePagePresentationController
 - (CGRect)frameOfPresentedViewInContainerView;
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4;
-- (_TtC22SubscribePageExtension35SubscribePagePresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size;
+- (_TtC22SubscribePageExtension35SubscribePagePresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
 - (void)containerViewWillLayoutSubviews;
 - (void)dismissalTransitionWillBegin;
 - (void)presentationTransitionWillBegin;
@@ -9,16 +9,16 @@
 
 @implementation SubscribePagePresentationController
 
-- (_TtC22SubscribePageExtension35SubscribePagePresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (_TtC22SubscribePageExtension35SubscribePagePresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
-  v5 = a3;
-  v6 = a4;
-  return sub_1004B7ABC(v5, a4);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  return sub_1004B7ABC(controllerCopy, viewController);
 }
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1004B7E94();
   v5 = v4;
   v7 = v6;
@@ -35,16 +35,16 @@
   return result;
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = [(SubscribePagePresentationController *)v7 traitCollection];
-  v9 = [v8 userInterfaceIdiom];
+  selfCopy = self;
+  traitCollection = [(SubscribePagePresentationController *)selfCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v9)
+  if (userInterfaceIdiom)
   {
     v10 = 540.0;
   }
@@ -54,7 +54,7 @@
     v10 = 295.0;
   }
 
-  if (v9)
+  if (userInterfaceIdiom)
   {
     v11 = 624.0;
   }
@@ -99,19 +99,19 @@
 
 - (void)containerViewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004B81D0();
 }
 
 - (void)presentationTransitionWillBegin
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004B8338();
 }
 
 - (void)dismissalTransitionWillBegin
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004B85B8();
 }
 

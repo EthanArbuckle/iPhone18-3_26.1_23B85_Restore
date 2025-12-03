@@ -2,12 +2,12 @@
 - (TVRTouchProcessor)touchProcessor;
 - (UIEdgeInsets)contentInsets;
 - (id)_init;
-- (void)_notifyConfigurationHandler:(BOOL)a3;
-- (void)setContentInsets:(UIEdgeInsets)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)_notifyConfigurationHandler:(BOOL)handler;
+- (void)setContentInsets:(UIEdgeInsets)insets;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation TVRTouchpadView
@@ -25,61 +25,61 @@
   return result;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  beganCopy = began;
   [(TVRTouchpadView *)self _notifyConfigurationHandler:1];
   WeakRetained = objc_loadWeakRetained(&self->_touchProcessor);
-  [WeakRetained touchesBegan:v7 withEvent:v6];
+  [WeakRetained touchesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  movedCopy = moved;
   WeakRetained = objc_loadWeakRetained(&self->_touchProcessor);
-  [WeakRetained touchesMoved:v7 withEvent:v6];
+  [WeakRetained touchesMoved:movedCopy withEvent:eventCopy];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  endedCopy = ended;
   [(TVRTouchpadView *)self _notifyConfigurationHandler:0];
   WeakRetained = objc_loadWeakRetained(&self->_touchProcessor);
-  [WeakRetained touchesEnded:v7 withEvent:v6];
+  [WeakRetained touchesEnded:endedCopy withEvent:eventCopy];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  cancelledCopy = cancelled;
   [(TVRTouchpadView *)self _notifyConfigurationHandler:0];
   WeakRetained = objc_loadWeakRetained(&self->_touchProcessor);
-  [WeakRetained touchesCancelled:v7 withEvent:v6];
+  [WeakRetained touchesCancelled:cancelledCopy withEvent:eventCopy];
 }
 
-- (void)setContentInsets:(UIEdgeInsets)a3
+- (void)setContentInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInsets.top, v3), vceqq_f64(*&self->_contentInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInsets = a3;
+    self->_contentInsets = insets;
     [(TVRTouchpadView *)self setNeedsLayout];
   }
 }
 
-- (void)_notifyConfigurationHandler:(BOOL)a3
+- (void)_notifyConfigurationHandler:(BOOL)handler
 {
-  self->_highlighted = a3;
+  self->_highlighted = handler;
   configurationHandler = self->_configurationHandler;
   if (configurationHandler)
   {
-    configurationHandler[2](configurationHandler, a3);
+    configurationHandler[2](configurationHandler, handler);
   }
 }
 

@@ -1,21 +1,21 @@
 @interface SUUITracklistHeaderCollectionViewCell
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeForHeaderTitleLabel:(id)a3;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (SUUITracklistHeaderCollectionViewCell)initWithFrame:(CGRect)a3;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeForHeaderTitleLabel:(id)label;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringForLabel:(id)label context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (SUUITracklistHeaderCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
 @end
 
 @implementation SUUITracklistHeaderCollectionViewCell
 
-- (SUUITracklistHeaderCollectionViewCell)initWithFrame:(CGRect)a3
+- (SUUITracklistHeaderCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = SUUITracklistHeaderCollectionViewCell;
-  v3 = [(SUUIViewReuseCollectionViewCell *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIViewReuseCollectionViewCell *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -30,8 +30,8 @@
     v9 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.2];
     [(UIView *)v8 setBackgroundColor:v9];
 
-    v10 = [(SUUITracklistHeaderCollectionViewCell *)v3 contentView];
-    [v10 addSubview:v3->_bottomSeparatorView];
+    contentView = [(SUUITracklistHeaderCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_bottomSeparatorView];
 
     v11 = objc_alloc_init(MEMORY[0x277D75D18]);
     topSeparatorView = v3->_topSeparatorView;
@@ -41,16 +41,16 @@
     v14 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.2];
     [(UIView *)v13 setBackgroundColor:v14];
 
-    v15 = [(SUUITracklistHeaderCollectionViewCell *)v3 contentView];
-    [v15 addSubview:v3->_topSeparatorView];
+    contentView2 = [(SUUITracklistHeaderCollectionViewCell *)v3 contentView];
+    [contentView2 addSubview:v3->_topSeparatorView];
   }
 
   return v3;
 }
 
-+ (CGSize)sizeForHeaderTitleLabel:(id)a3
++ (CGSize)sizeForHeaderTitleLabel:(id)label
 {
-  v3 = [a1 _attributedStringForLabel:a3 context:0];
+  v3 = [self _attributedStringForLabel:label context:0];
   [v3 size];
   v5 = v4;
   v7 = v6;
@@ -62,7 +62,7 @@
   return result;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
   v4 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);
@@ -71,22 +71,22 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [v7 aggregateValueForKey:0x286AF1940];
-  v10 = [v7 labelLayoutCache];
+  contextCopy = context;
+  elementCopy = element;
+  v9 = [contextCopy aggregateValueForKey:0x286AF1940];
+  labelLayoutCache = [contextCopy labelLayoutCache];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __83__SUUITracklistHeaderCollectionViewCell_requestLayoutForViewElement_width_context___block_invoke;
   v13[3] = &unk_2798F78D8;
-  v15 = v10;
-  v16 = a1;
-  v14 = v7;
-  v11 = v10;
-  v12 = v7;
-  [v9 enumerateColumnsForHeader:v8 usingBlock:v13];
+  v15 = labelLayoutCache;
+  selfCopy = self;
+  v14 = contextCopy;
+  v11 = labelLayoutCache;
+  v12 = contextCopy;
+  [v9 enumerateColumnsForHeader:elementCopy usingBlock:v13];
 }
 
 void __83__SUUITracklistHeaderCollectionViewCell_requestLayoutForViewElement_width_context___block_invoke(void *a1, void *a2, void *a3)
@@ -103,26 +103,26 @@ void __83__SUUITracklistHeaderCollectionViewCell_requestLayoutForViewElement_wid
   [v9 requestLayoutForLabel:v7 attributedString:v12 width:v11];
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v19 = 0;
   v20 = &v19;
   v22 = "";
   v21 = 0x3010000000;
   v24 = *(MEMORY[0x277CBF3A8] + 8);
-  v23 = a3;
-  v9 = [v8 aggregateValueForKey:0x286AF1940];
-  v10 = [v8 labelLayoutCache];
+  widthCopy = width;
+  v9 = [contextCopy aggregateValueForKey:0x286AF1940];
+  labelLayoutCache = [contextCopy labelLayoutCache];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __79__SUUITracklistHeaderCollectionViewCell_sizeThatFitsWidth_viewElement_context___block_invoke;
   v16[3] = &unk_2798F7900;
-  v11 = v10;
+  v11 = labelLayoutCache;
   v17 = v11;
   v18 = &v19;
-  [v9 enumerateColumnsForHeader:v7 usingBlock:v16];
+  [v9 enumerateColumnsForHeader:elementCopy usingBlock:v16];
   v12 = v20[4];
   v13 = v20[5] + 6.0;
   v20[5] = v13;
@@ -153,22 +153,22 @@ void __79__SUUITracklistHeaderCollectionViewCell_sizeThatFitsWidth_viewElement_c
   *(v9 + 40) = v10;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v8 aggregateValueForKey:0x286AF1940];
+  elementCopy = element;
+  contextCopy = context;
+  v9 = [contextCopy aggregateValueForKey:0x286AF1940];
   columnData = self->_columnData;
   self->_columnData = v9;
 
   [(NSMutableDictionary *)self->_columnViews removeAllObjects];
-  v11 = [v7 style];
-  v12 = [v11 ikBorderColor];
-  v13 = [v12 color];
+  style = [elementCopy style];
+  ikBorderColor = [style ikBorderColor];
+  color = [ikBorderColor color];
 
-  if (v13)
+  if (color)
   {
-    v14 = v13;
+    v14 = color;
   }
 
   else
@@ -184,10 +184,10 @@ void __79__SUUITracklistHeaderCollectionViewCell_sizeThatFitsWidth_viewElement_c
   v18[2] = __77__SUUITracklistHeaderCollectionViewCell_reloadWithViewElement_width_context___block_invoke;
   v18[3] = &unk_2798F7950;
   v18[4] = self;
-  v19 = v7;
-  v20 = v8;
-  v16 = v8;
-  v17 = v7;
+  v19 = elementCopy;
+  v20 = contextCopy;
+  v16 = contextCopy;
+  v17 = elementCopy;
   [(SUUIViewReuseCollectionViewCell *)self modifyUsingBlock:v18];
 }
 
@@ -229,8 +229,8 @@ void __77__SUUITracklistHeaderCollectionViewCell_reloadWithViewElement_width_con
   v34.receiver = self;
   v34.super_class = SUUITracklistHeaderCollectionViewCell;
   [(SUUICollectionViewCell *)&v34 layoutSubviews];
-  v3 = [(SUUITracklistHeaderCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SUUITracklistHeaderCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -238,15 +238,15 @@ void __77__SUUITracklistHeaderCollectionViewCell_reloadWithViewElement_width_con
 
   [(SUUITracklistColumnData *)self->_columnData interColumnSpacing];
   v13 = v12;
-  v14 = [(SUUITracklistHeaderCollectionViewCell *)self contentView];
-  v15 = [v14 effectiveUserInterfaceLayoutDirection];
+  contentView2 = [(SUUITracklistHeaderCollectionViewCell *)self contentView];
+  effectiveUserInterfaceLayoutDirection = [contentView2 effectiveUserInterfaceLayoutDirection];
 
   v33[0] = 0;
   v33[1] = v33;
   v33[2] = 0x2020000000;
   [(SUUITracklistColumnData *)self->_columnData leftEdgeInset];
   v33[3] = v16;
-  v17 = [(SUUITracklistColumnData *)self->_columnData columns];
+  columns = [(SUUITracklistColumnData *)self->_columnData columns];
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __55__SUUITracklistHeaderCollectionViewCell_layoutSubviews__block_invoke;
@@ -255,14 +255,14 @@ void __77__SUUITracklistHeaderCollectionViewCell_reloadWithViewElement_width_con
   v28 = v7;
   v29 = v9;
   v30 = v11;
-  v25 = self;
+  selfCopy = self;
   v26 = v33;
-  v32 = v15 == 1;
+  v32 = effectiveUserInterfaceLayoutDirection == 1;
   v31 = v13;
-  [v17 enumerateObjectsUsingBlock:&v21];
+  [columns enumerateObjectsUsingBlock:&v21];
 
-  v18 = [MEMORY[0x277D759A0] mainScreen];
-  [v18 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v20 = 1.0 / v19;
 
   [(UIView *)self->_bottomSeparatorView setFrame:0.0, v11 - v20, v9, v20];
@@ -330,16 +330,16 @@ LABEL_14:
   *(*(*(a1 + 40) + 8) + 24) = v8 + *(a1 + 80) + *(*(*(a1 + 40) + 8) + 24);
 }
 
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4
++ (id)_attributedStringForLabel:(id)label context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
-  v8 = SUUIViewElementFontWithStyle(v7);
+  labelCopy = label;
+  contextCopy = context;
+  style = [labelCopy style];
+  v8 = SUUIViewElementFontWithStyle(style);
   if (!v8)
   {
-    v9 = [v6 clientContext];
-    v10 = SUUIUserInterfaceIdiom(v9);
+    clientContext = [contextCopy clientContext];
+    v10 = SUUIUserInterfaceIdiom(clientContext);
 
     v11 = 10.0;
     if (v10 == 1)
@@ -350,16 +350,16 @@ LABEL_14:
     v8 = [MEMORY[0x277D74300] systemFontOfSize:v11];
   }
 
-  v12 = [v6 tintColor];
-  v13 = SUUIViewElementPlainColorWithStyle(v7, v12);
+  tintColor = [contextCopy tintColor];
+  v13 = SUUIViewElementPlainColorWithStyle(style, tintColor);
 
   if (!v13)
   {
     v13 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.6];
   }
 
-  v14 = [v5 text];
-  v15 = [v14 attributedStringWithDefaultFont:v8 foregroundColor:v13 style:v7];
+  text = [labelCopy text];
+  v15 = [text attributedStringWithDefaultFont:v8 foregroundColor:v13 style:style];
 
   return v15;
 }

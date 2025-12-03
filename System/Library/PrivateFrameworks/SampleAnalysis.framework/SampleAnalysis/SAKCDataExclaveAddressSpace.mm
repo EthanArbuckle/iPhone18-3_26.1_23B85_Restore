@@ -1,10 +1,10 @@
 @interface SAKCDataExclaveAddressSpace
-- (void)initWithInfo:(uint64_t)a3 name:;
+- (void)initWithInfo:(uint64_t)info name:;
 @end
 
 @implementation SAKCDataExclaveAddressSpace
 
-- (void)initWithInfo:(uint64_t)a3 name:
+- (void)initWithInfo:(uint64_t)info name:
 {
   if (result)
   {
@@ -14,7 +14,7 @@
     if (result)
     {
       result[1] = a2;
-      result[2] = a3;
+      result[2] = info;
     }
   }
 

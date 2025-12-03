@@ -6,10 +6,10 @@
 
 - (uint64_t)isStoreServicesURL
 {
-  result = [a1 scheme];
+  result = [self scheme];
   if (result)
   {
-    return [objc_msgSend(a1 "scheme")] == 0;
+    return [objc_msgSend(self "scheme")] == 0;
   }
 
   return result;

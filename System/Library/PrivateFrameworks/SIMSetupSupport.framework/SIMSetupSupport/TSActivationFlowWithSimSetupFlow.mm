@@ -1,37 +1,37 @@
 @interface TSActivationFlowWithSimSetupFlow
-- (id)_createFirstViewController:(id)a3;
+- (id)_createFirstViewController:(id)controller;
 - (id)firstViewController;
-- (id)initRequireSetup:(BOOL)a3 transferBackPlan:(id)a4;
-- (id)nextViewControllerFrom:(id)a3;
-- (void)_filterCarrierSetupItems:(id)a3;
-- (void)_maybePresentFirstViewController:(id)a3 firstViewControllerCallback:(id)a4;
-- (void)_maybeShowPreinstallConsentOnViewController:(id)a3 planItems:(id)a4;
-- (void)_requestCarrierSetupsWithCompletion:(id)a3;
-- (void)_requestCrossPlatformTransferPlanListWithCompletion:(id)a3;
-- (void)_requestPendingInstallItemsWithCompletion:(id)a3;
-- (void)_requestPlansWithCompletion:(id)a3;
-- (void)_requestTransferPlanListWithCompletion:(id)a3;
+- (id)initRequireSetup:(BOOL)setup transferBackPlan:(id)plan;
+- (id)nextViewControllerFrom:(id)from;
+- (void)_filterCarrierSetupItems:(id)items;
+- (void)_maybePresentFirstViewController:(id)controller firstViewControllerCallback:(id)callback;
+- (void)_maybeShowPreinstallConsentOnViewController:(id)controller planItems:(id)items;
+- (void)_requestCarrierSetupsWithCompletion:(id)completion;
+- (void)_requestCrossPlatformTransferPlanListWithCompletion:(id)completion;
+- (void)_requestPendingInstallItemsWithCompletion:(id)completion;
+- (void)_requestPlansWithCompletion:(id)completion;
+- (void)_requestTransferPlanListWithCompletion:(id)completion;
 - (void)_sendSIMSetupReadyNotification;
 - (void)_userDidTapCancel;
 - (void)accountCancelled;
 - (void)accountPendingRelease;
 - (void)dealloc;
-- (void)didPurchasePlanSuccessfullyWithEid:(id)a3 imei:(id)a4 meid:(id)a5 iccid:(id)a6 alternateSDMP:(id)a7 state:(id)a8;
-- (void)didTransferPlanSuccessfullyWithEid:(id)a3 imei:(id)a4 meid:(id)a5 iccid:(id)a6 srcIccid:(id)a7 alternateSDMP:(id)a8 state:(id)a9;
+- (void)didPurchasePlanSuccessfullyWithEid:(id)eid imei:(id)imei meid:(id)meid iccid:(id)iccid alternateSDMP:(id)p state:(id)state;
+- (void)didTransferPlanSuccessfullyWithEid:(id)eid imei:(id)imei meid:(id)meid iccid:(id)iccid srcIccid:(id)srcIccid alternateSDMP:(id)p state:(id)state;
 - (void)firstViewController;
-- (void)firstViewController:(id)a3;
-- (void)getWebsheetInfo:(id)a3 completion:(id)a4;
-- (void)planItemsUpdated:(id)a3 planListError:(id)a4;
-- (void)setCancelNavigationBarItems:(id)a3;
-- (void)startOverWithFirstViewController:(id)a3;
-- (void)viewControllerDidComplete:(id)a3;
+- (void)firstViewController:(id)controller;
+- (void)getWebsheetInfo:(id)info completion:(id)completion;
+- (void)planItemsUpdated:(id)updated planListError:(id)error;
+- (void)setCancelNavigationBarItems:(id)items;
+- (void)startOverWithFirstViewController:(id)controller;
+- (void)viewControllerDidComplete:(id)complete;
 @end
 
 @implementation TSActivationFlowWithSimSetupFlow
 
-- (id)initRequireSetup:(BOOL)a3 transferBackPlan:(id)a4
+- (id)initRequireSetup:(BOOL)setup transferBackPlan:(id)plan
 {
-  v7 = a4;
+  planCopy = plan;
   v25.receiver = self;
   v25.super_class = TSActivationFlowWithSimSetupFlow;
   v8 = [(TSSIMSetupFlow *)&v25 init];
@@ -41,26 +41,26 @@
     cancelButton = v8->_cancelButton;
     v8->_cancelButton = v9;
 
-    v8->_requireSetup = a3;
+    v8->_requireSetup = setup;
     v8->_isPreinstallingViewControllerActive = 1;
     v8->_userConsentType = 0;
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     transferItems = v8->_transferItems;
-    v8->_transferItems = v11;
+    v8->_transferItems = array;
 
-    v13 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     transferPlans = v8->_transferPlans;
-    v8->_transferPlans = v13;
+    v8->_transferPlans = array2;
 
-    v15 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     transferIneligibleViaCloudItems = v8->_transferIneligibleViaCloudItems;
-    v8->_transferIneligibleViaCloudItems = v15;
+    v8->_transferIneligibleViaCloudItems = array3;
 
     v8->_signupConsentResponse = 0;
-    objc_storeStrong(&v8->_transferBackPlan, a4);
-    v17 = [v7 phoneNumber];
+    objc_storeStrong(&v8->_transferBackPlan, plan);
+    phoneNumber = [planCopy phoneNumber];
     transferBackPlanPhoneNumber = v8->_transferBackPlanPhoneNumber;
-    v8->_transferBackPlanPhoneNumber = v17;
+    v8->_transferBackPlanPhoneNumber = phoneNumber;
 
     v19 = objc_alloc(MEMORY[0x277CC37B0]);
     v20 = [v19 initWithQueue:MEMORY[0x277D85CD0]];
@@ -125,10 +125,10 @@ void __66__TSActivationFlowWithSimSetupFlow__sendSIMSetupReadyNotification__bloc
   }
 }
 
-- (void)firstViewController:(id)a3
+- (void)firstViewController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     objc_initWeak(&location, self);
     v10[0] = MEMORY[0x277D85DD0];
@@ -136,7 +136,7 @@ void __66__TSActivationFlowWithSimSetupFlow__sendSIMSetupReadyNotification__bloc
     v10[2] = __56__TSActivationFlowWithSimSetupFlow_firstViewController___block_invoke;
     v10[3] = &unk_279B451D0;
     objc_copyWeak(&v12, &location);
-    v11 = v4;
+    v11 = controllerCopy;
     v5 = MEMORY[0x2667315D0](v10);
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
@@ -239,21 +239,21 @@ void __56__TSActivationFlowWithSimSetupFlow_firstViewController___block_invoke_4
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_maybePresentFirstViewController:(id)a3 firstViewControllerCallback:(id)a4
+- (void)_maybePresentFirstViewController:(id)controller firstViewControllerCallback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  controllerCopy = controller;
+  callbackCopy = callback;
+  if (controllerCopy)
   {
-    [(TSSIMSetupFlow *)self setTopViewController:v6];
+    [(TSSIMSetupFlow *)self setTopViewController:controllerCopy];
     objc_initWeak(&location, self);
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __97__TSActivationFlowWithSimSetupFlow__maybePresentFirstViewController_firstViewControllerCallback___block_invoke;
     v16[3] = &unk_279B451F8;
     objc_copyWeak(&v19, &location);
-    v18 = v7;
-    v17 = v6;
+    v18 = callbackCopy;
+    v17 = controllerCopy;
     [(TSSIMSetupFlow *)self maybePrepareNextDisplayViewController:v17 completion:v16];
 
     objc_destroyWeak(&v19);
@@ -268,7 +268,7 @@ void __56__TSActivationFlowWithSimSetupFlow_firstViewController___block_invoke_4
       [(TSActivationFlowWithSimSetupFlow *)v8 _maybePresentFirstViewController:v9 firstViewControllerCallback:v10, v11, v12, v13, v14, v15];
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(callbackCopy + 2))(callbackCopy, 0);
   }
 }
 
@@ -340,10 +340,10 @@ void __97__TSActivationFlowWithSimSetupFlow__maybePresentFirstViewController_fir
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)nextViewControllerFrom:(id)a3
+- (id)nextViewControllerFrom:(id)from
 {
   v137[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   if ([TSUtilities isRegulatoryRestrictionActive:self->_planInstallError])
   {
     self->_isPreinstallingViewControllerActive = 0;
@@ -353,8 +353,8 @@ void __97__TSActivationFlowWithSimSetupFlow__maybePresentFirstViewController_fir
     v137[0] = &unk_287583AA8;
     v137[1] = MEMORY[0x277CBEC38];
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v137 forKeys:v136 count:2];
-    v7 = [(TSSIMSetupFlow *)self navigationController];
-    v8 = [(TSSubFlowViewController *)v5 initWithOptions:v6 navigationController:v7 delegate:self];
+    navigationController = [(TSSIMSetupFlow *)self navigationController];
+    v8 = [(TSSubFlowViewController *)v5 initWithOptions:v6 navigationController:navigationController delegate:self];
 
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -368,18 +368,18 @@ void __97__TSActivationFlowWithSimSetupFlow__maybePresentFirstViewController_fir
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v4;
-    v10 = [(NSMutableArray *)self->_transferPlans filteredPlansForQRCodeBucket];
-    if (![v9 isTransferListCellTapped])
+    confirmationCode = fromCopy;
+    filteredPlansForQRCodeBucket = [(NSMutableArray *)self->_transferPlans filteredPlansForQRCodeBucket];
+    if (![confirmationCode isTransferListCellTapped])
     {
-      if (![v9 isScanButtonTapped])
+      if (![confirmationCode isScanButtonTapped])
       {
-        if ([v9 isOtherButtonTapped])
+        if ([confirmationCode isOtherButtonTapped])
         {
           v35 = +[TSUtilities transferOptions];
           if (!+[TSUtilities isPad]|| v35)
           {
-            v36 = [[TSCellularPlanIntroViewController alloc] initWithShowTransferOption:v35 requireDelayBluetoothConnection:0 showQrCodeOption:1 transferIneligiblePlans:v10];
+            v36 = [[TSCellularPlanIntroViewController alloc] initWithShowTransferOption:v35 requireDelayBluetoothConnection:0 showQrCodeOption:1 transferIneligiblePlans:filteredPlansForQRCodeBucket];
           }
 
           else
@@ -403,16 +403,16 @@ void __97__TSActivationFlowWithSimSetupFlow__maybePresentFirstViewController_fir
       v133[0] = &unk_287583AC0;
       v133[1] = MEMORY[0x277CBEC28];
       v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v133 forKeys:v132 count:2];
-      v11 = [v22 mutableCopy];
+      filteredPlansForTransferableBucket = [v22 mutableCopy];
 
-      if ([v10 count])
+      if ([filteredPlansForQRCodeBucket count])
       {
-        [v11 setObject:v10 forKeyedSubscript:@"Plans"];
+        [filteredPlansForTransferableBucket setObject:filteredPlansForQRCodeBucket forKeyedSubscript:@"Plans"];
       }
 
       v23 = [TSSubFlowViewController alloc];
-      v24 = [(TSSIMSetupFlow *)self navigationController];
-      v8 = [(TSSubFlowViewController *)v23 initWithOptions:v11 navigationController:v24 delegate:self];
+      navigationController2 = [(TSSIMSetupFlow *)self navigationController];
+      v8 = [(TSSubFlowViewController *)v23 initWithOptions:filteredPlansForTransferableBucket navigationController:navigationController2 delegate:self];
 
 LABEL_25:
 LABEL_26:
@@ -421,18 +421,18 @@ LABEL_58:
       goto LABEL_59;
     }
 
-    v105 = v9;
-    v107 = v4;
-    v11 = [(NSMutableArray *)self->_transferPlans filteredPlansForTransferableBucket];
-    v12 = [v11 filteredPlansForVisitStoreBucket];
-    v13 = [v11 filteredPlansForHiddenInCloudBucket:0];
-    v103 = [v11 filteredPlansForHiddenInCloudBucket:1];
-    v14 = [(CTDisplayPlanList *)self->_pendingInstallPlans plans];
-    v15 = [v14 count];
+    v105 = confirmationCode;
+    v107 = fromCopy;
+    filteredPlansForTransferableBucket = [(NSMutableArray *)self->_transferPlans filteredPlansForTransferableBucket];
+    filteredPlansForVisitStoreBucket = [filteredPlansForTransferableBucket filteredPlansForVisitStoreBucket];
+    v13 = [filteredPlansForTransferableBucket filteredPlansForHiddenInCloudBucket:0];
+    v103 = [filteredPlansForTransferableBucket filteredPlansForHiddenInCloudBucket:1];
+    plans = [(CTDisplayPlanList *)self->_pendingInstallPlans plans];
+    v15 = [plans count];
     v104 = v13;
     v16 = [v13 count] + v15;
-    v17 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
-    v18 = [v17 count];
+    plans2 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
+    v18 = [plans2 count];
 
     if (v16 + v18)
     {
@@ -440,17 +440,17 @@ LABEL_58:
       BYTE2(v102) = !self->_isFlexPolicyOn;
       LOWORD(v102) = 1;
       v8 = [TSTransferListViewController initWithTransferPlans:v28 confirmCellularPlanTransfer:"initWithTransferPlans:confirmCellularPlanTransfer:isActivationPolicyMismatch:isDualeSIMCapabilityLoss:pendingInstallItems:carrierSetupItems:showOtherOptions:isStandaloneProximityFlow:allowsMultiSelection:" isActivationPolicyMismatch:self->_transferPlans isDualeSIMCapabilityLoss:1 pendingInstallItems:self->_isActivationPolicyMismatch carrierSetupItems:self->_isDualeSIMCapabilityLoss showOtherOptions:self->_pendingInstallPlans isStandaloneProximityFlow:self->_carrierSetupItems allowsMultiSelection:v102];
-      v4 = v107;
-      v19 = v12;
+      fromCopy = v107;
+      v19 = filteredPlansForVisitStoreBucket;
     }
 
     else
     {
-      v19 = v12;
-      if (![v12 count])
+      v19 = filteredPlansForVisitStoreBucket;
+      if (![filteredPlansForVisitStoreBucket count])
       {
         v29 = v103;
-        v9 = v105;
+        confirmationCode = v105;
         if ([v103 count])
         {
           v45 = [TSSubFlowViewController alloc];
@@ -460,8 +460,8 @@ LABEL_58:
           v135[0] = v46;
           v135[1] = MEMORY[0x277CBEC28];
           v47 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v135 forKeys:v134 count:2];
-          v48 = [(TSSIMSetupFlow *)self navigationController];
-          v8 = [(TSSubFlowViewController *)v45 initWithOptions:v47 navigationController:v48 delegate:self];
+          navigationController3 = [(TSSIMSetupFlow *)self navigationController];
+          v8 = [(TSSubFlowViewController *)v45 initWithOptions:v47 navigationController:navigationController3 delegate:self];
         }
 
         else
@@ -475,15 +475,15 @@ LABEL_58:
           v8 = 0;
         }
 
-        v4 = v107;
+        fromCopy = v107;
         goto LABEL_24;
       }
 
-      v8 = [[SSVisitStoreViewController alloc] initWithPlans:v12 showOtherOption:1];
-      v4 = v107;
+      v8 = [[SSVisitStoreViewController alloc] initWithPlans:filteredPlansForVisitStoreBucket showOtherOption:1];
+      fromCopy = v107;
     }
 
-    v9 = v105;
+    confirmationCode = v105;
     v29 = v103;
 LABEL_24:
 
@@ -493,7 +493,7 @@ LABEL_24:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v4 isOtherButtonTapped])
+    if ([fromCopy isOtherButtonTapped])
     {
       v20 = +[TSUtilities transferOptions];
       if (!+[TSUtilities isPad]|| v20)
@@ -511,9 +511,9 @@ LABEL_24:
 
     v30 = [TSSubFlowViewController alloc];
     v130[0] = @"FlowTypeKey";
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:10002];
+    confirmationCode = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:10002];
     v130[1] = @"IsClientKey";
-    v131[0] = v9;
+    v131[0] = confirmationCode;
     v131[1] = MEMORY[0x277CBEC28];
     v31 = MEMORY[0x277CBEAC0];
     v32 = v131;
@@ -524,16 +524,16 @@ LABEL_24:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v4;
-    v25 = [v9 selectedPlan];
-    if (![v9 isOtherButtonTapped])
+    confirmationCode = fromCopy;
+    selectedPlan = [confirmationCode selectedPlan];
+    if (![confirmationCode isOtherButtonTapped])
     {
-      if (([v9 isSkipButtonTapped] & 1) == 0 && (!v25 || objc_msgSend(v25, "transferCapability") != 8))
+      if (([confirmationCode isSkipButtonTapped] & 1) == 0 && (!selectedPlan || objc_msgSend(selectedPlan, "transferCapability") != 8))
       {
-        if (![v9 crossPlatformTransferPlanSelected])
+        if (![confirmationCode crossPlatformTransferPlanSelected])
         {
           self->_isPreinstallingViewControllerActive = 0;
-          if ([v9 showSIMSetup])
+          if ([confirmationCode showSIMSetup])
           {
             self->_requireSetup = 1;
           }
@@ -545,9 +545,9 @@ LABEL_24:
           v127[0] = &unk_287583AA8;
           v127[1] = MEMORY[0x277CBEC38];
           v126[2] = @"DelayStartActivatingTimer";
-          v65 = [v9 installingTransferPlan];
+          installingTransferPlan = [confirmationCode installingTransferPlan];
           v66 = &unk_287583AF0;
-          if (v65)
+          if (installingTransferPlan)
           {
             v66 = &unk_287583AD8;
           }
@@ -564,20 +564,20 @@ LABEL_24:
           v106 = transferBackPlan;
           v127[3] = transferBackPlan;
           v126[4] = @"PlanSetupTypeKey";
-          v68 = [v9 installingTransferPlan];
+          installingTransferPlan2 = [confirmationCode installingTransferPlan];
           v69 = &unk_287583B20;
-          if (v68)
+          if (installingTransferPlan2)
           {
             v69 = &unk_287583B08;
           }
 
           v127[4] = v69;
           v126[5] = @"CarrierNameKey";
-          v70 = [v9 carrierNameForSelectedItem];
-          v71 = v4;
-          if (v70)
+          carrierNameForSelectedItem = [confirmationCode carrierNameForSelectedItem];
+          v71 = fromCopy;
+          if (carrierNameForSelectedItem)
           {
-            [v9 carrierNameForSelectedItem];
+            [confirmationCode carrierNameForSelectedItem];
           }
 
           else
@@ -589,17 +589,17 @@ LABEL_24:
           v127[6] = v64;
           v126[6] = @"MaybeShowConfirmationCodePaneKey";
           v126[7] = @"Plan";
-          v87 = [v9 selectedPlan];
-          v127[7] = v87;
+          selectedPlan2 = [confirmationCode selectedPlan];
+          v127[7] = selectedPlan2;
           v88 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v127 forKeys:v126 count:8];
-          v89 = [(TSSIMSetupFlow *)self navigationController];
-          v8 = [(TSSubFlowViewController *)v63 initWithOptions:v88 navigationController:v89 delegate:self];
+          navigationController4 = [(TSSIMSetupFlow *)self navigationController];
+          v8 = [(TSSubFlowViewController *)v63 initWithOptions:v88 navigationController:navigationController4 delegate:self];
 
           if (!v108)
           {
           }
 
-          v4 = v71;
+          fromCopy = v71;
           goto LABEL_57;
         }
 
@@ -621,7 +621,7 @@ LABEL_57:
     v26 = +[TSUtilities transferOptions];
     if (!+[TSUtilities isPad]|| v26)
     {
-      v27 = -[TSCellularPlanIntroViewController initWithShowTransferOption:requireDelayBluetoothConnection:showQrCodeOption:transferIneligiblePlans:]([TSCellularPlanIntroViewController alloc], "initWithShowTransferOption:requireDelayBluetoothConnection:showQrCodeOption:transferIneligiblePlans:", v26, [v9 requireDelayBluetoothConnection], 1, 0);
+      v27 = -[TSCellularPlanIntroViewController initWithShowTransferOption:requireDelayBluetoothConnection:showQrCodeOption:transferIneligiblePlans:]([TSCellularPlanIntroViewController alloc], "initWithShowTransferOption:requireDelayBluetoothConnection:showQrCodeOption:transferIneligiblePlans:", v26, [confirmationCode requireDelayBluetoothConnection], 1, 0);
     }
 
     else
@@ -637,13 +637,13 @@ LABEL_56:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v4;
-    if ([v9 isOtherButtonTapped])
+    confirmationCode = fromCopy;
+    if ([confirmationCode isOtherButtonTapped])
     {
       v37 = +[TSUtilities transferOptions];
       if (!+[TSUtilities isPad]|| v37)
       {
-        v38 = -[TSCellularPlanIntroViewController initWithShowTransferOption:requireDelayBluetoothConnection:showQrCodeOption:transferIneligiblePlans:]([TSCellularPlanIntroViewController alloc], "initWithShowTransferOption:requireDelayBluetoothConnection:showQrCodeOption:transferIneligiblePlans:", v37, [v9 requireDelayBluetoothConnection], 1, 0);
+        v38 = -[TSCellularPlanIntroViewController initWithShowTransferOption:requireDelayBluetoothConnection:showQrCodeOption:transferIneligiblePlans:]([TSCellularPlanIntroViewController alloc], "initWithShowTransferOption:requireDelayBluetoothConnection:showQrCodeOption:transferIneligiblePlans:", v37, [confirmationCode requireDelayBluetoothConnection], 1, 0);
       }
 
       else
@@ -654,39 +654,39 @@ LABEL_56:
       goto LABEL_74;
     }
 
-    if (([v9 isCarrierDirectAuthItemSelected] & 1) == 0)
+    if (([confirmationCode isCarrierDirectAuthItemSelected] & 1) == 0)
     {
-      if (_os_feature_enabled_impl() && ([v9 selectedPlans], v60 = objc_claimAutoreleasedReturnValue(), v60, v60))
+      if (_os_feature_enabled_impl() && ([confirmationCode selectedPlans], v60 = objc_claimAutoreleasedReturnValue(), v60, v60))
       {
         self->_isPreinstallingViewControllerActive = 0;
         v61 = [TSSubFlowViewController alloc];
         v125[0] = &unk_287583AA8;
         v124[0] = @"FlowTypeKey";
         v124[1] = @"Plans";
-        v25 = [v9 selectedPlans];
+        selectedPlan = [confirmationCode selectedPlans];
         v124[2] = @"ConfirmCellularPlanTransfer";
-        v125[1] = v25;
+        v125[1] = selectedPlan;
         v125[2] = MEMORY[0x277CBEC38];
-        v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v125 forKeys:v124 count:3];
-        v62 = [(TSSIMSetupFlow *)self navigationController];
-        v8 = [(TSSubFlowViewController *)v61 initWithOptions:v34 navigationController:v62 delegate:self];
+        null = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v125 forKeys:v124 count:3];
+        navigationController5 = [(TSSIMSetupFlow *)self navigationController];
+        v8 = [(TSSubFlowViewController *)v61 initWithOptions:null navigationController:navigationController5 delegate:self];
       }
 
       else
       {
-        if ([v9 isCarrierSetupItemSelected])
+        if ([confirmationCode isCarrierSetupItemSelected])
         {
           v72 = [TSBuddyMLViewController alloc];
-          v73 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
-          v74 = [v73 objectAtIndexedSubscript:0];
-          v75 = [v74 plan];
-          v8 = [(TSBuddyMLViewController *)v72 initWithCTPlan:v75 inBuddy:0];
+          plans3 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
+          v74 = [plans3 objectAtIndexedSubscript:0];
+          plan = [v74 plan];
+          v8 = [(TSBuddyMLViewController *)v72 initWithCTPlan:plan inBuddy:0];
 
           goto LABEL_58;
         }
 
         self->_isPreinstallingViewControllerActive = 0;
-        if ([v9 showSIMSetup])
+        if ([confirmationCode showSIMSetup])
         {
           self->_requireSetup = 1;
         }
@@ -698,41 +698,41 @@ LABEL_56:
         v123[0] = &unk_287583AA8;
         v123[1] = MEMORY[0x277CBEC38];
         v122[2] = @"DelayStartActivatingTimer";
-        v82 = [v9 installingTransferPlan];
+        installingTransferPlan3 = [confirmationCode installingTransferPlan];
         v83 = &unk_287583AF0;
-        if (v82)
+        if (installingTransferPlan3)
         {
           v83 = &unk_287583AD8;
         }
 
         v123[2] = v83;
         v122[3] = @"PlanSetupTypeKey";
-        v84 = [v9 installingTransferPlan];
+        installingTransferPlan4 = [confirmationCode installingTransferPlan];
         v85 = &unk_287583B20;
-        if (v84)
+        if (installingTransferPlan4)
         {
           v85 = &unk_287583B08;
         }
 
         v123[3] = v85;
         v122[4] = @"CarrierNameKey";
-        v25 = [v9 carrierNameForSelectedItem];
-        if (v25)
+        selectedPlan = [confirmationCode carrierNameForSelectedItem];
+        if (selectedPlan)
         {
-          [v9 carrierNameForSelectedItem];
+          [confirmationCode carrierNameForSelectedItem];
         }
 
         else
         {
           [MEMORY[0x277CBEB68] null];
         }
-        v34 = ;
+        null = ;
         v122[5] = @"MaybeShowConfirmationCodePaneKey";
-        v123[4] = v34;
+        v123[4] = null;
         v123[5] = v81;
-        v62 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v123 forKeys:v122 count:6];
-        v95 = [(TSSIMSetupFlow *)self navigationController];
-        v8 = [(TSSubFlowViewController *)v80 initWithOptions:v62 navigationController:v95 delegate:self];
+        navigationController5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v123 forKeys:v122 count:6];
+        navigationController6 = [(TSSIMSetupFlow *)self navigationController];
+        v8 = [(TSSubFlowViewController *)v80 initWithOptions:navigationController5 navigationController:navigationController6 delegate:self];
       }
 
       goto LABEL_29;
@@ -756,21 +756,21 @@ LABEL_65:
     v43 = v120;
     v44 = 2;
 LABEL_52:
-    v9 = [v41 dictionaryWithObjects:v42 forKeys:v43 count:v44];
-    v25 = [(TSSIMSetupFlow *)self navigationController];
-    v27 = [(TSSubFlowViewController *)v40 initWithOptions:v9 navigationController:v25 delegate:self];
+    confirmationCode = [v41 dictionaryWithObjects:v42 forKeys:v43 count:v44];
+    selectedPlan = [(TSSIMSetupFlow *)self navigationController];
+    v27 = [(TSSubFlowViewController *)v40 initWithOptions:confirmationCode navigationController:selectedPlan delegate:self];
     goto LABEL_56;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v4;
-    if ([v9 confirmationCodeRequired])
+    confirmationCode = fromCopy;
+    if ([confirmationCode confirmationCodeRequired])
     {
       v51 = [SSConfirmationCodeViewController alloc];
-      v25 = [v9 fauxCardData];
-      v27 = [(SSConfirmationCodeViewController *)v51 initWithCardData:v25];
+      selectedPlan = [confirmationCode fauxCardData];
+      v27 = [(SSConfirmationCodeViewController *)v51 initWithCardData:selectedPlan];
       goto LABEL_56;
     }
 
@@ -781,7 +781,7 @@ LABEL_52:
       goto LABEL_58;
     }
 
-    if ([v9 isEnterManuallyTapped])
+    if ([confirmationCode isEnterManuallyTapped])
     {
       v94 = SSCardManualEntryViewController;
 LABEL_120:
@@ -789,7 +789,7 @@ LABEL_120:
       goto LABEL_74;
     }
 
-    if ([v9 transferViaQRCode])
+    if ([confirmationCode transferViaQRCode])
     {
       goto LABEL_65;
     }
@@ -801,29 +801,29 @@ LABEL_120:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v4;
-    if (![v9 needShowTransferIntroPane])
+    confirmationCode = fromCopy;
+    if (![confirmationCode needShowTransferIntroPane])
     {
-      if ([v9 isProximityTransferButtonTapped])
+      if ([confirmationCode isProximityTransferButtonTapped])
       {
         v90 = [TSSubFlowViewController alloc];
         v118[0] = @"FlowTypeKey";
-        v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:10002];
-        v119[0] = v25;
+        selectedPlan = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:10002];
+        v119[0] = selectedPlan;
         v119[1] = MEMORY[0x277CBEC28];
         v118[1] = @"IsClientKey";
         v118[2] = @"TransferBackPlan";
         v91 = self->_transferBackPlan;
-        v34 = v91;
+        null = v91;
         if (!v91)
         {
-          v34 = [MEMORY[0x277CBEB68] null];
+          null = [MEMORY[0x277CBEB68] null];
         }
 
-        v119[2] = v34;
+        v119[2] = null;
         v92 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v119 forKeys:v118 count:3];
-        v93 = [(TSSIMSetupFlow *)self navigationController];
-        v8 = [(TSSubFlowViewController *)v90 initWithOptions:v92 navigationController:v93 delegate:self];
+        navigationController7 = [(TSSIMSetupFlow *)self navigationController];
+        v8 = [(TSSubFlowViewController *)v90 initWithOptions:v92 navigationController:navigationController7 delegate:self];
 
         if (v91)
         {
@@ -833,7 +833,7 @@ LABEL_120:
         goto LABEL_29;
       }
 
-      if ([v9 isScanButtonTapped])
+      if ([confirmationCode isScanButtonTapped])
       {
         v30 = [TSSubFlowViewController alloc];
         v116[0] = @"FlowTypeKey";
@@ -847,9 +847,9 @@ LABEL_120:
 
       else
       {
-        if (![v9 isCrossPlatformButtonTapped])
+        if (![confirmationCode isCrossPlatformButtonTapped])
         {
-          if (![v9 isTravelEduButtonTapped])
+          if (![confirmationCode isTravelEduButtonTapped])
           {
             goto LABEL_65;
           }
@@ -869,9 +869,9 @@ LABEL_120:
       }
 
 LABEL_28:
-      v25 = [v31 dictionaryWithObjects:v32 forKeys:v33 count:2];
-      v34 = [(TSSIMSetupFlow *)self navigationController];
-      v8 = [(TSSubFlowViewController *)v30 initWithOptions:v25 navigationController:v34 delegate:self];
+      selectedPlan = [v31 dictionaryWithObjects:v32 forKeys:v33 count:2];
+      null = [(TSSIMSetupFlow *)self navigationController];
+      v8 = [(TSSubFlowViewController *)v30 initWithOptions:selectedPlan navigationController:null delegate:self];
 LABEL_29:
 
       goto LABEL_57;
@@ -886,26 +886,26 @@ LABEL_74:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v4 isTransferButtonTapped])
+    if ([fromCopy isTransferButtonTapped])
     {
       v76 = [TSSubFlowViewController alloc];
       v112[0] = @"FlowTypeKey";
-      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:10002];
-      v113[0] = v9;
+      confirmationCode = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:10002];
+      v113[0] = confirmationCode;
       v113[1] = MEMORY[0x277CBEC28];
       v112[1] = @"IsClientKey";
       v112[2] = @"TransferBackPlan";
       v77 = self->_transferBackPlan;
-      v25 = v77;
+      selectedPlan = v77;
       if (!v77)
       {
-        v25 = [MEMORY[0x277CBEB68] null];
+        selectedPlan = [MEMORY[0x277CBEB68] null];
       }
 
-      v113[2] = v25;
+      v113[2] = selectedPlan;
       v78 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v113 forKeys:v112 count:3];
-      v79 = [(TSSIMSetupFlow *)self navigationController];
-      v8 = [(TSSubFlowViewController *)v76 initWithOptions:v78 navigationController:v79 delegate:self];
+      navigationController8 = [(TSSIMSetupFlow *)self navigationController];
+      v8 = [(TSSubFlowViewController *)v76 initWithOptions:v78 navigationController:navigationController8 delegate:self];
 
       if (v77)
       {
@@ -942,15 +942,15 @@ LABEL_40:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v4 confirmationCode];
-    v38 = [[TSCellularPlanUserConsentViewController alloc] initWithConfirmationCode:self->_name consentType:4 requireAdditionalConsent:self->_userConsentType != 0 confirmationCode:v9 acceptButtonTapped:0];
+    confirmationCode = [fromCopy confirmationCode];
+    v38 = [[TSCellularPlanUserConsentViewController alloc] initWithConfirmationCode:self->_name consentType:4 requireAdditionalConsent:self->_userConsentType != 0 confirmationCode:confirmationCode acceptButtonTapped:0];
     goto LABEL_74;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v4 consentType] != 4 || (self->_userConsentType & 0xFFFFFFFFFFFFFFFELL) != 2)
+    if ([fromCopy consentType] != 4 || (self->_userConsentType & 0xFFFFFFFFFFFFFFFELL) != 2)
     {
       v40 = [TSSubFlowViewController alloc];
       v110[0] = @"FlowTypeKey";
@@ -981,7 +981,7 @@ LABEL_150:
     goto LABEL_59;
   }
 
-  v100 = v4;
+  v100 = fromCopy;
   if (([v100 subFlowType] == 16 || objc_msgSend(v100, "subFlowType") == 22) && objc_msgSend(v100, "isOfferFallbackFlow"))
   {
     [v100 setIsOfferFallbackFlow:0];
@@ -1011,32 +1011,32 @@ void __59__TSActivationFlowWithSimSetupFlow_nextViewControllerFrom___block_invok
   [v2 postNotificationName:@"transfer.failed" object:*(*(a1 + 32) + 104)];
 }
 
-- (void)viewControllerDidComplete:(id)a3
+- (void)viewControllerDidComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_6;
   }
 
-  v5 = v4;
+  v5 = completeCopy;
   if ([v5 subFlowType] != 2 || (objc_msgSend(v5, "navigationController"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "viewControllers"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "indexOfObject:", v5), v7, v6, !v8))
   {
 
 LABEL_6:
     v14.receiver = self;
     v14.super_class = TSActivationFlowWithSimSetupFlow;
-    [(TSSIMSetupFlow *)&v14 viewControllerDidComplete:v4];
+    [(TSSIMSetupFlow *)&v14 viewControllerDidComplete:completeCopy];
     goto LABEL_7;
   }
 
-  v9 = [v5 navigationController];
-  v10 = [v9 viewControllers];
-  v11 = [v10 objectAtIndex:v8 - 1];
+  navigationController = [v5 navigationController];
+  viewControllers = [navigationController viewControllers];
+  v11 = [viewControllers objectAtIndex:v8 - 1];
 
-  v12 = [v5 navigationController];
-  v13 = [v12 popToViewController:v11 animated:1];
+  navigationController2 = [v5 navigationController];
+  v13 = [navigationController2 popToViewController:v11 animated:1];
 
   v15.receiver = self;
   v15.super_class = TSActivationFlowWithSimSetupFlow;
@@ -1045,38 +1045,38 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)setCancelNavigationBarItems:(id)a3
+- (void)setCancelNavigationBarItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = +[TSUtilities isPad];
-  v6 = [v4 navigationItem];
-  v7 = v6;
+  navigationItem = [itemsCopy navigationItem];
+  v7 = navigationItem;
   cancelButton = self->_cancelButton;
   if (v5)
   {
-    [v6 setRightBarButtonItem:cancelButton];
+    [navigationItem setRightBarButtonItem:cancelButton];
   }
 
   else
   {
-    [v6 setLeftBarButtonItem:cancelButton];
+    [navigationItem setLeftBarButtonItem:cancelButton];
   }
 
-  v9 = [v4 navigationItem];
+  navigationItem2 = [itemsCopy navigationItem];
 
-  [v9 setHidesBackButton:1 animated:0];
+  [navigationItem2 setHidesBackButton:1 animated:0];
 }
 
-- (void)planItemsUpdated:(id)a3 planListError:(id)a4
+- (void)planItemsUpdated:(id)updated planListError:(id)error
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  updatedCopy = updated;
+  errorCopy = error;
+  v8 = errorCopy;
   if (self->_planInstallError)
   {
-    v9 = _TSLogDomain();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    topViewController = _TSLogDomain();
+    if (os_log_type_enabled(topViewController, OS_LOG_TYPE_ERROR))
     {
       [TSActivationFlowWithSimSetupFlow planItemsUpdated:? planListError:?];
     }
@@ -1084,7 +1084,7 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  if (v7)
+  if (errorCopy)
   {
     v11 = _TSLogDomain();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1092,12 +1092,12 @@ LABEL_7:
       [TSActivationFlowWithSimSetupFlow planItemsUpdated:planListError:];
     }
 
-    v12 = [v8 domain];
-    if ([v12 isEqualToString:*MEMORY[0x277CF9680]])
+    domain = [v8 domain];
+    if ([domain isEqualToString:*MEMORY[0x277CF9680]])
     {
-      v13 = [v8 code];
+      code = [v8 code];
 
-      if (v13 == 19)
+      if (code == 19)
       {
         self->_confirmationCodeRequired = 1;
         goto LABEL_5;
@@ -1108,13 +1108,13 @@ LABEL_7:
     {
     }
 
-    objc_storeStrong(&self->_planInstallError, a4);
+    objc_storeStrong(&self->_planInstallError, error);
     if (![TSUtilities isRegulatoryRestrictionActive:v8])
     {
-      v9 = [TSUtilities getErrorTitleDetail:v8 forCarrier:self->_name];
+      topViewController = [TSUtilities getErrorTitleDetail:v8 forCarrier:self->_name];
       v33 = MEMORY[0x277D75110];
-      v34 = [v9 objectForKeyedSubscript:@"ErrorHeader"];
-      v35 = [v9 objectForKeyedSubscript:@"ErrorDetail"];
+      v34 = [topViewController objectForKeyedSubscript:@"ErrorHeader"];
+      v35 = [topViewController objectForKeyedSubscript:@"ErrorDetail"];
       v36 = [v33 alertControllerWithTitle:v34 message:v35 preferredStyle:1];
 
       v37 = MEMORY[0x277D750F8];
@@ -1141,14 +1141,14 @@ LABEL_7:
     }
 
 LABEL_41:
-    v9 = [(TSSIMSetupFlow *)self topViewController];
-    [(TSActivationFlowWithSimSetupFlow *)self viewControllerDidComplete:v9];
+    topViewController = [(TSSIMSetupFlow *)self topViewController];
+    [(TSActivationFlowWithSimSetupFlow *)self viewControllerDidComplete:topViewController];
 LABEL_4:
 
     goto LABEL_5;
   }
 
-  if (v6)
+  if (updatedCopy)
   {
     if (self->_isPreinstallingViewControllerActive)
     {
@@ -1156,7 +1156,7 @@ LABEL_4:
       v50 = 0u;
       v47 = 0u;
       v48 = 0u;
-      v14 = [v6 countByEnumeratingWithState:&v47 objects:v58 count:16];
+      v14 = [updatedCopy countByEnumeratingWithState:&v47 objects:v58 count:16];
       if (v14)
       {
         v15 = v14;
@@ -1171,24 +1171,24 @@ LABEL_4:
           {
             if (*v48 != v18)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(updatedCopy);
             }
 
             v20 = *(*(&v47 + 1) + 8 * i);
             if ([v20 isInstalling])
             {
-              v21 = [v20 plan];
-              v22 = [v21 status];
+              plan = [v20 plan];
+              status = [plan status];
 
-              if (v22 != 6)
+              if (status != 6)
               {
-                v23 = [v20 carrierName];
-                v24 = [v23 copy];
+                carrierName = [v20 carrierName];
+                v24 = [carrierName copy];
                 name = self->_name;
                 self->_name = v24;
 
-                v26 = [v20 iccid];
-                v17 = [v26 length] != 0;
+                iccid = [v20 iccid];
+                v17 = [iccid length] != 0;
 
                 v27 = _TSLogDomain();
                 if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -1209,7 +1209,7 @@ LABEL_4:
             }
           }
 
-          v15 = [v6 countByEnumeratingWithState:&v47 objects:v58 count:16];
+          v15 = [updatedCopy countByEnumeratingWithState:&v47 objects:v58 count:16];
         }
 
         while (v15);
@@ -1222,7 +1222,7 @@ LABEL_4:
         if (v17)
         {
           v29 = +[TSCellularPlanManagerCache sharedInstance];
-          v30 = [v29 calculateInstallConsentTextTypeFor:v6];
+          v30 = [v29 calculateInstallConsentTextTypeFor:updatedCopy];
 
           if (v30 > 2)
           {
@@ -1271,7 +1271,7 @@ LABEL_48:
             }
 
             *(&self->super.super.isa + v45) = 0;
-            v42 = [(TSSIMSetupFlow *)self topViewController];
+            topViewController2 = [(TSSIMSetupFlow *)self topViewController];
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1317,16 +1317,16 @@ void __67__TSActivationFlowWithSimSetupFlow_planItemsUpdated_planListError___blo
   [v2 presentViewController:*(a1 + 40) animated:1 completion:0];
 }
 
-- (void)didPurchasePlanSuccessfullyWithEid:(id)a3 imei:(id)a4 meid:(id)a5 iccid:(id)a6 alternateSDMP:(id)a7 state:(id)a8
+- (void)didPurchasePlanSuccessfullyWithEid:(id)eid imei:(id)imei meid:(id)meid iccid:(id)iccid alternateSDMP:(id)p state:(id)state
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
-  v14 = a8;
-  if (v11)
+  eidCopy = eid;
+  iccidCopy = iccid;
+  pCopy = p;
+  stateCopy = state;
+  if (eidCopy)
   {
     v15 = +[TSCellularPlanManagerCache sharedInstance];
-    [v15 didPurchasePlanForEid:v11 iccid:v12 smdpURL:v13 state:v14];
+    [v15 didPurchasePlanForEid:eidCopy iccid:iccidCopy smdpURL:pCopy state:stateCopy];
   }
 
   else
@@ -1339,71 +1339,71 @@ void __67__TSActivationFlowWithSimSetupFlow_planItemsUpdated_planListError___blo
   }
 }
 
-- (void)didTransferPlanSuccessfullyWithEid:(id)a3 imei:(id)a4 meid:(id)a5 iccid:(id)a6 srcIccid:(id)a7 alternateSDMP:(id)a8 state:(id)a9
+- (void)didTransferPlanSuccessfullyWithEid:(id)eid imei:(id)imei meid:(id)meid iccid:(id)iccid srcIccid:(id)srcIccid alternateSDMP:(id)p state:(id)state
 {
-  v13 = a9;
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a3;
+  stateCopy = state;
+  pCopy = p;
+  srcIccidCopy = srcIccid;
+  iccidCopy = iccid;
+  eidCopy = eid;
   v18 = +[TSCellularPlanManagerCache sharedInstance];
-  [v18 didTransferPlanForEid:v17 iccid:v16 srcIccid:v15 smdpURL:v14 state:v13];
+  [v18 didTransferPlanForEid:eidCopy iccid:iccidCopy srcIccid:srcIccidCopy smdpURL:pCopy state:stateCopy];
 }
 
 - (void)accountCancelled
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_0(&dword_262AA8000, a1, a3, "[E]Not implemented @%s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_0(&dword_262AA8000, self, a3, "[E]Not implemented @%s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
 - (void)accountPendingRelease
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_0(&dword_262AA8000, a1, a3, "[E]Not implemented @%s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_0(&dword_262AA8000, self, a3, "[E]Not implemented @%s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createFirstViewController:(id)a3
+- (id)_createFirstViewController:(id)controller
 {
   v84 = *MEMORY[0x277D85DE8];
-  v4 = [(NSMutableArray *)self->_transferPlans filteredPlansForTransferableBucket];
-  v53 = [v4 filteredPlansForHiddenInCloudBucket:0];
-  v57 = [v4 filteredPlansForHiddenInCloudBucket:1];
-  v5 = [(NSMutableArray *)self->_transferPlans filteredPlansForSoftwareUpdateBucket];
-  v60 = [(NSMutableArray *)self->_transferPlans filteredPlansForQRCodeBucket];
-  v58 = [(NSMutableArray *)self->_transferPlans filteredPlansForNonInstallableBucket];
-  v55 = [v4 filteredPlansForVisitStoreBucket];
-  v59 = v5;
-  v54 = [v5 filteredPlansForVisitStoreBucket];
+  filteredPlansForTransferableBucket = [(NSMutableArray *)self->_transferPlans filteredPlansForTransferableBucket];
+  v53 = [filteredPlansForTransferableBucket filteredPlansForHiddenInCloudBucket:0];
+  v57 = [filteredPlansForTransferableBucket filteredPlansForHiddenInCloudBucket:1];
+  filteredPlansForSoftwareUpdateBucket = [(NSMutableArray *)self->_transferPlans filteredPlansForSoftwareUpdateBucket];
+  filteredPlansForQRCodeBucket = [(NSMutableArray *)self->_transferPlans filteredPlansForQRCodeBucket];
+  filteredPlansForNonInstallableBucket = [(NSMutableArray *)self->_transferPlans filteredPlansForNonInstallableBucket];
+  filteredPlansForVisitStoreBucket = [filteredPlansForTransferableBucket filteredPlansForVisitStoreBucket];
+  v59 = filteredPlansForSoftwareUpdateBucket;
+  filteredPlansForVisitStoreBucket2 = [filteredPlansForSoftwareUpdateBucket filteredPlansForVisitStoreBucket];
   v6 = _TSLogDomain();
-  v56 = v4;
+  v56 = filteredPlansForTransferableBucket;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134219778;
-    v69 = [v4 count];
+    v69 = [filteredPlansForTransferableBucket count];
     v70 = 2048;
-    v71 = [v55 count];
+    v71 = [filteredPlansForVisitStoreBucket count];
     v72 = 2048;
     v73 = [v57 count];
     v74 = 2048;
-    v75 = [v5 count];
+    v75 = [filteredPlansForSoftwareUpdateBucket count];
     v76 = 2048;
-    v77 = [v54 count];
+    v77 = [filteredPlansForVisitStoreBucket2 count];
     v78 = 2048;
-    v79 = [v60 count];
+    v79 = [filteredPlansForQRCodeBucket count];
     v80 = 2048;
-    v81 = [v58 count];
+    v81 = [filteredPlansForNonInstallableBucket count];
     v82 = 2080;
     v83 = "[TSActivationFlowWithSimSetupFlow _createFirstViewController:]";
     _os_log_impl(&dword_262AA8000, v6, OS_LOG_TYPE_DEFAULT, "transferable:%lu (store:%lu, hidden:%lu), software update:%lu (store:%lu), qrcode:%lu, non install:%lu @%s", buf, 0x52u);
   }
 
-  v7 = [v4 count];
-  v8 = [(CTDisplayPlanList *)self->_pendingInstallPlans plans];
-  v9 = [v8 count];
-  v10 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
-  v11 = [v10 count];
+  v7 = [filteredPlansForTransferableBucket count];
+  plans = [(CTDisplayPlanList *)self->_pendingInstallPlans plans];
+  v9 = [plans count];
+  plans2 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
+  v11 = [plans2 count];
 
   v63 = 0u;
   v64 = 0u;
@@ -1480,15 +1480,15 @@ LABEL_22:
   if (!v25)
   {
     v34 = v18;
-    v35 = [(CTDisplayPlanList *)self->_crossPlatformTransferItems plans];
-    v36 = [v35 count];
+    plans3 = [(CTDisplayPlanList *)self->_crossPlatformTransferItems plans];
+    v36 = [plans3 count];
 
     v26 = v53;
     if (v36 == 1)
     {
       v37 = [TSSinglePlanTransferViewController alloc];
-      v28 = [(CTDisplayPlanList *)self->_crossPlatformTransferItems plans];
-      v38 = [v28 objectAtIndexedSubscript:0];
+      plans4 = [(CTDisplayPlanList *)self->_crossPlatformTransferItems plans];
+      v38 = [plans4 objectAtIndexedSubscript:0];
       v39 = [(TSSinglePlanTransferViewController *)v37 initWithCrossPlatformTransferPlan:v38];
 LABEL_40:
       v24 = v39;
@@ -1496,7 +1496,7 @@ LABEL_40:
       goto LABEL_41;
     }
 
-    if ([v60 count])
+    if ([filteredPlansForQRCodeBucket count])
     {
       v65[0] = @"FlowTypeKey";
       v65[1] = @"IsFirstViewKey";
@@ -1505,13 +1505,13 @@ LABEL_40:
       v65[2] = @"Plans";
       v66[2] = self->_transferPlans;
       v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v66 forKeys:v65 count:3];
-      v28 = [v42 mutableCopy];
+      plans4 = [v42 mutableCopy];
 
-      v24 = [[TSSubFlowViewController alloc] initWithOptions:v28 navigationController:0 delegate:self];
+      v24 = [[TSSubFlowViewController alloc] initWithOptions:plans4 navigationController:0 delegate:self];
       goto LABEL_41;
     }
 
-    if ([v5 count])
+    if ([filteredPlansForSoftwareUpdateBucket count])
     {
       v41 = [[TSNoPlanForTransferViewController alloc] initWithPlans:self->_transferPlans showOtherOptions:1];
     }
@@ -1532,12 +1532,12 @@ LABEL_50:
   }
 
   v26 = v53;
-  if (![v60 count])
+  if (![filteredPlansForQRCodeBucket count])
   {
-    v40 = [v58 count] + v25;
-    if ((v40 + [v5 count]) >= 2)
+    v40 = [filteredPlansForNonInstallableBucket count] + v25;
+    if ((v40 + [filteredPlansForSoftwareUpdateBucket count]) >= 2)
     {
-      if ([v55 count] != v25)
+      if ([filteredPlansForVisitStoreBucket count] != v25)
       {
         goto LABEL_20;
       }
@@ -1545,14 +1545,14 @@ LABEL_50:
       goto LABEL_31;
     }
 
-    v43 = [(CTDisplayPlanList *)self->_pendingInstallPlans plans];
-    v44 = [v43 count];
+    plans5 = [(CTDisplayPlanList *)self->_pendingInstallPlans plans];
+    v44 = [plans5 count];
 
     if (v44 == 1)
     {
       v45 = [TSSinglePlanTransferViewController alloc];
-      v28 = [(CTDisplayPlanList *)self->_pendingInstallPlans plans];
-      v38 = [v28 objectAtIndexedSubscript:0];
+      plans4 = [(CTDisplayPlanList *)self->_pendingInstallPlans plans];
+      v38 = [plans4 objectAtIndexedSubscript:0];
       v39 = [(TSSinglePlanTransferViewController *)v45 initWithPendingInstallPlan:v38];
       goto LABEL_40;
     }
@@ -1560,19 +1560,19 @@ LABEL_50:
     if ([v53 count] == 1)
     {
       v46 = [(NSMutableArray *)self->_transferItems objectAtIndexedSubscript:0];
-      v28 = [v46 objectForKeyedSubscript:@"planItem"];
+      plans4 = [v46 objectForKeyedSubscript:@"planItem"];
 
       v47 = [TSSinglePlanTransferViewController alloc];
       v38 = [(NSMutableArray *)self->_transferItems objectAtIndexedSubscript:0];
       LOBYTE(v51) = 0;
-      v39 = -[TSSinglePlanTransferViewController initWithTransferPlan:isPhysical:isIneligible:inBuddy:confirmCellularPlanTransfer:showOtherOptions:isShowingFilteredPlans:](v47, "initWithTransferPlan:isPhysical:isIneligible:inBuddy:confirmCellularPlanTransfer:showOtherOptions:isShowingFilteredPlans:", v38, [v28 isPhysical], objc_msgSend(v28, "isTransferIneligiblePlan"), 0, 1, 1, v51);
+      v39 = -[TSSinglePlanTransferViewController initWithTransferPlan:isPhysical:isIneligible:inBuddy:confirmCellularPlanTransfer:showOtherOptions:isShowingFilteredPlans:](v47, "initWithTransferPlan:isPhysical:isIneligible:inBuddy:confirmCellularPlanTransfer:showOtherOptions:isShowingFilteredPlans:", v38, [plans4 isPhysical], objc_msgSend(plans4, "isTransferIneligiblePlan"), 0, 1, 1, v51);
       goto LABEL_40;
     }
 
-    if ([v55 count] == 1)
+    if ([filteredPlansForVisitStoreBucket count] == 1)
     {
 LABEL_31:
-      v41 = [[SSVisitStoreViewController alloc] initWithPlans:v55 showOtherOption:1];
+      v41 = [[SSVisitStoreViewController alloc] initWithPlans:filteredPlansForVisitStoreBucket showOtherOption:1];
       goto LABEL_50;
     }
 
@@ -1581,8 +1581,8 @@ LABEL_31:
       goto LABEL_20;
     }
 
-    v48 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
-    v49 = [v48 count];
+    plans6 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
+    v49 = [plans6 count];
 
     if (v49 != 1)
     {
@@ -1599,11 +1599,11 @@ LABEL_31:
 
 LABEL_20:
   v27 = [TSMultiPlanIntermediateViewController alloc];
-  v28 = [(CTDisplayPlanList *)self->_pendingInstallPlans plans];
+  plans4 = [(CTDisplayPlanList *)self->_pendingInstallPlans plans];
   transferPlans = self->_transferPlans;
-  v30 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
+  plans7 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
   LOWORD(v51) = 0;
-  v24 = [(TSMultiPlanIntermediateViewController *)v27 initWithPendingInstallPlans:v28 transferPlans:transferPlans carrierSetupPlans:v30 showQRCodeOption:1 showOtherOptions:1 isShowingFilteredPlans:0 isStandaloneProximityFlow:v51 isHiddenPlanSelectable:?];
+  v24 = [(TSMultiPlanIntermediateViewController *)v27 initWithPendingInstallPlans:plans4 transferPlans:transferPlans carrierSetupPlans:plans7 showQRCodeOption:1 showOtherOptions:1 isShowingFilteredPlans:0 isStandaloneProximityFlow:v51 isHiddenPlanSelectable:?];
 
 LABEL_41:
 LABEL_42:
@@ -1615,17 +1615,17 @@ LABEL_24:
   return v24;
 }
 
-- (void)_maybeShowPreinstallConsentOnViewController:(id)a3 planItems:(id)a4
+- (void)_maybeShowPreinstallConsentOnViewController:(id)controller planItems:(id)items
 {
-  v6 = a3;
+  controllerCopy = controller;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __90__TSActivationFlowWithSimSetupFlow__maybeShowPreinstallConsentOnViewController_planItems___block_invoke;
   v13[3] = &unk_279B45220;
   v13[4] = self;
-  v7 = v6;
+  v7 = controllerCopy;
   v14 = v7;
-  v8 = [TSUtilities preinstallPPRAlertControllerWithItems:a4 completion:v13];
+  v8 = [TSUtilities preinstallPPRAlertControllerWithItems:items completion:v13];
   if (v8)
   {
     v9 = dispatch_time(0, 250000000);
@@ -1678,13 +1678,13 @@ uint64_t __90__TSActivationFlowWithSimSetupFlow__maybeShowPreinstallConsentOnVie
   return result;
 }
 
-- (void)_requestPlansWithCompletion:(id)a3
+- (void)_requestPlansWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     objc_initWeak(&location, self);
-    v5 = MEMORY[0x2667315D0](v4);
+    v5 = MEMORY[0x2667315D0](completionCopy);
     v6 = dispatch_group_create();
     queryGroup = self->_queryGroup;
     self->_queryGroup = v6;
@@ -1837,13 +1837,13 @@ void __64__TSActivationFlowWithSimSetupFlow__requestPlansWithCompletion___block_
   }
 }
 
-- (void)_requestTransferPlanListWithCompletion:(id)a3
+- (void)_requestTransferPlanListWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     objc_initWeak(&location, self);
-    v5 = MEMORY[0x2667315D0](v4);
+    v5 = MEMORY[0x2667315D0](completionCopy);
     v6 = +[TSCoreTelephonyClientCache sharedInstance];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -2123,15 +2123,15 @@ LABEL_5:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_requestCrossPlatformTransferPlanListWithCompletion:(id)a3
+- (void)_requestCrossPlatformTransferPlanListWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     objc_initWeak(&location, self);
-    v5 = MEMORY[0x2667315D0](v4);
+    v5 = MEMORY[0x2667315D0](completionCopy);
     v6 = +[TSCoreTelephonyClientCache sharedInstance];
-    v7 = [v6 getCoreTelephonyClient];
+    getCoreTelephonyClient = [v6 getCoreTelephonyClient];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __88__TSActivationFlowWithSimSetupFlow__requestCrossPlatformTransferPlanListWithCompletion___block_invoke;
@@ -2139,7 +2139,7 @@ LABEL_5:
     objc_copyWeak(&v19, &location);
     v8 = v5;
     v18 = v8;
-    [v7 plansPendingCrossPlatformTransferWithCompletion:v17];
+    [getCoreTelephonyClient plansPendingCrossPlatformTransferWithCompletion:v17];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -2200,13 +2200,13 @@ void __88__TSActivationFlowWithSimSetupFlow__requestCrossPlatformTransferPlanLis
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_requestPendingInstallItemsWithCompletion:(id)a3
+- (void)_requestPendingInstallItemsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     objc_initWeak(&location, self);
-    v5 = MEMORY[0x2667315D0](v4);
+    v5 = MEMORY[0x2667315D0](completionCopy);
     v6 = +[TSCoreTelephonyClientCache sharedInstance];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -2244,13 +2244,13 @@ void __78__TSActivationFlowWithSimSetupFlow__requestPendingInstallItemsWithCompl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_requestCarrierSetupsWithCompletion:(id)a3
+- (void)_requestCarrierSetupsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     objc_initWeak(&location, self);
-    v5 = MEMORY[0x2667315D0](v4);
+    v5 = MEMORY[0x2667315D0](completionCopy);
     v6 = +[TSCoreTelephonyClientCache sharedInstance];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -2317,16 +2317,16 @@ void __72__TSActivationFlowWithSimSetupFlow__requestCarrierSetupsWithCompletion_
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getWebsheetInfo:(id)a3 completion:(id)a4
+- (void)getWebsheetInfo:(id)info completion:(id)completion
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  infoCopy = info;
+  completionCopy = completion;
+  if (infoCopy)
   {
     objc_initWeak(location, self);
-    v8 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
-    v9 = [v8 count] > 1;
+    plans = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
+    v9 = [plans count] > 1;
 
     if (v9)
     {
@@ -2337,22 +2337,22 @@ void __72__TSActivationFlowWithSimSetupFlow__requestCarrierSetupsWithCompletion_
       }
     }
 
-    v18 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
-    v19 = [v18 count] == 0;
+    plans2 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
+    v19 = [plans2 count] == 0;
 
     if (!v19)
     {
       v20 = +[TSCoreTelephonyClientCache sharedInstance];
-      v21 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
-      v22 = [v21 objectAtIndexedSubscript:0];
-      v23 = [v22 plan];
+      plans3 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
+      v22 = [plans3 objectAtIndexedSubscript:0];
+      plan = [v22 plan];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __63__TSActivationFlowWithSimSetupFlow_getWebsheetInfo_completion___block_invoke;
       v26[3] = &unk_279B45310;
       objc_copyWeak(&v28, location);
-      v27 = v7;
-      [v20 getWebsheetInfoForPlan:v23 inBuddy:0 completion:v26];
+      v27 = completionCopy;
+      [v20 getWebsheetInfoForPlan:plan inBuddy:0 completion:v26];
 
       objc_destroyWeak(&v28);
     }
@@ -2370,7 +2370,7 @@ void __72__TSActivationFlowWithSimSetupFlow__requestCarrierSetupsWithCompletion_
       _os_log_impl(&dword_262AA8000, v24, OS_LOG_TYPE_DEFAULT, "No carrier setup items @%s", location, 0xCu);
     }
 
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -2400,21 +2400,21 @@ void __63__TSActivationFlowWithSimSetupFlow_getWebsheetInfo_completion___block_i
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_filterCarrierSetupItems:(id)a3
+- (void)_filterCarrierSetupItems:(id)items
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 plans];
-  v7 = [v6 count];
+  itemsCopy = items;
+  plans = [itemsCopy plans];
+  v7 = [plans count];
 
   if (v7)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     transferPlans = self->_transferPlans;
-    v10 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
-    [(NSMutableArray *)transferPlans filteredPlansWithoutSODATether:v10];
+    plans2 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
+    [(NSMutableArray *)transferPlans filteredPlansWithoutSODATether:plans2];
 
-    if ([TSFlowHelper hasTransferablePlanWithSameCarrierName:v5 transferablePlans:self->_transferItems inBuddy:0 matchingSODACarrierWebsheetTransferPlanIndex:v8])
+    if ([TSFlowHelper hasTransferablePlanWithSameCarrierName:itemsCopy transferablePlans:self->_transferItems inBuddy:0 matchingSODACarrierWebsheetTransferPlanIndex:v8])
     {
       carrierSetupItems = self->_carrierSetupItems;
       self->_carrierSetupItems = 0;
@@ -2422,7 +2422,7 @@ void __63__TSActivationFlowWithSimSetupFlow_getWebsheetInfo_completion___block_i
 
     else
     {
-      objc_storeStrong(&self->_carrierSetupItems, a3);
+      objc_storeStrong(&self->_carrierSetupItems, items);
       v21 = v8;
       v12 = [TSFlowHelper sortIndexesInDescending:v8];
       v22 = 0u;
@@ -2443,11 +2443,11 @@ void __63__TSActivationFlowWithSimSetupFlow_getWebsheetInfo_completion___block_i
               objc_enumerationMutation(v12);
             }
 
-            v17 = [*(*(&v22 + 1) + 8 * i) unsignedIntegerValue];
+            unsignedIntegerValue = [*(*(&v22 + 1) + 8 * i) unsignedIntegerValue];
             v18 = _TSLogDomain();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
             {
-              v19 = [(NSMutableArray *)self->_transferItems objectAtIndex:v17];
+              v19 = [(NSMutableArray *)self->_transferItems objectAtIndex:unsignedIntegerValue];
               *buf = 138412546;
               v27 = v19;
               v28 = 2080;
@@ -2455,7 +2455,7 @@ void __63__TSActivationFlowWithSimSetupFlow_getWebsheetInfo_completion___block_i
               _os_log_impl(&dword_262AA8000, v18, OS_LOG_TYPE_DEFAULT, "Plan %@ will be removed from transfer list @%s", buf, 0x16u);
             }
 
-            [(NSMutableArray *)self->_transferItems removeObjectAtIndex:v17];
+            [(NSMutableArray *)self->_transferItems removeObjectAtIndex:unsignedIntegerValue];
           }
 
           v14 = [v12 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -2473,14 +2473,14 @@ void __63__TSActivationFlowWithSimSetupFlow_getWebsheetInfo_completion___block_i
 
 - (void)_userDidTapCancel
 {
-  v3 = [(TSSIMSetupFlow *)self topViewController];
+  topViewController = [(TSSIMSetupFlow *)self topViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     goto LABEL_4;
   }
 
-  v4 = [(TSSIMSetupFlow *)self topViewController];
+  topViewController2 = [(TSSIMSetupFlow *)self topViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2490,12 +2490,12 @@ LABEL_5:
     v17 = +[TSCoreTelephonyClientCache sharedInstance];
     v16 = objc_alloc(MEMORY[0x277CC3720]);
     v15 = [TSUtilities transferablePlans:self->_transferItems];
-    v5 = [(CTDisplayPlanList *)self->_pendingInstallPlans plans];
-    v6 = [v5 count];
+    plans = [(CTDisplayPlanList *)self->_pendingInstallPlans plans];
+    v6 = [plans count];
     v7 = [TSUtilities odaPlans:self->_transferItems];
     v8 = [TSUtilities transferablePlanCarriers:self->_transferItems];
-    v9 = [(CTDisplayPlanList *)self->_pendingInstallPlans plans];
-    v10 = [TSUtilities alsPlanCarriers:v9];
+    plans2 = [(CTDisplayPlanList *)self->_pendingInstallPlans plans];
+    v10 = [TSUtilities alsPlanCarriers:plans2];
     v11 = [TSUtilities odaPlanCarriers:self->_transferItems];
     v12 = [v16 initWithInBuddy:0 transferablePlans:v15 selectedTransferablePlans:0 alsPlans:v6 selectedAlsPlans:0 odaPlans:v7 transferPlanCarriers:v8 selectedTransferPlanCarriers:&stru_28753DF48 alsPlanCarriers:v10 selectedAlsPlanCarriers:&stru_28753DF48 odaPlanCarriers:v11 selectedOdaPlanCarriers:&stru_28753DF48 sourceDevicesCount:+[TSUtilities sourceDevicesCount:](TSUtilities selectedSourceDevicesCount:{"sourceDevicesCount:", self->_transferItems), 0}];
     [v17 submitSimSetupUsage:v12];
@@ -2503,7 +2503,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v13 = [(TSSIMSetupFlow *)self topViewController];
+  topViewController3 = [(TSSIMSetupFlow *)self topViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2517,24 +2517,24 @@ LABEL_6:
   [(TSSIMSetupFlow *)self userDidTapCancel];
 }
 
-- (void)startOverWithFirstViewController:(id)a3
+- (void)startOverWithFirstViewController:(id)controller
 {
-  v7 = a3;
-  v4 = [(TSSIMSetupFlow *)self navigationController];
-  v5 = [v4 topViewController];
-  v6 = [(TSSIMSetupFlow *)self navigationController];
-  LOBYTE(self) = [(TSSIMSetupFlow *)self handleStartOverWithEntryPoint:v5 navigationController:v6 completion:v7];
+  controllerCopy = controller;
+  navigationController = [(TSSIMSetupFlow *)self navigationController];
+  topViewController = [navigationController topViewController];
+  navigationController2 = [(TSSIMSetupFlow *)self navigationController];
+  LOBYTE(self) = [(TSSIMSetupFlow *)self handleStartOverWithEntryPoint:topViewController navigationController:navigationController2 completion:controllerCopy];
 
   if ((self & 1) == 0)
   {
-    v7[2](v7, 0);
+    controllerCopy[2](controllerCopy, 0);
   }
 }
 
 - (void)firstViewController
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_0(&dword_262AA8000, a1, a3, "[E](UIViewController *)firstViewController is deprecated, please use (void)firstViewController:(void (^)(UIViewController *))completion @%s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_0(&dword_262AA8000, self, a3, "[E](UIViewController *)firstViewController is deprecated, please use (void)firstViewController:(void (^)(UIViewController *))completion @%s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 

@@ -18,9 +18,9 @@
     v6 = v4 + v5;
     [(HUCenteredCellUITableView *)self sectionFooterHeight];
     v8 = v6 + v7;
-    v9 = [(HUCenteredCellUITableView *)self window];
+    window = [(HUCenteredCellUITableView *)self window];
     [(HUCenteredCellUITableView *)self bounds];
-    [v9 convertRect:self fromView:?];
+    [window convertRect:self fromView:?];
     v36.origin.x = v10;
     v36.origin.y = v11;
     v36.size.width = v12;

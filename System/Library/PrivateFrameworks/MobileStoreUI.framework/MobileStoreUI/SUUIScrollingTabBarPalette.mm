@@ -1,19 +1,19 @@
 @interface SUUIScrollingTabBarPalette
-- (SUUIScrollingTabBarPalette)initWithFrame:(CGRect)a3;
+- (SUUIScrollingTabBarPalette)initWithFrame:(CGRect)frame;
 - (SUUIScrollingTabBarPaletteDelegate)_delegate;
 - (void)layoutSubviews;
-- (void)setTabBarBackgroundExtendsBehindPalette:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setTabBarBackgroundExtendsBehindPalette:(BOOL)palette;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SUUIScrollingTabBarPalette
 
-- (SUUIScrollingTabBarPalette)initWithFrame:(CGRect)a3
+- (SUUIScrollingTabBarPalette)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v21.receiver = self;
   v21.super_class = SUUIScrollingTabBarPalette;
   v7 = [(SUUIScrollingTabBarPalette *)&v21 initWithFrame:?];
@@ -55,14 +55,14 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SUUIScrollingTabBarPalette *)self traitCollection];
-  [v11 displayScale];
+  traitCollection = [(SUUIScrollingTabBarPalette *)self traitCollection];
+  [traitCollection displayScale];
   v13 = v12;
 
   if (v13 < 0.00000011920929)
   {
-    v14 = [MEMORY[0x277D759A0] mainScreen];
-    [v14 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v13 = v15;
   }
 
@@ -70,17 +70,17 @@
   [(UIView *)self->_contentView setFrame:v4, v6, v8, v10 + -1.0 / v13];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = SUUIScrollingTabBarPalette;
-  v4 = a3;
-  [(SUUIScrollingTabBarPalette *)&v10 traitCollectionDidChange:v4];
-  [v4 displayScale];
+  changeCopy = change;
+  [(SUUIScrollingTabBarPalette *)&v10 traitCollectionDidChange:changeCopy];
+  [changeCopy displayScale];
   v6 = v5;
 
-  v7 = [(SUUIScrollingTabBarPalette *)self traitCollection];
-  [v7 displayScale];
+  traitCollection = [(SUUIScrollingTabBarPalette *)self traitCollection];
+  [traitCollection displayScale];
   v9 = vabdd_f64(v6, v8);
 
   if (v9 > 0.00000011920929)
@@ -89,11 +89,11 @@
   }
 }
 
-- (void)setTabBarBackgroundExtendsBehindPalette:(BOOL)a3
+- (void)setTabBarBackgroundExtendsBehindPalette:(BOOL)palette
 {
-  if (self->_tabBarBackgroundExtendsBehindPalette != a3)
+  if (self->_tabBarBackgroundExtendsBehindPalette != palette)
   {
-    self->_tabBarBackgroundExtendsBehindPalette = a3;
+    self->_tabBarBackgroundExtendsBehindPalette = palette;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {

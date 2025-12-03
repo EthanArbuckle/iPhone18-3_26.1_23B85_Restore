@@ -4,15 +4,15 @@
 - (BOOL)verifyChangeHistory;
 - (id)_currentSyncSnapshotProperty;
 - (id)contactsForFullSync;
-- (id)copyChangeHistoryAfterSyncAnchor:(id)a3;
+- (id)copyChangeHistoryAfterSyncAnchor:(id)anchor;
 - (id)currentSyncSnapshotAnchorString;
 - (id)fullSyncSnapshotProperty;
 - (id)getLastClearedSyncAnchor;
-- (id)newSADomainObjectFromCNContactWithIdentifier:(id)a3;
-- (id)newSADomainObjectFromDeletedContactIdentifier:(id)a3;
+- (id)newSADomainObjectFromCNContactWithIdentifier:(id)identifier;
+- (id)newSADomainObjectFromDeletedContactIdentifier:(id)identifier;
 - (int64_t)currentSyncSnapshotCount;
-- (void)clearChangeHistoryToSyncAnchor:(id)a3;
-- (void)setCurrentSyncSnapshotAnchorString:(id)a3;
+- (void)clearChangeHistoryToSyncAnchor:(id)anchor;
+- (void)setCurrentSyncSnapshotAnchorString:(id)string;
 @end
 
 @implementation ABAssistantSyncPeople
@@ -82,12 +82,12 @@
   return v9;
 }
 
-- (void)clearChangeHistoryToSyncAnchor:(id)a3
+- (void)clearChangeHistoryToSyncAnchor:(id)anchor
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  anchorCopy = anchor;
   v5 = objc_alloc(MEMORY[0x277CBDA38]);
-  v8 = objc_msgSend_sequenceNumber(v4, v6, v7);
+  v8 = objc_msgSend_sequenceNumber(anchorCopy, v6, v7);
   v10 = objc_msgSend_initWithSequenceNumber_(v5, v9, v8);
   v11 = objc_alloc(MEMORY[0x277CBDA40]);
   v14 = objc_msgSend_changeHistoryClientIdentifier(self, v12, v13);
@@ -106,7 +106,7 @@
     {
       v25 = v23;
       v28 = objc_msgSend_changeHistoryClientIdentifier(self, v26, v27);
-      v31 = objc_msgSend_sequenceNumber(v4, v29, v30);
+      v31 = objc_msgSend_sequenceNumber(anchorCopy, v29, v30);
       *buf = 136315906;
       v34 = "[ABAssistantSyncPeople clearChangeHistoryToSyncAnchor:]";
       v35 = 2112;
@@ -172,7 +172,7 @@
   return v18;
 }
 
-- (id)copyChangeHistoryAfterSyncAnchor:(id)a3
+- (id)copyChangeHistoryAfterSyncAnchor:(id)anchor
 {
   v4 = objc_opt_new();
   objc_msgSend_setShouldUnifyResults_(v4, v5, 0);
@@ -195,10 +195,10 @@
   return v15;
 }
 
-- (id)newSADomainObjectFromCNContactWithIdentifier:(id)a3
+- (id)newSADomainObjectFromCNContactWithIdentifier:(id)identifier
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -211,7 +211,7 @@
 
   objc_msgSend_setUnifyResults_(v9, v10, 0);
   v11 = MEMORY[0x277CBDA58];
-  v37[0] = v4;
+  v37[0] = identifierCopy;
   v13 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v12, v37, 1);
   v15 = objc_msgSend_predicateForContactsWithIdentifiers_(v11, v14, v13);
   objc_msgSend_setPredicate_(v9, v16, v15);
@@ -253,12 +253,12 @@
   return v26;
 }
 
-- (id)newSADomainObjectFromDeletedContactIdentifier:(id)a3
+- (id)newSADomainObjectFromDeletedContactIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277D47630];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(v3);
-  v7 = objc_msgSend_assistantIDFromContactID_(MEMORY[0x277CFBC50], v6, v4);
+  v7 = objc_msgSend_assistantIDFromContactID_(MEMORY[0x277CFBC50], v6, identifierCopy);
 
   objc_msgSend_setIdentifier_(v5, v8, v7);
   return v5;
@@ -273,11 +273,11 @@
   return v6;
 }
 
-- (void)setCurrentSyncSnapshotAnchorString:(id)a3
+- (void)setCurrentSyncSnapshotAnchorString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v8 = objc_msgSend__currentSyncSnapshotProperty(self, v5, v6);
-  objc_msgSend_saveString_forKey_(ABAssistantSyncInfoPersistence, v7, v4, v8);
+  objc_msgSend_saveString_forKey_(ABAssistantSyncInfoPersistence, v7, stringCopy, v8);
 }
 
 - (id)currentSyncSnapshotAnchorString

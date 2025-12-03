@@ -1,11 +1,11 @@
 @interface NSDateComponentsFormatter
-+ (id)_maps_stringFromTimeInterval:(double)a3;
-+ (id)_maps_stringLongFromTimeInterval:(double)a3;
++ (id)_maps_stringFromTimeInterval:(double)interval;
++ (id)_maps_stringLongFromTimeInterval:(double)interval;
 @end
 
 @implementation NSDateComponentsFormatter
 
-+ (id)_maps_stringLongFromTimeInterval:(double)a3
++ (id)_maps_stringLongFromTimeInterval:(double)interval
 {
   if (qword_10195DBE0 != -1)
   {
@@ -14,10 +14,10 @@
 
   v4 = qword_10195DBD8;
 
-  return [v4 stringFromTimeInterval:a3];
+  return [v4 stringFromTimeInterval:interval];
 }
 
-+ (id)_maps_stringFromTimeInterval:(double)a3
++ (id)_maps_stringFromTimeInterval:(double)interval
 {
   if (qword_10195DBD0 != -1)
   {
@@ -26,7 +26,7 @@
 
   v4 = qword_10195DBC8;
 
-  return [v4 stringFromTimeInterval:a3];
+  return [v4 stringFromTimeInterval:interval];
 }
 
 @end

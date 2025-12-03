@@ -1,22 +1,22 @@
 @interface HKAccessibilityData
-- (HKAccessibilityData)initWithPointData:(id)a3 accessibilitySpans:(id)a4;
+- (HKAccessibilityData)initWithPointData:(id)data accessibilitySpans:(id)spans;
 - (id)description;
 @end
 
 @implementation HKAccessibilityData
 
-- (HKAccessibilityData)initWithPointData:(id)a3 accessibilitySpans:(id)a4
+- (HKAccessibilityData)initWithPointData:(id)data accessibilitySpans:(id)spans
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  spansCopy = spans;
   v12.receiver = self;
   v12.super_class = HKAccessibilityData;
   v9 = [(HKAccessibilityData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accessibilityPointData, a3);
-    objc_storeStrong(&v10->_accessibilitySpans, a4);
+    objc_storeStrong(&v9->_accessibilityPointData, data);
+    objc_storeStrong(&v10->_accessibilitySpans, spans);
   }
 
   return v10;
@@ -30,8 +30,8 @@
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(HKAccessibilityData *)self accessibilitySpans];
-  v7 = [v5 stringWithFormat:@"  accessibilitySpans %lu", objc_msgSend(v6, "count")];
+  accessibilitySpans = [(HKAccessibilityData *)self accessibilitySpans];
+  v7 = [v5 stringWithFormat:@"  accessibilitySpans %lu", objc_msgSend(accessibilitySpans, "count")];
   [v3 addObject:v7];
 
   v37 = 0u;
@@ -54,8 +54,8 @@
         }
 
         v12 = *(*(&v35 + 1) + 8 * i);
-        v13 = [(HKAccessibilityData *)self accessibilitySpans];
-        v14 = [v13 objectForKeyedSubscript:v12];
+        accessibilitySpans2 = [(HKAccessibilityData *)self accessibilitySpans];
+        v14 = [accessibilitySpans2 objectForKeyedSubscript:v12];
         v15 = [v14 description];
 
         v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"    key %@:", v12];
@@ -72,16 +72,16 @@
   }
 
   v18 = MEMORY[0x1E696AEC0];
-  v19 = [(HKAccessibilityData *)self accessibilityPointData];
-  v20 = [v18 stringWithFormat:@"  accessibilityPointData %lu", objc_msgSend(v19, "count")];
+  accessibilityPointData = [(HKAccessibilityData *)self accessibilityPointData];
+  v20 = [v18 stringWithFormat:@"  accessibilityPointData %lu", objc_msgSend(accessibilityPointData, "count")];
   [v3 addObject:v20];
 
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v21 = [(HKAccessibilityData *)self accessibilityPointData];
-  v22 = [v21 countByEnumeratingWithState:&v31 objects:v39 count:16];
+  accessibilityPointData2 = [(HKAccessibilityData *)self accessibilityPointData];
+  v22 = [accessibilityPointData2 countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v22)
   {
     v23 = v22;
@@ -92,7 +92,7 @@
       {
         if (*v32 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(accessibilityPointData2);
         }
 
         v26 = [*(*(&v31 + 1) + 8 * j) description];
@@ -100,7 +100,7 @@
         [v3 addObject:v27];
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v31 objects:v39 count:16];
+      v23 = [accessibilityPointData2 countByEnumeratingWithState:&v31 objects:v39 count:16];
     }
 
     while (v23);

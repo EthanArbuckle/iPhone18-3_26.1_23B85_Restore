@@ -1,396 +1,396 @@
 @interface GCHIDElementSnapshot
 - (GCHIDElementSnapshot)init;
-- (GCHIDElementSnapshot)initWithCoder:(id)a3;
-- (GCHIDElementSnapshot)initWithDictionary:(id)a3;
-- (GCHIDElementSnapshot)initWithHIDElement:(id)a3;
+- (GCHIDElementSnapshot)initWithCoder:(id)coder;
+- (GCHIDElementSnapshot)initWithDictionary:(id)dictionary;
+- (GCHIDElementSnapshot)initWithHIDElement:(id)element;
 - (id)debugDescription;
-- (id)valueForElementKey:(id)a3;
-- (id)valueForKey:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)valueForElementKey:(id)key;
+- (id)valueForKey:(id)key;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCHIDElementSnapshot
 
-- (GCHIDElementSnapshot)initWithHIDElement:(id)a3
+- (GCHIDElementSnapshot)initWithHIDElement:(id)element
 {
   v8.receiver = self;
   v8.super_class = GCHIDElementSnapshot;
-  v3 = a3;
+  elementCopy = element;
   v4 = [(GCHIDElementSnapshot *)&v8 init];
-  v4->_usageType = [v3 usageType];
-  v4->_usageTypeIndex = [v3 usageTypeIndex];
-  v4->_elementCookie = [v3 elementCookie];
-  v4->_type = [v3 type];
-  v4->_collectionType = [v3 collectionType];
-  v4->_usage = [v3 usage];
-  v4->_usagePage = [v3 usagePage];
-  v4->_min = [v3 min];
-  v4->_max = [v3 max];
-  v4->_scaledMin = [v3 scaledMin];
-  v4->_scaledMax = [v3 scaledMax];
-  v4->_size = [v3 size];
-  v4->_reportSize = [v3 reportSize];
-  v4->_reportCount = [v3 reportCount];
-  v4->_reportID = [v3 reportID];
-  v4->_isArray = [v3 isArray];
-  v4->_isRelative = [v3 isRelative];
-  v4->_isWrapping = [v3 isWrapping];
-  v4->_isNonLinear = [v3 isNonLinear];
-  v4->_hasPreferredState = [v3 hasPreferredState];
-  v4->_hasNullState = [v3 hasNullState];
-  v4->_flags = [v3 flags];
-  v4->_unit = [v3 unit];
-  v4->_unitExponent = [v3 unitExponent];
-  v5 = [v3 name];
+  v4->_usageType = [elementCopy usageType];
+  v4->_usageTypeIndex = [elementCopy usageTypeIndex];
+  v4->_elementCookie = [elementCopy elementCookie];
+  v4->_type = [elementCopy type];
+  v4->_collectionType = [elementCopy collectionType];
+  v4->_usage = [elementCopy usage];
+  v4->_usagePage = [elementCopy usagePage];
+  v4->_min = [elementCopy min];
+  v4->_max = [elementCopy max];
+  v4->_scaledMin = [elementCopy scaledMin];
+  v4->_scaledMax = [elementCopy scaledMax];
+  v4->_size = [elementCopy size];
+  v4->_reportSize = [elementCopy reportSize];
+  v4->_reportCount = [elementCopy reportCount];
+  v4->_reportID = [elementCopy reportID];
+  v4->_isArray = [elementCopy isArray];
+  v4->_isRelative = [elementCopy isRelative];
+  v4->_isWrapping = [elementCopy isWrapping];
+  v4->_isNonLinear = [elementCopy isNonLinear];
+  v4->_hasPreferredState = [elementCopy hasPreferredState];
+  v4->_hasNullState = [elementCopy hasNullState];
+  v4->_flags = [elementCopy flags];
+  v4->_unit = [elementCopy unit];
+  v4->_unitExponent = [elementCopy unitExponent];
+  name = [elementCopy name];
 
   name = v4->_name;
-  v4->_name = v5;
+  v4->_name = name;
 
   return v4;
 }
 
-- (GCHIDElementSnapshot)initWithDictionary:(id)a3
+- (GCHIDElementSnapshot)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v82.receiver = self;
   v82.super_class = GCHIDElementSnapshot;
   v5 = [(GCHIDElementSnapshot *)&v82 init];
-  v6 = [v4 objectForKey:@"UsageType"];
+  v6 = [dictionaryCopy objectForKey:@"UsageType"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = 0;
+    integerValue = 0;
   }
 
-  v5->_usageType = v7;
-  v8 = [v4 objectForKey:@"UsageTypeIndex"];
+  v5->_usageType = integerValue;
+  v8 = [dictionaryCopy objectForKey:@"UsageTypeIndex"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 integerValue];
+    integerValue2 = [v8 integerValue];
   }
 
   else
   {
-    v9 = -1;
+    integerValue2 = -1;
   }
 
-  v5->_usageTypeIndex = v9;
-  v10 = [v4 objectForKey:@"ElementCookie"];
+  v5->_usageTypeIndex = integerValue2;
+  v10 = [dictionaryCopy objectForKey:@"ElementCookie"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v10 unsignedIntValue];
+    unsignedIntValue = [v10 unsignedIntValue];
   }
 
   else
   {
-    v11 = 0;
+    unsignedIntValue = 0;
   }
 
-  v5->_elementCookie = v11;
-  v12 = [v4 objectForKey:@"Type"];
+  v5->_elementCookie = unsignedIntValue;
+  v12 = [dictionaryCopy objectForKey:@"Type"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v12 intValue];
+    intValue = [v12 intValue];
   }
 
   else
   {
-    v13 = 0;
+    intValue = 0;
   }
 
-  v5->_type = v13;
-  v14 = [v4 objectForKey:@"CollectionType"];
+  v5->_type = intValue;
+  v14 = [dictionaryCopy objectForKey:@"CollectionType"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = [v14 intValue];
+    intValue2 = [v14 intValue];
   }
 
   else
   {
-    v15 = 0;
+    intValue2 = 0;
   }
 
-  v5->_collectionType = v15;
-  v16 = [v4 objectForKey:@"Usage"];
+  v5->_collectionType = intValue2;
+  v16 = [dictionaryCopy objectForKey:@"Usage"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = [v16 integerValue];
+    integerValue3 = [v16 integerValue];
   }
 
   else
   {
-    v17 = 0;
+    integerValue3 = 0;
   }
 
-  v5->_usage = v17;
-  v18 = [v4 objectForKey:@"UsagePage"];
+  v5->_usage = integerValue3;
+  v18 = [dictionaryCopy objectForKey:@"UsagePage"];
   objc_opt_class();
   v81 = v6;
   if (objc_opt_isKindOfClass())
   {
-    v19 = [v18 integerValue];
+    integerValue4 = [v18 integerValue];
   }
 
   else
   {
-    v19 = 0;
+    integerValue4 = 0;
   }
 
-  v5->_usagePage = v19;
-  v20 = [v4 objectForKey:@"Min"];
+  v5->_usagePage = integerValue4;
+  v20 = [dictionaryCopy objectForKey:@"Min"];
   objc_opt_class();
   v75 = v20;
   if (objc_opt_isKindOfClass())
   {
-    v21 = [v20 integerValue];
+    integerValue5 = [v20 integerValue];
   }
 
   else
   {
-    v21 = 0;
+    integerValue5 = 0;
   }
 
   v79 = v10;
-  v5->_min = v21;
-  v22 = [v4 objectForKey:@"Max"];
+  v5->_min = integerValue5;
+  v22 = [dictionaryCopy objectForKey:@"Max"];
   objc_opt_class();
   v80 = v8;
   if (objc_opt_isKindOfClass())
   {
-    v23 = [v22 integerValue];
+    integerValue6 = [v22 integerValue];
   }
 
   else
   {
-    v23 = 0;
+    integerValue6 = 0;
   }
 
   v69 = v18;
-  v5->_max = v23;
-  v24 = [v4 objectForKey:@"ScaledMin"];
+  v5->_max = integerValue6;
+  v24 = [dictionaryCopy objectForKey:@"ScaledMin"];
   objc_opt_class();
   v73 = v24;
   v25 = v16;
   if (objc_opt_isKindOfClass())
   {
-    v26 = [v24 integerValue];
+    integerValue7 = [v24 integerValue];
   }
 
   else
   {
-    v26 = 0;
+    integerValue7 = 0;
   }
 
   v27 = v14;
-  v5->_scaledMin = v26;
-  v28 = [v4 objectForKey:@"ScaledMax"];
+  v5->_scaledMin = integerValue7;
+  v28 = [dictionaryCopy objectForKey:@"ScaledMax"];
   objc_opt_class();
   v29 = v12;
   if (objc_opt_isKindOfClass())
   {
-    v30 = [v28 integerValue];
+    integerValue8 = [v28 integerValue];
   }
 
   else
   {
-    v30 = 0;
+    integerValue8 = 0;
   }
 
-  v5->_scaledMax = v30;
-  v31 = [v4 objectForKey:@"Size"];
+  v5->_scaledMax = integerValue8;
+  v31 = [dictionaryCopy objectForKey:@"Size"];
   objc_opt_class();
   v71 = v31;
   if (objc_opt_isKindOfClass())
   {
-    v32 = [v31 integerValue];
+    integerValue9 = [v31 integerValue];
   }
 
   else
   {
-    v32 = 0;
+    integerValue9 = 0;
   }
 
-  v5->_size = v32;
-  v33 = [v4 objectForKey:@"ReportSize"];
+  v5->_size = integerValue9;
+  v33 = [dictionaryCopy objectForKey:@"ReportSize"];
   objc_opt_class();
   v34 = v29;
   v70 = v33;
   if (objc_opt_isKindOfClass())
   {
-    v35 = [v33 integerValue];
+    integerValue10 = [v33 integerValue];
   }
 
   else
   {
-    v35 = 0;
+    integerValue10 = 0;
   }
 
   v36 = v27;
-  v5->_reportSize = v35;
-  v37 = [v4 objectForKey:@"ReportCount"];
+  v5->_reportSize = integerValue10;
+  v37 = [dictionaryCopy objectForKey:@"ReportCount"];
   objc_opt_class();
   v76 = v25;
   v74 = v22;
   if (objc_opt_isKindOfClass())
   {
-    v38 = [v37 unsignedIntValue];
+    unsignedIntValue2 = [v37 unsignedIntValue];
   }
 
   else
   {
-    v38 = 0;
+    unsignedIntValue2 = 0;
   }
 
-  v5->_reportCount = v38;
-  v39 = [v4 objectForKey:@"ReportID"];
+  v5->_reportCount = unsignedIntValue2;
+  v39 = [dictionaryCopy objectForKey:@"ReportID"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v40 = [v39 integerValue];
+    integerValue11 = [v39 integerValue];
   }
 
   else
   {
-    v40 = 0;
+    integerValue11 = 0;
   }
 
-  v5->_reportID = v40;
-  v41 = [v4 objectForKey:@"IsArray"];
+  v5->_reportID = integerValue11;
+  v41 = [dictionaryCopy objectForKey:@"IsArray"];
   objc_opt_class();
   v66 = v41;
   if (objc_opt_isKindOfClass())
   {
-    v42 = [v41 BOOLValue];
+    bOOLValue = [v41 BOOLValue];
   }
 
   else
   {
-    v42 = 0;
+    bOOLValue = 0;
   }
 
-  v5->_isArray = v42;
-  v43 = [v4 objectForKey:@"IsRelative"];
+  v5->_isArray = bOOLValue;
+  v43 = [dictionaryCopy objectForKey:@"IsRelative"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v44 = [v43 BOOLValue];
+    bOOLValue2 = [v43 BOOLValue];
   }
 
   else
   {
-    v44 = 0;
+    bOOLValue2 = 0;
   }
 
-  v5->_isRelative = v44;
-  v45 = [v4 objectForKey:@"IsWrapping"];
+  v5->_isRelative = bOOLValue2;
+  v45 = [dictionaryCopy objectForKey:@"IsWrapping"];
   objc_opt_class();
   v72 = v28;
   v64 = v45;
   if (objc_opt_isKindOfClass())
   {
-    v46 = [v45 BOOLValue];
+    bOOLValue3 = [v45 BOOLValue];
   }
 
   else
   {
-    v46 = 0;
+    bOOLValue3 = 0;
   }
 
-  v5->_isWrapping = v46;
-  v47 = [v4 objectForKey:{@"IsNonLinear", v64}];
+  v5->_isWrapping = bOOLValue3;
+  v47 = [dictionaryCopy objectForKey:{@"IsNonLinear", v64}];
   objc_opt_class();
   v67 = v39;
   v68 = v37;
   if (objc_opt_isKindOfClass())
   {
-    v48 = [v47 BOOLValue];
+    bOOLValue4 = [v47 BOOLValue];
   }
 
   else
   {
-    v48 = 0;
+    bOOLValue4 = 0;
   }
 
-  v5->_isNonLinear = v48;
-  v49 = [v4 objectForKey:@"HasPreferredState"];
+  v5->_isNonLinear = bOOLValue4;
+  v49 = [dictionaryCopy objectForKey:@"HasPreferredState"];
   objc_opt_class();
   v78 = v34;
   if (objc_opt_isKindOfClass())
   {
-    v50 = [v49 BOOLValue];
+    bOOLValue5 = [v49 BOOLValue];
   }
 
   else
   {
-    v50 = 0;
+    bOOLValue5 = 0;
   }
 
-  v5->_hasPreferredState = v50;
-  v51 = [v4 objectForKey:@"HasNullState"];
+  v5->_hasPreferredState = bOOLValue5;
+  v51 = [dictionaryCopy objectForKey:@"HasNullState"];
   objc_opt_class();
   v77 = v36;
   if (objc_opt_isKindOfClass())
   {
-    v52 = [v51 BOOLValue];
+    bOOLValue6 = [v51 BOOLValue];
   }
 
   else
   {
-    v52 = 0;
+    bOOLValue6 = 0;
   }
 
-  v5->_hasNullState = v52;
-  v53 = [v4 objectForKey:@"Flags"];
+  v5->_hasNullState = bOOLValue6;
+  v53 = [dictionaryCopy objectForKey:@"Flags"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v54 = [v53 unsignedIntValue];
+    unsignedIntValue3 = [v53 unsignedIntValue];
   }
 
   else
   {
-    v54 = 0;
+    unsignedIntValue3 = 0;
   }
 
-  v5->_flags = v54;
-  v55 = [v4 objectForKey:@"Unit"];
+  v5->_flags = unsignedIntValue3;
+  v55 = [dictionaryCopy objectForKey:@"Unit"];
   objc_opt_class();
   v56 = v43;
   if (objc_opt_isKindOfClass())
   {
-    v57 = [v55 integerValue];
+    integerValue12 = [v55 integerValue];
   }
 
   else
   {
-    v57 = 0;
+    integerValue12 = 0;
   }
 
-  v5->_unit = v57;
-  v58 = [v4 objectForKey:@"UnitExponent"];
+  v5->_unit = integerValue12;
+  v58 = [dictionaryCopy objectForKey:@"UnitExponent"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v59 = [v58 integerValue];
+    integerValue13 = [v58 integerValue];
   }
 
   else
   {
-    v59 = 0;
+    integerValue13 = 0;
   }
 
-  v5->_unitExponent = v59;
-  v60 = [v4 objectForKey:@"Name"];
+  v5->_unitExponent = integerValue13;
+  v60 = [dictionaryCopy objectForKey:@"Name"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -408,36 +408,36 @@
   return v5;
 }
 
-- (GCHIDElementSnapshot)initWithCoder:(id)a3
+- (GCHIDElementSnapshot)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = GCHIDElementSnapshot;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(GCHIDElementSnapshot *)&v8 init];
-  v4->_usageType = [v3 decodeIntegerForKey:{@"UsageType", v8.receiver, v8.super_class}];
-  v4->_usageTypeIndex = [v3 decodeIntegerForKey:@"UsageTypeIndex"];
-  v4->_elementCookie = [v3 decodeInt32ForKey:@"ElementCookie"];
-  v4->_type = [v3 decodeIntForKey:@"Type"];
-  v4->_collectionType = [v3 decodeIntForKey:@"CollectionType"];
-  v4->_usage = [v3 decodeIntegerForKey:@"Usage"];
-  v4->_usagePage = [v3 decodeIntegerForKey:@"UsagePage"];
-  v4->_min = [v3 decodeIntegerForKey:@"Min"];
-  v4->_max = [v3 decodeIntegerForKey:@"Max"];
-  v4->_scaledMin = [v3 decodeIntegerForKey:@"ScaledMin"];
-  v4->_scaledMax = [v3 decodeIntegerForKey:@"ScaledMax"];
-  v4->_size = [v3 decodeIntegerForKey:@"Size"];
-  v4->_reportSize = [v3 decodeIntegerForKey:@"ReportSize"];
-  v4->_reportCount = [v3 decodeInt32ForKey:@"ReportCount"];
-  v4->_reportID = [v3 decodeIntegerForKey:@"ReportID"];
-  v4->_isArray = [v3 decodeBoolForKey:@"IsArray"];
-  v4->_isRelative = [v3 decodeBoolForKey:@"IsRelative"];
-  v4->_isWrapping = [v3 decodeBoolForKey:@"IsWrapping"];
-  v4->_isNonLinear = [v3 decodeBoolForKey:@"IsNonLinear"];
-  v4->_hasNullState = [v3 decodeBoolForKey:@"HasNullState"];
-  v4->_flags = [v3 decodeInt32ForKey:@"Flags"];
-  v4->_unit = [v3 decodeIntegerForKey:@"Unit"];
-  v4->_unitExponent = [v3 decodeIntegerForKey:@"UnitExponent"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"Name"];
+  v4->_usageType = [coderCopy decodeIntegerForKey:{@"UsageType", v8.receiver, v8.super_class}];
+  v4->_usageTypeIndex = [coderCopy decodeIntegerForKey:@"UsageTypeIndex"];
+  v4->_elementCookie = [coderCopy decodeInt32ForKey:@"ElementCookie"];
+  v4->_type = [coderCopy decodeIntForKey:@"Type"];
+  v4->_collectionType = [coderCopy decodeIntForKey:@"CollectionType"];
+  v4->_usage = [coderCopy decodeIntegerForKey:@"Usage"];
+  v4->_usagePage = [coderCopy decodeIntegerForKey:@"UsagePage"];
+  v4->_min = [coderCopy decodeIntegerForKey:@"Min"];
+  v4->_max = [coderCopy decodeIntegerForKey:@"Max"];
+  v4->_scaledMin = [coderCopy decodeIntegerForKey:@"ScaledMin"];
+  v4->_scaledMax = [coderCopy decodeIntegerForKey:@"ScaledMax"];
+  v4->_size = [coderCopy decodeIntegerForKey:@"Size"];
+  v4->_reportSize = [coderCopy decodeIntegerForKey:@"ReportSize"];
+  v4->_reportCount = [coderCopy decodeInt32ForKey:@"ReportCount"];
+  v4->_reportID = [coderCopy decodeIntegerForKey:@"ReportID"];
+  v4->_isArray = [coderCopy decodeBoolForKey:@"IsArray"];
+  v4->_isRelative = [coderCopy decodeBoolForKey:@"IsRelative"];
+  v4->_isWrapping = [coderCopy decodeBoolForKey:@"IsWrapping"];
+  v4->_isNonLinear = [coderCopy decodeBoolForKey:@"IsNonLinear"];
+  v4->_hasNullState = [coderCopy decodeBoolForKey:@"HasNullState"];
+  v4->_flags = [coderCopy decodeInt32ForKey:@"Flags"];
+  v4->_unit = [coderCopy decodeIntegerForKey:@"Unit"];
+  v4->_unitExponent = [coderCopy decodeIntegerForKey:@"UnitExponent"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Name"];
 
   name = v4->_name;
   v4->_name = v5;
@@ -445,34 +445,34 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   usageType = self->_usageType;
-  v5 = a3;
-  [v5 encodeInteger:usageType forKey:@"UsageType"];
-  [v5 encodeInteger:self->_usageTypeIndex forKey:@"UsageTypeIndex"];
-  [v5 encodeInt32:self->_elementCookie forKey:@"ElementCookie"];
-  [v5 encodeInt:self->_type forKey:@"Type"];
-  [v5 encodeInt:self->_collectionType forKey:@"CollectionType"];
-  [v5 encodeInteger:self->_usage forKey:@"Usage"];
-  [v5 encodeInteger:self->_usagePage forKey:@"UsagePage"];
-  [v5 encodeInteger:self->_min forKey:@"Min"];
-  [v5 encodeInteger:self->_max forKey:@"Max"];
-  [v5 encodeInteger:self->_scaledMin forKey:@"ScaledMin"];
-  [v5 encodeInteger:self->_scaledMax forKey:@"ScaledMax"];
-  [v5 encodeInteger:self->_size forKey:@"Size"];
-  [v5 encodeInteger:self->_reportSize forKey:@"ReportSize"];
-  [v5 encodeInt32:self->_reportCount forKey:@"ReportCount"];
-  [v5 encodeInteger:self->_reportID forKey:@"ReportID"];
-  [v5 encodeBool:self->_isArray != 0 forKey:@"IsArray"];
-  [v5 encodeBool:self->_isRelative != 0 forKey:@"IsRelative"];
-  [v5 encodeBool:self->_isWrapping != 0 forKey:@"IsWrapping"];
-  [v5 encodeBool:self->_isNonLinear != 0 forKey:@"IsNonLinear"];
-  [v5 encodeBool:self->_hasNullState != 0 forKey:@"HasNullState"];
-  [v5 encodeInt32:self->_flags forKey:@"Flags"];
-  [v5 encodeInteger:self->_unit forKey:@"Unit"];
-  [v5 encodeInteger:self->_unitExponent forKey:@"UnitExponent"];
-  [v5 encodeObject:self->_name forKey:@"Name"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:usageType forKey:@"UsageType"];
+  [coderCopy encodeInteger:self->_usageTypeIndex forKey:@"UsageTypeIndex"];
+  [coderCopy encodeInt32:self->_elementCookie forKey:@"ElementCookie"];
+  [coderCopy encodeInt:self->_type forKey:@"Type"];
+  [coderCopy encodeInt:self->_collectionType forKey:@"CollectionType"];
+  [coderCopy encodeInteger:self->_usage forKey:@"Usage"];
+  [coderCopy encodeInteger:self->_usagePage forKey:@"UsagePage"];
+  [coderCopy encodeInteger:self->_min forKey:@"Min"];
+  [coderCopy encodeInteger:self->_max forKey:@"Max"];
+  [coderCopy encodeInteger:self->_scaledMin forKey:@"ScaledMin"];
+  [coderCopy encodeInteger:self->_scaledMax forKey:@"ScaledMax"];
+  [coderCopy encodeInteger:self->_size forKey:@"Size"];
+  [coderCopy encodeInteger:self->_reportSize forKey:@"ReportSize"];
+  [coderCopy encodeInt32:self->_reportCount forKey:@"ReportCount"];
+  [coderCopy encodeInteger:self->_reportID forKey:@"ReportID"];
+  [coderCopy encodeBool:self->_isArray != 0 forKey:@"IsArray"];
+  [coderCopy encodeBool:self->_isRelative != 0 forKey:@"IsRelative"];
+  [coderCopy encodeBool:self->_isWrapping != 0 forKey:@"IsWrapping"];
+  [coderCopy encodeBool:self->_isNonLinear != 0 forKey:@"IsNonLinear"];
+  [coderCopy encodeBool:self->_hasNullState != 0 forKey:@"HasNullState"];
+  [coderCopy encodeInt32:self->_flags forKey:@"Flags"];
+  [coderCopy encodeInteger:self->_unit forKey:@"Unit"];
+  [coderCopy encodeInteger:self->_unitExponent forKey:@"UnitExponent"];
+  [coderCopy encodeObject:self->_name forKey:@"Name"];
 }
 
 - (GCHIDElementSnapshot)init
@@ -482,18 +482,18 @@
   return 0;
 }
 
-- (id)valueForElementKey:(id)a3
+- (id)valueForElementKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = GCHIDElementAttributeKeys();
-  v6 = [v5 containsObject:v4];
+  v6 = [v5 containsObject:keyCopy];
 
   if (v6)
   {
-    v7 = [v4 substringToIndex:1];
-    v8 = [v7 lowercaseString];
+    v7 = [keyCopy substringToIndex:1];
+    lowercaseString = [v7 lowercaseString];
 
-    v9 = [v4 stringByReplacingCharactersInRange:0 withString:{1, v8}];
+    v9 = [keyCopy stringByReplacingCharactersInRange:0 withString:{1, lowercaseString}];
     v10 = [(GCHIDElementSnapshot *)self valueForKey:v9];
   }
 
@@ -505,25 +505,25 @@
   return v10;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = GCHIDElementAttributeKeys();
-  v6 = [v5 containsObject:v4];
+  v6 = [v5 containsObject:keyCopy];
 
   if (v6)
   {
-    v7 = [v4 substringToIndex:1];
-    v8 = [v7 lowercaseString];
+    v7 = [keyCopy substringToIndex:1];
+    lowercaseString = [v7 lowercaseString];
 
-    v9 = [v4 stringByReplacingCharactersInRange:0 withString:{1, v8}];
+    v9 = [keyCopy stringByReplacingCharactersInRange:0 withString:{1, lowercaseString}];
 
-    v4 = v9;
+    keyCopy = v9;
   }
 
   v12.receiver = self;
   v12.super_class = GCHIDElementSnapshot;
-  v10 = [(GCHIDElementSnapshot *)&v12 valueForKey:v4];
+  v10 = [(GCHIDElementSnapshot *)&v12 valueForKey:keyCopy];
 
   return v10;
 }
@@ -534,10 +534,10 @@
   v10.receiver = self;
   v10.super_class = GCHIDElementSnapshot;
   v4 = [(GCHIDElementSnapshot *)&v10 debugDescription];
-  v5 = [(GCHIDElementSnapshot *)self elementCookie];
-  v6 = [(GCHIDElementSnapshot *)self type];
-  v7 = [(GCHIDElementSnapshot *)self name];
-  v8 = [v3 stringWithFormat:@"%@ {\n\t elementCookie = %u\n\t type = %i\n\t name = %@\n\t usageType = %zd\n\t usageTypeIndex = %zd\n\t usage = %zd\n\t usagePage = %zd\n}", v4, v5, v6, v7, -[GCHIDElementSnapshot usageType](self, "usageType"), -[GCHIDElementSnapshot usageTypeIndex](self, "usageTypeIndex"), -[GCHIDElementSnapshot usage](self, "usage"), -[GCHIDElementSnapshot usagePage](self, "usagePage")];
+  elementCookie = [(GCHIDElementSnapshot *)self elementCookie];
+  type = [(GCHIDElementSnapshot *)self type];
+  name = [(GCHIDElementSnapshot *)self name];
+  v8 = [v3 stringWithFormat:@"%@ {\n\t elementCookie = %u\n\t type = %i\n\t name = %@\n\t usageType = %zd\n\t usageTypeIndex = %zd\n\t usage = %zd\n\t usagePage = %zd\n}", v4, elementCookie, type, name, -[GCHIDElementSnapshot usageType](self, "usageType"), -[GCHIDElementSnapshot usageTypeIndex](self, "usageTypeIndex"), -[GCHIDElementSnapshot usage](self, "usage"), -[GCHIDElementSnapshot usagePage](self, "usagePage")];
 
   return v8;
 }

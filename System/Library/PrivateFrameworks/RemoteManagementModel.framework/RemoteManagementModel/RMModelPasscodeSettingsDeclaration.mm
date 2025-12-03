@@ -1,14 +1,14 @@
 @interface RMModelPasscodeSettingsDeclaration
 + (NSSet)allowedPayloadKeys;
 + (id)assetTypes;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3;
-+ (id)buildWithIdentifier:(id)a3 requirePasscode:(id)a4 requireAlphanumericPasscode:(id)a5 requireComplexPasscode:(id)a6 minimumLength:(id)a7 minimumComplexCharacters:(id)a8 maximumFailedAttempts:(id)a9 failedAttemptsResetInMinutes:(id)a10 maximumGracePeriodInMinutes:(id)a11 maximumInactivityInMinutes:(id)a12 maximumPasscodeAgeInDays:(id)a13 passcodeReuseLimit:(id)a14 changeAtNextAuth:(id)a15 customRegex:(id)a16;
-+ (id)combineConfigurations:(id)a3;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier;
++ (id)buildWithIdentifier:(id)identifier requirePasscode:(id)passcode requireAlphanumericPasscode:(id)alphanumericPasscode requireComplexPasscode:(id)complexPasscode minimumLength:(id)length minimumComplexCharacters:(id)characters maximumFailedAttempts:(id)attempts failedAttemptsResetInMinutes:(id)self0 maximumGracePeriodInMinutes:(id)self1 maximumInactivityInMinutes:(id)self2 maximumPasscodeAgeInDays:(id)self3 passcodeReuseLimit:(id)self4 changeAtNextAuth:(id)self5 customRegex:(id)self6;
++ (id)combineConfigurations:(id)configurations;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
-- (void)combineWithOther:(id)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
+- (void)combineWithOther:(id)other;
 @end
 
 @implementation RMModelPasscodeSettingsDeclaration
@@ -45,42 +45,42 @@
   return v2;
 }
 
-+ (id)buildWithIdentifier:(id)a3 requirePasscode:(id)a4 requireAlphanumericPasscode:(id)a5 requireComplexPasscode:(id)a6 minimumLength:(id)a7 minimumComplexCharacters:(id)a8 maximumFailedAttempts:(id)a9 failedAttemptsResetInMinutes:(id)a10 maximumGracePeriodInMinutes:(id)a11 maximumInactivityInMinutes:(id)a12 maximumPasscodeAgeInDays:(id)a13 passcodeReuseLimit:(id)a14 changeAtNextAuth:(id)a15 customRegex:(id)a16
++ (id)buildWithIdentifier:(id)identifier requirePasscode:(id)passcode requireAlphanumericPasscode:(id)alphanumericPasscode requireComplexPasscode:(id)complexPasscode minimumLength:(id)length minimumComplexCharacters:(id)characters maximumFailedAttempts:(id)attempts failedAttemptsResetInMinutes:(id)self0 maximumGracePeriodInMinutes:(id)self1 maximumInactivityInMinutes:(id)self2 maximumPasscodeAgeInDays:(id)self3 passcodeReuseLimit:(id)self4 changeAtNextAuth:(id)self5 customRegex:(id)self6
 {
-  v17 = a3;
-  v46 = a16;
-  v45 = a15;
-  v44 = a14;
-  v43 = a13;
-  v42 = a12;
-  v18 = a11;
-  v41 = a10;
-  v19 = a9;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
+  identifierCopy = identifier;
+  regexCopy = regex;
+  authCopy = auth;
+  limitCopy = limit;
+  daysCopy = days;
+  inactivityInMinutesCopy = inactivityInMinutes;
+  inMinutesCopy = inMinutes;
+  minutesCopy = minutes;
+  attemptsCopy = attempts;
+  charactersCopy = characters;
+  lengthCopy = length;
+  complexPasscodeCopy = complexPasscode;
+  alphanumericPasscodeCopy = alphanumericPasscode;
+  passcodeCopy = passcode;
   v25 = objc_opt_new();
   [v25 setDeclarationType:@"com.apple.configuration.passcode.settings"];
-  if (v17)
+  if (identifierCopy)
   {
-    [v25 setDeclarationIdentifier:v17];
+    [v25 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v26 = [MEMORY[0x277CCAD78] UUID];
-    v27 = [v26 UUIDString];
-    [v25 setDeclarationIdentifier:v27];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v25 setDeclarationIdentifier:uUIDString];
 
-    v17 = 0;
+    identifierCopy = 0;
   }
 
   v28 = MEMORY[0x277CBEC28];
-  if (v24)
+  if (passcodeCopy)
   {
-    v29 = v24;
+    v29 = passcodeCopy;
   }
 
   else
@@ -90,9 +90,9 @@
 
   [v25 setPayloadRequirePasscode:v29];
 
-  if (v23)
+  if (alphanumericPasscodeCopy)
   {
-    v30 = v23;
+    v30 = alphanumericPasscodeCopy;
   }
 
   else
@@ -102,9 +102,9 @@
 
   [v25 setPayloadRequireAlphanumericPasscode:v30];
 
-  if (v22)
+  if (complexPasscodeCopy)
   {
-    v31 = v22;
+    v31 = complexPasscodeCopy;
   }
 
   else
@@ -114,9 +114,9 @@
 
   [v25 setPayloadRequireComplexPasscode:v31];
 
-  if (v21)
+  if (lengthCopy)
   {
-    v32 = v21;
+    v32 = lengthCopy;
   }
 
   else
@@ -126,9 +126,9 @@
 
   [v25 setPayloadMinimumLength:v32];
 
-  if (v20)
+  if (charactersCopy)
   {
-    v33 = v20;
+    v33 = charactersCopy;
   }
 
   else
@@ -138,9 +138,9 @@
 
   [v25 setPayloadMinimumComplexCharacters:v33];
 
-  if (v19)
+  if (attemptsCopy)
   {
-    v34 = v19;
+    v34 = attemptsCopy;
   }
 
   else
@@ -150,16 +150,16 @@
 
   [v25 setPayloadMaximumFailedAttempts:v34];
 
-  [v25 setPayloadFailedAttemptsResetInMinutes:v41];
-  [v25 setPayloadMaximumGracePeriodInMinutes:v18];
+  [v25 setPayloadFailedAttemptsResetInMinutes:minutesCopy];
+  [v25 setPayloadMaximumGracePeriodInMinutes:inMinutesCopy];
 
-  [v25 setPayloadMaximumInactivityInMinutes:v42];
-  [v25 setPayloadMaximumPasscodeAgeInDays:v43];
+  [v25 setPayloadMaximumInactivityInMinutes:inactivityInMinutesCopy];
+  [v25 setPayloadMaximumPasscodeAgeInDays:daysCopy];
 
-  [v25 setPayloadPasscodeReuseLimit:v44];
-  if (v45)
+  [v25 setPayloadPasscodeReuseLimit:limitCopy];
+  if (authCopy)
   {
-    v35 = v45;
+    v35 = authCopy;
   }
 
   else
@@ -169,27 +169,27 @@
 
   [v25 setPayloadChangeAtNextAuth:v35];
 
-  [v25 setPayloadCustomRegex:v46];
+  [v25 setPayloadCustomRegex:regexCopy];
   [v25 updateServerToken];
 
   return v25;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_new();
   [v4 setDeclarationType:@"com.apple.configuration.passcode.settings"];
-  if (v3)
+  if (identifierCopy)
   {
-    [v4 setDeclarationIdentifier:v3];
+    [v4 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCAD78] UUID];
-    v6 = [v5 UUIDString];
-    [v4 setDeclarationIdentifier:v6];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v4 setDeclarationIdentifier:uUIDString];
   }
 
   [v4 updateServerToken];
@@ -197,16 +197,16 @@
   return v4;
 }
 
-+ (id)combineConfigurations:(id)a3
++ (id)combineConfigurations:(id)configurations
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  configurationsCopy = configurations;
   v4 = objc_opt_new();
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = configurationsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -273,12 +273,12 @@
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v9 = MEMORY[0x277CBEB58];
-  v10 = [v8 allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys = [dictionaryCopy allKeys];
+  v11 = [v9 setWithArray:allKeys];
 
   v12 = +[RMModelPasscodeSettingsDeclaration allowedPayloadKeys];
   [v11 minusSet:v12];
@@ -286,10 +286,10 @@
   v13 = [v11 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v13];
 
-  if ([(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"RequirePasscode" forKeyPath:@"payloadRequirePasscode" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"RequireAlphanumericPasscode" forKeyPath:@"payloadRequireAlphanumericPasscode" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"RequireComplexPasscode" forKeyPath:@"payloadRequireComplexPasscode" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:v8 usingKey:@"MinimumLength" forKeyPath:@"payloadMinimumLength" isRequired:0 defaultValue:&unk_28746B798 error:a5]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:v8 usingKey:@"MinimumComplexCharacters" forKeyPath:@"payloadMinimumComplexCharacters" isRequired:0 defaultValue:&unk_28746B798 error:a5]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:v8 usingKey:@"MaximumFailedAttempts" forKeyPath:@"payloadMaximumFailedAttempts" isRequired:0 defaultValue:&unk_28746B7B0 error:a5]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:v8 usingKey:@"FailedAttemptsResetInMinutes" forKeyPath:@"payloadFailedAttemptsResetInMinutes" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:v8 usingKey:@"MaximumGracePeriodInMinutes" forKeyPath:@"payloadMaximumGracePeriodInMinutes" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:v8 usingKey:@"MaximumInactivityInMinutes" forKeyPath:@"payloadMaximumInactivityInMinutes" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:v8 usingKey:@"MaximumPasscodeAgeInDays" forKeyPath:@"payloadMaximumPasscodeAgeInDays" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:v8 usingKey:@"PasscodeReuseLimit" forKeyPath:@"payloadPasscodeReuseLimit" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"ChangeAtNextAuth" forKeyPath:@"payloadChangeAtNextAuth" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5])
+  if ([(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"RequirePasscode" forKeyPath:@"payloadRequirePasscode" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"RequireAlphanumericPasscode" forKeyPath:@"payloadRequireAlphanumericPasscode" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"RequireComplexPasscode" forKeyPath:@"payloadRequireComplexPasscode" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"MinimumLength" forKeyPath:@"payloadMinimumLength" isRequired:0 defaultValue:&unk_28746B798 error:error]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"MinimumComplexCharacters" forKeyPath:@"payloadMinimumComplexCharacters" isRequired:0 defaultValue:&unk_28746B798 error:error]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"MaximumFailedAttempts" forKeyPath:@"payloadMaximumFailedAttempts" isRequired:0 defaultValue:&unk_28746B7B0 error:error]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"FailedAttemptsResetInMinutes" forKeyPath:@"payloadFailedAttemptsResetInMinutes" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"MaximumGracePeriodInMinutes" forKeyPath:@"payloadMaximumGracePeriodInMinutes" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"MaximumInactivityInMinutes" forKeyPath:@"payloadMaximumInactivityInMinutes" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"MaximumPasscodeAgeInDays" forKeyPath:@"payloadMaximumPasscodeAgeInDays" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"PasscodeReuseLimit" forKeyPath:@"payloadPasscodeReuseLimit" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"ChangeAtNextAuth" forKeyPath:@"payloadChangeAtNextAuth" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error])
   {
-    LOWORD(v16) = a4;
-    v14 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"CustomRegex" forKeyPath:@"payloadCustomRegex" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v16 error:a5];
+    LOWORD(v16) = type;
+    v14 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"CustomRegex" forKeyPath:@"payloadCustomRegex" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v16 error:error];
   }
 
   else
@@ -300,134 +300,134 @@
   return v14;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v5 = objc_opt_new();
-  v6 = [(RMModelPasscodeSettingsDeclaration *)self payloadRequirePasscode];
+  payloadRequirePasscode = [(RMModelPasscodeSettingsDeclaration *)self payloadRequirePasscode];
   v7 = MEMORY[0x277CBEC28];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"RequirePasscode" value:v6 isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"RequirePasscode" value:payloadRequirePasscode isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
 
-  v8 = [(RMModelPasscodeSettingsDeclaration *)self payloadRequireAlphanumericPasscode];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"RequireAlphanumericPasscode" value:v8 isRequired:0 defaultValue:v7];
+  payloadRequireAlphanumericPasscode = [(RMModelPasscodeSettingsDeclaration *)self payloadRequireAlphanumericPasscode];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"RequireAlphanumericPasscode" value:payloadRequireAlphanumericPasscode isRequired:0 defaultValue:v7];
 
-  v9 = [(RMModelPasscodeSettingsDeclaration *)self payloadRequireComplexPasscode];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"RequireComplexPasscode" value:v9 isRequired:0 defaultValue:v7];
+  payloadRequireComplexPasscode = [(RMModelPasscodeSettingsDeclaration *)self payloadRequireComplexPasscode];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"RequireComplexPasscode" value:payloadRequireComplexPasscode isRequired:0 defaultValue:v7];
 
-  v10 = [(RMModelPasscodeSettingsDeclaration *)self payloadMinimumLength];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"MinimumLength" value:v10 isRequired:0 defaultValue:&unk_28746B798];
+  payloadMinimumLength = [(RMModelPasscodeSettingsDeclaration *)self payloadMinimumLength];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"MinimumLength" value:payloadMinimumLength isRequired:0 defaultValue:&unk_28746B798];
 
-  v11 = [(RMModelPasscodeSettingsDeclaration *)self payloadMinimumComplexCharacters];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"MinimumComplexCharacters" value:v11 isRequired:0 defaultValue:&unk_28746B798];
+  payloadMinimumComplexCharacters = [(RMModelPasscodeSettingsDeclaration *)self payloadMinimumComplexCharacters];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"MinimumComplexCharacters" value:payloadMinimumComplexCharacters isRequired:0 defaultValue:&unk_28746B798];
 
-  v12 = [(RMModelPasscodeSettingsDeclaration *)self payloadMaximumFailedAttempts];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"MaximumFailedAttempts" value:v12 isRequired:0 defaultValue:&unk_28746B7B0];
+  payloadMaximumFailedAttempts = [(RMModelPasscodeSettingsDeclaration *)self payloadMaximumFailedAttempts];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"MaximumFailedAttempts" value:payloadMaximumFailedAttempts isRequired:0 defaultValue:&unk_28746B7B0];
 
-  v13 = [(RMModelPasscodeSettingsDeclaration *)self payloadFailedAttemptsResetInMinutes];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"FailedAttemptsResetInMinutes" value:v13 isRequired:0 defaultValue:0];
+  payloadFailedAttemptsResetInMinutes = [(RMModelPasscodeSettingsDeclaration *)self payloadFailedAttemptsResetInMinutes];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"FailedAttemptsResetInMinutes" value:payloadFailedAttemptsResetInMinutes isRequired:0 defaultValue:0];
 
-  v14 = [(RMModelPasscodeSettingsDeclaration *)self payloadMaximumGracePeriodInMinutes];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"MaximumGracePeriodInMinutes" value:v14 isRequired:0 defaultValue:0];
+  payloadMaximumGracePeriodInMinutes = [(RMModelPasscodeSettingsDeclaration *)self payloadMaximumGracePeriodInMinutes];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"MaximumGracePeriodInMinutes" value:payloadMaximumGracePeriodInMinutes isRequired:0 defaultValue:0];
 
-  v15 = [(RMModelPasscodeSettingsDeclaration *)self payloadMaximumInactivityInMinutes];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"MaximumInactivityInMinutes" value:v15 isRequired:0 defaultValue:0];
+  payloadMaximumInactivityInMinutes = [(RMModelPasscodeSettingsDeclaration *)self payloadMaximumInactivityInMinutes];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"MaximumInactivityInMinutes" value:payloadMaximumInactivityInMinutes isRequired:0 defaultValue:0];
 
-  v16 = [(RMModelPasscodeSettingsDeclaration *)self payloadMaximumPasscodeAgeInDays];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"MaximumPasscodeAgeInDays" value:v16 isRequired:0 defaultValue:0];
+  payloadMaximumPasscodeAgeInDays = [(RMModelPasscodeSettingsDeclaration *)self payloadMaximumPasscodeAgeInDays];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"MaximumPasscodeAgeInDays" value:payloadMaximumPasscodeAgeInDays isRequired:0 defaultValue:0];
 
-  v17 = [(RMModelPasscodeSettingsDeclaration *)self payloadPasscodeReuseLimit];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"PasscodeReuseLimit" value:v17 isRequired:0 defaultValue:0];
+  payloadPasscodeReuseLimit = [(RMModelPasscodeSettingsDeclaration *)self payloadPasscodeReuseLimit];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"PasscodeReuseLimit" value:payloadPasscodeReuseLimit isRequired:0 defaultValue:0];
 
-  v18 = [(RMModelPasscodeSettingsDeclaration *)self payloadChangeAtNextAuth];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"ChangeAtNextAuth" value:v18 isRequired:0 defaultValue:v7];
+  payloadChangeAtNextAuth = [(RMModelPasscodeSettingsDeclaration *)self payloadChangeAtNextAuth];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"ChangeAtNextAuth" value:payloadChangeAtNextAuth isRequired:0 defaultValue:v7];
 
-  v19 = [(RMModelPasscodeSettingsDeclaration *)self payloadCustomRegex];
+  payloadCustomRegex = [(RMModelPasscodeSettingsDeclaration *)self payloadCustomRegex];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __63__RMModelPasscodeSettingsDeclaration_serializePayloadWithType___block_invoke;
   v22[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v23 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"CustomRegex" value:v19 dictSerializer:v22 isRequired:0 defaultValue:0];
+  typeCopy = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"CustomRegex" value:payloadCustomRegex dictSerializer:v22 isRequired:0 defaultValue:0];
 
   v20 = [v5 copy];
 
   return v20;
 }
 
-- (void)combineWithOther:(id)a3
+- (void)combineWithOther:(id)other
 {
-  v4 = a3;
-  v5 = [(RMModelPasscodeSettingsDeclaration *)self payloadRequirePasscode];
-  v6 = [v4 payloadRequirePasscode];
-  v7 = [RMModelConfigurationBase combineBooleanOr:v5 other:v6];
+  otherCopy = other;
+  payloadRequirePasscode = [(RMModelPasscodeSettingsDeclaration *)self payloadRequirePasscode];
+  payloadRequirePasscode2 = [otherCopy payloadRequirePasscode];
+  v7 = [RMModelConfigurationBase combineBooleanOr:payloadRequirePasscode other:payloadRequirePasscode2];
   [(RMModelPasscodeSettingsDeclaration *)self setPayloadRequirePasscode:v7];
 
-  v8 = [(RMModelPasscodeSettingsDeclaration *)self payloadRequireAlphanumericPasscode];
-  v9 = [v4 payloadRequireAlphanumericPasscode];
-  v10 = [RMModelConfigurationBase combineBooleanOr:v8 other:v9];
+  payloadRequireAlphanumericPasscode = [(RMModelPasscodeSettingsDeclaration *)self payloadRequireAlphanumericPasscode];
+  payloadRequireAlphanumericPasscode2 = [otherCopy payloadRequireAlphanumericPasscode];
+  v10 = [RMModelConfigurationBase combineBooleanOr:payloadRequireAlphanumericPasscode other:payloadRequireAlphanumericPasscode2];
   [(RMModelPasscodeSettingsDeclaration *)self setPayloadRequireAlphanumericPasscode:v10];
 
-  v11 = [(RMModelPasscodeSettingsDeclaration *)self payloadRequireComplexPasscode];
-  v12 = [v4 payloadRequireComplexPasscode];
-  v13 = [RMModelConfigurationBase combineBooleanOr:v11 other:v12];
+  payloadRequireComplexPasscode = [(RMModelPasscodeSettingsDeclaration *)self payloadRequireComplexPasscode];
+  payloadRequireComplexPasscode2 = [otherCopy payloadRequireComplexPasscode];
+  v13 = [RMModelConfigurationBase combineBooleanOr:payloadRequireComplexPasscode other:payloadRequireComplexPasscode2];
   [(RMModelPasscodeSettingsDeclaration *)self setPayloadRequireComplexPasscode:v13];
 
-  v14 = [(RMModelPasscodeSettingsDeclaration *)self payloadMinimumLength];
-  v15 = [v4 payloadMinimumLength];
-  v16 = [RMModelConfigurationBase combineNumberMax:v14 other:v15];
+  payloadMinimumLength = [(RMModelPasscodeSettingsDeclaration *)self payloadMinimumLength];
+  payloadMinimumLength2 = [otherCopy payloadMinimumLength];
+  v16 = [RMModelConfigurationBase combineNumberMax:payloadMinimumLength other:payloadMinimumLength2];
   [(RMModelPasscodeSettingsDeclaration *)self setPayloadMinimumLength:v16];
 
-  v17 = [(RMModelPasscodeSettingsDeclaration *)self payloadMinimumComplexCharacters];
-  v18 = [v4 payloadMinimumComplexCharacters];
-  v19 = [RMModelConfigurationBase combineNumberMax:v17 other:v18];
+  payloadMinimumComplexCharacters = [(RMModelPasscodeSettingsDeclaration *)self payloadMinimumComplexCharacters];
+  payloadMinimumComplexCharacters2 = [otherCopy payloadMinimumComplexCharacters];
+  v19 = [RMModelConfigurationBase combineNumberMax:payloadMinimumComplexCharacters other:payloadMinimumComplexCharacters2];
   [(RMModelPasscodeSettingsDeclaration *)self setPayloadMinimumComplexCharacters:v19];
 
-  v20 = [(RMModelPasscodeSettingsDeclaration *)self payloadMaximumFailedAttempts];
-  v21 = [v4 payloadMaximumFailedAttempts];
-  v22 = [RMModelConfigurationBase combineNumberMin:v20 other:v21];
+  payloadMaximumFailedAttempts = [(RMModelPasscodeSettingsDeclaration *)self payloadMaximumFailedAttempts];
+  payloadMaximumFailedAttempts2 = [otherCopy payloadMaximumFailedAttempts];
+  v22 = [RMModelConfigurationBase combineNumberMin:payloadMaximumFailedAttempts other:payloadMaximumFailedAttempts2];
   [(RMModelPasscodeSettingsDeclaration *)self setPayloadMaximumFailedAttempts:v22];
 
-  v23 = [(RMModelPasscodeSettingsDeclaration *)self payloadFailedAttemptsResetInMinutes];
-  v24 = [v4 payloadFailedAttemptsResetInMinutes];
-  v25 = [RMModelConfigurationBase combineNumberMin:v23 other:v24];
+  payloadFailedAttemptsResetInMinutes = [(RMModelPasscodeSettingsDeclaration *)self payloadFailedAttemptsResetInMinutes];
+  payloadFailedAttemptsResetInMinutes2 = [otherCopy payloadFailedAttemptsResetInMinutes];
+  v25 = [RMModelConfigurationBase combineNumberMin:payloadFailedAttemptsResetInMinutes other:payloadFailedAttemptsResetInMinutes2];
   [(RMModelPasscodeSettingsDeclaration *)self setPayloadFailedAttemptsResetInMinutes:v25];
 
-  v26 = [(RMModelPasscodeSettingsDeclaration *)self payloadMaximumGracePeriodInMinutes];
-  v27 = [v4 payloadMaximumGracePeriodInMinutes];
-  v28 = [RMModelConfigurationBase combineNumberMin:v26 other:v27];
+  payloadMaximumGracePeriodInMinutes = [(RMModelPasscodeSettingsDeclaration *)self payloadMaximumGracePeriodInMinutes];
+  payloadMaximumGracePeriodInMinutes2 = [otherCopy payloadMaximumGracePeriodInMinutes];
+  v28 = [RMModelConfigurationBase combineNumberMin:payloadMaximumGracePeriodInMinutes other:payloadMaximumGracePeriodInMinutes2];
   [(RMModelPasscodeSettingsDeclaration *)self setPayloadMaximumGracePeriodInMinutes:v28];
 
-  v29 = [(RMModelPasscodeSettingsDeclaration *)self payloadMaximumInactivityInMinutes];
-  v30 = [v4 payloadMaximumInactivityInMinutes];
-  v31 = [RMModelConfigurationBase combineNumberMin:v29 other:v30];
+  payloadMaximumInactivityInMinutes = [(RMModelPasscodeSettingsDeclaration *)self payloadMaximumInactivityInMinutes];
+  payloadMaximumInactivityInMinutes2 = [otherCopy payloadMaximumInactivityInMinutes];
+  v31 = [RMModelConfigurationBase combineNumberMin:payloadMaximumInactivityInMinutes other:payloadMaximumInactivityInMinutes2];
   [(RMModelPasscodeSettingsDeclaration *)self setPayloadMaximumInactivityInMinutes:v31];
 
-  v32 = [(RMModelPasscodeSettingsDeclaration *)self payloadMaximumPasscodeAgeInDays];
-  v33 = [v4 payloadMaximumPasscodeAgeInDays];
-  v34 = [RMModelConfigurationBase combineNumberMin:v32 other:v33];
+  payloadMaximumPasscodeAgeInDays = [(RMModelPasscodeSettingsDeclaration *)self payloadMaximumPasscodeAgeInDays];
+  payloadMaximumPasscodeAgeInDays2 = [otherCopy payloadMaximumPasscodeAgeInDays];
+  v34 = [RMModelConfigurationBase combineNumberMin:payloadMaximumPasscodeAgeInDays other:payloadMaximumPasscodeAgeInDays2];
   [(RMModelPasscodeSettingsDeclaration *)self setPayloadMaximumPasscodeAgeInDays:v34];
 
-  v35 = [(RMModelPasscodeSettingsDeclaration *)self payloadPasscodeReuseLimit];
-  v36 = [v4 payloadPasscodeReuseLimit];
-  v37 = [RMModelConfigurationBase combineNumberMin:v35 other:v36];
+  payloadPasscodeReuseLimit = [(RMModelPasscodeSettingsDeclaration *)self payloadPasscodeReuseLimit];
+  payloadPasscodeReuseLimit2 = [otherCopy payloadPasscodeReuseLimit];
+  v37 = [RMModelConfigurationBase combineNumberMin:payloadPasscodeReuseLimit other:payloadPasscodeReuseLimit2];
   [(RMModelPasscodeSettingsDeclaration *)self setPayloadPasscodeReuseLimit:v37];
 
-  v38 = [(RMModelPasscodeSettingsDeclaration *)self payloadChangeAtNextAuth];
-  v39 = [v4 payloadChangeAtNextAuth];
-  v40 = [RMModelConfigurationBase combineBooleanOr:v38 other:v39];
+  payloadChangeAtNextAuth = [(RMModelPasscodeSettingsDeclaration *)self payloadChangeAtNextAuth];
+  payloadChangeAtNextAuth2 = [otherCopy payloadChangeAtNextAuth];
+  v40 = [RMModelConfigurationBase combineBooleanOr:payloadChangeAtNextAuth other:payloadChangeAtNextAuth2];
   [(RMModelPasscodeSettingsDeclaration *)self setPayloadChangeAtNextAuth:v40];
 
-  v43 = [(RMModelPasscodeSettingsDeclaration *)self payloadCustomRegex];
-  v41 = [v4 payloadCustomRegex];
+  payloadCustomRegex = [(RMModelPasscodeSettingsDeclaration *)self payloadCustomRegex];
+  payloadCustomRegex2 = [otherCopy payloadCustomRegex];
 
-  v42 = [RMModelConfigurationBase combineDictionary:v43 other:v41];
+  v42 = [RMModelConfigurationBase combineDictionary:payloadCustomRegex other:payloadCustomRegex2];
   [(RMModelPasscodeSettingsDeclaration *)self setPayloadCustomRegex:v42];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v32.receiver = self;
   v32.super_class = RMModelPasscodeSettingsDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v32 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v32 copyWithZone:zone];
   v5 = [(NSNumber *)self->_payloadRequirePasscode copy];
   v6 = v4[6];
   v4[6] = v5;

@@ -3,13 +3,13 @@
 - (CGSize)_interpageSpacingForPaging;
 - (double)_cardWidth;
 - (double)_switcherCardScale;
-- (double)leadingOffsetForIndex:(unint64_t)a3 displayItemsCount:(unint64_t)a4 scrollProgress:(double)a5;
-- (double)opacityForIndex:(unint64_t)a3 scrollProgress:(double)a4;
-- (double)scrollProgressForIndex:(unint64_t)a3;
-- (double)scrollProgressForIndex:(unint64_t)a3 displayItemsCount:(unint64_t)a4 frameOrigin:(double)a5;
-- (double)titleOpacityForIndex:(unint64_t)a3 scrollProgress:(double)a4;
+- (double)leadingOffsetForIndex:(unint64_t)index displayItemsCount:(unint64_t)count scrollProgress:(double)progress;
+- (double)opacityForIndex:(unint64_t)index scrollProgress:(double)progress;
+- (double)scrollProgressForIndex:(unint64_t)index;
+- (double)scrollProgressForIndex:(unint64_t)index displayItemsCount:(unint64_t)count frameOrigin:(double)origin;
+- (double)titleOpacityForIndex:(unint64_t)index scrollProgress:(double)progress;
 - (id)scrollViewAttributes;
-- (unint64_t)indexForScrollProgress:(double)a3 displayItemsCount:(unint64_t)a4 frameOrigin:(double)a5;
+- (unint64_t)indexForScrollProgress:(double)progress displayItemsCount:(unint64_t)count frameOrigin:(double)origin;
 @end
 
 @implementation SBReduceMotionDeckSwitcherModifier
@@ -18,8 +18,8 @@
 {
   v6.receiver = self;
   v6.super_class = SBReduceMotionDeckSwitcherModifier;
-  v3 = [(SBDeckSwitcherModifier *)&v6 scrollViewAttributes];
-  v4 = [v3 mutableCopy];
+  scrollViewAttributes = [(SBDeckSwitcherModifier *)&v6 scrollViewAttributes];
+  v4 = [scrollViewAttributes mutableCopy];
 
   [v4 setScrollViewPagingEnabled:1];
   [(SBReduceMotionDeckSwitcherModifier *)self _interpageSpacingForPaging];
@@ -62,56 +62,56 @@
   return result;
 }
 
-- (double)titleOpacityForIndex:(unint64_t)a3 scrollProgress:(double)a4
+- (double)titleOpacityForIndex:(unint64_t)index scrollProgress:(double)progress
 {
   [(SBReduceMotionDeckSwitcherModifier *)self scrollProgressForIndex:?];
   v8 = v7;
   v9 = 1.0;
-  if (a3 && v8 > a4)
+  if (index && v8 > progress)
   {
-    [(SBReduceMotionDeckSwitcherModifier *)self scrollProgressForIndex:a3 - 1, 1.0];
-    v9 = (a4 - v10) / (v8 - v10) + 0.0;
+    [(SBReduceMotionDeckSwitcherModifier *)self scrollProgressForIndex:index - 1, 1.0];
+    v9 = (progress - v10) / (v8 - v10) + 0.0;
   }
 
   return fmin(fmax(v9, 0.0), 1.0);
 }
 
-- (double)opacityForIndex:(unint64_t)a3 scrollProgress:(double)a4
+- (double)opacityForIndex:(unint64_t)index scrollProgress:(double)progress
 {
   v5 = 1.0;
-  v6 = a3 >= 2;
-  v7 = a3 - 2;
+  v6 = index >= 2;
+  v7 = index - 2;
   if (v6)
   {
     [(SBReduceMotionDeckSwitcherModifier *)self scrollProgressForIndex:v7, 1.0];
     v10 = v9;
-    v11 = [(SBDeckSwitcherModifier *)self numberOfItems];
-    v5 = (a4 - (v10 + -1.0 / v11)) / (v10 - (v10 + -1.0 / v11)) + 0.0;
+    numberOfItems = [(SBDeckSwitcherModifier *)self numberOfItems];
+    v5 = (progress - (v10 + -1.0 / numberOfItems)) / (v10 - (v10 + -1.0 / numberOfItems)) + 0.0;
   }
 
   return fmin(fmax(v5, 0.0), 1.0);
 }
 
-- (double)scrollProgressForIndex:(unint64_t)a3
+- (double)scrollProgressForIndex:(unint64_t)index
 {
-  v5 = [(SBDeckSwitcherModifier *)self numberOfItems];
+  numberOfItems = [(SBDeckSwitcherModifier *)self numberOfItems];
   [(SBDeckSwitcherModifier *)self desiredXOriginForQuantizedTopPage];
 
-  [(SBReduceMotionDeckSwitcherModifier *)self scrollProgressForIndex:a3 displayItemsCount:v5 frameOrigin:?];
+  [(SBReduceMotionDeckSwitcherModifier *)self scrollProgressForIndex:index displayItemsCount:numberOfItems frameOrigin:?];
   return result;
 }
 
-- (double)scrollProgressForIndex:(unint64_t)a3 displayItemsCount:(unint64_t)a4 frameOrigin:(double)a5
+- (double)scrollProgressForIndex:(unint64_t)index displayItemsCount:(unint64_t)count frameOrigin:(double)origin
 {
   [(SBReduceMotionDeckSwitcherModifier *)self _cardWidth];
   v9 = v8;
   [(SBDeckSwitcherModifier *)self scrollRange];
-  return 1.0 - (v9 + v9 * -0.2) * (~a3 + a4) / v10;
+  return 1.0 - (v9 + v9 * -0.2) * (~index + count) / v10;
 }
 
-- (unint64_t)indexForScrollProgress:(double)a3 displayItemsCount:(unint64_t)a4 frameOrigin:(double)a5
+- (unint64_t)indexForScrollProgress:(double)progress displayItemsCount:(unint64_t)count frameOrigin:(double)origin
 {
-  v8 = [(SBReduceMotionDeckSwitcherModifier *)self appLayouts:a3];
+  v8 = [(SBReduceMotionDeckSwitcherModifier *)self appLayouts:progress];
   v9 = [v8 count];
 
   if (!v9)
@@ -131,7 +131,7 @@
 
   else
   {
-    v15 = (a4 - (1.0 - a3) * v13 / v14 + 1.0);
+    v15 = (count - (1.0 - progress) * v13 / v14 + 1.0);
   }
 
   if (v9 - 1 >= v15)
@@ -145,12 +145,12 @@
   }
 }
 
-- (double)leadingOffsetForIndex:(unint64_t)a3 displayItemsCount:(unint64_t)a4 scrollProgress:(double)a5
+- (double)leadingOffsetForIndex:(unint64_t)index displayItemsCount:(unint64_t)count scrollProgress:(double)progress
 {
   [(SBReduceMotionDeckSwitcherModifier *)self _cardWidth];
   v10 = v9;
   [(SBDeckSwitcherModifier *)self scrollRange];
-  v12 = (v10 + v10 * -0.2) * (~a3 + a4) - (1.0 - a5) * v11;
+  v12 = (v10 + v10 * -0.2) * (~index + count) - (1.0 - progress) * v11;
   [(SBReduceMotionDeckSwitcherModifier *)self containerViewBounds];
   x = v19.origin.x;
   y = v19.origin.y;
@@ -174,8 +174,8 @@
 
 - (double)_switcherCardScale
 {
-  v2 = [(SBReduceMotionDeckSwitcherModifier *)self switcherSettings];
-  [v2 deckSwitcherPageScale];
+  switcherSettings = [(SBReduceMotionDeckSwitcherModifier *)self switcherSettings];
+  [switcherSettings deckSwitcherPageScale];
   v4 = v3;
 
   return v4;

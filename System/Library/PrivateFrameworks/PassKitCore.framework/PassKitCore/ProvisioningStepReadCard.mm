@@ -1,6 +1,6 @@
 @interface ProvisioningStepReadCard
 - (_TtC11PassKitCore24ProvisioningStepReadCard)init;
-- (void)tapToProvisionReader:(id)a3 didUpdateWithEvent:(int64_t)a4;
+- (void)tapToProvisionReader:(id)reader didUpdateWithEvent:(int64_t)event;
 @end
 
 @implementation ProvisioningStepReadCard
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)tapToProvisionReader:(id)a3 didUpdateWithEvent:(int64_t)a4
+- (void)tapToProvisionReader:(id)reader didUpdateWithEvent:(int64_t)event
 {
-  v6 = a3;
-  v7 = self;
-  sub_1AD4D3DE4(a4);
+  readerCopy = reader;
+  selfCopy = self;
+  sub_1AD4D3DE4(event);
 }
 
 @end

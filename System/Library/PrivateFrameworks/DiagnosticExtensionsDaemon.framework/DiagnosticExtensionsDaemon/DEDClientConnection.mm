@@ -1,30 +1,30 @@
 @interface DEDClientConnection
-- (DEDClientConnection)initWithCoder:(id)a3;
+- (DEDClientConnection)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DEDClientConnection
 
-- (DEDClientConnection)initWithCoder:(id)a3
+- (DEDClientConnection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = DEDClientConnection;
   v5 = [(DEDClientConnection *)&v7 init];
   if (v5)
   {
-    v5->_pid = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pid"];
+    v5->_pid = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pid"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(DEDClientConnection *)self pid];
-  [v4 encodeObject:v5 forKey:@"pid"];
+  [coderCopy encodeObject:v5 forKey:@"pid"];
 }
 
 - (id)description

@@ -1,19 +1,19 @@
 @interface PKEnhancedMerchantCollectionViewListCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation PKEnhancedMerchantCollectionViewListCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKEnhancedMerchantCollectionViewListCell" hasInstanceMethod:@"detailedDescriptionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKEnhancedMerchantCollectionViewListCell" hasInstanceVariable:@"_listContentView" withType:"UIListContentView"];
-  [v3 validateClass:@"PKEnhancedMerchantCollectionViewListCell" hasInstanceMethod:@"_visibleButtons" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIButton" hasInstanceVariable:@"_targetActions" withType:"NSMutableArray"];
-  [v3 validateClass:@"UIControlTargetAction" hasInstanceVariable:@"_actionHandler" withType:"UIAction"];
-  [v3 validateClass:@"UIAction" hasInstanceVariable:@"_handler" withType:"@?"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKEnhancedMerchantCollectionViewListCell" hasInstanceMethod:@"detailedDescriptionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKEnhancedMerchantCollectionViewListCell" hasInstanceVariable:@"_listContentView" withType:"UIListContentView"];
+  [validationsCopy validateClass:@"PKEnhancedMerchantCollectionViewListCell" hasInstanceMethod:@"_visibleButtons" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIButton" hasInstanceVariable:@"_targetActions" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"UIControlTargetAction" hasInstanceVariable:@"_actionHandler" withType:"UIAction"];
+  [validationsCopy validateClass:@"UIAction" hasInstanceVariable:@"_handler" withType:"@?"];
 }
 
 - (id)accessibilityLabel

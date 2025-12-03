@@ -24,18 +24,18 @@
     brightnessClient = v2->_brightnessClient;
     v2->_brightnessClient = v3;
 
-    v5 = [(CBClient *)v2->_brightnessClient blueLightClient];
+    blueLightClient = [(CBClient *)v2->_brightnessClient blueLightClient];
     v10[0] = MEMORY[0x29EDCA5F8];
     v10[1] = 3221225472;
     v10[2] = __27__AXBBlueLightManager_init__block_invoke;
     v10[3] = &unk_29F2A4DC0;
     v6 = v2;
     v11 = v6;
-    [v5 setStatusNotificationBlock:v10];
+    [blueLightClient setStatusNotificationBlock:v10];
 
-    v7 = [(AXBBlueLightManager *)v6 supportsBlueLightReduction];
-    v8 = [MEMORY[0x29EDBDFA0] sharedInstance];
-    [v8 setSupportsAdvancedDisplayFilters:v7];
+    supportsBlueLightReduction = [(AXBBlueLightManager *)v6 supportsBlueLightReduction];
+    mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+    [mEMORY[0x29EDBDFA0] setSupportsAdvancedDisplayFilters:supportsBlueLightReduction];
   }
 
   return v2;
@@ -60,8 +60,8 @@ void __27__AXBBlueLightManager_init__block_invoke(uint64_t a1, __int128 *a2)
 
 - (void)dealloc
 {
-  v3 = [(CBClient *)self->_brightnessClient blueLightClient];
-  [v3 setStatusNotificationBlock:0];
+  blueLightClient = [(CBClient *)self->_brightnessClient blueLightClient];
+  [blueLightClient setStatusNotificationBlock:0];
 
   v4.receiver = self;
   v4.super_class = AXBBlueLightManager;
@@ -89,10 +89,10 @@ uint64_t __36__AXBBlueLightManager_sharedManager__block_invoke()
 
 - (BOOL)supportsBlueLightReduction
 {
-  v2 = [(CBClient *)self->_brightnessClient blueLightClient];
-  v3 = [v2 supported];
+  blueLightClient = [(CBClient *)self->_brightnessClient blueLightClient];
+  supported = [blueLightClient supported];
 
-  return v3;
+  return supported;
 }
 
 - (void)disableBrightnessFilters
@@ -104,22 +104,22 @@ uint64_t __36__AXBBlueLightManager_sharedManager__block_invoke()
 
     [MEMORY[0x29EDBA070] numberWithUnsignedInt:DWORD1(v9)];
     _AXSSetCacheForBrightnessFilter();
-    v4 = [(CBClient *)self->_brightnessClient blueLightClient];
-    [v4 setMode:0];
+    blueLightClient = [(CBClient *)self->_brightnessClient blueLightClient];
+    [blueLightClient setMode:0];
 
-    v5 = [(CBClient *)self->_brightnessClient blueLightClient];
-    [v5 setEnabled:0];
+    blueLightClient2 = [(CBClient *)self->_brightnessClient blueLightClient];
+    [blueLightClient2 setEnabled:0];
   }
 
   if ([(AXBBlueLightManager *)self adaptationEnabled])
   {
     v6 = MEMORY[0x29EDBA070];
-    v7 = [(CBClient *)self->_brightnessClient adaptationClient];
-    [v6 numberWithBool:{objc_msgSend(v7, "getEnabled")}];
+    adaptationClient = [(CBClient *)self->_brightnessClient adaptationClient];
+    [v6 numberWithBool:{objc_msgSend(adaptationClient, "getEnabled")}];
 
     _AXSSetCacheForBrightnessFilter();
-    v8 = [(CBClient *)self->_brightnessClient adaptationClient];
-    [v8 setEnabled:0];
+    adaptationClient2 = [(CBClient *)self->_brightnessClient adaptationClient];
+    [adaptationClient2 setEnabled:0];
   }
 }
 
@@ -135,11 +135,11 @@ uint64_t __36__AXBBlueLightManager_sharedManager__block_invoke()
 
 - (BOOL)blueLightStatusEnabled
 {
-  v3 = [(CBClient *)self->_brightnessClient blueLightClient];
-  v4 = [v3 supported];
+  blueLightClient = [(CBClient *)self->_brightnessClient blueLightClient];
+  supported = [blueLightClient supported];
 
   result = 0;
-  if (v4)
+  if (supported)
   {
     v5 = [(CBClient *)self->_brightnessClient blueLightClient:0];
     [v5 getBlueLightStatus:v7];
@@ -157,38 +157,38 @@ uint64_t __36__AXBBlueLightManager_sharedManager__block_invoke()
 {
   if (!_AXSScreenFilterApplied())
   {
-    v3 = [(CBClient *)self->_brightnessClient blueLightClient];
-    v4 = [v3 supported];
+    blueLightClient = [(CBClient *)self->_brightnessClient blueLightClient];
+    supported = [blueLightClient supported];
 
-    if (v4)
+    if (supported)
     {
       if (![(AXBBlueLightManager *)self blueLightStatusEnabled])
       {
         v5 = _AXSCachedValueForBrightnessFilter();
         if (v5)
         {
-          v6 = [v5 intValue];
-          v7 = [(CBClient *)self->_brightnessClient blueLightClient];
-          [v7 setMode:v6];
+          intValue = [v5 intValue];
+          blueLightClient2 = [(CBClient *)self->_brightnessClient blueLightClient];
+          [blueLightClient2 setMode:intValue];
         }
       }
 
       _AXSSetCacheForBrightnessFilter();
     }
 
-    v8 = [(CBClient *)self->_brightnessClient adaptationClient];
-    v9 = [v8 supported];
+    adaptationClient = [(CBClient *)self->_brightnessClient adaptationClient];
+    supported2 = [adaptationClient supported];
 
-    if (v9)
+    if (supported2)
     {
       if (![(AXBBlueLightManager *)self adaptationEnabled])
       {
         v10 = _AXSCachedValueForBrightnessFilter();
         if (v10)
         {
-          v11 = [v10 BOOLValue];
-          v12 = [(CBClient *)self->_brightnessClient adaptationClient];
-          [v12 setEnabled:v11];
+          bOOLValue = [v10 BOOLValue];
+          adaptationClient2 = [(CBClient *)self->_brightnessClient adaptationClient];
+          [adaptationClient2 setEnabled:bOOLValue];
         }
       }
 
@@ -199,26 +199,26 @@ uint64_t __36__AXBBlueLightManager_sharedManager__block_invoke()
 
 - (BOOL)adaptationEnabled
 {
-  v3 = [(CBClient *)self->_brightnessClient adaptationClient];
-  v4 = [v3 supported];
+  adaptationClient = [(CBClient *)self->_brightnessClient adaptationClient];
+  supported = [adaptationClient supported];
 
-  if (!v4)
+  if (!supported)
   {
     return 0;
   }
 
-  v5 = [(CBClient *)self->_brightnessClient adaptationClient];
-  v6 = [v5 getEnabled];
+  adaptationClient2 = [(CBClient *)self->_brightnessClient adaptationClient];
+  getEnabled = [adaptationClient2 getEnabled];
 
-  return v6;
+  return getEnabled;
 }
 
 - (BOOL)supportsAdaptation
 {
-  v2 = [(CBClient *)self->_brightnessClient adaptationClient];
-  v3 = [v2 supported];
+  adaptationClient = [(CBClient *)self->_brightnessClient adaptationClient];
+  supported = [adaptationClient supported];
 
-  return v3;
+  return supported;
 }
 
 @end

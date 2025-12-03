@@ -1,15 +1,15 @@
 @interface KMFindMySyncDevicesBridge
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4;
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block;
 - (KMFindMySyncDevicesBridge)init;
-- (KMFindMySyncDevicesBridge)initWithDevicesProvider:(id)a3;
+- (KMFindMySyncDevicesBridge)initWithDevicesProvider:(id)provider;
 @end
 
 @implementation KMFindMySyncDevicesBridge
 
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  blockCopy = block;
   v6 = KMLogContextCore;
   if (os_log_type_enabled(KMLogContextCore, OS_LOG_TYPE_INFO))
   {
@@ -56,7 +56,7 @@
 
           v18 = *(*(&v24 + 1) + 8 * i);
           v19 = objc_autoreleasePoolPush();
-          LODWORD(v18) = v5[2](v5, v18);
+          LODWORD(v18) = blockCopy[2](blockCopy, v18);
           objc_autoreleasePoolPop(v19);
           if (!v18)
           {
@@ -106,15 +106,15 @@ LABEL_21:
   return v21;
 }
 
-- (KMFindMySyncDevicesBridge)initWithDevicesProvider:(id)a3
+- (KMFindMySyncDevicesBridge)initWithDevicesProvider:(id)provider
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = KMFindMySyncDevicesBridge;
   v6 = [(KMFindMySyncDevicesBridge *)&v12 init];
   v7 = v6;
-  if (v6 && (objc_storeStrong(&v6->_devicesProvider, a3), !v7->_devicesProvider))
+  if (v6 && (objc_storeStrong(&v6->_devicesProvider, provider), !v7->_devicesProvider))
   {
     v9 = KMLogContextCore;
     if (os_log_type_enabled(KMLogContextCore, OS_LOG_TYPE_ERROR))

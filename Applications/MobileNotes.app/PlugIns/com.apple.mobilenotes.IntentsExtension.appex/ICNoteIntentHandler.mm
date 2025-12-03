@@ -2,11 +2,11 @@
 - (ICLegacyContext)legacyContext;
 - (ICNoteContext)modernContext;
 - (ICRecentNotesCoreDataIndexer)recentNotesIndexer;
-- (id)defaultNoteForNote:(id)a3;
-- (void)handleNote:(id)a3 completion:(id)a4;
-- (void)provideNoteOptionsCollectionForNote:(id)a3 searchTerm:(id)a4 withCompletion:(id)a5;
-- (void)recentNotesWithCompletion:(id)a3;
-- (void)resolveNoteForNote:(id)a3 withCompletion:(id)a4;
+- (id)defaultNoteForNote:(id)note;
+- (void)handleNote:(id)note completion:(id)completion;
+- (void)provideNoteOptionsCollectionForNote:(id)note searchTerm:(id)term withCompletion:(id)completion;
+- (void)recentNotesWithCompletion:(id)completion;
+- (void)resolveNoteForNote:(id)note withCompletion:(id)completion;
 @end
 
 @implementation ICNoteIntentHandler
@@ -49,22 +49,22 @@
 {
   if (!self->_recentNotesIndexer)
   {
-    v5 = [(ICNoteIntentHandler *)self legacyContext];
-    v6 = [v5 managedObjectContext];
-    if (v6)
+    legacyContext = [(ICNoteIntentHandler *)self legacyContext];
+    managedObjectContext = [legacyContext managedObjectContext];
+    if (managedObjectContext)
     {
-      v7 = v6;
-      v8 = [(ICNoteIntentHandler *)self modernContext];
-      v9 = [v8 workerManagedObjectContext];
+      v7 = managedObjectContext;
+      modernContext = [(ICNoteIntentHandler *)self modernContext];
+      workerManagedObjectContext = [modernContext workerManagedObjectContext];
 
-      if (v9)
+      if (workerManagedObjectContext)
       {
         v10 = [ICRecentNotesCoreDataIndexer alloc];
-        v11 = [(ICNoteIntentHandler *)self legacyContext];
-        v12 = [v11 managedObjectContext];
-        v13 = [(ICNoteIntentHandler *)self modernContext];
-        v14 = [v13 workerManagedObjectContext];
-        v15 = [v10 initWithLegacyManagedObjectContext:v12 modernManagedObjectContext:v14];
+        legacyContext2 = [(ICNoteIntentHandler *)self legacyContext];
+        managedObjectContext2 = [legacyContext2 managedObjectContext];
+        modernContext2 = [(ICNoteIntentHandler *)self modernContext];
+        workerManagedObjectContext2 = [modernContext2 workerManagedObjectContext];
+        v15 = [v10 initWithLegacyManagedObjectContext:managedObjectContext2 modernManagedObjectContext:workerManagedObjectContext2];
         recentNotesIndexer = self->_recentNotesIndexer;
         self->_recentNotesIndexer = v15;
 
@@ -82,27 +82,27 @@
   return v3;
 }
 
-- (void)recentNotesWithCompletion:(id)a3
+- (void)recentNotesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICNoteIntentHandler *)self legacyContext];
-  v6 = [v5 managedObjectContext];
-  if (v6)
+  completionCopy = completion;
+  legacyContext = [(ICNoteIntentHandler *)self legacyContext];
+  managedObjectContext = [legacyContext managedObjectContext];
+  if (managedObjectContext)
   {
-    v7 = v6;
-    v8 = [(ICNoteIntentHandler *)self modernContext];
-    v9 = [v8 managedObjectContext];
+    v7 = managedObjectContext;
+    modernContext = [(ICNoteIntentHandler *)self modernContext];
+    managedObjectContext2 = [modernContext managedObjectContext];
 
-    if (v9)
+    if (managedObjectContext2)
     {
-      v10 = [(ICNoteIntentHandler *)self recentNotesIndexer];
+      recentNotesIndexer = [(ICNoteIntentHandler *)self recentNotesIndexer];
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_100004350;
       v13[3] = &unk_100020830;
       v13[4] = self;
-      v14 = v4;
-      [v10 reloadData:v13];
+      v14 = completionCopy;
+      [recentNotesIndexer reloadData:v13];
 
       goto LABEL_8;
     }
@@ -119,32 +119,32 @@
   }
 
   v12 = [[INObjectCollection alloc] initWithItems:&__NSArray0__struct];
-  (*(v4 + 2))(v4, v12, 0);
+  (*(completionCopy + 2))(completionCopy, v12, 0);
 
 LABEL_8:
 }
 
-- (void)provideNoteOptionsCollectionForNote:(id)a3 searchTerm:(id)a4 withCompletion:(id)a5
+- (void)provideNoteOptionsCollectionForNote:(id)note searchTerm:(id)term withCompletion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  if ([v7 length])
+  termCopy = term;
+  completionCopy = completion;
+  if ([termCopy length])
   {
-    v9 = [(ICNoteIntentHandler *)self legacyContext];
-    v10 = [v9 managedObjectContext];
-    if (v10)
+    legacyContext = [(ICNoteIntentHandler *)self legacyContext];
+    managedObjectContext = [legacyContext managedObjectContext];
+    if (managedObjectContext)
     {
-      v11 = v10;
-      v12 = [(ICNoteIntentHandler *)self modernContext];
-      v13 = [v12 managedObjectContext];
+      v11 = managedObjectContext;
+      modernContext = [(ICNoteIntentHandler *)self modernContext];
+      managedObjectContext2 = [modernContext managedObjectContext];
 
-      if (v13)
+      if (managedObjectContext2)
       {
-        v14 = [[ICSearchQueryOperation alloc] initWithSearchSuggestionsResponder:0 searchString:v7 performNLSearch:0 performTopHitSearch:0 tokens:0];
+        v14 = [[ICSearchQueryOperation alloc] initWithSearchSuggestionsResponder:0 searchString:termCopy performNLSearch:0 performTopHitSearch:0 tokens:0];
         v15 = +[NSOperationQueue mainQueue];
         [v15 addOperation:v14];
 
-        v18 = v8;
+        v18 = completionCopy;
         v16 = v14;
         dispatchMainAfterDelay();
 
@@ -164,70 +164,70 @@ LABEL_10:
     }
 
     v16 = [[INObjectCollection alloc] initWithItems:&__NSArray0__struct];
-    (*(v8 + 2))(v8, v16, 0);
+    (*(completionCopy + 2))(completionCopy, v16, 0);
     goto LABEL_10;
   }
 
-  [(ICNoteIntentHandler *)self recentNotesWithCompletion:v8];
+  [(ICNoteIntentHandler *)self recentNotesWithCompletion:completionCopy];
 LABEL_11:
 }
 
-- (void)resolveNoteForNote:(id)a3 withCompletion:(id)a4
+- (void)resolveNoteForNote:(id)note withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 note];
-  v9 = [v8 identifier];
+  noteCopy = note;
+  completionCopy = completion;
+  note = [noteCopy note];
+  identifier = [note identifier];
 
-  v10 = [v6 note];
-  if (v9)
+  note2 = [noteCopy note];
+  if (identifier)
   {
-    v11 = [ICIntentNoteResolutionResult successWithResolvedIntentNote:v10];
-    v7[2](v7, v11);
+    v11 = [ICIntentNoteResolutionResult successWithResolvedIntentNote:note2];
+    completionCopy[2](completionCopy, v11);
   }
 
   else
   {
-    v12 = [v10 displayString];
+    displayString = [note2 displayString];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000056B0;
     v13[3] = &unk_1000208A8;
-    v14 = v7;
-    [(ICNoteIntentHandler *)self provideNoteOptionsCollectionForNote:v6 searchTerm:v12 withCompletion:v13];
+    v14 = completionCopy;
+    [(ICNoteIntentHandler *)self provideNoteOptionsCollectionForNote:noteCopy searchTerm:displayString withCompletion:v13];
   }
 }
 
-- (void)handleNote:(id)a3 completion:(id)a4
+- (void)handleNote:(id)note completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  noteCopy = note;
   v8 = [[ICNoteIntentResponse alloc] initWithCode:2 userActivity:0];
-  v7 = [v6 note];
+  note = [noteCopy note];
 
-  [(ICNoteIntentResponse *)v8 setNote:v7];
-  v5[2](v5, v8);
+  [(ICNoteIntentResponse *)v8 setNote:note];
+  completionCopy[2](completionCopy, v8);
 }
 
-- (id)defaultNoteForNote:(id)a3
+- (id)defaultNoteForNote:(id)note
 {
-  v4 = a3;
-  v5 = [(ICNoteIntentHandler *)self legacyContext];
-  v6 = [v5 managedObjectContext];
-  if (v6)
+  noteCopy = note;
+  legacyContext = [(ICNoteIntentHandler *)self legacyContext];
+  managedObjectContext = [legacyContext managedObjectContext];
+  if (managedObjectContext)
   {
-    v7 = v6;
-    v8 = [(ICNoteIntentHandler *)self modernContext];
-    v9 = [v8 managedObjectContext];
+    v7 = managedObjectContext;
+    modernContext = [(ICNoteIntentHandler *)self modernContext];
+    managedObjectContext2 = [modernContext managedObjectContext];
 
-    if (v9)
+    if (managedObjectContext2)
     {
-      v10 = [(ICNoteIntentHandler *)self recentNotesIndexer];
-      [v10 reloadDataAndWait];
+      recentNotesIndexer = [(ICNoteIntentHandler *)self recentNotesIndexer];
+      [recentNotesIndexer reloadDataAndWait];
 
       objc_opt_class();
-      v11 = [(ICNoteIntentHandler *)self recentNotesIndexer];
-      v12 = [v11 firstRelevantItemIdentifier];
+      recentNotesIndexer2 = [(ICNoteIntentHandler *)self recentNotesIndexer];
+      firstRelevantItemIdentifier = [recentNotesIndexer2 firstRelevantItemIdentifier];
       v13 = ICDynamicCast();
 
       v38[0] = 0;
@@ -244,8 +244,8 @@ LABEL_11:
       v37 = 0;
       if ([v13 ic_isModernNoteType])
       {
-        v14 = [(ICNoteIntentHandler *)self modernContext];
-        v15 = [v14 managedObjectContext];
+        modernContext2 = [(ICNoteIntentHandler *)self modernContext];
+        managedObjectContext3 = [modernContext2 managedObjectContext];
         v28[0] = _NSConcreteStackBlock;
         v28[1] = 3221225472;
         v28[2] = sub_100005BBC;
@@ -254,7 +254,7 @@ LABEL_11:
         v28[4] = self;
         v29 = v13;
         v31 = &v32;
-        [v15 performBlockAndWait:v28];
+        [managedObjectContext3 performBlockAndWait:v28];
 
         v16 = v29;
       }
@@ -272,8 +272,8 @@ LABEL_11:
           goto LABEL_15;
         }
 
-        v18 = [(ICNoteIntentHandler *)self legacyContext];
-        v19 = [v18 managedObjectContext];
+        legacyContext2 = [(ICNoteIntentHandler *)self legacyContext];
+        managedObjectContext4 = [legacyContext2 managedObjectContext];
         v24[0] = _NSConcreteStackBlock;
         v24[1] = 3221225472;
         v24[2] = sub_100005C84;
@@ -282,7 +282,7 @@ LABEL_11:
         v24[4] = self;
         v25 = v13;
         v27 = &v32;
-        [v19 performBlockAndWait:v24];
+        [managedObjectContext4 performBlockAndWait:v24];
 
         v16 = v25;
       }

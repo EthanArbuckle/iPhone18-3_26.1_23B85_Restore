@@ -1,10 +1,10 @@
 @interface CHDLegend
-- (CHDLegend)initWithResources:(id)a3;
+- (CHDLegend)initWithResources:(id)resources;
 - (id)description;
 - (id)font;
-- (void)setFont:(id)a3;
-- (void)setGraphicProperties:(id)a3;
-- (void)setLabelEffects:(id)a3;
+- (void)setFont:(id)font;
+- (void)setGraphicProperties:(id)properties;
+- (void)setLabelEffects:(id)effects;
 @end
 
 @implementation CHDLegend
@@ -12,22 +12,22 @@
 - (id)font
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained fonts];
-  v5 = [v4 objectAtIndex:self->mFontIndex];
+  fonts = [WeakRetained fonts];
+  v5 = [fonts objectAtIndex:self->mFontIndex];
 
   return v5;
 }
 
-- (CHDLegend)initWithResources:(id)a3
+- (CHDLegend)initWithResources:(id)resources
 {
-  v4 = a3;
+  resourcesCopy = resources;
   v10.receiver = self;
   v10.super_class = CHDLegend;
   v5 = [(CHDLegend *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mResources, v4);
+    objc_storeWeak(&v5->mResources, resourcesCopy);
     v6->mFontIndex = -1;
     v6->mLegendPosition = 0;
     v7 = objc_alloc_init(EDCollection);
@@ -40,37 +40,37 @@
   return v6;
 }
 
-- (void)setGraphicProperties:(id)a3
+- (void)setGraphicProperties:(id)properties
 {
-  v5 = a3;
+  propertiesCopy = properties;
   mGraphicProperties = self->mGraphicProperties;
   p_mGraphicProperties = &self->mGraphicProperties;
-  if (mGraphicProperties != v5)
+  if (mGraphicProperties != propertiesCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mGraphicProperties, a3);
-    v5 = v8;
+    v8 = propertiesCopy;
+    objc_storeStrong(p_mGraphicProperties, properties);
+    propertiesCopy = v8;
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v6 = a3;
+  fontCopy = font;
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v5 = [WeakRetained fonts];
-  self->mFontIndex = [v5 addOrEquivalentObject:v6];
+  fonts = [WeakRetained fonts];
+  self->mFontIndex = [fonts addOrEquivalentObject:fontCopy];
 }
 
-- (void)setLabelEffects:(id)a3
+- (void)setLabelEffects:(id)effects
 {
-  v5 = a3;
+  effectsCopy = effects;
   mLabelEffects = self->mLabelEffects;
   p_mLabelEffects = &self->mLabelEffects;
-  if (mLabelEffects != v5)
+  if (mLabelEffects != effectsCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mLabelEffects, a3);
-    v5 = v8;
+    v8 = effectsCopy;
+    objc_storeStrong(p_mLabelEffects, effects);
+    effectsCopy = v8;
   }
 }
 

@@ -2,8 +2,8 @@
 - (BOOL)isBluetoothAvailable;
 - (BOOL)isNetworkReachable;
 - (TVRUINetworkObserver)init;
-- (void)_updateBluetoothAvailability:(BOOL)a3;
-- (void)_wifiStateUpdatedWithOldState:(int64_t)a3 newState:(int64_t)a4;
+- (void)_updateBluetoothAvailability:(BOOL)availability;
+- (void)_wifiStateUpdatedWithOldState:(int64_t)state newState:(int64_t)newState;
 - (void)dealloc;
 - (void)startObserving;
 - (void)stopObserving;
@@ -61,32 +61,32 @@
 - (void)startObserving
 {
   objc_initWeak(&location, self);
-  v3 = [(TVRUINetworkObserver *)self queue];
+  queue = [(TVRUINetworkObserver *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__TVRUINetworkObserver_startObserving__block_invoke;
   block[3] = &unk_279D87F18;
   objc_copyWeak(&v15, &location);
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 
-  v4 = [(TVRUINetworkObserver *)self cbController];
+  cbController = [(TVRUINetworkObserver *)self cbController];
 
-  if (!v4)
+  if (!cbController)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBE010]);
     [(TVRUINetworkObserver *)self setCbController:v5];
 
-    v6 = [(TVRUINetworkObserver *)self queue];
-    v7 = [(TVRUINetworkObserver *)self cbController];
-    [v7 setDispatchQueue:v6];
+    queue2 = [(TVRUINetworkObserver *)self queue];
+    cbController2 = [(TVRUINetworkObserver *)self cbController];
+    [cbController2 setDispatchQueue:queue2];
 
-    v8 = [(TVRUINetworkObserver *)self cbController];
+    cbController3 = [(TVRUINetworkObserver *)self cbController];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __38__TVRUINetworkObserver_startObserving__block_invoke_2;
     v12[3] = &unk_279D88BB8;
     objc_copyWeak(&v13, &location);
-    [v8 activateWithCompletion:v12];
+    [cbController3 activateWithCompletion:v12];
 
     v10 = MEMORY[0x277D85DD0];
     objc_copyWeak(&v11, &location);
@@ -218,13 +218,13 @@ void __38__TVRUINetworkObserver_startObserving__block_invoke_9(uint64_t a1)
 
 - (void)stopObserving
 {
-  v3 = [(TVRUINetworkObserver *)self queue];
+  queue = [(TVRUINetworkObserver *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__TVRUINetworkObserver_stopObserving__block_invoke;
   block[3] = &unk_279D87C20;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __37__TVRUINetworkObserver_stopObserving__block_invoke(uint64_t a1)
@@ -249,17 +249,17 @@ uint64_t __37__TVRUINetworkObserver_stopObserving__block_invoke(uint64_t a1)
 - (BOOL)isNetworkReachable
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(TVRUINetworkObserver *)self wifiStateMonitor];
+  wifiStateMonitor = [(TVRUINetworkObserver *)self wifiStateMonitor];
 
-  if (v3)
+  if (wifiStateMonitor)
   {
-    v4 = [(WFWiFiStateMonitor *)self->_wifiStateMonitor state];
-    LODWORD(v3) = v4 == 4;
+    state = [(WFWiFiStateMonitor *)self->_wifiStateMonitor state];
+    LODWORD(wifiStateMonitor) = state == 4;
     v5 = _TVRUINetworkObserverLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"not associated";
-      if (v4 == 4)
+      if (state == 4)
       {
         v6 = @"associated";
       }
@@ -272,14 +272,14 @@ uint64_t __37__TVRUINetworkObserver_stopObserving__block_invoke(uint64_t a1)
 
   if (+[TVRUIFeatures isAWDLEnabled])
   {
-    LODWORD(v3) = v3 | [(TVRUINetworkObserver *)self isBluetoothAvailable];
+    LODWORD(wifiStateMonitor) = wifiStateMonitor | [(TVRUINetworkObserver *)self isBluetoothAvailable];
   }
 
   v7 = _TVRUINetworkObserverLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"unreachable";
-    if (v3)
+    if (wifiStateMonitor)
     {
       v8 = @"reachable";
     }
@@ -289,20 +289,20 @@ uint64_t __37__TVRUINetworkObserver_stopObserving__block_invoke(uint64_t a1)
     _os_log_impl(&dword_26CFEB000, v7, OS_LOG_TYPE_DEFAULT, "Network is %@", &v10, 0xCu);
   }
 
-  return v3;
+  return wifiStateMonitor;
 }
 
 - (BOOL)isBluetoothAvailable
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(TVRUINetworkObserver *)self cbController];
+  cbController = [(TVRUINetworkObserver *)self cbController];
 
-  if (v3)
+  if (cbController)
   {
-    v4 = [(TVRUINetworkObserver *)self cbController];
-    v5 = [v4 bluetoothState];
+    cbController2 = [(TVRUINetworkObserver *)self cbController];
+    bluetoothState = [cbController2 bluetoothState];
 
-    v7 = v5 == 5 || v5 == 10;
+    v7 = bluetoothState == 5 || bluetoothState == 10;
     v8 = _TVRUINetworkObserverLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -320,17 +320,17 @@ uint64_t __37__TVRUINetworkObserver_stopObserving__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)_wifiStateUpdatedWithOldState:(int64_t)a3 newState:(int64_t)a4
+- (void)_wifiStateUpdatedWithOldState:(int64_t)state newState:(int64_t)newState
 {
-  v7 = [(TVRUINetworkObserver *)self queue];
+  queue = [(TVRUINetworkObserver *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__TVRUINetworkObserver__wifiStateUpdatedWithOldState_newState___block_invoke;
   block[3] = &unk_279D88C08;
-  block[5] = a4;
-  block[6] = a3;
+  block[5] = newState;
+  block[6] = state;
   block[4] = self;
-  dispatch_async(v7, block);
+  dispatch_async(queue, block);
 }
 
 void __63__TVRUINetworkObserver__wifiStateUpdatedWithOldState_newState___block_invoke(uint64_t a1)
@@ -382,19 +382,19 @@ void __63__TVRUINetworkObserver__wifiStateUpdatedWithOldState_newState___block_i
   v2[2](v2, *(a1 + 40));
 }
 
-- (void)_updateBluetoothAvailability:(BOOL)a3
+- (void)_updateBluetoothAvailability:(BOOL)availability
 {
-  v3 = a3;
+  availabilityCopy = availability;
   v12 = *MEMORY[0x277D85DE8];
-  v5 = [(TVRUINetworkObserver *)self bluetoothAvailabilityDidUpdate];
+  bluetoothAvailabilityDidUpdate = [(TVRUINetworkObserver *)self bluetoothAvailabilityDidUpdate];
 
-  if (v5)
+  if (bluetoothAvailabilityDidUpdate)
   {
     v6 = _TVRUINetworkObserverLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = @"unavailable";
-      if (v3)
+      if (availabilityCopy)
       {
         v7 = @"available";
       }
@@ -409,7 +409,7 @@ void __63__TVRUINetworkObserver__wifiStateUpdatedWithOldState_newState___block_i
     v8[2] = __53__TVRUINetworkObserver__updateBluetoothAvailability___block_invoke;
     v8[3] = &unk_279D878A8;
     v8[4] = self;
-    v9 = v3;
+    v9 = availabilityCopy;
     dispatch_async(MEMORY[0x277D85CD0], v8);
   }
 }

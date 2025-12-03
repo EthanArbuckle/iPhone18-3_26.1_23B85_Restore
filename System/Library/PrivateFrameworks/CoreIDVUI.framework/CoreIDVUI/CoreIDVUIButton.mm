@@ -1,11 +1,11 @@
 @interface CoreIDVUIButton
-- (_TtC9CoreIDVUI15CoreIDVUIButton)initWithCoder:(id)a3;
+- (_TtC9CoreIDVUI15CoreIDVUIButton)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation CoreIDVUIButton
 
-- (_TtC9CoreIDVUI15CoreIDVUIButton)initWithCoder:(id)a3
+- (_TtC9CoreIDVUI15CoreIDVUIButton)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9CoreIDVUI15CoreIDVUIButton_originalButtonText);
   *v3 = 0;
@@ -25,7 +25,7 @@
   v8.super_class = type metadata accessor for CoreIDVUIButton();
   v2 = v8.receiver;
   [(CoreIDVUIButton *)&v8 layoutSubviews];
-  v3 = [v2 layer];
+  layer = [v2 layer];
   [v2 bounds];
   v5 = v4;
   [v2 bounds];
@@ -39,7 +39,7 @@
     v7 = v6;
   }
 
-  [v3 setCornerRadius_];
+  [layer setCornerRadius_];
 
   sub_2458B51B8();
 }

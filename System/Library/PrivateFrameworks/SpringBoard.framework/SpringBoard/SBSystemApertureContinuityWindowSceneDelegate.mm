@@ -1,51 +1,51 @@
 @interface SBSystemApertureContinuityWindowSceneDelegate
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation SBSystemApertureContinuityWindowSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  sceneCopy = scene;
+  sessionCopy = session;
   v10 = SBLogContinuityDisplay();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 _sceneIdentifier];
+    _sceneIdentifier = [sceneCopy _sceneIdentifier];
     *buf = 134218242;
-    v36 = v8;
+    v36 = sceneCopy;
     v37 = 2114;
-    v38 = v11;
+    v38 = _sceneIdentifier;
     _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "<%p>:%{public}@ connected", buf, 0x16u);
   }
 
-  v12 = [v8 _FBSScene];
-  v13 = [v12 continuitySessionSceneParticipant];
+  _FBSScene = [sceneCopy _FBSScene];
+  continuitySessionSceneParticipant = [_FBSScene continuitySessionSceneParticipant];
 
-  v14 = [v13 continuitySession];
-  v15 = [v14 mainWindowScene];
-  if (!v15)
+  continuitySession = [continuitySessionSceneParticipant continuitySession];
+  mainWindowScene = [continuitySession mainWindowScene];
+  if (!mainWindowScene)
   {
     [SBSystemApertureContinuityWindowSceneDelegate scene:willConnectToSession:options:];
   }
 
-  v16 = [v15 systemApertureController];
-  if (!v16)
+  systemApertureController = [mainWindowScene systemApertureController];
+  if (!systemApertureController)
   {
     [SBSystemApertureContinuityWindowSceneDelegate scene:willConnectToSession:options:];
   }
 
   v33 = a2;
-  v17 = [v9 role];
-  v18 = [v17 isEqualToString:@"SBWindowSceneSessionRoleSystemApertureContinuity"];
-  v19 = [v17 isEqualToString:@"SBWindowSceneSessionRoleSystemApertureContinuityCurtain"];
+  role = [sessionCopy role];
+  v18 = [role isEqualToString:@"SBWindowSceneSessionRoleSystemApertureContinuity"];
+  v19 = [role isEqualToString:@"SBWindowSceneSessionRoleSystemApertureContinuityCurtain"];
   if (v18)
   {
-    v34 = v9;
+    v34 = sessionCopy;
     v20 = objc_opt_class();
-    v21 = v8;
+    v21 = sceneCopy;
     if (v20)
     {
       if (objc_opt_isKindOfClass())
@@ -74,25 +74,25 @@
     objc_storeStrong(&self->_systemApertureContinuityWindowScene, v22);
     windowScene = self->_windowScene;
     self->_windowScene = v27;
-    v26 = v27;
+    currentHandler = v27;
 
     debugName = self->_debugName;
     self->_debugName = @"systemAperture";
 
-    [(UIWindowScene *)v26 setAssociatedWindowScene:v15];
-    [v14 noteSystemApertureSceneConnected:v26];
-    [v16 highLevelContinuitySystemApertureWindowSceneDidConnect:v26];
-    [v14 noteSystemApertureUIIsReady:v26];
+    [(UIWindowScene *)currentHandler setAssociatedWindowScene:mainWindowScene];
+    [continuitySession noteSystemApertureSceneConnected:currentHandler];
+    [systemApertureController highLevelContinuitySystemApertureWindowSceneDidConnect:currentHandler];
+    [continuitySession noteSystemApertureUIIsReady:currentHandler];
 LABEL_26:
-    v9 = v34;
+    sessionCopy = v34;
     goto LABEL_27;
   }
 
   if (v19)
   {
-    v34 = v9;
+    v34 = sessionCopy;
     v23 = objc_opt_class();
-    v24 = v8;
+    v24 = sceneCopy;
     if (v23)
     {
       if (objc_opt_isKindOfClass())
@@ -121,40 +121,40 @@ LABEL_26:
     objc_storeStrong(&self->_systemApertureContinuityCurtainWindowScene, v25);
     v31 = self->_windowScene;
     self->_windowScene = v30;
-    v26 = v30;
+    currentHandler = v30;
 
     v32 = self->_debugName;
     self->_debugName = @"systemApertureCurtain";
 
-    [(UIWindowScene *)v26 setAssociatedWindowScene:v15];
-    [v14 noteSystemApertureCurtainSceneConnected:v26];
-    [v16 superHighLevelContinuityCurtainWindowSceneDidConnect:v26];
-    [v14 noteSystemApertureCurtainUIIsReady:v26];
+    [(UIWindowScene *)currentHandler setAssociatedWindowScene:mainWindowScene];
+    [continuitySession noteSystemApertureCurtainSceneConnected:currentHandler];
+    [systemApertureController superHighLevelContinuityCurtainWindowSceneDidConnect:currentHandler];
+    [continuitySession noteSystemApertureCurtainUIIsReady:currentHandler];
     goto LABEL_26;
   }
 
-  v26 = [MEMORY[0x277CCA890] currentHandler];
-  [(UIWindowScene *)v26 handleFailureInMethod:v33 object:self file:@"SBSystemApertureContinuityWindowSceneDelegate.m" lineNumber:73 description:@"unexpected role for SBSystemApertureContinuityWindowSceneDelegate: %@", v17];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [(UIWindowScene *)currentHandler handleFailureInMethod:v33 object:self file:@"SBSystemApertureContinuityWindowSceneDelegate.m" lineNumber:73 description:@"unexpected role for SBSystemApertureContinuityWindowSceneDelegate: %@", role];
 LABEL_27:
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  disconnectCopy = disconnect;
   v6 = SBLogContinuityDisplay();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 _sceneIdentifier];
+    _sceneIdentifier = [disconnectCopy _sceneIdentifier];
     v16 = 134218242;
-    v17 = v5;
+    v17 = disconnectCopy;
     v18 = 2114;
-    v19 = v7;
+    v19 = _sceneIdentifier;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "<%p>:%{public}@ disconnected", &v16, 0x16u);
   }
 
   v8 = objc_opt_class();
-  v9 = v5;
+  v9 = disconnectCopy;
   if (v8)
   {
     if (objc_opt_isKindOfClass())
@@ -175,28 +175,28 @@ LABEL_27:
 
   v11 = v10;
 
-  v12 = [(SBAccessoryWindowScene *)v11 associatedWindowScene];
-  if (!v12)
+  associatedWindowScene = [(SBAccessoryWindowScene *)v11 associatedWindowScene];
+  if (!associatedWindowScene)
   {
     [SBSystemApertureContinuityWindowSceneDelegate sceneDidDisconnect:];
   }
 
-  v13 = [v12 systemApertureController];
-  if (!v13)
+  systemApertureController = [associatedWindowScene systemApertureController];
+  if (!systemApertureController)
   {
-    [(SBSystemApertureContinuityWindowSceneDelegate *)self sceneDidDisconnect:a2, v12, v9];
+    [(SBSystemApertureContinuityWindowSceneDelegate *)self sceneDidDisconnect:a2, associatedWindowScene, v9];
   }
 
   if (self->_systemApertureContinuityWindowScene == v9)
   {
-    [v13 highLevelContinuitySystemApertureWindowSceneDidDisconnect:?];
+    [systemApertureController highLevelContinuitySystemApertureWindowSceneDidDisconnect:?];
     systemApertureContinuityWindowScene = self->_systemApertureContinuityWindowScene;
     self->_systemApertureContinuityWindowScene = 0;
   }
 
   else if (self->_systemApertureContinuityCurtainWindowScene == v9)
   {
-    [v13 superHighLevelContinuityCurtainWindowSceneDidDisconnect:?];
+    [systemApertureController superHighLevelContinuityCurtainWindowSceneDidDisconnect:?];
     systemApertureContinuityWindowScene = self->_systemApertureContinuityCurtainWindowScene;
     self->_systemApertureContinuityCurtainWindowScene = 0;
   }

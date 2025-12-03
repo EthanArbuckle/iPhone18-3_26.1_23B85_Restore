@@ -1,20 +1,20 @@
 @interface CDRichComplicationCornerTextOnlyView
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
 @implementation CDRichComplicationCornerTextOnlyView
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
-  v4 = [(CDRichComplicationCornerBaseTextView *)self innerLabel];
-  [v4 transitionToMonochromeWithFraction:2 style:a3];
+  innerLabel = [(CDRichComplicationCornerBaseTextView *)self innerLabel];
+  [innerLabel transitionToMonochromeWithFraction:2 style:fraction];
 }
 
 - (void)updateMonochromeColor
 {
-  v2 = [(CDRichComplicationCornerBaseTextView *)self innerLabel];
-  [v2 updateMonochromeColorWithStyle:2];
+  innerLabel = [(CDRichComplicationCornerBaseTextView *)self innerLabel];
+  [innerLabel updateMonochromeColorWithStyle:2];
 }
 
 @end

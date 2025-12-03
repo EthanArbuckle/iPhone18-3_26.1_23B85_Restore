@@ -1,25 +1,25 @@
 @interface TUISpinnerView
-+ (id)renderModelWithIdentifier:(id)a3;
-- (TUISpinnerView)initWithFrame:(CGRect)a3;
++ (id)renderModelWithIdentifier:(id)identifier;
+- (TUISpinnerView)initWithFrame:(CGRect)frame;
 - (void)prepareForReuse;
-- (void)setHidden:(BOOL)a3;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation TUISpinnerView
 
-+ (id)renderModelWithIdentifier:(id)a3
++ (id)renderModelWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[TUIRenderModelSpinner alloc] initWithReuseIdentifier:@"TUIReuseIdentifierSpinnerView" identifier:v3];
+  identifierCopy = identifier;
+  v4 = [[TUIRenderModelSpinner alloc] initWithReuseIdentifier:@"TUIReuseIdentifierSpinnerView" identifier:identifierCopy];
 
   return v4;
 }
 
-- (TUISpinnerView)initWithFrame:(CGRect)a3
+- (TUISpinnerView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = TUISpinnerView;
-  v3 = [(TUISpinnerView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUISpinnerView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
@@ -28,13 +28,13 @@
 
     [(UIActivityIndicatorView *)v3->_activityView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(TUISpinnerView *)v3 addSubview:v3->_activityView];
-    v6 = [(UIActivityIndicatorView *)v3->_activityView centerXAnchor];
-    v7 = [(TUISpinnerView *)v3 centerXAnchor];
-    v8 = [v6 constraintEqualToAnchor:v7];
+    centerXAnchor = [(UIActivityIndicatorView *)v3->_activityView centerXAnchor];
+    centerXAnchor2 = [(TUISpinnerView *)v3 centerXAnchor];
+    v8 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v15[0] = v8;
-    v9 = [(UIActivityIndicatorView *)v3->_activityView centerYAnchor];
-    v10 = [(TUISpinnerView *)v3 centerYAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    centerYAnchor = [(UIActivityIndicatorView *)v3->_activityView centerYAnchor];
+    centerYAnchor2 = [(TUISpinnerView *)v3 centerYAnchor];
+    v11 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v15[1] = v11;
     v12 = [NSArray arrayWithObjects:v15 count:2];
     [NSLayoutConstraint activateConstraints:v12];
@@ -53,14 +53,14 @@
   [(UIActivityIndicatorView *)self->_activityView startAnimating];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v6.receiver = self;
   v6.super_class = TUISpinnerView;
   [(TUISpinnerView *)&v6 setHidden:?];
   activityView = self->_activityView;
-  if (v3)
+  if (hiddenCopy)
   {
     [(UIActivityIndicatorView *)activityView stopAnimating];
   }

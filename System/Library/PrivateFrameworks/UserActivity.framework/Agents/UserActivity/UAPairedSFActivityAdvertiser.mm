@@ -1,42 +1,42 @@
 @interface UAPairedSFActivityAdvertiser
-- (UAPairedSFActivityAdvertiser)initWithDelegate:(id)a3;
-- (void)advertiseAdvertisementPayload:(id)a3 options:(id)a4;
-- (void)fetchLoginIDWithCompletionHandler:(id)a3;
-- (void)fetchPeerForUUID:(id)a3 withCompletionHandler:(id)a4;
-- (void)fetchSFPeerDevicesWithCompletionHandler:(id)a3;
-- (void)payloadRequestFromPeer:(id)a3 advertisementPayload:(id)a4 command:(id)a5 completionHandler:(id)a6;
+- (UAPairedSFActivityAdvertiser)initWithDelegate:(id)delegate;
+- (void)advertiseAdvertisementPayload:(id)payload options:(id)options;
+- (void)fetchLoginIDWithCompletionHandler:(id)handler;
+- (void)fetchPeerForUUID:(id)d withCompletionHandler:(id)handler;
+- (void)fetchSFPeerDevicesWithCompletionHandler:(id)handler;
+- (void)payloadRequestFromPeer:(id)peer advertisementPayload:(id)payload command:(id)command completionHandler:(id)handler;
 @end
 
 @implementation UAPairedSFActivityAdvertiser
 
-- (UAPairedSFActivityAdvertiser)initWithDelegate:(id)a3
+- (UAPairedSFActivityAdvertiser)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = UAPairedSFActivityAdvertiser;
   v5 = [(UAPairedSFActivityAdvertiser *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    [(UAPairedSFActivityAdvertiser *)v5 setDelegate:v4];
+    [(UAPairedSFActivityAdvertiser *)v5 setDelegate:delegateCopy];
     v7 = +[SFPeerDevice peerForSelf];
     peer = v6->_peer;
     v6->_peer = v7;
 
-    v9 = [(UAPairedSFActivityAdvertiser *)v6 peer];
-    [v9 setName:@"PairedAdvertiser"];
+    peer = [(UAPairedSFActivityAdvertiser *)v6 peer];
+    [peer setName:@"PairedAdvertiser"];
   }
 
   return v6;
 }
 
-- (void)advertiseAdvertisementPayload:(id)a3 options:(id)a4
+- (void)advertiseAdvertisementPayload:(id)payload options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UAPairedSFActivityAdvertiser *)self pairedScanner];
+  payloadCopy = payload;
+  optionsCopy = options;
+  pairedScanner = [(UAPairedSFActivityAdvertiser *)self pairedScanner];
 
-  if (v8)
+  if (pairedScanner)
   {
     v9 = dispatch_get_global_queue(0, 0);
     block[0] = _NSConcreteStackBlock;
@@ -44,76 +44,76 @@
     block[2] = sub_10003BB7C;
     block[3] = &unk_1000C4EE0;
     block[4] = self;
-    v11 = v6;
-    v12 = v7;
+    v11 = payloadCopy;
+    v12 = optionsCopy;
     dispatch_async(v9, block);
   }
 }
 
-- (void)fetchSFPeerDevicesWithCompletionHandler:(id)a3
+- (void)fetchSFPeerDevicesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003BCC0;
   v7[3] = &unk_1000C52F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)fetchPeerForUUID:(id)a3 withCompletionHandler:(id)a4
+- (void)fetchPeerForUUID:(id)d withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003BEA0;
   block[3] = &unk_1000C58C8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
   dispatch_async(v8, block);
 }
 
-- (void)fetchLoginIDWithCompletionHandler:(id)a3
+- (void)fetchLoginIDWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003C050;
   block[3] = &unk_1000C4E48;
-  v7 = v3;
-  v5 = v3;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(v4, block);
 }
 
-- (void)payloadRequestFromPeer:(id)a3 advertisementPayload:(id)a4 command:(id)a5 completionHandler:(id)a6
+- (void)payloadRequestFromPeer:(id)peer advertisementPayload:(id)payload command:(id)command completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  peerCopy = peer;
+  payloadCopy = payload;
+  commandCopy = command;
+  handlerCopy = handler;
   v14 = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003C1D0;
   block[3] = &unk_1000C5918;
   block[4] = self;
-  v20 = v11;
-  v21 = v12;
-  v22 = v10;
-  v23 = v13;
-  v15 = v13;
-  v16 = v10;
-  v17 = v12;
-  v18 = v11;
+  v20 = payloadCopy;
+  v21 = commandCopy;
+  v22 = peerCopy;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = peerCopy;
+  v17 = commandCopy;
+  v18 = payloadCopy;
   dispatch_async(v14, block);
 }
 

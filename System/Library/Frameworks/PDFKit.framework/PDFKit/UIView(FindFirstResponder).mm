@@ -7,9 +7,9 @@
 - (id)findFirstResponder
 {
   v15 = *MEMORY[0x1E69E9840];
-  if ([a1 isFirstResponder])
+  if ([self isFirstResponder])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
@@ -18,8 +18,8 @@
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v3 = [a1 subviews];
-    v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    subviews = [self subviews];
+    v4 = [subviews countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v4)
     {
       v5 = v4;
@@ -30,19 +30,19 @@
         {
           if (*v11 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(subviews);
           }
 
-          v8 = [*(*(&v10 + 1) + 8 * i) findFirstResponder];
-          if (v8)
+          findFirstResponder = [*(*(&v10 + 1) + 8 * i) findFirstResponder];
+          if (findFirstResponder)
           {
-            v2 = v8;
+            selfCopy = findFirstResponder;
 
             goto LABEL_13;
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v5 = [subviews countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v5)
         {
           continue;
@@ -52,12 +52,12 @@
       }
     }
 
-    v2 = 0;
+    selfCopy = 0;
   }
 
 LABEL_13:
 
-  return v2;
+  return selfCopy;
 }
 
 @end

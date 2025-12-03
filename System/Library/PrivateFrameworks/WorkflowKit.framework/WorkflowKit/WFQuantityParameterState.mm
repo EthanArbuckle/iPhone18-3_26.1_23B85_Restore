@@ -1,54 +1,54 @@
 @interface WFQuantityParameterState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)containedVariables;
 - (WFPropertyListObject)serializedRepresentation;
-- (WFQuantityParameterState)initWithMagnitudeState:(id)a3 unitString:(id)a4;
-- (WFQuantityParameterState)initWithMagnitudeState:(id)a3 unitString:(id)a4 variable:(id)a5;
-- (WFQuantityParameterState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
-- (WFQuantityParameterState)initWithVariable:(id)a3;
+- (WFQuantityParameterState)initWithMagnitudeState:(id)state unitString:(id)string;
+- (WFQuantityParameterState)initWithMagnitudeState:(id)state unitString:(id)string variable:(id)variable;
+- (WFQuantityParameterState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
+- (WFQuantityParameterState)initWithVariable:(id)variable;
 - (unint64_t)hash;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFQuantityParameterState
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFQuantityParameterState *)self magnitudeState];
-  v12 = [v11 decimalNumber];
-  if (v12)
+  contextCopy = context;
+  handlerCopy = handler;
+  valueHandlerCopy = valueHandler;
+  magnitudeState = [(WFQuantityParameterState *)self magnitudeState];
+  decimalNumber = [magnitudeState decimalNumber];
+  if (decimalNumber)
   {
   }
 
   else
   {
-    v13 = [(WFQuantityParameterState *)self magnitudeState];
-    v14 = [v13 variable];
+    magnitudeState2 = [(WFQuantityParameterState *)self magnitudeState];
+    variable = [magnitudeState2 variable];
 
-    if (!v14)
+    if (!variable)
     {
-      (*(v10 + 2))(v10, 0, 0);
+      (*(valueHandlerCopy + 2))(valueHandlerCopy, 0, 0);
       goto LABEL_5;
     }
   }
 
-  v15 = [(WFQuantityParameterState *)self magnitudeState];
+  magnitudeState3 = [(WFQuantityParameterState *)self magnitudeState];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __85__WFQuantityParameterState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke;
   v18[3] = &unk_1E8376038;
   v18[4] = self;
-  v19 = v9;
+  v19 = handlerCopy;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __85__WFQuantityParameterState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke_2;
   v16[3] = &unk_1E8376060;
   v16[4] = self;
-  v17 = v10;
-  [v15 processWithContext:v8 userInputRequiredHandler:v18 valueHandler:v16];
+  v17 = valueHandlerCopy;
+  [magnitudeState3 processWithContext:contextCopy userInputRequiredHandler:v18 valueHandler:v16];
 
 LABEL_5:
 }
@@ -87,26 +87,26 @@ void __85__WFQuantityParameterState_processWithContext_userInputRequiredHandler_
 
 - (NSArray)containedVariables
 {
-  v2 = [(WFQuantityParameterState *)self magnitudeState];
-  v3 = [v2 containedVariables];
+  magnitudeState = [(WFQuantityParameterState *)self magnitudeState];
+  containedVariables = [magnitudeState containedVariables];
 
-  return v3;
+  return containedVariables;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(WFQuantityParameterState *)self magnitudeState];
-  v4 = [v3 hash];
-  v5 = [(WFQuantityParameterState *)self unitString];
-  v6 = [v5 hash];
+  magnitudeState = [(WFQuantityParameterState *)self magnitudeState];
+  v4 = [magnitudeState hash];
+  unitString = [(WFQuantityParameterState *)self unitString];
+  v6 = [unitString hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -116,25 +116,25 @@ void __85__WFQuantityParameterState_processWithContext_userInputRequiredHandler_
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(WFQuantityParameterState *)v6 magnitudeState];
-      v8 = [(WFQuantityParameterState *)self magnitudeState];
-      if (v7 == v8 || (-[WFQuantityParameterState magnitudeState](v6, "magnitudeState"), v3 = objc_claimAutoreleasedReturnValue(), -[WFQuantityParameterState magnitudeState](self, "magnitudeState"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
+      magnitudeState = [(WFQuantityParameterState *)equalCopy magnitudeState];
+      magnitudeState2 = [(WFQuantityParameterState *)self magnitudeState];
+      if (magnitudeState == magnitudeState2 || (-[WFQuantityParameterState magnitudeState](equalCopy, "magnitudeState"), v3 = objc_claimAutoreleasedReturnValue(), -[WFQuantityParameterState magnitudeState](self, "magnitudeState"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
       {
-        v10 = [(WFQuantityParameterState *)v6 unitString];
-        v11 = [(WFQuantityParameterState *)self unitString];
-        if (v10 == v11)
+        unitString = [(WFQuantityParameterState *)equalCopy unitString];
+        unitString2 = [(WFQuantityParameterState *)self unitString];
+        if (unitString == unitString2)
         {
           v9 = 1;
         }
 
         else
         {
-          v12 = [(WFQuantityParameterState *)v6 unitString];
-          v13 = [(WFQuantityParameterState *)self unitString];
-          v9 = [v12 isEqualToString:v13];
+          unitString3 = [(WFQuantityParameterState *)equalCopy unitString];
+          unitString4 = [(WFQuantityParameterState *)self unitString];
+          v9 = [unitString3 isEqualToString:unitString4];
         }
 
-        if (v7 == v8)
+        if (magnitudeState == magnitudeState2)
         {
           goto LABEL_13;
         }
@@ -160,26 +160,26 @@ LABEL_14:
 - (WFPropertyListObject)serializedRepresentation
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v3 = [(WFQuantityParameterState *)self magnitudeState];
-  v4 = [v3 variable];
-  v5 = [v4 serializedRepresentation];
-  v6 = v5;
-  if (v5)
+  magnitudeState = [(WFQuantityParameterState *)self magnitudeState];
+  variable = [magnitudeState variable];
+  serializedRepresentation = [variable serializedRepresentation];
+  v6 = serializedRepresentation;
+  if (serializedRepresentation)
   {
-    v7 = v5;
+    serializedRepresentation2 = serializedRepresentation;
   }
 
   else
   {
-    v7 = [v3 serializedRepresentation];
+    serializedRepresentation2 = [magnitudeState serializedRepresentation];
   }
 
-  v8 = v7;
+  v8 = serializedRepresentation2;
 
   v9 = objc_opt_new();
   [v9 setValue:v8 forKey:*MEMORY[0x1E6997128]];
-  v10 = [(WFQuantityParameterState *)self unitString];
-  [v9 setValue:v10 forKey:*MEMORY[0x1E6997130]];
+  unitString = [(WFQuantityParameterState *)self unitString];
+  [v9 setValue:unitString forKey:*MEMORY[0x1E6997130]];
 
   v14[0] = @"WFSerializationType";
   v14[1] = @"Value";
@@ -192,31 +192,31 @@ LABEL_14:
   return v11;
 }
 
-- (WFQuantityParameterState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
+- (WFQuantityParameterState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  providerCopy = provider;
+  parameterCopy = parameter;
+  representationCopy = representation;
   v11 = objc_opt_class();
-  v12 = WFEnforceClass_1501(v10, v11);
+  v12 = WFEnforceClass_1501(representationCopy, v11);
 
   if (v12)
   {
     v13 = [v12 objectForKey:@"Value"];
     v14 = objc_opt_class();
-    v15 = WFEnforceClass_1501(v13, v14);
+    selfCopy = WFEnforceClass_1501(v13, v14);
 
-    if (v15)
+    if (selfCopy)
     {
-      v16 = [(WFQuantityParameterState *)v15 objectForKeyedSubscript:*MEMORY[0x1E6997128]];
-      v17 = [(WFQuantityParameterState *)v15 objectForKeyedSubscript:*MEMORY[0x1E6997130]];
+      v16 = [(WFQuantityParameterState *)selfCopy objectForKeyedSubscript:*MEMORY[0x1E6997128]];
+      v17 = [(WFQuantityParameterState *)selfCopy objectForKeyedSubscript:*MEMORY[0x1E6997130]];
       v18 = objc_opt_class();
       v19 = WFEnforceClass_1501(v17, v18);
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v20 = [[WFVariable alloc] initWithDictionary:v16 variableProvider:v8];
+        v20 = [[WFVariable alloc] initWithDictionary:v16 variableProvider:providerCopy];
         if (v20)
         {
           v21 = [(WFVariableSubstitutableParameterState *)[WFNumberStringSubstitutableState alloc] initWithVariable:v20];
@@ -230,67 +230,67 @@ LABEL_14:
 
       else
       {
-        v21 = [(WFVariableSubstitutableParameterState *)[WFNumberStringSubstitutableState alloc] initWithSerializedRepresentation:v16 variableProvider:v8 parameter:v9];
+        v21 = [(WFVariableSubstitutableParameterState *)[WFNumberStringSubstitutableState alloc] initWithSerializedRepresentation:v16 variableProvider:providerCopy parameter:parameterCopy];
       }
 
       self = [(WFQuantityParameterState *)self initWithMagnitudeState:v21 unitString:v19];
 
-      v15 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (WFQuantityParameterState)initWithVariable:(id)a3
+- (WFQuantityParameterState)initWithVariable:(id)variable
 {
-  v4 = a3;
-  v5 = [(WFVariableSubstitutableParameterState *)[WFNumberStringSubstitutableState alloc] initWithVariable:v4];
-  v6 = [(WFQuantityParameterState *)self initWithMagnitudeState:v5 unitString:0 variable:v4];
+  variableCopy = variable;
+  v5 = [(WFVariableSubstitutableParameterState *)[WFNumberStringSubstitutableState alloc] initWithVariable:variableCopy];
+  v6 = [(WFQuantityParameterState *)self initWithMagnitudeState:v5 unitString:0 variable:variableCopy];
 
   return v6;
 }
 
-- (WFQuantityParameterState)initWithMagnitudeState:(id)a3 unitString:(id)a4 variable:(id)a5
+- (WFQuantityParameterState)initWithMagnitudeState:(id)state unitString:(id)string variable:(id)variable
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  stateCopy = state;
+  stringCopy = string;
+  variableCopy = variable;
   v18.receiver = self;
   v18.super_class = WFQuantityParameterState;
   v12 = [(WFQuantityParameterState *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_magnitudeState, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_magnitudeState, state);
+    v14 = [stringCopy copy];
     unitString = v13->_unitString;
     v13->_unitString = v14;
 
-    objc_storeStrong(&v13->_variable, a5);
+    objc_storeStrong(&v13->_variable, variable);
     v16 = v13;
   }
 
   return v13;
 }
 
-- (WFQuantityParameterState)initWithMagnitudeState:(id)a3 unitString:(id)a4
+- (WFQuantityParameterState)initWithMagnitudeState:(id)state unitString:(id)string
 {
-  v7 = a3;
-  v8 = a4;
+  stateCopy = state;
+  stringCopy = string;
   v15.receiver = self;
   v15.super_class = WFQuantityParameterState;
   v9 = [(WFQuantityParameterState *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_magnitudeState, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_magnitudeState, state);
+    v11 = [stringCopy copy];
     unitString = v10->_unitString;
     v10->_unitString = v11;
 

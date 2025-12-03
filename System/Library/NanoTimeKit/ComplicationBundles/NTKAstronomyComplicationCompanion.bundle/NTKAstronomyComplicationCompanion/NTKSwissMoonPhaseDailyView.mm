@@ -1,14 +1,14 @@
 @interface NTKSwissMoonPhaseDailyView
-- (NTKSwissMoonPhaseDailyView)initWithFrame:(CGRect)a3;
+- (NTKSwissMoonPhaseDailyView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation NTKSwissMoonPhaseDailyView
 
-- (NTKSwissMoonPhaseDailyView)initWithFrame:(CGRect)a3
+- (NTKSwissMoonPhaseDailyView)initWithFrame:(CGRect)frame
 {
   v54.receiver = self;
   v54.super_class = NTKSwissMoonPhaseDailyView;
-  v3 = [(NTKSwissMoonPhaseDailyView *)&v54 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKSwissMoonPhaseDailyView *)&v54 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[CLKDevice currentDevice];
@@ -68,43 +68,43 @@
 
     [(NTKSwissMoonPhaseDailyView *)v3 addSubview:v3->_weekdayLabel];
     v29 = +[NSMutableArray array];
-    v30 = [(UILabel *)v3->_dayLabel centerXAnchor];
-    v31 = [(NTKSwissMoonPhaseDailyView *)v3 centerXAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
+    centerXAnchor = [(UILabel *)v3->_dayLabel centerXAnchor];
+    centerXAnchor2 = [(NTKSwissMoonPhaseDailyView *)v3 centerXAnchor];
+    v32 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v29 addObject:v32];
 
-    v33 = [(UILabel *)v3->_dayLabel firstBaselineAnchor];
-    v34 = [(NTKSwissMoonPhaseDailyView *)v3 topAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34 constant:v6];
+    firstBaselineAnchor = [(UILabel *)v3->_dayLabel firstBaselineAnchor];
+    topAnchor = [(NTKSwissMoonPhaseDailyView *)v3 topAnchor];
+    v35 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:v6];
     [v29 addObject:v35];
 
-    v36 = [(NTKAstronomyRichComplicationContentView *)v3->_moonView centerXAnchor];
-    v37 = [(NTKSwissMoonPhaseDailyView *)v3 centerXAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37];
+    centerXAnchor3 = [(NTKAstronomyRichComplicationContentView *)v3->_moonView centerXAnchor];
+    centerXAnchor4 = [(NTKSwissMoonPhaseDailyView *)v3 centerXAnchor];
+    v38 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     [v29 addObject:v38];
 
-    v39 = [(NTKAstronomyRichComplicationContentView *)v3->_moonView centerYAnchor];
-    v40 = [(NTKSwissMoonPhaseDailyView *)v3 centerYAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40];
+    centerYAnchor = [(NTKAstronomyRichComplicationContentView *)v3->_moonView centerYAnchor];
+    centerYAnchor2 = [(NTKSwissMoonPhaseDailyView *)v3 centerYAnchor];
+    v41 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v29 addObject:v41];
 
-    v42 = [(NTKAstronomyRichComplicationContentView *)v3->_moonView widthAnchor];
-    v43 = [v42 constraintEqualToConstant:v7];
+    widthAnchor = [(NTKAstronomyRichComplicationContentView *)v3->_moonView widthAnchor];
+    v43 = [widthAnchor constraintEqualToConstant:v7];
     [v29 addObject:v43];
 
-    v44 = [(NTKAstronomyRichComplicationContentView *)v3->_moonView heightAnchor];
-    v45 = [(NTKAstronomyRichComplicationContentView *)v3->_moonView widthAnchor];
-    v46 = [v44 constraintEqualToAnchor:v45];
+    heightAnchor = [(NTKAstronomyRichComplicationContentView *)v3->_moonView heightAnchor];
+    widthAnchor2 = [(NTKAstronomyRichComplicationContentView *)v3->_moonView widthAnchor];
+    v46 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
     [v29 addObject:v46];
 
-    v47 = [(UILabel *)v3->_weekdayLabel centerXAnchor];
-    v48 = [(NTKSwissMoonPhaseDailyView *)v3 centerXAnchor];
-    v49 = [v47 constraintEqualToAnchor:v48];
+    centerXAnchor5 = [(UILabel *)v3->_weekdayLabel centerXAnchor];
+    centerXAnchor6 = [(NTKSwissMoonPhaseDailyView *)v3 centerXAnchor];
+    v49 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     [v29 addObject:v49];
 
-    v50 = [(NTKSwissMoonPhaseDailyView *)v3 bottomAnchor];
-    v51 = [(UILabel *)v3->_weekdayLabel firstBaselineAnchor];
-    v52 = [v50 constraintEqualToAnchor:v51 constant:v9];
+    bottomAnchor = [(NTKSwissMoonPhaseDailyView *)v3 bottomAnchor];
+    firstBaselineAnchor2 = [(UILabel *)v3->_weekdayLabel firstBaselineAnchor];
+    v52 = [bottomAnchor constraintEqualToAnchor:firstBaselineAnchor2 constant:v9];
     [v29 addObject:v52];
 
     [NSLayoutConstraint activateConstraints:v29];

@@ -1,20 +1,20 @@
 @interface _UIViewServiceViewController
-- (_UIViewServiceViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)setContainedNavController:(id)a3;
+- (_UIViewServiceViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)setContainedNavController:(id)controller;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation _UIViewServiceViewController
 
-- (_UIViewServiceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_UIViewServiceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v17.receiver = self;
   v17.super_class = _UIViewServiceViewController;
-  v8 = [(_UIViewServiceViewController *)&v17 initWithNibName:v6 bundle:v7];
+  v8 = [(_UIViewServiceViewController *)&v17 initWithNibName:nameCopy bundle:bundleCopy];
   if (v8)
   {
     v9 = objc_alloc_init(_UIPreferredContentSizeRelayingNavigationController);
@@ -33,19 +33,19 @@
   return v8;
 }
 
-- (void)setContainedNavController:(id)a3
+- (void)setContainedNavController:(id)controller
 {
-  objc_storeStrong(&self->_containedNavController, a3);
-  v8 = a3;
-  [v8 setDelegate:self];
+  objc_storeStrong(&self->_containedNavController, controller);
+  controllerCopy = controller;
+  [controllerCopy setDelegate:self];
   [(UINavigationController *)self->_containedNavController beginAppearanceTransition:1 animated:0];
-  v5 = [(UINavigationController *)self->_containedNavController view];
-  [v5 setAutoresizingMask:18];
+  view = [(UINavigationController *)self->_containedNavController view];
+  [view setAutoresizingMask:18];
 
   [(_UIViewServiceViewController *)self addChildViewController:self->_containedNavController];
-  v6 = [(_UIViewServiceViewController *)self view];
-  v7 = [(UINavigationController *)self->_containedNavController view];
-  [v6 addSubview:v7];
+  view2 = [(_UIViewServiceViewController *)self view];
+  view3 = [(UINavigationController *)self->_containedNavController view];
+  [view2 addSubview:view3];
 
   [(UINavigationController *)self->_containedNavController didMoveToParentViewController:self];
   [(UINavigationController *)self->_containedNavController endAppearanceTransition];
@@ -58,25 +58,25 @@
   [(_UIViewServiceViewController *)&v2 viewDidLayoutSubviews];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v5 = cdui_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(_UIViewServiceViewController *)v4 preferredContentSizeDidChangeForChildContentContainer:v5];
+    [(_UIViewServiceViewController *)containerCopy preferredContentSizeDidChangeForChildContentContainer:v5];
   }
 
-  [v4 preferredContentSize];
+  [containerCopy preferredContentSize];
   [(_UIViewServiceViewController *)self _updatedContentSizeForPreferredContentSize:?];
   [(_UIViewServiceViewController *)self setPreferredContentSize:?];
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v6 = a3;
-  [a4 preferredContentSize];
-  [v6 setPreferredContentSize:?];
+  controllerCopy = controller;
+  [viewController preferredContentSize];
+  [controllerCopy setPreferredContentSize:?];
 }
 
 - (void)preferredContentSizeDidChangeForChildContentContainer:(void *)a1 .cold.1(void *a1, NSObject *a2)

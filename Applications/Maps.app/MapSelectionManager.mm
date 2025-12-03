@@ -1,43 +1,43 @@
 @interface MapSelectionManager
-- (BOOL)isMapItemSelected:(id)a3;
-- (BOOL)mapShouldSelectAnnotationView:(id)a3;
-- (BOOL)mapShouldSelectLabelMarker:(id)a3;
+- (BOOL)isMapItemSelected:(id)selected;
+- (BOOL)mapShouldSelectAnnotationView:(id)view;
+- (BOOL)mapShouldSelectLabelMarker:(id)marker;
 - (CustomPOIAnnotation)customLabelMarker;
 - (CustomPOIsController)customPOIsController;
 - (MKMapView)mapView;
-- (MapSelectionManager)initWithCameraController:(id)a3;
+- (MapSelectionManager)initWithCameraController:(id)controller;
 - (MapSelectionManagerDelegate)delegate;
-- (id)selectionStateIncludingCamera:(BOOL)a3 includeNotCustomLabelMarkers:(BOOL)a4;
+- (id)selectionStateIncludingCamera:(BOOL)camera includeNotCustomLabelMarkers:(BOOL)markers;
 - (int)currentMapViewTargetForAnalytics;
 - (int)currentUITargetForAnalytics;
-- (void)_addGestureRecognizersForMapView:(id)a3;
+- (void)_addGestureRecognizersForMapView:(id)view;
 - (void)_applyMapSelectionDidChange;
-- (void)_clearClusterSelectionOnGesture:(id)a3;
-- (void)_handleMapZoomingGesture:(id)a3;
+- (void)_clearClusterSelectionOnGesture:(id)gesture;
+- (void)_handleMapZoomingGesture:(id)gesture;
 - (void)_notifyDelegate;
-- (void)_performAnalyticsForTappingOnAnnotationView:(id)a3;
-- (void)_performAnalyticsForTappingOnLabelMarker:(id)a3;
-- (void)_removeGestureRecognizersForMapView:(id)a3;
-- (void)_selectCustomPOIAnnotation:(id)a3 camera:(id)a4 restoreRegion:(BOOL)a5 updateIfNeeded:(BOOL)a6 completion:(id)a7;
-- (void)_selectLabelMarkerWithKeys:(id)a3 camera:(id)a4 animated:(BOOL)a5 restoreRegion:(BOOL)a6 updateIfNeeded:(BOOL)a7 completion:(id)a8;
+- (void)_performAnalyticsForTappingOnAnnotationView:(id)view;
+- (void)_performAnalyticsForTappingOnLabelMarker:(id)marker;
+- (void)_removeGestureRecognizersForMapView:(id)view;
+- (void)_selectCustomPOIAnnotation:(id)annotation camera:(id)camera restoreRegion:(BOOL)region updateIfNeeded:(BOOL)needed completion:(id)completion;
+- (void)_selectLabelMarkerWithKeys:(id)keys camera:(id)camera animated:(BOOL)animated restoreRegion:(BOOL)region updateIfNeeded:(BOOL)needed completion:(id)completion;
 - (void)_setNeedsUpdate;
-- (void)clearSelectionAnimated:(BOOL)a3 updateIfNeeded:(BOOL)a4;
+- (void)clearSelectionAnimated:(BOOL)animated updateIfNeeded:(BOOL)needed;
 - (void)dealloc;
 - (void)deselectTrails;
-- (void)injectAndSelectPersonalizedItem:(id)a3;
-- (void)injectAndSelectSearchResult:(id)a3;
-- (void)injectPreviouslySelectedSearchResult:(id)a3;
-- (void)mapDidSelectAnnotationView:(id)a3;
-- (void)mapDidSelectLabelMarker:(id)a3;
-- (void)restoreSelectionState:(id)a3 animated:(BOOL)a4 restoreRegion:(BOOL)a5 notifyDelegate:(BOOL)a6;
-- (void)selectLabelMarker:(id)a3 animated:(BOOL)a4 updateIfNeeded:(BOOL)a5;
-- (void)selectMapItem:(id)a3 animated:(BOOL)a4;
-- (void)selectSearchResult:(id)a3 animated:(BOOL)a4;
-- (void)selectTrailId:(unint64_t)a3;
-- (void)selectTrailWithId:(unint64_t)a3 name:(id)a4 locale:(id)a5;
-- (void)setAnnotationView:(id)a3;
-- (void)setLabelMarker:(id)a3 updateIfNeeded:(BOOL)a4;
-- (void)setMapCameraController:(id)a3;
+- (void)injectAndSelectPersonalizedItem:(id)item;
+- (void)injectAndSelectSearchResult:(id)result;
+- (void)injectPreviouslySelectedSearchResult:(id)result;
+- (void)mapDidSelectAnnotationView:(id)view;
+- (void)mapDidSelectLabelMarker:(id)marker;
+- (void)restoreSelectionState:(id)state animated:(BOOL)animated restoreRegion:(BOOL)region notifyDelegate:(BOOL)delegate;
+- (void)selectLabelMarker:(id)marker animated:(BOOL)animated updateIfNeeded:(BOOL)needed;
+- (void)selectMapItem:(id)item animated:(BOOL)animated;
+- (void)selectSearchResult:(id)result animated:(BOOL)animated;
+- (void)selectTrailId:(unint64_t)id;
+- (void)selectTrailWithId:(unint64_t)id name:(id)name locale:(id)locale;
+- (void)setAnnotationView:(id)view;
+- (void)setLabelMarker:(id)marker updateIfNeeded:(BOOL)needed;
+- (void)setMapCameraController:(id)controller;
 @end
 
 @implementation MapSelectionManager
@@ -58,93 +58,93 @@
 
 - (int)currentMapViewTargetForAnalytics
 {
-  v3 = [(MapSelectionManager *)self delegate];
-  v4 = [v3 conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate];
+  delegate = [(MapSelectionManager *)self delegate];
+  v4 = [delegate conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(MapSelectionManager *)self delegate];
+  delegate2 = [(MapSelectionManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 currentMapViewTargetForAnalytics];
+    currentMapViewTargetForAnalytics = [delegate2 currentMapViewTargetForAnalytics];
   }
 
   else
   {
-    v6 = 0;
+    currentMapViewTargetForAnalytics = 0;
   }
 
-  return v6;
+  return currentMapViewTargetForAnalytics;
 }
 
 - (int)currentUITargetForAnalytics
 {
-  v3 = [(MapSelectionManager *)self delegate];
-  v4 = [v3 conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate];
+  delegate = [(MapSelectionManager *)self delegate];
+  v4 = [delegate conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(MapSelectionManager *)self delegate];
+  delegate2 = [(MapSelectionManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 currentUITargetForAnalytics];
+    currentUITargetForAnalytics = [delegate2 currentUITargetForAnalytics];
   }
 
   else
   {
-    v6 = 0;
+    currentUITargetForAnalytics = 0;
   }
 
-  return v6;
+  return currentUITargetForAnalytics;
 }
 
-- (void)_clearClusterSelectionOnGesture:(id)a3
+- (void)_clearClusterSelectionOnGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   if (self->_labelMarker)
   {
     if (self->_isCluster)
     {
-      v6 = v4;
-      v5 = [v4 state] == 3;
-      v4 = v6;
+      v6 = gestureCopy;
+      v5 = [gestureCopy state] == 3;
+      gestureCopy = v6;
       if (v5)
       {
         [(MapSelectionManager *)self clearSelection];
-        v4 = v6;
+        gestureCopy = v6;
       }
     }
   }
 }
 
-- (void)_handleMapZoomingGesture:(id)a3
+- (void)_handleMapZoomingGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   labelMarker = self->_labelMarker;
   if (labelMarker)
   {
-    v22 = v4;
+    v22 = gestureCopy;
     if (![(VKLabelMarker *)labelMarker isCluster])
     {
-      v10 = [(VKLabelMarker *)self->_labelMarker featureAnnotation];
-      v11 = v10;
-      if (v10 && [v10 conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation])
+      featureAnnotation = [(VKLabelMarker *)self->_labelMarker featureAnnotation];
+      v11 = featureAnnotation;
+      if (featureAnnotation && [featureAnnotation conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation])
       {
         v12 = v11;
-        v13 = [(MapSelectionManager *)self mapView];
-        v14 = [v13 _displayedSearchResultsType];
+        mapView = [(MapSelectionManager *)self mapView];
+        _displayedSearchResultsType = [mapView _displayedSearchResultsType];
 
-        v15 = [v12 styleAttributes];
-        v16 = [v15 styleAttributes];
-        v17 = [v16 isLabelPOI];
+        styleAttributes = [v12 styleAttributes];
+        v15StyleAttributes = [styleAttributes styleAttributes];
+        isLabelPOI = [v15StyleAttributes isLabelPOI];
 
-        if (v17 && v14 == 2)
+        if (isLabelPOI && _displayedSearchResultsType == 2)
         {
           if ([v22 state] == 1)
           {
@@ -185,12 +185,12 @@
       self->_clusterDeselectZoomThreshold = v7;
     }
 
-    v8 = [v22 state];
-    v4 = v22;
-    if (v8 == 2)
+    state = [v22 state];
+    gestureCopy = v22;
+    if (state == 2)
     {
       [v22 scale];
-      v4 = v22;
+      gestureCopy = v22;
       if (v9 == 0.0)
       {
         v9 = 1.0;
@@ -205,7 +205,7 @@
       {
         [(MapSelectionManager *)self clearSelection];
 LABEL_27:
-        v4 = v22;
+        gestureCopy = v22;
       }
     }
   }
@@ -221,51 +221,51 @@ LABEL_27:
   [(MapSelectionManager *)self setLabelMarker:v4];
 }
 
-- (void)_performAnalyticsForTappingOnAnnotationView:(id)a3
+- (void)_performAnalyticsForTappingOnAnnotationView:(id)view
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  viewCopy = view;
+  v5 = viewCopy;
+  if (viewCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100EAC2FC;
     v6[3] = &unk_101661A90;
     v6[4] = self;
-    v7 = v4;
+    v7 = viewCopy;
     dispatch_async(&_dispatch_main_q, v6);
   }
 }
 
-- (void)_performAnalyticsForTappingOnLabelMarker:(id)a3
+- (void)_performAnalyticsForTappingOnLabelMarker:(id)marker
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  markerCopy = marker;
+  v5 = markerCopy;
+  if (markerCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100EAC50C;
     v6[3] = &unk_101661A90;
     v6[4] = self;
-    v7 = v4;
+    v7 = markerCopy;
     dispatch_async(&_dispatch_main_q, v6);
   }
 }
 
-- (void)mapDidSelectAnnotationView:(id)a3
+- (void)mapDidSelectAnnotationView:(id)view
 {
-  v4 = a3;
-  v5 = v4;
+  viewCopy = view;
+  v5 = viewCopy;
   if (!self->_ignoreSelectionChanges)
   {
-    if (v4 && ![(MapSelectionManager *)self mapShouldSelectAnnotationView:v4])
+    if (viewCopy && ![(MapSelectionManager *)self mapShouldSelectAnnotationView:viewCopy])
     {
       v7 = sub_10006CB50();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         v11 = 134349314;
-        v12 = self;
+        selfCopy2 = self;
         v13 = 2112;
         v14 = v5;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Will reverse annotation view selection: %@", &v11, 0x16u);
@@ -273,9 +273,9 @@ LABEL_27:
 
       ignoreSelectionChanges = self->_ignoreSelectionChanges;
       [(MapSelectionManager *)self setIgnoreSelectionChanges:1];
-      v9 = [(MapSelectionManager *)self mapView];
-      v10 = [v5 annotation];
-      [v9 deselectAnnotation:v10 animated:0];
+      mapView = [(MapSelectionManager *)self mapView];
+      annotation = [v5 annotation];
+      [mapView deselectAnnotation:annotation animated:0];
 
       [(MapSelectionManager *)self setIgnoreSelectionChanges:ignoreSelectionChanges];
     }
@@ -286,7 +286,7 @@ LABEL_27:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
         v11 = 134349314;
-        v12 = self;
+        selfCopy2 = self;
         v13 = 2112;
         v14 = v5;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Map did select annotation view: %@", &v11, 0x16u);
@@ -298,16 +298,16 @@ LABEL_27:
   }
 }
 
-- (BOOL)mapShouldSelectAnnotationView:(id)a3
+- (BOOL)mapShouldSelectAnnotationView:(id)view
 {
-  v4 = a3;
-  v5 = [(MapSelectionManager *)self delegate];
+  viewCopy = view;
+  delegate = [(MapSelectionManager *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MapSelectionManager *)self delegate];
-    v8 = [v7 mapSelectionManager:self shouldSelectAnnotationView:v4];
+    delegate2 = [(MapSelectionManager *)self delegate];
+    v8 = [delegate2 mapSelectionManager:self shouldSelectAnnotationView:viewCopy];
   }
 
   else
@@ -326,9 +326,9 @@ LABEL_27:
 
     v11 = v10;
     v13 = 134349570;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v4;
+    v16 = viewCopy;
     v17 = 2112;
     v18 = v11;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] Should select annotationView %@: %@", &v13, 0x20u);
@@ -337,32 +337,32 @@ LABEL_27:
   return v8;
 }
 
-- (void)mapDidSelectLabelMarker:(id)a3
+- (void)mapDidSelectLabelMarker:(id)marker
 {
-  v5 = a3;
+  markerCopy = marker;
   v6 = sub_10006CB50();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 134349314;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v5;
+    v16 = markerCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Map did select label marker: %@", buf, 0x16u);
   }
 
   labelMarker = self->_labelMarker;
-  if (labelMarker && labelMarker != v5)
+  if (labelMarker && labelMarker != markerCopy)
   {
-    v8 = [(VKLabelMarker *)labelMarker featureAnnotation];
-    if ([v8 conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation])
+    featureAnnotation = [(VKLabelMarker *)labelMarker featureAnnotation];
+    if ([featureAnnotation conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation])
     {
-      v9 = [v8 searchResult];
-      if (v9)
+      searchResult = [featureAnnotation searchResult];
+      if (searchResult)
       {
-        v10 = [(MapSelectionManager *)self delegate];
-        v11 = [v10 searchPinsManagerForMapSelectionManager:self];
+        delegate = [(MapSelectionManager *)self delegate];
+        v11 = [delegate searchPinsManagerForMapSelectionManager:self];
 
-        [v11 mapSelectionManagerDidDeselectSearchResult:v9];
+        [v11 mapSelectionManagerDidDeselectSearchResult:searchResult];
       }
     }
   }
@@ -380,18 +380,18 @@ LABEL_27:
       dispatch_async(&_dispatch_main_q, block);
     }
 
-    objc_storeStrong(&self->_pendingSelectedLabelMarker, a3);
-    [(MapSelectionManager *)self _performAnalyticsForTappingOnLabelMarker:v5];
+    objc_storeStrong(&self->_pendingSelectedLabelMarker, marker);
+    [(MapSelectionManager *)self _performAnalyticsForTappingOnLabelMarker:markerCopy];
   }
 }
 
-- (BOOL)mapShouldSelectLabelMarker:(id)a3
+- (BOOL)mapShouldSelectLabelMarker:(id)marker
 {
-  v4 = a3;
-  if ([v4 isRouteAnnotation])
+  markerCopy = marker;
+  if ([markerCopy isRouteAnnotation])
   {
-    v5 = [v4 _maps_selectableRouteAnnotations];
-    if (![v5 count])
+    _maps_selectableRouteAnnotations = [markerCopy _maps_selectableRouteAnnotations];
+    if (![_maps_selectableRouteAnnotations count])
     {
 
 LABEL_10:
@@ -399,7 +399,7 @@ LABEL_10:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
         v15 = 134349056;
-        v16 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[%{public}p] Suppressing label marker selection (no selectable route annotations or empty cluster)", &v15, 0xCu);
       }
 
@@ -407,11 +407,11 @@ LABEL_10:
       goto LABEL_21;
     }
 
-    if ([v4 isCluster])
+    if ([markerCopy isCluster])
     {
-      v6 = [v4 clusterFeatureCount];
+      clusterFeatureCount = [markerCopy clusterFeatureCount];
 
-      if (!v6)
+      if (!clusterFeatureCount)
       {
         goto LABEL_10;
       }
@@ -422,18 +422,18 @@ LABEL_10:
     }
   }
 
-  else if (([v4 isCluster] & 1) != 0 && !objc_msgSend(v4, "clusterFeatureCount"))
+  else if (([markerCopy isCluster] & 1) != 0 && !objc_msgSend(markerCopy, "clusterFeatureCount"))
   {
     goto LABEL_10;
   }
 
-  v9 = [(MapSelectionManager *)self delegate];
+  delegate = [(MapSelectionManager *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(MapSelectionManager *)self delegate];
-    v8 = [v11 mapSelectionManager:self shouldSelectVKLabelMarker:v4];
+    delegate2 = [(MapSelectionManager *)self delegate];
+    v8 = [delegate2 mapSelectionManager:self shouldSelectVKLabelMarker:markerCopy];
   }
 
   else
@@ -452,9 +452,9 @@ LABEL_10:
 
     v13 = v12;
     v15 = 134349570;
-    v16 = self;
+    selfCopy2 = self;
     v17 = 2112;
-    v18 = v4;
+    v18 = markerCopy;
     v19 = 2112;
     v20 = v13;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Should select label marker %@: %@", &v15, 0x20u);
@@ -465,27 +465,27 @@ LABEL_21:
   return v8;
 }
 
-- (void)restoreSelectionState:(id)a3 animated:(BOOL)a4 restoreRegion:(BOOL)a5 notifyDelegate:(BOOL)a6
+- (void)restoreSelectionState:(id)state animated:(BOOL)animated restoreRegion:(BOOL)region notifyDelegate:(BOOL)delegate
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
+  delegateCopy = delegate;
+  regionCopy = region;
+  animatedCopy = animated;
+  stateCopy = state;
   v11 = sub_10006CB50();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v28 = 134349314;
-    v29 = self;
+    selfCopy = self;
     v30 = 2112;
-    v31 = v10;
+    v31 = stateCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[%{public}p] Restoring selection state: %@", &v28, 0x16u);
   }
 
-  if (v10)
+  if (stateCopy)
   {
-    v12 = [v10 camera];
-    v13 = v12;
-    if (v12 && (([v12 centerCoordinate], fabs(v15) > 180.0) || v14 < -90.0 || v14 > 90.0))
+    camera = [stateCopy camera];
+    v13 = camera;
+    if (camera && (([camera centerCoordinate], fabs(v15) > 180.0) || v14 < -90.0 || v14 > 90.0))
     {
 
       v13 = 0;
@@ -493,26 +493,26 @@ LABEL_21:
 
     else
     {
-      v16 = [v10 customPOIKeys];
+      customPOIKeys = [stateCopy customPOIKeys];
 
-      if (v16)
+      if (customPOIKeys)
       {
-        v17 = [v10 customPOIKeys];
-        [(MapSelectionManager *)self _selectLabelMarkerWithKeys:v17 camera:v13 animated:v8 restoreRegion:v7 updateIfNeeded:v6 completion:0];
+        customPOIKeys2 = [stateCopy customPOIKeys];
+        [(MapSelectionManager *)self _selectLabelMarkerWithKeys:customPOIKeys2 camera:v13 animated:animatedCopy restoreRegion:regionCopy updateIfNeeded:delegateCopy completion:0];
       }
 
       else
       {
-        v18 = [v10 selectedAnnotations];
-        v19 = [v18 count];
+        selectedAnnotations = [stateCopy selectedAnnotations];
+        v19 = [selectedAnnotations count];
 
         if (v19)
         {
-          v20 = [(MapSelectionManager *)self mapView];
-          v21 = [v10 selectedAnnotations];
-          [v20 setSelectedAnnotations:v21];
+          mapView = [(MapSelectionManager *)self mapView];
+          selectedAnnotations2 = [stateCopy selectedAnnotations];
+          [mapView setSelectedAnnotations:selectedAnnotations2];
 
-          if (v13 && v7)
+          if (v13 && regionCopy)
           {
             [(MapCameraController *)self->_mapCameraController restoreRegionForMapSelectionWithCamera:v13 completion:0];
           }
@@ -520,29 +520,29 @@ LABEL_21:
 
         else
         {
-          v22 = [v10 labelMarker];
+          labelMarker = [stateCopy labelMarker];
 
-          if (v22)
+          if (labelMarker)
           {
-            v23 = [v10 labelMarker];
-            v24 = [v23 isCluster];
+            labelMarker2 = [stateCopy labelMarker];
+            isCluster = [labelMarker2 isCluster];
 
-            if (v24)
+            if (isCluster)
             {
-              [(MapSelectionManager *)self clearSelectionAnimated:0 updateIfNeeded:v6];
+              [(MapSelectionManager *)self clearSelectionAnimated:0 updateIfNeeded:delegateCopy];
             }
 
             else
             {
-              v27 = [v10 labelMarker];
-              [(MapSelectionManager *)self selectLabelMarker:v27 animated:v8 updateIfNeeded:v6];
+              labelMarker3 = [stateCopy labelMarker];
+              [(MapSelectionManager *)self selectLabelMarker:labelMarker3 animated:animatedCopy updateIfNeeded:delegateCopy];
             }
           }
 
           else
           {
-            v25 = [(MapSelectionManager *)self delegate];
-            v26 = [v25 searchPinsManagerForMapSelectionManager:self];
+            delegate = [(MapSelectionManager *)self delegate];
+            v26 = [delegate searchPinsManagerForMapSelectionManager:self];
 
             [v26 clearLinkedPlacesAndPolygon];
           }
@@ -552,31 +552,31 @@ LABEL_21:
   }
 }
 
-- (id)selectionStateIncludingCamera:(BOOL)a3 includeNotCustomLabelMarkers:(BOOL)a4
+- (id)selectionStateIncludingCamera:(BOOL)camera includeNotCustomLabelMarkers:(BOOL)markers
 {
-  v4 = a4;
-  v5 = a3;
+  markersCopy = markers;
+  cameraCopy = camera;
   v7 = objc_opt_new();
-  v8 = [(MapSelectionManager *)self mapView];
-  v9 = [v8 _selectedLabelMarker];
+  mapView = [(MapSelectionManager *)self mapView];
+  _selectedLabelMarker = [mapView _selectedLabelMarker];
 
-  if (!v9)
+  if (!_selectedLabelMarker)
   {
-    v10 = [(MapSelectionManager *)self mapView];
-    v11 = [v10 selectedAnnotations];
-    [v7 setSelectedAnnotations:v11];
+    mapView2 = [(MapSelectionManager *)self mapView];
+    selectedAnnotations = [mapView2 selectedAnnotations];
+    [v7 setSelectedAnnotations:selectedAnnotations];
     goto LABEL_9;
   }
 
-  if (!v4)
+  if (!markersCopy)
   {
-    v12 = [v9 featureAnnotation];
-    v10 = v12;
-    if (!v12 || ![v12 conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation])
+    featureAnnotation = [_selectedLabelMarker featureAnnotation];
+    mapView2 = featureAnnotation;
+    if (!featureAnnotation || ![featureAnnotation conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation])
     {
 LABEL_10:
 
-      if (!v5)
+      if (!cameraCopy)
       {
         goto LABEL_12;
       }
@@ -584,20 +584,20 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v11 = [v10 keys];
-    [v7 setCustomPOIKeys:v11];
+    selectedAnnotations = [mapView2 keys];
+    [v7 setCustomPOIKeys:selectedAnnotations];
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  [v7 setLabelMarker:v9];
-  if (v5)
+  [v7 setLabelMarker:_selectedLabelMarker];
+  if (cameraCopy)
   {
 LABEL_11:
-    v13 = [(MapSelectionManager *)self mapView];
-    v14 = [v13 camera];
-    [v7 setCamera:v14];
+    mapView3 = [(MapSelectionManager *)self mapView];
+    camera = [mapView3 camera];
+    [v7 setCamera:camera];
   }
 
 LABEL_12:
@@ -605,14 +605,14 @@ LABEL_12:
   return v7;
 }
 
-- (void)_selectCustomPOIAnnotation:(id)a3 camera:(id)a4 restoreRegion:(BOOL)a5 updateIfNeeded:(BOOL)a6 completion:(id)a7
+- (void)_selectCustomPOIAnnotation:(id)annotation camera:(id)camera restoreRegion:(BOOL)region updateIfNeeded:(BOOL)needed completion:(id)completion
 {
-  v9 = a5;
-  v12 = a4;
-  v13 = a7;
-  v14 = a3;
-  v15 = [(MapSelectionManager *)self mapView];
-  v16 = [v15 _labelMarkerForCustomFeatureAnnotation:v14];
+  regionCopy = region;
+  cameraCopy = camera;
+  completionCopy = completion;
+  annotationCopy = annotation;
+  mapView = [(MapSelectionManager *)self mapView];
+  v16 = [mapView _labelMarkerForCustomFeatureAnnotation:annotationCopy];
 
   v25 = _NSConcreteStackBlock;
   v26 = 3221225472;
@@ -620,17 +620,17 @@ LABEL_12:
   v28 = &unk_101661068;
   v17 = v16;
   v29 = v17;
-  v30 = self;
-  v32 = a6;
-  v18 = v13;
+  selfCopy = self;
+  neededCopy = needed;
+  v18 = completionCopy;
   v31 = v18;
   v19 = objc_retainBlock(&v25);
   (v19[2])(v19, v20, v21, v22);
-  if (v9)
+  if (regionCopy)
   {
-    if (v12)
+    if (cameraCopy)
     {
-      [(MapCameraController *)self->_mapCameraController restoreRegionForMapSelectionWithCamera:v12 completion:0, v25, v26, v27, v28, v29, v30];
+      [(MapCameraController *)self->_mapCameraController restoreRegionForMapSelectionWithCamera:cameraCopy completion:0, v25, v26, v27, v28, v29, selfCopy];
     }
 
     else if (v17)
@@ -643,126 +643,126 @@ LABEL_12:
   }
 }
 
-- (void)_selectLabelMarkerWithKeys:(id)a3 camera:(id)a4 animated:(BOOL)a5 restoreRegion:(BOOL)a6 updateIfNeeded:(BOOL)a7 completion:(id)a8
+- (void)_selectLabelMarkerWithKeys:(id)keys camera:(id)camera animated:(BOOL)animated restoreRegion:(BOOL)region updateIfNeeded:(BOOL)needed completion:(id)completion
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a8;
+  keysCopy = keys;
+  cameraCopy = camera;
+  completionCopy = completion;
   v16 = sub_10006CB50();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     *buf = 134349570;
-    v25 = self;
+    selfCopy = self;
     v26 = 2112;
-    v27 = v13;
+    v27 = keysCopy;
     v28 = 2112;
-    v29 = v14;
+    v29 = cameraCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "[%{public}p] Selecting label marker with keys: %@, camera: %@", buf, 0x20u);
   }
 
-  if (v13 && [v13 count])
+  if (keysCopy && [keysCopy count])
   {
-    v17 = [(MapSelectionManager *)self customPOIsController];
+    customPOIsController = [(MapSelectionManager *)self customPOIsController];
 
-    if (v17)
+    if (customPOIsController)
     {
       [(MapSelectionManager *)self suspendUpdates];
-      v18 = [(MapSelectionManager *)self customPOIsController];
+      customPOIsController2 = [(MapSelectionManager *)self customPOIsController];
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
       v19[2] = sub_100EAD60C;
       v19[3] = &unk_101657788;
       v19[4] = self;
-      v21 = v15;
-      v20 = v14;
-      v22 = a6;
-      v23 = a7;
-      [v18 customFeatureForKeys:v13 completion:v19];
+      v21 = completionCopy;
+      v20 = cameraCopy;
+      regionCopy = region;
+      neededCopy = needed;
+      [customPOIsController2 customFeatureForKeys:keysCopy completion:v19];
     }
   }
 
-  else if (v15)
+  else if (completionCopy)
   {
-    (*(v15 + 2))(v15, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)injectPreviouslySelectedSearchResult:(id)a3
+- (void)injectPreviouslySelectedSearchResult:(id)result
 {
-  v4 = a3;
-  v5 = [(MapSelectionManager *)self customPOIsController];
-  v10 = [v5 injectSearchResultIfNeeded:v4];
+  resultCopy = result;
+  customPOIsController = [(MapSelectionManager *)self customPOIsController];
+  v10 = [customPOIsController injectSearchResultIfNeeded:resultCopy];
 
-  v6 = [(MapSelectionManager *)self mapView];
-  v7 = [v6 _labelMarkerForCustomFeatureAnnotation:v10];
+  mapView = [(MapSelectionManager *)self mapView];
+  v7 = [mapView _labelMarkerForCustomFeatureAnnotation:v10];
 
-  v8 = [(MapSelectionManager *)self mapView];
-  v9 = [v8 _mapLayer];
-  [v9 setPreviouslySelectedLabelMarker:v7];
+  mapView2 = [(MapSelectionManager *)self mapView];
+  _mapLayer = [mapView2 _mapLayer];
+  [_mapLayer setPreviouslySelectedLabelMarker:v7];
 }
 
-- (void)injectAndSelectSearchResult:(id)a3
+- (void)injectAndSelectSearchResult:(id)result
 {
-  v4 = a3;
-  v5 = [(MapSelectionManager *)self customPOIsController];
-  v6 = [v5 injectSearchResultIfNeeded:v4];
+  resultCopy = result;
+  customPOIsController = [(MapSelectionManager *)self customPOIsController];
+  v6 = [customPOIsController injectSearchResultIfNeeded:resultCopy];
 
   [(MapSelectionManager *)self _selectCustomPOIAnnotation:v6 camera:0 restoreRegion:1 updateIfNeeded:1 completion:0];
 }
 
-- (void)injectAndSelectPersonalizedItem:(id)a3
+- (void)injectAndSelectPersonalizedItem:(id)item
 {
-  v4 = a3;
-  v5 = [(MapSelectionManager *)self customPOIsController];
-  v6 = [v5 injectPersonalizedItemIfNeeded:v4];
+  itemCopy = item;
+  customPOIsController = [(MapSelectionManager *)self customPOIsController];
+  v6 = [customPOIsController injectPersonalizedItemIfNeeded:itemCopy];
 
   [(MapSelectionManager *)self _selectCustomPOIAnnotation:v6 camera:0 restoreRegion:1 updateIfNeeded:1 completion:0];
 }
 
-- (void)selectMapItem:(id)a3 animated:(BOOL)a4
+- (void)selectMapItem:(id)item animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  itemCopy = item;
   v7 = sub_10006CB50();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v12 = 134349314;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v6;
+    v15 = itemCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Selecting map item: %@", &v12, 0x16u);
   }
 
-  v8 = [[PersonalizedMapItemKey alloc] initWithMapItem:v6];
+  v8 = [[PersonalizedMapItemKey alloc] initWithMapItem:itemCopy];
   v9 = [NSSet setWithObject:v8];
-  if ([v6 _hasMUID] && objc_msgSend(v6, "_muid"))
+  if ([itemCopy _hasMUID] && objc_msgSend(itemCopy, "_muid"))
   {
-    v10 = -[PersonalizedMapItemMUIDKey initWithMUID:]([PersonalizedMapItemMUIDKey alloc], "initWithMUID:", [v6 _muid]);
+    v10 = -[PersonalizedMapItemMUIDKey initWithMUID:]([PersonalizedMapItemMUIDKey alloc], "initWithMUID:", [itemCopy _muid]);
     v11 = [v9 setByAddingObject:v10];
 
     v9 = v11;
   }
 
-  [(MapSelectionManager *)self selectLabelMarkerWithKeys:v9 animated:v4 completion:0];
+  [(MapSelectionManager *)self selectLabelMarkerWithKeys:v9 animated:animatedCopy completion:0];
 }
 
-- (BOOL)isMapItemSelected:(id)a3
+- (BOOL)isMapItemSelected:(id)selected
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  selectedCopy = selected;
+  v5 = selectedCopy;
+  if (selectedCopy)
   {
-    v6 = [v4 identifier];
-    v7 = [(VKLabelMarker *)self->_labelMarker identifier];
-    if (v6 && ([v6 isEqual:v7] & 1) != 0)
+    identifier = [selectedCopy identifier];
+    identifier2 = [(VKLabelMarker *)self->_labelMarker identifier];
+    if (identifier && ([identifier isEqual:identifier2] & 1) != 0)
     {
       v8 = 1;
     }
 
     else
     {
-      v9 = [(VKLabelMarker *)self->_labelMarker _maps_mapItem];
-      v8 = [v5 isEqual:v9];
+      _maps_mapItem = [(VKLabelMarker *)self->_labelMarker _maps_mapItem];
+      v8 = [v5 isEqual:_maps_mapItem];
     }
   }
 
@@ -776,123 +776,123 @@ LABEL_12:
 
 - (void)deselectTrails
 {
-  v3 = [(MapSelectionManager *)self selectedTrailId];
-  v4 = sub_10006CB50();
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_INFO);
-  if (v3)
+  selectedTrailId = [(MapSelectionManager *)self selectedTrailId];
+  mapView = sub_10006CB50();
+  v5 = os_log_type_enabled(mapView, OS_LOG_TYPE_INFO);
+  if (selectedTrailId)
   {
     if (v5)
     {
       v6 = 134349312;
-      v7 = self;
+      selfCopy2 = self;
       v8 = 2048;
-      v9 = [(MapSelectionManager *)self selectedTrailId];
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Deselecting trail with Id: %llu", &v6, 0x16u);
+      selectedTrailId2 = [(MapSelectionManager *)self selectedTrailId];
+      _os_log_impl(&_mh_execute_header, mapView, OS_LOG_TYPE_INFO, "[%{public}p] Deselecting trail with Id: %llu", &v6, 0x16u);
     }
 
     [(MapSelectionManager *)self setSelectedTrailId:0];
-    v4 = [(MapSelectionManager *)self mapView];
-    [v4 deselectTrails];
+    mapView = [(MapSelectionManager *)self mapView];
+    [mapView deselectTrails];
   }
 
   else if (v5)
   {
     v6 = 134349056;
-    v7 = self;
-    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] No selected trails to deselect.", &v6, 0xCu);
+    selfCopy2 = self;
+    _os_log_impl(&_mh_execute_header, mapView, OS_LOG_TYPE_INFO, "[%{public}p] No selected trails to deselect.", &v6, 0xCu);
   }
 }
 
-- (void)selectTrailWithId:(unint64_t)a3 name:(id)a4 locale:(id)a5
+- (void)selectTrailWithId:(unint64_t)id name:(id)name locale:(id)locale
 {
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  localeCopy = locale;
   v10 = sub_10006CB50();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v12 = 134349826;
-    v13 = self;
+    selfCopy = self;
     v14 = 2048;
-    v15 = a3;
+    idCopy = id;
     v16 = 2112;
-    v17 = v8;
+    v17 = nameCopy;
     v18 = 2112;
-    v19 = v9;
+    v19 = localeCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[%{public}p] Selecting trail with Id: %llu, name: %@, locale: %@", &v12, 0x2Au);
   }
 
-  [(MapSelectionManager *)self setSelectedTrailId:a3];
-  v11 = [(MapSelectionManager *)self mapView];
-  [v11 setSelectedTrailWithId:a3 name:v8 locale:v9];
+  [(MapSelectionManager *)self setSelectedTrailId:id];
+  mapView = [(MapSelectionManager *)self mapView];
+  [mapView setSelectedTrailWithId:id name:nameCopy locale:localeCopy];
 }
 
-- (void)selectTrailId:(unint64_t)a3
+- (void)selectTrailId:(unint64_t)id
 {
   v5 = sub_10006CB50();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 134349312;
-    v8 = self;
+    selfCopy = self;
     v9 = 2048;
-    v10 = a3;
+    idCopy = id;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Selecting trail ID: %llu", &v7, 0x16u);
   }
 
-  [(MapSelectionManager *)self setSelectedTrailId:a3];
-  v6 = [(MapSelectionManager *)self mapView];
-  [v6 setSelectedTrailId:a3];
+  [(MapSelectionManager *)self setSelectedTrailId:id];
+  mapView = [(MapSelectionManager *)self mapView];
+  [mapView setSelectedTrailId:id];
 }
 
-- (void)selectSearchResult:(id)a3 animated:(BOOL)a4
+- (void)selectSearchResult:(id)result animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  resultCopy = result;
   v7 = sub_10006CB50();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v10 = 134349314;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v6;
+    v13 = resultCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Selecting search result: %@", &v10, 0x16u);
   }
 
-  v8 = [(MapSelectionManager *)self delegate];
-  v9 = [v8 searchPinsManagerForMapSelectionManager:self];
+  delegate = [(MapSelectionManager *)self delegate];
+  v9 = [delegate searchPinsManagerForMapSelectionManager:self];
 
-  [v9 selectAndShowSearchResult:v6 animated:v4];
+  [v9 selectAndShowSearchResult:resultCopy animated:animatedCopy];
 }
 
-- (void)selectLabelMarker:(id)a3 animated:(BOOL)a4 updateIfNeeded:(BOOL)a5
+- (void)selectLabelMarker:(id)marker animated:(BOOL)animated updateIfNeeded:(BOOL)needed
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  neededCopy = needed;
+  animatedCopy = animated;
+  markerCopy = marker;
   v9 = sub_10006CB50();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v12 = 134349314;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v8;
+    v15 = markerCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] Selecting label marker: %@", &v12, 0x16u);
   }
 
-  if (self->_labelMarker != v8)
+  if (self->_labelMarker != markerCopy)
   {
-    v10 = [(VKLabelMarker *)v8 featureAnnotation];
-    if (v10)
+    featureAnnotation = [(VKLabelMarker *)markerCopy featureAnnotation];
+    if (featureAnnotation)
     {
 
 LABEL_7:
-      [(MapSelectionManager *)self setLabelMarker:v8 updateIfNeeded:v5];
-      v11 = [(MapSelectionManager *)self mapView];
-      [v11 _selectLabelMarker:v8 animated:v6];
+      [(MapSelectionManager *)self setLabelMarker:markerCopy updateIfNeeded:neededCopy];
+      mapView = [(MapSelectionManager *)self mapView];
+      [mapView _selectLabelMarker:markerCopy animated:animatedCopy];
 
       goto LABEL_8;
     }
 
-    if (([(VKLabelMarker *)v8 isSelectable]& 1) != 0)
+    if (([(VKLabelMarker *)markerCopy isSelectable]& 1) != 0)
     {
       goto LABEL_7;
     }
@@ -901,30 +901,30 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)clearSelectionAnimated:(BOOL)a3 updateIfNeeded:(BOOL)a4
+- (void)clearSelectionAnimated:(BOOL)animated updateIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v5 = a3;
+  neededCopy = needed;
+  animatedCopy = animated;
   v7 = sub_10006CB50();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v21 = 134349056;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Clearing selection", &v21, 0xCu);
   }
 
-  v8 = [(MapSelectionManager *)self customPOIsController];
-  [v8 clearInjectSearchResult];
+  customPOIsController = [(MapSelectionManager *)self customPOIsController];
+  [customPOIsController clearInjectSearchResult];
 
   labelMarker = self->_labelMarker;
   v10 = labelMarker != 0;
   if (labelMarker)
   {
-    v11 = [(MapSelectionManager *)self mapView];
-    [v11 _deselectLabelMarkerAnimated:v5];
+    mapView = [(MapSelectionManager *)self mapView];
+    [mapView _deselectLabelMarkerAnimated:animatedCopy];
 
-    v12 = [(MapSelectionManager *)self mapView];
-    [v12 deselectVenuePoiFeatureId];
+    mapView2 = [(MapSelectionManager *)self mapView];
+    [mapView2 deselectVenuePoiFeatureId];
 
     v13 = self->_labelMarker;
     self->_labelMarker = 0;
@@ -932,9 +932,9 @@ LABEL_8:
 
   if (self->_annotationView)
   {
-    v14 = [(MapSelectionManager *)self mapView];
-    v15 = [(MKAnnotationView *)self->_annotationView annotation];
-    [v14 deselectAnnotation:v15 animated:v5];
+    mapView3 = [(MapSelectionManager *)self mapView];
+    annotation = [(MKAnnotationView *)self->_annotationView annotation];
+    [mapView3 deselectAnnotation:annotation animated:animatedCopy];
 
     annotationView = self->_annotationView;
     self->_annotationView = 0;
@@ -942,22 +942,22 @@ LABEL_8:
     v10 = 1;
   }
 
-  v17 = [(MapSelectionManager *)self mapView];
-  v18 = [v17 _hasSelectedTransitLines];
+  mapView4 = [(MapSelectionManager *)self mapView];
+  _hasSelectedTransitLines = [mapView4 _hasSelectedTransitLines];
 
-  if (v18)
+  if (_hasSelectedTransitLines)
   {
-    v19 = [(MapSelectionManager *)self mapView];
-    [v19 _deselectTransitLineMarker];
+    mapView5 = [(MapSelectionManager *)self mapView];
+    [mapView5 _deselectTransitLineMarker];
 
-    v20 = [(MapSelectionManager *)self mapView];
-    [v20 _setApplicationState:0];
+    mapView6 = [(MapSelectionManager *)self mapView];
+    [mapView6 _setApplicationState:0];
 
     v10 = 1;
   }
 
   [(MapSelectionManager *)self deselectTrails];
-  if (v10 && v4)
+  if (v10 && neededCopy)
   {
     [(MapSelectionManager *)self _setNeedsUpdate];
   }
@@ -965,9 +965,9 @@ LABEL_8:
 
 - (CustomPOIAnnotation)customLabelMarker
 {
-  v2 = [(VKLabelMarker *)self->_labelMarker featureAnnotation];
-  v3 = v2;
-  if (v2 && [v2 conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation])
+  featureAnnotation = [(VKLabelMarker *)self->_labelMarker featureAnnotation];
+  v3 = featureAnnotation;
+  if (featureAnnotation && [featureAnnotation conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation])
   {
     v4 = v3;
   }
@@ -980,150 +980,150 @@ LABEL_8:
   return v4;
 }
 
-- (void)setAnnotationView:(id)a3
+- (void)setAnnotationView:(id)view
 {
-  v5 = a3;
-  if (self->_annotationView != v5)
+  viewCopy = view;
+  if (self->_annotationView != viewCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_annotationView, a3);
+    v8 = viewCopy;
+    objc_storeStrong(&self->_annotationView, view);
     labelMarker = self->_labelMarker;
     self->_labelMarker = 0;
 
-    v7 = [(MapSelectionManager *)self mapView];
-    [v7 deselectVenuePoiFeatureId];
+    mapView = [(MapSelectionManager *)self mapView];
+    [mapView deselectVenuePoiFeatureId];
 
     [(MapSelectionManager *)self _setNeedsUpdate];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
-- (void)setLabelMarker:(id)a3 updateIfNeeded:(BOOL)a4
+- (void)setLabelMarker:(id)marker updateIfNeeded:(BOOL)needed
 {
-  v7 = a3;
+  markerCopy = marker;
   p_labelMarker = &self->_labelMarker;
-  if (self->_labelMarker == v7)
+  if (self->_labelMarker == markerCopy)
   {
     goto LABEL_13;
   }
 
-  v18 = v7;
-  v9 = [(VKLabelMarker *)v7 featureAnnotation];
-  if (v9)
+  v18 = markerCopy;
+  featureAnnotation = [(VKLabelMarker *)markerCopy featureAnnotation];
+  if (featureAnnotation)
   {
-    v10 = [(VKLabelMarker *)*p_labelMarker featureAnnotation];
+    featureAnnotation2 = [(VKLabelMarker *)*p_labelMarker featureAnnotation];
 
-    if (v10)
+    if (featureAnnotation2)
     {
-      v11 = [(VKLabelMarker *)v18 featureAnnotation];
-      v12 = [(VKLabelMarker *)*p_labelMarker featureAnnotation];
-      LOBYTE(v9) = [v11 isEqual:v12];
+      featureAnnotation3 = [(VKLabelMarker *)v18 featureAnnotation];
+      featureAnnotation4 = [(VKLabelMarker *)*p_labelMarker featureAnnotation];
+      LOBYTE(featureAnnotation) = [featureAnnotation3 isEqual:featureAnnotation4];
     }
 
     else
     {
-      LOBYTE(v9) = 0;
+      LOBYTE(featureAnnotation) = 0;
     }
   }
 
-  objc_storeStrong(&self->_labelMarker, a3);
+  objc_storeStrong(&self->_labelMarker, marker);
   annotationView = self->_annotationView;
   self->_annotationView = 0;
 
   if ([(VKLabelMarker *)v18 countFeatureIDs])
   {
-    v14 = [(MapSelectionManager *)self mapView];
-    v15 = *[(VKLabelMarker *)v18 featureIDs];
+    mapView = [(MapSelectionManager *)self mapView];
+    businessID = *[(VKLabelMarker *)v18 featureIDs];
 LABEL_10:
-    [v14 setSelectedVenuePoiFeatureId:v15];
+    [mapView setSelectedVenuePoiFeatureId:businessID];
     goto LABEL_11;
   }
 
-  v16 = [(VKLabelMarker *)v18 hasBusinessID];
-  v17 = [(MapSelectionManager *)self mapView];
-  v14 = v17;
-  if (v16)
+  hasBusinessID = [(VKLabelMarker *)v18 hasBusinessID];
+  mapView2 = [(MapSelectionManager *)self mapView];
+  mapView = mapView2;
+  if (hasBusinessID)
   {
-    v15 = [(VKLabelMarker *)v18 businessID];
+    businessID = [(VKLabelMarker *)v18 businessID];
     goto LABEL_10;
   }
 
-  [v17 deselectVenuePoiFeatureId];
+  [mapView2 deselectVenuePoiFeatureId];
 LABEL_11:
 
   self->_isCluster = [(VKLabelMarker *)v18 isCluster];
-  v7 = v18;
-  if (!(v9 & 1 | !a4))
+  markerCopy = v18;
+  if (!(featureAnnotation & 1 | !needed))
   {
     [(MapSelectionManager *)self _setNeedsUpdate];
-    v7 = v18;
+    markerCopy = v18;
   }
 
 LABEL_13:
 }
 
-- (void)_removeGestureRecognizersForMapView:(id)a3
+- (void)_removeGestureRecognizersForMapView:(id)view
 {
-  if (a3)
+  if (view)
   {
-    v4 = a3;
-    v5 = [v4 _pinchGestureRecognizer];
-    [v5 removeTarget:self action:"_handleMapPinch:"];
+    viewCopy = view;
+    _pinchGestureRecognizer = [viewCopy _pinchGestureRecognizer];
+    [_pinchGestureRecognizer removeTarget:self action:"_handleMapPinch:"];
 
-    v6 = [v4 _oneHandedZoomGestureRecognizer];
-    [v6 removeTarget:self action:"_handleMapZoomingGesture:"];
+    _oneHandedZoomGestureRecognizer = [viewCopy _oneHandedZoomGestureRecognizer];
+    [_oneHandedZoomGestureRecognizer removeTarget:self action:"_handleMapZoomingGesture:"];
 
-    v7 = [v4 _doubleTapGestureRecognizer];
-    [v7 removeTarget:self action:"_clearClusterSelectionOnGesture:"];
+    _doubleTapGestureRecognizer = [viewCopy _doubleTapGestureRecognizer];
+    [_doubleTapGestureRecognizer removeTarget:self action:"_clearClusterSelectionOnGesture:"];
 
-    v8 = [v4 _twoFingerTapGestureRecognizer];
-    [v8 removeTarget:self action:"_clearClusterSelectionOnGesture:"];
+    _twoFingerTapGestureRecognizer = [viewCopy _twoFingerTapGestureRecognizer];
+    [_twoFingerTapGestureRecognizer removeTarget:self action:"_clearClusterSelectionOnGesture:"];
 
-    v9 = [v4 _selectingTapGestureRecognizer];
+    _selectingTapGestureRecognizer = [viewCopy _selectingTapGestureRecognizer];
 
-    [v9 removeTarget:self action:"_handleSelectingTapGesture:"];
+    [_selectingTapGestureRecognizer removeTarget:self action:"_handleSelectingTapGesture:"];
   }
 }
 
-- (void)_addGestureRecognizersForMapView:(id)a3
+- (void)_addGestureRecognizersForMapView:(id)view
 {
-  if (a3)
+  if (view)
   {
-    v4 = a3;
-    v5 = [v4 _pinchGestureRecognizer];
-    [v5 addTarget:self action:"_handleMapPinch:"];
+    viewCopy = view;
+    _pinchGestureRecognizer = [viewCopy _pinchGestureRecognizer];
+    [_pinchGestureRecognizer addTarget:self action:"_handleMapPinch:"];
 
-    v6 = [v4 _oneHandedZoomGestureRecognizer];
-    [v6 addTarget:self action:"_handleMapZoomingGesture:"];
+    _oneHandedZoomGestureRecognizer = [viewCopy _oneHandedZoomGestureRecognizer];
+    [_oneHandedZoomGestureRecognizer addTarget:self action:"_handleMapZoomingGesture:"];
 
-    v7 = [v4 _doubleTapGestureRecognizer];
-    [v7 addTarget:self action:"_clearClusterSelectionOnGesture:"];
+    _doubleTapGestureRecognizer = [viewCopy _doubleTapGestureRecognizer];
+    [_doubleTapGestureRecognizer addTarget:self action:"_clearClusterSelectionOnGesture:"];
 
-    v8 = [v4 _twoFingerTapGestureRecognizer];
-    [v8 addTarget:self action:"_clearClusterSelectionOnGesture:"];
+    _twoFingerTapGestureRecognizer = [viewCopy _twoFingerTapGestureRecognizer];
+    [_twoFingerTapGestureRecognizer addTarget:self action:"_clearClusterSelectionOnGesture:"];
 
-    v9 = [v4 _selectingTapGestureRecognizer];
+    _selectingTapGestureRecognizer = [viewCopy _selectingTapGestureRecognizer];
 
-    [v9 addTarget:self action:"_handleSelectingTapGesture:"];
+    [_selectingTapGestureRecognizer addTarget:self action:"_handleSelectingTapGesture:"];
   }
 }
 
-- (void)setMapCameraController:(id)a3
+- (void)setMapCameraController:(id)controller
 {
-  v5 = a3;
-  if (self->_mapCameraController != v5)
+  controllerCopy = controller;
+  if (self->_mapCameraController != controllerCopy)
   {
-    v10 = v5;
-    v6 = [(MapSelectionManager *)self mapCameraController];
-    v7 = [v6 mapView];
-    [(MapSelectionManager *)self _removeGestureRecognizersForMapView:v7];
+    v10 = controllerCopy;
+    mapCameraController = [(MapSelectionManager *)self mapCameraController];
+    mapView = [mapCameraController mapView];
+    [(MapSelectionManager *)self _removeGestureRecognizersForMapView:mapView];
 
-    objc_storeStrong(&self->_mapCameraController, a3);
-    v8 = [(MapSelectionManager *)self mapCameraController];
-    v9 = [v8 mapView];
-    [(MapSelectionManager *)self _addGestureRecognizersForMapView:v9];
+    objc_storeStrong(&self->_mapCameraController, controller);
+    mapCameraController2 = [(MapSelectionManager *)self mapCameraController];
+    mapView2 = [mapCameraController2 mapView];
+    [(MapSelectionManager *)self _addGestureRecognizersForMapView:mapView2];
 
-    v5 = v10;
+    controllerCopy = v10;
   }
 }
 
@@ -1179,34 +1179,34 @@ LABEL_13:
 
 - (MKMapView)mapView
 {
-  v2 = [(MapSelectionManager *)self mapCameraController];
-  v3 = [v2 mapView];
+  mapCameraController = [(MapSelectionManager *)self mapCameraController];
+  mapView = [mapCameraController mapView];
 
-  return v3;
+  return mapView;
 }
 
 - (void)dealloc
 {
-  v3 = [(MapSelectionManager *)self mapView];
-  [(MapSelectionManager *)self _removeGestureRecognizersForMapView:v3];
+  mapView = [(MapSelectionManager *)self mapView];
+  [(MapSelectionManager *)self _removeGestureRecognizersForMapView:mapView];
 
   v4.receiver = self;
   v4.super_class = MapSelectionManager;
   [(MapSelectionManager *)&v4 dealloc];
 }
 
-- (MapSelectionManager)initWithCameraController:(id)a3
+- (MapSelectionManager)initWithCameraController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = MapSelectionManager;
   v6 = [(MapSelectionManager *)&v12 init];
   if (v6)
   {
-    v7 = [v5 mapView];
-    [(MapSelectionManager *)v6 _addGestureRecognizersForMapView:v7];
+    mapView = [controllerCopy mapView];
+    [(MapSelectionManager *)v6 _addGestureRecognizersForMapView:mapView];
 
-    objc_storeStrong(&v6->_mapCameraController, a3);
+    objc_storeStrong(&v6->_mapCameraController, controller);
     v8 = +[NSUserDefaults standardUserDefaults];
     [v8 registerDefaults:&off_1016EE5D8];
 

@@ -1,17 +1,17 @@
 @interface CarSpeedSignView
-- (CarSpeedSignView)initWithCarSceneType:(int64_t)a3;
+- (CarSpeedSignView)initWithCarSceneType:(int64_t)type;
 - (double)dynamicScale;
 - (void)_activate;
 - (void)_deactivate;
-- (void)_setLocation:(id)a3;
+- (void)_setLocation:(id)location;
 - (void)_updateLocationSource;
 - (void)dealloc;
-- (void)locationManagerUpdatedLocation:(id)a3;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
+- (void)locationManagerUpdatedLocation:(id)location;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
 - (void)refreshSpeedLimit;
-- (void)setActive:(BOOL)a3;
-- (void)setContentsHidden:(BOOL)a3;
-- (void)setDimmed:(BOOL)a3 animated:(BOOL)a4;
+- (void)setActive:(BOOL)active;
+- (void)setContentsHidden:(BOOL)hidden;
+- (void)setDimmed:(BOOL)dimmed animated:(BOOL)animated;
 @end
 
 @implementation CarSpeedSignView
@@ -95,23 +95,23 @@ LABEL_7:
   [(CarSpeedSignView *)self _updateLocationSource];
 }
 
-- (void)locationManagerUpdatedLocation:(id)a3
+- (void)locationManagerUpdatedLocation:(id)location
 {
   roadMatcher = self->_roadMatcher;
-  v5 = a3;
-  v6 = [v5 currentLocation];
-  v7 = [(GEORoadMatcher *)roadMatcher matchLocation:v6 forTransportType:0];
+  locationCopy = location;
+  currentLocation = [locationCopy currentLocation];
+  v7 = [(GEORoadMatcher *)roadMatcher matchLocation:currentLocation forTransportType:0];
 
   v8 = [MNLocation alloc];
-  v9 = [v5 lastLocation];
+  lastLocation = [locationCopy lastLocation];
 
-  v10 = [v8 initWithRoadMatch:v7 rawLocation:v9 locationFixType:2];
+  v10 = [v8 initWithRoadMatch:v7 rawLocation:lastLocation locationFixType:2];
   v11 = sub_100006E1C();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [v10 locationUnreliable];
+    locationUnreliable = [v10 locationUnreliable];
     v13 = @"NO";
-    if (v12)
+    if (locationUnreliable)
     {
       v13 = @"YES";
     }
@@ -127,19 +127,19 @@ LABEL_7:
   [(CarSpeedSignView *)self _setLocation:v10];
 }
 
-- (void)_setLocation:(id)a3
+- (void)_setLocation:(id)location
 {
-  v4 = a3;
-  v5 = [v4 speedLimit];
-  v6 = [v4 speedLimitShieldType];
+  locationCopy = location;
+  speedLimit = [locationCopy speedLimit];
+  speedLimitShieldType = [locationCopy speedLimitShieldType];
 
-  [(SpeedLimitView *)self setSpeedLimit:v5 shieldType:v6];
+  [(SpeedLimitView *)self setSpeedLimit:speedLimit shieldType:speedLimitShieldType];
   v7 = [(SpeedLimitView *)self hasContent]^ 1;
 
   [(CarSpeedSignView *)self setContentsHidden:v7];
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
   self->_isNavigating = MNNavigationServiceStateIsNavigating();
   [(CarSpeedSignView *)self _updateLocationSource];
@@ -147,13 +147,13 @@ LABEL_7:
   [(CarSpeedSignView *)self refreshSpeedLimit];
 }
 
-- (void)setDimmed:(BOOL)a3 animated:(BOOL)a4
+- (void)setDimmed:(BOOL)dimmed animated:(BOOL)animated
 {
-  if (self->_dimmed != a3)
+  if (self->_dimmed != dimmed)
   {
-    v4 = a3;
-    self->_dimmed = a3;
-    if (a4)
+    dimmedCopy = dimmed;
+    self->_dimmed = dimmed;
+    if (animated)
     {
       v6 = !+[UIView _maps_shouldAdoptImplicitAnimationParameters];
     }
@@ -166,7 +166,7 @@ LABEL_7:
     v7 = sub_100006E1C();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      if (v4)
+      if (dimmedCopy)
       {
         v8 = @"YES";
       }
@@ -206,24 +206,24 @@ LABEL_7:
     }
 
     v13[4] = self;
-    v14 = v4;
+    v14 = dimmedCopy;
     [UIView animateWithDuration:v13 animations:v12];
   }
 }
 
 - (double)dynamicScale
 {
-  v3 = [(CarSpeedSignView *)self window];
-  v4 = [v3 screen];
-  if (v4)
+  window = [(CarSpeedSignView *)self window];
+  screen = [window screen];
+  if (screen)
   {
     carSceneType = self->_carSceneType;
 
     if (carSceneType == 6)
     {
-      v6 = [(CarSpeedSignView *)self window];
-      v7 = [v6 screen];
-      [v7 _car_dynamicPointScaleValue];
+      window2 = [(CarSpeedSignView *)self window];
+      screen2 = [window2 screen];
+      [screen2 _car_dynamicPointScaleValue];
       v9 = v8;
 
       return v9;
@@ -240,17 +240,17 @@ LABEL_7:
   return result;
 }
 
-- (void)setContentsHidden:(BOOL)a3
+- (void)setContentsHidden:(BOOL)hidden
 {
-  if (self->_contentsHidden != a3)
+  if (self->_contentsHidden != hidden)
   {
-    self->_contentsHidden = a3;
+    self->_contentsHidden = hidden;
     v4 = sub_100006E1C();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [(CarSpeedSignView *)self contentsHidden];
+      contentsHidden = [(CarSpeedSignView *)self contentsHidden];
       v6 = @"NO";
-      if (v5)
+      if (contentsHidden)
       {
         v6 = @"YES";
       }
@@ -271,22 +271,22 @@ LABEL_7:
   if (self->_isNavigating)
   {
     v3 = +[MNNavigationService sharedService];
-    v4 = [v3 lastLocation];
+    lastLocation = [v3 lastLocation];
   }
 
   else
   {
-    v4 = 0;
+    lastLocation = 0;
   }
 
-  [(CarSpeedSignView *)self _setLocation:v4];
+  [(CarSpeedSignView *)self _setLocation:lastLocation];
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    if (a3)
+    if (active)
     {
       [(CarSpeedSignView *)self _activate];
     }
@@ -298,7 +298,7 @@ LABEL_7:
   }
 }
 
-- (CarSpeedSignView)initWithCarSceneType:(int64_t)a3
+- (CarSpeedSignView)initWithCarSceneType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = CarSpeedSignView;
@@ -306,7 +306,7 @@ LABEL_7:
   v5 = v4;
   if (v4)
   {
-    v4->_carSceneType = a3;
+    v4->_carSceneType = type;
     v4->_active = 0;
     v4->_contentsHidden = 1;
     v6 = +[MNNavigationService sharedService];

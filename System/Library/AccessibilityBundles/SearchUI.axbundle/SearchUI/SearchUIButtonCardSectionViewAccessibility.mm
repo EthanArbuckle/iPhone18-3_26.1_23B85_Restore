@@ -1,16 +1,16 @@
 @interface SearchUIButtonCardSectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SearchUIButtonCardSectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TLKButtonView"];
-  [v3 validateClass:@"SearchUIButtonCardSectionView" hasProperty:@"contentView" withType:"@"];
-  [v3 validateClass:@"TLKButtonView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TLKButtonView"];
+  [validationsCopy validateClass:@"SearchUIButtonCardSectionView" hasProperty:@"contentView" withType:"@"];
+  [validationsCopy validateClass:@"TLKButtonView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

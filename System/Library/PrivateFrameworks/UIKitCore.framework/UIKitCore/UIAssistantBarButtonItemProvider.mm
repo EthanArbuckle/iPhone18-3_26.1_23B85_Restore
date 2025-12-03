@@ -2,35 +2,35 @@
 + (BOOL)_isDictationButtonVisible;
 + (BOOL)_isDismissButtonVisible;
 + (BOOL)_isEmojiButtonVisible;
-+ (BOOL)_isInputModeVisible:(id)a3;
++ (BOOL)_isInputModeVisible:(id)visible;
 + (BOOL)_isKeyboardItemEnabled;
 + (BOOL)_isMinimizeAssistantBarButtonVisible;
 + (BOOL)_isScribbleButtonsVisible;
 + (BOOL)_isShowKeyboardButtonVisible;
-+ (BOOL)_isStyleItemEnable:(id)a3;
++ (BOOL)_isStyleItemEnable:(id)enable;
 + (BOOL)isFloatingKeyboardVisible;
 + (BOOL)isKeyboardGroupVisible;
-+ (id)actionForInputMode:(id)a3 overrideImage:(id)a4 overrideTitle:(id)a5 overrideSubtitle:(id)a6;
-+ (id)actionForSoftwareKeyboardInputMode:(id)a3;
-+ (id)barButtonItemForAssistantItemStyle:(int64_t)a3 target:(id)a4 forcePlainButton:(BOOL)a5;
++ (id)actionForInputMode:(id)mode overrideImage:(id)image overrideTitle:(id)title overrideSubtitle:(id)subtitle;
++ (id)actionForSoftwareKeyboardInputMode:(id)mode;
++ (id)barButtonItemForAssistantItemStyle:(int64_t)style target:(id)target forcePlainButton:(BOOL)button;
 + (id)compactSystemAssistantItem;
-+ (id)configuredSymbolImageWithName:(id)a3 size:(double)a4 keyboardLanguageCode:(id)a5;
-+ (id)defaultSystemLeadingBarButtonGroupsForItem:(id)a3;
-+ (id)defaultSystemTrailingBarButtonGroupsForItem:(id)a3;
-+ (id)dictationActionForInputMode:(id)a3 inCurrentInputMode:(id)a4;
++ (id)configuredSymbolImageWithName:(id)name size:(double)size keyboardLanguageCode:(id)code;
++ (id)defaultSystemLeadingBarButtonGroupsForItem:(id)item;
++ (id)defaultSystemTrailingBarButtonGroupsForItem:(id)item;
++ (id)dictationActionForInputMode:(id)mode inCurrentInputMode:(id)inputMode;
 + (id)dictationMenu;
-+ (id)imageSymbolConfigurationForAssistantBarWithPointSize:(double)a3;
++ (id)imageSymbolConfigurationForAssistantBarWithPointSize:(double)size;
 + (id)inputWindowController;
-+ (id)inputWindowControllerForApplication:(BOOL)a3;
++ (id)inputWindowControllerForApplication:(BOOL)application;
 + (id)languageIndicatorImage;
-+ (id)languageIndicatorItem:(BOOL)a3;
-+ (id)languageIndicatorMenu:(BOOL)a3;
++ (id)languageIndicatorItem:(BOOL)item;
++ (id)languageIndicatorMenu:(BOOL)menu;
 + (id)systemDefaultAssistantItem;
-+ (id)unmodifiableSystemAssistantItem:(int64_t)a3;
++ (id)unmodifiableSystemAssistantItem:(int64_t)item;
 + (void)dismissFloatingKeyboard;
 + (void)presentFloatingKeyboard;
-+ (void)setAssistantBarCompact:(BOOL)a3 forceReload:(BOOL)a4;
-+ (void)setScribbleLanguageIdentifier:(id)a3;
++ (void)setAssistantBarCompact:(BOOL)compact forceReload:(BOOL)reload;
++ (void)setScribbleLanguageIdentifier:(id)identifier;
 + (void)updateFloatingAssistantBarIfNeeded;
 @end
 
@@ -39,10 +39,10 @@
 + (id)systemDefaultAssistantItem
 {
   v3 = objc_alloc_init(UISystemDefaultTextInputAssistantItem);
-  v4 = [a1 defaultSystemLeadingBarButtonGroupsForItem:v3];
+  v4 = [self defaultSystemLeadingBarButtonGroupsForItem:v3];
   [(UISystemDefaultTextInputAssistantItem *)v3 setLeadingBarButtonGroups:v4];
 
-  v5 = [a1 defaultSystemTrailingBarButtonGroupsForItem:v3];
+  v5 = [self defaultSystemTrailingBarButtonGroupsForItem:v3];
   [(UISystemDefaultTextInputAssistantItem *)v3 setTrailingBarButtonGroups:v5];
 
   return v3;
@@ -51,27 +51,27 @@
 + (id)inputWindowController
 {
   v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v4 = [v3 visualModeManager];
-  v5 = [v4 shouldShowWithinAppWindow];
+  visualModeManager = [v3 visualModeManager];
+  shouldShowWithinAppWindow = [visualModeManager shouldShowWithinAppWindow];
 
-  return [a1 inputWindowControllerForApplication:v5];
+  return [self inputWindowControllerForApplication:shouldShowWithinAppWindow];
 }
 
 + (void)updateFloatingAssistantBarIfNeeded
 {
-  v3 = [a1 inputWindowController];
-  v4 = [v3 placement];
+  inputWindowController = [self inputWindowController];
+  placement = [inputWindowController placement];
 
-  v5 = [v4 assistantView];
-  v6 = v5;
-  if (v5)
+  assistantView = [placement assistantView];
+  v6 = assistantView;
+  if (assistantView)
   {
-    v7 = v5;
+    v7 = assistantView;
   }
 
   else
   {
-    v7 = v4;
+    v7 = placement;
   }
 
   v11 = v7;
@@ -83,13 +83,13 @@
       if (([v11 isCompactAssistantView] & 1) == 0)
       {
         v8 = +[UIKeyboardPreferencesController sharedPreferencesController];
-        v9 = [v8 preferencesActions];
-        v10 = [v9 compactAssistantBarPersistentLocation];
+        preferencesActions = [v8 preferencesActions];
+        compactAssistantBarPersistentLocation = [preferencesActions compactAssistantBarPersistentLocation];
 
-        if (v10 == 1)
+        if (compactAssistantBarPersistentLocation == 1)
         {
           updateFloatingAssistantBarIfNeeded_updatingFloatingAssistantBar = 1;
-          [a1 setAssistantBarCompact:objc_msgSend(v11 forceReload:{"isCompactAssistantView"), 0}];
+          [self setAssistantBarCompact:objc_msgSend(v11 forceReload:{"isCompactAssistantView"), 0}];
           updateFloatingAssistantBarIfNeeded_updatingFloatingAssistantBar = 0;
         }
       }
@@ -100,19 +100,19 @@
 + (BOOL)isKeyboardGroupVisible
 {
   v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [v3 delegateAsResponder];
-  if (([v4 _isDisplayingWritingToolsSessionInUCB] & 1) == 0 && ((objc_msgSend(a1, "_isDismissButtonVisible") & 1) != 0 || objc_msgSend(a1, "_isScribbleButtonsVisible")))
+  delegateAsResponder = [v3 delegateAsResponder];
+  if (([delegateAsResponder _isDisplayingWritingToolsSessionInUCB] & 1) == 0 && ((objc_msgSend(self, "_isDismissButtonVisible") & 1) != 0 || objc_msgSend(self, "_isScribbleButtonsVisible")))
   {
-    v6 = [v4 inputView];
-    if (v6)
+    inputView = [delegateAsResponder inputView];
+    if (inputView)
     {
       v5 = 0;
     }
 
     else
     {
-      v7 = [v4 inputViewController];
-      v5 = v7 == 0;
+      inputViewController = [delegateAsResponder inputViewController];
+      v5 = inputViewController == 0;
     }
   }
 
@@ -127,70 +127,70 @@
 + (BOOL)_isEmojiButtonVisible
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 canPresentEmojiPopover];
+  canPresentEmojiPopover = [v2 canPresentEmojiPopover];
 
-  return v3;
+  return canPresentEmojiPopover;
 }
 
 + (BOOL)_isDictationButtonVisible
 {
   v2 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v3 = [v2 responder];
+  responder = [v2 responder];
 
-  if (objc_opt_respondsToSelector() & 1) != 0 && ([v3 _isDisplayingWritingToolsSessionInUCB])
+  if (objc_opt_respondsToSelector() & 1) != 0 && ([responder _isDisplayingWritingToolsSessionInUCB])
   {
-    v4 = 0;
+    shouldShowDictationKey = 0;
   }
 
   else
   {
-    v5 = [v3 inputAssistantItem];
-    v6 = [v5 _dictationReplacementAction];
+    inputAssistantItem = [responder inputAssistantItem];
+    _dictationReplacementAction = [inputAssistantItem _dictationReplacementAction];
 
-    if (v6)
+    if (_dictationReplacementAction)
     {
-      v4 = 1;
+      shouldShowDictationKey = 1;
     }
 
     else
     {
       v7 = +[UIKeyboardImpl activeInstance];
-      v4 = [v7 shouldShowDictationKey];
+      shouldShowDictationKey = [v7 shouldShowDictationKey];
     }
   }
 
-  return v4;
+  return shouldShowDictationKey;
 }
 
 + (BOOL)_isScribbleButtonsVisible
 {
-  v2 = [a1 inputWindowController];
-  v3 = [v2 placement];
+  inputWindowController = [self inputWindowController];
+  placement = [inputWindowController placement];
 
-  v4 = [v3 assistantView];
-  v5 = v4;
-  if (v4)
+  assistantView = [placement assistantView];
+  v5 = assistantView;
+  if (assistantView)
   {
-    v6 = v4;
+    v6 = assistantView;
   }
 
   else
   {
-    v6 = v3;
+    v6 = placement;
   }
 
   v7 = v6;
 
-  v8 = [v7 isFloatingAssistantView];
-  if (!v8)
+  isFloatingAssistantView = [v7 isFloatingAssistantView];
+  if (!isFloatingAssistantView)
   {
     return 0;
   }
 
   v9 = +[UIKeyboardImpl activeInstance];
-  v10 = [v9 _showsScribbleIconsInAssistantView];
+  _showsScribbleIconsInAssistantView = [v9 _showsScribbleIconsInAssistantView];
 
-  return v10;
+  return _showsScribbleIconsInAssistantView;
 }
 
 + (BOOL)_isDismissButtonVisible
@@ -214,16 +214,16 @@
   v2 = +[UIKeyboardImpl activeInstance];
   if (([v2 isMinimized] & 1) == 0)
   {
-    v3 = [v2 delegateAsResponder];
-    if ([v3 _suppressSoftwareKeyboard])
+    delegateAsResponder = [v2 delegateAsResponder];
+    if ([delegateAsResponder _suppressSoftwareKeyboard])
     {
     }
 
     else
     {
-      v4 = [v2 _showsScribbleIconsInAssistantView];
+      _showsScribbleIconsInAssistantView = [v2 _showsScribbleIconsInAssistantView];
 
-      if (!v4)
+      if (!_showsScribbleIconsInAssistantView)
       {
         v5 = 0;
         goto LABEL_6;
@@ -240,62 +240,62 @@ LABEL_6:
 + (BOOL)_isMinimizeAssistantBarButtonVisible
 {
   v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v4 = [v3 systemInputAssistantViewController];
+  systemInputAssistantViewController = [v3 systemInputAssistantViewController];
 
-  if ([v4 isInputAssistantItemEmpty] && !objc_msgSend(a1, "_isScribbleButtonsVisible") || (objc_msgSend(v4, "_usesCustomBackground") & 1) != 0 || +[UIKeyboardImpl isFloatingForced](UIKeyboardImpl, "isFloatingForced"))
+  if ([systemInputAssistantViewController isInputAssistantItemEmpty] && !objc_msgSend(self, "_isScribbleButtonsVisible") || (objc_msgSend(systemInputAssistantViewController, "_usesCustomBackground") & 1) != 0 || +[UIKeyboardImpl isFloatingForced](UIKeyboardImpl, "isFloatingForced"))
   {
-    v5 = 0;
+    supportsCompactStyle = 0;
   }
 
   else
   {
-    v5 = [v4 supportsCompactStyle];
+    supportsCompactStyle = [systemInputAssistantViewController supportsCompactStyle];
   }
 
-  return v5;
+  return supportsCompactStyle;
 }
 
 + (BOOL)_isKeyboardItemEnabled
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 textInputTraits];
-  v4 = [v3 keyboardType] != 122;
+  textInputTraits = [v2 textInputTraits];
+  v4 = [textInputTraits keyboardType] != 122;
 
   return v4;
 }
 
-+ (BOOL)_isStyleItemEnable:(id)a3
++ (BOOL)_isStyleItemEnable:(id)enable
 {
-  v3 = a3;
+  enableCopy = enable;
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 textInputTraits];
-  v6 = [v5 allowsTextAnimationsType];
+  textInputTraits = [v4 textInputTraits];
+  allowsTextAnimationsType = [textInputTraits allowsTextAnimationsType];
 
-  if (v6 == 2)
+  if (allowsTextAnimationsType == 2)
   {
     LOBYTE(v7) = 0;
   }
 
   else
   {
-    v7 = [v3 _isDisplayingWritingToolsSessionInUCB] ^ 1;
+    v7 = [enableCopy _isDisplayingWritingToolsSessionInUCB] ^ 1;
   }
 
   return v7;
 }
 
-+ (id)barButtonItemForAssistantItemStyle:(int64_t)a3 target:(id)a4 forcePlainButton:(BOOL)a5
++ (id)barButtonItemForAssistantItemStyle:(int64_t)style target:(id)target forcePlainButton:(BOOL)button
 {
-  v5 = a5;
-  v8 = a4;
+  buttonCopy = button;
+  targetCopy = target;
   v9 = 0;
   v10 = &stru_1EFB14550;
-  v48 = v5;
-  switch(a3)
+  v48 = buttonCopy;
+  switch(style)
   {
     case 0:
       v10 = _UINSLocalizedStringWithDefaultValue(@"Cut", @"Cut");
-      v11 = 0;
+      textEffectsButtonLanguageCode = 0;
       v12 = 0;
       v13 = 0;
       v14 = @"scissors";
@@ -307,7 +307,7 @@ LABEL_6:
       goto LABEL_29;
     case 1:
       v10 = _UINSLocalizedStringWithDefaultValue(@"Copy", @"Copy");
-      v11 = 0;
+      textEffectsButtonLanguageCode = 0;
       v12 = 0;
       v13 = 0;
       v14 = @"doc.on.doc";
@@ -319,7 +319,7 @@ LABEL_6:
       goto LABEL_29;
     case 2:
       v10 = _UINSLocalizedStringWithDefaultValue(@"Paste", @"Paste");
-      v11 = 0;
+      textEffectsButtonLanguageCode = 0;
       v12 = 0;
       v13 = 0;
       v14 = @"doc.on.clipboard";
@@ -331,7 +331,7 @@ LABEL_6:
       goto LABEL_29;
     case 3:
       v10 = _UINSLocalizedStringWithDefaultValue(@"Undo", @"Undo");
-      v11 = 0;
+      textEffectsButtonLanguageCode = 0;
       v12 = 0;
       v13 = 0;
       v14 = @"arrow.uturn.backward";
@@ -343,7 +343,7 @@ LABEL_6:
       goto LABEL_29;
     case 4:
       v10 = _UINSLocalizedStringWithDefaultValue(@"Redo", @"Redo");
-      v11 = 0;
+      textEffectsButtonLanguageCode = 0;
       v12 = 0;
       v13 = 0;
       v14 = @"arrow.uturn.forward";
@@ -360,9 +360,9 @@ LABEL_6:
       v63[1] = 3221225472;
       v63[2] = __95__UIAssistantBarButtonItemProvider_barButtonItemForAssistantItemStyle_target_forcePlainButton___block_invoke_6;
       v63[3] = &__block_descriptor_40_e25_v16__0__UIBarButtonItem_8l;
-      v63[4] = a1;
+      v63[4] = self;
       v18 = _Block_copy(v63);
-      v11 = 0;
+      textEffectsButtonLanguageCode = 0;
       v12 = 0;
       v13 = 0;
       v15 = 20.0;
@@ -376,9 +376,9 @@ LABEL_6:
       v62[1] = 3221225472;
       v62[2] = __95__UIAssistantBarButtonItemProvider_barButtonItemForAssistantItemStyle_target_forcePlainButton___block_invoke_7;
       v62[3] = &__block_descriptor_40_e25_v16__0__UIBarButtonItem_8l;
-      v62[4] = a1;
+      v62[4] = self;
       v18 = _Block_copy(v62);
-      v11 = 0;
+      textEffectsButtonLanguageCode = 0;
       v12 = 0;
       v13 = 0;
       v15 = 20.0;
@@ -393,9 +393,9 @@ LABEL_6:
       v61[1] = 3221225472;
       v61[2] = __95__UIAssistantBarButtonItemProvider_barButtonItemForAssistantItemStyle_target_forcePlainButton___block_invoke_8;
       v61[3] = &__block_descriptor_40_e25_v16__0__UIBarButtonItem_8l;
-      v61[4] = a1;
+      v61[4] = self;
       v18 = _Block_copy(v61);
-      v11 = 0;
+      textEffectsButtonLanguageCode = 0;
       v12 = 0;
       v13 = 0;
       v15 = 20.0;
@@ -413,12 +413,12 @@ LABEL_6:
       v29 = v28;
       v18 = _Block_copy(v59);
 
-      v11 = 0;
+      textEffectsButtonLanguageCode = 0;
       v23 = 0;
       v14 = 0;
       v12 = 0;
       v47 = 0;
-      v26 = 0;
+      _imageThatSuppressesAccessibilityHairlineThickening = 0;
       v15 = 20.0;
       v16 = 0.0;
       v27 = 1;
@@ -433,9 +433,9 @@ LABEL_6:
       v58[1] = 3221225472;
       v58[2] = __95__UIAssistantBarButtonItemProvider_barButtonItemForAssistantItemStyle_target_forcePlainButton___block_invoke_10;
       v58[3] = &__block_descriptor_40_e25_v16__0__UIBarButtonItem_8l;
-      v58[4] = a1;
+      v58[4] = self;
       v18 = _Block_copy(v58);
-      v11 = 0;
+      textEffectsButtonLanguageCode = 0;
       v12 = 0;
       v13 = 0;
       v15 = 20.0;
@@ -451,13 +451,13 @@ LABEL_6:
       aBlock[1] = 3221225472;
       aBlock[2] = __95__UIAssistantBarButtonItemProvider_barButtonItemForAssistantItemStyle_target_forcePlainButton___block_invoke_21;
       aBlock[3] = &__block_descriptor_40_e25_v16__0__UIBarButtonItem_8l;
-      aBlock[4] = a1;
+      aBlock[4] = self;
       v18 = _Block_copy(aBlock);
-      v11 = 0;
+      textEffectsButtonLanguageCode = 0;
       v14 = 0;
       v12 = 0;
       v47 = 0;
-      v26 = 0;
+      _imageThatSuppressesAccessibilityHairlineThickening = 0;
       v15 = 20.0;
       v27 = 1;
       v16 = 0.0;
@@ -470,9 +470,9 @@ LABEL_6:
       v57[1] = 3221225472;
       v57[2] = __95__UIAssistantBarButtonItemProvider_barButtonItemForAssistantItemStyle_target_forcePlainButton___block_invoke_12;
       v57[3] = &__block_descriptor_40_e25_v16__0__UIBarButtonItem_8l;
-      v57[4] = a1;
+      v57[4] = self;
       v18 = _Block_copy(v57);
-      v11 = 0;
+      textEffectsButtonLanguageCode = 0;
       v12 = 0;
       v13 = 1;
       v15 = 22.0;
@@ -486,7 +486,7 @@ LABEL_6:
       v56[1] = 3221225472;
       v56[2] = __95__UIAssistantBarButtonItemProvider_barButtonItemForAssistantItemStyle_target_forcePlainButton___block_invoke_13;
       v56[3] = &__block_descriptor_40_e25_v16__0__UIBarButtonItem_8l;
-      v56[4] = a1;
+      v56[4] = self;
       v21 = v56;
       goto LABEL_8;
     case 13:
@@ -496,11 +496,11 @@ LABEL_6:
       v55[1] = 3221225472;
       v55[2] = __95__UIAssistantBarButtonItemProvider_barButtonItemForAssistantItemStyle_target_forcePlainButton___block_invoke_14;
       v55[3] = &__block_descriptor_40_e25_v16__0__UIBarButtonItem_8l;
-      v55[4] = a1;
+      v55[4] = self;
       v21 = v55;
 LABEL_8:
       v18 = _Block_copy(v21);
-      v11 = 0;
+      textEffectsButtonLanguageCode = 0;
       v12 = 0;
       v13 = 1;
       v15 = 22.0;
@@ -514,9 +514,9 @@ LABEL_8:
       v54[1] = 3221225472;
       v54[2] = __95__UIAssistantBarButtonItemProvider_barButtonItemForAssistantItemStyle_target_forcePlainButton___block_invoke_15;
       v54[3] = &__block_descriptor_40_e25_v16__0__UIBarButtonItem_8l;
-      v54[4] = a1;
+      v54[4] = self;
       v18 = _Block_copy(v54);
-      v11 = 0;
+      textEffectsButtonLanguageCode = 0;
       v12 = 1;
       v15 = 22.0;
       v16 = 0.0;
@@ -529,9 +529,9 @@ LABEL_8:
       v52[1] = 3221225472;
       v52[2] = __95__UIAssistantBarButtonItemProvider_barButtonItemForAssistantItemStyle_target_forcePlainButton___block_invoke_17;
       v52[3] = &__block_descriptor_40_e25_v16__0__UIBarButtonItem_8l;
-      v52[4] = a1;
+      v52[4] = self;
       v18 = _Block_copy(v52);
-      v11 = 0;
+      textEffectsButtonLanguageCode = 0;
       v12 = 1;
       v15 = 22.0;
       v16 = 0.0;
@@ -543,9 +543,9 @@ LABEL_8:
       v51[1] = 3221225472;
       v51[2] = __95__UIAssistantBarButtonItemProvider_barButtonItemForAssistantItemStyle_target_forcePlainButton___block_invoke_19;
       v51[3] = &__block_descriptor_40_e25_v16__0__UIBarButtonItem_8l;
-      v51[4] = a1;
+      v51[4] = self;
       v18 = _Block_copy(v51);
-      v11 = 0;
+      textEffectsButtonLanguageCode = 0;
       v12 = 0;
       v13 = 0;
       v47 = 0;
@@ -566,9 +566,9 @@ LABEL_8:
       v14 = v31;
       v47 = sel_assistantWriteboard;
       v32 = [UIImage _kitImageNamed:v14 withTrait:0];
-      v26 = [v32 _imageThatSuppressesAccessibilityHairlineThickening];
+      _imageThatSuppressesAccessibilityHairlineThickening = [v32 _imageThatSuppressesAccessibilityHairlineThickening];
 
-      v11 = 0;
+      textEffectsButtonLanguageCode = 0;
       v23 = 0;
       v12 = 0;
       v27 = 1;
@@ -583,7 +583,7 @@ LABEL_8:
       v19 = +[UIKeyboardImpl sharedInstance];
 
       v18 = 0;
-      v11 = 0;
+      textEffectsButtonLanguageCode = 0;
       v12 = 0;
       v13 = 0;
       v47 = sel_deleteFromInput;
@@ -591,7 +591,7 @@ LABEL_8:
       v15 = 20.0;
       v16 = 0.0;
       v17 = 0.0;
-      v8 = v19;
+      targetCopy = v19;
       goto LABEL_29;
     case 20:
       v10 = _UINSLocalizedStringWithDefaultValue(@"Undo/Redo", @"Undo/Redo");
@@ -599,9 +599,9 @@ LABEL_8:
       v50[1] = 3221225472;
       v50[2] = __95__UIAssistantBarButtonItemProvider_barButtonItemForAssistantItemStyle_target_forcePlainButton___block_invoke_20;
       v50[3] = &__block_descriptor_40_e25_v16__0__UIBarButtonItem_8l;
-      v50[4] = a1;
+      v50[4] = self;
       v18 = _Block_copy(v50);
-      v11 = 0;
+      textEffectsButtonLanguageCode = 0;
       v12 = 0;
       v13 = 0;
       v47 = 0;
@@ -617,9 +617,9 @@ LABEL_8:
       v53[1] = 3221225472;
       v53[2] = __95__UIAssistantBarButtonItemProvider_barButtonItemForAssistantItemStyle_target_forcePlainButton___block_invoke_16;
       v53[3] = &__block_descriptor_40_e25_v16__0__UIBarButtonItem_8l;
-      v53[4] = a1;
+      v53[4] = self;
       v18 = _Block_copy(v53);
-      v11 = 0;
+      textEffectsButtonLanguageCode = 0;
       v12 = 1;
       v15 = 22.0;
       v16 = 0.0;
@@ -631,7 +631,7 @@ LABEL_28:
     case 22:
       v10 = _UINSLocalizedStringWithDefaultValue(@"Text Animation", @"Text Animation");
       v20 = +[UIKeyboardInputModeController sharedInputModeController];
-      v11 = [v20 textEffectsButtonLanguageCode];
+      textEffectsButtonLanguageCode = [v20 textEffectsButtonLanguageCode];
 
       v12 = 0;
       v13 = 0;
@@ -643,8 +643,8 @@ LABEL_28:
 LABEL_21:
       v17 = 0.0;
 LABEL_29:
-      v33 = [objc_opt_class() configuredSymbolImageWithName:v14 size:v11 keyboardLanguageCode:v15];
-      v26 = v33;
+      v33 = [objc_opt_class() configuredSymbolImageWithName:v14 size:textEffectsButtonLanguageCode keyboardLanguageCode:v15];
+      _imageThatSuppressesAccessibilityHairlineThickening = v33;
       v25 = 0.0;
       if (v13)
       {
@@ -654,12 +654,12 @@ LABEL_29:
 
       else if ([v33 hasBaseline])
       {
-        v34 = [v26 imageWithoutBaseline];
+        imageWithoutBaseline = [_imageThatSuppressesAccessibilityHairlineThickening imageWithoutBaseline];
 
-        [v34 _setAlignmentRectInsets:{0.0, 0.0, 0.0, 0.0}];
+        [imageWithoutBaseline _setAlignmentRectInsets:{0.0, 0.0, 0.0, 0.0}];
         v23 = 0;
         v27 = 1;
-        v26 = v34;
+        _imageThatSuppressesAccessibilityHairlineThickening = imageWithoutBaseline;
       }
 
       else
@@ -671,9 +671,9 @@ LABEL_29:
 LABEL_34:
       if (v16 != 0.0 || v17 != 0.0)
       {
-        v35 = [v26 imageWithAlignmentRectInsets:{0.0, v17, v16, 0.0}];
+        v35 = [_imageThatSuppressesAccessibilityHairlineThickening imageWithAlignmentRectInsets:{0.0, v17, v16, 0.0}];
 
-        v26 = v35;
+        _imageThatSuppressesAccessibilityHairlineThickening = v35;
       }
 
       if ((v27 | v48))
@@ -686,18 +686,18 @@ LABEL_34:
         v37 = [UIButton alloc];
         v38 = *MEMORY[0x1E695EFF8];
         v39 = *(MEMORY[0x1E695EFF8] + 8);
-        [v26 size];
+        [_imageThatSuppressesAccessibilityHairlineThickening size];
         v42 = [(UIButton *)v37 initWithFrame:v38, v39, v40, v41];
         [(UIControl *)v42 setPointerInteractionEnabled:1];
-        [(UIButton *)v42 setImage:v26 forState:0];
+        [(UIButton *)v42 setImage:_imageThatSuppressesAccessibilityHairlineThickening forState:0];
         [v42 setAccessibilityLabel:v10];
-        [(UIControl *)v42 addTarget:v8 action:v47 forControlEvents:64];
+        [(UIControl *)v42 addTarget:targetCopy action:v47 forControlEvents:64];
         v36 = v42;
 
         v43 = 0.0;
         if (v12)
         {
-          [v26 size];
+          [_imageThatSuppressesAccessibilityHairlineThickening size];
           v43 = v15 - v44;
         }
 
@@ -712,7 +712,7 @@ LABEL_34:
 
       else
       {
-        v9 = [(UIBarButtonItem *)v45 initWithImage:v26 style:0 target:v8 action:v47];
+        v9 = [(UIBarButtonItem *)v45 initWithImage:_imageThatSuppressesAccessibilityHairlineThickening style:0 target:targetCopy action:v47];
         [(UIBarButtonItem *)v9 setTitle:v10];
       }
 
@@ -1081,10 +1081,10 @@ void __95__UIAssistantBarButtonItemProvider_barButtonItemForAssistantItemStyle_t
   [v3 setHidden:{objc_msgSend(v2, "isKeyboardGroupVisible") ^ 1}];
 }
 
-+ (id)configuredSymbolImageWithName:(id)a3 size:(double)a4 keyboardLanguageCode:(id)a5
++ (id)configuredSymbolImageWithName:(id)name size:(double)size keyboardLanguageCode:(id)code
 {
-  v7 = a3;
-  v8 = a5;
+  nameCopy = name;
+  codeCopy = code;
   v9 = +[UIKeyboard activeKeyboard];
   if ([v9 _lightStyleRenderConfig])
   {
@@ -1107,9 +1107,9 @@ void __95__UIAssistantBarButtonItemProvider_barButtonItemForAssistantItemStyle_t
     qword_1ED499068 = v10;
   }
 
-  if (v8)
+  if (codeCopy)
   {
-    v11 = v8;
+    v11 = codeCopy;
   }
 
   else
@@ -1117,31 +1117,31 @@ void __95__UIAssistantBarButtonItemProvider_barButtonItemForAssistantItemStyle_t
     v11 = &stru_1EFB14550;
   }
 
-  v12 = [v7 stringByAppendingString:v11];
+  v12 = [nameCopy stringByAppendingString:v11];
   v13 = [_MergedGlobals_13_6 objectForKey:v12];
   if (!v13)
   {
-    v14 = [UITraitCollection traitCollectionWithUserInterfaceStyle:v10];
-    v15 = v14;
-    if (v14)
+    imageConfiguration = [UITraitCollection traitCollectionWithUserInterfaceStyle:v10];
+    v15 = imageConfiguration;
+    if (imageConfiguration)
     {
-      v14 = [v14 imageConfiguration];
+      imageConfiguration = [imageConfiguration imageConfiguration];
     }
 
-    v16 = v14;
+    v16 = imageConfiguration;
 
-    v17 = [objc_opt_class() imageSymbolConfigurationForAssistantBarWithPointSize:a4];
+    v17 = [objc_opt_class() imageSymbolConfigurationForAssistantBarWithPointSize:size];
     v18 = [v16 configurationByApplyingConfiguration:v17];
 
-    if (v8)
+    if (codeCopy)
     {
-      v19 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v8];
+      v19 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:codeCopy];
       v20 = [v18 configurationWithLocale:v19];
 
       v18 = v20;
     }
 
-    v21 = [UIImage imageNamed:v7 inBundle:qword_1ED499070 withConfiguration:v18];
+    v21 = [UIImage imageNamed:nameCopy inBundle:qword_1ED499070 withConfiguration:v18];
     if (v21)
     {
       v13 = v21;
@@ -1149,7 +1149,7 @@ void __95__UIAssistantBarButtonItemProvider_barButtonItemForAssistantItemStyle_t
 
     else
     {
-      v13 = [UIImage _systemImageNamed:v7 withConfiguration:v18];
+      v13 = [UIImage _systemImageNamed:nameCopy withConfiguration:v18];
       if (!v13)
       {
 LABEL_20:
@@ -1179,56 +1179,56 @@ void __92__UIAssistantBarButtonItemProvider_configuredSymbolImageWithName_size_k
   qword_1ED499070 = v2;
 }
 
-+ (id)imageSymbolConfigurationForAssistantBarWithPointSize:(double)a3
++ (id)imageSymbolConfigurationForAssistantBarWithPointSize:(double)size
 {
   v4 = [UIImageSymbolConfiguration configurationWithTextStyle:@"UICTFontTextStyleFootnote" scale:-1];
-  v5 = [UIImageSymbolConfiguration configurationWithPointSize:4 weight:a3];
+  v5 = [UIImageSymbolConfiguration configurationWithPointSize:4 weight:size];
   v6 = [v4 configurationByApplyingConfiguration:v5];
 
   return v6;
 }
 
-+ (id)inputWindowControllerForApplication:(BOOL)a3
++ (id)inputWindowControllerForApplication:(BOOL)application
 {
-  v3 = a3;
+  applicationCopy = application;
   v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v5 = [v4 visualModeManager];
-  v6 = [v5 useVisualModeWindowed];
+  visualModeManager = [v4 visualModeManager];
+  useVisualModeWindowed = [visualModeManager useVisualModeWindowed];
 
-  if (v3 && v6)
+  if (applicationCopy && useVisualModeWindowed)
   {
     v7 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v8 = [v7 containerRootController];
+    containerRootController = [v7 containerRootController];
   }
 
   else
   {
     v7 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
-    v8 = [v7 inputWindowRootViewController];
+    containerRootController = [v7 inputWindowRootViewController];
   }
 
-  v9 = v8;
+  v9 = containerRootController;
 
   return v9;
 }
 
-+ (id)defaultSystemLeadingBarButtonGroupsForItem:(id)a3
++ (id)defaultSystemLeadingBarButtonGroupsForItem:(id)item
 {
   v34[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 defaultSystemLeadingBarButtonGroups];
-  if (!v5)
+  itemCopy = item;
+  defaultSystemLeadingBarButtonGroups = [itemCopy defaultSystemLeadingBarButtonGroups];
+  if (!defaultSystemLeadingBarButtonGroups)
   {
-    v6 = [a1 barButtonItemForAssistantItemStyle:0 target:v4];
+    v6 = [self barButtonItemForAssistantItemStyle:0 target:itemCopy];
     [v6 setHidden:1];
-    v7 = [a1 barButtonItemForAssistantItemStyle:1 target:v4];
+    v7 = [self barButtonItemForAssistantItemStyle:1 target:itemCopy];
     [v7 setHidden:1];
-    v8 = [a1 barButtonItemForAssistantItemStyle:2 target:v4];
-    v9 = [a1 barButtonItemForAssistantItemStyle:3 target:v4];
-    v10 = [a1 barButtonItemForAssistantItemStyle:4 target:v4];
+    v8 = [self barButtonItemForAssistantItemStyle:2 target:itemCopy];
+    v9 = [self barButtonItemForAssistantItemStyle:3 target:itemCopy];
+    v10 = [self barButtonItemForAssistantItemStyle:4 target:itemCopy];
     v11 = [objc_opt_class() configuredSymbolImageWithName:@"scissors.badge.ellipsis" size:22.0];
     v12 = [objc_opt_class() configuredSymbolImageWithName:@"arrow.uturn.backward.circle.badge.ellipsis" size:22.0];
-    v13 = [[UIBarButtonItem alloc] initWithImage:v12 style:0 target:a1 action:0];
+    v13 = [[UIBarButtonItem alloc] initWithImage:v12 style:0 target:self action:0];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __79__UIAssistantBarButtonItemProvider_defaultSystemLeadingBarButtonGroupsForItem___block_invoke;
@@ -1240,7 +1240,7 @@ void __92__UIAssistantBarButtonItemProvider_configuredSymbolImageWithName_size_k
     v29 = v8;
     v30 = v11;
     v31 = v12;
-    v32 = a1;
+    selfCopy = self;
     v23 = v12;
     v22 = v11;
     v14 = v8;
@@ -1260,10 +1260,10 @@ void __92__UIAssistantBarButtonItemProvider_configuredSymbolImageWithName_size_k
     [(UIBarButtonItemGroup *)v20 _setSendActionsBeforeDismiss:1];
     [(UIBarButtonItemGroup *)v20 _setExpandStyle:1];
     v33 = v20;
-    v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v33 count:1];
+    defaultSystemLeadingBarButtonGroups = [MEMORY[0x1E695DEC8] arrayWithObjects:&v33 count:1];
   }
 
-  return v5;
+  return defaultSystemLeadingBarButtonGroups;
 }
 
 void __79__UIAssistantBarButtonItemProvider_defaultSystemLeadingBarButtonGroupsForItem___block_invoke(uint64_t a1, void *a2)
@@ -1321,27 +1321,27 @@ void __79__UIAssistantBarButtonItemProvider_defaultSystemLeadingBarButtonGroupsF
   }
 }
 
-+ (id)defaultSystemTrailingBarButtonGroupsForItem:(id)a3
++ (id)defaultSystemTrailingBarButtonGroupsForItem:(id)item
 {
   v19[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 defaultSystemTrailingBarButtonGroups];
-  if (!v5)
+  itemCopy = item;
+  defaultSystemTrailingBarButtonGroups = [itemCopy defaultSystemTrailingBarButtonGroups];
+  if (!defaultSystemTrailingBarButtonGroups)
   {
-    v6 = [a1 barButtonItemForAssistantItemStyle:5 target:v4];
+    v6 = [self barButtonItemForAssistantItemStyle:5 target:itemCopy];
     v19[0] = v6;
-    v7 = [a1 barButtonItemForAssistantItemStyle:6 target:v4];
+    v7 = [self barButtonItemForAssistantItemStyle:6 target:itemCopy];
     v19[1] = v7;
-    v8 = [a1 barButtonItemForAssistantItemStyle:7 target:v4];
+    v8 = [self barButtonItemForAssistantItemStyle:7 target:itemCopy];
     v19[2] = v8;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:3];
 
-    v10 = [a1 barButtonItemForAssistantItemStyle:8 target:v4];
+    v10 = [self barButtonItemForAssistantItemStyle:8 target:itemCopy];
     v11 = [[UIBarButtonItemGroup alloc] initWithBarButtonItems:v9 representativeItem:v10];
     [(UIBarButtonItemGroup *)v11 _setLocked:1];
     [(UIBarButtonItemGroup *)v11 _setSendActionsBeforeDismiss:1];
     [(UIBarButtonItemGroup *)v11 _setExpandStyle:1];
-    v12 = [a1 barButtonItemForAssistantItemStyle:9 target:v4];
+    v12 = [self barButtonItemForAssistantItemStyle:9 target:itemCopy];
     v13 = [UIBarButtonItemGroup alloc];
     v18 = v12;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
@@ -1350,55 +1350,55 @@ void __79__UIAssistantBarButtonItemProvider_defaultSystemLeadingBarButtonGroupsF
     [(UIBarButtonItemGroup *)v15 _setLocked:1];
     v17[0] = v11;
     v17[1] = v15;
-    v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
+    defaultSystemTrailingBarButtonGroups = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
   }
 
-  return v5;
+  return defaultSystemTrailingBarButtonGroups;
 }
 
-+ (BOOL)_isInputModeVisible:(id)a3
++ (BOOL)_isInputModeVisible:(id)visible
 {
-  v3 = a3;
-  v4 = [v3 primaryLanguage];
-  if (UIKeyboardInputModeIsNonLinguistic(v4))
+  visibleCopy = visible;
+  primaryLanguage = [visibleCopy primaryLanguage];
+  if (UIKeyboardInputModeIsNonLinguistic(primaryLanguage))
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v5 = [v3 isExtensionInputMode] ^ 1;
+    v5 = [visibleCopy isExtensionInputMode] ^ 1;
   }
 
   return v5;
 }
 
-+ (void)setScribbleLanguageIdentifier:(id)a3
++ (void)setScribbleLanguageIdentifier:(id)identifier
 {
-  v8 = a3;
+  identifierCopy = identifier;
   PKTextInputInteractionClass = getPKTextInputInteractionClass();
   v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v5 = [v4 scene];
-  v6 = [PKTextInputInteractionClass interactionForScene:v5];
+  scene = [v4 scene];
+  v6 = [PKTextInputInteractionClass interactionForScene:scene];
 
-  v7 = [v6 enabledLanguageIdentifiers];
-  LODWORD(v5) = [v7 containsObject:v8];
+  enabledLanguageIdentifiers = [v6 enabledLanguageIdentifiers];
+  LODWORD(scene) = [enabledLanguageIdentifiers containsObject:identifierCopy];
 
-  if (v5)
+  if (scene)
   {
-    [v6 setCurrentLanguageIdentifier:v8];
+    [v6 setCurrentLanguageIdentifier:identifierCopy];
   }
 }
 
-+ (id)actionForSoftwareKeyboardInputMode:(id)a3
++ (id)actionForSoftwareKeyboardInputMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   v5 = +[UIKeyboardInputModeController sharedInputModeController];
-  v6 = [v5 inputModeWithIdentifier:v4];
+  v6 = [v5 inputModeWithIdentifier:modeCopy];
 
-  v7 = [v6 indicatorIconForSoftwareLayout];
+  indicatorIconForSoftwareLayout = [v6 indicatorIconForSoftwareLayout];
   v8 = UIKeyboardActiveInputModes;
-  v9 = UIKeyboardInputModesMatchingMode(v4, v8);
+  v9 = UIKeyboardInputModesMatchingMode(modeCopy, v8);
   v10 = [v9 count];
 
   if (v10 < 2)
@@ -1408,32 +1408,32 @@ void __79__UIAssistantBarButtonItemProvider_defaultSystemLeadingBarButtonGroupsF
 
   else
   {
-    v11 = UIKeyboardLocalizedSWLayoutName(v4);
+    v11 = UIKeyboardLocalizedSWLayoutName(modeCopy);
   }
 
-  v12 = [a1 actionForInputMode:v4 overrideImage:v7 overrideTitle:0 overrideSubtitle:v11];
+  v12 = [self actionForInputMode:modeCopy overrideImage:indicatorIconForSoftwareLayout overrideTitle:0 overrideSubtitle:v11];
 
   return v12;
 }
 
-+ (id)actionForInputMode:(id)a3 overrideImage:(id)a4 overrideTitle:(id)a5 overrideSubtitle:(id)a6
++ (id)actionForInputMode:(id)mode overrideImage:(id)image overrideTitle:(id)title overrideSubtitle:(id)subtitle
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  modeCopy = mode;
+  imageCopy = image;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   v14 = +[UIKeyboardInputModeController sharedInputModeController];
-  v15 = [v14 inputModeWithIdentifier:v10];
+  v15 = [v14 inputModeWithIdentifier:modeCopy];
 
-  if (![a1 _isInputModeVisible:v15])
+  if (![self _isInputModeVisible:v15])
   {
     v16 = 0;
     goto LABEL_19;
   }
 
-  if (v11)
+  if (imageCopy)
   {
-    if (!v12)
+    if (!titleCopy)
     {
       goto LABEL_7;
     }
@@ -1441,11 +1441,11 @@ void __79__UIAssistantBarButtonItemProvider_defaultSystemLeadingBarButtonGroupsF
 
   else
   {
-    v11 = [v15 indicatorIcon];
-    if (!v12)
+    imageCopy = [v15 indicatorIcon];
+    if (!titleCopy)
     {
 LABEL_7:
-      v17 = [v15 identifier];
+      identifier = [v15 identifier];
       if (UIKeyboardShowsTransliterationCandidatesForInputMode())
       {
         [v15 monolingualDisplayName];
@@ -1455,7 +1455,7 @@ LABEL_7:
       {
         [v15 extendedDisplayName];
       }
-      v12 = ;
+      titleCopy = ;
     }
   }
 
@@ -1463,37 +1463,37 @@ LABEL_7:
   v28[1] = 3221225472;
   v28[2] = __100__UIAssistantBarButtonItemProvider_actionForInputMode_overrideImage_overrideTitle_overrideSubtitle___block_invoke;
   v28[3] = &unk_1E7103DD0;
-  v30 = a1;
-  v18 = v10;
+  selfCopy = self;
+  v18 = modeCopy;
   v29 = v18;
-  v19 = [UIAction actionWithTitle:v12 image:v11 identifier:v18 handler:v28];
+  v19 = [UIAction actionWithTitle:titleCopy image:imageCopy identifier:v18 handler:v28];
   v16 = v19;
-  if (v13)
+  if (subtitleCopy)
   {
-    [v19 setSubtitle:v13];
+    [v19 setSubtitle:subtitleCopy];
   }
 
-  if ([a1 _isScribbleButtonsVisible])
+  if ([self _isScribbleButtonsVisible])
   {
     PKTextInputInteractionClass = getPKTextInputInteractionClass();
     v21 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v22 = [v21 scene];
-    [PKTextInputInteractionClass interactionForScene:v22];
-    v27 = v11;
-    v24 = v23 = v13;
+    scene = [v21 scene];
+    [PKTextInputInteractionClass interactionForScene:scene];
+    v27 = imageCopy;
+    v24 = v23 = subtitleCopy;
 
-    v25 = [v24 currentLanguageIdentifier];
+    currentLanguageIdentifier = [v24 currentLanguageIdentifier];
 
-    v13 = v23;
-    v11 = v27;
+    subtitleCopy = v23;
+    imageCopy = v27;
   }
 
   else
   {
-    v25 = UIKeyboardGetCurrentInputMode();
+    currentLanguageIdentifier = UIKeyboardGetCurrentInputMode();
   }
 
-  if ([v18 isEqualToString:v25])
+  if ([v18 isEqualToString:currentLanguageIdentifier])
   {
     [v16 setState:1];
   }
@@ -1521,38 +1521,38 @@ void __100__UIAssistantBarButtonItemProvider_actionForInputMode_overrideImage_ov
   [*(a1 + 40) updateFloatingAssistantBarIfNeeded];
 }
 
-+ (void)setAssistantBarCompact:(BOOL)a3 forceReload:(BOOL)a4
++ (void)setAssistantBarCompact:(BOOL)compact forceReload:(BOOL)reload
 {
-  v4 = a3;
+  compactCopy = compact;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __71__UIAssistantBarButtonItemProvider_setAssistantBarCompact_forceReload___block_invoke;
   aBlock[3] = &__block_descriptor_42_e5_v8__0l;
-  v18 = a3;
-  aBlock[4] = a1;
-  v19 = a4;
+  compactCopy2 = compact;
+  aBlock[4] = self;
+  reloadCopy = reload;
   v6 = _Block_copy(aBlock);
   v7 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v8 = [v7 preferencesActions];
-  v9 = [v8 compactAssistantBarPersistentLocation];
+  preferencesActions = [v7 preferencesActions];
+  compactAssistantBarPersistentLocation = [preferencesActions compactAssistantBarPersistentLocation];
 
   v10 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v11 = [v10 visualModeManager];
-  if (![v11 useVisualModeWindowed])
+  visualModeManager = [v10 visualModeManager];
+  if (![visualModeManager useVisualModeWindowed])
   {
 
     goto LABEL_5;
   }
 
-  if (((v9 & 4) == 0) != v4)
+  if (((compactAssistantBarPersistentLocation & 4) == 0) != compactCopy)
   {
 LABEL_5:
     v6[2](v6);
     goto LABEL_6;
   }
 
-  v12 = [a1 inputWindowControllerForApplication:v4];
-  v13 = [a1 inputWindowControllerForApplication:v4 ^ 1];
+  v12 = [self inputWindowControllerForApplication:compactCopy];
+  v13 = [self inputWindowControllerForApplication:compactCopy ^ 1];
   v14 = +[UIInputViewSetPlacementOffScreenDown placement];
   [v12 setPlacement:v14 completion:&__block_literal_global_255_1];
   v15[0] = MEMORY[0x1E69E9820];
@@ -1632,16 +1632,16 @@ void __71__UIAssistantBarButtonItemProvider_setAssistantBarCompact_forceReload__
   if (+[UIKeyboard isKeyboardProcess])
   {
     v7 = +[UIKeyboardImpl activeInstance];
-    v3 = [v7 remoteTextInputPartner];
-    [v3 forwardKeyboardOperation:a2 object:0];
+    remoteTextInputPartner = [v7 remoteTextInputPartner];
+    [remoteTextInputPartner forwardKeyboardOperation:a2 object:0];
   }
 
   else
   {
     PKTextInputInteractionClass = getPKTextInputInteractionClass();
     v5 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v6 = [v5 scene];
-    v7 = [PKTextInputInteractionClass interactionForScene:v6];
+    scene = [v5 scene];
+    v7 = [PKTextInputInteractionClass interactionForScene:scene];
 
     [v7 dismissFloatingKeyboard];
   }
@@ -1652,16 +1652,16 @@ void __71__UIAssistantBarButtonItemProvider_setAssistantBarCompact_forceReload__
   if (+[UIKeyboard isKeyboardProcess])
   {
     v9 = +[UIKeyboardImpl activeInstance];
-    v3 = [v9 remoteTextInputPartner];
-    [v3 forwardKeyboardOperation:a2 object:0];
+    remoteTextInputPartner = [v9 remoteTextInputPartner];
+    [remoteTextInputPartner forwardKeyboardOperation:a2 object:0];
   }
 
   else
   {
     PKTextInputInteractionClass = getPKTextInputInteractionClass();
     v5 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v6 = [v5 scene];
-    v9 = [PKTextInputInteractionClass interactionForScene:v6];
+    scene = [v5 scene];
+    v9 = [PKTextInputInteractionClass interactionForScene:scene];
 
     if ([v9 isFloatingKeyboardVisible])
     {
@@ -1669,12 +1669,12 @@ void __71__UIAssistantBarButtonItemProvider_setAssistantBarCompact_forceReload__
     }
 
     v7 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v8 = [v7 systemInputAssistantViewController];
-    v3 = [v8 view];
+    systemInputAssistantViewController = [v7 systemInputAssistantViewController];
+    remoteTextInputPartner = [systemInputAssistantViewController view];
 
-    if (objc_opt_respondsToSelector() & 1) != 0 && [v3 _textInputSource] == 3 && (objc_opt_respondsToSelector())
+    if (objc_opt_respondsToSelector() & 1) != 0 && [remoteTextInputPartner _textInputSource] == 3 && (objc_opt_respondsToSelector())
     {
-      [v3 set_textInputSource:0];
+      [remoteTextInputPartner set_textInputSource:0];
     }
 
     [v9 presentFloatingKeyboard];
@@ -1693,28 +1693,28 @@ void __71__UIAssistantBarButtonItemProvider_setAssistantBarCompact_forceReload__
   {
     PKTextInputInteractionClass = getPKTextInputInteractionClass();
     v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v5 = [v4 scene];
-    v6 = [PKTextInputInteractionClass interactionForScene:v5];
+    scene = [v4 scene];
+    v6 = [PKTextInputInteractionClass interactionForScene:scene];
 
     LOBYTE(v4) = [v6 isFloatingKeyboardVisible];
     return v4;
   }
 }
 
-+ (id)languageIndicatorMenu:(BOOL)a3
++ (id)languageIndicatorMenu:(BOOL)menu
 {
-  v3 = a3;
+  menuCopy = menu;
   v65 = *MEMORY[0x1E69E9840];
-  if ([a1 _isScribbleButtonsVisible])
+  if ([self _isScribbleButtonsVisible])
   {
     PKTextInputInteractionClass = getPKTextInputInteractionClass();
     v6 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v7 = [v6 scene];
-    v8 = [PKTextInputInteractionClass interactionForScene:v7];
+    scene = [v6 scene];
+    v8 = [PKTextInputInteractionClass interactionForScene:scene];
 
     v51 = v8;
-    v9 = [v8 enabledLanguageIdentifiers];
-    if (v9)
+    enabledLanguageIdentifiers = [v8 enabledLanguageIdentifiers];
+    if (enabledLanguageIdentifiers)
     {
       goto LABEL_6;
     }
@@ -1725,15 +1725,15 @@ void __71__UIAssistantBarButtonItemProvider_setAssistantBarCompact_forceReload__
     v51 = 0;
   }
 
-  v9 = UIKeyboardGetActiveUniqueInputModesForHardwareKeyboard();
+  enabledLanguageIdentifiers = UIKeyboardGetActiveUniqueInputModesForHardwareKeyboard();
 LABEL_6:
   v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:5];
-  v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(enabledLanguageIdentifiers, "count")}];
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v12 = v9;
+  v12 = enabledLanguageIdentifiers;
   v13 = [v12 countByEnumeratingWithState:&v58 objects:v64 count:16];
   if (v13)
   {
@@ -1748,7 +1748,7 @@ LABEL_6:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [a1 actionForInputMode:*(*(&v58 + 1) + 8 * i)];
+        v17 = [self actionForInputMode:*(*(&v58 + 1) + 8 * i)];
         if (v17)
         {
           [v11 addObject:v17];
@@ -1761,48 +1761,48 @@ LABEL_6:
     while (v14);
   }
 
-  if ([a1 _isEmojiButtonVisible])
+  if ([self _isEmojiButtonVisible])
   {
     v18 = _UINSLocalizedStringWithDefaultValue(@"Show Emoji", @"Show Emoji");
-    v19 = [a1 configuredSymbolImageWithName:@"face.grinning" size:22.0];
+    v19 = [self configuredSymbolImageWithName:@"face.grinning" size:22.0];
     v20 = [UIAction actionWithTitle:v18 image:v19 identifier:@"emoji" handler:&__block_literal_global_271_1];
     [v10 addObject:v20];
   }
 
-  if ([a1 _isScribbleButtonsVisible])
+  if ([self _isScribbleButtonsVisible])
   {
-    if ([a1 isFloatingKeyboardVisible])
+    if ([self isFloatingKeyboardVisible])
     {
       v21 = _UINSLocalizedStringWithDefaultValue(@"Hide Keyboard", @"Hide Keyboard");
-      v22 = [a1 configuredSymbolImageWithName:@"keyboard" size:22.0];
+      v22 = [self configuredSymbolImageWithName:@"keyboard" size:22.0];
       v57[0] = MEMORY[0x1E69E9820];
       v57[1] = 3221225472;
       v57[2] = __58__UIAssistantBarButtonItemProvider_languageIndicatorMenu___block_invoke_3;
       v57[3] = &__block_descriptor_40_e18_v16__0__UIAction_8l;
-      v57[4] = a1;
+      v57[4] = self;
       v23 = v57;
     }
 
     else
     {
       v21 = _UINSLocalizedStringWithDefaultValue(@"Show Keyboard", @"Show Keyboard");
-      v22 = [a1 configuredSymbolImageWithName:@"keyboard" size:22.0];
+      v22 = [self configuredSymbolImageWithName:@"keyboard" size:22.0];
       v56[0] = MEMORY[0x1E69E9820];
       v56[1] = 3221225472;
       v56[2] = __58__UIAssistantBarButtonItemProvider_languageIndicatorMenu___block_invoke_4;
       v56[3] = &__block_descriptor_40_e18_v16__0__UIAction_8l;
-      v56[4] = a1;
+      v56[4] = self;
       v23 = v56;
     }
 
     goto LABEL_23;
   }
 
-  if ([a1 _isShowKeyboardButtonVisible])
+  if ([self _isShowKeyboardButtonVisible])
   {
-    [a1 dismissFloatingKeyboardFromPencilKitIfNeeded];
+    [self dismissFloatingKeyboardFromPencilKitIfNeeded];
     v21 = _UINSLocalizedStringWithDefaultValue(@"Show Keyboard", @"Show Keyboard");
-    v22 = [a1 configuredSymbolImageWithName:@"keyboard" size:22.0];
+    v22 = [self configuredSymbolImageWithName:@"keyboard" size:22.0];
     v23 = &__block_literal_global_279_0;
 LABEL_23:
     v24 = [UIAction actionWithTitle:v21 image:v22 identifier:@"keyboard" handler:v23];
@@ -1811,20 +1811,20 @@ LABEL_23:
 
   if ((_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl())
   {
-    if (![a1 _isMinimizeAssistantBarButtonVisible])
+    if (![self _isMinimizeAssistantBarButtonVisible])
     {
       goto LABEL_33;
     }
 
-    if (v3)
+    if (menuCopy)
     {
       v25 = _UINSLocalizedStringWithDefaultValue(@"Expand", @"Expand");
-      v26 = [a1 configuredSymbolImageWithName:@"arrow.up.left.and.arrow.down.right" size:22.0];
+      v26 = [self configuredSymbolImageWithName:@"arrow.up.left.and.arrow.down.right" size:22.0];
       v55[0] = MEMORY[0x1E69E9820];
       v55[1] = 3221225472;
       v55[2] = __58__UIAssistantBarButtonItemProvider_languageIndicatorMenu___block_invoke_6;
       v55[3] = &__block_descriptor_40_e18_v16__0__UIAction_8l;
-      v55[4] = a1;
+      v55[4] = self;
       v27 = @"minimize";
       v28 = v55;
     }
@@ -1832,12 +1832,12 @@ LABEL_23:
     else
     {
       v25 = _UINSLocalizedStringWithDefaultValue(@"Minimize", @"Minimize");
-      v26 = [a1 configuredSymbolImageWithName:@"arrow.down.right.and.arrow.up.left" size:22.0];
+      v26 = [self configuredSymbolImageWithName:@"arrow.down.right.and.arrow.up.left" size:22.0];
       v54[0] = MEMORY[0x1E69E9820];
       v54[1] = 3221225472;
       v54[2] = __58__UIAssistantBarButtonItemProvider_languageIndicatorMenu___block_invoke_7;
       v54[3] = &__block_descriptor_40_e18_v16__0__UIAction_8l;
-      v54[4] = a1;
+      v54[4] = self;
       v27 = @"minimize";
       v28 = v54;
     }
@@ -1845,13 +1845,13 @@ LABEL_23:
 
   else
   {
-    if (![a1 _isDismissButtonVisible])
+    if (![self _isDismissButtonVisible])
     {
       goto LABEL_33;
     }
 
     v25 = _UINSLocalizedStringWithDefaultValue(@"Dismiss", @"Dismiss");
-    v26 = [a1 configuredSymbolImageWithName:@"keyboard.chevron.compact.down" size:22.0];
+    v26 = [self configuredSymbolImageWithName:@"keyboard.chevron.compact.down" size:22.0];
     v27 = @"dismiss";
     v28 = &__block_literal_global_303_3;
   }
@@ -1860,10 +1860,10 @@ LABEL_23:
   [v10 addObject:v29];
 
 LABEL_33:
-  if ([a1 _isScribbleButtonsVisible])
+  if ([self _isScribbleButtonsVisible])
   {
     v30 = _UINSLocalizedStringWithDefaultValue(@"Pencil Settings…", @"Pencil Settings…");
-    v31 = [a1 configuredSymbolImageWithName:@"gear" size:22.0];
+    v31 = [self configuredSymbolImageWithName:@"gear" size:22.0];
     v32 = &__block_literal_global_314;
   }
 
@@ -1875,7 +1875,7 @@ LABEL_33:
     }
 
     v30 = _UINSLocalizedStringWithDefaultValue(@"Keyboard Settings…", @"Keyboard Settings…");
-    v31 = [a1 configuredSymbolImageWithName:@"gear" size:22.0];
+    v31 = [self configuredSymbolImageWithName:@"gear" size:22.0];
     v32 = &__block_literal_global_323_1;
   }
 
@@ -1894,10 +1894,10 @@ LABEL_38:
   [v34 addObject:v36];
   if (os_variant_has_internal_diagnostics())
   {
-    if ([a1 _isScribbleButtonsVisible])
+    if ([self _isScribbleButtonsVisible])
     {
       v49 = _UINSLocalizedStringWithDefaultValue(@"Report a Problem…", @"Report a Problem…");
-      v39 = [a1 configuredSymbolImageWithName:@"ladybug" size:22.0];
+      v39 = [self configuredSymbolImageWithName:@"ladybug" size:22.0];
       v52[0] = MEMORY[0x1E69E9820];
       v52[1] = 3221225472;
       v52[2] = __58__UIAssistantBarButtonItemProvider_languageIndicatorMenu___block_invoke_11;
@@ -1915,15 +1915,15 @@ LABEL_38:
     else
     {
       v44 = TIGetTypoTrackerButtonValue_0();
-      v45 = [v44 BOOLValue];
+      bOOLValue = [v44 BOOLValue];
 
-      if (!v45)
+      if (!bOOLValue)
       {
         goto LABEL_41;
       }
 
       v43 = _UINSLocalizedStringWithDefaultValue(@"Keyboard Feedback…", @"Keyboard Feedback…");
-      v50 = [a1 configuredSymbolImageWithName:@"ant" size:22.0];
+      v50 = [self configuredSymbolImageWithName:@"ant" size:22.0];
       v46 = [UIAction actionWithTitle:v43 image:v50 identifier:@"typotracker" handler:&__block_literal_global_356_2];
       v62 = v46;
       v47 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v62 count:1];
@@ -2009,23 +2009,23 @@ void __58__UIAssistantBarButtonItemProvider_languageIndicatorMenu___block_invoke
 
 + (id)languageIndicatorImage
 {
-  if ([a1 _isScribbleButtonsVisible])
+  if ([self _isScribbleButtonsVisible])
   {
     PKTextInputInteractionClass = getPKTextInputInteractionClass();
     v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v5 = [v4 scene];
-    v6 = [PKTextInputInteractionClass interactionForScene:v5];
+    scene = [v4 scene];
+    v6 = [PKTextInputInteractionClass interactionForScene:scene];
 
-    v7 = [v6 enabledLanguageIdentifiers];
-    v8 = [v7 count];
+    enabledLanguageIdentifiers = [v6 enabledLanguageIdentifiers];
+    v8 = [enabledLanguageIdentifiers count];
 
     if (v8 >= 2)
     {
       v9 = +[UIKeyboardInputModeController sharedInputModeController];
-      v10 = [v6 currentLanguageIdentifier];
-      v11 = [v9 inputModeWithIdentifier:v10];
+      currentLanguageIdentifier = [v6 currentLanguageIdentifier];
+      v11 = [v9 inputModeWithIdentifier:currentLanguageIdentifier];
 
-      v12 = [v11 indicatorIcon];
+      indicatorIcon = [v11 indicatorIcon];
 
       goto LABEL_7;
     }
@@ -2041,12 +2041,12 @@ LABEL_9:
     v14 = UIKeyboardGetCurrentInputMode();
     v6 = [v13 inputModeWithIdentifier:v14];
 
-    if ([a1 _isInputModeVisible:v6])
+    if ([self _isInputModeVisible:v6])
     {
-      v12 = [v6 indicatorIcon];
+      indicatorIcon = [v6 indicatorIcon];
 LABEL_7:
 
-      if (v12)
+      if (indicatorIcon)
       {
         goto LABEL_11;
       }
@@ -2060,35 +2060,35 @@ LABEL_7:
 LABEL_10:
   v15 = [objc_opt_class() configuredSymbolImageWithName:@"keyboard.badge.ellipsis" size:22.0];
   [v15 alignmentRectInsets];
-  v12 = [v15 imageWithAlignmentRectInsets:{v16 + 2.0, v17 + 2.5, v18 + -2.0, v19 + -2.5}];
+  indicatorIcon = [v15 imageWithAlignmentRectInsets:{v16 + 2.0, v17 + 2.5, v18 + -2.0, v19 + -2.5}];
 
 LABEL_11:
   if (+[UIKeyboard usesInputSystemUI])
   {
     v20 = +[UIColor clearColor];
-    v21 = [v12 imageWithTintColor:v20 renderingMode:1];
+    v21 = [indicatorIcon imageWithTintColor:v20 renderingMode:1];
 
-    v12 = v21;
+    indicatorIcon = v21;
   }
 
-  return v12;
+  return indicatorIcon;
 }
 
-+ (id)languageIndicatorItem:(BOOL)a3
++ (id)languageIndicatorItem:(BOOL)item
 {
-  v3 = a3;
-  v5 = [a1 languageIndicatorImage];
+  itemCopy = item;
+  languageIndicatorImage = [self languageIndicatorImage];
   v6 = [UIBarButtonItem alloc];
   v7 = v6;
-  if (v3)
+  if (itemCopy)
   {
-    v8 = [UIAction actionWithTitle:&stru_1EFB14550 image:v5 identifier:0 handler:&__block_literal_global_359_2];
+    v8 = [UIAction actionWithTitle:&stru_1EFB14550 image:languageIndicatorImage identifier:0 handler:&__block_literal_global_359_2];
     v9 = [(UIBarButtonItem *)v7 initWithPrimaryAction:v8];
   }
 
   else
   {
-    v9 = [(UIBarButtonItem *)v6 initWithImage:v5 menu:0];
+    v9 = [(UIBarButtonItem *)v6 initWithImage:languageIndicatorImage menu:0];
   }
 
   v10 = _UINSLocalizedStringWithDefaultValue(@"Keyboard", @"Keyboard");
@@ -2099,14 +2099,14 @@ LABEL_11:
   v13[1] = 3221225472;
   v13[2] = __58__UIAssistantBarButtonItemProvider_languageIndicatorItem___block_invoke_2;
   v13[3] = &__block_descriptor_41_e28___UIMenu_24__0_8__NSArray_16l;
-  v13[4] = a1;
-  v14 = v3;
+  v13[4] = self;
+  v14 = itemCopy;
   [(UIBarButtonItem *)v9 _setSecondaryActionsProvider:v13];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __58__UIAssistantBarButtonItemProvider_languageIndicatorItem___block_invoke_3;
   v12[3] = &__block_descriptor_40_e25_v16__0__UIBarButtonItem_8l;
-  v12[4] = a1;
+  v12[4] = self;
   [(UIBarButtonItem *)v9 _setAutoValidationHandler:v12];
   [(UIBarButtonItem *)v9 setIsKeyboardItem:1];
 
@@ -2130,23 +2130,23 @@ void __58__UIAssistantBarButtonItemProvider_languageIndicatorItem___block_invoke
   [v4 setEnabled:v3];
 }
 
-+ (id)dictationActionForInputMode:(id)a3 inCurrentInputMode:(id)a4
++ (id)dictationActionForInputMode:(id)mode inCurrentInputMode:(id)inputMode
 {
-  v5 = a3;
-  v6 = a4;
+  modeCopy = mode;
+  inputModeCopy = inputMode;
   v7 = +[UIKeyboardInputMode dictationInputMode];
-  v8 = [v7 indicatorIconForDictationLanguage:v5 scaleFactor:1.0];
+  v8 = [v7 indicatorIconForDictationLanguage:modeCopy scaleFactor:1.0];
 
-  v9 = UIKeyboardLocalizedDictationDisplayName(v5);
+  v9 = UIKeyboardLocalizedDictationDisplayName(modeCopy);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __83__UIAssistantBarButtonItemProvider_dictationActionForInputMode_inCurrentInputMode___block_invoke;
   v13[3] = &unk_1E70F4708;
-  v10 = v5;
+  v10 = modeCopy;
   v14 = v10;
   v11 = [UIAction actionWithTitle:v9 image:v8 identifier:v10 handler:v13];
 
-  LODWORD(v9) = [v10 isEqualToString:v6];
+  LODWORD(v9) = [v10 isEqualToString:inputModeCopy];
   if (v9)
   {
     [v11 setState:1];
@@ -2171,19 +2171,19 @@ void __83__UIAssistantBarButtonItemProvider_dictationActionForInputMode_inCurren
 {
   v38 = *MEMORY[0x1E69E9840];
   v3 = +[UIKeyboardInputModeController sharedInputModeController];
-  v4 = [v3 enabledDictationLanguages];
+  enabledDictationLanguages = [v3 enabledDictationLanguages];
 
-  if ([v4 count] >= 2)
+  if ([enabledDictationLanguages count] >= 2)
   {
-    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(enabledDictationLanguages, "count")}];
     v7 = +[UIKeyboardImpl activeInstance];
-    v8 = [v7 activeDictationLanguage];
+    activeDictationLanguage = [v7 activeDictationLanguage];
 
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v9 = v4;
+    v9 = enabledDictationLanguages;
     v10 = [v9 countByEnumeratingWithState:&v29 objects:v37 count:16];
     if (v10)
     {
@@ -2198,7 +2198,7 @@ void __83__UIAssistantBarButtonItemProvider_dictationActionForInputMode_inCurren
             objc_enumerationMutation(v9);
           }
 
-          v14 = [a1 dictationActionForInputMode:*(*(&v29 + 1) + 8 * i) inCurrentInputMode:{v8, v29}];
+          v14 = [self dictationActionForInputMode:*(*(&v29 + 1) + 8 * i) inCurrentInputMode:{activeDictationLanguage, v29}];
           [v6 addObject:v14];
         }
 
@@ -2211,7 +2211,7 @@ void __83__UIAssistantBarButtonItemProvider_dictationActionForInputMode_inCurren
     if (+[UIInputSwitcherView canShowKeyboardSettings])
     {
       v15 = _UILocalizedStringInSystemLanguage(@"Dictation Settings…", @"Dictation Settings…");
-      v16 = [a1 configuredSymbolImageWithName:@"gear" size:22.0];
+      v16 = [self configuredSymbolImageWithName:@"gear" size:22.0];
       v17 = [UIAction actionWithTitle:v15 image:v16 identifier:@"setting" handler:&__block_literal_global_368];
     }
 
@@ -2244,7 +2244,7 @@ void __83__UIAssistantBarButtonItemProvider_dictationActionForInputMode_inCurren
     if (os_variant_has_internal_diagnostics())
     {
       v23 = _UILocalizedStringInSystemLanguage(@"Dictation Feedback", @"Dictation Feedback");
-      v24 = [a1 configuredSymbolImageWithName:@"ladybug" size:22.0];
+      v24 = [self configuredSymbolImageWithName:@"ladybug" size:22.0];
       v25 = [UIAction actionWithTitle:v23 image:v24 identifier:@"report" handler:&__block_literal_global_376];
 
       v34 = v25;
@@ -2282,21 +2282,21 @@ void __49__UIAssistantBarButtonItemProvider_dictationMenu__block_invoke_2()
   [v0 launchDictationFeedbackApp];
 }
 
-+ (id)unmodifiableSystemAssistantItem:(int64_t)a3
++ (id)unmodifiableSystemAssistantItem:(int64_t)item
 {
   v88[2] = *MEMORY[0x1E69E9840];
-  if ((a3 - 2) > 2)
+  if ((item - 2) > 2)
   {
-    v4 = objc_alloc_init(UISystemDefaultTextInputAssistantItem);
-    v6 = [MEMORY[0x1E695DF70] array];
-    v77 = [MEMORY[0x1E695DF70] array];
-    v7 = [a1 barButtonItemForAssistantItemStyle:18 target:v4];
-    v70 = [a1 barButtonItemForAssistantItemStyle:11 target:v4];
-    v8 = [a1 barButtonItemForAssistantItemStyle:12 target:v4 forcePlainButton:a3 == 1];
-    v60 = v6;
+    compactSystemAssistantItem = objc_alloc_init(UISystemDefaultTextInputAssistantItem);
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    v7 = [self barButtonItemForAssistantItemStyle:18 target:compactSystemAssistantItem];
+    v70 = [self barButtonItemForAssistantItemStyle:11 target:compactSystemAssistantItem];
+    v8 = [self barButtonItemForAssistantItemStyle:12 target:compactSystemAssistantItem forcePlainButton:item == 1];
+    v60 = array;
     if (+[UIDictationController isRunning](UIDictationController, "isRunning") && (+[UIKeyboard isKeyboardProcess](UIKeyboard, "isKeyboardProcess") || !+[UIKeyboard usesInputSystemUI]))
     {
-      v9 = [a1 barButtonItemForAssistantItemStyle:13 target:v4 forcePlainButton:a3 == 1];
+      v9 = [self barButtonItemForAssistantItemStyle:13 target:compactSystemAssistantItem forcePlainButton:item == 1];
 
       v72 = v9;
     }
@@ -2306,13 +2306,13 @@ void __49__UIAssistantBarButtonItemProvider_dictationMenu__block_invoke_2()
       v72 = v8;
     }
 
-    v71 = [a1 barButtonItemForAssistantItemStyle:21 target:v4 forcePlainButton:a3 == 1];
-    v75 = [a1 barButtonItemForAssistantItemStyle:22 target:v4];
-    v69 = [a1 barButtonItemForAssistantItemStyle:14 target:v4];
-    v68 = [a1 barButtonItemForAssistantItemStyle:15 target:v4];
-    v10 = [a1 barButtonItemForAssistantItemStyle:10 target:v4];
-    v11 = [a1 barButtonItemForAssistantItemStyle:3 target:v4];
-    v12 = [a1 barButtonItemForAssistantItemStyle:4 target:v4];
+    v71 = [self barButtonItemForAssistantItemStyle:21 target:compactSystemAssistantItem forcePlainButton:item == 1];
+    v75 = [self barButtonItemForAssistantItemStyle:22 target:compactSystemAssistantItem];
+    v69 = [self barButtonItemForAssistantItemStyle:14 target:compactSystemAssistantItem];
+    v68 = [self barButtonItemForAssistantItemStyle:15 target:compactSystemAssistantItem];
+    v10 = [self barButtonItemForAssistantItemStyle:10 target:compactSystemAssistantItem];
+    v11 = [self barButtonItemForAssistantItemStyle:3 target:compactSystemAssistantItem];
+    v12 = [self barButtonItemForAssistantItemStyle:4 target:compactSystemAssistantItem];
     v13 = [UIBarButtonItemGroup alloc];
     v65 = v10;
     v66 = v7;
@@ -2322,18 +2322,18 @@ void __49__UIAssistantBarButtonItemProvider_dictationMenu__block_invoke_2()
     v67 = [(UIBarButtonItemGroup *)v13 initWithBarButtonItems:v14 representativeItem:0];
 
     v15 = +[UIKeyboardImpl activeInstance];
-    v16 = [v15 delegateAsResponder];
-    v74 = [v16 _assistantBarButtonItemForWritingToolsWithStyle:24];
+    delegateAsResponder = [v15 delegateAsResponder];
+    v74 = [delegateAsResponder _assistantBarButtonItemForWritingToolsWithStyle:24];
 
     v17 = +[UIKeyboardImpl activeInstance];
-    v18 = [v17 delegateAsResponder];
-    v73 = [v18 _assistantBarButtonItemForWritingToolsWithStyle:25];
+    delegateAsResponder2 = [v17 delegateAsResponder];
+    v73 = [delegateAsResponder2 _assistantBarButtonItemForWritingToolsWithStyle:25];
 
     v19 = +[UIKeyboardImpl activeInstance];
-    v20 = [v19 delegateAsResponder];
-    v21 = [v20 _assistantBarButtonItemForWritingToolsWithStyle:23];
+    delegateAsResponder3 = [v19 delegateAsResponder];
+    v21 = [delegateAsResponder3 _assistantBarButtonItemForWritingToolsWithStyle:23];
 
-    v22 = [a1 barButtonItemForAssistantItemStyle:20 target:v4];
+    v22 = [self barButtonItemForAssistantItemStyle:20 target:compactSystemAssistantItem];
     [v22 setIsKeyboardItem:1];
     [v11 setIsKeyboardItem:1];
     [v12 setIsKeyboardItem:1];
@@ -2350,12 +2350,12 @@ void __49__UIAssistantBarButtonItemProvider_dictationMenu__block_invoke_2()
     [(UIBarButtonItemGroup *)v25 _setShouldAlwaysCollapse:1];
     v26 = v60;
     [v60 addObject:v25];
-    v27 = [a1 barButtonItemForAssistantItemStyle:16 target:v4];
+    v27 = [self barButtonItemForAssistantItemStyle:16 target:compactSystemAssistantItem];
     v28 = v60;
     v76 = v21;
     if ((_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl())
     {
-      v29 = [a1 languageIndicatorItem:{0, v60, v27}];
+      v29 = [self languageIndicatorItem:{0, v60, v27}];
       v30 = [UIBarButtonItemGroup alloc];
       v86 = v29;
       v31 = 1;
@@ -2368,7 +2368,7 @@ void __49__UIAssistantBarButtonItemProvider_dictationMenu__block_invoke_2()
 
     else
     {
-      if (a3 == 1)
+      if (item == 1)
       {
         [v27 setIsKeyboardItem:1];
         v35 = [UIBarButtonItemGroup alloc];
@@ -2412,7 +2412,7 @@ void __49__UIAssistantBarButtonItemProvider_dictationMenu__block_invoke_2()
       [v28 addObject:v42];
     }
 
-    if (a3 == 1)
+    if (item == 1)
     {
       v43 = 1;
     }
@@ -2424,7 +2424,7 @@ void __49__UIAssistantBarButtonItemProvider_dictationMenu__block_invoke_2()
 
     if ((v43 & 1) == 0)
     {
-      [v77 addObject:v34];
+      [array2 addObject:v34];
     }
 
     [v75 setIsKeyboardItem:1];
@@ -2433,7 +2433,7 @@ void __49__UIAssistantBarButtonItemProvider_dictationMenu__block_invoke_2()
     v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v82 count:1];
     v46 = [(UIBarButtonItemGroup *)v44 initWithBarButtonItems:v45 representativeItem:0];
 
-    [v77 addObject:v46];
+    [array2 addObject:v46];
     if (v73 | v76)
     {
       v47 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -2449,18 +2449,18 @@ void __49__UIAssistantBarButtonItemProvider_dictationMenu__block_invoke_2()
       }
 
       v49 = [[UIBarButtonItemGroup alloc] initWithBarButtonItems:v48 representativeItem:0];
-      [v77 addObject:v49];
+      [array2 addObject:v49];
     }
 
-    if (a3 == 1)
+    if (item == 1)
     {
-      if ([a1 _isDictationButtonVisible])
+      if ([self _isDictationButtonVisible])
       {
         if (+[UIKeyboard usesInputSystemUI])
         {
-          v50 = [v72 image];
+          image = [v72 image];
           v51 = +[UIColor clearColor];
-          v52 = [v50 imageWithTintColor:v51 renderingMode:1];
+          v52 = [image imageWithTintColor:v51 renderingMode:1];
           v34 = v67;
           [v72 setImage:v52];
         }
@@ -2469,7 +2469,7 @@ void __49__UIAssistantBarButtonItemProvider_dictationMenu__block_invoke_2()
         v79[1] = 3221225472;
         v79[2] = __68__UIAssistantBarButtonItemProvider_unmodifiableSystemAssistantItem___block_invoke;
         v79[3] = &__block_descriptor_40_e28___UIMenu_24__0_8__NSArray_16l;
-        v79[4] = a1;
+        v79[4] = self;
         [v72 _setSecondaryActionsProvider:v79];
         [v72 setIsKeyboardItem:1];
         [v72 setTag:1944175551];
@@ -2477,14 +2477,14 @@ void __49__UIAssistantBarButtonItemProvider_dictationMenu__block_invoke_2()
         v78[1] = 3221225472;
         v78[2] = __68__UIAssistantBarButtonItemProvider_unmodifiableSystemAssistantItem___block_invoke_2;
         v78[3] = &__block_descriptor_40_e25_v16__0__UIBarButtonItem_8l;
-        v78[4] = a1;
+        v78[4] = self;
         [v72 _setAutoValidationHandler:v78];
         v53 = [UIBarButtonItemGroup alloc];
         v81 = v72;
         v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v81 count:1];
         v55 = [(UIBarButtonItemGroup *)v53 initWithBarButtonItems:v54 representativeItem:0];
 
-        [v77 addObject:v55];
+        [array2 addObject:v55];
       }
 
       [v71 setIsKeyboardItem:1];
@@ -2493,19 +2493,19 @@ void __49__UIAssistantBarButtonItemProvider_dictationMenu__block_invoke_2()
       v57 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v80 count:1];
       v58 = [(UIBarButtonItemGroup *)v56 initWithBarButtonItems:v57 representativeItem:0];
 
-      [v77 addObject:v58];
+      [array2 addObject:v58];
     }
 
-    [(UISystemDefaultTextInputAssistantItem *)v4 setLeadingBarButtonGroups:v28];
-    [(UISystemDefaultTextInputAssistantItem *)v4 setTrailingBarButtonGroups:v77];
+    [(UISystemDefaultTextInputAssistantItem *)compactSystemAssistantItem setLeadingBarButtonGroups:v28];
+    [(UISystemDefaultTextInputAssistantItem *)compactSystemAssistantItem setTrailingBarButtonGroups:array2];
   }
 
   else
   {
-    v4 = [a1 compactSystemAssistantItem];
+    compactSystemAssistantItem = [self compactSystemAssistantItem];
   }
 
-  return v4;
+  return compactSystemAssistantItem;
 }
 
 void __68__UIAssistantBarButtonItemProvider_unmodifiableSystemAssistantItem___block_invoke_2(uint64_t a1, void *a2)
@@ -2530,7 +2530,7 @@ void __68__UIAssistantBarButtonItemProvider_unmodifiableSystemAssistantItem___bl
   v3 = objc_alloc_init(UISystemDefaultTextInputAssistantItem);
   if ((_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl())
   {
-    v4 = [a1 languageIndicatorItem:1];
+    v4 = [self languageIndicatorItem:1];
     v5 = [[UITapGestureRecognizer alloc] initWithTarget:v3 action:sel_assistantExpand];
     v18[0] = v5;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
@@ -2544,10 +2544,10 @@ void __68__UIAssistantBarButtonItemProvider_unmodifiableSystemAssistantItem___bl
 
   else
   {
-    v4 = [a1 barButtonItemForAssistantItemStyle:16 target:v3];
-    v5 = [a1 barButtonItemForAssistantItemStyle:11 target:v3];
-    v8 = [a1 barButtonItemForAssistantItemStyle:15 target:v3];
-    v10 = [a1 barButtonItemForAssistantItemStyle:14 target:v3];
+    v4 = [self barButtonItemForAssistantItemStyle:16 target:v3];
+    v5 = [self barButtonItemForAssistantItemStyle:11 target:v3];
+    v8 = [self barButtonItemForAssistantItemStyle:15 target:v3];
+    v10 = [self barButtonItemForAssistantItemStyle:14 target:v3];
     [v4 setIsKeyboardItem:1];
     v11 = [UIBarButtonItemGroup alloc];
     v16[0] = v5;

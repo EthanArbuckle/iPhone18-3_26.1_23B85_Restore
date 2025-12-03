@@ -1,28 +1,28 @@
 @interface PKPaymentPassesResponse
-- (PKPaymentPassesResponse)initWithData:(id)a3;
+- (PKPaymentPassesResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentPassesResponse
 
-- (PKPaymentPassesResponse)initWithData:(id)a3
+- (PKPaymentPassesResponse)initWithData:(id)data
 {
   v34 = *MEMORY[0x1E69E9840];
   v28.receiver = self;
   v28.super_class = PKPaymentPassesResponse;
-  v3 = [(PKWebServiceResponse *)&v28 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v28 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 objectForKey:@"lastUpdated"];
+      v6 = [jSONObject objectForKey:@"lastUpdated"];
       lastUpdatedTag = v4->_lastUpdatedTag;
       v4->_lastUpdatedTag = v6;
 
       v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v9 = [v5 objectForKey:@"passURLs"];
+      v9 = [jSONObject objectForKey:@"passURLs"];
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
@@ -62,7 +62,7 @@
       v4->_passURLs = v8;
       v16 = v8;
 
-      v17 = [v5 objectForKey:@"devicePassSerialNumbers"];
+      v17 = [jSONObject objectForKey:@"devicePassSerialNumbers"];
       devicePassSerialNumbers = v4->_devicePassSerialNumbers;
       v4->_devicePassSerialNumbers = v17;
     }

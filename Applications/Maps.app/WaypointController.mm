@@ -1,13 +1,13 @@
 @interface WaypointController
 - (BOOL)isRunning;
 - (NSDictionary)waypointRequestResults;
-- (WaypointController)initWithConfiguration:(id)a3;
+- (WaypointController)initWithConfiguration:(id)configuration;
 - (WaypointControllerDelegate)delegate;
-- (void)_processTaskFinished:(id)a3;
+- (void)_processTaskFinished:(id)finished;
 - (void)_refreshDynamicOrigin;
 - (void)_startOnIsolationQueue;
 - (void)_stopOnIsolationQueue;
-- (void)_submitTask:(id)a3;
+- (void)_submitTask:(id)task;
 - (void)rebroadcastWaypoints;
 - (void)refresh;
 - (void)refreshDynamicOrigin;
@@ -27,13 +27,13 @@
 - (void)rebroadcastWaypoints
 {
   objc_initWeak(&location, self);
-  v3 = [(WaypointController *)self isolationQueue];
+  isolationQueue = [(WaypointController *)self isolationQueue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1006703D8;
   v4[3] = &unk_101661B98;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(isolationQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -41,16 +41,16 @@
 
 - (void)_refreshDynamicOrigin
 {
-  v3 = [(WaypointController *)self isolationQueue];
-  dispatch_assert_queue_V2(v3);
+  isolationQueue = [(WaypointController *)self isolationQueue];
+  dispatch_assert_queue_V2(isolationQueue);
 
-  v4 = [(WaypointController *)self configuration];
-  v5 = [v4 origin];
-  v6 = [v5 isCurrentLocation];
+  configuration = [(WaypointController *)self configuration];
+  origin = [configuration origin];
+  isCurrentLocation = [origin isCurrentLocation];
 
   v7 = sub_1006704F0();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-  if (v6)
+  if (isCurrentLocation)
   {
     if (v8)
     {
@@ -59,12 +59,12 @@
     }
 
     v9 = [ComposedWaypointTask alloc];
-    v10 = [(WaypointController *)self configuration];
-    v11 = [v10 origin];
-    v7 = [(ComposedWaypointTask *)v9 initWithRequest:v11];
+    configuration2 = [(WaypointController *)self configuration];
+    origin2 = [configuration2 origin];
+    v7 = [(ComposedWaypointTask *)v9 initWithRequest:origin2];
 
-    v12 = [(WaypointController *)self tasks];
-    [v12 replaceObjectAtIndex:0 withObject:v7];
+    tasks = [(WaypointController *)self tasks];
+    [tasks replaceObjectAtIndex:0 withObject:v7];
 
     [(WaypointController *)self _submitTask:v7];
   }
@@ -79,13 +79,13 @@
 - (void)refreshDynamicOrigin
 {
   objc_initWeak(&location, self);
-  v3 = [(WaypointController *)self isolationQueue];
+  isolationQueue = [(WaypointController *)self isolationQueue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1006707AC;
   v4[3] = &unk_101661B98;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(isolationQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -99,14 +99,14 @@
   v10 = sub_1006709F0;
   v11 = sub_100670A00;
   v12 = objc_opt_new();
-  v3 = [(WaypointController *)self isolationQueue];
+  isolationQueue = [(WaypointController *)self isolationQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100670A08;
   v6[3] = &unk_101661600;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(isolationQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -114,9 +114,9 @@
   return v4;
 }
 
-- (void)_processTaskFinished:(id)a3
+- (void)_processTaskFinished:(id)finished
 {
-  v4 = a3;
+  finishedCopy = finished;
   v5 = sub_1006704F0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -124,19 +124,19 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Processing currently finished waypoint tasks", buf, 2u);
   }
 
-  v6 = [(WaypointController *)self isolationQueue];
-  dispatch_assert_queue_V2(v6);
+  isolationQueue = [(WaypointController *)self isolationQueue];
+  dispatch_assert_queue_V2(isolationQueue);
 
-  v7 = [(WaypointController *)self tasks];
-  v8 = [v7 count] == 0;
+  tasks = [(WaypointController *)self tasks];
+  v8 = [tasks count] == 0;
 
   if (!v8)
   {
-    v9 = [(WaypointController *)self tasks];
-    v10 = [v9 count];
+    tasks2 = [(WaypointController *)self tasks];
+    v10 = [tasks2 count];
 
-    v11 = [(WaypointController *)self tasks];
-    v12 = [v11 indexOfObject:v4];
+    tasks3 = [(WaypointController *)self tasks];
+    v12 = [tasks3 indexOfObject:finishedCopy];
 
     if (v12)
     {
@@ -175,13 +175,13 @@
       [v13 postNotificationName:@"MapsWaypointResolutionDidLoadOriginNotification" object:0];
     }
 
-    v16 = [(WaypointController *)self receivedResults];
-    v17 = [v16 objectForKey:v4];
+    receivedResults = [(WaypointController *)self receivedResults];
+    v17 = [receivedResults objectForKey:finishedCopy];
 
     if ([v17 isSuccess])
     {
-      v18 = [(WaypointController *)self receivedResults];
-      v19 = [v18 count];
+      receivedResults2 = [(WaypointController *)self receivedResults];
+      v19 = [receivedResults2 count];
 
       if (v10 >= v19)
       {
@@ -204,21 +204,21 @@
 
         v22 = [[NSMutableArray alloc] initWithCapacity:v10];
         v23 = [[NSMutableArray alloc] initWithCapacity:v10];
-        v24 = [(WaypointController *)self tasks];
+        tasks4 = [(WaypointController *)self tasks];
         v49 = _NSConcreteStackBlock;
         v50 = 3221225472;
         v51 = sub_10067140C;
         v52 = &unk_1016254E0;
-        v53 = self;
+        selfCopy = self;
         v25 = v22;
         v54 = v25;
         v26 = v23;
         v55 = v26;
-        [v24 enumerateObjectsUsingBlock:&v49];
+        [tasks4 enumerateObjectsUsingBlock:&v49];
 
         v27 = [WaypointSet alloc];
-        v28 = [(WaypointSet *)v27 initWithWaypoints:v25, v49, v50, v51, v52, v53];
-        v29 = [Result resultWithValue:v28];
+        selfCopy = [(WaypointSet *)v27 initWithWaypoints:v25, v49, v50, v51, v52, selfCopy];
+        v29 = [Result resultWithValue:selfCopy];
         [(WaypointController *)self setResolvedWaypointSetResult:v29];
 
         if ([v26 count])
@@ -236,8 +236,8 @@
         }
       }
 
-      v32 = [(WaypointController *)self resolvedWaypointSetResult];
-      v33 = v32 == 0;
+      resolvedWaypointSetResult = [(WaypointController *)self resolvedWaypointSetResult];
+      v33 = resolvedWaypointSetResult == 0;
 
       v34 = sub_1006704F0();
       v35 = v34;
@@ -255,17 +255,17 @@
       {
         if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
         {
-          v36 = [(WaypointController *)self resolvedWaypointSetResult];
+          resolvedWaypointSetResult2 = [(WaypointController *)self resolvedWaypointSetResult];
           *buf = 134218242;
           *&buf[4] = v10;
           *&buf[12] = 2112;
-          *&buf[14] = v36;
+          *&buf[14] = resolvedWaypointSetResult2;
           _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "Finished resolving %lu waypoints: %@", buf, 0x16u);
         }
 
-        v37 = [(WaypointController *)self delegate];
-        v38 = [(WaypointController *)self resolvedWaypointSetResult];
-        [v37 waypointController:self didResolveWaypointSet:v38];
+        delegate = [(WaypointController *)self delegate];
+        resolvedWaypointSetResult3 = [(WaypointController *)self resolvedWaypointSetResult];
+        [delegate waypointController:self didResolveWaypointSet:resolvedWaypointSetResult3];
       }
     }
 
@@ -275,8 +275,8 @@
       v60 = 0u;
       v57 = 0u;
       v58 = 0u;
-      v39 = [(WaypointController *)self tasks];
-      v40 = [v39 countByEnumeratingWithState:&v57 objects:v69 count:16];
+      tasks5 = [(WaypointController *)self tasks];
+      v40 = [tasks5 countByEnumeratingWithState:&v57 objects:v69 count:16];
       if (v40)
       {
         v41 = *v58;
@@ -287,11 +287,11 @@
           {
             if (*v58 != v41)
             {
-              objc_enumerationMutation(v39);
+              objc_enumerationMutation(tasks5);
             }
 
             v43 = *(*(&v57 + 1) + 8 * v42);
-            if (v43 != v4)
+            if (v43 != finishedCopy)
             {
               [v43 cancel];
             }
@@ -300,7 +300,7 @@
           }
 
           while (v40 != v42);
-          v40 = [v39 countByEnumeratingWithState:&v57 objects:v69 count:16];
+          v40 = [tasks5 countByEnumeratingWithState:&v57 objects:v69 count:16];
         }
 
         while (v40);
@@ -333,26 +333,26 @@
         _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_ERROR, "Will stop waypoint refinement, error loading waypoint %lu: %@", v61, 0x16u);
       }
 
-      v47 = [(WaypointController *)self delegate];
-      v48 = [(WaypointController *)self resolvedWaypointSetResult];
-      [v47 waypointController:self didResolveWaypointSet:v48];
+      delegate2 = [(WaypointController *)self delegate];
+      resolvedWaypointSetResult4 = [(WaypointController *)self resolvedWaypointSetResult];
+      [delegate2 waypointController:self didResolveWaypointSet:resolvedWaypointSetResult4];
 
       _Block_object_dispose(buf, 8);
     }
   }
 }
 
-- (void)_submitTask:(id)a3
+- (void)_submitTask:(id)task
 {
-  v4 = a3;
-  v5 = [(WaypointController *)self isolationQueue];
-  dispatch_assert_queue_V2(v5);
+  taskCopy = task;
+  isolationQueue = [(WaypointController *)self isolationQueue];
+  dispatch_assert_queue_V2(isolationQueue);
 
-  v6 = [(WaypointController *)self receivedResults];
-  [v6 setObject:0 forKey:v4];
+  receivedResults = [(WaypointController *)self receivedResults];
+  [receivedResults setObject:0 forKey:taskCopy];
 
-  v7 = [(WaypointController *)self tasks];
-  v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Waypoint%lu", [v7 indexOfObject:v4]);
+  tasks = [(WaypointController *)self tasks];
+  v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Waypoint%lu", [tasks indexOfObject:taskCopy]);
 
   v9 = sub_1006704F0();
   v10 = os_signpost_id_generate(v9);
@@ -369,9 +369,9 @@
   v13 = sub_1006704F0();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [v4 identifier];
+    identifier = [taskCopy identifier];
     *buf = 138543362;
-    v25 = v14;
+    v25 = identifier;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Fetching waypoint with identifier: %{public}@", buf, 0xCu);
   }
 
@@ -384,14 +384,14 @@
   v23[1] = v10;
   v15 = v8;
   v21 = v15;
-  v16 = v4;
+  v16 = taskCopy;
   v22 = v16;
-  v17 = [(WaypointController *)self traitsForNextTask];
-  [v16 submitWithHandler:v20 traits:v17 networkActivityHandler:0];
+  traitsForNextTask = [(WaypointController *)self traitsForNextTask];
+  [v16 submitWithHandler:v20 traits:traitsForNextTask networkActivityHandler:0];
 
-  v18 = [(WaypointController *)self traitsForNextTask];
-  v19 = [v18 copyByIncrementingSessionCounters];
-  [(WaypointController *)self setTraitsForNextTask:v19];
+  traitsForNextTask2 = [(WaypointController *)self traitsForNextTask];
+  copyByIncrementingSessionCounters = [traitsForNextTask2 copyByIncrementingSessionCounters];
+  [(WaypointController *)self setTraitsForNextTask:copyByIncrementingSessionCounters];
 
   objc_destroyWeak(v23);
   objc_destroyWeak(buf);
@@ -400,13 +400,13 @@
 - (void)refresh
 {
   objc_initWeak(&location, self);
-  v3 = [(WaypointController *)self isolationQueue];
+  isolationQueue = [(WaypointController *)self isolationQueue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100671C98;
   v4[3] = &unk_101661B98;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(isolationQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -414,15 +414,15 @@
 
 - (BOOL)isRunning
 {
-  v3 = [(WaypointController *)self isolationQueue];
-  dispatch_assert_queue_V2(v3);
+  isolationQueue = [(WaypointController *)self isolationQueue];
+  dispatch_assert_queue_V2(isolationQueue);
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(WaypointController *)self tasks];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  tasks = [(WaypointController *)self tasks];
+  v5 = [tasks countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -432,7 +432,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(tasks);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -443,7 +443,7 @@
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [tasks countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -467,15 +467,15 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Stopping waypoint fetching", buf, 2u);
   }
 
-  v4 = [(WaypointController *)self isolationQueue];
-  dispatch_assert_queue_V2(v4);
+  isolationQueue = [(WaypointController *)self isolationQueue];
+  dispatch_assert_queue_V2(isolationQueue);
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(WaypointController *)self tasks];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  tasks = [(WaypointController *)self tasks];
+  v6 = [tasks countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -487,7 +487,7 @@ LABEL_12:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(tasks);
         }
 
         [*(*(&v10 + 1) + 8 * v9) cancel];
@@ -495,7 +495,7 @@ LABEL_12:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [tasks countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);
@@ -507,13 +507,13 @@ LABEL_12:
 - (void)stop
 {
   objc_initWeak(&location, self);
-  v3 = [(WaypointController *)self isolationQueue];
+  isolationQueue = [(WaypointController *)self isolationQueue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100672084;
   v4[3] = &unk_101661B98;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(isolationQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -528,38 +528,38 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Starting waypoint fetching", buf, 2u);
   }
 
-  v4 = [(WaypointController *)self isolationQueue];
-  dispatch_assert_queue_V2(v4);
+  isolationQueue = [(WaypointController *)self isolationQueue];
+  dispatch_assert_queue_V2(isolationQueue);
 
   if ([(WaypointController *)self isRunning])
   {
-    v5 = sub_1006704F0();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    tasks3 = sub_1006704F0();
+    if (os_log_type_enabled(tasks3, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Asked to start fetching waypoints but we already started; ignoring", buf, 2u);
+      _os_log_impl(&_mh_execute_header, tasks3, OS_LOG_TYPE_ERROR, "Asked to start fetching waypoints but we already started; ignoring", buf, 2u);
     }
   }
 
   else
   {
-    v6 = [(WaypointController *)self configuration];
-    v7 = [v6 requests];
-    v8 = [v7 count];
+    configuration = [(WaypointController *)self configuration];
+    requests = [configuration requests];
+    v8 = [requests count];
 
     if (v8 > 1)
     {
-      v13 = [(WaypointController *)self tasks];
-      [v13 removeAllObjects];
+      tasks = [(WaypointController *)self tasks];
+      [tasks removeAllObjects];
 
       v32 = 0u;
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v14 = [(WaypointController *)self configuration];
-      v15 = [v14 requests];
+      configuration2 = [(WaypointController *)self configuration];
+      requests2 = [configuration2 requests];
 
-      v16 = [v15 countByEnumeratingWithState:&v30 objects:v36 count:16];
+      v16 = [requests2 countByEnumeratingWithState:&v30 objects:v36 count:16];
       if (v16)
       {
         v17 = v16;
@@ -571,18 +571,18 @@ LABEL_12:
           {
             if (*v31 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(requests2);
             }
 
             v20 = [[ComposedWaypointTask alloc] initWithRequest:*(*(&v30 + 1) + 8 * v19)];
-            v21 = [(WaypointController *)self tasks];
-            [v21 addObject:v20];
+            tasks2 = [(WaypointController *)self tasks];
+            [tasks2 addObject:v20];
 
             v19 = v19 + 1;
           }
 
           while (v17 != v19);
-          v17 = [v15 countByEnumeratingWithState:&v30 objects:v36 count:16];
+          v17 = [requests2 countByEnumeratingWithState:&v30 objects:v36 count:16];
         }
 
         while (v17);
@@ -592,8 +592,8 @@ LABEL_12:
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v5 = [(WaypointController *)self tasks];
-      v22 = [v5 countByEnumeratingWithState:&v26 objects:v35 count:16];
+      tasks3 = [(WaypointController *)self tasks];
+      v22 = [tasks3 countByEnumeratingWithState:&v26 objects:v35 count:16];
       if (v22)
       {
         v23 = v22;
@@ -605,7 +605,7 @@ LABEL_12:
           {
             if (*v27 != v24)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(tasks3);
             }
 
             [(WaypointController *)self _submitTask:*(*(&v26 + 1) + 8 * v25)];
@@ -613,7 +613,7 @@ LABEL_12:
           }
 
           while (v23 != v25);
-          v23 = [v5 countByEnumeratingWithState:&v26 objects:v35 count:16];
+          v23 = [tasks3 countByEnumeratingWithState:&v26 objects:v35 count:16];
         }
 
         while (v23);
@@ -633,9 +633,9 @@ LABEL_12:
       v11 = [Result resultWithError:v10];
       [(WaypointController *)self setResolvedWaypointSetResult:v11];
 
-      v5 = [(WaypointController *)self delegate];
-      v12 = [(WaypointController *)self resolvedWaypointSetResult];
-      [v5 waypointController:self didResolveWaypointSet:v12];
+      tasks3 = [(WaypointController *)self delegate];
+      resolvedWaypointSetResult = [(WaypointController *)self resolvedWaypointSetResult];
+      [tasks3 waypointController:self didResolveWaypointSet:resolvedWaypointSetResult];
     }
   }
 }
@@ -657,7 +657,7 @@ LABEL_12:
   [v5 postNotificationName:@"MapsWaypointResolutionDidBeginNotification" object:0];
 
   objc_initWeak(buf, self);
-  v6 = [(WaypointController *)self isolationQueue];
+  isolationQueue = [(WaypointController *)self isolationQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100672618;
@@ -665,16 +665,16 @@ LABEL_12:
   v9 = v3;
   v7 = v3;
   objc_copyWeak(&v10, buf);
-  dispatch_async(v6, v8);
+  dispatch_async(isolationQueue, v8);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
   os_activity_scope_leave(&state);
 }
 
-- (WaypointController)initWithConfiguration:(id)a3
+- (WaypointController)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = sub_1006704F0();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
 
@@ -689,7 +689,7 @@ LABEL_12:
 
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    v12 = [v5 debugDescription];
+    v12 = [configurationCopy debugDescription];
     *buf = 138412546;
     v35 = v11;
     v36 = 2112;
@@ -707,7 +707,7 @@ LABEL_12:
 
     v15 = objc_opt_class();
     v11 = NSStringFromClass(v15);
-    v12 = [v5 description];
+    v12 = [configurationCopy description];
     *buf = 138412546;
     v35 = v11;
     v36 = 2112;
@@ -725,20 +725,20 @@ LABEL_7:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_configuration, a3);
-    v18 = [v5 traits];
-    v19 = [v18 copy];
+    objc_storeStrong(&v16->_configuration, configuration);
+    traits = [configurationCopy traits];
+    v19 = [traits copy];
     traitsForNextTask = v17->_traitsForNextTask;
     v17->_traitsForNextTask = v19;
 
     [(GEOMapServiceTraits *)v17->_traitsForNextTask setRequestPurpose:1];
     v21 = +[NSBundle mainBundle];
-    v22 = [v21 bundleIdentifier];
-    v23 = [NSString stringWithFormat:@"%@.WaypointController.%p", v22, v17];
+    bundleIdentifier = [v21 bundleIdentifier];
+    v23 = [NSString stringWithFormat:@"%@.WaypointController.%p", bundleIdentifier, v17];
 
-    v24 = [v23 UTF8String];
+    uTF8String = [v23 UTF8String];
     v25 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v26 = dispatch_queue_create(v24, v25);
+    v26 = dispatch_queue_create(uTF8String, v25);
     isolationQueue = v17->_isolationQueue;
     v17->_isolationQueue = v26;
 

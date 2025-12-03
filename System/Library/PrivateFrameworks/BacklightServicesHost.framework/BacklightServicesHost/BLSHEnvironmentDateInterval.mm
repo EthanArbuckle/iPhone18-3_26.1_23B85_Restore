@@ -1,27 +1,27 @@
 @interface BLSHEnvironmentDateInterval
-- (BLSHEnvironmentDateInterval)initWithPresentationInterval:(id)a3 previousPresentationDate:(id)a4 shouldReset:(BOOL)a5 environment:(id)a6;
-- (BOOL)isEqual:(id)a3;
+- (BLSHEnvironmentDateInterval)initWithPresentationInterval:(id)interval previousPresentationDate:(id)date shouldReset:(BOOL)reset environment:(id)environment;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation BLSHEnvironmentDateInterval
 
-- (BLSHEnvironmentDateInterval)initWithPresentationInterval:(id)a3 previousPresentationDate:(id)a4 shouldReset:(BOOL)a5 environment:(id)a6
+- (BLSHEnvironmentDateInterval)initWithPresentationInterval:(id)interval previousPresentationDate:(id)date shouldReset:(BOOL)reset environment:(id)environment
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  intervalCopy = interval;
+  dateCopy = date;
+  environmentCopy = environment;
   v17.receiver = self;
   v17.super_class = BLSHEnvironmentDateInterval;
   v14 = [(BLSHEnvironmentDateInterval *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_presentationInterval, a3);
-    objc_storeStrong(&v15->_previousPresentationDate, a4);
-    v15->_shouldReset = a5;
-    objc_storeStrong(&v15->_environment, a6);
+    objc_storeStrong(&v14->_presentationInterval, interval);
+    objc_storeStrong(&v15->_previousPresentationDate, date);
+    v15->_shouldReset = reset;
+    objc_storeStrong(&v15->_environment, environment);
   }
 
   return v15;
@@ -35,7 +35,7 @@
   v9 = __42__BLSHEnvironmentDateInterval_description__block_invoke;
   v10 = &unk_27841E538;
   v11 = v3;
-  v12 = self;
+  selfCopy = self;
   v4 = v3;
   [v4 appendProem:0 block:&v7];
   v5 = [v4 description];
@@ -79,26 +79,26 @@ void __42__BLSHEnvironmentDateInterval_description__block_invoke(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_presentationInterval];
-  v5 = [v3 appendObject:self->_previousPresentationDate];
-  v6 = [v3 appendBool:self->_shouldReset];
-  v7 = [v3 appendPointer:self->_environment];
-  v8 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_presentationInterval];
+  v5 = [builder appendObject:self->_previousPresentationDate];
+  v6 = [builder appendBool:self->_shouldReset];
+  v7 = [builder appendPointer:self->_environment];
+  v8 = [builder hash];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   presentationInterval = self->_presentationInterval;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __39__BLSHEnvironmentDateInterval_isEqual___block_invoke;
   v28[3] = &unk_27841EB40;
-  v7 = v4;
+  v7 = equalCopy;
   v29 = v7;
   v8 = [v5 appendObject:presentationInterval counterpart:v28];
   previousPresentationDate = self->_previousPresentationDate;

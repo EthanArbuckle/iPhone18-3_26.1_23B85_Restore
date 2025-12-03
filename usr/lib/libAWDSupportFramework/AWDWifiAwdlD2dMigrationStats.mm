@@ -1,26 +1,26 @@
 @interface AWDWifiAwdlD2dMigrationStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAvgCCA:(BOOL)a3;
-- (void)setHasChannel:(BOOL)a3;
-- (void)setHasMigrationRole:(BOOL)a3;
-- (void)setHasPeerRssi:(BOOL)a3;
-- (void)setHasSessionDuration:(BOOL)a3;
-- (void)setHasTxBytes:(BOOL)a3;
-- (void)setHasTxFailureCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAvgCCA:(BOOL)a;
+- (void)setHasChannel:(BOOL)channel;
+- (void)setHasMigrationRole:(BOOL)role;
+- (void)setHasPeerRssi:(BOOL)rssi;
+- (void)setHasSessionDuration:(BOOL)duration;
+- (void)setHasTxBytes:(BOOL)bytes;
+- (void)setHasTxFailureCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWifiAwdlD2dMigrationStats
 
-- (void)setHasSessionDuration:(BOOL)a3
+- (void)setHasSessionDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -33,9 +33,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasChannel:(BOOL)a3
+- (void)setHasChannel:(BOOL)channel
 {
-  if (a3)
+  if (channel)
   {
     v3 = 16;
   }
@@ -48,9 +48,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasPeerRssi:(BOOL)a3
+- (void)setHasPeerRssi:(BOOL)rssi
 {
-  if (a3)
+  if (rssi)
   {
     v3 = 64;
   }
@@ -63,9 +63,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasTxFailureCount:(BOOL)a3
+- (void)setHasTxFailureCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x80;
   }
@@ -78,9 +78,9 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasTxBytes:(BOOL)a3
+- (void)setHasTxBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 4;
   }
@@ -93,9 +93,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMigrationRole:(BOOL)a3
+- (void)setHasMigrationRole:(BOOL)role
 {
-  if (a3)
+  if (role)
   {
     v3 = 32;
   }
@@ -108,9 +108,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasAvgCCA:(BOOL)a3
+- (void)setHasAvgCCA:(BOOL)a
 {
-  if (a3)
+  if (a)
   {
     v3 = 8;
   }
@@ -132,11 +132,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_sessionDuration), @"sessionDuration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_sessionDuration), @"sessionDuration"}];
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -155,7 +155,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_channel), @"channel"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_channel), @"channel"}];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -169,7 +169,7 @@ LABEL_4:
   }
 
 LABEL_13:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_rxBytes), @"rxBytes"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_rxBytes), @"rxBytes"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -183,7 +183,7 @@ LABEL_5:
   }
 
 LABEL_14:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_peerRssi), @"peerRssi"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_peerRssi), @"peerRssi"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -197,7 +197,7 @@ LABEL_6:
   }
 
 LABEL_15:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_txFailureCount), @"txFailureCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_txFailureCount), @"txFailureCount"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -208,17 +208,17 @@ LABEL_7:
     }
 
 LABEL_17:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_migrationRole), @"migrationRole"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_migrationRole), @"migrationRole"}];
     if ((*&self->_has & 8) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_9;
   }
 
 LABEL_16:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txBytes), @"txBytes"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txBytes), @"txBytes"}];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
@@ -229,13 +229,13 @@ LABEL_8:
   if ((has & 8) != 0)
   {
 LABEL_9:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_avgCCA), @"avgCCA"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_avgCCA), @"avgCCA"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
@@ -348,13 +348,13 @@ LABEL_17:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 2) = self->_sessionDuration;
-    *(a3 + 52) |= 2u;
+    *(to + 2) = self->_sessionDuration;
+    *(to + 52) |= 2u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -373,8 +373,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 9) = self->_channel;
-  *(a3 + 52) |= 0x10u;
+  *(to + 9) = self->_channel;
+  *(to + 52) |= 0x10u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -388,8 +388,8 @@ LABEL_4:
   }
 
 LABEL_12:
-  *(a3 + 1) = self->_rxBytes;
-  *(a3 + 52) |= 1u;
+  *(to + 1) = self->_rxBytes;
+  *(to + 52) |= 1u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -403,8 +403,8 @@ LABEL_5:
   }
 
 LABEL_13:
-  *(a3 + 11) = self->_peerRssi;
-  *(a3 + 52) |= 0x40u;
+  *(to + 11) = self->_peerRssi;
+  *(to + 52) |= 0x40u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -418,8 +418,8 @@ LABEL_6:
   }
 
 LABEL_14:
-  *(a3 + 12) = self->_txFailureCount;
-  *(a3 + 52) |= 0x80u;
+  *(to + 12) = self->_txFailureCount;
+  *(to + 52) |= 0x80u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -433,8 +433,8 @@ LABEL_7:
   }
 
 LABEL_15:
-  *(a3 + 3) = self->_txBytes;
-  *(a3 + 52) |= 4u;
+  *(to + 3) = self->_txBytes;
+  *(to + 52) |= 4u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -445,23 +445,23 @@ LABEL_8:
     }
 
 LABEL_17:
-    *(a3 + 8) = self->_avgCCA;
-    *(a3 + 52) |= 8u;
+    *(to + 8) = self->_avgCCA;
+    *(to + 52) |= 8u;
     return;
   }
 
 LABEL_16:
-  *(a3 + 10) = self->_migrationRole;
-  *(a3 + 52) |= 0x20u;
+  *(to + 10) = self->_migrationRole;
+  *(to + 52) |= 0x20u;
   if ((*&self->_has & 8) != 0)
   {
     goto LABEL_17;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -573,72 +573,72 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 52) & 2) == 0 || self->_sessionDuration != *(a3 + 2))
+      if ((*(equal + 52) & 2) == 0 || self->_sessionDuration != *(equal + 2))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 52) & 2) != 0)
+    else if ((*(equal + 52) & 2) != 0)
     {
       goto LABEL_41;
     }
 
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 52) & 0x10) == 0 || self->_channel != *(a3 + 9))
+      if ((*(equal + 52) & 0x10) == 0 || self->_channel != *(equal + 9))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 52) & 0x10) != 0)
+    else if ((*(equal + 52) & 0x10) != 0)
     {
       goto LABEL_41;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 52) & 1) == 0 || self->_rxBytes != *(a3 + 1))
+      if ((*(equal + 52) & 1) == 0 || self->_rxBytes != *(equal + 1))
       {
         goto LABEL_41;
       }
     }
 
-    else if (*(a3 + 52))
+    else if (*(equal + 52))
     {
       goto LABEL_41;
     }
 
     if ((*&self->_has & 0x40) != 0)
     {
-      if ((*(a3 + 52) & 0x40) == 0 || self->_peerRssi != *(a3 + 11))
+      if ((*(equal + 52) & 0x40) == 0 || self->_peerRssi != *(equal + 11))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 52) & 0x40) != 0)
+    else if ((*(equal + 52) & 0x40) != 0)
     {
       goto LABEL_41;
     }
 
     if ((*&self->_has & 0x80) != 0)
     {
-      if ((*(a3 + 52) & 0x80) == 0 || self->_txFailureCount != *(a3 + 12))
+      if ((*(equal + 52) & 0x80) == 0 || self->_txFailureCount != *(equal + 12))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 52) & 0x80) != 0)
+    else if ((*(equal + 52) & 0x80) != 0)
     {
 LABEL_41:
       LOBYTE(v5) = 0;
@@ -647,34 +647,34 @@ LABEL_41:
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 52) & 4) == 0 || self->_txBytes != *(a3 + 3))
+      if ((*(equal + 52) & 4) == 0 || self->_txBytes != *(equal + 3))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 52) & 4) != 0)
+    else if ((*(equal + 52) & 4) != 0)
     {
       goto LABEL_41;
     }
 
     if ((*&self->_has & 0x20) != 0)
     {
-      if ((*(a3 + 52) & 0x20) == 0 || self->_migrationRole != *(a3 + 10))
+      if ((*(equal + 52) & 0x20) == 0 || self->_migrationRole != *(equal + 10))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 52) & 0x20) != 0)
+    else if ((*(equal + 52) & 0x20) != 0)
     {
       goto LABEL_41;
     }
 
-    LOBYTE(v5) = (*(a3 + 52) & 8) == 0;
+    LOBYTE(v5) = (*(equal + 52) & 8) == 0;
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 52) & 8) == 0 || self->_avgCCA != *(a3 + 8))
+      if ((*(equal + 52) & 8) == 0 || self->_avgCCA != *(equal + 8))
       {
         goto LABEL_41;
       }
@@ -796,14 +796,14 @@ LABEL_9:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 52);
+  v3 = *(from + 52);
   if ((v3 & 2) != 0)
   {
-    self->_sessionDuration = *(a3 + 2);
+    self->_sessionDuration = *(from + 2);
     *&self->_has |= 2u;
-    v3 = *(a3 + 52);
+    v3 = *(from + 52);
     if ((v3 & 0x10) == 0)
     {
 LABEL_3:
@@ -816,14 +816,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 52) & 0x10) == 0)
+  else if ((*(from + 52) & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_channel = *(a3 + 9);
+  self->_channel = *(from + 9);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 52);
+  v3 = *(from + 52);
   if ((v3 & 1) == 0)
   {
 LABEL_4:
@@ -836,9 +836,9 @@ LABEL_4:
   }
 
 LABEL_12:
-  self->_rxBytes = *(a3 + 1);
+  self->_rxBytes = *(from + 1);
   *&self->_has |= 1u;
-  v3 = *(a3 + 52);
+  v3 = *(from + 52);
   if ((v3 & 0x40) == 0)
   {
 LABEL_5:
@@ -851,9 +851,9 @@ LABEL_5:
   }
 
 LABEL_13:
-  self->_peerRssi = *(a3 + 11);
+  self->_peerRssi = *(from + 11);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 52);
+  v3 = *(from + 52);
   if ((v3 & 0x80) == 0)
   {
 LABEL_6:
@@ -866,9 +866,9 @@ LABEL_6:
   }
 
 LABEL_14:
-  self->_txFailureCount = *(a3 + 12);
+  self->_txFailureCount = *(from + 12);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 52);
+  v3 = *(from + 52);
   if ((v3 & 4) == 0)
   {
 LABEL_7:
@@ -881,9 +881,9 @@ LABEL_7:
   }
 
 LABEL_15:
-  self->_txBytes = *(a3 + 3);
+  self->_txBytes = *(from + 3);
   *&self->_has |= 4u;
-  v3 = *(a3 + 52);
+  v3 = *(from + 52);
   if ((v3 & 0x20) == 0)
   {
 LABEL_8:
@@ -893,15 +893,15 @@ LABEL_8:
     }
 
 LABEL_17:
-    self->_avgCCA = *(a3 + 8);
+    self->_avgCCA = *(from + 8);
     *&self->_has |= 8u;
     return;
   }
 
 LABEL_16:
-  self->_migrationRole = *(a3 + 10);
+  self->_migrationRole = *(from + 10);
   *&self->_has |= 0x20u;
-  if ((*(a3 + 52) & 8) != 0)
+  if ((*(from + 52) & 8) != 0)
   {
     goto LABEL_17;
   }

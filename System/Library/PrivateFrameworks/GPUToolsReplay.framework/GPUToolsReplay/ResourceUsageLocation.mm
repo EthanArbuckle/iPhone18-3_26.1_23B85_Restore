@@ -1,13 +1,13 @@
 @interface ResourceUsageLocation
-- (BOOL)isEqualTo:(id)a3;
-- (ResourceUsageLocation)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqualTo:(id)to;
+- (ResourceUsageLocation)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ResourceUsageLocation
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(ResourceUsageLocation);
   [(ResourceUsageLocation *)v4 setFunctionIndex:self->_functionIndex];
@@ -15,18 +15,18 @@
   return v4;
 }
 
-- (BOOL)isEqualTo:(id)a3
+- (BOOL)isEqualTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(ResourceUsageLocation *)self functionIndex];
-    if (v6 == [v5 functionIndex])
+    v5 = toCopy;
+    functionIndex = [(ResourceUsageLocation *)self functionIndex];
+    if (functionIndex == [v5 functionIndex])
     {
-      v7 = [(ResourceUsageLocation *)self subCommandIndex];
-      v8 = v7 == [v5 subCommandIndex];
+      subCommandIndex = [(ResourceUsageLocation *)self subCommandIndex];
+      v8 = subCommandIndex == [v5 subCommandIndex];
     }
 
     else
@@ -43,23 +43,23 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:self->_functionIndex forKey:@"functionIndex"];
-  [v4 encodeInt64:self->_subCommandIndex forKey:@"subCommandIndex"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:self->_functionIndex forKey:@"functionIndex"];
+  [coderCopy encodeInt64:self->_subCommandIndex forKey:@"subCommandIndex"];
 }
 
-- (ResourceUsageLocation)initWithCoder:(id)a3
+- (ResourceUsageLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = ResourceUsageLocation;
   v5 = [(ResourceUsageLocation *)&v7 init];
   if (v5)
   {
-    v5->_functionIndex = [v4 decodeInt64ForKey:@"functionIndex"];
-    v5->_subCommandIndex = [v4 decodeInt64ForKey:@"subCommandIndex"];
+    v5->_functionIndex = [coderCopy decodeInt64ForKey:@"functionIndex"];
+    v5->_subCommandIndex = [coderCopy decodeInt64ForKey:@"subCommandIndex"];
   }
 
   return v5;

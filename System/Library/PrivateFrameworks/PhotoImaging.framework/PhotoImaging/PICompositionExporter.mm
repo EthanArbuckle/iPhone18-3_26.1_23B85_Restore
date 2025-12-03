@@ -1,61 +1,61 @@
 @interface PICompositionExporter
-+ (BOOL)_lowMemoryModeSupportedForComposition:(id)a3 pixelSize:(id)a4;
-+ (id)resetImageProperties:(id)a3 preserveRegions:(BOOL)a4;
-+ (void)setMetadataConverter:(id)a3;
++ (BOOL)_lowMemoryModeSupportedForComposition:(id)composition pixelSize:(id)size;
++ (id)resetImageProperties:(id)properties preserveRegions:(BOOL)regions;
++ (void)setMetadataConverter:(id)converter;
 - (PICompositionExporter)init;
-- (id)addImageProperties:(id)a3 composition:(id)a4 options:(id)a5 error:(id *)a6;
-- (id)addVideoProperties:(id)a3 composition:(id)a4 options:(id)a5 error:(id *)a6;
-- (id)archiveURLForSidecarData:(id)a3;
-- (id)exportComposition:(id)a3 options:(id)a4 completionQueue:(id)a5 completion:(id)a6;
-- (id)exportVideoToURL:(id)a3 composition:(id)a4 options:(id)a5 completion:(id)a6;
-- (id)saveSidecarData:(id)a3 error:(id *)a4;
-- (id)variationForFlavor:(id)a3;
-- (void)_exportVideoToURL:(id)a3 composition:(id)a4 options:(id)a5 properties:(id)a6 progress:(id)a7 completion:(id)a8;
-- (void)exportImageToDataWithComposition:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)exportImageToURL:(id)a3 composition:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)prepareAuxiliaryImagesFetchProperties:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)prepareImageExportRequest:(id)a3 options:(id)a4 completion:(id)a5;
+- (id)addImageProperties:(id)properties composition:(id)composition options:(id)options error:(id *)error;
+- (id)addVideoProperties:(id)properties composition:(id)composition options:(id)options error:(id *)error;
+- (id)archiveURLForSidecarData:(id)data;
+- (id)exportComposition:(id)composition options:(id)options completionQueue:(id)queue completion:(id)completion;
+- (id)exportVideoToURL:(id)l composition:(id)composition options:(id)options completion:(id)completion;
+- (id)saveSidecarData:(id)data error:(id *)error;
+- (id)variationForFlavor:(id)flavor;
+- (void)_exportVideoToURL:(id)l composition:(id)composition options:(id)options properties:(id)properties progress:(id)progress completion:(id)completion;
+- (void)exportImageToDataWithComposition:(id)composition options:(id)options completion:(id)completion;
+- (void)exportImageToURL:(id)l composition:(id)composition options:(id)options completion:(id)completion;
+- (void)prepareAuxiliaryImagesFetchProperties:(id)properties options:(id)options completion:(id)completion;
+- (void)prepareImageExportRequest:(id)request options:(id)options completion:(id)completion;
 @end
 
 @implementation PICompositionExporter
 
-- (void)_exportVideoToURL:(id)a3 composition:(id)a4 options:(id)a5 properties:(id)a6 progress:(id)a7 completion:(id)a8
+- (void)_exportVideoToURL:(id)l composition:(id)composition options:(id)options properties:(id)properties progress:(id)progress completion:(id)completion
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = a8;
+  compositionCopy = composition;
+  optionsCopy = options;
+  progressCopy = progress;
+  completionCopy = completion;
   v17 = MEMORY[0x1E69B3D10];
-  v18 = a6;
-  v19 = a3;
-  v20 = [[v17 alloc] initWithComposition:v13 destinationURL:v19];
+  propertiesCopy = properties;
+  lCopy = l;
+  v20 = [[v17 alloc] initWithComposition:compositionCopy destinationURL:lCopy];
 
   [v20 setName:@"PICompositionExporter-video"];
-  v21 = [v14 priority];
-  [v20 setPriority:v21];
+  priority = [optionsCopy priority];
+  [v20 setPriority:priority];
 
-  v22 = [v14 scalePolicy];
-  [v20 setScalePolicy:v22];
+  scalePolicy = [optionsCopy scalePolicy];
+  [v20 setScalePolicy:scalePolicy];
 
-  [v20 setRequireHardwareEncoder:{objc_msgSend(v14, "requireHardwareEncoder")}];
-  v23 = [v18 metadata];
+  [v20 setRequireHardwareEncoder:{objc_msgSend(optionsCopy, "requireHardwareEncoder")}];
+  metadata = [propertiesCopy metadata];
 
-  [v20 setMetadata:v23];
-  [v20 setIncludeCinematicVideoTracks:{objc_msgSend(v14, "includeCinematicVideoTracks")}];
-  [v20 setComputeDigest:{objc_msgSend(v14, "computeDigest")}];
+  [v20 setMetadata:metadata];
+  [v20 setIncludeCinematicVideoTracks:{objc_msgSend(optionsCopy, "includeCinematicVideoTracks")}];
+  [v20 setComputeDigest:{objc_msgSend(optionsCopy, "computeDigest")}];
   v24 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (![v14 applyVideoOrientationAsMetadata])
+  if (![optionsCopy applyVideoOrientationAsMetadata])
   {
     v29 = 0;
     goto LABEL_25;
   }
 
-  v25 = [[PICompositionController alloc] initWithComposition:v13];
-  v26 = [(PICompositionController *)v25 autoLoopAdjustmentController];
-  if ([v26 enabled])
+  v25 = [[PICompositionController alloc] initWithComposition:compositionCopy];
+  autoLoopAdjustmentController = [(PICompositionController *)v25 autoLoopAdjustmentController];
+  if ([autoLoopAdjustmentController enabled])
   {
-    v27 = [v26 flavor];
-    v28 = [v27 isEqualToString:@"Mirror"];
+    flavor = [autoLoopAdjustmentController flavor];
+    v28 = [flavor isEqualToString:@"Mirror"];
   }
 
   else
@@ -63,11 +63,11 @@
     v28 = 0;
   }
 
-  v42 = v15;
-  if ([v26 enabled])
+  v42 = progressCopy;
+  if ([autoLoopAdjustmentController enabled])
   {
-    v30 = [v26 flavor];
-    v31 = [v30 isEqualToString:@"AutoLoop"];
+    flavor2 = [autoLoopAdjustmentController flavor];
+    v31 = [flavor2 isEqualToString:@"AutoLoop"];
   }
 
   else
@@ -75,11 +75,11 @@
     v31 = 0;
   }
 
-  v32 = [(PICompositionController *)v25 orientationAdjustmentController];
-  v33 = v32;
-  if (v32)
+  orientationAdjustmentController = [(PICompositionController *)v25 orientationAdjustmentController];
+  v33 = orientationAdjustmentController;
+  if (orientationAdjustmentController)
   {
-    [v32 orientation];
+    [orientationAdjustmentController orientation];
   }
 
   if ((v28 | v31))
@@ -124,34 +124,34 @@ LABEL_22:
   v29 = 0;
 LABEL_24:
 
-  v15 = v43;
+  progressCopy = v43;
 LABEL_25:
   [v20 setApplyOrientationAsMetadata:v29];
   [v20 setPipelineFilters:v24];
-  [v20 setBypassOutputSettingsIfNoComposition:{objc_msgSend(v14, "bypassOutputSettingsIfNoComposition")}];
-  v36 = [v20 outputSettings];
-  v37 = [v36 mutableCopy];
+  [v20 setBypassOutputSettingsIfNoComposition:{objc_msgSend(optionsCopy, "bypassOutputSettingsIfNoComposition")}];
+  outputSettings = [v20 outputSettings];
+  v37 = [outputSettings mutableCopy];
 
-  v38 = [v14 videoCodecType];
-  if (v38)
+  videoCodecType = [optionsCopy videoCodecType];
+  if (videoCodecType)
   {
-    [v37 setObject:v38 forKey:*MEMORY[0x1E6987CB0]];
+    [v37 setObject:videoCodecType forKey:*MEMORY[0x1E6987CB0]];
   }
 
   [v20 setOutputSettings:v37];
-  if ([v14 preserveSourceColorSpace])
+  if ([optionsCopy preserveSourceColorSpace])
   {
     [v20 setColorSpace:0];
   }
 
   else
   {
-    v39 = [v14 colorSpace];
+    colorSpace = [optionsCopy colorSpace];
 
-    if (v39)
+    if (colorSpace)
     {
-      v40 = [v14 colorSpace];
-      [v20 setColorSpace:v40];
+      colorSpace2 = [optionsCopy colorSpace];
+      [v20 setColorSpace:colorSpace2];
     }
   }
 
@@ -159,9 +159,9 @@ LABEL_25:
   v44[1] = 3221225472;
   v44[2] = __94__PICompositionExporter__exportVideoToURL_composition_options_properties_progress_completion___block_invoke;
   v44[3] = &unk_1E82ACA08;
-  v45 = v16;
-  v41 = v16;
-  [v20 submitWithProgress:v15 completion:v44];
+  v45 = completionCopy;
+  v41 = completionCopy;
+  [v20 submitWithProgress:progressCopy completion:v44];
 }
 
 void __94__PICompositionExporter__exportVideoToURL_composition_options_properties_progress_completion___block_invoke(uint64_t a1, void *a2)
@@ -208,13 +208,13 @@ void __94__PICompositionExporter__exportVideoToURL_composition_options_propertie
   }
 }
 
-- (id)addVideoProperties:(id)a3 composition:(id)a4 options:(id)a5 error:(id *)a6
+- (id)addVideoProperties:(id)properties composition:(id)composition options:(id)options error:(id *)error
 {
   v46 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!a6)
+  propertiesCopy = properties;
+  compositionCopy = composition;
+  optionsCopy = options;
+  if (!error)
   {
     v28 = NUAssertLogger_8250();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -236,8 +236,8 @@ void __94__PICompositionExporter__exportVideoToURL_composition_options_propertie
         v36 = dispatch_get_specific(*v30);
         v37 = MEMORY[0x1E696AF00];
         v38 = v36;
-        v39 = [v37 callStackSymbols];
-        v40 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v37 callStackSymbols];
+        v40 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v43 = v36;
         v44 = 2114;
@@ -248,8 +248,8 @@ void __94__PICompositionExporter__exportVideoToURL_composition_options_propertie
 
     else if (v33)
     {
-      v34 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v35 = [v34 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v35 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v43 = v35;
       _os_log_error_impl(&dword_1C7694000, v32, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -258,15 +258,15 @@ void __94__PICompositionExporter__exportVideoToURL_composition_options_propertie
     _NUAssertFailHandler();
   }
 
-  v13 = v12;
-  v14 = [[PICompositionController alloc] initWithComposition:v11];
-  v15 = [(PICompositionController *)v14 autoLoopAdjustmentController];
-  v41 = v10;
-  if ([v15 enabled])
+  v13 = optionsCopy;
+  v14 = [[PICompositionController alloc] initWithComposition:compositionCopy];
+  autoLoopAdjustmentController = [(PICompositionController *)v14 autoLoopAdjustmentController];
+  v41 = propertiesCopy;
+  if ([autoLoopAdjustmentController enabled])
   {
-    v16 = [v15 recipe];
-    v17 = [v10 mutableCopy];
-    if (v16)
+    recipe = [autoLoopAdjustmentController recipe];
+    v17 = [propertiesCopy mutableCopy];
+    if (recipe)
     {
       [PIMakerNoteUtilities removeAssetIdentifierFromMetadataArray:v17];
 
@@ -277,17 +277,17 @@ void __94__PICompositionExporter__exportVideoToURL_composition_options_propertie
 
   else
   {
-    v17 = [v10 mutableCopy];
+    v17 = [propertiesCopy mutableCopy];
   }
 
   v18 = 1;
 LABEL_7:
-  v19 = [v13 pairingIdentifier];
+  pairingIdentifier = [v13 pairingIdentifier];
 
-  if (v19)
+  if (pairingIdentifier)
   {
-    v20 = [v13 pairingIdentifier];
-    [PIMakerNoteUtilities addAssetIdentifier:v20 toMetadataArray:v17];
+    pairingIdentifier2 = [v13 pairingIdentifier];
+    [PIMakerNoteUtilities addAssetIdentifier:pairingIdentifier2 toMetadataArray:v17];
   }
 
   if (v18)
@@ -295,13 +295,13 @@ LABEL_7:
     goto LABEL_13;
   }
 
-  v21 = [v15 flavor];
-  v22 = [(PICompositionExporter *)self variationForFlavor:v21];
+  flavor = [autoLoopAdjustmentController flavor];
+  v22 = [(PICompositionExporter *)self variationForFlavor:flavor];
 
   if (v22)
   {
-    v23 = [objc_opt_class() metadataConverter];
-    v24 = [v23 videoMetadataForVariation:v22 error:a6];
+    metadataConverter = [objc_opt_class() metadataConverter];
+    v24 = [metadataConverter videoMetadataForVariation:v22 error:error];
 
     if (v24)
     {
@@ -316,8 +316,8 @@ LABEL_13:
   else
   {
     v25 = MEMORY[0x1E69B3A48];
-    v26 = [v15 flavor];
-    *a6 = [v25 invalidError:@"Unknown autoloop flavor" object:v26];
+    flavor2 = [autoLoopAdjustmentController flavor];
+    *error = [v25 invalidError:@"Unknown autoloop flavor" object:flavor2];
 
     v24 = 0;
   }
@@ -327,32 +327,32 @@ LABEL_16:
   return v24;
 }
 
-- (id)addImageProperties:(id)a3 composition:(id)a4 options:(id)a5 error:(id *)a6
+- (id)addImageProperties:(id)properties composition:(id)composition options:(id)options error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [[PICompositionController alloc] initWithComposition:v10];
-  v13 = [v9 mutableCopy];
-  v14 = [v11 pairingIdentifier];
+  propertiesCopy = properties;
+  compositionCopy = composition;
+  optionsCopy = options;
+  v12 = [[PICompositionController alloc] initWithComposition:compositionCopy];
+  v13 = [propertiesCopy mutableCopy];
+  pairingIdentifier = [optionsCopy pairingIdentifier];
 
-  if (v14)
+  if (pairingIdentifier)
   {
-    v15 = [v11 pairingIdentifier];
-    [PIMakerNoteUtilities addAssetIdentifier:v15 toMetadataDictionary:v13];
+    pairingIdentifier2 = [optionsCopy pairingIdentifier];
+    [PIMakerNoteUtilities addAssetIdentifier:pairingIdentifier2 toMetadataDictionary:v13];
   }
 
-  v16 = [(PICompositionController *)v12 autoLoopAdjustmentController];
-  if ([v16 enabled])
+  autoLoopAdjustmentController = [(PICompositionController *)v12 autoLoopAdjustmentController];
+  if ([autoLoopAdjustmentController enabled])
   {
-    v17 = [v16 flavor];
-    v18 = [v17 isEqualToString:@"LongExposure"];
+    flavor = [autoLoopAdjustmentController flavor];
+    v18 = [flavor isEqualToString:@"LongExposure"];
 
     if (v18)
     {
-      v19 = [objc_opt_class() metadataConverter];
+      metadataConverter = [objc_opt_class() metadataConverter];
       v20 = [(PICompositionExporter *)self variationForFlavor:@"LongExposure"];
-      v21 = [v19 setImageVariation:v20 properties:v13 error:a6];
+      v21 = [metadataConverter setImageVariation:v20 properties:v13 error:error];
 
       if (!v21)
       {
@@ -362,45 +362,45 @@ LABEL_16:
     }
   }
 
-  v22 = [objc_opt_class() metadataConverter];
-  v23 = [v22 photoProcessingFlagsFromProperties:v9 error:a6];
+  metadataConverter2 = [objc_opt_class() metadataConverter];
+  v23 = [metadataConverter2 photoProcessingFlagsFromProperties:propertiesCopy error:error];
 
   if (v23)
   {
-    v24 = [(PICompositionController *)v12 depthAdjustmentController];
-    v62 = v11;
+    depthAdjustmentController = [(PICompositionController *)v12 depthAdjustmentController];
+    v62 = optionsCopy;
     if ([v23 integerValue])
     {
-      v25 = 1;
+      enabled = 1;
     }
 
     else
     {
-      v25 = [v24 enabled];
+      enabled = [depthAdjustmentController enabled];
     }
 
-    v63 = [(PICompositionController *)v12 semanticEnhanceAdjustmentController];
-    v60 = v10;
-    v61 = v24;
-    if (!(v25 | [v63 enabled]))
+    semanticEnhanceAdjustmentController = [(PICompositionController *)v12 semanticEnhanceAdjustmentController];
+    v60 = compositionCopy;
+    v61 = depthAdjustmentController;
+    if (!(enabled | [semanticEnhanceAdjustmentController enabled]))
     {
       goto LABEL_35;
     }
 
-    v27 = [v23 integerValue];
-    if ([v24 enabled])
+    integerValue = [v23 integerValue];
+    if ([depthAdjustmentController enabled])
     {
-      v28 = v27 | 0x40;
+      v28 = integerValue | 0x40;
     }
 
     else
     {
-      v28 = v27 & 0xFFFFFFBF;
+      v28 = integerValue & 0xFFFFFFBF;
     }
 
-    v29 = [(PICompositionController *)v12 livePhotoKeyFrameAdjustmentController];
-    v30 = v29;
-    if (v29 && ([v29 keyFrameTime], (v65 & 1) != 0) || objc_msgSend(v16, "enabled"))
+    livePhotoKeyFrameAdjustmentController = [(PICompositionController *)v12 livePhotoKeyFrameAdjustmentController];
+    v30 = livePhotoKeyFrameAdjustmentController;
+    if (livePhotoKeyFrameAdjustmentController && ([livePhotoKeyFrameAdjustmentController keyFrameTime], (v65 & 1) != 0) || objc_msgSend(autoLoopAdjustmentController, "enabled"))
     {
       if ((v28 & 2) != 0)
       {
@@ -416,7 +416,7 @@ LABEL_16:
     }
 
     v31 = v28 & 0xFFFFFFFFFFFF7FFFLL;
-    if ([v63 enabled])
+    if ([semanticEnhanceAdjustmentController enabled])
     {
       v32 = 0x8000;
     }
@@ -426,15 +426,15 @@ LABEL_16:
       v32 = 0;
     }
 
-    v33 = [objc_opt_class() metadataConverter];
+    metadataConverter3 = [objc_opt_class() metadataConverter];
     v34 = [MEMORY[0x1E696AD98] numberWithInteger:v32 | v31];
-    v35 = [v33 setPhotoProcessingFlags:v34 properties:v13 error:a6];
+    v35 = [metadataConverter3 setPhotoProcessingFlags:v34 properties:v13 error:error];
 
     if (!v35)
     {
       v26 = 0;
-      v10 = v60;
-      v24 = v61;
+      compositionCopy = v60;
+      depthAdjustmentController = v61;
       goto LABEL_51;
     }
 
@@ -442,34 +442,34 @@ LABEL_16:
     v56 = [v13 objectForKeyedSubscript:*MEMORY[0x1E696D9B0]];
     v37 = [v56 mutableCopy];
     [v13 setObject:v37 forKeyedSubscript:v36];
-    v38 = [v61 enabled];
+    enabled2 = [v61 enabled];
     v39 = *MEMORY[0x1E696D988];
-    if (v38)
+    if (enabled2)
     {
       [v37 setObject:&unk_1F471EB80 forKeyedSubscript:*MEMORY[0x1E696D988]];
 LABEL_34:
-      v10 = v60;
+      compositionCopy = v60;
 
-      v24 = v61;
+      depthAdjustmentController = v61;
 LABEL_35:
-      v42 = [objc_opt_class() metadataConverter];
-      v30 = [v42 photoFeatureFlags:v9 error:a6];
+      metadataConverter4 = [objc_opt_class() metadataConverter];
+      v30 = [metadataConverter4 photoFeatureFlags:propertiesCopy error:error];
 
       if (v30)
       {
-        v59 = [(PICompositionController *)v12 portraitAdjustmentController];
-        if ([v30 intValue] && ((objc_msgSend(v59, "enabled") & 1) != 0 || objc_msgSend(v24, "enabled")))
+        portraitAdjustmentController = [(PICompositionController *)v12 portraitAdjustmentController];
+        if ([v30 intValue] && ((objc_msgSend(portraitAdjustmentController, "enabled") & 1) != 0 || objc_msgSend(depthAdjustmentController, "enabled")))
         {
-          v43 = [v30 unsignedIntegerValue];
-          v44 = [objc_opt_class() metadataConverter];
-          v45 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v43 & 0xFFFFFFFE];
-          v46 = [v44 setPhotoFeatureFlags:v45 properties:v13 error:a6];
+          unsignedIntegerValue = [v30 unsignedIntegerValue];
+          metadataConverter5 = [objc_opt_class() metadataConverter];
+          0xFFFFFFFE = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue & 0xFFFFFFFE];
+          v46 = [metadataConverter5 setPhotoFeatureFlags:0xFFFFFFFE properties:v13 error:error];
 
-          v24 = v61;
+          depthAdjustmentController = v61;
           if (!v46)
           {
             v26 = 0;
-            v10 = v60;
+            compositionCopy = v60;
             goto LABEL_50;
           }
         }
@@ -479,37 +479,37 @@ LABEL_35:
           [v13 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696D350]];
         }
 
-        v10 = v60;
+        compositionCopy = v60;
         v47 = [v60 objectForKeyedSubscript:@"semanticStyle"];
         if (v47)
         {
-          v48 = [v47 settings];
-          v49 = PISemanticStyleMakerNotePropertiesFromSettings(v48);
+          settings = [v47 settings];
+          v49 = PISemanticStyleMakerNotePropertiesFromSettings(settings);
 
-          v50 = [objc_opt_class() metadataConverter];
-          [v50 addSemanticStyleMakeNoteProperties:v49 toImageProperties:v13];
+          metadataConverter6 = [objc_opt_class() metadataConverter];
+          [metadataConverter6 addSemanticStyleMakeNoteProperties:v49 toImageProperties:v13];
         }
 
         else
         {
-          v49 = [v9 objectForKeyedSubscript:{*MEMORY[0x1E696DE30], 0}];
+          v49 = [propertiesCopy objectForKeyedSubscript:{*MEMORY[0x1E696DE30], 0}];
           v51 = *MEMORY[0x1E6986850];
           v52 = [v49 objectForKeyedSubscript:*MEMORY[0x1E6986850]];
 
           if (!v52)
           {
-            v24 = v61;
+            depthAdjustmentController = v61;
             goto LABEL_48;
           }
 
           v53 = [v49 objectForKeyedSubscript:v51];
-          v50 = [v53 mutableCopy];
+          metadataConverter6 = [v53 mutableCopy];
 
-          [v50 setObject:&unk_1F471EBB0 forKey:*MEMORY[0x1E6986870]];
-          v54 = [objc_opt_class() metadataConverter];
-          [v54 addSemanticStyleMakeNoteProperties:v50 toImageProperties:v13];
+          [metadataConverter6 setObject:&unk_1F471EBB0 forKey:*MEMORY[0x1E6986870]];
+          metadataConverter7 = [objc_opt_class() metadataConverter];
+          [metadataConverter7 addSemanticStyleMakeNoteProperties:metadataConverter6 toImageProperties:v13];
 
-          v24 = v61;
+          depthAdjustmentController = v61;
         }
 
 LABEL_48:
@@ -522,15 +522,15 @@ LABEL_50:
       v26 = 0;
 LABEL_51:
 
-      v11 = v62;
+      optionsCopy = v62;
       goto LABEL_52;
     }
 
     v40 = [v37 objectForKeyedSubscript:*MEMORY[0x1E696D988]];
-    v41 = [v40 intValue];
-    if ((v41 - 2) >= 3)
+    intValue = [v40 intValue];
+    if ((intValue - 2) >= 3)
     {
-      if (v41 != 8)
+      if (intValue != 8)
       {
         goto LABEL_33;
       }
@@ -555,28 +555,28 @@ LABEL_53:
   return v26;
 }
 
-- (void)prepareAuxiliaryImagesFetchProperties:(id)a3 options:(id)a4 completion:(id)a5
+- (void)prepareAuxiliaryImagesFetchProperties:(id)properties options:(id)options completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  optionsCopy = options;
+  completionCopy = completion;
   v9 = MEMORY[0x1E69B3968];
-  v10 = a3;
-  v11 = [[v9 alloc] initWithComposition:v10];
+  propertiesCopy = properties;
+  v11 = [[v9 alloc] initWithComposition:propertiesCopy];
 
   [v11 setName:@"PICompositionExporter-auxPropertiesRequest"];
-  v12 = [v7 priority];
-  [v11 setPriority:v12];
+  priority = [optionsCopy priority];
+  [v11 setPriority:priority];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __82__PICompositionExporter_prepareAuxiliaryImagesFetchProperties_options_completion___block_invoke;
   v16[3] = &unk_1E82AC510;
   v18 = v11;
-  v19 = v8;
-  v17 = v7;
+  v19 = completionCopy;
+  v17 = optionsCopy;
   v13 = v11;
-  v14 = v7;
-  v15 = v8;
+  v14 = optionsCopy;
+  v15 = completionCopy;
   [v13 submit:v16];
 }
 
@@ -761,22 +761,22 @@ void __82__PICompositionExporter_prepareAuxiliaryImagesFetchProperties_options_c
   (*(v3 + 16))(v3, v4);
 }
 
-- (void)prepareImageExportRequest:(id)a3 options:(id)a4 completion:(id)a5
+- (void)prepareImageExportRequest:(id)request options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  optionsCopy = options;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __70__PICompositionExporter_prepareImageExportRequest_options_completion___block_invoke;
   v14[3] = &unk_1E82AC230;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v9;
-  v12 = v8;
-  v13 = v10;
+  v15 = requestCopy;
+  v16 = optionsCopy;
+  v17 = completionCopy;
+  v11 = optionsCopy;
+  v12 = requestCopy;
+  v13 = completionCopy;
   [(PICompositionExporter *)self prepareAuxiliaryImagesFetchProperties:v12 options:v11 completion:v14];
 }
 
@@ -884,16 +884,16 @@ LABEL_14:
 LABEL_15:
 }
 
-- (id)variationForFlavor:(id)a3
+- (id)variationForFlavor:(id)flavor
 {
   v3 = variationForFlavor__onceToken;
-  v4 = a3;
+  flavorCopy = flavor;
   if (v3 != -1)
   {
     dispatch_once(&variationForFlavor__onceToken, &__block_literal_global_438);
   }
 
-  v5 = [variationForFlavor__map objectForKeyedSubscript:v4];
+  v5 = [variationForFlavor__map objectForKeyedSubscript:flavorCopy];
 
   return v5;
 }
@@ -912,11 +912,11 @@ void __44__PICompositionExporter_variationForFlavor___block_invoke()
   variationForFlavor__map = v0;
 }
 
-- (id)saveSidecarData:(id)a3 error:(id *)a4
+- (id)saveSidecarData:(id)data error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v15 = NUAssertLogger_8250();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -927,7 +927,7 @@ void __44__PICompositionExporter_variationForFlavor___block_invoke()
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v17 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v19 = NUAssertLogger_8250();
     v20 = os_log_type_enabled(v19, OS_LOG_TYPE_ERROR);
@@ -935,11 +935,11 @@ void __44__PICompositionExporter_variationForFlavor___block_invoke()
     {
       if (v20)
       {
-        v28 = dispatch_get_specific(*v17);
+        v28 = dispatch_get_specific(*callStackSymbols);
         v29 = MEMORY[0x1E696AF00];
         v30 = v28;
-        v17 = [v29 callStackSymbols];
-        v31 = [v17 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v29 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v38 = v28;
         v39 = 2114;
@@ -950,10 +950,10 @@ void __44__PICompositionExporter_variationForFlavor___block_invoke()
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v38 = v17;
+      v38 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -961,7 +961,7 @@ void __44__PICompositionExporter_variationForFlavor___block_invoke()
     goto LABEL_24;
   }
 
-  if (!a4)
+  if (!error)
   {
     v22 = NUAssertLogger_8250();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -972,7 +972,7 @@ void __44__PICompositionExporter_variationForFlavor___block_invoke()
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v17 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v24 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v19 = NUAssertLogger_8250();
     v25 = os_log_type_enabled(v19, OS_LOG_TYPE_ERROR);
@@ -980,8 +980,8 @@ void __44__PICompositionExporter_variationForFlavor___block_invoke()
     {
       if (v25)
       {
-        v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v27 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v38 = v27;
         _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -993,11 +993,11 @@ void __44__PICompositionExporter_variationForFlavor___block_invoke()
 LABEL_24:
     if (v25)
     {
-      v32 = dispatch_get_specific(*v17);
+      v32 = dispatch_get_specific(*callStackSymbols);
       v33 = MEMORY[0x1E696AF00];
       v34 = v32;
-      v35 = [v33 callStackSymbols];
-      v36 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v33 callStackSymbols];
+      v36 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v38 = v32;
       v39 = 2114;
@@ -1010,16 +1010,16 @@ LABEL_26:
     _NUAssertFailHandler();
   }
 
-  v7 = v6;
-  v8 = [(PICompositionExporter *)self archiveURLForSidecarData:v6];
-  v9 = [v8 URLByDeletingLastPathComponent];
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  v11 = [v10 createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:a4];
+  v7 = dataCopy;
+  v8 = [(PICompositionExporter *)self archiveURLForSidecarData:dataCopy];
+  uRLByDeletingLastPathComponent = [v8 URLByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v11 = [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:error];
 
   v12 = 0;
   if (v11)
   {
-    if ([v7 saveToURL:v8 error:a4])
+    if ([v7 saveToURL:v8 error:error])
     {
       v13 = v8;
     }
@@ -1035,22 +1035,22 @@ LABEL_26:
   return v12;
 }
 
-- (id)archiveURLForSidecarData:(id)a3
+- (id)archiveURLForSidecarData:(id)data
 {
-  v5 = a3;
-  if (!v5)
+  dataCopy = data;
+  if (!dataCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PICompositionExporter.m" lineNumber:726 description:{@"Invalid parameter not satisfying: %@", @"sidecarData != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PICompositionExporter.m" lineNumber:726 description:{@"Invalid parameter not satisfying: %@", @"sidecarData != nil"}];
   }
 
-  v6 = [v5 sourceIdentifier];
-  v7 = [v6 length];
+  sourceIdentifier = [dataCopy sourceIdentifier];
+  v7 = [sourceIdentifier length];
 
   if (!v7)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PICompositionExporter.m" lineNumber:727 description:@"Invalid sidecar data source identifier"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PICompositionExporter.m" lineNumber:727 description:@"Invalid sidecar data source identifier"];
   }
 
   v8 = objc_alloc(MEMORY[0x1E695DFF8]);
@@ -1059,39 +1059,39 @@ LABEL_26:
 
   v11 = [v10 URLByAppendingPathComponent:@"com.apple.PhotoImaging.Sidecar"];
 
-  v12 = [v5 sourceIdentifier];
-  v13 = [v11 URLByAppendingPathComponent:v12];
+  sourceIdentifier2 = [dataCopy sourceIdentifier];
+  v13 = [v11 URLByAppendingPathComponent:sourceIdentifier2];
 
   v14 = [v13 URLByAppendingPathExtension:@"aar"];
 
   return v14;
 }
 
-- (id)exportComposition:(id)a3 options:(id)a4 completionQueue:(id)a5 completion:(id)a6
+- (id)exportComposition:(id)composition options:(id)options completionQueue:(id)queue completion:(id)completion
 {
   v120 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  queue = a5;
-  v65 = a6;
-  v68 = v9;
-  v11 = [v9 mediaType];
-  if (v11 < 2)
+  compositionCopy = composition;
+  optionsCopy = options;
+  queue = queue;
+  completionCopy = completion;
+  v68 = compositionCopy;
+  mediaType = [compositionCopy mediaType];
+  if (mediaType < 2)
   {
 LABEL_6:
     v63 = 0;
     v15 = 0;
-    v67 = 0;
+    uUIDString = 0;
     v14 = 1;
     goto LABEL_12;
   }
 
-  if (v11 == 2)
+  if (mediaType == 2)
   {
-    v16 = [v10 videoPosterFrameURL];
-    if (v16)
+    videoPosterFrameURL = [optionsCopy videoPosterFrameURL];
+    if (videoPosterFrameURL)
     {
-      v17 = [v9 objectForKeyedSubscript:@"videoPosterFrame"];
+      v17 = [compositionCopy objectForKeyedSubscript:@"videoPosterFrame"];
       LODWORD(v63) = v17 != 0;
     }
 
@@ -1102,20 +1102,20 @@ LABEL_6:
 
     v14 = 0;
     v15 = 0;
-    v67 = 0;
+    uUIDString = 0;
     HIDWORD(v63) = 1;
   }
 
   else
   {
-    if (v11 == 3)
+    if (mediaType == 3)
     {
-      v12 = [v10 videoComplementURL];
+      videoComplementURL = [optionsCopy videoComplementURL];
 
-      if (v12)
+      if (videoComplementURL)
       {
-        v13 = [MEMORY[0x1E696AFB0] UUID];
-        v67 = [v13 UUIDString];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString = [uUID UUIDString];
 
         v63 = 0;
         v14 = 1;
@@ -1129,26 +1129,26 @@ LABEL_6:
     v63 = 0;
     v14 = 0;
     v15 = 0;
-    v67 = 0;
+    uUIDString = 0;
   }
 
 LABEL_12:
-  v18 = [v10 imageExportFormat];
-  v19 = [v10 videoCodecType];
-  v20 = v19;
+  imageExportFormat = [optionsCopy imageExportFormat];
+  videoCodecType = [optionsCopy videoCodecType];
+  v20 = videoCodecType;
   if (!v15)
   {
-    if (HIDWORD(v63) && !v19 || v18 | v19)
+    if (HIDWORD(v63) && !videoCodecType || imageExportFormat | videoCodecType)
     {
       goto LABEL_47;
     }
 
-    v18 = 0;
+    imageExportFormat = 0;
     v20 = 0;
     goto LABEL_28;
   }
 
-  if (v18 && v19)
+  if (imageExportFormat && videoCodecType)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -1170,7 +1170,7 @@ LABEL_12:
       *v116 = 138543618;
       *&v116[4] = v20;
       *&v116[12] = 2114;
-      *&v116[14] = v18;
+      *&v116[14] = imageExportFormat;
       _os_log_error_impl(&dword_1C7694000, v23, OS_LOG_TYPE_ERROR, "Unexpected Live Photo export format pairing. Video codec (%{public}@) and image export format (%{public}@)", v116, 0x16u);
     }
 
@@ -1182,14 +1182,14 @@ LABEL_12:
 
 LABEL_91:
     v33 = [objc_alloc(MEMORY[0x1E69B3C78]) initWithError:v24];
-    v65[2](v65, v33);
+    completionCopy[2](completionCopy, v33);
     v56 = 0;
     goto LABEL_87;
   }
 
-  if (v18 || !v19)
+  if (imageExportFormat || !videoCodecType)
   {
-    if (v18 && !v19)
+    if (imageExportFormat && !videoCodecType)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1202,7 +1202,7 @@ LABEL_91:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v24 = [MEMORY[0x1E69B3A48] unsupportedError:@"Unexpected image export format when attempting to export Live Photo" object:v18];
+          v24 = [MEMORY[0x1E69B3A48] unsupportedError:@"Unexpected image export format when attempting to export Live Photo" object:imageExportFormat];
           v20 = 0;
           if (v24)
           {
@@ -1221,9 +1221,9 @@ LABEL_91:
 
 LABEL_28:
     v25 = MEMORY[0x1E69C08F0];
-    v26 = [v10 primaryURL];
-    v27 = [v26 pathExtension];
-    v28 = [v25 typeWithFilenameExtension:v27];
+    primaryURL = [optionsCopy primaryURL];
+    pathExtension = [primaryURL pathExtension];
+    v28 = [v25 typeWithFilenameExtension:pathExtension];
 
     if ([v28 conformsToType:*MEMORY[0x1E6983138]])
     {
@@ -1240,25 +1240,25 @@ LABEL_28:
 
     v32 = *v30;
     v20 = v32;
-    v18 = v29;
+    imageExportFormat = v29;
     goto LABEL_47;
   }
 
-  if (v19 == *MEMORY[0x1E6987CF0])
+  if (videoCodecType == *MEMORY[0x1E6987CF0])
   {
-    v18 = objc_alloc_init(MEMORY[0x1E69B3AF8]);
+    imageExportFormat = objc_alloc_init(MEMORY[0x1E69B3AF8]);
   }
 
-  else if (v19 == *MEMORY[0x1E6987CE8])
+  else if (videoCodecType == *MEMORY[0x1E6987CE8])
   {
-    v18 = objc_alloc_init(MEMORY[0x1E69B3B00]);
-    [v18 setCompressionQuality:0.9];
+    imageExportFormat = objc_alloc_init(MEMORY[0x1E69B3B00]);
+    [imageExportFormat setCompressionQuality:0.9];
   }
 
   else
   {
-    v24 = [MEMORY[0x1E69B3A48] unsupportedError:@"Unexpected video codec when attempting to export Live Photo" object:v19];
-    v18 = 0;
+    v24 = [MEMORY[0x1E69B3A48] unsupportedError:@"Unexpected video codec when attempting to export Live Photo" object:videoCodecType];
+    imageExportFormat = 0;
     if (v24)
     {
       goto LABEL_91;
@@ -1267,22 +1267,22 @@ LABEL_28:
 
 LABEL_47:
   v33 = objc_alloc_init(PICompositionExporterVideoOptions);
-  [(PICompositionExporterOptions *)v33 setPairingIdentifier:v67];
-  v34 = [v10 priority];
-  [(PICompositionExporterOptions *)v33 setPriority:v34];
+  [(PICompositionExporterOptions *)v33 setPairingIdentifier:uUIDString];
+  priority = [optionsCopy priority];
+  [(PICompositionExporterOptions *)v33 setPriority:priority];
 
   [(PICompositionExporterVideoOptions *)v33 setVideoCodecType:v20];
-  -[PICompositionExporterVideoOptions setApplyVideoOrientationAsMetadata:](v33, "setApplyVideoOrientationAsMetadata:", [v10 applyVideoOrientationAsMetadata]);
+  -[PICompositionExporterVideoOptions setApplyVideoOrientationAsMetadata:](v33, "setApplyVideoOrientationAsMetadata:", [optionsCopy applyVideoOrientationAsMetadata]);
   v35 = objc_alloc_init(PICompositionExporterImageOptions);
-  [(PICompositionExporterOptions *)v35 setPairingIdentifier:v67];
-  v36 = [v10 priority];
-  [(PICompositionExporterOptions *)v35 setPriority:v36];
+  [(PICompositionExporterOptions *)v35 setPairingIdentifier:uUIDString];
+  priority2 = [optionsCopy priority];
+  [(PICompositionExporterOptions *)v35 setPriority:priority2];
 
-  [(PICompositionExporterImageOptions *)v35 setImageExportFormat:v18];
-  -[PICompositionExporterImageOptions setApplyImageOrientationAsMetadata:](v35, "setApplyImageOrientationAsMetadata:", [v10 applyImageOrientationAsMetadata]);
-  -[PICompositionExporterImageOptions setOptimizeForBackgroundProcessing:](v35, "setOptimizeForBackgroundProcessing:", [v10 optimizeForBackgroundProcessing]);
-  v37 = [v10 auxiliaryImageTypes];
-  [(PICompositionExporterImageOptions *)v35 setAuxiliaryImageTypes:v37];
+  [(PICompositionExporterImageOptions *)v35 setImageExportFormat:imageExportFormat];
+  -[PICompositionExporterImageOptions setApplyImageOrientationAsMetadata:](v35, "setApplyImageOrientationAsMetadata:", [optionsCopy applyImageOrientationAsMetadata]);
+  -[PICompositionExporterImageOptions setOptimizeForBackgroundProcessing:](v35, "setOptimizeForBackgroundProcessing:", [optionsCopy optimizeForBackgroundProcessing]);
+  auxiliaryImageTypes = [optionsCopy auxiliaryImageTypes];
+  [(PICompositionExporterImageOptions *)v35 setAuxiliaryImageTypes:auxiliaryImageTypes];
 
   if (v14)
   {
@@ -1370,7 +1370,7 @@ LABEL_47:
     }
 
     dispatch_group_enter(v38);
-    v41 = [v10 primaryURL];
+    primaryURL2 = [optionsCopy primaryURL];
     v96[0] = MEMORY[0x1E69E9820];
     v96[1] = 3221225472;
     v96[2] = __78__PICompositionExporter_exportComposition_options_completionQueue_completion___block_invoke;
@@ -1379,7 +1379,7 @@ LABEL_47:
     v99 = v103;
     v100 = v101;
     v97 = v38;
-    [(PICompositionExporter *)self exportImageToURL:v41 composition:v68 options:v35 completion:v96];
+    [(PICompositionExporter *)self exportImageToURL:primaryURL2 composition:v68 options:v35 completion:v96];
   }
 
   if (v15)
@@ -1397,17 +1397,17 @@ LABEL_47:
     }
 
     dispatch_group_enter(v38);
-    v43 = [v10 videoCodecType];
-    [(PICompositionExporterVideoOptions *)v33 setVideoCodecType:v43];
+    videoCodecType2 = [optionsCopy videoCodecType];
+    [(PICompositionExporterVideoOptions *)v33 setVideoCodecType:videoCodecType2];
 
-    v44 = [v10 videoComplementURL];
+    videoComplementURL2 = [optionsCopy videoComplementURL];
     v93[0] = MEMORY[0x1E69E9820];
     v93[1] = 3221225472;
     v93[2] = __78__PICompositionExporter_exportComposition_options_completionQueue_completion___block_invoke_405;
     v93[3] = &unk_1E82AA6C8;
     v95 = v111;
     v94 = v38;
-    v45 = [(PICompositionExporter *)self exportVideoToURL:v44 composition:v68 options:v33 completion:v93];
+    v45 = [(PICompositionExporter *)self exportVideoToURL:videoComplementURL2 composition:v68 options:v33 completion:v93];
   }
 
   else
@@ -1431,7 +1431,7 @@ LABEL_47:
 
     dispatch_group_enter(v38);
     [(PICompositionExporterVideoOptions *)v33 setBypassOutputSettingsIfNoComposition:1];
-    v47 = [v10 primaryURL];
+    primaryURL3 = [optionsCopy primaryURL];
     v88[0] = MEMORY[0x1E69E9820];
     v88[1] = 3221225472;
     v88[2] = __78__PICompositionExporter_exportComposition_options_completionQueue_completion___block_invoke_406;
@@ -1440,7 +1440,7 @@ LABEL_47:
     v91 = v103;
     v92 = v101;
     v89 = v38;
-    v48 = [(PICompositionExporter *)self exportVideoToURL:v47 composition:v68 options:v33 completion:v88];
+    v48 = [(PICompositionExporter *)self exportVideoToURL:primaryURL3 composition:v68 options:v33 completion:v88];
 
     v45 = v48;
   }
@@ -1461,14 +1461,14 @@ LABEL_47:
 
     v50 = objc_alloc_init(PICompositionExporterImageOptions);
     dispatch_group_enter(v38);
-    v51 = [v10 videoPosterFrameURL];
+    videoPosterFrameURL2 = [optionsCopy videoPosterFrameURL];
     v85[0] = MEMORY[0x1E69E9820];
     v85[1] = 3221225472;
     v85[2] = __78__PICompositionExporter_exportComposition_options_completionQueue_completion___block_invoke_407;
     v85[3] = &unk_1E82AA6C8;
     v87 = v107;
     v86 = v38;
-    [(PICompositionExporter *)self exportImageToURL:v51 composition:v68 options:v50 completion:v85];
+    [(PICompositionExporter *)self exportImageToURL:videoPosterFrameURL2 composition:v68 options:v50 completion:v85];
   }
 
   *buf = 0;
@@ -1477,11 +1477,11 @@ LABEL_47:
   v114 = __Block_byref_object_copy__8275;
   *&v115 = __Block_byref_object_dispose__8276;
   *(&v115 + 1) = 0;
-  if ([v10 exportSidecarData])
+  if ([optionsCopy exportSidecarData])
   {
     v52 = [[PICompositionSidecarData alloc] initWithComposition:v68];
-    v53 = [v10 brushStrokeHistory];
-    [(PICompositionSidecarData *)v52 setBrushStrokeHistory:v53];
+    brushStrokeHistory = [optionsCopy brushStrokeHistory];
+    [(PICompositionSidecarData *)v52 setBrushStrokeHistory:brushStrokeHistory];
 
     if (![(PICompositionSidecarData *)v52 isEmpty])
     {
@@ -1521,7 +1521,7 @@ LABEL_47:
   v73 = v109;
   v74 = v107;
   v75 = v105;
-  v70 = v65;
+  v70 = completionCopy;
   v76 = v103;
   v77 = v101;
   v78 = buf;
@@ -1763,64 +1763,64 @@ LABEL_21:
   (*(v16 + 16))(v16, v17);
 }
 
-- (id)exportVideoToURL:(id)a3 composition:(id)a4 options:(id)a5 completion:(id)a6
+- (id)exportVideoToURL:(id)l composition:(id)composition options:(id)options completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  compositionCopy = composition;
+  optionsCopy = options;
+  completionCopy = completion;
   v14 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:100];
-  v15 = [objc_alloc(MEMORY[0x1E69B3D28]) initWithComposition:v11];
+  v15 = [objc_alloc(MEMORY[0x1E69B3D28]) initWithComposition:compositionCopy];
   [v15 setName:@"PICompositionExporter-videoProperties"];
-  v16 = [v12 priority];
-  [v15 setPriority:v16];
+  priority = [optionsCopy priority];
+  [v15 setPriority:priority];
 
   v37 = 0;
   v17 = [v15 submitSynchronous:&v37];
   v18 = v37;
-  v19 = [v17 properties];
+  properties = [v17 properties];
 
-  if (v19)
+  if (properties)
   {
-    v35 = v10;
-    v20 = [v19 metadata];
+    v35 = lCopy;
+    metadata = [properties metadata];
     v36 = v18;
-    v34 = self;
-    v21 = [(PICompositionExporter *)self addVideoProperties:v20 composition:v11 options:v12 error:&v36];
+    selfCopy = self;
+    v21 = [(PICompositionExporter *)self addVideoProperties:metadata composition:compositionCopy options:optionsCopy error:&v36];
     v22 = v36;
 
-    v23 = [v12 metadataProcessor];
+    metadataProcessor = [optionsCopy metadataProcessor];
 
-    if (v23)
+    if (metadataProcessor)
     {
-      v24 = [v12 metadataProcessor];
-      v25 = (v24)[2](v24, v21);
+      metadataProcessor2 = [optionsCopy metadataProcessor];
+      v25 = (metadataProcessor2)[2](metadataProcessor2, v21);
 
       v21 = v25;
     }
 
     if (v21)
     {
-      v26 = [objc_alloc(MEMORY[0x1E69B3D68]) initWithProperties:v19];
+      v26 = [objc_alloc(MEMORY[0x1E69B3D68]) initWithProperties:properties];
       [v26 setMetadata:v21];
-      [(PICompositionExporter *)v34 _exportVideoToURL:v35 composition:v11 options:v12 properties:v26 progress:v14 completion:v13];
+      [(PICompositionExporter *)selfCopy _exportVideoToURL:v35 composition:compositionCopy options:optionsCopy properties:v26 progress:v14 completion:completionCopy];
       v27 = v14;
 
-      v10 = v35;
+      lCopy = v35;
       v18 = v22;
     }
 
     else
     {
-      v18 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to prepare video metadata" object:v19 underlyingError:v22];
+      v18 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to prepare video metadata" object:properties underlyingError:v22];
 
       if (*MEMORY[0x1E69B3D78] != -1)
       {
         dispatch_once(MEMORY[0x1E69B3D78], &__block_literal_global_526);
       }
 
-      v10 = v35;
+      lCopy = v35;
       v30 = *MEMORY[0x1E69B3D80];
       if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_ERROR))
       {
@@ -1832,7 +1832,7 @@ LABEL_21:
       }
 
       v31 = [objc_alloc(MEMORY[0x1E69B3C78]) initWithError:v18];
-      v13[2](v13, v31);
+      completionCopy[2](completionCopy, v31);
 
       v32 = v14;
     }
@@ -1841,7 +1841,7 @@ LABEL_21:
   else
   {
     v28 = [objc_alloc(MEMORY[0x1E69B3C78]) initWithError:v18];
-    v13[2](v13, v28);
+    completionCopy[2](completionCopy, v28);
 
     v29 = v14;
   }
@@ -1849,19 +1849,19 @@ LABEL_21:
   return v14;
 }
 
-- (void)exportImageToDataWithComposition:(id)a3 options:(id)a4 completion:(id)a5
+- (void)exportImageToDataWithComposition:(id)composition options:(id)options completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __77__PICompositionExporter_exportImageToDataWithComposition_options_completion___block_invoke;
   v12[3] = &unk_1E82ACC00;
-  v13 = v8;
-  v14 = v9;
-  v10 = v8;
-  v11 = v9;
-  [(PICompositionExporter *)self prepareImageExportRequest:a3 options:v10 completion:v12];
+  v13 = optionsCopy;
+  v14 = completionCopy;
+  v10 = optionsCopy;
+  v11 = completionCopy;
+  [(PICompositionExporter *)self prepareImageExportRequest:composition options:v10 completion:v12];
 }
 
 void __77__PICompositionExporter_exportImageToDataWithComposition_options_completion___block_invoke(uint64_t a1, void *a2)
@@ -1948,25 +1948,25 @@ void __77__PICompositionExporter_exportImageToDataWithComposition_options_comple
   }
 }
 
-- (void)exportImageToURL:(id)a3 composition:(id)a4 options:(id)a5 completion:(id)a6
+- (void)exportImageToURL:(id)l composition:(id)composition options:(id)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  compositionCopy = composition;
+  optionsCopy = options;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __73__PICompositionExporter_exportImageToURL_composition_options_completion___block_invoke;
   v18[3] = &unk_1E82AA650;
-  v22 = self;
-  v23 = v13;
-  v19 = v10;
-  v20 = v12;
-  v21 = v11;
-  v14 = v11;
-  v15 = v12;
-  v16 = v13;
-  v17 = v10;
+  selfCopy = self;
+  v23 = completionCopy;
+  v19 = lCopy;
+  v20 = optionsCopy;
+  v21 = compositionCopy;
+  v14 = compositionCopy;
+  v15 = optionsCopy;
+  v16 = completionCopy;
+  v17 = lCopy;
   [(PICompositionExporter *)self prepareImageExportRequest:v14 options:v15 completion:v18];
 }
 
@@ -2155,9 +2155,9 @@ void __29__PICompositionExporter_init__block_invoke()
   }
 }
 
-+ (id)resetImageProperties:(id)a3 preserveRegions:(BOOL)a4
++ (id)resetImageProperties:(id)properties preserveRegions:(BOOL)regions
 {
-  v5 = [a3 mutableCopy];
+  v5 = [properties mutableCopy];
   [v5 removeObjectForKey:*MEMORY[0x1E696DE78]];
   v6 = *MEMORY[0x1E696DF28];
   v7 = [v5 objectForKeyedSubscript:*MEMORY[0x1E696DF28]];
@@ -2169,7 +2169,7 @@ void __29__PICompositionExporter_init__block_invoke()
     [v5 setObject:v8 forKeyedSubscript:v6];
   }
 
-  if (!a4)
+  if (!regions)
   {
     v9 = *MEMORY[0x1E696D8B0];
     v10 = [v5 objectForKeyedSubscript:*MEMORY[0x1E696D8B0]];
@@ -2187,16 +2187,16 @@ void __29__PICompositionExporter_init__block_invoke()
   return v12;
 }
 
-+ (BOOL)_lowMemoryModeSupportedForComposition:(id)a3 pixelSize:(id)a4
++ (BOOL)_lowMemoryModeSupportedForComposition:(id)composition pixelSize:(id)size
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"depthEffect"];
+  var1 = size.var1;
+  var0 = size.var0;
+  compositionCopy = composition;
+  v7 = [compositionCopy objectForKeyedSubscript:@"depthEffect"];
   v8 = v7;
   if (v7 && ([v7 objectForKeyedSubscript:@"enabled"], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "BOOLValue"), v9, v10))
   {
-    v11 = ((var0 * var1) / 1000000.0 > 20.0) & ![PIPhotoEditHelper compositionHasAnyStageEffect:v6];
+    v11 = ((var0 * var1) / 1000000.0 > 20.0) & ![PIPhotoEditHelper compositionHasAnyStageEffect:compositionCopy];
   }
 
   else
@@ -2207,13 +2207,13 @@ void __29__PICompositionExporter_init__block_invoke()
   return v11;
 }
 
-+ (void)setMetadataConverter:(id)a3
++ (void)setMetadataConverter:(id)converter
 {
-  v3 = a3;
-  v6 = v3;
-  if (v3)
+  converterCopy = converter;
+  v6 = converterCopy;
+  if (converterCopy)
   {
-    v4 = v3;
+    v4 = converterCopy;
   }
 
   else

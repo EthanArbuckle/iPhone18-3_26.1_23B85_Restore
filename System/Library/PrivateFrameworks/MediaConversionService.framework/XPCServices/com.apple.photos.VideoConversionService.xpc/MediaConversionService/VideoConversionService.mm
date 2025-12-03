@@ -1,42 +1,42 @@
 @interface VideoConversionService
-+ (id)resourceURLCollectionForDestinationBookmarkDictionary:(id)a3 error:(id *)a4;
++ (id)resourceURLCollectionForDestinationBookmarkDictionary:(id)dictionary error:(id *)error;
 + (void)run;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)optionsRequirePhotosAdjustmentProcessing:(id)a3;
-- (BOOL)validateRequestIdentifier:(id)a3 replyHandler:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)optionsRequirePhotosAdjustmentProcessing:(id)processing;
+- (BOOL)validateRequestIdentifier:(id)identifier replyHandler:(id)handler;
 - (VideoConversionService)init;
-- (id)connectionTerminationEventHandlerForConnectionIdentifier:(id)a3 eventDescription:(id)a4;
-- (void)cancelJobsForConnectionWithIdentifier:(id)a3;
-- (void)conversionQueue:(id)a3 cancelCurrentlyProcessingEntry:(id)a4;
-- (void)conversionQueue:(id)a3 didCancelQueuedEntry:(id)a4 clientRequests:(id)a5;
-- (void)conversionQueue:(id)a3 processNextEntry:(id)a4;
-- (void)convertVideoAtSourceBookmarkDictionary:(id)a3 toDestinationBookmarkDictionary:(id)a4 options:(id)a5 replyHandler:(id)a6;
-- (void)echo:(id)a3 reply:(id)a4;
-- (void)extractStillImageFromVideoAtSourceBookmarkDictionary:(id)a3 toDestinationBookmarkDictionary:(id)a4 options:(id)a5 replyHandler:(id)a6;
-- (void)generateGIFForVideoAtSourceBookmarkDictionary:(id)a3 toDestinationBookmarkDictionary:(id)a4 options:(id)a5 replyHandler:(id)a6;
-- (void)modifyJobWithIdentifier:(id)a3 modifications:(id)a4;
-- (void)performConversionOfClass:(Class)a3 forSourceBookmarkDictionary:(id)a4 destinationBookmarkDictionary:(id)a5 options:(id)a6 replyHandler:(id)a7;
-- (void)requestStatusWithReply:(id)a3;
+- (id)connectionTerminationEventHandlerForConnectionIdentifier:(id)identifier eventDescription:(id)description;
+- (void)cancelJobsForConnectionWithIdentifier:(id)identifier;
+- (void)conversionQueue:(id)queue cancelCurrentlyProcessingEntry:(id)entry;
+- (void)conversionQueue:(id)queue didCancelQueuedEntry:(id)entry clientRequests:(id)requests;
+- (void)conversionQueue:(id)queue processNextEntry:(id)entry;
+- (void)convertVideoAtSourceBookmarkDictionary:(id)dictionary toDestinationBookmarkDictionary:(id)bookmarkDictionary options:(id)options replyHandler:(id)handler;
+- (void)echo:(id)echo reply:(id)reply;
+- (void)extractStillImageFromVideoAtSourceBookmarkDictionary:(id)dictionary toDestinationBookmarkDictionary:(id)bookmarkDictionary options:(id)options replyHandler:(id)handler;
+- (void)generateGIFForVideoAtSourceBookmarkDictionary:(id)dictionary toDestinationBookmarkDictionary:(id)bookmarkDictionary options:(id)options replyHandler:(id)handler;
+- (void)modifyJobWithIdentifier:(id)identifier modifications:(id)modifications;
+- (void)performConversionOfClass:(Class)class forSourceBookmarkDictionary:(id)dictionary destinationBookmarkDictionary:(id)bookmarkDictionary options:(id)options replyHandler:(id)handler;
+- (void)requestStatusWithReply:(id)reply;
 - (void)run;
-- (void)singlePassConvertVideoAtSourceBookmarkDictionary:(id)a3 toDestinationBookmarkDictionary:(id)a4 options:(id)a5 replyHandler:(id)a6;
+- (void)singlePassConvertVideoAtSourceBookmarkDictionary:(id)dictionary toDestinationBookmarkDictionary:(id)bookmarkDictionary options:(id)options replyHandler:(id)handler;
 @end
 
 @implementation VideoConversionService
 
-- (id)connectionTerminationEventHandlerForConnectionIdentifier:(id)a3 eventDescription:(id)a4
+- (id)connectionTerminationEventHandlerForConnectionIdentifier:(id)identifier eventDescription:(id)description
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  descriptionCopy = description;
   objc_initWeak(&location, self);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10001B810;
   v12[3] = &unk_10003D660;
   objc_copyWeak(&v15, &location);
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = identifierCopy;
+  v14 = descriptionCopy;
+  v8 = descriptionCopy;
+  v9 = identifierCopy;
   v10 = objc_retainBlock(v12);
 
   objc_destroyWeak(&v15);
@@ -45,12 +45,12 @@
   return v10;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = +[NSUUID UUID];
-  v6 = [v4 _xpcConnection];
-  pid = xpc_connection_get_pid(v6);
+  _xpcConnection = [connectionCopy _xpcConnection];
+  pid = xpc_connection_get_pid(_xpcConnection);
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
@@ -65,7 +65,7 @@
   v25 = v5;
   v22 = v5;
   v8 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-  [v4 setUserInfo:v8];
+  [connectionCopy setUserInfo:v8];
 
   v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___VideoConversionService];
   v10 = objc_opt_class();
@@ -78,48 +78,48 @@
   v17 = [NSSet setWithObjects:v10, v11, v12, v13, v14, v15, v16, objc_opt_class(), 0];
   [v9 setClasses:v17 forSelector:"convertVideoAtSourceBookmarkDictionary:toDestinationBookmarkDictionary:options:replyHandler:" argumentIndex:2 ofReply:0];
   [v9 setClasses:v17 forSelector:"extractStillImageFromVideoAtSourceBookmarkDictionary:toDestinationBookmarkDictionary:options:replyHandler:" argumentIndex:2 ofReply:0];
-  [v4 setExportedInterface:v9];
-  [v4 setExportedObject:self];
+  [connectionCopy setExportedInterface:v9];
+  [connectionCopy setExportedObject:self];
   v18 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___VideoConversionServiceClient];
-  [v4 setRemoteObjectInterface:v18];
+  [connectionCopy setRemoteObjectInterface:v18];
 
   v19 = [(VideoConversionService *)self connectionTerminationEventHandlerForConnectionIdentifier:v22 eventDescription:@"interruption"];
-  [v4 setInterruptionHandler:v19];
+  [connectionCopy setInterruptionHandler:v19];
 
   v20 = [(VideoConversionService *)self connectionTerminationEventHandlerForConnectionIdentifier:v22 eventDescription:@"invalidation"];
-  [v4 setInvalidationHandler:v20];
+  [connectionCopy setInvalidationHandler:v20];
 
-  [v4 resume];
+  [connectionCopy resume];
   return 1;
 }
 
-- (void)requestStatusWithReply:(id)a3
+- (void)requestStatusWithReply:(id)reply
 {
   v7 = @"PAMediaConversionServiceProcessIdentifierKey";
-  v4 = a3;
+  replyCopy = reply;
   v5 = [NSNumber numberWithInt:getpid()];
   v8 = v5;
   v6 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
-  (*(a3 + 2))(v4, v6, 0);
+  (*(reply + 2))(replyCopy, v6, 0);
 }
 
-- (void)cancelJobsForConnectionWithIdentifier:(id)a3
+- (void)cancelJobsForConnectionWithIdentifier:(id)identifier
 {
   requestQueue = self->_requestQueue;
-  v4 = [a3 UUIDString];
-  [(MediaConversionQueue *)requestQueue cancelRequestsForConnectionIdentifier:v4];
+  uUIDString = [identifier UUIDString];
+  [(MediaConversionQueue *)requestQueue cancelRequestsForConnectionIdentifier:uUIDString];
 }
 
-- (void)modifyJobWithIdentifier:(id)a3 modifications:(id)a4
+- (void)modifyJobWithIdentifier:(id)identifier modifications:(id)modifications
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  modificationsCopy = modifications;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v18 = v7;
+    v18 = identifierCopy;
     v19 = 2114;
-    v20 = v8;
+    v20 = modificationsCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Modify job for request %{public}@: %{public}@", buf, 0x16u);
   }
 
@@ -128,49 +128,49 @@
   v12[1] = 3221225472;
   v12[2] = sub_10001BE78;
   v12[3] = &unk_10003D638;
-  v13 = v7;
-  v14 = v8;
-  v15 = self;
+  v13 = identifierCopy;
+  v14 = modificationsCopy;
+  selfCopy = self;
   v16 = a2;
-  v10 = v8;
-  v11 = v7;
+  v10 = modificationsCopy;
+  v11 = identifierCopy;
   [(MediaConversionQueue *)requestQueue modifyRequestWithIdentifier:v11 changeHandler:v12];
 }
 
-- (void)extractStillImageFromVideoAtSourceBookmarkDictionary:(id)a3 toDestinationBookmarkDictionary:(id)a4 options:(id)a5 replyHandler:(id)a6
+- (void)extractStillImageFromVideoAtSourceBookmarkDictionary:(id)dictionary toDestinationBookmarkDictionary:(id)bookmarkDictionary options:(id)options replyHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  [(VideoConversionService *)self performConversionOfClass:objc_opt_class() forSourceBookmarkDictionary:v13 destinationBookmarkDictionary:v12 options:v11 replyHandler:v10];
+  handlerCopy = handler;
+  optionsCopy = options;
+  bookmarkDictionaryCopy = bookmarkDictionary;
+  dictionaryCopy = dictionary;
+  [(VideoConversionService *)self performConversionOfClass:objc_opt_class() forSourceBookmarkDictionary:dictionaryCopy destinationBookmarkDictionary:bookmarkDictionaryCopy options:optionsCopy replyHandler:handlerCopy];
 }
 
-- (void)singlePassConvertVideoAtSourceBookmarkDictionary:(id)a3 toDestinationBookmarkDictionary:(id)a4 options:(id)a5 replyHandler:(id)a6
+- (void)singlePassConvertVideoAtSourceBookmarkDictionary:(id)dictionary toDestinationBookmarkDictionary:(id)bookmarkDictionary options:(id)options replyHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  [(VideoConversionService *)self performConversionOfClass:objc_opt_class() forSourceBookmarkDictionary:v13 destinationBookmarkDictionary:v12 options:v11 replyHandler:v10];
+  handlerCopy = handler;
+  optionsCopy = options;
+  bookmarkDictionaryCopy = bookmarkDictionary;
+  dictionaryCopy = dictionary;
+  [(VideoConversionService *)self performConversionOfClass:objc_opt_class() forSourceBookmarkDictionary:dictionaryCopy destinationBookmarkDictionary:bookmarkDictionaryCopy options:optionsCopy replyHandler:handlerCopy];
 }
 
-- (void)generateGIFForVideoAtSourceBookmarkDictionary:(id)a3 toDestinationBookmarkDictionary:(id)a4 options:(id)a5 replyHandler:(id)a6
+- (void)generateGIFForVideoAtSourceBookmarkDictionary:(id)dictionary toDestinationBookmarkDictionary:(id)bookmarkDictionary options:(id)options replyHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  [(VideoConversionService *)self performConversionOfClass:objc_opt_class() forSourceBookmarkDictionary:v13 destinationBookmarkDictionary:v12 options:v11 replyHandler:v10];
+  handlerCopy = handler;
+  optionsCopy = options;
+  bookmarkDictionaryCopy = bookmarkDictionary;
+  dictionaryCopy = dictionary;
+  [(VideoConversionService *)self performConversionOfClass:objc_opt_class() forSourceBookmarkDictionary:dictionaryCopy destinationBookmarkDictionary:bookmarkDictionaryCopy options:optionsCopy replyHandler:handlerCopy];
 }
 
-- (void)convertVideoAtSourceBookmarkDictionary:(id)a3 toDestinationBookmarkDictionary:(id)a4 options:(id)a5 replyHandler:(id)a6
+- (void)convertVideoAtSourceBookmarkDictionary:(id)dictionary toDestinationBookmarkDictionary:(id)bookmarkDictionary options:(id)options replyHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v16 = a3;
-  v13 = [(VideoConversionService *)self optionsRequirePhotosAdjustmentProcessing:v11];
+  handlerCopy = handler;
+  optionsCopy = options;
+  bookmarkDictionaryCopy = bookmarkDictionary;
+  dictionaryCopy = dictionary;
+  v13 = [(VideoConversionService *)self optionsRequirePhotosAdjustmentProcessing:optionsCopy];
   v14 = &off_10003C550;
   if (!v13)
   {
@@ -178,42 +178,42 @@
   }
 
   v15 = *v14;
-  [(VideoConversionService *)self performConversionOfClass:objc_opt_class() forSourceBookmarkDictionary:v16 destinationBookmarkDictionary:v12 options:v11 replyHandler:v10];
+  [(VideoConversionService *)self performConversionOfClass:objc_opt_class() forSourceBookmarkDictionary:dictionaryCopy destinationBookmarkDictionary:bookmarkDictionaryCopy options:optionsCopy replyHandler:handlerCopy];
 }
 
-- (void)echo:(id)a3 reply:(id)a4
+- (void)echo:(id)echo reply:(id)reply
 {
-  v6 = a4;
-  v7 = [a3 stringByAppendingString:a3];
-  (*(a4 + 2))(v6, v7);
+  replyCopy = reply;
+  v7 = [echo stringByAppendingString:echo];
+  (*(reply + 2))(replyCopy, v7);
 }
 
-- (void)conversionQueue:(id)a3 cancelCurrentlyProcessingEntry:(id)a4
+- (void)conversionQueue:(id)queue cancelCurrentlyProcessingEntry:(id)entry
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  entryCopy = entry;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v11 = 138543362;
-    v12 = v8;
+    v12 = entryCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Request queue issued cancellation of currently processing queue entry %{public}@", &v11, 0xCu);
   }
 
-  v9 = [v8 videoConversionTask];
-  if (!v9)
+  videoConversionTask = [entryCopy videoConversionTask];
+  if (!videoConversionTask)
   {
     v10 = +[NSAssertionHandler currentHandler];
     [v10 handleFailureInMethod:a2 object:self file:@"VideoConversionService.m" lineNumber:1772 description:@"Unexpected nil conversion task"];
   }
 
-  [v9 cancel];
+  [videoConversionTask cancel];
 }
 
-- (void)conversionQueue:(id)a3 processNextEntry:(id)a4
+- (void)conversionQueue:(id)queue processNextEntry:(id)entry
 {
-  v37 = a3;
-  v39 = a4;
-  v41 = [v39 videoConversionTask];
+  queueCopy = queue;
+  entryCopy = entry;
+  videoConversionTask = [entryCopy videoConversionTask];
   v50 = 0;
   v51 = &v50;
   v52 = 0x2020000000;
@@ -225,16 +225,16 @@
   v49 = &v50;
   dsema = dispatch_semaphore_create(0);
   v48 = dsema;
-  [v41 setCompletionHandler:v47];
-  v6 = [v41 options];
-  v38 = [v6 objectForKeyedSubscript:@"_unitTestPreConversionDelayKey"];
+  [videoConversionTask setCompletionHandler:v47];
+  options = [videoConversionTask options];
+  v38 = [options objectForKeyedSubscript:@"_unitTestPreConversionDelayKey"];
 
   if (v38)
   {
     sleep([v38 intValue]);
   }
 
-  [v41 performConversion];
+  [videoConversionTask performConversion];
   while (1)
   {
     v7 = dispatch_time(0, 10000000000);
@@ -243,22 +243,22 @@
       break;
     }
 
-    if ([v41 didDetectHang])
+    if ([videoConversionTask didDetectHang])
     {
-      v8 = [v39 sourceURLCollection];
-      v9 = [v8 filenameExtensionAndPathHashForRole:@"PAMediaConversionResourceRoleMainResource"];
+      sourceURLCollection = [entryCopy sourceURLCollection];
+      v9 = [sourceURLCollection filenameExtensionAndPathHashForRole:@"PAMediaConversionResourceRoleMainResource"];
 
       v10 = &_os_log_default;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
-        v11 = [v39 sourceURLCollection];
-        v12 = [v11 logMessageSummary];
+        sourceURLCollection2 = [entryCopy sourceURLCollection];
+        logMessageSummary = [sourceURLCollection2 logMessageSummary];
         *buf = 138543875;
-        v56 = v39;
+        v56 = entryCopy;
         v57 = 2113;
         v58 = v9;
         v59 = 2114;
-        v60 = v12;
+        v60 = logMessageSummary;
         _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Timeout for %{public}@ with stalled conversion for %{private}@ (%{public}@), forcing exit", buf, 0x20u);
       }
 
@@ -266,31 +266,31 @@
     }
   }
 
-  v36 = [v41 error];
-  v35 = [v41 resultInformation];
+  error = [videoConversionTask error];
+  resultInformation = [videoConversionTask resultInformation];
   v42 = v51[3];
-  v13 = [v41 resultInformation];
-  if (v13)
+  resultInformation2 = [videoConversionTask resultInformation];
+  if (resultInformation2)
   {
     goto LABEL_10;
   }
 
-  v14 = [v41 error];
-  v15 = v14 == 0;
+  error2 = [videoConversionTask error];
+  v15 = error2 == 0;
 
   if (v15)
   {
-    v13 = +[NSAssertionHandler currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"VideoConversionService.m" lineNumber:1738 description:@"Conversion task finished without output information or error"];
+    resultInformation2 = +[NSAssertionHandler currentHandler];
+    [resultInformation2 handleFailureInMethod:a2 object:self file:@"VideoConversionService.m" lineNumber:1738 description:@"Conversion task finished without output information or error"];
 LABEL_10:
   }
 
-  v34 = [v41 outputURLCollection];
-  v16 = [v41 resultInformation];
-  v17 = [v16 objectForKeyedSubscript:@"PAMediaConversionServiceResultDataKey"];
-  v18 = [v41 options];
-  v19 = [v18 objectForKeyedSubscript:@"PAMediaConversionServiceOptionOutputFileTypeKey"];
-  v20 = [v37 markCompletionAndRetrieveClientRequestsForQueueEntry:v39 resultURLCollection:v34 didConvertSuccessfully:v42 == 1 conversionOutputInformation:v35 conversionOutputData:v17 conversionOutputFileType:v19 conversionError:v36];
+  outputURLCollection = [videoConversionTask outputURLCollection];
+  resultInformation3 = [videoConversionTask resultInformation];
+  v17 = [resultInformation3 objectForKeyedSubscript:@"PAMediaConversionServiceResultDataKey"];
+  options2 = [videoConversionTask options];
+  v19 = [options2 objectForKeyedSubscript:@"PAMediaConversionServiceOptionOutputFileTypeKey"];
+  v20 = [queueCopy markCompletionAndRetrieveClientRequestsForQueueEntry:entryCopy resultURLCollection:outputURLCollection didConvertSuccessfully:v42 == 1 conversionOutputInformation:resultInformation conversionOutputData:v17 conversionOutputFileType:v19 conversionError:error];
 
   v45 = 0u;
   v46 = 0u;
@@ -312,22 +312,22 @@ LABEL_10:
 
         v25 = *(*(&v43 + 1) + 8 * i);
         v26 = objc_autoreleasePoolPush();
-        v27 = [v25 requestTracker];
-        v28 = v27;
+        requestTracker = [v25 requestTracker];
+        v28 = requestTracker;
         if (v42 == 1)
         {
-          v29 = [v27 outputInformation];
+          outputInformation = [requestTracker outputInformation];
         }
 
         else
         {
-          v29 = 0;
+          outputInformation = 0;
         }
 
-        v30 = [v25 videoClientReplyHandler];
+        videoClientReplyHandler = [v25 videoClientReplyHandler];
         v31 = v51[3];
-        v32 = [v28 error];
-        (v30)[2](v30, v31, v29, v32);
+        error3 = [v28 error];
+        (videoClientReplyHandler)[2](videoClientReplyHandler, v31, outputInformation, error3);
 
         objc_autoreleasePoolPop(v26);
       }
@@ -341,16 +341,16 @@ LABEL_10:
   _Block_object_dispose(&v50, 8);
 }
 
-- (void)conversionQueue:(id)a3 didCancelQueuedEntry:(id)a4 clientRequests:(id)a5
+- (void)conversionQueue:(id)queue didCancelQueuedEntry:(id)entry clientRequests:(id)requests
 {
-  v28 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 videoConversionTask];
-  v12 = [v11 status];
-  if (v12 != 5)
+  queueCopy = queue;
+  entryCopy = entry;
+  requestsCopy = requests;
+  videoConversionTask = [entryCopy videoConversionTask];
+  status = [videoConversionTask status];
+  if (status != 5)
   {
-    v24 = v12;
+    v24 = status;
     v25 = +[NSAssertionHandler currentHandler];
     if (v24 > 6)
     {
@@ -363,22 +363,22 @@ LABEL_10:
     }
 
     v27 = v26;
-    [v25 handleFailureInMethod:a2 object:self file:@"VideoConversionService.m" lineNumber:1693 description:{@"Unexpected conversion task status %@ during cancellation of queued task", v27, v28}];
+    [v25 handleFailureInMethod:a2 object:self file:@"VideoConversionService.m" lineNumber:1693 description:{@"Unexpected conversion task status %@ during cancellation of queued task", v27, queueCopy}];
   }
 
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_10001CE3C;
   v33[3] = &unk_10003D5E8;
-  v13 = v9;
+  v13 = entryCopy;
   v34 = v13;
-  [v11 setCompletionHandler:v33];
-  [v11 cancel];
+  [videoConversionTask setCompletionHandler:v33];
+  [videoConversionTask cancel];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v14 = v10;
+  v14 = requestsCopy;
   v15 = [v14 countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v15)
   {
@@ -396,10 +396,10 @@ LABEL_10:
 
         v19 = *(*(&v29 + 1) + 8 * v18);
         v20 = objc_autoreleasePoolPush();
-        v21 = [v19 requestTracker];
-        v22 = [v19 videoClientReplyHandler];
-        v23 = [v21 error];
-        (v22)[2](v22, 4, 0, v23);
+        requestTracker = [v19 requestTracker];
+        videoClientReplyHandler = [v19 videoClientReplyHandler];
+        error = [requestTracker error];
+        (videoClientReplyHandler)[2](videoClientReplyHandler, 4, 0, error);
 
         objc_autoreleasePoolPop(v20);
         v18 = v18 + 1;
@@ -413,43 +413,43 @@ LABEL_10:
   }
 }
 
-- (BOOL)optionsRequirePhotosAdjustmentProcessing:(id)a3
+- (BOOL)optionsRequirePhotosAdjustmentProcessing:(id)processing
 {
-  v3 = [a3 objectForKeyedSubscript:@"PAMediaConversionServiceOptionAdjustmentInformationKey"];
+  v3 = [processing objectForKeyedSubscript:@"PAMediaConversionServiceOptionAdjustmentInformationKey"];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)performConversionOfClass:(Class)a3 forSourceBookmarkDictionary:(id)a4 destinationBookmarkDictionary:(id)a5 options:(id)a6 replyHandler:(id)a7
+- (void)performConversionOfClass:(Class)class forSourceBookmarkDictionary:(id)dictionary destinationBookmarkDictionary:(id)bookmarkDictionary options:(id)options replyHandler:(id)handler
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceJobIdentifierKey"];
-  if ([(VideoConversionService *)self validateRequestIdentifier:v16 replyHandler:v15])
+  dictionaryCopy = dictionary;
+  bookmarkDictionaryCopy = bookmarkDictionary;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v16 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceJobIdentifierKey"];
+  if ([(VideoConversionService *)self validateRequestIdentifier:v16 replyHandler:handlerCopy])
   {
-    v68 = v13;
+    v68 = bookmarkDictionaryCopy;
     v17 = +[NSXPCConnection currentConnection];
-    v65 = [v17 userInfo];
-    v18 = [v65 objectForKeyedSubscript:@"PAMCS_CONNECTION_USER_INFO_CONNECTION_IDENTIFIER_KEY"];
+    userInfo = [v17 userInfo];
+    v18 = [userInfo objectForKeyedSubscript:@"PAMCS_CONNECTION_USER_INFO_CONNECTION_IDENTIFIER_KEY"];
     v19 = objc_opt_new();
     v66 = v17;
     [v19 setConnection:v17];
     v67 = v18;
     [v19 setConnectionIdentifier:v18];
-    [v19 setVideoClientReplyHandler:v15];
-    v20 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionWantsProgressKey"];
+    [v19 setVideoClientReplyHandler:handlerCopy];
+    v20 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionWantsProgressKey"];
     [v19 setWantsProgress:{objc_msgSend(v20, "BOOLValue")}];
 
-    v21 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionJobPriorityKey"];
-    v22 = [v21 integerValue];
+    v21 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionJobPriorityKey"];
+    integerValue = [v21 integerValue];
 
     v69 = v16;
-    if (!v22)
+    if (!integerValue)
     {
-      v23 = [v14 mutableCopy];
+      v23 = [optionsCopy mutableCopy];
       [v23 setObject:&off_10003FB80 forKeyedSubscript:@"PAMediaConversionServiceOptionJobPriorityKey"];
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
@@ -461,21 +461,21 @@ LABEL_10:
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Request %{public}@ does not have a priority, the client should provide one. Defaulting to %@.", buf, 0x16u);
       }
 
-      v14 = v23;
+      optionsCopy = v23;
     }
 
-    v25 = [(MediaConversionQueue *)self->_requestQueue nextRequestNumber];
-    v26 = [v14 mutableCopy];
-    [v26 setObject:v12 forKeyedSubscript:@"PAMediaConversionServiceSourceBookmarkCollectionKey"];
+    nextRequestNumber = [(MediaConversionQueue *)self->_requestQueue nextRequestNumber];
+    v26 = [optionsCopy mutableCopy];
+    [v26 setObject:dictionaryCopy forKeyedSubscript:@"PAMediaConversionServiceSourceBookmarkCollectionKey"];
     v64 = v26;
-    v60 = v25;
-    v70 = [[MediaConversionRequestTracker alloc] initWithRequestOptions:v26 requestNumber:v25];
+    v60 = nextRequestNumber;
+    v70 = [[MediaConversionRequestTracker alloc] initWithRequestOptions:v26 requestNumber:nextRequestNumber];
     [v19 setRequestTracker:?];
-    v27 = [(MediaConversionQueue *)self->_requestQueue queueEntryWithConversionOptions:v14];
-    [v27 setTaskTypeSupportsDeduplication:{-[objc_class supportsDeduplication](a3, "supportsDeduplication")}];
-    v28 = [v27 identifier];
+    v27 = [(MediaConversionQueue *)self->_requestQueue queueEntryWithConversionOptions:optionsCopy];
+    [v27 setTaskTypeSupportsDeduplication:{-[objc_class supportsDeduplication](class, "supportsDeduplication")}];
+    identifier = [v27 identifier];
     v73 = 0;
-    v29 = [PAMediaConversionServiceSharedUtilitiesServiceSide temporaryFilesDirectoryURLForConversionTaskIdentifier:v28 error:&v73];
+    v29 = [PAMediaConversionServiceSharedUtilitiesServiceSide temporaryFilesDirectoryURLForConversionTaskIdentifier:identifier error:&v73];
     v30 = v73;
 
     if (!v29)
@@ -489,46 +489,46 @@ LABEL_10:
         _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Unable to create temporary files directory for request %{public}@: %@", buf, 0x16u);
       }
 
-      v15[2](v15, 2, 0, v30);
+      handlerCopy[2](handlerCopy, 2, 0, v30);
       goto LABEL_40;
     }
 
     v61 = v19;
-    v31 = a3;
+    classCopy = class;
     v32 = v30;
     [v27 setTemporaryFilesParentDirectoryURL:v29];
-    [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionWantsResultAsDataKey"];
+    [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionWantsResultAsDataKey"];
     v34 = v33 = v29;
-    v35 = [v34 BOOLValue];
+    bOOLValue = [v34 BOOLValue];
 
     v63 = v33;
-    if (v35)
+    if (bOOLValue)
     {
       v36 = [v33 URLByAppendingPathComponent:v69];
       v37 = [v36 URLByAppendingPathExtension:@"mov"];
 
       v38 = [PAMediaConversionServiceResourceURLCollection collectionWithMainResourceURL:v37];
       v30 = v32;
-      v39 = v31;
+      v39 = classCopy;
     }
 
     else
     {
       v72 = v32;
-      v13 = v68;
+      bookmarkDictionaryCopy = v68;
       v37 = [objc_opt_class() resourceURLCollectionForDestinationBookmarkDictionary:v68 error:&v72];
       v30 = v72;
 
       if (!v37)
       {
-        v41 = [(__CFString *)v30 domain];
-        if ([v41 isEqualToString:NSCocoaErrorDomain])
+        domain = [(__CFString *)v30 domain];
+        if ([domain isEqualToString:NSCocoaErrorDomain])
         {
-          v39 = v31;
-          v42 = [(__CFString *)v30 code];
+          v39 = classCopy;
+          code = [(__CFString *)v30 code];
 
-          v43 = v42 == 4;
-          v13 = v68;
+          v43 = code == 4;
+          bookmarkDictionaryCopy = v68;
           v19 = v61;
           if (v43)
           {
@@ -537,23 +537,23 @@ LABEL_10:
             v38 = 0;
 LABEL_22:
 
-            v44 = [[v39 alloc] initWithSourceBookmarkDictionary:v12 outputURLCollection:v38 options:v14 requestTracker:v70];
-            v45 = [v44 sourceURLCollection];
-            [v27 setSourceURLCollection:v45];
+            v44 = [[v39 alloc] initWithSourceBookmarkDictionary:dictionaryCopy outputURLCollection:v38 options:optionsCopy requestTracker:v70];
+            sourceURLCollection = [v44 sourceURLCollection];
+            [v27 setSourceURLCollection:sourceURLCollection];
 
-            v46 = [v27 identifier];
-            [v44 setIdentifier:v46];
+            identifier2 = [v27 identifier];
+            [v44 setIdentifier:identifier2];
 
             [v27 setVideoConversionTask:v44];
             [v44 setProgressObserver:v27];
             [v44 didEnqueue];
             requestQueue = self->_requestQueue;
             v71 = 0;
-            LOBYTE(v46) = [(MediaConversionQueue *)requestQueue enqueueEntry:v27 clientRequest:v19 isDuplicateOfOriginalQueueEntry:&v71];
+            LOBYTE(identifier2) = [(MediaConversionQueue *)requestQueue enqueueEntry:v27 clientRequest:v19 isDuplicateOfOriginalQueueEntry:&v71];
             v48 = v71;
             v49 = v48;
             v62 = v38;
-            if (v46)
+            if (identifier2)
             {
               if (v48)
               {
@@ -571,7 +571,7 @@ LABEL_22:
                 [v44 startProgressUpdateTimerAndMarkStartTime];
               }
 
-              v52 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionRequestReasonKey"];
+              v52 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionRequestReasonKey"];
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
               {
                 [v51 identifier];
@@ -596,9 +596,9 @@ LABEL_22:
 
             else
             {
-              v54 = [v19 requiresDeduplicationAgainstOriginalWithIdenticalOutput];
+              requiresDeduplicationAgainstOriginalWithIdenticalOutput = [v19 requiresDeduplicationAgainstOriginalWithIdenticalOutput];
               v55 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR);
-              if (v54)
+              if (requiresDeduplicationAgainstOriginalWithIdenticalOutput)
               {
                 if (v55)
                 {
@@ -628,14 +628,14 @@ LABEL_22:
 
               v58 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:v57 userInfo:v56];
 
-              v15[2](v15, 2, 0, v58);
+              handlerCopy[2](handlerCopy, 2, 0, v58);
               v30 = v58;
             }
 
             v29 = v63;
 
 LABEL_40:
-            v13 = v68;
+            bookmarkDictionaryCopy = v68;
 LABEL_41:
 
             v16 = v69;
@@ -658,13 +658,13 @@ LABEL_41:
           _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Unable to resolve final destination URLs for %{public}@: %@", buf, 0x16u);
         }
 
-        v15[2](v15, 2, 0, v30);
+        handlerCopy[2](handlerCopy, 2, 0, v30);
         v29 = v63;
         goto LABEL_41;
       }
 
       [(MediaConversionRequestTracker *)v70 setDestinationURLCollection:v37];
-      v39 = v31;
+      v39 = classCopy;
       if ([v27 taskTypeSupportsDeduplication])
       {
         v40 = [PAMediaConversionServiceSharedUtilitiesServiceSide temporaryDestinationURLCollectionForFinalDestinationURLCollection:v37 inParentDirectoryURL:v63];
@@ -686,13 +686,13 @@ LABEL_41:
 LABEL_42:
 }
 
-- (BOOL)validateRequestIdentifier:(id)a3 replyHandler:(id)a4
+- (BOOL)validateRequestIdentifier:(id)identifier replyHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (identifierCopy)
   {
-    v9 = v7;
+    v9 = identifierCopy;
   }
 
   else
@@ -711,7 +711,7 @@ LABEL_42:
     v11 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     v12 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:6 userInfo:v11];
 
-    v8[2](v8, 2, 0, v12);
+    handlerCopy[2](handlerCopy, 2, 0, v12);
   }
 
   return v10 != 0x7FFFFFFFFFFFFFFFLL;
@@ -722,11 +722,11 @@ LABEL_42:
   v3 = [[NSXPCListener alloc] initWithMachServiceName:@"com.apple.photos.VideoConversionService"];
   [(VideoConversionService *)self setListener:v3];
 
-  v4 = [(VideoConversionService *)self listener];
-  [v4 setDelegate:self];
+  listener = [(VideoConversionService *)self listener];
+  [listener setDelegate:self];
 
-  v5 = [(VideoConversionService *)self listener];
-  [v5 resume];
+  listener2 = [(VideoConversionService *)self listener];
+  [listener2 resume];
 
   dispatch_main();
 }
@@ -746,9 +746,9 @@ LABEL_42:
   return v2;
 }
 
-+ (id)resourceURLCollectionForDestinationBookmarkDictionary:(id)a3 error:(id *)a4
++ (id)resourceURLCollectionForDestinationBookmarkDictionary:(id)dictionary error:(id *)error
 {
-  v5 = [PAMediaConversionServiceResourceURLCollection collectionForBookmarkDataDictionaryRepresentation:a3 accessProvider:0 error:a4];
+  v5 = [PAMediaConversionServiceResourceURLCollection collectionForBookmarkDataDictionaryRepresentation:dictionary accessProvider:0 error:error];
   v6 = v5;
   if (v5)
   {
@@ -765,13 +765,13 @@ LABEL_42:
       *buf = 138412290;
       v13 = v8;
       _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Unable to remove destination URL: %@", buf, 0xCu);
-      if (!a4)
+      if (!error)
       {
         goto LABEL_6;
       }
     }
 
-    else if (!a4)
+    else if (!error)
     {
 LABEL_6:
 
@@ -780,7 +780,7 @@ LABEL_6:
     }
 
     v9 = v8;
-    *a4 = v8;
+    *error = v8;
     goto LABEL_6;
   }
 
@@ -792,7 +792,7 @@ LABEL_8:
 
 + (void)run
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 run];
 }
 

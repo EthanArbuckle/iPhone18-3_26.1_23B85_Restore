@@ -1,66 +1,66 @@
 @interface CUIKTTLDescriptionGeneratorUtilities
-+ (BOOL)ttlDescriptionShouldIncludeTrafficForHypothesis:(id)a3;
-+ (BOOL)ttlDescriptionShouldIncludeTrafficForHypothesisThatSupportsLiveTraffic:(BOOL)a3 transportType:(int)a4 eta:(double)a5;
-+ (id)descriptionForType:(unint64_t)a3;
-+ (unint64_t)ttlDescriptionTypeForDate:(id)a3 hypothesis:(id)a4;
++ (BOOL)ttlDescriptionShouldIncludeTrafficForHypothesis:(id)hypothesis;
++ (BOOL)ttlDescriptionShouldIncludeTrafficForHypothesisThatSupportsLiveTraffic:(BOOL)traffic transportType:(int)type eta:(double)eta;
++ (id)descriptionForType:(unint64_t)type;
++ (unint64_t)ttlDescriptionTypeForDate:(id)date hypothesis:(id)hypothesis;
 @end
 
 @implementation CUIKTTLDescriptionGeneratorUtilities
 
-+ (BOOL)ttlDescriptionShouldIncludeTrafficForHypothesis:(id)a3
++ (BOOL)ttlDescriptionShouldIncludeTrafficForHypothesis:(id)hypothesis
 {
-  v4 = a3;
-  [v4 estimatedTravelTime];
+  hypothesisCopy = hypothesis;
+  [hypothesisCopy estimatedTravelTime];
   v6 = v5;
-  v7 = [v4 supportsLiveTraffic];
-  v8 = [v4 transportType];
+  supportsLiveTraffic = [hypothesisCopy supportsLiveTraffic];
+  transportType = [hypothesisCopy transportType];
 
-  return [a1 ttlDescriptionShouldIncludeTrafficForHypothesisThatSupportsLiveTraffic:v7 transportType:v8 eta:v6];
+  return [self ttlDescriptionShouldIncludeTrafficForHypothesisThatSupportsLiveTraffic:supportsLiveTraffic transportType:transportType eta:v6];
 }
 
-+ (BOOL)ttlDescriptionShouldIncludeTrafficForHypothesisThatSupportsLiveTraffic:(BOOL)a3 transportType:(int)a4 eta:(double)a5
++ (BOOL)ttlDescriptionShouldIncludeTrafficForHypothesisThatSupportsLiveTraffic:(BOOL)traffic transportType:(int)type eta:(double)eta
 {
-  if (a4)
+  if (type)
   {
-    v5 = 0;
+    trafficCopy = 0;
   }
 
   else
   {
-    v5 = a3;
+    trafficCopy = traffic;
   }
 
-  return a5 > 300.0 && v5;
+  return eta > 300.0 && trafficCopy;
 }
 
-+ (unint64_t)ttlDescriptionTypeForDate:(id)a3 hypothesis:(id)a4
++ (unint64_t)ttlDescriptionTypeForDate:(id)date hypothesis:(id)hypothesis
 {
-  v5 = a3;
-  v6 = a4;
-  if ([MEMORY[0x1E6966B28] date:v5 representsLatenessForHypothesis:v6])
+  dateCopy = date;
+  hypothesisCopy = hypothesis;
+  if ([MEMORY[0x1E6966B28] date:dateCopy representsLatenessForHypothesis:hypothesisCopy])
   {
     v7 = 2;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E6966B28] date:v5 representsApproachingDepartureDateForHypothesis:v6] ^ 1;
+    v7 = [MEMORY[0x1E6966B28] date:dateCopy representsApproachingDepartureDateForHypothesis:hypothesisCopy] ^ 1;
   }
 
   return v7;
 }
 
-+ (id)descriptionForType:(unint64_t)a3
++ (id)descriptionForType:(unint64_t)type
 {
-  if (a3 < 3)
+  if (type < 3)
   {
-    return off_1E839A410[a3];
+    return off_1E839A410[type];
   }
 
   v5 = +[CUIKLogSubsystem defaultCategory];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(CUIKTTLDescriptionGeneratorUtilities *)a3 descriptionForType:v5];
+    [(CUIKTTLDescriptionGeneratorUtilities *)type descriptionForType:v5];
   }
 
   return &stru_1F4AA8958;

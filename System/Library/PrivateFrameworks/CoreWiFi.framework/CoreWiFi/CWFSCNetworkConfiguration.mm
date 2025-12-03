@@ -1,5 +1,5 @@
 @interface CWFSCNetworkConfiguration
-- (BOOL)__isIEEE80211NetworkInterfaceName:(id)a3;
+- (BOOL)__isIEEE80211NetworkInterfaceName:(id)name;
 - (BOOL)isMonitoringEvents;
 - (CWFSCNetworkConfiguration)init;
 - (id)DNSDomainName;
@@ -20,12 +20,12 @@
 - (id)IPv6ServiceName;
 - (id)__DNSGlobalStateConfig;
 - (id)__IPv4GlobalStateConfig;
-- (id)__IPv4SetupConfigForServiceID:(id)a3;
-- (id)__IPv4StateConfigForServiceID:(id)a3;
+- (id)__IPv4SetupConfigForServiceID:(id)d;
+- (id)__IPv4StateConfigForServiceID:(id)d;
 - (id)__IPv6GlobalStateConfig;
-- (id)__IPv6SetupConfigForServiceID:(id)a3;
-- (id)__IPv6StateConfigForServiceID:(id)a3;
-- (id)__nameForServiceWithID:(id)a3;
+- (id)__IPv6SetupConfigForServiceID:(id)d;
+- (id)__IPv6StateConfigForServiceID:(id)d;
+- (id)__nameForServiceWithID:(id)d;
 - (id)__networkInterfaceStateConfig;
 - (id)networkInterfaceNames;
 - (void)__startEventMonitoring;
@@ -221,10 +221,10 @@ LABEL_14:
   return v3;
 }
 
-- (id)__IPv4StateConfigForServiceID:(id)a3
+- (id)__IPv4StateConfigForServiceID:(id)d
 {
-  v4 = a3;
-  if (v4 && (NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(*MEMORY[0x1E695E480], *MEMORY[0x1E69822F0], v4, *MEMORY[0x1E6982338])) != 0)
+  dCopy = d;
+  if (dCopy && (NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(*MEMORY[0x1E695E480], *MEMORY[0x1E69822F0], dCopy, *MEMORY[0x1E6982338])) != 0)
   {
     v6 = NetworkServiceEntity;
     v7 = SCDynamicStoreCopyValue(self->_storeRef, NetworkServiceEntity);
@@ -251,10 +251,10 @@ LABEL_14:
   return v9;
 }
 
-- (id)__IPv6StateConfigForServiceID:(id)a3
+- (id)__IPv6StateConfigForServiceID:(id)d
 {
-  v4 = a3;
-  if (v4 && (NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(*MEMORY[0x1E695E480], *MEMORY[0x1E69822F0], v4, *MEMORY[0x1E6982340])) != 0)
+  dCopy = d;
+  if (dCopy && (NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(*MEMORY[0x1E695E480], *MEMORY[0x1E69822F0], dCopy, *MEMORY[0x1E6982340])) != 0)
   {
     v6 = NetworkServiceEntity;
     v7 = SCDynamicStoreCopyValue(self->_storeRef, NetworkServiceEntity);
@@ -281,10 +281,10 @@ LABEL_14:
   return v9;
 }
 
-- (id)__IPv4SetupConfigForServiceID:(id)a3
+- (id)__IPv4SetupConfigForServiceID:(id)d
 {
-  v4 = a3;
-  if (v4 && (NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(*MEMORY[0x1E695E480], *MEMORY[0x1E69822E8], v4, *MEMORY[0x1E6982338])) != 0)
+  dCopy = d;
+  if (dCopy && (NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(*MEMORY[0x1E695E480], *MEMORY[0x1E69822E8], dCopy, *MEMORY[0x1E6982338])) != 0)
   {
     v6 = NetworkServiceEntity;
     v7 = SCDynamicStoreCopyValue(self->_storeRef, NetworkServiceEntity);
@@ -311,10 +311,10 @@ LABEL_14:
   return v9;
 }
 
-- (id)__IPv6SetupConfigForServiceID:(id)a3
+- (id)__IPv6SetupConfigForServiceID:(id)d
 {
-  v4 = a3;
-  if (v4 && (NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(*MEMORY[0x1E695E480], *MEMORY[0x1E69822E8], v4, *MEMORY[0x1E6982340])) != 0)
+  dCopy = d;
+  if (dCopy && (NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(*MEMORY[0x1E695E480], *MEMORY[0x1E69822E8], dCopy, *MEMORY[0x1E6982340])) != 0)
   {
     v6 = NetworkServiceEntity;
     v7 = SCDynamicStoreCopyValue(self->_storeRef, NetworkServiceEntity);
@@ -431,17 +431,17 @@ LABEL_14:
   return v7;
 }
 
-- (id)__nameForServiceWithID:(id)a3
+- (id)__nameForServiceWithID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = *MEMORY[0x1E695E480];
-  v5 = [MEMORY[0x1E696AE30] processInfo];
-  v6 = [v5 processName];
-  v7 = SCPreferencesCreate(v4, v6, 0);
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
+  v7 = SCPreferencesCreate(v4, processName, 0);
 
   if (v7)
   {
-    v8 = SCNetworkServiceCopy(v7, v3);
+    v8 = SCNetworkServiceCopy(v7, dCopy);
     if (v8)
     {
       v9 = v8;
@@ -478,38 +478,38 @@ LABEL_14:
 
 - (id)IPv4InterfaceName
 {
-  v2 = [(CWFSCNetworkConfiguration *)self __IPv4GlobalStateConfig];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E6982300]];
+  __IPv4GlobalStateConfig = [(CWFSCNetworkConfiguration *)self __IPv4GlobalStateConfig];
+  v3 = [__IPv4GlobalStateConfig objectForKeyedSubscript:*MEMORY[0x1E6982300]];
 
   return v3;
 }
 
 - (id)IPv4ServiceID
 {
-  v2 = [(CWFSCNetworkConfiguration *)self __IPv4GlobalStateConfig];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E6982308]];
+  __IPv4GlobalStateConfig = [(CWFSCNetworkConfiguration *)self __IPv4GlobalStateConfig];
+  v3 = [__IPv4GlobalStateConfig objectForKeyedSubscript:*MEMORY[0x1E6982308]];
 
   return v3;
 }
 
 - (id)IPv4ServiceName
 {
-  v3 = [(CWFSCNetworkConfiguration *)self IPv4ServiceID];
-  v4 = [(CWFSCNetworkConfiguration *)self __nameForServiceWithID:v3];
+  iPv4ServiceID = [(CWFSCNetworkConfiguration *)self IPv4ServiceID];
+  v4 = [(CWFSCNetworkConfiguration *)self __nameForServiceWithID:iPv4ServiceID];
 
   return v4;
 }
 
 - (id)IPv4Addresses
 {
-  v3 = [(CWFSCNetworkConfiguration *)self IPv4ServiceID];
-  v4 = [(CWFSCNetworkConfiguration *)self __IPv4StateConfigForServiceID:v3];
+  iPv4ServiceID = [(CWFSCNetworkConfiguration *)self IPv4ServiceID];
+  v4 = [(CWFSCNetworkConfiguration *)self __IPv4StateConfigForServiceID:iPv4ServiceID];
   v5 = *MEMORY[0x1E6982478];
   v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982478]];
 
   if (!v6)
   {
-    v7 = [(CWFSCNetworkConfiguration *)self __IPv4SetupConfigForServiceID:v3];
+    v7 = [(CWFSCNetworkConfiguration *)self __IPv4SetupConfigForServiceID:iPv4ServiceID];
     v6 = [v7 objectForKeyedSubscript:v5];
   }
 
@@ -518,46 +518,46 @@ LABEL_14:
 
 - (id)IPv4Router
 {
-  v2 = [(CWFSCNetworkConfiguration *)self __IPv4GlobalStateConfig];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69824C0]];
+  __IPv4GlobalStateConfig = [(CWFSCNetworkConfiguration *)self __IPv4GlobalStateConfig];
+  v3 = [__IPv4GlobalStateConfig objectForKeyedSubscript:*MEMORY[0x1E69824C0]];
 
   return v3;
 }
 
 - (id)IPv4SubnetMasks
 {
-  v2 = [(CWFSCNetworkConfiguration *)self __IPv4GlobalStateConfig];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69824C8]];
+  __IPv4GlobalStateConfig = [(CWFSCNetworkConfiguration *)self __IPv4GlobalStateConfig];
+  v3 = [__IPv4GlobalStateConfig objectForKeyedSubscript:*MEMORY[0x1E69824C8]];
 
   return v3;
 }
 
 - (id)IPv6InterfaceName
 {
-  v2 = [(CWFSCNetworkConfiguration *)self __IPv6GlobalStateConfig];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E6982300]];
+  __IPv6GlobalStateConfig = [(CWFSCNetworkConfiguration *)self __IPv6GlobalStateConfig];
+  v3 = [__IPv6GlobalStateConfig objectForKeyedSubscript:*MEMORY[0x1E6982300]];
 
   return v3;
 }
 
 - (id)IPv6ServiceID
 {
-  v2 = [(CWFSCNetworkConfiguration *)self __IPv6GlobalStateConfig];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E6982308]];
+  __IPv6GlobalStateConfig = [(CWFSCNetworkConfiguration *)self __IPv6GlobalStateConfig];
+  v3 = [__IPv6GlobalStateConfig objectForKeyedSubscript:*MEMORY[0x1E6982308]];
 
   return v3;
 }
 
 - (id)IPv6Addresses
 {
-  v3 = [(CWFSCNetworkConfiguration *)self IPv6ServiceID];
-  v4 = [(CWFSCNetworkConfiguration *)self __IPv6StateConfigForServiceID:v3];
+  iPv6ServiceID = [(CWFSCNetworkConfiguration *)self IPv6ServiceID];
+  v4 = [(CWFSCNetworkConfiguration *)self __IPv6StateConfigForServiceID:iPv6ServiceID];
   v5 = *MEMORY[0x1E69824D8];
   v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69824D8]];
 
   if (!v6)
   {
-    v7 = [(CWFSCNetworkConfiguration *)self __IPv6SetupConfigForServiceID:v3];
+    v7 = [(CWFSCNetworkConfiguration *)self __IPv6SetupConfigForServiceID:iPv6ServiceID];
     v6 = [v7 objectForKeyedSubscript:v5];
   }
 
@@ -566,48 +566,48 @@ LABEL_14:
 
 - (id)IPv6ServiceName
 {
-  v3 = [(CWFSCNetworkConfiguration *)self IPv6ServiceID];
-  v4 = [(CWFSCNetworkConfiguration *)self __nameForServiceWithID:v3];
+  iPv6ServiceID = [(CWFSCNetworkConfiguration *)self IPv6ServiceID];
+  v4 = [(CWFSCNetworkConfiguration *)self __nameForServiceWithID:iPv6ServiceID];
 
   return v4;
 }
 
 - (id)IPv6Router
 {
-  v2 = [(CWFSCNetworkConfiguration *)self __IPv6GlobalStateConfig];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E6982528]];
+  __IPv6GlobalStateConfig = [(CWFSCNetworkConfiguration *)self __IPv6GlobalStateConfig];
+  v3 = [__IPv6GlobalStateConfig objectForKeyedSubscript:*MEMORY[0x1E6982528]];
 
   return v3;
 }
 
 - (id)IPv6PrefixLengths
 {
-  v2 = [(CWFSCNetworkConfiguration *)self __IPv6GlobalStateConfig];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E6982500]];
+  __IPv6GlobalStateConfig = [(CWFSCNetworkConfiguration *)self __IPv6GlobalStateConfig];
+  v3 = [__IPv6GlobalStateConfig objectForKeyedSubscript:*MEMORY[0x1E6982500]];
 
   return v3;
 }
 
 - (id)DNSServerAddresses
 {
-  v2 = [(CWFSCNetworkConfiguration *)self __DNSGlobalStateConfig];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69823D8]];
+  __DNSGlobalStateConfig = [(CWFSCNetworkConfiguration *)self __DNSGlobalStateConfig];
+  v3 = [__DNSGlobalStateConfig objectForKeyedSubscript:*MEMORY[0x1E69823D8]];
 
   return v3;
 }
 
 - (id)DNSDomainName
 {
-  v2 = [(CWFSCNetworkConfiguration *)self __DNSGlobalStateConfig];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69823C8]];
+  __DNSGlobalStateConfig = [(CWFSCNetworkConfiguration *)self __DNSGlobalStateConfig];
+  v3 = [__DNSGlobalStateConfig objectForKeyedSubscript:*MEMORY[0x1E69823C8]];
 
   return v3;
 }
 
 - (id)DNSSearchDomains
 {
-  v2 = [(CWFSCNetworkConfiguration *)self __DNSGlobalStateConfig];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69823D0]];
+  __DNSGlobalStateConfig = [(CWFSCNetworkConfiguration *)self __DNSGlobalStateConfig];
+  v3 = [__DNSGlobalStateConfig objectForKeyedSubscript:*MEMORY[0x1E69823D0]];
 
   return v3;
 }
@@ -644,21 +644,21 @@ LABEL_14:
 
 - (id)networkInterfaceNames
 {
-  v2 = [(CWFSCNetworkConfiguration *)self __networkInterfaceStateConfig];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69822F8]];
+  __networkInterfaceStateConfig = [(CWFSCNetworkConfiguration *)self __networkInterfaceStateConfig];
+  v3 = [__networkInterfaceStateConfig objectForKeyedSubscript:*MEMORY[0x1E69822F8]];
 
   return v3;
 }
 
-- (BOOL)__isIEEE80211NetworkInterfaceName:(id)a3
+- (BOOL)__isIEEE80211NetworkInterfaceName:(id)name
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
+  nameCopy = name;
+  v4 = nameCopy;
   memset(v12, 0, 44);
   v11[0] = 0;
   v11[1] = 0;
-  if (v3 && [v3 length] && objc_msgSend(v4, "length") <= 0x10 && (v5 = socket(2, 2, 0), v5 != -1))
+  if (nameCopy && [nameCopy length] && objc_msgSend(v4, "length") <= 0x10 && (v5 = socket(2, 2, 0), v5 != -1))
   {
     v6 = v5;
     [v4 getCString:v11 maxLength:16 encoding:30];
@@ -702,12 +702,12 @@ LABEL_14:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(CWFSCNetworkConfiguration *)self networkInterfaceNames];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  networkInterfaceNames = [(CWFSCNetworkConfiguration *)self networkInterfaceNames];
+  v4 = [networkInterfaceNames countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
-    v6 = 0;
+    array = 0;
     v7 = *v14;
     do
     {
@@ -715,22 +715,22 @@ LABEL_14:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(networkInterfaceNames);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
         if ([(CWFSCNetworkConfiguration *)self __isIEEE80211NetworkInterfaceName:v9])
         {
-          if (!v6)
+          if (!array)
           {
-            v6 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
           }
 
-          [v6 addObject:v9];
+          [array addObject:v9];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [networkInterfaceNames countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -738,10 +738,10 @@ LABEL_14:
 
   else
   {
-    v6 = 0;
+    array = 0;
   }
 
-  v10 = [v6 copy];
+  v10 = [array copy];
   v11 = *MEMORY[0x1E69E9840];
 
   return v10;

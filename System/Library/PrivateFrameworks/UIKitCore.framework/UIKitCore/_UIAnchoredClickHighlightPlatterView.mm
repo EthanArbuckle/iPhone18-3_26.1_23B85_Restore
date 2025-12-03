@@ -1,5 +1,5 @@
 @interface _UIAnchoredClickHighlightPlatterView
-- (_UIAnchoredClickHighlightPlatterView)initWithTargetedPreview:(id)a3;
+- (_UIAnchoredClickHighlightPlatterView)initWithTargetedPreview:(id)preview;
 - (_UIMorphingView)anchorView;
 - (void)anchorToContainer;
 - (void)deAnchor;
@@ -7,11 +7,11 @@
 
 @implementation _UIAnchoredClickHighlightPlatterView
 
-- (_UIAnchoredClickHighlightPlatterView)initWithTargetedPreview:(id)a3
+- (_UIAnchoredClickHighlightPlatterView)initWithTargetedPreview:(id)preview
 {
   v23.receiver = self;
   v23.super_class = _UIAnchoredClickHighlightPlatterView;
-  v3 = [(_UIHighlightPlatterView *)&v23 initWithTargetedPreview:a3];
+  v3 = [(_UIHighlightPlatterView *)&v23 initWithTargetedPreview:preview];
   if (v3)
   {
     if (_UIInternalPreferencesRevisionOnce != -1)
@@ -38,32 +38,32 @@
         if (byte_1EA95E0FC)
         {
           v7 = +[UIColor systemOrangeColor];
-          v8 = [v7 CGColor];
-          v9 = [(_UIHighlightPlatterView *)v3 portalView];
-          v10 = [v9 layer];
-          [v10 setBorderColor:v8];
+          cGColor = [v7 CGColor];
+          portalView = [(_UIHighlightPlatterView *)v3 portalView];
+          layer = [portalView layer];
+          [layer setBorderColor:cGColor];
 
-          v11 = [(_UIHighlightPlatterView *)v3 portalView];
-          v12 = [v11 layer];
-          [v12 setBorderWidth:1.0];
+          portalView2 = [(_UIHighlightPlatterView *)v3 portalView];
+          layer2 = [portalView2 layer];
+          [layer2 setBorderWidth:1.0];
 
           v13 = +[UIColor redColor];
-          v14 = [v13 CGColor];
-          v15 = [(UIView *)v3 layer];
-          [v15 setBorderColor:v14];
+          cGColor2 = [v13 CGColor];
+          layer3 = [(UIView *)v3 layer];
+          [layer3 setBorderColor:cGColor2];
 
-          v16 = [(UIView *)v3 layer];
-          [v16 setBorderWidth:1.0];
+          layer4 = [(UIView *)v3 layer];
+          [layer4 setBorderWidth:1.0];
 
           v17 = +[UIColor blueColor];
-          v18 = [v17 CGColor];
-          v19 = [(_UIAnchoredClickHighlightPlatterView *)v3 anchorView];
-          v20 = [v19 layer];
-          [v20 setBorderColor:v18];
+          cGColor3 = [v17 CGColor];
+          anchorView = [(_UIAnchoredClickHighlightPlatterView *)v3 anchorView];
+          layer5 = [anchorView layer];
+          [layer5 setBorderColor:cGColor3];
 
-          v21 = [(_UIAnchoredClickHighlightPlatterView *)v3 anchorView];
-          v22 = [v21 layer];
-          [v22 setBorderWidth:1.0];
+          anchorView2 = [(_UIAnchoredClickHighlightPlatterView *)v3 anchorView];
+          layer6 = [anchorView2 layer];
+          [layer6 setBorderWidth:1.0];
         }
       }
     }
@@ -75,38 +75,38 @@
 - (void)anchorToContainer
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v3 = [(_UIHighlightPlatterView *)self targetedPreview];
-  v4 = [v3 target];
+  targetedPreview = [(_UIHighlightPlatterView *)self targetedPreview];
+  target = [targetedPreview target];
   v5 = objc_opt_new();
   [v5 setUserInteractionEnabled:0];
   [v5 setUseOpacityPairFilter:1];
   [(_UIAnchoredClickHighlightPlatterView *)self setAnchorView:v5];
-  v6 = [v3 view];
-  v7 = [v4 container];
-  [v7 addSubview:v5];
+  view = [targetedPreview view];
+  container = [target container];
+  [container addSubview:v5];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
-    v9 = [v8 _verticalScrollIndicator];
-    [v8 bringSubviewToFront:v9];
+    v8 = container;
+    _verticalScrollIndicator = [v8 _verticalScrollIndicator];
+    [v8 bringSubviewToFront:_verticalScrollIndicator];
 
-    v10 = [v8 _horizontalScrollIndicator];
-    [v8 bringSubviewToFront:v10];
+    _horizontalScrollIndicator = [v8 _horizontalScrollIndicator];
+    [v8 bringSubviewToFront:_horizontalScrollIndicator];
   }
 
-  [v4 center];
+  [target center];
   [v5 setCenter:?];
-  if ([v3 _hasCustomTarget])
+  if ([targetedPreview _hasCustomTarget])
   {
-    if ([v3 _sourceViewIsInViewHierarchy])
+    if ([targetedPreview _sourceViewIsInViewHierarchy])
     {
-      v11 = v6;
-      [v4 center];
+      container3 = view;
+      [target center];
       v13 = v12;
       v15 = v14;
-      v16 = [v4 container];
-      [v11 convertPoint:v16 fromView:{v13, v15}];
+      container2 = [target container];
+      [container3 convertPoint:container2 fromView:{v13, v15}];
       v18 = v17;
       v20 = v19;
 LABEL_8:
@@ -114,49 +114,49 @@ LABEL_8:
       goto LABEL_11;
     }
 
-    v11 = [v4 container];
-    [v4 center];
+    container3 = [target container];
+    [target center];
     v18 = v28;
     v20 = v29;
   }
 
   else
   {
-    v11 = v6;
-    v21 = [v3 parameters];
-    v22 = [v21 visiblePath];
+    container3 = view;
+    parameters = [targetedPreview parameters];
+    visiblePath = [parameters visiblePath];
 
-    if (v22)
+    if (visiblePath)
     {
-      v16 = [v3 parameters];
-      v23 = [v16 visiblePath];
-      [v23 bounds];
+      container2 = [targetedPreview parameters];
+      visiblePath2 = [container2 visiblePath];
+      [visiblePath2 bounds];
       v18 = v25 + v24 * 0.5;
       v20 = v27 + v26 * 0.5;
 
       goto LABEL_8;
     }
 
-    [v11 bounds];
+    [container3 bounds];
     v18 = v31 + v30 * 0.5;
     v20 = v33 + v32 * 0.5;
   }
 
 LABEL_11:
-  v34 = [v3 overridePositionTrackingView];
-  if (v34)
+  overridePositionTrackingView = [targetedPreview overridePositionTrackingView];
+  if (overridePositionTrackingView)
   {
-    [v11 convertPoint:v34 toView:{v18, v20}];
+    [container3 convertPoint:overridePositionTrackingView toView:{v18, v20}];
     v18 = v35;
     v20 = v36;
-    v37 = v34;
+    v37 = overridePositionTrackingView;
 
-    v11 = v37;
+    container3 = v37;
   }
 
   v38 = objc_opt_new();
-  v39 = [v11 layer];
-  [v38 setSourceLayer:v39];
+  layer = [container3 layer];
+  [v38 setSourceLayer:layer];
 
   [v38 setKeyPath:@"position"];
   [v38 setDuration:INFINITY];
@@ -165,12 +165,12 @@ LABEL_11:
   v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:1];
   [v38 setSourcePoints:v41];
 
-  v42 = [v5 layer];
-  [v42 addAnimation:v38 forKey:@"_UIClickHighlightMatchMoveAnimation"];
+  layer2 = [v5 layer];
+  [layer2 addAnimation:v38 forKey:@"_UIClickHighlightMatchMoveAnimation"];
 
-  if (v4)
+  if (target)
   {
-    [v4 transform];
+    [target transform];
   }
 
   else
@@ -188,8 +188,8 @@ LABEL_11:
 
 - (void)deAnchor
 {
-  v2 = [(_UIAnchoredClickHighlightPlatterView *)self anchorView];
-  [v2 removeFromSuperview];
+  anchorView = [(_UIAnchoredClickHighlightPlatterView *)self anchorView];
+  [anchorView removeFromSuperview];
 }
 
 - (_UIMorphingView)anchorView

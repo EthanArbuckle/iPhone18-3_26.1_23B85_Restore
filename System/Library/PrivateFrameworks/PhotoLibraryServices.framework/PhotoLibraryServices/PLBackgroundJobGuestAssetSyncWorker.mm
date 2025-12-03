@@ -1,48 +1,48 @@
 @interface PLBackgroundJobGuestAssetSyncWorker
-+ (BOOL)_needsInitialSyncForSourceLibrary:(id)a3 targetLibrary:(id)a4;
-- (BOOL)_batchResetGuestSavedAssetTypeInManagedObjectContext:(id)a3 error:(id *)a4;
-- (BOOL)_batchResetSyndicationProcessingInManagedObjectContext:(id)a3 error:(id *)a4;
-- (BOOL)_checkSyndicationPreferencesEnabledAndCleanupGuestAssetsIfNeededWithPhotoLibrary:(id)a3;
-- (BOOL)_deleteAllGuestAssetsInPhotoLibrary:(id)a3 reason:(id)a4 error:(id *)a5;
-- (BOOL)_resetSyndicationProcessingInSourceLibrary:(id)a3 error:(id *)a4;
++ (BOOL)_needsInitialSyncForSourceLibrary:(id)library targetLibrary:(id)targetLibrary;
+- (BOOL)_batchResetGuestSavedAssetTypeInManagedObjectContext:(id)context error:(id *)error;
+- (BOOL)_batchResetSyndicationProcessingInManagedObjectContext:(id)context error:(id *)error;
+- (BOOL)_checkSyndicationPreferencesEnabledAndCleanupGuestAssetsIfNeededWithPhotoLibrary:(id)library;
+- (BOOL)_deleteAllGuestAssetsInPhotoLibrary:(id)library reason:(id)reason error:(id *)error;
+- (BOOL)_resetSyndicationProcessingInSourceLibrary:(id)library error:(id *)error;
 - (BOOL)_safeIsCancelled;
-- (BOOL)_systemPhotoLibraryChangedSinceLastRunWithSourceLibrary:(id)a3 targetLibrary:(id)a4;
-- (PLBackgroundJobGuestAssetSyncWorker)initWithLibraryBundle:(id)a3;
-- (id)_lastGuestAssetSyncTargetLibraryURLFromSourceLibrary:(id)a3 targetLibrary:(id)a4;
-- (id)_sourcePhotoLibraryWithName:(const char *)a3;
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4;
-- (void)_performWorkOnItem:(id)a3 inSystemPhotoLibrary:(id)a4 completion:(id)a5;
-- (void)_updateLastGuestAssetSyncTargetLibraryURLInSourceLibrary:(id)a3 targetLibrary:(id)a4;
-- (void)guestAssetSyncManager:(id)a3 isTransferingAsset:(id)a4 toLibrary:(id)a5 completion:(id)a6;
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5;
-- (void)stopWorkingOnItem:(id)a3;
+- (BOOL)_systemPhotoLibraryChangedSinceLastRunWithSourceLibrary:(id)library targetLibrary:(id)targetLibrary;
+- (PLBackgroundJobGuestAssetSyncWorker)initWithLibraryBundle:(id)bundle;
+- (id)_lastGuestAssetSyncTargetLibraryURLFromSourceLibrary:(id)library targetLibrary:(id)targetLibrary;
+- (id)_sourcePhotoLibraryWithName:(const char *)name;
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias;
+- (void)_performWorkOnItem:(id)item inSystemPhotoLibrary:(id)library completion:(id)completion;
+- (void)_updateLastGuestAssetSyncTargetLibraryURLInSourceLibrary:(id)library targetLibrary:(id)targetLibrary;
+- (void)guestAssetSyncManager:(id)manager isTransferingAsset:(id)asset toLibrary:(id)library completion:(id)completion;
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion;
+- (void)stopWorkingOnItem:(id)item;
 @end
 
 @implementation PLBackgroundJobGuestAssetSyncWorker
 
-- (void)guestAssetSyncManager:(id)a3 isTransferingAsset:(id)a4 toLibrary:(id)a5 completion:(id)a6
+- (void)guestAssetSyncManager:(id)manager isTransferingAsset:(id)asset toLibrary:(id)library completion:(id)completion
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v10 uuid];
-  v12 = [v10 photoLibrary];
+  completionCopy = completion;
+  libraryCopy = library;
+  assetCopy = asset;
+  uuid = [assetCopy uuid];
+  photoLibrary = [assetCopy photoLibrary];
 
-  v13 = [v12 libraryBundle];
+  libraryBundle = [photoLibrary libraryBundle];
 
-  v14 = [v9 libraryBundle];
+  libraryBundle2 = [libraryCopy libraryBundle];
 
   v15 = +[PLInterLibraryTransferOptions newTransferOptionsForAssetsFromSyndicationToSystem];
-  v16 = [MEMORY[0x1E695DFD8] setWithObject:v11];
+  v16 = [MEMORY[0x1E695DFD8] setWithObject:uuid];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __101__PLBackgroundJobGuestAssetSyncWorker_guestAssetSyncManager_isTransferingAsset_toLibrary_completion___block_invoke;
   v20[3] = &unk_1E7576050;
-  v21 = v11;
-  v22 = v8;
-  v17 = v8;
-  v18 = v11;
-  v19 = [v13 transferAssets:v16 toBundle:v14 options:v15 completion:v20];
+  v21 = uuid;
+  v22 = completionCopy;
+  v17 = completionCopy;
+  v18 = uuid;
+  v19 = [libraryBundle transferAssets:v16 toBundle:libraryBundle2 options:v15 completion:v20];
 }
 
 void __101__PLBackgroundJobGuestAssetSyncWorker_guestAssetSyncManager_isTransferingAsset_toLibrary_completion___block_invoke(uint64_t a1, void *a2)
@@ -84,14 +84,14 @@ LABEL_6:
   (*(*(a1 + 40) + 16))(*(a1 + 40), v3, v12, v13);
 }
 
-- (BOOL)_systemPhotoLibraryChangedSinceLastRunWithSourceLibrary:(id)a3 targetLibrary:(id)a4
+- (BOOL)_systemPhotoLibraryChangedSinceLastRunWithSourceLibrary:(id)library targetLibrary:(id)targetLibrary
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(PLBackgroundJobGuestAssetSyncWorker *)self _lastGuestAssetSyncTargetLibraryURLFromSourceLibrary:a3 targetLibrary:v6];
-  v8 = [v6 pathManager];
-  v9 = [v8 libraryURL];
-  v10 = [v7 isEqual:v9];
+  targetLibraryCopy = targetLibrary;
+  v7 = [(PLBackgroundJobGuestAssetSyncWorker *)self _lastGuestAssetSyncTargetLibraryURLFromSourceLibrary:library targetLibrary:targetLibraryCopy];
+  pathManager = [targetLibraryCopy pathManager];
+  libraryURL = [pathManager libraryURL];
+  v10 = [v7 isEqual:libraryURL];
 
   if ((v10 & 1) == 0)
   {
@@ -99,11 +99,11 @@ LABEL_6:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = [MEMORY[0x1E69BF220] descriptionWithFileURL:v7];
-      v13 = [v6 pathManager];
+      pathManager2 = [targetLibraryCopy pathManager];
       v15 = 138412546;
       v16 = v12;
       v17 = 2112;
-      v18 = v13;
+      v18 = pathManager2;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "GuestAssetSync: System photo library URL changed since last run %@ -> %@", &v15, 0x16u);
     }
   }
@@ -111,66 +111,66 @@ LABEL_6:
   return v10 ^ 1;
 }
 
-- (void)_updateLastGuestAssetSyncTargetLibraryURLInSourceLibrary:(id)a3 targetLibrary:(id)a4
+- (void)_updateLastGuestAssetSyncTargetLibraryURLInSourceLibrary:(id)library targetLibrary:(id)targetLibrary
 {
-  v5 = a3;
-  v6 = [a4 pathManager];
-  v9 = [v6 libraryURL];
+  libraryCopy = library;
+  pathManager = [targetLibrary pathManager];
+  libraryURL = [pathManager libraryURL];
 
-  v7 = [v9 path];
-  v8 = [v5 globalValues];
+  path = [libraryURL path];
+  globalValues = [libraryCopy globalValues];
 
-  [v8 setLastGuestAssetSyncTargetLibraryPath:v7];
+  [globalValues setLastGuestAssetSyncTargetLibraryPath:path];
 }
 
-- (id)_lastGuestAssetSyncTargetLibraryURLFromSourceLibrary:(id)a3 targetLibrary:(id)a4
+- (id)_lastGuestAssetSyncTargetLibraryURLFromSourceLibrary:(id)library targetLibrary:(id)targetLibrary
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 globalValues];
-  v8 = [v7 lastGuestAssetSyncTargetLibraryPath];
+  libraryCopy = library;
+  targetLibraryCopy = targetLibrary;
+  globalValues = [libraryCopy globalValues];
+  lastGuestAssetSyncTargetLibraryPath = [globalValues lastGuestAssetSyncTargetLibraryPath];
 
-  if (v8)
+  if (lastGuestAssetSyncTargetLibraryPath)
   {
-    v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:v8 isDirectory:1];
+    libraryURL = [MEMORY[0x1E695DFF8] fileURLWithPath:lastGuestAssetSyncTargetLibraryPath isDirectory:1];
   }
 
   else
   {
-    v10 = [v6 pathManager];
-    v9 = [v10 libraryURL];
+    pathManager = [targetLibraryCopy pathManager];
+    libraryURL = [pathManager libraryURL];
 
     v11 = PLSyndicationGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [v6 pathManager];
+      pathManager2 = [targetLibraryCopy pathManager];
       v16 = 138412290;
-      v17 = v12;
+      v17 = pathManager2;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_INFO, "GuestAssetSync: last target library URL is nil, setting to %@", &v16, 0xCu);
     }
 
-    v13 = [v9 path];
-    v14 = [v5 globalValues];
-    [v14 setLastGuestAssetSyncTargetLibraryPath:v13];
+    path = [libraryURL path];
+    globalValues2 = [libraryCopy globalValues];
+    [globalValues2 setLastGuestAssetSyncTargetLibraryPath:path];
   }
 
-  return v9;
+  return libraryURL;
 }
 
 - (BOOL)_safeIsCancelled
 {
   v2 = PLSafeResultWithUnfairLock();
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (BOOL)_batchResetSyndicationProcessingInManagedObjectContext:(id)a3 error:(id *)a4
+- (BOOL)_batchResetSyndicationProcessingInManagedObjectContext:(id)context error:(id *)error
 {
   v23[2] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695D560];
-  v6 = a3;
+  contextCopy = context;
   v7 = [v5 alloc];
   v8 = +[PLMediaAnalysisAssetAttributes entity];
   v9 = [v7 initWithEntity:v8];
@@ -186,7 +186,7 @@ LABEL_6:
   [v9 setPropertiesToUpdate:v11];
 
   v19 = 0;
-  v12 = [v6 executeRequest:v9 error:&v19];
+  v12 = [contextCopy executeRequest:v9 error:&v19];
 
   v13 = v19;
   v14 = PLSyndicationGetLog();
@@ -195,9 +195,9 @@ LABEL_6:
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v16 = [v12 result];
+      result = [v12 result];
       *buf = 138412290;
-      v21 = v16;
+      v21 = result;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_INFO, "GuestAssetSync: Batch reset syndicationProcessing on %@ media analysis attributes", buf, 0xCu);
     }
   }
@@ -211,21 +211,21 @@ LABEL_6:
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "GuestAssetSync: Failed to batch reset syndicationProcessing on media analysis attributes: %@", buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       v17 = v13;
-      *a4 = v13;
+      *error = v13;
     }
   }
 
   return v12 != 0;
 }
 
-- (BOOL)_batchResetGuestSavedAssetTypeInManagedObjectContext:(id)a3 error:(id *)a4
+- (BOOL)_batchResetGuestSavedAssetTypeInManagedObjectContext:(id)context error:(id *)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695D560];
-  v6 = a3;
+  contextCopy = context;
   v7 = [v5 alloc];
   v8 = +[PLManagedAsset entity];
   v9 = [v7 initWithEntity:v8];
@@ -240,7 +240,7 @@ LABEL_6:
   [v9 setPropertiesToUpdate:v12];
 
   v20 = 0;
-  v13 = [v6 executeRequest:v9 error:&v20];
+  v13 = [contextCopy executeRequest:v9 error:&v20];
 
   v14 = v20;
   v15 = PLSyndicationGetLog();
@@ -249,9 +249,9 @@ LABEL_6:
   {
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v17 = [v13 result];
+      result = [v13 result];
       *buf = 138412290;
-      v22 = v17;
+      v22 = result;
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_INFO, "GuestAssetSync: Batch reset savedAssetType for %@ assets", buf, 0xCu);
     }
   }
@@ -265,19 +265,19 @@ LABEL_6:
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_ERROR, "GuestAssetSync: Failed to batch reset savedAssetType for assets: %@", buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       v18 = v14;
-      *a4 = v14;
+      *error = v14;
     }
   }
 
   return v13 != 0;
 }
 
-- (BOOL)_resetSyndicationProcessingInSourceLibrary:(id)a3 error:(id *)a4
+- (BOOL)_resetSyndicationProcessingInSourceLibrary:(id)library error:(id *)error
 {
-  v6 = a3;
+  libraryCopy = library;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -294,14 +294,14 @@ LABEL_6:
   v11[3] = &unk_1E7578898;
   v13 = &v21;
   v11[4] = self;
-  v7 = v6;
+  v7 = libraryCopy;
   v12 = v7;
   v14 = &v15;
   [v7 performTransactionAndWait:v11];
   v8 = v16[5];
-  if (v8 && a4)
+  if (v8 && error)
   {
-    *a4 = v8;
+    *error = v8;
   }
 
   v9 = *(v22 + 24);
@@ -346,30 +346,30 @@ void __88__PLBackgroundJobGuestAssetSyncWorker__resetSyndicationProcessingInSour
   }
 }
 
-- (id)_sourcePhotoLibraryWithName:(const char *)a3
+- (id)_sourcePhotoLibraryWithName:(const char *)name
 {
   v4 = +[PLPhotoLibraryBundleController sharedBundleController];
   v5 = [MEMORY[0x1E69BF2A0] wellKnownPhotoLibraryURLForIdentifier:3];
   v6 = [v4 openBundleAtLibraryURL:v5];
 
-  v7 = [v6 libraryServicesManager];
+  libraryServicesManager = [v6 libraryServicesManager];
   v17 = 0;
-  v8 = [v7 activate:&v17];
+  v8 = [libraryServicesManager activate:&v17];
   v9 = v17;
   v10 = v9;
-  if (v8 && (v9, v16 = 0, v11 = [v7 awaitLibraryState:7 error:&v16], v10 = v16, v11))
+  if (v8 && (v9, v16 = 0, v11 = [libraryServicesManager awaitLibraryState:7 error:&v16], v10 = v16, v11))
   {
-    v12 = [v7 databaseContext];
-    v13 = [v12 newShortLivedLibraryWithName:a3];
+    databaseContext = [libraryServicesManager databaseContext];
+    v13 = [databaseContext newShortLivedLibraryWithName:name];
   }
 
   else
   {
-    v12 = PLSyndicationGetLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    databaseContext = PLSyndicationGetLog();
+    if (os_log_type_enabled(databaseContext, OS_LOG_TYPE_ERROR))
     {
       *v15 = 0;
-      _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "GuestAssetSync: Unable to provide source library for guest asset sync worker", v15, 2u);
+      _os_log_impl(&dword_19BF1F000, databaseContext, OS_LOG_TYPE_ERROR, "GuestAssetSync: Unable to provide source library for guest asset sync worker", v15, 2u);
     }
 
     v13 = 0;
@@ -378,23 +378,23 @@ void __88__PLBackgroundJobGuestAssetSyncWorker__resetSyndicationProcessingInSour
   return v13;
 }
 
-- (BOOL)_deleteAllGuestAssetsInPhotoLibrary:(id)a3 reason:(id)a4 error:(id *)a5
+- (BOOL)_deleteAllGuestAssetsInPhotoLibrary:(id)library reason:(id)reason error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  reasonCopy = reason;
   v9 = PLSyndicationGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v7;
+    v20 = libraryCopy;
     _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEFAULT, "GuestAssetSync: deleting all guest assets in library %@", buf, 0xCu);
   }
 
-  v10 = [v7 managedObjectContext];
-  v11 = [v7 pathManager];
+  managedObjectContext = [libraryCopy managedObjectContext];
+  pathManager = [libraryCopy pathManager];
   v18 = 0;
-  v12 = PLDeleteGuestAssetsInLibraryWithManagedObjectContext(v10, v11, v8, 0, &v18);
+  v12 = PLDeleteGuestAssetsInLibraryWithManagedObjectContext(managedObjectContext, pathManager, reasonCopy, 0, &v18);
 
   v13 = v18;
   if (v12)
@@ -408,25 +408,25 @@ void __88__PLBackgroundJobGuestAssetSyncWorker__resetSyndicationProcessingInSour
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v20 = v7;
+      v20 = libraryCopy;
       v21 = 2112;
       v22 = v13;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "GuestAssetSync: failed to delete guest assets in library %@ error: %@", buf, 0x16u);
     }
 
     v16 = v13;
-    if (a5)
+    if (error)
     {
-      *a5 = v16;
+      *error = v16;
     }
   }
 
   return v12;
 }
 
-- (BOOL)_checkSyndicationPreferencesEnabledAndCleanupGuestAssetsIfNeededWithPhotoLibrary:(id)a3
+- (BOOL)_checkSyndicationPreferencesEnabledAndCleanupGuestAssetsIfNeededWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v5 = PLSyndicationGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -437,33 +437,33 @@ void __88__PLBackgroundJobGuestAssetSyncWorker__resetSyndicationProcessingInSour
   v6 = PLSyndicationPreferencesEnabled(0);
   if ((v6 & 1) == 0)
   {
-    if ([PLGuestAssetSyncEngine didIngestGuestAssetsInLibrary:v4])
+    if ([PLGuestAssetSyncEngine didIngestGuestAssetsInLibrary:libraryCopy])
     {
-      [(PLBackgroundJobGuestAssetSyncWorker *)self _deleteAllGuestAssetsInPhotoLibrary:v4 reason:@"Deleting all guest assets in SPL because syndication prefs are disabled" error:0];
+      [(PLBackgroundJobGuestAssetSyncWorker *)self _deleteAllGuestAssetsInPhotoLibrary:libraryCopy reason:@"Deleting all guest assets in SPL because syndication prefs are disabled" error:0];
     }
 
     else
     {
-      v7 = [v4 globalValues];
-      [v7 setGuestAssetSyncStatus:0];
+      globalValues = [libraryCopy globalValues];
+      [globalValues setGuestAssetSyncStatus:0];
 
-      v8 = [v4 globalValues];
-      [v8 setGuestAssetInitialSyncResumeMarker:0];
+      globalValues2 = [libraryCopy globalValues];
+      [globalValues2 setGuestAssetInitialSyncResumeMarker:0];
     }
   }
 
   return v6;
 }
 
-- (void)stopWorkingOnItem:(id)a3
+- (void)stopWorkingOnItem:(id)item
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemCopy = item;
   v4 = PLSyndicationGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v6 = v3;
+    v6 = itemCopy;
     _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_INFO, "GuestAssetSync: PLBackgroundJobGuestAssetSyncWorker stopWorkingOnItem: %p", buf, 0xCu);
   }
 
@@ -481,56 +481,56 @@ uint64_t __57__PLBackgroundJobGuestAssetSyncWorker_stopWorkingOnItem___block_inv
   return result;
 }
 
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemCopy = item;
+  libraryCopy = library;
+  completionCopy = completion;
   v12 = PLSyndicationGetLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 134218242;
-    v38 = v9;
+    v38 = itemCopy;
     v39 = 2112;
-    v40 = v9;
+    v40 = itemCopy;
     _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_INFO, "GuestAssetSync: PLBackgroundJobGuestAssetSyncWorker performWorkOnItem: %p %@", buf, 0x16u);
   }
 
-  if (!v10)
+  if (!libraryCopy)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobGuestAssetSyncWorker.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"library != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundJobGuestAssetSyncWorker.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"library != nil"}];
   }
 
-  if ([(PLBackgroundJobWorker *)self hasEnoughDiskSpaceToContinue:v11])
+  if ([(PLBackgroundJobWorker *)self hasEnoughDiskSpaceToContinue:completionCopy])
   {
-    v13 = [(PLBackgroundJobWorker *)self libraryBundle];
-    v14 = [v13 libraryServicesManager];
+    libraryBundle = [(PLBackgroundJobWorker *)self libraryBundle];
+    libraryServicesManager = [libraryBundle libraryServicesManager];
 
-    if (v14)
+    if (libraryServicesManager)
     {
-      v15 = [v14 wellKnownPhotoLibraryIdentifier];
-      if (v15 <= 1)
+      wellKnownPhotoLibraryIdentifier = [libraryServicesManager wellKnownPhotoLibraryIdentifier];
+      if (wellKnownPhotoLibraryIdentifier <= 1)
       {
-        if (v15)
+        if (wellKnownPhotoLibraryIdentifier)
         {
-          if (v15 == 1)
+          if (wellKnownPhotoLibraryIdentifier == 1)
           {
-            [(PLBackgroundJobGuestAssetSyncWorker *)self _performWorkOnItem:v9 inSystemPhotoLibrary:v10 completion:v11];
+            [(PLBackgroundJobGuestAssetSyncWorker *)self _performWorkOnItem:itemCopy inSystemPhotoLibrary:libraryCopy completion:completionCopy];
           }
         }
 
         else
         {
-          if ([PLGuestAssetSyncEngine didIngestGuestAssetsInLibrary:v10])
+          if ([PLGuestAssetSyncEngine didIngestGuestAssetsInLibrary:libraryCopy])
           {
-            v25 = [v10 managedObjectContext];
-            if (v25)
+            managedObjectContext = [libraryCopy managedObjectContext];
+            if (managedObjectContext)
             {
-              v26 = v25;
+              globalValues = managedObjectContext;
               v32 = 0;
-              [(PLBackgroundJobGuestAssetSyncWorker *)self _deleteAllGuestAssetsInPhotoLibrary:v10 reason:@"Guest asset sync worker on non-SPL library deleting guest assets" error:&v32];
+              [(PLBackgroundJobGuestAssetSyncWorker *)self _deleteAllGuestAssetsInPhotoLibrary:libraryCopy reason:@"Guest asset sync worker on non-SPL library deleting guest assets" error:&v32];
               v27 = v32;
             }
 
@@ -543,51 +543,51 @@ uint64_t __57__PLBackgroundJobGuestAssetSyncWorker_stopWorkingOnItem___block_inv
               v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
               v27 = [v28 errorWithDomain:v29 code:41003 userInfo:v30];
 
-              v26 = 0;
+              globalValues = 0;
             }
           }
 
           else
           {
-            v26 = [v10 globalValues];
-            [v26 setGuestAssetSyncStatus:0];
+            globalValues = [libraryCopy globalValues];
+            [globalValues setGuestAssetSyncStatus:0];
             v27 = 0;
           }
 
-          v11[2](v11, v27);
+          completionCopy[2](completionCopy, v27);
         }
 
         goto LABEL_21;
       }
 
-      if (v15 == 2)
+      if (wellKnownPhotoLibraryIdentifier == 2)
       {
-        v20 = [MEMORY[0x1E696AAA8] currentHandler];
-        v18 = v20;
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        v18 = currentHandler2;
         v21 = @"Guest asset sync worker should not run on messages photo library";
         v22 = a2;
-        v23 = self;
+        selfCopy2 = self;
         v24 = 255;
       }
 
       else
       {
-        if (v15 != 3)
+        if (wellKnownPhotoLibraryIdentifier != 3)
         {
 LABEL_21:
 
           goto LABEL_22;
         }
 
-        v20 = [MEMORY[0x1E696AAA8] currentHandler];
-        v18 = v20;
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        v18 = currentHandler2;
         v21 = @"Guest asset sync worker should not run on syndication photo library";
         v22 = a2;
-        v23 = self;
+        selfCopy2 = self;
         v24 = 252;
       }
 
-      [v20 handleFailureInMethod:v22 object:v23 file:@"PLBackgroundJobGuestAssetSyncWorker.m" lineNumber:v24 description:v21];
+      [currentHandler2 handleFailureInMethod:v22 object:selfCopy2 file:@"PLBackgroundJobGuestAssetSyncWorker.m" lineNumber:v24 description:v21];
     }
 
     else
@@ -598,7 +598,7 @@ LABEL_21:
       v36 = @"nil lsm";
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
       v19 = [v16 errorWithDomain:v17 code:46002 userInfo:v18];
-      v11[2](v11, v19);
+      completionCopy[2](completionCopy, v19);
     }
 
     goto LABEL_21;
@@ -607,32 +607,32 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)_performWorkOnItem:(id)a3 inSystemPhotoLibrary:(id)a4 completion:(id)a5
+- (void)_performWorkOnItem:(id)item inSystemPhotoLibrary:(id)library completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(PLBackgroundJobGuestAssetSyncWorker *)self _checkSyndicationPreferencesEnabledAndCleanupGuestAssetsIfNeededWithPhotoLibrary:v9])
+  itemCopy = item;
+  libraryCopy = library;
+  completionCopy = completion;
+  if ([(PLBackgroundJobGuestAssetSyncWorker *)self _checkSyndicationPreferencesEnabledAndCleanupGuestAssetsIfNeededWithPhotoLibrary:libraryCopy])
   {
     v11 = [(PLBackgroundJobGuestAssetSyncWorker *)self _sourcePhotoLibraryWithName:"[PLBackgroundJobGuestAssetSyncWorker _performWorkOnItem:inSystemPhotoLibrary:completion:]"];
     if (v11)
     {
-      if ([(PLBackgroundJobGuestAssetSyncWorker *)self _systemPhotoLibraryChangedSinceLastRunWithSourceLibrary:v11 targetLibrary:v9])
+      if ([(PLBackgroundJobGuestAssetSyncWorker *)self _systemPhotoLibraryChangedSinceLastRunWithSourceLibrary:v11 targetLibrary:libraryCopy])
       {
         v26 = 0;
         v12 = [(PLBackgroundJobGuestAssetSyncWorker *)self _resetSyndicationProcessingInSourceLibrary:v11 error:&v26];
-        v13 = v26;
+        objectID = v26;
         if (!v12)
         {
-          v10[2](v10, v13);
+          completionCopy[2](completionCopy, objectID);
           goto LABEL_20;
         }
 
-        [(PLBackgroundJobGuestAssetSyncWorker *)self _updateLastGuestAssetSyncTargetLibraryURLInSourceLibrary:v11 targetLibrary:v9];
+        [(PLBackgroundJobGuestAssetSyncWorker *)self _updateLastGuestAssetSyncTargetLibraryURLInSourceLibrary:v11 targetLibrary:libraryCopy];
       }
 
-      if ([objc_opt_class() _needsInitialSyncForSourceLibrary:v11 targetLibrary:v9])
+      if ([objc_opt_class() _needsInitialSyncForSourceLibrary:v11 targetLibrary:libraryCopy])
       {
         v14 = PLSyndicationGetLog();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -645,7 +645,7 @@ LABEL_22:
         v22 = 3221225472;
         v23 = __90__PLBackgroundJobGuestAssetSyncWorker__performWorkOnItem_inSystemPhotoLibrary_completion___block_invoke;
         v24 = &unk_1E75781E8;
-        v25 = self;
+        selfCopy = self;
         PLSafeRunWithUnfairLock();
         manager = self->_manager;
         v19[0] = MEMORY[0x1E69E9820];
@@ -653,17 +653,17 @@ LABEL_22:
         v19[2] = __90__PLBackgroundJobGuestAssetSyncWorker__performWorkOnItem_inSystemPhotoLibrary_completion___block_invoke_2;
         v19[3] = &unk_1E7576FF8;
         v19[4] = self;
-        v20 = v10;
-        [(PLGuestAssetSyncEngine *)manager performInitialSyncWithSourceLibrary:v11 targetLibrary:v9 completion:v19];
+        v20 = completionCopy;
+        [(PLGuestAssetSyncEngine *)manager performInitialSyncWithSourceLibrary:v11 targetLibrary:libraryCopy completion:v19];
 
         goto LABEL_21;
       }
 
-      if ([v8 type] == 2)
+      if ([itemCopy type] == 2)
       {
         v18 = self->_manager;
-        v13 = [v8 objectID];
-        [(PLGuestAssetSyncEngine *)v18 processWorkItemObjectID:v13 sourceLibrary:v11 targetLibrary:v9 completion:v10];
+        objectID = [itemCopy objectID];
+        [(PLGuestAssetSyncEngine *)v18 processWorkItemObjectID:objectID sourceLibrary:v11 targetLibrary:libraryCopy completion:completionCopy];
 LABEL_20:
 
         goto LABEL_21;
@@ -676,12 +676,12 @@ LABEL_20:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v28 = v8;
+        v28 = itemCopy;
         _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_INFO, "GuestAssetSync: No work for item %p: sourceLibrary is nil", buf, 0xCu);
       }
     }
 
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
 LABEL_21:
 
     goto LABEL_22;
@@ -691,11 +691,11 @@ LABEL_21:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v28 = v8;
+    v28 = itemCopy;
     _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_INFO, "GuestAssetSync: No work for item %p: syndication preference is disabled", buf, 0xCu);
   }
 
-  v10[2](v10, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_22:
 }
 
@@ -713,24 +713,24 @@ uint64_t __90__PLBackgroundJobGuestAssetSyncWorker__performWorkOnItem_inSystemPh
   return result;
 }
 
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias
 {
   v50[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  criteriasCopy = criterias;
   v8 = +[PLBackgroundJobCriteria criteriaForHubbleWorker];
-  if (([v7 containsObject:v8] & 1) == 0)
+  if (([criteriasCopy containsObject:v8] & 1) == 0)
   {
-    v16 = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItemsForValidCriteria];
+    initWithZeroWorkItemsForValidCriteria = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItemsForValidCriteria];
     goto LABEL_34;
   }
 
-  v9 = [(PLBackgroundJobWorker *)self libraryBundle];
-  v10 = [v9 libraryServicesManager];
+  libraryBundle = [(PLBackgroundJobWorker *)self libraryBundle];
+  libraryServicesManager = [libraryBundle libraryServicesManager];
 
-  if (v10 && ![v10 wellKnownPhotoLibraryIdentifier])
+  if (libraryServicesManager && ![libraryServicesManager wellKnownPhotoLibraryIdentifier])
   {
-    v22 = [PLGuestAssetSyncEngine didIngestGuestAssetsInLibrary:v6];
+    v22 = [PLGuestAssetSyncEngine didIngestGuestAssetsInLibrary:libraryCopy];
     v18 = [PLBackgroundJobWorkerPendingWorkItems alloc];
     if (v22)
     {
@@ -742,14 +742,14 @@ uint64_t __90__PLBackgroundJobGuestAssetSyncWorker__performWorkOnItem_inSystemPh
     }
 
 LABEL_13:
-    v16 = [(PLBackgroundJobWorkerPendingWorkItems *)v18 initWithZeroWorkItems];
+    initWithZeroWorkItemsForValidCriteria = [(PLBackgroundJobWorkerPendingWorkItems *)v18 initWithZeroWorkItems];
     goto LABEL_33;
   }
 
   if (PLSyndicationPreferencesEnabled(1))
   {
     v11 = [(PLBackgroundJobGuestAssetSyncWorker *)self _sourcePhotoLibraryWithName:"[PLBackgroundJobGuestAssetSyncWorker workItemsNeedingProcessingInLibrary:validCriterias:]"];
-    if ([(PLBackgroundJobGuestAssetSyncWorker *)self _systemPhotoLibraryChangedSinceLastRunWithSourceLibrary:v11 targetLibrary:v6])
+    if ([(PLBackgroundJobGuestAssetSyncWorker *)self _systemPhotoLibraryChangedSinceLastRunWithSourceLibrary:v11 targetLibrary:libraryCopy])
     {
       v12 = [PLBackgroundJobWorkerPendingWorkItems alloc];
       v13 = +[PLBackgroundJobGuestAssetSyncWorkItemContainer libraryOrPreferencesChangedWorkItem];
@@ -760,7 +760,7 @@ LABEL_13:
 
     else
     {
-      if (![objc_opt_class() _needsInitialSyncForSourceLibrary:v11 targetLibrary:v6])
+      if (![objc_opt_class() _needsInitialSyncForSourceLibrary:v11 targetLibrary:libraryCopy])
       {
         manager = self->_manager;
         v43 = 0;
@@ -782,7 +782,7 @@ LABEL_13:
         {
           v36 = v13;
           v37 = v11;
-          v38 = v10;
+          v38 = libraryServicesManager;
           v41 = 0u;
           v42 = 0u;
           v39 = 0u;
@@ -813,16 +813,16 @@ LABEL_13:
             while (v30);
           }
 
-          v16 = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithCriteria:v8 workItemsNeedingProcessing:v27];
+          initWithZeroWorkItemsForValidCriteria = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithCriteria:v8 workItemsNeedingProcessing:v27];
           v11 = v37;
-          v10 = v38;
+          libraryServicesManager = v38;
           v24 = v35;
           v13 = v36;
         }
 
         else
         {
-          v16 = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItems];
+          initWithZeroWorkItemsForValidCriteria = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItems];
         }
 
         goto LABEL_32;
@@ -836,13 +836,13 @@ LABEL_13:
     }
 
     v24 = [v14 arrayWithObjects:v15 count:1];
-    v16 = [(PLBackgroundJobWorkerPendingWorkItems *)v12 initWithCriteria:v8 workItemsNeedingProcessing:v24];
+    initWithZeroWorkItemsForValidCriteria = [(PLBackgroundJobWorkerPendingWorkItems *)v12 initWithCriteria:v8 workItemsNeedingProcessing:v24];
 LABEL_32:
 
     goto LABEL_33;
   }
 
-  v17 = [PLGuestAssetSyncEngine didIngestGuestAssetsInLibrary:v6];
+  v17 = [PLGuestAssetSyncEngine didIngestGuestAssetsInLibrary:libraryCopy];
   v18 = [PLBackgroundJobWorkerPendingWorkItems alloc];
   if (!v17)
   {
@@ -855,19 +855,19 @@ LABEL_32:
   v21 = &v49;
 LABEL_12:
   v23 = [v20 arrayWithObjects:v21 count:1];
-  v16 = [(PLBackgroundJobWorkerPendingWorkItems *)v18 initWithCriteria:v8 workItemsNeedingProcessing:v23];
+  initWithZeroWorkItemsForValidCriteria = [(PLBackgroundJobWorkerPendingWorkItems *)v18 initWithCriteria:v8 workItemsNeedingProcessing:v23];
 
 LABEL_33:
 LABEL_34:
 
-  return v16;
+  return initWithZeroWorkItemsForValidCriteria;
 }
 
-- (PLBackgroundJobGuestAssetSyncWorker)initWithLibraryBundle:(id)a3
+- (PLBackgroundJobGuestAssetSyncWorker)initWithLibraryBundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = PLBackgroundJobGuestAssetSyncWorker;
-  v3 = [(PLBackgroundJobWorker *)&v8 initWithLibraryBundle:a3];
+  v3 = [(PLBackgroundJobWorker *)&v8 initWithLibraryBundle:bundle];
   v4 = v3;
   if (v3)
   {
@@ -880,20 +880,20 @@ LABEL_34:
   return v4;
 }
 
-+ (BOOL)_needsInitialSyncForSourceLibrary:(id)a3 targetLibrary:(id)a4
++ (BOOL)_needsInitialSyncForSourceLibrary:(id)library targetLibrary:(id)targetLibrary
 {
-  v5 = a4;
-  v6 = [a3 globalValues];
-  v7 = [v6 guestAssetSyncStatus];
-  if (v7)
+  targetLibraryCopy = targetLibrary;
+  globalValues = [library globalValues];
+  guestAssetSyncStatus = [globalValues guestAssetSyncStatus];
+  if (guestAssetSyncStatus)
   {
-    v8 = [v5 globalValues];
-    v9 = [v8 guestAssetSyncStatus];
-    if (v9)
+    globalValues2 = [targetLibraryCopy globalValues];
+    guestAssetSyncStatus2 = [globalValues2 guestAssetSyncStatus];
+    if (guestAssetSyncStatus2)
     {
-      v10 = [v5 globalValues];
-      v11 = [v10 guestAssetSyncStatus];
-      v12 = ([v11 integerValue] & 4) == 0;
+      globalValues3 = [targetLibraryCopy globalValues];
+      guestAssetSyncStatus3 = [globalValues3 guestAssetSyncStatus];
+      v12 = ([guestAssetSyncStatus3 integerValue] & 4) == 0;
     }
 
     else

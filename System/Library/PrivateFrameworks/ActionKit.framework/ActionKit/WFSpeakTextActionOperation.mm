@@ -1,14 +1,14 @@
 @interface WFSpeakTextActionOperation
 - (NSProgress)progress;
 - (WFSpeakTextActionOperation)init;
-- (void)addCompletionHandlerIfRunning:(id)a3;
-- (void)callCompletionHandlersWithError:(id)a3;
+- (void)addCompletionHandlerIfRunning:(id)running;
+- (void)callCompletionHandlersWithError:(id)error;
 - (void)cancel;
 - (void)cleanupSpeechSynthesizer;
-- (void)speakTextUsingSynthesizer:(id)a3 voice:(id)a4 rate:(float)a5 pitch:(float)a6;
-- (void)speechSynthesizer:(id)a3 didFailSpeakingUtterance:(id)a4 error:(id)a5;
-- (void)speechSynthesizer:(id)a3 didFinishSpeakingUtterance:(id)a4;
-- (void)speechSynthesizer:(id)a3 willSpeakRangeOfUtterance:(_NSRange)a4 utterance:(id)a5;
+- (void)speakTextUsingSynthesizer:(id)synthesizer voice:(id)voice rate:(float)rate pitch:(float)pitch;
+- (void)speechSynthesizer:(id)synthesizer didFailSpeakingUtterance:(id)utterance error:(id)error;
+- (void)speechSynthesizer:(id)synthesizer didFinishSpeakingUtterance:(id)utterance;
+- (void)speechSynthesizer:(id)synthesizer willSpeakRangeOfUtterance:(_NSRange)utterance utterance:(id)a5;
 @end
 
 @implementation WFSpeakTextActionOperation
@@ -20,18 +20,18 @@
   return WeakRetained;
 }
 
-- (void)addCompletionHandlerIfRunning:(id)a3
+- (void)addCompletionHandlerIfRunning:(id)running
 {
-  v4 = a3;
-  v5 = [(WFSpeakTextActionOperation *)self queue];
+  runningCopy = running;
+  queue = [(WFSpeakTextActionOperation *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__WFSpeakTextActionOperation_addCompletionHandlerIfRunning___block_invoke;
   v7[3] = &unk_278C22448;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = runningCopy;
+  v6 = runningCopy;
+  dispatch_async(queue, v7);
 }
 
 void __60__WFSpeakTextActionOperation_addCompletionHandlerIfRunning___block_invoke(uint64_t a1)
@@ -63,12 +63,12 @@ void __60__WFSpeakTextActionOperation_addCompletionHandlerIfRunning___block_invo
   }
 }
 
-- (void)callCompletionHandlersWithError:(id)a3
+- (void)callCompletionHandlersWithError:(id)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFSpeakTextActionOperation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  errorCopy = error;
+  queue = [(WFSpeakTextActionOperation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = [(NSMutableArray *)self->_completionHandlers copy];
   completionHandlers = self->_completionHandlers;
@@ -111,28 +111,28 @@ void __60__WFSpeakTextActionOperation_addCompletionHandlerIfRunning___block_invo
 
 - (void)cleanupSpeechSynthesizer
 {
-  v3 = [(WFSpeakTextActionOperation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(WFSpeakTextActionOperation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [getAVAudioSessionClass() sharedInstance];
-  [v4 setActive:0 withOptions:1 error:0];
+  sharedInstance = [getAVAudioSessionClass() sharedInstance];
+  [sharedInstance setActive:0 withOptions:1 error:0];
 
   synthesizer = self->_synthesizer;
   self->_synthesizer = 0;
 }
 
-- (void)speechSynthesizer:(id)a3 didFailSpeakingUtterance:(id)a4 error:(id)a5
+- (void)speechSynthesizer:(id)synthesizer didFailSpeakingUtterance:(id)utterance error:(id)error
 {
-  v6 = a5;
-  v7 = [(WFSpeakTextActionOperation *)self queue];
+  errorCopy = error;
+  queue = [(WFSpeakTextActionOperation *)self queue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __79__WFSpeakTextActionOperation_speechSynthesizer_didFailSpeakingUtterance_error___block_invoke;
   v9[3] = &unk_278C21508;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, v9);
+  v10 = errorCopy;
+  v8 = errorCopy;
+  dispatch_async(queue, v9);
 }
 
 uint64_t __79__WFSpeakTextActionOperation_speechSynthesizer_didFailSpeakingUtterance_error___block_invoke(uint64_t a1)
@@ -144,9 +144,9 @@ uint64_t __79__WFSpeakTextActionOperation_speechSynthesizer_didFailSpeakingUtter
   return [v2 callCompletionHandlersWithError:v3];
 }
 
-- (void)speechSynthesizer:(id)a3 didFinishSpeakingUtterance:(id)a4
+- (void)speechSynthesizer:(id)synthesizer didFinishSpeakingUtterance:(id)utterance
 {
-  v5 = [(WFSpeakTextActionOperation *)self queue:a3];
+  v5 = [(WFSpeakTextActionOperation *)self queue:synthesizer];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__WFSpeakTextActionOperation_speechSynthesizer_didFinishSpeakingUtterance___block_invoke;
@@ -163,11 +163,11 @@ uint64_t __75__WFSpeakTextActionOperation_speechSynthesizer_didFinishSpeakingUtt
   return [v2 callCompletionHandlersWithError:0];
 }
 
-- (void)speechSynthesizer:(id)a3 willSpeakRangeOfUtterance:(_NSRange)a4 utterance:(id)a5
+- (void)speechSynthesizer:(id)synthesizer willSpeakRangeOfUtterance:(_NSRange)utterance utterance:(id)a5
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = [(WFSpeakTextActionOperation *)self queue:a3];
+  length = utterance.length;
+  location = utterance.location;
+  v8 = [(WFSpeakTextActionOperation *)self queue:synthesizer];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84__WFSpeakTextActionOperation_speechSynthesizer_willSpeakRangeOfUtterance_utterance___block_invoke;
@@ -188,13 +188,13 @@ void __84__WFSpeakTextActionOperation_speechSynthesizer_willSpeakRangeOfUtteranc
 
 - (void)cancel
 {
-  v3 = [(WFSpeakTextActionOperation *)self queue];
+  queue = [(WFSpeakTextActionOperation *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__WFSpeakTextActionOperation_cancel__block_invoke;
   block[3] = &unk_278C224A0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __36__WFSpeakTextActionOperation_cancel__block_invoke(uint64_t a1)
@@ -208,23 +208,23 @@ void __36__WFSpeakTextActionOperation_cancel__block_invoke(uint64_t a1)
   [v4 stop];
 }
 
-- (void)speakTextUsingSynthesizer:(id)a3 voice:(id)a4 rate:(float)a5 pitch:(float)a6
+- (void)speakTextUsingSynthesizer:(id)synthesizer voice:(id)voice rate:(float)rate pitch:(float)pitch
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [(WFSpeakTextActionOperation *)self queue];
+  synthesizerCopy = synthesizer;
+  voiceCopy = voice;
+  queue = [(WFSpeakTextActionOperation *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __73__WFSpeakTextActionOperation_speakTextUsingSynthesizer_voice_rate_pitch___block_invoke;
   v15[3] = &unk_278C219E0;
   v15[4] = self;
-  v16 = v10;
-  v17 = v11;
-  v18 = a5;
-  v19 = a6;
-  v13 = v11;
-  v14 = v10;
-  dispatch_async(v12, v15);
+  v16 = synthesizerCopy;
+  v17 = voiceCopy;
+  rateCopy = rate;
+  pitchCopy = pitch;
+  v13 = voiceCopy;
+  v14 = synthesizerCopy;
+  dispatch_async(queue, v15);
 }
 
 void __73__WFSpeakTextActionOperation_speakTextUsingSynthesizer_voice_rate_pitch___block_invoke(uint64_t a1)

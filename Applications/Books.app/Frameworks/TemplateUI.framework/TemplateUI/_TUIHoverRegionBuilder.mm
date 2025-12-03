@@ -1,6 +1,6 @@
 @interface _TUIHoverRegionBuilder
 - (_TUIHoverRegionBuilder)init;
-- (void)addRegionWithRect:(CGRect)a3;
+- (void)addRegionWithRect:(CGRect)rect;
 @end
 
 @implementation _TUIHoverRegionBuilder
@@ -20,10 +20,10 @@
   return v2;
 }
 
-- (void)addRegionWithRect:(CGRect)a3
+- (void)addRegionWithRect:(CGRect)rect
 {
   bounds = self->_bounds;
-  v4 = [NSValue valueWithCGRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [NSValue valueWithCGRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   [(NSMutableArray *)bounds addObject:v4];
 }
 

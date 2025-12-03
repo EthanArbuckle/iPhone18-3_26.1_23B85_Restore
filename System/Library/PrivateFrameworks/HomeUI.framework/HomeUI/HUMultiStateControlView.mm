@@ -2,23 +2,23 @@
 - (BOOL)isDisabled;
 - (CGSize)intrinsicContentSize;
 - (HUControlViewDelegate)delegate;
-- (HUMultiStateControlView)initWithFrame:(CGRect)a3;
+- (HUMultiStateControlView)initWithFrame:(CGRect)frame;
 - (id)value;
-- (void)_selectedIndexChanged:(id)a3;
-- (void)addPossibleValue:(id)a3 withImage:(id)a4;
-- (void)addPossibleValue:(id)a3 withTitle:(id)a4;
-- (void)setDisabled:(BOOL)a3;
-- (void)setValue:(id)a3;
+- (void)_selectedIndexChanged:(id)changed;
+- (void)addPossibleValue:(id)value withImage:(id)image;
+- (void)addPossibleValue:(id)value withTitle:(id)title;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setValue:(id)value;
 @end
 
 @implementation HUMultiStateControlView
 
-- (HUMultiStateControlView)initWithFrame:(CGRect)a3
+- (HUMultiStateControlView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v13.receiver = self;
   v13.super_class = HUMultiStateControlView;
   v7 = [(HUMultiStateControlView *)&v13 initWithFrame:?];
@@ -31,9 +31,9 @@
     [(UISegmentedControl *)v7->_segmentedControl setAutoresizingMask:18];
     [(UISegmentedControl *)v7->_segmentedControl addTarget:v7 action:sel__selectedIndexChanged_ forControlEvents:4096];
     [(HUMultiStateControlView *)v7 addSubview:v7->_segmentedControl];
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     possibleValues = v7->_possibleValues;
-    v7->_possibleValues = v10;
+    v7->_possibleValues = array;
   }
 
   return v7;
@@ -41,8 +41,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(HUMultiStateControlView *)self segmentedControl];
-  [v2 intrinsicContentSize];
+  segmentedControl = [(HUMultiStateControlView *)self segmentedControl];
+  [segmentedControl intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -53,72 +53,72 @@
   return result;
 }
 
-- (void)addPossibleValue:(id)a3 withTitle:(id)a4
+- (void)addPossibleValue:(id)value withTitle:(id)title
 {
-  v6 = a4;
-  v9 = a3;
-  v7 = [(HUMultiStateControlView *)self segmentedControl];
-  v8 = [(HUMultiStateControlView *)self possibleValues];
-  [v7 insertSegmentWithTitle:v6 atIndex:objc_msgSend(v8 animated:{"count"), 0}];
+  titleCopy = title;
+  valueCopy = value;
+  segmentedControl = [(HUMultiStateControlView *)self segmentedControl];
+  possibleValues = [(HUMultiStateControlView *)self possibleValues];
+  [segmentedControl insertSegmentWithTitle:titleCopy atIndex:objc_msgSend(possibleValues animated:{"count"), 0}];
 
-  [(NSMutableArray *)self->_possibleValues addObject:v9];
+  [(NSMutableArray *)self->_possibleValues addObject:valueCopy];
 }
 
-- (void)addPossibleValue:(id)a3 withImage:(id)a4
+- (void)addPossibleValue:(id)value withImage:(id)image
 {
-  v6 = a4;
-  v9 = a3;
-  v7 = [(HUMultiStateControlView *)self segmentedControl];
-  v8 = [(HUMultiStateControlView *)self possibleValues];
-  [v7 insertSegmentWithImage:v6 atIndex:objc_msgSend(v8 animated:{"count"), 0}];
+  imageCopy = image;
+  valueCopy = value;
+  segmentedControl = [(HUMultiStateControlView *)self segmentedControl];
+  possibleValues = [(HUMultiStateControlView *)self possibleValues];
+  [segmentedControl insertSegmentWithImage:imageCopy atIndex:objc_msgSend(possibleValues animated:{"count"), 0}];
 
-  [(NSMutableArray *)self->_possibleValues addObject:v9];
+  [(NSMutableArray *)self->_possibleValues addObject:valueCopy];
 }
 
-- (void)_selectedIndexChanged:(id)a3
+- (void)_selectedIndexChanged:(id)changed
 {
-  v4 = [(HUMultiStateControlView *)self delegate];
-  [v4 controlViewDidBeginUserInteraction:self];
+  delegate = [(HUMultiStateControlView *)self delegate];
+  [delegate controlViewDidBeginUserInteraction:self];
 
-  v5 = [(HUMultiStateControlView *)self delegate];
-  v6 = [(HUMultiStateControlView *)self value];
-  [v5 controlView:self valueDidChange:v6];
+  delegate2 = [(HUMultiStateControlView *)self delegate];
+  value = [(HUMultiStateControlView *)self value];
+  [delegate2 controlView:self valueDidChange:value];
 
-  v7 = [(HUMultiStateControlView *)self delegate];
-  [v7 controlViewDidEndUserInteraction:self];
+  delegate3 = [(HUMultiStateControlView *)self delegate];
+  [delegate3 controlViewDidEndUserInteraction:self];
 }
 
 - (id)value
 {
-  v3 = [(HUMultiStateControlView *)self segmentedControl];
-  v4 = [v3 selectedSegmentIndex];
+  segmentedControl = [(HUMultiStateControlView *)self segmentedControl];
+  selectedSegmentIndex = [segmentedControl selectedSegmentIndex];
 
-  if (v4 == -1)
+  if (selectedSegmentIndex == -1)
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = [(HUMultiStateControlView *)self possibleValues];
-    v6 = [v5 objectAtIndexedSubscript:v4];
+    possibleValues = [(HUMultiStateControlView *)self possibleValues];
+    v6 = [possibleValues objectAtIndexedSubscript:selectedSegmentIndex];
   }
 
   return v6;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v8 = a3;
-  if (v8)
+  valueCopy = value;
+  if (valueCopy)
   {
-    v4 = [(HUMultiStateControlView *)self possibleValues];
-    v5 = [v4 indexOfObject:v8];
+    possibleValues = [(HUMultiStateControlView *)self possibleValues];
+    v5 = [possibleValues indexOfObject:valueCopy];
 
     if (v5 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v6 = [(HUMultiStateControlView *)self possibleValues];
-      NSLog(&cfstr_DesiredValueIs.isa, v8, v6);
+      possibleValues2 = [(HUMultiStateControlView *)self possibleValues];
+      NSLog(&cfstr_DesiredValueIs.isa, valueCopy, possibleValues2);
 
       v5 = 0x7FFFFFFFFFFFFFFFLL;
     }
@@ -129,23 +129,23 @@
     v5 = -1;
   }
 
-  v7 = [(HUMultiStateControlView *)self segmentedControl];
-  [v7 setSelectedSegmentIndex:v5];
+  segmentedControl = [(HUMultiStateControlView *)self segmentedControl];
+  [segmentedControl setSelectedSegmentIndex:v5];
 }
 
 - (BOOL)isDisabled
 {
-  v2 = [(HUMultiStateControlView *)self segmentedControl];
-  v3 = [v2 isEnabled];
+  segmentedControl = [(HUMultiStateControlView *)self segmentedControl];
+  isEnabled = [segmentedControl isEnabled];
 
-  return v3 ^ 1;
+  return isEnabled ^ 1;
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  v4 = [(HUMultiStateControlView *)self segmentedControl];
-  [v4 setEnabled:!v3];
+  disabledCopy = disabled;
+  segmentedControl = [(HUMultiStateControlView *)self segmentedControl];
+  [segmentedControl setEnabled:!disabledCopy];
 }
 
 - (HUControlViewDelegate)delegate

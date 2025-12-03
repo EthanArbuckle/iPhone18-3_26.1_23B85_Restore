@@ -1,12 +1,12 @@
 @interface MSPCollectionStorage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MSPCollectionStorage
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = MSPCollectionStorage;
   v4 = [(MSPCollectionStorage *)&v8 description];
-  v5 = [(MSPCollectionStorage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MSPCollectionStorage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   title = self->_title;
   if (title)
   {
-    [v3 setObject:title forKey:@"title"];
+    [dictionary setObject:title forKey:@"title"];
   }
 
   image = self->_image;
@@ -60,105 +60,105 @@
   unknownFields = self->_unknownFields;
   if (unknownFields)
   {
-    v11 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"Unknown Fields"];
+    dictionaryRepresentation = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"Unknown Fields"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_title)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_image)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_imageURL)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_collectionDescription)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_itemData)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
-  [(PBUnknownFields *)self->_unknownFields writeTo:v4];
+  [(PBUnknownFields *)self->_unknownFields writeTo:toCopy];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_title)
   {
-    [v4 setTitle:?];
-    v4 = v5;
+    [toCopy setTitle:?];
+    toCopy = v5;
   }
 
   if (self->_image)
   {
     [v5 setImage:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_imageURL)
   {
     [v5 setImageURL:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_collectionDescription)
   {
     [v5 setCollectionDescription:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_itemData)
   {
     [v5 setItemData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_title copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_title copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
-  v8 = [(NSData *)self->_image copyWithZone:a3];
+  v8 = [(NSData *)self->_image copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_imageURL copyWithZone:a3];
+  v10 = [(NSString *)self->_imageURL copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
-  v12 = [(NSString *)self->_collectionDescription copyWithZone:a3];
+  v12 = [(NSString *)self->_collectionDescription copyWithZone:zone];
   v13 = *(v5 + 16);
   *(v5 + 16) = v12;
 
-  v14 = [(NSData *)self->_itemData copyWithZone:a3];
+  v14 = [(NSData *)self->_itemData copyWithZone:zone];
   v15 = *(v5 + 40);
   *(v5 + 40) = v14;
 
@@ -166,13 +166,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((title = self->_title, !(title | v4[6])) || -[NSString isEqual:](title, "isEqual:")) && ((image = self->_image, !(image | v4[3])) || -[NSData isEqual:](image, "isEqual:")) && ((imageURL = self->_imageURL, !(imageURL | v4[4])) || -[NSString isEqual:](imageURL, "isEqual:")) && ((collectionDescription = self->_collectionDescription, !(collectionDescription | v4[2])) || -[NSString isEqual:](collectionDescription, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((title = self->_title, !(title | equalCopy[6])) || -[NSString isEqual:](title, "isEqual:")) && ((image = self->_image, !(image | equalCopy[3])) || -[NSData isEqual:](image, "isEqual:")) && ((imageURL = self->_imageURL, !(imageURL | equalCopy[4])) || -[NSString isEqual:](imageURL, "isEqual:")) && ((collectionDescription = self->_collectionDescription, !(collectionDescription | equalCopy[2])) || -[NSString isEqual:](collectionDescription, "isEqual:")))
   {
     itemData = self->_itemData;
-    if (itemData | v4[5])
+    if (itemData | equalCopy[5])
     {
       v10 = [(NSData *)itemData isEqual:?];
     }
@@ -200,30 +200,30 @@
   return v6 ^ [(NSData *)self->_itemData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[6])
+  fromCopy = from;
+  if (fromCopy[6])
   {
     [(MSPCollectionStorage *)self setTitle:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(MSPCollectionStorage *)self setImage:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(MSPCollectionStorage *)self setImageURL:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(MSPCollectionStorage *)self setCollectionDescription:?];
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
     [(MSPCollectionStorage *)self setItemData:?];
   }

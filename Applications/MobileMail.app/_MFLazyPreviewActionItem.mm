@@ -1,44 +1,44 @@
 @interface _MFLazyPreviewActionItem
-+ (id)previewActionItemWithTitle:(id)a3 dataSource:(id)a4;
-- (BOOL)isKindOfClass:(Class)a3;
++ (id)previewActionItemWithTitle:(id)title dataSource:(id)source;
+- (BOOL)isKindOfClass:(Class)class;
 - (id)_actions;
 - (id)handler;
 @end
 
 @implementation _MFLazyPreviewActionItem
 
-+ (id)previewActionItemWithTitle:(id)a3 dataSource:(id)a4
++ (id)previewActionItemWithTitle:(id)title dataSource:(id)source
 {
-  v6 = a4;
-  v7 = [a1 actionGroupWithTitle:a3 style:0 actions:&__NSArray0__struct];
-  [v7 setDataSource:v6];
+  sourceCopy = source;
+  v7 = [self actionGroupWithTitle:title style:0 actions:&__NSArray0__struct];
+  [v7 setDataSource:sourceCopy];
 
   return v7;
 }
 
 - (id)_actions
 {
-  v2 = [(_MFLazyPreviewActionItem *)self dataSource];
-  v3 = [v2 lazyPreviewActions];
+  dataSource = [(_MFLazyPreviewActionItem *)self dataSource];
+  lazyPreviewActions = [dataSource lazyPreviewActions];
 
-  return v3;
+  return lazyPreviewActions;
 }
 
 - (id)handler
 {
-  v2 = [(_MFLazyPreviewActionItem *)self dataSource];
-  v3 = [v2 lazyPreviewActionHandler];
+  dataSource = [(_MFLazyPreviewActionItem *)self dataSource];
+  lazyPreviewActionHandler = [dataSource lazyPreviewActionHandler];
 
-  return v3;
+  return lazyPreviewActionHandler;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
-    v5 = [(_MFLazyPreviewActionItem *)self dataSource];
-    v6 = [v5 lazyPreviewActions];
-    v7 = [v6 count];
+    dataSource = [(_MFLazyPreviewActionItem *)self dataSource];
+    lazyPreviewActions = [dataSource lazyPreviewActions];
+    v7 = [lazyPreviewActions count];
 
     if (!v7)
     {
@@ -48,7 +48,7 @@
 
   v9.receiver = self;
   v9.super_class = _MFLazyPreviewActionItem;
-  return [(_MFLazyPreviewActionItem *)&v9 isKindOfClass:a3];
+  return [(_MFLazyPreviewActionItem *)&v9 isKindOfClass:class];
 }
 
 @end

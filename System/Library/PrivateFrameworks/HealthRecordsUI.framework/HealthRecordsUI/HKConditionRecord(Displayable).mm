@@ -6,10 +6,10 @@
 
 - (id)codings
 {
-  v1 = [a1 conditionCodingCollection];
-  v2 = [v1 codings];
+  conditionCodingCollection = [self conditionCodingCollection];
+  codings = [conditionCodingCollection codings];
 
-  return v2;
+  return codings;
 }
 
 @end

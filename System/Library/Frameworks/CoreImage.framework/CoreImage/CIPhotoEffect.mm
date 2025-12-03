@@ -63,17 +63,17 @@
 
 - (id)cubeName
 {
-  v3 = [-[CIPhotoEffect valueForKey:](self valueForKey:{@"__inputVersion", "intValue"}];
-  if (v3 >= [(CIPhotoEffect *)self _maxVersion])
+  _maxVersion = [-[CIPhotoEffect valueForKey:](self valueForKey:{@"__inputVersion", "intValue"}];
+  if (_maxVersion >= [(CIPhotoEffect *)self _maxVersion])
   {
-    v3 = [(CIPhotoEffect *)self _maxVersion];
+    _maxVersion = [(CIPhotoEffect *)self _maxVersion];
   }
 
   v4 = objc_opt_class();
   result = NSStringFromClass(v4);
-  if (v3 >= 1)
+  if (_maxVersion >= 1)
   {
-    return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%d", result, v3];
+    return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%d", result, _maxVersion];
   }
 
   return result;
@@ -82,9 +82,9 @@
 - (id)cubePath
 {
   v3 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v4 = [(CIPhotoEffect *)self cubeName];
+  cubeName = [(CIPhotoEffect *)self cubeName];
 
-  return [v3 pathForResource:v4 ofType:@"scube"];
+  return [v3 pathForResource:cubeName ofType:@"scube"];
 }
 
 - (id)outputImage

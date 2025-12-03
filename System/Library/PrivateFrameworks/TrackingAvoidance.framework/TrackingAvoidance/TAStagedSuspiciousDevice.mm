@@ -1,18 +1,18 @@
 @interface TAStagedSuspiciousDevice
-- (BOOL)isEqual:(id)a3;
-- (TAStagedSuspiciousDevice)initWithCoder:(id)a3;
-- (TAStagedSuspiciousDevice)initWithDetection:(id)a3 keepInStagingUntil:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (TAStagedSuspiciousDevice)initWithCoder:(id)coder;
+- (TAStagedSuspiciousDevice)initWithDetection:(id)detection keepInStagingUntil:(id)until;
 - (id)description;
 - (id)descriptionDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TAStagedSuspiciousDevice
 
-- (TAStagedSuspiciousDevice)initWithDetection:(id)a3 keepInStagingUntil:(id)a4
+- (TAStagedSuspiciousDevice)initWithDetection:(id)detection keepInStagingUntil:(id)until
 {
-  v7 = a3;
-  v8 = a4;
+  detectionCopy = detection;
+  untilCopy = until;
   v13.receiver = self;
   v13.super_class = TAStagedSuspiciousDevice;
   v9 = [(TAStagedSuspiciousDevice *)&v13 init];
@@ -23,10 +23,10 @@
   }
 
   v11 = 0;
-  if (v7 && v8)
+  if (detectionCopy && untilCopy)
   {
-    objc_storeStrong(&v9->_detection, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_detection, detection);
+    objc_storeStrong(p_isa + 2, until);
 LABEL_5:
     v11 = p_isa;
   }
@@ -34,10 +34,10 @@ LABEL_5:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -47,14 +47,14 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(TAStagedSuspiciousDevice *)self detection];
-      v8 = [(TAStagedSuspiciousDevice *)v6 detection];
-      if (v7 != v8)
+      v6 = equalCopy;
+      detection = [(TAStagedSuspiciousDevice *)self detection];
+      detection2 = [(TAStagedSuspiciousDevice *)v6 detection];
+      if (detection != detection2)
       {
-        v9 = [(TAStagedSuspiciousDevice *)self detection];
-        v3 = [(TAStagedSuspiciousDevice *)v6 detection];
-        if (![v9 isEqual:v3])
+        detection3 = [(TAStagedSuspiciousDevice *)self detection];
+        detection4 = [(TAStagedSuspiciousDevice *)v6 detection];
+        if (![detection3 isEqual:detection4])
         {
           v10 = 0;
 LABEL_13:
@@ -63,25 +63,25 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v16 = v9;
+        v16 = detection3;
       }
 
-      v11 = [(TAStagedSuspiciousDevice *)self keepInStagingUntil];
-      v12 = [(TAStagedSuspiciousDevice *)v6 keepInStagingUntil];
-      if (v11 == v12)
+      keepInStagingUntil = [(TAStagedSuspiciousDevice *)self keepInStagingUntil];
+      keepInStagingUntil2 = [(TAStagedSuspiciousDevice *)v6 keepInStagingUntil];
+      if (keepInStagingUntil == keepInStagingUntil2)
       {
         v10 = 1;
       }
 
       else
       {
-        v13 = [(TAStagedSuspiciousDevice *)self keepInStagingUntil];
-        v14 = [(TAStagedSuspiciousDevice *)v6 keepInStagingUntil];
-        v10 = [v13 isEqual:v14];
+        keepInStagingUntil3 = [(TAStagedSuspiciousDevice *)self keepInStagingUntil];
+        keepInStagingUntil4 = [(TAStagedSuspiciousDevice *)v6 keepInStagingUntil];
+        v10 = [keepInStagingUntil3 isEqual:keepInStagingUntil4];
       }
 
-      v9 = v16;
-      if (v7 == v8)
+      detection3 = v16;
+      if (detection == detection2)
       {
         goto LABEL_14;
       }
@@ -101,11 +101,11 @@ LABEL_15:
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v8[0] = @"Detection";
-  v3 = [(TASuspiciousDevice *)self->_detection descriptionDictionary];
+  descriptionDictionary = [(TASuspiciousDevice *)self->_detection descriptionDictionary];
   v8[1] = @"KeepInStagingUntil";
-  v9[0] = v3;
-  v4 = [(NSDate *)self->_keepInStagingUntil getDateString];
-  v9[1] = v4;
+  v9[0] = descriptionDictionary;
+  getDateString = [(NSDate *)self->_keepInStagingUntil getDateString];
+  v9[1] = getDateString;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -115,9 +115,9 @@ LABEL_15:
 
 - (id)description
 {
-  v3 = [(TAStagedSuspiciousDevice *)self descriptionDictionary];
+  descriptionDictionary = [(TAStagedSuspiciousDevice *)self descriptionDictionary];
   v10 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:v3 error:&v10];
+  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:descriptionDictionary error:&v10];
   v5 = v10;
   if (v5)
   {
@@ -127,35 +127,35 @@ LABEL_15:
       [(TAOutgoingRequests *)v6 description];
     }
 
-    v7 = [MEMORY[0x277CCACA8] string];
+    string = [MEMORY[0x277CCACA8] string];
   }
 
   else
   {
-    v7 = v4;
+    string = v4;
   }
 
-  v8 = v7;
+  v8 = string;
 
   return v8;
 }
 
-- (TAStagedSuspiciousDevice)initWithCoder:(id)a3
+- (TAStagedSuspiciousDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Detection"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"KeepInStagingUntil"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Detection"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"KeepInStagingUntil"];
 
   v7 = [(TAStagedSuspiciousDevice *)self initWithDetection:v5 keepInStagingUntil:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   detection = self->_detection;
-  v5 = a3;
-  [v5 encodeObject:detection forKey:@"Detection"];
-  [v5 encodeObject:self->_keepInStagingUntil forKey:@"KeepInStagingUntil"];
+  coderCopy = coder;
+  [coderCopy encodeObject:detection forKey:@"Detection"];
+  [coderCopy encodeObject:self->_keepInStagingUntil forKey:@"KeepInStagingUntil"];
 }
 
 @end

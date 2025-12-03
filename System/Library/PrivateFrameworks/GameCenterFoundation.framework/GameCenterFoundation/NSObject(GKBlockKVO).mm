@@ -26,7 +26,7 @@
   v16 = 3221225472;
   v17 = __67__NSObject_GKBlockKVO___gkAddObserverForKeyPath_options_withBlock___block_invoke;
   v18 = &unk_2785E25E0;
-  v19 = a1;
+  selfCopy = self;
   v22 = &v25;
   v11 = v8;
   v20 = v11;
@@ -53,7 +53,7 @@
   v7[1] = 3221225472;
   v7[2] = __56__NSObject_GKBlockKVO___gkRemoveObserverWithBlockToken___block_invoke;
   v7[3] = &unk_2785DEBA8;
-  v7[4] = a1;
+  v7[4] = self;
   v8 = v4;
   v6 = v4;
   dispatch_sync(v5, v7);

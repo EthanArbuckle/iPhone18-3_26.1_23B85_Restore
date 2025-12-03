@@ -1,22 +1,22 @@
 @interface HTMonitorPidHangEvent
 + (void)_updateRunningBoardProcessMonitor;
-+ (void)checkHangForPid:(int)a3;
-+ (void)removePidFromProcessMonitoring:(int)a3;
-- (id)initHTMonitorPidHangEvent:(id *)a3 shmem_size:(unint64_t)a4;
++ (void)checkHangForPid:(int)pid;
++ (void)removePidFromProcessMonitoring:(int)monitoring;
+- (id)initHTMonitorPidHangEvent:(id *)event shmem_size:(unint64_t)shmem_size;
 - (void)dealloc;
 @end
 
 @implementation HTMonitorPidHangEvent
 
-- (id)initHTMonitorPidHangEvent:(id *)a3 shmem_size:(unint64_t)a4
+- (id)initHTMonitorPidHangEvent:(id *)event shmem_size:(unint64_t)shmem_size
 {
   v7.receiver = self;
   v7.super_class = HTMonitorPidHangEvent;
   result = [(HTMonitorPidHangEvent *)&v7 init];
   if (result)
   {
-    *(result + 1) = a3;
-    *(result + 2) = a4;
+    *(result + 1) = event;
+    *(result + 2) = shmem_size;
   }
 
   return result;
@@ -32,13 +32,13 @@
   [(HTMonitorPidHangEvent *)&v3 dealloc];
 }
 
-+ (void)checkHangForPid:(int)a3
++ (void)checkHangForPid:(int)pid
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__HTMonitorPidHangEvent_checkHangForPid___block_invoke;
   block[3] = &__block_descriptor_36_e5_v8__0l;
-  v4 = a3;
+  pidCopy = pid;
   dispatch_async(_htMonitorConnectionQueue, block);
 }
 
@@ -169,7 +169,7 @@ void __58__HTMonitorPidHangEvent__updateRunningBoardProcessMonitor__block_invoke
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)removePidFromProcessMonitoring:(int)a3
++ (void)removePidFromProcessMonitoring:(int)monitoring
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -192,7 +192,7 @@ void __58__HTMonitorPidHangEvent__updateRunningBoardProcessMonitor__block_invoke
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if ([v9 pid] == a3)
+        if ([v9 pid] == monitoring)
         {
           [processIdentifiers removeObject:v9];
           goto LABEL_11;

@@ -1,80 +1,80 @@
 @interface HKAnalyticsEventSubmissionManager
-- (BOOL)submitEvent:(id)a3 error:(id *)a4;
-- (HKAnalyticsEventSubmissionManager)initWithDataSource:(id)a3 eventUsedProvider:(id)a4 analyticsEventConsumer:(id)a5 loggingCategory:(id)a6;
-- (HKAnalyticsEventSubmissionManager)initWithLoggingCategory:(id)a3 healthDataSource:(id)a4;
+- (BOOL)submitEvent:(id)event error:(id *)error;
+- (HKAnalyticsEventSubmissionManager)initWithDataSource:(id)source eventUsedProvider:(id)provider analyticsEventConsumer:(id)consumer loggingCategory:(id)category;
+- (HKAnalyticsEventSubmissionManager)initWithLoggingCategory:(id)category healthDataSource:(id)source;
 - (id)queue;
-- (void)submitEvent:(id)a3 completion:(id)a4;
+- (void)submitEvent:(id)event completion:(id)completion;
 @end
 
 @implementation HKAnalyticsEventSubmissionManager
 
-- (HKAnalyticsEventSubmissionManager)initWithLoggingCategory:(id)a3 healthDataSource:(id)a4
+- (HKAnalyticsEventSubmissionManager)initWithLoggingCategory:(id)category healthDataSource:(id)source
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[HKAnalyticsDataSource alloc] initWithHealthDataSource:v6];
+  sourceCopy = source;
+  categoryCopy = category;
+  v8 = [[HKAnalyticsDataSource alloc] initWithHealthDataSource:sourceCopy];
 
-  v9 = [(HKAnalyticsEventSubmissionManager *)self initWithDataSource:v8 eventUsedProvider:&__block_literal_global_27 analyticsEventConsumer:&__block_literal_global_7 loggingCategory:v7];
+  v9 = [(HKAnalyticsEventSubmissionManager *)self initWithDataSource:v8 eventUsedProvider:&__block_literal_global_27 analyticsEventConsumer:&__block_literal_global_7 loggingCategory:categoryCopy];
   return v9;
 }
 
-- (HKAnalyticsEventSubmissionManager)initWithDataSource:(id)a3 eventUsedProvider:(id)a4 analyticsEventConsumer:(id)a5 loggingCategory:(id)a6
+- (HKAnalyticsEventSubmissionManager)initWithDataSource:(id)source eventUsedProvider:(id)provider analyticsEventConsumer:(id)consumer loggingCategory:(id)category
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  sourceCopy = source;
+  providerCopy = provider;
+  consumerCopy = consumer;
+  categoryCopy = category;
   v22.receiver = self;
   v22.super_class = HKAnalyticsEventSubmissionManager;
   v15 = [(HKAnalyticsEventSubmissionManager *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_dataSource, a3);
-    v17 = _Block_copy(v12);
+    objc_storeStrong(&v15->_dataSource, source);
+    v17 = _Block_copy(providerCopy);
     eventUsedProvider = v16->_eventUsedProvider;
     v16->_eventUsedProvider = v17;
 
-    v19 = _Block_copy(v13);
+    v19 = _Block_copy(consumerCopy);
     analyticsEventConsumer = v16->_analyticsEventConsumer;
     v16->_analyticsEventConsumer = v19;
 
-    objc_storeStrong(&v16->_loggingCategory, a6);
+    objc_storeStrong(&v16->_loggingCategory, category);
   }
 
   return v16;
 }
 
-- (BOOL)submitEvent:(id)a3 error:(id *)a4
+- (BOOL)submitEvent:(id)event error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 eventName];
-  v8 = [v7 containsString:@"pregnan"];
+  eventCopy = event;
+  eventName = [eventCopy eventName];
+  v8 = [eventName containsString:@"pregnan"];
 
-  v9 = [v6 eventName];
-  v10 = v9;
+  eventName2 = [eventCopy eventName];
+  v10 = eventName2;
   if (v8)
   {
-    v11 = HKSensitiveLogItem(v9);
+    v11 = HKSensitiveLogItem(eventName2);
 
     v10 = v11;
   }
 
-  v12 = [v6 eventName];
+  eventName3 = [eventCopy eventName];
   if ((*(self->_eventUsedProvider + 2))())
   {
-    v13 = [(HKAnalyticsDataSource *)self->_dataSource environmentDataSource];
-    v14 = [v13 isImproveHealthAndActivityEnabled];
+    environmentDataSource = [(HKAnalyticsDataSource *)self->_dataSource environmentDataSource];
+    isImproveHealthAndActivityEnabled = [environmentDataSource isImproveHealthAndActivityEnabled];
 
-    if ([v6 isEventSubmissionIHAGated] && (v14 & 1) == 0)
+    if ([eventCopy isEventSubmissionIHAGated] && (isImproveHealthAndActivityEnabled & 1) == 0)
     {
       _HKInitializeLogging();
       loggingCategory = self->_loggingCategory;
       if (os_log_type_enabled(loggingCategory, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v40 = self;
+        selfCopy7 = self;
         v41 = 2114;
         v42 = v10;
         v16 = "[%{public}@:%{public}@] Analytics event not sent as event requires IH&A but IH&A not enabled";
@@ -89,15 +89,15 @@ LABEL_10:
     v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
     dataSource = self->_dataSource;
     v38 = 0;
-    v20 = [v6 makeUnrestrictedEventPayloadWithDataSource:dataSource error:&v38];
+    v20 = [eventCopy makeUnrestrictedEventPayloadWithDataSource:dataSource error:&v38];
     v21 = v38;
     if (v21)
     {
       v22 = v21;
-      if (a4)
+      if (error)
       {
         v23 = v21;
-        *a4 = v22;
+        *error = v22;
       }
 
       else
@@ -110,7 +110,7 @@ LABEL_10:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v40 = self;
+        selfCopy7 = self;
         v41 = 2114;
         v42 = v22;
         v43 = 2114;
@@ -136,26 +136,26 @@ LABEL_20:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
       {
         *buf = 138543618;
-        v40 = self;
+        selfCopy7 = self;
         v41 = 2114;
         v42 = v10;
         _os_log_impl(&dword_19197B000, v28, OS_LOG_TYPE_INFO, "[%{public}@:%{public}@] No unrestricted payload", buf, 0x16u);
       }
     }
 
-    if (v14)
+    if (isImproveHealthAndActivityEnabled)
     {
       v29 = self->_dataSource;
       v37 = 0;
-      v30 = [v6 makeIHAGatedEventPayloadWithDataSource:v29 error:&v37];
+      v30 = [eventCopy makeIHAGatedEventPayloadWithDataSource:v29 error:&v37];
       v31 = v37;
       if (v31)
       {
         v22 = v31;
-        if (a4)
+        if (error)
         {
           v32 = v31;
-          *a4 = v22;
+          *error = v22;
         }
 
         else
@@ -168,7 +168,7 @@ LABEL_20:
         if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543874;
-          v40 = self;
+          selfCopy7 = self;
           v41 = 2114;
           v42 = v22;
           v43 = 2114;
@@ -192,7 +192,7 @@ LABEL_20:
         if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
         {
           *buf = 138543618;
-          v40 = self;
+          selfCopy7 = self;
           v41 = 2114;
           v42 = v10;
           _os_log_impl(&dword_19197B000, v35, OS_LOG_TYPE_INFO, "[%{public}@:%{public}@] No IH&A gated payload", buf, 0x16u);
@@ -216,7 +216,7 @@ LABEL_20:
     }
 
     *buf = 138543618;
-    v40 = self;
+    selfCopy7 = self;
     v41 = 2114;
     v42 = v10;
     _os_log_impl(&dword_19197B000, v36, OS_LOG_TYPE_DEFAULT, "[%{public}@:%{public}@] Not sending payload as there were no contents", buf, 0x16u);
@@ -232,7 +232,7 @@ LABEL_22:
   if (os_log_type_enabled(loggingCategory, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v40 = self;
+    selfCopy7 = self;
     v41 = 2114;
     v42 = v10;
     v16 = "[%{public}@:%{public}@] Analytics event not sent as event treated as unused by CoreAnalytics";
@@ -262,21 +262,21 @@ LABEL_23:
   return queue;
 }
 
-- (void)submitEvent:(id)a3 completion:(id)a4
+- (void)submitEvent:(id)event completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKAnalyticsEventSubmissionManager *)self queue];
+  eventCopy = event;
+  completionCopy = completion;
+  queue = [(HKAnalyticsEventSubmissionManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__HKAnalyticsEventSubmissionManager_submitEvent_completion___block_invoke;
   block[3] = &unk_1E73766C8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = eventCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = eventCopy;
+  dispatch_async(queue, block);
 }
 
 void __60__HKAnalyticsEventSubmissionManager_submitEvent_completion___block_invoke(void *a1)

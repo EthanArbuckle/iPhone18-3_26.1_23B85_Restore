@@ -1,6 +1,6 @@
 @interface PUILocationSystemServicesListController
 + (int)systemServicesLocationUsage;
-- (BOOL)_areCoalescedBundlesAuthorized:(id)a3;
+- (BOOL)_areCoalescedBundlesAuthorized:(id)authorized;
 - (PSSpecifier)productImprovementGroup;
 - (PUILocationSystemServicesListController)init;
 - (id)_areLocationBasedAlertsAuthorized;
@@ -12,26 +12,26 @@
 - (id)_isSystemCustomizationAuthorized;
 - (id)_isWirelessAuthorized;
 - (id)_locationBasedAlertBundles;
-- (id)_readAddressCorrectionAuthorizationStatus:(id)a3;
+- (id)_readAddressCorrectionAuthorizationStatus:(id)status;
 - (id)_routingAndTrafficBundles;
-- (id)coreRoutineEnabledStatus:(id)a3;
-- (id)isStatusEnabled:(id)a3;
+- (id)coreRoutineEnabledStatus:(id)status;
+- (id)isStatusEnabled:(id)enabled;
 - (id)specifiers;
-- (void)_performConsistencyCheckValue:(id)a3 bundles:(id)a4 name:(id)a5;
-- (void)_setAddressCorrectionAuthorizationStatus:(id)a3 specifier:(id)a4;
-- (void)_setCoalescedBundlesAuthorized:(id)a3 bundles:(id)a4;
-- (void)_setHomeKitAuthorized:(id)a3;
-- (void)_setImproveLocationAccuracyAuthorized:(id)a3;
-- (void)_setLocationBasedAlertsAuthorized:(id)a3;
-- (void)_setRoutingAndTrafficAuthorized:(id)a3;
-- (void)_setSystemCutomizationAuthorized:(id)a3;
-- (void)_setWirelessAuthorized:(id)a3;
+- (void)_performConsistencyCheckValue:(id)value bundles:(id)bundles name:(id)name;
+- (void)_setAddressCorrectionAuthorizationStatus:(id)status specifier:(id)specifier;
+- (void)_setCoalescedBundlesAuthorized:(id)authorized bundles:(id)bundles;
+- (void)_setHomeKitAuthorized:(id)authorized;
+- (void)_setImproveLocationAccuracyAuthorized:(id)authorized;
+- (void)_setLocationBasedAlertsAuthorized:(id)authorized;
+- (void)_setRoutingAndTrafficAuthorized:(id)authorized;
+- (void)_setSystemCutomizationAuthorized:(id)authorized;
+- (void)_setWirelessAuthorized:(id)authorized;
 - (void)_showAddressCorrectionPage;
 - (void)insertCoreRoutineSpecifier;
-- (void)setStatusEnabled:(id)a3 specifier:(id)a4;
-- (void)updateCoreRoutineEnabledStatusAndInsertSpecifier:(BOOL)a3;
-- (void)updateCoreRoutineSettings:(id)a3;
-- (void)updateImproveMapsSpecifierWithCompletion:(id)a3;
+- (void)setStatusEnabled:(id)enabled specifier:(id)specifier;
+- (void)updateCoreRoutineEnabledStatusAndInsertSpecifier:(BOOL)specifier;
+- (void)updateCoreRoutineSettings:(id)settings;
+- (void)updateImproveMapsSpecifierWithCompletion:(id)completion;
 @end
 
 @implementation PUILocationSystemServicesListController
@@ -44,32 +44,32 @@
   if (v2)
   {
     v3 = objc_alloc(MEMORY[0x277CBEB18]);
-    v4 = [(PUILocationSystemServicesListController *)v2 _locationBasedAlertBundles];
-    v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+    _locationBasedAlertBundles = [(PUILocationSystemServicesListController *)v2 _locationBasedAlertBundles];
+    v5 = [v3 initWithCapacity:{objc_msgSend(_locationBasedAlertBundles, "count")}];
     coalescedLocationBasedAlertsSystemServices = v2->super._coalescedLocationBasedAlertsSystemServices;
     v2->super._coalescedLocationBasedAlertsSystemServices = v5;
 
     v7 = objc_alloc(MEMORY[0x277CBEB18]);
-    v8 = [(PUILocationSystemServicesListController *)v2 _homeKitBundles];
-    v9 = [v7 initWithCapacity:{objc_msgSend(v8, "count")}];
+    _homeKitBundles = [(PUILocationSystemServicesListController *)v2 _homeKitBundles];
+    v9 = [v7 initWithCapacity:{objc_msgSend(_homeKitBundles, "count")}];
     coalescedHomeKitSystemServices = v2->super._coalescedHomeKitSystemServices;
     v2->super._coalescedHomeKitSystemServices = v9;
 
     v11 = objc_alloc(MEMORY[0x277CBEB18]);
-    v12 = [(PUILocationSystemServicesListController *)v2 _routingAndTrafficBundles];
-    v13 = [v11 initWithCapacity:{objc_msgSend(v12, "count")}];
+    _routingAndTrafficBundles = [(PUILocationSystemServicesListController *)v2 _routingAndTrafficBundles];
+    v13 = [v11 initWithCapacity:{objc_msgSend(_routingAndTrafficBundles, "count")}];
     coalescedRoutingAndTrafficSystemServices = v2->super._coalescedRoutingAndTrafficSystemServices;
     v2->super._coalescedRoutingAndTrafficSystemServices = v13;
 
     v15 = objc_alloc(MEMORY[0x277CBEB18]);
-    v16 = [(PUILocationSystemServicesListController *)v2 _improveLocationAccuracyBundles];
-    v17 = [v15 initWithCapacity:{objc_msgSend(v16, "count")}];
+    _improveLocationAccuracyBundles = [(PUILocationSystemServicesListController *)v2 _improveLocationAccuracyBundles];
+    v17 = [v15 initWithCapacity:{objc_msgSend(_improveLocationAccuracyBundles, "count")}];
     coalescedImproveLocationAccuracySystemServices = v2->super._coalescedImproveLocationAccuracySystemServices;
     v2->super._coalescedImproveLocationAccuracySystemServices = v17;
 
     v19 = objc_alloc(MEMORY[0x277CBEB18]);
-    v20 = [objc_opt_class() wirelessBundles];
-    v21 = [v19 initWithCapacity:{objc_msgSend(v20, "count")}];
+    wirelessBundles = [objc_opt_class() wirelessBundles];
+    v21 = [v19 initWithCapacity:{objc_msgSend(wirelessBundles, "count")}];
     coalescedWirelessSystemServices = v2->super._coalescedWirelessSystemServices;
     v2->super._coalescedWirelessSystemServices = v21;
 
@@ -108,8 +108,8 @@
           objc_enumerationMutation(v3);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) identifier];
-        v10 = [(PUILocationServicesListController *)v2 locationUsageForEntity:v9];
+        identifier = [*(*(&v14 + 1) + 8 * i) identifier];
+        v10 = [(PUILocationServicesListController *)v2 locationUsageForEntity:identifier];
 
         if (v10 == 4)
         {
@@ -152,7 +152,7 @@ LABEL_20:
   return v6;
 }
 
-- (id)isStatusEnabled:(id)a3
+- (id)isStatusEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
   v4 = [getCLLocationManagerClass_0() isStatusBarIconEnabledForLocationEntityClass:4];
@@ -160,26 +160,26 @@ LABEL_20:
   return [v3 numberWithBool:v4];
 }
 
-- (void)setStatusEnabled:(id)a3 specifier:(id)a4
+- (void)setStatusEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   CLLocationManagerClass_0 = getCLLocationManagerClass_0();
-  v6 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [CLLocationManagerClass_0 setStatusBarIconEnabled:v6 forLocationEntityClass:4];
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 postNotificationName:@"com.apple.PrivacySettingsUI.LocationServicesStateChanged" object:0];
+  [CLLocationManagerClass_0 setStatusBarIconEnabled:bOOLValue forLocationEntityClass:4];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.PrivacySettingsUI.LocationServicesStateChanged" object:0];
 }
 
-- (void)updateCoreRoutineSettings:(id)a3
+- (void)updateCoreRoutineSettings:(id)settings
 {
   v4.receiver = self;
   v4.super_class = PUILocationSystemServicesListController;
-  [(PUILocationServicesListController *)&v4 updateCoreRoutineSettings:a3];
+  [(PUILocationServicesListController *)&v4 updateCoreRoutineSettings:settings];
   [(PUILocationSystemServicesListController *)self updateCoreRoutineEnabledStatusAndInsertSpecifier:0];
 }
 
-- (void)updateCoreRoutineEnabledStatusAndInsertSpecifier:(BOOL)a3
+- (void)updateCoreRoutineEnabledStatusAndInsertSpecifier:(BOOL)specifier
 {
   v5 = dispatch_get_global_queue(0, 0);
   v6[0] = MEMORY[0x277D85DD0];
@@ -187,7 +187,7 @@ LABEL_20:
   v6[2] = __92__PUILocationSystemServicesListController_updateCoreRoutineEnabledStatusAndInsertSpecifier___block_invoke;
   v6[3] = &unk_279BA1850;
   v6[4] = self;
-  v7 = a3;
+  specifierCopy = specifier;
   dispatch_async(v5, v6);
 }
 
@@ -259,12 +259,12 @@ void __92__PUILocationSystemServicesListController_updateCoreRoutineEnabledStatu
 
 - (void)insertCoreRoutineSpecifier
 {
-  v11 = [(PUILocationSystemServicesListController *)self specifiers];
-  if ([v11 count])
+  specifiers = [(PUILocationSystemServicesListController *)self specifiers];
+  if ([specifiers count])
   {
-    v3 = [(PUILocationSystemServicesListController *)self specifierIDBeforeCoreRoutine];
+    specifierIDBeforeCoreRoutine = [(PUILocationSystemServicesListController *)self specifierIDBeforeCoreRoutine];
 
-    if (!v3)
+    if (!specifierIDBeforeCoreRoutine)
     {
       return;
     }
@@ -282,35 +282,35 @@ void __92__PUILocationSystemServicesListController_updateCoreRoutineEnabledStatu
       v5 = v12;
     }
 
-    v11 = v5;
+    specifiers = v5;
     v6 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v5 target:self set:0 get:sel_coreRoutineEnabledStatus_ detail:0 cell:2 edit:0];
-    v7 = [(PUILocationSystemServicesListController *)self coreRoutineAppKey];
-    [v6 setProperty:v7 forKey:*MEMORY[0x277D3FFB8]];
+    coreRoutineAppKey = [(PUILocationSystemServicesListController *)self coreRoutineAppKey];
+    [v6 setProperty:coreRoutineAppKey forKey:*MEMORY[0x277D3FFB8]];
 
     [v6 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FF38]];
     [v6 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
     [v6 setButtonAction:sel_showCoreRoutineSettings_];
-    v8 = [(PUILocationSystemServicesListController *)self specifierIDBeforeCoreRoutine];
-    v9 = [(PUILocationSystemServicesListController *)self view];
-    v10 = [v9 window];
-    [(PUILocationSystemServicesListController *)self insertSpecifier:v6 afterSpecifierID:v8 animated:v10 != 0];
+    specifierIDBeforeCoreRoutine2 = [(PUILocationSystemServicesListController *)self specifierIDBeforeCoreRoutine];
+    view = [(PUILocationSystemServicesListController *)self view];
+    window = [view window];
+    [(PUILocationSystemServicesListController *)self insertSpecifier:v6 afterSpecifierID:specifierIDBeforeCoreRoutine2 animated:window != 0];
   }
 }
 
-- (id)coreRoutineEnabledStatus:(id)a3
+- (id)coreRoutineEnabledStatus:(id)status
 {
-  v4 = [(PUILocationServicesListController *)self currentCoreRoutineStatus];
-  if ([v4 length])
+  currentCoreRoutineStatus = [(PUILocationServicesListController *)self currentCoreRoutineStatus];
+  if ([currentCoreRoutineStatus length])
   {
-    v5 = [(PUILocationServicesListController *)self currentCoreRoutineStatus];
+    currentCoreRoutineStatus2 = [(PUILocationServicesListController *)self currentCoreRoutineStatus];
   }
 
   else
   {
-    v5 = &stru_28771E540;
+    currentCoreRoutineStatus2 = &stru_28771E540;
   }
 
-  return v5;
+  return currentCoreRoutineStatus2;
 }
 
 - (id)_locationBasedAlertBundles
@@ -341,7 +341,7 @@ void __92__PUILocationSystemServicesListController_updateCoreRoutineEnabledStatu
   return [v2 routingAndTrafficBundles];
 }
 
-- (id)_readAddressCorrectionAuthorizationStatus:(id)a3
+- (id)_readAddressCorrectionAuthorizationStatus:(id)status
 {
   v17 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D0E7A0];
@@ -360,14 +360,14 @@ void __92__PUILocationSystemServicesListController_updateCoreRoutineEnabledStatu
     _os_log_impl(&dword_2657FE000, v6, OS_LOG_TYPE_DEFAULT, "read GEOAddressCorrectionAuthorizationStatus enabled: %@", &v15, 0xCu);
   }
 
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  v9 = [v8 sf_isInternalInstall];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isInternalInstall = [currentDevice sf_isInternalInstall];
 
-  if (v9)
+  if (sf_isInternalInstall)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithBool:v5 == 2];
-    v11 = [(PUILocationServicesListController *)self coalescedImproveMapsServices];
-    [(PUILocationSystemServicesListController *)self _performConsistencyCheckValue:v10 bundles:v11 name:@"Improve Maps"];
+    coalescedImproveMapsServices = [(PUILocationServicesListController *)self coalescedImproveMapsServices];
+    [(PUILocationSystemServicesListController *)self _performConsistencyCheckValue:v10 bundles:coalescedImproveMapsServices name:@"Improve Maps"];
   }
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:v5 == 2];
@@ -376,11 +376,11 @@ void __92__PUILocationSystemServicesListController_updateCoreRoutineEnabledStatu
   return v12;
 }
 
-- (void)_setAddressCorrectionAuthorizationStatus:(id)a3 specifier:(id)a4
+- (void)_setAddressCorrectionAuthorizationStatus:(id)status specifier:(id)specifier
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 BOOLValue])
+  statusCopy = status;
+  if ([statusCopy BOOLValue])
   {
     v6 = 2;
   }
@@ -402,8 +402,8 @@ void __92__PUILocationSystemServicesListController_updateCoreRoutineEnabledStatu
     _os_log_impl(&dword_2657FE000, v9, OS_LOG_TYPE_DEFAULT, "set GEOAddressCorrectionAuthorizationStatus: %ld", &v12, 0xCu);
   }
 
-  v10 = [(PUILocationServicesListController *)self coalescedImproveMapsServices];
-  [(PUILocationSystemServicesListController *)self _setCoalescedBundlesAuthorized:v5 bundles:v10];
+  coalescedImproveMapsServices = [(PUILocationServicesListController *)self coalescedImproveMapsServices];
+  [(PUILocationSystemServicesListController *)self _setCoalescedBundlesAuthorized:statusCopy bundles:coalescedImproveMapsServices];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -415,16 +415,16 @@ void __92__PUILocationSystemServicesListController_updateCoreRoutineEnabledStatu
   [v3 present];
 }
 
-- (void)_setCoalescedBundlesAuthorized:(id)a3 bundles:(id)a4
+- (void)_setCoalescedBundlesAuthorized:(id)authorized bundles:(id)bundles
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  authorizedCopy = authorized;
+  bundlesCopy = bundles;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v8 = [bundlesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -437,19 +437,19 @@ void __92__PUILocationSystemServicesListController_updateCoreRoutineEnabledStatu
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(bundlesCopy);
         }
 
         v13 = *(*(&v16 + 1) + 8 * v12);
-        v14 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-        [v14 setProperty:v13 forKey:v11];
-        [(PUILocationServicesListController *)self setEntityAuthorized:v6 specifier:v14];
+        emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+        [emptyGroupSpecifier setProperty:v13 forKey:v11];
+        [(PUILocationServicesListController *)self setEntityAuthorized:authorizedCopy specifier:emptyGroupSpecifier];
 
         ++v12;
       }
 
       while (v9 != v12);
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [bundlesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
@@ -458,74 +458,74 @@ void __92__PUILocationSystemServicesListController_updateCoreRoutineEnabledStatu
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setLocationBasedAlertsAuthorized:(id)a3
+- (void)_setLocationBasedAlertsAuthorized:(id)authorized
 {
-  [(PUILocationSystemServicesListController *)self _setCoalescedBundlesAuthorized:a3 bundles:self->super._coalescedLocationBasedAlertsSystemServices];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 sf_isInternalInstall];
+  [(PUILocationSystemServicesListController *)self _setCoalescedBundlesAuthorized:authorized bundles:self->super._coalescedLocationBasedAlertsSystemServices];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isInternalInstall = [currentDevice sf_isInternalInstall];
 
-  if (v5)
+  if (sf_isInternalInstall)
   {
 
     [(PUILocationSystemServicesListController *)self _performLocationBasedAlertsConsistencyCheck];
   }
 }
 
-- (void)_setHomeKitAuthorized:(id)a3
+- (void)_setHomeKitAuthorized:(id)authorized
 {
-  [(PUILocationSystemServicesListController *)self _setCoalescedBundlesAuthorized:a3 bundles:self->super._coalescedHomeKitSystemServices];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 sf_isInternalInstall];
+  [(PUILocationSystemServicesListController *)self _setCoalescedBundlesAuthorized:authorized bundles:self->super._coalescedHomeKitSystemServices];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isInternalInstall = [currentDevice sf_isInternalInstall];
 
-  if (v5)
+  if (sf_isInternalInstall)
   {
 
     [(PUILocationSystemServicesListController *)self _performHomeKitConsistencyCheck];
   }
 }
 
-- (void)_setRoutingAndTrafficAuthorized:(id)a3
+- (void)_setRoutingAndTrafficAuthorized:(id)authorized
 {
-  [(PUILocationSystemServicesListController *)self _setCoalescedBundlesAuthorized:a3 bundles:self->super._coalescedRoutingAndTrafficSystemServices];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 sf_isInternalInstall];
+  [(PUILocationSystemServicesListController *)self _setCoalescedBundlesAuthorized:authorized bundles:self->super._coalescedRoutingAndTrafficSystemServices];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isInternalInstall = [currentDevice sf_isInternalInstall];
 
-  if (v5)
+  if (sf_isInternalInstall)
   {
 
     [(PUILocationSystemServicesListController *)self _performRoutingAndTrafficConsistencyCheck];
   }
 }
 
-- (void)_setImproveLocationAccuracyAuthorized:(id)a3
+- (void)_setImproveLocationAccuracyAuthorized:(id)authorized
 {
-  [(PUILocationSystemServicesListController *)self _setCoalescedBundlesAuthorized:a3 bundles:self->super._coalescedImproveLocationAccuracySystemServices];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 sf_isInternalInstall];
+  [(PUILocationSystemServicesListController *)self _setCoalescedBundlesAuthorized:authorized bundles:self->super._coalescedImproveLocationAccuracySystemServices];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isInternalInstall = [currentDevice sf_isInternalInstall];
 
-  if (v5)
+  if (sf_isInternalInstall)
   {
 
     [(PUILocationSystemServicesListController *)self _performRoutingAndTrafficConsistencyCheck];
   }
 }
 
-- (void)_setSystemCutomizationAuthorized:(id)a3
+- (void)_setSystemCutomizationAuthorized:(id)authorized
 {
-  [(PUILocationSystemServicesListController *)self _setCoalescedBundlesAuthorized:a3 bundles:self->super._coalescedSystemCutomizationSystemServices];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 sf_isInternalInstall];
+  [(PUILocationSystemServicesListController *)self _setCoalescedBundlesAuthorized:authorized bundles:self->super._coalescedSystemCutomizationSystemServices];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isInternalInstall = [currentDevice sf_isInternalInstall];
 
-  if (v5)
+  if (sf_isInternalInstall)
   {
 
     [(PUILocationSystemServicesListController *)self _performSystemCustomizationConsistencyCheck];
   }
 }
 
-- (void)_setWirelessAuthorized:(id)a3
+- (void)_setWirelessAuthorized:(id)authorized
 {
-  v4 = a3;
+  authorizedCopy = authorized;
   v5 = self->super._coalescedWirelessSystemServices;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -533,9 +533,9 @@ void __92__PUILocationSystemServicesListController_updateCoreRoutineEnabledStatu
   aBlock[3] = &unk_279BA1D88;
   aBlock[4] = self;
   v6 = _Block_copy(aBlock);
-  if ([v4 BOOLValue])
+  if ([authorizedCopy BOOLValue])
   {
-    v6[2](v6, v4, v5);
+    v6[2](v6, authorizedCopy, v5);
   }
 
   else
@@ -545,10 +545,10 @@ void __92__PUILocationSystemServicesListController_updateCoreRoutineEnabledStatu
     v8 = SFLocalizableWAPIStringKeyForKey();
     v9 = PUI_LocalizedStringForLocationServicesPrivacy(v8);
 
-    v10 = [MEMORY[0x277D75418] currentDevice];
-    v11 = [v10 sf_isiPad];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    sf_isiPad = [currentDevice sf_isiPad];
 
-    v12 = [MEMORY[0x277D75110] alertControllerWithTitle:v7 message:v9 preferredStyle:v11];
+    v12 = [MEMORY[0x277D75110] alertControllerWithTitle:v7 message:v9 preferredStyle:sf_isiPad];
     v13 = MEMORY[0x277D750F8];
     v14 = PUI_LocalizedStringForLocationServicesPrivacy(@"WIRELESS_DISABLE_CONFIRM");
     v22[0] = MEMORY[0x277D85DD0];
@@ -556,7 +556,7 @@ void __92__PUILocationSystemServicesListController_updateCoreRoutineEnabledStatu
     v22[2] = __66__PUILocationSystemServicesListController__setWirelessAuthorized___block_invoke_2;
     v22[3] = &unk_279BA1DB0;
     v25 = v6;
-    v23 = v4;
+    v23 = authorizedCopy;
     v24 = v5;
     v15 = [v13 actionWithTitle:v14 style:0 handler:v22];
     [v12 addAction:v15];
@@ -598,15 +598,15 @@ void __66__PUILocationSystemServicesListController__setWirelessAuthorized___bloc
   [WeakRetained reloadSpecifierID:@"NETWORKING_WIRELESS"];
 }
 
-- (BOOL)_areCoalescedBundlesAuthorized:(id)a3
+- (BOOL)_areCoalescedBundlesAuthorized:(id)authorized
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  authorizedCopy = authorized;
+  v5 = [authorizedCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -618,23 +618,23 @@ void __66__PUILocationSystemServicesListController__setWirelessAuthorized___bloc
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(authorizedCopy);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-        [v11 setProperty:v10 forKey:v8];
-        v12 = [(PUILocationServicesListController *)self isEntityAuthorized:v11];
-        v13 = [v12 BOOLValue];
+        emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+        [emptyGroupSpecifier setProperty:v10 forKey:v8];
+        v12 = [(PUILocationServicesListController *)self isEntityAuthorized:emptyGroupSpecifier];
+        bOOLValue = [v12 BOOLValue];
 
-        if (v13)
+        if (bOOLValue)
         {
           v14 = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [authorizedCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v6)
       {
         continue;
@@ -654,10 +654,10 @@ LABEL_11:
 - (id)_areLocationBasedAlertsAuthorized
 {
   v3 = [(PUILocationSystemServicesListController *)self _areCoalescedBundlesAuthorized:self->super._coalescedLocationBasedAlertsSystemServices];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 sf_isInternalInstall];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isInternalInstall = [currentDevice sf_isInternalInstall];
 
-  if (v5)
+  if (sf_isInternalInstall)
   {
     [(PUILocationSystemServicesListController *)self _performLocationBasedAlertsConsistencyCheck];
   }
@@ -670,10 +670,10 @@ LABEL_11:
 - (id)_isWirelessAuthorized
 {
   v3 = [(PUILocationSystemServicesListController *)self _areCoalescedBundlesAuthorized:self->super._coalescedWirelessSystemServices];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 sf_isInternalInstall];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isInternalInstall = [currentDevice sf_isInternalInstall];
 
-  if (v5)
+  if (sf_isInternalInstall)
   {
     [(PUILocationSystemServicesListController *)self _performWirelessConsistencyCheck];
   }
@@ -686,10 +686,10 @@ LABEL_11:
 - (id)_isHomeKitAuthorized
 {
   v3 = [(PUILocationSystemServicesListController *)self _areCoalescedBundlesAuthorized:self->super._coalescedHomeKitSystemServices];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 sf_isInternalInstall];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isInternalInstall = [currentDevice sf_isInternalInstall];
 
-  if (v5)
+  if (sf_isInternalInstall)
   {
     [(PUILocationSystemServicesListController *)self _performHomeKitConsistencyCheck];
   }
@@ -702,10 +702,10 @@ LABEL_11:
 - (id)_isRoutingAndTrafficAuthorized
 {
   v3 = [(PUILocationSystemServicesListController *)self _areCoalescedBundlesAuthorized:self->super._coalescedRoutingAndTrafficSystemServices];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 sf_isInternalInstall];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isInternalInstall = [currentDevice sf_isInternalInstall];
 
-  if (v5)
+  if (sf_isInternalInstall)
   {
     [(PUILocationSystemServicesListController *)self _performRoutingAndTrafficConsistencyCheck];
   }
@@ -718,10 +718,10 @@ LABEL_11:
 - (id)_isImproveLocationAccuracyAuthorized
 {
   v3 = [(PUILocationSystemServicesListController *)self _areCoalescedBundlesAuthorized:self->super._coalescedImproveLocationAccuracySystemServices];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 sf_isInternalInstall];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isInternalInstall = [currentDevice sf_isInternalInstall];
 
-  if (v5)
+  if (sf_isInternalInstall)
   {
     [(PUILocationSystemServicesListController *)self _performImproveLocationAccuracyConsistencyCheck];
   }
@@ -734,10 +734,10 @@ LABEL_11:
 - (id)_isSystemCustomizationAuthorized
 {
   v3 = [(PUILocationSystemServicesListController *)self _areCoalescedBundlesAuthorized:self->super._coalescedSystemCutomizationSystemServices];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 sf_isInternalInstall];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isInternalInstall = [currentDevice sf_isInternalInstall];
 
-  if (v5)
+  if (sf_isInternalInstall)
   {
     [(PUILocationSystemServicesListController *)self _performSystemCustomizationConsistencyCheck];
   }
@@ -747,23 +747,23 @@ LABEL_11:
   return [v6 numberWithBool:v3];
 }
 
-- (void)_performConsistencyCheckValue:(id)a3 bundles:(id)a4 name:(id)a5
+- (void)_performConsistencyCheckValue:(id)value bundles:(id)bundles name:(id)name
 {
   v46 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  valueCopy = value;
+  bundlesCopy = bundles;
+  nameCopy = name;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v8;
-  v10 = [v8 countByEnumeratingWithState:&v33 objects:v45 count:16];
+  obj = bundlesCopy;
+  v10 = [bundlesCopy countByEnumeratingWithState:&v33 objects:v45 count:16];
   if (v10)
   {
     v11 = v10;
-    v29 = v9;
-    v30 = v7;
+    v29 = nameCopy;
+    v30 = valueCopy;
     v12 = 0;
     v13 = 0;
     v14 = 0;
@@ -781,13 +781,13 @@ LABEL_11:
         }
 
         v19 = *(*(&v33 + 1) + 8 * v17);
-        v20 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-        [v20 setProperty:v19 forKey:v16];
-        v12 = [(PUILocationServicesListController *)self isEntityAuthorized:v20];
+        emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+        [emptyGroupSpecifier setProperty:v19 forKey:v16];
+        v12 = [(PUILocationServicesListController *)self isEntityAuthorized:emptyGroupSpecifier];
 
-        v21 = [v12 BOOLValue];
-        v13 |= v21;
-        v14 |= v21 ^ 1;
+        bOOLValue = [v12 BOOLValue];
+        v13 |= bOOLValue;
+        v14 |= bOOLValue ^ 1;
 
         ++v17;
         v18 = v12;
@@ -798,8 +798,8 @@ LABEL_11:
     }
 
     while (v11);
-    v9 = v29;
-    v7 = v30;
+    nameCopy = v29;
+    valueCopy = v30;
     if ((v13 & v14 & 1) != 0 || v30 && v12 && (v28 = [v30 BOOLValue], v28 != objc_msgSend(v12, "BOOLValue")))
     {
       v22 = _PUILoggingFacility();
@@ -841,10 +841,10 @@ LABEL_11:
   if (!v3)
   {
     v95 = *MEMORY[0x277D3FC48];
-    v111 = self;
+    selfCopy = self;
     v100 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v94 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    v93 = [(PUILocationSystemServicesListController *)v111 productImprovementGroup];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    productImprovementGroup = [(PUILocationSystemServicesListController *)selfCopy productImprovementGroup];
     v116 = 0;
     v117 = &v116;
     v118 = 0x2020000000;
@@ -880,20 +880,20 @@ LABEL_11:
       _os_log_impl(&dword_2657FE000, v7, OS_LOG_TYPE_DEFAULT, "specifiers -- CLCopyAppsUsingLocation:\n%@", buf, 0xCu);
     }
 
-    objc_storeStrong(&v111->super._locationEntitiesDetails, obj);
+    objc_storeStrong(&selfCopy->super._locationEntitiesDetails, obj);
     v109 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v105 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v106 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [(PUILocationSystemServicesListController *)v111 setCoreRoutineAppKey:0];
-    [(PUILocationSystemServicesListController *)v111 setSpecifierIDBeforeCoreRoutine:0];
+    [(PUILocationSystemServicesListController *)selfCopy setCoreRoutineAppKey:0];
+    [(PUILocationSystemServicesListController *)selfCopy setSpecifierIDBeforeCoreRoutine:0];
     if (![obj count])
     {
       goto LABEL_85;
     }
 
     v8 = MEMORY[0x277CBEB98];
-    v9 = [(PUILocationServicesListController *)v111 hiddenBundleIdentifiers];
-    v110 = [v8 setWithSet:v9];
+    hiddenBundleIdentifiers = [(PUILocationServicesListController *)selfCopy hiddenBundleIdentifiers];
+    v110 = [v8 setWithSet:hiddenBundleIdentifiers];
 
     v114 = 0u;
     v115 = 0u;
@@ -936,13 +936,13 @@ LABEL_11:
           v18 = [v16 objectForKey:@"BundlePath"];
           if (v18)
           {
-            v19 = [(PUILocationSystemServicesListController *)v111 _locationBasedAlertBundles];
-            v20 = [v19 containsString:v18];
+            _locationBasedAlertBundles = [(PUILocationSystemServicesListController *)selfCopy _locationBasedAlertBundles];
+            v20 = [_locationBasedAlertBundles containsString:v18];
 
             if (v20)
             {
               [(NSArray *)v109 addObject:v15];
-              [(NSMutableArray *)v111->super._coalescedLocationBasedAlertsSystemServices addObject:v15];
+              [(NSMutableArray *)selfCopy->super._coalescedLocationBasedAlertsSystemServices addObject:v15];
               v17 = 0;
               BYTE4(v108) = 1;
               goto LABEL_48;
@@ -953,74 +953,74 @@ LABEL_11:
 
           if (v21)
           {
-            v22 = [(PUILocationSystemServicesListController *)v111 _improveLocationAccuracyBundles];
-            v23 = [v22 containsString:v21];
+            _improveLocationAccuracyBundles = [(PUILocationSystemServicesListController *)selfCopy _improveLocationAccuracyBundles];
+            v23 = [_improveLocationAccuracyBundles containsString:v21];
 
             if (v23)
             {
               [(NSArray *)v109 addObject:v15];
-              [(NSMutableArray *)v111->super._coalescedImproveLocationAccuracySystemServices addObject:v15];
+              [(NSMutableArray *)selfCopy->super._coalescedImproveLocationAccuracySystemServices addObject:v15];
               v17 = 0;
               LOBYTE(v108) = 1;
               goto LABEL_47;
             }
 
-            v24 = [(PUILocationSystemServicesListController *)v111 _homeKitBundles];
-            v25 = [v24 containsString:v21];
+            _homeKitBundles = [(PUILocationSystemServicesListController *)selfCopy _homeKitBundles];
+            v25 = [_homeKitBundles containsString:v21];
 
             if (v25)
             {
               [(NSArray *)v109 addObject:v15];
-              [(NSMutableArray *)v111->super._coalescedHomeKitSystemServices addObject:v15];
+              [(NSMutableArray *)selfCopy->super._coalescedHomeKitSystemServices addObject:v15];
               v17 = 0;
               v107 = 1;
               goto LABEL_47;
             }
 
-            v26 = [(PUILocationSystemServicesListController *)v111 _routingAndTrafficBundles];
-            v27 = [v26 containsString:v21];
+            _routingAndTrafficBundles = [(PUILocationSystemServicesListController *)selfCopy _routingAndTrafficBundles];
+            v27 = [_routingAndTrafficBundles containsString:v21];
 
             if (v27)
             {
               [(NSArray *)v109 addObject:v15];
-              [(NSMutableArray *)v111->super._coalescedRoutingAndTrafficSystemServices addObject:v15];
+              [(NSMutableArray *)selfCopy->super._coalescedRoutingAndTrafficSystemServices addObject:v15];
               v17 = 0;
               v104 = 1;
               goto LABEL_47;
             }
 
-            v28 = [objc_opt_class() wirelessBundles];
-            v29 = [v28 containsString:v21];
+            wirelessBundles = [objc_opt_class() wirelessBundles];
+            v29 = [wirelessBundles containsString:v21];
 
             if (v29)
             {
               [(NSArray *)v109 addObject:v15];
-              [(NSMutableArray *)v111->super._coalescedWirelessSystemServices addObject:v15];
+              [(NSMutableArray *)selfCopy->super._coalescedWirelessSystemServices addObject:v15];
               v17 = 0;
               v99 = 1;
               goto LABEL_47;
             }
 
-            v30 = [objc_opt_class() systemCustomizationBundles];
-            v31 = [v30 containsString:v21];
+            systemCustomizationBundles = [objc_opt_class() systemCustomizationBundles];
+            v31 = [systemCustomizationBundles containsString:v21];
 
             if (v31)
             {
               [(NSArray *)v109 addObject:v15];
-              [(NSMutableArray *)v111->super._coalescedSystemCutomizationSystemServices addObject:v15];
+              [(NSMutableArray *)selfCopy->super._coalescedSystemCutomizationSystemServices addObject:v15];
               v17 = 0;
               v96 = 1;
               goto LABEL_47;
             }
 
-            v32 = [objc_opt_class() improveMapsBundles];
-            v33 = [v32 containsString:v21];
+            improveMapsBundles = [objc_opt_class() improveMapsBundles];
+            v33 = [improveMapsBundles containsString:v21];
 
             if (v33)
             {
               [(NSArray *)v109 addObject:v15];
-              v34 = [(PUILocationServicesListController *)v111 coalescedImproveMapsServices];
-              [v34 addObject:v15];
+              coalescedImproveMapsServices = [(PUILocationServicesListController *)selfCopy coalescedImproveMapsServices];
+              [coalescedImproveMapsServices addObject:v15];
 
               goto LABEL_46;
             }
@@ -1067,7 +1067,7 @@ LABEL_47:
 
           if (v35 == 16)
           {
-            [(PUILocationSystemServicesListController *)v111 setCoreRoutineAppKey:v15];
+            [(PUILocationSystemServicesListController *)selfCopy setCoreRoutineAppKey:v15];
             v17 = 0;
 LABEL_51:
             v18 = v21;
@@ -1085,7 +1085,7 @@ LABEL_51:
           v17 = [v38 objectForInfoDictionaryKey:v101];
           if (![v17 length])
           {
-            v98 = [v18 lastPathComponent];
+            lastPathComponent = [v18 lastPathComponent];
 
             v39 = _PUILoggingFacility();
             if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -1095,7 +1095,7 @@ LABEL_51:
               _os_log_impl(&dword_2657FE000, v39, OS_LOG_TYPE_DEFAULT, "No display name found for system service: %@", buf, 0xCu);
             }
 
-            v17 = v98;
+            v17 = lastPathComponent;
           }
 
 LABEL_52:
@@ -1141,13 +1141,13 @@ LABEL_52:
               v44 = sel_setEntityAuthorized_specifier_;
             }
 
-            v45 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v17 target:v111 set:v44 get:sel_isEntityAuthorized_ detail:0 cell:6 edit:0];
+            v45 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v17 target:selfCopy set:v44 get:sel_isEntityAuthorized_ detail:0 cell:6 edit:0];
             [v45 setProperty:v15 forKey:v103];
-            v46 = [(PUILocationServicesListController *)v111 isEntityAuthorized:v45];
+            v46 = [(PUILocationServicesListController *)selfCopy isEntityAuthorized:v45];
             [v45 setProperty:v46 forKey:v102];
 
-            v47 = [(PUILocationSystemServicesListController *)v111 _productImprovementByBundlePath];
-            v48 = [v47 containsString:v18];
+            _productImprovementByBundlePath = [(PUILocationSystemServicesListController *)selfCopy _productImprovementByBundlePath];
+            v48 = [_productImprovementByBundlePath containsString:v18];
 
             if (v48)
             {
@@ -1177,11 +1177,11 @@ LABEL_48:
           {
             v51 = MEMORY[0x277D3FAD8];
             v52 = PUI_LocalizedStringForLocationServicesPrivacy(@"LOCATION_BASED_ALERTS");
-            v53 = [v51 preferenceSpecifierNamed:v52 target:v111 set:sel__setLocationBasedAlertsAuthorized_ get:sel__areLocationBasedAlertsAuthorized detail:0 cell:6 edit:0];
+            v53 = [v51 preferenceSpecifierNamed:v52 target:selfCopy set:sel__setLocationBasedAlertsAuthorized_ get:sel__areLocationBasedAlertsAuthorized detail:0 cell:6 edit:0];
 
             [v53 setProperty:@"LOCATION_BASED_ALERTS" forKey:v103];
-            v54 = [(PUILocationSystemServicesListController *)v111 _areLocationBasedAlertsAuthorized];
-            [v53 setProperty:v54 forKey:v102];
+            _areLocationBasedAlertsAuthorized = [(PUILocationSystemServicesListController *)selfCopy _areLocationBasedAlertsAuthorized];
+            [v53 setProperty:_areLocationBasedAlertsAuthorized forKey:v102];
 
             [v53 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
             [v105 addObject:v53];
@@ -1191,11 +1191,11 @@ LABEL_48:
           {
             v55 = MEMORY[0x277D3FAD8];
             v56 = PUI_LocalizedStringForLocationServicesPrivacy(@"HOMEKIT");
-            v57 = [v55 preferenceSpecifierNamed:v56 target:v111 set:sel__setHomeKitAuthorized_ get:sel__isHomeKitAuthorized detail:0 cell:6 edit:0];
+            v57 = [v55 preferenceSpecifierNamed:v56 target:selfCopy set:sel__setHomeKitAuthorized_ get:sel__isHomeKitAuthorized detail:0 cell:6 edit:0];
 
             [v57 setProperty:@"HOMEKIT" forKey:v103];
-            v58 = [(PUILocationSystemServicesListController *)v111 _isHomeKitAuthorized];
-            [v57 setProperty:v58 forKey:v102];
+            _isHomeKitAuthorized = [(PUILocationSystemServicesListController *)selfCopy _isHomeKitAuthorized];
+            [v57 setProperty:_isHomeKitAuthorized forKey:v102];
 
             [v105 addObject:v57];
           }
@@ -1204,11 +1204,11 @@ LABEL_48:
           {
             v59 = MEMORY[0x277D3FAD8];
             v60 = PUI_LocalizedStringForLocationServicesPrivacy(@"NETWORKING_WIRELESS");
-            v61 = [v59 preferenceSpecifierNamed:v60 target:v111 set:sel__setWirelessAuthorized_ get:sel__isWirelessAuthorized detail:0 cell:6 edit:0];
+            v61 = [v59 preferenceSpecifierNamed:v60 target:selfCopy set:sel__setWirelessAuthorized_ get:sel__isWirelessAuthorized detail:0 cell:6 edit:0];
 
             [v61 setProperty:@"NETWORKING_WIRELESS" forKey:v103];
-            v62 = [(PUILocationSystemServicesListController *)v111 _isWirelessAuthorized];
-            [v61 setProperty:v62 forKey:v102];
+            _isWirelessAuthorized = [(PUILocationSystemServicesListController *)selfCopy _isWirelessAuthorized];
+            [v61 setProperty:_isWirelessAuthorized forKey:v102];
 
             [v105 addObject:v61];
           }
@@ -1217,11 +1217,11 @@ LABEL_48:
           {
             v63 = MEMORY[0x277D3FAD8];
             v64 = PUI_LocalizedStringForLocationServicesPrivacy(@"ROUTING_AND_TRAFFIC");
-            v65 = [v63 preferenceSpecifierNamed:v64 target:v111 set:sel__setRoutingAndTrafficAuthorized_ get:sel__isRoutingAndTrafficAuthorized detail:0 cell:6 edit:0];
+            v65 = [v63 preferenceSpecifierNamed:v64 target:selfCopy set:sel__setRoutingAndTrafficAuthorized_ get:sel__isRoutingAndTrafficAuthorized detail:0 cell:6 edit:0];
 
             [v65 setProperty:@"ROUTING_AND_TRAFFIC" forKey:v103];
-            v66 = [(PUILocationSystemServicesListController *)v111 _isRoutingAndTrafficAuthorized];
-            [v65 setProperty:v66 forKey:v102];
+            _isRoutingAndTrafficAuthorized = [(PUILocationSystemServicesListController *)selfCopy _isRoutingAndTrafficAuthorized];
+            [v65 setProperty:_isRoutingAndTrafficAuthorized forKey:v102];
 
             [v106 addObject:v65];
           }
@@ -1230,11 +1230,11 @@ LABEL_48:
           {
             v67 = MEMORY[0x277D3FAD8];
             v68 = PUI_LocalizedStringForLocationServicesPrivacy(@"IMPROVE_LOCATION_ACCURACY");
-            v69 = [v67 preferenceSpecifierNamed:v68 target:v111 set:sel__setImproveLocationAccuracyAuthorized_ get:sel__isImproveLocationAccuracyAuthorized detail:0 cell:6 edit:0];
+            v69 = [v67 preferenceSpecifierNamed:v68 target:selfCopy set:sel__setImproveLocationAccuracyAuthorized_ get:sel__isImproveLocationAccuracyAuthorized detail:0 cell:6 edit:0];
 
             [v69 setProperty:@"IMPROVE_LOCATION_ACCURACY" forKey:v103];
-            v70 = [(PUILocationSystemServicesListController *)v111 _isImproveLocationAccuracyAuthorized];
-            [v69 setProperty:v70 forKey:v102];
+            _isImproveLocationAccuracyAuthorized = [(PUILocationSystemServicesListController *)selfCopy _isImproveLocationAccuracyAuthorized];
+            [v69 setProperty:_isImproveLocationAccuracyAuthorized forKey:v102];
 
             [v106 addObject:v69];
           }
@@ -1243,11 +1243,11 @@ LABEL_48:
           {
             v71 = MEMORY[0x277D3FAD8];
             v72 = PUI_LocalizedStringForLocationServicesPrivacy(@"SYSTEM_CUSTOMIZATION");
-            v110 = [v71 preferenceSpecifierNamed:v72 target:v111 set:sel__setSystemCutomizationAuthorized_ get:sel__isSystemCustomizationAuthorized detail:0 cell:6 edit:0];
+            v110 = [v71 preferenceSpecifierNamed:v72 target:selfCopy set:sel__setSystemCutomizationAuthorized_ get:sel__isSystemCustomizationAuthorized detail:0 cell:6 edit:0];
 
             [v110 setProperty:@"SYSTEM_CUSTOMIZATION" forKey:v103];
-            v73 = [(PUILocationSystemServicesListController *)v111 _isSystemCustomizationAuthorized];
-            [v110 setProperty:v73 forKey:v102];
+            _isSystemCustomizationAuthorized = [(PUILocationSystemServicesListController *)selfCopy _isSystemCustomizationAuthorized];
+            [v110 setProperty:_isSystemCustomizationAuthorized forKey:v102];
 
             [v105 addObject:v110];
             goto LABEL_84;
@@ -1264,30 +1264,30 @@ LABEL_85:
     [v106 sortUsingFunction:PUICompareSpecifiersByName context:0];
     v74 = MEMORY[0x277D3FAD8];
     v75 = PUI_LocalizedStringForLocationServices(@"POLARIS_TITLE");
-    v76 = [v74 preferenceSpecifierNamed:v75 target:v111 set:sel__setAddressCorrectionAuthorizationStatus_specifier_ get:sel__readAddressCorrectionAuthorizationStatus_ detail:0 cell:6 edit:0];
+    v76 = [v74 preferenceSpecifierNamed:v75 target:selfCopy set:sel__setAddressCorrectionAuthorizationStatus_specifier_ get:sel__readAddressCorrectionAuthorizationStatus_ detail:0 cell:6 edit:0];
 
     [v76 setIdentifier:@"POLARIS"];
     [v106 addObject:v76];
-    v77 = [(PUILocationSystemServicesListController *)v111 coreRoutineAppKey];
+    coreRoutineAppKey = [(PUILocationSystemServicesListController *)selfCopy coreRoutineAppKey];
 
-    if (v77)
+    if (coreRoutineAppKey)
     {
-      v78 = [v105 lastObject];
-      v79 = [v78 identifier];
-      [(PUILocationSystemServicesListController *)v111 setSpecifierIDBeforeCoreRoutine:v79];
+      lastObject = [v105 lastObject];
+      identifier = [lastObject identifier];
+      [(PUILocationSystemServicesListController *)selfCopy setSpecifierIDBeforeCoreRoutine:identifier];
 
-      [(PUILocationSystemServicesListController *)v111 updateCoreRoutineEnabledStatusAndInsertSpecifier:1];
+      [(PUILocationSystemServicesListController *)selfCopy updateCoreRoutineEnabledStatusAndInsertSpecifier:1];
     }
 
     if ([v105 count])
     {
-      [v100 addObject:v94];
+      [v100 addObject:emptyGroupSpecifier];
       [v100 addObjectsFromArray:v105];
     }
 
     if ([v106 count])
     {
-      [v100 addObject:v93];
+      [v100 addObject:productImprovementGroup];
       [v100 addObjectsFromArray:v106];
     }
 
@@ -1307,21 +1307,21 @@ LABEL_85:
       [v100 addObject:v83];
       v85 = MEMORY[0x277D3FAD8];
       v86 = PUI_LocalizedStringForLocationServices(@"STATUS_BAR_ICON");
-      v87 = [v85 preferenceSpecifierNamed:v86 target:v111 set:sel_setStatusEnabled_specifier_ get:sel_isStatusEnabled_ detail:0 cell:6 edit:0];
+      v87 = [v85 preferenceSpecifierNamed:v86 target:selfCopy set:sel_setStatusEnabled_specifier_ get:sel_isStatusEnabled_ detail:0 cell:6 edit:0];
       [v100 addObject:v87];
     }
 
-    ignoredLocationEntities = v111->super._ignoredLocationEntities;
-    v111->super._ignoredLocationEntities = v109;
+    ignoredLocationEntities = selfCopy->super._ignoredLocationEntities;
+    selfCopy->super._ignoredLocationEntities = v109;
     v89 = v109;
 
-    v90 = *(&v111->super.super.super.super.super.super.isa + v95);
-    *(&v111->super.super.super.super.super.super.isa + v95) = v100;
+    v90 = *(&selfCopy->super.super.super.super.super.super.isa + v95);
+    *(&selfCopy->super.super.super.super.super.super.isa + v95) = v100;
 
-    [(PUILocationServicesListController *)v111 updateSpecifiersForImposedSettingsWithReload:0];
-    [(PUILocationSystemServicesListController *)v111 updateImproveMapsSpecifierWithCompletion:0];
+    [(PUILocationServicesListController *)selfCopy updateSpecifiersForImposedSettingsWithReload:0];
+    [(PUILocationSystemServicesListController *)selfCopy updateImproveMapsSpecifierWithCompletion:0];
 
-    v3 = *(&v111->super.super.super.super.super.super.isa + v95);
+    v3 = *(&selfCopy->super.super.super.super.super.super.isa + v95);
   }
 
   v91 = *MEMORY[0x277D85DE8];
@@ -1336,10 +1336,10 @@ uint64_t __53__PUILocationSystemServicesListController_specifiers__block_invoke(
   return result;
 }
 
-- (void)updateImproveMapsSpecifierWithCompletion:(id)a3
+- (void)updateImproveMapsSpecifierWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = *MEMORY[0x277D3FDD8];
   v6 = SFIsAppWithBundleIDInstalled();
   v7 = _PUILoggingFacility();
@@ -1353,14 +1353,14 @@ uint64_t __53__PUILocationSystemServicesListController_specifiers__block_invoke(
       _os_log_impl(&dword_2657FE000, v7, OS_LOG_TYPE_DEFAULT, "%s: fetching routine state", buf, 0xCu);
     }
 
-    v9 = [(PUILocationServicesListController *)self routineManager];
+    routineManager = [(PUILocationServicesListController *)self routineManager];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __84__PUILocationSystemServicesListController_updateImproveMapsSpecifierWithCompletion___block_invoke;
     v11[3] = &unk_279BA1E28;
     v11[4] = self;
-    v12 = v4;
-    [v9 fetchRoutineStateWithHandler:v11];
+    v12 = completionCopy;
+    [routineManager fetchRoutineStateWithHandler:v11];
   }
 
   else
@@ -1373,9 +1373,9 @@ uint64_t __53__PUILocationSystemServicesListController_specifiers__block_invoke(
     }
 
     [(PUILocationSystemServicesListController *)self _setAddressCorrectionAuthorizationStatus:MEMORY[0x277CBEC28] specifier:0];
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 

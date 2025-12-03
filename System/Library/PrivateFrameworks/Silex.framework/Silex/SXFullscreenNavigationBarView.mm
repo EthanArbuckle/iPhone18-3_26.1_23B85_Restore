@@ -4,10 +4,10 @@
 - (void)createBackgroundView;
 - (void)createDoneButton;
 - (void)didMoveToSuperview;
-- (void)doneButtonPressed:(id)a3;
+- (void)doneButtonPressed:(id)pressed;
 - (void)layoutSubviews;
-- (void)setFrame:(CGRect)a3;
-- (void)updateFrameAnimated:(BOOL)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)updateFrameAnimated:(BOOL)animated;
 @end
 
 @implementation SXFullscreenNavigationBarView
@@ -43,21 +43,21 @@
   [(SXFullscreenNavigationBarView *)self updateFrameAnimated:0];
 }
 
-- (void)updateFrameAnimated:(BOOL)a3
+- (void)updateFrameAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(SXFullscreenNavigationBarView *)self superview];
-  [v5 frame];
+  animatedCopy = animated;
+  superview = [(SXFullscreenNavigationBarView *)self superview];
+  [superview frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(SXFullscreenNavigationBarView *)self traitCollection];
-  if ([v14 verticalSizeClass] == 1)
+  traitCollection = [(SXFullscreenNavigationBarView *)self traitCollection];
+  if ([traitCollection verticalSizeClass] == 1)
   {
-    v15 = [(SXFullscreenNavigationBarView *)self traitCollection];
-    if ([v15 horizontalSizeClass] == 1)
+    traitCollection2 = [(SXFullscreenNavigationBarView *)self traitCollection];
+    if ([traitCollection2 horizontalSizeClass] == 1)
     {
       v16 = 32.0;
     }
@@ -85,9 +85,9 @@
   v33.size.width = v11;
   v33.size.height = v13;
   Width = CGRectGetWidth(v33);
-  v21 = [(SXFullscreenNavigationBarView *)self expanded];
+  expanded = [(SXFullscreenNavigationBarView *)self expanded];
   v22 = 0.0;
-  if (!v21)
+  if (!expanded)
   {
     v23 = MinX;
     v24 = Width;
@@ -107,7 +107,7 @@
   v31[4] = self;
   v29 = MEMORY[0x1DA716BE0](v31);
   v30 = v29;
-  if (v3)
+  if (animatedCopy)
   {
     [MEMORY[0x1E69DD250] animateWithDuration:6 delay:v29 options:0 animations:0.15 completion:0.0];
   }
@@ -126,41 +126,41 @@ uint64_t __53__SXFullscreenNavigationBarView_updateFrameAnimated___block_invoke(
   return [v1 setAlpha:v2];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v24.receiver = self;
   v24.super_class = SXFullscreenNavigationBarView;
   [(SXFullscreenNavigationBarView *)&v24 setFrame:?];
-  v8 = [(SXFullscreenNavigationBarView *)self backgroundView];
+  backgroundView = [(SXFullscreenNavigationBarView *)self backgroundView];
   [(SXFullscreenNavigationBarView *)self bounds];
-  [v8 setFrame:?];
+  [backgroundView setFrame:?];
 
-  v9 = [(SXFullscreenNavigationBarView *)self superview];
-  v10 = v9;
-  if (v9)
+  superview = [(SXFullscreenNavigationBarView *)self superview];
+  v10 = superview;
+  if (superview)
   {
-    v11 = v9;
+    selfCopy = superview;
   }
 
   else
   {
-    v11 = self;
+    selfCopy = self;
   }
 
-  v12 = v11;
+  v12 = selfCopy;
 
   [(SXFullscreenNavigationBarView *)v12 safeAreaInsets];
   v14 = v13;
-  v15 = [(SXFullscreenNavigationBarView *)self traitCollection];
+  traitCollection = [(SXFullscreenNavigationBarView *)self traitCollection];
   v16 = 22.0;
-  if ([v15 verticalSizeClass] == 1)
+  if ([traitCollection verticalSizeClass] == 1)
   {
-    v17 = [(SXFullscreenNavigationBarView *)self traitCollection];
-    if ([v17 horizontalSizeClass] == 1)
+    traitCollection2 = [(SXFullscreenNavigationBarView *)self traitCollection];
+    if ([traitCollection2 horizontalSizeClass] == 1)
     {
       v16 = 16.0;
     }
@@ -178,12 +178,12 @@ uint64_t __53__SXFullscreenNavigationBarView_updateFrameAnimated___block_invoke(
   v25.size.width = width;
   v25.size.height = height;
   v20 = CGRectGetWidth(v25);
-  v21 = [(SXFullscreenNavigationBarView *)self button];
-  [v21 bounds];
+  button = [(SXFullscreenNavigationBarView *)self button];
+  [button bounds];
   v22 = v20 + CGRectGetWidth(v26) * -0.5 + -5.0 - v14;
 
-  v23 = [(SXFullscreenNavigationBarView *)self button];
-  [v23 setCenter:{v22, v16 + v19}];
+  button2 = [(SXFullscreenNavigationBarView *)self button];
+  [button2 setCenter:{v22, v16 + v19}];
 }
 
 - (void)createBackgroundView
@@ -194,8 +194,8 @@ uint64_t __53__SXFullscreenNavigationBarView_updateFrameAnimated___block_invoke(
   self->_backgroundView = v3;
 
   [(UIVisualEffectView *)self->_backgroundView _setGroupName:@"captionBars"];
-  v5 = [(SXFullscreenNavigationBarView *)self backgroundView];
-  [(SXFullscreenNavigationBarView *)self addSubview:v5];
+  backgroundView = [(SXFullscreenNavigationBarView *)self backgroundView];
+  [(SXFullscreenNavigationBarView *)self addSubview:backgroundView];
 }
 
 - (void)createDoneButton
@@ -204,33 +204,33 @@ uint64_t __53__SXFullscreenNavigationBarView_updateFrameAnimated___block_invoke(
   button = self->_button;
   self->_button = v3;
 
-  v5 = [(SXFullscreenNavigationBarView *)self button];
+  button = [(SXFullscreenNavigationBarView *)self button];
   v6 = SXBundle();
   v7 = [v6 localizedStringForKey:@"Done" value:&stru_1F532F6C0 table:0];
-  [v5 setTitle:v7 forState:0];
+  [button setTitle:v7 forState:0];
 
-  v8 = [(SXFullscreenNavigationBarView *)self button];
-  v9 = [MEMORY[0x1E69DC888] whiteColor];
-  [v8 setTitleColor:v9 forState:0];
+  button2 = [(SXFullscreenNavigationBarView *)self button];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [button2 setTitleColor:whiteColor forState:0];
 
-  v10 = [(SXFullscreenNavigationBarView *)self button];
-  v11 = [v10 titleLabel];
+  button3 = [(SXFullscreenNavigationBarView *)self button];
+  titleLabel = [button3 titleLabel];
   v12 = MEMORY[0x1E69DB878];
   [MEMORY[0x1E69DB878] systemFontSize];
   v13 = [v12 boldSystemFontOfSize:?];
-  [v11 setFont:v13];
+  [titleLabel setFont:v13];
 
-  v14 = [(SXFullscreenNavigationBarView *)self button];
-  [v14 addTarget:self action:sel_doneButtonPressed_ forControlEvents:64];
+  button4 = [(SXFullscreenNavigationBarView *)self button];
+  [button4 addTarget:self action:sel_doneButtonPressed_ forControlEvents:64];
 
   if (_UISolariumFeatureFlagEnabled())
   {
-    v15 = [(SXFullscreenNavigationBarView *)self button];
-    [v15 setOverrideUserInterfaceStyle:2];
+    button5 = [(SXFullscreenNavigationBarView *)self button];
+    [button5 setOverrideUserInterfaceStyle:2];
   }
 
-  v16 = [(SXFullscreenNavigationBarView *)self button];
-  [v16 sizeToFit];
+  button6 = [(SXFullscreenNavigationBarView *)self button];
+  [button6 sizeToFit];
 
   v17 = MEMORY[0x1E695EFF8];
   [(SXFullscreenNavigationBarView *)self frame];
@@ -257,25 +257,25 @@ uint64_t __53__SXFullscreenNavigationBarView_updateFrameAnimated___block_invoke(
     v23 = (44.0 - v22) * 0.5;
   }
 
-  v24 = [(SXFullscreenNavigationBarView *)self button];
-  v25 = [(SXFullscreenNavigationBarView *)self button];
-  [v25 frame];
+  button7 = [(SXFullscreenNavigationBarView *)self button];
+  button8 = [(SXFullscreenNavigationBarView *)self button];
+  [button8 frame];
   v29 = CGRectInset(v28, -v20, -v23);
-  [v24 setFrame:{v29.origin.x, v29.origin.y, v29.size.width, v29.size.height}];
+  [button7 setFrame:{v29.origin.x, v29.origin.y, v29.size.width, v29.size.height}];
 
-  v26 = [(SXFullscreenNavigationBarView *)self button];
-  [(SXFullscreenNavigationBarView *)self addSubview:v26];
+  button9 = [(SXFullscreenNavigationBarView *)self button];
+  [(SXFullscreenNavigationBarView *)self addSubview:button9];
 }
 
-- (void)doneButtonPressed:(id)a3
+- (void)doneButtonPressed:(id)pressed
 {
-  v4 = [(SXFullscreenNavigationBarView *)self delegate];
+  delegate = [(SXFullscreenNavigationBarView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SXFullscreenNavigationBarView *)self delegate];
-    [v6 fullscreenNavigationBarViewDoneButtonPressed:self];
+    delegate2 = [(SXFullscreenNavigationBarView *)self delegate];
+    [delegate2 fullscreenNavigationBarViewDoneButtonPressed:self];
   }
 }
 

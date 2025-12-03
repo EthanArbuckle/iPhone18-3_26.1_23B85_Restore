@@ -1,42 +1,42 @@
 @interface SXImageComponentSizer
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4;
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context;
 @end
 
 @implementation SXImageComponentSizer
 
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context
 {
-  v6 = a4;
-  v7 = [(SXComponentSizer *)self DOMObjectProvider];
-  v8 = [(SXComponentSizer *)self component];
-  v9 = [v8 imageIdentifier];
-  v10 = [v7 imageResourceForIdentifier:v9];
+  contextCopy = context;
+  dOMObjectProvider = [(SXComponentSizer *)self DOMObjectProvider];
+  component = [(SXComponentSizer *)self component];
+  imageIdentifier = [component imageIdentifier];
+  v10 = [dOMObjectProvider imageResourceForIdentifier:imageIdentifier];
 
-  v11 = [(SXComponentSizer *)self componentLayout];
-  [v11 maximumContentWidth];
+  componentLayout = [(SXComponentSizer *)self componentLayout];
+  [componentLayout maximumContentWidth];
   v13 = v12;
 
-  v14 = a3;
+  widthCopy = width;
   if (v13)
   {
-    v15 = [v6 unitConverter];
-    v16 = [(SXComponentSizer *)self componentLayout];
-    v17 = [v16 maximumContentWidth];
-    [v15 convertValueToPoints:{v17, v18}];
-    v14 = v19;
+    unitConverter = [contextCopy unitConverter];
+    componentLayout2 = [(SXComponentSizer *)self componentLayout];
+    maximumContentWidth = [componentLayout2 maximumContentWidth];
+    [unitConverter convertValueToPoints:{maximumContentWidth, v18}];
+    widthCopy = v19;
   }
 
-  if (v14 >= a3)
+  if (widthCopy >= width)
   {
-    v20 = a3;
+    widthCopy2 = width;
   }
 
   else
   {
-    v20 = v14;
+    widthCopy2 = widthCopy;
   }
 
-  [v10 heightForImageWidth:v20];
+  [v10 heightForImageWidth:widthCopy2];
   v22 = v21;
 
   return v22;

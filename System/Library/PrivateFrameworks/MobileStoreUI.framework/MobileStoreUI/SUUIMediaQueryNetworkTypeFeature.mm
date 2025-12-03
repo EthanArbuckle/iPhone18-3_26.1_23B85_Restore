@@ -1,6 +1,6 @@
 @interface SUUIMediaQueryNetworkTypeFeature
-- (BOOL)evaluateWithValues:(id)a3;
-- (SUUIMediaQueryNetworkTypeFeature)initWithFeatureName:(id)a3 value:(id)a4;
+- (BOOL)evaluateWithValues:(id)values;
+- (SUUIMediaQueryNetworkTypeFeature)initWithFeatureName:(id)name value:(id)value;
 - (id)description;
 - (id)notificationNames;
 - (id)requiredKeys;
@@ -8,15 +8,15 @@
 
 @implementation SUUIMediaQueryNetworkTypeFeature
 
-- (SUUIMediaQueryNetworkTypeFeature)initWithFeatureName:(id)a3 value:(id)a4
+- (SUUIMediaQueryNetworkTypeFeature)initWithFeatureName:(id)name value:(id)value
 {
-  v6 = a4;
+  valueCopy = value;
   v11.receiver = self;
   v11.super_class = SUUIMediaQueryNetworkTypeFeature;
-  v7 = [(SUUIMediaQueryFeature *)&v11 initWithFeatureName:a3 value:v6];
+  v7 = [(SUUIMediaQueryFeature *)&v11 initWithFeatureName:name value:valueCopy];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [valueCopy copy];
     value = v7->_value;
     v7->_value = v8;
   }
@@ -24,9 +24,9 @@
   return v7;
 }
 
-- (BOOL)evaluateWithValues:(id)a3
+- (BOOL)evaluateWithValues:(id)values
 {
-  v4 = [a3 objectForKey:0x286AFFE40];
+  v4 = [values objectForKey:0x286AFFE40];
   LOBYTE(self) = [v4 isEqualToString:self->_value];
 
   return self;
@@ -56,8 +56,8 @@
   v8.receiver = self;
   v8.super_class = SUUIMediaQueryNetworkTypeFeature;
   v4 = [(SUUIMediaQueryNetworkTypeFeature *)&v8 description];
-  v5 = [(SUUIMediaQueryFeature *)self featureName];
-  v6 = [v3 stringWithFormat:@"%@: [%@, %@]", v4, v5, self->_value];
+  featureName = [(SUUIMediaQueryFeature *)self featureName];
+  v6 = [v3 stringWithFormat:@"%@: [%@, %@]", v4, featureName, self->_value];
 
   return v6;
 }

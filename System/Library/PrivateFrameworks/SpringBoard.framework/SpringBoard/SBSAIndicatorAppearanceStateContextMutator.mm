@@ -1,14 +1,14 @@
 @interface SBSAIndicatorAppearanceStateContextMutator
 - (SBSAIndicatorAppearanceStateContext)indicatorAppearanceStateContext;
-- (SBSAIndicatorAppearanceStateContextMutator)initWithIndicatorAppearanceStateContext:(id)a3;
+- (SBSAIndicatorAppearanceStateContextMutator)initWithIndicatorAppearanceStateContext:(id)context;
 - (SBSAIndicatorElementContext)activeIndicatorElementContext;
 - (int64_t)interSensorIndicatorPhase;
 - (int64_t)microIndicatorEjectionPhase;
 - (int64_t)microIndicatorPhase;
-- (void)setActiveIndicatorElementContext:(id)a3;
-- (void)setInterSensorIndicatorPhase:(int64_t)a3;
-- (void)setMicroIndicatorEjectionPhase:(int64_t)a3;
-- (void)setMicroIndicatorPhase:(int64_t)a3;
+- (void)setActiveIndicatorElementContext:(id)context;
+- (void)setInterSensorIndicatorPhase:(int64_t)phase;
+- (void)setMicroIndicatorEjectionPhase:(int64_t)phase;
+- (void)setMicroIndicatorPhase:(int64_t)phase;
 @end
 
 @implementation SBSAIndicatorAppearanceStateContextMutator
@@ -16,37 +16,37 @@
 - (int64_t)interSensorIndicatorPhase
 {
   WeakRetained = objc_loadWeakRetained(&self->_indicatorAppearanceStateContext);
-  v3 = [WeakRetained interSensorIndicatorPhase];
+  interSensorIndicatorPhase = [WeakRetained interSensorIndicatorPhase];
 
-  return v3;
+  return interSensorIndicatorPhase;
 }
 
 - (int64_t)microIndicatorPhase
 {
   WeakRetained = objc_loadWeakRetained(&self->_indicatorAppearanceStateContext);
-  v3 = [WeakRetained microIndicatorPhase];
+  microIndicatorPhase = [WeakRetained microIndicatorPhase];
 
-  return v3;
+  return microIndicatorPhase;
 }
 
 - (int64_t)microIndicatorEjectionPhase
 {
   WeakRetained = objc_loadWeakRetained(&self->_indicatorAppearanceStateContext);
-  v3 = [WeakRetained microIndicatorEjectionPhase];
+  microIndicatorEjectionPhase = [WeakRetained microIndicatorEjectionPhase];
 
-  return v3;
+  return microIndicatorEjectionPhase;
 }
 
-- (SBSAIndicatorAppearanceStateContextMutator)initWithIndicatorAppearanceStateContext:(id)a3
+- (SBSAIndicatorAppearanceStateContextMutator)initWithIndicatorAppearanceStateContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = SBSAIndicatorAppearanceStateContextMutator;
   v5 = [(SBSAIndicatorAppearanceStateContextMutator *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_indicatorAppearanceStateContext, v4);
+    objc_storeWeak(&v5->_indicatorAppearanceStateContext, contextCopy);
   }
 
   return v6;
@@ -55,34 +55,34 @@
 - (SBSAIndicatorElementContext)activeIndicatorElementContext
 {
   WeakRetained = objc_loadWeakRetained(&self->_indicatorAppearanceStateContext);
-  v3 = [WeakRetained activeIndicatorElementContext];
+  activeIndicatorElementContext = [WeakRetained activeIndicatorElementContext];
 
-  return v3;
+  return activeIndicatorElementContext;
 }
 
-- (void)setActiveIndicatorElementContext:(id)a3
+- (void)setActiveIndicatorElementContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   WeakRetained = objc_loadWeakRetained(&self->_indicatorAppearanceStateContext);
-  [WeakRetained _setActiveIndicatorElementContext:v4];
+  [WeakRetained _setActiveIndicatorElementContext:contextCopy];
 }
 
-- (void)setInterSensorIndicatorPhase:(int64_t)a3
+- (void)setInterSensorIndicatorPhase:(int64_t)phase
 {
   WeakRetained = objc_loadWeakRetained(&self->_indicatorAppearanceStateContext);
-  [WeakRetained _setInterSensorIndicatorPhase:a3];
+  [WeakRetained _setInterSensorIndicatorPhase:phase];
 }
 
-- (void)setMicroIndicatorPhase:(int64_t)a3
+- (void)setMicroIndicatorPhase:(int64_t)phase
 {
   WeakRetained = objc_loadWeakRetained(&self->_indicatorAppearanceStateContext);
-  [WeakRetained _setMicroIndicatorPhase:a3];
+  [WeakRetained _setMicroIndicatorPhase:phase];
 }
 
-- (void)setMicroIndicatorEjectionPhase:(int64_t)a3
+- (void)setMicroIndicatorEjectionPhase:(int64_t)phase
 {
   WeakRetained = objc_loadWeakRetained(&self->_indicatorAppearanceStateContext);
-  [WeakRetained _setMicroIndicatorEjectionPhase:a3];
+  [WeakRetained _setMicroIndicatorEjectionPhase:phase];
 }
 
 - (SBSAIndicatorAppearanceStateContext)indicatorAppearanceStateContext

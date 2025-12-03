@@ -3,11 +3,11 @@
 - (AXSBHearingAidDeviceController)init;
 - (BOOL)isScreenLocked;
 - (id)hearingUIClient;
-- (id)userInterfaceClient:(id)a3 processMessageFromServer:(id)a4 withIdentifier:(unint64_t)a5 error:(id *)a6;
+- (id)userInterfaceClient:(id)client processMessageFromServer:(id)server withIdentifier:(unint64_t)identifier error:(id *)error;
 - (void)_lockStateChanged;
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3;
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client;
 - (void)dealloc;
-- (void)hearingServerDidDie:(id)a3;
+- (void)hearingServerDidDie:(id)die;
 - (void)startServer;
 @end
 
@@ -27,8 +27,8 @@
 
 - (void)startServer
 {
-  v3 = [MEMORY[0x277D12DE8] sharedInstance];
-  [v3 startServerWithDelegate:self];
+  mEMORY[0x277D12DE8] = [MEMORY[0x277D12DE8] sharedInstance];
+  [mEMORY[0x277D12DE8] startServerWithDelegate:self];
 }
 
 uint64_t __50__AXSBHearingAidDeviceController_sharedController__block_invoke()
@@ -47,8 +47,8 @@ uint64_t __50__AXSBHearingAidDeviceController_sharedController__block_invoke()
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, screenDidDim, @"com.apple.springboardservices.eventobserver.internalSBSEventObserverEventDimmed", 0, 0);
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v2 selector:sel_liveListenStatusBarActivated_ name:@"SBStatusBarReturnToHearingAidNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_liveListenStatusBarActivated_ name:@"SBStatusBarReturnToHearingAidNotification" object:0];
   }
 
   return v2;
@@ -70,8 +70,8 @@ uint64_t __50__AXSBHearingAidDeviceController_sharedController__block_invoke()
   CFNotificationCenterRemoveObserver(v8, self, *MEMORY[0x277D6EFE8], 0);
   v9 = CFNotificationCenterGetLocalCenter();
   CFNotificationCenterRemoveObserver(v9, self, *MEMORY[0x277D6EFD8], 0);
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v10 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v11.receiver = self;
   v11.super_class = AXSBHearingAidDeviceController;
@@ -116,8 +116,8 @@ uint64_t __49__AXSBHearingAidDeviceController_hearingUIClient__block_invoke(uint
 
 - (BOOL)isScreenLocked
 {
-  v2 = [MEMORY[0x277CE7E40] server];
-  v3 = [v2 isScreenLockedWithPasscode:0];
+  server = [MEMORY[0x277CE7E40] server];
+  v3 = [server isScreenLockedWithPasscode:0];
 
   return v3;
 }
@@ -133,15 +133,15 @@ void __56__AXSBHearingAidDeviceController_showHearingAidControl___block_invoke(u
   }
 }
 
-- (void)hearingServerDidDie:(id)a3
+- (void)hearingServerDidDie:(id)die
 {
-  v4 = [MEMORY[0x277D12E20] sharedInstance];
-  v5 = [v4 pairedHearingAids];
+  mEMORY[0x277D12E20] = [MEMORY[0x277D12E20] sharedInstance];
+  pairedHearingAids = [mEMORY[0x277D12E20] pairedHearingAids];
 
-  if (v5)
+  if (pairedHearingAids)
   {
-    v6 = [MEMORY[0x277D12DE8] sharedInstance];
-    [v6 startServerWithDelegate:self];
+    mEMORY[0x277D12DE8] = [MEMORY[0x277D12DE8] sharedInstance];
+    [mEMORY[0x277D12DE8] startServerWithDelegate:self];
   }
 
   v7 = dispatch_time(0, 3000000000);
@@ -157,18 +157,18 @@ void __54__AXSBHearingAidDeviceController_hearingServerDidDie___block_invoke()
   CFNotificationCenterPostNotification(DarwinNotifyCenter, v1, 0, 0, 1u);
 }
 
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client
 {
   [(AXSBHearingAidDeviceController *)self setIsShowingHearingAidControl:0];
-  v3 = [MEMORY[0x277CE7D30] server];
-  [v3 setHearingAidControlIsVisible:0];
+  server = [MEMORY[0x277CE7D30] server];
+  [server setHearingAidControlIsVisible:0];
 }
 
-- (id)userInterfaceClient:(id)a3 processMessageFromServer:(id)a4 withIdentifier:(unint64_t)a5 error:(id *)a6
+- (id)userInterfaceClient:(id)client processMessageFromServer:(id)server withIdentifier:(unint64_t)identifier error:(id *)error
 {
-  if (a5 == 1)
+  if (identifier == 1)
   {
-    v7 = [a4 valueForKey:@"result"];
+    v7 = [server valueForKey:@"result"];
     v8 = v7;
     if (v7)
     {

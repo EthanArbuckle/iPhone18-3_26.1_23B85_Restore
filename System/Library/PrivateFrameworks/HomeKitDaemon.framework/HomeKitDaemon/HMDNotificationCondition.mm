@@ -1,13 +1,13 @@
 @interface HMDNotificationCondition
-+ (BOOL)doesTypeMatch:(id)a3 against:(id)a4;
++ (BOOL)doesTypeMatch:(id)match against:(id)against;
 + (id)type;
-- (BOOL)isEqual:(id)a3;
-- (HMDNotificationCondition)initWithCoder:(id)a3;
-- (HMDNotificationCondition)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMDNotificationCondition)initWithCoder:(id)coder;
+- (HMDNotificationCondition)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)serializedRegistrationForRemoteMessage;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDNotificationCondition
@@ -25,18 +25,18 @@
   objc_exception_throw(v7);
 }
 
-+ (BOOL)doesTypeMatch:(id)a3 against:(id)a4
++ (BOOL)doesTypeMatch:(id)match against:(id)against
 {
-  v5 = a4;
-  v6 = [a3 objectForKeyedSubscript:@"HMDBNC.type"];
-  v7 = [v6 isEqualToString:v5];
+  againstCopy = against;
+  v6 = [match objectForKeyedSubscript:@"HMDBNC.type"];
+  v7 = [v6 isEqualToString:againstCopy];
 
   return v7;
 }
 
-- (HMDNotificationCondition)initWithCoder:(id)a3
+- (HMDNotificationCondition)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -48,9 +48,9 @@
   objc_exception_throw(v10);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -62,7 +62,7 @@
   objc_exception_throw(v10);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];
@@ -88,9 +88,9 @@
   objc_exception_throw(v7);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -102,9 +102,9 @@
   objc_exception_throw(v10);
 }
 
-- (HMDNotificationCondition)initWithDictionary:(id)a3
+- (HMDNotificationCondition)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -120,8 +120,8 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"HMDBNC.type";
-  v2 = [objc_opt_class() type];
-  v7[0] = v2;
+  type = [objc_opt_class() type];
+  v7[0] = type;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];

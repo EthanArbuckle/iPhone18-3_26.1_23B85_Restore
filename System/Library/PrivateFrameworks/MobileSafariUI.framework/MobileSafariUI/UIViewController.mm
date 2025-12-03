@@ -9,43 +9,43 @@
 - (void)safari_saveTableViewScrollPosition
 {
   v42[4] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 safari_tableViewForScrollPositionSaving];
-    v3 = v2;
-    if (v2)
+    safari_tableViewForScrollPositionSaving = [self safari_tableViewForScrollPositionSaving];
+    v3 = safari_tableViewForScrollPositionSaving;
+    if (safari_tableViewForScrollPositionSaving)
     {
-      v4 = [v2 numberOfSections];
-      if (v4)
+      numberOfSections = [safari_tableViewForScrollPositionSaving numberOfSections];
+      if (numberOfSections)
       {
-        [v3 rectForSection:v4 - 1];
+        [v3 rectForSection:numberOfSections - 1];
         MaxY = CGRectGetMaxY(v43);
         [v3 frame];
         Height = CGRectGetHeight(v44);
         [v3 adjustedContentInset];
         v8 = Height - v7;
-        v9 = [v3 tableHeaderView];
-        [v9 frame];
+        tableHeaderView = [v3 tableHeaderView];
+        [tableHeaderView frame];
         v10 = v8 + CGRectGetHeight(v45);
 
         if (MaxY >= v10)
         {
-          v11 = [v3 indexPathsForVisibleRows];
-          v12 = [v11 firstObject];
+          indexPathsForVisibleRows = [v3 indexPathsForVisibleRows];
+          firstObject = [indexPathsForVisibleRows firstObject];
 
-          if (v12)
+          if (firstObject)
           {
             [v3 contentOffset];
             v14 = v13;
             v16 = v15;
-            [v3 rectForRowAtIndexPath:v12];
+            [v3 rectForRowAtIndexPath:firstObject];
             v47 = CGRectOffset(v46, -v14, -v16);
             x = v47.origin.x;
             y = v47.origin.y;
             width = v47.size.width;
             v20 = v47.size.height;
-            v21 = [v12 section];
-            [v3 rectForHeaderInSection:v21];
+            section = [firstObject section];
+            [v3 rectForHeaderInSection:section];
             v23 = v22;
             v25 = v24;
             v27 = v26;
@@ -63,22 +63,22 @@
             [v3 adjustedContentInset];
             v33 = v31 - v32;
             v41[0] = @"VisibleIndexSection";
-            v34 = [MEMORY[0x277CCABB0] numberWithInteger:v21];
+            v34 = [MEMORY[0x277CCABB0] numberWithInteger:section];
             v42[0] = v34;
             v41[1] = @"VisibleIndexRow";
-            v35 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v12, "row")}];
+            v35 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(firstObject, "row")}];
             v42[1] = v35;
             v41[2] = @"VisibleIndexOffset";
             v36 = [MEMORY[0x277CCABB0] numberWithDouble:v33];
             v42[2] = v36;
             v41[3] = @"Timestamp";
-            v37 = [MEMORY[0x277CBEAA8] date];
-            v42[3] = v37;
+            date = [MEMORY[0x277CBEAA8] date];
+            v42[3] = date;
             v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:v41 count:4];
 
-            v39 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-            v40 = [a1 _safari_tableViewScrollPositionKey];
-            [v39 setObject:v38 forKey:v40];
+            standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+            _safari_tableViewScrollPositionKey = [self _safari_tableViewScrollPositionKey];
+            [standardUserDefaults setObject:v38 forKey:_safari_tableViewScrollPositionKey];
           }
         }
       }
@@ -88,58 +88,58 @@
 
 - (BOOL)safari_restoreTableViewScrollPosition
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [a1 _safari_tableViewScrollPositionKey];
-  v4 = [v2 dictionaryForKey:v3];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  _safari_tableViewScrollPositionKey = [self _safari_tableViewScrollPositionKey];
+  v4 = [standardUserDefaults dictionaryForKey:_safari_tableViewScrollPositionKey];
   v5 = v4;
   if (v4)
   {
     v6 = [v4 valueForKey:@"Timestamp"];
-    v7 = [MEMORY[0x277CBEAA8] date];
-    [v7 timeIntervalSinceDate:v6];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:v6];
     v9 = v8;
 
     v10 = v9 <= 480.0;
     if (v9 <= 480.0)
     {
-      v11 = [a1 safari_tableViewForScrollPositionSaving];
-      if (v11)
+      safari_tableViewForScrollPositionSaving = [self safari_tableViewForScrollPositionSaving];
+      if (safari_tableViewForScrollPositionSaving)
       {
         v12 = [v5 safari_numberForKey:@"VisibleIndexSection"];
         v13 = [v5 safari_numberForKey:@"VisibleIndexRow"];
         v14 = v13;
-        if (v12 && v13 && (v15 = [v12 integerValue], v15 < objc_msgSend(v11, "numberOfSections")) && (v16 = objc_msgSend(v14, "integerValue"), v16 < objc_msgSend(v11, "numberOfRowsInSection:", objc_msgSend(v12, "integerValue"))))
+        if (v12 && v13 && (v15 = [v12 integerValue], v15 < objc_msgSend(safari_tableViewForScrollPositionSaving, "numberOfSections")) && (v16 = objc_msgSend(v14, "integerValue"), v16 < objc_msgSend(safari_tableViewForScrollPositionSaving, "numberOfRowsInSection:", objc_msgSend(v12, "integerValue"))))
         {
           v17 = [MEMORY[0x277CCAA70] indexPathForRow:objc_msgSend(v14 inSection:{"integerValue"), objc_msgSend(v12, "integerValue")}];
-          [v11 scrollToRowAtIndexPath:v17 atScrollPosition:1 animated:0];
+          [safari_tableViewForScrollPositionSaving scrollToRowAtIndexPath:v17 atScrollPosition:1 animated:0];
           v18 = [v5 safari_numberForKey:@"VisibleIndexOffset"];
           if (v18)
           {
-            [v11 contentOffset];
+            [safari_tableViewForScrollPositionSaving contentOffset];
             v20 = v19;
             v22 = v21;
             [v18 floatValue];
-            [v11 setContentOffset:{v20, v22 - v23}];
+            [safari_tableViewForScrollPositionSaving setContentOffset:{v20, v22 - v23}];
           }
         }
 
         else
         {
-          [(UITableView *)v11 safari_adjustContentOffsetToTopHidingTableHeaderView];
+          [(UITableView *)safari_tableViewForScrollPositionSaving safari_adjustContentOffsetToTopHidingTableHeaderView];
         }
       }
 
-      [v2 removeObjectForKey:v3];
+      [standardUserDefaults removeObjectForKey:_safari_tableViewScrollPositionKey];
     }
 
     else
     {
-      [v2 removeObjectForKey:v3];
+      [standardUserDefaults removeObjectForKey:_safari_tableViewScrollPositionKey];
     }
   }
 
@@ -153,16 +153,16 @@
 
 - (BOOL)safari_hasSavedTableViewScrollPosition
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v3 = [v1 _safari_tableViewScrollPositionKey];
-    v4 = [v2 objectForKey:v3];
-    v1 = v4 != 0;
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    _safari_tableViewScrollPositionKey = [selfCopy _safari_tableViewScrollPositionKey];
+    v4 = [standardUserDefaults objectForKey:_safari_tableViewScrollPositionKey];
+    selfCopy = v4 != 0;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

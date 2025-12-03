@@ -1,5 +1,5 @@
 @interface MTLTelemetryRenderPipelineState
-- (MTLTelemetryRenderPipelineState)initWithPipelineState:(id)a3 reflection:(id)a4 parent:(id)a5 descriptor:(id)a6;
+- (MTLTelemetryRenderPipelineState)initWithPipelineState:(id)state reflection:(id)reflection parent:(id)parent descriptor:(id)descriptor;
 - (void)accumulateUsage;
 - (void)dealloc;
 @end
@@ -16,40 +16,40 @@
   ++v3[7];
 }
 
-- (MTLTelemetryRenderPipelineState)initWithPipelineState:(id)a3 reflection:(id)a4 parent:(id)a5 descriptor:(id)a6
+- (MTLTelemetryRenderPipelineState)initWithPipelineState:(id)state reflection:(id)reflection parent:(id)parent descriptor:(id)descriptor
 {
   v47 = *MEMORY[0x277D85DE8];
   v44.receiver = self;
   v44.super_class = MTLTelemetryRenderPipelineState;
-  v10 = [(MTLToolsRenderPipelineState *)&v44 initWithBaseObject:a3 parent:a5];
-  if (v10 && [a5 enableTelemetry])
+  v10 = [(MTLToolsRenderPipelineState *)&v44 initWithBaseObject:state parent:parent];
+  if (v10 && [parent enableTelemetry])
   {
     *(&v10->super.super._externalReferences + 1) = +[MTLTelemetryRenderPipelineState generateUniqueID];
-    *&v10->uniqueID = a5;
-    v11 = [a4 performanceStatistics];
-    v12 = [v11 objectForKey:*MEMORY[0x277CD6A20]];
-    v13 = [v11 objectForKey:*MEMORY[0x277CD6A18]];
+    *&v10->uniqueID = parent;
+    performanceStatistics = [reflection performanceStatistics];
+    v12 = [performanceStatistics objectForKey:*MEMORY[0x277CD6A20]];
+    v13 = [performanceStatistics objectForKey:*MEMORY[0x277CD6A18]];
     v14 = [v12 objectForKey:@"Telemetry Statistics"];
     v15 = [v13 objectForKey:@"Telemetry Statistics"];
-    v16 = *(a5 + 91);
+    v16 = *(parent + 91);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __86__MTLTelemetryRenderPipelineState_initWithPipelineState_reflection_parent_descriptor___block_invoke;
     block[3] = &unk_2787B4D48;
-    block[4] = a3;
+    block[4] = state;
     block[5] = v10;
     block[6] = v14;
     block[7] = v15;
-    block[8] = a6;
-    block[9] = a5;
-    block[10] = a4;
+    block[8] = descriptor;
+    block[9] = parent;
+    block[10] = reflection;
     dispatch_sync(v16, block);
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v17 = [a4 constantSamplerDescriptors];
-    v18 = [v17 countByEnumeratingWithState:&v39 objects:v46 count:16];
+    constantSamplerDescriptors = [reflection constantSamplerDescriptors];
+    v18 = [constantSamplerDescriptors countByEnumeratingWithState:&v39 objects:v46 count:16];
     if (!v18)
     {
       goto LABEL_13;
@@ -63,7 +63,7 @@
       {
         if (*v40 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(constantSamplerDescriptors);
         }
 
         if ([*(*(&v39 + 1) + 8 * i) maxAnisotropy] >= 2)
@@ -73,7 +73,7 @@
         }
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v39 objects:v46 count:16];
+      v19 = [constantSamplerDescriptors countByEnumeratingWithState:&v39 objects:v46 count:16];
     }
 
     while (v19);
@@ -85,8 +85,8 @@ LABEL_13:
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v24 = [a4 fragmentArguments];
-    v25 = [v24 countByEnumeratingWithState:&v35 objects:v45 count:16];
+    fragmentArguments = [reflection fragmentArguments];
+    v25 = [fragmentArguments countByEnumeratingWithState:&v35 objects:v45 count:16];
     if (!v25)
     {
       goto LABEL_25;
@@ -100,7 +100,7 @@ LABEL_15:
     {
       if (*v36 != v27)
       {
-        objc_enumerationMutation(v24);
+        objc_enumerationMutation(fragmentArguments);
       }
 
       v29 = *(*(&v35 + 1) + 8 * v28);
@@ -109,14 +109,14 @@ LABEL_15:
         goto LABEL_23;
       }
 
-      v30 = [v29 type];
+      type = [v29 type];
       v31 = v22;
-      if (v30 == 3)
+      if (type == 3)
       {
         goto LABEL_22;
       }
 
-      if (v30 == 2)
+      if (type == 2)
       {
         break;
       }
@@ -124,7 +124,7 @@ LABEL_15:
 LABEL_23:
       if (v26 == ++v28)
       {
-        v26 = [v24 countByEnumeratingWithState:&v35 objects:v45 count:16];
+        v26 = [fragmentArguments countByEnumeratingWithState:&v35 objects:v45 count:16];
         if (!v26)
         {
 LABEL_25:

@@ -1,40 +1,40 @@
 @interface GLKMeshBuffer
-- (id)_initWithBytes:(const void *)a3 length:(unint64_t)a4 offset:(unint64_t)a5 allocator:(id)a6 zone:(id)a7 type:(unint64_t)a8;
-- (id)_initWithData:(id)a3 allocator:(id)a4 type:(unint64_t)a5;
-- (id)_initWithLength:(unint64_t)a3 offset:(unint64_t)a4 zone:(id)a5 type:(unint64_t)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithBytes:(const void *)bytes length:(unint64_t)length offset:(unint64_t)offset allocator:(id)allocator zone:(id)zone type:(unint64_t)type;
+- (id)_initWithData:(id)data allocator:(id)allocator type:(unint64_t)type;
+- (id)_initWithLength:(unint64_t)length offset:(unint64_t)offset zone:(id)zone type:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)map;
 - (void)dealloc;
-- (void)fillData:(id)a3 offset:(unint64_t)a4;
+- (void)fillData:(id)data offset:(unint64_t)offset;
 @end
 
 @implementation GLKMeshBuffer
 
-- (id)_initWithLength:(unint64_t)a3 offset:(unint64_t)a4 zone:(id)a5 type:(unint64_t)a6
+- (id)_initWithLength:(unint64_t)length offset:(unint64_t)offset zone:(id)zone type:(unint64_t)type
 {
-  v10 = a5;
-  v11 = [v10 allocator];
-  v12 = [(GLKMeshBuffer *)self _initWithBytes:0 length:a3 offset:a4 allocator:v11 zone:v10 type:a6];
+  zoneCopy = zone;
+  allocator = [zoneCopy allocator];
+  v12 = [(GLKMeshBuffer *)self _initWithBytes:0 length:length offset:offset allocator:allocator zone:zoneCopy type:type];
 
   return v12;
 }
 
-- (id)_initWithData:(id)a3 allocator:(id)a4 type:(unint64_t)a5
+- (id)_initWithData:(id)data allocator:(id)allocator type:(unint64_t)type
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v11 bytes];
-  v13 = [v11 length];
+  dataCopy = data;
+  allocatorCopy = allocator;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v13 = [dataCopy2 length];
 
-  v14 = [(GLKMeshBuffer *)self _initWithBytes:v12 length:v13 offset:0 allocator:v10 zone:0 type:a5];
+  v14 = [(GLKMeshBuffer *)self _initWithBytes:bytes length:v13 offset:0 allocator:allocatorCopy zone:0 type:type];
   return v14;
 }
 
-- (id)_initWithBytes:(const void *)a3 length:(unint64_t)a4 offset:(unint64_t)a5 allocator:(id)a6 zone:(id)a7 type:(unint64_t)a8
+- (id)_initWithBytes:(const void *)bytes length:(unint64_t)length offset:(unint64_t)offset allocator:(id)allocator zone:(id)zone type:(unint64_t)type
 {
-  v15 = a6;
-  v16 = a7;
+  allocatorCopy = allocator;
+  zoneCopy = zone;
   v22.receiver = self;
   v22.super_class = GLKMeshBuffer;
   v17 = [(GLKMeshBuffer *)&v22 init];
@@ -45,26 +45,26 @@
   }
 
   v17->_mapCount = 0;
-  v17->_type = a8;
-  objc_storeStrong(&v17->_zone, a7);
-  v18->_length = a4;
-  objc_storeStrong(&v18->_allocator, a6);
-  v18->_offset = a5;
-  if (a8 == 1)
+  v17->_type = type;
+  objc_storeStrong(&v17->_zone, zone);
+  v18->_length = length;
+  objc_storeStrong(&v18->_allocator, allocator);
+  v18->_offset = offset;
+  if (type == 1)
   {
     v19 = 34962;
 LABEL_6:
     v18->_target = v19;
     if (v18->_zone)
     {
-      v18->_glBufferName = [v16 glBufferName];
+      v18->_glBufferName = [zoneCopy glBufferName];
     }
 
     else
     {
       glGenBuffers(1, &v18->_glBufferName);
       glBindBuffer(v18->_target, v18->_glBufferName);
-      glBufferData(v18->_target, a4, a3, 0x88E4u);
+      glBufferData(v18->_target, length, bytes, 0x88E4u);
     }
 
 LABEL_10:
@@ -72,7 +72,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (a8 == 2)
+  if (type == 2)
   {
     v19 = 34963;
     goto LABEL_6;
@@ -84,15 +84,15 @@ LABEL_11:
   return v20;
 }
 
-- (void)fillData:(id)a3 offset:(unint64_t)a4
+- (void)fillData:(id)data offset:(unint64_t)offset
 {
-  if (self->_length >= a4)
+  if (self->_length >= offset)
   {
-    v7 = a3;
-    v8 = [v7 length];
+    dataCopy = data;
+    v8 = [dataCopy length];
     length = self->_length;
-    v10 = v8 + a4 - length;
-    if (v8 + a4 < length)
+    v10 = v8 + offset - length;
+    if (v8 + offset < length)
     {
       v10 = 0;
     }
@@ -101,9 +101,9 @@ LABEL_11:
     glBindBuffer(self->_target, self->_glBufferName);
     target = self->_target;
     offset = self->_offset;
-    v14 = [v7 bytes];
+    bytes = [dataCopy bytes];
 
-    glBufferSubData(target, offset + a4, v11, v14);
+    glBufferSubData(target, offset + offset, v11, bytes);
   }
 }
 
@@ -149,13 +149,13 @@ uint64_t __20__GLKMeshBuffer_map__block_invoke(uint64_t result)
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(GLKMeshBuffer);
   v5 = [(GLKMeshBuffer *)self map];
   v6 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:objc_msgSend(v5 length:"bytes") freeWhenDone:{-[GLKMeshBuffer length](self, "length"), 0}];
-  v7 = [(GLKMeshBuffer *)self allocator];
-  v8 = [v7 newBufferWithData:v6 type:self->_type];
+  allocator = [(GLKMeshBuffer *)self allocator];
+  v8 = [allocator newBufferWithData:v6 type:self->_type];
 
   return v8;
 }

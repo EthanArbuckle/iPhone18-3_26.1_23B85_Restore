@@ -16,7 +16,7 @@
 - (id)_gkMapConcurrentlyWithBlock:()GKCollectionUtils
 {
   v4 = a3;
-  v5 = [a1 count];
+  v5 = [self count];
   v6 = malloc_type_calloc(v5, 8uLL, 0x80040B8603338uLL);
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
@@ -25,7 +25,7 @@
   v17 = v6;
   v7 = v4;
   v16 = v7;
-  [a1 enumerateObjectsWithOptions:1 usingBlock:&v12];
+  [self enumerateObjectsWithOptions:1 usingBlock:&v12];
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:{v5, v12, v13, v14, v15}];
   if (v5)
   {
@@ -49,7 +49,7 @@
 - (id)_gkMapWithBlock:()GKCollectionUtils
 {
   v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __46__NSArray_GKCollectionUtils___gkMapWithBlock___block_invoke;
@@ -58,7 +58,7 @@
   v6 = v5;
   v12 = v6;
   v7 = v4;
-  [a1 enumerateObjectsUsingBlock:v11];
+  [self enumerateObjectsUsingBlock:v11];
   v8 = v12;
   v9 = v6;
 
@@ -68,7 +68,7 @@
 - (id)_gkFilterWithBlock:()GKCollectionUtils
 {
   v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __49__NSArray_GKCollectionUtils___gkFilterWithBlock___block_invoke;
@@ -77,7 +77,7 @@
   v6 = v5;
   v12 = v6;
   v7 = v4;
-  [a1 enumerateObjectsUsingBlock:v11];
+  [self enumerateObjectsUsingBlock:v11];
   v8 = v12;
   v9 = v6;
 
@@ -87,8 +87,8 @@
 - (id)_gkSubarraysByKeyWithBlock:()GKCollectionUtils
 {
   v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(a1, "count")}];
-  v6 = [a1 count];
+  v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(self, "count")}];
+  v6 = [self count];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __57__NSArray_GKCollectionUtils___gkSubarraysByKeyWithBlock___block_invoke;
@@ -98,7 +98,7 @@
   v13 = v7;
   v15 = v6;
   v8 = v4;
-  [a1 enumerateObjectsUsingBlock:v12];
+  [self enumerateObjectsUsingBlock:v12];
   v9 = v13;
   v10 = v7;
 
@@ -110,12 +110,12 @@
   v29 = *MEMORY[0x277D85DE8];
   v6 = a3;
   v7 = a4;
-  v22 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v22 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(self, "count")}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = a1;
+  obj = self;
   v8 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v8)
   {
@@ -145,17 +145,17 @@
         v15 = v14;
         if (v13)
         {
-          v16 = [MEMORY[0x277CBEB68] null];
-          v17 = v16;
-          if (v13 == v16 || v15 == 0)
+          null = [MEMORY[0x277CBEB68] null];
+          v17 = null;
+          if (v13 == null || v15 == 0)
           {
           }
 
           else
           {
-            v19 = [MEMORY[0x277CBEB68] null];
+            null2 = [MEMORY[0x277CBEB68] null];
 
-            if (v15 != v19)
+            if (v15 != null2)
             {
               [v22 setObject:v15 forKey:v13];
             }
@@ -178,13 +178,13 @@
 {
   v19 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -195,7 +195,7 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = [*(*(&v14 + 1) + 8 * i) valueForKeyPath:{v4, v14}];
@@ -205,7 +205,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -220,13 +220,13 @@
 {
   v19 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(self, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -237,7 +237,7 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = [*(*(&v14 + 1) + 8 * i) valueForKeyPath:{v4, v14}];
@@ -247,7 +247,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -260,7 +260,7 @@
 
 - (id)_gkFirstObjectPassingTest:()GKCollectionUtils
 {
-  v2 = [a1 _gkIndexOfObjectPassingTest:?];
+  v2 = [self _gkIndexOfObjectPassingTest:?];
   if (v2 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = 0;
@@ -268,7 +268,7 @@
 
   else
   {
-    v3 = [a1 objectAtIndexedSubscript:v2];
+    v3 = [self objectAtIndexedSubscript:v2];
   }
 
   return v3;
@@ -292,7 +292,7 @@
   v14 = &v15;
   v9 = v7;
   v13 = v9;
-  [a1 enumerateObjectsUsingBlock:v12];
+  [self enumerateObjectsUsingBlock:v12];
   v10 = v16[5];
 
   _Block_object_dispose(&v15, 8);
@@ -309,7 +309,7 @@
   v8[3] = &unk_2785DC9B0;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 indexOfObjectPassingTest:v8];
+  v6 = [self indexOfObjectPassingTest:v8];
 
   return v6;
 }

@@ -1,27 +1,27 @@
 @interface NLXSchemaCDMTokenChain
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaCDMTokenChain)initWithDictionary:(id)a3;
-- (NLXSchemaCDMTokenChain)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaCDMTokenChain)initWithDictionary:(id)dictionary;
+- (NLXSchemaCDMTokenChain)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addTokens:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTokens:(id)tokens;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaCDMTokenChain
 
-- (NLXSchemaCDMTokenChain)initWithDictionary:(id)a3
+- (NLXSchemaCDMTokenChain)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = NLXSchemaCDMTokenChain;
   v5 = [(NLXSchemaCDMTokenChain *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"tokens"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"tokens"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,7 +65,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"asrHypothesisId", v19}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"asrHypothesisId", v19}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,30 +79,30 @@
   return v5;
 }
 
-- (NLXSchemaCDMTokenChain)initWithJSON:(id)a3
+- (NLXSchemaCDMTokenChain)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaCDMTokenChain *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaCDMTokenChain *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaCDMTokenChain *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -116,26 +116,26 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_asrHypothesisId)
   {
-    v4 = [(NLXSchemaCDMTokenChain *)self asrHypothesisId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    asrHypothesisId = [(NLXSchemaCDMTokenChain *)self asrHypothesisId];
+    dictionaryRepresentation = [asrHypothesisId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"asrHypothesisId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"asrHypothesisId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"asrHypothesisId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"asrHypothesisId"];
     }
   }
 
   if ([(NSArray *)self->_tokens count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -155,16 +155,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          if (v13)
+          dictionaryRepresentation2 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v7 addObject:v13];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v14 = [MEMORY[0x1E695DFB0] null];
-            [v7 addObject:v14];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -174,36 +174,36 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"tokens"];
+    [dictionary setObject:array forKeyedSubscript:@"tokens"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v16];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v16];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(NLXSchemaCDMTokenChain *)self tokens];
-  v6 = [v4 tokens];
-  if ((v5 != 0) == (v6 == 0))
+  tokens = [(NLXSchemaCDMTokenChain *)self tokens];
+  tokens2 = [equalCopy tokens];
+  if ((tokens != 0) == (tokens2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(NLXSchemaCDMTokenChain *)self tokens];
-  if (v7)
+  tokens3 = [(NLXSchemaCDMTokenChain *)self tokens];
+  if (tokens3)
   {
-    v8 = v7;
-    v9 = [(NLXSchemaCDMTokenChain *)self tokens];
-    v10 = [v4 tokens];
-    v11 = [v9 isEqual:v10];
+    v8 = tokens3;
+    tokens4 = [(NLXSchemaCDMTokenChain *)self tokens];
+    tokens5 = [equalCopy tokens];
+    v11 = [tokens4 isEqual:tokens5];
 
     if (!v11)
     {
@@ -215,12 +215,12 @@
   {
   }
 
-  v5 = [(NLXSchemaCDMTokenChain *)self asrHypothesisId];
-  v6 = [v4 asrHypothesisId];
-  if ((v5 != 0) != (v6 == 0))
+  tokens = [(NLXSchemaCDMTokenChain *)self asrHypothesisId];
+  tokens2 = [equalCopy asrHypothesisId];
+  if ((tokens != 0) != (tokens2 == 0))
   {
-    v12 = [(NLXSchemaCDMTokenChain *)self asrHypothesisId];
-    if (!v12)
+    asrHypothesisId = [(NLXSchemaCDMTokenChain *)self asrHypothesisId];
+    if (!asrHypothesisId)
     {
 
 LABEL_15:
@@ -228,10 +228,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(NLXSchemaCDMTokenChain *)self asrHypothesisId];
-    v15 = [v4 asrHypothesisId];
-    v16 = [v14 isEqual:v15];
+    v13 = asrHypothesisId;
+    asrHypothesisId2 = [(NLXSchemaCDMTokenChain *)self asrHypothesisId];
+    asrHypothesisId3 = [equalCopy asrHypothesisId];
+    v16 = [asrHypothesisId2 isEqual:asrHypothesisId3];
 
     if (v16)
     {
@@ -251,10 +251,10 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -286,48 +286,48 @@ LABEL_13:
     while (v7);
   }
 
-  v10 = [(NLXSchemaCDMTokenChain *)self asrHypothesisId];
+  asrHypothesisId = [(NLXSchemaCDMTokenChain *)self asrHypothesisId];
 
-  if (v10)
+  if (asrHypothesisId)
   {
-    v11 = [(NLXSchemaCDMTokenChain *)self asrHypothesisId];
+    asrHypothesisId2 = [(NLXSchemaCDMTokenChain *)self asrHypothesisId];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)addTokens:(id)a3
+- (void)addTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   tokens = self->_tokens;
-  v8 = v4;
+  v8 = tokensCopy;
   if (!tokens)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_tokens;
-    self->_tokens = v6;
+    self->_tokens = array;
 
-    v4 = v8;
+    tokensCopy = v8;
     tokens = self->_tokens;
   }
 
-  [(NSArray *)tokens addObject:v4];
+  [(NSArray *)tokens addObject:tokensCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v11.receiver = self;
   v11.super_class = NLXSchemaCDMTokenChain;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(NLXSchemaCDMTokenChain *)self tokens:v11.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(NLXSchemaCDMTokenChain *)self setTokens:v7];
 
-  v8 = [(NLXSchemaCDMTokenChain *)self asrHypothesisId];
-  v9 = [v8 applySensitiveConditionsPolicy:v4];
+  asrHypothesisId = [(NLXSchemaCDMTokenChain *)self asrHypothesisId];
+  v9 = [asrHypothesisId applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v9 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v9 suppressMessage];
+  if (policyCopy)
   {
     [(NLXSchemaCDMTokenChain *)self deleteAsrHypothesisId];
   }

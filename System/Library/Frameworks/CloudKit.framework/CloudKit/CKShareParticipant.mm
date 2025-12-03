@@ -1,22 +1,22 @@
 @interface CKShareParticipant
 + (id)oneTimeURLParticipant;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (CKShareParticipant)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CKShareParticipant)initWithCoder:(id)coder;
 - (CKShareParticipantPermission)permission;
 - (CKShareParticipantType)type;
 - (NSString)debugDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initInternal;
-- (id)initInternalWithUserIdentity:(id)a3;
-- (id)unifiedContactsInStore:(id)a3 keysToFetch:(id)a4 error:(id *)a5;
+- (id)initInternalWithUserIdentity:(id)identity;
+- (id)unifiedContactsInStore:(id)store keysToFetch:(id)fetch error:(id *)error;
 - (unint64_t)hash;
-- (void)CKDescribePropertiesUsing:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setParticipantID_modelMutation:(id)a3;
+- (void)CKDescribePropertiesUsing:(id)using;
+- (void)encodeWithCoder:(id)coder;
+- (void)setParticipantID_modelMutation:(id)mutation;
 - (void)setPermission:(CKShareParticipantPermission)permission;
 - (void)setType:(CKShareParticipantType)type;
-- (void)setUserIdentity_modelMutation:(id)a3;
+- (void)setUserIdentity_modelMutation:(id)mutation;
 @end
 
 @implementation CKShareParticipant
@@ -63,13 +63,13 @@
   return v2;
 }
 
-- (id)initInternalWithUserIdentity:(id)a3
+- (id)initInternalWithUserIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   inited = objc_msgSend_initInternal(self, v5, v6);
   if (inited)
   {
-    v10 = objc_msgSend_copy(v4, v7, v8);
+    v10 = objc_msgSend_copy(identityCopy, v7, v8);
     v11 = inited[4];
     inited[4] = v10;
   }
@@ -77,7 +77,7 @@
   return inited;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend_userIdentity(self, v5, v6);
@@ -146,10 +146,10 @@
   return inited;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     isEquivalentToUserIdentityOrPublicKey = 1;
   }
@@ -159,7 +159,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_participantID(self, v6, v7);
       v11 = objc_msgSend_participantID(v5, v9, v10);
       v12 = CKObjectsAreBothNilOrEqual(v8, v11);
@@ -212,13 +212,13 @@
   return v8;
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v69 = a3;
+  usingCopy = using;
   v8 = objc_msgSend_participantID(self, v4, v5);
   if (v8)
   {
-    objc_msgSend_addPropertyIfExists_value_shouldRedact_(v69, v6, @"participantID", v8, 0);
+    objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v6, @"participantID", v8, 0);
   }
 
   v9 = objc_msgSend_shareID(self, v6, v7);
@@ -226,29 +226,29 @@
   if (v9)
   {
     v12 = objc_msgSend_shareID(self, v10, v11);
-    objc_msgSend_addPropertyIfExists_value_shouldRedact_(v69, v13, @"shareID", v12, 0);
+    objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v13, @"shareID", v12, 0);
   }
 
   if (objc_msgSend_isCurrentUser(self, v10, v11))
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v69, v14, @"isCurrentUser", @"true", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v14, @"isCurrentUser", @"true", 0);
   }
 
   else
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v69, v14, @"isCurrentUser", @"false", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v14, @"isCurrentUser", @"false", 0);
   }
 
   if (objc_msgSend_isOrgAdminUser(self, v15, v16))
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v69, v17, @"isOrgAdminUser", @"true", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v17, @"isOrgAdminUser", @"true", 0);
   }
 
   v19 = objc_msgSend_role(self, v17, v18);
   if (v19)
   {
     v22 = CKStringFromParticipantRole(v19, v20);
-    objc_msgSend_addProperty_value_shouldRedact_(v69, v23, @"role", v22, 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v23, @"role", v22, 0);
   }
 
   v24 = objc_msgSend_permission(self, v20, v21);
@@ -261,12 +261,12 @@
 
     if (v24 == 1)
     {
-      objc_msgSend_addProperty_value_shouldRedact_(v69, v25, @"permission", @"none", 0);
+      objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v25, @"permission", @"none", 0);
       goto LABEL_21;
     }
 
 LABEL_19:
-    objc_msgSend_addProperty_value_shouldRedact_(v69, v25, @"permission", @"unknown", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v25, @"permission", @"unknown", 0);
     goto LABEL_21;
   }
 
@@ -274,14 +274,14 @@ LABEL_19:
   {
     if (v24 == 2)
     {
-      objc_msgSend_addProperty_value_shouldRedact_(v69, v25, @"permission", @"readOnly", 0);
+      objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v25, @"permission", @"readOnly", 0);
       goto LABEL_21;
     }
 
     goto LABEL_19;
   }
 
-  objc_msgSend_addProperty_value_shouldRedact_(v69, v25, @"permission", @"readWrite", 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v25, @"permission", @"readWrite", 0);
 LABEL_21:
   v27 = objc_msgSend_acceptanceStatus(self, v25, v26);
   if (v27 <= 1)
@@ -293,12 +293,12 @@ LABEL_21:
 
     if (v27 == 1)
     {
-      objc_msgSend_addProperty_value_shouldRedact_(v69, v28, @"acceptanceStatus", @"Pending", 0);
+      objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v28, @"acceptanceStatus", @"Pending", 0);
       goto LABEL_30;
     }
 
 LABEL_28:
-    objc_msgSend_addProperty_value_shouldRedact_(v69, v28, @"acceptanceStatus", @"Removed", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v28, @"acceptanceStatus", @"Removed", 0);
     goto LABEL_30;
   }
 
@@ -306,19 +306,19 @@ LABEL_28:
   {
     if (v27 == 2)
     {
-      objc_msgSend_addProperty_value_shouldRedact_(v69, v28, @"acceptanceStatus", @"Accepted", 0);
+      objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v28, @"acceptanceStatus", @"Accepted", 0);
       goto LABEL_30;
     }
 
     goto LABEL_28;
   }
 
-  objc_msgSend_addProperty_value_shouldRedact_(v69, v28, @"acceptanceStatus", @"Unsubscribed", 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v28, @"acceptanceStatus", @"Unsubscribed", 0);
 LABEL_30:
   v32 = objc_msgSend_userIdentity(self, v28, v29);
   if (v32)
   {
-    objc_msgSend_addPropertyIfExists_value_shouldRedact_(v69, v30, @"identity", v32, 0);
+    objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v30, @"identity", v32, 0);
   }
 
   v33 = objc_msgSend_protectionInfo(self, v30, v31);
@@ -326,14 +326,14 @@ LABEL_30:
 
   if (v36)
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v69, v37, @"hasProtectionInfo", @"true", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v37, @"hasProtectionInfo", @"true", 0);
   }
 
   v39 = objc_msgSend_invitationToken(self, v37, v38);
 
   if (v39)
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v69, v40, @"hasInvitationToken", @"true", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v40, @"hasInvitationToken", @"true", 0);
   }
 
   v42 = objc_msgSend_protectionInfoPublicKey(self, v40, v41);
@@ -341,12 +341,12 @@ LABEL_30:
 
   if (v45)
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v69, v46, @"hasProtectionInfoPublicKey", @"true", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v46, @"hasProtectionInfoPublicKey", @"true", 0);
   }
 
   if (objc_msgSend_wantsNewInvitationToken(self, v46, v47))
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v69, v48, @"wantsNewInvitationToken", @"true", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v48, @"wantsNewInvitationToken", @"true", 0);
   }
 
   v50 = objc_msgSend_invitationTokenStatus(self, v48, v49);
@@ -359,12 +359,12 @@ LABEL_30:
 
     if (v50 == 1)
     {
-      objc_msgSend_addProperty_value_shouldRedact_(v69, v51, @"invitationTokenStatus", @"Healthy", 0);
+      objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v51, @"invitationTokenStatus", @"Healthy", 0);
       goto LABEL_49;
     }
 
 LABEL_47:
-    objc_msgSend_addProperty_value_shouldRedact_(v69, v51, @"invitationTokenStatus", @"Unknown", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v51, @"invitationTokenStatus", @"Unknown", 0);
     goto LABEL_49;
   }
 
@@ -372,52 +372,52 @@ LABEL_47:
   {
     if (v50 == 2)
     {
-      objc_msgSend_addProperty_value_shouldRedact_(v69, v51, @"invitationTokenStatus", @"Expired", 0);
+      objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v51, @"invitationTokenStatus", @"Expired", 0);
       goto LABEL_49;
     }
 
     goto LABEL_47;
   }
 
-  objc_msgSend_addProperty_value_shouldRedact_(v69, v51, @"invitationTokenStatus", @"NeedsNewToken", 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v51, @"invitationTokenStatus", @"NeedsNewToken", 0);
 LABEL_49:
   if (objc_msgSend_isAnonymousInvitedParticipant(self, v51, v52))
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v69, v53, @"isAnonymousInvitedParticipant", @"true", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v53, @"isAnonymousInvitedParticipant", @"true", 0);
   }
 
   else
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v69, v53, @"isAnonymousInvitedParticipant", @"false", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v53, @"isAnonymousInvitedParticipant", @"false", 0);
   }
 
   if (objc_msgSend_isApprovedRequester(self, v54, v55))
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v69, v56, @"isApprovedRequester", @"true", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v56, @"isApprovedRequester", @"true", 0);
   }
 
   else
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v69, v56, @"isApprovedRequester", @"false", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v56, @"isApprovedRequester", @"false", 0);
   }
 
   v61 = objc_msgSend_invitationDate(self, v57, v58);
   if (v61)
   {
-    objc_msgSend_addPropertyIfExists_value_shouldRedact_(v69, v59, @"invitationDate", v61, 0);
+    objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v59, @"invitationDate", v61, 0);
   }
 
   v64 = objc_msgSend_acceptanceDate(self, v59, v60);
   if (v64)
   {
-    objc_msgSend_addPropertyIfExists_value_shouldRedact_(v69, v62, @"acceptanceDate", v64, 0);
+    objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v62, @"acceptanceDate", v64, 0);
   }
 
   v65 = objc_msgSend_originalParticipantRole(self, v62, v63);
   if (v65)
   {
     v67 = CKStringFromParticipantRole(v65, v66);
-    objc_msgSend_addProperty_value_shouldRedact_(v69, v68, @"originalParticipantRole", v67, 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v68, @"originalParticipantRole", v67, 0);
   }
 }
 
@@ -536,10 +536,10 @@ LABEL_49:
 
 - (CKShareParticipantPermission)permission
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  permission = v2->_permission;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  permission = selfCopy->_permission;
+  objc_sync_exit(selfCopy);
 
   return permission;
 }
@@ -566,11 +566,11 @@ LABEL_49:
   objc_sync_exit(v6);
 }
 
-- (id)unifiedContactsInStore:(id)a3 keysToFetch:(id)a4 error:(id *)a5
+- (id)unifiedContactsInStore:(id)store keysToFetch:(id)fetch error:(id *)error
 {
   v106 = *MEMORY[0x1E69E9840];
-  v86 = a3;
-  v8 = a4;
+  storeCopy = store;
+  fetchCopy = fetch;
   v11 = objc_msgSend_userIdentity(self, v9, v10);
   v14 = objc_msgSend_lookupInfo(v11, v12, v13);
 
@@ -705,7 +705,7 @@ LABEL_37:
 LABEL_20:
 
 LABEL_21:
-  v62 = objc_msgSend_mutableCopy(v8, v38, v39);
+  v62 = objc_msgSend_mutableCopy(fetchCopy, v38, v39);
   v99 = 0u;
   v100 = 0u;
   v97 = 0u;
@@ -747,15 +747,15 @@ LABEL_21:
   v87[1] = 3221225472;
   v87[2] = sub_18859A844;
   v87[3] = &unk_1E70BE440;
-  v70 = v86;
+  v70 = storeCopy;
   v88 = v70;
   v71 = v62;
   v89 = v71;
   v90 = &v91;
   v73 = objc_msgSend_CKFlatMap_(v16, v72, v87);
-  if (a5)
+  if (error)
   {
-    *a5 = *(v92 + 40);
+    *error = *(v92 + 40);
   }
 
   _Block_object_dispose(&v91, 8);
@@ -764,75 +764,75 @@ LABEL_21:
   return v73;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v101 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_participantID(self, v5, v6);
-  objc_msgSend_encodeObject_forKey_(v101, v8, v7, @"ParticipantID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v7, @"ParticipantID");
 
   v11 = objc_msgSend_inviterID(self, v9, v10);
-  objc_msgSend_encodeObject_forKey_(v101, v12, v11, @"InviterID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, v11, @"InviterID");
 
   v15 = objc_msgSend_userIdentity(self, v13, v14);
-  objc_msgSend_encodeObject_forKey_(v101, v16, v15, @"UserIdentity");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, v15, @"UserIdentity");
 
   isCurrentUser = objc_msgSend_isCurrentUser(self, v17, v18);
-  objc_msgSend_encodeBool_forKey_(v101, v20, isCurrentUser, @"IsCurrentUser");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v20, isCurrentUser, @"IsCurrentUser");
   isOrgAdminUser = objc_msgSend_isOrgAdminUser(self, v21, v22);
-  objc_msgSend_encodeBool_forKey_(v101, v24, isOrgAdminUser, @"IsOrgAdminUser");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v24, isOrgAdminUser, @"IsOrgAdminUser");
   v27 = objc_msgSend_role(self, v25, v26);
-  objc_msgSend_encodeInt64_forKey_(v101, v28, v27, @"Type");
+  objc_msgSend_encodeInt64_forKey_(coderCopy, v28, v27, @"Type");
   v31 = objc_msgSend_acceptanceStatus(self, v29, v30);
-  objc_msgSend_encodeInt64_forKey_(v101, v32, v31, @"AcceptanceStatus");
+  objc_msgSend_encodeInt64_forKey_(coderCopy, v32, v31, @"AcceptanceStatus");
   v35 = objc_msgSend_permission(self, v33, v34);
-  objc_msgSend_encodeInt64_forKey_(v101, v36, v35, @"Permission");
+  objc_msgSend_encodeInt64_forKey_(coderCopy, v36, v35, @"Permission");
   v39 = objc_msgSend_originalParticipantRole(self, v37, v38);
-  objc_msgSend_encodeInt64_forKey_(v101, v40, v39, @"OriginalParticipantType");
+  objc_msgSend_encodeInt64_forKey_(coderCopy, v40, v39, @"OriginalParticipantType");
   v43 = objc_msgSend_protectionInfo(self, v41, v42);
-  objc_msgSend_encodeObject_forKey_(v101, v44, v43, @"ProtectionInfo");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v44, v43, @"ProtectionInfo");
 
   v47 = objc_msgSend_encryptedPersonalInfo(self, v45, v46);
-  objc_msgSend_encodeObject_forKey_(v101, v48, v47, @"EncryptedPersonalInfo");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v48, v47, @"EncryptedPersonalInfo");
 
   v51 = objc_msgSend_createdInProcess(self, v49, v50);
-  objc_msgSend_encodeBool_forKey_(v101, v52, v51, @"CreatedInProcess");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v52, v51, @"CreatedInProcess");
   v55 = objc_msgSend_acceptedInProcess(self, v53, v54);
-  objc_msgSend_encodeBool_forKey_(v101, v56, v55, @"AcceptedInProcess");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v56, v55, @"AcceptedInProcess");
   v59 = objc_msgSend_invitationToken(self, v57, v58);
-  objc_msgSend_encodeObject_forKey_(v101, v60, v59, @"InvitationToken");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v60, v59, @"InvitationToken");
 
   v63 = objc_msgSend_protectionInfoPublicKey(self, v61, v62);
-  objc_msgSend_encodeObject_forKey_(v101, v64, v63, @"ProtectionInfoPublicKey");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v64, v63, @"ProtectionInfoPublicKey");
 
   v67 = objc_msgSend_wantsNewInvitationToken(self, v65, v66);
-  objc_msgSend_encodeBool_forKey_(v101, v68, v67, @"wantsNewInvitationToken");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v68, v67, @"wantsNewInvitationToken");
   v71 = objc_msgSend_mutableInvitationTokenStatus(self, v69, v70);
-  objc_msgSend_encodeInt64_forKey_(v101, v72, v71, @"mutableInvitationTokenStatus");
+  objc_msgSend_encodeInt64_forKey_(coderCopy, v72, v71, @"mutableInvitationTokenStatus");
   isAnonymousInvitedParticipant = objc_msgSend_isAnonymousInvitedParticipant(self, v73, v74);
-  objc_msgSend_encodeBool_forKey_(v101, v76, isAnonymousInvitedParticipant, @"isAnonymousInvitedParticipant");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v76, isAnonymousInvitedParticipant, @"isAnonymousInvitedParticipant");
   isApprovedRequester = objc_msgSend_isApprovedRequester(self, v77, v78);
-  objc_msgSend_encodeBool_forKey_(v101, v80, isApprovedRequester, @"isApprovedRequester");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v80, isApprovedRequester, @"isApprovedRequester");
   v83 = objc_msgSend_invitationDate(self, v81, v82);
-  objc_msgSend_encodeObject_forKey_(v101, v84, v83, @"invitationDate");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v84, v83, @"invitationDate");
 
   v87 = objc_msgSend_acceptanceDate(self, v85, v86);
-  objc_msgSend_encodeObject_forKey_(v101, v88, v87, @"acceptanceDate");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v88, v87, @"acceptanceDate");
 
   v91 = objc_msgSend_usesOneTimeURL(self, v89, v90);
-  objc_msgSend_encodeBool_forKey_(v101, v92, v91, @"usesOneTimeURL");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v92, v91, @"usesOneTimeURL");
   v95 = objc_msgSend_oneTimeURLSharingKeySeed(self, v93, v94);
-  objc_msgSend_encodeObject_forKey_(v101, v96, v95, @"oneTimeURLSharingKeySeed");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v96, v95, @"oneTimeURLSharingKeySeed");
 
   v99 = objc_msgSend_shareID(self, v97, v98);
-  objc_msgSend_encodeObject_forKey_(v101, v100, v99, @"ShareID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v100, v99, @"ShareID");
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (CKShareParticipant)initWithCoder:(id)a3
+- (CKShareParticipant)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v71.receiver = self;
   v71.super_class = CKShareParticipant;
   v5 = [(CKShareParticipant *)&v71 init];
@@ -843,75 +843,75 @@ LABEL_21:
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v11 = objc_msgSend_setWithObjects_(v7, v10, v8, v9, 0);
-    v13 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v12, v11, @"ParticipantID");
+    v13 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v12, v11, @"ParticipantID");
     participantID = v5->_participantID;
     v5->_participantID = v13;
 
     v15 = objc_opt_class();
-    v17 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v16, v15, @"InviterID");
+    v17 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v16, v15, @"InviterID");
     inviterID = v5->_inviterID;
     v5->_inviterID = v17;
 
     v19 = objc_opt_class();
-    v21 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v20, v19, @"UserIdentity");
+    v21 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v20, v19, @"UserIdentity");
     userIdentity = v5->_userIdentity;
     v5->_userIdentity = v21;
 
-    v5->_isCurrentUser = objc_msgSend_decodeBoolForKey_(v4, v23, @"IsCurrentUser");
-    v5->_isOrgAdminUser = objc_msgSend_decodeBoolForKey_(v4, v24, @"IsOrgAdminUser");
-    v5->_role = objc_msgSend_decodeInt64ForKey_(v4, v25, @"Type");
-    v5->_acceptanceStatus = objc_msgSend_decodeInt64ForKey_(v4, v26, @"AcceptanceStatus");
-    v5->_permission = objc_msgSend_decodeInt64ForKey_(v4, v27, @"Permission");
-    v5->_originalParticipantRole = objc_msgSend_decodeInt64ForKey_(v4, v28, @"OriginalParticipantType");
+    v5->_isCurrentUser = objc_msgSend_decodeBoolForKey_(coderCopy, v23, @"IsCurrentUser");
+    v5->_isOrgAdminUser = objc_msgSend_decodeBoolForKey_(coderCopy, v24, @"IsOrgAdminUser");
+    v5->_role = objc_msgSend_decodeInt64ForKey_(coderCopy, v25, @"Type");
+    v5->_acceptanceStatus = objc_msgSend_decodeInt64ForKey_(coderCopy, v26, @"AcceptanceStatus");
+    v5->_permission = objc_msgSend_decodeInt64ForKey_(coderCopy, v27, @"Permission");
+    v5->_originalParticipantRole = objc_msgSend_decodeInt64ForKey_(coderCopy, v28, @"OriginalParticipantType");
     v29 = objc_opt_class();
-    v31 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v30, v29, @"ProtectionInfo");
+    v31 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v30, v29, @"ProtectionInfo");
     protectionInfo = v5->_protectionInfo;
     v5->_protectionInfo = v31;
 
     v33 = objc_opt_class();
-    v35 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v34, v33, @"EncryptedPersonalInfo");
+    v35 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v34, v33, @"EncryptedPersonalInfo");
     encryptedPersonalInfo = v5->_encryptedPersonalInfo;
     v5->_encryptedPersonalInfo = v35;
 
-    v5->_createdInProcess = objc_msgSend_decodeBoolForKey_(v4, v37, @"CreatedInProcess");
-    v5->_acceptedInProcess = objc_msgSend_decodeBoolForKey_(v4, v38, @"AcceptedInProcess");
+    v5->_createdInProcess = objc_msgSend_decodeBoolForKey_(coderCopy, v37, @"CreatedInProcess");
+    v5->_acceptedInProcess = objc_msgSend_decodeBoolForKey_(coderCopy, v38, @"AcceptedInProcess");
     v39 = objc_opt_class();
-    v41 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v40, v39, @"InvitationToken");
+    v41 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v40, v39, @"InvitationToken");
     invitationToken = v5->_invitationToken;
     v5->_invitationToken = v41;
 
     v43 = objc_opt_class();
-    v45 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v44, v43, @"ProtectionInfoPublicKey");
+    v45 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v44, v43, @"ProtectionInfoPublicKey");
     protectionInfoPublicKey = v5->_protectionInfoPublicKey;
     v5->_protectionInfoPublicKey = v45;
 
-    v5->_wantsNewInvitationToken = objc_msgSend_decodeBoolForKey_(v4, v47, @"wantsNewInvitationToken");
-    v5->_isAnonymousInvitedParticipant = objc_msgSend_decodeBoolForKey_(v4, v48, @"isAnonymousInvitedParticipant");
-    v5->_isApprovedRequester = objc_msgSend_decodeBoolForKey_(v4, v49, @"isApprovedRequester");
+    v5->_wantsNewInvitationToken = objc_msgSend_decodeBoolForKey_(coderCopy, v47, @"wantsNewInvitationToken");
+    v5->_isAnonymousInvitedParticipant = objc_msgSend_decodeBoolForKey_(coderCopy, v48, @"isAnonymousInvitedParticipant");
+    v5->_isApprovedRequester = objc_msgSend_decodeBoolForKey_(coderCopy, v49, @"isApprovedRequester");
     v50 = objc_opt_class();
-    v52 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v51, v50, @"invitationDate");
+    v52 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v51, v50, @"invitationDate");
     invitationDate = v5->_invitationDate;
     v5->_invitationDate = v52;
 
     v54 = objc_opt_class();
-    v56 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v55, v54, @"acceptanceDate");
+    v56 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v55, v54, @"acceptanceDate");
     acceptanceDate = v5->_acceptanceDate;
     v5->_acceptanceDate = v56;
 
-    v5->_usesOneTimeURL = objc_msgSend_decodeBoolForKey_(v4, v58, @"usesOneTimeURL");
+    v5->_usesOneTimeURL = objc_msgSend_decodeBoolForKey_(coderCopy, v58, @"usesOneTimeURL");
     v59 = objc_opt_class();
-    v61 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v60, v59, @"oneTimeURLSharingKeySeed");
+    v61 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v60, v59, @"oneTimeURLSharingKeySeed");
     oneTimeURLSharingKeySeed = v5->_oneTimeURLSharingKeySeed;
     v5->_oneTimeURLSharingKeySeed = v61;
 
     v63 = objc_opt_class();
-    v65 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v64, v63, @"ShareID");
+    v65 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v64, v63, @"ShareID");
     shareID = v5->_shareID;
     v5->_shareID = v65;
 
-    if (objc_msgSend_containsValueForKey_(v4, v67, @"mutableInvitationTokenStatus"))
+    if (objc_msgSend_containsValueForKey_(coderCopy, v67, @"mutableInvitationTokenStatus"))
     {
-      v69 = objc_msgSend_decodeInt64ForKey_(v4, v68, @"mutableInvitationTokenStatus");
+      v69 = objc_msgSend_decodeInt64ForKey_(coderCopy, v68, @"mutableInvitationTokenStatus");
     }
 
     else
@@ -926,18 +926,18 @@ LABEL_21:
   return v5;
 }
 
-- (void)setUserIdentity_modelMutation:(id)a3
+- (void)setUserIdentity_modelMutation:(id)mutation
 {
-  v4 = objc_msgSend_copy(a3, a2, a3);
+  v4 = objc_msgSend_copy(mutation, a2, mutation);
   userIdentity = self->_userIdentity;
   self->_userIdentity = v4;
 
   MEMORY[0x1EEE66BB8](v4, userIdentity);
 }
 
-- (void)setParticipantID_modelMutation:(id)a3
+- (void)setParticipantID_modelMutation:(id)mutation
 {
-  v4 = objc_msgSend_copy(a3, a2, a3);
+  v4 = objc_msgSend_copy(mutation, a2, mutation);
   participantID = self->_participantID;
   self->_participantID = v4;
 

@@ -1,23 +1,23 @@
 @interface HKEntitlementStore
 + (id)taskIdentifier;
-- (HKEntitlementStore)initWithHealthStore:(id)a3;
-- (void)fetchContainerAppExtensionEntitlementsWithCompletion:(id)a3;
+- (HKEntitlementStore)initWithHealthStore:(id)store;
+- (void)fetchContainerAppExtensionEntitlementsWithCompletion:(id)completion;
 @end
 
 @implementation HKEntitlementStore
 
-- (HKEntitlementStore)initWithHealthStore:(id)a3
+- (HKEntitlementStore)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = HKEntitlementStore;
   v5 = [(HKEntitlementStore *)&v12 init];
   if (v5)
   {
     v6 = [HKTaskServerProxyProvider alloc];
-    v7 = [objc_opt_class() taskIdentifier];
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:v4 taskIdentifier:v7 exportedObject:v5 taskUUID:v8];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v9 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v5 taskUUID:uUID];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = v9;
 
@@ -34,9 +34,9 @@
   return NSStringFromClass(v2);
 }
 
-- (void)fetchContainerAppExtensionEntitlementsWithCompletion:(id)a3
+- (void)fetchContainerAppExtensionEntitlementsWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;

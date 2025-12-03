@@ -1,6 +1,6 @@
 @interface VOTImageExplorerCustomAction
-- (BOOL)isEqual:(id)a3;
-- (BOOL)performWithContext:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)performWithContext:(id)context;
 - (VOTImageExplorerCustomAction)init;
 - (unint64_t)hash;
 @end
@@ -14,20 +14,20 @@
   return [(VOTImageExplorerCustomAction *)&v3 init];
 }
 
-- (BOOL)performWithContext:(id)a3
+- (BOOL)performWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 isValidElementForImageExploration];
+  contextCopy = context;
+  isValidElementForImageExploration = [contextCopy isValidElementForImageExploration];
   v5 = VOTLogImageExplorer();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
-  if (v4)
+  if (isValidElementForImageExploration)
   {
     if (v6)
     {
       sub_10012A1B8();
     }
 
-    [v3 handleLaunchVoiceOverImageExplorer];
+    [contextCopy handleLaunchVoiceOverImageExplorer];
   }
 
   else
@@ -38,13 +38,13 @@
     }
   }
 
-  return v4;
+  return isValidElementForImageExploration;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
-  v4 = [v3 isMemberOfClass:objc_opt_class()];
+  equalCopy = equal;
+  v4 = [equalCopy isMemberOfClass:objc_opt_class()];
 
   return v4;
 }

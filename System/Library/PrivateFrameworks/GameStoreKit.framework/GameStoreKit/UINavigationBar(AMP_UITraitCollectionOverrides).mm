@@ -7,10 +7,10 @@
 - (id)setLayoutDirection:()AMP_UITraitCollectionOverrides
 {
   v19 = *MEMORY[0x277D85DE8];
-  if ([a1 layoutDirection] != a3)
+  if ([self layoutDirection] != a3)
   {
-    v5 = [a1 subviews];
-    v6 = [v5 copy];
+    subviews = [self subviews];
+    v6 = [subviews copy];
 
     v16 = 0u;
     v17 = 0u;
@@ -43,7 +43,7 @@
     }
   }
 
-  v13.receiver = a1;
+  v13.receiver = self;
   v13.super_class = &off_2862C75B0;
   return objc_msgSendSuper2(&v13, sel_setLayoutDirection_, a3);
 }

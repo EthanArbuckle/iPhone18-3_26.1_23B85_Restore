@@ -1,18 +1,18 @@
 @interface _PASDatabaseJournal
-+ (id)_binderForDictionary:(id)a3;
++ (id)_binderForDictionary:(id)dictionary;
 + (id)journalForInMemoryDb;
-+ (id)journalWithDbPath:(id)a3;
-- (BOOL)_executeFile:(id)a3 onDb:(id)a4 becameLocked:(BOOL *)a5;
-- (BOOL)_executeNextRecordFromFile:(id)a3 onDb:(id)a4 becameLocked:(BOOL *)a5 deleteFile:(BOOL *)a6;
++ (id)journalWithDbPath:(id)path;
+- (BOOL)_executeFile:(id)file onDb:(id)db becameLocked:(BOOL *)locked;
+- (BOOL)_executeNextRecordFromFile:(id)file onDb:(id)db becameLocked:(BOOL *)locked deleteFile:(BOOL *)deleteFile;
 - (BOOL)deleteAllJournaledQueries;
-- (BOOL)executeQueriesOnDatabase:(id)a3;
+- (BOOL)executeQueriesOnDatabase:(id)database;
 - (BOOL)startJournaling;
 - (BOOL)stopJournaling;
 - (id)_getCurrentFile;
 - (id)description;
 - (void)_addCurrentFileToLog;
 - (void)_closeCurrentFile;
-- (void)runQuery:(id)a3 values:(id)a4 onDb:(id)a5;
+- (void)runQuery:(id)query values:(id)values onDb:(id)db;
 @end
 
 @implementation _PASDatabaseJournal
@@ -92,10 +92,10 @@
   return v3;
 }
 
-- (BOOL)executeQueriesOnDatabase:(id)a3
+- (BOOL)executeQueriesOnDatabase:(id)database
 {
-  v5 = a3;
-  v6 = v5;
+  databaseCopy = database;
+  v6 = databaseCopy;
   v7 = 1;
   if (!self->_inMemory)
   {
@@ -111,7 +111,7 @@
     v10[4] = self;
     v12 = &v14;
     v13 = a2;
-    v11 = v5;
+    v11 = databaseCopy;
     dispatch_sync(queue, v10);
     v7 = *(v15 + 24);
 
@@ -121,19 +121,19 @@
   return v7 & 1;
 }
 
-- (BOOL)_executeFile:(id)a3 onDb:(id)a4 becameLocked:(BOOL *)a5
+- (BOOL)_executeFile:(id)file onDb:(id)db becameLocked:(BOOL *)locked
 {
   v25 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  fileCopy = file;
+  dbCopy = db;
   if (self->_inMemory)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"_PASDatabaseJournal.m" lineNumber:242 description:{@"Invalid parameter not satisfying: %@", @"!_inMemory"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASDatabaseJournal.m" lineNumber:242 description:{@"Invalid parameter not satisfying: %@", @"!_inMemory"}];
   }
 
   v20 = 1;
-  v11 = [(NSString *)self->_directoryPath stringByAppendingPathComponent:v9];
+  v11 = [(NSString *)self->_directoryPath stringByAppendingPathComponent:fileCopy];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
@@ -149,9 +149,9 @@
     goto LABEL_15;
   }
 
-  v13 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v19 = 0;
-  [v13 removeItemAtPath:v11 error:&v19];
+  [defaultManager removeItemAtPath:v11 error:&v19];
   v14 = v19;
 
   if (!v14)
@@ -185,20 +185,20 @@ LABEL_16:
   return v15;
 }
 
-- (BOOL)_executeNextRecordFromFile:(id)a3 onDb:(id)a4 becameLocked:(BOOL *)a5 deleteFile:(BOOL *)a6
+- (BOOL)_executeNextRecordFromFile:(id)file onDb:(id)db becameLocked:(BOOL *)locked deleteFile:(BOOL *)deleteFile
 {
   v37 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  fileCopy = file;
+  dbCopy = db;
   v11 = objc_autoreleasePoolPush();
-  v12 = [v9 read];
-  if (!v12)
+  read = [fileCopy read];
+  if (!read)
   {
     objc_autoreleasePoolPop(v11);
     goto LABEL_6;
   }
 
-  v13 = v12;
+  v13 = read;
   v14 = MEMORY[0x1E695DFD8];
   v15 = objc_opt_class();
   v16 = objc_opt_class();
@@ -214,7 +214,7 @@ LABEL_16:
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v34 = v9;
+      v34 = fileCopy;
       v35 = 2112;
       v36 = v20;
       _os_log_error_impl(&dword_1A7F47000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Got nil after trying to unarchive a db journal at %@: %@", buf, 0x16u);
@@ -230,7 +230,7 @@ LABEL_16:
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v34 = v9;
+      v34 = fileCopy;
       _os_log_error_impl(&dword_1A7F47000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "No __query key set in journal file: %@", buf, 0xCu);
     }
 
@@ -246,10 +246,10 @@ LABEL_13:
   v28[2] = __79___PASDatabaseJournal__executeNextRecordFromFile_onDb_becameLocked_deleteFile___block_invoke;
   v28[3] = &unk_1E77F1D70;
   v29 = v19;
-  v30 = a6;
-  v31 = a5;
+  deleteFileCopy = deleteFile;
+  lockedCopy = locked;
   v24 = v19;
-  [v10 prepAndRunQuery:v22 onPrep:v23 onRow:0 onError:v28];
+  [dbCopy prepAndRunQuery:v22 onPrep:v23 onRow:0 onError:v28];
 
 LABEL_6:
   v25 = 1;
@@ -259,21 +259,21 @@ LABEL_14:
   return v25;
 }
 
-- (void)runQuery:(id)a3 values:(id)a4 onDb:(id)a5
+- (void)runQuery:(id)query values:(id)values onDb:(id)db
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queryCopy = query;
+  valuesCopy = values;
+  dbCopy = db;
   if (self->_inMemory)
   {
-    v11 = [_PASDatabaseJournal _binderForDictionary:v9];
+    v11 = [_PASDatabaseJournal _binderForDictionary:valuesCopy];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __44___PASDatabaseJournal_runQuery_values_onDb___block_invoke_39;
     v14[3] = &unk_1E77F2868;
     v12 = &v15;
-    v15 = v8;
-    [v10 prepAndRunQuery:v15 onPrep:v11 onRow:0 onError:v14];
+    v15 = queryCopy;
+    [dbCopy prepAndRunQuery:v15 onPrep:v11 onRow:0 onError:v14];
   }
 
   else
@@ -284,10 +284,10 @@ LABEL_14:
     block[2] = __44___PASDatabaseJournal_runQuery_values_onDb___block_invoke;
     block[3] = &unk_1E77F1D48;
     v12 = &v17;
-    v17 = v8;
-    v18 = v9;
-    v19 = self;
-    v20 = v10;
+    v17 = queryCopy;
+    v18 = valuesCopy;
+    selfCopy = self;
+    v20 = dbCopy;
     dispatch_sync(queue, block);
 
     v11 = v18;
@@ -341,15 +341,15 @@ LABEL_14:
   return v6;
 }
 
-+ (id)_binderForDictionary:(id)a3
++ (id)_binderForDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44___PASDatabaseJournal__binderForDictionary___block_invoke;
   v7[3] = &unk_1E77F2818;
-  v8 = v3;
-  v4 = v3;
+  v8 = dictionaryCopy;
+  v4 = dictionaryCopy;
   v5 = MEMORY[0x1AC566DD0](v7);
 
   return v5;
@@ -366,20 +366,20 @@ LABEL_14:
   *(v2 + 16) = 0;
 
   *(v2 + 24) = 0;
-  v6 = [MEMORY[0x1E696AFB0] UUID];
-  v7 = [v6 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
   v8 = *(v2 + 32);
-  *(v2 + 32) = v7;
+  *(v2 + 32) = uUIDString;
 
   *(v2 + 41) = 1;
 
   return v2;
 }
 
-+ (id)journalWithDbPath:(id)a3
++ (id)journalWithDbPath:(id)path
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   pthread_mutex_lock(&journalWithDbPath__lock);
   if (!journalWithDbPath__instances)
   {
@@ -388,35 +388,35 @@ LABEL_14:
     journalWithDbPath__instances = v5;
   }
 
-  v7 = [a1 _journalPathForDbPath:v4];
-  v8 = [v7 lastPathComponent];
-  v9 = [v8 stringByDeletingPathExtension];
+  v7 = [self _journalPathForDbPath:pathCopy];
+  lastPathComponent = [v7 lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-  v10 = [journalWithDbPath__instances objectForKey:v9];
+  v10 = [journalWithDbPath__instances objectForKey:stringByDeletingPathExtension];
   if (!v10)
   {
     v10 = objc_opt_new();
-    v11 = [@"com.apple.proactive.databasejournal." stringByAppendingString:v9];
+    v11 = [@"com.apple.proactive.databasejournal." stringByAppendingString:stringByDeletingPathExtension];
     v12 = dispatch_queue_create([v11 UTF8String], 0);
     v13 = *(v10 + 8);
     *(v10 + 8) = v12;
 
     objc_storeStrong((v10 + 16), v7);
     *(v10 + 24) = 0;
-    v14 = [MEMORY[0x1E696AFB0] UUID];
-    v15 = [v14 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     v16 = *(v10 + 32);
-    *(v10 + 32) = v15;
+    *(v10 + 32) = uUIDString;
 
-    v17 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v18 = *(v10 + 16);
     v23 = 0;
-    v19 = [v17 createDirectoryAtPath:v18 withIntermediateDirectories:1 attributes:0 error:&v23];
+    v19 = [defaultManager createDirectoryAtPath:v18 withIntermediateDirectories:1 attributes:0 error:&v23];
     v20 = v23;
 
     if (v19)
     {
-      [journalWithDbPath__instances setObject:v10 forKey:v9];
+      [journalWithDbPath__instances setObject:v10 forKey:stringByDeletingPathExtension];
     }
 
     else

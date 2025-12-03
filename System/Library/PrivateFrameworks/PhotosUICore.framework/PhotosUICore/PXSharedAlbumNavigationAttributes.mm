@@ -1,19 +1,19 @@
 @interface PXSharedAlbumNavigationAttributes
-+ (id)attributesForURLComponents:(id)a3;
++ (id)attributesForURLComponents:(id)components;
 @end
 
 @implementation PXSharedAlbumNavigationAttributes
 
-+ (id)attributesForURLComponents:(id)a3
++ (id)attributesForURLComponents:(id)components
 {
   v27 = *MEMORY[0x1E69E9840];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v20 = a3;
-  v3 = [v20 queryItems];
-  v4 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  componentsCopy = components;
+  queryItems = [componentsCopy queryItems];
+  v4 = [queryItems countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v4)
   {
     v5 = v4;
@@ -27,41 +27,41 @@
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(queryItems);
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [v10 name];
-        if ([v11 isEqualToString:@"invitationalbumuuid"])
+        name = [v10 name];
+        if ([name isEqualToString:@"invitationalbumuuid"])
         {
-          v12 = [v10 value];
+          value = [v10 value];
           v13 = v7;
-          v7 = v12;
+          v7 = value;
         }
 
-        else if ([v11 isEqualToString:@"revealassetuuid"])
+        else if ([name isEqualToString:@"revealassetuuid"])
         {
-          v14 = [v10 value];
+          value2 = [v10 value];
           v13 = v6;
-          v6 = v14;
+          v6 = value2;
         }
 
         else
         {
-          if (![v11 isEqualToString:@"commentguid"])
+          if (![name isEqualToString:@"commentguid"])
           {
             goto LABEL_13;
           }
 
-          v15 = [v10 value];
+          value3 = [v10 value];
           v13 = v21;
-          v21 = v15;
+          v21 = value3;
         }
 
 LABEL_13:
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v5 = [queryItems countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (!v5)
       {
         goto LABEL_17;
@@ -76,7 +76,7 @@ LABEL_17:
 
   if (v7 || v6 || v21)
   {
-    v16 = objc_alloc_init(a1);
+    v16 = objc_alloc_init(self);
     objc_storeStrong(v16 + 1, v7);
     objc_storeStrong(v16 + 2, v6);
     objc_storeStrong(v16 + 3, v21);

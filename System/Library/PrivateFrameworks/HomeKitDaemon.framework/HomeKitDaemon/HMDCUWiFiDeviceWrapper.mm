@@ -1,33 +1,33 @@
 @interface HMDCUWiFiDeviceWrapper
 + (id)logCategory;
-- (HMDCUWiFiDeviceWrapper)initWithCUWiFiDevice:(id)a3 dispatchQueue:(id)a4;
+- (HMDCUWiFiDeviceWrapper)initWithCUWiFiDevice:(id)device dispatchQueue:(id)queue;
 - (NSString)description;
 - (NSString)name;
-- (void)cancelConfigurationWithCompletionHandler:(id)a3;
-- (void)startConfigurationWithCompletionHandler:(id)a3;
+- (void)cancelConfigurationWithCompletionHandler:(id)handler;
+- (void)startConfigurationWithCompletionHandler:(id)handler;
 @end
 
 @implementation HMDCUWiFiDeviceWrapper
 
 - (NSString)description
 {
-  v3 = [(HMDCUWiFiDeviceWrapper *)self identifier];
-  v4 = [(HMDCUWiFiDeviceWrapper *)self ssid];
-  v5 = [(HMDCUWiFiDeviceWrapper *)self name];
-  v9 = [(HMDCUWiFiDeviceWrapper *)self deviceID];
+  identifier = [(HMDCUWiFiDeviceWrapper *)self identifier];
+  ssid = [(HMDCUWiFiDeviceWrapper *)self ssid];
+  name = [(HMDCUWiFiDeviceWrapper *)self name];
+  deviceID = [(HMDCUWiFiDeviceWrapper *)self deviceID];
   NSAppendPrintF();
   v6 = 0;
 
-  [(CUWiFiDevice *)self->_cuWiFiDevice deviceIEFlags:v3];
+  [(CUWiFiDevice *)self->_cuWiFiDevice deviceIEFlags:identifier];
   NSAppendPrintF();
   v7 = v6;
 
   return v6;
 }
 
-- (void)cancelConfigurationWithCompletionHandler:(id)a3
+- (void)cancelConfigurationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -35,8 +35,8 @@
   block[2] = __67__HMDCUWiFiDeviceWrapper_cancelConfigurationWithCompletionHandler___block_invoke;
   block[3] = &unk_2786841C8;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(dispatchQueue, block);
 
   objc_destroyWeak(&v9);
@@ -54,14 +54,14 @@ void __67__HMDCUWiFiDeviceWrapper_cancelConfigurationWithCompletionHandler___blo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)startConfigurationWithCompletionHandler:(id)a3
+- (void)startConfigurationWithCompletionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_wacSession)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -81,8 +81,8 @@ void __67__HMDCUWiFiDeviceWrapper_cancelConfigurationWithCompletionHandler___blo
     self->_wacSession = v9;
 
     [(CUWACSession *)self->_wacSession setWacDevice:self->_cuWiFiDevice];
-    v11 = [(HMDCUWiFiDeviceWrapper *)self name];
-    [(CUWACSession *)self->_wacSession setLabel:v11];
+    name = [(HMDCUWiFiDeviceWrapper *)self name];
+    [(CUWACSession *)self->_wacSession setLabel:name];
 
     [(CUWACSession *)self->_wacSession setDispatchQueue:self->_dispatchQueue];
     *&buf = 0;
@@ -98,7 +98,7 @@ void __67__HMDCUWiFiDeviceWrapper_cancelConfigurationWithCompletionHandler___blo
     v16 = &unk_27867AA28;
     objc_copyWeak(&v19, &location);
     p_buf = &buf;
-    v17 = v4;
+    v17 = handlerCopy;
     [(CUWACSession *)self->_wacSession setProgressHandler:&v13];
     [(CUWACSession *)self->_wacSession activate:v13];
 
@@ -378,9 +378,9 @@ void __66__HMDCUWiFiDeviceWrapper_startConfigurationWithCompletionHandler___bloc
 
 - (NSString)name
 {
-  v3 = [(CUWiFiDevice *)self->_cuWiFiDevice deviceIEName];
+  deviceIEName = [(CUWiFiDevice *)self->_cuWiFiDevice deviceIEName];
   cuWiFiDevice = self->_cuWiFiDevice;
-  if (v3)
+  if (deviceIEName)
   {
     [(CUWiFiDevice *)cuWiFiDevice deviceIEName];
   }
@@ -394,22 +394,22 @@ void __66__HMDCUWiFiDeviceWrapper_startConfigurationWithCompletionHandler___bloc
   return v5;
 }
 
-- (HMDCUWiFiDeviceWrapper)initWithCUWiFiDevice:(id)a3 dispatchQueue:(id)a4
+- (HMDCUWiFiDeviceWrapper)initWithCUWiFiDevice:(id)device dispatchQueue:(id)queue
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = HMDCUWiFiDeviceWrapper;
   v9 = [(HMDCUWiFiDeviceWrapper *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_cuWiFiDevice, a3);
-    objc_storeStrong(&v10->_dispatchQueue, a4);
-    v11 = [v7 deviceIEDeviceID];
-    [v11 bytes];
-    [v11 length];
+    objc_storeStrong(&v9->_cuWiFiDevice, device);
+    objc_storeStrong(&v10->_dispatchQueue, queue);
+    deviceIEDeviceID = [deviceCopy deviceIEDeviceID];
+    [deviceIEDeviceID bytes];
+    [deviceIEDeviceID length];
     HardwareAddressToCString();
     v12 = [MEMORY[0x277CCACA8] stringWithCString:v17 encoding:4];
     deviceID = v10->deviceID;

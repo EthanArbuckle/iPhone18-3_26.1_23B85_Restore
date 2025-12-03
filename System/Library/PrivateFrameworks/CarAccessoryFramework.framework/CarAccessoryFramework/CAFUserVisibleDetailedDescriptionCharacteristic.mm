@@ -3,14 +3,14 @@
 + (void)load;
 - (CAFUserVisibleDetailedDescription)userVisibleDetailedDescriptionValue;
 - (id)formattedValue;
-- (void)setUserVisibleDetailedDescriptionValue:(id)a3;
+- (void)setUserVisibleDetailedDescriptionValue:(id)value;
 @end
 
 @implementation CAFUserVisibleDetailedDescriptionCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFUserVisibleDetailedDescriptionCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -18,22 +18,22 @@
 - (CAFUserVisibleDetailedDescription)userVisibleDetailedDescriptionValue
 {
   v3 = [CAFUserVisibleDetailedDescription alloc];
-  v4 = [(CAFDictionaryCharacteristic *)self dictionaryValue];
-  v5 = [(CAFUserVisibleDetailedDescription *)v3 initWithDictionary:v4];
+  dictionaryValue = [(CAFDictionaryCharacteristic *)self dictionaryValue];
+  v5 = [(CAFUserVisibleDetailedDescription *)v3 initWithDictionary:dictionaryValue];
 
   return v5;
 }
 
-- (void)setUserVisibleDetailedDescriptionValue:(id)a3
+- (void)setUserVisibleDetailedDescriptionValue:(id)value
 {
-  v4 = [a3 dictionaryRepresentation];
-  [(CAFDictionaryCharacteristic *)self setDictionaryValue:v4];
+  dictionaryRepresentation = [value dictionaryRepresentation];
+  [(CAFDictionaryCharacteristic *)self setDictionaryValue:dictionaryRepresentation];
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFUserVisibleDetailedDescriptionCharacteristic *)self userVisibleDetailedDescriptionValue];
-  v3 = [v2 description];
+  userVisibleDetailedDescriptionValue = [(CAFUserVisibleDetailedDescriptionCharacteristic *)self userVisibleDetailedDescriptionValue];
+  v3 = [userVisibleDetailedDescriptionValue description];
 
   return v3;
 }

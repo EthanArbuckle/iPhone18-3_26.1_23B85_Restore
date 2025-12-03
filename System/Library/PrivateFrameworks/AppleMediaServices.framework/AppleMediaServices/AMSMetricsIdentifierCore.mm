@@ -1,94 +1,94 @@
 @interface AMSMetricsIdentifierCore
-+ (BOOL)_shouldReplaceInfo:(id)a3 withInfo:(id)a4 isServerRecord:(BOOL)a5;
-+ (BOOL)_shouldUpdateDatabaseFor:(id)a3 consumerIDResetInterval:(double)a4;
-+ (id)_removeU13Identifier:(id)a3 account:(id)a4;
++ (BOOL)_shouldReplaceInfo:(id)info withInfo:(id)withInfo isServerRecord:(BOOL)record;
++ (BOOL)_shouldUpdateDatabaseFor:(id)for consumerIDResetInterval:(double)interval;
++ (id)_removeU13Identifier:(id)identifier account:(id)account;
 @end
 
 @implementation AMSMetricsIdentifierCore
 
-+ (id)_removeU13Identifier:(id)a3 account:(id)a4
++ (id)_removeU13Identifier:(id)identifier account:(id)account
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6 && (([v6 ams_accountFlagValueForAccountFlag:AMSAccountFlagUnderThirteen], v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) ? (v9 = 0) : (v9 = v8), v8, v10 = objc_msgSend(v9, "BOOLValue"), v9, (v10 & 1) != 0))
+  identifierCopy = identifier;
+  accountCopy = account;
+  v7 = accountCopy;
+  if (accountCopy && (([accountCopy ams_accountFlagValueForAccountFlag:AMSAccountFlagUnderThirteen], v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) ? (v9 = 0) : (v9 = v8), v8, v10 = objc_msgSend(v9, "BOOLValue"), v9, (v10 & 1) != 0))
   {
-    v11 = [v5 copy];
+    v11 = [identifierCopy copy];
     [v11 setValue:&stru_1F071BA78];
   }
 
   else
   {
-    v11 = v5;
+    v11 = identifierCopy;
   }
 
   return v11;
 }
 
-+ (BOOL)_shouldUpdateDatabaseFor:(id)a3 consumerIDResetInterval:(double)a4
++ (BOOL)_shouldUpdateDatabaseFor:(id)for consumerIDResetInterval:(double)interval
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  forCopy = for;
+  v6 = forCopy;
+  if (forCopy)
   {
-    v7 = [v5 serverProvidedAt];
+    serverProvidedAt = [forCopy serverProvidedAt];
 
-    if (v7)
+    if (serverProvidedAt)
     {
-      v8 = [v6 expires];
-      [v8 timeIntervalSinceReferenceDate];
+      expires = [v6 expires];
+      [expires timeIntervalSinceReferenceDate];
       v10 = v9;
 
-      v7 = [v6 serverProvidedAt];
-      v11 = [v7 dateByAddingTimeInterval:a4];
+      serverProvidedAt = [v6 serverProvidedAt];
+      v11 = [serverProvidedAt dateByAddingTimeInterval:interval];
       [v11 timeIntervalSinceReferenceDate];
       v13 = v12;
 
-      LOBYTE(v7) = v10 != v13;
+      LOBYTE(serverProvidedAt) = v10 != v13;
     }
   }
 
   else
   {
-    LOBYTE(v7) = 0;
+    LOBYTE(serverProvidedAt) = 0;
   }
 
-  return v7;
+  return serverProvidedAt;
 }
 
-+ (BOOL)_shouldReplaceInfo:(id)a3 withInfo:(id)a4 isServerRecord:(BOOL)a5
++ (BOOL)_shouldReplaceInfo:(id)info withInfo:(id)withInfo isServerRecord:(BOOL)record
 {
-  LODWORD(v5) = a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 serverProvidedAt];
-  if (v9)
+  LODWORD(serverProvidedAt4) = record;
+  infoCopy = info;
+  withInfoCopy = withInfo;
+  serverProvidedAt = [infoCopy serverProvidedAt];
+  if (serverProvidedAt)
   {
   }
 
   else
   {
-    v10 = [v8 serverProvidedAt];
+    serverProvidedAt2 = [withInfoCopy serverProvidedAt];
 
-    if (!v10)
+    if (!serverProvidedAt2)
     {
-      v28 = [v7 modified];
-      [v28 timeIntervalSinceReferenceDate];
+      modified = [infoCopy modified];
+      [modified timeIntervalSinceReferenceDate];
       v30 = v29;
-      v31 = [v8 modified];
-      [v31 timeIntervalSinceReferenceDate];
+      modified2 = [withInfoCopy modified];
+      [modified2 timeIntervalSinceReferenceDate];
       v33 = v32;
 
       if (v30 > v33)
       {
-        if (!v5)
+        if (!serverProvidedAt4)
         {
           goto LABEL_16;
         }
 
-        if ([v7 deleted])
+        if ([infoCopy deleted])
         {
-          LOBYTE(v5) = 0;
+          LOBYTE(serverProvidedAt4) = 0;
           goto LABEL_16;
         }
       }
@@ -97,50 +97,50 @@
     }
   }
 
-  v11 = [v7 serverProvidedAt];
+  serverProvidedAt3 = [infoCopy serverProvidedAt];
 
-  if (!v11)
+  if (!serverProvidedAt3)
   {
     goto LABEL_15;
   }
 
-  v5 = [v8 serverProvidedAt];
+  serverProvidedAt4 = [withInfoCopy serverProvidedAt];
 
-  if (v5)
+  if (serverProvidedAt4)
   {
-    v12 = [v7 value];
-    if (!v12 || (v13 = v12, [v7 value], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "value"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v14, "isEqualToString:", v15), v15, v14, v13, !v16))
+    value = [infoCopy value];
+    if (!value || (v13 = value, [infoCopy value], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(withInfoCopy, "value"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v14, "isEqualToString:", v15), v15, v14, v13, !v16))
     {
-      v23 = [v7 serverProvidedAt];
-      [v23 timeIntervalSinceReferenceDate];
+      serverProvidedAt5 = [infoCopy serverProvidedAt];
+      [serverProvidedAt5 timeIntervalSinceReferenceDate];
       v25 = v24;
-      v26 = [v8 serverProvidedAt];
-      [v26 timeIntervalSinceReferenceDate];
-      LOBYTE(v5) = v25 <= v27;
+      serverProvidedAt6 = [withInfoCopy serverProvidedAt];
+      [serverProvidedAt6 timeIntervalSinceReferenceDate];
+      LOBYTE(serverProvidedAt4) = v25 <= v27;
 
       goto LABEL_16;
     }
 
-    v17 = [v7 serverProvidedAt];
-    [v17 timeIntervalSinceReferenceDate];
+    serverProvidedAt7 = [infoCopy serverProvidedAt];
+    [serverProvidedAt7 timeIntervalSinceReferenceDate];
     v19 = v18;
-    v20 = [v8 serverProvidedAt];
-    [v20 timeIntervalSinceReferenceDate];
+    serverProvidedAt8 = [withInfoCopy serverProvidedAt];
+    [serverProvidedAt8 timeIntervalSinceReferenceDate];
     v22 = v21;
 
     if (v19 <= v22)
     {
-      LOBYTE(v5) = [v7 isEqualIgnoringLastSync:v8];
+      LOBYTE(serverProvidedAt4) = [infoCopy isEqualIgnoringLastSync:withInfoCopy];
       goto LABEL_16;
     }
 
 LABEL_15:
-    LOBYTE(v5) = 1;
+    LOBYTE(serverProvidedAt4) = 1;
   }
 
 LABEL_16:
 
-  return v5;
+  return serverProvidedAt4;
 }
 
 @end

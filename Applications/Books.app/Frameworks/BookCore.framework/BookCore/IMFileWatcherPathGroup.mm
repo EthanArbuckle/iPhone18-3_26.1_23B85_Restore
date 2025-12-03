@@ -1,22 +1,22 @@
 @interface IMFileWatcherPathGroup
-- (BOOL)addEntry:(id)a3;
+- (BOOL)addEntry:(id)entry;
 - (BOOL)setupSource;
-- (IMFileWatcherPathGroup)initWithFilePath:(id)a3 targetQueue:(id)a4;
+- (IMFileWatcherPathGroup)initWithFilePath:(id)path targetQueue:(id)queue;
 - (void)dealloc;
-- (void)enqueueBlocksForEntries:(id)a3 withChange:(int)a4;
+- (void)enqueueBlocksForEntries:(id)entries withChange:(int)change;
 - (void)handleDeleteOrRename;
 - (void)handleWrite;
 - (void)invalidateEntries;
-- (void)removeEntry:(id)a3;
+- (void)removeEntry:(id)entry;
 - (void)teardown;
 @end
 
 @implementation IMFileWatcherPathGroup
 
-- (IMFileWatcherPathGroup)initWithFilePath:(id)a3 targetQueue:(id)a4
+- (IMFileWatcherPathGroup)initWithFilePath:(id)path targetQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = IMFileWatcherPathGroup;
   v8 = [(IMFileWatcherPathGroup *)&v14 init];
@@ -26,11 +26,11 @@
     entries = v8->_entries;
     v8->_entries = v9;
 
-    v11 = [v6 copy];
+    v11 = [pathCopy copy];
     filePath = v8->_filePath;
     v8->_filePath = v11;
 
-    objc_storeStrong(&v8->_queue, a4);
+    objc_storeStrong(&v8->_queue, queue);
     if (![(IMFileWatcherPathGroup *)v8 setupSource])
     {
 
@@ -48,15 +48,15 @@
   [(IMFileWatcherPathGroup *)&v2 dealloc];
 }
 
-- (BOOL)addEntry:(id)a3
+- (BOOL)addEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   if (self->_source || [(IMFileWatcherPathGroup *)self setupSource])
   {
-    v5 = [(IMFileWatcherPathGroup *)self filePath];
-    [v4 setFilePath:v5];
+    filePath = [(IMFileWatcherPathGroup *)self filePath];
+    [entryCopy setFilePath:filePath];
 
-    [(NSMutableSet *)self->_entries addObject:v4];
+    [(NSMutableSet *)self->_entries addObject:entryCopy];
     v6 = 1;
   }
 
@@ -68,12 +68,12 @@
   return v6;
 }
 
-- (void)removeEntry:(id)a3
+- (void)removeEntry:(id)entry
 {
   entries = self->_entries;
-  v5 = a3;
-  [(NSMutableSet *)entries removeObject:v5];
-  [v5 invalidate];
+  entryCopy = entry;
+  [(NSMutableSet *)entries removeObject:entryCopy];
+  [entryCopy invalidate];
 
   if (![(NSMutableSet *)self->_entries count])
   {
@@ -90,8 +90,8 @@
   v19[3] = &unk_2CD000;
   v19[4] = self;
   v3 = objc_retainBlock(v19);
-  v4 = [(IMFileWatcherPathGroup *)self filePath];
-  v5 = (v3[2])(v3, v4);
+  filePath = [(IMFileWatcherPathGroup *)self filePath];
+  v5 = (v3[2])(v3, filePath);
 
   if (v5)
   {
@@ -103,7 +103,7 @@ LABEL_9:
     handler[3] = &unk_2C7BE8;
     v12 = v5;
     v17 = v12;
-    v18 = self;
+    selfCopy = self;
     dispatch_source_set_event_handler(v12, handler);
     dispatch_activate(v12);
     source = self->_source;
@@ -114,14 +114,14 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v6 = [(IMFileWatcherPathGroup *)self filePath];
-  v7 = [v6 stringByDeletingLastPathComponent];
-  v8 = (v3[2])(v3, v7);
+  filePath2 = [(IMFileWatcherPathGroup *)self filePath];
+  stringByDeletingLastPathComponent = [filePath2 stringByDeletingLastPathComponent];
+  v8 = (v3[2])(v3, stringByDeletingLastPathComponent);
 
   if (v8)
   {
-    v9 = [(IMFileWatcherPathGroup *)self filePath];
-    v5 = (v3[2])(v3, v9);
+    filePath3 = [(IMFileWatcherPathGroup *)self filePath];
+    v5 = (v3[2])(v3, filePath3);
 
     if (v5)
     {
@@ -171,14 +171,14 @@ LABEL_10:
       }
 
       entries = self->_entries;
-      v5 = self;
+      selfCopy2 = self;
       v6 = 2;
     }
 
     else
     {
       entries = self->_entries;
-      v5 = self;
+      selfCopy2 = self;
       if (watchingDirectory)
       {
         v6 = 1;
@@ -190,7 +190,7 @@ LABEL_10:
       }
     }
 
-    [(IMFileWatcherPathGroup *)v5 enqueueBlocksForEntries:entries withChange:v6];
+    [(IMFileWatcherPathGroup *)selfCopy2 enqueueBlocksForEntries:entries withChange:v6];
   }
 
   else
@@ -205,17 +205,17 @@ LABEL_10:
   if (self->_watchingDirectory)
   {
     memset(&v9, 0, sizeof(v9));
-    v3 = [(IMFileWatcherPathGroup *)self filePath];
-    v4 = lstat([v3 fileSystemRepresentation], &v9);
+    filePath = [(IMFileWatcherPathGroup *)self filePath];
+    v4 = lstat([filePath fileSystemRepresentation], &v9);
 
     if (v4 == -1)
     {
       if (*__error() != 2)
       {
-        v6 = [(IMFileWatcherPathGroup *)self filePath];
+        filePath2 = [(IMFileWatcherPathGroup *)self filePath];
         v7 = __error();
         v8 = strerror(*v7);
-        NSLog(@"Unexpected error with lstat(%@): %s", v6, v8);
+        NSLog(@"Unexpected error with lstat(%@): %s", filePath2, v8);
       }
     }
 
@@ -253,13 +253,13 @@ LABEL_10:
   [v3 enumerateObjectsUsingBlock:&stru_2CD040];
 }
 
-- (void)enqueueBlocksForEntries:(id)a3 withChange:(int)a4
+- (void)enqueueBlocksForEntries:(id)entries withChange:(int)change
 {
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a3;
+  obj = entries;
   v5 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
@@ -275,17 +275,17 @@ LABEL_10:
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 block];
-        v11 = [v9 queue];
+        block = [v9 block];
+        queue = [v9 queue];
         v14[0] = _NSConcreteStackBlock;
         v14[1] = 3221225472;
         v14[2] = sub_E0F00;
         v14[3] = &unk_2CD068;
-        v16 = a4;
+        changeCopy = change;
         v14[4] = v9;
-        v15 = v10;
-        v12 = v10;
-        [v11 addOperationWithBlock:v14];
+        v15 = block;
+        v12 = block;
+        [queue addOperationWithBlock:v14];
       }
 
       v6 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];

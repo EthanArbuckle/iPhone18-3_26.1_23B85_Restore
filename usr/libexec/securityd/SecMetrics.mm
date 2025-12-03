@@ -3,11 +3,11 @@
 + (id)managerObject;
 - (SecMetrics)init;
 - (id)generateDeviceInfo;
-- (id)getEvent:(id)a3;
-- (id)gzipEncode:(id)a3;
-- (id)requestForGenericEvent:(id)a3;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)sendEvent:(id)a3 pushTopic:(id)a4;
+- (id)getEvent:(id)event;
+- (id)gzipEncode:(id)encode;
+- (id)requestForGenericEvent:(id)event;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)sendEvent:(id)event pushTopic:(id)topic;
 @end
 
 @implementation SecMetrics
@@ -39,9 +39,9 @@
   return v2;
 }
 
-- (id)gzipEncode:(id)a3
+- (id)gzipEncode:(id)encode
 {
-  v3 = a3;
+  encodeCopy = encode;
   bzero(v10, 0x400uLL);
   v4 = +[NSMutableData data];
   *&v5 = 0xAAAAAAAAAAAAAAAALL;
@@ -56,7 +56,7 @@
   v6 = 0;
   if (!deflateInit2_(&v9, -1, 8, 31, 8, 0, "1.2.12", 112))
   {
-    v7 = v3;
+    v7 = encodeCopy;
     v9.avail_in = [v7 length];
     do
     {
@@ -83,33 +83,33 @@
   return v6;
 }
 
-- (id)requestForGenericEvent:(id)a3
+- (id)requestForGenericEvent:(id)event
 {
-  v4 = a3;
-  v5 = [objc_opt_class() c2MetricsEndpoint];
-  if (v5)
+  eventCopy = event;
+  c2MetricsEndpoint = [objc_opt_class() c2MetricsEndpoint];
+  if (c2MetricsEndpoint)
   {
-    v6 = [[NSMutableURLRequest alloc] initWithURL:v5];
+    v6 = [[NSMutableURLRequest alloc] initWithURL:c2MetricsEndpoint];
     if (v6)
     {
       v7 = objc_alloc_init(SECC2MPMetric);
       if (v7)
       {
-        v8 = [(SecMetrics *)self generateDeviceInfo];
-        [(SECC2MPMetric *)v7 setDeviceInfo:v8];
+        generateDeviceInfo = [(SecMetrics *)self generateDeviceInfo];
+        [(SECC2MPMetric *)v7 setDeviceInfo:generateDeviceInfo];
 
         [(SECC2MPMetric *)v7 setReportFrequency:0];
         [(SECC2MPMetric *)v7 setReportFrequencyBase:0];
         [(SECC2MPMetric *)v7 setMetricType:201];
-        [(SECC2MPMetric *)v7 setGenericEvent:v4];
+        [(SECC2MPMetric *)v7 setGenericEvent:eventCopy];
         v9 = objc_alloc_init(PBDataWriter);
         if (v9)
         {
           [(SECC2MPMetric *)v7 writeTo:v9];
-          v10 = [v9 immutableData];
-          if (v10)
+          immutableData = [v9 immutableData];
+          if (immutableData)
           {
-            v11 = [(SecMetrics *)self gzipEncode:v10];
+            v11 = [(SecMetrics *)self gzipEncode:immutableData];
             if (v11)
             {
               [v6 setHTTPMethod:@"POST"];
@@ -157,20 +157,20 @@
   return v12;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SecMetrics *)self getEvent:v9];
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
+  v11 = [(SecMetrics *)self getEvent:taskCopy];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v11 eventName];
-    v13 = [v9 originalRequest];
-    v14 = [v13 URL];
-    if (v10)
+    eventName = [v11 eventName];
+    originalRequest = [taskCopy originalRequest];
+    v14 = [originalRequest URL];
+    if (errorCopy)
     {
-      v15 = [v10 description];
+      v15 = [errorCopy description];
     }
 
     else
@@ -179,102 +179,102 @@
     }
 
     v26 = 138412802;
-    v27 = v12;
+    v27 = eventName;
     v28 = 2112;
     v29 = v14;
     v30 = 2112;
     v31 = v15;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "metrics %@ transfer %@ completed with: %@", &v26, 0x20u);
-    if (v10)
+    if (errorCopy)
     {
     }
   }
 
-  v16 = self;
-  objc_sync_enter(v16);
-  v17 = [(SecMetrics *)v16 taskMap];
-  v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v9 taskIdentifier]);
-  [v17 removeObjectForKey:v18];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  taskMap = [(SecMetrics *)selfCopy taskMap];
+  v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [taskCopy taskIdentifier]);
+  [taskMap removeObjectForKey:v18];
 
-  v19 = [(SecMetrics *)v16 lostEvents];
-  if (v10 || v19)
+  lostEvents = [(SecMetrics *)selfCopy lostEvents];
+  if (errorCopy || lostEvents)
   {
     v20 = +[NSMutableDictionary dictionary];
-    if ([(SecMetrics *)v16 lostEvents])
+    if ([(SecMetrics *)selfCopy lostEvents])
     {
-      v21 = [NSNumber numberWithLong:[(SecMetrics *)v16 lostEvents]];
+      v21 = [NSNumber numberWithLong:[(SecMetrics *)selfCopy lostEvents]];
       [v20 setObject:v21 forKeyedSubscript:@"counter"];
     }
 
-    if (v10)
+    if (errorCopy)
     {
-      v22 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v10 code]);
+      v22 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
       [v20 setObject:v22 forKeyedSubscript:@"error_code"];
 
-      v23 = [v10 domain];
-      [v20 setObject:v23 forKeyedSubscript:@"error_domain"];
+      domain = [errorCopy domain];
+      [v20 setObject:domain forKeyedSubscript:@"error_domain"];
     }
 
     [SecCoreAnalytics sendEvent:@"com.apple.security.push.channel.dropped" event:v20];
-    [(SecMetrics *)v16 setLostEvents:0];
+    [(SecMetrics *)selfCopy setLostEvents:0];
   }
 
-  v24 = [(SecMetrics *)v16 taskMap];
-  v25 = [v24 count] == 0;
+  taskMap2 = [(SecMetrics *)selfCopy taskMap];
+  v25 = [taskMap2 count] == 0;
 
   if (v25)
   {
-    [(SecMetrics *)v16 setTransaction:0];
+    [(SecMetrics *)selfCopy setTransaction:0];
   }
 
-  objc_sync_exit(v16);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)getEvent:(id)a3
+- (id)getEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(SecMetrics *)v5 taskMap];
-  v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 taskIdentifier]);
-  v8 = [v6 objectForKeyedSubscript:v7];
+  eventCopy = event;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  taskMap = [(SecMetrics *)selfCopy taskMap];
+  v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [eventCopy taskIdentifier]);
+  v8 = [taskMap objectForKeyedSubscript:v7];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (void)sendEvent:(id)a3 pushTopic:(id)a4
+- (void)sendEvent:(id)event pushTopic:(id)topic
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(SecMetrics *)v8 taskMap];
-  v10 = [v9 count];
+  eventCopy = event;
+  topicCopy = topic;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  taskMap = [(SecMetrics *)selfCopy taskMap];
+  v10 = [taskMap count];
 
   if (v10 < 6)
   {
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
 
-    v12 = [v6 genericEvent];
-    if (v12)
+    genericEvent = [eventCopy genericEvent];
+    if (genericEvent)
     {
-      v13 = [(SecMetrics *)v8 requestForGenericEvent:v12];
+      v13 = [(SecMetrics *)selfCopy requestForGenericEvent:genericEvent];
       if (v13)
       {
-        v14 = [(SecMetrics *)v8 URLSession];
-        v15 = [v14 dataTaskWithRequest:v13];
+        uRLSession = [(SecMetrics *)selfCopy URLSession];
+        v15 = [uRLSession dataTaskWithRequest:v13];
 
-        if (v7)
+        if (topicCopy)
         {
-          [v15 set_APSRelayTopic:v7];
+          [v15 set_APSRelayTopic:topicCopy];
         }
 
-        v16 = v8;
+        v16 = selfCopy;
         objc_sync_enter(v16);
-        v17 = [(SecMetrics *)v16 taskMap];
-        v18 = [v17 count];
+        taskMap2 = [(SecMetrics *)v16 taskMap];
+        v18 = [taskMap2 count];
 
         if (!v18)
         {
@@ -282,9 +282,9 @@
           [(SecMetrics *)v16 setTransaction:v19];
         }
 
-        v20 = [(SecMetrics *)v16 taskMap];
+        taskMap3 = [(SecMetrics *)v16 taskMap];
         v21 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v15 taskIdentifier]);
-        [v20 setObject:v6 forKeyedSubscript:v21];
+        [taskMap3 setObject:eventCopy forKeyedSubscript:v21];
 
         objc_sync_exit(v16);
         [v15 resume];
@@ -294,14 +294,14 @@
 
   else
   {
-    [(SecMetrics *)v8 setLostEvents:[(SecMetrics *)v8 lostEvents]+ 1];
-    objc_sync_exit(v8);
+    [(SecMetrics *)selfCopy setLostEvents:[(SecMetrics *)selfCopy lostEvents]+ 1];
+    objc_sync_exit(selfCopy);
 
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v6 eventName];
+      eventName = [eventCopy eventName];
       v22 = 138412290;
-      v23 = v11;
+      v23 = eventName;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "metrics %@ dropped on floor since too many are pending", &v22, 0xCu);
     }
   }
@@ -342,11 +342,11 @@
 + (id)c2MetricsEndpoint
 {
   v2 = +[ACAccountStore defaultStore];
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = v3;
-  if (v3)
+  aa_primaryAppleAccount = [v2 aa_primaryAppleAccount];
+  v4 = aa_primaryAppleAccount;
+  if (aa_primaryAppleAccount)
   {
-    v5 = [v3 propertiesForDataclass:ACAccountDataclassCKMetricsService];
+    v5 = [aa_primaryAppleAccount propertiesForDataclass:ACAccountDataclassCKMetricsService];
     v6 = [v5 objectForKeyedSubscript:@"url"];
 
     if (v6)

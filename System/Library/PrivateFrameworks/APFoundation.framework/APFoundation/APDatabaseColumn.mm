@@ -1,15 +1,15 @@
 @interface APDatabaseColumn
-- (APDatabaseColumn)initWithName:(id)a3 forColumnType:(int64_t)a4 withValue:(id)a5;
+- (APDatabaseColumn)initWithName:(id)name forColumnType:(int64_t)type withValue:(id)value;
 - (id)description;
 @end
 
 @implementation APDatabaseColumn
 
-- (APDatabaseColumn)initWithName:(id)a3 forColumnType:(int64_t)a4 withValue:(id)a5
+- (APDatabaseColumn)initWithName:(id)name forColumnType:(int64_t)type withValue:(id)value
 {
-  v9 = a3;
-  v10 = a5;
-  if (!v9)
+  nameCopy = name;
+  valueCopy = value;
+  if (!nameCopy)
   {
     APSimulateCrash(5, @"APDatabaseColumn initialized with name == nil.", 0);
   }
@@ -20,9 +20,9 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_name, a3);
-    v12->_type = a4;
-    objc_storeStrong(&v12->_value, a5);
+    objc_storeStrong(&v11->_name, name);
+    v12->_type = type;
+    objc_storeStrong(&v12->_value, value);
   }
 
   return v12;

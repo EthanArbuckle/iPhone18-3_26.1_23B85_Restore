@@ -1,15 +1,15 @@
 @interface MLHostExtensionContext
 - (_TtC20LighthouseBackground22MLHostExtensionContext)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MLHostExtensionContext
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  MLHostExtensionContext.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  MLHostExtensionContext.encode(with:)(coderCopy);
 }
 
 - (_TtC20LighthouseBackground22MLHostExtensionContext)init

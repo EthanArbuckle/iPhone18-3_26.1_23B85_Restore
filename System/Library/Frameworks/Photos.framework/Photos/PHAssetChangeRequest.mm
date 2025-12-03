@@ -1,34 +1,34 @@
 @interface PHAssetChangeRequest
-+ (BOOL)performBatchExpungeAndWaitWithAssets:(id)a3 deleteOptions:(id)a4 photoLibrary:(id)a5 error:(id *)a6;
++ (BOOL)performBatchExpungeAndWaitWithAssets:(id)assets deleteOptions:(id)options photoLibrary:(id)library error:(id *)error;
 + (PHAssetChangeRequest)changeRequestForAsset:(PHAsset *)asset;
-+ (id)changeRequestForAssetFromVideoFileURL:(id)a3 imageAsset:(id)a4 displayTime:(double)a5;
-+ (void)_deleteAssets:(id)a3 withOperation:(int64_t)a4 topLevelSelector:(SEL)a5 deleteOptions:(id)a6;
-+ (void)performBatchExpungeWithAssets:(id)a3 deleteOptions:(id)a4 photoLibrary:(id)a5 completionHandler:(id)a6;
-+ (void)recoverAssets:(id)a3;
++ (id)changeRequestForAssetFromVideoFileURL:(id)l imageAsset:(id)asset displayTime:(double)time;
++ (void)_deleteAssets:(id)assets withOperation:(int64_t)operation topLevelSelector:(SEL)selector deleteOptions:(id)options;
++ (void)performBatchExpungeWithAssets:(id)assets deleteOptions:(id)options photoLibrary:(id)library completionHandler:(id)handler;
++ (void)recoverAssets:(id)assets;
 - ($73DE6CFC58B34F5FFCF9CF852B54AD9C)animatedStickerTimeRange;
 - ($73DE6CFC58B34F5FFCF9CF852B54AD9C)bestVideoTimeRange;
-- (BOOL)_applyCompactSCSensitivityAnalysisUpdateToAsset:(id)a3 error:(id *)a4;
-- (BOOL)_applySensitivityAnalysisUpdateToAsset:(id)a3 error:(id *)a4;
-- (BOOL)_validateAndGenerateStillImageForLoopingLivePhotoWithContentEditingOutput:(id)a3 error:(id *)a4;
-- (BOOL)_validateAsyncContentEditingOutputPreviewRenderURLs:(id)a3 error:(id *)a4;
-- (BOOL)_validateImageURLForAssetMutation:(id)a3 error:(id *)a4;
-- (BOOL)addAssetResourceWithType:(int64_t)a3 fromFileAtURL:(id)a4;
-- (BOOL)applyMutationsToAssetRelationshipWithKey:(id)a3 asset:(id)a4 error:(id *)a5;
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5;
-- (BOOL)deleteAssetResourceWithType:(int64_t)a3;
+- (BOOL)_applyCompactSCSensitivityAnalysisUpdateToAsset:(id)asset error:(id *)error;
+- (BOOL)_applySensitivityAnalysisUpdateToAsset:(id)asset error:(id *)error;
+- (BOOL)_validateAndGenerateStillImageForLoopingLivePhotoWithContentEditingOutput:(id)output error:(id *)error;
+- (BOOL)_validateAsyncContentEditingOutputPreviewRenderURLs:(id)ls error:(id *)error;
+- (BOOL)_validateImageURLForAssetMutation:(id)mutation error:(id *)error;
+- (BOOL)addAssetResourceWithType:(int64_t)type fromFileAtURL:(id)l;
+- (BOOL)applyMutationsToAssetRelationshipWithKey:(id)key asset:(id)asset error:(id *)error;
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error;
+- (BOOL)deleteAssetResourceWithType:(int64_t)type;
 - (BOOL)isFavorite;
 - (BOOL)isHidden;
 - (BOOL)isHiding;
 - (BOOL)isRevertingContentToOriginal;
-- (BOOL)prepareForPhotoLibraryCheck:(id)a3 error:(id *)a4;
-- (BOOL)validateAccessibilityDescription:(id)a3 error:(id *)a4;
-- (BOOL)validateAdjustmentDataForAssetMutation:(id)a3 error:(id *)a4;
-- (BOOL)validateAssetDescription:(id)a3 error:(id *)a4;
-- (BOOL)validateContentEditingOutput:(id)a3 error:(id *)a4;
-- (BOOL)validateMutationsToManagedObject:(id)a3 error:(id *)a4;
-- (BOOL)validateReadAccessForContentURL:(id)a3 assetResource:(id)a4 error:(id *)a5;
-- (BOOL)validateVideoURLForAssetMutation:(id)a3 error:(id *)a4;
-- (BOOL)validateWriteAccessForContentURL:(id)a3 error:(id *)a4;
+- (BOOL)prepareForPhotoLibraryCheck:(id)check error:(id *)error;
+- (BOOL)validateAccessibilityDescription:(id)description error:(id *)error;
+- (BOOL)validateAdjustmentDataForAssetMutation:(id)mutation error:(id *)error;
+- (BOOL)validateAssetDescription:(id)description error:(id *)error;
+- (BOOL)validateContentEditingOutput:(id)output error:(id *)error;
+- (BOOL)validateMutationsToManagedObject:(id)object error:(id *)error;
+- (BOOL)validateReadAccessForContentURL:(id)l assetResource:(id)resource error:(id *)error;
+- (BOOL)validateVideoURLForAssetMutation:(id)mutation error:(id *)error;
+- (BOOL)validateWriteAccessForContentURL:(id)l error:(id *)error;
 - (CLLocation)location;
 - (NSDate)addedDate;
 - (NSDate)creationDate;
@@ -37,10 +37,10 @@
 - (NSString)assetDescription;
 - (NSString)title;
 - (PHAssetChangeRequest)init;
-- (PHAssetChangeRequest)initWithCoder:(id)a3;
-- (PHAssetChangeRequest)initWithHelper:(id)a3;
-- (PHAssetChangeRequest)initWithUUID:(id)a3 objectID:(id)a4;
-- (PHAssetChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5;
+- (PHAssetChangeRequest)initWithCoder:(id)coder;
+- (PHAssetChangeRequest)initWithHelper:(id)helper;
+- (PHAssetChangeRequest)initWithUUID:(id)d objectID:(id)iD;
+- (PHAssetChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization;
 - (double)curationScore;
 - (double)highlightPromotionScore;
 - (double)highlightVisibilityScore;
@@ -75,28 +75,28 @@
 - (id)_mutableKeywordObjectIDsAndUUIDs;
 - (id)_mutableLikeObjectIDsAndUUIDs;
 - (id)faceAdjustmentVersion;
-- (id)getPhotoAnalysisAttributesForAsset:(id)a3;
+- (id)getPhotoAnalysisAttributesForAsset:(id)asset;
 - (signed)generativeMemoryCreationEligibilityState;
-- (void)_addVersion:(signed __int16)a3 withKey:(id)a4 andType:(int64_t)a5 toDictionary:(id)a6;
+- (void)_addVersion:(signed __int16)version withKey:(id)key andType:(int64_t)type toDictionary:(id)dictionary;
 - (void)_prepareExistingIDsForTemporalFacesIfNeeded;
 - (void)_prepareFaceIDsIfNeeded;
-- (void)_prepareFacesHelperWithFetchResult:(id)a3;
-- (void)_setSavedAssetType:(signed __int16)a3;
-- (void)_setSceneClassifications:(id)a3 ofType:(int64_t)a4 timestamp:(id)a5;
-- (void)_setSyndicationIdentifier:(id)a3;
-- (void)_validateObjectSaliencyRects:(id)a3;
-- (void)addComments:(id)a3;
-- (void)addFaces:(id)a3;
-- (void)addKeywords:(id)a3;
-- (void)addLike:(id)a3;
-- (void)encodeToXPCDict:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_prepareFacesHelperWithFetchResult:(id)result;
+- (void)_setSavedAssetType:(signed __int16)type;
+- (void)_setSceneClassifications:(id)classifications ofType:(int64_t)type timestamp:(id)timestamp;
+- (void)_setSyndicationIdentifier:(id)identifier;
+- (void)_validateObjectSaliencyRects:(id)rects;
+- (void)addComments:(id)comments;
+- (void)addFaces:(id)faces;
+- (void)addKeywords:(id)keywords;
+- (void)addLike:(id)like;
+- (void)encodeToXPCDict:(id)dict;
+- (void)encodeWithCoder:(id)coder;
 - (void)incrementShareCount;
 - (void)promoteToGuestAsset;
-- (void)removeComments:(id)a3;
-- (void)removeFaces:(id)a3;
-- (void)removeKeywords:(id)a3;
-- (void)removeLike:(id)a3;
+- (void)removeComments:(id)comments;
+- (void)removeFaces:(id)faces;
+- (void)removeKeywords:(id)keywords;
+- (void)removeLike:(id)like;
 - (void)resetCharacterRecognitionAttributes;
 - (void)resetGeneratedAssetDescriptions;
 - (void)resetGuestAssetPromotion;
@@ -105,112 +105,112 @@
 - (void)resetWallpaperProperties;
 - (void)revertAssetContentToOriginal;
 - (void)revertLocationToOriginal;
-- (void)setAcceptableCropRectWithNormalizedRect:(CGRect)a3;
-- (void)setAccessibilityDescription:(id)a3;
-- (void)setActivityScore:(float)a3;
-- (void)setAddedDate:(id)a3;
-- (void)setAdjustmentData:(id)a3 withRenderedJPEGData:(id)a4 orRenderedContentURL:(id)a5 penultimateRenderedJPEGData:(id)a6 isSubstandardRender:(BOOL)a7 fullSizeRenderSize:(CGSize)a8 renderedVideoComplementURL:(id)a9 penultimateRenderedVideoComplementURL:(id)a10 optionalOriginalResourceChoice:(id)a11;
-- (void)setAlternateImportImageDate:(id)a3;
-- (void)setAnimatedStickerTimeRange:(id *)a3;
-- (void)setAssetDescription:(id)a3;
-- (void)setAudioClassification:(signed __int16)a3;
-- (void)setAudioScore:(float)a3;
-- (void)setAutoplaySuggestionScore:(float)a3;
-- (void)setBestKeyFrame:(CGImage *)a3 time:(id *)a4;
-- (void)setBestPlaybackRectWithNormalizedRect:(CGRect)a3;
-- (void)setBestVideoTimeRange:(id *)a3;
-- (void)setBlurrinessScore:(float)a3;
-- (void)setCharacterRecognitionData:(id)a3 machineReadableCodeData:(id)a4 algorithmVersion:(int64_t)a5 adjustmentVersion:(id)a6;
-- (void)setColorNormalizationData:(id)a3;
-- (void)setCompactImageSCSensitivityAnalysis:(int64_t)a3;
-- (void)setCompactVideoSCSensitivityAnalysis:(int64_t)a3;
-- (void)setCompactVideoSCSensitivityAnalysis:(int64_t)a3 videoSensitivityAnalysisVersion:(signed __int16)a4;
-- (void)setComputeSyncMediaAnalysisPayload:(id)a3;
+- (void)setAcceptableCropRectWithNormalizedRect:(CGRect)rect;
+- (void)setAccessibilityDescription:(id)description;
+- (void)setActivityScore:(float)score;
+- (void)setAddedDate:(id)date;
+- (void)setAdjustmentData:(id)data withRenderedJPEGData:(id)gData orRenderedContentURL:(id)l penultimateRenderedJPEGData:(id)eGData isSubstandardRender:(BOOL)render fullSizeRenderSize:(CGSize)size renderedVideoComplementURL:(id)rL penultimateRenderedVideoComplementURL:(id)self0 optionalOriginalResourceChoice:(id)self1;
+- (void)setAlternateImportImageDate:(id)date;
+- (void)setAnimatedStickerTimeRange:(id *)range;
+- (void)setAssetDescription:(id)description;
+- (void)setAudioClassification:(signed __int16)classification;
+- (void)setAudioScore:(float)score;
+- (void)setAutoplaySuggestionScore:(float)score;
+- (void)setBestKeyFrame:(CGImage *)frame time:(id *)time;
+- (void)setBestPlaybackRectWithNormalizedRect:(CGRect)rect;
+- (void)setBestVideoTimeRange:(id *)range;
+- (void)setBlurrinessScore:(float)score;
+- (void)setCharacterRecognitionData:(id)data machineReadableCodeData:(id)codeData algorithmVersion:(int64_t)version adjustmentVersion:(id)adjustmentVersion;
+- (void)setColorNormalizationData:(id)data;
+- (void)setCompactImageSCSensitivityAnalysis:(int64_t)analysis;
+- (void)setCompactVideoSCSensitivityAnalysis:(int64_t)analysis;
+- (void)setCompactVideoSCSensitivityAnalysis:(int64_t)analysis videoSensitivityAnalysisVersion:(signed __int16)version;
+- (void)setComputeSyncMediaAnalysisPayload:(id)payload;
 - (void)setContentEditingOutput:(PHContentEditingOutput *)contentEditingOutput;
-- (void)setContextualVideoThumbnailImage:(CGImage *)a3 withIdentifier:(id)a4;
+- (void)setContextualVideoThumbnailImage:(CGImage *)image withIdentifier:(id)identifier;
 - (void)setCreationDate:(NSDate *)creationDate;
-- (void)setCurationScore:(double)a3;
-- (void)setDuplicateMatchingData:(id)a3 duplicateMatchingAlternateData:(id)a4 processingSucceeded:(BOOL)a5;
-- (void)setExposureScore:(float)a3;
-- (void)setFaceAdjustmentVersion:(id)a3;
-- (void)setFaceAnalysisVersion:(signed __int16)a3;
-- (void)setFaceCount:(unint64_t)a3;
-- (void)setFailureScore:(float)a3;
+- (void)setCurationScore:(double)score;
+- (void)setDuplicateMatchingData:(id)data duplicateMatchingAlternateData:(id)alternateData processingSucceeded:(BOOL)succeeded;
+- (void)setExposureScore:(float)score;
+- (void)setFaceAdjustmentVersion:(id)version;
+- (void)setFaceAnalysisVersion:(signed __int16)version;
+- (void)setFaceCount:(unint64_t)count;
+- (void)setFailureScore:(float)score;
 - (void)setFavorite:(BOOL)favorite;
-- (void)setGeneratedAssetDescription:(id)a3 analysisVersion:(int64_t)a4 sourceType:(int64_t)a5;
-- (void)setGenerativeMemoryCreationEligibilityState:(signed __int16)a3;
-- (void)setGpsHorizontalAccuracy:(double)a3;
-- (void)setHarmoniousColorScore:(float)a3;
+- (void)setGeneratedAssetDescription:(id)description analysisVersion:(int64_t)version sourceType:(int64_t)type;
+- (void)setGenerativeMemoryCreationEligibilityState:(signed __int16)state;
+- (void)setGpsHorizontalAccuracy:(double)accuracy;
+- (void)setHarmoniousColorScore:(float)score;
 - (void)setHidden:(BOOL)hidden;
-- (void)setHighlightPromotionScore:(double)a3;
-- (void)setHighlightVisibilityScore:(double)a3;
-- (void)setIconicScore:(double)a3;
-- (void)setImageDisplayTime:(id *)a3;
-- (void)setImageEmbeddingVersion:(signed __int16)a3;
-- (void)setImmersivenessScore:(float)a3;
-- (void)setInterestingSubjectScore:(float)a3;
-- (void)setIntrusiveObjectPresenceScore:(float)a3;
-- (void)setKeywordTitles:(id)a3;
-- (void)setLibraryScopeContributors:(id)a3;
-- (void)setLivelyColorScore:(float)a3;
-- (void)setLocalAnalysisStage:(signed __int16)a3;
+- (void)setHighlightPromotionScore:(double)score;
+- (void)setHighlightVisibilityScore:(double)score;
+- (void)setIconicScore:(double)score;
+- (void)setImageDisplayTime:(id *)time;
+- (void)setImageEmbeddingVersion:(signed __int16)version;
+- (void)setImmersivenessScore:(float)score;
+- (void)setInterestingSubjectScore:(float)score;
+- (void)setIntrusiveObjectPresenceScore:(float)score;
+- (void)setKeywordTitles:(id)titles;
+- (void)setLibraryScopeContributors:(id)contributors;
+- (void)setLivelyColorScore:(float)score;
+- (void)setLocalAnalysisStage:(signed __int16)stage;
 - (void)setLocation:(CLLocation *)location;
-- (void)setLocationBasedSceneClassifications:(id)a3 ofType:(int64_t)a4 version:(signed __int16)a5 timestamp:(id)a6;
-- (void)setLowLight:(float)a3;
-- (void)setMediaAnalysisImageVersion:(signed __int16)a3;
-- (void)setMediaAnalysisTimeStamp:(id)a3;
-- (void)setMediaAnalysisVersion:(unint64_t)a3;
-- (void)setModificationDate:(id)a3;
-- (void)setNoiseScore:(float)a3;
-- (void)setObjectSaliencyRects:(id)a3;
-- (void)setOriginalResourceChoice:(unint64_t)a3;
-- (void)setOverallAestheticScore:(float)a3;
-- (void)setPhotoIrisVisibilityState:(unsigned __int16)a3;
-- (void)setPleasantCameraTiltScore:(float)a3;
-- (void)setPleasantCompositionScore:(float)a3;
-- (void)setPleasantLightingScore:(float)a3;
-- (void)setPleasantPatternScore:(float)a3;
-- (void)setPleasantPerspectiveScore:(float)a3;
-- (void)setPleasantPostProcessingScore:(float)a3;
-- (void)setPleasantReflectionsScore:(float)a3;
-- (void)setPleasantSymmetryScore:(float)a3;
-- (void)setPreferredCropRectWithNormalizedRect:(CGRect)a3;
-- (void)setProbableRotationDirection:(signed __int16)a3;
-- (void)setProbableRotationDirectionConfidence:(float)a3;
-- (void)setPtpTrashedState:(int64_t)a3;
-- (void)setRectWithNormalizedRect:(CGRect)a3 forPackedRect:(int64_t *)a4 forSetFlag:(BOOL *)a5;
-- (void)setReverseLocationData:(id)a3;
-- (void)setReverseLocationDataIsValid:(BOOL)a3;
-- (void)setSceneClassifications:(id)a3 ofType:(int64_t)a4 version:(signed __int16)a5 timestamp:(id)a6;
-- (void)setSceneprintData:(id)a3;
-- (void)setScreenTimeDeviceImageSensitivity:(signed __int16)a3;
-- (void)setSettlingEffectScore:(float)a3;
-- (void)setSharplyFocusedSubjectScore:(float)a3;
-- (void)setShiftedLocation:(id)a3;
-- (void)setStickerConfidenceScore:(float)a3 stickerAlgorithmVersion:(int64_t)a4;
-- (void)setSyndicationIdentifierOnMomentSharedAsset:(id)a3;
-- (void)setSyndicationProcessingValue:(unsigned __int16)a3;
-- (void)setSyndicationProcessingVersion:(unint64_t)a3;
-- (void)setTastefullyBlurredScore:(float)a3;
-- (void)setTemporalFaces:(id)a3;
-- (void)setTextUnderstandingData:(id)a3 version:(int64_t)a4;
-- (void)setTimeZone:(id)a3 withDate:(id)a4;
-- (void)setTitle:(id)a3;
-- (void)setVariationSuggestionStates:(unint64_t)a3 forVariationType:(unint64_t)a4;
-- (void)setVideoDuration:(id *)a3;
-- (void)setVideoEmbeddingVersion:(signed __int16)a3;
-- (void)setVideoScore:(float)a3;
-- (void)setVideoStickerSuggestionScore:(float)a3;
-- (void)setViewPresentation:(signed __int16)a3;
-- (void)setVisualSearchData:(id)a3 algorithmVersion:(int64_t)a4 adjustmentVersion:(id)a5;
-- (void)setVisualSearchData:(id)a3 stickerConfidenceScore:(float)a4 algorithmVersion:(int64_t)a5 adjustmentVersion:(id)a6;
-- (void)setWallpaperPropertiesData:(id)a3;
-- (void)setWallpaperPropertiesTimestamp:(id)a3;
-- (void)setWallpaperPropertiesVersion:(unint64_t)a3;
-- (void)setWallpaperScore:(float)a3;
-- (void)setWellChosenSubjectScore:(float)a3;
-- (void)setWellFramedSubjectScore:(float)a3;
-- (void)setWellTimedShotScore:(float)a3;
+- (void)setLocationBasedSceneClassifications:(id)classifications ofType:(int64_t)type version:(signed __int16)version timestamp:(id)timestamp;
+- (void)setLowLight:(float)light;
+- (void)setMediaAnalysisImageVersion:(signed __int16)version;
+- (void)setMediaAnalysisTimeStamp:(id)stamp;
+- (void)setMediaAnalysisVersion:(unint64_t)version;
+- (void)setModificationDate:(id)date;
+- (void)setNoiseScore:(float)score;
+- (void)setObjectSaliencyRects:(id)rects;
+- (void)setOriginalResourceChoice:(unint64_t)choice;
+- (void)setOverallAestheticScore:(float)score;
+- (void)setPhotoIrisVisibilityState:(unsigned __int16)state;
+- (void)setPleasantCameraTiltScore:(float)score;
+- (void)setPleasantCompositionScore:(float)score;
+- (void)setPleasantLightingScore:(float)score;
+- (void)setPleasantPatternScore:(float)score;
+- (void)setPleasantPerspectiveScore:(float)score;
+- (void)setPleasantPostProcessingScore:(float)score;
+- (void)setPleasantReflectionsScore:(float)score;
+- (void)setPleasantSymmetryScore:(float)score;
+- (void)setPreferredCropRectWithNormalizedRect:(CGRect)rect;
+- (void)setProbableRotationDirection:(signed __int16)direction;
+- (void)setProbableRotationDirectionConfidence:(float)confidence;
+- (void)setPtpTrashedState:(int64_t)state;
+- (void)setRectWithNormalizedRect:(CGRect)rect forPackedRect:(int64_t *)packedRect forSetFlag:(BOOL *)flag;
+- (void)setReverseLocationData:(id)data;
+- (void)setReverseLocationDataIsValid:(BOOL)valid;
+- (void)setSceneClassifications:(id)classifications ofType:(int64_t)type version:(signed __int16)version timestamp:(id)timestamp;
+- (void)setSceneprintData:(id)data;
+- (void)setScreenTimeDeviceImageSensitivity:(signed __int16)sensitivity;
+- (void)setSettlingEffectScore:(float)score;
+- (void)setSharplyFocusedSubjectScore:(float)score;
+- (void)setShiftedLocation:(id)location;
+- (void)setStickerConfidenceScore:(float)score stickerAlgorithmVersion:(int64_t)version;
+- (void)setSyndicationIdentifierOnMomentSharedAsset:(id)asset;
+- (void)setSyndicationProcessingValue:(unsigned __int16)value;
+- (void)setSyndicationProcessingVersion:(unint64_t)version;
+- (void)setTastefullyBlurredScore:(float)score;
+- (void)setTemporalFaces:(id)faces;
+- (void)setTextUnderstandingData:(id)data version:(int64_t)version;
+- (void)setTimeZone:(id)zone withDate:(id)date;
+- (void)setTitle:(id)title;
+- (void)setVariationSuggestionStates:(unint64_t)states forVariationType:(unint64_t)type;
+- (void)setVideoDuration:(id *)duration;
+- (void)setVideoEmbeddingVersion:(signed __int16)version;
+- (void)setVideoScore:(float)score;
+- (void)setVideoStickerSuggestionScore:(float)score;
+- (void)setViewPresentation:(signed __int16)presentation;
+- (void)setVisualSearchData:(id)data algorithmVersion:(int64_t)version adjustmentVersion:(id)adjustmentVersion;
+- (void)setVisualSearchData:(id)data stickerConfidenceScore:(float)score algorithmVersion:(int64_t)version adjustmentVersion:(id)adjustmentVersion;
+- (void)setWallpaperPropertiesData:(id)data;
+- (void)setWallpaperPropertiesTimestamp:(id)timestamp;
+- (void)setWallpaperPropertiesVersion:(unint64_t)version;
+- (void)setWallpaperScore:(float)score;
+- (void)setWellChosenSubjectScore:(float)score;
+- (void)setWellFramedSubjectScore:(float)score;
+- (void)setWellTimedShotScore:(float)score;
 - (void)updateExtendedAttributesUsingOriginalMediaMetadata;
 @end
 
@@ -234,38 +234,38 @@
   return self;
 }
 
-- (void)setImageDisplayTime:(id *)a3
+- (void)setImageDisplayTime:(id *)time
 {
-  var3 = a3->var3;
-  *&self->_imageDisplayTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_imageDisplayTime.value = *&time->var0;
   self->_imageDisplayTime.epoch = var3;
 }
 
-- (void)setVideoDuration:(id *)a3
+- (void)setVideoDuration:(id *)duration
 {
-  var3 = a3->var3;
-  *&self->_videoDuration.value = *&a3->var0;
+  var3 = duration->var3;
+  *&self->_videoDuration.value = *&duration->var0;
   self->_videoDuration.epoch = var3;
 }
 
-- (BOOL)applyMutationsToAssetRelationshipWithKey:(id)a3 asset:(id)a4 error:(id *)a5
+- (BOOL)applyMutationsToAssetRelationshipWithKey:(id)key asset:(id)asset error:(id *)error
 {
   v67 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isEqualToString:@"cloudComments"])
+  keyCopy = key;
+  assetCopy = asset;
+  if ([keyCopy isEqualToString:@"cloudComments"])
   {
     v10 = &OBJC_IVAR___PHAssetChangeRequest__commentsHelper;
   }
 
   else
   {
-    if (![v8 isEqualToString:@"likeComments"])
+    if (![keyCopy isEqualToString:@"likeComments"])
     {
       v42 = 0;
       v43 = 0;
       v11 = 0;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_34;
       }
@@ -281,7 +281,7 @@
   {
     v42 = 0;
     v43 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_34;
     }
@@ -290,28 +290,28 @@
   }
 
   v12 = v11;
-  v50 = a5;
+  errorCopy = error;
   [v11 setAllowsInsert:1];
   [v12 setAllowsRemove:1];
-  v13 = [MEMORY[0x1E69BE340] entityName];
-  [v12 setDestinationEntityName:v13];
+  entityName = [MEMORY[0x1E69BE340] entityName];
+  [v12 setDestinationEntityName:entityName];
 
   [v12 setDestinationUUIDKeyPath:@"cloudGUID"];
   v14 = objc_alloc_init(MEMORY[0x1E695DFD8]);
   v15 = objc_alloc_init(MEMORY[0x1E695DFD8]);
-  v51 = v8;
-  [v9 mutableSetValueForKey:v8];
+  v51 = keyCopy;
+  [assetCopy mutableSetValueForKey:keyCopy];
   v63 = v15;
   v64 = v14;
   v62 = 0;
   v47 = v49 = v12;
-  v48 = [v12 applyMutationsToManagedObject:v9 unorderedMutableChildren:? inserts:? deletes:? error:?];
+  v48 = [v12 applyMutationsToManagedObject:assetCopy unorderedMutableChildren:? inserts:? deletes:? error:?];
   v16 = v64;
 
   v45 = v63;
   v46 = v62;
-  v17 = [v9 collectionShare];
-  v53 = [v17 currentUserParticipant];
+  collectionShare = [assetCopy collectionShare];
+  currentUserParticipant = [collectionShare currentUserParticipant];
 
   v60 = 0u;
   v61 = 0u;
@@ -333,19 +333,19 @@
         }
 
         v22 = *(*(&v58 + 1) + 8 * i);
-        [v9 addComment:v22];
-        v23 = [v22 isMyComment];
+        [assetCopy addComment:v22];
+        isMyComment = [v22 isMyComment];
 
-        if (v23)
+        if (isMyComment)
         {
-          [v22 setShareParticipant:v53];
+          [v22 setShareParticipant:currentUserParticipant];
         }
 
         v24 = MEMORY[0x1E69BE358];
-        v25 = [v9 collectionShare];
-        v26 = [v25 collectionShareKind];
-        v27 = [v9 photoLibrary];
-        v28 = [v24 syncBackendForKind:v26 photoLibrary:v27];
+        collectionShare2 = [assetCopy collectionShare];
+        collectionShareKind = [collectionShare2 collectionShareKind];
+        photoLibrary = [assetCopy photoLibrary];
+        v28 = [v24 syncBackendForKind:collectionShareKind photoLibrary:photoLibrary];
 
         if (v28)
         {
@@ -380,23 +380,23 @@
 
         v34 = *(*(&v54 + 1) + 8 * j);
         v35 = MEMORY[0x1E69BE358];
-        v36 = [v9 collectionShare];
-        v37 = [v36 collectionShareKind];
-        v38 = [v9 photoLibrary];
-        v39 = [v35 syncBackendForKind:v37 photoLibrary:v38];
+        collectionShare3 = [assetCopy collectionShare];
+        collectionShareKind2 = [collectionShare3 collectionShareKind];
+        photoLibrary2 = [assetCopy photoLibrary];
+        v39 = [v35 syncBackendForKind:collectionShareKind2 photoLibrary:photoLibrary2];
 
         if (v39)
         {
-          v40 = [v34 cloudGUID];
+          cloudGUID = [v34 cloudGUID];
 
-          if (v40)
+          if (cloudGUID)
           {
-            v41 = [v34 cloudGUID];
-            [v39 deleteCommentWithGUIDFromServer:v41];
+            cloudGUID2 = [v34 cloudGUID];
+            [v39 deleteCommentWithGUIDFromServer:cloudGUID2];
           }
         }
 
-        [v9 deleteComment:v34];
+        [assetCopy deleteComment:v34];
       }
 
       v31 = [v29 countByEnumeratingWithState:&v54 objects:v65 count:16];
@@ -405,18 +405,18 @@
     while (v31);
   }
 
-  a5 = v50;
-  v8 = v51;
+  error = errorCopy;
+  keyCopy = v51;
   v42 = v49;
   v43 = v48;
   v11 = v46;
-  if (v50)
+  if (errorCopy)
   {
 LABEL_32:
     if (!v43)
     {
       v11 = v11;
-      *a5 = v11;
+      *error = v11;
     }
   }
 
@@ -432,37 +432,37 @@ LABEL_34:
     return 0;
   }
 
-  v3 = [(PHAssetChangeRequest *)self contentEditingOutput];
-  v4 = v3 == 0;
+  contentEditingOutput = [(PHAssetChangeRequest *)self contentEditingOutput];
+  v4 = contentEditingOutput == 0;
 
   return v4;
 }
 
 - (BOOL)isHiding
 {
-  v2 = [(PHChangeRequest *)self helper];
-  v3 = [v2 mutations];
-  v4 = [v3 objectForKey:@"hidden"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v4 = [mutations objectForKey:@"hidden"];
 
-  LOBYTE(v2) = [v4 BOOLValue];
-  return v2;
+  LOBYTE(helper) = [v4 BOOLValue];
+  return helper;
 }
 
-- (BOOL)_applySensitivityAnalysisUpdateToAsset:(id)a3 error:(id *)a4
+- (BOOL)_applySensitivityAnalysisUpdateToAsset:(id)asset error:(id *)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
+  assetCopy = asset;
+  v7 = assetCopy;
   if (self->_didSetCompactImageSCSensitivityAnalysis)
   {
-    v8 = [v6 sensitivityAnalysisState];
-    if ((v8 - 2) < 2)
+    sensitivityAnalysisState = [assetCopy sensitivityAnalysisState];
+    if ((sensitivityAnalysisState - 2) < 2)
     {
       v15 = 1;
       goto LABEL_20;
     }
 
-    if (v8 == 4 || !v8)
+    if (sensitivityAnalysisState == 4 || !sensitivityAnalysisState)
     {
       [v7 setSensitivityAnalysisState:1];
     }
@@ -470,22 +470,22 @@ LABEL_34:
     goto LABEL_18;
   }
 
-  if ([v6 hasVideoComponent])
+  if ([assetCopy hasVideoComponent])
   {
     if (!self->_didSetCompactVideoSCSensitivityAnalysis)
     {
 LABEL_18:
-      v15 = [(PHAssetChangeRequest *)self _applyCompactSCSensitivityAnalysisUpdateToAsset:v7 error:a4];
+      v15 = [(PHAssetChangeRequest *)self _applyCompactSCSensitivityAnalysisUpdateToAsset:v7 error:error];
       goto LABEL_20;
     }
 
     v9 = [(PHAssetChangeRequest *)self getMediaAnalysisAttributesForAsset:v7];
     [v9 setVideoSensitivityAnalysisVersion:self->_videoSensitivityAnalysisVersion];
-    v10 = [v7 sensitivityAnalysisState];
+    sensitivityAnalysisState2 = [v7 sensitivityAnalysisState];
     v11 = 2;
-    if (v10 && v10 != 4)
+    if (sensitivityAnalysisState2 && sensitivityAnalysisState2 != 4)
     {
-      if (v10 != 1)
+      if (sensitivityAnalysisState2 != 1)
       {
 LABEL_13:
 
@@ -509,10 +509,10 @@ LABEL_13:
   v18[0] = @"Video SCSensitivityAnalysisData may only be set for assets with video components";
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
   v14 = [v12 errorWithDomain:@"PHPhotosErrorDomain" code:3300 userInfo:v13];
-  if (a4)
+  if (error)
   {
     v14 = v14;
-    *a4 = v14;
+    *error = v14;
   }
 
   v15 = 0;
@@ -521,13 +521,13 @@ LABEL_20:
   return v15;
 }
 
-- (BOOL)_applyCompactSCSensitivityAnalysisUpdateToAsset:(id)a3 error:(id *)a4
+- (BOOL)_applyCompactSCSensitivityAnalysisUpdateToAsset:(id)asset error:(id *)error
 {
-  v6 = a3;
-  if ([v6 compactSCSensitivityAnalysis])
+  assetCopy = asset;
+  if ([assetCopy compactSCSensitivityAnalysis])
   {
-    v7 = [objc_alloc(getSCSensitivityAnalysisClass_19241()) initFromCompactAnalysis:objc_msgSend(v6 error:{"compactSCSensitivityAnalysis"), a4}];
-    v8 = [objc_alloc(getSCSensitivityAnalysisClass_19241()) initFromCompactAnalysis:self->_compactSCSensitivityAnalysis error:a4];
+    v7 = [objc_alloc(getSCSensitivityAnalysisClass_19241()) initFromCompactAnalysis:objc_msgSend(assetCopy error:{"compactSCSensitivityAnalysis"), error}];
+    v8 = [objc_alloc(getSCSensitivityAnalysisClass_19241()) initFromCompactAnalysis:self->_compactSCSensitivityAnalysis error:error];
     v9 = v8;
     if (v7)
     {
@@ -552,49 +552,49 @@ LABEL_20:
     v11 = 1;
   }
 
-  [v6 setCompactSCSensitivityAnalysis:self->_compactSCSensitivityAnalysis];
+  [assetCopy setCompactSCSensitivityAnalysis:self->_compactSCSensitivityAnalysis];
 
   return v11;
 }
 
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error
 {
   v592 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v491 = a4;
-  v8 = [(PHChangeRequest *)self helper];
+  objectCopy = object;
+  libraryCopy = library;
+  helper = [(PHChangeRequest *)self helper];
   v569 = 0;
-  v9 = [v8 applyMutationsToManagedObject:v7 error:&v569];
+  v9 = [helper applyMutationsToManagedObject:objectCopy error:&v569];
   v10 = v569;
 
   if (!v9)
   {
     LOBYTE(v30) = 0;
-    v31 = a5;
+    errorCopy2 = error;
     goto LABEL_526;
   }
 
   v469 = v10;
-  v490 = self;
-  v11 = [(PHChangeRequest *)self helper];
-  v12 = [v11 mutations];
-  v13 = [v12 objectForKey:@"dateCreated"];
+  selfCopy = self;
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v13 = [mutations objectForKey:@"dateCreated"];
 
   if (v13)
   {
-    [v7 didSetCustomDateCreated];
+    [objectCopy didSetCustomDateCreated];
   }
 
-  v492 = v7;
-  if ([v7 isAvalancheStackPhoto])
+  v492 = objectCopy;
+  if ([objectCopy isAvalancheStackPhoto])
   {
-    v14 = [(PHChangeRequest *)self helper];
-    v15 = [v14 mutations];
-    v16 = [v15 objectForKey:@"hidden"];
+    helper3 = [(PHChangeRequest *)self helper];
+    mutations2 = [helper3 mutations];
+    v16 = [mutations2 objectForKey:@"hidden"];
 
     if (v16)
     {
-      if ([v7 isFinderSyncedAsset])
+      if ([objectCopy isFinderSyncedAsset])
       {
         v17 = 2;
       }
@@ -605,15 +605,15 @@ LABEL_20:
       }
 
       v18 = objc_alloc(MEMORY[0x1E69BE2B0]);
-      v19 = [v7 avalancheUUID];
-      v20 = [v18 initWithUUID:v19 sourceType:v17 photoLibrary:v491];
+      avalancheUUID = [objectCopy avalancheUUID];
+      v20 = [v18 initWithUUID:avalancheUUID sourceType:v17 photoLibrary:libraryCopy];
 
-      v21 = [(PHChangeRequest *)self helper];
-      v22 = [v21 mutations];
-      v23 = [v22 objectForKey:@"hidden"];
+      helper4 = [(PHChangeRequest *)self helper];
+      mutations3 = [helper4 mutations];
+      v23 = [mutations3 objectForKey:@"hidden"];
       [v20 setHidden:{objc_msgSend(v23, "BOOLValue")}];
 
-      v7 = v492;
+      objectCopy = v492;
     }
   }
 
@@ -621,8 +621,8 @@ LABEL_20:
   if (v24)
   {
     v25 = v24;
-    v26 = [MEMORY[0x1E695DFB0] null];
-    v27 = [(CLLocation *)v25 isEqual:v26];
+    null = [MEMORY[0x1E695DFB0] null];
+    v27 = [(CLLocation *)v25 isEqual:null];
 
     v28 = v469;
     if (v27)
@@ -637,27 +637,27 @@ LABEL_20:
     }
 
     v463 = v29;
-    [v7 setLocation:?];
-    [v7 didSetCustomLocation];
-    v32 = v490;
+    [objectCopy setLocation:?];
+    [objectCopy didSetCustomLocation];
+    selfCopy2 = selfCopy;
   }
 
   else
   {
-    v32 = self;
+    selfCopy2 = self;
     v463 = 0;
     v28 = v469;
   }
 
-  if (v32->_didSetGpsHorizontalAccuracy)
+  if (selfCopy2->_didSetGpsHorizontalAccuracy)
   {
-    v33 = [v7 additionalAttributes];
-    [v33 setGpsHorizontalAccuracy:v490->_gpsHorizontalAccuracy];
+    additionalAttributes = [objectCopy additionalAttributes];
+    [additionalAttributes setGpsHorizontalAccuracy:selfCopy->_gpsHorizontalAccuracy];
 
-    v32 = v490;
+    selfCopy2 = selfCopy;
   }
 
-  v34 = v32->_assetDescription;
+  v34 = selfCopy2->_assetDescription;
   if (v34)
   {
     v35 = v34;
@@ -673,7 +673,7 @@ LABEL_20:
     }
 
     v462 = v36;
-    [v7 setLongDescription:?];
+    [objectCopy setLongDescription:?];
   }
 
   else
@@ -681,7 +681,7 @@ LABEL_20:
     v462 = 0;
   }
 
-  v37 = v32->_accessibilityDescription;
+  v37 = selfCopy2->_accessibilityDescription;
   if (v37)
   {
     v38 = v37;
@@ -697,7 +697,7 @@ LABEL_20:
     }
 
     v461 = v39;
-    [v7 setAccessibilityDescription:?];
+    [objectCopy setAccessibilityDescription:?];
   }
 
   else
@@ -705,40 +705,40 @@ LABEL_20:
     v461 = 0;
   }
 
-  if (v32->_didSetTitle)
+  if (selfCopy2->_didSetTitle)
   {
-    v40 = [v7 additionalAttributes];
-    [v40 setTitle:v490->_title];
+    additionalAttributes2 = [objectCopy additionalAttributes];
+    [additionalAttributes2 setTitle:selfCopy->_title];
 
-    v32 = v490;
+    selfCopy2 = selfCopy;
   }
 
-  v41 = [(PHAssetChangeRequest *)v32 videoURLForUpdate];
-  v42 = [(PHAssetChangeRequest *)v32 pairingIdentifier];
+  videoURLForUpdate = [(PHAssetChangeRequest *)selfCopy2 videoURLForUpdate];
+  pairingIdentifier = [(PHAssetChangeRequest *)selfCopy2 pairingIdentifier];
   LOBYTE(v43) = 1;
-  v465 = v42;
-  v466 = v41;
-  if (v41 && v42)
+  v465 = pairingIdentifier;
+  v466 = videoURLForUpdate;
+  if (videoURLForUpdate && pairingIdentifier)
   {
     memset(buf, 0, 24);
-    [(PHAssetChangeRequest *)v32 videoDuration];
+    [(PHAssetChangeRequest *)selfCopy2 videoDuration];
     v567 = 0uLL;
     v568 = 0;
-    [(PHAssetChangeRequest *)v32 imageDisplayTime];
+    [(PHAssetChangeRequest *)selfCopy2 imageDisplayTime];
     v565 = *buf;
     v566 = *&buf[16];
     v563 = v567;
     v564 = v568;
-    LOBYTE(v43) = [v7 becomePhotoIrisWithMediaGroupUUID:v465 mainFileMetadata:0 videoURL:v41 videoDuration:&v565 stillDisplayTime:&v563 options:0];
+    LOBYTE(v43) = [objectCopy becomePhotoIrisWithMediaGroupUUID:v465 mainFileMetadata:0 videoURL:videoURLForUpdate videoDuration:&v565 stillDisplayTime:&v563 options:0];
   }
 
-  if (v32->_didSetVisibilityState && [v7 isPhotoIris])
+  if (selfCopy2->_didSetVisibilityState && [objectCopy isPhotoIris])
   {
-    [v7 setVideoCpVisibilityState:v32->_photoIrisVisibilityState];
-    [v7 updatePlaybackStyleWithLivePhotoPlayability:{objc_msgSend(v7, "canPlayPhotoIris")}];
+    [objectCopy setVideoCpVisibilityState:selfCopy2->_photoIrisVisibilityState];
+    [objectCopy updatePlaybackStyleWithLivePhotoPlayability:{objc_msgSend(objectCopy, "canPlayPhotoIris")}];
   }
 
-  didSetSceneClassifications = v32->_didSetSceneClassifications;
+  didSetSceneClassifications = selfCopy2->_didSetSceneClassifications;
   if (didSetSceneClassifications == 1)
   {
     v460 = v43;
@@ -746,7 +746,7 @@ LABEL_20:
     v561 = 0u;
     v560 = 0u;
     v559 = 0u;
-    obj = v32->_sceneClassificationDictionariesByType;
+    obj = selfCopy2->_sceneClassificationDictionariesByType;
     v477 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v559 objects:v591 count:16];
     if (!v477)
     {
@@ -766,26 +766,26 @@ LABEL_20:
 
         v480 = v44;
         v45 = *(*(&v559 + 1) + 8 * v44);
-        v46 = [(NSMutableDictionary *)v32->_sceneClassificationDictionariesByType objectForKeyedSubscript:v45];
+        v46 = [(NSMutableDictionary *)selfCopy2->_sceneClassificationDictionariesByType objectForKeyedSubscript:v45];
         v47 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"sceneAnalysisVersion"];
         v482 = [v46 objectForKeyedSubscript:v47];
 
-        v48 = [(NSMutableDictionary *)v32->_sceneClassificationDictionariesByType objectForKeyedSubscript:v45];
+        v48 = [(NSMutableDictionary *)selfCopy2->_sceneClassificationDictionariesByType objectForKeyedSubscript:v45];
         v49 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"sceneAnalysisTimestamp"];
         v487 = [v48 objectForKeyedSubscript:v49];
 
         v50 = PLAssetAnalysisGetLog();
         if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
         {
-          v51 = [(PHChangeRequest *)v32 uuid];
+          uuid = [(PHChangeRequest *)selfCopy2 uuid];
           *buf = 138412546;
-          *&buf[4] = v51;
+          *&buf[4] = uuid;
           *&buf[12] = 2112;
           *&buf[14] = v487;
           _os_log_impl(&dword_19C86F000, v50, OS_LOG_TYPE_DEBUG, "Applying scene classifications to managed object - uuid: %@, adjustment timestamp: %@", buf, 0x16u);
         }
 
-        v52 = [(NSMutableDictionary *)v32->_sceneClassificationDictionariesByType objectForKeyedSubscript:v45];
+        v52 = [(NSMutableDictionary *)selfCopy2->_sceneClassificationDictionariesByType objectForKeyedSubscript:v45];
         v53 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"sceneClassifications"];
         v54 = [v52 objectForKeyedSubscript:v53];
 
@@ -819,24 +819,24 @@ LABEL_20:
           while (v58);
         }
 
-        v62 = [v45 integerValue];
-        if ((v62 - 4) < 4)
+        integerValue = [v45 integerValue];
+        if ((integerValue - 4) < 4)
         {
-          [v7 removeSceneClassificationsOfType:v62];
-          v63 = [(NSMutableDictionary *)v32->_sceneClassificationDictionariesByType objectForKeyedSubscript:v45];
+          [objectCopy removeSceneClassificationsOfType:integerValue];
+          v63 = [(NSMutableDictionary *)selfCopy2->_sceneClassificationDictionariesByType objectForKeyedSubscript:v45];
           v64 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"sceneAnalysisLocationVersion"];
-          v65 = [v63 objectForKeyedSubscript:v64];
+          additionalAttributes4 = [v63 objectForKeyedSubscript:v64];
 
-          v66 = [(PHAssetChangeRequest *)v32 getMediaAnalysisAttributesForAsset:v7];
+          v66 = [(PHAssetChangeRequest *)selfCopy2 getMediaAnalysisAttributesForAsset:objectCopy];
           if (v482)
           {
             [v66 setVaAnalysisVersion:{objc_msgSend(v482, "integerValue")}];
             goto LABEL_64;
           }
 
-          if (v65)
+          if (additionalAttributes4)
           {
-            [v66 setVaLocationAnalysisVersion:{objc_msgSend(v65, "integerValue")}];
+            [v66 setVaLocationAnalysisVersion:{objc_msgSend(additionalAttributes4, "integerValue")}];
 LABEL_64:
             [v66 setVaAnalysisTimestamp:v487];
           }
@@ -844,29 +844,29 @@ LABEL_64:
           goto LABEL_66;
         }
 
-        if ((v62 - 2) >= 2)
+        if ((integerValue - 2) >= 2)
         {
-          if (v62)
+          if (integerValue)
           {
             goto LABEL_67;
           }
 
-          [v7 removeSceneClassificationsOfType:?];
-          v67 = [v7 additionalAttributes];
-          v68 = [v482 shortValue];
+          [objectCopy removeSceneClassificationsOfType:?];
+          additionalAttributes3 = [objectCopy additionalAttributes];
+          shortValue = [v482 shortValue];
         }
 
         else
         {
-          [v7 removeTemporalSceneClassificationsOfType:v62];
-          v67 = [v7 additionalAttributes];
-          v68 = [v482 integerValue];
+          [objectCopy removeTemporalSceneClassificationsOfType:integerValue];
+          additionalAttributes3 = [objectCopy additionalAttributes];
+          shortValue = [v482 integerValue];
         }
 
-        [v67 setSceneAnalysisVersion:v68];
+        [additionalAttributes3 setSceneAnalysisVersion:shortValue];
 
-        v65 = [v7 additionalAttributes];
-        [v65 setSceneAnalysisTimestamp:v487];
+        additionalAttributes4 = [objectCopy additionalAttributes];
+        [additionalAttributes4 setSceneAnalysisTimestamp:v487];
 LABEL_66:
 
 LABEL_67:
@@ -891,17 +891,17 @@ LABEL_67:
 
               v74 = *(*(&v551 + 1) + 8 * j);
               v75 = MEMORY[0x1E69BE778];
-              v76 = [v74 extendedSceneIdentifier];
+              extendedSceneIdentifier = [v74 extendedSceneIdentifier];
               [v74 confidence];
               v78 = v77;
-              v79 = [v74 packedBoundingBoxRect];
+              packedBoundingBoxRect = [v74 packedBoundingBoxRect];
               [v74 startTime];
               v81 = v80;
               [v74 duration];
               v83 = v82;
-              v84 = [v74 classificationType];
-              v85 = [v74 thumbnailIdentifier];
-              v86 = [v75 insertIntoPhotoLibrary:v491 asset:v492 sceneIdentifier:v76 confidence:v79 packedBoundingBoxRect:v84 startTime:v85 duration:v78 classificationType:v81 thumbnailIdentifier:v83];
+              classificationType = [v74 classificationType];
+              thumbnailIdentifier = [v74 thumbnailIdentifier];
+              v86 = [v75 insertIntoPhotoLibrary:libraryCopy asset:v492 sceneIdentifier:extendedSceneIdentifier confidence:packedBoundingBoxRect packedBoundingBoxRect:classificationType startTime:thumbnailIdentifier duration:v78 classificationType:v81 thumbnailIdentifier:v83];
             }
 
             v71 = [v69 countByEnumeratingWithState:&v551 objects:v589 count:16];
@@ -911,8 +911,8 @@ LABEL_67:
         }
 
         v44 = v480 + 1;
-        v7 = v492;
-        v32 = v490;
+        objectCopy = v492;
+        selfCopy2 = selfCopy;
       }
 
       while (v480 + 1 != v477);
@@ -923,10 +923,10 @@ LABEL_76:
 
         *buf = 0;
         *&v567 = 0;
-        v87 = [v7 uuid];
+        uuid2 = [objectCopy uuid];
         PLStringUUIDComponents();
 
-        v32 = v490;
+        selfCopy2 = selfCopy;
         kdebug_trace();
         v28 = v469;
         LOBYTE(v43) = v460;
@@ -935,147 +935,147 @@ LABEL_76:
     }
   }
 
-  if (v32->_didSetImageEmbeddingVersion)
+  if (selfCopy2->_didSetImageEmbeddingVersion)
   {
-    v88 = [(PHAssetChangeRequest *)v32 getMediaAnalysisAttributesForAsset:v7];
-    [v88 setImageEmbeddingVersion:v490->_imageEmbeddingVersion];
+    v88 = [(PHAssetChangeRequest *)selfCopy2 getMediaAnalysisAttributesForAsset:objectCopy];
+    [v88 setImageEmbeddingVersion:selfCopy->_imageEmbeddingVersion];
 
-    v32 = v490;
+    selfCopy2 = selfCopy;
   }
 
-  if (v32->_didSetVideoEmbeddingVersion)
+  if (selfCopy2->_didSetVideoEmbeddingVersion)
   {
-    v89 = [(PHAssetChangeRequest *)v32 getMediaAnalysisAttributesForAsset:v7];
-    [v89 setVideoEmbeddingVersion:v490->_videoEmbeddingVersion];
+    v89 = [(PHAssetChangeRequest *)selfCopy2 getMediaAnalysisAttributesForAsset:objectCopy];
+    [v89 setVideoEmbeddingVersion:selfCopy->_videoEmbeddingVersion];
 
-    v32 = v490;
+    selfCopy2 = selfCopy;
   }
 
-  if (v32->_incrementPlayCount)
+  if (selfCopy2->_incrementPlayCount)
   {
-    v90 = [v7 additionalAttributes];
-    v91 = [v90 pendingPlayCount];
+    additionalAttributes5 = [objectCopy additionalAttributes];
+    pendingPlayCount = [additionalAttributes5 pendingPlayCount];
 
-    v92 = [v7 additionalAttributes];
-    [v92 setPendingPlayCount:v91 + 1];
+    additionalAttributes6 = [objectCopy additionalAttributes];
+    [additionalAttributes6 setPendingPlayCount:pendingPlayCount + 1];
 
-    v32 = v490;
+    selfCopy2 = selfCopy;
   }
 
-  if (v32->_incrementShareCount)
+  if (selfCopy2->_incrementShareCount)
   {
-    v93 = [v7 additionalAttributes];
-    v94 = [v93 pendingShareCount];
+    additionalAttributes7 = [objectCopy additionalAttributes];
+    pendingShareCount = [additionalAttributes7 pendingShareCount];
 
-    v95 = [v7 additionalAttributes];
-    [v95 setPendingShareCount:v94 + 1];
+    additionalAttributes8 = [objectCopy additionalAttributes];
+    [additionalAttributes8 setPendingShareCount:pendingShareCount + 1];
 
-    v32 = v490;
+    selfCopy2 = selfCopy;
   }
 
-  if (v32->_lastSharedDate)
+  if (selfCopy2->_lastSharedDate)
   {
-    [v7 setLastSharedDate:?];
+    [objectCopy setLastSharedDate:?];
   }
 
-  if (v32->_incrementViewCount)
+  if (selfCopy2->_incrementViewCount)
   {
-    v96 = [v7 additionalAttributes];
-    v97 = [v96 pendingViewCount];
+    additionalAttributes9 = [objectCopy additionalAttributes];
+    pendingViewCount = [additionalAttributes9 pendingViewCount];
 
-    v98 = [v7 additionalAttributes];
-    v99 = [MEMORY[0x1E695DF00] date];
-    [v98 setLastViewedDate:v99];
+    additionalAttributes10 = [objectCopy additionalAttributes];
+    date = [MEMORY[0x1E695DF00] date];
+    [additionalAttributes10 setLastViewedDate:date];
 
     v28 = v469;
-    v100 = [v7 additionalAttributes];
-    [v100 setPendingViewCount:v97 + 1];
+    additionalAttributes11 = [objectCopy additionalAttributes];
+    [additionalAttributes11 setPendingViewCount:pendingViewCount + 1];
 
-    v32 = v490;
+    selfCopy2 = selfCopy;
   }
 
-  if (v32->_clearLastSharedDate)
+  if (selfCopy2->_clearLastSharedDate)
   {
-    [v7 setLastSharedDate:0];
+    [objectCopy setLastSharedDate:0];
   }
 
-  if (v32->_clearLastViewedDate)
+  if (selfCopy2->_clearLastViewedDate)
   {
-    v101 = [v7 additionalAttributes];
-    [v101 setLastViewedDate:0];
+    additionalAttributes12 = [objectCopy additionalAttributes];
+    [additionalAttributes12 setLastViewedDate:0];
 
-    v32 = v490;
+    selfCopy2 = selfCopy;
   }
 
-  if (v32->_didSetVariationSuggestionStates)
+  if (selfCopy2->_didSetVariationSuggestionStates)
   {
-    v102 = [v7 additionalAttributes];
-    v103 = [v102 variationSuggestionStates];
+    additionalAttributes13 = [objectCopy additionalAttributes];
+    variationSuggestionStates = [additionalAttributes13 variationSuggestionStates];
 
-    v104 = v103 & ~v490->_variationSuggestionStatesMask;
-    variationSuggestionStates = v490->_variationSuggestionStates;
-    v106 = [v7 additionalAttributes];
-    [v106 setVariationSuggestionStates:variationSuggestionStates | v104];
+    v104 = variationSuggestionStates & ~selfCopy->_variationSuggestionStatesMask;
+    variationSuggestionStates = selfCopy->_variationSuggestionStates;
+    additionalAttributes14 = [objectCopy additionalAttributes];
+    [additionalAttributes14 setVariationSuggestionStates:variationSuggestionStates | v104];
 
-    v32 = v490;
+    selfCopy2 = selfCopy;
   }
 
-  if (v32->_didSetTimeZone)
+  if (selfCopy2->_didSetTimeZone)
   {
-    v107 = [v7 additionalAttributes];
-    [v107 setTimeZoneName:v490->_timeZoneName];
+    additionalAttributes15 = [objectCopy additionalAttributes];
+    [additionalAttributes15 setTimeZoneName:selfCopy->_timeZoneName];
 
-    v108 = [v7 additionalAttributes];
-    v109 = [MEMORY[0x1E696AD98] numberWithInt:v490->_timeZoneOffsetValue];
-    [v108 setTimeZoneOffset:v109];
+    additionalAttributes16 = [objectCopy additionalAttributes];
+    v109 = [MEMORY[0x1E696AD98] numberWithInt:selfCopy->_timeZoneOffsetValue];
+    [additionalAttributes16 setTimeZoneOffset:v109];
 
-    v32 = v490;
+    selfCopy2 = selfCopy;
   }
 
   v110 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v111 = [(PHAssetChangeRequest *)v32 facesHelper];
-  v112 = [v111 mutableObjectIDsAndUUIDs];
+  facesHelper = [(PHAssetChangeRequest *)selfCopy2 facesHelper];
+  mutableObjectIDsAndUUIDs = [facesHelper mutableObjectIDsAndUUIDs];
 
-  if (v112)
+  if (mutableObjectIDsAndUUIDs)
   {
-    [v111 setAllowsInsert:1];
-    [v111 setAllowsMove:0];
-    [v111 setAllowsRemove:1];
-    [v111 setDestinationEntityName:@"DetectedFace"];
-    v113 = [v7 mutableDetectedFaces];
+    [facesHelper setAllowsInsert:1];
+    [facesHelper setAllowsMove:0];
+    [facesHelper setAllowsRemove:1];
+    [facesHelper setDestinationEntityName:@"DetectedFace"];
+    mutableDetectedFaces = [objectCopy mutableDetectedFaces];
     v550 = v28;
-    v43 = [v111 applyMutationsToManagedObject:v7 unorderedMutableChildren:v113 error:&v550];
+    v43 = [facesHelper applyMutationsToManagedObject:objectCopy unorderedMutableChildren:mutableDetectedFaces error:&v550];
     v114 = v550;
     v115 = v28;
     v28 = v114;
 
     if (v43)
     {
-      v116 = [v113 allObjects];
-      [v110 addObjectsFromArray:v116];
+      allObjects = [mutableDetectedFaces allObjects];
+      [v110 addObjectsFromArray:allObjects];
     }
   }
 
-  v117 = [(PHAssetChangeRequest *)v490 temporalFacesHelper];
-  v118 = [v117 mutableObjectIDsAndUUIDs];
+  temporalFacesHelper = [(PHAssetChangeRequest *)selfCopy temporalFacesHelper];
+  mutableObjectIDsAndUUIDs2 = [temporalFacesHelper mutableObjectIDsAndUUIDs];
 
   v475 = v110;
-  v476 = v111;
-  v481 = v117;
-  if (v118)
+  v476 = facesHelper;
+  v481 = temporalFacesHelper;
+  if (mutableObjectIDsAndUUIDs2)
   {
-    [v117 setAllowsInsert:1];
-    [v117 setAllowsMove:0];
-    [v117 setAllowsRemove:1];
-    v119 = [MEMORY[0x1E69BE3D0] entityName];
-    [v117 setDestinationEntityName:v119];
+    [temporalFacesHelper setAllowsInsert:1];
+    [temporalFacesHelper setAllowsMove:0];
+    [temporalFacesHelper setAllowsRemove:1];
+    entityName = [MEMORY[0x1E69BE3D0] entityName];
+    [temporalFacesHelper setDestinationEntityName:entityName];
 
-    v120 = [v7 mutableTemporalDetectedFaces];
-    v121 = v7;
-    v122 = v120;
+    mutableTemporalDetectedFaces = [objectCopy mutableTemporalDetectedFaces];
+    v121 = objectCopy;
+    additionalAttributes17 = mutableTemporalDetectedFaces;
     v549 = 0;
     v548 = v28;
-    v123 = [v117 applyMutationsToManagedObject:v121 unorderedMutableChildren:v120 inserts:0 deletes:&v549 error:&v548];
+    v123 = [temporalFacesHelper applyMutationsToManagedObject:v121 unorderedMutableChildren:mutableTemporalDetectedFaces inserts:0 deletes:&v549 error:&v548];
     v124 = v549;
     v125 = v548;
 
@@ -1085,8 +1085,8 @@ LABEL_76:
       goto LABEL_129;
     }
 
-    v126 = [v122 allObjects];
-    [v110 addObjectsFromArray:v126];
+    allObjects2 = [additionalAttributes17 allObjects];
+    [v110 addObjectsFromArray:allObjects2];
 
     v546 = 0u;
     v547 = 0u;
@@ -1110,19 +1110,19 @@ LABEL_76:
           v132 = *(*(&v544 + 1) + 8 * k);
           if ([v132 isOrphan])
           {
-            v133 = [v132 managedObjectContext];
-            [v133 deleteObject:v132];
+            managedObjectContext = [v132 managedObjectContext];
+            [managedObjectContext deleteObject:v132];
           }
 
           else
           {
-            v133 = PLPhotoKitGetLog();
-            if (os_log_type_enabled(v133, OS_LOG_TYPE_ERROR))
+            managedObjectContext = PLPhotoKitGetLog();
+            if (os_log_type_enabled(managedObjectContext, OS_LOG_TYPE_ERROR))
             {
-              v134 = [v132 shortObjectIDURI];
+              shortObjectIDURI = [v132 shortObjectIDURI];
               *buf = 138543362;
-              *&buf[4] = v134;
-              _os_log_impl(&dword_19C86F000, v133, OS_LOG_TYPE_ERROR, "Unexpected old temporal face is not an orphan: %{public}@", buf, 0xCu);
+              *&buf[4] = shortObjectIDURI;
+              _os_log_impl(&dword_19C86F000, managedObjectContext, OS_LOG_TYPE_ERROR, "Unexpected old temporal face is not an orphan: %{public}@", buf, 0xCu);
             }
           }
         }
@@ -1133,7 +1133,7 @@ LABEL_76:
       while (v129);
     }
 
-    v135 = v490;
+    v135 = selfCopy;
     v110 = v475;
     v28 = v125;
   }
@@ -1147,7 +1147,7 @@ LABEL_76:
       goto LABEL_131;
     }
 
-    v135 = v490;
+    v135 = selfCopy;
   }
 
   if ([v110 count])
@@ -1180,99 +1180,99 @@ LABEL_76:
       while (v138);
     }
 
-    v135 = v490;
+    v135 = selfCopy;
   }
 
-  v141 = [(PHRelationshipChangeRequestHelper *)v135->_keywordsHelper mutableObjectIDsAndUUIDs];
+  mutableObjectIDsAndUUIDs3 = [(PHRelationshipChangeRequestHelper *)v135->_keywordsHelper mutableObjectIDsAndUUIDs];
 
-  if (v141)
+  if (mutableObjectIDsAndUUIDs3)
   {
     [(PHRelationshipChangeRequestHelper *)v135->_keywordsHelper setAllowsInsert:1];
     [(PHRelationshipChangeRequestHelper *)v135->_keywordsHelper setAllowsMove:0];
     keywordsHelper = v135->_keywordsHelper;
-    v143 = [MEMORY[0x1E69BE560] entityName];
-    [(PHRelationshipChangeRequestHelper *)keywordsHelper setDestinationEntityName:v143];
+    entityName2 = [MEMORY[0x1E69BE560] entityName];
+    [(PHRelationshipChangeRequestHelper *)keywordsHelper setDestinationEntityName:entityName2];
 
-    v122 = [v492 additionalAttributes];
-    v124 = [v122 mutableSetValueForKey:@"keywords"];
+    additionalAttributes17 = [v492 additionalAttributes];
+    v124 = [additionalAttributes17 mutableSetValueForKey:@"keywords"];
     v144 = v135->_keywordsHelper;
     v539 = v28;
-    v30 = [(PHRelationshipChangeRequestHelper *)v144 applyMutationsToManagedObject:v122 unorderedMutableChildren:v124 error:&v539];
+    v30 = [(PHRelationshipChangeRequestHelper *)v144 applyMutationsToManagedObject:additionalAttributes17 unorderedMutableChildren:v124 error:&v539];
     v125 = v539;
 
-    v111 = v476;
+    facesHelper = v476;
 LABEL_129:
 
     v470 = v125;
-    v7 = v492;
+    objectCopy = v492;
 LABEL_131:
-    v145 = v490;
+    v145 = selfCopy;
     goto LABEL_132;
   }
 
   v30 = 1;
   v470 = v28;
-  v7 = v492;
+  objectCopy = v492;
   v145 = v135;
-  v111 = v476;
+  facesHelper = v476;
 LABEL_132:
   if (![(PHAssetChangeRequest *)v145 didChangeAdjustments])
   {
     goto LABEL_168;
   }
 
-  v146 = [(PHAssetChangeRequest *)v145 contentEditingOutput];
+  contentEditingOutput = [(PHAssetChangeRequest *)v145 contentEditingOutput];
   v147 = PLPhotoEditGetLog();
   if (os_log_type_enabled(v147, OS_LOG_TYPE_DEFAULT))
   {
-    v148 = [v146 debugDescription];
+    v148 = [contentEditingOutput debugDescription];
     *buf = 138412290;
     *&buf[4] = v148;
     _os_log_impl(&dword_19C86F000, v147, OS_LOG_TYPE_DEFAULT, "Asset change request applying content editing output:\n%@", buf, 0xCu);
   }
 
-  if ([v146 isOnlyChangingOriginalChoice])
+  if ([contentEditingOutput isOnlyChangingOriginalChoice])
   {
-    if ([v7 hasAdjustments])
+    if ([objectCopy hasAdjustments])
     {
-      v149 = [MEMORY[0x1E69BE258] assetAdjustmentOptionsForRevertingToOriginal];
-      [v7 setAdjustments:0 options:v149];
+      assetAdjustmentOptionsForRevertingToOriginal = [MEMORY[0x1E69BE258] assetAdjustmentOptionsForRevertingToOriginal];
+      [objectCopy setAdjustments:0 options:assetAdjustmentOptionsForRevertingToOriginal];
     }
 
     goto LABEL_167;
   }
 
-  v150 = [v7 cameraProcessingAdjustmentState];
-  if ([v7 cameraProcessingAdjustmentState] != v150)
+  cameraProcessingAdjustmentState = [objectCopy cameraProcessingAdjustmentState];
+  if ([objectCopy cameraProcessingAdjustmentState] != cameraProcessingAdjustmentState)
   {
-    [v7 setCameraProcessingAdjustmentState:v150];
+    [objectCopy setCameraProcessingAdjustmentState:cameraProcessingAdjustmentState];
   }
 
-  if (![v146 isAsyncAdjustment])
+  if (![contentEditingOutput isAsyncAdjustment])
   {
     v159 = MEMORY[0x1E69C08F0];
-    v160 = [v7 originalUniformTypeIdentifier];
-    v151 = [v159 typeWithIdentifier:v160];
+    originalUniformTypeIdentifier = [objectCopy originalUniformTypeIdentifier];
+    v151 = [v159 typeWithIdentifier:originalUniformTypeIdentifier];
 
-    v161 = v490;
+    v161 = selfCopy;
     if ([v151 conformsToType:*MEMORY[0x1E6982F88]])
     {
-      if ([(PHAssetChangeRequest *)v490 isRevertingContentToOriginal])
+      if ([(PHAssetChangeRequest *)selfCopy isRevertingContentToOriginal])
       {
-        v162 = [v492 additionalAttributes];
-        v163 = [v162 originalResourceChoice];
+        additionalAttributes18 = [v492 additionalAttributes];
+        originalResourceChoice = [additionalAttributes18 originalResourceChoice];
         v164 = v30;
-        v165 = [v163 integerValue];
+        integerValue2 = [originalResourceChoice integerValue];
 
-        v161 = v490;
-        v166 = v165 == 3;
+        v161 = selfCopy;
+        v166 = integerValue2 == 3;
         v30 = v164;
         if (v166)
         {
-          v167 = [v492 additionalAttributes];
-          [v167 setOriginalResourceChoice:&unk_1F102CA40];
+          additionalAttributes19 = [v492 additionalAttributes];
+          [additionalAttributes19 setOriginalResourceChoice:&unk_1F102CA40];
 
-          v161 = v490;
+          v161 = selfCopy;
         }
       }
     }
@@ -1289,18 +1289,18 @@ LABEL_132:
 
     else
     {
-      v169 = [MEMORY[0x1E69BF238] fileManager];
-      v170 = [v146 renderedVideoComplementContentURL];
-      [v170 path];
+      fileManager = [MEMORY[0x1E69BF238] fileManager];
+      renderedVideoComplementContentURL = [contentEditingOutput renderedVideoComplementContentURL];
+      [renderedVideoComplementContentURL path];
       v172 = v171 = v30;
-      v173 = [v169 fileExistsAtPath:v172];
+      v173 = [fileManager fileExistsAtPath:v172];
 
       v30 = v171;
-      v161 = v490;
+      v161 = selfCopy;
       if (v173)
       {
 LABEL_161:
-        v158 = [v146 assetAdjustmentsWithEditorBundleID:v161->_editorBundleID];
+        videoDuration2 = [contentEditingOutput assetAdjustmentsWithEditorBundleID:v161->_editorBundleID];
         if ([(PHAssetChangeRequest *)v161 isRevertingContentToOriginal])
         {
           [MEMORY[0x1E69BE258] assetAdjustmentOptionsForRevertingToOriginal];
@@ -1308,11 +1308,11 @@ LABEL_161:
 
         else
         {
-          [v146 setAdjustmentsOptions];
+          [contentEditingOutput setAdjustmentsOptions];
         }
         v174 = ;
-        v117 = v481;
-        [v492 setAdjustments:v158 options:v174];
+        temporalFacesHelper = v481;
+        [v492 setAdjustments:videoDuration2 options:v174];
 
         goto LABEL_165;
       }
@@ -1324,7 +1324,7 @@ LABEL_161:
     goto LABEL_161;
   }
 
-  v151 = [v146 assetAdjustmentsWithEditorBundleID:v490->_editorBundleID];
+  v151 = [contentEditingOutput assetAdjustmentsWithEditorBundleID:selfCopy->_editorBundleID];
   v152 = PLPhotoEditGetLog();
   if (os_log_type_enabled(v152, OS_LOG_TYPE_DEBUG))
   {
@@ -1334,63 +1334,63 @@ LABEL_161:
     _os_log_impl(&dword_19C86F000, v152, OS_LOG_TYPE_DEBUG, "Asset change request applying async adjustments:\n%@", buf, 0xCu);
   }
 
-  v154 = [v146 setAdjustmentsOptions];
-  [v492 setAdjustments:v151 options:v154];
+  setAdjustmentsOptions = [contentEditingOutput setAdjustmentsOptions];
+  [v492 setAdjustments:v151 options:setAdjustmentsOptions];
 
-  v155 = [v146 playbackVariation];
+  playbackVariation = [contentEditingOutput playbackVariation];
 
-  if (v155)
+  if (playbackVariation)
   {
-    v156 = [v146 playbackVariation];
-    [v492 setPlaybackVariation:{objc_msgSend(v156, "integerValue")}];
+    playbackVariation2 = [contentEditingOutput playbackVariation];
+    [v492 setPlaybackVariation:{objc_msgSend(playbackVariation2, "integerValue")}];
   }
 
-  v157 = [v146 videoDuration];
+  videoDuration = [contentEditingOutput videoDuration];
 
-  if (!v157 || ![v492 isVideo])
+  if (!videoDuration || ![v492 isVideo])
   {
     goto LABEL_166;
   }
 
-  v158 = [v146 videoDuration];
-  [v158 doubleValue];
+  videoDuration2 = [contentEditingOutput videoDuration];
+  [videoDuration2 doubleValue];
   [v492 setDuration:?];
 LABEL_165:
 
 LABEL_166:
   *buf = 0;
   *&v567 = 0;
-  v7 = v492;
-  v175 = [v492 uuid];
+  objectCopy = v492;
+  uuid3 = [v492 uuid];
   PLStringUUIDComponents();
 
   kdebug_trace();
 LABEL_167:
 
-  v145 = v490;
+  v145 = selfCopy;
 LABEL_168:
-  v176 = [(PHAssetChangeRequest *)v145 contentEditingOutput];
-  v177 = [v176 isOnlyChangingOriginalChoice];
+  contentEditingOutput2 = [(PHAssetChangeRequest *)v145 contentEditingOutput];
+  isOnlyChangingOriginalChoice = [contentEditingOutput2 isOnlyChangingOriginalChoice];
 
-  v178 = [(PHAssetChangeRequest *)v145 contentEditingOutput];
-  v179 = [v178 originalResourceChoice];
-  v180 = v179;
-  if (!v177)
+  contentEditingOutput3 = [(PHAssetChangeRequest *)v145 contentEditingOutput];
+  originalResourceChoice2 = [contentEditingOutput3 originalResourceChoice];
+  v180 = originalResourceChoice2;
+  if (!isOnlyChangingOriginalChoice)
   {
 
     if (v180)
     {
-      v190 = [(PHAssetChangeRequest *)v490 contentEditingOutput];
-      v191 = [v190 originalResourceChoice];
-      v192 = [v191 integerValue];
+      contentEditingOutput4 = [(PHAssetChangeRequest *)selfCopy contentEditingOutput];
+      originalResourceChoice3 = [contentEditingOutput4 originalResourceChoice];
+      integerValue3 = [originalResourceChoice3 integerValue];
 
-      v193 = [v7 additionalAttributes];
-      v194 = [v193 originalResourceChoice];
-      v195 = [v194 integerValue];
+      additionalAttributes20 = [objectCopy additionalAttributes];
+      originalResourceChoice4 = [additionalAttributes20 originalResourceChoice];
+      integerValue4 = [originalResourceChoice4 integerValue];
 
-      v185 = v490;
-      v166 = v192 == v195;
-      v7 = v492;
+      v185 = selfCopy;
+      v166 = integerValue3 == integerValue4;
+      objectCopy = v492;
       if (v166)
       {
         goto LABEL_227;
@@ -1399,14 +1399,14 @@ LABEL_168:
       v196 = PLPhotoEditGetLog();
       if (os_log_type_enabled(v196, OS_LOG_TYPE_DEBUG))
       {
-        if (v192 > 3)
+        if (integerValue3 > 3)
         {
           v197 = 0;
         }
 
         else
         {
-          v197 = off_1E75A71C8[v192];
+          v197 = off_1E75A71C8[integerValue3];
         }
 
         v232 = v197;
@@ -1415,28 +1415,28 @@ LABEL_168:
         _os_log_impl(&dword_19C86F000, v196, OS_LOG_TYPE_DEBUG, "Applying content editing output also changing original resource choice to %@", buf, 0xCu);
       }
 
-      v230 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v192];
-      v213 = [v492 additionalAttributes];
-      [v213 setOriginalResourceChoice:v230];
-      v185 = v490;
+      v230 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:integerValue3];
+      additionalAttributes21 = [v492 additionalAttributes];
+      [additionalAttributes21 setOriginalResourceChoice:v230];
+      v185 = selfCopy;
     }
 
     else
     {
-      v185 = v490;
-      if (!v490->_didSetOriginalResourceChoice)
+      v185 = selfCopy;
+      if (!selfCopy->_didSetOriginalResourceChoice)
       {
         goto LABEL_227;
       }
 
-      originalResourceChoice = v490->_originalResourceChoice;
-      v199 = [v7 additionalAttributes];
-      v200 = [v199 originalResourceChoice];
-      v201 = [v200 integerValue];
+      originalResourceChoice = selfCopy->_originalResourceChoice;
+      additionalAttributes22 = [objectCopy additionalAttributes];
+      originalResourceChoice5 = [additionalAttributes22 originalResourceChoice];
+      integerValue5 = [originalResourceChoice5 integerValue];
 
-      v185 = v490;
-      v166 = originalResourceChoice == v201;
-      v111 = v476;
+      v185 = selfCopy;
+      v166 = originalResourceChoice == integerValue5;
+      facesHelper = v476;
       if (v166)
       {
         goto LABEL_227;
@@ -1445,7 +1445,7 @@ LABEL_168:
       v202 = PLPhotoEditGetLog();
       if (os_log_type_enabled(v202, OS_LOG_TYPE_DEBUG))
       {
-        v203 = v490->_originalResourceChoice;
+        v203 = selfCopy->_originalResourceChoice;
         if (v203 > 3)
         {
           v204 = 0;
@@ -1462,43 +1462,43 @@ LABEL_168:
         _os_log_impl(&dword_19C86F000, v202, OS_LOG_TYPE_DEBUG, "Setting original resource choice to %@", buf, 0xCu);
       }
 
-      v185 = v490;
-      v230 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v490->_originalResourceChoice];
-      v213 = [v7 additionalAttributes];
-      [v213 setOriginalResourceChoice:v230];
+      v185 = selfCopy;
+      v230 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:selfCopy->_originalResourceChoice];
+      additionalAttributes21 = [objectCopy additionalAttributes];
+      [additionalAttributes21 setOriginalResourceChoice:v230];
     }
 
 LABEL_226:
 
-    v7 = v492;
+    objectCopy = v492;
     goto LABEL_227;
   }
 
-  v181 = [v179 integerValue];
+  integerValue6 = [originalResourceChoice2 integerValue];
 
-  v182 = [v7 additionalAttributes];
-  v183 = [v182 originalResourceChoice];
-  v184 = [v183 integerValue];
+  additionalAttributes23 = [objectCopy additionalAttributes];
+  originalResourceChoice6 = [additionalAttributes23 originalResourceChoice];
+  integerValue7 = [originalResourceChoice6 integerValue];
 
-  v166 = v181 == v184;
-  v7 = v492;
-  v185 = v490;
+  v166 = integerValue6 == integerValue7;
+  objectCopy = v492;
+  v185 = selfCopy;
   if (!v166)
   {
-    v186 = [(PHAssetChangeRequest *)v490 contentEditingOutput];
-    v187 = [v186 renderedPreviewContentURL];
+    contentEditingOutput5 = [(PHAssetChangeRequest *)selfCopy contentEditingOutput];
+    renderedPreviewContentURL = [contentEditingOutput5 renderedPreviewContentURL];
 
     v188 = PLPhotoEditGetLog();
     if (os_log_type_enabled(v188, OS_LOG_TYPE_DEBUG))
     {
-      if (v181 > 3)
+      if (integerValue6 > 3)
       {
         v189 = 0;
       }
 
       else
       {
-        v189 = off_1E75A71C8[v181];
+        v189 = off_1E75A71C8[integerValue6];
       }
 
       v205 = v189;
@@ -1507,22 +1507,22 @@ LABEL_226:
       _os_log_impl(&dword_19C86F000, v188, OS_LOG_TYPE_DEBUG, "Setting original choice to %@ and mark asset for deferred rendering", buf, 0xCu);
     }
 
-    v478 = v187;
+    v478 = renderedPreviewContentURL;
     v483 = v30;
 
-    v206 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v181];
-    v207 = [v492 additionalAttributes];
-    [v207 setOriginalResourceChoice:v206];
+    v206 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:integerValue6];
+    additionalAttributes24 = [v492 additionalAttributes];
+    [additionalAttributes24 setOriginalResourceChoice:v206];
 
     [v492 setDeferredProcessingNeeded:4];
-    v208 = [v492 photoLibrary];
-    v209 = [v208 libraryServicesManager];
-    v210 = [v209 backgroundJobService];
-    v211 = [v492 photoLibrary];
+    photoLibrary = [v492 photoLibrary];
+    libraryServicesManager = [photoLibrary libraryServicesManager];
+    backgroundJobService = [libraryServicesManager backgroundJobService];
+    photoLibrary2 = [v492 photoLibrary];
     v212 = [MEMORY[0x1E69BE2B8] typesMaskForDeferredProcessingNeeded:{objc_msgSend(v492, "deferredProcessingNeeded")}];
-    [v210 signalBackgroundProcessingNeededOnLibrary:v211 workerTypes:v212];
+    [backgroundJobService signalBackgroundProcessingNeededOnLibrary:photoLibrary2 workerTypes:v212];
 
-    v213 = [MEMORY[0x1E69BF238] fileManager];
+    additionalAttributes21 = [MEMORY[0x1E69BF238] fileManager];
     [v492 unadjustedDerivativeImageURLs];
     v535 = 0u;
     v536 = 0u;
@@ -1544,16 +1544,16 @@ LABEL_226:
 
           v219 = *(*(&v535 + 1) + 8 * n);
           v534 = 0;
-          v220 = [v213 removeItemAtURL:v219 error:&v534];
+          v220 = [additionalAttributes21 removeItemAtURL:v219 error:&v534];
           v221 = v534;
           if (v220)
           {
             v222 = PLPhotoEditGetLog();
             if (os_log_type_enabled(v222, OS_LOG_TYPE_DEBUG))
             {
-              v223 = [v219 path];
+              path = [v219 path];
               *buf = 138412290;
-              *&buf[4] = v223;
+              *&buf[4] = path;
               _os_log_impl(&dword_19C86F000, v222, OS_LOG_TYPE_DEBUG, "Changing original choice, removed unadjusted derivative file at path: %@", buf, 0xCu);
             }
           }
@@ -1588,8 +1588,8 @@ LABEL_197:
     v533 = 0u;
     v530 = 0u;
     v531 = 0u;
-    v224 = [v492 modernResources];
-    v225 = [v224 countByEnumeratingWithState:&v530 objects:v585 count:16];
+    modernResources = [v492 modernResources];
+    v225 = [modernResources countByEnumeratingWithState:&v530 objects:v585 count:16];
     if (v225)
     {
       v226 = v225;
@@ -1600,7 +1600,7 @@ LABEL_197:
         {
           if (*v531 != v227)
           {
-            objc_enumerationMutation(v224);
+            objc_enumerationMutation(modernResources);
           }
 
           v229 = *(*(&v530 + 1) + 8 * ii);
@@ -1614,15 +1614,15 @@ LABEL_197:
           }
         }
 
-        v226 = [v224 countByEnumeratingWithState:&v530 objects:v585 count:16];
+        v226 = [modernResources countByEnumeratingWithState:&v530 objects:v585 count:16];
       }
 
       while (v226);
     }
 
-    v111 = v476;
+    facesHelper = v476;
     v230 = v478;
-    v117 = v481;
+    temporalFacesHelper = v481;
     if (v478)
     {
       v231 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v478];
@@ -1632,7 +1632,7 @@ LABEL_197:
       }
     }
 
-    v185 = v490;
+    v185 = selfCopy;
     v30 = v483;
     goto LABEL_226;
   }
@@ -1640,34 +1640,34 @@ LABEL_197:
 LABEL_227:
   if (v185->_didRevertLocationToOriginal && PLPlatformExtendedAttributesSupported())
   {
-    v234 = [v7 extendedAttributes];
-    v235 = v234;
-    if (v234)
+    extendedAttributes = [objectCopy extendedAttributes];
+    v235 = extendedAttributes;
+    if (extendedAttributes)
     {
-      v236 = [v234 latitude];
-      if (v236)
+      latitude = [extendedAttributes latitude];
+      if (latitude)
       {
-        v237 = v236;
-        v238 = [v235 longitude];
+        v237 = latitude;
+        longitude = [v235 longitude];
 
-        if (v238)
+        if (longitude)
         {
           v239 = objc_alloc(MEMORY[0x1E6985C40]);
-          v240 = [v235 latitude];
-          [v240 doubleValue];
+          latitude2 = [v235 latitude];
+          [latitude2 doubleValue];
           v242 = v241;
-          v243 = [v235 longitude];
-          [v243 doubleValue];
+          longitude2 = [v235 longitude];
+          [longitude2 doubleValue];
           v245 = [v239 initWithLatitude:v242 longitude:v244];
 
-          v7 = v492;
+          objectCopy = v492;
           [v492 setLocation:v245];
           [v492 didSetCustomLocation];
         }
       }
     }
 
-    v185 = v490;
+    v185 = selfCopy;
   }
 
   if (v185->_didUpdateExtendedAttributesUsingOriginalMediaMetadata)
@@ -1676,11 +1676,11 @@ LABEL_227:
     if (PLPlatformExtendedAttributesSupported())
     {
       v529 = v470;
-      v30 = [v7 updateExtendedAttributesWithError:&v529];
+      v30 = [objectCopy updateExtendedAttributesWithError:&v529];
       v247 = v529;
 
       v246 = v247;
-      v185 = v490;
+      v185 = selfCopy;
     }
   }
 
@@ -1691,63 +1691,63 @@ LABEL_227:
 
   if (v185->_didTrashAllSpatialOverCaptureResources)
   {
-    [v7 setTrashedStateOnSpatialOverCaptureResources:1];
+    [objectCopy setTrashedStateOnSpatialOverCaptureResources:1];
   }
 
   if (v185->_didUntrashAllSpatialOverCaptureResources)
   {
-    [v7 setTrashedStateOnSpatialOverCaptureResources:0];
+    [objectCopy setTrashedStateOnSpatialOverCaptureResources:0];
   }
 
   if (v185->_didExpungeAllSpatialOverCaptureResources)
   {
-    [v7 setTrashedStateOnSpatialOverCaptureResources:2];
+    [objectCopy setTrashedStateOnSpatialOverCaptureResources:2];
   }
 
   if (v185->_didExpungeTrashedSpatialOverCaptureResources)
   {
-    [v7 expungeTrashedSpatialOverCaptureResources];
+    [objectCopy expungeTrashedSpatialOverCaptureResources];
   }
 
   if (v185->_didPromoteToGuestAsset)
   {
     v528 = v246;
-    v30 = [v7 promoteToGuestAsset:&v528];
+    v30 = [objectCopy promoteToGuestAsset:&v528];
     v248 = v528;
 
     v246 = v248;
-    v185 = v490;
+    v185 = selfCopy;
   }
 
   if (v185->_didResetGuestAssetPromotion)
   {
     v527 = v246;
-    v30 = [v7 resetGuestAssetPromotion:&v527];
+    v30 = [objectCopy resetGuestAssetPromotion:&v527];
     v249 = v527;
 
     v246 = v249;
-    v185 = v490;
+    v185 = selfCopy;
   }
 
   v471 = v246;
   if (v185->_toRetryUpload)
   {
-    v250 = [v7 photoLibrary];
-    v251 = [v250 isCloudPhotoLibraryEnabled];
+    photoLibrary3 = [objectCopy photoLibrary];
+    isCloudPhotoLibraryEnabled = [photoLibrary3 isCloudPhotoLibraryEnabled];
 
-    v185 = v490;
-    if (v251)
+    v185 = selfCopy;
+    if (isCloudPhotoLibraryEnabled)
     {
-      v252 = [v7 master];
-      v253 = v252;
-      if (v252)
+      master = [objectCopy master];
+      v253 = master;
+      if (master)
       {
         v525 = 0u;
         v526 = 0u;
         v523 = 0u;
         v524 = 0u;
-        v254 = [v252 assets];
-        v255 = [v254 countByEnumeratingWithState:&v523 objects:v584 count:16];
+        assets = [master assets];
+        v255 = [assets countByEnumeratingWithState:&v523 objects:v584 count:16];
         if (v255)
         {
           v256 = v255;
@@ -1758,7 +1758,7 @@ LABEL_227:
             {
               if (*v524 != v257)
               {
-                objc_enumerationMutation(v254);
+                objc_enumerationMutation(assets);
               }
 
               v259 = *(*(&v523 + 1) + 8 * jj);
@@ -1768,15 +1768,15 @@ LABEL_227:
               }
             }
 
-            v256 = [v254 countByEnumeratingWithState:&v523 objects:v584 count:16];
+            v256 = [assets countByEnumeratingWithState:&v523 objects:v584 count:16];
           }
 
           while (v256);
         }
 
-        v7 = v492;
-        v185 = v490;
-        v111 = v476;
+        objectCopy = v492;
+        v185 = selfCopy;
+        facesHelper = v476;
         if (![v253 cloudLocalState])
         {
           goto LABEL_267;
@@ -1787,14 +1787,14 @@ LABEL_227:
 
       else
       {
-        if (![v7 cloudLocalState])
+        if (![objectCopy cloudLocalState])
         {
 LABEL_267:
 
           goto LABEL_268;
         }
 
-        v260 = v7;
+        v260 = objectCopy;
       }
 
       [v260 setCloudLocalState:0];
@@ -1803,43 +1803,43 @@ LABEL_267:
   }
 
 LABEL_268:
-  v261 = [(PHAssetChangeRequest *)v185 modificationDate];
-  if (v261)
+  modificationDate = [(PHAssetChangeRequest *)v185 modificationDate];
+  if (modificationDate)
   {
-    [v7 setModificationDate:v261];
+    [objectCopy setModificationDate:modificationDate];
   }
 
-  obja = v261;
+  obja = modificationDate;
   if (v185->_didModifyComputedAttributes)
   {
-    v262 = [v7 computedAttributes];
+    computedAttributes = [objectCopy computedAttributes];
 
-    if (!v262)
+    if (!computedAttributes)
     {
-      v263 = [v7 managedObjectContext];
+      managedObjectContext2 = [objectCopy managedObjectContext];
       [MEMORY[0x1E69BE370] entityName];
-      v265 = v264 = v7;
+      v265 = v264 = objectCopy;
       v522 = 0;
       v266 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext();
       v267 = 0;
 
       if (!v266)
       {
-        if (a5)
+        if (error)
         {
           v459 = v267;
-          *a5 = v267;
+          *error = v267;
         }
 
         v456 = 0;
-        v7 = v492;
+        objectCopy = v492;
         v10 = v471;
         goto LABEL_523;
       }
 
       [v264 setComputedAttributes:v266];
 
-      v7 = v264;
+      objectCopy = v264;
     }
 
     v268 = v30;
@@ -1847,7 +1847,7 @@ LABEL_268:
     v521 = 0u;
     v518 = 0u;
     v519 = 0u;
-    v269 = v490->_computedAttributeMutations;
+    v269 = selfCopy->_computedAttributeMutations;
     v270 = [(NSMutableDictionary *)v269 countByEnumeratingWithState:&v518 objects:v583 count:16];
     if (v270)
     {
@@ -1863,11 +1863,11 @@ LABEL_268:
           }
 
           v274 = *(*(&v518 + 1) + 8 * kk);
-          v275 = [v7 computedAttributes];
-          v276 = [(NSMutableDictionary *)v490->_computedAttributeMutations objectForKeyedSubscript:v274];
-          [v275 setValue:v276 forKey:v274];
+          computedAttributes2 = [objectCopy computedAttributes];
+          v276 = [(NSMutableDictionary *)selfCopy->_computedAttributeMutations objectForKeyedSubscript:v274];
+          [computedAttributes2 setValue:v276 forKey:v274];
 
-          v7 = v492;
+          objectCopy = v492;
         }
 
         v271 = [(NSMutableDictionary *)v269 countByEnumeratingWithState:&v518 objects:v583 count:16];
@@ -1877,35 +1877,35 @@ LABEL_268:
     }
 
     didSetSceneClassifications = 1;
-    v185 = v490;
+    v185 = selfCopy;
     v30 = v268;
   }
 
   if (v185->_mediaAnalysisTimeStamp)
   {
-    v277 = [(PHAssetChangeRequest *)v185 getMediaAnalysisAttributesForAsset:v7];
-    [v277 setMediaAnalysisTimeStamp:v490->_mediaAnalysisTimeStamp];
+    v277 = [(PHAssetChangeRequest *)v185 getMediaAnalysisAttributesForAsset:objectCopy];
+    [v277 setMediaAnalysisTimeStamp:selfCopy->_mediaAnalysisTimeStamp];
 
-    v185 = v490;
+    v185 = selfCopy;
     didSetSceneClassifications = 1;
   }
 
   didSetMediaAnalysisVersion = v185->_didSetMediaAnalysisVersion;
   if (didSetMediaAnalysisVersion == 1)
   {
-    v279 = [(PHAssetChangeRequest *)v185 getMediaAnalysisAttributesForAsset:v7];
-    [v279 setMediaAnalysisVersion:v490->_mediaAnalysisVersion];
+    v279 = [(PHAssetChangeRequest *)v185 getMediaAnalysisAttributesForAsset:objectCopy];
+    [v279 setMediaAnalysisVersion:selfCopy->_mediaAnalysisVersion];
 
-    v185 = v490;
+    v185 = selfCopy;
     didSetSceneClassifications = 1;
   }
 
   if (v185->_didSetMediaAnalysisImageVersion)
   {
-    v280 = [(PHAssetChangeRequest *)v185 getMediaAnalysisAttributesForAsset:v7];
-    [v280 setMediaAnalysisImageVersion:v490->_mediaAnalysisImageVersion];
+    v280 = [(PHAssetChangeRequest *)v185 getMediaAnalysisAttributesForAsset:objectCopy];
+    [v280 setMediaAnalysisImageVersion:selfCopy->_mediaAnalysisImageVersion];
 
-    v185 = v490;
+    v185 = selfCopy;
     didSetMediaAnalysisVersion = 1;
     didSetSceneClassifications = 1;
   }
@@ -1914,27 +1914,27 @@ LABEL_268:
   p_bestVideoTimeRange = &v185->_bestVideoTimeRange;
   if ((v185->_bestVideoTimeRange.start.flags & 1) != 0 && (v185->_bestVideoTimeRange.duration.flags & 1) != 0 && !v185->_bestVideoTimeRange.duration.epoch && (v185->_bestVideoTimeRange.duration.value & 0x8000000000000000) == 0)
   {
-    v282 = [(PHAssetChangeRequest *)v185 getMediaAnalysisAttributesForAsset:v7];
+    v282 = [(PHAssetChangeRequest *)v185 getMediaAnalysisAttributesForAsset:objectCopy];
     v283 = *&p_bestVideoTimeRange->start.epoch;
     *buf = *&p_bestVideoTimeRange->start.value;
     *&buf[16] = v283;
     v582 = *&p_bestVideoTimeRange->duration.timescale;
     [v282 setBestVideoTimeRange:buf];
 
-    v185 = v490;
+    v185 = selfCopy;
   }
 
   p_animatedStickerTimeRange = &v185->_animatedStickerTimeRange;
   if ((v185->_animatedStickerTimeRange.start.flags & 1) != 0 && (v185->_animatedStickerTimeRange.duration.flags & 1) != 0 && !v185->_animatedStickerTimeRange.duration.epoch && (v185->_animatedStickerTimeRange.duration.value & 0x8000000000000000) == 0)
   {
-    v285 = [(PHAssetChangeRequest *)v185 getMediaAnalysisAttributesForAsset:v7];
+    v285 = [(PHAssetChangeRequest *)v185 getMediaAnalysisAttributesForAsset:objectCopy];
     v286 = *&p_animatedStickerTimeRange->start.epoch;
     *buf = *&p_animatedStickerTimeRange->start.value;
     *&buf[16] = v286;
     v582 = *&p_animatedStickerTimeRange->duration.timescale;
     [v285 setAnimatedStickerTimeRange:buf];
 
-    v185 = v490;
+    v185 = selfCopy;
   }
 
   p_bestKeyFrameTime = &v185->_bestKeyFrameTime;
@@ -1946,37 +1946,37 @@ LABEL_268:
       *buf = *&p_bestKeyFrameTime->value;
       *&buf[16] = p_bestKeyFrameTime->epoch;
       v289 = CMTimeCopyDescription(0, buf);
-      v290 = [(NSData *)v490->_bestKeyFrameJPEGData length];
-      v291 = [v7 uuid];
+      v290 = [(NSData *)selfCopy->_bestKeyFrameJPEGData length];
+      uuid4 = [objectCopy uuid];
       *buf = 138412802;
       *&buf[4] = v289;
       *&buf[12] = 2048;
       *&buf[14] = v290;
       *&buf[22] = 2112;
-      *&buf[24] = v291;
+      *&buf[24] = uuid4;
       _os_log_impl(&dword_19C86F000, v288, OS_LOG_TYPE_DEBUG, "Setting best key frame time: %@ key frame image length: %lu for asset: %@", buf, 0x20u);
 
-      v7 = v492;
+      objectCopy = v492;
     }
 
     *buf = *&p_bestKeyFrameTime->value;
     *&buf[16] = p_bestKeyFrameTime->epoch;
-    [v7 setVideoKeyFrameTime:buf];
-    v185 = v490;
+    [objectCopy setVideoKeyFrameTime:buf];
+    v185 = selfCopy;
   }
 
   if (v185->_didUnsetBestKeyFrameTime)
   {
     *buf = *MEMORY[0x1E6960C70];
     *&buf[16] = *(MEMORY[0x1E6960C70] + 16);
-    [v7 setVideoKeyFrameTime:buf];
+    [objectCopy setVideoKeyFrameTime:buf];
   }
 
   if (v185->_bestKeyFrameJPEGData)
   {
-    if ([v7 isLocalVideoKeyFrameValid])
+    if ([objectCopy isLocalVideoKeyFrameValid])
     {
-      v292 = CGImageSourceCreateWithData(v490->_bestKeyFrameJPEGData, 0);
+      v292 = CGImageSourceCreateWithData(selfCopy->_bestKeyFrameJPEGData, 0);
       if (!v292)
       {
         goto LABEL_314;
@@ -1986,9 +1986,9 @@ LABEL_268:
       v294 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v294, OS_LOG_TYPE_DEBUG))
       {
-        v295 = [v7 uuid];
+        uuid5 = [objectCopy uuid];
         *buf = 138412290;
-        *&buf[4] = v295;
+        *&buf[4] = uuid5;
         _os_log_impl(&dword_19C86F000, v294, OS_LOG_TYPE_DEBUG, "Regenerating thumbs for new best key frame for asset: %@", buf, 0xCu);
       }
 
@@ -1996,8 +1996,8 @@ LABEL_268:
       v517 = 0;
       [MEMORY[0x1E69BE540] createThumbnailImage:&v517 previewImage:&v516 withToBeReleasedImageSource:v293];
       v296 = v517;
-      v297 = v516;
-      [v7 generateAndUpdateThumbnailsWithPreviewImage:v297 thumbnailImage:v296 fromImageSource:0 imageData:0 forceSRGBConversion:0];
+      uuid6 = v516;
+      [objectCopy generateAndUpdateThumbnailsWithPreviewImage:uuid6 thumbnailImage:v296 fromImageSource:0 imageData:0 forceSRGBConversion:0];
     }
 
     else
@@ -2010,9 +2010,9 @@ LABEL_313:
         goto LABEL_314;
       }
 
-      v297 = [v7 uuid];
+      uuid6 = [objectCopy uuid];
       *buf = 138543362;
-      *&buf[4] = v297;
+      *&buf[4] = uuid6;
       _os_log_impl(&dword_19C86F000, v296, OS_LOG_TYPE_DEBUG, "Video key frame incompatible with asset: %{public}@, skipping thumbnail update", buf, 0xCu);
     }
 
@@ -2025,7 +2025,7 @@ LABEL_314:
   v515 = 0u;
   v512 = 0u;
   v513 = 0u;
-  v298 = v490->_contextualVideoThumbnailImageDataByIdentifier;
+  v298 = selfCopy->_contextualVideoThumbnailImageDataByIdentifier;
   v299 = [(NSDictionary *)v298 countByEnumeratingWithState:&v512 objects:v580 count:16];
   if (v299)
   {
@@ -2045,11 +2045,11 @@ LABEL_314:
         v305 = [v492 writableFileURLForContextualVideoThumbnailIdentifier:v303];
         if (!v305)
         {
-          v310 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v310 handleFailureInMethod:a2 object:v490 file:@"PHAssetChangeRequest.m" lineNumber:4466 description:{@"Invalid parameter not satisfying: %@", @"cvtFileURL"}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"PHAssetChangeRequest.m" lineNumber:4466 description:{@"Invalid parameter not satisfying: %@", @"cvtFileURL"}];
         }
 
-        v306 = [(NSDictionary *)v490->_contextualVideoThumbnailImageDataByIdentifier objectForKeyedSubscript:v303];
+        v306 = [(NSDictionary *)selfCopy->_contextualVideoThumbnailImageDataByIdentifier objectForKeyedSubscript:v303];
         v511 = 0;
         v307 = [v306 writeToURL:v305 options:1073741825 error:&v511];
         v308 = v511;
@@ -2074,18 +2074,18 @@ LABEL_314:
     while (v300);
   }
 
-  v311 = v490;
+  v311 = selfCopy;
   v312 = v492;
-  if (v490->_computeSyncMediaAnalysisPayload)
+  if (selfCopy->_computeSyncMediaAnalysisPayload)
   {
     v313 = MEMORY[0x1E695DFF8];
-    v314 = [v492 pathForComputeSyncMediaAnalysisPayloadFile];
-    v315 = [v313 fileURLWithPath:v314];
+    pathForComputeSyncMediaAnalysisPayloadFile = [v492 pathForComputeSyncMediaAnalysisPayloadFile];
+    v315 = [v313 fileURLWithPath:pathForComputeSyncMediaAnalysisPayloadFile];
 
-    v316 = [MEMORY[0x1E696AC08] defaultManager];
-    v317 = [v315 URLByDeletingLastPathComponent];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    uRLByDeletingLastPathComponent = [v315 URLByDeletingLastPathComponent];
     v510 = 0;
-    v318 = [v316 createDirectoryAtURL:v317 withIntermediateDirectories:1 attributes:0 error:&v510];
+    v318 = [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v510];
     v319 = v510;
 
     if ((v318 & 1) == 0)
@@ -2093,17 +2093,17 @@ LABEL_314:
       v320 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v320, OS_LOG_TYPE_ERROR))
       {
-        v321 = [v492 uuid];
+        uuid7 = [v492 uuid];
         *buf = 138412546;
-        *&buf[4] = v321;
+        *&buf[4] = uuid7;
         *&buf[12] = 2112;
         *&buf[14] = v319;
         _os_log_impl(&dword_19C86F000, v320, OS_LOG_TYPE_ERROR, "Failed to create pathForMediaAnalysisComputeSyncSidecarPayload for asset %@ error: %@", buf, 0x16u);
       }
     }
 
-    v311 = v490;
-    [(NSData *)v490->_computeSyncMediaAnalysisPayload writeToURL:v315 atomically:1];
+    v311 = selfCopy;
+    [(NSData *)selfCopy->_computeSyncMediaAnalysisPayload writeToURL:v315 atomically:1];
 
     v312 = v492;
   }
@@ -2121,157 +2121,157 @@ LABEL_314:
   if (v311->_didSetPackedBestPlaybackRect)
   {
     v322 = [(PHAssetChangeRequest *)v311 getMediaAnalysisAttributesForAsset:v312];
-    [v322 setPackedBestPlaybackRect:v490->_packedBestPlaybackRect];
+    [v322 setPackedBestPlaybackRect:selfCopy->_packedBestPlaybackRect];
 
-    v311 = v490;
+    v311 = selfCopy;
   }
 
   if (v311->_didSetWallpaperPropertiesVersion)
   {
     v323 = [(PHAssetChangeRequest *)v311 getPhotoAnalysisAttributesForAsset:v492];
-    [v323 setWallpaperPropertiesVersion:v490->_wallpaperPropertiesVersion];
+    [v323 setWallpaperPropertiesVersion:selfCopy->_wallpaperPropertiesVersion];
 
-    v311 = v490;
+    v311 = selfCopy;
     didSetSceneClassifications = 1;
   }
 
   if (v311->_didSetWallpaperPropertiesTimestamp)
   {
     v324 = [(PHAssetChangeRequest *)v311 getPhotoAnalysisAttributesForAsset:v492];
-    [v324 setWallpaperPropertiesTimestamp:v490->_wallpaperPropertiesTimestamp];
+    [v324 setWallpaperPropertiesTimestamp:selfCopy->_wallpaperPropertiesTimestamp];
 
-    v311 = v490;
+    v311 = selfCopy;
   }
 
   if (v311->_didSetWallpaperPropertiesData)
   {
     v325 = [(PHAssetChangeRequest *)v311 getPhotoAnalysisAttributesForAsset:v492];
-    [v325 setWallpaperPropertiesData:v490->_wallpaperPropertiesData];
+    [v325 setWallpaperPropertiesData:selfCopy->_wallpaperPropertiesData];
 
-    v311 = v490;
+    v311 = selfCopy;
   }
 
   if (v311->_didSetBlurrinessScore)
   {
     v326 = [(PHAssetChangeRequest *)v311 getMediaAnalysisAttributesForAsset:v492];
-    *&v327 = v490->_blurrinessScore;
+    *&v327 = selfCopy->_blurrinessScore;
     [v326 setBlurrinessScore:v327];
 
-    v311 = v490;
+    v311 = selfCopy;
   }
 
   if (v311->_didSetExposureScore)
   {
     v328 = [(PHAssetChangeRequest *)v311 getMediaAnalysisAttributesForAsset:v492];
-    *&v329 = v490->_exposureScore;
+    *&v329 = selfCopy->_exposureScore;
     [v328 setExposureScore:v329];
 
-    v311 = v490;
+    v311 = selfCopy;
   }
 
   if (v311->_didSetWallpaperScore)
   {
     v330 = [(PHAssetChangeRequest *)v311 getMediaAnalysisAttributesForAsset:v492];
-    *&v331 = v490->_wallpaperScore;
+    *&v331 = selfCopy->_wallpaperScore;
     [v330 setWallpaperScore:v331];
 
-    v311 = v490;
+    v311 = selfCopy;
   }
 
   if (v311->_didSetAutoplaySuggestionScore)
   {
     v332 = [(PHAssetChangeRequest *)v311 getMediaAnalysisAttributesForAsset:v492];
-    *&v333 = v490->_autoplaySuggestionScore;
+    *&v333 = selfCopy->_autoplaySuggestionScore;
     [v332 setAutoplaySuggestionScore:v333];
 
-    v311 = v490;
+    v311 = selfCopy;
   }
 
   if (v311->_didSetVideoStickerSuggestionScore)
   {
     v334 = [(PHAssetChangeRequest *)v311 getMediaAnalysisAttributesForAsset:v492];
-    *&v335 = v490->_videoStickerSuggestionScore;
+    *&v335 = selfCopy->_videoStickerSuggestionScore;
     [v334 setVideoStickerSuggestionScore:v335];
 
-    v311 = v490;
+    v311 = selfCopy;
   }
 
   if (v311->_didSetVideoScore)
   {
     v336 = [(PHAssetChangeRequest *)v311 getMediaAnalysisAttributesForAsset:v492];
-    *&v337 = v490->_videoScore;
+    *&v337 = selfCopy->_videoScore;
     [v336 setVideoScore:v337];
 
-    v311 = v490;
+    v311 = selfCopy;
   }
 
   if (v311->_didSetActivityScore)
   {
     v338 = [(PHAssetChangeRequest *)v311 getMediaAnalysisAttributesForAsset:v492];
-    *&v339 = v490->_activityScore;
+    *&v339 = selfCopy->_activityScore;
     [v338 setActivityScore:v339];
 
-    v311 = v490;
+    v311 = selfCopy;
   }
 
   if (v311->_didSetAudioScore)
   {
     v340 = [(PHAssetChangeRequest *)v311 getMediaAnalysisAttributesForAsset:v492];
-    *&v341 = v490->_audioScore;
+    *&v341 = selfCopy->_audioScore;
     [v340 setAudioScore:v341];
 
-    v311 = v490;
+    v311 = selfCopy;
   }
 
   if (v311->_didSetSettlingEffectScore)
   {
     v342 = [(PHAssetChangeRequest *)v311 getMediaAnalysisAttributesForAsset:v492];
-    *&v343 = v490->_settlingEffectScore;
+    *&v343 = selfCopy->_settlingEffectScore;
     [v342 setSettlingEffectScore:v343];
 
-    v311 = v490;
+    v311 = selfCopy;
   }
 
   if (v311->_didSetFaceCount)
   {
     v344 = [(PHAssetChangeRequest *)v311 getMediaAnalysisAttributesForAsset:v492];
-    [v344 setFaceCount:v490->_faceCount];
+    [v344 setFaceCount:selfCopy->_faceCount];
 
-    v311 = v490;
+    v311 = selfCopy;
   }
 
   if (v311->_didSetAudioClassification)
   {
     v345 = [(PHAssetChangeRequest *)v311 getMediaAnalysisAttributesForAsset:v492];
-    [v345 setAudioClassification:v490->_audioClassification];
+    [v345 setAudioClassification:selfCopy->_audioClassification];
 
-    v311 = v490;
+    v311 = selfCopy;
     didSetSceneClassifications = 1;
   }
 
   if (v311->_didSetProbableRotationDirection)
   {
     v346 = [(PHAssetChangeRequest *)v311 getMediaAnalysisAttributesForAsset:v492];
-    [v346 setProbableRotationDirection:v490->_probableRotationDirection];
+    [v346 setProbableRotationDirection:selfCopy->_probableRotationDirection];
 
-    v311 = v490;
+    v311 = selfCopy;
   }
 
   if (v311->_didSetProbableRotationDirectionConfidence)
   {
     v347 = [(PHAssetChangeRequest *)v311 getMediaAnalysisAttributesForAsset:v492];
-    *&v348 = v490->_probableRotationDirectionConfidence;
+    *&v348 = selfCopy->_probableRotationDirectionConfidence;
     [v347 setProbableRotationDirectionConfidence:v348];
 
-    v311 = v490;
+    v311 = selfCopy;
   }
 
   if (v311->_colorNormalizationData)
   {
     v349 = [(PHAssetChangeRequest *)v311 getMediaAnalysisAttributesForAsset:v492];
-    [v349 setColorNormalizationData:v490->_colorNormalizationData];
+    [v349 setColorNormalizationData:selfCopy->_colorNormalizationData];
 
-    v311 = v490;
+    v311 = selfCopy;
   }
 
   if (v311->_resetCharacterRecognitionProperties)
@@ -2292,7 +2292,7 @@ LABEL_314:
     didSetSceneClassifications = 1;
   }
 
-  v311 = v490;
+  v311 = selfCopy;
 LABEL_378:
   if (v311->_resetTextUnderstandingProperties)
   {
@@ -2312,7 +2312,7 @@ LABEL_378:
     didSetSceneClassifications = 1;
   }
 
-  v311 = v490;
+  v311 = selfCopy;
 LABEL_383:
   if (v311->_resetGeneratedAssetDescriptionProperties)
   {
@@ -2342,11 +2342,11 @@ LABEL_383:
 
     if (v311->_didSetVisualSearchData)
     {
-      [v354 setVisualSearchData:v490->_visualSearchData algorithmVersion:SLOWORD(v490->_visualSearchAlgorithmVersion) adjustmentVersion:v490->_visualSearchAdjustmentVersion];
+      [v354 setVisualSearchData:selfCopy->_visualSearchData algorithmVersion:SLOWORD(selfCopy->_visualSearchAlgorithmVersion) adjustmentVersion:selfCopy->_visualSearchAdjustmentVersion];
     }
 
     didSetSceneClassifications = 1;
-    v311 = v490;
+    v311 = selfCopy;
   }
 
   if (!v311->_didSetCompactImageSCSensitivityAnalysis)
@@ -2385,11 +2385,11 @@ LABEL_402:
     [v360 setWallpaperPropertiesTimestamp:0];
     [v361 setWallpaperPropertiesData:0];
     wallpaperPropertiesVersion = 0;
-    v7 = v492;
-    v117 = v481;
+    objectCopy = v492;
+    temporalFacesHelper = v481;
 LABEL_410:
     [v361 setWallpaperPropertiesVersion:wallpaperPropertiesVersion];
-    v311 = v490;
+    v311 = selfCopy;
     goto LABEL_411;
   }
 
@@ -2403,8 +2403,8 @@ LABEL_410:
     [v361 setWallpaperPropertiesData:v311->_wallpaperPropertiesData];
   }
 
-  v7 = v492;
-  v117 = v481;
+  objectCopy = v492;
+  temporalFacesHelper = v481;
   if (v311->_didSetWallpaperPropertiesVersion)
   {
     wallpaperPropertiesVersion = v311->_wallpaperPropertiesVersion;
@@ -2416,28 +2416,28 @@ LABEL_411:
 
   if (v311->_didSetSyndicationProcessingValue)
   {
-    v363 = [(PHAssetChangeRequest *)v311 getMediaAnalysisAttributesForAsset:v7];
+    v363 = [(PHAssetChangeRequest *)v311 getMediaAnalysisAttributesForAsset:objectCopy];
     [v363 setSyndicationProcessingValue:v311->_syndicationProcessingValue];
   }
 
   if (v311->_didSetSyndicationProcessingVersion)
   {
-    v364 = [(PHAssetChangeRequest *)v311 getMediaAnalysisAttributesForAsset:v7];
+    v364 = [(PHAssetChangeRequest *)v311 getMediaAnalysisAttributesForAsset:objectCopy];
     [v364 setSyndicationProcessingVersion:v311->_syndicationProcessingVersion];
   }
 
   if (v311->_didSetSyndicationIdentifier)
   {
     syndicationIdentifier = v311->_syndicationIdentifier;
-    v366 = [v7 additionalAttributes];
-    [v366 setSyndicationIdentifier:syndicationIdentifier];
+    additionalAttributes25 = [objectCopy additionalAttributes];
+    [additionalAttributes25 setSyndicationIdentifier:syndicationIdentifier];
   }
 
   if (v311->_didSetFaceAnalysisVersion)
   {
     faceAnalysisVersion = v311->_faceAnalysisVersion;
-    v368 = [v7 additionalAttributes];
-    [v368 setFaceAnalysisVersion:faceAnalysisVersion];
+    additionalAttributes26 = [objectCopy additionalAttributes];
+    [additionalAttributes26 setFaceAnalysisVersion:faceAnalysisVersion];
 
     didSetSceneClassifications = 1;
   }
@@ -2445,121 +2445,121 @@ LABEL_411:
   if (v311->_didSetLocalAnalysisStage)
   {
     localAnalysisStage = v311->_localAnalysisStage;
-    v370 = [v7 computeSyncAttributes];
-    v371 = [v370 localAnalysisStage];
+    computeSyncAttributes = [objectCopy computeSyncAttributes];
+    localAnalysisStage = [computeSyncAttributes localAnalysisStage];
 
-    if (localAnalysisStage <= v371)
+    if (localAnalysisStage <= localAnalysisStage)
     {
       v372 = v311->_localAnalysisStage;
-      v373 = [v7 computeSyncAttributes];
-      v374 = [v373 localAnalysisStage];
+      computeSyncAttributes2 = [objectCopy computeSyncAttributes];
+      localAnalysisStage2 = [computeSyncAttributes2 localAnalysisStage];
 
-      if (v372 < v374)
+      if (v372 < localAnalysisStage2)
       {
         v375 = PLBackendGetLog();
         if (os_log_type_enabled(v375, OS_LOG_TYPE_INFO))
         {
-          v376 = [v7 computeSyncAttributes];
-          v377 = [v376 localAnalysisStage];
-          v378 = v490->_localAnalysisStage;
-          v379 = [(PHChangeRequest *)v490 clientBundleID];
+          computeSyncAttributes3 = [objectCopy computeSyncAttributes];
+          localAnalysisStage3 = [computeSyncAttributes3 localAnalysisStage];
+          v378 = selfCopy->_localAnalysisStage;
+          clientBundleID = [(PHChangeRequest *)selfCopy clientBundleID];
           *buf = 67109634;
-          *&buf[4] = v377;
-          v7 = v492;
+          *&buf[4] = localAnalysisStage3;
+          objectCopy = v492;
           *&buf[8] = 1024;
           *&buf[10] = v378;
           *&buf[14] = 2114;
-          *&buf[16] = v379;
+          *&buf[16] = clientBundleID;
           _os_log_impl(&dword_19C86F000, v375, OS_LOG_TYPE_INFO, "[CCSS] Quietly dropping attempt to downgrade analysis stage from %d to %d by client: %{public}@", buf, 0x18u);
         }
 
-        v311 = v490;
+        v311 = selfCopy;
       }
     }
 
     else
     {
-      [MEMORY[0x1E69BE368] updateLocalComputeSyncStageAfterProcessingForAsset:v7 stage:v311->_localAnalysisStage];
+      [MEMORY[0x1E69BE368] updateLocalComputeSyncStageAfterProcessingForAsset:objectCopy stage:v311->_localAnalysisStage];
     }
   }
 
   if (v311->_didSetViewPresentation)
   {
     viewPresentation = v311->_viewPresentation;
-    v381 = [v7 additionalAttributes];
-    [v381 setViewPresentation:viewPresentation];
+    additionalAttributes27 = [objectCopy additionalAttributes];
+    [additionalAttributes27 setViewPresentation:viewPresentation];
   }
 
   if (v311->_didSetSceneprintData)
   {
-    v382 = [v7 additionalAttributes];
-    [v382 setSceneprintWithData:v311->_sceneprintData];
+    additionalAttributes28 = [objectCopy additionalAttributes];
+    [additionalAttributes28 setSceneprintWithData:v311->_sceneprintData];
   }
 
   if (v311->_didSetDuplicateMatchingData)
   {
-    v383 = [v7 additionalAttributes];
-    [v383 setDuplicateMatchingData:v311->_duplicateMatchingData duplicateMatchingAlternateData:v311->_duplicateMatchingAlternateData processingSucceeded:v311->_duplicateProcessingSucceeded];
+    additionalAttributes29 = [objectCopy additionalAttributes];
+    [additionalAttributes29 setDuplicateMatchingData:v311->_duplicateMatchingData duplicateMatchingAlternateData:v311->_duplicateMatchingAlternateData processingSucceeded:v311->_duplicateProcessingSucceeded];
 
     didSetSceneClassifications = 1;
   }
 
   if (v311->_didSetReverseLocationData)
   {
-    v384 = [v7 additionalAttributes];
-    [v384 setReverseLocationData:v311->_reverseLocationData];
+    additionalAttributes30 = [objectCopy additionalAttributes];
+    [additionalAttributes30 setReverseLocationData:v311->_reverseLocationData];
   }
 
   if (v311->_didSetReverseLocationDataIsValid)
   {
-    v385 = [v7 additionalAttributes];
+    additionalAttributes31 = [objectCopy additionalAttributes];
     v386 = [MEMORY[0x1E696AD98] numberWithBool:v311->_reverseLocationDataIsValid];
-    [v385 setReverseLocationDataIsValid:v386];
+    [additionalAttributes31 setReverseLocationDataIsValid:v386];
   }
 
   if (v311->_didSetShiftedLocation)
   {
-    v387 = [v7 additionalAttributes];
-    [v387 setShiftedLocation:v311->_shiftedLocation];
+    additionalAttributes32 = [objectCopy additionalAttributes];
+    [additionalAttributes32 setShiftedLocation:v311->_shiftedLocation];
 
-    v388 = [v7 additionalAttributes];
-    [v388 setShiftedLocationIsValid:1];
+    additionalAttributes33 = [objectCopy additionalAttributes];
+    [additionalAttributes33 setShiftedLocationIsValid:1];
   }
 
   if (v311->_didSetObjectSaliencyRectsData)
   {
-    v389 = [v7 additionalAttributes];
-    [v389 setObjectSaliencyRectsData:v311->_objectSaliencyRectsData];
+    additionalAttributes34 = [objectCopy additionalAttributes];
+    [additionalAttributes34 setObjectSaliencyRectsData:v311->_objectSaliencyRectsData];
   }
 
   if (v311->_alternateImportImageDate)
   {
-    v390 = [v7 additionalAttributes];
-    [v390 setAlternateImportImageDate:v311->_alternateImportImageDate];
+    additionalAttributes35 = [objectCopy additionalAttributes];
+    [additionalAttributes35 setAlternateImportImageDate:v311->_alternateImportImageDate];
   }
 
   if (v311->_didSetSavedAssetType)
   {
-    [v7 setSavedAssetType:v490->_savedAssetType];
+    [objectCopy setSavedAssetType:selfCopy->_savedAssetType];
   }
 
   if (didSetSceneClassifications)
   {
-    v391 = [MEMORY[0x1E695DF00] date];
-    [v7 setAnalysisStateModificationDate:v391];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [objectCopy setAnalysisStateModificationDate:date2];
   }
 
   if (v479)
   {
-    v392 = [v7 photoLibrary];
-    v393 = [MEMORY[0x1E69BE2B8] maskForFeatureAvailability];
-    [v392 signalBackgroundProcessingNeededForWorkerTypes:v393];
+    photoLibrary4 = [objectCopy photoLibrary];
+    maskForFeatureAvailability = [MEMORY[0x1E69BE2B8] maskForFeatureAvailability];
+    [photoLibrary4 signalBackgroundProcessingNeededForWorkerTypes:maskForFeatureAvailability];
   }
 
-  if (v490->_didSetKeywordTitles)
+  if (selfCopy->_didSetKeywordTitles)
   {
-    v394 = [v491 keywordManager];
-    v355 = [v394 setKeywords:v490->_keywordTitles forAsset:v7];
+    keywordManager = [libraryCopy keywordManager];
+    v355 = [keywordManager setKeywords:selfCopy->_keywordTitles forAsset:objectCopy];
     if ((v355 & 1) == 0)
     {
       v395 = MEMORY[0x1E696ABC0];
@@ -2568,27 +2568,27 @@ LABEL_411:
       v396 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v579 forKeys:&v578 count:1];
       v397 = [v395 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v396];
 
-      v7 = v492;
+      objectCopy = v492;
       v471 = v397;
     }
   }
 
   v10 = v471;
-  if (v490->_didSetScreenTimeDeviceImageSensitivity)
+  if (selfCopy->_didSetScreenTimeDeviceImageSensitivity)
   {
-    v398 = [(PHAssetChangeRequest *)v490 getMediaAnalysisAttributesForAsset:v7];
-    [v398 setScreenTimeDeviceImageSensitivity:v490->_screenTimeDeviceImageSensitivity];
+    v398 = [(PHAssetChangeRequest *)selfCopy getMediaAnalysisAttributesForAsset:objectCopy];
+    [v398 setScreenTimeDeviceImageSensitivity:selfCopy->_screenTimeDeviceImageSensitivity];
   }
 
-  pathsToNewAssetResourcesByAssetResourceType = v490->_pathsToNewAssetResourcesByAssetResourceType;
+  pathsToNewAssetResourcesByAssetResourceType = selfCopy->_pathsToNewAssetResourcesByAssetResourceType;
   if (pathsToNewAssetResourcesByAssetResourceType)
   {
     v507 = 0u;
     v508 = 0u;
     v505 = 0u;
     v506 = 0u;
-    v485 = [(NSDictionary *)pathsToNewAssetResourcesByAssetResourceType allKeys];
-    v400 = [v485 countByEnumeratingWithState:&v505 objects:v577 count:16];
+    allKeys = [(NSDictionary *)pathsToNewAssetResourcesByAssetResourceType allKeys];
+    v400 = [allKeys countByEnumeratingWithState:&v505 objects:v577 count:16];
     if (!v400)
     {
       goto LABEL_484;
@@ -2606,17 +2606,17 @@ LABEL_411:
       {
         if (*v506 != v402)
         {
-          objc_enumerationMutation(v485);
+          objc_enumerationMutation(allKeys);
         }
 
         v407 = *(*(&v505 + 1) + 8 * v406);
         if (!PHAssetResourceTypeClientCanAppendToOrDeleteFromAsset([v407 integerValue]))
         {
-          v414 = [*(v403 + 3776) stringWithFormat:@"adding asset resource of type %@ is not allowed", v407];
+          v407 = [*(v403 + 3776) stringWithFormat:@"adding asset resource of type %@ is not allowed", v407];
           v415 = *(v405 + 3008);
           v573 = v404;
-          v488 = v414;
-          v574 = v414;
+          v488 = v407;
+          v574 = v407;
           v416 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v574 forKeys:&v573 count:1];
           v417 = [v415 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3111 userInfo:v416];
 LABEL_473:
@@ -2628,16 +2628,16 @@ LABEL_473:
           goto LABEL_474;
         }
 
-        v408 = [(NSDictionary *)v490->_pathsToNewAssetResourcesByAssetResourceType objectForKeyedSubscript:v407];
-        v409 = [v407 integerValue];
-        if (v409 <= 100)
+        v408 = [(NSDictionary *)selfCopy->_pathsToNewAssetResourcesByAssetResourceType objectForKeyedSubscript:v407];
+        integerValue8 = [v407 integerValue];
+        if (integerValue8 <= 100)
         {
-          if ((v409 - 1) < 0x13)
+          if ((integerValue8 - 1) < 0x13)
           {
             goto LABEL_471;
           }
 
-          if (v409 == 20)
+          if (integerValue8 == 20)
           {
             v504 = 0;
             v412 = [v492 installExistingAlchemistImageAtPath:v408 error:&v504];
@@ -2648,8 +2648,8 @@ LABEL_473:
 
         else
         {
-          v410 = v409 - 110;
-          if ((v409 - 110) <= 9)
+          v410 = integerValue8 - 110;
+          if ((integerValue8 - 110) <= 9)
           {
             if (((1 << v410) & 0x2F) != 0)
             {
@@ -2658,7 +2658,7 @@ LABEL_473:
 
             if (((1 << v410) & 0x3C0) != 0)
             {
-              v411 = ResourceRecipeIDForDeletableAssetResourceType(v409);
+              v411 = ResourceRecipeIDForDeletableAssetResourceType(integerValue8);
               v501 = 0;
               v412 = [v492 installExistingAlchemistV2ResourceFileAtPath:v408 recipeID:v411 error:&v501];
               v413 = v501;
@@ -2681,14 +2681,14 @@ LABEL_479:
             goto LABEL_480;
           }
 
-          if ((v409 - 101) < 8)
+          if ((integerValue8 - 101) < 8)
           {
 LABEL_471:
             v488 = v408;
-            v418 = [*(v403 + 3776) stringWithFormat:@"adding asset resource type %@ is allowed but not currently supported", v407];
+            v4072 = [*(v403 + 3776) stringWithFormat:@"adding asset resource type %@ is allowed but not currently supported", v407];
             v419 = *(v405 + 3008);
             v575 = v404;
-            v576 = v418;
+            v576 = v4072;
             [MEMORY[0x1E695DF20] dictionaryWithObjects:&v576 forKeys:&v575 count:1];
             v420 = v401;
             v421 = v402;
@@ -2710,7 +2710,7 @@ LABEL_472:
             goto LABEL_473;
           }
 
-          if (v409 == 109)
+          if (integerValue8 == 109)
           {
             v503 = 0;
             v412 = [v492 installExistingWallpaperComputeResourcesFileAtPath:v408 error:&v503];
@@ -2735,20 +2735,20 @@ LABEL_474:
       }
 
       while (v401 != v406);
-      v427 = [v485 countByEnumeratingWithState:&v505 objects:v577 count:16];
+      v427 = [allKeys countByEnumeratingWithState:&v505 objects:v577 count:16];
       v401 = v427;
       if (!v427)
       {
 LABEL_484:
 
-        v7 = v492;
-        v117 = v481;
+        objectCopy = v492;
+        temporalFacesHelper = v481;
         break;
       }
     }
   }
 
-  assetResourceTypesToDelete = v490->_assetResourceTypesToDelete;
+  assetResourceTypesToDelete = selfCopy->_assetResourceTypesToDelete;
   if (assetResourceTypesToDelete)
   {
     v429 = v10;
@@ -2773,20 +2773,20 @@ LABEL_484:
           }
 
           v434 = *(*(&v497 + 1) + 8 * nn);
-          v435 = [v434 integerValue];
-          if (PHAssetResourceTypeClientCanAppendToOrDeleteFromAsset(v435))
+          integerValue9 = [v434 integerValue];
+          if (PHAssetResourceTypeClientCanAppendToOrDeleteFromAsset(integerValue9))
           {
-            v436 = [MEMORY[0x1E696AC08] defaultManager];
-            v437 = PathForDeletableAssetResourceType(v492, v435);
+            defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+            v437 = PathForDeletableAssetResourceType(v492, integerValue9);
             v496 = 0;
-            v438 = [v436 removeItemAtPath:v437 error:&v496];
-            v439 = v496;
+            v438 = [defaultManager2 removeItemAtPath:v437 error:&v496];
+            v434 = v496;
 
             if (v438 & 1) != 0 || (PLIsErrorFileNotFound())
             {
               if (v355)
               {
-                [v492 deleteResourcesWithRecipeID:ResourceRecipeIDForDeletableAssetResourceType(v435) andVersion:3];
+                [v492 deleteResourcesWithRecipeID:ResourceRecipeIDForDeletableAssetResourceType(integerValue9) andVersion:3];
                 v355 = 1;
               }
 
@@ -2798,21 +2798,21 @@ LABEL_484:
 
             else
             {
-              v439 = v439;
+              v434 = v434;
 
               v355 = 0;
-              v429 = v439;
+              v429 = v434;
             }
 
-            v117 = v481;
+            temporalFacesHelper = v481;
           }
 
           else
           {
-            v439 = [MEMORY[0x1E696AEC0] stringWithFormat:@"deleting asset resource of type %@ is not allowed", v434];
+            v434 = [MEMORY[0x1E696AEC0] stringWithFormat:@"deleting asset resource of type %@ is not allowed", v434];
             v440 = MEMORY[0x1E696ABC0];
             v570 = v486;
-            v571 = v439;
+            v571 = v434;
             v441 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v571 forKeys:&v570 count:1];
             v442 = [v440 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3111 userInfo:v441];
 
@@ -2830,12 +2830,12 @@ LABEL_484:
     if ((v355 & 1) == 0)
     {
       LOBYTE(v30) = 0;
-      v7 = v492;
+      objectCopy = v492;
       v10 = v429;
       goto LABEL_517;
     }
 
-    v7 = v492;
+    objectCopy = v492;
   }
 
   else
@@ -2848,17 +2848,17 @@ LABEL_484:
     v429 = v10;
   }
 
-  p_isa = &v490->super.super.isa;
-  if (v490->_deleteContextualVideoThumbnails)
+  p_isa = &selfCopy->super.super.isa;
+  if (selfCopy->_deleteContextualVideoThumbnails)
   {
     v495 = v429;
-    v444 = [v7 deleteContextualVideoThumbnailFilesWithError:&v495];
+    v444 = [objectCopy deleteContextualVideoThumbnailFilesWithError:&v495];
     v10 = v495;
 
     if (v444)
     {
       v429 = v10;
-      p_isa = &v490->super.super.isa;
+      p_isa = &selfCopy->super.super.isa;
       goto LABEL_509;
     }
 
@@ -2868,12 +2868,12 @@ LABEL_511:
   }
 
 LABEL_509:
-  v445 = [p_isa[66] mutableObjectIDsAndUUIDs];
+  mutableObjectIDsAndUUIDs4 = [p_isa[66] mutableObjectIDsAndUUIDs];
 
-  if (v445)
+  if (mutableObjectIDsAndUUIDs4)
   {
     v494 = v429;
-    v446 = [p_isa applyMutationsToAssetRelationshipWithKey:@"cloudComments" asset:v7 error:&v494];
+    v446 = [p_isa applyMutationsToAssetRelationshipWithKey:@"cloudComments" asset:objectCopy error:&v494];
     v10 = v494;
 
     if (!v446)
@@ -2887,12 +2887,12 @@ LABEL_509:
     v10 = v429;
   }
 
-  v447 = [(PHRelationshipChangeRequestHelper *)v490->_likesHelper mutableObjectIDsAndUUIDs];
+  mutableObjectIDsAndUUIDs5 = [(PHRelationshipChangeRequestHelper *)selfCopy->_likesHelper mutableObjectIDsAndUUIDs];
 
-  if (v447)
+  if (mutableObjectIDsAndUUIDs5)
   {
     v493 = v10;
-    LOBYTE(v30) = [(PHAssetChangeRequest *)v490 applyMutationsToAssetRelationshipWithKey:@"likeComments" asset:v7 error:&v493];
+    LOBYTE(v30) = [(PHAssetChangeRequest *)selfCopy applyMutationsToAssetRelationshipWithKey:@"likeComments" asset:objectCopy error:&v493];
     v448 = v493;
 
     v10 = v448;
@@ -2904,42 +2904,42 @@ LABEL_509:
   }
 
 LABEL_517:
-  v449 = v490;
-  if (v490->_libraryScopeOriginatorUUIDs)
+  v449 = selfCopy;
+  if (selfCopy->_libraryScopeOriginatorUUIDs)
   {
-    v450 = [v7 libraryScope];
-    if (v450)
+    libraryScope = [objectCopy libraryScope];
+    if (libraryScope)
     {
       v451 = MEMORY[0x1E69BE7D8];
-      [(NSSet *)v490->_libraryScopeOriginatorUUIDs allObjects];
+      [(NSSet *)selfCopy->_libraryScopeOriginatorUUIDs allObjects];
       v453 = v452 = v10;
-      v454 = [v451 participantsWithUUIDs:v453 inPhotoLibrary:v491];
+      v454 = [v451 participantsWithUUIDs:v453 inPhotoLibrary:libraryCopy];
 
       v455 = [MEMORY[0x1E695DFD8] setWithArray:v454];
-      [v7 setLibraryScope:v450 withContributors:v455];
+      [objectCopy setLibraryScope:libraryScope withContributors:v455];
 
       v10 = v452;
     }
 
-    v449 = v490;
+    v449 = selfCopy;
   }
 
   if (v449->_didSetPtpTrashedState)
   {
-    v263 = [v7 additionalAttributes];
-    [v263 setPtpTrashedState:v449->_ptpTrashedState];
+    managedObjectContext2 = [objectCopy additionalAttributes];
+    [managedObjectContext2 setPtpTrashedState:v449->_ptpTrashedState];
     v456 = 1;
-    v111 = v476;
+    facesHelper = v476;
 LABEL_523:
 
     goto LABEL_525;
   }
 
   v456 = 1;
-  v111 = v476;
+  facesHelper = v476;
 LABEL_525:
 
-  v31 = a5;
+  errorCopy2 = error;
   if (!v456)
   {
     LOBYTE(v30) = 0;
@@ -2947,11 +2947,11 @@ LABEL_525:
   }
 
 LABEL_526:
-  if (v31 && (v30 & 1) == 0)
+  if (errorCopy2 && (v30 & 1) == 0)
   {
     v457 = v10;
     LOBYTE(v30) = 0;
-    *v31 = v10;
+    *errorCopy2 = v10;
   }
 
 LABEL_530:
@@ -2959,20 +2959,20 @@ LABEL_530:
   return v30;
 }
 
-- (BOOL)validateReadAccessForContentURL:(id)a3 assetResource:(id)a4 error:(id *)a5
+- (BOOL)validateReadAccessForContentURL:(id)l assetResource:(id)resource error:(id *)error
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isFileURL])
+  lCopy = l;
+  resourceCopy = resource;
+  if ([lCopy isFileURL])
   {
-    if (!PLIsAssetsd() || -[PHChangeRequest isClientEntitled](self, "isClientEntitled") || ([v9 duplicateAllowsReadAccess] & 1) != 0)
+    if (!PLIsAssetsd() || -[PHChangeRequest isClientEntitled](self, "isClientEntitled") || ([resourceCopy duplicateAllowsReadAccess] & 1) != 0)
     {
       goto LABEL_7;
     }
 
-    v10 = [v8 path];
-    if ([MEMORY[0x1E69BF2E0] processWithID:self->_clientProcessIdentifier canReadSandboxForPath:v10])
+    path = [lCopy path];
+    if ([MEMORY[0x1E69BF2E0] processWithID:self->_clientProcessIdentifier canReadSandboxForPath:path])
     {
 
 LABEL_7:
@@ -2982,7 +2982,7 @@ LABEL_7:
     }
 
     v17 = MEMORY[0x1E696ABC0];
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid URL %@", v8, *MEMORY[0x1E696A578]];
+    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid URL %@", lCopy, *MEMORY[0x1E696A578]];
     v20 = v14;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
     v11 = [v17 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v18];
@@ -2992,17 +2992,17 @@ LABEL_7:
   {
     v13 = MEMORY[0x1E696ABC0];
     v21 = *MEMORY[0x1E696A578];
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid URL %@", v8];
-    v22[0] = v10;
+    path = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid URL %@", lCopy];
+    v22[0] = path;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
     v11 = [v13 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v14];
   }
 
-  if (a5)
+  if (error)
   {
     v15 = v11;
     v12 = 0;
-    *a5 = v11;
+    *error = v11;
   }
 
   else
@@ -3015,44 +3015,44 @@ LABEL_12:
   return v12;
 }
 
-- (id)getPhotoAnalysisAttributesForAsset:(id)a3
+- (id)getPhotoAnalysisAttributesForAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 photoAnalysisAttributes];
+  assetCopy = asset;
+  photoAnalysisAttributes = [assetCopy photoAnalysisAttributes];
 
-  if (v4)
+  if (photoAnalysisAttributes)
   {
-    v5 = [v3 photoAnalysisAttributes];
+    photoAnalysisAttributes2 = [assetCopy photoAnalysisAttributes];
   }
 
   else
   {
-    v6 = [v3 managedObjectContext];
-    v7 = [MEMORY[0x1E69BE610] entityName];
-    v5 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext();
+    managedObjectContext = [assetCopy managedObjectContext];
+    entityName = [MEMORY[0x1E69BE610] entityName];
+    photoAnalysisAttributes2 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext();
 
-    if (v5)
+    if (photoAnalysisAttributes2)
     {
-      [v3 setPhotoAnalysisAttributes:v5];
+      [assetCopy setPhotoAnalysisAttributes:photoAnalysisAttributes2];
     }
   }
 
-  return v5;
+  return photoAnalysisAttributes2;
 }
 
-- (BOOL)validateWriteAccessForContentURL:(id)a3 error:(id *)a4
+- (BOOL)validateWriteAccessForContentURL:(id)l error:(id *)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 isFileURL])
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
     if (!PLIsAssetsd() || [(PHChangeRequest *)self isClientEntitled])
     {
       goto LABEL_6;
     }
 
-    v7 = [v6 path];
-    if ([MEMORY[0x1E69BF2E0] processWithID:self->_clientProcessIdentifier canWriteSandboxForPath:v7])
+    path = [lCopy path];
+    if ([MEMORY[0x1E69BF2E0] processWithID:self->_clientProcessIdentifier canWriteSandboxForPath:path])
     {
 
 LABEL_6:
@@ -3062,7 +3062,7 @@ LABEL_6:
     }
 
     v14 = MEMORY[0x1E696ABC0];
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid URL %@", v6, *MEMORY[0x1E696A578]];
+    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid URL %@", lCopy, *MEMORY[0x1E696A578]];
     v17 = v11;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
     v8 = [v14 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v15];
@@ -3072,17 +3072,17 @@ LABEL_6:
   {
     v10 = MEMORY[0x1E696ABC0];
     v18 = *MEMORY[0x1E696A578];
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid URL %@", v6];
-    v19[0] = v7;
+    path = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid URL %@", lCopy];
+    v19[0] = path;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
     v8 = [v10 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v11];
   }
 
-  if (a4)
+  if (error)
   {
     v12 = v8;
     v9 = 0;
-    *a4 = v8;
+    *error = v8;
   }
 
   else
@@ -3095,15 +3095,15 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)validateContentEditingOutput:(id)a3 error:(id *)a4
+- (BOOL)validateContentEditingOutput:(id)output error:(id *)error
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 adjustmentData];
-  if (v7)
+  outputCopy = output;
+  adjustmentData = [outputCopy adjustmentData];
+  if (adjustmentData)
   {
     v43 = 0;
-    v8 = [(PHAssetChangeRequest *)self validateAdjustmentDataForAssetMutation:v7 error:&v43];
+    v8 = [(PHAssetChangeRequest *)self validateAdjustmentDataForAssetMutation:adjustmentData error:&v43];
     v9 = v43;
   }
 
@@ -3118,12 +3118,12 @@ LABEL_11:
     v8 = 0;
   }
 
-  v12 = [v6 renderedContentURL];
-  v13 = v12;
-  if (v8 && v12)
+  renderedContentURL = [outputCopy renderedContentURL];
+  v13 = renderedContentURL;
+  if (v8 && renderedContentURL)
   {
     v42 = v9;
-    v14 = [(PHAssetChangeRequest *)self validateWriteAccessForContentURL:v12 error:&v42];
+    v14 = [(PHAssetChangeRequest *)self validateWriteAccessForContentURL:renderedContentURL error:&v42];
     v15 = v42;
 
     if (!v14)
@@ -3138,7 +3138,7 @@ LABEL_11:
   {
     v16 = 0;
     v15 = v9;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_33;
     }
@@ -3146,20 +3146,20 @@ LABEL_11:
     goto LABEL_31;
   }
 
-  if ([v6 isAsyncAdjustment])
+  if ([outputCopy isAsyncAdjustment])
   {
     v41 = v9;
-    v16 = [(PHAssetChangeRequest *)self _validateAsyncContentEditingOutputPreviewRenderURLs:v6 error:&v41];
+    v16 = [(PHAssetChangeRequest *)self _validateAsyncContentEditingOutputPreviewRenderURLs:outputCopy error:&v41];
     v17 = v41;
 LABEL_11:
     v15 = v17;
     goto LABEL_12;
   }
 
-  if (([v6 isAsyncAdjustment] & 1) == 0)
+  if (([outputCopy isAsyncAdjustment] & 1) == 0)
   {
-    v18 = [v6 mediaType];
-    if (v18 == 2)
+    mediaType = [outputCopy mediaType];
+    if (mediaType == 2)
     {
       if (v13)
       {
@@ -3170,19 +3170,19 @@ LABEL_11:
       }
 
       v29 = objc_alloc(MEMORY[0x1E69C0910]);
-      v30 = [v7 formatIdentifier];
-      v31 = [v7 formatVersion];
-      v32 = [v7 data];
-      v33 = [v29 initWithFormatIdentifier:v30 formatVersion:v31 data:v32 baseVersion:0 editorBundleID:0 renderTypes:0];
+      formatIdentifier = [adjustmentData formatIdentifier];
+      formatVersion = [adjustmentData formatVersion];
+      data = [adjustmentData data];
+      v33 = [v29 initWithFormatIdentifier:formatIdentifier formatVersion:formatVersion data:data baseVersion:0 editorBundleID:0 renderTypes:0];
 
       if ([v33 isRecognizedFormat])
       {
 
 LABEL_26:
-        if ([v6 isLoopingLivePhoto])
+        if ([outputCopy isLoopingLivePhoto])
         {
           v37 = v9;
-          v16 = [(PHAssetChangeRequest *)self _validateAndGenerateStillImageForLoopingLivePhotoWithContentEditingOutput:v6 error:&v37];
+          v16 = [(PHAssetChangeRequest *)self _validateAndGenerateStillImageForLoopingLivePhotoWithContentEditingOutput:outputCopy error:&v37];
           v17 = v37;
           goto LABEL_11;
         }
@@ -3203,9 +3203,9 @@ LABEL_26:
 
     else
     {
-      if (v18 == 1)
+      if (mediaType == 1)
       {
-        if (![v6 isLoopingLivePhoto])
+        if (![outputCopy isLoopingLivePhoto])
         {
           v39 = v9;
           v26 = [(PHAssetChangeRequest *)self _validateImageURLForAssetMutation:v13 error:&v39];
@@ -3234,7 +3234,7 @@ LABEL_25:
 
 LABEL_30:
         v16 = 0;
-        if (!a4)
+        if (!error)
         {
 LABEL_33:
           v9 = v15;
@@ -3246,7 +3246,7 @@ LABEL_31:
         {
           v27 = v15;
           v16 = 0;
-          *a4 = v15;
+          *error = v15;
         }
 
         goto LABEL_33;
@@ -3255,7 +3255,7 @@ LABEL_31:
       v21 = MEMORY[0x1E696ABC0];
       v44 = *MEMORY[0x1E696A578];
       v22 = MEMORY[0x1E696AEC0];
-      v23 = [MEMORY[0x1E696AD98] numberWithInteger:v18];
+      v23 = [MEMORY[0x1E696AD98] numberWithInteger:mediaType];
       v24 = [v22 stringWithFormat:@"Cannot modify content type %@", v23];
       v45 = v24;
       v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
@@ -3267,7 +3267,7 @@ LABEL_31:
 
 LABEL_12:
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_33;
     }
@@ -3282,13 +3282,13 @@ LABEL_34:
   return v16;
 }
 
-- (BOOL)validateMutationsToManagedObject:(id)a3 error:(id *)a4
+- (BOOL)validateMutationsToManagedObject:(id)object error:(id *)error
 {
   v90[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PHChangeRequest *)self helper];
+  objectCopy = object;
+  helper = [(PHChangeRequest *)self helper];
   v78 = 0;
-  v8 = [v7 validateMutationsToManagedObject:v6 error:&v78];
+  v8 = [helper validateMutationsToManagedObject:objectCopy error:&v78];
   v9 = v78;
 
   if (!v8)
@@ -3296,37 +3296,37 @@ LABEL_34:
     goto LABEL_8;
   }
 
-  v10 = [(PHAssetChangeRequest *)self assetDescription];
+  assetDescription = [(PHAssetChangeRequest *)self assetDescription];
   v77 = v9;
-  v11 = [(PHAssetChangeRequest *)self validateAssetDescription:v10 error:&v77];
+  v11 = [(PHAssetChangeRequest *)self validateAssetDescription:assetDescription error:&v77];
   v12 = v77;
 
   if (!v11)
   {
     v9 = v12;
 LABEL_8:
-    v16 = [(PHAssetChangeRequest *)self contentEditingOutput];
+    contentEditingOutput = [(PHAssetChangeRequest *)self contentEditingOutput];
     goto LABEL_9;
   }
 
-  v13 = [(PHAssetChangeRequest *)self accessibilityDescription];
+  accessibilityDescription = [(PHAssetChangeRequest *)self accessibilityDescription];
   v76 = v12;
-  v14 = [(PHAssetChangeRequest *)self validateAccessibilityDescription:v13 error:&v76];
+  v14 = [(PHAssetChangeRequest *)self validateAccessibilityDescription:accessibilityDescription error:&v76];
   v9 = v76;
 
-  v15 = [(PHAssetChangeRequest *)self contentEditingOutput];
-  v16 = v15;
+  contentEditingOutput2 = [(PHAssetChangeRequest *)self contentEditingOutput];
+  contentEditingOutput = contentEditingOutput2;
   if (!v14)
   {
     goto LABEL_9;
   }
 
-  if ([v15 isOnlyChangingOriginalChoice])
+  if ([contentEditingOutput2 isOnlyChangingOriginalChoice])
   {
-    v17 = [v16 originalResourceChoice];
-    v18 = [v17 integerValue];
+    originalResourceChoice = [contentEditingOutput originalResourceChoice];
+    integerValue = [originalResourceChoice integerValue];
 
-    if (v18 >= 2)
+    if (integerValue >= 2)
     {
       v19 = MEMORY[0x1E696ABC0];
       v89 = *MEMORY[0x1E696A578];
@@ -3341,7 +3341,7 @@ LABEL_34:
       goto LABEL_35;
     }
 
-    if (([v6 isRAWPlusJPEG] & 1) == 0)
+    if (([objectCopy isRAWPlusJPEG] & 1) == 0)
     {
       v19 = MEMORY[0x1E696ABC0];
       v87 = *MEMORY[0x1E696A578];
@@ -3358,15 +3358,15 @@ LABEL_34:
     goto LABEL_24;
   }
 
-  if (v16 && ([v16 isOnlyChangingOriginalChoice] & 1) == 0)
+  if (contentEditingOutput && ([contentEditingOutput isOnlyChangingOriginalChoice] & 1) == 0)
   {
     v75 = v9;
-    v55 = [(PHAssetChangeRequest *)self validateContentEditingOutput:v16 error:&v75];
+    v55 = [(PHAssetChangeRequest *)self validateContentEditingOutput:contentEditingOutput error:&v75];
     v56 = v75;
 
-    v57 = [v16 originalResourceChoice];
+    originalResourceChoice2 = [contentEditingOutput originalResourceChoice];
 
-    if (!v57)
+    if (!originalResourceChoice2)
     {
       if (!v55)
       {
@@ -3379,32 +3379,32 @@ LABEL_34:
       goto LABEL_24;
     }
 
-    v58 = [v16 originalResourceChoice];
-    v59 = [v58 integerValue];
+    originalResourceChoice3 = [contentEditingOutput originalResourceChoice];
+    integerValue2 = [originalResourceChoice3 integerValue];
 
-    v60 = v6;
-    v61 = [v60 pathForOriginalFile];
-    v62 = [v61 pathExtension];
+    v60 = objectCopy;
+    pathForOriginalFile = [v60 pathForOriginalFile];
+    pathExtension = [pathForOriginalFile pathExtension];
 
-    v63 = [MEMORY[0x1E69BE540] uniformTypeIdentifierFromPathExtension:v62 assetType:{objc_msgSend(v60, "kind")}];
+    v63 = [MEMORY[0x1E69BE540] uniformTypeIdentifierFromPathExtension:pathExtension assetType:{objc_msgSend(v60, "kind")}];
     v74 = [MEMORY[0x1E69C08F0] typeWithIdentifier:v63];
-    if ([v74 conformsToType:*MEMORY[0x1E6982F88]] && (v59 - 1) < 2 || objc_msgSend(v60, "isRAWPlusJPEG") && (v59 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    if ([v74 conformsToType:*MEMORY[0x1E6982F88]] && (integerValue2 - 1) < 2 || objc_msgSend(v60, "isRAWPlusJPEG") && (integerValue2 & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
       v72 = MEMORY[0x1E696ABC0];
       v85 = *MEMORY[0x1E696A578];
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid original resource choice: %ld", v59];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid original resource choice: %ld", integerValue2];
       v73 = v60;
       v64 = v63;
       v66 = v65 = v56;
       v86 = v66;
       [MEMORY[0x1E695DF20] dictionaryWithObjects:&v86 forKeys:&v85 count:1];
-      v68 = v67 = v62;
+      v68 = v67 = pathExtension;
       v9 = [v72 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3300 userInfo:v68];
 
       v63 = v64;
       v60 = v73;
 
-      v62 = v67;
+      pathExtension = v67;
       v55 = 0;
     }
 
@@ -3423,34 +3423,34 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v26 = [(PHChangeRequest *)self photoLibrary];
-  if (![v26 isCloudPhotoLibraryEnabled])
+  photoLibrary = [(PHChangeRequest *)self photoLibrary];
+  if (![photoLibrary isCloudPhotoLibraryEnabled])
   {
 LABEL_23:
 
     goto LABEL_24;
   }
 
-  v27 = [v6 entity];
+  entity = [objectCopy entity];
   v28 = MEMORY[0x1E69BE540];
-  v29 = [v6 managedObjectContext];
-  v30 = [v28 entityInManagedObjectContext:v29];
-  v31 = [v27 isKindOfEntity:v30];
+  managedObjectContext = [objectCopy managedObjectContext];
+  v30 = [v28 entityInManagedObjectContext:managedObjectContext];
+  v31 = [entity isKindOfEntity:v30];
 
   if (v31)
   {
-    v26 = v6;
-    v32 = [v26 master];
-    if (v32)
+    photoLibrary = objectCopy;
+    master = [photoLibrary master];
+    if (master)
     {
-      v33 = [v26 additionalAttributes];
-      v34 = [v33 originalResourceChoice];
-      v35 = [v34 integerValue] == 1;
+      additionalAttributes = [photoLibrary additionalAttributes];
+      originalResourceChoice4 = [additionalAttributes originalResourceChoice];
+      v35 = [originalResourceChoice4 integerValue] == 1;
 
-      v36 = [v26 uuid];
-      LODWORD(v34) = [v32 allOriginalsAreLocallyAvailableForAssetUuid:v36 useOriginalAltInsteadOfOriginal:v35];
+      uuid = [photoLibrary uuid];
+      LODWORD(originalResourceChoice4) = [master allOriginalsAreLocallyAvailableForAssetUuid:uuid useOriginalAltInsteadOfOriginal:v35];
 
-      if (!v34)
+      if (!originalResourceChoice4)
       {
         v69 = MEMORY[0x1E696ABC0];
         v83 = *MEMORY[0x1E696A578];
@@ -3470,17 +3470,17 @@ LABEL_23:
 LABEL_24:
   if (self->_didPromoteToGuestAsset)
   {
-    v37 = v6;
+    v37 = objectCopy;
     [MEMORY[0x1E69BF328] maskForAllowedToPromoteToGuestAsset];
     [v37 savedAssetType];
     if (!PLValidatedSavedAssetTypeApplies())
     {
       v47 = MEMORY[0x1E696AEC0];
-      v48 = [v37 uuid];
-      v49 = [v37 savedAssetType];
+      uuid2 = [v37 uuid];
+      savedAssetType = [v37 savedAssetType];
       [v37 savedAssetType];
       v50 = PLValidatedSavedAssetTypeDescription();
-      v51 = [v47 stringWithFormat:@"Not allowed to promote asset %@ savedAssetType %hd(%@) to Guest", v48, v49, v50];
+      v51 = [v47 stringWithFormat:@"Not allowed to promote asset %@ savedAssetType %hd(%@) to Guest", uuid2, savedAssetType, v50];
 
       v52 = MEMORY[0x1E696ABC0];
       v81 = *MEMORY[0x1E696A278];
@@ -3501,18 +3501,18 @@ LABEL_35:
     goto LABEL_13;
   }
 
-  v38 = v6;
+  v38 = objectCopy;
   [MEMORY[0x1E69BF328] maskForAllowedToPromoteToGuestAsset];
   [v38 savedAssetType];
   v23 = PLValidatedSavedAssetTypeApplies();
   if ((v23 & 1) == 0)
   {
     v39 = MEMORY[0x1E696AEC0];
-    v40 = [v38 uuid];
-    v41 = [v38 savedAssetType];
+    uuid3 = [v38 uuid];
+    savedAssetType2 = [v38 savedAssetType];
     [v38 savedAssetType];
     v42 = PLValidatedSavedAssetTypeDescription();
-    v43 = [v39 stringWithFormat:@"Not allowed to reset promote asset %@ savedAssetType %hd(%@) to Guest", v40, v41, v42];
+    v43 = [v39 stringWithFormat:@"Not allowed to reset promote asset %@ savedAssetType %hd(%@) to Guest", uuid3, savedAssetType2, v42];
 
     v44 = MEMORY[0x1E696ABC0];
     v79 = *MEMORY[0x1E696A278];
@@ -3524,11 +3524,11 @@ LABEL_35:
   }
 
 LABEL_10:
-  if (a4 && (v23 & 1) == 0)
+  if (error && (v23 & 1) == 0)
   {
     v24 = v9;
     v23 = 0;
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_13:
@@ -3536,14 +3536,14 @@ LABEL_13:
   return v23;
 }
 
-- (BOOL)_validateAsyncContentEditingOutputPreviewRenderURLs:(id)a3 error:(id *)a4
+- (BOOL)_validateAsyncContentEditingOutputPreviewRenderURLs:(id)ls error:(id *)error
 {
-  v6 = a3;
-  if ([v6 mediaType] == 2)
+  lsCopy = ls;
+  if ([lsCopy mediaType] == 2)
   {
-    v7 = [v6 renderedVideoPosterURL];
+    renderedVideoPosterURL = [lsCopy renderedVideoPosterURL];
     v16 = 0;
-    v8 = [(PHAssetChangeRequest *)self _validateImageURLForAssetMutation:v7 error:&v16];
+    v8 = [(PHAssetChangeRequest *)self _validateImageURLForAssetMutation:renderedVideoPosterURL error:&v16];
     v9 = v16;
 
     if (v8)
@@ -3559,16 +3559,16 @@ LABEL_13:
   }
 
   v11 = v9;
-  v12 = [v6 renderedPreviewContentURL];
+  renderedPreviewContentURL = [lsCopy renderedPreviewContentURL];
   v15 = v9;
-  v10 = [(PHAssetChangeRequest *)self _validateImageURLForAssetMutation:v12 error:&v15];
+  v10 = [(PHAssetChangeRequest *)self _validateImageURLForAssetMutation:renderedPreviewContentURL error:&v15];
   v9 = v15;
 
-  if (a4 && !v10)
+  if (error && !v10)
   {
     v13 = v9;
     v10 = 0;
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_8:
@@ -3576,11 +3576,11 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)validateAccessibilityDescription:(id)a3 error:(id *)a4
+- (BOOL)validateAccessibilityDescription:(id)description error:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6 || [(PHChangeRequest *)self isClientEntitled]|| [(PHAssetChangeRequest *)self duplicateAllowsPrivateMetadata])
+  descriptionCopy = description;
+  if (!descriptionCopy || [(PHChangeRequest *)self isClientEntitled]|| [(PHAssetChangeRequest *)self duplicateAllowsPrivateMetadata])
   {
     v7 = 0;
     v8 = 1;
@@ -3594,11 +3594,11 @@ LABEL_8:
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
     v7 = [v10 ph_errorWithDomain:@"PHPhotosErrorDomain" code:5101 userInfo:v11];
 
-    if (a4)
+    if (error)
     {
       v12 = v7;
       v8 = 0;
-      *a4 = v7;
+      *error = v7;
     }
 
     else
@@ -3610,11 +3610,11 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)validateAssetDescription:(id)a3 error:(id *)a4
+- (BOOL)validateAssetDescription:(id)description error:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6 || [(PHChangeRequest *)self isClientEntitled]|| [(PHAssetChangeRequest *)self duplicateAllowsPrivateMetadata])
+  descriptionCopy = description;
+  if (!descriptionCopy || [(PHChangeRequest *)self isClientEntitled]|| [(PHAssetChangeRequest *)self duplicateAllowsPrivateMetadata])
   {
     v7 = 0;
     v8 = 1;
@@ -3628,11 +3628,11 @@ LABEL_8:
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
     v7 = [v10 ph_errorWithDomain:@"PHPhotosErrorDomain" code:5101 userInfo:v11];
 
-    if (a4)
+    if (error)
     {
       v12 = v7;
       v8 = 0;
-      *a4 = v7;
+      *error = v7;
     }
 
     else
@@ -3644,18 +3644,18 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)validateAdjustmentDataForAssetMutation:(id)a3 error:(id *)a4
+- (BOOL)validateAdjustmentDataForAssetMutation:(id)mutation error:(id *)error
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 formatIdentifier];
-  v8 = [v7 lowercaseString];
-  v9 = [v8 hasPrefix:@"com.apple."];
+  mutationCopy = mutation;
+  formatIdentifier = [mutationCopy formatIdentifier];
+  lowercaseString = [formatIdentifier lowercaseString];
+  v9 = [lowercaseString hasPrefix:@"com.apple."];
 
   if (!v9 || self->_clientEntitled || (-[NSString lowercaseString](self->_editorBundleID, "lowercaseString"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 hasPrefix:@"com.apple."], v10, (v11 & 1) != 0))
   {
-    v12 = [v6 data];
-    if (![v12 length])
+    data = [mutationCopy data];
+    if (![data length])
     {
       v18 = MEMORY[0x1E696ABC0];
       v28 = *MEMORY[0x1E696A578];
@@ -3666,7 +3666,7 @@ LABEL_8:
       goto LABEL_11;
     }
 
-    v13 = [v12 length];
+    v13 = [data length];
     if (v13 <= +[PHContentEditingOutput maximumAdjustmentDataLength])
     {
 
@@ -3687,8 +3687,8 @@ LABEL_8:
   {
     v14 = MEMORY[0x1E696ABC0];
     v30 = *MEMORY[0x1E696A578];
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid format identifier %@", v7];
-    v31[0] = v12;
+    data = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid format identifier %@", formatIdentifier];
+    v31[0] = data;
     v15 = MEMORY[0x1E695DF20];
     v16 = v31;
     v17 = &v30;
@@ -3700,11 +3700,11 @@ LABEL_8:
 LABEL_11:
   v22 = [v20 ph_errorWithDomain:@"PHPhotosErrorDomain" code:v21 userInfo:v19];
 
-  if (a4)
+  if (error)
   {
     v24 = v22;
     v23 = 0;
-    *a4 = v22;
+    *error = v22;
   }
 
   else
@@ -3717,35 +3717,35 @@ LABEL_14:
   return v23;
 }
 
-- (BOOL)validateVideoURLForAssetMutation:(id)a3 error:(id *)a4
+- (BOOL)validateVideoURLForAssetMutation:(id)mutation error:(id *)error
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  mutationCopy = mutation;
+  if (mutationCopy)
   {
     v6 = objc_alloc_init(PHValidator);
-    LOBYTE(a4) = [(PHValidator *)v6 validateURL:v5 withOptions:32 error:a4];
+    LOBYTE(error) = [(PHValidator *)v6 validateURL:mutationCopy withOptions:32 error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
     v7 = MEMORY[0x1E696ABC0];
     v10 = *MEMORY[0x1E696A578];
     v11[0] = @"failed to validate with nil url";
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    *a4 = [v7 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3303 userInfo:v8];
+    *error = [v7 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3303 userInfo:v8];
 
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
   }
 
-  return a4;
+  return error;
 }
 
-- (BOOL)_validateImageURLForAssetMutation:(id)a3 error:(id *)a4
+- (BOOL)_validateImageURLForAssetMutation:(id)mutation error:(id *)error
 {
   v62[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = CGImageSourceCreateWithURL(v6, 0);
+  mutationCopy = mutation;
+  v7 = CGImageSourceCreateWithURL(mutationCopy, 0);
   if (!v7)
   {
     v23 = MEMORY[0x1E696ABC0];
@@ -3795,23 +3795,23 @@ LABEL_13:
 
 LABEL_6:
 
-  v12 = [(PHChangeRequest *)self helper];
-  v13 = [v12 clientLinkedAgainst];
-  v14 = [v13 clientLinkedOnOrAfterFall2023OSVersions];
+  helper = [(PHChangeRequest *)self helper];
+  clientLinkedAgainst = [helper clientLinkedAgainst];
+  clientLinkedOnOrAfterFall2023OSVersions = [clientLinkedAgainst clientLinkedOnOrAfterFall2023OSVersions];
 
-  if (v14)
+  if (clientLinkedOnOrAfterFall2023OSVersions)
   {
     v15 = MEMORY[0x1E6982C40];
-    v16 = [(__CFURL *)v6 pathExtension];
-    v9 = [v15 typeWithFilenameExtension:v16];
+    pathExtension = [(__CFURL *)mutationCopy pathExtension];
+    v9 = [v15 typeWithFilenameExtension:pathExtension];
 
     if (!v9 || ([v9 isDynamic] & 1) != 0 || (objc_msgSend(v11, "isEqual:", v9) & 1) == 0 && (!objc_msgSend(v11, "isEqual:", *MEMORY[0x1E6982E10]) || (v50 = *MEMORY[0x1E6983138], !objc_msgSend(v11, "conformsToType:", *MEMORY[0x1E6983138])) || !objc_msgSend(v9, "conformsToType:", v50)))
     {
       v17 = MEMORY[0x1E696ABC0];
       v57 = *MEMORY[0x1E696A278];
       v18 = MEMORY[0x1E696AEC0];
-      v19 = [(__CFURL *)v6 path];
-      v20 = [v18 stringWithFormat:@"Invalid image type (%@) for specified path: (%@)", v11, v19];
+      path = [(__CFURL *)mutationCopy path];
+      v20 = [v18 stringWithFormat:@"Invalid image type (%@) for specified path: (%@)", v11, path];
       v58 = v20;
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
       v22 = [v17 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3302 userInfo:v21];
@@ -3828,9 +3828,9 @@ LABEL_14:
   if (v36)
   {
     v37 = v36;
-    v38 = [v36 intValue];
+    intValue = [v36 intValue];
 
-    if (v38 != 1)
+    if (intValue != 1)
     {
       v26 = MEMORY[0x1E696ABC0];
       v55 = *MEMORY[0x1E696A278];
@@ -3870,9 +3870,9 @@ LABEL_14:
     goto LABEL_39;
   }
 
-  v45 = [v43 intValue];
+  intValue2 = [v43 intValue];
 
-  if (v45 != 1)
+  if (intValue2 != 1)
   {
 LABEL_33:
     v47 = MEMORY[0x1E696ABC0];
@@ -3899,11 +3899,11 @@ LABEL_40:
   }
 
 LABEL_16:
-  if (a4)
+  if (error)
   {
     v32 = v31;
     v33 = 0;
-    *a4 = v31;
+    *error = v31;
   }
 
   else
@@ -3916,37 +3916,37 @@ LABEL_19:
   return v33;
 }
 
-- (BOOL)_validateAndGenerateStillImageForLoopingLivePhotoWithContentEditingOutput:(id)a3 error:(id *)a4
+- (BOOL)_validateAndGenerateStillImageForLoopingLivePhotoWithContentEditingOutput:(id)output error:(id *)error
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 renderedContentURL];
-  v8 = [objc_alloc(MEMORY[0x1E6988168]) initWithURL:v7 options:0];
+  outputCopy = output;
+  renderedContentURL = [outputCopy renderedContentURL];
+  v8 = [objc_alloc(MEMORY[0x1E6988168]) initWithURL:renderedContentURL options:0];
   v9 = [objc_alloc(MEMORY[0x1E69C0718]) initWithAVAsset:v8 timeZoneLookup:0];
   if ([v9 isLoopingVideo])
   {
-    v10 = [v6 shouldPreferHEICForRenderedImages];
+    shouldPreferHEICForRenderedImages = [outputCopy shouldPreferHEICForRenderedImages];
     v11 = objc_opt_class();
-    v12 = [(PHChangeRequest *)self photoLibrary];
-    v13 = [v12 photoLibraryURL];
-    v14 = [v11 imageRenderURLUsingHEICFormat:v10 appropriateForURL:v13];
+    photoLibrary = [(PHChangeRequest *)self photoLibrary];
+    photoLibraryURL = [photoLibrary photoLibraryURL];
+    v14 = [v11 imageRenderURLUsingHEICFormat:shouldPreferHEICForRenderedImages appropriateForURL:photoLibraryURL];
 
-    [v6 setRenderedContentURL:v14];
-    [v6 setRenderedVideoComplementContentURL:v7];
+    [outputCopy setRenderedContentURL:v14];
+    [outputCopy setRenderedVideoComplementContentURL:renderedContentURL];
     v34 = [objc_alloc(MEMORY[0x1E6987E68]) initWithAsset:v8];
     v15 = [MEMORY[0x1E69C0708] copyCGImageFromImageGenerator:? atTime:? actualTime:? error:?];
     v33 = 0;
     if (v15)
     {
-      v16 = [v6 renderedContentURL];
+      renderedContentURL2 = [outputCopy renderedContentURL];
       v17 = MEMORY[0x1E6982E00];
-      if (!v10)
+      if (!shouldPreferHEICForRenderedImages)
       {
         v17 = MEMORY[0x1E6982E58];
       }
 
-      v18 = [*v17 identifier];
-      v19 = CGImageDestinationCreateWithURL(v16, v18, 1uLL, 0);
+      identifier = [*v17 identifier];
+      v19 = CGImageDestinationCreateWithURL(renderedContentURL2, identifier, 1uLL, 0);
 
       if (v19)
       {
@@ -3959,9 +3959,9 @@ LABEL_19:
           v40 = @"Failed to write still image";
           v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
           v22 = [v32 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v21];
-          if (a4)
+          if (error)
           {
-            *a4 = v22;
+            *error = v22;
           }
         }
 
@@ -3975,9 +3975,9 @@ LABEL_19:
         v38 = @"Failed to create still image";
         v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
         v30 = [v28 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v29];
-        if (a4)
+        if (error)
         {
-          *a4 = v30;
+          *error = v30;
         }
 
         v20 = 0;
@@ -3993,9 +3993,9 @@ LABEL_19:
       v36 = @"Failed to generate still image from rendered content";
       v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
       v27 = [v25 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v26];
-      if (a4)
+      if (error)
       {
-        *a4 = v27;
+        *error = v27;
       }
 
       v20 = 0;
@@ -4010,51 +4010,51 @@ LABEL_19:
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:&v41 count:1];
     v24 = [v23 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3302 userInfo:v14];
     v20 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = v24;
+      *error = v24;
     }
   }
 
   return v20;
 }
 
-- (void)setViewPresentation:(signed __int16)a3
+- (void)setViewPresentation:(signed __int16)presentation
 {
-  self->_viewPresentation = a3;
+  self->_viewPresentation = presentation;
   self->_didSetViewPresentation = 1;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setLocalAnalysisStage:(signed __int16)a3
+- (void)setLocalAnalysisStage:(signed __int16)stage
 {
-  self->_localAnalysisStage = a3;
+  self->_localAnalysisStage = stage;
   self->_didSetLocalAnalysisStage = 1;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setFaceAnalysisVersion:(signed __int16)a3
+- (void)setFaceAnalysisVersion:(signed __int16)version
 {
-  self->_faceAnalysisVersion = a3;
+  self->_faceAnalysisVersion = version;
   self->_didSetFaceAnalysisVersion = 1;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)_setSyndicationIdentifier:(id)a3
+- (void)_setSyndicationIdentifier:(id)identifier
 {
   self->_didSetSyndicationIdentifier = 1;
-  objc_storeStrong(&self->_syndicationIdentifier, a3);
+  objc_storeStrong(&self->_syndicationIdentifier, identifier);
 
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setSyndicationIdentifierOnMomentSharedAsset:(id)a3
+- (void)setSyndicationIdentifierOnMomentSharedAsset:(id)asset
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetCopy = asset;
   if ([(PHAsset *)self->_originalAsset sourceType]== 8)
   {
-    [(PHAssetChangeRequest *)self _setSyndicationIdentifier:v4];
+    [(PHAssetChangeRequest *)self _setSyndicationIdentifier:assetCopy];
   }
 
   else
@@ -4062,39 +4062,39 @@ LABEL_19:
     v5 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      v6 = [(PHObject *)self->_originalAsset uuid];
+      uuid = [(PHObject *)self->_originalAsset uuid];
       v7 = 138412290;
-      v8 = v6;
+      v8 = uuid;
       _os_log_impl(&dword_19C86F000, v5, OS_LOG_TYPE_FAULT, "syndicationIdentifier can only be set on PHAssetSourceTypeMomentShared assets: %@", &v7, 0xCu);
     }
   }
 }
 
-- (void)setSyndicationProcessingVersion:(unint64_t)a3
+- (void)setSyndicationProcessingVersion:(unint64_t)version
 {
   self->_didSetSyndicationProcessingVersion = 1;
-  self->_syndicationProcessingVersion = a3;
+  self->_syndicationProcessingVersion = version;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setSyndicationProcessingValue:(unsigned __int16)a3
+- (void)setSyndicationProcessingValue:(unsigned __int16)value
 {
   self->_didSetSyndicationProcessingValue = 1;
-  self->_syndicationProcessingValue = a3;
+  self->_syndicationProcessingValue = value;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setScreenTimeDeviceImageSensitivity:(signed __int16)a3
+- (void)setScreenTimeDeviceImageSensitivity:(signed __int16)sensitivity
 {
   self->_didSetScreenTimeDeviceImageSensitivity = 1;
-  self->_screenTimeDeviceImageSensitivity = a3;
+  self->_screenTimeDeviceImageSensitivity = sensitivity;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setLibraryScopeContributors:(id)a3
+- (void)setLibraryScopeContributors:(id)contributors
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = [a3 valueForKey:@"uuid"];
+  v5 = [contributors valueForKey:@"uuid"];
   v6 = [v4 setWithArray:v5];
   libraryScopeOriginatorUUIDs = self->_libraryScopeOriginatorUUIDs;
   self->_libraryScopeOriginatorUUIDs = v6;
@@ -4102,16 +4102,16 @@ LABEL_19:
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setTimeZone:(id)a3 withDate:(id)a4
+- (void)setTimeZone:(id)zone withDate:(id)date
 {
   self->_didSetTimeZone = 1;
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 name];
+  dateCopy = date;
+  zoneCopy = zone;
+  name = [zoneCopy name];
   timeZoneName = self->_timeZoneName;
-  self->_timeZoneName = v8;
+  self->_timeZoneName = name;
 
-  v10 = [v7 secondsFromGMTForDate:v6];
+  v10 = [zoneCopy secondsFromGMTForDate:dateCopy];
   self->_timeZoneOffsetValue = v10;
 
   [(PHChangeRequest *)self didMutate];
@@ -4122,8 +4122,8 @@ LABEL_19:
   self->_resetWallpaperProperties = 1;
   if (self->_didSetWallpaperPropertiesData)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3385 description:@"A change request should not have wallpaper proeprties data set if it is being reset."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3385 description:@"A change request should not have wallpaper proeprties data set if it is being reset."];
   }
 
   [(PHChangeRequest *)self didMutate];
@@ -4134,133 +4134,133 @@ LABEL_19:
   self->_resetVisualSearchProperties = 1;
   if (self->_didSetVisualSearchProperties)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3379 description:@"A change request should not have VisualSearch data set if it is being reset."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3379 description:@"A change request should not have VisualSearch data set if it is being reset."];
   }
 
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setStickerConfidenceScore:(float)a3 stickerAlgorithmVersion:(int64_t)a4
+- (void)setStickerConfidenceScore:(float)score stickerAlgorithmVersion:(int64_t)version
 {
   self->_didSetVisualSearchProperties = 1;
   self->_didSetStickerConfidenceScore = 1;
-  self->_stickerConfidenceScore = a3;
-  self->_stickerConfidenceScoreAlgorithmVersion = a4;
+  self->_stickerConfidenceScore = score;
+  self->_stickerConfidenceScoreAlgorithmVersion = version;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setCompactVideoSCSensitivityAnalysis:(int64_t)a3
+- (void)setCompactVideoSCSensitivityAnalysis:(int64_t)analysis
 {
-  self->_compactSCSensitivityAnalysis = a3;
-  v4 = [MEMORY[0x1E69BE5A0] currentVideoSensitivityAnalysisVersion];
-  self->_videoSensitivityAnalysisVersion = [v4 shortValue];
+  self->_compactSCSensitivityAnalysis = analysis;
+  currentVideoSensitivityAnalysisVersion = [MEMORY[0x1E69BE5A0] currentVideoSensitivityAnalysisVersion];
+  self->_videoSensitivityAnalysisVersion = [currentVideoSensitivityAnalysisVersion shortValue];
 
   self->_didSetCompactVideoSCSensitivityAnalysis = 1;
 
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setCompactVideoSCSensitivityAnalysis:(int64_t)a3 videoSensitivityAnalysisVersion:(signed __int16)a4
+- (void)setCompactVideoSCSensitivityAnalysis:(int64_t)analysis videoSensitivityAnalysisVersion:(signed __int16)version
 {
-  self->_compactSCSensitivityAnalysis = a3;
-  self->_videoSensitivityAnalysisVersion = a4;
+  self->_compactSCSensitivityAnalysis = analysis;
+  self->_videoSensitivityAnalysisVersion = version;
   self->_didSetCompactVideoSCSensitivityAnalysis = 1;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setCompactImageSCSensitivityAnalysis:(int64_t)a3
+- (void)setCompactImageSCSensitivityAnalysis:(int64_t)analysis
 {
-  self->_compactSCSensitivityAnalysis = a3;
+  self->_compactSCSensitivityAnalysis = analysis;
   self->_didSetCompactImageSCSensitivityAnalysis = 1;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setVisualSearchData:(id)a3 stickerConfidenceScore:(float)a4 algorithmVersion:(int64_t)a5 adjustmentVersion:(id)a6
+- (void)setVisualSearchData:(id)data stickerConfidenceScore:(float)score algorithmVersion:(int64_t)version adjustmentVersion:(id)adjustmentVersion
 {
-  v11 = a3;
-  v12 = a6;
+  dataCopy = data;
+  adjustmentVersionCopy = adjustmentVersion;
   self->_didSetVisualSearchProperties = 1;
   self->_didSetStickerConfidenceScore = 1;
   self->_didSetVisualSearchData = 1;
   if (self->_resetVisualSearchProperties)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3337 description:@"A change request should be resetting VisualSearch data set if it is setting new data."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3337 description:@"A change request should be resetting VisualSearch data set if it is setting new data."];
   }
 
-  if (a5 <= 0)
+  if (version <= 0)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3339 description:@"Cannot set a zero algorithm version"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3339 description:@"Cannot set a zero algorithm version"];
 
-    if (v12)
+    if (adjustmentVersionCopy)
     {
       goto LABEL_5;
     }
   }
 
-  else if (v12)
+  else if (adjustmentVersionCopy)
   {
     goto LABEL_5;
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3340 description:{@"Invalid parameter not satisfying: %@", @"adjustmentVersion"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3340 description:{@"Invalid parameter not satisfying: %@", @"adjustmentVersion"}];
 
 LABEL_5:
   visualSearchData = self->_visualSearchData;
-  self->_visualSearchData = v11;
-  v14 = v11;
+  self->_visualSearchData = dataCopy;
+  v14 = dataCopy;
 
-  self->_stickerConfidenceScore = a4;
-  self->_stickerConfidenceScoreAlgorithmVersion = a5;
-  self->_visualSearchAlgorithmVersion = a5;
+  self->_stickerConfidenceScore = score;
+  self->_stickerConfidenceScoreAlgorithmVersion = version;
+  self->_visualSearchAlgorithmVersion = version;
   visualSearchAdjustmentVersion = self->_visualSearchAdjustmentVersion;
-  self->_visualSearchAdjustmentVersion = v12;
+  self->_visualSearchAdjustmentVersion = adjustmentVersionCopy;
 
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setVisualSearchData:(id)a3 algorithmVersion:(int64_t)a4 adjustmentVersion:(id)a5
+- (void)setVisualSearchData:(id)data algorithmVersion:(int64_t)version adjustmentVersion:(id)adjustmentVersion
 {
-  v9 = a3;
-  v10 = a5;
+  dataCopy = data;
+  adjustmentVersionCopy = adjustmentVersion;
   self->_didSetVisualSearchProperties = 1;
   self->_didSetVisualSearchData = 1;
   if (self->_resetVisualSearchProperties)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3323 description:@"A change request should be resetting VisualSearch data set if it is setting new data."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3323 description:@"A change request should be resetting VisualSearch data set if it is setting new data."];
   }
 
-  if (a4 <= 0)
+  if (version <= 0)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3325 description:@"Cannot set a zero algorithm version"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3325 description:@"Cannot set a zero algorithm version"];
 
-    if (v10)
+    if (adjustmentVersionCopy)
     {
       goto LABEL_5;
     }
   }
 
-  else if (v10)
+  else if (adjustmentVersionCopy)
   {
     goto LABEL_5;
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3326 description:{@"Invalid parameter not satisfying: %@", @"adjustmentVersion"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3326 description:{@"Invalid parameter not satisfying: %@", @"adjustmentVersion"}];
 
 LABEL_5:
   visualSearchData = self->_visualSearchData;
-  self->_visualSearchData = v9;
-  v12 = v9;
+  self->_visualSearchData = dataCopy;
+  v12 = dataCopy;
 
-  self->_visualSearchAlgorithmVersion = a4;
+  self->_visualSearchAlgorithmVersion = version;
   visualSearchAdjustmentVersion = self->_visualSearchAdjustmentVersion;
-  self->_visualSearchAdjustmentVersion = v10;
+  self->_visualSearchAdjustmentVersion = adjustmentVersionCopy;
 
   [(PHChangeRequest *)self didMutate];
 }
@@ -4269,27 +4269,27 @@ LABEL_5:
 {
   if (self->_didSetTextUnderstandingProperties)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3316 description:@"A change request should not have TU data set if it is being reset."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3316 description:@"A change request should not have TU data set if it is being reset."];
   }
 
   self->_resetTextUnderstandingProperties = 1;
 }
 
-- (void)setTextUnderstandingData:(id)a3 version:(int64_t)a4
+- (void)setTextUnderstandingData:(id)data version:(int64_t)version
 {
-  v7 = a3;
+  dataCopy = data;
   if (self->_resetTextUnderstandingProperties)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3308 description:@"A change request should not be resetting OCR data set if it is setting new TU data."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3308 description:@"A change request should not be resetting OCR data set if it is setting new TU data."];
   }
 
   self->_didSetTextUnderstandingProperties = 1;
   textUnderstandingData = self->_textUnderstandingData;
-  self->_textUnderstandingData = v7;
+  self->_textUnderstandingData = dataCopy;
 
-  self->_textUnderstandingVersion = a4;
+  self->_textUnderstandingVersion = version;
 
   [(PHChangeRequest *)self didMutate];
 }
@@ -4299,211 +4299,211 @@ LABEL_5:
   self->_resetCharacterRecognitionProperties = 1;
   if (self->_didSetCharacterRecognitionData)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3303 description:@"A change request should not have OCR data set if it is being reset."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3303 description:@"A change request should not have OCR data set if it is being reset."];
   }
 
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setCharacterRecognitionData:(id)a3 machineReadableCodeData:(id)a4 algorithmVersion:(int64_t)a5 adjustmentVersion:(id)a6
+- (void)setCharacterRecognitionData:(id)data machineReadableCodeData:(id)codeData algorithmVersion:(int64_t)version adjustmentVersion:(id)adjustmentVersion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  dataCopy = data;
+  codeDataCopy = codeData;
+  adjustmentVersionCopy = adjustmentVersion;
   self->_didSetCharacterRecognitionData = 1;
   if (self->_resetCharacterRecognitionProperties)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3290 description:@"A change request should not be resetting OCR data set if it is setting new data."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3290 description:@"A change request should not be resetting OCR data set if it is setting new data."];
   }
 
-  if (a5 <= 0)
+  if (version <= 0)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3292 description:@"Cannot set a zero algorithm version"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3292 description:@"Cannot set a zero algorithm version"];
 
-    if (v13)
+    if (adjustmentVersionCopy)
     {
       goto LABEL_5;
     }
   }
 
-  else if (v13)
+  else if (adjustmentVersionCopy)
   {
     goto LABEL_5;
   }
 
-  v21 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3293 description:{@"Invalid parameter not satisfying: %@", @"adjustmentVersion"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3293 description:{@"Invalid parameter not satisfying: %@", @"adjustmentVersion"}];
 
 LABEL_5:
   characterRecognitionData = self->_characterRecognitionData;
-  self->_characterRecognitionData = v11;
-  v15 = v11;
+  self->_characterRecognitionData = dataCopy;
+  v15 = dataCopy;
 
   machineReadableCodeData = self->_machineReadableCodeData;
-  self->_machineReadableCodeData = v12;
-  v17 = v12;
+  self->_machineReadableCodeData = codeDataCopy;
+  v17 = codeDataCopy;
 
-  self->_characterRecognitionAlgorithmVersion = a5;
+  self->_characterRecognitionAlgorithmVersion = version;
   characterRecognitionAdjustmentVersion = self->_characterRecognitionAdjustmentVersion;
-  self->_characterRecognitionAdjustmentVersion = v13;
+  self->_characterRecognitionAdjustmentVersion = adjustmentVersionCopy;
 
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setColorNormalizationData:(id)a3
+- (void)setColorNormalizationData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   colorNormalizationData = self->_colorNormalizationData;
   self->_colorNormalizationData = v4;
 
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setProbableRotationDirectionConfidence:(float)a3
+- (void)setProbableRotationDirectionConfidence:(float)confidence
 {
   self->_didSetProbableRotationDirectionConfidence = 1;
-  self->_probableRotationDirectionConfidence = a3;
+  self->_probableRotationDirectionConfidence = confidence;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setProbableRotationDirection:(signed __int16)a3
+- (void)setProbableRotationDirection:(signed __int16)direction
 {
   self->_didSetProbableRotationDirection = 1;
-  self->_probableRotationDirection = a3;
+  self->_probableRotationDirection = direction;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setAudioClassification:(signed __int16)a3
+- (void)setAudioClassification:(signed __int16)classification
 {
   self->_didSetAudioClassification = 1;
-  self->_audioClassification = a3;
+  self->_audioClassification = classification;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setFaceCount:(unint64_t)a3
+- (void)setFaceCount:(unint64_t)count
 {
   self->_didSetFaceCount = 1;
-  self->_faceCount = a3;
+  self->_faceCount = count;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setSettlingEffectScore:(float)a3
+- (void)setSettlingEffectScore:(float)score
 {
   self->_didSetSettlingEffectScore = 1;
-  self->_settlingEffectScore = a3;
+  self->_settlingEffectScore = score;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setAudioScore:(float)a3
+- (void)setAudioScore:(float)score
 {
   self->_didSetAudioScore = 1;
-  self->_audioScore = a3;
+  self->_audioScore = score;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setActivityScore:(float)a3
+- (void)setActivityScore:(float)score
 {
   self->_didSetActivityScore = 1;
-  self->_activityScore = a3;
+  self->_activityScore = score;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setVideoScore:(float)a3
+- (void)setVideoScore:(float)score
 {
   self->_didSetVideoScore = 1;
-  self->_videoScore = a3;
+  self->_videoScore = score;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setVideoStickerSuggestionScore:(float)a3
+- (void)setVideoStickerSuggestionScore:(float)score
 {
   self->_didSetVideoStickerSuggestionScore = 1;
-  self->_videoStickerSuggestionScore = a3;
+  self->_videoStickerSuggestionScore = score;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setAutoplaySuggestionScore:(float)a3
+- (void)setAutoplaySuggestionScore:(float)score
 {
   self->_didSetAutoplaySuggestionScore = 1;
-  self->_autoplaySuggestionScore = a3;
+  self->_autoplaySuggestionScore = score;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setWallpaperScore:(float)a3
+- (void)setWallpaperScore:(float)score
 {
   self->_didSetWallpaperScore = 1;
-  self->_wallpaperScore = a3;
+  self->_wallpaperScore = score;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setExposureScore:(float)a3
+- (void)setExposureScore:(float)score
 {
   self->_didSetExposureScore = 1;
-  self->_exposureScore = a3;
+  self->_exposureScore = score;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setBlurrinessScore:(float)a3
+- (void)setBlurrinessScore:(float)score
 {
   self->_didSetBlurrinessScore = 1;
-  self->_blurrinessScore = a3;
+  self->_blurrinessScore = score;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setMediaAnalysisTimeStamp:(id)a3
+- (void)setMediaAnalysisTimeStamp:(id)stamp
 {
   self->_didSetMediaAnalysisTimeStamp = 1;
-  objc_storeStrong(&self->_mediaAnalysisTimeStamp, a3);
+  objc_storeStrong(&self->_mediaAnalysisTimeStamp, stamp);
 
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setMediaAnalysisImageVersion:(signed __int16)a3
+- (void)setMediaAnalysisImageVersion:(signed __int16)version
 {
   self->_didSetMediaAnalysisImageVersion = 1;
-  self->_mediaAnalysisImageVersion = a3;
+  self->_mediaAnalysisImageVersion = version;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setMediaAnalysisVersion:(unint64_t)a3
+- (void)setMediaAnalysisVersion:(unint64_t)version
 {
   self->_didSetMediaAnalysisVersion = 1;
-  self->_mediaAnalysisVersion = a3;
+  self->_mediaAnalysisVersion = version;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setComputeSyncMediaAnalysisPayload:(id)a3
+- (void)setComputeSyncMediaAnalysisPayload:(id)payload
 {
-  objc_storeStrong(&self->_computeSyncMediaAnalysisPayload, a3);
+  objc_storeStrong(&self->_computeSyncMediaAnalysisPayload, payload);
 
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setBestPlaybackRectWithNormalizedRect:(CGRect)a3
+- (void)setBestPlaybackRectWithNormalizedRect:(CGRect)rect
 {
   v5 = 0;
   v4 = 0;
-  [(PHAssetChangeRequest *)self setRectWithNormalizedRect:&v5 forPackedRect:&v4 forSetFlag:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PHAssetChangeRequest *)self setRectWithNormalizedRect:&v5 forPackedRect:&v4 forSetFlag:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   self->_packedBestPlaybackRect = v5;
   self->_didSetPackedBestPlaybackRect = v4;
 }
 
-- (void)setBestKeyFrame:(CGImage *)a3 time:(id *)a4
+- (void)setBestKeyFrame:(CGImage *)frame time:(id *)time
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = [(PHAsset *)self->_originalAsset isVideo];
-  if (a3 && v7)
+  isVideo = [(PHAsset *)self->_originalAsset isVideo];
+  if (frame && isVideo)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF88]);
-    v9 = [*MEMORY[0x1E6982E58] identifier];
-    v10 = CGImageDestinationCreateWithData(v8, v9, 1uLL, 0);
+    identifier = [*MEMORY[0x1E6982E58] identifier];
+    v10 = CGImageDestinationCreateWithData(v8, identifier, 1uLL, 0);
 
     if (v10)
     {
-      CGImageDestinationAddImage(v10, a3, 0);
+      CGImageDestinationAddImage(v10, frame, 0);
       CGImageDestinationFinalize(v10);
       CFRelease(v10);
     }
@@ -4512,24 +4512,24 @@ LABEL_5:
     self->_bestKeyFrameJPEGData = v8;
   }
 
-  if (a4->var2)
+  if (time->var2)
   {
-    var3 = a4->var3;
-    *&self->_bestKeyFrameTime.value = *&a4->var0;
+    var3 = time->var3;
+    *&self->_bestKeyFrameTime.value = *&time->var0;
     self->_bestKeyFrameTime.epoch = var3;
     v12 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       bestKeyFrameTime = self->_bestKeyFrameTime;
-      v13 = CMTimeCopyDescription(0, &bestKeyFrameTime);
+      uuid2 = CMTimeCopyDescription(0, &bestKeyFrameTime);
       v15 = [(NSData *)self->_bestKeyFrameJPEGData length];
-      v16 = [(PHChangeRequest *)self uuid];
+      uuid = [(PHChangeRequest *)self uuid];
       LODWORD(bestKeyFrameTime.value) = 138412802;
-      *(&bestKeyFrameTime.value + 4) = v13;
+      *(&bestKeyFrameTime.value + 4) = uuid2;
       LOWORD(bestKeyFrameTime.flags) = 2048;
       *(&bestKeyFrameTime.flags + 2) = v15;
       HIWORD(bestKeyFrameTime.epoch) = 2112;
-      v18 = v16;
+      v18 = uuid;
       _os_log_impl(&dword_19C86F000, v12, OS_LOG_TYPE_DEBUG, "Client setting best key frame time: %@ key frame image length: %lu for asset: %@", &bestKeyFrameTime, 0x20u);
 
       goto LABEL_11;
@@ -4542,9 +4542,9 @@ LABEL_5:
     v12 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [(PHChangeRequest *)self uuid];
+      uuid2 = [(PHChangeRequest *)self uuid];
       LODWORD(bestKeyFrameTime.value) = 138412290;
-      *(&bestKeyFrameTime.value + 4) = v13;
+      *(&bestKeyFrameTime.value + 4) = uuid2;
       _os_log_impl(&dword_19C86F000, v12, OS_LOG_TYPE_DEBUG, "Client unsetting best key frame time for asset: %@", &bestKeyFrameTime, 0xCu);
 LABEL_11:
     }
@@ -4553,77 +4553,77 @@ LABEL_11:
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setAnimatedStickerTimeRange:(id *)a3
+- (void)setAnimatedStickerTimeRange:(id *)range
 {
-  v4 = *&a3->var0.var3;
-  v3 = *&a3->var1.var1;
-  *&self->_animatedStickerTimeRange.start.value = *&a3->var0.var0;
+  v4 = *&range->var0.var3;
+  v3 = *&range->var1.var1;
+  *&self->_animatedStickerTimeRange.start.value = *&range->var0.var0;
   *&self->_animatedStickerTimeRange.start.epoch = v4;
   *&self->_animatedStickerTimeRange.duration.timescale = v3;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setBestVideoTimeRange:(id *)a3
+- (void)setBestVideoTimeRange:(id *)range
 {
-  v4 = *&a3->var0.var3;
-  v3 = *&a3->var1.var1;
-  *&self->_bestVideoTimeRange.start.value = *&a3->var0.var0;
+  v4 = *&range->var0.var3;
+  v3 = *&range->var1.var1;
+  *&self->_bestVideoTimeRange.start.value = *&range->var0.var0;
   *&self->_bestVideoTimeRange.start.epoch = v4;
   *&self->_bestVideoTimeRange.duration.timescale = v3;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setWallpaperPropertiesData:(id)a3
+- (void)setWallpaperPropertiesData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   if (self->_resetWallpaperProperties)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3127 description:@"A change request should be resetting wallpaper properties data set if it is setting new data."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3127 description:@"A change request should be resetting wallpaper properties data set if it is setting new data."];
   }
 
   self->_didSetWallpaperPropertiesData = 1;
   wallpaperPropertiesData = self->_wallpaperPropertiesData;
-  self->_wallpaperPropertiesData = v5;
+  self->_wallpaperPropertiesData = dataCopy;
 
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setWallpaperPropertiesVersion:(unint64_t)a3
+- (void)setWallpaperPropertiesVersion:(unint64_t)version
 {
   if (self->_resetWallpaperProperties)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3120 description:@"A change request should be resetting wallpaper properties version set if it is setting new version."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3120 description:@"A change request should be resetting wallpaper properties version set if it is setting new version."];
   }
 
   self->_didSetWallpaperPropertiesVersion = 1;
-  self->_wallpaperPropertiesVersion = a3;
+  self->_wallpaperPropertiesVersion = version;
 
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setWallpaperPropertiesTimestamp:(id)a3
+- (void)setWallpaperPropertiesTimestamp:(id)timestamp
 {
-  v5 = a3;
+  timestampCopy = timestamp;
   if (self->_resetWallpaperProperties)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3113 description:@"A change request should be resetting wallpaper properties timestamp set if it is setting new timestamp."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:3113 description:@"A change request should be resetting wallpaper properties timestamp set if it is setting new timestamp."];
   }
 
   self->_didSetWallpaperPropertiesTimestamp = 1;
   wallpaperPropertiesTimestamp = self->_wallpaperPropertiesTimestamp;
-  self->_wallpaperPropertiesTimestamp = v5;
+  self->_wallpaperPropertiesTimestamp = timestampCopy;
 
   [(PHChangeRequest *)self didMutate];
 }
 
-- (PHAssetChangeRequest)initWithCoder:(id)a3
+- (PHAssetChangeRequest)initWithCoder:(id)coder
 {
   v333[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"helper"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"helper"];
   [v5 setChangeRequest:self];
   [v5 setMutated:1];
   v6 = objc_alloc_init(MEMORY[0x1E69BE298]);
@@ -4632,60 +4632,60 @@ LABEL_11:
   if (v7)
   {
     v331 = v5;
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"detectedFaces"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"detectedFaces"];
     facesHelper = v7->_facesHelper;
     v7->_facesHelper = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"temporalDetectedFaces"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"temporalDetectedFaces"];
     temporalFacesHelper = v7->_temporalFacesHelper;
     v7->_temporalFacesHelper = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keywords"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keywords"];
     keywordsHelper = v7->_keywordsHelper;
     v7->_keywordsHelper = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cloudComments"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cloudComments"];
     commentsHelper = v7->_commentsHelper;
     v7->_commentsHelper = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"likeComments"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"likeComments"];
     likesHelper = v7->_likesHelper;
     v7->_likesHelper = v16;
 
     v7->_clientProcessIdentifier = [v6 clientProcessIdentifier];
-    v18 = [v6 photoKitEntitled];
+    photoKitEntitled = [v6 photoKitEntitled];
     v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didChangeAdjustments"];
-    v20 = [v4 decodeBoolForKey:v19];
+    v20 = [coderCopy decodeBoolForKey:v19];
 
     if (v20)
     {
       [(PHAssetChangeRequest *)v7 markDidChangeAdjustments];
       v21 = objc_opt_class();
       v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"contentEditingOutput"];
-      v23 = [v4 decodeObjectOfClass:v21 forKey:v22];
+      v23 = [coderCopy decodeObjectOfClass:v21 forKey:v22];
 
       [(PHAssetChangeRequest *)v7 setContentEditingOutput:v23];
-      if (v18)
+      if (photoKitEntitled)
       {
         v24 = objc_opt_class();
         v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"editorBundleURL"];
-        v26 = [v4 decodeObjectOfClass:v24 forKey:v25];
+        v26 = [coderCopy decodeObjectOfClass:v24 forKey:v25];
         editorBundleURL = v7->_editorBundleURL;
         v7->_editorBundleURL = v26;
 
         if (v7->_editorBundleURL)
         {
           v28 = [MEMORY[0x1E696AAE8] bundleWithURL:?];
-          v29 = [v28 bundleIdentifier];
+          bundleIdentifier = [v28 bundleIdentifier];
           editorBundleID = v7->_editorBundleID;
-          v7->_editorBundleID = v29;
+          v7->_editorBundleID = bundleIdentifier;
         }
 
         if (!v7->_editorBundleID)
         {
           v31 = objc_opt_class();
           v32 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"editorBundleID"];
-          v33 = [v4 decodeObjectOfClass:v31 forKey:v32];
+          v33 = [coderCopy decodeObjectOfClass:v31 forKey:v32];
           v34 = v7->_editorBundleID;
           v7->_editorBundleID = v33;
         }
@@ -4693,69 +4693,69 @@ LABEL_11:
     }
 
     v35 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"originalResourceChoice"];
-    v7->_originalResourceChoice = [v4 decodeIntegerForKey:v35];
+    v7->_originalResourceChoice = [coderCopy decodeIntegerForKey:v35];
 
     v36 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didSetOriginalResourceChoice"];
-    v7->_didSetOriginalResourceChoice = [v4 decodeBoolForKey:v36];
+    v7->_didSetOriginalResourceChoice = [coderCopy decodeBoolForKey:v36];
 
     v37 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didRevertLocationToOriginal"];
-    v7->_didRevertLocationToOriginal = [v4 decodeBoolForKey:v37];
+    v7->_didRevertLocationToOriginal = [coderCopy decodeBoolForKey:v37];
 
     v38 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didUpdateExtendedAttributesUsingOriginalMediaMetadata"];
-    v7->_didUpdateExtendedAttributesUsingOriginalMediaMetadata = [v4 decodeBoolForKey:v38];
+    v7->_didUpdateExtendedAttributesUsingOriginalMediaMetadata = [coderCopy decodeBoolForKey:v38];
 
     v39 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didExpungeAllSpatialOverCaptureResources"];
-    v7->_didExpungeAllSpatialOverCaptureResources = [v4 decodeBoolForKey:v39];
+    v7->_didExpungeAllSpatialOverCaptureResources = [coderCopy decodeBoolForKey:v39];
 
     v40 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didTrashAllSpatialOverCaptureResources"];
-    v7->_didTrashAllSpatialOverCaptureResources = [v4 decodeBoolForKey:v40];
+    v7->_didTrashAllSpatialOverCaptureResources = [coderCopy decodeBoolForKey:v40];
 
     v41 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didUntrashAllSpatialOverCaptureResources"];
-    v7->_didUntrashAllSpatialOverCaptureResources = [v4 decodeBoolForKey:v41];
+    v7->_didUntrashAllSpatialOverCaptureResources = [coderCopy decodeBoolForKey:v41];
 
     v42 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didExpungeTrashedSpatialOverCaptureResources"];
-    v7->_didExpungeTrashedSpatialOverCaptureResources = [v4 decodeBoolForKey:v42];
+    v7->_didExpungeTrashedSpatialOverCaptureResources = [coderCopy decodeBoolForKey:v42];
 
     v43 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didPromoteToGuestAsset"];
-    v7->_didPromoteToGuestAsset = [v4 decodeBoolForKey:v43];
+    v7->_didPromoteToGuestAsset = [coderCopy decodeBoolForKey:v43];
 
     v44 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didResetGuestAssetPromotion"];
-    v7->_didResetGuestAssetPromotion = [v4 decodeBoolForKey:v44];
+    v7->_didResetGuestAssetPromotion = [coderCopy decodeBoolForKey:v44];
 
     v45 = MEMORY[0x1E695DFD8];
     v46 = objc_opt_class();
     v47 = [v45 setWithObjects:{v46, objc_opt_class(), 0}];
     v48 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"updatedLocation"];
-    v49 = [v4 decodeObjectOfClasses:v47 forKey:v48];
+    v49 = [coderCopy decodeObjectOfClasses:v47 forKey:v48];
     updatedLocation = v7->_updatedLocation;
     v7->_updatedLocation = v49;
 
     v51 = objc_opt_class();
     v52 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"assetDescription"];
-    v53 = [v4 decodeObjectOfClass:v51 forKey:v52];
+    v53 = [coderCopy decodeObjectOfClass:v51 forKey:v52];
     assetDescription = v7->_assetDescription;
     v7->_assetDescription = v53;
 
     v55 = objc_opt_class();
     v56 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"accessibilityDescription"];
-    v57 = [v4 decodeObjectOfClass:v55 forKey:v56];
+    v57 = [coderCopy decodeObjectOfClass:v55 forKey:v56];
     accessibilityDescription = v7->_accessibilityDescription;
     v7->_accessibilityDescription = v57;
 
     v59 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didSetTitle"];
-    v7->_didSetTitle = [v4 decodeBoolForKey:v59];
+    v7->_didSetTitle = [coderCopy decodeBoolForKey:v59];
 
     if (v7->_didSetTitle)
     {
       v60 = objc_opt_class();
       v61 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"title"];
-      v62 = [v4 decodeObjectOfClass:v60 forKey:v61];
+      v62 = [coderCopy decodeObjectOfClass:v60 forKey:v61];
       title = v7->_title;
       v7->_title = v62;
     }
 
     v64 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didSetKeywordTitles"];
-    v7->_didSetKeywordTitles = [v4 decodeBoolForKey:v64];
+    v7->_didSetKeywordTitles = [coderCopy decodeBoolForKey:v64];
 
     if (v7->_didSetKeywordTitles)
     {
@@ -4763,26 +4763,26 @@ LABEL_11:
       v66 = objc_opt_class();
       v67 = [v65 setWithObjects:{v66, objc_opt_class(), 0}];
       v68 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"keywordTitles"];
-      v69 = [v4 decodeObjectOfClasses:v67 forKey:v68];
+      v69 = [coderCopy decodeObjectOfClasses:v67 forKey:v68];
       keywordTitles = v7->_keywordTitles;
       v7->_keywordTitles = v69;
     }
 
     v71 = objc_opt_class();
     v72 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"videoURLForUpdate"];
-    v73 = [v4 decodeObjectOfClass:v71 forKey:v72];
+    v73 = [coderCopy decodeObjectOfClass:v71 forKey:v72];
     videoURLForUpdate = v7->_videoURLForUpdate;
     v7->_videoURLForUpdate = v73;
 
     v75 = objc_opt_class();
     v76 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"pairingIdentifier"];
-    v77 = [v4 decodeObjectOfClass:v75 forKey:v76];
+    v77 = [coderCopy decodeObjectOfClass:v75 forKey:v76];
     pairingIdentifier = v7->_pairingIdentifier;
     v7->_pairingIdentifier = v77;
 
     v79 = objc_opt_class();
     v80 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"videoDuration"];
-    v81 = [v4 decodeObjectOfClass:v79 forKey:v80];
+    v81 = [coderCopy decodeObjectOfClass:v79 forKey:v80];
 
     p_videoDuration = &v7->_videoDuration;
     v330 = v81;
@@ -4803,7 +4803,7 @@ LABEL_11:
 
     v85 = objc_opt_class();
     v86 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"imageDisplayTime"];
-    v87 = [v4 decodeObjectOfClass:v85 forKey:v86];
+    v87 = [coderCopy decodeObjectOfClass:v85 forKey:v86];
 
     p_imageDisplayTime = &v7->_imageDisplayTime;
     v329 = v87;
@@ -4823,10 +4823,10 @@ LABEL_11:
     }
 
     v91 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"photoIrisVisibilityState"];
-    v7->_photoIrisVisibilityState = [v4 decodeIntegerForKey:v91];
+    v7->_photoIrisVisibilityState = [coderCopy decodeIntegerForKey:v91];
 
     v92 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didSetVisibilityState"];
-    v7->_didSetVisibilityState = [v4 decodeBoolForKey:v92];
+    v7->_didSetVisibilityState = [coderCopy decodeBoolForKey:v92];
 
     v93 = MEMORY[0x1E695DFD8];
     v333[0] = objc_opt_class();
@@ -4837,7 +4837,7 @@ LABEL_11:
     v94 = [MEMORY[0x1E695DEC8] arrayWithObjects:v333 count:5];
     v95 = [v93 setWithArray:v94];
     v96 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"sceneClassificationsByType"];
-    v97 = [v4 decodeObjectOfClasses:v95 forKey:v96];
+    v97 = [coderCopy decodeObjectOfClasses:v95 forKey:v96];
 
     if (v97)
     {
@@ -4849,58 +4849,58 @@ LABEL_11:
     }
 
     v100 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didSetImageEmbeddingVersionKey"];
-    v7->_didSetImageEmbeddingVersion = [v4 decodeBoolForKey:v100];
+    v7->_didSetImageEmbeddingVersion = [coderCopy decodeBoolForKey:v100];
 
     if (v7->_didSetImageEmbeddingVersion)
     {
       v101 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"imageEmbeddingVersion"];
-      v7->_imageEmbeddingVersion = [v4 decodeIntegerForKey:v101];
+      v7->_imageEmbeddingVersion = [coderCopy decodeIntegerForKey:v101];
     }
 
     v102 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didSetVideoEmbeddingVersionKey"];
-    v7->_didSetVideoEmbeddingVersion = [v4 decodeBoolForKey:v102];
+    v7->_didSetVideoEmbeddingVersion = [coderCopy decodeBoolForKey:v102];
 
     if (v7->_didSetVideoEmbeddingVersion)
     {
       v103 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"videoEmbeddingVersion"];
-      v7->_videoEmbeddingVersion = [v4 decodeIntegerForKey:v103];
+      v7->_videoEmbeddingVersion = [coderCopy decodeIntegerForKey:v103];
     }
 
     v328 = v97;
     v104 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"incrementPlayCount"];
-    v7->_incrementPlayCount = [v4 decodeBoolForKey:v104];
+    v7->_incrementPlayCount = [coderCopy decodeBoolForKey:v104];
 
     v105 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"incrementShareCount"];
-    v7->_incrementShareCount = [v4 decodeBoolForKey:v105];
+    v7->_incrementShareCount = [coderCopy decodeBoolForKey:v105];
 
     v106 = objc_opt_class();
     v107 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"lastSharedDate"];
-    v108 = [v4 decodeObjectOfClass:v106 forKey:v107];
+    v108 = [coderCopy decodeObjectOfClass:v106 forKey:v107];
     lastSharedDate = v7->_lastSharedDate;
     v7->_lastSharedDate = v108;
 
     v110 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"incrementViewCount"];
-    v7->_incrementViewCount = [v4 decodeBoolForKey:v110];
+    v7->_incrementViewCount = [coderCopy decodeBoolForKey:v110];
 
     v111 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"variationSuggestionStates"];
-    v7->_variationSuggestionStates = [v4 decodeInt64ForKey:v111];
+    v7->_variationSuggestionStates = [coderCopy decodeInt64ForKey:v111];
 
     if (v7->_variationSuggestionStates)
     {
       v7->_didSetVariationSuggestionStates = 1;
       v112 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"variationSuggestionStatesMask"];
-      v7->_variationSuggestionStatesMask = [v4 decodeInt64ForKey:v112];
+      v7->_variationSuggestionStatesMask = [coderCopy decodeInt64ForKey:v112];
     }
 
     v113 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"toRetryUpload"];
-    v7->_toRetryUpload = [v4 decodeBoolForKey:v113];
+    v7->_toRetryUpload = [coderCopy decodeBoolForKey:v113];
 
     v114 = MEMORY[0x1E695DFD8];
     v115 = objc_opt_class();
     v116 = objc_opt_class();
     v117 = [v114 setWithObjects:{v115, v116, objc_opt_class(), 0}];
     v118 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"pathsToNewAssetResourcesByAssetResourceType"];
-    v119 = [v4 decodeObjectOfClasses:v117 forKey:v118];
+    v119 = [coderCopy decodeObjectOfClasses:v117 forKey:v118];
     pathsToNewAssetResourcesByAssetResourceType = v7->_pathsToNewAssetResourcesByAssetResourceType;
     v7->_pathsToNewAssetResourcesByAssetResourceType = v119;
 
@@ -4908,24 +4908,24 @@ LABEL_11:
     v122 = objc_opt_class();
     v123 = [v121 setWithObjects:{v122, objc_opt_class(), 0}];
     v124 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"assetResourceTypesToDelete"];
-    v125 = [v4 decodeObjectOfClasses:v123 forKey:v124];
+    v125 = [coderCopy decodeObjectOfClasses:v123 forKey:v124];
     assetResourceTypesToDelete = v7->_assetResourceTypesToDelete;
     v7->_assetResourceTypesToDelete = v125;
 
     v127 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"deleteContextualVideoThumbnails"];
-    v7->_deleteContextualVideoThumbnails = [v4 decodeBoolForKey:v127];
+    v7->_deleteContextualVideoThumbnails = [coderCopy decodeBoolForKey:v127];
 
     v128 = MEMORY[0x1E695DFD8];
     v129 = objc_opt_class();
     v130 = [v128 setWithObjects:{v129, objc_opt_class(), 0}];
     v131 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"libraryScopeOriginatorUUIDs"];
-    v132 = [v4 decodeObjectOfClasses:v130 forKey:v131];
+    v132 = [coderCopy decodeObjectOfClasses:v130 forKey:v131];
     v133 = [v128 setWithArray:v132];
     libraryScopeOriginatorUUIDs = v7->_libraryScopeOriginatorUUIDs;
     v7->_libraryScopeOriginatorUUIDs = v133;
 
     v135 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"packedPreferredCropRect"];
-    v7->_packedPreferredCropRect = [v4 decodeIntegerForKey:v135];
+    v7->_packedPreferredCropRect = [coderCopy decodeIntegerForKey:v135];
 
     if (v7->_packedPreferredCropRect)
     {
@@ -4933,7 +4933,7 @@ LABEL_11:
     }
 
     v136 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"packedAcceptableCropRect"];
-    v7->_packedAcceptableCropRect = [v4 decodeIntegerForKey:v136];
+    v7->_packedAcceptableCropRect = [coderCopy decodeIntegerForKey:v136];
 
     if (v7->_packedAcceptableCropRect)
     {
@@ -4941,7 +4941,7 @@ LABEL_11:
     }
 
     v137 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"packedBestPlaybackRect"];
-    v7->_packedBestPlaybackRect = [v4 decodeIntegerForKey:v137];
+    v7->_packedBestPlaybackRect = [coderCopy decodeIntegerForKey:v137];
 
     if (v7->_packedBestPlaybackRect)
     {
@@ -4950,7 +4950,7 @@ LABEL_11:
 
     v138 = objc_opt_class();
     v139 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"computedAttributeMutations"];
-    v140 = [v4 decodeObjectOfClass:v138 forKey:v139];
+    v140 = [coderCopy decodeObjectOfClass:v138 forKey:v139];
     computedAttributeMutations = v7->_computedAttributeMutations;
     v7->_computedAttributeMutations = v140;
 
@@ -4960,7 +4960,7 @@ LABEL_11:
     }
 
     v142 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"resetWallpaperProperties"];
-    v143 = [v4 decodeBoolForKey:v142];
+    v143 = [coderCopy decodeBoolForKey:v142];
 
     if (v143)
     {
@@ -4979,7 +4979,7 @@ LABEL_11:
     {
       v146 = objc_opt_class();
       v147 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"photoAnalysisWallpaperPropertiesTimeStamp"];
-      v148 = [v4 decodeObjectOfClass:v146 forKey:v147];
+      v148 = [coderCopy decodeObjectOfClass:v146 forKey:v147];
       v149 = v7->_wallpaperPropertiesTimestamp;
       v7->_wallpaperPropertiesTimestamp = v148;
 
@@ -4989,7 +4989,7 @@ LABEL_11:
       }
 
       v150 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"photoAnalysisWallpaperPropertiesVersion"];
-      v7->_wallpaperPropertiesVersion = [v4 decodeIntegerForKey:v150];
+      v7->_wallpaperPropertiesVersion = [coderCopy decodeIntegerForKey:v150];
 
       if (v7->_wallpaperPropertiesVersion)
       {
@@ -4998,7 +4998,7 @@ LABEL_11:
 
       v151 = objc_opt_class();
       v152 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"photoAnalysisWallpaperProperties"];
-      v153 = [v4 decodeObjectOfClass:v151 forKey:v152];
+      v153 = [coderCopy decodeObjectOfClass:v151 forKey:v152];
       v154 = v7->_wallpaperPropertiesData;
       v7->_wallpaperPropertiesData = v153;
 
@@ -5010,7 +5010,7 @@ LABEL_11:
 
     v155 = objc_opt_class();
     v156 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"mediaAnalysisTimeStamp"];
-    v157 = [v4 decodeObjectOfClass:v155 forKey:v156];
+    v157 = [coderCopy decodeObjectOfClass:v155 forKey:v156];
     mediaAnalysisTimeStamp = v7->_mediaAnalysisTimeStamp;
     v7->_mediaAnalysisTimeStamp = v157;
 
@@ -5020,7 +5020,7 @@ LABEL_11:
     }
 
     v159 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"mediaAnalysisVersion"];
-    v7->_mediaAnalysisVersion = [v4 decodeIntegerForKey:v159];
+    v7->_mediaAnalysisVersion = [coderCopy decodeIntegerForKey:v159];
 
     if (v7->_mediaAnalysisVersion)
     {
@@ -5028,7 +5028,7 @@ LABEL_11:
     }
 
     v160 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"mediaAnalysisImageVersion"];
-    v7->_mediaAnalysisImageVersion = [v4 decodeIntegerForKey:v160];
+    v7->_mediaAnalysisImageVersion = [coderCopy decodeIntegerForKey:v160];
 
     if (v7->_mediaAnalysisImageVersion)
     {
@@ -5037,7 +5037,7 @@ LABEL_11:
 
     v161 = objc_opt_class();
     v162 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"bestKeyFrameTime"];
-    v163 = [v4 decodeObjectOfClass:v161 forKey:v162];
+    v163 = [coderCopy decodeObjectOfClass:v161 forKey:v162];
 
     if (v163)
     {
@@ -5048,29 +5048,29 @@ LABEL_11:
     }
 
     v165 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"unsetBestKeyFrameTime"];
-    v7->_didUnsetBestKeyFrameTime = [v4 decodeBoolForKey:v165];
+    v7->_didUnsetBestKeyFrameTime = [coderCopy decodeBoolForKey:v165];
 
     v166 = objc_opt_class();
     v167 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"bestKeyFrameJPEGData"];
-    v168 = [v4 decodeObjectOfClass:v166 forKey:v167];
+    v168 = [coderCopy decodeObjectOfClass:v166 forKey:v167];
     bestKeyFrameJPEGData = v7->_bestKeyFrameJPEGData;
     v7->_bestKeyFrameJPEGData = v168;
 
     v170 = objc_opt_class();
     v171 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"contextualVideoThumbnailImageData"];
-    v172 = [v4 decodeObjectOfClass:v170 forKey:v171];
+    v172 = [coderCopy decodeObjectOfClass:v170 forKey:v171];
     contextualVideoThumbnailImageDataByIdentifier = v7->_contextualVideoThumbnailImageDataByIdentifier;
     v7->_contextualVideoThumbnailImageDataByIdentifier = v172;
 
     v174 = objc_opt_class();
     v175 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"computeSyncMediaAnalysisPayload"];
-    v176 = [v4 decodeObjectOfClass:v174 forKey:v175];
+    v176 = [coderCopy decodeObjectOfClass:v174 forKey:v175];
     computeSyncMediaAnalysisPayload = v7->_computeSyncMediaAnalysisPayload;
     v7->_computeSyncMediaAnalysisPayload = v176;
 
     v178 = objc_opt_class();
     v179 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"bestVideoTimeRange"];
-    v180 = [v4 decodeObjectOfClass:v178 forKey:v179];
+    v180 = [coderCopy decodeObjectOfClass:v178 forKey:v179];
 
     if (v180)
     {
@@ -5084,7 +5084,7 @@ LABEL_11:
 
     v183 = objc_opt_class();
     v184 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"animatedStickerTimeRange"];
-    v185 = [v4 decodeObjectOfClass:v183 forKey:v184];
+    v185 = [coderCopy decodeObjectOfClass:v183 forKey:v184];
 
     if (v185)
     {
@@ -5097,7 +5097,7 @@ LABEL_11:
     }
 
     v188 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"blurrinessScore"];
-    [v4 decodeFloatForKey:v188];
+    [coderCopy decodeFloatForKey:v188];
     v7->_blurrinessScore = v189;
 
     if (v7->_blurrinessScore != 0.0)
@@ -5106,7 +5106,7 @@ LABEL_11:
     }
 
     v190 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"exposureScore"];
-    [v4 decodeFloatForKey:v190];
+    [coderCopy decodeFloatForKey:v190];
     v7->_exposureScore = v191;
 
     if (v7->_exposureScore != 0.0)
@@ -5115,7 +5115,7 @@ LABEL_11:
     }
 
     v192 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"audioScore"];
-    [v4 decodeFloatForKey:v192];
+    [coderCopy decodeFloatForKey:v192];
     v7->_audioScore = v193;
 
     if (v7->_audioScore != 0.0)
@@ -5124,7 +5124,7 @@ LABEL_11:
     }
 
     v194 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"settlingEffectScore"];
-    [v4 decodeFloatForKey:v194];
+    [coderCopy decodeFloatForKey:v194];
     v7->_settlingEffectScore = v195;
 
     if (v7->_settlingEffectScore != 0.0)
@@ -5133,7 +5133,7 @@ LABEL_11:
     }
 
     v196 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"wallpaperScore"];
-    [v4 decodeFloatForKey:v196];
+    [coderCopy decodeFloatForKey:v196];
     v7->_wallpaperScore = v197;
 
     if (v7->_wallpaperScore != 0.0)
@@ -5142,7 +5142,7 @@ LABEL_11:
     }
 
     v198 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"autoplaySuggestionScore"];
-    [v4 decodeFloatForKey:v198];
+    [coderCopy decodeFloatForKey:v198];
     v7->_autoplaySuggestionScore = v199;
 
     if (v7->_autoplaySuggestionScore != 0.0)
@@ -5151,7 +5151,7 @@ LABEL_11:
     }
 
     v200 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"videoStickerSuggestionScore"];
-    [v4 decodeFloatForKey:v200];
+    [coderCopy decodeFloatForKey:v200];
     v7->_videoStickerSuggestionScore = v201;
 
     if (v7->_videoStickerSuggestionScore != 0.0)
@@ -5160,7 +5160,7 @@ LABEL_11:
     }
 
     v202 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"videoScore"];
-    [v4 decodeFloatForKey:v202];
+    [coderCopy decodeFloatForKey:v202];
     v7->_videoScore = v203;
 
     if (v7->_videoScore != 0.0)
@@ -5169,7 +5169,7 @@ LABEL_11:
     }
 
     v204 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"activityScore"];
-    [v4 decodeFloatForKey:v204];
+    [coderCopy decodeFloatForKey:v204];
     v7->_activityScore = v205;
 
     if (v7->_activityScore != 0.0)
@@ -5178,7 +5178,7 @@ LABEL_11:
     }
 
     v206 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"faceCount"];
-    v7->_faceCount = [v4 decodeInt64ForKey:v206];
+    v7->_faceCount = [coderCopy decodeInt64ForKey:v206];
 
     if (v7->_faceCount)
     {
@@ -5186,7 +5186,7 @@ LABEL_11:
     }
 
     v207 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"audioClassification"];
-    v7->_audioClassification = [v4 decodeIntegerForKey:v207];
+    v7->_audioClassification = [coderCopy decodeIntegerForKey:v207];
 
     if (v7->_audioClassification)
     {
@@ -5194,7 +5194,7 @@ LABEL_11:
     }
 
     v208 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"probableRotationDirection"];
-    v7->_probableRotationDirection = [v4 decodeIntegerForKey:v208];
+    v7->_probableRotationDirection = [coderCopy decodeIntegerForKey:v208];
 
     if (v7->_probableRotationDirection)
     {
@@ -5202,7 +5202,7 @@ LABEL_11:
     }
 
     v209 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"probableRotationDirectionConfidence"];
-    [v4 decodeFloatForKey:v209];
+    [coderCopy decodeFloatForKey:v209];
     v7->_probableRotationDirectionConfidence = v210;
 
     if (v7->_probableRotationDirectionConfidence != 0.0)
@@ -5212,12 +5212,12 @@ LABEL_11:
 
     v211 = objc_opt_class();
     v212 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"colorNormalizationData"];
-    v213 = [v4 decodeObjectOfClass:v211 forKey:v212];
+    v213 = [coderCopy decodeObjectOfClass:v211 forKey:v212];
     colorNormalizationData = v7->_colorNormalizationData;
     v7->_colorNormalizationData = v213;
 
     v215 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"resetCharacterRecognitionProperties"];
-    v7->_resetCharacterRecognitionProperties = [v4 decodeBoolForKey:v215];
+    v7->_resetCharacterRecognitionProperties = [coderCopy decodeBoolForKey:v215];
 
     if (!v7->_resetCharacterRecognitionProperties)
     {
@@ -5225,7 +5225,7 @@ LABEL_11:
       v217 = objc_opt_class();
       v218 = [v216 setWithObjects:{v217, objc_opt_class(), 0}];
       v219 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"characterRecognitionProperties"];
-      v220 = [v4 decodeObjectOfClasses:v218 forKey:v219];
+      v220 = [coderCopy decodeObjectOfClasses:v218 forKey:v219];
 
       if (v220)
       {
@@ -5252,7 +5252,7 @@ LABEL_11:
     }
 
     v232 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"resetTextUnderstandingProperties"];
-    v7->_resetTextUnderstandingProperties = [v4 decodeBoolForKey:v232];
+    v7->_resetTextUnderstandingProperties = [coderCopy decodeBoolForKey:v232];
 
     if (!v7->_resetTextUnderstandingProperties)
     {
@@ -5260,7 +5260,7 @@ LABEL_11:
       v234 = objc_opt_class();
       v235 = [v233 setWithObjects:{v234, objc_opt_class(), 0}];
       v236 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"textUnderstandingProperties"];
-      v237 = [v4 decodeObjectOfClasses:v235 forKey:v236];
+      v237 = [coderCopy decodeObjectOfClasses:v235 forKey:v236];
 
       if (v237)
       {
@@ -5277,7 +5277,7 @@ LABEL_11:
     }
 
     v243 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"resetVisualSearchProperties"];
-    v7->_resetVisualSearchProperties = [v4 decodeBoolForKey:v243];
+    v7->_resetVisualSearchProperties = [coderCopy decodeBoolForKey:v243];
 
     if (!v7->_resetVisualSearchProperties)
     {
@@ -5285,7 +5285,7 @@ LABEL_11:
       v245 = objc_opt_class();
       v246 = [v244 setWithObjects:{v245, objc_opt_class(), 0}];
       v247 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"visualSearchProperties"];
-      v248 = [v4 decodeObjectOfClasses:v246 forKey:v247];
+      v248 = [coderCopy decodeObjectOfClasses:v246 forKey:v247];
 
       if (v248)
       {
@@ -5324,7 +5324,7 @@ LABEL_11:
     }
 
     v266 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"compactImageSCSensitivityAnalysis"];
-    v7->_compactSCSensitivityAnalysis = [v4 decodeIntegerForKey:v266];
+    v7->_compactSCSensitivityAnalysis = [coderCopy decodeIntegerForKey:v266];
 
     if (v7->_compactSCSensitivityAnalysis)
     {
@@ -5332,10 +5332,10 @@ LABEL_11:
     }
 
     v267 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"compactVideoSCSensitivityAnalysis"];
-    v7->_compactSCSensitivityAnalysis = [v4 decodeIntegerForKey:v267];
+    v7->_compactSCSensitivityAnalysis = [coderCopy decodeIntegerForKey:v267];
 
     v268 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"videoSensitivityAnalysisVersion"];
-    v7->_videoSensitivityAnalysisVersion = [v4 decodeIntegerForKey:v268];
+    v7->_videoSensitivityAnalysisVersion = [coderCopy decodeIntegerForKey:v268];
 
     if (v7->_compactSCSensitivityAnalysis && v7->_videoSensitivityAnalysisVersion)
     {
@@ -5344,7 +5344,7 @@ LABEL_11:
 
     v269 = objc_opt_class();
     v270 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"sceneprintData"];
-    v271 = [v4 decodeObjectOfClass:v269 forKey:v270];
+    v271 = [coderCopy decodeObjectOfClass:v269 forKey:v270];
     sceneprintData = v7->_sceneprintData;
     v7->_sceneprintData = v271;
 
@@ -5355,7 +5355,7 @@ LABEL_11:
 
     v273 = objc_opt_class();
     v274 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"duplicateMatchingData"];
-    v275 = [v4 decodeObjectOfClass:v273 forKey:v274];
+    v275 = [coderCopy decodeObjectOfClass:v273 forKey:v274];
     duplicateMatchingData = v7->_duplicateMatchingData;
     v7->_duplicateMatchingData = v275;
 
@@ -5364,7 +5364,7 @@ LABEL_11:
       v7->_didSetDuplicateMatchingData = 1;
       v277 = objc_opt_class();
       v278 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"duplicateMatchingAlternateData"];
-      v279 = [v4 decodeObjectOfClass:v277 forKey:v278];
+      v279 = [coderCopy decodeObjectOfClass:v277 forKey:v278];
       duplicateMatchingAlternateData = v7->_duplicateMatchingAlternateData;
       v7->_duplicateMatchingAlternateData = v279;
 
@@ -5381,12 +5381,12 @@ LABEL_11:
       }
 
       v283 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"duplicateProcessingSucceeded"];
-      v7->_duplicateProcessingSucceeded = [v4 decodeBoolForKey:v283];
+      v7->_duplicateProcessingSucceeded = [coderCopy decodeBoolForKey:v283];
     }
 
     v284 = objc_opt_class();
     v285 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"reverseLocationData"];
-    v286 = [v4 decodeObjectOfClass:v284 forKey:v285];
+    v286 = [coderCopy decodeObjectOfClass:v284 forKey:v285];
     reverseLocationData = v7->_reverseLocationData;
     v7->_reverseLocationData = v286;
 
@@ -5396,7 +5396,7 @@ LABEL_11:
     }
 
     v288 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"reverseLocationDataIsValid"];
-    v7->_reverseLocationDataIsValid = [v4 decodeBoolForKey:v288];
+    v7->_reverseLocationDataIsValid = [coderCopy decodeBoolForKey:v288];
 
     if (v7->_reverseLocationDataIsValid)
     {
@@ -5405,7 +5405,7 @@ LABEL_11:
 
     v289 = objc_opt_class();
     v290 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"objectSaliencyRectsData"];
-    v291 = [v4 decodeObjectOfClass:v289 forKey:v290];
+    v291 = [coderCopy decodeObjectOfClass:v289 forKey:v290];
     objectSaliencyRectsData = v7->_objectSaliencyRectsData;
     v7->_objectSaliencyRectsData = v291;
 
@@ -5418,7 +5418,7 @@ LABEL_11:
     v294 = objc_opt_class();
     v295 = [v293 setWithObjects:{v294, objc_opt_class(), 0}];
     v296 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"shiftedLocation"];
-    v297 = [v4 decodeObjectOfClasses:v295 forKey:v296];
+    v297 = [coderCopy decodeObjectOfClasses:v295 forKey:v296];
     shiftedLocation = v7->_shiftedLocation;
     v7->_shiftedLocation = v297;
 
@@ -5432,7 +5432,7 @@ LABEL_11:
 
     v301 = objc_opt_class();
     v302 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"timeZoneName"];
-    v303 = [v4 decodeObjectOfClass:v301 forKey:v302];
+    v303 = [coderCopy decodeObjectOfClass:v301 forKey:v302];
     timeZoneName = v7->_timeZoneName;
     v7->_timeZoneName = v303;
 
@@ -5440,11 +5440,11 @@ LABEL_11:
     {
       v7->_didSetTimeZone = 1;
       v305 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"timeZoneOffsetValue"];
-      v7->_timeZoneOffsetValue = [v4 decodeInt32ForKey:v305];
+      v7->_timeZoneOffsetValue = [coderCopy decodeInt32ForKey:v305];
     }
 
     v306 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"gpsHorizontalAccuracy"];
-    [v4 decodeDoubleForKey:v306];
+    [coderCopy decodeDoubleForKey:v306];
     v7->_gpsHorizontalAccuracy = v307;
 
     if (v7->_gpsHorizontalAccuracy != 0.0)
@@ -5453,7 +5453,7 @@ LABEL_11:
     }
 
     v308 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"screenTimeDeviceImageSensitivity"];
-    v7->_screenTimeDeviceImageSensitivity = [v4 decodeIntegerForKey:v308];
+    v7->_screenTimeDeviceImageSensitivity = [coderCopy decodeIntegerForKey:v308];
 
     if (v7->_screenTimeDeviceImageSensitivity)
     {
@@ -5461,7 +5461,7 @@ LABEL_11:
     }
 
     v309 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"syndicationProcessingValue"];
-    v7->_syndicationProcessingValue = [v4 decodeIntegerForKey:v309];
+    v7->_syndicationProcessingValue = [coderCopy decodeIntegerForKey:v309];
 
     if (v7->_syndicationProcessingValue)
     {
@@ -5469,7 +5469,7 @@ LABEL_11:
     }
 
     v310 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"syndicationProcessingVersion"];
-    v7->_syndicationProcessingVersion = [v4 decodeInt64ForKey:v310];
+    v7->_syndicationProcessingVersion = [coderCopy decodeInt64ForKey:v310];
 
     if (v7->_syndicationProcessingVersion)
     {
@@ -5478,7 +5478,7 @@ LABEL_11:
 
     v311 = objc_opt_class();
     v312 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"syndicationIdentifier"];
-    v313 = [v4 decodeObjectOfClass:v311 forKey:v312];
+    v313 = [coderCopy decodeObjectOfClass:v311 forKey:v312];
     syndicationIdentifier = v7->_syndicationIdentifier;
     v7->_syndicationIdentifier = v313;
 
@@ -5488,7 +5488,7 @@ LABEL_11:
     }
 
     v315 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"faceAnalysisVersion"];
-    v7->_faceAnalysisVersion = [v4 decodeIntegerForKey:v315];
+    v7->_faceAnalysisVersion = [coderCopy decodeIntegerForKey:v315];
 
     if (v7->_faceAnalysisVersion)
     {
@@ -5496,7 +5496,7 @@ LABEL_11:
     }
 
     v316 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"localAnalysisStage"];
-    v7->_localAnalysisStage = [v4 decodeIntegerForKey:v316];
+    v7->_localAnalysisStage = [coderCopy decodeIntegerForKey:v316];
 
     if (v7->_localAnalysisStage)
     {
@@ -5504,7 +5504,7 @@ LABEL_11:
     }
 
     v317 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"viewPresentation"];
-    v7->_viewPresentation = [v4 decodeIntegerForKey:v317];
+    v7->_viewPresentation = [coderCopy decodeIntegerForKey:v317];
 
     if (v7->_viewPresentation)
     {
@@ -5512,24 +5512,24 @@ LABEL_11:
     }
 
     v318 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"ResetGeneratedAssetDescriptionKey"];
-    v7->_resetGeneratedAssetDescriptionProperties = [v4 decodeBoolForKey:v318];
+    v7->_resetGeneratedAssetDescriptionProperties = [coderCopy decodeBoolForKey:v318];
 
     if (!v7->_resetGeneratedAssetDescriptionProperties)
     {
       v319 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"DidSetGeneratedAssetDescriptionKey"];
-      v7->_didSetGeneratedAssetDescriptionProperties = [v4 decodeBoolForKey:v319];
+      v7->_didSetGeneratedAssetDescriptionProperties = [coderCopy decodeBoolForKey:v319];
 
       if (v7->_didSetGeneratedAssetDescriptionProperties)
       {
         v320 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"GeneratedAssetDescriptionPropertiesKey"];
-        v321 = [v4 decodeObjectForKey:v320];
+        v321 = [coderCopy decodeObjectForKey:v320];
         generatedAssetDescriptionDictionaries = v7->_generatedAssetDescriptionDictionaries;
         v7->_generatedAssetDescriptionDictionaries = v321;
       }
     }
 
     v323 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"PtpTrashedStateKey"];
-    v324 = [v4 decodeObjectForKey:v323];
+    v324 = [coderCopy decodeObjectForKey:v323];
 
     if (v324)
     {
@@ -5538,7 +5538,7 @@ LABEL_11:
     }
 
     v325 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"savedAssetType"];
-    v7->_savedAssetType = [v4 decodeIntegerForKey:v325];
+    v7->_savedAssetType = [coderCopy decodeIntegerForKey:v325];
 
     if (v7->_savedAssetType)
     {
@@ -5553,126 +5553,126 @@ LABEL_11:
   return v326;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->super._helper forKey:@"helper"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->super._helper forKey:@"helper"];
   facesHelper = self->_facesHelper;
-  v6 = [(PHRelationshipChangeRequestHelper *)facesHelper relationshipName];
-  [v4 encodeObject:facesHelper forKey:v6];
+  relationshipName = [(PHRelationshipChangeRequestHelper *)facesHelper relationshipName];
+  [coderCopy encodeObject:facesHelper forKey:relationshipName];
 
   temporalFacesHelper = self->_temporalFacesHelper;
-  v8 = [(PHRelationshipChangeRequestHelper *)temporalFacesHelper relationshipName];
-  [v4 encodeObject:temporalFacesHelper forKey:v8];
+  relationshipName2 = [(PHRelationshipChangeRequestHelper *)temporalFacesHelper relationshipName];
+  [coderCopy encodeObject:temporalFacesHelper forKey:relationshipName2];
 
   keywordsHelper = self->_keywordsHelper;
-  v10 = [(PHRelationshipChangeRequestHelper *)keywordsHelper relationshipName];
-  [v4 encodeObject:keywordsHelper forKey:v10];
+  relationshipName3 = [(PHRelationshipChangeRequestHelper *)keywordsHelper relationshipName];
+  [coderCopy encodeObject:keywordsHelper forKey:relationshipName3];
 
   commentsHelper = self->_commentsHelper;
-  v12 = [(PHRelationshipChangeRequestHelper *)commentsHelper relationshipName];
-  [v4 encodeObject:commentsHelper forKey:v12];
+  relationshipName4 = [(PHRelationshipChangeRequestHelper *)commentsHelper relationshipName];
+  [coderCopy encodeObject:commentsHelper forKey:relationshipName4];
 
   likesHelper = self->_likesHelper;
-  v14 = [(PHRelationshipChangeRequestHelper *)likesHelper relationshipName];
-  [v4 encodeObject:likesHelper forKey:v14];
+  relationshipName5 = [(PHRelationshipChangeRequestHelper *)likesHelper relationshipName];
+  [coderCopy encodeObject:likesHelper forKey:relationshipName5];
 
   if (self->_didChangeAdjustments)
   {
-    v15 = [(PHAssetChangeRequest *)self contentEditingOutput];
-    if (v15)
+    contentEditingOutput = [(PHAssetChangeRequest *)self contentEditingOutput];
+    if (contentEditingOutput)
     {
       v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didChangeAdjustments"];
-      [v4 encodeBool:1 forKey:v16];
+      [coderCopy encodeBool:1 forKey:v16];
 
       v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"contentEditingOutput"];
-      [v4 encodeObject:v15 forKey:v17];
+      [coderCopy encodeObject:contentEditingOutput forKey:v17];
 
       editorBundleID = self->_editorBundleID;
       v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"editorBundleID"];
-      [v4 encodeObject:editorBundleID forKey:v19];
+      [coderCopy encodeObject:editorBundleID forKey:v19];
 
       editorBundleURL = self->_editorBundleURL;
       v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"editorBundleURL"];
-      [v4 encodeObject:editorBundleURL forKey:v21];
+      [coderCopy encodeObject:editorBundleURL forKey:v21];
     }
   }
 
   didSetOriginalResourceChoice = self->_didSetOriginalResourceChoice;
   v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didSetOriginalResourceChoice"];
-  [v4 encodeBool:didSetOriginalResourceChoice forKey:v23];
+  [coderCopy encodeBool:didSetOriginalResourceChoice forKey:v23];
 
   didRevertLocationToOriginal = self->_didRevertLocationToOriginal;
   v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didRevertLocationToOriginal"];
-  [v4 encodeBool:didRevertLocationToOriginal forKey:v25];
+  [coderCopy encodeBool:didRevertLocationToOriginal forKey:v25];
 
   originalResourceChoice = self->_originalResourceChoice;
   v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"originalResourceChoice"];
-  [v4 encodeInteger:originalResourceChoice forKey:v27];
+  [coderCopy encodeInteger:originalResourceChoice forKey:v27];
 
   didUpdateExtendedAttributesUsingOriginalMediaMetadata = self->_didUpdateExtendedAttributesUsingOriginalMediaMetadata;
   v29 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didUpdateExtendedAttributesUsingOriginalMediaMetadata"];
-  [v4 encodeBool:didUpdateExtendedAttributesUsingOriginalMediaMetadata forKey:v29];
+  [coderCopy encodeBool:didUpdateExtendedAttributesUsingOriginalMediaMetadata forKey:v29];
 
   didExpungeAllSpatialOverCaptureResources = self->_didExpungeAllSpatialOverCaptureResources;
   v31 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didExpungeAllSpatialOverCaptureResources"];
-  [v4 encodeBool:didExpungeAllSpatialOverCaptureResources forKey:v31];
+  [coderCopy encodeBool:didExpungeAllSpatialOverCaptureResources forKey:v31];
 
   didTrashAllSpatialOverCaptureResources = self->_didTrashAllSpatialOverCaptureResources;
   v33 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didTrashAllSpatialOverCaptureResources"];
-  [v4 encodeBool:didTrashAllSpatialOverCaptureResources forKey:v33];
+  [coderCopy encodeBool:didTrashAllSpatialOverCaptureResources forKey:v33];
 
   didUntrashAllSpatialOverCaptureResources = self->_didUntrashAllSpatialOverCaptureResources;
   v35 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didUntrashAllSpatialOverCaptureResources"];
-  [v4 encodeBool:didUntrashAllSpatialOverCaptureResources forKey:v35];
+  [coderCopy encodeBool:didUntrashAllSpatialOverCaptureResources forKey:v35];
 
   didExpungeTrashedSpatialOverCaptureResources = self->_didExpungeTrashedSpatialOverCaptureResources;
   v37 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didExpungeTrashedSpatialOverCaptureResources"];
-  [v4 encodeBool:didExpungeTrashedSpatialOverCaptureResources forKey:v37];
+  [coderCopy encodeBool:didExpungeTrashedSpatialOverCaptureResources forKey:v37];
 
   didPromoteToGuestAsset = self->_didPromoteToGuestAsset;
   v39 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didPromoteToGuestAsset"];
-  [v4 encodeBool:didPromoteToGuestAsset forKey:v39];
+  [coderCopy encodeBool:didPromoteToGuestAsset forKey:v39];
 
   didResetGuestAssetPromotion = self->_didResetGuestAssetPromotion;
   v41 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didResetGuestAssetPromotion"];
-  [v4 encodeBool:didResetGuestAssetPromotion forKey:v41];
+  [coderCopy encodeBool:didResetGuestAssetPromotion forKey:v41];
 
   updatedLocation = self->_updatedLocation;
   v43 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"updatedLocation"];
-  [v4 encodeObject:updatedLocation forKey:v43];
+  [coderCopy encodeObject:updatedLocation forKey:v43];
 
   assetDescription = self->_assetDescription;
   v45 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"assetDescription"];
-  [v4 encodeObject:assetDescription forKey:v45];
+  [coderCopy encodeObject:assetDescription forKey:v45];
 
   accessibilityDescription = self->_accessibilityDescription;
   v47 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"accessibilityDescription"];
-  [v4 encodeObject:accessibilityDescription forKey:v47];
+  [coderCopy encodeObject:accessibilityDescription forKey:v47];
 
   didSetTitle = self->_didSetTitle;
   v49 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didSetTitle"];
-  [v4 encodeBool:didSetTitle forKey:v49];
+  [coderCopy encodeBool:didSetTitle forKey:v49];
 
   title = self->_title;
   v51 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"title"];
-  [v4 encodeObject:title forKey:v51];
+  [coderCopy encodeObject:title forKey:v51];
 
   didSetKeywordTitles = self->_didSetKeywordTitles;
   v53 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didSetKeywordTitles"];
-  [v4 encodeBool:didSetKeywordTitles forKey:v53];
+  [coderCopy encodeBool:didSetKeywordTitles forKey:v53];
 
   keywordTitles = self->_keywordTitles;
   v55 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"keywordTitles"];
-  [v4 encodeObject:keywordTitles forKey:v55];
+  [coderCopy encodeObject:keywordTitles forKey:v55];
 
   videoURLForUpdate = self->_videoURLForUpdate;
   v57 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"videoURLForUpdate"];
-  [v4 encodeObject:videoURLForUpdate forKey:v57];
+  [coderCopy encodeObject:videoURLForUpdate forKey:v57];
 
   pairingIdentifier = self->_pairingIdentifier;
   v59 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"pairingIdentifier"];
-  [v4 encodeObject:pairingIdentifier forKey:v59];
+  [coderCopy encodeObject:pairingIdentifier forKey:v59];
 
   if (self->_videoDuration.flags)
   {
@@ -5683,7 +5683,7 @@ LABEL_11:
     {
       v61 = v60;
       v62 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"videoDuration"];
-      [v4 encodeObject:v61 forKey:v62];
+      [coderCopy encodeObject:v61 forKey:v62];
 
       CFRelease(v61);
     }
@@ -5698,7 +5698,7 @@ LABEL_11:
     {
       v64 = v63;
       v65 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"imageDisplayTime"];
-      [v4 encodeObject:v64 forKey:v65];
+      [coderCopy encodeObject:v64 forKey:v65];
 
       CFRelease(v64);
     }
@@ -5706,110 +5706,110 @@ LABEL_11:
 
   didSetVisibilityState = self->_didSetVisibilityState;
   v67 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didSetVisibilityState"];
-  [v4 encodeBool:didSetVisibilityState forKey:v67];
+  [coderCopy encodeBool:didSetVisibilityState forKey:v67];
 
   photoIrisVisibilityState = self->_photoIrisVisibilityState;
   v69 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"photoIrisVisibilityState"];
-  [v4 encodeInteger:photoIrisVisibilityState forKey:v69];
+  [coderCopy encodeInteger:photoIrisVisibilityState forKey:v69];
 
   if (self->_didSetSceneClassifications)
   {
     sceneClassificationDictionariesByType = self->_sceneClassificationDictionariesByType;
     v71 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"sceneClassificationsByType"];
-    [v4 encodeObject:sceneClassificationDictionariesByType forKey:v71];
+    [coderCopy encodeObject:sceneClassificationDictionariesByType forKey:v71];
   }
 
   if (self->_didSetImageEmbeddingVersion)
   {
     imageEmbeddingVersion = self->_imageEmbeddingVersion;
     v73 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"imageEmbeddingVersion"];
-    [v4 encodeInteger:imageEmbeddingVersion forKey:v73];
+    [coderCopy encodeInteger:imageEmbeddingVersion forKey:v73];
 
     v74 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didSetImageEmbeddingVersionKey"];
-    [v4 encodeBool:1 forKey:v74];
+    [coderCopy encodeBool:1 forKey:v74];
   }
 
   if (self->_didSetVideoEmbeddingVersion)
   {
     videoEmbeddingVersion = self->_videoEmbeddingVersion;
     v76 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"videoEmbeddingVersion"];
-    [v4 encodeInteger:videoEmbeddingVersion forKey:v76];
+    [coderCopy encodeInteger:videoEmbeddingVersion forKey:v76];
 
     v77 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didSetVideoEmbeddingVersionKey"];
-    [v4 encodeBool:1 forKey:v77];
+    [coderCopy encodeBool:1 forKey:v77];
   }
 
   incrementPlayCount = self->_incrementPlayCount;
   v79 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"incrementPlayCount"];
-  [v4 encodeBool:incrementPlayCount forKey:v79];
+  [coderCopy encodeBool:incrementPlayCount forKey:v79];
 
   incrementShareCount = self->_incrementShareCount;
   v81 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"incrementShareCount"];
-  [v4 encodeBool:incrementShareCount forKey:v81];
+  [coderCopy encodeBool:incrementShareCount forKey:v81];
 
   lastSharedDate = self->_lastSharedDate;
   v83 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"lastSharedDate"];
-  [v4 encodeObject:lastSharedDate forKey:v83];
+  [coderCopy encodeObject:lastSharedDate forKey:v83];
 
   incrementViewCount = self->_incrementViewCount;
   v85 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"incrementViewCount"];
-  [v4 encodeBool:incrementViewCount forKey:v85];
+  [coderCopy encodeBool:incrementViewCount forKey:v85];
 
   clearLastViewedDate = self->_clearLastViewedDate;
   v87 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"clearLastViewedDate"];
-  [v4 encodeBool:clearLastViewedDate forKey:v87];
+  [coderCopy encodeBool:clearLastViewedDate forKey:v87];
 
   clearLastSharedDate = self->_clearLastSharedDate;
   v89 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"clearLastSharedDate"];
-  [v4 encodeBool:clearLastSharedDate forKey:v89];
+  [coderCopy encodeBool:clearLastSharedDate forKey:v89];
 
   if (self->_didSetVariationSuggestionStates)
   {
     variationSuggestionStates = self->_variationSuggestionStates;
     v91 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"variationSuggestionStates"];
-    [v4 encodeInt64:variationSuggestionStates forKey:v91];
+    [coderCopy encodeInt64:variationSuggestionStates forKey:v91];
 
     variationSuggestionStatesMask = self->_variationSuggestionStatesMask;
     v93 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"variationSuggestionStatesMask"];
-    [v4 encodeInt64:variationSuggestionStatesMask forKey:v93];
+    [coderCopy encodeInt64:variationSuggestionStatesMask forKey:v93];
   }
 
   toRetryUpload = self->_toRetryUpload;
   v95 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"toRetryUpload"];
-  [v4 encodeBool:toRetryUpload forKey:v95];
+  [coderCopy encodeBool:toRetryUpload forKey:v95];
 
   if (self->_didSetPackedPreferredCropRect)
   {
     packedPreferredCropRect = self->_packedPreferredCropRect;
     v97 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"packedPreferredCropRect"];
-    [v4 encodeInt64:packedPreferredCropRect forKey:v97];
+    [coderCopy encodeInt64:packedPreferredCropRect forKey:v97];
   }
 
   if (self->_didSetPackedAcceptableCropRect)
   {
     packedAcceptableCropRect = self->_packedAcceptableCropRect;
     v99 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"packedAcceptableCropRect"];
-    [v4 encodeInt64:packedAcceptableCropRect forKey:v99];
+    [coderCopy encodeInt64:packedAcceptableCropRect forKey:v99];
   }
 
   if (self->_didSetPackedBestPlaybackRect)
   {
     packedBestPlaybackRect = self->_packedBestPlaybackRect;
     v101 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"packedBestPlaybackRect"];
-    [v4 encodeInt64:packedBestPlaybackRect forKey:v101];
+    [coderCopy encodeInt64:packedBestPlaybackRect forKey:v101];
   }
 
   if (self->_didModifyComputedAttributes)
   {
     computedAttributeMutations = self->_computedAttributeMutations;
-    v103 = computedAttributeMutations;
+    dictionary = computedAttributeMutations;
     if (!computedAttributeMutations)
     {
-      v103 = [MEMORY[0x1E695DF20] dictionary];
+      dictionary = [MEMORY[0x1E695DF20] dictionary];
     }
 
     v104 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"computedAttributeMutations"];
-    [v4 encodeObject:v103 forKey:v104];
+    [coderCopy encodeObject:dictionary forKey:v104];
 
     if (!computedAttributeMutations)
     {
@@ -5820,33 +5820,33 @@ LABEL_11:
   {
     pathsToNewAssetResourcesByAssetResourceType = self->_pathsToNewAssetResourcesByAssetResourceType;
     v106 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"pathsToNewAssetResourcesByAssetResourceType"];
-    [v4 encodeObject:pathsToNewAssetResourcesByAssetResourceType forKey:v106];
+    [coderCopy encodeObject:pathsToNewAssetResourcesByAssetResourceType forKey:v106];
   }
 
   if ([(NSSet *)self->_assetResourceTypesToDelete count])
   {
     assetResourceTypesToDelete = self->_assetResourceTypesToDelete;
     v108 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"assetResourceTypesToDelete"];
-    [v4 encodeObject:assetResourceTypesToDelete forKey:v108];
+    [coderCopy encodeObject:assetResourceTypesToDelete forKey:v108];
   }
 
   if (self->_deleteContextualVideoThumbnails)
   {
     v109 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"deleteContextualVideoThumbnails"];
-    [v4 encodeBool:1 forKey:v109];
+    [coderCopy encodeBool:1 forKey:v109];
   }
 
   if ([(NSSet *)self->_libraryScopeOriginatorUUIDs count])
   {
-    v110 = [(NSSet *)self->_libraryScopeOriginatorUUIDs allObjects];
+    allObjects = [(NSSet *)self->_libraryScopeOriginatorUUIDs allObjects];
     v111 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"libraryScopeOriginatorUUIDs"];
-    [v4 encodeObject:v110 forKey:v111];
+    [coderCopy encodeObject:allObjects forKey:v111];
   }
 
   if (self->_resetWallpaperProperties)
   {
     v112 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"resetWallpaperProperties"];
-    [v4 encodeBool:1 forKey:v112];
+    [coderCopy encodeBool:1 forKey:v112];
 LABEL_46:
 
     goto LABEL_47;
@@ -5856,41 +5856,41 @@ LABEL_46:
   {
     wallpaperPropertiesTimestamp = self->_wallpaperPropertiesTimestamp;
     v114 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"photoAnalysisWallpaperPropertiesTimeStamp"];
-    [v4 encodeObject:wallpaperPropertiesTimestamp forKey:v114];
+    [coderCopy encodeObject:wallpaperPropertiesTimestamp forKey:v114];
   }
 
   if (self->_didSetWallpaperPropertiesVersion)
   {
     wallpaperPropertiesVersion = self->_wallpaperPropertiesVersion;
     v116 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"photoAnalysisWallpaperPropertiesVersion"];
-    [v4 encodeInt64:wallpaperPropertiesVersion forKey:v116];
+    [coderCopy encodeInt64:wallpaperPropertiesVersion forKey:v116];
   }
 
   if (self->_didSetWallpaperPropertiesData)
   {
     wallpaperPropertiesData = self->_wallpaperPropertiesData;
     v112 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"photoAnalysisWallpaperProperties"];
-    [v4 encodeObject:wallpaperPropertiesData forKey:v112];
+    [coderCopy encodeObject:wallpaperPropertiesData forKey:v112];
     goto LABEL_46;
   }
 
 LABEL_47:
   mediaAnalysisTimeStamp = self->_mediaAnalysisTimeStamp;
   v119 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"mediaAnalysisTimeStamp"];
-  [v4 encodeObject:mediaAnalysisTimeStamp forKey:v119];
+  [coderCopy encodeObject:mediaAnalysisTimeStamp forKey:v119];
 
   if (self->_didSetMediaAnalysisVersion)
   {
     mediaAnalysisVersion = self->_mediaAnalysisVersion;
     v121 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"mediaAnalysisVersion"];
-    [v4 encodeInt64:mediaAnalysisVersion forKey:v121];
+    [coderCopy encodeInt64:mediaAnalysisVersion forKey:v121];
   }
 
   if (self->_didSetMediaAnalysisImageVersion)
   {
     mediaAnalysisImageVersion = self->_mediaAnalysisImageVersion;
     v123 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"mediaAnalysisImageVersion"];
-    [v4 encodeInt64:mediaAnalysisImageVersion forKey:v123];
+    [coderCopy encodeInt64:mediaAnalysisImageVersion forKey:v123];
   }
 
   if ((self->_bestVideoTimeRange.start.flags & 1) != 0 && (self->_bestVideoTimeRange.duration.flags & 1) != 0 && !self->_bestVideoTimeRange.duration.epoch && (self->_bestVideoTimeRange.duration.value & 0x8000000000000000) == 0)
@@ -5904,7 +5904,7 @@ LABEL_47:
     {
       v269 = v268;
       v270 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"bestVideoTimeRange"];
-      [v4 encodeObject:v269 forKey:v270];
+      [coderCopy encodeObject:v269 forKey:v270];
 
       CFRelease(v269);
     }
@@ -5921,7 +5921,7 @@ LABEL_47:
     {
       v273 = v272;
       v274 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"animatedStickerTimeRange"];
-      [v4 encodeObject:v273 forKey:v274];
+      [coderCopy encodeObject:v273 forKey:v274];
 
       CFRelease(v273);
     }
@@ -5936,7 +5936,7 @@ LABEL_47:
     {
       v125 = v124;
       v126 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"bestKeyFrameTime"];
-      [v4 encodeObject:v125 forKey:v126];
+      [coderCopy encodeObject:v125 forKey:v126];
 
       CFRelease(v125);
     }
@@ -5944,29 +5944,29 @@ LABEL_47:
 
   didUnsetBestKeyFrameTime = self->_didUnsetBestKeyFrameTime;
   v128 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"unsetBestKeyFrameTime"];
-  [v4 encodeBool:didUnsetBestKeyFrameTime forKey:v128];
+  [coderCopy encodeBool:didUnsetBestKeyFrameTime forKey:v128];
 
   bestKeyFrameJPEGData = self->_bestKeyFrameJPEGData;
   v130 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"bestKeyFrameJPEGData"];
-  [v4 encodeObject:bestKeyFrameJPEGData forKey:v130];
+  [coderCopy encodeObject:bestKeyFrameJPEGData forKey:v130];
 
   contextualVideoThumbnailImageDataByIdentifier = self->_contextualVideoThumbnailImageDataByIdentifier;
   if (contextualVideoThumbnailImageDataByIdentifier)
   {
     v132 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"contextualVideoThumbnailImageData"];
-    [v4 encodeObject:contextualVideoThumbnailImageDataByIdentifier forKey:v132];
+    [coderCopy encodeObject:contextualVideoThumbnailImageDataByIdentifier forKey:v132];
   }
 
   computeSyncMediaAnalysisPayload = self->_computeSyncMediaAnalysisPayload;
   v134 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"computeSyncMediaAnalysisPayload"];
-  [v4 encodeObject:computeSyncMediaAnalysisPayload forKey:v134];
+  [coderCopy encodeObject:computeSyncMediaAnalysisPayload forKey:v134];
 
   if (self->_didSetBlurrinessScore)
   {
     blurrinessScore = self->_blurrinessScore;
     v136 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"blurrinessScore"];
     *&v137 = blurrinessScore;
-    [v4 encodeFloat:v136 forKey:v137];
+    [coderCopy encodeFloat:v136 forKey:v137];
   }
 
   if (self->_didSetExposureScore)
@@ -5974,7 +5974,7 @@ LABEL_47:
     exposureScore = self->_exposureScore;
     v139 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"exposureScore"];
     *&v140 = exposureScore;
-    [v4 encodeFloat:v139 forKey:v140];
+    [coderCopy encodeFloat:v139 forKey:v140];
   }
 
   if (self->_didSetAudioScore)
@@ -5982,7 +5982,7 @@ LABEL_47:
     audioScore = self->_audioScore;
     v142 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"audioScore"];
     *&v143 = audioScore;
-    [v4 encodeFloat:v142 forKey:v143];
+    [coderCopy encodeFloat:v142 forKey:v143];
   }
 
   if (self->_didSetSettlingEffectScore)
@@ -5990,7 +5990,7 @@ LABEL_47:
     settlingEffectScore = self->_settlingEffectScore;
     v145 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"settlingEffectScore"];
     *&v146 = settlingEffectScore;
-    [v4 encodeFloat:v145 forKey:v146];
+    [coderCopy encodeFloat:v145 forKey:v146];
   }
 
   if (self->_didSetWallpaperScore)
@@ -5998,7 +5998,7 @@ LABEL_47:
     wallpaperScore = self->_wallpaperScore;
     v148 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"wallpaperScore"];
     *&v149 = wallpaperScore;
-    [v4 encodeFloat:v148 forKey:v149];
+    [coderCopy encodeFloat:v148 forKey:v149];
   }
 
   if (self->_didSetAutoplaySuggestionScore)
@@ -6006,7 +6006,7 @@ LABEL_47:
     autoplaySuggestionScore = self->_autoplaySuggestionScore;
     v151 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"autoplaySuggestionScore"];
     *&v152 = autoplaySuggestionScore;
-    [v4 encodeFloat:v151 forKey:v152];
+    [coderCopy encodeFloat:v151 forKey:v152];
   }
 
   if (self->_didSetVideoStickerSuggestionScore)
@@ -6014,7 +6014,7 @@ LABEL_47:
     videoStickerSuggestionScore = self->_videoStickerSuggestionScore;
     v154 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"videoStickerSuggestionScore"];
     *&v155 = videoStickerSuggestionScore;
-    [v4 encodeFloat:v154 forKey:v155];
+    [coderCopy encodeFloat:v154 forKey:v155];
   }
 
   if (self->_didSetVideoScore)
@@ -6022,7 +6022,7 @@ LABEL_47:
     videoScore = self->_videoScore;
     v157 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"videoScore"];
     *&v158 = videoScore;
-    [v4 encodeFloat:v157 forKey:v158];
+    [coderCopy encodeFloat:v157 forKey:v158];
   }
 
   if (self->_didSetActivityScore)
@@ -6030,28 +6030,28 @@ LABEL_47:
     activityScore = self->_activityScore;
     v160 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"activityScore"];
     *&v161 = activityScore;
-    [v4 encodeFloat:v160 forKey:v161];
+    [coderCopy encodeFloat:v160 forKey:v161];
   }
 
   if (self->_didSetFaceCount)
   {
     faceCount = self->_faceCount;
     v163 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"faceCount"];
-    [v4 encodeInt64:faceCount forKey:v163];
+    [coderCopy encodeInt64:faceCount forKey:v163];
   }
 
   if (self->_didSetAudioClassification)
   {
     audioClassification = self->_audioClassification;
     v165 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"audioClassification"];
-    [v4 encodeInteger:audioClassification forKey:v165];
+    [coderCopy encodeInteger:audioClassification forKey:v165];
   }
 
   if (self->_didSetProbableRotationDirection)
   {
     probableRotationDirection = self->_probableRotationDirection;
     v167 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"probableRotationDirection"];
-    [v4 encodeInteger:probableRotationDirection forKey:v167];
+    [coderCopy encodeInteger:probableRotationDirection forKey:v167];
   }
 
   if (self->_didSetProbableRotationDirectionConfidence)
@@ -6059,16 +6059,16 @@ LABEL_47:
     probableRotationDirectionConfidence = self->_probableRotationDirectionConfidence;
     v169 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"probableRotationDirectionConfidence"];
     *&v170 = probableRotationDirectionConfidence;
-    [v4 encodeFloat:v169 forKey:v170];
+    [coderCopy encodeFloat:v169 forKey:v170];
   }
 
   colorNormalizationData = self->_colorNormalizationData;
   v172 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"colorNormalizationData"];
-  [v4 encodeObject:colorNormalizationData forKey:v172];
+  [coderCopy encodeObject:colorNormalizationData forKey:v172];
 
   resetCharacterRecognitionProperties = self->_resetCharacterRecognitionProperties;
   v174 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"resetCharacterRecognitionProperties"];
-  [v4 encodeBool:resetCharacterRecognitionProperties forKey:v174];
+  [coderCopy encodeBool:resetCharacterRecognitionProperties forKey:v174];
 
   if (!self->_resetCharacterRecognitionProperties && self->_didSetCharacterRecognitionData)
   {
@@ -6090,12 +6090,12 @@ LABEL_47:
     [v175 setObject:machineReadableCodeData forKeyedSubscript:v183];
 
     v184 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"characterRecognitionProperties"];
-    [v4 encodeObject:v175 forKey:v184];
+    [coderCopy encodeObject:v175 forKey:v184];
   }
 
   resetTextUnderstandingProperties = self->_resetTextUnderstandingProperties;
   v186 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"resetTextUnderstandingProperties"];
-  [v4 encodeBool:resetTextUnderstandingProperties forKey:v186];
+  [coderCopy encodeBool:resetTextUnderstandingProperties forKey:v186];
 
   if (!self->_resetTextUnderstandingProperties && self->_didSetTextUnderstandingProperties)
   {
@@ -6109,12 +6109,12 @@ LABEL_47:
     [v187 setObject:v190 forKeyedSubscript:v191];
 
     v192 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"textUnderstandingProperties"];
-    [v4 encodeObject:v187 forKey:v192];
+    [coderCopy encodeObject:v187 forKey:v192];
   }
 
   resetVisualSearchProperties = self->_resetVisualSearchProperties;
   v194 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"resetVisualSearchProperties"];
-  [v4 encodeBool:resetVisualSearchProperties forKey:v194];
+  [coderCopy encodeBool:resetVisualSearchProperties forKey:v194];
 
   if (self->_didSetVisualSearchProperties)
   {
@@ -6152,38 +6152,38 @@ LABEL_47:
     [v195 setObject:v209 forKeyedSubscript:v210];
 
     v211 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"visualSearchProperties"];
-    [v4 encodeObject:v195 forKey:v211];
+    [coderCopy encodeObject:v195 forKey:v211];
   }
 
   if (self->_didSetCompactImageSCSensitivityAnalysis)
   {
     compactSCSensitivityAnalysis = self->_compactSCSensitivityAnalysis;
     v213 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"compactImageSCSensitivityAnalysis"];
-    [v4 encodeInt64:compactSCSensitivityAnalysis forKey:v213];
+    [coderCopy encodeInt64:compactSCSensitivityAnalysis forKey:v213];
   }
 
   if (self->_didSetCompactVideoSCSensitivityAnalysis)
   {
     v214 = self->_compactSCSensitivityAnalysis;
     v215 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"compactVideoSCSensitivityAnalysis"];
-    [v4 encodeInt64:v214 forKey:v215];
+    [coderCopy encodeInt64:v214 forKey:v215];
 
     videoSensitivityAnalysisVersion = self->_videoSensitivityAnalysisVersion;
     v217 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"videoSensitivityAnalysisVersion"];
-    [v4 encodeInt64:videoSensitivityAnalysisVersion forKey:v217];
+    [coderCopy encodeInt64:videoSensitivityAnalysisVersion forKey:v217];
   }
 
   if (self->_didSetSceneprintData)
   {
     sceneprintData = self->_sceneprintData;
-    v219 = sceneprintData;
+    data = sceneprintData;
     if (!sceneprintData)
     {
-      v219 = [MEMORY[0x1E695DEF0] data];
+      data = [MEMORY[0x1E695DEF0] data];
     }
 
     v220 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"sceneprintData"];
-    [v4 encodeObject:v219 forKey:v220];
+    [coderCopy encodeObject:data forKey:v220];
 
     if (!sceneprintData)
     {
@@ -6193,28 +6193,28 @@ LABEL_47:
   if (self->_didSetDuplicateMatchingData)
   {
     duplicateMatchingData = self->_duplicateMatchingData;
-    v222 = duplicateMatchingData;
+    data2 = duplicateMatchingData;
     if (!duplicateMatchingData)
     {
-      v222 = [MEMORY[0x1E695DEF0] data];
+      data2 = [MEMORY[0x1E695DEF0] data];
     }
 
     v223 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"duplicateMatchingData"];
-    [v4 encodeObject:v222 forKey:v223];
+    [coderCopy encodeObject:data2 forKey:v223];
 
     if (!duplicateMatchingData)
     {
     }
 
     duplicateMatchingAlternateData = self->_duplicateMatchingAlternateData;
-    v225 = duplicateMatchingAlternateData;
+    data3 = duplicateMatchingAlternateData;
     if (!duplicateMatchingAlternateData)
     {
-      v225 = [MEMORY[0x1E695DEF0] data];
+      data3 = [MEMORY[0x1E695DEF0] data];
     }
 
     v226 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"duplicateMatchingAlternateData"];
-    [v4 encodeObject:v225 forKey:v226];
+    [coderCopy encodeObject:data3 forKey:v226];
 
     if (!duplicateMatchingAlternateData)
     {
@@ -6222,20 +6222,20 @@ LABEL_47:
 
     duplicateProcessingSucceeded = self->_duplicateProcessingSucceeded;
     v228 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"duplicateProcessingSucceeded"];
-    [v4 encodeBool:duplicateProcessingSucceeded forKey:v228];
+    [coderCopy encodeBool:duplicateProcessingSucceeded forKey:v228];
   }
 
   if (self->_didSetReverseLocationData)
   {
     reverseLocationData = self->_reverseLocationData;
-    v230 = reverseLocationData;
+    data4 = reverseLocationData;
     if (!reverseLocationData)
     {
-      v230 = [MEMORY[0x1E695DEF0] data];
+      data4 = [MEMORY[0x1E695DEF0] data];
     }
 
     v231 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"reverseLocationData"];
-    [v4 encodeObject:v230 forKey:v231];
+    [coderCopy encodeObject:data4 forKey:v231];
 
     if (!reverseLocationData)
     {
@@ -6246,20 +6246,20 @@ LABEL_47:
   {
     reverseLocationDataIsValid = self->_reverseLocationDataIsValid;
     v233 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"reverseLocationDataIsValid"];
-    [v4 encodeBool:reverseLocationDataIsValid forKey:v233];
+    [coderCopy encodeBool:reverseLocationDataIsValid forKey:v233];
   }
 
   if (self->_didSetShiftedLocation)
   {
     shiftedLocation = self->_shiftedLocation;
-    v235 = shiftedLocation;
+    data5 = shiftedLocation;
     if (!shiftedLocation)
     {
-      v235 = [MEMORY[0x1E695DEF0] data];
+      data5 = [MEMORY[0x1E695DEF0] data];
     }
 
     v236 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"shiftedLocation"];
-    [v4 encodeObject:v235 forKey:v236];
+    [coderCopy encodeObject:data5 forKey:v236];
 
     if (!shiftedLocation)
     {
@@ -6269,14 +6269,14 @@ LABEL_47:
   if (self->_didSetObjectSaliencyRectsData)
   {
     objectSaliencyRectsData = self->_objectSaliencyRectsData;
-    v238 = objectSaliencyRectsData;
+    data6 = objectSaliencyRectsData;
     if (!objectSaliencyRectsData)
     {
-      v238 = [MEMORY[0x1E695DEF0] data];
+      data6 = [MEMORY[0x1E695DEF0] data];
     }
 
     v239 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"objectSaliencyRectsData"];
-    [v4 encodeObject:v238 forKey:v239];
+    [coderCopy encodeObject:data6 forKey:v239];
 
     if (!objectSaliencyRectsData)
     {
@@ -6287,73 +6287,73 @@ LABEL_47:
   {
     timeZoneName = self->_timeZoneName;
     v241 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"timeZoneName"];
-    [v4 encodeObject:timeZoneName forKey:v241];
+    [coderCopy encodeObject:timeZoneName forKey:v241];
 
     timeZoneOffsetValue = self->_timeZoneOffsetValue;
     v243 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"timeZoneOffsetValue"];
-    [v4 encodeInt32:timeZoneOffsetValue forKey:v243];
+    [coderCopy encodeInt32:timeZoneOffsetValue forKey:v243];
   }
 
   if (self->_didSetGpsHorizontalAccuracy)
   {
     gpsHorizontalAccuracy = self->_gpsHorizontalAccuracy;
     v245 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"gpsHorizontalAccuracy"];
-    [v4 encodeDouble:v245 forKey:gpsHorizontalAccuracy];
+    [coderCopy encodeDouble:v245 forKey:gpsHorizontalAccuracy];
   }
 
   if (self->_didSetScreenTimeDeviceImageSensitivity)
   {
     screenTimeDeviceImageSensitivity = self->_screenTimeDeviceImageSensitivity;
     v247 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"screenTimeDeviceImageSensitivity"];
-    [v4 encodeInteger:screenTimeDeviceImageSensitivity forKey:v247];
+    [coderCopy encodeInteger:screenTimeDeviceImageSensitivity forKey:v247];
   }
 
   if (self->_didSetSyndicationProcessingValue)
   {
     syndicationProcessingValue = self->_syndicationProcessingValue;
     v249 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"syndicationProcessingValue"];
-    [v4 encodeInteger:syndicationProcessingValue forKey:v249];
+    [coderCopy encodeInteger:syndicationProcessingValue forKey:v249];
   }
 
   if (self->_didSetSyndicationProcessingVersion)
   {
     syndicationProcessingVersion = self->_syndicationProcessingVersion;
     v251 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"syndicationProcessingVersion"];
-    [v4 encodeInt64:syndicationProcessingVersion forKey:v251];
+    [coderCopy encodeInt64:syndicationProcessingVersion forKey:v251];
   }
 
   if (self->_didSetSyndicationIdentifier)
   {
     syndicationIdentifier = self->_syndicationIdentifier;
     v253 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"syndicationIdentifier"];
-    [v4 encodeObject:syndicationIdentifier forKey:v253];
+    [coderCopy encodeObject:syndicationIdentifier forKey:v253];
   }
 
   if (self->_didSetFaceAnalysisVersion)
   {
     faceAnalysisVersion = self->_faceAnalysisVersion;
     v255 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"faceAnalysisVersion"];
-    [v4 encodeInteger:faceAnalysisVersion forKey:v255];
+    [coderCopy encodeInteger:faceAnalysisVersion forKey:v255];
   }
 
   if (self->_didSetLocalAnalysisStage)
   {
     localAnalysisStage = self->_localAnalysisStage;
     v257 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"localAnalysisStage"];
-    [v4 encodeInteger:localAnalysisStage forKey:v257];
+    [coderCopy encodeInteger:localAnalysisStage forKey:v257];
   }
 
   if (self->_didSetViewPresentation)
   {
     viewPresentation = self->_viewPresentation;
     v259 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"viewPresentation"];
-    [v4 encodeInteger:viewPresentation forKey:v259];
+    [coderCopy encodeInteger:viewPresentation forKey:v259];
   }
 
   if (self->_resetGeneratedAssetDescriptionProperties)
   {
     v260 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"ResetGeneratedAssetDescriptionKey"];
-    [v4 encodeBool:1 forKey:v260];
+    [coderCopy encodeBool:1 forKey:v260];
   }
 
   else
@@ -6364,11 +6364,11 @@ LABEL_47:
     }
 
     v261 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"DidSetGeneratedAssetDescriptionKey"];
-    [v4 encodeBool:1 forKey:v261];
+    [coderCopy encodeBool:1 forKey:v261];
 
     generatedAssetDescriptionDictionaries = self->_generatedAssetDescriptionDictionaries;
     v260 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"GeneratedAssetDescriptionPropertiesKey"];
-    [v4 encodeObject:generatedAssetDescriptionDictionaries forKey:v260];
+    [coderCopy encodeObject:generatedAssetDescriptionDictionaries forKey:v260];
   }
 
 LABEL_157:
@@ -6376,40 +6376,40 @@ LABEL_157:
   {
     ptpTrashedState = self->_ptpTrashedState;
     v264 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"PtpTrashedStateKey"];
-    [v4 encodeInt64:ptpTrashedState forKey:v264];
+    [coderCopy encodeInt64:ptpTrashedState forKey:v264];
   }
 
   if (self->_didSetSavedAssetType)
   {
     savedAssetType = self->_savedAssetType;
     v266 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"savedAssetType"];
-    [v4 encodeInteger:savedAssetType forKey:v266];
+    [coderCopy encodeInteger:savedAssetType forKey:v266];
   }
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
   v78 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 encodeToXPCDict:v4];
+  dictCopy = dict;
+  helper = [(PHChangeRequest *)self helper];
+  [helper encodeToXPCDict:dictCopy];
 
-  v6 = [(PHAssetChangeRequest *)self facesHelper];
-  [v6 encodeToXPCDict:v4];
+  facesHelper = [(PHAssetChangeRequest *)self facesHelper];
+  [facesHelper encodeToXPCDict:dictCopy];
 
-  v7 = [(PHAssetChangeRequest *)self temporalFacesHelper];
-  [v7 encodeToXPCDict:v4];
+  temporalFacesHelper = [(PHAssetChangeRequest *)self temporalFacesHelper];
+  [temporalFacesHelper encodeToXPCDict:dictCopy];
 
-  [(PHRelationshipChangeRequestHelper *)self->_keywordsHelper encodeToXPCDict:v4];
-  [(PHRelationshipChangeRequestHelper *)self->_commentsHelper encodeToXPCDict:v4];
-  [(PHRelationshipChangeRequestHelper *)self->_likesHelper encodeToXPCDict:v4];
+  [(PHRelationshipChangeRequestHelper *)self->_keywordsHelper encodeToXPCDict:dictCopy];
+  [(PHRelationshipChangeRequestHelper *)self->_commentsHelper encodeToXPCDict:dictCopy];
+  [(PHRelationshipChangeRequestHelper *)self->_likesHelper encodeToXPCDict:dictCopy];
   if ([(PHAssetChangeRequest *)self didChangeAdjustments])
   {
-    v8 = [(PHAssetChangeRequest *)self contentEditingOutput];
-    if (v8)
+    contentEditingOutput = [(PHAssetChangeRequest *)self contentEditingOutput];
+    if (contentEditingOutput)
     {
       v76 = 0;
-      v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v76];
+      v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:contentEditingOutput requiringSecureCoding:1 error:&v76];
       v10 = v76;
       if (!v9)
       {
@@ -6428,28 +6428,28 @@ LABEL_157:
       v9 = 0;
     }
 
-    xpc_dictionary_set_BOOL(v4, "didChangeAdjustments", 1);
+    xpc_dictionary_set_BOOL(dictCopy, "didChangeAdjustments", 1);
     PLXPCDictionarySetData();
     PLXPCDictionarySetString();
     PLXPCDictionarySetURL();
   }
 
-  xpc_dictionary_set_BOOL(v4, "didSetOriginalResourceChoice", self->_didSetOriginalResourceChoice);
-  xpc_dictionary_set_BOOL(v4, "didRevertLocationToOriginal", self->_didRevertLocationToOriginal);
-  xpc_dictionary_set_uint64(v4, "originalResourceChoice", self->_originalResourceChoice);
-  xpc_dictionary_set_BOOL(v4, "didUpdateExtendedAttributesUsingOriginalMediaMetadata", self->_didUpdateExtendedAttributesUsingOriginalMediaMetadata);
-  xpc_dictionary_set_BOOL(v4, "didExpungeAllSpatialOverCaptureResources", self->_didExpungeAllSpatialOverCaptureResources);
-  xpc_dictionary_set_BOOL(v4, "didTrashAllSpatialOverCaptureResources", self->_didTrashAllSpatialOverCaptureResources);
-  xpc_dictionary_set_BOOL(v4, "didUntrashAllSpatialOverCaptureResources", self->_didUntrashAllSpatialOverCaptureResources);
-  xpc_dictionary_set_BOOL(v4, "didExpungeTrashedSpatialOverCaptureResources", self->_didExpungeTrashedSpatialOverCaptureResources);
+  xpc_dictionary_set_BOOL(dictCopy, "didSetOriginalResourceChoice", self->_didSetOriginalResourceChoice);
+  xpc_dictionary_set_BOOL(dictCopy, "didRevertLocationToOriginal", self->_didRevertLocationToOriginal);
+  xpc_dictionary_set_uint64(dictCopy, "originalResourceChoice", self->_originalResourceChoice);
+  xpc_dictionary_set_BOOL(dictCopy, "didUpdateExtendedAttributesUsingOriginalMediaMetadata", self->_didUpdateExtendedAttributesUsingOriginalMediaMetadata);
+  xpc_dictionary_set_BOOL(dictCopy, "didExpungeAllSpatialOverCaptureResources", self->_didExpungeAllSpatialOverCaptureResources);
+  xpc_dictionary_set_BOOL(dictCopy, "didTrashAllSpatialOverCaptureResources", self->_didTrashAllSpatialOverCaptureResources);
+  xpc_dictionary_set_BOOL(dictCopy, "didUntrashAllSpatialOverCaptureResources", self->_didUntrashAllSpatialOverCaptureResources);
+  xpc_dictionary_set_BOOL(dictCopy, "didExpungeTrashedSpatialOverCaptureResources", self->_didExpungeTrashedSpatialOverCaptureResources);
   if (self->_didPromoteToGuestAsset)
   {
-    xpc_dictionary_set_BOOL(v4, "didPromoteToGuestAsset", 1);
+    xpc_dictionary_set_BOOL(dictCopy, "didPromoteToGuestAsset", 1);
   }
 
   if (self->_didResetGuestAssetPromotion)
   {
-    xpc_dictionary_set_BOOL(v4, "didResetGuestAssetPromotion", 1);
+    xpc_dictionary_set_BOOL(dictCopy, "didResetGuestAssetPromotion", 1);
   }
 
   updatedLocation = self->_updatedLocation;
@@ -6487,7 +6487,7 @@ LABEL_157:
 
   if (self->_didSetTitle)
   {
-    xpc_dictionary_set_BOOL(v4, "didSetTitle", 1);
+    xpc_dictionary_set_BOOL(dictCopy, "didSetTitle", 1);
     if (self->_title)
     {
       PLXPCDictionarySetString();
@@ -6496,11 +6496,11 @@ LABEL_157:
 
   if (self->_didSetKeywordTitles)
   {
-    xpc_dictionary_set_BOOL(v4, "didSetKeywordTitles", 1);
+    xpc_dictionary_set_BOOL(dictCopy, "didSetKeywordTitles", 1);
     keywordTitles = self->_keywordTitles;
     if (keywordTitles)
     {
-      v17 = [(NSSet *)keywordTitles allObjects];
+      allObjects = [(NSSet *)keywordTitles allObjects];
       PLXPCDictionarySetArray();
     }
   }
@@ -6541,8 +6541,8 @@ LABEL_157:
     }
   }
 
-  xpc_dictionary_set_BOOL(v4, "didSetVisibilityState", self->_didSetVisibilityState);
-  xpc_dictionary_set_uint64(v4, "photoIrisVisibilityState", self->_photoIrisVisibilityState);
+  xpc_dictionary_set_BOOL(dictCopy, "didSetVisibilityState", self->_didSetVisibilityState);
+  xpc_dictionary_set_uint64(dictCopy, "photoIrisVisibilityState", self->_photoIrisVisibilityState);
   if (self->_didSetSceneClassifications)
   {
     PLXPCDictionarySetDictionary();
@@ -6550,72 +6550,72 @@ LABEL_157:
 
   if (self->_didSetImageEmbeddingVersion)
   {
-    xpc_dictionary_set_BOOL(v4, "didSetImageEmbeddingVersionKey", 1);
-    xpc_dictionary_set_int64(v4, "imageEmbeddingVersion", self->_imageEmbeddingVersion);
+    xpc_dictionary_set_BOOL(dictCopy, "didSetImageEmbeddingVersionKey", 1);
+    xpc_dictionary_set_int64(dictCopy, "imageEmbeddingVersion", self->_imageEmbeddingVersion);
   }
 
   if (self->_didSetVideoEmbeddingVersion)
   {
-    xpc_dictionary_set_BOOL(v4, "didSetVideoEmbeddingVersionKey", 1);
-    xpc_dictionary_set_int64(v4, "videoEmbeddingVersion", self->_videoEmbeddingVersion);
+    xpc_dictionary_set_BOOL(dictCopy, "didSetVideoEmbeddingVersionKey", 1);
+    xpc_dictionary_set_int64(dictCopy, "videoEmbeddingVersion", self->_videoEmbeddingVersion);
   }
 
   if (self->_incrementPlayCount)
   {
-    xpc_dictionary_set_BOOL(v4, "incrementPlayCount", 1);
+    xpc_dictionary_set_BOOL(dictCopy, "incrementPlayCount", 1);
   }
 
   if (self->_incrementShareCount)
   {
-    xpc_dictionary_set_BOOL(v4, "incrementShareCount", 1);
+    xpc_dictionary_set_BOOL(dictCopy, "incrementShareCount", 1);
   }
 
   lastSharedDate = self->_lastSharedDate;
   if (lastSharedDate)
   {
     [(NSDate *)lastSharedDate timeIntervalSinceReferenceDate];
-    xpc_dictionary_set_date(v4, "lastSharedDate", v23);
+    xpc_dictionary_set_date(dictCopy, "lastSharedDate", v23);
   }
 
   if (self->_incrementViewCount)
   {
-    xpc_dictionary_set_BOOL(v4, "incrementViewCount", 1);
+    xpc_dictionary_set_BOOL(dictCopy, "incrementViewCount", 1);
   }
 
   if (self->_clearLastSharedDate)
   {
-    xpc_dictionary_set_BOOL(v4, "clearLastSharedDate", 1);
+    xpc_dictionary_set_BOOL(dictCopy, "clearLastSharedDate", 1);
   }
 
   if (self->_clearLastViewedDate)
   {
-    xpc_dictionary_set_BOOL(v4, "clearLastViewedDate", 1);
+    xpc_dictionary_set_BOOL(dictCopy, "clearLastViewedDate", 1);
   }
 
   if (self->_didSetVariationSuggestionStates)
   {
-    xpc_dictionary_set_uint64(v4, "variationSuggestionStates", self->_variationSuggestionStates);
-    xpc_dictionary_set_uint64(v4, "variationSuggestionStatesMask", self->_variationSuggestionStatesMask);
+    xpc_dictionary_set_uint64(dictCopy, "variationSuggestionStates", self->_variationSuggestionStates);
+    xpc_dictionary_set_uint64(dictCopy, "variationSuggestionStatesMask", self->_variationSuggestionStatesMask);
   }
 
   if (self->_toRetryUpload)
   {
-    xpc_dictionary_set_BOOL(v4, "toRetryUpload", 1);
+    xpc_dictionary_set_BOOL(dictCopy, "toRetryUpload", 1);
   }
 
   if (self->_didSetPackedPreferredCropRect)
   {
-    xpc_dictionary_set_int64(v4, "packedPreferredCropRect", self->_packedPreferredCropRect);
+    xpc_dictionary_set_int64(dictCopy, "packedPreferredCropRect", self->_packedPreferredCropRect);
   }
 
   if (self->_didSetPackedAcceptableCropRect)
   {
-    xpc_dictionary_set_int64(v4, "packedAcceptableCropRect", self->_packedAcceptableCropRect);
+    xpc_dictionary_set_int64(dictCopy, "packedAcceptableCropRect", self->_packedAcceptableCropRect);
   }
 
   if (self->_didSetPackedBestPlaybackRect)
   {
-    xpc_dictionary_set_int64(v4, "packedBestPlaybackRect", self->_packedBestPlaybackRect);
+    xpc_dictionary_set_int64(dictCopy, "packedBestPlaybackRect", self->_packedBestPlaybackRect);
   }
 
   if (self->_didModifyComputedAttributes)
@@ -6628,7 +6628,7 @@ LABEL_157:
     else
     {
       v24 = xpc_null_create();
-      xpc_dictionary_set_value(v4, "computedAttributeMutations", v24);
+      xpc_dictionary_set_value(dictCopy, "computedAttributeMutations", v24);
     }
   }
 
@@ -6639,24 +6639,24 @@ LABEL_157:
 
   if ([(NSSet *)self->_assetResourceTypesToDelete count])
   {
-    v25 = [(NSSet *)self->_assetResourceTypesToDelete allObjects];
+    allObjects2 = [(NSSet *)self->_assetResourceTypesToDelete allObjects];
     PLXPCDictionarySetArray();
   }
 
   if (self->_deleteContextualVideoThumbnails)
   {
-    xpc_dictionary_set_BOOL(v4, "deleteContextualVideoThumbnails", 1);
+    xpc_dictionary_set_BOOL(dictCopy, "deleteContextualVideoThumbnails", 1);
   }
 
   if ([(NSSet *)self->_libraryScopeOriginatorUUIDs count])
   {
-    v26 = [(NSSet *)self->_libraryScopeOriginatorUUIDs allObjects];
+    allObjects3 = [(NSSet *)self->_libraryScopeOriginatorUUIDs allObjects];
     PLXPCDictionarySetArray();
   }
 
   if (self->_resetWallpaperProperties)
   {
-    xpc_dictionary_set_BOOL(v4, "resetWallpaperProperties", 1);
+    xpc_dictionary_set_BOOL(dictCopy, "resetWallpaperProperties", 1);
   }
 
   else
@@ -6668,7 +6668,7 @@ LABEL_157:
 
     if (self->_didSetWallpaperPropertiesVersion)
     {
-      xpc_dictionary_set_uint64(v4, "photoAnalysisWallpaperPropertiesVersion", self->_wallpaperPropertiesVersion);
+      xpc_dictionary_set_uint64(dictCopy, "photoAnalysisWallpaperPropertiesVersion", self->_wallpaperPropertiesVersion);
     }
 
     if (self->_didSetWallpaperPropertiesData)
@@ -6684,12 +6684,12 @@ LABEL_157:
 
   if (self->_didSetMediaAnalysisVersion)
   {
-    xpc_dictionary_set_uint64(v4, "mediaAnalysisVersion", self->_mediaAnalysisVersion);
+    xpc_dictionary_set_uint64(dictCopy, "mediaAnalysisVersion", self->_mediaAnalysisVersion);
   }
 
   if (self->_didSetMediaAnalysisImageVersion)
   {
-    xpc_dictionary_set_int64(v4, "mediaAnalysisImageVersion", self->_mediaAnalysisImageVersion);
+    xpc_dictionary_set_int64(dictCopy, "mediaAnalysisImageVersion", self->_mediaAnalysisImageVersion);
   }
 
   if ((self->_bestVideoTimeRange.start.flags & 1) != 0 && (self->_bestVideoTimeRange.duration.flags & 1) != 0 && !self->_bestVideoTimeRange.duration.epoch && (self->_bestVideoTimeRange.duration.value & 0x8000000000000000) == 0)
@@ -6735,7 +6735,7 @@ LABEL_157:
     }
   }
 
-  xpc_dictionary_set_BOOL(v4, "unsetBestKeyFrameTime", self->_didUnsetBestKeyFrameTime);
+  xpc_dictionary_set_BOOL(dictCopy, "unsetBestKeyFrameTime", self->_didUnsetBestKeyFrameTime);
   if (self->_bestKeyFrameJPEGData)
   {
     PLXPCDictionarySetData();
@@ -6753,67 +6753,67 @@ LABEL_157:
 
   if (self->_didSetBlurrinessScore)
   {
-    xpc_dictionary_set_double(v4, "blurrinessScore", self->_blurrinessScore);
+    xpc_dictionary_set_double(dictCopy, "blurrinessScore", self->_blurrinessScore);
   }
 
   if (self->_didSetExposureScore)
   {
-    xpc_dictionary_set_double(v4, "exposureScore", self->_exposureScore);
+    xpc_dictionary_set_double(dictCopy, "exposureScore", self->_exposureScore);
   }
 
   if (self->_didSetAudioScore)
   {
-    xpc_dictionary_set_double(v4, "audioScore", self->_audioScore);
+    xpc_dictionary_set_double(dictCopy, "audioScore", self->_audioScore);
   }
 
   if (self->_didSetSettlingEffectScore)
   {
-    xpc_dictionary_set_double(v4, "settlingEffectScore", self->_settlingEffectScore);
+    xpc_dictionary_set_double(dictCopy, "settlingEffectScore", self->_settlingEffectScore);
   }
 
   if (self->_didSetWallpaperScore)
   {
-    xpc_dictionary_set_double(v4, "wallpaperScore", self->_wallpaperScore);
+    xpc_dictionary_set_double(dictCopy, "wallpaperScore", self->_wallpaperScore);
   }
 
   if (self->_didSetAutoplaySuggestionScore)
   {
-    xpc_dictionary_set_double(v4, "autoplaySuggestionScore", self->_autoplaySuggestionScore);
+    xpc_dictionary_set_double(dictCopy, "autoplaySuggestionScore", self->_autoplaySuggestionScore);
   }
 
   if (self->_didSetVideoStickerSuggestionScore)
   {
-    xpc_dictionary_set_double(v4, "videoStickerSuggestionScore", self->_videoStickerSuggestionScore);
+    xpc_dictionary_set_double(dictCopy, "videoStickerSuggestionScore", self->_videoStickerSuggestionScore);
   }
 
   if (self->_didSetVideoScore)
   {
-    xpc_dictionary_set_double(v4, "videoScore", self->_videoScore);
+    xpc_dictionary_set_double(dictCopy, "videoScore", self->_videoScore);
   }
 
   if (self->_didSetActivityScore)
   {
-    xpc_dictionary_set_double(v4, "activityScore", self->_activityScore);
+    xpc_dictionary_set_double(dictCopy, "activityScore", self->_activityScore);
   }
 
   if (self->_didSetFaceCount)
   {
-    xpc_dictionary_set_uint64(v4, "faceCount", self->_faceCount);
+    xpc_dictionary_set_uint64(dictCopy, "faceCount", self->_faceCount);
   }
 
   if (self->_didSetAudioClassification)
   {
-    xpc_dictionary_set_int64(v4, "audioClassification", self->_audioClassification);
+    xpc_dictionary_set_int64(dictCopy, "audioClassification", self->_audioClassification);
   }
 
   if (self->_didSetProbableRotationDirection)
   {
-    xpc_dictionary_set_int64(v4, "probableRotationDirection", self->_probableRotationDirection);
+    xpc_dictionary_set_int64(dictCopy, "probableRotationDirection", self->_probableRotationDirection);
   }
 
   if (self->_didSetProbableRotationDirectionConfidence)
   {
-    xpc_dictionary_set_double(v4, "probableRotationDirectionConfidence", self->_probableRotationDirectionConfidence);
+    xpc_dictionary_set_double(dictCopy, "probableRotationDirectionConfidence", self->_probableRotationDirectionConfidence);
   }
 
   if (self->_colorNormalizationData)
@@ -6823,7 +6823,7 @@ LABEL_157:
 
   if (self->_resetCharacterRecognitionProperties)
   {
-    xpc_dictionary_set_BOOL(v4, "resetCharacterRecognitionProperties", 1);
+    xpc_dictionary_set_BOOL(dictCopy, "resetCharacterRecognitionProperties", 1);
   }
 
   else if (self->_didSetCharacterRecognitionData)
@@ -6850,7 +6850,7 @@ LABEL_157:
 
   if (self->_resetTextUnderstandingProperties)
   {
-    xpc_dictionary_set_BOOL(v4, "resetTextUnderstandingProperties", 1);
+    xpc_dictionary_set_BOOL(dictCopy, "resetTextUnderstandingProperties", 1);
   }
 
   else if (self->_didSetTextUnderstandingProperties)
@@ -6869,7 +6869,7 @@ LABEL_157:
 
   if (self->_resetVisualSearchProperties)
   {
-    xpc_dictionary_set_BOOL(v4, "resetVisualSearchProperties", 1);
+    xpc_dictionary_set_BOOL(dictCopy, "resetVisualSearchProperties", 1);
   }
 
   if (self->_didSetVisualSearchProperties)
@@ -6912,13 +6912,13 @@ LABEL_157:
 
   if (self->_didSetCompactImageSCSensitivityAnalysis)
   {
-    xpc_dictionary_set_int64(v4, "compactImageSCSensitivityAnalysis", self->_compactSCSensitivityAnalysis);
+    xpc_dictionary_set_int64(dictCopy, "compactImageSCSensitivityAnalysis", self->_compactSCSensitivityAnalysis);
   }
 
   if (self->_didSetCompactVideoSCSensitivityAnalysis)
   {
-    xpc_dictionary_set_int64(v4, "compactVideoSCSensitivityAnalysis", self->_compactSCSensitivityAnalysis);
-    xpc_dictionary_set_int64(v4, "videoSensitivityAnalysisVersion", self->_videoSensitivityAnalysisVersion);
+    xpc_dictionary_set_int64(dictCopy, "compactVideoSCSensitivityAnalysis", self->_compactSCSensitivityAnalysis);
+    xpc_dictionary_set_int64(dictCopy, "videoSensitivityAnalysisVersion", self->_videoSensitivityAnalysisVersion);
   }
 
   if (self->_didSetSceneprintData)
@@ -6931,7 +6931,7 @@ LABEL_157:
     else
     {
       v59 = xpc_null_create();
-      xpc_dictionary_set_value(v4, "sceneprintData", v59);
+      xpc_dictionary_set_value(dictCopy, "sceneprintData", v59);
     }
   }
 
@@ -6945,7 +6945,7 @@ LABEL_157:
     else
     {
       v60 = xpc_null_create();
-      xpc_dictionary_set_value(v4, "duplicateMatchingData", v60);
+      xpc_dictionary_set_value(dictCopy, "duplicateMatchingData", v60);
     }
 
     if (self->_duplicateMatchingAlternateData)
@@ -6956,10 +6956,10 @@ LABEL_157:
     else
     {
       v61 = xpc_null_create();
-      xpc_dictionary_set_value(v4, "duplicateMatchingAlternateData", v61);
+      xpc_dictionary_set_value(dictCopy, "duplicateMatchingAlternateData", v61);
     }
 
-    xpc_dictionary_set_BOOL(v4, "duplicateProcessingSucceeded", self->_duplicateProcessingSucceeded);
+    xpc_dictionary_set_BOOL(dictCopy, "duplicateProcessingSucceeded", self->_duplicateProcessingSucceeded);
   }
 
   if (self->_didSetReverseLocationData)
@@ -6972,13 +6972,13 @@ LABEL_157:
     else
     {
       v62 = xpc_null_create();
-      xpc_dictionary_set_value(v4, "reverseLocationData", v62);
+      xpc_dictionary_set_value(dictCopy, "reverseLocationData", v62);
     }
   }
 
   if (self->_didSetReverseLocationDataIsValid)
   {
-    xpc_dictionary_set_BOOL(v4, "reverseLocationDataIsValid", self->_reverseLocationDataIsValid);
+    xpc_dictionary_set_BOOL(dictCopy, "reverseLocationDataIsValid", self->_reverseLocationDataIsValid);
   }
 
   if (self->_didSetShiftedLocation)
@@ -7009,7 +7009,7 @@ LABEL_157:
     else
     {
       v65 = xpc_null_create();
-      xpc_dictionary_set_value(v4, "shiftedLocation", v65);
+      xpc_dictionary_set_value(dictCopy, "shiftedLocation", v65);
     }
   }
 
@@ -7023,34 +7023,34 @@ LABEL_157:
     else
     {
       v67 = xpc_null_create();
-      xpc_dictionary_set_value(v4, "objectSaliencyRectsData", v67);
+      xpc_dictionary_set_value(dictCopy, "objectSaliencyRectsData", v67);
     }
   }
 
   if (self->_didSetTimeZone)
   {
     PLXPCDictionarySetString();
-    xpc_dictionary_set_int64(v4, "timeZoneOffsetValue", self->_timeZoneOffsetValue);
+    xpc_dictionary_set_int64(dictCopy, "timeZoneOffsetValue", self->_timeZoneOffsetValue);
   }
 
   if (self->_didSetGpsHorizontalAccuracy)
   {
-    xpc_dictionary_set_double(v4, "gpsHorizontalAccuracy", self->_gpsHorizontalAccuracy);
+    xpc_dictionary_set_double(dictCopy, "gpsHorizontalAccuracy", self->_gpsHorizontalAccuracy);
   }
 
   if (self->_didSetScreenTimeDeviceImageSensitivity)
   {
-    xpc_dictionary_set_int64(v4, "screenTimeDeviceImageSensitivity", self->_screenTimeDeviceImageSensitivity);
+    xpc_dictionary_set_int64(dictCopy, "screenTimeDeviceImageSensitivity", self->_screenTimeDeviceImageSensitivity);
   }
 
   if (self->_didSetSyndicationProcessingValue)
   {
-    xpc_dictionary_set_uint64(v4, "syndicationProcessingValue", self->_syndicationProcessingValue);
+    xpc_dictionary_set_uint64(dictCopy, "syndicationProcessingValue", self->_syndicationProcessingValue);
   }
 
   if (self->_didSetSyndicationProcessingVersion)
   {
-    xpc_dictionary_set_uint64(v4, "syndicationProcessingVersion", self->_syndicationProcessingVersion);
+    xpc_dictionary_set_uint64(dictCopy, "syndicationProcessingVersion", self->_syndicationProcessingVersion);
   }
 
   if (self->_didSetSyndicationIdentifier)
@@ -7060,38 +7060,38 @@ LABEL_157:
 
   if (self->_didSetFaceAnalysisVersion)
   {
-    xpc_dictionary_set_int64(v4, "faceAnalysisVersion", self->_faceAnalysisVersion);
+    xpc_dictionary_set_int64(dictCopy, "faceAnalysisVersion", self->_faceAnalysisVersion);
   }
 
   if (self->_didSetLocalAnalysisStage)
   {
-    xpc_dictionary_set_int64(v4, "localAnalysisStage", self->_localAnalysisStage);
+    xpc_dictionary_set_int64(dictCopy, "localAnalysisStage", self->_localAnalysisStage);
   }
 
   if (self->_didSetViewPresentation)
   {
-    xpc_dictionary_set_int64(v4, "viewPresentation", self->_viewPresentation);
+    xpc_dictionary_set_int64(dictCopy, "viewPresentation", self->_viewPresentation);
   }
 
   if (self->_resetGeneratedAssetDescriptionProperties)
   {
-    xpc_dictionary_set_BOOL(v4, "ResetGeneratedAssetDescriptionKey", 1);
+    xpc_dictionary_set_BOOL(dictCopy, "ResetGeneratedAssetDescriptionKey", 1);
   }
 
   else if (self->_didSetGeneratedAssetDescriptionProperties)
   {
-    xpc_dictionary_set_BOOL(v4, "DidSetGeneratedAssetDescriptionKey", 1);
+    xpc_dictionary_set_BOOL(dictCopy, "DidSetGeneratedAssetDescriptionKey", 1);
     PLXPCDictionarySetDictionary();
   }
 
   if (self->_didSetPtpTrashedState)
   {
-    xpc_dictionary_set_int64(v4, "PtpTrashedStateKey", self->_ptpTrashedState);
+    xpc_dictionary_set_int64(dictCopy, "PtpTrashedStateKey", self->_ptpTrashedState);
   }
 
   if (self->_didSetSavedAssetType)
   {
-    xpc_dictionary_set_int64(v4, "savedAssetType", self->_savedAssetType);
+    xpc_dictionary_set_int64(dictCopy, "savedAssetType", self->_savedAssetType);
   }
 }
 
@@ -7101,9 +7101,9 @@ LABEL_157:
   v3 = PLPhotoKitGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PHChangeRequest *)self uuid];
+    uuid = [(PHChangeRequest *)self uuid];
     v5 = 138543362;
-    v6 = v4;
+    v6 = uuid;
     _os_log_impl(&dword_19C86F000, v3, OS_LOG_TYPE_DEFAULT, "Reverting content to original for asset %{public}@", &v5, 0xCu);
   }
 
@@ -7116,9 +7116,9 @@ LABEL_157:
   v3 = PLSyndicationGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(PHObject *)self->_originalAsset uuid];
+    uuid = [(PHObject *)self->_originalAsset uuid];
     v5 = 138543362;
-    v6 = v4;
+    v6 = uuid;
     _os_log_impl(&dword_19C86F000, v3, OS_LOG_TYPE_INFO, "reset guest asset promotion on %{public}@", &v5, 0xCu);
   }
 
@@ -7133,9 +7133,9 @@ LABEL_157:
   v3 = PLSyndicationGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(PHObject *)self->_originalAsset uuid];
+    uuid = [(PHObject *)self->_originalAsset uuid];
     v5 = 138543362;
-    v6 = v4;
+    v6 = uuid;
     _os_log_impl(&dword_19C86F000, v3, OS_LOG_TYPE_INFO, "promote to guest asset: %{public}@", &v5, 0xCu);
   }
 
@@ -7149,9 +7149,9 @@ LABEL_157:
   originalAsset = self->_originalAsset;
   if (originalAsset)
   {
-    v3 = [(PHChangeRequest *)self photoLibrary];
-    v4 = [v3 librarySpecificFetchOptions];
-    originalAsset = [PHQuery queryForLikesForAsset:originalAsset options:v4];
+    photoLibrary = [(PHChangeRequest *)self photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+    originalAsset = [PHQuery queryForLikesForAsset:originalAsset options:librarySpecificFetchOptions];
   }
 
   v5 = [PHRelationshipChangeRequestHelper existentObjectIDsUsingQuery:originalAsset];
@@ -7162,45 +7162,45 @@ LABEL_157:
 - (id)_mutableLikeObjectIDsAndUUIDs
 {
   likesHelper = self->_likesHelper;
-  v4 = [(PHAssetChangeRequest *)self _existentLikeObjectIDs];
-  [(PHRelationshipChangeRequestHelper *)likesHelper prepareIfNeededWithExistentObjectIDs:v4];
+  _existentLikeObjectIDs = [(PHAssetChangeRequest *)self _existentLikeObjectIDs];
+  [(PHRelationshipChangeRequestHelper *)likesHelper prepareIfNeededWithExistentObjectIDs:_existentLikeObjectIDs];
 
   v5 = self->_likesHelper;
 
   return [(PHRelationshipChangeRequestHelper *)v5 mutableObjectIDsAndUUIDs];
 }
 
-- (void)removeLike:(id)a3
+- (void)removeLike:(id)like
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  likeCopy = like;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v9 count:1];
-  v7 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:v6, v9, v10];
+  likeCopy2 = like;
+  v6 = [v4 arrayWithObjects:&likeCopy count:1];
+  v7 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:v6, likeCopy, v10];
 
   if (v7)
   {
-    v8 = [(PHAssetChangeRequest *)self _mutableLikeObjectIDsAndUUIDs];
-    [v8 removeObjectsInArray:v7];
+    _mutableLikeObjectIDsAndUUIDs = [(PHAssetChangeRequest *)self _mutableLikeObjectIDsAndUUIDs];
+    [_mutableLikeObjectIDsAndUUIDs removeObjectsInArray:v7];
 
     [(PHChangeRequest *)self didMutate];
   }
 }
 
-- (void)addLike:(id)a3
+- (void)addLike:(id)like
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  likeCopy = like;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v9 count:1];
-  v7 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:v6, v9, v10];
+  likeCopy2 = like;
+  v6 = [v4 arrayWithObjects:&likeCopy count:1];
+  v7 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:v6, likeCopy, v10];
 
   if (v7)
   {
-    v8 = [(PHAssetChangeRequest *)self _mutableLikeObjectIDsAndUUIDs];
-    [v8 addObjectsFromArray:v7];
+    _mutableLikeObjectIDsAndUUIDs = [(PHAssetChangeRequest *)self _mutableLikeObjectIDsAndUUIDs];
+    [_mutableLikeObjectIDsAndUUIDs addObjectsFromArray:v7];
 
     [(PHChangeRequest *)self didMutate];
   }
@@ -7213,9 +7213,9 @@ LABEL_157:
   originalAsset = self->_originalAsset;
   if (originalAsset)
   {
-    v3 = [(PHChangeRequest *)self photoLibrary];
-    v4 = [v3 librarySpecificFetchOptions];
-    originalAsset = [PHQuery queryForCommentsForAsset:originalAsset options:v4];
+    photoLibrary = [(PHChangeRequest *)self photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+    originalAsset = [PHQuery queryForCommentsForAsset:originalAsset options:librarySpecificFetchOptions];
   }
 
   v5 = [PHRelationshipChangeRequestHelper existentObjectIDsUsingQuery:originalAsset];
@@ -7226,35 +7226,35 @@ LABEL_157:
 - (id)_mutableCommentObjectIDsAndUUIDs
 {
   commentsHelper = self->_commentsHelper;
-  v4 = [(PHAssetChangeRequest *)self _existentCommentObjectIDs];
-  [(PHRelationshipChangeRequestHelper *)commentsHelper prepareIfNeededWithExistentObjectIDs:v4];
+  _existentCommentObjectIDs = [(PHAssetChangeRequest *)self _existentCommentObjectIDs];
+  [(PHRelationshipChangeRequestHelper *)commentsHelper prepareIfNeededWithExistentObjectIDs:_existentCommentObjectIDs];
 
   v5 = self->_commentsHelper;
 
   return [(PHRelationshipChangeRequestHelper *)v5 mutableObjectIDsAndUUIDs];
 }
 
-- (void)removeComments:(id)a3
+- (void)removeComments:(id)comments
 {
-  v4 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:a3];
+  v4 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:comments];
   if (v4)
   {
     v6 = v4;
-    v5 = [(PHAssetChangeRequest *)self _mutableCommentObjectIDsAndUUIDs];
-    [v5 removeObjectsInArray:v6];
+    _mutableCommentObjectIDsAndUUIDs = [(PHAssetChangeRequest *)self _mutableCommentObjectIDsAndUUIDs];
+    [_mutableCommentObjectIDsAndUUIDs removeObjectsInArray:v6];
 
     [(PHChangeRequest *)self didMutate];
     v4 = v6;
   }
 }
 
-- (void)addComments:(id)a3
+- (void)addComments:(id)comments
 {
-  v5 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:a3];
+  v5 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:comments];
   if (v5)
   {
-    v4 = [(PHAssetChangeRequest *)self _mutableCommentObjectIDsAndUUIDs];
-    [v4 addObjectsFromArray:v5];
+    _mutableCommentObjectIDsAndUUIDs = [(PHAssetChangeRequest *)self _mutableCommentObjectIDsAndUUIDs];
+    [_mutableCommentObjectIDsAndUUIDs addObjectsFromArray:v5];
 
     [(PHChangeRequest *)self didMutate];
   }
@@ -7262,9 +7262,9 @@ LABEL_157:
   [(PHChangeRequest *)self didMutate];
 }
 
-- (BOOL)deleteAssetResourceWithType:(int64_t)a3
+- (BOOL)deleteAssetResourceWithType:(int64_t)type
 {
-  v5 = PHAssetResourceTypeClientCanAppendToOrDeleteFromAsset(a3);
+  v5 = PHAssetResourceTypeClientCanAppendToOrDeleteFromAsset(type);
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -7273,19 +7273,19 @@ LABEL_157:
       [v6 unionSet:self->_assetResourceTypesToDelete];
     }
 
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:type];
     [v6 addObject:v7];
 
     objc_storeStrong(&self->_assetResourceTypesToDelete, v6);
     [(PHChangeRequest *)self didMutate];
     pathsToNewAssetResourcesByAssetResourceType = self->_pathsToNewAssetResourcesByAssetResourceType;
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v9 = [MEMORY[0x1E696AD98] numberWithInteger:type];
     v10 = [(NSDictionary *)pathsToNewAssetResourcesByAssetResourceType objectForKeyedSubscript:v9];
 
     if (v10)
     {
       v11 = [(NSDictionary *)self->_pathsToNewAssetResourcesByAssetResourceType mutableCopy];
-      v12 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v12 = [MEMORY[0x1E696AD98] numberWithInteger:type];
       [(NSDictionary *)v11 setObject:0 forKeyedSubscript:v12];
 
       v13 = self->_pathsToNewAssetResourcesByAssetResourceType;
@@ -7296,39 +7296,39 @@ LABEL_157:
   return v5;
 }
 
-- (BOOL)addAssetResourceWithType:(int64_t)a3 fromFileAtURL:(id)a4
+- (BOOL)addAssetResourceWithType:(int64_t)type fromFileAtURL:(id)l
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (PHAssetResourceTypeClientCanAppendToOrDeleteFromAsset(a3))
+  lCopy = l;
+  if (PHAssetResourceTypeClientCanAppendToOrDeleteFromAsset(type))
   {
-    v7 = [MEMORY[0x1E696AFB0] UUID];
-    v8 = [v7 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v9 = [(PHChangeRequest *)self photoLibrary];
-    v10 = [v9 pathManager];
+    photoLibrary = [(PHChangeRequest *)self photoLibrary];
+    pathManager = [photoLibrary pathManager];
     v34 = 0;
-    v11 = [v10 externalDirectoryWithSubType:3 createIfNeeded:1 error:&v34];
+    v11 = [pathManager externalDirectoryWithSubType:3 createIfNeeded:1 error:&v34];
     v12 = v34;
 
     if (v11)
     {
       v13 = MEMORY[0x1E696AEC0];
-      v14 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-      v15 = [v13 stringWithFormat:@"ResourceType-%@-%@", v14, v8];
+      v14 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+      v15 = [v13 stringWithFormat:@"ResourceType-%@-%@", v14, uUIDString];
       v16 = [v11 stringByAppendingPathComponent:v15];
 
       v17 = MEMORY[0x1E69BF238];
       v18 = [MEMORY[0x1E695DFF8] fileURLWithPath:v16];
       v33 = 0;
-      v19 = [v17 copyItemAtURL:v6 toURL:v18 error:&v33];
+      v19 = [v17 copyItemAtURL:lCopy toURL:v18 error:&v33];
       v20 = v33;
 
       if (v19)
       {
         v30 = v20;
         v31 = v12;
-        v32 = v8;
+        v32 = uUIDString;
         v21 = objc_alloc_init(MEMORY[0x1E695DF90]);
         v22 = v21;
         if (self->_pathsToNewAssetResourcesByAssetResourceType)
@@ -7336,19 +7336,19 @@ LABEL_157:
           [v21 addEntriesFromDictionary:?];
         }
 
-        v23 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+        v23 = [MEMORY[0x1E696AD98] numberWithInteger:type];
         [v22 setObject:v16 forKeyedSubscript:v23];
 
         objc_storeStrong(&self->_pathsToNewAssetResourcesByAssetResourceType, v22);
         [(PHChangeRequest *)self didMutate];
         assetResourceTypesToDelete = self->_assetResourceTypesToDelete;
-        v25 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+        v25 = [MEMORY[0x1E696AD98] numberWithInteger:type];
         LODWORD(assetResourceTypesToDelete) = [(NSSet *)assetResourceTypesToDelete containsObject:v25];
 
         if (assetResourceTypesToDelete)
         {
           v26 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithSet:self->_assetResourceTypesToDelete];
-          v27 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+          v27 = [MEMORY[0x1E696AD98] numberWithInteger:type];
           [(NSSet *)v26 removeObject:v27];
 
           v28 = self->_assetResourceTypesToDelete;
@@ -7356,7 +7356,7 @@ LABEL_157:
         }
 
         v12 = v31;
-        v8 = v32;
+        uUIDString = v32;
         v20 = v30;
       }
     }
@@ -7403,9 +7403,9 @@ LABEL_157:
   }
 }
 
-- (void)setOriginalResourceChoice:(unint64_t)a3
+- (void)setOriginalResourceChoice:(unint64_t)choice
 {
-  self->_originalResourceChoice = a3;
+  self->_originalResourceChoice = choice;
   self->_didSetOriginalResourceChoice = 1;
   [(PHChangeRequest *)self didMutate];
 }
@@ -7413,17 +7413,17 @@ LABEL_157:
 - (void)setContentEditingOutput:(PHContentEditingOutput *)contentEditingOutput
 {
   v17 = contentEditingOutput;
-  v6 = [(PHAssetChangeRequest *)self supportedEditOperations];
-  v7 = [v6 containsIndex:2];
+  supportedEditOperations = [(PHAssetChangeRequest *)self supportedEditOperations];
+  v7 = [supportedEditOperations containsIndex:2];
 
   if (v7)
   {
     [(PHChangeRequest *)self didMutate];
     [(PHAssetChangeRequest *)self markDidChangeAdjustments];
     objc_storeStrong(&self->_contentEditingOutput, contentEditingOutput);
-    v8 = [(PHContentEditingOutput *)v17 editorBundleURL];
+    editorBundleURL = [(PHContentEditingOutput *)v17 editorBundleURL];
     editorBundleURL = self->_editorBundleURL;
-    self->_editorBundleURL = v8;
+    self->_editorBundleURL = editorBundleURL;
   }
 
   else if ((PLIsAssetsd() & 1) == 0)
@@ -7440,48 +7440,48 @@ LABEL_157:
   }
 }
 
-- (void)setAdjustmentData:(id)a3 withRenderedJPEGData:(id)a4 orRenderedContentURL:(id)a5 penultimateRenderedJPEGData:(id)a6 isSubstandardRender:(BOOL)a7 fullSizeRenderSize:(CGSize)a8 renderedVideoComplementURL:(id)a9 penultimateRenderedVideoComplementURL:(id)a10 optionalOriginalResourceChoice:(id)a11
+- (void)setAdjustmentData:(id)data withRenderedJPEGData:(id)gData orRenderedContentURL:(id)l penultimateRenderedJPEGData:(id)eGData isSubstandardRender:(BOOL)render fullSizeRenderSize:(CGSize)size renderedVideoComplementURL:(id)rL penultimateRenderedVideoComplementURL:(id)self0 optionalOriginalResourceChoice:(id)self1
 {
-  height = a8.height;
-  width = a8.width;
-  v37 = a7;
+  height = size.height;
+  width = size.width;
+  renderCopy = render;
   v42 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v39 = a9;
-  v38 = a10;
-  v22 = a11;
+  dataCopy = data;
+  gDataCopy = gData;
+  lCopy = l;
+  eGDataCopy = eGData;
+  rLCopy = rL;
+  uRLCopy = uRL;
+  choiceCopy = choice;
   originalAsset = self->_originalAsset;
-  v24 = v21;
-  v25 = v19;
+  v24 = eGDataCopy;
+  v25 = gDataCopy;
   if (originalAsset)
   {
-    v26 = [(PHAsset *)originalAsset mediaType];
+    mediaType = [(PHAsset *)originalAsset mediaType];
   }
 
   else
   {
-    v26 = 1;
+    mediaType = 1;
   }
 
   v27 = [PHContentEditingOutput alloc];
-  v28 = [(PHChangeRequest *)self photoLibrary];
-  v29 = [v28 photoLibraryURL];
-  v30 = [(PHContentEditingOutput *)v27 initWithAdjustmentBaseVersion:0 mediaType:v26 appropriateForURL:v29];
+  photoLibrary = [(PHChangeRequest *)self photoLibrary];
+  photoLibraryURL = [photoLibrary photoLibraryURL];
+  v30 = [(PHContentEditingOutput *)v27 initWithAdjustmentBaseVersion:0 mediaType:mediaType appropriateForURL:photoLibraryURL];
 
-  -[PHContentEditingOutput setBaseVersion:](v30, "setBaseVersion:", [v18 baseVersion]);
-  [(PHContentEditingOutput *)v30 setAdjustmentData:v18];
-  v31 = v20;
-  if (v20)
+  -[PHContentEditingOutput setBaseVersion:](v30, "setBaseVersion:", [dataCopy baseVersion]);
+  [(PHContentEditingOutput *)v30 setAdjustmentData:dataCopy];
+  v31 = lCopy;
+  if (lCopy)
   {
-    [(PHContentEditingOutput *)v30 setRenderedContentURL:v20];
+    [(PHContentEditingOutput *)v30 setRenderedContentURL:lCopy];
     v32 = v25;
     v33 = v24;
 LABEL_8:
-    v34 = v38;
-    v35 = v39;
+    v34 = uRLCopy;
+    v35 = rLCopy;
     goto LABEL_9;
   }
 
@@ -7494,25 +7494,25 @@ LABEL_8:
   }
 
   v36 = PLPhotoKitGetLog();
-  v34 = v38;
-  v35 = v39;
+  v34 = uRLCopy;
+  v35 = rLCopy;
   if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v41 = v18;
+    v41 = dataCopy;
     _os_log_impl(&dword_19C86F000, v36, OS_LOG_TYPE_ERROR, "No rendered content provided for %@", buf, 0xCu);
   }
 
 LABEL_9:
   [(PHContentEditingOutput *)v30 setPenultimateRenderedJPEGData:v33];
-  [(PHContentEditingOutput *)v30 setIsSubstandardRender:v37];
+  [(PHContentEditingOutput *)v30 setIsSubstandardRender:renderCopy];
   [(PHContentEditingOutput *)v30 setFullSizeRenderWidth:width];
   [(PHContentEditingOutput *)v30 setFullSizeRenderHeight:height];
   [(PHContentEditingOutput *)v30 setRenderedVideoComplementContentURL:v35];
   [(PHContentEditingOutput *)v30 setPenultimateRenderedVideoComplementContentURL:v34];
-  if (v22)
+  if (choiceCopy)
   {
-    [(PHContentEditingOutput *)v30 setOriginalResourceChoice:v22];
+    [(PHContentEditingOutput *)v30 setOriginalResourceChoice:choiceCopy];
   }
 
   [(PHAssetChangeRequest *)self setContentEditingOutput:v30];
@@ -7521,27 +7521,27 @@ LABEL_9:
 - (void)_prepareExistingIDsForTemporalFacesIfNeeded
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHRelationshipChangeRequestHelper *)self->_temporalFacesHelper originalObjectIDs];
+  originalObjectIDs = [(PHRelationshipChangeRequestHelper *)self->_temporalFacesHelper originalObjectIDs];
 
-  if (!v3)
+  if (!originalObjectIDs)
   {
     if (self->_originalAsset)
     {
-      v4 = [(PHChangeRequest *)self photoLibrary];
-      v5 = [PHFetchOptions fetchOptionsWithPhotoLibrary:v4 orObject:0];
+      photoLibrary = [(PHChangeRequest *)self photoLibrary];
+      v5 = [PHFetchOptions fetchOptionsWithPhotoLibrary:photoLibrary orObject:0];
 
       [v5 setIncludeMediaAnalysisProcessingRangeTypes:2];
       [v5 setIncludedDetectionTypes:&unk_1F102DFB8];
       v6 = [PHQuery queryForFacesInAsset:self->_originalAsset options:v5];
-      v7 = [v6 executeQuery];
+      executeQuery = [v6 executeQuery];
       temporalFacesHelper = self->_temporalFacesHelper;
-      v9 = [v7 fetchedObjectIDs];
-      [(PHRelationshipChangeRequestHelper *)temporalFacesHelper setOriginalObjectIDs:v9];
+      fetchedObjectIDs = [executeQuery fetchedObjectIDs];
+      [(PHRelationshipChangeRequestHelper *)temporalFacesHelper setOriginalObjectIDs:fetchedObjectIDs];
     }
 
-    v10 = [(PHRelationshipChangeRequestHelper *)self->_temporalFacesHelper originalObjectIDs];
+    originalObjectIDs2 = [(PHRelationshipChangeRequestHelper *)self->_temporalFacesHelper originalObjectIDs];
 
-    if (!v10)
+    if (!originalObjectIDs2)
     {
       v11 = self->_temporalFacesHelper;
       v12 = MEMORY[0x1E695E0F0];
@@ -7562,48 +7562,48 @@ LABEL_9:
 - (void)_prepareFaceIDsIfNeeded
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHRelationshipChangeRequestHelper *)self->_facesHelper originalObjectIDs];
+  originalObjectIDs = [(PHRelationshipChangeRequestHelper *)self->_facesHelper originalObjectIDs];
 
-  if (!v3)
+  if (!originalObjectIDs)
   {
     originalAsset = self->_originalAsset;
     if (originalAsset)
     {
       v5 = [PHQuery queryForFacesInAsset:originalAsset options:0];
-      v6 = [v5 executeQuery];
-      [(PHAssetChangeRequest *)self _prepareFacesHelperWithFetchResult:v6];
+      executeQuery = [v5 executeQuery];
+      [(PHAssetChangeRequest *)self _prepareFacesHelperWithFetchResult:executeQuery];
     }
 
-    v7 = [(PHRelationshipChangeRequestHelper *)self->_facesHelper originalObjectIDs];
+    originalObjectIDs2 = [(PHRelationshipChangeRequestHelper *)self->_facesHelper originalObjectIDs];
 
-    if (!v7)
+    if (!originalObjectIDs2)
     {
       [(PHRelationshipChangeRequestHelper *)self->_facesHelper setOriginalObjectIDs:MEMORY[0x1E695E0F0]];
     }
   }
 
-  v8 = [(PHRelationshipChangeRequestHelper *)self->_facesHelper mutableObjectIDsAndUUIDs];
+  mutableObjectIDsAndUUIDs = [(PHRelationshipChangeRequestHelper *)self->_facesHelper mutableObjectIDsAndUUIDs];
 
-  if (!v8)
+  if (!mutableObjectIDsAndUUIDs)
   {
     facesHelper = self->_facesHelper;
-    v11 = [(PHRelationshipChangeRequestHelper *)facesHelper originalObjectIDs];
-    v10 = [v11 mutableCopy];
+    originalObjectIDs3 = [(PHRelationshipChangeRequestHelper *)facesHelper originalObjectIDs];
+    v10 = [originalObjectIDs3 mutableCopy];
     [(PHRelationshipChangeRequestHelper *)facesHelper setMutableObjectIDsAndUUIDs:v10];
   }
 }
 
-- (void)_prepareFacesHelperWithFetchResult:(id)a3
+- (void)_prepareFacesHelperWithFetchResult:(id)result
 {
-  v7 = a3;
+  resultCopy = result;
   +[PHPhotoLibrary assertTransaction];
-  v4 = [(PHRelationshipChangeRequestHelper *)self->_facesHelper originalObjectIDs];
+  originalObjectIDs = [(PHRelationshipChangeRequestHelper *)self->_facesHelper originalObjectIDs];
 
-  if (!v4)
+  if (!originalObjectIDs)
   {
     facesHelper = self->_facesHelper;
-    v6 = [v7 fetchedObjectIDs];
-    [(PHRelationshipChangeRequestHelper *)facesHelper setOriginalObjectIDs:v6];
+    fetchedObjectIDs = [resultCopy fetchedObjectIDs];
+    [(PHRelationshipChangeRequestHelper *)facesHelper setOriginalObjectIDs:fetchedObjectIDs];
   }
 }
 
@@ -7612,9 +7612,9 @@ LABEL_9:
   originalAsset = self->_originalAsset;
   if (originalAsset)
   {
-    v3 = [(PHChangeRequest *)self photoLibrary];
-    v4 = [v3 librarySpecificFetchOptions];
-    originalAsset = [PHQuery queryForKeywordsForAsset:originalAsset options:v4];
+    photoLibrary = [(PHChangeRequest *)self photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+    originalAsset = [PHQuery queryForKeywordsForAsset:originalAsset options:librarySpecificFetchOptions];
   }
 
   v5 = [PHRelationshipChangeRequestHelper existentObjectIDsUsingQuery:originalAsset];
@@ -7625,67 +7625,67 @@ LABEL_9:
 - (id)_mutableKeywordObjectIDsAndUUIDs
 {
   keywordsHelper = self->_keywordsHelper;
-  v4 = [(PHAssetChangeRequest *)self _existentKeywordObjectIDs];
-  [(PHRelationshipChangeRequestHelper *)keywordsHelper prepareIfNeededWithExistentObjectIDs:v4];
+  _existentKeywordObjectIDs = [(PHAssetChangeRequest *)self _existentKeywordObjectIDs];
+  [(PHRelationshipChangeRequestHelper *)keywordsHelper prepareIfNeededWithExistentObjectIDs:_existentKeywordObjectIDs];
 
   v5 = self->_keywordsHelper;
 
   return [(PHRelationshipChangeRequestHelper *)v5 mutableObjectIDsAndUUIDs];
 }
 
-- (void)removeKeywords:(id)a3
+- (void)removeKeywords:(id)keywords
 {
-  v4 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:a3];
+  v4 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:keywords];
   if (v4)
   {
     v6 = v4;
     [(PHChangeRequest *)self didMutate];
-    v5 = [(PHAssetChangeRequest *)self _mutableKeywordObjectIDsAndUUIDs];
-    [v5 removeObjectsInArray:v6];
+    _mutableKeywordObjectIDsAndUUIDs = [(PHAssetChangeRequest *)self _mutableKeywordObjectIDsAndUUIDs];
+    [_mutableKeywordObjectIDsAndUUIDs removeObjectsInArray:v6];
 
     v4 = v6;
   }
 }
 
-- (void)addKeywords:(id)a3
+- (void)addKeywords:(id)keywords
 {
-  v4 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:a3];
+  v4 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:keywords];
   if (v4)
   {
     v6 = v4;
     [(PHChangeRequest *)self didMutate];
-    v5 = [(PHAssetChangeRequest *)self _mutableKeywordObjectIDsAndUUIDs];
-    [v5 addObjectsFromArray:v6];
+    _mutableKeywordObjectIDsAndUUIDs = [(PHAssetChangeRequest *)self _mutableKeywordObjectIDsAndUUIDs];
+    [_mutableKeywordObjectIDsAndUUIDs addObjectsFromArray:v6];
 
     v4 = v6;
   }
 }
 
-- (void)setKeywordTitles:(id)a3
+- (void)setKeywordTitles:(id)titles
 {
-  v4 = a3;
+  titlesCopy = titles;
   [(PHChangeRequest *)self didMutate];
   self->_didSetKeywordTitles = 1;
-  v5 = [v4 copy];
+  v5 = [titlesCopy copy];
 
   keywordTitles = self->_keywordTitles;
   self->_keywordTitles = v5;
 }
 
-- (void)setVariationSuggestionStates:(unint64_t)a3 forVariationType:(unint64_t)a4
+- (void)setVariationSuggestionStates:(unint64_t)states forVariationType:(unint64_t)type
 {
-  v5 = a3;
+  statesCopy = states;
   [(PHChangeRequest *)self didMutate];
   self->_didSetVariationSuggestionStates = 1;
-  v7 = 6 * a4 - 6;
-  v8 = (v5 & 0x3F) << v7;
-  if (!a4)
+  v7 = 6 * type - 6;
+  v8 = (statesCopy & 0x3F) << v7;
+  if (!type)
   {
     v8 = 0;
   }
 
   v9 = 63 << v7;
-  if (!a4)
+  if (!type)
   {
     v9 = 0;
   }
@@ -7697,55 +7697,55 @@ LABEL_9:
 - (void)incrementShareCount
 {
   [(PHChangeRequest *)self didMutate];
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   lastSharedDate = self->_lastSharedDate;
-  self->_lastSharedDate = v3;
+  self->_lastSharedDate = date;
 
   self->_incrementShareCount = 1;
 }
 
-- (void)setFaceAdjustmentVersion:(id)a3
+- (void)setFaceAdjustmentVersion:(id)version
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  versionCopy = version;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (versionCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"faceAdjustmentVersion"];
+    [mutations setObject:versionCopy forKeyedSubscript:@"faceAdjustmentVersion"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"faceAdjustmentVersion"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"faceAdjustmentVersion"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"faceAdjustmentVersion"];
+    [mutations removeObjectForKey:@"faceAdjustmentVersion"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"faceAdjustmentVersion"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"faceAdjustmentVersion"];
   }
 }
 
 - (id)faceAdjustmentVersion
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"faceAdjustmentVersion"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"faceAdjustmentVersion"];
 
   return v5;
 }
 
-- (void)setContextualVideoThumbnailImage:(CGImage *)a3 withIdentifier:(id)a4
+- (void)setContextualVideoThumbnailImage:(CGImage *)image withIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  identifierCopy = identifier;
   if (![(PHAsset *)self->_originalAsset isVideo])
   {
     v7 = PLPhotoKitGetLog();
@@ -7763,7 +7763,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!a3 || !v6)
+  if (!image || !identifierCopy)
   {
     v7 = PLPhotoKitGetLog();
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -7774,9 +7774,9 @@ LABEL_12:
     v17 = 136315650;
     v18 = "[PHAssetChangeRequest setContextualVideoThumbnailImage:withIdentifier:]";
     v19 = 2048;
-    v20 = a3;
+    imageCopy = image;
     v21 = 2114;
-    v22 = v6;
+    v22 = identifierCopy;
     v13 = "Invalid parameter in %s image:%p identifier:%{public}@";
     v14 = v7;
     v15 = 32;
@@ -7784,12 +7784,12 @@ LABEL_12:
   }
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF88]);
-  v8 = [*MEMORY[0x1E6982E58] identifier];
-  v9 = CGImageDestinationCreateWithData(v7, v8, 1uLL, 0);
+  identifier = [*MEMORY[0x1E6982E58] identifier];
+  v9 = CGImageDestinationCreateWithData(v7, identifier, 1uLL, 0);
 
   if (v9)
   {
-    CGImageDestinationAddImage(v9, a3, 0);
+    CGImageDestinationAddImage(v9, image, 0);
     CGImageDestinationFinalize(v9);
     CFRelease(v9);
     v10 = [(NSDictionary *)self->_contextualVideoThumbnailImageDataByIdentifier mutableCopy];
@@ -7798,7 +7798,7 @@ LABEL_12:
       v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
     }
 
-    [v10 setObject:v7 forKeyedSubscript:v6];
+    [v10 setObject:v7 forKeyedSubscript:identifierCopy];
     v11 = [v10 copy];
     contextualVideoThumbnailImageDataByIdentifier = self->_contextualVideoThumbnailImageDataByIdentifier;
     self->_contextualVideoThumbnailImageDataByIdentifier = v11;
@@ -7820,9 +7820,9 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)setTemporalFaces:(id)a3
+- (void)setTemporalFaces:(id)faces
 {
-  v4 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:a3];
+  v4 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:faces];
   v5 = [v4 mutableCopy];
 
   if (v5)
@@ -7843,38 +7843,38 @@ LABEL_13:
   [(PHRelationshipChangeRequestHelper *)temporalFacesHelper setMutableObjectIDsAndUUIDs:v8];
 }
 
-- (void)removeFaces:(id)a3
+- (void)removeFaces:(id)faces
 {
-  v4 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:a3];
+  v4 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:faces];
   if (v4)
   {
     v6 = v4;
     [(PHChangeRequest *)self didMutate];
-    v5 = [(PHAssetChangeRequest *)self _mutableFaceObjectIDsAndUUIDs];
-    [v5 removeObjectsInArray:v6];
+    _mutableFaceObjectIDsAndUUIDs = [(PHAssetChangeRequest *)self _mutableFaceObjectIDsAndUUIDs];
+    [_mutableFaceObjectIDsAndUUIDs removeObjectsInArray:v6];
 
     v4 = v6;
   }
 }
 
-- (void)addFaces:(id)a3
+- (void)addFaces:(id)faces
 {
-  v4 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:a3];
+  v4 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:faces];
   if (v4)
   {
     v6 = v4;
     [(PHChangeRequest *)self didMutate];
-    v5 = [(PHAssetChangeRequest *)self _mutableFaceObjectIDsAndUUIDs];
-    [v5 addObjectsFromArray:v6];
+    _mutableFaceObjectIDsAndUUIDs = [(PHAssetChangeRequest *)self _mutableFaceObjectIDsAndUUIDs];
+    [_mutableFaceObjectIDsAndUUIDs addObjectsFromArray:v6];
 
     v4 = v6;
   }
 }
 
-- (void)_setSavedAssetType:(signed __int16)a3
+- (void)_setSavedAssetType:(signed __int16)type
 {
   self->_didSetSavedAssetType = 1;
-  self->_savedAssetType = a3;
+  self->_savedAssetType = type;
   [(PHChangeRequest *)self didMutate];
 }
 
@@ -7883,79 +7883,79 @@ LABEL_13:
   [(PHChangeRequest *)self didMutate];
   if (self->_didSetGeneratedAssetDescriptionProperties)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:1482 description:@"Attempting to set and reset generated asset description in same change request."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:1482 description:@"Attempting to set and reset generated asset description in same change request."];
   }
 
   self->_resetGeneratedAssetDescriptionProperties = 1;
 }
 
-- (void)setGeneratedAssetDescription:(id)a3 analysisVersion:(int64_t)a4 sourceType:(int64_t)a5
+- (void)setGeneratedAssetDescription:(id)description analysisVersion:(int64_t)version sourceType:(int64_t)type
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if (!v9)
+  descriptionCopy = description;
+  if (!descriptionCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:1466 description:{@"Invalid parameter not satisfying: %@", @"description"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:1466 description:{@"Invalid parameter not satisfying: %@", @"description"}];
   }
 
-  if (a4 <= 0)
+  if (version <= 0)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:1467 description:{@"Invalid parameter not satisfying: %@", @"version > 0"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:1467 description:{@"Invalid parameter not satisfying: %@", @"version > 0"}];
   }
 
-  if (a5 >= 3)
+  if (type >= 3)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:1468 description:{@"Invalid parameter not satisfying: %@", @"sourceType >= 0 && sourceType <= PHGeneratedAssetDescriptionSourceTypeMovie"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:1468 description:{@"Invalid parameter not satisfying: %@", @"sourceType >= 0 && sourceType <= PHGeneratedAssetDescriptionSourceTypeMovie"}];
   }
 
   if (self->_resetGeneratedAssetDescriptionProperties)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:1469 description:@"Attempting to set and reset generated asset description in same change request."];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:1469 description:@"Attempting to set and reset generated asset description in same change request."];
   }
 
   [(PHChangeRequest *)self didMutate];
   if (!self->_generatedAssetDescriptionDictionaries)
   {
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     generatedAssetDescriptionDictionaries = self->_generatedAssetDescriptionDictionaries;
-    self->_generatedAssetDescriptionDictionaries = v10;
+    self->_generatedAssetDescriptionDictionaries = dictionary;
   }
 
   v20[0] = @"descriptionText";
   v20[1] = @"analysisVersion";
-  v21[0] = v9;
-  v12 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v21[0] = descriptionCopy;
+  v12 = [MEMORY[0x1E696AD98] numberWithInteger:version];
   v21[1] = v12;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:2];
   v14 = self->_generatedAssetDescriptionDictionaries;
-  v15 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+  v15 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   [(NSMutableDictionary *)v14 setObject:v13 forKeyedSubscript:v15];
 
   self->_didSetGeneratedAssetDescriptionProperties = 1;
 }
 
-- (void)setAlternateImportImageDate:(id)a3
+- (void)setAlternateImportImageDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   [(PHChangeRequest *)self didMutate];
   alternateImportImageDate = self->_alternateImportImageDate;
-  self->_alternateImportImageDate = v4;
+  self->_alternateImportImageDate = dateCopy;
 }
 
-- (void)_validateObjectSaliencyRects:(id)a3
+- (void)_validateObjectSaliencyRects:(id)rects
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  rectsCopy = rects;
+  v5 = [rectsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -7966,7 +7966,7 @@ LABEL_13:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(rectsCopy);
         }
 
         MEMORY[0x19EAF15F0](*(*(&v16 + 1) + 8 * i));
@@ -7984,25 +7984,25 @@ LABEL_13:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [rectsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)setObjectSaliencyRects:(id)a3
+- (void)setObjectSaliencyRects:(id)rects
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  rectsCopy = rects;
   [(PHChangeRequest *)self didMutate];
   self->_didSetObjectSaliencyRectsData = 1;
-  if ([v6 count] <= 3 && objc_msgSend(v6, "count"))
+  if ([rectsCopy count] <= 3 && objc_msgSend(rectsCopy, "count"))
   {
-    [(PHAssetChangeRequest *)self _validateObjectSaliencyRects:v6];
-    objc_storeStrong(&self->_objectSaliencyRects, a3);
+    [(PHAssetChangeRequest *)self _validateObjectSaliencyRects:rectsCopy];
+    objc_storeStrong(&self->_objectSaliencyRects, rects);
     v18 = 0;
-    v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v18];
+    v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:rectsCopy requiringSecureCoding:1 error:&v18];
     v8 = v18;
     objectSaliencyRectsData = self->_objectSaliencyRectsData;
     self->_objectSaliencyRectsData = v7;
@@ -8019,7 +8019,7 @@ LABEL_13:
     }
   }
 
-  else if ([v6 count] >= 4)
+  else if ([rectsCopy count] >= 4)
   {
     v11 = MEMORY[0x1E695DF30];
     v12 = *MEMORY[0x1E695D940];
@@ -8033,63 +8033,63 @@ LABEL_13:
   }
 }
 
-- (void)setShiftedLocation:(id)a3
+- (void)setShiftedLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   [(PHChangeRequest *)self didMutate];
   self->_didSetShiftedLocation = 1;
   shiftedLocation = self->_shiftedLocation;
-  self->_shiftedLocation = v4;
+  self->_shiftedLocation = locationCopy;
 }
 
-- (void)setReverseLocationDataIsValid:(BOOL)a3
+- (void)setReverseLocationDataIsValid:(BOOL)valid
 {
   [(PHChangeRequest *)self didMutate];
   self->_didSetReverseLocationDataIsValid = 1;
-  self->_reverseLocationDataIsValid = a3;
+  self->_reverseLocationDataIsValid = valid;
 }
 
-- (void)setReverseLocationData:(id)a3
+- (void)setReverseLocationData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   [(PHChangeRequest *)self didMutate];
   self->_didSetReverseLocationData = 1;
   reverseLocationData = self->_reverseLocationData;
-  self->_reverseLocationData = v4;
+  self->_reverseLocationData = dataCopy;
 }
 
-- (void)setDuplicateMatchingData:(id)a3 duplicateMatchingAlternateData:(id)a4 processingSucceeded:(BOOL)a5
+- (void)setDuplicateMatchingData:(id)data duplicateMatchingAlternateData:(id)alternateData processingSucceeded:(BOOL)succeeded
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  alternateDataCopy = alternateData;
   [(PHChangeRequest *)self didMutate];
   self->_didSetDuplicateMatchingData = 1;
   duplicateMatchingData = self->_duplicateMatchingData;
-  self->_duplicateMatchingData = v8;
-  v11 = v8;
+  self->_duplicateMatchingData = dataCopy;
+  v11 = dataCopy;
 
   duplicateMatchingAlternateData = self->_duplicateMatchingAlternateData;
-  self->_duplicateMatchingAlternateData = v9;
+  self->_duplicateMatchingAlternateData = alternateDataCopy;
 
-  self->_duplicateProcessingSucceeded = a5;
+  self->_duplicateProcessingSucceeded = succeeded;
 }
 
-- (void)setSceneprintData:(id)a3
+- (void)setSceneprintData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   [(PHChangeRequest *)self didMutate];
   self->_didSetSceneprintData = 1;
   sceneprintData = self->_sceneprintData;
-  self->_sceneprintData = v4;
+  self->_sceneprintData = dataCopy;
 }
 
-- (void)setRectWithNormalizedRect:(CGRect)a3 forPackedRect:(int64_t *)a4 forSetFlag:(BOOL *)a5
+- (void)setRectWithNormalizedRect:(CGRect)rect forPackedRect:(int64_t *)packedRect forSetFlag:(BOOL *)flag
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsNull(a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (CGRectIsNull(rect))
   {
     x = *MEMORY[0x1E695F058];
     y = *(MEMORY[0x1E695F058] + 8);
@@ -8110,170 +8110,170 @@ LABEL_13:
     objc_exception_throw(v18);
   }
 
-  *a4 = MEMORY[0x19EAF2080](x, y, width, height);
-  *a5 = 1;
+  *packedRect = MEMORY[0x19EAF2080](x, y, width, height);
+  *flag = 1;
 
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setAcceptableCropRectWithNormalizedRect:(CGRect)a3
+- (void)setAcceptableCropRectWithNormalizedRect:(CGRect)rect
 {
   v5 = 0;
   v4 = 0;
-  [(PHAssetChangeRequest *)self setRectWithNormalizedRect:&v5 forPackedRect:&v4 forSetFlag:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PHAssetChangeRequest *)self setRectWithNormalizedRect:&v5 forPackedRect:&v4 forSetFlag:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   self->_packedAcceptableCropRect = v5;
   self->_didSetPackedAcceptableCropRect = v4;
 }
 
-- (void)setPreferredCropRectWithNormalizedRect:(CGRect)a3
+- (void)setPreferredCropRectWithNormalizedRect:(CGRect)rect
 {
   v5 = 0;
   v4 = 0;
-  [(PHAssetChangeRequest *)self setRectWithNormalizedRect:&v5 forPackedRect:&v4 forSetFlag:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PHAssetChangeRequest *)self setRectWithNormalizedRect:&v5 forPackedRect:&v4 forSetFlag:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   self->_packedPreferredCropRect = v5;
   self->_didSetPackedPreferredCropRect = v4;
 }
 
-- (void)setPhotoIrisVisibilityState:(unsigned __int16)a3
+- (void)setPhotoIrisVisibilityState:(unsigned __int16)state
 {
-  self->_photoIrisVisibilityState = a3;
+  self->_photoIrisVisibilityState = state;
   self->_didSetVisibilityState = 1;
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setVideoEmbeddingVersion:(signed __int16)a3
+- (void)setVideoEmbeddingVersion:(signed __int16)version
 {
-  v3 = a3;
+  versionCopy = version;
   v11 = *MEMORY[0x1E69E9840];
-  self->_videoEmbeddingVersion = a3;
+  self->_videoEmbeddingVersion = version;
   self->_didSetVideoEmbeddingVersion = 1;
   [(PHChangeRequest *)self didMutate];
   v5 = PLAssetAnalysisGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(PHChangeRequest *)self uuid];
+    uuid = [(PHChangeRequest *)self uuid];
     v7 = 138412546;
-    v8 = v6;
+    v8 = uuid;
     v9 = 1024;
-    v10 = v3;
+    v10 = versionCopy;
     _os_log_impl(&dword_19C86F000, v5, OS_LOG_TYPE_DEBUG, "Set video embedding version - uuid: %@, version: %d", &v7, 0x12u);
   }
 }
 
-- (void)setImageEmbeddingVersion:(signed __int16)a3
+- (void)setImageEmbeddingVersion:(signed __int16)version
 {
-  v3 = a3;
+  versionCopy = version;
   v11 = *MEMORY[0x1E69E9840];
-  self->_imageEmbeddingVersion = a3;
+  self->_imageEmbeddingVersion = version;
   self->_didSetImageEmbeddingVersion = 1;
   [(PHChangeRequest *)self didMutate];
   v5 = PLAssetAnalysisGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(PHChangeRequest *)self uuid];
+    uuid = [(PHChangeRequest *)self uuid];
     v7 = 138412546;
-    v8 = v6;
+    v8 = uuid;
     v9 = 1024;
-    v10 = v3;
+    v10 = versionCopy;
     _os_log_impl(&dword_19C86F000, v5, OS_LOG_TYPE_DEBUG, "Set image embedding version - uuid: %@, version: %d", &v7, 0x12u);
   }
 }
 
-- (void)setSceneClassifications:(id)a3 ofType:(int64_t)a4 version:(signed __int16)a5 timestamp:(id)a6
+- (void)setSceneClassifications:(id)classifications ofType:(int64_t)type version:(signed __int16)version timestamp:(id)timestamp
 {
-  v21 = a5;
+  versionCopy = version;
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a6;
+  classificationsCopy = classifications;
+  timestampCopy = timestamp;
   sceneClassificationDictionariesByType = self->_sceneClassificationDictionariesByType;
-  v12 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v12 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v13 = [(NSMutableDictionary *)sceneClassificationDictionariesByType objectForKeyedSubscript:v12];
   v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"sceneAnalysisLocationVersion"];
   v15 = [v13 objectForKeyedSubscript:v14];
 
   if (v15)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:1338 description:@"Attempting to set normal and location analysis scene classifications in same change request."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:1338 description:@"Attempting to set normal and location analysis scene classifications in same change request."];
   }
 
-  [(PHAssetChangeRequest *)self _setSceneClassifications:v9 ofType:a4 timestamp:v10, a2];
+  [(PHAssetChangeRequest *)self _setSceneClassifications:classificationsCopy ofType:type timestamp:timestampCopy, a2];
   v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"sceneAnalysisVersion"];
-  [(PHAssetChangeRequest *)self _addVersion:v21 withKey:v16 andType:a4 toDictionary:self->_sceneClassificationDictionariesByType];
+  [(PHAssetChangeRequest *)self _addVersion:versionCopy withKey:v16 andType:type toDictionary:self->_sceneClassificationDictionariesByType];
 
   [(PHChangeRequest *)self didMutate];
   self->_didSetSceneClassifications = 1;
   v17 = PLAssetAnalysisGetLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    v18 = [(PHChangeRequest *)self uuid];
+    uuid = [(PHChangeRequest *)self uuid];
     *buf = 138412546;
-    v23 = v18;
+    v23 = uuid;
     v24 = 2112;
-    v25 = v10;
+    v25 = timestampCopy;
     _os_log_impl(&dword_19C86F000, v17, OS_LOG_TYPE_DEBUG, "Set scene classifications - uuid: %@, adjustment timestamp: %@", buf, 0x16u);
   }
 }
 
-- (void)setLocationBasedSceneClassifications:(id)a3 ofType:(int64_t)a4 version:(signed __int16)a5 timestamp:(id)a6
+- (void)setLocationBasedSceneClassifications:(id)classifications ofType:(int64_t)type version:(signed __int16)version timestamp:(id)timestamp
 {
-  v21 = a5;
+  versionCopy = version;
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a6;
+  classificationsCopy = classifications;
+  timestampCopy = timestamp;
   sceneClassificationDictionariesByType = self->_sceneClassificationDictionariesByType;
-  v12 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v12 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v13 = [(NSMutableDictionary *)sceneClassificationDictionariesByType objectForKeyedSubscript:v12];
   v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"sceneAnalysisVersion"];
   v15 = [v13 objectForKeyedSubscript:v14];
 
   if (v15)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:1329 description:@"Attempting to set normal and location analysis scene classifications in same change request."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:1329 description:@"Attempting to set normal and location analysis scene classifications in same change request."];
   }
 
-  [(PHAssetChangeRequest *)self _setSceneClassifications:v9 ofType:a4 timestamp:v10, a2];
+  [(PHAssetChangeRequest *)self _setSceneClassifications:classificationsCopy ofType:type timestamp:timestampCopy, a2];
   v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"sceneAnalysisLocationVersion"];
-  [(PHAssetChangeRequest *)self _addVersion:v21 withKey:v16 andType:a4 toDictionary:self->_sceneClassificationDictionariesByType];
+  [(PHAssetChangeRequest *)self _addVersion:versionCopy withKey:v16 andType:type toDictionary:self->_sceneClassificationDictionariesByType];
 
   [(PHChangeRequest *)self didMutate];
   self->_didSetSceneClassifications = 1;
   v17 = PLAssetAnalysisGetLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    v18 = [(PHChangeRequest *)self uuid];
+    uuid = [(PHChangeRequest *)self uuid];
     *buf = 138412546;
-    v23 = v18;
+    v23 = uuid;
     v24 = 2112;
-    v25 = v10;
+    v25 = timestampCopy;
     _os_log_impl(&dword_19C86F000, v17, OS_LOG_TYPE_DEBUG, "Set scene classifications - uuid: %@, adjustment timestamp: %@", buf, 0x16u);
   }
 }
 
-- (void)_addVersion:(signed __int16)a3 withKey:(id)a4 andType:(int64_t)a5 toDictionary:(id)a6
+- (void)_addVersion:(signed __int16)version withKey:(id)key andType:(int64_t)type toDictionary:(id)dictionary
 {
-  v8 = a3;
+  versionCopy = version;
   v9 = MEMORY[0x1E696AD98];
-  v10 = a6;
-  v11 = a4;
-  v12 = [v9 numberWithInteger:a5];
-  v13 = [v10 objectForKeyedSubscript:v12];
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  v12 = [v9 numberWithInteger:type];
+  v13 = [dictionaryCopy objectForKeyedSubscript:v12];
   v16 = [v13 mutableCopy];
 
-  v14 = [MEMORY[0x1E696AD98] numberWithShort:v8];
-  [v16 setObject:v14 forKeyedSubscript:v11];
+  v14 = [MEMORY[0x1E696AD98] numberWithShort:versionCopy];
+  [v16 setObject:v14 forKeyedSubscript:keyCopy];
 
-  v15 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
-  [v10 setObject:v16 forKeyedSubscript:v15];
+  v15 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  [dictionaryCopy setObject:v16 forKeyedSubscript:v15];
 }
 
-- (void)_setSceneClassifications:(id)a3 ofType:(int64_t)a4 timestamp:(id)a5
+- (void)_setSceneClassifications:(id)classifications ofType:(int64_t)type timestamp:(id)timestamp
 {
   v46 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  classificationsCopy = classifications;
+  timestampCopy = timestamp;
+  if (timestampCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -8287,7 +8287,7 @@ LABEL_13:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v10 = v8;
+  v10 = classificationsCopy;
   v11 = [v10 countByEnumeratingWithState:&v35 objects:v45 count:16];
   if (v11)
   {
@@ -8303,12 +8303,12 @@ LABEL_13:
         }
 
         v15 = *(*(&v35 + 1) + 8 * i);
-        if ([v15 classificationType] != a4)
+        if ([v15 classificationType] != type)
         {
           v28 = MEMORY[0x1E695DF30];
           v29 = *MEMORY[0x1E695D930];
-          v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: Classification type (%ld) does not match expected type (%ld). PHSceneClassification.type should equal expected type in 'ofType' parameter.", "-[PHAssetChangeRequest _setSceneClassifications:ofType:timestamp:]", objc_msgSend(v15, "classificationType"), a4];
-          v31 = [v28 exceptionWithName:v29 reason:v30 userInfo:0];
+          type = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: Classification type (%ld) does not match expected type (%ld). PHSceneClassification.type should equal expected type in 'ofType' parameter.", "-[PHAssetChangeRequest _setSceneClassifications:ofType:timestamp:]", objc_msgSend(v15, "classificationType"), type];
+          v31 = [v28 exceptionWithName:v29 reason:type userInfo:0];
           v32 = v31;
 
           objc_exception_throw(v31);
@@ -8323,12 +8323,12 @@ LABEL_13:
 
   if (!self->_sceneClassificationDictionariesByType)
   {
-    v16 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     sceneClassificationDictionariesByType = self->_sceneClassificationDictionariesByType;
-    self->_sceneClassificationDictionariesByType = v16;
+    self->_sceneClassificationDictionariesByType = dictionary;
   }
 
-  v34 = self;
+  selfCopy = self;
   v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"sceneClassifications"];
   v43[0] = v18;
   v19 = [v10 count];
@@ -8345,19 +8345,19 @@ LABEL_13:
   v44[0] = v20;
   v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"sceneAnalysisTimestamp"];
   v43[1] = v21;
-  v22 = v9;
-  if (!v9)
+  null = timestampCopy;
+  if (!timestampCopy)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v44[1] = v22;
+  v44[1] = null;
   v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:v43 count:2];
-  v24 = v34->_sceneClassificationDictionariesByType;
-  v25 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v24 = selfCopy->_sceneClassificationDictionariesByType;
+  v25 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   [(NSMutableDictionary *)v24 setObject:v23 forKeyedSubscript:v25];
 
-  if (!v9)
+  if (!timestampCopy)
   {
   }
 
@@ -8365,37 +8365,37 @@ LABEL_13:
   {
   }
 
-  v34->_didSetSceneClassifications = 1;
+  selfCopy->_didSetSceneClassifications = 1;
   v26 = PLAssetAnalysisGetLog();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
   {
-    v27 = [(PHChangeRequest *)v34 uuid];
+    uuid = [(PHChangeRequest *)selfCopy uuid];
     *buf = 138412546;
-    v40 = v27;
+    v40 = uuid;
     v41 = 2112;
-    v42 = v9;
+    v42 = timestampCopy;
     _os_log_impl(&dword_19C86F000, v26, OS_LOG_TYPE_DEBUG, "Set scene classifications - uuid: %@, adjustment timestamp: %@", buf, 0x16u);
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   [(PHChangeRequest *)self didMutate];
   self->_didSetTitle = 1;
-  v5 = [v4 copy];
+  v5 = [titleCopy copy];
 
   title = self->_title;
   self->_title = v5;
 }
 
-- (void)setAccessibilityDescription:(id)a3
+- (void)setAccessibilityDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   [(PHChangeRequest *)self didMutate];
-  if (v4)
+  if (descriptionCopy)
   {
-    v5 = v4;
+    v5 = descriptionCopy;
   }
 
   else
@@ -8409,13 +8409,13 @@ LABEL_13:
   self->_accessibilityDescription = v6;
 }
 
-- (void)setAssetDescription:(id)a3
+- (void)setAssetDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   [(PHChangeRequest *)self didMutate];
-  if (v4)
+  if (descriptionCopy)
   {
-    v5 = v4;
+    v5 = descriptionCopy;
   }
 
   else
@@ -8429,7 +8429,7 @@ LABEL_13:
   self->_assetDescription = v6;
 }
 
-- (void)setLowLight:(float)a3
+- (void)setLowLight:(float)light
 {
   [(PHChangeRequest *)self didMutate];
   self->_didModifyComputedAttributes = 1;
@@ -8440,7 +8440,7 @@ LABEL_13:
     self->_computedAttributeMutations = v6;
   }
 
-  *&v5 = a3;
+  *&v5 = light;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   [(NSMutableDictionary *)self->_computedAttributeMutations setObject:v8 forKeyedSubscript:@"lowLight"];
 }
@@ -8455,7 +8455,7 @@ LABEL_13:
   return v5;
 }
 
-- (void)setPleasantCameraTiltScore:(float)a3
+- (void)setPleasantCameraTiltScore:(float)score
 {
   [(PHChangeRequest *)self didMutate];
   self->_didModifyComputedAttributes = 1;
@@ -8466,7 +8466,7 @@ LABEL_13:
     self->_computedAttributeMutations = v6;
   }
 
-  *&v5 = a3;
+  *&v5 = score;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   [(NSMutableDictionary *)self->_computedAttributeMutations setObject:v8 forKeyedSubscript:@"pleasantCameraTiltScore"];
 }
@@ -8481,7 +8481,7 @@ LABEL_13:
   return v5;
 }
 
-- (void)setIntrusiveObjectPresenceScore:(float)a3
+- (void)setIntrusiveObjectPresenceScore:(float)score
 {
   [(PHChangeRequest *)self didMutate];
   self->_didModifyComputedAttributes = 1;
@@ -8492,7 +8492,7 @@ LABEL_13:
     self->_computedAttributeMutations = v6;
   }
 
-  *&v5 = a3;
+  *&v5 = score;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   [(NSMutableDictionary *)self->_computedAttributeMutations setObject:v8 forKeyedSubscript:@"intrusiveObjectPresenceScore"];
 }
@@ -8507,7 +8507,7 @@ LABEL_13:
   return v5;
 }
 
-- (void)setInterestingSubjectScore:(float)a3
+- (void)setInterestingSubjectScore:(float)score
 {
   [(PHChangeRequest *)self didMutate];
   self->_didModifyComputedAttributes = 1;
@@ -8518,7 +8518,7 @@ LABEL_13:
     self->_computedAttributeMutations = v6;
   }
 
-  *&v5 = a3;
+  *&v5 = score;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   [(NSMutableDictionary *)self->_computedAttributeMutations setObject:v8 forKeyedSubscript:@"interestingSubjectScore"];
 }
@@ -8533,7 +8533,7 @@ LABEL_13:
   return v5;
 }
 
-- (void)setPleasantCompositionScore:(float)a3
+- (void)setPleasantCompositionScore:(float)score
 {
   [(PHChangeRequest *)self didMutate];
   self->_didModifyComputedAttributes = 1;
@@ -8544,7 +8544,7 @@ LABEL_13:
     self->_computedAttributeMutations = v6;
   }
 
-  *&v5 = a3;
+  *&v5 = score;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   [(NSMutableDictionary *)self->_computedAttributeMutations setObject:v8 forKeyedSubscript:@"pleasantCompositionScore"];
 }
@@ -8559,7 +8559,7 @@ LABEL_13:
   return v5;
 }
 
-- (void)setFailureScore:(float)a3
+- (void)setFailureScore:(float)score
 {
   [(PHChangeRequest *)self didMutate];
   self->_didModifyComputedAttributes = 1;
@@ -8570,7 +8570,7 @@ LABEL_13:
     self->_computedAttributeMutations = v6;
   }
 
-  *&v5 = a3;
+  *&v5 = score;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   [(NSMutableDictionary *)self->_computedAttributeMutations setObject:v8 forKeyedSubscript:@"failureScore"];
 }
@@ -8585,7 +8585,7 @@ LABEL_13:
   return v5;
 }
 
-- (void)setNoiseScore:(float)a3
+- (void)setNoiseScore:(float)score
 {
   [(PHChangeRequest *)self didMutate];
   self->_didModifyComputedAttributes = 1;
@@ -8596,7 +8596,7 @@ LABEL_13:
     self->_computedAttributeMutations = v6;
   }
 
-  *&v5 = a3;
+  *&v5 = score;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   [(NSMutableDictionary *)self->_computedAttributeMutations setObject:v8 forKeyedSubscript:@"noiseScore"];
 }
@@ -8611,7 +8611,7 @@ LABEL_13:
   return v5;
 }
 
-- (void)setPleasantPostProcessingScore:(float)a3
+- (void)setPleasantPostProcessingScore:(float)score
 {
   [(PHChangeRequest *)self didMutate];
   self->_didModifyComputedAttributes = 1;
@@ -8622,7 +8622,7 @@ LABEL_13:
     self->_computedAttributeMutations = v6;
   }
 
-  *&v5 = a3;
+  *&v5 = score;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   [(NSMutableDictionary *)self->_computedAttributeMutations setObject:v8 forKeyedSubscript:@"pleasantPostProcessingScore"];
 }
@@ -8637,7 +8637,7 @@ LABEL_13:
   return v5;
 }
 
-- (void)setPleasantPerspectiveScore:(float)a3
+- (void)setPleasantPerspectiveScore:(float)score
 {
   [(PHChangeRequest *)self didMutate];
   self->_didModifyComputedAttributes = 1;
@@ -8648,7 +8648,7 @@ LABEL_13:
     self->_computedAttributeMutations = v6;
   }
 
-  *&v5 = a3;
+  *&v5 = score;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   [(NSMutableDictionary *)self->_computedAttributeMutations setObject:v8 forKeyedSubscript:@"pleasantPerspectiveScore"];
 }
@@ -8663,7 +8663,7 @@ LABEL_13:
   return v5;
 }
 
-- (void)setImmersivenessScore:(float)a3
+- (void)setImmersivenessScore:(float)score
 {
   [(PHChangeRequest *)self didMutate];
   self->_didModifyComputedAttributes = 1;
@@ -8674,7 +8674,7 @@ LABEL_13:
     self->_computedAttributeMutations = v6;
   }
 
-  *&v5 = a3;
+  *&v5 = score;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   [(NSMutableDictionary *)self->_computedAttributeMutations setObject:v8 forKeyedSubscript:@"immersivenessScore"];
 }
@@ -8689,7 +8689,7 @@ LABEL_13:
   return v5;
 }
 
-- (void)setPleasantPatternScore:(float)a3
+- (void)setPleasantPatternScore:(float)score
 {
   [(PHChangeRequest *)self didMutate];
   self->_didModifyComputedAttributes = 1;
@@ -8700,7 +8700,7 @@ LABEL_13:
     self->_computedAttributeMutations = v6;
   }
 
-  *&v5 = a3;
+  *&v5 = score;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   [(NSMutableDictionary *)self->_computedAttributeMutations setObject:v8 forKeyedSubscript:@"pleasantPatternScore"];
 }
@@ -8715,7 +8715,7 @@ LABEL_13:
   return v5;
 }
 
-- (void)setPleasantSymmetryScore:(float)a3
+- (void)setPleasantSymmetryScore:(float)score
 {
   [(PHChangeRequest *)self didMutate];
   self->_didModifyComputedAttributes = 1;
@@ -8726,7 +8726,7 @@ LABEL_13:
     self->_computedAttributeMutations = v6;
   }
 
-  *&v5 = a3;
+  *&v5 = score;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   [(NSMutableDictionary *)self->_computedAttributeMutations setObject:v8 forKeyedSubscript:@"pleasantSymmetryScore"];
 }
@@ -8741,7 +8741,7 @@ LABEL_13:
   return v5;
 }
 
-- (void)setLivelyColorScore:(float)a3
+- (void)setLivelyColorScore:(float)score
 {
   [(PHChangeRequest *)self didMutate];
   self->_didModifyComputedAttributes = 1;
@@ -8752,7 +8752,7 @@ LABEL_13:
     self->_computedAttributeMutations = v6;
   }
 
-  *&v5 = a3;
+  *&v5 = score;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   [(NSMutableDictionary *)self->_computedAttributeMutations setObject:v8 forKeyedSubscript:@"livelyColorScore"];
 }
@@ -8767,7 +8767,7 @@ LABEL_13:
   return v5;
 }
 
-- (void)setHarmoniousColorScore:(float)a3
+- (void)setHarmoniousColorScore:(float)score
 {
   [(PHChangeRequest *)self didMutate];
   self->_didModifyComputedAttributes = 1;
@@ -8778,7 +8778,7 @@ LABEL_13:
     self->_computedAttributeMutations = v6;
   }
 
-  *&v5 = a3;
+  *&v5 = score;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   [(NSMutableDictionary *)self->_computedAttributeMutations setObject:v8 forKeyedSubscript:@"harmoniousColorScore"];
 }
@@ -8793,7 +8793,7 @@ LABEL_13:
   return v5;
 }
 
-- (void)setPleasantReflectionsScore:(float)a3
+- (void)setPleasantReflectionsScore:(float)score
 {
   [(PHChangeRequest *)self didMutate];
   self->_didModifyComputedAttributes = 1;
@@ -8804,7 +8804,7 @@ LABEL_13:
     self->_computedAttributeMutations = v6;
   }
 
-  *&v5 = a3;
+  *&v5 = score;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   [(NSMutableDictionary *)self->_computedAttributeMutations setObject:v8 forKeyedSubscript:@"pleasantReflectionsScore"];
 }
@@ -8819,7 +8819,7 @@ LABEL_13:
   return v5;
 }
 
-- (void)setPleasantLightingScore:(float)a3
+- (void)setPleasantLightingScore:(float)score
 {
   [(PHChangeRequest *)self didMutate];
   self->_didModifyComputedAttributes = 1;
@@ -8830,7 +8830,7 @@ LABEL_13:
     self->_computedAttributeMutations = v6;
   }
 
-  *&v5 = a3;
+  *&v5 = score;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   [(NSMutableDictionary *)self->_computedAttributeMutations setObject:v8 forKeyedSubscript:@"pleasantLightingScore"];
 }
@@ -8845,7 +8845,7 @@ LABEL_13:
   return v5;
 }
 
-- (void)setWellTimedShotScore:(float)a3
+- (void)setWellTimedShotScore:(float)score
 {
   [(PHChangeRequest *)self didMutate];
   self->_didModifyComputedAttributes = 1;
@@ -8856,7 +8856,7 @@ LABEL_13:
     self->_computedAttributeMutations = v6;
   }
 
-  *&v5 = a3;
+  *&v5 = score;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   [(NSMutableDictionary *)self->_computedAttributeMutations setObject:v8 forKeyedSubscript:@"wellTimedShotScore"];
 }
@@ -8871,7 +8871,7 @@ LABEL_13:
   return v5;
 }
 
-- (void)setSharplyFocusedSubjectScore:(float)a3
+- (void)setSharplyFocusedSubjectScore:(float)score
 {
   [(PHChangeRequest *)self didMutate];
   self->_didModifyComputedAttributes = 1;
@@ -8882,7 +8882,7 @@ LABEL_13:
     self->_computedAttributeMutations = v6;
   }
 
-  *&v5 = a3;
+  *&v5 = score;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   [(NSMutableDictionary *)self->_computedAttributeMutations setObject:v8 forKeyedSubscript:@"sharplyFocusedSubjectScore"];
 }
@@ -8897,7 +8897,7 @@ LABEL_13:
   return v5;
 }
 
-- (void)setTastefullyBlurredScore:(float)a3
+- (void)setTastefullyBlurredScore:(float)score
 {
   [(PHChangeRequest *)self didMutate];
   self->_didModifyComputedAttributes = 1;
@@ -8908,7 +8908,7 @@ LABEL_13:
     self->_computedAttributeMutations = v6;
   }
 
-  *&v5 = a3;
+  *&v5 = score;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   [(NSMutableDictionary *)self->_computedAttributeMutations setObject:v8 forKeyedSubscript:@"tastefullyBlurredScore"];
 }
@@ -8923,7 +8923,7 @@ LABEL_13:
   return v5;
 }
 
-- (void)setWellChosenSubjectScore:(float)a3
+- (void)setWellChosenSubjectScore:(float)score
 {
   [(PHChangeRequest *)self didMutate];
   self->_didModifyComputedAttributes = 1;
@@ -8934,7 +8934,7 @@ LABEL_13:
     self->_computedAttributeMutations = v6;
   }
 
-  *&v5 = a3;
+  *&v5 = score;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   [(NSMutableDictionary *)self->_computedAttributeMutations setObject:v8 forKeyedSubscript:@"wellChosenSubjectScore"];
 }
@@ -8949,7 +8949,7 @@ LABEL_13:
   return v5;
 }
 
-- (void)setWellFramedSubjectScore:(float)a3
+- (void)setWellFramedSubjectScore:(float)score
 {
   [(PHChangeRequest *)self didMutate];
   self->_didModifyComputedAttributes = 1;
@@ -8960,7 +8960,7 @@ LABEL_13:
     self->_computedAttributeMutations = v6;
   }
 
-  *&v5 = a3;
+  *&v5 = score;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   [(NSMutableDictionary *)self->_computedAttributeMutations setObject:v8 forKeyedSubscript:@"wellFramedSubjectScore"];
 }
@@ -8975,10 +8975,10 @@ LABEL_13:
   return v5;
 }
 
-- (void)setPtpTrashedState:(int64_t)a3
+- (void)setPtpTrashedState:(int64_t)state
 {
   [(PHChangeRequest *)self didMutate];
-  self->_ptpTrashedState = a3;
+  self->_ptpTrashedState = state;
   self->_didSetPtpTrashedState = 1;
 }
 
@@ -9006,9 +9006,9 @@ LABEL_13:
   return assetDescription;
 }
 
-- (void)setGpsHorizontalAccuracy:(double)a3
+- (void)setGpsHorizontalAccuracy:(double)accuracy
 {
-  self->_gpsHorizontalAccuracy = a3;
+  self->_gpsHorizontalAccuracy = accuracy;
   self->_didSetGpsHorizontalAccuracy = 1;
   [(PHChangeRequest *)self didMutate];
 }
@@ -9017,13 +9017,13 @@ LABEL_13:
 {
   obj = location;
   [(PHChangeRequest *)self didMutate];
-  v4 = obj;
+  null = obj;
   if (!obj)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  objc_storeStrong(&self->_updatedLocation, v4);
+  objc_storeStrong(&self->_updatedLocation, null);
   v5 = obj;
   if (!obj)
   {
@@ -9036,8 +9036,8 @@ LABEL_13:
 {
   +[PHPhotoLibrary assertTransaction];
   v3 = self->_updatedLocation;
-  v4 = [MEMORY[0x1E695DFB0] null];
-  v5 = [(CLLocation *)v3 isEqual:v4];
+  null = [MEMORY[0x1E695DFB0] null];
+  v5 = [(CLLocation *)v3 isEqual:null];
 
   if (v5)
   {
@@ -9048,46 +9048,46 @@ LABEL_13:
   return v3;
 }
 
-- (void)setGenerativeMemoryCreationEligibilityState:(signed __int16)a3
+- (void)setGenerativeMemoryCreationEligibilityState:(signed __int16)state
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  stateCopy = state;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"generativeMemoryCreationEligibilityState"];
+  v8 = [MEMORY[0x1E696AD98] numberWithShort:stateCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"generativeMemoryCreationEligibilityState"];
 }
 
 - (signed)generativeMemoryCreationEligibilityState
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"generativeMemoryCreationEligibilityState"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"generativeMemoryCreationEligibilityState"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setIconicScore:(double)a3
+- (void)setIconicScore:(double)score
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"iconicScore"];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:score];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"iconicScore"];
 }
 
 - (double)iconicScore
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"iconicScore"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"iconicScore"];
 
   [v5 doubleValue];
   v7 = v6;
@@ -9095,24 +9095,24 @@ LABEL_13:
   return v7;
 }
 
-- (void)setOverallAestheticScore:(float)a3
+- (void)setOverallAestheticScore:(float)score
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  *&v6 = a3;
+  *&v6 = score;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v6];
-  v7 = [(PHChangeRequest *)self helper];
-  v8 = [v7 mutations];
-  [v8 setObject:v9 forKeyedSubscript:@"overallAestheticScore"];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v9 forKeyedSubscript:@"overallAestheticScore"];
 }
 
 - (float)overallAestheticScore
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"overallAestheticScore"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"overallAestheticScore"];
 
   [v5 floatValue];
   v7 = v6;
@@ -9120,23 +9120,23 @@ LABEL_13:
   return v7;
 }
 
-- (void)setHighlightPromotionScore:(double)a3
+- (void)setHighlightPromotionScore:(double)score
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"highlightPromotionScore"];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:score];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"highlightPromotionScore"];
 }
 
 - (double)highlightPromotionScore
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"highlightPromotionScore"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"highlightPromotionScore"];
 
   [v5 doubleValue];
   v7 = v6;
@@ -9144,23 +9144,23 @@ LABEL_13:
   return v7;
 }
 
-- (void)setHighlightVisibilityScore:(double)a3
+- (void)setHighlightVisibilityScore:(double)score
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"highlightVisibilityScore"];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:score];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"highlightVisibilityScore"];
 }
 
 - (double)highlightVisibilityScore
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"highlightVisibilityScore"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"highlightVisibilityScore"];
 
   [v5 doubleValue];
   v7 = v6;
@@ -9168,23 +9168,23 @@ LABEL_13:
   return v7;
 }
 
-- (void)setCurationScore:(double)a3
+- (void)setCurationScore:(double)score
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"curationScore"];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:score];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"curationScore"];
 }
 
 - (double)curationScore
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"curationScore"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"curationScore"];
 
   [v5 doubleValue];
   v7 = v6;
@@ -9195,121 +9195,121 @@ LABEL_13:
 - (void)setHidden:(BOOL)hidden
 {
   v3 = hidden;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"hidden"];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"hidden"];
 }
 
 - (BOOL)isHidden
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"hidden"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"hidden"];
 
-  LOBYTE(v3) = [v5 BOOLValue];
-  return v3;
+  LOBYTE(helper) = [v5 BOOLValue];
+  return helper;
 }
 
 - (void)setFavorite:(BOOL)favorite
 {
   v3 = favorite;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"favorite"];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"favorite"];
 }
 
 - (BOOL)isFavorite
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"favorite"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"favorite"];
 
-  LOBYTE(v3) = [v5 BOOLValue];
-  return v3;
+  LOBYTE(helper) = [v5 BOOLValue];
+  return helper;
 }
 
-- (void)setAddedDate:(id)a3
+- (void)setAddedDate:(id)date
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  dateCopy = date;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (dateCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"addedDate"];
+    [mutations setObject:dateCopy forKeyedSubscript:@"addedDate"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"addedDate"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"addedDate"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"addedDate"];
+    [mutations removeObjectForKey:@"addedDate"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"addedDate"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"addedDate"];
   }
 }
 
 - (NSDate)addedDate
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"addedDate"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"addedDate"];
 
   return v5;
 }
 
-- (void)setModificationDate:(id)a3
+- (void)setModificationDate:(id)date
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  dateCopy = date;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (dateCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"modificationDate"];
+    [mutations setObject:dateCopy forKeyedSubscript:@"modificationDate"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"modificationDate"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"modificationDate"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"modificationDate"];
+    [mutations removeObjectForKey:@"modificationDate"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"modificationDate"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"modificationDate"];
   }
 }
 
 - (NSDate)modificationDate
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"modificationDate"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"modificationDate"];
 
   return v5;
 }
@@ -9317,99 +9317,99 @@ LABEL_13:
 - (void)setCreationDate:(NSDate *)creationDate
 {
   v10 = creationDate;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
   if (v10)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"dateCreated"];
+    [mutations setObject:v10 forKeyedSubscript:@"dateCreated"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"dateCreated"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"dateCreated"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"dateCreated"];
+    [mutations removeObjectForKey:@"dateCreated"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"dateCreated"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"dateCreated"];
   }
 }
 
 - (NSDate)creationDate
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"dateCreated"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"dateCreated"];
 
   return v5;
 }
 
-- (BOOL)prepareForPhotoLibraryCheck:(id)a3 error:(id *)a4
+- (BOOL)prepareForPhotoLibraryCheck:(id)check error:(id *)error
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 type] && objc_msgSend(v5, "type") != 1)
+  checkCopy = check;
+  if ([checkCopy type] && objc_msgSend(checkCopy, "type") != 1)
   {
-    if (a4)
+    if (error)
     {
       v6 = MEMORY[0x1E696ABC0];
       v9 = *MEMORY[0x1E696A578];
       v10[0] = @"Change must be performed within the sharedPhotoLibrary or sharedMomentSharePhotoLibrary";
       v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-      *a4 = [v6 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v7];
+      *error = [v6 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v7];
 
-      LOBYTE(a4) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   else
   {
-    LOBYTE(a4) = 1;
+    LOBYTE(error) = 1;
   }
 
-  return a4;
+  return error;
 }
 
-- (PHAssetChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5
+- (PHAssetChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization
 {
   v273 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[PHChangeRequestHelper alloc] initWithXPCDict:v8 changeRequest:self request:v9 clientAuthorization:v10];
+  dictCopy = dict;
+  requestCopy = request;
+  authorizationCopy = authorization;
+  v11 = [[PHChangeRequestHelper alloc] initWithXPCDict:dictCopy changeRequest:self request:requestCopy clientAuthorization:authorizationCopy];
   if (!v11 || (self = [(PHAssetChangeRequest *)self initWithHelper:v11], self, !self))
   {
 
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_227;
   }
 
   v262 = v11;
-  v12 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"detectedFaces" xpcDict:v8 changeRequestHelper:self->super._helper];
+  v12 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"detectedFaces" xpcDict:dictCopy changeRequestHelper:self->super._helper];
   facesHelper = self->_facesHelper;
   self->_facesHelper = v12;
 
-  v14 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"temporalDetectedFaces" xpcDict:v8 changeRequestHelper:self->super._helper];
+  v14 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"temporalDetectedFaces" xpcDict:dictCopy changeRequestHelper:self->super._helper];
   temporalFacesHelper = self->_temporalFacesHelper;
   self->_temporalFacesHelper = v14;
 
-  v16 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"keywords" xpcDict:v8 changeRequestHelper:self->super._helper];
+  v16 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"keywords" xpcDict:dictCopy changeRequestHelper:self->super._helper];
   keywordsHelper = self->_keywordsHelper;
   self->_keywordsHelper = v16;
 
-  v18 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"cloudComments" xpcDict:v8 changeRequestHelper:self->super._helper];
+  v18 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"cloudComments" xpcDict:dictCopy changeRequestHelper:self->super._helper];
   commentsHelper = self->_commentsHelper;
   self->_commentsHelper = v18;
 
-  v20 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"likeComments" xpcDict:v8 changeRequestHelper:self->super._helper];
+  v20 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"likeComments" xpcDict:dictCopy changeRequestHelper:self->super._helper];
   likesHelper = self->_likesHelper;
   self->_likesHelper = v20;
 
@@ -9417,17 +9417,17 @@ LABEL_13:
   aBlock[1] = 3221225472;
   aBlock[2] = __68__PHAssetChangeRequest_initWithXPCDict_request_clientAuthorization___block_invoke;
   aBlock[3] = &unk_1E75AAEB0;
-  v22 = self;
-  v270 = v22;
-  v263 = v9;
-  v271 = v9;
+  selfCopy = self;
+  v270 = selfCopy;
+  v263 = requestCopy;
+  v271 = requestCopy;
   v23 = _Block_copy(aBlock);
-  v22->_clientProcessIdentifier = [v10 clientProcessIdentifier];
-  v265 = [v10 photoKitEntitled];
-  v264 = v10;
-  if (xpc_dictionary_get_BOOL(v8, "didChangeAdjustments"))
+  selfCopy->_clientProcessIdentifier = [authorizationCopy clientProcessIdentifier];
+  photoKitEntitled = [authorizationCopy photoKitEntitled];
+  v264 = authorizationCopy;
+  if (xpc_dictionary_get_BOOL(dictCopy, "didChangeAdjustments"))
   {
-    [(PHAssetChangeRequest *)v22 markDidChangeAdjustments];
+    [(PHAssetChangeRequest *)selfCopy markDidChangeAdjustments];
     v24 = PLDataFromXPCDictionary();
     if (v24)
     {
@@ -9444,7 +9444,7 @@ LABEL_13:
           _os_log_impl(&dword_19C86F000, v27, OS_LOG_TYPE_DEFAULT, "Failed to unarchive contentEditingOutputData, error: %@", &buf, 0xCu);
         }
 
-        v10 = v264;
+        authorizationCopy = v264;
       }
     }
 
@@ -9453,101 +9453,101 @@ LABEL_13:
       v25 = 0;
     }
 
-    [(PHAssetChangeRequest *)v22 setContentEditingOutput:v25];
-    if (v265)
+    [(PHAssetChangeRequest *)selfCopy setContentEditingOutput:v25];
+    if (photoKitEntitled)
     {
       v28 = PLURLFromXPCDictionary();
-      editorBundleURL = v22->_editorBundleURL;
-      v22->_editorBundleURL = v28;
+      editorBundleURL = selfCopy->_editorBundleURL;
+      selfCopy->_editorBundleURL = v28;
 
-      if (v22->_editorBundleURL)
+      if (selfCopy->_editorBundleURL)
       {
         v30 = [MEMORY[0x1E696AAE8] bundleWithURL:?];
-        v31 = [v30 bundleIdentifier];
-        editorBundleID = v22->_editorBundleID;
-        v22->_editorBundleID = v31;
+        bundleIdentifier = [v30 bundleIdentifier];
+        editorBundleID = selfCopy->_editorBundleID;
+        selfCopy->_editorBundleID = bundleIdentifier;
       }
 
-      if (!v22->_editorBundleID)
+      if (!selfCopy->_editorBundleID)
       {
         v33 = PLStringFromXPCDictionary();
-        v34 = v22->_editorBundleID;
-        v22->_editorBundleID = v33;
+        v34 = selfCopy->_editorBundleID;
+        selfCopy->_editorBundleID = v33;
       }
     }
 
-    if (!v22->_editorBundleID)
+    if (!selfCopy->_editorBundleID)
     {
-      v35 = [v10 trustedCallerBundleID];
-      v36 = v22->_editorBundleID;
-      v22->_editorBundleID = v35;
+      trustedCallerBundleID = [authorizationCopy trustedCallerBundleID];
+      v36 = selfCopy->_editorBundleID;
+      selfCopy->_editorBundleID = trustedCallerBundleID;
     }
   }
 
-  if ([(PHAssetChangeRequest *)v22 didChangeAdjustments])
+  if ([(PHAssetChangeRequest *)selfCopy didChangeAdjustments])
   {
     v23[2](v23);
   }
 
-  v22->_originalResourceChoice = xpc_dictionary_get_uint64(v8, "originalResourceChoice");
-  v37 = xpc_dictionary_get_BOOL(v8, "didSetOriginalResourceChoice");
-  v22->_didSetOriginalResourceChoice = v37;
+  selfCopy->_originalResourceChoice = xpc_dictionary_get_uint64(dictCopy, "originalResourceChoice");
+  v37 = xpc_dictionary_get_BOOL(dictCopy, "didSetOriginalResourceChoice");
+  selfCopy->_didSetOriginalResourceChoice = v37;
   if (v37)
   {
     v23[2](v23);
   }
 
-  v38 = xpc_dictionary_get_BOOL(v8, "didRevertLocationToOriginal");
-  v22->_didRevertLocationToOriginal = v38;
+  v38 = xpc_dictionary_get_BOOL(dictCopy, "didRevertLocationToOriginal");
+  selfCopy->_didRevertLocationToOriginal = v38;
   if (v38)
   {
     v23[2](v23);
   }
 
-  v39 = xpc_dictionary_get_BOOL(v8, "didUpdateExtendedAttributesUsingOriginalMediaMetadata");
-  v22->_didUpdateExtendedAttributesUsingOriginalMediaMetadata = v39;
+  v39 = xpc_dictionary_get_BOOL(dictCopy, "didUpdateExtendedAttributesUsingOriginalMediaMetadata");
+  selfCopy->_didUpdateExtendedAttributesUsingOriginalMediaMetadata = v39;
   if (v39)
   {
     v23[2](v23);
   }
 
-  v40 = xpc_dictionary_get_BOOL(v8, "didExpungeAllSpatialOverCaptureResources");
-  v22->_didExpungeAllSpatialOverCaptureResources = v40;
+  v40 = xpc_dictionary_get_BOOL(dictCopy, "didExpungeAllSpatialOverCaptureResources");
+  selfCopy->_didExpungeAllSpatialOverCaptureResources = v40;
   if (v40)
   {
     v23[2](v23);
   }
 
-  v41 = xpc_dictionary_get_BOOL(v8, "didTrashAllSpatialOverCaptureResources");
-  v22->_didTrashAllSpatialOverCaptureResources = v41;
+  v41 = xpc_dictionary_get_BOOL(dictCopy, "didTrashAllSpatialOverCaptureResources");
+  selfCopy->_didTrashAllSpatialOverCaptureResources = v41;
   if (v41)
   {
     v23[2](v23);
   }
 
-  v42 = xpc_dictionary_get_BOOL(v8, "didUntrashAllSpatialOverCaptureResources");
-  v22->_didUntrashAllSpatialOverCaptureResources = v42;
+  v42 = xpc_dictionary_get_BOOL(dictCopy, "didUntrashAllSpatialOverCaptureResources");
+  selfCopy->_didUntrashAllSpatialOverCaptureResources = v42;
   if (v42)
   {
     v23[2](v23);
   }
 
-  v43 = xpc_dictionary_get_BOOL(v8, "didExpungeTrashedSpatialOverCaptureResources");
-  v22->_didExpungeTrashedSpatialOverCaptureResources = v43;
+  v43 = xpc_dictionary_get_BOOL(dictCopy, "didExpungeTrashedSpatialOverCaptureResources");
+  selfCopy->_didExpungeTrashedSpatialOverCaptureResources = v43;
   if (v43)
   {
     v23[2](v23);
   }
 
-  v44 = xpc_dictionary_get_BOOL(v8, "didPromoteToGuestAsset");
-  v22->_didPromoteToGuestAsset = v44;
+  v44 = xpc_dictionary_get_BOOL(dictCopy, "didPromoteToGuestAsset");
+  selfCopy->_didPromoteToGuestAsset = v44;
   if (v44)
   {
     v23[2](v23);
   }
 
-  v45 = xpc_dictionary_get_BOOL(v8, "didResetGuestAssetPromotion");
-  v22->_didResetGuestAssetPromotion = v45;
+  v45 = xpc_dictionary_get_BOOL(dictCopy, "didResetGuestAssetPromotion");
+  selfCopy->_didResetGuestAssetPromotion = v45;
   if (v45)
   {
     v23[2](v23);
@@ -9563,10 +9563,10 @@ LABEL_13:
     v267 = 0;
     v51 = [v47 unarchivedObjectOfClasses:v50 fromData:v46 error:&v267];
     v52 = v267;
-    updatedLocation = v22->_updatedLocation;
-    v22->_updatedLocation = v51;
+    updatedLocation = selfCopy->_updatedLocation;
+    selfCopy->_updatedLocation = v51;
 
-    if (v22->_updatedLocation)
+    if (selfCopy->_updatedLocation)
     {
       v23[2](v23);
     }
@@ -9584,61 +9584,61 @@ LABEL_13:
   }
 
   v55 = PLStringFromXPCDictionary();
-  assetDescription = v22->_assetDescription;
-  v22->_assetDescription = v55;
+  assetDescription = selfCopy->_assetDescription;
+  selfCopy->_assetDescription = v55;
 
-  if (v22->_assetDescription)
+  if (selfCopy->_assetDescription)
   {
     v23[2](v23);
   }
 
   v57 = PLStringFromXPCDictionary();
-  accessibilityDescription = v22->_accessibilityDescription;
-  v22->_accessibilityDescription = v57;
+  accessibilityDescription = selfCopy->_accessibilityDescription;
+  selfCopy->_accessibilityDescription = v57;
 
-  if (v22->_accessibilityDescription)
+  if (selfCopy->_accessibilityDescription)
   {
     v23[2](v23);
   }
 
-  v59 = xpc_dictionary_get_BOOL(v8, "didSetTitle");
-  v22->_didSetTitle = v59;
+  v59 = xpc_dictionary_get_BOOL(dictCopy, "didSetTitle");
+  selfCopy->_didSetTitle = v59;
   if (v59)
   {
     v60 = PLStringFromXPCDictionary();
-    title = v22->_title;
-    v22->_title = v60;
+    title = selfCopy->_title;
+    selfCopy->_title = v60;
 
     v23[2](v23);
   }
 
-  v62 = xpc_dictionary_get_BOOL(v8, "didSetKeywordTitles");
-  v22->_didSetKeywordTitles = v62;
+  v62 = xpc_dictionary_get_BOOL(dictCopy, "didSetKeywordTitles");
+  selfCopy->_didSetKeywordTitles = v62;
   if (v62)
   {
     v63 = PLArrayFromXPCDictionary();
     v64 = [MEMORY[0x1E695DFD8] setWithArray:v63];
-    keywordTitles = v22->_keywordTitles;
-    v22->_keywordTitles = v64;
+    keywordTitles = selfCopy->_keywordTitles;
+    selfCopy->_keywordTitles = v64;
 
     v23[2](v23);
   }
 
   v66 = PLURLFromXPCDictionary();
-  videoURLForUpdate = v22->_videoURLForUpdate;
-  v22->_videoURLForUpdate = v66;
+  videoURLForUpdate = selfCopy->_videoURLForUpdate;
+  selfCopy->_videoURLForUpdate = v66;
 
   v68 = PLStringFromXPCDictionary();
-  pairingIdentifier = v22->_pairingIdentifier;
-  v22->_pairingIdentifier = v68;
+  pairingIdentifier = selfCopy->_pairingIdentifier;
+  selfCopy->_pairingIdentifier = v68;
 
   v70 = PLDictionaryFromXPCDictionary();
-  p_videoDuration = &v22->_videoDuration;
+  p_videoDuration = &selfCopy->_videoDuration;
   if (v70)
   {
     CMTimeMakeFromDictionary(&buf.start, v70);
     v72 = *&buf.start.value;
-    v22->_videoDuration.epoch = buf.start.epoch;
+    selfCopy->_videoDuration.epoch = buf.start.epoch;
     *&p_videoDuration->value = v72;
   }
 
@@ -9646,16 +9646,16 @@ LABEL_13:
   {
     v73 = MEMORY[0x1E6960C70];
     *&p_videoDuration->value = *MEMORY[0x1E6960C70];
-    v22->_videoDuration.epoch = *(v73 + 16);
+    selfCopy->_videoDuration.epoch = *(v73 + 16);
   }
 
   v74 = PLDictionaryFromXPCDictionary();
-  p_imageDisplayTime = &v22->_imageDisplayTime;
+  p_imageDisplayTime = &selfCopy->_imageDisplayTime;
   if (v74)
   {
     CMTimeMakeFromDictionary(&buf.start, v74);
     v76 = *&buf.start.value;
-    v22->_imageDisplayTime.epoch = buf.start.epoch;
+    selfCopy->_imageDisplayTime.epoch = buf.start.epoch;
     *&p_imageDisplayTime->value = v76;
   }
 
@@ -9663,17 +9663,17 @@ LABEL_13:
   {
     v77 = MEMORY[0x1E6960C70];
     *&p_imageDisplayTime->value = *MEMORY[0x1E6960C70];
-    v22->_imageDisplayTime.epoch = *(v77 + 16);
+    selfCopy->_imageDisplayTime.epoch = *(v77 + 16);
   }
 
-  if (v22->_videoURLForUpdate && v22->_pairingIdentifier)
+  if (selfCopy->_videoURLForUpdate && selfCopy->_pairingIdentifier)
   {
     v23[2](v23);
   }
 
-  v22->_photoIrisVisibilityState = xpc_dictionary_get_uint64(v8, "photoIrisVisibilityState");
-  v78 = xpc_dictionary_get_BOOL(v8, "didSetVisibilityState");
-  v22->_didSetVisibilityState = v78;
+  selfCopy->_photoIrisVisibilityState = xpc_dictionary_get_uint64(dictCopy, "photoIrisVisibilityState");
+  v78 = xpc_dictionary_get_BOOL(dictCopy, "didSetVisibilityState");
+  selfCopy->_didSetVisibilityState = v78;
   if (v78)
   {
     v23[2](v23);
@@ -9684,237 +9684,237 @@ LABEL_13:
   if (v79)
   {
     v81 = [v79 mutableCopy];
-    sceneClassificationDictionariesByType = v22->_sceneClassificationDictionariesByType;
-    v22->_sceneClassificationDictionariesByType = v81;
+    sceneClassificationDictionariesByType = selfCopy->_sceneClassificationDictionariesByType;
+    selfCopy->_sceneClassificationDictionariesByType = v81;
 
-    v22->_didSetSceneClassifications = 1;
+    selfCopy->_didSetSceneClassifications = 1;
     v23[2](v23);
   }
 
-  v83 = xpc_dictionary_get_BOOL(v8, "didSetImageEmbeddingVersionKey");
-  v22->_didSetImageEmbeddingVersion = v83;
+  v83 = xpc_dictionary_get_BOOL(dictCopy, "didSetImageEmbeddingVersionKey");
+  selfCopy->_didSetImageEmbeddingVersion = v83;
   if (v83)
   {
-    v22->_imageEmbeddingVersion = xpc_dictionary_get_int64(v8, "imageEmbeddingVersion");
+    selfCopy->_imageEmbeddingVersion = xpc_dictionary_get_int64(dictCopy, "imageEmbeddingVersion");
     v23[2](v23);
   }
 
   v260 = v80;
-  v84 = xpc_dictionary_get_BOOL(v8, "didSetVideoEmbeddingVersionKey");
-  v22->_didSetVideoEmbeddingVersion = v84;
+  v84 = xpc_dictionary_get_BOOL(dictCopy, "didSetVideoEmbeddingVersionKey");
+  selfCopy->_didSetVideoEmbeddingVersion = v84;
   if (v84)
   {
-    v22->_videoEmbeddingVersion = xpc_dictionary_get_int64(v8, "videoEmbeddingVersion");
+    selfCopy->_videoEmbeddingVersion = xpc_dictionary_get_int64(dictCopy, "videoEmbeddingVersion");
     v23[2](v23);
   }
 
-  v22->_incrementPlayCount = xpc_dictionary_get_BOOL(v8, "incrementPlayCount");
-  v22->_incrementShareCount = xpc_dictionary_get_BOOL(v8, "incrementShareCount");
-  date = xpc_dictionary_get_date(v8, "lastSharedDate");
+  selfCopy->_incrementPlayCount = xpc_dictionary_get_BOOL(dictCopy, "incrementPlayCount");
+  selfCopy->_incrementShareCount = xpc_dictionary_get_BOOL(dictCopy, "incrementShareCount");
+  date = xpc_dictionary_get_date(dictCopy, "lastSharedDate");
   if (date)
   {
     v86 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:date];
-    lastSharedDate = v22->_lastSharedDate;
-    v22->_lastSharedDate = v86;
+    lastSharedDate = selfCopy->_lastSharedDate;
+    selfCopy->_lastSharedDate = v86;
   }
 
-  v88 = xpc_dictionary_get_BOOL(v8, "incrementViewCount");
-  v22->_incrementViewCount = v88;
-  if (v22->_incrementPlayCount || v22->_incrementShareCount || v88)
+  v88 = xpc_dictionary_get_BOOL(dictCopy, "incrementViewCount");
+  selfCopy->_incrementViewCount = v88;
+  if (selfCopy->_incrementPlayCount || selfCopy->_incrementShareCount || v88)
   {
     v23[2](v23);
   }
 
-  v22->_clearLastViewedDate = xpc_dictionary_get_BOOL(v8, "clearLastViewedDate");
-  v89 = xpc_dictionary_get_BOOL(v8, "clearLastSharedDate");
-  v22->_clearLastSharedDate = v89;
-  if (v22->_clearLastViewedDate || v89)
+  selfCopy->_clearLastViewedDate = xpc_dictionary_get_BOOL(dictCopy, "clearLastViewedDate");
+  v89 = xpc_dictionary_get_BOOL(dictCopy, "clearLastSharedDate");
+  selfCopy->_clearLastSharedDate = v89;
+  if (selfCopy->_clearLastViewedDate || v89)
   {
     v23[2](v23);
   }
 
-  v90 = xpc_dictionary_get_value(v8, "variationSuggestionStates");
+  v90 = xpc_dictionary_get_value(dictCopy, "variationSuggestionStates");
   v91 = v90;
   if (v90)
   {
-    v22->_didSetVariationSuggestionStates = 1;
-    v22->_variationSuggestionStates = xpc_uint64_get_value(v90);
-    v22->_variationSuggestionStatesMask = xpc_dictionary_get_uint64(v8, "variationSuggestionStatesMask");
+    selfCopy->_didSetVariationSuggestionStates = 1;
+    selfCopy->_variationSuggestionStates = xpc_uint64_get_value(v90);
+    selfCopy->_variationSuggestionStatesMask = xpc_dictionary_get_uint64(dictCopy, "variationSuggestionStatesMask");
     v23[2](v23);
   }
 
-  v92 = xpc_dictionary_get_BOOL(v8, "toRetryUpload");
-  v22->_toRetryUpload = v92;
+  v92 = xpc_dictionary_get_BOOL(dictCopy, "toRetryUpload");
+  selfCopy->_toRetryUpload = v92;
   if (v92)
   {
     v23[2](v23);
   }
 
-  v93 = xpc_dictionary_get_value(v8, "pathsToNewAssetResourcesByAssetResourceType");
+  v93 = xpc_dictionary_get_value(dictCopy, "pathsToNewAssetResourcesByAssetResourceType");
 
   if (v93)
   {
     v94 = PLDictionaryFromXPCObject();
-    pathsToNewAssetResourcesByAssetResourceType = v22->_pathsToNewAssetResourcesByAssetResourceType;
-    v22->_pathsToNewAssetResourcesByAssetResourceType = v94;
+    pathsToNewAssetResourcesByAssetResourceType = selfCopy->_pathsToNewAssetResourcesByAssetResourceType;
+    selfCopy->_pathsToNewAssetResourcesByAssetResourceType = v94;
 
     v23[2](v23);
   }
 
-  v96 = xpc_dictionary_get_value(v8, "assetResourceTypesToDelete");
+  v96 = xpc_dictionary_get_value(dictCopy, "assetResourceTypesToDelete");
 
   if (v96)
   {
     v97 = MEMORY[0x1E695DFD8];
     v98 = PLArrayFromXPCObject();
     v99 = [v97 setWithArray:v98];
-    assetResourceTypesToDelete = v22->_assetResourceTypesToDelete;
-    v22->_assetResourceTypesToDelete = v99;
+    assetResourceTypesToDelete = selfCopy->_assetResourceTypesToDelete;
+    selfCopy->_assetResourceTypesToDelete = v99;
 
     v23[2](v23);
   }
 
-  v101 = xpc_dictionary_get_BOOL(v8, "deleteContextualVideoThumbnails");
-  v22->_deleteContextualVideoThumbnails = v101;
+  v101 = xpc_dictionary_get_BOOL(dictCopy, "deleteContextualVideoThumbnails");
+  selfCopy->_deleteContextualVideoThumbnails = v101;
   if (v101)
   {
     v23[2](v23);
   }
 
-  v102 = xpc_dictionary_get_value(v8, "libraryScopeOriginatorUUIDs");
+  v102 = xpc_dictionary_get_value(dictCopy, "libraryScopeOriginatorUUIDs");
 
   if (v102)
   {
     v103 = MEMORY[0x1E695DFD8];
     v104 = PLArrayFromXPCObject();
     v105 = [v103 setWithArray:v104];
-    libraryScopeOriginatorUUIDs = v22->_libraryScopeOriginatorUUIDs;
-    v22->_libraryScopeOriginatorUUIDs = v105;
+    libraryScopeOriginatorUUIDs = selfCopy->_libraryScopeOriginatorUUIDs;
+    selfCopy->_libraryScopeOriginatorUUIDs = v105;
 
     v23[2](v23);
   }
 
-  v107 = xpc_dictionary_get_value(v8, "packedPreferredCropRect");
+  v107 = xpc_dictionary_get_value(dictCopy, "packedPreferredCropRect");
 
   if (v107)
   {
-    v22->_didSetPackedPreferredCropRect = 1;
-    v22->_packedPreferredCropRect = xpc_int64_get_value(v107);
+    selfCopy->_didSetPackedPreferredCropRect = 1;
+    selfCopy->_packedPreferredCropRect = xpc_int64_get_value(v107);
     v23[2](v23);
   }
 
   v261 = v46;
-  v108 = xpc_dictionary_get_value(v8, "packedAcceptableCropRect");
+  v108 = xpc_dictionary_get_value(dictCopy, "packedAcceptableCropRect");
 
   if (v108)
   {
-    v22->_didSetPackedAcceptableCropRect = 1;
-    v22->_packedAcceptableCropRect = xpc_int64_get_value(v108);
+    selfCopy->_didSetPackedAcceptableCropRect = 1;
+    selfCopy->_packedAcceptableCropRect = xpc_int64_get_value(v108);
     v23[2](v23);
   }
 
-  v109 = xpc_dictionary_get_value(v8, "packedBestPlaybackRect");
+  v109 = xpc_dictionary_get_value(dictCopy, "packedBestPlaybackRect");
 
   if (v109)
   {
-    v22->_didSetPackedBestPlaybackRect = 1;
-    v22->_packedBestPlaybackRect = xpc_int64_get_value(v109);
+    selfCopy->_didSetPackedBestPlaybackRect = 1;
+    selfCopy->_packedBestPlaybackRect = xpc_int64_get_value(v109);
     v23[2](v23);
   }
 
-  v110 = xpc_dictionary_get_value(v8, "computedAttributeMutations");
+  v110 = xpc_dictionary_get_value(dictCopy, "computedAttributeMutations");
 
   if (v110)
   {
-    v22->_didModifyComputedAttributes = 1;
+    selfCopy->_didModifyComputedAttributes = 1;
     v111 = PLDictionaryFromXPCObject();
     v112 = [v111 mutableCopy];
-    computedAttributeMutations = v22->_computedAttributeMutations;
-    v22->_computedAttributeMutations = v112;
+    computedAttributeMutations = selfCopy->_computedAttributeMutations;
+    selfCopy->_computedAttributeMutations = v112;
 
     v23[2](v23);
   }
 
-  v114 = xpc_dictionary_get_BOOL(v8, "resetWallpaperProperties");
-  v22->_resetWallpaperProperties = v114;
+  v114 = xpc_dictionary_get_BOOL(dictCopy, "resetWallpaperProperties");
+  selfCopy->_resetWallpaperProperties = v114;
   if (v114)
   {
-    v22->_didSetWallpaperPropertiesTimestamp = 1;
-    wallpaperPropertiesTimestamp = v22->_wallpaperPropertiesTimestamp;
-    v22->_wallpaperPropertiesTimestamp = 0;
+    selfCopy->_didSetWallpaperPropertiesTimestamp = 1;
+    wallpaperPropertiesTimestamp = selfCopy->_wallpaperPropertiesTimestamp;
+    selfCopy->_wallpaperPropertiesTimestamp = 0;
 
-    v22->_didSetWallpaperPropertiesVersion = 1;
-    v22->_wallpaperPropertiesVersion = 0;
-    v22->_didSetWallpaperPropertiesData = 1;
-    wallpaperPropertiesData = v22->_wallpaperPropertiesData;
-    v22->_wallpaperPropertiesData = 0;
+    selfCopy->_didSetWallpaperPropertiesVersion = 1;
+    selfCopy->_wallpaperPropertiesVersion = 0;
+    selfCopy->_didSetWallpaperPropertiesData = 1;
+    wallpaperPropertiesData = selfCopy->_wallpaperPropertiesData;
+    selfCopy->_wallpaperPropertiesData = 0;
 LABEL_109:
 
     v23[2](v23);
     goto LABEL_110;
   }
 
-  v117 = xpc_dictionary_get_value(v8, "photoAnalysisWallpaperPropertiesTimeStamp");
+  v117 = xpc_dictionary_get_value(dictCopy, "photoAnalysisWallpaperPropertiesTimeStamp");
 
   if (v117)
   {
-    v22->_didSetWallpaperPropertiesTimestamp = 1;
+    selfCopy->_didSetWallpaperPropertiesTimestamp = 1;
     v118 = PLDateFromXPCObject();
-    v119 = v22->_wallpaperPropertiesTimestamp;
-    v22->_wallpaperPropertiesTimestamp = v118;
+    v119 = selfCopy->_wallpaperPropertiesTimestamp;
+    selfCopy->_wallpaperPropertiesTimestamp = v118;
 
     v23[2](v23);
   }
 
-  v120 = xpc_dictionary_get_value(v8, "photoAnalysisWallpaperPropertiesVersion");
+  v120 = xpc_dictionary_get_value(dictCopy, "photoAnalysisWallpaperPropertiesVersion");
 
   if (v120)
   {
-    v22->_didSetWallpaperPropertiesVersion = 1;
-    v22->_wallpaperPropertiesVersion = xpc_uint64_get_value(v120);
+    selfCopy->_didSetWallpaperPropertiesVersion = 1;
+    selfCopy->_wallpaperPropertiesVersion = xpc_uint64_get_value(v120);
     v23[2](v23);
   }
 
-  v110 = xpc_dictionary_get_value(v8, "photoAnalysisWallpaperProperties");
+  v110 = xpc_dictionary_get_value(dictCopy, "photoAnalysisWallpaperProperties");
 
   if (v110)
   {
-    v22->_didSetWallpaperPropertiesData = 1;
+    selfCopy->_didSetWallpaperPropertiesData = 1;
     buf.start.value = 0;
-    data = xpc_dictionary_get_data(v8, "photoAnalysisWallpaperProperties", &buf);
+    data = xpc_dictionary_get_data(dictCopy, "photoAnalysisWallpaperProperties", &buf);
     v122 = [MEMORY[0x1E695DEF0] dataWithBytes:data length:buf.start.value];
-    wallpaperPropertiesData = v22->_wallpaperPropertiesData;
-    v22->_wallpaperPropertiesData = v122;
+    wallpaperPropertiesData = selfCopy->_wallpaperPropertiesData;
+    selfCopy->_wallpaperPropertiesData = v122;
     goto LABEL_109;
   }
 
 LABEL_110:
-  v123 = xpc_dictionary_get_value(v8, "mediaAnalysisTimeStamp");
+  v123 = xpc_dictionary_get_value(dictCopy, "mediaAnalysisTimeStamp");
   if (v123)
   {
-    v22->_didSetMediaAnalysisTimeStamp = 1;
+    selfCopy->_didSetMediaAnalysisTimeStamp = 1;
     v124 = PLDateFromXPCObject();
-    mediaAnalysisTimeStamp = v22->_mediaAnalysisTimeStamp;
-    v22->_mediaAnalysisTimeStamp = v124;
+    mediaAnalysisTimeStamp = selfCopy->_mediaAnalysisTimeStamp;
+    selfCopy->_mediaAnalysisTimeStamp = v124;
 
     v23[2](v23);
   }
 
-  v126 = xpc_dictionary_get_value(v8, "mediaAnalysisVersion");
+  v126 = xpc_dictionary_get_value(dictCopy, "mediaAnalysisVersion");
 
   if (v126)
   {
-    v22->_didSetMediaAnalysisVersion = 1;
-    v22->_mediaAnalysisVersion = xpc_uint64_get_value(v126);
+    selfCopy->_didSetMediaAnalysisVersion = 1;
+    selfCopy->_mediaAnalysisVersion = xpc_uint64_get_value(v126);
     v23[2](v23);
   }
 
-  v127 = xpc_dictionary_get_value(v8, "mediaAnalysisImageVersion");
+  v127 = xpc_dictionary_get_value(dictCopy, "mediaAnalysisImageVersion");
 
   if (v127)
   {
-    v22->_didSetMediaAnalysisImageVersion = 1;
-    v22->_mediaAnalysisImageVersion = xpc_int64_get_value(v127);
+    selfCopy->_didSetMediaAnalysisImageVersion = 1;
+    selfCopy->_mediaAnalysisImageVersion = xpc_int64_get_value(v127);
     v23[2](v23);
   }
 
@@ -9923,13 +9923,13 @@ LABEL_110:
   {
     CMTimeMakeFromDictionary(&buf.start, v128);
     v129 = *&buf.start.value;
-    v22->_bestKeyFrameTime.epoch = buf.start.epoch;
-    *&v22->_bestKeyFrameTime.value = v129;
+    selfCopy->_bestKeyFrameTime.epoch = buf.start.epoch;
+    *&selfCopy->_bestKeyFrameTime.value = v129;
     v23[2](v23);
   }
 
-  v130 = xpc_dictionary_get_BOOL(v8, "unsetBestKeyFrameTime");
-  v22->_didUnsetBestKeyFrameTime = v130;
+  v130 = xpc_dictionary_get_BOOL(dictCopy, "unsetBestKeyFrameTime");
+  selfCopy->_didUnsetBestKeyFrameTime = v130;
   if (v130)
   {
     v23[2](v23);
@@ -9938,21 +9938,21 @@ LABEL_110:
   v131 = PLDataFromXPCDictionary();
   if (v131)
   {
-    objc_storeStrong(&v22->_bestKeyFrameJPEGData, v131);
+    objc_storeStrong(&selfCopy->_bestKeyFrameJPEGData, v131);
     v23[2](v23);
   }
 
   v132 = PLDictionaryFromXPCDictionary();
   if (v132)
   {
-    objc_storeStrong(&v22->_contextualVideoThumbnailImageDataByIdentifier, v132);
+    objc_storeStrong(&selfCopy->_contextualVideoThumbnailImageDataByIdentifier, v132);
     v23[2](v23);
   }
 
   v133 = PLDataFromXPCDictionary();
   if (v133)
   {
-    objc_storeStrong(&v22->_computeSyncMediaAnalysisPayload, v133);
+    objc_storeStrong(&selfCopy->_computeSyncMediaAnalysisPayload, v133);
     v23[2](v23);
   }
 
@@ -9962,9 +9962,9 @@ LABEL_110:
     CMTimeRangeMakeFromDictionary(&buf, v134);
     v135 = *&buf.start.value;
     v136 = *&buf.duration.timescale;
-    *&v22->_bestVideoTimeRange.start.epoch = *&buf.start.epoch;
-    *&v22->_bestVideoTimeRange.duration.timescale = v136;
-    *&v22->_bestVideoTimeRange.start.value = v135;
+    *&selfCopy->_bestVideoTimeRange.start.epoch = *&buf.start.epoch;
+    *&selfCopy->_bestVideoTimeRange.duration.timescale = v136;
+    *&selfCopy->_bestVideoTimeRange.start.value = v135;
     v23[2](v23);
   }
 
@@ -9975,179 +9975,179 @@ LABEL_110:
     CMTimeRangeMakeFromDictionary(&buf, v137);
     v138 = *&buf.start.value;
     v139 = *&buf.duration.timescale;
-    *&v22->_animatedStickerTimeRange.start.epoch = *&buf.start.epoch;
-    *&v22->_animatedStickerTimeRange.duration.timescale = v139;
-    *&v22->_animatedStickerTimeRange.start.value = v138;
+    *&selfCopy->_animatedStickerTimeRange.start.epoch = *&buf.start.epoch;
+    *&selfCopy->_animatedStickerTimeRange.duration.timescale = v139;
+    *&selfCopy->_animatedStickerTimeRange.start.value = v138;
     v23[2](v23);
   }
 
-  v140 = xpc_dictionary_get_value(v8, "blurrinessScore");
+  v140 = xpc_dictionary_get_value(dictCopy, "blurrinessScore");
 
   if (v140)
   {
-    v22->_didSetBlurrinessScore = 1;
+    selfCopy->_didSetBlurrinessScore = 1;
     value = xpc_double_get_value(v140);
-    v22->_blurrinessScore = value;
+    selfCopy->_blurrinessScore = value;
     v23[2](v23);
   }
 
-  v142 = xpc_dictionary_get_value(v8, "exposureScore");
+  v142 = xpc_dictionary_get_value(dictCopy, "exposureScore");
 
   if (v142)
   {
-    v22->_didSetExposureScore = 1;
+    selfCopy->_didSetExposureScore = 1;
     v143 = xpc_double_get_value(v142);
-    v22->_exposureScore = v143;
+    selfCopy->_exposureScore = v143;
     v23[2](v23);
   }
 
-  v144 = xpc_dictionary_get_value(v8, "audioScore");
+  v144 = xpc_dictionary_get_value(dictCopy, "audioScore");
 
   if (v144)
   {
-    v22->_didSetAudioScore = 1;
+    selfCopy->_didSetAudioScore = 1;
     v145 = xpc_double_get_value(v144);
-    v22->_audioScore = v145;
+    selfCopy->_audioScore = v145;
     v23[2](v23);
   }
 
-  v146 = xpc_dictionary_get_value(v8, "settlingEffectScore");
+  v146 = xpc_dictionary_get_value(dictCopy, "settlingEffectScore");
 
   if (v146)
   {
-    v22->_didSetSettlingEffectScore = 1;
+    selfCopy->_didSetSettlingEffectScore = 1;
     v147 = xpc_double_get_value(v146);
-    v22->_settlingEffectScore = v147;
+    selfCopy->_settlingEffectScore = v147;
     v23[2](v23);
   }
 
-  v148 = xpc_dictionary_get_value(v8, "wallpaperScore");
+  v148 = xpc_dictionary_get_value(dictCopy, "wallpaperScore");
 
   if (v148)
   {
-    v22->_didSetWallpaperScore = 1;
+    selfCopy->_didSetWallpaperScore = 1;
     v149 = xpc_double_get_value(v148);
-    v22->_wallpaperScore = v149;
+    selfCopy->_wallpaperScore = v149;
     v23[2](v23);
   }
 
-  v150 = xpc_dictionary_get_value(v8, "autoplaySuggestionScore");
+  v150 = xpc_dictionary_get_value(dictCopy, "autoplaySuggestionScore");
 
   if (v150)
   {
-    v22->_didSetAutoplaySuggestionScore = 1;
+    selfCopy->_didSetAutoplaySuggestionScore = 1;
     v151 = xpc_double_get_value(v150);
-    v22->_autoplaySuggestionScore = v151;
+    selfCopy->_autoplaySuggestionScore = v151;
     v23[2](v23);
   }
 
-  v152 = xpc_dictionary_get_value(v8, "videoStickerSuggestionScore");
+  v152 = xpc_dictionary_get_value(dictCopy, "videoStickerSuggestionScore");
 
   if (v152)
   {
-    v22->_didSetVideoStickerSuggestionScore = 1;
+    selfCopy->_didSetVideoStickerSuggestionScore = 1;
     v153 = xpc_double_get_value(v152);
-    v22->_videoStickerSuggestionScore = v153;
+    selfCopy->_videoStickerSuggestionScore = v153;
     v23[2](v23);
   }
 
-  v154 = xpc_dictionary_get_value(v8, "videoScore");
+  v154 = xpc_dictionary_get_value(dictCopy, "videoScore");
 
   if (v154)
   {
-    v22->_didSetVideoScore = 1;
+    selfCopy->_didSetVideoScore = 1;
     v155 = xpc_double_get_value(v154);
-    v22->_videoScore = v155;
+    selfCopy->_videoScore = v155;
     v23[2](v23);
   }
 
-  v156 = xpc_dictionary_get_value(v8, "activityScore");
+  v156 = xpc_dictionary_get_value(dictCopy, "activityScore");
 
   if (v156)
   {
-    v22->_didSetActivityScore = 1;
+    selfCopy->_didSetActivityScore = 1;
     v157 = xpc_double_get_value(v156);
-    v22->_activityScore = v157;
+    selfCopy->_activityScore = v157;
     v23[2](v23);
   }
 
-  v158 = xpc_dictionary_get_value(v8, "faceCount");
+  v158 = xpc_dictionary_get_value(dictCopy, "faceCount");
 
   if (v158)
   {
-    v22->_didSetFaceCount = 1;
-    v22->_faceCount = xpc_uint64_get_value(v158);
+    selfCopy->_didSetFaceCount = 1;
+    selfCopy->_faceCount = xpc_uint64_get_value(v158);
     v23[2](v23);
   }
 
-  v159 = xpc_dictionary_get_value(v8, "audioClassification");
+  v159 = xpc_dictionary_get_value(dictCopy, "audioClassification");
 
   if (v159)
   {
-    v22->_didSetAudioClassification = 1;
-    v22->_audioClassification = xpc_int64_get_value(v159);
+    selfCopy->_didSetAudioClassification = 1;
+    selfCopy->_audioClassification = xpc_int64_get_value(v159);
     v23[2](v23);
   }
 
   v259 = v132;
-  v160 = xpc_dictionary_get_value(v8, "probableRotationDirection");
+  v160 = xpc_dictionary_get_value(dictCopy, "probableRotationDirection");
 
   if (v160)
   {
-    v22->_probableRotationDirection = xpc_int64_get_value(v160);
-    v22->_didSetProbableRotationDirection = 1;
+    selfCopy->_probableRotationDirection = xpc_int64_get_value(v160);
+    selfCopy->_didSetProbableRotationDirection = 1;
   }
 
-  v161 = xpc_dictionary_get_value(v8, "probableRotationDirectionConfidence");
+  v161 = xpc_dictionary_get_value(dictCopy, "probableRotationDirectionConfidence");
 
   if (v161)
   {
     v162 = xpc_double_get_value(v161);
-    v22->_probableRotationDirectionConfidence = v162;
-    v22->_didSetProbableRotationDirectionConfidence = 1;
+    selfCopy->_probableRotationDirectionConfidence = v162;
+    selfCopy->_didSetProbableRotationDirectionConfidence = 1;
   }
 
-  v163 = xpc_dictionary_get_value(v8, "colorNormalizationData");
+  v163 = xpc_dictionary_get_value(dictCopy, "colorNormalizationData");
 
   if (v163)
   {
     v164 = PLDataFromXPCDataObject();
-    colorNormalizationData = v22->_colorNormalizationData;
-    v22->_colorNormalizationData = v164;
+    colorNormalizationData = selfCopy->_colorNormalizationData;
+    selfCopy->_colorNormalizationData = v164;
   }
 
-  if (xpc_dictionary_get_BOOL(v8, "resetCharacterRecognitionProperties"))
+  if (xpc_dictionary_get_BOOL(dictCopy, "resetCharacterRecognitionProperties"))
   {
-    v22->_resetCharacterRecognitionProperties = 1;
+    selfCopy->_resetCharacterRecognitionProperties = 1;
     v23[2](v23);
   }
 
   else
   {
-    v166 = xpc_dictionary_get_value(v8, "characterRecognitionProperties");
+    v166 = xpc_dictionary_get_value(dictCopy, "characterRecognitionProperties");
 
     if (v166)
     {
-      v22->_didSetCharacterRecognitionData = 1;
+      selfCopy->_didSetCharacterRecognitionData = 1;
       v167 = PLDictionaryFromXPCObject();
       v168 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"characterRecognitionData"];
       v169 = [v167 objectForKeyedSubscript:v168];
-      characterRecognitionData = v22->_characterRecognitionData;
-      v22->_characterRecognitionData = v169;
+      characterRecognitionData = selfCopy->_characterRecognitionData;
+      selfCopy->_characterRecognitionData = v169;
 
       v171 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"machineReadableCodeData"];
       v172 = [v167 objectForKeyedSubscript:v171];
-      machineReadableCodeData = v22->_machineReadableCodeData;
-      v22->_machineReadableCodeData = v172;
+      machineReadableCodeData = selfCopy->_machineReadableCodeData;
+      selfCopy->_machineReadableCodeData = v172;
 
       v174 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"characterRecognitionAlgorithmVersion"];
       v175 = [v167 objectForKeyedSubscript:v174];
-      v22->_characterRecognitionAlgorithmVersion = [v175 integerValue];
+      selfCopy->_characterRecognitionAlgorithmVersion = [v175 integerValue];
 
       v176 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"characterRecognitionAdjustmentVersion"];
       v177 = [v167 objectForKeyedSubscript:v176];
-      characterRecognitionAdjustmentVersion = v22->_characterRecognitionAdjustmentVersion;
-      v22->_characterRecognitionAdjustmentVersion = v177;
+      characterRecognitionAdjustmentVersion = selfCopy->_characterRecognitionAdjustmentVersion;
+      selfCopy->_characterRecognitionAdjustmentVersion = v177;
 
       v23[2](v23);
       v163 = v166;
@@ -10159,28 +10159,28 @@ LABEL_110:
     }
   }
 
-  if (xpc_dictionary_get_BOOL(v8, "resetTextUnderstandingProperties"))
+  if (xpc_dictionary_get_BOOL(dictCopy, "resetTextUnderstandingProperties"))
   {
-    v22->_resetTextUnderstandingProperties = 1;
+    selfCopy->_resetTextUnderstandingProperties = 1;
     v23[2](v23);
   }
 
   else
   {
-    v179 = xpc_dictionary_get_value(v8, "textUnderstandingProperties");
+    v179 = xpc_dictionary_get_value(dictCopy, "textUnderstandingProperties");
 
     if (v179)
     {
-      v22->_didSetTextUnderstandingProperties = 1;
+      selfCopy->_didSetTextUnderstandingProperties = 1;
       v180 = PLDictionaryFromXPCObject();
       v181 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"textUnderstandingData"];
       v182 = [v180 objectForKeyedSubscript:v181];
-      textUnderstandingData = v22->_textUnderstandingData;
-      v22->_textUnderstandingData = v182;
+      textUnderstandingData = selfCopy->_textUnderstandingData;
+      selfCopy->_textUnderstandingData = v182;
 
       v184 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"textUnderstandingVersion"];
       v185 = [v180 objectForKeyedSubscript:v184];
-      v22->_textUnderstandingVersion = [v185 integerValue];
+      selfCopy->_textUnderstandingVersion = [v185 integerValue];
 
       v23[2](v23);
       v163 = v179;
@@ -10192,155 +10192,155 @@ LABEL_110:
     }
   }
 
-  if (xpc_dictionary_get_BOOL(v8, "resetVisualSearchProperties"))
+  if (xpc_dictionary_get_BOOL(dictCopy, "resetVisualSearchProperties"))
   {
-    v22->_resetVisualSearchProperties = 1;
+    selfCopy->_resetVisualSearchProperties = 1;
     v23[2](v23);
   }
 
   else
   {
-    v186 = xpc_dictionary_get_value(v8, "visualSearchProperties");
+    v186 = xpc_dictionary_get_value(dictCopy, "visualSearchProperties");
 
     if (!v186)
     {
       goto LABEL_173;
     }
 
-    v22->_didSetVisualSearchProperties = 1;
+    selfCopy->_didSetVisualSearchProperties = 1;
     v187 = PLDictionaryFromXPCObject();
     v188 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"visualSearchData"];
     v189 = [v187 objectForKeyedSubscript:v188];
-    visualSearchData = v22->_visualSearchData;
-    v22->_visualSearchData = v189;
+    visualSearchData = selfCopy->_visualSearchData;
+    selfCopy->_visualSearchData = v189;
 
     v191 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didSetVisualSearchData"];
     v192 = [v187 objectForKeyedSubscript:v191];
-    v22->_didSetVisualSearchData = [v192 BOOLValue];
+    selfCopy->_didSetVisualSearchData = [v192 BOOLValue];
 
     v193 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"didSetStickerConfidenceScore"];
     v194 = [v187 objectForKeyedSubscript:v193];
-    v22->_didSetStickerConfidenceScore = [v194 BOOLValue];
+    selfCopy->_didSetStickerConfidenceScore = [v194 BOOLValue];
 
     v195 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"stickerConfidenceScore"];
     v196 = [v187 objectForKeyedSubscript:v195];
     [v196 floatValue];
-    v22->_stickerConfidenceScore = v197;
+    selfCopy->_stickerConfidenceScore = v197;
 
     v198 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"visualSearchAlgorithmVersion"];
     v199 = [v187 objectForKeyedSubscript:v198];
-    v22->_visualSearchAlgorithmVersion = [v199 integerValue];
+    selfCopy->_visualSearchAlgorithmVersion = [v199 integerValue];
 
     v200 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"stickerConfidenceScoreAlgorithmVersion"];
     v201 = [v187 objectForKeyedSubscript:v200];
-    v22->_stickerConfidenceScoreAlgorithmVersion = [v201 integerValue];
+    selfCopy->_stickerConfidenceScoreAlgorithmVersion = [v201 integerValue];
 
     v202 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"visualSearchAdjustmentVersion"];
     v203 = [v187 objectForKeyedSubscript:v202];
-    visualSearchAdjustmentVersion = v22->_visualSearchAdjustmentVersion;
-    v22->_visualSearchAdjustmentVersion = v203;
+    visualSearchAdjustmentVersion = selfCopy->_visualSearchAdjustmentVersion;
+    selfCopy->_visualSearchAdjustmentVersion = v203;
 
     v23[2](v23);
     v163 = v186;
   }
 
 LABEL_173:
-  v205 = xpc_dictionary_get_value(v8, "compactImageSCSensitivityAnalysis");
+  v205 = xpc_dictionary_get_value(dictCopy, "compactImageSCSensitivityAnalysis");
   v206 = v205;
   if (v205)
   {
-    v22->_didSetCompactImageSCSensitivityAnalysis = 1;
-    v22->_compactSCSensitivityAnalysis = xpc_int64_get_value(v205);
+    selfCopy->_didSetCompactImageSCSensitivityAnalysis = 1;
+    selfCopy->_compactSCSensitivityAnalysis = xpc_int64_get_value(v205);
     v23[2](v23);
   }
 
-  v207 = xpc_dictionary_get_value(v8, "compactVideoSCSensitivityAnalysis");
+  v207 = xpc_dictionary_get_value(dictCopy, "compactVideoSCSensitivityAnalysis");
 
-  v208 = xpc_dictionary_get_value(v8, "videoSensitivityAnalysisVersion");
+  v208 = xpc_dictionary_get_value(dictCopy, "videoSensitivityAnalysisVersion");
   v209 = v208;
   if (v207 && v208)
   {
-    v22->_didSetCompactVideoSCSensitivityAnalysis = 1;
-    v22->_compactSCSensitivityAnalysis = xpc_int64_get_value(v207);
-    v22->_videoSensitivityAnalysisVersion = xpc_int64_get_value(v209);
+    selfCopy->_didSetCompactVideoSCSensitivityAnalysis = 1;
+    selfCopy->_compactSCSensitivityAnalysis = xpc_int64_get_value(v207);
+    selfCopy->_videoSensitivityAnalysisVersion = xpc_int64_get_value(v209);
     v23[2](v23);
   }
 
-  v210 = xpc_dictionary_get_value(v8, "sceneprintData");
+  v210 = xpc_dictionary_get_value(dictCopy, "sceneprintData");
 
   if (v210)
   {
-    v22->_didSetSceneprintData = 1;
+    selfCopy->_didSetSceneprintData = 1;
     v211 = PLDataFromXPCDataObject();
-    sceneprintData = v22->_sceneprintData;
-    v22->_sceneprintData = v211;
+    sceneprintData = selfCopy->_sceneprintData;
+    selfCopy->_sceneprintData = v211;
 
     v23[2](v23);
   }
 
-  v213 = xpc_dictionary_get_value(v8, "duplicateMatchingData");
+  v213 = xpc_dictionary_get_value(dictCopy, "duplicateMatchingData");
 
   if (v213)
   {
-    v22->_didSetDuplicateMatchingData = 1;
+    selfCopy->_didSetDuplicateMatchingData = 1;
     v214 = PLDataFromXPCDictionary();
-    duplicateMatchingData = v22->_duplicateMatchingData;
-    v22->_duplicateMatchingData = v214;
+    duplicateMatchingData = selfCopy->_duplicateMatchingData;
+    selfCopy->_duplicateMatchingData = v214;
 
-    if (![(NSData *)v22->_duplicateMatchingData length])
+    if (![(NSData *)selfCopy->_duplicateMatchingData length])
     {
-      v216 = v22->_duplicateMatchingData;
-      v22->_duplicateMatchingData = 0;
+      v216 = selfCopy->_duplicateMatchingData;
+      selfCopy->_duplicateMatchingData = 0;
     }
 
     v217 = PLDataFromXPCDictionary();
-    duplicateMatchingAlternateData = v22->_duplicateMatchingAlternateData;
-    v22->_duplicateMatchingAlternateData = v217;
+    duplicateMatchingAlternateData = selfCopy->_duplicateMatchingAlternateData;
+    selfCopy->_duplicateMatchingAlternateData = v217;
 
-    if (![(NSData *)v22->_duplicateMatchingAlternateData length])
+    if (![(NSData *)selfCopy->_duplicateMatchingAlternateData length])
     {
-      v219 = v22->_duplicateMatchingAlternateData;
-      v22->_duplicateMatchingAlternateData = 0;
+      v219 = selfCopy->_duplicateMatchingAlternateData;
+      selfCopy->_duplicateMatchingAlternateData = 0;
     }
 
-    v22->_duplicateProcessingSucceeded = xpc_dictionary_get_BOOL(v8, "duplicateProcessingSucceeded");
+    selfCopy->_duplicateProcessingSucceeded = xpc_dictionary_get_BOOL(dictCopy, "duplicateProcessingSucceeded");
     v23[2](v23);
   }
 
-  v220 = xpc_dictionary_get_value(v8, "reverseLocationData");
+  v220 = xpc_dictionary_get_value(dictCopy, "reverseLocationData");
 
   if (v220)
   {
-    v22->_didSetReverseLocationData = 1;
+    selfCopy->_didSetReverseLocationData = 1;
     v221 = PLDataFromXPCDataObject();
-    reverseLocationData = v22->_reverseLocationData;
-    v22->_reverseLocationData = v221;
+    reverseLocationData = selfCopy->_reverseLocationData;
+    selfCopy->_reverseLocationData = v221;
 
     v23[2](v23);
   }
 
-  v223 = xpc_dictionary_get_value(v8, "objectSaliencyRectsData");
+  v223 = xpc_dictionary_get_value(dictCopy, "objectSaliencyRectsData");
 
   if (v223)
   {
-    v22->_didSetObjectSaliencyRectsData = 1;
+    selfCopy->_didSetObjectSaliencyRectsData = 1;
     v224 = PLDataFromXPCDataObject();
-    objectSaliencyRectsData = v22->_objectSaliencyRectsData;
-    v22->_objectSaliencyRectsData = v224;
+    objectSaliencyRectsData = selfCopy->_objectSaliencyRectsData;
+    selfCopy->_objectSaliencyRectsData = v224;
 
     v23[2](v23);
   }
 
-  v226 = xpc_dictionary_get_value(v8, "reverseLocationDataIsValid");
+  v226 = xpc_dictionary_get_value(dictCopy, "reverseLocationDataIsValid");
 
   if (v226)
   {
-    v22->_didSetReverseLocationDataIsValid = 1;
-    v22->_reverseLocationDataIsValid = xpc_BOOL_get_value(v226);
+    selfCopy->_didSetReverseLocationDataIsValid = 1;
+    selfCopy->_reverseLocationDataIsValid = xpc_BOOL_get_value(v226);
     v23[2](v23);
   }
 
-  v227 = xpc_dictionary_get_value(v8, "shiftedLocation");
+  v227 = xpc_dictionary_get_value(dictCopy, "shiftedLocation");
 
   if (v227)
   {
@@ -10354,12 +10354,12 @@ LABEL_173:
       v266 = 0;
       v233 = [v229 unarchivedObjectOfClasses:v232 fromData:v228 error:&v266];
       v234 = v266;
-      shiftedLocation = v22->_shiftedLocation;
-      v22->_shiftedLocation = v233;
+      shiftedLocation = selfCopy->_shiftedLocation;
+      selfCopy->_shiftedLocation = v233;
 
-      if (v22->_shiftedLocation)
+      if (selfCopy->_shiftedLocation)
       {
-        v22->_didSetShiftedLocation = 1;
+        selfCopy->_didSetShiftedLocation = 1;
         v23[2](v23);
       }
 
@@ -10377,102 +10377,102 @@ LABEL_173:
 
     else
     {
-      v22->_didSetShiftedLocation = 1;
-      v236 = v22->_shiftedLocation;
-      v22->_shiftedLocation = 0;
+      selfCopy->_didSetShiftedLocation = 1;
+      v236 = selfCopy->_shiftedLocation;
+      selfCopy->_shiftedLocation = 0;
 
       v23[2](v23);
     }
   }
 
-  v238 = xpc_dictionary_get_value(v8, "timeZoneName");
+  v238 = xpc_dictionary_get_value(dictCopy, "timeZoneName");
 
   if (v238)
   {
-    v22->_didSetTimeZone = 1;
+    selfCopy->_didSetTimeZone = 1;
     v239 = PLStringFromXPCDictionary();
-    timeZoneName = v22->_timeZoneName;
-    v22->_timeZoneName = v239;
+    timeZoneName = selfCopy->_timeZoneName;
+    selfCopy->_timeZoneName = v239;
 
-    v22->_timeZoneOffsetValue = xpc_dictionary_get_int64(v8, "timeZoneOffsetValue");
+    selfCopy->_timeZoneOffsetValue = xpc_dictionary_get_int64(dictCopy, "timeZoneOffsetValue");
     v23[2](v23);
   }
 
-  v22->_clientEntitled = v265;
-  v22->_gpsHorizontalAccuracy = xpc_dictionary_get_double(v8, "gpsHorizontalAccuracy");
-  v22->_didSetGpsHorizontalAccuracy = 1;
+  selfCopy->_clientEntitled = photoKitEntitled;
+  selfCopy->_gpsHorizontalAccuracy = xpc_dictionary_get_double(dictCopy, "gpsHorizontalAccuracy");
+  selfCopy->_didSetGpsHorizontalAccuracy = 1;
   v23[2](v23);
-  v241 = xpc_dictionary_get_value(v8, "screenTimeDeviceImageSensitivity");
+  v241 = xpc_dictionary_get_value(dictCopy, "screenTimeDeviceImageSensitivity");
 
   if (v241)
   {
-    v22->_didSetScreenTimeDeviceImageSensitivity = 1;
-    v22->_screenTimeDeviceImageSensitivity = xpc_int64_get_value(v241);
+    selfCopy->_didSetScreenTimeDeviceImageSensitivity = 1;
+    selfCopy->_screenTimeDeviceImageSensitivity = xpc_int64_get_value(v241);
     v23[2](v23);
   }
 
-  v242 = xpc_dictionary_get_value(v8, "syndicationProcessingValue");
+  v242 = xpc_dictionary_get_value(dictCopy, "syndicationProcessingValue");
 
   if (v242)
   {
-    v22->_syndicationProcessingValue = xpc_uint64_get_value(v242);
-    v22->_didSetSyndicationProcessingValue = 1;
+    selfCopy->_syndicationProcessingValue = xpc_uint64_get_value(v242);
+    selfCopy->_didSetSyndicationProcessingValue = 1;
     v23[2](v23);
   }
 
-  v243 = xpc_dictionary_get_value(v8, "syndicationProcessingVersion");
+  v243 = xpc_dictionary_get_value(dictCopy, "syndicationProcessingVersion");
 
   if (v243)
   {
-    v22->_syndicationProcessingVersion = xpc_uint64_get_value(v243);
-    v22->_didSetSyndicationProcessingVersion = 1;
+    selfCopy->_syndicationProcessingVersion = xpc_uint64_get_value(v243);
+    selfCopy->_didSetSyndicationProcessingVersion = 1;
     v23[2](v23);
   }
 
-  v244 = xpc_dictionary_get_value(v8, "syndicationIdentifier");
+  v244 = xpc_dictionary_get_value(dictCopy, "syndicationIdentifier");
 
   if (v244)
   {
     v245 = PLStringFromXPCDictionary();
-    syndicationIdentifier = v22->_syndicationIdentifier;
-    v22->_syndicationIdentifier = v245;
+    syndicationIdentifier = selfCopy->_syndicationIdentifier;
+    selfCopy->_syndicationIdentifier = v245;
 
-    v22->_didSetSyndicationIdentifier = 1;
+    selfCopy->_didSetSyndicationIdentifier = 1;
     v23[2](v23);
   }
 
-  v247 = xpc_dictionary_get_value(v8, "faceAnalysisVersion");
+  v247 = xpc_dictionary_get_value(dictCopy, "faceAnalysisVersion");
 
   if (v247)
   {
-    v22->_didSetFaceAnalysisVersion = 1;
-    v22->_faceAnalysisVersion = xpc_int64_get_value(v247);
+    selfCopy->_didSetFaceAnalysisVersion = 1;
+    selfCopy->_faceAnalysisVersion = xpc_int64_get_value(v247);
     v23[2](v23);
   }
 
-  v248 = xpc_dictionary_get_value(v8, "localAnalysisStage");
+  v248 = xpc_dictionary_get_value(dictCopy, "localAnalysisStage");
 
   if (v248)
   {
-    v22->_didSetLocalAnalysisStage = 1;
-    v22->_localAnalysisStage = xpc_int64_get_value(v248);
+    selfCopy->_didSetLocalAnalysisStage = 1;
+    selfCopy->_localAnalysisStage = xpc_int64_get_value(v248);
     v23[2](v23);
   }
 
-  v249 = xpc_dictionary_get_value(v8, "viewPresentation");
+  v249 = xpc_dictionary_get_value(dictCopy, "viewPresentation");
 
   if (v249)
   {
-    v22->_didSetViewPresentation = 1;
-    v22->_viewPresentation = xpc_int64_get_value(v249);
+    selfCopy->_didSetViewPresentation = 1;
+    selfCopy->_viewPresentation = xpc_int64_get_value(v249);
     v23[2](v23);
   }
 
-  v22->_resetGeneratedAssetDescriptionProperties = xpc_dictionary_get_BOOL(v8, "ResetGeneratedAssetDescriptionKey");
-  v250 = xpc_dictionary_get_BOOL(v8, "DidSetGeneratedAssetDescriptionKey");
-  v22->_didSetGeneratedAssetDescriptionProperties = v250;
-  v10 = v264;
-  if (v22->_resetGeneratedAssetDescriptionProperties)
+  selfCopy->_resetGeneratedAssetDescriptionProperties = xpc_dictionary_get_BOOL(dictCopy, "ResetGeneratedAssetDescriptionKey");
+  v250 = xpc_dictionary_get_BOOL(dictCopy, "DidSetGeneratedAssetDescriptionKey");
+  selfCopy->_didSetGeneratedAssetDescriptionProperties = v250;
+  authorizationCopy = v264;
+  if (selfCopy->_resetGeneratedAssetDescriptionProperties)
   {
     goto LABEL_221;
   }
@@ -10481,35 +10481,35 @@ LABEL_173:
   {
     v251 = PLDictionaryFromXPCDictionary();
     v252 = [v251 mutableCopy];
-    generatedAssetDescriptionDictionaries = v22->_generatedAssetDescriptionDictionaries;
-    v22->_generatedAssetDescriptionDictionaries = v252;
+    generatedAssetDescriptionDictionaries = selfCopy->_generatedAssetDescriptionDictionaries;
+    selfCopy->_generatedAssetDescriptionDictionaries = v252;
 
 LABEL_221:
     v23[2](v23);
   }
 
-  v254 = xpc_dictionary_get_value(v8, "PtpTrashedStateKey");
+  v254 = xpc_dictionary_get_value(dictCopy, "PtpTrashedStateKey");
 
   if (v254)
   {
-    v22->_ptpTrashedState = xpc_int64_get_value(v254);
-    v22->_didSetPtpTrashedState = 1;
+    selfCopy->_ptpTrashedState = xpc_int64_get_value(v254);
+    selfCopy->_didSetPtpTrashedState = 1;
     v23[2](v23);
   }
 
-  v255 = xpc_dictionary_get_value(v8, "savedAssetType");
+  v255 = xpc_dictionary_get_value(dictCopy, "savedAssetType");
 
   if (v255)
   {
-    v22->_didSetSavedAssetType = 1;
-    v22->_savedAssetType = xpc_int64_get_value(v255);
+    selfCopy->_didSetSavedAssetType = 1;
+    selfCopy->_savedAssetType = xpc_int64_get_value(v255);
     v23[2](v23);
   }
 
   v11 = v262;
-  v9 = v263;
+  requestCopy = v263;
 LABEL_227:
-  v256 = v22;
+  v256 = selfCopy;
 
   return v256;
 }
@@ -10523,29 +10523,29 @@ uint64_t __68__PHAssetChangeRequest_initWithXPCDict_request_clientAuthorization_
   return [v2 recordUpdateRequest:v3];
 }
 
-- (PHAssetChangeRequest)initWithUUID:(id)a3 objectID:(id)a4
+- (PHAssetChangeRequest)initWithUUID:(id)d objectID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PHChangeRequestHelper alloc] initWithUUID:v7 objectID:v6 changeRequest:self];
+  iDCopy = iD;
+  dCopy = d;
+  v8 = [[PHChangeRequestHelper alloc] initWithUUID:dCopy objectID:iDCopy changeRequest:self];
 
   v9 = [(PHAssetChangeRequest *)self initWithHelper:v8];
   if (v9)
   {
-    v10 = [objc_opt_class() _allAssetEditOperations];
-    [(PHAssetChangeRequest *)v9 setSupportedEditOperations:v10];
+    _allAssetEditOperations = [objc_opt_class() _allAssetEditOperations];
+    [(PHAssetChangeRequest *)v9 setSupportedEditOperations:_allAssetEditOperations];
   }
 
   return v9;
 }
 
-- (PHAssetChangeRequest)initWithHelper:(id)a3
+- (PHAssetChangeRequest)initWithHelper:(id)helper
 {
-  v6 = a3;
-  if (!v6)
+  helperCopy = helper;
+  if (!helperCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:479 description:{@"Invalid parameter not satisfying: %@", @"helper"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:479 description:{@"Invalid parameter not satisfying: %@", @"helper"}];
   }
 
   v22.receiver = self;
@@ -10554,7 +10554,7 @@ uint64_t __68__PHAssetChangeRequest_initWithXPCDict_request_clientAuthorization_
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->super._helper, a3);
+    objc_storeStrong(&v7->super._helper, helper);
     v9 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"detectedFaces" changeRequestHelper:v8->super._helper];
     facesHelper = v8->_facesHelper;
     v8->_facesHelper = v9;
@@ -10575,8 +10575,8 @@ uint64_t __68__PHAssetChangeRequest_initWithXPCDict_request_clientAuthorization_
     likesHelper = v8->_likesHelper;
     v8->_likesHelper = v17;
 
-    v19 = [objc_opt_class() _allAssetEditOperations];
-    [(PHAssetChangeRequest *)v8 setSupportedEditOperations:v19];
+    _allAssetEditOperations = [objc_opt_class() _allAssetEditOperations];
+    [(PHAssetChangeRequest *)v8 setSupportedEditOperations:_allAssetEditOperations];
   }
 
   return v8;
@@ -10589,11 +10589,11 @@ uint64_t __68__PHAssetChangeRequest_initWithXPCDict_request_clientAuthorization_
   return [(PHAssetChangeRequest *)self initWithHelper:0];
 }
 
-+ (void)recoverAssets:(id)a3
++ (void)recoverAssets:(id)assets
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [PHObject assertAllObjects:v4 forSelector:a2 areOfType:objc_opt_class()];
+  assetsCopy = assets;
+  [PHObject assertAllObjects:assetsCopy forSelector:a2 areOfType:objc_opt_class()];
   +[PHPhotoLibrary assertTransaction];
   if (recoverAssets__s_onceToken != -1)
   {
@@ -10604,7 +10604,7 @@ uint64_t __68__PHAssetChangeRequest_initWithXPCDict_request_clientAuthorization_
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = v4;
+  v5 = assetsCopy;
   v6 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v6)
   {
@@ -10620,53 +10620,53 @@ uint64_t __68__PHAssetChangeRequest_initWithXPCDict_request_clientAuthorization_
         }
 
         v10 = *(*(&v24 + 1) + 8 * i);
-        v11 = [MEMORY[0x1E69BF328] defaultSavedAssetTypeForUnknownFilesystemImportAssets];
-        v12 = [v10 photoLibrary];
-        v13 = [v12 pathManager];
-        v14 = [v13 isDCIM];
+        defaultSavedAssetTypeForUnknownFilesystemImportAssets = [MEMORY[0x1E69BF328] defaultSavedAssetTypeForUnknownFilesystemImportAssets];
+        photoLibrary = [v10 photoLibrary];
+        pathManager = [photoLibrary pathManager];
+        isDCIM = [pathManager isDCIM];
 
-        if (v14)
+        if (isDCIM)
         {
-          v15 = [v10 pathForOriginalFile];
-          if ([v15 length])
+          pathForOriginalFile = [v10 pathForOriginalFile];
+          if ([pathForOriginalFile length])
           {
             v16 = MEMORY[0x1E695DFF8];
-            v17 = [v15 stringByDeletingLastPathComponent];
-            v18 = [v16 fileURLWithPath:v17 isDirectory:1];
+            stringByDeletingLastPathComponent = [pathForOriginalFile stringByDeletingLastPathComponent];
+            v18 = [v16 fileURLWithPath:stringByDeletingLastPathComponent isDirectory:1];
 
             v23 = 0;
             if (v18 && [MEMORY[0x1E69BE5B8] shouldImportAssetsFromDCIMSubDirectoryAtURL:v18 assetsKind:&v23] && v23 <= 7)
             {
               if (((1 << v23) & 0x8D) != 0)
               {
-                v19 = [v10 directory];
-                v20 = [v19 hasPrefix:recoverAssets__s_cplAssetDirectoryPrefix];
+                directory = [v10 directory];
+                v20 = [directory hasPrefix:recoverAssets__s_cplAssetDirectoryPrefix];
 
                 if (v20)
                 {
-                  v21 = [MEMORY[0x1E69BF328] savedAssetTypeForAssetsInCPLAssetsDirectory];
+                  savedAssetTypeForAssetsInCPLAssetsDirectory = [MEMORY[0x1E69BF328] savedAssetTypeForAssetsInCPLAssetsDirectory];
                 }
 
                 else
                 {
-                  v21 = [MEMORY[0x1E69BF328] defaultSavedAssetTypeForUnknownFilesystemImportAssets];
+                  savedAssetTypeForAssetsInCPLAssetsDirectory = [MEMORY[0x1E69BF328] defaultSavedAssetTypeForUnknownFilesystemImportAssets];
                 }
 
 LABEL_22:
-                v11 = v21;
+                defaultSavedAssetTypeForUnknownFilesystemImportAssets = savedAssetTypeForAssetsInCPLAssetsDirectory;
               }
 
               else
               {
                 if (v23 == 1)
                 {
-                  v21 = [MEMORY[0x1E69BF328] savedAssetTypeForImportedByCameraConnectionKit];
+                  savedAssetTypeForAssetsInCPLAssetsDirectory = [MEMORY[0x1E69BF328] savedAssetTypeForImportedByCameraConnectionKit];
                   goto LABEL_22;
                 }
 
                 if (v23 == 4)
                 {
-                  v21 = [MEMORY[0x1E69BF328] savedAssetTypeForFinderSyncedAsset];
+                  savedAssetTypeForAssetsInCPLAssetsDirectory = [MEMORY[0x1E69BF328] savedAssetTypeForFinderSyncedAsset];
                   goto LABEL_22;
                 }
               }
@@ -10680,7 +10680,7 @@ LABEL_22:
         }
 
         v22 = [PHAssetChangeRequest changeRequestForAsset:v10];
-        [v22 _setSavedAssetType:v11];
+        [v22 _setSavedAssetType:defaultSavedAssetTypeForUnknownFilesystemImportAssets];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -10697,33 +10697,33 @@ uint64_t __38__PHAssetChangeRequest_recoverAssets___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (BOOL)performBatchExpungeAndWaitWithAssets:(id)a3 deleteOptions:(id)a4 photoLibrary:(id)a5 error:(id *)a6
++ (BOOL)performBatchExpungeAndWaitWithAssets:(id)assets deleteOptions:(id)options photoLibrary:(id)library error:(id *)error
 {
-  v7 = [PHBatchAssetExpunger batchAssetExpungerWithAssets:a3 deleteOptions:a4 library:a5 topLevelSelector:a2];
-  LOBYTE(a6) = [v7 performChangesAndWait:a6];
+  v7 = [PHBatchAssetExpunger batchAssetExpungerWithAssets:assets deleteOptions:options library:library topLevelSelector:a2];
+  LOBYTE(error) = [v7 performChangesAndWait:error];
 
-  return a6;
+  return error;
 }
 
-+ (void)performBatchExpungeWithAssets:(id)a3 deleteOptions:(id)a4 photoLibrary:(id)a5 completionHandler:(id)a6
++ (void)performBatchExpungeWithAssets:(id)assets deleteOptions:(id)options photoLibrary:(id)library completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = [PHBatchAssetExpunger batchAssetExpungerWithAssets:a3 deleteOptions:a4 library:a5 topLevelSelector:a2];
-  [v11 performChangesWithCompletionHandler:v10];
+  handlerCopy = handler;
+  v11 = [PHBatchAssetExpunger batchAssetExpungerWithAssets:assets deleteOptions:options library:library topLevelSelector:a2];
+  [v11 performChangesWithCompletionHandler:handlerCopy];
 }
 
-+ (void)_deleteAssets:(id)a3 withOperation:(int64_t)a4 topLevelSelector:(SEL)a5 deleteOptions:(id)a6
++ (void)_deleteAssets:(id)assets withOperation:(int64_t)operation topLevelSelector:(SEL)selector deleteOptions:(id)options
 {
   v22 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a6;
-  [PHObject assertAllObjects:v9 forSelector:a5 areOfType:objc_opt_class()];
+  assetsCopy = assets;
+  optionsCopy = options;
+  [PHObject assertAllObjects:assetsCopy forSelector:selector areOfType:objc_opt_class()];
   +[PHPhotoLibrary assertTransaction];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = v9;
+  v11 = assetsCopy;
   v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {
@@ -10739,8 +10739,8 @@ uint64_t __38__PHAssetChangeRequest_recoverAssets___block_invoke()
           objc_enumerationMutation(v11);
         }
 
-        v16 = [(PHTrashableObjectDeleteRequest *)PHAssetDeleteRequest deleteRequestForObject:*(*(&v17 + 1) + 8 * v15) operation:a4, v17];
-        [v16 setDeleteOptions:v10];
+        v16 = [(PHTrashableObjectDeleteRequest *)PHAssetDeleteRequest deleteRequestForObject:*(*(&v17 + 1) + 8 * v15) operation:operation, v17];
+        [v16 setDeleteOptions:optionsCopy];
 
         ++v15;
       }
@@ -10761,15 +10761,15 @@ uint64_t __38__PHAssetChangeRequest_recoverAssets___block_invoke()
     v4 = [PHChangeRequestHelper changeRequestForObject:v3];
     [v4 _setOriginalAsset:v3];
 
-    v5 = [MEMORY[0x1E696AD50] indexSet];
-    v6 = [objc_opt_class() _allAssetEditOperations];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
+    _allAssetEditOperations = [objc_opt_class() _allAssetEditOperations];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __46__PHAssetChangeRequest_changeRequestForAsset___block_invoke;
     v10[3] = &unk_1E75A9568;
-    v11 = v5;
-    v7 = v5;
-    [v6 enumerateIndexesUsingBlock:v10];
+    v11 = indexSet;
+    v7 = indexSet;
+    [_allAssetEditOperations enumerateIndexesUsingBlock:v10];
 
     v8 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexSet:v7];
     [v4 setSupportedEditOperations:v8];
@@ -10783,27 +10783,27 @@ uint64_t __38__PHAssetChangeRequest_recoverAssets___block_invoke()
   return v4;
 }
 
-+ (id)changeRequestForAssetFromVideoFileURL:(id)a3 imageAsset:(id)a4 displayTime:(double)a5
++ (id)changeRequestForAssetFromVideoFileURL:(id)l imageAsset:(id)asset displayTime:(double)time
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  lCopy = l;
+  assetCopy = asset;
+  if (!lCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"PHAssetChangeRequest.m" lineNumber:444 description:{@"Invalid parameter not satisfying: %@", @"videoFileURL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:444 description:{@"Invalid parameter not satisfying: %@", @"videoFileURL"}];
   }
 
-  if (([v10 isPhoto] & 1) == 0)
+  if (([assetCopy isPhoto] & 1) == 0)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"PHAssetChangeRequest.m" lineNumber:445 description:@"require photo when updating to iris"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHAssetChangeRequest.m" lineNumber:445 description:@"require photo when updating to iris"];
   }
 
-  v11 = [a1 changeRequestForAsset:v10];
-  v12 = [v9 path];
+  v11 = [self changeRequestForAsset:assetCopy];
+  path = [lCopy path];
   v13 = PFVideoComplementMetadataForVideoAtPath();
 
-  v14 = [v13 pairingIdentifier];
+  pairingIdentifier = [v13 pairingIdentifier];
   memset(&v22, 0, sizeof(v22));
   if ([v13 hasValidImageDisplayTime])
   {
@@ -10820,14 +10820,14 @@ uint64_t __38__PHAssetChangeRequest_recoverAssets___block_invoke()
 
   else
   {
-    CMTimeMakeWithSeconds(&v22, a5, 60000);
+    CMTimeMakeWithSeconds(&v22, time, 60000);
   }
 
   memset(&v21, 0, sizeof(v21));
   if (![v13 hasValidVideoDuration])
   {
     v21 = **&MEMORY[0x1E6960C70];
-    if (v14)
+    if (pairingIdentifier)
     {
       goto LABEL_16;
     }
@@ -10838,7 +10838,7 @@ uint64_t __38__PHAssetChangeRequest_recoverAssets___block_invoke()
   if (v13)
   {
     [v13 videoDuration];
-    if (v14)
+    if (pairingIdentifier)
     {
       goto LABEL_16;
     }
@@ -10847,22 +10847,22 @@ uint64_t __38__PHAssetChangeRequest_recoverAssets___block_invoke()
   }
 
   memset(&v21, 0, sizeof(v21));
-  if (!v14)
+  if (!pairingIdentifier)
   {
 LABEL_15:
-    v15 = [MEMORY[0x1E696AFB0] UUID];
-    v14 = [v15 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    pairingIdentifier = [uUID UUIDString];
   }
 
 LABEL_16:
-  [v11 setVideoURLForUpdate:v9];
+  [v11 setVideoURLForUpdate:lCopy];
   v20 = v21;
   [v11 setVideoDuration:&v20];
   v20 = v22;
   [v11 setImageDisplayTime:&v20];
-  [v11 setPairingIdentifier:v14];
-  v16 = [objc_opt_class() _allAssetEditOperations];
-  [v11 setSupportedEditOperations:v16];
+  [v11 setPairingIdentifier:pairingIdentifier];
+  _allAssetEditOperations = [objc_opt_class() _allAssetEditOperations];
+  [v11 setSupportedEditOperations:_allAssetEditOperations];
 
   [v11 didMutate];
 

@@ -1,23 +1,23 @@
 @interface CKDChainPCSData
-- (CKDChainPCSData)initWithCoder:(id)a3;
-- (CKDChainPCSData)initWithPCSData:(id)a3 encryptedPrivateKey:(id)a4;
+- (CKDChainPCSData)initWithCoder:(id)coder;
+- (CKDChainPCSData)initWithPCSData:(id)data encryptedPrivateKey:(id)key;
 - (id)CKPropertiesDescription;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKDChainPCSData
 
-- (CKDChainPCSData)initWithPCSData:(id)a3 encryptedPrivateKey:(id)a4
+- (CKDChainPCSData)initWithPCSData:(id)data encryptedPrivateKey:(id)key
 {
-  v7 = a4;
+  keyCopy = key;
   v11.receiver = self;
   v11.super_class = CKDChainPCSData;
-  v8 = [(CKDPCSData *)&v11 initWithPCSData:a3];
+  v8 = [(CKDPCSData *)&v11 initWithPCSData:data];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_encryptedChainPCSPrivateKey, a4);
+    objc_storeStrong(&v8->_encryptedChainPCSPrivateKey, key);
   }
 
   return v9;
@@ -28,8 +28,8 @@
   v3 = objc_autoreleasePoolPush();
   v16.receiver = self;
   v16.super_class = CKDChainPCSData;
-  v4 = [(CKDPCSData *)&v16 CKPropertiesDescription];
-  v7 = objc_msgSend_mutableCopy(v4, v5, v6);
+  cKPropertiesDescription = [(CKDPCSData *)&v16 CKPropertiesDescription];
+  v7 = objc_msgSend_mutableCopy(cKPropertiesDescription, v5, v6);
 
   v10 = objc_msgSend_encryptedChainPCSPrivateKey(self, v8, v9);
 
@@ -44,11 +44,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v13.receiver = self;
   v13.super_class = CKDChainPCSData;
-  v4 = [(CKDPCSData *)&v13 copyWithZone:a3];
+  v4 = [(CKDPCSData *)&v13 copyWithZone:zone];
   v7 = objc_msgSend_encryptedChainPCSPrivateKey(self, v5, v6);
   v10 = objc_msgSend_copy(v7, v8, v9);
   objc_msgSend_setEncryptedChainPCSPrivateKey_(v4, v11, v10);
@@ -56,28 +56,28 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v7.receiver = self;
   v7.super_class = CKDChainPCSData;
-  [(CKDPCSData *)&v7 encodeWithCoder:v4];
-  objc_msgSend_encodeObject_forKey_(v4, v6, self->_encryptedChainPCSPrivateKey, @"ChainPrivateKey");
+  [(CKDPCSData *)&v7 encodeWithCoder:coderCopy];
+  objc_msgSend_encodeObject_forKey_(coderCopy, v6, self->_encryptedChainPCSPrivateKey, @"ChainPrivateKey");
   objc_autoreleasePoolPop(v5);
 }
 
-- (CKDChainPCSData)initWithCoder:(id)a3
+- (CKDChainPCSData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = CKDChainPCSData;
-  v5 = [(CKDPCSData *)&v12 initWithCoder:v4];
+  v5 = [(CKDPCSData *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
     v7 = objc_opt_class();
-    v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v8, v7, @"ChainPrivateKey");
+    v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v8, v7, @"ChainPrivateKey");
     encryptedChainPCSPrivateKey = v5->_encryptedChainPCSPrivateKey;
     v5->_encryptedChainPCSPrivateKey = v9;
 

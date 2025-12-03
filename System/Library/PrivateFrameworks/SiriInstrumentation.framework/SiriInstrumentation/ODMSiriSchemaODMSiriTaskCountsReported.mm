@@ -1,30 +1,30 @@
 @interface ODMSiriSchemaODMSiriTaskCountsReported
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODMSiriSchemaODMSiriTaskCountsReported)initWithDictionary:(id)a3;
-- (ODMSiriSchemaODMSiriTaskCountsReported)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODMSiriSchemaODMSiriTaskCountsReported)initWithDictionary:(id)dictionary;
+- (ODMSiriSchemaODMSiriTaskCountsReported)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasCancelledSiriTaskCount:(BOOL)a3;
-- (void)setHasCompletedSiriTaskCount:(BOOL)a3;
-- (void)setHasCompletedUITaskCount:(BOOL)a3;
-- (void)setHasFailedSiriTaskCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasCancelledSiriTaskCount:(BOOL)count;
+- (void)setHasCompletedSiriTaskCount:(BOOL)count;
+- (void)setHasCompletedUITaskCount:(BOOL)count;
+- (void)setHasFailedSiriTaskCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODMSiriSchemaODMSiriTaskCountsReported
 
-- (ODMSiriSchemaODMSiriTaskCountsReported)initWithDictionary:(id)a3
+- (ODMSiriSchemaODMSiriTaskCountsReported)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = ODMSiriSchemaODMSiriTaskCountsReported;
   v5 = [(ODMSiriSchemaODMSiriTaskCountsReported *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"dimensions"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"dimensions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,35 +32,35 @@
       [(ODMSiriSchemaODMSiriTaskCountsReported *)v5 setDimensions:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"taskType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"taskType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODMSiriSchemaODMSiriTaskCountsReported setTaskType:](v5, "setTaskType:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"completedSiriTaskCount"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"completedSiriTaskCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODMSiriSchemaODMSiriTaskCountsReported setCompletedSiriTaskCount:](v5, "setCompletedSiriTaskCount:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"failedSiriTaskCount"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"failedSiriTaskCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODMSiriSchemaODMSiriTaskCountsReported setFailedSiriTaskCount:](v5, "setFailedSiriTaskCount:", [v10 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"cancelledSiriTaskCount"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"cancelledSiriTaskCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODMSiriSchemaODMSiriTaskCountsReported setCancelledSiriTaskCount:](v5, "setCancelledSiriTaskCount:", [v11 unsignedIntValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"completedUITaskCount"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"completedUITaskCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,30 +73,30 @@
   return v5;
 }
 
-- (ODMSiriSchemaODMSiriTaskCountsReported)initWithJSON:(id)a3
+- (ODMSiriSchemaODMSiriTaskCountsReported)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODMSiriSchemaODMSiriTaskCountsReported *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODMSiriSchemaODMSiriTaskCountsReported *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODMSiriSchemaODMSiriTaskCountsReported *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -109,12 +109,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODMSiriSchemaODMSiriTaskCountsReported cancelledSiriTaskCount](self, "cancelledSiriTaskCount")}];
-    [v3 setObject:v8 forKeyedSubscript:@"cancelledSiriTaskCount"];
+    [dictionary setObject:v8 forKeyedSubscript:@"cancelledSiriTaskCount"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -135,29 +135,29 @@ LABEL_3:
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODMSiriSchemaODMSiriTaskCountsReported completedSiriTaskCount](self, "completedSiriTaskCount")}];
-  [v3 setObject:v9 forKeyedSubscript:@"completedSiriTaskCount"];
+  [dictionary setObject:v9 forKeyedSubscript:@"completedSiriTaskCount"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODMSiriSchemaODMSiriTaskCountsReported completedUITaskCount](self, "completedUITaskCount")}];
-    [v3 setObject:v5 forKeyedSubscript:@"completedUITaskCount"];
+    [dictionary setObject:v5 forKeyedSubscript:@"completedUITaskCount"];
   }
 
 LABEL_5:
   if (self->_dimensions)
   {
-    v6 = [(ODMSiriSchemaODMSiriTaskCountsReported *)self dimensions];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    dimensions = [(ODMSiriSchemaODMSiriTaskCountsReported *)self dimensions];
+    dictionaryRepresentation = [dimensions dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"dimensions"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"dimensions"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"dimensions"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"dimensions"];
     }
   }
 
@@ -165,7 +165,7 @@ LABEL_5:
   if ((v11 & 4) != 0)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODMSiriSchemaODMSiriTaskCountsReported failedSiriTaskCount](self, "failedSiriTaskCount")}];
-    [v3 setObject:v12 forKeyedSubscript:@"failedSiriTaskCount"];
+    [dictionary setObject:v12 forKeyedSubscript:@"failedSiriTaskCount"];
 
     v11 = self->_has;
   }
@@ -183,12 +183,12 @@ LABEL_5:
       v14 = off_1E78DE130[v13];
     }
 
-    [v3 setObject:v14 forKeyedSubscript:@"taskType"];
+    [dictionary setObject:v14 forKeyedSubscript:@"taskType"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -260,30 +260,30 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
-  v5 = [(ODMSiriSchemaODMSiriTaskCountsReported *)self dimensions];
-  v6 = [v4 dimensions];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  dimensions = [(ODMSiriSchemaODMSiriTaskCountsReported *)self dimensions];
+  dimensions2 = [equalCopy dimensions];
+  v7 = dimensions2;
+  if ((dimensions != 0) == (dimensions2 == 0))
   {
 
     goto LABEL_28;
   }
 
-  v8 = [(ODMSiriSchemaODMSiriTaskCountsReported *)self dimensions];
-  if (v8)
+  dimensions3 = [(ODMSiriSchemaODMSiriTaskCountsReported *)self dimensions];
+  if (dimensions3)
   {
-    v9 = v8;
-    v10 = [(ODMSiriSchemaODMSiriTaskCountsReported *)self dimensions];
-    v11 = [v4 dimensions];
-    v12 = [v10 isEqual:v11];
+    v9 = dimensions3;
+    dimensions4 = [(ODMSiriSchemaODMSiriTaskCountsReported *)self dimensions];
+    dimensions5 = [equalCopy dimensions];
+    v12 = [dimensions4 isEqual:dimensions5];
 
     if (!v12)
     {
@@ -296,7 +296,7 @@ LABEL_6:
   }
 
   has = self->_has;
-  v14 = v4[36];
+  v14 = equalCopy[36];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_28:
@@ -307,13 +307,13 @@ LABEL_28:
   if (*&has)
   {
     taskType = self->_taskType;
-    if (taskType != [v4 taskType])
+    if (taskType != [equalCopy taskType])
     {
       goto LABEL_28;
     }
 
     has = self->_has;
-    v14 = v4[36];
+    v14 = equalCopy[36];
   }
 
   v16 = (*&has >> 1) & 1;
@@ -325,13 +325,13 @@ LABEL_28:
   if (v16)
   {
     completedSiriTaskCount = self->_completedSiriTaskCount;
-    if (completedSiriTaskCount != [v4 completedSiriTaskCount])
+    if (completedSiriTaskCount != [equalCopy completedSiriTaskCount])
     {
       goto LABEL_28;
     }
 
     has = self->_has;
-    v14 = v4[36];
+    v14 = equalCopy[36];
   }
 
   v18 = (*&has >> 2) & 1;
@@ -343,13 +343,13 @@ LABEL_28:
   if (v18)
   {
     failedSiriTaskCount = self->_failedSiriTaskCount;
-    if (failedSiriTaskCount != [v4 failedSiriTaskCount])
+    if (failedSiriTaskCount != [equalCopy failedSiriTaskCount])
     {
       goto LABEL_28;
     }
 
     has = self->_has;
-    v14 = v4[36];
+    v14 = equalCopy[36];
   }
 
   v20 = (*&has >> 3) & 1;
@@ -361,10 +361,10 @@ LABEL_28:
   if (v20)
   {
     cancelledSiriTaskCount = self->_cancelledSiriTaskCount;
-    if (cancelledSiriTaskCount == [v4 cancelledSiriTaskCount])
+    if (cancelledSiriTaskCount == [equalCopy cancelledSiriTaskCount])
     {
       has = self->_has;
-      v14 = v4[36];
+      v14 = equalCopy[36];
       goto LABEL_24;
     }
 
@@ -381,7 +381,7 @@ LABEL_24:
   if (v22)
   {
     completedUITaskCount = self->_completedUITaskCount;
-    if (completedUITaskCount != [v4 completedUITaskCount])
+    if (completedUITaskCount != [equalCopy completedUITaskCount])
     {
       goto LABEL_28;
     }
@@ -393,14 +393,14 @@ LABEL_29:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(ODMSiriSchemaODMSiriTaskCountsReported *)self dimensions];
+  toCopy = to;
+  dimensions = [(ODMSiriSchemaODMSiriTaskCountsReported *)self dimensions];
 
-  if (v4)
+  if (dimensions)
   {
-    v5 = [(ODMSiriSchemaODMSiriTaskCountsReported *)self dimensions];
+    dimensions2 = [(ODMSiriSchemaODMSiriTaskCountsReported *)self dimensions];
     PBDataWriterWriteSubmessage();
   }
 
@@ -411,11 +411,11 @@ LABEL_29:
     has = self->_has;
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteUint32Field();
-    v7 = v8;
+    v7 = toCopy;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -435,7 +435,7 @@ LABEL_7:
   }
 
   PBDataWriterWriteUint32Field();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -450,20 +450,20 @@ LABEL_8:
 
 LABEL_15:
   PBDataWriterWriteUint32Field();
-  v7 = v8;
+  v7 = toCopy;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_9:
     PBDataWriterWriteUint32Field();
-    v7 = v8;
+    v7 = toCopy;
   }
 
 LABEL_10:
 }
 
-- (void)setHasCompletedUITaskCount:(BOOL)a3
+- (void)setHasCompletedUITaskCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 16;
   }
@@ -476,9 +476,9 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasCancelledSiriTaskCount:(BOOL)a3
+- (void)setHasCancelledSiriTaskCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -491,9 +491,9 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasFailedSiriTaskCount:(BOOL)a3
+- (void)setHasFailedSiriTaskCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -506,9 +506,9 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasCompletedSiriTaskCount:(BOOL)a3
+- (void)setHasCompletedSiriTaskCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -521,17 +521,17 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ODMSiriSchemaODMSiriTaskCountsReported;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ODMSiriSchemaODMSiriTaskCountsReported *)self dimensions:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ODMSiriSchemaODMSiriTaskCountsReported *)self deleteDimensions];
   }

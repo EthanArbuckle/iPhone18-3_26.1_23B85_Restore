@@ -1,5 +1,5 @@
 @interface PUAdjustmentsModePickerCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_updateButton;
@@ -7,12 +7,12 @@
 
 @implementation PUAdjustmentsModePickerCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUAdjustmentsModePickerCell" hasInstanceVariable:@"_accessoryButton" withType:"UIButton"];
-  [v3 validateClass:@"PUAdjustmentsModePickerCell" hasInstanceMethod:@"localizedModeName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUAdjustmentsModePickerCell" hasInstanceMethod:@"_updateButton" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUAdjustmentsModePickerCell" hasInstanceVariable:@"_accessoryButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"PUAdjustmentsModePickerCell" hasInstanceMethod:@"localizedModeName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUAdjustmentsModePickerCell" hasInstanceMethod:@"_updateButton" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

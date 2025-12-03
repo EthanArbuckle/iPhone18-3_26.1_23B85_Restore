@@ -1,40 +1,40 @@
 @interface BMEvaluationCommonMetadata
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMEvaluationCommonMetadata)initWithFeatureDomain:(id)a3 bundleId:(id)a4 evaluationUuid:(id)a5 isHighPriority:(id)a6 diagnostics:(id)a7 prefilledQuestions:(id)a8 auxiliaryAttributes:(id)a9 systemBuild:(id)a10 modelVersion:(id)a11;
-- (BMEvaluationCommonMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMEvaluationCommonMetadata)initWithFeatureDomain:(id)domain bundleId:(id)id evaluationUuid:(id)uuid isHighPriority:(id)priority diagnostics:(id)diagnostics prefilledQuestions:(id)questions auxiliaryAttributes:(id)attributes systemBuild:(id)self0 modelVersion:(id)self1;
+- (BMEvaluationCommonMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (NSUUID)evaluationUuid;
 - (id)_prefilledQuestionsJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMEvaluationCommonMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMEvaluationCommonMetadata *)self featureDomain];
-    v7 = [v5 featureDomain];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    featureDomain = [(BMEvaluationCommonMetadata *)self featureDomain];
+    featureDomain2 = [v5 featureDomain];
+    v8 = featureDomain2;
+    if (featureDomain == featureDomain2)
     {
     }
 
     else
     {
-      v9 = [(BMEvaluationCommonMetadata *)self featureDomain];
-      v10 = [v5 featureDomain];
-      v11 = [v9 isEqual:v10];
+      featureDomain3 = [(BMEvaluationCommonMetadata *)self featureDomain];
+      featureDomain4 = [v5 featureDomain];
+      v11 = [featureDomain3 isEqual:featureDomain4];
 
       if (!v11)
       {
@@ -42,18 +42,18 @@
       }
     }
 
-    v13 = [(BMEvaluationCommonMetadata *)self bundleId];
-    v14 = [v5 bundleId];
-    v15 = v14;
-    if (v13 == v14)
+    bundleId = [(BMEvaluationCommonMetadata *)self bundleId];
+    bundleId2 = [v5 bundleId];
+    v15 = bundleId2;
+    if (bundleId == bundleId2)
     {
     }
 
     else
     {
-      v16 = [(BMEvaluationCommonMetadata *)self bundleId];
-      v17 = [v5 bundleId];
-      v18 = [v16 isEqual:v17];
+      bundleId3 = [(BMEvaluationCommonMetadata *)self bundleId];
+      bundleId4 = [v5 bundleId];
+      v18 = [bundleId3 isEqual:bundleId4];
 
       if (!v18)
       {
@@ -61,18 +61,18 @@
       }
     }
 
-    v19 = [(BMEvaluationCommonMetadata *)self evaluationUuid];
-    v20 = [v5 evaluationUuid];
-    v21 = v20;
-    if (v19 == v20)
+    evaluationUuid = [(BMEvaluationCommonMetadata *)self evaluationUuid];
+    evaluationUuid2 = [v5 evaluationUuid];
+    v21 = evaluationUuid2;
+    if (evaluationUuid == evaluationUuid2)
     {
     }
 
     else
     {
-      v22 = [(BMEvaluationCommonMetadata *)self evaluationUuid];
-      v23 = [v5 evaluationUuid];
-      v24 = [v22 isEqual:v23];
+      evaluationUuid3 = [(BMEvaluationCommonMetadata *)self evaluationUuid];
+      evaluationUuid4 = [v5 evaluationUuid];
+      v24 = [evaluationUuid3 isEqual:evaluationUuid4];
 
       if (!v24)
       {
@@ -92,25 +92,25 @@
         goto LABEL_34;
       }
 
-      v25 = [(BMEvaluationCommonMetadata *)self isHighPriority];
-      if (v25 != [v5 isHighPriority])
+      isHighPriority = [(BMEvaluationCommonMetadata *)self isHighPriority];
+      if (isHighPriority != [v5 isHighPriority])
       {
         goto LABEL_34;
       }
     }
 
-    v26 = [(BMEvaluationCommonMetadata *)self diagnostics];
-    v27 = [v5 diagnostics];
-    v28 = v27;
-    if (v26 == v27)
+    diagnostics = [(BMEvaluationCommonMetadata *)self diagnostics];
+    diagnostics2 = [v5 diagnostics];
+    v28 = diagnostics2;
+    if (diagnostics == diagnostics2)
     {
     }
 
     else
     {
-      v29 = [(BMEvaluationCommonMetadata *)self diagnostics];
-      v30 = [v5 diagnostics];
-      v31 = [v29 isEqual:v30];
+      diagnostics3 = [(BMEvaluationCommonMetadata *)self diagnostics];
+      diagnostics4 = [v5 diagnostics];
+      v31 = [diagnostics3 isEqual:diagnostics4];
 
       if (!v31)
       {
@@ -118,18 +118,18 @@
       }
     }
 
-    v32 = [(BMEvaluationCommonMetadata *)self prefilledQuestions];
-    v33 = [v5 prefilledQuestions];
-    v34 = v33;
-    if (v32 == v33)
+    prefilledQuestions = [(BMEvaluationCommonMetadata *)self prefilledQuestions];
+    prefilledQuestions2 = [v5 prefilledQuestions];
+    v34 = prefilledQuestions2;
+    if (prefilledQuestions == prefilledQuestions2)
     {
     }
 
     else
     {
-      v35 = [(BMEvaluationCommonMetadata *)self prefilledQuestions];
-      v36 = [v5 prefilledQuestions];
-      v37 = [v35 isEqual:v36];
+      prefilledQuestions3 = [(BMEvaluationCommonMetadata *)self prefilledQuestions];
+      prefilledQuestions4 = [v5 prefilledQuestions];
+      v37 = [prefilledQuestions3 isEqual:prefilledQuestions4];
 
       if (!v37)
       {
@@ -137,18 +137,18 @@
       }
     }
 
-    v38 = [(BMEvaluationCommonMetadata *)self auxiliaryAttributes];
-    v39 = [v5 auxiliaryAttributes];
-    v40 = v39;
-    if (v38 == v39)
+    auxiliaryAttributes = [(BMEvaluationCommonMetadata *)self auxiliaryAttributes];
+    auxiliaryAttributes2 = [v5 auxiliaryAttributes];
+    v40 = auxiliaryAttributes2;
+    if (auxiliaryAttributes == auxiliaryAttributes2)
     {
     }
 
     else
     {
-      v41 = [(BMEvaluationCommonMetadata *)self auxiliaryAttributes];
-      v42 = [v5 auxiliaryAttributes];
-      v43 = [v41 isEqual:v42];
+      auxiliaryAttributes3 = [(BMEvaluationCommonMetadata *)self auxiliaryAttributes];
+      auxiliaryAttributes4 = [v5 auxiliaryAttributes];
+      v43 = [auxiliaryAttributes3 isEqual:auxiliaryAttributes4];
 
       if (!v43)
       {
@@ -156,18 +156,18 @@
       }
     }
 
-    v44 = [(BMEvaluationCommonMetadata *)self systemBuild];
-    v45 = [v5 systemBuild];
-    v46 = v45;
-    if (v44 == v45)
+    systemBuild = [(BMEvaluationCommonMetadata *)self systemBuild];
+    systemBuild2 = [v5 systemBuild];
+    v46 = systemBuild2;
+    if (systemBuild == systemBuild2)
     {
     }
 
     else
     {
-      v47 = [(BMEvaluationCommonMetadata *)self systemBuild];
-      v48 = [v5 systemBuild];
-      v49 = [v47 isEqual:v48];
+      systemBuild3 = [(BMEvaluationCommonMetadata *)self systemBuild];
+      systemBuild4 = [v5 systemBuild];
+      v49 = [systemBuild3 isEqual:systemBuild4];
 
       if (!v49)
       {
@@ -179,18 +179,18 @@ LABEL_35:
       }
     }
 
-    v51 = [(BMEvaluationCommonMetadata *)self modelVersion];
-    v52 = [v5 modelVersion];
-    if (v51 == v52)
+    modelVersion = [(BMEvaluationCommonMetadata *)self modelVersion];
+    modelVersion2 = [v5 modelVersion];
+    if (modelVersion == modelVersion2)
     {
       v12 = 1;
     }
 
     else
     {
-      v53 = [(BMEvaluationCommonMetadata *)self modelVersion];
-      v54 = [v5 modelVersion];
-      v12 = [v53 isEqual:v54];
+      modelVersion3 = [(BMEvaluationCommonMetadata *)self modelVersion];
+      modelVersion4 = [v5 modelVersion];
+      v12 = [modelVersion3 isEqual:modelVersion4];
     }
 
     goto LABEL_35;
@@ -221,10 +221,10 @@ LABEL_36:
 - (id)jsonDictionary
 {
   v35[9] = *MEMORY[0x1E69E9840];
-  v3 = [(BMEvaluationCommonMetadata *)self featureDomain];
-  v4 = [(BMEvaluationCommonMetadata *)self bundleId];
-  v5 = [(BMEvaluationCommonMetadata *)self evaluationUuid];
-  v6 = [v5 UUIDString];
+  featureDomain = [(BMEvaluationCommonMetadata *)self featureDomain];
+  bundleId = [(BMEvaluationCommonMetadata *)self bundleId];
+  evaluationUuid = [(BMEvaluationCommonMetadata *)self evaluationUuid];
+  uUIDString = [evaluationUuid UUIDString];
 
   if ([(BMEvaluationCommonMetadata *)self hasIsHighPriority])
   {
@@ -236,104 +236,104 @@ LABEL_36:
     v7 = 0;
   }
 
-  v8 = [(BMEvaluationCommonMetadata *)self diagnostics];
-  v33 = [(BMEvaluationCommonMetadata *)self _prefilledQuestionsJSONArray];
-  v9 = [(BMEvaluationCommonMetadata *)self auxiliaryAttributes];
-  v10 = [v9 jsonDictionary];
+  diagnostics = [(BMEvaluationCommonMetadata *)self diagnostics];
+  _prefilledQuestionsJSONArray = [(BMEvaluationCommonMetadata *)self _prefilledQuestionsJSONArray];
+  auxiliaryAttributes = [(BMEvaluationCommonMetadata *)self auxiliaryAttributes];
+  jsonDictionary = [auxiliaryAttributes jsonDictionary];
 
-  v11 = [(BMEvaluationCommonMetadata *)self systemBuild];
-  v12 = [(BMEvaluationCommonMetadata *)self modelVersion];
+  systemBuild = [(BMEvaluationCommonMetadata *)self systemBuild];
+  modelVersion = [(BMEvaluationCommonMetadata *)self modelVersion];
   v34[0] = @"featureDomain";
-  v13 = v3;
-  if (!v3)
+  null = featureDomain;
+  if (!featureDomain)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28 = v13;
-  v35[0] = v13;
+  v28 = null;
+  v35[0] = null;
   v34[1] = @"bundleId";
-  v14 = v4;
-  if (!v4)
+  null2 = bundleId;
+  if (!bundleId)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v14;
-  v35[1] = v14;
+  v27 = null2;
+  v35[1] = null2;
   v34[2] = @"evaluationUuid";
-  v15 = v6;
-  if (!v6)
+  null3 = uUIDString;
+  if (!uUIDString)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32 = v3;
-  v26 = v15;
-  v35[2] = v15;
+  v32 = featureDomain;
+  v26 = null3;
+  v35[2] = null3;
   v34[3] = @"isHighPriority";
-  v16 = v7;
+  null4 = v7;
   if (!v7)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31 = v4;
-  v25 = v16;
-  v35[3] = v16;
+  v31 = bundleId;
+  v25 = null4;
+  v35[3] = null4;
   v34[4] = @"diagnostics";
-  v17 = v8;
-  if (!v8)
+  null5 = diagnostics;
+  if (!diagnostics)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30 = v6;
-  v35[4] = v17;
+  v30 = uUIDString;
+  v35[4] = null5;
   v34[5] = @"prefilledQuestions";
-  v18 = v33;
-  if (!v33)
+  null6 = _prefilledQuestionsJSONArray;
+  if (!_prefilledQuestionsJSONArray)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
   v19 = v7;
-  v35[5] = v18;
+  v35[5] = null6;
   v34[6] = @"auxiliaryAttributes";
-  v20 = v10;
-  if (!v10)
+  null7 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[6] = v20;
+  v35[6] = null7;
   v34[7] = @"systemBuild";
-  v21 = v11;
-  if (!v11)
+  null8 = systemBuild;
+  if (!systemBuild)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[7] = v21;
+  v35[7] = null8;
   v34[8] = @"modelVersion";
-  v22 = v12;
-  if (!v12)
+  null9 = modelVersion;
+  if (!modelVersion)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[8] = v22;
+  v35[8] = null9;
   v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:9];
-  if (v12)
+  if (modelVersion)
   {
-    if (v11)
+    if (systemBuild)
     {
       goto LABEL_24;
     }
 
 LABEL_38:
 
-    if (v10)
+    if (jsonDictionary)
     {
       goto LABEL_25;
     }
@@ -341,13 +341,13 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  if (!v11)
+  if (!systemBuild)
   {
     goto LABEL_38;
   }
 
 LABEL_24:
-  if (v10)
+  if (jsonDictionary)
   {
     goto LABEL_25;
   }
@@ -355,11 +355,11 @@ LABEL_24:
 LABEL_39:
 
 LABEL_25:
-  if (!v33)
+  if (!_prefilledQuestionsJSONArray)
   {
   }
 
-  if (!v8)
+  if (!diagnostics)
   {
   }
 
@@ -411,8 +411,8 @@ LABEL_34:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMEvaluationCommonMetadata *)self prefilledQuestions];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  prefilledQuestions = [(BMEvaluationCommonMetadata *)self prefilledQuestions];
+  v5 = [prefilledQuestions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -423,14 +423,14 @@ LABEL_34:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(prefilledQuestions);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [prefilledQuestions countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -441,11 +441,11 @@ LABEL_34:
   return v3;
 }
 
-- (BMEvaluationCommonMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMEvaluationCommonMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v168[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"featureDomain"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"featureDomain"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = 0;
@@ -457,7 +457,7 @@ LABEL_34:
   {
     v7 = v6;
 LABEL_4:
-    v8 = [v5 objectForKeyedSubscript:@"bundleId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"bundleId"];
     if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v133 = 0;
@@ -469,7 +469,7 @@ LABEL_4:
     {
       v133 = v8;
 LABEL_7:
-      v9 = [v5 objectForKeyedSubscript:@"evaluationUuid"];
+      v9 = [dictionaryCopy objectForKeyedSubscript:@"evaluationUuid"];
       v134 = v9;
       if (!v9 || (v10 = v9, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
@@ -480,9 +480,9 @@ LABEL_7:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
-          v39 = 0;
+          selfCopy4 = 0;
           v35 = v133;
 LABEL_107:
 
@@ -504,16 +504,16 @@ LABEL_107:
         v54 = v48;
         v8 = v47;
         v43 = v52;
-        *a4 = [v46 initWithDomain:v54 code:2 userInfo:v53];
+        *error = [v46 initWithDomain:v54 code:2 userInfo:v53];
 
-        v39 = 0;
+        selfCopy4 = 0;
         v35 = v133;
 LABEL_106:
 
         goto LABEL_107;
       }
 
-      v127 = self;
+      selfCopy5 = self;
       v18 = v10;
       v19 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v18];
       if (v19)
@@ -521,9 +521,9 @@ LABEL_106:
         v20 = v19;
 
         v132 = v20;
-        self = v127;
+        self = selfCopy5;
 LABEL_10:
-        v11 = [v5 objectForKeyedSubscript:@"isHighPriority"];
+        v11 = [dictionaryCopy objectForKeyedSubscript:@"isHighPriority"];
         v131 = v11;
         if (!v11 || (v12 = v11, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
@@ -536,14 +536,14 @@ LABEL_10:
         {
           v125 = v12;
 LABEL_13:
-          v13 = [v5 objectForKeyedSubscript:@"diagnostics"];
+          v13 = [dictionaryCopy objectForKeyedSubscript:@"diagnostics"];
           v129 = v13;
           if (v13 && (v14 = v13, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (a4)
+              if (error)
               {
                 v65 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v66 = v7;
@@ -562,8 +562,8 @@ LABEL_13:
                 v137 = v71;
                 v73 = [v65 initWithDomain:v72 code:2 userInfo:?];
                 v130 = 0;
-                v39 = 0;
-                *a4 = v73;
+                selfCopy4 = 0;
+                *error = v73;
                 v43 = v132;
                 v35 = v133;
 
@@ -571,7 +571,7 @@ LABEL_13:
               }
 
               v130 = 0;
-              v39 = 0;
+              selfCopy4 = 0;
               v43 = v132;
               v35 = v133;
               goto LABEL_103;
@@ -587,15 +587,15 @@ LABEL_13:
             v130 = 0;
           }
 
-          v15 = [v5 objectForKeyedSubscript:@"prefilledQuestions"];
-          v16 = [MEMORY[0x1E695DFB0] null];
-          v17 = [(BMCustomAttributes *)v15 isEqual:v16];
+          v15 = [dictionaryCopy objectForKeyedSubscript:@"prefilledQuestions"];
+          null = [MEMORY[0x1E695DFB0] null];
+          v17 = [(BMCustomAttributes *)v15 isEqual:null];
 
           if (v17)
           {
             v119 = v6;
-            v121 = v5;
-            v126 = self;
+            v121 = dictionaryCopy;
+            selfCopy3 = self;
 
             v15 = 0;
           }
@@ -607,7 +607,7 @@ LABEL_13:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (a4)
+                if (error)
                 {
                   v83 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v84 = v7;
@@ -619,12 +619,12 @@ LABEL_13:
                   v86 = v85;
                   v7 = v84;
                   v87 = [v83 initWithDomain:v86 code:2 userInfo:v26];
-                  v39 = 0;
-                  *a4 = v87;
+                  selfCopy4 = 0;
+                  *error = v87;
                   goto LABEL_68;
                 }
 
-                v39 = 0;
+                selfCopy4 = 0;
                 v8 = v123;
                 v43 = v132;
                 v35 = v133;
@@ -633,8 +633,8 @@ LABEL_13:
             }
 
             v119 = v6;
-            v121 = v5;
-            v126 = self;
+            v121 = dictionaryCopy;
+            selfCopy3 = self;
           }
 
           v136 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[BMCustomAttributes count](v15, "count")}];
@@ -671,8 +671,8 @@ LABEL_30:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              v74 = a4;
-              if (a4)
+              errorCopy2 = error;
+              if (error)
               {
                 v75 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v76 = *MEMORY[0x1E698F240];
@@ -699,17 +699,17 @@ LABEL_30:
               v8 = v123;
               v43 = v132;
               v35 = v133;
-              if (a4)
+              if (error)
               {
                 v82 = v29;
-                *a4 = v80;
+                *error = v80;
               }
 
-              v39 = 0;
+              selfCopy4 = 0;
               v118 = v15;
               v6 = v119;
-              v5 = v121;
-              self = v126;
+              dictionaryCopy = v121;
+              self = selfCopy3;
 LABEL_99:
 
               v7 = v122;
@@ -730,18 +730,18 @@ LABEL_99:
 
 LABEL_38:
 
-              v5 = v121;
+              dictionaryCopy = v121;
               v26 = [v121 objectForKeyedSubscript:@"auxiliaryAttributes"];
               if (!v26)
               {
                 v118 = 0;
-                self = v126;
+                self = selfCopy3;
                 v6 = v119;
                 goto LABEL_71;
               }
 
               objc_opt_class();
-              self = v126;
+              self = selfCopy3;
               v6 = v119;
               if (objc_opt_isKindOfClass())
               {
@@ -764,13 +764,13 @@ LABEL_38:
                 {
                   v43 = v132;
                   v35 = v133;
-                  if (a4)
+                  if (error)
                   {
                     v98 = v98;
-                    *a4 = v98;
+                    *error = v98;
                   }
 
-                  v39 = 0;
+                  selfCopy4 = 0;
                   v118 = v80;
                   goto LABEL_99;
                 }
@@ -828,12 +828,12 @@ LABEL_88:
                     v103 = v99;
 LABEL_95:
                     self = [(BMEvaluationCommonMetadata *)self initWithFeatureDomain:v122 bundleId:v133 evaluationUuid:v132 isHighPriority:v125 diagnostics:v130 prefilledQuestions:v136 auxiliaryAttributes:v26 systemBuild:v80 modelVersion:v103];
-                    v39 = self;
+                    selfCopy4 = self;
                   }
 
                   else
                   {
-                    if (a4)
+                    if (error)
                     {
                       v124 = objc_alloc(MEMORY[0x1E696ABC0]);
                       v120 = *MEMORY[0x1E698F240];
@@ -841,11 +841,11 @@ LABEL_95:
                       v111 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"modelVersion"];
                       v145 = v111;
                       v112 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v145 forKeys:&v144 count:1];
-                      *a4 = [v124 initWithDomain:v120 code:2 userInfo:v112];
+                      *error = [v124 initWithDomain:v120 code:2 userInfo:v112];
                     }
 
                     v103 = 0;
-                    v39 = 0;
+                    selfCopy4 = 0;
                   }
 
 LABEL_96:
@@ -856,7 +856,7 @@ LABEL_96:
 
                 else
                 {
-                  if (a4)
+                  if (error)
                   {
                     v101 = v123;
                     v102 = v6;
@@ -868,13 +868,13 @@ LABEL_96:
                     v100 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v147 forKeys:&v146 count:1];
                     v110 = [v108 initWithDomain:v109 code:2 userInfo:v100];
                     v80 = 0;
-                    v39 = 0;
-                    *a4 = v110;
+                    selfCopy4 = 0;
+                    *error = v110;
                     goto LABEL_96;
                   }
 
                   v80 = 0;
-                  v39 = 0;
+                  selfCopy4 = 0;
                 }
 
 LABEL_98:
@@ -883,7 +883,7 @@ LABEL_98:
                 goto LABEL_99;
               }
 
-              if (a4)
+              if (error)
               {
                 v117 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v106 = *MEMORY[0x1E698F240];
@@ -894,14 +894,14 @@ LABEL_98:
                 v80 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v149 forKeys:&v148 count:1];
                 v107 = v106;
                 v6 = v119;
-                v39 = 0;
-                *a4 = [v117 initWithDomain:v107 code:2 userInfo:v80];
+                selfCopy4 = 0;
+                *error = [v117 initWithDomain:v107 code:2 userInfo:v80];
 LABEL_60:
                 v8 = v123;
                 goto LABEL_98;
               }
 
-              v39 = 0;
+              selfCopy4 = 0;
 LABEL_68:
               v8 = v123;
               v43 = v132;
@@ -917,8 +917,8 @@ LABEL_104:
             }
           }
 
-          v74 = a4;
-          if (a4)
+          errorCopy2 = error;
+          if (error)
           {
             v75 = objc_alloc(MEMORY[0x1E696ABC0]);
             v76 = *MEMORY[0x1E698F240];
@@ -931,26 +931,26 @@ LABEL_104:
 LABEL_59:
             v80 = [v77 dictionaryWithObjects:v78 forKeys:v79 count:1];
             v81 = [v75 initWithDomain:v76 code:2 userInfo:v80];
-            v39 = 0;
-            *v74 = v81;
+            selfCopy4 = 0;
+            *errorCopy2 = v81;
             v118 = v15;
             v6 = v119;
-            v5 = v121;
-            self = v126;
+            dictionaryCopy = v121;
+            self = selfCopy3;
             goto LABEL_60;
           }
 
 LABEL_67:
-          v39 = 0;
+          selfCopy4 = 0;
           v26 = v15;
           v6 = v119;
-          v5 = v121;
-          self = v126;
+          dictionaryCopy = v121;
+          self = selfCopy3;
           v7 = v122;
           goto LABEL_68;
         }
 
-        if (a4)
+        if (error)
         {
           v55 = objc_alloc(MEMORY[0x1E696ABC0]);
           v56 = v8;
@@ -969,15 +969,15 @@ LABEL_67:
           v129 = v61;
           v63 = [v55 initWithDomain:v62 code:2 userInfo:?];
           v64 = 0;
-          v39 = 0;
-          *a4 = v63;
+          selfCopy4 = 0;
+          *error = v63;
           v43 = v132;
           v35 = v133;
           goto LABEL_104;
         }
 
         v64 = 0;
-        v39 = 0;
+        selfCopy4 = 0;
         v43 = v132;
         v35 = v133;
 LABEL_105:
@@ -985,7 +985,7 @@ LABEL_105:
         goto LABEL_106;
       }
 
-      if (a4)
+      if (error)
       {
         v90 = objc_alloc(MEMORY[0x1E696ABC0]);
         v91 = v8;
@@ -996,25 +996,25 @@ LABEL_105:
         v94 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v164 forKeys:&v163 count:1];
         v95 = v92;
         v8 = v91;
-        *a4 = [v90 initWithDomain:v95 code:2 userInfo:v94];
+        *error = [v90 initWithDomain:v95 code:2 userInfo:v94];
       }
 
-      v39 = 0;
+      selfCopy4 = 0;
       v43 = v18;
       v134 = v18;
       v35 = v133;
 LABEL_77:
-      self = v127;
+      self = selfCopy5;
       goto LABEL_106;
     }
 
-    if (a4)
+    if (error)
     {
       v40 = objc_alloc(MEMORY[0x1E696ABC0]);
       v41 = v8;
       v42 = *MEMORY[0x1E698F240];
       v165 = *MEMORY[0x1E696A578];
-      v127 = self;
+      selfCopy5 = self;
       v134 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"bundleId"];
       v166 = v134;
       v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v166 forKeys:&v165 count:1];
@@ -1022,28 +1022,28 @@ LABEL_77:
       v8 = v41;
       v45 = [v40 initWithDomain:v44 code:2 userInfo:v43];
       v35 = 0;
-      v39 = 0;
-      *a4 = v45;
+      selfCopy4 = 0;
+      *error = v45;
       goto LABEL_77;
     }
 
     v35 = 0;
-    v39 = 0;
+    selfCopy4 = 0;
 LABEL_108:
 
     goto LABEL_109;
   }
 
-  if (a4)
+  if (error)
   {
     v30 = objc_alloc(MEMORY[0x1E696ABC0]);
     v31 = *MEMORY[0x1E698F240];
     v167 = *MEMORY[0x1E696A578];
-    v32 = self;
+    selfCopy6 = self;
     v33 = objc_alloc(MEMORY[0x1E696AEC0]);
     v113 = objc_opt_class();
     v34 = v33;
-    self = v32;
+    self = selfCopy6;
     v35 = [v34 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", v113, @"featureDomain"];
     v168[0] = v35;
     v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v168 forKeys:&v167 count:1];
@@ -1051,32 +1051,32 @@ LABEL_108:
     v8 = v36;
     v38 = [v30 initWithDomain:v37 code:2 userInfo:v36];
     v7 = 0;
-    v39 = 0;
-    *a4 = v38;
+    selfCopy4 = 0;
+    *error = v38;
     goto LABEL_108;
   }
 
   v7 = 0;
-  v39 = 0;
+  selfCopy4 = 0;
 LABEL_109:
 
   v104 = *MEMORY[0x1E69E9840];
-  return v39;
+  return selfCopy4;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMEvaluationCommonMetadata *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_featureDomain)
   {
     PBDataWriterWriteStringField();
@@ -1124,7 +1124,7 @@ LABEL_109:
 
         v11 = *(*(&v13 + 1) + 8 * i);
         PBDataWriterPlaceMark();
-        [v11 writeTo:v4];
+        [v11 writeTo:toCopy];
         PBDataWriterRecallMark();
       }
 
@@ -1137,7 +1137,7 @@ LABEL_109:
   if (self->_auxiliaryAttributes)
   {
     PBDataWriterPlaceMark();
-    [(BMCustomAttributes *)self->_auxiliaryAttributes writeTo:v4];
+    [(BMCustomAttributes *)self->_auxiliaryAttributes writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -1154,9 +1154,9 @@ LABEL_109:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v38.receiver = self;
   v38.super_class = BMEvaluationCommonMetadata;
   v5 = [(BMEventBase *)&v38 init];
@@ -1166,12 +1166,12 @@ LABEL_109:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_60;
       }
@@ -1182,18 +1182,18 @@ LABEL_109:
       while (1)
       {
         LOBYTE(v39) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v39 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v39 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v39 & 0x7F) << v8;
@@ -1211,9 +1211,9 @@ LABEL_109:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_60;
       }
@@ -1245,7 +1245,7 @@ LABEL_16:
           goto LABEL_65;
         }
 
-        v26 = [[BMEvaluationCommonMetadataQuestionAnswer alloc] initByReadFrom:v4];
+        v26 = [[BMEvaluationCommonMetadataQuestionAnswer alloc] initByReadFrom:fromCopy];
         if (!v26)
         {
           goto LABEL_65;
@@ -1295,7 +1295,7 @@ LABEL_56:
           goto LABEL_65;
         }
 
-        v30 = [[BMCustomAttributes alloc] initByReadFrom:v4];
+        v30 = [[BMCustomAttributes alloc] initByReadFrom:fromCopy];
         if (!v30)
         {
           goto LABEL_65;
@@ -1308,8 +1308,8 @@ LABEL_56:
       }
 
 LABEL_54:
-      v32 = [v4 position];
-      if (v32 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_60;
       }
@@ -1341,18 +1341,18 @@ LABEL_65:
         while (1)
         {
           LOBYTE(v39) = 0;
-          v22 = [v4 position] + 1;
-          if (v22 >= [v4 position] && (v23 = objc_msgSend(v4, "position") + 1, v23 <= objc_msgSend(v4, "length")))
+          v22 = [fromCopy position] + 1;
+          if (v22 >= [fromCopy position] && (v23 = objc_msgSend(fromCopy, "position") + 1, v23 <= objc_msgSend(fromCopy, "length")))
           {
-            v24 = [v4 data];
-            [v24 getBytes:&v39 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v39 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v21 |= (v39 & 0x7F) << v19;
@@ -1370,7 +1370,7 @@ LABEL_65:
           }
         }
 
-        v25 = (v21 != 0) & ~[v4 hasError];
+        v25 = (v21 != 0) & ~[fromCopy hasError];
 LABEL_59:
         v5->_isHighPriority = v25;
         goto LABEL_54;
@@ -1402,8 +1402,8 @@ LABEL_60:
   prefilledQuestions = v5->_prefilledQuestions;
   v5->_prefilledQuestions = v33;
 
-  v35 = [v4 hasError];
-  if (v35)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_61:
     v36 = 0;
@@ -1421,45 +1421,45 @@ LABEL_62:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMEvaluationCommonMetadata *)self featureDomain];
-  v5 = [(BMEvaluationCommonMetadata *)self bundleId];
-  v6 = [(BMEvaluationCommonMetadata *)self evaluationUuid];
+  featureDomain = [(BMEvaluationCommonMetadata *)self featureDomain];
+  bundleId = [(BMEvaluationCommonMetadata *)self bundleId];
+  evaluationUuid = [(BMEvaluationCommonMetadata *)self evaluationUuid];
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMEvaluationCommonMetadata isHighPriority](self, "isHighPriority")}];
-  v8 = [(BMEvaluationCommonMetadata *)self diagnostics];
-  v9 = [(BMEvaluationCommonMetadata *)self prefilledQuestions];
-  v10 = [(BMEvaluationCommonMetadata *)self auxiliaryAttributes];
-  v11 = [(BMEvaluationCommonMetadata *)self systemBuild];
-  v12 = [(BMEvaluationCommonMetadata *)self modelVersion];
-  v13 = [v3 initWithFormat:@"BMEvaluationCommonMetadata with featureDomain: %@, bundleId: %@, evaluationUuid: %@, isHighPriority: %@, diagnostics: %@, prefilledQuestions: %@, auxiliaryAttributes: %@, systemBuild: %@, modelVersion: %@", v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  diagnostics = [(BMEvaluationCommonMetadata *)self diagnostics];
+  prefilledQuestions = [(BMEvaluationCommonMetadata *)self prefilledQuestions];
+  auxiliaryAttributes = [(BMEvaluationCommonMetadata *)self auxiliaryAttributes];
+  systemBuild = [(BMEvaluationCommonMetadata *)self systemBuild];
+  modelVersion = [(BMEvaluationCommonMetadata *)self modelVersion];
+  v13 = [v3 initWithFormat:@"BMEvaluationCommonMetadata with featureDomain: %@, bundleId: %@, evaluationUuid: %@, isHighPriority: %@, diagnostics: %@, prefilledQuestions: %@, auxiliaryAttributes: %@, systemBuild: %@, modelVersion: %@", featureDomain, bundleId, evaluationUuid, v7, diagnostics, prefilledQuestions, auxiliaryAttributes, systemBuild, modelVersion];
 
   return v13;
 }
 
-- (BMEvaluationCommonMetadata)initWithFeatureDomain:(id)a3 bundleId:(id)a4 evaluationUuid:(id)a5 isHighPriority:(id)a6 diagnostics:(id)a7 prefilledQuestions:(id)a8 auxiliaryAttributes:(id)a9 systemBuild:(id)a10 modelVersion:(id)a11
+- (BMEvaluationCommonMetadata)initWithFeatureDomain:(id)domain bundleId:(id)id evaluationUuid:(id)uuid isHighPriority:(id)priority diagnostics:(id)diagnostics prefilledQuestions:(id)questions auxiliaryAttributes:(id)attributes systemBuild:(id)self0 modelVersion:(id)self1
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  v30 = a4;
-  v18 = a5;
-  v19 = a6;
-  v29 = a7;
-  v28 = a8;
-  v27 = a9;
-  v26 = a10;
-  v25 = a11;
+  domainCopy = domain;
+  idCopy = id;
+  uuidCopy = uuid;
+  priorityCopy = priority;
+  diagnosticsCopy = diagnostics;
+  questionsCopy = questions;
+  attributesCopy = attributes;
+  buildCopy = build;
+  versionCopy = version;
   v32.receiver = self;
   v32.super_class = BMEvaluationCommonMetadata;
   v20 = [(BMEventBase *)&v32 init];
   if (v20)
   {
     v20->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v20->_featureDomain, a3);
-    objc_storeStrong(&v20->_bundleId, a4);
-    if (v18)
+    objc_storeStrong(&v20->_featureDomain, domain);
+    objc_storeStrong(&v20->_bundleId, id);
+    if (uuidCopy)
     {
       v33[0] = 0;
       v33[1] = 0;
-      [v18 getUUIDBytes:v33];
+      [uuidCopy getUUIDBytes:v33];
       v21 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:v33 length:16];
       raw_evaluationUuid = v20->_raw_evaluationUuid;
       v20->_raw_evaluationUuid = v21;
@@ -1471,10 +1471,10 @@ LABEL_62:
       v20->_raw_evaluationUuid = 0;
     }
 
-    if (v19)
+    if (priorityCopy)
     {
       v20->_hasIsHighPriority = 1;
-      v20->_isHighPriority = [v19 BOOLValue];
+      v20->_isHighPriority = [priorityCopy BOOLValue];
     }
 
     else
@@ -1483,11 +1483,11 @@ LABEL_62:
       v20->_isHighPriority = 0;
     }
 
-    objc_storeStrong(&v20->_diagnostics, a7);
-    objc_storeStrong(&v20->_prefilledQuestions, a8);
-    objc_storeStrong(&v20->_auxiliaryAttributes, a9);
-    objc_storeStrong(&v20->_systemBuild, a10);
-    objc_storeStrong(&v20->_modelVersion, a11);
+    objc_storeStrong(&v20->_diagnostics, diagnostics);
+    objc_storeStrong(&v20->_prefilledQuestions, questions);
+    objc_storeStrong(&v20->_auxiliaryAttributes, attributes);
+    objc_storeStrong(&v20->_systemBuild, build);
+    objc_storeStrong(&v20->_modelVersion, version);
   }
 
   v23 = *MEMORY[0x1E69E9840];
@@ -1568,9 +1568,9 @@ id __37__BMEvaluationCommonMetadata_columns__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1578,8 +1578,8 @@ id __37__BMEvaluationCommonMetadata_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMEvaluationCommonMetadata alloc] initByReadFrom:v7];
     v4 = v8;

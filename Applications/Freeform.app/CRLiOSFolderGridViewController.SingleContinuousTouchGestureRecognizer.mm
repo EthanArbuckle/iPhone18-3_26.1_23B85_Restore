@@ -1,14 +1,14 @@
 @interface CRLiOSFolderGridViewController.SingleContinuousTouchGestureRecognizer
-- (_TtCC8Freeform30CRLiOSFolderGridViewController38SingleContinuousTouchGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_TtCC8Freeform30CRLiOSFolderGridViewController38SingleContinuousTouchGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation CRLiOSFolderGridViewController.SingleContinuousTouchGestureRecognizer
 
-- (_TtCC8Freeform30CRLiOSFolderGridViewController38SingleContinuousTouchGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtCC8Freeform30CRLiOSFolderGridViewController38SingleContinuousTouchGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
@@ -20,17 +20,17 @@
     memset(v6, 0, sizeof(v6));
   }
 
-  return sub_10005AD00(v6, a4);
+  return sub_10005AD00(v6, action);
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   sub_100006370(0, &qword_101A23BE0);
   sub_10000FDE0(&qword_101A23BE8, &qword_101A23BE0);
   v6 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a4;
-  v8 = self;
-  sub_100F608BC(v6, v7);
+  eventCopy = event;
+  selfCopy = self;
+  sub_100F608BC(v6, eventCopy);
 }
 
 - (void)reset

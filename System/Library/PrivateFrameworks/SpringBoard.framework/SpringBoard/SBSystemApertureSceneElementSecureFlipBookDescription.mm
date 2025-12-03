@@ -1,39 +1,39 @@
 @interface SBSystemApertureSceneElementSecureFlipBookDescription
-- (BOOL)isSequenceDelayed:(id)a3 toState:(id)a4;
-- (BOOL)isSequenceFrom:(id)a3 to:(id)a4 supportedConcurrentlyWithContainerSequence:(id)a5 toContainerState:(id)a6;
-- (BOOL)isSequenceSecure:(id)a3 toState:(id)a4;
+- (BOOL)isSequenceDelayed:(id)delayed toState:(id)state;
+- (BOOL)isSequenceFrom:(id)from to:(id)to supportedConcurrentlyWithContainerSequence:(id)sequence toContainerState:(id)state;
+- (BOOL)isSequenceSecure:(id)secure toState:(id)state;
 - (CGRect)captureBounds;
-- (SBSystemApertureSceneElementSecureFlipBookDescription)initWithConfigurationName:(id)a3 layoutMode:(id)a4 clientDescription:(id)a5 scene:(id)a6 delegate:(id)a7;
+- (SBSystemApertureSceneElementSecureFlipBookDescription)initWithConfigurationName:(id)name layoutMode:(id)mode clientDescription:(id)description scene:(id)scene delegate:(id)delegate;
 - (UIView)referenceView;
-- (double)maximumLatencyToExitLoopingState:(id)a3;
-- (id)allowedNextStatesForState:(id)a3;
-- (void)resetToState:(id)a3 completion:(id)a4;
-- (void)transitionToState:(id)a3 completion:(id)a4;
+- (double)maximumLatencyToExitLoopingState:(id)state;
+- (id)allowedNextStatesForState:(id)state;
+- (void)resetToState:(id)state completion:(id)completion;
+- (void)transitionToState:(id)state completion:(id)completion;
 @end
 
 @implementation SBSystemApertureSceneElementSecureFlipBookDescription
 
-- (SBSystemApertureSceneElementSecureFlipBookDescription)initWithConfigurationName:(id)a3 layoutMode:(id)a4 clientDescription:(id)a5 scene:(id)a6 delegate:(id)a7
+- (SBSystemApertureSceneElementSecureFlipBookDescription)initWithConfigurationName:(id)name layoutMode:(id)mode clientDescription:(id)description scene:(id)scene delegate:(id)delegate
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  nameCopy = name;
+  modeCopy = mode;
+  descriptionCopy = description;
+  sceneCopy = scene;
+  delegateCopy = delegate;
   v26.receiver = self;
   v26.super_class = SBSystemApertureSceneElementSecureFlipBookDescription;
   v17 = [(SBSystemApertureSceneElementSecureFlipBookDescription *)&v26 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_clientDescription, a5);
-    objc_storeWeak(&v18->_scene, v15);
-    v19 = [v12 copy];
+    objc_storeStrong(&v17->_clientDescription, description);
+    objc_storeWeak(&v18->_scene, sceneCopy);
+    v19 = [nameCopy copy];
     configurationName = v18->_configurationName;
     v18->_configurationName = v19;
 
-    objc_storeStrong(&v18->_layoutMode, a4);
-    objc_storeWeak(&v18->_delegate, v16);
+    objc_storeStrong(&v18->_layoutMode, mode);
+    objc_storeWeak(&v18->_delegate, delegateCopy);
     [(SBUISystemApertureSecureFlipBookClientDescription *)v18->_clientDescription captureBounds];
     v18->_captureBounds.origin.x = v21;
     v18->_captureBounds.origin.y = v22;
@@ -44,12 +44,12 @@
   return v18;
 }
 
-- (id)allowedNextStatesForState:(id)a3
+- (id)allowedNextStatesForState:(id)state
 {
   clientDescription = self->_clientDescription;
-  v4 = a3;
-  v5 = [(SBUISystemApertureSecureFlipBookClientDescription *)clientDescription stateToAllowedNextStates];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  stateCopy = state;
+  stateToAllowedNextStates = [(SBUISystemApertureSecureFlipBookClientDescription *)clientDescription stateToAllowedNextStates];
+  v6 = [stateToAllowedNextStates objectForKeyedSubscript:stateCopy];
 
   if (v6)
   {
@@ -66,36 +66,36 @@
   return v7;
 }
 
-- (BOOL)isSequenceSecure:(id)a3 toState:(id)a4
+- (BOOL)isSequenceSecure:(id)secure toState:(id)state
 {
   clientDescription = self->_clientDescription;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBUISystemApertureSecureFlipBookClientDescription *)clientDescription stateToSecureSequence];
-  v9 = [v8 objectForKey:v7];
+  stateCopy = state;
+  secureCopy = secure;
+  stateToSecureSequence = [(SBUISystemApertureSecureFlipBookClientDescription *)clientDescription stateToSecureSequence];
+  v9 = [stateToSecureSequence objectForKey:secureCopy];
 
-  LOBYTE(v7) = [v9 containsObject:v6];
-  return v7;
+  LOBYTE(secureCopy) = [v9 containsObject:stateCopy];
+  return secureCopy;
 }
 
-- (BOOL)isSequenceDelayed:(id)a3 toState:(id)a4
+- (BOOL)isSequenceDelayed:(id)delayed toState:(id)state
 {
   clientDescription = self->_clientDescription;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBUISystemApertureSecureFlipBookClientDescription *)clientDescription stateToDelayedSequence];
-  v9 = [v8 objectForKey:v7];
+  stateCopy = state;
+  delayedCopy = delayed;
+  stateToDelayedSequence = [(SBUISystemApertureSecureFlipBookClientDescription *)clientDescription stateToDelayedSequence];
+  v9 = [stateToDelayedSequence objectForKey:delayedCopy];
 
-  LOBYTE(v7) = [v9 containsObject:v6];
-  return v7;
+  LOBYTE(delayedCopy) = [v9 containsObject:stateCopy];
+  return delayedCopy;
 }
 
-- (double)maximumLatencyToExitLoopingState:(id)a3
+- (double)maximumLatencyToExitLoopingState:(id)state
 {
   clientDescription = self->_clientDescription;
-  v4 = a3;
-  v5 = [(SBUISystemApertureSecureFlipBookClientDescription *)clientDescription stateToMaximumExitLatency];
-  v6 = [v5 objectForKey:v4];
+  stateCopy = state;
+  stateToMaximumExitLatency = [(SBUISystemApertureSecureFlipBookClientDescription *)clientDescription stateToMaximumExitLatency];
+  v6 = [stateToMaximumExitLatency objectForKey:stateCopy];
 
   if (v6)
   {
@@ -132,10 +132,10 @@
   return result;
 }
 
-- (void)resetToState:(id)a3 completion:(id)a4
+- (void)resetToState:(id)state completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_scene);
   if (([WeakRetained isActive] & 1) == 0)
   {
@@ -145,13 +145,13 @@
   v9 = objc_alloc(MEMORY[0x277D67E48]);
   configurationName = self->_configurationName;
   layoutMode = self->_layoutMode;
-  v12 = [(SBSystemApertureSceneElementSecureFlipBookDescription *)self flipBookName];
+  flipBookName = [(SBSystemApertureSceneElementSecureFlipBookDescription *)self flipBookName];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __81__SBSystemApertureSceneElementSecureFlipBookDescription_resetToState_completion___block_invoke;
   v15[3] = &unk_2783B4CF0;
   v15[4] = self;
-  v13 = [v9 initWithConfigurationName:configurationName layoutMode:layoutMode flipBookName:v12 type:0 toState:v6 captureBoundsUpdateHandler:v15 completionHandler:v7];
+  v13 = [v9 initWithConfigurationName:configurationName layoutMode:layoutMode flipBookName:flipBookName type:0 toState:stateCopy captureBoundsUpdateHandler:v15 completionHandler:completionCopy];
 
   v14 = [MEMORY[0x277CBEB98] setWithObject:v13];
   [WeakRetained sendActions:v14];
@@ -167,10 +167,10 @@ uint64_t __81__SBSystemApertureSceneElementSecureFlipBookDescription_resetToStat
   return result;
 }
 
-- (void)transitionToState:(id)a3 completion:(id)a4
+- (void)transitionToState:(id)state completion:(id)completion
 {
-  v14 = a3;
-  v6 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_scene);
   if (([WeakRetained isActive] & 1) == 0)
   {
@@ -180,25 +180,25 @@ uint64_t __81__SBSystemApertureSceneElementSecureFlipBookDescription_resetToStat
   v8 = objc_alloc(MEMORY[0x277D67E48]);
   configurationName = self->_configurationName;
   layoutMode = self->_layoutMode;
-  v11 = [(SBSystemApertureSceneElementSecureFlipBookDescription *)self flipBookName];
-  v12 = [v8 initWithConfigurationName:configurationName layoutMode:layoutMode flipBookName:v11 type:1 toState:v14 captureBoundsUpdateHandler:0 completionHandler:v6];
+  flipBookName = [(SBSystemApertureSceneElementSecureFlipBookDescription *)self flipBookName];
+  v12 = [v8 initWithConfigurationName:configurationName layoutMode:layoutMode flipBookName:flipBookName type:1 toState:stateCopy captureBoundsUpdateHandler:0 completionHandler:completionCopy];
 
   v13 = [MEMORY[0x277CBEB98] setWithObject:v12];
   [WeakRetained sendActions:v13];
 }
 
-- (BOOL)isSequenceFrom:(id)a3 to:(id)a4 supportedConcurrentlyWithContainerSequence:(id)a5 toContainerState:(id)a6
+- (BOOL)isSequenceFrom:(id)from to:(id)to supportedConcurrentlyWithContainerSequence:(id)sequence toContainerState:(id)state
 {
   clientDescription = self->_clientDescription;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(SBUISystemApertureSecureFlipBookClientDescription *)clientDescription stateToSupportedConcurrentComposedSequences];
+  stateCopy = state;
+  sequenceCopy = sequence;
+  toCopy = to;
+  fromCopy = from;
+  stateToSupportedConcurrentComposedSequences = [(SBUISystemApertureSecureFlipBookClientDescription *)clientDescription stateToSupportedConcurrentComposedSequences];
   v15 = SBUISystemApertureSecureFlipBookClientComposedSequence();
 
-  LOBYTE(v11) = [v14 containsObject:v15];
-  return v11;
+  LOBYTE(sequenceCopy) = [stateToSupportedConcurrentComposedSequences containsObject:v15];
+  return sequenceCopy;
 }
 
 - (void)resetToState:completion:.cold.1()

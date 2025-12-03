@@ -1,5 +1,5 @@
 @interface ASReleasableBuffer
-- (ASReleasableBuffer)initWithData:(id)a3;
+- (ASReleasableBuffer)initWithData:(id)data;
 - (char)takeDataAndOwnership;
 - (void)dealloc;
 - (void)releaseData;
@@ -7,9 +7,9 @@
 
 @implementation ASReleasableBuffer
 
-- (ASReleasableBuffer)initWithData:(id)a3
+- (ASReleasableBuffer)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = ASReleasableBuffer;
   v5 = [(ASReleasableBuffer *)&v9 init];
@@ -19,7 +19,7 @@
   }
 
   byte_1006DF760 = 1;
-  v6 = [v4 length];
+  v6 = [dataCopy length];
   v5->_originalDataLength = v6;
   if (!v6)
   {
@@ -31,7 +31,7 @@
   v5->_data = v7;
   if (v7)
   {
-    memcpy(v7, [v4 bytes], v5->_originalDataLength);
+    memcpy(v7, [dataCopy bytes], v5->_originalDataLength);
 LABEL_6:
     v7 = v5;
   }

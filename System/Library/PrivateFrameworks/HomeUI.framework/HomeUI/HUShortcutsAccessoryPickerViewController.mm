@@ -1,32 +1,32 @@
 @interface HUShortcutsAccessoryPickerViewController
-- (HUShortcutsAccessoryPickerViewController)initWithHome:(id)a3 configuration:(id)a4;
-- (HUShortcutsAccessoryPickerViewController)initWithItemManager:(id)a3 collectionViewLayout:(id)a4;
-- (id)buildItemModuleControllerForModule:(id)a3;
+- (HUShortcutsAccessoryPickerViewController)initWithHome:(id)home configuration:(id)configuration;
+- (HUShortcutsAccessoryPickerViewController)initWithItemManager:(id)manager collectionViewLayout:(id)layout;
+- (id)buildItemModuleControllerForModule:(id)module;
 - (id)getServices;
-- (id)initUsingCompositionalLayoutWithItemManager:(id)a3;
+- (id)initUsingCompositionalLayoutWithItemManager:(id)manager;
 - (void)configureWithDefaultSelectionController;
-- (void)setServices:(id)a3;
+- (void)setServices:(id)services;
 @end
 
 @implementation HUShortcutsAccessoryPickerViewController
 
-- (HUShortcutsAccessoryPickerViewController)initWithHome:(id)a3 configuration:(id)a4
+- (HUShortcutsAccessoryPickerViewController)initWithHome:(id)home configuration:(id)configuration
 {
-  v5 = a3;
-  v6 = a4;
+  homeCopy = home;
+  configurationCopy = configuration;
   HUShortcutsTriggerViewAccessoryPickerConfiguration.buildConfiguration()(&v10);
   v7 = objc_allocWithZone(type metadata accessor for ShortcutsAccessoryPickerViewController());
-  v8 = ShortcutsAccessoryPickerViewController.init(home:configuration:)(v5, &v10);
+  v8 = ShortcutsAccessoryPickerViewController.init(home:configuration:)(homeCopy, &v10);
 
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return v8;
 }
 
-- (id)buildItemModuleControllerForModule:(id)a3
+- (id)buildItemModuleControllerForModule:(id)module
 {
-  v4 = a3;
-  v5 = self;
+  moduleCopy = module;
+  selfCopy = self;
   v6 = sub_20CFF09FC();
 
   return v6;
@@ -34,13 +34,13 @@
 
 - (void)configureWithDefaultSelectionController
 {
-  v2 = self;
+  selfCopy = self;
   sub_20CFF0E34();
 }
 
 - (id)getServices
 {
-  v2 = self;
+  selfCopy = self;
   sub_20CFF0F54();
 
   sub_20CECF940(0, &qword_27C81AEC0);
@@ -50,7 +50,7 @@
   return v3;
 }
 
-- (void)setServices:(id)a3
+- (void)setServices:(id)services
 {
   sub_20CECF940(0, &qword_27C81AEC0);
   sub_20CFF1C68();
@@ -68,14 +68,14 @@
   }
 }
 
-- (HUShortcutsAccessoryPickerViewController)initWithItemManager:(id)a3 collectionViewLayout:(id)a4
+- (HUShortcutsAccessoryPickerViewController)initWithItemManager:(id)manager collectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)initUsingCompositionalLayoutWithItemManager:(id)a3
+- (id)initUsingCompositionalLayoutWithItemManager:(id)manager
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

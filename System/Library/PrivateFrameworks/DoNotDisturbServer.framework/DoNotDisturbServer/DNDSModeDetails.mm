@@ -1,9 +1,9 @@
 @interface DNDSModeDetails
 + (id)detailsForInactiveDoNotDisturb;
-- (BOOL)isEqual:(id)a3;
-- (DNDSModeDetails)initWithInterruptionSuppression:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (DNDSModeDetails)initWithInterruptionSuppression:(unint64_t)suppression;
 - (id)description;
-- (id)restrictedDetailsWithDetails:(id)a3;
+- (id)restrictedDetailsWithDetails:(id)details;
 @end
 
 @implementation DNDSModeDetails
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __49__DNDSModeDetails_detailsForInactiveDoNotDisturb__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (detailsForInactiveDoNotDisturb_onceToken != -1)
   {
     dispatch_once(&detailsForInactiveDoNotDisturb_onceToken, block);
@@ -34,34 +34,34 @@ uint64_t __49__DNDSModeDetails_detailsForInactiveDoNotDisturb__block_invoke(uint
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-- (DNDSModeDetails)initWithInterruptionSuppression:(unint64_t)a3
+- (DNDSModeDetails)initWithInterruptionSuppression:(unint64_t)suppression
 {
   v5.receiver = self;
   v5.super_class = DNDSModeDetails;
   result = [(DNDSModeDetails *)&v5 init];
   if (result)
   {
-    result->_interruptionSuppression = a3;
+    result->_interruptionSuppression = suppression;
   }
 
   return result;
 }
 
-- (id)restrictedDetailsWithDetails:(id)a3
+- (id)restrictedDetailsWithDetails:(id)details
 {
-  v4 = a3;
+  detailsCopy = details;
   [(DNDSModeDetails *)self interruptionSuppression];
-  [v4 interruptionSuppression];
+  [detailsCopy interruptionSuppression];
 
   v5 = [[DNDSModeDetails alloc] initWithInterruptionSuppression:DNDMostRestrictiveInterruptionSuppression()];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -71,11 +71,11 @@ uint64_t __49__DNDSModeDetails_detailsForInactiveDoNotDisturb__block_invoke(uint
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(DNDSModeDetails *)self interruptionSuppression];
-      v7 = [(DNDSModeDetails *)v5 interruptionSuppression];
+      v5 = equalCopy;
+      interruptionSuppression = [(DNDSModeDetails *)self interruptionSuppression];
+      interruptionSuppression2 = [(DNDSModeDetails *)v5 interruptionSuppression];
 
-      v8 = v6 == v7;
+      v8 = interruptionSuppression == interruptionSuppression2;
     }
 
     else

@@ -1,56 +1,56 @@
 @interface LNPhotoItemCollection
-- (BOOL)isEqual:(id)a3;
-- (LNPhotoItemCollection)initWithCoder:(id)a3;
-- (LNPhotoItemCollection)initWithItems:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNPhotoItemCollection)initWithCoder:(id)coder;
+- (LNPhotoItemCollection)initWithItems:(id)items;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNPhotoItemCollection
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNPhotoItemCollection *)self items];
-  [v4 encodeObject:v5 forKey:@"items"];
+  coderCopy = coder;
+  items = [(LNPhotoItemCollection *)self items];
+  [coderCopy encodeObject:items forKey:@"items"];
 }
 
-- (LNPhotoItemCollection)initWithCoder:(id)a3
+- (LNPhotoItemCollection)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"items"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"items"];
 
   if (v5)
   {
     self = [(LNPhotoItemCollection *)self initWithItems:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [(LNPhotoItemCollection *)self items];
-      v8 = [(LNPhotoItemCollection *)v6 items];
-      v9 = v7;
-      v10 = v8;
+      items = [(LNPhotoItemCollection *)self items];
+      items2 = [(LNPhotoItemCollection *)v6 items];
+      v9 = items;
+      v10 = items2;
       v11 = v10;
       if (v9 == v10)
       {
@@ -76,13 +76,13 @@
   return v12;
 }
 
-- (LNPhotoItemCollection)initWithItems:(id)a3
+- (LNPhotoItemCollection)initWithItems:(id)items
 {
-  v6 = a3;
-  if (!v6)
+  itemsCopy = items;
+  if (!itemsCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"LNPhotoItemCollection.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"items"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNPhotoItemCollection.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"items"}];
   }
 
   v11.receiver = self;
@@ -91,7 +91,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_items, a3);
+    objc_storeStrong(&v7->_items, items);
   }
 
   return v8;

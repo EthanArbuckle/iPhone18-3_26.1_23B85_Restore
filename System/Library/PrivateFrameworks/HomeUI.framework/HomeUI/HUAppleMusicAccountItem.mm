@@ -1,29 +1,29 @@
 @interface HUAppleMusicAccountItem
 - (HUAppleMusicAccountItem)init;
-- (HUAppleMusicAccountItem)initWithMediaProfileContainer:(id)a3 account:(id)a4;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HUAppleMusicAccountItem)initWithMediaProfileContainer:(id)container account:(id)account;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HUAppleMusicAccountItem
 
-- (HUAppleMusicAccountItem)initWithMediaProfileContainer:(id)a3 account:(id)a4
+- (HUAppleMusicAccountItem)initWithMediaProfileContainer:(id)container account:(id)account
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  containerCopy = container;
+  accountCopy = account;
+  if (!accountCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"HUAppleMusicAccountItem.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"account"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUAppleMusicAccountItem.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"account"}];
   }
 
   v13.receiver = self;
   v13.super_class = HUAppleMusicAccountItem;
-  v9 = [(HUAppleMusicItem *)&v13 initWithMediaProfileContainer:v7];
+  v9 = [(HUAppleMusicItem *)&v13 initWithMediaProfileContainer:containerCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a4);
+    objc_storeStrong(&v9->_account, account);
   }
 
   return v10;
@@ -31,31 +31,31 @@
 
 - (HUAppleMusicAccountItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithMediaProfileContainer_account_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUAppleMusicAccountItem.m" lineNumber:35 description:{@"%s is unavailable; use %@ instead", "-[HUAppleMusicAccountItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUAppleMusicAccountItem.m" lineNumber:35 description:{@"%s is unavailable; use %@ instead", "-[HUAppleMusicAccountItem init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(HUAppleMusicItem *)self mediaProfileContainer];
-  v6 = [(HUAppleMusicAccountItem *)self account];
-  v7 = [v4 initWithMediaProfileContainer:v5 account:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  mediaProfileContainer = [(HUAppleMusicItem *)self mediaProfileContainer];
+  account = [(HUAppleMusicAccountItem *)self account];
+  v7 = [v4 initWithMediaProfileContainer:mediaProfileContainer account:account];
 
   [v7 copyLatestResultsFromItem:self];
   return v7;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   objc_initWeak(&location, self);
   v10.receiver = self;
   v10.super_class = HUAppleMusicAccountItem;
-  v5 = [(HUAppleMusicItem *)&v10 _subclass_updateWithOptions:v4];
+  v5 = [(HUAppleMusicItem *)&v10 _subclass_updateWithOptions:optionsCopy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __55__HUAppleMusicAccountItem__subclass_updateWithOptions___block_invoke;

@@ -1,23 +1,23 @@
 @interface MOEventPatternManager
-- (MOEventPatternManager)initWithUniverse:(id)a3;
+- (MOEventPatternManager)initWithUniverse:(id)universe;
 - (id)_initializeBatchedTypeDetector;
 - (id)_initializeStreamingTypeDetector;
-- (id)_processEvents:(id)a3 forDetector:(id)a4;
-- (id)processEvents:(id)a3 withRefreshVariant:(unint64_t)a4 forDateInterval:(id)a5;
+- (id)_processEvents:(id)events forDetector:(id)detector;
+- (id)processEvents:(id)events withRefreshVariant:(unint64_t)variant forDateInterval:(id)interval;
 @end
 
 @implementation MOEventPatternManager
 
-- (MOEventPatternManager)initWithUniverse:(id)a3
+- (MOEventPatternManager)initWithUniverse:(id)universe
 {
-  v5 = a3;
+  universeCopy = universe;
   v22.receiver = self;
   v22.super_class = MOEventPatternManager;
   v6 = [(MOEventPatternManager *)&v22 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_universe, a3);
+    objc_storeStrong(&v6->_universe, universe);
     universe = v7->_universe;
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
@@ -356,14 +356,14 @@
   }
 
   v234 = objc_opt_new();
-  v4 = [(MOEventStore *)self->_eventStore getEWAPlistFileURL];
-  if (v4 && ([(MOEventStore *)self->_eventStore readEWAPlistFile:v4], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  getEWAPlistFileURL = [(MOEventStore *)self->_eventStore getEWAPlistFileURL];
+  if (getEWAPlistFileURL && ([(MOEventStore *)self->_eventStore readEWAPlistFile:getEWAPlistFileURL], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v233 = self;
+    selfCopy = self;
     v184 = v5;
-    v185 = v4;
+    v185 = getEWAPlistFileURL;
     v6 = [v5 mutableCopy];
-    v7 = [v6 allKeys];
+    allKeys = [v6 allKeys];
     v8 = _mo_log_facility_get_os_log(&MOLogFacilityStreamingPatternDetection);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -380,7 +380,7 @@
     v272 = 0u;
     v273 = 0u;
     v274 = 0u;
-    v10 = v7;
+    v10 = allKeys;
     v11 = [v10 countByEnumeratingWithState:&v271 objects:v300 count:16];
     if (v11)
     {
@@ -415,31 +415,31 @@
     [v231 setAnomalyDetector:v228];
     v298[0] = @"TukeyFactorForExponentialDistributionOutlier";
     LODWORD(v17) = *"U0B@";
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_TSLW_TukeyFactorForExponentialDistributionOutlier" withFallback:v17];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_TSLW_TukeyFactorForExponentialDistributionOutlier" withFallback:v17];
     v18 = [NSNumber numberWithFloat:?];
     v299[0] = v18;
     v298[1] = @"MinimumFeatureNumberForPersonalizedThreshold";
     LODWORD(v19) = 2.0;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_TSLW_MinimumFeatureNumberForPersonalizedThreshold" withFallback:v19];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_TSLW_MinimumFeatureNumberForPersonalizedThreshold" withFallback:v19];
     v20 = [NSNumber numberWithFloat:?];
     v299[1] = v20;
     v298[2] = @"MinimumFeatureSizeForPersonalizedThreshold";
     LODWORD(v21) = 1185464320;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_TSLW_MinimumFeatureSizeForPersonalizedThreshold" withFallback:v21];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_TSLW_MinimumFeatureSizeForPersonalizedThreshold" withFallback:v21];
     v22 = [NSNumber numberWithFloat:?];
     v299[2] = v22;
     v298[3] = @"MaximumThreshold";
     LODWORD(v23) = 1242802176;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_TSLW_MaximumThreshold" withFallback:v23];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_TSLW_MaximumThreshold" withFallback:v23];
     v24 = [NSNumber numberWithFloat:?];
     v299[3] = v24;
     v298[4] = @"MinimumThreshold";
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_TSLW_MinimumThreshold" withFallback:0.0];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_TSLW_MinimumThreshold" withFallback:0.0];
     v25 = [NSNumber numberWithFloat:?];
     v299[4] = v25;
     v298[5] = @"BetaForEWAUpdate";
     LODWORD(v26) = 1064198944;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_TSLW_BetaForEWAUpdate" withFallback:v26];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_TSLW_BetaForEWAUpdate" withFallback:v26];
     v27 = [NSNumber numberWithFloat:?];
     v299[5] = v27;
     v299[6] = &off_1003691D8;
@@ -494,31 +494,31 @@
     [v29 setAnomalyDetector:v224];
     v295[0] = @"TukeyFactorForExponentialDistributionOutlier";
     LODWORD(v37) = *"U0B@";
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_WD_TukeyFactorForExponentialDistributionOutlier" withFallback:v37];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_WD_TukeyFactorForExponentialDistributionOutlier" withFallback:v37];
     v38 = [NSNumber numberWithFloat:?];
     v296[0] = v38;
     v295[1] = @"MinimumFeatureNumberForPersonalizedThreshold";
     LODWORD(v39) = 2.0;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_WD_MinimumFeatureNumberForPersonalizedThreshold" withFallback:v39];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_WD_MinimumFeatureNumberForPersonalizedThreshold" withFallback:v39];
     v40 = [NSNumber numberWithFloat:?];
     v296[1] = v40;
     v295[2] = @"MinimumFeatureSizeForPersonalizedThreshold";
     LODWORD(v41) = 1114636288;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_WD_MinimumFeatureSizeForPersonalizedThreshold" withFallback:v41];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_WD_MinimumFeatureSizeForPersonalizedThreshold" withFallback:v41];
     v42 = [NSNumber numberWithFloat:?];
     v296[2] = v42;
     v295[3] = @"MaximumThreshold";
     LODWORD(v43) = 1172373504;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_WD_MaximumThreshold" withFallback:v43];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_WD_MaximumThreshold" withFallback:v43];
     v44 = [NSNumber numberWithFloat:?];
     v296[3] = v44;
     v295[4] = @"MinimumThreshold";
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_WD_MinimumThreshold" withFallback:0.0];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_WD_MinimumThreshold" withFallback:0.0];
     v45 = [NSNumber numberWithFloat:?];
     v296[4] = v45;
     v295[5] = @"BetaForEWAUpdate";
     LODWORD(v46) = 1064198944;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_WD_BetaForEWAUpdate" withFallback:v46];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_WD_BetaForEWAUpdate" withFallback:v46];
     v47 = [NSNumber numberWithFloat:?];
     v296[5] = v47;
     v296[6] = &off_100369178;
@@ -575,31 +575,31 @@
     [v223 setAnomalyDetector:v220];
     v292[0] = @"TukeyFactorForExponentialDistributionOutlier";
     LODWORD(v57) = *"U0B@";
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_PAD_TukeyFactorForExponentialDistributionOutlier" withFallback:v57];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_PAD_TukeyFactorForExponentialDistributionOutlier" withFallback:v57];
     v58 = [NSNumber numberWithFloat:?];
     v293[0] = v58;
     v292[1] = @"MinimumFeatureNumberForPersonalizedThreshold";
     LODWORD(v59) = 2.0;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_PAD_MinimumFeatureNumberForPersonalizedThreshold" withFallback:v59];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_PAD_MinimumFeatureNumberForPersonalizedThreshold" withFallback:v59];
     v60 = [NSNumber numberWithFloat:?];
     v293[1] = v60;
     v292[2] = @"MinimumFeatureSizeForPersonalizedThreshold";
     LODWORD(v61) = 1114636288;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_PAD_MinimumFeatureSizeForPersonalizedThreshold" withFallback:v61];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_PAD_MinimumFeatureSizeForPersonalizedThreshold" withFallback:v61];
     v62 = [NSNumber numberWithFloat:?];
     v293[2] = v62;
     v292[3] = @"MaximumThreshold";
     LODWORD(v63) = 1172373504;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_PAD_MaximumThreshold" withFallback:v63];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_PAD_MaximumThreshold" withFallback:v63];
     v64 = [NSNumber numberWithFloat:?];
     v293[3] = v64;
     v292[4] = @"MinimumThreshold";
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_PAD_MinimumThreshold" withFallback:0.0];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_PAD_MinimumThreshold" withFallback:0.0];
     v65 = [NSNumber numberWithFloat:?];
     v293[4] = v65;
     v292[5] = @"BetaForEWAUpdate";
     LODWORD(v66) = 1064198944;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_PAD_BetaForEWAUpdate" withFallback:v66];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_PAD_BetaForEWAUpdate" withFallback:v66];
     v67 = [NSNumber numberWithFloat:?];
     v293[5] = v67;
     v293[6] = &off_100369178;
@@ -654,50 +654,50 @@
     [v232 setFeatureExtractor:v218];
     [v232 setAnomalyDetector:v217];
     v289[0] = @"ExcludeTextOnlyConversations";
-    v239 = [NSNumber numberWithBool:[(MOConfigurationManagerBase *)v233->_configurationManager getBoolSettingForKey:@"PD_TSLSC_ExcludeTextOnlyConversations" withFallback:0]];
+    v239 = [NSNumber numberWithBool:[(MOConfigurationManagerBase *)selfCopy->_configurationManager getBoolSettingForKey:@"PD_TSLSC_ExcludeTextOnlyConversations" withFallback:0]];
     v290[0] = v239;
     v289[1] = @"MinimumTextCount";
     LODWORD(v77) = 1.0;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_TSLSC_MinimumTextCount" withFallback:v77];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_TSLSC_MinimumTextCount" withFallback:v77];
     v235 = [NSNumber numberWithFloat:?];
     v290[1] = v235;
     v289[2] = @"MinimumTotalCallDuration";
     LODWORD(v78) = 1133903872;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_TSLSC_MinimumTotalCallDuration" withFallback:v78];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_TSLSC_MinimumTotalCallDuration" withFallback:v78];
     v215 = [NSNumber numberWithFloat:?];
     v290[2] = v215;
     v289[3] = @"MaximumNumberOfContacts";
     LODWORD(v79) = 1.0;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_TSLSC_MaximumNumberOfContacts" withFallback:v79];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_TSLSC_MaximumNumberOfContacts" withFallback:v79];
     v213 = [NSNumber numberWithFloat:?];
     v290[3] = v213;
     v289[4] = @"TukeyFactorForExponentialDistributionOutlier";
     LODWORD(v80) = *"U0B@";
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_TSLSC_TukeyFactorForExponentialDistributionOutlier" withFallback:v80];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_TSLSC_TukeyFactorForExponentialDistributionOutlier" withFallback:v80];
     v81 = [NSNumber numberWithFloat:?];
     v290[4] = v81;
     v289[5] = @"MinimumFeatureNumberForPersonalizedThreshold";
     LODWORD(v82) = 1.0;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_TSLSC_MinimumFeatureNumberForPersonalizedThreshold" withFallback:v82];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_TSLSC_MinimumFeatureNumberForPersonalizedThreshold" withFallback:v82];
     v83 = [NSNumber numberWithFloat:?];
     v290[5] = v83;
     v289[6] = @"MinimumFeatureSizeForPersonalizedThreshold";
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_TSLSC_MinimumFeatureSizeForPersonalizedThreshold" withFallback:0.0];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_TSLSC_MinimumFeatureSizeForPersonalizedThreshold" withFallback:0.0];
     v84 = [NSNumber numberWithFloat:?];
     v290[6] = v84;
     v289[7] = @"MaximumThreshold";
     LODWORD(v85) = 1242802176;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_TSLSC_MaximumThreshold" withFallback:v85];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_TSLSC_MaximumThreshold" withFallback:v85];
     v86 = [NSNumber numberWithFloat:?];
     v290[7] = v86;
     v289[8] = @"MinimumThreshold";
     LODWORD(v87) = 1221783552;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_TSLSC_MinimumThreshold" withFallback:v87];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_TSLSC_MinimumThreshold" withFallback:v87];
     v88 = [NSNumber numberWithFloat:?];
     v290[8] = v88;
     v289[9] = @"BetaForEWAUpdate";
     LODWORD(v89) = 1064198944;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_TSLSC_BetaForEWAUpdate" withFallback:v89];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_TSLSC_BetaForEWAUpdate" withFallback:v89];
     v90 = [NSNumber numberWithFloat:?];
     v290[9] = v90;
     v290[10] = &off_1003691D8;
@@ -752,49 +752,49 @@
     [v216 setFeatureExtractor:v214];
     [v216 setAnomalyDetector:v212];
     v286[0] = @"ExcludeTextOnlyConversations";
-    v240 = [NSNumber numberWithBool:[(MOConfigurationManagerBase *)v233->_configurationManager getBoolSettingForKey:@"PD_SCD_ExcludeTextOnlyConversations" withFallback:1]];
+    v240 = [NSNumber numberWithBool:[(MOConfigurationManagerBase *)selfCopy->_configurationManager getBoolSettingForKey:@"PD_SCD_ExcludeTextOnlyConversations" withFallback:1]];
     v287[0] = v240;
     v286[1] = @"MinimumTextCount";
     LODWORD(v100) = 1.0;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_SCD_MinimumTextCount" withFallback:v100];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_SCD_MinimumTextCount" withFallback:v100];
     v210 = [NSNumber numberWithFloat:?];
     v287[1] = v210;
     v286[2] = @"MinimumTotalCallDuration";
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_SCD_MinimumTotalCallDuration" withFallback:0.0];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_SCD_MinimumTotalCallDuration" withFallback:0.0];
     v208 = [NSNumber numberWithFloat:?];
     v287[2] = v208;
     v286[3] = @"MaximumNumberOfContacts";
     LODWORD(v101) = 1.0;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_SCD_MaximumNumberOfContacts" withFallback:v101];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_SCD_MaximumNumberOfContacts" withFallback:v101];
     v206 = [NSNumber numberWithFloat:?];
     v287[3] = v206;
     v286[4] = @"TukeyFactorForExponentialDistributionOutlier";
     LODWORD(v102) = 2.0;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_SCD_TukeyFactorForExponentialDistributionOutlier" withFallback:v102];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_SCD_TukeyFactorForExponentialDistributionOutlier" withFallback:v102];
     v204 = [NSNumber numberWithFloat:?];
     v287[4] = v204;
     v286[5] = @"MinimumFeatureNumberForPersonalizedThreshold";
     LODWORD(v103) = 1.0;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_SCD_MinimumFeatureNumberForPersonalizedThreshold" withFallback:v103];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_SCD_MinimumFeatureNumberForPersonalizedThreshold" withFallback:v103];
     v104 = [NSNumber numberWithFloat:?];
     v287[5] = v104;
     v286[6] = @"MinimumFeatureSizeForPersonalizedThreshold";
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_SCD_MinimumFeatureSizeForPersonalizedThreshold" withFallback:0.0];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_SCD_MinimumFeatureSizeForPersonalizedThreshold" withFallback:0.0];
     v105 = [NSNumber numberWithFloat:?];
     v287[6] = v105;
     v286[7] = @"MaximumThreshold";
     LODWORD(v106) = 1172373504;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_SCD_MaximumThreshold" withFallback:v106];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_SCD_MaximumThreshold" withFallback:v106];
     v107 = [NSNumber numberWithFloat:?];
     v287[7] = v107;
     v286[8] = @"MinimumThreshold";
     LODWORD(v108) = 1147207680;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_SCD_MinimumThreshold" withFallback:v108];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_SCD_MinimumThreshold" withFallback:v108];
     v109 = [NSNumber numberWithFloat:?];
     v287[8] = v109;
     v286[9] = @"BetaForEWAUpdate";
     LODWORD(v110) = 1064198944;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_SCD_BetaForEWAUpdate" withFallback:v110];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_SCD_BetaForEWAUpdate" withFallback:v110];
     v111 = [NSNumber numberWithFloat:?];
     v287[9] = v111;
     v287[10] = &off_100369178;
@@ -848,51 +848,51 @@
     [v211 setFeatureExtractor:v207];
     [v211 setAnomalyDetector:v205];
     v283[0] = @"ExcludeTextOnlyConversations";
-    v241 = [NSNumber numberWithBool:[(MOConfigurationManagerBase *)v233->_configurationManager getBoolSettingForKey:@"PD_SCF_ExcludeTextOnlyConversations" withFallback:0]];
+    v241 = [NSNumber numberWithBool:[(MOConfigurationManagerBase *)selfCopy->_configurationManager getBoolSettingForKey:@"PD_SCF_ExcludeTextOnlyConversations" withFallback:0]];
     v284[0] = v241;
     v283[1] = @"MinimumTextCount";
     LODWORD(v121) = 1.0;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_SCF_MinimumTextCount" withFallback:v121];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_SCF_MinimumTextCount" withFallback:v121];
     v202 = [NSNumber numberWithFloat:?];
     v284[1] = v202;
     v283[2] = @"MinimumTotalCallDuration";
     LODWORD(v122) = 1133903872;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_SCF_MinimumTotalCallDuration" withFallback:v122];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_SCF_MinimumTotalCallDuration" withFallback:v122];
     v200 = [NSNumber numberWithFloat:?];
     v284[2] = v200;
     v283[3] = @"MaximumNumberOfContacts";
     LODWORD(v123) = 1.0;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_SCF_MaximumNumberOfContacts" withFallback:v123];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_SCF_MaximumNumberOfContacts" withFallback:v123];
     v198 = [NSNumber numberWithFloat:?];
     v284[3] = v198;
     v283[4] = @"TukeyFactorForExponentialDistributionOutlier";
     LODWORD(v124) = *"U0B@";
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_SCF_TukeyFactorForExponentialDistributionOutlier" withFallback:v124];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_SCF_TukeyFactorForExponentialDistributionOutlier" withFallback:v124];
     v196 = [NSNumber numberWithFloat:?];
     v284[4] = v196;
     v283[5] = @"MinimumFeatureNumberForPersonalizedThreshold";
     LODWORD(v125) = 1.0;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_SCF_MinimumFeatureNumberForPersonalizedThreshold" withFallback:v125];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_SCF_MinimumFeatureNumberForPersonalizedThreshold" withFallback:v125];
     v194 = [NSNumber numberWithFloat:?];
     v284[5] = v194;
     v283[6] = @"MinimumFeatureSizeForPersonalizedThreshold";
     LODWORD(v126) = 2.0;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_SCF_MinimumFeatureSizeForPersonalizedThreshold" withFallback:v126];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_SCF_MinimumFeatureSizeForPersonalizedThreshold" withFallback:v126];
     v127 = [NSNumber numberWithFloat:?];
     v284[6] = v127;
     v283[7] = @"MaximumThreshold";
     LODWORD(v128) = 1125515264;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_SCF_MaximumThreshold" withFallback:v128];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_SCF_MaximumThreshold" withFallback:v128];
     v129 = [NSNumber numberWithFloat:?];
     v284[7] = v129;
     v283[8] = @"MinimumThreshold";
     LODWORD(v130) = 5.0;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_SCF_MinimumThreshold" withFallback:v130];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_SCF_MinimumThreshold" withFallback:v130];
     v131 = [NSNumber numberWithFloat:?];
     v284[8] = v131;
     v283[9] = @"BetaForEWAUpdate";
     LODWORD(v132) = 1064198944;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_SCF_BetaForEWAUpdate" withFallback:v132];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_SCF_BetaForEWAUpdate" withFallback:v132];
     v133 = [NSNumber numberWithFloat:?];
     v284[9] = v133;
     v284[10] = &off_1003691A8;
@@ -950,40 +950,40 @@
     [v203 setAnomalyDetector:v195];
     v280[0] = @"TukeyFactorForExponentialDistributionOutlier";
     LODWORD(v142) = 2.0;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_HAH_TukeyFactorForExponentialDistributionOutlier" withFallback:v142];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_HAH_TukeyFactorForExponentialDistributionOutlier" withFallback:v142];
     v192 = [NSNumber numberWithFloat:?];
     v281[0] = v192;
     v280[1] = @"MinimumFeatureNumberForPersonalizedThreshold";
     LODWORD(v143) = 5.0;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_HAH_MinimumFeatureNumberForPersonalizedThreshold" withFallback:v143];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_HAH_MinimumFeatureNumberForPersonalizedThreshold" withFallback:v143];
     v190 = [NSNumber numberWithFloat:?];
     v281[1] = v190;
     v280[2] = @"MinimumFeatureSizeForPersonalizedThreshold";
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_HAH_MinimumFeatureSizeForPersonalizedThreshold" withFallback:0.0];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_HAH_MinimumFeatureSizeForPersonalizedThreshold" withFallback:0.0];
     v188 = [NSNumber numberWithFloat:?];
     v281[2] = v188;
     v280[3] = @"MaximumThreshold";
     LODWORD(v144) = 20.0;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_HAH_MaximumThreshold" withFallback:v144];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_HAH_MaximumThreshold" withFallback:v144];
     v186 = [NSNumber numberWithFloat:?];
     v281[3] = v186;
     v280[4] = @"MinimumThreshold";
     LODWORD(v145) = 3.0;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_HAH_MinimumThreshold" withFallback:v145];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_HAH_MinimumThreshold" withFallback:v145];
     v146 = [NSNumber numberWithFloat:?];
     v281[4] = v146;
     v280[5] = @"BetaForEWAUpdate";
     LODWORD(v147) = 1064198944;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_HAH_BetaForEWAUpdate" withFallback:v147];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_HAH_BetaForEWAUpdate" withFallback:v147];
     v148 = [NSNumber numberWithFloat:?];
     v281[5] = v148;
     v280[6] = @"AggregationType";
     LODWORD(v149) = 1.0;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_HAH_AggregationType" withFallback:v149];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_HAH_AggregationType" withFallback:v149];
     v150 = [NSNumber numberWithFloat:?];
     v281[6] = v150;
     v280[7] = @"AggregationWindow";
-    v151 = [NSNumber numberWithInt:[(MOConfigurationManagerBase *)v233->_configurationManager getIntegerSettingForKey:@"PD_HAH_AggregationWindow" withFallback:16]];
+    v151 = [NSNumber numberWithInt:[(MOConfigurationManagerBase *)selfCopy->_configurationManager getIntegerSettingForKey:@"PD_HAH_AggregationWindow" withFallback:16]];
     v281[7] = v151;
     v281[8] = &off_1003691F0;
     v280[8] = @"AnomalyFeatureType";
@@ -1039,39 +1039,39 @@
     [v179 setAnomalyDetector:v187];
     v277[0] = @"TukeyFactorForExponentialDistributionOutlier";
     LODWORD(v161) = 1068708659;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_TAH_TukeyFactorForExponentialDistributionOutlier" withFallback:v161];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_TAH_TukeyFactorForExponentialDistributionOutlier" withFallback:v161];
     v178 = [NSNumber numberWithFloat:?];
     v278[0] = v178;
     v277[1] = @"MinimumFeatureNumberForPersonalizedThreshold";
     LODWORD(v162) = 3.0;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_TAH_MinimumFeatureNumberForPersonalizedThreshold" withFallback:v162];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_TAH_MinimumFeatureNumberForPersonalizedThreshold" withFallback:v162];
     v177 = [NSNumber numberWithFloat:?];
     v278[1] = v177;
     v277[2] = @"MinimumFeatureSizeForPersonalizedThreshold";
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_TAH_MinimumFeatureSizeForPersonalizedThreshold" withFallback:0.0];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_TAH_MinimumFeatureSizeForPersonalizedThreshold" withFallback:0.0];
     v176 = [NSNumber numberWithFloat:?];
     v278[2] = v176;
     v277[3] = @"MaximumThreshold";
     LODWORD(v163) = 1200398336;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_TAH_MaximumThreshold" withFallback:v163];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_TAH_MaximumThreshold" withFallback:v163];
     v175 = [NSNumber numberWithFloat:?];
     v278[3] = v175;
     v277[4] = @"MinimumThreshold";
     LODWORD(v164) = 1193852928;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_TAH_MinimumThreshold" withFallback:v164];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_TAH_MinimumThreshold" withFallback:v164];
     v174 = [NSNumber numberWithFloat:?];
     v278[4] = v174;
     v277[5] = @"BetaForEWAUpdate";
     LODWORD(v165) = 1064198944;
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_TAH_BetaForEWAUpdate" withFallback:v165];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_TAH_BetaForEWAUpdate" withFallback:v165];
     v166 = [NSNumber numberWithFloat:?];
     v278[5] = v166;
     v277[6] = @"AggregationType";
-    [(MOConfigurationManagerBase *)v233->_configurationManager getFloatSettingForKey:@"PD_TAH_AggregationType" withFallback:0.0];
+    [(MOConfigurationManagerBase *)selfCopy->_configurationManager getFloatSettingForKey:@"PD_TAH_AggregationType" withFallback:0.0];
     v167 = [NSNumber numberWithFloat:?];
     v278[6] = v167;
     v277[7] = @"AggregationWindow";
-    v168 = [NSNumber numberWithInt:[(MOConfigurationManagerBase *)v233->_configurationManager getIntegerSettingForKey:@"PD_TAH_AggregationWindow" withFallback:16]];
+    v168 = [NSNumber numberWithInt:[(MOConfigurationManagerBase *)selfCopy->_configurationManager getIntegerSettingForKey:@"PD_TAH_AggregationWindow" withFallback:16]];
     v278[7] = v168;
     v278[8] = &off_100369208;
     v277[8] = @"AnomalyFeatureType";
@@ -1092,7 +1092,7 @@
     }
 
     v172 = v184;
-    v4 = v185;
+    getEWAPlistFileURL = v185;
   }
 
   else
@@ -1107,15 +1107,15 @@
   return v234;
 }
 
-- (id)_processEvents:(id)a3 forDetector:(id)a4
+- (id)_processEvents:(id)events forDetector:(id)detector
 {
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  detectorCopy = detector;
   v8 = objc_opt_new();
-  if ([v7 count])
+  if ([detectorCopy count])
   {
-    v9 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
-    if ([v7 count])
+    v9 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [detectorCopy count]);
+    if ([detectorCopy count])
     {
       v10 = 0;
       do
@@ -1126,21 +1126,21 @@
         ++v10;
       }
 
-      while (v10 < [v7 count]);
+      while (v10 < [detectorCopy count]);
     }
 
     v12 = [[MOPerformanceMeasurement alloc] initWithName:@"MOEventPatternManager" measureRecentPeak:1];
     [(MOPerformanceMeasurement *)v12 startSession];
-    v13 = [v7 count];
+    v13 = [detectorCopy count];
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __52__MOEventPatternManager__processEvents_forDetector___block_invoke;
     block[3] = &unk_100337310;
-    v42 = v7;
-    v15 = v7;
+    v42 = detectorCopy;
+    v15 = detectorCopy;
     v53 = v15;
-    v54 = v6;
+    v54 = eventsCopy;
     v16 = v9;
     v55 = v16;
     dispatch_apply(v13, queue, block);
@@ -1178,8 +1178,8 @@
       while (v19);
     }
 
-    v41 = self;
-    v43 = v6;
+    selfCopy = self;
+    v43 = eventsCopy;
 
     v23 = _mo_log_facility_get_os_log(&MOLogFacilityPatternDetection);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
@@ -1210,15 +1210,15 @@
             objc_enumerationMutation(v26);
           }
 
-          v31 = [*(*(&v44 + 1) + 8 * j) getAnomalyDetector];
-          if (v31)
+          getAnomalyDetector = [*(*(&v44 + 1) + 8 * j) getAnomalyDetector];
+          if (getAnomalyDetector)
           {
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v32 = [v31 getAnomalyDetectorDict];
-              v33 = v32;
-              if (v32 && [v32 count])
+              getAnomalyDetectorDict = [getAnomalyDetector getAnomalyDetectorDict];
+              v33 = getAnomalyDetectorDict;
+              if (getAnomalyDetectorDict && [getAnomalyDetectorDict count])
               {
                 [v25 addEntriesFromDictionary:v33];
               }
@@ -1232,14 +1232,14 @@
       while (v28);
     }
 
-    v34 = [(MOEventStore *)v41->_eventStore getEWAPlistFileURL];
-    v6 = v43;
-    if (!v34)
+    getEWAPlistFileURL = [(MOEventStore *)selfCopy->_eventStore getEWAPlistFileURL];
+    eventsCopy = v43;
+    if (!getEWAPlistFileURL)
     {
       goto LABEL_38;
     }
 
-    v35 = [(MOEventStore *)v41->_eventStore persistEWAMetrics:v34 withData:v25];
+    v35 = [(MOEventStore *)selfCopy->_eventStore persistEWAMetrics:getEWAPlistFileURL withData:v25];
     v36 = _mo_log_facility_get_os_log(&MOLogFacilityPatternDetection);
     v37 = os_log_type_enabled(v36, OS_LOG_TYPE_INFO);
     if (v35)
@@ -1261,7 +1261,7 @@ LABEL_36:
     }
 
 LABEL_38:
-    v7 = v42;
+    detectorCopy = v42;
   }
 
   return v8;
@@ -1290,25 +1290,25 @@ void __52__MOEventPatternManager__processEvents_forDetector___block_invoke(uint6
   }
 }
 
-- (id)processEvents:(id)a3 withRefreshVariant:(unint64_t)a4 forDateInterval:(id)a5
+- (id)processEvents:(id)events withRefreshVariant:(unint64_t)variant forDateInterval:(id)interval
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  v11 = __ROR8__(a4, 8);
+  eventsCopy = events;
+  intervalCopy = interval;
+  v10 = intervalCopy;
+  v11 = __ROR8__(variant, 8);
   v12 = &__NSArray0__struct;
   if (v11 <= 6)
   {
     if (((1 << v11) & 0x2A) != 0)
     {
-      [v9 duration];
+      [intervalCopy duration];
       if (v15 >= 2419200.0)
       {
-        v13 = objc_opt_new();
-        v17 = [(MOEventPatternManager *)self _initializeBatchedTypeDetector];
-        v18 = [(MOEventPatternManager *)self _initializeStreamingTypeDetector];
-        [v13 addObjectsFromArray:v18];
-        [v13 addObjectsFromArray:v17];
+        _initializeStreamingTypeDetector2 = objc_opt_new();
+        _initializeBatchedTypeDetector = [(MOEventPatternManager *)self _initializeBatchedTypeDetector];
+        _initializeStreamingTypeDetector = [(MOEventPatternManager *)self _initializeStreamingTypeDetector];
+        [_initializeStreamingTypeDetector2 addObjectsFromArray:_initializeStreamingTypeDetector];
+        [_initializeStreamingTypeDetector2 addObjectsFromArray:_initializeBatchedTypeDetector];
         v19 = _mo_log_facility_get_os_log(&MOLogFacilityPatternDetection);
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
@@ -1316,27 +1316,27 @@ void __52__MOEventPatternManager__processEvents_forDetector___block_invoke(uint6
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Running streaming and batched pattern detectors", &v21, 2u);
         }
 
-        v12 = [(MOEventPatternManager *)self _processEvents:v8 forDetector:v13];
+        v12 = [(MOEventPatternManager *)self _processEvents:eventsCopy forDetector:_initializeStreamingTypeDetector2];
       }
 
       else
       {
-        v13 = _mo_log_facility_get_os_log(&MOLogFacilityPatternDetection);
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+        _initializeStreamingTypeDetector2 = _mo_log_facility_get_os_log(&MOLogFacilityPatternDetection);
+        if (os_log_type_enabled(_initializeStreamingTypeDetector2, OS_LOG_TYPE_INFO))
         {
           [v10 duration];
           v21 = 134218240;
           v22 = v16;
           v23 = 2048;
-          v24 = a4;
-          _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Have only %f days of data, not running batched detectors for variant %lu", &v21, 0x16u);
+          variantCopy = variant;
+          _os_log_impl(&_mh_execute_header, _initializeStreamingTypeDetector2, OS_LOG_TYPE_INFO, "Have only %f days of data, not running batched detectors for variant %lu", &v21, 0x16u);
         }
       }
     }
 
     else if (((1 << v11) & 0x44) != 0)
     {
-      v13 = [(MOEventPatternManager *)self _initializeStreamingTypeDetector];
+      _initializeStreamingTypeDetector2 = [(MOEventPatternManager *)self _initializeStreamingTypeDetector];
       v14 = _mo_log_facility_get_os_log(&MOLogFacilityPatternDetection);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
@@ -1344,7 +1344,7 @@ void __52__MOEventPatternManager__processEvents_forDetector___block_invoke(uint6
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Running streaming pattern detectors", &v21, 2u);
       }
 
-      v12 = [(MOEventPatternManager *)self _processEvents:v8 forDetector:v13];
+      v12 = [(MOEventPatternManager *)self _processEvents:eventsCopy forDetector:_initializeStreamingTypeDetector2];
     }
 
     else
@@ -1354,10 +1354,10 @@ void __52__MOEventPatternManager__processEvents_forDetector___block_invoke(uint6
         goto LABEL_17;
       }
 
-      v13 = _mo_log_facility_get_os_log(&MOLogFacilityPatternDetection);
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      _initializeStreamingTypeDetector2 = _mo_log_facility_get_os_log(&MOLogFacilityPatternDetection);
+      if (os_log_type_enabled(_initializeStreamingTypeDetector2, OS_LOG_TYPE_ERROR))
       {
-        [MOEventPatternManager processEvents:v13 withRefreshVariant:? forDateInterval:?];
+        [MOEventPatternManager processEvents:_initializeStreamingTypeDetector2 withRefreshVariant:? forDateInterval:?];
       }
     }
   }

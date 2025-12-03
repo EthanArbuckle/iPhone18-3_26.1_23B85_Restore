@@ -1,5 +1,5 @@
 @interface PXPeopleScalableAvatarViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -7,12 +7,12 @@
 
 @implementation PXPeopleScalableAvatarViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXPeopleScalableAvatarView" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXPeopleScalableAvatarView" hasInstanceMethod:@"person" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"PXPerson" hasRequiredInstanceMethod:@"px_localizedName"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXPeopleScalableAvatarView" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXPeopleScalableAvatarView" hasInstanceMethod:@"person" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"PXPerson" hasRequiredInstanceMethod:@"px_localizedName"];
 }
 
 - (id)accessibilityLabel
@@ -33,7 +33,7 @@
   }
 
   v8 = [(PXPeopleScalableAvatarViewAccessibility *)self safeValueForKey:@"imageView"];
-  v11 = [v8 accessibilityLabel];
+  accessibilityLabel = [v8 accessibilityLabel];
   v9 = __UIAXStringForVariables();
 
   return v9;
@@ -42,17 +42,17 @@
 - (unint64_t)accessibilityTraits
 {
   v2 = [(PXPeopleScalableAvatarViewAccessibility *)self safeValueForKey:@"imageView"];
-  v3 = [v2 accessibilityTraits];
+  accessibilityTraits = [v2 accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (id)accessibilityValue
 {
   v2 = [(PXPeopleScalableAvatarViewAccessibility *)self safeValueForKey:@"imageView"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 @end

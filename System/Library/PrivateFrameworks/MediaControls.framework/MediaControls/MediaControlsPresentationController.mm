@@ -1,11 +1,11 @@
 @interface MediaControlsPresentationController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (CGPoint)sourcePoint;
 - (CGRect)frameOfPresentedViewInContainerView;
 - (UIEdgeInsets)edgeInsets;
 - (UIView)presentingView;
-- (void)_dismissTap:(id)a3;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (void)_dismissTap:(id)tap;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
 - (void)presentationTransitionWillBegin;
 @end
@@ -19,8 +19,8 @@
   [(UIPreviewPresentationController *)&v13 presentationTransitionWillBegin];
   v3 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__dismissTap_];
   [v3 setDelegate:self];
-  v4 = [(MediaControlsPresentationController *)self containerView];
-  [v4 addGestureRecognizer:v3];
+  containerView = [(MediaControlsPresentationController *)self containerView];
+  [containerView addGestureRecognizer:v3];
 
   WeakRetained = objc_loadWeakRetained(&self->_presentingView);
   if (!WeakRetained)
@@ -29,24 +29,24 @@
     materialView = self->_materialView;
     self->_materialView = v6;
 
-    v8 = [(MediaControlsPresentationController *)self containerView];
-    [v8 bounds];
+    containerView2 = [(MediaControlsPresentationController *)self containerView];
+    [containerView2 bounds];
     [(MTMaterialView *)self->_materialView setFrame:?];
 
     [(MTMaterialView *)self->_materialView setAutoresizingMask:18];
     [(MTMaterialView *)self->_materialView setShouldCrossfade:1];
-    v9 = [(MediaControlsPresentationController *)self containerView];
-    [v9 addSubview:self->_materialView];
+    containerView3 = [(MediaControlsPresentationController *)self containerView];
+    [containerView3 addSubview:self->_materialView];
   }
 
-  v10 = [(MediaControlsPresentationController *)self presentedViewController];
-  v11 = [v10 transitionCoordinator];
+  presentedViewController = [(MediaControlsPresentationController *)self presentedViewController];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __70__MediaControlsPresentationController_presentationTransitionWillBegin__block_invoke;
   v12[3] = &unk_1E76645E8;
   v12[4] = self;
-  [v11 animateAlongsideTransition:v12 completion:0];
+  [transitionCoordinator animateAlongsideTransition:v12 completion:0];
 }
 
 void __70__MediaControlsPresentationController_presentationTransitionWillBegin__block_invoke(uint64_t a1)
@@ -64,14 +64,14 @@ void __70__MediaControlsPresentationController_presentationTransitionWillBegin__
   v6.receiver = self;
   v6.super_class = MediaControlsPresentationController;
   [(UIPreviewPresentationController *)&v6 dismissalTransitionWillBegin];
-  v3 = [(MediaControlsPresentationController *)self presentedViewController];
-  v4 = [v3 transitionCoordinator];
+  presentedViewController = [(MediaControlsPresentationController *)self presentedViewController];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __67__MediaControlsPresentationController_dismissalTransitionWillBegin__block_invoke;
   v5[3] = &unk_1E76645E8;
   v5[4] = self;
-  [v4 animateAlongsideTransition:v5 completion:0];
+  [transitionCoordinator animateAlongsideTransition:v5 completion:0];
 }
 
 void __67__MediaControlsPresentationController_dismissalTransitionWillBegin__block_invoke(uint64_t a1)
@@ -86,13 +86,13 @@ void __67__MediaControlsPresentationController_dismissalTransitionWillBegin__blo
   [WeakRetained setTransform:v4];
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
-  v3 = a3;
+  endCopy = end;
   v8.receiver = self;
   v8.super_class = MediaControlsPresentationController;
   [(UIPreviewPresentationController *)&v8 dismissalTransitionDidEnd:?];
-  if (v3)
+  if (endCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_presentingView);
     [WeakRetained setAlpha:1.0];
@@ -108,13 +108,13 @@ void __67__MediaControlsPresentationController_dismissalTransitionWillBegin__blo
 {
   x = self->_sourcePoint.x;
   y = self->_sourcePoint.y;
-  v5 = [(MediaControlsPresentationController *)self traitCollection];
-  if (![v5 userInterfaceIdiom])
+  traitCollection = [(MediaControlsPresentationController *)self traitCollection];
+  if (![traitCollection userInterfaceIdiom])
   {
 
 LABEL_8:
-    v9 = [(MediaControlsPresentationController *)self containerView];
-    [v9 center];
+    containerView = [(MediaControlsPresentationController *)self containerView];
+    [containerView center];
 
     goto LABEL_9;
   }
@@ -128,11 +128,11 @@ LABEL_8:
   }
 
 LABEL_9:
-  v10 = [(MediaControlsPresentationController *)self containerView];
-  v11 = [(MediaControlsPresentationController *)self presentedViewController];
-  [v11 preferredContentSize];
+  containerView2 = [(MediaControlsPresentationController *)self containerView];
+  presentedViewController = [(MediaControlsPresentationController *)self presentedViewController];
+  [presentedViewController preferredContentSize];
 
-  [v10 bounds];
+  [containerView2 bounds];
   top = self->_edgeInsets.top;
   left = self->_edgeInsets.left;
   v15 = v14 + left;
@@ -279,26 +279,26 @@ LABEL_19:
   return result;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  v6 = [(MediaControlsPresentationController *)self presentedViewController];
-  v7 = [v6 view];
-  [v5 locationInView:v7];
+  touchCopy = touch;
+  presentedViewController = [(MediaControlsPresentationController *)self presentedViewController];
+  view = [presentedViewController view];
+  [touchCopy locationInView:view];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(MediaControlsPresentationController *)self presentedViewController];
-  v13 = [v12 view];
-  LOBYTE(v6) = [v13 pointInside:0 withEvent:{v9, v11}];
+  presentedViewController2 = [(MediaControlsPresentationController *)self presentedViewController];
+  view2 = [presentedViewController2 view];
+  LOBYTE(presentedViewController) = [view2 pointInside:0 withEvent:{v9, v11}];
 
-  return v6 ^ 1;
+  return presentedViewController ^ 1;
 }
 
-- (void)_dismissTap:(id)a3
+- (void)_dismissTap:(id)tap
 {
-  v3 = [(MediaControlsPresentationController *)self presentedViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentedViewController = [(MediaControlsPresentationController *)self presentedViewController];
+  [presentedViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (UIView)presentingView

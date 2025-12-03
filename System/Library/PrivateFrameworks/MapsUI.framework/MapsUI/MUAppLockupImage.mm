@@ -1,32 +1,32 @@
 @interface MUAppLockupImage
-- (MUAppLockupImage)initWithRemoteURL:(id)a3 metrics:(id)a4;
-- (void)loadImageWithCompletion:(id)a3;
+- (MUAppLockupImage)initWithRemoteURL:(id)l metrics:(id)metrics;
+- (void)loadImageWithCompletion:(id)completion;
 @end
 
 @implementation MUAppLockupImage
 
-- (void)loadImageWithCompletion:(id)a3
+- (void)loadImageWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MUAppLockupImage *)self cachedImage];
+  completionCopy = completion;
+  cachedImage = [(MUAppLockupImage *)self cachedImage];
 
-  if (v5)
+  if (cachedImage)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v6 = [MEMORY[0x1E696F190] sharedImageManager];
+    mEMORY[0x1E696F190] = [MEMORY[0x1E696F190] sharedImageManager];
     v7 = [(MUAppLockupImage *)self url];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __44__MUAppLockupImage_loadImageWithCompletion___block_invoke;
     v8[3] = &unk_1E8218A90;
     objc_copyWeak(&v10, &location);
-    v9 = v4;
-    [v6 loadAppImageAtURL:v7 completionHandler:v8];
+    v9 = completionCopy;
+    [mEMORY[0x1E696F190] loadAppImageAtURL:v7 completionHandler:v8];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -174,18 +174,18 @@ void __44__MUAppLockupImage_loadImageWithCompletion___block_invoke_5(uint64_t a1
   }
 }
 
-- (MUAppLockupImage)initWithRemoteURL:(id)a3 metrics:(id)a4
+- (MUAppLockupImage)initWithRemoteURL:(id)l metrics:(id)metrics
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  metricsCopy = metrics;
   v15.receiver = self;
   v15.super_class = MUAppLockupImage;
   v9 = [(MUAppLockupImage *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_url, a3);
-    objc_storeStrong(&v10->_metrics, a4);
+    objc_storeStrong(&v9->_url, l);
+    objc_storeStrong(&v10->_metrics, metrics);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("com.apple.maps.MUAppLockupImage.ImageProcessingQueue", v11);
     imageProcessingQueue = v10->_imageProcessingQueue;

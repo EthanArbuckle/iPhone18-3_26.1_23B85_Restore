@@ -6,8 +6,8 @@
 
 - (id)taskId
 {
-  v2 = [(NSURLRequest *)self allHTTPHeaderFields];
-  v3 = [v2 objectForKey:@"X-Apple-Request-UUID"];
+  allHTTPHeaderFields = [(NSURLRequest *)self allHTTPHeaderFields];
+  v3 = [allHTTPHeaderFields objectForKey:@"X-Apple-Request-UUID"];
 
   if (v3)
   {

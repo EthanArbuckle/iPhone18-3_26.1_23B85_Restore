@@ -2,11 +2,11 @@
 - (MPSImageBox)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSImageBox)initWithDevice:(id)device;
 - (MPSImageBox)initWithDevice:(id)device kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight;
-- (MPSRegion)sourceRegionForDestinationSize:(SEL)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (MPSRegion)sourceRegionForDestinationSize:(SEL)size;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)initFilterInfo;
 @end
 
@@ -381,17 +381,17 @@ LABEL_10:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v11.receiver = self;
   v11.super_class = MPSImageBox;
   [(MPSUnaryImageKernel *)&v11 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, self->_kernelWidth, @"MPSBoxTent.kernelWidth", v6, v7);
-  objc_msgSend_encodeInt64_forKey_(a3, v8, self->_kernelHeight, @"MPSBoxTent.kernelHeight", v9, v10);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, self->_kernelWidth, @"MPSBoxTent.kernelWidth", v6, v7);
+  objc_msgSend_encodeInt64_forKey_(coder, v8, self->_kernelHeight, @"MPSBoxTent.kernelHeight", v9, v10);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v15.receiver = self;
   v15.super_class = MPSImageBox;
@@ -406,20 +406,20 @@ LABEL_10:
     hPass = self->hPass;
     if (hPass)
     {
-      v11[29] = objc_msgSend_copyWithZone_device_(hPass, v8, a3, a4, v9, v10);
+      v11[29] = objc_msgSend_copyWithZone_device_(hPass, v8, zone, device, v9, v10);
     }
 
     vPass = self->vPass;
     if (vPass)
     {
-      v11[30] = objc_msgSend_copyWithZone_device_(vPass, v8, a3, a4, v9, v10);
+      v11[30] = objc_msgSend_copyWithZone_device_(vPass, v8, zone, device, v9, v10);
     }
   }
 
   return v11;
 }
 
-- (MPSRegion)sourceRegionForDestinationSize:(SEL)a3
+- (MPSRegion)sourceRegionForDestinationSize:(SEL)size
 {
   *&retstr->origin.z = 0u;
   *&retstr->size.height = 0u;

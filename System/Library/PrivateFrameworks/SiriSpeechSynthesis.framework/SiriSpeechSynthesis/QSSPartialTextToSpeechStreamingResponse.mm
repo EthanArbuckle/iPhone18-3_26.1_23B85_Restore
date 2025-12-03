@@ -4,13 +4,13 @@
 - (NSString)session_id;
 - (NSString)speech_id;
 - (NSString)stream_id;
-- (Offset<siri::speech::schema_fb::PartialTextToSpeechStreamingResponse>)addObjectToBuffer:(void *)a3;
-- (QSSPartialTextToSpeechStreamingResponse)initWithFlatbuffData:(id)a3 root:(const PartialTextToSpeechStreamingResponse *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::PartialTextToSpeechStreamingResponse>)addObjectToBuffer:(void *)buffer;
+- (QSSPartialTextToSpeechStreamingResponse)initWithFlatbuffData:(id)data root:(const PartialTextToSpeechStreamingResponse *)root verify:(BOOL)verify;
 - (QSSTextToSpeechFeature)feature;
 - (id)flatbuffData;
 - (int)current_pkt_number;
 - (int)error_code;
-- (void)audio:(id)a3;
+- (void)audio:(id)audio;
 @end
 
 @implementation QSSPartialTextToSpeechStreamingResponse
@@ -44,55 +44,55 @@ flatbuffers::DetachedBuffer *__55__QSSPartialTextToSpeechStreamingResponse_flatb
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::PartialTextToSpeechStreamingResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::PartialTextToSpeechStreamingResponse>)addObjectToBuffer:(void *)buffer
 {
   v55 = *MEMORY[0x277D85DE8];
-  v5 = [(QSSPartialTextToSpeechStreamingResponse *)self speech_id];
-  v6 = v5;
-  if (!v5)
+  speech_id = [(QSSPartialTextToSpeechStreamingResponse *)self speech_id];
+  v6 = speech_id;
+  if (!speech_id)
   {
-    v5 = &stru_2879AE8E0;
+    speech_id = &stru_2879AE8E0;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)speech_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v10 = [(QSSPartialTextToSpeechStreamingResponse *)self session_id];
-  v11 = v10;
-  if (!v10)
+  session_id = [(QSSPartialTextToSpeechStreamingResponse *)self session_id];
+  v11 = session_id;
+  if (!session_id)
   {
-    v10 = &stru_2879AE8E0;
+    session_id = &stru_2879AE8E0;
   }
 
-  v12 = [(__CFString *)v10 UTF8String];
-  v13 = strlen(v12);
-  LODWORD(v40) = flatbuffers::FlatBufferBuilder::CreateString(a3, v12, v13);
+  uTF8String2 = [(__CFString *)session_id UTF8String];
+  v13 = strlen(uTF8String2);
+  LODWORD(v40) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v13);
 
   HIDWORD(v39) = [(QSSPartialTextToSpeechStreamingResponse *)self error_code];
-  v14 = [(QSSPartialTextToSpeechStreamingResponse *)self error_str];
-  v15 = v14;
-  if (!v14)
+  error_str = [(QSSPartialTextToSpeechStreamingResponse *)self error_str];
+  v15 = error_str;
+  if (!error_str)
   {
-    v14 = &stru_2879AE8E0;
+    error_str = &stru_2879AE8E0;
   }
 
-  v16 = [(__CFString *)v14 UTF8String];
-  v17 = strlen(v16);
-  LODWORD(v39) = flatbuffers::FlatBufferBuilder::CreateString(a3, v16, v17);
+  uTF8String3 = [(__CFString *)error_str UTF8String];
+  v17 = strlen(uTF8String3);
+  LODWORD(v39) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String3, v17);
 
-  v18 = [(QSSPartialTextToSpeechStreamingResponse *)self stream_id];
-  v19 = v18;
-  if (!v18)
+  stream_id = [(QSSPartialTextToSpeechStreamingResponse *)self stream_id];
+  v19 = stream_id;
+  if (!stream_id)
   {
-    v18 = &stru_2879AE8E0;
+    stream_id = &stru_2879AE8E0;
   }
 
-  v20 = [(__CFString *)v18 UTF8String];
-  v21 = strlen(v20);
-  v22 = flatbuffers::FlatBufferBuilder::CreateString(a3, v20, v21);
+  uTF8String4 = [(__CFString *)stream_id UTF8String];
+  v21 = strlen(uTF8String4);
+  v22 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String4, v21);
 
-  v23 = [(QSSPartialTextToSpeechStreamingResponse *)self current_pkt_number];
+  current_pkt_number = [(QSSPartialTextToSpeechStreamingResponse *)self current_pkt_number];
   v47 = 0;
   v48 = &v47;
   v49 = 0x3812000000;
@@ -105,18 +105,18 @@ flatbuffers::DetachedBuffer *__55__QSSPartialTextToSpeechStreamingResponse_flatb
   v46[2] = __61__QSSPartialTextToSpeechStreamingResponse_addObjectToBuffer___block_invoke;
   v46[3] = &unk_279C4C2C8;
   v46[4] = &v47;
-  v46[5] = a3;
+  v46[5] = buffer;
   [(QSSPartialTextToSpeechStreamingResponse *)self audio:v46];
   memset(&v45, 0, sizeof(v45));
-  v24 = [(QSSPartialTextToSpeechStreamingResponse *)self word_timing_info];
-  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v45, [v24 count]);
+  word_timing_info = [(QSSPartialTextToSpeechStreamingResponse *)self word_timing_info];
+  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v45, [word_timing_info count]);
 
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v25 = [(QSSPartialTextToSpeechStreamingResponse *)self word_timing_info];
-  v26 = [v25 countByEnumeratingWithState:&v41 objects:v54 count:16];
+  word_timing_info2 = [(QSSPartialTextToSpeechStreamingResponse *)self word_timing_info];
+  v26 = [word_timing_info2 countByEnumeratingWithState:&v41 objects:v54 count:16];
   if (v26)
   {
     v27 = *v42;
@@ -126,14 +126,14 @@ flatbuffers::DetachedBuffer *__55__QSSPartialTextToSpeechStreamingResponse_flatb
       {
         if (*v42 != v27)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(word_timing_info2);
         }
 
-        HIDWORD(v40) = [*(*(&v41 + 1) + 8 * i) addObjectToBuffer:{a3, v39, v40}];
+        HIDWORD(v40) = [*(*(&v41 + 1) + 8 * i) addObjectToBuffer:{buffer, v39, v40}];
         std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v45, &v40 + 1);
       }
 
-      v26 = [v25 countByEnumeratingWithState:&v41 objects:v54 count:16];
+      v26 = [word_timing_info2 countByEnumeratingWithState:&v41 objects:v54 count:16];
     }
 
     while (v26);
@@ -150,25 +150,25 @@ flatbuffers::DetachedBuffer *__55__QSSPartialTextToSpeechStreamingResponse_flatb
     v30 = v45.__begin_;
   }
 
-  v31 = flatbuffers::FlatBufferBuilder::CreateVector<flatbuffers::String>(a3, v30, v45.__end_ - v45.__begin_);
-  v32 = [(QSSPartialTextToSpeechStreamingResponse *)self feature];
-  v33 = [v32 addObjectToBuffer:a3];
+  v31 = flatbuffers::FlatBufferBuilder::CreateVector<flatbuffers::String>(buffer, v30, v45.__end_ - v45.__begin_);
+  feature = [(QSSPartialTextToSpeechStreamingResponse *)self feature];
+  v33 = [feature addObjectToBuffer:buffer];
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v34 = *(a3 + 8);
-  v35 = *(a3 + 12);
-  LODWORD(v32) = *(a3 + 10);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 6, v40);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 8, SHIDWORD(v39));
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 10, v39);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 12, v22);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 14, v23);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 16, *(v48 + 12));
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 18, v31);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 20, v33);
-  v36.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v34 - v35 + v32);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v34 = *(buffer + 8);
+  v35 = *(buffer + 12);
+  LODWORD(feature) = *(buffer + 10);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 6, v40);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 8, SHIDWORD(v39));
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 10, v39);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 12, v22);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 14, current_pkt_number);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 16, *(v48 + 12));
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 18, v31);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 20, v33);
+  v36.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v34 - v35 + feature);
   if (begin)
   {
     operator delete(begin);
@@ -213,10 +213,10 @@ uint64_t __61__QSSPartialTextToSpeechStreamingResponse_addObjectToBuffer___block
 
 - (NSArray)word_timing_info
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"word_timing_info"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"word_timing_info"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 0x13u)
@@ -233,7 +233,7 @@ uint64_t __61__QSSPartialTextToSpeechStreamingResponse_addObjectToBuffer___block
           do
           {
             v11 = [[QSSWordTimingInfo alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -244,20 +244,20 @@ uint64_t __61__QSSPartialTextToSpeechStreamingResponse_addObjectToBuffer___block
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"word_timing_info"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"word_timing_info"];
   }
 
-  return v3;
+  return array;
 }
 
-- (void)audio:(id)a3
+- (void)audio:(id)audio
 {
   root = self->_root;
   v5 = &root[-*root->var0];
-  v6 = a3;
+  audioCopy = audio;
   v7 = *root[*v5[16].var0 + *root[*v5[16].var0].var0].var0;
-  v8 = v6;
-  (*(a3 + 2))();
+  v8 = audioCopy;
+  (*(audio + 2))();
 }
 
 - (int)current_pkt_number
@@ -382,42 +382,42 @@ uint64_t __61__QSSPartialTextToSpeechStreamingResponse_addObjectToBuffer___block
   return v6;
 }
 
-- (QSSPartialTextToSpeechStreamingResponse)initWithFlatbuffData:(id)a3 root:(const PartialTextToSpeechStreamingResponse *)a4 verify:(BOOL)a5
+- (QSSPartialTextToSpeechStreamingResponse)initWithFlatbuffData:(id)data root:(const PartialTextToSpeechStreamingResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSPartialTextToSpeechStreamingResponse;
   v10 = [(QSSPartialTextToSpeechStreamingResponse *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -439,9 +439,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

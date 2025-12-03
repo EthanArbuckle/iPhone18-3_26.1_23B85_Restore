@@ -1,17 +1,17 @@
 @interface PXGSpritesRectDiagnosticsProvider
-- (void)enumerateRectDiagnosticsForLayout:(id)a3 usingBlock:(id)a4;
+- (void)enumerateRectDiagnosticsForLayout:(id)layout usingBlock:(id)block;
 @end
 
 @implementation PXGSpritesRectDiagnosticsProvider
 
-- (void)enumerateRectDiagnosticsForLayout:(id)a3 usingBlock:(id)a4
+- (void)enumerateRectDiagnosticsForLayout:(id)layout usingBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  layoutCopy = layout;
+  blockCopy = block;
   v7 = +[PXTungstenSettings sharedInstance];
   if ([v7 anySpritesRectDiagnosticsEnabled])
   {
-    [v5 visibleRect];
+    [layoutCopy visibleRect];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -21,8 +21,8 @@
     v16[2] = __82__PXGSpritesRectDiagnosticsProvider_enumerateRectDiagnosticsForLayout_usingBlock___block_invoke;
     v16[3] = &unk_2782A99B8;
     v17 = v7;
-    v18 = v6;
-    [v5 enumerateSpritesInRect:v16 usingBlock:{v9, v11, v13, v15}];
+    v18 = blockCopy;
+    [layoutCopy enumerateSpritesInRect:v16 usingBlock:{v9, v11, v13, v15}];
   }
 }
 

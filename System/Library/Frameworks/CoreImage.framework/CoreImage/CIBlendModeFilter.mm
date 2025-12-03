@@ -31,11 +31,11 @@
   {
     if (inputBackgroundImage)
     {
-      v5 = [(CIBlendModeFilter *)self _kernel];
+      _kernel = [(CIBlendModeFilter *)self _kernel];
       v6 = self->inputImage;
       v7 = self->inputBackgroundImage;
 
-      return [v5 applyWithForeground:v6 background:v7];
+      return [_kernel applyWithForeground:v6 background:v7];
     }
 
     v9 = inputImage;

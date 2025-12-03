@@ -1,7 +1,7 @@
 @interface ATXUIFeedbackMetricsQuery
 - (ATXUIFeedbackMetricsQuery)init;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXUIFeedbackMetricsQuery:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXUIFeedbackMetricsQuery:(id)query;
 - (unint64_t)hash;
 @end
 
@@ -26,28 +26,28 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXUIFeedbackMetricsQuery *)self isEqualToATXUIFeedbackMetricsQuery:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXUIFeedbackMetricsQuery *)self isEqualToATXUIFeedbackMetricsQuery:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXUIFeedbackMetricsQuery:(id)a3
+- (BOOL)isEqualToATXUIFeedbackMetricsQuery:(id)query
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_clientModelType != v4[4] || self->_consumerSubType != *(v4 + 8))
+  queryCopy = query;
+  v5 = queryCopy;
+  if (self->_clientModelType != queryCopy[4] || self->_consumerSubType != *(queryCopy + 8))
   {
     goto LABEL_5;
   }

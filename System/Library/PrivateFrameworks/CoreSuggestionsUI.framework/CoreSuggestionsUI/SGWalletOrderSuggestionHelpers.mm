@@ -1,18 +1,18 @@
 @interface SGWalletOrderSuggestionHelpers
-- (SGWalletOrderSuggestionHelpers)initWithOrderData:(id)a3;
+- (SGWalletOrderSuggestionHelpers)initWithOrderData:(id)data;
 - (id)attributedSubtitle;
 - (id)orderDeepLink;
-- (id)orderPreviewControllerForURL:(id)a3 completion:(id)a4;
+- (id)orderPreviewControllerForURL:(id)l completion:(id)completion;
 - (id)walletLogo;
-- (void)saveOrderForURL:(id)a3 completion:(id)a4;
+- (void)saveOrderForURL:(id)l completion:(id)completion;
 @end
 
 @implementation SGWalletOrderSuggestionHelpers
 
-- (void)saveOrderForURL:(id)a3 completion:(id)a4
+- (void)saveOrderForURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2050000000;
@@ -36,9 +36,9 @@
   v11[2] = __61__SGWalletOrderSuggestionHelpers_saveOrderForURL_completion___block_invoke;
   v11[3] = &unk_1E7CD9250;
   v11[4] = self;
-  v12 = v7;
-  v10 = v7;
-  [v8 saveOrderAtURL:v6 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [v8 saveOrderAtURL:lCopy completion:v11];
 }
 
 void __61__SGWalletOrderSuggestionHelpers_saveOrderForURL_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -64,11 +64,11 @@ void __61__SGWalletOrderSuggestionHelpers_saveOrderForURL_completion___block_inv
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)orderPreviewControllerForURL:(id)a3 completion:(id)a4
+- (id)orderPreviewControllerForURL:(id)l completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2050000000;
@@ -92,10 +92,10 @@ void __61__SGWalletOrderSuggestionHelpers_saveOrderForURL_completion___block_inv
   v20[2] = __74__SGWalletOrderSuggestionHelpers_orderPreviewControllerForURL_completion___block_invoke;
   v20[3] = &unk_1E7CD9250;
   v20[4] = self;
-  v10 = v7;
+  v10 = completionCopy;
   v21 = v10;
   v19 = 0;
-  v11 = [v8 makeViewControllerWithOrderURL:v6 completion:v20 error:&v19];
+  v11 = [v8 makeViewControllerWithOrderURL:lCopy completion:v20 error:&v19];
   v12 = v19;
   if (v12)
   {
@@ -150,51 +150,51 @@ void __74__SGWalletOrderSuggestionHelpers_orderPreviewControllerForURL_completio
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(FKSuggestionsOrderBanner *)self->_banner walletLogo];
+    walletLogo = [(FKSuggestionsOrderBanner *)self->_banner walletLogo];
   }
 
   else
   {
-    v3 = 0;
+    walletLogo = 0;
   }
 
-  return v3;
+  return walletLogo;
 }
 
 - (id)attributedSubtitle
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(FKSuggestionsOrderBanner *)self->_banner bannerAttributedSubtitle];
+    bannerAttributedSubtitle = [(FKSuggestionsOrderBanner *)self->_banner bannerAttributedSubtitle];
   }
 
   else
   {
-    v3 = 0;
+    bannerAttributedSubtitle = 0;
   }
 
-  return v3;
+  return bannerAttributedSubtitle;
 }
 
 - (id)orderDeepLink
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(FKSuggestionsOrderBanner *)self->_banner orderDeepLink];
+    orderDeepLink = [(FKSuggestionsOrderBanner *)self->_banner orderDeepLink];
   }
 
   else
   {
-    v3 = 0;
+    orderDeepLink = 0;
   }
 
-  return v3;
+  return orderDeepLink;
 }
 
-- (SGWalletOrderSuggestionHelpers)initWithOrderData:(id)a3
+- (SGWalletOrderSuggestionHelpers)initWithOrderData:(id)data
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v18.receiver = self;
   v18.super_class = SGWalletOrderSuggestionHelpers;
   v5 = [(SGWalletOrderSuggestionHelpers *)&v18 init];
@@ -222,7 +222,7 @@ void __74__SGWalletOrderSuggestionHelpers_orderPreviewControllerForURL_completio
   v7 = v6;
   _Block_object_dispose(&v19, 8);
   v17 = 0;
-  v8 = [[v6 alloc] initWithData:v4 error:&v17];
+  v8 = [[v6 alloc] initWithData:dataCopy error:&v17];
   v9 = v17;
   banner = v5->_banner;
   v5->_banner = v8;

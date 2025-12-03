@@ -3,20 +3,20 @@
 - (id)controllers;
 - (id)copilotFusedControllers;
 - (id)games;
-- (id)mergeControllers:(id)a3;
-- (id)mergeCopilotFusedControllers:(id)a3;
-- (id)mergeGames:(id)a3;
-- (id)mergeProfiles:(id)a3;
-- (id)mergedDictForTombstonesLookup:(id)a3 dataLookup:(id)a4;
-- (id)mergedTombstonesForRemoteDictionary:(id)a3 localDictionary:(id)a4;
+- (id)mergeControllers:(id)controllers;
+- (id)mergeCopilotFusedControllers:(id)controllers;
+- (id)mergeGames:(id)games;
+- (id)mergeProfiles:(id)profiles;
+- (id)mergedDictForTombstonesLookup:(id)lookup dataLookup:(id)dataLookup;
+- (id)mergedTombstonesForRemoteDictionary:(id)dictionary localDictionary:(id)localDictionary;
 - (id)profiles;
 - (id)storeVersion;
 - (void)registerKeys;
-- (void)setControllers:(id)a3;
-- (void)setCopilotFusedControllers:(id)a3;
-- (void)setGames:(id)a3;
-- (void)setProfiles:(id)a3;
-- (void)setStoreVersion:(id)a3;
+- (void)setControllers:(id)controllers;
+- (void)setCopilotFusedControllers:(id)controllers;
+- (void)setGames:(id)games;
+- (void)setProfiles:(id)profiles;
+- (void)setStoreVersion:(id)version;
 @end
 
 @implementation GCSettingsMediator
@@ -55,10 +55,10 @@
   [(GCSettingsMediator *)self registerKey:@"profiles" getter:"profiles" setter:"setProfiles:" merger:"mergeProfiles:" type:v11];
 }
 
-- (id)mergedTombstonesForRemoteDictionary:(id)a3 localDictionary:(id)a4
+- (id)mergedTombstonesForRemoteDictionary:(id)dictionary localDictionary:(id)localDictionary
 {
-  v5 = a4;
-  v6 = [a3 objectForKeyedSubscript:@"tombstones"];
+  localDictionaryCopy = localDictionary;
+  v6 = [dictionary objectForKeyedSubscript:@"tombstones"];
   if (v6)
   {
     v7 = v6;
@@ -69,8 +69,8 @@
     v7 = &__NSArray0__struct;
   }
 
-  v35 = v5;
-  v8 = [v5 objectForKeyedSubscript:@"tombstones"];
+  v35 = localDictionaryCopy;
+  v8 = [localDictionaryCopy objectForKeyedSubscript:@"tombstones"];
   if (v8)
   {
     v9 = v8;
@@ -110,43 +110,43 @@
         }
 
         v19 = [objc_alloc(v11[34]) initWithJSONObject:*(*(&v38 + 1) + 8 * v18)];
-        v20 = [v19 creationDate];
-        v21 = [v20 compare:v13];
+        creationDate = [v19 creationDate];
+        v21 = [creationDate compare:v13];
 
         if (v21 == -1)
         {
-          v24 = getGCSLogger();
-          if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
+          identifier2 = getGCSLogger();
+          if (os_log_type_enabled(identifier2, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
             v43 = v19;
-            _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "GCSettingsMediator::mergedTombstonesForRemoteDictionary:localDictionary - deleting tombstone %@", buf, 0xCu);
+            _os_log_impl(&_mh_execute_header, identifier2, OS_LOG_TYPE_INFO, "GCSettingsMediator::mergedTombstonesForRemoteDictionary:localDictionary - deleting tombstone %@", buf, 0xCu);
           }
         }
 
         else
         {
-          v22 = [v19 identifier];
-          v23 = [v14 objectForKeyedSubscript:v22];
+          identifier = [v19 identifier];
+          v23 = [v14 objectForKeyedSubscript:identifier];
 
-          v24 = [v19 identifier];
+          identifier2 = [v19 identifier];
           if (v23)
           {
             v25 = v17;
             v26 = v11;
-            v27 = [v14 objectForKeyedSubscript:v24];
+            v27 = [v14 objectForKeyedSubscript:identifier2];
 
-            v28 = [v27 creationDate];
-            v29 = [v19 creationDate];
-            v30 = [v28 compare:v29];
+            creationDate2 = [v27 creationDate];
+            creationDate3 = [v19 creationDate];
+            v30 = [creationDate2 compare:creationDate3];
 
             if (v30 == -1)
             {
-              v31 = [v19 identifier];
-              [v14 setObject:v19 forKeyedSubscript:v31];
+              identifier3 = [v19 identifier];
+              [v14 setObject:v19 forKeyedSubscript:identifier3];
             }
 
-            v24 = v27;
+            identifier2 = v27;
             v11 = v26;
             v17 = v25;
             v16 = v36;
@@ -154,7 +154,7 @@
 
           else
           {
-            [v14 setObject:v19 forKeyedSubscript:v24];
+            [v14 setObject:v19 forKeyedSubscript:identifier2];
           }
         }
 
@@ -171,17 +171,17 @@
   return v14;
 }
 
-- (id)mergedDictForTombstonesLookup:(id)a3 dataLookup:(id)a4
+- (id)mergedDictForTombstonesLookup:(id)lookup dataLookup:(id)dataLookup
 {
-  v5 = a3;
-  v6 = a4;
+  lookupCopy = lookup;
+  dataLookupCopy = dataLookup;
   v7 = +[NSMutableArray array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = [v5 allValues];
-  v9 = [v8 countByEnumeratingWithState:&v27 objects:v34 count:16];
+  allValues = [lookupCopy allValues];
+  v9 = [allValues countByEnumeratingWithState:&v27 objects:v34 count:16];
   if (v9)
   {
     v10 = v9;
@@ -192,14 +192,14 @@
       {
         if (*v28 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
-        v13 = [*(*(&v27 + 1) + 8 * i) jsonObject];
-        [v7 addObject:v13];
+        jsonObject = [*(*(&v27 + 1) + 8 * i) jsonObject];
+        [v7 addObject:jsonObject];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v27 objects:v34 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v27 objects:v34 count:16];
     }
 
     while (v10);
@@ -210,8 +210,8 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v15 = [v6 allValues];
-  v16 = [v15 countByEnumeratingWithState:&v23 objects:v33 count:16];
+  allValues2 = [dataLookupCopy allValues];
+  v16 = [allValues2 countByEnumeratingWithState:&v23 objects:v33 count:16];
   if (v16)
   {
     v17 = v16;
@@ -222,14 +222,14 @@
       {
         if (*v24 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(allValues2);
         }
 
-        v20 = [*(*(&v23 + 1) + 8 * j) jsonObject];
-        [v14 addObject:v20];
+        jsonObject2 = [*(*(&v23 + 1) + 8 * j) jsonObject];
+        [v14 addObject:jsonObject2];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v23 objects:v33 count:16];
+      v17 = [allValues2 countByEnumeratingWithState:&v23 objects:v33 count:16];
     }
 
     while (v17);
@@ -262,35 +262,35 @@
   return v6;
 }
 
-- (void)setControllers:(id)a3
+- (void)setControllers:(id)controllers
 {
-  v3 = a3;
+  controllersCopy = controllers;
   v4 = getGCSLogger();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = controllersCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "GCSettingsMediator::setControllers %@", &v6, 0xCu);
   }
 
   v5 = sub_100000E00();
-  [v5 setObject:v3 forKey:@"controllers"];
+  [v5 setObject:controllersCopy forKey:@"controllers"];
 }
 
-- (id)mergeControllers:(id)a3
+- (id)mergeControllers:(id)controllers
 {
-  v4 = a3;
+  controllersCopy = controllers;
   v5 = getGCSLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v48 = v4;
+    v48 = controllersCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "GCSettingsMediator::mergeControllers %@", buf, 0xCu);
   }
 
-  if (v4)
+  if (controllersCopy)
   {
-    v6 = v4;
+    v6 = controllersCopy;
   }
 
   else
@@ -310,17 +310,17 @@
     v9 = &__NSArray0__struct;
   }
 
-  v10 = [(GCSettingsMediator *)self controllers];
-  v11 = [v10 objectForKeyedSubscript:@"data"];
+  controllers = [(GCSettingsMediator *)self controllers];
+  v11 = [controllers objectForKeyedSubscript:@"data"];
   if (v11)
   {
     v8 = v11;
   }
 
   v39 = v6;
-  v40 = self;
-  v37 = v10;
-  v12 = [(GCSettingsMediator *)self mergedTombstonesForRemoteDictionary:v6 localDictionary:v10];
+  selfCopy = self;
+  v37 = controllers;
+  v12 = [(GCSettingsMediator *)self mergedTombstonesForRemoteDictionary:v6 localDictionary:controllers];
   v13 = getGCSLogger();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -352,15 +352,15 @@
         }
 
         v18 = [[GCSController alloc] initWithJSONObject:*(*(&v43 + 1) + 8 * i)];
-        v19 = [v18 persistentIdentifier];
-        v20 = [v12 objectForKeyedSubscript:v19];
+        persistentIdentifier = [v18 persistentIdentifier];
+        v20 = [v12 objectForKeyedSubscript:persistentIdentifier];
 
         if (v20)
         {
-          v21 = [v12 objectForKeyedSubscript:v19];
-          v22 = [v21 creationDate];
-          v23 = [v18 modifiedDate];
-          v24 = [v22 compare:v23];
+          v21 = [v12 objectForKeyedSubscript:persistentIdentifier];
+          creationDate = [v21 creationDate];
+          modifiedDate = [v18 modifiedDate];
+          v24 = [creationDate compare:modifiedDate];
 
           if (v24 != -1)
           {
@@ -380,11 +380,11 @@ LABEL_29:
           }
         }
 
-        v28 = [v14 objectForKeyedSubscript:v19];
+        v28 = [v14 objectForKeyedSubscript:persistentIdentifier];
 
         if (!v28)
         {
-          [v14 setObject:v18 forKeyedSubscript:v19];
+          [v14 setObject:v18 forKeyedSubscript:persistentIdentifier];
           v25 = getGCSLogger();
           if (!os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
           {
@@ -398,14 +398,14 @@ LABEL_29:
           goto LABEL_29;
         }
 
-        v25 = [v14 objectForKeyedSubscript:v19];
-        v29 = [v25 modifiedDate];
-        v30 = [v18 modifiedDate];
-        v31 = [v29 compare:v30];
+        v25 = [v14 objectForKeyedSubscript:persistentIdentifier];
+        modifiedDate2 = [v25 modifiedDate];
+        modifiedDate3 = [v18 modifiedDate];
+        v31 = [modifiedDate2 compare:modifiedDate3];
 
         if (v31 == -1)
         {
-          [v14 setObject:v18 forKeyedSubscript:v19];
+          [v14 setObject:v18 forKeyedSubscript:persistentIdentifier];
           v32 = getGCSLogger();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
           {
@@ -434,8 +434,8 @@ LABEL_30:
     _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "GCSettingsMediator::mergeControllers dataLookup %@", buf, 0xCu);
   }
 
-  v34 = [(GCSettingsMediator *)v40 mergedDictForTombstonesLookup:v12 dataLookup:v14];
-  [(GCSettingsMediator *)v40 setControllers:v34];
+  v34 = [(GCSettingsMediator *)selfCopy mergedDictForTombstonesLookup:v12 dataLookup:v14];
+  [(GCSettingsMediator *)selfCopy setControllers:v34];
 
   return v34;
 }
@@ -458,35 +458,35 @@ LABEL_30:
   return v6;
 }
 
-- (void)setGames:(id)a3
+- (void)setGames:(id)games
 {
-  v3 = a3;
+  gamesCopy = games;
   v4 = getGCSLogger();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = gamesCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "GCSettingsMediator::setGames %@", &v6, 0xCu);
   }
 
   v5 = sub_100000E00();
-  [v5 setObject:v3 forKey:@"games"];
+  [v5 setObject:gamesCopy forKey:@"games"];
 }
 
-- (id)mergeGames:(id)a3
+- (id)mergeGames:(id)games
 {
-  v4 = a3;
+  gamesCopy = games;
   v5 = getGCSLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v48 = v4;
+    v48 = gamesCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "GCSettingsMediator::mergeGames %@", buf, 0xCu);
   }
 
-  if (v4)
+  if (gamesCopy)
   {
-    v6 = v4;
+    v6 = gamesCopy;
   }
 
   else
@@ -506,17 +506,17 @@ LABEL_30:
     v9 = &__NSArray0__struct;
   }
 
-  v10 = [(GCSettingsMediator *)self games];
-  v11 = [v10 objectForKeyedSubscript:@"data"];
+  games = [(GCSettingsMediator *)self games];
+  v11 = [games objectForKeyedSubscript:@"data"];
   if (v11)
   {
     v8 = v11;
   }
 
   v39 = v6;
-  v40 = self;
-  v37 = v10;
-  v12 = [(GCSettingsMediator *)self mergedTombstonesForRemoteDictionary:v6 localDictionary:v10];
+  selfCopy = self;
+  v37 = games;
+  v12 = [(GCSettingsMediator *)self mergedTombstonesForRemoteDictionary:v6 localDictionary:games];
   v13 = getGCSLogger();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -548,15 +548,15 @@ LABEL_30:
         }
 
         v18 = [[GCSGame alloc] initWithJSONObject:*(*(&v43 + 1) + 8 * i)];
-        v19 = [v18 bundleIdentifier];
-        v20 = [v12 objectForKeyedSubscript:v19];
+        bundleIdentifier = [v18 bundleIdentifier];
+        v20 = [v12 objectForKeyedSubscript:bundleIdentifier];
 
         if (v20)
         {
-          v21 = [v12 objectForKeyedSubscript:v19];
-          v22 = [v21 creationDate];
-          v23 = [v18 modifiedDate];
-          v24 = [v22 compare:v23];
+          v21 = [v12 objectForKeyedSubscript:bundleIdentifier];
+          creationDate = [v21 creationDate];
+          modifiedDate = [v18 modifiedDate];
+          v24 = [creationDate compare:modifiedDate];
 
           if (v24 != -1)
           {
@@ -576,11 +576,11 @@ LABEL_29:
           }
         }
 
-        v28 = [v14 objectForKeyedSubscript:v19];
+        v28 = [v14 objectForKeyedSubscript:bundleIdentifier];
 
         if (!v28)
         {
-          [v14 setObject:v18 forKeyedSubscript:v19];
+          [v14 setObject:v18 forKeyedSubscript:bundleIdentifier];
           v25 = getGCSLogger();
           if (!os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
           {
@@ -594,14 +594,14 @@ LABEL_29:
           goto LABEL_29;
         }
 
-        v25 = [v14 objectForKeyedSubscript:v19];
-        v29 = [v25 modifiedDate];
-        v30 = [v18 modifiedDate];
-        v31 = [v29 compare:v30];
+        v25 = [v14 objectForKeyedSubscript:bundleIdentifier];
+        modifiedDate2 = [v25 modifiedDate];
+        modifiedDate3 = [v18 modifiedDate];
+        v31 = [modifiedDate2 compare:modifiedDate3];
 
         if (v31 == -1)
         {
-          [v14 setObject:v18 forKeyedSubscript:v19];
+          [v14 setObject:v18 forKeyedSubscript:bundleIdentifier];
           v32 = getGCSLogger();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
           {
@@ -630,8 +630,8 @@ LABEL_30:
     _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "GCSettingsMediator::mergeGames dataLookup %@", buf, 0xCu);
   }
 
-  v34 = [(GCSettingsMediator *)v40 mergedDictForTombstonesLookup:v12 dataLookup:v14];
-  [(GCSettingsMediator *)v40 setGames:v34];
+  v34 = [(GCSettingsMediator *)selfCopy mergedDictForTombstonesLookup:v12 dataLookup:v14];
+  [(GCSettingsMediator *)selfCopy setGames:v34];
 
   return v34;
 }
@@ -654,14 +654,14 @@ LABEL_30:
   return v6;
 }
 
-- (void)setProfiles:(id)a3
+- (void)setProfiles:(id)profiles
 {
-  v3 = a3;
+  profilesCopy = profiles;
   v4 = getGCSLogger();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v3;
+    v19 = profilesCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "GCSettingsMediator::setProfiles %@", buf, 0xCu);
   }
 
@@ -669,7 +669,7 @@ LABEL_30:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v3;
+  v5 = profilesCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -704,20 +704,20 @@ LABEL_30:
   [v12 setObject:v5 forKey:@"profiles"];
 }
 
-- (id)mergeProfiles:(id)a3
+- (id)mergeProfiles:(id)profiles
 {
-  v4 = a3;
+  profilesCopy = profiles;
   v5 = getGCSLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v49 = v4;
+    v49 = profilesCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "GCSettingsMediator::mergeProfiles %@", buf, 0xCu);
   }
 
-  if (v4)
+  if (profilesCopy)
   {
-    v6 = v4;
+    v6 = profilesCopy;
   }
 
   else
@@ -737,17 +737,17 @@ LABEL_30:
     v9 = &__NSArray0__struct;
   }
 
-  v10 = [(GCSettingsMediator *)self profiles];
-  v11 = [v10 objectForKeyedSubscript:@"data"];
+  profiles = [(GCSettingsMediator *)self profiles];
+  v11 = [profiles objectForKeyedSubscript:@"data"];
   if (v11)
   {
     v8 = v11;
   }
 
   v40 = v6;
-  v41 = self;
-  v38 = v10;
-  v12 = [(GCSettingsMediator *)self mergedTombstonesForRemoteDictionary:v6 localDictionary:v10];
+  selfCopy = self;
+  v38 = profiles;
+  v12 = [(GCSettingsMediator *)self mergedTombstonesForRemoteDictionary:v6 localDictionary:profiles];
   v13 = getGCSLogger();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -779,17 +779,17 @@ LABEL_30:
         }
 
         v18 = [[GCSProfile alloc] initWithJSONObject:*(*(&v44 + 1) + 8 * i)];
-        v19 = [v18 uuid];
-        v20 = [v19 UUIDString];
+        uuid = [v18 uuid];
+        uUIDString = [uuid UUIDString];
 
-        v21 = [v12 objectForKeyedSubscript:v20];
+        v21 = [v12 objectForKeyedSubscript:uUIDString];
 
         if (v21)
         {
-          v22 = [v12 objectForKeyedSubscript:v20];
-          v23 = [v22 creationDate];
-          v24 = [v18 modifiedDate];
-          v25 = [v23 compare:v24];
+          v22 = [v12 objectForKeyedSubscript:uUIDString];
+          creationDate = [v22 creationDate];
+          modifiedDate = [v18 modifiedDate];
+          v25 = [creationDate compare:modifiedDate];
 
           if (v25 != -1)
           {
@@ -809,11 +809,11 @@ LABEL_29:
           }
         }
 
-        v29 = [v14 objectForKeyedSubscript:v20];
+        v29 = [v14 objectForKeyedSubscript:uUIDString];
 
         if (!v29)
         {
-          [v14 setObject:v18 forKeyedSubscript:v20];
+          [v14 setObject:v18 forKeyedSubscript:uUIDString];
           v26 = getGCSLogger();
           if (!os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
           {
@@ -827,14 +827,14 @@ LABEL_29:
           goto LABEL_29;
         }
 
-        v26 = [v14 objectForKeyedSubscript:v20];
-        v30 = [v26 modifiedDate];
-        v31 = [v18 modifiedDate];
-        v32 = [v30 compare:v31];
+        v26 = [v14 objectForKeyedSubscript:uUIDString];
+        modifiedDate2 = [v26 modifiedDate];
+        modifiedDate3 = [v18 modifiedDate];
+        v32 = [modifiedDate2 compare:modifiedDate3];
 
         if (v32 == -1)
         {
-          [v14 setObject:v18 forKeyedSubscript:v20];
+          [v14 setObject:v18 forKeyedSubscript:uUIDString];
           v33 = getGCSLogger();
           if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
           {
@@ -863,8 +863,8 @@ LABEL_30:
     _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_INFO, "GCSettingsMediator::mergeProfiles dataLookup %@", buf, 0xCu);
   }
 
-  v35 = [(GCSettingsMediator *)v41 mergedDictForTombstonesLookup:v12 dataLookup:v14];
-  [(GCSettingsMediator *)v41 setProfiles:v35];
+  v35 = [(GCSettingsMediator *)selfCopy mergedDictForTombstonesLookup:v12 dataLookup:v14];
+  [(GCSettingsMediator *)selfCopy setProfiles:v35];
 
   return v35;
 }
@@ -887,35 +887,35 @@ LABEL_30:
   return v6;
 }
 
-- (void)setCopilotFusedControllers:(id)a3
+- (void)setCopilotFusedControllers:(id)controllers
 {
-  v3 = a3;
+  controllersCopy = controllers;
   v4 = getGCSLogger();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = controllersCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "GCSettingsMediator::setCopilotFusedControllers %@", &v6, 0xCu);
   }
 
   v5 = sub_100000E00();
-  [v5 setObject:v3 forKey:@"copilotFusedControllers"];
+  [v5 setObject:controllersCopy forKey:@"copilotFusedControllers"];
 }
 
-- (id)mergeCopilotFusedControllers:(id)a3
+- (id)mergeCopilotFusedControllers:(id)controllers
 {
-  v4 = a3;
+  controllersCopy = controllers;
   v5 = getGCSLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v48 = v4;
+    v48 = controllersCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "GCSettingsMediator::mergeCopilotFusedControllers %@", buf, 0xCu);
   }
 
-  if (v4)
+  if (controllersCopy)
   {
-    v6 = v4;
+    v6 = controllersCopy;
   }
 
   else
@@ -935,17 +935,17 @@ LABEL_30:
     v9 = &__NSArray0__struct;
   }
 
-  v10 = [(GCSettingsMediator *)self copilotFusedControllers];
-  v11 = [v10 objectForKeyedSubscript:@"data"];
+  copilotFusedControllers = [(GCSettingsMediator *)self copilotFusedControllers];
+  v11 = [copilotFusedControllers objectForKeyedSubscript:@"data"];
   if (v11)
   {
     v8 = v11;
   }
 
   v39 = v6;
-  v40 = self;
-  v37 = v10;
-  v12 = [(GCSettingsMediator *)self mergedTombstonesForRemoteDictionary:v6 localDictionary:v10];
+  selfCopy = self;
+  v37 = copilotFusedControllers;
+  v12 = [(GCSettingsMediator *)self mergedTombstonesForRemoteDictionary:v6 localDictionary:copilotFusedControllers];
   v13 = getGCSLogger();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -977,15 +977,15 @@ LABEL_30:
         }
 
         v18 = [[GCSCopilotFusedController alloc] initWithJSONObject:*(*(&v43 + 1) + 8 * i)];
-        v19 = [v18 fusedControllerIdentifier];
-        v20 = [v12 objectForKeyedSubscript:v19];
+        fusedControllerIdentifier = [v18 fusedControllerIdentifier];
+        v20 = [v12 objectForKeyedSubscript:fusedControllerIdentifier];
 
         if (v20)
         {
-          v21 = [v12 objectForKeyedSubscript:v19];
-          v22 = [v21 creationDate];
-          v23 = [v18 modifiedDate];
-          v24 = [v22 compare:v23];
+          v21 = [v12 objectForKeyedSubscript:fusedControllerIdentifier];
+          creationDate = [v21 creationDate];
+          modifiedDate = [v18 modifiedDate];
+          v24 = [creationDate compare:modifiedDate];
 
           if (v24 != -1)
           {
@@ -1005,11 +1005,11 @@ LABEL_29:
           }
         }
 
-        v28 = [v14 objectForKeyedSubscript:v19];
+        v28 = [v14 objectForKeyedSubscript:fusedControllerIdentifier];
 
         if (!v28)
         {
-          [v14 setObject:v18 forKeyedSubscript:v19];
+          [v14 setObject:v18 forKeyedSubscript:fusedControllerIdentifier];
           v25 = getGCSLogger();
           if (!os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
           {
@@ -1023,14 +1023,14 @@ LABEL_29:
           goto LABEL_29;
         }
 
-        v25 = [v14 objectForKeyedSubscript:v19];
-        v29 = [v25 modifiedDate];
-        v30 = [v18 modifiedDate];
-        v31 = [v29 compare:v30];
+        v25 = [v14 objectForKeyedSubscript:fusedControllerIdentifier];
+        modifiedDate2 = [v25 modifiedDate];
+        modifiedDate3 = [v18 modifiedDate];
+        v31 = [modifiedDate2 compare:modifiedDate3];
 
         if (v31 == -1)
         {
-          [v14 setObject:v18 forKeyedSubscript:v19];
+          [v14 setObject:v18 forKeyedSubscript:fusedControllerIdentifier];
           v32 = getGCSLogger();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
           {
@@ -1059,8 +1059,8 @@ LABEL_30:
     _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "GCSettingsMediator::mergeCopilotFusedControllers dataLookup %@", buf, 0xCu);
   }
 
-  v34 = [(GCSettingsMediator *)v40 mergedDictForTombstonesLookup:v12 dataLookup:v14];
-  [(GCSettingsMediator *)v40 setCopilotFusedControllers:v34];
+  v34 = [(GCSettingsMediator *)selfCopy mergedDictForTombstonesLookup:v12 dataLookup:v14];
+  [(GCSettingsMediator *)selfCopy setCopilotFusedControllers:v34];
 
   return v34;
 }
@@ -1083,19 +1083,19 @@ LABEL_30:
   return v6;
 }
 
-- (void)setStoreVersion:(id)a3
+- (void)setStoreVersion:(id)version
 {
-  v3 = a3;
+  versionCopy = version;
   v4 = getGCSLogger();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = versionCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "GCSettingsMediator::setStoreVersion %@", &v6, 0xCu);
   }
 
   v5 = sub_100000E00();
-  [v5 setObject:v3 forKey:@"settingsVersion"];
+  [v5 setObject:versionCopy forKey:@"settingsVersion"];
 }
 
 @end

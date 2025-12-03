@@ -1,50 +1,50 @@
 @interface WLLockScreenView
-- (BOOL)_hasVisiblePageForIndex:(unint64_t)a3;
-- (BOOL)isPassFooterViewInGroup:(id)a3;
-- (CGRect)_footerViewFrameForPassView:(id)a3;
-- (WLLockScreenView)initWithFrame:(CGRect)a3;
+- (BOOL)_hasVisiblePageForIndex:(unint64_t)index;
+- (BOOL)isPassFooterViewInGroup:(id)group;
+- (CGRect)_footerViewFrameForPassView:(id)view;
+- (WLLockScreenView)initWithFrame:(CGRect)frame;
 - (WLLockScreenViewDataSource)dataSource;
 - (WLLockScreenViewDelegate)delegate;
-- (id)_createPassFooterConfigurationForPassView:(id)a3;
+- (id)_createPassFooterConfigurationForPassView:(id)view;
 - (id)_dequeueRecycledPage;
-- (id)_visiblePageForIndex:(unint64_t)a3;
+- (id)_visiblePageForIndex:(unint64_t)index;
 - (unint64_t)currentIndex;
-- (void)_configurePage:(id)a3 forIndex:(unint64_t)a4;
+- (void)_configurePage:(id)page forIndex:(unint64_t)index;
 - (void)_dismissIfAppropriate;
-- (void)_handleDidReceiveSuccessfulTransaction:(id)a3;
+- (void)_handleDidReceiveSuccessfulTransaction:(id)transaction;
 - (void)_refreshBrightnessForFrontmostPass;
-- (void)_tilePagesEagerly:(BOOL)a3;
+- (void)_tilePagesEagerly:(BOOL)eagerly;
 - (void)_updateAlphasAndBacklight;
 - (void)_updateInformativeAssertion;
 - (void)_updateNumberOfPages;
 - (void)_updatePageControl;
 - (void)_updatePageScrollViewContentSize;
-- (void)_updatePassFooterViewWithReload:(BOOL)a3;
+- (void)_updatePassFooterViewWithReload:(BOOL)reload;
 - (void)_updateVisiblePage;
 - (void)dealloc;
 - (void)didAppear;
 - (void)invalidate;
 - (void)layoutSubviews;
 - (void)pageChanged;
-- (void)reloadCardAtIndex:(unint64_t)a3;
+- (void)reloadCardAtIndex:(unint64_t)index;
 - (void)safeAreaInsetsDidChange;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setDataSource:(id)a3;
-- (void)setOffscreen:(BOOL)a3;
-- (void)setSubviewAlpha:(double)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setDataSource:(id)source;
+- (void)setOffscreen:(BOOL)offscreen;
+- (void)setSubviewAlpha:(double)alpha;
 - (void)willDisappear;
 @end
 
 @implementation WLLockScreenView
 
-- (WLLockScreenView)initWithFrame:(CGRect)a3
+- (WLLockScreenView)initWithFrame:(CGRect)frame
 {
   v25.receiver = self;
   v25.super_class = WLLockScreenView;
-  v3 = [(WLLockScreenView *)&v25 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WLLockScreenView *)&v25 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIView alloc];
@@ -217,28 +217,28 @@
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  objc_storeWeak(&self->_dataSource, a3);
+  objc_storeWeak(&self->_dataSource, source);
 
   [(WLLockScreenView *)self _updateNumberOfPages];
 }
 
-- (void)setSubviewAlpha:(double)a3
+- (void)setSubviewAlpha:(double)alpha
 {
   [(UIPageControl *)self->_pageControl setAlpha:?];
   if (self->_passFooterViewVisible)
   {
     passFooterView = self->_passFooterView;
 
-    [(PKPassFooterView *)passFooterView setAlpha:a3];
+    [(PKPassFooterView *)passFooterView setAlpha:alpha];
   }
 }
 
-- (void)setOffscreen:(BOOL)a3
+- (void)setOffscreen:(BOOL)offscreen
 {
   verticalScrollView = self->_verticalScrollView;
-  if (a3)
+  if (offscreen)
   {
     [(WLLockScreenView *)self bounds];
     v5 = 0.0;
@@ -329,9 +329,9 @@
 
 - (void)pageChanged
 {
-  v3 = [(UIPageControl *)self->_pageControl currentPage];
+  currentPage = [(UIPageControl *)self->_pageControl currentPage];
 
-  [(WLLockScreenView *)self _jumpToPage:v3 animated:1];
+  [(WLLockScreenView *)self _jumpToPage:currentPage animated:1];
 }
 
 - (void)layoutSubviews
@@ -384,13 +384,13 @@
   v41 = v44;
   [(UIScrollView *)v16 setTransform:&v39];
   v17 = [(WLLockScreenView *)self _visiblePageForIndex:[(UIPageControl *)self->_pageControl currentPage]];
-  v18 = [v17 passView];
+  passView = [v17 passView];
   [(UIScrollView *)self->_verticalScrollView bounds];
   v19 = CGRectGetWidth(v49) + 8.0;
   PKPassMaxFrontSize();
   v21 = v20;
-  v22 = [v18 pass];
-  if ([v22 style] == &dword_8 + 1)
+  pass = [passView pass];
+  if ([pass style] == &dword_8 + 1)
   {
     [(WLLockScreenView *)self safeAreaInsets];
     v24 = v23;
@@ -421,16 +421,16 @@
   [(WLLockScreenView *)self _updatePageScrollViewContentSize];
   [(WLLockScreenView *)self _tilePagesEagerly:0];
   passFooterView = self->_passFooterView;
-  v36 = [(PKPassFooterView *)passFooterView configuration];
-  v37 = [v36 passView];
-  [(WLLockScreenView *)self _footerViewFrameForPassView:v37];
+  configuration = [(PKPassFooterView *)passFooterView configuration];
+  passView2 = [configuration passView];
+  [(WLLockScreenView *)self _footerViewFrameForPassView:passView2];
   [(PKPassFooterView *)passFooterView setFrame:?];
 
   [(UIPageControl *)self->_pageControl sizeToFit];
   [(UIPageControl *)self->_pageControl frame];
   [(UIScrollView *)self->_pageScrollView frame];
   [(WLLockScreenView *)self convertPoint:self->_verticalScrollView fromView:?];
-  [v18 sizeOfFront];
+  [passView sizeOfFront];
   pageControl = self->_pageControl;
   UIRectCenteredXInRect();
   [(UIPageControl *)pageControl setFrame:?];
@@ -444,30 +444,30 @@
   [(WLLockScreenView *)self setNeedsLayout];
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
   verticalScrollView = self->_verticalScrollView;
-  if (verticalScrollView == a3)
+  if (verticalScrollView == dragging)
   {
-    y = a4.y;
+    y = velocity.y;
     [(UIScrollView *)verticalScrollView bounds];
-    if (y >= 0.0 || a5->y >= v8 / 1.5)
+    if (y >= 0.0 || offset->y >= v8 / 1.5)
     {
-      a5->x = 0.0;
-      a5->y = v8;
+      offset->x = 0.0;
+      offset->y = v8;
     }
 
     else
     {
-      *a5 = CGPointZero;
+      *offset = CGPointZero;
     }
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  if (self->_pageScrollView == v4)
+  scrollCopy = scroll;
+  if (self->_pageScrollView == scrollCopy)
   {
     [(WLLockScreenView *)self _tilePagesEagerly:0];
     if ([(UIScrollView *)self->_pageScrollView isDragging])
@@ -482,13 +482,13 @@
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v6 = a3;
-  if (!a4)
+  draggingCopy = dragging;
+  if (!decelerate)
   {
-    v7 = v6;
-    if (self->_pageScrollView == v6)
+    v7 = draggingCopy;
+    if (self->_pageScrollView == draggingCopy)
     {
       [(WLLockScreenView *)self _tilePagesEagerly:1];
       [(WLLockScreenView *)self _updatePageControl];
@@ -499,13 +499,13 @@
       [(WLLockScreenView *)self _dismissIfAppropriate];
     }
 
-    v6 = v7;
+    draggingCopy = v7;
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  if (self->_pageScrollView == a3)
+  if (self->_pageScrollView == decelerating)
   {
     [(WLLockScreenView *)self _tilePagesEagerly:1];
 
@@ -589,8 +589,8 @@
     v7 = v17;
   }
 
-  v18 = [(WLLockScreenView *)self delegate];
-  [v18 updateBacklightWithProgress:v7];
+  delegate = [(WLLockScreenView *)self delegate];
+  [delegate updateBacklightWithProgress:v7];
 
   v19 = v6 / -80.0 + 1.0;
   v20 = v19 > 1.0 || v19 < 0.0;
@@ -636,12 +636,12 @@
   if (v8 != v11 || v10 != v6)
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v14 = [WeakRetained startIndex];
+    startIndex = [WeakRetained startIndex];
 
     [(UIScrollView *)self->_pageScrollView setContentSize:v11, v6];
-    [(UIPageControl *)self->_pageControl setCurrentPage:v14];
+    [(UIPageControl *)self->_pageControl setCurrentPage:startIndex];
 
-    [(WLLockScreenView *)self _jumpToPage:v14];
+    [(WLLockScreenView *)self _jumpToPage:startIndex];
   }
 }
 
@@ -732,12 +732,12 @@ LABEL_9:
   return v19;
 }
 
-- (void)reloadCardAtIndex:(unint64_t)a3
+- (void)reloadCardAtIndex:(unint64_t)index
 {
   v5 = [(WLLockScreenView *)self _visiblePageForIndex:?];
   if (v5)
   {
-    [(WLLockScreenView *)self _configurePage:v5 forIndex:a3];
+    [(WLLockScreenView *)self _configurePage:v5 forIndex:index];
   }
 
   [(WLLockScreenView *)self _updateVisiblePage];
@@ -745,25 +745,25 @@ LABEL_9:
 
 - (void)_updatePageControl
 {
-  v3 = [(WLLockScreenView *)self currentIndex];
-  if ([(UIPageControl *)self->_pageControl currentPage]!= v3)
+  currentIndex = [(WLLockScreenView *)self currentIndex];
+  if ([(UIPageControl *)self->_pageControl currentPage]!= currentIndex)
   {
     v4 = [(WLLockScreenView *)self _visiblePageForIndex:[(UIPageControl *)self->_pageControl currentPage]];
-    v5 = [v4 passView];
-    [v5 setModalShadowVisibility:!self->_animatingPresentation animated:0.0];
+    passView = [v4 passView];
+    [passView setModalShadowVisibility:!self->_animatingPresentation animated:0.0];
     [(WLLockScreenView *)self _updateVisiblePage];
     [(WLLockScreenView *)self _updatePassFooterViewIfNecessary];
-    v6 = [(WLLockScreenView *)self _visiblePageForIndex:v3];
-    v7 = [v6 passView];
-    [v7 setModalShadowVisibility:!self->_animatingPresentation animated:1.0];
+    v6 = [(WLLockScreenView *)self _visiblePageForIndex:currentIndex];
+    passView2 = [v6 passView];
+    [passView2 setModalShadowVisibility:!self->_animatingPresentation animated:1.0];
   }
 
-  [(UIPageControl *)self->_pageControl setCurrentPage:v3];
+  [(UIPageControl *)self->_pageControl setCurrentPage:currentIndex];
 
   [(WLLockScreenView *)self _refreshBrightnessForFrontmostPass];
 }
 
-- (id)_visiblePageForIndex:(unint64_t)a3
+- (id)_visiblePageForIndex:(unint64_t)index
 {
   v12 = 0u;
   v13 = 0u;
@@ -785,7 +785,7 @@ LABEL_9:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 index] == a3)
+        if ([v9 index] == index)
         {
           v10 = v9;
           goto LABEL_11;
@@ -808,9 +808,9 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)_hasVisiblePageForIndex:(unint64_t)a3
+- (BOOL)_hasVisiblePageForIndex:(unint64_t)index
 {
-  v3 = [(WLLockScreenView *)self _visiblePageForIndex:a3];
+  v3 = [(WLLockScreenView *)self _visiblePageForIndex:index];
   v4 = v3 != 0;
 
   return v4;
@@ -818,43 +818,43 @@ LABEL_11:
 
 - (id)_dequeueRecycledPage
 {
-  v3 = [(NSMutableSet *)self->_recycledPages anyObject];
-  if (v3)
+  anyObject = [(NSMutableSet *)self->_recycledPages anyObject];
+  if (anyObject)
   {
-    [(NSMutableSet *)self->_recycledPages removeObject:v3];
+    [(NSMutableSet *)self->_recycledPages removeObject:anyObject];
   }
 
-  return v3;
+  return anyObject;
 }
 
-- (void)_configurePage:(id)a3 forIndex:(unint64_t)a4
+- (void)_configurePage:(id)page forIndex:(unint64_t)index
 {
-  v12 = a3;
-  [v12 setIndex:a4];
+  pageCopy = page;
+  [pageCopy setIndex:index];
   if (!self->_invalidated)
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v7 = [WeakRetained cardAtIndex:a4];
-    [v12 setPass:v7];
+    v7 = [WeakRetained cardAtIndex:index];
+    [pageCopy setPass:v7];
   }
 
-  v8 = [v12 passView];
-  v9 = [(UIPageControl *)self->_pageControl currentPage];
+  passView = [pageCopy passView];
+  currentPage = [(UIPageControl *)self->_pageControl currentPage];
   v10 = 0.0;
-  if (v9 == a4)
+  if (currentPage == index)
   {
     v10 = 1.0;
   }
 
-  [v8 setModalShadowVisibility:0 animated:v10];
+  [passView setModalShadowVisibility:0 animated:v10];
 
   [(UIScrollView *)self->_pageScrollView bounds];
-  [v12 setFrame:{v11 * a4, 0.0}];
+  [pageCopy setFrame:{v11 * index, 0.0}];
 }
 
-- (void)_tilePagesEagerly:(BOOL)a3
+- (void)_tilePagesEagerly:(BOOL)eagerly
 {
-  v51 = a3;
+  eagerlyCopy = eagerly;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   if ([WeakRetained cardCount])
   {
@@ -1046,7 +1046,7 @@ LABEL_51:
   }
 
   [(NSMutableSet *)self->_visiblePages minusSet:self->_recycledPages];
-  if (v51)
+  if (eagerlyCopy)
   {
     v23 = v34;
     v42 = v35;
@@ -1061,19 +1061,19 @@ LABEL_51:
   {
     if (![(WLLockScreenView *)self _hasVisiblePageForIndex:v23, v50])
     {
-      v43 = [(WLLockScreenView *)self _dequeueRecycledPage];
-      if (!v43)
+      _dequeueRecycledPage = [(WLLockScreenView *)self _dequeueRecycledPage];
+      if (!_dequeueRecycledPage)
       {
-        v43 = objc_alloc_init(WLLockScreenCardView);
+        _dequeueRecycledPage = objc_alloc_init(WLLockScreenCardView);
       }
 
-      [(WLLockScreenView *)self _configurePage:v43 forIndex:v23];
-      [(UIScrollView *)self->_pageScrollView addSubview:v43];
-      [(NSMutableSet *)self->_visiblePages addObject:v43];
+      [(WLLockScreenView *)self _configurePage:_dequeueRecycledPage forIndex:v23];
+      [(UIScrollView *)self->_pageScrollView addSubview:_dequeueRecycledPage];
+      [(NSMutableSet *)self->_visiblePages addObject:_dequeueRecycledPage];
     }
   }
 
-  v44 = [(WLLockScreenView *)self currentIndex];
+  currentIndex = [(WLLockScreenView *)self currentIndex];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
@@ -1093,7 +1093,7 @@ LABEL_51:
           objc_enumerationMutation(v45);
         }
 
-        [*(*(&v52 + 1) + 8 * j) setModallyPresented:{objc_msgSend(*(*(&v52 + 1) + 8 * j), "index") == v44}];
+        [*(*(&v52 + 1) + 8 * j) setModallyPresented:{objc_msgSend(*(*(&v52 + 1) + 8 * j), "index") == currentIndex}];
       }
 
       v47 = [(NSMutableSet *)v45 countByEnumeratingWithState:&v52 objects:v60 count:16];
@@ -1103,7 +1103,7 @@ LABEL_51:
   }
 }
 
-- (BOOL)isPassFooterViewInGroup:(id)a3
+- (BOOL)isPassFooterViewInGroup:(id)group
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v4 = [WeakRetained cardCount] > 1;
@@ -1114,9 +1114,9 @@ LABEL_51:
 - (void)_refreshBrightnessForFrontmostPass
 {
   v15 = [(WLLockScreenView *)self _visiblePageForIndex:[(WLLockScreenView *)self currentIndex]];
-  v3 = [v15 pass];
-  v4 = [v3 shouldRampBacklight];
-  if (v4)
+  pass = [v15 pass];
+  shouldRampBacklight = [pass shouldRampBacklight];
+  if (shouldRampBacklight)
   {
     p_wantsBacklightRamping = &self->_wantsBacklightRamping;
     if (self->_wantsBacklightRamping)
@@ -1128,11 +1128,11 @@ LABEL_51:
     goto LABEL_19;
   }
 
-  v6 = v4;
+  v6 = shouldRampBacklight;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v8 = [WeakRetained cardCount];
+  cardCount = [WeakRetained cardCount];
 
-  if (v8)
+  if (cardCount)
   {
     v9 = 0;
     do
@@ -1148,23 +1148,23 @@ LABEL_51:
           if (self->_wantsBacklightRamping)
           {
             LOBYTE(v6) = 1;
-            v3 = v11;
+            pass = v11;
             goto LABEL_21;
           }
 
-          v3 = v11;
+          pass = v11;
           goto LABEL_19;
         }
 
-        v3 = v11;
+        pass = v11;
       }
 
       ++v9;
       v12 = objc_loadWeakRetained(&self->_dataSource);
-      v13 = [v12 cardCount];
+      cardCount2 = [v12 cardCount];
     }
 
-    while (v9 < v13);
+    while (v9 < cardCount2);
     p_wantsBacklightRamping = &self->_wantsBacklightRamping;
     if (self->_wantsBacklightRamping != (v6 ^ 1))
     {
@@ -1249,7 +1249,7 @@ LABEL_21:
       goto LABEL_20;
     }
 
-    v14 = informativeAssertion;
+    uniqueID = informativeAssertion;
     v15 = self->_informativeAssertion;
     self->_informativeAssertion = 0;
 
@@ -1259,7 +1259,7 @@ LABEL_21:
       sub_6FE4();
     }
 
-    sub_43A8(v14);
+    sub_43A8(uniqueID);
     v4 = 0;
     goto LABEL_14;
   }
@@ -1285,21 +1285,21 @@ LABEL_21:
     else if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134349056;
-      v28 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "WLLockScreenView (%{public}p): failed to acquire presented springboard informative assertion.", buf, 0xCu);
     }
   }
 
   if (!self->_informativeAssertion)
   {
-    v14 = [v4 uniqueID];
-    v17 = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
+    uniqueID = [v4 uniqueID];
+    pKGetClassNFHardwareManager() = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
     v25[0] = @"NFAssertionType";
     v25[1] = @"passID";
     v26[0] = &off_108E0;
-    if (v14)
+    if (uniqueID)
     {
-      v24 = v14;
+      v24 = uniqueID;
       v18 = [NSArray arrayWithObjects:&v24 count:1];
     }
 
@@ -1310,9 +1310,9 @@ LABEL_21:
 
     v26[1] = v18;
     v19 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:2];
-    v20 = [v17 queueAssertionWithParams:v19 completion:0];
+    v20 = [pKGetClassNFHardwareManager() queueAssertionWithParams:v19 completion:0];
 
-    if (v14)
+    if (uniqueID)
     {
     }
 
@@ -1333,7 +1333,7 @@ LABEL_21:
     else if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v28 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_0, v22, OS_LOG_TYPE_DEFAULT, "WLLockScreenView (%p): failed to acquire presented nearfield informative assertion.", buf, 0xCu);
     }
 
@@ -1343,15 +1343,15 @@ LABEL_14:
 LABEL_20:
 }
 
-- (id)_createPassFooterConfigurationForPassView:(id)a3
+- (id)_createPassFooterConfigurationForPassView:(id)view
 {
-  if (!a3)
+  if (!view)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [v4 pass];
+  viewCopy = view;
+  pass = [viewCopy pass];
   if (PKValueAddedServicesEnabledForPass())
   {
     if ([(PKSecureElement *)self->_secureElement isInRestrictedMode])
@@ -1370,18 +1370,18 @@ LABEL_20:
     v6 = 0;
   }
 
-  v8 = [[PKPassFooterViewConfiguration alloc] initWithPassView:v4 state:v6];
+  v8 = [[PKPassFooterViewConfiguration alloc] initWithPassView:viewCopy state:v6];
 
   return v8;
 }
 
-- (void)_updatePassFooterViewWithReload:(BOOL)a3
+- (void)_updatePassFooterViewWithReload:(BOOL)reload
 {
-  v3 = a3;
+  reloadCopy = reload;
   v5 = [(WLLockScreenView *)self _visiblePageForIndex:[(WLLockScreenView *)self currentIndex]];
-  v29 = [v5 passView];
+  passView = [v5 passView];
 
-  v6 = [(WLLockScreenView *)self _createPassFooterConfigurationForPassView:v29];
+  v6 = [(WLLockScreenView *)self _createPassFooterConfigurationForPassView:passView];
   v7 = v6;
   if (self->_disappeared || self->_transacted || self->_invalidated)
   {
@@ -1389,7 +1389,7 @@ LABEL_20:
     v8 = 0;
     v9 = 0;
     v7 = 0;
-    v3 = 0;
+    reloadCopy = 0;
   }
 
   else
@@ -1401,10 +1401,10 @@ LABEL_20:
   passFooterViewVisible = self->_passFooterViewVisible;
   [(PKPassFooterView *)self->_passFooterView alpha];
   v12 = v11;
-  v13 = [(PKPassFooterView *)self->_passFooterView configuration];
+  configuration = [(PKPassFooterView *)self->_passFooterView configuration];
   v14 = PKEqualObjects();
 
-  if ((v9 & v3 & 1) != 0 || (passFooterViewVisible == v8 ? (v15 = v14 == 0) : (v15 = 1), !v15 ? (v16 = v12 == 1.0) : (v16 = 0), !v16))
+  if ((v9 & reloadCopy & 1) != 0 || (passFooterViewVisible == v8 ? (v15 = v14 == 0) : (v15 = 1), !v15 ? (v16 = v12 == 1.0) : (v16 = 0), !v16))
   {
     [(WLLockScreenView *)self layoutIfNeeded];
     self->_passFooterViewVisible = v8;
@@ -1456,7 +1456,7 @@ LABEL_25:
           {
             v22 = self->_passFooterView;
             *buf = 134349312;
-            v36 = self;
+            selfCopy = self;
             v37 = 2050;
             v38 = v22;
             _os_log_impl(&dword_0, v21, OS_LOG_TYPE_DEFAULT, "PKPassGroupStackView (%{public}p): configuring PKPassFooterView %{public}p.", buf, 0x16u);
@@ -1473,7 +1473,7 @@ LABEL_25:
           }
 
           v24 = (v23 & 1) != 0 || self->_passFooterViewOutstandingAnimations != 0;
-          if (v3)
+          if (reloadCopy)
           {
             v25 = 2;
           }
@@ -1544,10 +1544,10 @@ LABEL_46:
 LABEL_47:
 }
 
-- (CGRect)_footerViewFrameForPassView:(id)a3
+- (CGRect)_footerViewFrameForPassView:(id)view
 {
-  v4 = [a3 pass];
-  [v4 style];
+  pass = [view pass];
+  [pass style];
 
   [(UIScrollView *)self->_pageScrollView frame];
   [(WLLockScreenView *)self convertRect:self->_verticalScrollView fromView:?];
@@ -1571,14 +1571,14 @@ LABEL_47:
   return result;
 }
 
-- (void)_handleDidReceiveSuccessfulTransaction:(id)a3
+- (void)_handleDidReceiveSuccessfulTransaction:(id)transaction
 {
-  v8 = a3;
-  v4 = [v8 object];
-  if ([(PKPassFooterView *)self->_passFooterView isViewCurrentContentView:v4])
+  transactionCopy = transaction;
+  object = [transactionCopy object];
+  if ([(PKPassFooterView *)self->_passFooterView isViewCurrentContentView:object])
   {
-    v5 = [v8 userInfo];
-    v6 = [v5 PKBoolForKey:PKPaymentDidReceiveSuccessfulTransactionPersistUI];
+    userInfo = [transactionCopy userInfo];
+    v6 = [userInfo PKBoolForKey:PKPaymentDidReceiveSuccessfulTransactionPersistUI];
 
     if ((v6 & 1) == 0)
     {

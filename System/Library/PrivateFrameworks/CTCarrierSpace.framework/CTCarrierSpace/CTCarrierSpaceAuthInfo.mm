@@ -1,8 +1,8 @@
 @interface CTCarrierSpaceAuthInfo
 - (CTCarrierSpaceAuthInfo)init;
-- (CTCarrierSpaceAuthInfo)initWithCoder:(id)a3;
+- (CTCarrierSpaceAuthInfo)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTCarrierSpaceAuthInfo
@@ -31,14 +31,14 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CCAB68] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTCarrierSpaceAuthInfo *)self accessToken];
-  [v3 appendFormat:@" accessToken=%@", v4];
+  accessToken = [(CTCarrierSpaceAuthInfo *)self accessToken];
+  [v3 appendFormat:@" accessToken=%@", accessToken];
 
-  v5 = [(CTCarrierSpaceAuthInfo *)self refreshToken];
-  [v3 appendFormat:@" refreshToken=%@", v5];
+  refreshToken = [(CTCarrierSpaceAuthInfo *)self refreshToken];
+  [v3 appendFormat:@" refreshToken=%@", refreshToken];
 
-  v6 = [(CTCarrierSpaceAuthInfo *)self expiresAt];
-  [v3 appendFormat:@" expiresAt=%@", v6];
+  expiresAt = [(CTCarrierSpaceAuthInfo *)self expiresAt];
+  [v3 appendFormat:@" expiresAt=%@", expiresAt];
 
   [v3 appendFormat:@" shouldCache=%d", -[CTCarrierSpaceAuthInfo shouldCache](self, "shouldCache")];
   [v3 appendString:@">"];
@@ -46,37 +46,37 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   accessToken = self->_accessToken;
-  v5 = a3;
-  [v5 encodeObject:accessToken forKey:@"accessToken"];
-  [v5 encodeObject:self->_refreshToken forKey:@"refreshToken"];
-  [v5 encodeObject:self->_expiresAt forKey:@"expiresAt"];
-  [v5 encodeBool:self->_shouldCache forKey:@"shouldCache"];
+  coderCopy = coder;
+  [coderCopy encodeObject:accessToken forKey:@"accessToken"];
+  [coderCopy encodeObject:self->_refreshToken forKey:@"refreshToken"];
+  [coderCopy encodeObject:self->_expiresAt forKey:@"expiresAt"];
+  [coderCopy encodeBool:self->_shouldCache forKey:@"shouldCache"];
 }
 
-- (CTCarrierSpaceAuthInfo)initWithCoder:(id)a3
+- (CTCarrierSpaceAuthInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CTCarrierSpaceAuthInfo;
   v5 = [(CTCarrierSpaceAuthInfo *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessToken"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessToken"];
     accessToken = v5->_accessToken;
     v5->_accessToken = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"refreshToken"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"refreshToken"];
     refreshToken = v5->_refreshToken;
     v5->_refreshToken = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expiresAt"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expiresAt"];
     expiresAt = v5->_expiresAt;
     v5->_expiresAt = v10;
 
-    v5->_shouldCache = [v4 decodeBoolForKey:@"shouldCache"];
+    v5->_shouldCache = [coderCopy decodeBoolForKey:@"shouldCache"];
   }
 
   return v5;

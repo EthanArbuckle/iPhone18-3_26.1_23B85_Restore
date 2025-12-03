@@ -1,14 +1,14 @@
 @interface NSExtension
-- (id)extensionHostContextForUUID:(void *)a1;
+- (id)extensionHostContextForUUID:(void *)d;
 @end
 
 @implementation NSExtension
 
-- (id)extensionHostContextForUUID:(void *)a1
+- (id)extensionHostContextForUUID:(void *)d
 {
-  if (a1)
+  if (d)
   {
-    v2 = [a1 _extensionContextForUUID:a2];
+    v2 = [d _extensionContextForUUID:a2];
     v3 = v2;
     if (v2)
     {
@@ -17,8 +17,8 @@
       {
         v5 = v4;
         v6 = [NEProcessIdentity alloc];
-        v7 = [v5 _xpcConnection];
-        v8 = [(NEProcessIdentity *)v6 initFromXPCConnection:v7];
+        _xpcConnection = [v5 _xpcConnection];
+        v8 = [(NEProcessIdentity *)v6 initFromXPCConnection:_xpcConnection];
         objc_setProperty_atomic(v3, v9, v8, 64);
 
         if (objc_getProperty(v3, v10, 64, 1))

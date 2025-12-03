@@ -3,24 +3,24 @@
 + (id)_toneSyncAnchorFilePath;
 + (id)_toneSyncMediaPath;
 + (id)_toneSyncPlistFolderPath;
-- (BOOL)installAsset:(id)a3 progressCallback:(id)a4 error:(id *)a5;
-- (BOOL)prepareForSyncWithHostAnchor:(id)a3 progressCallback:(id)a4 error:(id *)a5;
-- (BOOL)reconcileSync:(unsigned int)a3 withNewAnchor:(id)a4 progressCallback:(id)a5 error:(id *)a6;
+- (BOOL)installAsset:(id)asset progressCallback:(id)callback error:(id *)error;
+- (BOOL)prepareForSyncWithHostAnchor:(id)anchor progressCallback:(id)callback error:(id *)error;
+- (BOOL)reconcileSync:(unsigned int)sync withNewAnchor:(id)anchor progressCallback:(id)callback error:(id *)error;
 - (ToneSyncClient)init;
-- (id)_relativePathCorrespondingTo:(id)a3 relativeTo:(id)a4;
-- (id)_toneMetadataFromSyncOperation:(id)a3 syncIdentifier:(id)a4 valid:(BOOL *)a5;
+- (id)_relativePathCorrespondingTo:(id)to relativeTo:(id)relativeTo;
+- (id)_toneMetadataFromSyncOperation:(id)operation syncIdentifier:(id)identifier valid:(BOOL *)valid;
 - (id)currentSyncAnchor;
-- (id)enumeratePathsForBackupType:(int)a3 usingBlock:(id)a4;
+- (id)enumeratePathsForBackupType:(int)type usingBlock:(id)block;
 - (id)installedAssetMetrics;
 - (id)outstandingAssetTransfers;
-- (void)_processSyncOperation:(id)a3;
+- (void)_processSyncOperation:(id)operation;
 - (void)_removeSyncPlists;
-- (void)_writeSyncAnchor:(id)a3;
-- (void)assetTransfer:(id)a3 succeeded:(BOOL)a4 withError:(id)a5;
-- (void)assetTransferEndedWithSuccess:(BOOL)a3;
+- (void)_writeSyncAnchor:(id)anchor;
+- (void)assetTransfer:(id)transfer succeeded:(BOOL)succeeded withError:(id)error;
+- (void)assetTransferEndedWithSuccess:(BOOL)success;
 - (void)clearSyncData;
-- (void)pathsToBackup:(id *)a3 pathsNotToBackup:(id *)a4;
-- (void)syncEndedWithSuccess:(BOOL)a3;
+- (void)pathsToBackup:(id *)backup pathsNotToBackup:(id *)toBackup;
+- (void)syncEndedWithSuccess:(BOOL)success;
 @end
 
 @implementation ToneSyncClient
@@ -47,8 +47,8 @@
 - (id)currentSyncAnchor
 {
   v2 = [NSDictionary alloc];
-  v3 = [objc_opt_class() _toneSyncAnchorFilePath];
-  v4 = [v2 initWithContentsOfFile:v3];
+  _toneSyncAnchorFilePath = [objc_opt_class() _toneSyncAnchorFilePath];
+  v4 = [v2 initWithContentsOfFile:_toneSyncAnchorFilePath];
 
   v5 = v4;
   objc_opt_class();
@@ -118,9 +118,9 @@
   return v13;
 }
 
-- (BOOL)prepareForSyncWithHostAnchor:(id)a3 progressCallback:(id)a4 error:(id *)a5
+- (BOOL)prepareForSyncWithHostAnchor:(id)anchor progressCallback:(id)callback error:(id *)error
 {
-  v7 = a3;
+  anchorCopy = anchor;
   v8 = _ATLogCategorySyncBundle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -128,7 +128,7 @@
     *buf = 138543618;
     v32 = v9;
     v33 = 2114;
-    v34 = v7;
+    v34 = anchorCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%{public}@, host anchor: %{public}@", buf, 0x16u);
   }
 
@@ -140,7 +140,7 @@
   if (v11 == &dword_0 + 1)
   {
     v23 = v12;
-    v24 = v7;
+    v24 = anchorCopy;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
@@ -186,7 +186,7 @@
     [(ToneSyncClient *)self _writeSyncAnchor:@"0"];
     [(TLToneManager *)self->_toneManager _registerDidRequestResetSyncPostAccidentalToneDeletion];
     v13 = v23;
-    v7 = v24;
+    anchorCopy = v24;
   }
 
   [(NSMutableArray *)self->_uploadAssets removeAllObjects:v23];
@@ -195,9 +195,9 @@
   return 1;
 }
 
-- (BOOL)reconcileSync:(unsigned int)a3 withNewAnchor:(id)a4 progressCallback:(id)a5 error:(id *)a6
+- (BOOL)reconcileSync:(unsigned int)sync withNewAnchor:(id)anchor progressCallback:(id)callback error:(id *)error
 {
-  v35 = a4;
+  anchorCopy = anchor;
   v9 = _ATLogCategorySyncBundle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -205,9 +205,9 @@
     *buf = 138543874;
     v54 = v10;
     v55 = 1024;
-    *v56 = a3;
+    *v56 = sync;
     *&v56[4] = 2114;
-    *&v56[6] = v35;
+    *&v56[6] = anchorCopy;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "%{public}@, sync type: %u, reconciled anchor: %{public}@", buf, 0x1Cu);
   }
 
@@ -233,8 +233,8 @@
 
         v42 = i;
         v14 = *(*(&v47 + 1) + 8 * i);
-        v15 = [objc_opt_class() _toneSyncPlistFolderPath];
-        v16 = [v15 stringByAppendingPathComponent:v14];
+        _toneSyncPlistFolderPath = [objc_opt_class() _toneSyncPlistFolderPath];
+        v16 = [_toneSyncPlistFolderPath stringByAppendingPathComponent:v14];
 
         v41 = [[NSDictionary alloc] initWithContentsOfFile:v16];
         v17 = [v41 objectForKey:@"operations"];
@@ -350,7 +350,7 @@
     while (v38);
   }
 
-  [(ToneSyncClient *)self _writeSyncAnchor:v35];
+  [(ToneSyncClient *)self _writeSyncAnchor:anchorCopy];
   return 1;
 }
 
@@ -358,8 +358,8 @@
 {
   v25 = +[NSMutableArray array];
   [v25 addObjectsFromArray:self->_uploadAssets];
-  v29 = [(TLToneManager *)self->_toneManager _allSyncedTones];
-  [v29 allKeys];
+  _allSyncedTones = [(TLToneManager *)self->_toneManager _allSyncedTones];
+  [_allSyncedTones allKeys];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -386,23 +386,23 @@
         }
 
         v9 = *(*(&v31 + 1) + 8 * v8);
-        v10 = [(TLToneManager *)self->_toneManager _iTunesRingtoneDirectory];
-        v11 = [v7[61] defaultManager];
-        v12 = [v10 stringByAppendingPathComponent:v9];
-        v13 = [v11 fileExistsAtPath:v12];
+        _iTunesRingtoneDirectory = [(TLToneManager *)self->_toneManager _iTunesRingtoneDirectory];
+        defaultManager = [v7[61] defaultManager];
+        v12 = [_iTunesRingtoneDirectory stringByAppendingPathComponent:v9];
+        v13 = [defaultManager fileExistsAtPath:v12];
 
         if ((v13 & 1) == 0)
         {
-          v14 = [v29 objectForKey:v9];
+          v14 = [_allSyncedTones objectForKey:v9];
           v15 = [v14 objectForKey:v28];
           v16 = [v14 objectForKey:v27];
           if (v15)
           {
             v17 = v6;
-            v18 = self;
+            selfCopy = self;
             v19 = v7;
-            v20 = [v15 stringValue];
-            v21 = [ATAsset downloadAssetWithIdentifier:v20 dataclass:@"Ringtone" prettyName:v16];
+            stringValue = [v15 stringValue];
+            v21 = [ATAsset downloadAssetWithIdentifier:stringValue dataclass:@"Ringtone" prettyName:v16];
 
             if (v21)
             {
@@ -410,7 +410,7 @@
             }
 
             v7 = v19;
-            self = v18;
+            self = selfCopy;
             v6 = v17;
             v5 = v26;
           }
@@ -448,56 +448,56 @@
   return v25;
 }
 
-- (void)assetTransfer:(id)a3 succeeded:(BOOL)a4 withError:(id)a5
+- (void)assetTransfer:(id)transfer succeeded:(BOOL)succeeded withError:(id)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  succeededCopy = succeeded;
+  transferCopy = transfer;
+  errorCopy = error;
   v10 = _ATLogCategorySyncBundle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v24 = 138543618;
-    v25 = v8;
+    v25 = transferCopy;
     v26 = 2114;
-    v27 = v9;
+    v27 = errorCopy;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "assetTransfer complete for. asset=%{public}@. error=%{public}@", &v24, 0x16u);
   }
 
-  if (v6)
+  if (succeededCopy)
   {
-    v11 = [v8 isDownload];
+    isDownload = [transferCopy isDownload];
     toneManager = self->_toneManager;
-    if (v11)
+    if (isDownload)
     {
-      v13 = [(TLToneManager *)self->_toneManager _allSyncedTones];
-      v14 = [v8 identifier];
-      v15 = [v13 objectForKey:v14];
+      _allSyncedTones = [(TLToneManager *)self->_toneManager _allSyncedTones];
+      identifier = [transferCopy identifier];
+      v15 = [_allSyncedTones objectForKey:identifier];
 
       v16 = self->_toneManager;
-      v17 = [v8 identifier];
-      v18 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v17 longLongValue]);
+      identifier2 = [transferCopy identifier];
+      v18 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [identifier2 longLongValue]);
       [(TLToneManager *)v16 _removeToneWithSyncIdentifier:v18];
 
       v19 = self->_toneManager;
-      v20 = [v8 path];
-      v21 = [v20 lastPathComponent];
-      [(TLToneManager *)v19 _importSyncedToneWithMetadata:v15 fileName:v21];
+      path = [transferCopy path];
+      lastPathComponent = [path lastPathComponent];
+      [(TLToneManager *)v19 _importSyncedToneWithMetadata:v15 fileName:lastPathComponent];
     }
 
     else
     {
-      v22 = [v8 path];
-      v23 = [v22 lastPathComponent];
-      [(TLToneManager *)toneManager _transferPurchasedToITunes:v23];
+      path2 = [transferCopy path];
+      lastPathComponent2 = [path2 lastPathComponent];
+      [(TLToneManager *)toneManager _transferPurchasedToITunes:lastPathComponent2];
 
-      [(NSMutableArray *)self->_uploadAssets removeObject:v8];
+      [(NSMutableArray *)self->_uploadAssets removeObject:transferCopy];
     }
   }
 }
 
-- (void)assetTransferEndedWithSuccess:(BOOL)a3
+- (void)assetTransferEndedWithSuccess:(BOOL)success
 {
-  v3 = a3;
+  successCopy = success;
   v6 = _ATLogCategorySyncBundle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -505,17 +505,17 @@
     v8 = 138543618;
     v9 = v7;
     v10 = 1024;
-    v11 = v3;
+    v11 = successCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%{public}@, success: %{BOOL}d", &v8, 0x12u);
   }
 
-  if (v3)
+  if (successCopy)
   {
     [(ToneSyncClient *)self _removeSyncPlists];
   }
 }
 
-- (BOOL)installAsset:(id)a3 progressCallback:(id)a4 error:(id *)a5
+- (BOOL)installAsset:(id)asset progressCallback:(id)callback error:(id *)error
 {
   v6 = _ATLogCategorySyncBundle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -529,9 +529,9 @@
   return 1;
 }
 
-- (void)syncEndedWithSuccess:(BOOL)a3
+- (void)syncEndedWithSuccess:(BOOL)success
 {
-  v3 = a3;
+  successCopy = success;
   v5 = _ATLogCategorySyncBundle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -539,7 +539,7 @@
     v7 = 138543618;
     v8 = v6;
     v9 = 1024;
-    v10 = v3;
+    v10 = successCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%{public}@, success: %{BOOL}d", &v7, 0x12u);
   }
 }
@@ -559,45 +559,45 @@
   v6 = _ATLogCategorySyncBundle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [objc_opt_class() _toneSyncAnchorFilePath];
+    _toneSyncAnchorFilePath = [objc_opt_class() _toneSyncAnchorFilePath];
     v10 = 138543362;
-    v11 = v7;
+    v11 = _toneSyncAnchorFilePath;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Removing sync anchor at %{public}@", &v10, 0xCu);
   }
 
   v8 = +[NSFileManager defaultManager];
-  v9 = [objc_opt_class() _toneSyncAnchorFilePath];
-  [v8 removeItemAtPath:v9 error:0];
+  _toneSyncAnchorFilePath2 = [objc_opt_class() _toneSyncAnchorFilePath];
+  [v8 removeItemAtPath:_toneSyncAnchorFilePath2 error:0];
 }
 
 - (id)installedAssetMetrics
 {
-  v3 = [(TLToneManager *)self->_toneManager _installedTonesSize];
-  v4 = [(TLToneManager *)self->_toneManager _installedTones];
-  v5 = [v4 count];
+  _installedTonesSize = [(TLToneManager *)self->_toneManager _installedTonesSize];
+  _installedTones = [(TLToneManager *)self->_toneManager _installedTones];
+  v5 = [_installedTones count];
 
   v10[0] = @"_Count";
   v6 = [NSNumber numberWithLongLong:v5];
   v10[1] = @"_PhysicalSize";
   v11[0] = v6;
-  v7 = [NSNumber numberWithLongLong:v3];
+  v7 = [NSNumber numberWithLongLong:_installedTonesSize];
   v11[1] = v7;
   v8 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:2];
 
   return v8;
 }
 
-- (id)enumeratePathsForBackupType:(int)a3 usingBlock:(id)a4
+- (id)enumeratePathsForBackupType:(int)type usingBlock:(id)block
 {
-  v6 = a4;
-  if (a3 > 3)
+  blockCopy = block;
+  if (type > 3)
   {
     v36 = 0;
   }
 
   else
   {
-    v36 = *(&off_82A8 + a3);
+    v36 = *(&off_82A8 + type);
   }
 
   v7 = _ATLogCategorySyncBundle();
@@ -619,20 +619,20 @@
   v43[2] = sub_2540;
   v43[3] = &unk_8260;
   v43[4] = self;
-  v45 = v6;
+  v45 = blockCopy;
   v46 = buf;
   v35 = v45;
   v44 = v36;
   v8 = objc_retainBlock(v43);
-  v9 = [(TLToneManager *)self->_toneManager _installedTones];
-  v10 = [(TLToneManager *)self->_toneManager _rootDirectory];
-  v38 = [v10 stringByAppendingString:@"/"];
+  _installedTones = [(TLToneManager *)self->_toneManager _installedTones];
+  _rootDirectory = [(TLToneManager *)self->_toneManager _rootDirectory];
+  v38 = [_rootDirectory stringByAppendingString:@"/"];
 
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v9;
+  obj = _installedTones;
   v11 = [obj countByEnumeratingWithState:&v39 objects:v51 count:16];
   if (v11)
   {
@@ -647,16 +647,16 @@ LABEL_8:
       }
 
       v14 = *(*(&v39 + 1) + 8 * v13);
-      v15 = [v14 isPurchased];
+      isPurchased = [v14 isPurchased];
       v16 = *&buf[8];
-      if (v15 && (*(*&buf[8] + 24) & 1) == 0)
+      if (isPurchased && (*(*&buf[8] + 24) & 1) == 0)
       {
-        v17 = [v14 syncIdentifier];
-        v18 = [v17 stringValue];
-        v19 = [NSString stringWithFormat:@"%@.plist", v18, v35];
+        syncIdentifier = [v14 syncIdentifier];
+        stringValue = [syncIdentifier stringValue];
+        v19 = [NSString stringWithFormat:@"%@.plist", stringValue, v35];
 
-        v20 = [(TLToneManager *)self->_toneManager _deviceITunesRingtoneDirectory];
-        v21 = [v20 stringByAppendingPathComponent:v19];
+        _deviceITunesRingtoneDirectory = [(TLToneManager *)self->_toneManager _deviceITunesRingtoneDirectory];
+        v21 = [_deviceITunesRingtoneDirectory stringByAppendingPathComponent:v19];
 
         v22 = [(ToneSyncClient *)self _relativePathCorrespondingTo:v21 relativeTo:v38];
 
@@ -668,11 +668,11 @@ LABEL_8:
         v16 = *&buf[8];
         if ((*(*&buf[8] + 24) & 1) == 0)
         {
-          v23 = [v14 artworkFile];
-          if (v23)
+          artworkFile = [v14 artworkFile];
+          if (artworkFile)
           {
-            v24 = [(TLToneManager *)self->_toneManager _deviceITunesRingtoneDirectory];
-            v25 = [v24 stringByAppendingPathComponent:v23];
+            _deviceITunesRingtoneDirectory2 = [(TLToneManager *)self->_toneManager _deviceITunesRingtoneDirectory];
+            v25 = [_deviceITunesRingtoneDirectory2 stringByAppendingPathComponent:artworkFile];
 
             v26 = [(ToneSyncClient *)self _relativePathCorrespondingTo:v25 relativeTo:v38];
 
@@ -691,8 +691,8 @@ LABEL_8:
         break;
       }
 
-      v27 = [v14 filePath];
-      v28 = [(ToneSyncClient *)self _relativePathCorrespondingTo:v27 relativeTo:v38];
+      filePath = [v14 filePath];
+      v28 = [(ToneSyncClient *)self _relativePathCorrespondingTo:filePath relativeTo:v38];
 
       if (v28)
       {
@@ -719,8 +719,8 @@ LABEL_8:
 
   if ((*(*&buf[8] + 24) & 1) == 0)
   {
-    v29 = [(TLToneManager *)self->_toneManager _deviceITunesRingtoneInformationPlist];
-    v30 = [(ToneSyncClient *)self _relativePathCorrespondingTo:v29 relativeTo:v38];
+    _deviceITunesRingtoneInformationPlist = [(TLToneManager *)self->_toneManager _deviceITunesRingtoneInformationPlist];
+    v30 = [(ToneSyncClient *)self _relativePathCorrespondingTo:_deviceITunesRingtoneInformationPlist relativeTo:v38];
 
     if (v30)
     {
@@ -729,8 +729,8 @@ LABEL_8:
 
     if ((*(*&buf[8] + 24) & 1) == 0)
     {
-      v31 = [(TLToneManager *)self->_toneManager _iTunesRingtoneInformationPlist];
-      v32 = [(ToneSyncClient *)self _relativePathCorrespondingTo:v31 relativeTo:v38];
+      _iTunesRingtoneInformationPlist = [(TLToneManager *)self->_toneManager _iTunesRingtoneInformationPlist];
+      v32 = [(ToneSyncClient *)self _relativePathCorrespondingTo:_iTunesRingtoneInformationPlist relativeTo:v38];
 
       if (v32)
       {
@@ -743,7 +743,7 @@ LABEL_8:
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
         {
           *v47 = 138543618;
-          v48 = self;
+          selfCopy = self;
           v49 = 2114;
           v50 = v36;
           _os_log_impl(&dword_0, v33, OS_LOG_TYPE_DEFAULT, "%{public}@: Successfully completed enumeration of paths for backup of type %{public}@.", v47, 0x16u);
@@ -756,7 +756,7 @@ LABEL_8:
   return 0;
 }
 
-- (void)pathsToBackup:(id *)a3 pathsNotToBackup:(id *)a4
+- (void)pathsToBackup:(id *)backup pathsNotToBackup:(id *)toBackup
 {
   v18 = 0;
   v19 = &v18;
@@ -798,8 +798,8 @@ LABEL_8:
     }
   }
 
-  *a3 = v19[5];
-  *a4 = v13[5];
+  *backup = v19[5];
+  *toBackup = v13[5];
   _Block_object_dispose(&v12, 8);
 
   _Block_object_dispose(&v18, 8);
@@ -826,10 +826,10 @@ LABEL_8:
   return [v2 stringByAppendingPathComponent:@"Media"];
 }
 
-- (id)_relativePathCorrespondingTo:(id)a3 relativeTo:(id)a4
+- (id)_relativePathCorrespondingTo:(id)to relativeTo:(id)relativeTo
 {
-  v5 = a3;
-  v6 = [v5 rangeOfString:a4];
+  toCopy = to;
+  v6 = [toCopy rangeOfString:relativeTo];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 0;
@@ -837,7 +837,7 @@ LABEL_8:
 
   else
   {
-    v8 = [v5 substringFromIndex:&v6[v7]];
+    v8 = [toCopy substringFromIndex:&v6[v7]];
   }
 
   return v8;
@@ -847,9 +847,9 @@ LABEL_8:
 {
   v3 = +[NSMutableArray array];
   v4 = +[NSFileManager defaultManager];
-  v5 = [a1 _toneSyncPlistFolderPath];
+  _toneSyncPlistFolderPath = [self _toneSyncPlistFolderPath];
   v19 = 0;
-  v6 = [v4 contentsOfDirectoryAtPath:v5 error:&v19];
+  v6 = [v4 contentsOfDirectoryAtPath:_toneSyncPlistFolderPath error:&v19];
   v7 = v19;
 
   if (v6)
@@ -892,10 +892,10 @@ LABEL_8:
   return v3;
 }
 
-- (void)_processSyncOperation:(id)a3
+- (void)_processSyncOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"operation"];
+  operationCopy = operation;
+  v5 = [operationCopy objectForKey:@"operation"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -913,7 +913,7 @@ LABEL_8:
   {
     if ([v7 isEqualToString:@"insert_track"])
     {
-      v8 = [v4 objectForKey:@"pid"];
+      v8 = [operationCopy objectForKey:@"pid"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -935,7 +935,7 @@ LABEL_8:
         if (!v11)
         {
           v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lld", [v10 longLongValue]);
-          v13 = [(ToneSyncClient *)self _toneMetadataFromSyncOperation:v4 syncIdentifier:v10 valid:&v32];
+          v13 = [(ToneSyncClient *)self _toneMetadataFromSyncOperation:operationCopy syncIdentifier:v10 valid:&v32];
           if (v32 == 1)
           {
             [(TLToneManager *)self->_toneManager _importSyncedToneWithMetadata:v13 fileName:v12];
@@ -956,7 +956,7 @@ LABEL_8:
 
     if ([v7 isEqualToString:@"delete_track"])
     {
-      v15 = [v4 objectForKey:@"pid"];
+      v15 = [operationCopy objectForKey:@"pid"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -978,7 +978,7 @@ LABEL_8:
 
     if ([v7 isEqualToString:@"upload_track"])
     {
-      v18 = [v4 objectForKey:@"pid"];
+      v18 = [operationCopy objectForKey:@"pid"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -998,15 +998,15 @@ LABEL_8:
         v22 = v21;
         if (v21)
         {
-          v23 = [v21 filePath];
-          v24 = [objc_opt_class() _toneSyncMediaPath];
-          v25 = [(ToneSyncClient *)self _relativePathCorrespondingTo:v23 relativeTo:v24];
+          filePath = [v21 filePath];
+          _toneSyncMediaPath = [objc_opt_class() _toneSyncMediaPath];
+          v25 = [(ToneSyncClient *)self _relativePathCorrespondingTo:filePath relativeTo:_toneSyncMediaPath];
 
           if (v25)
           {
             v26 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lld", [v20 longLongValue]);
-            v27 = [v22 name];
-            v28 = [ATAsset uploadAssetWithIdentifier:v26 dataclass:@"Ringtone" sourcePath:v25 prettyName:v27];
+            name = [v22 name];
+            v28 = [ATAsset uploadAssetWithIdentifier:v26 dataclass:@"Ringtone" sourcePath:v25 prettyName:name];
 
             if (v28)
             {
@@ -1031,9 +1031,9 @@ LABEL_8:
           v25 = _ATLogCategorySyncBundle();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
           {
-            v31 = [v20 longLongValue];
+            longLongValue = [v20 longLongValue];
             *buf = 134217984;
-            v34 = v31;
+            v34 = longLongValue;
             _os_log_impl(&dword_0, v25, OS_LOG_TYPE_ERROR, "Could not find tone for syncIdentifier: %lld", buf, 0xCu);
           }
         }
@@ -1057,12 +1057,12 @@ LABEL_8:
   }
 }
 
-- (id)_toneMetadataFromSyncOperation:(id)a3 syncIdentifier:(id)a4 valid:(BOOL *)a5
+- (id)_toneMetadataFromSyncOperation:(id)operation syncIdentifier:(id)identifier valid:(BOOL *)valid
 {
-  v7 = a3;
-  v8 = a4;
+  operationCopy = operation;
+  identifierCopy = identifier;
   v9 = +[NSMutableDictionary dictionary];
-  v10 = [v7 objectForKey:@"ringtone_info"];
+  v10 = [operationCopy objectForKey:@"ringtone_info"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1124,7 +1124,7 @@ LABEL_8:
     v54 = 0;
   }
 
-  v19 = [v7 objectForKey:@"item"];
+  v19 = [operationCopy objectForKey:@"item"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1159,7 +1159,7 @@ LABEL_8:
       [v9 setObject:v24 forKey:kToneTitleKey];
     }
 
-    v53 = v8;
+    v53 = identifierCopy;
     v25 = [v21 objectForKey:@"album"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1179,7 +1179,7 @@ LABEL_8:
       [v9 setObject:v27 forKey:kToneAlbumKey];
     }
 
-    v28 = [v21 objectForKey:{@"artist", a5}];
+    v28 = [v21 objectForKey:{@"artist", valid}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1250,18 +1250,18 @@ LABEL_8:
 
     v39 = v38;
 
-    v40 = [v39 BOOLValue];
-    if (v40)
+    bOOLValue = [v39 BOOLValue];
+    if (bOOLValue)
     {
       [v9 setObject:kToneMediaKindAlertTone forKey:kToneMediaKindKey];
     }
 
-    a5 = v52;
-    v8 = v53;
+    valid = v52;
+    identifierCopy = v53;
   }
 
-  [v9 setObject:v8 forKey:kToneSyncIdentifierKey];
-  v41 = [v7 objectForKey:@"store_info"];
+  [v9 setObject:identifierCopy forKey:kToneSyncIdentifierKey];
+  v41 = [operationCopy objectForKey:@"store_info"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1310,17 +1310,17 @@ LABEL_8:
 
     v49 = v48;
 
-    v50 = [v49 stringValue];
+    stringValue = [v49 stringValue];
 
-    if (v50)
+    if (stringValue)
     {
-      [v9 setObject:v50 forKey:kToneStoreFrontIdentifierKey];
+      [v9 setObject:stringValue forKey:kToneStoreFrontIdentifierKey];
     }
   }
 
-  if (a5)
+  if (valid)
   {
-    *a5 = v54;
+    *valid = v54;
   }
 
   return v9;
@@ -1332,8 +1332,8 @@ LABEL_8:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v2 = [objc_opt_class() _syncPlistPaths];
-  v3 = [v2 countByEnumeratingWithState:&v16 objects:v24 count:16];
+  _syncPlistPaths = [objc_opt_class() _syncPlistPaths];
+  v3 = [_syncPlistPaths countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1344,12 +1344,12 @@ LABEL_8:
       {
         if (*v17 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_syncPlistPaths);
         }
 
         v7 = *(*(&v16 + 1) + 8 * i);
-        v8 = [objc_opt_class() _toneSyncPlistFolderPath];
-        v9 = [v8 stringByAppendingPathComponent:v7];
+        _toneSyncPlistFolderPath = [objc_opt_class() _toneSyncPlistFolderPath];
+        v9 = [_toneSyncPlistFolderPath stringByAppendingPathComponent:v7];
 
         v10 = _ATLogCategorySyncBundle();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1378,20 +1378,20 @@ LABEL_8:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v16 objects:v24 count:16];
+      v4 = [_syncPlistPaths countByEnumeratingWithState:&v16 objects:v24 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)_writeSyncAnchor:(id)a3
+- (void)_writeSyncAnchor:(id)anchor
 {
-  v3 = a3;
-  if ([v3 length])
+  anchorCopy = anchor;
+  if ([anchorCopy length])
   {
     v9 = @"syncAnchor";
-    v10 = v3;
+    v10 = anchorCopy;
     v4 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     v5 = _ATLogCategorySyncBundle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1401,8 +1401,8 @@ LABEL_8:
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Writing sync anchor: %{public}@", &v7, 0xCu);
     }
 
-    v6 = [objc_opt_class() _toneSyncAnchorFilePath];
-    [v4 writeToFile:v6 atomically:1];
+    _toneSyncAnchorFilePath = [objc_opt_class() _toneSyncAnchorFilePath];
+    [v4 writeToFile:_toneSyncAnchorFilePath atomically:1];
   }
 }
 

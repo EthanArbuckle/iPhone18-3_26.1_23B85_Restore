@@ -1,24 +1,24 @@
 @interface EQKitOverlayBox
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)erasableBounds;
-- (EQKitOverlayBox)initWithBox:(id)a3 overlayBox:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (EQKitOverlayBox)initWithBox:(id)box overlayBox:(id)overlayBox;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)renderIntoContext:(CGContext *)a3 offset:(CGPoint)a4;
+- (void)renderIntoContext:(CGContext *)context offset:(CGPoint)offset;
 @end
 
 @implementation EQKitOverlayBox
 
-- (EQKitOverlayBox)initWithBox:(id)a3 overlayBox:(id)a4
+- (EQKitOverlayBox)initWithBox:(id)box overlayBox:(id)overlayBox
 {
   v8.receiver = self;
   v8.super_class = EQKitOverlayBox;
   v6 = [(EQKitOverlayBox *)&v8 init];
   if (v6)
   {
-    v6->mBox = a3;
-    v6->mOverlayBox = a4;
+    v6->mBox = box;
+    v6->mOverlayBox = overlayBox;
   }
 
   return v6;
@@ -51,57 +51,57 @@
   return CGRectUnion(*&v19, *&v12);
 }
 
-- (void)renderIntoContext:(CGContext *)a3 offset:(CGPoint)a4
+- (void)renderIntoContext:(CGContext *)context offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v8.receiver = self;
   v8.super_class = EQKitOverlayBox;
   [EQKitBox renderIntoContext:sel_renderIntoContext_offset_ offset:?];
-  [(EQKitBox *)self->mBox renderIntoContext:a3 offset:x, y];
-  [(EQKitBox *)self->mOverlayBox renderIntoContext:a3 offset:x, y];
+  [(EQKitBox *)self->mBox renderIntoContext:context offset:x, y];
+  [(EQKitBox *)self->mOverlayBox renderIntoContext:context offset:x, y];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = [(EQKitOverlayBox *)self box];
-  v6 = [(EQKitOverlayBox *)self overlayBox];
+  overlayBox = [(EQKitOverlayBox *)self overlayBox];
 
-  return [v4 initWithBox:v5 overlayBox:v6];
+  return [v4 initWithBox:v5 overlayBox:overlayBox];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = self;
-  v4 = self == a3;
-  LOBYTE(self) = self == a3;
-  if (a3)
+  selfCopy = self;
+  v4 = self == equal;
+  LOBYTE(self) = self == equal;
+  if (equal)
   {
     if (!v4)
     {
-      LODWORD(self) = [a3 isMemberOfClass:objc_opt_class()];
+      LODWORD(self) = [equal isMemberOfClass:objc_opt_class()];
       if (self)
       {
-        v6 = [(EQKitOverlayBox *)v3 box];
-        self = [a3 box];
+        v6 = [(EQKitOverlayBox *)selfCopy box];
+        self = [equal box];
         if (v6 == self || (v7 = self, LOBYTE(self) = 0, v6) && v7 && (LODWORD(self) = [(EQKitOverlayBox *)v6 isEqual:?], self))
         {
-          v8 = [(EQKitOverlayBox *)v3 overlayBox];
-          self = [a3 overlayBox];
-          if (v8 == self)
+          overlayBox = [(EQKitOverlayBox *)selfCopy overlayBox];
+          self = [equal overlayBox];
+          if (overlayBox == self)
           {
             LOBYTE(self) = 1;
           }
 
           else
           {
-            v9 = self;
+            selfCopy2 = self;
             LOBYTE(self) = 0;
-            if (v8 && v9)
+            if (overlayBox && selfCopy2)
             {
 
-              LOBYTE(self) = [(EQKitOverlayBox *)v8 isEqual:?];
+              LOBYTE(self) = [(EQKitOverlayBox *)overlayBox isEqual:?];
             }
           }
         }

@@ -1,30 +1,30 @@
 @interface ICDeveloperTokenDefaultProvider
 + (ICDeveloperTokenDefaultProvider)sharedProvider;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (ICDeveloperTokenDefaultProvider)init;
-- (ICDeveloperTokenDefaultProvider)initWithCoder:(id)a3;
+- (ICDeveloperTokenDefaultProvider)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)_fetchDeveloperTokenWithClientInfo:(id)a3;
-- (void)fetchDeveloperTokenForClientInfo:(id)a3 completionHandler:(id)a4;
+- (void)_fetchDeveloperTokenWithClientInfo:(id)info;
+- (void)fetchDeveloperTokenForClientInfo:(id)info completionHandler:(id)handler;
 @end
 
 @implementation ICDeveloperTokenDefaultProvider
 
-- (void)_fetchDeveloperTokenWithClientInfo:(id)a3
+- (void)_fetchDeveloperTokenWithClientInfo:(id)info
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v4;
+    v14 = infoCopy;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ fetching developer token with clientInfo %{public}@", buf, 0x16u);
   }
 
-  v6 = [[ICDeveloperTokenFetchRequest alloc] initWithClientInfo:v4 options:0];
+  v6 = [[ICDeveloperTokenFetchRequest alloc] initWithClientInfo:infoCopy options:0];
   [(ICDeveloperTokenFetchRequest *)v6 setClientType:0];
   requestOperationQueue = self->_requestOperationQueue;
   v9[0] = MEMORY[0x1E69E9820];
@@ -32,8 +32,8 @@
   v9[2] = __70__ICDeveloperTokenDefaultProvider__fetchDeveloperTokenWithClientInfo___block_invoke;
   v9[3] = &unk_1E7BF4218;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = infoCopy;
+  v8 = infoCopy;
   [(ICDeveloperTokenFetchRequest *)v6 performRequestOnOperationQueue:requestOperationQueue withResponseHandler:v9];
 }
 
@@ -71,17 +71,17 @@ void __70__ICDeveloperTokenDefaultProvider__fetchDeveloperTokenWithClientInfo___
   [v7 enumerateObjectsUsingBlock:v13];
 }
 
-- (void)fetchDeveloperTokenForClientInfo:(id)a3 completionHandler:(id)a4
+- (void)fetchDeveloperTokenForClientInfo:(id)info completionHandler:(id)handler
 {
-  v6 = a4;
-  v13 = [a3 copy];
+  handlerCopy = handler;
+  v13 = [info copy];
   os_unfair_lock_lock(&self->_lock);
   v7 = [(NSMutableDictionary *)self->_pendingCompletionHandlers objectForKeyedSubscript:v13];
 
   if (v7)
   {
     v8 = [(NSMutableDictionary *)self->_pendingCompletionHandlers objectForKeyedSubscript:v13];
-    v9 = MEMORY[0x1B8C781E0](v6);
+    v9 = MEMORY[0x1B8C781E0](handlerCopy);
 
     [v8 addObject:v9];
     os_unfair_lock_unlock(&self->_lock);
@@ -89,11 +89,11 @@ void __70__ICDeveloperTokenDefaultProvider__fetchDeveloperTokenWithClientInfo___
 
   else
   {
-    v10 = [MEMORY[0x1E695DF70] array];
-    [(NSMutableDictionary *)self->_pendingCompletionHandlers setObject:v10 forKeyedSubscript:v13];
+    array = [MEMORY[0x1E695DF70] array];
+    [(NSMutableDictionary *)self->_pendingCompletionHandlers setObject:array forKeyedSubscript:v13];
 
     v11 = [(NSMutableDictionary *)self->_pendingCompletionHandlers objectForKeyedSubscript:v13];
-    v12 = MEMORY[0x1B8C781E0](v6);
+    v12 = MEMORY[0x1B8C781E0](handlerCopy);
 
     [v11 addObject:v12];
     os_unfair_lock_unlock(&self->_lock);
@@ -101,17 +101,17 @@ void __70__ICDeveloperTokenDefaultProvider__fetchDeveloperTokenWithClientInfo___
   }
 }
 
-- (ICDeveloperTokenDefaultProvider)initWithCoder:(id)a3
+- (ICDeveloperTokenDefaultProvider)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = ICDeveloperTokenDefaultProvider;
   return [(ICDeveloperTokenDefaultProvider *)&v4 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -121,7 +121,7 @@ void __70__ICDeveloperTokenDefaultProvider__fetchDeveloperTokenWithClientInfo___
     v5 = objc_opt_class();
     if ([(ICDeveloperTokenDefaultProvider *)self isMemberOfClass:v5])
     {
-      v6 = [(ICDeveloperTokenDefaultProvider *)v4 isMemberOfClass:v5];
+      v6 = [(ICDeveloperTokenDefaultProvider *)equalCopy isMemberOfClass:v5];
     }
 
     else
@@ -149,9 +149,9 @@ void __70__ICDeveloperTokenDefaultProvider__fetchDeveloperTokenWithClientInfo___
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     pendingCompletionHandlers = v3->_pendingCompletionHandlers;
-    v3->_pendingCompletionHandlers = v4;
+    v3->_pendingCompletionHandlers = dictionary;
 
     v6 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     requestOperationQueue = v3->_requestOperationQueue;

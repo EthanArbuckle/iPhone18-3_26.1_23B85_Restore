@@ -1,12 +1,12 @@
 @interface NonVisualEffectView
-- (NonVisualEffectView)initWithCoder:(id)a3;
-- (NonVisualEffectView)initWithEffect:(id)a3;
-- (NonVisualEffectView)initWithFrame:(CGRect)a3;
+- (NonVisualEffectView)initWithCoder:(id)coder;
+- (NonVisualEffectView)initWithEffect:(id)effect;
+- (NonVisualEffectView)initWithFrame:(CGRect)frame;
 - (UIView)contentView;
-- (void)_setCornerRadius:(double)a3;
-- (void)_setCornerRadius:(double)a3 continuous:(BOOL)a4 maskedCorners:(unint64_t)a5;
-- (void)setCustomBackgroundColor:(id)a3;
-- (void)setEffect:(id)a3;
+- (void)_setCornerRadius:(double)radius;
+- (void)_setCornerRadius:(double)radius continuous:(BOOL)continuous maskedCorners:(unint64_t)corners;
+- (void)setCustomBackgroundColor:(id)color;
+- (void)setEffect:(id)effect;
 - (void)updateTheme;
 @end
 
@@ -17,21 +17,21 @@
   v6.receiver = self;
   v6.super_class = NonVisualEffectView;
   [(MapsThemeView *)&v6 updateTheme];
-  v3 = [(NonVisualEffectView *)self customBackgroundColor];
+  customBackgroundColor = [(NonVisualEffectView *)self customBackgroundColor];
 
-  if (!v3)
+  if (!customBackgroundColor)
   {
-    v4 = [(NonVisualEffectView *)self theme];
-    v5 = [v4 controlBackgroundColor];
-    [(UIView *)self->_backgroundView setBackgroundColor:v5];
+    theme = [(NonVisualEffectView *)self theme];
+    controlBackgroundColor = [theme controlBackgroundColor];
+    [(UIView *)self->_backgroundView setBackgroundColor:controlBackgroundColor];
   }
 }
 
-- (void)setCustomBackgroundColor:(id)a3
+- (void)setCustomBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = self->_customBackgroundColor;
-  v6 = v4;
+  v6 = colorCopy;
   if (v6 | v5)
   {
     v12 = v6;
@@ -51,9 +51,9 @@
 
       else
       {
-        v10 = [(NonVisualEffectView *)self theme];
-        v11 = [v10 controlBackgroundColor];
-        [(NonVisualEffectView *)self setBackgroundColor:v11];
+        theme = [(NonVisualEffectView *)self theme];
+        controlBackgroundColor = [theme controlBackgroundColor];
+        [(NonVisualEffectView *)self setBackgroundColor:controlBackgroundColor];
       }
 
       v6 = v12;
@@ -61,16 +61,16 @@
   }
 }
 
-- (void)_setCornerRadius:(double)a3 continuous:(BOOL)a4 maskedCorners:(unint64_t)a5
+- (void)_setCornerRadius:(double)radius continuous:(BOOL)continuous maskedCorners:(unint64_t)corners
 {
-  v6 = a4;
-  self->_cornerRadius = a3;
+  continuousCopy = continuous;
+  self->_cornerRadius = radius;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(NonVisualEffectView *)self subviews];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  subviews = [(NonVisualEffectView *)self subviews];
+  v9 = [subviews countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -81,42 +81,42 @@
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(subviews);
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
-        v14 = [v13 layer];
-        [v14 setMaskedCorners:a5];
+        layer = [v13 layer];
+        [layer setMaskedCorners:corners];
 
-        if (v6)
+        if (continuousCopy)
         {
-          [v13 _setContinuousCornerRadius:a3];
+          [v13 _setContinuousCornerRadius:radius];
         }
 
         else
         {
-          [v13 _setCornerRadius:a3];
+          [v13 _setCornerRadius:radius];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [subviews countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)_setCornerRadius:(double)a3
+- (void)_setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(NonVisualEffectView *)self subviews];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    subviews = [(NonVisualEffectView *)self subviews];
+    v5 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -127,13 +127,13 @@
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(subviews);
           }
 
-          [*(*(&v9 + 1) + 8 * i) _setCornerRadius:a3];
+          [*(*(&v9 + 1) + 8 * i) _setCornerRadius:radius];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -141,15 +141,15 @@
   }
 }
 
-- (void)setEffect:(id)a3
+- (void)setEffect:(id)effect
 {
-  v4 = a3;
+  effectCopy = effect;
   effect = self->_effect;
-  if (effect != v4)
+  if (effect != effectCopy)
   {
-    v16 = v4;
-    v6 = [(UIVisualEffect *)effect isEqual:v4];
-    v4 = v16;
+    v16 = effectCopy;
+    v6 = [(UIVisualEffect *)effect isEqual:effectCopy];
+    effectCopy = v16;
     if ((v6 & 1) == 0)
     {
       v7 = [(UIVisualEffect *)v16 copy];
@@ -170,9 +170,9 @@
           [(UIView *)self->_backgroundView setAutoresizingMask:18];
           [(UIView *)self->_backgroundView _setCornerRadius:self->_cornerRadius];
           [(UIView *)self->_backgroundView setClipsToBounds:1];
-          v14 = [(NonVisualEffectView *)self theme];
-          v15 = [v14 controlBackgroundColor];
-          [(UIView *)self->_backgroundView setBackgroundColor:v15];
+          theme = [(NonVisualEffectView *)self theme];
+          controlBackgroundColor = [theme controlBackgroundColor];
+          [(UIView *)self->_backgroundView setBackgroundColor:controlBackgroundColor];
 
           [(NonVisualEffectView *)self insertSubview:self->_backgroundView atIndex:0];
           goto LABEL_9;
@@ -188,7 +188,7 @@
 
       [(UIView *)backgroundView setHidden:v10];
 LABEL_9:
-      v4 = v16;
+      effectCopy = v16;
     }
   }
 }
@@ -214,7 +214,7 @@ LABEL_9:
   return contentView;
 }
 
-- (NonVisualEffectView)initWithCoder:(id)a3
+- (NonVisualEffectView)initWithCoder:(id)coder
 {
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
@@ -224,9 +224,9 @@ LABEL_9:
   return [(NonVisualEffectView *)self initWithEffect:0];
 }
 
-- (NonVisualEffectView)initWithEffect:(id)a3
+- (NonVisualEffectView)initWithEffect:(id)effect
 {
-  v4 = a3;
+  effectCopy = effect;
   v8.receiver = self;
   v8.super_class = NonVisualEffectView;
   v5 = [(NonVisualEffectView *)&v8 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
@@ -234,18 +234,18 @@ LABEL_9:
   if (v5)
   {
     [(NonVisualEffectView *)v5 setAutoresizesSubviews:1];
-    [(NonVisualEffectView *)v6 setEffect:v4];
+    [(NonVisualEffectView *)v6 setEffect:effectCopy];
   }
 
   return v6;
 }
 
-- (NonVisualEffectView)initWithFrame:(CGRect)a3
+- (NonVisualEffectView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = [(NonVisualEffectView *)self initWithEffect:0];
   v8 = v7;
   if (v7)

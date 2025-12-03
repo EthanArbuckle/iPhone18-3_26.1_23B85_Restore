@@ -1,424 +1,424 @@
 @interface SiriContextOverride
-- (BOOL)accessibilityShortcutEnabledForSystemState:(id)a3;
-- (BOOL)carDNDActiveForSystemState:(id)a3;
-- (BOOL)deviceIsBlockedForSystemState:(id)a3;
-- (BOOL)deviceIsPasscodeLockedForSystemState:(id)a3;
-- (BOOL)hasUnlockedSinceBootForSystemState:(id)a3;
-- (BOOL)isConnectedToCarPlayForSystemState:(id)a3;
-- (BOOL)isConnectedToTrustedCarPlayForSystemState:(id)a3;
-- (BOOL)isPadForSystemState:(id)a3;
-- (BOOL)pocketStateShouldPreventVoiceTriggerForSystemState:(id)a3;
-- (BOOL)siriIsEnabledForSystemState:(id)a3;
-- (BOOL)siriIsRestrictedForSystemState:(id)a3;
-- (BOOL)siriIsSupportedForSystemState:(id)a3;
-- (BOOL)smartCoverClosedForSystemState:(id)a3;
-- (SiriContextOverride)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)currentSpokenLanguageCodeForSystemState:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)accessibilityShortcutEnabledForSystemState:(id)state;
+- (BOOL)carDNDActiveForSystemState:(id)state;
+- (BOOL)deviceIsBlockedForSystemState:(id)state;
+- (BOOL)deviceIsPasscodeLockedForSystemState:(id)state;
+- (BOOL)hasUnlockedSinceBootForSystemState:(id)state;
+- (BOOL)isConnectedToCarPlayForSystemState:(id)state;
+- (BOOL)isConnectedToTrustedCarPlayForSystemState:(id)state;
+- (BOOL)isPadForSystemState:(id)state;
+- (BOOL)pocketStateShouldPreventVoiceTriggerForSystemState:(id)state;
+- (BOOL)siriIsEnabledForSystemState:(id)state;
+- (BOOL)siriIsRestrictedForSystemState:(id)state;
+- (BOOL)siriIsSupportedForSystemState:(id)state;
+- (BOOL)smartCoverClosedForSystemState:(id)state;
+- (SiriContextOverride)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)currentSpokenLanguageCodeForSystemState:(id)state;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SiriContextOverride
 
-- (id)currentSpokenLanguageCodeForSystemState:(id)a3
+- (id)currentSpokenLanguageCodeForSystemState:(id)state
 {
-  v4 = a3;
-  v5 = [(SiriContextOverride *)self currentSpokenLanguageCode];
-  if (v5)
+  stateCopy = state;
+  currentSpokenLanguageCode = [(SiriContextOverride *)self currentSpokenLanguageCode];
+  if (currentSpokenLanguageCode)
   {
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = v4;
+    selfCopy = stateCopy;
   }
 
-  v7 = [(SiriContextOverride *)v6 currentSpokenLanguageCode];
+  currentSpokenLanguageCode2 = [(SiriContextOverride *)selfCopy currentSpokenLanguageCode];
 
-  return v7;
+  return currentSpokenLanguageCode2;
 }
 
-- (BOOL)hasUnlockedSinceBootForSystemState:(id)a3
+- (BOOL)hasUnlockedSinceBootForSystemState:(id)state
 {
-  v4 = a3;
-  v5 = [(SiriContextOverride *)self unlockedSinceBoot];
-  if (v5)
+  stateCopy = state;
+  unlockedSinceBoot = [(SiriContextOverride *)self unlockedSinceBoot];
+  if (unlockedSinceBoot)
   {
-    v6 = [(SiriContextOverride *)self unlockedSinceBoot];
-    v7 = [v6 BOOLValue];
+    unlockedSinceBoot2 = [(SiriContextOverride *)self unlockedSinceBoot];
+    bOOLValue = [unlockedSinceBoot2 BOOLValue];
   }
 
   else
   {
-    v7 = [v4 hasUnlockedSinceBoot];
+    bOOLValue = [stateCopy hasUnlockedSinceBoot];
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)deviceIsBlockedForSystemState:(id)a3
+- (BOOL)deviceIsBlockedForSystemState:(id)state
 {
-  v4 = a3;
-  v5 = [(SiriContextOverride *)self deviceIsBlocked];
-  if (v5)
+  stateCopy = state;
+  deviceIsBlocked = [(SiriContextOverride *)self deviceIsBlocked];
+  if (deviceIsBlocked)
   {
-    v6 = [(SiriContextOverride *)self deviceIsBlocked];
-    v7 = [v6 BOOLValue];
+    deviceIsBlocked2 = [(SiriContextOverride *)self deviceIsBlocked];
+    bOOLValue = [deviceIsBlocked2 BOOLValue];
   }
 
   else
   {
-    v7 = [v4 deviceIsBlocked];
+    bOOLValue = [stateCopy deviceIsBlocked];
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)deviceIsPasscodeLockedForSystemState:(id)a3
+- (BOOL)deviceIsPasscodeLockedForSystemState:(id)state
 {
-  v4 = a3;
-  v5 = [(SiriContextOverride *)self deviceIsPasscodeLocked];
-  if (v5)
+  stateCopy = state;
+  deviceIsPasscodeLocked = [(SiriContextOverride *)self deviceIsPasscodeLocked];
+  if (deviceIsPasscodeLocked)
   {
-    v6 = [(SiriContextOverride *)self deviceIsPasscodeLocked];
-    v7 = [v6 BOOLValue];
+    deviceIsPasscodeLocked2 = [(SiriContextOverride *)self deviceIsPasscodeLocked];
+    bOOLValue = [deviceIsPasscodeLocked2 BOOLValue];
   }
 
   else
   {
-    v7 = [v4 deviceIsPasscodeLocked];
+    bOOLValue = [stateCopy deviceIsPasscodeLocked];
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)pocketStateShouldPreventVoiceTriggerForSystemState:(id)a3
+- (BOOL)pocketStateShouldPreventVoiceTriggerForSystemState:(id)state
 {
-  v4 = [(SiriContextOverride *)self pocketStateShouldPreventVoiceTrigger];
-  if (v4)
+  pocketStateShouldPreventVoiceTrigger = [(SiriContextOverride *)self pocketStateShouldPreventVoiceTrigger];
+  if (pocketStateShouldPreventVoiceTrigger)
   {
-    v5 = [(SiriContextOverride *)self pocketStateShouldPreventVoiceTrigger];
-    v6 = [v5 BOOLValue];
+    pocketStateShouldPreventVoiceTrigger2 = [(SiriContextOverride *)self pocketStateShouldPreventVoiceTrigger];
+    bOOLValue = [pocketStateShouldPreventVoiceTrigger2 BOOLValue];
   }
 
   else
   {
-    v5 = +[SASSiriPocketStateManager sharedManager];
-    v6 = [v5 pocketStateShouldPreventVoiceTrigger];
+    pocketStateShouldPreventVoiceTrigger2 = +[SASSiriPocketStateManager sharedManager];
+    bOOLValue = [pocketStateShouldPreventVoiceTrigger2 pocketStateShouldPreventVoiceTrigger];
   }
 
-  v7 = v6;
+  v7 = bOOLValue;
 
   return v7;
 }
 
-- (BOOL)isPadForSystemState:(id)a3
+- (BOOL)isPadForSystemState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = [(SiriContextOverride *)self pad];
   if (v5)
   {
     v6 = [(SiriContextOverride *)self pad];
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = [v4 isPad];
+    bOOLValue = [stateCopy isPad];
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)smartCoverClosedForSystemState:(id)a3
+- (BOOL)smartCoverClosedForSystemState:(id)state
 {
-  v4 = a3;
-  v5 = [(SiriContextOverride *)self smartCoverClosed];
-  if (v5)
+  stateCopy = state;
+  smartCoverClosed = [(SiriContextOverride *)self smartCoverClosed];
+  if (smartCoverClosed)
   {
-    v6 = [(SiriContextOverride *)self smartCoverClosed];
-    v7 = [v6 BOOLValue];
+    smartCoverClosed2 = [(SiriContextOverride *)self smartCoverClosed];
+    bOOLValue = [smartCoverClosed2 BOOLValue];
   }
 
   else
   {
-    v7 = [v4 smartCoverClosed];
+    bOOLValue = [stateCopy smartCoverClosed];
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)accessibilityShortcutEnabledForSystemState:(id)a3
+- (BOOL)accessibilityShortcutEnabledForSystemState:(id)state
 {
-  v4 = a3;
-  v5 = [(SiriContextOverride *)self accessibilityShortcutEnabled];
-  if (v5)
+  stateCopy = state;
+  accessibilityShortcutEnabled = [(SiriContextOverride *)self accessibilityShortcutEnabled];
+  if (accessibilityShortcutEnabled)
   {
-    v6 = [(SiriContextOverride *)self accessibilityShortcutEnabled];
-    v7 = [v6 BOOLValue];
+    accessibilityShortcutEnabled2 = [(SiriContextOverride *)self accessibilityShortcutEnabled];
+    bOOLValue = [accessibilityShortcutEnabled2 BOOLValue];
   }
 
   else
   {
-    v7 = [v4 accessibilityShortcutEnabled];
+    bOOLValue = [stateCopy accessibilityShortcutEnabled];
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)carDNDActiveForSystemState:(id)a3
+- (BOOL)carDNDActiveForSystemState:(id)state
 {
-  v4 = a3;
-  v5 = [(SiriContextOverride *)self carDNDActive];
-  if (v5)
+  stateCopy = state;
+  carDNDActive = [(SiriContextOverride *)self carDNDActive];
+  if (carDNDActive)
   {
-    v6 = [(SiriContextOverride *)self carDNDActive];
-    v7 = [v6 BOOLValue];
+    carDNDActive2 = [(SiriContextOverride *)self carDNDActive];
+    bOOLValue = [carDNDActive2 BOOLValue];
   }
 
   else
   {
-    v7 = [v4 carDNDActive];
+    bOOLValue = [stateCopy carDNDActive];
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)isConnectedToCarPlayForSystemState:(id)a3
+- (BOOL)isConnectedToCarPlayForSystemState:(id)state
 {
-  v4 = a3;
-  v5 = [(SiriContextOverride *)self connectedToCarPlay];
-  if (v5)
+  stateCopy = state;
+  connectedToCarPlay = [(SiriContextOverride *)self connectedToCarPlay];
+  if (connectedToCarPlay)
   {
-    v6 = [(SiriContextOverride *)self connectedToCarPlay];
-    v7 = [v6 BOOLValue];
+    connectedToCarPlay2 = [(SiriContextOverride *)self connectedToCarPlay];
+    bOOLValue = [connectedToCarPlay2 BOOLValue];
   }
 
   else
   {
-    v7 = [v4 isConnectedToCarPlay];
+    bOOLValue = [stateCopy isConnectedToCarPlay];
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)isConnectedToTrustedCarPlayForSystemState:(id)a3
+- (BOOL)isConnectedToTrustedCarPlayForSystemState:(id)state
 {
-  v4 = a3;
-  v5 = [(SiriContextOverride *)self connectedToTrustedCarPlay];
-  if (v5)
+  stateCopy = state;
+  connectedToTrustedCarPlay = [(SiriContextOverride *)self connectedToTrustedCarPlay];
+  if (connectedToTrustedCarPlay)
   {
-    v6 = [(SiriContextOverride *)self connectedToTrustedCarPlay];
-    v7 = [v6 BOOLValue];
+    connectedToTrustedCarPlay2 = [(SiriContextOverride *)self connectedToTrustedCarPlay];
+    bOOLValue = [connectedToTrustedCarPlay2 BOOLValue];
   }
 
   else
   {
-    v7 = [v4 isConnectedToTrustedCarPlay];
+    bOOLValue = [stateCopy isConnectedToTrustedCarPlay];
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)siriIsEnabledForSystemState:(id)a3
+- (BOOL)siriIsEnabledForSystemState:(id)state
 {
-  v4 = a3;
-  v5 = [(SiriContextOverride *)self siriIsEnabled];
-  if (v5)
+  stateCopy = state;
+  siriIsEnabled = [(SiriContextOverride *)self siriIsEnabled];
+  if (siriIsEnabled)
   {
-    v6 = [(SiriContextOverride *)self siriIsEnabled];
-    v7 = [v6 BOOLValue];
+    siriIsEnabled2 = [(SiriContextOverride *)self siriIsEnabled];
+    bOOLValue = [siriIsEnabled2 BOOLValue];
   }
 
   else
   {
-    v7 = [v4 siriIsEnabled];
+    bOOLValue = [stateCopy siriIsEnabled];
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)siriIsRestrictedForSystemState:(id)a3
+- (BOOL)siriIsRestrictedForSystemState:(id)state
 {
-  v4 = a3;
-  v5 = [(SiriContextOverride *)self siriIsRestricted];
-  if (v5)
+  stateCopy = state;
+  siriIsRestricted = [(SiriContextOverride *)self siriIsRestricted];
+  if (siriIsRestricted)
   {
-    v6 = [(SiriContextOverride *)self siriIsRestricted];
-    v7 = [v6 BOOLValue];
+    siriIsRestricted2 = [(SiriContextOverride *)self siriIsRestricted];
+    bOOLValue = [siriIsRestricted2 BOOLValue];
   }
 
   else
   {
-    v7 = [v4 siriIsRestricted];
+    bOOLValue = [stateCopy siriIsRestricted];
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)siriIsSupportedForSystemState:(id)a3
+- (BOOL)siriIsSupportedForSystemState:(id)state
 {
-  v4 = a3;
-  v5 = [(SiriContextOverride *)self siriIsSupported];
-  if (v5)
+  stateCopy = state;
+  siriIsSupported = [(SiriContextOverride *)self siriIsSupported];
+  if (siriIsSupported)
   {
-    v6 = [(SiriContextOverride *)self siriIsSupported];
-    v7 = [v6 BOOLValue];
+    siriIsSupported2 = [(SiriContextOverride *)self siriIsSupported];
+    bOOLValue = [siriIsSupported2 BOOLValue];
   }
 
   else
   {
-    v7 = [v4 siriIsSupported];
+    bOOLValue = [stateCopy siriIsSupported];
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (SiriContextOverride)initWithCoder:(id)a3
+- (SiriContextOverride)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = SiriContextOverride;
   v5 = [(SiriContextOverride *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentSpokenLanguageCode"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentSpokenLanguageCode"];
     [(SiriContextOverride *)v5 setCurrentSpokenLanguageCode:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"unlockedSinceBoot"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"unlockedSinceBoot"];
     [(SiriContextOverride *)v5 setUnlockedSinceBoot:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceIsBlocked"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceIsBlocked"];
     [(SiriContextOverride *)v5 setDeviceIsBlocked:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceIsPasscodeLocked"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceIsPasscodeLocked"];
     [(SiriContextOverride *)v5 setDeviceIsPasscodeLocked:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pocketStateShouldPreventVoiceTrigger"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pocketStateShouldPreventVoiceTrigger"];
     [(SiriContextOverride *)v5 setPocketStateShouldPreventVoiceTrigger:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pad"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pad"];
     [(SiriContextOverride *)v5 setPad:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"smartCoverClosed"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"smartCoverClosed"];
     [(SiriContextOverride *)v5 setSmartCoverClosed:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityShortcutEnabled"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityShortcutEnabled"];
     [(SiriContextOverride *)v5 setAccessibilityShortcutEnabled:v13];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"carDNDActive"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"carDNDActive"];
     [(SiriContextOverride *)v5 setCarDNDActive:v14];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"connectedToCarPlay"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"connectedToCarPlay"];
     [(SiriContextOverride *)v5 setConnectedToCarPlay:v15];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"connectedToTrustedCarPlay"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"connectedToTrustedCarPlay"];
     [(SiriContextOverride *)v5 setConnectedToTrustedCarPlay:v16];
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"siriIsEnabled"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"siriIsEnabled"];
     [(SiriContextOverride *)v5 setSiriIsEnabled:v17];
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"siriIsRestricted"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"siriIsRestricted"];
     [(SiriContextOverride *)v5 setSiriIsRestricted:v18];
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"siriIsSupported"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"siriIsSupported"];
     [(SiriContextOverride *)v5 setSiriIsSupported:v19];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SiriContextOverride *)self currentSpokenLanguageCode];
-  [v4 encodeObject:v5 forKey:@"currentSpokenLanguageCode"];
+  coderCopy = coder;
+  currentSpokenLanguageCode = [(SiriContextOverride *)self currentSpokenLanguageCode];
+  [coderCopy encodeObject:currentSpokenLanguageCode forKey:@"currentSpokenLanguageCode"];
 
-  v6 = [(SiriContextOverride *)self unlockedSinceBoot];
-  [v4 encodeObject:v6 forKey:@"unlockedSinceBoot"];
+  unlockedSinceBoot = [(SiriContextOverride *)self unlockedSinceBoot];
+  [coderCopy encodeObject:unlockedSinceBoot forKey:@"unlockedSinceBoot"];
 
-  v7 = [(SiriContextOverride *)self deviceIsBlocked];
-  [v4 encodeObject:v7 forKey:@"deviceIsBlocked"];
+  deviceIsBlocked = [(SiriContextOverride *)self deviceIsBlocked];
+  [coderCopy encodeObject:deviceIsBlocked forKey:@"deviceIsBlocked"];
 
-  v8 = [(SiriContextOverride *)self deviceIsPasscodeLocked];
-  [v4 encodeObject:v8 forKey:@"deviceIsPasscodeLocked"];
+  deviceIsPasscodeLocked = [(SiriContextOverride *)self deviceIsPasscodeLocked];
+  [coderCopy encodeObject:deviceIsPasscodeLocked forKey:@"deviceIsPasscodeLocked"];
 
-  v9 = [(SiriContextOverride *)self pocketStateShouldPreventVoiceTrigger];
-  [v4 encodeObject:v9 forKey:@"pocketStateShouldPreventVoiceTrigger"];
+  pocketStateShouldPreventVoiceTrigger = [(SiriContextOverride *)self pocketStateShouldPreventVoiceTrigger];
+  [coderCopy encodeObject:pocketStateShouldPreventVoiceTrigger forKey:@"pocketStateShouldPreventVoiceTrigger"];
 
   v10 = [(SiriContextOverride *)self pad];
-  [v4 encodeObject:v10 forKey:@"pad"];
+  [coderCopy encodeObject:v10 forKey:@"pad"];
 
-  v11 = [(SiriContextOverride *)self smartCoverClosed];
-  [v4 encodeObject:v11 forKey:@"smartCoverClosed"];
+  smartCoverClosed = [(SiriContextOverride *)self smartCoverClosed];
+  [coderCopy encodeObject:smartCoverClosed forKey:@"smartCoverClosed"];
 
-  v12 = [(SiriContextOverride *)self accessibilityShortcutEnabled];
-  [v4 encodeObject:v12 forKey:@"accessibilityShortcutEnabled"];
+  accessibilityShortcutEnabled = [(SiriContextOverride *)self accessibilityShortcutEnabled];
+  [coderCopy encodeObject:accessibilityShortcutEnabled forKey:@"accessibilityShortcutEnabled"];
 
-  v13 = [(SiriContextOverride *)self carDNDActive];
-  [v4 encodeObject:v13 forKey:@"carDNDActive"];
+  carDNDActive = [(SiriContextOverride *)self carDNDActive];
+  [coderCopy encodeObject:carDNDActive forKey:@"carDNDActive"];
 
-  v14 = [(SiriContextOverride *)self connectedToCarPlay];
-  [v4 encodeObject:v14 forKey:@"connectedToCarPlay"];
+  connectedToCarPlay = [(SiriContextOverride *)self connectedToCarPlay];
+  [coderCopy encodeObject:connectedToCarPlay forKey:@"connectedToCarPlay"];
 
-  v15 = [(SiriContextOverride *)self connectedToTrustedCarPlay];
-  [v4 encodeObject:v15 forKey:@"connectedToTrustedCarPlay"];
+  connectedToTrustedCarPlay = [(SiriContextOverride *)self connectedToTrustedCarPlay];
+  [coderCopy encodeObject:connectedToTrustedCarPlay forKey:@"connectedToTrustedCarPlay"];
 
-  v16 = [(SiriContextOverride *)self siriIsEnabled];
-  [v4 encodeObject:v16 forKey:@"siriIsEnabled"];
+  siriIsEnabled = [(SiriContextOverride *)self siriIsEnabled];
+  [coderCopy encodeObject:siriIsEnabled forKey:@"siriIsEnabled"];
 
-  v17 = [(SiriContextOverride *)self siriIsRestricted];
-  [v4 encodeObject:v17 forKey:@"siriIsRestricted"];
+  siriIsRestricted = [(SiriContextOverride *)self siriIsRestricted];
+  [coderCopy encodeObject:siriIsRestricted forKey:@"siriIsRestricted"];
 
-  v18 = [(SiriContextOverride *)self siriIsSupported];
-  [v4 encodeObject:v18 forKey:@"siriIsSupported"];
+  siriIsSupported = [(SiriContextOverride *)self siriIsSupported];
+  [coderCopy encodeObject:siriIsSupported forKey:@"siriIsSupported"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SiriContextOverride);
-  v5 = [(SiriContextOverride *)self currentSpokenLanguageCode];
-  [(SiriContextOverride *)v4 setCurrentSpokenLanguageCode:v5];
+  currentSpokenLanguageCode = [(SiriContextOverride *)self currentSpokenLanguageCode];
+  [(SiriContextOverride *)v4 setCurrentSpokenLanguageCode:currentSpokenLanguageCode];
 
-  v6 = [(SiriContextOverride *)self unlockedSinceBoot];
-  [(SiriContextOverride *)v4 setUnlockedSinceBoot:v6];
+  unlockedSinceBoot = [(SiriContextOverride *)self unlockedSinceBoot];
+  [(SiriContextOverride *)v4 setUnlockedSinceBoot:unlockedSinceBoot];
 
-  v7 = [(SiriContextOverride *)self deviceIsBlocked];
-  [(SiriContextOverride *)v4 setDeviceIsBlocked:v7];
+  deviceIsBlocked = [(SiriContextOverride *)self deviceIsBlocked];
+  [(SiriContextOverride *)v4 setDeviceIsBlocked:deviceIsBlocked];
 
-  v8 = [(SiriContextOverride *)self deviceIsPasscodeLocked];
-  [(SiriContextOverride *)v4 setDeviceIsPasscodeLocked:v8];
+  deviceIsPasscodeLocked = [(SiriContextOverride *)self deviceIsPasscodeLocked];
+  [(SiriContextOverride *)v4 setDeviceIsPasscodeLocked:deviceIsPasscodeLocked];
 
-  v9 = [(SiriContextOverride *)self pocketStateShouldPreventVoiceTrigger];
-  [(SiriContextOverride *)v4 setPocketStateShouldPreventVoiceTrigger:v9];
+  pocketStateShouldPreventVoiceTrigger = [(SiriContextOverride *)self pocketStateShouldPreventVoiceTrigger];
+  [(SiriContextOverride *)v4 setPocketStateShouldPreventVoiceTrigger:pocketStateShouldPreventVoiceTrigger];
 
   v10 = [(SiriContextOverride *)self pad];
   [(SiriContextOverride *)v4 setPad:v10];
 
-  v11 = [(SiriContextOverride *)self smartCoverClosed];
-  [(SiriContextOverride *)v4 setSmartCoverClosed:v11];
+  smartCoverClosed = [(SiriContextOverride *)self smartCoverClosed];
+  [(SiriContextOverride *)v4 setSmartCoverClosed:smartCoverClosed];
 
-  v12 = [(SiriContextOverride *)self accessibilityShortcutEnabled];
-  [(SiriContextOverride *)v4 setAccessibilityShortcutEnabled:v12];
+  accessibilityShortcutEnabled = [(SiriContextOverride *)self accessibilityShortcutEnabled];
+  [(SiriContextOverride *)v4 setAccessibilityShortcutEnabled:accessibilityShortcutEnabled];
 
-  v13 = [(SiriContextOverride *)self carDNDActive];
-  [(SiriContextOverride *)v4 setCarDNDActive:v13];
+  carDNDActive = [(SiriContextOverride *)self carDNDActive];
+  [(SiriContextOverride *)v4 setCarDNDActive:carDNDActive];
 
-  v14 = [(SiriContextOverride *)self connectedToCarPlay];
-  [(SiriContextOverride *)v4 setConnectedToCarPlay:v14];
+  connectedToCarPlay = [(SiriContextOverride *)self connectedToCarPlay];
+  [(SiriContextOverride *)v4 setConnectedToCarPlay:connectedToCarPlay];
 
-  v15 = [(SiriContextOverride *)self connectedToTrustedCarPlay];
-  [(SiriContextOverride *)v4 setConnectedToTrustedCarPlay:v15];
+  connectedToTrustedCarPlay = [(SiriContextOverride *)self connectedToTrustedCarPlay];
+  [(SiriContextOverride *)v4 setConnectedToTrustedCarPlay:connectedToTrustedCarPlay];
 
-  v16 = [(SiriContextOverride *)self siriIsEnabled];
-  [(SiriContextOverride *)v4 setSiriIsEnabled:v16];
+  siriIsEnabled = [(SiriContextOverride *)self siriIsEnabled];
+  [(SiriContextOverride *)v4 setSiriIsEnabled:siriIsEnabled];
 
-  v17 = [(SiriContextOverride *)self siriIsRestricted];
-  [(SiriContextOverride *)v4 setSiriIsRestricted:v17];
+  siriIsRestricted = [(SiriContextOverride *)self siriIsRestricted];
+  [(SiriContextOverride *)v4 setSiriIsRestricted:siriIsRestricted];
 
-  v18 = [(SiriContextOverride *)self siriIsSupported];
-  [(SiriContextOverride *)v4 setSiriIsSupported:v18];
+  siriIsSupported = [(SiriContextOverride *)self siriIsSupported];
+  [(SiriContextOverride *)v4 setSiriIsSupported:siriIsSupported];
 
   return v4;
 }

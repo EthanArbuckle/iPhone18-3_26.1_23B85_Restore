@@ -13,36 +13,36 @@
   v181 = [v3 URLForResource:@"Sparkles" withExtension:@"ca"];
 
   v180 = [CAPackage packageWithContentsOfURL:v181 type:kCAPackageTypeCAMLBundle options:0 error:0];
-  v179 = [&off_84C0 stringValue];
-  v4 = [v180 publishedObjectWithName:v179];
-  v5 = [v4 sublayers];
-  v6 = [v5 objectAtIndexedSubscript:0];
+  stringValue = [&off_84C0 stringValue];
+  v4 = [v180 publishedObjectWithName:stringValue];
+  sublayers = [v4 sublayers];
+  v6 = [sublayers objectAtIndexedSubscript:0];
 
   [v6 setOpacity:0.0];
-  v7 = [v4 sublayers];
-  v8 = [v7 objectAtIndexedSubscript:1];
+  sublayers2 = [v4 sublayers];
+  v8 = [sublayers2 objectAtIndexedSubscript:1];
 
-  v9 = [v4 sublayers];
-  v10 = [v9 objectAtIndexedSubscript:1];
-  v11 = [v10 sublayers];
-  v12 = [v11 objectAtIndexedSubscript:0];
+  sublayers3 = [v4 sublayers];
+  v10 = [sublayers3 objectAtIndexedSubscript:1];
+  sublayers4 = [v10 sublayers];
+  v12 = [sublayers4 objectAtIndexedSubscript:0];
 
-  v13 = [v4 sublayers];
-  v14 = [v13 objectAtIndexedSubscript:1];
-  v15 = [v14 sublayers];
-  v16 = [v15 objectAtIndexedSubscript:1];
+  sublayers5 = [v4 sublayers];
+  v14 = [sublayers5 objectAtIndexedSubscript:1];
+  sublayers6 = [v14 sublayers];
+  v16 = [sublayers6 objectAtIndexedSubscript:1];
 
-  v17 = [v4 sublayers];
-  v18 = [v17 objectAtIndexedSubscript:1];
-  v19 = [v18 sublayers];
-  v20 = [v19 objectAtIndexedSubscript:2];
+  sublayers7 = [v4 sublayers];
+  v18 = [sublayers7 objectAtIndexedSubscript:1];
+  sublayers8 = [v18 sublayers];
+  v20 = [sublayers8 objectAtIndexedSubscript:2];
 
-  v177 = self;
+  selfCopy = self;
   [(CKSparklesEffectView *)self bounds];
   v22 = v21;
   v24 = v23;
-  v25 = [(CKSparklesEffectView *)self layer];
-  [v25 convertTime:0 fromLayer:CACurrentMediaTime()];
+  layer = [(CKSparklesEffectView *)self layer];
+  [layer convertTime:0 fromLayer:CACurrentMediaTime()];
   v176 = v4;
   [v4 setBeginTime:?];
 
@@ -59,53 +59,53 @@
   [v12 setBirthRate:0.0];
   [v12 setPosition:{v22 * 0.5, v24 * 0.5}];
   [v12 setBounds:{0.0, 0.0, v22, v24}];
-  v26 = [v12 emitterCells];
-  v27 = [v26 objectAtIndexedSubscript:0];
+  emitterCells = [v12 emitterCells];
+  v27 = [emitterCells objectAtIndexedSubscript:0];
   [v27 setScale:0.5];
 
   v28 = (v22 * v24 + -1000500.0) / 6117724.0;
-  v29 = [v12 emitterCells];
-  v30 = [v29 objectAtIndexedSubscript:0];
+  emitterCells2 = [v12 emitterCells];
+  v30 = [emitterCells2 objectAtIndexedSubscript:0];
   [v30 setContentsScale:v28 * -2.4 + 3.2];
 
   [v16 setSeed:arc4random()];
   [v16 setBirthRate:0.0];
   [v16 setPosition:{v22 * 0.5, v24 * 0.5}];
   [v16 setBounds:{0.0, 0.0, v22, v24}];
-  v31 = [v16 emitterCells];
-  v32 = [v31 objectAtIndexedSubscript:0];
+  emitterCells3 = [v16 emitterCells];
+  v32 = [emitterCells3 objectAtIndexedSubscript:0];
   [v32 setScale:1.0];
 
-  v33 = [v16 emitterCells];
-  v34 = [v33 objectAtIndexedSubscript:1];
+  emitterCells4 = [v16 emitterCells];
+  v34 = [emitterCells4 objectAtIndexedSubscript:1];
   [v34 setScale:1.0];
 
-  v35 = [v16 emitterCells];
-  v36 = [v35 objectAtIndexedSubscript:0];
+  emitterCells5 = [v16 emitterCells];
+  v36 = [emitterCells5 objectAtIndexedSubscript:0];
   [v36 setContentsScale:v28 * -1.275 + 1.7];
 
-  v37 = [v16 emitterCells];
-  v38 = [v37 objectAtIndexedSubscript:1];
+  emitterCells6 = [v16 emitterCells];
+  v38 = [emitterCells6 objectAtIndexedSubscript:1];
   [v38 setContentsScale:v28 * -1.2 + 1.6];
 
   [v20 setSeed:arc4random()];
   [v20 setBirthRate:0.0];
   [v20 setPosition:{v22 * 0.5, v24 * 0.5}];
   [v20 setBounds:{0.0, 0.0, v22, v24}];
-  v39 = [v20 emitterCells];
-  v40 = [v39 objectAtIndexedSubscript:0];
+  emitterCells7 = [v20 emitterCells];
+  v40 = [emitterCells7 objectAtIndexedSubscript:0];
   [v40 setScale:0.5];
 
-  v41 = [v20 emitterCells];
-  v42 = [v41 objectAtIndexedSubscript:1];
+  emitterCells8 = [v20 emitterCells];
+  v42 = [emitterCells8 objectAtIndexedSubscript:1];
   [v42 setScale:0.5];
 
-  v43 = [v20 emitterCells];
-  v44 = [v43 objectAtIndexedSubscript:0];
+  emitterCells9 = [v20 emitterCells];
+  v44 = [emitterCells9 objectAtIndexedSubscript:0];
   [v44 setContentsScale:v28 * -0.6 + 0.8];
 
-  v45 = [v20 emitterCells];
-  v46 = [v45 objectAtIndexedSubscript:1];
+  emitterCells10 = [v20 emitterCells];
+  v46 = [emitterCells10 objectAtIndexedSubscript:1];
   [v46 setContentsScale:v28 * -0.525 + 0.7];
 
   v192 = [CABasicAnimation animationWithKeyPath:@"birthRate"];
@@ -382,10 +382,10 @@
   [v185 addAnimation:v192 forKey:@"fall"];
   [v184 addAnimation:v192 forKey:@"fall"];
   [v20 addAnimation:v192 forKey:@"fall"];
-  v160 = [(CKSparklesEffectView *)v177 layer];
-  [v160 addSublayer:v176];
+  layer2 = [(CKSparklesEffectView *)selfCopy layer];
+  [layer2 addSublayer:v176];
 
-  objc_storeStrong(&v177->_sparklesLayer, v176);
+  objc_storeStrong(&selfCopy->_sparklesLayer, v176);
   v161 = dispatch_time(0, 5000000000);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

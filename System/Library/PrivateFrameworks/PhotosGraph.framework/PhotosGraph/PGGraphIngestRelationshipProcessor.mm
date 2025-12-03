@@ -1,40 +1,40 @@
 @interface PGGraphIngestRelationshipProcessor
-- (BOOL)shouldRunWithGraphUpdate:(id)a3;
-- (PGGraphIngestRelationshipProcessor)initWithGraphBuilder:(id)a3;
-- (id)_personNodesToAnalyzeInGraph:(id)a3;
-- (id)personNodesToAnalyzeInGraph:(id)a3 forAppleInternal:(BOOL)a4;
-- (id)tagRelationshipByPersonForPersonNodes:(id)a3;
-- (unint64_t)relationshipForRelationshipTag:(unint64_t)a3;
-- (void)insertRelationshipEdgesForRelationshipTags:(id)a3 meNode:(id)a4;
-- (void)removeInferredRelationshipEdgesForPersonNodes:(id)a3 inGraph:(id)a4;
-- (void)removeStorytellingRelationshipEdgesForPersonNodes:(id)a3 inGraph:(id)a4;
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4;
+- (BOOL)shouldRunWithGraphUpdate:(id)update;
+- (PGGraphIngestRelationshipProcessor)initWithGraphBuilder:(id)builder;
+- (id)_personNodesToAnalyzeInGraph:(id)graph;
+- (id)personNodesToAnalyzeInGraph:(id)graph forAppleInternal:(BOOL)internal;
+- (id)tagRelationshipByPersonForPersonNodes:(id)nodes;
+- (unint64_t)relationshipForRelationshipTag:(unint64_t)tag;
+- (void)insertRelationshipEdgesForRelationshipTags:(id)tags meNode:(id)node;
+- (void)removeInferredRelationshipEdgesForPersonNodes:(id)nodes inGraph:(id)graph;
+- (void)removeStorytellingRelationshipEdgesForPersonNodes:(id)nodes inGraph:(id)graph;
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block;
 @end
 
 @implementation PGGraphIngestRelationshipProcessor
 
-- (id)personNodesToAnalyzeInGraph:(id)a3 forAppleInternal:(BOOL)a4
+- (id)personNodesToAnalyzeInGraph:(id)graph forAppleInternal:(BOOL)internal
 {
-  v4 = a4;
-  v6 = a3;
+  internalCopy = internal;
+  graphCopy = graph;
   if (![(PGGraphBuilder *)self->_graphBuilder isSharedLibraryEnabled])
   {
     goto LABEL_9;
   }
 
-  v7 = [(PGGraphBuilder *)self->_graphBuilder momentNodesWhereMeIsPresent];
-  if (![v7 count])
+  momentNodesWhereMeIsPresent = [(PGGraphBuilder *)self->_graphBuilder momentNodesWhereMeIsPresent];
+  if (![momentNodesWhereMeIsPresent count])
   {
-    v11 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+    loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
       *v16 = 0;
-      _os_log_impl(&dword_22F0FC000, v11, OS_LOG_TYPE_INFO, "No moments in library where Me is present. Not applying presence filtering", v16, 2u);
+      _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "No moments in library where Me is present. Not applying presence filtering", v16, 2u);
     }
 
 LABEL_9:
-    v9 = [PGGraphPersonNodeCollection personNodesExcludingMeInGraph:v6];
-    if (v4)
+    subsetExcludingMe = [PGGraphPersonNodeCollection personNodesExcludingMeInGraph:graphCopy];
+    if (internalCopy)
     {
       goto LABEL_5;
     }
@@ -42,26 +42,26 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v8 = [v7 presentPersonNodes];
-  v9 = [v8 subsetExcludingMe];
+  presentPersonNodes = [momentNodesWhereMeIsPresent presentPersonNodes];
+  subsetExcludingMe = [presentPersonNodes subsetExcludingMe];
 
-  if (!v9)
+  if (!subsetExcludingMe)
   {
     goto LABEL_9;
   }
 
-  if (v4)
+  if (internalCopy)
   {
 LABEL_5:
-    v10 = v9;
+    v10 = subsetExcludingMe;
     goto LABEL_11;
   }
 
 LABEL_10:
-  v12 = [v6 meNodeCollection];
-  v13 = [v12 relatedPersonNodes];
+  meNodeCollection = [graphCopy meNodeCollection];
+  relatedPersonNodes = [meNodeCollection relatedPersonNodes];
 
-  v14 = [v9 collectionBySubtracting:v13];
+  v14 = [subsetExcludingMe collectionBySubtracting:relatedPersonNodes];
 
   v10 = v14;
 LABEL_11:
@@ -69,26 +69,26 @@ LABEL_11:
   return v10;
 }
 
-- (id)_personNodesToAnalyzeInGraph:(id)a3
+- (id)_personNodesToAnalyzeInGraph:(id)graph
 {
-  v4 = a3;
+  graphCopy = graph;
   if (PGIsAppleInternal_onceToken != -1)
   {
     dispatch_once(&PGIsAppleInternal_onceToken, &__block_literal_global_8316);
   }
 
-  v5 = [(PGGraphIngestRelationshipProcessor *)self personNodesToAnalyzeInGraph:v4 forAppleInternal:PGIsAppleInternal_isAppleInternal];
+  v5 = [(PGGraphIngestRelationshipProcessor *)self personNodesToAnalyzeInGraph:graphCopy forAppleInternal:PGIsAppleInternal_isAppleInternal];
 
   return v5;
 }
 
-- (void)removeStorytellingRelationshipEdgesForPersonNodes:(id)a3 inGraph:(id)a4
+- (void)removeStorytellingRelationshipEdgesForPersonNodes:(id)nodes inGraph:(id)graph
 {
-  v5 = a4;
+  graphCopy = graph;
   v6 = MEMORY[0x277D22C50];
-  v7 = a3;
+  nodesCopy = nodes;
   v8 = objc_alloc_init(v6);
-  v9 = [v7 storytellingRelationshipEdges];
+  storytellingRelationshipEdges = [nodesCopy storytellingRelationshipEdges];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -96,32 +96,32 @@ LABEL_11:
   v11[3] = &unk_2788863A0;
   v10 = v8;
   v12 = v10;
-  [v9 enumerateEdgesUsingBlock:v11];
+  [storytellingRelationshipEdges enumerateEdgesUsingBlock:v11];
 
   if ([v10 numberOfChanges])
   {
-    [v5 executeGraphChangeRequest:v10];
+    [graphCopy executeGraphChangeRequest:v10];
   }
 }
 
-- (void)removeInferredRelationshipEdgesForPersonNodes:(id)a3 inGraph:(id)a4
+- (void)removeInferredRelationshipEdgesForPersonNodes:(id)nodes inGraph:(id)graph
 {
-  v5 = a4;
-  v6 = [a3 relationshipEdges];
+  graphCopy = graph;
+  relationshipEdges = [nodes relationshipEdges];
   v7 = +[PGGraphRelationshipEdge confirmedRelationshipFilter];
-  v8 = [v6 edgesMatchingFilter:v7];
-  v10 = [v6 collectionBySubtracting:v8];
+  v8 = [relationshipEdges edgesMatchingFilter:v7];
+  v10 = [relationshipEdges collectionBySubtracting:v8];
 
   v9 = objc_alloc_init(MEMORY[0x277D22C50]);
   [v9 removeEdges:v10];
-  [v5 executeGraphChangeRequest:v9];
+  [graphCopy executeGraphChangeRequest:v9];
 }
 
-- (unint64_t)relationshipForRelationshipTag:(unint64_t)a3
+- (unint64_t)relationshipForRelationshipTag:(unint64_t)tag
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3 - 1;
-  if (a3 - 1 < 0xD && ((0x1EFFu >> v4) & 1) != 0)
+  v4 = tag - 1;
+  if (tag - 1 < 0xD && ((0x1EFFu >> v4) & 1) != 0)
   {
     result = qword_22F78CAE8[v4];
   }
@@ -129,16 +129,16 @@ LABEL_11:
   else
   {
     v6 = +[PGLogging sharedLogging];
-    v7 = [v6 loggingConnection];
+    loggingConnection = [v6 loggingConnection];
 
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
-      v8 = [PGGraphPersonRelationshipTagNode labelForRelationshipTag:a3];
+      v8 = [PGGraphPersonRelationshipTagNode labelForRelationshipTag:tag];
       v10 = 134218242;
-      v11 = a3;
+      tagCopy = tag;
       v12 = 2112;
       v13 = v8;
-      _os_log_impl(&dword_22F0FC000, v7, OS_LOG_TYPE_INFO, "[PGGraphIngestRelationshipProcessor] Encountered unmapped entity tag %lu (%@) during relationship ingest", &v10, 0x16u);
+      _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[PGGraphIngestRelationshipProcessor] Encountered unmapped entity tag %lu (%@) during relationship ingest", &v10, 0x16u);
     }
 
     result = 0;
@@ -148,9 +148,9 @@ LABEL_11:
   return result;
 }
 
-- (id)tagRelationshipByPersonForPersonNodes:(id)a3
+- (id)tagRelationshipByPersonForPersonNodes:(id)nodes
 {
-  v4 = a3;
+  nodesCopy = nodes;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -163,7 +163,7 @@ LABEL_11:
   v7[3] = &unk_278889420;
   v7[4] = self;
   v7[5] = &v8;
-  [v4 enumerateNodesUsingBlock:v7];
+  [nodesCopy enumerateNodesUsingBlock:v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
 
@@ -217,17 +217,17 @@ void __76__PGGraphIngestRelationshipProcessor_tagRelationshipByPersonForPersonNo
   }
 }
 
-- (void)insertRelationshipEdgesForRelationshipTags:(id)a3 meNode:(id)a4
+- (void)insertRelationshipEdgesForRelationshipTags:(id)tags meNode:(id)node
 {
-  v6 = a4;
+  nodeCopy = node;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __88__PGGraphIngestRelationshipProcessor_insertRelationshipEdgesForRelationshipTags_meNode___block_invoke;
   v8[3] = &unk_278886350;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [a3 enumerateKeysAndObjectsUsingBlock:v8];
+  v9 = nodeCopy;
+  v7 = nodeCopy;
+  [tags enumerateKeysAndObjectsUsingBlock:v8];
 }
 
 void __88__PGGraphIngestRelationshipProcessor_insertRelationshipEdgesForRelationshipTags_meNode___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -271,15 +271,15 @@ void __88__PGGraphIngestRelationshipProcessor_insertRelationshipEdgesForRelation
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block
 {
   v70 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PGGraphBuilder *)self->_graphBuilder graph];
-  v9 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-  v10 = os_signpost_id_generate(v9);
-  v11 = v9;
+  updateCopy = update;
+  blockCopy = block;
+  graph = [(PGGraphBuilder *)self->_graphBuilder graph];
+  loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+  v10 = os_signpost_id_generate(loggingConnection);
+  v11 = loggingConnection;
   v12 = v11;
   v54 = v10 - 1;
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
@@ -291,49 +291,49 @@ void __88__PGGraphIngestRelationshipProcessor_insertRelationshipEdgesForRelation
   info = 0;
   mach_timebase_info(&info);
   v51 = mach_absolute_time();
-  if ([v6 isResumingFullAnalysis])
+  if ([updateCopy isResumingFullAnalysis])
   {
-    v13 = [(PGGraphIngestRelationshipProcessor *)self _personNodesToAnalyzeInGraph:v8];
+    v13 = [(PGGraphIngestRelationshipProcessor *)self _personNodesToAnalyzeInGraph:graph];
   }
 
   else
   {
     v14 = [PGGraphPersonNodeCollection alloc];
-    v15 = [v6 insertedAndUpdatedPersonNodes];
-    v13 = [(MAElementCollection *)v14 initWithSet:v15 graph:v8];
+    insertedAndUpdatedPersonNodes = [updateCopy insertedAndUpdatedPersonNodes];
+    v13 = [(MAElementCollection *)v14 initWithSet:insertedAndUpdatedPersonNodes graph:graph];
   }
 
   if ([(MAElementCollection *)v13 count])
   {
     spid = v10;
-    v50 = v6;
-    [(PGGraphIngestRelationshipProcessor *)self removeInferredRelationshipEdgesForPersonNodes:v13 inGraph:v8];
+    v50 = updateCopy;
+    [(PGGraphIngestRelationshipProcessor *)self removeInferredRelationshipEdgesForPersonNodes:v13 inGraph:graph];
     v16 = [PGGraphRelationshipProcessor alloc];
-    v17 = [(PGGraphBuilder *)self->_graphBuilder serviceManager];
-    v18 = [(PGGraphRelationshipProcessor *)v16 initWithPersonNodes:v13 runOptions:8190 serviceManager:v17];
+    serviceManager = [(PGGraphBuilder *)self->_graphBuilder serviceManager];
+    v18 = [(PGGraphRelationshipProcessor *)v16 initWithPersonNodes:v13 runOptions:8190 serviceManager:serviceManager];
     v19 = v12;
     v20 = v18;
 
     v48 = v19;
-    v49 = v7;
-    [v20 runRelationshipAnalysisWithLoggingConnection:v19 progressBlock:v7];
-    v21 = [v8 meNode];
-    LOBYTE(v17) = +[PGUserDefaults isRelationshipSignalPropertiesIngestAllowed];
+    v49 = blockCopy;
+    [v20 runRelationshipAnalysisWithLoggingConnection:v19 progressBlock:blockCopy];
+    meNode = [graph meNode];
+    LOBYTE(serviceManager) = +[PGUserDefaults isRelationshipSignalPropertiesIngestAllowed];
     v22 = +[PGUserDefaults isRelationshipFilteredOutInferencesIngestAllowed];
-    v53 = v8;
-    v47 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection nodesInGraph:v8];
-    v23 = [v47 personNodeByLocalIdentifier];
+    v53 = graph;
+    v47 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection nodesInGraph:graph];
+    personNodeByLocalIdentifier = [v47 personNodeByLocalIdentifier];
     v24 = [(PGGraphIngestRelationshipProcessor *)self tagRelationshipByPersonForPersonNodes:v13];
     v58[0] = MEMORY[0x277D85DD0];
     v58[1] = 3221225472;
     v58[2] = __71__PGGraphIngestRelationshipProcessor_runWithGraphUpdate_progressBlock___block_invoke;
     v58[3] = &unk_278886300;
-    v25 = v23;
+    v25 = personNodeByLocalIdentifier;
     v63 = v22;
-    v64 = v17;
+    v64 = serviceManager;
     v59 = v25;
-    v60 = self;
-    v26 = v21;
+    selfCopy = self;
+    v26 = meNode;
     v61 = v26;
     v27 = v24;
     v62 = v27;
@@ -345,9 +345,9 @@ void __88__PGGraphIngestRelationshipProcessor_insertRelationshipEdgesForRelation
     }
 
     v28 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v29 = [v26 collection];
-    v30 = [v29 relatedPersonNodes];
-    v31 = [(MAElementCollection *)v13 collectionByIntersecting:v30];
+    collection = [v26 collection];
+    relatedPersonNodes = [collection relatedPersonNodes];
+    v31 = [(MAElementCollection *)v13 collectionByIntersecting:relatedPersonNodes];
 
     [(PGGraphBuilder *)self->_graphBuilder insertStorytellingRelationshipsWithRelationshipsForPersonNodes:v31 meNode:v26];
     v32 = [(MAElementCollection *)v13 collectionBySubtracting:v31];
@@ -383,9 +383,9 @@ void __88__PGGraphIngestRelationshipProcessor_insertRelationshipEdgesForRelation
       _os_log_impl(&dword_22F0FC000, v39, OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", buf, 0x16u);
     }
 
-    v7 = v49;
-    v6 = v50;
-    v8 = v53;
+    blockCopy = v49;
+    updateCopy = v50;
+    graph = v53;
   }
 
   else
@@ -450,14 +450,14 @@ void __71__PGGraphIngestRelationshipProcessor_runWithGraphUpdate_progressBlock__
   [*(a1 + 40) setObject:v5 forKeyedSubscript:v6];
 }
 
-- (BOOL)shouldRunWithGraphUpdate:(id)a3
+- (BOOL)shouldRunWithGraphUpdate:(id)update
 {
-  v4 = a3;
-  if ((([v4 isResumingFullAnalysis] & 1) != 0 || objc_msgSend(v4, "hasUpdatedPersonNodes")) && !+[PGUserDefaults isRelationshipInferenceDisabled](PGUserDefaults, "isRelationshipInferenceDisabled"))
+  updateCopy = update;
+  if ((([updateCopy isResumingFullAnalysis] & 1) != 0 || objc_msgSend(updateCopy, "hasUpdatedPersonNodes")) && !+[PGUserDefaults isRelationshipInferenceDisabled](PGUserDefaults, "isRelationshipInferenceDisabled"))
   {
-    v6 = [(PGGraphBuilder *)self->_graphBuilder graph];
-    v7 = [v6 meNode];
-    v5 = v7 != 0;
+    graph = [(PGGraphBuilder *)self->_graphBuilder graph];
+    meNode = [graph meNode];
+    v5 = meNode != 0;
   }
 
   else
@@ -468,16 +468,16 @@ void __71__PGGraphIngestRelationshipProcessor_runWithGraphUpdate_progressBlock__
   return v5;
 }
 
-- (PGGraphIngestRelationshipProcessor)initWithGraphBuilder:(id)a3
+- (PGGraphIngestRelationshipProcessor)initWithGraphBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = PGGraphIngestRelationshipProcessor;
   v6 = [(PGGraphIngestRelationshipProcessor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graphBuilder, a3);
+    objc_storeStrong(&v6->_graphBuilder, builder);
   }
 
   return v7;

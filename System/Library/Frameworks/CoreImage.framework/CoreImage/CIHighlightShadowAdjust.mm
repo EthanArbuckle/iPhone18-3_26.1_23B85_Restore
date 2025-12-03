@@ -1,7 +1,7 @@
 @interface CIHighlightShadowAdjust
 + (id)customAttributes;
 - (BOOL)_isIdentity;
-- (id)_initFromProperties:(id)a3;
+- (id)_initFromProperties:(id)properties;
 - (id)_outputProperties;
 - (id)outputImage;
 - (void)setDefaults;
@@ -103,17 +103,17 @@
     v4 = v3;
     if ([v3 intValue] < 1)
     {
-      v5 = 0;
+      intValue = 0;
     }
 
     else
     {
-      v5 = [v4 intValue];
+      intValue = [v4 intValue];
     }
 
-    if (v5 >= [(CIHighlightShadowAdjust *)self _maxVersion])
+    if (intValue >= [(CIHighlightShadowAdjust *)self _maxVersion])
     {
-      v7 = [(CIHighlightShadowAdjust *)self _maxVersion];
+      _maxVersion = [(CIHighlightShadowAdjust *)self _maxVersion];
     }
 
     else
@@ -124,16 +124,16 @@
         goto LABEL_13;
       }
 
-      v7 = [v4 intValue];
+      _maxVersion = [v4 intValue];
     }
   }
 
   else
   {
-    v7 = [(CIHighlightShadowAdjust *)self _defaultVersion];
+    _maxVersion = [(CIHighlightShadowAdjust *)self _defaultVersion];
   }
 
-  v8 = v7;
+  v8 = _maxVersion;
 LABEL_13:
   [(NSNumber *)self->inputShadowAmount doubleValue];
   v10 = fmin(fmax(v9, -1.0), 1.0);
@@ -153,21 +153,21 @@ LABEL_13:
       v16 = 0.0;
     }
 
-    v17 = [[(CIImage *)self->inputImage imageByApplyingGaussianBlurWithSigma:v16] imageByUnpremultiplyingAlpha];
+    imageByUnpremultiplyingAlpha = [[(CIImage *)self->inputImage imageByApplyingGaussianBlurWithSigma:v16] imageByUnpremultiplyingAlpha];
     v18 = fmin(fmax(1.0 - pow(fabs(v10 / 0.3), 1.6), 0.0), 1.0);
     v19 = [CIVector vectorWithX:v10 Y:v12 Z:v18 W:1.0 / fmax(1.997 - 1.0 / (exp(v12 * -6.0) + 1.0), 1.0)];
-    v20 = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
+    imageByUnpremultiplyingAlpha2 = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
     if (!v8)
     {
       if (v12 <= 0.9999)
       {
-        v21 = [(CIHighlightShadowAdjust *)self _kernelSHnoB_v0];
-        [(CIImage *)v20 extent];
+        _kernelSHnoB_v0 = [(CIHighlightShadowAdjust *)self _kernelSHnoB_v0];
+        [(CIImage *)imageByUnpremultiplyingAlpha2 extent];
         v23 = v40;
         v25 = v41;
         v27 = v42;
         v29 = v43;
-        v57[0] = v20;
+        v57[0] = imageByUnpremultiplyingAlpha2;
         v57[1] = v19;
         v30 = MEMORY[0x1E695DEC8];
         v31 = v57;
@@ -175,13 +175,13 @@ LABEL_13:
 
       else
       {
-        v21 = [(CIHighlightShadowAdjust *)self _kernelSnoB_v0];
-        [(CIImage *)v20 extent];
+        _kernelSHnoB_v0 = [(CIHighlightShadowAdjust *)self _kernelSnoB_v0];
+        [(CIImage *)imageByUnpremultiplyingAlpha2 extent];
         v23 = v32;
         v25 = v33;
         v27 = v34;
         v29 = v35;
-        v58[0] = v20;
+        v58[0] = imageByUnpremultiplyingAlpha2;
         v58[1] = v19;
         v30 = MEMORY[0x1E695DEC8];
         v31 = v58;
@@ -194,29 +194,29 @@ LABEL_13:
     {
       if (v15 == 0.0)
       {
-        v21 = [(CIHighlightShadowAdjust *)self _kernelSHnoB_v1];
-        [(CIImage *)v20 extent];
+        _kernelSHnoB_v0 = [(CIHighlightShadowAdjust *)self _kernelSHnoB_v1];
+        [(CIImage *)imageByUnpremultiplyingAlpha2 extent];
         v23 = v22;
         v25 = v24;
         v27 = v26;
         v29 = v28;
-        v56[0] = v20;
+        v56[0] = imageByUnpremultiplyingAlpha2;
         v56[1] = v19;
         v30 = MEMORY[0x1E695DEC8];
         v31 = v56;
 LABEL_31:
         v44 = 2;
-        return [objc_msgSend(v21 applyWithExtent:objc_msgSend(v30 arguments:{"arrayWithObjects:count:", v31, v44), v23, v25, v27, v29), "imageByPremultiplyingAlpha"}];
+        return [objc_msgSend(_kernelSHnoB_v0 applyWithExtent:objc_msgSend(v30 arguments:{"arrayWithObjects:count:", v31, v44), v23, v25, v27, v29), "imageByPremultiplyingAlpha"}];
       }
 
-      v21 = [(CIHighlightShadowAdjust *)self _kernelSH_v1];
-      [(CIImage *)v20 extent];
+      _kernelSHnoB_v0 = [(CIHighlightShadowAdjust *)self _kernelSH_v1];
+      [(CIImage *)imageByUnpremultiplyingAlpha2 extent];
       v23 = v45;
       v25 = v46;
       v27 = v47;
       v29 = v48;
-      v55[0] = v20;
-      v55[1] = v17;
+      v55[0] = imageByUnpremultiplyingAlpha2;
+      v55[1] = imageByUnpremultiplyingAlpha;
       v55[2] = v19;
       v30 = MEMORY[0x1E695DEC8];
       v31 = v55;
@@ -226,34 +226,34 @@ LABEL_31:
     {
       if (v15 == 0.0)
       {
-        v21 = [(CIHighlightShadowAdjust *)self _kernelSHnoB_v2];
-        [(CIImage *)v20 extent];
+        _kernelSHnoB_v0 = [(CIHighlightShadowAdjust *)self _kernelSHnoB_v2];
+        [(CIImage *)imageByUnpremultiplyingAlpha2 extent];
         v23 = v36;
         v25 = v37;
         v27 = v38;
         v29 = v39;
-        v54[0] = v20;
+        v54[0] = imageByUnpremultiplyingAlpha2;
         v54[1] = v19;
         v30 = MEMORY[0x1E695DEC8];
         v31 = v54;
         goto LABEL_31;
       }
 
-      v21 = [(CIHighlightShadowAdjust *)self _kernelSH_v2];
-      [(CIImage *)v20 extent];
+      _kernelSHnoB_v0 = [(CIHighlightShadowAdjust *)self _kernelSH_v2];
+      [(CIImage *)imageByUnpremultiplyingAlpha2 extent];
       v23 = v49;
       v25 = v50;
       v27 = v51;
       v29 = v52;
-      v53[0] = v20;
-      v53[1] = v17;
+      v53[0] = imageByUnpremultiplyingAlpha2;
+      v53[1] = imageByUnpremultiplyingAlpha;
       v53[2] = v19;
       v30 = MEMORY[0x1E695DEC8];
       v31 = v53;
     }
 
     v44 = 3;
-    return [objc_msgSend(v21 applyWithExtent:objc_msgSend(v30 arguments:{"arrayWithObjects:count:", v31, v44), v23, v25, v27, v29), "imageByPremultiplyingAlpha"}];
+    return [objc_msgSend(_kernelSHnoB_v0 applyWithExtent:objc_msgSend(v30 arguments:{"arrayWithObjects:count:", v31, v44), v23, v25, v27, v29), "imageByPremultiplyingAlpha"}];
   }
 
   v13 = self->inputImage;
@@ -286,11 +286,11 @@ LABEL_31:
   return [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:4];
 }
 
-- (id)_initFromProperties:(id)a3
+- (id)_initFromProperties:(id)properties
 {
   v6 = 0.0;
   v7 = 0.0;
-  if (metadataPropertyArrayGetDouble(a3, @"http://ns.apple.com/adjustment-settings/1.0/", @"Shadows", &v7) && metadataPropertyArrayGetDouble(a3, @"http://ns.apple.com/adjustment-settings/1.0/", @"Highlights", &v6))
+  if (metadataPropertyArrayGetDouble(properties, @"http://ns.apple.com/adjustment-settings/1.0/", @"Shadows", &v7) && metadataPropertyArrayGetDouble(properties, @"http://ns.apple.com/adjustment-settings/1.0/", @"Highlights", &v6))
   {
     -[CIHighlightShadowAdjust setInputShadowAmount:](self, "setInputShadowAmount:", [MEMORY[0x1E696AD98] numberWithDouble:v7]);
     -[CIHighlightShadowAdjust setInputHighlightAmount:](self, "setInputHighlightAmount:", [MEMORY[0x1E696AD98] numberWithDouble:v6]);

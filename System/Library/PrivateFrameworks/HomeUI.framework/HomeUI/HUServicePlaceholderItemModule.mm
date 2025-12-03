@@ -1,6 +1,6 @@
 @interface HUServicePlaceholderItemModule
 - (id)buildItemProviders;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 @end
 
 @implementation HUServicePlaceholderItemModule
@@ -40,27 +40,27 @@
   [(HUServicePlaceholderItemModule *)self setPlaceholderItemProvider:v17];
 
   v18 = MEMORY[0x277CBEB98];
-  v19 = [(HUServicePlaceholderItemModule *)self placeholderItemProvider];
-  v20 = [v18 setWithObject:v19];
+  placeholderItemProvider = [(HUServicePlaceholderItemModule *)self placeholderItemProvider];
+  v20 = [v18 setWithObject:placeholderItemProvider];
 
   return v20;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D14850];
-  v5 = a3;
+  itemsCopy = items;
   v6 = [[v4 alloc] initWithIdentifier:@"servicePlaceholder"];
-  v7 = [(HUServicePlaceholderItemModule *)self placeholderItemProvider];
-  v8 = [v7 items];
-  v9 = [v8 allObjects];
+  placeholderItemProvider = [(HUServicePlaceholderItemModule *)self placeholderItemProvider];
+  items = [placeholderItemProvider items];
+  allObjects = [items allObjects];
 
-  [v6 setItems:v9];
+  [v6 setItems:allObjects];
   v10 = MEMORY[0x277D14778];
   v14[0] = v6;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-  v12 = [v10 filterSections:v11 toDisplayedItems:v5];
+  v12 = [v10 filterSections:v11 toDisplayedItems:itemsCopy];
 
   return v12;
 }

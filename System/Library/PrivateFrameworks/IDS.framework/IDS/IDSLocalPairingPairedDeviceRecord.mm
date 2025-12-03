@@ -1,47 +1,47 @@
 @interface IDSLocalPairingPairedDeviceRecord
-- (IDSLocalPairingPairedDeviceRecord)initWithCBUUID:(id)a3 publicIdentityDataClassA:(id)a4 classC:(id)a5 classD:(id)a6;
-- (IDSLocalPairingPairedDeviceRecord)initWithCoder:(id)a3;
+- (IDSLocalPairingPairedDeviceRecord)initWithCBUUID:(id)d publicIdentityDataClassA:(id)a classC:(id)c classD:(id)classD;
+- (IDSLocalPairingPairedDeviceRecord)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSLocalPairingPairedDeviceRecord
 
-- (IDSLocalPairingPairedDeviceRecord)initWithCoder:(id)a3
+- (IDSLocalPairingPairedDeviceRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCBUUID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCBUUID"];
   cbuuid = self->_cbuuid;
   self->_cbuuid = v5;
 
   v9.receiver = self;
   v9.super_class = IDSLocalPairingPairedDeviceRecord;
-  v7 = [(IDSLocalPairingRecord *)&v9 initWithCoder:v4];
+  v7 = [(IDSLocalPairingRecord *)&v9 initWithCoder:coderCopy];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IDSLocalPairingPairedDeviceRecord *)self cbuuid];
-  [v4 encodeObject:v5 forKey:@"kCBUUID"];
+  coderCopy = coder;
+  cbuuid = [(IDSLocalPairingPairedDeviceRecord *)self cbuuid];
+  [coderCopy encodeObject:cbuuid forKey:@"kCBUUID"];
 
   v6.receiver = self;
   v6.super_class = IDSLocalPairingPairedDeviceRecord;
-  [(IDSLocalPairingRecord *)&v6 encodeWithCoder:v4];
+  [(IDSLocalPairingRecord *)&v6 encodeWithCoder:coderCopy];
 }
 
-- (IDSLocalPairingPairedDeviceRecord)initWithCBUUID:(id)a3 publicIdentityDataClassA:(id)a4 classC:(id)a5 classD:(id)a6
+- (IDSLocalPairingPairedDeviceRecord)initWithCBUUID:(id)d publicIdentityDataClassA:(id)a classC:(id)c classD:(id)classD
 {
-  v11 = a3;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = IDSLocalPairingPairedDeviceRecord;
-  v12 = [(IDSLocalPairingRecord *)&v15 initWithIdentityDataClassA:a4 classC:a5 classD:a6];
+  v12 = [(IDSLocalPairingRecord *)&v15 initWithIdentityDataClassA:a classC:c classD:classD];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_cbuuid, a3);
+    objc_storeStrong(&v12->_cbuuid, d);
   }
 
   return v13;
@@ -61,8 +61,8 @@
   v9 = MEMORY[0x1E696AEC0];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  v12 = [(IDSLocalPairingPairedDeviceRecord *)self cbuuid];
-  v13 = [v9 stringWithFormat:@"<%@: %p cbuuid: %@ classA: %@, errorClassA: %@, classC: %@, errorClassC: %@, classD: %@, errorClassD: %@>", v11, self, v12, v3, v4, v5, v6, v7, v8];
+  cbuuid = [(IDSLocalPairingPairedDeviceRecord *)self cbuuid];
+  v13 = [v9 stringWithFormat:@"<%@: %p cbuuid: %@ classA: %@, errorClassA: %@, classC: %@, errorClassC: %@, classD: %@, errorClassD: %@>", v11, self, cbuuid, v3, v4, v5, v6, v7, v8];
 
   return v13;
 }

@@ -1,20 +1,20 @@
 @interface NSPathStore2
-+ (id)pathStoreWithCharacters:(const unsigned __int16 *)a3 length:(unint64_t)a4;
-+ (id)pathWithComponents:(id)a3;
++ (id)pathStoreWithCharacters:(const unsigned __int16 *)characters length:(unint64_t)length;
++ (id)pathWithComponents:(id)components;
 - (BOOL)isAbsolutePath;
-- (BOOL)isEqualToString:(id)a3;
-- (id)_stringByResolvingSymlinksInPathUsingCache:(BOOL)a3;
-- (id)_stringByStandardizingPathUsingCache:(BOOL)a3;
+- (BOOL)isEqualToString:(id)string;
+- (id)_stringByResolvingSymlinksInPathUsingCache:(BOOL)cache;
+- (id)_stringByStandardizingPathUsingCache:(BOOL)cache;
 - (id)lastPathComponent;
 - (id)pathExtension;
 - (id)stringByAbbreviatingWithTildeInPath;
-- (id)stringByAppendingPathComponent:(id)a3;
-- (id)stringByAppendingPathExtension:(id)a3;
+- (id)stringByAppendingPathComponent:(id)component;
+- (id)stringByAppendingPathExtension:(id)extension;
 - (id)stringByDeletingLastPathComponent;
 - (id)stringByDeletingPathExtension;
 - (id)stringByExpandingTildeInPath;
-- (unsigned)characterAtIndex:(unint64_t)a3;
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4;
+- (unsigned)characterAtIndex:(unint64_t)index;
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range;
 @end
 
 @implementation NSPathStore2
@@ -127,13 +127,13 @@
 
 - (id)stringByExpandingTildeInPath
 {
-  v2 = self;
+  selfCopy = self;
   v16 = *MEMORY[0x1E69E9840];
   v14 = self->_lengthAndRefCount >> 20;
   characters = self->_characters;
   __memmove_chk();
   _NSExpandTildeInPath(v15, &v14);
-  v5 = v2->_lengthAndRefCount >> 20;
+  v5 = selfCopy->_lengthAndRefCount >> 20;
   if (v5 >= v14)
   {
     v6 = v14;
@@ -141,7 +141,7 @@
 
   else
   {
-    v6 = v2->_lengthAndRefCount >> 20;
+    v6 = selfCopy->_lengthAndRefCount >> 20;
   }
 
   if (v6)
@@ -191,13 +191,13 @@ LABEL_13:
     return [NSPathStore2 pathStoreWithCharacters:v15 length:v14];
   }
 
-  return v2;
+  return selfCopy;
 }
 
-+ (id)pathStoreWithCharacters:(const unsigned __int16 *)a3 length:(unint64_t)a4
++ (id)pathStoreWithCharacters:(const unsigned __int16 *)characters length:(unint64_t)length
 {
-  v4 = a4;
-  if (a4 > 0x400)
+  lengthCopy = length;
+  if (length > 0x400)
   {
 
     return [NSString stringWithCharacters:"stringWithCharacters:length:" length:?];
@@ -206,28 +206,28 @@ LABEL_13:
   else
   {
     v6 = objc_opt_self();
-    v7 = NSAllocateObject(v6, 2 * v4, 0);
+    v7 = NSAllocateObject(v6, 2 * lengthCopy, 0);
     v8 = v7;
-    if (v4)
+    if (lengthCopy)
     {
-      memmove(v7 + 3, a3, 2 * v4);
-      if (v4 == 1)
+      memmove(v7 + 3, characters, 2 * lengthCopy);
+      if (lengthCopy == 1)
       {
         v9 = 0x100000;
       }
 
       else
       {
-        while (*(v8 + v4 + 5) == 47)
+        while (*(v8 + lengthCopy + 5) == 47)
         {
-          if (v4-- <= 2)
+          if (lengthCopy-- <= 2)
           {
-            LODWORD(v4) = 1;
+            LODWORD(lengthCopy) = 1;
             break;
           }
         }
 
-        v9 = v4 << 20;
+        v9 = lengthCopy << 20;
       }
     }
 
@@ -242,50 +242,50 @@ LABEL_13:
   }
 }
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
-  if (a3 >= self->_lengthAndRefCount >> 20)
+  if (index >= self->_lengthAndRefCount >> 20)
   {
-    v4 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: index (%lu) beyond bounds (%d)", _NSMethodExceptionProem(self, a2), a3, self->_lengthAndRefCount >> 20), 0}];
+    v4 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: index (%lu) beyond bounds (%d)", _NSMethodExceptionProem(self, a2), index, self->_lengthAndRefCount >> 20), 0}];
     objc_exception_throw(v4);
   }
 
-  return self->_characters[a3];
+  return self->_characters[index];
 }
 
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range
 {
-  if (a4.location + a4.length >= (self->_lengthAndRefCount >> 20) + 1)
+  if (range.location + range.length >= (self->_lengthAndRefCount >> 20) + 1)
   {
-    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: index (%lu) beyond bounds (%d)", _NSMethodExceptionProem(self, a2), a4.location + a4.length, (self->_lengthAndRefCount >> 20) + 1), 0}];
+    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: index (%lu) beyond bounds (%d)", _NSMethodExceptionProem(self, a2), range.location + range.length, (self->_lengthAndRefCount >> 20) + 1), 0}];
     objc_exception_throw(v5);
   }
 
-  if (a4.length)
+  if (range.length)
   {
 
-    memmove(a3, &self->_characters[a4.location], 2 * a4.length);
+    memmove(characters, &self->_characters[range.location], 2 * range.length);
   }
 }
 
-- (BOOL)isEqualToString:(id)a3
+- (BOOL)isEqualToString:(id)string
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (self == a3)
+  if (self == string)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!string)
   {
     return 0;
   }
 
-  v4 = self;
-  if (object_getClass(a3) == NSPathStore2)
+  selfCopy = self;
+  if (object_getClass(string) == NSPathStore2)
   {
-    v9 = *(v4 + 8) >> 20;
-    v10 = *(a3 + 2) >> 20;
+    v9 = *(selfCopy + 8) >> 20;
+    v10 = *(string + 2) >> 20;
     if (v9 >= v10)
     {
       v11 = v10;
@@ -298,8 +298,8 @@ LABEL_13:
 
     if (v11)
     {
-      v12 = (v4 + 12);
-      v13 = (a3 + 12);
+      v12 = (selfCopy + 12);
+      v13 = (string + 12);
       while (1)
       {
         v15 = *v12++;
@@ -307,8 +307,8 @@ LABEL_13:
         v16 = *v13++;
         v17 = v14 >= v16;
         v18 = v14 == v16;
-        v19 = v14 > v16 ? 1 : v4;
-        v4 = v17 ? v19 : -1;
+        v19 = v14 > v16 ? 1 : selfCopy;
+        selfCopy = v17 ? v19 : -1;
         if (!v18)
         {
           break;
@@ -328,19 +328,19 @@ LABEL_22:
       v20 = v9 > v10;
       if (v17)
       {
-        v4 = v20;
+        selfCopy = v20;
       }
 
       else
       {
-        v4 = -1;
+        selfCopy = -1;
       }
     }
   }
 
   else
   {
-    v5 = [a3 length];
+    v5 = [string length];
     v6 = v5;
     if (v5 >= 1041)
     {
@@ -352,8 +352,8 @@ LABEL_22:
       v7 = v33;
     }
 
-    [a3 getCharacters:v7 range:{0, v6}];
-    v21 = *(v4 + 8) >> 20;
+    [string getCharacters:v7 range:{0, v6}];
+    v21 = *(selfCopy + 8) >> 20;
     if (v21 >= v6)
     {
       v22 = v6;
@@ -361,12 +361,12 @@ LABEL_22:
 
     else
     {
-      v22 = *(v4 + 8) >> 20;
+      v22 = *(selfCopy + 8) >> 20;
     }
 
     if (v22)
     {
-      v23 = (v4 + 12);
+      v23 = (selfCopy + 12);
       v24 = v7;
       while (1)
       {
@@ -375,8 +375,8 @@ LABEL_22:
         v27 = *v24++;
         v28 = v25 >= v27;
         v29 = v25 == v27;
-        v30 = v25 > v27 ? 1 : v4;
-        v4 = v28 ? v30 : -1;
+        v30 = v25 > v27 ? 1 : selfCopy;
+        selfCopy = v28 ? v30 : -1;
         if (!v29)
         {
           break;
@@ -396,12 +396,12 @@ LABEL_40:
       v32 = v6 < v21;
       if (v31)
       {
-        v4 = -1;
+        selfCopy = -1;
       }
 
       else
       {
-        v4 = v32;
+        selfCopy = v32;
       }
     }
 
@@ -411,26 +411,26 @@ LABEL_40:
     }
   }
 
-  return v4 == 0;
+  return selfCopy == 0;
 }
 
-+ (id)pathWithComponents:(id)a3
++ (id)pathWithComponents:(id)components
 {
-  v50 = a1;
+  selfCopy = self;
   v51 = a2;
   v58 = *MEMORY[0x1E69E9840];
-  if (!a3 || (_NSIsNSArray() & 1) == 0)
+  if (!components || (_NSIsNSArray() & 1) == 0)
   {
-    v42 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: components argument is not an array", _NSMethodExceptionProem(v50, v51)), 0}];
+    v42 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: components argument is not an array", _NSMethodExceptionProem(selfCopy, v51)), 0}];
     objc_exception_throw(v42);
   }
 
-  if (![a3 count])
+  if (![components count])
   {
     return &stru_1EEEFDF90;
   }
 
-  v4 = [a3 count];
+  v4 = [components count];
   v5 = v4;
   if (v4 >> 60)
   {
@@ -446,11 +446,11 @@ LABEL_40:
   }
 
   MEMORY[0x1EEE9AC00](v4);
-  v8 = &v45 - v7;
+  v8 = &componentsCopy - v7;
   v53[1] = 0;
   v9 = 8 * v6;
-  v47 = &v45;
-  v45 = a3;
+  v47 = &componentsCopy;
+  componentsCopy = components;
   if (v5 >= 0x101)
   {
     v8 = _CFCreateArrayStorage();
@@ -462,7 +462,7 @@ LABEL_40:
   else
   {
     MEMORY[0x1EEE9AC00](v6);
-    v10 = &v45 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
+    v10 = &componentsCopy - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
     bzero(v10, v9);
     v53[0] = 0;
     if (!v5)
@@ -480,7 +480,7 @@ LABEL_40:
   v14 = 0;
   for (i = 0; i != v5; ++i)
   {
-    v16 = [a3 objectAtIndexedSubscript:{i, v45}];
+    v16 = [components objectAtIndexedSubscript:{i, componentsCopy}];
     *&v8[8 * i] = v16;
     v11 = [v16 length];
     *&v10[8 * i] = v11;
@@ -495,7 +495,7 @@ LABEL_40:
   v17 = 0;
 LABEL_17:
   MEMORY[0x1EEE9AC00](v11);
-  v19 = (&v45 - v18);
+  v19 = (&componentsCopy - v18);
   v52 = v20;
   v22 = 2 * v21;
   if (v20 >= 0x101)
@@ -506,13 +506,13 @@ LABEL_17:
 
   else
   {
-    bzero(&v45 - v18, v22);
+    bzero(&componentsCopy - v18, v22);
   }
 
   MEMORY[0x1EEE9AC00](v23);
-  v25 = &v45 - v24;
+  v25 = &componentsCopy - v24;
   v27 = 2 * v26;
-  v46 = &v45;
+  v46 = &componentsCopy;
   if (v14 >= 0x101)
   {
     v25 = malloc_type_malloc(v27, 0x1000040BDFB0063uLL);
@@ -524,7 +524,7 @@ LABEL_17:
 
   else
   {
-    bzero(&v45 - v24, v27);
+    bzero(&componentsCopy - v24, v27);
     if (v17)
     {
       goto LABEL_36;
@@ -535,7 +535,7 @@ LABEL_17:
   v49 = v19 - 1;
   do
   {
-    [*&v8[8 * v28] getCharacters:v25 range:{0, *&v10[8 * v28], v45, v46, v47, v48}];
+    [*&v8[8 * v28] getCharacters:v25 range:{0, *&v10[8 * v28], componentsCopy, v46, v47, v48}];
     if (*&v10[8 * v28] + v53[0] >= 1019)
     {
       _NSTransmutePathSlashes(v19, v53);
@@ -562,7 +562,7 @@ LABEL_17:
 
     if ((_NSAppendPathComponent(v19, v53, v52, v25, *&v10[8 * v28]) & 1) == 0)
     {
-      v32 = _NSMethodExceptionProem(v50, v51);
+      v32 = _NSMethodExceptionProem(selfCopy, v51);
       NSLog(@"%@: cannot append path '%@' to path '%@'", v32, *&v8[8 * v28], [NSString stringWithCharacters:v19 length:v53[0]]);
     }
 
@@ -629,8 +629,8 @@ LABEL_57:
     v38 = _NSOSLog();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_FAULT))
     {
-      v40 = v45;
-      v41 = [v45 valueForKey:@"length"];
+      v40 = componentsCopy;
+      v41 = [componentsCopy valueForKey:@"length"];
       *buf = 138478083;
       v55 = v40;
       v56 = 2112;
@@ -656,7 +656,7 @@ LABEL_57:
   }
 
 LABEL_51:
-  v12 = [NSPathStore2 pathStoreWithCharacters:v19 length:v45];
+  v12 = [NSPathStore2 pathStoreWithCharacters:v19 length:componentsCopy];
 LABEL_60:
   if (v52 >= 0x101)
   {
@@ -672,27 +672,27 @@ LABEL_60:
   return v12;
 }
 
-- (id)stringByAppendingPathComponent:(id)a3
+- (id)stringByAppendingPathComponent:(id)component
 {
-  v3 = self;
+  selfCopy = self;
   v38[260] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!component)
   {
-    return v3;
+    return selfCopy;
   }
 
   v6 = self->_lengthAndRefCount >> 20;
-  Class = object_getClass(a3);
+  Class = object_getClass(component);
   if (Class == NSPathStore2)
   {
     v27 = 0;
-    v9 = *(a3 + 2) >> 20;
-    v10 = a3 + 12;
+    v9 = *(component + 2) >> 20;
+    v10 = component + 12;
   }
 
   else
   {
-    v8 = [a3 length];
+    v8 = [component length];
     v9 = v8;
     v10 = v38;
     if (v8 >= 1041)
@@ -701,7 +701,7 @@ LABEL_60:
     }
 
     v27 = v10 != v38;
-    Class = [a3 getCharacters:v10 range:{0, v9}];
+    Class = [component getCharacters:v10 range:{0, v9}];
   }
 
   v28 = v26;
@@ -720,11 +720,11 @@ LABEL_60:
     bzero(&v26[-v12], v15);
   }
 
-  memmove(v13, v3->_characters, 2 * v6);
+  memmove(v13, selfCopy->_characters, 2 * v6);
   if ((_NSAppendPathComponent(v13, &v29, v6 + v9 + 1, v10, v9) & 1) == 0)
   {
-    v19 = _NSMethodExceptionProem(v3, a2);
-    NSLog(@"%@: cannot append path '%@' to path '%@'", v19, a3, v3);
+    v19 = _NSMethodExceptionProem(selfCopy, a2);
+    NSLog(@"%@: cannot append path '%@' to path '%@'", v19, component, selfCopy);
     return 0;
   }
 
@@ -796,14 +796,14 @@ LABEL_33:
     v22 = _NSOSLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
     {
-      v24 = [a3 length];
-      v25 = [(NSPathStore2 *)v3 length];
+      v24 = [component length];
+      v25 = [(NSPathStore2 *)selfCopy length];
       v30 = 138478595;
-      v31 = a3;
+      componentCopy = component;
       v32 = 2048;
       v33 = v24;
       v34 = 2113;
-      v35 = v3;
+      v35 = selfCopy;
       v36 = 2048;
       v37 = v25;
       _os_log_fault_impl(&dword_18075C000, v22, OS_LOG_TYPE_FAULT, "Appending path component %{private}@ (length: %lu) to string %{private}@ (length: %lu) resulted in an embedded NUL character", &v30, 0x2Au);
@@ -819,30 +819,30 @@ LABEL_24:
     v16 = v29;
   }
 
-  v3 = [NSPathStore2 pathStoreWithCharacters:v13 length:v16];
+  selfCopy = [NSPathStore2 pathStoreWithCharacters:v13 length:v16];
   if (v11 >= 0x101)
   {
     free(v13);
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)stringByAppendingPathExtension:(id)a3
+- (id)stringByAppendingPathExtension:(id)extension
 {
-  v4 = self;
+  selfCopy = self;
   v36[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!extension)
   {
     v34 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: nil argument", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v34);
   }
 
-  v6 = [a3 length];
+  v6 = [extension length];
   if (v6)
   {
     v7 = v6;
-    v8 = v4->_lengthAndRefCount >> 20;
+    v8 = selfCopy->_lengthAndRefCount >> 20;
     v9 = v6 + v8 + 1;
     MEMORY[0x1EEE9AC00](v6);
     v12 = v35 - v11;
@@ -871,9 +871,9 @@ LABEL_24:
       bzero(v35 - v16, v19);
     }
 
-    [a3 getCharacters:v12 range:{0, v7}];
-    characters = v4->_characters;
-    memmove(v17, v4->_characters, 2 * v8);
+    [extension getCharacters:v12 range:{0, v7}];
+    characters = selfCopy->_characters;
+    memmove(v17, selfCopy->_characters, 2 * v8);
     v36[0] = v8;
     if (_NSAppendPathExtension(v17, v36, v9, v12, v7))
     {
@@ -901,7 +901,7 @@ LABEL_24:
       }
 
 LABEL_21:
-      v26 = v4->_lengthAndRefCount >> 20;
+      v26 = selfCopy->_lengthAndRefCount >> 20;
       if (v26 >= v23)
       {
         v27 = v23;
@@ -909,7 +909,7 @@ LABEL_21:
 
       else
       {
-        v27 = v4->_lengthAndRefCount >> 20;
+        v27 = selfCopy->_lengthAndRefCount >> 20;
       }
 
       if (v27)
@@ -959,14 +959,14 @@ LABEL_33:
         }
       }
 
-      v4 = [NSPathStore2 pathStoreWithCharacters:v17 length:?];
+      selfCopy = [NSPathStore2 pathStoreWithCharacters:v17 length:?];
     }
 
     else
     {
-      v25 = _NSMethodExceptionProem(v4, a2);
-      NSLog(@"%@: cannot append extension '%@' to path '%@'", v25, a3, v4);
-      v4 = 0;
+      v25 = _NSMethodExceptionProem(selfCopy, a2);
+      NSLog(@"%@: cannot append extension '%@' to path '%@'", v25, extension, selfCopy);
+      selfCopy = 0;
     }
 
 LABEL_36:
@@ -980,23 +980,23 @@ LABEL_36:
       free(v17);
     }
 
-    return v4;
+    return selfCopy;
   }
 
-  v14 = [(NSPathStore2 *)v4 copy];
+  v14 = [(NSPathStore2 *)selfCopy copy];
 
   return v14;
 }
 
 - (id)stringByAbbreviatingWithTildeInPath
 {
-  v2 = self;
+  selfCopy = self;
   v16 = *MEMORY[0x1E69E9840];
   v14 = self->_lengthAndRefCount >> 20;
   characters = self->_characters;
   __memmove_chk();
   _NSAbbreviatePathWithTilde(v15, &v14);
-  v5 = v2->_lengthAndRefCount >> 20;
+  v5 = selfCopy->_lengthAndRefCount >> 20;
   if (v5 >= v14)
   {
     v6 = v14;
@@ -1004,7 +1004,7 @@ LABEL_36:
 
   else
   {
-    v6 = v2->_lengthAndRefCount >> 20;
+    v6 = selfCopy->_lengthAndRefCount >> 20;
   }
 
   if (v6)
@@ -1054,20 +1054,20 @@ LABEL_13:
     return [NSPathStore2 pathStoreWithCharacters:v15 length:v14];
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (id)_stringByStandardizingPathUsingCache:(BOOL)a3
+- (id)_stringByStandardizingPathUsingCache:(BOOL)cache
 {
-  v3 = a3;
-  v4 = self;
+  cacheCopy = cache;
+  selfCopy = self;
   v18 = *MEMORY[0x1E69E9840];
   v16 = self->_lengthAndRefCount >> 20;
   characters = self->_characters;
   __memmove_chk();
   _NSExpandTildeInPath(v17, &v16);
-  _NSStandardizePathUsingCache(v17, &v16, v3);
-  v7 = v4->_lengthAndRefCount >> 20;
+  _NSStandardizePathUsingCache(v17, &v16, cacheCopy);
+  v7 = selfCopy->_lengthAndRefCount >> 20;
   if (v7 >= v16)
   {
     v8 = v16;
@@ -1075,7 +1075,7 @@ LABEL_13:
 
   else
   {
-    v8 = v4->_lengthAndRefCount >> 20;
+    v8 = selfCopy->_lengthAndRefCount >> 20;
   }
 
   if (v8)
@@ -1125,21 +1125,21 @@ LABEL_13:
     return [NSPathStore2 pathStoreWithCharacters:v17 length:v16];
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)_stringByResolvingSymlinksInPathUsingCache:(BOOL)a3
+- (id)_stringByResolvingSymlinksInPathUsingCache:(BOOL)cache
 {
-  v3 = a3;
-  v4 = self;
+  cacheCopy = cache;
+  selfCopy = self;
   v18 = *MEMORY[0x1E69E9840];
   v16 = self->_lengthAndRefCount >> 20;
   characters = self->_characters;
   __memmove_chk();
   _NSExpandTildeInPath(v17, &v16);
-  _NSResolveSymlinksInPathUsingCache(v17, &v16, v3);
-  _NSStandardizePathUsingCache(v17, &v16, v3);
-  v7 = v4->_lengthAndRefCount >> 20;
+  _NSResolveSymlinksInPathUsingCache(v17, &v16, cacheCopy);
+  _NSStandardizePathUsingCache(v17, &v16, cacheCopy);
+  v7 = selfCopy->_lengthAndRefCount >> 20;
   if (v7 >= v16)
   {
     v8 = v16;
@@ -1147,7 +1147,7 @@ LABEL_13:
 
   else
   {
-    v8 = v4->_lengthAndRefCount >> 20;
+    v8 = selfCopy->_lengthAndRefCount >> 20;
   }
 
   if (v8)
@@ -1197,7 +1197,7 @@ LABEL_13:
     return [NSPathStore2 pathStoreWithCharacters:v17 length:v16];
   }
 
-  return v4;
+  return selfCopy;
 }
 
 @end

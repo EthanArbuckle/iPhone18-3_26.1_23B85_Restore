@@ -1,30 +1,30 @@
 @interface HUSceneActionEditorItemManager
 + (id)allActionGridEditorSectionIdentifiers;
-+ (id)sectionIdentifierForActionGridEditorType:(unint64_t)a3;
-+ (unint64_t)actionGridEditorTypeForSectionIdentifier:(id)a3;
-- (HUSceneActionEditorItemManager)initWithActionSetBuilder:(id)a3 mode:(unint64_t)a4 delegate:(id)a5;
++ (id)sectionIdentifierForActionGridEditorType:(unint64_t)type;
++ (unint64_t)actionGridEditorTypeForSectionIdentifier:(id)identifier;
+- (HUSceneActionEditorItemManager)initWithActionSetBuilder:(id)builder mode:(unint64_t)mode delegate:(id)delegate;
 - (NSSet)actionGridItems;
 - (NSSet)itemsToHideWhenEmpty;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionForActionGridEditorType:(unint64_t)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
-- (id)_itemsToHideInSet:(id)a3;
-- (void)_createItemsForActionGridEditorType:(unint64_t)a3 home:(id)a4;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionForActionGridEditorType:(unint64_t)type;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
+- (id)_itemsToHideInSet:(id)set;
+- (void)_createItemsForActionGridEditorType:(unint64_t)type home:(id)home;
 @end
 
 @implementation HUSceneActionEditorItemManager
 
-- (HUSceneActionEditorItemManager)initWithActionSetBuilder:(id)a3 mode:(unint64_t)a4 delegate:(id)a5
+- (HUSceneActionEditorItemManager)initWithActionSetBuilder:(id)builder mode:(unint64_t)mode delegate:(id)delegate
 {
-  v9 = a3;
+  builderCopy = builder;
   v15.receiver = self;
   v15.super_class = HUSceneActionEditorItemManager;
-  v10 = [(HFItemManager *)&v15 initWithDelegate:a5];
+  v10 = [(HFItemManager *)&v15 initWithDelegate:delegate];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_actionSetBuilder, a3);
-    v11->_mode = a4;
+    objc_storeStrong(&v10->_actionSetBuilder, builder);
+    v11->_mode = mode;
     v12 = objc_opt_new();
     actionGridItemsByEditorType = v11->_actionGridItemsByEditorType;
     v11->_actionGridItemsByEditorType = v12;
@@ -33,10 +33,10 @@
   return v11;
 }
 
-+ (unint64_t)actionGridEditorTypeForSectionIdentifier:(id)a3
++ (unint64_t)actionGridEditorTypeForSectionIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifierCopy = identifier;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -56,12 +56,12 @@
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [a1 sectionIdentifierForActionGridEditorType:{objc_msgSend(v10, "unsignedIntegerValue")}];
-        v12 = [v5 isEqualToString:v11];
+        v11 = [self sectionIdentifierForActionGridEditorType:{objc_msgSend(v10, "unsignedIntegerValue")}];
+        v12 = [identifierCopy isEqualToString:v11];
 
         if (v12)
         {
-          v14 = [v10 unsignedIntegerValue];
+          unsignedIntegerValue = [v10 unsignedIntegerValue];
           goto LABEL_11;
         }
       }
@@ -76,24 +76,24 @@
     }
   }
 
-  v13 = [MEMORY[0x277CCA890] currentHandler];
-  [v13 handleFailureInMethod:a2 object:a1 file:@"HUSceneActionEditorItemManager.m" lineNumber:67 description:{@"Unexpected section ID %@ for %s!", v5, "+[HUSceneActionEditorItemManager actionGridEditorTypeForSectionIdentifier:]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUSceneActionEditorItemManager.m" lineNumber:67 description:{@"Unexpected section ID %@ for %s!", identifierCopy, "+[HUSceneActionEditorItemManager actionGridEditorTypeForSectionIdentifier:]"}];
 
-  v14 = 0;
+  unsignedIntegerValue = 0;
 LABEL_11:
 
-  return v14;
+  return unsignedIntegerValue;
 }
 
-+ (id)sectionIdentifierForActionGridEditorType:(unint64_t)a3
++ (id)sectionIdentifierForActionGridEditorType:(unint64_t)type
 {
   v3 = @"AllAccessories";
-  if (a3 == 2)
+  if (type == 2)
   {
     v3 = @"OtherAccessories";
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     return @"PrioritizedAccessories";
   }
@@ -110,7 +110,7 @@ LABEL_11:
   v4[1] = 3221225472;
   v4[2] = __71__HUSceneActionEditorItemManager_allActionGridEditorSectionIdentifiers__block_invoke;
   v4[3] = &__block_descriptor_40_e5__8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = __71__HUSceneActionEditorItemManager_allActionGridEditorSectionIdentifiers__block_invoke(v4);
 
   return v2;
@@ -151,9 +151,9 @@ void __71__HUSceneActionEditorItemManager_allActionGridEditorSectionIdentifiers_
 - (NSSet)actionGridItems
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HUSceneActionEditorItemManager *)self actionGridItemsByEditorType];
-  v4 = [v3 allValues];
-  v5 = [v2 setWithArray:v4];
+  actionGridItemsByEditorType = [(HUSceneActionEditorItemManager *)self actionGridItemsByEditorType];
+  allValues = [actionGridItemsByEditorType allValues];
+  v5 = [v2 setWithArray:allValues];
 
   return v5;
 }
@@ -161,31 +161,31 @@ void __71__HUSceneActionEditorItemManager_allActionGridEditorSectionIdentifiers_
 - (NSSet)itemsToHideWhenEmpty
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(HUSceneActionEditorItemManager *)self actionGridItems];
-  [v3 unionSet:v4];
+  actionGridItems = [(HUSceneActionEditorItemManager *)self actionGridItems];
+  [v3 unionSet:actionGridItems];
 
-  v5 = [(HUSceneActionEditorItemManager *)self testSceneItem];
-  [v3 na_safeAddObject:v5];
+  testSceneItem = [(HUSceneActionEditorItemManager *)self testSceneItem];
+  [v3 na_safeAddObject:testSceneItem];
 
-  v6 = [(HUSceneActionEditorItemManager *)self showInHomeDashboardItem];
-  [v3 na_safeAddObject:v6];
+  showInHomeDashboardItem = [(HUSceneActionEditorItemManager *)self showInHomeDashboardItem];
+  [v3 na_safeAddObject:showInHomeDashboardItem];
 
-  v7 = [(HUSceneActionEditorItemManager *)self mediaItem];
-  [v3 na_safeAddObject:v7];
+  mediaItem = [(HUSceneActionEditorItemManager *)self mediaItem];
+  [v3 na_safeAddObject:mediaItem];
 
   return v3;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v74[2] = *MEMORY[0x277D85DE8];
-  v62 = a3;
-  v4 = [(HUSceneActionEditorItemManager *)self actionSetBuilder];
+  homeCopy = home;
+  actionSetBuilder = [(HUSceneActionEditorItemManager *)self actionSetBuilder];
   if ([(HUSceneActionEditorItemManager *)self mode]== 1 || [(HUSceneActionEditorItemManager *)self mode]== 2)
   {
-    v5 = [(HFItemManager *)self home];
-    v6 = [v5 actionSets];
-    v7 = [v6 na_filter:&__block_literal_global_101];
+    home = [(HFItemManager *)self home];
+    actionSets = [home actionSets];
+    v7 = [actionSets na_filter:&__block_literal_global_101];
     v8 = [v7 count];
 
     v9 = v8 < 8;
@@ -193,26 +193,26 @@ void __71__HUSceneActionEditorItemManager_allActionGridEditorSectionIdentifiers_
 
   else
   {
-    v10 = [(HUSceneActionEditorItemManager *)self actionSetBuilder];
-    v11 = [v10 actionSet];
-    if ([v11 hf_hasSetForContextType:0])
+    actionSetBuilder2 = [(HUSceneActionEditorItemManager *)self actionSetBuilder];
+    actionSet = [actionSetBuilder2 actionSet];
+    if ([actionSet hf_hasSetForContextType:0])
     {
       LOBYTE(v12) = 0;
     }
 
     else
     {
-      v13 = [(HUSceneActionEditorItemManager *)self actionSetBuilder];
-      v14 = [v13 actionSet];
-      v12 = [v14 hf_hasSetShowInHomeDashboard] ^ 1;
+      actionSetBuilder3 = [(HUSceneActionEditorItemManager *)self actionSetBuilder];
+      actionSet2 = [actionSetBuilder3 actionSet];
+      v12 = [actionSet2 hf_hasSetShowInHomeDashboard] ^ 1;
     }
 
-    v15 = [(HUSceneActionEditorItemManager *)self actionSetBuilder];
-    v9 = [v15 showInHomeDashboard] | v12;
+    actionSetBuilder4 = [(HUSceneActionEditorItemManager *)self actionSetBuilder];
+    v9 = [actionSetBuilder4 showInHomeDashboard] | v12;
   }
 
-  v16 = [(HUSceneActionEditorItemManager *)self actionSetBuilder];
-  [v16 setShowInHomeDashboard:v9 & 1];
+  actionSetBuilder5 = [(HUSceneActionEditorItemManager *)self actionSetBuilder];
+  [actionSetBuilder5 setShowInHomeDashboard:v9 & 1];
 
   v59 = [MEMORY[0x277CBEB58] set];
   v17 = objc_alloc(MEMORY[0x277D14B38]);
@@ -220,14 +220,14 @@ void __71__HUSceneActionEditorItemManager_allActionGridEditorSectionIdentifiers_
   v66[1] = 3221225472;
   v66[2] = __61__HUSceneActionEditorItemManager__buildItemProvidersForHome___block_invoke_2;
   v66[3] = &unk_277DB7478;
-  v61 = v4;
+  v61 = actionSetBuilder;
   v67 = v61;
   v18 = [v17 initWithResultsBlock:v66];
   [(HUSceneActionEditorItemManager *)self setNameAndIconItem:v18];
 
-  [(HUSceneActionEditorItemManager *)self _createItemsForActionGridEditorType:0 home:v62];
-  [(HUSceneActionEditorItemManager *)self _createItemsForActionGridEditorType:1 home:v62];
-  [(HUSceneActionEditorItemManager *)self _createItemsForActionGridEditorType:2 home:v62];
+  [(HUSceneActionEditorItemManager *)self _createItemsForActionGridEditorType:0 home:homeCopy];
+  [(HUSceneActionEditorItemManager *)self _createItemsForActionGridEditorType:1 home:homeCopy];
+  [(HUSceneActionEditorItemManager *)self _createItemsForActionGridEditorType:2 home:homeCopy];
   v19 = [(HUSceneActionEditorItemManager *)self mode]&& [(HUSceneActionEditorItemManager *)self mode]!= 1 && [(HUSceneActionEditorItemManager *)self mode]!= 2 && [(HUSceneActionEditorItemManager *)self mode]!= 3;
   v65[0] = MEMORY[0x277D85DD0];
   v65[1] = 3221225472;
@@ -259,17 +259,17 @@ void __71__HUSceneActionEditorItemManager_allActionGridEditorSectionIdentifiers_
   [(HUSceneActionEditorItemManager *)self setTestSceneItem:v31];
 
   v32 = [HUIncludedContextItem alloc];
-  v33 = [(HUSceneActionEditorItemManager *)self actionSetBuilder];
-  v34 = [v33 actionSet];
-  v35 = [(HUIncludedContextItem *)v32 initWithHomeKitObject:v34 contextType:3 home:v62];
+  actionSetBuilder6 = [(HUSceneActionEditorItemManager *)self actionSetBuilder];
+  actionSet3 = [actionSetBuilder6 actionSet];
+  v35 = [(HUIncludedContextItem *)v32 initWithHomeKitObject:actionSet3 contextType:3 home:homeCopy];
 
   v36 = [MEMORY[0x277CCABB0] numberWithInt:v19];
   [(HUIncludedContextItem *)v35 setOverrideHiddenState:v36];
 
   if ([(HUSceneActionEditorItemManager *)self mode]== 1 || [(HUSceneActionEditorItemManager *)self mode]== 2)
   {
-    v37 = [(HUSceneActionEditorItemManager *)self actionSetBuilder];
-    if ([v37 showInHomeDashboard])
+    actionSetBuilder7 = [(HUSceneActionEditorItemManager *)self actionSetBuilder];
+    if ([actionSetBuilder7 showInHomeDashboard])
     {
       v38 = &unk_2824915E0;
     }
@@ -305,27 +305,27 @@ void __71__HUSceneActionEditorItemManager_allActionGridEditorSectionIdentifiers_
   v47 = [v45 initWithResultsBlock:v63];
   [(HUSceneActionEditorItemManager *)self setMediaItem:v47];
 
-  v48 = [(HUSceneActionEditorItemManager *)self actionGridItemsByEditorType];
-  v49 = [v48 allValues];
-  [v60 addObjectsFromArray:v49];
+  actionGridItemsByEditorType = [(HUSceneActionEditorItemManager *)self actionGridItemsByEditorType];
+  allValues = [actionGridItemsByEditorType allValues];
+  [v60 addObjectsFromArray:allValues];
 
-  v50 = [(HUSceneActionEditorItemManager *)self nameAndIconItem];
-  [v60 na_safeAddObject:v50];
+  nameAndIconItem = [(HUSceneActionEditorItemManager *)self nameAndIconItem];
+  [v60 na_safeAddObject:nameAndIconItem];
 
-  v51 = [(HUSceneActionEditorItemManager *)self mediaItem];
-  [v60 na_safeAddObject:v51];
+  mediaItem = [(HUSceneActionEditorItemManager *)self mediaItem];
+  [v60 na_safeAddObject:mediaItem];
 
-  v52 = [(HUSceneActionEditorItemManager *)self changeServicesItem];
-  [v60 na_safeAddObject:v52];
+  changeServicesItem = [(HUSceneActionEditorItemManager *)self changeServicesItem];
+  [v60 na_safeAddObject:changeServicesItem];
 
-  v53 = [(HUSceneActionEditorItemManager *)self testSceneItem];
-  [v60 na_safeAddObject:v53];
+  testSceneItem = [(HUSceneActionEditorItemManager *)self testSceneItem];
+  [v60 na_safeAddObject:testSceneItem];
 
-  v54 = [(HUSceneActionEditorItemManager *)self showInHomeDashboardItem];
-  [v60 na_safeAddObject:v54];
+  showInHomeDashboardItem = [(HUSceneActionEditorItemManager *)self showInHomeDashboardItem];
+  [v60 na_safeAddObject:showInHomeDashboardItem];
 
-  v55 = [(HUSceneActionEditorItemManager *)self deleteSceneItem];
-  [v60 na_safeAddObject:v55];
+  deleteSceneItem = [(HUSceneActionEditorItemManager *)self deleteSceneItem];
+  [v60 na_safeAddObject:deleteSceneItem];
 
   v56 = [objc_alloc(MEMORY[0x277D14B40]) initWithItems:v60];
   v68 = v56;
@@ -458,42 +458,42 @@ id __61__HUSceneActionEditorItemManager__buildItemProvidersForHome___block_invok
   return v9;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  itemsCopy = items;
+  array = [MEMORY[0x277CBEB18] array];
   v5 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUSceneActionEditorNameSectionIdentifier"];
-  v6 = [(HUSceneActionEditorItemManager *)self nameAndIconItem];
-  v40[0] = v6;
+  nameAndIconItem = [(HUSceneActionEditorItemManager *)self nameAndIconItem];
+  v40[0] = nameAndIconItem;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:1];
   [v5 setItems:v7];
 
-  [v4 addObject:v5];
-  v8 = [(HUSceneActionEditorItemManager *)self prioritizedAccessories];
-  v9 = [v8 count];
+  [array addObject:v5];
+  prioritizedAccessories = [(HUSceneActionEditorItemManager *)self prioritizedAccessories];
+  v9 = [prioritizedAccessories count];
 
-  v10 = self;
+  selfCopy2 = self;
   if (v9)
   {
     v11 = [(HUSceneActionEditorItemManager *)self _buildSectionForActionGridEditorType:1];
-    [v4 addObject:v11];
+    [array addObject:v11];
 
-    v12 = [(HUSceneActionEditorItemManager *)self actionSetBuilder];
-    v13 = [v12 actions];
+    actionSetBuilder = [(HUSceneActionEditorItemManager *)self actionSetBuilder];
+    actions = [actionSetBuilder actions];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __67__HUSceneActionEditorItemManager__buildSectionsWithDisplayedItems___block_invoke;
     v36[3] = &unk_277DB96C8;
     v36[4] = self;
-    v14 = [v13 na_any:v36];
+    v14 = [actions na_any:v36];
 
     if (!v14)
     {
       goto LABEL_6;
     }
 
-    v10 = self;
+    selfCopy2 = self;
     v15 = 2;
   }
 
@@ -502,55 +502,55 @@ id __61__HUSceneActionEditorItemManager__buildItemProvidersForHome___block_invok
     v15 = 0;
   }
 
-  v16 = [(HUSceneActionEditorItemManager *)v10 _buildSectionForActionGridEditorType:v15];
-  [v4 addObject:v16];
+  v16 = [(HUSceneActionEditorItemManager *)selfCopy2 _buildSectionForActionGridEditorType:v15];
+  [array addObject:v16];
 
 LABEL_6:
   v17 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUSceneActionEditorMediaSectionIdentifier"];
   v18 = _HULocalizedStringWithDefaultValue(@"HUSceneActionEditorMediaInstructionsTitle", @"HUSceneActionEditorMediaInstructionsTitle", 1);
   [v17 setHeaderTitle:v18];
 
-  v19 = [(HFItemManager *)self home];
-  v20 = [v19 hf_currentUserIsAdministrator];
+  home = [(HFItemManager *)self home];
+  hf_currentUserIsAdministrator = [home hf_currentUserIsAdministrator];
 
-  if (v20)
+  if (hf_currentUserIsAdministrator)
   {
     v21 = _HULocalizedStringWithDefaultValue(@"HUSceneActionEditorMediaInstructionsDescription", @"HUSceneActionEditorMediaInstructionsDescription", 1);
     [v17 setHeaderSecondaryText:v21];
   }
 
-  v22 = [(HUSceneActionEditorItemManager *)self mediaItem];
-  v39 = v22;
+  mediaItem = [(HUSceneActionEditorItemManager *)self mediaItem];
+  v39 = mediaItem;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v39 count:1];
   [v17 setItems:v23];
 
-  [v4 addObject:v17];
+  [array addObject:v17];
   v24 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUSceneActionEditorSettingsSectionIdentifier"];
-  v25 = [(HUSceneActionEditorItemManager *)self testSceneItem];
-  v38[0] = v25;
-  v26 = [(HUSceneActionEditorItemManager *)self changeServicesItem];
-  v38[1] = v26;
-  v27 = [(HUSceneActionEditorItemManager *)self showInHomeDashboardItem];
-  v38[2] = v27;
+  testSceneItem = [(HUSceneActionEditorItemManager *)self testSceneItem];
+  v38[0] = testSceneItem;
+  changeServicesItem = [(HUSceneActionEditorItemManager *)self changeServicesItem];
+  v38[1] = changeServicesItem;
+  showInHomeDashboardItem = [(HUSceneActionEditorItemManager *)self showInHomeDashboardItem];
+  v38[2] = showInHomeDashboardItem;
   v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:3];
   [v24 setItems:v28];
 
   v29 = _HULocalizedStringWithDefaultValue(@"HUServiceDetailsShowInHomeDashboardFooterTitle", @"HUServiceDetailsShowInHomeDashboardFooterTitle", 1);
   [v24 setFooterTitle:v29];
 
-  [v4 addObject:v24];
+  [array addObject:v24];
   if (![(HUSceneActionEditorItemManager *)self mode]|| [(HUSceneActionEditorItemManager *)self mode]== 3)
   {
     v30 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUSceneActionEditorDeleteSectionIdentifier"];
-    v31 = [(HUSceneActionEditorItemManager *)self deleteSceneItem];
-    v37 = v31;
+    deleteSceneItem = [(HUSceneActionEditorItemManager *)self deleteSceneItem];
+    v37 = deleteSceneItem;
     v32 = [MEMORY[0x277CBEA60] arrayWithObjects:&v37 count:1];
     [v30 setItems:v32];
 
-    [v4 addObject:v30];
+    [array addObject:v30];
   }
 
-  v33 = [MEMORY[0x277D14778] filterSections:v4 toDisplayedItems:v35];
+  v33 = [MEMORY[0x277D14778] filterSections:array toDisplayedItems:itemsCopy];
 
   return v33;
 }
@@ -684,51 +684,51 @@ uint64_t __67__HUSceneActionEditorItemManager__buildSectionsWithDisplayedItems__
   return v5;
 }
 
-- (id)_itemsToHideInSet:(id)a3
+- (id)_itemsToHideInSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v13.receiver = self;
   v13.super_class = HUSceneActionEditorItemManager;
-  v5 = [(HFItemManager *)&v13 _itemsToHideInSet:v4];
+  v5 = [(HFItemManager *)&v13 _itemsToHideInSet:setCopy];
   v6 = [v5 mutableCopy];
 
-  v7 = [(HUSceneActionEditorItemManager *)self actionSetBuilder];
-  v8 = [v7 actions];
-  v9 = [v8 count];
+  actionSetBuilder = [(HUSceneActionEditorItemManager *)self actionSetBuilder];
+  actions = [actionSetBuilder actions];
+  v9 = [actions count];
 
   if (!v9)
   {
-    v10 = [(HUSceneActionEditorItemManager *)self itemsToHideWhenEmpty];
-    v11 = [v10 mutableCopy];
+    itemsToHideWhenEmpty = [(HUSceneActionEditorItemManager *)self itemsToHideWhenEmpty];
+    v11 = [itemsToHideWhenEmpty mutableCopy];
 
-    [v11 intersectSet:v4];
+    [v11 intersectSet:setCopy];
     [v6 unionSet:v11];
   }
 
   return v6;
 }
 
-- (id)_buildSectionForActionGridEditorType:(unint64_t)a3
+- (id)_buildSectionForActionGridEditorType:(unint64_t)type
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v5 = objc_alloc(MEMORY[0x277D14850]);
-  v6 = [objc_opt_class() sectionIdentifierForActionGridEditorType:a3];
+  v6 = [objc_opt_class() sectionIdentifierForActionGridEditorType:type];
   v7 = [v5 initWithIdentifier:v6];
 
-  if (a3 > 2)
+  if (type > 2)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = _HULocalizedStringWithDefaultValue(off_277DBCCA8[a3], off_277DBCCA8[a3], 1);
+    v8 = _HULocalizedStringWithDefaultValue(off_277DBCCA8[type], off_277DBCCA8[type], 1);
   }
 
   [v7 setHeaderTitle:v8];
-  v9 = [(HUSceneActionEditorItemManager *)self actionGridItemsByEditorType];
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v11 = [v9 objectForKeyedSubscript:v10];
+  actionGridItemsByEditorType = [(HUSceneActionEditorItemManager *)self actionGridItemsByEditorType];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+  v11 = [actionGridItemsByEditorType objectForKeyedSubscript:v10];
   v14[0] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
   [v7 setItems:v12];
@@ -736,13 +736,13 @@ uint64_t __67__HUSceneActionEditorItemManager__buildSectionsWithDisplayedItems__
   return v7;
 }
 
-- (void)_createItemsForActionGridEditorType:(unint64_t)a3 home:(id)a4
+- (void)_createItemsForActionGridEditorType:(unint64_t)type home:(id)home
 {
   v6 = objc_alloc(MEMORY[0x277D14B38]);
   v9 = [v6 initWithResults:MEMORY[0x277CBEC10]];
-  v7 = [(HUSceneActionEditorItemManager *)self actionGridItemsByEditorType];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v7 setObject:v9 forKeyedSubscript:v8];
+  actionGridItemsByEditorType = [(HUSceneActionEditorItemManager *)self actionGridItemsByEditorType];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+  [actionGridItemsByEditorType setObject:v9 forKeyedSubscript:v8];
 }
 
 @end

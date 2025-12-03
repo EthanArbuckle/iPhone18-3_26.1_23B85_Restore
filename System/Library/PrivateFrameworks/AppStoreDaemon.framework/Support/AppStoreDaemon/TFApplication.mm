@@ -1,10 +1,10 @@
 @interface TFApplication
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TFApplication
@@ -14,8 +14,8 @@
   v7.receiver = self;
   v7.super_class = TFApplication;
   v3 = [(TFApplication *)&v7 description];
-  v4 = [(TFApplication *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(TFApplication *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -93,9 +93,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteUint64Field();
@@ -142,9 +142,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -152,15 +152,15 @@
     *(v5 + 72) |= 1u;
   }
 
-  v7 = [(NSString *)self->_bundleId copyWithZone:a3];
+  v7 = [(NSString *)self->_bundleId copyWithZone:zone];
   v8 = v6[3];
   v6[3] = v7;
 
-  v9 = [(NSString *)self->_cfBundleShortVersionString copyWithZone:a3];
+  v9 = [(NSString *)self->_cfBundleShortVersionString copyWithZone:zone];
   v10 = v6[4];
   v6[4] = v9;
 
-  v11 = [(NSString *)self->_cfBundleVersion copyWithZone:a3];
+  v11 = [(NSString *)self->_cfBundleVersion copyWithZone:zone];
   v12 = v6[5];
   v6[5] = v11;
 
@@ -170,7 +170,7 @@
     *(v6 + 72) |= 2u;
   }
 
-  v13 = [(NSString *)self->_gitBranch copyWithZone:a3];
+  v13 = [(NSString *)self->_gitBranch copyWithZone:zone];
   v14 = v6[7];
   v6[7] = v13;
 
@@ -180,7 +180,7 @@
     *(v6 + 72) |= 8u;
   }
 
-  v15 = [(NSString *)self->_ciBuildGroup copyWithZone:a3];
+  v15 = [(NSString *)self->_ciBuildGroup copyWithZone:zone];
   v16 = v6[6];
   v6[6] = v15;
 
@@ -193,35 +193,35 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_applicationAdamId != *(v4 + 1))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_applicationAdamId != *(equalCopy + 1))
     {
       goto LABEL_31;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_31;
   }
 
   bundleId = self->_bundleId;
-  if (bundleId | *(v4 + 3) && ![(NSString *)bundleId isEqual:?])
+  if (bundleId | *(equalCopy + 3) && ![(NSString *)bundleId isEqual:?])
   {
     goto LABEL_31;
   }
 
   cfBundleShortVersionString = self->_cfBundleShortVersionString;
-  if (cfBundleShortVersionString | *(v4 + 4))
+  if (cfBundleShortVersionString | *(equalCopy + 4))
   {
     if (![(NSString *)cfBundleShortVersionString isEqual:?])
     {
@@ -230,7 +230,7 @@
   }
 
   cfBundleVersion = self->_cfBundleVersion;
-  if (cfBundleVersion | *(v4 + 5))
+  if (cfBundleVersion | *(equalCopy + 5))
   {
     if (![(NSString *)cfBundleVersion isEqual:?])
     {
@@ -239,22 +239,22 @@
   }
 
   has = self->_has;
-  v9 = *(v4 + 72);
+  v9 = *(equalCopy + 72);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 72) & 2) == 0 || self->_uptimeMillis != *(v4 + 2))
+    if ((*(equalCopy + 72) & 2) == 0 || self->_uptimeMillis != *(equalCopy + 2))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 72) & 2) != 0)
+  else if ((*(equalCopy + 72) & 2) != 0)
   {
     goto LABEL_31;
   }
 
   gitBranch = self->_gitBranch;
-  if (gitBranch | *(v4 + 7))
+  if (gitBranch | *(equalCopy + 7))
   {
     if (![(NSString *)gitBranch isEqual:?])
     {
@@ -262,7 +262,7 @@
     }
 
     has = self->_has;
-    v9 = *(v4 + 72);
+    v9 = *(equalCopy + 72);
   }
 
   if ((has & 8) != 0)
@@ -274,13 +274,13 @@
 
     if (self->_isAppClip)
     {
-      if ((*(v4 + 68) & 1) == 0)
+      if ((*(equalCopy + 68) & 1) == 0)
       {
         goto LABEL_31;
       }
     }
 
-    else if (*(v4 + 68))
+    else if (*(equalCopy + 68))
     {
       goto LABEL_31;
     }
@@ -292,7 +292,7 @@
   }
 
   ciBuildGroup = self->_ciBuildGroup;
-  if (!(ciBuildGroup | *(v4 + 6)))
+  if (!(ciBuildGroup | *(equalCopy + 6)))
   {
     goto LABEL_26;
   }
@@ -305,12 +305,12 @@ LABEL_31:
   }
 
   has = self->_has;
-  v9 = *(v4 + 72);
+  v9 = *(equalCopy + 72);
 LABEL_26:
   v12 = (v9 & 4) == 0;
   if ((has & 4) != 0)
   {
-    if ((v9 & 4) == 0 || self->_platform != *(v4 + 16))
+    if ((v9 & 4) == 0 || self->_platform != *(equalCopy + 16))
     {
       goto LABEL_31;
     }

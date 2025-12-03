@@ -1,7 +1,7 @@
 @interface MUPhotoTileCollectionViewCell
 + (id)reuseIdentifier;
 - (CGSize)targetFrameSize;
-- (MUPhotoTileCollectionViewCell)initWithFrame:(CGRect)a3;
+- (MUPhotoTileCollectionViewCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MUPhotoTileCollectionViewCell
@@ -14,11 +14,11 @@
   return result;
 }
 
-- (MUPhotoTileCollectionViewCell)initWithFrame:(CGRect)a3
+- (MUPhotoTileCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = MUPhotoTileCollectionViewCell;
-  v3 = [(MUPhotoTileCollectionViewCell *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUPhotoTileCollectionViewCell *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MUPhotoTileView alloc];
@@ -26,13 +26,13 @@
     photoTileView = v3->_photoTileView;
     v3->_photoTileView = v5;
 
-    v7 = [(MUPhotoTileCollectionViewCell *)v3 contentView];
-    [v7 addSubview:v3->_photoTileView];
+    contentView = [(MUPhotoTileCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_photoTileView];
 
     v8 = [MUEdgeLayout alloc];
     v9 = v3->_photoTileView;
-    v10 = [(MUPhotoTileCollectionViewCell *)v3 contentView];
-    v11 = [(MUEdgeLayout *)v8 initWithItem:v9 container:v10];
+    contentView2 = [(MUPhotoTileCollectionViewCell *)v3 contentView];
+    v11 = [(MUEdgeLayout *)v8 initWithItem:v9 container:contentView2];
     [(MUConstraintLayout *)v11 activate];
 
     [(UIView *)v3 _mapsui_setCardCorner];

@@ -2,18 +2,18 @@
 - (ClientSideWrapper)init;
 - (id)proxy;
 - (void)dealloc;
-- (void)queue_activeProcessResignWithCompletion:(id)a3;
-- (void)queue_applicationLostFocusWithCompletion:(id)a3;
-- (void)queue_getDebugInfoWithCompletion:(id)a3;
-- (void)queue_keyboardChanged:(id)a3 onComplete:(id)a4;
-- (void)queue_keyboardChangedWithCompletion:(id)a3;
-- (void)queue_keyboardIAVChanged:(double)a3 onComplete:(id)a4;
-- (void)queue_keyboardSuppressed:(BOOL)a3 withCompletion:(id)a4;
-- (void)queue_keyboardTransition:(id)a3 event:(unint64_t)a4 withInfo:(id)a5 onComplete:(id)a6;
-- (void)queue_keyboardUIDidChange:(id)a3 onComplete:(id)a4;
-- (void)queue_sceneBecameFocused:(id)a3 withCompletion:(id)a4;
-- (void)queue_setKeyboardDisabled:(BOOL)a3 withCompletion:(id)a4;
-- (void)queue_setLastEventSource:(int64_t)a3 withCompletion:(id)a4;
+- (void)queue_activeProcessResignWithCompletion:(id)completion;
+- (void)queue_applicationLostFocusWithCompletion:(id)completion;
+- (void)queue_getDebugInfoWithCompletion:(id)completion;
+- (void)queue_keyboardChanged:(id)changed onComplete:(id)complete;
+- (void)queue_keyboardChangedWithCompletion:(id)completion;
+- (void)queue_keyboardIAVChanged:(double)changed onComplete:(id)complete;
+- (void)queue_keyboardSuppressed:(BOOL)suppressed withCompletion:(id)completion;
+- (void)queue_keyboardTransition:(id)transition event:(unint64_t)event withInfo:(id)info onComplete:(id)complete;
+- (void)queue_keyboardUIDidChange:(id)change onComplete:(id)complete;
+- (void)queue_sceneBecameFocused:(id)focused withCompletion:(id)completion;
+- (void)queue_setKeyboardDisabled:(BOOL)disabled withCompletion:(id)completion;
+- (void)queue_setLastEventSource:(int64_t)source withCompletion:(id)completion;
 @end
 
 @implementation ClientSideWrapper
@@ -88,99 +88,99 @@ LABEL_6:
   [(ClientSideWrapper *)&v3 dealloc];
 }
 
-- (void)queue_keyboardChanged:(id)a3 onComplete:(id)a4
+- (void)queue_keyboardChanged:(id)changed onComplete:(id)complete
 {
-  if (a4)
+  if (complete)
   {
-    (*(a4 + 2))(a4);
+    (*(complete + 2))(complete);
   }
 }
 
-- (void)queue_keyboardChangedWithCompletion:(id)a3
+- (void)queue_keyboardChangedWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)queue_keyboardTransition:(id)a3 event:(unint64_t)a4 withInfo:(id)a5 onComplete:(id)a6
+- (void)queue_keyboardTransition:(id)transition event:(unint64_t)event withInfo:(id)info onComplete:(id)complete
 {
-  if (a6)
+  if (complete)
   {
-    (*(a6 + 2))(a6);
+    (*(complete + 2))(complete);
   }
 }
 
-- (void)queue_applicationLostFocusWithCompletion:(id)a3
+- (void)queue_applicationLostFocusWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)queue_getDebugInfoWithCompletion:(id)a3
+- (void)queue_getDebugInfoWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, &off_1000044C0);
+    (*(completion + 2))(completion, &off_1000044C0);
   }
 }
 
-- (void)queue_keyboardSuppressed:(BOOL)a3 withCompletion:(id)a4
+- (void)queue_keyboardSuppressed:(BOOL)suppressed withCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)queue_keyboardIAVChanged:(double)a3 onComplete:(id)a4
+- (void)queue_keyboardIAVChanged:(double)changed onComplete:(id)complete
 {
-  if (a4)
+  if (complete)
   {
-    (*(a4 + 2))(a4, a3);
+    (*(complete + 2))(complete, changed);
   }
 }
 
-- (void)queue_setKeyboardDisabled:(BOOL)a3 withCompletion:(id)a4
+- (void)queue_setKeyboardDisabled:(BOOL)disabled withCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)queue_activeProcessResignWithCompletion:(id)a3
+- (void)queue_activeProcessResignWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)queue_keyboardUIDidChange:(id)a3 onComplete:(id)a4
+- (void)queue_keyboardUIDidChange:(id)change onComplete:(id)complete
 {
-  if (a4)
+  if (complete)
   {
-    (*(a4 + 2))(a4);
+    (*(complete + 2))(complete);
   }
 }
 
-- (void)queue_sceneBecameFocused:(id)a3 withCompletion:(id)a4
+- (void)queue_sceneBecameFocused:(id)focused withCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)queue_setLastEventSource:(int64_t)a3 withCompletion:(id)a4
+- (void)queue_setLastEventSource:(int64_t)source withCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 

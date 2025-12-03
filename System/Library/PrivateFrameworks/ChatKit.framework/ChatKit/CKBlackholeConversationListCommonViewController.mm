@@ -1,30 +1,30 @@
 @interface CKBlackholeConversationListCommonViewController
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size;
 - (CKBlackholeConversationListCommonViewController)init;
 - (UIBarButtonItem)clearAllButton;
 - (UILabel)emptyConversationListLabel;
 - (id)_alertTitleForClearAll;
 - (id)_alertTitleForDelete;
 - (id)_conversations;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (void)_batchDeleteConversationWithCompletionHandler:(id)a3;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (void)_batchDeleteConversationWithCompletionHandler:(id)handler;
 - (void)_clearAllTapped;
-- (void)_clearAllTappedWithCompletionHandler:(id)a3;
-- (void)_confirmDeleteConversation:(id)a3 view:(id)a4 withCompletionHandler:(id)a5;
-- (void)_deleteConversation:(id)a3;
-- (void)_deleteConversation:(id)a3 withCompletionHandler:(id)a4;
+- (void)_clearAllTappedWithCompletionHandler:(id)handler;
+- (void)_confirmDeleteConversation:(id)conversation view:(id)view withCompletionHandler:(id)handler;
+- (void)_deleteConversation:(id)conversation;
+- (void)_deleteConversation:(id)conversation withCompletionHandler:(id)handler;
 - (void)_updateConversationList;
 - (void)_updateConversationListEmptyLabel;
 - (void)dealloc;
-- (void)endHoldingConversationListUpdatesForKey:(id)a3;
+- (void)endHoldingConversationListUpdatesForKey:(id)key;
 - (void)popViewControllerIfNecessary;
-- (void)setVisibleConversations:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willBeginEditingRowAtIndexPath:(id)a4;
+- (void)setVisibleConversations:(id)conversations;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willBeginEditingRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CKBlackholeConversationListCommonViewController
@@ -37,16 +37,16 @@
   v2 = [(CKBlackholeConversationListCommonViewController *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel__updateConversationList name:@"CKConversationListFinishedLoadingNotification" object:0];
-    [v3 addObserver:v2 selector:sel__updateConversationList name:@"CKConversationListChangedNotification" object:0];
-    [v3 addObserver:v2 selector:sel__updateConversationList name:@"CKConversationListConversationLeftNotification" object:0];
-    [v3 addObserver:v2 selector:sel__updateConversationList name:*MEMORY[0x1E69A5748] object:0];
-    [v3 addObserver:v2 selector:sel__updateConversationList name:*MEMORY[0x1E69A5870] object:0];
-    [v3 addObserver:v2 selector:sel__updateConversationList name:*MEMORY[0x1E69A58F8] object:0];
-    [v3 addObserver:v2 selector:sel__updateConversationList name:*MEMORY[0x1E69A58C8] object:0];
-    [v3 addObserver:v2 selector:sel__updateConversationList name:*MEMORY[0x1E69A58C0] object:0];
-    [v3 addObserver:v2 selector:sel__updateConversationList name:*MEMORY[0x1E69A5900] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__updateConversationList name:@"CKConversationListFinishedLoadingNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__updateConversationList name:@"CKConversationListChangedNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__updateConversationList name:@"CKConversationListConversationLeftNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__updateConversationList name:*MEMORY[0x1E69A5748] object:0];
+    [defaultCenter addObserver:v2 selector:sel__updateConversationList name:*MEMORY[0x1E69A5870] object:0];
+    [defaultCenter addObserver:v2 selector:sel__updateConversationList name:*MEMORY[0x1E69A58F8] object:0];
+    [defaultCenter addObserver:v2 selector:sel__updateConversationList name:*MEMORY[0x1E69A58C8] object:0];
+    [defaultCenter addObserver:v2 selector:sel__updateConversationList name:*MEMORY[0x1E69A58C0] object:0];
+    [defaultCenter addObserver:v2 selector:sel__updateConversationList name:*MEMORY[0x1E69A5900] object:0];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, _popToConversationListOnRestore, *MEMORY[0x1E69A5858], v2, CFNotificationSuspensionBehaviorDeliverImmediately);
     v5 = [[CKScheduledUpdater alloc] initWithTarget:v2 action:sel__updateConversationList];
@@ -67,8 +67,8 @@
 - (void)dealloc
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4 = IMLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -94,36 +94,36 @@
   v4 = [v3 localizedStringForKey:@"BLACKHOLE_CONVERSATIONLIST_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
   [(CKBlackholeConversationListCommonViewController *)self setTitle:v4];
 
-  v5 = [(CKBlackholeConversationListCommonViewController *)self clearAllButton];
-  v6 = [(CKBlackholeConversationListCommonViewController *)self navigationItem];
-  [v6 setRightBarButtonItem:v5];
+  clearAllButton = [(CKBlackholeConversationListCommonViewController *)self clearAllButton];
+  navigationItem = [(CKBlackholeConversationListCommonViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:clearAllButton];
 
   v7 = objc_alloc(MEMORY[0x1E69DD020]);
-  v8 = [(CKBlackholeConversationListCommonViewController *)self view];
-  [v8 bounds];
+  view = [(CKBlackholeConversationListCommonViewController *)self view];
+  [view bounds];
   v9 = [v7 initWithFrame:2 style:?];
   [(CKBlackholeConversationListCommonViewController *)self setTableView:v9];
 
-  v10 = [(CKBlackholeConversationListCommonViewController *)self tableView];
-  [v10 registerClass:objc_opt_class() forCellReuseIdentifier:@"identifiers"];
+  tableView = [(CKBlackholeConversationListCommonViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"identifiers"];
 
   v11 = objc_alloc(MEMORY[0x1E69DD7B8]);
-  v12 = [(CKBlackholeConversationListCommonViewController *)self tableView];
+  tableView2 = [(CKBlackholeConversationListCommonViewController *)self tableView];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __62__CKBlackholeConversationListCommonViewController_viewDidLoad__block_invoke;
   v18[3] = &unk_1E72F50C0;
   v18[4] = self;
-  v13 = [v11 initWithTableView:v12 cellProvider:v18];
+  v13 = [v11 initWithTableView:tableView2 cellProvider:v18];
   [(CKBlackholeConversationListCommonViewController *)self setTableViewDataSource:v13];
 
   v14 = IMLogHandleForCategory();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
-    v15 = [MEMORY[0x1E69A5B50] sharedController];
-    v16 = [v15 isConnected];
+    mEMORY[0x1E69A5B50] = [MEMORY[0x1E69A5B50] sharedController];
+    isConnected = [mEMORY[0x1E69A5B50] isConnected];
     v17 = @"NO";
-    if (v16)
+    if (isConnected)
     {
       v17 = @"YES";
     }
@@ -155,21 +155,21 @@ id __62__CKBlackholeConversationListCommonViewController_viewDidLoad__block_invo
   return v8;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v14 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = CKBlackholeConversationListCommonViewController;
-  [(CKBlackholeConversationListCommonViewController *)&v9 viewWillAppear:a3];
+  [(CKBlackholeConversationListCommonViewController *)&v9 viewWillAppear:appear];
   [(CKBlackholeConversationListCommonViewController *)self endHoldingConversationListUpdatesForKey:@"kCKBlackholeConversationListHoldUpdatesForDeletion"];
-  v4 = [MEMORY[0x1E69A5B50] sharedController];
-  [v4 addListenerID:@"CKSettingsMessagesController" capabilities:(*MEMORY[0x1E69A6268] | *MEMORY[0x1E69A6258]) | *MEMORY[0x1E69A6280]];
+  mEMORY[0x1E69A5B50] = [MEMORY[0x1E69A5B50] sharedController];
+  [mEMORY[0x1E69A5B50] addListenerID:@"CKSettingsMessagesController" capabilities:(*MEMORY[0x1E69A6268] | *MEMORY[0x1E69A6258]) | *MEMORY[0x1E69A6280]];
 
   v5 = IMLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [MEMORY[0x1E69A5B50] sharedController];
-    v7 = [v6 hasListenerForID:@"CKSettingsMessagesController"];
+    mEMORY[0x1E69A5B50]2 = [MEMORY[0x1E69A5B50] sharedController];
+    v7 = [mEMORY[0x1E69A5B50]2 hasListenerForID:@"CKSettingsMessagesController"];
     v8 = @"NO";
     if (v7)
     {
@@ -184,22 +184,22 @@ id __62__CKBlackholeConversationListCommonViewController_viewDidLoad__block_invo
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v11 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = CKBlackholeConversationListCommonViewController;
-  [(CKBlackholeConversationListCommonViewController *)&v6 viewWillDisappear:a3];
+  [(CKBlackholeConversationListCommonViewController *)&v6 viewWillDisappear:disappear];
   if ([(CKBlackholeConversationListCommonViewController *)self isMovingFromParentViewController])
   {
     v4 = IMLogHandleForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [(CKBlackholeConversationListCommonViewController *)self isMovingFromParentViewController];
+      isMovingFromParentViewController = [(CKBlackholeConversationListCommonViewController *)self isMovingFromParentViewController];
       *buf = 138412546;
       v8 = @"CKSettingsMessagesController";
       v9 = 1024;
-      v10 = v5;
+      v10 = isMovingFromParentViewController;
       _os_log_impl(&dword_19020E000, v4, OS_LOG_TYPE_INFO, "viewWillDisappear. Will remove listener: %@: movingFromParentViewController: %d", buf, 0x12u);
     }
 
@@ -207,12 +207,12 @@ id __62__CKBlackholeConversationListCommonViewController_viewDidLoad__block_invo
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v15 = a4;
-  if ([v15 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    if ([v15 section] == 1)
+    if ([pathCopy section] == 1)
     {
       [(CKBlackholeConversationListCommonViewController *)self _clearAllTapped];
     }
@@ -220,35 +220,35 @@ id __62__CKBlackholeConversationListCommonViewController_viewDidLoad__block_invo
 
   else
   {
-    v5 = [(CKBlackholeConversationListCommonViewController *)self visibleConversations];
-    v6 = [v5 objectAtIndex:{objc_msgSend(v15, "row")}];
+    visibleConversations = [(CKBlackholeConversationListCommonViewController *)self visibleConversations];
+    v6 = [visibleConversations objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
     v7 = [[CKBlackholeTranscriptViewController alloc] initWithConversation:v6];
     v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"chevron.backward"];
     v9 = [objc_alloc(MEMORY[0x1E69DC708]) initWithImage:v8 style:0 target:self action:sel_dismissTranscript];
-    v10 = [(CKBlackholeTranscriptViewController *)v7 navigationItem];
-    [v10 setLeftBarButtonItem:v9];
+    navigationItem = [(CKBlackholeTranscriptViewController *)v7 navigationItem];
+    [navigationItem setLeftBarButtonItem:v9];
 
     v11 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v7];
-    v12 = [MEMORY[0x1E69DC938] currentDevice];
-    v13 = [v12 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    v13 = [currentDevice userInterfaceIdiom] == 1;
 
     [v11 setModalPresentationStyle:v13];
-    v14 = [MEMORY[0x1E69A8168] sharedInstance];
-    [v14 trackSpamEvent:17];
+    mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
+    [mEMORY[0x1E69A8168] trackSpamEvent:17];
 
     [(CKBlackholeConversationListCommonViewController *)self presentViewController:v11 animated:0 completion:0];
   }
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(CKBlackholeConversationListCommonViewController *)self visibleConversations];
-  v7 = [v5 row];
+  pathCopy = path;
+  visibleConversations = [(CKBlackholeConversationListCommonViewController *)self visibleConversations];
+  v7 = [pathCopy row];
 
-  v8 = [v6 objectAtIndex:v7];
+  v8 = [visibleConversations objectAtIndex:v7];
 
   v9 = MEMORY[0x1E69DC8E8];
   v10 = CKFrameworkBundle();
@@ -257,14 +257,14 @@ id __62__CKBlackholeConversationListCommonViewController_viewDidLoad__block_invo
   v19 = 3221225472;
   v20 = __112__CKBlackholeConversationListCommonViewController_tableView_trailingSwipeActionsConfigurationForRowAtIndexPath___block_invoke;
   v21 = &unk_1E72F3A70;
-  v22 = self;
+  selfCopy = self;
   v23 = v8;
   v12 = v8;
   v13 = [v9 contextualActionWithStyle:1 title:v11 handler:&v18];
 
   v14 = MEMORY[0x1E69DCFC0];
   v24[0] = v13;
-  v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:{1, v18, v19, v20, v21, v22}];
+  v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:{1, v18, v19, v20, v21, selfCopy}];
   v16 = [v14 configurationWithActions:v15];
 
   [v16 setPerformsFirstActionWithFullSwipe:0];
@@ -272,16 +272,16 @@ id __62__CKBlackholeConversationListCommonViewController_viewDidLoad__block_invo
   return v16;
 }
 
-- (void)_deleteConversation:(id)a3
+- (void)_deleteConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = [(CKBlackholeConversationListCommonViewController *)self view];
+  conversationCopy = conversation;
+  view = [(CKBlackholeConversationListCommonViewController *)self view];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __71__CKBlackholeConversationListCommonViewController__deleteConversation___block_invoke;
   v6[3] = &unk_1E72EB9C8;
   v6[4] = self;
-  [(CKBlackholeConversationListCommonViewController *)self _confirmDeleteConversation:v4 view:v5 withCompletionHandler:v6];
+  [(CKBlackholeConversationListCommonViewController *)self _confirmDeleteConversation:conversationCopy view:view withCompletionHandler:v6];
 }
 
 uint64_t __71__CKBlackholeConversationListCommonViewController__deleteConversation___block_invoke(uint64_t a1, int a2)
@@ -297,28 +297,28 @@ uint64_t __71__CKBlackholeConversationListCommonViewController__deleteConversati
   return result;
 }
 
-- (void)tableView:(id)a3 willBeginEditingRowAtIndexPath:(id)a4
+- (void)tableView:(id)view willBeginEditingRowAtIndexPath:(id)path
 {
-  [(CKBlackholeConversationListCommonViewController *)self setEditing:0, a4];
-  v5 = [(CKBlackholeConversationListCommonViewController *)self updater];
-  [v5 beginHoldingUpdatesForKey:@"kCKBlackholeConversationListHoldUpdatesForDeletion"];
+  [(CKBlackholeConversationListCommonViewController *)self setEditing:0, path];
+  updater = [(CKBlackholeConversationListCommonViewController *)self updater];
+  [updater beginHoldingUpdatesForKey:@"kCKBlackholeConversationListHoldUpdatesForDeletion"];
 }
 
-- (void)_confirmDeleteConversation:(id)a3 view:(id)a4 withCompletionHandler:(id)a5
+- (void)_confirmDeleteConversation:(id)conversation view:(id)view withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  conversationCopy = conversation;
+  viewCopy = view;
+  handlerCopy = handler;
+  if (conversationCopy)
   {
-    v11 = [(CKBlackholeConversationListCommonViewController *)self _alertTitleForDelete];
+    _alertTitleForDelete = [(CKBlackholeConversationListCommonViewController *)self _alertTitleForDelete];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __105__CKBlackholeConversationListCommonViewController__confirmDeleteConversation_view_withCompletionHandler___block_invoke;
     v16[3] = &unk_1E72EDA68;
-    v17 = v8;
-    v18 = self;
-    v19 = v10;
+    v17 = conversationCopy;
+    selfCopy = self;
+    v19 = handlerCopy;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __105__CKBlackholeConversationListCommonViewController__confirmDeleteConversation_view_withCompletionHandler___block_invoke_2;
@@ -326,7 +326,7 @@ uint64_t __71__CKBlackholeConversationListCommonViewController__deleteConversati
     v13[4] = self;
     v14 = v17;
     v15 = v19;
-    [(UITableViewController *)self _confirmDeleteConversationFromView:v9 alertTitle:v11 forMultipleConversations:0 withReportSpamHander:v16 withNotReportSpamHandler:v13 withCancelHandler:0];
+    [(UITableViewController *)self _confirmDeleteConversationFromView:viewCopy alertTitle:_alertTitleForDelete forMultipleConversations:0 withReportSpamHander:v16 withNotReportSpamHandler:v13 withCancelHandler:0];
 
     v12 = v17;
   }
@@ -354,46 +354,46 @@ uint64_t __105__CKBlackholeConversationListCommonViewController__confirmDeleteCo
   return [v3 _deleteConversation:v4 withCompletionHandler:v5];
 }
 
-- (void)setVisibleConversations:(id)a3
+- (void)setVisibleConversations:(id)conversations
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(NSArray *)v4 count])
+  conversationsCopy = conversations;
+  if ([(NSArray *)conversationsCopy count])
   {
-    v5 = [(NSArray *)v4 count];
+    v5 = [(NSArray *)conversationsCopy count];
     if (v5 != [(NSArray *)self->_visibleConversations count])
     {
-      v6 = [MEMORY[0x1E69A8168] sharedInstance];
+      mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
       v10 = @"ReceivedJunkConversationCount";
-      v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSArray count](v4, "count")}];
+      v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSArray count](conversationsCopy, "count")}];
       v11[0] = v7;
       v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-      [v6 trackSpamEvent:26 withDictionary:v8];
+      [mEMORY[0x1E69A8168] trackSpamEvent:26 withDictionary:v8];
     }
   }
 
   visibleConversations = self->_visibleConversations;
-  self->_visibleConversations = v4;
+  self->_visibleConversations = conversationsCopy;
 }
 
-- (void)_deleteConversation:(id)a3 withCompletionHandler:(id)a4
+- (void)_deleteConversation:(id)conversation withCompletionHandler:(id)handler
 {
-  v12 = a4;
-  v6 = a3;
-  v7 = [(CKBlackholeConversationListCommonViewController *)self _conversationList];
-  [v7 removeConversation:v6];
+  handlerCopy = handler;
+  conversationCopy = conversation;
+  _conversationList = [(CKBlackholeConversationListCommonViewController *)self _conversationList];
+  [_conversationList removeConversation:conversationCopy];
 
-  v8 = [(CKBlackholeConversationListCommonViewController *)self _conversationList];
-  [v8 deleteConversation:v6];
+  _conversationList2 = [(CKBlackholeConversationListCommonViewController *)self _conversationList];
+  [_conversationList2 deleteConversation:conversationCopy];
 
-  if (v12)
+  if (handlerCopy)
   {
-    v12[2](v12, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 
-  v9 = [(CKBlackholeConversationListCommonViewController *)self _conversationList];
-  v10 = [v9 conversations];
-  v11 = [v10 count];
+  _conversationList3 = [(CKBlackholeConversationListCommonViewController *)self _conversationList];
+  conversations = [_conversationList3 conversations];
+  v11 = [conversations count];
 
   if (!v11)
   {
@@ -403,8 +403,8 @@ uint64_t __105__CKBlackholeConversationListCommonViewController__confirmDeleteCo
 
 - (void)_clearAllTapped
 {
-  v3 = [(CKBlackholeConversationListCommonViewController *)self updater];
-  [v3 beginHoldingUpdatesForKey:@"kCKBlackholeConversationListHoldUpdatesForDeletion"];
+  updater = [(CKBlackholeConversationListCommonViewController *)self updater];
+  [updater beginHoldingUpdatesForKey:@"kCKBlackholeConversationListHoldUpdatesForDeletion"];
 
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
@@ -431,27 +431,27 @@ uint64_t __66__CKBlackholeConversationListCommonViewController__clearAllTapped__
 {
   if (!CKMessageUnknownFilteringEnabled())
   {
-    v4 = [(CKBlackholeConversationListCommonViewController *)self navigationController];
-    v3 = [v4 popViewControllerAnimated:1];
+    navigationController = [(CKBlackholeConversationListCommonViewController *)self navigationController];
+    v3 = [navigationController popViewControllerAnimated:1];
   }
 }
 
-- (void)_clearAllTappedWithCompletionHandler:(id)a3
+- (void)_clearAllTappedWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CKBlackholeConversationListCommonViewController *)self visibleConversations];
-  v6 = v5;
-  if (v5 && [v5 count])
+  handlerCopy = handler;
+  visibleConversations = [(CKBlackholeConversationListCommonViewController *)self visibleConversations];
+  v6 = visibleConversations;
+  if (visibleConversations && [visibleConversations count])
   {
-    v7 = [(CKBlackholeConversationListCommonViewController *)self view];
-    v8 = [(CKBlackholeConversationListCommonViewController *)self _alertTitleForClearAll];
+    view = [(CKBlackholeConversationListCommonViewController *)self view];
+    _alertTitleForClearAll = [(CKBlackholeConversationListCommonViewController *)self _alertTitleForClearAll];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __88__CKBlackholeConversationListCommonViewController__clearAllTappedWithCompletionHandler___block_invoke;
     v13[3] = &unk_1E72EDA68;
     v14 = v6;
-    v15 = self;
-    v16 = v4;
+    selfCopy = self;
+    v16 = handlerCopy;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __88__CKBlackholeConversationListCommonViewController__clearAllTappedWithCompletionHandler___block_invoke_2;
@@ -463,7 +463,7 @@ uint64_t __66__CKBlackholeConversationListCommonViewController__clearAllTapped__
     v10[2] = __88__CKBlackholeConversationListCommonViewController__clearAllTappedWithCompletionHandler___block_invoke_3;
     v10[3] = &unk_1E72EBA18;
     v10[4] = self;
-    [(UITableViewController *)self _confirmDeleteConversationFromView:v7 alertTitle:v8 forMultipleConversations:1 withReportSpamHander:v13 withNotReportSpamHandler:v11 withCancelHandler:v10];
+    [(UITableViewController *)self _confirmDeleteConversationFromView:view alertTitle:_alertTitleForClearAll forMultipleConversations:1 withReportSpamHander:v13 withNotReportSpamHandler:v11 withCancelHandler:v10];
 
     v9 = v14;
   }
@@ -519,76 +519,76 @@ uint64_t __88__CKBlackholeConversationListCommonViewController__clearAllTappedWi
   return [*(a1 + 40) _batchDeleteConversationWithCompletionHandler:*(a1 + 48)];
 }
 
-- (void)_batchDeleteConversationWithCompletionHandler:(id)a3
+- (void)_batchDeleteConversationWithCompletionHandler:(id)handler
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKBlackholeConversationListCommonViewController *)self visibleConversations];
-  v6 = [MEMORY[0x1E69A8168] sharedInstance];
+  handlerCopy = handler;
+  visibleConversations = [(CKBlackholeConversationListCommonViewController *)self visibleConversations];
+  mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
   v11 = @"ClearedJunkConversationCount";
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v5, "count")}];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(visibleConversations, "count")}];
   v12[0] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-  [v6 trackSpamEvent:27 withDictionary:v8];
+  [mEMORY[0x1E69A8168] trackSpamEvent:27 withDictionary:v8];
 
   v9 = +[CKCurrentConversationsManager sharedInstance];
-  [v9 purgeConversations:v5];
+  [v9 purgeConversations:visibleConversations];
 
-  v10 = [(CKBlackholeConversationListCommonViewController *)self _conversationList];
-  [v10 deleteConversations:v5];
+  _conversationList = [(CKBlackholeConversationListCommonViewController *)self _conversationList];
+  [_conversationList deleteConversations:visibleConversations];
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 }
 
-- (void)endHoldingConversationListUpdatesForKey:(id)a3
+- (void)endHoldingConversationListUpdatesForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CKBlackholeConversationListCommonViewController *)self updater];
-  [v5 endHoldingAllUpdatesForKey:v4];
+  keyCopy = key;
+  updater = [(CKBlackholeConversationListCommonViewController *)self updater];
+  [updater endHoldingAllUpdatesForKey:keyCopy];
 
-  v6 = [(CKBlackholeConversationListCommonViewController *)self updater];
-  [v6 setNeedsUpdate];
+  updater2 = [(CKBlackholeConversationListCommonViewController *)self updater];
+  [updater2 setNeedsUpdate];
 
-  v7 = [(CKBlackholeConversationListCommonViewController *)self updater];
-  [v7 updateIfNeeded];
+  updater3 = [(CKBlackholeConversationListCommonViewController *)self updater];
+  [updater3 updateIfNeeded];
 }
 
 - (void)_updateConversationList
 {
-  v3 = [(CKBlackholeConversationListCommonViewController *)self updater];
-  v4 = [v3 isHoldingUpdates];
+  updater = [(CKBlackholeConversationListCommonViewController *)self updater];
+  isHoldingUpdates = [updater isHoldingUpdates];
 
-  if ((v4 & 1) == 0)
+  if ((isHoldingUpdates & 1) == 0)
   {
-    v5 = [(CKBlackholeConversationListCommonViewController *)self _conversationList];
-    [v5 resort];
+    _conversationList = [(CKBlackholeConversationListCommonViewController *)self _conversationList];
+    [_conversationList resort];
 
-    v6 = [(CKBlackholeConversationListCommonViewController *)self _conversationList];
-    [v6 updateConversationListsAndSortIfEnabled];
+    _conversationList2 = [(CKBlackholeConversationListCommonViewController *)self _conversationList];
+    [_conversationList2 updateConversationListsAndSortIfEnabled];
 
-    v7 = [(CKBlackholeConversationListCommonViewController *)self _conversations];
-    v8 = [v7 copy];
+    _conversations = [(CKBlackholeConversationListCommonViewController *)self _conversations];
+    v8 = [_conversations copy];
     [(CKBlackholeConversationListCommonViewController *)self setVisibleConversations:v8];
 
-    v9 = [(CKBlackholeConversationListCommonViewController *)self visibleConversations];
+    visibleConversations = [(CKBlackholeConversationListCommonViewController *)self visibleConversations];
 
-    if (v9)
+    if (visibleConversations)
     {
-      v10 = [(CKBlackholeConversationListCommonViewController *)self tableViewDataSource];
-      v11 = [v10 emptySnapshot];
+      tableViewDataSource = [(CKBlackholeConversationListCommonViewController *)self tableViewDataSource];
+      emptySnapshot = [tableViewDataSource emptySnapshot];
 
-      [v11 appendSectionsWithIdentifiers:&unk_1F04E6D38];
-      v12 = [(CKBlackholeConversationListCommonViewController *)self visibleConversations];
-      [v11 appendItemsWithIdentifiers:v12 intoSectionWithIdentifier:&unk_1F04E7FE0];
+      [emptySnapshot appendSectionsWithIdentifiers:&unk_1F04E6D38];
+      visibleConversations2 = [(CKBlackholeConversationListCommonViewController *)self visibleConversations];
+      [emptySnapshot appendItemsWithIdentifiers:visibleConversations2 intoSectionWithIdentifier:&unk_1F04E7FE0];
 
-      v13 = [(CKBlackholeConversationListCommonViewController *)self tableViewDataSource];
-      [v13 applyDifferencesFromSnapshot:v11];
+      tableViewDataSource2 = [(CKBlackholeConversationListCommonViewController *)self tableViewDataSource];
+      [tableViewDataSource2 applyDifferencesFromSnapshot:emptySnapshot];
 
-      v14 = [(CKBlackholeConversationListCommonViewController *)self tableView];
-      [v14 reloadData];
+      tableView = [(CKBlackholeConversationListCommonViewController *)self tableView];
+      [tableView reloadData];
     }
 
     [(CKBlackholeConversationListCommonViewController *)self _updateConversationListEmptyLabel];
@@ -598,83 +598,83 @@ uint64_t __88__CKBlackholeConversationListCommonViewController__clearAllTappedWi
 - (void)_updateConversationListEmptyLabel
 {
   v51[3] = *MEMORY[0x1E69E9840];
-  v3 = [(CKBlackholeConversationListCommonViewController *)self visibleConversations];
-  v4 = [v3 count];
+  visibleConversations = [(CKBlackholeConversationListCommonViewController *)self visibleConversations];
+  v4 = [visibleConversations count];
 
-  v5 = [(CKBlackholeConversationListCommonViewController *)self clearAllButton];
-  v6 = v5;
+  clearAllButton = [(CKBlackholeConversationListCommonViewController *)self clearAllButton];
+  v6 = clearAllButton;
   if (v4 >= 1)
   {
-    [v5 setEnabled:1];
+    [clearAllButton setEnabled:1];
 
-    v7 = [(CKBlackholeConversationListCommonViewController *)self emptyConversationListLabel];
-    [v7 removeFromSuperview];
+    emptyConversationListLabel = [(CKBlackholeConversationListCommonViewController *)self emptyConversationListLabel];
+    [emptyConversationListLabel removeFromSuperview];
 
     goto LABEL_7;
   }
 
-  [v5 setEnabled:0];
+  [clearAllButton setEnabled:0];
 
-  v8 = [(CKBlackholeConversationListCommonViewController *)self view];
-  [v8 frame];
+  view = [(CKBlackholeConversationListCommonViewController *)self view];
+  [view frame];
   if (!CGRectIsEmpty(v52))
   {
-    v9 = [(CKBlackholeConversationListCommonViewController *)self emptyConversationListLabel];
-    v10 = [v9 superview];
+    emptyConversationListLabel2 = [(CKBlackholeConversationListCommonViewController *)self emptyConversationListLabel];
+    superview = [emptyConversationListLabel2 superview];
 
-    if (v10)
+    if (superview)
     {
       goto LABEL_7;
     }
 
-    v11 = [(CKBlackholeConversationListCommonViewController *)self view];
-    v12 = [(CKBlackholeConversationListCommonViewController *)self emptyConversationListLabel];
-    [v11 addSubview:v12];
+    view2 = [(CKBlackholeConversationListCommonViewController *)self view];
+    emptyConversationListLabel3 = [(CKBlackholeConversationListCommonViewController *)self emptyConversationListLabel];
+    [view2 addSubview:emptyConversationListLabel3];
 
-    v13 = [(CKBlackholeConversationListCommonViewController *)self emptyConversationListLabel];
-    [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+    emptyConversationListLabel4 = [(CKBlackholeConversationListCommonViewController *)self emptyConversationListLabel];
+    [emptyConversationListLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v41 = MEMORY[0x1E696ACD8];
-    v48 = [(CKBlackholeConversationListCommonViewController *)self emptyConversationListLabel];
-    v46 = [v48 centerXAnchor];
-    v47 = [(CKBlackholeConversationListCommonViewController *)self view];
-    v45 = [v47 safeAreaLayoutGuide];
-    v44 = [v45 centerXAnchor];
-    v43 = [v46 constraintEqualToAnchor:v44];
+    emptyConversationListLabel5 = [(CKBlackholeConversationListCommonViewController *)self emptyConversationListLabel];
+    centerXAnchor = [emptyConversationListLabel5 centerXAnchor];
+    view3 = [(CKBlackholeConversationListCommonViewController *)self view];
+    safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+    centerXAnchor2 = [safeAreaLayoutGuide centerXAnchor];
+    v43 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v51[0] = v43;
-    v42 = [(CKBlackholeConversationListCommonViewController *)self emptyConversationListLabel];
-    v39 = [v42 leadingAnchor];
-    v40 = [(CKBlackholeConversationListCommonViewController *)self view];
-    v38 = [v40 safeAreaLayoutGuide];
-    v37 = [v38 leadingAnchor];
-    v14 = [v39 constraintGreaterThanOrEqualToAnchor:v37];
+    emptyConversationListLabel6 = [(CKBlackholeConversationListCommonViewController *)self emptyConversationListLabel];
+    leadingAnchor = [emptyConversationListLabel6 leadingAnchor];
+    view4 = [(CKBlackholeConversationListCommonViewController *)self view];
+    safeAreaLayoutGuide2 = [view4 safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide2 leadingAnchor];
+    v14 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
     v51[1] = v14;
-    v15 = [(CKBlackholeConversationListCommonViewController *)self emptyConversationListLabel];
-    v16 = [v15 trailingAnchor];
-    v17 = [(CKBlackholeConversationListCommonViewController *)self view];
-    v18 = [v17 safeAreaLayoutGuide];
-    v19 = [v18 trailingAnchor];
-    v20 = [v16 constraintLessThanOrEqualToAnchor:v19];
+    emptyConversationListLabel7 = [(CKBlackholeConversationListCommonViewController *)self emptyConversationListLabel];
+    trailingAnchor = [emptyConversationListLabel7 trailingAnchor];
+    view5 = [(CKBlackholeConversationListCommonViewController *)self view];
+    safeAreaLayoutGuide3 = [view5 safeAreaLayoutGuide];
+    trailingAnchor2 = [safeAreaLayoutGuide3 trailingAnchor];
+    v20 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
     v51[2] = v20;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:3];
     [v41 activateConstraints:v21];
 
-    v22 = [(CKBlackholeConversationListCommonViewController *)self navigationController];
-    v23 = [v22 navigationBar];
-    [v23 frame];
+    navigationController = [(CKBlackholeConversationListCommonViewController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar frame];
     v25 = v24;
-    v26 = [(CKBlackholeConversationListCommonViewController *)self view];
-    [v26 safeAreaInsets];
+    view6 = [(CKBlackholeConversationListCommonViewController *)self view];
+    [view6 safeAreaInsets];
     v28 = v25 + v27;
-    v29 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v29 statusBarFrame];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] statusBarFrame];
     v31 = (v28 + v30) * -0.5;
 
-    v8 = [(CKBlackholeConversationListCommonViewController *)self emptyConversationListLabel];
-    v32 = [v8 centerYAnchor];
-    v33 = [(CKBlackholeConversationListCommonViewController *)self view];
-    v34 = [v33 centerYAnchor];
-    v35 = [v32 constraintEqualToAnchor:v34 constant:v31];
+    view = [(CKBlackholeConversationListCommonViewController *)self emptyConversationListLabel];
+    centerYAnchor = [view centerYAnchor];
+    view7 = [(CKBlackholeConversationListCommonViewController *)self view];
+    centerYAnchor2 = [view7 centerYAnchor];
+    v35 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:v31];
     [v35 setActive:1];
   }
 
@@ -693,8 +693,8 @@ LABEL_7:
   v4.receiver = self;
   v4.super_class = CKBlackholeConversationListCommonViewController;
   [(CKBlackholeConversationListCommonViewController *)&v4 viewSafeAreaInsetsDidChange];
-  v3 = [(CKBlackholeConversationListCommonViewController *)self emptyConversationListLabel];
-  [v3 removeFromSuperview];
+  emptyConversationListLabel = [(CKBlackholeConversationListCommonViewController *)self emptyConversationListLabel];
+  [emptyConversationListLabel removeFromSuperview];
 
   [(CKBlackholeConversationListCommonViewController *)self _updateConversationListEmptyLabel];
 }
@@ -734,11 +734,11 @@ LABEL_7:
     [(UILabel *)v5 setFont:v8];
 
     [(UILabel *)v5 setNumberOfLines:0];
-    v9 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [(UILabel *)v5 setTextColor:v9];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [(UILabel *)v5 setTextColor:tertiaryLabelColor];
 
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v5 setBackgroundColor:v10];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v5 setBackgroundColor:clearColor];
 
     [(UILabel *)v5 sizeToFit];
     v11 = self->_emptyConversationListLabel;
@@ -752,19 +752,19 @@ LABEL_7:
 
 - (id)_conversations
 {
-  v2 = [(CKBlackholeConversationListCommonViewController *)self _conversationList];
-  v3 = [v2 conversations];
+  _conversationList = [(CKBlackholeConversationListCommonViewController *)self _conversationList];
+  conversations = [_conversationList conversations];
 
-  return v3;
+  return conversations;
 }
 
 - (id)_alertTitleForDelete
 {
-  v2 = [MEMORY[0x1E69A5B20] sharedInstance];
-  v3 = [v2 isEnabled];
+  mEMORY[0x1E69A5B20] = [MEMORY[0x1E69A5B20] sharedInstance];
+  isEnabled = [mEMORY[0x1E69A5B20] isEnabled];
   v4 = CKFrameworkBundle();
   v5 = v4;
-  if (v3)
+  if (isEnabled)
   {
     v6 = @"DELETE_ALERT_MESSAGE_ON_ICLOUD";
   }
@@ -781,11 +781,11 @@ LABEL_7:
 
 - (id)_alertTitleForClearAll
 {
-  v2 = [MEMORY[0x1E69A5B20] sharedInstance];
-  v3 = [v2 isEnabled];
+  mEMORY[0x1E69A5B20] = [MEMORY[0x1E69A5B20] sharedInstance];
+  isEnabled = [mEMORY[0x1E69A5B20] isEnabled];
   v4 = CKFrameworkBundle();
   v5 = v4;
-  if (v3)
+  if (isEnabled)
   {
     v6 = @"BLACKHOLE_BATCH_DELETE_PROMPT";
   }
@@ -800,7 +800,7 @@ LABEL_7:
   return v7;
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size
 {
   v4 = *MEMORY[0x1E695F060];
   v5 = *(MEMORY[0x1E695F060] + 8);

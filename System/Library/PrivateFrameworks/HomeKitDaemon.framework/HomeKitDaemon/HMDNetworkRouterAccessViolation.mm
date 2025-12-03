@@ -1,12 +1,12 @@
 @interface HMDNetworkRouterAccessViolation
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDNetworkRouterAccessViolation)init;
-- (HMDNetworkRouterAccessViolation)initWithClientIdentifier:(id)a3 lastViolationTimestamp:(id)a4 lastResetTimestamp:(id)a5;
+- (HMDNetworkRouterAccessViolation)initWithClientIdentifier:(id)identifier lastViolationTimestamp:(id)timestamp lastResetTimestamp:(id)resetTimestamp;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HMDNetworkRouterAccessViolation
@@ -14,18 +14,18 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDNetworkRouterAccessViolation *)self clientIdentifier];
-  v5 = [(HMDNetworkRouterAccessViolation *)self lastViolationTimestamp];
-  v6 = [(HMDNetworkRouterAccessViolation *)self lastResetTimestamp];
-  v7 = [v3 stringWithFormat:@"<HMDNetworkRouterAccessViolation clientIdentifier=%@, lastViolationTimestamp=%@, lastResetTimestamp=%@>", v4, v5, v6];
+  clientIdentifier = [(HMDNetworkRouterAccessViolation *)self clientIdentifier];
+  lastViolationTimestamp = [(HMDNetworkRouterAccessViolation *)self lastViolationTimestamp];
+  lastResetTimestamp = [(HMDNetworkRouterAccessViolation *)self lastResetTimestamp];
+  v7 = [v3 stringWithFormat:@"<HMDNetworkRouterAccessViolation clientIdentifier=%@, lastViolationTimestamp=%@, lastResetTimestamp=%@>", clientIdentifier, lastViolationTimestamp, lastResetTimestamp];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -35,46 +35,46 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(HMDNetworkRouterAccessViolation *)self clientIdentifier];
-      v9 = [(HMDNetworkRouterAccessViolation *)v7 clientIdentifier];
-      if (v8 != v9)
+      v7 = equalCopy;
+      clientIdentifier = [(HMDNetworkRouterAccessViolation *)self clientIdentifier];
+      clientIdentifier2 = [(HMDNetworkRouterAccessViolation *)v7 clientIdentifier];
+      if (clientIdentifier != clientIdentifier2)
       {
-        v3 = [(HMDNetworkRouterAccessViolation *)self clientIdentifier];
-        v4 = [(HMDNetworkRouterAccessViolation *)v7 clientIdentifier];
-        if (![v3 isEqual:v4])
+        clientIdentifier3 = [(HMDNetworkRouterAccessViolation *)self clientIdentifier];
+        clientIdentifier4 = [(HMDNetworkRouterAccessViolation *)v7 clientIdentifier];
+        if (![clientIdentifier3 isEqual:clientIdentifier4])
         {
           v10 = 0;
           goto LABEL_19;
         }
       }
 
-      v11 = [(HMDNetworkRouterAccessViolation *)self lastViolationTimestamp];
-      v12 = [(HMDNetworkRouterAccessViolation *)v7 lastViolationTimestamp];
-      v13 = v12;
-      if (v11 == v12)
+      lastViolationTimestamp = [(HMDNetworkRouterAccessViolation *)self lastViolationTimestamp];
+      lastViolationTimestamp2 = [(HMDNetworkRouterAccessViolation *)v7 lastViolationTimestamp];
+      v13 = lastViolationTimestamp2;
+      if (lastViolationTimestamp == lastViolationTimestamp2)
       {
-        v28 = v12;
+        v28 = lastViolationTimestamp2;
       }
 
       else
       {
-        v14 = [(HMDNetworkRouterAccessViolation *)self lastViolationTimestamp];
-        v27 = [(HMDNetworkRouterAccessViolation *)v7 lastViolationTimestamp];
-        if (![v14 isEqual:?])
+        lastViolationTimestamp3 = [(HMDNetworkRouterAccessViolation *)self lastViolationTimestamp];
+        lastViolationTimestamp4 = [(HMDNetworkRouterAccessViolation *)v7 lastViolationTimestamp];
+        if (![lastViolationTimestamp3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_17;
         }
 
-        v26 = v14;
+        v26 = lastViolationTimestamp3;
         v28 = v13;
       }
 
-      v15 = [(HMDNetworkRouterAccessViolation *)self lastResetTimestamp];
-      v16 = [(HMDNetworkRouterAccessViolation *)v7 lastResetTimestamp];
-      v17 = v16;
-      if (v15 == v16)
+      lastResetTimestamp = [(HMDNetworkRouterAccessViolation *)self lastResetTimestamp];
+      lastResetTimestamp2 = [(HMDNetworkRouterAccessViolation *)v7 lastResetTimestamp];
+      v17 = lastResetTimestamp2;
+      if (lastResetTimestamp == lastResetTimestamp2)
       {
 
         v10 = 1;
@@ -83,29 +83,29 @@
       else
       {
         [(HMDNetworkRouterAccessViolation *)self lastResetTimestamp];
-        v18 = v25 = v3;
+        v18 = v25 = clientIdentifier3;
         [(HMDNetworkRouterAccessViolation *)v7 lastResetTimestamp];
-        v24 = v11;
-        v19 = v4;
-        v20 = v9;
-        v22 = v21 = v8;
+        v24 = lastViolationTimestamp;
+        v19 = clientIdentifier4;
+        v20 = clientIdentifier2;
+        v22 = v21 = clientIdentifier;
         v10 = [v18 isEqual:v22];
 
-        v8 = v21;
-        v9 = v20;
-        v4 = v19;
-        v11 = v24;
+        clientIdentifier = v21;
+        clientIdentifier2 = v20;
+        clientIdentifier4 = v19;
+        lastViolationTimestamp = v24;
 
-        v3 = v25;
+        clientIdentifier3 = v25;
       }
 
       v13 = v28;
-      v14 = v26;
-      if (v11 == v28)
+      lastViolationTimestamp3 = v26;
+      if (lastViolationTimestamp == v28)
       {
 LABEL_18:
 
-        if (v8 == v9)
+        if (clientIdentifier == clientIdentifier2)
         {
 LABEL_20:
 
@@ -130,18 +130,18 @@ LABEL_21:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDNetworkRouterAccessViolation allocWithZone:a3];
-  v5 = [(HMDNetworkRouterAccessViolation *)self clientIdentifier];
-  v6 = [(HMDNetworkRouterAccessViolation *)self lastViolationTimestamp];
-  v7 = [(HMDNetworkRouterAccessViolation *)self lastResetTimestamp];
-  v8 = [(HMDNetworkRouterAccessViolation *)v4 initWithClientIdentifier:v5 lastViolationTimestamp:v6 lastResetTimestamp:v7];
+  v4 = [HMDNetworkRouterAccessViolation allocWithZone:zone];
+  clientIdentifier = [(HMDNetworkRouterAccessViolation *)self clientIdentifier];
+  lastViolationTimestamp = [(HMDNetworkRouterAccessViolation *)self lastViolationTimestamp];
+  lastResetTimestamp = [(HMDNetworkRouterAccessViolation *)self lastResetTimestamp];
+  v8 = [(HMDNetworkRouterAccessViolation *)v4 initWithClientIdentifier:clientIdentifier lastViolationTimestamp:lastViolationTimestamp lastResetTimestamp:lastResetTimestamp];
 
   return v8;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
   v40 = 0u;
@@ -166,13 +166,13 @@ LABEL_21:
   v23 = 0u;
   v21 = 0u;
   TLV8BufferInit();
-  v5 = [(HMDNetworkRouterAccessViolation *)self clientIdentifier];
+  clientIdentifier = [(HMDNetworkRouterAccessViolation *)self clientIdentifier];
 
-  if (v5)
+  if (clientIdentifier)
   {
-    v6 = [(HMDNetworkRouterAccessViolation *)self clientIdentifier];
+    clientIdentifier2 = [(HMDNetworkRouterAccessViolation *)self clientIdentifier];
     v20 = 0;
-    v7 = [v6 serializeWithError:&v20];
+    v7 = [clientIdentifier2 serializeWithError:&v20];
     v8 = v20;
 
     if (v8)
@@ -187,11 +187,11 @@ LABEL_21:
 LABEL_8:
 
 LABEL_9:
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus();
         v8 = 0;
-        *a3 = v11 = 0;
+        *error = v11 = 0;
         goto LABEL_20;
       }
 
@@ -202,13 +202,13 @@ LABEL_17:
     }
   }
 
-  v9 = [(HMDNetworkRouterAccessViolation *)self lastViolationTimestamp];
+  lastViolationTimestamp = [(HMDNetworkRouterAccessViolation *)self lastViolationTimestamp];
 
-  if (v9)
+  if (lastViolationTimestamp)
   {
-    v10 = [(HMDNetworkRouterAccessViolation *)self lastViolationTimestamp];
+    lastViolationTimestamp2 = [(HMDNetworkRouterAccessViolation *)self lastViolationTimestamp];
     v19 = 0;
-    v7 = [v10 serializeWithError:&v19];
+    v7 = [lastViolationTimestamp2 serializeWithError:&v19];
     v8 = v19;
 
     if (v8)
@@ -224,24 +224,24 @@ LABEL_17:
     }
   }
 
-  v12 = [(HMDNetworkRouterAccessViolation *)self lastResetTimestamp];
+  lastResetTimestamp = [(HMDNetworkRouterAccessViolation *)self lastResetTimestamp];
 
-  if (v12)
+  if (lastResetTimestamp)
   {
-    v13 = [(HMDNetworkRouterAccessViolation *)self lastResetTimestamp];
+    lastResetTimestamp2 = [(HMDNetworkRouterAccessViolation *)self lastResetTimestamp];
     v18 = 0;
-    v7 = [v13 serializeWithError:&v18];
+    v7 = [lastResetTimestamp2 serializeWithError:&v18];
     v8 = v18;
 
     if (v8)
     {
 LABEL_15:
 
-      if (a3)
+      if (error)
       {
         v14 = v8;
         v11 = 0;
-        *a3 = v8;
+        *error = v8;
         goto LABEL_20;
       }
 
@@ -268,16 +268,16 @@ LABEL_20:
   return v11;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v8 = [v6 bytes];
+  bytes = [dataCopy bytes];
   v9 = [v7 length];
   if (!v9)
   {
@@ -287,13 +287,13 @@ LABEL_20:
     goto LABEL_27;
   }
 
-  v23 = self;
-  v24 = a4;
+  selfCopy = self;
+  errorCopy = error;
   v10 = 0;
   v11 = 0;
   v12 = 0;
   v13 = 0;
-  v14 = v8 + v9;
+  v14 = bytes + v9;
   do
   {
     v32 = 0;
@@ -303,10 +303,10 @@ LABEL_20:
     v29 = 0;
     if (TLV8GetNext() || TLV8GetOrCopyCoalesced())
     {
-      if (v24)
+      if (errorCopy)
       {
         HMErrorFromOSStatus();
-        *v24 = v20 = 0;
+        *errorCopy = v20 = 0;
         goto LABEL_28;
       }
 
@@ -367,11 +367,11 @@ LABEL_15:
   if (v10)
   {
 LABEL_19:
-    if (v24)
+    if (errorCopy)
     {
       v19 = v10;
       v20 = 0;
-      *v24 = v10;
+      *errorCopy = v10;
       goto LABEL_28;
     }
 
@@ -381,9 +381,9 @@ LABEL_24:
   }
 
 LABEL_26:
-  self = v23;
+  self = selfCopy;
 LABEL_27:
-  [(HMDNetworkRouterAccessViolation *)self setClientIdentifier:v13, v23];
+  [(HMDNetworkRouterAccessViolation *)self setClientIdentifier:v13, selfCopy];
   [(HMDNetworkRouterAccessViolation *)self setLastViolationTimestamp:v12];
   [(HMDNetworkRouterAccessViolation *)self setLastResetTimestamp:v11];
   v10 = 0;
@@ -393,20 +393,20 @@ LABEL_28:
   return v20;
 }
 
-- (HMDNetworkRouterAccessViolation)initWithClientIdentifier:(id)a3 lastViolationTimestamp:(id)a4 lastResetTimestamp:(id)a5
+- (HMDNetworkRouterAccessViolation)initWithClientIdentifier:(id)identifier lastViolationTimestamp:(id)timestamp lastResetTimestamp:(id)resetTimestamp
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  timestampCopy = timestamp;
+  resetTimestampCopy = resetTimestamp;
   v15.receiver = self;
   v15.super_class = HMDNetworkRouterAccessViolation;
   v12 = [(HMDNetworkRouterAccessViolation *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_clientIdentifier, a3);
-    objc_storeStrong(&v13->_lastViolationTimestamp, a4);
-    objc_storeStrong(&v13->_lastResetTimestamp, a5);
+    objc_storeStrong(&v12->_clientIdentifier, identifier);
+    objc_storeStrong(&v13->_lastViolationTimestamp, timestamp);
+    objc_storeStrong(&v13->_lastResetTimestamp, resetTimestamp);
   }
 
   return v13;
@@ -419,24 +419,24 @@ LABEL_28:
   return [(HMDNetworkRouterAccessViolation *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDNetworkRouterAccessViolation);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDNetworkRouterAccessViolation *)v6 parseFromData:v5 error:&v11];
+    [(HMDNetworkRouterAccessViolation *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

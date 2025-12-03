@@ -1,19 +1,19 @@
 @interface PUPhotoEditAdjustmentCell
 - (BOOL)displayMappedValue;
-- (PUPhotoEditAdjustmentCell)initWithCoder:(id)a3;
-- (PUPhotoEditAdjustmentCell)initWithFrame:(CGRect)a3;
+- (PUPhotoEditAdjustmentCell)initWithCoder:(id)coder;
+- (PUPhotoEditAdjustmentCell)initWithFrame:(CGRect)frame;
 - (PUPhotoEditBaseAdjustmentCellDelegate)delegate;
 - (void)_setupEventHandler;
 - (void)_updateValueLabelVisibility;
-- (void)handleButton:(id)a3;
+- (void)handleButton:(id)button;
 - (void)reloadImage;
-- (void)setDisplayMappedValue:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setImageIsColor:(BOOL)a3;
-- (void)setImageName:(id)a3;
-- (void)setImageTransformBlock:(id)a3;
-- (void)setIsUserModifying:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setDisplayMappedValue:(BOOL)value;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setImageIsColor:(BOOL)color;
+- (void)setImageName:(id)name;
+- (void)setImageTransformBlock:(id)block;
+- (void)setIsUserModifying:(BOOL)modifying;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation PUPhotoEditAdjustmentCell
@@ -25,70 +25,70 @@
   return WeakRetained;
 }
 
-- (void)handleButton:(id)a3
+- (void)handleButton:(id)button
 {
-  v7 = a3;
-  v4 = [(PUPhotoEditAdjustmentCell *)self delegate];
-  v5 = [v4 canToggleCell:self];
+  buttonCopy = button;
+  delegate = [(PUPhotoEditAdjustmentCell *)self delegate];
+  v5 = [delegate canToggleCell:self];
 
   if (v5)
   {
-    [v7 setSelected:{objc_msgSend(v7, "isSelected") ^ 1}];
-    -[PUPhotoEditAdjustmentCell setEnabled:](self, "setEnabled:", [v7 isSelected]);
-    v6 = [(PUPhotoEditAdjustmentCell *)self delegate];
-    [v6 didToggleCell:self];
+    [buttonCopy setSelected:{objc_msgSend(buttonCopy, "isSelected") ^ 1}];
+    -[PUPhotoEditAdjustmentCell setEnabled:](self, "setEnabled:", [buttonCopy isSelected]);
+    delegate2 = [(PUPhotoEditAdjustmentCell *)self delegate];
+    [delegate2 didToggleCell:self];
   }
 }
 
 - (BOOL)displayMappedValue
 {
-  v2 = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
-  v3 = [v2 displayMappedValue];
+  containerButton = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
+  displayMappedValue = [containerButton displayMappedValue];
 
-  return v3;
+  return displayMappedValue;
 }
 
-- (void)setDisplayMappedValue:(BOOL)a3
+- (void)setDisplayMappedValue:(BOOL)value
 {
-  v3 = a3;
-  v4 = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
-  [v4 setDisplayMappedValue:v3];
+  valueCopy = value;
+  containerButton = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
+  [containerButton setDisplayMappedValue:valueCopy];
 }
 
 - (void)_updateValueLabelVisibility
 {
   if ([(PUPhotoEditBaseAdjustmentCell *)self isUserModifying])
   {
-    v3 = [(PUPhotoEditAdjustmentCell *)self shouldDisplayValueLabel];
+    shouldDisplayValueLabel = [(PUPhotoEditAdjustmentCell *)self shouldDisplayValueLabel];
   }
 
   else
   {
-    v3 = 0;
+    shouldDisplayValueLabel = 0;
   }
 
-  v4 = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
-  [v4 setShouldShowValueLabel:v3];
+  containerButton = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
+  [containerButton setShouldShowValueLabel:shouldDisplayValueLabel];
 }
 
-- (void)setIsUserModifying:(BOOL)a3
+- (void)setIsUserModifying:(BOOL)modifying
 {
   v4.receiver = self;
   v4.super_class = PUPhotoEditAdjustmentCell;
-  [(PUPhotoEditBaseAdjustmentCell *)&v4 setIsUserModifying:a3];
+  [(PUPhotoEditBaseAdjustmentCell *)&v4 setIsUserModifying:modifying];
   [(PUPhotoEditAdjustmentCell *)self _updateValueLabelVisibility];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v8.receiver = self;
   v8.super_class = PUPhotoEditAdjustmentCell;
   [(PUPhotoEditBaseAdjustmentCell *)&v8 setEnabled:?];
-  v5 = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
-  [v5 setSelected:v3];
+  containerButton = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
+  [containerButton setSelected:enabledCopy];
 
-  if (v3)
+  if (enabledCopy)
   {
     v6 = 1.0;
   }
@@ -98,92 +98,92 @@
     v6 = 0.3;
   }
 
-  v7 = [(PUPhotoEditAdjustmentCell *)self contentView];
-  [v7 setAlpha:v6];
+  contentView = [(PUPhotoEditAdjustmentCell *)self contentView];
+  [contentView setAlpha:v6];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v7.receiver = self;
   v7.super_class = PUPhotoEditAdjustmentCell;
   [(PUPhotoEditBaseAdjustmentCell *)&v7 setSelected:?];
-  v5 = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
-  [v5 setEnabled:v3];
+  containerButton = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
+  [containerButton setEnabled:selectedCopy];
 
-  v6 = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
-  [v6 setUserInteractionEnabled:v3];
+  containerButton2 = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
+  [containerButton2 setUserInteractionEnabled:selectedCopy];
 }
 
 - (void)reloadImage
 {
   v3 = MEMORY[0x1E69DCAB8];
-  v4 = [(PUPhotoEditBaseAdjustmentCell *)self imageName];
-  v11 = [v3 pu_PhotosUIImageNamed:v4];
+  imageName = [(PUPhotoEditBaseAdjustmentCell *)self imageName];
+  v11 = [v3 pu_PhotosUIImageNamed:imageName];
 
   if (![(PUPhotoEditBaseAdjustmentCell *)self imageIsColor])
   {
-    v5 = [MEMORY[0x1E69DC888] labelColor];
-    v6 = [v11 imageWithTintColor:v5];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    v6 = [v11 imageWithTintColor:labelColor];
 
     v11 = v6;
   }
 
-  v7 = [(PUPhotoEditBaseAdjustmentCell *)self imageTransformBlock];
+  imageTransformBlock = [(PUPhotoEditBaseAdjustmentCell *)self imageTransformBlock];
 
-  if (v7)
+  if (imageTransformBlock)
   {
-    v8 = [(PUPhotoEditBaseAdjustmentCell *)self imageTransformBlock];
-    v9 = (v8)[2](v8, v11);
+    imageTransformBlock2 = [(PUPhotoEditBaseAdjustmentCell *)self imageTransformBlock];
+    v9 = (imageTransformBlock2)[2](imageTransformBlock2, v11);
 
     v11 = v9;
   }
 
-  v10 = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
-  [v10 setImage:v11 forState:0];
+  containerButton = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
+  [containerButton setImage:v11 forState:0];
 }
 
-- (void)setImageTransformBlock:(id)a3
+- (void)setImageTransformBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   imageTransformBlock = self->super._imageTransformBlock;
   self->super._imageTransformBlock = v4;
 
   [(PUPhotoEditAdjustmentCell *)self reloadImage];
 }
 
-- (void)setImageIsColor:(BOOL)a3
+- (void)setImageIsColor:(BOOL)color
 {
-  if (self->super._imageIsColor != a3)
+  if (self->super._imageIsColor != color)
   {
-    self->super._imageIsColor = a3;
+    self->super._imageIsColor = color;
     [(PUPhotoEditAdjustmentCell *)self reloadImage];
   }
 }
 
-- (void)setImageName:(id)a3
+- (void)setImageName:(id)name
 {
-  v5 = a3;
-  if (self->super._imageName != v5)
+  nameCopy = name;
+  if (self->super._imageName != nameCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->super._imageName, a3);
+    v6 = nameCopy;
+    objc_storeStrong(&self->super._imageName, name);
     [(PUPhotoEditAdjustmentCell *)self reloadImage];
-    v5 = v6;
+    nameCopy = v6;
   }
 }
 
 - (void)_setupEventHandler
 {
-  v3 = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
-  [v3 addTarget:self action:sel_handleButton_ forControlEvents:64];
+  containerButton = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
+  [containerButton addTarget:self action:sel_handleButton_ forControlEvents:64];
 }
 
-- (PUPhotoEditAdjustmentCell)initWithCoder:(id)a3
+- (PUPhotoEditAdjustmentCell)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PUPhotoEditAdjustmentCell;
-  v3 = [(PUPhotoEditBaseAdjustmentCell *)&v6 initWithCoder:a3];
+  v3 = [(PUPhotoEditBaseAdjustmentCell *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -193,11 +193,11 @@
   return v4;
 }
 
-- (PUPhotoEditAdjustmentCell)initWithFrame:(CGRect)a3
+- (PUPhotoEditAdjustmentCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PUPhotoEditAdjustmentCell;
-  v3 = [(PUPhotoEditBaseAdjustmentCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUPhotoEditBaseAdjustmentCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

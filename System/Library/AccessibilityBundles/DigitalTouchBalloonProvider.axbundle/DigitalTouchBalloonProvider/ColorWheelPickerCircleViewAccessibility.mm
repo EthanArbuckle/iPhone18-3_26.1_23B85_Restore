@@ -11,29 +11,29 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(ColorWheelPickerCircleViewAccessibility *)self accessibilityIdentifier];
-  if ([v3 isEqualToString:@"digital.touch.picker.circle.identifier"])
+  accessibilityIdentifier = [(ColorWheelPickerCircleViewAccessibility *)self accessibilityIdentifier];
+  if ([accessibilityIdentifier isEqualToString:@"digital.touch.picker.circle.identifier"])
   {
-    v4 = 1;
+    isAccessibilityElement = 1;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = ColorWheelPickerCircleViewAccessibility;
-    v4 = [(ColorWheelPickerCircleViewAccessibility *)&v6 isAccessibilityElement];
+    isAccessibilityElement = [(ColorWheelPickerCircleViewAccessibility *)&v6 isAccessibilityElement];
   }
 
-  return v4;
+  return isAccessibilityElement;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v8.receiver = self;
   v8.super_class = ColorWheelPickerCircleViewAccessibility;
-  v3 = [(ColorWheelPickerCircleViewAccessibility *)&v8 accessibilityTraits];
-  v4 = [(ColorWheelPickerCircleViewAccessibility *)self accessibilityIdentifier];
-  v5 = [v4 isEqualToString:@"digital.touch.picker.circle.identifier"];
+  accessibilityTraits = [(ColorWheelPickerCircleViewAccessibility *)&v8 accessibilityTraits];
+  accessibilityIdentifier = [(ColorWheelPickerCircleViewAccessibility *)self accessibilityIdentifier];
+  v5 = [accessibilityIdentifier isEqualToString:@"digital.touch.picker.circle.identifier"];
 
   v6 = *MEMORY[0x29EDC7F60];
   if (!v5)
@@ -41,54 +41,54 @@
     v6 = 0;
   }
 
-  return v6 | v3;
+  return v6 | accessibilityTraits;
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(ColorWheelPickerCircleViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"digital.touch.picker.circle.identifier"];
+  accessibilityIdentifier = [(ColorWheelPickerCircleViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"digital.touch.picker.circle.identifier"];
 
   if (v4)
   {
     v5 = [(ColorWheelPickerCircleViewAccessibility *)self safeValueForKey:@"backgroundColor"];
-    v6 = [v5 axColorStringForSpeaking];
+    axColorStringForSpeaking = [v5 axColorStringForSpeaking];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = ColorWheelPickerCircleViewAccessibility;
-    v6 = [(ColorWheelPickerCircleViewAccessibility *)&v8 accessibilityValue];
+    axColorStringForSpeaking = [(ColorWheelPickerCircleViewAccessibility *)&v8 accessibilityValue];
   }
 
-  return v6;
+  return axColorStringForSpeaking;
 }
 
 - (id)accessibilityPath
 {
-  v3 = [(ColorWheelPickerCircleViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"digital.touch.picker.circle.identifier"];
+  accessibilityIdentifier = [(ColorWheelPickerCircleViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"digital.touch.picker.circle.identifier"];
 
   if (v4)
   {
-    v5 = [(ColorWheelPickerCircleViewAccessibility *)self _accessibilityCirclePathBasedOnBoundsWidth];
+    _accessibilityCirclePathBasedOnBoundsWidth = [(ColorWheelPickerCircleViewAccessibility *)self _accessibilityCirclePathBasedOnBoundsWidth];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = ColorWheelPickerCircleViewAccessibility;
-    v5 = [(ColorWheelPickerCircleViewAccessibility *)&v7 accessibilityPath];
+    _accessibilityCirclePathBasedOnBoundsWidth = [(ColorWheelPickerCircleViewAccessibility *)&v7 accessibilityPath];
   }
 
-  return v5;
+  return _accessibilityCirclePathBasedOnBoundsWidth;
 }
 
 - (void)accessibilityIncrement
 {
-  v3 = [(ColorWheelPickerCircleViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"digital.touch.picker.circle.identifier"];
+  accessibilityIdentifier = [(ColorWheelPickerCircleViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"digital.touch.picker.circle.identifier"];
 
   if (v4)
   {
@@ -106,8 +106,8 @@
 
 - (void)accessibilityDecrement
 {
-  v3 = [(ColorWheelPickerCircleViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"digital.touch.picker.circle.identifier"];
+  accessibilityIdentifier = [(ColorWheelPickerCircleViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"digital.touch.picker.circle.identifier"];
 
   if (v4)
   {

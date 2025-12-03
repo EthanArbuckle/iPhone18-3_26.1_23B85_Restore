@@ -1,10 +1,10 @@
 @interface TUUserConfiguration
 + (BOOL)isFilterAsNewCallersEnabledForFaceTime;
 + (BOOL)isFilterAsNewCallersEnabledForPhone;
-+ (id)getBooleanFromUserDefaults:(id)a3 default:(id)a4 dataSource:(id)a5;
++ (id)getBooleanFromUserDefaults:(id)defaults default:(id)default dataSource:(id)source;
 + (id)registeredDefaults;
 + (id)userDefaults;
-- (BOOL)isBrandedCallingEnabled:(id)a3;
+- (BOOL)isBrandedCallingEnabled:(id)enabled;
 - (BOOL)isBusinessConnectCallingEnabled;
 - (BOOL)isCallHapticsEnabled;
 - (BOOL)isCallRecordingEnabled;
@@ -20,16 +20,16 @@
 - (BOOL)isSpamFilterEnabledForFaceTime;
 - (BOOL)isUplevelFTAEnabled;
 - (TUUserConfiguration)init;
-- (id)getBooleanFromUserDefaults:(id)a3 default:(id)a4;
+- (id)getBooleanFromUserDefaults:(id)defaults default:(id)default;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setBusinessConnectCallingEnabled:(BOOL)a3;
-- (void)setCallRecordingEnabled:(BOOL)a3;
-- (void)setCallScreeningEnabled:(BOOL)a3;
-- (void)setReceptionistEnabled:(BOOL)a3;
-- (void)setSilenceJunkCallingEnabled:(BOOL)a3;
-- (void)setSpamFilterEnabledForFaceTime:(BOOL)a3;
-- (void)setValueInUserDefaults:(id)a3 forKey:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setBusinessConnectCallingEnabled:(BOOL)enabled;
+- (void)setCallRecordingEnabled:(BOOL)enabled;
+- (void)setCallScreeningEnabled:(BOOL)enabled;
+- (void)setReceptionistEnabled:(BOOL)enabled;
+- (void)setSilenceJunkCallingEnabled:(BOOL)enabled;
+- (void)setSpamFilterEnabledForFaceTime:(BOOL)time;
+- (void)setValueInUserDefaults:(id)defaults forKey:(id)key;
 - (void)synchronize;
 @end
 
@@ -37,16 +37,16 @@
 
 - (TUUserConfiguration)init
 {
-  v3 = [objc_opt_class() userDefaults];
+  userDefaults = [objc_opt_class() userDefaults];
   v10.receiver = self;
   v10.super_class = TUUserConfiguration;
-  v4 = [(TUConfiguration *)&v10 initWithDataSource:v3];
+  v4 = [(TUConfiguration *)&v10 initWithDataSource:userDefaults];
   if (v4)
   {
-    [v3 addObserver:v4 forKeyPath:@"announceCalls" options:0 context:&TUUserConfigurationKeyValueObserverContext];
-    [v3 addObserver:v4 forKeyPath:@"conversationLinkBaseURL" options:0 context:&TUUserConfigurationKeyValueObserverContext];
-    [v3 addObserver:v4 forKeyPath:@"simulateFatalPersistentStoreError" options:0 context:&TUUserConfigurationKeyValueObserverContext];
-    [v3 addObserver:v4 forKeyPath:@"simulateInternationalCall" options:0 context:&TUUserConfigurationKeyValueObserverContext];
+    [userDefaults addObserver:v4 forKeyPath:@"announceCalls" options:0 context:&TUUserConfigurationKeyValueObserverContext];
+    [userDefaults addObserver:v4 forKeyPath:@"conversationLinkBaseURL" options:0 context:&TUUserConfigurationKeyValueObserverContext];
+    [userDefaults addObserver:v4 forKeyPath:@"simulateFatalPersistentStoreError" options:0 context:&TUUserConfigurationKeyValueObserverContext];
+    [userDefaults addObserver:v4 forKeyPath:@"simulateInternationalCall" options:0 context:&TUUserConfigurationKeyValueObserverContext];
     v5 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_BACKGROUND, 0);
     v6 = dispatch_queue_create("TUConfigurationProviderQueue", v5);
     v7 = [objc_alloc(MEMORY[0x1E69650A0]) initWithQueue:v6];
@@ -115,7 +115,7 @@ void __41__TUUserConfiguration_registeredDefaults__block_invoke()
   block[1] = 3221225472;
   block[2] = __35__TUUserConfiguration_userDefaults__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (userDefaults_onceToken != -1)
   {
     dispatch_once(&userDefaults_onceToken, block);
@@ -135,14 +135,14 @@ void __41__TUUserConfiguration_registeredDefaults__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [(TUConfiguration *)self dataSource];
+  dataSource = [(TUConfiguration *)self dataSource];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 removeObserver:self forKeyPath:@"announceCalls" context:&TUUserConfigurationKeyValueObserverContext];
-    [v3 removeObserver:self forKeyPath:@"conversationLinkBaseURL" context:&TUUserConfigurationKeyValueObserverContext];
-    [v3 removeObserver:self forKeyPath:@"simulateFatalPersistentStoreError" context:&TUUserConfigurationKeyValueObserverContext];
-    [v3 removeObserver:self forKeyPath:@"simulateInternationalCall" context:&TUUserConfigurationKeyValueObserverContext];
+    [dataSource removeObserver:self forKeyPath:@"announceCalls" context:&TUUserConfigurationKeyValueObserverContext];
+    [dataSource removeObserver:self forKeyPath:@"conversationLinkBaseURL" context:&TUUserConfigurationKeyValueObserverContext];
+    [dataSource removeObserver:self forKeyPath:@"simulateFatalPersistentStoreError" context:&TUUserConfigurationKeyValueObserverContext];
+    [dataSource removeObserver:self forKeyPath:@"simulateInternationalCall" context:&TUUserConfigurationKeyValueObserverContext];
   }
 
   v4.receiver = self;
@@ -193,21 +193,21 @@ void __41__TUUserConfiguration_registeredDefaults__block_invoke()
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)getBooleanFromUserDefaults:(id)a3 default:(id)a4
+- (id)getBooleanFromUserDefaults:(id)defaults default:(id)default
 {
-  v6 = a4;
-  v7 = a3;
+  defaultCopy = default;
+  defaultsCopy = defaults;
   v8 = objc_opt_class();
-  v9 = [(TUConfiguration *)self dataSource];
-  v10 = [v8 getBooleanFromUserDefaults:v7 default:v6 dataSource:v9];
+  dataSource = [(TUConfiguration *)self dataSource];
+  v10 = [v8 getBooleanFromUserDefaults:defaultsCopy default:defaultCopy dataSource:dataSource];
 
   return v10;
 }
 
-+ (id)getBooleanFromUserDefaults:(id)a3 default:(id)a4 dataSource:(id)a5
++ (id)getBooleanFromUserDefaults:(id)defaults default:(id)default dataSource:(id)source
 {
-  v7 = a4;
-  v8 = [a5 objectForKey:a3];
+  defaultCopy = default;
+  v8 = [source objectForKey:defaults];
   v9 = v8;
   if (v8)
   {
@@ -216,7 +216,7 @@ void __41__TUUserConfiguration_registeredDefaults__block_invoke()
 
   else
   {
-    v10 = v7;
+    v10 = defaultCopy;
   }
 
   v11 = v10;
@@ -224,41 +224,41 @@ void __41__TUUserConfiguration_registeredDefaults__block_invoke()
   return v10;
 }
 
-- (void)setValueInUserDefaults:(id)a3 forKey:(id)a4
+- (void)setValueInUserDefaults:(id)defaults forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TUConfiguration *)self dataSource];
-  [v8 setObject:v7 forKey:v6];
+  keyCopy = key;
+  defaultsCopy = defaults;
+  dataSource = [(TUConfiguration *)self dataSource];
+  [dataSource setObject:defaultsCopy forKey:keyCopy];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v19 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  pathCopy = path;
+  objectCopy = object;
   v11 = TUDefaultLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v16 = v9;
+    v16 = pathCopy;
     v17 = 2112;
-    v18 = v10;
+    v18 = objectCopy;
     _os_log_impl(&dword_1956FD000, v11, OS_LOG_TYPE_DEFAULT, "Received a key-value observing notification for key path (%@) object (%@).", buf, 0x16u);
   }
 
-  if (a6 == &TUUserConfigurationKeyValueObserverContext)
+  if (context == &TUUserConfigurationKeyValueObserverContext)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (([v9 isEqualToString:@"announceCalls"] & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", @"conversationLinkBaseURL") & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", @"simulateFatalPersistentStoreError") & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"simulateInternationalCall")))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (([pathCopy isEqualToString:@"announceCalls"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"conversationLinkBaseURL") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"simulateFatalPersistentStoreError") & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"simulateInternationalCall")))
     {
-      v12 = [(TUConfiguration *)self delegateController];
+      delegateController = [(TUConfiguration *)self delegateController];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __70__TUUserConfiguration_observeValueForKeyPath_ofObject_change_context___block_invoke;
       v14[3] = &unk_1E7426418;
       v14[4] = self;
-      [v12 enumerateDelegatesUsingBlock:v14];
+      [delegateController enumerateDelegatesUsingBlock:v14];
     }
   }
 
@@ -300,15 +300,15 @@ void __70__TUUserConfiguration_observeValueForKeyPath_ofObject_change_context___
   }
 
   v5 = [(TUUserConfiguration *)self getBooleanFromUserDefaults:@"CallScreeningDisabled" default:&unk_1F09C5FE0];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
   v7 = *MEMORY[0x1E69E9840];
-  return v6 ^ 1;
+  return bOOLValue ^ 1;
 }
 
-- (void)setCallScreeningEnabled:(BOOL)a3
+- (void)setCallScreeningEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v13 = *MEMORY[0x1E69E9840];
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -316,12 +316,12 @@ void __70__TUUserConfiguration_observeValueForKeyPath_ofObject_change_context___
     v9 = 138412546;
     v10 = objc_opt_class();
     v11 = 1024;
-    v12 = v3;
+    v12 = enabledCopy;
     v6 = v10;
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "%@ setCallScreeningEnabled called %d", &v9, 0x12u);
   }
 
-  v7 = [MEMORY[0x1E696AD98] numberWithInt:!v3];
+  v7 = [MEMORY[0x1E696AD98] numberWithInt:!enabledCopy];
   [(TUUserConfiguration *)self setValueInUserDefaults:v7 forKey:@"CallScreeningDisabled"];
 
   [(TUUserConfiguration *)self synchronize];
@@ -341,10 +341,10 @@ void __70__TUUserConfiguration_observeValueForKeyPath_ofObject_change_context___
   }
 
   v5 = [(TUUserConfiguration *)self getBooleanFromUserDefaults:@"HoldAssistDetectionEnabled" default:&unk_1F09C5FF8];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
   v7 = *MEMORY[0x1E69E9840];
-  return v6;
+  return bOOLValue;
 }
 
 - (BOOL)isReceptionistEnabled
@@ -360,15 +360,15 @@ void __70__TUUserConfiguration_observeValueForKeyPath_ofObject_change_context___
   }
 
   v5 = [(TUUserConfiguration *)self getBooleanFromUserDefaults:@"ReceptionistDisabled" default:&unk_1F09C5FF8];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
   v7 = *MEMORY[0x1E69E9840];
-  return v6 ^ 1;
+  return bOOLValue ^ 1;
 }
 
-- (void)setReceptionistEnabled:(BOOL)a3
+- (void)setReceptionistEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v13 = *MEMORY[0x1E69E9840];
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -376,12 +376,12 @@ void __70__TUUserConfiguration_observeValueForKeyPath_ofObject_change_context___
     v9 = 138412546;
     v10 = objc_opt_class();
     v11 = 1024;
-    v12 = v3;
+    v12 = enabledCopy;
     v6 = v10;
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "%@ setReceptionistEnabled called %d", &v9, 0x12u);
   }
 
-  v7 = [MEMORY[0x1E696AD98] numberWithInt:!v3];
+  v7 = [MEMORY[0x1E696AD98] numberWithInt:!enabledCopy];
   [(TUUserConfiguration *)self setValueInUserDefaults:v7 forKey:@"ReceptionistDisabled"];
 
   [(TUUserConfiguration *)self synchronize];
@@ -401,10 +401,10 @@ void __70__TUUserConfiguration_observeValueForKeyPath_ofObject_change_context___
   }
 
   v5 = [(TUUserConfiguration *)self getBooleanFromUserDefaults:@"EligibleForReceptionistOnboardingNotification" default:&unk_1F09C5FF8];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
   v7 = *MEMORY[0x1E69E9840];
-  return v6;
+  return bOOLValue;
 }
 
 - (BOOL)isSilenceUnknownCallersEnabledForFaceTime
@@ -412,7 +412,7 @@ void __70__TUUserConfiguration_observeValueForKeyPath_ofObject_change_context___
   v14 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AD98] numberWithBool:TUSilenceUnknownFaceTimeCallersDefaultValue()];
   v4 = [(TUUserConfiguration *)self getBooleanFromUserDefaults:@"silenceUnknownFaceTimeCallers" default:v3];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -420,20 +420,20 @@ void __70__TUUserConfiguration_observeValueForKeyPath_ofObject_change_context___
     v10 = 138412546;
     v11 = objc_opt_class();
     v12 = 1024;
-    v13 = v5;
+    v13 = bOOLValue;
     v7 = v11;
     _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "%@ isSilenceUnknownCallersEnabledForFaceTime called, returning %d", &v10, 0x12u);
   }
 
   v8 = *MEMORY[0x1E69E9840];
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)isSilenceUnknownCallersEnabledForPhone
 {
   v12 = *MEMORY[0x1E69E9840];
   v2 = [(TUUserConfiguration *)self getBooleanFromUserDefaults:@"allowContactsOnly" default:&unk_1F09C5FE0];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
   v4 = TUDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -441,42 +441,42 @@ void __70__TUUserConfiguration_observeValueForKeyPath_ofObject_change_context___
     v8 = 138412546;
     v9 = objc_opt_class();
     v10 = 1024;
-    v11 = v3;
+    v11 = bOOLValue;
     v5 = v9;
     _os_log_impl(&dword_1956FD000, v4, OS_LOG_TYPE_DEFAULT, "%@ isSilenceUnknownCallersEnabledForPhone called, returning %d", &v8, 0x12u);
   }
 
   v6 = *MEMORY[0x1E69E9840];
-  return v3;
+  return bOOLValue;
 }
 
 + (BOOL)isFilterAsNewCallersEnabledForFaceTime
 {
-  v3 = [objc_opt_class() userDefaults];
-  v4 = [a1 getBooleanFromUserDefaults:@"filterUnknownFaceTimeCallersAsNewCallers" default:&unk_1F09C5FE0 dataSource:v3];
-  v5 = [v4 BOOLValue];
+  userDefaults = [objc_opt_class() userDefaults];
+  v4 = [self getBooleanFromUserDefaults:@"filterUnknownFaceTimeCallersAsNewCallers" default:&unk_1F09C5FE0 dataSource:userDefaults];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 + (BOOL)isFilterAsNewCallersEnabledForPhone
 {
-  v3 = [objc_opt_class() userDefaults];
-  v4 = [a1 getBooleanFromUserDefaults:@"filterUnknownCallersAsNewCallers" default:&unk_1F09C5FE0 dataSource:v3];
-  v5 = [v4 BOOLValue];
+  userDefaults = [objc_opt_class() userDefaults];
+  v4 = [self getBooleanFromUserDefaults:@"filterUnknownCallersAsNewCallers" default:&unk_1F09C5FE0 dataSource:userDefaults];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (BOOL)isBrandedCallingEnabled:(id)a3
+- (BOOL)isBrandedCallingEnabled:(id)enabled
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  enabledCopy = enabled;
   v16 = 0;
   coreTelephonyClient = self->_coreTelephonyClient;
   v6 = *MEMORY[0x1E6965158];
   v15 = 0;
-  v7 = [(CoreTelephonyClient *)coreTelephonyClient context:v4 getCapability:v6 status:&v16 with:&v15];
+  v7 = [(CoreTelephonyClient *)coreTelephonyClient context:enabledCopy getCapability:v6 status:&v16 with:&v15];
   v8 = v15;
   v9 = TUDefaultLog();
   v10 = v9;
@@ -484,7 +484,7 @@ void __70__TUUserConfiguration_observeValueForKeyPath_ofObject_change_context___
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(TUUserConfiguration *)v4 isBrandedCallingEnabled:v10];
+      [(TUUserConfiguration *)enabledCopy isBrandedCallingEnabled:v10];
     }
 
     v11 = 0;
@@ -501,7 +501,7 @@ void __70__TUUserConfiguration_observeValueForKeyPath_ofObject_change_context___
       }
 
       *buf = 138412546;
-      v18 = v4;
+      v18 = enabledCopy;
       v19 = 2112;
       v20 = v12;
       _os_log_impl(&dword_1956FD000, v10, OS_LOG_TYPE_DEFAULT, "Fetched state of branded calling for context: %@, state: %@", buf, 0x16u);
@@ -526,25 +526,25 @@ void __70__TUUserConfiguration_observeValueForKeyPath_ofObject_change_context___
     _os_log_impl(&dword_1956FD000, v3, OS_LOG_TYPE_DEFAULT, "%@ getSilenceJunkCallingEnabled called", v11, 0xCu);
   }
 
-  v5 = +[TUCall acceptableJunkConfidence];
-  v6 = [(TUConfiguration *)self dataSource];
-  v7 = [v6 objectForKey:@"maxJunkLevel"];
+  integerValue = +[TUCall acceptableJunkConfidence];
+  dataSource = [(TUConfiguration *)self dataSource];
+  v7 = [dataSource objectForKey:@"maxJunkLevel"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v7 integerValue];
+    integerValue = [v7 integerValue];
   }
 
-  v8 = [TUCall isJunkConfidenceLevelJunk:v5, *v11];
+  v8 = [TUCall isJunkConfidenceLevelJunk:integerValue, *v11];
 
   v9 = *MEMORY[0x1E69E9840];
   return !v8;
 }
 
-- (void)setSilenceJunkCallingEnabled:(BOOL)a3
+- (void)setSilenceJunkCallingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v11 = *MEMORY[0x1E69E9840];
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -552,13 +552,13 @@ void __70__TUUserConfiguration_observeValueForKeyPath_ofObject_change_context___
     *v10 = 138412546;
     *&v10[4] = objc_opt_class();
     *&v10[12] = 1024;
-    *&v10[14] = v3;
+    *&v10[14] = enabledCopy;
     v6 = *&v10[4];
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "%@ setSilenceJunkCallingEnabled called %d", v10, 0x12u);
   }
 
   v7 = +[TUCall maxJunkConfidence];
-  if (v3)
+  if (enabledCopy)
   {
     v7 = +[TUCall acceptableJunkConfidence];
   }
@@ -582,15 +582,15 @@ void __70__TUUserConfiguration_observeValueForKeyPath_ofObject_change_context___
   }
 
   v5 = [(TUUserConfiguration *)self getBooleanFromUserDefaults:@"BusinessConnectCallingDisabled" default:&unk_1F09C5FE0];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
   v7 = *MEMORY[0x1E69E9840];
-  return v6 ^ 1;
+  return bOOLValue ^ 1;
 }
 
-- (void)setBusinessConnectCallingEnabled:(BOOL)a3
+- (void)setBusinessConnectCallingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v13 = *MEMORY[0x1E69E9840];
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -598,12 +598,12 @@ void __70__TUUserConfiguration_observeValueForKeyPath_ofObject_change_context___
     v9 = 138412546;
     v10 = objc_opt_class();
     v11 = 1024;
-    v12 = v3;
+    v12 = enabledCopy;
     v6 = v10;
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "%@ setBusinessConnectCallingEnabled called %d", &v9, 0x12u);
   }
 
-  v7 = [MEMORY[0x1E696AD98] numberWithInt:!v3];
+  v7 = [MEMORY[0x1E696AD98] numberWithInt:!enabledCopy];
   [(TUUserConfiguration *)self setValueInUserDefaults:v7 forKey:@"BusinessConnectCallingDisabled"];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -621,8 +621,8 @@ void __70__TUUserConfiguration_observeValueForKeyPath_ofObject_change_context___
     _os_log_impl(&dword_1956FD000, v3, OS_LOG_TYPE_DEFAULT, "%@ isUplevelFTAEnabled called", &v11, 0xCu);
   }
 
-  v5 = [MEMORY[0x1E699BE70] sharedInstance];
-  if ([v5 deviceType] == 2)
+  mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+  if ([mEMORY[0x1E699BE70] deviceType] == 2)
   {
     v6 = &unk_1F09C5FE0;
   }
@@ -633,10 +633,10 @@ void __70__TUUserConfiguration_observeValueForKeyPath_ofObject_change_context___
   }
 
   v7 = [(TUUserConfiguration *)self getBooleanFromUserDefaults:@"TUFTAUplevelKey" default:v6];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
   v9 = *MEMORY[0x1E69E9840];
-  return v8;
+  return bOOLValue;
 }
 
 - (BOOL)isCallRecordingEnabled
@@ -652,15 +652,15 @@ void __70__TUUserConfiguration_observeValueForKeyPath_ofObject_change_context___
   }
 
   v5 = [(TUUserConfiguration *)self getBooleanFromUserDefaults:@"CallRecordingDisabled" default:&unk_1F09C5FE0];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
   v7 = *MEMORY[0x1E69E9840];
-  return v6 ^ 1;
+  return bOOLValue ^ 1;
 }
 
-- (void)setCallRecordingEnabled:(BOOL)a3
+- (void)setCallRecordingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v13 = *MEMORY[0x1E69E9840];
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -668,12 +668,12 @@ void __70__TUUserConfiguration_observeValueForKeyPath_ofObject_change_context___
     v9 = 138412546;
     v10 = objc_opt_class();
     v11 = 1024;
-    v12 = v3;
+    v12 = enabledCopy;
     v6 = v10;
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "%@ setCallRecordingEnabled called %d", &v9, 0x12u);
   }
 
-  v7 = [MEMORY[0x1E696AD98] numberWithInt:!v3];
+  v7 = [MEMORY[0x1E696AD98] numberWithInt:!enabledCopy];
   [(TUUserConfiguration *)self setValueInUserDefaults:v7 forKey:@"CallRecordingDisabled"];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -692,15 +692,15 @@ void __70__TUUserConfiguration_observeValueForKeyPath_ofObject_change_context___
   }
 
   v5 = [(TUUserConfiguration *)self getBooleanFromUserDefaults:@"spamFilterFaceTimeDisabled" default:&unk_1F09C5FE0];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
   v7 = *MEMORY[0x1E69E9840];
-  return v6 ^ 1;
+  return bOOLValue ^ 1;
 }
 
-- (void)setSpamFilterEnabledForFaceTime:(BOOL)a3
+- (void)setSpamFilterEnabledForFaceTime:(BOOL)time
 {
-  v3 = a3;
+  timeCopy = time;
   v13 = *MEMORY[0x1E69E9840];
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -708,12 +708,12 @@ void __70__TUUserConfiguration_observeValueForKeyPath_ofObject_change_context___
     v9 = 138412546;
     v10 = objc_opt_class();
     v11 = 1024;
-    v12 = v3;
+    v12 = timeCopy;
     v6 = v10;
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "%@ setSpamFilterEnabledForFaceTime called %d", &v9, 0x12u);
   }
 
-  v7 = [MEMORY[0x1E696AD98] numberWithInt:!v3];
+  v7 = [MEMORY[0x1E696AD98] numberWithInt:!timeCopy];
   [(TUUserConfiguration *)self setValueInUserDefaults:v7 forKey:@"spamFilterFaceTimeDisabled"];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -732,10 +732,10 @@ void __70__TUUserConfiguration_observeValueForKeyPath_ofObject_change_context___
   }
 
   v5 = [(TUUserConfiguration *)self getBooleanFromUserDefaults:@"TUCallHapticsEnabled" default:&unk_1F09C5FF8];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
   v7 = *MEMORY[0x1E69E9840];
-  return v6;
+  return bOOLValue;
 }
 
 - (void)isBrandedCallingEnabled:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

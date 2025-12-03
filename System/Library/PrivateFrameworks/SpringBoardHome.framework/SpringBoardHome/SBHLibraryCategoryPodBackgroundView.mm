@@ -1,12 +1,12 @@
 @interface SBHLibraryCategoryPodBackgroundView
-+ (id)visualStyleSetNameForUserInterfaceStyle:(int64_t)a3;
++ (id)visualStyleSetNameForUserInterfaceStyle:(int64_t)style;
 @end
 
 @implementation SBHLibraryCategoryPodBackgroundView
 
-+ (id)visualStyleSetNameForUserInterfaceStyle:(int64_t)a3
++ (id)visualStyleSetNameForUserInterfaceStyle:(int64_t)style
 {
-  if (a3 == 2)
+  if (style == 2)
   {
     return @"podBackgroundViewDark";
   }

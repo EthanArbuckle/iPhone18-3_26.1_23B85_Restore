@@ -2,9 +2,9 @@
 - (OZChannelButton)ozChannel;
 - (id)callback;
 - (void)performCallback;
-- (void)setButtonTitle:(id)a3;
-- (void)setCallback:(id)a3;
-- (void)setSelector:(SEL)a3 andTarget:(id)a4;
+- (void)setButtonTitle:(id)title;
+- (void)setCallback:(id)callback;
+- (void)setSelector:(SEL)selector andTarget:(id)target;
 @end
 
 @implementation CHChannelButton
@@ -19,7 +19,7 @@
   return result;
 }
 
-- (void)setSelector:(SEL)a3 andTarget:(id)a4
+- (void)setSelector:(SEL)selector andTarget:(id)target
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
@@ -31,11 +31,11 @@
     v7 = 0;
   }
 
-  v8 = NSStringFromSelector(a3);
+  v8 = NSStringFromSelector(selector);
   v10.var0 = 0;
   PCString::set(&v10, v8);
   v9.var0 = &v10;
-  OZChannelButton::setCallbackSelectorAsString(v7, v9, a4);
+  OZChannelButton::setCallbackSelectorAsString(v7, v9, target);
   PCString::~PCString(&v10);
 }
 
@@ -50,17 +50,17 @@
   return OZChannelButton::getCallbackBlock(pOZChannel);
 }
 
-- (void)setCallback:(id)a3
+- (void)setCallback:(id)callback
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  OZChannelButton::setCallbackBlock(pOZChannel, a3);
+  OZChannelButton::setCallbackBlock(pOZChannel, callback);
 }
 
-- (void)setButtonTitle:(id)a3
+- (void)setButtonTitle:(id)title
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
@@ -73,7 +73,7 @@
   }
 
   v6.var0 = 0;
-  PCString::set(&v6, a3);
+  PCString::set(&v6, title);
   PCString::set(v5 + 22, &v6);
   PCString::~PCString(&v6);
 }

@@ -3,55 +3,55 @@
 - (BOOL)_shouldSkipValidation;
 - (BOOL)canHideContentInWebView;
 - (CGPoint)lastRequestLocation;
-- (WBSScribbleController)initWithWebView:(id)a3;
+- (WBSScribbleController)initWithWebView:(id)view;
 - (WBSScribbleControllerDelegate)delegate;
-- (id)_contentBlockingRulesAsString:(id)a3;
+- (id)_contentBlockingRulesAsString:(id)string;
 - (id)_currentUserContentControllers;
 - (id)_elementsToValidate;
-- (id)_tapToRadarDescriptionWithWebView:(id)a3 contentBlockingRules:(id)a4;
+- (id)_tapToRadarDescriptionWithWebView:(id)view contentBlockingRules:(id)rules;
 - (id)cachedGlobalContentBlockerActions;
-- (void)_applyQuirksToRequest:(id)a3;
+- (void)_applyQuirksToRequest:(id)request;
 - (void)_applyWebCompatibilityFixups;
 - (void)_disableHiddenActiveElementIfNeeded;
-- (void)_hideElementUsingPaintAvoidance:(id)a3 completion:(id)a4;
+- (void)_hideElementUsingPaintAvoidance:(id)avoidance completion:(id)completion;
 - (void)_makePageScrollableAndInteractableIfNeeded;
 - (void)_rescheduleValidation;
-- (void)_resetPaintAvoidanceForElements:(id)a3 completion:(id)a4;
+- (void)_resetPaintAvoidanceForElements:(id)elements completion:(id)completion;
 - (void)_stopValidationTimer;
 - (void)_updateQuirksIfNeeded;
 - (void)_updateUserStyleSheet;
-- (void)_validateHiddenElements:(id)a3;
+- (void)_validateHiddenElements:(id)elements;
 - (void)clearAllEdits;
 - (void)deselectSelectedElement;
-- (void)endScribblingAndSaveChanges:(BOOL)a3;
-- (void)getElementAtPoint:(CGPoint)a3 completion:(id)a4;
-- (void)getTapToRadarURLForScribbleIssueForWebView:(id)a3 category:(int64_t)a4 completionHandler:(id)a5;
+- (void)endScribblingAndSaveChanges:(BOOL)changes;
+- (void)getElementAtPoint:(CGPoint)point completion:(id)completion;
+- (void)getTapToRadarURLForScribbleIssueForWebView:(id)view category:(int64_t)category completionHandler:(id)handler;
 - (void)hideSelectedElement;
 - (void)invalidate;
-- (void)loadContentBlockerForHost:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)loadContentBlockerForHost:(id)host;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)reloadWithoutScribbleElements;
-- (void)setDelegate:(id)a3;
-- (void)startScribblingWithCompletionHandler:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)startScribblingWithCompletionHandler:(id)handler;
 - (void)startValidatingHiddenElements;
 - (void)undoLastAction;
 - (void)updateCountForElementsHiddenByPaintingAvoidance;
-- (void)updateSelectionToPoint:(CGPoint)a3;
-- (void)userDefinedContentBlockerManagerDidUpdateAllRules:(id)a3;
+- (void)updateSelectionToPoint:(CGPoint)point;
+- (void)userDefinedContentBlockerManagerDidUpdateAllRules:(id)rules;
 @end
 
 @implementation WBSScribbleController
 
-- (WBSScribbleController)initWithWebView:(id)a3
+- (WBSScribbleController)initWithWebView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v21.receiver = self;
   v21.super_class = WBSScribbleController;
   v5 = [(WBSScribbleController *)&v21 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_webView, v4);
+    objc_storeWeak(&v5->_webView, viewCopy);
     v7 = objc_opt_new();
     targetedElementsHiddenFromCurrentSession = v6->_targetedElementsHiddenFromCurrentSession;
     v6->_targetedElementsHiddenFromCurrentSession = v7;
@@ -93,11 +93,11 @@
   [(WBSScribbleController *)self _stopValidationTimer];
 }
 
-- (void)getElementAtPoint:(CGPoint)a3 completion:(id)a4
+- (void)getElementAtPoint:(CGPoint)point completion:(id)completion
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  completionCopy = completion;
   self->_lastRequestLocation.x = x;
   self->_lastRequestLocation.y = y;
   v8 = [objc_alloc(MEMORY[0x1E6985400]) initWithPoint:{x, y}];
@@ -110,7 +110,7 @@
   v11[2] = __54__WBSScribbleController_getElementAtPoint_completion___block_invoke;
   v11[3] = &unk_1E8285590;
   objc_copyWeak(&v13, &location);
-  v10 = v7;
+  v10 = completionCopy;
   v12 = v10;
   [WeakRetained _requestTargetedElementInfo:v8 completionHandler:v11];
 
@@ -154,15 +154,15 @@ void __54__WBSScribbleController_getElementAtPoint_completion___block_invoke(uin
 
   if (v11)
   {
-    v4 = [v11 safari_highLevelDomain];
-    v5 = [(WBSScribbleQuirks *)self->_quirksForCurrentSession highLevelDomain];
-    v6 = [v5 isEqualToString:v4];
+    safari_highLevelDomain = [v11 safari_highLevelDomain];
+    highLevelDomain = [(WBSScribbleQuirks *)self->_quirksForCurrentSession highLevelDomain];
+    v6 = [highLevelDomain isEqualToString:safari_highLevelDomain];
 
     if ((v6 & 1) == 0)
     {
-      v7 = [(WBSScribbleController *)self delegate];
-      v8 = [v7 scribbleQuirksManager];
-      v9 = [v8 quirksForHighLevelDomain:v4];
+      delegate = [(WBSScribbleController *)self delegate];
+      scribbleQuirksManager = [delegate scribbleQuirksManager];
+      v9 = [scribbleQuirksManager quirksForHighLevelDomain:safari_highLevelDomain];
       quirksForCurrentSession = self->_quirksForCurrentSession;
       self->_quirksForCurrentSession = v9;
     }
@@ -170,23 +170,23 @@ void __54__WBSScribbleController_getElementAtPoint_completion___block_invoke(uin
 
   else
   {
-    v4 = self->_quirksForCurrentSession;
+    safari_highLevelDomain = self->_quirksForCurrentSession;
     self->_quirksForCurrentSession = 0;
   }
 }
 
-- (void)_applyQuirksToRequest:(id)a3
+- (void)_applyQuirksToRequest:(id)request
 {
-  v7 = a3;
+  requestCopy = request;
   quirksForCurrentSession = self->_quirksForCurrentSession;
   if (quirksForCurrentSession)
   {
-    v5 = [(WBSScribbleQuirks *)quirksForCurrentSession shouldIgnorePointerEventsNone];
+    shouldIgnorePointerEventsNone = [(WBSScribbleQuirks *)quirksForCurrentSession shouldIgnorePointerEventsNone];
 
-    if (v5)
+    if (shouldIgnorePointerEventsNone)
     {
-      v6 = [(WBSScribbleQuirks *)self->_quirksForCurrentSession shouldIgnorePointerEventsNone];
-      [v7 setShouldIgnorePointerEventsNone:{objc_msgSend(v6, "BOOLValue")}];
+      shouldIgnorePointerEventsNone2 = [(WBSScribbleQuirks *)self->_quirksForCurrentSession shouldIgnorePointerEventsNone];
+      [requestCopy setShouldIgnorePointerEventsNone:{objc_msgSend(shouldIgnorePointerEventsNone2, "BOOLValue")}];
     }
   }
 }
@@ -216,22 +216,22 @@ void __54__WBSScribbleController_getElementAtPoint_completion___block_invoke(uin
 
 - (BOOL)_hasAnyHiddenElements
 {
-  v3 = [(WBSScribbleController *)self canHideContentInWebView];
-  if (v3)
+  canHideContentInWebView = [(WBSScribbleController *)self canHideContentInWebView];
+  if (canHideContentInWebView)
   {
-    LOBYTE(v3) = self->_numberOfElementsHiddenByPaintingAvoidance || [(NSMutableArray *)self->_targetedElementsHiddenFromCurrentSession count]|| [(NSMutableArray *)self->_targetedElementsHiddenByValidation count]!= 0;
+    LOBYTE(canHideContentInWebView) = self->_numberOfElementsHiddenByPaintingAvoidance || [(NSMutableArray *)self->_targetedElementsHiddenFromCurrentSession count]|| [(NSMutableArray *)self->_targetedElementsHiddenByValidation count]!= 0;
   }
 
-  return v3;
+  return canHideContentInWebView;
 }
 
 - (id)_elementsToValidate
 {
-  v3 = [(WBSUserDefinedContentBlocker *)self->_contentBlockerForCurrentHost actions];
-  v4 = scribbleElementsFromActions(v3);
+  actions = [(WBSUserDefinedContentBlocker *)self->_contentBlockerForCurrentHost actions];
+  v4 = scribbleElementsFromActions(actions);
 
-  v5 = [(WBSScribbleController *)self cachedGlobalContentBlockerActions];
-  v6 = scribbleElementsFromActions(v5);
+  cachedGlobalContentBlockerActions = [(WBSScribbleController *)self cachedGlobalContentBlockerActions];
+  v6 = scribbleElementsFromActions(cachedGlobalContentBlockerActions);
   v7 = [v4 arrayByAddingObjectsFromArray:v6];
 
   if (self->_scribbleElementsFromCurrentSession)
@@ -266,8 +266,8 @@ void __54__WBSScribbleController_getElementAtPoint_completion___block_invoke(uin
 
     else
     {
-      v7 = [(WBSScribbleController *)self cachedGlobalContentBlockerActions];
-      v5 = [v7 count] == 0;
+      cachedGlobalContentBlockerActions = [(WBSScribbleController *)self cachedGlobalContentBlockerActions];
+      v5 = [cachedGlobalContentBlockerActions count] == 0;
     }
   }
 
@@ -281,11 +281,11 @@ void __54__WBSScribbleController_getElementAtPoint_completion___block_invoke(uin
 
 - (id)cachedGlobalContentBlockerActions
 {
-  v2 = [(WBSScribbleController *)self delegate];
-  v3 = [v2 userDefinedContentBlockerManager];
-  v4 = [v3 cachedGlobalContentBlockerActions];
+  delegate = [(WBSScribbleController *)self delegate];
+  userDefinedContentBlockerManager = [delegate userDefinedContentBlockerManager];
+  cachedGlobalContentBlockerActions = [userDefinedContentBlockerManager cachedGlobalContentBlockerActions];
 
-  return v4;
+  return cachedGlobalContentBlockerActions;
 }
 
 - (void)_rescheduleValidation
@@ -327,13 +327,13 @@ void __46__WBSScribbleController__rescheduleValidation__block_invoke_2(uint64_t 
   }
 }
 
-- (void)_validateHiddenElements:(id)a3
+- (void)_validateHiddenElements:(id)elements
 {
-  v4 = a3;
-  v5 = v4;
+  elementsCopy = elements;
+  v5 = elementsCopy;
   if (self->_validator)
   {
-    (*(v4 + 2))(v4);
+    (*(elementsCopy + 2))(elementsCopy);
   }
 
   else
@@ -341,15 +341,15 @@ void __46__WBSScribbleController__rescheduleValidation__block_invoke_2(uint64_t 
     objc_initWeak(&location, self);
     v6 = [WBSScribbleValidator alloc];
     WeakRetained = objc_loadWeakRetained(&self->_webView);
-    v8 = [(WBSScribbleController *)self _elementsToValidate];
-    v9 = [(WBSScribbleController *)self _targetsHiddenByUserOrValidation];
+    _elementsToValidate = [(WBSScribbleController *)self _elementsToValidate];
+    _targetsHiddenByUserOrValidation = [(WBSScribbleController *)self _targetsHiddenByUserOrValidation];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __49__WBSScribbleController__validateHiddenElements___block_invoke;
     v12[3] = &unk_1E8285AB0;
     objc_copyWeak(&v14, &location);
     v13 = v5;
-    v10 = [(WBSScribbleValidator *)v6 initWithWebView:WeakRetained elements:v8 excludedTargets:v9 completion:v12];
+    v10 = [(WBSScribbleValidator *)v6 initWithWebView:WeakRetained elements:_elementsToValidate excludedTargets:_targetsHiddenByUserOrValidation completion:v12];
     validator = self->_validator;
     self->_validator = v10;
 
@@ -529,11 +529,11 @@ void __49__WBSScribbleController__validateHiddenElements___block_invoke_46(void 
   }
 }
 
-- (void)_resetPaintAvoidanceForElements:(id)a3 completion:(id)a4
+- (void)_resetPaintAvoidanceForElements:(id)elements completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  elementsCopy = elements;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_webView);
   if (WeakRetained)
   {
@@ -541,7 +541,7 @@ void __49__WBSScribbleController__validateHiddenElements___block_invoke_46(void 
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = v6;
+    v9 = elementsCopy;
     v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
@@ -578,13 +578,13 @@ void __49__WBSScribbleController__validateHiddenElements___block_invoke_46(void 
     v17[2] = __68__WBSScribbleController__resetPaintAvoidanceForElements_completion___block_invoke_3;
     v17[3] = &unk_1E82838F8;
     v17[4] = self;
-    v18 = v7;
+    v18 = completionCopy;
     [WeakRetained _resetVisibilityAdjustmentsForTargetedElements:v9 completionHandler:v17];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -612,10 +612,10 @@ uint64_t __68__WBSScribbleController__resetPaintAvoidanceForElements_completion_
   return v3();
 }
 
-- (void)_hideElementUsingPaintAvoidance:(id)a3 completion:(id)a4
+- (void)_hideElementUsingPaintAvoidance:(id)avoidance completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  avoidanceCopy = avoidance;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_webView);
   if (WeakRetained)
   {
@@ -624,13 +624,13 @@ uint64_t __68__WBSScribbleController__resetPaintAvoidanceForElements_completion_
     v9[2] = __68__WBSScribbleController__hideElementUsingPaintAvoidance_completion___block_invoke;
     v9[3] = &unk_1E82838F8;
     v9[4] = self;
-    v10 = v7;
-    [WeakRetained _adjustVisibilityForTargetedElements:v6 completionHandler:v9];
+    v10 = completionCopy;
+    [WeakRetained _adjustVisibilityForTargetedElements:avoidanceCopy completionHandler:v9];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -681,43 +681,43 @@ void __72__WBSScribbleController_updateCountForElementsHiddenByPaintingAvoidance
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
-    v5 = [WeakRetained userDefinedContentBlockerManager];
-    [v5 removeUserDefinedContentBlockerObserver:self];
+    userDefinedContentBlockerManager = [WeakRetained userDefinedContentBlockerManager];
+    [userDefinedContentBlockerManager removeUserDefinedContentBlockerObserver:self];
   }
 
-  objc_storeWeak(&self->_delegate, v4);
-  v6 = [v4 userDefinedContentBlockerManager];
+  objc_storeWeak(&self->_delegate, delegateCopy);
+  userDefinedContentBlockerManager2 = [delegateCopy userDefinedContentBlockerManager];
 
-  [v6 addUserDefinedContentBlockerObserver:self];
+  [userDefinedContentBlockerManager2 addUserDefinedContentBlockerObserver:self];
 }
 
-- (void)loadContentBlockerForHost:(id)a3
+- (void)loadContentBlockerForHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   WeakRetained = objc_loadWeakRetained(&self->_webView);
 
-  if (WeakRetained && [v4 length] && objc_msgSend(MEMORY[0x1E69C8880], "isScribbleEnabled"))
+  if (WeakRetained && [hostCopy length] && objc_msgSend(MEMORY[0x1E69C8880], "isScribbleEnabled"))
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    v7 = [v6 userDefinedContentBlockerManager];
+    userDefinedContentBlockerManager = [v6 userDefinedContentBlockerManager];
     objc_initWeak(&location, self);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v7 normalBrowsingUserDefinedContentBlockerManager];
+      normalBrowsingUserDefinedContentBlockerManager = [userDefinedContentBlockerManager normalBrowsingUserDefinedContentBlockerManager];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __51__WBSScribbleController_loadContentBlockerForHost___block_invoke;
       v13[3] = &unk_1E8285B00;
       objc_copyWeak(&v15, &location);
       v14 = v6;
-      [v8 contentBlockerForHost:v4 createIfNeeded:0 completionHandler:v13];
+      [normalBrowsingUserDefinedContentBlockerManager contentBlockerForHost:hostCopy createIfNeeded:0 completionHandler:v13];
 
       objc_destroyWeak(&v15);
     }
@@ -729,7 +729,7 @@ void __72__WBSScribbleController_updateCountForElementsHiddenByPaintingAvoidance
     objc_copyWeak(&v12, &location);
     v9 = v6;
     v11 = v9;
-    [v7 contentBlockerForHost:v4 createIfNeeded:0 completionHandler:v10];
+    [userDefinedContentBlockerManager contentBlockerForHost:hostCopy createIfNeeded:0 completionHandler:v10];
     self->_numberOfElementsHiddenByPaintingAvoidance = 0;
     [(WBSScribbleController *)self updateCountForElementsHiddenByPaintingAvoidance];
     [(NSMutableDictionary *)self->_activeGlobalActionsByDatabaseID removeAllObjects];
@@ -800,27 +800,27 @@ void __51__WBSScribbleController_loadContentBlockerForHost___block_invoke_2(uint
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [WeakRetained userDefinedContentBlockerManager];
-  v5 = v4;
+  userDefinedContentBlockerManager = [WeakRetained userDefinedContentBlockerManager];
+  v5 = userDefinedContentBlockerManager;
   if (self->_contentBlockerForCurrentHost)
   {
-    [v4 deleteActionsForContentBlocker:?];
+    [userDefinedContentBlockerManager deleteActionsForContentBlocker:?];
   }
 
   v6 = objc_loadWeakRetained(&self->_webView);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 normalBrowsingUserDefinedContentBlockerManager];
+    normalBrowsingUserDefinedContentBlockerManager = [v5 normalBrowsingUserDefinedContentBlockerManager];
     v8 = [v6 URL];
-    v9 = [v8 host];
+    host = [v8 host];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __38__WBSScribbleController_clearAllEdits__block_invoke;
     v28[3] = &unk_1E8285B28;
-    v10 = v7;
+    v10 = normalBrowsingUserDefinedContentBlockerManager;
     v29 = v10;
-    [v10 contentBlockerForHost:v9 createIfNeeded:0 completionHandler:v28];
+    [v10 contentBlockerForHost:host createIfNeeded:0 completionHandler:v28];
   }
 
   else
@@ -830,8 +830,8 @@ void __51__WBSScribbleController_loadContentBlockerForHost___block_invoke_2(uint
 
   if ([(WBSScribbleController *)self numberOfAllHiddenElements])
   {
-    v11 = [MEMORY[0x1E69C8810] sharedLogger];
-    [v11 didClearScribble];
+    mEMORY[0x1E69C8810] = [MEMORY[0x1E69C8810] sharedLogger];
+    [mEMORY[0x1E69C8810] didClearScribble];
 
     v12 = MEMORY[0x1E69E9820];
     self->_numberOfElementsHiddenByPaintingAvoidance = 0;
@@ -841,10 +841,10 @@ void __51__WBSScribbleController_loadContentBlockerForHost___block_invoke_2(uint
     v25[2] = __38__WBSScribbleController_clearAllEdits__block_invoke_2;
     v25[3] = &unk_1E8285B50;
     v26 = WeakRetained;
-    v27 = self;
+    selfCopy = self;
     [v6 _resetVisibilityAdjustmentsForTargetedElements:0 completionHandler:v25];
-    v13 = [(NSMutableDictionary *)self->_activeGlobalActionsByDatabaseID allValues];
-    [v10 deleteActions:v13];
+    allValues = [(NSMutableDictionary *)self->_activeGlobalActionsByDatabaseID allValues];
+    [v10 deleteActions:allValues];
 
     [(WBSScribbleController *)self _stopValidationTimer];
     validator = self->_validator;
@@ -860,8 +860,8 @@ void __51__WBSScribbleController_loadContentBlockerForHost___block_invoke_2(uint
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v15 = [(WBSScribbleController *)self _currentUserContentControllers];
-    v16 = [v15 countByEnumeratingWithState:&v21 objects:v30 count:16];
+    _currentUserContentControllers = [(WBSScribbleController *)self _currentUserContentControllers];
+    v16 = [_currentUserContentControllers countByEnumeratingWithState:&v21 objects:v30 count:16];
     if (v16)
     {
       v17 = v16;
@@ -874,14 +874,14 @@ void __51__WBSScribbleController_loadContentBlockerForHost___block_invoke_2(uint
         {
           if (*v22 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(_currentUserContentControllers);
           }
 
           [*(*(&v21 + 1) + 8 * v20++) safari_updateScribbleStyleSheetForWebView:v6 targets:v19 forceScrollable:0];
         }
 
         while (v17 != v20);
-        v17 = [v15 countByEnumeratingWithState:&v21 objects:v30 count:16];
+        v17 = [_currentUserContentControllers countByEnumeratingWithState:&v21 objects:v30 count:16];
       }
 
       while (v17);
@@ -899,78 +899,78 @@ uint64_t __38__WBSScribbleController_clearAllEdits__block_invoke(uint64_t result
   return result;
 }
 
-- (void)userDefinedContentBlockerManagerDidUpdateAllRules:(id)a3
+- (void)userDefinedContentBlockerManagerDidUpdateAllRules:(id)rules
 {
-  v4 = a3;
+  rulesCopy = rules;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained userDefinedContentBlockerManager];
+  userDefinedContentBlockerManager = [WeakRetained userDefinedContentBlockerManager];
 
-  if (v6 == v4)
+  if (userDefinedContentBlockerManager == rulesCopy)
   {
     v9 = objc_loadWeakRetained(&self->_webView);
     v7 = [v9 URL];
-    v8 = [v7 host];
-    [(WBSScribbleController *)self loadContentBlockerForHost:v8];
+    host = [v7 host];
+    [(WBSScribbleController *)self loadContentBlockerForHost:host];
   }
 }
 
-- (id)_tapToRadarDescriptionWithWebView:(id)a3 contentBlockingRules:(id)a4
+- (id)_tapToRadarDescriptionWithWebView:(id)view contentBlockingRules:(id)rules
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 bounds];
+  rulesCopy = rules;
+  viewCopy = view;
+  [viewCopy bounds];
   v8 = v7;
   v10 = v9;
-  v11 = [v6 scrollView];
-  [v11 zoomScale];
+  scrollView = [viewCopy scrollView];
+  [scrollView zoomScale];
   v13 = v12;
 
-  [v6 _viewScale];
+  [viewCopy _viewScale];
   v15 = v14;
-  v16 = [v6 URL];
+  v16 = [viewCopy URL];
 
   v17 = MEMORY[0x1E696AEC0];
-  v18 = [v16 safari_userVisibleHost];
-  v19 = [v17 stringWithFormat:@"* Please describe the issue in detail:\n\n* Please attach a screenshot or screen recording if possible.\n\nURL: %@\nPage Bounds: %f width, %f height\nPage Zoom Factor: %lf\nPage Scale: %f\n\nContent Blocking Rules for %@:\n%@", v16, v8, v10, v13, v15, v18, v5];
+  safari_userVisibleHost = [v16 safari_userVisibleHost];
+  rulesCopy = [v17 stringWithFormat:@"* Please describe the issue in detail:\n\n* Please attach a screenshot or screen recording if possible.\n\nURL: %@\nPage Bounds: %f width, %f height\nPage Zoom Factor: %lf\nPage Scale: %f\n\nContent Blocking Rules for %@:\n%@", v16, v8, v10, v13, v15, safari_userVisibleHost, rulesCopy];
 
-  return v19;
+  return rulesCopy;
 }
 
-- (void)getTapToRadarURLForScribbleIssueForWebView:(id)a3 category:(int64_t)a4 completionHandler:(id)a5
+- (void)getTapToRadarURLForScribbleIssueForWebView:(id)view category:(int64_t)category completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  viewCopy = view;
+  handlerCopy = handler;
   v10 = MEMORY[0x1E696AEC0];
-  if ((a4 - 1) > 2)
+  if ((category - 1) > 2)
   {
     v11 = @"CannotSelectItems";
   }
 
   else
   {
-    v11 = off_1E8285D50[a4 - 1];
+    v11 = off_1E8285D50[category - 1];
   }
 
-  v12 = [v8 URL];
-  v13 = [v12 safari_userVisibleHost];
-  v14 = [v10 stringWithFormat:@"[%@] Distraction Control Issue on %@", v11, v13];
+  v12 = [viewCopy URL];
+  safari_userVisibleHost = [v12 safari_userVisibleHost];
+  v14 = [v10 stringWithFormat:@"[%@] Distraction Control Issue on %@", v11, safari_userVisibleHost];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v16 = [WeakRetained userDefinedContentBlockerManager];
-  v17 = [v8 URL];
-  v18 = [v17 host];
+  userDefinedContentBlockerManager = [WeakRetained userDefinedContentBlockerManager];
+  v17 = [viewCopy URL];
+  host = [v17 host];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __95__WBSScribbleController_getTapToRadarURLForScribbleIssueForWebView_category_completionHandler___block_invoke;
   v22[3] = &unk_1E8285B78;
   v22[4] = self;
-  v23 = v8;
+  v23 = viewCopy;
   v24 = v14;
-  v25 = v9;
-  v19 = v9;
+  v25 = handlerCopy;
+  v19 = handlerCopy;
   v20 = v14;
-  v21 = v8;
-  [v16 contentBlockerForHost:v18 createIfNeeded:0 completionHandler:v22];
+  v21 = viewCopy;
+  [userDefinedContentBlockerManager contentBlockerForHost:host createIfNeeded:0 completionHandler:v22];
 }
 
 void __95__WBSScribbleController_getTapToRadarURLForScribbleIssueForWebView_category_completionHandler___block_invoke(void *a1, uint64_t a2)
@@ -991,17 +991,17 @@ void __95__WBSScribbleController_getTapToRadarURLForScribbleIssueForWebView_cate
   (*(v9 + 16))(v9, v10);
 }
 
-- (id)_contentBlockingRulesAsString:(id)a3
+- (id)_contentBlockingRulesAsString:(id)string
 {
   v51 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AD60] string];
+  stringCopy = string;
+  string = [MEMORY[0x1E696AD60] string];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v22 = v3;
-  obj = [v3 actions];
+  v22 = stringCopy;
+  obj = [stringCopy actions];
   v25 = [obj countByEnumeratingWithState:&v43 objects:v50 count:16];
   if (v25)
   {
@@ -1017,13 +1017,13 @@ void __95__WBSScribbleController_getTapToRadarURLForScribbleIssueForWebView_cate
         }
 
         v26 = v5;
-        v6 = [*(*(&v43 + 1) + 8 * v5) allSelectorsIncludingShadowHosts];
+        allSelectorsIncludingShadowHosts = [*(*(&v43 + 1) + 8 * v5) allSelectorsIncludingShadowHosts];
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
         v42 = 0u;
-        v27 = v6;
-        v29 = [v6 countByEnumeratingWithState:&v39 objects:v49 count:16];
+        v27 = allSelectorsIncludingShadowHosts;
+        v29 = [allSelectorsIncludingShadowHosts countByEnumeratingWithState:&v39 objects:v49 count:16];
         if (v29)
         {
           v28 = *v40;
@@ -1078,8 +1078,8 @@ void __95__WBSScribbleController_getTapToRadarURLForScribbleIssueForWebView_cate
                             objc_enumerationMutation(v15);
                           }
 
-                          [v4 appendString:*(*(&v31 + 1) + 8 * j)];
-                          [v4 appendString:@"\n"];
+                          [string appendString:*(*(&v31 + 1) + 8 * j)];
+                          [string appendString:@"\n"];
                         }
 
                         v17 = [v15 countByEnumeratingWithState:&v31 objects:v47 count:16];
@@ -1115,9 +1115,9 @@ void __95__WBSScribbleController_getTapToRadarURLForScribbleIssueForWebView_cate
     while (v25);
   }
 
-  if ([v4 length])
+  if ([string length])
   {
-    v20 = v4;
+    v20 = string;
   }
 
   else
@@ -1128,12 +1128,12 @@ void __95__WBSScribbleController_getTapToRadarURLForScribbleIssueForWebView_cate
   return v20;
 }
 
-- (void)updateSelectionToPoint:(CGPoint)a3
+- (void)updateSelectionToPoint:(CGPoint)point
 {
   if (self->_elementSelectionEnabled)
   {
-    y = a3.y;
-    x = a3.x;
+    y = point.y;
+    x = point.x;
     objc_initWeak(&location, self);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -1183,18 +1183,18 @@ void __48__WBSScribbleController_updateSelectionToPoint___block_invoke(uint64_t 
   WeakRetained = objc_loadWeakRetained(&self->_webView);
   if (WeakRetained)
   {
-    v4 = [(WBSScribbleQuirks *)self->_quirksForCurrentSession shouldDisableHiddenActiveElement];
-    v5 = [v4 BOOLValue];
+    shouldDisableHiddenActiveElement = [(WBSScribbleQuirks *)self->_quirksForCurrentSession shouldDisableHiddenActiveElement];
+    bOOLValue = [shouldDisableHiddenActiveElement BOOLValue];
 
-    if (v5)
+    if (bOOLValue)
     {
       v6 = objc_opt_new();
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v7 = [(WBSUserDefinedContentBlocker *)self->_contentBlockerForCurrentHost actions];
-      v8 = [v7 countByEnumeratingWithState:&v28 objects:v35 count:16];
+      actions = [(WBSUserDefinedContentBlocker *)self->_contentBlockerForCurrentHost actions];
+      v8 = [actions countByEnumeratingWithState:&v28 objects:v35 count:16];
       if (v8)
       {
         v9 = v8;
@@ -1206,18 +1206,18 @@ void __48__WBSScribbleController_updateSelectionToPoint___block_invoke(uint64_t 
           {
             if (*v29 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(actions);
             }
 
-            v12 = [*(*(&v28 + 1) + 8 * v11) allSelectorsIncludingShadowHosts];
-            v13 = selectorsForJavaScript(v12);
+            allSelectorsIncludingShadowHosts = [*(*(&v28 + 1) + 8 * v11) allSelectorsIncludingShadowHosts];
+            v13 = selectorsForJavaScript(allSelectorsIncludingShadowHosts);
             [v6 addObjectsFromArray:v13];
 
             ++v11;
           }
 
           while (v9 != v11);
-          v9 = [v7 countByEnumeratingWithState:&v28 objects:v35 count:16];
+          v9 = [actions countByEnumeratingWithState:&v28 objects:v35 count:16];
         }
 
         while (v9);
@@ -1243,8 +1243,8 @@ void __48__WBSScribbleController_updateSelectionToPoint___block_invoke(uint64_t 
               objc_enumerationMutation(v14);
             }
 
-            v19 = [*(*(&v24 + 1) + 8 * v18) allSelectorsIncludingShadowHosts];
-            v20 = selectorsForJavaScript(v19);
+            allSelectorsIncludingShadowHosts2 = [*(*(&v24 + 1) + 8 * v18) allSelectorsIncludingShadowHosts];
+            v20 = selectorsForJavaScript(allSelectorsIncludingShadowHosts2);
             [v6 addObjectsFromArray:v20];
 
             ++v18;
@@ -1263,8 +1263,8 @@ void __48__WBSScribbleController_updateSelectionToPoint___block_invoke(uint64_t 
         v32 = @"selectors";
         v33 = v21;
         v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
-        v23 = [MEMORY[0x1E6985318] defaultClientWorld];
-        [WeakRetained callAsyncJavaScript:@"return (selectors => {    const activeElement = window?.document?.activeElement;    if (!activeElement || activeElement === document.body || activeElement.disabled)        return false;    for (const element of [...document.querySelectorAll(selectors)]) {        if (element.contains(activeElement)) {            activeElement.disabled = true;            activeElement.setAttribute('aria-disabled' arguments:'true');            return true;        }    }    return false;})(selectors)" inFrame:v22 inContentWorld:0 completionHandler:{v23, &__block_literal_global_88}];
+        defaultClientWorld = [MEMORY[0x1E6985318] defaultClientWorld];
+        [WeakRetained callAsyncJavaScript:@"return (selectors => {    const activeElement = window?.document?.activeElement;    if (!activeElement || activeElement === document.body || activeElement.disabled)        return false;    for (const element of [...document.querySelectorAll(selectors)]) {        if (element.contains(activeElement)) {            activeElement.disabled = true;            activeElement.setAttribute('aria-disabled' arguments:'true');            return true;        }    }    return false;})(selectors)" inFrame:v22 inContentWorld:0 completionHandler:{defaultClientWorld, &__block_literal_global_88}];
       }
     }
   }
@@ -1298,13 +1298,13 @@ void __60__WBSScribbleController__disableHiddenActiveElementIfNeeded__block_invo
   {
     WeakRetained = objc_loadWeakRetained(&self->_webView);
     v4 = [WeakRetained URL];
-    v5 = [v4 host];
+    host = [v4 host];
 
-    if (v5)
+    if (host)
     {
       if ([(WBSScribbleController *)self _hasAnyHiddenElements])
       {
-        v6 = [MEMORY[0x1E6985318] safari_worldForScribbleScript];
+        safari_worldForScribbleScript = [MEMORY[0x1E6985318] safari_worldForScribbleScript];
         self->_isUpdatingShouldMakePageScrollableAndInteractable = 1;
         objc_initWeak(&location, self);
         v7[0] = MEMORY[0x1E69E9820];
@@ -1312,7 +1312,7 @@ void __60__WBSScribbleController__disableHiddenActiveElementIfNeeded__block_invo
         v7[2] = __67__WBSScribbleController__makePageScrollableAndInteractableIfNeeded__block_invoke;
         v7[3] = &unk_1E8285BE8;
         objc_copyWeak(&v8, &location);
-        [WeakRetained evaluateJavaScript:@"(() => {    if (document?.body) {        const bodyStyle = getComputedStyle(document.body);        if (bodyStyle.overflow === 'hidden' || bodyStyle.pointerEvents === 'none')            return true;        const thresholdForScrollableBodyContent = 2 * visualViewport.height * visualViewport.scale;        if (bodyStyle.position === 'fixed' && document.body.getBoundingClientRect().height > thresholdForScrollableBodyContent)            return true;    }    if (document?.documentElement) {        const documentElementStyle = getComputedStyle(document.documentElement);        if (documentElementStyle.overflow === 'hidden' || documentElementStyle.pointerEvents === 'none')            return true;    }    return false;})();" inFrame:0 inContentWorld:v6 completionHandler:v7];
+        [WeakRetained evaluateJavaScript:@"(() => {    if (document?.body) {        const bodyStyle = getComputedStyle(document.body);        if (bodyStyle.overflow === 'hidden' || bodyStyle.pointerEvents === 'none')            return true;        const thresholdForScrollableBodyContent = 2 * visualViewport.height * visualViewport.scale;        if (bodyStyle.position === 'fixed' && document.body.getBoundingClientRect().height > thresholdForScrollableBodyContent)            return true;    }    if (document?.documentElement) {        const documentElementStyle = getComputedStyle(document.documentElement);        if (documentElementStyle.overflow === 'hidden' || documentElementStyle.pointerEvents === 'none')            return true;    }    return false;})();" inFrame:0 inContentWorld:safari_worldForScribbleScript completionHandler:v7];
         objc_destroyWeak(&v8);
         objc_destroyWeak(&location);
       }
@@ -1354,13 +1354,13 @@ void __67__WBSScribbleController__makePageScrollableAndInteractableIfNeeded__blo
 - (void)hideSelectedElement
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a1;
-  v4 = [a2 targetedElements];
-  v5 = [v4 firstObject];
-  v6 = [v5 debugDescription];
+  selfCopy = self;
+  targetedElements = [a2 targetedElements];
+  firstObject = [targetedElements firstObject];
+  v6 = [firstObject debugDescription];
   v7 = 138477827;
   v8 = v6;
-  _os_log_debug_impl(&dword_1C6968000, v3, OS_LOG_TYPE_DEBUG, "Hiding item: %{private}@", &v7, 0xCu);
+  _os_log_debug_impl(&dword_1C6968000, selfCopy, OS_LOG_TYPE_DEBUG, "Hiding item: %{private}@", &v7, 0xCu);
 }
 
 void __44__WBSScribbleController_hideSelectedElement__block_invoke(uint64_t a1, void *a2)
@@ -1392,16 +1392,16 @@ void __44__WBSScribbleController_hideSelectedElement__block_invoke(uint64_t a1, 
   {
     objc_initWeak(&location, self);
     [(WBSScribbleController *)self _stopValidationTimer];
-    v3 = [(NSMutableArray *)self->_scribbleElementsFromCurrentSession lastObject];
+    lastObject = [(NSMutableArray *)self->_scribbleElementsFromCurrentSession lastObject];
     [(NSMutableArray *)self->_scribbleElementsFromCurrentSession removeLastObject];
-    [(NSMutableArray *)self->_scribbleElementsForGlobalActionsFromCurrentSession removeObject:v3];
-    v4 = [v3 targetedElements];
+    [(NSMutableArray *)self->_scribbleElementsForGlobalActionsFromCurrentSession removeObject:lastObject];
+    targetedElements = [lastObject targetedElements];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __39__WBSScribbleController_undoLastAction__block_invoke;
     v5[3] = &unk_1E8285C58;
     objc_copyWeak(&v6, &location);
-    [(WBSScribbleController *)self _resetPaintAvoidanceForElements:v4 completion:v5];
+    [(WBSScribbleController *)self _resetPaintAvoidanceForElements:targetedElements completion:v5];
     objc_destroyWeak(&v6);
 
     objc_destroyWeak(&location);
@@ -1420,17 +1420,17 @@ void __39__WBSScribbleController_undoLastAction__block_invoke(uint64_t a1)
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if ([WeakRetained isPrivateBrowsing])
   {
-    v3 = [MEMORY[0x1E6985350] safari_privateBrowsingUserContentController];
-    v6[0] = v3;
-    v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
+    safari_privateBrowsingUserContentController = [MEMORY[0x1E6985350] safari_privateBrowsingUserContentController];
+    v6[0] = safari_privateBrowsingUserContentController;
+    normalBrowsingUserContentControllers = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   }
 
   else
   {
-    v4 = [WeakRetained normalBrowsingUserContentControllers];
+    normalBrowsingUserContentControllers = [WeakRetained normalBrowsingUserContentControllers];
   }
 
-  return v4;
+  return normalBrowsingUserContentControllers;
 }
 
 - (void)_updateUserStyleSheet
@@ -1442,8 +1442,8 @@ void __39__WBSScribbleController_undoLastAction__block_invoke(uint64_t a1)
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v3 = [(WBSScribbleController *)self _currentUserContentControllers];
-    v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    _currentUserContentControllers = [(WBSScribbleController *)self _currentUserContentControllers];
+    v4 = [_currentUserContentControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v4)
     {
       v5 = v4;
@@ -1455,7 +1455,7 @@ void __39__WBSScribbleController_undoLastAction__block_invoke(uint64_t a1)
         {
           if (*v11 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(_currentUserContentControllers);
           }
 
           v8 = *(*(&v10 + 1) + 8 * v7);
@@ -1466,7 +1466,7 @@ void __39__WBSScribbleController_undoLastAction__block_invoke(uint64_t a1)
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v5 = [_currentUserContentControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v5);
@@ -1479,9 +1479,9 @@ void __39__WBSScribbleController_undoLastAction__block_invoke(uint64_t a1)
   if ([MEMORY[0x1E69C8880] isScribbleEnabled])
   {
     WeakRetained = objc_loadWeakRetained(&self->_webView);
-    v4 = [WeakRetained _committedURL];
-    v5 = [v4 host];
-    v6 = [v5 length];
+    _committedURL = [WeakRetained _committedURL];
+    host = [_committedURL host];
+    v6 = [host length];
 
     if (!v6)
     {
@@ -1491,10 +1491,10 @@ LABEL_12:
       return v8;
     }
 
-    v7 = [WeakRetained _MIMEType];
-    if ([v7 length])
+    _MIMEType = [WeakRetained _MIMEType];
+    if ([_MIMEType length])
     {
-      if ([v7 hasPrefix:@"text/"])
+      if ([_MIMEType hasPrefix:@"text/"])
       {
         LOBYTE(v8) = 1;
 LABEL_11:
@@ -1502,9 +1502,9 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      if (([v7 isEqualToString:@"application/pdf"] & 1) == 0 && (objc_msgSend(v7, "hasPrefix:", @"image/") & 1) == 0)
+      if (([_MIMEType isEqualToString:@"application/pdf"] & 1) == 0 && (objc_msgSend(_MIMEType, "hasPrefix:", @"image/") & 1) == 0)
       {
-        v8 = [v7 hasPrefix:@"audio/"] ^ 1;
+        v8 = [_MIMEType hasPrefix:@"audio/"] ^ 1;
         goto LABEL_11;
       }
     }
@@ -1517,25 +1517,25 @@ LABEL_11:
   return v8;
 }
 
-- (void)startScribblingWithCompletionHandler:(id)a3
+- (void)startScribblingWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_webView);
   v6 = [WeakRetained URL];
 
   self->_startedScribblingWithHiddenItems = [(WBSScribbleController *)self numberOfAllHiddenElements]!= 0;
   [(WBSScribbleController *)self _updateQuirksIfNeeded];
-  v7 = [v6 host];
+  host = [v6 host];
   v8 = objc_loadWeakRetained(&self->_delegate);
-  v9 = [v8 userDefinedContentBlockerManager];
+  userDefinedContentBlockerManager = [v8 userDefinedContentBlockerManager];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __62__WBSScribbleController_startScribblingWithCompletionHandler___block_invoke;
   v11[3] = &unk_1E8285C80;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
-  [v9 contentBlockerForHost:v7 createIfNeeded:1 completionHandler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [userDefinedContentBlockerManager contentBlockerForHost:host createIfNeeded:1 completionHandler:v11];
 }
 
 void __62__WBSScribbleController_startScribblingWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1564,9 +1564,9 @@ void __62__WBSScribbleController_startScribblingWithCompletionHandler___block_in
   }
 }
 
-- (void)endScribblingAndSaveChanges:(BOOL)a3
+- (void)endScribblingAndSaveChanges:(BOOL)changes
 {
-  v3 = a3;
+  changesCopy = changes;
   v39 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_webView);
   v6 = WeakRetained;
@@ -1586,28 +1586,28 @@ void __62__WBSScribbleController_startScribblingWithCompletionHandler___block_in
   [v8 setHandler:v37];
   v26 = [(NSMutableArray *)self->_scribbleElementsFromCurrentSession safari_mapObjectsUsingBlock:&__block_literal_global_117_0];
   v9 = objc_loadWeakRetained(&self->_delegate);
-  v10 = [v9 userDefinedContentBlockerManager];
-  v11 = [MEMORY[0x1E69C8810] sharedLogger];
-  v12 = v11;
-  if (v3)
+  userDefinedContentBlockerManager = [v9 userDefinedContentBlockerManager];
+  mEMORY[0x1E69C8810] = [MEMORY[0x1E69C8810] sharedLogger];
+  v12 = mEMORY[0x1E69C8810];
+  if (changesCopy)
   {
-    [v11 didFinishScribble:{-[WBSScribbleController numberOfChangesFromCurrentSession](self, "numberOfChangesFromCurrentSession")}];
+    [mEMORY[0x1E69C8810] didFinishScribble:{-[WBSScribbleController numberOfChangesFromCurrentSession](self, "numberOfChangesFromCurrentSession")}];
 
     if (self->_startedScribblingWithHiddenItems)
     {
-      v13 = [MEMORY[0x1E69C8810] sharedLogger];
-      [v13 didHideMoreItems];
+      mEMORY[0x1E69C8810]2 = [MEMORY[0x1E69C8810] sharedLogger];
+      [mEMORY[0x1E69C8810]2 didHideMoreItems];
     }
 
     objc_initWeak(&location, self);
-    [v10 addActions:v26 forContentBlocker:self->_contentBlockerForCurrentHost];
-    v14 = [(WBSUserDefinedContentBlocker *)self->_contentBlockerForCurrentHost host];
+    [userDefinedContentBlockerManager addActions:v26 forContentBlocker:self->_contentBlockerForCurrentHost];
+    host = [(WBSUserDefinedContentBlocker *)self->_contentBlockerForCurrentHost host];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __53__WBSScribbleController_endScribblingAndSaveChanges___block_invoke_3;
     v34[3] = &unk_1E8285CC8;
     objc_copyWeak(&v35, &location);
-    [v10 contentBlockerForHost:v14 createIfNeeded:0 completionHandler:v34];
+    [userDefinedContentBlockerManager contentBlockerForHost:host createIfNeeded:0 completionHandler:v34];
 
     if ([(NSMutableArray *)self->_scribbleElementsForGlobalActionsFromCurrentSession count])
     {
@@ -1616,7 +1616,7 @@ void __62__WBSScribbleController_startScribblingWithCompletionHandler___block_in
       v31[1] = 3221225472;
       v31[2] = __53__WBSScribbleController_endScribblingAndSaveChanges___block_invoke_5;
       v31[3] = &unk_1E8285CF0;
-      v32 = v10;
+      v32 = userDefinedContentBlockerManager;
       v16 = v15;
       v33 = v16;
       [v32 getGlobalContentBlockerWithCompletionHandler:v31];
@@ -1628,7 +1628,7 @@ void __62__WBSScribbleController_startScribblingWithCompletionHandler___block_in
 
   else
   {
-    [v11 didCancelScribble];
+    [mEMORY[0x1E69C8810] didCancelScribble];
 
     v17 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSMutableArray count](self->_scribbleElementsFromCurrentSession, "count")}];
     v29 = 0u;
@@ -1649,8 +1649,8 @@ void __62__WBSScribbleController_startScribblingWithCompletionHandler___block_in
             objc_enumerationMutation(v18);
           }
 
-          v22 = [*(*(&v27 + 1) + 8 * i) targetedElements];
-          [v17 addObjectsFromArray:v22];
+          targetedElements = [*(*(&v27 + 1) + 8 * i) targetedElements];
+          [v17 addObjectsFromArray:targetedElements];
         }
 
         v19 = [(NSMutableArray *)v18 countByEnumeratingWithState:&v27 objects:v38 count:16];
@@ -1666,8 +1666,8 @@ void __62__WBSScribbleController_startScribblingWithCompletionHandler___block_in
 
     [(NSMutableArray *)self->_scribbleElementsForGlobalActionsFromCurrentSession removeAllObjects];
     [(NSMutableArray *)self->_scribbleElementsFromCurrentSession removeAllObjects];
-    v23 = [(WBSUserDefinedContentBlocker *)self->_contentBlockerForCurrentHost actions];
-    v24 = [v23 safari_filterObjectsUsingBlock:&__block_literal_global_125];
+    actions = [(WBSUserDefinedContentBlocker *)self->_contentBlockerForCurrentHost actions];
+    v24 = [actions safari_filterObjectsUsingBlock:&__block_literal_global_125];
     [(WBSUserDefinedContentBlocker *)self->_contentBlockerForCurrentHost setActions:v24];
   }
 }
@@ -1707,18 +1707,18 @@ void __53__WBSScribbleController_endScribblingAndSaveChanges___block_invoke_6(ui
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (webViewFrameObservationContext == a6)
+  if (webViewFrameObservationContext == context)
   {
     v11 = *MEMORY[0x1E696A4F0];
-    v12 = a5;
-    v13 = [v12 objectForKeyedSubscript:v11];
+    changeCopy = change;
+    v13 = [changeCopy objectForKeyedSubscript:v11];
     [v13 CGRectValue];
     v15 = v14;
     v17 = v16;
 
-    v18 = [v12 objectForKeyedSubscript:*MEMORY[0x1E696A500]];
+    v18 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A500]];
 
     [v18 CGRectValue];
     v20 = v19;
@@ -1729,8 +1729,8 @@ void __53__WBSScribbleController_endScribblingAndSaveChanges___block_invoke_6(ui
       selectedScribbleElement = self->_selectedScribbleElement;
       self->_selectedScribbleElement = 0;
 
-      v25 = [(WBSScribbleController *)self delegate];
-      [v25 scribbleController:self didUpdateSelectedElement:0 withError:0];
+      delegate = [(WBSScribbleController *)self delegate];
+      [delegate scribbleController:self didUpdateSelectedElement:0 withError:0];
     }
   }
 
@@ -1738,8 +1738,8 @@ void __53__WBSScribbleController_endScribblingAndSaveChanges___block_invoke_6(ui
   {
     v26.receiver = self;
     v26.super_class = WBSScribbleController;
-    v10 = a5;
-    [(WBSScribbleController *)&v26 observeValueForKeyPath:a3 ofObject:a4 change:v10 context:a6];
+    changeCopy2 = change;
+    [(WBSScribbleController *)&v26 observeValueForKeyPath:path ofObject:object change:changeCopy2 context:context];
   }
 }
 

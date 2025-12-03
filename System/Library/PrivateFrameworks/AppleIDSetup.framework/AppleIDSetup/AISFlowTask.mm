@@ -3,8 +3,8 @@
 - (_TtC12AppleIDSetup11AISFlowTask)init;
 - (void)complete;
 - (void)dealloc;
-- (void)setCompleted:(BOOL)a3;
-- (void)waitUntilLoadedWithCompletionHandler:(id)a3;
+- (void)setCompleted:(BOOL)completed;
+- (void)waitUntilLoadedWithCompletionHandler:(id)handler;
 @end
 
 @implementation AISFlowTask
@@ -16,26 +16,26 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setCompleted:(BOOL)a3
+- (void)setCompleted:(BOOL)completed
 {
   v5 = OBJC_IVAR____TtC12AppleIDSetup11AISFlowTask_completed;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = completed;
 }
 
 - (void)complete
 {
-  v2 = self;
+  selfCopy = self;
   sub_240651654();
 }
 
-- (void)waitUntilLoadedWithCompletionHandler:(id)a3
+- (void)waitUntilLoadedWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27E4B9BF0, &qword_240762710);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -51,7 +51,7 @@
   v13[3] = 0;
   v13[4] = &unk_240767F10;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_2406FC468(0, 0, v8, &unk_24076FBC0, v13);
 }
 
@@ -59,14 +59,14 @@
 {
   if (*(&self->super.isa + OBJC_IVAR____TtC12AppleIDSetup11AISFlowTask_cachedTask))
   {
-    v3 = self;
+    selfCopy = self;
 
     sub_24075A4A4();
   }
 
   else
   {
-    v4 = self;
+    selfCopy2 = self;
   }
 
   v5.receiver = self;

@@ -1,26 +1,26 @@
 @interface FCCKRecordSchema
-+ (FCCKRecordSchema)recordWithType:(void *)a3 fields:;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isFieldKnown:(uint64_t)a1;
++ (FCCKRecordSchema)recordWithType:(void *)type fields:;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isFieldKnown:(uint64_t)known;
 - (FCCKRecordSchema)init;
 - (id)allEncryptedFieldNames;
 - (id)allUnencryptedFieldNames;
-- (id)schemaForField:(id *)a1;
-- (uint64_t)isFieldEncrypted:(uint64_t)a1;
+- (id)schemaForField:(id *)field;
+- (uint64_t)isFieldEncrypted:(uint64_t)encrypted;
 - (unint64_t)hash;
 @end
 
 @implementation FCCKRecordSchema
 
-+ (FCCKRecordSchema)recordWithType:(void *)a3 fields:
++ (FCCKRecordSchema)recordWithType:(void *)type fields:
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v5 = a2;
   objc_opt_self();
   v6 = [FCCKRecordSchema alloc];
   v7 = v5;
-  v8 = v4;
+  v8 = typeCopy;
   if (v6)
   {
     v26.receiver = v6;
@@ -30,7 +30,7 @@
     if (v9)
     {
       objc_storeStrong(&v9->_recordType, a2);
-      v10 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
@@ -62,7 +62,7 @@
               v17 = 0;
             }
 
-            [(NSDictionary *)v10 setObject:v16 forKeyedSubscript:v17, v22];
+            [(NSDictionary *)dictionary setObject:v16 forKeyedSubscript:v17, v22];
             ++v15;
           }
 
@@ -75,7 +75,7 @@
       }
 
       fieldSchemasByName = v6->_fieldSchemasByName;
-      v6->_fieldSchemasByName = v10;
+      v6->_fieldSchemasByName = dictionary;
     }
   }
 
@@ -110,15 +110,15 @@
   objc_exception_throw(v6);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -189,10 +189,10 @@
 
 - (id)allEncryptedFieldNames
 {
-  if (a1)
+  if (self)
   {
-    v1 = [*(a1 + 8) allValues];
-    v2 = [v1 fc_arrayByTransformingWithBlock:&__block_literal_global_40_0];
+    allValues = [*(self + 8) allValues];
+    v2 = [allValues fc_arrayByTransformingWithBlock:&__block_literal_global_40_0];
   }
 
   else
@@ -222,10 +222,10 @@ id __42__FCCKRecordSchema_allEncryptedFieldNames__block_invoke(uint64_t a1, void
 
 - (id)allUnencryptedFieldNames
 {
-  if (a1)
+  if (self)
   {
-    v1 = [*(a1 + 8) allValues];
-    v2 = [v1 fc_arrayByTransformingWithBlock:&__block_literal_global_42_0];
+    allValues = [*(self + 8) allValues];
+    v2 = [allValues fc_arrayByTransformingWithBlock:&__block_literal_global_42_0];
   }
 
   else
@@ -262,35 +262,35 @@ LABEL_6:
   return v4;
 }
 
-- (id)schemaForField:(id *)a1
+- (id)schemaForField:(id *)field
 {
-  if (a1)
+  if (field)
   {
-    a1 = [a1[1] objectForKeyedSubscript:a2];
+    field = [field[1] objectForKeyedSubscript:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return field;
 }
 
-- (BOOL)isFieldKnown:(uint64_t)a1
+- (BOOL)isFieldKnown:(uint64_t)known
 {
-  if (!a1)
+  if (!known)
   {
     return 0;
   }
 
-  v2 = [*(a1 + 8) objectForKeyedSubscript:a2];
+  v2 = [*(known + 8) objectForKeyedSubscript:a2];
   v3 = v2 != 0;
 
   return v3;
 }
 
-- (uint64_t)isFieldEncrypted:(uint64_t)a1
+- (uint64_t)isFieldEncrypted:(uint64_t)encrypted
 {
-  if (a1)
+  if (encrypted)
   {
-    v2 = [*(a1 + 8) objectForKeyedSubscript:a2];
+    v2 = [*(encrypted + 8) objectForKeyedSubscript:a2];
     if (v2)
     {
       v3 = v2[8];

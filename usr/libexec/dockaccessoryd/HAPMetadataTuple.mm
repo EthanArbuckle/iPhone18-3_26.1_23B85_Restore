@@ -1,18 +1,18 @@
 @interface HAPMetadataTuple
-- (BOOL)isEqual:(id)a3;
-- (HAPMetadataTuple)initWithCharacteristicType:(id)a3 serviceType:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HAPMetadataTuple)initWithCharacteristicType:(id)type serviceType:(id)serviceType;
 - (unint64_t)hash;
 @end
 
 @implementation HAPMetadataTuple
 
-- (HAPMetadataTuple)initWithCharacteristicType:(id)a3 serviceType:(id)a4
+- (HAPMetadataTuple)initWithCharacteristicType:(id)type serviceType:(id)serviceType
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  v10 = 0;
-  if (v7 && v8)
+  typeCopy = type;
+  serviceTypeCopy = serviceType;
+  v9 = serviceTypeCopy;
+  selfCopy = 0;
+  if (typeCopy && serviceTypeCopy)
   {
     v16.receiver = self;
     v16.super_class = HAPMetadataTuple;
@@ -20,27 +20,27 @@
     v12 = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_characteristicType, a3);
-      objc_storeStrong(&v12->_serviceType, a4);
-      v13 = [NSString stringWithFormat:@"%@+%@", v9, v7];
+      objc_storeStrong(&v11->_characteristicType, type);
+      objc_storeStrong(&v12->_serviceType, serviceType);
+      typeCopy = [NSString stringWithFormat:@"%@+%@", v9, typeCopy];
       index = v12->_index;
-      v12->_index = v13;
+      v12->_index = typeCopy;
     }
 
     self = v12;
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -52,9 +52,9 @@
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 index];
-    v9 = [(HAPMetadataTuple *)self index];
-    v10 = [v8 isEqual:v9];
+    index = [v6 index];
+    index2 = [(HAPMetadataTuple *)self index];
+    v10 = [index isEqual:index2];
   }
 
   else
@@ -67,8 +67,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HAPMetadataTuple *)self index];
-  v3 = [v2 hash];
+  index = [(HAPMetadataTuple *)self index];
+  v3 = [index hash];
 
   return v3;
 }

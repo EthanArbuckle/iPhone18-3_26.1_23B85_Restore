@@ -1,20 +1,20 @@
 @interface RTDTWResult
-- (RTDTWResult)initWithDistance:(double)a3 cellIndices:(id)a4;
+- (RTDTWResult)initWithDistance:(double)distance cellIndices:(id)indices;
 @end
 
 @implementation RTDTWResult
 
-- (RTDTWResult)initWithDistance:(double)a3 cellIndices:(id)a4
+- (RTDTWResult)initWithDistance:(double)distance cellIndices:(id)indices
 {
-  v6 = a4;
+  indicesCopy = indices;
   v10.receiver = self;
   v10.super_class = RTDTWResult;
   v7 = [(RTDTWResult *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(RTDTWResult *)v7 setDistance:a3];
-    [(RTDTWResult *)v8 setCellIndices:v6];
+    [(RTDTWResult *)v7 setDistance:distance];
+    [(RTDTWResult *)v8 setCellIndices:indicesCopy];
   }
 
   return v8;

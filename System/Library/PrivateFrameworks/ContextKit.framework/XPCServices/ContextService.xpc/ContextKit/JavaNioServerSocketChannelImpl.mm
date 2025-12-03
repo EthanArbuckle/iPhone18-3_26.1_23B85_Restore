@@ -2,12 +2,12 @@
 - (id)accept;
 - (id)getFD;
 - (id)getLocalAddress;
-- (id)getOptionWithJavaNetSocketOption:(id)a3;
-- (id)setOptionWithJavaNetSocketOption:(id)a3 withId:(id)a4;
+- (id)getOptionWithJavaNetSocketOption:(id)option;
+- (id)setOptionWithJavaNetSocketOption:(id)option withId:(id)id;
 - (id)supportedOptions;
 - (void)dealloc;
 - (void)implCloseSelectableChannel;
-- (void)implConfigureBlockingWithBoolean:(BOOL)a3;
+- (void)implConfigureBlockingWithBoolean:(BOOL)boolean;
 @end
 
 @implementation JavaNioServerSocketChannelImpl
@@ -29,7 +29,7 @@
   return [v3 getLocalSocketAddress];
 }
 
-- (id)getOptionWithJavaNetSocketOption:(id)a3
+- (id)getOptionWithJavaNetSocketOption:(id)option
 {
   if ((atomic_load_explicit(JavaNetStandardSocketOptions__initialized, memory_order_acquire) & 1) == 0)
   {
@@ -38,17 +38,17 @@
 
   v5 = JavaNetStandardSocketOptions_SERVER_SOCKET_OPTIONS_;
 
-  return JavaNioNioUtils_getSocketOptionWithJavaNioFileDescriptorChannel_withJavaUtilSet_withJavaNetSocketOption_(self, v5, a3);
+  return JavaNioNioUtils_getSocketOptionWithJavaNioFileDescriptorChannel_withJavaUtilSet_withJavaNetSocketOption_(self, v5, option);
 }
 
-- (id)setOptionWithJavaNetSocketOption:(id)a3 withId:(id)a4
+- (id)setOptionWithJavaNetSocketOption:(id)option withId:(id)id
 {
   if ((atomic_load_explicit(JavaNetStandardSocketOptions__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001661A8();
   }
 
-  JavaNioNioUtils_setSocketOptionWithJavaNioFileDescriptorChannel_withJavaUtilSet_withJavaNetSocketOption_withId_(self, JavaNetStandardSocketOptions_SERVER_SOCKET_OPTIONS_, a3, a4);
+  JavaNioNioUtils_setSocketOptionWithJavaNioFileDescriptorChannel_withJavaUtilSet_withJavaNetSocketOption_withId_(self, JavaNetStandardSocketOptions_SERVER_SOCKET_OPTIONS_, option, id);
   return self;
 }
 
@@ -101,7 +101,7 @@ LABEL_10:
   }
 }
 
-- (void)implConfigureBlockingWithBoolean:(BOOL)a3
+- (void)implConfigureBlockingWithBoolean:(BOOL)boolean
 {
   v3 = *(&self->super.super.blockingLock_ + 7);
   if (!v3)
@@ -109,10 +109,10 @@ LABEL_10:
     JreThrowNullPointerException();
   }
 
-  v4 = a3;
+  booleanCopy = boolean;
   v5 = [v3 getFD$];
 
-  LibcoreIoIoUtils_setBlockingWithJavaIoFileDescriptor_withBoolean_(v5, v4);
+  LibcoreIoIoUtils_setBlockingWithJavaIoFileDescriptor_withBoolean_(v5, booleanCopy);
 }
 
 - (void)implCloseSelectableChannel

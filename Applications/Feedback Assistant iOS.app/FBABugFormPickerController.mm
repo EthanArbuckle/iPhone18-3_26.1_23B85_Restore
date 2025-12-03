@@ -1,44 +1,44 @@
 @interface FBABugFormPickerController
-- (_TtC18Feedback_Assistant26FBABugFormPickerController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC18Feedback_Assistant26FBABugFormPickerController)initWithStubsPredicate:(id)a3;
+- (_TtC18Feedback_Assistant26FBABugFormPickerController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC18Feedback_Assistant26FBABugFormPickerController)initWithStubsPredicate:(id)predicate;
 - (_TtP18Feedback_Assistant24FBABugFormPickerDelegate_)pickerDelegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)dismissPicker;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)setCurrentSelection:(id)a3;
-- (void)setTeam:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)setCurrentSelection:(id)selection;
+- (void)setTeam:(id)team;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation FBABugFormPickerController
 
-- (_TtC18Feedback_Assistant26FBABugFormPickerController)initWithStubsPredicate:(id)a3
+- (_TtC18Feedback_Assistant26FBABugFormPickerController)initWithStubsPredicate:(id)predicate
 {
-  v3 = a3;
-  v4 = sub_100080934(v3);
+  predicateCopy = predicate;
+  v4 = sub_100080934(predicateCopy);
 
   return v4;
 }
 
-- (void)setCurrentSelection:(id)a3
+- (void)setCurrentSelection:(id)selection
 {
   v4 = *(self + OBJC_IVAR____TtC18Feedback_Assistant26FBABugFormPickerController_currentSelection);
-  *(self + OBJC_IVAR____TtC18Feedback_Assistant26FBABugFormPickerController_currentSelection) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC18Feedback_Assistant26FBABugFormPickerController_currentSelection) = selection;
+  selectionCopy = selection;
 }
 
-- (void)setTeam:(id)a3
+- (void)setTeam:(id)team
 {
   v4 = *(self + OBJC_IVAR____TtC18Feedback_Assistant26FBABugFormPickerController_team);
-  *(self + OBJC_IVAR____TtC18Feedback_Assistant26FBABugFormPickerController_team) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC18Feedback_Assistant26FBABugFormPickerController_team) = team;
+  teamCopy = team;
 }
 
 - (_TtP18Feedback_Assistant24FBABugFormPickerDelegate_)pickerDelegate
@@ -50,14 +50,14 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10007F048();
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = a3;
-  v6 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_100080A04();
   v8 = v7;
 
@@ -74,24 +74,24 @@
   return v9;
 }
 
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_100080AF8(v9, a5);
+  viewCopy = view;
+  headerViewCopy = headerView;
+  selfCopy = self;
+  sub_100080AF8(headerViewCopy, section);
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_10007F450(v6, a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_10007F450(viewCopy, section);
 
   return v8;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v4 = *(self + OBJC_IVAR____TtC18Feedback_Assistant26FBABugFormPickerController_formStubs);
   if (v4)
@@ -120,7 +120,7 @@
   return self;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
@@ -128,9 +128,9 @@
   __chkstk_darwin(v6);
   v10 = &v16 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
-  sub_10007F5D0(v11);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10007F5D0(viewCopy);
   v14 = v13;
 
   (*(v7 + 8))(v10, v6);
@@ -138,7 +138,7 @@
   return v14;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
@@ -146,32 +146,32 @@
   __chkstk_darwin(v6);
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_100080C04();
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10007FA20(a3);
+  selfCopy = self;
+  sub_10007FA20(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_10007FE28(a3);
+  selfCopy = self;
+  sub_10007FE28(disappear);
 }
 
 - (void)dismissPicker
 {
-  v2 = self;
+  selfCopy = self;
   sub_10007FF8C();
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
@@ -186,7 +186,7 @@
   }
 }
 
-- (_TtC18Feedback_Assistant26FBABugFormPickerController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18Feedback_Assistant26FBABugFormPickerController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

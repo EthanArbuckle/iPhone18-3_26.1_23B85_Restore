@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (BOOL)_isCurrentMediaLive;
 - (BOOL)_isCurrentMediaSportingEvent;
-- (BOOL)_isInfoHUDButtonPresent:(id)a3;
+- (BOOL)_isInfoHUDButtonPresent:(id)present;
 - (BOOL)_isInsightTabAvailable;
 - (BOOL)isCurrentMediaMovie;
 - (BOOL)isCurrentMediaTVShow;
@@ -15,31 +15,31 @@
 - (UIImage)playImageForFromBeginningAction;
 - (VUIPlaybackTabManager)init;
 - (VUIPlaybackTabManagerDelegate)delegate;
-- (id)_createHudContentViewControllerWithTabId:(id)a3 title:(id)a4 excludingCanonicals:(id)a5 isMultiview:(BOOL)a6 locale:(id)a7 playsFromStart:(BOOL)a8;
-- (id)_createPrefetchedDataForPlayerHUDWithTabId:(id)a3 title:(id)a4 excludingCanonicals:(id)a5 isMultiview:(BOOL)a6 locale:(id)a7 playsFromStart:(BOOL)a8;
-- (id)_documentRefContextDataForCurrentMediaTypeWithCanonicalID:(id)a3 showCanonicalID:(id)a4;
-- (id)_getPageIDForTabName:(id)a3;
+- (id)_createHudContentViewControllerWithTabId:(id)id title:(id)title excludingCanonicals:(id)canonicals isMultiview:(BOOL)multiview locale:(id)locale playsFromStart:(BOOL)start;
+- (id)_createPrefetchedDataForPlayerHUDWithTabId:(id)id title:(id)title excludingCanonicals:(id)canonicals isMultiview:(BOOL)multiview locale:(id)locale playsFromStart:(BOOL)start;
+- (id)_documentRefContextDataForCurrentMediaTypeWithCanonicalID:(id)d showCanonicalID:(id)iD;
+- (id)_getPageIDForTabName:(id)name;
 - (id)appContext;
-- (id)createClickMetricsWithType:(id)a3;
-- (id)createHUDViewControllerWithTabInfo:(id)a3 excludingCanonicals:(id)a4 isMultiview:(BOOL)a5 locale:(id)a6 playsFromStart:(BOOL)a7;
-- (id)getPageEventDataWithSelectedTab:(id)a3;
-- (id)moreInfoViewControllerWithAppContext:(id)a3;
-- (void)_addMetadataInfoToEvent:(id)a3;
-- (void)_getTabsForCanonicalId:(id)a3 adamId:(id)a4 playablePassThrough:(id)a5 programId:(id)a6 contentId:(id)a7 completion:(id)a8;
-- (void)_handleDidShowInfoViewController:(id)a3;
-- (void)_updateHUDsForAVPlayerViewController:(id)a3 canonicalId:(id)a4 tabInfo:(id)a5 excludingCanonicals:(id)a6;
+- (id)createClickMetricsWithType:(id)type;
+- (id)createHUDViewControllerWithTabInfo:(id)info excludingCanonicals:(id)canonicals isMultiview:(BOOL)multiview locale:(id)locale playsFromStart:(BOOL)start;
+- (id)getPageEventDataWithSelectedTab:(id)tab;
+- (id)moreInfoViewControllerWithAppContext:(id)context;
+- (void)_addMetadataInfoToEvent:(id)event;
+- (void)_getTabsForCanonicalId:(id)id adamId:(id)adamId playablePassThrough:(id)through programId:(id)programId contentId:(id)contentId completion:(id)completion;
+- (void)_handleDidShowInfoViewController:(id)controller;
+- (void)_updateHUDsForAVPlayerViewController:(id)controller canonicalId:(id)id tabInfo:(id)info excludingCanonicals:(id)canonicals;
 - (void)_updateTimedMetadataEligibilityFlagInCurrentMediaItem;
 - (void)createImpressionsForInfoTab;
 - (void)recordImpressionsForInfoTab;
 - (void)recordPageHandler;
-- (void)recordPageMetricsForSelectedTab:(id)a3 tabName:(id)a4;
-- (void)recordPageMetricsForSelectedTab:(id)a3 tabName:(id)a4 pageID:(id)a5;
+- (void)recordPageMetricsForSelectedTab:(id)tab tabName:(id)name;
+- (void)recordPageMetricsForSelectedTab:(id)tab tabName:(id)name pageID:(id)d;
 - (void)reportMoreInfoMetrics;
 - (void)reportPlayFromBeginningMetrics;
-- (void)resetPlayerTabsForPlayerViewController:(id)a3;
-- (void)updatePlayerTabsExcludingCanonicals:(id)a3 completion:(id)a4;
-- (void)updatePlayerViewSize:(CGSize)a3;
-- (void)updatePrefetchedDataOnExistingHUDContentViewController:(id)a3 canonicalId:(id)a4 excludingCanonicals:(id)a5;
+- (void)resetPlayerTabsForPlayerViewController:(id)controller;
+- (void)updatePlayerTabsExcludingCanonicals:(id)canonicals completion:(id)completion;
+- (void)updatePlayerViewSize:(CGSize)size;
+- (void)updatePrefetchedDataOnExistingHUDContentViewController:(id)controller canonicalId:(id)id excludingCanonicals:(id)canonicals;
 @end
 
 @implementation VUIPlaybackTabManager
@@ -51,21 +51,21 @@
   [(VUIPlaybackTabManager *)self createImpressionsForInfoTab];
 }
 
-- (void)_handleDidShowInfoViewController:(id)a3
+- (void)_handleDidShowInfoViewController:(id)controller
 {
-  v4 = [a3 userInfo];
-  v10 = [v4 objectForKey:*MEMORY[0x1E6958598]];
+  userInfo = [controller userInfo];
+  v10 = [userInfo objectForKey:*MEMORY[0x1E6958598]];
 
   v5 = v10;
   if (v10 == *MEMORY[0x1E69585B0])
   {
     v6 = +[VUIInterfaceFactory sharedInstance];
-    v7 = [v6 playbackMetricsQueueManager];
-    [v7 recordPage:self];
+    playbackMetricsQueueManager = [v6 playbackMetricsQueueManager];
+    [playbackMetricsQueueManager recordPage:self];
 
     v8 = +[VUIInterfaceFactory sharedInstance];
-    v9 = [v8 playbackMetricsQueueManager];
-    [v9 recordImpressions:self];
+    playbackMetricsQueueManager2 = [v8 playbackMetricsQueueManager];
+    [playbackMetricsQueueManager2 recordImpressions:self];
 
     v5 = v10;
   }
@@ -77,7 +77,7 @@
   block[1] = 3221225472;
   block[2] = __39__VUIPlaybackTabManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_20 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_20, block);
@@ -111,42 +111,42 @@ void __39__VUIPlaybackTabManager_sharedInstance__block_invoke(uint64_t a1)
     v2->_hudViewControllers = v3;
 
     v2->_playbackTabError = 0;
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel__handleDidShowInfoViewController_ name:*MEMORY[0x1E69585A0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleDidShowInfoViewController_ name:*MEMORY[0x1E69585A0] object:0];
   }
 
   return v2;
 }
 
-- (void)updatePlayerTabsExcludingCanonicals:(id)a3 completion:(id)a4
+- (void)updatePlayerTabsExcludingCanonicals:(id)canonicals completion:(id)completion
 {
   v71 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  canonicalsCopy = canonicals;
+  completionCopy = completion;
   if ([(VUIPlaybackTabManager *)self isPlayerTabsEnabled])
   {
-    v8 = [(VUIPlaybackTabManager *)self delegate];
-    v9 = [v8 currentMediaItem];
+    delegate = [(VUIPlaybackTabManager *)self delegate];
+    currentMediaItem = [delegate currentMediaItem];
 
-    v10 = [v9 mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyIsExtrasContent"];
-    v11 = [v10 BOOLValue];
+    v10 = [currentMediaItem mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyIsExtrasContent"];
+    bOOLValue = [v10 BOOLValue];
 
-    if (v11)
+    if (bOOLValue)
     {
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7);
+        completionCopy[2](completionCopy);
       }
 
       goto LABEL_61;
     }
 
-    *(&v56 + 1) = [v9 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
-    *&v56 = [v9 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DA8]];
-    v12 = [v9 mediaItemMetadataForProperty:@"VUIMediaItemMetadataMakeAdditionalPlayerTabsRequest"];
-    v13 = [v12 BOOLValue];
+    *(&v56 + 1) = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
+    *&v56 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5DA8]];
+    v12 = [currentMediaItem mediaItemMetadataForProperty:@"VUIMediaItemMetadataMakeAdditionalPlayerTabsRequest"];
+    bOOLValue2 = [v12 BOOLValue];
 
-    v14 = [v9 mediaItemMetadataForProperty:@"VUIMediaItemMetadataIsEligibleForPlayerTabs"];
+    v14 = [currentMediaItem mediaItemMetadataForProperty:@"VUIMediaItemMetadataIsEligibleForPlayerTabs"];
     v57 = v14;
     if (v14)
     {
@@ -158,19 +158,19 @@ void __39__VUIPlaybackTabManager_sharedInstance__block_invoke(uint64_t a1)
       v15 = 1;
     }
 
-    v55 = [v9 mediaItemMetadataForProperty:@"VUIMediaItemMetadataPlayablePassThrough"];
-    v54 = [v9 mediaItemMetadataForProperty:*MEMORY[0x1E69D5BF0]];
-    v53 = [v9 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CD8]];
-    v16 = [v9 mediaItemMetadataForProperty:@"VUIMediaItemMetadataIsEligibleForInfoTab"];
+    v55 = [currentMediaItem mediaItemMetadataForProperty:@"VUIMediaItemMetadataPlayablePassThrough"];
+    v54 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5BF0]];
+    v53 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5CD8]];
+    v16 = [currentMediaItem mediaItemMetadataForProperty:@"VUIMediaItemMetadataIsEligibleForInfoTab"];
     v17 = v16;
     if (v16)
     {
-      v18 = [v16 BOOLValue];
+      bOOLValue3 = [v16 BOOLValue];
     }
 
     else
     {
-      v18 = 1;
+      bOOLValue3 = 1;
     }
 
     if (!+[_TtC8VideosUI38VUINetworkReachabilityMonitorObjCProxy isNetworkReachable])
@@ -179,7 +179,7 @@ void __39__VUIPlaybackTabManager_sharedInstance__block_invoke(uint64_t a1)
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         v25 = @"NO";
-        if (v18)
+        if (bOOLValue3)
         {
           v25 = @"YES";
         }
@@ -189,24 +189,24 @@ void __39__VUIPlaybackTabManager_sharedInstance__block_invoke(uint64_t a1)
         _os_log_impl(&dword_1E323F000, v24, OS_LOG_TYPE_DEFAULT, "VUIPlaybackTabManager:: Network is not reachable, not fetching tabs setAllowInfoMetadataSubpanel:%@", buf, 0xCu);
       }
 
-      v26 = [(VUIPlaybackTabManager *)self delegate];
-      v27 = [v26 playerViewController];
-      [v27 vui_setAllowInfoMetadataSubpanel:v18];
-      if (v7)
+      delegate2 = [(VUIPlaybackTabManager *)self delegate];
+      playerViewController = [delegate2 playerViewController];
+      [playerViewController vui_setAllowInfoMetadataSubpanel:bOOLValue3];
+      if (completionCopy)
       {
-        v7[2](v7);
+        completionCopy[2](completionCopy);
       }
 
       goto LABEL_60;
     }
 
-    if (v13)
+    if (bOOLValue2)
     {
-      v19 = [(VUIPlaybackTabManager *)self lastRequestDate];
-      if (v19)
+      lastRequestDate = [(VUIPlaybackTabManager *)self lastRequestDate];
+      if (lastRequestDate)
       {
-        v20 = [(VUIPlaybackTabManager *)self lastRequestDate];
-        [v20 timeIntervalSinceNow];
+        lastRequestDate2 = [(VUIPlaybackTabManager *)self lastRequestDate];
+        [lastRequestDate2 timeIntervalSinceNow];
         v22 = fabs(v21);
 
         if (v22 < 1.0)
@@ -218,9 +218,9 @@ void __39__VUIPlaybackTabManager_sharedInstance__block_invoke(uint64_t a1)
             _os_log_impl(&dword_1E323F000, v23, OS_LOG_TYPE_DEFAULT, "VUIPlaybackTabManager:: Not fetching tabs since we just fetched them a moment ago", buf, 2u);
           }
 
-          if (v7)
+          if (completionCopy)
           {
-            v7[2](v7);
+            completionCopy[2](completionCopy);
           }
 
           goto LABEL_60;
@@ -228,21 +228,21 @@ void __39__VUIPlaybackTabManager_sharedInstance__block_invoke(uint64_t a1)
       }
     }
 
-    v28 = [MEMORY[0x1E695DF00] date];
-    [(VUIPlaybackTabManager *)self setLastRequestDate:v28];
+    date = [MEMORY[0x1E695DF00] date];
+    [(VUIPlaybackTabManager *)self setLastRequestDate:date];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __72__VUIPlaybackTabManager_updatePlayerTabsExcludingCanonicals_completion___block_invoke;
     aBlock[3] = &unk_1E8733608;
-    v29 = v7;
+    v29 = completionCopy;
     v68 = v29;
     v51 = _Block_copy(aBlock);
     objc_initWeak(&location, self);
     if (v15)
     {
-      v50 = [(VUIPlaybackTabManager *)self delegate];
-      val = [v50 playerViewController];
+      delegate3 = [(VUIPlaybackTabManager *)self delegate];
+      val = [delegate3 playerViewController];
       v30 = VUIDefaultLogObject();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
@@ -262,14 +262,14 @@ void __39__VUIPlaybackTabManager_sharedInstance__block_invoke(uint64_t a1)
 
     if (v56 == 0)
     {
-      v50 = [(VUIPlaybackTabManager *)self delegate];
-      val = [v50 playerViewController];
+      delegate3 = [(VUIPlaybackTabManager *)self delegate];
+      val = [delegate3 playerViewController];
       [(VUIPlaybackTabManager *)self resetPlayerTabsForPlayerViewController:val];
       v33 = VUIDefaultLogObject();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
       {
         v34 = @"NO";
-        if (v18)
+        if (bOOLValue3)
         {
           v34 = @"YES";
         }
@@ -279,7 +279,7 @@ void __39__VUIPlaybackTabManager_sharedInstance__block_invoke(uint64_t a1)
         _os_log_impl(&dword_1E323F000, v33, OS_LOG_TYPE_DEFAULT, "VUIPlaybackTabManager:: not fetching tabs because canonical id is missing setAllowInfoMetadataSubpanel:%@", buf, 0xCu);
       }
 
-      [val vui_setAllowInfoMetadataSubpanel:v18];
+      [val vui_setAllowInfoMetadataSubpanel:bOOLValue3];
       if (!v29)
       {
         goto LABEL_59;
@@ -290,25 +290,25 @@ LABEL_58:
       goto LABEL_59;
     }
 
-    v50 = [(VUIPlaybackTabManager *)self delegate];
-    val = [v50 playerViewController];
+    delegate3 = [(VUIPlaybackTabManager *)self delegate];
+    val = [delegate3 playerViewController];
     if (*(&v56 + 1))
     {
-      v31 = [(VUIPlaybackTabManager *)self tabsInfo];
-      if (v31)
+      tabsInfo = [(VUIPlaybackTabManager *)self tabsInfo];
+      if (tabsInfo)
       {
-        v48 = [(VUIPlaybackTabManager *)self tabsInfo];
-        v32 = [v48 canonicalId];
-        v46 = [v32 isEqualToString:*(&v56 + 1)];
+        tabsInfo2 = [(VUIPlaybackTabManager *)self tabsInfo];
+        canonicalId = [tabsInfo2 canonicalId];
+        v46 = [canonicalId isEqualToString:*(&v56 + 1)];
 
-        if (((v46 ^ 1 | v13) & 1) == 0)
+        if (((v46 ^ 1 | bOOLValue2) & 1) == 0)
         {
 LABEL_53:
-          v37 = [(VUIPlaybackTabManager *)self tabsInfo];
-          v38 = [v37 isInfoTabAllowed];
+          tabsInfo3 = [(VUIPlaybackTabManager *)self tabsInfo];
+          isInfoTabAllowed = [tabsInfo3 isInfoTabAllowed];
 
           v39 = VUIDefaultLogObject();
-          v40 = v38 & v18;
+          v40 = isInfoTabAllowed & bOOLValue3;
           if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
           {
             v41 = @"NO";
@@ -323,11 +323,11 @@ LABEL_53:
           }
 
           [val vui_setAllowInfoMetadataSubpanel:v40];
-          v42 = [(VUIPlaybackTabManager *)self tabsInfo];
-          v43 = [v42 canonicalId];
-          v44 = [(VUIPlaybackTabManager *)self tabsInfo];
-          v45 = [v44 tabDetails];
-          [(VUIPlaybackTabManager *)self _updateHUDsForAVPlayerViewController:val canonicalId:v43 tabInfo:v45 excludingCanonicals:v6];
+          tabsInfo4 = [(VUIPlaybackTabManager *)self tabsInfo];
+          canonicalId2 = [tabsInfo4 canonicalId];
+          tabsInfo5 = [(VUIPlaybackTabManager *)self tabsInfo];
+          tabDetails = [tabsInfo5 tabDetails];
+          [(VUIPlaybackTabManager *)self _updateHUDsForAVPlayerViewController:val canonicalId:canonicalId2 tabInfo:tabDetails excludingCanonicals:canonicalsCopy];
 
           [(VUIPlaybackTabManager *)self _updateTimedMetadataEligibilityFlagInCurrentMediaItem];
           if (!v29)
@@ -347,12 +347,12 @@ LABEL_53:
         goto LABEL_53;
       }
 
-      v49 = [(VUIPlaybackTabManager *)self tabsInfo];
-      if (v49 || [(VUIPlaybackTabManager *)self playbackTabError]== 2)
+      tabsInfo6 = [(VUIPlaybackTabManager *)self tabsInfo];
+      if (tabsInfo6 || [(VUIPlaybackTabManager *)self playbackTabError]== 2)
       {
-        v35 = [(VUIPlaybackTabManager *)self tabsInfo];
-        v36 = [v35 adamId];
-        v47 = [v36 isEqualToString:v56];
+        tabsInfo7 = [(VUIPlaybackTabManager *)self tabsInfo];
+        adamId = [tabsInfo7 adamId];
+        v47 = [adamId isEqualToString:v56];
 
         if (v47)
         {
@@ -373,7 +373,7 @@ LABEL_61:
       }
     }
 
-    if ((v13 & 1) == 0)
+    if ((bOOLValue2 & 1) == 0)
     {
       [(VUIPlaybackTabManager *)self resetPlayerTabsForPlayerViewController:val];
     }
@@ -387,9 +387,9 @@ LABEL_61:
     objc_copyWeak(&v64, buf);
     v59 = *(&v56 + 1);
     v61 = v51;
-    v65 = v18;
+    v65 = bOOLValue3;
     v62 = v29;
-    v60 = v6;
+    v60 = canonicalsCopy;
     [(VUIPlaybackTabManager *)self _getTabsForCanonicalId:v59 adamId:v56 playablePassThrough:v55 programId:v54 contentId:v53 completion:v58];
 
     objc_destroyWeak(&v64);
@@ -398,9 +398,9 @@ LABEL_61:
     goto LABEL_59;
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_62:
@@ -617,28 +617,28 @@ LABEL_37:
 LABEL_40:
 }
 
-- (id)createHUDViewControllerWithTabInfo:(id)a3 excludingCanonicals:(id)a4 isMultiview:(BOOL)a5 locale:(id)a6 playsFromStart:(BOOL)a7
+- (id)createHUDViewControllerWithTabInfo:(id)info excludingCanonicals:(id)canonicals isMultiview:(BOOL)multiview locale:(id)locale playsFromStart:(BOOL)start
 {
-  v7 = a7;
-  v9 = a5;
-  v12 = a3;
-  v13 = a6;
-  v14 = a4;
-  v15 = [v12 tabId];
-  v16 = [v12 title];
-  v17 = [(VUIPlaybackTabManager *)self _createHudContentViewControllerWithTabId:v15 title:v16 excludingCanonicals:v14 isMultiview:v9 locale:v13 playsFromStart:v7];
+  startCopy = start;
+  multiviewCopy = multiview;
+  infoCopy = info;
+  localeCopy = locale;
+  canonicalsCopy = canonicals;
+  tabId = [infoCopy tabId];
+  title = [infoCopy title];
+  v17 = [(VUIPlaybackTabManager *)self _createHudContentViewControllerWithTabId:tabId title:title excludingCanonicals:canonicalsCopy isMultiview:multiviewCopy locale:localeCopy playsFromStart:startCopy];
 
-  if (v17 && v15)
+  if (v17 && tabId)
   {
     v18 = objc_alloc_init(VUIHUDViewController);
-    [(VUIHUDViewController *)v18 setTitle:v16];
+    [(VUIHUDViewController *)v18 setTitle:title];
     [(VUIHUDViewController *)v18 setHudContentViewController:v17];
-    v19 = [v12 tabId];
-    [(VUIHUDViewController *)v18 setTabIdentifier:v19];
+    tabId2 = [infoCopy tabId];
+    [(VUIHUDViewController *)v18 setTabIdentifier:tabId2];
 
-    [(VUIHUDViewController *)v18 setIsMultiview:v9];
-    v20 = [(VUIPlaybackTabManager *)self hudViewControllers];
-    [v20 setObject:v18 forKey:v15];
+    [(VUIHUDViewController *)v18 setIsMultiview:multiviewCopy];
+    hudViewControllers = [(VUIPlaybackTabManager *)self hudViewControllers];
+    [hudViewControllers setObject:v18 forKey:tabId];
   }
 
   else
@@ -656,34 +656,34 @@ LABEL_40:
   return v18;
 }
 
-- (void)resetPlayerTabsForPlayerViewController:(id)a3
+- (void)resetPlayerTabsForPlayerViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(VUIPlaybackTabManager *)self setTabsInfo:0];
   [(VUIPlaybackTabManager *)self setLastRequestDate:0];
-  v5 = [(VUIPlaybackTabManager *)self hudViewControllers];
-  [v5 removeAllObjects];
+  hudViewControllers = [(VUIPlaybackTabManager *)self hudViewControllers];
+  [hudViewControllers removeAllObjects];
 
-  [v4 setCustomInfoViewControllers:MEMORY[0x1E695E0F0]];
+  [controllerCopy setCustomInfoViewControllers:MEMORY[0x1E695E0F0]];
   [(VUIPlaybackTabManager *)self setPlaybackTabError:0];
   v7 = +[VUIInterfaceFactory sharedInstance];
-  v6 = [v7 playbackMetricsQueueManager];
-  [v6 clearQueue];
+  playbackMetricsQueueManager = [v7 playbackMetricsQueueManager];
+  [playbackMetricsQueueManager clearQueue];
 }
 
-- (void)updatePlayerViewSize:(CGSize)a3
+- (void)updatePlayerViewSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(VUIPlaybackTabManager *)self hudViewControllers];
-  v7 = [v6 allKeys];
+  hudViewControllers = [(VUIPlaybackTabManager *)self hudViewControllers];
+  allKeys = [hudViewControllers allKeys];
 
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v8 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -695,54 +695,54 @@ LABEL_40:
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v16 + 1) + 8 * v11);
-        v13 = [(VUIPlaybackTabManager *)self hudViewControllers];
-        v14 = [v13 objectForKey:v12];
+        hudViewControllers2 = [(VUIPlaybackTabManager *)self hudViewControllers];
+        v14 = [hudViewControllers2 objectForKey:v12];
 
         [v14 setPlayerViewSize:{width, height}];
-        v15 = [v14 hudContentViewController];
-        [v15 setPlayerViewSize:{width, height}];
+        hudContentViewController = [v14 hudContentViewController];
+        [hudContentViewController setPlayerViewSize:{width, height}];
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)_getTabsForCanonicalId:(id)a3 adamId:(id)a4 playablePassThrough:(id)a5 programId:(id)a6 contentId:(id)a7 completion:(id)a8
+- (void)_getTabsForCanonicalId:(id)id adamId:(id)adamId playablePassThrough:(id)through programId:(id)programId contentId:(id)contentId completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [(VUIPlaybackTabManager *)self appContext];
+  idCopy = id;
+  adamIdCopy = adamId;
+  throughCopy = through;
+  programIdCopy = programId;
+  contentIdCopy = contentId;
+  completionCopy = completion;
+  appContext = [(VUIPlaybackTabManager *)self appContext];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __106__VUIPlaybackTabManager__getTabsForCanonicalId_adamId_playablePassThrough_programId_contentId_completion___block_invoke;
   v27[3] = &unk_1E8733658;
-  v28 = v14;
-  v29 = v15;
-  v30 = v16;
-  v31 = v17;
-  v32 = v18;
-  v33 = v19;
-  v21 = v19;
-  v22 = v18;
-  v23 = v17;
-  v24 = v16;
-  v25 = v15;
-  v26 = v14;
-  [v20 evaluate:v27];
+  v28 = idCopy;
+  v29 = adamIdCopy;
+  v30 = throughCopy;
+  v31 = programIdCopy;
+  v32 = contentIdCopy;
+  v33 = completionCopy;
+  v21 = completionCopy;
+  v22 = contentIdCopy;
+  v23 = programIdCopy;
+  v24 = throughCopy;
+  v25 = adamIdCopy;
+  v26 = idCopy;
+  [appContext evaluate:v27];
 }
 
 void __106__VUIPlaybackTabManager__getTabsForCanonicalId_adamId_playablePassThrough_programId_contentId_completion___block_invoke(uint64_t a1, void *a2)
@@ -1076,24 +1076,24 @@ void __106__VUIPlaybackTabManager__getTabsForCanonicalId_adamId_playablePassThro
   }
 }
 
-- (void)_updateHUDsForAVPlayerViewController:(id)a3 canonicalId:(id)a4 tabInfo:(id)a5 excludingCanonicals:(id)a6
+- (void)_updateHUDsForAVPlayerViewController:(id)controller canonicalId:(id)id tabInfo:(id)info excludingCanonicals:(id)canonicals
 {
   v49 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v38 = a4;
-  v11 = a5;
-  v41 = a6;
-  v40 = [(VUIPlaybackTabManager *)self delegate];
-  if ([v11 count])
+  controllerCopy = controller;
+  idCopy = id;
+  infoCopy = info;
+  canonicalsCopy = canonicals;
+  delegate = [(VUIPlaybackTabManager *)self delegate];
+  if ([infoCopy count])
   {
-    v36 = v10;
+    v36 = controllerCopy;
     v39 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v35 = v11;
-    obj = v11;
+    v35 = infoCopy;
+    obj = infoCopy;
     v12 = [obj countByEnumeratingWithState:&v43 objects:v48 count:16];
     if (!v12)
     {
@@ -1112,36 +1112,36 @@ void __106__VUIPlaybackTabManager__getTabsForCanonicalId_adamId_playablePassThro
         }
 
         v15 = *(*(&v43 + 1) + 8 * i);
-        v16 = [v15 tabId];
-        v17 = [(VUIPlaybackTabManager *)self hudViewControllers];
-        v18 = [v17 objectForKey:v16];
+        tabId = [v15 tabId];
+        hudViewControllers = [(VUIPlaybackTabManager *)self hudViewControllers];
+        v18 = [hudViewControllers objectForKey:tabId];
 
         if (v18)
         {
-          v19 = [v18 hudContentViewController];
-          [(VUIPlaybackTabManager *)self updatePrefetchedDataOnExistingHUDContentViewController:v19 canonicalId:v38 excludingCanonicals:v41];
+          hudContentViewController = [v18 hudContentViewController];
+          [(VUIPlaybackTabManager *)self updatePrefetchedDataOnExistingHUDContentViewController:hudContentViewController canonicalId:idCopy excludingCanonicals:canonicalsCopy];
         }
 
         else
         {
-          v20 = [v40 currentMediaItem];
-          v21 = [v20 mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyBroadcastLocale"];
-          v22 = [v20 mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyPlaysFromStartOfLiveStream"];
-          v23 = [v22 BOOLValue];
+          currentMediaItem = [delegate currentMediaItem];
+          v21 = [currentMediaItem mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyBroadcastLocale"];
+          v22 = [currentMediaItem mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyPlaysFromStartOfLiveStream"];
+          bOOLValue = [v22 BOOLValue];
 
-          if ([v16 containsString:@"uts.col.PlayerTabKeyPlays"] && +[VUIGroupActivitiesManagerObjC isSessionActive](VUIGroupActivitiesManagerObjC, "isSessionActive"))
+          if ([tabId containsString:@"uts.col.PlayerTabKeyPlays"] && +[VUIGroupActivitiesManagerObjC isSessionActive](VUIGroupActivitiesManagerObjC, "isSessionActive"))
           {
             v18 = 0;
           }
 
           else
           {
-            v18 = [(VUIPlaybackTabManager *)self createHUDViewControllerWithTabInfo:v15 excludingCanonicals:v41 isMultiview:0 locale:v21 playsFromStart:v23];
+            v18 = [(VUIPlaybackTabManager *)self createHUDViewControllerWithTabInfo:v15 excludingCanonicals:canonicalsCopy isMultiview:0 locale:v21 playsFromStart:bOOLValue];
           }
 
-          v24 = [v36 view];
-          v25 = [v24 window];
-          [v25 bounds];
+          view = [v36 view];
+          window = [view window];
+          [window bounds];
           [v18 setPlayerViewSize:{v26, v27}];
 
           if (!v18)
@@ -1150,24 +1150,24 @@ void __106__VUIPlaybackTabManager__getTabsForCanonicalId_adamId_playablePassThro
           }
         }
 
-        v28 = [v18 hudContentViewController];
-        if ([v28 conformsToProtocol:&unk_1F5F390C8])
+        hudContentViewController2 = [v18 hudContentViewController];
+        if ([hudContentViewController2 conformsToProtocol:&unk_1F5F390C8])
         {
-          v29 = v28;
-          v30 = [v40 nowPlayingControllerDelegate];
-          [v29 setNowPlayingTabDelegate:v30];
+          v29 = hudContentViewController2;
+          nowPlayingControllerDelegate = [delegate nowPlayingControllerDelegate];
+          [v29 setNowPlayingTabDelegate:nowPlayingControllerDelegate];
         }
 
-        v31 = [v18 title];
-        v32 = [v31 length];
+        title = [v18 title];
+        v32 = [title length];
 
         if (!v32)
         {
-          v33 = [v15 title];
-          [v18 setTitle:v33];
+          title2 = [v15 title];
+          [v18 setTitle:title2];
         }
 
-        if (![v16 containsString:@"uts.col.PlayerTabKeyPlays"] || !+[VUIGroupActivitiesManagerObjC isSessionActive](VUIGroupActivitiesManagerObjC, "isSessionActive"))
+        if (![tabId containsString:@"uts.col.PlayerTabKeyPlays"] || !+[VUIGroupActivitiesManagerObjC isSessionActive](VUIGroupActivitiesManagerObjC, "isSessionActive"))
         {
           [v39 addObject:v18];
         }
@@ -1180,13 +1180,13 @@ LABEL_22:
       {
 LABEL_24:
 
-        v10 = v36;
+        controllerCopy = v36;
         if ([v39 count])
         {
           [v36 setCustomInfoViewControllers:v39];
         }
 
-        v11 = v35;
+        infoCopy = v35;
         goto LABEL_30;
       }
     }
@@ -1199,23 +1199,23 @@ LABEL_24:
     _os_log_impl(&dword_1E323F000, v34, OS_LOG_TYPE_DEFAULT, "VUIPlaybackTabManager::No tabs are received, reset existing tabs if available and return early", buf, 2u);
   }
 
-  [(VUIPlaybackTabManager *)self resetPlayerTabsForPlayerViewController:v10];
+  [(VUIPlaybackTabManager *)self resetPlayerTabsForPlayerViewController:controllerCopy];
 LABEL_30:
 }
 
-- (id)_createHudContentViewControllerWithTabId:(id)a3 title:(id)a4 excludingCanonicals:(id)a5 isMultiview:(BOOL)a6 locale:(id)a7 playsFromStart:(BOOL)a8
+- (id)_createHudContentViewControllerWithTabId:(id)id title:(id)title excludingCanonicals:(id)canonicals isMultiview:(BOOL)multiview locale:(id)locale playsFromStart:(BOOL)start
 {
-  v8 = a8;
-  v10 = a6;
+  startCopy = start;
+  multiviewCopy = multiview;
   v44 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = [(VUIPlaybackTabManager *)self delegate];
+  idCopy = id;
+  titleCopy = title;
+  canonicalsCopy = canonicals;
+  localeCopy = locale;
+  delegate = [(VUIPlaybackTabManager *)self delegate];
   v19 = objc_opt_new();
-  v41 = v16;
-  if ([v14 isEqualToString:@"uts.marker.Spotlight"])
+  v41 = canonicalsCopy;
+  if ([idCopy isEqualToString:@"uts.marker.Spotlight"])
   {
     v20 = VUIDefaultLogObject();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -1226,35 +1226,35 @@ LABEL_30:
 
     v21 = [[VUIDocumentDataSource alloc] initWithDocumentRef:@"TimedMetadata"];
     v22 = +[VUIInterfaceFactory sharedInstance];
-    v23 = [(VUIPlaybackTabManager *)self appContext];
-    v24 = [(VUIDocumentDataSource *)v22 viewControllerWithDocumentDataSource:v21 appContext:v23];
+    appContext = [(VUIPlaybackTabManager *)self appContext];
+    v24 = [(VUIDocumentDataSource *)v22 viewControllerWithDocumentDataSource:v21 appContext:appContext];
   }
 
   else
   {
-    v25 = v15;
-    v21 = [(VUIPlaybackTabManager *)self _createPrefetchedDataForPlayerHUDWithTabId:v14 title:v15 excludingCanonicals:v16 isMultiview:v10 locale:v17 playsFromStart:v8];
-    v26 = [(VUIDocumentDataSource *)v21 jsonData];
+    v25 = titleCopy;
+    v21 = [(VUIPlaybackTabManager *)self _createPrefetchedDataForPlayerHUDWithTabId:idCopy title:titleCopy excludingCanonicals:canonicalsCopy isMultiview:multiviewCopy locale:localeCopy playsFromStart:startCopy];
+    jsonData = [(VUIDocumentDataSource *)v21 jsonData];
 
     v27 = VUIDefaultLogObject();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [(VUIDocumentDataSource *)v21 jsonData];
+      jsonData2 = [(VUIDocumentDataSource *)v21 jsonData];
       *buf = 138412290;
-      v43 = v28;
+      v43 = jsonData2;
       _os_log_impl(&dword_1E323F000, v27, OS_LOG_TYPE_DEFAULT, "VUIPlaybackTabManager::Creating hud content controller with data: [%@]", buf, 0xCu);
     }
 
     v22 = [[VUIDocumentDataSource alloc] initWithDocumentRef:@"PlayerHUD"];
-    v23 = [(VUIPlaybackTabManager *)self appContext];
+    appContext = [(VUIPlaybackTabManager *)self appContext];
     [(VUIDocumentDataSource *)v22 setDocumentType:@"player"];
     [(VUIDocumentDataSource *)v22 setControllerRef:@"PlayerHUD"];
     [(VUIDocumentDataSource *)v22 setPrefetchData:v21];
     v29 = +[VUIInterfaceFactory sharedInstance];
-    v24 = [v29 viewControllerWithDocumentDataSource:v22 appContext:v23];
+    v24 = [v29 viewControllerWithDocumentDataSource:v22 appContext:appContext];
 
-    v19 = v26;
-    v15 = v25;
+    v19 = jsonData;
+    titleCopy = v25;
   }
 
   if ([v24 conformsToProtocol:&unk_1F5F390C8])
@@ -1262,116 +1262,116 @@ LABEL_30:
     v30 = v24;
     if (objc_opt_respondsToSelector())
     {
-      v31 = [v18 nowPlayingControllerDelegate];
-      [v30 setNowPlayingTabDelegate:v31];
+      nowPlayingControllerDelegate = [delegate nowPlayingControllerDelegate];
+      [v30 setNowPlayingTabDelegate:nowPlayingControllerDelegate];
     }
 
-    v32 = v15;
+    v32 = titleCopy;
     if (objc_opt_respondsToSelector())
     {
       [v30 setNowPlayingTabContextData:v19];
     }
 
-    v33 = [v18 playerViewController];
-    v34 = [v33 view];
-    v35 = [v34 window];
-    [v35 bounds];
+    playerViewController = [delegate playerViewController];
+    view = [playerViewController view];
+    window = [view window];
+    [window bounds];
     v37 = v36;
     v39 = v38;
 
     [v30 setPlayerViewSize:{v37, v39}];
-    v15 = v32;
+    titleCopy = v32;
   }
 
   return v24;
 }
 
-- (id)_createPrefetchedDataForPlayerHUDWithTabId:(id)a3 title:(id)a4 excludingCanonicals:(id)a5 isMultiview:(BOOL)a6 locale:(id)a7 playsFromStart:(BOOL)a8
+- (id)_createPrefetchedDataForPlayerHUDWithTabId:(id)id title:(id)title excludingCanonicals:(id)canonicals isMultiview:(BOOL)multiview locale:(id)locale playsFromStart:(BOOL)start
 {
-  v8 = a8;
-  v10 = a6;
-  v14 = a5;
-  v15 = a7;
-  v16 = a4;
-  v17 = a3;
-  v18 = [(VUIPlaybackTabManager *)self delegate];
+  startCopy = start;
+  multiviewCopy = multiview;
+  canonicalsCopy = canonicals;
+  localeCopy = locale;
+  titleCopy = title;
+  idCopy = id;
+  delegate = [(VUIPlaybackTabManager *)self delegate];
   v19 = objc_opt_new();
-  [v19 setTabId:v17];
+  [v19 setTabId:idCopy];
 
-  v20 = [(VUIPlaybackTabManager *)self tabsInfo];
-  v21 = [v20 canonicalId];
+  tabsInfo = [(VUIPlaybackTabManager *)self tabsInfo];
+  canonicalId = [tabsInfo canonicalId];
 
-  if (v21)
+  if (canonicalId)
   {
-    [v19 setCanonicalId:v21];
+    [v19 setCanonicalId:canonicalId];
   }
 
-  if (v14)
+  if (canonicalsCopy)
   {
-    [v19 setExcludedCanonicals:v14];
+    [v19 setExcludedCanonicals:canonicalsCopy];
   }
 
   [v19 setIncludeMultiviewButton:{-[VUIPlaybackTabManager shouldIncludeMultiviewButton](self, "shouldIncludeMultiviewButton")}];
-  [v19 setIsMultiviewPlayer:v10];
-  [v19 setPlayFromStart:v8];
-  v22 = [v18 multiviewIdentifiers];
-  [v19 setMultiviewIdentifiers:v22];
+  [v19 setIsMultiviewPlayer:multiviewCopy];
+  [v19 setPlayFromStart:startCopy];
+  multiviewIdentifiers = [delegate multiviewIdentifiers];
+  [v19 setMultiviewIdentifiers:multiviewIdentifiers];
 
-  [v19 setLocale:v15];
-  [v19 setTitle:v16];
+  [v19 setLocale:localeCopy];
+  [v19 setTitle:titleCopy];
 
   return v19;
 }
 
 - (BOOL)shouldIncludeMultiviewButton
 {
-  v3 = [(VUIPlaybackTabManager *)self delegate];
-  v4 = [v3 multiviewPlayerCount];
-  v5 = [(VUIPlaybackTabManager *)self delegate];
-  v6 = [v5 maxMultiviewPlayerCount];
+  delegate = [(VUIPlaybackTabManager *)self delegate];
+  multiviewPlayerCount = [delegate multiviewPlayerCount];
+  delegate2 = [(VUIPlaybackTabManager *)self delegate];
+  maxMultiviewPlayerCount = [delegate2 maxMultiviewPlayerCount];
 
-  if (v4 == v6)
+  if (multiviewPlayerCount == maxMultiviewPlayerCount)
   {
     return 0;
   }
 
-  v8 = [(VUIPlaybackTabManager *)self tabsInfo];
-  v9 = [v8 multiviewTabInfo];
-  v7 = v9 != 0;
+  tabsInfo = [(VUIPlaybackTabManager *)self tabsInfo];
+  multiviewTabInfo = [tabsInfo multiviewTabInfo];
+  v7 = multiviewTabInfo != 0;
 
   return v7;
 }
 
-- (void)updatePrefetchedDataOnExistingHUDContentViewController:(id)a3 canonicalId:(id)a4 excludingCanonicals:(id)a5
+- (void)updatePrefetchedDataOnExistingHUDContentViewController:(id)controller canonicalId:(id)id excludingCanonicals:(id)canonicals
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(VUIPlaybackTabManager *)self delegate];
-  if ([v17 conformsToProtocol:&unk_1F5F390C8])
+  controllerCopy = controller;
+  idCopy = id;
+  canonicalsCopy = canonicals;
+  delegate = [(VUIPlaybackTabManager *)self delegate];
+  if ([controllerCopy conformsToProtocol:&unk_1F5F390C8])
   {
-    v11 = v17;
+    v11 = controllerCopy;
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v11 getNowPlayingTabContextData];
-      if (v12)
+      getNowPlayingTabContextData = [v11 getNowPlayingTabContextData];
+      if (getNowPlayingTabContextData)
       {
-        v13 = v12;
-        v14 = [[VUIDocumentPreFetchedDataPlayerHUD alloc] initWithDictionary:v12];
-        [(VUIDocumentPreFetchedDataPlayerHUD *)v14 setExcludedCanonicals:v9];
-        v15 = [v10 multiviewIdentifiers];
-        [(VUIDocumentPreFetchedDataPlayerHUD *)v14 setMultiviewIdentifiers:v15];
+        v13 = getNowPlayingTabContextData;
+        v14 = [[VUIDocumentPreFetchedDataPlayerHUD alloc] initWithDictionary:getNowPlayingTabContextData];
+        [(VUIDocumentPreFetchedDataPlayerHUD *)v14 setExcludedCanonicals:canonicalsCopy];
+        multiviewIdentifiers = [delegate multiviewIdentifiers];
+        [(VUIDocumentPreFetchedDataPlayerHUD *)v14 setMultiviewIdentifiers:multiviewIdentifiers];
 
-        if (v8)
+        if (idCopy)
         {
-          [(VUIDocumentPreFetchedDataPlayerHUD *)v14 setCanonicalId:v8];
+          [(VUIDocumentPreFetchedDataPlayerHUD *)v14 setCanonicalId:idCopy];
         }
 
         [(VUIDocumentPreFetchedDataPlayerHUD *)v14 setIncludeMultiviewButton:[(VUIPlaybackTabManager *)self shouldIncludeMultiviewButton]];
-        v16 = [(VUIDocumentPreFetchedDataPlayerHUD *)v14 jsonData];
+        jsonData = [(VUIDocumentPreFetchedDataPlayerHUD *)v14 jsonData];
         if (objc_opt_respondsToSelector())
         {
-          [v11 setNowPlayingTabContextData:v16];
+          [v11 setNowPlayingTabContextData:jsonData];
         }
       }
     }
@@ -1381,18 +1381,18 @@ LABEL_30:
 - (id)appContext
 {
   v2 = +[VUITVAppLauncher sharedInstance];
-  v3 = [v2 appController];
-  v4 = [v3 appContext];
+  appController = [v2 appController];
+  appContext = [appController appContext];
 
-  return v4;
+  return appContext;
 }
 
 - (NSString)playTitleForFromBeginningAction
 {
-  v2 = [(VUIPlaybackTabManager *)self _isCurrentMediaSportingEvent];
+  _isCurrentMediaSportingEvent = [(VUIPlaybackTabManager *)self _isCurrentMediaSportingEvent];
   v3 = +[VUILocalizationManager sharedInstance];
   v4 = v3;
-  if (v2)
+  if (_isCurrentMediaSportingEvent)
   {
     v5 = @"WATCH_FROM_START";
   }
@@ -1424,12 +1424,12 @@ LABEL_30:
   return v3;
 }
 
-- (void)recordPageMetricsForSelectedTab:(id)a3 tabName:(id)a4
+- (void)recordPageMetricsForSelectedTab:(id)tab tabName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(VUIPlaybackTabManager *)self _getPageIDForTabName:v6];
-  [(VUIPlaybackTabManager *)self recordPageMetricsForSelectedTab:v7 tabName:v6 pageID:v8];
+  nameCopy = name;
+  tabCopy = tab;
+  v8 = [(VUIPlaybackTabManager *)self _getPageIDForTabName:nameCopy];
+  [(VUIPlaybackTabManager *)self recordPageMetricsForSelectedTab:tabCopy tabName:nameCopy pageID:v8];
 }
 
 - (void)createImpressionsForInfoTab
@@ -1468,40 +1468,40 @@ LABEL_30:
 
 - (void)recordImpressionsForInfoTab
 {
-  v3 = [(VUIPlaybackTabManager *)self infoTabImpressions];
+  infoTabImpressions = [(VUIPlaybackTabManager *)self infoTabImpressions];
 
-  if (v3)
+  if (infoTabImpressions)
   {
     v4 = +[VUIMetricsController sharedInstance];
-    v5 = [(VUIPlaybackTabManager *)self infoTabImpressions];
-    [v4 recordImpressions:v5];
+    infoTabImpressions2 = [(VUIPlaybackTabManager *)self infoTabImpressions];
+    [v4 recordImpressions:infoTabImpressions2];
 
     [(VUIPlaybackTabManager *)self setInfoTabImpressions:0];
   }
 }
 
-- (id)getPageEventDataWithSelectedTab:(id)a3
+- (id)getPageEventDataWithSelectedTab:(id)tab
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tabCopy = tab;
   v11 = @"pageContext";
   v12[0] = @"player";
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-  if ([v4 isEqualToString:*MEMORY[0x1E69585B0]])
+  if ([tabCopy isEqualToString:*MEMORY[0x1E69585B0]])
   {
-    v6 = [(VUIPlaybackTabManager *)self delegate];
-    v7 = [v6 currentMediaItem];
+    delegate = [(VUIPlaybackTabManager *)self delegate];
+    currentMediaItem = [delegate currentMediaItem];
 
-    v8 = [v7 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
+    v8 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
     v9 = [VUIMetricsPageEventData createWithPageId:v8 andPageType:@"Player" andEventData:v5];
   }
 
   else
   {
-    v7 = [(VUIPlaybackTabManager *)self _getPageIDForTabName:v4];
-    if ([v7 length])
+    currentMediaItem = [(VUIPlaybackTabManager *)self _getPageIDForTabName:tabCopy];
+    if ([currentMediaItem length])
     {
-      v9 = [VUIMetricsPageEventData createWithPageId:v7 andPageType:@"Player" andEventData:v5];
+      v9 = [VUIMetricsPageEventData createWithPageId:currentMediaItem andPageType:@"Player" andEventData:v5];
     }
 
     else
@@ -1513,17 +1513,17 @@ LABEL_30:
   return v9;
 }
 
-- (void)recordPageMetricsForSelectedTab:(id)a3 tabName:(id)a4 pageID:(id)a5
+- (void)recordPageMetricsForSelectedTab:(id)tab tabName:(id)name pageID:(id)d
 {
-  v6 = [(VUIPlaybackTabManager *)self getPageEventDataWithSelectedTab:a3, a4, a5];
+  v6 = [(VUIPlaybackTabManager *)self getPageEventDataWithSelectedTab:tab, name, d];
   v5 = +[VUIMetricsController sharedInstance];
   [v5 recordPage:v6];
 }
 
-- (id)_getPageIDForTabName:(id)a3
+- (id)_getPageIDForTabName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Continue Watching"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"Continue Watching"])
   {
     v4 = @"UpNext";
 LABEL_9:
@@ -1531,19 +1531,19 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:@"Live Sports"])
+  if ([nameCopy isEqualToString:@"Live Sports"])
   {
     v4 = @"LiveSports";
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"Key Plays"])
+  if ([nameCopy isEqualToString:@"Key Plays"])
   {
     v4 = @"keyPlays";
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"InSight"])
+  if ([nameCopy isEqualToString:@"InSight"])
   {
     v4 = @"uts.marker.Spotlight";
     goto LABEL_9;
@@ -1557,19 +1557,19 @@ LABEL_10:
 
 - (BOOL)_isCurrentMediaSportingEvent
 {
-  v2 = [(VUIPlaybackTabManager *)self delegate];
-  v3 = [v2 currentMediaItem];
+  delegate = [(VUIPlaybackTabManager *)self delegate];
+  currentMediaItem = [delegate currentMediaItem];
 
-  LOBYTE(v2) = [v3 hasTrait:VUIMediaItemTraitIsSportingEvent];
-  return v2;
+  LOBYTE(delegate) = [currentMediaItem hasTrait:VUIMediaItemTraitIsSportingEvent];
+  return delegate;
 }
 
 - (BOOL)isCurrentMediaMovie
 {
-  v2 = [(VUIPlaybackTabManager *)self delegate];
-  v3 = [v2 currentMediaItem];
+  delegate = [(VUIPlaybackTabManager *)self delegate];
+  currentMediaItem = [delegate currentMediaItem];
 
-  v4 = [v3 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
+  v4 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
   if ([v4 isEqualToString:*MEMORY[0x1E69D5EB8]])
   {
     v5 = 1;
@@ -1585,10 +1585,10 @@ LABEL_10:
 
 - (BOOL)isCurrentMediaTVShow
 {
-  v2 = [(VUIPlaybackTabManager *)self delegate];
-  v3 = [v2 currentMediaItem];
+  delegate = [(VUIPlaybackTabManager *)self delegate];
+  currentMediaItem = [delegate currentMediaItem];
 
-  v4 = [v3 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
+  v4 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
   v5 = [v4 isEqualToString:*MEMORY[0x1E69D5ED0]];
 
   return v5;
@@ -1596,24 +1596,24 @@ LABEL_10:
 
 - (BOOL)_isCurrentMediaLive
 {
-  v2 = [(VUIPlaybackTabManager *)self delegate];
-  v3 = [v2 currentMediaItem];
+  delegate = [(VUIPlaybackTabManager *)self delegate];
+  currentMediaItem = [delegate currentMediaItem];
 
-  LOBYTE(v2) = [v3 hasTrait:*MEMORY[0x1E69D5E50]];
-  return v2;
+  LOBYTE(delegate) = [currentMediaItem hasTrait:*MEMORY[0x1E69D5E50]];
+  return delegate;
 }
 
 - (BOOL)_isInsightTabAvailable
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [(VUIPlaybackTabManager *)self tabsInfo];
-  v3 = [v2 tabDetails];
+  tabsInfo = [(VUIPlaybackTabManager *)self tabsInfo];
+  tabDetails = [tabsInfo tabDetails];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = v3;
+  v4 = tabDetails;
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -1628,8 +1628,8 @@ LABEL_10:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) tabId];
-        v10 = [v9 isEqualToString:@"uts.marker.Spotlight"];
+        tabId = [*(*(&v13 + 1) + 8 * i) tabId];
+        v10 = [tabId isEqualToString:@"uts.marker.Spotlight"];
 
         if (v10)
         {
@@ -1657,15 +1657,15 @@ LABEL_11:
 - (void)_updateTimedMetadataEligibilityFlagInCurrentMediaItem
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIPlaybackTabManager *)self delegate];
-  v4 = [v3 currentMediaItem];
+  delegate = [(VUIPlaybackTabManager *)self delegate];
+  currentMediaItem = [delegate currentMediaItem];
 
-  v5 = [(VUIPlaybackTabManager *)self _isInsightTabAvailable];
+  _isInsightTabAvailable = [(VUIPlaybackTabManager *)self _isInsightTabAvailable];
   v6 = sTimedMetadataLogObject;
   if (os_log_type_enabled(sTimedMetadataLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"NO";
-    if (v5)
+    if (_isInsightTabAvailable)
     {
       v7 = @"YES";
     }
@@ -1673,21 +1673,21 @@ LABEL_11:
     v9 = 138412546;
     v10 = v7;
     v11 = 2112;
-    v12 = v4;
+    v12 = currentMediaItem;
     _os_log_impl(&dword_1E323F000, v6, OS_LOG_TYPE_DEFAULT, "VUIPlaybackTabManager::Setting isEligibleForTimedMetadata - %@ for title - %@", &v9, 0x16u);
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v5];
-  [v4 setMediaItemMetadata:v8 forProperty:@"VUIMediaItemMetadataKeyIsEligibleForTimedMetadata"];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:_isInsightTabAvailable];
+  [currentMediaItem setMediaItemMetadata:v8 forProperty:@"VUIMediaItemMetadataKeyIsEligibleForTimedMetadata"];
 }
 
 - (BOOL)shouldShowMoreInfoButton
 {
-  v3 = [(VUIPlaybackTabManager *)self delegate];
-  v4 = [v3 currentMediaItem];
+  delegate = [(VUIPlaybackTabManager *)self delegate];
+  currentMediaItem = [delegate currentMediaItem];
 
-  v5 = [v4 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
-  v6 = [v4 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D50]];
+  v5 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
+  v6 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5D50]];
   if (!+[_TtC8VideosUI38VUINetworkReachabilityMonitorObjCProxy isNetworkReachable])
   {
     goto LABEL_8;
@@ -1714,12 +1714,12 @@ LABEL_9:
 
 - (BOOL)shouldShowPlayFromBeginningButtonForMediaInfo
 {
-  v3 = [(VUIPlaybackTabManager *)self delegate];
-  v4 = [v3 mediaSupportsStartOver];
+  delegate = [(VUIPlaybackTabManager *)self delegate];
+  mediaSupportsStartOver = [delegate mediaSupportsStartOver];
 
-  LODWORD(v3) = [(VUIPlaybackTabManager *)self _isCurrentMediaSportingEvent];
-  v5 = [(VUIPlaybackTabManager *)self _isCurrentMediaLive];
-  return (v3 | v5) & v4 & 1 | (((v3 | v5) & 1) == 0);
+  LODWORD(delegate) = [(VUIPlaybackTabManager *)self _isCurrentMediaSportingEvent];
+  _isCurrentMediaLive = [(VUIPlaybackTabManager *)self _isCurrentMediaLive];
+  return (delegate | _isCurrentMediaLive) & mediaSupportsStartOver & 1 | (((delegate | _isCurrentMediaLive) & 1) == 0);
 }
 
 - (NSString)moreInfoTitle
@@ -1733,10 +1733,10 @@ LABEL_9:
 
   else
   {
-    v6 = [(VUIPlaybackTabManager *)self isCurrentMediaMovie];
+    isCurrentMediaMovie = [(VUIPlaybackTabManager *)self isCurrentMediaMovie];
     v3 = +[VUILocalizationManager sharedInstance];
     v4 = v3;
-    if (v6)
+    if (isCurrentMediaMovie)
     {
       v5 = @"TV.Button.GoToMovie";
     }
@@ -1767,24 +1767,24 @@ LABEL_9:
   return v2;
 }
 
-- (id)_documentRefContextDataForCurrentMediaTypeWithCanonicalID:(id)a3 showCanonicalID:(id)a4
+- (id)_documentRefContextDataForCurrentMediaTypeWithCanonicalID:(id)d showCanonicalID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   if ([(VUIPlaybackTabManager *)self isCurrentMediaMovie]|| [(VUIPlaybackTabManager *)self _isCurrentMediaSportingEvent])
   {
-    if ([v6 length])
+    if ([dCopy length])
     {
-      v8 = [[VUIDocumentContextDataMovie alloc] initWithMovieID:v6];
+      v8 = [[VUIDocumentContextDataMovie alloc] initWithMovieID:dCopy];
 LABEL_5:
       v9 = v8;
       goto LABEL_10;
     }
   }
 
-  else if (-[VUIPlaybackTabManager isCurrentMediaTVShow](self, "isCurrentMediaTVShow") && [v7 length])
+  else if (-[VUIPlaybackTabManager isCurrentMediaTVShow](self, "isCurrentMediaTVShow") && [iDCopy length])
   {
-    v8 = [[VUIDocumentContextDataTVShow alloc] initWithShowID:v7 episodeID:v6];
+    v8 = [[VUIDocumentContextDataTVShow alloc] initWithShowID:iDCopy episodeID:dCopy];
     goto LABEL_5;
   }
 
@@ -1794,15 +1794,15 @@ LABEL_10:
   return v9;
 }
 
-- (id)moreInfoViewControllerWithAppContext:(id)a3
+- (id)moreInfoViewControllerWithAppContext:(id)context
 {
   v5 = @"MovieCanonical";
-  v6 = a3;
-  v7 = [(VUIPlaybackTabManager *)self delegate];
-  v8 = [v7 currentMediaItem];
+  contextCopy = context;
+  delegate = [(VUIPlaybackTabManager *)self delegate];
+  currentMediaItem = [delegate currentMediaItem];
 
-  v9 = [v8 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
-  v10 = [v8 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D50]];
+  v9 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
+  v10 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5D50]];
   if ([(VUIPlaybackTabManager *)self _isCurrentMediaSportingEvent])
   {
     v11 = VUIDocumentRefSportsCanonical;
@@ -1835,46 +1835,46 @@ LABEL_6:
   [(VUIDocumentDataSource *)v14 setContextData:v16];
 
   v17 = +[VUIInterfaceFactory sharedInstance];
-  v18 = [v17 viewControllerWithDocumentDataSource:v14 appContext:v6];
+  v18 = [v17 viewControllerWithDocumentDataSource:v14 appContext:contextCopy];
 
   return v18;
 }
 
-- (BOOL)_isInfoHUDButtonPresent:(id)a3
+- (BOOL)_isInfoHUDButtonPresent:(id)present
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"play"])
+  presentCopy = present;
+  if ([presentCopy isEqualToString:@"play"])
   {
-    v5 = [(VUIPlaybackTabManager *)self shouldShowPlayFromBeginningButtonForMediaInfo];
+    shouldShowPlayFromBeginningButtonForMediaInfo = [(VUIPlaybackTabManager *)self shouldShowPlayFromBeginningButtonForMediaInfo];
   }
 
   else
   {
-    if (![v4 isEqualToString:@"navigate"])
+    if (![presentCopy isEqualToString:@"navigate"])
     {
       v6 = 0;
       goto LABEL_7;
     }
 
-    v5 = [(VUIPlaybackTabManager *)self shouldShowMoreInfoButton];
+    shouldShowPlayFromBeginningButtonForMediaInfo = [(VUIPlaybackTabManager *)self shouldShowMoreInfoButton];
   }
 
-  v6 = v5;
+  v6 = shouldShowPlayFromBeginningButtonForMediaInfo;
 LABEL_7:
 
   return v6;
 }
 
-- (id)createClickMetricsWithType:(id)a3
+- (id)createClickMetricsWithType:(id)type
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(VUIPlaybackTabManager *)self _isInfoHUDButtonPresent:v4])
+  typeCopy = type;
+  if ([(VUIPlaybackTabManager *)self _isInfoHUDButtonPresent:typeCopy])
   {
     v9[0] = @"targetType";
     v9[1] = @"actionType";
     v10[0] = @"button";
-    v10[1] = v4;
+    v10[1] = typeCopy;
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
     v6 = [v5 mutableCopy];
 
@@ -1890,21 +1890,21 @@ LABEL_7:
   return v7;
 }
 
-- (void)_addMetadataInfoToEvent:(id)a3
+- (void)_addMetadataInfoToEvent:(id)event
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(VUIPlaybackTabManager *)self delegate];
-  v6 = [v5 currentMediaItem];
+  eventCopy = event;
+  delegate = [(VUIPlaybackTabManager *)self delegate];
+  currentMediaItem = [delegate currentMediaItem];
 
-  v7 = [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AD0]];
+  v7 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5AD0]];
   if (v7)
   {
-    [v4 setObject:v7 forKey:@"brandId"];
+    [eventCopy setObject:v7 forKey:@"brandId"];
   }
 
-  v8 = [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
-  v9 = [v6 hasTrait:VUIMediaItemTraitIsSportingEvent];
+  v8 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
+  v9 = [currentMediaItem hasTrait:VUIMediaItemTraitIsSportingEvent];
   if (v8)
   {
     v10 = [v8 isEqualToString:*MEMORY[0x1E69D5ED0]];
@@ -1925,20 +1925,20 @@ LABEL_7:
     v11 = VUIMetricsMediaContentTypeSportingEvent;
   }
 
-  [v4 setObject:*v11 forKey:@"contentType"];
+  [eventCopy setObject:*v11 forKey:@"contentType"];
 LABEL_10:
-  v12 = [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
+  v12 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
   if (v12)
   {
-    [v4 setObject:v12 forKey:@"targetId"];
+    [eventCopy setObject:v12 forKey:@"targetId"];
   }
 
-  v13 = [v4 objectForKeyedSubscript:@"actionType"];
+  v13 = [eventCopy objectForKeyedSubscript:@"actionType"];
   if ([v13 length])
   {
     if ([v13 isEqualToString:@"play"])
     {
-      v14 = [(VUIPlaybackTabManager *)self playTitleForFromBeginningAction];
+      playTitleForFromBeginningAction = [(VUIPlaybackTabManager *)self playTitleForFromBeginningAction];
     }
 
     else
@@ -1949,17 +1949,17 @@ LABEL_10:
         goto LABEL_19;
       }
 
-      v14 = [(VUIPlaybackTabManager *)self moreInfoTitle];
+      playTitleForFromBeginningAction = [(VUIPlaybackTabManager *)self moreInfoTitle];
     }
 
-    v15 = v14;
+    v15 = playTitleForFromBeginningAction;
 LABEL_19:
     if ([v15 length])
     {
       v17 = @"name";
       v18[0] = v15;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-      [v4 setObject:v16 forKey:@"actionDetails"];
+      [eventCopy setObject:v16 forKey:@"actionDetails"];
     }
   }
 }

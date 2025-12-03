@@ -1,12 +1,12 @@
 @interface OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_$2
-- (OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_$2)initWithLong:(int64_t)a3 withOrgApacheLuceneUtilLongValues:(id)a4;
-- (int64_t)getWithLong:(int64_t)a3;
+- (OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_$2)initWithLong:(int64_t)long withOrgApacheLuceneUtilLongValues:(id)values;
+- (int64_t)getWithLong:(int64_t)long;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_$2
 
-- (int64_t)getWithLong:(int64_t)a3
+- (int64_t)getWithLong:(int64_t)long
 {
   if (!self->val$values_)
   {
@@ -14,13 +14,13 @@
   }
 
   v3 = self->val$delta_;
-  return [(OrgApacheLuceneUtilLongValues *)self->val$values_ getWithLong:a3]+ v3;
+  return [(OrgApacheLuceneUtilLongValues *)self->val$values_ getWithLong:long]+ v3;
 }
 
-- (OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_$2)initWithLong:(int64_t)a3 withOrgApacheLuceneUtilLongValues:(id)a4
+- (OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_$2)initWithLong:(int64_t)long withOrgApacheLuceneUtilLongValues:(id)values
 {
-  self->val$delta_ = a3;
-  JreStrongAssign(&self->val$values_, a4);
+  self->val$delta_ = long;
+  JreStrongAssign(&self->val$values_, values);
   OrgApacheLuceneUtilLongValues_init(self);
   return self;
 }

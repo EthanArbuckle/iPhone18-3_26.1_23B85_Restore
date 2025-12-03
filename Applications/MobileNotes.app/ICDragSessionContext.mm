@@ -1,24 +1,24 @@
 @interface ICDragSessionContext
-- (ICDragSessionContext)initWithModernManagedObjectContext:(id)a3 legacyManagedObjectContext:(id)a4;
-- (id)addItemIdentifierIfAppropriate:(id)a3 isEditingCollectionView:(BOOL)a4;
+- (ICDragSessionContext)initWithModernManagedObjectContext:(id)context legacyManagedObjectContext:(id)objectContext;
+- (id)addItemIdentifierIfAppropriate:(id)appropriate isEditingCollectionView:(BOOL)view;
 - (id)debugDescription;
-- (void)updateDropTargetCellsForPinNoteDrop:(BOOL)a3;
+- (void)updateDropTargetCellsForPinNoteDrop:(BOOL)drop;
 @end
 
 @implementation ICDragSessionContext
 
-- (ICDragSessionContext)initWithModernManagedObjectContext:(id)a3 legacyManagedObjectContext:(id)a4
+- (ICDragSessionContext)initWithModernManagedObjectContext:(id)context legacyManagedObjectContext:(id)objectContext
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  objectContextCopy = objectContext;
   v13.receiver = self;
   v13.super_class = ICDragSessionContext;
   v9 = [(ICDragSessionContext *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_modernManagedObjectContext, a3);
-    objc_storeStrong(&v10->_legacyManagedObjectContext, a4);
+    objc_storeStrong(&v9->_modernManagedObjectContext, context);
+    objc_storeStrong(&v10->_legacyManagedObjectContext, objectContext);
     currentSourceObjectIDs = v10->_currentSourceObjectIDs;
     v10->_currentSourceObjectIDs = &__NSArray0__struct;
   }
@@ -26,22 +26,22 @@
   return v10;
 }
 
-- (id)addItemIdentifierIfAppropriate:(id)a3 isEditingCollectionView:(BOOL)a4
+- (id)addItemIdentifierIfAppropriate:(id)appropriate isEditingCollectionView:(BOOL)view
 {
-  v6 = a3;
+  appropriateCopy = appropriate;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
-    v8 = [v7 object];
+    v7 = appropriateCopy;
+    object = [v7 object];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v6 = v7;
+    appropriateCopy = v7;
     if (isKindOfClass)
     {
-      v10 = [v7 object];
-      v6 = [v10 objectID];
+      object2 = [v7 object];
+      appropriateCopy = [object2 objectID];
     }
   }
 
@@ -51,18 +51,18 @@
     goto LABEL_38;
   }
 
-  if ([v6 ic_isEntityOfClass:objc_opt_class()])
+  if ([appropriateCopy ic_isEntityOfClass:objc_opt_class()])
   {
     if ([(ICDragSessionContext *)self dragSessionType]== 1 || ![(ICDragSessionContext *)self dragSessionType])
     {
       [(ICDragSessionContext *)self setDragSessionType:1];
-      v11 = [(ICDragSessionContext *)self modernManagedObjectContext];
-      v12 = [v11 objectWithID:v6];
+      modernManagedObjectContext = [(ICDragSessionContext *)self modernManagedObjectContext];
+      v12 = [modernManagedObjectContext objectWithID:appropriateCopy];
 
-      v13 = v6;
+      v13 = appropriateCopy;
       v14 = [ICAppURLUtilities appURLForNote:v12];
       v15 = v12;
-      v16 = [v15 title];
+      title = [v15 title];
       if ([v15 canBeSharedViaICloud])
       {
         v17 = v15;
@@ -73,7 +73,7 @@
         v17 = 0;
       }
 
-      if (v6)
+      if (appropriateCopy)
       {
         goto LABEL_23;
       }
@@ -84,7 +84,7 @@
 LABEL_38:
     v34 = 0;
     v14 = 0;
-    v16 = 0;
+    title = 0;
     v15 = 0;
     v17 = 0;
 LABEL_39:
@@ -92,7 +92,7 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  if ([v6 ic_isEntityOfClass:objc_opt_class()])
+  if ([appropriateCopy ic_isEntityOfClass:objc_opt_class()])
   {
     if ([(ICDragSessionContext *)self dragSessionType]!= 1 && [(ICDragSessionContext *)self dragSessionType])
     {
@@ -100,16 +100,16 @@ LABEL_39:
     }
 
     [(ICDragSessionContext *)self setDragSessionType:1];
-    v18 = [(ICDragSessionContext *)self legacyManagedObjectContext];
-    v15 = [v18 objectWithID:v6];
+    legacyManagedObjectContext = [(ICDragSessionContext *)self legacyManagedObjectContext];
+    v15 = [legacyManagedObjectContext objectWithID:appropriateCopy];
 
-    v19 = v6;
-    v20 = [ICAppURLUtilities appURLForHTMLNote:v15];
+    v19 = appropriateCopy;
+    shareURL = [ICAppURLUtilities appURLForHTMLNote:v15];
 LABEL_15:
-    v14 = v20;
-    v16 = [v15 title];
+    v14 = shareURL;
+    title = [v15 title];
     v17 = 0;
-    if (!v6)
+    if (!appropriateCopy)
     {
       goto LABEL_46;
     }
@@ -117,7 +117,7 @@ LABEL_15:
     goto LABEL_23;
   }
 
-  if ([v6 ic_isEntityOfClass:objc_opt_class()])
+  if ([appropriateCopy ic_isEntityOfClass:objc_opt_class()])
   {
     if ([(ICDragSessionContext *)self dragSessionType])
     {
@@ -125,12 +125,12 @@ LABEL_15:
     }
 
     [(ICDragSessionContext *)self setDragSessionType:2];
-    v21 = [(ICDragSessionContext *)self modernManagedObjectContext];
-    v22 = [v21 objectWithID:v6];
+    modernManagedObjectContext2 = [(ICDragSessionContext *)self modernManagedObjectContext];
+    v22 = [modernManagedObjectContext2 objectWithID:appropriateCopy];
 
-    v23 = v6;
+    v23 = appropriateCopy;
     v14 = [ICAppURLUtilities appURLForFolder:v22];
-    v16 = [v22 titleForTableViewCell];
+    title = [v22 titleForTableViewCell];
     if ([v22 canBeSharedViaICloud])
     {
       v17 = v22;
@@ -144,19 +144,19 @@ LABEL_15:
 
   else
   {
-    if (![v6 ic_isEntityOfClass:objc_opt_class()])
+    if (![appropriateCopy ic_isEntityOfClass:objc_opt_class()])
     {
-      if (![v6 ic_isEntityOfClass:objc_opt_class()] || -[ICDragSessionContext dragSessionType](self, "dragSessionType"))
+      if (![appropriateCopy ic_isEntityOfClass:objc_opt_class()] || -[ICDragSessionContext dragSessionType](self, "dragSessionType"))
       {
         goto LABEL_38;
       }
 
       [(ICDragSessionContext *)self setDragSessionType:3];
-      v39 = [(ICDragSessionContext *)self modernManagedObjectContext];
-      v15 = [v39 objectWithID:v6];
+      modernManagedObjectContext3 = [(ICDragSessionContext *)self modernManagedObjectContext];
+      v15 = [modernManagedObjectContext3 objectWithID:appropriateCopy];
 
-      v40 = v6;
-      v20 = [v15 shareURL];
+      v40 = appropriateCopy;
+      shareURL = [v15 shareURL];
       goto LABEL_15;
     }
 
@@ -166,18 +166,18 @@ LABEL_15:
     }
 
     [(ICDragSessionContext *)self setDragSessionType:2];
-    v35 = [(ICDragSessionContext *)self legacyManagedObjectContext];
-    v36 = [v35 objectWithID:v6];
+    legacyManagedObjectContext2 = [(ICDragSessionContext *)self legacyManagedObjectContext];
+    v36 = [legacyManagedObjectContext2 objectWithID:appropriateCopy];
 
-    v37 = v6;
+    v37 = appropriateCopy;
     v14 = [ICAppURLUtilities appURLForHTMLFolder:v36];
-    v16 = [v36 titleForTableViewCell];
+    title = [v36 titleForTableViewCell];
 
     v17 = 0;
   }
 
   v15 = 0;
-  if (!v6)
+  if (!appropriateCopy)
   {
 LABEL_46:
     v34 = 0;
@@ -185,11 +185,11 @@ LABEL_46:
   }
 
 LABEL_23:
-  v24 = [(NSArray *)self->_currentSourceObjectIDs arrayByAddingObject:v6];
+  v24 = [(NSArray *)self->_currentSourceObjectIDs arrayByAddingObject:appropriateCopy];
   currentSourceObjectIDs = self->_currentSourceObjectIDs;
   self->_currentSourceObjectIDs = v24;
 
-  v26 = [v6 URIRepresentation];
+  uRIRepresentation = [appropriateCopy URIRepresentation];
   v27 = [NSItemProvider alloc];
   if (v15)
   {
@@ -198,17 +198,17 @@ LABEL_23:
 
   else
   {
-    v28 = [v27 initWithItem:v26 typeIdentifier:@"com.apple.mobilenotes.managed.object.id.url"];
+    v28 = [v27 initWithItem:uRIRepresentation typeIdentifier:@"com.apple.mobilenotes.managed.object.id.url"];
   }
 
   v29 = v28;
-  [v28 setSuggestedName:v16];
-  if (!a4)
+  [v28 setSuggestedName:title];
+  if (!view)
   {
     v30 = [[NSUserActivity alloc] initWithActivityType:@"com.apple.notes.open.object"];
-    [v30 setTitle:v16];
-    v31 = [v14 absoluteString];
-    [v30 setTargetContentIdentifier:v31];
+    [v30 setTitle:title];
+    absoluteString = [v14 absoluteString];
+    [v30 setTargetContentIdentifier:absoluteString];
 
     [v30 setUserInfo:&off_10066E380];
     [v29 registerObject:v30 visibility:0];
@@ -221,17 +221,17 @@ LABEL_23:
   }
 
   v33 = [[UIDragItem alloc] initWithItemProvider:v29];
-  [v33 setLocalObject:v6];
+  [v33 setLocalObject:appropriateCopy];
 
-  v34 = v6;
+  v34 = appropriateCopy;
 LABEL_40:
 
   return v33;
 }
 
-- (void)updateDropTargetCellsForPinNoteDrop:(BOOL)a3
+- (void)updateDropTargetCellsForPinNoteDrop:(BOOL)drop
 {
-  v3 = a3;
+  dropCopy = drop;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -253,7 +253,7 @@ LABEL_40:
 
         objc_opt_class();
         v9 = ICDynamicCast();
-        [v9 setPinDropTarget:v3];
+        [v9 setPinDropTarget:dropCopy];
 
         ++v8;
       }
@@ -280,9 +280,9 @@ LABEL_40:
     v5 = off_100647358[v4];
   }
 
-  v6 = [(ICDragSessionContext *)self currentSourceObjectIDs];
-  v7 = [(ICDragSessionContext *)self currentDropTargetItemIDs];
-  v8 = [NSString stringWithFormat:@"<%@: %p> dragSessionType: %@, currentSourceObjectIDs: %@, currentDropTargetItemIDs: %@", v3, self, v5, v6, v7];
+  currentSourceObjectIDs = [(ICDragSessionContext *)self currentSourceObjectIDs];
+  currentDropTargetItemIDs = [(ICDragSessionContext *)self currentDropTargetItemIDs];
+  v8 = [NSString stringWithFormat:@"<%@: %p> dragSessionType: %@, currentSourceObjectIDs: %@, currentDropTargetItemIDs: %@", v3, self, v5, currentSourceObjectIDs, currentDropTargetItemIDs];
 
   return v8;
 }

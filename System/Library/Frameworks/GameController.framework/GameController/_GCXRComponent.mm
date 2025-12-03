@@ -1,21 +1,21 @@
 @interface _GCXRComponent
-+ (id)componentWithPhysicalInputProfile:(id)a3;
-- (_GCXRComponent)initWithIdentifier:(id)a3;
-- (void)setController:(id)a3;
++ (id)componentWithPhysicalInputProfile:(id)profile;
+- (_GCXRComponent)initWithIdentifier:(id)identifier;
+- (void)setController:(id)controller;
 - (void)updateSkeletons;
 @end
 
 @implementation _GCXRComponent
 
-- (_GCXRComponent)initWithIdentifier:(id)a3
+- (_GCXRComponent)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = _GCXRComponent;
   v5 = [(_GCXRComponent *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copyWithZone:0];
+    v6 = [identifierCopy copyWithZone:0];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -23,40 +23,40 @@
   return v5;
 }
 
-- (void)setController:(id)a3
+- (void)setController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
 
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_controller, obj);
-    v5 = [obj physicalInputProfile];
+    physicalInputProfile = [obj physicalInputProfile];
     physicalInput = self->_physicalInput;
-    self->_physicalInput = v5;
+    self->_physicalInput = physicalInputProfile;
 
     [(_GCXRComponent *)self updateSkeletons];
   }
 }
 
-+ (id)componentWithPhysicalInputProfile:(id)a3
++ (id)componentWithPhysicalInputProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [v4 buttons];
-  v6 = [v5 objectForKeyedSubscript:@"XRPropertyButtonFingerRing"];
+  profileCopy = profile;
+  buttons = [profileCopy buttons];
+  v6 = [buttons objectForKeyedSubscript:@"XRPropertyButtonFingerRing"];
 
   if (v6)
   {
     v7 = [_GCXRComponent alloc];
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [(_GCXRComponent *)v7 initWithIdentifier:v8];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v9 = [(_GCXRComponent *)v7 initWithIdentifier:uUID];
 
     if (v9)
     {
-      objc_storeStrong((v9 + 24), a3);
-      v10 = [MEMORY[0x1E695DF90] dictionary];
+      objc_storeStrong((v9 + 24), profile);
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v11 = *(v9 + 48);
-      *(v9 + 48) = v10;
+      *(v9 + 48) = dictionary;
     }
   }
 
@@ -76,27 +76,27 @@
 
   if (v4)
   {
-    v5 = [v4 handedness];
+    handedness = [v4 handedness];
   }
 
   else
   {
-    v6 = [(GCPhysicalInputProfile *)self->_physicalInput buttons];
-    v7 = [v6 objectForKeyedSubscript:@"GCPropertyValueHandedness"];
+    buttons = [(GCPhysicalInputProfile *)self->_physicalInput buttons];
+    v7 = [buttons objectForKeyedSubscript:@"GCPropertyValueHandedness"];
 
     if (v7)
     {
       [v7 value];
-      v5 = v8;
+      handedness = v8;
     }
 
     else
     {
-      v5 = 0;
+      handedness = 0;
     }
   }
 
-  if ((v5 | 2) == 3)
+  if ((handedness | 2) == 3)
   {
     v9 = [_GCHandSkeleton alloc];
     physicalInput = self->_physicalInput;
@@ -107,13 +107,13 @@
     self->_leftHandSkeleton = v11;
 
     [(NSMutableDictionary *)self->_handSkeletons setValue:self->_leftHandSkeleton forKey:@"GCHandSkeletonLeft"];
-    if (v5 == 1)
+    if (handedness == 1)
     {
       goto LABEL_11;
     }
   }
 
-  if ((v5 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((handedness & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v14 = [_GCHandSkeleton alloc];
     v15 = self->_physicalInput;
@@ -124,7 +124,7 @@
     self->_rightHandSkeleton = v16;
 
     [(NSMutableDictionary *)self->_handSkeletons setValue:self->_rightHandSkeleton forKey:@"GCHandSkeletonRight"];
-    if (v5 == 2)
+    if (handedness == 2)
     {
 LABEL_11:
       [(NSMutableDictionary *)self->_handSkeletons setValue:*p_leftHandSkeleton forKey:@"GCHandSkeletonAny"];

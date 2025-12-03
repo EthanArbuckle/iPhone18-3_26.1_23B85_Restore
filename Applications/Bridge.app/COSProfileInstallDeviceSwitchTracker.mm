@@ -1,37 +1,37 @@
 @interface COSProfileInstallDeviceSwitchTracker
-+ (id)selectDevice:(id)a3 currentDevice:(id)a4 completionBlock:(id)a5;
++ (id)selectDevice:(id)device currentDevice:(id)currentDevice completionBlock:(id)block;
 - (void)_cancelConnectionTimeout;
-- (void)_connectionFinishedWithSuccess:(BOOL)a3;
+- (void)_connectionFinishedWithSuccess:(BOOL)success;
 - (void)connectToDevice;
-- (void)didBTConnectDevice:(id)a3;
-- (void)didIDSConnectDevice:(id)a3;
-- (void)didUpdateAsDisconnectedDevice:(id)a3;
+- (void)didBTConnectDevice:(id)device;
+- (void)didIDSConnectDevice:(id)device;
+- (void)didUpdateAsDisconnectedDevice:(id)device;
 - (void)rollback;
 @end
 
 @implementation COSProfileInstallDeviceSwitchTracker
 
-+ (id)selectDevice:(id)a3 currentDevice:(id)a4 completionBlock:(id)a5
++ (id)selectDevice:(id)device currentDevice:(id)currentDevice completionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  deviceCopy = device;
+  currentDeviceCopy = currentDevice;
+  blockCopy = block;
   v10 = pbb_bridge_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 136446722;
     v14 = "+[COSProfileInstallDeviceSwitchTracker selectDevice:currentDevice:completionBlock:]";
     v15 = 2112;
-    v16 = v7;
+    v16 = deviceCopy;
     v17 = 2112;
-    v18 = v8;
+    v18 = currentDeviceCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}s: selected device: %@; current device: %@", &v13, 0x20u);
   }
 
   v11 = objc_alloc_init(COSProfileInstallDeviceSwitchTracker);
-  [(COSProfileInstallDeviceSwitchTracker *)v11 setSwitchToDevice:v7];
-  [(COSProfileInstallDeviceSwitchTracker *)v11 setCurrentActiveDevice:v8];
-  [(COSProfileInstallDeviceSwitchTracker *)v11 setBlock:v9];
+  [(COSProfileInstallDeviceSwitchTracker *)v11 setSwitchToDevice:deviceCopy];
+  [(COSProfileInstallDeviceSwitchTracker *)v11 setCurrentActiveDevice:currentDeviceCopy];
+  [(COSProfileInstallDeviceSwitchTracker *)v11 setBlock:blockCopy];
 
   return v11;
 }
@@ -64,9 +64,9 @@
 {
   objc_initWeak(&location, self);
   v3 = [(NRDevice *)self->_switchToDevice valueForProperty:NRDevicePropertyIsAltAccount];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
   connectionTracker = self->_connectionTracker;
-  if (v4)
+  if (bOOLValue)
   {
     if (!connectionTracker)
     {
@@ -152,14 +152,14 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_connectionFinishedWithSuccess:(BOOL)a3
+- (void)_connectionFinishedWithSuccess:(BOOL)success
 {
-  v3 = a3;
+  successCopy = success;
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v3)
+    if (successCopy)
     {
       v6 = @"YES";
     }
@@ -176,56 +176,56 @@
   v7[2] = sub_1000865B8;
   v7[3] = &unk_1002693C0;
   v7[4] = self;
-  v8 = v3;
+  v8 = successCopy;
   dispatch_async(&_dispatch_main_q, v7);
 }
 
-- (void)didIDSConnectDevice:(id)a3
+- (void)didIDSConnectDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   connectionTracker = self->_connectionTracker;
   self->_connectionTracker = 0;
 
   v6 = pbb_bridge_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 pairingID];
+    pairingID = [deviceCopy pairingID];
     v8 = 136315394;
     v9 = "[COSProfileInstallDeviceSwitchTracker didIDSConnectDevice:]";
     v10 = 2112;
-    v11 = v7;
+    v11 = pairingID;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s - %@", &v8, 0x16u);
   }
 
   [(COSProfileInstallDeviceSwitchTracker *)self _connectionFinishedWithSuccess:1];
 }
 
-- (void)didBTConnectDevice:(id)a3
+- (void)didBTConnectDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = pbb_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 pairingID];
+    pairingID = [deviceCopy pairingID];
     v6 = 136315394;
     v7 = "[COSProfileInstallDeviceSwitchTracker didBTConnectDevice:]";
     v8 = 2112;
-    v9 = v5;
+    v9 = pairingID;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s - %@", &v6, 0x16u);
   }
 }
 
-- (void)didUpdateAsDisconnectedDevice:(id)a3
+- (void)didUpdateAsDisconnectedDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = pbb_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 pairingID];
+    pairingID = [deviceCopy pairingID];
     v6 = 136315394;
     v7 = "[COSProfileInstallDeviceSwitchTracker didUpdateAsDisconnectedDevice:]";
     v8 = 2112;
-    v9 = v5;
+    v9 = pairingID;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s - %@", &v6, 0x16u);
   }
 }

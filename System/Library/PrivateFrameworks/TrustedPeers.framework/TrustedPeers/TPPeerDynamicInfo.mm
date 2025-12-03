@@ -1,14 +1,14 @@
 @interface TPPeerDynamicInfo
-+ (id)dynamicInfoPBWithClock:(unint64_t)a3 includedPeerIDs:(id)a4 excludedPeerIDs:(id)a5 dispositions:(id)a6 preapprovals:(id)a7;
-+ (id)dynamicInfoWithClock:(unint64_t)a3 includedPeerIDs:(id)a4 excludedPeerIDs:(id)a5 dispositions:(id)a6 preapprovals:(id)a7 signingKeyPair:(id)a8 error:(id *)a9;
-+ (id)dynamicInfoWithData:(id)a3 sig:(id)a4;
-- (BOOL)checkSignatureWithKey:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPeerDynamicInfo:(id)a3;
++ (id)dynamicInfoPBWithClock:(unint64_t)clock includedPeerIDs:(id)ds excludedPeerIDs:(id)iDs dispositions:(id)dispositions preapprovals:(id)preapprovals;
++ (id)dynamicInfoWithClock:(unint64_t)clock includedPeerIDs:(id)ds excludedPeerIDs:(id)iDs dispositions:(id)dispositions preapprovals:(id)preapprovals signingKeyPair:(id)pair error:(id *)error;
++ (id)dynamicInfoWithData:(id)data sig:(id)sig;
+- (BOOL)checkSignatureWithKey:(id)key;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPeerDynamicInfo:(id)info;
 - (NSData)data;
 - (NSData)sig;
 - (NSDictionary)dispositions;
-- (TPPeerDynamicInfo)initWithObj:(id)a3 tsd:(id)a4;
+- (TPPeerDynamicInfo)initWithObj:(id)obj tsd:(id)tsd;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)pb;
@@ -16,10 +16,10 @@
 
 @implementation TPPeerDynamicInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -27,7 +27,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TPPeerDynamicInfo *)self isEqualToPeerDynamicInfo:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TPPeerDynamicInfo *)self isEqualToPeerDynamicInfo:equalCopy];
   }
 
   return v5;
@@ -36,8 +36,8 @@
 - (id)description
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(TPPeerDynamicInfo *)self dictionaryRepresentation];
-  v5 = [v4 description];
+  dictionaryRepresentation = [(TPPeerDynamicInfo *)self dictionaryRepresentation];
+  v5 = [dictionaryRepresentation description];
 
   objc_autoreleasePoolPop(v3);
 
@@ -48,29 +48,29 @@
 {
   v3 = objc_autoreleasePoolPush();
   v4 = [(TPPeerDynamicInfo *)self pb];
-  v5 = [v4 dictionaryRepresentation];
+  dictionaryRepresentation = [v4 dictionaryRepresentation];
 
   objc_autoreleasePoolPop(v3);
 
-  return v5;
+  return dictionaryRepresentation;
 }
 
-- (BOOL)isEqualToPeerDynamicInfo:(id)a3
+- (BOOL)isEqualToPeerDynamicInfo:(id)info
 {
-  v4 = a3;
-  if (v4 == self)
+  infoCopy = info;
+  if (infoCopy == self)
   {
     v9 = 1;
   }
 
   else
   {
-    v5 = [(TPPeerDynamicInfo *)self data];
-    v6 = [(TPPeerDynamicInfo *)v4 data];
-    if ([v5 isEqualToData:v6])
+    data = [(TPPeerDynamicInfo *)self data];
+    data2 = [(TPPeerDynamicInfo *)infoCopy data];
+    if ([data isEqualToData:data2])
     {
       v7 = [(TPPeerDynamicInfo *)self sig];
-      v8 = [(TPPeerDynamicInfo *)v4 sig];
+      v8 = [(TPPeerDynamicInfo *)infoCopy sig];
       v9 = [v7 isEqualToData:v8];
     }
 
@@ -94,16 +94,16 @@
 - (NSData)data
 {
   v2 = [(TPPeerDynamicInfo *)self tsd];
-  v3 = [v2 data];
+  data = [v2 data];
 
-  return v3;
+  return data;
 }
 
-- (BOOL)checkSignatureWithKey:(id)a3
+- (BOOL)checkSignatureWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [(TPPeerDynamicInfo *)self tsd];
-  v6 = [v5 checkSignatureWithKey:v4];
+  v6 = [v5 checkSignatureWithKey:keyCopy];
 
   return v6;
 }
@@ -114,7 +114,7 @@
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v5 = objc_autoreleasePoolPush();
   v6 = [(TPPeerDynamicInfo *)self pb];
-  v7 = [v6 dispositions];
+  dispositions = [v6 dispositions];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __33__TPPeerDynamicInfo_dispositions__block_invoke;
@@ -123,7 +123,7 @@
   v12 = v8;
   v9 = v3;
   v13 = v9;
-  [v7 enumerateObjectsUsingBlock:v11];
+  [dispositions enumerateObjectsUsingBlock:v11];
 
   objc_autoreleasePoolPop(v5);
 
@@ -154,54 +154,54 @@ void __33__TPPeerDynamicInfo_dispositions__block_invoke(uint64_t a1, void *a2)
 - (id)pb
 {
   v3 = [TPPBPeerDynamicInfo alloc];
-  v4 = [(TPPeerDynamicInfo *)self data];
-  v5 = [(TPPBPeerDynamicInfo *)v3 initWithData:v4];
+  data = [(TPPeerDynamicInfo *)self data];
+  v5 = [(TPPBPeerDynamicInfo *)v3 initWithData:data];
 
   return v5;
 }
 
-- (TPPeerDynamicInfo)initWithObj:(id)a3 tsd:(id)a4
+- (TPPeerDynamicInfo)initWithObj:(id)obj tsd:(id)tsd
 {
-  v6 = a3;
-  v7 = a4;
+  objCopy = obj;
+  tsdCopy = tsd;
   v8 = +[TPStringTable defaultTable];
   v20.receiver = self;
   v20.super_class = TPPeerDynamicInfo;
   v9 = [(TPPeerDynamicInfo *)&v20 init];
   if (v9)
   {
-    v9->_clock = [v6 clock];
-    v10 = [v6 includeds];
-    v11 = [v8 setWithArray:v10];
+    v9->_clock = [objCopy clock];
+    includeds = [objCopy includeds];
+    v11 = [v8 setWithArray:includeds];
     includedPeerIDs = v9->_includedPeerIDs;
     v9->_includedPeerIDs = v11;
 
-    v13 = [v6 excludeds];
-    v14 = [v8 setWithArray:v13];
+    excludeds = [objCopy excludeds];
+    v14 = [v8 setWithArray:excludeds];
     excludedPeerIDs = v9->_excludedPeerIDs;
     v9->_excludedPeerIDs = v14;
 
-    v16 = [v6 preapprovals];
-    v17 = [v8 setWithArray:v16];
+    preapprovals = [objCopy preapprovals];
+    v17 = [v8 setWithArray:preapprovals];
     preapprovals = v9->_preapprovals;
     v9->_preapprovals = v17;
 
-    objc_storeStrong(&v9->_tsd, a4);
+    objc_storeStrong(&v9->_tsd, tsd);
   }
 
   return v9;
 }
 
-+ (id)dynamicInfoWithData:(id)a3 sig:(id)a4
++ (id)dynamicInfoWithData:(id)data sig:(id)sig
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  sigCopy = sig;
   v7 = objc_autoreleasePoolPush();
-  v8 = [[TPPBPeerDynamicInfo alloc] initWithData:v5];
+  v8 = [[TPPBPeerDynamicInfo alloc] initWithData:dataCopy];
   if (v8)
   {
     v9 = [TPPeerDynamicInfo alloc];
-    v10 = [[TPTypedSignedData alloc] initWithData:v5 sig:v6 signatureTypeName:@"TPPB.PeerDynamicInfo"];
+    v10 = [[TPTypedSignedData alloc] initWithData:dataCopy sig:sigCopy signatureTypeName:@"TPPB.PeerDynamicInfo"];
     v11 = [(TPPeerDynamicInfo *)v9 initWithObj:v8 tsd:v10];
   }
 
@@ -215,64 +215,64 @@ void __33__TPPeerDynamicInfo_dispositions__block_invoke(uint64_t a1, void *a2)
   return v11;
 }
 
-+ (id)dynamicInfoWithClock:(unint64_t)a3 includedPeerIDs:(id)a4 excludedPeerIDs:(id)a5 dispositions:(id)a6 preapprovals:(id)a7 signingKeyPair:(id)a8 error:(id *)a9
++ (id)dynamicInfoWithClock:(unint64_t)clock includedPeerIDs:(id)ds excludedPeerIDs:(id)iDs dispositions:(id)dispositions preapprovals:(id)preapprovals signingKeyPair:(id)pair error:(id *)error
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  dispositionsCopy = dispositions;
+  preapprovalsCopy = preapprovals;
+  pairCopy = pair;
   v20 = objc_autoreleasePoolPush();
-  v27 = v15;
-  v21 = [a1 dynamicInfoPBWithClock:a3 includedPeerIDs:v15 excludedPeerIDs:v16 dispositions:v17 preapprovals:v18];
-  v22 = [v21 data];
+  v27 = dsCopy;
+  v21 = [self dynamicInfoPBWithClock:clock includedPeerIDs:dsCopy excludedPeerIDs:iDsCopy dispositions:dispositionsCopy preapprovals:preapprovalsCopy];
+  data = [v21 data];
   v28 = 0;
-  v23 = [[TPTypedSignedData alloc] initWithData:v22 key:v19 signatureTypeName:@"TPPB.PeerDynamicInfo" error:&v28];
+  v23 = [[TPTypedSignedData alloc] initWithData:data key:pairCopy signatureTypeName:@"TPPB.PeerDynamicInfo" error:&v28];
   v24 = v28;
   if (v23)
   {
-    v15 = [[TPPeerDynamicInfo alloc] initWithObj:v21 tsd:v23];
+    dsCopy = [[TPPeerDynamicInfo alloc] initWithObj:v21 tsd:v23];
   }
 
   objc_autoreleasePoolPop(v20);
   if (!v23)
   {
-    v15 = 0;
-    if (a9)
+    dsCopy = 0;
+    if (error)
     {
       if (v24)
       {
         v25 = v24;
-        v15 = 0;
-        *a9 = v24;
+        dsCopy = 0;
+        *error = v24;
       }
     }
   }
 
-  return v15;
+  return dsCopy;
 }
 
-+ (id)dynamicInfoPBWithClock:(unint64_t)a3 includedPeerIDs:(id)a4 excludedPeerIDs:(id)a5 dispositions:(id)a6 preapprovals:(id)a7
++ (id)dynamicInfoPBWithClock:(unint64_t)clock includedPeerIDs:(id)ds excludedPeerIDs:(id)iDs dispositions:(id)dispositions preapprovals:(id)preapprovals
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
+  preapprovalsCopy = preapprovals;
+  dispositionsCopy = dispositions;
+  iDsCopy = iDs;
+  dsCopy = ds;
   v15 = objc_alloc_init(TPPBPeerDynamicInfo);
-  [(TPPBPeerDynamicInfo *)v15 setClock:a3];
-  v16 = [v14 allObjects];
+  [(TPPBPeerDynamicInfo *)v15 setClock:clock];
+  allObjects = [dsCopy allObjects];
 
-  v17 = [v16 mutableCopy];
+  v17 = [allObjects mutableCopy];
   [(TPPBPeerDynamicInfo *)v15 setIncludeds:v17];
 
-  v18 = [v13 allObjects];
+  allObjects2 = [iDsCopy allObjects];
 
-  v19 = [v18 mutableCopy];
+  v19 = [allObjects2 mutableCopy];
   [(TPPBPeerDynamicInfo *)v15 setExcludeds:v19];
 
-  v20 = [v11 allObjects];
+  allObjects3 = [preapprovalsCopy allObjects];
 
-  v21 = [v20 mutableCopy];
+  v21 = [allObjects3 mutableCopy];
   [(TPPBPeerDynamicInfo *)v15 setPreapprovals:v21];
 
   v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -284,7 +284,7 @@ void __33__TPPeerDynamicInfo_dispositions__block_invoke(uint64_t a1, void *a2)
   v25[3] = &unk_279DED7E0;
   v23 = v15;
   v26 = v23;
-  [v12 enumerateKeysAndObjectsUsingBlock:v25];
+  [dispositionsCopy enumerateKeysAndObjectsUsingBlock:v25];
 
   return v23;
 }

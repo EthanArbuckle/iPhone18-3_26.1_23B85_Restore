@@ -1,11 +1,11 @@
 @interface CAMTimerCache
-- (BOOL)isRunningTimerForKey:(id)a3;
+- (BOOL)isRunningTimerForKey:(id)key;
 - (CAMTimerCache)init;
 - (CAMTimerCacheDelegate)delegate;
-- (void)_handleTimer:(id)a3 forKey:(id)a4;
+- (void)_handleTimer:(id)timer forKey:(id)key;
 - (void)cancelAllTimers;
-- (void)cancelTimerForKey:(id)a3;
-- (void)startTimerForKey:(id)a3 duration:(double)a4;
+- (void)cancelTimerForKey:(id)key;
+- (void)startTimerForKey:(id)key duration:(double)duration;
 @end
 
 @implementation CAMTimerCache
@@ -25,11 +25,11 @@
   return v2;
 }
 
-- (void)startTimerForKey:(id)a3 duration:(double)a4
+- (void)startTimerForKey:(id)key duration:(double)duration
 {
-  v6 = a3;
-  v7 = [(CAMTimerCache *)self _timersByType];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  keyCopy = key;
+  _timersByType = [(CAMTimerCache *)self _timersByType];
+  v8 = [_timersByType objectForKeyedSubscript:keyCopy];
   if (v8)
   {
     v9 = v8;
@@ -47,17 +47,17 @@
     objc_copyWeak(&v16, &location);
     v9 = v10;
     v14 = v9;
-    v15 = v6;
+    v15 = keyCopy;
     dispatch_source_set_event_handler(v9, v13);
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
   }
 
-  v11 = a4 * 1000000000.0;
+  v11 = duration * 1000000000.0;
   v12 = dispatch_time(0, v11);
   dispatch_source_set_timer(v9, v12, 0xFFFFFFFFFFFFFFFFLL, (v11 * 0.1));
-  [v7 setObject:v9 forKeyedSubscript:v6];
+  [_timersByType setObject:v9 forKeyedSubscript:keyCopy];
   dispatch_resume(v9);
 }
 
@@ -67,19 +67,19 @@ void __43__CAMTimerCache_startTimerForKey_duration___block_invoke(uint64_t a1)
   [WeakRetained _handleTimer:*(a1 + 32) forKey:*(a1 + 40)];
 }
 
-- (void)_handleTimer:(id)a3 forKey:(id)a4
+- (void)_handleTimer:(id)timer forKey:(id)key
 {
-  source = a3;
-  v6 = a4;
-  v7 = [(CAMTimerCache *)self _timersByType];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  source = timer;
+  keyCopy = key;
+  _timersByType = [(CAMTimerCache *)self _timersByType];
+  v8 = [_timersByType objectForKeyedSubscript:keyCopy];
 
   v9 = source;
   if (v8 == source)
   {
-    [v7 setObject:0 forKeyedSubscript:v6];
-    v10 = [(CAMTimerCache *)self delegate];
-    [v10 timerCache:self timerDidFireForKey:v6];
+    [_timersByType setObject:0 forKeyedSubscript:keyCopy];
+    delegate = [(CAMTimerCache *)self delegate];
+    [delegate timerCache:self timerDidFireForKey:keyCopy];
 
     v9 = source;
   }
@@ -87,29 +87,29 @@ void __43__CAMTimerCache_startTimerForKey_duration___block_invoke(uint64_t a1)
   dispatch_source_cancel(v9);
 }
 
-- (void)cancelTimerForKey:(id)a3
+- (void)cancelTimerForKey:(id)key
 {
-  v7 = a3;
-  v4 = [(CAMTimerCache *)self _timersByType];
-  v5 = [v4 objectForKeyedSubscript:v7];
+  keyCopy = key;
+  _timersByType = [(CAMTimerCache *)self _timersByType];
+  v5 = [_timersByType objectForKeyedSubscript:keyCopy];
   v6 = v5;
   if (v5)
   {
     dispatch_source_cancel(v5);
-    [v4 setObject:0 forKeyedSubscript:v7];
+    [_timersByType setObject:0 forKeyedSubscript:keyCopy];
   }
 }
 
 - (void)cancelAllTimers
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = [(CAMTimerCache *)self _timersByType];
+  _timersByType = [(CAMTimerCache *)self _timersByType];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [v2 allValues];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [_timersByType allValues];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -121,27 +121,27 @@ void __43__CAMTimerCache_startTimerForKey_duration___block_invoke(uint64_t a1)
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         dispatch_source_cancel(*(*(&v8 + 1) + 8 * v7++));
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 
-  [v2 removeAllObjects];
+  [_timersByType removeAllObjects];
 }
 
-- (BOOL)isRunningTimerForKey:(id)a3
+- (BOOL)isRunningTimerForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CAMTimerCache *)self _timersByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  _timersByType = [(CAMTimerCache *)self _timersByType];
+  v6 = [_timersByType objectForKeyedSubscript:keyCopy];
 
   return v6 != 0;
 }

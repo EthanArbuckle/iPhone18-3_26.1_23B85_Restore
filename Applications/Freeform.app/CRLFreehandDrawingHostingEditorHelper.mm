@@ -1,17 +1,17 @@
 @interface CRLFreehandDrawingHostingEditorHelper
-+ (id)makeCopyOfSelectedDrawingItemsFromHostingEditor:(id)a3;
++ (id)makeCopyOfSelectedDrawingItemsFromHostingEditor:(id)editor;
 @end
 
 @implementation CRLFreehandDrawingHostingEditorHelper
 
-+ (id)makeCopyOfSelectedDrawingItemsFromHostingEditor:(id)a3
++ (id)makeCopyOfSelectedDrawingItemsFromHostingEditor:(id)editor
 {
-  v58 = a3;
+  editorCopy = editor;
   v60 = +[NSMutableArray array];
-  v64 = [v58 interactiveCanvasController];
-  v62 = [v64 canvasEditor];
-  v3 = v64;
-  if (!v64)
+  interactiveCanvasController = [editorCopy interactiveCanvasController];
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  v3 = interactiveCanvasController;
+  if (!interactiveCanvasController)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -42,14 +42,14 @@
     v3 = 0;
   }
 
-  v7 = [v3 editorController];
-  v56 = [v7 selectionPath];
+  editorController = [v3 editorController];
+  selectionPath = [editorController selectionPath];
 
-  v8 = [v64 selectionModelTranslator];
-  v55 = [v8 boardItemsForSelectionPath:v56];
+  selectionModelTranslator = [interactiveCanvasController selectionModelTranslator];
+  v55 = [selectionModelTranslator boardItemsForSelectionPath:selectionPath];
 
-  v57 = [v58 drawingRepresetativeItemsFromBoardItems:v55];
-  v9 = [v64 topLevelZOrderedSiblingsOfInfos:v57];
+  v57 = [editorCopy drawingRepresetativeItemsFromBoardItems:v55];
+  v9 = [interactiveCanvasController topLevelZOrderedSiblingsOfInfos:v57];
   v10 = [v9 crl_arrayWithObjectsInSet:v57];
 
   v67 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v10 count]);
@@ -88,12 +88,12 @@
 
   if ([v67 count])
   {
-    v17 = [v64 editingCoordinator];
-    v69 = [v17 boardItemFactory];
+    editingCoordinator = [interactiveCanvasController editingCoordinator];
+    boardItemFactory = [editingCoordinator boardItemFactory];
 
-    v54 = [v58 drawingItemsFromCurrentSelectionPath];
-    v18 = [v64 topLevelZOrderedSiblingsOfInfos:v54];
-    v19 = [v18 crl_arrayWithObjectsInSet:v54];
+    drawingItemsFromCurrentSelectionPath = [editorCopy drawingItemsFromCurrentSelectionPath];
+    v18 = [interactiveCanvasController topLevelZOrderedSiblingsOfInfos:drawingItemsFromCurrentSelectionPath];
+    v19 = [v18 crl_arrayWithObjectsInSet:drawingItemsFromCurrentSelectionPath];
 
     v77 = 0u;
     v78 = 0u;
@@ -122,16 +122,16 @@
           *&v84[16] = sub_1003DB9AC;
           *&v84[24] = sub_1003DB9BC;
           *&v84[32] = 0;
-          v22 = [v62 selectionPathWithInfo:v21];
+          v22 = [canvasEditor selectionPathWithInfo:v21];
           v74[0] = _NSConcreteStackBlock;
           v74[1] = 3221225472;
           v74[2] = sub_1003DB9C4;
           v74[3] = &unk_101857988;
           v74[4] = v21;
           v74[5] = v83;
-          [v64 forLayoutNearestVisibleRectForInfosForSelectionPath:v22 performBlock:v74];
+          [interactiveCanvasController forLayoutNearestVisibleRectForInfosForSelectionPath:v22 performBlock:v74];
 
-          v68 = [v69 makeFreehandDrawingItemWithGeometry:*(*v84 + 40)];
+          v68 = [boardItemFactory makeFreehandDrawingItemWithGeometry:*(*v84 + 40)];
           v23 = +[NSMutableArray array];
           v72 = 0u;
           v73 = 0u;
@@ -152,13 +152,13 @@
                 }
 
                 v28 = *(*(&v70 + 1) + 8 * j);
-                v29 = [v28 parentInfo];
-                v30 = v29 == v21;
+                parentInfo = [v28 parentInfo];
+                v30 = parentInfo == v21;
 
                 if (v30)
                 {
                   v31 = objc_opt_class();
-                  v32 = [v69 makeDuplicateOfBoardItem:v28];
+                  v32 = [boardItemFactory makeDuplicateOfBoardItem:v28];
                   v33 = sub_100013F00(v31, v32);
 
                   [v23 addObject:v33];
@@ -172,11 +172,11 @@
             while (v25);
           }
 
-          v34 = [v64 board];
-          [v68 beforeInsertionAddNewItems:v23 board:v34 error:0];
+          board = [interactiveCanvasController board];
+          [v68 beforeInsertionAddNewItems:v23 board:board error:0];
 
-          v35 = [v68 childItems];
-          v36 = [v35 count] == 0;
+          childItems = [v68 childItems];
+          v36 = [childItems count] == 0;
 
           if (v36)
           {
@@ -221,8 +221,8 @@
             [CRLAssertionHandler handleFailureInFunction:v40 file:v41 lineNumber:75 isFatal:0 description:"Every freehand info should have at least one child!"];
           }
 
-          v42 = [v68 childItems];
-          v43 = [v42 count] == 0;
+          childItems2 = [v68 childItems];
+          v43 = [childItems2 count] == 0;
 
           if (!v43)
           {

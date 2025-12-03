@@ -1,48 +1,48 @@
 @interface PXPostAssetsToSharedAlbumAction
-- (PXPostAssetsToSharedAlbumAction)initWithSharedAlbum:(id)a3 assets:(id)a4 comment:(id)a5;
+- (PXPostAssetsToSharedAlbumAction)initWithSharedAlbum:(id)album assets:(id)assets comment:(id)comment;
 - (id)presentationEnvironment;
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXPostAssetsToSharedAlbumAction
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
   v4 = MEMORY[0x1E696ABC0];
-  v5 = a3;
+  undoCopy = undo;
   v6 = [v4 px_genericErrorWithDebugDescription:@"No undo support for post actions"];
-  (*(a3 + 2))(v5, 0, v6);
+  (*(undo + 2))(undoCopy, 0, v6);
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionCopy = action;
   v5 = self->_sharedAlbum;
   v6 = PLSharedAlbumsGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(PHAssetCollection *)v5 uuid];
+    uuid = [(PHAssetCollection *)v5 uuid];
     *buf = 138543362;
-    v19 = v7;
+    v19 = uuid;
     _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEFAULT, "IPXSharedAlbumPostToAction: Posting assets to shared album with UUID=%{public}@", buf, 0xCu);
   }
 
-  v8 = [(PXPostAssetsToSharedAlbumAction *)self presentationEnvironment];
-  v9 = [(PXAssetsAction *)self assets];
+  presentationEnvironment = [(PXPostAssetsToSharedAlbumAction *)self presentationEnvironment];
+  assets = [(PXAssetsAction *)self assets];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __49__PXPostAssetsToSharedAlbumAction_performAction___block_invoke;
   v13[3] = &unk_1E77358A0;
   v14 = v5;
-  v15 = self;
-  v16 = v8;
-  v17 = v4;
-  v10 = v4;
-  v11 = v8;
+  selfCopy = self;
+  v16 = presentationEnvironment;
+  v17 = actionCopy;
+  v10 = actionCopy;
+  v11 = presentationEnvironment;
   v12 = v5;
-  _PXSharedAlbumsValidateSharedAlbumAddAssets(v12, v9, v11, 0, v13);
+  _PXSharedAlbumsValidateSharedAlbumAddAssets(v12, assets, v11, 0, v13);
 }
 
 void __49__PXPostAssetsToSharedAlbumAction_performAction___block_invoke(uint64_t a1, void *a2)
@@ -72,31 +72,31 @@ void __49__PXPostAssetsToSharedAlbumAction_performAction___block_invoke(uint64_t
 LABEL_6:
 }
 
-- (PXPostAssetsToSharedAlbumAction)initWithSharedAlbum:(id)a3 assets:(id)a4 comment:(id)a5
+- (PXPostAssetsToSharedAlbumAction)initWithSharedAlbum:(id)album assets:(id)assets comment:(id)comment
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  albumCopy = album;
+  assetsCopy = assets;
+  commentCopy = comment;
+  if (!albumCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PXPostAssetsToSharedAlbumAction.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"sharedAlbum"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPostAssetsToSharedAlbumAction.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"sharedAlbum"}];
   }
 
-  if (![v11 count])
+  if (![assetsCopy count])
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PXPostAssetsToSharedAlbumAction.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"assets.count"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPostAssetsToSharedAlbumAction.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"assets.count"}];
   }
 
   v20.receiver = self;
   v20.super_class = PXPostAssetsToSharedAlbumAction;
-  v13 = [(PXAssetsAction *)&v20 initWithAssets:v11];
+  v13 = [(PXAssetsAction *)&v20 initWithAssets:assetsCopy];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_sharedAlbum, a3);
-    v15 = [v12 copy];
+    objc_storeStrong(&v13->_sharedAlbum, album);
+    v15 = [commentCopy copy];
     comment = v14->_comment;
     v14->_comment = v15;
   }

@@ -1,31 +1,31 @@
 @interface CKRecord
-+ (id)cpl_expungedRecordFromCPLRecordChange:(id)a3 inZone:(id)a4 target:(id)a5;
-+ (id)cpl_expungedSharedRecordFromCPLRecordChange:(id)a3 inZone:(id)a4 target:(id)a5;
-+ (id)cpl_recordFromCPLRecordChange:(id)a3 scopeProvider:(id)a4 currentUserRecordID:(id)a5 inZone:(id)a6 resourceCountAndSize:(id)a7 error:(id *)a8;
++ (id)cpl_expungedRecordFromCPLRecordChange:(id)change inZone:(id)zone target:(id)target;
++ (id)cpl_expungedSharedRecordFromCPLRecordChange:(id)change inZone:(id)zone target:(id)target;
++ (id)cpl_recordFromCPLRecordChange:(id)change scopeProvider:(id)provider currentUserRecordID:(id)d inZone:(id)zone resourceCountAndSize:(id)size error:(id *)error;
 - (BOOL)cpl_inExpunged;
 - (BOOL)cpl_isEPPRecord;
-- (BOOL)cpl_isSharedWithScopeWithIdentifier:(id)a3 scopeProvider:(id)a4 currentUserRecordID:(id)a5 isSparseRecord:(BOOL *)a6;
+- (BOOL)cpl_isSharedWithScopeWithIdentifier:(id)identifier scopeProvider:(id)provider currentUserRecordID:(id)d isSparseRecord:(BOOL *)record;
 - (BOOL)cpl_isSparseRecord;
 - (BOOL)cpl_supportsSharingScopeIdentifier;
 - (Class)cpl_recordChangeClass;
 - (id)cplChangedKeys;
 - (id)cplFullDescription;
-- (id)cplResourceWithType:(unint64_t)a3 scopedIdentifier:(id)a4 forRecord:(id)a5 isCoherent:(BOOL *)a6 scopeProvider:(id)a7;
-- (id)cplResourcesWithScopedIdentifier:(id)a3 coherent:(BOOL *)a4 forRecord:(id)a5 scopeProvider:(id)a6;
-- (id)cpl_decryptedObjectForKey:(id)a3 validateClass:(Class)a4;
-- (id)cpl_destinationRecordIDInPrivateScopeWithCurrentUserRecordID:(id)a3 proposedDestinationRecordID:(id)a4;
-- (id)cpl_legacyDecryptedObjectForKey:(id)a3 validateClass:(Class)a4;
-- (id)cpl_objectForKey:(id)a3 validateClass:(Class)a4;
-- (id)cpl_recordChangeMissingResourceProperties:(id *)a3 scopeIdentifier:(id)a4 scopeProvider:(id)a5 currentUserRecordID:(id)a6;
-- (id)cpl_sharingRecordScopedIdentifierWithScopeProvider:(id)a3 currentUserRecordID:(id)a4 isSparseRecord:(BOOL *)a5;
-- (id)plistArchiveWithCPLArchiver:(id)a3;
-- (id)selfIfMatchesRecordName:(id)a3;
-- (void)cplValidateAndWarnIntegrityOfResourceData:(id)a3 withFingerPrintKey:(id)a4 andFileSizeKey:(id)a5 fingerprintScheme:(id)a6;
+- (id)cplResourceWithType:(unint64_t)type scopedIdentifier:(id)identifier forRecord:(id)record isCoherent:(BOOL *)coherent scopeProvider:(id)provider;
+- (id)cplResourcesWithScopedIdentifier:(id)identifier coherent:(BOOL *)coherent forRecord:(id)record scopeProvider:(id)provider;
+- (id)cpl_decryptedObjectForKey:(id)key validateClass:(Class)class;
+- (id)cpl_destinationRecordIDInPrivateScopeWithCurrentUserRecordID:(id)d proposedDestinationRecordID:(id)iD;
+- (id)cpl_legacyDecryptedObjectForKey:(id)key validateClass:(Class)class;
+- (id)cpl_objectForKey:(id)key validateClass:(Class)class;
+- (id)cpl_recordChangeMissingResourceProperties:(id *)properties scopeIdentifier:(id)identifier scopeProvider:(id)provider currentUserRecordID:(id)d;
+- (id)cpl_sharingRecordScopedIdentifierWithScopeProvider:(id)provider currentUserRecordID:(id)d isSparseRecord:(BOOL *)record;
+- (id)plistArchiveWithCPLArchiver:(id)archiver;
+- (id)selfIfMatchesRecordName:(id)name;
+- (void)cplValidateAndWarnIntegrityOfResourceData:(id)data withFingerPrintKey:(id)key andFileSizeKey:(id)sizeKey fingerprintScheme:(id)scheme;
 - (void)cpl_markRecordAsEPP;
-- (void)cpl_setEncryptedObject:(id)a3 forKey:(id)a4 validateClass:(Class)a5;
-- (void)cpl_setLegacyEncryptedObject:(id)a3 forKey:(id)a4;
-- (void)cpl_updateContributorsOnSharedRecord:(id)a3;
-- (void)cpl_updatePrivateRecordSharedToRecordWithID:(id)a3 currentUserRecordID:(id)a4 setSparseRecordFlag:(BOOL)a5 force:(BOOL)a6;
+- (void)cpl_setEncryptedObject:(id)object forKey:(id)key validateClass:(Class)class;
+- (void)cpl_setLegacyEncryptedObject:(id)object forKey:(id)key;
+- (void)cpl_updateContributorsOnSharedRecord:(id)record;
+- (void)cpl_updatePrivateRecordSharedToRecordWithID:(id)d currentUserRecordID:(id)iD setSparseRecordFlag:(BOOL)flag force:(BOOL)force;
 @end
 
 @implementation CKRecord
@@ -34,42 +34,42 @@
 {
   v3 = [NSMutableString alloc];
   v4 = objc_opt_class();
-  v5 = [(CKRecord *)self recordType];
-  v6 = [(CKRecord *)self recordID];
-  v7 = [v6 cplFullDescription];
-  v8 = [(CKRecord *)self recordChangeTag];
-  v9 = v8;
+  recordType = [(CKRecord *)self recordType];
+  recordID = [(CKRecord *)self recordID];
+  cplFullDescription = [recordID cplFullDescription];
+  recordChangeTag = [(CKRecord *)self recordChangeTag];
+  v9 = recordChangeTag;
   v10 = @"<no etag>";
-  if (v8)
+  if (recordChangeTag)
   {
-    v10 = v8;
+    v10 = recordChangeTag;
   }
 
-  v11 = [v3 initWithFormat:@"[%@ (%@) %@ recordChangeTag=%@", v4, v5, v7, v10];
+  v11 = [v3 initWithFormat:@"[%@ (%@) %@ recordChangeTag=%@", v4, recordType, cplFullDescription, v10];
 
-  v12 = [(CKRecord *)self valueStore];
-  v13 = [(CKRecord *)self encryptedValueStore];
+  valueStore = [(CKRecord *)self valueStore];
+  encryptedValueStore = [(CKRecord *)self encryptedValueStore];
   v14 = [NSSet alloc];
-  v35 = v13;
-  v15 = [v13 allKeys];
-  v16 = [v14 initWithArray:v15];
+  v35 = encryptedValueStore;
+  allKeys = [encryptedValueStore allKeys];
+  v16 = [v14 initWithArray:allKeys];
 
   v17 = [NSMutableSet alloc];
-  v36 = v12;
-  v18 = [v12 allKeys];
-  v19 = [v17 initWithArray:v18];
+  v36 = valueStore;
+  allKeys2 = [valueStore allKeys];
+  v19 = [v17 initWithArray:allKeys2];
 
   [v19 unionSet:v16];
-  v20 = [(CKRecord *)self changedKeys];
-  [v19 addObjectsFromArray:v20];
+  changedKeys = [(CKRecord *)self changedKeys];
+  [v19 addObjectsFromArray:changedKeys];
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
   v34 = v19;
-  v21 = [v19 allObjects];
-  v22 = [v21 sortedArrayUsingSelector:"compare:"];
+  allObjects = [v19 allObjects];
+  v22 = [allObjects sortedArrayUsingSelector:"compare:"];
 
   obj = v22;
   v23 = [v22 countByEnumeratingWithState:&v38 objects:v42 count:16];
@@ -146,19 +146,19 @@
 
 - (Class)cpl_recordChangeClass
 {
-  v2 = [(CKRecord *)self recordType];
-  v3 = CPLRecordChangeClassForCKRecordType(v2);
+  recordType = [(CKRecord *)self recordType];
+  v3 = CPLRecordChangeClassForCKRecordType(recordType);
 
   return v3;
 }
 
-- (id)cpl_objectForKey:(id)a3 validateClass:(Class)a4
+- (id)cpl_objectForKey:(id)key validateClass:(Class)class
 {
-  v5 = a3;
-  v6 = [(CKRecord *)self objectForKey:v5];
+  keyCopy = key;
+  v6 = [(CKRecord *)self objectForKey:keyCopy];
   if (v6 && (objc_opt_isKindOfClass() & 1) == 0)
   {
-    sub_1001A2E40(v5, self, v6);
+    sub_1001A2E40(keyCopy, self, v6);
     v6 = 0;
   }
 
@@ -167,15 +167,15 @@
 
 - (id)cplChangedKeys
 {
-  v3 = [(CKRecord *)self valueStore];
-  v4 = [v3 changedKeysSet];
-  v5 = [v4 allObjects];
-  v6 = [v5 mutableCopy];
+  valueStore = [(CKRecord *)self valueStore];
+  changedKeysSet = [valueStore changedKeysSet];
+  allObjects = [changedKeysSet allObjects];
+  v6 = [allObjects mutableCopy];
 
-  v7 = [(CKRecord *)self encryptedValueStore];
-  v8 = [v7 changedKeysSet];
-  v9 = [v8 allObjects];
-  [v6 addObjectsFromArray:v9];
+  encryptedValueStore = [(CKRecord *)self encryptedValueStore];
+  changedKeysSet2 = [encryptedValueStore changedKeysSet];
+  allObjects2 = [changedKeysSet2 allObjects];
+  [v6 addObjectsFromArray:allObjects2];
 
   return v6;
 }
@@ -183,27 +183,27 @@
 - (BOOL)cpl_inExpunged
 {
   v2 = [(CKRecord *)self objectForKeyedSubscript:@"isExpunged"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)cpl_isSparseRecord
 {
   v2 = [(CKRecord *)self objectForKey:@"isSparsePrivateRecord"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (id)cpl_sharingRecordScopedIdentifierWithScopeProvider:(id)a3 currentUserRecordID:(id)a4 isSparseRecord:(BOOL *)a5
+- (id)cpl_sharingRecordScopedIdentifierWithScopeProvider:(id)provider currentUserRecordID:(id)d isSparseRecord:(BOOL *)record
 {
-  v8 = a3;
-  v9 = a4;
+  providerCopy = provider;
+  dCopy = d;
   v10 = [(CKRecord *)self objectForKey:@"isSparsePrivateRecord"];
-  *a5 = [v10 BOOLValue];
+  *record = [v10 BOOLValue];
 
-  if (!*a5)
+  if (!*record)
   {
     self = 0;
     goto LABEL_17;
@@ -219,14 +219,14 @@
   v13 = CKCurrentUserDefaultName;
   if (v12)
   {
-    v14 = [v12 recordID];
-    v15 = [v14 recordName];
+    recordID = [v12 recordID];
+    recordName = [recordID recordName];
 
-    v16 = [v9 recordName];
-    v17 = v16;
-    if (v15 && v16)
+    recordName2 = [dCopy recordName];
+    v17 = recordName2;
+    if (recordName && recordName2)
     {
-      v18 = [v15 isEqual:v16];
+      v18 = [recordName isEqual:recordName2];
 
       if (v18)
       {
@@ -237,22 +237,22 @@
     else
     {
 
-      if (!(v15 | v17))
+      if (!(recordName | v17))
       {
         goto LABEL_11;
       }
     }
 
-    v19 = [v12 recordID];
-    v20 = [v19 recordName];
+    recordID2 = [v12 recordID];
+    recordName3 = [recordID2 recordName];
 
-    v13 = v20;
+    v13 = recordName3;
   }
 
 LABEL_11:
   v21 = [[CKRecordZoneID alloc] initWithZoneName:v11 ownerName:v13];
-  v22 = [v8 scopeIdentifierFromZoneID:v21];
-  v23 = [v8 cloudKitScopeForScopeIdentifier:v22];
+  v22 = [providerCopy scopeIdentifierFromZoneID:v21];
+  v23 = [providerCopy cloudKitScopeForScopeIdentifier:v22];
   v24 = v23 == 0;
   if (v23)
   {
@@ -286,23 +286,23 @@ LABEL_17:
 
 - (BOOL)cpl_supportsSharingScopeIdentifier
 {
-  v2 = [(CKRecord *)self cpl_recordChangeClass];
-  if (v2)
+  cpl_recordChangeClass = [(CKRecord *)self cpl_recordChangeClass];
+  if (cpl_recordChangeClass)
   {
 
-    LOBYTE(v2) = [(objc_class *)v2 supportsSharingScopedIdentifier];
+    LOBYTE(cpl_recordChangeClass) = [(objc_class *)cpl_recordChangeClass supportsSharingScopedIdentifier];
   }
 
-  return v2;
+  return cpl_recordChangeClass;
 }
 
-- (BOOL)cpl_isSharedWithScopeWithIdentifier:(id)a3 scopeProvider:(id)a4 currentUserRecordID:(id)a5 isSparseRecord:(BOOL *)a6
+- (BOOL)cpl_isSharedWithScopeWithIdentifier:(id)identifier scopeProvider:(id)provider currentUserRecordID:(id)d isSparseRecord:(BOOL *)record
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  providerCopy = provider;
+  dCopy = d;
   v13 = [(CKRecord *)self objectForKey:@"isSparsePrivateRecord"];
-  *a6 = [v13 BOOLValue];
+  *record = [v13 BOOLValue];
 
   v14 = [(CKRecord *)self objectForKey:@"linkedShareZoneName"];
   v15 = [(CKRecord *)self objectForKey:@"linkedShareZoneOwner"];
@@ -314,14 +314,14 @@ LABEL_17:
   v16 = CKCurrentUserDefaultName;
   if (v15)
   {
-    v17 = [v15 recordID];
-    v18 = [v17 recordName];
+    recordID = [v15 recordID];
+    recordName = [recordID recordName];
 
-    v19 = [v12 recordName];
-    v20 = v19;
-    if (v18 && v19)
+    recordName2 = [dCopy recordName];
+    v20 = recordName2;
+    if (recordName && recordName2)
     {
-      v21 = [v18 isEqual:v19];
+      v21 = [recordName isEqual:recordName2];
 
       if (v21)
       {
@@ -332,22 +332,22 @@ LABEL_17:
     else
     {
 
-      if (!(v18 | v20))
+      if (!(recordName | v20))
       {
         goto LABEL_9;
       }
     }
 
-    v22 = [v15 recordID];
-    v23 = [v22 recordName];
+    recordID2 = [v15 recordID];
+    recordName3 = [recordID2 recordName];
 
-    v16 = v23;
+    v16 = recordName3;
   }
 
 LABEL_9:
   v24 = [[CKRecordZoneID alloc] initWithZoneName:v14 ownerName:v16];
-  v25 = [v11 scopeIdentifierFromZoneID:v24];
-  v26 = [v11 cloudKitScopeForScopeIdentifier:v25];
+  v25 = [providerCopy scopeIdentifierFromZoneID:v24];
+  v26 = [providerCopy cloudKitScopeForScopeIdentifier:v25];
   if (!v26)
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -359,7 +359,7 @@ LABEL_9:
     goto LABEL_16;
   }
 
-  if (!v25 || ([v25 isEqualToString:v10] & 1) == 0)
+  if (!v25 || ([v25 isEqualToString:identifierCopy] & 1) == 0)
   {
 LABEL_16:
 
@@ -374,48 +374,48 @@ LABEL_18:
   return v27;
 }
 
-- (void)cpl_updatePrivateRecordSharedToRecordWithID:(id)a3 currentUserRecordID:(id)a4 setSparseRecordFlag:(BOOL)a5 force:(BOOL)a6
+- (void)cpl_updatePrivateRecordSharedToRecordWithID:(id)d currentUserRecordID:(id)iD setSparseRecordFlag:(BOOL)flag force:(BOOL)force
 {
-  v7 = a5;
-  v17 = a3;
-  v10 = a4;
-  if (a6 || [(objc_class *)[(CKRecord *)self cpl_recordChangeClass] supportsSharingScopedIdentifier])
+  flagCopy = flag;
+  dCopy = d;
+  iDCopy = iD;
+  if (force || [(objc_class *)[(CKRecord *)self cpl_recordChangeClass] supportsSharingScopedIdentifier])
   {
-    v11 = [v17 zoneID];
-    v12 = [v11 ownerName];
-    v13 = CPLCKReferenceToUser(v12, v10);
+    zoneID = [dCopy zoneID];
+    ownerName = [zoneID ownerName];
+    v13 = CPLCKReferenceToUser(ownerName, iDCopy);
 
     [(CKRecord *)self setObject:v13 forKey:@"linkedShareZoneOwner"];
-    v14 = [v17 zoneID];
-    v15 = [v14 zoneName];
-    [(CKRecord *)self setObject:v15 forKey:@"linkedShareZoneName"];
+    zoneID2 = [dCopy zoneID];
+    zoneName = [zoneID2 zoneName];
+    [(CKRecord *)self setObject:zoneName forKey:@"linkedShareZoneName"];
 
-    v16 = [v17 recordName];
-    [(CKRecord *)self setObject:v16 forKey:@"linkedShareRecordName"];
+    recordName = [dCopy recordName];
+    [(CKRecord *)self setObject:recordName forKey:@"linkedShareRecordName"];
 
-    if (v7)
+    if (flagCopy)
     {
       [(CKRecord *)self setObject:&__kCFBooleanTrue forKey:@"isSparsePrivateRecord"];
     }
   }
 }
 
-- (void)cpl_updateContributorsOnSharedRecord:(id)a3
+- (void)cpl_updateContributorsOnSharedRecord:(id)record
 {
-  v4 = a3;
-  if ([v4 count])
+  recordCopy = record;
+  if ([recordCopy count])
   {
-    v22 = self;
-    v5 = [(CKRecord *)self recordID];
-    v6 = [v5 zoneID];
+    selfCopy = self;
+    recordID = [(CKRecord *)self recordID];
+    zoneID = [recordID zoneID];
 
-    v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+    v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(recordCopy, "count")}];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v23 = v4;
-    v8 = v4;
+    v23 = recordCopy;
+    v8 = recordCopy;
     v9 = [v8 countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (v9)
     {
@@ -430,7 +430,7 @@ LABEL_18:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [[CKRecordID alloc] initWithRecordName:*(*(&v24 + 1) + 8 * i) zoneID:v6];
+          v13 = [[CKRecordID alloc] initWithRecordName:*(*(&v24 + 1) + 8 * i) zoneID:zoneID];
           v14 = [[CKReference alloc] initWithRecordID:v13 action:0];
           [v7 addObject:v14];
         }
@@ -446,17 +446,17 @@ LABEL_18:
       v15 = sub_100068094();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(CKRecord *)v22 recordID];
+        recordID2 = [(CKRecord *)selfCopy recordID];
         *buf = 138412546;
         v29 = v7;
         v30 = 2114;
-        v31 = v16;
+        v31 = recordID2;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Setting proposed contributors to %@ for record %{public}@", buf, 0x16u);
       }
     }
 
-    v17 = [(CKRecord *)v22 pluginFields];
-    v18 = [v17 mutableCopy];
+    pluginFields = [(CKRecord *)selfCopy pluginFields];
+    v18 = [pluginFields mutableCopy];
 
     if (!v18)
     {
@@ -464,19 +464,19 @@ LABEL_18:
     }
 
     [v18 setValue:v7 forKey:@"proposedContributors"];
-    [(CKRecord *)v22 setPluginFields:v18];
-    v4 = v23;
+    [(CKRecord *)selfCopy setPluginFields:v18];
+    recordCopy = v23;
     if ((_CPLSilentLogging & 1) == 0)
     {
       v19 = __CPLGenericOSLogDomain();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [(CKRecord *)v22 recordID];
-        v21 = [v20 recordName];
+        recordID3 = [(CKRecord *)selfCopy recordID];
+        recordName = [recordID3 recordName];
         *buf = 138412546;
         v29 = v18;
         v30 = 2112;
-        v31 = v21;
+        v31 = recordName;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Setting plugin fields to %@ for %@", buf, 0x16u);
       }
     }
@@ -485,28 +485,28 @@ LABEL_18:
 
 - (BOOL)cpl_isEPPRecord
 {
-  v3 = [(CKRecord *)self cpl_recordChangeClass];
-  if ([(objc_class *)v3 isSubclassOfClass:objc_opt_class()])
+  cpl_recordChangeClass = [(CKRecord *)self cpl_recordChangeClass];
+  if ([(objc_class *)cpl_recordChangeClass isSubclassOfClass:objc_opt_class()])
   {
-    v4 = [(CKRecord *)self objectForKeyedSubscript:@"masterRef"];
-    v5 = [v4 recordID];
-    v6 = [v5 recordName];
+    recordID2 = [(CKRecord *)self objectForKeyedSubscript:@"masterRef"];
+    recordID = [recordID2 recordID];
+    recordName = [recordID recordName];
   }
 
   else
   {
-    if (![(objc_class *)v3 isSubclassOfClass:objc_opt_class()])
+    if (![(objc_class *)cpl_recordChangeClass isSubclassOfClass:objc_opt_class()])
     {
       return 0;
     }
 
-    v4 = [(CKRecord *)self recordID];
-    v6 = [v4 recordName];
+    recordID2 = [(CKRecord *)self recordID];
+    recordName = [recordID2 recordName];
   }
 
-  if (v6)
+  if (recordName)
   {
-    v7 = [CPLFingerprintScheme isMMCSv2Fingerprint:v6];
+    v7 = [CPLFingerprintScheme isMMCSv2Fingerprint:recordName];
   }
 
   else
@@ -517,15 +517,15 @@ LABEL_18:
   return v7;
 }
 
-- (id)cpl_destinationRecordIDInPrivateScopeWithCurrentUserRecordID:(id)a3 proposedDestinationRecordID:(id)a4
+- (id)cpl_destinationRecordIDInPrivateScopeWithCurrentUserRecordID:(id)d proposedDestinationRecordID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v8 = [(CKRecord *)self objectForKeyedSubscript:@"remappedBy"];
   if (v8)
   {
-    v24 = v6;
-    v9 = [v6 recordName];
+    v24 = dCopy;
+    recordName = [dCopy recordName];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -548,16 +548,16 @@ LABEL_18:
 
           v15 = *(*(&v25 + 1) + 8 * i);
           v16 = sub_100198578(v15);
-          v17 = [v16 isEqualToString:v9];
+          v17 = [v16 isEqualToString:recordName];
 
           if (v17)
           {
             v19 = [CKRecordID alloc];
             v20 = sub_10019858C(v15);
-            v21 = [v7 zoneID];
-            v18 = [v19 initWithRecordName:v20 zoneID:v21];
+            zoneID = [iDCopy zoneID];
+            v18 = [v19 initWithRecordName:v20 zoneID:zoneID];
 
-            v6 = v24;
+            dCopy = v24;
             goto LABEL_13;
           }
         }
@@ -572,24 +572,24 @@ LABEL_18:
       }
     }
 
-    v6 = v24;
+    dCopy = v24;
   }
 
-  v18 = v7;
+  v18 = iDCopy;
 LABEL_13:
 
   return v18;
 }
 
-- (id)cpl_decryptedObjectForKey:(id)a3 validateClass:(Class)a4
+- (id)cpl_decryptedObjectForKey:(id)key validateClass:(Class)class
 {
-  v6 = a3;
-  v7 = [(CKRecord *)self encryptedValues];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  keyCopy = key;
+  encryptedValues = [(CKRecord *)self encryptedValues];
+  v8 = [encryptedValues objectForKeyedSubscript:keyCopy];
 
   if (v8 && (objc_opt_isKindOfClass() & 1) == 0)
   {
-    v9 = [(CKRecord *)self cpl_legacyDecryptedObjectForKey:v6 validateClass:a4];
+    v9 = [(CKRecord *)self cpl_legacyDecryptedObjectForKey:keyCopy validateClass:class];
   }
 
   else
@@ -602,26 +602,26 @@ LABEL_13:
   return v10;
 }
 
-- (void)cpl_setEncryptedObject:(id)a3 forKey:(id)a4 validateClass:(Class)a5
+- (void)cpl_setEncryptedObject:(id)object forKey:(id)key validateClass:(Class)class
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(CKRecord *)self encryptedValues];
-  [v9 setObject:v8 forKeyedSubscript:v7];
+  keyCopy = key;
+  objectCopy = object;
+  encryptedValues = [(CKRecord *)self encryptedValues];
+  [encryptedValues setObject:objectCopy forKeyedSubscript:keyCopy];
 }
 
-- (id)cpl_legacyDecryptedObjectForKey:(id)a3 validateClass:(Class)a4
+- (id)cpl_legacyDecryptedObjectForKey:(id)key validateClass:(Class)class
 {
-  v7 = a3;
-  if (([(objc_class *)a4 isSubclassOfClass:objc_opt_class()]& 1) == 0 && ([(objc_class *)a4 isSubclassOfClass:objc_opt_class()]& 1) == 0 && ([(objc_class *)a4 isSubclassOfClass:objc_opt_class()]& 1) == 0 && ([(objc_class *)a4 isSubclassOfClass:objc_opt_class()]& 1) == 0 && ([(objc_class *)a4 isSubclassOfClass:objc_opt_class()]& 1) == 0 && ([(objc_class *)a4 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  keyCopy = key;
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) == 0 && ([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) == 0 && ([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) == 0 && ([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) == 0 && ([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) == 0 && ([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
-    sub_1001A3148(a2, self, a4);
+    sub_1001A3148(a2, self, class);
   }
 
-  v8 = [(CKRecord *)self encryptedValues];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  encryptedValues = [(CKRecord *)self encryptedValues];
+  v9 = [encryptedValues objectForKeyedSubscript:keyCopy];
 
-  if (!v9 && ([(CKRecord *)self objectForKeyedSubscript:v7], (v9 = objc_claimAutoreleasedReturnValue()) == 0) || (objc_opt_isKindOfClass() & 1) != 0)
+  if (!v9 && ([(CKRecord *)self objectForKeyedSubscript:keyCopy], (v9 = objc_claimAutoreleasedReturnValue()) == 0) || (objc_opt_isKindOfClass() & 1) != 0)
   {
     v10 = v9;
     v9 = v10;
@@ -641,7 +641,7 @@ LABEL_11:
     goto LABEL_17;
   }
 
-  if ([(objc_class *)a4 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
     v10 = [[NSString alloc] initWithData:v9 encoding:4];
     goto LABEL_11;
@@ -658,13 +658,13 @@ LABEL_11:
       v16 = sub_100069014();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v17 = [(CKRecord *)self recordType];
-        v18 = [(CKRecord *)self recordID];
-        v19 = [v18 recordName];
+        recordType = [(CKRecord *)self recordType];
+        recordID = [(CKRecord *)self recordID];
+        recordName = [recordID recordName];
         *buf = 138543874;
-        v22 = v17;
+        v22 = recordType;
         v23 = 2114;
-        v24 = v19;
+        v24 = recordName;
         v25 = 2112;
         v26 = v14;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Unable to decode property list for %{public}@.%{public}@: %@", buf, 0x20u);
@@ -688,11 +688,11 @@ LABEL_18:
   return v11;
 }
 
-- (void)cpl_setLegacyEncryptedObject:(id)a3 forKey:(id)a4
+- (void)cpl_setLegacyEncryptedObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  objectCopy = object;
+  keyCopy = key;
+  if (!objectCopy)
   {
     goto LABEL_14;
   }
@@ -703,26 +703,26 @@ LABEL_18:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v6 dataUsingEncoding:4];
+      v8 = [objectCopy dataUsingEncoding:4];
     }
 
     else
     {
       v15 = 0;
-      v8 = [NSPropertyListSerialization dataWithPropertyList:v6 format:200 options:0 error:&v15];
+      v8 = [NSPropertyListSerialization dataWithPropertyList:objectCopy format:200 options:0 error:&v15];
       v9 = v15;
       if (!v8 && (_CPLSilentLogging & 1) == 0)
       {
         v10 = sub_100069014();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
-          v11 = [(CKRecord *)self recordType];
-          v12 = [(CKRecord *)self recordID];
-          v13 = [v12 recordName];
+          recordType = [(CKRecord *)self recordType];
+          recordID = [(CKRecord *)self recordID];
+          recordName = [recordID recordName];
           *buf = 138543874;
-          v17 = v11;
+          v17 = recordType;
           v18 = 2114;
-          v19 = v13;
+          v19 = recordName;
           v20 = 2112;
           v21 = v9;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Unable to convert property list for %{public}@.%{public}@: %@", buf, 0x20u);
@@ -736,35 +736,35 @@ LABEL_18:
     }
 
 LABEL_14:
-    [(CKRecord *)self setObject:0 forKeyedSubscript:v7];
+    [(CKRecord *)self setObject:0 forKeyedSubscript:keyCopy];
     goto LABEL_15;
   }
 
-  v8 = v6;
+  v8 = objectCopy;
 LABEL_13:
-  v14 = [(CKRecord *)self encryptedValues];
-  [v14 setObject:v8 forKeyedSubscript:v7];
+  encryptedValues = [(CKRecord *)self encryptedValues];
+  [encryptedValues setObject:v8 forKeyedSubscript:keyCopy];
 
 LABEL_15:
 }
 
-+ (id)cpl_expungedRecordFromCPLRecordChange:(id)a3 inZone:(id)a4 target:(id)a5
++ (id)cpl_expungedRecordFromCPLRecordChange:(id)change inZone:(id)zone target:(id)target
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (([v7 supportsDeletion] & 1) == 0)
+  changeCopy = change;
+  zoneCopy = zone;
+  targetCopy = target;
+  if (([changeCopy supportsDeletion] & 1) == 0)
   {
     sub_1001A3474();
   }
 
-  if ([v7 supportsDirectDeletion])
+  if ([changeCopy supportsDirectDeletion])
   {
     sub_1001A3550();
   }
 
-  v10 = CPLBaseCKRecordFromCPLRecordChange(v7, v8, v9);
-  if ([v7 supportsRecordModificationDate])
+  v10 = CPLBaseCKRecordFromCPLRecordChange(changeCopy, zoneCopy, targetCopy);
+  if ([changeCopy supportsRecordModificationDate])
   {
     v11 = +[NSDate date];
     [v10 setObject:v11 forKey:@"recordModificationDate"];
@@ -776,23 +776,23 @@ LABEL_15:
   return v10;
 }
 
-+ (id)cpl_expungedSharedRecordFromCPLRecordChange:(id)a3 inZone:(id)a4 target:(id)a5
++ (id)cpl_expungedSharedRecordFromCPLRecordChange:(id)change inZone:(id)zone target:(id)target
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (([v7 supportsDeletion] & 1) == 0)
+  changeCopy = change;
+  zoneCopy = zone;
+  targetCopy = target;
+  if (([changeCopy supportsDeletion] & 1) == 0)
   {
     sub_1001A362C();
   }
 
-  if ([v7 supportsDirectDeletion])
+  if ([changeCopy supportsDirectDeletion])
   {
     sub_1001A3708();
   }
 
-  v10 = CPLBaseSharedCKRecordFromCPLRecordChange(v7, v8, v9);
-  if ([v7 supportsRecordModificationDate])
+  v10 = CPLBaseSharedCKRecordFromCPLRecordChange(changeCopy, zoneCopy, targetCopy);
+  if ([changeCopy supportsRecordModificationDate])
   {
     v11 = +[NSDate date];
     [v10 setObject:v11 forKey:@"recordModificationDate"];
@@ -804,22 +804,22 @@ LABEL_15:
   return v10;
 }
 
-+ (id)cpl_recordFromCPLRecordChange:(id)a3 scopeProvider:(id)a4 currentUserRecordID:(id)a5 inZone:(id)a6 resourceCountAndSize:(id)a7 error:(id *)a8
++ (id)cpl_recordFromCPLRecordChange:(id)change scopeProvider:(id)provider currentUserRecordID:(id)d inZone:(id)zone resourceCountAndSize:(id)size error:(id *)error
 {
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  sizeCopy = size;
+  zoneCopy = zone;
+  dCopy = d;
+  providerCopy = provider;
+  changeCopy = change;
   v18 = objc_alloc_init(CPLSimpleRecordTargetMapping);
-  v19 = [v17 scopedIdentifier];
-  v20 = [v18 targetForRecordWithScopedIdentifier:v19];
-  v21 = CPLBaseCKRecordFromCPLRecordChange(v17, v14, v20);
+  scopedIdentifier = [changeCopy scopedIdentifier];
+  v20 = [v18 targetForRecordWithScopedIdentifier:scopedIdentifier];
+  v21 = CPLBaseCKRecordFromCPLRecordChange(changeCopy, zoneCopy, v20);
 
-  v22 = [[CPLSimpleCKRecordBuilder alloc] initWithBaseCKRecord:v21 scopeProvider:v16 currentUserRecordID:v15 targetMapping:v18];
-  LODWORD(a8) = [v17 prepareWithCKRecordBuilder:v22 resourceCountAndSize:v13 scopeProvider:v16 error:a8];
+  v22 = [[CPLSimpleCKRecordBuilder alloc] initWithBaseCKRecord:v21 scopeProvider:providerCopy currentUserRecordID:dCopy targetMapping:v18];
+  LODWORD(error) = [changeCopy prepareWithCKRecordBuilder:v22 resourceCountAndSize:sizeCopy scopeProvider:providerCopy error:error];
 
-  if (a8)
+  if (error)
   {
     v23 = v21;
   }
@@ -832,24 +832,24 @@ LABEL_15:
   return v23;
 }
 
-- (id)cpl_recordChangeMissingResourceProperties:(id *)a3 scopeIdentifier:(id)a4 scopeProvider:(id)a5 currentUserRecordID:(id)a6
+- (id)cpl_recordChangeMissingResourceProperties:(id *)properties scopeIdentifier:(id)identifier scopeProvider:(id)provider currentUserRecordID:(id)d
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(CKRecord *)self recordType];
-  v14 = CPLRecordChangeClassForCKRecordType(v13);
+  identifierCopy = identifier;
+  providerCopy = provider;
+  dCopy = d;
+  recordType = [(CKRecord *)self recordType];
+  v14 = CPLRecordChangeClassForCKRecordType(recordType);
   if (v14)
   {
     v15 = objc_alloc_init(v14);
-    [v15 prepareWithCKRecord:self scopeIdentifier:v10 scopeProvider:v11 currentUserRecordID:v12];
+    [v15 prepareWithCKRecord:self scopeIdentifier:identifierCopy scopeProvider:providerCopy currentUserRecordID:dCopy];
     if (([v15 isDelete] & 1) == 0)
     {
       v16 = [(CKRecord *)self objectForKeyedSubscript:@"dateExpunged"];
       v17 = [v16 dateByAddingTimeInterval:-2592000.0];
       [v15 setDateDeleted:v17];
 
-      [v15 fillWithCKRecord:self missingResourceProperties:a3 scopeProvider:v11];
+      [v15 fillWithCKRecord:self missingResourceProperties:properties scopeProvider:providerCopy];
     }
 
     v18 = v15;
@@ -863,48 +863,48 @@ LABEL_15:
   return v18;
 }
 
-- (id)cplResourceWithType:(unint64_t)a3 scopedIdentifier:(id)a4 forRecord:(id)a5 isCoherent:(BOOL *)a6 scopeProvider:(id)a7
+- (id)cplResourceWithType:(unint64_t)type scopedIdentifier:(id)identifier forRecord:(id)record isCoherent:(BOOL *)coherent scopeProvider:(id)provider
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = sub_100084A0C(CPLCloudKitResourceKeys, a3);
+  identifierCopy = identifier;
+  recordCopy = record;
+  providerCopy = provider;
+  v15 = sub_100084A0C(CPLCloudKitResourceKeys, type);
   if (v15)
   {
-    v75 = v14;
-    v82 = 0.0;
-    v83 = 0;
-    v81 = 0.0;
-    v16 = [(CKRecord *)self pluginFields];
+    v75 = providerCopy;
+    integerValue2 = 0.0;
+    unsignedIntegerValue = 0;
+    integerValue = 0.0;
+    pluginFields = [(CKRecord *)self pluginFields];
     v17 = sub_1001A8CEC(v15);
-    v18 = [v16 objectForKeyedSubscript:v17];
-    v19 = [v18 BOOLValue];
+    v18 = [pluginFields objectForKeyedSubscript:v17];
+    bOOLValue = [v18 BOOLValue];
 
-    v72 = a3;
-    v73 = a6;
-    *a6 = 1;
-    v77 = v12;
-    v71 = v19;
-    v74 = v13;
-    if (v19)
+    typeCopy = type;
+    coherentCopy = coherent;
+    *coherent = 1;
+    v77 = identifierCopy;
+    v71 = bOOLValue;
+    v74 = recordCopy;
+    if (bOOLValue)
     {
       v20 = sub_100194228(v15);
-      v21 = [v16 objectForKey:v20];
-      v83 = [v21 unsignedIntegerValue];
+      v21 = [pluginFields objectForKey:v20];
+      unsignedIntegerValue = [v21 unsignedIntegerValue];
 
       v22 = sub_1001A8C80(v15);
-      v76 = [v16 objectForKey:v22];
+      v76 = [pluginFields objectForKey:v22];
 
       v23 = sub_1001A8C8C(v15);
-      v24 = [v16 objectForKey:v23];
+      v24 = [pluginFields objectForKey:v23];
 
       v25 = sub_1001A8C98(v15);
-      v26 = [v16 objectForKey:v25];
+      v26 = [pluginFields objectForKey:v25];
 
-      v81 = [v24 integerValue];
-      v82 = [v26 integerValue];
+      integerValue = [v24 integerValue];
+      integerValue2 = [v26 integerValue];
       v27 = sub_1001A8CA4(v15);
-      v28 = [v16 objectForKey:v27];
+      v28 = [pluginFields objectForKey:v27];
       v29 = CPLDynamicFingerPrintFromCloudKitFingerPrint(v28);
 
       v30 = 0;
@@ -926,7 +926,7 @@ LABEL_15:
       v76 = 0;
 LABEL_25:
       v47 = 1;
-      v48 = 1;
+      canMatchSignatureToFingerprint = 1;
       if (v29)
       {
 LABEL_26:
@@ -943,16 +943,16 @@ LABEL_26:
           v52 = v47;
         }
 
-        v53 = v72;
+        v53 = typeCopy;
         if ((v52 & 1) == 0 && (_CPLSilentLogging & 1) == 0)
         {
-          sub_1001A3890(self, v77, v72);
+          sub_1001A3890(self, v77, typeCopy);
         }
 
         [v51 setStableHash:v31];
-        [v51 setFileSize:v83];
+        [v51 setFileSize:unsignedIntegerValue];
         [v51 setFileUTI:v76];
-        [v51 setImageDimensions:{v81, v82}];
+        [v51 setImageDimensions:{integerValue, integerValue2}];
         if (v78)
         {
           v54 = 1;
@@ -977,41 +977,41 @@ LABEL_26:
             *buf = 138412546;
             v85 = v56;
             v86 = 2112;
-            v87 = self;
+            selfCopy = self;
             _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "Did not find %@ in %@", buf, 0x16u);
 
-            v53 = v72;
+            v53 = typeCopy;
           }
         }
 
         v49 = v78;
-        if (!*v73)
+        if (!*coherentCopy)
         {
           goto LABEL_51;
         }
 
-        if (!v48)
+        if (!canMatchSignatureToFingerprint)
         {
-          *v73 = 1;
+          *coherentCopy = 1;
 LABEL_51:
-          v12 = v77;
+          identifierCopy = v77;
           v47 = [[CPLResource alloc] initWithResourceIdentity:v51 itemScopedIdentifier:v77 resourceType:v53];
-          v62 = [v78 fileURL];
+          fileURL = [v78 fileURL];
 
-          if (v62)
+          if (fileURL)
           {
-            v63 = [v78 fileURL];
-            v64 = [v47 identity];
-            [v64 setFileURL:v63];
+            fileURL2 = [v78 fileURL];
+            identity = [v47 identity];
+            [identity setFileURL:fileURL2];
 
-            v12 = v77;
+            identifierCopy = v77;
           }
 
           v30 = v50;
 LABEL_54:
 
-          v13 = v74;
-          v14 = v75;
+          recordCopy = v74;
+          providerCopy = v75;
           if (v29)
           {
             goto LABEL_56;
@@ -1030,8 +1030,8 @@ LABEL_54:
             v60 = 1;
 LABEL_50:
 
-            *v73 = v60;
-            v53 = v72;
+            *coherentCopy = v60;
+            v53 = typeCopy;
             goto LABEL_51;
           }
         }
@@ -1047,21 +1047,21 @@ LABEL_50:
       }
 
 LABEL_23:
-      v12 = v77;
+      identifierCopy = v77;
       v49 = v78;
       goto LABEL_54;
     }
 
-    v34 = [v75 fingerprintContext];
-    v35 = [v34 fingerprintSchemeForFingerprint:v29];
+    fingerprintContext = [v75 fingerprintContext];
+    v35 = [fingerprintContext fingerprintSchemeForFingerprint:v29];
 
     v70 = v35;
     if (v35 && [v35 isValid])
     {
-      v36 = sub_1001ACA54([CPLCloudKitResourceRecordProperties alloc], v15, [v13 recordClass], v35);
+      v36 = sub_1001ACA54([CPLCloudKitResourceRecordProperties alloc], v15, [recordCopy recordClass], v35);
       v79 = 0;
       v80 = 0;
-      sub_1001ACB00(v36, &v80, &v83, &v81, &v79, self);
+      sub_1001ACB00(v36, &v80, &unsignedIntegerValue, &integerValue, &v79, self);
       v31 = v80;
       v76 = v79;
       [v78 signature];
@@ -1069,8 +1069,8 @@ LABEL_23:
       if (v30)
       {
         v68 = v36;
-        v38 = [v75 fingerprintContext];
-        v39 = [v38 fingerprintSchemeForSignature:v30];
+        fingerprintContext2 = [v75 fingerprintContext];
+        v39 = [fingerprintContext2 fingerprintSchemeForSignature:v30];
 
         v69 = v39;
         if (v39 == v37)
@@ -1082,11 +1082,11 @@ LABEL_23:
 
           else
           {
-            v47 = [v74 requiresStableHashForResourceType:a3] ^ 1;
+            v47 = [v74 requiresStableHashForResourceType:type] ^ 1;
           }
 
           v36 = v68;
-          v48 = [v39 canMatchSignatureToFingerprint];
+          canMatchSignatureToFingerprint = [v39 canMatchSignatureToFingerprint];
         }
 
         else
@@ -1097,25 +1097,25 @@ LABEL_23:
             v40 = __CPLGenericOSLogDomain();
             if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
             {
-              v41 = [(CKRecord *)self recordID];
-              v42 = [CPLResource shortDescriptionForResourceType:a3];
-              v43 = [v69 fingerprintSchemeDescription];
-              v44 = [v70 fingerprintSchemeDescription];
+              recordID = [(CKRecord *)self recordID];
+              v42 = [CPLResource shortDescriptionForResourceType:type];
+              fingerprintSchemeDescription = [v69 fingerprintSchemeDescription];
+              fingerprintSchemeDescription2 = [v70 fingerprintSchemeDescription];
               *buf = 138544386;
-              v85 = v41;
+              v85 = recordID;
               v86 = 2112;
-              v87 = v77;
+              selfCopy = v77;
               v88 = 2112;
               v89 = v42;
               v90 = 2114;
-              v91 = v43;
+              v91 = fingerprintSchemeDescription;
               v92 = 2114;
-              v93 = v44;
+              v93 = fingerprintSchemeDescription2;
               _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_ERROR, "CKRecord %{public}@ (for %@) has a CKAsset for %@ with a fingerprint of a different scheme %{public}@ (vs. %{public}@)", buf, 0x34u);
             }
           }
 
-          *v73 = 0;
+          *coherentCopy = 0;
           v30 = v67;
           if (!v31)
           {
@@ -1132,7 +1132,7 @@ LABEL_23:
 
           v66 = [CKAsset cplFingerPrintForSignature:v67];
 
-          v48 = 0;
+          canMatchSignatureToFingerprint = 0;
           v47 = 1;
           v29 = v66;
           v36 = v68;
@@ -1145,7 +1145,7 @@ LABEL_21:
       }
 
       v47 = 1;
-      v48 = 1;
+      canMatchSignatureToFingerprint = 1;
     }
 
     else
@@ -1155,12 +1155,12 @@ LABEL_21:
         v39 = __CPLGenericOSLogDomain();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
         {
-          v45 = [(CKRecord *)self recordID];
-          v46 = [CPLResource shortDescriptionForResourceType:a3];
+          recordID2 = [(CKRecord *)self recordID];
+          v46 = [CPLResource shortDescriptionForResourceType:type];
           *buf = 138544130;
-          v85 = v45;
+          v85 = recordID2;
           v86 = 2112;
-          v87 = v12;
+          selfCopy = identifierCopy;
           v88 = 2112;
           v89 = v46;
           v90 = 2112;
@@ -1173,7 +1173,7 @@ LABEL_21:
         v76 = 0;
         v47 = 1;
         v36 = v29;
-        v48 = 1;
+        canMatchSignatureToFingerprint = 1;
         v29 = 0;
         goto LABEL_21;
       }
@@ -1183,7 +1183,7 @@ LABEL_21:
       v76 = 0;
       v47 = 1;
       v36 = v29;
-      v48 = 1;
+      canMatchSignatureToFingerprint = 1;
       v29 = 0;
     }
 
@@ -1204,11 +1204,11 @@ LABEL_56:
   return v47;
 }
 
-- (id)cplResourcesWithScopedIdentifier:(id)a3 coherent:(BOOL *)a4 forRecord:(id)a5 scopeProvider:(id)a6
+- (id)cplResourcesWithScopedIdentifier:(id)identifier coherent:(BOOL *)coherent forRecord:(id)record scopeProvider:(id)provider
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  recordCopy = record;
+  providerCopy = provider;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -1219,19 +1219,19 @@ LABEL_56:
   v23 = 3221225472;
   v24 = sub_10006A37C;
   v25 = &unk_1002753C8;
-  v13 = v11;
+  v13 = recordCopy;
   v26 = v13;
-  v27 = self;
-  v14 = v10;
+  selfCopy = self;
+  v14 = identifierCopy;
   v28 = v14;
-  v15 = v12;
+  v15 = providerCopy;
   v29 = v15;
   v30 = &v32;
-  v31 = a4;
+  coherentCopy = coherent;
   [CPLResource enumerateResourceTypesWithBlock:&v22];
   v16 = v33[5];
   v17 = v16;
-  if (*a4 && [v16 count])
+  if (*coherent && [v16 count])
   {
     v18 = [CPLCloudKitFakeDynamicDerivatives overriddenResourcesFromResources:v17];
 
@@ -1246,49 +1246,49 @@ LABEL_56:
   return v20;
 }
 
-- (id)plistArchiveWithCPLArchiver:(id)a3
+- (id)plistArchiveWithCPLArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   v5 = objc_alloc_init(NSMutableDictionary);
-  v6 = [v4 archiveCursor];
-  [v4 setArchiveCursor:v5];
-  [(CKRecord *)self encodeWithCoder:v4];
-  [v4 setArchiveCursor:v6];
+  archiveCursor = [archiverCopy archiveCursor];
+  [archiverCopy setArchiveCursor:v5];
+  [(CKRecord *)self encodeWithCoder:archiverCopy];
+  [archiverCopy setArchiveCursor:archiveCursor];
 
   return v5;
 }
 
-- (id)selfIfMatchesRecordName:(id)a3
+- (id)selfIfMatchesRecordName:(id)name
 {
-  v4 = a3;
-  v5 = [(CKRecord *)self recordID];
-  v6 = [v5 recordName];
-  v7 = [v6 isEqualToString:v4];
+  nameCopy = name;
+  recordID = [(CKRecord *)self recordID];
+  recordName = [recordID recordName];
+  v7 = [recordName isEqualToString:nameCopy];
 
   if (v7)
   {
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)cplValidateAndWarnIntegrityOfResourceData:(id)a3 withFingerPrintKey:(id)a4 andFileSizeKey:(id)a5 fingerprintScheme:(id)a6
+- (void)cplValidateAndWarnIntegrityOfResourceData:(id)data withFingerPrintKey:(id)key andFileSizeKey:(id)sizeKey fingerprintScheme:(id)scheme
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dataCopy = data;
+  keyCopy = key;
+  sizeKeyCopy = sizeKey;
   v35 = 0;
-  v13 = [a6 fingerPrintForData:v10 error:&v35];
+  v13 = [scheme fingerPrintForData:dataCopy error:&v35];
   v14 = v35;
   if (v13)
   {
-    v15 = [(CKRecord *)self objectForKey:v11];
+    v15 = [(CKRecord *)self objectForKey:keyCopy];
     v16 = v15;
     if ((!v15 || ([v15 isEqual:v13]& 1) == 0) && (_CPLSilentLogging & 1) == 0)
     {
@@ -1296,7 +1296,7 @@ LABEL_56:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v37 = v13;
+        selfCopy = v13;
         sub_10006D02C();
         sub_10006D064(&_mh_execute_header, v18, v19, "Mismatching fingerprint (fetched %@ vs. expected %@) for resourceData for %@", v20, v21, v22, v23, v34, v35, buf[0]);
       }
@@ -1313,7 +1313,7 @@ LABEL_11:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v37 = self;
+      selfCopy = self;
       v38 = 2112;
       v39 = v14;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Unable to fingerprint resource data for %@: %@", buf, 0x16u);
@@ -1323,16 +1323,16 @@ LABEL_11:
   }
 
 LABEL_12:
-  v24 = [(CKRecord *)self objectForKey:v12];
-  v25 = [v10 length];
+  v24 = [(CKRecord *)self objectForKey:sizeKeyCopy];
+  v25 = [dataCopy length];
   if (v25 != [v24 unsignedIntegerValue] && (_CPLSilentLogging & 1) == 0)
   {
     v26 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      v27 = [v10 length];
+      v27 = [dataCopy length];
       *buf = 134218498;
-      v37 = v27;
+      selfCopy = v27;
       sub_10006D02C();
       sub_10006D064(&_mh_execute_header, v28, v29, "Mismatching filesize (fetched %lu vs. expected %@) for resourceData for %@", v30, v31, v32, v33, v34, v35, buf[0]);
     }
@@ -1341,8 +1341,8 @@ LABEL_12:
 
 - (void)cpl_markRecordAsEPP
 {
-  v3 = [(CKRecord *)self pluginFields];
-  v4 = [v3 mutableCopy];
+  pluginFields = [(CKRecord *)self pluginFields];
+  v4 = [pluginFields mutableCopy];
 
   if (!v4)
   {
@@ -1356,8 +1356,8 @@ LABEL_12:
     v5 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(CKRecord *)self recordID];
-      v7 = [v6 recordName];
+      recordID = [(CKRecord *)self recordID];
+      recordName = [recordID recordName];
       v9 = 138412546;
       v10 = v4;
       sub_1000033B4();

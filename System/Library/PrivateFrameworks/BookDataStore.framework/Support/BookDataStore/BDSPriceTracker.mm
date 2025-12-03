@@ -1,17 +1,17 @@
 @interface BDSPriceTracker
 - (BDSPriceTracker)init;
-- (BDSPriceTracker)initWithPersistenceURL:(id)a3;
-- (void)bdsctl_addTrackedItem:(BDSDistributedPriceTrackingConfigItemID *)a3 completion:(id)a4;
-- (void)bdsctl_getStateWithCompletion:(id)a3;
-- (void)bdsctl_updateReferencePrices:(NSDictionary *)a3 completion:(id)a4;
-- (void)bdsdctl_updateTrackedPricesIgnoringScheduleForAllItemsWithCompletionHandler:(id)a3;
-- (void)setConfiguration:(BDSDistributedPriceTrackingConfig *)a3 completion:(id)a4;
-- (void)updateTrackedPricesIgnoringScheduleForNewItemsWithCompletionHandler:(id)a3;
+- (BDSPriceTracker)initWithPersistenceURL:(id)l;
+- (void)bdsctl_addTrackedItem:(BDSDistributedPriceTrackingConfigItemID *)item completion:(id)completion;
+- (void)bdsctl_getStateWithCompletion:(id)completion;
+- (void)bdsctl_updateReferencePrices:(NSDictionary *)prices completion:(id)completion;
+- (void)bdsdctl_updateTrackedPricesIgnoringScheduleForAllItemsWithCompletionHandler:(id)handler;
+- (void)setConfiguration:(BDSDistributedPriceTrackingConfig *)configuration completion:(id)completion;
+- (void)updateTrackedPricesIgnoringScheduleForNewItemsWithCompletionHandler:(id)handler;
 @end
 
 @implementation BDSPriceTracker
 
-- (BDSPriceTracker)initWithPersistenceURL:(id)a3
+- (BDSPriceTracker)initWithPersistenceURL:(id)l
 {
   v4 = sub_100084528(&qword_100271368, &qword_1001F3AD0);
   v5 = *(*(v4 - 8) + 64);
@@ -48,13 +48,13 @@
   return v25;
 }
 
-- (void)updateTrackedPricesIgnoringScheduleForNewItemsWithCompletionHandler:(id)a3
+- (void)updateTrackedPricesIgnoringScheduleForNewItemsWithCompletionHandler:(id)handler
 {
   v5 = sub_100084528(&unk_100270A00, &qword_1001F3120);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -82,15 +82,15 @@
   return result;
 }
 
-- (void)setConfiguration:(BDSDistributedPriceTrackingConfig *)a3 completion:(id)a4
+- (void)setConfiguration:(BDSDistributedPriceTrackingConfig *)configuration completion:(id)completion
 {
   v7 = sub_100084528(&unk_100270A00, &qword_1001F3120);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = configuration;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1001C6348();
@@ -105,18 +105,18 @@
   v15[3] = 0;
   v15[4] = &unk_1001F3A50;
   v15[5] = v14;
-  v16 = a3;
+  configurationCopy = configuration;
 
   sub_100118770(0, 0, v10, &unk_1001F3A58, v15);
 }
 
-- (void)bdsctl_getStateWithCompletion:(id)a3
+- (void)bdsctl_getStateWithCompletion:(id)completion
 {
   v5 = sub_100084528(&unk_100270A00, &qword_1001F3120);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -136,15 +136,15 @@
   sub_100118770(0, 0, v8, &unk_1001F3A08, v13);
 }
 
-- (void)bdsctl_addTrackedItem:(BDSDistributedPriceTrackingConfigItemID *)a3 completion:(id)a4
+- (void)bdsctl_addTrackedItem:(BDSDistributedPriceTrackingConfigItemID *)item completion:(id)completion
 {
   v7 = sub_100084528(&unk_100270A00, &qword_1001F3120);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = item;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1001C6348();
@@ -159,20 +159,20 @@
   v15[3] = 0;
   v15[4] = &unk_1001F39D8;
   v15[5] = v14;
-  v16 = a3;
+  itemCopy = item;
 
   sub_100118770(0, 0, v10, &unk_1001F39E0, v15);
 }
 
-- (void)bdsctl_updateReferencePrices:(NSDictionary *)a3 completion:(id)a4
+- (void)bdsctl_updateReferencePrices:(NSDictionary *)prices completion:(id)completion
 {
   v7 = sub_100084528(&unk_100270A00, &qword_1001F3120);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = prices;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1001C6348();
@@ -187,18 +187,18 @@
   v15[3] = 0;
   v15[4] = &unk_1001F39A8;
   v15[5] = v14;
-  v16 = a3;
+  pricesCopy = prices;
 
   sub_100118770(0, 0, v10, &unk_1001F39B0, v15);
 }
 
-- (void)bdsdctl_updateTrackedPricesIgnoringScheduleForAllItemsWithCompletionHandler:(id)a3
+- (void)bdsdctl_updateTrackedPricesIgnoringScheduleForAllItemsWithCompletionHandler:(id)handler
 {
   v5 = sub_100084528(&unk_100270A00, &qword_1001F3120);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;

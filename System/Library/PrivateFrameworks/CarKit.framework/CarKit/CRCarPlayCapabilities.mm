@@ -1,26 +1,26 @@
 @interface CRCarPlayCapabilities
 + (NSString)capabilitiesIdentifier;
 + (NSString)capabilitiesVersion;
-+ (id)_newCapabilitiesFromGlobalDomainWithIdentifier:(id)a3;
++ (id)_newCapabilitiesFromGlobalDomainWithIdentifier:(id)identifier;
 + (id)carPlayCapabilitiesCache;
-+ (id)fetchCarCapabilitiesWithIdentifier:(id)a3;
++ (id)fetchCarCapabilitiesWithIdentifier:(id)identifier;
 + (void)_resetCapabilitiesGlobalDomain;
 + (void)invalidateCarPlayCapabilitiesCache;
-+ (void)setCapabilitiesIdentifier:(id)a3;
-+ (void)setCapabilitiesVersion:(id)a3;
-+ (void)setCarPlayCapabilitiesCache:(id)a3;
-+ (void)waitForCarCapabilitiesValuesWithReply:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCapabilities:(id)a3;
++ (void)setCapabilitiesIdentifier:(id)identifier;
++ (void)setCapabilitiesVersion:(id)version;
++ (void)setCarPlayCapabilitiesCache:(id)cache;
++ (void)waitForCarCapabilitiesValuesWithReply:(id)reply;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCapabilities:(id)capabilities;
 - (CRCarPlayCapabilities)init;
-- (CRCarPlayCapabilities)initWithCoder:(id)a3;
-- (CRCarPlayCapabilities)initWithDictionaryRepresentation:(id)a3;
-- (CRCarPlayCapabilities)initWithVersion:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CRCarPlayCapabilities)initWithCoder:(id)coder;
+- (CRCarPlayCapabilities)initWithDictionaryRepresentation:(id)representation;
+- (CRCarPlayCapabilities)initWithVersion:(id)version;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)informativeText;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)persistCapabilitiesToGlobalDomain;
 @end
 
@@ -28,8 +28,8 @@
 
 + (NSString)capabilitiesIdentifier
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (sCRCarPlayCapabilitiesIdentifier)
   {
     v3 = [sCRCarPlayCapabilitiesIdentifier copy];
@@ -40,7 +40,7 @@
     v3 = @"CarCapabilitiesDefaultIdentifier";
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v4 = CarGeneralLogging();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -58,9 +58,9 @@
   v2 = [(CRCarPlayCapabilities *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AEC0] string];
+    string = [MEMORY[0x1E696AEC0] string];
     version = v2->_version;
-    v2->_version = v3;
+    v2->_version = string;
 
     *&v2->_disabledFeature = xmmword_1C825B9F0;
     *&v2->_liveActivitiesMode = vdupq_n_s64(2uLL);
@@ -73,21 +73,21 @@
     dashboardRoundedCorners = v2->_dashboardRoundedCorners;
     v2->_dashboardRoundedCorners = v7;
 
-    v9 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
     userInfo = v2->_userInfo;
-    v2->_userInfo = v9;
+    v2->_userInfo = dictionary;
   }
 
   return v2;
 }
 
-- (CRCarPlayCapabilities)initWithVersion:(id)a3
+- (CRCarPlayCapabilities)initWithVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   v5 = [(CRCarPlayCapabilities *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [versionCopy copy];
     version = v5->_version;
     v5->_version = v6;
   }
@@ -133,7 +133,7 @@
 - (id)informativeText
 {
   v15 = MEMORY[0x1E696AEC0];
-  v3 = [objc_opt_class() capabilitiesIdentifier];
+  capabilitiesIdentifier = [objc_opt_class() capabilitiesIdentifier];
   version = self->_version;
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_disabledFeature];
   v6 = [CARSessionConfiguration descriptionForCapability:self->_nowPlayingAlbumArtMode];
@@ -143,20 +143,20 @@
   v14 = *&self->_viewAreaInsets;
   userInfo = self->_userInfo;
   v11 = [MEMORY[0x1E696AD98] numberWithBool:self->_persisted];
-  v12 = [v15 stringWithFormat:@"vehicle identifier = %@\nplist version = %@\ndisabledFeature mask = %@\nnowPlayingAlbumArtMode = %@\nliveActivitiesMode = %@\nlodWidgetsMode = %@\nuserInterfaceStyle = %@\nviewAreaInset = %@\ndashboardRoundedCorners = %@\nuserInfo = %@, persisted = %@\nzoomFactor = %@", v3, version, v5, v6, v7, v8, v9, v14, userInfo, v11, self->_zoomFactor];
+  v12 = [v15 stringWithFormat:@"vehicle identifier = %@\nplist version = %@\ndisabledFeature mask = %@\nnowPlayingAlbumArtMode = %@\nliveActivitiesMode = %@\nlodWidgetsMode = %@\nuserInterfaceStyle = %@\nviewAreaInset = %@\ndashboardRoundedCorners = %@\nuserInfo = %@, persisted = %@\nzoomFactor = %@", capabilitiesIdentifier, version, v5, v6, v7, v8, v9, v14, userInfo, v11, self->_zoomFactor];
 
   return v12;
 }
 
-+ (void)setCapabilitiesIdentifier:(id)a3
++ (void)setCapabilitiesIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = a1;
-  objc_sync_enter(v5);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = sCRCarPlayCapabilitiesIdentifier;
-  if (v4)
+  if (identifierCopy)
   {
-    if (([sCRCarPlayCapabilitiesIdentifier isEqualToString:v4] & 1) == 0)
+    if (([sCRCarPlayCapabilitiesIdentifier isEqualToString:identifierCopy] & 1) == 0)
     {
       v7 = CarGeneralLogging();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -164,7 +164,7 @@
         +[CRCarPlayCapabilities setCapabilitiesIdentifier:];
       }
 
-      v8 = [v4 copy];
+      v8 = [identifierCopy copy];
       v9 = sCRCarPlayCapabilitiesIdentifier;
       sCRCarPlayCapabilitiesIdentifier = v8;
     }
@@ -175,17 +175,17 @@
     sCRCarPlayCapabilitiesIdentifier = @"CarCapabilitiesDefaultIdentifier";
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-+ (void)setCapabilitiesVersion:(id)a3
++ (void)setCapabilitiesVersion:(id)version
 {
-  if (a3)
+  if (version)
   {
     v3 = *MEMORY[0x1E695E890];
     v4 = *MEMORY[0x1E695E8B8];
     v5 = *MEMORY[0x1E695E898];
-    v6 = a3;
+    versionCopy = version;
     v7 = CFPreferencesCopyValue(@"CarCapabilities", v3, v4, v5);
     v8 = [v7 mutableCopy];
     v9 = v8;
@@ -201,7 +201,7 @@
 
     value = v10;
 
-    [value setObject:v6 forKey:@"CarCapabilitiesContentVersion"];
+    [value setObject:versionCopy forKey:@"CarCapabilitiesContentVersion"];
     CFPreferencesSetValue(@"CarCapabilities", value, v3, v4, v5);
     CFPreferencesSynchronize(v3, v4, v5);
   }
@@ -243,66 +243,66 @@ void __44__CRCarPlayCapabilities_capabilitiesVersion__block_invoke()
   CFPreferencesSynchronize(v0, v1, v2);
 }
 
-- (CRCarPlayCapabilities)initWithCoder:(id)a3
+- (CRCarPlayCapabilities)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = CRCarPlayCapabilities;
   v5 = [(CRCarPlayCapabilities *)&v12 init];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"CRCapabilitiesVersionKey"])
+    if ([coderCopy containsValueForKey:@"CRCapabilitiesVersionKey"])
     {
-      v6 = [v4 decodeObjectForKey:@"CRCapabilitiesVersionKey"];
+      v6 = [coderCopy decodeObjectForKey:@"CRCapabilitiesVersionKey"];
       [(CRCarPlayCapabilities *)v5 setVersion:v6];
     }
 
-    if ([v4 containsValueForKey:@"CapabilitiesViewAreaInsetKey"])
+    if ([coderCopy containsValueForKey:@"CapabilitiesViewAreaInsetKey"])
     {
-      v7 = [v4 decodeObjectForKey:@"CapabilitiesViewAreaInsetKey"];
+      v7 = [coderCopy decodeObjectForKey:@"CapabilitiesViewAreaInsetKey"];
       [(CRCarPlayCapabilities *)v5 setViewAreaInsets:v7];
     }
 
-    if ([v4 containsValueForKey:@"CapabilitiesDashboardRoundedCornersKey"])
+    if ([coderCopy containsValueForKey:@"CapabilitiesDashboardRoundedCornersKey"])
     {
-      v8 = [v4 decodeObjectForKey:@"CapabilitiesDashboardRoundedCornersKey"];
+      v8 = [coderCopy decodeObjectForKey:@"CapabilitiesDashboardRoundedCornersKey"];
       [(CRCarPlayCapabilities *)v5 setDashboardRoundedCorners:v8];
     }
 
-    if ([v4 containsValueForKey:@"CapabilitiesNowPlayingAlbumArtKey"])
+    if ([coderCopy containsValueForKey:@"CapabilitiesNowPlayingAlbumArtKey"])
     {
-      -[CRCarPlayCapabilities setNowPlayingAlbumArtMode:](v5, "setNowPlayingAlbumArtMode:", [v4 decodeIntegerForKey:@"CapabilitiesNowPlayingAlbumArtKey"]);
+      -[CRCarPlayCapabilities setNowPlayingAlbumArtMode:](v5, "setNowPlayingAlbumArtMode:", [coderCopy decodeIntegerForKey:@"CapabilitiesNowPlayingAlbumArtKey"]);
     }
 
-    if ([v4 containsValueForKey:@"CapabilitiesLiveActivitiesKey"])
+    if ([coderCopy containsValueForKey:@"CapabilitiesLiveActivitiesKey"])
     {
-      -[CRCarPlayCapabilities setLiveActivitiesMode:](v5, "setLiveActivitiesMode:", [v4 decodeIntegerForKey:@"CapabilitiesLiveActivitiesKey"]);
+      -[CRCarPlayCapabilities setLiveActivitiesMode:](v5, "setLiveActivitiesMode:", [coderCopy decodeIntegerForKey:@"CapabilitiesLiveActivitiesKey"]);
     }
 
-    if ([v4 containsValueForKey:@"CapabilitiesLodWidgetsKey"])
+    if ([coderCopy containsValueForKey:@"CapabilitiesLodWidgetsKey"])
     {
-      -[CRCarPlayCapabilities setLodWidgetsMode:](v5, "setLodWidgetsMode:", [v4 decodeIntegerForKey:@"CapabilitiesLodWidgetsKey"]);
+      -[CRCarPlayCapabilities setLodWidgetsMode:](v5, "setLodWidgetsMode:", [coderCopy decodeIntegerForKey:@"CapabilitiesLodWidgetsKey"]);
     }
 
-    if ([v4 containsValueForKey:@"CRCapabilitiesDisabledFeatureKey"])
+    if ([coderCopy containsValueForKey:@"CRCapabilitiesDisabledFeatureKey"])
     {
-      -[CRCarPlayCapabilities setDisabledFeature:](v5, "setDisabledFeature:", [v4 decodeIntegerForKey:@"CRCapabilitiesDisabledFeatureKey"]);
+      -[CRCarPlayCapabilities setDisabledFeature:](v5, "setDisabledFeature:", [coderCopy decodeIntegerForKey:@"CRCapabilitiesDisabledFeatureKey"]);
     }
 
-    if ([v4 containsValueForKey:@"CRCapabilitiesUserInterfaceStyleKey"])
+    if ([coderCopy containsValueForKey:@"CRCapabilitiesUserInterfaceStyleKey"])
     {
-      -[CRCarPlayCapabilities setUserInterfaceStyle:](v5, "setUserInterfaceStyle:", [v4 decodeIntegerForKey:@"CRCapabilitiesUserInterfaceStyleKey"]);
+      -[CRCarPlayCapabilities setUserInterfaceStyle:](v5, "setUserInterfaceStyle:", [coderCopy decodeIntegerForKey:@"CRCapabilitiesUserInterfaceStyleKey"]);
     }
 
-    if ([v4 containsValueForKey:@"CRCapabilitiesUserInfoKey"])
+    if ([coderCopy containsValueForKey:@"CRCapabilitiesUserInfoKey"])
     {
-      v9 = [v4 decodeObjectForKey:@"CRCapabilitiesUserInfoKey"];
+      v9 = [coderCopy decodeObjectForKey:@"CRCapabilitiesUserInfoKey"];
       [(CRCarPlayCapabilities *)v5 setUserInfo:v9];
     }
 
-    if ([v4 containsValueForKey:@"CRCapabilitiesZoomFactorKeyKey"])
+    if ([coderCopy containsValueForKey:@"CRCapabilitiesZoomFactorKeyKey"])
     {
-      v10 = [v4 decodeObjectForKey:@"CRCapabilitiesZoomFactorKeyKey"];
+      v10 = [coderCopy decodeObjectForKey:@"CRCapabilitiesZoomFactorKeyKey"];
       [(CRCarPlayCapabilities *)v5 setZoomFactor:v10];
     }
   }
@@ -310,32 +310,32 @@ void __44__CRCarPlayCapabilities_capabilitiesVersion__block_invoke()
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   version = self->_version;
-  v9 = v4;
+  v9 = coderCopy;
   if (version)
   {
-    [v4 encodeObject:version forKey:@"CRCapabilitiesVersionKey"];
-    v4 = v9;
+    [coderCopy encodeObject:version forKey:@"CRCapabilitiesVersionKey"];
+    coderCopy = v9;
   }
 
   viewAreaInsets = self->_viewAreaInsets;
   if (viewAreaInsets)
   {
     [v9 encodeObject:viewAreaInsets forKey:@"CapabilitiesViewAreaInsetKey"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   dashboardRoundedCorners = self->_dashboardRoundedCorners;
   if (dashboardRoundedCorners)
   {
     [v9 encodeObject:dashboardRoundedCorners forKey:@"CapabilitiesDashboardRoundedCornersKey"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
-  [v4 encodeInteger:self->_nowPlayingAlbumArtMode forKey:@"CapabilitiesNowPlayingAlbumArtKey"];
+  [coderCopy encodeInteger:self->_nowPlayingAlbumArtMode forKey:@"CapabilitiesNowPlayingAlbumArtKey"];
   [v9 encodeInteger:self->_liveActivitiesMode forKey:@"CapabilitiesLiveActivitiesKey"];
   [v9 encodeInteger:self->_lodWidgetsMode forKey:@"CapabilitiesLodWidgetsKey"];
   [v9 encodeInteger:self->_disabledFeature forKey:@"CRCapabilitiesDisabledFeatureKey"];
@@ -348,9 +348,9 @@ void __44__CRCarPlayCapabilities_capabilitiesVersion__block_invoke()
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -370,17 +370,17 @@ void __44__CRCarPlayCapabilities_capabilitiesVersion__block_invoke()
   return v5;
 }
 
-- (BOOL)isEqualToCapabilities:(id)a3
+- (BOOL)isEqualToCapabilities:(id)capabilities
 {
-  v4 = a3;
-  v5 = [(CRCarPlayCapabilities *)self version];
-  v6 = [v4 version];
-  v7 = [v5 isEqualToString:v6];
+  capabilitiesCopy = capabilities;
+  version = [(CRCarPlayCapabilities *)self version];
+  version2 = [capabilitiesCopy version];
+  v7 = [version isEqualToString:version2];
 
-  if (v7 && (v8 = -[CRCarPlayCapabilities disabledFeature](self, "disabledFeature"), v8 == [v4 disabledFeature]) && (v9 = -[CRCarPlayCapabilities nowPlayingAlbumArtMode](self, "nowPlayingAlbumArtMode"), v9 == objc_msgSend(v4, "nowPlayingAlbumArtMode")) && (v10 = -[CRCarPlayCapabilities liveActivitiesMode](self, "liveActivitiesMode"), v10 == objc_msgSend(v4, "liveActivitiesMode")) && (v11 = -[CRCarPlayCapabilities lodWidgetsMode](self, "lodWidgetsMode"), v11 == objc_msgSend(v4, "lodWidgetsMode")) && (-[CRCarPlayCapabilities viewAreaInsets](self, "viewAreaInsets"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "edgeInsetsValue"), v14 = v13, v16 = v15, v18 = v17, v20 = v19, objc_msgSend(v4, "viewAreaInsets"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "edgeInsetsValue"), v52.top = v22, v52.left = v23, v52.bottom = v24, v52.right = v25, v50.top = v14, v50.left = v16, v50.bottom = v18, v50.right = v20, v26 = NSEdgeInsetsEqual(v50, v52), v21, v12, v26) && (-[CRCarPlayCapabilities dashboardRoundedCorners](self, "dashboardRoundedCorners"), v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v27, "edgeInsetsValue"), v29 = v28, v31 = v30, v33 = v32, v35 = v34, objc_msgSend(v4, "dashboardRoundedCorners"), v36 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v36, "edgeInsetsValue"), v53.top = v37, v53.left = v38, v53.bottom = v39, v53.right = v40, v51.top = v29, v51.left = v31, v51.bottom = v33, v51.right = v35, v41 = NSEdgeInsetsEqual(v51, v53), v36, v27, v41) && (v42 = -[CRCarPlayCapabilities userInterfaceStyle](self, "userInterfaceStyle"), v42 == objc_msgSend(v4, "userInterfaceStyle")) && (-[CRCarPlayCapabilities userInfo](self, "userInfo"), v43 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "userInfo"), v44 = objc_claimAutoreleasedReturnValue(), v45 = objc_msgSend(v43, "isEqualToDictionary:", v44), v44, v43, v45))
+  if (v7 && (v8 = -[CRCarPlayCapabilities disabledFeature](self, "disabledFeature"), v8 == [capabilitiesCopy disabledFeature]) && (v9 = -[CRCarPlayCapabilities nowPlayingAlbumArtMode](self, "nowPlayingAlbumArtMode"), v9 == objc_msgSend(capabilitiesCopy, "nowPlayingAlbumArtMode")) && (v10 = -[CRCarPlayCapabilities liveActivitiesMode](self, "liveActivitiesMode"), v10 == objc_msgSend(capabilitiesCopy, "liveActivitiesMode")) && (v11 = -[CRCarPlayCapabilities lodWidgetsMode](self, "lodWidgetsMode"), v11 == objc_msgSend(capabilitiesCopy, "lodWidgetsMode")) && (-[CRCarPlayCapabilities viewAreaInsets](self, "viewAreaInsets"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "edgeInsetsValue"), v14 = v13, v16 = v15, v18 = v17, v20 = v19, objc_msgSend(capabilitiesCopy, "viewAreaInsets"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "edgeInsetsValue"), v52.top = v22, v52.left = v23, v52.bottom = v24, v52.right = v25, v50.top = v14, v50.left = v16, v50.bottom = v18, v50.right = v20, v26 = NSEdgeInsetsEqual(v50, v52), v21, v12, v26) && (-[CRCarPlayCapabilities dashboardRoundedCorners](self, "dashboardRoundedCorners"), v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v27, "edgeInsetsValue"), v29 = v28, v31 = v30, v33 = v32, v35 = v34, objc_msgSend(capabilitiesCopy, "dashboardRoundedCorners"), v36 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v36, "edgeInsetsValue"), v53.top = v37, v53.left = v38, v53.bottom = v39, v53.right = v40, v51.top = v29, v51.left = v31, v51.bottom = v33, v51.right = v35, v41 = NSEdgeInsetsEqual(v51, v53), v36, v27, v41) && (v42 = -[CRCarPlayCapabilities userInterfaceStyle](self, "userInterfaceStyle"), v42 == objc_msgSend(capabilitiesCopy, "userInterfaceStyle")) && (-[CRCarPlayCapabilities userInfo](self, "userInfo"), v43 = objc_claimAutoreleasedReturnValue(), objc_msgSend(capabilitiesCopy, "userInfo"), v44 = objc_claimAutoreleasedReturnValue(), v45 = objc_msgSend(v43, "isEqualToDictionary:", v44), v44, v43, v45))
   {
-    v46 = [(CRCarPlayCapabilities *)self zoomFactor];
-    v47 = [v4 zoomFactor];
+    zoomFactor = [(CRCarPlayCapabilities *)self zoomFactor];
+    zoomFactor2 = [capabilitiesCopy zoomFactor];
     v48 = BSEqualObjects();
   }
 
@@ -392,10 +392,10 @@ void __44__CRCarPlayCapabilities_capabilitiesVersion__block_invoke()
   return v48;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -403,59 +403,59 @@ void __44__CRCarPlayCapabilities_capabilitiesVersion__block_invoke()
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CRCarPlayCapabilities *)self isEqualToCapabilities:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CRCarPlayCapabilities *)self isEqualToCapabilities:equalCopy];
   }
 
   return v5;
 }
 
-- (CRCarPlayCapabilities)initWithDictionaryRepresentation:(id)a3
+- (CRCarPlayCapabilities)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v27.receiver = self;
   v27.super_class = CRCarPlayCapabilities;
   v5 = [(CRCarPlayCapabilities *)&v27 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"CRCapabilitiesVersionKey"];
+    v6 = [representationCopy objectForKeyedSubscript:@"CRCapabilitiesVersionKey"];
     version = v5->_version;
     v5->_version = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"CRCapabilitiesDisabledFeatureKey"];
+    v8 = [representationCopy objectForKeyedSubscript:@"CRCapabilitiesDisabledFeatureKey"];
     v5->_disabledFeature = [v8 integerValue];
 
-    v9 = [v4 objectForKeyedSubscript:@"CapabilitiesNowPlayingAlbumArtKey"];
+    v9 = [representationCopy objectForKeyedSubscript:@"CapabilitiesNowPlayingAlbumArtKey"];
     v5->_nowPlayingAlbumArtMode = [v9 integerValue];
 
-    v10 = [v4 objectForKeyedSubscript:@"CapabilitiesLiveActivitiesKey"];
+    v10 = [representationCopy objectForKeyedSubscript:@"CapabilitiesLiveActivitiesKey"];
     v5->_liveActivitiesMode = [v10 integerValue];
 
-    v11 = [v4 objectForKeyedSubscript:@"CapabilitiesLodWidgetsKey"];
+    v11 = [representationCopy objectForKeyedSubscript:@"CapabilitiesLodWidgetsKey"];
     v5->_lodWidgetsMode = [v11 integerValue];
 
-    v12 = [v4 objectForKeyedSubscript:@"CapabilitiesViewAreaInsetKey"];
+    v12 = [representationCopy objectForKeyedSubscript:@"CapabilitiesViewAreaInsetKey"];
     v13 = MEMORY[0x1E696B098];
     v28 = NSRectFromString(v12);
     v14 = [v13 valueWithEdgeInsets:{v28.origin.x, v28.origin.y, v28.size.width, v28.size.height}];
     viewAreaInsets = v5->_viewAreaInsets;
     v5->_viewAreaInsets = v14;
 
-    v16 = [v4 objectForKeyedSubscript:@"CapabilitiesDashboardRoundedCornersKey"];
+    v16 = [representationCopy objectForKeyedSubscript:@"CapabilitiesDashboardRoundedCornersKey"];
     v17 = MEMORY[0x1E696B098];
     v29 = NSRectFromString(v16);
     v18 = [v17 valueWithEdgeInsets:{v29.origin.x, v29.origin.y, v29.size.width, v29.size.height}];
     dashboardRoundedCorners = v5->_dashboardRoundedCorners;
     v5->_dashboardRoundedCorners = v18;
 
-    v20 = [v4 objectForKeyedSubscript:@"CRCapabilitiesUserInterfaceStyleKey"];
+    v20 = [representationCopy objectForKeyedSubscript:@"CRCapabilitiesUserInterfaceStyleKey"];
     v5->_userInterfaceStyle = [v20 integerValue];
 
-    v21 = [v4 objectForKeyedSubscript:@"CRCapabilitiesUserInfoKey"];
+    v21 = [representationCopy objectForKeyedSubscript:@"CRCapabilitiesUserInfoKey"];
     userInfo = v5->_userInfo;
     v5->_userInfo = v21;
 
     objc_opt_class();
-    v23 = [v4 objectForKeyedSubscript:@"CRCapabilitiesZoomFactorKeyKey"];
+    v23 = [representationCopy objectForKeyedSubscript:@"CRCapabilitiesZoomFactorKeyKey"];
     if (v23 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v24 = v23;
@@ -506,18 +506,18 @@ void __44__CRCarPlayCapabilities_capabilitiesVersion__block_invoke()
   return v3;
 }
 
-+ (id)fetchCarCapabilitiesWithIdentifier:(id)a3
++ (id)fetchCarCapabilitiesWithIdentifier:(id)identifier
 {
-  v4 = [a1 _newCapabilitiesFromGlobalDomainWithIdentifier:a3];
+  v4 = [self _newCapabilitiesFromGlobalDomainWithIdentifier:identifier];
   if (([v4 persisted] & 1) == 0)
   {
-    v5 = [a1 carPlayCapabilitiesCache];
+    carPlayCapabilitiesCache = [self carPlayCapabilitiesCache];
 
-    if (v5)
+    if (carPlayCapabilitiesCache)
     {
-      v6 = [a1 carPlayCapabilitiesCache];
+      carPlayCapabilitiesCache2 = [self carPlayCapabilitiesCache];
 
-      v4 = v6;
+      v4 = carPlayCapabilitiesCache2;
     }
   }
 
@@ -530,15 +530,15 @@ void __44__CRCarPlayCapabilities_capabilitiesVersion__block_invoke()
   return v4;
 }
 
-+ (id)_newCapabilitiesFromGlobalDomainWithIdentifier:(id)a3
++ (id)_newCapabilitiesFromGlobalDomainWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = *MEMORY[0x1E695E890];
   v5 = *MEMORY[0x1E695E8B8];
   v6 = *MEMORY[0x1E695E898];
   CFPreferencesSynchronize(*MEMORY[0x1E695E890], *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
   v7 = CFPreferencesCopyValue(@"CarCapabilities", v4, v5, v6);
-  v8 = [v7 objectForKey:v3];
+  v8 = [v7 objectForKey:identifierCopy];
   v9 = CarGeneralLogging();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
   if (v8)
@@ -587,10 +587,10 @@ void __44__CRCarPlayCapabilities_capabilitiesVersion__block_invoke()
   _os_log_debug_impl(&dword_1C81FC000, log, OS_LOG_TYPE_DEBUG, "%s: resetting car capabilities to global domain", &v1, 0xCu);
 }
 
-+ (void)waitForCarCapabilitiesValuesWithReply:(id)a3
++ (void)waitForCarCapabilitiesValuesWithReply:(id)reply
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v5 = +[CRCarPlayCapabilities capabilitiesIdentifier];
   if ([v5 isEqualToString:@"CarCapabilitiesDefaultIdentifier"])
   {
@@ -602,10 +602,10 @@ void __44__CRCarPlayCapabilities_capabilitiesVersion__block_invoke()
 
   if (v5 && ([v5 isEqualToString:@"CarCapabilitiesDefaultIdentifier"] & 1) == 0)
   {
-    [a1 invalidateCarPlayCapabilitiesCache];
+    [self invalidateCarPlayCapabilitiesCache];
     v7 = [CRCarPlayCapabilities fetchCarCapabilitiesWithIdentifier:v5];
-    v8 = [v7 version];
-    if (v8 && ([v7 version], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "integerValue"), v11 = objc_msgSend(@"5", "integerValue"), v9, v8, v10 > v11))
+    version = [v7 version];
+    if (version && ([v7 version], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "integerValue"), v11 = objc_msgSend(@"5", "integerValue"), v9, version, v10 > v11))
     {
       v12 = CarGeneralLogging();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -617,18 +617,18 @@ void __44__CRCarPlayCapabilities_capabilitiesVersion__block_invoke()
         _os_log_impl(&dword_1C81FC000, v12, OS_LOG_TYPE_DEFAULT, "%s: CarCapabilities available for current session: %@", buf, 0x16u);
       }
 
-      if (!v4)
+      if (!replyCopy)
       {
         goto LABEL_13;
       }
 
-      v13 = [v7 dictionaryRepresentation];
-      v4[2](v4, v13, 0);
+      dictionaryRepresentation = [v7 dictionaryRepresentation];
+      replyCopy[2](replyCopy, dictionaryRepresentation, 0);
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       v14 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F48038E8];
       v15 = MEMORY[0x1E695DFD8];
       v16 = objc_opt_class();
@@ -655,10 +655,10 @@ void __44__CRCarPlayCapabilities_capabilitiesVersion__block_invoke()
       v25[2] = __63__CRCarPlayCapabilities_waitForCarCapabilitiesValuesWithReply___block_invoke_157;
       v25[3] = &unk_1E82FD510;
       v29 = buf;
-      v30 = a1;
-      v28 = v4;
-      v13 = v24;
-      v26 = v13;
+      selfCopy = self;
+      v28 = replyCopy;
+      dictionaryRepresentation = date;
+      v26 = dictionaryRepresentation;
       v22 = v19;
       v27 = v22;
       [v20 requestCarCapabilitiesStatus:v21 withReply:v25];
@@ -734,7 +734,7 @@ void __63__CRCarPlayCapabilities_waitForCarCapabilitiesValuesWithReply___block_i
 
 + (void)invalidateCarPlayCapabilitiesCache
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
   v2 = sCRCarPlayCapabilitiesCache;
   sCRCarPlayCapabilitiesCache = 0;
@@ -742,30 +742,30 @@ void __63__CRCarPlayCapabilities_waitForCarCapabilitiesValuesWithReply___block_i
   objc_sync_exit(obj);
 }
 
-+ (void)setCarPlayCapabilitiesCache:(id)a3
++ (void)setCarPlayCapabilitiesCache:(id)cache
 {
-  v9 = a3;
-  v4 = a1;
-  objc_sync_enter(v4);
-  v5 = [v9 version];
-  v6 = [v5 integerValue];
+  cacheCopy = cache;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  version = [cacheCopy version];
+  integerValue = [version integerValue];
 
-  if (v6 >= 1)
+  if (integerValue >= 1)
   {
-    v7 = [v9 copy];
+    v7 = [cacheCopy copy];
     v8 = sCRCarPlayCapabilitiesCache;
     sCRCarPlayCapabilitiesCache = v7;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 + (id)carPlayCapabilitiesCache
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = sCRCarPlayCapabilitiesCache;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }

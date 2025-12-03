@@ -1,14 +1,14 @@
 @interface CPLEngineScopeFlagsUpdate
-+ (id)_arrayDescriptionForFlags:(int64_t)a3 remainingFlags:(int64_t *)a4;
-+ (id)descriptionForFlags:(int64_t)a3;
++ (id)_arrayDescriptionForFlags:(int64_t)flags remainingFlags:(int64_t *)remainingFlags;
++ (id)descriptionForFlags:(int64_t)flags;
 + (id)flagsDescriptionMapping;
 - (CPLEngineScopeFlagsUpdate)init;
-- (CPLEngineScopeFlagsUpdate)initWithFlags:(int64_t)a3;
+- (CPLEngineScopeFlagsUpdate)initWithFlags:(int64_t)flags;
 - (NSArray)arrayDescription;
 - (id)description;
-- (void)setValue:(BOOL)a3 forFlag:(int64_t)a4;
-- (void)updateFlags:(id)a3;
-- (void)updateFlags:(int64_t)a3 withFlagsValue:(int64_t)a4;
+- (void)setValue:(BOOL)value forFlag:(int64_t)flag;
+- (void)updateFlags:(id)flags;
+- (void)updateFlags:(int64_t)flags withFlagsValue:(int64_t)value;
 @end
 
 @implementation CPLEngineScopeFlagsUpdate
@@ -38,7 +38,7 @@
   if (self->_updatedFlagsMask)
   {
     v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v4 = [objc_opt_class() flagsDescriptionMapping];
+    flagsDescriptionMapping = [objc_opt_class() flagsDescriptionMapping];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __40__CPLEngineScopeFlagsUpdate_description__block_invoke;
@@ -46,7 +46,7 @@
     v16[4] = self;
     v5 = v3;
     v17 = v5;
-    [v4 enumerateKeysAndObjectsUsingBlock:v16];
+    [flagsDescriptionMapping enumerateKeysAndObjectsUsingBlock:v16];
 
     v6 = [v5 count];
     v7 = objc_alloc(MEMORY[0x1E696AEC0]);
@@ -56,12 +56,12 @@
     if (v6)
     {
       v11 = [v5 componentsJoinedByString:{@", "}];
-      v12 = [v7 initWithFormat:@"%@ (0x%lx %@)", v9, flags, v11];
+      flags = [v7 initWithFormat:@"%@ (0x%lx %@)", v9, flags, v11];
     }
 
     else
     {
-      v12 = [v7 initWithFormat:@"%@ (0x%lx)", v8, flags];
+      flags = [v7 initWithFormat:@"%@ (0x%lx)", v8, flags];
     }
   }
 
@@ -69,10 +69,10 @@
   {
     v13 = objc_alloc(MEMORY[0x1E696AEC0]);
     v14 = [objc_opt_class() descriptionForFlags:self->_flags];
-    v12 = [v13 initWithFormat:@"%@ (0x%lx)", v14, self->_flags];
+    flags = [v13 initWithFormat:@"%@ (0x%lx)", v14, self->_flags];
   }
 
-  return v12;
+  return flags;
 }
 
 void __40__CPLEngineScopeFlagsUpdate_description__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -100,29 +100,29 @@ void __40__CPLEngineScopeFlagsUpdate_description__block_invoke(uint64_t a1, void
   }
 }
 
-- (void)updateFlags:(id)a3
+- (void)updateFlags:(id)flags
 {
-  v4 = a3;
-  v5 = [v4 updatedFlagsMask];
-  v6 = [v4 flags];
+  flagsCopy = flags;
+  updatedFlagsMask = [flagsCopy updatedFlagsMask];
+  flags = [flagsCopy flags];
 
-  [(CPLEngineScopeFlagsUpdate *)self updateFlags:v5 withFlagsValue:v6];
+  [(CPLEngineScopeFlagsUpdate *)self updateFlags:updatedFlagsMask withFlagsValue:flags];
 }
 
-- (void)updateFlags:(int64_t)a3 withFlagsValue:(int64_t)a4
+- (void)updateFlags:(int64_t)flags withFlagsValue:(int64_t)value
 {
-  v4 = self->_updatedFlagsMask | a3;
-  self->_flags = self->_flags & ~a3 | a4 & a3;
+  v4 = self->_updatedFlagsMask | flags;
+  self->_flags = self->_flags & ~flags | value & flags;
   self->_updatedFlagsMask = v4;
 }
 
-- (void)setValue:(BOOL)a3 forFlag:(int64_t)a4
+- (void)setValue:(BOOL)value forFlag:(int64_t)flag
 {
   flags = self->_flags;
-  if (a3)
+  if (value)
   {
-    v5 = flags | a4;
-    if ((flags | a4) == flags)
+    v5 = flags | flag;
+    if ((flags | flag) == flags)
     {
       return;
     }
@@ -132,26 +132,26 @@ void __40__CPLEngineScopeFlagsUpdate_description__block_invoke(uint64_t a1, void
 
   else
   {
-    v5 = flags & ~a4;
+    v5 = flags & ~flag;
     if (v5 == flags)
     {
       return;
     }
   }
 
-  v6 = self->_updatedFlagsMask | flags & a4;
+  v6 = self->_updatedFlagsMask | flags & flag;
   self->_flags = v5;
   self->_updatedFlagsMask = v6;
 }
 
-- (CPLEngineScopeFlagsUpdate)initWithFlags:(int64_t)a3
+- (CPLEngineScopeFlagsUpdate)initWithFlags:(int64_t)flags
 {
   v5.receiver = self;
   v5.super_class = CPLEngineScopeFlagsUpdate;
   result = [(CPLEngineScopeFlagsUpdate *)&v5 init];
   if (result)
   {
-    result->_flags = a3;
+    result->_flags = flags;
   }
 
   return result;
@@ -164,12 +164,12 @@ void __40__CPLEngineScopeFlagsUpdate_description__block_invoke(uint64_t a1, void
   return [(CPLEngineScopeFlagsUpdate *)&v3 init];
 }
 
-+ (id)descriptionForFlags:(int64_t)a3
++ (id)descriptionForFlags:(int64_t)flags
 {
-  if (a3)
+  if (flags)
   {
     v9 = 0;
-    v3 = [a1 _arrayDescriptionForFlags:a3 remainingFlags:&v9];
+    v3 = [self _arrayDescriptionForFlags:flags remainingFlags:&v9];
     v4 = v3;
     if (v9)
     {
@@ -192,33 +192,33 @@ void __40__CPLEngineScopeFlagsUpdate_description__block_invoke(uint64_t a1, void
   return v7;
 }
 
-+ (id)_arrayDescriptionForFlags:(int64_t)a3 remainingFlags:(int64_t *)a4
++ (id)_arrayDescriptionForFlags:(int64_t)flags remainingFlags:(int64_t *)remainingFlags
 {
-  if (a3)
+  if (flags)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v15 = 0;
     v16 = &v15;
     v17 = 0x2020000000;
-    v18 = a3;
-    v8 = [a1 flagsDescriptionMapping];
+    flagsCopy = flags;
+    flagsDescriptionMapping = [self flagsDescriptionMapping];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __70__CPLEngineScopeFlagsUpdate__arrayDescriptionForFlags_remainingFlags___block_invoke;
     v11[3] = &unk_1E861C198;
     v13 = &v15;
-    v14 = a3;
+    flagsCopy2 = flags;
     v9 = v7;
     v12 = v9;
-    [v8 enumerateKeysAndObjectsUsingBlock:v11];
+    [flagsDescriptionMapping enumerateKeysAndObjectsUsingBlock:v11];
 
-    *a4 = v16[3];
+    *remainingFlags = v16[3];
     _Block_object_dispose(&v15, 8);
   }
 
   else
   {
-    *a4 = 0;
+    *remainingFlags = 0;
     v9 = &unk_1F57EF878;
   }
 

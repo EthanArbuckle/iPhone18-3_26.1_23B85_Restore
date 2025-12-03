@@ -67,9 +67,9 @@
     return 0;
   }
 
-  v3 = [(CIBloom *)self _isIdentity];
+  _isIdentity = [(CIBloom *)self _isIdentity];
   inputImage = self->inputImage;
-  if (v3)
+  if (_isIdentity)
   {
     v5 = inputImage;
 
@@ -99,11 +99,11 @@
     y = v28.origin.y;
     width = v28.size.width;
     height = v28.size.height;
-    v24 = [(CIBloom *)self _kernel];
+    _kernel = [(CIBloom *)self _kernel];
     v25[0] = self->inputImage;
     v25[1] = v7;
     v25[2] = self->inputIntensity;
-    return [v24 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v25, 3), x, y, width, height}];
+    return [_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v25, 3), x, y, width, height}];
   }
 }
 

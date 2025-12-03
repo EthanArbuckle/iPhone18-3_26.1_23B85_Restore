@@ -1,29 +1,29 @@
 @interface NMAPIURLRequest
-- (NMAPIURLRequest)initWithURL:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)urlComponentsWithStoreURLBag:(id)a3 error:(id *)a4;
+- (NMAPIURLRequest)initWithURL:(id)l;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)urlComponentsWithStoreURLBag:(id)bag error:(id *)error;
 @end
 
 @implementation NMAPIURLRequest
 
-- (NMAPIURLRequest)initWithURL:(id)a3
+- (NMAPIURLRequest)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = NMAPIURLRequest;
   v5 = [(MPStoreModelRequest *)&v8 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"URL : %@", v4];
-    [(NMAPIURLRequest *)v5 setLabel:v6];
+    lCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"URL : %@", lCopy];
+    [(NMAPIURLRequest *)v5 setLabel:lCopy];
 
-    [(NMAPIURLRequest *)v5 setURL:v4];
+    [(NMAPIURLRequest *)v5 setURL:lCopy];
   }
 
   return v5;
 }
 
-- (id)urlComponentsWithStoreURLBag:(id)a3 error:(id *)a4
+- (id)urlComponentsWithStoreURLBag:(id)bag error:(id *)error
 {
   URL = self->_URL;
   if (URL)
@@ -39,12 +39,12 @@
       [NMAPIURLRequest urlComponentsWithStoreURLBag:v7 error:?];
     }
 
-    if (a4)
+    if (error)
     {
       v8 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D7F900] code:-7101 userInfo:0];
       v9 = v8;
       v5 = 0;
-      *a4 = v8;
+      *error = v8;
     }
 
     else
@@ -56,11 +56,11 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = NMAPIURLRequest;
-  v4 = [(NMAPIRequest *)&v7 copyWithZone:a3];
+  v4 = [(NMAPIRequest *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {

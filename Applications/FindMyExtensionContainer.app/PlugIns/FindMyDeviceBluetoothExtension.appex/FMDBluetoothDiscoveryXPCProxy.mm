@@ -1,8 +1,8 @@
 @interface FMDBluetoothDiscoveryXPCProxy
-- (void)_didEndDiscoveryWithError:(id)a3;
-- (void)didDiscoverDevice:(id)a3;
-- (void)didEndDiscoveryWithError:(id)a3;
-- (void)didLoseDevice:(id)a3;
+- (void)_didEndDiscoveryWithError:(id)error;
+- (void)didDiscoverDevice:(id)device;
+- (void)didEndDiscoveryWithError:(id)error;
+- (void)didLoseDevice:(id)device;
 - (void)startDiscovery;
 - (void)stopDiscovery;
 @end
@@ -11,9 +11,9 @@
 
 - (void)startDiscovery
 {
-  v3 = [(FMDBluetoothDiscoveryXPCProxy *)self connection];
-  v4 = v3;
-  if (v3 && [v3 state] == 1)
+  connection = [(FMDBluetoothDiscoveryXPCProxy *)self connection];
+  v4 = connection;
+  if (connection && [connection state] == 1)
   {
     v5 = v4;
   }
@@ -36,70 +36,70 @@
     objc_destroyWeak(&location);
   }
 
-  v8 = [v5 remoteObjectProxy];
-  [v8 startDiscovery];
+  remoteObjectProxy = [v5 remoteObjectProxy];
+  [remoteObjectProxy startDiscovery];
 }
 
 - (void)stopDiscovery
 {
-  v2 = [(FMDBluetoothDiscoveryXPCProxy *)self connection];
-  if (v2)
+  connection = [(FMDBluetoothDiscoveryXPCProxy *)self connection];
+  if (connection)
   {
-    v4 = v2;
-    v3 = [v2 remoteObjectProxy];
-    [v3 stopDiscovery];
+    v4 = connection;
+    remoteObjectProxy = [connection remoteObjectProxy];
+    [remoteObjectProxy stopDiscovery];
 
-    v2 = v4;
+    connection = v4;
   }
 }
 
-- (void)didEndDiscoveryWithError:(id)a3
+- (void)didEndDiscoveryWithError:(id)error
 {
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
     v5 = sub_100003BEC();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      sub_10000DF34(v4, v5);
+      sub_10000DF34(errorCopy, v5);
     }
   }
 
-  [(FMDBluetoothDiscoveryXPCProxy *)self _didEndDiscoveryWithError:v4];
+  [(FMDBluetoothDiscoveryXPCProxy *)self _didEndDiscoveryWithError:errorCopy];
 }
 
-- (void)didDiscoverDevice:(id)a3
+- (void)didDiscoverDevice:(id)device
 {
-  v6 = a3;
-  v4 = [(FMDBluetoothDiscoveryXPCProxy *)self didDiscoverDevice];
+  deviceCopy = device;
+  didDiscoverDevice = [(FMDBluetoothDiscoveryXPCProxy *)self didDiscoverDevice];
 
-  if (v4)
+  if (didDiscoverDevice)
   {
-    v5 = [(FMDBluetoothDiscoveryXPCProxy *)self didDiscoverDevice];
-    (v5)[2](v5, v6);
+    didDiscoverDevice2 = [(FMDBluetoothDiscoveryXPCProxy *)self didDiscoverDevice];
+    (didDiscoverDevice2)[2](didDiscoverDevice2, deviceCopy);
   }
 }
 
-- (void)didLoseDevice:(id)a3
+- (void)didLoseDevice:(id)device
 {
-  v6 = a3;
-  v4 = [(FMDBluetoothDiscoveryXPCProxy *)self didLoseDevice];
+  deviceCopy = device;
+  didLoseDevice = [(FMDBluetoothDiscoveryXPCProxy *)self didLoseDevice];
 
-  if (v4)
+  if (didLoseDevice)
   {
-    v5 = [(FMDBluetoothDiscoveryXPCProxy *)self didLoseDevice];
-    (v5)[2](v5, v6);
+    didLoseDevice2 = [(FMDBluetoothDiscoveryXPCProxy *)self didLoseDevice];
+    (didLoseDevice2)[2](didLoseDevice2, deviceCopy);
   }
 }
 
-- (void)_didEndDiscoveryWithError:(id)a3
+- (void)_didEndDiscoveryWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(FMDBluetoothDiscoveryXPCProxy *)self didEndDiscovery];
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  didEndDiscovery = [(FMDBluetoothDiscoveryXPCProxy *)self didEndDiscovery];
+  v5 = didEndDiscovery;
+  if (didEndDiscovery)
   {
-    (*(v4 + 16))(v4, v6);
+    (*(didEndDiscovery + 16))(didEndDiscovery, errorCopy);
   }
 }
 

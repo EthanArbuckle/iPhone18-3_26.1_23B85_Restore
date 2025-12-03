@@ -1,35 +1,35 @@
 @interface MPSGraphSparseTensorOp
-- (MPSGraphSparseTensorOp)initWithGraph:(id)a3 sparseStorageType:(unint64_t)a4 inputTensors:(id)a5 shape:(id)a6 dataType:(unsigned int)a7 name:(id)a8;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (MPSGraphSparseTensorOp)initWithGraph:(id)graph sparseStorageType:(unint64_t)type inputTensors:(id)tensors shape:(id)shape dataType:(unsigned int)dataType name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphSparseTensorOp
 
-- (MPSGraphSparseTensorOp)initWithGraph:(id)a3 sparseStorageType:(unint64_t)a4 inputTensors:(id)a5 shape:(id)a6 dataType:(unsigned int)a7 name:(id)a8
+- (MPSGraphSparseTensorOp)initWithGraph:(id)graph sparseStorageType:(unint64_t)type inputTensors:(id)tensors shape:(id)shape dataType:(unsigned int)dataType name:(id)name
 {
-  objc_storeStrong(&self->_shape, a6);
-  v15 = a6;
-  v16 = a8;
-  v17 = a5;
-  v18 = a3;
-  *(&self->_dataType + 1) = a7;
-  self->_sparseStorageType = a4;
+  objc_storeStrong(&self->_shape, shape);
+  shapeCopy = shape;
+  nameCopy = name;
+  tensorsCopy = tensors;
+  graphCopy = graph;
+  *(&self->_dataType + 1) = dataType;
+  self->_sparseStorageType = type;
   v21.receiver = self;
   v21.super_class = MPSGraphSparseTensorOp;
-  v19 = [(MPSGraphOperation *)&v21 initWithGraph:v18 inputTensors:v17 controlDependencies:MEMORY[0x1E695E0F0] name:v16];
+  v19 = [(MPSGraphOperation *)&v21 initWithGraph:graphCopy inputTensors:tensorsCopy controlDependencies:MEMORY[0x1E695E0F0] name:nameCopy];
 
   return v19;
 }
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   v52 = *MEMORY[0x1E69E9840];
-  v11 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphSparseTensorOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphSparseOps.mm", __p);
-  v12 = v11;
+  v12 = nameCopy;
   v51 = 260;
   v50[0] = __p;
-  StringAttr = mlir::Builder::getStringAttr(a3, v50);
+  StringAttr = mlir::Builder::getStringAttr(builder, v50);
   v14 = mlir::FileLineColLoc::get(StringAttr, 0x5Fu, 0);
   if (!v12)
   {
@@ -37,8 +37,8 @@
   }
 
   v15 = v12;
-  v16 = [v12 UTF8String];
-  v17 = strlen(v16);
+  uTF8String = [v12 UTF8String];
+  v17 = strlen(uTF8String);
   if (v17 >= 0x7FFFFFFFFFFFFFF8)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -53,11 +53,11 @@
   HIBYTE(v47) = v17;
   if (v17)
   {
-    memmove(&__dst, v16, v17);
+    memmove(&__dst, uTF8String, v17);
   }
 
   *(&__dst + v19) = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, &__dst, v18, &v43);
+  MPSSymbolTable::insertOpInSymbolTable(table, &__dst, v18, &v43);
   v20 = v43.__r_.__value_.__r.__words[0];
   if ((v43.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -73,7 +73,7 @@
   }
 
   LOBYTE(v51) = v21;
-  v22 = mlir::Builder::getStringAttr(a3, v50);
+  v22 = mlir::Builder::getStringAttr(builder, v50);
   v23 = mlir::NameLoc::get(v22, v14);
   if (SHIBYTE(v43.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -97,9 +97,9 @@ LABEL_15:
     operator delete(__p[0]);
   }
 
-  MLIRType = getMLIRType(a3, self->_shape, *(&self->_dataType + 1));
-  v25 = *a5;
-  v26 = *(a5 + 1) - *a5;
+  MLIRType = getMLIRType(builder, self->_shape, *(&self->_dataType + 1));
+  v25 = *values;
+  v26 = *(values + 1) - *values;
   if (!v26)
   {
     std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
@@ -128,8 +128,8 @@ LABEL_15:
   }
 
   mlir::OperationState::OperationState(v50, v23, v30);
-  mlir::mps::MaterializeSparseTensorOp::build(a3, v50, v27, *v25, v49[0], v49[1], sparseStorageType);
-  v32 = mlir::OpBuilder::create(a3, v50);
+  mlir::mps::MaterializeSparseTensorOp::build(builder, v50, v27, *v25, v49[0], v49[1], sparseStorageType);
+  v32 = mlir::OpBuilder::create(builder, v50);
   v33 = *(*(v32 + 48) + 16);
   mlir::OperationState::~OperationState(v50);
   if (v33 == &mlir::detail::TypeIDResolver<mlir::mps::MaterializeSparseTensorOp,void>::id)

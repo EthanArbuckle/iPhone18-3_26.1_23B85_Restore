@@ -1,78 +1,78 @@
 @interface TKPage
-- (TKPage)initWithViewName:(id)a3;
+- (TKPage)initWithViewName:(id)name;
 - (UIViewController)viewController;
 - (id)createViewController;
 - (void)dataError;
-- (void)dataLoaded:(id)a3 withError:(id)a4;
+- (void)dataLoaded:(id)loaded withError:(id)error;
 - (void)dealloc;
-- (void)didFinishLoading:(id)a3 data:(id)a4 responseError:(id)a5;
-- (void)didLoadData:(BOOL)a3;
+- (void)didFinishLoading:(id)loading data:(id)data responseError:(id)error;
+- (void)didLoadData:(BOOL)data;
 - (void)dispose;
 - (void)hideLoadingViewController;
 - (void)load;
-- (void)loadData:(id)a3 postData:(id)a4;
-- (void)loadRequest:(id)a3;
-- (void)reloadWithDelayedShowLoading:(BOOL)a3;
-- (void)setData:(id)a3;
+- (void)loadData:(id)data postData:(id)postData;
+- (void)loadRequest:(id)request;
+- (void)reloadWithDelayedShowLoading:(BOOL)loading;
+- (void)setData:(id)data;
 - (void)showLoadingViewController;
 @end
 
 @implementation TKPage
 
-- (TKPage)initWithViewName:(id)a3
+- (TKPage)initWithViewName:(id)name
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v14;
-  v14 = 0;
+  objc_storeStrong(location, name);
+  v3 = selfCopy;
+  selfCopy = 0;
   v12.receiver = v3;
   v12.super_class = TKPage;
-  v14 = [(TKPage *)&v12 init];
-  objc_storeStrong(&v14, v14);
-  if (v14)
+  selfCopy = [(TKPage *)&v12 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v4 = [location[0] copy];
-    viewName = v14->_viewName;
-    v14->_viewName = v4;
+    viewName = selfCopy->_viewName;
+    selfCopy->_viewName = v4;
     MEMORY[0x277D82BD8](viewName);
     v10 = objc_alloc(MEMORY[0x277D73408]);
     v11 = objc_alloc_init(MEMORY[0x277D73410]);
     v6 = [v10 initWithSchema:?];
-    dataObject = v14->_dataObject;
-    v14->_dataObject = v6;
+    dataObject = selfCopy->_dataObject;
+    selfCopy->_dataObject = v6;
     MEMORY[0x277D82BD8](dataObject);
     MEMORY[0x277D82BD8](v11);
-    v14->_shouldShowLoading = 1;
+    selfCopy->_shouldShowLoading = 1;
   }
 
-  v9 = MEMORY[0x277D82BE0](v14);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(TKPage *)self dispose];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = TKPage;
   [(TKPage *)&v2 dealloc];
 }
 
 - (UIViewController)viewController
 {
-  v5 = self;
+  selfCopy = self;
   obj[1] = a2;
   obj[0] = objc_loadWeakRetained(&self->_weakViewController);
   if (!obj[0])
   {
-    obj[0] = [(TKPage *)v5 createViewController];
+    obj[0] = [(TKPage *)selfCopy createViewController];
     MEMORY[0x277D82BD8](0);
-    objc_storeWeak(&v5->_weakViewController, obj[0]);
+    objc_storeWeak(&selfCopy->_weakViewController, obj[0]);
   }
 
   v6 = MEMORY[0x277D82BE0](obj[0]);
@@ -84,30 +84,30 @@
 
 - (id)createViewController
 {
-  v25 = self;
+  selfCopy = self;
   v24[1] = a2;
   v13 = +[TKApplication shared];
-  v12 = [v13 repository];
-  v24[0] = [v12 tmlPathForName:v25->_viewName];
-  MEMORY[0x277D82BD8](v12);
+  repository = [v13 repository];
+  v24[0] = [repository tmlPathForName:selfCopy->_viewName];
+  MEMORY[0x277D82BD8](repository);
   MEMORY[0x277D82BD8](v13);
   if ([v24[0] length])
   {
     v22 = objc_alloc_init(MEMORY[0x277D733F8]);
-    v9 = [MEMORY[0x277D73420] weakReferenceWithObject:v25];
+    v9 = [MEMORY[0x277D73420] weakReferenceWithObject:selfCopy];
     [v22 addObject:? withIdentifier:?];
     MEMORY[0x277D82BD8](v9);
-    [v22 addObject:v25->_dataObject withIdentifier:@"data"];
+    [v22 addObject:selfCopy->_dataObject withIdentifier:@"data"];
     [v22 makeWeakObjectWithIdentifier:@"owner"];
     if ([v22 loadSourceFromPath:v24[0]])
     {
-      v21 = [v22 rootObject];
+      rootObject = [v22 rootObject];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v21 setTkPage:v25];
-        objc_storeStrong(&v25->_context, v22);
-        objc_initWeak(&location, v25);
+        [rootObject setTkPage:selfCopy];
+        objc_storeStrong(&selfCopy->_context, v22);
+        objc_initWeak(&location, selfCopy);
         v4 = MEMORY[0x277D73418];
         v14 = MEMORY[0x277D85DD0];
         v15 = -1073741824;
@@ -115,8 +115,8 @@
         v17 = __30__TKPage_createViewController__block_invoke;
         v18 = &unk_2797EE450;
         objc_copyWeak(&v19, &location);
-        [v4 runBlock:&v14 onFinalize:v21];
-        v26 = MEMORY[0x277D82BE0](v21);
+        [v4 runBlock:&v14 onFinalize:rootObject];
+        v26 = MEMORY[0x277D82BE0](rootObject);
         v23 = 1;
         objc_destroyWeak(&v19);
         objc_destroyWeak(&location);
@@ -132,7 +132,7 @@
         v23 = 1;
       }
 
-      objc_storeStrong(&v21, 0);
+      objc_storeStrong(&rootObject, 0);
     }
 
     else
@@ -151,7 +151,7 @@
   else
   {
     v11 = +[TKApplication shared];
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"View not found: %@", v25->_viewName];
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"View not found: %@", selfCopy->_viewName];
     v26 = [v11 newErrorViewController:?];
     MEMORY[0x277D82BD8](v10);
     MEMORY[0x277D82BD8](v11);
@@ -173,29 +173,29 @@ uint64_t __30__TKPage_createViewController__block_invoke(uint64_t a1)
 
 - (void)dispose
 {
-  v7 = self;
+  selfCopy = self;
   v6[1] = a2;
   v6[0] = MEMORY[0x277D82BE0](self->_context);
-  objc_storeStrong(&v7->_context, 0);
+  objc_storeStrong(&selfCopy->_context, 0);
   [v6[0] dispose];
   v4 = objc_alloc(MEMORY[0x277D73408]);
-  v5 = [(TMLJSONObject *)v7->_dataObject SCHEMA];
+  sCHEMA = [(TMLJSONObject *)selfCopy->_dataObject SCHEMA];
   v2 = [v4 initWithSchema:?];
-  dataObject = v7->_dataObject;
-  v7->_dataObject = v2;
+  dataObject = selfCopy->_dataObject;
+  selfCopy->_dataObject = v2;
   MEMORY[0x277D82BD8](dataObject);
-  MEMORY[0x277D82BD8](v5);
-  objc_storeStrong(&v7->_dataRequest, 0);
+  MEMORY[0x277D82BD8](sCHEMA);
+  objc_storeStrong(&selfCopy->_dataRequest, 0);
   objc_storeStrong(v6, 0);
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(TMLJSONObject *)v4->_dataObject setRawJSONSync:location[0]];
+  objc_storeStrong(location, data);
+  [(TMLJSONObject *)selfCopy->_dataObject setRawJSONSync:location[0]];
   objc_storeStrong(location, 0);
 }
 
@@ -210,17 +210,17 @@ uint64_t __30__TKPage_createViewController__block_invoke(uint64_t a1)
   }
 }
 
-- (void)loadData:(id)a3 postData:(id)a4
+- (void)loadData:(id)data postData:(id)postData
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  v7 = [location[0] absoluteString];
-  v8 = [v7 length];
-  MEMORY[0x277D82BD8](v7);
+  objc_storeStrong(&v11, postData);
+  absoluteString = [location[0] absoluteString];
+  v8 = [absoluteString length];
+  MEMORY[0x277D82BD8](absoluteString);
   if (v8)
   {
     v4 = objc_alloc(MEMORY[0x277CCAB70]);
@@ -232,7 +232,7 @@ uint64_t __30__TKPage_createViewController__block_invoke(uint64_t a1)
       MEMORY[0x277D82BD8](v5);
     }
 
-    [(TKPage *)v13 loadRequest:v9];
+    [(TKPage *)selfCopy loadRequest:v9];
     objc_storeStrong(&v9, 0);
     v10 = 0;
   }
@@ -246,39 +246,39 @@ uint64_t __30__TKPage_createViewController__block_invoke(uint64_t a1)
   objc_storeStrong(location, 0);
 }
 
-- (void)loadRequest:(id)a3
+- (void)loadRequest:(id)request
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(TKPage *)v4 setDataRequest:location[0]];
-  [(TKPage *)v4 reloadWithDelayedShowLoading:1];
+  objc_storeStrong(location, request);
+  [(TKPage *)selfCopy setDataRequest:location[0]];
+  [(TKPage *)selfCopy reloadWithDelayedShowLoading:1];
   objc_storeStrong(location, 0);
 }
 
-- (void)reloadWithDelayedShowLoading:(BOOL)a3
+- (void)reloadWithDelayedShowLoading:(BOOL)loading
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
+  loadingCopy = loading;
   if (self->_networkTask)
   {
-    [(TKNetworkTask *)v17->_networkTask cancel];
-    objc_storeStrong(&v17->_networkTask, 0);
+    [(TKNetworkTask *)selfCopy->_networkTask cancel];
+    objc_storeStrong(&selfCopy->_networkTask, 0);
   }
 
-  v7 = [(NSURLRequest *)v17->_dataRequest URL];
+  v7 = [(NSURLRequest *)selfCopy->_dataRequest URL];
   MEMORY[0x277D82BD8](v7);
   if (v7)
   {
-    [(TKPage *)v17 willChangeValueForKey:?];
-    v17->_dataLoading = 1;
-    [(TKPage *)v17 didChangeValueForKey:@"dataLoading"];
-    [(TKPage *)v17 showLoadingViewController];
-    objc_initWeak(&location, v17);
+    [(TKPage *)selfCopy willChangeValueForKey:?];
+    selfCopy->_dataLoading = 1;
+    [(TKPage *)selfCopy didChangeValueForKey:@"dataLoading"];
+    [(TKPage *)selfCopy showLoadingViewController];
+    objc_initWeak(&location, selfCopy);
     v5 = +[TKNetwork shared];
-    dataRequest = v17->_dataRequest;
+    dataRequest = selfCopy->_dataRequest;
     v8 = MEMORY[0x277D85DD0];
     v9 = -1073741824;
     v10 = 0;
@@ -286,8 +286,8 @@ uint64_t __30__TKPage_createViewController__block_invoke(uint64_t a1)
     v12 = &unk_2797EE478;
     objc_copyWeak(v13, &location);
     v3 = [v5 loadRequest:dataRequest priority:1 completion:&v8];
-    networkTask = v17->_networkTask;
-    v17->_networkTask = v3;
+    networkTask = selfCopy->_networkTask;
+    selfCopy->_networkTask = v3;
     MEMORY[0x277D82BD8](networkTask);
     MEMORY[0x277D82BD8](v5);
     objc_destroyWeak(v13);
@@ -312,16 +312,16 @@ void __39__TKPage_reloadWithDelayedShowLoading___block_invoke(id *a1, void *a2, 
   objc_storeStrong(location, 0);
 }
 
-- (void)didFinishLoading:(id)a3 data:(id)a4 responseError:(id)a5
+- (void)didFinishLoading:(id)loading data:(id)data responseError:(id)error
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, loading);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, data);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
+  objc_storeStrong(&v11, error);
   v10 = MEMORY[0x277D82BE0](v11);
   if (location[0] && v12)
   {
@@ -329,13 +329,13 @@ void __39__TKPage_reloadWithDelayedShowLoading___block_invoke(id *a1, void *a2, 
     v5 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v12 options:0 error:&v8];
     objc_storeStrong(&v10, v8);
     v9 = v5;
-    [(TKPage *)v14 dataLoaded:v5 withError:v10];
+    [(TKPage *)selfCopy dataLoaded:v5 withError:v10];
     objc_storeStrong(&v9, 0);
   }
 
   else
   {
-    [(TKPage *)v14 dataLoaded:0 withError:v10];
+    [(TKPage *)selfCopy dataLoaded:0 withError:v10];
   }
 
   objc_storeStrong(&v10, 0);
@@ -344,18 +344,18 @@ void __39__TKPage_reloadWithDelayedShowLoading___block_invoke(id *a1, void *a2, 
   objc_storeStrong(location, 0);
 }
 
-- (void)dataLoaded:(id)a3 withError:(id)a4
+- (void)dataLoaded:(id)loaded withError:(id)error
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, loaded);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
-  objc_initWeak(&from, v25);
+  objc_storeStrong(&v23, error);
+  objc_initWeak(&from, selfCopy);
   if (location[0])
   {
-    dataObject = v25->_dataObject;
+    dataObject = selfCopy->_dataObject;
     v8 = location[0];
     v16 = MEMORY[0x277D85DD0];
     v17 = -1073741824;
@@ -431,13 +431,13 @@ uint64_t __31__TKPage_dataLoaded_withError___block_invoke_3(uint64_t a1)
   [(TKPage *)self emitTMLSignal:@"dataError" withArguments:&unk_286780EF8];
 }
 
-- (void)didLoadData:(BOOL)a3
+- (void)didLoadData:(BOOL)data
 {
   [(TKPage *)self willChangeValueForKey:?];
   self->_dataLoading = 0;
   [(TKPage *)self didChangeValueForKey:@"dataLoading"];
   [(TKPage *)self hideLoadingViewController];
-  if (a3)
+  if (data)
   {
     [(TKPage *)self emitTMLSignal:@"dataLoaded" withArguments:0];
   }
@@ -445,12 +445,12 @@ uint64_t __31__TKPage_dataLoaded_withError___block_invoke_3(uint64_t a1)
 
 - (void)showLoadingViewController
 {
-  v40 = self;
+  selfCopy = self;
   v39[1] = a2;
   if (self->_shouldShowLoading)
   {
-    v39[0] = objc_loadWeakRetained(&v40->_loadingViewController);
-    WeakRetained = objc_loadWeakRetained(&v40->_weakViewController);
+    v39[0] = objc_loadWeakRetained(&selfCopy->_loadingViewController);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_weakViewController);
     if (v39[0] || !WeakRetained || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v37 = 1;
@@ -458,43 +458,43 @@ uint64_t __31__TKPage_dataLoaded_withError___block_invoke_3(uint64_t a1)
 
     else
     {
-      v36 = [WeakRetained view];
+      view = [WeakRetained view];
       v13 = +[TKApplication shared];
-      v2 = [v13 newLoadingViewController];
+      newLoadingViewController = [v13 newLoadingViewController];
       v3 = v39[0];
-      v39[0] = v2;
+      v39[0] = newLoadingViewController;
       MEMORY[0x277D82BD8](v3);
       MEMORY[0x277D82BD8](v13);
       if (v39[0])
       {
         [WeakRetained addChildViewController:v39[0]];
-        v35 = [v39[0] view];
-        [v36 bounds];
+        view2 = [v39[0] view];
+        [view bounds];
         *&v33 = v4;
         *(&v33 + 1) = v5;
         *&v34 = v6;
         *(&v34 + 1) = v7;
         v31 = v33;
         v32 = v34;
-        [v35 setFrame:{v4, v5, v6, v7}];
-        [v35 setTranslatesAutoresizingMaskIntoConstraints:0];
+        [view2 setFrame:{v4, v5, v6, v7}];
+        [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
         objc_opt_class();
         v30 = (objc_opt_isKindOfClass() ^ 1) & 1;
-        [v35 setAutoresizingMask:18];
-        v9 = [MEMORY[0x277D75128] sharedApplication];
-        [v9 statusBarOrientationAnimationDuration];
+        [view2 setAutoresizingMask:18];
+        mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+        [mEMORY[0x277D75128] statusBarOrientationAnimationDuration];
         v10 = v8 / 2.0;
-        MEMORY[0x277D82BD8](v9);
+        MEMORY[0x277D82BD8](mEMORY[0x277D75128]);
         v29 = v10;
         v12 = MEMORY[0x277D75D18];
-        v11 = v36;
+        v11 = view;
         v21 = MEMORY[0x277D85DD0];
         v22 = -1073741824;
         v23 = 0;
         v24 = __35__TKPage_showLoadingViewController__block_invoke;
         v25 = &unk_2797EE4F0;
-        v26 = MEMORY[0x277D82BE0](v36);
-        v27 = MEMORY[0x277D82BE0](v35);
+        v26 = MEMORY[0x277D82BE0](view);
+        v27 = MEMORY[0x277D82BE0](view2);
         v28 = v30 & 1;
         v14 = MEMORY[0x277D85DD0];
         v15 = -1073741824;
@@ -504,12 +504,12 @@ uint64_t __31__TKPage_dataLoaded_withError___block_invoke_3(uint64_t a1)
         v19 = MEMORY[0x277D82BE0](v39[0]);
         v20 = MEMORY[0x277D82BE0](WeakRetained);
         [v12 transitionWithView:v11 duration:5243008 options:&v21 animations:&v14 completion:v10];
-        objc_storeWeak(&v40->_loadingViewController, v39[0]);
+        objc_storeWeak(&selfCopy->_loadingViewController, v39[0]);
         objc_storeStrong(&v20, 0);
         objc_storeStrong(&v19, 0);
         objc_storeStrong(&v27, 0);
         objc_storeStrong(&v26, 0);
-        objc_storeStrong(&v35, 0);
+        objc_storeStrong(&view2, 0);
         v37 = 0;
       }
 
@@ -518,7 +518,7 @@ uint64_t __31__TKPage_dataLoaded_withError___block_invoke_3(uint64_t a1)
         v37 = 1;
       }
 
-      objc_storeStrong(&v36, 0);
+      objc_storeStrong(&view, 0);
     }
 
     objc_storeStrong(&WeakRetained, 0);
@@ -573,22 +573,22 @@ uint64_t __35__TKPage_showLoadingViewController__block_invoke(uint64_t a1)
 
 - (void)hideLoadingViewController
 {
-  v23 = self;
+  selfCopy = self;
   v22[1] = a2;
   v22[0] = objc_loadWeakRetained(&self->_loadingViewController);
-  WeakRetained = objc_loadWeakRetained(&v23->_weakViewController);
-  v21 = [WeakRetained viewIfLoaded];
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_weakViewController);
+  viewIfLoaded = [WeakRetained viewIfLoaded];
   MEMORY[0x277D82BD8](WeakRetained);
-  if (v22[0] && v21)
+  if (v22[0] && viewIfLoaded)
   {
-    v3 = [MEMORY[0x277D75128] sharedApplication];
-    [v3 statusBarOrientationAnimationDuration];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] statusBarOrientationAnimationDuration];
     v4 = v2 / 2.0;
-    MEMORY[0x277D82BD8](v3);
+    MEMORY[0x277D82BD8](mEMORY[0x277D75128]);
     v19[1] = *&v4;
     [v22[0] willMoveToParentViewController:?];
     v6 = MEMORY[0x277D75D18];
-    v5 = v21;
+    v5 = viewIfLoaded;
     v14 = MEMORY[0x277D85DD0];
     v15 = -1073741824;
     v16 = 0;
@@ -602,7 +602,7 @@ uint64_t __35__TKPage_showLoadingViewController__block_invoke(uint64_t a1)
     v12 = &unk_2797EE248;
     v13 = MEMORY[0x277D82BE0](v22[0]);
     [v6 transitionWithView:v5 duration:5243008 options:&v14 animations:&v8 completion:v4];
-    objc_storeWeak(&v23->_loadingViewController, 0);
+    objc_storeWeak(&selfCopy->_loadingViewController, 0);
     objc_storeStrong(&v13, 0);
     objc_storeStrong(v19, 0);
     v20 = 0;
@@ -613,7 +613,7 @@ uint64_t __35__TKPage_showLoadingViewController__block_invoke(uint64_t a1)
     v20 = 1;
   }
 
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&viewIfLoaded, 0);
   objc_storeStrong(v22, 0);
 }
 

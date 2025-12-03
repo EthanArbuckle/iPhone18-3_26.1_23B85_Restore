@@ -1,26 +1,26 @@
 @interface CHSWidgetDisplayProperties
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
-- (CHSWidgetDisplayProperties)initWithCoder:(id)a3;
-- (CHSWidgetDisplayProperties)initWithDisplayConfiguration:(id)a3;
-- (CHSWidgetDisplayProperties)initWithScale:(double)a3 colorGamut:(unint64_t)a4;
-- (CHSWidgetDisplayProperties)initWithSize:(CGSize)a3 scale:(double)a4 colorGamut:(unint64_t)a5;
-- (CHSWidgetDisplayProperties)initWithWidgetDisplayProperties:(id)a3;
+- (CHSWidgetDisplayProperties)initWithCoder:(id)coder;
+- (CHSWidgetDisplayProperties)initWithDisplayConfiguration:(id)configuration;
+- (CHSWidgetDisplayProperties)initWithScale:(double)scale colorGamut:(unint64_t)gamut;
+- (CHSWidgetDisplayProperties)initWithSize:(CGSize)size scale:(double)scale colorGamut:(unint64_t)gamut;
+- (CHSWidgetDisplayProperties)initWithWidgetDisplayProperties:(id)properties;
 - (id)description;
 - (id)fallbackDisplayProperties;
-- (int64_t)comparedTo:(id)a3;
+- (int64_t)comparedTo:(id)to;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSWidgetDisplayProperties
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendCGFloat:self->_scale];
-  v5 = [v3 appendUnsignedInteger:self->_colorGamut];
-  v6 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendCGFloat:self->_scale];
+  v5 = [builder appendUnsignedInteger:self->_colorGamut];
+  v6 = [builder hash];
 
   return v6;
 }
@@ -40,20 +40,20 @@
   }
 
   [v3 appendString:v5 withName:@"gamut"];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (CHSWidgetDisplayProperties)initWithScale:(double)a3 colorGamut:(unint64_t)a4
+- (CHSWidgetDisplayProperties)initWithScale:(double)scale colorGamut:(unint64_t)gamut
 {
   v12.receiver = self;
   v12.super_class = CHSWidgetDisplayProperties;
   result = [(CHSWidgetDisplayProperties *)&v12 init];
   if (result)
   {
-    result->_scale = a3;
-    result->_colorGamut = a4;
+    result->_scale = scale;
+    result->_colorGamut = gamut;
     __asm { FMOV            V0.2D, #1.0 }
 
     result->_size = _Q0;
@@ -62,11 +62,11 @@
   return result;
 }
 
-- (CHSWidgetDisplayProperties)initWithSize:(CGSize)a3 scale:(double)a4 colorGamut:(unint64_t)a5
+- (CHSWidgetDisplayProperties)initWithSize:(CGSize)size scale:(double)scale colorGamut:(unint64_t)gamut
 {
-  height = a3.height;
-  width = a3.width;
-  result = [(CHSWidgetDisplayProperties *)self initWithScale:a5 colorGamut:a4];
+  height = size.height;
+  width = size.width;
+  result = [(CHSWidgetDisplayProperties *)self initWithScale:gamut colorGamut:scale];
   if (result)
   {
     result->_size.width = width;
@@ -76,21 +76,21 @@
   return result;
 }
 
-- (CHSWidgetDisplayProperties)initWithDisplayConfiguration:(id)a3
+- (CHSWidgetDisplayProperties)initWithDisplayConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 colorGamut];
-  [v4 pointScale];
-  v6 = [(CHSWidgetDisplayProperties *)self initWithScale:v5 != 1 colorGamut:?];
+  configurationCopy = configuration;
+  colorGamut = [configurationCopy colorGamut];
+  [configurationCopy pointScale];
+  v6 = [(CHSWidgetDisplayProperties *)self initWithScale:colorGamut != 1 colorGamut:?];
 
   return v6;
 }
 
-- (CHSWidgetDisplayProperties)initWithWidgetDisplayProperties:(id)a3
+- (CHSWidgetDisplayProperties)initWithWidgetDisplayProperties:(id)properties
 {
-  v4 = a3;
-  [v4 scale];
-  v6 = -[CHSWidgetDisplayProperties initWithScale:colorGamut:](self, "initWithScale:colorGamut:", [v4 colorGamut], v5);
+  propertiesCopy = properties;
+  [propertiesCopy scale];
+  v6 = -[CHSWidgetDisplayProperties initWithScale:colorGamut:](self, "initWithScale:colorGamut:", [propertiesCopy colorGamut], v5);
 
   return v6;
 }
@@ -104,11 +104,11 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -158,14 +158,14 @@
   return v15;
 }
 
-- (int64_t)comparedTo:(id)a3
+- (int64_t)comparedTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = [(CHSWidgetDisplayProperties *)self hash];
-  if (v5 >= [v4 hash])
+  if (v5 >= [toCopy hash])
   {
     v7 = [(CHSWidgetDisplayProperties *)self hash];
-    v6 = v7 > [v4 hash];
+    v6 = v7 > [toCopy hash];
   }
 
   else
@@ -178,7 +178,7 @@
 
 - (id)fallbackDisplayProperties
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (self->_colorGamut)
   {
     v4 = [[CHSWidgetDisplayProperties alloc] initWithScale:0 colorGamut:self->_scale];
@@ -189,14 +189,14 @@
     v4 = [[CHSWidgetDisplayProperties alloc] initWithScale:1 colorGamut:self->_scale];
   }
 
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   for (i = 3.0; i > self->_scale; i = i + -1.0)
   {
     if (self->_colorGamut)
     {
       v6 = [[CHSWidgetDisplayProperties alloc] initWithScale:self->_colorGamut colorGamut:i];
-      [v3 addObject:v6];
+      [array addObject:v6];
 
       v7 = [[CHSWidgetDisplayProperties alloc] initWithScale:0 colorGamut:i];
     }
@@ -204,43 +204,43 @@
     else
     {
       v8 = [[CHSWidgetDisplayProperties alloc] initWithScale:self->_colorGamut colorGamut:i];
-      [v3 addObject:v8];
+      [array addObject:v8];
 
       v7 = [[CHSWidgetDisplayProperties alloc] initWithScale:1 colorGamut:i];
     }
 
-    [v3 addObject:v7];
+    [array addObject:v7];
   }
 
-  return v3;
+  return array;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   scale = self->_scale;
   *&scale = scale;
-  v7 = v4;
-  [v4 encodeFloat:@"scale" forKey:scale];
+  v7 = coderCopy;
+  [coderCopy encodeFloat:@"scale" forKey:scale];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_colorGamut];
   [v7 encodeObject:v6 forKey:@"colorGamut"];
 }
 
-- (CHSWidgetDisplayProperties)initWithCoder:(id)a3
+- (CHSWidgetDisplayProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeFloatForKey:@"scale"];
+  coderCopy = coder;
+  [coderCopy decodeFloatForKey:@"scale"];
   v6 = v5;
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"colorGamut"];
-  v8 = [v7 unsignedIntegerValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"colorGamut"];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
   v9 = v6;
 
-  v10 = [(CHSWidgetDisplayProperties *)self initWithScale:v8 colorGamut:v9];
+  v10 = [(CHSWidgetDisplayProperties *)self initWithScale:unsignedIntegerValue colorGamut:v9];
   v11 = v10;
   if (v10)
   {
     v10->_scale = v9;
-    v10->_colorGamut = v8;
+    v10->_colorGamut = unsignedIntegerValue;
   }
 
   return v11;

@@ -1,24 +1,24 @@
 @interface CXExtensionCallSource
-- (CXExtensionCallSource)initWithExtension:(id)a3;
-- (CXExtensionCallSource)initWithExtensionIdentifier:(id)a3;
+- (CXExtensionCallSource)initWithExtension:(id)extension;
+- (CXExtensionCallSource)initWithExtensionIdentifier:(id)identifier;
 - (id)bundle;
 - (int)processIdentifier;
-- (void)beginWithCompletionHandler:(id)a3;
+- (void)beginWithCompletionHandler:(id)handler;
 @end
 
 @implementation CXExtensionCallSource
 
-- (CXExtensionCallSource)initWithExtension:(id)a3
+- (CXExtensionCallSource)initWithExtension:(id)extension
 {
-  v5 = a3;
-  v6 = [v5 identifier];
+  extensionCopy = extension;
+  identifier = [extensionCopy identifier];
   v26.receiver = self;
   v26.super_class = CXExtensionCallSource;
-  v7 = [(CXCallSource *)&v26 initWithIdentifier:v6];
+  v7 = [(CXCallSource *)&v26 initWithIdentifier:identifier];
 
   if (v7)
   {
-    objc_storeStrong(&v7->_extension, a3);
+    objc_storeStrong(&v7->_extension, extension);
     objc_initWeak(&location, v7);
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
@@ -137,11 +137,11 @@ uint64_t __43__CXExtensionCallSource_initWithExtension___block_invoke_4(uint64_t
   return result;
 }
 
-- (CXExtensionCallSource)initWithExtensionIdentifier:(id)a3
+- (CXExtensionCallSource)initWithExtensionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10 = 0;
-  v5 = [MEMORY[0x1E696ABD0] extensionWithIdentifier:v4 error:&v10];
+  v5 = [MEMORY[0x1E696ABD0] extensionWithIdentifier:identifierCopy error:&v10];
   v6 = v10;
   if (v5)
   {
@@ -153,7 +153,7 @@ uint64_t __43__CXExtensionCallSource_initWithExtension___block_invoke_4(uint64_t
     v8 = CXDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(CXExtensionCallSource *)v4 initWithExtensionIdentifier:v6, v8];
+      [(CXExtensionCallSource *)identifierCopy initWithExtensionIdentifier:v6, v8];
     }
 
     v7 = 0;
@@ -164,45 +164,45 @@ uint64_t __43__CXExtensionCallSource_initWithExtension___block_invoke_4(uint64_t
 
 - (id)bundle
 {
-  v2 = [(CXExtensionCallSource *)self extension];
-  v3 = [v2 _extensionBundle];
+  extension = [(CXExtensionCallSource *)self extension];
+  _extensionBundle = [extension _extensionBundle];
 
-  return v3;
+  return _extensionBundle;
 }
 
 - (int)processIdentifier
 {
-  v3 = [(CXExtensionCallSource *)self extensionContext];
-  v4 = [v3 _auxiliaryConnection];
-  if (v4)
+  extensionContext = [(CXExtensionCallSource *)self extensionContext];
+  _auxiliaryConnection = [extensionContext _auxiliaryConnection];
+  if (_auxiliaryConnection)
   {
-    v5 = [(CXExtensionCallSource *)self extensionContext];
-    v6 = [v5 _auxiliaryConnection];
-    v7 = [v6 processIdentifier];
+    extensionContext2 = [(CXExtensionCallSource *)self extensionContext];
+    _auxiliaryConnection2 = [extensionContext2 _auxiliaryConnection];
+    processIdentifier = [_auxiliaryConnection2 processIdentifier];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = CXExtensionCallSource;
-    v7 = [(CXCallSource *)&v9 processIdentifier];
+    processIdentifier = [(CXCallSource *)&v9 processIdentifier];
   }
 
-  return v7;
+  return processIdentifier;
 }
 
-- (void)beginWithCompletionHandler:(id)a3
+- (void)beginWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CXCallSource *)self queue];
+  handlerCopy = handler;
+  queue = [(CXCallSource *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__CXExtensionCallSource_beginWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7C06CF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 void __52__CXExtensionCallSource_beginWithCompletionHandler___block_invoke(uint64_t a1)

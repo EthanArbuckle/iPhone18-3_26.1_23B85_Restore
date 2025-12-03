@@ -9,28 +9,28 @@
 - (CGRect)cellFrameFromLayoutAttributes;
 - (CGRect)checkboxFrame;
 - (CGRect)unpinAccessoryViewFrame;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKPinnedConversationCollectionViewCell)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKPinnedConversationCollectionViewCell)initWithFrame:(CGRect)frame;
 - (CKPinnedConversationCollectionViewCellDelegate)delegate;
-- (double)accessorySizeForLayoutStyle:(int64_t)a3;
+- (double)accessorySizeForLayoutStyle:(int64_t)style;
 - (id)configurationState;
 - (void)_createCheckboxAccessoryIfNecessary;
 - (void)_createUnpinAccessoryIfNecessary;
 - (void)_updateActivityItemBoundingFrame;
-- (void)_updateActivitySupressionForState:(id)a3;
-- (void)applyLayoutAttributes:(id)a3;
-- (void)dragStateDidChange:(int64_t)a3;
+- (void)_updateActivitySupressionForState:(id)state;
+- (void)applyLayoutAttributes:(id)attributes;
+- (void)dragStateDidChange:(int64_t)change;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAllowActivitySuppressionWhenSelected:(BOOL)a3;
-- (void)setDelegate:(id)a3;
-- (void)setEditingMode:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setJittering:(BOOL)a3;
-- (void)setLinkInteractions:(id)a3;
-- (void)setShowsBackgroundViewWhenSelected:(BOOL)a3;
-- (void)unpinButtonTapped:(id)a3;
+- (void)setAllowActivitySuppressionWhenSelected:(BOOL)selected;
+- (void)setDelegate:(id)delegate;
+- (void)setEditingMode:(unint64_t)mode animated:(BOOL)animated;
+- (void)setJittering:(BOOL)jittering;
+- (void)setLinkInteractions:(id)interactions;
+- (void)setShowsBackgroundViewWhenSelected:(BOOL)selected;
+- (void)unpinButtonTapped:(id)tapped;
 - (void)updateCheckboxAccessoryImageForCurrentLayoutStyle;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)updateConfigurationUsingState:(id)state;
 - (void)updateUnpinAccessoryImageForCurrentLayoutStyle;
 @end
 
@@ -43,11 +43,11 @@
   return NSStringFromClass(v2);
 }
 
-- (CKPinnedConversationCollectionViewCell)initWithFrame:(CGRect)a3
+- (CKPinnedConversationCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = CKPinnedConversationCollectionViewCell;
-  v3 = [(CKPinnedConversationCollectionViewCell *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKPinnedConversationCollectionViewCell *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [CKPinnedConversationView alloc];
@@ -56,8 +56,8 @@
     pinnedConversationView = v3->_pinnedConversationView;
     v3->_pinnedConversationView = v5;
 
-    v7 = [(CKPinnedConversationCollectionViewCell *)v3 contentView];
-    [v7 addSubview:v3->_pinnedConversationView];
+    contentView = [(CKPinnedConversationCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_pinnedConversationView];
 
     v3->_editingMode = 0;
   }
@@ -65,13 +65,13 @@
   return v3;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v13.receiver = self;
   v13.super_class = CKPinnedConversationCollectionViewCell;
-  v4 = a3;
-  [(CKPinnedConversationCollectionViewCell *)&v13 applyLayoutAttributes:v4];
-  [v4 frame];
+  attributesCopy = attributes;
+  [(CKPinnedConversationCollectionViewCell *)&v13 applyLayoutAttributes:attributesCopy];
+  [attributesCopy frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -123,9 +123,9 @@
   [(CKPinnedConversationView *)pinnedConversationView setActivityItemBoundingFrame:v4, v3, v6, v5];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -141,20 +141,20 @@
 {
   v5.receiver = self;
   v5.super_class = CKPinnedConversationCollectionViewCell;
-  v2 = [(CKPinnedConversationCollectionViewCell *)&v5 configurationState];
+  configurationState = [(CKPinnedConversationCollectionViewCell *)&v5 configurationState];
   v3 = +[CKUIBehavior sharedBehaviors];
-  [v3 modifyConversationCellStateForDrop:v2];
+  [v3 modifyConversationCellStateForDrop:configurationState];
 
-  return v2;
+  return configurationState;
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v29 = a3;
-  v4 = [MEMORY[0x1E69DC6E8] listSidebarCellConfiguration];
+  stateCopy = state;
+  listSidebarCellConfiguration = [MEMORY[0x1E69DC6E8] listSidebarCellConfiguration];
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [(CKPinnedConversationCollectionViewCell *)self traitCollection];
-  if ([v5 useSelectedAppearanceForConversationCellState:v29 traitCollection:v6])
+  traitCollection = [(CKPinnedConversationCollectionViewCell *)self traitCollection];
+  if ([v5 useSelectedAppearanceForConversationCellState:stateCopy traitCollection:traitCollection])
   {
     if ([(CKPinnedConversationCollectionViewCell *)self editingMode])
     {
@@ -172,34 +172,34 @@
     v7 = 0;
   }
 
-  v8 = [MEMORY[0x1E69DC888] clearColor];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
   v9 = +[CKUIBehavior sharedBehaviors];
-  [v9 modifyConversationCellStateForDrop:v29];
+  [v9 modifyConversationCellStateForDrop:stateCopy];
 
-  v10 = [v4 updatedConfigurationForState:v29];
+  v10 = [listSidebarCellConfiguration updatedConfigurationForState:stateCopy];
 
   if (v7 && [(CKPinnedConversationCollectionViewCell *)self showsBackgroundViewWhenSelected])
   {
     v11 = +[CKUIBehavior sharedBehaviors];
-    v12 = [v11 theme];
-    v13 = [v12 conversationListPinnedCellSelectorViewColor];
+    theme = [v11 theme];
+    conversationListPinnedCellSelectorViewColor = [theme conversationListPinnedCellSelectorViewColor];
 
-    if (v13)
+    if (conversationListPinnedCellSelectorViewColor)
     {
       v14 = +[CKUIBehavior sharedBehaviors];
-      v15 = [v14 theme];
-      v16 = [v15 conversationListPinnedCellSelectorViewColor];
+      theme2 = [v14 theme];
+      conversationListPinnedCellSelectorViewColor2 = [theme2 conversationListPinnedCellSelectorViewColor];
 
-      v8 = v14;
+      clearColor = v14;
     }
 
     else
     {
-      v16 = [v10 backgroundColor];
+      conversationListPinnedCellSelectorViewColor2 = [v10 backgroundColor];
     }
 
     v17 = 1;
-    v8 = v16;
+    clearColor = conversationListPinnedCellSelectorViewColor2;
   }
 
   else
@@ -207,40 +207,40 @@
     v17 = 0;
   }
 
-  v18 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v19 = [v18 conversationPinningTouchdownDimEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  conversationPinningTouchdownDimEnabled = [mEMORY[0x1E69A8070] conversationPinningTouchdownDimEnabled];
 
-  if (v19)
+  if (conversationPinningTouchdownDimEnabled)
   {
-    v20 = [v29 isHighlighted];
-    v21 = [v29 cellDropState] == 2;
+    isHighlighted = [stateCopy isHighlighted];
+    v21 = [stateCopy cellDropState] == 2;
     if (![(CKPinnedConversationCollectionViewCell *)self showsBackgroundViewWhenSelected])
     {
-      v21 |= v20 | v7;
+      v21 |= isHighlighted | v7;
     }
 
-    v22 = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
-    [v22 setDimmed:v21 & 1];
+    pinnedConversationView = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
+    [pinnedConversationView setDimmed:v21 & 1];
   }
 
-  [v10 setBackgroundColor:v8];
+  [v10 setBackgroundColor:clearColor];
   v23 = +[CKUIBehavior sharedBehaviors];
   [v23 conversationListPinnedCellSelectedBackgroundCornerRadius];
   [v10 setCornerRadius:?];
 
   [v10 setEdgesAddingLayoutMarginsToBackgroundInsets:0];
   [v10 setBackgroundInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
-  [(CKPinnedConversationCollectionViewCell *)self _updateActivitySupressionForState:v29];
-  v24 = [(CKPinnedConversationCollectionViewCell *)self isSelected];
-  v25 = [(CKPinnedConversationCollectionViewCell *)self checkboxAccessoryView];
-  [v25 setSelected:v24];
+  [(CKPinnedConversationCollectionViewCell *)self _updateActivitySupressionForState:stateCopy];
+  isSelected = [(CKPinnedConversationCollectionViewCell *)self isSelected];
+  checkboxAccessoryView = [(CKPinnedConversationCollectionViewCell *)self checkboxAccessoryView];
+  [checkboxAccessoryView setSelected:isSelected];
 
-  v26 = [(CKPinnedConversationCollectionViewCell *)self showsBackgroundViewWhenSelected];
-  v27 = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
-  [v27 setNeedsUnreadIndicatorLeadingEdgePadding:v26];
+  showsBackgroundViewWhenSelected = [(CKPinnedConversationCollectionViewCell *)self showsBackgroundViewWhenSelected];
+  pinnedConversationView2 = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
+  [pinnedConversationView2 setNeedsUnreadIndicatorLeadingEdgePadding:showsBackgroundViewWhenSelected];
 
-  v28 = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
-  [v28 setIsSelectedWithDarkAppearance:v17];
+  pinnedConversationView3 = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
+  [pinnedConversationView3 setIsSelectedWithDarkAppearance:v17];
 
   [(CKPinnedConversationCollectionViewCell *)self setBackgroundConfiguration:v10];
 }
@@ -249,14 +249,14 @@
 {
   v2 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"minus"];
   v3 = [MEMORY[0x1E69DC730] effectWithStyle:16];
-  v4 = [MEMORY[0x1E69DC888] systemWhiteColor];
+  systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
   v5 = [CKConversationListAccessoryView alloc];
   v6 = +[CKUIBehavior sharedBehaviors];
   [v6 pinnedConversationDefaultAccessorySize];
   v7 = [(CKConversationListAccessoryView *)v5 initWithDiameter:?];
 
   [(CKConversationListAccessoryView *)v7 setBlurEffect:v3 withVibrancyEffectStyle:2 forState:0];
-  [(CKConversationListAccessoryView *)v7 setTintColor:v4 forState:0];
+  [(CKConversationListAccessoryView *)v7 setTintColor:systemWhiteColor forState:0];
   [(CKConversationListAccessoryView *)v7 setImage:v2 forState:0];
 
   return v7;
@@ -265,12 +265,12 @@
 + (id)checkmarkAccessoryView
 {
   v2 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"checkmark"];
-  v3 = [MEMORY[0x1E69DC888] systemGrayColor];
-  v4 = [v3 colorWithAlphaComponent:0.100000001];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  v4 = [systemGrayColor colorWithAlphaComponent:0.100000001];
 
-  v5 = [MEMORY[0x1E69DC888] systemBlueColor];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
   v6 = [MEMORY[0x1E69DC730] effectWithStyle:8];
-  v7 = [MEMORY[0x1E69DC888] systemWhiteColor];
+  systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
   v8 = [CKConversationListAccessoryView alloc];
   v9 = +[CKUIBehavior sharedBehaviors];
   [v9 pinnedConversationDefaultAccessorySize];
@@ -278,8 +278,8 @@
 
   [(CKConversationListAccessoryView *)v10 setBlurEffect:v6 forState:0];
   [(CKConversationListAccessoryView *)v10 setBackgroundColor:v4 forState:0];
-  [(CKConversationListAccessoryView *)v10 setBackgroundColor:v5 forState:4];
-  [(CKConversationListAccessoryView *)v10 setTintColor:v7 forState:4];
+  [(CKConversationListAccessoryView *)v10 setBackgroundColor:systemBlueColor forState:4];
+  [(CKConversationListAccessoryView *)v10 setTintColor:systemWhiteColor forState:4];
   [(CKConversationListAccessoryView *)v10 setImage:v2 forState:4];
   [(CKConversationListAccessoryView *)v10 setUserInteractionEnabled:0];
   v11 = +[CKUIBehavior sharedBehaviors];
@@ -287,43 +287,43 @@
   v13 = v12;
   [(CKConversationListAccessoryView *)v10 bounds];
   v15 = v13 * v14;
-  v16 = [(CKConversationListAccessoryView *)v10 layer];
-  [v16 setBorderWidth:v15];
+  layer = [(CKConversationListAccessoryView *)v10 layer];
+  [layer setBorderWidth:v15];
 
-  v17 = [MEMORY[0x1E69DC888] systemWhiteColor];
-  v18 = [v17 CGColor];
-  v19 = [(CKConversationListAccessoryView *)v10 layer];
-  [v19 setBorderColor:v18];
+  systemWhiteColor2 = [MEMORY[0x1E69DC888] systemWhiteColor];
+  cGColor = [systemWhiteColor2 CGColor];
+  layer2 = [(CKConversationListAccessoryView *)v10 layer];
+  [layer2 setBorderColor:cGColor];
 
-  v20 = [(CKConversationListAccessoryView *)v10 layer];
-  [v20 setMasksToBounds:0];
+  layer3 = [(CKConversationListAccessoryView *)v10 layer];
+  [layer3 setMasksToBounds:0];
 
-  v21 = [MEMORY[0x1E69DC888] blackColor];
-  v22 = [v21 CGColor];
-  v23 = [(CKConversationListAccessoryView *)v10 layer];
-  [v23 setShadowColor:v22];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  cGColor2 = [blackColor CGColor];
+  layer4 = [(CKConversationListAccessoryView *)v10 layer];
+  [layer4 setShadowColor:cGColor2];
 
-  v24 = [(CKConversationListAccessoryView *)v10 layer];
+  layer5 = [(CKConversationListAccessoryView *)v10 layer];
   LODWORD(v25) = 1025758986;
-  [v24 setShadowOpacity:v25];
+  [layer5 setShadowOpacity:v25];
 
-  v26 = [(CKConversationListAccessoryView *)v10 layer];
-  [v26 setShadowRadius:7.0];
+  layer6 = [(CKConversationListAccessoryView *)v10 layer];
+  [layer6 setShadowRadius:7.0];
 
-  v27 = [(CKConversationListAccessoryView *)v10 layer];
-  [v27 setShadowOffset:{0.0, 12.0}];
+  layer7 = [(CKConversationListAccessoryView *)v10 layer];
+  [layer7 setShadowOffset:{0.0, 12.0}];
 
   return v10;
 }
 
-- (double)accessorySizeForLayoutStyle:(int64_t)a3
+- (double)accessorySizeForLayoutStyle:(int64_t)style
 {
-  if (a3 > 6)
+  if (style > 6)
   {
     return 0.0;
   }
 
-  if (((1 << a3) & 0x3C) != 0)
+  if (((1 << style) & 0x3C) != 0)
   {
     return 18.0;
   }
@@ -337,10 +337,10 @@
 
 - (void)updateCheckboxAccessoryImageForCurrentLayoutStyle
 {
-  v3 = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
-  v4 = [v3 layoutStyle];
+  pinnedConversationView = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
+  layoutStyle = [pinnedConversationView layoutStyle];
 
-  if (v4 > 6)
+  if (layoutStyle > 6)
   {
     v6 = 0;
     v5 = 0;
@@ -348,7 +348,7 @@
 
   else
   {
-    v5 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:**(&unk_1E72F4AB8 + v4) variant:1024];
+    v5 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:**(&unk_1E72F4AB8 + layoutStyle) variant:1024];
     v6 = 1;
   }
 
@@ -357,16 +357,16 @@
   v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"checkmark"];
   v9 = [v8 imageWithConfiguration:v7];
 
-  v10 = [(CKPinnedConversationCollectionViewCell *)self checkboxAccessoryView];
-  [v10 setImage:v9 forState:4];
+  checkboxAccessoryView = [(CKPinnedConversationCollectionViewCell *)self checkboxAccessoryView];
+  [checkboxAccessoryView setImage:v9 forState:4];
 }
 
 - (void)updateUnpinAccessoryImageForCurrentLayoutStyle
 {
-  v3 = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
-  v4 = [v3 layoutStyle];
+  pinnedConversationView = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
+  layoutStyle = [pinnedConversationView layoutStyle];
 
-  if (v4 > 6)
+  if (layoutStyle > 6)
   {
     v6 = 0;
     v7 = 0;
@@ -374,8 +374,8 @@
 
   else
   {
-    v5 = qword_1E72F4AF0[v4];
-    v6 = qword_190DD0F98[v4];
+    v5 = qword_1E72F4AF0[layoutStyle];
+    v6 = qword_190DD0F98[layoutStyle];
     v7 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*v5 variant:1024];
   }
 
@@ -384,15 +384,15 @@
   v9 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"minus"];
   v10 = [v9 imageWithConfiguration:v8];
 
-  v11 = [(CKPinnedConversationCollectionViewCell *)self unpinAccessoryView];
-  [v11 setImage:v10 forState:0];
+  unpinAccessoryView = [(CKPinnedConversationCollectionViewCell *)self unpinAccessoryView];
+  [unpinAccessoryView setImage:v10 forState:0];
 }
 
 - (void)_createCheckboxAccessoryIfNecessary
 {
-  v3 = [(CKPinnedConversationCollectionViewCell *)self checkboxAccessoryView];
+  checkboxAccessoryView = [(CKPinnedConversationCollectionViewCell *)self checkboxAccessoryView];
 
-  if (!v3)
+  if (!checkboxAccessoryView)
   {
     v4 = +[CKPinnedConversationCollectionViewCell checkmarkAccessoryView];
     checkboxAccessoryView = self->_checkboxAccessoryView;
@@ -407,9 +407,9 @@
 
 - (void)_createUnpinAccessoryIfNecessary
 {
-  v3 = [(CKPinnedConversationCollectionViewCell *)self unpinAccessoryView];
+  unpinAccessoryView = [(CKPinnedConversationCollectionViewCell *)self unpinAccessoryView];
 
-  if (!v3)
+  if (!unpinAccessoryView)
   {
     v4 = +[CKPinnedConversationCollectionViewCell unpinAccessoryView];
     unpinAccessoryView = self->_unpinAccessoryView;
@@ -424,25 +424,25 @@
   }
 }
 
-- (void)setAllowActivitySuppressionWhenSelected:(BOOL)a3
+- (void)setAllowActivitySuppressionWhenSelected:(BOOL)selected
 {
-  if (self->_allowActivitySuppressionWhenSelected != a3)
+  if (self->_allowActivitySuppressionWhenSelected != selected)
   {
-    self->_allowActivitySuppressionWhenSelected = a3;
-    v5 = [(CKPinnedConversationCollectionViewCell *)self configurationState];
-    [(CKPinnedConversationCollectionViewCell *)self _updateActivitySupressionForState:v5];
+    self->_allowActivitySuppressionWhenSelected = selected;
+    configurationState = [(CKPinnedConversationCollectionViewCell *)self configurationState];
+    [(CKPinnedConversationCollectionViewCell *)self _updateActivitySupressionForState:configurationState];
   }
 }
 
-- (void)setEditingMode:(unint64_t)a3 animated:(BOOL)a4
+- (void)setEditingMode:(unint64_t)mode animated:(BOOL)animated
 {
-  v4 = a4;
-  if (self->_editingMode != a3)
+  animatedCopy = animated;
+  if (self->_editingMode != mode)
   {
-    self->_editingMode = a3;
+    self->_editingMode = mode;
   }
 
-  if (a3 && (-[CKPinnedConversationCollectionViewCell pinnedConversationView](self, "pinnedConversationView"), v7 = objc_claimAutoreleasedReturnValue(), [v7 setDimmed:0], v7, a3 == 1) && !CKIsRunningInMacCatalyst())
+  if (mode && (-[CKPinnedConversationCollectionViewCell pinnedConversationView](self, "pinnedConversationView"), v7 = objc_claimAutoreleasedReturnValue(), [v7 setDimmed:0], v7, mode == 1) && !CKIsRunningInMacCatalyst())
   {
     if ([(CKPinnedConversationCollectionViewCell *)self isShowingCheckboxAccessory])
     {
@@ -452,17 +452,17 @@
     else
     {
       [(CKPinnedConversationCollectionViewCell *)self setShowingCheckboxAccessory:1];
-      v14 = v4;
+      v14 = animatedCopy;
     }
 
-    v15 = [(CKPinnedConversationCollectionViewCell *)self contentView];
+    contentView = [(CKPinnedConversationCollectionViewCell *)self contentView];
     v16 = MEMORY[0x1E69DD250];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __66__CKPinnedConversationCollectionViewCell_setEditingMode_animated___block_invoke;
     v35[3] = &unk_1E72EB8D0;
     v35[4] = self;
-    v17 = v15;
+    v17 = contentView;
     v36 = v17;
     [v16 performWithoutAnimation:v35];
     if (v14)
@@ -486,12 +486,12 @@
 
   else
   {
-    v8 = [(CKPinnedConversationCollectionViewCell *)self checkboxAccessoryView];
+    checkboxAccessoryView = [(CKPinnedConversationCollectionViewCell *)self checkboxAccessoryView];
 
-    if (v8)
+    if (checkboxAccessoryView)
     {
       [(CKPinnedConversationCollectionViewCell *)self setShowingCheckboxAccessory:0];
-      if (v4)
+      if (animatedCopy)
       {
         v32[0] = MEMORY[0x1E69E9820];
         v32[1] = 3221225472;
@@ -508,15 +508,15 @@
 
       else
       {
-        v9 = [(CKPinnedConversationCollectionViewCell *)self checkboxAccessoryView];
-        [v9 removeFromSuperview];
+        checkboxAccessoryView2 = [(CKPinnedConversationCollectionViewCell *)self checkboxAccessoryView];
+        [checkboxAccessoryView2 removeFromSuperview];
 
         [(CKPinnedConversationCollectionViewCell *)self setCheckboxAccessoryView:0];
       }
     }
 
-    [(CKPinnedConversationCollectionViewCell *)self setJittering:a3 == 2];
-    if (a3 == 2)
+    [(CKPinnedConversationCollectionViewCell *)self setJittering:mode == 2];
+    if (mode == 2)
     {
       if ([(CKPinnedConversationCollectionViewCell *)self isShowingUnpinAccessory])
       {
@@ -526,17 +526,17 @@
       else
       {
         [(CKPinnedConversationCollectionViewCell *)self setShowingUnpinAccessory:1];
-        v10 = v4;
+        v10 = animatedCopy;
       }
 
-      v11 = [(CKPinnedConversationCollectionViewCell *)self contentView];
+      contentView2 = [(CKPinnedConversationCollectionViewCell *)self contentView];
       v12 = MEMORY[0x1E69DD250];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __66__CKPinnedConversationCollectionViewCell_setEditingMode_animated___block_invoke_6;
       v29[3] = &unk_1E72EB8D0;
       v29[4] = self;
-      v13 = v11;
+      v13 = contentView2;
       v30 = v13;
       [v12 performWithoutAnimation:v29];
       if (v10)
@@ -564,12 +564,12 @@
     }
   }
 
-  v18 = [(CKPinnedConversationCollectionViewCell *)self unpinAccessoryView];
+  unpinAccessoryView = [(CKPinnedConversationCollectionViewCell *)self unpinAccessoryView];
 
-  if (v18)
+  if (unpinAccessoryView)
   {
     [(CKPinnedConversationCollectionViewCell *)self setShowingUnpinAccessory:0];
-    if (v4)
+    if (animatedCopy)
     {
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
@@ -586,8 +586,8 @@
 
     else
     {
-      v19 = [(CKPinnedConversationCollectionViewCell *)self unpinAccessoryView];
-      [v19 removeFromSuperview];
+      unpinAccessoryView2 = [(CKPinnedConversationCollectionViewCell *)self unpinAccessoryView];
+      [unpinAccessoryView2 removeFromSuperview];
 
       [(CKPinnedConversationCollectionViewCell *)self setUnpinAccessoryView:0];
     }
@@ -595,25 +595,25 @@
 
   if (!CKIsRunningInMacCatalyst())
   {
-    if (!a3)
+    if (!mode)
     {
-      v20 = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
-      [v20 endSuppressingActivityWithReason:@"EditMode" animated:v4 completion:0];
+      pinnedConversationView = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
+      [pinnedConversationView endSuppressingActivityWithReason:@"EditMode" animated:animatedCopy completion:0];
       goto LABEL_32;
     }
 
 LABEL_30:
-    v20 = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
-    [v20 beginSuppressingActivityWithReason:@"EditMode" animated:v4 completion:0];
+    pinnedConversationView = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
+    [pinnedConversationView beginSuppressingActivityWithReason:@"EditMode" animated:animatedCopy completion:0];
 LABEL_32:
   }
 
 LABEL_33:
   v21 = +[CKUIBehavior sharedBehaviors];
-  v22 = [v21 hidesUnreadIndicatorWhenEditing];
-  if (a3)
+  hidesUnreadIndicatorWhenEditing = [v21 hidesUnreadIndicatorWhenEditing];
+  if (mode)
   {
-    v23 = v22;
+    v23 = hidesUnreadIndicatorWhenEditing;
   }
 
   else
@@ -621,8 +621,8 @@ LABEL_33:
     v23 = 0;
   }
 
-  v24 = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
-  [v24 setUnreadIndicatorHidden:v23 animated:v4];
+  pinnedConversationView2 = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
+  [pinnedConversationView2 setUnreadIndicatorHidden:v23 animated:animatedCopy];
 }
 
 void __66__CKPinnedConversationCollectionViewCell_setEditingMode_animated___block_invoke(uint64_t a1)
@@ -755,43 +755,43 @@ uint64_t __66__CKPinnedConversationCollectionViewCell_setEditingMode_animated___
   return [v3 setUnpinAccessoryView:0];
 }
 
-- (void)setJittering:(BOOL)a3
+- (void)setJittering:(BOOL)jittering
 {
-  v3 = a3;
-  if ([(CKPinnedConversationCollectionViewCell *)self isJittering]!= a3)
+  jitteringCopy = jittering;
+  if ([(CKPinnedConversationCollectionViewCell *)self isJittering]!= jittering)
   {
-    v8 = [(CKPinnedConversationCollectionViewCell *)self layer];
-    if (v3)
+    layer = [(CKPinnedConversationCollectionViewCell *)self layer];
+    if (jitteringCopy)
     {
-      v5 = [objc_opt_class() _jitterXTranslationAnimation];
-      [v8 addAnimation:v5 forKey:@"CKJitterXTranslation"];
+      _jitterXTranslationAnimation = [objc_opt_class() _jitterXTranslationAnimation];
+      [layer addAnimation:_jitterXTranslationAnimation forKey:@"CKJitterXTranslation"];
 
-      v6 = [objc_opt_class() _jitterYTranslationAnimation];
-      [v8 addAnimation:v6 forKey:@"CKJitterYTranslation"];
+      _jitterYTranslationAnimation = [objc_opt_class() _jitterYTranslationAnimation];
+      [layer addAnimation:_jitterYTranslationAnimation forKey:@"CKJitterYTranslation"];
 
-      v7 = [objc_opt_class() _jitterRotationAnimation];
-      [v8 addAnimation:v7 forKey:@"CKJitterRotation"];
+      _jitterRotationAnimation = [objc_opt_class() _jitterRotationAnimation];
+      [layer addAnimation:_jitterRotationAnimation forKey:@"CKJitterRotation"];
     }
 
     else
     {
-      [v8 removeAnimationForKey:@"CKJitterXTranslation"];
-      [v8 removeAnimationForKey:@"CKJitterYTranslation"];
-      [v8 removeAnimationForKey:@"CKJitterRotation"];
+      [layer removeAnimationForKey:@"CKJitterXTranslation"];
+      [layer removeAnimationForKey:@"CKJitterYTranslation"];
+      [layer removeAnimationForKey:@"CKJitterRotation"];
     }
   }
 }
 
 - (BOOL)isJittering
 {
-  v2 = [(CKPinnedConversationCollectionViewCell *)self layer];
-  v3 = [v2 animationForKey:@"CKJitterXTranslation"];
+  layer = [(CKPinnedConversationCollectionViewCell *)self layer];
+  v3 = [layer animationForKey:@"CKJitterXTranslation"];
   if (v3)
   {
-    v4 = [v2 animationForKey:@"CKJitterYTranslation"];
+    v4 = [layer animationForKey:@"CKJitterYTranslation"];
     if (v4)
     {
-      v5 = [v2 animationForKey:@"CKJitterRotation"];
+      v5 = [layer animationForKey:@"CKJitterRotation"];
       v6 = v5 != 0;
     }
 
@@ -872,52 +872,52 @@ uint64_t __66__CKPinnedConversationCollectionViewCell_setEditingMode_animated___
   return v2;
 }
 
-- (void)setShowsBackgroundViewWhenSelected:(BOOL)a3
+- (void)setShowsBackgroundViewWhenSelected:(BOOL)selected
 {
-  if (self->_showsBackgroundViewWhenSelected != a3)
+  if (self->_showsBackgroundViewWhenSelected != selected)
   {
-    self->_showsBackgroundViewWhenSelected = a3;
+    self->_showsBackgroundViewWhenSelected = selected;
   }
 }
 
-- (void)_updateActivitySupressionForState:(id)a3
+- (void)_updateActivitySupressionForState:(id)state
 {
-  v7 = a3;
-  if (self->_allowActivitySuppressionWhenSelected && (+[CKUIBehavior sharedBehaviors](CKUIBehavior, "sharedBehaviors"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 suppressPinActivityForState:v7], v4, v5))
+  stateCopy = state;
+  if (self->_allowActivitySuppressionWhenSelected && (+[CKUIBehavior sharedBehaviors](CKUIBehavior, "sharedBehaviors"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 suppressPinActivityForState:stateCopy], v4, v5))
   {
-    v6 = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
-    [v6 beginSuppressingActivityWithReason:@"CellSelected" animated:1 completion:0];
+    pinnedConversationView = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
+    [pinnedConversationView beginSuppressingActivityWithReason:@"CellSelected" animated:1 completion:0];
   }
 
   else
   {
-    v6 = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
-    [v6 endSuppressingActivityWithReason:@"CellSelected" animated:1 completion:0];
+    pinnedConversationView = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
+    [pinnedConversationView endSuppressingActivityWithReason:@"CellSelected" animated:1 completion:0];
   }
 }
 
-- (void)dragStateDidChange:(int64_t)a3
+- (void)dragStateDidChange:(int64_t)change
 {
-  v5 = [(CKPinnedConversationCollectionViewCell *)self isPreparingForReuse];
-  v6 = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
-  v8 = v6;
-  v7 = !v5;
-  if (a3 == 1)
+  isPreparingForReuse = [(CKPinnedConversationCollectionViewCell *)self isPreparingForReuse];
+  pinnedConversationView = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
+  v8 = pinnedConversationView;
+  v7 = !isPreparingForReuse;
+  if (change == 1)
   {
-    [v6 beginSuppressingActivityWithReason:@"CellDragState" animated:v7 completion:0];
+    [pinnedConversationView beginSuppressingActivityWithReason:@"CellDragState" animated:v7 completion:0];
   }
 
   else
   {
-    if (a3 == 2)
+    if (change == 2)
     {
-      [v6 beginSuppressingActivityWithReason:@"CellDragState" animated:v7 completion:0];
+      [pinnedConversationView beginSuppressingActivityWithReason:@"CellDragState" animated:v7 completion:0];
 
       [(CKPinnedConversationCollectionViewCell *)self setAlpha:0.0];
       return;
     }
 
-    [v6 endSuppressingActivityWithReason:@"CellDragState" animated:v7 completion:0];
+    [pinnedConversationView endSuppressingActivityWithReason:@"CellDragState" animated:v7 completion:0];
   }
 }
 
@@ -926,47 +926,47 @@ uint64_t __66__CKPinnedConversationCollectionViewCell_setEditingMode_animated___
   v41.receiver = self;
   v41.super_class = CKPinnedConversationCollectionViewCell;
   [(CKPinnedConversationCollectionViewCell *)&v41 layoutSubviews];
-  v3 = [(CKPinnedConversationCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(CKPinnedConversationCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  pinnedConversationView = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
+  [pinnedConversationView setFrame:{v5, v7, v9, v11}];
 
   [(CKPinnedConversationCollectionViewCell *)self unpinAccessoryViewFrame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(CKPinnedConversationCollectionViewCell *)self unpinAccessoryView];
-  [v21 setBounds:{0.0, 0.0, v18, v20}];
+  unpinAccessoryView = [(CKPinnedConversationCollectionViewCell *)self unpinAccessoryView];
+  [unpinAccessoryView setBounds:{0.0, 0.0, v18, v20}];
 
-  v22 = [(CKPinnedConversationCollectionViewCell *)self unpinAccessoryView];
-  [v22 setCenter:{v14 + v18 * 0.5, v16 + v20 * 0.5}];
+  unpinAccessoryView2 = [(CKPinnedConversationCollectionViewCell *)self unpinAccessoryView];
+  [unpinAccessoryView2 setCenter:{v14 + v18 * 0.5, v16 + v20 * 0.5}];
 
   [(CKPinnedConversationCollectionViewCell *)self checkboxFrame];
   v24 = v23;
   v26 = v25;
   v28 = v27;
   v30 = v29;
-  v31 = [(CKPinnedConversationCollectionViewCell *)self checkboxAccessoryView];
-  [v31 setBounds:{0.0, 0.0, v28, v30}];
+  checkboxAccessoryView = [(CKPinnedConversationCollectionViewCell *)self checkboxAccessoryView];
+  [checkboxAccessoryView setBounds:{0.0, 0.0, v28, v30}];
 
-  v32 = [(CKPinnedConversationCollectionViewCell *)self checkboxAccessoryView];
-  [v32 setCenter:{v24 + v28 * 0.5, v26 + v30 * 0.5}];
+  checkboxAccessoryView2 = [(CKPinnedConversationCollectionViewCell *)self checkboxAccessoryView];
+  [checkboxAccessoryView2 setCenter:{v24 + v28 * 0.5, v26 + v30 * 0.5}];
 
   v33 = +[CKUIBehavior sharedBehaviors];
   [v33 pinnedConversationCheckmarkStrokeRatio];
   v35 = v34;
-  v36 = [(CKPinnedConversationCollectionViewCell *)self checkboxAccessoryView];
-  [v36 bounds];
+  checkboxAccessoryView3 = [(CKPinnedConversationCollectionViewCell *)self checkboxAccessoryView];
+  [checkboxAccessoryView3 bounds];
   v38 = v35 * v37;
-  v39 = [(CKPinnedConversationCollectionViewCell *)self checkboxAccessoryView];
-  v40 = [v39 layer];
-  [v40 setBorderWidth:v38];
+  checkboxAccessoryView4 = [(CKPinnedConversationCollectionViewCell *)self checkboxAccessoryView];
+  layer = [checkboxAccessoryView4 layer];
+  [layer setBorderWidth:v38];
 
   [(CKPinnedConversationCollectionViewCell *)self updateCheckboxAccessoryImageForCurrentLayoutStyle];
   [(CKPinnedConversationCollectionViewCell *)self updateUnpinAccessoryImageForCurrentLayoutStyle];
@@ -974,14 +974,14 @@ uint64_t __66__CKPinnedConversationCollectionViewCell_setEditingMode_animated___
 
 - (CGRect)unpinAccessoryViewFrame
 {
-  v3 = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
-  v4 = [v3 layoutStyle];
+  pinnedConversationView = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
+  layoutStyle = [pinnedConversationView layoutStyle];
 
-  [(CKPinnedConversationCollectionViewCell *)self accessorySizeForLayoutStyle:v4];
+  [(CKPinnedConversationCollectionViewCell *)self accessorySizeForLayoutStyle:layoutStyle];
   v6 = v5;
-  v7 = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
+  pinnedConversationView2 = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
   [(CKPinnedConversationCollectionViewCell *)self bounds];
-  [v7 avatarViewFrameForSize:v4 layoutStyle:{v8, v9}];
+  [pinnedConversationView2 avatarViewFrameForSize:layoutStyle layoutStyle:{v8, v9}];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -1009,14 +1009,14 @@ uint64_t __66__CKPinnedConversationCollectionViewCell_setEditingMode_animated___
 
 - (CGRect)checkboxFrame
 {
-  v3 = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
-  v4 = [v3 layoutStyle];
+  pinnedConversationView = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
+  layoutStyle = [pinnedConversationView layoutStyle];
 
-  [(CKPinnedConversationCollectionViewCell *)self accessorySizeForLayoutStyle:v4];
+  [(CKPinnedConversationCollectionViewCell *)self accessorySizeForLayoutStyle:layoutStyle];
   v6 = v5;
-  v7 = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
+  pinnedConversationView2 = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
   [(CKPinnedConversationCollectionViewCell *)self bounds];
-  [v7 avatarViewFrameForSize:v4 layoutStyle:{v8, v9}];
+  [pinnedConversationView2 avatarViewFrameForSize:layoutStyle layoutStyle:{v8, v9}];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -1032,9 +1032,9 @@ uint64_t __66__CKPinnedConversationCollectionViewCell_setEditingMode_animated___
   v29.size.width = v15;
   v29.size.height = v17;
   v19 = CGRectGetMaxY(v29) - v6;
-  v20 = [(CKPinnedConversationCollectionViewCell *)self checkboxAccessoryView];
-  v21 = [v20 layer];
-  [v21 borderWidth];
+  checkboxAccessoryView = [(CKPinnedConversationCollectionViewCell *)self checkboxAccessoryView];
+  layer = [checkboxAccessoryView layer];
+  [layer borderWidth];
   v23 = v18 + v22 * 0.5;
 
   v24 = v23;
@@ -1048,9 +1048,9 @@ uint64_t __66__CKPinnedConversationCollectionViewCell_setEditingMode_animated___
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(CKPinnedConversationView *)self->_pinnedConversationView sizeThatFits:a3.width, a3.height];
+  [(CKPinnedConversationView *)self->_pinnedConversationView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -1059,43 +1059,43 @@ uint64_t __66__CKPinnedConversationCollectionViewCell_setEditingMode_animated___
 - (void)prepareForReuse
 {
   self->_isPreparingForReuse = 1;
-  v3 = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
-  [v3 prepareForReuse];
+  pinnedConversationView = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
+  [pinnedConversationView prepareForReuse];
 
   v9.receiver = self;
   v9.super_class = CKPinnedConversationCollectionViewCell;
   [(CKPinnedConversationCollectionViewCell *)&v9 prepareForReuse];
-  v4 = [(CKPinnedConversationCollectionViewCell *)self editingMode];
-  if ((v4 == 2) != [(CKPinnedConversationCollectionViewCell *)self isJittering])
+  editingMode = [(CKPinnedConversationCollectionViewCell *)self editingMode];
+  if ((editingMode == 2) != [(CKPinnedConversationCollectionViewCell *)self isJittering])
   {
-    [(CKPinnedConversationCollectionViewCell *)self setJittering:v4 == 2];
+    [(CKPinnedConversationCollectionViewCell *)self setJittering:editingMode == 2];
   }
 
-  v5 = [(CKPinnedConversationCollectionViewCell *)self unpinAccessoryView];
-  [v5 setHidden:v4 != 2];
+  unpinAccessoryView = [(CKPinnedConversationCollectionViewCell *)self unpinAccessoryView];
+  [unpinAccessoryView setHidden:editingMode != 2];
 
   v6 = [(CKPinnedConversationCollectionViewCell *)self editingMode]!= 1;
-  v7 = [(CKPinnedConversationCollectionViewCell *)self checkboxAccessoryView];
-  [v7 setHidden:v6];
+  checkboxAccessoryView = [(CKPinnedConversationCollectionViewCell *)self checkboxAccessoryView];
+  [checkboxAccessoryView setHidden:v6];
 
-  v8 = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
-  [v8 setDimmed:0];
+  pinnedConversationView2 = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
+  [pinnedConversationView2 setDimmed:0];
 
   self->_isPreparingForReuse = 0;
 }
 
-- (void)unpinButtonTapped:(id)a3
+- (void)unpinButtonTapped:(id)tapped
 {
-  v6 = [(CKPinnedConversationCollectionViewCell *)self delegate];
-  v4 = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
-  v5 = [v4 conversation];
-  [v6 unpinButtonTappedForCell:self withConversation:v5];
+  delegate = [(CKPinnedConversationCollectionViewCell *)self delegate];
+  pinnedConversationView = [(CKPinnedConversationCollectionViewCell *)self pinnedConversationView];
+  conversation = [pinnedConversationView conversation];
+  [delegate unpinButtonTappedForCell:self withConversation:conversation];
 }
 
-- (void)setLinkInteractions:(id)a3
+- (void)setLinkInteractions:(id)interactions
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  interactionsCopy = interactions;
   linkInteractions = self->_linkInteractions;
   if (linkInteractions)
   {
@@ -1130,7 +1130,7 @@ uint64_t __66__CKPinnedConversationCollectionViewCell_setEditingMode_animated___
     }
   }
 
-  v11 = [v4 copy];
+  v11 = [interactionsCopy copy];
   v12 = self->_linkInteractions;
   self->_linkInteractions = v11;
 

@@ -1,148 +1,148 @@
 @interface MAGraph
-+ (BOOL)populateGraph:(id)a3 withDefinitions:(id)a4 constraints:(id)a5 error:(id *)a6;
-+ (BOOL)scanGraphElementOptionsString:(id)a3 minimum:(unint64_t *)a4 maximum:(unint64_t *)a5 error:(id *)a6;
-+ (BOOL)scanGraphElementString:(id)a3 type:(unint64_t *)a4 optionalName:(id *)a5 label:(id *)a6 optionalDomains:(id *)a7 optionalProperties:(id *)a8 error:(id *)a9;
-+ (BOOL)scanMatchString:(id)a3 definitions:(id *)a4 constraints:(id *)a5 forCreation:(BOOL)a6 error:(id *)a7;
-+ (MAGraph)graphWithDefinitions:(id)a3 constraints:(id)a4 error:(id *)a5;
-+ (MAGraph)graphWithVisualString:(id)a3 error:(id *)a4;
++ (BOOL)populateGraph:(id)graph withDefinitions:(id)definitions constraints:(id)constraints error:(id *)error;
++ (BOOL)scanGraphElementOptionsString:(id)string minimum:(unint64_t *)minimum maximum:(unint64_t *)maximum error:(id *)error;
++ (BOOL)scanGraphElementString:(id)string type:(unint64_t *)type optionalName:(id *)name label:(id *)label optionalDomains:(id *)domains optionalProperties:(id *)properties error:(id *)error;
++ (BOOL)scanMatchString:(id)string definitions:(id *)definitions constraints:(id *)constraints forCreation:(BOOL)creation error:(id *)error;
++ (MAGraph)graphWithDefinitions:(id)definitions constraints:(id)constraints error:(id *)error;
++ (MAGraph)graphWithVisualString:(id)string error:(id *)error;
 + (id)defaultSpecification;
 + (id)graph;
-+ (id)graphJSONURLWithPath:(id)a3 andName:(id)a4;
-+ (id)graphMLURLWithPath:(id)a3 andName:(id)a4;
-+ (id)persistentStoreURLWithPath:(id)a3 andName:(id)a4;
-+ (id)scanGraphConstraintString:(id)a3 error:(id *)a4;
-+ (id)visualStringWithFormat:(id)a3 elements:(id)a4;
++ (id)graphJSONURLWithPath:(id)path andName:(id)name;
++ (id)graphMLURLWithPath:(id)path andName:(id)name;
++ (id)persistentStoreURLWithPath:(id)path andName:(id)name;
++ (id)scanGraphConstraintString:(id)string error:(id *)error;
++ (id)visualStringWithFormat:(id)format elements:(id)elements;
 + (void)initialize;
-- (BOOL)_matchNode:(id)a3 usingAbstractNode:(id)a4 fromEdge:(id)a5 atIteration:(unint64_t)a6 withDefinitions:(id)a7 constraints:(id)a8 unusedConstraints:(id)a9 andSubGraph:(id)a10 matchingNodeQueue:(id)a11;
+- (BOOL)_matchNode:(id)node usingAbstractNode:(id)abstractNode fromEdge:(id)edge atIteration:(unint64_t)iteration withDefinitions:(id)definitions constraints:(id)constraints unusedConstraints:(id)unusedConstraints andSubGraph:(id)self0 matchingNodeQueue:(id)self1;
 - (BOOL)_shouldFail;
-- (BOOL)conformsToGraphSchema:(id)a3;
-- (BOOL)copyPersistentStoreToURL:(id)a3 error:(id *)a4;
-- (BOOL)findAndResolveUniqueEdge:(id)a3;
-- (BOOL)findAndResolveUniqueNode:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)conformsToGraphSchema:(id)schema;
+- (BOOL)copyPersistentStoreToURL:(id)l error:(id *)error;
+- (BOOL)findAndResolveUniqueEdge:(id)edge;
+- (BOOL)findAndResolveUniqueNode:(id)node;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isReadOnly;
-- (BOOL)migratePersistentStoreToURL:(id)a3 error:(id *)a4;
+- (BOOL)migratePersistentStoreToURL:(id)l error:(id *)error;
 - (BOOL)noFatalError;
-- (BOOL)updateGraphWithVisualString:(id)a3;
+- (BOOL)updateGraphWithVisualString:(id)string;
 - (BOOL)usesClassADataProtection;
 - (BOOL)usesClassBDataProtection;
 - (BOOL)usesClassCDataProtection;
-- (BOOL)writeDataToURL:(id)a3 error:(id *)a4;
-- (BOOL)writeGraphJSONToURL:(id)a3 error:(id *)a4;
-- (MAGraph)initWithGraphJSONURL:(id)a3 error:(id *)a4;
-- (MAGraph)initWithGraphMLURL:(id)a3 error:(id *)a4;
-- (MAGraph)initWithPersistenceOptions:(int64_t)a3;
-- (MAGraph)initWithPersistentStoreURL:(id)a3 options:(int64_t)a4 error:(id *)a5;
-- (MAGraph)initWithSpecification:(id)a3;
-- (MAGraph)initWithSpecification:(id)a3 dataURL:(id)a4 error:(id *)a5;
-- (MAGraph)initWithSpecification:(id)a3 persistenceStoreURL:(id)a4 error:(id *)a5;
+- (BOOL)writeDataToURL:(id)l error:(id *)error;
+- (BOOL)writeGraphJSONToURL:(id)l error:(id *)error;
+- (MAGraph)initWithGraphJSONURL:(id)l error:(id *)error;
+- (MAGraph)initWithGraphMLURL:(id)l error:(id *)error;
+- (MAGraph)initWithPersistenceOptions:(int64_t)options;
+- (MAGraph)initWithPersistentStoreURL:(id)l options:(int64_t)options error:(id *)error;
+- (MAGraph)initWithSpecification:(id)specification;
+- (MAGraph)initWithSpecification:(id)specification dataURL:(id)l error:(id *)error;
+- (MAGraph)initWithSpecification:(id)specification persistenceStoreURL:(id)l error:(id *)error;
 - (NSUUID)identifier;
-- (id)_constraintAbstractEdgesFromAbstractNode:(id)a3 inConstraints:(id *)a4;
+- (id)_constraintAbstractEdgesFromAbstractNode:(id)node inConstraints:(id *)constraints;
 - (id)_graphDictionary;
 - (id)_graphJSONDictionary;
-- (id)_instantiateGraphWithStoreAtURL:(id)a3 error:(id *)a4;
+- (id)_instantiateGraphWithStoreAtURL:(id)l error:(id *)error;
 - (id)abstractEdges;
-- (id)addEdgeFromBase:(id)a3 sourceNode:(id)a4 targetNode:(id)a5;
-- (id)addNodeFromBase:(id)a3;
-- (id)adjacencyWithEndNodeIdentifiers:(id)a3 edgeFilter:(id)a4 edgeType:(unint64_t)a5;
-- (id)adjacencyWithStartNodeIdentifiers:(id)a3 edgeFilter:(id)a4 edgeType:(unint64_t)a5;
-- (id)anyEdgeMatchingFilter:(id)a3;
-- (id)anyNodeMatchingFilter:(id)a3;
+- (id)addEdgeFromBase:(id)base sourceNode:(id)node targetNode:(id)targetNode;
+- (id)addNodeFromBase:(id)base;
+- (id)adjacencyWithEndNodeIdentifiers:(id)identifiers edgeFilter:(id)filter edgeType:(unint64_t)type;
+- (id)adjacencyWithStartNodeIdentifiers:(id)identifiers edgeFilter:(id)filter edgeType:(unint64_t)type;
+- (id)anyEdgeMatchingFilter:(id)filter;
+- (id)anyNodeMatchingFilter:(id)filter;
 - (id)databaseURL;
-- (id)edgeFromFetchedRowWithIdentifier:(int)a3 domain:(signed __int16)a4 label:(id)a5 weight:(float)a6 properties:(id)a7 sourceNodeIdentifier:(int)a8 targetNodeIdentifier:(int)a9;
-- (id)edgeIdentifiersMatchingFilter:(id)a3;
-- (id)edgeIdentifiersMatchingFilter:(id)a3 intersectingIdentifiers:(id)a4;
-- (id)edgeIdentifiersOfType:(unint64_t)a3 betweenNodesForIdentifiers:(id)a4 andNodesForIdentifiers:(id)a5 matchingFilter:(id)a6;
-- (id)edgeIdentifiersOfType:(unint64_t)a3 onNodesForIdentifiers:(id)a4 matchingFilter:(id)a5;
-- (id)edgeIdentifiersOfType:(unint64_t)a3 sourceNodeIdentifier:(unint64_t)a4 targetNodeIdentifier:(unint64_t)a5;
+- (id)edgeFromFetchedRowWithIdentifier:(int)identifier domain:(signed __int16)domain label:(id)label weight:(float)weight properties:(id)properties sourceNodeIdentifier:(int)nodeIdentifier targetNodeIdentifier:(int)targetNodeIdentifier;
+- (id)edgeIdentifiersMatchingFilter:(id)filter;
+- (id)edgeIdentifiersMatchingFilter:(id)filter intersectingIdentifiers:(id)identifiers;
+- (id)edgeIdentifiersOfType:(unint64_t)type betweenNodesForIdentifiers:(id)identifiers andNodesForIdentifiers:(id)forIdentifiers matchingFilter:(id)filter;
+- (id)edgeIdentifiersOfType:(unint64_t)type onNodesForIdentifiers:(id)identifiers matchingFilter:(id)filter;
+- (id)edgeIdentifiersOfType:(unint64_t)type sourceNodeIdentifier:(unint64_t)identifier targetNodeIdentifier:(unint64_t)nodeIdentifier;
 - (id)edgesDomains;
-- (id)edgesForIdentifiers:(id)a3;
+- (id)edgesForIdentifiers:(id)identifiers;
 - (id)edgesLabels;
 - (id)graphNode;
-- (id)matchWithDefinitions:(id)a3 constraints:(id)a4 error:(id *)a5;
-- (id)matchWithVisualFormat:(id)a3 elements:(id)a4 error:(id *)a5;
-- (id)neighborNodeIdentifiersWithStartNodeIdentifiers:(id)a3 edgeType:(unint64_t)a4 edgeFilter:(id)a5;
-- (id)nodeFromFetchedRowWithIdentifier:(int)a3 domain:(signed __int16)a4 label:(id)a5 weight:(float)a6 properties:(id)a7;
-- (id)nodeIdentifiersMatchingFilter:(id)a3;
-- (id)nodeIdentifiersMatchingFilter:(id)a3 intersectingIdentifiers:(id)a4;
-- (id)nodeIdentifiersRelatedToSourceNodeIdentifiers:(id)a3 relation:(id)a4;
+- (id)matchWithDefinitions:(id)definitions constraints:(id)constraints error:(id *)error;
+- (id)matchWithVisualFormat:(id)format elements:(id)elements error:(id *)error;
+- (id)neighborNodeIdentifiersWithStartNodeIdentifiers:(id)identifiers edgeType:(unint64_t)type edgeFilter:(id)filter;
+- (id)nodeFromFetchedRowWithIdentifier:(int)identifier domain:(signed __int16)domain label:(id)label weight:(float)weight properties:(id)properties;
+- (id)nodeIdentifiersMatchingFilter:(id)filter;
+- (id)nodeIdentifiersMatchingFilter:(id)filter intersectingIdentifiers:(id)identifiers;
+- (id)nodeIdentifiersRelatedToSourceNodeIdentifiers:(id)identifiers relation:(id)relation;
 - (id)nodesDomains;
-- (id)nodesForIdentifiers:(id)a3;
+- (id)nodesForIdentifiers:(id)identifiers;
 - (id)nodesLabels;
 - (id)orphanNodes;
-- (id)schema:(id)a3;
-- (id)selectBestRootNodeForPath:(id)a3 withDefinitions:(id)a4;
-- (id)shortestPathFromNode:(id)a3 toNode:(id)a4 directed:(BOOL)a5;
-- (id)transitiveClosureNeighborNodeIdentifiersWithStartNodeIdentifiers:(id)a3 edgeType:(unint64_t)a4 edgeFilter:(id)a5;
+- (id)schema:(id)schema;
+- (id)selectBestRootNodeForPath:(id)path withDefinitions:(id)definitions;
+- (id)shortestPathFromNode:(id)node toNode:(id)toNode directed:(BOOL)directed;
+- (id)transitiveClosureNeighborNodeIdentifiersWithStartNodeIdentifiers:(id)identifiers edgeType:(unint64_t)type edgeFilter:(id)filter;
 - (unint64_t)hash;
-- (unint64_t)numberOfEdgesMatchingFilter:(id)a3;
-- (unint64_t)numberOfNodesMatchingFilter:(id)a3;
+- (unint64_t)numberOfEdgesMatchingFilter:(id)filter;
+- (unint64_t)numberOfNodesMatchingFilter:(id)filter;
 - (unint64_t)version;
-- (void)_loadWithGraphDictionary:(id)a3;
-- (void)addUniqueNode:(id)a3 didInsert:(BOOL *)a4;
-- (void)breadthFirstSearchFromNode:(id)a3 directed:(BOOL)a4 usingBlock:(id)a5;
+- (void)_loadWithGraphDictionary:(id)dictionary;
+- (void)addUniqueNode:(id)node didInsert:(BOOL *)insert;
+- (void)breadthFirstSearchFromNode:(id)node directed:(BOOL)directed usingBlock:(id)block;
 - (void)closePersistentStore;
 - (void)dealloc;
-- (void)depthFirstSearchFromNode:(id)a3 directed:(BOOL)a4 usingBlock:(id)a5;
+- (void)depthFirstSearchFromNode:(id)node directed:(BOOL)directed usingBlock:(id)block;
 - (void)enterBatch;
-- (void)enumerateDoublePropertyValuesForKey:(id)a3 ofEdgesWithIdentifiers:(id)a4 usingBlock:(id)a5;
-- (void)enumerateDoublePropertyValuesForKey:(id)a3 ofNodesWithIdentifiers:(id)a4 usingBlock:(id)a5;
-- (void)enumerateEdgesMatchingFilter:(id)a3 usingBlock:(id)a4;
-- (void)enumerateEdgesWithIdentifiers:(id)a3 usingBlock:(id)a4;
-- (void)enumerateIntegerPropertyValuesForKey:(id)a3 ofEdgesWithIdentifiers:(id)a4 usingBlock:(id)a5;
-- (void)enumerateIntegerPropertyValuesForKey:(id)a3 ofNodesWithIdentifiers:(id)a4 usingBlock:(id)a5;
-- (void)enumerateNodesMatchingFilter:(id)a3 usingBlock:(id)a4;
-- (void)enumerateNodesWithIdentifiers:(id)a3 sortedByFloatPropertyForName:(id)a4 usingBlock:(id)a5;
-- (void)enumerateNodesWithIdentifiers:(id)a3 sortedByIntegerPropertyForName:(id)a4 usingBlock:(id)a5;
-- (void)enumerateNodesWithIdentifiers:(id)a3 sortedByStringPropertyForName:(id)a4 usingBlock:(id)a5;
-- (void)enumerateNodesWithIdentifiers:(id)a3 usingBlock:(id)a4;
-- (void)enumeratePropertyValuesForKey:(id)a3 ofEdgesWithIdentifiers:(id)a4 usingBlock:(id)a5;
-- (void)enumeratePropertyValuesForKey:(id)a3 ofNodesWithIdentifiers:(id)a4 usingBlock:(id)a5;
-- (void)enumerateStringPropertyValuesForKey:(id)a3 ofEdgesWithIdentifiers:(id)a4 usingBlock:(id)a5;
-- (void)enumerateStringPropertyValuesForKey:(id)a3 ofNodesWithIdentifiers:(id)a4 usingBlock:(id)a5;
-- (void)enumerateUnsignedIntegerPropertyValuesForKey:(id)a3 ofEdgesWithIdentifiers:(id)a4 usingBlock:(id)a5;
-- (void)enumerateUnsignedIntegerPropertyValuesForKey:(id)a3 ofNodesWithIdentifiers:(id)a4 usingBlock:(id)a5;
-- (void)enumerateUnsignedLongLongPropertyValuesForKey:(id)a3 ofEdgesWithIdentifiers:(id)a4 usingBlock:(id)a5;
-- (void)enumerateUnsignedLongLongPropertyValuesForKey:(id)a3 ofNodesWithIdentifiers:(id)a4 usingBlock:(id)a5;
-- (void)executeGraphChangeRequest:(id)a3;
-- (void)labelAndDomainFromLabels:(id)a3 outLabel:(id *)a4 outDomain:(unsigned __int16 *)a5;
-- (void)labelsAndDomainsOfEdgesForIdentifiers:(id)a3 labels:(id *)a4 domains:(id *)a5;
-- (void)labelsAndDomainsOfNodesForIdentifiers:(id)a3 labels:(id *)a4 domains:(id *)a5;
+- (void)enumerateDoublePropertyValuesForKey:(id)key ofEdgesWithIdentifiers:(id)identifiers usingBlock:(id)block;
+- (void)enumerateDoublePropertyValuesForKey:(id)key ofNodesWithIdentifiers:(id)identifiers usingBlock:(id)block;
+- (void)enumerateEdgesMatchingFilter:(id)filter usingBlock:(id)block;
+- (void)enumerateEdgesWithIdentifiers:(id)identifiers usingBlock:(id)block;
+- (void)enumerateIntegerPropertyValuesForKey:(id)key ofEdgesWithIdentifiers:(id)identifiers usingBlock:(id)block;
+- (void)enumerateIntegerPropertyValuesForKey:(id)key ofNodesWithIdentifiers:(id)identifiers usingBlock:(id)block;
+- (void)enumerateNodesMatchingFilter:(id)filter usingBlock:(id)block;
+- (void)enumerateNodesWithIdentifiers:(id)identifiers sortedByFloatPropertyForName:(id)name usingBlock:(id)block;
+- (void)enumerateNodesWithIdentifiers:(id)identifiers sortedByIntegerPropertyForName:(id)name usingBlock:(id)block;
+- (void)enumerateNodesWithIdentifiers:(id)identifiers sortedByStringPropertyForName:(id)name usingBlock:(id)block;
+- (void)enumerateNodesWithIdentifiers:(id)identifiers usingBlock:(id)block;
+- (void)enumeratePropertyValuesForKey:(id)key ofEdgesWithIdentifiers:(id)identifiers usingBlock:(id)block;
+- (void)enumeratePropertyValuesForKey:(id)key ofNodesWithIdentifiers:(id)identifiers usingBlock:(id)block;
+- (void)enumerateStringPropertyValuesForKey:(id)key ofEdgesWithIdentifiers:(id)identifiers usingBlock:(id)block;
+- (void)enumerateStringPropertyValuesForKey:(id)key ofNodesWithIdentifiers:(id)identifiers usingBlock:(id)block;
+- (void)enumerateUnsignedIntegerPropertyValuesForKey:(id)key ofEdgesWithIdentifiers:(id)identifiers usingBlock:(id)block;
+- (void)enumerateUnsignedIntegerPropertyValuesForKey:(id)key ofNodesWithIdentifiers:(id)identifiers usingBlock:(id)block;
+- (void)enumerateUnsignedLongLongPropertyValuesForKey:(id)key ofEdgesWithIdentifiers:(id)identifiers usingBlock:(id)block;
+- (void)enumerateUnsignedLongLongPropertyValuesForKey:(id)key ofNodesWithIdentifiers:(id)identifiers usingBlock:(id)block;
+- (void)executeGraphChangeRequest:(id)request;
+- (void)labelAndDomainFromLabels:(id)labels outLabel:(id *)label outDomain:(unsigned __int16 *)domain;
+- (void)labelsAndDomainsOfEdgesForIdentifiers:(id)identifiers labels:(id *)labels domains:(id *)domains;
+- (void)labelsAndDomainsOfNodesForIdentifiers:(id)identifiers labels:(id *)labels domains:(id *)domains;
 - (void)leaveBatch;
-- (void)legacyRemoveEdges:(id)a3;
-- (void)legacyRemoveNodes:(id)a3;
-- (void)loadDomains:(id)a3;
-- (void)mergeWithGraph:(id)a3 strictNodes:(BOOL)a4 strictEdges:(BOOL)a5 saveToDatabase:(BOOL)a6 createdNodes:(id *)a7 createdEdges:(id *)a8;
-- (void)persistModelProperties:(id)a3 forEdgeWithIdentifier:(unint64_t)a4 clobberExisting:(BOOL)a5;
-- (void)persistModelProperties:(id)a3 forNodeWithIdentifier:(unint64_t)a4 clobberExisting:(BOOL)a5;
-- (void)persistModelProperty:(id)a3 forKey:(id)a4 forEdgeWithIdentifier:(unint64_t)a5;
-- (void)persistModelProperty:(id)a3 forKey:(id)a4 forNodeWithIdentifier:(unint64_t)a5;
-- (void)persistWeight:(float)a3 forEdgeWithIdentifier:(unint64_t)a4;
-- (void)persistWeight:(float)a3 forNodeWithIdentifier:(unint64_t)a4;
-- (void)removeModelPropertiesForEdgeWithIdentifier:(unint64_t)a3;
-- (void)removeModelPropertiesForNodeWithIdentifier:(unint64_t)a3;
-- (void)removeModelPropertyForKey:(id)a3 forEdgeWithIdentifier:(unint64_t)a4;
-- (void)removeModelPropertyForKey:(id)a3 forNodeWithIdentifier:(unint64_t)a4;
+- (void)legacyRemoveEdges:(id)edges;
+- (void)legacyRemoveNodes:(id)nodes;
+- (void)loadDomains:(id)domains;
+- (void)mergeWithGraph:(id)graph strictNodes:(BOOL)nodes strictEdges:(BOOL)edges saveToDatabase:(BOOL)database createdNodes:(id *)createdNodes createdEdges:(id *)createdEdges;
+- (void)persistModelProperties:(id)properties forEdgeWithIdentifier:(unint64_t)identifier clobberExisting:(BOOL)existing;
+- (void)persistModelProperties:(id)properties forNodeWithIdentifier:(unint64_t)identifier clobberExisting:(BOOL)existing;
+- (void)persistModelProperty:(id)property forKey:(id)key forEdgeWithIdentifier:(unint64_t)identifier;
+- (void)persistModelProperty:(id)property forKey:(id)key forNodeWithIdentifier:(unint64_t)identifier;
+- (void)persistWeight:(float)weight forEdgeWithIdentifier:(unint64_t)identifier;
+- (void)persistWeight:(float)weight forNodeWithIdentifier:(unint64_t)identifier;
+- (void)removeModelPropertiesForEdgeWithIdentifier:(unint64_t)identifier;
+- (void)removeModelPropertiesForNodeWithIdentifier:(unint64_t)identifier;
+- (void)removeModelPropertyForKey:(id)key forEdgeWithIdentifier:(unint64_t)identifier;
+- (void)removeModelPropertyForKey:(id)key forNodeWithIdentifier:(unint64_t)identifier;
 - (void)rollbackBatch;
-- (void)setVersion:(unint64_t)a3;
-- (void)unloadDomains:(id)a3;
-- (void)unloadEdge:(id)a3;
+- (void)setVersion:(unint64_t)version;
+- (void)unloadDomains:(id)domains;
+- (void)unloadEdge:(id)edge;
 @end
 
 @implementation MAGraph
 
 - (unint64_t)hash
 {
-  v2 = [(MAGraph *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(MAGraph *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -152,11 +152,11 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = v4;
-      v8 = [(MAGraph *)self identifier];
-      v9 = [(MAGraph *)v7 identifier];
+      v7 = equalCopy;
+      identifier = [(MAGraph *)self identifier];
+      identifier2 = [(MAGraph *)v7 identifier];
 
-      v6 = [v8 isEqual:v9];
+      v6 = [identifier isEqual:identifier2];
     }
 
     else
@@ -168,13 +168,13 @@
   return v6;
 }
 
-- (id)edgeIdentifiersOfType:(unint64_t)a3 betweenNodesForIdentifiers:(id)a4 andNodesForIdentifiers:(id)a5 matchingFilter:(id)a6
+- (id)edgeIdentifiersOfType:(unint64_t)type betweenNodesForIdentifiers:(id)identifiers andNodesForIdentifiers:(id)forIdentifiers matchingFilter:(id)filter
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifiersCopy = identifiers;
+  forIdentifiersCopy = forIdentifiers;
+  filterCopy = filter;
   v13 = objc_autoreleasePoolPush();
-  if (([v10 isEmpty] & 1) != 0 || objc_msgSend(v11, "isEmpty"))
+  if (([identifiersCopy isEmpty] & 1) != 0 || objc_msgSend(forIdentifiersCopy, "isEmpty"))
   {
     v14 = objc_alloc_init(KGElementIdentifierSet);
   }
@@ -182,8 +182,8 @@
   else
   {
     graph = self->_graph;
-    v16 = [v12 kgEdgeFilter];
-    v14 = [(KGGraph *)graph edgeIdentifiersBetweenStartNodeIdentifiers:v10 endNodeIdentifiers:v11 edgeFilter:v16 edgeDirection:a3];
+    kgEdgeFilter = [filterCopy kgEdgeFilter];
+    v14 = [(KGGraph *)graph edgeIdentifiersBetweenStartNodeIdentifiers:identifiersCopy endNodeIdentifiers:forIdentifiersCopy edgeFilter:kgEdgeFilter edgeDirection:type];
   }
 
   objc_autoreleasePoolPop(v13);
@@ -191,32 +191,32 @@
   return v14;
 }
 
-- (id)edgeIdentifiersOfType:(unint64_t)a3 onNodesForIdentifiers:(id)a4 matchingFilter:(id)a5
+- (id)edgeIdentifiersOfType:(unint64_t)type onNodesForIdentifiers:(id)identifiers matchingFilter:(id)filter
 {
   graph = self->_graph;
-  v9 = a5;
-  v10 = [(KGGraph *)graph edgeIdentifiersWithStartNodeIdentifiers:a4 edgeDirection:a3];
+  filterCopy = filter;
+  v10 = [(KGGraph *)graph edgeIdentifiersWithStartNodeIdentifiers:identifiers edgeDirection:type];
   v11 = self->_graph;
-  v12 = [v9 kgEdgeFilter];
+  kgEdgeFilter = [filterCopy kgEdgeFilter];
 
-  v13 = [(KGGraph *)v11 edgeIdentifiersMatchingFilter:v12 intersectingIdentifiers:v10];
+  v13 = [(KGGraph *)v11 edgeIdentifiersMatchingFilter:kgEdgeFilter intersectingIdentifiers:v10];
 
   return v13;
 }
 
-- (id)nodeIdentifiersRelatedToSourceNodeIdentifiers:(id)a3 relation:(id)a4
+- (id)nodeIdentifiersRelatedToSourceNodeIdentifiers:(id)identifiers relation:(id)relation
 {
-  v6 = a4;
-  v7 = a3;
+  relationCopy = relation;
+  identifiersCopy = identifiers;
   v8 = objc_alloc_init(KGMutableElementIdentifierSet);
-  [v6 unionAdjacencySetFromSourceNodeIdentifiers:v7 toTargetNodeIdentifiers:v8 graph:self];
+  [relationCopy unionAdjacencySetFromSourceNodeIdentifiers:identifiersCopy toTargetNodeIdentifiers:v8 graph:self];
 
   return v8;
 }
 
-- (id)anyEdgeMatchingFilter:(id)a3
+- (id)anyEdgeMatchingFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -228,28 +228,28 @@
   v7[2] = __33__MAGraph_anyEdgeMatchingFilter___block_invoke;
   v7[3] = &unk_2797FFB10;
   v7[4] = &v8;
-  [(MAGraph *)self enumerateEdgesMatchingFilter:v4 usingBlock:v7];
+  [(MAGraph *)self enumerateEdgesMatchingFilter:filterCopy usingBlock:v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
 
   return v5;
 }
 
-- (id)edgeIdentifiersOfType:(unint64_t)a3 sourceNodeIdentifier:(unint64_t)a4 targetNodeIdentifier:(unint64_t)a5
+- (id)edgeIdentifiersOfType:(unint64_t)type sourceNodeIdentifier:(unint64_t)identifier targetNodeIdentifier:(unint64_t)nodeIdentifier
 {
   v9 = objc_autoreleasePoolPush();
-  if (a3 - 1 > 2)
+  if (type - 1 > 2)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = qword_255972F78[a3 - 1];
+    v10 = qword_255972F78[type - 1];
   }
 
-  v11 = [[KGElementIdentifierSet alloc] initWithElementIdentifier:a4];
-  v12 = [(KGGraph *)self->_graph edgeIdentifiersWithStartNodeIdentifiers:v11 edgeDirection:a3];
+  v11 = [[KGElementIdentifierSet alloc] initWithElementIdentifier:identifier];
+  v12 = [(KGGraph *)self->_graph edgeIdentifiersWithStartNodeIdentifiers:v11 edgeDirection:type];
   if ([v12 isEmpty])
   {
     if (v12)
@@ -267,7 +267,7 @@
 
   else
   {
-    v14 = [[KGElementIdentifierSet alloc] initWithElementIdentifier:a5];
+    v14 = [[KGElementIdentifierSet alloc] initWithElementIdentifier:nodeIdentifier];
     v15 = [(KGGraph *)self->_graph edgeIdentifiersWithStartNodeIdentifiers:v14 edgeDirection:v10];
     v16 = [v15 identifierSetByIntersectingIdentifierSet:v12];
     v17 = v16;
@@ -289,16 +289,16 @@
   return v19;
 }
 
-- (void)enumerateUnsignedLongLongPropertyValuesForKey:(id)a3 ofEdgesWithIdentifiers:(id)a4 usingBlock:(id)a5
+- (void)enumerateUnsignedLongLongPropertyValuesForKey:(id)key ofEdgesWithIdentifiers:(id)identifiers usingBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __91__MAGraph_enumerateUnsignedLongLongPropertyValuesForKey_ofEdgesWithIdentifiers_usingBlock___block_invoke;
   v10[3] = &unk_2797FDBB0;
-  v11 = v8;
-  v9 = v8;
-  [(MAGraph *)self enumeratePropertyValuesForKey:a3 ofEdgesWithIdentifiers:a4 usingBlock:v10];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  [(MAGraph *)self enumeratePropertyValuesForKey:key ofEdgesWithIdentifiers:identifiers usingBlock:v10];
 }
 
 void __91__MAGraph_enumerateUnsignedLongLongPropertyValuesForKey_ofEdgesWithIdentifiers_usingBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3, uint64_t a4)
@@ -310,16 +310,16 @@ void __91__MAGraph_enumerateUnsignedLongLongPropertyValuesForKey_ofEdgesWithIden
   }
 }
 
-- (void)enumerateUnsignedIntegerPropertyValuesForKey:(id)a3 ofEdgesWithIdentifiers:(id)a4 usingBlock:(id)a5
+- (void)enumerateUnsignedIntegerPropertyValuesForKey:(id)key ofEdgesWithIdentifiers:(id)identifiers usingBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __90__MAGraph_enumerateUnsignedIntegerPropertyValuesForKey_ofEdgesWithIdentifiers_usingBlock___block_invoke;
   v10[3] = &unk_2797FDBB0;
-  v11 = v8;
-  v9 = v8;
-  [(MAGraph *)self enumeratePropertyValuesForKey:a3 ofEdgesWithIdentifiers:a4 usingBlock:v10];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  [(MAGraph *)self enumeratePropertyValuesForKey:key ofEdgesWithIdentifiers:identifiers usingBlock:v10];
 }
 
 void __90__MAGraph_enumerateUnsignedIntegerPropertyValuesForKey_ofEdgesWithIdentifiers_usingBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3, uint64_t a4)
@@ -331,16 +331,16 @@ void __90__MAGraph_enumerateUnsignedIntegerPropertyValuesForKey_ofEdgesWithIdent
   }
 }
 
-- (void)enumerateDoublePropertyValuesForKey:(id)a3 ofEdgesWithIdentifiers:(id)a4 usingBlock:(id)a5
+- (void)enumerateDoublePropertyValuesForKey:(id)key ofEdgesWithIdentifiers:(id)identifiers usingBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __81__MAGraph_enumerateDoublePropertyValuesForKey_ofEdgesWithIdentifiers_usingBlock___block_invoke;
   v10[3] = &unk_2797FDBB0;
-  v11 = v8;
-  v9 = v8;
-  [(MAGraph *)self enumeratePropertyValuesForKey:a3 ofEdgesWithIdentifiers:a4 usingBlock:v10];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  [(MAGraph *)self enumeratePropertyValuesForKey:key ofEdgesWithIdentifiers:identifiers usingBlock:v10];
 }
 
 void __81__MAGraph_enumerateDoublePropertyValuesForKey_ofEdgesWithIdentifiers_usingBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3, uint64_t a4)
@@ -354,16 +354,16 @@ void __81__MAGraph_enumerateDoublePropertyValuesForKey_ofEdgesWithIdentifiers_us
   }
 }
 
-- (void)enumerateStringPropertyValuesForKey:(id)a3 ofEdgesWithIdentifiers:(id)a4 usingBlock:(id)a5
+- (void)enumerateStringPropertyValuesForKey:(id)key ofEdgesWithIdentifiers:(id)identifiers usingBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __81__MAGraph_enumerateStringPropertyValuesForKey_ofEdgesWithIdentifiers_usingBlock___block_invoke;
   v10[3] = &unk_2797FDBB0;
-  v11 = v8;
-  v9 = v8;
-  [(MAGraph *)self enumeratePropertyValuesForKey:a3 ofEdgesWithIdentifiers:a4 usingBlock:v10];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  [(MAGraph *)self enumeratePropertyValuesForKey:key ofEdgesWithIdentifiers:identifiers usingBlock:v10];
 }
 
 void __81__MAGraph_enumerateStringPropertyValuesForKey_ofEdgesWithIdentifiers_usingBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -375,16 +375,16 @@ void __81__MAGraph_enumerateStringPropertyValuesForKey_ofEdgesWithIdentifiers_us
   }
 }
 
-- (void)enumerateIntegerPropertyValuesForKey:(id)a3 ofEdgesWithIdentifiers:(id)a4 usingBlock:(id)a5
+- (void)enumerateIntegerPropertyValuesForKey:(id)key ofEdgesWithIdentifiers:(id)identifiers usingBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __82__MAGraph_enumerateIntegerPropertyValuesForKey_ofEdgesWithIdentifiers_usingBlock___block_invoke;
   v10[3] = &unk_2797FDBB0;
-  v11 = v8;
-  v9 = v8;
-  [(MAGraph *)self enumeratePropertyValuesForKey:a3 ofEdgesWithIdentifiers:a4 usingBlock:v10];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  [(MAGraph *)self enumeratePropertyValuesForKey:key ofEdgesWithIdentifiers:identifiers usingBlock:v10];
 }
 
 void __82__MAGraph_enumerateIntegerPropertyValuesForKey_ofEdgesWithIdentifiers_usingBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3, uint64_t a4)
@@ -396,20 +396,20 @@ void __82__MAGraph_enumerateIntegerPropertyValuesForKey_ofEdgesWithIdentifiers_u
   }
 }
 
-- (void)enumeratePropertyValuesForKey:(id)a3 ofEdgesWithIdentifiers:(id)a4 usingBlock:(id)a5
+- (void)enumeratePropertyValuesForKey:(id)key ofEdgesWithIdentifiers:(id)identifiers usingBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(KGElementCollection *)[KGEdgeCollection alloc] initWithIdentifiers:v9 graph:self->_graph];
+  blockCopy = block;
+  identifiersCopy = identifiers;
+  keyCopy = key;
+  v11 = [(KGElementCollection *)[KGEdgeCollection alloc] initWithIdentifiers:identifiersCopy graph:self->_graph];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __75__MAGraph_enumeratePropertyValuesForKey_ofEdgesWithIdentifiers_usingBlock___block_invoke;
   v13[3] = &unk_2797FDB88;
-  v14 = v8;
-  v12 = v8;
-  [(KGEdgeCollection *)v11 enumeratePropertyValuesForKey:v10 withBlock:v13];
+  v14 = blockCopy;
+  v12 = blockCopy;
+  [(KGEdgeCollection *)v11 enumeratePropertyValuesForKey:keyCopy withBlock:v13];
 }
 
 uint64_t __75__MAGraph_enumeratePropertyValuesForKey_ofEdgesWithIdentifiers_usingBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -423,16 +423,16 @@ uint64_t __75__MAGraph_enumeratePropertyValuesForKey_ofEdgesWithIdentifiers_usin
   return MEMORY[0x2821F9730]();
 }
 
-- (void)enumerateUnsignedLongLongPropertyValuesForKey:(id)a3 ofNodesWithIdentifiers:(id)a4 usingBlock:(id)a5
+- (void)enumerateUnsignedLongLongPropertyValuesForKey:(id)key ofNodesWithIdentifiers:(id)identifiers usingBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __91__MAGraph_enumerateUnsignedLongLongPropertyValuesForKey_ofNodesWithIdentifiers_usingBlock___block_invoke;
   v10[3] = &unk_2797FDBB0;
-  v11 = v8;
-  v9 = v8;
-  [(MAGraph *)self enumeratePropertyValuesForKey:a3 ofNodesWithIdentifiers:a4 usingBlock:v10];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  [(MAGraph *)self enumeratePropertyValuesForKey:key ofNodesWithIdentifiers:identifiers usingBlock:v10];
 }
 
 void __91__MAGraph_enumerateUnsignedLongLongPropertyValuesForKey_ofNodesWithIdentifiers_usingBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3, uint64_t a4)
@@ -444,16 +444,16 @@ void __91__MAGraph_enumerateUnsignedLongLongPropertyValuesForKey_ofNodesWithIden
   }
 }
 
-- (void)enumerateUnsignedIntegerPropertyValuesForKey:(id)a3 ofNodesWithIdentifiers:(id)a4 usingBlock:(id)a5
+- (void)enumerateUnsignedIntegerPropertyValuesForKey:(id)key ofNodesWithIdentifiers:(id)identifiers usingBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __90__MAGraph_enumerateUnsignedIntegerPropertyValuesForKey_ofNodesWithIdentifiers_usingBlock___block_invoke;
   v10[3] = &unk_2797FDBB0;
-  v11 = v8;
-  v9 = v8;
-  [(MAGraph *)self enumeratePropertyValuesForKey:a3 ofNodesWithIdentifiers:a4 usingBlock:v10];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  [(MAGraph *)self enumeratePropertyValuesForKey:key ofNodesWithIdentifiers:identifiers usingBlock:v10];
 }
 
 void __90__MAGraph_enumerateUnsignedIntegerPropertyValuesForKey_ofNodesWithIdentifiers_usingBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3, uint64_t a4)
@@ -465,16 +465,16 @@ void __90__MAGraph_enumerateUnsignedIntegerPropertyValuesForKey_ofNodesWithIdent
   }
 }
 
-- (void)enumerateDoublePropertyValuesForKey:(id)a3 ofNodesWithIdentifiers:(id)a4 usingBlock:(id)a5
+- (void)enumerateDoublePropertyValuesForKey:(id)key ofNodesWithIdentifiers:(id)identifiers usingBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __81__MAGraph_enumerateDoublePropertyValuesForKey_ofNodesWithIdentifiers_usingBlock___block_invoke;
   v10[3] = &unk_2797FDBB0;
-  v11 = v8;
-  v9 = v8;
-  [(MAGraph *)self enumeratePropertyValuesForKey:a3 ofNodesWithIdentifiers:a4 usingBlock:v10];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  [(MAGraph *)self enumeratePropertyValuesForKey:key ofNodesWithIdentifiers:identifiers usingBlock:v10];
 }
 
 void __81__MAGraph_enumerateDoublePropertyValuesForKey_ofNodesWithIdentifiers_usingBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3, uint64_t a4)
@@ -488,16 +488,16 @@ void __81__MAGraph_enumerateDoublePropertyValuesForKey_ofNodesWithIdentifiers_us
   }
 }
 
-- (void)enumerateStringPropertyValuesForKey:(id)a3 ofNodesWithIdentifiers:(id)a4 usingBlock:(id)a5
+- (void)enumerateStringPropertyValuesForKey:(id)key ofNodesWithIdentifiers:(id)identifiers usingBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __81__MAGraph_enumerateStringPropertyValuesForKey_ofNodesWithIdentifiers_usingBlock___block_invoke;
   v10[3] = &unk_2797FDBB0;
-  v11 = v8;
-  v9 = v8;
-  [(MAGraph *)self enumeratePropertyValuesForKey:a3 ofNodesWithIdentifiers:a4 usingBlock:v10];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  [(MAGraph *)self enumeratePropertyValuesForKey:key ofNodesWithIdentifiers:identifiers usingBlock:v10];
 }
 
 void __81__MAGraph_enumerateStringPropertyValuesForKey_ofNodesWithIdentifiers_usingBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -509,16 +509,16 @@ void __81__MAGraph_enumerateStringPropertyValuesForKey_ofNodesWithIdentifiers_us
   }
 }
 
-- (void)enumerateIntegerPropertyValuesForKey:(id)a3 ofNodesWithIdentifiers:(id)a4 usingBlock:(id)a5
+- (void)enumerateIntegerPropertyValuesForKey:(id)key ofNodesWithIdentifiers:(id)identifiers usingBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __82__MAGraph_enumerateIntegerPropertyValuesForKey_ofNodesWithIdentifiers_usingBlock___block_invoke;
   v10[3] = &unk_2797FDBB0;
-  v11 = v8;
-  v9 = v8;
-  [(MAGraph *)self enumeratePropertyValuesForKey:a3 ofNodesWithIdentifiers:a4 usingBlock:v10];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  [(MAGraph *)self enumeratePropertyValuesForKey:key ofNodesWithIdentifiers:identifiers usingBlock:v10];
 }
 
 void __82__MAGraph_enumerateIntegerPropertyValuesForKey_ofNodesWithIdentifiers_usingBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3, uint64_t a4)
@@ -530,20 +530,20 @@ void __82__MAGraph_enumerateIntegerPropertyValuesForKey_ofNodesWithIdentifiers_u
   }
 }
 
-- (void)enumeratePropertyValuesForKey:(id)a3 ofNodesWithIdentifiers:(id)a4 usingBlock:(id)a5
+- (void)enumeratePropertyValuesForKey:(id)key ofNodesWithIdentifiers:(id)identifiers usingBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(KGElementCollection *)[KGNodeCollection alloc] initWithIdentifiers:v9 graph:self->_graph];
+  blockCopy = block;
+  identifiersCopy = identifiers;
+  keyCopy = key;
+  v11 = [(KGElementCollection *)[KGNodeCollection alloc] initWithIdentifiers:identifiersCopy graph:self->_graph];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __75__MAGraph_enumeratePropertyValuesForKey_ofNodesWithIdentifiers_usingBlock___block_invoke;
   v13[3] = &unk_2797FDB88;
-  v14 = v8;
-  v12 = v8;
-  [(KGNodeCollection *)v11 enumeratePropertyValuesForKey:v10 withBlock:v13];
+  v14 = blockCopy;
+  v12 = blockCopy;
+  [(KGNodeCollection *)v11 enumeratePropertyValuesForKey:keyCopy withBlock:v13];
 }
 
 uint64_t __75__MAGraph_enumeratePropertyValuesForKey_ofNodesWithIdentifiers_usingBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -559,8 +559,8 @@ uint64_t __75__MAGraph_enumeratePropertyValuesForKey_ofNodesWithIdentifiers_usin
 
 - (id)abstractEdges
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -568,9 +568,9 @@ uint64_t __75__MAGraph_enumeratePropertyValuesForKey_ofNodesWithIdentifiers_usin
   v6[3] = &unk_2797FFB60;
   v4 = v3;
   v7 = v4;
-  [(MAGraph *)v2 enumerateEdgesWithBlock:v6];
+  [(MAGraph *)selfCopy enumerateEdgesWithBlock:v6];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -605,20 +605,20 @@ void __24__MAGraph_abstractEdges__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)enumerateEdgesMatchingFilter:(id)a3 usingBlock:(id)a4
+- (void)enumerateEdgesMatchingFilter:(id)filter usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(MAGraph *)self edgeIdentifiersMatchingFilter:a3];
-  [(MAGraph *)self enumerateEdgesWithIdentifiers:v7 usingBlock:v6];
+  blockCopy = block;
+  v7 = [(MAGraph *)self edgeIdentifiersMatchingFilter:filter];
+  [(MAGraph *)self enumerateEdgesWithIdentifiers:v7 usingBlock:blockCopy];
 }
 
-- (void)enumerateEdgesWithIdentifiers:(id)a3 usingBlock:(id)a4
+- (void)enumerateEdgesWithIdentifiers:(id)identifiers usingBlock:(id)block
 {
-  v9 = a3;
-  v6 = a4;
+  identifiersCopy = identifiers;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
-  v8 = [(KGGraph *)self->_graph edgesForIdentifiers:v9];
-  [v8 enumerateEdgesUsingBlock:v6];
+  v8 = [(KGGraph *)self->_graph edgesForIdentifiers:identifiersCopy];
+  [v8 enumerateEdgesUsingBlock:blockCopy];
 
   objc_autoreleasePoolPop(v7);
 }
@@ -626,9 +626,9 @@ void __24__MAGraph_abstractEdges__block_invoke(uint64_t a1, void *a2)
 - (id)edgesDomains
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [(KGGraph *)self->_graph edgeLabels];
+  edgeLabels = [(KGGraph *)self->_graph edgeLabels];
   v3 = [MEMORY[0x277CCAC30] predicateWithFormat:@"SELF beginswith 'domain'"];
-  v4 = [v2 filteredSetUsingPredicate:v3];
+  v4 = [edgeLabels filteredSetUsingPredicate:v3];
   v5 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v14 = 0u;
   v15 = 0u;
@@ -666,36 +666,36 @@ void __24__MAGraph_abstractEdges__block_invoke(uint64_t a1, void *a2)
 
 - (id)edgesLabels
 {
-  v2 = [(KGGraph *)self->_graph edgeLabels];
+  edgeLabels = [(KGGraph *)self->_graph edgeLabels];
   v3 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (SELF beginswith 'domain')"];
-  v4 = [v2 filteredSetUsingPredicate:v3];
+  v4 = [edgeLabels filteredSetUsingPredicate:v3];
 
   return v4;
 }
 
-- (unint64_t)numberOfEdgesMatchingFilter:(id)a3
+- (unint64_t)numberOfEdgesMatchingFilter:(id)filter
 {
-  v3 = [(MAGraph *)self edgeIdentifiersMatchingFilter:a3];
+  v3 = [(MAGraph *)self edgeIdentifiersMatchingFilter:filter];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (id)edgeIdentifiersMatchingFilter:(id)a3 intersectingIdentifiers:(id)a4
+- (id)edgeIdentifiersMatchingFilter:(id)filter intersectingIdentifiers:(id)identifiers
 {
   graph = self->_graph;
-  v6 = a4;
-  v7 = [a3 kgEdgeFilter];
-  v8 = [(KGGraph *)graph edgeIdentifiersMatchingFilter:v7 intersectingIdentifiers:v6];
+  identifiersCopy = identifiers;
+  kgEdgeFilter = [filter kgEdgeFilter];
+  v8 = [(KGGraph *)graph edgeIdentifiersMatchingFilter:kgEdgeFilter intersectingIdentifiers:identifiersCopy];
 
   return v8;
 }
 
-- (id)edgeIdentifiersMatchingFilter:(id)a3
+- (id)edgeIdentifiersMatchingFilter:(id)filter
 {
   graph = self->_graph;
-  v4 = [a3 kgEdgeFilter];
-  v5 = [(KGGraph *)graph edgeIdentifiersMatchingFilter:v4];
+  kgEdgeFilter = [filter kgEdgeFilter];
+  v5 = [(KGGraph *)graph edgeIdentifiersMatchingFilter:kgEdgeFilter];
   v6 = v5;
   if (v5)
   {
@@ -712,37 +712,37 @@ void __24__MAGraph_abstractEdges__block_invoke(uint64_t a1, void *a2)
   return v8;
 }
 
-- (id)edgesForIdentifiers:(id)a3
+- (id)edgesForIdentifiers:(id)identifiers
 {
-  v3 = [(KGGraph *)self->_graph edgesForIdentifiers:a3];
+  v3 = [(KGGraph *)self->_graph edgesForIdentifiers:identifiers];
   v4 = [v3 set];
 
   return v4;
 }
 
-- (void)legacyRemoveEdges:(id)a3
+- (void)legacyRemoveEdges:(id)edges
 {
-  v4 = a3;
-  v6 = [(MAElementCollection *)[MAEdgeCollection alloc] initWithSet:v4 graph:self];
+  edgesCopy = edges;
+  v6 = [(MAElementCollection *)[MAEdgeCollection alloc] initWithSet:edgesCopy graph:self];
 
   v5 = objc_alloc_init(MAGraphChangeRequest);
   [(MAGraphChangeRequest *)v5 removeEdges:v6];
   [(MAGraph *)self executeGraphChangeRequest:v5];
 }
 
-- (id)addEdgeFromBase:(id)a3 sourceNode:(id)a4 targetNode:(id)a5
+- (id)addEdgeFromBase:(id)base sourceNode:(id)node targetNode:(id)targetNode
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 label];
-  v12 = [v10 domain];
-  [v10 weight];
+  targetNodeCopy = targetNode;
+  nodeCopy = node;
+  baseCopy = base;
+  label = [baseCopy label];
+  domain = [baseCopy domain];
+  [baseCopy weight];
   v14 = v13;
-  v15 = [v10 propertyDictionary];
+  propertyDictionary = [baseCopy propertyDictionary];
 
   LODWORD(v16) = v14;
-  v17 = [(MAGraph *)self addEdgeWithLabel:v11 sourceNode:v9 targetNode:v8 domain:v12 weight:v15 properties:v16];
+  v17 = [(MAGraph *)self addEdgeWithLabel:label sourceNode:nodeCopy targetNode:targetNodeCopy domain:domain weight:propertyDictionary properties:v16];
 
   return v17;
 }
@@ -750,10 +750,10 @@ void __24__MAGraph_abstractEdges__block_invoke(uint64_t a1, void *a2)
 - (id)graphNode
 {
   v3 = [MAAbstractNode alloc];
-  v4 = [(MAGraph *)self identifier];
-  v5 = [v4 UUIDString];
+  identifier = [(MAGraph *)self identifier];
+  uUIDString = [identifier UUIDString];
   LODWORD(v6) = 1.0;
-  v7 = [(MAAbstractNode *)v3 initWithLabel:v5 domain:1 weight:MEMORY[0x277CBEC10] properties:v6];
+  v7 = [(MAAbstractNode *)v3 initWithLabel:uUIDString domain:1 weight:MEMORY[0x277CBEC10] properties:v6];
 
   return v7;
 }
@@ -785,98 +785,98 @@ void __22__MAGraph_orphanNodes__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (id)transitiveClosureNeighborNodeIdentifiersWithStartNodeIdentifiers:(id)a3 edgeType:(unint64_t)a4 edgeFilter:(id)a5
+- (id)transitiveClosureNeighborNodeIdentifiersWithStartNodeIdentifiers:(id)identifiers edgeType:(unint64_t)type edgeFilter:(id)filter
 {
   graph = self->_graph;
-  v8 = a3;
-  v9 = [a5 kgEdgeFilter];
-  v10 = [(KGGraph *)graph transitiveClosureNeighborNodeIdentifiersWithStartNodeIdentifiers:v8 edgeDirection:a4 edgeFilter:v9];
+  identifiersCopy = identifiers;
+  kgEdgeFilter = [filter kgEdgeFilter];
+  v10 = [(KGGraph *)graph transitiveClosureNeighborNodeIdentifiersWithStartNodeIdentifiers:identifiersCopy edgeDirection:type edgeFilter:kgEdgeFilter];
 
   return v10;
 }
 
-- (id)neighborNodeIdentifiersWithStartNodeIdentifiers:(id)a3 edgeType:(unint64_t)a4 edgeFilter:(id)a5
+- (id)neighborNodeIdentifiersWithStartNodeIdentifiers:(id)identifiers edgeType:(unint64_t)type edgeFilter:(id)filter
 {
   graph = self->_graph;
-  v8 = a3;
-  v9 = [a5 kgEdgeFilter];
-  v10 = [(KGGraph *)graph neighborNodeIdentifiersWithStartNodeIdentifiers:v8 edgeDirection:a4 edgeFilter:v9];
+  identifiersCopy = identifiers;
+  kgEdgeFilter = [filter kgEdgeFilter];
+  v10 = [(KGGraph *)graph neighborNodeIdentifiersWithStartNodeIdentifiers:identifiersCopy edgeDirection:type edgeFilter:kgEdgeFilter];
 
   return v10;
 }
 
-- (void)enumerateNodesMatchingFilter:(id)a3 usingBlock:(id)a4
+- (void)enumerateNodesMatchingFilter:(id)filter usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(MAGraph *)self nodeIdentifiersMatchingFilter:a3];
-  [(MAGraph *)self enumerateNodesWithIdentifiers:v7 usingBlock:v6];
+  blockCopy = block;
+  v7 = [(MAGraph *)self nodeIdentifiersMatchingFilter:filter];
+  [(MAGraph *)self enumerateNodesWithIdentifiers:v7 usingBlock:blockCopy];
 }
 
-- (void)enumerateNodesWithIdentifiers:(id)a3 sortedByFloatPropertyForName:(id)a4 usingBlock:(id)a5
+- (void)enumerateNodesWithIdentifiers:(id)identifiers sortedByFloatPropertyForName:(id)name usingBlock:(id)block
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  identifiersCopy = identifiers;
+  nameCopy = name;
+  blockCopy = block;
   v10 = objc_autoreleasePoolPush();
-  v11 = [(KGGraph *)self->_graph nodesForIdentifiers:v12];
-  [v11 enumerateNodesSortedByFloatPropertyForName:v8 usingBlock:v9];
+  v11 = [(KGGraph *)self->_graph nodesForIdentifiers:identifiersCopy];
+  [v11 enumerateNodesSortedByFloatPropertyForName:nameCopy usingBlock:blockCopy];
 
   objc_autoreleasePoolPop(v10);
 }
 
-- (void)enumerateNodesWithIdentifiers:(id)a3 sortedByIntegerPropertyForName:(id)a4 usingBlock:(id)a5
+- (void)enumerateNodesWithIdentifiers:(id)identifiers sortedByIntegerPropertyForName:(id)name usingBlock:(id)block
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  identifiersCopy = identifiers;
+  nameCopy = name;
+  blockCopy = block;
   v10 = objc_autoreleasePoolPush();
-  v11 = [(KGGraph *)self->_graph nodesForIdentifiers:v12];
-  [v11 enumerateNodesSortedByIntegerPropertyForName:v8 usingBlock:v9];
+  v11 = [(KGGraph *)self->_graph nodesForIdentifiers:identifiersCopy];
+  [v11 enumerateNodesSortedByIntegerPropertyForName:nameCopy usingBlock:blockCopy];
 
   objc_autoreleasePoolPop(v10);
 }
 
-- (void)enumerateNodesWithIdentifiers:(id)a3 sortedByStringPropertyForName:(id)a4 usingBlock:(id)a5
+- (void)enumerateNodesWithIdentifiers:(id)identifiers sortedByStringPropertyForName:(id)name usingBlock:(id)block
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  identifiersCopy = identifiers;
+  nameCopy = name;
+  blockCopy = block;
   v10 = objc_autoreleasePoolPush();
-  v11 = [(KGGraph *)self->_graph nodesForIdentifiers:v12];
-  [v11 enumerateNodesSortedByStringPropertyForName:v8 usingBlock:v9];
+  v11 = [(KGGraph *)self->_graph nodesForIdentifiers:identifiersCopy];
+  [v11 enumerateNodesSortedByStringPropertyForName:nameCopy usingBlock:blockCopy];
 
   objc_autoreleasePoolPop(v10);
 }
 
-- (void)enumerateNodesWithIdentifiers:(id)a3 usingBlock:(id)a4
+- (void)enumerateNodesWithIdentifiers:(id)identifiers usingBlock:(id)block
 {
-  v9 = a3;
-  v6 = a4;
+  identifiersCopy = identifiers;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
-  v8 = [(KGGraph *)self->_graph nodesForIdentifiers:v9];
-  [v8 enumerateNodesUsingBlock:v6];
+  v8 = [(KGGraph *)self->_graph nodesForIdentifiers:identifiersCopy];
+  [v8 enumerateNodesUsingBlock:blockCopy];
 
   objc_autoreleasePoolPop(v7);
 }
 
-- (id)adjacencyWithEndNodeIdentifiers:(id)a3 edgeFilter:(id)a4 edgeType:(unint64_t)a5
+- (id)adjacencyWithEndNodeIdentifiers:(id)identifiers edgeFilter:(id)filter edgeType:(unint64_t)type
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  typeCopy = type;
+  identifiersCopy = identifiers;
+  filterCopy = filter;
   v10 = objc_alloc_init(KGDirectedBinaryAdjacency);
   v11 = objc_alloc_init(KGDirectedBinaryAdjacency);
-  if ((v5 & 2) != 0)
+  if ((typeCopy & 2) != 0)
   {
-    v12 = [(MAGraph *)self edgeIdentifiersOfType:1 onNodesForIdentifiers:v8 matchingFilter:v9];
+    v12 = [(MAGraph *)self edgeIdentifiersOfType:1 onNodesForIdentifiers:identifiersCopy matchingFilter:filterCopy];
     v13 = [(MAGraph *)self targetsBySourceWithEdgeIdentifiers:v12];
 
     v10 = v13;
   }
 
-  if (v5)
+  if (typeCopy)
   {
-    v14 = [(MAGraph *)self edgeIdentifiersOfType:2 onNodesForIdentifiers:v8 matchingFilter:v9];
+    v14 = [(MAGraph *)self edgeIdentifiersOfType:2 onNodesForIdentifiers:identifiersCopy matchingFilter:filterCopy];
     v15 = [(MAGraph *)self sourcesByTargetWithEdgeIdentifiers:v14];
 
     v11 = v15;
@@ -887,24 +887,24 @@ void __22__MAGraph_orphanNodes__block_invoke(uint64_t a1, void *a2)
   return v16;
 }
 
-- (id)adjacencyWithStartNodeIdentifiers:(id)a3 edgeFilter:(id)a4 edgeType:(unint64_t)a5
+- (id)adjacencyWithStartNodeIdentifiers:(id)identifiers edgeFilter:(id)filter edgeType:(unint64_t)type
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  typeCopy = type;
+  identifiersCopy = identifiers;
+  filterCopy = filter;
   v10 = objc_alloc_init(KGDirectedBinaryAdjacency);
   v11 = objc_alloc_init(KGDirectedBinaryAdjacency);
-  if ((v5 & 2) != 0)
+  if ((typeCopy & 2) != 0)
   {
-    v12 = [(MAGraph *)self edgeIdentifiersOfType:2 onNodesForIdentifiers:v8 matchingFilter:v9];
+    v12 = [(MAGraph *)self edgeIdentifiersOfType:2 onNodesForIdentifiers:identifiersCopy matchingFilter:filterCopy];
     v13 = [(MAGraph *)self targetsBySourceWithEdgeIdentifiers:v12];
 
     v10 = v13;
   }
 
-  if (v5)
+  if (typeCopy)
   {
-    v14 = [(MAGraph *)self edgeIdentifiersOfType:1 onNodesForIdentifiers:v8 matchingFilter:v9];
+    v14 = [(MAGraph *)self edgeIdentifiersOfType:1 onNodesForIdentifiers:identifiersCopy matchingFilter:filterCopy];
     v15 = [(MAGraph *)self sourcesByTargetWithEdgeIdentifiers:v14];
 
     v11 = v15;
@@ -915,16 +915,16 @@ void __22__MAGraph_orphanNodes__block_invoke(uint64_t a1, void *a2)
   return v16;
 }
 
-- (void)labelsAndDomainsOfEdgesForIdentifiers:(id)a3 labels:(id *)a4 domains:(id *)a5
+- (void)labelsAndDomainsOfEdgesForIdentifiers:(id)identifiers labels:(id *)labels domains:(id *)domains
 {
-  v7 = [(KGGraph *)self->_graph labelsOfEdgesForIdentifiers:a3];
-  MALabelsAndDomainsFromKGLabels(v7, a4, a5);
+  v7 = [(KGGraph *)self->_graph labelsOfEdgesForIdentifiers:identifiers];
+  MALabelsAndDomainsFromKGLabels(v7, labels, domains);
 }
 
-- (void)labelsAndDomainsOfNodesForIdentifiers:(id)a3 labels:(id *)a4 domains:(id *)a5
+- (void)labelsAndDomainsOfNodesForIdentifiers:(id)identifiers labels:(id *)labels domains:(id *)domains
 {
-  v7 = [(KGGraph *)self->_graph labelsOfNodesForIdentifiers:a3];
-  MALabelsAndDomainsFromKGLabels(v7, a4, a5);
+  v7 = [(KGGraph *)self->_graph labelsOfNodesForIdentifiers:identifiers];
+  MALabelsAndDomainsFromKGLabels(v7, labels, domains);
 }
 
 - (id)nodesDomains
@@ -935,8 +935,8 @@ void __22__MAGraph_orphanNodes__block_invoke(uint64_t a1, void *a2)
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(KGGraph *)self->_graph nodeLabels];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  nodeLabels = [(KGGraph *)self->_graph nodeLabels];
+  v5 = [nodeLabels countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -947,7 +947,7 @@ void __22__MAGraph_orphanNodes__block_invoke(uint64_t a1, void *a2)
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(nodeLabels);
         }
 
         v9 = [MAKGDomainConversion maDomainForKGLabel:*(*(&v12 + 1) + 8 * i)];
@@ -957,7 +957,7 @@ void __22__MAGraph_orphanNodes__block_invoke(uint64_t a1, void *a2)
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [nodeLabels countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -976,8 +976,8 @@ void __22__MAGraph_orphanNodes__block_invoke(uint64_t a1, void *a2)
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(KGGraph *)self->_graph nodeLabels];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  nodeLabels = [(KGGraph *)self->_graph nodeLabels];
+  v5 = [nodeLabels countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -988,7 +988,7 @@ void __22__MAGraph_orphanNodes__block_invoke(uint64_t a1, void *a2)
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(nodeLabels);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -998,7 +998,7 @@ void __22__MAGraph_orphanNodes__block_invoke(uint64_t a1, void *a2)
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [nodeLabels countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -1009,37 +1009,37 @@ void __22__MAGraph_orphanNodes__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (unint64_t)numberOfNodesMatchingFilter:(id)a3
+- (unint64_t)numberOfNodesMatchingFilter:(id)filter
 {
-  v3 = [(MAGraph *)self nodeIdentifiersMatchingFilter:a3];
+  v3 = [(MAGraph *)self nodeIdentifiersMatchingFilter:filter];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (id)anyNodeMatchingFilter:(id)a3
+- (id)anyNodeMatchingFilter:(id)filter
 {
-  v4 = [(MAGraph *)self nodeIdentifiersMatchingFilter:a3];
+  v4 = [(MAGraph *)self nodeIdentifiersMatchingFilter:filter];
   v5 = -[KGGraph nodeForIdentifier:](self->_graph, "nodeForIdentifier:", [v4 firstElement]);
 
   return v5;
 }
 
-- (id)nodeIdentifiersMatchingFilter:(id)a3 intersectingIdentifiers:(id)a4
+- (id)nodeIdentifiersMatchingFilter:(id)filter intersectingIdentifiers:(id)identifiers
 {
   graph = self->_graph;
-  v6 = a4;
-  v7 = [a3 kgNodeFilter];
-  v8 = [(KGGraph *)graph nodeIdentifiersMatchingFilter:v7 intersectingIdentifiers:v6];
+  identifiersCopy = identifiers;
+  kgNodeFilter = [filter kgNodeFilter];
+  v8 = [(KGGraph *)graph nodeIdentifiersMatchingFilter:kgNodeFilter intersectingIdentifiers:identifiersCopy];
 
   return v8;
 }
 
-- (id)nodeIdentifiersMatchingFilter:(id)a3
+- (id)nodeIdentifiersMatchingFilter:(id)filter
 {
   graph = self->_graph;
-  v4 = [a3 kgNodeFilter];
-  v5 = [(KGGraph *)graph nodeIdentifiersMatchingFilter:v4];
+  kgNodeFilter = [filter kgNodeFilter];
+  v5 = [(KGGraph *)graph nodeIdentifiersMatchingFilter:kgNodeFilter];
   v6 = v5;
   if (v5)
   {
@@ -1056,18 +1056,18 @@ void __22__MAGraph_orphanNodes__block_invoke(uint64_t a1, void *a2)
   return v8;
 }
 
-- (id)nodesForIdentifiers:(id)a3
+- (id)nodesForIdentifiers:(id)identifiers
 {
-  v3 = [(KGGraph *)self->_graph nodesForIdentifiers:a3];
+  v3 = [(KGGraph *)self->_graph nodesForIdentifiers:identifiers];
   v4 = [v3 set];
 
   return v4;
 }
 
-- (void)legacyRemoveNodes:(id)a3
+- (void)legacyRemoveNodes:(id)nodes
 {
-  v4 = a3;
-  v6 = [(MAElementCollection *)[MANodeCollection alloc] initWithSet:v4 graph:self];
+  nodesCopy = nodes;
+  v6 = [(MAElementCollection *)[MANodeCollection alloc] initWithSet:nodesCopy graph:self];
 
   v5 = objc_alloc_init(MAGraphChangeRequest);
   [(MAGraphChangeRequest *)v5 removeNodes:v6];
@@ -1084,24 +1084,24 @@ void __81__MAGraph_addUniquelyIdentifiedNodeWithLabel_domain_weight_properties_d
   }
 }
 
-- (BOOL)findAndResolveUniqueEdge:(id)a3
+- (BOOL)findAndResolveUniqueEdge:(id)edge
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  edgeCopy = edge;
   v5 = objc_autoreleasePoolPush();
-  v6 = [v4 sourceNode];
-  v7 = [v6 identifier];
+  sourceNode = [edgeCopy sourceNode];
+  identifier = [sourceNode identifier];
 
-  v8 = [v4 targetNode];
-  v9 = [v8 identifier];
+  targetNode = [edgeCopy targetNode];
+  identifier2 = [targetNode identifier];
 
   v10 = 0;
-  if (v7 && v9)
+  if (identifier && identifier2)
   {
-    v11 = [[KGElementIdentifierSet alloc] initWithElementIdentifier:v7];
-    v12 = [[KGElementIdentifierSet alloc] initWithElementIdentifier:v9];
-    v13 = [v4 uniquelyIdentifyingFilter];
-    v14 = [(MAGraph *)self edgeIdentifiersOfType:2 betweenNodesForIdentifiers:v11 andNodesForIdentifiers:v12 matchingFilter:v13];
+    v11 = [[KGElementIdentifierSet alloc] initWithElementIdentifier:identifier];
+    v12 = [[KGElementIdentifierSet alloc] initWithElementIdentifier:identifier2];
+    uniquelyIdentifyingFilter = [edgeCopy uniquelyIdentifyingFilter];
+    v14 = [(MAGraph *)self edgeIdentifiersOfType:2 betweenNodesForIdentifiers:v11 andNodesForIdentifiers:v12 matchingFilter:uniquelyIdentifyingFilter];
     v15 = [v14 count];
     v10 = v15 != 0;
     if (v15)
@@ -1115,15 +1115,15 @@ void __81__MAGraph_addUniquelyIdentifiedNodeWithLabel_domain_weight_properties_d
           v21 = 134218242;
           v22 = v16;
           v23 = 2112;
-          v24 = v13;
+          v24 = uniquelyIdentifyingFilter;
           _os_log_fault_impl(&dword_255870000, v17, OS_LOG_TYPE_FAULT, "(%lu) edges found for unique insert with filter %@", &v21, 0x16u);
         }
       }
 
-      v18 = [(MAGraph *)self graphReference];
-      [v4 setGraphReference:v18];
+      graphReference = [(MAGraph *)self graphReference];
+      [edgeCopy setGraphReference:graphReference];
 
-      [v4 resolveIdentifier:{objc_msgSend(v14, "firstElement")}];
+      [edgeCopy resolveIdentifier:{objc_msgSend(v14, "firstElement")}];
     }
   }
 
@@ -1133,29 +1133,29 @@ void __81__MAGraph_addUniquelyIdentifiedNodeWithLabel_domain_weight_properties_d
   return v10;
 }
 
-- (void)addUniqueNode:(id)a3 didInsert:(BOOL *)a4
+- (void)addUniqueNode:(id)node didInsert:(BOOL *)insert
 {
-  v8 = a3;
+  nodeCopy = node;
   v6 = [(MAGraph *)self findAndResolveUniqueNode:?];
-  if (a4)
+  if (insert)
   {
-    *a4 = !v6;
+    *insert = !v6;
   }
 
   if (!v6)
   {
     v7 = objc_alloc_init(MAGraphChangeRequest);
-    [(MAGraphChangeRequest *)v7 addNode:v8];
+    [(MAGraphChangeRequest *)v7 addNode:nodeCopy];
     [(MAGraph *)self executeGraphChangeRequest:v7];
   }
 }
 
-- (BOOL)findAndResolveUniqueNode:(id)a3
+- (BOOL)findAndResolveUniqueNode:(id)node
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 uniquelyIdentifyingFilter];
-  v6 = [(MAGraph *)self nodeIdentifiersMatchingFilter:v5];
+  nodeCopy = node;
+  uniquelyIdentifyingFilter = [nodeCopy uniquelyIdentifyingFilter];
+  v6 = [(MAGraph *)self nodeIdentifiersMatchingFilter:uniquelyIdentifyingFilter];
   v7 = [v6 count];
   v8 = v7;
   if (v7)
@@ -1168,49 +1168,49 @@ void __81__MAGraph_addUniquelyIdentifiedNodeWithLabel_domain_weight_properties_d
         v13 = 134218242;
         v14 = v8;
         v15 = 2112;
-        v16 = v5;
+        v16 = uniquelyIdentifyingFilter;
         _os_log_fault_impl(&dword_255870000, v9, OS_LOG_TYPE_FAULT, "(%lu) nodes found for unique insert with filter %@", &v13, 0x16u);
       }
     }
 
-    v10 = [(MAGraph *)self graphReference];
-    [v4 setGraphReference:v10];
+    graphReference = [(MAGraph *)self graphReference];
+    [nodeCopy setGraphReference:graphReference];
 
-    [v4 resolveIdentifier:{objc_msgSend(v6, "firstElement")}];
+    [nodeCopy resolveIdentifier:{objc_msgSend(v6, "firstElement")}];
   }
 
   v11 = *MEMORY[0x277D85DE8];
   return v8 != 0;
 }
 
-- (id)addNodeFromBase:(id)a3
+- (id)addNodeFromBase:(id)base
 {
-  v4 = a3;
-  v5 = [v4 label];
-  v6 = [v4 domain];
-  [v4 weight];
+  baseCopy = base;
+  label = [baseCopy label];
+  domain = [baseCopy domain];
+  [baseCopy weight];
   v8 = v7;
-  v9 = [v4 propertyDictionary];
+  propertyDictionary = [baseCopy propertyDictionary];
 
   LODWORD(v10) = v8;
-  v11 = [(MAGraph *)self _addNodeWithLabel:v5 domain:v6 weight:v9 properties:v10];
+  v11 = [(MAGraph *)self _addNodeWithLabel:label domain:domain weight:propertyDictionary properties:v10];
 
   return v11;
 }
 
-- (void)executeGraphChangeRequest:(id)a3
+- (void)executeGraphChangeRequest:(id)request
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc_init(KGGraphChangeRequest);
-  if ([v4 numberOfChanges])
+  if ([requestCopy numberOfChanges])
   {
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v6 = [v4 nodesToInsert];
-    v7 = [v6 countByEnumeratingWithState:&v33 objects:v40 count:16];
+    nodesToInsert = [requestCopy nodesToInsert];
+    v7 = [nodesToInsert countByEnumeratingWithState:&v33 objects:v40 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1221,17 +1221,17 @@ void __81__MAGraph_addUniquelyIdentifiedNodeWithLabel_domain_weight_properties_d
         {
           if (*v34 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(nodesToInsert);
           }
 
           v11 = *(*(&v33 + 1) + 8 * i);
           [(KGGraphChangeRequest *)v5 insertNode:v11];
-          v12 = [(MAGraph *)self specification];
-          v13 = [v12 rootGraphReference];
-          [v11 setGraphReference:v13];
+          specification = [(MAGraph *)self specification];
+          rootGraphReference = [specification rootGraphReference];
+          [v11 setGraphReference:rootGraphReference];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v33 objects:v40 count:16];
+        v8 = [nodesToInsert countByEnumeratingWithState:&v33 objects:v40 count:16];
       }
 
       while (v8);
@@ -1241,8 +1241,8 @@ void __81__MAGraph_addUniquelyIdentifiedNodeWithLabel_domain_weight_properties_d
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v14 = [v4 edgesToInsert];
-    v15 = [v14 countByEnumeratingWithState:&v29 objects:v39 count:16];
+    edgesToInsert = [requestCopy edgesToInsert];
+    v15 = [edgesToInsert countByEnumeratingWithState:&v29 objects:v39 count:16];
     if (v15)
     {
       v16 = v15;
@@ -1253,32 +1253,32 @@ void __81__MAGraph_addUniquelyIdentifiedNodeWithLabel_domain_weight_properties_d
         {
           if (*v30 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(edgesToInsert);
           }
 
           v19 = *(*(&v29 + 1) + 8 * j);
           [(KGGraphChangeRequest *)v5 insertEdge:v19];
-          v20 = [(MAGraph *)self specification];
-          v21 = [v20 rootGraphReference];
-          [v19 setGraphReference:v21];
+          specification2 = [(MAGraph *)self specification];
+          rootGraphReference2 = [specification2 rootGraphReference];
+          [v19 setGraphReference:rootGraphReference2];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v29 objects:v39 count:16];
+        v16 = [edgesToInsert countByEnumeratingWithState:&v29 objects:v39 count:16];
       }
 
       while (v16);
     }
 
-    v22 = [v4 nodeIdentifiersToRemove];
-    if ([v22 count])
+    nodeIdentifiersToRemove = [requestCopy nodeIdentifiersToRemove];
+    if ([nodeIdentifiersToRemove count])
     {
-      [(KGGraphChangeRequest *)v5 removeNodesForIdentifiers:v22];
+      [(KGGraphChangeRequest *)v5 removeNodesForIdentifiers:nodeIdentifiersToRemove];
     }
 
-    v23 = [v4 edgeIdentifiersToRemove];
-    if ([v23 count])
+    edgeIdentifiersToRemove = [requestCopy edgeIdentifiersToRemove];
+    if ([edgeIdentifiersToRemove count])
     {
-      [(KGGraphChangeRequest *)v5 removeEdgesForIdentifiers:v23];
+      [(KGGraphChangeRequest *)v5 removeEdgesForIdentifiers:edgeIdentifiersToRemove];
     }
 
     graph = self->_graph;
@@ -1303,32 +1303,32 @@ void __81__MAGraph_addUniquelyIdentifiedNodeWithLabel_domain_weight_properties_d
 
 - (BOOL)usesClassCDataProtection
 {
-  v2 = [(MAGraph *)self specification];
-  v3 = ([v2 persistenceOptions] >> 5) & 1;
+  specification = [(MAGraph *)self specification];
+  v3 = ([specification persistenceOptions] >> 5) & 1;
 
   return v3;
 }
 
 - (BOOL)usesClassBDataProtection
 {
-  v2 = [(MAGraph *)self specification];
-  v3 = ([v2 persistenceOptions] >> 4) & 1;
+  specification = [(MAGraph *)self specification];
+  v3 = ([specification persistenceOptions] >> 4) & 1;
 
   return v3;
 }
 
 - (BOOL)usesClassADataProtection
 {
-  v2 = [(MAGraph *)self specification];
-  v3 = ([v2 persistenceOptions] >> 3) & 1;
+  specification = [(MAGraph *)self specification];
+  v3 = ([specification persistenceOptions] >> 3) & 1;
 
   return v3;
 }
 
 - (BOOL)isReadOnly
 {
-  v2 = [(MAGraph *)self specification];
-  v3 = ([v2 persistenceOptions] >> 2) & 1;
+  specification = [(MAGraph *)self specification];
+  v3 = ([specification persistenceOptions] >> 2) & 1;
 
   return v3;
 }
@@ -1336,9 +1336,9 @@ void __81__MAGraph_addUniquelyIdentifiedNodeWithLabel_domain_weight_properties_d
 - (void)rollbackBatch
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(KGStoredGraph *)self->_graph store];
+  store = [(KGStoredGraph *)self->_graph store];
   v7 = 0;
-  v4 = [v3 rollbackTransactionWithError:&v7];
+  v4 = [store rollbackTransactionWithError:&v7];
   v5 = v7;
 
   if ((v4 & 1) == 0)
@@ -1358,13 +1358,13 @@ void __81__MAGraph_addUniquelyIdentifiedNodeWithLabel_domain_weight_properties_d
 - (void)leaveBatch
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(MAGraph *)self noFatalError];
-  v4 = [(KGStoredGraph *)self->_graph store];
-  v5 = v4;
-  if (v3)
+  noFatalError = [(MAGraph *)self noFatalError];
+  store = [(KGStoredGraph *)self->_graph store];
+  v5 = store;
+  if (noFatalError)
   {
     v10 = 0;
-    v6 = [v4 commitTransactionWithError:&v10];
+    v6 = [store commitTransactionWithError:&v10];
     v7 = v10;
 
     if ((v6 & 1) == 0)
@@ -1382,7 +1382,7 @@ void __81__MAGraph_addUniquelyIdentifiedNodeWithLabel_domain_weight_properties_d
   else
   {
     v9 = 0;
-    [v4 rollbackTransactionWithError:&v9];
+    [store rollbackTransactionWithError:&v9];
     v7 = v9;
   }
 
@@ -1392,9 +1392,9 @@ void __81__MAGraph_addUniquelyIdentifiedNodeWithLabel_domain_weight_properties_d
 - (void)enterBatch
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(KGStoredGraph *)self->_graph store];
+  store = [(KGStoredGraph *)self->_graph store];
   v7 = 0;
-  v4 = [v3 beginTransactionWithError:&v7];
+  v4 = [store beginTransactionWithError:&v7];
   v5 = v7;
 
   if ((v4 & 1) == 0)
@@ -1413,37 +1413,37 @@ void __81__MAGraph_addUniquelyIdentifiedNodeWithLabel_domain_weight_properties_d
 
 - (NSUUID)identifier
 {
-  v2 = [(KGStoredGraph *)self->_graph store];
-  v3 = [v2 graphIdentifier];
+  store = [(KGStoredGraph *)self->_graph store];
+  graphIdentifier = [store graphIdentifier];
 
-  return v3;
+  return graphIdentifier;
 }
 
-- (void)setVersion:(unint64_t)a3
+- (void)setVersion:(unint64_t)version
 {
-  v4 = [(KGStoredGraph *)self->_graph store];
-  [v4 setGraphVersion:a3];
+  store = [(KGStoredGraph *)self->_graph store];
+  [store setGraphVersion:version];
 }
 
 - (unint64_t)version
 {
-  v2 = [(KGStoredGraph *)self->_graph store];
-  v3 = [v2 graphVersion];
+  store = [(KGStoredGraph *)self->_graph store];
+  graphVersion = [store graphVersion];
 
-  return v3;
+  return graphVersion;
 }
 
-- (void)labelAndDomainFromLabels:(id)a3 outLabel:(id *)a4 outDomain:(unsigned __int16 *)a5
+- (void)labelAndDomainFromLabels:(id)labels outLabel:(id *)label outDomain:(unsigned __int16 *)domain
 {
-  v20 = a4;
+  labelCopy = label;
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  labelsCopy = labels;
   os_unfair_lock_lock(&self->_labelMapLock);
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v6;
+  v7 = labelsCopy;
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
@@ -1460,11 +1460,11 @@ void __81__MAGraph_addUniquelyIdentifiedNodeWithLabel_domain_weight_properties_d
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        v14 = [(NSMutableDictionary *)self->_domainByLabel objectForKeyedSubscript:v13, v20];
-        if (v14)
+        labelCopy = [(NSMutableDictionary *)self->_domainByLabel objectForKeyedSubscript:v13, labelCopy];
+        if (labelCopy)
         {
-          v15 = v14;
-          v16 = [v14 unsignedShortValue];
+          v15 = labelCopy;
+          unsignedShortValue = [labelCopy unsignedShortValue];
         }
 
         else
@@ -1473,13 +1473,13 @@ void __81__MAGraph_addUniquelyIdentifiedNodeWithLabel_domain_weight_properties_d
           if (v17 == 0xFFFF)
           {
             v15 = v10;
-            v16 = -1;
+            unsignedShortValue = -1;
             v10 = v13;
           }
 
           else
           {
-            v16 = v17;
+            unsignedShortValue = v17;
             v15 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v17];
             [(NSMutableDictionary *)self->_domainByLabel setObject:v15 forKeyedSubscript:v13];
             [(NSMutableDictionary *)self->_labelByDomain setObject:v13 forKeyedSubscript:v15];
@@ -1496,19 +1496,19 @@ void __81__MAGraph_addUniquelyIdentifiedNodeWithLabel_domain_weight_properties_d
   else
   {
     v10 = 0;
-    v16 = -1;
+    unsignedShortValue = -1;
   }
 
   os_unfair_lock_unlock(&self->_labelMapLock);
-  if (v20)
+  if (labelCopy)
   {
     v18 = v10;
-    *v20 = v10;
+    *labelCopy = v10;
   }
 
-  if (a5)
+  if (domain)
   {
-    *a5 = v16;
+    *domain = unsignedShortValue;
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -1518,10 +1518,10 @@ void __81__MAGraph_addUniquelyIdentifiedNodeWithLabel_domain_weight_properties_d
 {
   if (self->_databaseStatus == 1)
   {
-    v3 = [(KGGraph *)self->_graph noFatalError];
-    if (v3)
+    noFatalError = [(KGGraph *)self->_graph noFatalError];
+    if (noFatalError)
     {
-      LOBYTE(v3) = self->_databaseStatus == 1;
+      LOBYTE(noFatalError) = self->_databaseStatus == 1;
     }
 
     else
@@ -1532,10 +1532,10 @@ void __81__MAGraph_addUniquelyIdentifiedNodeWithLabel_domain_weight_properties_d
 
   else
   {
-    LOBYTE(v3) = 0;
+    LOBYTE(noFatalError) = 0;
   }
 
-  return v3;
+  return noFatalError;
 }
 
 - (void)dealloc
@@ -1546,58 +1546,58 @@ void __81__MAGraph_addUniquelyIdentifiedNodeWithLabel_domain_weight_properties_d
   [(MAGraph *)&v3 dealloc];
 }
 
-- (MAGraph)initWithPersistenceOptions:(int64_t)a3
+- (MAGraph)initWithPersistenceOptions:(int64_t)options
 {
   v4 = [(MAGraph *)self init];
   v5 = v4;
   if (v4)
   {
-    [(MAGraphSpecification *)v4->_specification setPersistenceOptions:a3];
+    [(MAGraphSpecification *)v4->_specification setPersistenceOptions:options];
   }
 
   return v5;
 }
 
-- (MAGraph)initWithSpecification:(id)a3
+- (MAGraph)initWithSpecification:(id)specification
 {
-  v4 = a3;
+  specificationCopy = specification;
   v20.receiver = self;
   v20.super_class = MAGraph;
   v5 = [(MAGraph *)&v20 init];
   if (v5)
   {
-    if (v4)
+    if (specificationCopy)
     {
-      v6 = [v4 copy];
+      defaultSpecification = [specificationCopy copy];
     }
 
     else
     {
-      v6 = [objc_opt_class() defaultSpecification];
+      defaultSpecification = [objc_opt_class() defaultSpecification];
     }
 
     specification = v5->_specification;
-    v5->_specification = v6;
+    v5->_specification = defaultSpecification;
 
     v8 = [[MAGraphReference alloc] initWithGraph:v5];
     [(MAGraphSpecification *)v5->_specification setRootGraphReference:v8];
 
     v9 = [MAKGEntityFactory alloc];
-    v10 = [(MAGraph *)v5 specification];
-    v11 = [(MAKGEntityFactory *)v9 initWithSpecification:v10];
+    specification = [(MAGraph *)v5 specification];
+    v11 = [(MAKGEntityFactory *)v9 initWithSpecification:specification];
 
     v12 = objc_alloc_init(KGMemoryGraphStore);
     v13 = [[KGStoredGraph alloc] initGraphWithStore:v12 entityFactory:v11];
     graph = v5->_graph;
     v5->_graph = v13;
 
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     labelByDomain = v5->_labelByDomain;
-    v5->_labelByDomain = v15;
+    v5->_labelByDomain = dictionary;
 
-    v17 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     domainByLabel = v5->_domainByLabel;
-    v5->_domainByLabel = v17;
+    v5->_domainByLabel = dictionary2;
 
     v5->_labelMapLock._os_unfair_lock_opaque = 0;
     v5->_databaseStatus = 1;
@@ -1628,46 +1628,46 @@ void __81__MAGraph_addUniquelyIdentifiedNodeWithLabel_domain_weight_properties_d
   }
 }
 
-- (void)mergeWithGraph:(id)a3 strictNodes:(BOOL)a4 strictEdges:(BOOL)a5 saveToDatabase:(BOOL)a6 createdNodes:(id *)a7 createdEdges:(id *)a8
+- (void)mergeWithGraph:(id)graph strictNodes:(BOOL)nodes strictEdges:(BOOL)edges saveToDatabase:(BOOL)database createdNodes:(id *)createdNodes createdEdges:(id *)createdEdges
 {
   v13 = MEMORY[0x277CBEB58];
-  v14 = a3;
+  graphCopy = graph;
   v15 = [v13 set];
   v16 = [MEMORY[0x277CBEB58] set];
-  v17 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __106__MAGraph_Merge_Private__mergeWithGraph_strictNodes_strictEdges_saveToDatabase_createdNodes_createdEdges___block_invoke;
   v29[3] = &unk_2797FED38;
-  v32 = a4;
+  nodesCopy = nodes;
   v29[4] = self;
-  v18 = v17;
+  v18 = strongToStrongObjectsMapTable;
   v30 = v18;
   v19 = v15;
   v31 = v19;
-  [v14 enumerateNodesWithBlock:v29];
+  [graphCopy enumerateNodesWithBlock:v29];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __106__MAGraph_Merge_Private__mergeWithGraph_strictNodes_strictEdges_saveToDatabase_createdNodes_createdEdges___block_invoke_2;
   v24[3] = &unk_2797FED90;
-  v28 = a5;
+  edgesCopy = edges;
   v25 = v18;
-  v26 = self;
+  selfCopy = self;
   v20 = v16;
   v27 = v20;
   v21 = v18;
-  [v14 enumerateEdgesWithBlock:v24];
+  [graphCopy enumerateEdgesWithBlock:v24];
 
-  if (a7)
+  if (createdNodes)
   {
     v22 = v19;
-    *a7 = v19;
+    *createdNodes = v19;
   }
 
-  if (a8)
+  if (createdEdges)
   {
     v23 = v20;
-    *a8 = v20;
+    *createdEdges = v20;
   }
 }
 
@@ -1819,16 +1819,16 @@ void __106__MAGraph_Merge_Private__mergeWithGraph_strictNodes_strictEdges_saveTo
   *a3 = 1;
 }
 
-- (void)persistWeight:(float)a3 forEdgeWithIdentifier:(unint64_t)a4
+- (void)persistWeight:(float)weight forEdgeWithIdentifier:(unint64_t)identifier
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v6 = [(KGGraph *)self->_graph edgeForIdentifier:a4];
+  v6 = [(KGGraph *)self->_graph edgeForIdentifier:identifier];
   [v6 weight];
   v8 = v7;
   v9 = objc_alloc_init(KGGraphChangeRequest);
   v28 = @"__weight";
-  v10 = a3;
-  v11 = [[KGDoublePropertyValue alloc] initWithValue:v10];
+  weightCopy = weight;
+  v11 = [[KGDoublePropertyValue alloc] initWithValue:weightCopy];
   v29[0] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:&v28 count:1];
   [(KGGraphChangeRequest *)v9 updateEdge:v6 newProperties:v12];
@@ -1841,15 +1841,15 @@ void __106__MAGraph_Merge_Private__mergeWithGraph_strictNodes_strictEdges_saveTo
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v16 = [v6 identifier];
+      identifier = [v6 identifier];
       *buf = 138413314;
       v19 = v6;
       v20 = 2048;
-      v21 = v16;
+      v21 = identifier;
       v22 = 2048;
       v23 = v8;
       v24 = 2048;
-      v25 = v10;
+      v25 = weightCopy;
       v26 = 2112;
       v27 = v14;
       _os_log_error_impl(&dword_255870000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Error persisting weight for edge(%@) identifier(%lu) old weight(%f) new weight(%f) error(%@)", buf, 0x34u);
@@ -1861,16 +1861,16 @@ void __106__MAGraph_Merge_Private__mergeWithGraph_strictNodes_strictEdges_saveTo
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)persistWeight:(float)a3 forNodeWithIdentifier:(unint64_t)a4
+- (void)persistWeight:(float)weight forNodeWithIdentifier:(unint64_t)identifier
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v6 = [(KGGraph *)self->_graph nodeForIdentifier:a4];
+  v6 = [(KGGraph *)self->_graph nodeForIdentifier:identifier];
   [v6 weight];
   v8 = v7;
   v9 = objc_alloc_init(KGGraphChangeRequest);
   v28 = @"__weight";
-  v10 = a3;
-  v11 = [[KGDoublePropertyValue alloc] initWithValue:v10];
+  weightCopy = weight;
+  v11 = [[KGDoublePropertyValue alloc] initWithValue:weightCopy];
   v29[0] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:&v28 count:1];
   [(KGGraphChangeRequest *)v9 updateNode:v6 newProperties:v12];
@@ -1883,15 +1883,15 @@ void __106__MAGraph_Merge_Private__mergeWithGraph_strictNodes_strictEdges_saveTo
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v16 = [v6 identifier];
+      identifier = [v6 identifier];
       *buf = 138413314;
       v19 = v6;
       v20 = 2048;
-      v21 = v16;
+      v21 = identifier;
       v22 = 2048;
       v23 = v8;
       v24 = 2048;
-      v25 = v10;
+      v25 = weightCopy;
       v26 = 2112;
       v27 = v14;
       _os_log_error_impl(&dword_255870000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Error persisting weight for node(%@) identifier(%lu) old weight(%f) new weight(%f) error(%@)", buf, 0x34u);
@@ -1903,10 +1903,10 @@ void __106__MAGraph_Merge_Private__mergeWithGraph_strictNodes_strictEdges_saveTo
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeModelPropertiesForEdgeWithIdentifier:(unint64_t)a3
+- (void)removeModelPropertiesForEdgeWithIdentifier:(unint64_t)identifier
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [(KGGraph *)self->_graph edgeForIdentifier:a3];
+  v4 = [(KGGraph *)self->_graph edgeForIdentifier:identifier];
   v5 = objc_alloc_init(KGGraphChangeRequest);
   [(KGGraphChangeRequest *)v5 updateEdge:v4 newProperties:MEMORY[0x277CBEC10]];
   graph = self->_graph;
@@ -1928,16 +1928,16 @@ void __106__MAGraph_Merge_Private__mergeWithGraph_strictNodes_strictEdges_saveTo
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeModelPropertyForKey:(id)a3 forEdgeWithIdentifier:(unint64_t)a4
+- (void)removeModelPropertyForKey:(id)key forEdgeWithIdentifier:(unint64_t)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
   graph = self->_graph;
-  v7 = a3;
-  v8 = [(KGGraph *)graph edgeForIdentifier:a4];
-  v9 = [v8 properties];
-  v10 = [v9 mutableCopy];
+  keyCopy = key;
+  v8 = [(KGGraph *)graph edgeForIdentifier:identifier];
+  properties = [v8 properties];
+  v10 = [properties mutableCopy];
 
-  [v10 removeObjectForKey:v7];
+  [v10 removeObjectForKey:keyCopy];
   v11 = objc_alloc_init(KGGraphChangeRequest);
   [(KGGraphChangeRequest *)v11 updateEdge:v8 newProperties:v10];
   v12 = self->_graph;
@@ -1959,19 +1959,19 @@ void __106__MAGraph_Merge_Private__mergeWithGraph_strictNodes_strictEdges_saveTo
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)persistModelProperties:(id)a3 forEdgeWithIdentifier:(unint64_t)a4 clobberExisting:(BOOL)a5
+- (void)persistModelProperties:(id)properties forEdgeWithIdentifier:(unint64_t)identifier clobberExisting:(BOOL)existing
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = [KGPropertyValue kgPropertiesWithMAProperties:a3];
+  v8 = [KGPropertyValue kgPropertiesWithMAProperties:properties];
   if (v8)
   {
     v9 = v8;
-    v10 = [(KGGraph *)self->_graph edgeForIdentifier:a4];
+    v10 = [(KGGraph *)self->_graph edgeForIdentifier:identifier];
     v11 = v10;
-    if (!a5)
+    if (!existing)
     {
-      v12 = [v10 properties];
-      v13 = [v12 mutableCopy];
+      properties = [v10 properties];
+      v13 = [properties mutableCopy];
 
       [v13 addEntriesFromDictionary:v9];
       v9 = v13;
@@ -2003,7 +2003,7 @@ void __106__MAGraph_Merge_Private__mergeWithGraph_strictNodes_strictEdges_saveTo
       goto LABEL_11;
     }
 
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:identifier];
     *buf = 138412546;
     v21 = 0;
     v22 = 2112;
@@ -2015,19 +2015,19 @@ LABEL_11:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)persistModelProperty:(id)a3 forKey:(id)a4 forEdgeWithIdentifier:(unint64_t)a5
+- (void)persistModelProperty:(id)property forKey:(id)key forEdgeWithIdentifier:(unint64_t)identifier
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [KGPropertyValue kgPropertyValueWithMAPropertyValue:v8];
+  propertyCopy = property;
+  keyCopy = key;
+  v10 = [KGPropertyValue kgPropertyValueWithMAPropertyValue:propertyCopy];
   if (v10)
   {
-    v11 = [(KGGraph *)self->_graph edgeForIdentifier:a5];
-    v12 = [v11 properties];
-    v13 = [v12 mutableCopy];
+    v11 = [(KGGraph *)self->_graph edgeForIdentifier:identifier];
+    properties = [v11 properties];
+    v13 = [properties mutableCopy];
 
-    [v13 setObject:v10 forKeyedSubscript:v9];
+    [v13 setObject:v10 forKeyedSubscript:keyCopy];
     v14 = objc_alloc_init(KGGraphChangeRequest);
     [(KGGraphChangeRequest *)v14 updateEdge:v11 newProperties:v13];
     graph = self->_graph;
@@ -2049,9 +2049,9 @@ LABEL_11:
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:identifier];
     *buf = 138412546;
-    v22 = v8;
+    v22 = propertyCopy;
     v23 = 2112;
     v24 = v19;
     _os_log_error_impl(&dword_255870000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Error persisting edge property %@ for edge with identifier %@", buf, 0x16u);
@@ -2060,10 +2060,10 @@ LABEL_11:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeModelPropertiesForNodeWithIdentifier:(unint64_t)a3
+- (void)removeModelPropertiesForNodeWithIdentifier:(unint64_t)identifier
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [(KGGraph *)self->_graph nodeForIdentifier:a3];
+  v4 = [(KGGraph *)self->_graph nodeForIdentifier:identifier];
   v5 = objc_alloc_init(KGGraphChangeRequest);
   [(KGGraphChangeRequest *)v5 updateNode:v4 newProperties:MEMORY[0x277CBEC10]];
   graph = self->_graph;
@@ -2085,16 +2085,16 @@ LABEL_11:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeModelPropertyForKey:(id)a3 forNodeWithIdentifier:(unint64_t)a4
+- (void)removeModelPropertyForKey:(id)key forNodeWithIdentifier:(unint64_t)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
   graph = self->_graph;
-  v7 = a3;
-  v8 = [(KGGraph *)graph nodeForIdentifier:a4];
-  v9 = [v8 properties];
-  v10 = [v9 mutableCopy];
+  keyCopy = key;
+  v8 = [(KGGraph *)graph nodeForIdentifier:identifier];
+  properties = [v8 properties];
+  v10 = [properties mutableCopy];
 
-  [v10 removeObjectForKey:v7];
+  [v10 removeObjectForKey:keyCopy];
   v11 = objc_alloc_init(KGGraphChangeRequest);
   [(KGGraphChangeRequest *)v11 updateNode:v8 newProperties:v10];
   v12 = self->_graph;
@@ -2116,19 +2116,19 @@ LABEL_11:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)persistModelProperties:(id)a3 forNodeWithIdentifier:(unint64_t)a4 clobberExisting:(BOOL)a5
+- (void)persistModelProperties:(id)properties forNodeWithIdentifier:(unint64_t)identifier clobberExisting:(BOOL)existing
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = [KGPropertyValue kgPropertiesWithMAProperties:a3];
+  v8 = [KGPropertyValue kgPropertiesWithMAProperties:properties];
   if (v8)
   {
     v9 = v8;
-    v10 = [(KGGraph *)self->_graph nodeForIdentifier:a4];
+    v10 = [(KGGraph *)self->_graph nodeForIdentifier:identifier];
     v11 = v10;
-    if (!a5)
+    if (!existing)
     {
-      v12 = [v10 properties];
-      v13 = [v12 mutableCopy];
+      properties = [v10 properties];
+      v13 = [properties mutableCopy];
 
       [v13 addEntriesFromDictionary:v9];
       v9 = v13;
@@ -2160,7 +2160,7 @@ LABEL_11:
       goto LABEL_11;
     }
 
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:identifier];
     *buf = 138412546;
     v21 = 0;
     v22 = 2112;
@@ -2172,19 +2172,19 @@ LABEL_11:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)persistModelProperty:(id)a3 forKey:(id)a4 forNodeWithIdentifier:(unint64_t)a5
+- (void)persistModelProperty:(id)property forKey:(id)key forNodeWithIdentifier:(unint64_t)identifier
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [KGPropertyValue kgPropertyValueWithMAPropertyValue:v8];
+  propertyCopy = property;
+  keyCopy = key;
+  v10 = [KGPropertyValue kgPropertyValueWithMAPropertyValue:propertyCopy];
   if (v10)
   {
-    v11 = [(KGGraph *)self->_graph nodeForIdentifier:a5];
-    v12 = [v11 properties];
-    v13 = [v12 mutableCopy];
+    v11 = [(KGGraph *)self->_graph nodeForIdentifier:identifier];
+    properties = [v11 properties];
+    v13 = [properties mutableCopy];
 
-    [v13 setObject:v10 forKeyedSubscript:v9];
+    [v13 setObject:v10 forKeyedSubscript:keyCopy];
     v14 = objc_alloc_init(KGGraphChangeRequest);
     [(KGGraphChangeRequest *)v14 updateNode:v11 newProperties:v13];
     graph = self->_graph;
@@ -2206,9 +2206,9 @@ LABEL_11:
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:identifier];
     *buf = 138412546;
-    v22 = v8;
+    v22 = propertyCopy;
     v23 = 2112;
     v24 = v19;
     _os_log_error_impl(&dword_255870000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Error persisting node property %@ for node with identifier %@", buf, 0x16u);
@@ -2217,40 +2217,40 @@ LABEL_11:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)copyPersistentStoreToURL:(id)a3 error:(id *)a4
+- (BOOL)copyPersistentStoreToURL:(id)l error:(id *)error
 {
   graph = self->_graph;
-  v6 = a3;
-  v7 = [(KGStoredGraph *)graph store];
-  LOBYTE(a4) = [v7 copyToURL:v6 error:a4];
+  lCopy = l;
+  store = [(KGStoredGraph *)graph store];
+  LOBYTE(error) = [store copyToURL:lCopy error:error];
 
-  return a4;
+  return error;
 }
 
 - (void)closePersistentStore
 {
-  v3 = [(KGStoredGraph *)self->_graph store];
-  [v3 close];
+  store = [(KGStoredGraph *)self->_graph store];
+  [store close];
 
   graph = self->_graph;
   self->_graph = 0;
 }
 
-- (BOOL)migratePersistentStoreToURL:(id)a3 error:(id *)a4
+- (BOOL)migratePersistentStoreToURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [(KGStoredGraph *)self->_graph store];
-  v8 = [v7 url];
+  lCopy = l;
+  store = [(KGStoredGraph *)self->_graph store];
+  v8 = [store url];
 
-  v9 = [(KGStoredGraph *)self->_graph store];
-  [v9 close];
+  store2 = [(KGStoredGraph *)self->_graph store];
+  [store2 close];
 
   graph = self->_graph;
   self->_graph = 0;
 
-  if ([objc_opt_class() migratePersistentStoreFromURL:v8 toURL:v6 error:a4])
+  if ([objc_opt_class() migratePersistentStoreFromURL:v8 toURL:lCopy error:error])
   {
-    v11 = [(MAGraph *)self _instantiateGraphWithStoreAtURL:v6 error:a4];
+    v11 = [(MAGraph *)self _instantiateGraphWithStoreAtURL:lCopy error:error];
     v12 = self->_graph;
     self->_graph = v11;
 
@@ -2265,43 +2265,43 @@ LABEL_11:
   return v13;
 }
 
-- (void)unloadDomains:(id)a3
+- (void)unloadDomains:(id)domains
 {
-  v5 = a3;
+  domainsCopy = domains;
   v6 = KGMethodNotImplentedException(self, a2);
   objc_exception_throw(v6);
 }
 
-- (void)unloadEdge:(id)a3
+- (void)unloadEdge:(id)edge
 {
-  v5 = a3;
+  edgeCopy = edge;
   v6 = KGMethodNotImplentedException(self, a2);
   objc_exception_throw(v6);
 }
 
-- (void)loadDomains:(id)a3
+- (void)loadDomains:(id)domains
 {
-  v5 = a3;
+  domainsCopy = domains;
   v6 = KGMethodNotImplentedException(self, a2);
   objc_exception_throw(v6);
 }
 
 - (id)databaseURL
 {
-  v2 = [(KGStoredGraph *)self->_graph store];
-  v3 = [v2 url];
+  store = [(KGStoredGraph *)self->_graph store];
+  v3 = [store url];
 
   return v3;
 }
 
-- (MAGraph)initWithSpecification:(id)a3 persistenceStoreURL:(id)a4 error:(id *)a5
+- (MAGraph)initWithSpecification:(id)specification persistenceStoreURL:(id)l error:(id *)error
 {
-  v8 = a4;
-  v9 = [(MAGraph *)self initWithSpecification:a3];
+  lCopy = l;
+  v9 = [(MAGraph *)self initWithSpecification:specification];
   v10 = v9;
   if (v9)
   {
-    v11 = [(MAGraph *)v9 _instantiateGraphWithStoreAtURL:v8 error:a5];
+    v11 = [(MAGraph *)v9 _instantiateGraphWithStoreAtURL:lCopy error:error];
     graph = v10->_graph;
     v10->_graph = v11;
 
@@ -2315,25 +2315,25 @@ LABEL_11:
   return v10;
 }
 
-- (MAGraph)initWithPersistentStoreURL:(id)a3 options:(int64_t)a4 error:(id *)a5
+- (MAGraph)initWithPersistentStoreURL:(id)l options:(int64_t)options error:(id *)error
 {
-  v8 = a3;
-  v9 = [objc_opt_class() defaultSpecification];
-  [v9 setPersistenceOptions:a4];
-  v10 = [(MAGraph *)self initWithSpecification:v9 persistenceStoreURL:v8 error:a5];
+  lCopy = l;
+  defaultSpecification = [objc_opt_class() defaultSpecification];
+  [defaultSpecification setPersistenceOptions:options];
+  v10 = [(MAGraph *)self initWithSpecification:defaultSpecification persistenceStoreURL:lCopy error:error];
 
   return v10;
 }
 
-- (id)_instantiateGraphWithStoreAtURL:(id)a3 error:(id *)a4
+- (id)_instantiateGraphWithStoreAtURL:(id)l error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  lCopy = l;
   v7 = [MAKGEntityFactory alloc];
-  v8 = [(MAGraph *)self specification];
-  v9 = [(MAKGEntityFactory *)v7 initWithSpecification:v8];
+  specification = [(MAGraph *)self specification];
+  v9 = [(MAKGEntityFactory *)v7 initWithSpecification:specification];
 
-  v10 = [[KGDegasGraphStore alloc] initWithURL:v6];
+  v10 = [[KGDegasGraphStore alloc] initWithURL:lCopy];
   if ([(MAGraph *)self isReadOnly])
   {
     v11 = 1;
@@ -2388,11 +2388,11 @@ LABEL_11:
     }
 
     [(MAGraph *)self setHadFatalError];
-    if (a4)
+    if (error)
     {
       v17 = v14;
       v15 = 0;
-      *a4 = v14;
+      *error = v14;
     }
 
     else
@@ -2408,50 +2408,50 @@ LABEL_11:
 
 - (BOOL)_shouldFail
 {
-  v2 = [(MAGraph *)self specification];
-  v3 = ([v2 persistenceOptions] >> 8) & 1;
+  specification = [(MAGraph *)self specification];
+  v3 = ([specification persistenceOptions] >> 8) & 1;
 
   return v3;
 }
 
-- (id)edgeFromFetchedRowWithIdentifier:(int)a3 domain:(signed __int16)a4 label:(id)a5 weight:(float)a6 properties:(id)a7 sourceNodeIdentifier:(int)a8 targetNodeIdentifier:(int)a9
+- (id)edgeFromFetchedRowWithIdentifier:(int)identifier domain:(signed __int16)domain label:(id)label weight:(float)weight properties:(id)properties sourceNodeIdentifier:(int)nodeIdentifier targetNodeIdentifier:(int)targetNodeIdentifier
 {
-  v12 = a5;
-  v13 = a7;
+  labelCopy = label;
+  propertiesCopy = properties;
   v14 = KGMethodNotImplentedException(self, a2);
   objc_exception_throw(v14);
 }
 
-- (id)nodeFromFetchedRowWithIdentifier:(int)a3 domain:(signed __int16)a4 label:(id)a5 weight:(float)a6 properties:(id)a7
+- (id)nodeFromFetchedRowWithIdentifier:(int)identifier domain:(signed __int16)domain label:(id)label weight:(float)weight properties:(id)properties
 {
-  v10 = a5;
-  v11 = a7;
+  labelCopy = label;
+  propertiesCopy = properties;
   v12 = KGMethodNotImplentedException(self, a2);
   objc_exception_throw(v12);
 }
 
-+ (id)persistentStoreURLWithPath:(id)a3 andName:(id)a4
++ (id)persistentStoreURLWithPath:(id)path andName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 persistentStoreFileExtension];
-  v9 = [MEMORY[0x277CBEBC0] fileURLWithPath:v7];
+  nameCopy = name;
+  pathCopy = path;
+  persistentStoreFileExtension = [self persistentStoreFileExtension];
+  v9 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy];
 
-  v10 = [v9 URLByAppendingPathComponent:v6];
+  v10 = [v9 URLByAppendingPathComponent:nameCopy];
 
-  v11 = [v10 URLByAppendingPathExtension:v8];
+  v11 = [v10 URLByAppendingPathExtension:persistentStoreFileExtension];
 
   return v11;
 }
 
-- (BOOL)writeGraphJSONToURL:(id)a3 error:(id *)a4
+- (BOOL)writeGraphJSONToURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MAGraph *)self _graphJSONDictionary];
+  lCopy = l;
+  _graphJSONDictionary = [(MAGraph *)self _graphJSONDictionary];
   v8 = objc_alloc_init(MEMORY[0x277CCAA00]);
-  v9 = [v6 URLByDeletingLastPathComponent];
-  v10 = [v9 path];
-  v11 = [v8 fileExistsAtPath:v10];
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  path = [uRLByDeletingLastPathComponent path];
+  v11 = [v8 fileExistsAtPath:path];
 
   if (v11)
   {
@@ -2461,49 +2461,49 @@ LABEL_11:
   else
   {
     v18 = 0;
-    [v8 createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:&v18];
+    [v8 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v18];
     v12 = v18;
   }
 
-  v13 = [objc_alloc(MEMORY[0x277CBEB78]) initWithURL:v6 append:0];
+  v13 = [objc_alloc(MEMORY[0x277CBEB78]) initWithURL:lCopy append:0];
   v14 = v13;
   if (v12 || !v13)
   {
-    if (a4)
+    if (error)
     {
       v15 = MEMORY[0x277CCA9B8];
-      v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot write data to URL %@", v6];
-      *a4 = [v15 errorWithDescription:v16];
+      lCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot write data to URL %@", lCopy];
+      *error = [v15 errorWithDescription:lCopy];
 
-      LOBYTE(a4) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   else
   {
     [v13 open];
-    a4 = [MEMORY[0x277CCAAA0] writeJSONObject:v7 toStream:v14 options:0 error:a4];
+    error = [MEMORY[0x277CCAAA0] writeJSONObject:_graphJSONDictionary toStream:v14 options:0 error:error];
     [v14 close];
-    if (a4)
+    if (error)
     {
-      LOBYTE(a4) = 1;
+      LOBYTE(error) = 1;
     }
 
     else
     {
-      [v8 removeItemAtURL:v6 error:0];
+      [v8 removeItemAtURL:lCopy error:0];
     }
   }
 
-  return a4;
+  return error;
 }
 
 - (id)_graphJSONDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(MAGraph *)self identifier];
-  v5 = [v4 UUIDString];
-  [v3 setObject:v5 forKey:@"id"];
+  identifier = [(MAGraph *)self identifier];
+  uUIDString = [identifier UUIDString];
+  [v3 setObject:uUIDString forKey:@"id"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[MAGraph version](self, "version")}];
   [v3 setObject:v6 forKey:@"version"];
@@ -2597,24 +2597,24 @@ void __45__MAGraph_File_Private___graphJSONDictionary__block_invoke_2(uint64_t a
   [*(a1 + 32) addObject:v17];
 }
 
-- (MAGraph)initWithGraphJSONURL:(id)a3 error:(id *)a4
+- (MAGraph)initWithGraphJSONURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v7 = KGMethodNotImplentedException(self, a2);
   objc_exception_throw(v7);
 }
 
-- (MAGraph)initWithGraphMLURL:(id)a3 error:(id *)a4
+- (MAGraph)initWithGraphMLURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v7 = KGMethodNotImplentedException(self, a2);
   objc_exception_throw(v7);
 }
 
-- (MAGraph)initWithSpecification:(id)a3 dataURL:(id)a4 error:(id *)a5
+- (MAGraph)initWithSpecification:(id)specification dataURL:(id)l error:(id *)error
 {
-  v8 = a4;
-  v9 = [(MAGraph *)self initWithSpecification:a3];
+  lCopy = l;
+  v9 = [(MAGraph *)self initWithSpecification:specification];
   if (!v9)
   {
 LABEL_5:
@@ -2622,11 +2622,11 @@ LABEL_5:
     goto LABEL_10;
   }
 
-  v10 = [objc_alloc(MEMORY[0x277CBEAE0]) initWithURL:v8];
+  v10 = [objc_alloc(MEMORY[0x277CBEAE0]) initWithURL:lCopy];
   [v10 open];
   if (v10)
   {
-    v11 = [MEMORY[0x277CCAC58] propertyListWithStream:v10 options:0 format:0 error:a5];
+    v11 = [MEMORY[0x277CCAC58] propertyListWithStream:v10 options:0 format:0 error:error];
     [v10 close];
     if (!v11)
     {
@@ -2640,12 +2640,12 @@ LABEL_5:
   }
 
   v12 = +[MALogging sharedLogging];
-  v13 = [v12 loggingConnection];
+  loggingConnection = [v12 loggingConnection];
 
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
   {
     *v15 = 0;
-    _os_log_error_impl(&dword_255870000, v13, OS_LOG_TYPE_ERROR, "Bad data URL", v15, 2u);
+    _os_log_error_impl(&dword_255870000, loggingConnection, OS_LOG_TYPE_ERROR, "Bad data URL", v15, 2u);
   }
 
   v11 = 0;
@@ -2654,17 +2654,17 @@ LABEL_10:
   return v11;
 }
 
-- (void)_loadWithGraphDictionary:(id)a3
+- (void)_loadWithGraphDictionary:(id)dictionary
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v44 = v4;
-  obj = [v4 objectForKey:@"nodes"];
+  v44 = dictionaryCopy;
+  obj = [dictionaryCopy objectForKey:@"nodes"];
   v6 = [obj countByEnumeratingWithState:&v52 objects:v57 count:16];
   if (v6)
   {
@@ -2682,7 +2682,7 @@ LABEL_10:
         v10 = *(*(&v52 + 1) + 8 * i);
         v11 = [v10 objectForKey:@"label"];
         v12 = [v10 objectForKey:@"domain"];
-        v13 = [v12 unsignedIntegerValue];
+        unsignedIntegerValue = [v12 unsignedIntegerValue];
 
         v14 = [v10 objectForKey:@"weight"];
         [v14 floatValue];
@@ -2690,7 +2690,7 @@ LABEL_10:
 
         v17 = [v10 objectForKey:@"properties"];
         LODWORD(v18) = v16;
-        v19 = [(MAGraph *)self addNodeWithLabel:v11 domain:v13 weight:v17 properties:v18];
+        v19 = [(MAGraph *)self addNodeWithLabel:v11 domain:unsignedIntegerValue weight:v17 properties:v18];
         v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v19, "identifier")}];
         v21 = [v10 objectForKeyedSubscript:@"identifier"];
         [v5 setObject:v20 forKeyedSubscript:v21];
@@ -2724,25 +2724,25 @@ LABEL_10:
         v25 = *(*(&v48 + 1) + 8 * j);
         v26 = [v25 objectForKey:@"sourceNodeIdentifier"];
         v27 = [v5 objectForKeyedSubscript:v26];
-        v28 = [v27 unsignedIntegerValue];
+        unsignedIntegerValue2 = [v27 unsignedIntegerValue];
 
         v29 = [v25 objectForKey:@"targetNodeIdentifier"];
         v30 = [v5 objectForKeyedSubscript:v29];
-        v31 = [v30 unsignedIntegerValue];
+        unsignedIntegerValue3 = [v30 unsignedIntegerValue];
 
         v32 = [v25 objectForKey:@"label"];
         v33 = [v25 objectForKey:@"domain"];
-        v34 = [v33 unsignedIntegerValue];
+        unsignedIntegerValue4 = [v33 unsignedIntegerValue];
 
         v35 = [v25 objectForKey:@"weight"];
         [v35 floatValue];
         v37 = v36;
 
         v38 = [v25 objectForKey:@"properties"];
-        v39 = [(MAGraph *)self nodeForIdentifier:v28];
-        v40 = [(MAGraph *)self nodeForIdentifier:v31];
+        v39 = [(MAGraph *)self nodeForIdentifier:unsignedIntegerValue2];
+        v40 = [(MAGraph *)self nodeForIdentifier:unsignedIntegerValue3];
         LODWORD(v41) = v37;
-        v42 = [(MAGraph *)self addEdgeWithLabel:v32 sourceNode:v39 targetNode:v40 domain:v34 weight:v38 properties:v41];
+        v42 = [(MAGraph *)self addEdgeWithLabel:v32 sourceNode:v39 targetNode:v40 domain:unsignedIntegerValue4 weight:v38 properties:v41];
       }
 
       v23 = [v45 countByEnumeratingWithState:&v48 objects:v56 count:16];
@@ -2754,14 +2754,14 @@ LABEL_10:
   v43 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)writeDataToURL:(id)a3 error:(id *)a4
+- (BOOL)writeDataToURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MAGraph *)self _graphDictionary];
+  lCopy = l;
+  _graphDictionary = [(MAGraph *)self _graphDictionary];
   v8 = objc_alloc_init(MEMORY[0x277CCAA00]);
-  v9 = [v6 URLByDeletingLastPathComponent];
-  v10 = [v9 path];
-  v11 = [v8 fileExistsAtPath:v10];
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  path = [uRLByDeletingLastPathComponent path];
+  v11 = [v8 fileExistsAtPath:path];
 
   if (v11)
   {
@@ -2771,50 +2771,50 @@ LABEL_10:
   else
   {
     v18 = 0;
-    [v8 createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:&v18];
+    [v8 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v18];
     v12 = v18;
   }
 
-  v13 = [objc_alloc(MEMORY[0x277CBEB78]) initWithURL:v6 append:0];
+  v13 = [objc_alloc(MEMORY[0x277CBEB78]) initWithURL:lCopy append:0];
   v14 = v13;
   if (v12 || !v13)
   {
-    if (a4)
+    if (error)
     {
       v15 = MEMORY[0x277CCA9B8];
-      v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot write data to URL %@", v6];
-      *a4 = [v15 errorWithDescription:v16];
+      lCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot write data to URL %@", lCopy];
+      *error = [v15 errorWithDescription:lCopy];
 
-      LOBYTE(a4) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   else
   {
     [v13 open];
-    a4 = [MEMORY[0x277CCAC58] writePropertyList:v7 toStream:v14 format:200 options:0 error:a4];
+    error = [MEMORY[0x277CCAC58] writePropertyList:_graphDictionary toStream:v14 format:200 options:0 error:error];
     [v14 close];
-    if (a4)
+    if (error)
     {
-      LOBYTE(a4) = 1;
+      LOBYTE(error) = 1;
     }
 
     else
     {
-      [v8 removeItemAtURL:v6 error:0];
+      [v8 removeItemAtURL:lCopy error:0];
     }
   }
 
-  return a4;
+  return error;
 }
 
 - (id)_graphDictionary
 {
   v24[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(MAGraph *)self identifier];
-  v5 = [v4 UUIDString];
-  [v3 setObject:v5 forKey:@"identifier"];
+  identifier = [(MAGraph *)self identifier];
+  uUIDString = [identifier UUIDString];
+  [v3 setObject:uUIDString forKey:@"identifier"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[MAGraph version](self, "version")}];
   [v3 setObject:v6 forKey:@"version"];
@@ -2913,48 +2913,48 @@ void __41__MAGraph_File_Private___graphDictionary__block_invoke_2(uint64_t a1, v
   [*(a1 + 32) addObject:v17];
 }
 
-+ (id)graphJSONURLWithPath:(id)a3 andName:(id)a4
++ (id)graphJSONURLWithPath:(id)path andName:(id)name
 {
   v5 = MEMORY[0x277CBEBC0];
-  v6 = a4;
-  v7 = [v5 fileURLWithPath:a3];
-  v8 = [v7 URLByAppendingPathComponent:v6];
+  nameCopy = name;
+  v7 = [v5 fileURLWithPath:path];
+  v8 = [v7 URLByAppendingPathComponent:nameCopy];
 
   v9 = [v8 URLByAppendingPathExtension:@"json"];
 
   return v9;
 }
 
-+ (id)graphMLURLWithPath:(id)a3 andName:(id)a4
++ (id)graphMLURLWithPath:(id)path andName:(id)name
 {
   v5 = MEMORY[0x277CBEBC0];
-  v6 = a4;
-  v7 = [v5 fileURLWithPath:a3];
-  v8 = [v7 URLByAppendingPathComponent:v6];
+  nameCopy = name;
+  v7 = [v5 fileURLWithPath:path];
+  v8 = [v7 URLByAppendingPathComponent:nameCopy];
 
   v9 = [v8 URLByAppendingPathExtension:@"graphml"];
 
   return v9;
 }
 
-- (id)schema:(id)a3
+- (id)schema:(id)schema
 {
-  v4 = a3;
+  schemaCopy = schema;
   v5 = +[MAGraph graph];
-  v6 = [(MAGraph *)self edgesLabels];
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  edgesLabels = [(MAGraph *)self edgesLabels];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __34__MAGraph_Schema_Private__schema___block_invoke;
   v14[3] = &unk_2797FF9A8;
   v14[4] = self;
-  v15 = v4;
-  v16 = v7;
+  v15 = schemaCopy;
+  v16 = dictionary;
   v8 = v5;
   v17 = v8;
-  v9 = v7;
-  v10 = v4;
-  [v6 enumerateObjectsUsingBlock:v14];
+  v9 = dictionary;
+  v10 = schemaCopy;
+  [edgesLabels enumerateObjectsUsingBlock:v14];
   v11 = v17;
   v12 = v8;
 
@@ -3226,11 +3226,11 @@ void __34__MAGraph_Schema_Private__schema___block_invoke(uint64_t a1, void *a2)
   v68 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)conformsToGraphSchema:(id)a3
+- (BOOL)conformsToGraphSchema:(id)schema
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  schemaCopy = schema;
+  array = [MEMORY[0x277CBEB18] array];
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -3243,11 +3243,11 @@ void __34__MAGraph_Schema_Private__schema___block_invoke(uint64_t a1, void *a2)
   v14 = 3221225472;
   v15 = __49__MAGraph_Schema_Private__conformsToGraphSchema___block_invoke;
   v16 = &unk_2797FF958;
-  v6 = v4;
+  v6 = schemaCopy;
   v17 = v6;
   v19 = &v21;
   v20 = &v25;
-  v7 = v5;
+  v7 = array;
   v18 = v7;
   [(MAGraph *)self enumerateNodesWithBlock:&v13];
   v8 = [v7 count];
@@ -3339,41 +3339,41 @@ LABEL_10:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)matchWithDefinitions:(id)a3 constraints:(id)a4 error:(id *)a5
+- (id)matchWithDefinitions:(id)definitions constraints:(id)constraints error:(id *)error
 {
   v70 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  definitionsCopy = definitions;
+  constraintsCopy = constraints;
+  if ([definitionsCopy count])
   {
-    if (v7 && [v7 count])
+    if (constraintsCopy && [constraintsCopy count])
     {
-      v8 = [MEMORY[0x277CBEB40] orderedSetWithArray:v7];
+      v8 = [MEMORY[0x277CBEB40] orderedSetWithArray:constraintsCopy];
       v9 = [MASubGraph subGraphWithGraph:self];
       if ([v8 count])
       {
         v52 = v8;
-        v53 = v6;
-        v47 = v7;
+        v53 = definitionsCopy;
+        v47 = constraintsCopy;
         v54 = v9;
         while (1)
         {
-          v10 = [v8 firstObject];
-          if (!v10)
+          firstObject = [v8 firstObject];
+          if (!firstObject)
           {
             break;
           }
 
-          v11 = v10;
-          v12 = [(MAGraph *)self selectBestRootNodeForPath:v10 withDefinitions:v6];
+          v11 = firstObject;
+          v12 = [(MAGraph *)self selectBestRootNodeForPath:firstObject withDefinitions:definitionsCopy];
           if (!v12)
           {
             goto LABEL_39;
           }
 
           v13 = v12;
-          v14 = [v12 label];
-          v15 = [v6 objectForKey:v14];
+          label = [v12 label];
+          v15 = [definitionsCopy objectForKey:label];
 
           if (![v15 count])
           {
@@ -3412,16 +3412,16 @@ LABEL_39:
 
                 else
                 {
-                  v25 = [v21 label];
-                  if ([v25 isEqualToString:@"*"])
+                  label2 = [v21 label];
+                  if ([label2 isEqualToString:@"*"])
                   {
 
-                    v25 = 0;
+                    label2 = 0;
                   }
 
-                  v26 = [v21 domain];
-                  v27 = [v21 propertyDictionary];
-                  v24 = [(MAGraph *)self nodesForLabel:v25 domain:v26 properties:v27];
+                  domain = [v21 domain];
+                  propertyDictionary = [v21 propertyDictionary];
+                  v24 = [(MAGraph *)self nodesForLabel:label2 domain:domain properties:propertyDictionary];
                 }
 
                 [v16 unionSet:v24];
@@ -3460,18 +3460,18 @@ LABEL_39:
                 v66[0] = @"node";
                 v66[1] = @"label";
                 v67[0] = v32;
-                v36 = [v13 label];
-                v67[1] = v36;
+                label3 = [v13 label];
+                v67[1] = label3;
                 v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v67 forKeys:v66 count:2];
                 v38 = [v35 arrayWithObject:v37];
 
-                v39 = [v52 array];
-                LODWORD(v37) = [(MAGraph *)self _matchNode:v32 usingAbstractNode:v13 fromEdge:0 atIteration:0 withDefinitions:v53 constraints:v39 unusedConstraints:v34 andSubGraph:v54 matchingNodeQueue:v38];
+                array = [v52 array];
+                LODWORD(v37) = [(MAGraph *)self _matchNode:v32 usingAbstractNode:v13 fromEdge:0 atIteration:0 withDefinitions:v53 constraints:array unusedConstraints:v34 andSubGraph:v54 matchingNodeQueue:v38];
 
                 if (v37)
                 {
-                  v40 = [v13 label];
-                  [v54 _addNode:v32 withName:v40];
+                  label4 = [v13 label];
+                  [v54 _addNode:v32 withName:label4];
                 }
 
                 if ([v28 count])
@@ -3496,9 +3496,9 @@ LABEL_39:
           v8 = v52;
           [v52 intersectSet:v28];
 
-          v6 = v53;
+          definitionsCopy = v53;
           v9 = v54;
-          v7 = v47;
+          constraintsCopy = v47;
           if (![v52 count])
           {
             goto LABEL_35;
@@ -3525,7 +3525,7 @@ LABEL_35:
       v64[4] = self;
       v43 = v42;
       v65 = v43;
-      [v6 enumerateKeysAndObjectsUsingBlock:v64];
+      [definitionsCopy enumerateKeysAndObjectsUsingBlock:v64];
       v44 = v65;
       v8 = v43;
 
@@ -3634,20 +3634,20 @@ void __65__MAGraph_QueryInternal__matchWithDefinitions_constraints_error___block
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)matchWithVisualFormat:(id)a3 elements:(id)a4 error:(id *)a5
+- (id)matchWithVisualFormat:(id)format elements:(id)elements error:(id *)error
 {
-  v26 = self;
+  selfCopy = self;
   v40 = *MEMORY[0x277D85DE8];
-  v29 = a3;
-  v6 = a4;
+  formatCopy = format;
+  elementsCopy = elements;
   v27 = objc_autoreleasePoolPush();
-  v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+  v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(elementsCopy, "count")}];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v8 = [v6 allKeys];
-  v9 = [v8 countByEnumeratingWithState:&v34 objects:v39 count:16];
+  allKeys = [elementsCopy allKeys];
+  v9 = [allKeys countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v9)
   {
     v10 = v9;
@@ -3658,17 +3658,17 @@ void __65__MAGraph_QueryInternal__matchWithDefinitions_constraints_error___block
       {
         if (*v35 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = *(*(&v34 + 1) + 8 * i);
-        v14 = [v6 objectForKeyedSubscript:{v13, v26}];
+        v14 = [elementsCopy objectForKeyedSubscript:{v13, selfCopy}];
         v38 = v14;
         v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
         [v7 setObject:v15 forKey:v13];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v34 objects:v39 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v34 objects:v39 count:16];
     }
 
     while (v10);
@@ -3677,7 +3677,7 @@ void __65__MAGraph_QueryInternal__matchWithDefinitions_constraints_error___block
   v32 = 0;
   v33 = v7;
   v31 = 0;
-  v16 = [objc_opt_class() scanMatchString:v29 definitions:&v33 constraints:&v32 forCreation:0 error:&v31];
+  v16 = [objc_opt_class() scanMatchString:formatCopy definitions:&v33 constraints:&v32 forCreation:0 error:&v31];
   v17 = v33;
 
   v18 = v32;
@@ -3686,7 +3686,7 @@ void __65__MAGraph_QueryInternal__matchWithDefinitions_constraints_error___block
   if (v16)
   {
     v30 = v19;
-    v21 = [(MAGraph *)v26 matchWithDefinitions:v17 constraints:v18 error:&v30];
+    v21 = [(MAGraph *)selfCopy matchWithDefinitions:v17 constraints:v18 error:&v30];
     v22 = v30;
 
     v20 = v22;
@@ -3698,10 +3698,10 @@ void __65__MAGraph_QueryInternal__matchWithDefinitions_constraints_error___block
   }
 
   objc_autoreleasePoolPop(v27);
-  if (a5)
+  if (error)
   {
     v23 = v20;
-    *a5 = v20;
+    *error = v20;
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -3709,20 +3709,20 @@ void __65__MAGraph_QueryInternal__matchWithDefinitions_constraints_error___block
   return v21;
 }
 
-- (id)selectBestRootNodeForPath:(id)a3 withDefinitions:(id)a4
+- (id)selectBestRootNodeForPath:(id)path withDefinitions:(id)definitions
 {
   v63 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 sourceNode];
-  v9 = [v8 label];
-  v10 = [v7 objectForKey:v9];
+  pathCopy = path;
+  definitionsCopy = definitions;
+  sourceNode = [pathCopy sourceNode];
+  label = [sourceNode label];
+  v10 = [definitionsCopy objectForKey:label];
 
-  v46 = v6;
-  v11 = [v6 targetNode];
-  v12 = [v11 label];
-  v45 = v7;
-  v50 = [v7 objectForKey:v12];
+  v46 = pathCopy;
+  targetNode = [pathCopy targetNode];
+  label2 = [targetNode label];
+  v45 = definitionsCopy;
+  v50 = [definitionsCopy objectForKey:label2];
 
   v59 = 0u;
   v60 = 0u;
@@ -3751,10 +3751,10 @@ void __65__MAGraph_QueryInternal__matchWithDefinitions_constraints_error___block
       }
 
       v18 = *(*(&v57 + 1) + 8 * i);
-      v19 = [v18 edgesCount];
-      v20 = [v18 graphReference];
+      edgesCount = [v18 edgesCount];
+      graphReference = [v18 graphReference];
 
-      if (!v20)
+      if (!graphReference)
       {
         goto LABEL_13;
       }
@@ -3764,37 +3764,37 @@ void __65__MAGraph_QueryInternal__matchWithDefinitions_constraints_error___block
       {
 
 LABEL_13:
-        v25 = [v18 label];
-        if ([v25 isEqualToString:@"*"])
+        label3 = [v18 label];
+        if ([label3 isEqualToString:@"*"])
         {
 
-          v25 = 0;
+          label3 = 0;
         }
 
-        v26 = [v18 domain];
-        v27 = [v18 propertyDictionary];
-        v52 += [(MAGraph *)self nodesCountForLabel:v25 domain:v26 properties:v27];
+        domain = [v18 domain];
+        propertyDictionary = [v18 propertyDictionary];
+        v52 += [(MAGraph *)self nodesCountForLabel:label3 domain:domain properties:propertyDictionary];
 
         goto LABEL_16;
       }
 
-      v22 = [v21 edgesCount];
-      v23 = [v18 edgesCount];
+      edgesCount2 = [v21 edgesCount];
+      edgesCount3 = [v18 edgesCount];
 
       v24 = v52;
-      if (v22 == v23)
+      if (edgesCount2 == edgesCount3)
       {
         v24 = v52 + 1;
       }
 
       v52 = v24;
-      if (v22 != v23)
+      if (edgesCount2 != edgesCount3)
       {
         goto LABEL_13;
       }
 
 LABEL_16:
-      v15 += v19;
+      v15 += edgesCount;
     }
 
     v14 = [obj countByEnumeratingWithState:&v57 objects:v62 count:16];
@@ -3824,18 +3824,18 @@ LABEL_20:
         }
 
         v31 = *(*(&v53 + 1) + 8 * j);
-        v32 = [v31 edgesCount];
-        v33 = [v31 graphReference];
+        edgesCount4 = [v31 edgesCount];
+        graphReference2 = [v31 graphReference];
 
-        if (v33)
+        if (graphReference2)
         {
           v34 = -[MAGraph nodeForIdentifier:](self, "nodeForIdentifier:", [v31 identifier]);
           if ([v34 isEqualToNode:v31])
           {
-            v35 = [v34 edgesCount];
-            v36 = [v31 edgesCount];
+            edgesCount5 = [v34 edgesCount];
+            edgesCount6 = [v31 edgesCount];
 
-            if (v35 == v36)
+            if (edgesCount5 == edgesCount6)
             {
               ++v28;
               goto LABEL_33;
@@ -3847,19 +3847,19 @@ LABEL_20:
           }
         }
 
-        v37 = [v31 label];
-        if ([v37 isEqualToString:@"*"])
+        label4 = [v31 label];
+        if ([label4 isEqualToString:@"*"])
         {
 
-          v37 = 0;
+          label4 = 0;
         }
 
-        v38 = [v31 domain];
-        v39 = [v31 propertyDictionary];
-        v28 += [(MAGraph *)self nodesCountForLabel:v37 domain:v38 properties:v39];
+        domain2 = [v31 domain];
+        propertyDictionary2 = [v31 propertyDictionary];
+        v28 += [(MAGraph *)self nodesCountForLabel:label4 domain:domain2 properties:propertyDictionary2];
 
 LABEL_33:
-        v29 += v32;
+        v29 += edgesCount4;
       }
 
       v51 = [v47 countByEnumeratingWithState:&v53 objects:v61 count:16];
@@ -3871,48 +3871,48 @@ LABEL_33:
   if (v52 > v28 || v52 >= v28 && v15 >= v29)
   {
     v40 = v46;
-    v41 = [v46 targetNode];
+    targetNode2 = [v46 targetNode];
   }
 
   else
   {
     v40 = v46;
-    v41 = [v46 sourceNode];
+    targetNode2 = [v46 sourceNode];
   }
 
-  v42 = v41;
+  v42 = targetNode2;
 
   v43 = *MEMORY[0x277D85DE8];
 
   return v42;
 }
 
-- (BOOL)_matchNode:(id)a3 usingAbstractNode:(id)a4 fromEdge:(id)a5 atIteration:(unint64_t)a6 withDefinitions:(id)a7 constraints:(id)a8 unusedConstraints:(id)a9 andSubGraph:(id)a10 matchingNodeQueue:(id)a11
+- (BOOL)_matchNode:(id)node usingAbstractNode:(id)abstractNode fromEdge:(id)edge atIteration:(unint64_t)iteration withDefinitions:(id)definitions constraints:(id)constraints unusedConstraints:(id)unusedConstraints andSubGraph:(id)self0 matchingNodeQueue:(id)self1
 {
   v258 = *MEMORY[0x277D85DE8];
-  v168 = a3;
-  v17 = a4;
-  v163 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v125 = a10;
-  v160 = a11;
-  v243 = v19;
-  v21 = v19;
-  v154 = self;
-  v22 = [(MAGraph *)self _constraintAbstractEdgesFromAbstractNode:v17 inConstraints:&v243];
+  nodeCopy = node;
+  abstractNodeCopy = abstractNode;
+  edgeCopy = edge;
+  definitionsCopy = definitions;
+  constraintsCopy = constraints;
+  unusedConstraintsCopy = unusedConstraints;
+  graphCopy = graph;
+  queueCopy = queue;
+  v243 = constraintsCopy;
+  v21 = constraintsCopy;
+  selfCopy = self;
+  v22 = [(MAGraph *)self _constraintAbstractEdgesFromAbstractNode:abstractNodeCopy inConstraints:&v243];
   v153 = v243;
 
-  v167 = v17;
+  v167 = abstractNodeCopy;
   v126 = v21;
   if (![v22 count])
   {
-    [v20 addObjectsFromArray:v21];
-    v114 = [v17 label];
-    v115 = [v18 objectForKey:v114];
+    [unusedConstraintsCopy addObjectsFromArray:v21];
+    label = [abstractNodeCopy label];
+    v115 = [definitionsCopy objectForKey:label];
 
-    v116 = [v17 hasProperties];
+    hasProperties = [abstractNodeCopy hasProperties];
     v239 = 0u;
     v240 = 0u;
     v241 = 0u;
@@ -3932,7 +3932,7 @@ LABEL_33:
             objc_enumerationMutation(v113);
           }
 
-          if ([v168 matchesNode:*(*(&v239 + 1) + 8 * i) includingProperties:v116])
+          if ([nodeCopy matchesNode:*(*(&v239 + 1) + 8 * i) includingProperties:hasProperties])
           {
             LOBYTE(v62) = 1;
             goto LABEL_148;
@@ -3951,7 +3951,7 @@ LABEL_33:
       LOBYTE(v62) = 0;
 LABEL_148:
       v132 = v113;
-      v17 = v167;
+      abstractNodeCopy = v167;
     }
 
     else
@@ -3973,11 +3973,11 @@ LABEL_148:
   if (v131)
   {
     v128 = 0;
-    v136 = a6 + 1;
+    v136 = iteration + 1;
     v130 = *v236;
     v124 = v209;
-    v158 = v18;
-    v159 = v20;
+    v158 = definitionsCopy;
+    v159 = unusedConstraintsCopy;
     v152 = v22;
 LABEL_4:
     v23 = 0;
@@ -3991,12 +3991,12 @@ LABEL_4:
       v133 = v23;
       v24 = *(*(&v235 + 1) + 8 * v23);
       v134 = objc_autoreleasePoolPush();
-      v161 = [MASubGraph subGraphWithGraph:v154];
+      v161 = [MASubGraph subGraphWithGraph:selfCopy];
       [v132 addObject:?];
-      v25 = [v24 oppositeNode:v17];
+      v25 = [v24 oppositeNode:abstractNodeCopy];
       v173 = v24;
-      v26 = [v24 label];
-      v27 = [v18 objectForKey:v26];
+      label2 = [v24 label];
+      v27 = [definitionsCopy objectForKey:label2];
 
       v135 = v27;
       if (![v27 count])
@@ -4005,8 +4005,8 @@ LABEL_4:
         goto LABEL_127;
       }
 
-      v28 = [v25 label];
-      v29 = [v18 objectForKey:v28];
+      label3 = [v25 label];
+      v29 = [definitionsCopy objectForKey:label3];
 
       v148 = v29;
       if ([v29 count])
@@ -4039,22 +4039,22 @@ LABEL_127:
       }
     }
 
-    v30 = [v173 minimum];
-    v31 = [v173 maximum];
-    v164 = [v173 isDirected];
+    minimum = [v173 minimum];
+    maximum = [v173 maximum];
+    isDirected = [v173 isDirected];
     v32 = [MEMORY[0x277CBEB58] set];
     v33 = v136;
-    v137 = v31;
+    v137 = maximum;
     v162 = v25;
     v166 = v32;
-    if (v136 >= v31)
+    if (v136 >= maximum)
     {
       v63 = 0;
     }
 
     else
     {
-      v127 = v30;
+      v127 = minimum;
       v234 = 0u;
       v233 = 0u;
       v232 = 0u;
@@ -4076,30 +4076,30 @@ LABEL_127:
 
             v38 = *(*(&v231 + 1) + 8 * j);
             v39 = objc_autoreleasePoolPush();
-            v40 = [v38 label];
-            if ([v40 isEqualToString:@"*"])
+            label4 = [v38 label];
+            if ([label4 isEqualToString:@"*"])
             {
 
-              v40 = 0;
+              label4 = 0;
             }
 
             v230 = 0;
-            v41 = [v38 propertyDictionary];
+            propertyDictionary = [v38 propertyDictionary];
             if ([v167 hasEdge:v173 isIn:&v230])
             {
               aBlock[0] = MEMORY[0x277D85DD0];
               aBlock[1] = 3221225472;
               aBlock[2] = __144__MAGraph_Query___matchNode_usingAbstractNode_fromEdge_atIteration_withDefinitions_constraints_unusedConstraints_andSubGraph_matchingNodeQueue___block_invoke;
               aBlock[3] = &unk_2797FF9F8;
-              v224 = v163;
-              v225 = v41;
-              v42 = v168;
+              v224 = edgeCopy;
+              v225 = propertyDictionary;
+              v42 = nodeCopy;
               v226 = v42;
-              v228 = v164;
+              v228 = isDirected;
               v229 = v230;
               v227 = v166;
               v43 = _Block_copy(aBlock);
-              [v42 enumerateEdgesWithLabel:v40 domain:objc_msgSend(v38 usingBlock:{"domain"), v43}];
+              [v42 enumerateEdgesWithLabel:label4 domain:objc_msgSend(v38 usingBlock:{"domain"), v43}];
             }
 
             objc_autoreleasePoolPop(v39);
@@ -4115,9 +4115,9 @@ LABEL_127:
       {
         v62 = 0;
         v32 = v166;
-        v17 = v167;
-        v18 = v158;
-        v20 = v159;
+        abstractNodeCopy = v167;
+        definitionsCopy = v158;
+        unusedConstraintsCopy = v159;
         v25 = v162;
 LABEL_125:
 
@@ -4131,8 +4131,8 @@ LABEL_125:
       v222 = 0u;
       v44 = v126;
       v45 = [v44 countByEnumeratingWithState:&v219 objects:v254 count:16];
-      v18 = v158;
-      v20 = v159;
+      definitionsCopy = v158;
+      unusedConstraintsCopy = v159;
       v25 = v162;
       if (v45)
       {
@@ -4160,7 +4160,7 @@ LABEL_125:
         while (v46);
       }
 
-      v145 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v215 = 0u;
       v216 = 0u;
       v217 = 0u;
@@ -4182,12 +4182,12 @@ LABEL_125:
 
             v51 = *(*(&v215 + 1) + 8 * m);
             v52 = objc_autoreleasePoolPush();
-            v53 = [v51 oppositeNode:v168];
+            v53 = [v51 oppositeNode:nodeCopy];
             v211 = 0u;
             v212 = 0u;
             v213 = 0u;
             v214 = 0u;
-            v54 = v160;
+            v54 = queueCopy;
             v55 = [v54 countByEnumeratingWithState:&v211 objects:v252 count:16];
             if (v55)
             {
@@ -4208,8 +4208,8 @@ LABEL_125:
                   if (v60)
                   {
 
-                    v18 = v158;
-                    v20 = v159;
+                    definitionsCopy = v158;
+                    unusedConstraintsCopy = v159;
                     goto LABEL_47;
                   }
                 }
@@ -4225,19 +4225,19 @@ LABEL_125:
             }
 
             v123 = v54;
-            v18 = v158;
-            v20 = v159;
-            if ([(MAGraph *)v154 _matchNode:v53 usingAbstractNode:v167 fromEdge:v51 atIteration:v136 withDefinitions:v158 constraints:context unusedConstraints:v159 andSubGraph:v161 matchingNodeQueue:v123, v124])
+            definitionsCopy = v158;
+            unusedConstraintsCopy = v159;
+            if ([(MAGraph *)selfCopy _matchNode:v53 usingAbstractNode:v167 fromEdge:v51 atIteration:v136 withDefinitions:v158 constraints:context unusedConstraints:v159 andSubGraph:v161 matchingNodeQueue:v123, v124])
             {
               ++v140;
-              v61 = [v173 label];
-              [v161 _addEdge:v51 withName:v61];
+              label5 = [v173 label];
+              [v161 _addEdge:v51 withName:label5];
             }
 
             else
             {
 LABEL_47:
-              [v145 addObject:v51];
+              [array addObject:v51];
             }
 
             v22 = v152;
@@ -4262,16 +4262,16 @@ LABEL_47:
       v209[0] = __144__MAGraph_Query___matchNode_usingAbstractNode_fromEdge_atIteration_withDefinitions_constraints_unusedConstraints_andSubGraph_matchingNodeQueue___block_invoke_2;
       v209[1] = &unk_2797FFA20;
       v210 = v142;
-      [v145 enumerateObjectsUsingBlock:v208];
+      [array enumerateObjectsUsingBlock:v208];
 
       v32 = v166;
-      v17 = v167;
+      abstractNodeCopy = v167;
       v33 = v136;
       v63 = v140;
-      v30 = v127;
+      minimum = v127;
     }
 
-    if (v33 < v30 || v33 > v137)
+    if (v33 < minimum || v33 > v137)
     {
 LABEL_122:
       v62 = v63 != 0;
@@ -4308,13 +4308,13 @@ LABEL_122:
 
             v65 = *(*(&v204 + 1) + 8 * v64);
             v66 = objc_autoreleasePoolPush();
-            v67 = [v65 label];
+            label6 = [v65 label];
             v156 = v64;
             contexta = v66;
-            if ([v67 isEqualToString:@"*"])
+            if ([label6 isEqualToString:@"*"])
             {
 
-              v67 = 0;
+              label6 = 0;
             }
 
             v202 = 0u;
@@ -4338,43 +4338,43 @@ LABEL_122:
 
                   v72 = *(*(&v200 + 1) + 8 * ii);
                   v230 = 0;
-                  if ([v17 hasEdge:v173 isIn:&v230])
+                  if ([abstractNodeCopy hasEdge:v173 isIn:&v230])
                   {
-                    v73 = v67;
-                    v74 = [v65 propertyDictionary];
-                    v75 = [v72 graphReference];
-                    v76 = v75 == 0;
+                    v73 = label6;
+                    propertyDictionary2 = [v65 propertyDictionary];
+                    graphReference = [v72 graphReference];
+                    v76 = graphReference == 0;
 
-                    if (v75)
+                    if (graphReference)
                     {
-                      LOBYTE(v77) = 0;
+                      LOBYTE(hasProperties2) = 0;
                     }
 
                     else
                     {
-                      v77 = [v72 hasProperties];
+                      hasProperties2 = [v72 hasProperties];
                     }
 
                     v190[0] = MEMORY[0x277D85DD0];
                     v190[1] = 3221225472;
                     v190[2] = __144__MAGraph_Query___matchNode_usingAbstractNode_fromEdge_atIteration_withDefinitions_constraints_unusedConstraints_andSubGraph_matchingNodeQueue___block_invoke_3;
                     v190[3] = &unk_2797FFA48;
-                    v191 = v163;
-                    v192 = v74;
-                    v78 = v168;
-                    v196 = v164;
+                    v191 = edgeCopy;
+                    v192 = propertyDictionary2;
+                    v78 = nodeCopy;
+                    v196 = isDirected;
                     v197 = v230;
                     v198 = v76;
                     v193 = v78;
                     v194 = v72;
-                    v199 = v77;
+                    v199 = hasProperties2;
                     v195 = v166;
-                    v79 = v74;
+                    v79 = propertyDictionary2;
                     v80 = _Block_copy(v190);
-                    v67 = v73;
+                    label6 = v73;
                     [v78 enumerateEdgesWithLabel:v73 domain:objc_msgSend(v65 usingBlock:{"domain"), v80}];
 
-                    v17 = v167;
+                    abstractNodeCopy = v167;
                   }
                 }
 
@@ -4386,7 +4386,7 @@ LABEL_122:
 
             objc_autoreleasePoolPop(contexta);
             v64 = v156 + 1;
-            v20 = v159;
+            unusedConstraintsCopy = v159;
             v22 = v152;
           }
 
@@ -4404,7 +4404,7 @@ LABEL_122:
         v186 = 0u;
         v187 = 0u;
         v139 = v166;
-        v18 = v158;
+        definitionsCopy = v158;
         v25 = v162;
         v147 = [v139 countByEnumeratingWithState:&v186 objects:v249 count:16];
         if (!v147)
@@ -4423,7 +4423,7 @@ LABEL_122:
             }
 
             v157 = *(*(&v186 + 1) + 8 * jj);
-            v82 = [v157 oppositeNode:v168];
+            v82 = [v157 oppositeNode:nodeCopy];
             v182 = 0u;
             v183 = 0u;
             v184 = 0u;
@@ -4432,7 +4432,7 @@ LABEL_122:
             v83 = [v165 countByEnumeratingWithState:&v182 objects:v248 count:16];
             if (!v83)
             {
-              v18 = v158;
+              definitionsCopy = v158;
               v25 = v162;
               goto LABEL_119;
             }
@@ -4451,9 +4451,9 @@ LABEL_122:
 
                 v87 = *(*(&v182 + 1) + 8 * kk);
                 v88 = objc_autoreleasePoolPush();
-                v89 = [v87 graphReference];
+                graphReference2 = [v87 graphReference];
 
-                if (v89)
+                if (graphReference2)
                 {
                   if (![v82 isSameNodeAsNode:v87])
                   {
@@ -4472,7 +4472,7 @@ LABEL_122:
                 v181 = 0u;
                 v178 = 0u;
                 v179 = 0u;
-                v91 = v160;
+                v91 = queueCopy;
                 v92 = [v91 countByEnumeratingWithState:&v178 objects:v247 count:16];
                 if (v92)
                 {
@@ -4512,16 +4512,16 @@ LABEL_122:
                 v246[0] = v82;
                 v245[0] = @"node";
                 v245[1] = @"label";
-                v98 = [v162 label];
-                v246[1] = v98;
+                label7 = [v162 label];
+                v246[1] = label7;
                 v99 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v246 forKeys:v245 count:2];
                 [v91 addObject:v99];
 
-                LODWORD(v98) = [(MAGraph *)v154 _matchNode:v82 usingAbstractNode:v162 fromEdge:v157 atIteration:0 withDefinitions:v158 constraints:v153 unusedConstraints:v159 andSubGraph:v161 matchingNodeQueue:v91];
+                LODWORD(label7) = [(MAGraph *)selfCopy _matchNode:v82 usingAbstractNode:v162 fromEdge:v157 atIteration:0 withDefinitions:v158 constraints:v153 unusedConstraints:v159 andSubGraph:v161 matchingNodeQueue:v91];
                 [v91 removeLastObject];
                 v84 = v90;
                 v88 = v172;
-                if (v98)
+                if (label7)
                 {
                   v176 = 0u;
                   v177 = 0u;
@@ -4546,8 +4546,8 @@ LABEL_122:
                         v106 = [v105 objectForKeyedSubscript:@"node"];
                         v107 = [v105 objectForKeyedSubscript:@"label"];
                         [v161 _addNode:v106 withName:v107 forKeyNode:v82];
-                        v108 = [v162 label];
-                        [v161 _addNode:v82 withName:v108 forKeyNode:v106];
+                        label8 = [v162 label];
+                        [v161 _addNode:v82 withName:label8 forKeyNode:v106];
                       }
 
                       v102 = [v100 countByEnumeratingWithState:&v174 objects:v244 count:16];
@@ -4559,16 +4559,16 @@ LABEL_122:
                   ++v141;
 
                   v25 = v162;
-                  v109 = [v162 label];
-                  [v161 _addNode:v82 withName:v109];
+                  label9 = [v162 label];
+                  [v161 _addNode:v82 withName:label9];
 
-                  v110 = [v173 label];
-                  [v161 _addEdge:v157 withName:v110];
+                  label10 = [v173 label];
+                  [v161 _addEdge:v157 withName:label10];
 
                   objc_autoreleasePoolPop(v172);
-                  v17 = v167;
+                  abstractNodeCopy = v167;
                   v22 = v152;
-                  v18 = v158;
+                  definitionsCopy = v158;
                   goto LABEL_117;
                 }
 
@@ -4585,8 +4585,8 @@ LABEL_106:
               break;
             }
 
-            v17 = v167;
-            v18 = v158;
+            abstractNodeCopy = v167;
+            definitionsCopy = v158;
             v22 = v152;
             v25 = v162;
 LABEL_117:
@@ -4599,7 +4599,7 @@ LABEL_119:
           {
 LABEL_121:
 
-            v20 = v159;
+            unusedConstraintsCopy = v159;
             v32 = v166;
             v63 = v141;
             goto LABEL_122;
@@ -4608,7 +4608,7 @@ LABEL_121:
       }
 
       v62 = 0;
-      v18 = v158;
+      definitionsCopy = v158;
       v25 = v162;
       v32 = v166;
     }
@@ -4631,7 +4631,7 @@ LABEL_144:
       [MASubGraph subGraphIntersectionsWithSubGraphs:v132];
     }
     v113 = ;
-    [v125 mergeWithSubGraph:v113];
+    [graphCopy mergeWithSubGraph:v113];
     LOBYTE(v62) = 1;
 LABEL_153:
 
@@ -4733,18 +4733,18 @@ LABEL_19:
 LABEL_20:
 }
 
-- (id)_constraintAbstractEdgesFromAbstractNode:(id)a3 inConstraints:(id *)a4
+- (id)_constraintAbstractEdgesFromAbstractNode:(id)node inConstraints:(id *)constraints
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v28 = [MEMORY[0x277CBEB18] array];
+  nodeCopy = node;
+  array = [MEMORY[0x277CBEB18] array];
   [MEMORY[0x277CBEB58] set];
-  v26 = v25 = a4;
+  v26 = v25 = constraints;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = *a4;
+  obj = *constraints;
   v30 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v30)
   {
@@ -4760,27 +4760,27 @@ LABEL_20:
         }
 
         v7 = *(*(&v31 + 1) + 8 * v6);
-        v8 = [v5 hasProperties];
-        v9 = [v7 nodesCount];
-        if (!v9)
+        hasProperties = [nodeCopy hasProperties];
+        nodesCount = [v7 nodesCount];
+        if (!nodesCount)
         {
           v12 = 0;
 LABEL_19:
-          [v28 addObject:v7];
+          [array addObject:v7];
           goto LABEL_20;
         }
 
-        v10 = v9;
+        v10 = nodesCount;
         v11 = 0;
         v12 = 0;
         v13 = 1;
-        v14 = v9;
+        v14 = nodesCount;
         while (1)
         {
           v15 = v12;
           v12 = [v7 nodeAtIndex:v11];
 
-          if ([v12 matchesNode:v5 includingProperties:v8])
+          if ([v12 matchesNode:nodeCopy includingProperties:hasProperties])
           {
             break;
           }
@@ -4818,7 +4818,7 @@ LABEL_19:
 
           if ([v17 edgesCount])
           {
-            [v28 addObject:v17];
+            [array addObject:v17];
           }
 
           v18 = v11;
@@ -4844,7 +4844,7 @@ LABEL_19:
           while (v13);
           if ([v20 edgesCount])
           {
-            [v28 addObject:v20];
+            [array addObject:v20];
           }
         }
 
@@ -4861,7 +4861,7 @@ LABEL_20:
     while (v21);
   }
 
-  v22 = v28;
+  v22 = array;
   *v25 = v22;
 
   v23 = *MEMORY[0x277D85DE8];
@@ -4869,13 +4869,13 @@ LABEL_20:
   return v26;
 }
 
-- (BOOL)updateGraphWithVisualString:(id)a3
+- (BOOL)updateGraphWithVisualString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v14 = 0;
   v15 = 0;
   v13 = 0;
-  v5 = [objc_opt_class() scanMatchString:v4 definitions:&v15 constraints:&v14 forCreation:1 error:&v13];
+  v5 = [objc_opt_class() scanMatchString:stringCopy definitions:&v15 constraints:&v14 forCreation:1 error:&v13];
 
   v6 = v15;
   v7 = v14;
@@ -4897,16 +4897,16 @@ LABEL_20:
   return v9;
 }
 
-+ (BOOL)scanGraphElementOptionsString:(id)a3 minimum:(unint64_t *)a4 maximum:(unint64_t *)a5 error:(id *)a6
++ (BOOL)scanGraphElementOptionsString:(id)string minimum:(unint64_t *)minimum maximum:(unint64_t *)maximum error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  stringCopy = string;
   v32 = 0;
   v9 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"[\\w\\d\\ options:\\-\\ \\:\\{\\'\\\\}\\#\\%\\+\\$\\^\\/\\(\\)\\?\\=]+\\](?:\\*(\\d+)\\.\\.(\\d+))?" error:{0, &v32}];;
   v10 = v32;
   v11 = v10;
-  *a4 = 1;
-  *a5 = 1;
+  *minimum = 1;
+  *maximum = 1;
   if (v9)
   {
     v12 = v10 == 0;
@@ -4919,7 +4919,7 @@ LABEL_20:
 
   if (v12)
   {
-    v14 = [v9 matchesInString:v8 options:0 range:{0, objc_msgSend(v8, "length")}];
+    v14 = [v9 matchesInString:stringCopy options:0 range:{0, objc_msgSend(stringCopy, "length")}];
     v15 = v14;
     if (v14)
     {
@@ -4945,10 +4945,10 @@ LABEL_20:
                 {
                   v25 = v21;
                   v26 = v23;
-                  v27 = [v8 substringWithRange:{v19, v25}];
-                  v28 = [v8 substringWithRange:{v24, v26}];
-                  *a4 = [v27 integerValue];
-                  *a5 = [v28 integerValue];
+                  v27 = [stringCopy substringWithRange:{v19, v25}];
+                  v28 = [stringCopy substringWithRange:{v24, v26}];
+                  *minimum = [v27 integerValue];
+                  *maximum = [v28 integerValue];
 
                   v16 = 1;
                 }
@@ -4981,11 +4981,11 @@ LABEL_20:
   return v13;
 }
 
-+ (id)scanGraphConstraintString:(id)a3 error:(id *)a4
++ (id)scanGraphConstraintString:(id)string error:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 hasPrefix:{@"(", "hasSuffix:", @")"}])
+  stringCopy = string;
+  if ([stringCopy hasPrefix:{@"(", "hasSuffix:", @")"}])
   {
     v5 = objc_opt_new();
     v30 = 0;
@@ -4995,7 +4995,7 @@ LABEL_20:
     v9 = 0;
     if (v6 && !v7)
     {
-      v10 = [v6 matchesInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
+      v10 = [v6 matchesInString:stringCopy options:0 range:{0, objc_msgSend(stringCopy, "length")}];
       v11 = v10;
       if (v10)
       {
@@ -5028,7 +5028,7 @@ LABEL_20:
                 goto LABEL_25;
               }
 
-              v21 = [v4 substringWithRange:{v18, v19}];
+              v21 = [stringCopy substringWithRange:{v18, v19}];
               [v5 addObject:v21];
             }
 
@@ -5075,17 +5075,17 @@ LABEL_25:
   return v9;
 }
 
-+ (BOOL)scanGraphElementString:(id)a3 type:(unint64_t *)a4 optionalName:(id *)a5 label:(id *)a6 optionalDomains:(id *)a7 optionalProperties:(id *)a8 error:(id *)a9
++ (BOOL)scanGraphElementString:(id)string type:(unint64_t *)type optionalName:(id *)name label:(id *)label optionalDomains:(id *)domains optionalProperties:(id *)properties error:(id *)error
 {
   v77[2] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = [MEMORY[0x277CCAC80] scannerWithString:v13];
-  v15 = [MEMORY[0x277CCAB50] alphanumericCharacterSet];
-  [v15 addCharactersInString:@"_"];
-  [v15 removeCharactersInString:@"([:{';}])"];
-  v16 = [MEMORY[0x277CCAB50] alphanumericCharacterSet];
-  [v16 addCharactersInString:@"_ -%:/+*.$^(?)><="];
-  [v16 removeCharactersInString:@"[{';}]"];
+  stringCopy = string;
+  v14 = [MEMORY[0x277CCAC80] scannerWithString:stringCopy];
+  alphanumericCharacterSet = [MEMORY[0x277CCAB50] alphanumericCharacterSet];
+  [alphanumericCharacterSet addCharactersInString:@"_"];
+  [alphanumericCharacterSet removeCharactersInString:@"([:{';}])"];
+  alphanumericCharacterSet2 = [MEMORY[0x277CCAB50] alphanumericCharacterSet];
+  [alphanumericCharacterSet2 addCharactersInString:@"_ -%:/+*.$^(?)><="];
+  [alphanumericCharacterSet2 removeCharactersInString:@"[{';}]"];
   if ([v14 scanString:@"(" intoString:{0) && objc_msgSend(v14, "scanLocation") == 1}]
   {
     v64 = 0;
@@ -5098,7 +5098,7 @@ LABEL_25:
     if (![v14 scanString:@"[" intoString:0])
     {
       v69 = 0;
-      v70 = 0;
+      dictionary = 0;
       v67 = 0;
       v19 = 0;
       v23 = 0;
@@ -5110,7 +5110,7 @@ LABEL_25:
     if ([v14 scanLocation] != 1)
     {
       v69 = 0;
-      v70 = 0;
+      dictionary = 0;
       v67 = 0;
       v19 = 0;
       v23 = 0;
@@ -5123,12 +5123,12 @@ LABEL_25:
 
   v66 = v18;
   v75 = 0;
-  [v14 scanCharactersFromSet:v15 intoString:&v75];
+  [v14 scanCharactersFromSet:alphanumericCharacterSet intoString:&v75];
   v19 = v75;
   if ([v14 scanString:@":" intoString:0])
   {
     v74 = 0;
-    [v14 scanCharactersFromSet:v15 intoString:&v74];
+    [v14 scanCharactersFromSet:alphanumericCharacterSet intoString:&v74];
     v20 = v74;
     v21 = @"*";
     if (v20)
@@ -5137,27 +5137,27 @@ LABEL_25:
     }
 
     v69 = v21;
-    v62 = a5;
+    nameCopy = name;
     v63 = v19;
     if (![v14 scanString:@":" intoString:0])
     {
       v67 = [MEMORY[0x277CCAA78] indexSetWithIndex:0];
 LABEL_26:
-      v70 = 0;
+      dictionary = 0;
       if ([v14 scanString:@"{" intoString:0])
       {
-        v58 = a6;
-        v59 = a7;
-        v60 = a8;
-        v61 = v13;
-        v70 = [MEMORY[0x277CBEB38] dictionary];
+        labelCopy = label;
+        domainsCopy = domains;
+        propertiesCopy = properties;
+        v61 = stringCopy;
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
         v25 = 0;
         v26 = 0;
         while (1)
         {
           v27 = v25;
           v72 = v25;
-          v28 = [v14 scanCharactersFromSet:v15 intoString:&v72];
+          v28 = [v14 scanCharactersFromSet:alphanumericCharacterSet intoString:&v72];
           v25 = v72;
 
           if (!v28 || ([v14 scanString:@":" intoString:0] & 1) == 0 && !objc_msgSend(v14, "scanUpToString:intoString:", @":", 0) || (objc_msgSend(v14, "scanString:intoString:", @"'", 0) & 1) == 0 && !objc_msgSend(v14, "scanUpToString:intoString:", @"'", 0))
@@ -5165,17 +5165,17 @@ LABEL_26:
             goto LABEL_59;
           }
 
-          v29 = v15;
+          v29 = alphanumericCharacterSet;
           v71 = v26;
-          v30 = v16;
-          v31 = [v14 scanCharactersFromSet:v16 intoString:&v71];
+          v30 = alphanumericCharacterSet2;
+          v31 = [v14 scanCharactersFromSet:alphanumericCharacterSet2 intoString:&v71];
           v32 = v71;
 
           if (!v31 || ![v14 scanString:@"'" intoString:0])
           {
             v26 = v32;
-            v16 = v30;
-            v15 = v29;
+            alphanumericCharacterSet2 = v30;
+            alphanumericCharacterSet = v29;
 LABEL_59:
             v19 = v63;
             goto LABEL_60;
@@ -5197,9 +5197,9 @@ LABEL_59:
               v41 = v32;
             }
 
-            [v70 setObject:v41 forKey:v25];
+            [dictionary setObject:v41 forKey:v25];
             v26 = v32;
-            v16 = v30;
+            alphanumericCharacterSet2 = v30;
             goto LABEL_49;
           }
 
@@ -5239,10 +5239,10 @@ LABEL_41:
           v36 = objc_alloc_init(MEMORY[0x277CCABB8]);
           v37 = [v36 numberFromString:v26];
           v38 = v37;
-          v16 = v30;
+          alphanumericCharacterSet2 = v30;
           if ((v35 & 1) != 0 || !v37)
           {
-            [v70 setObject:v26 forKey:v25];
+            [dictionary setObject:v26 forKey:v25];
           }
 
           else
@@ -5252,11 +5252,11 @@ LABEL_41:
             v77[0] = v65;
             v77[1] = v37;
             v39 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v77 forKeys:v76 count:2];
-            [v70 setObject:v39 forKey:v25];
+            [dictionary setObject:v39 forKey:v25];
           }
 
 LABEL_49:
-          v15 = v29;
+          alphanumericCharacterSet = v29;
 
           if (([v14 scanString:@";" intoString:0] & 1) == 0)
           {
@@ -5265,22 +5265,22 @@ LABEL_49:
             if (v43)
             {
 
-              a8 = v60;
-              v13 = v61;
-              a6 = v58;
-              a7 = v59;
-              a5 = v62;
+              properties = propertiesCopy;
+              stringCopy = v61;
+              label = labelCopy;
+              domains = domainsCopy;
+              name = nameCopy;
               break;
             }
 
 LABEL_60:
 
             v17 = 0;
-            a8 = v60;
-            v13 = v61;
-            a6 = v58;
-            a7 = v59;
-            a5 = v62;
+            properties = propertiesCopy;
+            stringCopy = v61;
+            label = labelCopy;
+            domains = domainsCopy;
+            name = nameCopy;
             goto LABEL_74;
           }
         }
@@ -5291,8 +5291,8 @@ LABEL_60:
         if (!v64 || [v14 scanString:@"]" intoString:0])
         {
           v44 = v19;
-          v45 = [v14 scanLocation];
-          v46 = v45 == [v13 length];
+          scanLocation = [v14 scanLocation];
+          v46 = scanLocation == [stringCopy length];
           v19 = v44;
           v17 = v46;
           goto LABEL_74;
@@ -5329,11 +5329,11 @@ LABEL_77:
       goto LABEL_26;
     }
 
-    v70 = 0;
+    dictionary = 0;
     v67 = 0;
     v17 = 0;
 LABEL_63:
-    v42 = a4;
+    typeCopy3 = type;
     v19 = v63;
     goto LABEL_75;
   }
@@ -5341,14 +5341,14 @@ LABEL_63:
   if (!v19)
   {
     v69 = 0;
-    v70 = 0;
+    dictionary = 0;
     v67 = 0;
     v17 = 0;
 LABEL_74:
-    v42 = a4;
+    typeCopy3 = type;
 LABEL_75:
     v23 = v66;
-    if (!v42)
+    if (!typeCopy3)
     {
       goto LABEL_83;
     }
@@ -5364,7 +5364,7 @@ LABEL_75:
   if (!v64)
   {
     v69 = 0;
-    v70 = 0;
+    dictionary = 0;
     v67 = 0;
     goto LABEL_77;
   }
@@ -5373,19 +5373,19 @@ LABEL_75:
   {
 LABEL_22:
     v63 = v19;
-    v24 = [v14 scanLocation];
-    if (v24 == [v13 length])
+    scanLocation2 = [v14 scanLocation];
+    if (scanLocation2 == [stringCopy length])
     {
       v67 = [MEMORY[0x277CCAA78] indexSetWithIndex:0];
       v69 = 0;
-      v70 = 0;
+      dictionary = 0;
       v17 = 1;
     }
 
     else
     {
       v69 = 0;
-      v70 = 0;
+      dictionary = 0;
       v67 = 0;
       v17 = 0;
     }
@@ -5394,14 +5394,14 @@ LABEL_22:
   }
 
   v69 = 0;
-  v70 = 0;
+  dictionary = 0;
   v67 = 0;
 LABEL_78:
   v17 = 0;
   v23 = 2;
 LABEL_79:
-  v42 = a4;
-  if (!a4)
+  typeCopy3 = type;
+  if (!type)
   {
     goto LABEL_83;
   }
@@ -5412,9 +5412,9 @@ LABEL_80:
     v23 = 0;
   }
 
-  *v42 = v23;
+  *typeCopy3 = v23;
 LABEL_83:
-  if (a5)
+  if (name)
   {
     if (v17)
     {
@@ -5426,10 +5426,10 @@ LABEL_83:
       v47 = 0;
     }
 
-    *a5 = v47;
+    *name = v47;
   }
 
-  if (a6)
+  if (label)
   {
     if (v17)
     {
@@ -5441,10 +5441,10 @@ LABEL_83:
       v48 = 0;
     }
 
-    *a6 = v48;
+    *label = v48;
   }
 
-  if (a7)
+  if (domains)
   {
     if (v17)
     {
@@ -5456,16 +5456,16 @@ LABEL_83:
       v49 = 0;
     }
 
-    *a7 = v49;
+    *domains = v49;
   }
 
-  if (a8)
+  if (properties)
   {
     if (v17)
     {
-      if ([v70 count])
+      if ([dictionary count])
       {
-        v50 = v70;
+        v50 = dictionary;
       }
 
       else
@@ -5479,10 +5479,10 @@ LABEL_83:
       v50 = 0;
     }
 
-    *a8 = v50;
+    *properties = v50;
   }
 
-  if (a9)
+  if (error)
   {
     v51 = v17;
   }
@@ -5496,45 +5496,45 @@ LABEL_83:
   {
     v52 = v19;
     v53 = MEMORY[0x277CCA9B8];
-    v54 = [MEMORY[0x277CCACA8] stringWithFormat:@"'%@' do not match element requirement.", v13];
+    stringCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"'%@' do not match element requirement.", stringCopy];
     v55 = v53;
     v19 = v52;
-    *a9 = [v55 errorWithDescription:v54];
+    *error = [v55 errorWithDescription:stringCopy];
   }
 
   v56 = *MEMORY[0x277D85DE8];
   return v17;
 }
 
-+ (BOOL)scanMatchString:(id)a3 definitions:(id *)a4 constraints:(id *)a5 forCreation:(BOOL)a6 error:(id *)a7
++ (BOOL)scanMatchString:(id)string definitions:(id *)definitions constraints:(id *)constraints forCreation:(BOOL)creation error:(id *)error
 {
   v112 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if (a4 && *a4)
+  stringCopy = string;
+  if (definitions && *definitions)
   {
-    v10 = [*a4 mutableCopy];
+    dictionary = [*definitions mutableCopy];
   }
 
   else
   {
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v11 = v10;
-  v77 = [MEMORY[0x277CBEB18] array];
+  v11 = dictionary;
+  array = [MEMORY[0x277CBEB18] array];
   v12 = objc_alloc_init(MAAbstractGraph);
-  v13 = [MEMORY[0x277CBEB18] array];
-  v14 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"([\\(|\\[](?:[\\w\\|\\*\\ \\.\\'\\{\\}\\:\\(\\)\\-\\>\\<\\[\\]\\%\\+\\$\\^\\/\\?\\=]|\\d options:)+[\\)|\\]])" error:{0, a7}];;
+  array2 = [MEMORY[0x277CBEB18] array];
+  v14 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"([\\(|\\[](?:[\\w\\|\\*\\ \\.\\'\\{\\}\\:\\(\\)\\-\\>\\<\\[\\]\\%\\+\\$\\^\\/\\?\\=]|\\d options:)+[\\)|\\]])" error:{0, error}];;
   if (v14)
   {
-    v15 = [v14 matchesInString:v9 options:0 range:{0, objc_msgSend(v9, "length")}];
+    v15 = [v14 matchesInString:stringCopy options:0 range:{0, objc_msgSend(stringCopy, "length")}];
     v16 = v15;
     if (v15)
     {
-      v67 = a4;
-      v68 = a5;
+      definitionsCopy = definitions;
+      constraintsCopy = constraints;
       v70 = v14;
-      v71 = v13;
+      v71 = array2;
       v75 = v12;
       v108 = 0u;
       v109 = 0u;
@@ -5548,12 +5548,12 @@ LABEL_83:
         v17 = 0x2797FD000uLL;
         v74 = *v107;
         v18 = 1;
-        v78 = v9;
+        v78 = stringCopy;
         v80 = v11;
         do
         {
           v19 = 0;
-          v20 = a7;
+          errorCopy4 = error;
           do
           {
             if (*v107 != v74)
@@ -5577,14 +5577,14 @@ LABEL_83:
                 }
 
                 v25 = [v22 rangeAtIndex:v23];
-                v27 = [v9 substringWithRange:{v25, v26}];
+                v27 = [stringCopy substringWithRange:{v25, v26}];
                 v104 = 0;
                 v105 = 0;
                 v102 = 0;
                 v103 = 0;
                 v101 = 0;
                 v82 = v27;
-                v28 = [a1 scanGraphElementString:0 type:? optionalName:? label:? optionalDomains:? optionalProperties:? error:?];
+                v28 = [self scanGraphElementString:0 type:? optionalName:? label:? optionalDomains:? optionalProperties:? error:?];
                 v94 = v104;
                 v29 = v103;
                 v92 = v102;
@@ -5597,13 +5597,13 @@ LABEL_83:
                     if (v105 == 1)
                     {
                       v30 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v92, "count")}];
-                      v31 = [v92 firstIndex];
-                      while (v31 != 0xFFFF)
+                      firstIndex = [v92 firstIndex];
+                      while (firstIndex != 0xFFFF)
                       {
                         v32 = v30;
                         v33 = [MAAbstractNode alloc];
                         LODWORD(v34) = 1.0;
-                        v35 = [(MAAbstractNode *)v33 initWithLabel:v90 domain:v31 weight:v89 properties:v34];
+                        v35 = [(MAAbstractNode *)v33 initWithLabel:v90 domain:firstIndex weight:v89 properties:v34];
                         [(MANode *)v35 setIdentifier:v18];
                         v36 = v94;
                         if (!v94)
@@ -5617,7 +5617,7 @@ LABEL_83:
 
                         if (v37)
                         {
-                          if (!v20)
+                          if (!errorCopy4)
                           {
                             goto LABEL_67;
                           }
@@ -5629,18 +5629,18 @@ LABEL_83:
 
                         v30 = v32;
                         [v32 addObject:v35];
-                        v31 = [v92 indexGreaterThanIndex:v31];
+                        firstIndex = [v92 indexGreaterThanIndex:firstIndex];
                       }
 
                       goto LABEL_48;
                     }
 
-                    if (v20)
+                    if (errorCopy4)
                     {
                       v60 = MEMORY[0x277CCA9B8];
                       v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"Query string malformed, element '%@' doesn't match any type.", v82];
                       [v60 errorWithDescription:v30];
-                      *v20 = v54 = 0;
+                      *errorCopy4 = v54 = 0;
                       goto LABEL_69;
                     }
 
@@ -5651,7 +5651,7 @@ LABEL_70:
                     {
 
                       v12 = v75;
-                      v13 = v71;
+                      array2 = v71;
                       goto LABEL_87;
                     }
 
@@ -5667,13 +5667,13 @@ LABEL_71:
                   }
 
                   v30 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v92, "count")}];
-                  v55 = [v92 firstIndex];
-                  while (v55 != 0xFFFF)
+                  firstIndex2 = [v92 firstIndex];
+                  while (firstIndex2 != 0xFFFF)
                   {
                     v32 = v30;
                     v56 = objc_alloc(*(v17 + 432));
                     LODWORD(v57) = 1.0;
-                    v35 = [v56 initWithLabel:v90 domain:v55 weight:v89 properties:v57];
+                    v35 = [v56 initWithLabel:v90 domain:firstIndex2 weight:v89 properties:v57];
                     [(MANode *)v35 setIdentifier:v18];
                     v58 = v94;
                     if (!v94)
@@ -5687,12 +5687,12 @@ LABEL_71:
 
                     if (v59)
                     {
-                      if (v20)
+                      if (errorCopy4)
                       {
                         v61 = MEMORY[0x277CCA9B8];
                         [MEMORY[0x277CCACA8] stringWithFormat:@"Query string malformed, edge named '%@' has no matching definition.", v94];
                         v62 = LABEL_66:;
-                        *v20 = [v61 errorWithDescription:v62];
+                        *errorCopy4 = [v61 errorWithDescription:v62];
                       }
 
 LABEL_67:
@@ -5704,14 +5704,14 @@ LABEL_67:
 
                     v30 = v32;
                     [v32 addObject:v35];
-                    v55 = [v92 indexGreaterThanIndex:v55];
+                    firstIndex2 = [v92 indexGreaterThanIndex:firstIndex2];
                   }
 
 LABEL_48:
                   [v11 setObject:v30 forKey:v94];
                   v54 = 1;
 LABEL_68:
-                  v9 = v78;
+                  stringCopy = v78;
 LABEL_69:
 
                   goto LABEL_70;
@@ -5720,7 +5720,7 @@ LABEL_69:
                 break;
               }
 
-              v38 = [a1 scanGraphConstraintString:v82 error:v20];
+              v38 = [self scanGraphConstraintString:v82 error:errorCopy4];
               v79 = objc_opt_new();
               v39 = +[MAPath path];
               v99 = 1;
@@ -5738,19 +5738,19 @@ LABEL_69:
                 *v96;
                 *v96;
                 v40 = **(&v95 + 1);
-                v41 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"(\\(|\\[)([\\w\\d\\ options:\\-\\ \\:\\{\\'\\\\}\\#\\%\\+\\$\\^\\/\\(\\)\\?\\=]+)(\\)|\\])" error:{0, v20}];;
+                v41 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"(\\(|\\[)([\\w\\d\\ options:\\-\\ \\:\\{\\'\\\\}\\#\\%\\+\\$\\^\\/\\(\\)\\?\\=]+)(\\)|\\])" error:{0, errorCopy4}];;
                 if (v41)
                 {
                   v42 = v41;
                   v43 = [v41 matchesInString:v40 options:0 range:{0, objc_msgSend(v40, "length")}];
                   if ([v43 count] == 1)
                   {
-                    v44 = [v43 firstObject];
-                    if ([v44 numberOfRanges] == 4)
+                    firstObject = [v43 firstObject];
+                    if ([firstObject numberOfRanges] == 4)
                     {
-                      v45 = [v44 rangeAtIndex:0];
+                      v45 = [firstObject rangeAtIndex:0];
                       v88 = [v40 substringWithRange:{v45, v46}];
-                      v47 = [a1 scanGraphElementString:v20 type:? optionalName:? label:? optionalDomains:? optionalProperties:? error:?];
+                      v47 = [self scanGraphElementString:errorCopy4 type:? optionalName:? label:? optionalDomains:? optionalProperties:? error:?];
                       v48 = 0;
                       v49 = 0;
                       v93 = 0;
@@ -5760,16 +5760,16 @@ LABEL_69:
                       {
                         if (v49 | v48)
                         {
-                          v20 = a7;
-                          if (a7)
+                          errorCopy4 = error;
+                          if (error)
                           {
                             v51 = MEMORY[0x277CCA9B8];
                             v52 = v50;
                             v53 = [MEMORY[0x277CCACA8] stringWithFormat:@"Query string malformed, element '%@' has no matching type.", v88];
-                            *a7 = [v51 errorWithDescription:v53];
+                            *error = [v51 errorWithDescription:v53];
 
                             v50 = v52;
-                            v20 = a7;
+                            errorCopy4 = error;
                           }
 
                           v23 = v85;
@@ -5790,13 +5790,13 @@ LABEL_60:
                       }
 
                       v23 = v85;
-                      v20 = a7;
+                      errorCopy4 = error;
                       goto LABEL_35;
                     }
 
-                    if (v20)
+                    if (errorCopy4)
                     {
-                      *v20 = [MEMORY[0x277CCA9B8] errorWithDescription:{@"Query string malformed, constraint result has wrong number of ranges."}];
+                      *errorCopy4 = [MEMORY[0x277CCA9B8] errorWithDescription:{@"Query string malformed, constraint result has wrong number of ranges."}];
                     }
 
                     v11 = v80;
@@ -5808,9 +5808,9 @@ LABEL_60:
                   {
                     v11 = v80;
                     v23 = v85;
-                    if (v20)
+                    if (errorCopy4)
                     {
-                      *v20 = [MEMORY[0x277CCA9B8] errorWithDescription:{@"Query string malformed, constraintString should match exactly once."}];
+                      *errorCopy4 = [MEMORY[0x277CCA9B8] errorWithDescription:{@"Query string malformed, constraintString should match exactly once."}];
                     }
                   }
                 }
@@ -5825,7 +5825,7 @@ LABEL_60:
                 goto LABEL_59;
               }
 
-              [v77 addObject:v79];
+              [array addObject:v79];
               if (([v39 isEmpty] & 1) == 0)
               {
                 [v71 addObject:v39];
@@ -5847,7 +5847,7 @@ LABEL_72:
         while (v73);
       }
 
-      if (v67)
+      if (definitionsCopy)
       {
         if ([v11 count])
         {
@@ -5859,12 +5859,12 @@ LABEL_72:
           v63 = 0;
         }
 
-        *v67 = v63;
+        *definitionsCopy = v63;
       }
 
       v12 = v75;
-      v13 = v71;
-      if (v68)
+      array2 = v71;
+      if (constraintsCopy)
       {
         if ([v71 count])
         {
@@ -5876,7 +5876,7 @@ LABEL_72:
           v64 = 0;
         }
 
-        *v68 = v64;
+        *constraintsCopy = v64;
       }
 
       LOBYTE(v54) = 1;
@@ -5885,10 +5885,10 @@ LABEL_87:
       v14 = v70;
     }
 
-    else if (a7)
+    else if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDescription:{@"Query string malformed, not matching any expression."}];
-      *a7 = LOBYTE(v54) = 0;
+      *error = LOBYTE(v54) = 0;
     }
 
     else
@@ -5906,16 +5906,16 @@ LABEL_87:
   return v54;
 }
 
-+ (id)visualStringWithFormat:(id)a3 elements:(id)a4
++ (id)visualStringWithFormat:(id)format elements:(id)elements
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [MEMORY[0x277CCAB68] stringWithString:a3];
+  elementsCopy = elements;
+  v6 = [MEMORY[0x277CCAB68] stringWithString:format];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = [v5 allKeys];
+  obj = [elementsCopy allKeys];
   v7 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -5931,18 +5931,18 @@ LABEL_87:
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v5 objectForKeyedSubscript:v11];
-        v13 = [v12 visualString];
+        v12 = [elementsCopy objectForKeyedSubscript:v11];
+        visualString = [v12 visualString];
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
         {
           v14 = [v12 visualStringWithName:v11];
 
-          v13 = v14;
+          visualString = v14;
         }
 
         v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@)", v11];
-        [v6 replaceOccurrencesOfString:v15 withString:v13 options:0 range:{0, objc_msgSend(v6, "length")}];
+        [v6 replaceOccurrencesOfString:v15 withString:visualString options:0 range:{0, objc_msgSend(v6, "length")}];
       }
 
       v8 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -5956,16 +5956,16 @@ LABEL_87:
   return v6;
 }
 
-+ (MAGraph)graphWithDefinitions:(id)a3 constraints:(id)a4 error:(id *)a5
++ (MAGraph)graphWithDefinitions:(id)definitions constraints:(id)constraints error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_opt_class() graph];
-  LODWORD(a5) = [a1 populateGraph:v10 withDefinitions:v9 constraints:v8 error:a5];
+  constraintsCopy = constraints;
+  definitionsCopy = definitions;
+  graph = [objc_opt_class() graph];
+  LODWORD(error) = [self populateGraph:graph withDefinitions:definitionsCopy constraints:constraintsCopy error:error];
 
-  if (a5)
+  if (error)
   {
-    v11 = v10;
+    v11 = graph;
   }
 
   else
@@ -5976,11 +5976,11 @@ LABEL_87:
   return v11;
 }
 
-+ (BOOL)populateGraph:(id)a3 withDefinitions:(id)a4 constraints:(id)a5 error:(id *)a6
++ (BOOL)populateGraph:(id)graph withDefinitions:(id)definitions constraints:(id)constraints error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v19 = a3;
-  v20 = a4;
+  graphCopy = graph;
+  definitionsCopy = definitions;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
@@ -5989,7 +5989,7 @@ LABEL_87:
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = a5;
+  obj = constraints;
   v8 = [obj countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v8)
   {
@@ -6008,10 +6008,10 @@ LABEL_87:
         v25[1] = 3221225472;
         v25[2] = __66__MAGraph_Query__populateGraph_withDefinitions_constraints_error___block_invoke;
         v25[3] = &unk_2797FF9D0;
-        v12 = v20;
+        v12 = definitionsCopy;
         v26 = v12;
         v28 = &v33;
-        v13 = v19;
+        v13 = graphCopy;
         v27 = v13;
         [v11 enumerateWithBlock:v25];
         if (!*(v34 + 24))
@@ -6373,43 +6373,43 @@ LABEL_37:
   v56 = *MEMORY[0x277D85DE8];
 }
 
-+ (MAGraph)graphWithVisualString:(id)a3 error:(id *)a4
++ (MAGraph)graphWithVisualString:(id)string error:(id *)error
 {
-  v6 = a3;
+  stringCopy = string;
   v12 = 0;
   v13 = 0;
-  v7 = [objc_opt_class() scanMatchString:v6 definitions:&v13 constraints:&v12 forCreation:1 error:a4];
+  v7 = [objc_opt_class() scanMatchString:stringCopy definitions:&v13 constraints:&v12 forCreation:1 error:error];
 
   v8 = v13;
   v9 = v12;
   v10 = 0;
   if (v7)
   {
-    v10 = [a1 graphWithDefinitions:v8 constraints:v9 error:a4];
+    v10 = [self graphWithDefinitions:v8 constraints:v9 error:error];
   }
 
   return v10;
 }
 
-- (void)breadthFirstSearchFromNode:(id)a3 directed:(BOOL)a4 usingBlock:(id)a5
+- (void)breadthFirstSearchFromNode:(id)node directed:(BOOL)directed usingBlock:(id)block
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [MEMORY[0x277CBEB18] array];
+  nodeCopy = node;
+  blockCopy = block;
+  array = [MEMORY[0x277CBEB18] array];
   v10 = [MEMORY[0x277CBEB58] set];
   v19 = 0;
-  [v9 addObject:v7];
-  if ([v9 count])
+  [array addObject:nodeCopy];
+  if ([array count])
   {
     while (1)
     {
-      v11 = [v9 firstObject];
-      if ([v10 containsObject:v11])
+      firstObject = [array firstObject];
+      if ([v10 containsObject:firstObject])
       {
         goto LABEL_8;
       }
 
-      v12 = v8[2](v8, v11, &v19);
+      v12 = blockCopy[2](blockCopy, firstObject, &v19);
       if (v19 == 1)
       {
 
@@ -6417,7 +6417,7 @@ LABEL_37:
       }
 
       v13 = v12;
-      [v10 addObject:v11];
+      [v10 addObject:firstObject];
       if (v13)
       {
         break;
@@ -6425,7 +6425,7 @@ LABEL_37:
 
 LABEL_9:
 
-      if (![v9 count])
+      if (![array count])
       {
         goto LABEL_12;
       }
@@ -6435,21 +6435,21 @@ LABEL_9:
     v17[1] = 3221225472;
     v17[2] = __69__MAGraph_Traversal__breadthFirstSearchFromNode_directed_usingBlock___block_invoke;
     v17[3] = &unk_2797FFB60;
-    v14 = v9;
+    v14 = array;
     v18 = v14;
-    [v11 enumerateOutEdgesUsingBlock:v17];
-    if (!a4)
+    [firstObject enumerateOutEdgesUsingBlock:v17];
+    if (!directed)
     {
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __69__MAGraph_Traversal__breadthFirstSearchFromNode_directed_usingBlock___block_invoke_2;
       v15[3] = &unk_2797FFB60;
       v16 = v14;
-      [v11 enumerateInEdgesUsingBlock:v15];
+      [firstObject enumerateInEdgesUsingBlock:v15];
     }
 
 LABEL_8:
-    [v9 removeObject:v11];
+    [array removeObject:firstObject];
     goto LABEL_9;
   }
 
@@ -6470,26 +6470,26 @@ void __69__MAGraph_Traversal__breadthFirstSearchFromNode_directed_usingBlock___b
   [v2 addObject:v3];
 }
 
-- (void)depthFirstSearchFromNode:(id)a3 directed:(BOOL)a4 usingBlock:(id)a5
+- (void)depthFirstSearchFromNode:(id)node directed:(BOOL)directed usingBlock:(id)block
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [MEMORY[0x277CBEB18] array];
+  nodeCopy = node;
+  blockCopy = block;
+  array = [MEMORY[0x277CBEB18] array];
   v10 = [MEMORY[0x277CBEB58] set];
   v20 = 0;
-  [v9 addObject:v7];
-  if ([v9 count])
+  [array addObject:nodeCopy];
+  if ([array count])
   {
     while (1)
     {
-      v11 = [v9 lastObject];
-      v12 = [v9 count];
-      if ([v10 containsObject:v11])
+      lastObject = [array lastObject];
+      v12 = [array count];
+      if ([v10 containsObject:lastObject])
       {
         goto LABEL_8;
       }
 
-      v13 = v8[2](v8, v11, &v20);
+      v13 = blockCopy[2](blockCopy, lastObject, &v20);
       if (v20 == 1)
       {
 
@@ -6497,7 +6497,7 @@ void __69__MAGraph_Traversal__breadthFirstSearchFromNode_directed_usingBlock___b
       }
 
       v14 = v13;
-      [v10 addObject:v11];
+      [v10 addObject:lastObject];
       if (v14)
       {
         break;
@@ -6505,7 +6505,7 @@ void __69__MAGraph_Traversal__breadthFirstSearchFromNode_directed_usingBlock___b
 
 LABEL_9:
 
-      if (![v9 count])
+      if (![array count])
       {
         goto LABEL_12;
       }
@@ -6515,21 +6515,21 @@ LABEL_9:
     v18[1] = 3221225472;
     v18[2] = __67__MAGraph_Traversal__depthFirstSearchFromNode_directed_usingBlock___block_invoke;
     v18[3] = &unk_2797FFB60;
-    v15 = v9;
+    v15 = array;
     v19 = v15;
-    [v11 enumerateOutEdgesUsingBlock:v18];
-    if (!a4)
+    [lastObject enumerateOutEdgesUsingBlock:v18];
+    if (!directed)
     {
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __67__MAGraph_Traversal__depthFirstSearchFromNode_directed_usingBlock___block_invoke_2;
       v16[3] = &unk_2797FFB60;
       v17 = v15;
-      [v11 enumerateInEdgesUsingBlock:v16];
+      [lastObject enumerateInEdgesUsingBlock:v16];
     }
 
 LABEL_8:
-    [v9 removeObjectAtIndex:v12 - 1];
+    [array removeObjectAtIndex:v12 - 1];
     goto LABEL_9;
   }
 
@@ -6550,18 +6550,18 @@ void __67__MAGraph_Traversal__depthFirstSearchFromNode_directed_usingBlock___blo
   [v2 addObject:v3];
 }
 
-- (id)shortestPathFromNode:(id)a3 toNode:(id)a4 directed:(BOOL)a5
+- (id)shortestPathFromNode:(id)node toNode:(id)toNode directed:(BOOL)directed
 {
-  v5 = a5;
-  v7 = a3;
-  v24 = a4;
+  directedCopy = directed;
+  nodeCopy = node;
+  toNodeCopy = toNode;
   v21 = +[MAPath path];
-  v23 = [MEMORY[0x277CBEB40] orderedSet];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
   v8 = objc_opt_new();
-  v22 = [MEMORY[0x277CBEB40] orderedSet];
-  v9 = v7;
-  [v8 setObject:&unk_2867B4ED0 forKey:v9];
-  if (v5)
+  orderedSet2 = [MEMORY[0x277CBEB40] orderedSet];
+  firstObject = nodeCopy;
+  [v8 setObject:&unk_2867B4ED0 forKey:firstObject];
+  if (directedCopy)
   {
     v10 = 2;
   }
@@ -6571,28 +6571,28 @@ void __67__MAGraph_Traversal__depthFirstSearchFromNode_directed_usingBlock___blo
     v10 = 3;
   }
 
-  v19 = v9;
-  while (([v9 isEqual:{v24, v19}] & 1) == 0)
+  v19 = firstObject;
+  while (([firstObject isEqual:{toNodeCopy, v19}] & 1) == 0)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __59__MAGraph_Traversal__shortestPathFromNode_toNode_directed___block_invoke;
     aBlock[3] = &unk_2797FFAE8;
-    v11 = v23;
-    v50 = v5;
+    v11 = orderedSet;
+    v50 = directedCopy;
     v46 = v11;
-    v47 = v9;
-    v12 = v22;
+    v47 = firstObject;
+    v12 = orderedSet2;
     v48 = v12;
     v49 = v8;
-    v13 = v9;
+    v13 = firstObject;
     v14 = _Block_copy(aBlock);
     [v13 enumerateEdgesOfType:v10 usingBlock:v14];
-    v9 = [v12 firstObject];
+    firstObject = [v12 firstObject];
 
-    if (v9)
+    if (firstObject)
     {
-      [v12 removeObject:v9];
+      [v12 removeObject:firstObject];
     }
 
     else
@@ -6600,13 +6600,13 @@ void __67__MAGraph_Traversal__depthFirstSearchFromNode_directed_usingBlock___blo
       v20 = v21;
     }
 
-    if (!v9)
+    if (!firstObject)
     {
       goto LABEL_17;
     }
   }
 
-  v15 = v24;
+  v15 = toNodeCopy;
 
   do
   {
@@ -6641,7 +6641,7 @@ void __67__MAGraph_Traversal__depthFirstSearchFromNode_directed_usingBlock___blo
     v28 = v44;
     v29 = &v38;
     v30 = &v32;
-    v31 = v5;
+    v31 = directedCopy;
     [v16 enumerateNeighborNodesUsingBlock:v25];
     if (v33[5])
     {

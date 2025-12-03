@@ -5,7 +5,7 @@
 - (id)description;
 - (id)splitterDeviceList;
 - (unint64_t)splitterState;
-- (void)addDeviceIntoSplitterDeviceList:(id)a3;
+- (void)addDeviceIntoSplitterDeviceList:(id)list;
 @end
 
 @implementation CSBluetoothWirelessSplitterInfo
@@ -141,9 +141,9 @@ LABEL_17:
   return result;
 }
 
-- (void)addDeviceIntoSplitterDeviceList:(id)a3
+- (void)addDeviceIntoSplitterDeviceList:(id)list
 {
-  if (a3)
+  if (list)
   {
     [(NSMutableArray *)self->_splitterDeviceList addObject:?];
   }
@@ -159,8 +159,8 @@ LABEL_17:
 - (id)description
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD60] string];
-  [v3 appendFormat:@"[SplitterEnabled(%d)]", self->_splitterEnabled];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"[SplitterEnabled(%d)]", self->_splitterEnabled];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -182,8 +182,8 @@ LABEL_17:
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 address];
-        [v3 appendFormat:@"[Device%d(%@) DoAP(%d)]", v8, v11, objc_msgSend(v10, "supportDoAP")];
+        address = [v10 address];
+        [string appendFormat:@"[Device%d(%@) DoAP(%d)]", v8, address, objc_msgSend(v10, "supportDoAP")];
 
         v8 = (v8 + 1);
       }
@@ -194,10 +194,10 @@ LABEL_17:
     while (v6);
   }
 
-  [v3 appendFormat:@"[SplitterState:%d]", -[CSBluetoothWirelessSplitterInfo splitterState](self, "splitterState")];
+  [string appendFormat:@"[SplitterState:%d]", -[CSBluetoothWirelessSplitterInfo splitterState](self, "splitterState")];
   v12 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return string;
 }
 
 - (CSBluetoothWirelessSplitterInfo)init
@@ -207,9 +207,9 @@ LABEL_17:
   v2 = [(CSBluetoothWirelessSplitterInfo *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     splitterDeviceList = v2->_splitterDeviceList;
-    v2->_splitterDeviceList = v3;
+    v2->_splitterDeviceList = array;
   }
 
   return v2;

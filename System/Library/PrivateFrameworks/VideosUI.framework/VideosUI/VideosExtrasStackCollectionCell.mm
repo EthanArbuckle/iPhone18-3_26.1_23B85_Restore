@@ -1,15 +1,15 @@
 @interface VideosExtrasStackCollectionCell
-- (void)setViewController:(id)a3;
-- (void)willMoveToSuperview:(id)a3;
+- (void)setViewController:(id)controller;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation VideosExtrasStackCollectionCell
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v4.receiver = self;
   v4.super_class = VideosExtrasStackCollectionCell;
-  [(VideosExtrasStackCollectionCell *)&v4 willMoveToSuperview:a3];
+  [(VideosExtrasStackCollectionCell *)&v4 willMoveToSuperview:superview];
   if (self->_needsViewWillAppear)
   {
     [(VideosExtrasGridElementViewController *)self->_viewController viewWillAppear:0];
@@ -17,12 +17,12 @@
   }
 }
 
-- (void)setViewController:(id)a3
+- (void)setViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   viewController = self->_viewController;
-  v17 = v5;
-  if (viewController != v5)
+  v17 = controllerCopy;
+  if (viewController != controllerCopy)
   {
     if (self->_fitConstraints)
     {
@@ -30,49 +30,49 @@
       viewController = self->_viewController;
     }
 
-    v7 = [(VideosExtrasGridElementViewController *)viewController view];
-    v8 = [v7 superview];
+    view = [(VideosExtrasGridElementViewController *)viewController view];
+    superview = [view superview];
 
-    if (v8 == self)
+    if (superview == self)
     {
       [(VideosExtrasGridElementViewController *)self->_viewController willMoveToParentViewController:0];
-      v9 = [(VideosExtrasGridElementViewController *)self->_viewController view];
-      [v9 removeFromSuperview];
+      view2 = [(VideosExtrasGridElementViewController *)self->_viewController view];
+      [view2 removeFromSuperview];
 
       [(VideosExtrasGridElementViewController *)self->_viewController removeFromParentViewController];
     }
 
     if (v17)
     {
-      v10 = [(VideosExtrasStackCollectionCell *)self superview];
+      superview2 = [(VideosExtrasStackCollectionCell *)self superview];
 
-      if (!v10)
+      if (!superview2)
       {
         self->_needsViewWillAppear = 1;
       }
 
-      v11 = [(VideosExtrasStackCollectionCell *)self parentViewController];
-      [v11 addChildViewController:v17];
+      parentViewController = [(VideosExtrasStackCollectionCell *)self parentViewController];
+      [parentViewController addChildViewController:v17];
 
-      v12 = [(VideosExtrasGridElementViewController *)v17 view];
-      v13 = [(VideosExtrasStackCollectionCell *)self contentView];
-      [v13 addSubview:v12];
-      v14 = [MEMORY[0x1E696ACD8] constraintsByAttachingView:v12 toView:v13 alongEdges:15 insets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+      view3 = [(VideosExtrasGridElementViewController *)v17 view];
+      contentView = [(VideosExtrasStackCollectionCell *)self contentView];
+      [contentView addSubview:view3];
+      v14 = [MEMORY[0x1E696ACD8] constraintsByAttachingView:view3 toView:contentView alongEdges:15 insets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
       fitConstraints = self->_fitConstraints;
       self->_fitConstraints = v14;
 
       [MEMORY[0x1E696ACD8] activateConstraints:self->_fitConstraints];
-      v16 = [(VideosExtrasStackCollectionCell *)self parentViewController];
-      [(VideosExtrasGridElementViewController *)v17 didMoveToParentViewController:v16];
+      parentViewController2 = [(VideosExtrasStackCollectionCell *)self parentViewController];
+      [(VideosExtrasGridElementViewController *)v17 didMoveToParentViewController:parentViewController2];
     }
 
     else
     {
-      v12 = self->_fitConstraints;
+      view3 = self->_fitConstraints;
       self->_fitConstraints = 0;
     }
 
-    objc_storeStrong(&self->_viewController, a3);
+    objc_storeStrong(&self->_viewController, controller);
   }
 }
 

@@ -1,6 +1,6 @@
 @interface MFIMAPCommandPipeline
-- (id)failureResponsesFromSendingCommandsWithConnection:(id)a3;
-- (void)_removeFetchUnitMatchingResponse:(id)a3;
+- (id)failureResponsesFromSendingCommandsWithConnection:(id)connection;
+- (void)_removeFetchUnitMatchingResponse:(id)response;
 - (void)dealloc;
 @end
 
@@ -13,9 +13,9 @@
   [(MFIMAPCommandPipeline *)&v3 dealloc];
 }
 
-- (void)_removeFetchUnitMatchingResponse:(id)a3
+- (void)_removeFetchUnitMatchingResponse:(id)response
 {
-  v5 = [objc_msgSend(a3 fetchResultWithType:{8), "uid"}];
+  v5 = [objc_msgSend(response fetchResultWithType:{8), "uid"}];
   if (v5)
   {
     v6 = v5;
@@ -24,7 +24,7 @@
       v7 = [(NSMutableArray *)self->_fetchUnits objectAtIndex:0];
       if ([v7 uid] == v6)
       {
-        if ([v7 matchesFetchResponse:a3])
+        if ([v7 matchesFetchResponse:response])
         {
           fetchUnits = self->_fetchUnits;
 
@@ -35,7 +35,7 @@
   }
 }
 
-- (id)failureResponsesFromSendingCommandsWithConnection:(id)a3
+- (id)failureResponsesFromSendingCommandsWithConnection:(id)connection
 {
   v45[2] = *MEMORY[0x277D85DE8];
   [(MFIMAPCommandPipeline *)self mf_lock];
@@ -48,20 +48,20 @@
   }
 
   v6 = v5;
-  v37 = a3;
+  connectionCopy = connection;
   v38 = 0;
   v7 = 0;
   v8 = 0;
   for (i = 0; i < v6; ++i)
   {
-    v10 = [(NSMutableArray *)self->_fetchUnits objectAtIndex:i, v37];
-    v11 = [v10 uid];
-    v12 = [v10 fetchItem];
+    connectionCopy = [(NSMutableArray *)self->_fetchUnits objectAtIndex:i, connectionCopy];
+    v11 = [connectionCopy uid];
+    fetchItem = [connectionCopy fetchItem];
     v39 = v8;
-    if ([v10 bodyDataConsumer] && objc_msgSend(v10, "consumerSection"))
+    if ([connectionCopy bodyDataConsumer] && objc_msgSend(connectionCopy, "consumerSection"))
     {
       v13 = objc_alloc_init(MFIMAPResponseConsumer);
-      -[MFIMAPResponseConsumer addConsumer:forSection:](v13, "addConsumer:forSection:", [v10 bodyDataConsumer], objc_msgSend(v10, "consumerSection"));
+      -[MFIMAPResponseConsumer addConsumer:forSection:](v13, "addConsumer:forSection:", [connectionCopy bodyDataConsumer], objc_msgSend(connectionCopy, "consumerSection"));
     }
 
     else
@@ -90,7 +90,7 @@
             if (!v15)
             {
               v15 = objc_msgSend(@"("), "mutableCopyWithZone:", 0;
-              [v15 appendString:v12];
+              [v15 appendString:fetchItem];
             }
 
             [v15 appendString:@" "];
@@ -122,7 +122,7 @@
 
 LABEL_26:
       [v15 appendString:@""]);
-      v12 = v15;
+      fetchItem = v15;
       goto LABEL_27;
     }
 
@@ -152,7 +152,7 @@ LABEL_27:
     *v18 = 21;
     *(v18 + 4) = v13;
     v45[0] = EFStringWithInt();
-    v45[1] = v12;
+    v45[1] = fetchItem;
     *(v18 + 1) = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:v45 count:2];
     if (v15)
     {
@@ -165,11 +165,11 @@ LABEL_27:
   if (v39 != -1)
   {
     *(self + 24) |= 2u;
-    [v37 mf_lock];
+    [connectionCopy mf_lock];
     Current = CFAbsoluteTimeGetCurrent();
-    [v37 _responseFromSendingCommands:v7 count:v8];
-    [v37 setReadBufferSizeFromElapsedTime:self->_expectedSize bytesRead:CFAbsoluteTimeGetCurrent() - Current];
-    [v37 mf_unlock];
+    [connectionCopy _responseFromSendingCommands:v7 count:v8];
+    [connectionCopy setReadBufferSizeFromElapsedTime:self->_expectedSize bytesRead:CFAbsoluteTimeGetCurrent() - Current];
+    [connectionCopy mf_unlock];
     v21 = 0;
     v22 = 0;
     do
@@ -213,7 +213,7 @@ LABEL_27:
     *(self + 24) &= ~2u;
   }
 
-  a3 = v37;
+  connection = connectionCopy;
 LABEL_49:
   if ([(NSMutableArray *)self->_fetchUnits count])
   {
@@ -229,7 +229,7 @@ LABEL_49:
   self->_expectedSize = 0;
   *(self + 24) &= ~1u;
   [(MFIMAPCommandPipeline *)self mf_unlock];
-  [a3 didFinishCommands:v19 count:v8];
+  [connection didFinishCommands:v19 count:v8];
   if (v19)
   {
     free(v19);

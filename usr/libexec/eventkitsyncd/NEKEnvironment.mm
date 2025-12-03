@@ -9,7 +9,7 @@
 - (NEKSyncCoordinator)syncCoordinator;
 - (NEKTinyStore)tinyStore;
 - (NSString)clientName;
-- (void)setSyncController:(id)a3;
+- (void)setSyncController:(id)controller;
 @end
 
 @implementation NEKEnvironment
@@ -49,11 +49,11 @@
 
 - (NEKTinyStore)tinyStore
 {
-  v3 = [(NEKEnvironment *)self dbFileManager];
+  dbFileManager = [(NEKEnvironment *)self dbFileManager];
   os_unfair_lock_lock(&self->_lock);
   if (!self->_tinyStore)
   {
-    v4 = [[NEKTinyStore alloc] initWithDatabaseManager:v3];
+    v4 = [[NEKTinyStore alloc] initWithDatabaseManager:dbFileManager];
     tinyStore = self->_tinyStore;
     self->_tinyStore = v4;
   }
@@ -67,11 +67,11 @@
 
 - (NEKRecordMap)recordMap
 {
-  v3 = [(NEKEnvironment *)self dbFileManager];
+  dbFileManager = [(NEKEnvironment *)self dbFileManager];
   os_unfair_lock_lock(&self->_lock);
   if (!self->_recordMap)
   {
-    v4 = [[NEKRecordMap alloc] initWithDatabaseManager:v3];
+    v4 = [[NEKRecordMap alloc] initWithDatabaseManager:dbFileManager];
     recordMap = self->_recordMap;
     self->_recordMap = v4;
   }
@@ -85,11 +85,11 @@
 
 - (NEKSeenMap)seenMap
 {
-  v3 = [(NEKEnvironment *)self dbFileManager];
+  dbFileManager = [(NEKEnvironment *)self dbFileManager];
   os_unfair_lock_lock(&self->_lock);
   if (!self->_seenMap)
   {
-    v4 = [[NEKSeenMap alloc] initWithDatabaseManager:v3];
+    v4 = [[NEKSeenMap alloc] initWithDatabaseManager:dbFileManager];
     seenMap = self->_seenMap;
     self->_seenMap = v4;
   }
@@ -137,12 +137,12 @@
 
 - (NSString)clientName
 {
-  v3 = [(NEKEnvironment *)self dbFileManager];
+  dbFileManager = [(NEKEnvironment *)self dbFileManager];
   os_unfair_lock_lock(&self->_lock);
   if (!self->_clientName)
   {
-    v4 = [v3 pairingID];
-    v5 = [NSString stringWithFormat:@"com.apple.eventkitsync.changeobserver.%@", v4];
+    pairingID = [dbFileManager pairingID];
+    v5 = [NSString stringWithFormat:@"com.apple.eventkitsync.changeobserver.%@", pairingID];
     clientName = self->_clientName;
     self->_clientName = v5;
   }
@@ -154,13 +154,13 @@
   return v7;
 }
 
-- (void)setSyncController:(id)a3
+- (void)setSyncController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(NSCondition *)self->_controllerCondition lock];
   syncController = self->_syncController;
-  self->_syncController = v4;
-  v6 = v4;
+  self->_syncController = controllerCopy;
+  v6 = controllerCopy;
 
   [(NSCondition *)self->_controllerCondition broadcast];
   [(NSCondition *)self->_controllerCondition unlock];
@@ -168,11 +168,11 @@
 
 - (NEKSessionAnalytics)analytics
 {
-  v3 = [(NEKEnvironment *)self dbFileManager];
+  dbFileManager = [(NEKEnvironment *)self dbFileManager];
   os_unfair_lock_lock(&self->_lock);
   if (!self->_analytics)
   {
-    v4 = [[NEKSessionAnalytics alloc] initWithFileManager:v3];
+    v4 = [[NEKSessionAnalytics alloc] initWithFileManager:dbFileManager];
     analytics = self->_analytics;
     self->_analytics = v4;
   }

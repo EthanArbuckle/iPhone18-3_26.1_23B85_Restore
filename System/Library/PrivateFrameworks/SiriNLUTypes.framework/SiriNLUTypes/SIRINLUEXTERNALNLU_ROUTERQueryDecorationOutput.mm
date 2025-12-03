@@ -1,33 +1,33 @@
 @interface SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAdjustedRankedSpans:(id)a3;
-- (void)addAdjustedRankedTools:(id)a3;
-- (void)addContext:(id)a3;
-- (void)addOriginalRankedSpans:(id)a3;
-- (void)addOriginalRankedTools:(id)a3;
-- (void)addRequiredContext:(id)a3;
-- (void)addSpans:(id)a3;
-- (void)addUtteranceContext:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAdjustedRankedSpans:(id)spans;
+- (void)addAdjustedRankedTools:(id)tools;
+- (void)addContext:(id)context;
+- (void)addOriginalRankedSpans:(id)spans;
+- (void)addOriginalRankedTools:(id)tools;
+- (void)addRequiredContext:(id)context;
+- (void)addSpans:(id)spans;
+- (void)addUtteranceContext:(id)context;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v86 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v5 = v4[6];
+  v5 = fromCopy[6];
   v6 = [v5 countByEnumeratingWithState:&v74 objects:v85 count:16];
   if (v6)
   {
@@ -57,7 +57,7 @@
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v10 = v4[8];
+  v10 = fromCopy[8];
   v11 = [v10 countByEnumeratingWithState:&v70 objects:v84 count:16];
   if (v11)
   {
@@ -87,7 +87,7 @@
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v15 = v4[5];
+  v15 = fromCopy[5];
   v16 = [v15 countByEnumeratingWithState:&v66 objects:v83 count:16];
   if (v16)
   {
@@ -117,7 +117,7 @@
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v20 = v4[2];
+  v20 = fromCopy[2];
   v21 = [v20 countByEnumeratingWithState:&v62 objects:v82 count:16];
   if (v21)
   {
@@ -147,7 +147,7 @@
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v25 = v4[4];
+  v25 = fromCopy[4];
   v26 = [v25 countByEnumeratingWithState:&v58 objects:v81 count:16];
   if (v26)
   {
@@ -177,7 +177,7 @@
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v30 = v4[1];
+  v30 = fromCopy[1];
   v31 = [v30 countByEnumeratingWithState:&v54 objects:v80 count:16];
   if (v31)
   {
@@ -207,7 +207,7 @@
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v35 = v4[7];
+  v35 = fromCopy[7];
   v36 = [v35 countByEnumeratingWithState:&v50 objects:v79 count:16];
   if (v36)
   {
@@ -237,7 +237,7 @@
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v40 = v4[3];
+  v40 = fromCopy[3];
   v41 = [v40 countByEnumeratingWithState:&v46 objects:v78 count:16];
   if (v41)
   {
@@ -278,13 +278,13 @@
   return v9 ^ [(NSMutableArray *)self->_contexts hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((requiredContexts = self->_requiredContexts, !(requiredContexts | v4[6])) || -[NSMutableArray isEqual:](requiredContexts, "isEqual:")) && ((utteranceContexts = self->_utteranceContexts, !(utteranceContexts | v4[8])) || -[NSMutableArray isEqual:](utteranceContexts, "isEqual:")) && ((originalRankedTools = self->_originalRankedTools, !(originalRankedTools | v4[5])) || -[NSMutableArray isEqual:](originalRankedTools, "isEqual:")) && ((adjustedRankedTools = self->_adjustedRankedTools, !(adjustedRankedTools | v4[2])) || -[NSMutableArray isEqual:](adjustedRankedTools, "isEqual:")) && ((originalRankedSpans = self->_originalRankedSpans, !(originalRankedSpans | v4[4])) || -[NSMutableArray isEqual:](originalRankedSpans, "isEqual:")) && ((adjustedRankedSpans = self->_adjustedRankedSpans, !(adjustedRankedSpans | v4[1])) || -[NSMutableArray isEqual:](adjustedRankedSpans, "isEqual:")) && ((spans = self->_spans, !(spans | v4[7])) || -[NSMutableArray isEqual:](spans, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((requiredContexts = self->_requiredContexts, !(requiredContexts | equalCopy[6])) || -[NSMutableArray isEqual:](requiredContexts, "isEqual:")) && ((utteranceContexts = self->_utteranceContexts, !(utteranceContexts | equalCopy[8])) || -[NSMutableArray isEqual:](utteranceContexts, "isEqual:")) && ((originalRankedTools = self->_originalRankedTools, !(originalRankedTools | equalCopy[5])) || -[NSMutableArray isEqual:](originalRankedTools, "isEqual:")) && ((adjustedRankedTools = self->_adjustedRankedTools, !(adjustedRankedTools | equalCopy[2])) || -[NSMutableArray isEqual:](adjustedRankedTools, "isEqual:")) && ((originalRankedSpans = self->_originalRankedSpans, !(originalRankedSpans | equalCopy[4])) || -[NSMutableArray isEqual:](originalRankedSpans, "isEqual:")) && ((adjustedRankedSpans = self->_adjustedRankedSpans, !(adjustedRankedSpans | equalCopy[1])) || -[NSMutableArray isEqual:](adjustedRankedSpans, "isEqual:")) && ((spans = self->_spans, !(spans | equalCopy[7])) || -[NSMutableArray isEqual:](spans, "isEqual:")))
   {
     contexts = self->_contexts;
-    if (contexts | v4[3])
+    if (contexts | equalCopy[3])
     {
       v13 = [(NSMutableArray *)contexts isEqual:?];
     }
@@ -303,10 +303,10 @@
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v96 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
@@ -327,7 +327,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v84 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v84 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addRequiredContext:v11];
 
         ++v10;
@@ -360,7 +360,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v80 + 1) + 8 * v16) copyWithZone:a3];
+        v17 = [*(*(&v80 + 1) + 8 * v16) copyWithZone:zone];
         [v5 addUtteranceContext:v17];
 
         ++v16;
@@ -393,7 +393,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v76 + 1) + 8 * v22) copyWithZone:a3];
+        v23 = [*(*(&v76 + 1) + 8 * v22) copyWithZone:zone];
         [v5 addOriginalRankedTools:v23];
 
         ++v22;
@@ -426,7 +426,7 @@
           objc_enumerationMutation(v24);
         }
 
-        v29 = [*(*(&v72 + 1) + 8 * v28) copyWithZone:a3];
+        v29 = [*(*(&v72 + 1) + 8 * v28) copyWithZone:zone];
         [v5 addAdjustedRankedTools:v29];
 
         ++v28;
@@ -459,7 +459,7 @@
           objc_enumerationMutation(v30);
         }
 
-        v35 = [*(*(&v68 + 1) + 8 * v34) copyWithZone:a3];
+        v35 = [*(*(&v68 + 1) + 8 * v34) copyWithZone:zone];
         [v5 addOriginalRankedSpans:v35];
 
         ++v34;
@@ -492,7 +492,7 @@
           objc_enumerationMutation(v36);
         }
 
-        v41 = [*(*(&v64 + 1) + 8 * v40) copyWithZone:a3];
+        v41 = [*(*(&v64 + 1) + 8 * v40) copyWithZone:zone];
         [v5 addAdjustedRankedSpans:v41];
 
         ++v40;
@@ -525,7 +525,7 @@
           objc_enumerationMutation(v42);
         }
 
-        v47 = [*(*(&v60 + 1) + 8 * v46) copyWithZone:a3];
+        v47 = [*(*(&v60 + 1) + 8 * v46) copyWithZone:zone];
         [v5 addSpans:v47];
 
         ++v46;
@@ -558,7 +558,7 @@
           objc_enumerationMutation(v48);
         }
 
-        v53 = [*(*(&v56 + 1) + 8 * v52) copyWithZone:{a3, v56}];
+        v53 = [*(*(&v56 + 1) + 8 * v52) copyWithZone:{zone, v56}];
         [v5 addContext:v53];
 
         ++v52;
@@ -575,134 +575,134 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v36 = a3;
+  toCopy = to;
   if ([(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self requiredContextsCount])
   {
-    [v36 clearRequiredContexts];
-    v4 = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self requiredContextsCount];
-    if (v4)
+    [toCopy clearRequiredContexts];
+    requiredContextsCount = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self requiredContextsCount];
+    if (requiredContextsCount)
     {
-      v5 = v4;
+      v5 = requiredContextsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self requiredContextAtIndex:i];
-        [v36 addRequiredContext:v7];
+        [toCopy addRequiredContext:v7];
       }
     }
   }
 
   if ([(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self utteranceContextsCount])
   {
-    [v36 clearUtteranceContexts];
-    v8 = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self utteranceContextsCount];
-    if (v8)
+    [toCopy clearUtteranceContexts];
+    utteranceContextsCount = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self utteranceContextsCount];
+    if (utteranceContextsCount)
     {
-      v9 = v8;
+      v9 = utteranceContextsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self utteranceContextAtIndex:j];
-        [v36 addUtteranceContext:v11];
+        [toCopy addUtteranceContext:v11];
       }
     }
   }
 
   if ([(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self originalRankedToolsCount])
   {
-    [v36 clearOriginalRankedTools];
-    v12 = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self originalRankedToolsCount];
-    if (v12)
+    [toCopy clearOriginalRankedTools];
+    originalRankedToolsCount = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self originalRankedToolsCount];
+    if (originalRankedToolsCount)
     {
-      v13 = v12;
+      v13 = originalRankedToolsCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self originalRankedToolsAtIndex:k];
-        [v36 addOriginalRankedTools:v15];
+        [toCopy addOriginalRankedTools:v15];
       }
     }
   }
 
   if ([(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self adjustedRankedToolsCount])
   {
-    [v36 clearAdjustedRankedTools];
-    v16 = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self adjustedRankedToolsCount];
-    if (v16)
+    [toCopy clearAdjustedRankedTools];
+    adjustedRankedToolsCount = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self adjustedRankedToolsCount];
+    if (adjustedRankedToolsCount)
     {
-      v17 = v16;
+      v17 = adjustedRankedToolsCount;
       for (m = 0; m != v17; ++m)
       {
         v19 = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self adjustedRankedToolsAtIndex:m];
-        [v36 addAdjustedRankedTools:v19];
+        [toCopy addAdjustedRankedTools:v19];
       }
     }
   }
 
   if ([(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self originalRankedSpansCount])
   {
-    [v36 clearOriginalRankedSpans];
-    v20 = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self originalRankedSpansCount];
-    if (v20)
+    [toCopy clearOriginalRankedSpans];
+    originalRankedSpansCount = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self originalRankedSpansCount];
+    if (originalRankedSpansCount)
     {
-      v21 = v20;
+      v21 = originalRankedSpansCount;
       for (n = 0; n != v21; ++n)
       {
         v23 = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self originalRankedSpansAtIndex:n];
-        [v36 addOriginalRankedSpans:v23];
+        [toCopy addOriginalRankedSpans:v23];
       }
     }
   }
 
   if ([(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self adjustedRankedSpansCount])
   {
-    [v36 clearAdjustedRankedSpans];
-    v24 = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self adjustedRankedSpansCount];
-    if (v24)
+    [toCopy clearAdjustedRankedSpans];
+    adjustedRankedSpansCount = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self adjustedRankedSpansCount];
+    if (adjustedRankedSpansCount)
     {
-      v25 = v24;
+      v25 = adjustedRankedSpansCount;
       for (ii = 0; ii != v25; ++ii)
       {
         v27 = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self adjustedRankedSpansAtIndex:ii];
-        [v36 addAdjustedRankedSpans:v27];
+        [toCopy addAdjustedRankedSpans:v27];
       }
     }
   }
 
   if ([(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self spansCount])
   {
-    [v36 clearSpans];
-    v28 = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self spansCount];
-    if (v28)
+    [toCopy clearSpans];
+    spansCount = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self spansCount];
+    if (spansCount)
     {
-      v29 = v28;
+      v29 = spansCount;
       for (jj = 0; jj != v29; ++jj)
       {
         v31 = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self spansAtIndex:jj];
-        [v36 addSpans:v31];
+        [toCopy addSpans:v31];
       }
     }
   }
 
   if ([(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self contextsCount])
   {
-    [v36 clearContexts];
-    v32 = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self contextsCount];
-    if (v32)
+    [toCopy clearContexts];
+    contextsCount = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self contextsCount];
+    if (contextsCount)
     {
-      v33 = v32;
+      v33 = contextsCount;
       for (kk = 0; kk != v33; ++kk)
       {
         v35 = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self contextAtIndex:kk];
-        [v36 addContext:v35];
+        [toCopy addContext:v35];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v94 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
@@ -965,7 +965,7 @@
 - (id)dictionaryRepresentation
 {
   v58 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_requiredContexts count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_requiredContexts, "count")}];
@@ -988,8 +988,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v50 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v50 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v50 objects:v57 count:16];
@@ -998,7 +998,7 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"required_context"];
+    [dictionary setObject:v4 forKey:@"required_context"];
   }
 
   if ([(NSMutableArray *)self->_utteranceContexts count])
@@ -1023,8 +1023,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v46 + 1) + 8 * j) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation2 = [*(*(&v46 + 1) + 8 * j) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation2];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v46 objects:v56 count:16];
@@ -1033,31 +1033,31 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"utterance_context"];
+    [dictionary setObject:v11 forKey:@"utterance_context"];
   }
 
   originalRankedTools = self->_originalRankedTools;
   if (originalRankedTools)
   {
-    [v3 setObject:originalRankedTools forKey:@"original_ranked_tools"];
+    [dictionary setObject:originalRankedTools forKey:@"original_ranked_tools"];
   }
 
   adjustedRankedTools = self->_adjustedRankedTools;
   if (adjustedRankedTools)
   {
-    [v3 setObject:adjustedRankedTools forKey:@"adjusted_ranked_tools"];
+    [dictionary setObject:adjustedRankedTools forKey:@"adjusted_ranked_tools"];
   }
 
   originalRankedSpans = self->_originalRankedSpans;
   if (originalRankedSpans)
   {
-    [v3 setObject:originalRankedSpans forKey:@"original_ranked_spans"];
+    [dictionary setObject:originalRankedSpans forKey:@"original_ranked_spans"];
   }
 
   adjustedRankedSpans = self->_adjustedRankedSpans;
   if (adjustedRankedSpans)
   {
-    [v3 setObject:adjustedRankedSpans forKey:@"adjusted_ranked_spans"];
+    [dictionary setObject:adjustedRankedSpans forKey:@"adjusted_ranked_spans"];
   }
 
   if ([(NSMutableArray *)self->_spans count])
@@ -1082,8 +1082,8 @@
             objc_enumerationMutation(v23);
           }
 
-          v28 = [*(*(&v42 + 1) + 8 * k) dictionaryRepresentation];
-          [v22 addObject:v28];
+          dictionaryRepresentation3 = [*(*(&v42 + 1) + 8 * k) dictionaryRepresentation];
+          [v22 addObject:dictionaryRepresentation3];
         }
 
         v25 = [(NSMutableArray *)v23 countByEnumeratingWithState:&v42 objects:v55 count:16];
@@ -1092,7 +1092,7 @@
       while (v25);
     }
 
-    [v3 setObject:v22 forKey:@"spans"];
+    [dictionary setObject:v22 forKey:@"spans"];
   }
 
   if ([(NSMutableArray *)self->_contexts count])
@@ -1117,8 +1117,8 @@
             objc_enumerationMutation(v30);
           }
 
-          v35 = [*(*(&v38 + 1) + 8 * m) dictionaryRepresentation];
-          [v29 addObject:v35];
+          dictionaryRepresentation4 = [*(*(&v38 + 1) + 8 * m) dictionaryRepresentation];
+          [v29 addObject:dictionaryRepresentation4];
         }
 
         v32 = [(NSMutableArray *)v30 countByEnumeratingWithState:&v38 objects:v54 count:16];
@@ -1127,12 +1127,12 @@
       while (v32);
     }
 
-    [v3 setObject:v29 forKey:@"context"];
+    [dictionary setObject:v29 forKey:@"context"];
   }
 
   v36 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -1141,154 +1141,154 @@
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput;
   v4 = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)&v8 description];
-  v5 = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addContext:(id)a3
+- (void)addContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   contexts = self->_contexts;
-  v8 = v4;
+  v8 = contextCopy;
   if (!contexts)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_contexts;
     self->_contexts = v6;
 
-    v4 = v8;
+    contextCopy = v8;
     contexts = self->_contexts;
   }
 
-  [(NSMutableArray *)contexts addObject:v4];
+  [(NSMutableArray *)contexts addObject:contextCopy];
 }
 
-- (void)addSpans:(id)a3
+- (void)addSpans:(id)spans
 {
-  v4 = a3;
+  spansCopy = spans;
   spans = self->_spans;
-  v8 = v4;
+  v8 = spansCopy;
   if (!spans)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_spans;
     self->_spans = v6;
 
-    v4 = v8;
+    spansCopy = v8;
     spans = self->_spans;
   }
 
-  [(NSMutableArray *)spans addObject:v4];
+  [(NSMutableArray *)spans addObject:spansCopy];
 }
 
-- (void)addAdjustedRankedSpans:(id)a3
+- (void)addAdjustedRankedSpans:(id)spans
 {
-  v4 = a3;
+  spansCopy = spans;
   adjustedRankedSpans = self->_adjustedRankedSpans;
-  v8 = v4;
+  v8 = spansCopy;
   if (!adjustedRankedSpans)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_adjustedRankedSpans;
     self->_adjustedRankedSpans = v6;
 
-    v4 = v8;
+    spansCopy = v8;
     adjustedRankedSpans = self->_adjustedRankedSpans;
   }
 
-  [(NSMutableArray *)adjustedRankedSpans addObject:v4];
+  [(NSMutableArray *)adjustedRankedSpans addObject:spansCopy];
 }
 
-- (void)addOriginalRankedSpans:(id)a3
+- (void)addOriginalRankedSpans:(id)spans
 {
-  v4 = a3;
+  spansCopy = spans;
   originalRankedSpans = self->_originalRankedSpans;
-  v8 = v4;
+  v8 = spansCopy;
   if (!originalRankedSpans)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_originalRankedSpans;
     self->_originalRankedSpans = v6;
 
-    v4 = v8;
+    spansCopy = v8;
     originalRankedSpans = self->_originalRankedSpans;
   }
 
-  [(NSMutableArray *)originalRankedSpans addObject:v4];
+  [(NSMutableArray *)originalRankedSpans addObject:spansCopy];
 }
 
-- (void)addAdjustedRankedTools:(id)a3
+- (void)addAdjustedRankedTools:(id)tools
 {
-  v4 = a3;
+  toolsCopy = tools;
   adjustedRankedTools = self->_adjustedRankedTools;
-  v8 = v4;
+  v8 = toolsCopy;
   if (!adjustedRankedTools)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_adjustedRankedTools;
     self->_adjustedRankedTools = v6;
 
-    v4 = v8;
+    toolsCopy = v8;
     adjustedRankedTools = self->_adjustedRankedTools;
   }
 
-  [(NSMutableArray *)adjustedRankedTools addObject:v4];
+  [(NSMutableArray *)adjustedRankedTools addObject:toolsCopy];
 }
 
-- (void)addOriginalRankedTools:(id)a3
+- (void)addOriginalRankedTools:(id)tools
 {
-  v4 = a3;
+  toolsCopy = tools;
   originalRankedTools = self->_originalRankedTools;
-  v8 = v4;
+  v8 = toolsCopy;
   if (!originalRankedTools)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_originalRankedTools;
     self->_originalRankedTools = v6;
 
-    v4 = v8;
+    toolsCopy = v8;
     originalRankedTools = self->_originalRankedTools;
   }
 
-  [(NSMutableArray *)originalRankedTools addObject:v4];
+  [(NSMutableArray *)originalRankedTools addObject:toolsCopy];
 }
 
-- (void)addUtteranceContext:(id)a3
+- (void)addUtteranceContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   utteranceContexts = self->_utteranceContexts;
-  v8 = v4;
+  v8 = contextCopy;
   if (!utteranceContexts)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_utteranceContexts;
     self->_utteranceContexts = v6;
 
-    v4 = v8;
+    contextCopy = v8;
     utteranceContexts = self->_utteranceContexts;
   }
 
-  [(NSMutableArray *)utteranceContexts addObject:v4];
+  [(NSMutableArray *)utteranceContexts addObject:contextCopy];
 }
 
-- (void)addRequiredContext:(id)a3
+- (void)addRequiredContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requiredContexts = self->_requiredContexts;
-  v8 = v4;
+  v8 = contextCopy;
   if (!requiredContexts)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_requiredContexts;
     self->_requiredContexts = v6;
 
-    v4 = v8;
+    contextCopy = v8;
     requiredContexts = self->_requiredContexts;
   }
 
-  [(NSMutableArray *)requiredContexts addObject:v4];
+  [(NSMutableArray *)requiredContexts addObject:contextCopy];
 }
 
 @end

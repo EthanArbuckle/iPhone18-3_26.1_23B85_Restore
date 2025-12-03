@@ -1,30 +1,30 @@
 @interface PKPaymentPreference
-- (PKPaymentPreference)initWithTitle:(id)a3 preferences:(id)a4 selectedIndex:(unint64_t)a5 readOnly:(BOOL)a6;
+- (PKPaymentPreference)initWithTitle:(id)title preferences:(id)preferences selectedIndex:(unint64_t)index readOnly:(BOOL)only;
 - (_NSRange)footerLinkRange;
 - (void)clearAllErrors;
-- (void)setErrors:(id)a3 forPreference:(id)a4;
+- (void)setErrors:(id)errors forPreference:(id)preference;
 @end
 
 @implementation PKPaymentPreference
 
-- (PKPaymentPreference)initWithTitle:(id)a3 preferences:(id)a4 selectedIndex:(unint64_t)a5 readOnly:(BOOL)a6
+- (PKPaymentPreference)initWithTitle:(id)title preferences:(id)preferences selectedIndex:(unint64_t)index readOnly:(BOOL)only
 {
-  v10 = a3;
-  v11 = a4;
+  titleCopy = title;
+  preferencesCopy = preferences;
   v19.receiver = self;
   v19.super_class = PKPaymentPreference;
   v12 = [(PKPaymentPreference *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_preferences, a4);
-    v13->_selectedIndex = a5;
+    objc_storeStrong(&v12->_preferences, preferences);
+    v13->_selectedIndex = index;
     v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
     errors = v13->_errors;
     v13->_errors = v14;
 
-    v13->_isReadOnly = a6;
-    v16 = [v10 copy];
+    v13->_isReadOnly = only;
+    v16 = [titleCopy copy];
     title = v13->_title;
     v13->_title = v16;
 
@@ -34,13 +34,13 @@
   return v13;
 }
 
-- (void)setErrors:(id)a3 forPreference:(id)a4
+- (void)setErrors:(id)errors forPreference:(id)preference
 {
-  v7 = a3;
-  v6 = a4;
-  if ([(NSArray *)self->_preferences indexOfObject:v6]!= 0x7FFFFFFFFFFFFFFFLL)
+  errorsCopy = errors;
+  preferenceCopy = preference;
+  if ([(NSArray *)self->_preferences indexOfObject:preferenceCopy]!= 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(NSMutableDictionary *)self->_errors setObject:v7 forKey:v6];
+    [(NSMutableDictionary *)self->_errors setObject:errorsCopy forKey:preferenceCopy];
   }
 }
 

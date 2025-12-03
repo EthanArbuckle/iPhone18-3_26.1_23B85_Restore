@@ -1,43 +1,43 @@
 @interface MOSuggestionsUIServerManager
-+ (id)getRemoteProcessIdentifier:(id)a3;
++ (id)getRemoteProcessIdentifier:(id)identifier;
 + (id)sharedInstance;
-- (BOOL)addConnection:(id)a3 withId:(id)a4;
-- (BOOL)isClientVisibleFor:(id)a3;
-- (BOOL)isConnectingProcessAuthorized:(id)a3;
-- (BOOL)isVisibleClient:(id)a3;
+- (BOOL)addConnection:(id)connection withId:(id)id;
+- (BOOL)isClientVisibleFor:(id)for;
+- (BOOL)isConnectingProcessAuthorized:(id)authorized;
+- (BOOL)isVisibleClient:(id)client;
 - (MOSuggestionsUIServerManager)init;
 - (id)getAnyVisibleClientId;
-- (id)getClientBundleIdentifierFor:(id)a3;
-- (id)getClientConnectionPropertiesFor:(id)a3;
-- (id)getClientIdentifierFor:(id)a3;
-- (id)getClientProxyFor:(id)a3;
-- (id)getClientRemoteProcessFor:(id)a3;
-- (id)getConnectionHostId:(id)a3;
-- (id)getConnectionPropertiesForId:(id)a3;
-- (id)getPropertiesForConnection:(id)a3;
+- (id)getClientBundleIdentifierFor:(id)for;
+- (id)getClientConnectionPropertiesFor:(id)for;
+- (id)getClientIdentifierFor:(id)for;
+- (id)getClientProxyFor:(id)for;
+- (id)getClientRemoteProcessFor:(id)for;
+- (id)getConnectionHostId:(id)id;
+- (id)getConnectionPropertiesForId:(id)id;
+- (id)getPropertiesForConnection:(id)connection;
 - (void)dealloc;
-- (void)destroyScene:(id)a3;
-- (void)didConnectToSecureWindowWithSession:(id)a3 connectionId:(id)a4 delegate:(id)a5;
-- (void)didDisonnectToSecureWindowForConnectionId:(id)a3;
-- (void)fetchAssets:(id)a3 withTypes:(id)a4 completion:(id)a5;
-- (void)fetchAssets:(id)a3 withTypes:(id)a4 onAssetsCallback:(id)a5;
-- (void)getProxyFor:(id)a3 withBlock:(id)a4;
-- (void)grantSandboxAccessFor:(id)a3 sender:(id)a4;
+- (void)destroyScene:(id)scene;
+- (void)didConnectToSecureWindowWithSession:(id)session connectionId:(id)id delegate:(id)delegate;
+- (void)didDisonnectToSecureWindowForConnectionId:(id)id;
+- (void)fetchAssets:(id)assets withTypes:(id)types completion:(id)completion;
+- (void)fetchAssets:(id)assets withTypes:(id)types onAssetsCallback:(id)callback;
+- (void)getProxyFor:(id)for withBlock:(id)block;
+- (void)grantSandboxAccessFor:(id)for sender:(id)sender;
 - (void)launch;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 - (void)onLockNotification;
-- (void)performTask:(unint64_t)a3 suggestion:(id)a4 sender:(id)a5;
-- (void)processManager:(id)a3 didRemoveProcess:(id)a4;
+- (void)performTask:(unint64_t)task suggestion:(id)suggestion sender:(id)sender;
+- (void)processManager:(id)manager didRemoveProcess:(id)process;
 - (void)registerForLayoutMonitorForBackgroundStateNotifications;
 - (void)registerForLockNotifications;
-- (void)removeConnection:(id)a3;
-- (void)removeConnectionId:(id)a3;
+- (void)removeConnection:(id)connection;
+- (void)removeConnectionId:(id)id;
 - (void)requestNotificationAuthIfNeeded;
-- (void)requestPickerForSceneIdentiyToken:(id)a3 withOptions:(id)a4;
-- (void)sendSuggestionSheetStateUpdate:(unint64_t)a3 sender:(id)a4;
+- (void)requestPickerForSceneIdentiyToken:(id)token withOptions:(id)options;
+- (void)sendSuggestionSheetStateUpdate:(unint64_t)update sender:(id)sender;
 - (void)setupListener;
 - (void)terminate;
-- (void)updatePickerState:(id)a3 animated:(id)a4;
+- (void)updatePickerState:(id)state animated:(id)animated;
 @end
 
 @implementation MOSuggestionsUIServerManager
@@ -48,7 +48,7 @@
   block[1] = 3221225472;
   block[2] = __46__MOSuggestionsUIServerManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -66,13 +66,13 @@ uint64_t __46__MOSuggestionsUIServerManager_sharedInstance__block_invoke()
   return _objc_release_x1();
 }
 
-+ (id)getRemoteProcessIdentifier:(id)a3
++ (id)getRemoteProcessIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  identifierCopy = identifier;
+  v4 = identifierCopy;
+  if (identifierCopy)
   {
-    v5 = [v3 valueForEntitlement:@"application-identifier"];
+    v5 = [identifierCopy valueForEntitlement:@"application-identifier"];
     v6 = v5;
     if ((!v5 || !-[__CFString length](v5, "length")) && ([v4 bundleIdentifier], v7 = objc_claimAutoreleasedReturnValue(), v6, (v6 = v7) == 0) || !-[__CFString length](v6, "length"))
     {
@@ -131,32 +131,32 @@ uint64_t __46__MOSuggestionsUIServerManager_sharedInstance__block_invoke()
   [(MOSuggestionsUIServerManager *)&v4 dealloc];
 }
 
-- (void)didConnectToSecureWindowWithSession:(id)a3 connectionId:(id)a4 delegate:(id)a5
+- (void)didConnectToSecureWindowWithSession:(id)session connectionId:(id)id delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  sessionCopy = session;
+  idCopy = id;
+  delegateCopy = delegate;
+  if (idCopy)
   {
     v11 = _mo_log_facility_get_os_log(&MOLogFacilityUIService);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [v9 UUIDString];
+      uUIDString = [idCopy UUIDString];
       v24 = 138412290;
-      v25 = v12;
+      v25 = uUIDString;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Connected to window, client connection: %@", &v24, 0xCu);
     }
 
-    v13 = [(NSMutableDictionary *)self->_connectionProperties objectForKeyedSubscript:v9];
+    v13 = [(NSMutableDictionary *)self->_connectionProperties objectForKeyedSubscript:idCopy];
     v14 = v13;
     if (v13)
     {
       [v13 setActivationState:3];
-      [v14 setSession:v8];
-      [v14 setDelegate:v10];
-      v15 = [v14 pendingPresentationOptions];
+      [v14 setSession:sessionCopy];
+      [v14 setDelegate:delegateCopy];
+      pendingPresentationOptions = [v14 pendingPresentationOptions];
 
-      if (v15)
+      if (pendingPresentationOptions)
       {
         v16 = _mo_log_facility_get_os_log(&MOLogFacilityUIService);
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -165,16 +165,16 @@ uint64_t __46__MOSuggestionsUIServerManager_sharedInstance__block_invoke()
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Fulfilling previously unfulfillable presentation request", &v24, 2u);
         }
 
-        v17 = [v14 delegate];
-        v18 = [v14 pendingPresentationOptions];
-        [v17 didReceivePresentationRequestWithOptions:v18];
+        delegate = [v14 delegate];
+        pendingPresentationOptions2 = [v14 pendingPresentationOptions];
+        [delegate didReceivePresentationRequestWithOptions:pendingPresentationOptions2];
       }
 
       else
       {
-        v20 = [v14 unfulfilledUpdateState];
+        unfulfilledUpdateState = [v14 unfulfilledUpdateState];
 
-        if (!v20)
+        if (!unfulfilledUpdateState)
         {
 LABEL_19:
           [v14 setPendingPresentationOptions:0];
@@ -190,11 +190,11 @@ LABEL_19:
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Fulfilling previously unfulfillable update request", &v24, 2u);
         }
 
-        v17 = [v14 delegate];
-        v18 = [v14 unfulfilledUpdateState];
-        v22 = [v18 unsignedIntValue];
-        v23 = [v14 unfulfilledUpdateIsAnimated];
-        [v17 didReceiveUpdateRequestWithState:v22 animated:{objc_msgSend(v23, "BOOLValue")}];
+        delegate = [v14 delegate];
+        pendingPresentationOptions2 = [v14 unfulfilledUpdateState];
+        unsignedIntValue = [pendingPresentationOptions2 unsignedIntValue];
+        unfulfilledUpdateIsAnimated = [v14 unfulfilledUpdateIsAnimated];
+        [delegate didReceiveUpdateRequestWithState:unsignedIntValue animated:{objc_msgSend(unfulfilledUpdateIsAnimated, "BOOLValue")}];
       }
 
       goto LABEL_19;
@@ -206,12 +206,12 @@ LABEL_19:
       [MOSuggestionsUIServerManager didConnectToSecureWindowWithSession:connectionId:delegate:];
     }
 
-    [(MOSuggestionsUIServerManager *)self destroyScene:v8];
+    [(MOSuggestionsUIServerManager *)self destroyScene:sessionCopy];
   }
 
   else
   {
-    [(MOSuggestionsUIServerManager *)self destroyScene:v8];
+    [(MOSuggestionsUIServerManager *)self destroyScene:sessionCopy];
     v14 = _mo_log_facility_get_os_log(&MOLogFacilityUIService);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
     {
@@ -222,50 +222,50 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)didDisonnectToSecureWindowForConnectionId:(id)a3
+- (void)didDisonnectToSecureWindowForConnectionId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityUIService);
   v6 = v5;
-  if (v4)
+  if (idCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v7 = [v4 UUIDString];
+      uUIDString = [idCopy UUIDString];
       *buf = 138412290;
-      v21 = v7;
+      v21 = uUIDString;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%@ Disconnected from window.", buf, 0xCu);
     }
 
-    v6 = [(NSMutableDictionary *)self->_connectionProperties objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_connectionProperties objectForKeyedSubscript:idCopy];
     v8 = _mo_log_facility_get_os_log(&MOLogFacilityUIService);
     v9 = v8;
     if (v6)
     {
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        v10 = [v4 UUIDString];
+        uUIDString2 = [idCopy UUIDString];
         *buf = 138412290;
-        v21 = v10;
+        v21 = uUIDString2;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%@ Connection state clean-up.", buf, 0xCu);
       }
 
-      v11 = [v6 session];
-      [(MOSuggestionsUIServerManager *)self destroyScene:v11];
+      session = [v6 session];
+      [(MOSuggestionsUIServerManager *)self destroyScene:session];
 
       v9 = objc_opt_new();
-      v12 = [v6 connectionHost];
-      [v9 setConnectionHost:v12];
+      connectionHost = [v6 connectionHost];
+      [v9 setConnectionHost:connectionHost];
 
-      v13 = [v6 responseQueue];
-      [v9 setResponseQueue:v13];
+      responseQueue = [v6 responseQueue];
+      [v9 setResponseQueue:responseQueue];
 
-      v14 = [v6 delegate];
-      [v9 setDelegate:v14];
+      delegate = [v6 delegate];
+      [v9 setDelegate:delegate];
 
-      [(NSMutableDictionary *)self->_connectionProperties setObject:v9 forKeyedSubscript:v4];
-      v15 = [v9 responseQueue];
-      if (v15)
+      [(NSMutableDictionary *)self->_connectionProperties setObject:v9 forKeyedSubscript:idCopy];
+      responseQueue2 = [v9 responseQueue];
+      if (responseQueue2)
       {
         objc_initWeak(buf, self);
         block[0] = _NSConcreteStackBlock;
@@ -273,8 +273,8 @@ LABEL_20:
         block[2] = __74__MOSuggestionsUIServerManager_didDisonnectToSecureWindowForConnectionId___block_invoke;
         block[3] = &unk_100308EB0;
         objc_copyWeak(&v19, buf);
-        v17 = v4;
-        v18 = v15;
+        v17 = idCopy;
+        v18 = responseQueue2;
         dispatch_async(v18, block);
 
         objc_destroyWeak(&v19);
@@ -426,7 +426,7 @@ void __87__MOSuggestionsUIServerManager_registerForLayoutMonitorForBackgroundSta
 
 - (void)requestNotificationAuthIfNeeded
 {
-  v2 = *(*a1 + 24);
+  v2 = *(*self + 24);
   v3 = 134217984;
   v4 = v2;
   _os_log_debug_impl(&_mh_execute_header, a2, OS_LOG_TYPE_DEBUG, "onboardingStatus=%lu", &v3, 0xCu);
@@ -501,18 +501,18 @@ void __45__MOSuggestionsUIServerManager_setupListener__block_invoke(uint64_t a1,
   [v3 setDelegate:*(a1 + 32)];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  contextCopy = context;
   if (listener_didReceiveConnection_withContext__onceToken != -1)
   {
     [MOSuggestionsUIServerManager listener:didReceiveConnection:withContext:];
   }
 
-  v11 = [v9 remoteProcess];
-  v12 = [v11 pid];
+  remoteProcess = [connectionCopy remoteProcess];
+  v12 = [remoteProcess pid];
   v13 = _mo_log_facility_get_os_log(&MOLogFacilityUIService);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -522,7 +522,7 @@ void __45__MOSuggestionsUIServerManager_setupListener__block_invoke(uint64_t a1,
   }
 
   objc_initWeak(&location, self);
-  if ([(MOSuggestionsUIServerManager *)self isConnectingProcessAuthorized:v11])
+  if ([(MOSuggestionsUIServerManager *)self isConnectingProcessAuthorized:remoteProcess])
   {
     v14 = _mo_log_facility_get_os_log(&MOLogFacilityUIService);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -534,21 +534,21 @@ void __45__MOSuggestionsUIServerManager_setupListener__block_invoke(uint64_t a1,
     v27 = 3221225472;
     v28 = __74__MOSuggestionsUIServerManager_listener_didReceiveConnection_withContext___block_invoke_288;
     v29 = &unk_1003090B8;
-    v30 = self;
+    selfCopy = self;
     v15 = objc_opt_new();
     v31 = v15;
     objc_copyWeak(&v32, &location);
-    [v9 configureConnection:&v26];
+    [connectionCopy configureConnection:&v26];
     v16 = objc_loadWeakRetained(&location);
-    v17 = [v16 addConnection:v9 withId:{v15, v26, v27, v28, v29, v30}];
+    v17 = [v16 addConnection:connectionCopy withId:{v15, v26, v27, v28, v29, selfCopy}];
 
     if (v17)
     {
       v18 = _mo_log_facility_get_os_log(&MOLogFacilityUIService);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
-        v24 = [v9 remoteProcess];
-        v25 = [MOSuggestionsUIServerManager getRemoteProcessIdentifier:v24];
+        remoteProcess2 = [connectionCopy remoteProcess];
+        v25 = [MOSuggestionsUIServerManager getRemoteProcessIdentifier:remoteProcess2];
         *buf = 138412546;
         v35 = v15;
         v36 = 2112;
@@ -556,7 +556,7 @@ void __45__MOSuggestionsUIServerManager_setupListener__block_invoke(uint64_t a1,
         _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "Activating connection: client:%@, id:%@", buf, 0x16u);
       }
 
-      [v9 activate];
+      [connectionCopy activate];
     }
 
     else
@@ -564,12 +564,12 @@ void __45__MOSuggestionsUIServerManager_setupListener__block_invoke(uint64_t a1,
       v20 = _mo_log_facility_get_os_log(&MOLogFacilityUIService);
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v21 = [v9 remoteProcess];
-        v22 = [MOSuggestionsUIServerManager getRemoteProcessIdentifier:v21];
-        [(MOSuggestionsUIServerManager *)v22 listener:buf didReceiveConnection:v20 withContext:v21];
+        remoteProcess3 = [connectionCopy remoteProcess];
+        v22 = [MOSuggestionsUIServerManager getRemoteProcessIdentifier:remoteProcess3];
+        [(MOSuggestionsUIServerManager *)v22 listener:buf didReceiveConnection:v20 withContext:remoteProcess3];
       }
 
-      [v9 invalidate];
+      [connectionCopy invalidate];
     }
 
     v23 = _mo_log_facility_get_os_log(&MOLogFacilityUIService);
@@ -589,7 +589,7 @@ void __45__MOSuggestionsUIServerManager_setupListener__block_invoke(uint64_t a1,
       [MOSuggestionsUIServerManager listener:didReceiveConnection:withContext:];
     }
 
-    [v9 invalidate];
+    [connectionCopy invalidate];
   }
 
   objc_destroyWeak(&location);
@@ -673,20 +673,20 @@ void __74__MOSuggestionsUIServerManager_listener_didReceiveConnection_withContex
   }
 }
 
-- (BOOL)isConnectingProcessAuthorized:(id)a3
+- (BOOL)isConnectingProcessAuthorized:(id)authorized
 {
-  v3 = a3;
-  v4 = [v3 valueForEntitlement:@"com.apple.developer.journal.allow"];
+  authorizedCopy = authorized;
+  v4 = [authorizedCopy valueForEntitlement:@"com.apple.developer.journal.allow"];
   if (v4)
   {
     v5 = _mo_log_facility_get_os_log(&MOLogFacilityUIService);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v3 bundleIdentifier];
+      bundleIdentifier = [authorizedCopy bundleIdentifier];
       *buf = 138412802;
-      v24 = v6;
+      v24 = bundleIdentifier;
       v25 = 1024;
-      v26 = [v3 pid];
+      v26 = [authorizedCopy pid];
       v27 = 2112;
       v28 = v4;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Connection BundleID=%@ pid=%d API entitlements=%@", buf, 0x1Cu);
@@ -733,11 +733,11 @@ void __74__MOSuggestionsUIServerManager_listener_didReceiveConnection_withContex
   v12 = _mo_log_facility_get_os_log(&MOLogFacilityUIService);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v3 bundleIdentifier];
-    v14 = [v3 pid];
-    v15 = [v3 valueForEntitlement:@"com.apple.moments.allowSuggestions"];
+    bundleIdentifier2 = [authorizedCopy bundleIdentifier];
+    v14 = [authorizedCopy pid];
+    v15 = [authorizedCopy valueForEntitlement:@"com.apple.moments.allowSuggestions"];
     *buf = 138412802;
-    v24 = v13;
+    v24 = bundleIdentifier2;
     v25 = 1024;
     v26 = v14;
     v27 = 2112;
@@ -745,20 +745,20 @@ void __74__MOSuggestionsUIServerManager_listener_didReceiveConnection_withContex
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Connection BundleID=%@ pid=%d valueFor=%@", buf, 0x1Cu);
   }
 
-  v16 = [v3 hasEntitlement:@"com.apple.moments.allowSuggestions"];
+  v16 = [authorizedCopy hasEntitlement:@"com.apple.moments.allowSuggestions"];
 LABEL_17:
 
   return v16;
 }
 
-- (BOOL)addConnection:(id)a3 withId:(id)a4
+- (BOOL)addConnection:(id)connection withId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 remoteProcess];
-  v9 = [MOSuggestionsUIServerManager getRemoteProcessIdentifier:v8];
+  connectionCopy = connection;
+  idCopy = id;
+  remoteProcess = [connectionCopy remoteProcess];
+  v9 = [MOSuggestionsUIServerManager getRemoteProcessIdentifier:remoteProcess];
 
-  if (v6)
+  if (connectionCopy)
   {
     v10 = v9 == 0;
   }
@@ -768,7 +768,7 @@ LABEL_17:
     v10 = 1;
   }
 
-  v11 = v10 || v7 == 0;
+  v11 = v10 || idCopy == 0;
   v12 = !v11;
   if (v11)
   {
@@ -790,40 +790,40 @@ LABEL_17:
     }
 
     v15 = objc_opt_new();
-    [v15 setConnectionHost:v6];
-    v16 = [v6 remoteProcess];
-    v17 = [v16 bundleIdentifier];
+    [v15 setConnectionHost:connectionCopy];
+    remoteProcess2 = [connectionCopy remoteProcess];
+    bundleIdentifier = [remoteProcess2 bundleIdentifier];
 
-    if (!v17)
+    if (!bundleIdentifier)
     {
-      v17 = v9;
+      bundleIdentifier = v9;
     }
 
     v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v19 = dispatch_queue_attr_make_with_qos_class(v18, QOS_CLASS_USER_INITIATED, 0);
 
-    v20 = [NSString stringWithFormat:@"RSP:%@", v17];
+    v20 = [NSString stringWithFormat:@"RSP:%@", bundleIdentifier];
     v21 = dispatch_queue_create([v20 UTF8String], v19);
     [v15 setResponseQueue:v21];
 
     v22 = [(NSMutableDictionary *)self->_clientConnections objectForKeyedSubscript:v9];
-    [v22 addObject:v7];
+    [v22 addObject:idCopy];
 
-    [(NSMutableDictionary *)self->_connectionProperties setObject:v15 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_connectionProperties setObject:v15 forKeyedSubscript:idCopy];
   }
 
   return v12;
 }
 
-- (void)destroyScene:(id)a3
+- (void)destroyScene:(id)scene
 {
-  v3 = a3;
-  if (v3)
+  sceneCopy = scene;
+  if (sceneCopy)
   {
     v4 = _mo_log_facility_get_os_log(&MOLogFacilityUIService);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [v3 description];
+      v5 = [sceneCopy description];
       *buf = 138412290;
       v10 = v5;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "(destroyScene) destroying scene %@", buf, 0xCu);
@@ -834,7 +834,7 @@ LABEL_17:
     v7[1] = 3221225472;
     v7[2] = __45__MOSuggestionsUIServerManager_destroyScene___block_invoke;
     v7[3] = &unk_1003090E0;
-    v8 = v3;
+    v8 = sceneCopy;
     [v6 requestSceneSessionDestruction:v8 options:0 errorHandler:v7];
   }
 }
@@ -861,24 +861,24 @@ void __45__MOSuggestionsUIServerManager_destroyScene___block_invoke(uint64_t a1,
   }
 }
 
-- (void)removeConnectionId:(id)a3
+- (void)removeConnectionId:(id)id
 {
-  v4 = a3;
-  if (v4)
+  idCopy = id;
+  if (idCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_connectionProperties objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_connectionProperties objectForKeyedSubscript:idCopy];
     if (v5)
     {
-      v6 = [(MOSuggestionsUIServerManager *)self getConnectionHostId:v4];
+      v6 = [(MOSuggestionsUIServerManager *)self getConnectionHostId:idCopy];
       [v6 invalidate];
 
-      v7 = [v5 session];
-      [(MOSuggestionsUIServerManager *)self destroyScene:v7];
+      session = [v5 session];
+      [(MOSuggestionsUIServerManager *)self destroyScene:session];
 
-      [(NSMutableDictionary *)self->_connectionProperties removeObjectForKey:v4];
-      v8 = [v5 connectionHost];
-      v9 = [v8 remoteProcess];
-      v10 = [MOSuggestionsUIServerManager getRemoteProcessIdentifier:v9];
+      [(NSMutableDictionary *)self->_connectionProperties removeObjectForKey:idCopy];
+      connectionHost = [v5 connectionHost];
+      remoteProcess = [connectionHost remoteProcess];
+      v10 = [MOSuggestionsUIServerManager getRemoteProcessIdentifier:remoteProcess];
 
       if (v10)
       {
@@ -886,14 +886,14 @@ void __45__MOSuggestionsUIServerManager_destroyScene___block_invoke(uint64_t a1,
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v26 = v4;
+          v26 = idCopy;
           v27 = 2112;
           v28 = v10;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Connection '%@' removed for '%@'", buf, 0x16u);
         }
 
         v12 = [(NSMutableDictionary *)self->_clientConnections objectForKeyedSubscript:v10];
-        [v12 removeObject:v4];
+        [v12 removeObject:idCopy];
 
         v22 = 0u;
         v23 = 0u;
@@ -939,15 +939,15 @@ LABEL_8:
   }
 }
 
-- (void)removeConnection:(id)a3
+- (void)removeConnection:(id)connection
 {
-  v4 = [MOSuggestionsUIServerManager getConnectionIdentifier:a3];
+  v4 = [MOSuggestionsUIServerManager getConnectionIdentifier:connection];
   [(MOSuggestionsUIServerManager *)self removeConnectionId:v4];
 }
 
-- (id)getPropertiesForConnection:(id)a3
+- (id)getPropertiesForConnection:(id)connection
 {
-  v4 = [MOSuggestionsUIServerManager getConnectionIdentifier:a3];
+  v4 = [MOSuggestionsUIServerManager getConnectionIdentifier:connection];
   if (v4)
   {
     v5 = [(NSMutableDictionary *)self->_connectionProperties objectForKeyedSubscript:v4];
@@ -961,23 +961,23 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)isVisibleClient:(id)a3
+- (BOOL)isVisibleClient:(id)client
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  clientCopy = client;
+  v4 = clientCopy;
+  if (clientCopy)
   {
-    v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v3 pid]);
+    v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [clientCopy pid]);
     v17 = 0;
     v6 = [RBSProcessHandle handleForIdentifier:v5 error:&v17];
     v7 = v17;
 
-    v8 = [v6 currentState];
-    v9 = [v8 taskState];
+    currentState = [v6 currentState];
+    taskState = [currentState taskState];
 
-    v10 = [v6 currentState];
-    v11 = [v10 endowmentNamespaces];
-    v12 = [v11 containsObject:@"com.apple.frontboard.visibility"];
+    currentState2 = [v6 currentState];
+    endowmentNamespaces = [currentState2 endowmentNamespaces];
+    v12 = [endowmentNamespaces containsObject:@"com.apple.frontboard.visibility"];
 
     v13 = _mo_log_facility_get_os_log(&MOLogFacilityUIService);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -990,11 +990,11 @@ LABEL_8:
       v22 = 2112;
       v23 = v7;
       v24 = 1024;
-      v25 = v9 == 4;
+      v25 = taskState == 4;
       _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "Query client %@ visible=%u (error=%@) isRunning=%u", buf, 0x22u);
     }
 
-    if (v9 == 4)
+    if (taskState == 4)
     {
       v14 = v12;
     }
@@ -1013,25 +1013,25 @@ LABEL_8:
   return v14;
 }
 
-- (id)getConnectionHostId:(id)a3
+- (id)getConnectionHostId:(id)id
 {
-  if (a3)
+  if (id)
   {
     v3 = [(NSMutableDictionary *)self->_connectionProperties objectForKeyedSubscript:?];
-    v4 = [v3 connectionHost];
+    connectionHost = [v3 connectionHost];
   }
 
   else
   {
-    v4 = 0;
+    connectionHost = 0;
   }
 
-  return v4;
+  return connectionHost;
 }
 
-- (id)getConnectionPropertiesForId:(id)a3
+- (id)getConnectionPropertiesForId:(id)id
 {
-  if (a3)
+  if (id)
   {
     v4 = [(NSMutableDictionary *)self->_connectionProperties objectForKeyedSubscript:?];
   }
@@ -1067,8 +1067,8 @@ LABEL_8:
 
         v8 = *(*(&v14 + 1) + 8 * i);
         v9 = [(MOSuggestionsUIServerManager *)self getConnectionHostId:v8, v14];
-        v10 = [v9 remoteProcess];
-        v11 = [(MOSuggestionsUIServerManager *)self isVisibleClient:v10];
+        remoteProcess = [v9 remoteProcess];
+        v11 = [(MOSuggestionsUIServerManager *)self isVisibleClient:remoteProcess];
 
         if (v11)
         {
@@ -1093,9 +1093,9 @@ LABEL_11:
   return v12;
 }
 
-- (id)getClientConnectionPropertiesFor:(id)a3
+- (id)getClientConnectionPropertiesFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1107,7 +1107,7 @@ LABEL_11:
   v9[1] = 3221225472;
   v9[2] = __65__MOSuggestionsUIServerManager_getClientConnectionPropertiesFor___block_invoke;
   v9[3] = &unk_100309108;
-  v6 = v4;
+  v6 = forCopy;
   v10 = v6;
   v11 = &v12;
   [(NSMutableDictionary *)connectionProperties enumerateKeysAndObjectsUsingBlock:v9];
@@ -1131,66 +1131,66 @@ void __65__MOSuggestionsUIServerManager_getClientConnectionPropertiesFor___block
   }
 }
 
-- (id)getClientRemoteProcessFor:(id)a3
+- (id)getClientRemoteProcessFor:(id)for
 {
-  if (a3)
+  if (for)
   {
     v3 = [(MOSuggestionsUIServerManager *)self getClientConnectionPropertiesFor:?];
-    v4 = [v3 connectionHost];
-    v5 = [v4 remoteProcess];
+    connectionHost = [v3 connectionHost];
+    remoteProcess = [connectionHost remoteProcess];
   }
 
   else
   {
-    v5 = 0;
+    remoteProcess = 0;
   }
 
-  return v5;
+  return remoteProcess;
 }
 
-- (id)getClientIdentifierFor:(id)a3
+- (id)getClientIdentifierFor:(id)for
 {
-  v3 = [(MOSuggestionsUIServerManager *)self getClientRemoteProcessFor:a3];
+  v3 = [(MOSuggestionsUIServerManager *)self getClientRemoteProcessFor:for];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 bundleIdentifier];
-    if (!v5)
+    bundleIdentifier = [v3 bundleIdentifier];
+    if (!bundleIdentifier)
     {
-      v5 = [v4 valueForEntitlement:@"application-identifier"];
+      bundleIdentifier = [v4 valueForEntitlement:@"application-identifier"];
     }
   }
 
   else
   {
-    v5 = 0;
+    bundleIdentifier = 0;
   }
 
-  return v5;
+  return bundleIdentifier;
 }
 
-- (id)getClientBundleIdentifierFor:(id)a3
+- (id)getClientBundleIdentifierFor:(id)for
 {
-  v3 = [(MOSuggestionsUIServerManager *)self getClientRemoteProcessFor:a3];
+  v3 = [(MOSuggestionsUIServerManager *)self getClientRemoteProcessFor:for];
   v4 = _mo_log_facility_get_os_log(&MOLogFacilityUIService);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     [MOSuggestionsUIServerManager getClientBundleIdentifierFor:v3];
   }
 
-  v5 = [v3 bundleIdentifier];
+  bundleIdentifier = [v3 bundleIdentifier];
 
-  return v5;
+  return bundleIdentifier;
 }
 
-- (id)getClientProxyFor:(id)a3
+- (id)getClientProxyFor:(id)for
 {
-  v4 = a3;
-  v5 = [(MOSuggestionsUIServerManager *)self getClientConnectionPropertiesFor:v4];
-  v6 = [v5 connectionHost];
-  v7 = [v6 remoteTarget];
+  forCopy = for;
+  v5 = [(MOSuggestionsUIServerManager *)self getClientConnectionPropertiesFor:forCopy];
+  connectionHost = [v5 connectionHost];
+  remoteTarget = [connectionHost remoteTarget];
 
-  if (!v7)
+  if (!remoteTarget)
   {
     if (v5 && ([v5 brokenPipeState] & 1) == 0)
     {
@@ -1203,7 +1203,7 @@ void __65__MOSuggestionsUIServerManager_getClientConnectionPropertiesFor___block
       [v5 setBrokenPipeState:1];
     }
 
-    [v4 didReceiveUpdateRequestWithState:0 animated:1];
+    [forCopy didReceiveUpdateRequestWithState:0 animated:1];
   }
 
   if (v5 && [v5 brokenPipeState])
@@ -1218,16 +1218,16 @@ void __65__MOSuggestionsUIServerManager_getClientConnectionPropertiesFor___block
     [v5 setBrokenPipeState:0];
   }
 
-  return v7;
+  return remoteTarget;
 }
 
-- (void)getProxyFor:(id)a3 withBlock:(id)a4
+- (void)getProxyFor:(id)for withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOSuggestionsUIServerManager *)self getClientConnectionPropertiesFor:v6];
-  v9 = [v8 responseQueue];
-  if (v9)
+  forCopy = for;
+  blockCopy = block;
+  v8 = [(MOSuggestionsUIServerManager *)self getClientConnectionPropertiesFor:forCopy];
+  responseQueue = [v8 responseQueue];
+  if (responseQueue)
   {
     objc_initWeak(&location, self);
     v11[0] = _NSConcreteStackBlock;
@@ -1235,9 +1235,9 @@ void __65__MOSuggestionsUIServerManager_getClientConnectionPropertiesFor___block
     v11[2] = __54__MOSuggestionsUIServerManager_getProxyFor_withBlock___block_invoke;
     v11[3] = &unk_100309130;
     objc_copyWeak(&v14, &location);
-    v12 = v6;
-    v13 = v7;
-    dispatch_async(v9, v11);
+    v12 = forCopy;
+    v13 = blockCopy;
+    dispatch_async(responseQueue, v11);
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -1266,9 +1266,9 @@ void __54__MOSuggestionsUIServerManager_getProxyFor_withBlock___block_invoke(uin
   }
 }
 
-- (BOOL)isClientVisibleFor:(id)a3
+- (BOOL)isClientVisibleFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityUIService);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1276,9 +1276,9 @@ void __54__MOSuggestionsUIServerManager_getProxyFor_withBlock___block_invoke(uin
   }
 
   v6 = +[MOOnboardingManager sharedInstance];
-  v7 = [v6 onboardingFlowCompletionStatus];
+  onboardingFlowCompletionStatus = [v6 onboardingFlowCompletionStatus];
 
-  if (v7 > 5 || ((1 << v7) & 0x33) == 0)
+  if (onboardingFlowCompletionStatus > 5 || ((1 << onboardingFlowCompletionStatus) & 0x33) == 0)
   {
     v25 = 0u;
     v26 = 0u;
@@ -1301,8 +1301,8 @@ void __54__MOSuggestionsUIServerManager_getProxyFor_withBlock___block_invoke(uin
 
           v16 = *(*(&v23 + 1) + 8 * i);
           v17 = [(MOSuggestionsUIServerManager *)self getConnectionHostId:v16, v23];
-          v18 = [v17 remoteProcess];
-          v19 = [(MOSuggestionsUIServerManager *)self isVisibleClient:v18];
+          remoteProcess = [v17 remoteProcess];
+          v19 = [(MOSuggestionsUIServerManager *)self isVisibleClient:remoteProcess];
 
           if (v19)
           {
@@ -1321,13 +1321,13 @@ void __54__MOSuggestionsUIServerManager_getProxyFor_withBlock___block_invoke(uin
       }
     }
 
-    v20 = [(MOSuggestionsUIServerManager *)self getClientConnectionPropertiesFor:v4];
+    v20 = [(MOSuggestionsUIServerManager *)self getClientConnectionPropertiesFor:forCopy];
     v9 = v20;
     if (v20)
     {
-      v21 = [(NSMutableDictionary *)v20 connectionHost];
-      v22 = [v21 remoteProcess];
-      v10 = [(MOSuggestionsUIServerManager *)self isVisibleClient:v22];
+      connectionHost = [(NSMutableDictionary *)v20 connectionHost];
+      remoteProcess2 = [connectionHost remoteProcess];
+      v10 = [(MOSuggestionsUIServerManager *)self isVisibleClient:remoteProcess2];
 
       goto LABEL_10;
     }
@@ -1348,10 +1348,10 @@ LABEL_10:
   return v10;
 }
 
-- (void)requestPickerForSceneIdentiyToken:(id)a3 withOptions:(id)a4
+- (void)requestPickerForSceneIdentiyToken:(id)token withOptions:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  tokenCopy = token;
+  optionsCopy = options;
   v9 = +[BSServiceConnection currentContext];
   v10 = [MOSuggestionsUIServerManager getConnectionIdentifier:v9];
 
@@ -1376,9 +1376,9 @@ LABEL_10:
     [v15 handleFailureInMethod:a2 object:self file:@"MOSuggestionsUIServerManager.m" lineNumber:651 description:{@"unexpected picker request from untracked connection (in %s:%d)", "-[MOSuggestionsUIServerManager requestPickerForSceneIdentiyToken:withOptions:]", 651}];
   }
 
-  v16 = [v13 sceneIdentityToken];
+  sceneIdentityToken = [v13 sceneIdentityToken];
 
-  if (v16)
+  if (sceneIdentityToken)
   {
     v17 = _mo_log_facility_get_os_log(&MOLogFacilityUIService);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -1389,14 +1389,14 @@ LABEL_10:
 
   else
   {
-    [v13 setSceneIdentityToken:v7];
+    [v13 setSceneIdentityToken:tokenCopy];
     [v13 setActivationState:2];
     v18 = _mo_log_facility_get_os_log(&MOLogFacilityUIService);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v7 stringRepresentation];
+      stringRepresentation = [tokenCopy stringRepresentation];
       *buf = 138412290;
-      v38 = v19;
+      v38 = stringRepresentation;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Activating new scene with token=%@", buf, 0xCu);
     }
 
@@ -1406,13 +1406,13 @@ LABEL_10:
     v20 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
     [v17 setUserInfo:v20];
 
-    v21 = [v17 userInfo];
-    v22 = [v21 allKeys];
-    v23 = [NSSet setWithArray:v22];
+    userInfo = [v17 userInfo];
+    allKeys = [userInfo allKeys];
+    v23 = [NSSet setWithArray:allKeys];
     [v17 setRequiredUserInfoKeys:v23];
 
     v24 = objc_opt_new();
-    v25 = [[_UIWindowSceneOverlayPlacement alloc] initWithTargetSceneIdentity:v7];
+    v25 = [[_UIWindowSceneOverlayPlacement alloc] initWithTargetSceneIdentity:tokenCopy];
     [v24 setPlacement:v25];
     v26 = +[UIApplication sharedApplication];
     v33[0] = _NSConcreteStackBlock;
@@ -1426,19 +1426,19 @@ LABEL_10:
   v27 = _mo_log_facility_get_os_log(&MOLogFacilityUIService);
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
-    v28 = [v13 sceneIdentityToken];
-    v29 = [v28 stringRepresentation];
+    sceneIdentityToken2 = [v13 sceneIdentityToken];
+    stringRepresentation2 = [sceneIdentityToken2 stringRepresentation];
     *buf = 138412290;
-    v38 = v29;
+    v38 = stringRepresentation2;
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Received picker presentation request with token=%@", buf, 0xCu);
   }
 
-  v30 = [v13 session];
+  session = [v13 session];
 
-  if (v30)
+  if (session)
   {
-    v31 = [v13 delegate];
-    [v31 didReceivePresentationRequestWithOptions:v8];
+    delegate = [v13 delegate];
+    [delegate didReceivePresentationRequestWithOptions:optionsCopy];
   }
 
   else
@@ -1450,8 +1450,8 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "View is not ready to accept presentations.", buf, 2u);
     }
 
-    v31 = [v8 copy];
-    [v13 setPendingPresentationOptions:v31];
+    delegate = [optionsCopy copy];
+    [v13 setPendingPresentationOptions:delegate];
   }
 }
 
@@ -1470,10 +1470,10 @@ void __78__MOSuggestionsUIServerManager_requestPickerForSceneIdentiyToken_withOp
   }
 }
 
-- (void)updatePickerState:(id)a3 animated:(id)a4
+- (void)updatePickerState:(id)state animated:(id)animated
 {
-  v7 = a3;
-  v8 = a4;
+  stateCopy = state;
+  animatedCopy = animated;
   v9 = +[BSServiceConnection currentContext];
   v10 = [(MOSuggestionsUIServerManager *)self getPropertiesForConnection:v9];
 
@@ -1489,31 +1489,31 @@ void __78__MOSuggestionsUIServerManager_requestPickerForSceneIdentiyToken_withOp
     [v12 handleFailureInMethod:a2 object:self file:@"MOSuggestionsUIServerManager.m" lineNumber:695 description:{@"unexpected picker request from untracked connection (in %s:%d)", "-[MOSuggestionsUIServerManager updatePickerState:animated:]", 695}];
   }
 
-  v13 = [v10 session];
+  session = [v10 session];
 
-  if (v13)
+  if (session)
   {
-    v14 = [v10 delegate];
-    [v14 didReceiveUpdateRequestWithState:objc_msgSend(v7 animated:{"unsignedIntValue"), objc_msgSend(v8, "BOOLValue")}];
+    delegate = [v10 delegate];
+    [delegate didReceiveUpdateRequestWithState:objc_msgSend(stateCopy animated:{"unsignedIntValue"), objc_msgSend(animatedCopy, "BOOLValue")}];
   }
 
   else
   {
-    v15 = [v10 activationState];
+    activationState = [v10 activationState];
     v16 = _mo_log_facility_get_os_log(&MOLogFacilityUIService);
     v17 = v16;
-    if (v15 == 2)
+    if (activationState == 2)
     {
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         [MOSuggestionsUIServerManager updatePickerState:animated:];
       }
 
-      v18 = [v7 copy];
+      v18 = [stateCopy copy];
       [v10 setUnfulfilledUpdateState:v18];
 
-      v14 = [v8 copy];
-      [v10 setUnfulfilledUpdateIsAnimated:v14];
+      delegate = [animatedCopy copy];
+      [v10 setUnfulfilledUpdateIsAnimated:delegate];
     }
 
     else
@@ -1523,15 +1523,15 @@ void __78__MOSuggestionsUIServerManager_requestPickerForSceneIdentiyToken_withOp
         [MOSuggestionsUIServerManager updatePickerState:animated:];
       }
 
-      v19 = [v10 delegate];
+      delegate2 = [v10 delegate];
       v20[0] = _NSConcreteStackBlock;
       v20[1] = 3221225472;
       v20[2] = __59__MOSuggestionsUIServerManager_updatePickerState_animated___block_invoke;
       v20[3] = &unk_100309158;
       v21 = v10;
-      [(MOSuggestionsUIServerManager *)self getProxyFor:v19 withBlock:v20];
+      [(MOSuggestionsUIServerManager *)self getProxyFor:delegate2 withBlock:v20];
 
-      v14 = v21;
+      delegate = v21;
     }
   }
 }
@@ -1566,43 +1566,43 @@ void __59__MOSuggestionsUIServerManager_updatePickerState_animated___block_invok
   v4 = +[BSServiceConnection currentContext];
   v5 = [(MOSuggestionsUIServerManager *)self getPropertiesForConnection:v4];
 
-  v6 = [v5 connectionHost];
-  [v6 invalidate];
+  connectionHost = [v5 connectionHost];
+  [connectionHost invalidate];
 
   v7 = +[BSServiceConnection currentContext];
   [(MOSuggestionsUIServerManager *)self removeConnection:v7];
 }
 
-- (void)fetchAssets:(id)a3 withTypes:(id)a4 completion:(id)a5
+- (void)fetchAssets:(id)assets withTypes:(id)types completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  assetsCopy = assets;
+  completionCopy = completion;
+  typesCopy = types;
   v11 = _mo_log_facility_get_os_log(&MOLogFacilityUIService);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 suggestionIdentifier];
-    v13 = [v12 UUIDString];
+    suggestionIdentifier = [assetsCopy suggestionIdentifier];
+    uUIDString = [suggestionIdentifier UUIDString];
     *buf = 138412290;
-    v24 = v13;
+    v24 = uUIDString;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "(Legacy) server, fetching suggestion assets for suggestion id=%@", buf, 0xCu);
   }
 
   v14 = +[BSServiceConnection currentContext];
   v15 = [(MOSuggestionsUIServerManager *)self getPropertiesForConnection:v14];
 
-  v16 = [v15 delegate];
-  v17 = [v10 requestedTypes];
+  delegate = [v15 delegate];
+  requestedTypes = [typesCopy requestedTypes];
 
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = __65__MOSuggestionsUIServerManager_fetchAssets_withTypes_completion___block_invoke;
   v20[3] = &unk_100309180;
-  v21 = v8;
-  v22 = v9;
-  v18 = v9;
-  v19 = v8;
-  [v16 willReturnAssetsForSuggestion:v19 withTypes:v17 completion:v20];
+  v21 = assetsCopy;
+  v22 = completionCopy;
+  v18 = completionCopy;
+  v19 = assetsCopy;
+  [delegate willReturnAssetsForSuggestion:v19 withTypes:requestedTypes completion:v20];
 }
 
 void __65__MOSuggestionsUIServerManager_fetchAssets_withTypes_completion___block_invoke(uint64_t a1, void *a2)
@@ -1624,36 +1624,36 @@ void __65__MOSuggestionsUIServerManager_fetchAssets_withTypes_completion___block
   (*(v7 + 16))(v7, v8, 0);
 }
 
-- (void)fetchAssets:(id)a3 withTypes:(id)a4 onAssetsCallback:(id)a5
+- (void)fetchAssets:(id)assets withTypes:(id)types onAssetsCallback:(id)callback
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  assetsCopy = assets;
+  callbackCopy = callback;
+  typesCopy = types;
   v11 = _mo_log_facility_get_os_log(&MOLogFacilityUIService);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 suggestionIdentifier];
-    v13 = [v12 UUIDString];
+    suggestionIdentifier = [assetsCopy suggestionIdentifier];
+    uUIDString = [suggestionIdentifier UUIDString];
     *buf = 138412290;
-    v24 = v13;
+    v24 = uUIDString;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, " server, fetching suggestion assets for suggestion id=%@", buf, 0xCu);
   }
 
   v14 = +[BSServiceConnection currentContext];
   v15 = [(MOSuggestionsUIServerManager *)self getPropertiesForConnection:v14];
 
-  v16 = [v15 delegate];
-  v17 = [v10 requestedTypes];
+  delegate = [v15 delegate];
+  requestedTypes = [typesCopy requestedTypes];
 
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = __71__MOSuggestionsUIServerManager_fetchAssets_withTypes_onAssetsCallback___block_invoke;
   v20[3] = &unk_1003091A8;
-  v21 = v8;
-  v22 = v9;
-  v18 = v9;
-  v19 = v8;
-  [v16 willReturnAssetsForSuggestion:v19 withTypes:v17 onAssetsCallback:v20];
+  v21 = assetsCopy;
+  v22 = callbackCopy;
+  v18 = callbackCopy;
+  v19 = assetsCopy;
+  [delegate willReturnAssetsForSuggestion:v19 withTypes:requestedTypes onAssetsCallback:v20];
 }
 
 void __71__MOSuggestionsUIServerManager_fetchAssets_withTypes_onAssetsCallback___block_invoke(uint64_t a1, void *a2)
@@ -1676,16 +1676,16 @@ void __71__MOSuggestionsUIServerManager_fetchAssets_withTypes_onAssetsCallback__
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)performTask:(unint64_t)a3 suggestion:(id)a4 sender:(id)a5
+- (void)performTask:(unint64_t)task suggestion:(id)suggestion sender:(id)sender
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __62__MOSuggestionsUIServerManager_performTask_suggestion_sender___block_invoke;
   v9[3] = &unk_100309210;
-  v10 = a4;
-  v11 = a3;
-  v8 = v10;
-  [(MOSuggestionsUIServerManager *)self getProxyFor:a5 withBlock:v9];
+  suggestionCopy = suggestion;
+  taskCopy = task;
+  v8 = suggestionCopy;
+  [(MOSuggestionsUIServerManager *)self getProxyFor:sender withBlock:v9];
 }
 
 void __62__MOSuggestionsUIServerManager_performTask_suggestion_sender___block_invoke(uint64_t a1, void *a2)
@@ -1701,35 +1701,35 @@ void __62__MOSuggestionsUIServerManager_performTask_suggestion_sender___block_in
   [v3 performTask:v5 suggestion:*(a1 + 32)];
 }
 
-- (void)sendSuggestionSheetStateUpdate:(unint64_t)a3 sender:(id)a4
+- (void)sendSuggestionSheetStateUpdate:(unint64_t)update sender:(id)sender
 {
-  v6 = a4;
-  v7 = [(MOSuggestionsUIServerManager *)self getClientConnectionPropertiesFor:v6];
-  if ([v7 currentViewState] != a3)
+  senderCopy = sender;
+  v7 = [(MOSuggestionsUIServerManager *)self getClientConnectionPropertiesFor:senderCopy];
+  if ([v7 currentViewState] != update)
   {
     v8 = _mo_log_facility_get_os_log(&MOLogFacilityUIService);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [MOSuggestionsUIServerManager sendSuggestionSheetStateUpdate:a3 sender:v8];
+      [MOSuggestionsUIServerManager sendSuggestionSheetStateUpdate:update sender:v8];
     }
 
-    v9 = [NSNumber numberWithUnsignedInteger:a3];
-    [v7 setCurrentViewState:a3];
+    v9 = [NSNumber numberWithUnsignedInteger:update];
+    [v7 setCurrentViewState:update];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = __70__MOSuggestionsUIServerManager_sendSuggestionSheetStateUpdate_sender___block_invoke;
     v11[3] = &unk_100309158;
     v12 = v9;
     v10 = v9;
-    [(MOSuggestionsUIServerManager *)self getProxyFor:v6 withBlock:v11];
+    [(MOSuggestionsUIServerManager *)self getProxyFor:senderCopy withBlock:v11];
   }
 }
 
-- (void)grantSandboxAccessFor:(id)a3 sender:(id)a4
+- (void)grantSandboxAccessFor:(id)for sender:(id)sender
 {
-  v6 = a4;
-  v7 = [a3 path];
-  [v7 fileSystemRepresentation];
+  senderCopy = sender;
+  path = [for path];
+  [path fileSystemRepresentation];
   v8 = sandbox_extension_issue_file();
   if (v8)
   {
@@ -1742,13 +1742,13 @@ void __62__MOSuggestionsUIServerManager_performTask_suggestion_sender___block_in
     v12[3] = &unk_100309158;
     v13 = v10;
     v11 = v10;
-    [(MOSuggestionsUIServerManager *)self getProxyFor:v6 withBlock:v12];
+    [(MOSuggestionsUIServerManager *)self getProxyFor:senderCopy withBlock:v12];
   }
 }
 
-- (void)processManager:(id)a3 didRemoveProcess:(id)a4
+- (void)processManager:(id)manager didRemoveProcess:(id)process
 {
-  v5 = a4;
+  processCopy = process;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -1769,17 +1769,17 @@ void __62__MOSuggestionsUIServerManager_performTask_suggestion_sender___block_in
         }
 
         v11 = [(MOSuggestionsUIServerManager *)self getConnectionHostId:*(*(&v16 + 1) + 8 * i), v16];
-        v12 = [v11 remoteProcess];
+        remoteProcess = [v11 remoteProcess];
 
-        if (v12)
+        if (remoteProcess)
         {
-          v13 = [v5 pid];
-          if (v13 == [v12 pid])
+          v13 = [processCopy pid];
+          if (v13 == [remoteProcess pid])
           {
             v14 = _mo_log_facility_get_os_log(&MOLogFacilityUIService);
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
-              v15 = [MOSuggestionsUIServerManager getRemoteProcessIdentifier:v12];
+              v15 = [MOSuggestionsUIServerManager getRemoteProcessIdentifier:remoteProcess];
               *buf = 138412290;
               v21 = v15;
               _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Client process has ended id=%@", buf, 0xCu);

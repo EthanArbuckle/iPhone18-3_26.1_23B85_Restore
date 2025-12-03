@@ -2,7 +2,7 @@
 + (DBSDisplayZoomConfigurationController)defaultController;
 - (id)currentDisplayZoomMode;
 - (id)displayZoomModes;
-- (void)setDisplayZoomMode:(id)a3 withRelaunchURL:(id)a4 transitionWithScreenshot:(BOOL)a5;
+- (void)setDisplayZoomMode:(id)mode withRelaunchURL:(id)l transitionWithScreenshot:(BOOL)screenshot;
 @end
 
 @implementation DBSDisplayZoomConfigurationController
@@ -204,16 +204,16 @@ void __57__DBSDisplayZoomConfigurationController_displayZoomModes__block_invoke(
   displayZoomModes__displayZoomModes = v4;
 }
 
-- (void)setDisplayZoomMode:(id)a3 withRelaunchURL:(id)a4 transitionWithScreenshot:(BOOL)a5
+- (void)setDisplayZoomMode:(id)mode withRelaunchURL:(id)l transitionWithScreenshot:(BOOL)screenshot
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  modeCopy = mode;
+  lCopy = l;
   v9 = DBSLogForCategory(1uLL);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = DBSStringForDisplayZoomOption([v7 displayZoomOption]);
-    [v7 size];
+    v10 = DBSStringForDisplayZoomOption([modeCopy displayZoomOption]);
+    [modeCopy size];
     v11 = NSStringFromCGSize(v24);
     *buf = 136315650;
     v18 = "[DBSDisplayZoomConfigurationController setDisplayZoomMode:withRelaunchURL:transitionWithScreenshot:]";
@@ -225,7 +225,7 @@ void __57__DBSDisplayZoomConfigurationController_displayZoomModes__block_invoke(
   }
 
   DBSGetMobileFrameBuffer();
-  [v7 size];
+  [modeCopy size];
   IOMobileFramebufferSetCanvasSize();
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"DBSMagnifyModeDidChangeNotification", 0, 0, 1u);
@@ -233,9 +233,9 @@ void __57__DBSDisplayZoomConfigurationController_displayZoomModes__block_invoke(
   v14[1] = 3221225472;
   v14[2] = __101__DBSDisplayZoomConfigurationController_setDisplayZoomMode_withRelaunchURL_transitionWithScreenshot___block_invoke;
   v14[3] = &unk_278459758;
-  v16 = a5;
-  v15 = v8;
-  v13 = v8;
+  screenshotCopy = screenshot;
+  v15 = lCopy;
+  v13 = lCopy;
   dispatch_async(MEMORY[0x277D85CD0], v14);
 }
 

@@ -1,48 +1,48 @@
 @interface ICSCallAnalyticsLogger
 - (void)bannerDidDisconnect;
-- (void)callStatusChanged:(id)a3;
-- (void)createAnalyticsViewForCall:(id)a3 initialPresentationMode:(int64_t)a4 bannersEnabled:(BOOL)a5;
-- (void)createAnsweredBannerAnalyticsViewWithIsHandsfreeAudioRoute:(BOOL)a3;
-- (void)ringerMutedForCallUUID:(id)a3;
-- (void)setBannerDismissalReasonForAnalyticsSource:(id)a3 callUUID:(id)a4;
-- (void)setPresentationMode:(int64_t)a3 callUUID:(id)a4;
-- (void)submitCAMetric:(id)a3 viewId:(id)a4;
+- (void)callStatusChanged:(id)changed;
+- (void)createAnalyticsViewForCall:(id)call initialPresentationMode:(int64_t)mode bannersEnabled:(BOOL)enabled;
+- (void)createAnsweredBannerAnalyticsViewWithIsHandsfreeAudioRoute:(BOOL)route;
+- (void)ringerMutedForCallUUID:(id)d;
+- (void)setBannerDismissalReasonForAnalyticsSource:(id)source callUUID:(id)d;
+- (void)setPresentationMode:(int64_t)mode callUUID:(id)d;
+- (void)submitCAMetric:(id)metric viewId:(id)id;
 @end
 
 @implementation ICSCallAnalyticsLogger
 
-- (void)callStatusChanged:(id)a3
+- (void)callStatusChanged:(id)changed
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4, v6);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   sub_10000C078();
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)createAnalyticsViewForCall:(id)a3 initialPresentationMode:(int64_t)a4 bannersEnabled:(BOOL)a5
+- (void)createAnalyticsViewForCall:(id)call initialPresentationMode:(int64_t)mode bannersEnabled:(BOOL)enabled
 {
-  v6 = a3;
-  v7 = self;
+  callCopy = call;
+  selfCopy = self;
   sub_1001E76E0();
 }
 
-- (void)createAnsweredBannerAnalyticsViewWithIsHandsfreeAudioRoute:(BOOL)a3
+- (void)createAnsweredBannerAnalyticsViewWithIsHandsfreeAudioRoute:(BOOL)route
 {
-  v4 = self;
-  sub_1001E7A50(a3);
+  selfCopy = self;
+  sub_1001E7A50(route);
 }
 
-- (void)setBannerDismissalReasonForAnalyticsSource:(id)a3 callUUID:(id)a4
+- (void)setBannerDismissalReasonForAnalyticsSource:(id)source callUUID:(id)d
 {
   v7 = sub_10014EA98(&qword_1003AAB40);
   __chkstk_darwin(v7 - 8, v8);
   v10 = &v15 - v9;
-  if (a4)
+  if (d)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v11 = type metadata accessor for UUID();
@@ -56,19 +56,19 @@
   }
 
   sub_100006848(v10, v12, 1, v11);
-  v13 = a3;
-  v14 = self;
+  sourceCopy = source;
+  selfCopy = self;
   sub_1001E7B34();
 
   sub_1000306A4(v10, &qword_1003AAB40);
 }
 
-- (void)setPresentationMode:(int64_t)a3 callUUID:(id)a4
+- (void)setPresentationMode:(int64_t)mode callUUID:(id)d
 {
   v6 = sub_10014EA98(&qword_1003AAB40);
   __chkstk_darwin(v6 - 8, v7);
   v9 = &v13 - v8;
-  if (a4)
+  if (d)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v10 = type metadata accessor for UUID();
@@ -82,18 +82,18 @@
   }
 
   sub_100006848(v9, v11, 1, v10);
-  v12 = self;
+  selfCopy = self;
   sub_1001E7E78();
 
   sub_1000306A4(v9, &qword_1003AAB40);
 }
 
-- (void)ringerMutedForCallUUID:(id)a3
+- (void)ringerMutedForCallUUID:(id)d
 {
   v5 = sub_10014EA98(&qword_1003AAB40);
   __chkstk_darwin(v5 - 8, v6);
   v8 = &v12 - v7;
-  if (a3)
+  if (d)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = type metadata accessor for UUID();
@@ -107,7 +107,7 @@
   }
 
   sub_100006848(v8, v10, 1, v9);
-  v11 = self;
+  selfCopy = self;
   sub_1001E815C();
 
   sub_1000306A4(v8, &qword_1003AAB40);
@@ -115,15 +115,15 @@
 
 - (void)bannerDidDisconnect
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001E842C();
 }
 
-- (void)submitCAMetric:(id)a3 viewId:(id)a4
+- (void)submitCAMetric:(id)metric viewId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  metricCopy = metric;
+  idCopy = id;
+  selfCopy = self;
   sub_1001E84B8();
 }
 

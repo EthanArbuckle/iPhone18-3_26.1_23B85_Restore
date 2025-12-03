@@ -1,16 +1,16 @@
 @interface DMTSharingBackedRemoteSetupBroadcaster
-- (DMTSharingBackedRemoteSetupBroadcaster)initWithPrimitives:(id)a3;
+- (DMTSharingBackedRemoteSetupBroadcaster)initWithPrimitives:(id)primitives;
 - (void)beginObservingTerminal;
-- (void)broadcastTerminal:(id)a3 didActivateWithError:(id)a4;
-- (void)broadcastTerminal:(id)a3 hasError:(id)a4;
-- (void)broadcastTerminal:(id)a3 hasPairedDeviceConnection:(id)a4;
-- (void)broadcastTerminal:(id)a3 needsToDisplayPin:(id)a4;
-- (void)broadcastTerminal:(id)a3 stoppedWithError:(id)a4;
-- (void)broadcastTerminalNeedsToDismissPin:(id)a3;
+- (void)broadcastTerminal:(id)terminal didActivateWithError:(id)error;
+- (void)broadcastTerminal:(id)terminal hasError:(id)error;
+- (void)broadcastTerminal:(id)terminal hasPairedDeviceConnection:(id)connection;
+- (void)broadcastTerminal:(id)terminal needsToDisplayPin:(id)pin;
+- (void)broadcastTerminal:(id)terminal stoppedWithError:(id)error;
+- (void)broadcastTerminalNeedsToDismissPin:(id)pin;
 - (void)dealloc;
 - (void)endObservingTerminal;
-- (void)invalidateWithError:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)invalidateWithError:(id)error;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)startBroadcasting;
 @end
 
@@ -24,21 +24,21 @@
   [(DMTSharingBackedRemoteSetupBroadcaster *)&v3 dealloc];
 }
 
-- (DMTSharingBackedRemoteSetupBroadcaster)initWithPrimitives:(id)a3
+- (DMTSharingBackedRemoteSetupBroadcaster)initWithPrimitives:(id)primitives
 {
-  v5 = a3;
+  primitivesCopy = primitives;
   v13.receiver = self;
   v13.super_class = DMTSharingBackedRemoteSetupBroadcaster;
   v6 = [(DMTSharingBackedRemoteSetupBroadcaster *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_broadcastPrimitives, a3);
+    objc_storeStrong(&v6->_broadcastPrimitives, primitives);
     v8 = objc_opt_new();
     delegateQueue = v7->_delegateQueue;
     v7->_delegateQueue = v8;
 
-    v10 = [objc_alloc(MEMORY[0x277CF9570]) initWithBroadcastPrimitives:v5 delegate:v7 delegationQueue:v7->_delegateQueue];
+    v10 = [objc_alloc(MEMORY[0x277CF9570]) initWithBroadcastPrimitives:primitivesCopy delegate:v7 delegationQueue:v7->_delegateQueue];
     terminal = v7->_terminal;
     v7->_terminal = v10;
   }
@@ -60,25 +60,25 @@
   else
   {
     [(DMTSharingBackedRemoteSetupBroadcaster *)self beginObservingTerminal];
-    v11 = [(DMTSharingBackedRemoteSetupBroadcaster *)self terminal];
-    [v11 activate];
+    terminal = [(DMTSharingBackedRemoteSetupBroadcaster *)self terminal];
+    [terminal activate];
   }
 }
 
-- (void)broadcastTerminal:(id)a3 didActivateWithError:(id)a4
+- (void)broadcastTerminal:(id)terminal didActivateWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  terminalCopy = terminal;
+  errorCopy = error;
   v8 = _DMTLogGeneral_3();
   v9 = v8;
-  if (v7)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       [DMTSharingBackedRemoteSetupBroadcaster broadcastTerminal:didActivateWithError:];
     }
 
-    [(DMTSharingBackedRemoteSetupBroadcaster *)self performSelectorOnMainThread:sel_invalidateWithError_ withObject:v7 waitUntilDone:0];
+    [(DMTSharingBackedRemoteSetupBroadcaster *)self performSelectorOnMainThread:sel_invalidateWithError_ withObject:errorCopy waitUntilDone:0];
   }
 
   else
@@ -90,16 +90,16 @@
   }
 }
 
-- (void)broadcastTerminal:(id)a3 hasError:(id)a4
+- (void)broadcastTerminal:(id)terminal hasError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__DMTSharingBackedRemoteSetupBroadcaster_broadcastTerminal_hasError___block_invoke;
   v7[3] = &unk_278F5E650;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -117,16 +117,16 @@ void __69__DMTSharingBackedRemoteSetupBroadcaster_broadcastTerminal_hasError___b
   }
 }
 
-- (void)broadcastTerminal:(id)a3 stoppedWithError:(id)a4
+- (void)broadcastTerminal:(id)terminal stoppedWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __77__DMTSharingBackedRemoteSetupBroadcaster_broadcastTerminal_stoppedWithError___block_invoke;
   v7[3] = &unk_278F5E650;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -144,13 +144,13 @@ uint64_t __77__DMTSharingBackedRemoteSetupBroadcaster_broadcastTerminal_stoppedW
   return result;
 }
 
-- (void)broadcastTerminal:(id)a3 hasPairedDeviceConnection:(id)a4
+- (void)broadcastTerminal:(id)terminal hasPairedDeviceConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = _DMTLogGeneral_3();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [DMTSharingBackedRemoteSetupBroadcaster broadcastTerminal:v5 hasPairedDeviceConnection:v6];
+    [DMTSharingBackedRemoteSetupBroadcaster broadcastTerminal:connectionCopy hasPairedDeviceConnection:v6];
   }
 
   v8[0] = MEMORY[0x277D85DD0];
@@ -158,8 +158,8 @@ uint64_t __77__DMTSharingBackedRemoteSetupBroadcaster_broadcastTerminal_stoppedW
   v8[2] = __86__DMTSharingBackedRemoteSetupBroadcaster_broadcastTerminal_hasPairedDeviceConnection___block_invoke;
   v8[3] = &unk_278F5E650;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = connectionCopy;
+  v7 = connectionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 }
 
@@ -196,16 +196,16 @@ void __86__DMTSharingBackedRemoteSetupBroadcaster_broadcastTerminal_hasPairedDev
   }
 }
 
-- (void)broadcastTerminal:(id)a3 needsToDisplayPin:(id)a4
+- (void)broadcastTerminal:(id)terminal needsToDisplayPin:(id)pin
 {
-  v5 = a4;
+  pinCopy = pin;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__DMTSharingBackedRemoteSetupBroadcaster_broadcastTerminal_needsToDisplayPin___block_invoke;
   v7[3] = &unk_278F5E650;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = pinCopy;
+  v6 = pinCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -227,7 +227,7 @@ void __78__DMTSharingBackedRemoteSetupBroadcaster_broadcastTerminal_needsToDispl
   }
 }
 
-- (void)broadcastTerminalNeedsToDismissPin:(id)a3
+- (void)broadcastTerminalNeedsToDismissPin:(id)pin
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -252,16 +252,16 @@ void __77__DMTSharingBackedRemoteSetupBroadcaster_broadcastTerminalNeedsToDismis
   }
 }
 
-- (void)invalidateWithError:(id)a3
+- (void)invalidateWithError:(id)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if (![(DMTSharingBackedRemoteSetupBroadcaster *)self isInvalidated])
   {
     [(DMTSharingBackedRemoteSetupBroadcaster *)self setIsInvalidated:1];
     [(DMTSharingBackedRemoteSetupBroadcaster *)self setDisplayedPin:0];
-    v5 = [(DMTSharingBackedRemoteSetupBroadcaster *)self terminal];
-    [v5 invalidate];
+    terminal = [(DMTSharingBackedRemoteSetupBroadcaster *)self terminal];
+    [terminal invalidate];
 
     v6 = _DMTLogGeneral_3();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -269,18 +269,18 @@ void __77__DMTSharingBackedRemoteSetupBroadcaster_broadcastTerminalNeedsToDismis
       [DMTSharingBackedRemoteSetupBroadcaster invalidateWithError:];
     }
 
-    if (v4)
+    if (errorCopy)
     {
-      v7 = [(DMTSharingBackedRemoteSetupBroadcaster *)self showErrorHandler];
+      showErrorHandler = [(DMTSharingBackedRemoteSetupBroadcaster *)self showErrorHandler];
 
-      if (v7)
+      if (showErrorHandler)
       {
-        v8 = [(DMTSharingBackedRemoteSetupBroadcaster *)self showErrorHandler];
+        showErrorHandler2 = [(DMTSharingBackedRemoteSetupBroadcaster *)self showErrorHandler];
         v12 = *MEMORY[0x277CCA7E8];
-        v13[0] = v4;
+        v13[0] = errorCopy;
         v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
         v10 = DMTErrorWithCodeAndUserInfo(40, v9);
-        (v8)[2](v8, v10);
+        (showErrorHandler2)[2](showErrorHandler2, v10);
       }
     }
   }
@@ -290,30 +290,30 @@ void __77__DMTSharingBackedRemoteSetupBroadcaster_broadcastTerminalNeedsToDismis
 
 - (void)beginObservingTerminal
 {
-  v3 = [(DMTSharingBackedRemoteSetupBroadcaster *)self terminal];
-  [v3 addObserver:self forKeyPath:@"broadcasting" options:4 context:@"TerminalObservationContext"];
+  terminal = [(DMTSharingBackedRemoteSetupBroadcaster *)self terminal];
+  [terminal addObserver:self forKeyPath:@"broadcasting" options:4 context:@"TerminalObservationContext"];
 }
 
 - (void)endObservingTerminal
 {
-  v3 = [(DMTSharingBackedRemoteSetupBroadcaster *)self terminal];
-  [v3 removeObserver:self forKeyPath:@"broadcasting" context:@"TerminalObservationContext"];
+  terminal = [(DMTSharingBackedRemoteSetupBroadcaster *)self terminal];
+  [terminal removeObserver:self forKeyPath:@"broadcasting" context:@"TerminalObservationContext"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == @"TerminalObservationContext")
+  if (context == @"TerminalObservationContext")
   {
-    if ([a3 isEqualToString:{@"broadcasting", a4, a5}])
+    if ([path isEqualToString:{@"broadcasting", object, change}])
     {
-      v7 = [(DMTSharingBackedRemoteSetupBroadcaster *)self terminal];
-      v8 = [v7 isBroadcasting];
-      v9 = [(DMTSharingBackedRemoteSetupBroadcaster *)self isBroadcasting];
+      terminal = [(DMTSharingBackedRemoteSetupBroadcaster *)self terminal];
+      isBroadcasting = [terminal isBroadcasting];
+      isBroadcasting2 = [(DMTSharingBackedRemoteSetupBroadcaster *)self isBroadcasting];
 
-      if (v8 != v9)
+      if (isBroadcasting != isBroadcasting2)
       {
-        v10 = [(DMTSharingBackedRemoteSetupBroadcaster *)self terminal];
-        -[DMTSharingBackedRemoteSetupBroadcaster setIsBroadcasting:](self, "setIsBroadcasting:", [v10 isBroadcasting]);
+        terminal2 = [(DMTSharingBackedRemoteSetupBroadcaster *)self terminal];
+        -[DMTSharingBackedRemoteSetupBroadcaster setIsBroadcasting:](self, "setIsBroadcasting:", [terminal2 isBroadcasting]);
       }
     }
   }
@@ -322,7 +322,7 @@ void __77__DMTSharingBackedRemoteSetupBroadcaster_broadcastTerminalNeedsToDismis
   {
     v11.receiver = self;
     v11.super_class = DMTSharingBackedRemoteSetupBroadcaster;
-    [(DMTSharingBackedRemoteSetupBroadcaster *)&v11 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(DMTSharingBackedRemoteSetupBroadcaster *)&v11 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 

@@ -1,14 +1,14 @@
 @interface MTLGPUDebugResidencySet
-- (MTLGPUDebugResidencySet)initWithResidencySet:(id)a3 device:(id)a4 descriptor:(id)a5;
+- (MTLGPUDebugResidencySet)initWithResidencySet:(id)set device:(id)device descriptor:(id)descriptor;
 @end
 
 @implementation MTLGPUDebugResidencySet
 
-- (MTLGPUDebugResidencySet)initWithResidencySet:(id)a3 device:(id)a4 descriptor:(id)a5
+- (MTLGPUDebugResidencySet)initWithResidencySet:(id)set device:(id)device descriptor:(id)descriptor
 {
   v6.receiver = self;
   v6.super_class = MTLGPUDebugResidencySet;
-  return [(MTLToolsResidencySet *)&v6 initWithBaseObject:a3 parent:a4, a5];
+  return [(MTLToolsResidencySet *)&v6 initWithBaseObject:set parent:device, descriptor];
 }
 
 @end

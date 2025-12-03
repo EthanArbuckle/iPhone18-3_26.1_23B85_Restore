@@ -1,104 +1,104 @@
 @interface CKWalletItemLinkSearchResultCell
-- (CKWalletItemLinkSearchResultCell)initWithFrame:(CGRect)a3;
+- (CKWalletItemLinkSearchResultCell)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)marginInsets;
 - (id)previewSnapshot;
-- (void)_metadataGenerated:(id)a3;
-- (void)configureWithQueryResult:(id)a3 searchText:(id)a4 mode:(unint64_t)a5;
+- (void)_metadataGenerated:(id)generated;
+- (void)configureWithQueryResult:(id)result searchText:(id)text mode:(unint64_t)mode;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setLinkPresentationProperties:(id)a3 forSearchResult:(id)a4;
+- (void)setLinkPresentationProperties:(id)properties forSearchResult:(id)result;
 @end
 
 @implementation CKWalletItemLinkSearchResultCell
 
-- (CKWalletItemLinkSearchResultCell)initWithFrame:(CGRect)a3
+- (CKWalletItemLinkSearchResultCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CKWalletItemLinkSearchResultCell;
-  v3 = [(CKWalletItemLinkSearchResultCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKWalletItemLinkSearchResultCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel__metadataGenerated_ name:@"CKSearchLPWalletItemMetadataDidChange" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__metadataGenerated_ name:@"CKSearchLPWalletItemMetadataDidChange" object:0];
   }
 
   return v3;
 }
 
-- (void)configureWithQueryResult:(id)a3 searchText:(id)a4 mode:(unint64_t)a5
+- (void)configureWithQueryResult:(id)result searchText:(id)text mode:(unint64_t)mode
 {
-  v12 = a3;
-  v6 = [v12 identifier];
-  [(CKWalletItemLinkSearchResultCell *)self setResultIdentifier:v6];
+  resultCopy = result;
+  identifier = [resultCopy identifier];
+  [(CKWalletItemLinkSearchResultCell *)self setResultIdentifier:identifier];
 
   v7 = +[CKSearchThumbnailPreviewGenerator sharedInstance];
-  v8 = [v7 hasCachedWalletItemLinkPropertiesForQueryResult:v12];
+  v8 = [v7 hasCachedWalletItemLinkPropertiesForQueryResult:resultCopy];
 
   v9 = +[CKSearchThumbnailPreviewGenerator sharedInstance];
   v10 = v9;
   if (v8)
   {
-    v11 = [v9 cachedWalletItemLinkPropertiesForQueryResult:v12];
+    v11 = [v9 cachedWalletItemLinkPropertiesForQueryResult:resultCopy];
 
-    [(CKWalletItemLinkSearchResultCell *)self setLinkPresentationProperties:v11 forSearchResult:v12];
+    [(CKWalletItemLinkSearchResultCell *)self setLinkPresentationProperties:v11 forSearchResult:resultCopy];
     v10 = v11;
   }
 
   else
   {
-    [v9 beginGeneratingWebLinkPresentationPropertiesForQueryResult:v12];
+    [v9 beginGeneratingWebLinkPresentationPropertiesForQueryResult:resultCopy];
   }
 }
 
-- (void)setLinkPresentationProperties:(id)a3 forSearchResult:(id)a4
+- (void)setLinkPresentationProperties:(id)properties forSearchResult:(id)result
 {
-  v13 = a3;
-  v6 = a4;
-  if (v13)
+  propertiesCopy = properties;
+  resultCopy = result;
+  if (propertiesCopy)
   {
-    v7 = [(CKWalletItemLinkSearchResultCell *)self linkMetadata];
-    v8 = [v7 isEqual:v13];
+    linkMetadata = [(CKWalletItemLinkSearchResultCell *)self linkMetadata];
+    v8 = [linkMetadata isEqual:propertiesCopy];
 
     if ((v8 & 1) == 0)
     {
-      [(CKWalletItemLinkSearchResultCell *)self setLinkMetadata:v13];
-      v9 = [(CKWalletItemLinkSearchResultCell *)self linkView];
+      [(CKWalletItemLinkSearchResultCell *)self setLinkMetadata:propertiesCopy];
+      linkView = [(CKWalletItemLinkSearchResultCell *)self linkView];
 
-      if (v9)
+      if (linkView)
       {
-        v10 = [(CKWalletItemLinkSearchResultCell *)self linkView];
-        [v10 removeFromSuperview];
+        linkView2 = [(CKWalletItemLinkSearchResultCell *)self linkView];
+        [linkView2 removeFromSuperview];
 
         [(CKWalletItemLinkSearchResultCell *)self setLinkView:0];
       }
 
-      v11 = [objc_alloc(MEMORY[0x1E696ECC8]) initWithPresentationProperties:v13 URL:0];
+      v11 = [objc_alloc(MEMORY[0x1E696ECC8]) initWithPresentationProperties:propertiesCopy URL:0];
       [v11 _setApplyCornerRadius:1];
       [v11 _setPreferredSizeClass:5];
       [v11 _setDisableTapGesture:1];
       [v11 _setAction:0 withText:&stru_1F04268F8 buttonType:1];
       [(CKWalletItemLinkSearchResultCell *)self setLinkView:v11];
-      v12 = [(CKWalletItemLinkSearchResultCell *)self contentView];
-      [v12 addSubview:v11];
+      contentView = [(CKWalletItemLinkSearchResultCell *)self contentView];
+      [contentView addSubview:v11];
 
       [(CKWalletItemLinkSearchResultCell *)self setNeedsLayout];
     }
   }
 }
 
-- (void)_metadataGenerated:(id)a3
+- (void)_metadataGenerated:(id)generated
 {
-  v9 = [a3 object];
-  v4 = [v9 identifier];
-  v5 = [(CKWalletItemLinkSearchResultCell *)self resultIdentifier];
-  v6 = [v4 isEqualToString:v5];
+  object = [generated object];
+  identifier = [object identifier];
+  resultIdentifier = [(CKWalletItemLinkSearchResultCell *)self resultIdentifier];
+  v6 = [identifier isEqualToString:resultIdentifier];
 
   if (v6)
   {
     v7 = +[CKSearchThumbnailPreviewGenerator sharedInstance];
-    v8 = [v7 cachedWalletItemLinkPropertiesForQueryResult:v9];
-    [(CKWalletItemLinkSearchResultCell *)self setLinkPresentationProperties:v8 forSearchResult:v9];
+    v8 = [v7 cachedWalletItemLinkPropertiesForQueryResult:object];
+    [(CKWalletItemLinkSearchResultCell *)self setLinkPresentationProperties:v8 forSearchResult:object];
   }
 }
 
@@ -115,37 +115,37 @@
   *&rect.origin.y = self;
   *&rect.size.width = CKWalletItemLinkSearchResultCell;
   [(CGFloat *)&rect.origin.y layoutSubviews];
-  v3 = [(CKWalletItemLinkSearchResultCell *)self contentView];
-  [v3 bounds];
+  contentView = [(CKWalletItemLinkSearchResultCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CKWalletItemLinkSearchResultCell *)self linkView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  linkView = [(CKWalletItemLinkSearchResultCell *)self linkView];
+  [linkView setFrame:{v5, v7, v9, v11}];
 
-  v13 = [(CKEditableSearchResultCell *)self checkmarkView];
+  checkmarkView = [(CKEditableSearchResultCell *)self checkmarkView];
 
-  if (v13)
+  if (checkmarkView)
   {
-    v14 = [(CKWalletItemLinkSearchResultCell *)self _shouldReverseLayoutDirection];
-    v15 = [(CKWalletItemLinkSearchResultCell *)self contentView];
-    v16 = [(CKEditableSearchResultCell *)self checkmarkView];
-    [v15 bringSubviewToFront:v16];
+    _shouldReverseLayoutDirection = [(CKWalletItemLinkSearchResultCell *)self _shouldReverseLayoutDirection];
+    contentView2 = [(CKWalletItemLinkSearchResultCell *)self contentView];
+    checkmarkView2 = [(CKEditableSearchResultCell *)self checkmarkView];
+    [contentView2 bringSubviewToFront:checkmarkView2];
 
-    v17 = [(CKEditableSearchResultCell *)self checkmarkView];
-    [v17 sizeToFit];
+    checkmarkView3 = [(CKEditableSearchResultCell *)self checkmarkView];
+    [checkmarkView3 sizeToFit];
 
-    v18 = [(CKEditableSearchResultCell *)self checkmarkView];
-    [v18 frame];
+    checkmarkView4 = [(CKEditableSearchResultCell *)self checkmarkView];
+    [checkmarkView4 frame];
     rect.origin.x = v19;
     v21 = v20;
     v23 = v22;
     v25 = v24;
 
     v26 = 4.0;
-    if ((v14 & 1) == 0)
+    if ((_shouldReverseLayoutDirection & 1) == 0)
     {
       v32.origin.x = v5;
       v32.origin.y = v7;
@@ -169,8 +169,8 @@
     v35.size.width = v23;
     v35.size.height = v25;
     v29 = Height - CGRectGetHeight(v35) + -4.0;
-    v30 = [(CKEditableSearchResultCell *)self checkmarkView];
-    [v30 setFrame:{v26, v29, v23, v25}];
+    checkmarkView5 = [(CKEditableSearchResultCell *)self checkmarkView];
+    [checkmarkView5 setFrame:{v26, v29, v23, v25}];
   }
 }
 
@@ -181,12 +181,12 @@
   [(CKEditableSearchResultCell *)&v5 prepareForReuse];
   [(CKWalletItemLinkSearchResultCell *)self setResultIdentifier:0];
   [(CKWalletItemLinkSearchResultCell *)self setLinkMetadata:0];
-  v3 = [(CKWalletItemLinkSearchResultCell *)self linkView];
+  linkView = [(CKWalletItemLinkSearchResultCell *)self linkView];
 
-  if (v3)
+  if (linkView)
   {
-    v4 = [(CKWalletItemLinkSearchResultCell *)self linkView];
-    [v4 removeFromSuperview];
+    linkView2 = [(CKWalletItemLinkSearchResultCell *)self linkView];
+    [linkView2 removeFromSuperview];
 
     [(CKWalletItemLinkSearchResultCell *)self setLinkView:0];
   }
@@ -194,16 +194,16 @@
 
 - (id)previewSnapshot
 {
-  v2 = [(CKWalletItemLinkSearchResultCell *)self linkView];
-  v3 = v2;
-  if (v2)
+  linkView = [(CKWalletItemLinkSearchResultCell *)self linkView];
+  v3 = linkView;
+  if (linkView)
   {
-    [v2 bounds];
+    [linkView bounds];
     v10.width = v4;
     v10.height = v5;
     UIGraphicsBeginImageContextWithOptions(v10, 0, 0.0);
-    v6 = [v3 layer];
-    [v6 renderInContext:UIGraphicsGetCurrentContext()];
+    layer = [v3 layer];
+    [layer renderInContext:UIGraphicsGetCurrentContext()];
 
     v7 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();

@@ -1,23 +1,23 @@
 @interface TSTTextEngineDelegate
-- (TSTTextEngineDelegate)initWithPadding:(UIEdgeInsets)a3 verticalAlignment:(unsigned int)a4;
+- (TSTTextEngineDelegate)initWithPadding:(UIEdgeInsets)padding verticalAlignment:(unsigned int)alignment;
 - (void)dealloc;
 @end
 
 @implementation TSTTextEngineDelegate
 
-- (TSTTextEngineDelegate)initWithPadding:(UIEdgeInsets)a3 verticalAlignment:(unsigned int)a4
+- (TSTTextEngineDelegate)initWithPadding:(UIEdgeInsets)padding verticalAlignment:(unsigned int)alignment
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = padding.right;
+  bottom = padding.bottom;
+  left = padding.left;
+  top = padding.top;
   v11.receiver = self;
   v11.super_class = TSTTextEngineDelegate;
   v9 = [(TSTTextEngineDelegate *)&v11 init];
   if (v9)
   {
     v9->mPadding = [[TSWPPadding alloc] initWithTopInset:top leftInset:left bottomInset:bottom rightInset:right];
-    v9->mVerticalAlignment = a4;
+    v9->mVerticalAlignment = alignment;
   }
 
   return v9;

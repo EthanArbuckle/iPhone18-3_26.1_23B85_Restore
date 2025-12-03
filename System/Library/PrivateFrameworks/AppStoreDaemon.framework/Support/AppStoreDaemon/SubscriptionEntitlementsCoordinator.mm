@@ -1,10 +1,10 @@
 @interface SubscriptionEntitlementsCoordinator
 + (id)sharedInstance;
 - (SubscriptionEntitlementsCoordinator)init;
-- (void)_handleAccountStoreDidChangeNotification:(id)a3;
+- (void)_handleAccountStoreDidChangeNotification:(id)notification;
 - (void)dealloc;
-- (void)pushService:(id)a3 didReceiveMessage:(id)a4 completionHandler:(id)a5;
-- (void)setCachedSubscriptionEntitlements:(id)a3 forAccountID:(id)a4 segment:(unint64_t)a5;
+- (void)pushService:(id)service didReceiveMessage:(id)message completionHandler:(id)handler;
+- (void)setCachedSubscriptionEntitlements:(id)entitlements forAccountID:(id)d segment:(unint64_t)segment;
 @end
 
 @implementation SubscriptionEntitlementsCoordinator
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_1002F3F38;
   block[3] = &unk_10051BD00;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1005AABA0 != -1)
   {
     dispatch_once(&qword_1005AABA0, block);
@@ -75,31 +75,31 @@
   [(SubscriptionEntitlementsCoordinator *)&v5 dealloc];
 }
 
-- (void)setCachedSubscriptionEntitlements:(id)a3 forAccountID:(id)a4 segment:(unint64_t)a5
+- (void)setCachedSubscriptionEntitlements:(id)entitlements forAccountID:(id)d segment:(unint64_t)segment
 {
-  v8 = a3;
-  v9 = a4;
+  entitlementsCopy = entitlements;
+  dCopy = d;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1002F5544;
   v13[3] = &unk_100522528;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
+  v14 = entitlementsCopy;
+  v15 = dCopy;
+  segmentCopy = segment;
+  v11 = dCopy;
+  v12 = entitlementsCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
-- (void)pushService:(id)a3 didReceiveMessage:(id)a4 completionHandler:(id)a5
+- (void)pushService:(id)service didReceiveMessage:(id)message completionHandler:(id)handler
 {
-  v7 = a4;
-  v30 = a5;
+  messageCopy = message;
+  handlerCopy = handler;
   v8 = objc_alloc_init(_TtC9appstored6LogKey);
-  v31 = v7;
-  if (self->_lastAccountID && (sub_1002EA054(v7), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isEqualToNumber:self->_lastAccountID], v9, v10))
+  v31 = messageCopy;
+  if (self->_lastAccountID && (sub_1002EA054(messageCopy), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isEqualToNumber:self->_lastAccountID], v9, v10))
   {
     v11 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -128,15 +128,15 @@
             objc_enumerationMutation(&off_1005494D0);
           }
 
-          v16 = [*(*(&v32 + 1) + 8 * v15) unsignedIntegerValue];
-          v17 = sub_1002F4648(self, v16, v8);
+          unsignedIntegerValue = [*(*(&v32 + 1) + 8 * v15) unsignedIntegerValue];
+          v17 = sub_1002F4648(self, unsignedIntegerValue, v8);
           dispatchQueue = self->_dispatchQueue;
           *buf = _NSConcreteStackBlock;
           *&buf[8] = 3221225472;
           *&buf[16] = sub_1002F5358;
           v38 = &unk_10051F4B0;
-          v39 = self;
-          v41 = v16;
+          selfCopy = self;
+          v41 = unsignedIntegerValue;
           v19 = v17;
           v40 = v19;
           dispatch_sync(dispatchQueue, buf);
@@ -146,7 +146,7 @@
           if (v20)
           {
             objc_setProperty_atomic(v20, v21, v19, 16);
-            v22->_segment = v16;
+            v22->_segment = unsignedIntegerValue;
           }
 
           v23 = sub_1003FA4F0(XPCRequestToken, 1);
@@ -183,7 +183,7 @@
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       lastAccountID = self->_lastAccountID;
-      v29 = sub_1002EA054(v7);
+      v29 = sub_1002EA054(messageCopy);
       *buf = 138412802;
       *&buf[4] = v8;
       *&buf[12] = 2114;
@@ -194,10 +194,10 @@
     }
   }
 
-  v30[2](v30, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)_handleAccountStoreDidChangeNotification:(id)a3
+- (void)_handleAccountStoreDidChangeNotification:(id)notification
 {
   v4 = objc_alloc_init(_TtC9appstored6LogKey);
   v5 = ASDLogHandleForCategory();
@@ -214,7 +214,7 @@
   v8[2] = sub_1002F8014;
   v8[3] = &unk_10051B570;
   v9 = v4;
-  v10 = self;
+  selfCopy = self;
   v7 = v4;
   dispatch_async(dispatchQueue, v8);
 }

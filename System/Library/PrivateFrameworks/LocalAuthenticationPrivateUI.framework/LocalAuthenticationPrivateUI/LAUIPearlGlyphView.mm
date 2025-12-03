@@ -2,15 +2,15 @@
 + (id)sharedStaticResources;
 + (void)invokeSuccessFeedback;
 - (LAUIPearlGlyphView)init;
-- (LAUIPearlGlyphView)initWithConfiguration:(id)a3;
-- (LAUIPearlGlyphView)initWithStyle:(int64_t)a3;
+- (LAUIPearlGlyphView)initWithConfiguration:(id)configuration;
+- (LAUIPearlGlyphView)initWithStyle:(int64_t)style;
 - (LAUIPearlGlyphViewDelegate)delegate;
 - (NSNumber)remainingMinDisplayTimeInterval;
 - (UIColor)finishedColor;
 - (UIColor)idleColor;
 - (double)modelTransform;
 - (id).cxx_construct;
-- (id)initSecureGlyphViewWithConfiguration:(id *)a1;
+- (id)initSecureGlyphViewWithConfiguration:(id *)configuration;
 - (uint64_t)_updateRendererPaused:(uint64_t)result;
 - (uint64_t)beginExternalAnimation;
 - (uint64_t)endExternalAnimation;
@@ -20,26 +20,26 @@
 - (uint64_t)setWireframeEnabled:(uint64_t)result;
 - (void)_applyCheckmarkColor;
 - (void)_applyConfiguration;
-- (void)_applyConfigurationWithTraitCollection:(uint64_t)a1;
-- (void)_applyStateAnimated:(uint64_t)a1;
-- (void)_executeCompletionHandlers:(uint64_t)a1;
-- (void)_setSecureFaceIDViewState:(uint64_t)a3 animated:(void *)a4 withCompletion:;
+- (void)_applyConfigurationWithTraitCollection:(uint64_t)collection;
+- (void)_applyStateAnimated:(uint64_t)animated;
+- (void)_executeCompletionHandlers:(uint64_t)handlers;
+- (void)_setSecureFaceIDViewState:(uint64_t)state animated:(void *)animated withCompletion:;
 - (void)_updateReduceBlurState;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)invalidate;
 - (void)layoutSubviews;
 - (void)purgeBuffers;
-- (void)renderLoop:(id)a3 drawAtTime:(double)a4;
-- (void)renderLoop:(id)a3 drawableSizeDidChange:(CGSize)a4;
-- (void)setDelegate:(id)a3;
-- (void)setFaceVisibility:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setFinishedColor:(id)a3 animated:(BOOL)a4;
-- (void)setHideFace:(BOOL)a3 animated:(BOOL)a4;
-- (void)setIdleColor:(id)a3 animated:(BOOL)a4;
-- (void)setPaused:(BOOL)a3;
-- (void)setState:(int64_t)a3 animated:(BOOL)a4 withCompletion:(id)a5;
-- (void)setStyle:(int64_t)a3 animated:(BOOL)a4;
+- (void)renderLoop:(id)loop drawAtTime:(double)time;
+- (void)renderLoop:(id)loop drawableSizeDidChange:(CGSize)change;
+- (void)setDelegate:(id)delegate;
+- (void)setFaceVisibility:(unint64_t)visibility animated:(BOOL)animated;
+- (void)setFinishedColor:(id)color animated:(BOOL)animated;
+- (void)setHideFace:(BOOL)face animated:(BOOL)animated;
+- (void)setIdleColor:(id)color animated:(BOOL)animated;
+- (void)setPaused:(BOOL)paused;
+- (void)setState:(int64_t)state animated:(BOOL)animated withCompletion:(id)completion;
+- (void)setStyle:(int64_t)style animated:(BOOL)animated;
 @end
 
 @implementation LAUIPearlGlyphView
@@ -67,9 +67,9 @@
   return v4;
 }
 
-- (LAUIPearlGlyphView)initWithStyle:(int64_t)a3
+- (LAUIPearlGlyphView)initWithStyle:(int64_t)style
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 4)
+  if ((style & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
     v5 = +[LAUIPearlGlyphStaticConfiguration createSystemApertureConfiguration];
   }
@@ -80,21 +80,21 @@
   }
 
   v6 = v5;
-  [v5 setInitialStyle:a3];
+  [v5 setInitialStyle:style];
   v7 = [(LAUIPearlGlyphView *)self initWithConfiguration:v6];
 
   return v7;
 }
 
-- (LAUIPearlGlyphView)initWithConfiguration:(id)a3
+- (LAUIPearlGlyphView)initWithConfiguration:(id)configuration
 {
   v47[19] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
-    v5 = [MEMORY[0x277D240D0] sharedInstance];
-    v6 = [v4 secureVariantEnabled];
-    if (!v6 || (v6 = [v5 isSupported], !v6) || (v6 = objc_msgSend(v5, "isEnabled"), !v6) || (v6 = -[LAUIPearlGlyphView initSecureGlyphViewWithConfiguration:](self, v4), self = v6, (v7 = v6) == 0))
+    mEMORY[0x277D240D0] = [MEMORY[0x277D240D0] sharedInstance];
+    secureVariantEnabled = [configurationCopy secureVariantEnabled];
+    if (!secureVariantEnabled || (secureVariantEnabled = [mEMORY[0x277D240D0] isSupported], !secureVariantEnabled) || (secureVariantEnabled = objc_msgSend(mEMORY[0x277D240D0], "isEnabled"), !secureVariantEnabled) || (secureVariantEnabled = -[LAUIPearlGlyphView initSecureGlyphViewWithConfiguration:](self, configurationCopy), self = secureVariantEnabled, (selfCopy = secureVariantEnabled) == 0))
     {
       v9 = static_resources;
       if (static_resources)
@@ -116,49 +116,49 @@
           if (v16)
           {
             objc_storeStrong(v16 + 51, v9);
-            v19 = [MEMORY[0x277D759A0] mainScreen];
-            [v19 scale];
+            mainScreen = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen scale];
             *(v18 + 54) = v20;
 
             *(v18 + 768) = 0;
             *(v18 + 769) = 1;
             *(v18 + 770) = 1;
             *(v18 + 481) = 1;
-            *(v17 + 52) = [v4 initialStyle];
+            *(v17 + 52) = [configurationCopy initialStyle];
             v21 = UIAccessibilityIsReduceTransparencyEnabled() || UIAccessibilityIsReduceMotionEnabled();
             *(v17 + 424) = v21;
-            *(v17 + 425) = [v4 isRecording];
+            *(v17 + 425) = [configurationCopy isRecording];
             *(v18 + 97) = 3;
             v22 = objc_alloc_init(MEMORY[0x277D75D18]);
             v23 = *(v17 + 57);
             *(v17 + 57) = v22;
 
             [v18 addSubview:*(v17 + 57)];
-            v24 = [MEMORY[0x277CBEB68] null];
+            null = [MEMORY[0x277CBEB68] null];
             v46[0] = @"position";
             v46[1] = @"bounds";
-            v47[0] = v24;
-            v47[1] = v24;
+            v47[0] = null;
+            v47[1] = null;
             v46[2] = @"transform";
             v46[3] = @"backgroundColor";
-            v47[2] = v24;
-            v47[3] = v24;
+            v47[2] = null;
+            v47[3] = null;
             v46[4] = @"cornerRadius";
             v46[5] = @"contents";
-            v47[4] = v24;
-            v47[5] = v24;
+            v47[4] = null;
+            v47[5] = null;
             v46[6] = @"anchorPoint";
             v46[7] = @"opacity";
-            v47[6] = v24;
-            v47[7] = v24;
+            v47[6] = null;
+            v47[7] = null;
             v46[8] = @"strokeStart";
             v46[9] = @"strokeEnd";
-            v47[8] = v24;
-            v47[9] = v24;
+            v47[8] = null;
+            v47[9] = null;
             v46[10] = @"strokeColor";
             v46[11] = @"fillColor";
-            v47[10] = v24;
-            v47[11] = v24;
+            v47[10] = null;
+            v47[11] = null;
             v43 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:v46 count:12];
 
             v25 = objc_alloc_init(MEMORY[0x277CD9ED0]);
@@ -181,14 +181,14 @@
             [*(v17 + 68) setActions:v43];
             [*(v18 + 68) setContentsScale:*(v18 + 54)];
             v31 = *(v18 + 68);
-            v32 = [MEMORY[0x277D75348] blackColor];
-            v33 = v32;
-            [v31 setStrokeColor:{objc_msgSend(v32, "CGColor")}];
+            blackColor = [MEMORY[0x277D75348] blackColor];
+            v33 = blackColor;
+            [v31 setStrokeColor:{objc_msgSend(blackColor, "CGColor")}];
 
             v34 = *(v18 + 68);
-            v35 = [MEMORY[0x277D75348] blackColor];
-            v36 = v35;
-            [v34 setFillColor:{objc_msgSend(v35, "CGColor")}];
+            blackColor2 = [MEMORY[0x277D75348] blackColor];
+            v36 = blackColor2;
+            [v34 setFillColor:{objc_msgSend(blackColor2, "CGColor")}];
 
             [*(v18 + 68) setLineWidth:1.0];
             [*(v18 + 99) setMask:*(v18 + 68)];
@@ -201,48 +201,48 @@
             [*(v17 + 58) setHighFrameRateReason:2424833];
             [*(v17 + 58) setDelegate:v18];
             *(v18 + 94) = CGColorSpaceRetain([*(v17 + 58) colorSpace]);
-            v40 = [*(v17 + 58) layer];
+            layer = [*(v17 + 58) layer];
             v41 = *(v17 + 59);
-            *(v17 + 59) = v40;
+            *(v17 + 59) = layer;
 
             [*(v17 + 59) setOpaque:0];
             operator new();
           }
 
           self = 0;
-          v7 = self;
+          selfCopy = self;
           v11 = v44;
         }
 
         else
         {
-          v7 = 0;
+          selfCopy = 0;
         }
       }
 
       else
       {
-        v7 = 0;
+        selfCopy = 0;
       }
     }
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)initSecureGlyphViewWithConfiguration:(id *)a1
+- (id)initSecureGlyphViewWithConfiguration:(id *)configuration
 {
   v26[2] = *MEMORY[0x277D85DE8];
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!configuration)
   {
-    v20 = 0;
+    configurationCopy = 0;
     goto LABEL_16;
   }
 
@@ -255,7 +255,7 @@
       v7 = *(MEMORY[0x277CBF3A0] + 8);
       v8 = *(MEMORY[0x277CBF3A0] + 16);
       v9 = *(MEMORY[0x277CBF3A0] + 24);
-      v24.receiver = a1;
+      v24.receiver = configuration;
       v24.super_class = LAUIPearlGlyphView;
       v10 = objc_msgSendSuper2(&v24, sel_initWithFrame_, v6, v7, v8, v9);
       v11 = v10;
@@ -271,13 +271,13 @@
         }
 
         v13 = MEMORY[0x277CCAAD0];
-        v23 = [v11[95] centerXAnchor];
-        v14 = [v11 centerXAnchor];
-        v15 = [v23 constraintEqualToAnchor:v14];
+        centerXAnchor = [v11[95] centerXAnchor];
+        centerXAnchor2 = [v11 centerXAnchor];
+        v15 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         v26[0] = v15;
-        v16 = [v11[95] centerYAnchor];
-        v17 = [v11 centerYAnchor];
-        v18 = [v16 constraintEqualToAnchor:v17];
+        centerYAnchor = [v11[95] centerYAnchor];
+        centerYAnchor2 = [v11 centerYAnchor];
+        v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
         v26[1] = v18;
         v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:2];
         [v13 activateConstraints:v19];
@@ -285,8 +285,8 @@
         *(v11 + 480) = 1;
       }
 
-      a1 = v11;
-      v20 = a1;
+      configuration = v11;
+      configurationCopy = configuration;
       goto LABEL_15;
     }
 
@@ -307,34 +307,34 @@
     }
   }
 
-  v20 = 0;
+  configurationCopy = 0;
 LABEL_15:
 
 LABEL_16:
-  return v20;
+  return configurationCopy;
 }
 
 - (void)_applyConfiguration
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 traitCollection];
-    [(LAUIPearlGlyphView *)a1 _applyConfigurationWithTraitCollection:v2];
+    traitCollection = [self traitCollection];
+    [(LAUIPearlGlyphView *)self _applyConfigurationWithTraitCollection:traitCollection];
   }
 }
 
-- (void)_applyStateAnimated:(uint64_t)a1
+- (void)_applyStateAnimated:(uint64_t)animated
 {
   v109 = *MEMORY[0x277D85DE8];
-  if (!a1 || (*(a1 + 480) & 1) != 0)
+  if (!animated || (*(animated + 480) & 1) != 0)
   {
     return;
   }
 
-  *(a1 + 712) = 1;
-  *(a1 + 713) = a2;
-  v4 = (*(a1 + 720) + 1);
-  *(a1 + 720) = v4;
+  *(animated + 712) = 1;
+  *(animated + 713) = a2;
+  v4 = (*(animated + 720) + 1);
+  *(animated + 720) = v4;
   v5 = dispatch_group_create();
   v81[0] = 0;
   v81[1] = v81;
@@ -350,8 +350,8 @@ LABEL_16:
   v7 = MEMORY[0x259C5AE60](v78);
   v9 = v7;
   v10 = 0x27F82A000uLL;
-  v11 = *(a1 + 784);
-  v12 = *(a1 + 704);
+  v11 = *(animated + 784);
+  v12 = *(animated + 704);
   if (v12 <= 8 && ((1 << v12) & 0x1EC) != 0)
   {
     if (((v11 < 9) & (0x1ECu >> v11)) != 0)
@@ -414,7 +414,7 @@ LABEL_9:
     }
 
     memset(location, 0, 17);
-    *(__p + 7) = *(a1 + 416);
+    *(__p + 7) = *(animated + 416);
     v85 = 1;
     *v86 = *__p;
     *&v86[15] = *(&__p[1] + 7);
@@ -425,14 +425,14 @@ LABEL_9:
     v94 = 0;
     if (v11 == 6)
     {
-      v23 = (a1 + 688);
+      v23 = (animated + 688);
     }
 
     else
     {
       if (v11 != 5)
       {
-        v33 = *(a1 + 608);
+        v33 = *(animated + 608);
         *location = v33;
         if ((v11 - 7) < 0xFFFFFFFFFFFFFFFELL || v12 == 4)
         {
@@ -442,13 +442,13 @@ LABEL_9:
         goto LABEL_58;
       }
 
-      v23 = (a1 + 624);
+      v23 = (animated + 624);
     }
 
     *location = *v23;
     if (v12 == 4)
     {
-      v33 = *(a1 + 608);
+      v33 = *(animated + 608);
 LABEL_59:
       LOBYTE(v84) = 1;
       *&location[16] = v33;
@@ -460,7 +460,7 @@ LABEL_59:
 LABEL_67:
       v93 = v35;
       dispatch_group_enter(v6);
-      v39 = *(a1 + 560);
+      v39 = *(animated + 560);
 LABEL_68:
       if (__p[0])
       {
@@ -472,14 +472,14 @@ LABEL_68:
     }
 
 LABEL_58:
-    v33 = *(a1 + 624);
+    v33 = *(animated + 624);
     goto LABEL_59;
   }
 
   if (v11 > 2)
   {
     v62 = v7;
-    v24 = *(a1 + 776);
+    v24 = *(animated + 776);
     v25 = 4;
     if (v11 == 4)
     {
@@ -518,7 +518,7 @@ LABEL_58:
         v16 = 0.0;
       }
 
-      v32 = (a1 + 608);
+      v32 = (animated + 608);
       goto LABEL_83;
     }
 
@@ -552,11 +552,11 @@ LABEL_58:
       {
         v28 = 0;
 LABEL_82:
-        v32 = (a1 + 656);
+        v32 = (animated + 656);
         v29 = 5;
 LABEL_83:
         v46 = *v32;
-        v47 = *(a1 + 416);
+        v47 = *(animated + 416);
         location[16] = 0;
         *(__p + 7) = v47;
         LOBYTE(v84) = 0;
@@ -573,7 +573,7 @@ LABEL_83:
         v93 = 1034147594;
         if (v26)
         {
-          v48 = *(a1 + 704) == 2;
+          v48 = *(animated + 704) == 2;
         }
 
         else
@@ -594,7 +594,7 @@ LABEL_83:
         }
 
         dispatch_group_enter(v49);
-        v50 = *(a1 + 560);
+        v50 = *(animated + 560);
         v71[0] = MEMORY[0x277D85DD0];
         v71[1] = 3221225472;
         v71[2] = __42__LAUIPearlGlyphView__applyStateAnimated___block_invoke_2;
@@ -611,7 +611,7 @@ LABEL_83:
 
         if (v28)
         {
-          objc_initWeak(__p, a1);
+          objc_initWeak(__p, animated);
           v10 = 0x27F82A000;
           dispatch_group_enter(v6);
           block[0] = MEMORY[0x277D85DD0];
@@ -631,10 +631,10 @@ LABEL_83:
         else
         {
           v10 = 0x27F82A000uLL;
-          if (*(a1 + 440))
+          if (*(animated + 440))
           {
             dispatch_group_enter(v6);
-            v52 = *(a1 + 440);
+            v52 = *(animated + 440);
             v65[0] = MEMORY[0x277D85DD0];
             v65[1] = 3221225472;
             v65[2] = __42__LAUIPearlGlyphView__applyStateAnimated___block_invoke_5;
@@ -663,7 +663,7 @@ LABEL_83:
         v36 = 0.0;
       }
 
-      v37 = *(a1 + 416);
+      v37 = *(animated + 416);
       location[16] = 0;
       *(__p + 7) = v37;
       LOBYTE(v84) = 0;
@@ -673,8 +673,8 @@ LABEL_83:
       v89 = 0;
       v90 = 0;
       v94 = 0;
-      *location = *(a1 + 608);
-      v85 = *(a1 + 776) & 1;
+      *location = *(animated + 608);
+      v85 = *(animated + 776) & 1;
       if (v13)
       {
         v38 = v16;
@@ -702,7 +702,7 @@ LABEL_83:
       }
 
       memset(location, 0, 17);
-      *&v76[7] = *(a1 + 416);
+      *&v76[7] = *(animated + 416);
       LOBYTE(v84) = 0;
       v85 = 1;
       *v86 = *v76;
@@ -718,7 +718,7 @@ LABEL_83:
       v95 = 0;
       v96 = 0;
       v97 = 0;
-      *&v75[7] = *(a1 + 416);
+      *&v75[7] = *(animated + 416);
       v98 = 0;
       v99 = 1;
       *v100 = *v75;
@@ -731,12 +731,12 @@ LABEL_83:
       v106 = 0;
       v107 = 0;
       v108 = 0;
-      *__p[0] = *(a1 + 640);
+      *__p[0] = *(animated + 640);
       v42 = __p[0];
       v43 = __p[1];
-      for (*(__p[0] + 7) = *(a1 + 624); v42 != v43; v42 += 112)
+      for (*(__p[0] + 7) = *(animated + 624); v42 != v43; v42 += 112)
       {
-        v42[48] = (*(a1 + 776) & 2) != 0;
+        v42[48] = (*(animated + 776) & 2) != 0;
         *(v42 + 20) = 1065142997;
         *(v42 + 21) = v41;
         v42[88] = 1;
@@ -744,7 +744,7 @@ LABEL_83:
       }
 
       dispatch_group_enter(v6);
-      v44 = *(a1 + 560);
+      v44 = *(animated + 560);
       v45 = __p[0];
       *location = __p[0];
       *&location[8] = *&__p[1];
@@ -771,8 +771,8 @@ LABEL_83:
       }
 
       location[16] = 0;
-      v19 = *(a1 + 416);
-      v20 = *(a1 + 424);
+      v19 = *(animated + 416);
+      v20 = *(animated + 424);
       if (v20)
       {
         v21 = 4;
@@ -787,13 +787,13 @@ LABEL_83:
       v85 = 1;
       *&v86[7] = v19;
       v86[15] = v20;
-      *&v86[16] = *(a1 + 425);
-      *&v86[19] = *(a1 + 428);
+      *&v86[16] = *(animated + 425);
+      *&v86[19] = *(animated + 428);
       v87 = v21;
       v89 = 0;
       v90 = 0;
       v94 = 0;
-      *location = *(a1 + 624);
+      *location = *(animated + 624);
       v88 = v17;
       v91 = 1064732459;
       v92 = 1;
@@ -804,10 +804,10 @@ LABEL_66:
 
 LABEL_96:
   v53 = 1.0;
-  if (*(a1 + *(v10 + 1420)) != 3)
+  if (*(animated + *(v10 + 1420)) != 3)
   {
-    [*(a1 + 440) setRevealed:0 animated:a2];
-    v54 = *(a1 + *(v10 + 1420));
+    [*(animated + 440) setRevealed:0 animated:a2];
+    v54 = *(animated + *(v10 + 1420));
     v8 = 1.0;
     v15 = 0.0;
     if (v54 == 8)
@@ -831,7 +831,7 @@ LABEL_96:
     }
   }
 
-  [*(a1 + 792) opacity];
+  [*(animated + 792) opacity];
   v56 = v55;
   if (v53 != v55)
   {
@@ -845,10 +845,10 @@ LABEL_96:
     [v57 durationForEpsilon:0.001];
     [v57 setDuration:?];
     [v57 setAdditive:1];
-    v58 = [*(a1 + 792) presentationLayer];
-    if (v58 || (v58 = *(a1 + 792)) != 0)
+    presentationLayer = [*(animated + 792) presentationLayer];
+    if (presentationLayer || (presentationLayer = *(animated + 792)) != 0)
     {
-      [v58 opacity];
+      [presentationLayer opacity];
       v56 = v59;
     }
 
@@ -856,12 +856,12 @@ LABEL_96:
     [v57 setFromValue:v60];
 
     [v57 setToValue:&unk_28682FCC0];
-    [*(a1 + 792) addAnimation:v57 forKey:@"opacity"];
+    [*(animated + 792) addAnimation:v57 forKey:@"opacity"];
     *&v61 = v53;
-    [*(a1 + 792) setOpacity:v61];
+    [*(animated + 792) setOpacity:v61];
   }
 
-  objc_initWeak(location, a1);
+  objc_initWeak(location, animated);
   v63[0] = MEMORY[0x277D85DD0];
   v63[1] = 3221225472;
   v63[2] = __42__LAUIPearlGlyphView__applyStateAnimated___block_invoke_119;
@@ -870,7 +870,7 @@ LABEL_96:
   v64[1] = v4;
   v63[4] = v81;
   dispatch_group_notify(v6, MEMORY[0x277D85CD0], v63);
-  [(LAUIPearlGlyphView *)a1 _updateRendererPaused:?];
+  [(LAUIPearlGlyphView *)animated _updateRendererPaused:?];
   objc_destroyWeak(v64);
   objc_destroyWeak(location);
 
@@ -879,8 +879,8 @@ LABEL_96:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4 = *(self + 94);
   if (v4)
@@ -895,24 +895,24 @@ LABEL_96:
   [(LAUIPearlGlyphView *)&v5 dealloc];
 }
 
-- (void)_applyConfigurationWithTraitCollection:(uint64_t)a1
+- (void)_applyConfigurationWithTraitCollection:(uint64_t)collection
 {
   v3 = a2;
-  if (!a1 || !v3 || *(a1 + 760))
+  if (!collection || !v3 || *(collection + 760))
   {
     goto LABEL_59;
   }
 
   v61 = v3;
   v4 = v3;
-  v5 = [MEMORY[0x277D75C80] currentTraitCollection];
+  currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
   [MEMORY[0x277D75C80] setCurrentTraitCollection:v4];
-  v6 = *(a1 + 752);
-  if (*(a1 + 600) == 1)
+  v6 = *(collection + 752);
+  if (*(collection + 600) == 1)
   {
-    v7 = *(a1 + 592);
-    v8 = [v7 CGColor];
-    converted_color = LAUI_CA_utilities::create_converted_color(v8, v6, v9);
+    v7 = *(collection + 592);
+    cGColor = [v7 CGColor];
+    converted_color = LAUI_CA_utilities::create_converted_color(cGColor, v6, v9);
     if (converted_color)
     {
       v11 = converted_color;
@@ -936,14 +936,14 @@ LABEL_96:
 
     v54 = v14;
 
-    *(a1 + 608) = v54;
+    *(collection + 608) = v54;
   }
 
-  if (*(a1 + 680) == 1)
+  if (*(collection + 680) == 1)
   {
-    v15 = *(a1 + 672);
-    v16 = [v15 CGColor];
-    v18 = LAUI_CA_utilities::create_converted_color(v16, v6, v17);
+    v15 = *(collection + 672);
+    cGColor2 = [v15 CGColor];
+    v18 = LAUI_CA_utilities::create_converted_color(cGColor2, v6, v17);
     if (v18)
     {
       v19 = v18;
@@ -967,10 +967,10 @@ LABEL_96:
 
     v56 = v22;
 
-    *(a1 + 688) = v56;
+    *(collection + 688) = v56;
   }
 
-  v23 = *(a1 + 416);
+  v23 = *(collection + 416);
   if (v23 > 9)
   {
     goto LABEL_29;
@@ -978,22 +978,22 @@ LABEL_96:
 
   if (((1 << v23) & 0x3C8) != 0)
   {
-    if (*(a1 + 680) == 1)
+    if (*(collection + 680) == 1)
     {
-      _Q0 = *(a1 + 688);
+      _Q0 = *(collection + 688);
     }
 
     else
     {
       __asm { FMOV            V0.4S, #1.0 }
 
-      *(a1 + 688) = _Q0;
+      *(collection + 688) = _Q0;
     }
 
-    *(a1 + 656) = _Q0;
-    *(a1 + 624) = _Q0;
-    v30 = a1 + 592;
-    if (*(a1 + 600))
+    *(collection + 656) = _Q0;
+    *(collection + 624) = _Q0;
+    v30 = collection + 592;
+    if (*(collection + 600))
     {
       goto LABEL_55;
     }
@@ -1003,24 +1003,24 @@ LABEL_96:
 
   if (((1 << v23) & 0x30) != 0)
   {
-    if ((*(a1 + 600) & 1) == 0)
+    if ((*(collection + 600) & 1) == 0)
     {
-      *(a1 + 608) = xmmword_25611D2B0;
+      *(collection + 608) = xmmword_25611D2B0;
     }
 
-    if (*(a1 + 680) == 1)
+    if (*(collection + 680) == 1)
     {
-      v25 = *(a1 + 688);
+      v25 = *(collection + 688);
     }
 
     else
     {
       v25 = xmmword_25611D2C0;
-      *(a1 + 688) = xmmword_25611D2C0;
+      *(collection + 688) = xmmword_25611D2C0;
     }
 
-    *(a1 + 656) = v25;
-    *(a1 + 624) = v25;
+    *(collection + 656) = v25;
+    *(collection + 624) = v25;
     goto LABEL_55;
   }
 
@@ -1033,16 +1033,16 @@ LABEL_29:
       {
         __asm { FMOV            V0.4S, #1.0 }
 
-        *(a1 + 656) = _Q0;
-        *(a1 + 624) = _Q0;
-        if ((*(a1 + 600) & 1) == 0)
+        *(collection + 656) = _Q0;
+        *(collection + 624) = _Q0;
+        if ((*(collection + 600) & 1) == 0)
         {
-          *(a1 + 608) = _Q0;
+          *(collection + 608) = _Q0;
         }
 
-        if ((*(a1 + 680) & 1) == 0)
+        if ((*(collection + 680) & 1) == 0)
         {
-          *(a1 + 688) = *(a1 + 624);
+          *(collection + 688) = *(collection + 624);
         }
       }
 
@@ -1050,9 +1050,9 @@ LABEL_29:
     }
   }
 
-  v32 = [MEMORY[0x277D75348] systemBlueColor];
-  v33 = [v32 CGColor];
-  v35 = LAUI_CA_utilities::create_converted_color(v33, v6, v34);
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  cGColor3 = [systemBlueColor CGColor];
+  v35 = LAUI_CA_utilities::create_converted_color(cGColor3, v6, v34);
   if (v35)
   {
     v36 = v35;
@@ -1076,12 +1076,12 @@ LABEL_29:
 
   v58 = v39;
 
-  *(a1 + 624) = v58;
-  if (*(a1 + 416) == 2)
+  *(collection + 624) = v58;
+  if (*(collection + 416) == 2)
   {
-    v40 = [MEMORY[0x277D75348] systemGreenColor];
-    v41 = [v40 CGColor];
-    v43 = LAUI_CA_utilities::create_converted_color(v41, v6, v42);
+    systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+    cGColor4 = [systemGreenColor CGColor];
+    v43 = LAUI_CA_utilities::create_converted_color(cGColor4, v6, v42);
     if (v43)
     {
       v44 = v43;
@@ -1105,32 +1105,32 @@ LABEL_29:
 
     v60 = v47;
 
-    *(a1 + 656) = v60;
+    *(collection + 656) = v60;
   }
 
   else
   {
-    *(a1 + 656) = *(a1 + 624);
+    *(collection + 656) = *(collection + 624);
   }
 
-  if ((*(a1 + 600) & 1) == 0)
+  if ((*(collection + 600) & 1) == 0)
   {
-    *(a1 + 608) = xmmword_25611D2D0;
+    *(collection + 608) = xmmword_25611D2D0;
   }
 
-  v30 = a1 + 672;
-  if (*(a1 + 680))
+  v30 = collection + 672;
+  if (*(collection + 680))
   {
     goto LABEL_55;
   }
 
-  _Q0 = *(a1 + 624);
+  _Q0 = *(collection + 624);
 LABEL_54:
   *(v30 + 16) = _Q0;
 LABEL_55:
-  v48 = *(a1 + 624);
-  *(a1 + 640) = v48;
-  v49 = *(a1 + 416);
+  v48 = *(collection + 624);
+  *(collection + 640) = v48;
+  v49 = *(collection + 416);
   if (v49 > 9)
   {
     __break(1u);
@@ -1139,11 +1139,11 @@ LABEL_55:
 
   if (((1 << v49) & 0x33A) != 0)
   {
-    *(a1 + 652) = vmuls_lane_f32(0.5, v48, 3);
+    *(collection + 652) = vmuls_lane_f32(0.5, v48, 3);
   }
 
-  [(LAUIPearlGlyphView *)a1 _applyCheckmarkColor];
-  [MEMORY[0x277D75C80] setCurrentTraitCollection:v5];
+  [(LAUIPearlGlyphView *)collection _applyCheckmarkColor];
+  [MEMORY[0x277D75C80] setCurrentTraitCollection:currentTraitCollection];
 
   v3 = v61;
 LABEL_59:
@@ -1154,9 +1154,9 @@ LABEL_59:
   v8.receiver = self;
   v8.super_class = LAUIPearlGlyphView;
   [(LAUIPearlGlyphView *)&v8 didMoveToWindow];
-  v3 = [(LAUIPearlGlyphView *)self window];
-  *(self + 482) = v3 != 0;
-  if (v3)
+  window = [(LAUIPearlGlyphView *)self window];
+  *(self + 482) = window != 0;
+  if (window)
   {
     v5 = *(self + 69);
     if (v5)
@@ -1166,8 +1166,8 @@ LABEL_59:
   }
 
   v6 = *(self + 58);
-  v7 = [v3 screen];
-  [v6 attachToScreen:v7];
+  screen = [window screen];
+  [v6 attachToScreen:screen];
 
   [(LAUIPearlGlyphView *)self _updateRendererPaused:?];
 }
@@ -1299,13 +1299,13 @@ LABEL_59:
   }
 }
 
-- (void)setStyle:(int64_t)a3 animated:(BOOL)a4
+- (void)setStyle:(int64_t)style animated:(BOOL)animated
 {
-  if (*(self + 52) != a3)
+  if (*(self + 52) != style)
   {
-    *(self + 52) = a3;
+    *(self + 52) = style;
     [(LAUIPearlGlyphView *)self _applyConfiguration];
-    if (a4)
+    if (animated)
     {
       v7 = 1;
     }
@@ -1330,13 +1330,13 @@ LABEL_59:
   return v2;
 }
 
-- (void)setIdleColor:(id)a3 animated:(BOOL)a4
+- (void)setIdleColor:(id)color animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  colorCopy = color;
+  v7 = colorCopy;
+  if (colorCopy)
   {
-    v10 = v6;
+    v10 = colorCopy;
     v11 = 1;
     v8 = (self + 592);
     if (*(self + 600) && v10 == *v8)
@@ -1360,7 +1360,7 @@ LABEL_12:
 
   std::__optional_storage_base<UIColor * {__strong},false>::__assign_from[abi:ne200100]<std::__optional_copy_assign_base<UIColor * {__strong},false> const&>(v8, &v10);
   [(LAUIPearlGlyphView *)self _applyConfiguration];
-  if (a4)
+  if (animated)
   {
     v9 = 1;
   }
@@ -1390,13 +1390,13 @@ LABEL_13:
   return v2;
 }
 
-- (void)setFinishedColor:(id)a3 animated:(BOOL)a4
+- (void)setFinishedColor:(id)color animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  colorCopy = color;
+  v7 = colorCopy;
+  if (colorCopy)
   {
-    v10 = v6;
+    v10 = colorCopy;
     v11 = 1;
     v8 = (self + 672);
     if (*(self + 680) && v10 == *v8)
@@ -1420,7 +1420,7 @@ LABEL_12:
 
   std::__optional_storage_base<UIColor * {__strong},false>::__assign_from[abi:ne200100]<std::__optional_copy_assign_base<UIColor * {__strong},false> const&>(v8, &v10);
   [(LAUIPearlGlyphView *)self _applyConfiguration];
-  if (a4)
+  if (animated)
   {
     v9 = 1;
   }
@@ -1444,12 +1444,12 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)setFaceVisibility:(unint64_t)a3 animated:(BOOL)a4
+- (void)setFaceVisibility:(unint64_t)visibility animated:(BOOL)animated
 {
-  if (*(self + 97) != a3)
+  if (*(self + 97) != visibility)
   {
-    *(self + 97) = a3;
-    if (a4)
+    *(self + 97) = visibility;
+    if (animated)
     {
       v4 = 1;
     }
@@ -1468,9 +1468,9 @@ LABEL_13:
   }
 }
 
-- (void)setHideFace:(BOOL)a3 animated:(BOOL)a4
+- (void)setHideFace:(BOOL)face animated:(BOOL)animated
 {
-  if (a3)
+  if (face)
   {
     v4 = 0;
   }
@@ -1480,25 +1480,25 @@ LABEL_13:
     v4 = 3;
   }
 
-  [(LAUIPearlGlyphView *)self setFaceVisibility:v4 animated:a4];
+  [(LAUIPearlGlyphView *)self setFaceVisibility:v4 animated:animated];
 }
 
-- (void)setState:(int64_t)a3 animated:(BOOL)a4 withCompletion:(id)a5
+- (void)setState:(int64_t)state animated:(BOOL)animated withCompletion:(id)completion
 {
-  v5 = a4;
+  animatedCopy = animated;
   v53[2] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  completionCopy = completion;
   if (*(self + 95))
   {
-    [(LAUIPearlGlyphView *)self _setSecureFaceIDViewState:a3 animated:0 withCompletion:v8];
+    [(LAUIPearlGlyphView *)self _setSecureFaceIDViewState:state animated:0 withCompletion:completionCopy];
   }
 
   else
   {
-    if (v5)
+    if (animatedCopy)
     {
       v9 = *(self + 768) ^ 1;
-      if (a3 == 4 && (*(self + 768) & 1) == 0)
+      if (state == 4 && (*(self + 768) & 1) == 0)
       {
         if (*(self + 769) == 1)
         {
@@ -1547,12 +1547,12 @@ LABEL_13:
           v27 = [MEMORY[0x277CCAE60] valueWithCGPoint:{-v21, 0.0}];
           [v23 setToValue:v27];
 
-          v28 = [MEMORY[0x277CD9E00] animation];
-          [(CAAnimation *)v28 setBeginTimeMode:v13];
+          animation = [MEMORY[0x277CD9E00] animation];
+          [(CAAnimation *)animation setBeginTimeMode:v13];
           v53[0] = v12;
           v53[1] = v23;
           v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:2];
-          [(CAAnimation *)v28 setAnimations:v29];
+          [(CAAnimation *)animation setAnimations:v29];
 
           v30 = v12;
           [v30 beginTime];
@@ -1572,9 +1572,9 @@ LABEL_13:
             v40 = v37 + v39;
           }
 
-          [(CAAnimation *)v28 setDuration:v40];
-          v41 = [(LAUIPearlGlyphView *)self layer];
-          v42 = LAUILayerAddAdditiveAnimation(v41, &cfstr_Position.isa, v28);
+          [(CAAnimation *)animation setDuration:v40];
+          layer = [(LAUIPearlGlyphView *)self layer];
+          v42 = LAUILayerAddAdditiveAnimation(layer, &cfstr_Position.isa, animation);
         }
 
         if (*(self + 770) == 1)
@@ -1589,9 +1589,9 @@ LABEL_13:
       v9 = 0;
     }
 
-    if (*(self + 98) == a3)
+    if (*(self + 98) == state)
     {
-      if (v8)
+      if (completionCopy)
       {
         if (*(self + 712) == 1)
         {
@@ -1601,7 +1601,7 @@ LABEL_13:
             v48 = 3321888768;
             v49 = ___ZN17LAUI_CA_utilities38animation_completion_handler_container7executeEU13block_pointerFvbEb_block_invoke;
             v50 = &__block_descriptor_48_ea8_32c102_ZTSKZN17LAUI_CA_utilities38animation_completion_handler_container7executeEU13block_pointerFvbEbEUlvE__e5_v8__0l;
-            v43 = MEMORY[0x259C5AE60](v8);
+            v43 = MEMORY[0x259C5AE60](completionCopy);
             v51 = MEMORY[0x259C5AE60]();
             v52 = 0;
             dispatch_async(MEMORY[0x277D85CD0], &block);
@@ -1609,7 +1609,7 @@ LABEL_13:
 
           else
           {
-            v46 = [v8 copy];
+            v46 = [completionCopy copy];
             std::vector<void({block_pointer} {__strong})(BOOL),std::allocator<void({block_pointer} {__strong})(BOOL)>>::push_back[abi:ne200100](self + 91, &v46);
           }
         }
@@ -1620,7 +1620,7 @@ LABEL_13:
           v48 = 3321888768;
           v49 = ___ZN17LAUI_CA_utilities38animation_completion_handler_container7executeEU13block_pointerFvbEb_block_invoke;
           v50 = &__block_descriptor_48_ea8_32c102_ZTSKZN17LAUI_CA_utilities38animation_completion_handler_container7executeEU13block_pointerFvbEbEUlvE__e5_v8__0l;
-          v44 = MEMORY[0x259C5AE60](v8);
+          v44 = MEMORY[0x259C5AE60](completionCopy);
           v51 = MEMORY[0x259C5AE60]();
           v52 = 1;
           dispatch_async(MEMORY[0x277D85CD0], &block);
@@ -1630,41 +1630,41 @@ LABEL_13:
 
     else
     {
-      if (([LAUIPearlGlyphView setState:v8 animated:? withCompletion:?]& 1) == 0)
+      if (([LAUIPearlGlyphView setState:completionCopy animated:? withCompletion:?]& 1) == 0)
       {
-        v45 = [v8 copy];
+        v45 = [completionCopy copy];
         std::vector<void({block_pointer} {__strong})(BOOL),std::allocator<void({block_pointer} {__strong})(BOOL)>>::push_back[abi:ne200100](self + 91, &v45);
       }
 
       *(self + 88) = *(self + 98);
-      *(self + 98) = a3;
+      *(self + 98) = state;
       [(LAUIPearlGlyphView *)self _applyStateAnimated:?];
       *(self + 88) = *(self + 98);
     }
   }
 }
 
-- (void)_setSecureFaceIDViewState:(uint64_t)a3 animated:(void *)a4 withCompletion:
+- (void)_setSecureFaceIDViewState:(uint64_t)state animated:(void *)animated withCompletion:
 {
-  v6 = a4;
-  if (a1)
+  animatedCopy = animated;
+  if (self)
   {
-    v7 = *(a1 + 784);
+    v7 = *(self + 784);
     if (v7 != a2)
     {
-      *(a1 + 704) = v7;
-      *(a1 + 784) = a2;
+      *(self + 704) = v7;
+      *(self + 784) = a2;
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __72__LAUIPearlGlyphView__setSecureFaceIDViewState_animated_withCompletion___block_invoke;
       v8[3] = &__block_descriptor_40_e5_q8__0l;
       v8[4] = a2;
-      [*(a1 + 760) setState:__72__LAUIPearlGlyphView__setSecureFaceIDViewState_animated_withCompletion___block_invoke(v8)];
+      [*(self + 760) setState:__72__LAUIPearlGlyphView__setSecureFaceIDViewState_animated_withCompletion___block_invoke(v8)];
     }
 
-    if (v6)
+    if (animatedCopy)
     {
-      v6[2](v6, 1);
+      animatedCopy[2](animatedCopy, 1);
     }
   }
 }
@@ -1764,11 +1764,11 @@ void __42__LAUIPearlGlyphView__applyStateAnimated___block_invoke_119(uint64_t a1
   }
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  if (*(self + 768) != a3)
+  if (*(self + 768) != paused)
   {
-    *(self + 768) = a3;
+    *(self + 768) = paused;
     [(LAUIPearlGlyphView *)self _updateRendererPaused:?];
     if (*(self + 768) == 1)
     {
@@ -1783,21 +1783,21 @@ void __42__LAUIPearlGlyphView__applyStateAnimated___block_invoke_119(uint64_t a1
   v3 = *(self + 95);
   if (v3)
   {
-    v4 = [v3 remainingMinDisplayTimeInterval];
+    remainingMinDisplayTimeInterval = [v3 remainingMinDisplayTimeInterval];
   }
 
   else
   {
-    v4 = &unk_28682FCC0;
+    remainingMinDisplayTimeInterval = &unk_28682FCC0;
   }
 
-  return v4;
+  return remainingMinDisplayTimeInterval;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(self + 100, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(self + 100, delegateCopy);
   v5 = objc_opt_respondsToSelector();
 
   *(self + 448) = v5 & 1;
@@ -1805,9 +1805,9 @@ void __42__LAUIPearlGlyphView__applyStateAnimated___block_invoke_119(uint64_t a1
 
 - (double)modelTransform
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 552);
+    v2 = *(self + 552);
     if (v2)
     {
       v3 = v2[14];
@@ -1859,20 +1859,20 @@ void __42__LAUIPearlGlyphView__applyStateAnimated___block_invoke_119(uint64_t a1
   return *&v6;
 }
 
-- (void)renderLoop:(id)a3 drawableSizeDidChange:(CGSize)a4
+- (void)renderLoop:(id)loop drawableSizeDidChange:(CGSize)change
 {
   if ((*(self + 480) & 1) == 0)
   {
     v6[0] = v4;
     v6[1] = v5;
-    [(LAUIPearlGlyphView *)self renderLoop:v6 drawableSizeDidChange:a4.width, a4.height];
+    [(LAUIPearlGlyphView *)self renderLoop:v6 drawableSizeDidChange:change.width, change.height];
   }
 }
 
-- (void)renderLoop:(id)a3 drawAtTime:(double)a4
+- (void)renderLoop:(id)loop drawAtTime:(double)time
 {
   v124 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  loopCopy = loop;
   if (*(self + 480))
   {
     goto LABEL_65;
@@ -1977,7 +1977,7 @@ LABEL_61:
     goto LABEL_62;
   }
 
-  vars0 = v5;
+  vars0 = loopCopy;
   v52 = updated * 1000.0;
   v53 = LAUI_uniform_cubic_b_spline_renderer::animator_t<float,(LAUI_uniform_cubic_b_spline_renderer::animator_interpolation_type)0>::update(v51 + 272, v52);
   v54 = LAUI_uniform_cubic_b_spline_renderer::animator_t<float,(LAUI_uniform_cubic_b_spline_renderer::animator_interpolation_type)0>::update(v51 + 328, v52);
@@ -2146,7 +2146,7 @@ LABEL_41:
   v87 = v63 & ((v86 & 0x100) >> 8);
   v88 = v86 & v60;
   v89 = v88 | v87;
-  v5 = vars0;
+  loopCopy = vars0;
   if ((v89 & 1) == 0)
   {
     v94 = *(v51 + 872);
@@ -2257,21 +2257,21 @@ LABEL_65:
 - (void)_applyCheckmarkColor
 {
   v7 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 752);
+    v2 = *(self + 752);
     if (v2)
     {
-      if (*(a1 + 440))
+      if (*(self + 440))
       {
-        v3 = *(a1 + 656);
+        v3 = *(self + 656);
         v6[0] = vcvtq_f64_f32(*v3.f32);
         v6[1] = vcvt_hight_f64_f32(v3);
         v4 = CGColorCreate(v2, v6);
         if (v4)
         {
           v5 = v4;
-          [*(a1 + 440) setColor:v4 animated:0];
+          [*(self + 440) setColor:v4 animated:0];
           CFRelease(v5);
         }
       }
@@ -2327,11 +2327,11 @@ LABEL_65:
   return result;
 }
 
-- (void)_executeCompletionHandlers:(uint64_t)a1
+- (void)_executeCompletionHandlers:(uint64_t)handlers
 {
-  if (a1)
+  if (handlers)
   {
-    v4 = (a1 + 728);
+    v4 = (handlers + 728);
     v6 = *v4;
     v5 = v4[1];
     if (v5 != *v4)
@@ -2354,9 +2354,9 @@ LABEL_65:
 
 - (uint64_t)isWireframeEnabled
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 552);
+    v1 = *(self + 552);
     if (v1)
     {
       LOBYTE(v1) = *(v1 + 128);
@@ -2406,42 +2406,42 @@ LABEL_65:
 
 - (uint64_t)beginExternalAnimation
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 488);
-    *(a1 + 488) = v1 + 1;
+    v1 = *(self + 488);
+    *(self + 488) = v1 + 1;
     if (!v1)
     {
-      return OUTLINED_FUNCTION_0_3(a1);
+      return OUTLINED_FUNCTION_0_3(self);
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)endExternalAnimation
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 488) - 1;
-    *(a1 + 488) = v1;
+    v1 = *(self + 488) - 1;
+    *(self + 488) = v1;
     if (!v1)
     {
-      return OUTLINED_FUNCTION_0_3(a1);
+      return OUTLINED_FUNCTION_0_3(self);
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_updateReduceBlurState
 {
-  if (a1)
+  if (self)
   {
     if (UIAccessibilityIsReduceTransparencyEnabled())
     {
-      v2 = a1 + 424;
-      if (a1[424])
+      v2 = self + 424;
+      if (self[424])
       {
         return;
       }
@@ -2452,18 +2452,18 @@ LABEL_65:
     else
     {
       IsReduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
-      v2 = a1 + 424;
-      if (IsReduceMotionEnabled == a1[424])
+      v2 = self + 424;
+      if (IsReduceMotionEnabled == self[424])
       {
         return;
       }
     }
 
     *v2 = IsReduceMotionEnabled;
-    [(LAUIPearlGlyphView *)a1 _applyConfiguration];
-    if (a1[712] == 1)
+    [(LAUIPearlGlyphView *)self _applyConfiguration];
+    if (self[712] == 1)
     {
-      v4 = a1[713];
+      v4 = self[713];
     }
 
     else
@@ -2471,13 +2471,13 @@ LABEL_65:
       v4 = 0;
     }
 
-    [(LAUIPearlGlyphView *)a1 _applyStateAnimated:?];
+    [(LAUIPearlGlyphView *)self _applyStateAnimated:?];
   }
 }
 
 - (uint64_t)invalidate
 {
-  *a1 = 1;
+  *self = 1;
   v3 = *(a2 + 464);
   if (v3)
   {

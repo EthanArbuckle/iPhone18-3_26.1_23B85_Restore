@@ -1,7 +1,7 @@
 @interface ASPasskeyConfigurationSubscriberApplicator
 + (id)supportedConfigurationTypes;
 - (_TtC26AuthenticationServicesCore42ASPasskeyConfigurationSubscriberApplicator)init;
-- (_TtC26AuthenticationServicesCore42ASPasskeyConfigurationSubscriberApplicator)initWithAdapter:(id)a3 inPlaceUpdates:(BOOL)a4;
+- (_TtC26AuthenticationServicesCore42ASPasskeyConfigurationSubscriberApplicator)initWithAdapter:(id)adapter inPlaceUpdates:(BOOL)updates;
 @end
 
 @implementation ASPasskeyConfigurationSubscriberApplicator
@@ -25,7 +25,7 @@
   return v2;
 }
 
-- (_TtC26AuthenticationServicesCore42ASPasskeyConfigurationSubscriberApplicator)initWithAdapter:(id)a3 inPlaceUpdates:(BOOL)a4
+- (_TtC26AuthenticationServicesCore42ASPasskeyConfigurationSubscriberApplicator)initWithAdapter:(id)adapter inPlaceUpdates:(BOOL)updates
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,21 +1,21 @@
 @interface SUUIPickerView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUIPickerView)initWithFrame:(CGRect)a3;
-- (SUUIPickerView)initWithTitles:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUIPickerView)initWithFrame:(CGRect)frame;
+- (SUUIPickerView)initWithTitles:(id)titles;
 - (SUUIPickerViewDelegate)delegate;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
 @end
 
 @implementation SUUIPickerView
 
-- (SUUIPickerView)initWithFrame:(CGRect)a3
+- (SUUIPickerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = [(SUUIPickerView *)self initWithTitles:0];
   v8 = v7;
   if (v7)
@@ -26,15 +26,15 @@
   return v8;
 }
 
-- (SUUIPickerView)initWithTitles:(id)a3
+- (SUUIPickerView)initWithTitles:(id)titles
 {
-  v4 = a3;
+  titlesCopy = titles;
   v19.receiver = self;
   v19.super_class = SUUIPickerView;
   v5 = [(SUUIPickerView *)&v19 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [titlesCopy copy];
     titles = v5->_titles;
     v5->_titles = v6;
 
@@ -62,8 +62,8 @@
     [(UIPickerView *)v5->_pickerView setDelegate:v5];
     [(UIPickerView *)v5->_pickerView setShowsSelectionIndicator:1];
     [(SUUIPickerView *)v5 addSubview:v5->_pickerView];
-    v17 = [MEMORY[0x277D75348] clearColor];
-    [(SUUIPickerView *)v5 setBackgroundColor:v17];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SUUIPickerView *)v5 setBackgroundColor:clearColor];
   }
 
   return v5;
@@ -78,9 +78,9 @@
   [(SUUIPickerView *)&v3 dealloc];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIPickerView *)self->_pickerView sizeThatFits:a3.width, a3.height];
+  [(UIPickerView *)self->_pickerView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -96,12 +96,12 @@
   [(_UIBackdropView *)self->_backdropView setFrame:?];
   [(UIPickerView *)self->_pickerView setFrame:v4, v6, v8, v10];
   separatorView = self->_separatorView;
-  v13 = [MEMORY[0x277D759A0] mainScreen];
-  [v13 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   [(UIView *)separatorView setFrame:v4, v6, v8, 1.0 / v12];
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
@@ -109,7 +109,7 @@
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 pickerView:self didSelectItemAtIndex:a4];
+    [v9 pickerView:self didSelectItemAtIndex:row];
   }
 }
 

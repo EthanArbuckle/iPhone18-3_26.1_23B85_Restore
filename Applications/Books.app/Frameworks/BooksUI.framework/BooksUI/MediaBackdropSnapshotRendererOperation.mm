@@ -17,10 +17,10 @@
   v8[2] = 0;
   v8[3] = 0;
   v8[4] = self;
-  v9 = self;
+  selfCopy = self;
   sub_182AE4(0, 0, v6, &unk_268198, v8);
 
-  v10 = *(&v9->super.super.isa + OBJC_IVAR____TtC7BooksUI38MediaBackdropSnapshotRendererOperation_semaphore);
+  v10 = *(&selfCopy->super.super.isa + OBJC_IVAR____TtC7BooksUI38MediaBackdropSnapshotRendererOperation_semaphore);
   sub_264990();
 }
 

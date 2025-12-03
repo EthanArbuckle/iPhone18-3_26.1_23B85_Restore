@@ -1,26 +1,26 @@
 @interface DebugFormatRulerView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DebugFormatRulerView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6321CB4();
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v11.receiver = self;
   v11.super_class = swift_getObjectType();
-  v7 = a4;
+  eventCopy = event;
   v8 = v11.receiver;
-  if ([(DebugFormatRulerView *)&v11 pointInside:v7 withEvent:x, y])
+  if ([(DebugFormatRulerView *)&v11 pointInside:eventCopy withEvent:x, y])
   {
     [*&v8[OBJC_IVAR____TtC8NewsFeed20DebugFormatRulerView_horizontalRulerEdgeView] frame];
     v12.x = x;
@@ -47,16 +47,16 @@
   return v9;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v9.receiver;
-  [(DebugFormatRulerView *)&v9 traitCollectionDidChange:v4];
+  [(DebugFormatRulerView *)&v9 traitCollectionDidChange:changeCopy];
   v6 = *&v5[OBJC_IVAR____TtC8NewsFeed20DebugFormatRulerView_borderLayer];
-  v7 = [objc_opt_self() separatorColor];
-  v8 = [v7 CGColor];
+  separatorColor = [objc_opt_self() separatorColor];
+  cGColor = [separatorColor CGColor];
 
   [v6 setStrokeColor_];
 }

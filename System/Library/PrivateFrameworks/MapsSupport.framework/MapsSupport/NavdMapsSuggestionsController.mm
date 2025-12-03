@@ -1,9 +1,9 @@
 @interface NavdMapsSuggestionsController
 - (NavdMapsSuggestionsController)init;
-- (NavdMapsSuggestionsController)initWithResourceDepot:(id)a3 sharedRegister:(id)a4;
+- (NavdMapsSuggestionsController)initWithResourceDepot:(id)depot sharedRegister:(id)register;
 - (void)dealloc;
 - (void)startDoomIfNotStarted;
-- (void)valueChangedForMapsFeature:(id)a3 enabled:(BOOL)a4;
+- (void)valueChangedForMapsFeature:(id)feature enabled:(BOOL)enabled;
 @end
 
 @implementation NavdMapsSuggestionsController
@@ -28,17 +28,17 @@
   return v6;
 }
 
-- (NavdMapsSuggestionsController)initWithResourceDepot:(id)a3 sharedRegister:(id)a4
+- (NavdMapsSuggestionsController)initWithResourceDepot:(id)depot sharedRegister:(id)register
 {
-  v7 = a3;
-  v8 = a4;
+  depotCopy = depot;
+  registerCopy = register;
   v57.receiver = self;
   v57.super_class = NavdMapsSuggestionsController;
   v9 = [(NavdMapsSuggestionsController *)&v57 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_resourceDepot, a3);
+    objc_storeStrong(&v9->_resourceDepot, depot);
     v11 = objc_alloc_init(NavdRouteGeniusServer);
     routeGeniusServer = v10->_routeGeniusServer;
     v10->_routeGeniusServer = v11;
@@ -57,7 +57,7 @@
     MapsFeature_AddDelegateListener();
 
     v21 = +[MapsSuggestionsDestinationdTrigger description];
-    v22 = [v8 objectForKeyedSubscript:v21];
+    v22 = [registerCopy objectForKeyedSubscript:v21];
 
     if (v22)
     {
@@ -66,14 +66,14 @@
 
     if (!v10->_venueAnnouncer)
     {
-      v23 = [[NavdVenueAnnouncer alloc] initFromResourceDepot:v10->_resourceDepot sharedRegister:v8];
+      v23 = [[NavdVenueAnnouncer alloc] initFromResourceDepot:v10->_resourceDepot sharedRegister:registerCopy];
       venueAnnouncer = v10->_venueAnnouncer;
       v10->_venueAnnouncer = v23;
     }
 
     if (!v10->_avocadoUpdater)
     {
-      v25 = [[NavdAvocadoUpdater alloc] initFromResourceDepot:v10->_resourceDepot sharedRegister:v8];
+      v25 = [[NavdAvocadoUpdater alloc] initFromResourceDepot:v10->_resourceDepot sharedRegister:registerCopy];
       avocadoUpdater = v10->_avocadoUpdater;
       v10->_avocadoUpdater = v25;
     }
@@ -103,7 +103,7 @@
     v47 = v34;
     v35 = v28;
     v48 = v35;
-    v49 = v8;
+    v49 = registerCopy;
     v36 = v45;
     v50 = v36;
     v37 = v44;
@@ -112,7 +112,7 @@
     v52 = v38;
     dispatch_async(v33, block);
 
-    v39 = [[MapsSuggestionsDOoMEngineWrapper alloc] initWithResourceDepot:v7 conditions:&__NSArray0__struct];
+    v39 = [[MapsSuggestionsDOoMEngineWrapper alloc] initWithResourceDepot:depotCopy conditions:&__NSArray0__struct];
     doomEngineWrapper = v10->_doomEngineWrapper;
     v10->_doomEngineWrapper = v39;
 
@@ -130,11 +130,11 @@
   return v10;
 }
 
-- (void)valueChangedForMapsFeature:(id)a3 enabled:(BOOL)a4
+- (void)valueChangedForMapsFeature:(id)feature enabled:(BOOL)enabled
 {
-  if (a3.var0.var0 == LODWORD(MapsFeaturesConfig_LocationIntelligenceMaps[0]) && a3.var0.var1 == MapsFeaturesConfig_LocationIntelligenceMaps[1])
+  if (feature.var0.var0 == LODWORD(MapsFeaturesConfig_LocationIntelligenceMaps[0]) && feature.var0.var1 == MapsFeaturesConfig_LocationIntelligenceMaps[1])
   {
-    if (a4)
+    if (enabled)
     {
 
       [(NavdMapsSuggestionsController *)self startDoomIfNotStarted];

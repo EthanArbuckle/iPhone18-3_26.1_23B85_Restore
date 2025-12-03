@@ -1,48 +1,48 @@
 @interface MOContextMO
-+ (id)managedObjectWithContext:(id)a3 inManagedObjectContext:(id)a4;
-+ (void)updateManagedObject:(id)a3 withContext:(id)a4 inManagedObjectContext:(id)a5;
++ (id)managedObjectWithContext:(id)context inManagedObjectContext:(id)objectContext;
++ (void)updateManagedObject:(id)object withContext:(id)context inManagedObjectContext:(id)objectContext;
 @end
 
 @implementation MOContextMO
 
-+ (id)managedObjectWithContext:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithContext:(id)context inManagedObjectContext:(id)objectContext
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MOContextMO alloc] initWithContext:v5];
-  [MOContextMO updateManagedObject:v7 withContext:v6 inManagedObjectContext:v5];
+  objectContextCopy = objectContext;
+  contextCopy = context;
+  v7 = [[MOContextMO alloc] initWithContext:objectContextCopy];
+  [MOContextMO updateManagedObject:v7 withContext:contextCopy inManagedObjectContext:objectContextCopy];
 
   return v7;
 }
 
-+ (void)updateManagedObject:(id)a3 withContext:(id)a4 inManagedObjectContext:(id)a5
++ (void)updateManagedObject:(id)object withContext:(id)context inManagedObjectContext:(id)objectContext
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 contextIdentifier];
-  [v7 setContextIdentifier:v10];
+  objectCopy = object;
+  contextCopy = context;
+  objectContextCopy = objectContext;
+  contextIdentifier = [contextCopy contextIdentifier];
+  [objectCopy setContextIdentifier:contextIdentifier];
 
-  v11 = [v8 contextCreationTimestamp];
-  [v7 setContextCreationTimestamp:v11];
+  contextCreationTimestamp = [contextCopy contextCreationTimestamp];
+  [objectCopy setContextCreationTimestamp:contextCreationTimestamp];
 
-  [v7 setAssociatedPatternType:{objc_msgSend(v8, "associatedPatternType")}];
-  [v7 setActionType:{objc_msgSend(v8, "actionType")}];
-  v12 = [v8 associatedRequestID];
-  [v7 setAssociatedRequestID:v12];
+  [objectCopy setAssociatedPatternType:{objc_msgSend(contextCopy, "associatedPatternType")}];
+  [objectCopy setActionType:{objc_msgSend(contextCopy, "actionType")}];
+  associatedRequestID = [contextCopy associatedRequestID];
+  [objectCopy setAssociatedRequestID:associatedRequestID];
 
-  v13 = [v8 associatedBundleID];
-  [v7 setAssociatedBundleID:v13];
+  associatedBundleID = [contextCopy associatedBundleID];
+  [objectCopy setAssociatedBundleID:associatedBundleID];
 
-  v14 = [v8 associatedSuggestionID];
-  [v7 setAssociatedSuggestionID:v14];
+  associatedSuggestionID = [contextCopy associatedSuggestionID];
+  [objectCopy setAssociatedSuggestionID:associatedSuggestionID];
 
-  v15 = [v8 bundleContentIdentifier];
-  [v7 setBundleContentIdentifier:v15];
+  bundleContentIdentifier = [contextCopy bundleContentIdentifier];
+  [objectCopy setBundleContentIdentifier:bundleContentIdentifier];
 
-  [v7 setContextStrings:0];
-  v16 = [v8 contextStrings];
-  v17 = [v16 count];
+  [objectCopy setContextStrings:0];
+  contextStrings = [contextCopy contextStrings];
+  v17 = [contextStrings count];
 
   if (v17)
   {
@@ -50,8 +50,8 @@
     v75 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v18 = [v8 contextStrings];
-    v19 = [v18 countByEnumeratingWithState:&v72 objects:v80 count:16];
+    contextStrings2 = [contextCopy contextStrings];
+    v19 = [contextStrings2 countByEnumeratingWithState:&v72 objects:v80 count:16];
     if (v19)
     {
       v20 = v19;
@@ -63,26 +63,26 @@
         {
           if (*v73 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(contextStrings2);
           }
 
-          v23 = [MOContextStringMO managedObjectWithContextString:*(*(&v72 + 1) + 8 * v22) inManagedObjectContext:v9];
-          [v7 addContextStringsObject:v23];
+          v23 = [MOContextStringMO managedObjectWithContextString:*(*(&v72 + 1) + 8 * v22) inManagedObjectContext:objectContextCopy];
+          [objectCopy addContextStringsObject:v23];
 
           v22 = v22 + 1;
         }
 
         while (v20 != v22);
-        v20 = [v18 countByEnumeratingWithState:&v72 objects:v80 count:16];
+        v20 = [contextStrings2 countByEnumeratingWithState:&v72 objects:v80 count:16];
       }
 
       while (v20);
     }
   }
 
-  [v7 setAssociatedLocations:0];
-  v24 = [v8 associatedLocations];
-  v25 = [v24 count];
+  [objectCopy setAssociatedLocations:0];
+  associatedLocations = [contextCopy associatedLocations];
+  v25 = [associatedLocations count];
 
   if (v25)
   {
@@ -90,8 +90,8 @@
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v26 = [v8 associatedLocations];
-    v27 = [v26 countByEnumeratingWithState:&v68 objects:v79 count:16];
+    associatedLocations2 = [contextCopy associatedLocations];
+    v27 = [associatedLocations2 countByEnumeratingWithState:&v68 objects:v79 count:16];
     if (v27)
     {
       v28 = v27;
@@ -103,26 +103,26 @@
         {
           if (*v69 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(associatedLocations2);
           }
 
-          v31 = [MOContextLocationMetaDataMO managedObjectWithObject:*(*(&v68 + 1) + 8 * v30) inManagedObjectContext:v9];
-          [v7 addAssociatedLocationsObject:v31];
+          v31 = [MOContextLocationMetaDataMO managedObjectWithObject:*(*(&v68 + 1) + 8 * v30) inManagedObjectContext:objectContextCopy];
+          [objectCopy addAssociatedLocationsObject:v31];
 
           v30 = v30 + 1;
         }
 
         while (v28 != v30);
-        v28 = [v26 countByEnumeratingWithState:&v68 objects:v79 count:16];
+        v28 = [associatedLocations2 countByEnumeratingWithState:&v68 objects:v79 count:16];
       }
 
       while (v28);
     }
   }
 
-  [v7 setAssociatedContacts:0];
-  v32 = [v8 associatedContacts];
-  v33 = [v32 count];
+  [objectCopy setAssociatedContacts:0];
+  associatedContacts = [contextCopy associatedContacts];
+  v33 = [associatedContacts count];
 
   if (v33)
   {
@@ -130,8 +130,8 @@
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v34 = [v8 associatedContacts];
-    v35 = [v34 countByEnumeratingWithState:&v64 objects:v78 count:16];
+    associatedContacts2 = [contextCopy associatedContacts];
+    v35 = [associatedContacts2 countByEnumeratingWithState:&v64 objects:v78 count:16];
     if (v35)
     {
       v36 = v35;
@@ -143,26 +143,26 @@
         {
           if (*v65 != v37)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(associatedContacts2);
           }
 
-          v39 = [MOContextContactMetaDataMO managedObjectWithObject:*(*(&v64 + 1) + 8 * v38) inManagedObjectContext:v9];
-          [v7 addAssociatedContactsObject:v39];
+          v39 = [MOContextContactMetaDataMO managedObjectWithObject:*(*(&v64 + 1) + 8 * v38) inManagedObjectContext:objectContextCopy];
+          [objectCopy addAssociatedContactsObject:v39];
 
           v38 = v38 + 1;
         }
 
         while (v36 != v38);
-        v36 = [v34 countByEnumeratingWithState:&v64 objects:v78 count:16];
+        v36 = [associatedContacts2 countByEnumeratingWithState:&v64 objects:v78 count:16];
       }
 
       while (v36);
     }
   }
 
-  [v7 setAssociatedTime:0];
-  v40 = [v8 associatedTime];
-  v41 = [v40 count];
+  [objectCopy setAssociatedTime:0];
+  associatedTime = [contextCopy associatedTime];
+  v41 = [associatedTime count];
 
   if (v41)
   {
@@ -170,8 +170,8 @@
     v63 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v42 = [v8 associatedTime];
-    v43 = [v42 countByEnumeratingWithState:&v60 objects:v77 count:16];
+    associatedTime2 = [contextCopy associatedTime];
+    v43 = [associatedTime2 countByEnumeratingWithState:&v60 objects:v77 count:16];
     if (v43)
     {
       v44 = v43;
@@ -183,26 +183,26 @@
         {
           if (*v61 != v45)
           {
-            objc_enumerationMutation(v42);
+            objc_enumerationMutation(associatedTime2);
           }
 
-          v47 = [MOContextTimeMetaDataMO managedObjectWithObject:*(*(&v60 + 1) + 8 * v46) inManagedObjectContext:v9];
-          [v7 addAssociatedTimeObject:v47];
+          v47 = [MOContextTimeMetaDataMO managedObjectWithObject:*(*(&v60 + 1) + 8 * v46) inManagedObjectContext:objectContextCopy];
+          [objectCopy addAssociatedTimeObject:v47];
 
           v46 = v46 + 1;
         }
 
         while (v44 != v46);
-        v44 = [v42 countByEnumeratingWithState:&v60 objects:v77 count:16];
+        v44 = [associatedTime2 countByEnumeratingWithState:&v60 objects:v77 count:16];
       }
 
       while (v44);
     }
   }
 
-  [v7 setAssociatedMusic:0];
-  v48 = [v8 associatedMusic];
-  v49 = [v48 count];
+  [objectCopy setAssociatedMusic:0];
+  associatedMusic = [contextCopy associatedMusic];
+  v49 = [associatedMusic count];
 
   if (v49)
   {
@@ -210,8 +210,8 @@
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v50 = [v8 associatedMusic];
-    v51 = [v50 countByEnumeratingWithState:&v56 objects:v76 count:16];
+    associatedMusic2 = [contextCopy associatedMusic];
+    v51 = [associatedMusic2 countByEnumeratingWithState:&v56 objects:v76 count:16];
     if (v51)
     {
       v52 = v51;
@@ -223,17 +223,17 @@
         {
           if (*v57 != v53)
           {
-            objc_enumerationMutation(v50);
+            objc_enumerationMutation(associatedMusic2);
           }
 
-          v55 = [MOContextMusicMetaDataMO managedObjectWithObject:*(*(&v56 + 1) + 8 * v54) inManagedObjectContext:v9];
-          [v7 addAssociatedMusicObject:v55];
+          v55 = [MOContextMusicMetaDataMO managedObjectWithObject:*(*(&v56 + 1) + 8 * v54) inManagedObjectContext:objectContextCopy];
+          [objectCopy addAssociatedMusicObject:v55];
 
           v54 = v54 + 1;
         }
 
         while (v52 != v54);
-        v52 = [v50 countByEnumeratingWithState:&v56 objects:v76 count:16];
+        v52 = [associatedMusic2 countByEnumeratingWithState:&v56 objects:v76 count:16];
       }
 
       while (v52);

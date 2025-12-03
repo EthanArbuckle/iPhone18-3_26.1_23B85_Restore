@@ -1,29 +1,29 @@
 @interface ADPearlColorInFieldCalibrationResult
-- (ADPearlColorInFieldCalibrationResult)initWithDictionary:(id)a3;
-- (__n128)setPearlToColorExtrinsics:(__n128)a3;
+- (ADPearlColorInFieldCalibrationResult)initWithDictionary:(id)dictionary;
+- (__n128)setPearlToColorExtrinsics:(__n128)extrinsics;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation ADPearlColorInFieldCalibrationResult
 
-- (__n128)setPearlToColorExtrinsics:(__n128)a3
+- (__n128)setPearlToColorExtrinsics:(__n128)extrinsics
 {
   result[8] = a2;
-  result[9] = a3;
+  result[9] = extrinsics;
   result[10] = a4;
   result[11] = a5;
   return result;
 }
 
-- (ADPearlColorInFieldCalibrationResult)initWithDictionary:(id)a3
+- (ADPearlColorInFieldCalibrationResult)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v69.receiver = self;
   v69.super_class = ADPearlColorInFieldCalibrationResult;
   v5 = [(ADPearlColorInFieldCalibrationResult *)&v69 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"pearlToColorExtrinsics"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"pearlToColorExtrinsics"];
     v7 = v6;
     if (v6)
     {
@@ -38,135 +38,135 @@
       *&v5[1]._factoryRotationX = v14;
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"execute"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"execute"];
     v5->_executed = [v15 BOOLValue];
 
-    v16 = [v4 objectForKeyedSubscript:@"deltaRotationX"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"deltaRotationX"];
     [v16 doubleValue];
     *&v17 = v17;
     v5->_deltaRotationX = *&v17;
 
-    v18 = [v4 objectForKeyedSubscript:@"deltaRotationY"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"deltaRotationY"];
     [v18 doubleValue];
     *&v19 = v19;
     v5->_deltaRotationY = *&v19;
 
-    v20 = [v4 objectForKeyedSubscript:@"deltaRotationZ"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"deltaRotationZ"];
     [v20 doubleValue];
     *&v21 = v21;
     v5->_deltaRotationZ = *&v21;
 
-    v22 = [v4 objectForKeyedSubscript:@"STDX"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"STDX"];
     [v22 doubleValue];
     *&v23 = v23;
     v5->_stdX = *&v23;
 
-    v24 = [v4 objectForKeyedSubscript:@"STDY"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"STDY"];
     [v24 doubleValue];
     *&v25 = v25;
     v5->_stdY = *&v25;
 
-    v26 = [v4 objectForKeyedSubscript:@"STDZ"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"STDZ"];
     [v26 doubleValue];
     *&v27 = v27;
     v5->_stdZ = *&v27;
 
-    v28 = [v4 objectForKeyedSubscript:@"absoluteRotationX"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"absoluteRotationX"];
     [v28 doubleValue];
     *&v29 = v29;
     v5->_absoluteRotationX = *&v29;
 
-    v30 = [v4 objectForKeyedSubscript:@"absoluteRotationY"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"absoluteRotationY"];
     [v30 doubleValue];
     *&v31 = v31;
     v5->_absoluteRotationY = *&v31;
 
-    v32 = [v4 objectForKeyedSubscript:@"absoluteRotationZ"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"absoluteRotationZ"];
     [v32 doubleValue];
     *&v33 = v33;
     v5->_absoluteRotationZ = *&v33;
 
-    v34 = [v4 objectForKeyedSubscript:@"factoryRotationX"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"factoryRotationX"];
     [v34 doubleValue];
     *&v35 = v35;
     v5->_factoryRotationX = *&v35;
 
-    v36 = [v4 objectForKeyedSubscript:@"factoryRotationY"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"factoryRotationY"];
     [v36 doubleValue];
     *&v37 = v37;
     v5->_factoryRotationY = *&v37;
 
-    v38 = [v4 objectForKeyedSubscript:@"factoryRotationZ"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"factoryRotationZ"];
     [v38 doubleValue];
     *&v39 = v39;
     v5->_factoryRotationZ = *&v39;
 
-    v40 = [v4 objectForKeyedSubscript:@"absoluteRotationPostISFX"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"absoluteRotationPostISFX"];
     [v40 doubleValue];
     *&v41 = v41;
     v5->_absoluteRotationPostISFX = *&v41;
 
-    v42 = [v4 objectForKeyedSubscript:@"absoluteRotationPostISFY"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"absoluteRotationPostISFY"];
     [v42 doubleValue];
     *&v43 = v43;
     v5->_absoluteRotationPostISFY = *&v43;
 
-    v44 = [v4 objectForKeyedSubscript:@"absoluteRotationPostISFZ"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"absoluteRotationPostISFZ"];
     [v44 doubleValue];
     *&v45 = v45;
     v5->_absoluteRotationPostISFZ = *&v45;
 
-    v46 = [v4 objectForKeyedSubscript:@"confidence"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"confidence"];
     [v46 doubleValue];
     *&v47 = v47;
     v5->_confidence = *&v47;
 
-    v48 = [v4 objectForKeyedSubscript:@"preRelative2FactoryX"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"preRelative2FactoryX"];
     [v48 doubleValue];
     *&v49 = v49;
     v5->_preRelative2FactoryX = *&v49;
 
-    v50 = [v4 objectForKeyedSubscript:@"preRelative2FactoryY"];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"preRelative2FactoryY"];
     [v50 doubleValue];
     *&v51 = v51;
     v5->_preRelative2FactoryY = *&v51;
 
-    v52 = [v4 objectForKeyedSubscript:@"preRelative2FactoryZ"];
+    v52 = [dictionaryCopy objectForKeyedSubscript:@"preRelative2FactoryZ"];
     [v52 doubleValue];
     *&v53 = v53;
     v5->_preRelative2FactoryZ = *&v53;
 
-    v54 = [v4 objectForKeyedSubscript:@"postRelative2FactoryX"];
+    v54 = [dictionaryCopy objectForKeyedSubscript:@"postRelative2FactoryX"];
     [v54 doubleValue];
     *&v55 = v55;
     v5->_postRelative2FactoryX = *&v55;
 
-    v56 = [v4 objectForKeyedSubscript:@"postRelative2FactoryY"];
+    v56 = [dictionaryCopy objectForKeyedSubscript:@"postRelative2FactoryY"];
     [v56 doubleValue];
     *&v57 = v57;
     v5->_postRelative2FactoryY = *&v57;
 
-    v58 = [v4 objectForKeyedSubscript:@"postRelative2FactoryZ"];
+    v58 = [dictionaryCopy objectForKeyedSubscript:@"postRelative2FactoryZ"];
     [v58 doubleValue];
     *&v59 = v59;
     v5->_postRelative2FactoryZ = *&v59;
 
-    v60 = [v4 objectForKeyedSubscript:@"postRelative2PrevX"];
+    v60 = [dictionaryCopy objectForKeyedSubscript:@"postRelative2PrevX"];
     [v60 doubleValue];
     *&v61 = v61;
     v5->_postRelative2PrevX = *&v61;
 
-    v62 = [v4 objectForKeyedSubscript:@"postRelative2PrevY"];
+    v62 = [dictionaryCopy objectForKeyedSubscript:@"postRelative2PrevY"];
     [v62 doubleValue];
     *&v63 = v63;
     v5->_postRelative2PrevY = *&v63;
 
-    v64 = [v4 objectForKeyedSubscript:@"postRelative2PrevZ"];
+    v64 = [dictionaryCopy objectForKeyedSubscript:@"postRelative2PrevZ"];
     [v64 doubleValue];
     *&v65 = v65;
     v5->_postRelative2PrevZ = *&v65;
 
-    v66 = [v4 objectForKeyedSubscript:@"validDepthPercentage"];
+    v66 = [dictionaryCopy objectForKeyedSubscript:@"validDepthPercentage"];
     [v66 doubleValue];
     *&v67 = v67;
     v5->_validDepthPercentage = *&v67;

@@ -1,134 +1,134 @@
 @interface GuidanceSearchResultsCategoryDataProvider
 - (GEOFeatureStyleAttributes)styleAttributes;
-- (GuidanceSearchResultsCategoryDataProvider)initWithSearchItem:(id)a3 mapService:(id)a4 chromeViewController:(id)a5;
+- (GuidanceSearchResultsCategoryDataProvider)initWithSearchItem:(id)item mapService:(id)service chromeViewController:(id)controller;
 - (NSString)subtitle;
 - (NSString)title;
-- (void)_handleResponseForTicket:(id)a3 mapItems:(id)a4 error:(id)a5 completion:(id)a6;
-- (void)_submitTicket:(id)a3 completion:(id)a4;
+- (void)_handleResponseForTicket:(id)ticket mapItems:(id)items error:(id)error completion:(id)completion;
+- (void)_submitTicket:(id)ticket completion:(id)completion;
 - (void)dealloc;
-- (void)loadSearchResultsWithRouteInfo:(id)a3 completion:(id)a4;
+- (void)loadSearchResultsWithRouteInfo:(id)info completion:(id)completion;
 @end
 
 @implementation GuidanceSearchResultsCategoryDataProvider
 
-- (void)loadSearchResultsWithRouteInfo:(id)a3 completion:(id)a4
+- (void)loadSearchResultsWithRouteInfo:(id)info completion:(id)completion
 {
-  v27 = a4;
-  v6 = a3;
-  v7 = [(GuidanceSearchResultsCategoryDataProvider *)self chromeViewController];
-  v8 = [v7 currentTraits];
+  completionCopy = completion;
+  infoCopy = info;
+  chromeViewController = [(GuidanceSearchResultsCategoryDataProvider *)self chromeViewController];
+  currentTraits = [chromeViewController currentTraits];
 
-  [v8 setNavigating:1];
+  [currentTraits setNavigating:1];
   v9 = +[MNNavigationService sharedService];
   v28 = v9;
   if ([v9 isInNavigatingState])
   {
-    v10 = [v9 navigationTransportType];
+    navigationTransportType = [v9 navigationTransportType];
   }
 
   else
   {
-    v10 = [v9 desiredTransportType];
+    navigationTransportType = [v9 desiredTransportType];
   }
 
-  [v8 setNavigationTransportType:v10];
+  [currentTraits setNavigationTransportType:navigationTransportType];
   v11 = +[SearchVirtualGarageManager sharedSearchVirtualGarageManager];
-  v26 = [v11 updatedTraitsForCurrentGarageState:v8];
+  v26 = [v11 updatedTraitsForCurrentGarageState:currentTraits];
 
-  v12 = [(GuidanceSearchResultsCategoryDataProvider *)self mapService];
-  v13 = [(GuidanceSearchResultsCategoryDataProvider *)self searchItem];
-  v14 = [v13 searchCategory];
-  v15 = [v6 originalWaypointRouteRepresentation];
-  v16 = [v6 legacyRouteRepresentation];
-  [v6 sessionState];
+  mapService = [(GuidanceSearchResultsCategoryDataProvider *)self mapService];
+  searchItem = [(GuidanceSearchResultsCategoryDataProvider *)self searchItem];
+  searchCategory = [searchItem searchCategory];
+  originalWaypointRouteRepresentation = [infoCopy originalWaypointRouteRepresentation];
+  legacyRouteRepresentation = [infoCopy legacyRouteRepresentation];
+  [infoCopy sessionState];
   v17 = v25 = self;
-  v18 = [v6 routeId];
-  v19 = [v6 routeAttributes];
+  routeId = [infoCopy routeId];
+  routeAttributes = [infoCopy routeAttributes];
 
   LODWORD(v24) = 10;
-  v20 = [v12 ticketForSearchAlongRouteWithCategory:v14 searchQuery:0 completionItem:0 originalWaypointRouteData:v15 zilchData:v16 sessionState:v17 routeId:v18 routeAttributes:v19 maxResults:v24 traits:v26 searchSessionData:0];
+  v20 = [mapService ticketForSearchAlongRouteWithCategory:searchCategory searchQuery:0 completionItem:0 originalWaypointRouteData:originalWaypointRouteRepresentation zilchData:legacyRouteRepresentation sessionState:v17 routeId:routeId routeAttributes:routeAttributes maxResults:v24 traits:v26 searchSessionData:0];
 
-  v21 = [(GuidanceSearchResultsCategoryDataProvider *)v25 workerQueue];
+  workerQueue = [(GuidanceSearchResultsCategoryDataProvider *)v25 workerQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1008A0BE0;
   block[3] = &unk_1016605F8;
   block[4] = v25;
   v30 = v20;
-  v31 = v27;
-  v22 = v27;
+  v31 = completionCopy;
+  v22 = completionCopy;
   v23 = v20;
-  dispatch_async(v21, block);
+  dispatch_async(workerQueue, block);
 }
 
 - (GEOFeatureStyleAttributes)styleAttributes
 {
-  v2 = [(GuidanceSearchResultsCategoryDataProvider *)self searchItem];
-  v3 = [v2 searchCategory];
-  v4 = [v3 styleAttributes];
+  searchItem = [(GuidanceSearchResultsCategoryDataProvider *)self searchItem];
+  searchCategory = [searchItem searchCategory];
+  styleAttributes = [searchCategory styleAttributes];
 
-  return v4;
+  return styleAttributes;
 }
 
 - (NSString)subtitle
 {
-  v2 = [(GuidanceSearchResultsCategoryDataProvider *)self categorySearchResultSection];
-  v3 = [v2 subHeaderDisplayName];
+  categorySearchResultSection = [(GuidanceSearchResultsCategoryDataProvider *)self categorySearchResultSection];
+  subHeaderDisplayName = [categorySearchResultSection subHeaderDisplayName];
 
-  return v3;
+  return subHeaderDisplayName;
 }
 
 - (NSString)title
 {
-  v2 = [(GuidanceSearchResultsCategoryDataProvider *)self searchItem];
-  v3 = [v2 title];
+  searchItem = [(GuidanceSearchResultsCategoryDataProvider *)self searchItem];
+  title = [searchItem title];
 
-  return v3;
+  return title;
 }
 
-- (void)_handleResponseForTicket:(id)a3 mapItems:(id)a4 error:(id)a5 completion:(id)a6
+- (void)_handleResponseForTicket:(id)ticket mapItems:(id)items error:(id)error completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
-  v14 = [(GuidanceSearchResultsCategoryDataProvider *)self searchTicket];
+  itemsCopy = items;
+  errorCopy = error;
+  completionCopy = completion;
+  ticketCopy = ticket;
+  searchTicket = [(GuidanceSearchResultsCategoryDataProvider *)self searchTicket];
 
-  if (v14 == v13)
+  if (searchTicket == ticketCopy)
   {
-    v15 = [(GuidanceSearchResultsCategoryDataProvider *)self searchTicket];
-    v16 = [v15 categorySearchResultSection];
-    [(GuidanceSearchResultsCategoryDataProvider *)self setCategorySearchResultSection:v16];
+    searchTicket2 = [(GuidanceSearchResultsCategoryDataProvider *)self searchTicket];
+    categorySearchResultSection = [searchTicket2 categorySearchResultSection];
+    [(GuidanceSearchResultsCategoryDataProvider *)self setCategorySearchResultSection:categorySearchResultSection];
 
     [(GuidanceSearchResultsCategoryDataProvider *)self setSearchTicket:0];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1008A0E3C;
     block[3] = &unk_1016605F8;
-    v20 = v12;
-    v18 = v10;
-    v19 = v11;
+    v20 = completionCopy;
+    v18 = itemsCopy;
+    v19 = errorCopy;
     dispatch_async(&_dispatch_main_q, block);
   }
 }
 
-- (void)_submitTicket:(id)a3 completion:(id)a4
+- (void)_submitTicket:(id)ticket completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(GuidanceSearchResultsCategoryDataProvider *)self searchTicket];
-  [v8 cancel];
+  ticketCopy = ticket;
+  completionCopy = completion;
+  searchTicket = [(GuidanceSearchResultsCategoryDataProvider *)self searchTicket];
+  [searchTicket cancel];
 
-  [(GuidanceSearchResultsCategoryDataProvider *)self setSearchTicket:v6];
+  [(GuidanceSearchResultsCategoryDataProvider *)self setSearchTicket:ticketCopy];
   objc_initWeak(&location, self);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1008A0F84;
   v11[3] = &unk_10165DCA0;
   objc_copyWeak(&v14, &location);
-  v9 = v6;
+  v9 = ticketCopy;
   v12 = v9;
-  v10 = v7;
+  v10 = completionCopy;
   v13 = v10;
   [v9 submitWithHandler:v11 networkActivity:0];
 
@@ -144,20 +144,20 @@
   [(GuidanceSearchResultsCategoryDataProvider *)&v3 dealloc];
 }
 
-- (GuidanceSearchResultsCategoryDataProvider)initWithSearchItem:(id)a3 mapService:(id)a4 chromeViewController:(id)a5
+- (GuidanceSearchResultsCategoryDataProvider)initWithSearchItem:(id)item mapService:(id)service chromeViewController:(id)controller
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemCopy = item;
+  serviceCopy = service;
+  controllerCopy = controller;
   v17.receiver = self;
   v17.super_class = GuidanceSearchResultsCategoryDataProvider;
   v12 = [(GuidanceSearchResultsCategoryDataProvider *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_searchItem, a3);
-    objc_storeStrong(&v13->_mapService, a4);
-    objc_storeStrong(&v13->_chromeViewController, a5);
+    objc_storeStrong(&v12->_searchItem, item);
+    objc_storeStrong(&v13->_mapService, service);
+    objc_storeStrong(&v13->_chromeViewController, controller);
     v14 = dispatch_queue_create("GuidanceSearchResultsCategoryDataProvider.workerQueue", 0);
     workerQueue = v13->_workerQueue;
     v13->_workerQueue = v14;

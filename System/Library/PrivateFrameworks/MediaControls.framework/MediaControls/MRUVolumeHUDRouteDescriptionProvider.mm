@@ -3,7 +3,7 @@
 - (MRUVolumeHUDRouteDescriptionProvider)init;
 - (MRUVolumeHUDRouteDescriptionProviderDelegate)delegate;
 - (void)cycleOverridePackageDescriptions;
-- (void)setOverrideOutputDeviceAsset:(id)a3;
+- (void)setOverrideOutputDeviceAsset:(id)asset;
 - (void)updateOutputDeviceAsset;
 @end
 
@@ -11,10 +11,10 @@
 
 - (void)cycleOverridePackageDescriptions
 {
-  v3 = [(MRUVolumeHUDRouteDescriptionProvider *)self outputDeviceAsset];
-  v4 = [v3 type];
+  outputDeviceAsset = [(MRUVolumeHUDRouteDescriptionProvider *)self outputDeviceAsset];
+  type = [outputDeviceAsset type];
 
-  v5 = (v4 + 1) % 23;
+  v5 = (type + 1) % 23;
   if (v5 == 2)
   {
     v6 = +[MRUOutputDeviceAsset sharingAsset];
@@ -65,12 +65,12 @@
   return overrideOutputDeviceAsset;
 }
 
-- (void)setOverrideOutputDeviceAsset:(id)a3
+- (void)setOverrideOutputDeviceAsset:(id)asset
 {
-  objc_storeStrong(&self->_overrideOutputDeviceAsset, a3);
+  objc_storeStrong(&self->_overrideOutputDeviceAsset, asset);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [(MRUVolumeHUDRouteDescriptionProvider *)self outputDeviceAsset];
-  [WeakRetained volumeHUDRouteDescriptionProvider:self didChangeOutputDeviceAsset:v4];
+  outputDeviceAsset = [(MRUVolumeHUDRouteDescriptionProvider *)self outputDeviceAsset];
+  [WeakRetained volumeHUDRouteDescriptionProvider:self didChangeOutputDeviceAsset:outputDeviceAsset];
 }
 
 - (void)updateOutputDeviceAsset
@@ -82,8 +82,8 @@
   {
     objc_storeStrong(&self->_outputDeviceAsset, obj);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v5 = [(MRUVolumeHUDRouteDescriptionProvider *)self outputDeviceAsset];
-    [WeakRetained volumeHUDRouteDescriptionProvider:self didChangeOutputDeviceAsset:v5];
+    outputDeviceAsset = [(MRUVolumeHUDRouteDescriptionProvider *)self outputDeviceAsset];
+    [WeakRetained volumeHUDRouteDescriptionProvider:self didChangeOutputDeviceAsset:outputDeviceAsset];
   }
 }
 

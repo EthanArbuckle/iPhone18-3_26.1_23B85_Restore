@@ -1,5 +1,5 @@
 @interface DOCMetadataKeyValueRowAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
@@ -7,22 +7,22 @@
 
 @implementation DOCMetadataKeyValueRowAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DocumentManagerExecutables.DOCMetadataKeyValueRow" hasInstanceMethod:@"accessibilityElementWithLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCMetadataKeyValueRow" hasInstanceMethod:@"accessibilityElementWithValue" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCMetadataKeyValueRow" hasSwiftField:@"$__lazy_storage_$_menuButton" withSwiftType:"Optional<UIButton>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCMetadataKeyValueRow" hasInstanceMethod:@"accessibilityElementWithLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCMetadataKeyValueRow" hasInstanceMethod:@"accessibilityElementWithValue" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCMetadataKeyValueRow" hasSwiftField:@"$__lazy_storage_$_menuButton" withSwiftType:"Optional<UIButton>"];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(DOCMetadataKeyValueRowAccessibility *)self _accessibilityStringForLabelKeyValues:@"accessibilityElementWithLabel, accessibilityElementWithValue"];
-  v4 = [(DOCMetadataKeyValueRowAccessibility *)self _axMenuButton];
-  v5 = v4;
-  if (v4)
+  _axMenuButton = [(DOCMetadataKeyValueRowAccessibility *)self _axMenuButton];
+  v5 = _axMenuButton;
+  if (_axMenuButton)
   {
-    v10 = [v4 accessibilityLabel];
+    accessibilityLabel = [_axMenuButton accessibilityLabel];
     v11 = @"__AXStringForVariablesSentinel";
     v6 = __AXStringForVariables();
 
@@ -31,52 +31,52 @@
 
   if ([v3 length])
   {
-    v7 = v3;
+    accessibilityLabel2 = v3;
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = DOCMetadataKeyValueRowAccessibility;
-    v7 = [(DOCMetadataKeyValueRowAccessibility *)&v12 accessibilityLabel];
+    accessibilityLabel2 = [(DOCMetadataKeyValueRowAccessibility *)&v12 accessibilityLabel];
   }
 
-  v8 = v7;
+  v8 = accessibilityLabel2;
 
   return v8;
 }
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v8.receiver = self;
   v8.super_class = DOCMetadataKeyValueRowAccessibility;
-  v4 = [(DOCMetadataKeyValueRowAccessibility *)&v8 accessibilityCustomActions];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  accessibilityCustomActions = [(DOCMetadataKeyValueRowAccessibility *)&v8 accessibilityCustomActions];
+  [array axSafelyAddObjectsFromArray:accessibilityCustomActions];
 
   v5 = [(DOCMetadataKeyValueRowAccessibility *)self safeValueForKey:@"accessibilityElementWithValue"];
-  v6 = [v5 accessibilityCustomActions];
-  [v3 axSafelyAddObjectsFromArray:v6];
+  accessibilityCustomActions2 = [v5 accessibilityCustomActions];
+  [array axSafelyAddObjectsFromArray:accessibilityCustomActions2];
 
-  return v3;
+  return array;
 }
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(DOCMetadataKeyValueRowAccessibility *)self _axMenuButton];
-  v4 = v3;
-  if (v3 && ([v3 menu], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  _axMenuButton = [(DOCMetadataKeyValueRowAccessibility *)self _axMenuButton];
+  v4 = _axMenuButton;
+  if (_axMenuButton && ([_axMenuButton menu], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [v4 _accessibilityShowContextMenuWithTargetPointValue:0];
+    accessibilityActivate = [v4 _accessibilityShowContextMenuWithTargetPointValue:0];
   }
 
   else
   {
     v7 = [(DOCMetadataKeyValueRowAccessibility *)self safeValueForKey:@"accessibilityElementWithValue"];
-    v6 = [v7 accessibilityActivate];
+    accessibilityActivate = [v7 accessibilityActivate];
   }
 
-  return v6;
+  return accessibilityActivate;
 }
 
 @end

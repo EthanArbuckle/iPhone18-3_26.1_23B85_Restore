@@ -1,5 +1,5 @@
 @interface BUIChargingStateProvider
-- (BOOL)shouldShowCardForType:(signed __int16)a3;
+- (BOOL)shouldShowCardForType:(signed __int16)type;
 - (BUIChargingStateProvider)init;
 - (LastChargeInfoDelegate)lastChargeInfoDelegate;
 - (id)debugDescription;
@@ -93,8 +93,8 @@
       goto LABEL_19;
     }
 
-    v8 = [v6 intValue];
-    if (v8 != [(ChargingStateProvider *)self uisocLevel])
+    intValue = [v6 intValue];
+    if (intValue != [(ChargingStateProvider *)self uisocLevel])
     {
       goto LABEL_18;
     }
@@ -133,32 +133,32 @@ LABEL_19:
 - (void)lastChargeInfoChanged
 {
   [(ChargingStateProvider *)self computeStates];
-  v3 = [(BUIChargingStateProvider *)self lastChargeInfoDelegate];
+  lastChargeInfoDelegate = [(BUIChargingStateProvider *)self lastChargeInfoDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v7 = [(BUIChargingStateProvider *)self lastChargeInfoDelegate];
-    v5 = [(BUIChargingStateProvider *)self lastChargeLevel];
-    v6 = [(BUIChargingStateProvider *)self lastChargeTimeInterval];
-    [v7 lastChargeInfoChangedWithLevel:v5 dateInterval:v6];
+    lastChargeInfoDelegate2 = [(BUIChargingStateProvider *)self lastChargeInfoDelegate];
+    lastChargeLevel = [(BUIChargingStateProvider *)self lastChargeLevel];
+    lastChargeTimeInterval = [(BUIChargingStateProvider *)self lastChargeTimeInterval];
+    [lastChargeInfoDelegate2 lastChargeInfoChangedWithLevel:lastChargeLevel dateInterval:lastChargeTimeInterval];
   }
 }
 
-- (BOOL)shouldShowCardForType:(signed __int16)a3
+- (BOOL)shouldShowCardForType:(signed __int16)type
 {
-  v3 = a3;
+  typeCopy = type;
   v5 = [(BUIChargingStateProvider *)self isOverridableType:?];
   if (!v5)
   {
     return v5;
   }
 
-  if (v3 > 7)
+  if (typeCopy > 7)
   {
-    if (v3 != 8)
+    if (typeCopy != 8)
     {
-      if (v3 == 10)
+      if (typeCopy == 10)
       {
         LOBYTE(v5) = 1;
         return v5;
@@ -175,9 +175,9 @@ LABEL_19:
 
   else
   {
-    if (v3 != 2)
+    if (typeCopy != 2)
     {
-      if (v3 == 7)
+      if (typeCopy == 7)
       {
         v6 = self->_chargingClient;
         v16 = 0;
@@ -206,7 +206,7 @@ LABEL_11:
     v13 = BUILogCommon();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      sub_10F718(v12, v3, v13);
+      sub_10F718(v12, typeCopy, v13);
     }
 
     goto LABEL_15;
@@ -220,12 +220,12 @@ LABEL_11:
   v11.receiver = self;
   v11.super_class = BUIChargingStateProvider;
   v3 = [(ChargingStateProvider *)&v11 debugDescription];
-  v4 = [(BUIChargingStateProvider *)self isCriticalLevel];
-  v5 = [(BUIChargingStateProvider *)self shouldShowOverrideCard];
-  v6 = [(BUIChargingStateProvider *)self shouldShowLowPowerModeCard];
-  v7 = [(BUIChargingStateProvider *)self lastChargeTimeInterval];
-  v8 = [(BUIChargingStateProvider *)self lastChargeLevel];
-  v9 = [v3 stringByAppendingFormat:@", isCriticalLevel: %d, shouldShowOverrideCard: %d, shouldShowLowPowerModeCard: %d, lastChargeTimeInterval: %@, lastChargeLevel: %@", v4, v5, v6, v7, v8];
+  isCriticalLevel = [(BUIChargingStateProvider *)self isCriticalLevel];
+  shouldShowOverrideCard = [(BUIChargingStateProvider *)self shouldShowOverrideCard];
+  shouldShowLowPowerModeCard = [(BUIChargingStateProvider *)self shouldShowLowPowerModeCard];
+  lastChargeTimeInterval = [(BUIChargingStateProvider *)self lastChargeTimeInterval];
+  lastChargeLevel = [(BUIChargingStateProvider *)self lastChargeLevel];
+  v9 = [v3 stringByAppendingFormat:@", isCriticalLevel: %d, shouldShowOverrideCard: %d, shouldShowLowPowerModeCard: %d, lastChargeTimeInterval: %@, lastChargeLevel: %@", isCriticalLevel, shouldShowOverrideCard, shouldShowLowPowerModeCard, lastChargeTimeInterval, lastChargeLevel];
 
   return v9;
 }

@@ -1,30 +1,30 @@
 @interface IDSGroupEncryptionKeyMaterial
 + (NSUUID)keyOriginIdentifier;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRealTimeEncryptionKeyMaterial:(id)a3;
-- (IDSGroupEncryptionKeyMaterial)initWithDictionary:(id)a3;
-- (IDSGroupEncryptionKeyMaterial)initWithIndex:(id)a3 groupID:(id)a4 participantID:(unint64_t)a5;
-- (IDSGroupEncryptionKeyMaterial)initWithKeyMaterial:(id)a3 keySalt:(id)a4 keyIndex:(id)a5 groupID:(id)a6;
-- (IDSGroupEncryptionKeyMaterial)initWithKeyMaterial:(id)a3 keySalt:(id)a4 keyIndex:(id)a5 groupID:(id)a6 generationCounter:(unsigned int)a7 participantID:(unint64_t)a8;
-- (IDSGroupEncryptionKeyMaterial)initWithKeyMaterial:(id)a3 keySalt:(id)a4 keyIndex:(id)a5 groupID:(id)a6 isGeneratedLocally:(BOOL)a7 createdAt:(id)a8 generationCounter:(unsigned int)a9 participantID:(unint64_t)a10;
-- (IDSGroupEncryptionKeyMaterial)initWithKeyMaterial:(id)a3 keySalt:(id)a4 keyIndex:(id)a5 groupID:(id)a6 isGeneratedLocally:(BOOL)a7 createdAt:(id)a8 generationCounter:(unsigned int)a9 participantID:(unint64_t)a10 shortKeyIndexLength:(unsigned __int8)a11;
-- (IDSGroupEncryptionKeyMaterial)initWithKeyMaterial:(id)a3 keySalt:(id)a4 keyIndex:(id)a5 groupID:(id)a6 participantID:(unint64_t)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRealTimeEncryptionKeyMaterial:(id)material;
+- (IDSGroupEncryptionKeyMaterial)initWithDictionary:(id)dictionary;
+- (IDSGroupEncryptionKeyMaterial)initWithIndex:(id)index groupID:(id)d participantID:(unint64_t)iD;
+- (IDSGroupEncryptionKeyMaterial)initWithKeyMaterial:(id)material keySalt:(id)salt keyIndex:(id)index groupID:(id)d;
+- (IDSGroupEncryptionKeyMaterial)initWithKeyMaterial:(id)material keySalt:(id)salt keyIndex:(id)index groupID:(id)d generationCounter:(unsigned int)counter participantID:(unint64_t)iD;
+- (IDSGroupEncryptionKeyMaterial)initWithKeyMaterial:(id)material keySalt:(id)salt keyIndex:(id)index groupID:(id)d isGeneratedLocally:(BOOL)locally createdAt:(id)at generationCounter:(unsigned int)counter participantID:(unint64_t)self0;
+- (IDSGroupEncryptionKeyMaterial)initWithKeyMaterial:(id)material keySalt:(id)salt keyIndex:(id)index groupID:(id)d isGeneratedLocally:(BOOL)locally createdAt:(id)at generationCounter:(unsigned int)counter participantID:(unint64_t)self0 shortKeyIndexLength:(unsigned __int8)self1;
+- (IDSGroupEncryptionKeyMaterial)initWithKeyMaterial:(id)material keySalt:(id)salt keyIndex:(id)index groupID:(id)d participantID:(unint64_t)iD;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)changeCreatedAt:(id)a3;
+- (void)changeCreatedAt:(id)at;
 @end
 
 @implementation IDSGroupEncryptionKeyMaterial
 
-- (IDSGroupEncryptionKeyMaterial)initWithIndex:(id)a3 groupID:(id)a4 participantID:(unint64_t)a5
+- (IDSGroupEncryptionKeyMaterial)initWithIndex:(id)index groupID:(id)d participantID:(unint64_t)iD
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  indexCopy = index;
+  dCopy = d;
   v30.receiver = self;
   v30.super_class = IDSGroupEncryptionKeyMaterial;
   v10 = [(IDSGroupEncryptionKeyMaterial *)&v30 init];
@@ -116,19 +116,19 @@ LABEL_30:
   keySalt = v10->_keySalt;
   v10->_keySalt = v12;
 
-  v15 = [v8 copy];
+  v15 = [indexCopy copy];
   keyIndex = v10->_keyIndex;
   v10->_keyIndex = v15;
 
-  v17 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   createdAt = v10->_createdAt;
-  v10->_createdAt = v17;
+  v10->_createdAt = date;
 
   v19 = [MEMORY[0x1E695DFA8] set];
   devicesToBeSent = v10->_devicesToBeSent;
   v10->_devicesToBeSent = v19;
 
-  v21 = [v9 copy];
+  v21 = [dCopy copy];
   groupID = v10->_groupID;
   v10->_groupID = v21;
 
@@ -136,7 +136,7 @@ LABEL_30:
   v23 = +[IDSGroupEncryptionKeyMaterial locallyGeneratedKeysCounter]+ 1;
   [IDSGroupEncryptionKeyMaterial setLocallyGeneratedKeysCounter:v23];
   v10->_generationCounter = v23;
-  v10->_participantID = a5;
+  v10->_participantID = iD;
   v10->_shortKeyIndexLength = 0;
 LABEL_13:
   v24 = v10;
@@ -145,151 +145,151 @@ LABEL_31:
   return v24;
 }
 
-- (IDSGroupEncryptionKeyMaterial)initWithKeyMaterial:(id)a3 keySalt:(id)a4 keyIndex:(id)a5 groupID:(id)a6
+- (IDSGroupEncryptionKeyMaterial)initWithKeyMaterial:(id)material keySalt:(id)salt keyIndex:(id)index groupID:(id)d
 {
   v10 = MEMORY[0x1E695DF00];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v10 date];
+  dCopy = d;
+  indexCopy = index;
+  saltCopy = salt;
+  materialCopy = material;
+  date = [v10 date];
   LODWORD(v18) = 0;
-  v16 = [(IDSGroupEncryptionKeyMaterial *)self initWithKeyMaterial:v14 keySalt:v13 keyIndex:v12 groupID:v11 isGeneratedLocally:0 createdAt:v15 generationCounter:v18 participantID:0];
+  v16 = [(IDSGroupEncryptionKeyMaterial *)self initWithKeyMaterial:materialCopy keySalt:saltCopy keyIndex:indexCopy groupID:dCopy isGeneratedLocally:0 createdAt:date generationCounter:v18 participantID:0];
 
   return v16;
 }
 
-- (IDSGroupEncryptionKeyMaterial)initWithKeyMaterial:(id)a3 keySalt:(id)a4 keyIndex:(id)a5 groupID:(id)a6 participantID:(unint64_t)a7
+- (IDSGroupEncryptionKeyMaterial)initWithKeyMaterial:(id)material keySalt:(id)salt keyIndex:(id)index groupID:(id)d participantID:(unint64_t)iD
 {
   v12 = MEMORY[0x1E695DF00];
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [v12 date];
+  dCopy = d;
+  indexCopy = index;
+  saltCopy = salt;
+  materialCopy = material;
+  date = [v12 date];
   LODWORD(v20) = 0;
-  v18 = [(IDSGroupEncryptionKeyMaterial *)self initWithKeyMaterial:v16 keySalt:v15 keyIndex:v14 groupID:v13 isGeneratedLocally:0 createdAt:v17 generationCounter:v20 participantID:a7];
+  v18 = [(IDSGroupEncryptionKeyMaterial *)self initWithKeyMaterial:materialCopy keySalt:saltCopy keyIndex:indexCopy groupID:dCopy isGeneratedLocally:0 createdAt:date generationCounter:v20 participantID:iD];
 
   return v18;
 }
 
-- (IDSGroupEncryptionKeyMaterial)initWithKeyMaterial:(id)a3 keySalt:(id)a4 keyIndex:(id)a5 groupID:(id)a6 generationCounter:(unsigned int)a7 participantID:(unint64_t)a8
+- (IDSGroupEncryptionKeyMaterial)initWithKeyMaterial:(id)material keySalt:(id)salt keyIndex:(id)index groupID:(id)d generationCounter:(unsigned int)counter participantID:(unint64_t)iD
 {
   v14 = MEMORY[0x1E695DF00];
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  v19 = [v14 date];
-  LODWORD(v22) = a7;
-  v20 = [(IDSGroupEncryptionKeyMaterial *)self initWithKeyMaterial:v18 keySalt:v17 keyIndex:v16 groupID:v15 isGeneratedLocally:0 createdAt:v19 generationCounter:v22 participantID:a8];
+  dCopy = d;
+  indexCopy = index;
+  saltCopy = salt;
+  materialCopy = material;
+  date = [v14 date];
+  LODWORD(v22) = counter;
+  v20 = [(IDSGroupEncryptionKeyMaterial *)self initWithKeyMaterial:materialCopy keySalt:saltCopy keyIndex:indexCopy groupID:dCopy isGeneratedLocally:0 createdAt:date generationCounter:v22 participantID:iD];
 
   return v20;
 }
 
-- (IDSGroupEncryptionKeyMaterial)initWithKeyMaterial:(id)a3 keySalt:(id)a4 keyIndex:(id)a5 groupID:(id)a6 isGeneratedLocally:(BOOL)a7 createdAt:(id)a8 generationCounter:(unsigned int)a9 participantID:(unint64_t)a10
+- (IDSGroupEncryptionKeyMaterial)initWithKeyMaterial:(id)material keySalt:(id)salt keyIndex:(id)index groupID:(id)d isGeneratedLocally:(BOOL)locally createdAt:(id)at generationCounter:(unsigned int)counter participantID:(unint64_t)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a8;
+  materialCopy = material;
+  saltCopy = salt;
+  indexCopy = index;
+  dCopy = d;
+  atCopy = at;
   v31.receiver = self;
   v31.super_class = IDSGroupEncryptionKeyMaterial;
   v21 = [(IDSGroupEncryptionKeyMaterial *)&v31 init];
   if (v21)
   {
-    v22 = [v16 copy];
+    v22 = [materialCopy copy];
     keyMaterial = v21->_keyMaterial;
     v21->_keyMaterial = v22;
 
-    v24 = [v17 copy];
+    v24 = [saltCopy copy];
     keySalt = v21->_keySalt;
     v21->_keySalt = v24;
 
-    v26 = [v18 copy];
+    v26 = [indexCopy copy];
     keyIndex = v21->_keyIndex;
     v21->_keyIndex = v26;
 
-    objc_storeStrong(&v21->_createdAt, a8);
-    v21->_isGeneratedLocally = a7;
-    v21->_generationCounter = a9;
-    v28 = [v19 copy];
+    objc_storeStrong(&v21->_createdAt, at);
+    v21->_isGeneratedLocally = locally;
+    v21->_generationCounter = counter;
+    v28 = [dCopy copy];
     groupID = v21->_groupID;
     v21->_groupID = v28;
 
-    v21->_participantID = a10;
+    v21->_participantID = iD;
     v21->_shortKeyIndexLength = 0;
   }
 
   return v21;
 }
 
-- (IDSGroupEncryptionKeyMaterial)initWithKeyMaterial:(id)a3 keySalt:(id)a4 keyIndex:(id)a5 groupID:(id)a6 isGeneratedLocally:(BOOL)a7 createdAt:(id)a8 generationCounter:(unsigned int)a9 participantID:(unint64_t)a10 shortKeyIndexLength:(unsigned __int8)a11
+- (IDSGroupEncryptionKeyMaterial)initWithKeyMaterial:(id)material keySalt:(id)salt keyIndex:(id)index groupID:(id)d isGeneratedLocally:(BOOL)locally createdAt:(id)at generationCounter:(unsigned int)counter participantID:(unint64_t)self0 shortKeyIndexLength:(unsigned __int8)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a8;
+  materialCopy = material;
+  saltCopy = salt;
+  indexCopy = index;
+  dCopy = d;
+  atCopy = at;
   v32.receiver = self;
   v32.super_class = IDSGroupEncryptionKeyMaterial;
   v22 = [(IDSGroupEncryptionKeyMaterial *)&v32 init];
   if (v22)
   {
-    v23 = [v17 copy];
+    v23 = [materialCopy copy];
     keyMaterial = v22->_keyMaterial;
     v22->_keyMaterial = v23;
 
-    v25 = [v18 copy];
+    v25 = [saltCopy copy];
     keySalt = v22->_keySalt;
     v22->_keySalt = v25;
 
-    v27 = [v19 copy];
+    v27 = [indexCopy copy];
     keyIndex = v22->_keyIndex;
     v22->_keyIndex = v27;
 
-    objc_storeStrong(&v22->_createdAt, a8);
-    v22->_isGeneratedLocally = a7;
-    v22->_generationCounter = a9;
-    v29 = [v20 copy];
+    objc_storeStrong(&v22->_createdAt, at);
+    v22->_isGeneratedLocally = locally;
+    v22->_generationCounter = counter;
+    v29 = [dCopy copy];
     groupID = v22->_groupID;
     v22->_groupID = v29;
 
-    v22->_participantID = a10;
-    v22->_shortKeyIndexLength = a11;
+    v22->_participantID = iD;
+    v22->_shortKeyIndexLength = length;
   }
 
   return v22;
 }
 
-- (IDSGroupEncryptionKeyMaterial)initWithDictionary:(id)a3
+- (IDSGroupEncryptionKeyMaterial)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v19 = [v4 objectForKeyedSubscript:@"keyMaterial"];
-  v18 = [v4 objectForKeyedSubscript:@"keySalt"];
-  v17 = [v4 objectForKeyedSubscript:@"keyIndex"];
-  v5 = [v4 objectForKeyedSubscript:@"groupID"];
-  v6 = [v4 objectForKeyedSubscript:@"isGeneratedLocally"];
+  dictionaryCopy = dictionary;
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"keyMaterial"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"keySalt"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"keyIndex"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"groupID"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"isGeneratedLocally"];
   HIDWORD(v16) = [v6 BOOLValue];
-  v7 = [v4 objectForKeyedSubscript:@"createdAt"];
-  v8 = [v4 objectForKeyedSubscript:@"generationCounter"];
-  v9 = [v8 unsignedIntValue];
-  v10 = [v4 objectForKeyedSubscript:@"participantID"];
-  v11 = [v10 unsignedLongLongValue];
-  v12 = [v4 objectForKeyedSubscript:@"smkil"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"createdAt"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"generationCounter"];
+  unsignedIntValue = [v8 unsignedIntValue];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"participantID"];
+  unsignedLongLongValue = [v10 unsignedLongLongValue];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"smkil"];
 
   LOBYTE(v16) = [v12 unsignedIntValue];
-  LODWORD(v15) = v9;
-  v13 = [(IDSGroupEncryptionKeyMaterial *)self initWithKeyMaterial:v19 keySalt:v18 keyIndex:v17 groupID:v5 isGeneratedLocally:HIDWORD(v16) createdAt:v7 generationCounter:v15 participantID:v11 shortKeyIndexLength:v16];
+  LODWORD(v15) = unsignedIntValue;
+  v13 = [(IDSGroupEncryptionKeyMaterial *)self initWithKeyMaterial:v19 keySalt:v18 keyIndex:v17 groupID:v5 isGeneratedLocally:HIDWORD(v16) createdAt:v7 generationCounter:v15 participantID:unsignedLongLongValue shortKeyIndexLength:v16];
 
   return v13;
 }
 
-- (void)changeCreatedAt:(id)a3
+- (void)changeCreatedAt:(id)at
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  atCopy = at;
   v5 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -297,7 +297,7 @@ LABEL_31:
     *buf = 138412546;
     v12 = createdAt;
     v13 = 2112;
-    v14 = v4;
+    v14 = atCopy;
     _os_log_impl(&dword_1A7AD9000, v5, OS_LOG_TYPE_DEFAULT, "change CreatedAt from %@ to %@", buf, 0x16u);
   }
 
@@ -306,18 +306,18 @@ LABEL_31:
     if (_IDSShouldLogTransport())
     {
       v9 = self->_createdAt;
-      v10 = v4;
+      v10 = atCopy;
       _IDSLogTransport(@"IDSRTEncryptionKeyMaterial", @"IDS", @"change CreatedAt from %@ to %@");
       if (_IDSShouldLog())
       {
         v9 = self->_createdAt;
-        v10 = v4;
+        v10 = atCopy;
         _IDSLogV(0, @"IDSFoundation", @"IDSRTEncryptionKeyMaterial", @"change CreatedAt from %@ to %@");
       }
     }
   }
 
-  v7 = [v4 copy];
+  v7 = [atCopy copy];
   v8 = self->_createdAt;
   self->_createdAt = v7;
 }
@@ -334,33 +334,33 @@ LABEL_31:
   return v3;
 }
 
-- (BOOL)isEqualToRealTimeEncryptionKeyMaterial:(id)a3
+- (BOOL)isEqualToRealTimeEncryptionKeyMaterial:(id)material
 {
-  if (self == a3)
+  if (self == material)
   {
     return 1;
   }
 
-  v4 = [a3 keyIndex];
-  v5 = [(IDSGroupEncryptionKeyMaterial *)self keyIndex];
-  v6 = [v4 isEqual:v5];
+  keyIndex = [material keyIndex];
+  keyIndex2 = [(IDSGroupEncryptionKeyMaterial *)self keyIndex];
+  v6 = [keyIndex isEqual:keyIndex2];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSGroupEncryptionKeyMaterial *)self isEqualToRealTimeEncryptionKeyMaterial:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSGroupEncryptionKeyMaterial *)self isEqualToRealTimeEncryptionKeyMaterial:equalCopy];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(IDSGroupEncryptionKeyMaterial *)self keyIndex];
-  v3 = [v2 hash];
+  keyIndex = [(IDSGroupEncryptionKeyMaterial *)self keyIndex];
+  v3 = [keyIndex hash];
 
   return v3;
 }
@@ -369,11 +369,11 @@ LABEL_31:
 {
   v12 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
-  v4 = [(IDSGroupEncryptionKeyMaterial *)self keyIndex];
-  v5 = [(IDSGroupEncryptionKeyMaterial *)self keyMaterial];
-  v6 = [(IDSGroupEncryptionKeyMaterial *)self keySalt];
-  v7 = [(IDSGroupEncryptionKeyMaterial *)self ratchetIndex];
-  v8 = [(IDSGroupEncryptionKeyMaterial *)self createdAt];
+  keyIndex = [(IDSGroupEncryptionKeyMaterial *)self keyIndex];
+  keyMaterial = [(IDSGroupEncryptionKeyMaterial *)self keyMaterial];
+  keySalt = [(IDSGroupEncryptionKeyMaterial *)self keySalt];
+  ratchetIndex = [(IDSGroupEncryptionKeyMaterial *)self ratchetIndex];
+  createdAt = [(IDSGroupEncryptionKeyMaterial *)self createdAt];
   if ([(IDSGroupEncryptionKeyMaterial *)self isGeneratedLocally])
   {
     v9 = @"YES";
@@ -384,7 +384,7 @@ LABEL_31:
     v9 = @"NO";
   }
 
-  v10 = [v12 stringWithFormat:@"<%@: %p KeyIndex: %@, KeyMaterial: %@, KeySalt: %@, ratchetIndex: %d, createdAt: %@, isGeneratedLocally: %@, counter:%u, participantID: %llu, smkil: %u>", v3, self, v4, v5, v6, v7, v8, v9, -[IDSGroupEncryptionKeyMaterial generationCounter](self, "generationCounter"), -[IDSGroupEncryptionKeyMaterial participantID](self, "participantID"), -[IDSGroupEncryptionKeyMaterial shortKeyIndexLength](self, "shortKeyIndexLength")];
+  v10 = [v12 stringWithFormat:@"<%@: %p KeyIndex: %@, KeyMaterial: %@, KeySalt: %@, ratchetIndex: %d, createdAt: %@, isGeneratedLocally: %@, counter:%u, participantID: %llu, smkil: %u>", v3, self, keyIndex, keyMaterial, keySalt, ratchetIndex, createdAt, v9, -[IDSGroupEncryptionKeyMaterial generationCounter](self, "generationCounter"), -[IDSGroupEncryptionKeyMaterial participantID](self, "participantID"), -[IDSGroupEncryptionKeyMaterial shortKeyIndexLength](self, "shortKeyIndexLength")];
 
   return v10;
 }
@@ -393,9 +393,9 @@ LABEL_31:
 {
   v12 = MEMORY[0x1E696AEC0];
   v11 = objc_opt_class();
-  v3 = [(IDSGroupEncryptionKeyMaterial *)self keyIndex];
-  v4 = [(IDSGroupEncryptionKeyMaterial *)self groupID];
-  v5 = [(IDSGroupEncryptionKeyMaterial *)self createdAt];
+  keyIndex = [(IDSGroupEncryptionKeyMaterial *)self keyIndex];
+  groupID = [(IDSGroupEncryptionKeyMaterial *)self groupID];
+  createdAt = [(IDSGroupEncryptionKeyMaterial *)self createdAt];
   if ([(IDSGroupEncryptionKeyMaterial *)self isGeneratedLocally])
   {
     v6 = @"YES";
@@ -406,28 +406,28 @@ LABEL_31:
     v6 = @"NO";
   }
 
-  v7 = [(IDSGroupEncryptionKeyMaterial *)self keySalt];
-  v8 = [(IDSGroupEncryptionKeyMaterial *)self keyMaterial];
-  v9 = [v12 stringWithFormat:@"<%@: %p KeyIndex: %@, groupID: %@, createdAt: %@, isGeneratedLocally: %@, KeySalt: %@, KeyMaterial: %@, ratchetIndex: %d, counter: %u, participantID: %llu, smkil: %u>", v11, self, v3, v4, v5, v6, v7, v8, -[IDSGroupEncryptionKeyMaterial ratchetIndex](self, "ratchetIndex"), -[IDSGroupEncryptionKeyMaterial generationCounter](self, "generationCounter"), -[IDSGroupEncryptionKeyMaterial participantID](self, "participantID"), -[IDSGroupEncryptionKeyMaterial shortKeyIndexLength](self, "shortKeyIndexLength")];
+  keySalt = [(IDSGroupEncryptionKeyMaterial *)self keySalt];
+  keyMaterial = [(IDSGroupEncryptionKeyMaterial *)self keyMaterial];
+  v9 = [v12 stringWithFormat:@"<%@: %p KeyIndex: %@, groupID: %@, createdAt: %@, isGeneratedLocally: %@, KeySalt: %@, KeyMaterial: %@, ratchetIndex: %d, counter: %u, participantID: %llu, smkil: %u>", v11, self, keyIndex, groupID, createdAt, v6, keySalt, keyMaterial, -[IDSGroupEncryptionKeyMaterial ratchetIndex](self, "ratchetIndex"), -[IDSGroupEncryptionKeyMaterial generationCounter](self, "generationCounter"), -[IDSGroupEncryptionKeyMaterial participantID](self, "participantID"), -[IDSGroupEncryptionKeyMaterial shortKeyIndexLength](self, "shortKeyIndexLength")];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [IDSGroupEncryptionKeyMaterial alloc];
   LODWORD(v6) = self->_generationCounter;
   return [(IDSGroupEncryptionKeyMaterial *)v4 initWithKeyMaterial:self->_keyMaterial keySalt:self->_keySalt keyIndex:self->_keyIndex groupID:self->_groupID isGeneratedLocally:self->_isGeneratedLocally createdAt:self->_createdAt generationCounter:v6 participantID:self->_participantID];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(IDSGroupEncryptionKeyMaterial *)self generationCounter];
-  if (v5 >= [v4 generationCounter])
+  compareCopy = compare;
+  generationCounter = [(IDSGroupEncryptionKeyMaterial *)self generationCounter];
+  if (generationCounter >= [compareCopy generationCounter])
   {
-    v7 = [(IDSGroupEncryptionKeyMaterial *)self generationCounter];
-    v6 = v7 > [v4 generationCounter];
+    generationCounter2 = [(IDSGroupEncryptionKeyMaterial *)self generationCounter];
+    v6 = generationCounter2 > [compareCopy generationCounter];
   }
 
   else

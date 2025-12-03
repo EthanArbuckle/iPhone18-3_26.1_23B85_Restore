@@ -2,18 +2,18 @@
 - (SKUITrendingSearchPageViewDelegate)trendingSearchDelegate;
 - (void)_reloadData;
 - (void)_reloadView;
-- (void)_setTrendingResponse:(id)a3 error:(id)a4;
+- (void)_setTrendingResponse:(id)response error:(id)error;
 - (void)layoutSubviews;
-- (void)setTrendingSearchDelegate:(id)a3;
-- (void)setTrendingSearchProvider:(id)a3;
-- (void)setTrendingSearchesVisible:(BOOL)a3;
+- (void)setTrendingSearchDelegate:(id)delegate;
+- (void)setTrendingSearchProvider:(id)provider;
+- (void)setTrendingSearchesVisible:(BOOL)visible;
 @end
 
 @implementation SKUISearchFieldTableView
 
-- (void)setTrendingSearchProvider:(id)a3
+- (void)setTrendingSearchProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -26,9 +26,9 @@
     }
   }
 
-  if (self->_trendingSearchProvider != v5)
+  if (self->_trendingSearchProvider != providerCopy)
   {
-    objc_storeStrong(&self->_trendingSearchProvider, a3);
+    objc_storeStrong(&self->_trendingSearchProvider, provider);
     if (self->_trendingSearchesVisible && !self->_page)
     {
       [(SKUISearchFieldTableView *)self _reloadData];
@@ -36,9 +36,9 @@
   }
 }
 
-- (void)setTrendingSearchDelegate:(id)a3
+- (void)setTrendingSearchDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -51,13 +51,13 @@
     }
   }
 
-  v13 = objc_storeWeak(&self->_trendingSearchDelegate, v4);
-  [(SKUITrendingSearchPageView *)self->_pageView setDelegate:v4];
+  v13 = objc_storeWeak(&self->_trendingSearchDelegate, delegateCopy);
+  [(SKUITrendingSearchPageView *)self->_pageView setDelegate:delegateCopy];
 }
 
-- (void)setTrendingSearchesVisible:(BOOL)a3
+- (void)setTrendingSearchesVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -70,10 +70,10 @@
     }
   }
 
-  if (self->_trendingSearchesVisible != v3)
+  if (self->_trendingSearchesVisible != visibleCopy)
   {
-    self->_trendingSearchesVisible = v3;
-    if (v3 && !self->_page)
+    self->_trendingSearchesVisible = visibleCopy;
+    if (visibleCopy && !self->_page)
     {
       [(SKUISearchFieldTableView *)self _reloadData];
     }
@@ -125,13 +125,13 @@
     }
 
     objc_initWeak(&location, self);
-    v7 = [(SKUISearchFieldTableView *)self trendingSearchProvider];
+    trendingSearchProvider = [(SKUISearchFieldTableView *)self trendingSearchProvider];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __39__SKUISearchFieldTableView__reloadData__block_invoke;
     v8[3] = &unk_2781FDF98;
     objc_copyWeak(&v9, &location);
-    [v7 trendingSearchPageWithURL:v6 completionBlock:v8];
+    [trendingSearchProvider trendingSearchPageWithURL:v6 completionBlock:v8];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -146,15 +146,15 @@ void __39__SKUISearchFieldTableView__reloadData__block_invoke(uint64_t a1, void 
   [WeakRetained _setTrendingResponse:v6 error:v5];
 }
 
-- (void)_setTrendingResponse:(id)a3 error:(id)a4
+- (void)_setTrendingResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  if (v6)
+  responseCopy = response;
+  if (responseCopy)
   {
-    v7 = v6;
-    objc_storeStrong(&self->_page, a3);
+    v7 = responseCopy;
+    objc_storeStrong(&self->_page, response);
     [(SKUISearchFieldTableView *)self _reloadView];
-    v6 = v7;
+    responseCopy = v7;
   }
 }
 

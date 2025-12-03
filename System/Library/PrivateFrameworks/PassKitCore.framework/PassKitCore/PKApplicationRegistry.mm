@@ -1,18 +1,18 @@
 @interface PKApplicationRegistry
-- (BOOL)applicationIsRegisteredWithBundleIdentifier:(id)a3;
-- (BOOL)registerApplicationWithBundleIdentifier:(id)a3;
-- (PKApplicationRegistry)initWithArchiveFileURL:(id)a3;
+- (BOOL)applicationIsRegisteredWithBundleIdentifier:(id)identifier;
+- (BOOL)registerApplicationWithBundleIdentifier:(id)identifier;
+- (PKApplicationRegistry)initWithArchiveFileURL:(id)l;
 - (void)_requestArchiveToDisk;
 - (void)_validateRegisteredApplications;
-- (void)applicationsDidUninstall:(id)a3;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)dealloc;
 @end
 
 @implementation PKApplicationRegistry
 
-- (PKApplicationRegistry)initWithArchiveFileURL:(id)a3
+- (PKApplicationRegistry)initWithArchiveFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = PKApplicationRegistry;
   v5 = [(PKApplicationRegistry *)&v13 init];
@@ -28,7 +28,7 @@
     v10[2] = __48__PKApplicationRegistry_initWithArchiveFileURL___block_invoke;
     v10[3] = &unk_1E79C4DD8;
     v11 = v5;
-    v12 = v4;
+    v12 = lCopy;
     dispatch_sync(v8, v10);
   }
 
@@ -120,25 +120,25 @@ LABEL_12:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E6963608] defaultWorkspace];
-  [v3 removeObserver:self];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  [defaultWorkspace removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PKApplicationRegistry;
   [(PKApplicationRegistry *)&v4 dealloc];
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   applicationRegistryQueue = self->_applicationRegistryQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__PKApplicationRegistry_applicationsDidUninstall___block_invoke;
   v7[3] = &unk_1E79C4DD8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = uninstallCopy;
+  selfCopy = self;
+  v6 = uninstallCopy;
   dispatch_async(applicationRegistryQueue, v7);
 }
 
@@ -160,9 +160,9 @@ void __50__PKApplicationRegistry_applicationsDidUninstall___block_invoke_2(uint6
   [*(*(a1 + 32) + 8) removeObject:v3];
 }
 
-- (BOOL)registerApplicationWithBundleIdentifier:(id)a3
+- (BOOL)registerApplicationWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -172,10 +172,10 @@ void __50__PKApplicationRegistry_applicationsDidUninstall___block_invoke_2(uint6
   block[1] = 3221225472;
   block[2] = __65__PKApplicationRegistry_registerApplicationWithBundleIdentifier___block_invoke;
   block[3] = &unk_1E79D1A78;
-  v9 = v4;
-  v10 = self;
+  v9 = identifierCopy;
+  selfCopy = self;
   v11 = &v12;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(applicationRegistryQueue, block);
   LOBYTE(applicationRegistryQueue) = *(v13 + 24);
 
@@ -213,9 +213,9 @@ void __65__PKApplicationRegistry_registerApplicationWithBundleIdentifier___block
   }
 }
 
-- (BOOL)applicationIsRegisteredWithBundleIdentifier:(id)a3
+- (BOOL)applicationIsRegisteredWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -225,10 +225,10 @@ void __65__PKApplicationRegistry_registerApplicationWithBundleIdentifier___block
   block[1] = 3221225472;
   block[2] = __69__PKApplicationRegistry_applicationIsRegisteredWithBundleIdentifier___block_invoke;
   block[3] = &unk_1E79E0D00;
-  v9 = v4;
+  v9 = identifierCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(applicationRegistryQueue, block);
   LOBYTE(applicationRegistryQueue) = *(v12 + 24);
 

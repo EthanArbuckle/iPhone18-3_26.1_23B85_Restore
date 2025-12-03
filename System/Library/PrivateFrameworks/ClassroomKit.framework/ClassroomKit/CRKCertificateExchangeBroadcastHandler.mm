@@ -1,57 +1,57 @@
 @interface CRKCertificateExchangeBroadcastHandler
-- (CRKCertificateExchangeBroadcastHandler)initWithIDSPrimitives:(id)a3 appleIDProvider:(id)a4;
+- (CRKCertificateExchangeBroadcastHandler)initWithIDSPrimitives:(id)primitives appleIDProvider:(id)provider;
 - (CRKCertificateExchangeBroadcastHandlerDelegate)delegate;
-- (void)processMessage:(id)a3 senderAppleID:(id)a4 senderAddress:(id)a5;
+- (void)processMessage:(id)message senderAppleID:(id)d senderAddress:(id)address;
 @end
 
 @implementation CRKCertificateExchangeBroadcastHandler
 
-- (CRKCertificateExchangeBroadcastHandler)initWithIDSPrimitives:(id)a3 appleIDProvider:(id)a4
+- (CRKCertificateExchangeBroadcastHandler)initWithIDSPrimitives:(id)primitives appleIDProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  primitivesCopy = primitives;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = CRKCertificateExchangeBroadcastHandler;
   v9 = [(CRKCertificateExchangeBroadcastHandler *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_IDSPrimitives, a3);
-    objc_storeStrong(&v10->_appleIDProvider, a4);
+    objc_storeStrong(&v9->_IDSPrimitives, primitives);
+    objc_storeStrong(&v10->_appleIDProvider, provider);
   }
 
   return v10;
 }
 
-- (void)processMessage:(id)a3 senderAppleID:(id)a4 senderAddress:(id)a5
+- (void)processMessage:(id)message senderAppleID:(id)d senderAddress:(id)address
 {
   v54 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [CRKIDSMessagePayload instanceWithDictionary:a3];
-  v11 = [(CRKCertificateExchangeBroadcastHandler *)self appleIDProvider];
-  v12 = [v11 appleID];
+  dCopy = d;
+  addressCopy = address;
+  v10 = [CRKIDSMessagePayload instanceWithDictionary:message];
+  appleIDProvider = [(CRKCertificateExchangeBroadcastHandler *)self appleIDProvider];
+  appleID = [appleIDProvider appleID];
 
   if (v10)
   {
-    v13 = [v10 messageMetadata];
-    if ([v13 messageType] != 1 || v12 == 0)
+    messageMetadata = [v10 messageMetadata];
+    if ([messageMetadata messageType] != 1 || appleID == 0)
     {
 LABEL_22:
 
       goto LABEL_23;
     }
 
-    v15 = [(CRKCertificateExchangeBroadcastHandler *)self delegate];
+    delegate = [(CRKCertificateExchangeBroadcastHandler *)self delegate];
 
-    if (v15)
+    if (delegate)
     {
-      v16 = [v10 messageContent];
-      v13 = [CRKRequestCertificatesIDSMessage instanceWithDictionary:v16];
+      messageContent = [v10 messageContent];
+      messageMetadata = [CRKRequestCertificatesIDSMessage instanceWithDictionary:messageContent];
 
-      if (v13)
+      if (messageMetadata)
       {
-        v44 = v9;
+        v44 = addressCopy;
         v17 = _CRKLogASM();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
@@ -60,31 +60,31 @@ LABEL_22:
           *buf = 138543874;
           v49 = v19;
           v50 = 2048;
-          v51 = self;
+          selfCopy3 = self;
           v52 = 2114;
-          v53 = v8;
+          v53 = dCopy;
           _os_log_impl(&dword_243550000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ - %p: Received certificate request from (%{public}@)", buf, 0x20u);
         }
 
-        v20 = [(CRKCertificateExchangeBroadcastHandler *)self delegate];
-        v21 = [v13 sourceRole];
-        v22 = [v13 destinationRole];
-        v23 = [v13 controlGroupIdentifier];
-        v24 = [v13 destinationDeviceIdentifier];
-        v25 = v13;
-        v26 = v24;
+        delegate2 = [(CRKCertificateExchangeBroadcastHandler *)self delegate];
+        sourceRole = [messageMetadata sourceRole];
+        destinationRole = [messageMetadata destinationRole];
+        controlGroupIdentifier = [messageMetadata controlGroupIdentifier];
+        destinationDeviceIdentifier = [messageMetadata destinationDeviceIdentifier];
+        v25 = messageMetadata;
+        v26 = destinationDeviceIdentifier;
         v45 = v25;
-        v27 = [v25 requesterCertificate];
+        requesterCertificate = [v25 requesterCertificate];
         v47 = 0;
-        v28 = [v20 certificateExchangeHandler:self needsCertificatesForRequester:v8 sourceRole:v21 destinationRole:v22 controlGroupIdentifier:v23 destinationDeviceIdentifier:v26 requesterCertificate:v27 error:&v47];
+        v28 = [delegate2 certificateExchangeHandler:self needsCertificatesForRequester:dCopy sourceRole:sourceRole destinationRole:destinationRole controlGroupIdentifier:controlGroupIdentifier destinationDeviceIdentifier:v26 requesterCertificate:requesterCertificate error:&v47];
         v29 = v47;
 
         if (v28)
         {
-          v30 = [v28 isValidRequest];
+          isValidRequest = [v28 isValidRequest];
           v31 = _CRKLogASM();
           v32 = os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT);
-          if (v30)
+          if (isValidRequest)
           {
             if (v32)
             {
@@ -93,20 +93,20 @@ LABEL_22:
               *buf = 138543618;
               v49 = v34;
               v50 = 2048;
-              v51 = self;
+              selfCopy3 = self;
               _os_log_impl(&dword_243550000, v31, OS_LOG_TYPE_DEFAULT, "%{public}@ - %p: Valid cert request processed. Replying with cert.", buf, 0x16u);
             }
 
             v35 = [CRKRequestCertificatesResponseIDSMessage alloc];
-            v36 = [v45 requestIdentifier];
-            v37 = [v28 certificateDataCollection];
-            v31 = [(CRKRequestCertificatesResponseIDSMessage *)v35 initWithRequestIdentifier:v36 certificateDataCollection:v37 error:v29];
+            requestIdentifier = [v45 requestIdentifier];
+            certificateDataCollection = [v28 certificateDataCollection];
+            v31 = [(CRKRequestCertificatesResponseIDSMessage *)v35 initWithRequestIdentifier:requestIdentifier certificateDataCollection:certificateDataCollection error:v29];
 
             v38 = [CRKIDSMessageCannon alloc];
-            v39 = [(CRKCertificateExchangeBroadcastHandler *)self IDSPrimitives];
-            v40 = [(CRKIDSMessageCannon *)v38 initWithIDSPrimitives:v39];
+            iDSPrimitives = [(CRKCertificateExchangeBroadcastHandler *)self IDSPrimitives];
+            v40 = [(CRKIDSMessageCannon *)v38 initWithIDSPrimitives:iDSPrimitives];
 
-            v13 = v45;
+            messageMetadata = v45;
             v41 = objc_opt_new();
             [v41 setFireAndForget:1];
             v46[0] = MEMORY[0x277D85DD0];
@@ -114,14 +114,14 @@ LABEL_22:
             v46[2] = __85__CRKCertificateExchangeBroadcastHandler_processMessage_senderAppleID_senderAddress___block_invoke;
             v46[3] = &unk_278DC0F68;
             v46[4] = self;
-            [(CRKIDSMessageCannon *)v40 sendIDSMessage:v31 destinationAddress:v44 sourceAppleID:v12 options:v41 completion:v46];
+            [(CRKIDSMessageCannon *)v40 sendIDSMessage:v31 destinationAddress:v44 sourceAppleID:appleID options:v41 completion:v46];
 
-            v9 = v44;
+            addressCopy = v44;
           }
 
           else
           {
-            v13 = v45;
+            messageMetadata = v45;
             if (v32)
             {
               v42 = objc_opt_class();
@@ -129,11 +129,11 @@ LABEL_22:
               *buf = 138543618;
               v49 = v43;
               v50 = 2048;
-              v51 = self;
+              selfCopy3 = self;
               _os_log_impl(&dword_243550000, v31, OS_LOG_TYPE_DEFAULT, "%{public}@ - %p: Cert request is invalid. Dropping message.", buf, 0x16u);
             }
 
-            v9 = v44;
+            addressCopy = v44;
           }
         }
 
@@ -145,8 +145,8 @@ LABEL_22:
             [CRKCertificateExchangeBroadcastHandler processMessage:v29 senderAppleID:? senderAddress:?];
           }
 
-          v9 = v44;
-          v13 = v45;
+          addressCopy = v44;
+          messageMetadata = v45;
         }
       }
 

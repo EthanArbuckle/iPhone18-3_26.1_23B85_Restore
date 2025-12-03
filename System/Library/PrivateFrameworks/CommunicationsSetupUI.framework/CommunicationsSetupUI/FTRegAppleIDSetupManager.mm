@@ -2,21 +2,21 @@
 + (id)sharedInstance;
 - (BOOL)_shouldAttemptAccountRegistration;
 - (BOOL)_shouldShowAliasSelectionUI;
-- (BOOL)aliasIsEnabled:(id)a3;
-- (BOOL)beginSetupWithCompletionHandler:(id)a3;
+- (BOOL)aliasIsEnabled:(id)enabled;
+- (BOOL)beginSetupWithCompletionHandler:(id)handler;
 - (BOOL)shouldShowAliasSelectionUI;
 - (BOOL)showsPhoneNumberDisplayString;
 - (FTRegAppleIDSetupManager)init;
 - (IDSAccountController)faceTimeAccountController;
 - (IDSAccountController)iMessageAccountController;
 - (id)_appleID;
-- (id)accountControllerForService:(id)a3;
+- (id)accountControllerForService:(id)service;
 - (id)phoneNumberDisplayString;
 - (void)_cleanup;
 - (void)_updateCandidateAliases;
 - (void)_updateSelectionSummaryText;
-- (void)addSetupDictionary:(id)a3 forService:(int64_t)a4;
-- (void)setSelectedAliases:(id)a3;
+- (void)addSetupDictionary:(id)dictionary forService:(int64_t)service;
+- (void)setSelectedAliases:(id)aliases;
 @end
 
 @implementation FTRegAppleIDSetupManager
@@ -87,9 +87,9 @@ uint64_t __42__FTRegAppleIDSetupManager_sharedInstance__block_invoke()
   return faceTimeAccountController;
 }
 
-- (id)accountControllerForService:(id)a3
+- (id)accountControllerForService:(id)service
 {
-  if ([a3 isEqualToString:*MEMORY[0x277D186B0]])
+  if ([service isEqualToString:*MEMORY[0x277D186B0]])
   {
     [(FTRegAppleIDSetupManager *)self iMessageAccountController];
   }
@@ -120,13 +120,13 @@ uint64_t __42__FTRegAppleIDSetupManager_sharedInstance__block_invoke()
   v9 = __Block_byref_object_copy__2;
   v10 = __Block_byref_object_dispose__2;
   v11 = 0;
-  v2 = [(FTRegAppleIDSetupManager *)self setupOperations];
+  setupOperations = [(FTRegAppleIDSetupManager *)self setupOperations];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __36__FTRegAppleIDSetupManager__appleID__block_invoke;
   v5[3] = &unk_278DE8BB8;
   v5[4] = &v6;
-  [v2 enumerateKeysAndObjectsUsingBlock:v5];
+  [setupOperations enumerateKeysAndObjectsUsingBlock:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -150,23 +150,23 @@ void __36__FTRegAppleIDSetupManager__appleID__block_invoke(uint64_t a1, uint64_t
 
 - (BOOL)_shouldAttemptAccountRegistration
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(FTRegAppleIDSetupManager *)self setupOperations];
+  setupOperations = [(FTRegAppleIDSetupManager *)self setupOperations];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __61__FTRegAppleIDSetupManager__shouldAttemptAccountRegistration__block_invoke;
   v5[3] = &unk_278DE8BE0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  [v3 enumerateKeysAndObjectsUsingBlock:v5];
+  [setupOperations enumerateKeysAndObjectsUsingBlock:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __61__FTRegAppleIDSetupManager__shouldAttemptAccountRegistration__block_invoke(uint64_t a1, void *a2)
@@ -216,24 +216,24 @@ void __61__FTRegAppleIDSetupManager__shouldAttemptAccountRegistration__block_inv
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addSetupDictionary:(id)a3 forService:(int64_t)a4
+- (void)addSetupDictionary:(id)dictionary forService:(int64_t)service
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (dictionary)
   {
-    v6 = a3;
+    dictionaryCopy = dictionary;
     v7 = csui_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 134217984;
-      v12 = a4;
+      serviceCopy = service;
       _os_log_impl(&dword_243BE5000, v7, OS_LOG_TYPE_DEFAULT, "Adding setup dictionary for service type: %ld", &v11, 0xCu);
     }
 
-    [v6 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_57_0];
-    v8 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:a4];
-    v9 = [(FTRegAppleIDSetupManager *)self setupOperations];
-    [v9 setObject:v6 forKey:v8];
+    [dictionaryCopy enumerateKeysAndObjectsUsingBlock:&__block_literal_global_57_0];
+    v8 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:service];
+    setupOperations = [(FTRegAppleIDSetupManager *)self setupOperations];
+    [setupOperations setObject:dictionaryCopy forKey:v8];
 
     [(FTRegAppleIDSetupManager *)self _updateCandidateAliases];
   }
@@ -282,7 +282,7 @@ LABEL_6:
   v16 = *MEMORY[0x277D85DE8];
   if ([(FTRegAppleIDSetupManager *)self _shouldAttemptAccountRegistration])
   {
-    v3 = [(FTRegAppleIDSetupManager *)self candidateAliases];
+    candidateAliases = [(FTRegAppleIDSetupManager *)self candidateAliases];
     v4 = _IDSCopyOrderedAliases();
     v5 = [(__CFString *)v4 count];
     v6 = csui_log();
@@ -293,9 +293,9 @@ LABEL_6:
       _os_log_impl(&dword_243BE5000, v6, OS_LOG_TYPE_DEFAULT, "  => Squashed sorted candidates: %@", &v14, 0xCu);
     }
 
-    v7 = [(FTRegAppleIDSetupManager *)self showsPhoneNumberDisplayString];
+    showsPhoneNumberDisplayString = [(FTRegAppleIDSetupManager *)self showsPhoneNumberDisplayString];
     v8 = 1;
-    if (v7)
+    if (showsPhoneNumberDisplayString)
     {
       v8 = 2;
     }
@@ -333,13 +333,13 @@ LABEL_6:
   return [(FTRegAppleIDSetupManager *)self _shouldShowAliasSelectionUI];
 }
 
-- (BOOL)aliasIsEnabled:(id)a3
+- (BOOL)aliasIsEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = CommunicationsSetupUIBundle();
   v6 = CNFRegStringTableName();
   v7 = [v5 localizedStringForKey:@"YOUR_NUMBER_STRING" value:&stru_2856D3978 table:v6];
-  v8 = [v4 isEqualToString:v7];
+  v8 = [enabledCopy isEqualToString:v7];
 
   if (v8)
   {
@@ -348,8 +348,8 @@ LABEL_6:
 
   else if ([(FTRegAppleIDSetupManager *)self showsPhoneNumberDisplayString])
   {
-    v10 = [(FTRegAppleIDSetupManager *)self phoneNumberDisplayString];
-    v11 = [v4 isEqualToString:v10];
+    phoneNumberDisplayString = [(FTRegAppleIDSetupManager *)self phoneNumberDisplayString];
+    v11 = [enabledCopy isEqualToString:phoneNumberDisplayString];
 
     v9 = v11 ^ 1;
   }
@@ -364,23 +364,23 @@ LABEL_6:
 
 - (BOOL)showsPhoneNumberDisplayString
 {
-  v2 = [MEMORY[0x277D07DB0] sharedInstance];
-  v3 = [v2 supportsSMSIdentification];
+  mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+  supportsSMSIdentification = [mEMORY[0x277D07DB0] supportsSMSIdentification];
 
-  return v3;
+  return supportsSMSIdentification;
 }
 
 - (id)phoneNumberDisplayString
 {
   if ([(FTRegAppleIDSetupManager *)self showsPhoneNumberDisplayString])
   {
-    v2 = [MEMORY[0x277D07DB0] sharedInstance];
-    v3 = [v2 telephoneNumber];
-    v4 = [v3 _stripFZIDPrefix];
+    mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+    telephoneNumber = [mEMORY[0x277D07DB0] telephoneNumber];
+    _stripFZIDPrefix = [telephoneNumber _stripFZIDPrefix];
 
-    if ([v4 length])
+    if ([_stripFZIDPrefix length])
     {
-      CNFRegFormattedPhoneNumberForString(v4);
+      CNFRegFormattedPhoneNumberForString(_stripFZIDPrefix);
     }
 
     else
@@ -401,28 +401,28 @@ LABEL_6:
 - (void)_updateSelectionSummaryText
 {
   v46 = *MEMORY[0x277D85DE8];
-  v38 = [(FTRegAppleIDSetupManager *)self _appleID];
+  _appleID = [(FTRegAppleIDSetupManager *)self _appleID];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v40 = self;
-  v3 = [(FTRegAppleIDSetupManager *)self selectedAliases];
-  v4 = [v3 countByEnumeratingWithState:&v41 objects:v45 count:16];
+  selfCopy = self;
+  selectedAliases = [(FTRegAppleIDSetupManager *)self selectedAliases];
+  v4 = [selectedAliases countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (!v4)
   {
 
 LABEL_27:
-    [(FTRegAppleIDSetupManager *)v40 setSelectionSummaryText:0];
+    [(FTRegAppleIDSetupManager *)selfCopy setSelectionSummaryText:0];
     v7 = 0;
     goto LABEL_38;
   }
 
   v5 = v4;
-  v6 = 0;
+  _appearsToBePhoneNumber = 0;
   v7 = 0;
   v8 = *v42;
-  obj = v3;
+  obj = selectedAliases;
   while (2)
   {
     for (i = 0; i != v5; ++i)
@@ -448,40 +448,40 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      if ([(FTRegAppleIDSetupManager *)v40 showsPhoneNumberDisplayString])
+      if ([(FTRegAppleIDSetupManager *)selfCopy showsPhoneNumberDisplayString])
       {
-        v15 = [(FTRegAppleIDSetupManager *)v40 phoneNumberDisplayString];
-        v16 = [v10 isEqualToString:v15];
+        phoneNumberDisplayString = [(FTRegAppleIDSetupManager *)selfCopy phoneNumberDisplayString];
+        v16 = [v10 isEqualToString:phoneNumberDisplayString];
 
         if (v16)
         {
           v20 = v10;
 
-          v6 = [v20 _appearsToBePhoneNumber];
+          _appearsToBePhoneNumber = [v20 _appearsToBePhoneNumber];
           goto LABEL_22;
         }
       }
 
-      if (((v7 != 0) & v6) != 0)
+      if (((v7 != 0) & _appearsToBePhoneNumber) != 0)
       {
-        v6 = 1;
+        _appearsToBePhoneNumber = 1;
         continue;
       }
 
-      v17 = [v10 _appearsToBePhoneNumber];
-      if ((v17 & 1) == 0 && v7)
+      _appearsToBePhoneNumber2 = [v10 _appearsToBePhoneNumber];
+      if ((_appearsToBePhoneNumber2 & 1) == 0 && v7)
       {
-        if (![v10 isEqualToString:v38])
+        if (![v10 isEqualToString:_appleID])
         {
           continue;
         }
 
-        v17 = 0;
+        _appearsToBePhoneNumber2 = 0;
       }
 
       v18 = v10;
 
-      v6 = v17;
+      _appearsToBePhoneNumber = _appearsToBePhoneNumber2;
       v7 = v18;
     }
 
@@ -502,14 +502,14 @@ LABEL_23:
     goto LABEL_27;
   }
 
-  v21 = [MEMORY[0x277D07DB0] sharedInstance];
-  v22 = [v21 callingAvailable];
+  mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+  callingAvailable = [mEMORY[0x277D07DB0] callingAvailable];
 
   if (v14)
   {
     v23 = CommunicationsSetupUIBundle();
     v24 = CNFRegStringTableName();
-    if (v22)
+    if (callingAvailable)
     {
       v25 = @"BUDDY_CALLERID_GENERIC_PHONE";
     }
@@ -520,22 +520,22 @@ LABEL_23:
     }
 
     v36 = [v23 localizedStringForKey:v25 value:&stru_2856D3978 table:v24];
-    [(FTRegAppleIDSetupManager *)v40 setSelectionSummaryText:v36];
+    [(FTRegAppleIDSetupManager *)selfCopy setSelectionSummaryText:v36];
   }
 
   else
   {
-    v26 = [v7 _appearsToBePhoneNumber] | v6;
+    v26 = [v7 _appearsToBePhoneNumber] | _appearsToBePhoneNumber;
     v27 = MEMORY[0x277CCACA8];
     v28 = CommunicationsSetupUIBundle();
     v29 = @"BUDDY_CALLERID_UNQUOTED_NO_FACETIME_AUDIO";
-    if (v22)
+    if (callingAvailable)
     {
       v29 = @"BUDDY_CALLERID_UNQUOTED";
     }
 
     v30 = @"BUDDY_CALLERID_QUOTED";
-    if (!v22)
+    if (!callingAvailable)
     {
       v30 = @"BUDDY_CALLERID_QUOTED_NO_FACETIME_AUDIO";
     }
@@ -555,7 +555,7 @@ LABEL_23:
     v34 = [v28 localizedStringForKey:v32 value:&stru_2856D3978 table:v33];
     v35 = [v27 stringWithFormat:v34, v7];
 
-    [(FTRegAppleIDSetupManager *)v40 setSelectionSummaryText:v35];
+    [(FTRegAppleIDSetupManager *)selfCopy setSelectionSummaryText:v35];
   }
 
 LABEL_38:
@@ -580,16 +580,16 @@ LABEL_38:
   v31 = __Block_byref_object_dispose__2;
   v32 = 0;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(FTRegAppleIDSetupManager *)self setupOperations];
+  setupOperations = [(FTRegAppleIDSetupManager *)self setupOperations];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __51__FTRegAppleIDSetupManager__updateCandidateAliases__block_invoke;
   v26[3] = &unk_278DE8BB8;
   v26[4] = buf;
-  [v5 enumerateKeysAndObjectsUsingBlock:v26];
+  [setupOperations enumerateKeysAndObjectsUsingBlock:v26];
 
   objc_autoreleasePoolPop(v4);
-  v6 = [*(v28 + 5) allObjects];
+  allObjects = [*(v28 + 5) allObjects];
   v7 = _IDSCopyOrderedAliases();
 
   v8 = csui_log();
@@ -612,8 +612,8 @@ LABEL_38:
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if ([(FTRegAppleIDSetupManager *)self showsPhoneNumberDisplayString])
   {
-    v12 = [(FTRegAppleIDSetupManager *)self phoneNumberDisplayString];
-    [v11 addObject:v12];
+    phoneNumberDisplayString = [(FTRegAppleIDSetupManager *)self phoneNumberDisplayString];
+    [v11 addObject:phoneNumberDisplayString];
   }
 
   v24 = 0u;
@@ -635,19 +635,19 @@ LABEL_38:
           objc_enumerationMutation(v13);
         }
 
-        v17 = [*(*(&v22 + 1) + 8 * v16) _stripFZIDPrefix];
-        if ([v17 _appearsToBePhoneNumber])
+        _stripFZIDPrefix = [*(*(&v22 + 1) + 8 * v16) _stripFZIDPrefix];
+        if ([_stripFZIDPrefix _appearsToBePhoneNumber])
         {
-          v18 = CNFRegFormattedPhoneNumberForString(v17);
+          v18 = CNFRegFormattedPhoneNumberForString(_stripFZIDPrefix);
           if ([v18 length] && (objc_msgSend(v11, "containsObject:", v18) & 1) == 0)
           {
             [v11 addObject:v18];
           }
         }
 
-        else if (([v11 containsObject:v17] & 1) == 0)
+        else if (([v11 containsObject:_stripFZIDPrefix] & 1) == 0)
         {
-          [v11 addObject:v17];
+          [v11 addObject:_stripFZIDPrefix];
         }
 
         ++v16;
@@ -726,14 +726,14 @@ id __51__FTRegAppleIDSetupManager__updateCandidateAliases__block_invoke_2(uint64
   return v5;
 }
 
-- (void)setSelectedAliases:(id)a3
+- (void)setSelectedAliases:(id)aliases
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (self->_selectedAliases != v4)
+  aliasesCopy = aliases;
+  v5 = aliasesCopy;
+  if (self->_selectedAliases != aliasesCopy)
   {
-    v6 = [(NSArray *)v4 copy];
+    v6 = [(NSArray *)aliasesCopy copy];
     selectedAliases = self->_selectedAliases;
     self->_selectedAliases = v6;
 
@@ -751,12 +751,12 @@ id __51__FTRegAppleIDSetupManager__updateCandidateAliases__block_invoke_2(uint64
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)beginSetupWithCompletionHandler:(id)a3
+- (BOOL)beginSetupWithCompletionHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  [(FTRegAppleIDSetupManager *)self setHandler:a3];
-  v4 = [(FTRegAppleIDSetupManager *)self setupOperations];
-  v5 = [v4 count];
+  [(FTRegAppleIDSetupManager *)self setHandler:handler];
+  setupOperations = [(FTRegAppleIDSetupManager *)self setupOperations];
+  v5 = [setupOperations count];
 
   if (v5)
   {
@@ -773,21 +773,21 @@ id __51__FTRegAppleIDSetupManager__updateCandidateAliases__block_invoke_2(uint64
         v7 = @"NO";
       }
 
-      v8 = [(FTRegAppleIDSetupManager *)self selectedAliases];
+      selectedAliases = [(FTRegAppleIDSetupManager *)self selectedAliases];
       *buf = 138412546;
       v18 = v7;
       v19 = 2112;
-      v20 = v8;
+      v20 = selectedAliases;
       _os_log_impl(&dword_243BE5000, v6, OS_LOG_TYPE_DEFAULT, "Starting setup operation. Should show selection UI:%@  selectedAliases: %@", buf, 0x16u);
     }
 
-    v9 = [(FTRegAppleIDSetupManager *)self setupOperations];
+    setupOperations2 = [(FTRegAppleIDSetupManager *)self setupOperations];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __60__FTRegAppleIDSetupManager_beginSetupWithCompletionHandler___block_invoke_97;
     v15[3] = &unk_278DE8C58;
     v15[4] = self;
-    [v9 enumerateKeysAndObjectsUsingBlock:v15];
+    [setupOperations2 enumerateKeysAndObjectsUsingBlock:v15];
 
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;

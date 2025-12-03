@@ -1,46 +1,46 @@
 @interface NPTUpload
 - (BOOL)finishedAllTasks;
 - (BOOL)inTimedMode;
-- (NPTUpload)initWithCoder:(id)a3;
-- (NPTUpload)initWithNetworkActivityParent:(id)a3 testConfiguration:(id)a4;
-- (double)checkAndReturnSpeedStablized:(id)a3;
-- (double)minNonZeroValue:(double)a3 comparisonValue:(double)a4;
+- (NPTUpload)initWithCoder:(id)coder;
+- (NPTUpload)initWithNetworkActivityParent:(id)parent testConfiguration:(id)configuration;
+- (double)checkAndReturnSpeedStablized:(id)stablized;
+- (double)minNonZeroValue:(double)value comparisonValue:(double)comparisonValue;
 - (id)aggregateResults;
 - (id)checkInterfaceSpecified;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)createHTTPBodyWithBoundary:(id)a3 usingData:(id)a4 withMimeType:(id)a5 withFileName:(id)a6;
-- (id)createRandomDataOfSize:(unint64_t)a3;
-- (id)createTempFileWithData:(id)a3 named:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)createHTTPBodyWithBoundary:(id)boundary usingData:(id)data withMimeType:(id)type withFileName:(id)name;
+- (id)createRandomDataOfSize:(unint64_t)size;
+- (id)createTempFileWithData:(id)data named:(id)named;
 - (id)delegate;
-- (id)processNQResult:(id)a3;
+- (id)processNQResult:(id)result;
 - (id)realTimeSpeedMetricOverall;
 - (int)determineSuspensionThreshold;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7;
-- (void)URLSession:(id)a3 task:(id)a4 needNewBodyStream:(id)a5;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics;
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send;
+- (void)URLSession:(id)session task:(id)task needNewBodyStream:(id)stream;
 - (void)cancel;
 - (void)cancelDispatchTimer;
 - (void)cancelDispatchTimerAndSession;
 - (void)cleanUp;
-- (void)completeActivityWithReason:(int)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)progress:(id)a3;
-- (void)removeTempFileNamed:(id)a3;
+- (void)completeActivityWithReason:(int)reason;
+- (void)encodeWithCoder:(id)coder;
+- (void)progress:(id)progress;
+- (void)removeTempFileNamed:(id)named;
 - (void)setupTimer;
-- (void)startLegacyUploadWithCompletion:(id)a3;
-- (void)startNQUploadWithCompletion:(id)a3;
+- (void)startLegacyUploadWithCompletion:(id)completion;
+- (void)startNQUploadWithCompletion:(id)completion;
 - (void)startTasks;
-- (void)startUploadWithCompletion:(id)a3;
+- (void)startUploadWithCompletion:(id)completion;
 @end
 
 @implementation NPTUpload
 
-- (NPTUpload)initWithNetworkActivityParent:(id)a3 testConfiguration:(id)a4
+- (NPTUpload)initWithNetworkActivityParent:(id)parent testConfiguration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
+  parentCopy = parent;
+  configurationCopy = configuration;
   v27.receiver = self;
   v27.super_class = NPTUpload;
   v9 = [(NPTUpload *)&v27 init];
@@ -49,29 +49,29 @@
     v10 = objc_alloc_init(NPTMetricResult);
     [(NPTUpload *)v9 setResults:v10];
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     taskDict = v9->taskDict;
-    v9->taskDict = v11;
+    v9->taskDict = dictionary;
 
     v13 = nw_activity_create();
     uploadActivity = v9->uploadActivity;
     v9->uploadActivity = v13;
 
-    objc_storeStrong(&v9->activityParent, a3);
+    objc_storeStrong(&v9->activityParent, parent);
     activityParent = v9->activityParent;
     v15 = v9->uploadActivity;
     nw_activity_set_parent_activity();
-    if ([v8 stopAtFileSize])
+    if ([configurationCopy stopAtFileSize])
     {
-      v17 = 1;
+      concurrentStreams = 1;
     }
 
     else
     {
-      v17 = [v8 concurrentStreams];
+      concurrentStreams = [configurationCopy concurrentStreams];
     }
 
-    v9->maxConcurrentStreams = v17;
+    v9->maxConcurrentStreams = concurrentStreams;
     v9->processedStreamEndCount = 0;
     v18 = objc_alloc_init(MEMORY[0x277CBEB18]);
     buffer = v9->buffer;
@@ -79,20 +79,20 @@
 
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     v9->recentBufferTime = v20;
-    v9->timedUploadLength = [v8 testDuration];
-    v9->smartUpload = [v8 endWhenStable];
+    v9->timedUploadLength = [configurationCopy testDuration];
+    v9->smartUpload = [configurationCopy endWhenStable];
     uploadError = v9->uploadError;
     v9->stableSpeedToLog = 0.0;
     v9->uploadError = 0;
 
-    v9->stopAtFileSizeEnabled = [v8 stopAtFileSize];
-    v22 = [v8 clientName];
+    v9->stopAtFileSizeEnabled = [configurationCopy stopAtFileSize];
+    clientName = [configurationCopy clientName];
     callingClient = v9->callingClient;
-    v9->callingClient = v22;
+    v9->callingClient = clientName;
 
     v9->maxSpeedObserved = 0.0;
-    objc_storeStrong(&v9->testConfig, a4);
-    v9->legacy = [v8 legacyMode];
+    objc_storeStrong(&v9->testConfig, configuration);
+    v9->legacy = [configurationCopy legacyMode];
     nqConfig = v9->nqConfig;
     v9->nqConfig = 0;
 
@@ -103,65 +103,65 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NPTUpload *)self results];
-  [v4 encodeObject:v5 forKey:@"uploadResult"];
+  coderCopy = coder;
+  results = [(NPTUpload *)self results];
+  [coderCopy encodeObject:results forKey:@"uploadResult"];
 }
 
-- (NPTUpload)initWithCoder:(id)a3
+- (NPTUpload)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = NPTUpload;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(NPTUpload *)&v7 init];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"uploadResult", v7.receiver, v7.super_class}];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"uploadResult", v7.receiver, v7.super_class}];
 
   [(NPTUpload *)v4 setResults:v5];
   return v4;
 }
 
-- (void)startNQUploadWithCompletion:(id)a3
+- (void)startNQUploadWithCompletion:(id)completion
 {
-  v4 = a3;
-  [(NPTUpload *)self setCompletion:v4];
-  v5 = [(NPTPerformanceTestConfiguration *)self->testConfig NQUploadConfiguration];
+  completionCopy = completion;
+  [(NPTUpload *)self setCompletion:completionCopy];
+  nQUploadConfiguration = [(NPTPerformanceTestConfiguration *)self->testConfig NQUploadConfiguration];
   nqConfig = self->nqConfig;
-  self->nqConfig = v5;
+  self->nqConfig = nQUploadConfiguration;
 
-  v7 = [(NPTPerformanceTestConfiguration *)self->testConfig bonjourHost];
+  bonjourHost = [(NPTPerformanceTestConfiguration *)self->testConfig bonjourHost];
 
-  if (v7)
+  if (bonjourHost)
   {
-    v8 = [(NPTPerformanceTestConfiguration *)self->testConfig bonjourHost];
-    [(NetworkQualityConfiguration *)self->nqConfig setBonjourHost:v8];
+    bonjourHost2 = [(NPTPerformanceTestConfiguration *)self->testConfig bonjourHost];
+    [(NetworkQualityConfiguration *)self->nqConfig setBonjourHost:bonjourHost2];
 
     [(NetworkQualityConfiguration *)self->nqConfig setValidateCertificate:0];
   }
 
   uploadActivity = self->uploadActivity;
   nw_activity_activate();
-  v10 = [(NPTUpload *)self checkInterfaceSpecified];
-  v11 = [(NPTUpload *)self results];
-  [v11 setError:v10];
+  checkInterfaceSpecified = [(NPTUpload *)self checkInterfaceSpecified];
+  results = [(NPTUpload *)self results];
+  [results setError:checkInterfaceSpecified];
 
-  if (v10)
+  if (checkInterfaceSpecified)
   {
-    v12 = [(NPTUpload *)self delegate];
+    delegate = [(NPTUpload *)self delegate];
 
-    if (v12)
+    if (delegate)
     {
-      v13 = [(NPTUpload *)self delegate];
-      [v13 upload:self didFinishWithError:v10];
+      delegate2 = [(NPTUpload *)self delegate];
+      [delegate2 upload:self didFinishWithError:checkInterfaceSpecified];
     }
 
-    v14 = [(NPTUpload *)self completion];
+    completion = [(NPTUpload *)self completion];
 
-    if (v14)
+    if (completion)
     {
-      v15 = [(NPTUpload *)self completion];
-      (v15)[2](v15, 0, v10);
+      completion2 = [(NPTUpload *)self completion];
+      (completion2)[2](completion2, 0, checkInterfaceSpecified);
     }
   }
 
@@ -182,12 +182,12 @@
 
     if (self->nqTest)
     {
-      v22 = [(NPTUpload *)self delegate];
+      delegate3 = [(NPTUpload *)self delegate];
 
-      if (v22)
+      if (delegate3)
       {
-        v23 = [(NPTUpload *)self delegate];
-        [v23 uploadWillStart];
+        delegate4 = [(NPTUpload *)self delegate];
+        [delegate4 uploadWillStart];
       }
     }
 
@@ -293,45 +293,45 @@ void __41__NPTUpload_startNQUploadWithCompletion___block_invoke(uint64_t a1, voi
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startUploadWithCompletion:(id)a3
+- (void)startUploadWithCompletion:(id)completion
 {
   if (self->legacy)
   {
-    [(NPTUpload *)self startLegacyUploadWithCompletion:a3];
+    [(NPTUpload *)self startLegacyUploadWithCompletion:completion];
   }
 
   else
   {
-    [(NPTUpload *)self startNQUploadWithCompletion:a3];
+    [(NPTUpload *)self startNQUploadWithCompletion:completion];
   }
 }
 
-- (void)startLegacyUploadWithCompletion:(id)a3
+- (void)startLegacyUploadWithCompletion:(id)completion
 {
   v54 = *MEMORY[0x277D85DE8];
-  [(NPTUpload *)self setCompletion:a3];
+  [(NPTUpload *)self setCompletion:completion];
   uploadActivity = self->uploadActivity;
   nw_activity_activate();
-  v5 = [(NPTUpload *)self checkInterfaceSpecified];
-  v6 = [(NPTUpload *)self results];
-  [v6 setError:v5];
+  checkInterfaceSpecified = [(NPTUpload *)self checkInterfaceSpecified];
+  results = [(NPTUpload *)self results];
+  [results setError:checkInterfaceSpecified];
 
-  if (v5)
+  if (checkInterfaceSpecified)
   {
-    v7 = [(NPTUpload *)self delegate];
+    delegate = [(NPTUpload *)self delegate];
 
-    if (v7)
+    if (delegate)
     {
-      v8 = [(NPTUpload *)self delegate];
-      [v8 upload:self didFinishWithError:v5];
+      delegate2 = [(NPTUpload *)self delegate];
+      [delegate2 upload:self didFinishWithError:checkInterfaceSpecified];
     }
 
-    v9 = [(NPTUpload *)self completion];
+    completion = [(NPTUpload *)self completion];
 
-    if (v9)
+    if (completion)
     {
-      v10 = [(NPTUpload *)self completion];
-      (v10)[2](v10, 0, v5);
+      completion2 = [(NPTUpload *)self completion];
+      (completion2)[2](completion2, 0, checkInterfaceSpecified);
     }
   }
 
@@ -347,26 +347,26 @@ void __41__NPTUpload_startNQUploadWithCompletion___block_invoke(uint64_t a1, voi
       v11 = 1;
     }
 
-    v12 = [MEMORY[0x277CBABC8] ephemeralSessionConfiguration];
+    ephemeralSessionConfiguration = [MEMORY[0x277CBABC8] ephemeralSessionConfiguration];
     v13 = objc_alloc_init(MEMORY[0x277CCABD8]);
     [v13 setMaxConcurrentOperationCount:1];
     [v13 setQualityOfService:33];
-    [v12 setAllowsCellularAccess:v11];
-    [v12 setWaitsForConnectivity:0];
-    [v12 setTimeoutIntervalForRequest:3.0];
+    [ephemeralSessionConfiguration setAllowsCellularAccess:v11];
+    [ephemeralSessionConfiguration setWaitsForConnectivity:0];
+    [ephemeralSessionConfiguration setTimeoutIntervalForRequest:3.0];
     if (!self->timedUploadLength)
     {
-      [v12 setTimeoutIntervalForResource:(90 * self->maxConcurrentStreams)];
+      [ephemeralSessionConfiguration setTimeoutIntervalForResource:(90 * self->maxConcurrentStreams)];
     }
 
-    [v12 setHTTPMaximumConnectionsPerHost:self->maxConcurrentStreams + 1];
-    v14 = [MEMORY[0x277CBABB8] sessionWithConfiguration:v12 delegate:self delegateQueue:v13];
+    [ephemeralSessionConfiguration setHTTPMaximumConnectionsPerHost:self->maxConcurrentStreams + 1];
+    v14 = [MEMORY[0x277CBABB8] sessionWithConfiguration:ephemeralSessionConfiguration delegate:self delegateQueue:v13];
     uploadSession = self->uploadSession;
     self->uploadSession = v14;
 
     v16 = MEMORY[0x277CBAB50];
-    v17 = [(NPTPerformanceTestConfiguration *)self->testConfig uploadURL];
-    v18 = [v16 requestWithURL:v17];
+    uploadURL = [(NPTPerformanceTestConfiguration *)self->testConfig uploadURL];
+    v18 = [v16 requestWithURL:uploadURL];
     request = self->request;
     self->request = v18;
 
@@ -385,65 +385,65 @@ void __41__NPTUpload_startNQUploadWithCompletion___block_invoke(uint64_t a1, voi
       [(NSMutableURLRequest *)self->request setValue:self->callingClient forHTTPHeaderField:@"NPTKit-Client"];
     }
 
-    v23 = [(NPTPerformanceTestConfiguration *)self->testConfig interfaceName];
+    interfaceName = [(NPTPerformanceTestConfiguration *)self->testConfig interfaceName];
 
-    if (v23)
+    if (interfaceName)
     {
       v24 = +[NPTLogger network];
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = [(NPTPerformanceTestConfiguration *)self->testConfig interfaceName];
+        interfaceName2 = [(NPTPerformanceTestConfiguration *)self->testConfig interfaceName];
         *buf = 138412290;
-        v53 = v25;
+        v53 = interfaceName2;
         _os_log_impl(&dword_233421000, v24, OS_LOG_TYPE_DEFAULT, "Force the upload over the following interface: %@", buf, 0xCu);
       }
 
       v26 = self->request;
-      v27 = [(NPTPerformanceTestConfiguration *)self->testConfig interfaceName];
-      [(NSMutableURLRequest *)v26 setBoundInterfaceIdentifier:v27];
+      interfaceName3 = [(NPTPerformanceTestConfiguration *)self->testConfig interfaceName];
+      [(NSMutableURLRequest *)v26 setBoundInterfaceIdentifier:interfaceName3];
     }
 
     v28 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.wifiqa.NPTKit"];
-    v29 = [v28 infoDictionary];
-    v30 = [v29 objectForKey:@"CFBundleShortVersionString"];
+    infoDictionary = [v28 infoDictionary];
+    v30 = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
 
     v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"NPTKit/%@", v30];
     [(NSMutableURLRequest *)self->request addValue:v31 forHTTPHeaderField:@"User-Agent"];
-    v32 = [(NPTPerformanceTestConfiguration *)self->testConfig uploadSize];
+    uploadSize = [(NPTPerformanceTestConfiguration *)self->testConfig uploadSize];
     if ([(NPTUpload *)self inTimedMode])
     {
       if ([(NPTPerformanceTestConfiguration *)self->testConfig uploadSize]== 1001)
       {
-        v32 = 50;
+        uploadSize = 50;
       }
 
       else
       {
-        v32 = v32;
+        uploadSize = uploadSize;
       }
     }
 
-    v33 = [MEMORY[0x277CCAD78] UUID];
-    v34 = [v33 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v35 = [NPTFileSizeConverter getFileSizeInBytes:v32];
+    v35 = [NPTFileSizeConverter getFileSizeInBytes:uploadSize];
     self->uploadFileSize = v35;
     v36 = v35;
-    v37 = [(NPTUpload *)self results];
-    [v37 setFileSize:v36];
+    results2 = [(NPTUpload *)self results];
+    [results2 setFileSize:v36];
 
     v38 = self->request;
-    v39 = [MEMORY[0x277CCACA8] stringWithFormat:@"multipart/form-data boundary=%@", v34];;
+    v39 = [MEMORY[0x277CCACA8] stringWithFormat:@"multipart/form-data boundary=%@", uUIDString];;
     [(NSMutableURLRequest *)v38 setValue:v39 forHTTPHeaderField:@"Content-Type"];
 
     if (self->uploadSession)
     {
-      v40 = [(NPTUpload *)self delegate];
+      delegate3 = [(NPTUpload *)self delegate];
 
-      if (v40)
+      if (delegate3)
       {
-        v41 = [(NPTUpload *)self delegate];
-        [v41 uploadWillStart];
+        delegate4 = [(NPTUpload *)self delegate];
+        [delegate4 uploadWillStart];
       }
 
       v42 = +[NPTLogger network];
@@ -462,7 +462,7 @@ void __41__NPTUpload_startNQUploadWithCompletion___block_invoke(uint64_t a1, voi
         {
           if ([(NPTUpload *)self inTimedMode])
           {
-            v45 = self;
+            selfCopy2 = self;
             uploadFileSize = 0x100000;
             v47 = 0x8000;
           }
@@ -470,11 +470,11 @@ void __41__NPTUpload_startNQUploadWithCompletion___block_invoke(uint64_t a1, voi
           else
           {
             uploadFileSize = self->uploadFileSize;
-            v45 = self;
+            selfCopy2 = self;
             v47 = 0x200000;
           }
 
-          v48 = [(NPTUpload *)v45 setupNewUploadTask:uploadFileSize suspensionThresholdEnum:v47];
+          v48 = [(NPTUpload *)selfCopy2 setupNewUploadTask:uploadFileSize suspensionThresholdEnum:v47];
           ++v44;
         }
 
@@ -508,10 +508,10 @@ void __41__NPTUpload_startNQUploadWithCompletion___block_invoke(uint64_t a1, voi
   self->uploadSession = 0;
 }
 
-- (id)createRandomDataOfSize:(unint64_t)a3
+- (id)createRandomDataOfSize:(unint64_t)size
 {
   v4 = [MEMORY[0x277CBEB28] dataWithLength:?];
-  if (SecRandomCopyBytes(*MEMORY[0x277CDC540], a3, [v4 mutableBytes]))
+  if (SecRandomCopyBytes(*MEMORY[0x277CDC540], size, [v4 mutableBytes]))
   {
     v5 = +[NPTLogger network];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -520,7 +520,7 @@ void __41__NPTUpload_startNQUploadWithCompletion___block_invoke(uint64_t a1, voi
       _os_log_impl(&dword_233421000, v5, OS_LOG_TYPE_DEFAULT, "Failed to generate random bytes to upload ", v9, 2u);
     }
 
-    v6 = [MEMORY[0x277CBEB28] dataWithLength:a3];
+    v6 = [MEMORY[0x277CBEB28] dataWithLength:size];
   }
 
   else
@@ -533,18 +533,18 @@ void __41__NPTUpload_startNQUploadWithCompletion___block_invoke(uint64_t a1, voi
   return v7;
 }
 
-- (id)createTempFileWithData:(id)a3 named:(id)a4
+- (id)createTempFileWithData:(id)data named:(id)named
 {
   v6 = MEMORY[0x277CCAA00];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 defaultManager];
-  v10 = [v9 temporaryDirectory];
+  namedCopy = named;
+  dataCopy = data;
+  defaultManager = [v6 defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
 
-  v11 = [v10 URLByAppendingPathComponent:v7 isDirectory:0];
+  v11 = [temporaryDirectory URLByAppendingPathComponent:namedCopy isDirectory:0];
 
   v17 = 0;
-  v12 = [v8 writeToURL:v11 options:1 error:&v17];
+  v12 = [dataCopy writeToURL:v11 options:1 error:&v17];
 
   v13 = v17;
   if (v13)
@@ -570,18 +570,18 @@ void __41__NPTUpload_startNQUploadWithCompletion___block_invoke(uint64_t a1, voi
   return v15;
 }
 
-- (void)removeTempFileNamed:(id)a3
+- (void)removeTempFileNamed:(id)named
 {
   v4 = MEMORY[0x277CCAA00];
-  v5 = a3;
-  v6 = [v4 defaultManager];
-  v7 = [v6 temporaryDirectory];
+  namedCopy = named;
+  defaultManager = [v4 defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
 
-  v8 = [v7 URLByAppendingPathComponent:v5 isDirectory:0];
+  v8 = [temporaryDirectory URLByAppendingPathComponent:namedCopy isDirectory:0];
 
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
   v14 = 0;
-  [v9 removeItemAtURL:v8 error:&v14];
+  [defaultManager2 removeItemAtURL:v8 error:&v14];
   v10 = v14;
 
   if (v10)
@@ -593,12 +593,12 @@ void __41__NPTUpload_startNQUploadWithCompletion___block_invoke(uint64_t a1, voi
     }
 
     [(NSURLSession *)self->uploadSession invalidateAndCancel];
-    v12 = [(NPTUpload *)self delegate];
+    delegate = [(NPTUpload *)self delegate];
 
-    if (v12)
+    if (delegate)
     {
-      v13 = [(NPTUpload *)self delegate];
-      [v13 upload:self didFinishWithError:v10];
+      delegate2 = [(NPTUpload *)self delegate];
+      [delegate2 upload:self didFinishWithError:v10];
     }
   }
 }
@@ -652,21 +652,21 @@ uint64_t __23__NPTUpload_setupTimer__block_invoke(uint64_t a1)
   return [*(*(a1 + 32) + 8) invalidateAndCancel];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 needNewBodyStream:(id)a5
+- (void)URLSession:(id)session task:(id)task needNewBodyStream:(id)stream
 {
-  v14 = a5;
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(a4, "taskIdentifier")];
+  streamCopy = stream;
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(task, "taskIdentifier")];
   v8 = [(NSMutableDictionary *)self->taskDict objectForKeyedSubscript:v7];
-  v9 = [v8 results];
+  results = [v8 results];
 
-  if (v9)
+  if (results)
   {
     v10 = [(NSMutableDictionary *)self->taskDict objectForKeyedSubscript:v7];
-    v11 = [v10 results];
-    v12 = [v11 fileSize];
+    results2 = [v10 results];
+    fileSize = [results2 fileSize];
 
-    v13 = [[NPTUploadDataStream alloc] initWithLength:v12];
-    v14[2](v14, v13);
+    v13 = [[NPTUploadDataStream alloc] initWithLength:fileSize];
+    streamCopy[2](streamCopy, v13);
   }
 }
 
@@ -693,9 +693,9 @@ uint64_t __23__NPTUpload_setupTimer__block_invoke(uint64_t a1)
   }
 }
 
-- (double)checkAndReturnSpeedStablized:(id)a3
+- (double)checkAndReturnSpeedStablized:(id)stablized
 {
-  v4 = a3;
+  stablizedCopy = stablized;
   v5 = self->recentBufferTime + 1.0;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v6 = 0.0;
@@ -705,7 +705,7 @@ uint64_t __23__NPTUpload_setupTimer__block_invoke(uint64_t a1)
     self->recentBufferTime = v8;
     buffer = self->buffer;
     v10 = MEMORY[0x277CCABB0];
-    [v4 speed];
+    [stablizedCopy speed];
     v11 = [v10 numberWithDouble:?];
     [(NSMutableArray *)buffer addObject:v11];
 
@@ -730,7 +730,7 @@ uint64_t __23__NPTUpload_setupTimer__block_invoke(uint64_t a1)
 
       if (v20 < 0.1)
       {
-        [v4 speed];
+        [stablizedCopy speed];
         v6 = v21;
       }
     }
@@ -739,87 +739,87 @@ uint64_t __23__NPTUpload_setupTimer__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (id)createHTTPBodyWithBoundary:(id)a3 usingData:(id)a4 withMimeType:(id)a5 withFileName:(id)a6
+- (id)createHTTPBodyWithBoundary:(id)boundary usingData:(id)data withMimeType:(id)type withFileName:(id)name
 {
   v9 = MEMORY[0x277CBEB28];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v9 data];
-  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"--%@\r\n", v13];
-  v16 = [v15 dataUsingEncoding:4];
-  [v14 appendData:v16];
+  nameCopy = name;
+  typeCopy = type;
+  dataCopy = data;
+  boundaryCopy = boundary;
+  data = [v9 data];
+  boundaryCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"--%@\r\n", boundaryCopy];
+  v16 = [boundaryCopy dataUsingEncoding:4];
+  [data appendData:v16];
 
-  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"Content-Disposition: form-data name=%@; filename=upload\r\n", v10];;
+  nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Content-Disposition: form-data name=%@; filename=upload\r\n", nameCopy];;
 
-  v18 = [v17 dataUsingEncoding:4];
-  [v14 appendData:v18];
+  v18 = [nameCopy dataUsingEncoding:4];
+  [data appendData:v18];
 
-  v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Content-Type: %@\r\n\r\n", v11];
+  typeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Content-Type: %@\r\n\r\n", typeCopy];
 
-  v20 = [v19 dataUsingEncoding:4];
-  [v14 appendData:v20];
+  v20 = [typeCopy dataUsingEncoding:4];
+  [data appendData:v20];
 
-  [v14 appendData:v12];
+  [data appendData:dataCopy];
   v21 = [@"\r\n" dataUsingEncoding:4];
-  [v14 appendData:v21];
+  [data appendData:v21];
 
-  v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"--%@--\r\n", v13];
+  boundaryCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"--%@--\r\n", boundaryCopy];
 
-  v23 = [v22 dataUsingEncoding:4];
-  [v14 appendData:v23];
+  v23 = [boundaryCopy2 dataUsingEncoding:4];
+  [data appendData:v23];
 
-  return v14;
+  return data;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics
 {
-  v22 = a4;
-  v7 = a5;
+  taskCopy = task;
+  metricsCopy = metrics;
   taskDict = self->taskDict;
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(v22, "taskIdentifier")];
+  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(taskCopy, "taskIdentifier")];
   v10 = [(NSMutableDictionary *)taskDict objectForKeyedSubscript:v9];
 
   if (v10)
   {
     v11 = objc_alloc_init(NPTMetricResult);
-    [(NPTMetricResult *)v11 populateWithMetrics:v7];
-    v12 = [v22 response];
-    [(NPTMetricResult *)v11 populateWithURLResponse:v12];
+    [(NPTMetricResult *)v11 populateWithMetrics:metricsCopy];
+    response = [taskCopy response];
+    [(NPTMetricResult *)v11 populateWithURLResponse:response];
 
-    -[NPTMetricResult setFileSize:](v11, "setFileSize:", [v22 countOfBytesSent]);
+    -[NPTMetricResult setFileSize:](v11, "setFileSize:", [taskCopy countOfBytesSent]);
     if (!self->timedUploadLength)
     {
-      v13 = [(NPTUpload *)self results];
-      -[NPTMetricResult setFileSize:](v11, "setFileSize:", [v13 fileSize]);
+      results = [(NPTUpload *)self results];
+      -[NPTMetricResult setFileSize:](v11, "setFileSize:", [results fileSize]);
     }
 
     v14 = [(NPTMetricResult *)v11 fileSize]* 8.0;
     [(NPTMetricResult *)v11 requestTime];
     [(NPTMetricResult *)v11 setSpeed:v14 / v15 / 1000000.0];
     v16 = self->taskDict;
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(v22, "taskIdentifier")];
+    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(taskCopy, "taskIdentifier")];
     v18 = [(NSMutableDictionary *)v16 objectForKeyedSubscript:v17];
-    [v18 setTaskMetrics:v7];
+    [v18 setTaskMetrics:metricsCopy];
 
     v19 = self->taskDict;
-    v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(v22, "taskIdentifier")];
+    v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(taskCopy, "taskIdentifier")];
     v21 = [(NSMutableDictionary *)v19 objectForKeyedSubscript:v20];
     [v21 setResults:v11];
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = [(NPTUpload *)self realTimeSpeedMetricOverall:a3];
-  v9 = [(NPTUpload *)self delegate];
+  v8 = [(NPTUpload *)self realTimeSpeedMetricOverall:session];
+  delegate = [(NPTUpload *)self delegate];
 
-  if (v9)
+  if (delegate)
   {
-    v10 = [(NPTUpload *)self delegate];
-    [v10 upload:self didReceiveSpeedMetric:v8];
+    delegate2 = [(NPTUpload *)self delegate];
+    [delegate2 upload:self didReceiveSpeedMetric:v8];
   }
 
   [v8 speed];
@@ -839,12 +839,12 @@ uint64_t __23__NPTUpload_setupTimer__block_invoke(uint64_t a1)
       v15 = +[NPTLogger network];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [v8 bytesTransferred];
+        bytesTransferred = [v8 bytesTransferred];
         [v8 timeSinceStart];
         v19 = 134218496;
         v20 = v14;
         v21 = 2048;
-        v22 = v16;
+        v22 = bytesTransferred;
         v23 = 2048;
         v24 = v17;
         _os_log_impl(&dword_233421000, v15, OS_LOG_TYPE_DEFAULT, "Upload task has stabilized at %f Mbps after uploading %lld bytes over %f seconds", &v19, 0x20u);
@@ -862,17 +862,17 @@ uint64_t __23__NPTUpload_setupTimer__block_invoke(uint64_t a1)
 
 - (int)determineSuspensionThreshold
 {
-  v2 = [(NPTUpload *)self realTimeSpeedMetricOverall];
-  [v2 speed];
+  realTimeSpeedMetricOverall = [(NPTUpload *)self realTimeSpeedMetricOverall];
+  [realTimeSpeedMetricOverall speed];
   if (v3 >= 24.0)
   {
-    [v2 speed];
+    [realTimeSpeedMetricOverall speed];
     if (v5 >= 96.0)
     {
-      [v2 speed];
+      [realTimeSpeedMetricOverall speed];
       if (v6 >= 192.0)
       {
-        [v2 speed];
+        [realTimeSpeedMetricOverall speed];
         if (v7 >= 384.0)
         {
           v4 = 0x200000;
@@ -904,30 +904,30 @@ uint64_t __23__NPTUpload_setupTimer__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 copy];
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
+  v11 = [errorCopy copy];
   if (v11 && ![(NPTUpload *)self isTimerCancelledError:v11])
   {
     goto LABEL_6;
   }
 
-  v12 = [v9 response];
-  v13 = v12;
-  if (v12)
+  response = [taskCopy response];
+  v13 = response;
+  if (response)
   {
-    v14 = [v12 statusCode];
-    if (v14 > 399)
+    statusCode = [response statusCode];
+    if (statusCode > 399)
     {
-      v15 = v14;
-      v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Upload task: %@ failed to Upload payload due to: %ld", v9, v14];
-      v17 = [MEMORY[0x277CBEB38] dictionary];
-      [v17 setValue:v16 forKey:*MEMORY[0x277CCA450]];
-      v18 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPTKit" code:v15 userInfo:v17];
+      v15 = statusCode;
+      v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Upload task: %@ failed to Upload payload due to: %ld", taskCopy, statusCode];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [dictionary setValue:v16 forKey:*MEMORY[0x277CCA450]];
+      v18 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPTKit" code:v15 userInfo:dictionary];
 
       v11 = v18;
       if (v18)
@@ -936,7 +936,7 @@ LABEL_6:
         v19 = +[NPTLogger network];
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
-          [NPTUpload URLSession:v9 task:v11 didCompleteWithError:?];
+          [NPTUpload URLSession:taskCopy task:v11 didCompleteWithError:?];
         }
 
         uploadError = self->uploadError;
@@ -994,39 +994,39 @@ LABEL_24:
         }
 
         [(NPTUpload *)self completeActivityWithReason:v26];
-        v27 = [(NPTUpload *)self aggregateResults];
-        [(NPTUpload *)self setResults:v27];
+        aggregateResults = [(NPTUpload *)self aggregateResults];
+        [(NPTUpload *)self setResults:aggregateResults];
 
-        v28 = [(NPTUpload *)self delegate];
-        LOBYTE(v27) = v28 == 0;
+        delegate = [(NPTUpload *)self delegate];
+        LOBYTE(aggregateResults) = delegate == 0;
 
-        if ((v27 & 1) == 0)
+        if ((aggregateResults & 1) == 0)
         {
           v29 = self->uploadError == 0;
-          v30 = [(NPTUpload *)self delegate];
-          v31 = v30;
+          delegate2 = [(NPTUpload *)self delegate];
+          v31 = delegate2;
           if (v29)
           {
-            v32 = [(NPTUpload *)self results];
-            [v31 upload:self didFinishWithResults:v32];
+            results = [(NPTUpload *)self results];
+            [v31 upload:self didFinishWithResults:results];
           }
 
           else
           {
-            [v30 upload:self didFinishWithError:self->uploadError];
+            [delegate2 upload:self didFinishWithError:self->uploadError];
           }
         }
 
-        v33 = [(NPTUpload *)self completion];
-        v34 = v33 == 0;
+        completion = [(NPTUpload *)self completion];
+        v34 = completion == 0;
 
         if (!v34)
         {
           objc_initWeak(buf, self);
-          v35 = [(NPTUpload *)self completion];
+          completion2 = [(NPTUpload *)self completion];
           WeakRetained = objc_loadWeakRetained(buf);
-          v37 = [WeakRetained results];
-          (v35)[2](v35, v37, self->uploadError);
+          results2 = [WeakRetained results];
+          (completion2)[2](completion2, results2, self->uploadError);
 
           objc_destroyWeak(buf);
         }
@@ -1040,9 +1040,9 @@ LABEL_24:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v40 = v9;
+    v40 = taskCopy;
     v41 = 2048;
-    v42 = [v9 countOfBytesSent];
+    countOfBytesSent = [taskCopy countOfBytesSent];
     _os_log_impl(&dword_233421000, v22, OS_LOG_TYPE_DEFAULT, "Upload task: %@ Upload: %lld bytes", buf, 0x16u);
   }
 
@@ -1052,71 +1052,71 @@ LABEL_24:
     goto LABEL_23;
   }
 
-  v23 = [(NPTUpload *)self determineSuspensionThreshold];
+  determineSuspensionThreshold = [(NPTUpload *)self determineSuspensionThreshold];
   v24 = +[NPTLogger network];
   if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
   {
-    [NPTUpload URLSession:v9 task:v23 didCompleteWithError:v24];
+    [NPTUpload URLSession:taskCopy task:determineSuspensionThreshold didCompleteWithError:v24];
   }
 
-  [(NPTUpload *)self kickOffNewUpload:self->uploadFileSize suspensionThresholdEnum:v23];
+  [(NPTUpload *)self kickOffNewUpload:self->uploadFileSize suspensionThresholdEnum:determineSuspensionThreshold];
   v11 = 0;
 LABEL_40:
 
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  sessionCopy = session;
+  errorCopy = error;
+  if (errorCopy)
   {
     v8 = +[NPTLogger network];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [NPTUpload URLSession:v7 didBecomeInvalidWithError:v8];
+      [NPTUpload URLSession:errorCopy didBecomeInvalidWithError:v8];
     }
 
     [(NSURLSession *)self->uploadSession finishTasksAndInvalidate];
     [(NPTUpload *)self completeActivityWithReason:3];
-    v9 = [(NPTUpload *)self delegate];
+    delegate = [(NPTUpload *)self delegate];
 
-    if (v9)
+    if (delegate)
     {
-      v10 = [(NPTUpload *)self delegate];
-      [v10 upload:self didFinishWithError:v7];
+      delegate2 = [(NPTUpload *)self delegate];
+      [delegate2 upload:self didFinishWithError:errorCopy];
     }
 
-    v11 = [(NPTUpload *)self completion];
+    completion = [(NPTUpload *)self completion];
 
-    if (v11)
+    if (completion)
     {
-      v12 = [(NPTUpload *)self completion];
-      (v12)[2](v12, 0, v7);
+      completion2 = [(NPTUpload *)self completion];
+      (completion2)[2](completion2, 0, errorCopy);
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NPTUpload allocWithZone:?]];
-  v5 = [(NPTUpload *)self results];
-  [(NPTUpload *)v4 setResults:v5];
+  results = [(NPTUpload *)self results];
+  [(NPTUpload *)v4 setResults:results];
 
   return v4;
 }
 
-- (void)progress:(id)a3
+- (void)progress:(id)progress
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  progressCopy = progress;
   v5 = objc_alloc_init(MEMORY[0x277CBEAA8]);
   [v5 timeIntervalSinceDate:self->initialTime];
   v7 = v6;
-  v8 = [v4 uplinkCapacity];
-  v9 = [v8 value];
-  [v9 doubleValue];
+  uplinkCapacity = [progressCopy uplinkCapacity];
+  value = [uplinkCapacity value];
+  [value doubleValue];
   v11 = v10 / 1000000.0;
 
   v12 = +[NPTLogger network];
@@ -1128,19 +1128,19 @@ LABEL_40:
   }
 
   v13 = [NPTSpeedMetric alloc];
-  v14 = [v4 uplinkBytesTransferred];
-  v15 = [v14 intValue];
-  v16 = [(NetworkQualityConfiguration *)self->nqConfig maxUplinkData];
-  v17 = [v4 uplinkResponsiveness];
-  v18 = [v17 value];
-  v19 = -[NPTSpeedMetric initWithPointInTime:timeSinceStart:bytesTransferred:totalBytesExpected:speed:responsiveness:](v13, "initWithPointInTime:timeSinceStart:bytesTransferred:totalBytesExpected:speed:responsiveness:", v5, v15, v16, [v18 intValue], v7, v11);
+  uplinkBytesTransferred = [progressCopy uplinkBytesTransferred];
+  intValue = [uplinkBytesTransferred intValue];
+  maxUplinkData = [(NetworkQualityConfiguration *)self->nqConfig maxUplinkData];
+  uplinkResponsiveness = [progressCopy uplinkResponsiveness];
+  value2 = [uplinkResponsiveness value];
+  v19 = -[NPTSpeedMetric initWithPointInTime:timeSinceStart:bytesTransferred:totalBytesExpected:speed:responsiveness:](v13, "initWithPointInTime:timeSinceStart:bytesTransferred:totalBytesExpected:speed:responsiveness:", v5, intValue, maxUplinkData, [value2 intValue], v7, v11);
 
-  v20 = [(NPTUpload *)self delegate];
+  delegate = [(NPTUpload *)self delegate];
 
-  if (v20)
+  if (delegate)
   {
-    v21 = [(NPTUpload *)self delegate];
-    [v21 upload:self didReceiveSpeedMetric:v19];
+    delegate2 = [(NPTUpload *)self delegate];
+    [delegate2 upload:self didReceiveSpeedMetric:v19];
   }
 
   [(NPTSpeedMetric *)v19 speed];
@@ -1160,12 +1160,12 @@ LABEL_40:
       v26 = +[NPTLogger network];
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [(NPTSpeedMetric *)v19 bytesTransferred];
+        bytesTransferred = [(NPTSpeedMetric *)v19 bytesTransferred];
         [(NPTSpeedMetric *)v19 timeSinceStart];
         v30 = 134218496;
         v31 = v25;
         v32 = 2048;
-        v33 = v27;
+        v33 = bytesTransferred;
         v34 = 2048;
         v35 = v28;
         _os_log_impl(&dword_233421000, v26, OS_LOG_TYPE_DEFAULT, "Upload task has stabilized at %f Mbps after uploading %lld bytes over %f seconds", &v30, 0x20u);
@@ -1200,8 +1200,8 @@ LABEL_40:
         }
 
         v8 = [(NSMutableDictionary *)self->taskDict objectForKey:*(*(&v11 + 1) + 8 * v7), v11];
-        v9 = [v8 task];
-        [v9 resume];
+        task = [v8 task];
+        [task resume];
 
         ++v7;
       }
@@ -1230,8 +1230,8 @@ LABEL_40:
 - (id)checkInterfaceSpecified
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v3 = [(NPTPerformanceTestConfiguration *)self->testConfig interfaceName];
-  if (v3)
+  interfaceName = [(NPTPerformanceTestConfiguration *)self->testConfig interfaceName];
+  if (interfaceName)
   {
 
 LABEL_4:
@@ -1282,11 +1282,11 @@ LABEL_5:
         }
 
         v10 = [(NSMutableDictionary *)self->taskDict objectForKey:*(*(&v18 + 1) + 8 * i), v18];
-        v11 = [v10 task];
-        v7 += [v11 countOfBytesSent];
+        task = [v10 task];
+        v7 += [task countOfBytesSent];
 
-        v12 = [v10 task];
-        v6 += [v12 countOfBytesExpectedToSend];
+        task2 = [v10 task];
+        v6 += [task2 countOfBytesExpectedToSend];
       }
 
       v5 = [(NSMutableDictionary *)v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -1310,25 +1310,25 @@ LABEL_5:
   return v15;
 }
 
-- (double)minNonZeroValue:(double)a3 comparisonValue:(double)a4
+- (double)minNonZeroValue:(double)value comparisonValue:(double)comparisonValue
 {
-  if (a3 != 0.0)
+  if (value != 0.0)
   {
-    if (a4 <= 0.0)
+    if (comparisonValue <= 0.0)
     {
-      return a3;
+      return value;
     }
 
-    else if (a3 < a4)
+    else if (value < comparisonValue)
     {
-      return a3;
+      return value;
     }
   }
 
-  return a4;
+  return comparisonValue;
 }
 
-- (void)completeActivityWithReason:(int)a3
+- (void)completeActivityWithReason:(int)reason
 {
   if (self->uploadActivity && nw_activity_is_activated())
   {
@@ -1350,25 +1350,25 @@ LABEL_5:
 {
   v134 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(NPTMetricResult);
-  v117 = self;
+  selfCopy = self;
   if ([(NSMutableDictionary *)self->taskDict count])
   {
-    v4 = [(NSMutableDictionary *)self->taskDict allKeys];
-    v5 = [v4 objectAtIndex:0];
+    allKeys = [(NSMutableDictionary *)self->taskDict allKeys];
+    v5 = [allKeys objectAtIndex:0];
 
-    v6 = [(NSMutableDictionary *)v117->taskDict objectForKeyedSubscript:v5];
-    v7 = [v6 taskMetrics];
-    v8 = [v7 transactionMetrics];
-    v9 = [v8 firstObject];
-    v10 = [v9 requestStartDate];
+    v6 = [(NSMutableDictionary *)selfCopy->taskDict objectForKeyedSubscript:v5];
+    taskMetrics = [v6 taskMetrics];
+    transactionMetrics = [taskMetrics transactionMetrics];
+    firstObject = [transactionMetrics firstObject];
+    requestStartDate = [firstObject requestStartDate];
 
-    v11 = [(NSMutableDictionary *)v117->taskDict objectForKeyedSubscript:v5];
-    v12 = [v11 taskMetrics];
-    v13 = [v12 transactionMetrics];
-    v14 = [v13 firstObject];
-    v15 = [v14 requestEndDate];
+    v11 = [(NSMutableDictionary *)selfCopy->taskDict objectForKeyedSubscript:v5];
+    taskMetrics2 = [v11 taskMetrics];
+    transactionMetrics2 = [taskMetrics2 transactionMetrics];
+    firstObject2 = [transactionMetrics2 firstObject];
+    requestEndDate = [firstObject2 requestEndDate];
 
-    endTimeAggregate = v117->endTimeAggregate;
+    endTimeAggregate = selfCopy->endTimeAggregate;
     if (endTimeAggregate)
     {
       v17 = endTimeAggregate;
@@ -1385,26 +1385,26 @@ LABEL_5:
 
     else
     {
-      v115 = v15;
+      v115 = requestEndDate;
     }
 
     v109 = v5;
-    v20 = [(NSMutableDictionary *)v117->taskDict objectForKeyedSubscript:v5];
-    v21 = [v20 results];
-    v22 = [v21 copy];
+    v20 = [(NSMutableDictionary *)selfCopy->taskDict objectForKeyedSubscript:v5];
+    results = [v20 results];
+    v22 = [results copy];
 
     [v22 setSpeed:0.0];
     [v22 setFileSize:0];
-    v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v117->maxConcurrentStreams];
+    v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:selfCopy->maxConcurrentStreams];
     [v22 setConcurrentStreams:v23];
 
-    [v22 setError:v117->uploadError];
+    [v22 setError:selfCopy->uploadError];
     v121 = 0u;
     v122 = 0u;
     v119 = 0u;
     v120 = 0u;
-    obj = v117->taskDict;
-    v24 = v10;
+    obj = selfCopy->taskDict;
+    v24 = requestStartDate;
     v114 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v119 objects:v133 count:16];
     if (v114)
     {
@@ -1421,33 +1421,33 @@ LABEL_5:
           }
 
           v26 = *(*(&v119 + 1) + 8 * v25);
-          v27 = [(NSMutableDictionary *)v117->taskDict objectForKey:v26];
-          v28 = [(NSMutableDictionary *)v117->taskDict objectForKeyedSubscript:v26];
-          v29 = [v28 taskMetrics];
-          v30 = [v29 transactionMetrics];
-          v31 = [v30 firstObject];
-          v32 = [v31 requestStartDate];
+          v27 = [(NSMutableDictionary *)selfCopy->taskDict objectForKey:v26];
+          v28 = [(NSMutableDictionary *)selfCopy->taskDict objectForKeyedSubscript:v26];
+          taskMetrics3 = [v28 taskMetrics];
+          transactionMetrics3 = [taskMetrics3 transactionMetrics];
+          firstObject3 = [transactionMetrics3 firstObject];
+          requestStartDate2 = [firstObject3 requestStartDate];
 
-          v33 = [(NSMutableDictionary *)v117->taskDict objectForKeyedSubscript:v26];
-          v34 = [v33 taskMetrics];
-          v35 = [v34 transactionMetrics];
-          v36 = [v35 firstObject];
-          v118 = [v36 requestEndDate];
+          v33 = [(NSMutableDictionary *)selfCopy->taskDict objectForKeyedSubscript:v26];
+          taskMetrics4 = [v33 taskMetrics];
+          transactionMetrics4 = [taskMetrics4 transactionMetrics];
+          firstObject4 = [transactionMetrics4 firstObject];
+          requestEndDate2 = [firstObject4 requestEndDate];
 
-          v37 = v32;
-          if (v32 && (!v24 || [(NSDate *)v24 compare:v32]== NSOrderedDescending))
+          v37 = requestStartDate2;
+          if (requestStartDate2 && (!v24 || [(NSDate *)v24 compare:requestStartDate2]== NSOrderedDescending))
           {
-            v38 = v32;
+            v38 = requestStartDate2;
 
             v24 = v38;
           }
 
-          v39 = v118;
+          v39 = requestEndDate2;
           v22 = v112;
           v116 = v24;
-          if (v118 && (!v115 || [(NSDate *)v115 compare:v118]== NSOrderedAscending))
+          if (requestEndDate2 && (!v115 || [(NSDate *)v115 compare:requestEndDate2]== NSOrderedAscending))
           {
-            v40 = v118;
+            v40 = requestEndDate2;
 
             v115 = v40;
           }
@@ -1455,21 +1455,21 @@ LABEL_5:
           v41 = +[NPTLogger network];
           if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
           {
-            v42 = [v27 task];
+            task = [v27 task];
             [v27 results];
             v43 = v111 = v37;
             [v43 domainLookupTime];
             v45 = v44;
-            v46 = [v27 results];
-            [v46 connectionTime];
+            results2 = [v27 results];
+            [results2 connectionTime];
             v48 = v47;
-            v49 = [v27 results];
-            [v49 requestTime];
+            results3 = [v27 results];
+            [results3 requestTime];
             v51 = v50;
-            v52 = [v27 results];
-            [v52 responseTime];
+            results4 = [v27 results];
+            [results4 responseTime];
             *buf = 138413314;
-            v124 = v42;
+            v124 = task;
             v125 = 2048;
             v126 = v45;
             v127 = 2048;
@@ -1480,67 +1480,67 @@ LABEL_5:
             v132 = v53;
             _os_log_impl(&dword_233421000, v41, OS_LOG_TYPE_DEFAULT, "Upload Task: %@ DomainLookupTime: %f, connectionTime: %f, requestTime: %f, responseTime: %f", buf, 0x34u);
 
-            v39 = v118;
+            v39 = requestEndDate2;
             v37 = v111;
           }
 
-          v54 = [v27 results];
-          [v112 setFileSize:{objc_msgSend(v112, "fileSize") + objc_msgSend(v54, "fileSize")}];
+          results5 = [v27 results];
+          [v112 setFileSize:{objc_msgSend(v112, "fileSize") + objc_msgSend(results5, "fileSize")}];
 
           [v112 domainLookupTime];
           v56 = v55;
-          v57 = [v27 results];
-          [v57 domainLookupTime];
-          [(NPTUpload *)v117 minNonZeroValue:v56 comparisonValue:v58];
+          results6 = [v27 results];
+          [results6 domainLookupTime];
+          [(NPTUpload *)selfCopy minNonZeroValue:v56 comparisonValue:v58];
           [v112 setDomainLookupTime:?];
 
           [v112 connectionTime];
           v60 = v59;
-          v61 = [v27 results];
-          [v61 connectionTime];
-          [(NPTUpload *)v117 minNonZeroValue:v60 comparisonValue:v62];
+          results7 = [v27 results];
+          [results7 connectionTime];
+          [(NPTUpload *)selfCopy minNonZeroValue:v60 comparisonValue:v62];
           [v112 setConnectionTime:?];
 
           [v112 secureConnectionTime];
           v64 = v63;
-          v65 = [v27 results];
-          [v65 secureConnectionTime];
-          [(NPTUpload *)v117 minNonZeroValue:v64 comparisonValue:v66];
+          results8 = [v27 results];
+          [results8 secureConnectionTime];
+          [(NPTUpload *)selfCopy minNonZeroValue:v64 comparisonValue:v66];
           [v112 setSecureConnectionTime:?];
 
           [v112 responseTime];
           v68 = v67;
-          v69 = [v27 results];
-          [v69 responseTime];
-          [(NPTUpload *)v117 minNonZeroValue:v68 comparisonValue:v70];
+          results9 = [v27 results];
+          [results9 responseTime];
+          [(NPTUpload *)selfCopy minNonZeroValue:v68 comparisonValue:v70];
           [v112 setResponseTime:?];
 
           [v112 requestToResponseTime];
           v72 = v71;
-          v73 = [v27 results];
-          [v73 requestToResponseTime];
-          [(NPTUpload *)v117 minNonZeroValue:v72 comparisonValue:v74];
+          results10 = [v27 results];
+          [results10 requestToResponseTime];
+          [(NPTUpload *)selfCopy minNonZeroValue:v72 comparisonValue:v74];
           [v112 setRequestToResponseTime:?];
 
-          v75 = [v27 results];
-          v76 = [v75 cdnpop];
-          v77 = [v76 length];
+          results11 = [v27 results];
+          cdnpop = [results11 cdnpop];
+          v77 = [cdnpop length];
 
           if (v77)
           {
-            v78 = [v27 results];
-            v79 = [v78 cdnpop];
-            [v112 setCdnpop:v79];
+            results12 = [v27 results];
+            cdnpop2 = [results12 cdnpop];
+            [v112 setCdnpop:cdnpop2];
 
             v80 = +[NPTLogger network];
             if (os_log_type_enabled(v80, OS_LOG_TYPE_DEBUG))
             {
-              v95 = [v27 task];
-              v96 = [v27 results];
-              [v96 cdnpop];
+              task2 = [v27 task];
+              results13 = [v27 results];
+              [results13 cdnpop];
               v98 = v97 = v37;
               *buf = 138412546;
-              v124 = v95;
+              v124 = task2;
               v125 = 2112;
               v126 = v98;
               _os_log_debug_impl(&dword_233421000, v80, OS_LOG_TYPE_DEBUG, "Task: %@ CDN point of presence: %@", buf, 0x16u);
@@ -1549,36 +1549,36 @@ LABEL_5:
             }
           }
 
-          v81 = [v27 results];
-          v82 = [v81 server];
-          v83 = [v82 length];
+          results14 = [v27 results];
+          server = [results14 server];
+          v83 = [server length];
 
           if (v83)
           {
-            v84 = [v27 results];
-            v85 = [v84 server];
-            [v112 setServer:v85];
+            results15 = [v27 results];
+            server2 = [results15 server];
+            [v112 setServer:server2];
           }
 
-          v86 = [v27 results];
-          v87 = [v86 appleClientASNCompany];
-          v88 = [v87 length];
+          results16 = [v27 results];
+          appleClientASNCompany = [results16 appleClientASNCompany];
+          v88 = [appleClientASNCompany length];
 
           if (v88)
           {
-            v89 = [v27 results];
-            v90 = [v89 appleClientASNCompany];
-            [v112 setAppleClientASNCompany:v90];
+            results17 = [v27 results];
+            appleClientASNCompany2 = [results17 appleClientASNCompany];
+            [v112 setAppleClientASNCompany:appleClientASNCompany2];
           }
 
-          v91 = [v27 results];
-          v92 = [v91 appleClientASN];
+          results18 = [v27 results];
+          appleClientASN = [results18 appleClientASN];
 
-          if (v92)
+          if (appleClientASN)
           {
-            v93 = [v27 results];
-            v94 = [v93 appleClientASN];
-            [v112 setAppleClientASN:v94];
+            results19 = [v27 results];
+            appleClientASN2 = [results19 appleClientASN];
+            [v112 setAppleClientASN:appleClientASN2];
           }
 
           ++v25;
@@ -1594,7 +1594,7 @@ LABEL_5:
 
     if (!v24)
     {
-      v24 = v117->initialTime;
+      v24 = selfCopy->initialTime;
       v99 = +[NPTLogger network];
       if (os_log_type_enabled(v99, OS_LOG_TYPE_DEFAULT))
       {
@@ -1622,14 +1622,14 @@ LABEL_5:
     }
 
     [v22 speed];
-    if (v105 > v117->maxSpeedObserved)
+    if (v105 > selfCopy->maxSpeedObserved)
     {
       [v22 speed];
-      v117->maxSpeedObserved = v106;
+      selfCopy->maxSpeedObserved = v106;
     }
 
     [v22 setMaxSpeedObserved:?];
-    if (v117->stableSpeedToLog > 0.0)
+    if (selfCopy->stableSpeedToLog > 0.0)
     {
       [v22 setStableSpeed:?];
     }
@@ -1670,9 +1670,9 @@ LABEL_5:
         }
 
         v8 = [(NSMutableDictionary *)self->taskDict objectForKey:*(*(&v13 + 1) + 8 * i), v13];
-        v9 = [v8 taskMetrics];
+        taskMetrics = [v8 taskMetrics];
 
-        if (!v9)
+        if (!taskMetrics)
         {
           v10 = 0;
           goto LABEL_11;
@@ -1742,15 +1742,15 @@ LABEL_11:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)processNQResult:(id)a3
+- (id)processNQResult:(id)result
 {
   v62 = *MEMORY[0x277D85DE8];
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v53 = a3;
-  obj = [v53 urlSessionMetrics];
+  resultCopy = result;
+  obj = [resultCopy urlSessionMetrics];
   v4 = [obj countByEnumeratingWithState:&v57 objects:v61 count:16];
   if (v4)
   {
@@ -1773,8 +1773,8 @@ LABEL_11:
         if ([v9 hasPrefix:@"tp_"])
         {
           v56 = v8;
-          v10 = [v53 urlSessionMetrics];
-          v11 = [v10 objectForKeyedSubscript:v9];
+          urlSessionMetrics = [resultCopy urlSessionMetrics];
+          v11 = [urlSessionMetrics objectForKeyedSubscript:v9];
 
           if ([v11 count])
           {
@@ -1784,9 +1784,9 @@ LABEL_11:
               v13 = [v11 objectAtIndexedSubscript:v12];
               v14 = objc_alloc_init(*(v7 + 2312));
               [v14 populateWithMetrics:v13];
-              v15 = [v13 transactionMetrics];
-              v16 = [v15 firstObject];
-              [v16 response];
+              transactionMetrics = [v13 transactionMetrics];
+              firstObject = [transactionMetrics firstObject];
+              [firstObject response];
               v18 = v17 = v7;
               [v14 populateWithURLResponse:v18];
 
@@ -1821,93 +1821,93 @@ LABEL_11:
     while (v5);
   }
 
-  v23 = [(NPTUpload *)self aggregateResults];
-  [v23 setMaxSpeedObserved:self->maxSpeedObserved];
-  v24 = [v53 uplinkBytesTransferred];
-  [v23 setFileSize:{objc_msgSend(v24, "unsignedIntValue")}];
+  aggregateResults = [(NPTUpload *)self aggregateResults];
+  [aggregateResults setMaxSpeedObserved:self->maxSpeedObserved];
+  uplinkBytesTransferred = [resultCopy uplinkBytesTransferred];
+  [aggregateResults setFileSize:{objc_msgSend(uplinkBytesTransferred, "unsignedIntValue")}];
 
-  v25 = [v53 uplinkCapacity];
-  v26 = [v25 value];
-  [v26 doubleValue];
-  [v23 setSpeed:v27 / 1000000.0];
+  uplinkCapacity = [resultCopy uplinkCapacity];
+  value = [uplinkCapacity value];
+  [value doubleValue];
+  [aggregateResults setSpeed:v27 / 1000000.0];
 
-  v28 = [v53 uplinkCapacity];
-  v29 = [v28 rating];
-  if (v29)
+  uplinkCapacity2 = [resultCopy uplinkCapacity];
+  rating = [uplinkCapacity2 rating];
+  if (rating)
   {
-    [v23 setSpeedRating:v29];
+    [aggregateResults setSpeedRating:rating];
   }
 
   else
   {
     v30 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:0];
-    [v23 setSpeedRating:v30];
+    [aggregateResults setSpeedRating:v30];
   }
 
   v31 = objc_alloc(MEMORY[0x277CCABB0]);
-  v32 = [v53 uplinkCapacity];
-  v33 = [v31 initWithInteger:{objc_msgSend(v32, "confidence")}];
-  [v23 setSpeedConfidence:v33];
+  uplinkCapacity3 = [resultCopy uplinkCapacity];
+  v33 = [v31 initWithInteger:{objc_msgSend(uplinkCapacity3, "confidence")}];
+  [aggregateResults setSpeedConfidence:v33];
 
-  v34 = [v53 uplinkResponsiveness];
-  v35 = [v34 value];
-  if (v35)
+  uplinkResponsiveness = [resultCopy uplinkResponsiveness];
+  value2 = [uplinkResponsiveness value];
+  if (value2)
   {
-    [v23 setResponsiveness:v35];
+    [aggregateResults setResponsiveness:value2];
   }
 
   else
   {
     v36 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:0];
-    [v23 setResponsiveness:v36];
+    [aggregateResults setResponsiveness:v36];
   }
 
-  v37 = [v53 uplinkResponsiveness];
-  v38 = [v37 rating];
-  if (v38)
+  uplinkResponsiveness2 = [resultCopy uplinkResponsiveness];
+  rating2 = [uplinkResponsiveness2 rating];
+  if (rating2)
   {
-    [v23 setResponsivenessRating:v38];
+    [aggregateResults setResponsivenessRating:rating2];
   }
 
   else
   {
     v39 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:0];
-    [v23 setResponsivenessRating:v39];
+    [aggregateResults setResponsivenessRating:v39];
   }
 
   v40 = objc_alloc(MEMORY[0x277CCABB0]);
-  v41 = [v53 uplinkResponsiveness];
-  v42 = [v40 initWithInteger:{objc_msgSend(v41, "confidence")}];
-  [v23 setResponsivenessConfidence:v42];
+  uplinkResponsiveness3 = [resultCopy uplinkResponsiveness];
+  v42 = [v40 initWithInteger:{objc_msgSend(uplinkResponsiveness3, "confidence")}];
+  [aggregateResults setResponsivenessConfidence:v42];
 
-  v43 = [v53 uplinkFlows];
-  if (v43)
+  uplinkFlows = [resultCopy uplinkFlows];
+  if (uplinkFlows)
   {
-    [v23 setConcurrentStreams:v43];
+    [aggregateResults setConcurrentStreams:uplinkFlows];
   }
 
   else
   {
     v44 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:0];
-    [v23 setConcurrentStreams:v44];
+    [aggregateResults setConcurrentStreams:v44];
   }
 
-  v45 = [v53 latency];
-  v46 = [v45 value];
-  [v23 setLatency:v46];
+  latency = [resultCopy latency];
+  value3 = [latency value];
+  [aggregateResults setLatency:value3];
 
-  v47 = [v53 testEndpoint];
-  [v23 setNqTestEndPoint:v47];
+  testEndpoint = [resultCopy testEndpoint];
+  [aggregateResults setNqTestEndPoint:testEndpoint];
 
-  v48 = [v53 asn];
-  [v23 setAppleClientASN:v48];
+  v48 = [resultCopy asn];
+  [aggregateResults setAppleClientASN:v48];
 
-  v49 = [v53 asnName];
-  [v23 setAppleClientASNCompany:v49];
+  asnName = [resultCopy asnName];
+  [aggregateResults setAppleClientASNCompany:asnName];
 
   v50 = *MEMORY[0x277D85DE8];
 
-  return v23;
+  return aggregateResults;
 }
 
 - (id)delegate

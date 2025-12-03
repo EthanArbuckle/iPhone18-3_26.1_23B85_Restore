@@ -1,30 +1,30 @@
 @interface PKPaletteColorPickerContainerView
 - (BOOL)_isInputAssistantViewControllerPresented;
 - (PKDrawingPaletteViewStateSubject)paletteViewState;
-- (PKPaletteColorPickerContainerView)initWithFrame:(CGRect)a3;
+- (PKPaletteColorPickerContainerView)initWithFrame:(CGRect)frame;
 - (PKPaletteColorPickerContainerViewDelegate)delegate;
 - (PKPalettePopoverPresenting)palettePopoverPresenting;
-- (void)_dismissViewController:(id)a3 withCompletion:(id)a4;
+- (void)_dismissViewController:(id)controller withCompletion:(id)completion;
 - (void)_handleUCBButtonPressed;
 - (void)_installInputAssistantViewContainer;
 - (void)_showInputAssistantPopover;
 - (void)_updateUI;
-- (void)dismissPalettePopoverWithCompletion:(id)a3;
-- (void)setLayoutAxis:(int64_t)a3;
-- (void)setPalettePopoverPresenting:(id)a3;
-- (void)setPaletteViewState:(id)a3;
-- (void)setShouldShowInputAssistantView:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)dismissPalettePopoverWithCompletion:(id)completion;
+- (void)setLayoutAxis:(int64_t)axis;
+- (void)setPalettePopoverPresenting:(id)presenting;
+- (void)setPaletteViewState:(id)state;
+- (void)setShouldShowInputAssistantView:(BOOL)view;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PKPaletteColorPickerContainerView
 
-- (PKPaletteColorPickerContainerView)initWithFrame:(CGRect)a3
+- (PKPaletteColorPickerContainerView)initWithFrame:(CGRect)frame
 {
   v30[6] = *MEMORY[0x1E69E9840];
   v29.receiver = self;
   v29.super_class = PKPaletteColorPickerContainerView;
-  v3 = [(PKPaletteColorPickerContainerView *)&v29 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPaletteColorPickerContainerView *)&v29 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCF90]);
@@ -35,29 +35,29 @@
     [(UIStackView *)v3->_stackView setAlignment:3];
     [(PKPaletteColorPickerContainerView *)v3 addSubview:v3->_stackView];
     v21 = MEMORY[0x1E696ACD8];
-    v28 = [(UIStackView *)v3->_stackView topAnchor];
-    v27 = [(PKPaletteColorPickerContainerView *)v3 topAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    topAnchor = [(UIStackView *)v3->_stackView topAnchor];
+    topAnchor2 = [(PKPaletteColorPickerContainerView *)v3 topAnchor];
+    v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v30[0] = v26;
-    v25 = [(UIStackView *)v3->_stackView bottomAnchor];
-    v24 = [(PKPaletteColorPickerContainerView *)v3 bottomAnchor];
-    v23 = [v25 constraintEqualToAnchor:v24];
+    bottomAnchor = [(UIStackView *)v3->_stackView bottomAnchor];
+    bottomAnchor2 = [(PKPaletteColorPickerContainerView *)v3 bottomAnchor];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v30[1] = v23;
-    v22 = [(UIStackView *)v3->_stackView leadingAnchor];
-    v20 = [(PKPaletteColorPickerContainerView *)v3 leadingAnchor];
-    v19 = [v22 constraintEqualToAnchor:v20];
+    leadingAnchor = [(UIStackView *)v3->_stackView leadingAnchor];
+    leadingAnchor2 = [(PKPaletteColorPickerContainerView *)v3 leadingAnchor];
+    v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v30[2] = v19;
-    v18 = [(UIStackView *)v3->_stackView trailingAnchor];
-    v17 = [(PKPaletteColorPickerContainerView *)v3 trailingAnchor];
-    v6 = [v18 constraintEqualToAnchor:v17];
+    trailingAnchor = [(UIStackView *)v3->_stackView trailingAnchor];
+    trailingAnchor2 = [(PKPaletteColorPickerContainerView *)v3 trailingAnchor];
+    v6 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v30[3] = v6;
-    v7 = [(UIStackView *)v3->_stackView widthAnchor];
-    v8 = [(PKPaletteColorPickerContainerView *)v3 widthAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    widthAnchor = [(UIStackView *)v3->_stackView widthAnchor];
+    widthAnchor2 = [(PKPaletteColorPickerContainerView *)v3 widthAnchor];
+    v9 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v30[4] = v9;
-    v10 = [(UIStackView *)v3->_stackView heightAnchor];
-    v11 = [(PKPaletteColorPickerContainerView *)v3 heightAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    heightAnchor = [(UIStackView *)v3->_stackView heightAnchor];
+    heightAnchor2 = [(PKPaletteColorPickerContainerView *)v3 heightAnchor];
+    v12 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v30[5] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:6];
     [v21 activateConstraints:v13];
@@ -74,27 +74,27 @@
   return v3;
 }
 
-- (void)setShouldShowInputAssistantView:(BOOL)a3
+- (void)setShouldShowInputAssistantView:(BOOL)view
 {
-  if (self->_shouldShowInputAssistantView != a3)
+  if (self->_shouldShowInputAssistantView != view)
   {
-    self->_shouldShowInputAssistantView = a3;
+    self->_shouldShowInputAssistantView = view;
     [(PKPaletteColorPickerContainerView *)self _updateUI];
   }
 }
 
-- (void)setLayoutAxis:(int64_t)a3
+- (void)setLayoutAxis:(int64_t)axis
 {
-  if (self->_layoutAxis != a3)
+  if (self->_layoutAxis != axis)
   {
-    self->_layoutAxis = a3;
+    self->_layoutAxis = axis;
     [(PKPaletteColorPickerContainerView *)self _updateUI];
   }
 }
 
-- (void)setPalettePopoverPresenting:(id)a3
+- (void)setPalettePopoverPresenting:(id)presenting
 {
-  obj = a3;
+  obj = presenting;
   WeakRetained = objc_loadWeakRetained(&self->_palettePopoverPresenting);
 
   v5 = obj;
@@ -106,9 +106,9 @@
   }
 }
 
-- (void)setPaletteViewState:(id)a3
+- (void)setPaletteViewState:(id)state
 {
-  obj = a3;
+  obj = state;
   WeakRetained = objc_loadWeakRetained(&self->_paletteViewState);
 
   v5 = obj;
@@ -122,12 +122,12 @@
 
 - (void)_updateUI
 {
-  v3 = [(PKPaletteColorPickerContainerView *)self layoutAxis];
-  v4 = [(PKPaletteColorPickerContainerView *)self stackView];
-  [v4 setAxis:v3];
+  layoutAxis = [(PKPaletteColorPickerContainerView *)self layoutAxis];
+  stackView = [(PKPaletteColorPickerContainerView *)self stackView];
+  [stackView setAxis:layoutAxis];
 
-  v5 = [(PKPaletteColorPickerContainerView *)self stackView];
-  [v5 setSpacing:8.0];
+  stackView2 = [(PKPaletteColorPickerContainerView *)self stackView];
+  [stackView2 setSpacing:8.0];
 
   if (-[PKPaletteColorPickerContainerView shouldShowInputAssistantView](self, "shouldShowInputAssistantView") && (-[PKPaletteColorPickerContainerView stackView](self, "stackView"), v6 = objc_claimAutoreleasedReturnValue(), [v6 arrangedSubviews], v7 = objc_claimAutoreleasedReturnValue(), -[PKPaletteColorPickerContainerView inputAssistantContainerView](self, "inputAssistantContainerView"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "containsObject:", v8), v8, v7, v6, (v9 & 1) == 0))
   {
@@ -137,19 +137,19 @@
 
   else if (![(PKPaletteColorPickerContainerView *)self shouldShowInputAssistantView])
   {
-    v10 = [(PKPaletteColorPickerContainerView *)self stackView];
-    v11 = [v10 arrangedSubviews];
-    v12 = [(PKPaletteColorPickerContainerView *)self inputAssistantContainerView];
-    v13 = [v11 containsObject:v12];
+    stackView3 = [(PKPaletteColorPickerContainerView *)self stackView];
+    arrangedSubviews = [stackView3 arrangedSubviews];
+    inputAssistantContainerView = [(PKPaletteColorPickerContainerView *)self inputAssistantContainerView];
+    v13 = [arrangedSubviews containsObject:inputAssistantContainerView];
 
     if (v13)
     {
-      v14 = [(PKPaletteColorPickerContainerView *)self stackView];
-      v15 = [(PKPaletteColorPickerContainerView *)self inputAssistantContainerView];
-      [v14 removeArrangedSubview:v15];
+      stackView4 = [(PKPaletteColorPickerContainerView *)self stackView];
+      inputAssistantContainerView2 = [(PKPaletteColorPickerContainerView *)self inputAssistantContainerView];
+      [stackView4 removeArrangedSubview:inputAssistantContainerView2];
 
-      v16 = [(PKPaletteColorPickerContainerView *)self inputAssistantContainerView];
-      [v16 removeFromSuperview];
+      inputAssistantContainerView3 = [(PKPaletteColorPickerContainerView *)self inputAssistantContainerView];
+      [inputAssistantContainerView3 removeFromSuperview];
 
       [(PKPaletteColorPickerContainerView *)self setInputAssistantContainerView:0];
     }
@@ -162,25 +162,25 @@
   inputAssistantContainerView = self->_inputAssistantContainerView;
   self->_inputAssistantContainerView = v3;
 
-  v5 = [(PKPaletteColorPickerContainerView *)self inputAssistantContainerView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  inputAssistantContainerView = [(PKPaletteColorPickerContainerView *)self inputAssistantContainerView];
+  [inputAssistantContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(PKPaletteColorPickerContainerView *)self stackView];
-  v7 = [(PKPaletteColorPickerContainerView *)self inputAssistantContainerView];
-  [v6 insertArrangedSubview:v7 atIndex:0];
+  stackView = [(PKPaletteColorPickerContainerView *)self stackView];
+  inputAssistantContainerView2 = [(PKPaletteColorPickerContainerView *)self inputAssistantContainerView];
+  [stackView insertArrangedSubview:inputAssistantContainerView2 atIndex:0];
 
-  v9 = [(PKPaletteColorPickerContainerView *)self inputAssistantContainerView];
-  v8 = [v9 UCBbutton];
-  [v8 addTarget:self action:sel__handleUCBButtonPressed forControlEvents:64];
+  inputAssistantContainerView3 = [(PKPaletteColorPickerContainerView *)self inputAssistantContainerView];
+  uCBbutton = [inputAssistantContainerView3 UCBbutton];
+  [uCBbutton addTarget:self action:sel__handleUCBButtonPressed forControlEvents:64];
 }
 
 - (void)_handleUCBButtonPressed
 {
-  v3 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
-  v4 = v3;
-  if (v3)
+  inputAssistantViewController = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
+  v4 = inputAssistantViewController;
+  if (inputAssistantViewController)
   {
-    if ([v3 isBeingPresented])
+    if ([inputAssistantViewController isBeingPresented])
     {
 
 LABEL_5:
@@ -190,18 +190,18 @@ LABEL_10:
       return;
     }
 
-    v5 = [v4 isBeingDismissed];
+    isBeingDismissed = [v4 isBeingDismissed];
 
-    if (v5)
+    if (isBeingDismissed)
     {
       goto LABEL_5;
     }
   }
 
-  v6 = [(PKPaletteColorPickerContainerView *)self palettePopoverPresenting];
-  v7 = [v6 shouldPalettePresentPopover];
+  palettePopoverPresenting = [(PKPaletteColorPickerContainerView *)self palettePopoverPresenting];
+  shouldPalettePresentPopover = [palettePopoverPresenting shouldPalettePresentPopover];
 
-  if (!v7)
+  if (!shouldPalettePresentPopover)
   {
     goto LABEL_10;
   }
@@ -215,76 +215,76 @@ LABEL_10:
   [(PKPaletteColorPickerContainerView *)self setInputAssistantViewController:v3];
 
   v4 = objc_alloc_init(PKDrawingPaletteInputAssistantView);
-  v5 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
-  [v5 setInputAssistantView:v4];
+  inputAssistantViewController = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
+  [inputAssistantViewController setInputAssistantView:v4];
 
-  v6 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
-  [v6 setModalPresentationStyle:7];
+  inputAssistantViewController2 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
+  [inputAssistantViewController2 setModalPresentationStyle:7];
 
-  v7 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
-  v8 = [v7 popoverPresentationController];
-  [v8 setDelegate:self];
+  inputAssistantViewController3 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
+  popoverPresentationController = [inputAssistantViewController3 popoverPresentationController];
+  [popoverPresentationController setDelegate:self];
 
-  v9 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
-  v10 = [v9 popoverPresentationController];
-  [v10 setPermittedArrowDirections:2];
+  inputAssistantViewController4 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
+  popoverPresentationController2 = [inputAssistantViewController4 popoverPresentationController];
+  [popoverPresentationController2 setPermittedArrowDirections:2];
 
-  v11 = [(PKPaletteColorPickerContainerView *)self inputAssistantContainerView];
-  v12 = [v11 UCBbutton];
-  [v12 bounds];
+  inputAssistantContainerView = [(PKPaletteColorPickerContainerView *)self inputAssistantContainerView];
+  uCBbutton = [inputAssistantContainerView UCBbutton];
+  [uCBbutton bounds];
   v42 = CGRectInset(v41, -5.0, -5.0);
   x = v42.origin.x;
   y = v42.origin.y;
   width = v42.size.width;
   height = v42.size.height;
-  v17 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
-  v18 = [v17 popoverPresentationController];
-  [v18 setSourceRect:{x, y, width, height}];
+  inputAssistantViewController5 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
+  popoverPresentationController3 = [inputAssistantViewController5 popoverPresentationController];
+  [popoverPresentationController3 setSourceRect:{x, y, width, height}];
 
-  v19 = [(PKPaletteColorPickerContainerView *)self inputAssistantContainerView];
-  v20 = [v19 UCBbutton];
-  v21 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
-  v22 = [v21 popoverPresentationController];
-  [v22 setSourceView:v20];
+  inputAssistantContainerView2 = [(PKPaletteColorPickerContainerView *)self inputAssistantContainerView];
+  uCBbutton2 = [inputAssistantContainerView2 UCBbutton];
+  inputAssistantViewController6 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
+  popoverPresentationController4 = [inputAssistantViewController6 popoverPresentationController];
+  [popoverPresentationController4 setSourceView:uCBbutton2];
 
-  v23 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
-  v24 = [v23 popoverPresentationController];
-  [v24 _setShouldDisableInteractionDuringTransitions:0];
+  inputAssistantViewController7 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
+  popoverPresentationController5 = [inputAssistantViewController7 popoverPresentationController];
+  [popoverPresentationController5 _setShouldDisableInteractionDuringTransitions:0];
 
-  v25 = [(PKPaletteColorPickerContainerView *)self palettePopoverPresenting];
-  v26 = [v25 palettePopoverPassthroughViews];
-  v27 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
-  v28 = [v27 popoverPresentationController];
-  [v28 setPassthroughViews:v26];
+  palettePopoverPresenting = [(PKPaletteColorPickerContainerView *)self palettePopoverPresenting];
+  palettePopoverPassthroughViews = [palettePopoverPresenting palettePopoverPassthroughViews];
+  inputAssistantViewController8 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
+  popoverPresentationController6 = [inputAssistantViewController8 popoverPresentationController];
+  [popoverPresentationController6 setPassthroughViews:palettePopoverPassthroughViews];
 
-  v29 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
-  v30 = [v29 popoverPresentationController];
-  [v30 _setIgnoresKeyboardNotifications:1];
+  inputAssistantViewController9 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
+  popoverPresentationController7 = [inputAssistantViewController9 popoverPresentationController];
+  [popoverPresentationController7 _setIgnoresKeyboardNotifications:1];
 
-  v31 = [(PKPaletteColorPickerContainerView *)self palettePopoverPresenting];
-  v32 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
-  [v31 updatePalettePopover:v32];
+  palettePopoverPresenting2 = [(PKPaletteColorPickerContainerView *)self palettePopoverPresenting];
+  inputAssistantViewController10 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
+  [palettePopoverPresenting2 updatePalettePopover:inputAssistantViewController10];
 
-  v33 = [(PKPaletteColorPickerContainerView *)self delegate];
-  LOBYTE(v32) = objc_opt_respondsToSelector();
+  delegate = [(PKPaletteColorPickerContainerView *)self delegate];
+  LOBYTE(inputAssistantViewController10) = objc_opt_respondsToSelector();
 
-  if (v32)
+  if (inputAssistantViewController10)
   {
-    v34 = [(PKPaletteColorPickerContainerView *)self delegate];
-    v35 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
-    v36 = [v35 inputAssistantView];
-    [v34 colorPickerContainerView:self willPresentInputAssistantView:v36];
+    delegate2 = [(PKPaletteColorPickerContainerView *)self delegate];
+    inputAssistantViewController11 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
+    inputAssistantView = [inputAssistantViewController11 inputAssistantView];
+    [delegate2 colorPickerContainerView:self willPresentInputAssistantView:inputAssistantView];
   }
 
-  v37 = [(PKPaletteColorPickerContainerView *)self palettePopoverPresenting];
-  v38 = [v37 palettePopoverPresentingController];
-  v39 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
+  palettePopoverPresenting3 = [(PKPaletteColorPickerContainerView *)self palettePopoverPresenting];
+  palettePopoverPresentingController = [palettePopoverPresenting3 palettePopoverPresentingController];
+  inputAssistantViewController12 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __63__PKPaletteColorPickerContainerView__showInputAssistantPopover__block_invoke;
   v40[3] = &unk_1E82D7148;
   v40[4] = self;
-  [v38 presentViewController:v39 animated:1 completion:v40];
+  [palettePopoverPresentingController presentViewController:inputAssistantViewController12 animated:1 completion:v40];
 }
 
 void __63__PKPaletteColorPickerContainerView__showInputAssistantPopover__block_invoke(uint64_t a1)
@@ -304,17 +304,17 @@ void __63__PKPaletteColorPickerContainerView__showInputAssistantPopover__block_i
 
 - (BOOL)_isInputAssistantViewControllerPresented
 {
-  v3 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
-  if (v3)
+  inputAssistantViewController = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
+  if (inputAssistantViewController)
   {
-    v4 = [(PKPaletteColorPickerContainerView *)self palettePopoverPresenting];
-    v5 = [v4 palettePopoverPresentingController];
-    v6 = [v5 presentedViewController];
-    v7 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
-    if (v6 == v7)
+    palettePopoverPresenting = [(PKPaletteColorPickerContainerView *)self palettePopoverPresenting];
+    palettePopoverPresentingController = [palettePopoverPresenting palettePopoverPresentingController];
+    presentedViewController = [palettePopoverPresentingController presentedViewController];
+    inputAssistantViewController2 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
+    if (presentedViewController == inputAssistantViewController2)
     {
-      v9 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
-      v8 = [v9 isBeingDismissed] ^ 1;
+      inputAssistantViewController3 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
+      v8 = [inputAssistantViewController3 isBeingDismissed] ^ 1;
     }
 
     else
@@ -331,38 +331,38 @@ void __63__PKPaletteColorPickerContainerView__showInputAssistantPopover__block_i
   return v8;
 }
 
-- (void)dismissPalettePopoverWithCompletion:(id)a3
+- (void)dismissPalettePopoverWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(PKPaletteColorPickerContainerView *)self _isInputAssistantViewControllerPresented])
   {
-    v5 = [(PKPaletteColorPickerContainerView *)self delegate];
+    delegate = [(PKPaletteColorPickerContainerView *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(PKPaletteColorPickerContainerView *)self delegate];
-      v8 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
-      v9 = [v8 inputAssistantView];
-      [v7 colorPickerContainerView:self willDismissInputAssistantView:v9];
+      delegate2 = [(PKPaletteColorPickerContainerView *)self delegate];
+      inputAssistantViewController = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
+      inputAssistantView = [inputAssistantViewController inputAssistantView];
+      [delegate2 colorPickerContainerView:self willDismissInputAssistantView:inputAssistantView];
     }
 
-    v10 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
+    inputAssistantViewController2 = [(PKPaletteColorPickerContainerView *)self inputAssistantViewController];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __73__PKPaletteColorPickerContainerView_dismissPalettePopoverWithCompletion___block_invoke;
     v14[3] = &unk_1E82D7AE8;
     v14[4] = self;
-    v15 = v4;
-    [(PKPaletteColorPickerContainerView *)self _dismissViewController:v10 withCompletion:v14];
+    v15 = completionCopy;
+    [(PKPaletteColorPickerContainerView *)self _dismissViewController:inputAssistantViewController2 withCompletion:v14];
   }
 
   else
   {
-    v11 = [(PKPaletteColorPickerContainerView *)self palettePopoverPresenting];
-    v12 = [v11 palettePopoverPresentingController];
-    v13 = [v12 presentedViewController];
-    [(PKPaletteColorPickerContainerView *)self _dismissViewController:v13 withCompletion:v4];
+    palettePopoverPresenting = [(PKPaletteColorPickerContainerView *)self palettePopoverPresenting];
+    palettePopoverPresentingController = [palettePopoverPresenting palettePopoverPresentingController];
+    presentedViewController = [palettePopoverPresentingController presentedViewController];
+    [(PKPaletteColorPickerContainerView *)self _dismissViewController:presentedViewController withCompletion:completionCopy];
   }
 }
 
@@ -391,36 +391,36 @@ uint64_t __73__PKPaletteColorPickerContainerView_dismissPalettePopoverWithComple
   return result;
 }
 
-- (void)_dismissViewController:(id)a3 withCompletion:(id)a4
+- (void)_dismissViewController:(id)controller withCompletion:(id)completion
 {
-  v6 = a3;
-  v5 = a4;
-  if (v6 && ([v6 isBeingDismissed] & 1) == 0)
+  controllerCopy = controller;
+  completionCopy = completion;
+  if (controllerCopy && ([controllerCopy isBeingDismissed] & 1) == 0)
   {
-    [v6 dismissViewControllerAnimated:1 completion:v5];
+    [controllerCopy dismissViewControllerAnimated:1 completion:completionCopy];
   }
 
-  else if (v5)
+  else if (completionCopy)
   {
-    v5[2](v5);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = PKPaletteColorPickerContainerView;
-  [(PKPaletteColorPickerContainerView *)&v10 traitCollectionDidChange:v4];
-  v5 = [(PKPaletteColorPickerContainerView *)self traitCollection];
-  v6 = [v5 verticalSizeClass];
-  if (v6 == [v4 verticalSizeClass])
+  [(PKPaletteColorPickerContainerView *)&v10 traitCollectionDidChange:changeCopy];
+  traitCollection = [(PKPaletteColorPickerContainerView *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
+  if (verticalSizeClass == [changeCopy verticalSizeClass])
   {
-    v7 = [(PKPaletteColorPickerContainerView *)self traitCollection];
-    v8 = [v7 horizontalSizeClass];
-    v9 = [v4 horizontalSizeClass];
+    traitCollection2 = [(PKPaletteColorPickerContainerView *)self traitCollection];
+    horizontalSizeClass = [traitCollection2 horizontalSizeClass];
+    horizontalSizeClass2 = [changeCopy horizontalSizeClass];
 
-    if (v8 == v9)
+    if (horizontalSizeClass == horizontalSizeClass2)
     {
       goto LABEL_6;
     }

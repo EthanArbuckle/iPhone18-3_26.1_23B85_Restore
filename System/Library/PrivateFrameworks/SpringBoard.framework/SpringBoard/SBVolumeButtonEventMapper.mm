@@ -1,14 +1,14 @@
 @interface SBVolumeButtonEventMapper
 + (BOOL)isVolumeButtonRemappingSupported;
-+ (BOOL)shouldInvertVolumeButtonsOnEdge:(unint64_t)a3 forInterfaceOrientation:(int64_t)a4 userInterfaceLayoutDirection:(int64_t)a5;
-- (BOOL)isVolumeButtonEventInvertible:(id)a3 withPressType:(int64_t)a4;
-- (BOOL)shouldInvertVolumeButtonsForEvent:(id)a3 withPressType:(int64_t)a4;
++ (BOOL)shouldInvertVolumeButtonsOnEdge:(unint64_t)edge forInterfaceOrientation:(int64_t)orientation userInterfaceLayoutDirection:(int64_t)direction;
+- (BOOL)isVolumeButtonEventInvertible:(id)invertible withPressType:(int64_t)type;
+- (BOOL)shouldInvertVolumeButtonsForEvent:(id)event withPressType:(int64_t)type;
 - (SBVolumeButtonEventMapper)init;
 - (int64_t)effectiveInterfaceOrientation;
 - (void)_hardwareDefaultsChanged;
-- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)a3 willAnimateWithDuration:(double)a4 fromOrientation:(int64_t)a5;
+- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)orientation willAnimateWithDuration:(double)duration fromOrientation:(int64_t)fromOrientation;
 - (void)dealloc;
-- (void)setVolumeButtonRemappingEnabled:(BOOL)a3;
+- (void)setVolumeButtonRemappingEnabled:(BOOL)enabled;
 @end
 
 @implementation SBVolumeButtonEventMapper
@@ -31,7 +31,7 @@
     v2->_buttonsEdge = v4;
     v2->_layoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1;
     v5 = +[SBDefaults localDefaults];
-    v6 = [v5 hardwareDefaults];
+    hardwareDefaults = [v5 hardwareDefaults];
 
     objc_initWeak(&location, v2);
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"disableNaturalVolumeButtonOrientation"];
@@ -42,7 +42,7 @@
     v14 = __33__SBVolumeButtonEventMapper_init__block_invoke;
     v15 = &unk_2783A8C68;
     objc_copyWeak(&v16, &location);
-    v10 = [v6 observeDefault:v7 onQueue:v8 withBlock:&v12];
+    v10 = [hardwareDefaults observeDefault:v7 onQueue:v8 withBlock:&v12];
 
     [(SBVolumeButtonEventMapper *)v2 _hardwareDefaultsChanged:v12];
     objc_destroyWeak(&v16);
@@ -73,37 +73,37 @@ void __33__SBVolumeButtonEventMapper_init__block_invoke(uint64_t a1)
     return SBFEffectiveDeviceClass() == 2;
   }
 
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v2 = [v3 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v2 = [currentDevice userInterfaceIdiom] == 1;
 
   return v2;
 }
 
-+ (BOOL)shouldInvertVolumeButtonsOnEdge:(unint64_t)a3 forInterfaceOrientation:(int64_t)a4 userInterfaceLayoutDirection:(int64_t)a5
++ (BOOL)shouldInvertVolumeButtonsOnEdge:(unint64_t)edge forInterfaceOrientation:(int64_t)orientation userInterfaceLayoutDirection:(int64_t)direction
 {
-  if (a3 == 8)
+  if (edge == 8)
   {
-    if (a5 == 1)
+    if (direction == 1)
     {
-      return [a1 _shouldInvertVolumeButtonsForRTLRightEdgePadInInterfaceOrientation:a4];
+      return [self _shouldInvertVolumeButtonsForRTLRightEdgePadInInterfaceOrientation:orientation];
     }
 
     else
     {
-      return [a1 _shouldInvertVolumeButtonsForLTRRightEdgePadInInterfaceOrientation:a4];
+      return [self _shouldInvertVolumeButtonsForLTRRightEdgePadInInterfaceOrientation:orientation];
     }
   }
 
-  else if (a3 == 1)
+  else if (edge == 1)
   {
-    if (a5 == 1)
+    if (direction == 1)
     {
-      return [a1 _shouldInvertVolumeButtonsForRTLTopEdgePadInInterfaceOrientation:a4];
+      return [self _shouldInvertVolumeButtonsForRTLTopEdgePadInInterfaceOrientation:orientation];
     }
 
     else
     {
-      return [a1 _shouldInvertVolumeButtonsForLTRTopEdgePadInInterfaceOrientation:a4];
+      return [self _shouldInvertVolumeButtonsForLTRTopEdgePadInInterfaceOrientation:orientation];
     }
   }
 
@@ -113,13 +113,13 @@ void __33__SBVolumeButtonEventMapper_init__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)isVolumeButtonEventInvertible:(id)a3 withPressType:(int64_t)a4
+- (BOOL)isVolumeButtonEventInvertible:(id)invertible withPressType:(int64_t)type
 {
   v4 = 0;
   v16 = *MEMORY[0x277D85DE8];
-  if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 0x66 && self->_volumeButtonRemappingEnabled)
+  if ((type & 0xFFFFFFFFFFFFFFFELL) == 0x66 && self->_volumeButtonRemappingEnabled)
   {
-    v5 = [a3 _hidEvent];
+    _hidEvent = [invertible _hidEvent];
     if ((IOHIDEventGetIntegerValue() - 233) > 1)
     {
       return 0;
@@ -129,7 +129,7 @@ void __33__SBVolumeButtonEventMapper_init__block_invoke(uint64_t a1)
     {
       Type = IOHIDEventGetType();
       v4 = 0;
-      if (v5 && Type == 3)
+      if (_hidEvent && Type == 3)
       {
         v7 = BKSHIDEventGetBaseAttributes();
         if ([v7 source])
@@ -170,14 +170,14 @@ void __33__SBVolumeButtonEventMapper_init__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (BOOL)shouldInvertVolumeButtonsForEvent:(id)a3 withPressType:(int64_t)a4
+- (BOOL)shouldInvertVolumeButtonsForEvent:(id)event withPressType:(int64_t)type
 {
   v29 = *MEMORY[0x277D85DE8];
-  if ([(SBVolumeButtonEventMapper *)self isVolumeButtonEventInvertible:a3 withPressType:a4])
+  if ([(SBVolumeButtonEventMapper *)self isVolumeButtonEventInvertible:event withPressType:type])
   {
-    v5 = [(SBVolumeButtonEventMapper *)self effectiveInterfaceOrientation];
+    effectiveInterfaceOrientation = [(SBVolumeButtonEventMapper *)self effectiveInterfaceOrientation];
     layoutDirection = self->_layoutDirection;
-    v7 = [objc_opt_class() shouldInvertVolumeButtonsOnEdge:self->_buttonsEdge forInterfaceOrientation:v5 userInterfaceLayoutDirection:layoutDirection];
+    v7 = [objc_opt_class() shouldInvertVolumeButtonsOnEdge:self->_buttonsEdge forInterfaceOrientation:effectiveInterfaceOrientation userInterfaceLayoutDirection:layoutDirection];
     v8 = SBLogButtonsVolume();
     v9 = v8;
     if (v7)
@@ -257,12 +257,12 @@ LABEL_18:
   return v7;
 }
 
-- (void)setVolumeButtonRemappingEnabled:(BOOL)a3
+- (void)setVolumeButtonRemappingEnabled:(BOOL)enabled
 {
-  if (self->_volumeButtonRemappingEnabled != a3)
+  if (self->_volumeButtonRemappingEnabled != enabled)
   {
-    self->_volumeButtonRemappingEnabled = a3;
-    if (a3)
+    self->_volumeButtonRemappingEnabled = enabled;
+    if (enabled)
     {
       [SBApp addActiveOrientationObserver:self];
 
@@ -280,9 +280,9 @@ LABEL_18:
 - (int64_t)effectiveInterfaceOrientation
 {
   v3 = +[SBBacklightController sharedInstance];
-  v4 = [v3 screenIsOn];
+  screenIsOn = [v3 screenIsOn];
 
-  if (v4)
+  if (screenIsOn)
   {
     return self->_effectiveInterfaceOrientation;
   }
@@ -290,7 +290,7 @@ LABEL_18:
   return BKHIDServicesGetNonFlatDeviceOrientation();
 }
 
-- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)a3 willAnimateWithDuration:(double)a4 fromOrientation:(int64_t)a5
+- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)orientation willAnimateWithDuration:(double)duration fromOrientation:(int64_t)fromOrientation
 {
   objc_initWeak(&location, self);
   v10 = MEMORY[0x277D85DD0];
@@ -298,18 +298,18 @@ LABEL_18:
   v12 = __118__SBVolumeButtonEventMapper_activeInterfaceOrientationDidChangeToOrientation_willAnimateWithDuration_fromOrientation___block_invoke;
   v13 = &unk_2783BF040;
   objc_copyWeak(v14, &location);
-  v14[1] = a3;
-  v14[2] = a5;
+  v14[1] = orientation;
+  v14[2] = fromOrientation;
   v8 = MEMORY[0x223D6F7F0](&v10);
   v9 = v8;
-  if (a4 <= 0.0)
+  if (duration <= 0.0)
   {
     (*(v8 + 16))(v8, 1);
   }
 
   else
   {
-    [MEMORY[0x277D75D18] animateWithDuration:&__block_literal_global_324 animations:v8 completion:{a4, v10, v11, v12, v13}];
+    [MEMORY[0x277D75D18] animateWithDuration:&__block_literal_global_324 animations:v8 completion:{duration, v10, v11, v12, v13}];
   }
 
   objc_destroyWeak(v14);
@@ -376,12 +376,12 @@ LABEL_10:
 - (void)_hardwareDefaultsChanged
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(SBVolumeButtonEventMapper *)self isVolumeButtonRemappingEnabled];
+  isVolumeButtonRemappingEnabled = [(SBVolumeButtonEventMapper *)self isVolumeButtonRemappingEnabled];
   v4 = +[SBDefaults localDefaults];
-  v5 = [v4 hardwareDefaults];
-  -[SBVolumeButtonEventMapper setVolumeButtonRemappingEnabled:](self, "setVolumeButtonRemappingEnabled:", [v5 isNaturalVolumeButtonOrientationEnabled]);
+  hardwareDefaults = [v4 hardwareDefaults];
+  -[SBVolumeButtonEventMapper setVolumeButtonRemappingEnabled:](self, "setVolumeButtonRemappingEnabled:", [hardwareDefaults isNaturalVolumeButtonOrientationEnabled]);
 
-  if (v3 != [(SBVolumeButtonEventMapper *)self isVolumeButtonRemappingEnabled])
+  if (isVolumeButtonRemappingEnabled != [(SBVolumeButtonEventMapper *)self isVolumeButtonRemappingEnabled])
   {
     v6 = SBLogButtonsVolume();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))

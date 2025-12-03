@@ -1,19 +1,19 @@
 @interface BKDirectTouchPerDisplayInfo
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 - (void)dealloc;
 @end
 
 @implementation BKDirectTouchPerDisplayInfo
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v8 = a3;
-  [v8 appendProem:self block:&stru_1000F9A68];
+  formatterCopy = formatter;
+  [formatterCopy appendProem:self block:&stru_1000F9A68];
   v4 = sub_100002D14(&self->super.isa);
-  v5 = [v8 appendObject:v4 withName:@"digitizers"];
+  v5 = [formatterCopy appendObject:v4 withName:@"digitizers"];
 
-  v6 = [v8 appendObject:self->_touchStreams withName:@"touchStreams"];
-  v7 = [v8 appendObject:self->_hitTestRegions withName:@"hitTestRegions"];
+  v6 = [formatterCopy appendObject:self->_touchStreams withName:@"touchStreams"];
+  v7 = [formatterCopy appendObject:self->_hitTestRegions withName:@"hitTestRegions"];
 }
 
 - (void)dealloc

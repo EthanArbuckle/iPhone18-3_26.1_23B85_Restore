@@ -1,19 +1,19 @@
 @interface SKUIItemBrowseTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SKUIItemBrowseTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUIItemBrowseTableViewCell" hasInstanceMethod:@"layout" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKUIItemBrowseCellLayout" hasInstanceMethod:@"category" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKUIItemBrowseCellLayout" hasInstanceMethod:@"numberOfUserRatings" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SKUIItemBrowseCellLayout" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKUIItemBrowseCellLayout" hasInstanceMethod:@"indexNumberString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKUIItemBrowseCellLayout" hasInstanceVariable:@"_userRating" withType:"d"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUIItemBrowseTableViewCell" hasInstanceMethod:@"layout" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKUIItemBrowseCellLayout" hasInstanceMethod:@"category" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKUIItemBrowseCellLayout" hasInstanceMethod:@"numberOfUserRatings" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SKUIItemBrowseCellLayout" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKUIItemBrowseCellLayout" hasInstanceMethod:@"indexNumberString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKUIItemBrowseCellLayout" hasInstanceVariable:@"_userRating" withType:"d"];
 }
 
 - (id)accessibilityLabel

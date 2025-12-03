@@ -1,33 +1,33 @@
 @interface HMAccessoryInfoProtoNetworkInfoEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addIpv4Addresses:(id)a3;
-- (void)addIpv6Addresses:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addIpv4Addresses:(id)addresses;
+- (void)addIpv6Addresses:(id)addresses;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMAccessoryInfoProtoNetworkInfoEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(HMAccessoryInfoProtoNetworkInfoEvent *)self setIfaceName:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(HMAccessoryInfoProtoNetworkInfoEvent *)self setMacAddress:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(HMAccessoryInfoProtoNetworkInfoEvent *)self setType:?];
   }
@@ -36,7 +36,7 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v6)
   {
@@ -64,7 +64,7 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = *(v4 + 3);
+  v10 = *(fromCopy + 3);
   v11 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v11)
   {
@@ -89,7 +89,7 @@
   }
 
   wifiInfo = self->_wifiInfo;
-  v16 = *(v4 + 6);
+  v16 = *(fromCopy + 6);
   if (wifiInfo)
   {
     if (v16)
@@ -116,13 +116,13 @@
   return v6 ^ v7 ^ [(HMAccessoryInfoProtoAirportInfoEvent *)self->_wifiInfo hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((ifaceName = self->_ifaceName, !(ifaceName | v4[1])) || -[NSString isEqual:](ifaceName, "isEqual:")) && ((macAddress = self->_macAddress, !(macAddress | v4[4])) || -[NSString isEqual:](macAddress, "isEqual:")) && ((type = self->_type, !(type | v4[5])) || -[NSString isEqual:](type, "isEqual:")) && ((ipv4Addresses = self->_ipv4Addresses, !(ipv4Addresses | v4[2])) || -[NSMutableArray isEqual:](ipv4Addresses, "isEqual:")) && ((ipv6Addresses = self->_ipv6Addresses, !(ipv6Addresses | v4[3])) || -[NSMutableArray isEqual:](ipv6Addresses, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((ifaceName = self->_ifaceName, !(ifaceName | equalCopy[1])) || -[NSString isEqual:](ifaceName, "isEqual:")) && ((macAddress = self->_macAddress, !(macAddress | equalCopy[4])) || -[NSString isEqual:](macAddress, "isEqual:")) && ((type = self->_type, !(type | equalCopy[5])) || -[NSString isEqual:](type, "isEqual:")) && ((ipv4Addresses = self->_ipv4Addresses, !(ipv4Addresses | equalCopy[2])) || -[NSMutableArray isEqual:](ipv4Addresses, "isEqual:")) && ((ipv6Addresses = self->_ipv6Addresses, !(ipv6Addresses | equalCopy[3])) || -[NSMutableArray isEqual:](ipv6Addresses, "isEqual:")))
   {
     wifiInfo = self->_wifiInfo;
-    if (wifiInfo | v4[6])
+    if (wifiInfo | equalCopy[6])
     {
       v11 = [(HMAccessoryInfoProtoAirportInfoEvent *)wifiInfo isEqual:?];
     }
@@ -141,19 +141,19 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_ifaceName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_ifaceName copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_macAddress copyWithZone:a3];
+  v8 = [(NSString *)self->_macAddress copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NSString *)self->_type copyWithZone:a3];
+  v10 = [(NSString *)self->_type copyWithZone:zone];
   v11 = v5[5];
   v5[5] = v10;
 
@@ -177,7 +177,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v32 + 1) + 8 * v16) copyWithZone:a3];
+        v17 = [*(*(&v32 + 1) + 8 * v16) copyWithZone:zone];
         [v5 addIpv4Addresses:v17];
 
         ++v16;
@@ -210,7 +210,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v28 + 1) + 8 * v22) copyWithZone:{a3, v28}];
+        v23 = [*(*(&v28 + 1) + 8 * v22) copyWithZone:{zone, v28}];
         [v5 addIpv6Addresses:v23];
 
         ++v22;
@@ -223,7 +223,7 @@
     while (v20);
   }
 
-  v24 = [(HMAccessoryInfoProtoAirportInfoEvent *)self->_wifiInfo copyWithZone:a3];
+  v24 = [(HMAccessoryInfoProtoAirportInfoEvent *)self->_wifiInfo copyWithZone:zone];
   v25 = v5[6];
   v5[6] = v24;
 
@@ -231,64 +231,64 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if (self->_ifaceName)
   {
-    [v12 setIfaceName:?];
+    [toCopy setIfaceName:?];
   }
 
   if (self->_macAddress)
   {
-    [v12 setMacAddress:?];
+    [toCopy setMacAddress:?];
   }
 
   if (self->_type)
   {
-    [v12 setType:?];
+    [toCopy setType:?];
   }
 
   if ([(HMAccessoryInfoProtoNetworkInfoEvent *)self ipv4AddressesCount])
   {
-    [v12 clearIpv4Addresses];
-    v4 = [(HMAccessoryInfoProtoNetworkInfoEvent *)self ipv4AddressesCount];
-    if (v4)
+    [toCopy clearIpv4Addresses];
+    ipv4AddressesCount = [(HMAccessoryInfoProtoNetworkInfoEvent *)self ipv4AddressesCount];
+    if (ipv4AddressesCount)
     {
-      v5 = v4;
+      v5 = ipv4AddressesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HMAccessoryInfoProtoNetworkInfoEvent *)self ipv4AddressesAtIndex:i];
-        [v12 addIpv4Addresses:v7];
+        [toCopy addIpv4Addresses:v7];
       }
     }
   }
 
   if ([(HMAccessoryInfoProtoNetworkInfoEvent *)self ipv6AddressesCount])
   {
-    [v12 clearIpv6Addresses];
-    v8 = [(HMAccessoryInfoProtoNetworkInfoEvent *)self ipv6AddressesCount];
-    if (v8)
+    [toCopy clearIpv6Addresses];
+    ipv6AddressesCount = [(HMAccessoryInfoProtoNetworkInfoEvent *)self ipv6AddressesCount];
+    if (ipv6AddressesCount)
     {
-      v9 = v8;
+      v9 = ipv6AddressesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(HMAccessoryInfoProtoNetworkInfoEvent *)self ipv6AddressesAtIndex:j];
-        [v12 addIpv6Addresses:v11];
+        [toCopy addIpv6Addresses:v11];
       }
     }
   }
 
   if (self->_wifiInfo)
   {
-    [v12 setWifiInfo:?];
+    [toCopy setWifiInfo:?];
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_ifaceName)
   {
     PBDataWriterWriteStringField();
@@ -378,12 +378,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   ifaceName = self->_ifaceName;
   if (ifaceName)
   {
-    [v3 setObject:ifaceName forKey:@"ifaceName"];
+    [dictionary setObject:ifaceName forKey:@"ifaceName"];
   }
 
   macAddress = self->_macAddress;
@@ -413,8 +413,8 @@
   wifiInfo = self->_wifiInfo;
   if (wifiInfo)
   {
-    v11 = [(HMAccessoryInfoProtoAirportInfoEvent *)wifiInfo dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"wifiInfo"];
+    dictionaryRepresentation = [(HMAccessoryInfoProtoAirportInfoEvent *)wifiInfo dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"wifiInfo"];
   }
 
   return v4;
@@ -426,46 +426,46 @@
   v8.receiver = self;
   v8.super_class = HMAccessoryInfoProtoNetworkInfoEvent;
   v4 = [(HMAccessoryInfoProtoNetworkInfoEvent *)&v8 description];
-  v5 = [(HMAccessoryInfoProtoNetworkInfoEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMAccessoryInfoProtoNetworkInfoEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addIpv6Addresses:(id)a3
+- (void)addIpv6Addresses:(id)addresses
 {
-  v4 = a3;
+  addressesCopy = addresses;
   ipv6Addresses = self->_ipv6Addresses;
-  v8 = v4;
+  v8 = addressesCopy;
   if (!ipv6Addresses)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_ipv6Addresses;
     self->_ipv6Addresses = v6;
 
-    v4 = v8;
+    addressesCopy = v8;
     ipv6Addresses = self->_ipv6Addresses;
   }
 
-  [(NSMutableArray *)ipv6Addresses addObject:v4];
+  [(NSMutableArray *)ipv6Addresses addObject:addressesCopy];
 }
 
-- (void)addIpv4Addresses:(id)a3
+- (void)addIpv4Addresses:(id)addresses
 {
-  v4 = a3;
+  addressesCopy = addresses;
   ipv4Addresses = self->_ipv4Addresses;
-  v8 = v4;
+  v8 = addressesCopy;
   if (!ipv4Addresses)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_ipv4Addresses;
     self->_ipv4Addresses = v6;
 
-    v4 = v8;
+    addressesCopy = v8;
     ipv4Addresses = self->_ipv4Addresses;
   }
 
-  [(NSMutableArray *)ipv4Addresses addObject:v4];
+  [(NSMutableArray *)ipv4Addresses addObject:addressesCopy];
 }
 
 @end

@@ -1,29 +1,29 @@
 @interface FigFocusPixelDisparityGenerator
 - (CGRect)focusPixelValidArea;
-- (FigFocusPixelDisparityGenerator)initWithCommandQueue:(id)a3;
-- (id)_createTextureOfWidth:(unsigned int)a3 andHeight:(unsigned int)a4 withFormat:(unint64_t)a5 textureUsage:(unint64_t)a6;
+- (FigFocusPixelDisparityGenerator)initWithCommandQueue:(id)queue;
+- (id)_createTextureOfWidth:(unsigned int)width andHeight:(unsigned int)height withFormat:(unint64_t)format textureUsage:(unint64_t)usage;
 - (int)_allocateResources;
 - (int)_allocateTextures;
-- (int)_computeDisparityQuality:(int *)a3;
-- (int)_downscale2X420fTBGRAEqualWithCommandBuffer:(id)a3 in_Ytex:(id)a4 in_UVtex:(id)a5 out_tex:(id)a6 cropRect:(CGRect)a7;
+- (int)_computeDisparityQuality:(int *)quality;
+- (int)_downscale2X420fTBGRAEqualWithCommandBuffer:(id)buffer in_Ytex:(id)ytex in_UVtex:(id)vtex out_tex:(id)out_tex cropRect:(CGRect)rect;
 - (int)_extractFocusPixelMetadata;
 - (int)_initShaders;
-- (int)_populateImagePyramidFrom420fPixelBuffer:(__CVBuffer *)a3 cropRect:(CGRect)a4;
-- (int)_populateImagePyramidFrom:(id)a3;
+- (int)_populateImagePyramidFrom420fPixelBuffer:(__CVBuffer *)buffer cropRect:(CGRect)rect;
+- (int)_populateImagePyramidFrom:(id)from;
 - (int)_populateRawGreenChannelPyramid;
 - (int)_setupImagePyramid;
-- (int)getFPBuffersSizeFromOptions:(id)a3;
-- (int)getFrameSizesFromOptions:(id)a3;
-- (int)getPatternDetailsFrom:(id)a3 outTypeName:(id *)a4 outCountX:(unsigned int *)a5 outCountY:(unsigned int *)a6 outStartX:(unsigned int *)a7 outStartY:(unsigned int *)a8 outStepX:(unsigned int *)a9 outStepY:(unsigned int *)a10;
-- (int)getSequenceDetailsFrom:(id)a3 withName:(id)a4 outCount:(unsigned int *)a5 outStart:(unsigned int *)a6 outStep:(unsigned int *)a7;
-- (int)mapPixelTypeNameToDirection:(id)a3;
-- (int)prepareToProcess:(unsigned int)a3;
+- (int)getFPBuffersSizeFromOptions:(id)options;
+- (int)getFrameSizesFromOptions:(id)options;
+- (int)getPatternDetailsFrom:(id)from outTypeName:(id *)name outCountX:(unsigned int *)x outCountY:(unsigned int *)y outStartX:(unsigned int *)startX outStartY:(unsigned int *)startY outStepX:(unsigned int *)stepX outStepY:(unsigned int *)self0;
+- (int)getSequenceDetailsFrom:(id)from withName:(id)name outCount:(unsigned int *)count outStart:(unsigned int *)start outStep:(unsigned int *)step;
+- (int)mapPixelTypeNameToDirection:(id)direction;
+- (int)prepareToProcess:(unsigned int)process;
 - (int)process;
 - (int)purgeResources;
-- (int)readSizeFromDictionary:(id)a3 toWidth:(unsigned int *)a4 toHeight:(unsigned int *)a5;
+- (int)readSizeFromDictionary:(id)dictionary toWidth:(unsigned int *)width toHeight:(unsigned int *)height;
 - (void)_overrideTuningParametersForFactory;
 - (void)dealloc;
-- (void)setOptions:(id)a3;
+- (void)setOptions:(id)options;
 @end
 
 @implementation FigFocusPixelDisparityGenerator
@@ -317,10 +317,10 @@ LABEL_21:
   return v45;
 }
 
-- (id)_createTextureOfWidth:(unsigned int)a3 andHeight:(unsigned int)a4 withFormat:(unint64_t)a5 textureUsage:(unint64_t)a6
+- (id)_createTextureOfWidth:(unsigned int)width andHeight:(unsigned int)height withFormat:(unint64_t)format textureUsage:(unint64_t)usage
 {
-  v8 = objc_msgSend_texture2DDescriptorWithPixelFormat_width_height_mipmapped_(MEMORY[0x29EDBB670], a2, a5, a3, a4, 0);
-  objc_msgSend_setUsage_(v8, v9, a6);
+  v8 = objc_msgSend_texture2DDescriptorWithPixelFormat_width_height_mipmapped_(MEMORY[0x29EDBB670], a2, format, width, height, 0);
+  objc_msgSend_setUsage_(v8, v9, usage);
   v12 = objc_msgSend_device(self->_metalContext, v10, v11);
   v14 = objc_msgSend_newTextureWithDescriptor_(v12, v13, v8);
 
@@ -362,9 +362,9 @@ LABEL_21:
   return ResourcesWithMaxInputResolution;
 }
 
-- (FigFocusPixelDisparityGenerator)initWithCommandQueue:(id)a3
+- (FigFocusPixelDisparityGenerator)initWithCommandQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v30.receiver = self;
   v30.super_class = FigFocusPixelDisparityGenerator;
   v5 = [(FigFocusPixelDisparityGenerator *)&v30 init];
@@ -377,7 +377,7 @@ LABEL_21:
   v7 = objc_opt_class();
   v9 = objc_msgSend_bundleForClass_(v6, v8, v7);
   v10 = objc_alloc(MEMORY[0x29EDC0A40]);
-  inited = objc_msgSend_initWithbundle_andOptionalCommandQueue_(v10, v11, v9, v4);
+  inited = objc_msgSend_initWithbundle_andOptionalCommandQueue_(v10, v11, v9, queueCopy);
   v13 = *(v5 + 47);
   *(v5 + 47) = inited;
 
@@ -439,11 +439,11 @@ LABEL_9:
   return v28;
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
-  v43 = a3;
-  objc_storeStrong(&self->_options, a3);
-  v6 = objc_msgSend_objectForKeyedSubscript_(v43, v5, *MEMORY[0x29EDC0288]);
+  optionsCopy = options;
+  objc_storeStrong(&self->_options, options);
+  v6 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v5, *MEMORY[0x29EDC0288]);
   v7 = *MEMORY[0x29EDBFF48];
   v9 = objc_msgSend_objectForKeyedSubscript_(v6, v8, *MEMORY[0x29EDBFF48]);
   v11 = objc_msgSend_objectForKeyedSubscript_(v9, v10, *MEMORY[0x29EDC07A0]);
@@ -452,10 +452,10 @@ LABEL_9:
   self->_moduleSerialNumber = v13;
 
   v15 = *MEMORY[0x29EDC0298];
-  v17 = objc_msgSend_objectForKeyedSubscript_(v43, v16, *MEMORY[0x29EDC0298]);
+  v17 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v16, *MEMORY[0x29EDC0298]);
   v19 = objc_msgSend_objectForKeyedSubscript_(v17, v18, @"FPDisparity");
 
-  if (v19 || (objc_msgSend_objectForKeyedSubscript_(v43, v20, v15), (v19 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v19 || (objc_msgSend_objectForKeyedSubscript_(optionsCopy, v20, v15), (v19 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v21 = [FocusPixelDisparityTuningParameters alloc];
     v23 = objc_msgSend_initWithTuningDictionary_cameraInfoByPortType_(v21, v22, v19, v6);
@@ -557,10 +557,10 @@ LABEL_9:
   return 0;
 }
 
-- (int)getSequenceDetailsFrom:(id)a3 withName:(id)a4 outCount:(unsigned int *)a5 outStart:(unsigned int *)a6 outStep:(unsigned int *)a7
+- (int)getSequenceDetailsFrom:(id)from withName:(id)name outCount:(unsigned int *)count outStart:(unsigned int *)start outStep:(unsigned int *)step
 {
   v18 = 0;
-  v10 = objc_msgSend_objectForKeyedSubscript_(a3, a2, a4);
+  v10 = objc_msgSend_objectForKeyedSubscript_(from, a2, name);
   v12 = v10;
   if (!v10)
   {
@@ -570,7 +570,7 @@ LABEL_17:
     goto LABEL_12;
   }
 
-  if (!a5)
+  if (!count)
   {
     goto LABEL_5;
   }
@@ -582,9 +582,9 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  *a5 = v13;
+  *count = v13;
 LABEL_5:
-  if (!a6)
+  if (!start)
   {
     goto LABEL_8;
   }
@@ -596,9 +596,9 @@ LABEL_5:
     goto LABEL_17;
   }
 
-  *a6 = v14;
+  *start = v14;
 LABEL_8:
-  if (!a7)
+  if (!step)
   {
     v16 = 0;
     goto LABEL_12;
@@ -612,23 +612,23 @@ LABEL_8:
   }
 
   v16 = 0;
-  *a7 = v15;
+  *step = v15;
 LABEL_12:
 
   return v16;
 }
 
-- (int)getPatternDetailsFrom:(id)a3 outTypeName:(id *)a4 outCountX:(unsigned int *)a5 outCountY:(unsigned int *)a6 outStartX:(unsigned int *)a7 outStartY:(unsigned int *)a8 outStepX:(unsigned int *)a9 outStepY:(unsigned int *)a10
+- (int)getPatternDetailsFrom:(id)from outTypeName:(id *)name outCountX:(unsigned int *)x outCountY:(unsigned int *)y outStartX:(unsigned int *)startX outStartY:(unsigned int *)startY outStepX:(unsigned int *)stepX outStepY:(unsigned int *)self0
 {
-  v16 = a3;
-  v18 = v16;
+  fromCopy = from;
+  v18 = fromCopy;
   v29 = 0;
   v27 = 0;
   v28 = 0;
   v26 = 0;
-  if (a4)
+  if (name)
   {
-    v19 = objc_msgSend_objectForKeyedSubscript_(v16, v17, @"PixelType");
+    v19 = objc_msgSend_objectForKeyedSubscript_(fromCopy, v17, @"PixelType");
     v20 = v19;
     if (!v19)
     {
@@ -638,7 +638,7 @@ LABEL_12:
     }
 
     v21 = v19;
-    *a4 = v20;
+    *name = v20;
   }
 
   else
@@ -646,7 +646,7 @@ LABEL_12:
     v20 = 0;
   }
 
-  if (a5 || a7 || a9)
+  if (x || startX || stepX)
   {
     SequenceDetailsFrom_withName_outCount_outStart_outStep = objc_msgSend_getSequenceDetailsFrom_withName_outCount_outStart_outStep_(self, v17, v18, @"X", &v29, &v28 + 4, &v28);
     if (SequenceDetailsFrom_withName_outCount_outStart_outStep)
@@ -656,23 +656,23 @@ LABEL_12:
       goto LABEL_26;
     }
 
-    if (a5)
+    if (x)
     {
-      *a5 = v29;
+      *x = v29;
     }
 
-    if (a7)
+    if (startX)
     {
-      *a7 = HIDWORD(v28);
+      *startX = HIDWORD(v28);
     }
 
-    if (a9)
+    if (stepX)
     {
-      *a9 = v28;
+      *stepX = v28;
     }
   }
 
-  if (!a6 && !a8 && !a10)
+  if (!y && !startY && !stepY)
   {
     goto LABEL_25;
   }
@@ -685,20 +685,20 @@ LABEL_12:
     goto LABEL_26;
   }
 
-  if (a6)
+  if (y)
   {
-    *a6 = HIDWORD(v27);
+    *y = HIDWORD(v27);
   }
 
-  if (a8)
+  if (startY)
   {
-    *a8 = v27;
+    *startY = v27;
   }
 
-  if (a10)
+  if (stepY)
   {
     v24 = 0;
-    *a10 = v26;
+    *stepY = v26;
   }
 
   else
@@ -712,14 +712,14 @@ LABEL_26:
   return v24;
 }
 
-- (int)readSizeFromDictionary:(id)a3 toWidth:(unsigned int *)a4 toHeight:(unsigned int *)a5
+- (int)readSizeFromDictionary:(id)dictionary toWidth:(unsigned int *)width toHeight:(unsigned int *)height
 {
-  v7 = a3;
-  v9 = v7;
+  dictionaryCopy = dictionary;
+  v9 = dictionaryCopy;
   v12 = 0;
-  if (a4)
+  if (width)
   {
-    *a4 = objc_msgSend_cmi_intValueForKey_defaultValue_found_(v7, v8, @"width", 0, &v12);
+    *width = objc_msgSend_cmi_intValueForKey_defaultValue_found_(dictionaryCopy, v8, @"width", 0, &v12);
     if (v12 != 1)
     {
       v11 = 772;
@@ -727,29 +727,29 @@ LABEL_26:
     }
   }
 
-  if (a5)
+  if (height)
   {
-    *a5 = objc_msgSend_cmi_intValueForKey_defaultValue_found_(v9, v8, @"height", 0, &v12);
+    *height = objc_msgSend_cmi_intValueForKey_defaultValue_found_(v9, v8, @"height", 0, &v12);
     if (v12)
     {
-      LODWORD(a5) = 0;
+      LODWORD(height) = 0;
       goto LABEL_6;
     }
 
     v11 = 778;
 LABEL_9:
     sub_29579DDB0(v11, &v13);
-    LODWORD(a5) = v13;
+    LODWORD(height) = v13;
   }
 
 LABEL_6:
 
-  return a5;
+  return height;
 }
 
-- (int)getFrameSizesFromOptions:(id)a3
+- (int)getFrameSizesFromOptions:(id)options
 {
-  v4 = objc_msgSend_objectForKeyedSubscript_(a3, a2, *MEMORY[0x29EDC0298]);
+  v4 = objc_msgSend_objectForKeyedSubscript_(options, a2, *MEMORY[0x29EDC0298]);
   v6 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"sizes");
 
   if (!v6)
@@ -826,9 +826,9 @@ LABEL_11:
   return v19;
 }
 
-- (int)getFPBuffersSizeFromOptions:(id)a3
+- (int)getFPBuffersSizeFromOptions:(id)options
 {
-  v4 = objc_msgSend_objectForKeyedSubscript_(a3, a2, @"Patterns");
+  v4 = objc_msgSend_objectForKeyedSubscript_(options, a2, @"Patterns");
   v7 = v4;
   if (!v4)
   {
@@ -959,14 +959,14 @@ LABEL_28:
   return v25;
 }
 
-- (int)prepareToProcess:(unsigned int)a3
+- (int)prepareToProcess:(unsigned int)process
 {
-  self->_processingType = a3;
+  self->_processingType = process;
   objc_msgSend_getFPBuffersSizeFromOptions_(self, a2, self->_options);
   objc_msgSend_getFrameSizesFromOptions_(self, v5, self->_options);
-  if (a3 - 1 > 1)
+  if (process - 1 > 1)
   {
-    if (!a3 && (self->_gTopLevelDisparityWidth != 400 || self->_gTopLevelDisparityHeight != 300))
+    if (!process && (self->_gTopLevelDisparityWidth != 400 || self->_gTopLevelDisparityHeight != 300))
     {
       sub_29579E728();
       return 1;
@@ -1379,15 +1379,15 @@ LABEL_9:
   return v57;
 }
 
-- (int)_populateImagePyramidFrom:(id)a3
+- (int)_populateImagePyramidFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v7 = objc_msgSend_commandQueue(self->_metalContext, v5, v6);
   v10 = objc_msgSend_commandBuffer(v7, v8, v9);
 
   if (v10)
   {
-    v12 = objc_msgSend_doImagePyramidWithCommandBuffer_in_tex_(self->_pyr_image, v11, v10, v4);
+    v12 = objc_msgSend_doImagePyramidWithCommandBuffer_in_tex_(self->_pyr_image, v11, v10, fromCopy);
     if (v12)
     {
       v26 = v12;
@@ -1422,13 +1422,13 @@ LABEL_9:
   return v26;
 }
 
-- (int)_populateImagePyramidFrom420fPixelBuffer:(__CVBuffer *)a3 cropRect:(CGRect)a4
+- (int)_populateImagePyramidFrom420fPixelBuffer:(__CVBuffer *)buffer cropRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = objc_msgSend_commandQueue(self->_metalContext, a2, a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = objc_msgSend_commandQueue(self->_metalContext, a2, buffer);
   v13 = objc_msgSend_commandBuffer(v10, v11, v12);
 
   if (!v13)
@@ -1438,7 +1438,7 @@ LABEL_9:
     goto LABEL_18;
   }
 
-  v15 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v14, a3, 10, 23, 0);
+  v15 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v14, buffer, 10, 23, 0);
   if (!v15)
   {
     sub_29579F7D4();
@@ -1448,7 +1448,7 @@ LABEL_28:
   }
 
   v17 = v15;
-  v18 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v16, a3, 30, 23, 1);
+  v18 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v16, buffer, 30, 23, 1);
   if (!v18)
   {
     sub_29579F744(v17);
@@ -1642,15 +1642,15 @@ LABEL_8:
   return v45;
 }
 
-- (int)mapPixelTypeNameToDirection:(id)a3
+- (int)mapPixelTypeNameToDirection:(id)direction
 {
-  v4 = a3;
+  directionCopy = direction;
   if (qword_2A1389908 != -1)
   {
     sub_29579FD00();
   }
 
-  v5 = objc_msgSend_objectForKeyedSubscript_(qword_2A1389900, v3, v4);
+  v5 = objc_msgSend_objectForKeyedSubscript_(qword_2A1389900, v3, directionCopy);
   v8 = v5;
   if (v5)
   {
@@ -1770,19 +1770,19 @@ LABEL_25:
   return PatternDetailsFrom_outTypeName_outCountX_outCountY_outStartX_outStartY_outStepX_outStepY;
 }
 
-- (int)_downscale2X420fTBGRAEqualWithCommandBuffer:(id)a3 in_Ytex:(id)a4 in_UVtex:(id)a5 out_tex:(id)a6 cropRect:(CGRect)a7
+- (int)_downscale2X420fTBGRAEqualWithCommandBuffer:(id)buffer in_Ytex:(id)ytex in_UVtex:(id)vtex out_tex:(id)out_tex cropRect:(CGRect)rect
 {
-  width = a7.size.width;
-  height = a7.size.height;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  width = rect.size.width;
+  height = rect.size.height;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  ytexCopy = ytex;
+  vtexCopy = vtex;
+  out_texCopy = out_tex;
   v16 = self->_pipelineStates[1];
-  v17 = a3;
-  v20 = objc_msgSend_width(v14, v18, v19);
-  v23 = objc_msgSend_height(v14, v21, v22);
+  bufferCopy = buffer;
+  v20 = objc_msgSend_width(vtexCopy, v18, v19);
+  v23 = objc_msgSend_height(vtexCopy, v21, v22);
   v24 = x;
   *v25.i32 = v24 * v20;
   v26 = y;
@@ -1791,19 +1791,19 @@ LABEL_25:
   v28.f64[1] = height;
   v25.i32[1] = v27;
   v56 = vcvt_hight_f32_f64(v25, v28);
-  v31 = objc_msgSend_computeCommandEncoder(v17, v29, v30);
+  v31 = objc_msgSend_computeCommandEncoder(bufferCopy, v29, v30);
 
   if (v31)
   {
     objc_msgSend_setComputePipelineState_(v31, v32, v16);
-    objc_msgSend_setTexture_atIndex_(v31, v33, v13, 0);
-    objc_msgSend_setTexture_atIndex_(v31, v34, v14, 1);
-    objc_msgSend_setTexture_atIndex_(v31, v35, v15, 2);
+    objc_msgSend_setTexture_atIndex_(v31, v33, ytexCopy, 0);
+    objc_msgSend_setTexture_atIndex_(v31, v34, vtexCopy, 1);
+    objc_msgSend_setTexture_atIndex_(v31, v35, out_texCopy, 2);
     objc_msgSend_setBytes_length_atIndex_(v31, v36, &v56, 16, 0);
     v39 = objc_msgSend_threadExecutionWidth(v16, v37, v38);
     v42 = objc_msgSend_maxTotalThreadsPerThreadgroup(v16, v40, v41) / v39;
-    v55[0] = objc_msgSend_width(v15, v43, v44);
-    v55[1] = objc_msgSend_height(v15, v45, v46);
+    v55[0] = objc_msgSend_width(out_texCopy, v43, v44);
+    v55[1] = objc_msgSend_height(out_texCopy, v45, v46);
     v55[2] = 1;
     v54[0] = v39;
     v54[1] = v42;
@@ -1822,7 +1822,7 @@ LABEL_25:
   return v50;
 }
 
-- (int)_computeDisparityQuality:(int *)a3
+- (int)_computeDisparityQuality:(int *)quality
 {
   if (!self->_segmentationTexture)
   {
@@ -1830,7 +1830,7 @@ LABEL_25:
     return -12782;
   }
 
-  v5 = objc_msgSend_commandQueue(self->_metalContext, a2, a3);
+  v5 = objc_msgSend_commandQueue(self->_metalContext, a2, quality);
   v8 = objc_msgSend_commandBuffer(v5, v6, v7);
 
   if (!v8)
@@ -1913,7 +1913,7 @@ LABEL_25:
 
   v56 = objc_msgSend_width(v18, v50, v51);
   v59 = ((objc_msgSend_height(v18, v57, v58) * v56) * 0.05);
-  *a3 = *v52 >= v59 && v52[1] >= v59 && vabds_f32(v53, v55) >= 0.1;
+  *quality = *v52 >= v59 && v52[1] >= v59 && vabds_f32(v53, v55) >= 0.1;
 
   return 0;
 }

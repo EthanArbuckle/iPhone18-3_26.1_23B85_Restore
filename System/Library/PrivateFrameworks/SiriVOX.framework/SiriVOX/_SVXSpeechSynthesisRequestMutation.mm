@@ -1,5 +1,5 @@
 @interface _SVXSpeechSynthesisRequestMutation
-- (_SVXSpeechSynthesisRequestMutation)initWithBaseModel:(id)a3;
+- (_SVXSpeechSynthesisRequestMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -27,60 +27,60 @@ LABEL_8:
         if ((mutationFlags & 8) != 0)
         {
 LABEL_9:
-          v9 = self->_speakableText;
+          speakableText = self->_speakableText;
 LABEL_13:
-          v10 = v9;
+          v10 = speakableText;
           if ((*&self->_mutationFlags & 0x10) != 0)
           {
-            v11 = self->_speakableContext;
+            speakableContext = self->_speakableContext;
           }
 
           else
           {
-            v11 = [(SVXSpeechSynthesisRequest *)self->_baseModel speakableContext];
+            speakableContext = [(SVXSpeechSynthesisRequest *)self->_baseModel speakableContext];
           }
 
-          v12 = v11;
+          v12 = speakableContext;
           if ((*&self->_mutationFlags & 0x20) != 0)
           {
-            v13 = self->_localizationKey;
+            localizationKey = self->_localizationKey;
           }
 
           else
           {
-            v13 = [(SVXSpeechSynthesisRequest *)self->_baseModel localizationKey];
+            localizationKey = [(SVXSpeechSynthesisRequest *)self->_baseModel localizationKey];
           }
 
-          v14 = v13;
+          v14 = localizationKey;
           if ((*&self->_mutationFlags & 0x40) != 0)
           {
-            v15 = self->_presynthesizedAudio;
+            presynthesizedAudio = self->_presynthesizedAudio;
           }
 
           else
           {
-            v15 = [(SVXSpeechSynthesisRequest *)self->_baseModel presynthesizedAudio];
+            presynthesizedAudio = [(SVXSpeechSynthesisRequest *)self->_baseModel presynthesizedAudio];
           }
 
-          v16 = v15;
+          v16 = presynthesizedAudio;
           if ((*&self->_mutationFlags & 0x80000000) != 0)
           {
-            v17 = self->_streamID;
+            streamID = self->_streamID;
           }
 
           else
           {
-            v17 = [(SVXSpeechSynthesisRequest *)self->_baseModel streamID];
+            streamID = [(SVXSpeechSynthesisRequest *)self->_baseModel streamID];
           }
 
-          v18 = v17;
-          v6 = [[SVXSpeechSynthesisRequest alloc] initWithPriority:priority options:options speakableText:v10 speakableContext:v12 localizationKey:v14 presynthesizedAudio:v16 streamID:v17];
+          v18 = streamID;
+          v6 = [[SVXSpeechSynthesisRequest alloc] initWithPriority:priority options:options speakableText:v10 speakableContext:v12 localizationKey:v14 presynthesizedAudio:v16 streamID:streamID];
 
           goto LABEL_26;
         }
 
 LABEL_12:
-        v9 = [(SVXSpeechSynthesisRequest *)self->_baseModel speakableText];
+        speakableText = [(SVXSpeechSynthesisRequest *)self->_baseModel speakableText];
         goto LABEL_13;
       }
     }
@@ -112,16 +112,16 @@ LABEL_26:
   return v6;
 }
 
-- (_SVXSpeechSynthesisRequestMutation)initWithBaseModel:(id)a3
+- (_SVXSpeechSynthesisRequestMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SVXSpeechSynthesisRequestMutation;
   v6 = [(_SVXSpeechSynthesisRequestMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

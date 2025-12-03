@@ -2,16 +2,16 @@
 - (NSArray)failureTypes;
 - (SSErrorHandler)init;
 - (SSErrorHandlerDelegate)delegate;
-- (void)_handleMessage:(id)a3 fromServerConnection:(id)a4;
-- (void)_openSessionWithMessage:(id)a3;
-- (void)_reconnectToDaemonWithCompletionBlock:(id)a3;
+- (void)_handleMessage:(id)message fromServerConnection:(id)connection;
+- (void)_openSessionWithMessage:(id)message;
+- (void)_reconnectToDaemonWithCompletionBlock:(id)block;
 - (void)_sendDisconnectMessage;
 - (void)_tearDownConnections;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
-- (void)setFailureTypes:(id)a3;
-- (void)startWithCompletionBlock:(id)a3;
-- (void)stopWithCompletionBlock:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setFailureTypes:(id)types;
+- (void)startWithCompletionBlock:(id)block;
+- (void)stopWithCompletionBlock:(id)block;
 @end
 
 @implementation SSErrorHandler
@@ -114,7 +114,7 @@ id __30__SSErrorHandler_failureTypes__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -122,11 +122,11 @@ id __30__SSErrorHandler_failureTypes__block_invoke(uint64_t a1)
   v4[2] = __30__SSErrorHandler_setDelegate___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = delegate;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setFailureTypes:(id)a3
+- (void)setFailureTypes:(id)types
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -134,7 +134,7 @@ id __30__SSErrorHandler_failureTypes__block_invoke(uint64_t a1)
   v4[2] = __34__SSErrorHandler_setFailureTypes___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = types;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -152,7 +152,7 @@ uint64_t __34__SSErrorHandler_setFailureTypes___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)startWithCompletionBlock:(id)a3
+- (void)startWithCompletionBlock:(id)block
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -160,7 +160,7 @@ uint64_t __34__SSErrorHandler_setFailureTypes___block_invoke(uint64_t result)
   v4[2] = __43__SSErrorHandler_startWithCompletionBlock___block_invoke;
   v4[3] = &unk_1E84AF318;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = block;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -211,7 +211,7 @@ uint64_t __43__SSErrorHandler_startWithCompletionBlock___block_invoke_3(uint64_t
   return [v5 _handleMessage:a2 fromServerConnection:a3];
 }
 
-- (void)stopWithCompletionBlock:(id)a3
+- (void)stopWithCompletionBlock:(id)block
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -219,7 +219,7 @@ uint64_t __43__SSErrorHandler_startWithCompletionBlock___block_invoke_3(uint64_t
   v4[2] = __42__SSErrorHandler_stopWithCompletionBlock___block_invoke;
   v4[3] = &unk_1E84AF318;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = block;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -235,18 +235,18 @@ void __42__SSErrorHandler_stopWithCompletionBlock___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_handleMessage:(id)a3 fromServerConnection:(id)a4
+- (void)_handleMessage:(id)message fromServerConnection:(id)connection
 {
-  xpc_retain(a4);
-  xpc_retain(a3);
+  xpc_retain(connection);
+  xpc_retain(message);
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__SSErrorHandler__handleMessage_fromServerConnection___block_invoke;
   block[3] = &unk_1E84AD640;
-  block[4] = a3;
+  block[4] = message;
   block[5] = self;
-  block[6] = a4;
+  block[6] = connection;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -263,13 +263,13 @@ void __54__SSErrorHandler__handleMessage_fromServerConnection___block_invoke(uin
   xpc_release(v2);
 }
 
-- (void)_openSessionWithMessage:(id)a3
+- (void)_openSessionWithMessage:(id)message
 {
   v5 = objc_alloc_init(SSErrorHandlerSession);
   [(SSErrorHandlerSession *)v5 _setControlConnection:self->_controlConnection];
-  [(SSErrorHandlerSession *)v5 _setSessionID:xpc_dictionary_get_int64(a3, "1")];
+  [(SSErrorHandlerSession *)v5 _setSessionID:xpc_dictionary_get_int64(message, "1")];
   objc_opt_class();
-  v6 = SSXPCDictionaryCopyCFObjectWithClass(a3, "2");
+  v6 = SSXPCDictionaryCopyCFObjectWithClass(message, "2");
   [(SSErrorHandlerSession *)v5 _setErrorProperties:v6];
 
   delegate = self->_delegate;
@@ -292,7 +292,7 @@ void __54__SSErrorHandler__handleMessage_fromServerConnection___block_invoke(uin
   }
 }
 
-- (void)_reconnectToDaemonWithCompletionBlock:(id)a3
+- (void)_reconnectToDaemonWithCompletionBlock:(id)block
 {
   v26 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -303,15 +303,15 @@ void __54__SSErrorHandler__handleMessage_fromServerConnection___block_invoke(uin
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
     if (os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -343,9 +343,9 @@ void __54__SSErrorHandler__handleMessage_fromServerConnection___block_invoke(uin
   v18 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v18, "0", 96);
   SSXPCDictionarySetCFObject(v18, "2", self->_failureTypes);
-  v19 = [(SSXPCConnection *)self->_observerConnection createXPCEndpoint];
-  xpc_dictionary_set_value(v18, "1", v19);
-  xpc_release(v19);
+  createXPCEndpoint = [(SSXPCConnection *)self->_observerConnection createXPCEndpoint];
+  xpc_dictionary_set_value(v18, "1", createXPCEndpoint);
+  xpc_release(createXPCEndpoint);
   v20 = [SSWeakReference weakReferenceWithObject:self];
   controlConnection = self->_controlConnection;
   v23[0] = MEMORY[0x1E69E9820];
@@ -353,7 +353,7 @@ void __54__SSErrorHandler__handleMessage_fromServerConnection___block_invoke(uin
   v23[2] = __56__SSErrorHandler__reconnectToDaemonWithCompletionBlock___block_invoke;
   v23[3] = &unk_1E84AFB40;
   v23[4] = v20;
-  v23[5] = a3;
+  v23[5] = block;
   [(SSXPCConnection *)controlConnection sendMessage:v18 withReply:v23];
   xpc_release(v18);
 }
@@ -412,7 +412,7 @@ LABEL_11:
 
 - (void)_sendDisconnectMessage
 {
-  v3 = [(SSErrorHandler *)self delegate];
+  delegate = [(SSErrorHandler *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     delegateQueue = self->_delegateQueue;
@@ -420,7 +420,7 @@ LABEL_11:
     v5[1] = 3221225472;
     v5[2] = __40__SSErrorHandler__sendDisconnectMessage__block_invoke;
     v5[3] = &unk_1E84AC458;
-    v5[4] = v3;
+    v5[4] = delegate;
     v5[5] = self;
     dispatch_async(delegateQueue, v5);
   }

@@ -1,29 +1,29 @@
 @interface NWNetworkAdviceUpdate
-- (BOOL)isEqual:(id)a3;
-- (NWNetworkAdviceUpdate)initWithCoder:(id)a3;
-- (NWNetworkAdviceUpdate)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NWNetworkAdviceUpdate)initWithCoder:(id)coder;
+- (NWNetworkAdviceUpdate)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NWNetworkAdviceUpdate
 
-- (NWNetworkAdviceUpdate)initWithCoder:(id)a3
+- (NWNetworkAdviceUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = NWNetworkAdviceUpdate;
   v5 = [(NWNetworkAdviceUpdate *)&v13 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v5->_level = [v4 decodeIntegerForKey:@"level"];
+    v5->_level = [coderCopy decodeIntegerForKey:@"level"];
     v7 = objc_alloc(MEMORY[0x277CBEB98]);
     v8 = objc_opt_class();
     v9 = [v7 initWithObjects:{v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"applications"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"applications"];
     applications = v5->_applications;
     v5->_applications = v10;
 
@@ -33,13 +33,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  [v6 encodeInteger:-[NWNetworkAdviceUpdate level](self forKey:{"level"), @"level"}];
-  v5 = [(NWNetworkAdviceUpdate *)self applications];
-  [v6 encodeObject:v5 forKey:@"applications"];
+  [coderCopy encodeInteger:-[NWNetworkAdviceUpdate level](self forKey:{"level"), @"level"}];
+  applications = [(NWNetworkAdviceUpdate *)self applications];
+  [coderCopy encodeObject:applications forKey:@"applications"];
 
   objc_autoreleasePoolPop(v4);
 }
@@ -49,12 +49,12 @@
   v21 = *MEMORY[0x277D85DE8];
   v3 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:10];
   [v3 appendFormat:@"level: %ld", -[NWNetworkAdviceUpdate level](self, "level")];
-  v4 = [(NWNetworkAdviceUpdate *)self applications];
+  applications = [(NWNetworkAdviceUpdate *)self applications];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [applications countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -65,17 +65,17 @@
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(applications);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 bundleIdentifier];
-        v11 = [v9 state];
-        v12 = [v9 reason];
-        [v3 appendFormat:@", (%@, %ld, %@)", v10, v11, v12];
+        bundleIdentifier = [v9 bundleIdentifier];
+        state = [v9 state];
+        reason = [v9 reason];
+        [v3 appendFormat:@", (%@, %ld, %@)", bundleIdentifier, state, reason];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [applications countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -88,16 +88,16 @@
   return v13;
 }
 
-- (NWNetworkAdviceUpdate)initWithDictionary:(id)a3
+- (NWNetworkAdviceUpdate)initWithDictionary:(id)dictionary
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = NWNetworkAdviceUpdate;
   v5 = [(NWNetworkAdviceUpdate *)&v27 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"detail"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"detail"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -105,9 +105,9 @@
     }
 
     v21 = v5;
-    v7 = [v4 objectForKeyedSubscript:@"states"];
-    v22 = v4;
-    v8 = [v4 objectForKeyedSubscript:@"reasons"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"states"];
+    v22 = dictionaryCopy;
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"reasons"];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -167,19 +167,19 @@
     v5 = v21;
     [(NWNetworkAdviceUpdate *)v21 setApplications:v12];
 
-    v4 = v22;
+    dictionaryCopy = v22;
   }
 
   v19 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
-    LOBYTE(v7) = 1;
+    LOBYTE(applications) = 1;
   }
 
   else
@@ -187,57 +187,57 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(NWNetworkAdviceUpdate *)self level];
-      if (v6 == [(NWNetworkAdviceUpdate *)v5 level])
+      v5 = equalCopy;
+      level = [(NWNetworkAdviceUpdate *)self level];
+      if (level == [(NWNetworkAdviceUpdate *)v5 level])
       {
-        v7 = [(NWNetworkAdviceUpdate *)self applications];
-        if (v7)
+        applications = [(NWNetworkAdviceUpdate *)self applications];
+        if (applications)
         {
-          v8 = [(NWNetworkAdviceUpdate *)v5 applications];
+          applications2 = [(NWNetworkAdviceUpdate *)v5 applications];
 
-          if (v8)
+          if (applications2)
           {
             v9 = objc_alloc(MEMORY[0x277CBEB98]);
-            v10 = [(NWNetworkAdviceUpdate *)self applications];
-            v11 = [v9 initWithArray:v10];
+            applications3 = [(NWNetworkAdviceUpdate *)self applications];
+            v11 = [v9 initWithArray:applications3];
 
-            v7 = objc_alloc(MEMORY[0x277CBEB98]);
-            v12 = [(NWNetworkAdviceUpdate *)v5 applications];
-            v13 = [v7 initWithArray:v12];
+            applications = objc_alloc(MEMORY[0x277CBEB98]);
+            applications4 = [(NWNetworkAdviceUpdate *)v5 applications];
+            v13 = [applications initWithArray:applications4];
 
-            LOBYTE(v7) = [v11 isEqualToSet:v13];
+            LOBYTE(applications) = [v11 isEqualToSet:v13];
           }
 
           else
           {
-            LOBYTE(v7) = 0;
+            LOBYTE(applications) = 0;
           }
         }
 
-        v14 = [(NWNetworkAdviceUpdate *)self applications];
-        if (![v14 count])
+        applications5 = [(NWNetworkAdviceUpdate *)self applications];
+        if (![applications5 count])
         {
-          v15 = [(NWNetworkAdviceUpdate *)v5 applications];
-          v16 = [v15 count] == 0;
+          applications6 = [(NWNetworkAdviceUpdate *)v5 applications];
+          v16 = [applications6 count] == 0;
 
-          LOBYTE(v7) = v16 | v7;
+          LOBYTE(applications) = v16 | applications;
         }
       }
 
       else
       {
-        LOBYTE(v7) = 0;
+        LOBYTE(applications) = 0;
       }
     }
 
     else
     {
-      LOBYTE(v7) = 0;
+      LOBYTE(applications) = 0;
     }
   }
 
-  return v7 & 1;
+  return applications & 1;
 }
 
 - (unint64_t)hash
@@ -248,7 +248,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(NWNetworkAdviceUpdate);
   v4->_level = self->_level;

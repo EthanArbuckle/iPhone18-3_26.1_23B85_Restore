@@ -1,18 +1,18 @@
 @interface CKNoAnimationSearchController
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
 @end
 
 @implementation CKNoAnimationSearchController
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   v5 = [[CKNoAnimationSearchFieldAnimator alloc] initWithAppearing:1];
 
   return v5;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   v3 = [[CKNoAnimationSearchFieldAnimator alloc] initWithAppearing:0];
 

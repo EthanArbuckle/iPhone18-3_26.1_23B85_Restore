@@ -6,9 +6,9 @@
 
 + (id)samplingDateAsString
 {
-  v2 = [MEMORY[0x1E695DF00] date];
-  v3 = [objc_opt_class() dateFormatter];
-  v4 = [v3 stringFromDate:v2];
+  date = [MEMORY[0x1E695DF00] date];
+  dateFormatter = [objc_opt_class() dateFormatter];
+  v4 = [dateFormatter stringFromDate:date];
 
   return v4;
 }

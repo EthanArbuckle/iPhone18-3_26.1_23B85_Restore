@@ -1,14 +1,14 @@
 @interface VUIAppInstallerViewController
 - (VUIAppInstallerViewController)init;
-- (VUIAppInstallerViewController)initWithInstallable:(id)a3 punchoutURL:(id)a4;
-- (VUIAppInstallerViewController)initWithVUIInstallable:(id)a3 punchoutURL:(id)a4;
+- (VUIAppInstallerViewController)initWithInstallable:(id)installable punchoutURL:(id)l;
+- (VUIAppInstallerViewController)initWithVUIInstallable:(id)installable punchoutURL:(id)l;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_beginInstallingApp;
-- (void)_dismissAppInstallWithCompletion:(id)a3;
-- (void)_finishInstallationWithCompletion:(id)a3;
+- (void)_dismissAppInstallWithCompletion:(id)completion;
+- (void)_finishInstallationWithCompletion:(id)completion;
 - (void)_initConfirmation;
-- (void)_updateWithInstallProgress:(double)a3;
-- (void)beginInstallingAppWithProgressHandler:(id)a3 completion:(id)a4;
+- (void)_updateWithInstallProgress:(double)progress;
+- (void)beginInstallingAppWithProgressHandler:(id)handler completion:(id)completion;
 - (void)loadView;
 @end
 
@@ -21,11 +21,11 @@
   return 0;
 }
 
-- (VUIAppInstallerViewController)initWithInstallable:(id)a3 punchoutURL:(id)a4
+- (VUIAppInstallerViewController)initWithInstallable:(id)installable punchoutURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  installableCopy = installable;
+  lCopy = l;
+  if (installableCopy)
   {
     v14.receiver = self;
     v14.super_class = VUIAppInstallerViewController;
@@ -33,32 +33,32 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_installable, a3);
+      objc_storeStrong(&v9->_installable, installable);
       v10->_displayAppStoreLink = 1;
       v11 = objc_alloc_init(VUIASDDialogObserver);
       [(VUIASDDialogObserver *)v11 setPresenterViewController:v10];
       [(VUIAppInstallerViewController *)v10 setDialogObserver:v11];
-      [(VUIAppInstallerViewController *)v10 setPunchoutURL:v8];
+      [(VUIAppInstallerViewController *)v10 setPunchoutURL:lCopy];
     }
 
     self = v10;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"installable must be non-nil"];
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (VUIAppInstallerViewController)initWithVUIInstallable:(id)a3 punchoutURL:(id)a4
+- (VUIAppInstallerViewController)initWithVUIInstallable:(id)installable punchoutURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  installableCopy = installable;
+  lCopy = l;
+  if (installableCopy)
   {
     v14.receiver = self;
     v14.super_class = VUIAppInstallerViewController;
@@ -66,32 +66,32 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_vuiInstallable, a3);
+      objc_storeStrong(&v9->_vuiInstallable, installable);
       v10->_displayAppStoreLink = 1;
       v11 = objc_alloc_init(VUIASDDialogObserver);
       [(VUIASDDialogObserver *)v11 setPresenterViewController:v10];
       [(VUIAppInstallerViewController *)v10 setDialogObserver:v11];
-      [(VUIAppInstallerViewController *)v10 setPunchoutURL:v8];
+      [(VUIAppInstallerViewController *)v10 setPunchoutURL:lCopy];
     }
 
     self = v10;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"installable must be non-nil"];
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (void)_initConfirmation
 {
   v104 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69E14D0] defaultAppLibrary];
-  v4 = [v3 allAppBundleIdentifiers];
+  defaultAppLibrary = [MEMORY[0x1E69E14D0] defaultAppLibrary];
+  allAppBundleIdentifiers = [defaultAppLibrary allAppBundleIdentifiers];
 
   v5 = _os_feature_enabled_impl();
   v6 = &OBJC_IVAR___VUIAppInstallerViewController__installable;
@@ -119,7 +119,7 @@
           objc_enumerationMutation(v7);
         }
 
-        if ([v4 containsObject:*(*(&v98 + 1) + 8 * v10)])
+        if ([allAppBundleIdentifiers containsObject:*(*(&v98 + 1) + 8 * v10)])
         {
           v11 = 1;
           goto LABEL_13;
@@ -145,7 +145,7 @@ LABEL_13:
   NSLog(&cfstr_AppInstallatio.isa, v11);
   v82 = self->_confirmationTitle;
   v12 = self->_confirmationBody;
-  v81 = self->_confirmationInstallButtonTitle;
+  localizedUppercaseString = self->_confirmationInstallButtonTitle;
   v78 = self->_localizedContentTitle;
   v13 = self->_updateBody;
   v80 = self->_updateTitle;
@@ -159,12 +159,12 @@ LABEL_13:
     [(VUIAppInstallerViewController *)self installable];
   }
   v14 = ;
-  v79 = [v14 name];
+  name = [v14 name];
 
   if (![(NSString *)v82 length])
   {
-    v15 = [MEMORY[0x1E69DC938] currentDevice];
-    v16 = [v15 userInterfaceIdiom] == 2;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    v16 = [currentDevice userInterfaceIdiom] == 2;
 
     v17 = MEMORY[0x1E696AEC0];
     v18 = +[VUILocalizationManager sharedInstance];
@@ -186,7 +186,7 @@ LABEL_13:
     }
 
     v22 = [v18 localizedStringForKey:v21];
-    v23 = [v17 stringWithValidatedFormat:v22 validFormatSpecifiers:@"%@" error:0, v79];
+    v23 = [v17 stringWithValidatedFormat:v22 validFormatSpecifiers:@"%@" error:0, name];
 
     v82 = v23;
   }
@@ -205,13 +205,13 @@ LABEL_13:
         v24 = MEMORY[0x1E696AEC0];
         v25 = +[VUILocalizationManager sharedInstance];
         v26 = [v25 localizedStringForKey:@"APP_UPDATE_ALERT_MESSAGE_FORMAT"];
-        v77 = [v24 stringWithValidatedFormat:v26 validFormatSpecifiers:@"%@ %@" error:0, v78, v79];
+        v77 = [v24 stringWithValidatedFormat:v26 validFormatSpecifiers:@"%@ %@" error:0, v78, name];
       }
 
       else
       {
-        v27 = [MEMORY[0x1E69DC938] currentDevice];
-        v28 = [v27 userInterfaceIdiom] == 2;
+        currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+        v28 = [currentDevice2 userInterfaceIdiom] == 2;
 
         v29 = MEMORY[0x1E696AEC0];
         v30 = +[VUILocalizationManager sharedInstance];
@@ -226,7 +226,7 @@ LABEL_13:
           [v30 localizedStringForKey:@"APP_INSTALL_ALERT_MESSAGE_FORMAT_IOS"];
         }
         v26 = ;
-        v77 = [v29 stringWithValidatedFormat:v26 validFormatSpecifiers:@"%@ %@" error:0, v78, v79];
+        v77 = [v29 stringWithValidatedFormat:v26 validFormatSpecifiers:@"%@ %@" error:0, v78, name];
       }
 
       v12 = v25;
@@ -238,10 +238,10 @@ LABEL_13:
     }
   }
 
-  if (![(NSString *)v81 length])
+  if (![(NSString *)localizedUppercaseString length])
   {
-    v31 = [MEMORY[0x1E69DC938] currentDevice];
-    v32 = [v31 userInterfaceIdiom] == 2;
+    currentDevice3 = [MEMORY[0x1E69DC938] currentDevice];
+    v32 = [currentDevice3 userInterfaceIdiom] == 2;
 
     v33 = +[VUILocalizationManager sharedInstance];
     v34 = v33;
@@ -258,7 +258,7 @@ LABEL_13:
       }
       v35 = ;
 
-      v81 = v35;
+      localizedUppercaseString = v35;
     }
 
     else
@@ -275,7 +275,7 @@ LABEL_13:
 
       v37 = [v33 localizedStringForKey:v36];
 
-      v81 = [v37 localizedUppercaseString];
+      localizedUppercaseString = [v37 localizedUppercaseString];
       v34 = v37;
     }
   }
@@ -303,7 +303,7 @@ LABEL_13:
       }
 
       v42 = [(NSString *)v39 localizedStringForKey:v41];
-      v76 = [v38 stringWithValidatedFormat:v42 validFormatSpecifiers:@"%@ %@" error:0, v78, v79];
+      v76 = [v38 stringWithValidatedFormat:v42 validFormatSpecifiers:@"%@ %@" error:0, v78, name];
 
       v13 = v40;
     }
@@ -319,14 +319,14 @@ LABEL_13:
     v43 = MEMORY[0x1E696AEC0];
     v44 = +[VUILocalizationManager sharedInstance];
     v45 = [v44 localizedStringForKey:@"APP_INSTALL_PAGE_TITLE_FORMAT"];
-    v46 = [v43 stringWithValidatedFormat:v45 validFormatSpecifiers:@"%@" error:0, v79];
+    v46 = [v43 stringWithValidatedFormat:v45 validFormatSpecifiers:@"%@" error:0, name];
 
     if (v11)
     {
       v47 = MEMORY[0x1E696AEC0];
       v48 = +[VUILocalizationManager sharedInstance];
       v49 = [v48 localizedStringForKey:@"APP_INSTALL_PAGE_UPDATE_TITLE_FORMAT"];
-      v80 = [v47 stringWithValidatedFormat:v49 validFormatSpecifiers:@"%@" error:0, v79];
+      v80 = [v47 stringWithValidatedFormat:v49 validFormatSpecifiers:@"%@" error:0, name];
     }
 
     else
@@ -340,8 +340,8 @@ LABEL_13:
   v52 = v51;
   if (v50)
   {
-    v53 = [(VUIAppInstallerViewController *)self vuiInstallable];
-    v54 = [(VUIAppInstallConfirmationViewController *)v52 initWithVUIInstallable:v53];
+    vuiInstallable = [(VUIAppInstallerViewController *)self vuiInstallable];
+    v54 = [(VUIAppInstallConfirmationViewController *)v52 initWithVUIInstallable:vuiInstallable];
     confirmationController = self->_confirmationController;
     self->_confirmationController = v54;
   }
@@ -349,25 +349,25 @@ LABEL_13:
   else
   {
     v56 = [(VUIAppInstallConfirmationViewController *)v51 initWithInstallable:self->_installable];
-    v53 = self->_confirmationController;
+    vuiInstallable = self->_confirmationController;
     self->_confirmationController = v56;
   }
 
-  v57 = [(VUIAppInstallerViewController *)self confirmationController];
-  [v57 setTitle:v82];
+  confirmationController = [(VUIAppInstallerViewController *)self confirmationController];
+  [confirmationController setTitle:v82];
 
-  v58 = [(VUIAppInstallerViewController *)self confirmationController];
-  [v58 setMessage:v77];
+  confirmationController2 = [(VUIAppInstallerViewController *)self confirmationController];
+  [confirmationController2 setMessage:v77];
 
-  v59 = [(VUIAppInstallerViewController *)self confirmationController];
-  v60 = [v59 actionButton];
-  [v60 setTitle:v81 forState:0];
+  confirmationController3 = [(VUIAppInstallerViewController *)self confirmationController];
+  actionButton = [confirmationController3 actionButton];
+  [actionButton setTitle:localizedUppercaseString forState:0];
 
-  v61 = [(VUIAppInstallerViewController *)self confirmationController];
-  [v61 setUpdateTitle:v80];
+  confirmationController4 = [(VUIAppInstallerViewController *)self confirmationController];
+  [confirmationController4 setUpdateTitle:v80];
 
-  v62 = [(VUIAppInstallerViewController *)self confirmationController];
-  [v62 setUpdateMessage:v76];
+  confirmationController5 = [(VUIAppInstallerViewController *)self confirmationController];
+  [confirmationController5 setUpdateMessage:v76];
 
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -392,8 +392,8 @@ LABEL_13:
   v91[3] = &unk_1E872E4B8;
   objc_copyWeak(&v92, &location);
   [(VUIAppInstallConfirmationViewController *)v66 setActionHandler:v91];
-  v67 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v67 userInterfaceIdiom] == 2)
+  currentDevice4 = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice4 userInterfaceIdiom] == 2)
   {
     displayAppStoreLink = self->_displayAppStoreLink;
 
@@ -403,14 +403,14 @@ LABEL_13:
       from = 0;
       if (_os_feature_enabled_impl())
       {
-        v69 = [(VUIAppInstallerViewController *)self vuiInstallable];
-        objc_storeWeak(&v89, v69);
+        vuiInstallable2 = [(VUIAppInstallerViewController *)self vuiInstallable];
+        objc_storeWeak(&v89, vuiInstallable2);
       }
 
       else
       {
-        v69 = [(VUIAppInstallerViewController *)self installable];
-        objc_storeWeak(&from, v69);
+        vuiInstallable2 = [(VUIAppInstallerViewController *)self installable];
+        objc_storeWeak(&from, vuiInstallable2);
       }
 
       v70 = self->_confirmationController;
@@ -434,8 +434,8 @@ LABEL_13:
   {
   }
 
-  v71 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v71 userInterfaceIdiom] == 2)
+  currentDevice5 = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice5 userInterfaceIdiom] == 2)
   {
     displaySecondaryLink = self->_displaySecondaryLink;
 
@@ -461,9 +461,9 @@ LABEL_13:
   v74 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v102 count:1];
   [(VUIAppInstallerViewController *)self setViewControllers:v74];
 
-  v75 = [(VUIAppInstallerViewController *)self navigationBar];
-  [v75 _setHidesShadow:1];
-  [v75 _setDisableBlurTinting:1];
+  navigationBar = [(VUIAppInstallerViewController *)self navigationBar];
+  [navigationBar _setHidesShadow:1];
+  [navigationBar _setDisableBlurTinting:1];
 
   objc_destroyWeak(&v92);
   objc_destroyWeak(&v96);
@@ -590,23 +590,23 @@ void __50__VUIAppInstallerViewController__initConfirmation__block_invoke_7(uint6
   v7.receiver = self;
   v7.super_class = VUIAppInstallerViewController;
   [(VUIAppInstallerViewController *)&v7 loadView];
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 != 2)
+  if (userInterfaceIdiom != 2)
   {
-    v5 = [(VUIAppInstallerViewController *)self view];
-    v6 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
-    [v5 setBackgroundColor:v6];
+    view = [(VUIAppInstallerViewController *)self view];
+    vui_primaryDynamicBackgroundColor = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
+    [view setBackgroundColor:vui_primaryDynamicBackgroundColor];
   }
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (!v4)
+  if (!userInterfaceIdiom)
   {
     return 2;
   }
@@ -616,10 +616,10 @@ void __50__VUIAppInstallerViewController__initConfirmation__block_invoke_7(uint6
   return [(VUIAppInstallerViewController *)&v6 supportedInterfaceOrientations];
 }
 
-- (void)beginInstallingAppWithProgressHandler:(id)a3 completion:(id)a4
+- (void)beginInstallingAppWithProgressHandler:(id)handler completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  completionCopy = completion;
   [(VUIAppInstallerViewController *)self _dismissAppInstallWithCompletion:0];
   progressBlock = self->_progressBlock;
   if (progressBlock)
@@ -633,15 +633,15 @@ void __50__VUIAppInstallerViewController__initConfirmation__block_invoke_7(uint6
     self->_completionBlock = 0;
   }
 
-  v10 = [MEMORY[0x1E69E14D0] defaultAppLibrary];
-  [v10 beginIgnoringAppLibraryChanges];
+  defaultAppLibrary = [MEMORY[0x1E69E14D0] defaultAppLibrary];
+  [defaultAppLibrary beginIgnoringAppLibraryChanges];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __82__VUIAppInstallerViewController_beginInstallingAppWithProgressHandler_completion___block_invoke;
   aBlock[3] = &unk_1E87363A8;
-  v20 = v7;
-  v11 = v7;
+  v20 = completionCopy;
+  v11 = completionCopy;
   v12 = _Block_copy(aBlock);
   v13 = self->_completionBlock;
   self->_completionBlock = v12;
@@ -652,8 +652,8 @@ void __50__VUIAppInstallerViewController__initConfirmation__block_invoke_7(uint6
   v17[2] = __82__VUIAppInstallerViewController_beginInstallingAppWithProgressHandler_completion___block_invoke_2;
   v17[3] = &unk_1E87363D0;
   v17[4] = self;
-  v18 = v6;
-  v14 = v6;
+  v18 = handlerCopy;
+  v14 = handlerCopy;
   v15 = _Block_copy(v17);
   v16 = self->_progressBlock;
   self->_progressBlock = v15;
@@ -711,17 +711,17 @@ uint64_t __82__VUIAppInstallerViewController_beginInstallingAppWithProgressHandl
   v4 = _Block_copy(v7);
   if (_os_feature_enabled_impl())
   {
-    v5 = +[VUIAppInstaller defaultAppInstaller];
+    defaultAppInstaller = +[VUIAppInstaller defaultAppInstaller];
     [(VUIAppInstallerViewController *)self vuiInstallable];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69E14C8] defaultAppInstaller];
+    defaultAppInstaller = [MEMORY[0x1E69E14C8] defaultAppInstaller];
     [(VUIAppInstallerViewController *)self installable];
   }
   v6 = ;
-  [v5 installAppForInstallable:v6 sceneIdentifier:0 progressHandler:v3 completion:v4];
+  [defaultAppInstaller installAppForInstallable:v6 sceneIdentifier:0 progressHandler:v3 completion:v4];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&v10);
@@ -988,23 +988,23 @@ void __52__VUIAppInstallerViewController__beginInstallingApp__block_invoke_3_99(
   }
 }
 
-- (void)_dismissAppInstallWithCompletion:(id)a3
+- (void)_dismissAppInstallWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(VUIAppInstallConfirmationViewController *)self->_confirmationController presentingViewController];
-  if (v5)
+  completionCopy = completion;
+  presentingViewController = [(VUIAppInstallConfirmationViewController *)self->_confirmationController presentingViewController];
+  if (presentingViewController)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __66__VUIAppInstallerViewController__dismissAppInstallWithCompletion___block_invoke;
     v7[3] = &unk_1E872D7E0;
-    v8 = v4;
-    [v5 dismissViewControllerAnimated:1 completion:v7];
+    v8 = completionCopy;
+    [presentingViewController dismissViewControllerAnimated:1 completion:v7];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
   confirmationController = self->_confirmationController;
@@ -1022,25 +1022,25 @@ uint64_t __66__VUIAppInstallerViewController__dismissAppInstallWithCompletion___
   return result;
 }
 
-- (void)_updateWithInstallProgress:(double)a3
+- (void)_updateWithInstallProgress:(double)progress
 {
-  if (a3 == 0.0)
+  if (progress == 0.0)
   {
     [(VUIAppInstallConfirmationViewController *)self->_confirmationController setInstallingState];
   }
 
-  v6 = [(VUIAppInstallConfirmationViewController *)self->_confirmationController lockup];
-  v5 = [v6 installView];
-  [v5 setInstallProgress:a3];
+  lockup = [(VUIAppInstallConfirmationViewController *)self->_confirmationController lockup];
+  installView = [lockup installView];
+  [installView setInstallProgress:progress];
 }
 
-- (void)_finishInstallationWithCompletion:(id)a3
+- (void)_finishInstallationWithCompletion:(id)completion
 {
   confirmationController = self->_confirmationController;
-  v4 = a3;
-  v6 = [(VUIAppInstallConfirmationViewController *)confirmationController lockup];
-  v5 = [v6 installView];
-  [v5 finishInstallationWithCompletion:v4];
+  completionCopy = completion;
+  lockup = [(VUIAppInstallConfirmationViewController *)confirmationController lockup];
+  installView = [lockup installView];
+  [installView finishInstallationWithCompletion:completionCopy];
 }
 
 void __52__VUIAppInstallerViewController__beginInstallingApp__block_invoke_3_99_cold_1(uint64_t a1, NSObject *a2)

@@ -6,10 +6,10 @@
 - (id)remoteObjectInterface;
 - (void)_activate;
 - (void)_invalidate;
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5;
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply;
 - (void)connectionEstablished;
 - (void)dealloc;
-- (void)getRemoteObjectProxyOnQueue:(id)a3;
+- (void)getRemoteObjectProxyOnQueue:(id)queue;
 - (void)interrupted;
 - (void)invalidated;
 - (void)onqueue_activate;
@@ -18,11 +18,11 @@
 - (void)onqueue_connectionInvalidated;
 - (void)onqueue_ensureConnectionEstablished;
 - (void)onqueue_ensureXPCStarted;
-- (void)onqueue_getRemoteObjectProxyOnQueue:(id)a3;
+- (void)onqueue_getRemoteObjectProxyOnQueue:(id)queue;
 - (void)onqueue_interrupted;
 - (void)onqueue_invalidate;
 - (void)onqueue_invalidated;
-- (void)setDispatchQueue:(id)a3;
+- (void)setDispatchQueue:(id)queue;
 @end
 
 @implementation SFXPCClient
@@ -33,8 +33,8 @@
   if (!self->_connection)
   {
     v3 = objc_alloc(MEMORY[0x1E696B0B8]);
-    v4 = [(SFXPCClient *)self machServiceName];
-    v5 = [v3 initWithMachServiceName:v4 options:0];
+    machServiceName = [(SFXPCClient *)self machServiceName];
+    v5 = [v3 initWithMachServiceName:machServiceName options:0];
     connection = self->_connection;
     self->_connection = v5;
 
@@ -44,11 +44,11 @@
     }
 
     [(NSXPCConnection *)self->_connection _setQueue:self->_dispatchQueue];
-    v7 = [(SFXPCClient *)self remoteObjectInterface];
-    [(NSXPCConnection *)self->_connection setRemoteObjectInterface:v7];
+    remoteObjectInterface = [(SFXPCClient *)self remoteObjectInterface];
+    [(NSXPCConnection *)self->_connection setRemoteObjectInterface:remoteObjectInterface];
 
-    v8 = [(SFXPCClient *)self exportedInterface];
-    [(NSXPCConnection *)self->_connection setExportedInterface:v8];
+    exportedInterface = [(SFXPCClient *)self exportedInterface];
+    [(NSXPCConnection *)self->_connection setExportedInterface:exportedInterface];
 
     [(NSXPCConnection *)self->_connection setExportedObject:self];
     objc_initWeak(&location, self);
@@ -115,9 +115,9 @@
   }
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   obj = self;
   objc_sync_enter(obj);
   if (obj->_activateCalled)
@@ -129,35 +129,35 @@
   else
   {
     dispatchQueue = obj->_dispatchQueue;
-    obj->_dispatchQueue = v4;
+    obj->_dispatchQueue = queueCopy;
 
     objc_sync_exit(obj);
   }
 }
 
-- (void)getRemoteObjectProxyOnQueue:(id)a3
+- (void)getRemoteObjectProxyOnQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__SFXPCClient_getRemoteObjectProxyOnQueue___block_invoke;
   v7[3] = &unk_1E788B210;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = queueCopy;
+  v6 = queueCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)onqueue_getRemoteObjectProxyOnQueue:(id)a3
+- (void)onqueue_getRemoteObjectProxyOnQueue:(id)queue
 {
-  v6 = a3;
+  queueCopy = queue;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (self->_activateCalled)
   {
     [(SFXPCClient *)self onqueue_ensureXPCStarted];
     v4 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:&__block_literal_global_25];
-    v6[2](v6, v4);
+    queueCopy[2](queueCopy, v4);
   }
 
   else
@@ -207,9 +207,9 @@ void __51__SFXPCClient_onqueue_getRemoteObjectProxyOnQueue___block_invoke(uint64
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(SFXPCClient *)self machServiceName];
+      machServiceName = [(SFXPCClient *)self machServiceName];
       v8 = 138412290;
-      v9 = v6;
+      v9 = machServiceName;
       _os_log_impl(&dword_1A9662000, v5, OS_LOG_TYPE_DEFAULT, "Activating %@", &v8, 0xCu);
     }
 
@@ -421,17 +421,17 @@ void __50__SFXPCClient_onqueue_ensureConnectionEstablished__block_invoke_2(uint6
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply
 {
-  v6 = a4;
-  [v6 retainArguments];
+  invocationCopy = invocation;
+  [invocationCopy retainArguments];
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__SFXPCClient_connection_handleInvocation_isReply___block_invoke;
   block[3] = &unk_1E788B198;
-  v10 = v6;
-  v8 = v6;
+  v10 = invocationCopy;
+  v8 = invocationCopy;
   dispatch_async(dispatchQueue, block);
 }
 

@@ -1,20 +1,20 @@
 @interface SBRingerVolumeSliderView
-- (SBRingerVolumeSliderView)initWithFrame:(CGRect)a3;
+- (SBRingerVolumeSliderView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setLayoutAxis:(int64_t)a3;
-- (void)setStyle:(unint64_t)a3;
-- (void)setValue:(double)a3 animated:(BOOL)a4;
+- (void)setLayoutAxis:(int64_t)axis;
+- (void)setStyle:(unint64_t)style;
+- (void)setValue:(double)value animated:(BOOL)animated;
 @end
 
 @implementation SBRingerVolumeSliderView
 
-- (SBRingerVolumeSliderView)initWithFrame:(CGRect)a3
+- (SBRingerVolumeSliderView)initWithFrame:(CGRect)frame
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v17.receiver = self;
   v17.super_class = SBRingerVolumeSliderView;
-  v3 = [(SBRingerVolumeSliderView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBRingerVolumeSliderView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -76,16 +76,16 @@ void __42__SBRingerVolumeSliderView_initWithFrame___block_invoke(uint64_t a1)
   [(SBRingerVolumeSliderView *)&v3 dealloc];
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     backgroundView = self->_backgroundView;
-    if (a3)
+    if (style)
     {
-      v6 = [MEMORY[0x277D75348] tertiaryLabelColor];
-      [(UIView *)backgroundView setBackgroundColor:v6];
+      tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+      [(UIView *)backgroundView setBackgroundColor:tertiaryLabelColor];
 
       fillView = self->_fillView;
       [MEMORY[0x277D75348] labelColor];
@@ -93,8 +93,8 @@ void __42__SBRingerVolumeSliderView_initWithFrame___block_invoke(uint64_t a1)
 
     else
     {
-      v8 = [MEMORY[0x277D75348] quaternaryLabelColor];
-      [(UIView *)backgroundView setBackgroundColor:v8];
+      quaternaryLabelColor = [MEMORY[0x277D75348] quaternaryLabelColor];
+      [(UIView *)backgroundView setBackgroundColor:quaternaryLabelColor];
 
       fillView = self->_fillView;
       [MEMORY[0x277D75348] secondaryLabelColor];
@@ -104,32 +104,32 @@ void __42__SBRingerVolumeSliderView_initWithFrame___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setLayoutAxis:(int64_t)a3
+- (void)setLayoutAxis:(int64_t)axis
 {
-  if (self->_layoutAxis != a3)
+  if (self->_layoutAxis != axis)
   {
-    self->_layoutAxis = a3;
+    self->_layoutAxis = axis;
     [(SBRingerVolumeSliderView *)self setNeedsLayout];
 
     [(SBRingerVolumeSliderView *)self layoutIfNeeded];
   }
 }
 
-- (void)setValue:(double)a3 animated:(BOOL)a4
+- (void)setValue:(double)value animated:(BOOL)animated
 {
-  if (self->_value != a3)
+  if (self->_value != value)
   {
     v7[6] = v4;
     v7[7] = v5;
-    self->_value = a3;
-    if (a4)
+    self->_value = value;
+    if (animated)
     {
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __46__SBRingerVolumeSliderView_setValue_animated___block_invoke;
       v7[3] = &unk_2783A8BC8;
       v7[4] = self;
-      *&v7[5] = a3;
+      *&v7[5] = value;
       [MEMORY[0x277D75D18] _animateUsingSpringWithTension:0 friction:v7 interactive:0 animations:281.84 completion:33.58];
     }
 
@@ -140,7 +140,7 @@ void __42__SBRingerVolumeSliderView_initWithFrame___block_invoke(uint64_t a1)
       v6[2] = __46__SBRingerVolumeSliderView_setValue_animated___block_invoke_2;
       v6[3] = &unk_2783A8BC8;
       v6[4] = self;
-      *&v6[5] = a3;
+      *&v6[5] = value;
       [MEMORY[0x277D75D18] performWithoutAnimation:v6];
     }
   }

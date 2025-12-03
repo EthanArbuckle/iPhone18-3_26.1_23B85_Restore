@@ -1,22 +1,22 @@
 @interface RPIdentitySyncSessionTelemetry
 - (_TtC8rapportd30RPIdentitySyncSessionTelemetry)init;
-- (void)logIdentityUpdateWithHandle:(NSString *)a3 deviceIRKData:(NSData *)a4 type:(int)a5 source:(int)a6 completionHandler:(id)a7;
-- (void)logStartWithBtAddressData:(NSData *)a3 handles:(NSSet *)a4 completionHandler:(id)a5;
-- (void)setWithIdentitySyncCache:(_TtC8rapportd19RPIdentitySyncCache *)a3 completionHandler:(id)a4;
+- (void)logIdentityUpdateWithHandle:(NSString *)handle deviceIRKData:(NSData *)data type:(int)type source:(int)source completionHandler:(id)handler;
+- (void)logStartWithBtAddressData:(NSData *)data handles:(NSSet *)handles completionHandler:(id)handler;
+- (void)setWithIdentitySyncCache:(_TtC8rapportd19RPIdentitySyncCache *)cache completionHandler:(id)handler;
 @end
 
 @implementation RPIdentitySyncSessionTelemetry
 
-- (void)logStartWithBtAddressData:(NSData *)a3 handles:(NSSet *)a4 completionHandler:(id)a5
+- (void)logStartWithBtAddressData:(NSData *)data handles:(NSSet *)handles completionHandler:(id)handler
 {
   v9 = sub_1000C4810(&qword_1001D4F68, &qword_100149690);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = data;
+  v14[3] = handles;
   v14[4] = v13;
   v14[5] = self;
   v15 = type metadata accessor for TaskPriority();
@@ -31,24 +31,24 @@
   v17[3] = 0;
   v17[4] = &unk_10014BE90;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
+  dataCopy = data;
+  handlesCopy = handles;
 
   sub_1000EED08(0, 0, v12, &unk_10014BE98, v17);
 }
 
-- (void)logIdentityUpdateWithHandle:(NSString *)a3 deviceIRKData:(NSData *)a4 type:(int)a5 source:(int)a6 completionHandler:(id)a7
+- (void)logIdentityUpdateWithHandle:(NSString *)handle deviceIRKData:(NSData *)data type:(int)type source:(int)source completionHandler:(id)handler
 {
   v13 = sub_1000C4810(&qword_1001D4F68, &qword_100149690);
   v14 = *(*(v13 - 8) + 64);
   __chkstk_darwin(v13 - 8);
   v16 = &v24 - v15;
-  v17 = _Block_copy(a7);
+  v17 = _Block_copy(handler);
   v18 = swift_allocObject();
-  *(v18 + 16) = a3;
-  *(v18 + 24) = a4;
-  *(v18 + 32) = a5;
-  *(v18 + 36) = a6;
+  *(v18 + 16) = handle;
+  *(v18 + 24) = data;
+  *(v18 + 32) = type;
+  *(v18 + 36) = source;
   *(v18 + 40) = v17;
   *(v18 + 48) = self;
   v19 = type metadata accessor for TaskPriority();
@@ -63,21 +63,21 @@
   v21[3] = 0;
   v21[4] = &unk_10014BE70;
   v21[5] = v20;
-  v22 = a3;
-  v23 = a4;
+  handleCopy = handle;
+  dataCopy = data;
 
   sub_1000EED08(0, 0, v16, &unk_10014BE78, v21);
 }
 
-- (void)setWithIdentitySyncCache:(_TtC8rapportd19RPIdentitySyncCache *)a3 completionHandler:(id)a4
+- (void)setWithIdentitySyncCache:(_TtC8rapportd19RPIdentitySyncCache *)cache completionHandler:(id)handler
 {
   v7 = sub_1000C4810(&qword_1001D4F68, &qword_100149690);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v16 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = cache;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();

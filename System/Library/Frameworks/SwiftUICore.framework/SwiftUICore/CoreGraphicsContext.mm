@@ -1,5 +1,5 @@
 @interface CoreGraphicsContext
-- (CoreGraphicsContext)initWithCGContext:(CGContext *)a3;
+- (CoreGraphicsContext)initWithCGContext:(CGContext *)context;
 - (void)pop;
 - (void)push;
 @end
@@ -51,7 +51,7 @@
   }
 }
 
-- (CoreGraphicsContext)initWithCGContext:(CGContext *)a3
+- (CoreGraphicsContext)initWithCGContext:(CGContext *)context
 {
   if (_once_0 != -1)
   {
@@ -63,7 +63,7 @@
   result = [(CoreGraphicsContext *)&v6 init];
   if (result)
   {
-    result->_ctx = a3;
+    result->_ctx = context;
   }
 
   return result;

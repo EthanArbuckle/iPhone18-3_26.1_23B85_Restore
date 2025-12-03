@@ -1,15 +1,15 @@
 @interface CNAggregateKeyDescriptor
-+ (id)keyDescriptorWithKeyDescriptors:(id)a3 description:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (CNAggregateKeyDescriptor)initWithCoder:(id)a3;
-- (CNAggregateKeyDescriptor)initWithKeyDescriptors:(id)a3 description:(id)a4;
++ (id)keyDescriptorWithKeyDescriptors:(id)descriptors description:(id)description;
+- (BOOL)isEqual:(id)equal;
+- (CNAggregateKeyDescriptor)initWithCoder:(id)coder;
+- (CNAggregateKeyDescriptor)initWithKeyDescriptors:(id)descriptors description:(id)description;
 - (NSString)description;
 - (id)_cn_optionalKeys;
-- (id)_cn_recursiveDescriptionWithPrefix:(id)a3;
+- (id)_cn_recursiveDescriptionWithPrefix:(id)prefix;
 - (id)_cn_requiredKeys;
 - (unint64_t)hash;
-- (void)_cn_executeGetterForRepresentedKeys:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_cn_executeGetterForRepresentedKeys:(id)keys;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNAggregateKeyDescriptor
@@ -17,9 +17,9 @@
 - (id)_cn_requiredKeys
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  requiredKeys = v2->_requiredKeys;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  requiredKeys = selfCopy->_requiredKeys;
   if (requiredKeys)
   {
     v4 = requiredKeys;
@@ -32,8 +32,8 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(CNAggregateKeyDescriptor *)v2 keyDescriptors];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    keyDescriptors = [(CNAggregateKeyDescriptor *)selfCopy keyDescriptors];
+    v7 = [keyDescriptors countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = *v15;
@@ -43,27 +43,27 @@
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(keyDescriptors);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) _cn_requiredKeys];
-          [v5 unionKeyVector:v10];
+          _cn_requiredKeys = [*(*(&v14 + 1) + 8 * i) _cn_requiredKeys];
+          [v5 unionKeyVector:_cn_requiredKeys];
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [keyDescriptors countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v7);
     }
 
     v11 = [v5 copy];
-    v12 = v2->_requiredKeys;
-    v2->_requiredKeys = v11;
+    v12 = selfCopy->_requiredKeys;
+    selfCopy->_requiredKeys = v11;
 
-    v4 = v2->_requiredKeys;
+    v4 = selfCopy->_requiredKeys;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -76,8 +76,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CNAggregateKeyDescriptor *)self keyDescriptors];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  keyDescriptors = [(CNAggregateKeyDescriptor *)self keyDescriptors];
+  v5 = [keyDescriptors countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -88,14 +88,14 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keyDescriptors);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) _cn_optionalKeys];
-        [v3 unionKeyVector:v9];
+        _cn_optionalKeys = [*(*(&v12 + 1) + 8 * i) _cn_optionalKeys];
+        [v3 unionKeyVector:_cn_optionalKeys];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [keyDescriptors countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -145,64 +145,64 @@ uint64_t __32__CNAggregateKeyDescriptor_hash__block_invoke_2(uint64_t a1)
 - (NSString)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNAggregateKeyDescriptor *)self privateDescription];
-  v5 = [v3 appendName:@"kind" object:v4];
+  privateDescription = [(CNAggregateKeyDescriptor *)self privateDescription];
+  v5 = [v3 appendName:@"kind" object:privateDescription];
 
-  v6 = [(CNAggregateKeyDescriptor *)self unauthorizedKeys];
+  unauthorizedKeys = [(CNAggregateKeyDescriptor *)self unauthorizedKeys];
 
-  if (v6)
+  if (unauthorizedKeys)
   {
-    v7 = [(CNAggregateKeyDescriptor *)self unauthorizedKeys];
-    v8 = [v3 appendName:@"unauthorized keys" object:v7];
+    unauthorizedKeys2 = [(CNAggregateKeyDescriptor *)self unauthorizedKeys];
+    v8 = [v3 appendName:@"unauthorized keys" object:unauthorizedKeys2];
   }
 
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
-+ (id)keyDescriptorWithKeyDescriptors:(id)a3 description:(id)a4
++ (id)keyDescriptorWithKeyDescriptors:(id)descriptors description:(id)description
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithKeyDescriptors:v7 description:v6];
+  descriptionCopy = description;
+  descriptorsCopy = descriptors;
+  v8 = [[self alloc] initWithKeyDescriptors:descriptorsCopy description:descriptionCopy];
 
   return v8;
 }
 
-- (CNAggregateKeyDescriptor)initWithKeyDescriptors:(id)a3 description:(id)a4
+- (CNAggregateKeyDescriptor)initWithKeyDescriptors:(id)descriptors description:(id)description
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorsCopy = descriptors;
+  descriptionCopy = description;
   v12.receiver = self;
   v12.super_class = CNAggregateKeyDescriptor;
   v8 = [(CNAggregateKeyDescriptor *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    [(CNAggregateKeyDescriptor *)v8 setKeyDescriptors:v6];
-    [(CNAggregateKeyDescriptor *)v9 setPrivateDescription:v7];
+    [(CNAggregateKeyDescriptor *)v8 setKeyDescriptors:descriptorsCopy];
+    [(CNAggregateKeyDescriptor *)v9 setPrivateDescription:descriptionCopy];
     v10 = v9;
   }
 
   return v9;
 }
 
-- (CNAggregateKeyDescriptor)initWithCoder:(id)a3
+- (CNAggregateKeyDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = CNAggregateKeyDescriptor;
   v5 = [(CNAggregateKeyDescriptor *)&v15 init];
   if (v5)
   {
     v6 = +[CNSecureCodingClassSets keyDescriptorClasses];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"_keyDescriptors"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"_keyDescriptors"];
     v8 = [v7 copy];
     keyDescriptors = v5->_keyDescriptors;
     v5->_keyDescriptors = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_privateDescription"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_privateDescription"];
     v11 = [v10 copy];
     privateDescription = v5->_privateDescription;
     v5->_privateDescription = v11;
@@ -213,17 +213,17 @@ uint64_t __32__CNAggregateKeyDescriptor_hash__block_invoke_2(uint64_t a1)
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   keyDescriptors = self->_keyDescriptors;
-  v5 = a3;
-  [v5 encodeObject:keyDescriptors forKey:@"_keyDescriptors"];
-  [v5 encodeObject:self->_privateDescription forKey:@"_privateDescription"];
+  coderCopy = coder;
+  [coderCopy encodeObject:keyDescriptors forKey:@"_keyDescriptors"];
+  [coderCopy encodeObject:self->_privateDescription forKey:@"_privateDescription"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v6 = objc_opt_class();
   v16[0] = MEMORY[0x1E69E9820];
@@ -231,16 +231,16 @@ uint64_t __32__CNAggregateKeyDescriptor_hash__block_invoke_2(uint64_t a1)
   v16[2] = __36__CNAggregateKeyDescriptor_isEqual___block_invoke;
   v16[3] = &unk_1E7412228;
   v16[4] = self;
-  v17 = v4;
+  v17 = equalCopy;
   aBlock = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __36__CNAggregateKeyDescriptor_isEqual___block_invoke_2;
   v13 = &unk_1E7412228;
-  v14 = self;
-  v15 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v15 = equalCopy;
+  v7 = equalCopy;
   v8 = _Block_copy(&aBlock);
-  LOBYTE(self) = [v5 isObject:v7 kindOfClass:v6 andEqualToObject:self withBlocks:{v16, v8, 0, aBlock, v11, v12, v13, v14}];
+  LOBYTE(self) = [v5 isObject:v7 kindOfClass:v6 andEqualToObject:self withBlocks:{v16, v8, 0, aBlock, v11, v12, v13, selfCopy}];
 
   return self;
 }
@@ -303,24 +303,24 @@ LABEL_7:
   return v6;
 }
 
-- (id)_cn_recursiveDescriptionWithPrefix:(id)a3
+- (id)_cn_recursiveDescriptionWithPrefix:(id)prefix
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD60] string];
-  [v5 appendString:v4];
+  prefixCopy = prefix;
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendString:prefixCopy];
   v6 = [(CNAggregateKeyDescriptor *)self description];
-  [v5 appendString:v6];
+  [string appendString:v6];
 
-  [v5 appendString:@"\n"];
-  v18 = v4;
-  v7 = [v4 stringByAppendingString:@"\t"];
+  [string appendString:@"\n"];
+  v18 = prefixCopy;
+  v7 = [prefixCopy stringByAppendingString:@"\t"];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [(CNAggregateKeyDescriptor *)self keyDescriptors];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  keyDescriptors = [(CNAggregateKeyDescriptor *)self keyDescriptors];
+  v9 = [keyDescriptors countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -331,7 +331,7 @@ LABEL_7:
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(keyDescriptors);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
@@ -346,31 +346,31 @@ LABEL_7:
           v14 = [v7 stringByAppendingString:v15];
         }
 
-        [v5 appendString:v14];
-        [v5 appendString:@"\n"];
+        [string appendString:v14];
+        [string appendString:@"\n"];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v10 = [keyDescriptors countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v10);
   }
 
-  v16 = [v5 copy];
+  v16 = [string copy];
 
   return v16;
 }
 
-- (void)_cn_executeGetterForRepresentedKeys:(id)a3
+- (void)_cn_executeGetterForRepresentedKeys:(id)keys
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keysCopy = keys;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(CNAggregateKeyDescriptor *)self keyDescriptors];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  keyDescriptors = [(CNAggregateKeyDescriptor *)self keyDescriptors];
+  v6 = [keyDescriptors countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -382,14 +382,14 @@ LABEL_7:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keyDescriptors);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) _cn_executeGetterForRepresentedKeys:v4];
+        [*(*(&v10 + 1) + 8 * v9++) _cn_executeGetterForRepresentedKeys:keysCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [keyDescriptors countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);

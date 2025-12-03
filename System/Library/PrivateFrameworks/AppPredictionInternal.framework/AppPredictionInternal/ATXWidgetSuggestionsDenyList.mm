@@ -1,7 +1,7 @@
 @interface ATXWidgetSuggestionsDenyList
 - (ATXWidgetSuggestionsDenyList)init;
-- (ATXWidgetSuggestionsDenyList)initWithAssets:(id)a3;
-- (BOOL)containsInfoSuggestion:(id)a3;
+- (ATXWidgetSuggestionsDenyList)initWithAssets:(id)assets;
+- (BOOL)containsInfoSuggestion:(id)suggestion;
 @end
 
 @implementation ATXWidgetSuggestionsDenyList
@@ -14,15 +14,15 @@
   return v4;
 }
 
-- (ATXWidgetSuggestionsDenyList)initWithAssets:(id)a3
+- (ATXWidgetSuggestionsDenyList)initWithAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   v8.receiver = self;
   v8.super_class = ATXWidgetSuggestionsDenyList;
   v5 = [(ATXWidgetSuggestionsDenyList *)&v8 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"denyList"];
+    v6 = [assetsCopy objectForKeyedSubscript:@"denyList"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,10 +33,10 @@
   return v5;
 }
 
-- (BOOL)containsInfoSuggestion:(id)a3
+- (BOOL)containsInfoSuggestion:(id)suggestion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  suggestionCopy = suggestion;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -60,10 +60,10 @@ LABEL_3:
       v11 = [v10 objectForKeyedSubscript:{@"extensionBundleId", v24}];
       v12 = [v10 objectForKeyedSubscript:@"appBundleId"];
       v13 = [v10 objectForKeyedSubscript:@"widgetKind"];
-      if (v11 && ([v4 widgetBundleIdentifier], v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
+      if (v11 && ([suggestionCopy widgetBundleIdentifier], v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
       {
-        v15 = [v4 widgetBundleIdentifier];
-        v16 = [v11 isEqualToString:v15];
+        widgetBundleIdentifier = [suggestionCopy widgetBundleIdentifier];
+        v16 = [v11 isEqualToString:widgetBundleIdentifier];
 
         if (v12)
         {
@@ -77,24 +77,24 @@ LABEL_3:
         if (v12)
         {
 LABEL_11:
-          v17 = [v4 appBundleIdentifier];
+          appBundleIdentifier = [suggestionCopy appBundleIdentifier];
 
-          if (v17)
+          if (appBundleIdentifier)
           {
-            v18 = [v4 appBundleIdentifier];
-            v16 &= [v12 isEqualToString:v18];
+            appBundleIdentifier2 = [suggestionCopy appBundleIdentifier];
+            v16 &= [v12 isEqualToString:appBundleIdentifier2];
           }
         }
       }
 
       if (v13)
       {
-        v19 = [v4 widgetKind];
+        widgetKind = [suggestionCopy widgetKind];
 
-        if (v19)
+        if (widgetKind)
         {
-          v20 = [v4 widgetKind];
-          LOBYTE(v16) = v16 & [v13 isEqualToString:v20];
+          widgetKind2 = [suggestionCopy widgetKind];
+          LOBYTE(v16) = v16 & [v13 isEqualToString:widgetKind2];
         }
       }
 

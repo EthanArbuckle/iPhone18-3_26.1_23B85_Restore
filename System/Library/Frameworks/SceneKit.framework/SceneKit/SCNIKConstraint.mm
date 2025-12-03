@@ -3,16 +3,16 @@
 - (CGFloat)maxAllowedRotationAngleForJoint:(SCNNode *)node;
 - (SCNIKConstraint)init;
 - (SCNIKConstraint)initWithChainRootNode:(SCNNode *)chainRootNode;
-- (SCNIKConstraint)initWithCoder:(id)a3;
+- (SCNIKConstraint)initWithCoder:(id)coder;
 - (SCNVector3)targetPosition;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)jointForNode:(id)a3;
-- (void)_customDecodingOfSCNIKConstraint:(id)a3;
-- (void)_customEncodingOfSCNIKConstraint:(id)a3;
-- (void)_didDecodeSCNIKConstraint:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)jointForNode:(id)node;
+- (void)_customDecodingOfSCNIKConstraint:(id)constraint;
+- (void)_customEncodingOfSCNIKConstraint:(id)constraint;
+- (void)_didDecodeSCNIKConstraint:(id)constraint;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setChainRootNode:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setChainRootNode:(id)node;
 - (void)setMaxAllowedRotationAngle:(CGFloat)angle forJoint:(SCNNode *)node;
 - (void)setTargetPosition:(SCNVector3)targetPosition;
 @end
@@ -44,7 +44,7 @@
 
 + (SCNIKConstraint)inverseKinematicsConstraintWithChainRootNode:(SCNNode *)chainRootNode
 {
-  v3 = [[a1 alloc] initWithChainRootNode:chainRootNode];
+  v3 = [[self alloc] initWithChainRootNode:chainRootNode];
 
   return v3;
 }
@@ -61,21 +61,21 @@
   return v5;
 }
 
-- (void)setChainRootNode:(id)a3
+- (void)setChainRootNode:(id)node
 {
-  if (self->_chainRootNode != a3)
+  if (self->_chainRootNode != node)
   {
     v8[10] = v3;
     v8[11] = v4;
-    self->_chainRootNode = a3;
-    v7 = [(SCNConstraint *)self sceneRef];
+    self->_chainRootNode = node;
+    sceneRef = [(SCNConstraint *)self sceneRef];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __36__SCNIKConstraint_setChainRootNode___block_invoke;
     v8[3] = &unk_2782FC950;
     v8[4] = self;
-    v8[5] = a3;
-    [SCNTransaction postCommandWithContext:v7 object:self applyBlock:v8];
+    v8[5] = node;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v8];
   }
 }
 
@@ -104,7 +104,7 @@ void __36__SCNIKConstraint_setChainRootNode___block_invoke(uint64_t a1)
   y = targetPosition.y;
   x = targetPosition.x;
   self->_ikTarget = targetPosition;
-  v7 = [(SCNConstraint *)self sceneRef];
+  sceneRef = [(SCNConstraint *)self sceneRef];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __37__SCNIKConstraint_setTargetPosition___block_invoke;
@@ -113,7 +113,7 @@ void __36__SCNIKConstraint_setChainRootNode___block_invoke(uint64_t a1)
   v9 = x;
   v10 = y;
   v11 = z;
-  [SCNTransaction postCommandWithContext:v7 object:self key:@"targetPosition" applyBlock:v8];
+  [SCNTransaction postCommandWithContext:sceneRef object:self key:@"targetPosition" applyBlock:v8];
 }
 
 void __37__SCNIKConstraint_setTargetPosition___block_invoke(uint64_t a1, __n128 a2)
@@ -123,7 +123,7 @@ void __37__SCNIKConstraint_setTargetPosition___block_invoke(uint64_t a1, __n128 
   C3DConstraintIKSetTarget(*(*(a1 + 32) + 8), a2);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [(SCNIKConstraint *)self targetPosition];
@@ -133,14 +133,14 @@ void __37__SCNIKConstraint_setTargetPosition___block_invoke(uint64_t a1, __n128 
   return v4;
 }
 
-- (id)jointForNode:(id)a3
+- (id)jointForNode:(id)node
 {
   v5 = [MEMORY[0x277CCAE60] valueWithPointer:?];
   v6 = [(NSMutableDictionary *)self->_jointsPerNode objectForKey:v5];
   if (!v6)
   {
     v6 = objc_alloc_init(SCNIKJoint);
-    [(SCNIKJoint *)v6 setJoint:a3];
+    [(SCNIKJoint *)v6 setJoint:node];
     [(SCNIKJoint *)v6 setMaxAllowedRotationAngle:180.0];
     [(NSMutableDictionary *)self->_jointsPerNode setObject:v6 forKey:v5];
   }
@@ -151,7 +151,7 @@ void __37__SCNIKConstraint_setTargetPosition___block_invoke(uint64_t a1, __n128 
 - (void)setMaxAllowedRotationAngle:(CGFloat)angle forJoint:(SCNNode *)node
 {
   [-[SCNIKConstraint jointForNode:](self "jointForNode:{"setMaxAllowedRotationAngle:", angle}")];
-  v7 = [(SCNConstraint *)self sceneRef];
+  sceneRef = [(SCNConstraint *)self sceneRef];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __55__SCNIKConstraint_setMaxAllowedRotationAngle_forJoint___block_invoke;
@@ -159,7 +159,7 @@ void __37__SCNIKConstraint_setTargetPosition___block_invoke(uint64_t a1, __n128 
   *&v8[6] = angle;
   v8[4] = self;
   v8[5] = node;
-  [SCNTransaction postCommandWithContext:v7 object:self applyBlock:v8];
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v8];
 }
 
 void __55__SCNIKConstraint_setMaxAllowedRotationAngle_forJoint___block_invoke(uint64_t a1)
@@ -183,24 +183,24 @@ void __55__SCNIKConstraint_setMaxAllowedRotationAngle_forJoint___block_invoke(ui
   return result;
 }
 
-- (void)_didDecodeSCNIKConstraint:(id)a3
+- (void)_didDecodeSCNIKConstraint:(id)constraint
 {
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"node%d", 0)}];
+  v5 = [constraint decodeObjectOfClass:objc_opt_class() forKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"node%d", 0)}];
   if (v5)
   {
     v6 = v5;
     do
     {
-      [a3 decodeFloatForKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"angle%d", 0)}];
+      [constraint decodeFloatForKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"angle%d", 0)}];
       [(SCNIKConstraint *)self setMaxAllowedRotationAngle:v6 forJoint:v7];
-      v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"node%d", 0)}];
+      v6 = [constraint decodeObjectOfClass:objc_opt_class() forKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"node%d", 0)}];
     }
 
     while (v6);
   }
 }
 
-- (void)_customEncodingOfSCNIKConstraint:(id)a3
+- (void)_customEncodingOfSCNIKConstraint:(id)constraint
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
@@ -229,9 +229,9 @@ void __55__SCNIKConstraint_setMaxAllowedRotationAngle_forJoint___block_invoke(ui
         v12 = v11;
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"angle%d", v7];
         *&v14 = v12;
-        [a3 encodeFloat:v13 forKey:v14];
-        v15 = [v10 joint];
-        [a3 encodeObject:v15 forKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"node%d", v7)}];
+        [constraint encodeFloat:v13 forKey:v14];
+        joint = [v10 joint];
+        [constraint encodeObject:joint forKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"node%d", v7)}];
         v7 = (v7 + 1);
         ++v9;
       }
@@ -243,32 +243,32 @@ void __55__SCNIKConstraint_setMaxAllowedRotationAngle_forJoint___block_invoke(ui
     while (v6);
   }
 
-  SCNEncodeVector3(a3, @"ikTarget", self->_ikTarget.x, self->_ikTarget.y, self->_ikTarget.z);
+  SCNEncodeVector3(constraint, @"ikTarget", self->_ikTarget.x, self->_ikTarget.y, self->_ikTarget.z);
 }
 
-- (void)_customDecodingOfSCNIKConstraint:(id)a3
+- (void)_customDecodingOfSCNIKConstraint:(id)constraint
 {
   self->super._constraintRef = C3DConstraintCreateIK();
-  *&v5 = SCNDecodeVector3(a3, @"ikTarget");
+  *&v5 = SCNDecodeVector3(constraint, @"ikTarget");
   [(SCNIKConstraint *)self setTargetPosition:v5];
 
-  [(SCNConstraint *)self finalizeDecodeConstraint:a3];
+  [(SCNConstraint *)self finalizeDecodeConstraint:constraint];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = SCNIKConstraint;
   [(SCNConstraint *)&v6 encodeWithCoder:?];
-  [(SCNIKConstraint *)self _customEncodingOfSCNIKConstraint:a3];
+  [(SCNIKConstraint *)self _customEncodingOfSCNIKConstraint:coder];
   chainRootNode = self->_chainRootNode;
   if (chainRootNode)
   {
-    [a3 encodeObject:chainRootNode forKey:@"chainRootNode"];
+    [coder encodeObject:chainRootNode forKey:@"chainRootNode"];
   }
 }
 
-- (SCNIKConstraint)initWithCoder:(id)a3
+- (SCNIKConstraint)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = SCNIKConstraint;
@@ -277,9 +277,9 @@ void __55__SCNIKConstraint_setMaxAllowedRotationAngle_forJoint___block_invoke(ui
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    [(SCNIKConstraint *)v4 _customDecodingOfSCNIKConstraint:a3];
-    -[SCNIKConstraint setChainRootNode:](v4, "setChainRootNode:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"chainRootNode"]);
-    [(SCNIKConstraint *)v4 _didDecodeSCNIKConstraint:a3];
+    [(SCNIKConstraint *)v4 _customDecodingOfSCNIKConstraint:coder];
+    -[SCNIKConstraint setChainRootNode:](v4, "setChainRootNode:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"chainRootNode"]);
+    [(SCNIKConstraint *)v4 _didDecodeSCNIKConstraint:coder];
     [SCNTransaction setImmediateMode:v5];
   }
 

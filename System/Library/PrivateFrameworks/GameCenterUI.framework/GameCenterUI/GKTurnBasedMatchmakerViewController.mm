@@ -6,19 +6,19 @@
 - (id)turnBasedMatchmakerDelegate;
 - (void)_setupChildViewController;
 - (void)_setupRemoteViewController;
-- (void)authenticationChanged:(id)a3;
+- (void)authenticationChanged:(id)changed;
 - (void)cancel;
 - (void)dealloc;
-- (void)extensionDidFinishWithError:(id)a3;
-- (void)finishWithError:(id)a3;
-- (void)finishWithMatch:(id)a3;
+- (void)extensionDidFinishWithError:(id)error;
+- (void)finishWithError:(id)error;
+- (void)finishWithMatch:(id)match;
 - (void)loadView;
-- (void)playerQuitMatch:(id)a3;
-- (void)setRemoteViewController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)playerQuitMatch:(id)match;
+- (void)setRemoteViewController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation GKTurnBasedMatchmakerViewController
@@ -37,13 +37,13 @@
 
     v5->_showExistingMatches = 1;
     [(GKTurnBasedMatchmakerViewController *)v5 _setupChildViewController];
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v9 = *MEMORY[0x277D0BCD0];
-    v10 = [MEMORY[0x277D0C138] localPlayer];
-    [v8 addObserver:v5 selector:sel_authenticationChanged_ name:v9 object:v10];
+    localPlayer = [MEMORY[0x277D0C138] localPlayer];
+    [defaultCenter addObserver:v5 selector:sel_authenticationChanged_ name:v9 object:localPlayer];
 
-    v11 = [MEMORY[0x277D0C138] localPlayer];
-    [v11 registerListener:v5];
+    localPlayer2 = [MEMORY[0x277D0C138] localPlayer];
+    [localPlayer2 registerListener:v5];
   }
 
   return v5;
@@ -71,8 +71,8 @@
   }
 
   [(GKExtensionRemoteViewController *)self->_remoteViewController cancelExtension];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = GKTurnBasedMatchmakerViewController;
@@ -96,9 +96,9 @@
   v3 = [(GKTurnBasedMatchmakerViewController *)self _gkInGameUIUnavailableAlertWithRestrictionMode:2 dismissHandler:v5];
   [(GKTurnBasedMatchmakerViewController *)self setAlertController:v3];
 
-  v4 = [(GKTurnBasedMatchmakerViewController *)self alertController];
+  alertController = [(GKTurnBasedMatchmakerViewController *)self alertController];
 
-  if (!v4)
+  if (!alertController)
   {
     [(GKTurnBasedMatchmakerViewController *)self setNavigationBarHidden:1];
     [(GKTurnBasedMatchmakerViewController *)self setWantsFullScreenLayout:1];
@@ -166,22 +166,22 @@ void __65__GKTurnBasedMatchmakerViewController__setupRemoteViewController__block
   }
 }
 
-- (void)extensionDidFinishWithError:(id)a3
+- (void)extensionDidFinishWithError:(id)error
 {
-  [(GKTurnBasedMatchmakerViewController *)self finishWithError:a3];
+  [(GKTurnBasedMatchmakerViewController *)self finishWithError:error];
   [(UINavigationController *)self _updateViewControllerStackWithViewController:0];
 
   [(GKTurnBasedMatchmakerViewController *)self setRemoteViewController:0];
 }
 
-- (void)setRemoteViewController:(id)a3
+- (void)setRemoteViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_remoteViewController != v5)
+  controllerCopy = controller;
+  if (self->_remoteViewController != controllerCopy)
   {
-    objc_storeStrong(&self->_remoteViewController, a3);
-    v6 = [(GKTurnBasedMatchmakerViewController *)self remoteViewController];
-    [v6 setDelegate:self];
+    objc_storeStrong(&self->_remoteViewController, controller);
+    remoteViewController = [(GKTurnBasedMatchmakerViewController *)self remoteViewController];
+    [remoteViewController setDelegate:self];
 
     v7 = MEMORY[0x277CBEB38];
     v8 = +[GKExtensionRemoteViewController initialItemsForExtension];
@@ -199,18 +199,18 @@ void __65__GKTurnBasedMatchmakerViewController__setupRemoteViewController__block
     matchRequest = self->_matchRequest;
     if (matchRequest)
     {
-      v14 = [(GKMatchRequest *)matchRequest internal];
-      [v9 setObject:v14 forKeyedSubscript:@"MatchesMatchRequestInternal"];
+      internal = [(GKMatchRequest *)matchRequest internal];
+      [v9 setObject:internal forKeyedSubscript:@"MatchesMatchRequestInternal"];
     }
 
     objc_initWeak(&location, self);
-    v15 = [(GKTurnBasedMatchmakerViewController *)self remoteViewController];
+    remoteViewController2 = [(GKTurnBasedMatchmakerViewController *)self remoteViewController];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __63__GKTurnBasedMatchmakerViewController_setRemoteViewController___block_invoke;
     v16[3] = &unk_27966AE80;
     objc_copyWeak(&v17, &location);
-    [v15 setInitialState:v9 withReply:v16];
+    [remoteViewController2 setInitialState:v9 withReply:v16];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -236,9 +236,9 @@ void __63__GKTurnBasedMatchmakerViewController_setRemoteViewController___block_i
 
 - (BOOL)shouldShowPlayForTurnBasedMatch
 {
-  v3 = [MEMORY[0x277D0C138] localPlayer];
-  v4 = [v3 eventEmitter];
-  v5 = [v4 listenerRegisteredForSelector:sel_player_receivedTurnEventForMatch_didBecomeActive_];
+  localPlayer = [MEMORY[0x277D0C138] localPlayer];
+  eventEmitter = [localPlayer eventEmitter];
+  v5 = [eventEmitter listenerRegisteredForSelector:sel_player_receivedTurnEventForMatch_didBecomeActive_];
 
   if (v5)
   {
@@ -247,7 +247,7 @@ void __63__GKTurnBasedMatchmakerViewController_setRemoteViewController___block_i
 
   else
   {
-    v7 = [(GKTurnBasedMatchmakerViewController *)self turnBasedMatchmakerDelegate];
+    turnBasedMatchmakerDelegate = [(GKTurnBasedMatchmakerViewController *)self turnBasedMatchmakerDelegate];
     v6 = objc_opt_respondsToSelector();
   }
 
@@ -256,9 +256,9 @@ void __63__GKTurnBasedMatchmakerViewController_setRemoteViewController___block_i
 
 - (BOOL)shouldShowQuitForTurnBasedMatch
 {
-  v3 = [MEMORY[0x277D0C138] localPlayer];
-  v4 = [v3 eventEmitter];
-  v5 = [v4 listenerRegisteredForSelector:sel_player_wantsToQuitMatch_];
+  localPlayer = [MEMORY[0x277D0C138] localPlayer];
+  eventEmitter = [localPlayer eventEmitter];
+  v5 = [eventEmitter listenerRegisteredForSelector:sel_player_wantsToQuitMatch_];
 
   if (v5)
   {
@@ -267,7 +267,7 @@ void __63__GKTurnBasedMatchmakerViewController_setRemoteViewController___block_i
 
   else
   {
-    v7 = [(GKTurnBasedMatchmakerViewController *)self turnBasedMatchmakerDelegate];
+    turnBasedMatchmakerDelegate = [(GKTurnBasedMatchmakerViewController *)self turnBasedMatchmakerDelegate];
     v6 = objc_opt_respondsToSelector();
   }
 
@@ -282,75 +282,75 @@ void __63__GKTurnBasedMatchmakerViewController_setRemoteViewController___block_i
   [(GKTurnBasedMatchmakerViewController *)self setOverrideUserInterfaceStyle:2];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277D0C138] local];
-  [v5 hideAccessPoint];
+  appearCopy = appear;
+  local = [MEMORY[0x277D0C138] local];
+  [local hideAccessPoint];
 
-  v6 = [(GKTurnBasedMatchmakerViewController *)self remoteViewController];
+  remoteViewController = [(GKTurnBasedMatchmakerViewController *)self remoteViewController];
 
-  if (!v6)
+  if (!remoteViewController)
   {
     [(GKTurnBasedMatchmakerViewController *)self _setupChildViewController];
     goto LABEL_7;
   }
 
-  v7 = [(GKTurnBasedMatchmakerViewController *)self alertController];
-  if (!v7)
+  alertController = [(GKTurnBasedMatchmakerViewController *)self alertController];
+  if (!alertController)
   {
-    v8 = [(GKTurnBasedMatchmakerViewController *)self viewControllers];
-    v9 = [v8 count];
+    viewControllers = [(GKTurnBasedMatchmakerViewController *)self viewControllers];
+    v9 = [viewControllers count];
 
     if (v9)
     {
       goto LABEL_6;
     }
 
-    v7 = [(GKTurnBasedMatchmakerViewController *)self remoteViewController];
-    [(UINavigationController *)self _updateViewControllerStackWithViewController:v7];
+    alertController = [(GKTurnBasedMatchmakerViewController *)self remoteViewController];
+    [(UINavigationController *)self _updateViewControllerStackWithViewController:alertController];
   }
 
 LABEL_6:
-  v10 = [(GKTurnBasedMatchmakerViewController *)self remoteViewController];
-  [v10 setDelegate:self];
+  remoteViewController2 = [(GKTurnBasedMatchmakerViewController *)self remoteViewController];
+  [remoteViewController2 setDelegate:self];
 
 LABEL_7:
   v14.receiver = self;
   v14.super_class = GKTurnBasedMatchmakerViewController;
-  [(GKTurnBasedMatchmakerViewController *)&v14 viewWillAppear:v3];
-  v11 = [(GKTurnBasedMatchmakerViewController *)self matchRequest];
-  v12 = [v11 isIncorrectlyInvitingPlayers];
+  [(GKTurnBasedMatchmakerViewController *)&v14 viewWillAppear:appearCopy];
+  matchRequest = [(GKTurnBasedMatchmakerViewController *)self matchRequest];
+  isIncorrectlyInvitingPlayers = [matchRequest isIncorrectlyInvitingPlayers];
 
-  if (v12)
+  if (isIncorrectlyInvitingPlayers)
   {
     v13 = [MEMORY[0x277CCA9B8] userErrorForCode:30 userInfo:0];
     [(GKTurnBasedMatchmakerViewController *)self finishWithError:v13];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = GKTurnBasedMatchmakerViewController;
-  [(GKTurnBasedMatchmakerViewController *)&v6 viewDidAppear:a3];
-  v4 = [(GKTurnBasedMatchmakerViewController *)self alertController];
+  [(GKTurnBasedMatchmakerViewController *)&v6 viewDidAppear:appear];
+  alertController = [(GKTurnBasedMatchmakerViewController *)self alertController];
 
-  if (v4)
+  if (alertController)
   {
-    v5 = [(GKTurnBasedMatchmakerViewController *)self alertController];
-    [(GKTurnBasedMatchmakerViewController *)self presentViewController:v5 animated:1 completion:&__block_literal_global_67];
+    alertController2 = [(GKTurnBasedMatchmakerViewController *)self alertController];
+    [(GKTurnBasedMatchmakerViewController *)self presentViewController:alertController2 animated:1 completion:&__block_literal_global_67];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = GKTurnBasedMatchmakerViewController;
-  [(GKTurnBasedMatchmakerViewController *)&v8 viewDidDisappear:a3];
+  [(GKTurnBasedMatchmakerViewController *)&v8 viewDidDisappear:disappear];
   [(UINavigationController *)self _updateViewControllerStackWithViewController:0];
-  v4 = [MEMORY[0x277D0C138] local];
-  [v4 showAccessPoint];
+  local = [MEMORY[0x277D0C138] local];
+  [local showAccessPoint];
 
   if (!*MEMORY[0x277D0C2A0])
   {
@@ -369,34 +369,34 @@ LABEL_7:
 
 - (void)cancel
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(GKTurnBasedMatchmakerViewController *)self turnBasedMatchmakerDelegate];
-  [v4 turnBasedMatchmakerViewControllerWasCancelled:self];
+  turnBasedMatchmakerDelegate = [(GKTurnBasedMatchmakerViewController *)self turnBasedMatchmakerDelegate];
+  [turnBasedMatchmakerDelegate turnBasedMatchmakerViewControllerWasCancelled:self];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v4 = MEMORY[0x277CCAB98];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  [v6 removeObserver:self];
+  errorCopy = error;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v7 = [(GKTurnBasedMatchmakerViewController *)self turnBasedMatchmakerDelegate];
-  [v7 turnBasedMatchmakerViewController:self didFailWithError:v5];
+  turnBasedMatchmakerDelegate = [(GKTurnBasedMatchmakerViewController *)self turnBasedMatchmakerDelegate];
+  [turnBasedMatchmakerDelegate turnBasedMatchmakerViewController:self didFailWithError:errorCopy];
 }
 
-- (void)finishWithMatch:(id)a3
+- (void)finishWithMatch:(id)match
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  matchCopy = match;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v6 = [(GKTurnBasedMatchmakerViewController *)self turnBasedMatchmakerDelegate];
+  turnBasedMatchmakerDelegate = [(GKTurnBasedMatchmakerViewController *)self turnBasedMatchmakerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 turnBasedMatchmakerViewController:self didFindMatch:v4];
+    [turnBasedMatchmakerDelegate turnBasedMatchmakerViewController:self didFindMatch:matchCopy];
   }
 
   else
@@ -420,41 +420,41 @@ LABEL_7:
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
-  v9 = [MEMORY[0x277D0C138] localPlayer];
-  v10 = [v9 eventEmitter];
-  [v10 player:v9 receivedTurnEventForMatch:v4 didBecomeActive:1];
+  localPlayer = [MEMORY[0x277D0C138] localPlayer];
+  eventEmitter = [localPlayer eventEmitter];
+  [eventEmitter player:localPlayer receivedTurnEventForMatch:matchCopy didBecomeActive:1];
 }
 
-- (void)playerQuitMatch:(id)a3
+- (void)playerQuitMatch:(id)match
 {
-  v7 = a3;
-  v4 = [(GKTurnBasedMatchmakerViewController *)self turnBasedMatchmakerDelegate];
+  matchCopy = match;
+  turnBasedMatchmakerDelegate = [(GKTurnBasedMatchmakerViewController *)self turnBasedMatchmakerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 turnBasedMatchmakerViewController:self playerQuitForMatch:v7];
+    [turnBasedMatchmakerDelegate turnBasedMatchmakerViewController:self playerQuitForMatch:matchCopy];
   }
 
-  v5 = [MEMORY[0x277D0C138] localPlayer];
-  v6 = [v5 eventEmitter];
-  [v6 player:v5 wantsToQuitMatch:v7];
+  localPlayer = [MEMORY[0x277D0C138] localPlayer];
+  eventEmitter = [localPlayer eventEmitter];
+  [eventEmitter player:localPlayer wantsToQuitMatch:matchCopy];
 }
 
-- (void)authenticationChanged:(id)a3
+- (void)authenticationChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v10 = [v4 objectForKey:*MEMORY[0x277D0BCE0]];
+  userInfo = [changed userInfo];
+  v10 = [userInfo objectForKey:*MEMORY[0x277D0BCE0]];
 
-  v5 = [MEMORY[0x277D0C138] localPlayer];
-  if (([v5 isAuthenticated] & 1) == 0)
+  localPlayer = [MEMORY[0x277D0C138] localPlayer];
+  if (([localPlayer isAuthenticated] & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v6 = [MEMORY[0x277D0C138] localPlayer];
-  v7 = [v6 internal];
-  v8 = [v7 playerID];
-  v9 = [v8 isEqualToString:v10];
+  localPlayer2 = [MEMORY[0x277D0C138] localPlayer];
+  internal = [localPlayer2 internal];
+  playerID = [internal playerID];
+  v9 = [playerID isEqualToString:v10];
 
   if ((v9 & 1) == 0)
   {

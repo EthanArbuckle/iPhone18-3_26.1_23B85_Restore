@@ -1,5 +1,5 @@
 @interface CPLCloudKitSetupTask
-- (CPLCloudKitSetupTask)initWithController:(id)a3 updateDisabledFeatures:(BOOL)a4 completionHandler:(id)a5;
+- (CPLCloudKitSetupTask)initWithController:(id)controller updateDisabledFeatures:(BOOL)features completionHandler:(id)handler;
 - (void)fetchBoundaryKey;
 - (void)fetchDerivativesFilter;
 - (void)fetchDisabledFeatures;
@@ -8,19 +8,19 @@
 
 @implementation CPLCloudKitSetupTask
 
-- (CPLCloudKitSetupTask)initWithController:(id)a3 updateDisabledFeatures:(BOOL)a4 completionHandler:(id)a5
+- (CPLCloudKitSetupTask)initWithController:(id)controller updateDisabledFeatures:(BOOL)features completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v13.receiver = self;
   v13.super_class = CPLCloudKitSetupTask;
-  v9 = [(CPLCloudKitBaseSetupTask *)&v13 initWithController:a3];
+  v9 = [(CPLCloudKitBaseSetupTask *)&v13 initWithController:controller];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [handlerCopy copy];
     completionHandler = v9->_completionHandler;
     v9->_completionHandler = v10;
 
-    v9->_shouldUpdateDisabledFeatures = a4;
+    v9->_shouldUpdateDisabledFeatures = features;
   }
 
   return v9;
@@ -87,8 +87,8 @@
 
 - (void)fetchBoundaryKey
 {
-  v3 = [(CPLCloudKitTransportTask *)self fingerprintContext];
-  if (v3)
+  fingerprintContext = [(CPLCloudKitTransportTask *)self fingerprintContext];
+  if (fingerprintContext)
   {
     v24 = 0;
     v4 = [(CPLCloudKitTransportTask *)self shouldRunOperationsWithError:&v24];
@@ -114,21 +114,21 @@
       v7 = objc_retainBlock(v19);
       v18 = v7;
       [v6 setCancellationHandler:&v14];
-      v8 = [(CPLCloudKitTransportTask *)self controller];
-      v9 = [v8 libraryIdentifier];
-      v10 = v9;
-      if (!v9)
+      controller = [(CPLCloudKitTransportTask *)self controller];
+      libraryIdentifier = [controller libraryIdentifier];
+      v10 = libraryIdentifier;
+      if (!libraryIdentifier)
       {
-        v12 = [(CPLCloudKitTransportTask *)self controller];
+        controller2 = [(CPLCloudKitTransportTask *)self controller];
         v10 = [objc_opt_class() description];
       }
 
       v25[0] = v10;
       v25[1] = @"Setup";
-      v11 = [NSArray arrayWithObjects:v25 count:2, v12, v14, v15, v16, v17];
-      [v3 refreshBoundaryKeyWithSource:v11 completionHandler:v7];
+      v11 = [NSArray arrayWithObjects:v25 count:2, controller2, v14, v15, v16, v17];
+      [fingerprintContext refreshBoundaryKeyWithSource:v11 completionHandler:v7];
 
-      if (!v9)
+      if (!libraryIdentifier)
       {
       }
 

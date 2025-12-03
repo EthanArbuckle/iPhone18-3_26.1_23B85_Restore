@@ -1,41 +1,41 @@
 @interface CCUIContentModuleDetailClickPresentationInteractionManager
-- (BOOL)clickPresentationInteractionShouldBegin:(id)a3;
-- (BOOL)clickPresentationInteractionShouldPresent:(id)a3;
-- (CCUIContentModuleDetailClickPresentationInteractionManager)initWithPresentingViewController:(id)a3 delegate:(id)a4;
+- (BOOL)clickPresentationInteractionShouldBegin:(id)begin;
+- (BOOL)clickPresentationInteractionShouldPresent:(id)present;
+- (CCUIContentModuleDetailClickPresentationInteractionManager)initWithPresentingViewController:(id)controller delegate:(id)delegate;
 - (CCUIContentModuleDetailClickPresentationInteractionManagerDelegate)delegate;
-- (id)clickPresentationInteraction:(id)a3 presentationForPresentingViewController:(id)a4;
-- (id)clickPresentationInteraction:(id)a3 previewForHighlightingAtLocation:(CGPoint)a4;
-- (void)clickPresentationInteractionEnded:(id)a3 wasCancelled:(BOOL)a4;
-- (void)setDelegate:(id)a3;
-- (void)setViewForInteraction:(id)a3;
+- (id)clickPresentationInteraction:(id)interaction presentationForPresentingViewController:(id)controller;
+- (id)clickPresentationInteraction:(id)interaction previewForHighlightingAtLocation:(CGPoint)location;
+- (void)clickPresentationInteractionEnded:(id)ended wasCancelled:(BOOL)cancelled;
+- (void)setDelegate:(id)delegate;
+- (void)setViewForInteraction:(id)interaction;
 @end
 
 @implementation CCUIContentModuleDetailClickPresentationInteractionManager
 
-- (CCUIContentModuleDetailClickPresentationInteractionManager)initWithPresentingViewController:(id)a3 delegate:(id)a4
+- (CCUIContentModuleDetailClickPresentationInteractionManager)initWithPresentingViewController:(id)controller delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = CCUIContentModuleDetailClickPresentationInteractionManager;
   v9 = [(CCUIContentModuleDetailClickPresentationInteractionManager *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_presentingViewController, a3);
+    objc_storeStrong(&v9->_presentingViewController, controller);
     v11 = [objc_alloc(MEMORY[0x1E69DD3E8]) initWithDelegate:v10];
     clickPresentationInteraction = v10->_clickPresentationInteraction;
     v10->_clickPresentationInteraction = v11;
 
-    [(CCUIContentModuleDetailClickPresentationInteractionManager *)v10 setDelegate:v8];
+    [(CCUIContentModuleDetailClickPresentationInteractionManager *)v10 setDelegate:delegateCopy];
   }
 
   return v10;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -78,39 +78,39 @@
   }
 }
 
-- (void)setViewForInteraction:(id)a3
+- (void)setViewForInteraction:(id)interaction
 {
-  v5 = a3;
+  interactionCopy = interaction;
   viewForInteraction = self->_viewForInteraction;
-  if (viewForInteraction != v5)
+  if (viewForInteraction != interactionCopy)
   {
-    v7 = v5;
+    v7 = interactionCopy;
     [(UIView *)viewForInteraction removeInteraction:self->_clickPresentationInteraction];
-    objc_storeStrong(&self->_viewForInteraction, a3);
+    objc_storeStrong(&self->_viewForInteraction, interaction);
     viewForInteraction = [(UIView *)self->_viewForInteraction addInteraction:self->_clickPresentationInteraction];
-    v5 = v7;
+    interactionCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](viewForInteraction, v5);
+  MEMORY[0x1EEE66BB8](viewForInteraction, interactionCopy);
 }
 
-- (BOOL)clickPresentationInteractionShouldBegin:(id)a3
+- (BOOL)clickPresentationInteractionShouldBegin:(id)begin
 {
   if ((*&self->_delegateFlags & 2) == 0)
   {
     return 1;
   }
 
-  v4 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v4) = [WeakRetained contentModuleDetailClickPresentationInteractionControllerInteractionShouldBegin:v4];
+  LOBYTE(selfCopy) = [WeakRetained contentModuleDetailClickPresentationInteractionControllerInteractionShouldBegin:selfCopy];
 
-  return v4;
+  return selfCopy;
 }
 
-- (BOOL)clickPresentationInteractionShouldPresent:(id)a3
+- (BOOL)clickPresentationInteractionShouldPresent:(id)present
 {
-  v4 = a3;
+  presentCopy = present;
   v5 = (*&self->_delegateFlags & 4) == 0 || !self->_authenticated && (block[0] = MEMORY[0x1E69E9820], block[1] = 3221225472, block[2] = __104__CCUIContentModuleDetailClickPresentationInteractionManager_clickPresentationInteractionShouldPresent___block_invoke, block[3] = &unk_1E83EA478, block[4] = self, dispatch_async(MEMORY[0x1E69E96A0], block), (*&self->_delegateFlags & 4) == 0) || self->_authenticated;
 
   return v5;
@@ -173,10 +173,10 @@ void __104__CCUIContentModuleDetailClickPresentationInteractionManager_clickPres
   }
 }
 
-- (id)clickPresentationInteraction:(id)a3 presentationForPresentingViewController:(id)a4
+- (id)clickPresentationInteraction:(id)interaction presentationForPresentingViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  controllerCopy = controller;
   if ((*&self->_delegateFlags & 1) != 0 && (WeakRetained = objc_loadWeakRetained(&self->_delegate), [WeakRetained presentedViewControllerForContentModuleDetailClickPresentationInteractionController:self], v9 = objc_claimAutoreleasedReturnValue(), WeakRetained, v9))
   {
     if (objc_opt_respondsToSelector())
@@ -185,16 +185,16 @@ void __104__CCUIContentModuleDetailClickPresentationInteractionManager_clickPres
     }
 
     v10 = [CCUIContentModuleDetailTransitioningDelegate alloc];
-    v11 = [v7 parentViewController];
-    v12 = [(CCUIContentModuleDetailTransitioningDelegate *)v10 initWithAnchoringViewController:v11];
+    parentViewController = [controllerCopy parentViewController];
+    v12 = [(CCUIContentModuleDetailTransitioningDelegate *)v10 initWithAnchoringViewController:parentViewController];
     detailTransitioningDelegate = self->_detailTransitioningDelegate;
     self->_detailTransitioningDelegate = v12;
 
-    v14 = [(CCUIContentModuleDetailTransitioningDelegate *)self->_detailTransitioningDelegate presentationControllerForPresentedViewController:v9 presentingViewController:v7 sourceViewController:v7];
+    v14 = [(CCUIContentModuleDetailTransitioningDelegate *)self->_detailTransitioningDelegate presentationControllerForPresentedViewController:v9 presentingViewController:controllerCopy sourceViewController:controllerCopy];
     presentationController = self->_presentationController;
     self->_presentationController = v14;
 
-    v16 = [(CCUIContentModuleDetailTransitioningDelegate *)self->_detailTransitioningDelegate animationControllerForPresentedController:v9 presentingController:v7 sourceController:v7];
+    v16 = [(CCUIContentModuleDetailTransitioningDelegate *)self->_detailTransitioningDelegate animationControllerForPresentedController:v9 presentingController:controllerCopy sourceController:controllerCopy];
     v17 = objc_opt_class();
     v18 = v16;
     if (v17)
@@ -243,38 +243,38 @@ void __104__CCUIContentModuleDetailClickPresentationInteractionManager_clickPres
 
     v27 = [[CCUIContentModuleDetailClickPresentationTransition alloc] initWithPresentedViewController:v9 animationController:v26];
     v20 = [objc_alloc(MEMORY[0x1E69DD3E0]) initWithPresentedViewController:v9 presentationController:self->_presentationController];
-    v28 = [MEMORY[0x1E69DC938] currentDevice];
-    v29 = [v28 userInterfaceIdiom];
-    v30 = [(UIViewController *)self->_presentingViewController bs_presentationContextDefiningViewController];
-    v31 = [v30 view];
-    v32 = v31;
-    if (v29)
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
+    bs_presentationContextDefiningViewController = [(UIViewController *)self->_presentingViewController bs_presentationContextDefiningViewController];
+    view = [bs_presentationContextDefiningViewController view];
+    v32 = view;
+    if (userInterfaceIdiom)
     {
-      v33 = [v31 superview];
+      superview = [view superview];
 
-      v32 = v33;
+      v32 = superview;
     }
 
     [v20 setCustomContainerView:v32];
     if (objc_opt_respondsToSelector())
     {
-      v34 = [v9 viewForTouchContinuation];
+      viewForTouchContinuation = [v9 viewForTouchContinuation];
     }
 
     else
     {
-      v34 = self->_viewForInteraction;
+      viewForTouchContinuation = self->_viewForInteraction;
     }
 
-    v35 = v34;
-    [v20 setCustomViewForTouchContinuation:v34];
+    v35 = viewForTouchContinuation;
+    [v20 setCustomViewForTouchContinuation:viewForTouchContinuation];
     [v20 setAppearanceTransition:v37];
     [v20 setDisappearanceTransition:v27];
   }
 
   else
   {
-    [v6 cancelInteraction];
+    [interactionCopy cancelInteraction];
     v9 = 0;
     v20 = 0;
   }
@@ -282,9 +282,9 @@ void __104__CCUIContentModuleDetailClickPresentationInteractionManager_clickPres
   return v20;
 }
 
-- (void)clickPresentationInteractionEnded:(id)a3 wasCancelled:(BOOL)a4
+- (void)clickPresentationInteractionEnded:(id)ended wasCancelled:(BOOL)cancelled
 {
-  v4 = a4;
+  cancelledCopy = cancelled;
   detailTransitioningDelegate = self->_detailTransitioningDelegate;
   self->_detailTransitioningDelegate = 0;
 
@@ -295,17 +295,17 @@ void __104__CCUIContentModuleDetailClickPresentationInteractionManager_clickPres
   if ((*&self->_delegateFlags & 8) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained contentModuleDetailClickPresentationInteractionControllerInteractionEnded:self wasCancelled:v4];
+    [WeakRetained contentModuleDetailClickPresentationInteractionControllerInteractionEnded:self wasCancelled:cancelledCopy];
   }
 }
 
-- (id)clickPresentationInteraction:(id)a3 previewForHighlightingAtLocation:(CGPoint)a4
+- (id)clickPresentationInteraction:(id)interaction previewForHighlightingAtLocation:(CGPoint)location
 {
   v19 = *MEMORY[0x1E69E9840];
-  if ([(UIView *)self->_viewForInteraction _isInAWindow:a3])
+  if ([(UIView *)self->_viewForInteraction _isInAWindow:interaction])
   {
     v5 = self->_viewForInteraction;
-    v6 = [(UIView *)v5 window];
+    window = [(UIView *)v5 window];
     v7 = CCUILogUserInterface;
     if (os_log_type_enabled(CCUILogUserInterface, OS_LOG_TYPE_DEFAULT))
     {
@@ -317,7 +317,7 @@ void __104__CCUIContentModuleDetailClickPresentationInteractionManager_clickPres
       v15 = 2114;
       v16 = v5;
       v17 = 2114;
-      v18 = v6;
+      v18 = window;
       _os_log_impl(&dword_1D168A000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Control Center is about to call [UITargetedPreview initWithView:], view = %{public}@, window = %{public}@", &v13, 0x20u);
     }
 

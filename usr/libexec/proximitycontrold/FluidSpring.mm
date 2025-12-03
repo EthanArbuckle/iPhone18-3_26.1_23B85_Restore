@@ -1,7 +1,7 @@
 @interface FluidSpring
 - (FluidSpring)init;
-- (FluidSpring)initWithParameters:(FLSpringParameters)a3 retargetImpuse:(double)a4;
-- (double)step:(double)a3 progress:(double)a4;
+- (FluidSpring)initWithParameters:(FLSpringParameters)parameters retargetImpuse:(double)impuse;
+- (double)step:(double)step progress:(double)progress;
 @end
 
 @implementation FluidSpring
@@ -26,12 +26,12 @@
   return v2;
 }
 
-- (FluidSpring)initWithParameters:(FLSpringParameters)a3 retargetImpuse:(double)a4
+- (FluidSpring)initWithParameters:(FLSpringParameters)parameters retargetImpuse:(double)impuse
 {
-  responseSmoothing = a3.responseSmoothing;
-  response = a3.response;
-  dampingRatioSmoothing = a3.dampingRatioSmoothing;
-  dampingRatio = a3.dampingRatio;
+  responseSmoothing = parameters.responseSmoothing;
+  response = parameters.response;
+  dampingRatioSmoothing = parameters.dampingRatioSmoothing;
+  dampingRatio = parameters.dampingRatio;
   v13.receiver = self;
   v13.super_class = FluidSpring;
   v9 = [(FluidSpring *)&v13 init];
@@ -41,7 +41,7 @@
     internalSpring = v9->_internalSpring;
     v9->_internalSpring = v10;
 
-    [(FLSpring *)v9->_internalSpring setRetargetImpulse:a4];
+    [(FLSpring *)v9->_internalSpring setRetargetImpulse:impuse];
     [(FLSpring *)v9->_internalSpring setTrackingParameters:dampingRatio, dampingRatioSmoothing, response, responseSmoothing];
     [(FLSpring *)v9->_internalSpring setTracking:1];
     v9->_lastUpdate = 0.0;
@@ -50,11 +50,11 @@
   return v9;
 }
 
-- (double)step:(double)a3 progress:(double)a4
+- (double)step:(double)step progress:(double)progress
 {
-  [(FLSpring *)self->_internalSpring setTarget:a4];
-  v6 = a3 - self->_lastUpdate;
-  self->_lastUpdate = a3;
+  [(FLSpring *)self->_internalSpring setTarget:progress];
+  v6 = step - self->_lastUpdate;
+  self->_lastUpdate = step;
   [(FLSpring *)self->_internalSpring step:v6];
   internalSpring = self->_internalSpring;
 

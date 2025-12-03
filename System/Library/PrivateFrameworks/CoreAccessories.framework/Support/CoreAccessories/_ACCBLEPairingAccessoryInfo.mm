@@ -1,26 +1,26 @@
 @interface _ACCBLEPairingAccessoryInfo
-- (_ACCBLEPairingAccessoryInfo)initWithUID:(id)a3 blePairingUUID:(id)a4 accInfoDict:(id)a5 supportedPairTypes:(id)a6;
+- (_ACCBLEPairingAccessoryInfo)initWithUID:(id)d blePairingUUID:(id)iD accInfoDict:(id)dict supportedPairTypes:(id)types;
 - (void)dealloc;
 @end
 
 @implementation _ACCBLEPairingAccessoryInfo
 
-- (_ACCBLEPairingAccessoryInfo)initWithUID:(id)a3 blePairingUUID:(id)a4 accInfoDict:(id)a5 supportedPairTypes:(id)a6
+- (_ACCBLEPairingAccessoryInfo)initWithUID:(id)d blePairingUUID:(id)iD accInfoDict:(id)dict supportedPairTypes:(id)types
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  dictCopy = dict;
+  typesCopy = types;
   v19.receiver = self;
   v19.super_class = _ACCBLEPairingAccessoryInfo;
   v15 = [(_ACCBLEPairingAccessoryInfo *)&v19 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_accessoryUID, a3);
-    objc_storeStrong(&v16->_blePairingUUID, a4);
-    objc_storeStrong(&v16->_accInfoDict, a5);
-    objc_storeStrong(&v16->_supportedPairTypes, a6);
+    objc_storeStrong(&v15->_accessoryUID, d);
+    objc_storeStrong(&v16->_blePairingUUID, iD);
+    objc_storeStrong(&v16->_accInfoDict, dict);
+    objc_storeStrong(&v16->_supportedPairTypes, types);
     activeProvider = v16->_activeProvider;
     v16->_activeProvider = 0;
 

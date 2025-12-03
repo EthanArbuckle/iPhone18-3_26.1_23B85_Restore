@@ -2,11 +2,11 @@
 + (id)sharedInstance;
 + (void)resetSharedInstance;
 - (ATXApp2VecClustering)init;
-- (float)_getL2DistanceFrom:(const float *)a3 to:(float *)a4;
-- (id)_getClosestClusterCentroidForVector:(const float *)a3;
-- (id)_mergeClusterCentroids:(id)a3 forBundleIds:(id)a4;
-- (id)getClosestClusterCentroidForBundleId:(id)a3;
-- (id)getClusterCentroidsForBundleIds:(id)a3;
+- (float)_getL2DistanceFrom:(const float *)from to:(float *)to;
+- (id)_getClosestClusterCentroidForVector:(const float *)vector;
+- (id)_mergeClusterCentroids:(id)centroids forBundleIds:(id)ids;
+- (id)getClosestClusterCentroidForBundleId:(id)id;
+- (id)getClusterCentroidsForBundleIds:(id)ids;
 - (void)init;
 @end
 
@@ -41,9 +41,9 @@
       appEmbeddings = v5->_appEmbeddings;
       v5->_appEmbeddings = v9;
 
-      v11 = [(ATXApp2VecMapping *)v5->_appEmbeddings vectorLength];
-      v5->_vectorLength = v11;
-      if (v11 != [(ATXApp2VecMapping *)v5->_clusterCentroids vectorLength])
+      vectorLength = [(ATXApp2VecMapping *)v5->_appEmbeddings vectorLength];
+      v5->_vectorLength = vectorLength;
+      if (vectorLength != [(ATXApp2VecMapping *)v5->_clusterCentroids vectorLength])
       {
         [ATXApp2VecClustering init];
       }
@@ -96,16 +96,16 @@
   pthread_mutex_unlock(&sharedInstanceLock_0);
 }
 
-- (id)getClusterCentroidsForBundleIds:(id)a3
+- (id)getClusterCentroidsForBundleIds:(id)ids
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  idsCopy = ids;
+  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(idsCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = idsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -137,57 +137,57 @@
   return v12;
 }
 
-- (id)_mergeClusterCentroids:(id)a3 forBundleIds:(id)a4
+- (id)_mergeClusterCentroids:(id)centroids forBundleIds:(id)ids
 {
   v79 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v67 = self;
+  centroidsCopy = centroids;
+  idsCopy = ids;
+  selfCopy = self;
   if (self->_loaded)
   {
     v8 = objc_opt_new();
-    if ([v7 count])
+    if ([idsCopy count])
     {
       v9 = 0;
       do
       {
-        v10 = [v6 objectAtIndexedSubscript:v9];
+        v10 = [centroidsCopy objectAtIndexedSubscript:v9];
         v11 = [v8 objectForKeyedSubscript:v10];
 
         if (!v11)
         {
           v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
-          v13 = [v6 objectAtIndexedSubscript:v9];
+          v13 = [centroidsCopy objectAtIndexedSubscript:v9];
           [v8 setObject:v12 forKeyedSubscript:v13];
         }
 
-        v14 = [v6 objectAtIndexedSubscript:v9];
+        v14 = [centroidsCopy objectAtIndexedSubscript:v9];
         v15 = [v8 objectForKeyedSubscript:v14];
-        v16 = [v7 objectAtIndexedSubscript:v9];
+        v16 = [idsCopy objectAtIndexedSubscript:v9];
         [v15 addObject:v16];
 
         ++v9;
       }
 
-      while ([v7 count] > v9);
+      while ([idsCopy count] > v9);
     }
 
-    v58 = v7;
-    v17 = v6;
-    v18 = [v8 allKeys];
+    v58 = idsCopy;
+    v17 = centroidsCopy;
+    allKeys = [v8 allKeys];
     v73 = 0u;
     v74 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v19 = [v18 countByEnumeratingWithState:&v73 objects:v78 count:16];
+    v19 = [allKeys countByEnumeratingWithState:&v73 objects:v78 count:16];
     if (v19)
     {
       v20 = v19;
       v21 = *v74;
       v56 = v8;
-      v57 = v6;
+      v57 = centroidsCopy;
       v54 = v21;
-      v55 = v18;
+      v55 = allKeys;
       do
       {
         v22 = 0;
@@ -196,7 +196,7 @@
         {
           if (*v74 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(allKeys);
           }
 
           v23 = *(*(&v73 + 1) + 8 * v22);
@@ -205,8 +205,8 @@
           {
             v61 = &v53;
             v62 = v22;
-            appEmbeddings = v67->_appEmbeddings;
-            v26 = &v53 - ((4 * v67->_vectorLength + 15) & 0xFFFFFFFFFFFFFFF0);
+            appEmbeddings = selfCopy->_appEmbeddings;
+            v26 = &v53 - ((4 * selfCopy->_vectorLength + 15) & 0xFFFFFFFFFFFFFFF0);
             v63 = v24;
             v27 = [v24 objectAtIndexedSubscript:0];
             v65 = v26;
@@ -216,7 +216,7 @@
             {
               v28 = v23;
               v60 = &v53;
-              v64 = &v53 - ((4 * v67->_vectorLength + 15) & 0xFFFFFFFFFFFFFFF0);
+              v64 = &v53 - ((4 * selfCopy->_vectorLength + 15) & 0xFFFFFFFFFFFFFFF0);
               v71 = 0u;
               v72 = 0u;
               v69 = 0u;
@@ -244,13 +244,13 @@
                     {
                       if ([*(*(&v69 + 1) + 8 * i) integerValue])
                       {
-                        v35 = v67;
-                        clusterCentroids = v67->_clusterCentroids;
+                        v35 = selfCopy;
+                        clusterCentroids = selfCopy->_clusterCentroids;
                         v37 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v34, "integerValue") - 1}];
-                        v38 = [v37 stringValue];
+                        stringValue = [v37 stringValue];
                         v39 = clusterCentroids;
                         v40 = v64;
-                        [(ATXApp2VecMapping *)v39 getVectorForBundleId:v38 into:v64];
+                        [(ATXApp2VecMapping *)v39 getVectorForBundleId:stringValue into:v64];
 
                         [(ATXApp2VecClustering *)v35 _getL2DistanceFrom:v65 to:v40];
                         if (v41 < v32)
@@ -286,7 +286,7 @@
               v17 = v57;
               [v57 setObject:v45 atIndexedSubscript:v50];
 
-              v18 = v55;
+              allKeys = v55;
               v8 = v56;
               v21 = v54;
               v20 = v59;
@@ -300,28 +300,28 @@
         }
 
         while (v22 != v20);
-        v20 = [v18 countByEnumeratingWithState:&v73 objects:v78 count:16];
+        v20 = [allKeys countByEnumeratingWithState:&v73 objects:v78 count:16];
       }
 
       while (v20);
     }
 
-    v6 = v17;
-    v7 = v58;
+    centroidsCopy = v17;
+    idsCopy = v58;
   }
 
   v51 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return centroidsCopy;
 }
 
-- (id)getClosestClusterCentroidForBundleId:(id)a3
+- (id)getClosestClusterCentroidForBundleId:(id)id
 {
   v8[1] = *MEMORY[0x277D85DE8];
   if (self->_loaded)
   {
     v4 = v8 - ((4 * self->_vectorLength + 15) & 0xFFFFFFFFFFFFFFF0);
-    if ([(ATXApp2VecMapping *)self->_appEmbeddings getVectorForBundleId:a3 into:v4])
+    if ([(ATXApp2VecMapping *)self->_appEmbeddings getVectorForBundleId:id into:v4])
     {
       v5 = [(ATXApp2VecClustering *)self _getClosestClusterCentroidForVector:v4];
     }
@@ -342,20 +342,20 @@
   return v5;
 }
 
-- (id)_getClosestClusterCentroidForVector:(const float *)a3
+- (id)_getClosestClusterCentroidForVector:(const float *)vector
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v5 = [(ATXApp2VecMapping *)self->_clusterCentroids appCount];
+  appCount = [(ATXApp2VecMapping *)self->_clusterCentroids appCount];
   v19[0] = v19;
   v6 = v19 - ((4 * self->_vectorLength + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (v5 < 1)
+  if (appCount < 1)
   {
     v9 = 0;
   }
 
   else
   {
-    v7 = v5;
+    v7 = appCount;
     v8 = 0;
     v9 = 0;
     v10 = 3.4028e38;
@@ -363,10 +363,10 @@
     {
       clusterCentroids = self->_clusterCentroids;
       v12 = [MEMORY[0x277CCABB0] numberWithInt:{v8, v19[0]}];
-      v13 = [v12 stringValue];
-      [(ATXApp2VecMapping *)clusterCentroids getVectorForBundleId:v13 into:v6];
+      stringValue = [v12 stringValue];
+      [(ATXApp2VecMapping *)clusterCentroids getVectorForBundleId:stringValue into:v6];
 
-      [(ATXApp2VecClustering *)self _getL2DistanceFrom:a3 to:v6];
+      [(ATXApp2VecClustering *)self _getL2DistanceFrom:vector to:v6];
       if (v14 < v10)
       {
         v9 = v8 + 1;
@@ -390,7 +390,7 @@
   return v16;
 }
 
-- (float)_getL2DistanceFrom:(const float *)a3 to:(float *)a4
+- (float)_getL2DistanceFrom:(const float *)from to:(float *)to
 {
   vectorLength_low = LODWORD(self->_vectorLength);
   catlas_saxpby_NEWLAPACK();
@@ -404,7 +404,7 @@
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = 138412546;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2112;
   v7 = a2;
   _os_log_error_impl(&dword_2263AA000, log, OS_LOG_TYPE_ERROR, "Could not load centroids (from %@) and embeddings (from %@)", &v4, 0x16u);

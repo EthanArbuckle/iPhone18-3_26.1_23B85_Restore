@@ -1,31 +1,31 @@
 @interface CLPredictedWalkDistanceServiceCompanion
 + (BOOL)isSupported;
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (CLPredictedWalkDistanceServiceCompanion)init;
 - (id).cxx_construct;
 - (void)beginService;
-- (void)completeActivity:(id)a3 withNextEstimateTime:(double)a4;
+- (void)completeActivity:(id)activity withNextEstimateTime:(double)time;
 - (void)endService;
-- (void)getSixMinuteWalkDistancePrediction:(id)a3;
-- (void)onP6MWDActivity:(id)a3;
-- (void)onUserInfoUpdate:(const int *)a3 data:(const void *)a4;
-- (void)receivePredictedWalkDistanceBout:(id)a3;
+- (void)getSixMinuteWalkDistancePrediction:(id)prediction;
+- (void)onP6MWDActivity:(id)activity;
+- (void)onUserInfoUpdate:(const int *)update data:(const void *)data;
+- (void)receivePredictedWalkDistanceBout:(id)bout;
 - (void)scheduleEstimate;
-- (void)sendAnalyticsWeeklyEstimate:(CLPredictedWalkDistanceEstimate *)a3 strideCalInfo:(StrideCalInfo *)a4 walkingWorkoutPaceStats:(CLRunningStat *)a5 runningWorkoutPaceStats:(CLRunningStat *)a6 userInfo:(CLBodyMetrics *)a7;
-- (void)sendToCoreAnalyticsWeeklyEstimate:(const CLPredictedWalkDistanceEstimateAnalytics *)a3;
+- (void)sendAnalyticsWeeklyEstimate:(CLPredictedWalkDistanceEstimate *)estimate strideCalInfo:(StrideCalInfo *)info walkingWorkoutPaceStats:(CLRunningStat *)stats runningWorkoutPaceStats:(CLRunningStat *)paceStats userInfo:(CLBodyMetrics *)userInfo;
+- (void)sendToCoreAnalyticsWeeklyEstimate:(const CLPredictedWalkDistanceEstimateAnalytics *)estimate;
 - (void)setUpAggregationOnTimer;
-- (void)writeToHealthKitPrediction:(double)a3 estimateTime:(double)a4 earliestTimeUsed:(double)a5 calibrationStatus:(BOOL)a6;
+- (void)writeToHealthKitPrediction:(double)prediction estimateTime:(double)time earliestTimeUsed:(double)used calibrationStatus:(BOOL)status;
 @end
 
 @implementation CLPredictedWalkDistanceServiceCompanion
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -279,11 +279,11 @@
   dispatch_resume(self->fAggregationTimer);
 }
 
-- (void)onP6MWDActivity:(id)a3
+- (void)onP6MWDActivity:(id)activity
 {
-  if (a3)
+  if (activity)
   {
-    state = xpc_activity_get_state(a3);
+    state = xpc_activity_get_state(activity);
     if (state == 4 || (v6 = state, state == 2))
     {
       if (qword_1025D4430 != -1)
@@ -303,7 +303,7 @@
         sub_10187D6FC();
       }
 
-      [(CLPredictedWalkDistanceServiceCompanion *)self getSixMinuteWalkDistancePrediction:a3];
+      [(CLPredictedWalkDistanceServiceCompanion *)self getSixMinuteWalkDistancePrediction:activity];
     }
 
     else
@@ -349,7 +349,7 @@
   }
 }
 
-- (void)getSixMinuteWalkDistancePrediction:(id)a3
+- (void)getSixMinuteWalkDistancePrediction:(id)prediction
 {
   if (objc_opt_class() && ![(CLPredictedWalkDistanceServiceCompanion *)self isWheelchairMode])
   {
@@ -720,7 +720,7 @@
       v55[2] = sub_1003F38EC;
       v55[3] = &unk_102450340;
       v55[4] = v14;
-      v55[5] = a3;
+      v55[5] = prediction;
       v55[8] = v123;
       v55[9] = v117;
       v55[6] = self;
@@ -838,7 +838,7 @@
         sub_10187D9B4();
       }
 
-      [(CLPredictedWalkDistanceServiceCompanion *)self completeActivity:a3 withNextEstimateTime:v126];
+      [(CLPredictedWalkDistanceServiceCompanion *)self completeActivity:prediction withNextEstimateTime:v126];
     }
   }
 
@@ -846,22 +846,22 @@
   {
     v5 = CFAbsoluteTimeGetCurrent() + self->fP6MWDPredictionInterval;
 
-    [(CLPredictedWalkDistanceServiceCompanion *)self completeActivity:a3 withNextEstimateTime:v5];
+    [(CLPredictedWalkDistanceServiceCompanion *)self completeActivity:prediction withNextEstimateTime:v5];
   }
 }
 
-- (void)completeActivity:(id)a3 withNextEstimateTime:(double)a4
+- (void)completeActivity:(id)activity withNextEstimateTime:(double)time
 {
-  v9 = a4;
+  timeCopy = time;
   v6 = sub_100011660();
   sub_100185AC0(v6, buf);
-  sub_100116D68(*buf, "kP6MWDNextEstimateTime", &v9);
+  sub_100116D68(*buf, "kP6MWDNextEstimateTime", &timeCopy);
   if (*&buf[8])
   {
     sub_100008080(*&buf[8]);
   }
 
-  if (!xpc_activity_set_state(a3, 5))
+  if (!xpc_activity_set_state(activity, 5))
   {
     if (qword_1025D4430 != -1)
     {
@@ -871,7 +871,7 @@
     v7 = qword_1025D4438;
     if (os_log_type_enabled(qword_1025D4438, OS_LOG_TYPE_FAULT))
     {
-      state = xpc_activity_get_state(a3);
+      state = xpc_activity_get_state(activity);
       *buf = 136446466;
       *&buf[4] = "com.apple.locationd.P6MWD";
       *&buf[12] = 2050;
@@ -881,16 +881,16 @@
 
     if (sub_10000A100(121, 0))
     {
-      sub_10187ED94(a3);
+      sub_10187ED94(activity);
     }
   }
 
   [(CLPredictedWalkDistanceServiceCompanion *)self scheduleEstimate];
 }
 
-- (void)writeToHealthKitPrediction:(double)a3 estimateTime:(double)a4 earliestTimeUsed:(double)a5 calibrationStatus:(BOOL)a6
+- (void)writeToHealthKitPrediction:(double)prediction estimateTime:(double)time earliestTimeUsed:(double)used calibrationStatus:(BOOL)status
 {
-  v6 = a6;
+  statusCopy = status;
   if (objc_opt_class())
   {
     if (qword_1025D4430 != -1)
@@ -898,20 +898,20 @@
       sub_10187CE3C();
     }
 
-    v11 = round(a3);
+    v11 = round(prediction);
     v12 = qword_1025D4438;
     if (os_log_type_enabled(qword_1025D4438, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134350081;
-      v32 = a4;
+      timeCopy = time;
       v33 = 2050;
-      v34 = a4;
+      timeCopy2 = time;
       v35 = 2049;
       v36 = v11;
       v37 = 1025;
-      v38 = v6;
+      v38 = statusCopy;
       v39 = 2049;
-      v40 = a5;
+      usedCopy = used;
       _os_log_impl(dword_100000000, v12, OS_LOG_TYPE_DEBUG, "Writing predicted 6MWD to HealthKit, startTime: %{public}f, endTime: %{public}f, prediction: %{private}f, calibrationStatus: %{private}d, earliestTimeUsed: %{private}f", buf, 0x30u);
     }
 
@@ -924,15 +924,15 @@
       }
 
       v21 = 134350081;
-      v22 = a4;
+      timeCopy3 = time;
       v23 = 2050;
-      v24 = a4;
+      timeCopy4 = time;
       v25 = 2049;
       v26 = v11;
       v27 = 1025;
-      v28 = v6;
+      v28 = statusCopy;
       v29 = 2049;
-      v30 = a5;
+      usedCopy2 = used;
       v19 = _os_log_send_and_compose_impl();
       sub_100152C7C("Generic", 1, 0, 2, "[CLPredictedWalkDistanceServiceCompanion writeToHealthKitPrediction:estimateTime:earliestTimeUsed:calibrationStatus:]", "%s\n", v19);
       if (v19 != buf)
@@ -944,7 +944,7 @@
     v13 = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierSixMinuteWalkTestDistance];
     v14 = objc_opt_new();
     v15 = v14;
-    if (v6)
+    if (statusCopy)
     {
       v16 = &__kCFBooleanTrue;
     }
@@ -955,19 +955,19 @@
     }
 
     [v14 setObject:v16 forKeyedSubscript:HKMetadataKeyAppleDeviceCalibrated];
-    if (a5 != 0.0)
+    if (used != 0.0)
     {
-      [v15 setObject:+[NSDate dateWithTimeIntervalSinceReferenceDate:](NSDate forKeyedSubscript:{"dateWithTimeIntervalSinceReferenceDate:", a5), HKMetadataKeyDateOfEarliestDataUsedForEstimate}];
+      [v15 setObject:+[NSDate dateWithTimeIntervalSinceReferenceDate:](NSDate forKeyedSubscript:{"dateWithTimeIntervalSinceReferenceDate:", used), HKMetadataKeyDateOfEarliestDataUsedForEstimate}];
     }
 
-    v17 = [HKQuantitySample quantitySampleWithType:v13 quantity:[HKQuantity quantityWithUnit:[HKUnit unitFromString:@"m"] doubleValue:v11] startDate:[NSDate dateWithTimeIntervalSinceReferenceDate:a4] endDate:[NSDate dateWithTimeIntervalSinceReferenceDate:a4] metadata:v15];
+    v17 = [HKQuantitySample quantitySampleWithType:v13 quantity:[HKQuantity quantityWithUnit:[HKUnit unitFromString:@"m"] doubleValue:v11] startDate:[NSDate dateWithTimeIntervalSinceReferenceDate:time] endDate:[NSDate dateWithTimeIntervalSinceReferenceDate:time] metadata:v15];
     fHkHealthStore = self->fHkHealthStore;
     v20 = v17;
     [(HKHealthStore *)fHkHealthStore saveObjects:[NSArray withCompletion:"arrayWithObjects:count:" arrayWithObjects:1 count:?], &stru_102450380];
   }
 }
 
-- (void)receivePredictedWalkDistanceBout:(id)a3
+- (void)receivePredictedWalkDistanceBout:(id)bout
 {
   if (qword_1025D4430 != -1)
   {
@@ -997,7 +997,7 @@
   v31 = 0u;
   v32 = 0u;
   v33 = 0;
-  [a3 getBytes:buf length:120];
+  [bout getBytes:buf length:120];
   if (qword_1025D4430 != -1)
   {
     sub_10187CF34();
@@ -1085,10 +1085,10 @@
   }
 }
 
-- (void)onUserInfoUpdate:(const int *)a3 data:(const void *)a4
+- (void)onUserInfoUpdate:(const int *)update data:(const void *)data
 {
   [-[CLPredictedWalkDistanceServiceCompanion universe](self "universe")];
-  if (*a3 == 2)
+  if (*update == 2)
   {
     if (qword_1025D4430 != -1)
     {
@@ -1107,10 +1107,10 @@
       sub_10187F464();
     }
 
-    v9 = *(a4 + 1);
-    v8 = *(a4 + 2);
-    v10 = *a4;
-    *&self->fUserInfo.runVo2max = *(a4 + 44);
+    v9 = *(data + 1);
+    v8 = *(data + 2);
+    v10 = *data;
+    *&self->fUserInfo.runVo2max = *(data + 44);
     *&self->fUserInfo.vo2max = v9;
     *&self->fUserInfo.hronset = v8;
     *&self->fUserInfo.gender = v10;
@@ -1126,7 +1126,7 @@
     v11 = qword_1025D4438;
     if (os_log_type_enabled(qword_1025D4438, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = *a3;
+      v12 = *update;
       v13[0] = 67109120;
       v13[1] = v12;
       _os_log_impl(dword_100000000, v11, OS_LOG_TYPE_DEFAULT, "#Warning Unhandled notification type, %d", v13, 8u);
@@ -1134,17 +1134,17 @@
 
     if (sub_10000A100(121, 2))
     {
-      sub_10187F368(a3);
+      sub_10187F368(update);
     }
   }
 }
 
-- (void)sendAnalyticsWeeklyEstimate:(CLPredictedWalkDistanceEstimate *)a3 strideCalInfo:(StrideCalInfo *)a4 walkingWorkoutPaceStats:(CLRunningStat *)a5 runningWorkoutPaceStats:(CLRunningStat *)a6 userInfo:(CLBodyMetrics *)a7
+- (void)sendAnalyticsWeeklyEstimate:(CLPredictedWalkDistanceEstimate *)estimate strideCalInfo:(StrideCalInfo *)info walkingWorkoutPaceStats:(CLRunningStat *)stats runningWorkoutPaceStats:(CLRunningStat *)paceStats userInfo:(CLBodyMetrics *)userInfo
 {
   if (objc_opt_class() && ([+[MCProfileConnection sharedConnection](MCProfileConnection "sharedConnection")] & 1) != 0)
   {
-    v13 = a3->var0 + -7862400.0;
-    v14 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:a3->var0];
+    v13 = estimate->var0 + -7862400.0;
+    v14 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:estimate->var0];
     v15 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:v13];
     v35 = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierSixMinuteWalkTestDistance];
     v16 = [HKQuery predicateForSamplesWithStartDate:v15 endDate:v14 options:3];
@@ -1154,52 +1154,52 @@
     v36[2] = sub_1003F5540;
     v36[3] = &unk_1024503D0;
     v36[4] = self;
-    v18 = *&a3->var34;
-    v51 = *&a3->var32;
+    v18 = *&estimate->var34;
+    v51 = *&estimate->var32;
     v52 = v18;
-    v19 = *&a3->var29;
-    v49 = *&a3->var27;
+    v19 = *&estimate->var29;
+    v49 = *&estimate->var27;
     v50 = v19;
-    v20 = *&a3->var21;
-    v45 = *&a3->var19;
+    v20 = *&estimate->var21;
+    v45 = *&estimate->var19;
     v46 = v20;
-    v21 = *&a3->var25;
-    v47 = *&a3->var23;
+    v21 = *&estimate->var25;
+    v47 = *&estimate->var23;
     v48 = v21;
-    v22 = *&a3->var10;
-    v41 = *&a3->var8;
+    v22 = *&estimate->var10;
+    v41 = *&estimate->var8;
     v42 = v22;
-    v23 = *&a3->var16;
-    v43 = *&a3->var14;
+    v23 = *&estimate->var16;
+    v43 = *&estimate->var14;
     v44 = v23;
-    v24 = *&a3->var2;
-    v37 = *&a3->var0;
+    v24 = *&estimate->var2;
+    v37 = *&estimate->var0;
     v38 = v24;
-    v25 = *&a3->var6;
-    v39 = *&a3->var4;
+    v25 = *&estimate->var6;
+    v39 = *&estimate->var4;
     v40 = v25;
-    v26 = *&a4->var7;
-    v55 = *&a4->var5;
+    v26 = *&info->var7;
+    v55 = *&info->var5;
     v56 = v26;
-    v27 = *&a4->var3;
-    v53 = *&a4->var0;
+    v27 = *&info->var3;
+    v53 = *&info->var0;
     v54 = v27;
-    var9 = a4->var9;
-    v28 = *&a5->var2;
-    v58 = *&a5->var0;
+    var9 = info->var9;
+    v28 = *&stats->var2;
+    v58 = *&stats->var0;
     v59 = v28;
-    var4 = a5->var4;
-    v30 = a6->var4;
-    v31 = *&a6->var2;
-    v61 = *&a6->var0;
+    var4 = stats->var4;
+    v30 = paceStats->var4;
+    v31 = *&paceStats->var2;
+    v61 = *&paceStats->var0;
     v62 = v31;
     v60 = var4;
     v63 = v30;
-    *(v66 + 12) = *&a7->runVo2max;
-    v32 = *&a7->hronset;
-    v65 = *&a7->vo2max;
+    *(v66 + 12) = *&userInfo->runVo2max;
+    v32 = *&userInfo->hronset;
+    v65 = *&userInfo->vo2max;
     v66[0] = v32;
-    v64 = *&a7->gender;
+    v64 = *&userInfo->gender;
     v33 = [v17 initWithSampleType:v35 predicate:v16 limit:0 sortDescriptors:0 resultsHandler:v36];
     [(HKHealthStore *)self->fHkHealthStore executeQuery:v33];
   }
@@ -1225,7 +1225,7 @@
   }
 }
 
-- (void)sendToCoreAnalyticsWeeklyEstimate:(const CLPredictedWalkDistanceEstimateAnalytics *)a3
+- (void)sendToCoreAnalyticsWeeklyEstimate:(const CLPredictedWalkDistanceEstimateAnalytics *)estimate
 {
   if ((atomic_load_explicit(&qword_102656240, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_102656240))
   {

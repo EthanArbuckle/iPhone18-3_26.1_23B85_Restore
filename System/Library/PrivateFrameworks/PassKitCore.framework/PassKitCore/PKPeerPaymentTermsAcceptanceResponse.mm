@@ -1,23 +1,23 @@
 @interface PKPeerPaymentTermsAcceptanceResponse
 - (BOOL)hasTermsData;
-- (PKPeerPaymentTermsAcceptanceResponse)initWithData:(id)a3;
+- (PKPeerPaymentTermsAcceptanceResponse)initWithData:(id)data;
 @end
 
 @implementation PKPeerPaymentTermsAcceptanceResponse
 
-- (PKPeerPaymentTermsAcceptanceResponse)initWithData:(id)a3
+- (PKPeerPaymentTermsAcceptanceResponse)initWithData:(id)data
 {
   v12.receiver = self;
   v12.super_class = PKPeerPaymentTermsAcceptanceResponse;
-  v3 = [(PKWebServiceResponse *)&v12 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v12 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = jSONObject;
       v7 = [v6 PKStringForKey:@"termsIdentifier"];
       termsIdentifier = v4->_termsIdentifier;
       v4->_termsIdentifier = v7;

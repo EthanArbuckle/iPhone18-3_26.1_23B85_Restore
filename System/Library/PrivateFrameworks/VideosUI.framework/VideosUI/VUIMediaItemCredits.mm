@@ -1,12 +1,12 @@
 @interface VUIMediaItemCredits
 - (BOOL)hasCredits;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSOrderedSet)cast;
 - (NSOrderedSet)directors;
 - (NSOrderedSet)producers;
 - (NSOrderedSet)screenwriters;
-- (VUIMediaItemCredits)initWithStringRepresentation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VUIMediaItemCredits)initWithStringRepresentation:(id)representation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)stringRepresentation;
 - (unint64_t)hash;
@@ -19,9 +19,9 @@
   cast = self->_cast;
   if (!cast)
   {
-    v4 = [MEMORY[0x1E695DFB8] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFB8] orderedSet];
     v5 = self->_cast;
-    self->_cast = v4;
+    self->_cast = orderedSet;
 
     cast = self->_cast;
   }
@@ -34,9 +34,9 @@
   directors = self->_directors;
   if (!directors)
   {
-    v4 = [MEMORY[0x1E695DFB8] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFB8] orderedSet];
     v5 = self->_directors;
-    self->_directors = v4;
+    self->_directors = orderedSet;
 
     directors = self->_directors;
   }
@@ -49,9 +49,9 @@
   producers = self->_producers;
   if (!producers)
   {
-    v4 = [MEMORY[0x1E695DFB8] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFB8] orderedSet];
     v5 = self->_producers;
-    self->_producers = v4;
+    self->_producers = orderedSet;
 
     producers = self->_producers;
   }
@@ -64,9 +64,9 @@
   screenwriters = self->_screenwriters;
   if (!screenwriters)
   {
-    v4 = [MEMORY[0x1E695DFB8] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFB8] orderedSet];
     v5 = self->_screenwriters;
-    self->_screenwriters = v4;
+    self->_screenwriters = orderedSet;
 
     screenwriters = self->_screenwriters;
   }
@@ -76,24 +76,24 @@
 
 - (BOOL)hasCredits
 {
-  v3 = [(VUIMediaItemCredits *)self cast];
-  v4 = [v3 count];
-  v5 = [(VUIMediaItemCredits *)self directors];
-  v6 = [v5 count] + v4;
-  v7 = [(VUIMediaItemCredits *)self producers];
-  v8 = v6 + [v7 count];
-  v9 = [(VUIMediaItemCredits *)self screenwriters];
-  v10 = [v9 count];
+  cast = [(VUIMediaItemCredits *)self cast];
+  v4 = [cast count];
+  directors = [(VUIMediaItemCredits *)self directors];
+  v6 = [directors count] + v4;
+  producers = [(VUIMediaItemCredits *)self producers];
+  v8 = v6 + [producers count];
+  screenwriters = [(VUIMediaItemCredits *)self screenwriters];
+  v10 = [screenwriters count];
 
   return v8 + v10 != 0;
 }
 
-- (VUIMediaItemCredits)initWithStringRepresentation:(id)a3
+- (VUIMediaItemCredits)initWithStringRepresentation:(id)representation
 {
   v4 = MEMORY[0x1E696AB08];
-  v5 = a3;
+  representationCopy = representation;
   v6 = [v4 characterSetWithCharactersInString:{@", "}];
-  v7 = [v5 componentsSeparatedByCharactersInSet:v6];
+  v7 = [representationCopy componentsSeparatedByCharactersInSet:v6];
 
   if ([v7 count] != 4)
   {
@@ -137,31 +137,31 @@
 - (id)stringRepresentation
 {
   v3 = objc_opt_class();
-  v4 = [(VUIMediaItemCredits *)self cast];
-  v5 = [v4 array];
-  v6 = [v3 _stringRepresentationFromArray:v5];
+  cast = [(VUIMediaItemCredits *)self cast];
+  array = [cast array];
+  v6 = [v3 _stringRepresentationFromArray:array];
 
   v7 = objc_opt_class();
-  v8 = [(VUIMediaItemCredits *)self directors];
-  v9 = [v8 array];
-  v10 = [v7 _stringRepresentationFromArray:v9];
+  directors = [(VUIMediaItemCredits *)self directors];
+  array2 = [directors array];
+  v10 = [v7 _stringRepresentationFromArray:array2];
 
   v11 = objc_opt_class();
-  v12 = [(VUIMediaItemCredits *)self producers];
-  v13 = [v12 array];
-  v14 = [v11 _stringRepresentationFromArray:v13];
+  producers = [(VUIMediaItemCredits *)self producers];
+  array3 = [producers array];
+  v14 = [v11 _stringRepresentationFromArray:array3];
 
   v15 = objc_opt_class();
-  v16 = [(VUIMediaItemCredits *)self screenwriters];
-  v17 = [v16 array];
-  v18 = [v15 _stringRepresentationFromArray:v17];
+  screenwriters = [(VUIMediaItemCredits *)self screenwriters];
+  array4 = [screenwriters array];
+  v18 = [v15 _stringRepresentationFromArray:array4];
 
   v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@, %@, %@, %@", v6, v10, v14, v18];
 
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(VUIMediaItemCredits);
   v5 = [(NSOrderedSet *)self->_cast copy];
@@ -185,42 +185,42 @@
 
 - (unint64_t)hash
 {
-  v3 = [(VUIMediaItemCredits *)self cast];
-  v4 = [v3 hash];
+  cast = [(VUIMediaItemCredits *)self cast];
+  v4 = [cast hash];
 
-  v5 = [(VUIMediaItemCredits *)self directors];
-  v6 = [v5 hash] ^ v4;
+  directors = [(VUIMediaItemCredits *)self directors];
+  v6 = [directors hash] ^ v4;
 
-  v7 = [(VUIMediaItemCredits *)self producers];
-  v8 = [v7 hash];
+  producers = [(VUIMediaItemCredits *)self producers];
+  v8 = [producers hash];
 
-  v9 = [(VUIMediaItemCredits *)self screenwriters];
-  v10 = v8 ^ [v9 hash];
+  screenwriters = [(VUIMediaItemCredits *)self screenwriters];
+  v10 = v8 ^ [screenwriters hash];
 
   return v6 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v6 = v5;
-        v7 = [(VUIMediaItemCredits *)self cast];
-        v8 = [(VUIMediaItemCredits *)v6 cast];
-        v9 = v7;
-        v10 = v8;
+        cast = [(VUIMediaItemCredits *)self cast];
+        cast2 = [(VUIMediaItemCredits *)v6 cast];
+        v9 = cast;
+        v10 = cast2;
         v11 = v10;
         if (v9 == v10)
         {
@@ -242,10 +242,10 @@
           }
         }
 
-        v14 = [(VUIMediaItemCredits *)self directors];
-        v15 = [(VUIMediaItemCredits *)v6 directors];
-        v9 = v14;
-        v16 = v15;
+        directors = [(VUIMediaItemCredits *)self directors];
+        directors2 = [(VUIMediaItemCredits *)v6 directors];
+        v9 = directors;
+        v16 = directors2;
         v11 = v16;
         if (v9 == v16)
         {
@@ -267,19 +267,19 @@
           }
         }
 
-        v18 = [(VUIMediaItemCredits *)self producers];
-        v19 = [(VUIMediaItemCredits *)v6 producers];
-        v9 = v18;
-        v20 = v19;
+        producers = [(VUIMediaItemCredits *)self producers];
+        producers2 = [(VUIMediaItemCredits *)v6 producers];
+        v9 = producers;
+        v20 = producers2;
         v11 = v20;
         if (v9 == v20)
         {
 
 LABEL_24:
-          v22 = [(VUIMediaItemCredits *)self screenwriters];
-          v23 = [(VUIMediaItemCredits *)v6 screenwriters];
-          v9 = v22;
-          v24 = v23;
+          screenwriters = [(VUIMediaItemCredits *)self screenwriters];
+          screenwriters2 = [(VUIMediaItemCredits *)v6 screenwriters];
+          v9 = screenwriters;
+          v24 = screenwriters2;
           v11 = v24;
           if (v9 == v24)
           {
@@ -338,23 +338,23 @@ LABEL_31:
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VUIMediaItemCredits *)self cast];
-  v7 = [v5 stringWithFormat:@"%@=%@", @"cast", v6];
+  cast = [(VUIMediaItemCredits *)self cast];
+  v7 = [v5 stringWithFormat:@"%@=%@", @"cast", cast];
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(VUIMediaItemCredits *)self directors];
-  v10 = [v8 stringWithFormat:@"%@=%@", @"directors", v9];
+  directors = [(VUIMediaItemCredits *)self directors];
+  v10 = [v8 stringWithFormat:@"%@=%@", @"directors", directors];
   [v3 addObject:v10];
 
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [(VUIMediaItemCredits *)self producers];
-  v13 = [v11 stringWithFormat:@"%@=%@", @"producers", v12];
+  producers = [(VUIMediaItemCredits *)self producers];
+  v13 = [v11 stringWithFormat:@"%@=%@", @"producers", producers];
   [v3 addObject:v13];
 
   v14 = MEMORY[0x1E696AEC0];
-  v15 = [(VUIMediaItemCredits *)self screenwriters];
-  v16 = [v14 stringWithFormat:@"%@=%@", @"screenwriters", v15];
+  screenwriters = [(VUIMediaItemCredits *)self screenwriters];
+  v16 = [v14 stringWithFormat:@"%@=%@", @"screenwriters", screenwriters];
   [v3 addObject:v16];
 
   v17 = MEMORY[0x1E696AEC0];

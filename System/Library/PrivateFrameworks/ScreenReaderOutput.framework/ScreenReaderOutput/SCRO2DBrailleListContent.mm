@@ -1,19 +1,19 @@
 @interface SCRO2DBrailleListContent
 - (id)multiLineBraille;
-- (void)drawOnCanvas:(id)a3;
+- (void)drawOnCanvas:(id)canvas;
 @end
 
 @implementation SCRO2DBrailleListContent
 
-- (void)drawOnCanvas:(id)a3
+- (void)drawOnCanvas:(id)canvas
 {
-  v4 = a3;
-  v5 = [(SCRO2DBrailleListContent *)self multiLineBraille];
-  v11 = v4;
-  v6 = [MEMORY[0x277CBEA90] data];
-  [v11 setImageData:v6];
+  canvasCopy = canvas;
+  multiLineBraille = [(SCRO2DBrailleListContent *)self multiLineBraille];
+  v11 = canvasCopy;
+  data = [MEMORY[0x277CBEA90] data];
+  [v11 setImageData:data];
 
-  v7 = [v5 componentsJoinedByString:&stru_28763D5C8];
+  v7 = [multiLineBraille componentsJoinedByString:&stru_28763D5C8];
   v8 = [v7 length];
   v9 = malloc_type_malloc(v8, 0x100004077774924uLL);
   if (v8)

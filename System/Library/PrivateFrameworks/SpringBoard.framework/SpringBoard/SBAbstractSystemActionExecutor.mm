@@ -2,27 +2,27 @@
 - (BOOL)_canBeExecuted;
 - (BOOL)_isExecuting;
 - (BOOL)_requiresAuthenticationAtLeastOnceSinceBootBeforeExecution;
-- (SBAbstractSystemActionExecutor)initWithSystemAction:(id)a3;
-- (id)_beginInteractiveExecutionWithContext:(id)a3 executionHandler:(id)a4 error:(id *)a5;
-- (id)_previewWithCoordinator:(id)a3;
-- (id)executeWithContext:(id)a3 executionHandler:(id)a4 completion:(id)a5;
-- (id)previewWithCoordinator:(id)a3;
+- (SBAbstractSystemActionExecutor)initWithSystemAction:(id)action;
+- (id)_beginInteractiveExecutionWithContext:(id)context executionHandler:(id)handler error:(id *)error;
+- (id)_previewWithCoordinator:(id)coordinator;
+- (id)executeWithContext:(id)context executionHandler:(id)handler completion:(id)completion;
+- (id)previewWithCoordinator:(id)coordinator;
 - (void)_cancelPreviewing;
-- (void)_finishExecutingWithResult:(id)a3;
+- (void)_finishExecutingWithResult:(id)result;
 - (void)cancelPreviewing;
 @end
 
 @implementation SBAbstractSystemActionExecutor
 
-- (SBAbstractSystemActionExecutor)initWithSystemAction:(id)a3
+- (SBAbstractSystemActionExecutor)initWithSystemAction:(id)action
 {
-  v6 = a3;
-  if (!v6)
+  actionCopy = action;
+  if (!actionCopy)
   {
     [SBAbstractSystemActionExecutor initWithSystemAction:a2];
   }
 
-  v7 = v6;
+  v7 = actionCopy;
   v11.receiver = self;
   v11.super_class = SBAbstractSystemActionExecutor;
   v8 = [(SBAbstractSystemActionExecutor *)&v11 init];
@@ -34,29 +34,29 @@
 
   if (v8)
   {
-    objc_storeStrong(&v8->_systemAction, a3);
+    objc_storeStrong(&v8->_systemAction, action);
   }
 
   return v8;
 }
 
-- (id)previewWithCoordinator:(id)a3
+- (id)previewWithCoordinator:(id)coordinator
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  coordinatorCopy = coordinator;
   if (![(SBAbstractSystemActionExecutor *)self canBeExecuted])
   {
     [(SBAbstractSystemActionExecutor *)self previewWithCoordinator:a2];
   }
 
-  v6 = [(SBAbstractSystemActionExecutor *)self _previewWithCoordinator:v5];
+  v6 = [(SBAbstractSystemActionExecutor *)self _previewWithCoordinator:coordinatorCopy];
   if (v6)
   {
     v7 = SBLogSystemActionPreviewing();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543618;
-      v10 = self;
+      selfCopy = self;
       v11 = 2114;
       v12 = v6;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ encountered an error while previewing action: %{public}@", &v9, 0x16u);
@@ -76,7 +76,7 @@
     v4 = OUTLINED_FUNCTION_5_0();
     v5 = NSStringFromClass(v4);
     OUTLINED_FUNCTION_0_0();
-    OUTLINED_FUNCTION_3(&dword_21ED4E000, MEMORY[0x277D86220], v6, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", v7, v8, v9, v10, a1, v12, v13);
+    OUTLINED_FUNCTION_3(&dword_21ED4E000, MEMORY[0x277D86220], v6, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", v7, v8, v9, v10, self, v12, v13);
   }
 
   [v3 UTF8String];
@@ -84,12 +84,12 @@
   __break(0);
 }
 
-- (id)executeWithContext:(id)a3 executionHandler:(id)a4 completion:(id)a5
+- (id)executeWithContext:(id)context executionHandler:(id)handler completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  handlerCopy = handler;
+  completionCopy = completion;
   if (![(SBAbstractSystemActionExecutor *)self canBeExecuted])
   {
     [SBAbstractSystemActionExecutor executeWithContext:a2 executionHandler:? completion:?];
@@ -106,7 +106,7 @@
     executionCompletions = self->_executionCompletions;
   }
 
-  v15 = [v11 copy];
+  v15 = [completionCopy copy];
   v16 = MEMORY[0x223D6F7F0]();
   [(NSMutableArray *)executionCompletions addObject:v16];
 
@@ -117,7 +117,7 @@
   }
 
   v22 = 0;
-  v18 = [(SBAbstractSystemActionExecutor *)self _beginInteractiveExecutionWithContext:v9 executionHandler:v10 error:&v22];
+  v18 = [(SBAbstractSystemActionExecutor *)self _beginInteractiveExecutionWithContext:contextCopy executionHandler:handlerCopy error:&v22];
   v19 = v22;
   if (!v18)
   {
@@ -130,7 +130,7 @@
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v24 = self;
+      selfCopy = self;
       v25 = 2114;
       v26 = v19;
       _os_log_impl(&dword_21ED4E000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ will finish executing without beginning due to error: %{public}@", buf, 0x16u);
@@ -142,10 +142,10 @@
   return v18;
 }
 
-- (void)_finishExecutingWithResult:(id)a3
+- (void)_finishExecutingWithResult:(id)result
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultCopy = result;
   if (self->_executionEndTime == 0.0)
   {
     BSContinuousMachTimeNow();
@@ -213,7 +213,7 @@
   return 0;
 }
 
-- (id)_previewWithCoordinator:(id)a3
+- (id)_previewWithCoordinator:(id)coordinator
 {
   OUTLINED_FUNCTION_1_2();
   objc_opt_class();
@@ -231,7 +231,7 @@
   NSRequestConcreteImplementation();
 }
 
-- (id)_beginInteractiveExecutionWithContext:(id)a3 executionHandler:(id)a4 error:(id *)a5
+- (id)_beginInteractiveExecutionWithContext:(id)context executionHandler:(id)handler error:(id *)error
 {
   OUTLINED_FUNCTION_1_2();
   objc_opt_class();

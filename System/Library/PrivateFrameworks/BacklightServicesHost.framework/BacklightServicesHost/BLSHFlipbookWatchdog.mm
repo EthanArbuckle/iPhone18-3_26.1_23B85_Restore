@@ -1,28 +1,28 @@
 @interface BLSHFlipbookWatchdog
-- (BLSHFlipbookWatchdog)initWithOSInterfaceProvider:(id)a3;
+- (BLSHFlipbookWatchdog)initWithOSInterfaceProvider:(id)provider;
 - (void)_globalQueue_initializeDCPStats;
-- (void)_globalQueue_refreshDCPStats:(BOOL)a3;
-- (void)_mainQueue_alertFor1hzFlipbookFrameMiss:(int64_t)a3;
+- (void)_globalQueue_refreshDCPStats:(BOOL)stats;
+- (void)_mainQueue_alertFor1hzFlipbookFrameMiss:(int64_t)miss;
 - (void)dealloc;
 - (void)enableAlertsUsingDefaults;
-- (void)systemSleepMonitorDidWakeFromSleep:(id)a3;
+- (void)systemSleepMonitorDidWakeFromSleep:(id)sleep;
 @end
 
 @implementation BLSHFlipbookWatchdog
 
-- (BLSHFlipbookWatchdog)initWithOSInterfaceProvider:(id)a3
+- (BLSHFlipbookWatchdog)initWithOSInterfaceProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = BLSHFlipbookWatchdog;
   v6 = [(BLSHFlipbookWatchdog *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_osInterfaceProvider, a3);
-    v8 = [(BLSHOSInterfaceProviding *)v7->_osInterfaceProvider systemSleepMonitor];
+    objc_storeStrong(&v6->_osInterfaceProvider, provider);
+    systemSleepMonitor = [(BLSHOSInterfaceProviding *)v7->_osInterfaceProvider systemSleepMonitor];
     sleepMonitor = v7->_sleepMonitor;
-    v7->_sleepMonitor = v8;
+    v7->_sleepMonitor = systemSleepMonitor;
 
     [(BLSHSystemSleepMonitoring *)v7->_sleepMonitor addObserver:v7];
     [(BLSHFlipbookWatchdog *)v7 enableAlertsUsingDefaults];
@@ -57,7 +57,7 @@
   [(BLSHFlipbookWatchdog *)&v5 dealloc];
 }
 
-- (void)systemSleepMonitorDidWakeFromSleep:(id)a3
+- (void)systemSleepMonitorDidWakeFromSleep:(id)sleep
 {
   v4 = dispatch_get_global_queue(17, 0);
   block[0] = MEMORY[0x277D85DD0];
@@ -81,13 +81,13 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_mainQueue_alertFor1hzFlipbookFrameMiss:(int64_t)a3
+- (void)_mainQueue_alertFor1hzFlipbookFrameMiss:(int64_t)miss
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v5 = bls_flipbook_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(BLSHFlipbookWatchdog *)self _mainQueue_alertFor1hzFlipbookFrameMiss:a3, v5];
+    [(BLSHFlipbookWatchdog *)self _mainQueue_alertFor1hzFlipbookFrameMiss:miss, v5];
   }
 
   v9 = @"missedFrames";
@@ -107,13 +107,13 @@
 - (void)_globalQueue_initializeDCPStats
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = *a1;
+  v7 = *self;
   OUTLINED_FUNCTION_0_6();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0xCu);
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_globalQueue_refreshDCPStats:(BOOL)a3
+- (void)_globalQueue_refreshDCPStats:(BOOL)stats
 {
   if (self->_ioReportSubscription && self->_ioReportSubscribedChannels)
   {

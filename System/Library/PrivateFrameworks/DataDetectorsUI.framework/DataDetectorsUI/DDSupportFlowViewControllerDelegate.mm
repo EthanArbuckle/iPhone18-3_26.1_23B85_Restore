@@ -1,11 +1,11 @@
 @interface DDSupportFlowViewControllerDelegate
-- (void)supportFlowViewControllerDidCancel:(id)a3;
-- (void)supportFlowViewControllerDidStart:(id)a3;
+- (void)supportFlowViewControllerDidCancel:(id)cancel;
+- (void)supportFlowViewControllerDidStart:(id)start;
 @end
 
 @implementation DDSupportFlowViewControllerDelegate
 
-- (void)supportFlowViewControllerDidStart:(id)a3
+- (void)supportFlowViewControllerDidStart:(id)start
 {
   sub_21ABC66B4();
   sub_21ABC66A4();
@@ -16,7 +16,7 @@
   }
 }
 
-- (void)supportFlowViewControllerDidCancel:(id)a3
+- (void)supportFlowViewControllerDidCancel:(id)cancel
 {
   sub_21ABC66B4();
   sub_21ABC66A4();

@@ -1,6 +1,6 @@
 @interface TVRUIPageButton
-- (CGPath)_newScaledPathForPath:(CGPath *)a3 forSize:(CGSize)a4;
-- (TVRUIPageButton)initWithType:(int64_t)a3 hasTapAction:(BOOL)a4;
+- (CGPath)_newScaledPathForPath:(CGPath *)path forSize:(CGSize)size;
+- (TVRUIPageButton)initWithType:(int64_t)type hasTapAction:(BOOL)action;
 - (UIBezierPath)wingPath;
 - (id)newChevronWingLayer;
 - (void)_setupSublayers;
@@ -10,11 +10,11 @@
 
 @implementation TVRUIPageButton
 
-- (TVRUIPageButton)initWithType:(int64_t)a3 hasTapAction:(BOOL)a4
+- (TVRUIPageButton)initWithType:(int64_t)type hasTapAction:(BOOL)action
 {
   v7.receiver = self;
   v7.super_class = TVRUIPageButton;
-  v4 = [(TVRUIButton *)&v7 initWithType:a3 hasTapAction:a4 options:2];
+  v4 = [(TVRUIButton *)&v7 initWithType:type hasTapAction:action options:2];
   v5 = v4;
   if (v4)
   {
@@ -30,18 +30,18 @@
   contentLayer = self->_contentLayer;
   self->_contentLayer = v3;
 
-  v5 = [(TVRUIPageButton *)self newChevronWingLayer];
+  newChevronWingLayer = [(TVRUIPageButton *)self newChevronWingLayer];
   leftWing = self->_leftWing;
-  self->_leftWing = v5;
+  self->_leftWing = newChevronWingLayer;
 
   [(CAShapeLayer *)self->_leftWing setAnchorPoint:1.0, 0.5];
   CGAffineTransformMakeRotation(&v14, -0.279253);
   v7 = self->_leftWing;
   v13 = v14;
   [(CAShapeLayer *)v7 setAffineTransform:&v13];
-  v8 = [(TVRUIPageButton *)self newChevronWingLayer];
+  newChevronWingLayer2 = [(TVRUIPageButton *)self newChevronWingLayer];
   rightWing = self->_rightWing;
-  self->_rightWing = v8;
+  self->_rightWing = newChevronWingLayer2;
 
   [(CAShapeLayer *)self->_rightWing setAnchorPoint:0.0, 0.5];
   CGAffineTransformMakeRotation(&v12, 0.279253);
@@ -50,8 +50,8 @@
   [(CAShapeLayer *)v10 setAffineTransform:&v13];
   [(CALayer *)self->_contentLayer addSublayer:self->_leftWing];
   [(CALayer *)self->_contentLayer addSublayer:self->_rightWing];
-  v11 = [(TVRUIPageButton *)self layer];
-  [v11 addSublayer:self->_contentLayer];
+  layer = [(TVRUIPageButton *)self layer];
+  [layer addSublayer:self->_contentLayer];
 }
 
 - (void)layoutSubviews
@@ -64,8 +64,8 @@
 
 - (void)_updateLayers
 {
-  v3 = [(TVRUIPageButton *)self layer];
-  [v3 bounds];
+  layer = [(TVRUIPageButton *)self layer];
+  [layer bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -94,8 +94,8 @@
   v20.size.width = v9;
   v20.size.height = v11;
   [(CAShapeLayer *)self->_rightWing setPosition:v13, CGRectGetMidY(v20)];
-  v14 = [(TVRUIPageButton *)self wingPath];
-  v15 = -[TVRUIPageButton _newScaledPathForPath:forSize:](self, "_newScaledPathForPath:forSize:", [v14 CGPath], 12.0, 6.0);
+  wingPath = [(TVRUIPageButton *)self wingPath];
+  v15 = -[TVRUIPageButton _newScaledPathForPath:forSize:](self, "_newScaledPathForPath:forSize:", [wingPath CGPath], 12.0, 6.0);
 
   [(CAShapeLayer *)self->_leftWing setPath:v15];
   [(CAShapeLayer *)self->_rightWing setPath:v15];
@@ -103,11 +103,11 @@
   CGPathRelease(v15);
 }
 
-- (CGPath)_newScaledPathForPath:(CGPath *)a3 forSize:(CGSize)a4
+- (CGPath)_newScaledPathForPath:(CGPath *)path forSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  PathBoundingBox = CGPathGetPathBoundingBox(a3);
+  height = size.height;
+  width = size.width;
+  PathBoundingBox = CGPathGetPathBoundingBox(path);
   result = 0;
   if (height != 0.0 && PathBoundingBox.size.height != 0.0)
   {
@@ -123,7 +123,7 @@
 
     memset(&v9, 0, sizeof(v9));
     CGAffineTransformMakeScale(&v9, v8, v8);
-    return CGPathCreateMutableCopyByTransformingPath(a3, &v9);
+    return CGPathCreateMutableCopyByTransformingPath(path, &v9);
   }
 
   return result;
@@ -151,11 +151,11 @@
 - (id)newChevronWingLayer
 {
   v3 = objc_alloc_init(MEMORY[0x277CD9F90]);
-  v4 = [MEMORY[0x277D75348] systemWhiteColor];
-  [v3 setFillColor:{objc_msgSend(v4, "CGColor")}];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  [v3 setFillColor:{objc_msgSend(systemWhiteColor, "CGColor")}];
 
-  v5 = [(TVRUIPageButton *)self wingPath];
-  [v3 setPath:{objc_msgSend(v5, "CGPath")}];
+  wingPath = [(TVRUIPageButton *)self wingPath];
+  [v3 setPath:{objc_msgSend(wingPath, "CGPath")}];
 
   return v3;
 }

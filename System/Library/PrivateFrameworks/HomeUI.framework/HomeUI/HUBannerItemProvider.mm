@@ -1,9 +1,9 @@
 @interface HUBannerItemProvider
 + (id)_bannerItemClasses;
-+ (id)sortOrderForBannerItemCategory:(unint64_t)a3;
-- (HUBannerItemProvider)initWithHome:(id)a3;
-- (HUBannerItemProvider)initWithItems:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)sortOrderForBannerItemCategory:(unint64_t)category;
+- (HUBannerItemProvider)initWithHome:(id)home;
+- (HUBannerItemProvider)initWithItems:(id)items;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HUBannerItemProvider
@@ -36,9 +36,9 @@ void __42__HUBannerItemProvider__bannerItemClasses__block_invoke_2()
   qword_281120CF0 = v0;
 }
 
-+ (id)sortOrderForBannerItemCategory:(unint64_t)a3
++ (id)sortOrderForBannerItemCategory:(unint64_t)category
 {
-  if (a3 == 2)
+  if (category == 2)
   {
     if (qword_281120D18 == -1)
     {
@@ -51,7 +51,7 @@ void __42__HUBannerItemProvider__bannerItemClasses__block_invoke_2()
     goto LABEL_17;
   }
 
-  if (a3 == 1)
+  if (category == 1)
   {
     if (qword_281120D08 == -1)
     {
@@ -67,7 +67,7 @@ LABEL_17:
     goto LABEL_10;
   }
 
-  if (a3)
+  if (category)
   {
     goto LABEL_11;
   }
@@ -81,10 +81,10 @@ LABEL_17:
 
   v3 = &qword_281120D00;
 LABEL_10:
-  a1 = *v3;
+  self = *v3;
 LABEL_11:
 
-  return a1;
+  return self;
 }
 
 void __55__HUBannerItemProvider_sortOrderForBannerItemCategory___block_invoke_2()
@@ -220,16 +220,16 @@ uint64_t __44__HUBannerItemProvider_bannerItemComparator__block_invoke(uint64_t 
   return v16;
 }
 
-- (HUBannerItemProvider)initWithHome:(id)a3
+- (HUBannerItemProvider)initWithHome:(id)home
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v5 = objc_opt_new();
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v24 = self;
+  selfCopy = self;
   obj = [objc_opt_class() _bannerItemClasses];
   v6 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (!v6)
@@ -258,7 +258,7 @@ uint64_t __44__HUBannerItemProvider_bannerItemComparator__block_invoke(uint64_t 
       }
 
       v12 = *(*(&v29 + 1) + 8 * v11);
-      v13 = [[v12 alloc] initWithHome:v4];
+      v13 = [[v12 alloc] initWithHome:homeCopy];
       [v5 addObject:v13];
       if (([(objc_class *)v12 isEqual:objc_opt_class()]& 1) != 0)
       {
@@ -309,13 +309,13 @@ LABEL_12:
   while (v18);
 LABEL_21:
 
-  v28.receiver = v24;
+  v28.receiver = selfCopy;
   v28.super_class = HUBannerItemProvider;
   v19 = [(HFStaticItemProvider *)&v28 initWithItems:v5];
   p_isa = &v19->super.super.super.isa;
   if (v19)
   {
-    objc_storeStrong(&v19->_home, a3);
+    objc_storeStrong(&v19->_home, home);
     objc_storeStrong(p_isa + 5, v8);
     objc_storeStrong(p_isa + 6, v26);
     objc_storeStrong(p_isa + 7, v9);
@@ -327,20 +327,20 @@ LABEL_21:
   return v21;
 }
 
-- (HUBannerItemProvider)initWithItems:(id)a3
+- (HUBannerItemProvider)initWithItems:(id)items
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithHome_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUBannerItemProvider.m" lineNumber:174 description:{@"%s is unavailable; use %@ instead", "-[HUBannerItemProvider initWithItems:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUBannerItemProvider.m" lineNumber:174 description:{@"%s is unavailable; use %@ instead", "-[HUBannerItemProvider initWithItems:]", v6}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HUBannerItemProvider *)self home];
-  v6 = [v4 initWithHome:v5];
+  home = [(HUBannerItemProvider *)self home];
+  v6 = [v4 initWithHome:home];
 
   return v6;
 }

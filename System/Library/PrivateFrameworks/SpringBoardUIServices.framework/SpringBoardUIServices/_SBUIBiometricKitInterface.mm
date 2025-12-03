@@ -1,31 +1,31 @@
 @interface _SBUIBiometricKitInterface
-- (BOOL)enableBackgroundFingerDetection:(BOOL)a3 error:(id *)a4;
+- (BOOL)enableBackgroundFingerDetection:(BOOL)detection error:(id *)error;
 - (BOOL)isPeriocularMatchingEnabled;
 - (_SBUIBiometricKitInterface)init;
-- (id)_createPresenceDetectOperationsForDeviceTypes:(id)a3 error:(id *)a4;
-- (id)createFaceDetectOperationsWithError:(id *)a3;
-- (id)createFingerDetectOperationsWithError:(id *)a3;
-- (id)createMatchOperationsWithMode:(unint64_t)a3 andCredentialSet:(id)a4 error:(id *)a5;
+- (id)_createPresenceDetectOperationsForDeviceTypes:(id)types error:(id *)error;
+- (id)createFaceDetectOperationsWithError:(id *)error;
+- (id)createFingerDetectOperationsWithError:(id *)error;
+- (id)createMatchOperationsWithMode:(unint64_t)mode andCredentialSet:(id)set error:(id *)error;
 - (id)createPearlDevice;
-- (unint64_t)_biometricEventForFaceDetectFeedback:(int64_t)a3;
-- (unint64_t)_eventForLockoutState:(int64_t)a3;
-- (unint64_t)_matchOperationTriggerForWakeSource:(unint64_t)a3;
+- (unint64_t)_biometricEventForFaceDetectFeedback:(int64_t)feedback;
+- (unint64_t)_eventForLockoutState:(int64_t)state;
+- (unint64_t)_matchOperationTriggerForWakeSource:(unint64_t)source;
 - (unint64_t)lockoutState;
-- (void)_sendDelegateEventForFaceOcclusionInfo:(id)a3;
-- (void)_sendDelegateEventForFaceWUPoseEligibilityInfo:(id)a3;
-- (void)_sendDelegateEventForFeedback:(int64_t)a3;
+- (void)_sendDelegateEventForFaceOcclusionInfo:(id)info;
+- (void)_sendDelegateEventForFaceWUPoseEligibilityInfo:(id)info;
+- (void)_sendDelegateEventForFeedback:(int64_t)feedback;
 - (void)_startFallbackIndicatorTimer;
 - (void)dealloc;
-- (void)device:(id)a3 pearlEventOccurred:(int64_t)a4;
+- (void)device:(id)device pearlEventOccurred:(int64_t)occurred;
 - (void)forceBioLockout;
-- (void)matchOperation:(id)a3 failedWithReason:(int64_t)a4;
-- (void)matchOperation:(id)a3 matchedWithResult:(id)a4;
-- (void)matchOperation:(id)a3 providedFaceOcclusionInfo:(id)a4;
-- (void)matchOperation:(id)a3 providedFaceWUPoseEligibilityInfo:(id)a4;
-- (void)matchOperation:(id)a3 providedFeedback:(int64_t)a4;
-- (void)operation:(id)a3 finishedWithReason:(int64_t)a4;
-- (void)operation:(id)a3 presenceStateChanged:(BOOL)a4;
-- (void)operation:(id)a3 stateChanged:(int64_t)a4;
+- (void)matchOperation:(id)operation failedWithReason:(int64_t)reason;
+- (void)matchOperation:(id)operation matchedWithResult:(id)result;
+- (void)matchOperation:(id)operation providedFaceOcclusionInfo:(id)info;
+- (void)matchOperation:(id)operation providedFaceWUPoseEligibilityInfo:(id)info;
+- (void)matchOperation:(id)operation providedFeedback:(int64_t)feedback;
+- (void)operation:(id)operation finishedWithReason:(int64_t)reason;
+- (void)operation:(id)operation presenceStateChanged:(BOOL)changed;
+- (void)operation:(id)operation stateChanged:(int64_t)changed;
 @end
 
 @implementation _SBUIBiometricKitInterface
@@ -116,19 +116,19 @@
 
     if (__loadBiometricKitIfNecessary_biometricKit && __loadBiometricKitIfNecessary_localAuthentication != 0)
     {
-      v5 = [MEMORY[0x1E698E698] serial];
-      v6 = [v5 serviceClass:25];
+      serial = [MEMORY[0x1E698E698] serial];
+      v6 = [serial serviceClass:25];
       v7 = BSDispatchQueueCreate();
       delegateQueue = v3->_delegateQueue;
       v3->_delegateQueue = v7;
 
-      v9 = [(objc_class *)_SBUIEffectiveBiometricClassFromString(@"BKDeviceManager") availableDevices];
-      v39 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v9, "count")}];
+      availableDevices = [(objc_class *)_SBUIEffectiveBiometricClassFromString(@"BKDeviceManager") availableDevices];
+      v39 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(availableDevices, "count")}];
       v50 = 0u;
       v51 = 0u;
       v48 = 0u;
       v49 = 0u;
-      obj = v9;
+      obj = availableDevices;
       v10 = [obj countByEnumeratingWithState:&v48 objects:v58 count:16];
       if (v10)
       {
@@ -242,8 +242,8 @@
 LABEL_35:
             if (!v3->_pearlDevice)
             {
-              v32 = [v25 descriptor];
-              if ([v32 type] == 2)
+              descriptor = [v25 descriptor];
+              if ([descriptor type] == 2)
               {
                 _SBUIEffectiveBiometricClassFromString(@"BKDevicePearl");
                 objc_opt_class();
@@ -297,12 +297,12 @@ LABEL_35:
 - (id)createPearlDevice
 {
   v26 = *MEMORY[0x1E69E9840];
-  v2 = [(objc_class *)_SBUIEffectiveBiometricClassFromString(@"BKDeviceManager") availableDevices];
+  availableDevices = [(objc_class *)_SBUIEffectiveBiometricClassFromString(@"BKDeviceManager") availableDevices];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  v3 = [availableDevices countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v3)
   {
     v5 = v3;
@@ -316,7 +316,7 @@ LABEL_35:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(availableDevices);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
@@ -347,7 +347,7 @@ LABEL_35:
         }
       }
 
-      v5 = [v2 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v5 = [availableDevices countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v5);
@@ -361,24 +361,24 @@ LABEL_35:
   return v6;
 }
 
-- (BOOL)enableBackgroundFingerDetection:(BOOL)a3 error:(id *)a4
+- (BOOL)enableBackgroundFingerDetection:(BOOL)detection error:(id *)error
 {
-  v5 = a3;
-  if (a3 && !self->_mesaDevice)
+  detectionCopy = detection;
+  if (detection && !self->_mesaDevice)
   {
     [_SBUIBiometricKitInterface enableBackgroundFingerDetection:a2 error:self];
   }
 
   mesaDevice = self->_mesaDevice;
 
-  return [(BKDeviceTouchID *)mesaDevice enableBackgroundFingerDetection:v5 error:a4];
+  return [(BKDeviceTouchID *)mesaDevice enableBackgroundFingerDetection:detectionCopy error:error];
 }
 
-- (id)createMatchOperationsWithMode:(unint64_t)a3 andCredentialSet:(id)a4 error:(id *)a5
+- (id)createMatchOperationsWithMode:(unint64_t)mode andCredentialSet:(id)set error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!a3)
+  setCopy = set;
+  if (!mode)
   {
     [_SBUIBiometricKitInterface createMatchOperationsWithMode:a2 andCredentialSet:self error:?];
   }
@@ -394,7 +394,7 @@ LABEL_35:
   {
     v11 = v10;
     v12 = 4;
-    if (!v7)
+    if (!setCopy)
     {
       v12 = 2;
     }
@@ -411,7 +411,7 @@ LABEL_35:
           objc_enumerationMutation(obj);
         }
 
-        v15 = [*(*(&v27 + 1) + 8 * i) createMatchOperationWithError:{a5, v23}];
+        v15 = [*(*(&v27 + 1) + 8 * i) createMatchOperationWithError:{error, v23}];
         if (!v15)
         {
 
@@ -434,15 +434,15 @@ LABEL_35:
           v17 = 0;
         }
 
-        if (a3 > 1)
+        if (mode > 1)
         {
-          if (a3 == 2)
+          if (mode == 2)
           {
             [v16 setPurpose:5];
             [v16 setCaptureOnly:1];
           }
 
-          else if (a3 == 3)
+          else if (mode == 3)
           {
             [v16 setPurpose:v23];
             [v17 setShouldAutoRetry:1];
@@ -453,9 +453,9 @@ LABEL_35:
           }
         }
 
-        else if (a3)
+        else if (mode)
         {
-          if (a3 == 1)
+          if (mode == 1)
           {
             [v16 setPurpose:5];
           }
@@ -463,16 +463,16 @@ LABEL_35:
 
         else
         {
-          v18 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v18 handleFailureInMethod:a2 object:self file:@"_SBUIBiometricKitInterface.m" lineNumber:349 description:@"Invalid Match Mode"];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"_SBUIBiometricKitInterface.m" lineNumber:349 description:@"Invalid Match Mode"];
         }
 
         [v17 setLongTimeout:1];
         [v17 setStopOnSuccess:1];
-        if (v7)
+        if (setCopy)
         {
-          v19 = [v7 serializedCredentialSet];
-          [v16 setCredentialSet:v19];
+          serializedCredentialSet = [setCopy serializedCredentialSet];
+          [v16 setCredentialSet:serializedCredentialSet];
         }
 
         [(NSSet *)v8 addObject:v16];
@@ -498,18 +498,18 @@ LABEL_30:
   return v21;
 }
 
-- (id)createFingerDetectOperationsWithError:(id *)a3
+- (id)createFingerDetectOperationsWithError:(id *)error
 {
   v5 = [MEMORY[0x1E695DFD8] setWithObject:&unk_1F1DB5938];
-  v6 = [(_SBUIBiometricKitInterface *)self _createPresenceDetectOperationsForDeviceTypes:v5 error:a3];
+  v6 = [(_SBUIBiometricKitInterface *)self _createPresenceDetectOperationsForDeviceTypes:v5 error:error];
 
   return v6;
 }
 
-- (id)createFaceDetectOperationsWithError:(id *)a3
+- (id)createFaceDetectOperationsWithError:(id *)error
 {
   v5 = [MEMORY[0x1E695DFD8] setWithObject:&unk_1F1DB5950];
-  v6 = [(_SBUIBiometricKitInterface *)self _createPresenceDetectOperationsForDeviceTypes:v5 error:a3];
+  v6 = [(_SBUIBiometricKitInterface *)self _createPresenceDetectOperationsForDeviceTypes:v5 error:error];
 
   return v6;
 }
@@ -583,162 +583,162 @@ LABEL_30:
   v4 = v8;
   if (v4)
   {
-    v5 = SBLogDashBoard();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    periocularFaceIDMatchEnabled = SBLogDashBoard();
+    if (os_log_type_enabled(periocularFaceIDMatchEnabled, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v10 = v4;
-      _os_log_impl(&dword_1A9A79000, v5, OS_LOG_TYPE_DEFAULT, "Could not get protected config: %@", buf, 0xCu);
+      _os_log_impl(&dword_1A9A79000, periocularFaceIDMatchEnabled, OS_LOG_TYPE_DEFAULT, "Could not get protected config: %@", buf, 0xCu);
     }
 
-    v6 = 0;
+    bOOLValue = 0;
   }
 
   else
   {
-    v5 = [v3 periocularFaceIDMatchEnabled];
-    v6 = [v5 BOOLValue];
+    periocularFaceIDMatchEnabled = [v3 periocularFaceIDMatchEnabled];
+    bOOLValue = [periocularFaceIDMatchEnabled BOOLValue];
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (unint64_t)_matchOperationTriggerForWakeSource:(unint64_t)a3
+- (unint64_t)_matchOperationTriggerForWakeSource:(unint64_t)source
 {
-  if (a3 > 6)
+  if (source > 6)
   {
     return 3;
   }
 
   else
   {
-    return qword_1A9B2A718[a3];
+    return qword_1A9B2A718[source];
   }
 }
 
-- (void)operation:(id)a3 finishedWithReason:(int64_t)a4
+- (void)operation:(id)operation finishedWithReason:(int64_t)reason
 {
-  v6 = a3;
+  operationCopy = operation;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59___SBUIBiometricKitInterface_operation_finishedWithReason___block_invoke;
   block[3] = &unk_1E789DCF8;
-  v10 = self;
-  v11 = a4;
-  v9 = v6;
-  v7 = v6;
+  selfCopy = self;
+  reasonCopy = reason;
+  v9 = operationCopy;
+  v7 = operationCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)operation:(id)a3 stateChanged:(int64_t)a4
+- (void)operation:(id)operation stateChanged:(int64_t)changed
 {
-  v6 = a3;
-  if (([v6 isMemberOfClass:_SBUIEffectiveBiometricClassFromString(@"BKFaceDetectOperation")] & 1) == 0)
+  operationCopy = operation;
+  if (([operationCopy isMemberOfClass:_SBUIEffectiveBiometricClassFromString(@"BKFaceDetectOperation")] & 1) == 0)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __53___SBUIBiometricKitInterface_operation_stateChanged___block_invoke;
     block[3] = &unk_1E789DCF8;
     block[4] = self;
-    v8 = v6;
-    v9 = a4;
+    v8 = operationCopy;
+    changedCopy = changed;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
 
-- (void)matchOperation:(id)a3 failedWithReason:(int64_t)a4
+- (void)matchOperation:(id)operation failedWithReason:(int64_t)reason
 {
-  v6 = a3;
+  operationCopy = operation;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62___SBUIBiometricKitInterface_matchOperation_failedWithReason___block_invoke;
   block[3] = &unk_1E789DCF8;
-  v10 = self;
-  v11 = a4;
-  v9 = v6;
-  v7 = v6;
+  selfCopy = self;
+  reasonCopy = reason;
+  v9 = operationCopy;
+  v7 = operationCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)operation:(id)a3 presenceStateChanged:(BOOL)a4
+- (void)operation:(id)operation presenceStateChanged:(BOOL)changed
 {
-  v6 = a3;
+  operationCopy = operation;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61___SBUIBiometricKitInterface_operation_presenceStateChanged___block_invoke;
   block[3] = &unk_1E789DD20;
-  v11 = a4;
-  v9 = v6;
-  v10 = self;
-  v7 = v6;
+  changedCopy = changed;
+  v9 = operationCopy;
+  selfCopy = self;
+  v7 = operationCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)matchOperation:(id)a3 matchedWithResult:(id)a4
+- (void)matchOperation:(id)operation matchedWithResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  resultCopy = result;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63___SBUIBiometricKitInterface_matchOperation_matchedWithResult___block_invoke;
   block[3] = &unk_1E789DD48;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = operationCopy;
+  v12 = resultCopy;
+  v8 = resultCopy;
+  v9 = operationCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)matchOperation:(id)a3 providedFeedback:(int64_t)a4
+- (void)matchOperation:(id)operation providedFeedback:(int64_t)feedback
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __62___SBUIBiometricKitInterface_matchOperation_providedFeedback___block_invoke;
   v4[3] = &unk_1E789DD70;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = feedback;
   dispatch_async(MEMORY[0x1E69E96A0], v4);
 }
 
-- (void)matchOperation:(id)a3 providedFaceOcclusionInfo:(id)a4
+- (void)matchOperation:(id)operation providedFaceOcclusionInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71___SBUIBiometricKitInterface_matchOperation_providedFaceOcclusionInfo___block_invoke;
   v7[3] = &unk_1E789DD98;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = infoCopy;
+  v6 = infoCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
-- (void)matchOperation:(id)a3 providedFaceWUPoseEligibilityInfo:(id)a4
+- (void)matchOperation:(id)operation providedFaceWUPoseEligibilityInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __79___SBUIBiometricKitInterface_matchOperation_providedFaceWUPoseEligibilityInfo___block_invoke;
   v7[3] = &unk_1E789DD98;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = infoCopy;
+  v6 = infoCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
-- (void)device:(id)a3 pearlEventOccurred:(int64_t)a4
+- (void)device:(id)device pearlEventOccurred:(int64_t)occurred
 {
-  if (self->_pearlDevice == a3 && ((_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl()))
+  if (self->_pearlDevice == device && ((_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl()))
   {
-    if (a4 == 16)
+    if (occurred == 16)
     {
       [(_SBUIBiometricKitInterface *)self _sendDelegateEvent:34];
 
       [(_SBUIBiometricKitInterface *)self _startFallbackIndicatorTimer];
     }
 
-    else if (a4 == 15)
+    else if (occurred == 15)
     {
       [(NSTimer *)self->_fallbackIndicatorTimer invalidate];
       fallbackIndicatorTimer = self->_fallbackIndicatorTimer;
@@ -749,75 +749,75 @@ LABEL_30:
   }
 }
 
-- (void)_sendDelegateEventForFeedback:(int64_t)a3
+- (void)_sendDelegateEventForFeedback:(int64_t)feedback
 {
-  v4 = [(_SBUIBiometricKitInterface *)self _biometricEventForFaceDetectFeedback:a3];
+  v4 = [(_SBUIBiometricKitInterface *)self _biometricEventForFaceDetectFeedback:feedback];
 
   [(_SBUIBiometricKitInterface *)self _sendDelegateEvent:v4];
 }
 
-- (void)_sendDelegateEventForFaceOcclusionInfo:(id)a3
+- (void)_sendDelegateEventForFaceOcclusionInfo:(id)info
 {
-  if ([a3 hasFaceOcclusion])
+  if ([info hasFaceOcclusion])
   {
 
     [(_SBUIBiometricKitInterface *)self _sendDelegateEvent:21];
   }
 }
 
-- (void)_sendDelegateEventForFaceWUPoseEligibilityInfo:(id)a3
+- (void)_sendDelegateEventForFaceWUPoseEligibilityInfo:(id)info
 {
-  if ([a3 isEligible])
+  if ([info isEligible])
   {
 
     [(_SBUIBiometricKitInterface *)self _sendDelegateEvent:29];
   }
 }
 
-- (unint64_t)_eventForLockoutState:(int64_t)a3
+- (unint64_t)_eventForLockoutState:(int64_t)state
 {
-  if ((a3 - 1) > 7)
+  if ((state - 1) > 7)
   {
     return 5;
   }
 
   else
   {
-    return qword_1A9B2A750[a3 - 1];
+    return qword_1A9B2A750[state - 1];
   }
 }
 
-- (unint64_t)_biometricEventForFaceDetectFeedback:(int64_t)a3
+- (unint64_t)_biometricEventForFaceDetectFeedback:(int64_t)feedback
 {
   result = 16;
-  if (a3 <= 7)
+  if (feedback <= 7)
   {
-    if (a3 > 4)
+    if (feedback > 4)
     {
-      if (a3 != 5)
+      if (feedback != 5)
       {
         v4 = 20;
         v5 = 21;
-        if (a3 != 7)
+        if (feedback != 7)
         {
           v5 = 16;
         }
 
-        v6 = a3 == 6;
+        v6 = feedback == 6;
         goto LABEL_15;
       }
     }
 
-    else if (a3 != 2)
+    else if (feedback != 2)
     {
       v4 = 18;
       v5 = 17;
-      if (a3 != 4)
+      if (feedback != 4)
       {
         v5 = 16;
       }
 
-      v6 = a3 == 3;
+      v6 = feedback == 3;
 LABEL_15:
       if (v6)
       {
@@ -833,14 +833,14 @@ LABEL_15:
     return 22;
   }
 
-  if (a3 <= 10)
+  if (feedback <= 10)
   {
-    if (a3 == 8)
+    if (feedback == 8)
     {
       return 19;
     }
 
-    if (a3 != 9)
+    if (feedback != 9)
     {
       return 23;
     }
@@ -848,7 +848,7 @@ LABEL_15:
     return 22;
   }
 
-  switch(a3)
+  switch(feedback)
   {
     case 11:
       return 28;
@@ -869,10 +869,10 @@ LABEL_15:
   return result;
 }
 
-- (id)_createPresenceDetectOperationsForDeviceTypes:(id)a3 error:(id *)a4
+- (id)_createPresenceDetectOperationsForDeviceTypes:(id)types error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  typesCopy = types;
   v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSSet count](self->_biometricDevices, "count")}];
   v24 = 0u;
   v25 = 0u;
@@ -895,13 +895,13 @@ LABEL_15:
         }
 
         v12 = *(*(&v24 + 1) + 8 * i);
-        if (v5)
+        if (typesCopy)
         {
           v13 = v6;
           v14 = MEMORY[0x1E696AD98];
-          v15 = [*(*(&v24 + 1) + 8 * i) descriptor];
-          v16 = [v14 numberWithInteger:{objc_msgSend(v15, "type")}];
-          v17 = [v5 containsObject:v16];
+          descriptor = [*(*(&v24 + 1) + 8 * i) descriptor];
+          v16 = [v14 numberWithInteger:{objc_msgSend(descriptor, "type")}];
+          v17 = [typesCopy containsObject:v16];
 
           v6 = v13;
           if (!v17)
@@ -910,7 +910,7 @@ LABEL_15:
           }
         }
 
-        v18 = [v12 createPresenceDetectOperationWithError:{a4, obj}];
+        v18 = [v12 createPresenceDetectOperationWithError:{error, obj}];
         if (!v18)
         {
 
@@ -966,8 +966,8 @@ LABEL_14:
   v9 = self->_fallbackIndicatorTimer;
   self->_fallbackIndicatorTimer = v8;
 
-  v10 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [v10 addTimer:self->_fallbackIndicatorTimer forMode:*MEMORY[0x1E695DA28]];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [mainRunLoop addTimer:self->_fallbackIndicatorTimer forMode:*MEMORY[0x1E695DA28]];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);

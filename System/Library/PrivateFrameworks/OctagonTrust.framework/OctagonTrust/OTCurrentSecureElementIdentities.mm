@@ -1,23 +1,23 @@
 @interface OTCurrentSecureElementIdentities
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addTrustedPeerSecureElementIdentities:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTrustedPeerSecureElementIdentities:(id)identities;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation OTCurrentSecureElementIdentities
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   localPeerIdentity = self->_localPeerIdentity;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (localPeerIdentity)
   {
     if (v6)
@@ -35,7 +35,7 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = *(v4 + 3);
+  v7 = *(fromCopy + 3);
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -60,7 +60,7 @@
   }
 
   pendingLocalPeerIdentity = self->_pendingLocalPeerIdentity;
-  v13 = *(v4 + 2);
+  v13 = *(fromCopy + 2);
   if (pendingLocalPeerIdentity)
   {
     if (v13)
@@ -84,13 +84,13 @@
   return v4 ^ [(OTSecureElementPeerIdentity *)self->_pendingLocalPeerIdentity hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((localPeerIdentity = self->_localPeerIdentity, !(localPeerIdentity | v4[1])) || -[OTSecureElementPeerIdentity isEqual:](localPeerIdentity, "isEqual:")) && ((trustedPeerSecureElementIdentities = self->_trustedPeerSecureElementIdentities, !(trustedPeerSecureElementIdentities | v4[3])) || -[NSMutableArray isEqual:](trustedPeerSecureElementIdentities, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((localPeerIdentity = self->_localPeerIdentity, !(localPeerIdentity | equalCopy[1])) || -[OTSecureElementPeerIdentity isEqual:](localPeerIdentity, "isEqual:")) && ((trustedPeerSecureElementIdentities = self->_trustedPeerSecureElementIdentities, !(trustedPeerSecureElementIdentities | equalCopy[3])) || -[NSMutableArray isEqual:](trustedPeerSecureElementIdentities, "isEqual:")))
   {
     pendingLocalPeerIdentity = self->_pendingLocalPeerIdentity;
-    if (pendingLocalPeerIdentity | v4[2])
+    if (pendingLocalPeerIdentity | equalCopy[2])
     {
       v8 = [(OTSecureElementPeerIdentity *)pendingLocalPeerIdentity isEqual:?];
     }
@@ -109,11 +109,11 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(OTSecureElementPeerIdentity *)self->_localPeerIdentity copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(OTSecureElementPeerIdentity *)self->_localPeerIdentity copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -137,7 +137,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v18 + 1) + 8 * v12) copyWithZone:{a3, v18}];
+        v13 = [*(*(&v18 + 1) + 8 * v12) copyWithZone:{zone, v18}];
         [v5 addTrustedPeerSecureElementIdentities:v13];
 
         ++v12;
@@ -150,7 +150,7 @@
     while (v10);
   }
 
-  v14 = [(OTSecureElementPeerIdentity *)self->_pendingLocalPeerIdentity copyWithZone:a3];
+  v14 = [(OTSecureElementPeerIdentity *)self->_pendingLocalPeerIdentity copyWithZone:zone];
   v15 = v5[2];
   v5[2] = v14;
 
@@ -158,39 +158,39 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_localPeerIdentity)
   {
-    [v8 setLocalPeerIdentity:?];
+    [toCopy setLocalPeerIdentity:?];
   }
 
   if ([(OTCurrentSecureElementIdentities *)self trustedPeerSecureElementIdentitiesCount])
   {
-    [v8 clearTrustedPeerSecureElementIdentities];
-    v4 = [(OTCurrentSecureElementIdentities *)self trustedPeerSecureElementIdentitiesCount];
-    if (v4)
+    [toCopy clearTrustedPeerSecureElementIdentities];
+    trustedPeerSecureElementIdentitiesCount = [(OTCurrentSecureElementIdentities *)self trustedPeerSecureElementIdentitiesCount];
+    if (trustedPeerSecureElementIdentitiesCount)
     {
-      v5 = v4;
+      v5 = trustedPeerSecureElementIdentitiesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(OTCurrentSecureElementIdentities *)self trustedPeerSecureElementIdentitiesAtIndex:i];
-        [v8 addTrustedPeerSecureElementIdentities:v7];
+        [toCopy addTrustedPeerSecureElementIdentities:v7];
       }
     }
   }
 
   if (self->_pendingLocalPeerIdentity)
   {
-    [v8 setPendingLocalPeerIdentity:?];
+    [toCopy setPendingLocalPeerIdentity:?];
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_localPeerIdentity)
   {
     PBDataWriterWriteSubmessage();
@@ -239,12 +239,12 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   localPeerIdentity = self->_localPeerIdentity;
   if (localPeerIdentity)
   {
-    v5 = [(OTSecureElementPeerIdentity *)localPeerIdentity dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"localPeerIdentity"];
+    dictionaryRepresentation = [(OTSecureElementPeerIdentity *)localPeerIdentity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"localPeerIdentity"];
   }
 
   if ([(NSMutableArray *)self->_trustedPeerSecureElementIdentities count])
@@ -269,8 +269,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -279,19 +279,19 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"trustedPeerSecureElementIdentities"];
+    [dictionary setObject:v6 forKey:@"trustedPeerSecureElementIdentities"];
   }
 
   pendingLocalPeerIdentity = self->_pendingLocalPeerIdentity;
   if (pendingLocalPeerIdentity)
   {
-    v14 = [(OTSecureElementPeerIdentity *)pendingLocalPeerIdentity dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"pendingLocalPeerIdentity"];
+    dictionaryRepresentation3 = [(OTSecureElementPeerIdentity *)pendingLocalPeerIdentity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"pendingLocalPeerIdentity"];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -300,28 +300,28 @@
   v8.receiver = self;
   v8.super_class = OTCurrentSecureElementIdentities;
   v4 = [(OTCurrentSecureElementIdentities *)&v8 description];
-  v5 = [(OTCurrentSecureElementIdentities *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(OTCurrentSecureElementIdentities *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addTrustedPeerSecureElementIdentities:(id)a3
+- (void)addTrustedPeerSecureElementIdentities:(id)identities
 {
-  v4 = a3;
+  identitiesCopy = identities;
   trustedPeerSecureElementIdentities = self->_trustedPeerSecureElementIdentities;
-  v8 = v4;
+  v8 = identitiesCopy;
   if (!trustedPeerSecureElementIdentities)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_trustedPeerSecureElementIdentities;
     self->_trustedPeerSecureElementIdentities = v6;
 
-    v4 = v8;
+    identitiesCopy = v8;
     trustedPeerSecureElementIdentities = self->_trustedPeerSecureElementIdentities;
   }
 
-  [(NSMutableArray *)trustedPeerSecureElementIdentities addObject:v4];
+  [(NSMutableArray *)trustedPeerSecureElementIdentities addObject:identitiesCopy];
 }
 
 @end

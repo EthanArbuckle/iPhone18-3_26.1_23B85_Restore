@@ -1,13 +1,13 @@
 @interface TUSIMFocusState
 - (TUSIMFocusState)init;
-- (TUSIMFocusState)initWithCoder:(id)a3;
-- (TUSIMFocusState)initWithIdentifier:(id)a3 name:(id)a4 phNumber:(id)a5 focusAllowCalls:(BOOL)a6;
-- (void)encodeWithCoder:(id)a3;
+- (TUSIMFocusState)initWithCoder:(id)coder;
+- (TUSIMFocusState)initWithIdentifier:(id)identifier name:(id)name phNumber:(id)number focusAllowCalls:(BOOL)calls;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUSIMFocusState
 
-- (TUSIMFocusState)initWithIdentifier:(id)a3 name:(id)a4 phNumber:(id)a5 focusAllowCalls:(BOOL)a6
+- (TUSIMFocusState)initWithIdentifier:(id)identifier name:(id)name phNumber:(id)number focusAllowCalls:(BOOL)calls
 {
   v8 = sub_19586ED50();
   v10 = v9;
@@ -23,23 +23,23 @@
   v17 = (self + OBJC_IVAR___TUSIMFocusState_phNumber);
   *v17 = v14;
   v17[1] = v18;
-  *(self + OBJC_IVAR___TUSIMFocusState_focusAllowCalls) = a6;
+  *(self + OBJC_IVAR___TUSIMFocusState_focusAllowCalls) = calls;
   v20.receiver = self;
   v20.super_class = TUSIMFocusState;
   return [(TUSIMFocusState *)&v20 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  TUSIMFocusState.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  TUSIMFocusState.encode(with:)(coderCopy);
 }
 
-- (TUSIMFocusState)initWithCoder:(id)a3
+- (TUSIMFocusState)initWithCoder:(id)coder
 {
-  v3 = a3;
-  sub_195854634(v3);
+  coderCopy = coder;
+  sub_195854634(coderCopy);
   v5 = v4;
 
   return v5;

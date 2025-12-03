@@ -10,13 +10,13 @@
   v5 = a3;
   if (!v5)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"INIntentResponse+Workflow.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"INIntentResponse+Workflow.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v6 = [a1 _codableDescription];
+  _codableDescription = [self _codableDescription];
   v7 = objc_opt_class();
-  v8 = v6;
+  v8 = _codableDescription;
   if (v8 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     v10 = getWFGeneralLogObject();
@@ -42,12 +42,12 @@
     v9 = v8;
   }
 
-  v12 = [v9 outputAttribute];
-  v13 = v12;
-  if (v12)
+  outputAttribute = [v9 outputAttribute];
+  v13 = outputAttribute;
+  if (outputAttribute)
   {
-    v14 = [v12 propertyName];
-    v15 = [a1 valueForKey:v14];
+    propertyName = [outputAttribute propertyName];
+    v15 = [self valueForKey:propertyName];
 
     if (v15)
     {

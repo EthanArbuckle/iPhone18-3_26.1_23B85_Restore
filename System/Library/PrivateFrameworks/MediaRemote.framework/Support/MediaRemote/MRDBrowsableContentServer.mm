@@ -1,23 +1,23 @@
 @interface MRDBrowsableContentServer
-- (BOOL)_takeProcessAssertionForClient:(id)a3 withReason:(id)a4;
-- (BOOL)isClient:(id)a3 allowedNowPlayingAccessFor:(id)a4;
+- (BOOL)_takeProcessAssertionForClient:(id)client withReason:(id)reason;
+- (BOOL)isClient:(id)client allowedNowPlayingAccessFor:(id)for;
 - (MRDBrowsableContentServer)init;
-- (void)_clearQueuedBeginLoadingMessagesForApp:(id)a3;
-- (void)_clientDidRegisterCanBeNowPlaying:(id)a3;
-- (void)_clientDidUnregisterCanBeNowPlaying:(id)a3;
-- (void)_enqueueCompletion:(id)a3 forUnavailableDestinationApp:(id)a4;
-- (void)_handleBeginLoadingBrowsableContentMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleBrowsableContentDidFinishLoadingFromClient:(id)a3 indexPath:(id)a4 withError:(id)a5;
-- (void)_handleGetAppsSupportingBrowsableContentAPIsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetSupportedBrowsableContentAPIsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleRequestPlaybackInitializationMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetSupportedBrowsableContentAPIsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSupportedAPIsDidChangeForClient:(id)a3;
-- (void)_relayMessage:(id)a3 fromClient:(id)a4 toClientWithBundleIDAndReply:(id)a5;
-- (void)_scheduleEndProcessAssertionForClient:(id)a3;
-- (void)_sendInitiatePlaybackMessage:(id)a3;
-- (void)_sendQueuedBeginLoadingMessagesForAvailableApp:(id)a3;
-- (void)handleXPCMessage:(id)a3 fromClient:(id)a4;
+- (void)_clearQueuedBeginLoadingMessagesForApp:(id)app;
+- (void)_clientDidRegisterCanBeNowPlaying:(id)playing;
+- (void)_clientDidUnregisterCanBeNowPlaying:(id)playing;
+- (void)_enqueueCompletion:(id)completion forUnavailableDestinationApp:(id)app;
+- (void)_handleBeginLoadingBrowsableContentMessage:(id)message fromClient:(id)client;
+- (void)_handleBrowsableContentDidFinishLoadingFromClient:(id)client indexPath:(id)path withError:(id)error;
+- (void)_handleGetAppsSupportingBrowsableContentAPIsMessage:(id)message fromClient:(id)client;
+- (void)_handleGetSupportedBrowsableContentAPIsMessage:(id)message fromClient:(id)client;
+- (void)_handleRequestPlaybackInitializationMessage:(id)message fromClient:(id)client;
+- (void)_handleSetSupportedBrowsableContentAPIsMessage:(id)message fromClient:(id)client;
+- (void)_handleSupportedAPIsDidChangeForClient:(id)client;
+- (void)_relayMessage:(id)message fromClient:(id)client toClientWithBundleIDAndReply:(id)reply;
+- (void)_scheduleEndProcessAssertionForClient:(id)client;
+- (void)_sendInitiatePlaybackMessage:(id)message;
+- (void)_sendQueuedBeginLoadingMessagesForAvailableApp:(id)app;
+- (void)handleXPCMessage:(id)message fromClient:(id)client;
 @end
 
 @implementation MRDBrowsableContentServer
@@ -55,10 +55,10 @@
   return v2;
 }
 
-- (void)handleXPCMessage:(id)a3 fromClient:(id)a4
+- (void)handleXPCMessage:(id)message fromClient:(id)client
 {
-  xdict = a3;
-  v6 = a4;
+  xdict = message;
+  clientCopy = client;
   uint64 = xpc_dictionary_get_uint64(xdict, "MRXPC_MESSAGE_ID_KEY");
   if (uint64 > 0x500000000000005)
   {
@@ -66,12 +66,12 @@
     {
       if (uint64 == 0x500000000000006)
       {
-        [(MRDBrowsableContentServer *)self _handleRequestPlaybackInitializationMessage:xdict fromClient:v6];
+        [(MRDBrowsableContentServer *)self _handleRequestPlaybackInitializationMessage:xdict fromClient:clientCopy];
       }
 
       else
       {
-        [(MRDBrowsableContentServer *)self _handleGetSupportedBrowsableContentAPIsMessage:xdict fromClient:v6];
+        [(MRDBrowsableContentServer *)self _handleGetSupportedBrowsableContentAPIsMessage:xdict fromClient:clientCopy];
       }
     }
 
@@ -80,10 +80,10 @@
       switch(uint64)
       {
         case 0x500000000000008:
-          [(MRDBrowsableContentServer *)self _handleSetSupportedBrowsableContentAPIsMessage:xdict fromClient:v6];
+          [(MRDBrowsableContentServer *)self _handleSetSupportedBrowsableContentAPIsMessage:xdict fromClient:clientCopy];
           break;
         case 0x500000000000009:
-          [(MRDBrowsableContentServer *)self _handleGetAppsSupportingBrowsableContentAPIsMessage:xdict fromClient:v6];
+          [(MRDBrowsableContentServer *)self _handleGetAppsSupportingBrowsableContentAPIsMessage:xdict fromClient:clientCopy];
           break;
         case 0x50000000000000ALL:
           goto LABEL_3;
@@ -97,24 +97,24 @@
     {
 LABEL_3:
       v8 = MRCreateStringFromXPCMessage();
-      [(MRDBrowsableContentServer *)self _relayMessage:xdict fromClient:v6 toClientWithBundleIDAndReply:v8];
+      [(MRDBrowsableContentServer *)self _relayMessage:xdict fromClient:clientCopy toClientWithBundleIDAndReply:v8];
 
       goto LABEL_4;
     }
 
     if (uint64 == 0x500000000000001)
     {
-      [(MRDBrowsableContentServer *)self _handleBeginLoadingBrowsableContentMessage:xdict fromClient:v6];
+      [(MRDBrowsableContentServer *)self _handleBeginLoadingBrowsableContentMessage:xdict fromClient:clientCopy];
     }
   }
 
 LABEL_4:
 }
 
-- (void)_handleBeginLoadingBrowsableContentMessage:(id)a3 fromClient:(id)a4
+- (void)_handleBeginLoadingBrowsableContentMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v8 = MRCreateStringFromXPCMessage();
   v9 = +[MRDMediaRemoteServer server];
   v10 = v9;
@@ -133,23 +133,23 @@ LABEL_4:
   v18 = 3221225472;
   v19 = sub_100094CE8;
   v20 = &unk_1004B9708;
-  v21 = v6;
-  v22 = self;
-  v12 = v6;
+  v21 = messageCopy;
+  selfCopy = self;
+  v12 = messageCopy;
   v13 = objc_retainBlock(&v17);
   if (v11 && [v11 canBeNowPlaying])
   {
-    v14 = [v11 bundleIdentifier];
-    [(MRDBrowsableContentServer *)self _clearQueuedBeginLoadingMessagesForApp:v14];
+    bundleIdentifier = [v11 bundleIdentifier];
+    [(MRDBrowsableContentServer *)self _clearQueuedBeginLoadingMessagesForApp:bundleIdentifier];
 
     (v13[2])(v13, v11);
   }
 
   else
   {
-    v15 = [v11 bundleIdentifier];
+    bundleIdentifier2 = [v11 bundleIdentifier];
 
-    if (v15)
+    if (bundleIdentifier2)
     {
       Error = [v11 bundleIdentifier];
       [(MRDBrowsableContentServer *)self _enqueueCompletion:v13 forUnavailableDestinationApp:Error];
@@ -158,46 +158,46 @@ LABEL_4:
     else
     {
       Error = MRMediaRemoteCreateError();
-      [(MRDBrowsableContentServer *)self _handleBrowsableContentDidFinishLoadingFromClient:v7 indexPath:0 withError:0, Error];
+      [(MRDBrowsableContentServer *)self _handleBrowsableContentDidFinishLoadingFromClient:clientCopy indexPath:0 withError:0, Error];
     }
   }
 }
 
-- (void)_enqueueCompletion:(id)a3 forUnavailableDestinationApp:(id)a4
+- (void)_enqueueCompletion:(id)completion forUnavailableDestinationApp:(id)app
 {
-  v6 = a4;
-  v7 = a3;
+  appCopy = app;
+  completionCopy = completion;
   v8 = _MRLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v6;
+    v13 = appCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Client %@ not available. Enqueuing beginLoading message", &v12, 0xCu);
   }
 
   queuedBeginLoadingBlocks = self->_queuedBeginLoadingBlocks;
-  v10 = [v7 copy];
+  v10 = [completionCopy copy];
 
   v11 = objc_retainBlock(v10);
-  [(NSMutableDictionary *)queuedBeginLoadingBlocks setObject:v11 forKey:v6];
+  [(NSMutableDictionary *)queuedBeginLoadingBlocks setObject:v11 forKey:appCopy];
 }
 
-- (void)_sendQueuedBeginLoadingMessagesForAvailableApp:(id)a3
+- (void)_sendQueuedBeginLoadingMessagesForAvailableApp:(id)app
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_queuedBeginLoadingBlocks objectForKey:v4];
+  appCopy = app;
+  v5 = [(NSMutableDictionary *)self->_queuedBeginLoadingBlocks objectForKey:appCopy];
   if (v5)
   {
     v6 = _MRLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = appCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Client %@ now available. Dequeuing beginLoading message", &v10, 0xCu);
     }
 
     v7 = +[MRDMediaRemoteServer server];
-    v8 = [v7 clientForBundleIdentifier:v4];
+    v8 = [v7 clientForBundleIdentifier:appCopy];
 
     if (v8)
     {
@@ -210,19 +210,19 @@ LABEL_4:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v10 = 138412290;
-        v11 = v4;
+        v11 = appCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Client %@ not available even though it can be now playing app", &v10, 0xCu);
       }
     }
   }
 
-  [(MRDBrowsableContentServer *)self _clearQueuedBeginLoadingMessagesForApp:v4];
+  [(MRDBrowsableContentServer *)self _clearQueuedBeginLoadingMessagesForApp:appCopy];
 }
 
-- (void)_clearQueuedBeginLoadingMessagesForApp:(id)a3
+- (void)_clearQueuedBeginLoadingMessagesForApp:(id)app
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_queuedBeginLoadingBlocks objectForKey:v4];
+  appCopy = app;
+  v5 = [(NSMutableDictionary *)self->_queuedBeginLoadingBlocks objectForKey:appCopy];
 
   if (v5)
   {
@@ -230,63 +230,63 @@ LABEL_4:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v4;
+      v8 = appCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Clearing beginLoading message for client %@", &v7, 0xCu);
     }
 
-    [(NSMutableDictionary *)self->_queuedBeginLoadingBlocks removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_queuedBeginLoadingBlocks removeObjectForKey:appCopy];
   }
 }
 
-- (void)_clientDidRegisterCanBeNowPlaying:(id)a3
+- (void)_clientDidRegisterCanBeNowPlaying:(id)playing
 {
-  v4 = [a3 userInfo];
+  userInfo = [playing userInfo];
   v7 = MRGetPlayerPathFromUserInfo();
 
   if ([v7 isLocal])
   {
-    v5 = [v7 client];
-    v6 = [v5 bundleIdentifier];
-    [(MRDBrowsableContentServer *)self _sendQueuedBeginLoadingMessagesForAvailableApp:v6];
+    client = [v7 client];
+    bundleIdentifier = [client bundleIdentifier];
+    [(MRDBrowsableContentServer *)self _sendQueuedBeginLoadingMessagesForAvailableApp:bundleIdentifier];
   }
 }
 
-- (void)_clientDidUnregisterCanBeNowPlaying:(id)a3
+- (void)_clientDidUnregisterCanBeNowPlaying:(id)playing
 {
-  v4 = [a3 userInfo];
+  userInfo = [playing userInfo];
   v7 = MRGetPlayerPathFromUserInfo();
 
   if ([v7 isLocal])
   {
-    v5 = [v7 client];
-    v6 = [v5 bundleIdentifier];
-    [(MRDBrowsableContentServer *)self _clearQueuedBeginLoadingMessagesForApp:v6];
+    client = [v7 client];
+    bundleIdentifier = [client bundleIdentifier];
+    [(MRDBrowsableContentServer *)self _clearQueuedBeginLoadingMessagesForApp:bundleIdentifier];
   }
 }
 
-- (void)_handleRequestPlaybackInitializationMessage:(id)a3 fromClient:(id)a4
+- (void)_handleRequestPlaybackInitializationMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v8 = MRCreateDataFromXPCMessage();
   v9 = MRCreateStringFromXPCMessage();
   if (!v9)
   {
     v10 = +[MRDMediaRemoteServer server];
-    v11 = [v10 localNowPlayingClient];
+    localNowPlayingClient = [v10 localNowPlayingClient];
 
-    v12 = [v11 bundleIdentifier];
-    v9 = [v12 copy];
+    bundleIdentifier = [localNowPlayingClient bundleIdentifier];
+    v9 = [bundleIdentifier copy];
   }
 
   v13 = [[MRDInitiatePlaybackMessage alloc] initWithBundleID:v9 indexPathData:v8];
 
-  v14 = [(MRDInitiatePlaybackMessage *)v13 bundleID];
-  if ([(MRDBrowsableContentServer *)self isClient:v7 allowedNowPlayingAccessFor:v14])
+  bundleID = [(MRDInitiatePlaybackMessage *)v13 bundleID];
+  if ([(MRDBrowsableContentServer *)self isClient:clientCopy allowedNowPlayingAccessFor:bundleID])
   {
-    if (v14)
+    if (bundleID)
     {
-      if (sub_10019D8DC(v14))
+      if (sub_10019D8DC(bundleID))
       {
         [(MRDBrowsableContentServer *)self _sendInitiatePlaybackMessage:v13];
       }
@@ -299,7 +299,7 @@ LABEL_4:
         v18[3] = &unk_1004B8690;
         v18[4] = self;
         v19 = v13;
-        v20 = v14;
+        v20 = bundleID;
         sub_10019DA18(v20, 0, v18);
       }
     }
@@ -320,69 +320,69 @@ LABEL_4:
     v15 = _MRLogForCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      sub_1003A64EC(v14, v7);
+      sub_1003A64EC(bundleID, clientCopy);
     }
 
-    sub_10000F9E4(v6, 3u);
+    sub_10000F9E4(messageCopy, 3u);
   }
 }
 
-- (void)_handleGetSupportedBrowsableContentAPIsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetSupportedBrowsableContentAPIsMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = MRCreateStringFromXPCMessage();
-  sub_10000BEE0(v5, "MRXPC_CONTENT_API_MASK_KEY", 1, [(MRDBrowsableContentAPICoordinator *)self->_apiCoordinator supportedAPIsForApplication:v6], 0);
+  sub_10000BEE0(messageCopy, "MRXPC_CONTENT_API_MASK_KEY", 1, [(MRDBrowsableContentAPICoordinator *)self->_apiCoordinator supportedAPIsForApplication:v6], 0);
 }
 
-- (void)_handleSetSupportedBrowsableContentAPIsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetSupportedBrowsableContentAPIsMessage:(id)message fromClient:(id)client
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 bundleIdentifier];
-  [(MRDBrowsableContentAPICoordinator *)self->_apiCoordinator setSupportedAPIs:xpc_dictionary_get_uint64(v7 forApplication:"MRXPC_CONTENT_API_MASK_KEY"), v8];
-  sub_10000F9E4(v7, 0);
+  clientCopy = client;
+  messageCopy = message;
+  bundleIdentifier = [clientCopy bundleIdentifier];
+  [(MRDBrowsableContentAPICoordinator *)self->_apiCoordinator setSupportedAPIs:xpc_dictionary_get_uint64(messageCopy forApplication:"MRXPC_CONTENT_API_MASK_KEY"), bundleIdentifier];
+  sub_10000F9E4(messageCopy, 0);
 
-  [(MRDBrowsableContentServer *)self _handleSupportedAPIsDidChangeForClient:v6];
+  [(MRDBrowsableContentServer *)self _handleSupportedAPIsDidChangeForClient:clientCopy];
 }
 
-- (void)_handleGetAppsSupportingBrowsableContentAPIsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetAppsSupportingBrowsableContentAPIsMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
-  v7 = [(MRDBrowsableContentAPICoordinator *)self->_apiCoordinator applicationsSupportingAPIs:xpc_dictionary_get_uint64(v5, "MRXPC_CONTENT_API_MASK_KEY")];
+  messageCopy = message;
+  v7 = [(MRDBrowsableContentAPICoordinator *)self->_apiCoordinator applicationsSupportingAPIs:xpc_dictionary_get_uint64(messageCopy, "MRXPC_CONTENT_API_MASK_KEY")];
   v6 = [NSPropertyListSerialization dataWithPropertyList:v7 format:200 options:0 error:0];
-  sub_10001673C(v5, "MRXPC_BUNDLE_ID_ARRAY_DATA_KEY", v6, 0);
+  sub_10001673C(messageCopy, "MRXPC_BUNDLE_ID_ARRAY_DATA_KEY", v6, 0);
 }
 
-- (BOOL)isClient:(id)a3 allowedNowPlayingAccessFor:(id)a4
+- (BOOL)isClient:(id)client allowedNowPlayingAccessFor:(id)for
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEntitledFor:512] & 1) != 0 || (objc_msgSend(v5, "isEntitledFor:", 1024))
+  clientCopy = client;
+  forCopy = for;
+  if ([clientCopy isEntitledFor:512] & 1) != 0 || (objc_msgSend(clientCopy, "isEntitledFor:", 1024))
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v5 bundleIdentifier];
-    v7 = [v8 isEqual:v6];
+    bundleIdentifier = [clientCopy bundleIdentifier];
+    v7 = [bundleIdentifier isEqual:forCopy];
   }
 
   return v7;
 }
 
-- (void)_relayMessage:(id)a3 fromClient:(id)a4 toClientWithBundleIDAndReply:(id)a5
+- (void)_relayMessage:(id)message fromClient:(id)client toClientWithBundleIDAndReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(MRDBrowsableContentServer *)self isClient:v9 allowedNowPlayingAccessFor:v10])
+  messageCopy = message;
+  clientCopy = client;
+  replyCopy = reply;
+  if ([(MRDBrowsableContentServer *)self isClient:clientCopy allowedNowPlayingAccessFor:replyCopy])
   {
     v11 = +[MRDMediaRemoteServer server];
     v12 = v11;
-    if (v10)
+    if (replyCopy)
     {
-      [v11 clientForBundleIdentifier:v10];
+      [v11 clientForBundleIdentifier:replyCopy];
     }
 
     else
@@ -393,10 +393,10 @@ LABEL_4:
 
     if (v14)
     {
-      if ([(MRDBrowsableContentServer *)self _messageRequiresMediaServerBlessing:v8])
+      if ([(MRDBrowsableContentServer *)self _messageRequiresMediaServerBlessing:messageCopy])
       {
-        v15 = [v14 bundleIdentifier];
-        v16 = sub_10019FC4C(v15);
+        bundleIdentifier = [v14 bundleIdentifier];
+        v16 = sub_10019FC4C(bundleIdentifier);
 
         if ((v16 & 1) == 0)
         {
@@ -419,27 +419,27 @@ LABEL_4:
 
         v19 = [MRDTaskAssertion alloc];
         v20 = [v14 pid];
-        v21 = [v14 bundleIdentifier];
-        v22 = [(MRDTaskAssertion *)v19 initWithType:3 pid:v20 bundleID:v21 name:@"BrowsableContent playback initiated"];
+        bundleIdentifier2 = [v14 bundleIdentifier];
+        v22 = [(MRDTaskAssertion *)v19 initWithType:3 pid:v20 bundleID:bundleIdentifier2 name:@"BrowsableContent playback initiated"];
 
         [(MRDTaskAssertion *)v22 invalidateInDuration:5.0];
       }
 
-      [v14 relayXPCMessage:v8 andReply:1];
+      [v14 relayXPCMessage:messageCopy andReply:1];
     }
 
     else
     {
-      v23 = [(MRDBrowsableContentServer *)self _messageCanLaunchApp:v8];
-      if (v10 && v23)
+      v23 = [(MRDBrowsableContentServer *)self _messageCanLaunchApp:messageCopy];
+      if (replyCopy && v23)
       {
         v25[0] = _NSConcreteStackBlock;
         v25[1] = 3221225472;
         v25[2] = sub_100095CD8;
         v25[3] = &unk_1004B8690;
         v25[4] = self;
-        v26 = v8;
-        v27 = v10;
+        v26 = messageCopy;
+        v27 = replyCopy;
         sub_10019DA18(v27, 0, v25);
       }
 
@@ -448,10 +448,10 @@ LABEL_4:
         v24 = _MRLogForCategory();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
-          sub_1003A658C(v10, v24);
+          sub_1003A658C(replyCopy, v24);
         }
 
-        sub_10000F9E4(v8, 4u);
+        sub_10000F9E4(messageCopy, 4u);
       }
     }
   }
@@ -461,105 +461,105 @@ LABEL_4:
     v13 = _MRLogForCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      sub_1003A64EC(v10, v9);
+      sub_1003A64EC(replyCopy, clientCopy);
     }
 
-    sub_10000F9E4(v8, 3u);
+    sub_10000F9E4(messageCopy, 3u);
   }
 }
 
-- (void)_sendInitiatePlaybackMessage:(id)a3
+- (void)_sendInitiatePlaybackMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 bundleID];
-  if ((sub_10019FC4C(v5) & 1) == 0)
+  messageCopy = message;
+  bundleID = [messageCopy bundleID];
+  if ((sub_10019FC4C(bundleID) & 1) == 0)
   {
     v6 = _MRLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v5;
+      v15 = bundleID;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Error preparing client %@ for playback initialization.", &v14, 0xCu);
     }
   }
 
   v7 = +[MRDMediaRemoteServer server];
-  v8 = [v7 clientForBundleIdentifier:v5];
+  v8 = [v7 clientForBundleIdentifier:bundleID];
 
   if (v8)
   {
     [(MRDBrowsableContentServer *)self _takeProcessAssertionForClient:v8 withReason:@"Sending initiatePlaybackMessage"];
-    v9 = [v4 indexPathData];
+    indexPathData = [messageCopy indexPathData];
     v10 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_uint64(v10, "MRXPC_MESSAGE_ID_KEY", 0x500000000000006uLL);
-    v11 = [v4 bundleID];
-    xpc_dictionary_set_string(v10, "MRXPC_BUNDLE_ID_KEY", [v11 UTF8String]);
+    bundleID2 = [messageCopy bundleID];
+    xpc_dictionary_set_string(v10, "MRXPC_BUNDLE_ID_KEY", [bundleID2 UTF8String]);
 
-    xpc_dictionary_set_data(v10, "MRXPC_INDEXPATH_DATA_KEY", [v9 bytes], [v9 length]);
-    v12 = [v8 connection];
-    v13 = [v12 connection];
-    xpc_connection_send_message(v13, v10);
+    xpc_dictionary_set_data(v10, "MRXPC_INDEXPATH_DATA_KEY", [indexPathData bytes], [indexPathData length]);
+    connection = [v8 connection];
+    v12Connection = [connection connection];
+    xpc_connection_send_message(v12Connection, v10);
 
     [(MRDBrowsableContentServer *)self _scheduleEndProcessAssertionForClient:v8];
   }
 
   else
   {
-    v9 = _MRLogForCategory();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    indexPathData = _MRLogForCategory();
+    if (os_log_type_enabled(indexPathData, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v5;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Warning: no client found for bundle ID %@. Dropping initiate playback message.", &v14, 0xCu);
+      v15 = bundleID;
+      _os_log_impl(&_mh_execute_header, indexPathData, OS_LOG_TYPE_DEFAULT, "Warning: no client found for bundle ID %@. Dropping initiate playback message.", &v14, 0xCu);
     }
   }
 }
 
-- (void)_handleBrowsableContentDidFinishLoadingFromClient:(id)a3 indexPath:(id)a4 withError:(id)a5
+- (void)_handleBrowsableContentDidFinishLoadingFromClient:(id)client indexPath:(id)path withError:(id)error
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v8 = a3;
-  v9 = a5;
-  v10 = [[NSData alloc] initWithBytes:var0 length:8 * var1];
+  var1 = path.var1;
+  var0 = path.var0;
+  clientCopy = client;
+  errorCopy = error;
+  var1 = [[NSData alloc] initWithBytes:var0 length:8 * var1];
   v19 = kMRMediaRemoteIndexPathDataUserInfoKey;
-  v20 = v10;
+  v20 = var1;
   v11 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
   v12 = [v11 mutableCopy];
 
-  if (v9)
+  if (errorCopy)
   {
-    v13 = [v9 localizedDescription];
-    if (v13)
+    localizedDescription = [errorCopy localizedDescription];
+    if (localizedDescription)
     {
-      [v12 setObject:v13 forKey:kMRMediaRemoteBrowsableContentErrorLocalizedDescriptionKey];
+      [v12 setObject:localizedDescription forKey:kMRMediaRemoteBrowsableContentErrorLocalizedDescriptionKey];
     }
 
-    v14 = [v9 domain];
-    if (v14)
+    domain = [errorCopy domain];
+    if (domain)
     {
-      [v12 setObject:v14 forKey:kMRMediaRemoteBrowsableContentErrorDomainKey];
-      v15 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v9 code]);
+      [v12 setObject:domain forKey:kMRMediaRemoteBrowsableContentErrorDomainKey];
+      v15 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
       [v12 setObject:v15 forKey:kMRMediaRemoteBrowsableContentErrorCodeKey];
     }
   }
 
-  v16 = [v8 bundleIdentifier];
+  bundleIdentifier = [clientCopy bundleIdentifier];
 
-  if (v16)
+  if (bundleIdentifier)
   {
-    v17 = [v8 bundleIdentifier];
-    [v12 setObject:v17 forKey:kMRMediaRemoteBrowsableContentBundleIdentifierUserInfoKey];
+    bundleIdentifier2 = [clientCopy bundleIdentifier];
+    [v12 setObject:bundleIdentifier2 forKey:kMRMediaRemoteBrowsableContentBundleIdentifierUserInfoKey];
   }
 
   v18 = +[MRDMediaRemoteServer server];
   [v18 postClientNotificationNamed:kMRMediaRemoteApplicationFinishedLoadingContentNotification userInfo:v12];
 }
 
-- (void)_handleSupportedAPIsDidChangeForClient:(id)a3
+- (void)_handleSupportedAPIsDidChangeForClient:(id)client
 {
-  v27 = a3;
-  v4 = [v27 bundleIdentifier];
+  clientCopy = client;
+  bundleIdentifier = [clientCopy bundleIdentifier];
   v5 = [(NSMutableArray *)self->_queuedInitiatePlaybackMessages copy];
   v32 = 0u;
   v33 = 0u;
@@ -583,8 +583,8 @@ LABEL_4:
         }
 
         v11 = *(*(&v32 + 1) + 8 * i);
-        v12 = [v11 bundleID];
-        v13 = [v12 isEqualToString:v4];
+        bundleID = [v11 bundleID];
+        v13 = [bundleID isEqualToString:bundleIdentifier];
 
         if (v13)
         {
@@ -594,7 +594,7 @@ LABEL_4:
             *buf = v25;
             v38 = v11;
             v39 = 2112;
-            v40 = v27;
+            v40 = clientCopy;
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Sending queued initiate playback message %@ to client %@.", buf, 0x16u);
           }
 
@@ -631,7 +631,7 @@ LABEL_4:
 
         v21 = *(*(&v28 + 1) + 8 * j);
         v22 = MRCreateStringFromXPCMessage();
-        if ([v22 isEqualToString:v4])
+        if ([v22 isEqualToString:bundleIdentifier])
         {
           v23 = _MRLogForCategory();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -639,11 +639,11 @@ LABEL_4:
             *buf = 138412546;
             v38 = v21;
             v39 = 2112;
-            v40 = v4;
+            v40 = bundleIdentifier;
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Sending queued relayable message %@ to client %@", buf, 0x16u);
           }
 
-          [(MRDBrowsableContentServer *)self _relayMessage:v21 fromClient:v27 toClientWithBundleIDAndReply:v4];
+          [(MRDBrowsableContentServer *)self _relayMessage:v21 fromClient:clientCopy toClientWithBundleIDAndReply:bundleIdentifier];
           [(NSMutableArray *)self->_queuedRelayableMessages removeObject:v21];
         }
       }
@@ -658,28 +658,28 @@ LABEL_4:
   [v24 postClientNotificationNamed:kMRMediaRemoteBrowsableContentAPIChangedNotification userInfo:0];
 }
 
-- (BOOL)_takeProcessAssertionForClient:(id)a3 withReason:(id)a4
+- (BOOL)_takeProcessAssertionForClient:(id)client withReason:(id)reason
 {
-  v5 = a3;
-  v6 = a4;
+  clientCopy = client;
+  reasonCopy = reason;
   v7 = _MRLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 bundleIdentifier];
+    bundleIdentifier = [clientCopy bundleIdentifier];
     v17 = 138412290;
-    v18 = v8;
+    v18 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Browsable Content Server: Taking process assertion for %@.", &v17, 0xCu);
   }
 
   v9 = [MRDTaskAssertion alloc];
-  v10 = [v5 pid];
-  v11 = [v5 bundleIdentifier];
-  v12 = [(MRDTaskAssertion *)v9 initWithType:3 pid:v10 bundleID:v11 name:v6];
+  v10 = [clientCopy pid];
+  bundleIdentifier2 = [clientCopy bundleIdentifier];
+  v12 = [(MRDTaskAssertion *)v9 initWithType:3 pid:v10 bundleID:bundleIdentifier2 name:reasonCopy];
 
-  v13 = [(MRDTaskAssertion *)v12 isValid];
-  if (v13)
+  isValid = [(MRDTaskAssertion *)v12 isValid];
+  if (isValid)
   {
-    [v5 setCurrentTaskAssertion:v12];
+    [clientCopy setCurrentTaskAssertion:v12];
   }
 
   else
@@ -687,20 +687,20 @@ LABEL_4:
     v14 = _MRLogForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v5 bundleIdentifier];
+      bundleIdentifier3 = [clientCopy bundleIdentifier];
       v17 = 138412290;
-      v18 = v15;
+      v18 = bundleIdentifier3;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Unable to take task assertion for %@.", &v17, 0xCu);
     }
   }
 
-  return v13;
+  return isValid;
 }
 
-- (void)_scheduleEndProcessAssertionForClient:(id)a3
+- (void)_scheduleEndProcessAssertionForClient:(id)client
 {
-  v3 = [a3 currentTaskAssertion];
-  [v3 invalidateInDuration:10.0];
+  currentTaskAssertion = [client currentTaskAssertion];
+  [currentTaskAssertion invalidateInDuration:10.0];
 }
 
 @end

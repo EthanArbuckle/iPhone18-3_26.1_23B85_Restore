@@ -1,24 +1,24 @@
 @interface PXMemoriesFeedDataSourceManagerBase
-+ (BOOL)shouldGroupTogetherMemoriesWithCreationDate:(id)a3 andCreationDate:(id)a4;
-+ (id)_updatedFetchResultsForMemoriesForDatasource:(id)a3 changeDetails:(id)a4 changeInstance:(id)a5;
-+ (id)baseFetchOptionsWithPhotoLibrary:(id)a3;
-+ (id)generateEntriesFromMemories:(id)a3 startingFromIndex:(unint64_t)a4 maximumNumberOfEntries:(unint64_t)a5 finalMemoryIndex:(unint64_t *)a6;
++ (BOOL)shouldGroupTogetherMemoriesWithCreationDate:(id)date andCreationDate:(id)creationDate;
++ (id)_updatedFetchResultsForMemoriesForDatasource:(id)datasource changeDetails:(id)details changeInstance:(id)instance;
++ (id)baseFetchOptionsWithPhotoLibrary:(id)library;
++ (id)generateEntriesFromMemories:(id)memories startingFromIndex:(unint64_t)index maximumNumberOfEntries:(unint64_t)entries finalMemoryIndex:(unint64_t *)memoryIndex;
 - (BOOL)hasAnyMemories;
 - (NSDate)mostRecentCreationDate;
-- (PXMemoriesFeedDataSourceManagerBase)initWithPhotoLibrary:(id)a3;
+- (PXMemoriesFeedDataSourceManagerBase)initWithPhotoLibrary:(id)library;
 - (id)fetchOptions;
-- (id)pauseChangeDeliveryWithTimeout:(double)a3 identifier:(id)a4;
-- (id)prepareForPhotoLibraryChange:(id)a3;
-- (void)_clearPendingNotificationForMemory:(id)a3;
+- (id)pauseChangeDeliveryWithTimeout:(double)timeout identifier:(id)identifier;
+- (id)prepareForPhotoLibraryChange:(id)change;
+- (void)_clearPendingNotificationForMemory:(id)memory;
 - (void)generateAdditionalEntriesIfPossible;
-- (void)handleChangedKeyAssetsForMemories:(id)a3;
-- (void)handleIncrementalFetchResultChange:(id)a3 updatedFetchResultsForMemoriesWithChangedKeyAssets:(id)a4;
-- (void)handleNonIncrementalFetchResultChange:(id)a3;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4;
-- (void)reloadMemories:(BOOL)a3;
+- (void)handleChangedKeyAssetsForMemories:(id)memories;
+- (void)handleIncrementalFetchResultChange:(id)change updatedFetchResultsForMemoriesWithChangedKeyAssets:(id)assets;
+- (void)handleNonIncrementalFetchResultChange:(id)change;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info;
+- (void)reloadMemories:(BOOL)memories;
 - (void)resetMemoriesFetchResult;
-- (void)resumeChangeDeliveryAndBackgroundLoading:(id)a3;
-- (void)setMemoriesFetchResult:(id)a3;
+- (void)resumeChangeDeliveryAndBackgroundLoading:(id)loading;
+- (void)setMemoriesFetchResult:(id)result;
 - (void)updateCurrentMemoriesNonPendingAndNotificationStatus;
 @end
 
@@ -27,14 +27,14 @@
 - (void)updateCurrentMemoriesNonPendingAndNotificationStatus
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(PXMemoriesFeedDataSourceManagerBase *)self memoriesFetchResult];
+  memoriesFetchResult = [(PXMemoriesFeedDataSourceManagerBase *)self memoriesFetchResult];
   v4 = +[PXMemoriesSeenHelper defaultHelper];
-  [v4 clearAnyPendingNotificationsFromMemories:v3];
-  v5 = [(PXMemoriesFeedDataSourceManagerBase *)self firstUngroupedMemoryIndex];
-  if (v5)
+  [v4 clearAnyPendingNotificationsFromMemories:memoriesFetchResult];
+  firstUngroupedMemoryIndex = [(PXMemoriesFeedDataSourceManagerBase *)self firstUngroupedMemoryIndex];
+  if (firstUngroupedMemoryIndex)
   {
-    v6 = v5;
-    v7 = [v3 count];
+    v6 = firstUngroupedMemoryIndex;
+    v7 = [memoriesFetchResult count];
     if (v6 >= v7)
     {
       v8 = v7;
@@ -46,7 +46,7 @@
     }
 
     v9 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, v8}];
-    v10 = [v3 objectsAtIndexes:v9];
+    v10 = [memoriesFetchResult objectsAtIndexes:v9];
     [v4 clearAnyPendingStateFromMemories:v10];
   }
 
@@ -60,27 +60,27 @@
       v13 = 2048;
       v14 = 0;
       v15 = 2048;
-      v16 = [v3 count];
+      v16 = [memoriesFetchResult count];
       _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEFAULT, "%s Unexpected value for firstUngroupedMemoryIndex: %lu, memoriesFetchResult.count: %lu", &v11, 0x20u);
     }
   }
 }
 
-- (void)_clearPendingNotificationForMemory:(id)a3
+- (void)_clearPendingNotificationForMemory:(id)memory
 {
-  v4 = a3;
+  memoryCopy = memory;
   photoLibrary = self->_photoLibrary;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __74__PXMemoriesFeedDataSourceManagerBase__clearPendingNotificationForMemory___block_invoke;
   v10[3] = &unk_1E774C648;
-  v11 = v4;
-  v6 = v4;
+  v11 = memoryCopy;
+  v6 = memoryCopy;
   [(PHPhotoLibrary *)photoLibrary performChanges:v10 completionHandler:&__block_literal_global_54654];
-  v7 = [(PHPhotoLibrary *)self->_photoLibrary assetsdClient];
-  v8 = [v7 notificationClient];
-  v9 = [v6 uuid];
-  [v8 asyncNotifyInterestingMemoryNotificationViewedForColletionID:v9];
+  assetsdClient = [(PHPhotoLibrary *)self->_photoLibrary assetsdClient];
+  notificationClient = [assetsdClient notificationClient];
+  uuid = [v6 uuid];
+  [notificationClient asyncNotifyInterestingMemoryNotificationViewedForColletionID:uuid];
 }
 
 void __74__PXMemoriesFeedDataSourceManagerBase__clearPendingNotificationForMemory___block_invoke(uint64_t a1)
@@ -105,63 +105,63 @@ void __74__PXMemoriesFeedDataSourceManagerBase__clearPendingNotificationForMemor
   }
 }
 
-- (void)handleChangedKeyAssetsForMemories:(id)a3
+- (void)handleChangedKeyAssetsForMemories:(id)memories
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  memoriesCopy = memories;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 handleFailureInMethod:a2 object:self file:@"PXMemoriesFeedDataSourceManagerBase.m" lineNumber:244 description:{@"Method %s is a responsibility of subclass %@", "-[PXMemoriesFeedDataSourceManagerBase handleChangedKeyAssetsForMemories:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMemoriesFeedDataSourceManagerBase.m" lineNumber:244 description:{@"Method %s is a responsibility of subclass %@", "-[PXMemoriesFeedDataSourceManagerBase handleChangedKeyAssetsForMemories:]", v8}];
 
   abort();
 }
 
-- (void)handleNonIncrementalFetchResultChange:(id)a3
+- (void)handleNonIncrementalFetchResultChange:(id)change
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  changeCopy = change;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 handleFailureInMethod:a2 object:self file:@"PXMemoriesFeedDataSourceManagerBase.m" lineNumber:240 description:{@"Method %s is a responsibility of subclass %@", "-[PXMemoriesFeedDataSourceManagerBase handleNonIncrementalFetchResultChange:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMemoriesFeedDataSourceManagerBase.m" lineNumber:240 description:{@"Method %s is a responsibility of subclass %@", "-[PXMemoriesFeedDataSourceManagerBase handleNonIncrementalFetchResultChange:]", v8}];
 
   abort();
 }
 
-- (void)handleIncrementalFetchResultChange:(id)a3 updatedFetchResultsForMemoriesWithChangedKeyAssets:(id)a4
+- (void)handleIncrementalFetchResultChange:(id)change updatedFetchResultsForMemoriesWithChangedKeyAssets:(id)assets
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
+  changeCopy = change;
+  assetsCopy = assets;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  [v9 handleFailureInMethod:a2 object:self file:@"PXMemoriesFeedDataSourceManagerBase.m" lineNumber:236 description:{@"Method %s is a responsibility of subclass %@", "-[PXMemoriesFeedDataSourceManagerBase handleIncrementalFetchResultChange:updatedFetchResultsForMemoriesWithChangedKeyAssets:]", v11}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMemoriesFeedDataSourceManagerBase.m" lineNumber:236 description:{@"Method %s is a responsibility of subclass %@", "-[PXMemoriesFeedDataSourceManagerBase handleIncrementalFetchResultChange:updatedFetchResultsForMemoriesWithChangedKeyAssets:]", v11}];
 
   abort();
 }
 
-- (void)reloadMemories:(BOOL)a3
+- (void)reloadMemories:(BOOL)memories
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v5 handleFailureInMethod:a2 object:self file:@"PXMemoriesFeedDataSourceManagerBase.m" lineNumber:232 description:{@"Method %s is a responsibility of subclass %@", "-[PXMemoriesFeedDataSourceManagerBase reloadMemories:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMemoriesFeedDataSourceManagerBase.m" lineNumber:232 description:{@"Method %s is a responsibility of subclass %@", "-[PXMemoriesFeedDataSourceManagerBase reloadMemories:]", v7}];
 
   abort();
 }
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [v6 objectForKeyedSubscript:@"memoriesFetchResultChangeDetails"];
-  v8 = [v6 objectForKeyedSubscript:@"updatedFetchResultsForMemoriesWithChangedKeyAssets"];
-  v9 = [v6 objectForKeyedSubscript:@"datasource"];
-  v10 = [(PXSectionedDataSourceManager *)self dataSource];
-  v11 = [v6 objectForKeyedSubscript:@"memoriesFetchResult"];
+  queueCopy = queue;
+  infoCopy = info;
+  v7 = [infoCopy objectForKeyedSubscript:@"memoriesFetchResultChangeDetails"];
+  v8 = [infoCopy objectForKeyedSubscript:@"updatedFetchResultsForMemoriesWithChangedKeyAssets"];
+  v9 = [infoCopy objectForKeyedSubscript:@"datasource"];
+  dataSource = [(PXSectionedDataSourceManager *)self dataSource];
+  v11 = [infoCopy objectForKeyedSubscript:@"memoriesFetchResult"];
 
-  v12 = [(PXMemoriesFeedDataSourceManagerBase *)self memoriesFetchResult];
-  v13 = v12;
-  if (v9 == v10 && v11 == v12)
+  memoriesFetchResult = [(PXMemoriesFeedDataSourceManagerBase *)self memoriesFetchResult];
+  v13 = memoriesFetchResult;
+  if (v9 == dataSource && v11 == memoriesFetchResult)
   {
     if (v7)
     {
@@ -171,9 +171,9 @@ void __74__PXMemoriesFeedDataSourceManagerBase__clearPendingNotificationForMemor
 
   else
   {
-    v14 = [v16 changeDetailsForFetchResult:v12];
+    v14 = [queueCopy changeDetailsForFetchResult:memoriesFetchResult];
 
-    v15 = [PXMemoriesFeedDataSourceManagerBase _updatedFetchResultsForMemoriesForDatasource:v10 changeDetails:v14 changeInstance:v16];
+    v15 = [PXMemoriesFeedDataSourceManagerBase _updatedFetchResultsForMemoriesForDatasource:dataSource changeDetails:v14 changeInstance:queueCopy];
 
     v8 = v15;
     v7 = v14;
@@ -182,7 +182,7 @@ void __74__PXMemoriesFeedDataSourceManagerBase__clearPendingNotificationForMemor
 LABEL_4:
       if ([v7 hasIncrementalChanges])
       {
-        [(PXMemoriesFeedDataSourceManagerBase *)self handleIncrementalFetchResultChange:v16 updatedFetchResultsForMemoriesWithChangedKeyAssets:v8];
+        [(PXMemoriesFeedDataSourceManagerBase *)self handleIncrementalFetchResultChange:queueCopy updatedFetchResultsForMemoriesWithChangedKeyAssets:v8];
       }
 
       else
@@ -202,9 +202,9 @@ LABEL_4:
 LABEL_10:
 }
 
-- (id)prepareForPhotoLibraryChange:(id)a3
+- (id)prepareForPhotoLibraryChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -225,8 +225,8 @@ LABEL_10:
   block[5] = &v17;
   block[6] = &v11;
   dispatch_sync(MEMORY[0x1E69E96A0], block);
-  v5 = [v4 changeDetailsForFetchResult:v12[5]];
-  v6 = [PXMemoriesFeedDataSourceManagerBase _updatedFetchResultsForMemoriesForDatasource:v18[5] changeDetails:v5 changeInstance:v4];
+  v5 = [changeCopy changeDetailsForFetchResult:v12[5]];
+  v6 = [PXMemoriesFeedDataSourceManagerBase _updatedFetchResultsForMemoriesForDatasource:v18[5] changeDetails:v5 changeInstance:changeCopy];
   v7 = objc_opt_new();
   [v7 setObject:v18[5] forKeyedSubscript:@"datasource"];
   [v7 setObject:v6 forKeyedSubscript:@"updatedFetchResultsForMemoriesWithChangedKeyAssets"];
@@ -260,28 +260,28 @@ void __68__PXMemoriesFeedDataSourceManagerBase_prepareForPhotoLibraryChange___bl
   *(v6 + 40) = v5;
 }
 
-- (void)resumeChangeDeliveryAndBackgroundLoading:(id)a3
+- (void)resumeChangeDeliveryAndBackgroundLoading:(id)loading
 {
-  v4 = a3;
-  v5 = [(PXMemoriesFeedDataSourceManagerBase *)self photoLibrary];
-  [v5 px_endPausingChanges:v4];
+  loadingCopy = loading;
+  photoLibrary = [(PXMemoriesFeedDataSourceManagerBase *)self photoLibrary];
+  [photoLibrary px_endPausingChanges:loadingCopy];
 }
 
-- (id)pauseChangeDeliveryWithTimeout:(double)a3 identifier:(id)a4
+- (id)pauseChangeDeliveryWithTimeout:(double)timeout identifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(PXMemoriesFeedDataSourceManagerBase *)self photoLibrary];
-  v8 = [v7 px_beginPausingChangesWithTimeout:v6 identifier:a3];
+  identifierCopy = identifier;
+  photoLibrary = [(PXMemoriesFeedDataSourceManagerBase *)self photoLibrary];
+  v8 = [photoLibrary px_beginPausingChangesWithTimeout:identifierCopy identifier:timeout];
 
   return v8;
 }
 
 - (void)generateAdditionalEntriesIfPossible
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXMemoriesFeedDataSourceManagerBase.m" lineNumber:126 description:{@"Method %s is a responsibility of subclass %@", "-[PXMemoriesFeedDataSourceManagerBase generateAdditionalEntriesIfPossible]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMemoriesFeedDataSourceManagerBase.m" lineNumber:126 description:{@"Method %s is a responsibility of subclass %@", "-[PXMemoriesFeedDataSourceManagerBase generateAdditionalEntriesIfPossible]", v6}];
 
   abort();
 }
@@ -290,20 +290,20 @@ void __68__PXMemoriesFeedDataSourceManagerBase_prepareForPhotoLibraryChange___bl
 {
   if (self->_memoryGenerationHasStarted)
   {
-    v5 = [(PXMemoriesFeedDataSourceManagerBase *)self fetchOptions];
-    v4 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v5];
+    fetchOptions = [(PXMemoriesFeedDataSourceManagerBase *)self fetchOptions];
+    v4 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:fetchOptions];
     [(PXMemoriesFeedDataSourceManagerBase *)self setMemoriesFetchResult:v4];
   }
 }
 
-- (void)setMemoriesFetchResult:(id)a3
+- (void)setMemoriesFetchResult:(id)result
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_memoriesFetchResult != v5)
+  resultCopy = result;
+  if (self->_memoriesFetchResult != resultCopy)
   {
-    objc_storeStrong(&self->_memoriesFetchResult, a3);
-    if (!v5)
+    objc_storeStrong(&self->_memoriesFetchResult, result);
+    if (!resultCopy)
     {
       v6 = PLMemoriesGetLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -319,24 +319,24 @@ void __68__PXMemoriesFeedDataSourceManagerBase_prepareForPhotoLibraryChange___bl
 - (id)fetchOptions
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v2 = [(PXMemoriesFeedDataSourceManagerBase *)self photoLibrary];
-  v3 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v2];
+  photoLibrary = [(PXMemoriesFeedDataSourceManagerBase *)self photoLibrary];
+  v3 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:photoLibrary];
   v4 = [[PXLibraryFilterState alloc] initWithSharedLibraryStatusProvider:v3];
-  v5 = [PXMemoriesFeedDataSourceManagerBase baseFetchOptionsWithPhotoLibrary:v2];
-  [v5 setPhotoLibrary:v2];
+  v5 = [PXMemoriesFeedDataSourceManagerBase baseFetchOptionsWithPhotoLibrary:photoLibrary];
+  [v5 setPhotoLibrary:photoLibrary];
   v10[0] = *MEMORY[0x1E6978F08];
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   [v5 setFetchPropertySets:v6];
 
-  v7 = [(PXLibraryFilterState *)v4 viewMode];
-  if (v7 == 2)
+  viewMode = [(PXLibraryFilterState *)v4 viewMode];
+  if (viewMode == 2)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = 2 * (v7 != 1);
+    v8 = 2 * (viewMode != 1);
   }
 
   [v5 setSharingFilter:v8];
@@ -346,28 +346,28 @@ void __68__PXMemoriesFeedDataSourceManagerBase_prepareForPhotoLibraryChange___bl
 
 - (BOOL)hasAnyMemories
 {
-  v2 = [(PXMemoriesFeedDataSourceManagerBase *)self memoriesFetchResult];
-  v3 = [v2 count] != 0;
+  memoriesFetchResult = [(PXMemoriesFeedDataSourceManagerBase *)self memoriesFetchResult];
+  v3 = [memoriesFetchResult count] != 0;
 
   return v3;
 }
 
-- (PXMemoriesFeedDataSourceManagerBase)initWithPhotoLibrary:(id)a3
+- (PXMemoriesFeedDataSourceManagerBase)initWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v8.receiver = self;
   v8.super_class = PXMemoriesFeedDataSourceManagerBase;
   v5 = [(PXSectionedDataSourceManager *)&v8 init];
   if (v5)
   {
-    v6 = v4;
-    if (!v4)
+    px_deprecated_appPhotoLibrary = libraryCopy;
+    if (!libraryCopy)
     {
-      v6 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+      px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
     }
 
-    objc_storeStrong(&v5->_photoLibrary, v6);
-    if (!v4)
+    objc_storeStrong(&v5->_photoLibrary, px_deprecated_appPhotoLibrary);
+    if (!libraryCopy)
     {
     }
   }
@@ -378,37 +378,37 @@ void __68__PXMemoriesFeedDataSourceManagerBase_prepareForPhotoLibraryChange___bl
 - (NSDate)mostRecentCreationDate
 {
   v3 = objc_opt_class();
-  v4 = [(PXMemoriesFeedDataSourceManagerBase *)self photoLibrary];
-  v5 = [v3 baseFetchOptionsWithPhotoLibrary:v4];
+  photoLibrary = [(PXMemoriesFeedDataSourceManagerBase *)self photoLibrary];
+  v5 = [v3 baseFetchOptionsWithPhotoLibrary:photoLibrary];
 
   [v5 setFetchLimit:1];
   v6 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v5];
-  v7 = [v6 firstObject];
-  v8 = [v7 creationDate];
+  firstObject = [v6 firstObject];
+  creationDate = [firstObject creationDate];
 
-  return v8;
+  return creationDate;
 }
 
-+ (BOOL)shouldGroupTogetherMemoriesWithCreationDate:(id)a3 andCreationDate:(id)a4
++ (BOOL)shouldGroupTogetherMemoriesWithCreationDate:(id)date andCreationDate:(id)creationDate
 {
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  creationDateCopy = creationDate;
   v9 = +[PXMemoriesFeedSettings sharedInstance];
-  v10 = [v9 memoryGroupingMethod];
-  switch(v10)
+  memoryGroupingMethod = [v9 memoryGroupingMethod];
+  switch(memoryGroupingMethod)
   {
     case 1:
-      v11 = [v7 px_isSameDayAsDate:v8];
+      v11 = [dateCopy px_isSameDayAsDate:creationDateCopy];
       break;
     case 2:
-      [v7 timeIntervalSinceDate:v8];
+      [dateCopy timeIntervalSinceDate:creationDateCopy];
       v13 = fabs(v12);
       [v9 memoryGroupingInterval];
       v11 = v13 <= v14;
       break;
     case 0:
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v16 handleFailureInMethod:a2 object:a1 file:@"PXMemoriesFeedDataSourceManagerBase.m" lineNumber:306 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXMemoriesFeedDataSourceManagerBase.m" lineNumber:306 description:@"Code which should be unreachable has been reached"];
 
       abort();
     default:
@@ -419,16 +419,16 @@ void __68__PXMemoriesFeedDataSourceManagerBase_prepareForPhotoLibraryChange___bl
   return v11;
 }
 
-+ (id)generateEntriesFromMemories:(id)a3 startingFromIndex:(unint64_t)a4 maximumNumberOfEntries:(unint64_t)a5 finalMemoryIndex:(unint64_t *)a6
++ (id)generateEntriesFromMemories:(id)memories startingFromIndex:(unint64_t)index maximumNumberOfEntries:(unint64_t)entries finalMemoryIndex:(unint64_t *)memoryIndex
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  memoriesCopy = memories;
   v9 = PLMemoriesGetLog();
   v10 = &off_1A52F8000;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v32 = [v8 count];
+    v32 = [memoriesCopy count];
     _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEFAULT, "Generating feed entries from %lu entries...", buf, 0xCu);
   }
 
@@ -443,26 +443,26 @@ void __68__PXMemoriesFeedDataSourceManagerBase_prepareForPhotoLibraryChange___bl
   v14 = v11;
   v30 = v14;
   v15 = _Block_copy(aBlock);
-  if ([v8 count])
+  if ([memoriesCopy count])
   {
-    v25 = a6;
-    if ([v8 count] > a4)
+    memoryIndexCopy = memoryIndex;
+    if ([memoriesCopy count] > index)
     {
-      v16 = 0;
+      creationDate = 0;
       v17 = 0x7FFFFFFFFFFFFFFFLL;
       while (1)
       {
-        v18 = v16;
-        v19 = [v8 objectAtIndexedSubscript:a4];
-        v16 = [v19 creationDate];
-        if (v18 && ([a1 shouldGroupTogetherMemoriesWithCreationDate:v16 andCreationDate:v18] & 1) == 0)
+        v18 = creationDate;
+        v19 = [memoriesCopy objectAtIndexedSubscript:index];
+        creationDate = [v19 creationDate];
+        if (v18 && ([self shouldGroupTogetherMemoriesWithCreationDate:creationDate andCreationDate:v18] & 1) == 0)
         {
           v15[2](v15, v18, v13);
-          v17 = a4 - 1;
-          if ([v14 count] >= a5)
+          v17 = index - 1;
+          if ([v14 count] >= entries)
           {
 
-            v16 = v18;
+            creationDate = v18;
             goto LABEL_14;
           }
 
@@ -472,27 +472,27 @@ void __68__PXMemoriesFeedDataSourceManagerBase_prepareForPhotoLibraryChange___bl
         v20 = [PXMemoryInfo memoryInfoWithMemory:v19];
         [v13 addObject:v20];
 
-        if (++a4 >= [v8 count])
+        if (++index >= [memoriesCopy count])
         {
           goto LABEL_14;
         }
       }
     }
 
-    v16 = 0;
+    creationDate = 0;
     v17 = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_14:
     if ([v13 count])
     {
-      a6 = v25;
-      if ([v14 count] >= a5)
+      memoryIndex = memoryIndexCopy;
+      if ([v14 count] >= entries)
       {
-        a4 = v17;
+        index = v17;
       }
 
       else
       {
-        v15[2](v15, v16, v13);
+        v15[2](v15, creationDate, v13);
       }
 
       v10 = &off_1A52F8000;
@@ -500,21 +500,21 @@ LABEL_14:
 
     else
     {
-      a4 = v17;
-      a6 = v25;
+      index = v17;
+      memoryIndex = memoryIndexCopy;
       v10 = &off_1A52F8000;
     }
   }
 
   else
   {
-    v16 = 0;
-    a4 = 0x7FFFFFFFFFFFFFFFLL;
+    creationDate = 0;
+    index = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (a6)
+  if (memoryIndex)
   {
-    *a6 = a4;
+    *memoryIndex = index;
   }
 
   v21 = PLMemoriesGetLog();
@@ -545,25 +545,25 @@ void __125__PXMemoriesFeedDataSourceManagerBase_generateEntriesFromMemories_star
   [*(a1 + 40) addObject:v2];
 }
 
-+ (id)_updatedFetchResultsForMemoriesForDatasource:(id)a3 changeDetails:(id)a4 changeInstance:(id)a5
++ (id)_updatedFetchResultsForMemoriesForDatasource:(id)datasource changeDetails:(id)details changeInstance:(id)instance
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  detailsCopy = details;
+  instanceCopy = instance;
+  datasourceCopy = datasource;
   v10 = objc_opt_new();
-  v11 = [v9 entries];
+  entries = [datasourceCopy entries];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __113__PXMemoriesFeedDataSourceManagerBase__updatedFetchResultsForMemoriesForDatasource_changeDetails_changeInstance___block_invoke;
   v18[3] = &unk_1E7732768;
-  v19 = v7;
-  v20 = v8;
+  v19 = detailsCopy;
+  v20 = instanceCopy;
   v12 = v10;
   v21 = v12;
-  v13 = v8;
-  v14 = v7;
-  [v11 enumerateObjectsUsingBlock:v18];
+  v13 = instanceCopy;
+  v14 = detailsCopy;
+  [entries enumerateObjectsUsingBlock:v18];
   v15 = v21;
   v16 = v12;
 
@@ -615,22 +615,22 @@ void __113__PXMemoriesFeedDataSourceManagerBase__updatedFetchResultsForMemoriesF
   }
 }
 
-+ (id)baseFetchOptionsWithPhotoLibrary:(id)a3
++ (id)baseFetchOptionsWithPhotoLibrary:(id)library
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [a3 librarySpecificFetchOptions];
-  [v3 setIncludePendingMemories:1];
+  librarySpecificFetchOptions = [library librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludePendingMemories:1];
   v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"rejected = NO"];
-  [v3 setPredicate:v4];
+  [librarySpecificFetchOptions setPredicate:v4];
 
   v5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:0];
   v9[0] = v5;
   v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"uuid" ascending:0];
   v9[1] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
-  [v3 setSortDescriptors:v7];
+  [librarySpecificFetchOptions setSortDescriptors:v7];
 
-  return v3;
+  return librarySpecificFetchOptions;
 }
 
 @end

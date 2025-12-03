@@ -1,35 +1,35 @@
 @interface MPStoreModelRequestOperation
 - (MPStoreModelRequestOperation)init;
-- (MPStoreModelRequestOperation)initWithRequest:(id)a3 responseHandler:(id)a4;
+- (MPStoreModelRequestOperation)initWithRequest:(id)request responseHandler:(id)handler;
 - (double)remainingTimeInterval;
-- (id)_URLLoadRequestWithRequest:(id)a3 requestContext:(id)a4;
-- (void)_executeItemMetadataLoadForRequestedItemIdentifiers:(id)a3 reason:(unint64_t)a4 requestContext:(id)a5;
-- (void)_executeURLLoadWithRequest:(id)a3 storeURLBag:(id)a4 requestContext:(id)a5;
-- (void)_executeURLLoadWithRequests:(id)a3 storeURLBag:(id)a4 requestContext:(id)a5;
-- (void)_finishWithResponse:(id)a3 error:(id)a4;
+- (id)_URLLoadRequestWithRequest:(id)request requestContext:(id)context;
+- (void)_executeItemMetadataLoadForRequestedItemIdentifiers:(id)identifiers reason:(unint64_t)reason requestContext:(id)context;
+- (void)_executeURLLoadWithRequest:(id)request storeURLBag:(id)bag requestContext:(id)context;
+- (void)_executeURLLoadWithRequests:(id)requests storeURLBag:(id)bag requestContext:(id)context;
+- (void)_finishWithResponse:(id)response error:(id)error;
 - (void)_handleTimeout;
 - (void)_tearDownTimeoutTimerSource;
 - (void)cancel;
 - (void)dealloc;
 - (void)execute;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 @end
 
 @implementation MPStoreModelRequestOperation
 
-- (id)_URLLoadRequestWithRequest:(id)a3 requestContext:(id)a4
+- (id)_URLLoadRequestWithRequest:(id)request requestContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   request = self->_request;
-  v8 = a3;
+  requestCopy = request;
   if (([(MPStoreModelRequest *)request authenticationOptions]& 1) != 0)
   {
-    v10 = [v6 clientInfo];
+    clientInfo = [contextCopy clientInfo];
     v11 = MRMediaRemoteCopyLocalDeviceSystemMediaApplicationDisplayID();
     v12 = MEMORY[0x1E69E43B0];
-    v13 = [v10 clientIdentifier];
-    v14 = [v10 clientVersion];
-    v15 = [v12 clientInfoForMusicKitRequestWithClientIdentifier:v13 clientVersion:v14 bundleIdentifier:v11];
+    clientIdentifier = [clientInfo clientIdentifier];
+    clientVersion = [clientInfo clientVersion];
+    v15 = [v12 clientInfoForMusicKitRequestWithClientIdentifier:clientIdentifier clientVersion:clientVersion bundleIdentifier:v11];
 
     v16 = objc_alloc(MEMORY[0x1E69E4478]);
     v21 = MEMORY[0x1E69E9820];
@@ -37,18 +37,18 @@
     v23 = __74__MPStoreModelRequestOperation__URLLoadRequestWithRequest_requestContext___block_invoke;
     v24 = &unk_1E767C7F8;
     v25 = v15;
-    v26 = v6;
+    v26 = contextCopy;
     v17 = v15;
     v18 = [v16 initWithBlock:&v21];
     v19 = objc_alloc(MEMORY[0x1E69E4480]);
-    v9 = [v19 initWithURLRequest:v8 requestContext:{v18, v21, v22, v23, v24}];
+    v9 = [v19 initWithURLRequest:requestCopy requestContext:{v18, v21, v22, v23, v24}];
 
-    v8 = v10;
+    requestCopy = clientInfo;
   }
 
   else
   {
-    v9 = [objc_alloc(MEMORY[0x1E69E4620]) initWithURLRequest:v8 requestContext:v6];
+    v9 = [objc_alloc(MEMORY[0x1E69E4620]) initWithURLRequest:requestCopy requestContext:contextCopy];
   }
 
   return v9;
@@ -82,19 +82,19 @@ void __74__MPStoreModelRequestOperation__URLLoadRequestWithRequest_requestContex
   [(MPStoreModelRequestOperation *)self cancel];
 }
 
-- (void)_executeURLLoadWithRequests:(id)a3 storeURLBag:(id)a4 requestContext:(id)a5
+- (void)_executeURLLoadWithRequests:(id)requests storeURLBag:(id)bag requestContext:(id)context
 {
   v38 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v23 = a5;
-  v22 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
+  requestsCopy = requests;
+  contextCopy = context;
+  v22 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(requestsCopy, "count")}];
   v8 = objc_opt_new();
   v9 = dispatch_group_create();
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v7;
+  obj = requestsCopy;
   v10 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v10)
   {
@@ -112,8 +112,8 @@ void __74__MPStoreModelRequestOperation__URLLoadRequestWithRequest_requestContex
 
         v14 = *(*(&v33 + 1) + 8 * v13);
         dispatch_group_enter(v9);
-        v15 = [(MPStoreModelRequestOperation *)self _URLLoadRequestWithRequest:v14 requestContext:v23];
-        v16 = [MEMORY[0x1E69E4678] highPrioritySession];
+        v15 = [(MPStoreModelRequestOperation *)self _URLLoadRequestWithRequest:v14 requestContext:contextCopy];
+        highPrioritySession = [MEMORY[0x1E69E4678] highPrioritySession];
         v28[0] = MEMORY[0x1E69E9820];
         v28[1] = 3221225472;
         v28[2] = __87__MPStoreModelRequestOperation__executeURLLoadWithRequests_storeURLBag_requestContext___block_invoke;
@@ -123,7 +123,7 @@ void __74__MPStoreModelRequestOperation__URLLoadRequestWithRequest_requestContex
         v30 = v22;
         v31 = v14;
         v32 = v9;
-        [v16 enqueueDataRequest:v15 withCompletionHandler:v28];
+        [highPrioritySession enqueueDataRequest:v15 withCompletionHandler:v28];
 
         ++v13;
       }
@@ -298,16 +298,16 @@ void __87__MPStoreModelRequestOperation__executeURLLoadWithRequests_storeURLBag_
   }
 }
 
-- (void)_executeURLLoadWithRequest:(id)a3 storeURLBag:(id)a4 requestContext:(id)a5
+- (void)_executeURLLoadWithRequest:(id)request storeURLBag:(id)bag requestContext:(id)context
 {
-  v6 = [(MPStoreModelRequestOperation *)self _URLLoadRequestWithRequest:a3 requestContext:a5];
-  v7 = [MEMORY[0x1E69E4678] highPrioritySession];
+  v6 = [(MPStoreModelRequestOperation *)self _URLLoadRequestWithRequest:request requestContext:context];
+  highPrioritySession = [MEMORY[0x1E69E4678] highPrioritySession];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __86__MPStoreModelRequestOperation__executeURLLoadWithRequest_storeURLBag_requestContext___block_invoke;
   v8[3] = &unk_1E767D208;
   v8[4] = self;
-  [v7 enqueueDataRequest:v6 withCompletionHandler:v8];
+  [highPrioritySession enqueueDataRequest:v6 withCompletionHandler:v8];
 }
 
 void __86__MPStoreModelRequestOperation__executeURLLoadWithRequest_storeURLBag_requestContext___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -332,20 +332,20 @@ void __86__MPStoreModelRequestOperation__executeURLLoadWithRequest_storeURLBag_r
   }
 }
 
-- (void)_executeItemMetadataLoadForRequestedItemIdentifiers:(id)a3 reason:(unint64_t)a4 requestContext:(id)a5
+- (void)_executeItemMetadataLoadForRequestedItemIdentifiers:(id)identifiers reason:(unint64_t)reason requestContext:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  identifiersCopy = identifiers;
   v10 = objc_alloc_init(MPStoreItemMetadataRequest);
-  v11 = [v8 clientInfo];
-  [(MPStoreItemMetadataRequest *)v10 setClientInfo:v11];
+  clientInfo = [contextCopy clientInfo];
+  [(MPStoreItemMetadataRequest *)v10 setClientInfo:clientInfo];
 
-  v12 = [v8 identity];
+  identity = [contextCopy identity];
 
-  [(MPStoreItemMetadataRequest *)v10 setUserIdentity:v12];
-  [(MPStoreItemMetadataRequest *)v10 setItemIdentifiers:v9];
+  [(MPStoreItemMetadataRequest *)v10 setUserIdentity:identity];
+  [(MPStoreItemMetadataRequest *)v10 setItemIdentifiers:identifiersCopy];
 
-  [(MPStoreItemMetadataRequest *)v10 setReason:a4];
+  [(MPStoreItemMetadataRequest *)v10 setReason:reason];
   [(MPStoreItemMetadataRequest *)v10 setQualityOfService:[(MPStoreModelRequestOperation *)self qualityOfService]];
   v13 = +[MPStoreItemMetadataRequestController sharedStoreItemMetadataRequestController];
   v15[0] = MEMORY[0x1E69E9820];
@@ -377,20 +377,20 @@ void __106__MPStoreModelRequestOperation__executeItemMetadataLoadForRequestedIte
   }
 }
 
-- (void)_finishWithResponse:(id)a3 error:(id)a4
+- (void)_finishWithResponse:(id)response error:(id)error
 {
-  v6 = a3;
+  responseCopy = response;
   accessSerialQueue = self->_accessSerialQueue;
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __58__MPStoreModelRequestOperation__finishWithResponse_error___block_invoke;
   v13 = &unk_1E76823C0;
-  v14 = self;
-  v15 = v6;
-  v8 = v6;
-  v9 = a4;
+  selfCopy = self;
+  v15 = responseCopy;
+  v8 = responseCopy;
+  errorCopy = error;
   dispatch_sync(accessSerialQueue, &v10);
-  [(MPStoreModelRequestOperation *)self finishWithError:v9, v10, v11, v12, v13, v14];
+  [(MPStoreModelRequestOperation *)self finishWithError:errorCopy, v10, v11, v12, v13, selfCopy];
 }
 
 void __58__MPStoreModelRequestOperation__finishWithResponse_error___block_invoke(uint64_t a1)
@@ -448,9 +448,9 @@ uint64_t __53__MPStoreModelRequestOperation_remainingTimeInterval__block_invoke(
   return result;
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -475,12 +475,12 @@ uint64_t __53__MPStoreModelRequestOperation_remainingTimeInterval__block_invoke(
   v6 = v16[5];
   if (v6)
   {
-    (*(v6 + 16))(v6, v10[5], v4);
+    (*(v6 + 16))(v6, v10[5], errorCopy);
   }
 
   v7.receiver = self;
   v7.super_class = MPStoreModelRequestOperation;
-  [(MPAsyncOperation *)&v7 finishWithError:v4];
+  [(MPAsyncOperation *)&v7 finishWithError:errorCopy];
   _Block_object_dispose(&v9, 8);
 
   _Block_object_dispose(&v15, 8);
@@ -516,33 +516,33 @@ void __48__MPStoreModelRequestOperation_finishWithError___block_invoke(void *a1)
   v22[2] = v6;
   objc_copyWeak(v22, &location);
   dispatch_async(accessSerialQueue, block);
-  v8 = [MEMORY[0x1E69E43B0] defaultInfo];
-  v9 = [(MPStoreModelRequest *)self->_request clientIdentifier];
-  v10 = [(MPStoreModelRequest *)self->_request clientVersion];
-  if (v9 | v10)
+  defaultInfo = [MEMORY[0x1E69E43B0] defaultInfo];
+  clientIdentifier = [(MPStoreModelRequest *)self->_request clientIdentifier];
+  clientVersion = [(MPStoreModelRequest *)self->_request clientVersion];
+  if (clientIdentifier | clientVersion)
   {
-    v11 = [v8 mutableCopy];
+    v11 = [defaultInfo mutableCopy];
     v12 = v11;
-    if (v9)
+    if (clientIdentifier)
     {
-      [v11 setClientIdentifier:v9];
+      [v11 setClientIdentifier:clientIdentifier];
     }
 
-    if (v10)
+    if (clientVersion)
     {
-      [v12 setClientVersion:v10];
+      [v12 setClientVersion:clientVersion];
     }
 
     v13 = [v12 copy];
 
-    v8 = v13;
+    defaultInfo = v13;
   }
 
   v14 = objc_alloc(MEMORY[0x1E69E4618]);
-  v15 = [(MPAsyncOperation *)self userIdentity];
-  v16 = [v14 initWithIdentity:v15 clientInfo:v8];
+  userIdentity = [(MPAsyncOperation *)self userIdentity];
+  v16 = [v14 initWithIdentity:userIdentity clientInfo:defaultInfo];
 
-  v17 = [MEMORY[0x1E69E4658] sharedBagProvider];
+  mEMORY[0x1E69E4658] = [MEMORY[0x1E69E4658] sharedBagProvider];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __39__MPStoreModelRequestOperation_execute__block_invoke_3;
@@ -550,7 +550,7 @@ void __48__MPStoreModelRequestOperation_finishWithError___block_invoke(void *a1)
   v19[4] = self;
   v18 = v16;
   v20 = v18;
-  [v17 getBagForRequestContext:v18 withCompletionHandler:v19];
+  [mEMORY[0x1E69E4658] getBagForRequestContext:v18 withCompletionHandler:v19];
 
   objc_destroyWeak(v22);
   objc_destroyWeak(&location);
@@ -712,18 +712,18 @@ void __39__MPStoreModelRequestOperation_execute__block_invoke_2(uint64_t a1)
   [(MPStoreModelRequestOperation *)&v3 dealloc];
 }
 
-- (MPStoreModelRequestOperation)initWithRequest:(id)a3 responseHandler:(id)a4
+- (MPStoreModelRequestOperation)initWithRequest:(id)request responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = [(MPStoreModelRequestOperation *)self init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [requestCopy copy];
     request = v8->_request;
     v8->_request = v9;
 
-    v11 = [v7 copy];
+    v11 = [handlerCopy copy];
     responseHandler = v8->_responseHandler;
     v8->_responseHandler = v11;
   }

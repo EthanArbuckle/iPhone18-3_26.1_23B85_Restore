@@ -8,7 +8,7 @@
 - (void)handleGesture
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtCV12GameStoreKit24UIPressGestureRecognizer11Coordinator_action);
-  v3 = self;
+  selfCopy = self;
   v2();
 }
 

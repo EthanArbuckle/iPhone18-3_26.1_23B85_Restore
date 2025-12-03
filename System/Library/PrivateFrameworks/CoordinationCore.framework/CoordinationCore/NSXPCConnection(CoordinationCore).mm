@@ -7,30 +7,30 @@
 
 - (id)co_ClientBundleIdentifier
 {
-  v2 = objc_getAssociatedObject(a1, sel_co_ClientBundleIdentifier);
-  if (!v2)
+  bundleIdentifier = objc_getAssociatedObject(self, sel_co_ClientBundleIdentifier);
+  if (!bundleIdentifier)
   {
-    [a1 auditToken];
+    [self auditToken];
     CPCopyBundleIdentifierAndTeamFromAuditToken();
-    v3 = [MEMORY[0x277CCA8D8] mainBundle];
-    v2 = [v3 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    [a1 co_SetClientBundleIdentifier:{v2, v5, v6, v7, v8}];
+    [self co_SetClientBundleIdentifier:{bundleIdentifier, v5, v6, v7, v8}];
   }
 
-  return v2;
+  return bundleIdentifier;
 }
 
 - (id)co_PeerInstance
 {
   v6[2] = *MEMORY[0x277D85DE8];
-  v2 = objc_getAssociatedObject(a1, sel_co_PeerInstance);
+  v2 = objc_getAssociatedObject(self, sel_co_PeerInstance);
   if (!v2)
   {
     v6[0] = 0;
     v6[1] = 0;
-    v3 = [a1 _xpcConnection];
-    if (v3 && xpc_connection_get_peer_instance())
+    _xpcConnection = [self _xpcConnection];
+    if (_xpcConnection && xpc_connection_get_peer_instance())
     {
       v2 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:v6];
     }

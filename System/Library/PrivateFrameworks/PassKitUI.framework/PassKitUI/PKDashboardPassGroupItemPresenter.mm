@@ -1,19 +1,19 @@
 @interface PKDashboardPassGroupItemPresenter
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
-- (PKDashboardPassGroupItemPresenter)initWithPassGroupView:(id)a3 sizeProvider:(id)a4;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
+- (PKDashboardPassGroupItemPresenter)initWithPassGroupView:(id)view sizeProvider:(id)provider;
 - (PKDashboardPassGroupItemPresenterDelegate)delegate;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (void)_configureCell:(id)a3 forItem:(id)a4;
+- (void)_configureCell:(id)cell forItem:(id)item;
 @end
 
 @implementation PKDashboardPassGroupItemPresenter
 
-- (PKDashboardPassGroupItemPresenter)initWithPassGroupView:(id)a3 sizeProvider:(id)a4
+- (PKDashboardPassGroupItemPresenter)initWithPassGroupView:(id)view sizeProvider:(id)provider
 {
-  v7 = a3;
-  result = a4;
-  if (v7)
+  viewCopy = view;
+  result = provider;
+  if (viewCopy)
   {
     v9 = result;
     v12.receiver = self;
@@ -22,7 +22,7 @@
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_groupView, a3);
+      objc_storeStrong(&v10->_groupView, view);
       objc_storeWeak(&v11->_sizeProvider, v9);
     }
 
@@ -47,16 +47,16 @@
   return v2;
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = [a4 dequeueReusableCellWithReuseIdentifier:@"groupItemPresenter" forIndexPath:a5];
-  [(PKDashboardPassGroupItemPresenter *)self _configureCell:v9 forItem:v8];
+  itemCopy = item;
+  v9 = [view dequeueReusableCellWithReuseIdentifier:@"groupItemPresenter" forIndexPath:path];
+  [(PKDashboardPassGroupItemPresenter *)self _configureCell:v9 forItem:itemCopy];
 
   return v9;
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
   WeakRetained = objc_loadWeakRetained(&self->_sizeProvider);
   v9 = WeakRetained;
@@ -82,7 +82,7 @@
 
   else
   {
-    [(PKPassGroupView *)self->_groupView sizeThatFits:a5, 1.79769313e308];
+    [(PKPassGroupView *)self->_groupView sizeThatFits:width, 1.79769313e308];
     v23 = v14;
     v24 = v13;
     [(PKPassGroupView *)self->_groupView alignmentRectInsets];
@@ -103,19 +103,19 @@
   return result;
 }
 
-- (void)_configureCell:(id)a3 forItem:(id)a4
+- (void)_configureCell:(id)cell forItem:(id)item
 {
-  v8 = a3;
-  [v8 setWantsCustomAppearance:1];
-  [v8 setMaskType:0];
-  v5 = [MEMORY[0x1E69DC888] clearColor];
-  [v8 setBackgroundColor:v5];
+  cellCopy = cell;
+  [cellCopy setWantsCustomAppearance:1];
+  [cellCopy setMaskType:0];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [cellCopy setBackgroundColor:clearColor];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = WeakRetained;
   if (WeakRetained && [WeakRetained shouldInsertPassGroupViewForPassGroupPresenter:self])
   {
-    [v8 setGroupView:self->_groupView];
+    [cellCopy setGroupView:self->_groupView];
   }
 }
 

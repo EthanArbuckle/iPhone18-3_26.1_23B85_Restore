@@ -1,41 +1,41 @@
 @interface NTKRichComplicationBezelView
-+ (CGAffineTransform)transformForState:(SEL)a3;
-+ (id)keylineImageWithFilled:(BOOL)a3 forDevice:(id)a4;
-+ (id)keylineViewForDevice:(id)a3;
-+ (id)layoutRuleForState:(int64_t)a3 faceBounds:(CGRect)a4 dialDiameter:(double)a5 forDevice:(id)a6;
-+ (id)viewWithLegacyComplicationType:(unint64_t)a3;
-+ (void)updateCustomDataAnimationFromEarlierView:(id)a3 laterView:(id)a4 isForward:(BOOL)a5 animationType:(unint64_t)a6 animationDuration:(double)a7 animationFraction:(float)a8 bezelTextUpdateHandler:(id)a9;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
++ (CGAffineTransform)transformForState:(SEL)state;
++ (id)keylineImageWithFilled:(BOOL)filled forDevice:(id)device;
++ (id)keylineViewForDevice:(id)device;
++ (id)layoutRuleForState:(int64_t)state faceBounds:(CGRect)bounds dialDiameter:(double)diameter forDevice:(id)device;
++ (id)viewWithLegacyComplicationType:(unint64_t)type;
++ (void)updateCustomDataAnimationFromEarlierView:(id)view laterView:(id)laterView isForward:(BOOL)forward animationType:(unint64_t)type animationDuration:(double)duration animationFraction:(float)fraction bezelTextUpdateHandler:(id)handler;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (NTKRichComplicationBezelView)init;
-- (NTKRichComplicationBezelView)initWithFamily:(int64_t)a3;
+- (NTKRichComplicationBezelView)initWithFamily:(int64_t)family;
 - (NTKRichComplicationBezelViewDelegate)delegate;
 - (void)_createHitTestPathIfNecessary;
-- (void)_setLayoutTransformToView:(id)a3 origin:(CGPoint)a4 rotationInDegree:(double)a5 centerScale:(double)a6;
-- (void)_updateHitTestShape:(int64_t)a3 frame:(CGRect)a4;
+- (void)_setLayoutTransformToView:(id)view origin:(CGPoint)origin rotationInDegree:(double)degree centerScale:(double)scale;
+- (void)_updateHitTestShape:(int64_t)shape frame:(CGRect)frame;
 @end
 
 @implementation NTKRichComplicationBezelView
 
-+ (id)keylineImageWithFilled:(BOOL)a3 forDevice:(id)a4
++ (id)keylineImageWithFilled:(BOOL)filled forDevice:(id)device
 {
-  v4 = a3;
-  v5 = a4;
+  filledCopy = filled;
+  deviceCopy = device;
   v6 = (NTKWhistlerSubdialComplicationDistanceFromCenter)();
-  v7 = v6 - NTKWhistlerSubdialComplicationEditingInset(v5);
-  v8 = NTKWhistlerSubdialComplicationDistanceFromCenter(v5) * 0.95;
-  [NTKAnalogUtilities largeDialDiameterForDevice:v5];
+  v7 = v6 - NTKWhistlerSubdialComplicationEditingInset(deviceCopy);
+  v8 = NTKWhistlerSubdialComplicationDistanceFromCenter(deviceCopy) * 0.95;
+  [NTKAnalogUtilities largeDialDiameterForDevice:deviceCopy];
   v10 = v9 * 0.5 - NTKKeylineWidth();
-  v11 = NTKWhistlerSubdialComplicationDiameter(v5);
-  v13 = v7 + v12 * 0.5 + ___LayoutConstants_block_invoke_4(v11, v5);
-  v14 = [off_27877BE80 heartKeylineWithDevice:v5 outerRadius:v4 innerRadius:v10 sideComplicationDistance:v13 topComplicationDistance:v7 strokeWidth:v8 filled:NTKKeylineWidth()];
+  v11 = NTKWhistlerSubdialComplicationDiameter(deviceCopy);
+  v13 = v7 + v12 * 0.5 + ___LayoutConstants_block_invoke_4(v11, deviceCopy);
+  v14 = [off_27877BE80 heartKeylineWithDevice:deviceCopy outerRadius:filledCopy innerRadius:v10 sideComplicationDistance:v13 topComplicationDistance:v7 strokeWidth:v8 filled:NTKKeylineWidth()];
 
   return v14;
 }
 
-+ (id)keylineViewForDevice:(id)a3
++ (id)keylineViewForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [a1 keylineImageWithFilled:0 forDevice:v4];
+  deviceCopy = device;
+  v5 = [self keylineImageWithFilled:0 forDevice:deviceCopy];
   v6 = v5;
   if (v5)
   {
@@ -44,7 +44,7 @@
     v10[1] = 3221225472;
     v10[2] = __53__NTKRichComplicationBezelView_keylineViewForDevice___block_invoke;
     v10[3] = &unk_27877ED90;
-    v11 = v4;
+    v11 = deviceCopy;
     v8 = [NTKKeylineTouchable touchableWithHandler:v10];
     [v7 setTouchable:v8];
   }
@@ -92,12 +92,12 @@ uint64_t __53__NTKRichComplicationBezelView_keylineViewForDevice___block_invoke(
   return v29;
 }
 
-+ (id)layoutRuleForState:(int64_t)a3 faceBounds:(CGRect)a4 dialDiameter:(double)a5 forDevice:(id)a6
++ (id)layoutRuleForState:(int64_t)state faceBounds:(CGRect)bounds dialDiameter:(double)diameter forDevice:(id)device
 {
-  v8 = a6;
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  deviceCopy = device;
+  if ((state & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v9 = [a1 keylineImageWithFilled:0 forDevice:v8];
+    v9 = [self keylineImageWithFilled:0 forDevice:deviceCopy];
     [v9 size];
   }
 
@@ -109,7 +109,7 @@ uint64_t __53__NTKRichComplicationBezelView_keylineViewForDevice___block_invoke(
   v26 = 0u;
   v27 = 0u;
   v25 = 0u;
-  [a1 transformForState:a3];
+  [self transformForState:state];
   v18 = *MEMORY[0x277D768C8];
   v19 = *(MEMORY[0x277D768C8] + 8);
   v20 = *(MEMORY[0x277D768C8] + 16);
@@ -117,12 +117,12 @@ uint64_t __53__NTKRichComplicationBezelView_keylineViewForDevice___block_invoke(
   v24[0] = v25;
   v24[1] = v26;
   v24[2] = v27;
-  v22 = [NTKComplicationLayoutRule layoutRuleForDevice:v8 withReferenceFrame:3 horizontalLayout:3 verticalLayout:1 keylinePadding:v24 clip:v11 editingTransform:v13, v15, v17, v18, v19, v20, v21];
+  v22 = [NTKComplicationLayoutRule layoutRuleForDevice:deviceCopy withReferenceFrame:3 horizontalLayout:3 verticalLayout:1 keylinePadding:v24 clip:v11 editingTransform:v13, v15, v17, v18, v19, v20, v21];
 
   return v22;
 }
 
-+ (CGAffineTransform)transformForState:(SEL)a3
++ (CGAffineTransform)transformForState:(SEL)state
 {
   if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
@@ -137,9 +137,9 @@ uint64_t __53__NTKRichComplicationBezelView_keylineViewForDevice___block_invoke(
   return result;
 }
 
-+ (id)viewWithLegacyComplicationType:(unint64_t)a3
++ (id)viewWithLegacyComplicationType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     v4 = 0;
   }
@@ -152,20 +152,20 @@ uint64_t __53__NTKRichComplicationBezelView_keylineViewForDevice___block_invoke(
   return v4;
 }
 
-+ (void)updateCustomDataAnimationFromEarlierView:(id)a3 laterView:(id)a4 isForward:(BOOL)a5 animationType:(unint64_t)a6 animationDuration:(double)a7 animationFraction:(float)a8 bezelTextUpdateHandler:(id)a9
++ (void)updateCustomDataAnimationFromEarlierView:(id)view laterView:(id)laterView isForward:(BOOL)forward animationType:(unint64_t)type animationDuration:(double)duration animationFraction:(float)fraction bezelTextUpdateHandler:(id)handler
 {
-  v13 = a5;
-  v18 = a3;
-  v15 = a4;
-  v16 = a9;
+  forwardCopy = forward;
+  viewCopy = view;
+  laterViewCopy = laterView;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      *&v17 = a8;
-      [NTKRichComplicationBezelBaseCircularView updateCustomDataAnimationFromEarlierView:v18 laterView:v15 isForward:v13 animationType:a6 animationDuration:v16 animationFraction:a7 bezelTextUpdateHandler:v17];
+      *&v17 = fraction;
+      [NTKRichComplicationBezelBaseCircularView updateCustomDataAnimationFromEarlierView:viewCopy laterView:laterViewCopy isForward:forwardCopy animationType:type animationDuration:handlerCopy animationFraction:duration bezelTextUpdateHandler:v17];
     }
   }
 }
@@ -177,26 +177,26 @@ uint64_t __53__NTKRichComplicationBezelView_keylineViewForDevice___block_invoke(
   return [(CDRichComplicationView *)&v3 initWithFamily:9];
 }
 
-- (NTKRichComplicationBezelView)initWithFamily:(int64_t)a3
+- (NTKRichComplicationBezelView)initWithFamily:(int64_t)family
 {
-  if (a3 == 9)
+  if (family == 9)
   {
     self = [(NTKRichComplicationBezelView *)self init];
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(NTKRichComplicationBezelView *)self _createHitTestPathIfNecessary];
   [(NTKRichComplicationBezelView *)self bounds];
   v11.x = x;
@@ -222,8 +222,8 @@ uint64_t __53__NTKRichComplicationBezelView_keylineViewForDevice___block_invoke(
     v8 = v7;
     v10 = v9;
     hitTestShape = self->_hitTestShape;
-    v12 = [(CDRichComplicationView *)self device];
-    v13 = [NTKRichComplicationBezelUtilities hitTestPathWithViewBounds:hitTestShape shape:v12 shapeFrame:v4 forDevice:v6, v8, v10, self->_hitTestShapeFrame.origin.x, self->_hitTestShapeFrame.origin.y, self->_hitTestShapeFrame.size.width, self->_hitTestShapeFrame.size.height];
+    device = [(CDRichComplicationView *)self device];
+    v13 = [NTKRichComplicationBezelUtilities hitTestPathWithViewBounds:hitTestShape shape:device shapeFrame:v4 forDevice:v6, v8, v10, self->_hitTestShapeFrame.origin.x, self->_hitTestShapeFrame.origin.y, self->_hitTestShapeFrame.size.width, self->_hitTestShapeFrame.size.height];
     hitTestPath = self->_hitTestPath;
     self->_hitTestPath = v13;
 
@@ -235,18 +235,18 @@ uint64_t __53__NTKRichComplicationBezelView_keylineViewForDevice___block_invoke(
   }
 }
 
-- (void)_updateHitTestShape:(int64_t)a3 frame:(CGRect)a4
+- (void)_updateHitTestShape:(int64_t)shape frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if (self->_hitTestShape != a3 || !CGRectEqualToRect(a4, self->_hitTestShapeFrame))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (self->_hitTestShape != shape || !CGRectEqualToRect(frame, self->_hitTestShapeFrame))
   {
     hitTestPath = self->_hitTestPath;
     self->_hitTestPath = 0;
 
-    self->_hitTestShape = a3;
+    self->_hitTestShape = shape;
     self->_hitTestShapeFrame.origin.x = x;
     self->_hitTestShapeFrame.origin.y = y;
     self->_hitTestShapeFrame.size.width = width;
@@ -254,11 +254,11 @@ uint64_t __53__NTKRichComplicationBezelView_keylineViewForDevice___block_invoke(
   }
 }
 
-- (void)_setLayoutTransformToView:(id)a3 origin:(CGPoint)a4 rotationInDegree:(double)a5 centerScale:(double)a6
+- (void)_setLayoutTransformToView:(id)view origin:(CGPoint)origin rotationInDegree:(double)degree centerScale:(double)scale
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = a3;
+  y = origin.y;
+  x = origin.x;
+  viewCopy = view;
   [(NTKRichComplicationBezelView *)self bounds];
   v12 = v11;
   v14 = v13;
@@ -270,15 +270,15 @@ uint64_t __53__NTKRichComplicationBezelView_keylineViewForDevice___block_invoke(
   *&v22.c = v15;
   *&v22.tx = *&v23.tx;
   CGAffineTransformTranslate(&v23, &v22, x, y);
-  [v10 center];
+  [viewCopy center];
   v17 = v12 * 0.5 - x - v16;
-  [v10 center];
+  [viewCopy center];
   v19 = v14 * 0.5 - y - v18;
   v21 = v23;
   CGAffineTransformTranslate(&v22, &v21, v17, v19);
   v23 = v22;
   v21 = v22;
-  CGAffineTransformScale(&v22, &v21, a6, a6);
+  CGAffineTransformScale(&v22, &v21, scale, scale);
   v23 = v22;
   CLKDegreesToRadians();
   v21 = v23;
@@ -287,7 +287,7 @@ uint64_t __53__NTKRichComplicationBezelView_keylineViewForDevice___block_invoke(
   v21 = v22;
   CGAffineTransformTranslate(&v22, &v21, -v17, -v19);
   v23 = v22;
-  [v10 setTransform:&v22];
+  [viewCopy setTransform:&v22];
 }
 
 - (NTKRichComplicationBezelViewDelegate)delegate

@@ -1,17 +1,17 @@
 @interface SearchUIClearProactiveCategoryHandler
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5;
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment;
 @end
 
 @implementation SearchUIClearProactiveCategoryHandler
 
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  if (![v7 shouldClearWholeSection] || objc_msgSend(v7, "category") == 2)
+  commandCopy = command;
+  environmentCopy = environment;
+  if (![commandCopy shouldClearWholeSection] || objc_msgSend(commandCopy, "category") == 2)
   {
-    v9 = [v8 feedbackDelegate];
+    feedbackDelegate = [environmentCopy feedbackDelegate];
     v10 = objc_opt_respondsToSelector();
 
     if ((v10 & 1) == 0)
@@ -19,22 +19,22 @@
       goto LABEL_7;
     }
 
-    v11 = [v8 feedbackDelegate];
-    v12 = [(SearchUICommandHandler *)self rowModel];
-    [v11 removeRowModel:v12 completion:0];
+    feedbackDelegate2 = [environmentCopy feedbackDelegate];
+    rowModel = [(SearchUICommandHandler *)self rowModel];
+    [feedbackDelegate2 removeRowModel:rowModel completion:0];
     goto LABEL_5;
   }
 
-  v11 = [v8 feedbackDelegate];
-  v16 = [v8 feedbackDelegate];
+  feedbackDelegate2 = [environmentCopy feedbackDelegate];
+  feedbackDelegate3 = [environmentCopy feedbackDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v17 = [(SearchUICommandHandler *)self rowModel];
+    rowModel2 = [(SearchUICommandHandler *)self rowModel];
 
-    if (v17)
+    if (rowModel2)
     {
-      v12 = [(SearchUICommandHandler *)self rowModel];
-      [v11 removeSectionContainingRowModel:v12 completion:0];
+      rowModel = [(SearchUICommandHandler *)self rowModel];
+      [feedbackDelegate2 removeSectionContainingRowModel:rowModel completion:0];
       goto LABEL_5;
     }
   }
@@ -43,37 +43,37 @@
   {
   }
 
-  v12 = [v8 feedbackDelegate];
+  rowModel = [environmentCopy feedbackDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v18 = [(SearchUICommandHandler *)self sectionModel];
+    sectionModel = [(SearchUICommandHandler *)self sectionModel];
 
-    if (!v18)
+    if (!sectionModel)
     {
       goto LABEL_6;
     }
 
-    v12 = [(SearchUICommandHandler *)self sectionModel];
-    [v11 removeSectionModel:v12 completion:0];
+    rowModel = [(SearchUICommandHandler *)self sectionModel];
+    [feedbackDelegate2 removeSectionModel:rowModel completion:0];
   }
 
 LABEL_5:
 
 LABEL_6:
 LABEL_7:
-  v13 = [(SearchUICommandHandler *)self rowModel];
-  v14 = [v13 identifyingResult];
+  rowModel3 = [(SearchUICommandHandler *)self rowModel];
+  identifyingResult = [rowModel3 identifyingResult];
 
-  if ([v7 category] == 1)
+  if ([commandCopy category] == 1)
   {
-    if ([v7 shouldClearWholeSection])
+    if ([commandCopy shouldClearWholeSection])
     {
       [MEMORY[0x1E69D3E98] deleteAllRecents];
     }
 
     else
     {
-      [MEMORY[0x1E69D3E98] deleteResult:v14];
+      [MEMORY[0x1E69D3E98] deleteResult:identifyingResult];
     }
   }
 
@@ -83,7 +83,7 @@ LABEL_7:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138412290;
-      v20 = v14;
+      v20 = identifyingResult;
       _os_log_impl(&dword_1DA169000, v15, OS_LOG_TYPE_DEFAULT, "Proactive to handle result through feedback, result: %@", &v19, 0xCu);
     }
   }

@@ -1,24 +1,24 @@
 @interface MTLGPUDebugIndirectComputeCommand
-- (MTLGPUDebugIndirectComputeCommand)initWithIndirectComputeCommand:(id)a3 commandIndex:(unint64_t)a4 indirectCommandBuffer:(id)a5;
-- (void)concurrentDispatchThreadgroups:(id *)a3 threadsPerThreadgroup:(id *)a4;
-- (void)concurrentDispatchThreads:(id *)a3 threadsPerThreadgroup:(id *)a4;
+- (MTLGPUDebugIndirectComputeCommand)initWithIndirectComputeCommand:(id)command commandIndex:(unint64_t)index indirectCommandBuffer:(id)buffer;
+- (void)concurrentDispatchThreadgroups:(id *)threadgroups threadsPerThreadgroup:(id *)threadgroup;
+- (void)concurrentDispatchThreads:(id *)threads threadsPerThreadgroup:(id *)threadgroup;
 - (void)dealloc;
 - (void)reset;
-- (void)setComputePipelineState:(id)a3;
-- (void)setKernelBuffer:(id)a3 offset:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6;
-- (void)setStageInRegion:(id *)a3;
+- (void)setComputePipelineState:(id)state;
+- (void)setKernelBuffer:(id)buffer offset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index;
+- (void)setStageInRegion:(id *)region;
 @end
 
 @implementation MTLGPUDebugIndirectComputeCommand
 
-- (MTLGPUDebugIndirectComputeCommand)initWithIndirectComputeCommand:(id)a3 commandIndex:(unint64_t)a4 indirectCommandBuffer:(id)a5
+- (MTLGPUDebugIndirectComputeCommand)initWithIndirectComputeCommand:(id)command commandIndex:(unint64_t)index indirectCommandBuffer:(id)buffer
 {
   v7.receiver = self;
   v7.super_class = MTLGPUDebugIndirectComputeCommand;
-  result = [(MTLToolsObject *)&v7 initWithBaseObject:a3 parent:a5];
+  result = [(MTLToolsObject *)&v7 initWithBaseObject:command parent:buffer];
   if (result)
   {
-    result->_commandIndex = a4;
+    result->_commandIndex = index;
   }
 
   return result;
@@ -32,46 +32,46 @@
   [(MTLToolsObject *)baseObject reset];
 }
 
-- (void)setStageInRegion:(id *)a3
+- (void)setStageInRegion:(id *)region
 {
   baseObject = self->super.super._baseObject;
-  v4 = *&a3->var0.var2;
-  v5[0] = *&a3->var0.var0;
+  v4 = *&region->var0.var2;
+  v5[0] = *&region->var0.var0;
   v5[1] = v4;
-  v5[2] = *&a3->var1.var1;
+  v5[2] = *&region->var1.var1;
   [(MTLToolsObject *)baseObject setStageInRegion:v5];
 }
 
-- (void)setKernelBuffer:(id)a3 offset:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6
+- (void)setKernelBuffer:(id)buffer offset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index
 {
   baseObject = self->super.super._baseObject;
-  v10 = [a3 baseObject];
+  baseObject = [buffer baseObject];
 
-  [(MTLToolsObject *)baseObject setKernelBuffer:v10 offset:a4 attributeStride:a5 atIndex:a6];
+  [(MTLToolsObject *)baseObject setKernelBuffer:baseObject offset:offset attributeStride:stride atIndex:index];
 }
 
-- (void)setComputePipelineState:(id)a3
+- (void)setComputePipelineState:(id)state
 {
-  [(MTLToolsObject *)self->super.super._parent setComputePipelineStateBuffers:a3 commandIndex:self->_commandIndex];
+  [(MTLToolsObject *)self->super.super._parent setComputePipelineStateBuffers:state commandIndex:self->_commandIndex];
   baseObject = self->super.super._baseObject;
-  v6 = [a3 baseObject];
+  baseObject = [state baseObject];
 
-  [(MTLToolsObject *)baseObject setComputePipelineState:v6];
+  [(MTLToolsObject *)baseObject setComputePipelineState:baseObject];
 }
 
-- (void)concurrentDispatchThreads:(id *)a3 threadsPerThreadgroup:(id *)a4
+- (void)concurrentDispatchThreads:(id *)threads threadsPerThreadgroup:(id *)threadgroup
 {
-  v6 = *a3;
-  v5 = *a4;
+  v6 = *threads;
+  v5 = *threadgroup;
   v4.receiver = self;
   v4.super_class = MTLGPUDebugIndirectComputeCommand;
   [(MTLToolsIndirectComputeCommand *)&v4 concurrentDispatchThreads:&v6 threadsPerThreadgroup:&v5];
 }
 
-- (void)concurrentDispatchThreadgroups:(id *)a3 threadsPerThreadgroup:(id *)a4
+- (void)concurrentDispatchThreadgroups:(id *)threadgroups threadsPerThreadgroup:(id *)threadgroup
 {
-  v6 = *a3;
-  v5 = *a4;
+  v6 = *threadgroups;
+  v5 = *threadgroup;
   v4.receiver = self;
   v4.super_class = MTLGPUDebugIndirectComputeCommand;
   [(MTLToolsIndirectComputeCommand *)&v4 concurrentDispatchThreadgroups:&v6 threadsPerThreadgroup:&v5];

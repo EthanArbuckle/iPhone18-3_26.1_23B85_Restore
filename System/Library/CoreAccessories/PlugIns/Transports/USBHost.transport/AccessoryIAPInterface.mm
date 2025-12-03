@@ -1,11 +1,11 @@
 @interface AccessoryIAPInterface
-+ (unint64_t)getRegistryEntryIDFromService:(unsigned int)a3;
++ (unint64_t)getRegistryEntryIDFromService:(unsigned int)service;
 - (BOOL)clearUSBHostHIDInterfaces;
 - (BOOL)lockOtherInterfaces;
-- (BOOL)setInterfaceProperties:(id)a3;
-- (BOOL)setProperty:(id)a3 forInterfaceNum:(unsigned __int8)a4;
+- (BOOL)setInterfaceProperties:(id)properties;
+- (BOOL)setProperty:(id)property forInterfaceNum:(unsigned __int8)num;
 - (BOOL)unlockOtherInterfaces;
-- (BOOL)writeData:(id)a3;
+- (BOOL)writeData:(id)data;
 - (void)dealloc;
 - (void)dismissNotSupportNotification;
 - (void)presentNotSupportNotification;
@@ -74,15 +74,15 @@ void __58__AccessoryIAPInterface_configureInterface_skipPipeSetup___block_invoke
   }
 }
 
-- (BOOL)writeData:(id)a3
+- (BOOL)writeData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (![(AccessoryIAPInterface *)self interface]|| !*[(AccessoryIAPInterface *)self interface])
   {
     goto LABEL_30;
   }
 
-  v5 = ((*-[AccessoryIAPInterface interface](self, "interface"))[256])(-[AccessoryIAPInterface interface](self, "interface"), -[AccessoryIAPInterface bulkOutPipeRef](self, "bulkOutPipeRef"), [v4 bytes], objc_msgSend(v4, "length"));
+  v5 = ((*-[AccessoryIAPInterface interface](self, "interface"))[256])(-[AccessoryIAPInterface interface](self, "interface"), -[AccessoryIAPInterface bulkOutPipeRef](self, "bulkOutPipeRef"), [dataCopy bytes], objc_msgSend(dataCopy, "length"));
   if (v5 == -536850432)
   {
     if (gLogObjects && gNumLogObjects >= 1)
@@ -108,7 +108,7 @@ void __58__AccessoryIAPInterface_configureInterface_skipPipeSetup___block_invoke
     }
 
     ((*[(AccessoryIAPInterface *)self interface])[240])([(AccessoryIAPInterface *)self interface], [(AccessoryIAPInterface *)self bulkOutPipeRef]);
-    v5 = ((*-[AccessoryIAPInterface interface](self, "interface"))[256])(-[AccessoryIAPInterface interface](self, "interface"), -[AccessoryIAPInterface bulkOutPipeRef](self, "bulkOutPipeRef"), [v4 bytes], objc_msgSend(v4, "length"));
+    v5 = ((*-[AccessoryIAPInterface interface](self, "interface"))[256])(-[AccessoryIAPInterface interface](self, "interface"), -[AccessoryIAPInterface bulkOutPipeRef](self, "bulkOutPipeRef"), [dataCopy bytes], objc_msgSend(dataCopy, "length"));
   }
 
   if (gLogObjects)
@@ -166,10 +166,10 @@ void __58__AccessoryIAPInterface_configureInterface_skipPipeSetup___block_invoke
 
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      [(AccessoryIAPInterface *)v4 writeData:v11];
+      [(AccessoryIAPInterface *)dataCopy writeData:v11];
     }
 
-    if (!-[AccessoryIAPInterface needOutZLP](self, "needOutZLP") || ![v4 length] || (v16 = objc_msgSend(v4, "length"), v16 == -[AccessoryIAPInterface maxOutLength](self, "maxOutLength")) || (v17 = objc_msgSend(v4, "length"), v17 % -[AccessoryIAPInterface bulkOutPipeMaxPacketSize](self, "bulkOutPipeMaxPacketSize")) || !((*-[AccessoryIAPInterface interface](self, "interface"))[256])(-[AccessoryIAPInterface interface](self, "interface"), -[AccessoryIAPInterface bulkOutPipeRef](self, "bulkOutPipeRef"), &writeData__zlpBuffer, 0))
+    if (!-[AccessoryIAPInterface needOutZLP](self, "needOutZLP") || ![dataCopy length] || (v16 = objc_msgSend(dataCopy, "length"), v16 == -[AccessoryIAPInterface maxOutLength](self, "maxOutLength")) || (v17 = objc_msgSend(dataCopy, "length"), v17 % -[AccessoryIAPInterface bulkOutPipeMaxPacketSize](self, "bulkOutPipeMaxPacketSize")) || !((*-[AccessoryIAPInterface interface](self, "interface"))[256])(-[AccessoryIAPInterface interface](self, "interface"), -[AccessoryIAPInterface bulkOutPipeRef](self, "bulkOutPipeRef"), &writeData__zlpBuffer, 0))
     {
       v13 = 1;
       goto LABEL_31;
@@ -192,34 +192,34 @@ LABEL_31:
   return v13;
 }
 
-- (BOOL)setProperty:(id)a3 forInterfaceNum:(unsigned __int8)a4
+- (BOOL)setProperty:(id)property forInterfaceNum:(unsigned __int8)num
 {
-  v4 = a4;
+  numCopy = num;
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(AccessoryIAPInterface *)self interfacePropertiesArray];
+  propertyCopy = property;
+  interfacePropertiesArray = [(AccessoryIAPInterface *)self interfacePropertiesArray];
 
-  if (!v7)
+  if (!interfacePropertiesArray)
   {
-    v8 = [MEMORY[0x277CBEB18] array];
-    [(AccessoryIAPInterface *)self setInterfacePropertiesArray:v8];
+    array = [MEMORY[0x277CBEB18] array];
+    [(AccessoryIAPInterface *)self setInterfacePropertiesArray:array];
   }
 
-  v9 = [(AccessoryIAPInterface *)self interfacePropertiesArray];
+  interfacePropertiesArray2 = [(AccessoryIAPInterface *)self interfacePropertiesArray];
 
-  if (v9)
+  if (interfacePropertiesArray2)
   {
-    v10 = [(AccessoryIAPInterface *)self interfacePropertiesArray];
-    v11 = [v10 count];
+    interfacePropertiesArray3 = [(AccessoryIAPInterface *)self interfacePropertiesArray];
+    v11 = [interfacePropertiesArray3 count];
 
-    if (v11 <= v4)
+    if (v11 <= numCopy)
     {
-      v12 = v4 - v11 + 1;
+      v12 = numCopy - v11 + 1;
       do
       {
-        v13 = [(AccessoryIAPInterface *)self interfacePropertiesArray];
-        v14 = [MEMORY[0x277CBEAC0] dictionary];
-        [v13 addObject:v14];
+        interfacePropertiesArray4 = [(AccessoryIAPInterface *)self interfacePropertiesArray];
+        dictionary = [MEMORY[0x277CBEAC0] dictionary];
+        [interfacePropertiesArray4 addObject:dictionary];
 
         --v12;
       }
@@ -227,8 +227,8 @@ LABEL_31:
       while (v12);
     }
 
-    v15 = [(AccessoryIAPInterface *)self interfacePropertiesArray];
-    [v15 setObject:v6 atIndexedSubscript:v4];
+    interfacePropertiesArray5 = [(AccessoryIAPInterface *)self interfacePropertiesArray];
+    [interfacePropertiesArray5 setObject:propertyCopy atIndexedSubscript:numCopy];
   }
 
   if (gLogObjects && gNumLogObjects >= 1)
@@ -249,23 +249,23 @@ LABEL_31:
 
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v18 = [(AccessoryIAPInterface *)self interfacePropertiesArray];
+    interfacePropertiesArray6 = [(AccessoryIAPInterface *)self interfacePropertiesArray];
     v21[0] = 67109634;
-    v21[1] = v4;
+    v21[1] = numCopy;
     v22 = 2112;
-    v23 = v6;
+    v23 = propertyCopy;
     v24 = 2112;
-    v25 = v18;
+    v25 = interfacePropertiesArray6;
     _os_log_impl(&dword_2336F5000, v16, OS_LOG_TYPE_INFO, "Set property for interface number %u: %@\ninterfacePropertiesArray: %@", v21, 0x1Cu);
   }
 
   v19 = *MEMORY[0x277D85DE8];
-  return v9 != 0;
+  return interfacePropertiesArray2 != 0;
 }
 
-- (BOOL)setInterfaceProperties:(id)a3
+- (BOOL)setInterfaceProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   if ([(AccessoryIAPInterface *)self interface])
   {
     entry = 0;
@@ -305,7 +305,7 @@ LABEL_31:
 
     else
     {
-      v9 = IORegistryEntrySetCFProperties(entry, v4);
+      v9 = IORegistryEntrySetCFProperties(entry, propertiesCopy);
       if (gLogObjects)
       {
         v10 = gNumLogObjects <= 0;
@@ -441,9 +441,9 @@ LABEL_44:
 
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(AccessoryIAPInterface *)self interfacePropertiesArray];
+    interfacePropertiesArray = [(AccessoryIAPInterface *)self interfacePropertiesArray];
     v9 = 138412290;
-    v10 = v6;
+    v10 = interfacePropertiesArray;
     _os_log_impl(&dword_2336F5000, v5, OS_LOG_TYPE_INFO, "interfacePropertiesArray %@...", &v9, 0xCu);
   }
 
@@ -453,29 +453,29 @@ LABEL_44:
 
 - (BOOL)unlockOtherInterfaces
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(AccessoryIAPInterface *)self interfacePropertiesArray];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  interfacePropertiesArray = [(AccessoryIAPInterface *)self interfacePropertiesArray];
 
-  if (v4)
+  if (interfacePropertiesArray)
   {
-    v5 = [(AccessoryIAPInterface *)self interfacePropertiesArray];
-    [v3 setObject:v5 forKey:@"InterfaceProperties"];
+    interfacePropertiesArray2 = [(AccessoryIAPInterface *)self interfacePropertiesArray];
+    [dictionary setObject:interfacePropertiesArray2 forKey:@"InterfaceProperties"];
   }
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:1];
-  [v3 setObject:v6 forKey:@"Authenticated"];
+  [dictionary setObject:v6 forKey:@"Authenticated"];
 
-  v7 = [(AccessoryIAPInterface *)self setInterfaceProperties:v3];
+  v7 = [(AccessoryIAPInterface *)self setInterfaceProperties:dictionary];
   return v7;
 }
 
 - (BOOL)lockOtherInterfaces
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithBool:0];
-  [v3 setObject:v4 forKey:@"Authenticated"];
+  [dictionary setObject:v4 forKey:@"Authenticated"];
 
-  LOBYTE(self) = [(AccessoryIAPInterface *)self setInterfaceProperties:v3];
+  LOBYTE(self) = [(AccessoryIAPInterface *)self setInterfaceProperties:dictionary];
   return self;
 }
 
@@ -517,7 +517,7 @@ LABEL_44:
     vid = self->_vid;
     pid = self->_pid;
     registryEntryID = self->_registryEntryID;
-    v11 = [v3 groupIdentifier];
+    groupIdentifier = [v3 groupIdentifier];
     v14 = 136316418;
     v15 = "[AccessoryIAPInterface presentNotSupportNotification]";
     v16 = 1024;
@@ -527,7 +527,7 @@ LABEL_44:
     v20 = 2048;
     v21 = registryEntryID;
     v22 = 2112;
-    v23 = v11;
+    v23 = groupIdentifier;
     v24 = 2112;
     v25 = v3;
     _os_log_impl(&dword_2336F5000, v7, OS_LOG_TYPE_DEFAULT, "%s: vid/pid 0x%X/0x%X, registryID 0x%llx, groupidentifer %@, pAccErrorNotification %@", &v14, 0x36u);
@@ -593,10 +593,10 @@ LABEL_44:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (unint64_t)getRegistryEntryIDFromService:(unsigned int)a3
++ (unint64_t)getRegistryEntryIDFromService:(unsigned int)service
 {
   entryID = 0;
-  if (IORegistryEntryGetRegistryEntryID(a3, &entryID))
+  if (IORegistryEntryGetRegistryEntryID(service, &entryID))
   {
     return 0;
   }

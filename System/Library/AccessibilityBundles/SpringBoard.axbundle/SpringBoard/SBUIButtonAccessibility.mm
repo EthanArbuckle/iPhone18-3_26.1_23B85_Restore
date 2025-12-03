@@ -13,8 +13,8 @@
   y = v5;
   width = v7;
   height = v9;
-  v11 = [(SBUIButtonAccessibility *)self accessibilityIdentifier];
-  if (([v11 isEqualToString:@"AppSwitcherPlay"] & 1) != 0 || (objc_msgSend(v11, "isEqualToString:", @"AppSwitcherPrev") & 1) != 0 || objc_msgSend(v11, "isEqualToString:", @"AppSwitcherNext"))
+  accessibilityIdentifier = [(SBUIButtonAccessibility *)self accessibilityIdentifier];
+  if (([accessibilityIdentifier isEqualToString:@"AppSwitcherPlay"] & 1) != 0 || (objc_msgSend(accessibilityIdentifier, "isEqualToString:", @"AppSwitcherPrev") & 1) != 0 || objc_msgSend(accessibilityIdentifier, "isEqualToString:", @"AppSwitcherNext"))
   {
     v17.origin.x = x;
     v17.origin.y = y;

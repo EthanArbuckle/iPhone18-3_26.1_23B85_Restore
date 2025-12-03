@@ -1,29 +1,29 @@
 @interface PPSTimeIntervalCoalescePolicy
 + (id)legacyPolicy;
-- (PPSTimeIntervalCoalescePolicy)initWithCoder:(id)a3;
-- (PPSTimeIntervalCoalescePolicy)initWithNumberCoalescePolicy:(signed __int16)a3 stringCoalescePolicy:(signed __int16)a4;
-- (void)encodeWithCoder:(id)a3;
+- (PPSTimeIntervalCoalescePolicy)initWithCoder:(id)coder;
+- (PPSTimeIntervalCoalescePolicy)initWithNumberCoalescePolicy:(signed __int16)policy stringCoalescePolicy:(signed __int16)coalescePolicy;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPSTimeIntervalCoalescePolicy
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[PPSTimeIntervalCoalescePolicy numberPolicy](self forKey:{"numberPolicy"), @"numberPolicy"}];
-  [v4 encodeInteger:-[PPSTimeIntervalCoalescePolicy stringPolicy](self forKey:{"stringPolicy"), @"stringPolicy"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[PPSTimeIntervalCoalescePolicy numberPolicy](self forKey:{"numberPolicy"), @"numberPolicy"}];
+  [coderCopy encodeInteger:-[PPSTimeIntervalCoalescePolicy stringPolicy](self forKey:{"stringPolicy"), @"stringPolicy"}];
 }
 
-- (PPSTimeIntervalCoalescePolicy)initWithCoder:(id)a3
+- (PPSTimeIntervalCoalescePolicy)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PPSTimeIntervalCoalescePolicy;
   v5 = [(PPSTimeIntervalCoalescePolicy *)&v7 init];
   if (v5)
   {
-    v5->_numberPolicy = [v4 decodeIntegerForKey:@"numberPolicy"];
-    v5->_stringPolicy = [v4 decodeIntegerForKey:@"stringPolicy"];
+    v5->_numberPolicy = [coderCopy decodeIntegerForKey:@"numberPolicy"];
+    v5->_stringPolicy = [coderCopy decodeIntegerForKey:@"stringPolicy"];
   }
 
   return v5;
@@ -36,15 +36,15 @@
   return v2;
 }
 
-- (PPSTimeIntervalCoalescePolicy)initWithNumberCoalescePolicy:(signed __int16)a3 stringCoalescePolicy:(signed __int16)a4
+- (PPSTimeIntervalCoalescePolicy)initWithNumberCoalescePolicy:(signed __int16)policy stringCoalescePolicy:(signed __int16)coalescePolicy
 {
   v7.receiver = self;
   v7.super_class = PPSTimeIntervalCoalescePolicy;
   result = [(PPSTimeIntervalCoalescePolicy *)&v7 init];
   if (result)
   {
-    result->_numberPolicy = a3;
-    result->_stringPolicy = a4;
+    result->_numberPolicy = policy;
+    result->_stringPolicy = coalescePolicy;
   }
 
   return result;

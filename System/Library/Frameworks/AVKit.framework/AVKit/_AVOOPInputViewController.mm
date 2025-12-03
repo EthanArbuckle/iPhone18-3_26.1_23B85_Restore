@@ -1,17 +1,17 @@
 @interface _AVOOPInputViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (_TtC5AVKit25_AVOOPInputViewController)initWithCoder:(id)a3;
-- (_TtC5AVKit25_AVOOPInputViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC5AVKit25_AVOOPInputViewController)initWithTappingForDismissing:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (_TtC5AVKit25_AVOOPInputViewController)initWithCoder:(id)coder;
+- (_TtC5AVKit25_AVOOPInputViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC5AVKit25_AVOOPInputViewController)initWithTappingForDismissing:(id)dismissing;
 - (void)handleTapGestureRecognizer;
 - (void)viewDidLoad;
 @end
 
 @implementation _AVOOPInputViewController
 
-- (_TtC5AVKit25_AVOOPInputViewController)initWithTappingForDismissing:(id)a3
+- (_TtC5AVKit25_AVOOPInputViewController)initWithTappingForDismissing:(id)dismissing
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(dismissing);
   if (v3)
   {
     v4 = swift_allocObject();
@@ -29,7 +29,7 @@
   return v5;
 }
 
-- (_TtC5AVKit25_AVOOPInputViewController)initWithCoder:(id)a3
+- (_TtC5AVKit25_AVOOPInputViewController)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC5AVKit25_AVOOPInputViewController_onTappingForDismissing);
   *v3 = 0;
@@ -44,7 +44,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_18B534CBC();
 }
 
@@ -53,7 +53,7 @@
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC5AVKit25_AVOOPInputViewController_onTappingForDismissing);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_18B4A324C(v2);
     v2(v4);
 
@@ -61,17 +61,17 @@
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_18B535588(v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = sub_18B535588(touchCopy);
 
   return v9 & 1;
 }
 
-- (_TtC5AVKit25_AVOOPInputViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5AVKit25_AVOOPInputViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

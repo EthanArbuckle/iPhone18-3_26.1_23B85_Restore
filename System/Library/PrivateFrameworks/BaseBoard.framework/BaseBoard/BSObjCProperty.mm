@@ -1,18 +1,18 @@
 @interface BSObjCProperty
-+ (id)propertyWithBuilder:(id)a3;
-+ (id)propertyWithBuilder:(id)a3 error:(id *)a4;
-+ (id)propertyWithName:(id)a3 attributes:(id)a4 error:(id *)a5;
-+ (id)propertyWithName:(void *)a3 value:(void *)a4 attributes:;
-+ (id)propertyWithProperty:(objc_property *)a3 error:(id *)a4;
++ (id)propertyWithBuilder:(id)builder;
++ (id)propertyWithBuilder:(id)builder error:(id *)error;
++ (id)propertyWithName:(id)name attributes:(id)attributes error:(id *)error;
++ (id)propertyWithName:(void *)name value:(void *)value attributes:;
++ (id)propertyWithProperty:(objc_property *)property error:(id *)error;
 - (BOOL)isAssign;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SEL)_getSelector;
 - (SEL)_setSelector;
-- (id)copyAddingCustomAttributes:(id)a3;
+- (id)copyAddingCustomAttributes:(id)attributes;
 - (id)copyAsReadWrite;
-- (id)customAttributeForKey:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)customAttributeForKey:(id)key;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)_reifySelectors;
@@ -23,19 +23,19 @@
 - (SEL)_setSelector
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (!a1 || ([a1 isReadOnly] & 1) != 0)
+  if (!self || ([self isReadOnly] & 1) != 0)
   {
     return 0;
   }
 
-  v3 = a1[6];
+  v3 = self[6];
   if (!v3)
   {
-    v4 = [a1[9] substringToIndex:1];
-    v5 = [v4 capitalizedString];
+    v4 = [self[9] substringToIndex:1];
+    capitalizedString = [v4 capitalizedString];
 
-    v6 = [a1[9] substringFromIndex:1];
-    v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"set%@%@:", v5, v6];
+    v6 = [self[9] substringFromIndex:1];
+    v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"set%@%@:", capitalizedString, v6];
   }
 
   v2 = NSSelectorFromString(v3);
@@ -57,15 +57,15 @@
 - (SEL)_getSelector
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = *(a1 + 40);
+  v1 = *(self + 40);
   if (!v1)
   {
-    v1 = *(a1 + 72);
+    v1 = *(self + 72);
   }
 
   v2 = v1;
@@ -100,24 +100,24 @@
 
 - (void)_reifySelectors
 {
-  if (a1)
+  if (self)
   {
-    if (!*(a1 + 16))
+    if (!*(self + 16))
     {
-      v2 = *(a1 + 8);
-      v3 = [(BSObjCProperty *)a1 _getSelector];
-      v4 = [BSObjCMethod _propertyGetterForValue:v2 withSelector:v3];
-      v5 = *(a1 + 16);
-      *(a1 + 16) = v4;
+      v2 = *(self + 8);
+      _getSelector = [(BSObjCProperty *)self _getSelector];
+      v4 = [BSObjCMethod _propertyGetterForValue:v2 withSelector:_getSelector];
+      v5 = *(self + 16);
+      *(self + 16) = v4;
     }
 
-    if (!*(a1 + 24) && (*(a1 + 65) & 1) == 0)
+    if (!*(self + 24) && (*(self + 65) & 1) == 0)
     {
-      v6 = *(a1 + 8);
-      v7 = [(BSObjCProperty *)a1 _setSelector];
-      v8 = [BSObjCMethod _propertySetterForValue:v6 withSelector:v7];
-      v9 = *(a1 + 24);
-      *(a1 + 24) = v8;
+      v6 = *(self + 8);
+      _setSelector = [(BSObjCProperty *)self _setSelector];
+      v8 = [BSObjCMethod _propertySetterForValue:v6 withSelector:_setSelector];
+      v9 = *(self + 24);
+      *(self + 24) = v8;
     }
   }
 }
@@ -144,8 +144,8 @@
     objc_storeStrong(&v3->_customGetter, self->_customGetter);
     objc_storeStrong(&v3->_getter, self->_getter);
     value = self->_value;
-    v5 = [(BSObjCProperty *)&v3->super.isa _setSelector];
-    v6 = [BSObjCMethod _propertySetterForValue:v5 withSelector:?];
+    _setSelector = [(BSObjCProperty *)&v3->super.isa _setSelector];
+    v6 = [BSObjCMethod _propertySetterForValue:_setSelector withSelector:?];
     setter = v3->_setter;
     v3->_setter = v6;
 
@@ -154,12 +154,12 @@
   }
 }
 
-+ (id)propertyWithName:(void *)a3 value:(void *)a4 attributes:
++ (id)propertyWithName:(void *)name value:(void *)value attributes:
 {
   v56 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  valueCopy = value;
   v10 = objc_opt_self();
   if (!v7)
   {
@@ -190,7 +190,7 @@
     JUMPOUT(0x18FF3CF50);
   }
 
-  if (!v8)
+  if (!nameCopy)
   {
     v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"value"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -219,7 +219,7 @@
     JUMPOUT(0x18FF3D058);
   }
 
-  if (![v9 count])
+  if (![valueCopy count])
   {
     v38 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"[attributes count]"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -249,35 +249,35 @@
   }
 
   v11 = objc_alloc_init(v10);
-  objc_storeStrong(v11 + 1, a3);
+  objc_storeStrong(v11 + 1, name);
   objc_storeStrong(v11 + 9, a2);
-  v12 = [v9 objectForKey:@"?"];
+  v12 = [valueCopy objectForKey:@"?"];
   *(v11 + 32) = v12 == 0;
 
-  v13 = [v9 objectForKey:@"N"];
+  v13 = [valueCopy objectForKey:@"N"];
   *(v11 + 64) = v13 != 0;
 
-  v14 = [v9 objectForKey:@"R"];
+  v14 = [valueCopy objectForKey:@"R"];
   *(v11 + 65) = v14 != 0;
 
-  v15 = [v9 objectForKey:@"C"];
+  v15 = [valueCopy objectForKey:@"C"];
   *(v11 + 66) = v15 != 0;
 
-  v16 = [v9 objectForKey:@"&"];
+  v16 = [valueCopy objectForKey:@"&"];
   *(v11 + 67) = v16 != 0;
 
-  v17 = [v9 objectForKey:@"W"];
+  v17 = [valueCopy objectForKey:@"W"];
   *(v11 + 68) = v17 != 0;
 
-  v18 = [v9 objectForKey:@"G"];
+  v18 = [valueCopy objectForKey:@"G"];
   v19 = v11[5];
   v11[5] = v18;
 
-  v20 = [v9 objectForKey:@"S"];
+  v20 = [valueCopy objectForKey:@"S"];
   v21 = v11[6];
   v11[6] = v20;
 
-  v22 = [v9 mutableCopy];
+  v22 = [valueCopy mutableCopy];
   v43[0] = @"T";
   v43[1] = @"N";
   v43[2] = @"R";
@@ -316,16 +316,16 @@
   return v11;
 }
 
-- (id)customAttributeForKey:(id)a3
+- (id)customAttributeForKey:(id)key
 {
-  v3 = [(NSDictionary *)self->_customAttributes objectForKey:a3];
+  v3 = [(NSDictionary *)self->_customAttributes objectForKey:key];
 
   return v3;
 }
 
-- (id)copyAddingCustomAttributes:(id)a3
+- (id)copyAddingCustomAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = objc_alloc_init(BSObjCProperty);
   objc_storeStrong(&v5->_value, self->_value);
   objc_storeStrong(&v5->_name, self->_name);
@@ -342,12 +342,12 @@
   customAttributes = self->_customAttributes;
   if (customAttributes)
   {
-    v7 = [(NSDictionary *)customAttributes bs_dictionaryByAddingEntriesFromDictionary:v4];
+    v7 = [(NSDictionary *)customAttributes bs_dictionaryByAddingEntriesFromDictionary:attributesCopy];
   }
 
   else
   {
-    v7 = [v4 copy];
+    v7 = [attributesCopy copy];
   }
 
   v8 = v5->_customAttributes;
@@ -356,10 +356,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
     goto LABEL_5;
@@ -372,7 +372,7 @@
   }
 
   name = self->_name;
-  v9 = v4->_name;
+  v9 = equalCopy->_name;
   if (name != v9)
   {
     v6 = 0;
@@ -388,7 +388,7 @@
   }
 
   value = self->_value;
-  v11 = v4->_value;
+  v11 = equalCopy->_value;
   if (value != v11)
   {
     v6 = 0;
@@ -404,7 +404,7 @@
   }
 
   customGetter = self->_customGetter;
-  v13 = v4->_customGetter;
+  v13 = equalCopy->_customGetter;
   if (customGetter != v13)
   {
     v6 = 0;
@@ -420,13 +420,13 @@
   }
 
   customSetter = self->_customSetter;
-  v15 = v4->_customSetter;
+  v15 = equalCopy->_customSetter;
   if (customSetter == v15)
   {
 LABEL_22:
-    if (self->_nonatomic == v4->_nonatomic && self->_weak == v4->_weak && self->_strong == v4->_strong)
+    if (self->_nonatomic == equalCopy->_nonatomic && self->_weak == equalCopy->_weak && self->_strong == equalCopy->_strong)
     {
-      v6 = self->_copy == v4->_copy;
+      v6 = self->_copy == equalCopy->_copy;
       goto LABEL_5;
     }
 
@@ -452,10 +452,10 @@ LABEL_5:
 
 - (id)succinctDescription
 {
-  v2 = [(BSObjCProperty *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BSObjCProperty *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -516,8 +516,8 @@ LABEL_5:
   }
 
   [v4 appendString:@" "]);
-  v8 = [(BSObjCValue *)self->_value _prettyTypeString];
-  if ([v8 hasSuffix:@"*"])
+  _prettyTypeString = [(BSObjCValue *)self->_value _prettyTypeString];
+  if ([_prettyTypeString hasSuffix:@"*"])
   {
     v9 = @"%@%@";
   }
@@ -527,7 +527,7 @@ LABEL_5:
     v9 = @"%@ %@";
   }
 
-  [v4 appendFormat:v9, v8, self->_name];
+  [v4 appendFormat:v9, _prettyTypeString, self->_name];
   if (!self->_required)
   {
     v10 = [v3 appendObject:@"optional" withName:0];
@@ -538,27 +538,27 @@ LABEL_5:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSObjCProperty *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BSObjCProperty *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSObjCProperty *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(BSObjCProperty *)self succinctDescriptionBuilder];
 
-  return v3;
+  return succinctDescriptionBuilder;
 }
 
-+ (id)propertyWithProperty:(objc_property *)a3 error:(id *)a4
++ (id)propertyWithProperty:(objc_property *)property error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!property)
   {
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", a4, @"property"];
+    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", error, @"property"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v13 = NSStringFromSelector(a2);
@@ -569,7 +569,7 @@ LABEL_5:
       v19 = 2114;
       v20 = v15;
       v21 = 2048;
-      v22 = a1;
+      selfCopy = self;
       v23 = 2114;
       v24 = @"BSObjCRuntime.m";
       v25 = 1024;
@@ -585,35 +585,35 @@ LABEL_5:
     JUMPOUT(0x18FF42ED0);
   }
 
-  v7 = [MEMORY[0x1E696AEC0] bs_stringWithUTF8String:property_getName(a3)];
-  v8 = [MEMORY[0x1E695DF20] bsobjc_attributesForProperty:a3];
-  v9 = [a1 propertyWithName:v7 attributes:v8 error:a4];
+  v7 = [MEMORY[0x1E696AEC0] bs_stringWithUTF8String:property_getName(property)];
+  v8 = [MEMORY[0x1E695DF20] bsobjc_attributesForProperty:property];
+  v9 = [self propertyWithName:v7 attributes:v8 error:error];
 
   return v9;
 }
 
-+ (id)propertyWithBuilder:(id)a3
++ (id)propertyWithBuilder:(id)builder
 {
-  v3 = [a1 propertyWithBuilder:a3 error:0];
+  v3 = [self propertyWithBuilder:builder error:0];
 
   return v3;
 }
 
-+ (id)propertyWithBuilder:(id)a3 error:(id *)a4
++ (id)propertyWithBuilder:(id)builder error:(id *)error
 {
-  v5 = a3;
+  builderCopy = builder;
   v6 = objc_opt_new();
-  v5[2](v5, v6);
-  v7 = [v6 value];
-  if (v7)
+  builderCopy[2](builderCopy, v6);
+  value = [v6 value];
+  if (value)
   {
-    v8 = [v6 name];
-    if (v8)
+    name = [v6 name];
+    if (name)
     {
-      v9 = [v6 associationPolicy];
-      if (!v9)
+      associationPolicy = [v6 associationPolicy];
+      if (!associationPolicy)
       {
-        v9 = [v7 isObject];
+        associationPolicy = [value isObject];
       }
 
       v10 = objc_opt_new();
@@ -623,35 +623,35 @@ LABEL_5:
         [v10 setObject:&stru_1F03A1A98 forKey:@"?"];
       }
 
-      if ((v9 - 1) <= 2)
+      if ((associationPolicy - 1) <= 2)
       {
-        [v10 setObject:&stru_1F03A1A98 forKey:off_1E72CB450[v9 - 1]];
+        [v10 setObject:&stru_1F03A1A98 forKey:off_1E72CB450[associationPolicy - 1]];
       }
 
-      v11 = [v6 getterName];
+      getterName = [v6 getterName];
 
-      if (v11)
+      if (getterName)
       {
-        v12 = [v6 getterName];
-        [v10 setObject:v12 forKey:@"G"];
+        getterName2 = [v6 getterName];
+        [v10 setObject:getterName2 forKey:@"G"];
       }
 
-      v13 = [v6 setterName];
+      setterName = [v6 setterName];
 
-      if (v13)
+      if (setterName)
       {
-        v14 = [v6 setterName];
-        [v10 setObject:v14 forKey:@"S"];
+        setterName2 = [v6 setterName];
+        [v10 setObject:setterName2 forKey:@"S"];
       }
 
-      v15 = [BSObjCProperty propertyWithName:v8 value:v7 attributes:v10];
+      v15 = [BSObjCProperty propertyWithName:name value:value attributes:v10];
       [(BSObjCProperty *)v15 _reifySelectors];
     }
 
-    else if (a4)
+    else if (error)
     {
       [MEMORY[0x1E696ABC0] bs_errorWithDomain:@"BSObjCRuntime" code:1 configuration:&__block_literal_global_823];
-      *a4 = v15 = 0;
+      *error = v15 = 0;
     }
 
     else
@@ -660,10 +660,10 @@ LABEL_5:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] bs_errorWithDomain:@"BSObjCRuntime" code:1 configuration:&__block_literal_global_818];
-    *a4 = v15 = 0;
+    *error = v15 = 0;
   }
 
   else
@@ -674,13 +674,13 @@ LABEL_5:
   return v15;
 }
 
-+ (id)propertyWithName:(id)a3 attributes:(id)a4 error:(id *)a5
++ (id)propertyWithName:(id)name attributes:(id)attributes error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  nameCopy = name;
+  attributesCopy = attributes;
+  v11 = attributesCopy;
+  if (!nameCopy)
   {
     v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"name"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -693,7 +693,7 @@ LABEL_5:
       v28 = 2114;
       v29 = v19;
       v30 = 2048;
-      v31 = a1;
+      selfCopy2 = self;
       v32 = 2114;
       v33 = @"BSObjCRuntime.m";
       v34 = 1024;
@@ -709,7 +709,7 @@ LABEL_5:
     JUMPOUT(0x18FF43444);
   }
 
-  if (!v10)
+  if (!attributesCopy)
   {
     v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"attributes"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -722,7 +722,7 @@ LABEL_5:
       v28 = 2114;
       v29 = v24;
       v30 = 2048;
-      v31 = a1;
+      selfCopy2 = self;
       v32 = 2114;
       v33 = @"BSObjCRuntime.m";
       v34 = 1024;
@@ -738,11 +738,11 @@ LABEL_5:
     JUMPOUT(0x18FF4354CLL);
   }
 
-  v12 = [v10 objectForKey:@"T"];
-  v13 = [BSObjCValue valueWithEncoding:v12 error:a5];
+  v12 = [attributesCopy objectForKey:@"T"];
+  v13 = [BSObjCValue valueWithEncoding:v12 error:error];
   if (v13)
   {
-    v14 = [BSObjCProperty propertyWithName:v9 value:v13 attributes:v11];
+    v14 = [BSObjCProperty propertyWithName:nameCopy value:v13 attributes:v11];
     [(BSObjCProperty *)v14 _reifySelectors];
   }
 

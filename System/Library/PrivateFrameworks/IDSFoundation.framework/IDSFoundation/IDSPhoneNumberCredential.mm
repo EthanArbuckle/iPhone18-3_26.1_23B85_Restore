@@ -1,59 +1,59 @@
 @interface IDSPhoneNumberCredential
-- (IDSPhoneNumberCredential)initWithCoder:(id)a3;
-- (IDSPhoneNumberCredential)initWithTelURI:(id)a3 credential:(id)a4 credentialType:(int64_t)a5;
+- (IDSPhoneNumberCredential)initWithCoder:(id)coder;
+- (IDSPhoneNumberCredential)initWithTelURI:(id)i credential:(id)credential credentialType:(int64_t)type;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSPhoneNumberCredential
 
-- (IDSPhoneNumberCredential)initWithTelURI:(id)a3 credential:(id)a4 credentialType:(int64_t)a5
+- (IDSPhoneNumberCredential)initWithTelURI:(id)i credential:(id)credential credentialType:(int64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  iCopy = i;
+  credentialCopy = credential;
   v14.receiver = self;
   v14.super_class = IDSPhoneNumberCredential;
   v11 = [(IDSPhoneNumberCredential *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_telURI, a3);
-    objc_storeStrong(&v12->_credential, a4);
-    v12->_credentialType = a5;
+    objc_storeStrong(&v11->_telURI, i);
+    objc_storeStrong(&v12->_credential, credential);
+    v12->_credentialType = type;
   }
 
   return v12;
 }
 
-- (IDSPhoneNumberCredential)initWithCoder:(id)a3
+- (IDSPhoneNumberCredential)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = IDSPhoneNumberCredential;
   v5 = [(IDSPhoneNumberCredential *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TelURI"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TelURI"];
     telURI = v5->_telURI;
     v5->_telURI = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Credential"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Credential"];
     credential = v5->_credential;
     v5->_credential = v8;
 
-    v5->_credentialType = [v4 decodeIntegerForKey:@"CredentialType"];
+    v5->_credentialType = [coderCopy decodeIntegerForKey:@"CredentialType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   telURI = self->_telURI;
-  v5 = a3;
-  [v5 encodeObject:telURI forKey:@"TelURI"];
-  [v5 encodeObject:self->_credential forKey:@"Credential"];
-  [v5 encodeInteger:self->_credentialType forKey:@"CredentialType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:telURI forKey:@"TelURI"];
+  [coderCopy encodeObject:self->_credential forKey:@"Credential"];
+  [coderCopy encodeInteger:self->_credentialType forKey:@"CredentialType"];
 }
 
 - (id)description

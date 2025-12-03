@@ -1,40 +1,40 @@
 @interface NTKPrideTouchCrownHandler
-- (NTKPrideTouchCrownHandler)initWithNumSplines:(int)a3 strumWidth:(float)a4 strumSpeed:(float)a5 isCyclical:(BOOL)a6 padding:(int)a7;
-- (float)strumAmplitudeForSpline:(int)a3;
-- (void)_generateStrumCurveWithWidth:(float)a3;
-- (void)_strumToCyclicalIndex:(int)a3 withVelocity:(double)a4;
-- (void)_strumToLinearIndex:(int)a3 withVelocity:(double)a4;
+- (NTKPrideTouchCrownHandler)initWithNumSplines:(int)splines strumWidth:(float)width strumSpeed:(float)speed isCyclical:(BOOL)cyclical padding:(int)padding;
+- (float)strumAmplitudeForSpline:(int)spline;
+- (void)_generateStrumCurveWithWidth:(float)width;
+- (void)_strumToCyclicalIndex:(int)index withVelocity:(double)velocity;
+- (void)_strumToLinearIndex:(int)index withVelocity:(double)velocity;
 - (void)clearTouches;
 - (void)dealloc;
-- (void)fadeStrumByAmount:(float)a3;
-- (void)iterateTouchesWithBlock:(id)a3;
-- (void)strumToOffset:(double)a3 withVelocity:(double)a4;
+- (void)fadeStrumByAmount:(float)amount;
+- (void)iterateTouchesWithBlock:(id)block;
+- (void)strumToOffset:(double)offset withVelocity:(double)velocity;
 @end
 
 @implementation NTKPrideTouchCrownHandler
 
-- (NTKPrideTouchCrownHandler)initWithNumSplines:(int)a3 strumWidth:(float)a4 strumSpeed:(float)a5 isCyclical:(BOOL)a6 padding:(int)a7
+- (NTKPrideTouchCrownHandler)initWithNumSplines:(int)splines strumWidth:(float)width strumSpeed:(float)speed isCyclical:(BOOL)cyclical padding:(int)padding
 {
-  v8 = a6;
+  cyclicalCopy = cyclical;
   v17.receiver = self;
   v17.super_class = NTKPrideTouchCrownHandler;
   v12 = [(NTKPrideTouchCrownHandler *)&v17 init];
   v14 = v12;
   if (v12)
   {
-    v12->_isCyclical = v8;
+    v12->_isCyclical = cyclicalCopy;
     v12->_previousCrownIndex = 0;
     v12->_previousCrownOffset = 0.0;
-    v12->_strumSpeed = a5;
-    v12->_strumPad = a7;
-    v15 = 2 * a7;
-    if (v8)
+    v12->_strumSpeed = speed;
+    v12->_strumPad = padding;
+    v15 = 2 * padding;
+    if (cyclicalCopy)
     {
       v15 = 0;
     }
 
-    v12->_numSplines = v15 + a3;
-    *&v13 = a4;
+    v12->_numSplines = v15 + splines;
+    *&v13 = width;
     [(NTKPrideTouchCrownHandler *)v12 _generateStrumCurveWithWidth:v13];
     v14->_strumAmplitudes = malloc_type_calloc(v14->_numSplines, 4uLL, 0x100004052888210uLL);
     v14->_strumTargets = malloc_type_calloc(v14->_numSplines, 4uLL, 0x100004052888210uLL);
@@ -52,9 +52,9 @@
   [(NTKPrideTouchCrownHandler *)&v3 dealloc];
 }
 
-- (void)_generateStrumCurveWithWidth:(float)a3
+- (void)_generateStrumCurveWithWidth:(float)width
 {
-  v24 = -a3;
+  v24 = -width;
   v3 = 0x100000000;
   v4 = xmmword_1B0B0;
   v5 = &self->_strumCurve[1];
@@ -103,23 +103,23 @@
   while (v6);
 }
 
-- (void)_strumToCyclicalIndex:(int)a3 withVelocity:(double)a4
+- (void)_strumToCyclicalIndex:(int)index withVelocity:(double)velocity
 {
-  v4 = a4;
-  if (a4 >= 0.0 || (v5 = self->_previousCrownIndex, v5 <= a3))
+  velocityCopy = velocity;
+  if (velocity >= 0.0 || (v5 = self->_previousCrownIndex, v5 <= index))
   {
-    if (a4 <= 0.0 || (v16 = self->_previousCrownIndex, v16 >= a3))
+    if (velocity <= 0.0 || (v16 = self->_previousCrownIndex, v16 >= index))
     {
-      if (a4 >= 0.0 || (v27 = self->_previousCrownIndex, v27 >= a3))
+      if (velocity >= 0.0 || (v27 = self->_previousCrownIndex, v27 >= index))
       {
-        if (a4 > 0.0)
+        if (velocity > 0.0)
         {
           previousCrownIndex = self->_previousCrownIndex;
-          if (previousCrownIndex > a3)
+          if (previousCrownIndex > index)
           {
             numSplines = self->_numSplines;
-            v40 = numSplines + a3;
-            if (previousCrownIndex < numSplines + a3)
+            v40 = numSplines + index;
+            if (previousCrownIndex < numSplines + index)
             {
               strumTargets = self->_strumTargets;
               v42 = previousCrownIndex - 7;
@@ -132,7 +132,7 @@
                 v47 = v44;
                 do
                 {
-                  v48 = strumTargets[v47 % numSplines] + (*(self->_strumCurve + (v45 >> 30)) * v4) * 0.05;
+                  v48 = strumTargets[v47 % numSplines] + (*(self->_strumCurve + (v45 >> 30)) * velocityCopy) * 0.05;
                   strumTargets[v47 % numSplines] = v48;
                   v45 += 0x100000000;
                   ++v47;
@@ -155,13 +155,13 @@
       else
       {
         v28 = self->_numSplines;
-        if (v28 + v27 > a3)
+        if (v28 + v27 > index)
         {
           v29 = self->_strumTargets;
-          v30 = a3 - 7;
-          v31 = a3;
-          v32 = a3 - 7 + v28;
-          v33 = -a3;
+          v30 = index - 7;
+          indexCopy = index;
+          v32 = index - 7 + v28;
+          v33 = -index;
           do
           {
             v34 = ((v33 + v30) << 32) + 0x700000000;
@@ -169,21 +169,21 @@
             v36 = v32;
             do
             {
-              v37 = v29[v36 % v28] + (*(self->_strumCurve + (v34 >> 30)) * v4) * 0.05;
+              v37 = v29[v36 % v28] + (*(self->_strumCurve + (v34 >> 30)) * velocityCopy) * 0.05;
               v29[v36 % v28] = v37;
               v34 += 0x100000000;
               ++v36;
               ++v35;
             }
 
-            while (v35 < v31 + 6);
-            ++v31;
+            while (v35 < indexCopy + 6);
+            ++indexCopy;
             ++v30;
             LODWORD(v33) = v33 - 1;
             ++v32;
           }
 
-          while (v31 != v28 + v27);
+          while (indexCopy != v28 + v27);
         }
       }
     }
@@ -193,7 +193,7 @@
       v17 = self->_numSplines;
       v18 = self->_strumTargets;
       v19 = v16 - 7;
-      v20 = a3;
+      indexCopy2 = index;
       v21 = -v16;
       v22 = v16 - 7 + v17;
       do
@@ -203,7 +203,7 @@
         v25 = v22;
         do
         {
-          v26 = v18[v25 % v17] + (*(self->_strumCurve + (v23 >> 30)) * v4) * 0.05;
+          v26 = v18[v25 % v17] + (*(self->_strumCurve + (v23 >> 30)) * velocityCopy) * 0.05;
           v18[v25 % v17] = v26;
           v23 += 0x100000000;
           ++v25;
@@ -217,7 +217,7 @@
         ++v22;
       }
 
-      while (v16 != v20);
+      while (v16 != indexCopy2);
     }
   }
 
@@ -225,10 +225,10 @@
   {
     v6 = self->_numSplines;
     v7 = self->_strumTargets;
-    v8 = a3 - 7;
-    v9 = a3;
-    v10 = -a3;
-    v11 = a3 - 7 + v6;
+    v8 = index - 7;
+    indexCopy3 = index;
+    v10 = -index;
+    v11 = index - 7 + v6;
     do
     {
       v12 = ((v10 + v8) << 32) + 0x700000000;
@@ -236,44 +236,44 @@
       v14 = v11;
       do
       {
-        v15 = v7[v14 % v6] + (*(self->_strumCurve + (v12 >> 30)) * v4) * 0.05;
+        v15 = v7[v14 % v6] + (*(self->_strumCurve + (v12 >> 30)) * velocityCopy) * 0.05;
         v7[v14 % v6] = v15;
         v12 += 0x100000000;
         ++v14;
         ++v13;
       }
 
-      while (v13 < v9 + 6);
-      ++v9;
+      while (v13 < indexCopy3 + 6);
+      ++indexCopy3;
       ++v8;
       LODWORD(v10) = v10 - 1;
       ++v11;
     }
 
-    while (v9 != v5);
+    while (indexCopy3 != v5);
   }
 
   *self->_strumTargets = self->_strumTargets[1];
 }
 
-- (void)_strumToLinearIndex:(int)a3 withVelocity:(double)a4
+- (void)_strumToLinearIndex:(int)index withVelocity:(double)velocity
 {
   previousCrownIndex = self->_previousCrownIndex;
-  v5 = previousCrownIndex - a3;
-  if (previousCrownIndex - a3 < 0)
+  v5 = previousCrownIndex - index;
+  if (previousCrownIndex - index < 0)
   {
-    v5 = a3 - previousCrownIndex;
+    v5 = index - previousCrownIndex;
   }
 
   numSplines = self->_numSplines;
   if (v5 <= numSplines / 2)
   {
-    v10 = fabs(a4);
+    v10 = fabs(velocity);
     v11 = (1.0 - pow(1000.0, -v10)) * 5.0;
-    v12 = a4 >= 0.0 || previousCrownIndex <= a3;
+    v12 = velocity >= 0.0 || previousCrownIndex <= index;
     if (v12)
     {
-      if (a4 > 0.0 && previousCrownIndex < a3)
+      if (velocity > 0.0 && previousCrownIndex < index)
       {
         v13 = previousCrownIndex - 7;
         v14 = -previousCrownIndex;
@@ -301,15 +301,15 @@
           LODWORD(v14) = v14 - 1;
         }
 
-        while (a3 + 1 != previousCrownIndex);
+        while (index + 1 != previousCrownIndex);
       }
     }
 
     else
     {
-      v20 = a3 - 7;
-      v21 = a3;
-      v22 = -a3;
+      v20 = index - 7;
+      indexCopy = index;
+      v22 = -index;
       do
       {
         v23 = v20;
@@ -325,24 +325,24 @@
           }
 
           v24 += 0x100000000;
-          v12 = v25++ < v21 + 6;
+          v12 = v25++ < indexCopy + 6;
         }
 
         while (v12);
-        ++v21;
+        ++indexCopy;
         v20 = v23 + 1;
         LODWORD(v22) = v22 - 1;
       }
 
-      while (previousCrownIndex + 1 != v21);
+      while (previousCrownIndex + 1 != indexCopy);
     }
   }
 }
 
-- (void)strumToOffset:(double)a3 withVelocity:(double)a4
+- (void)strumToOffset:(double)offset withVelocity:(double)velocity
 {
-  v6 = (a3 / self->_strumSpeed * (self->_numSplines - 1));
-  v7 = a3 - self->_previousCrownOffset;
+  v6 = (offset / self->_strumSpeed * (self->_numSplines - 1));
+  v7 = offset - self->_previousCrownOffset;
   if (self->_isCyclical)
   {
     [(NTKPrideTouchCrownHandler *)self _strumToCyclicalIndex:v6 withVelocity:v7];
@@ -354,7 +354,7 @@
   }
 
   self->_previousCrownIndex = v6;
-  self->_previousCrownOffset = a3;
+  self->_previousCrownOffset = offset;
 }
 
 - (void)clearTouches
@@ -381,20 +381,20 @@
   }
 }
 
-- (void)iterateTouchesWithBlock:(id)a3
+- (void)iterateTouchesWithBlock:(id)block
 {
   v4 = 0;
   touchTimes = self->_touchTimes;
   do
   {
-    (*(a3 + 2))(a3, a2, touchTimes[v4], *&touchTimes[2 * v4 - 20]);
+    (*(block + 2))(block, a2, touchTimes[v4], *&touchTimes[2 * v4 - 20]);
     ++v4;
   }
 
   while (v4 != 10);
 }
 
-- (void)fadeStrumByAmount:(float)a3
+- (void)fadeStrumByAmount:(float)amount
 {
   numSplines = self->_numSplines;
   if (numSplines >= 1)
@@ -443,7 +443,7 @@ LABEL_7:
   }
 }
 
-- (float)strumAmplitudeForSpline:(int)a3
+- (float)strumAmplitudeForSpline:(int)spline
 {
   if (self->_isCyclical)
   {
@@ -455,7 +455,7 @@ LABEL_7:
     strumPad = self->_strumPad;
   }
 
-  return self->_strumAmplitudes[strumPad + a3];
+  return self->_strumAmplitudes[strumPad + spline];
 }
 
 @end

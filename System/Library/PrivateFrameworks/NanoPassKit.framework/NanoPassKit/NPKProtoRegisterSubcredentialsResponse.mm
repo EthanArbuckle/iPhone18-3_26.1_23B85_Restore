@@ -1,51 +1,51 @@
 @interface NPKProtoRegisterSubcredentialsResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addErrorsData:(id)a3;
-- (void)addPassesData:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addErrorsData:(id)data;
+- (void)addPassesData:(id)data;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoRegisterSubcredentialsResponse
 
-- (void)addPassesData:(id)a3
+- (void)addPassesData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   passesDatas = self->_passesDatas;
-  v8 = v4;
+  v8 = dataCopy;
   if (!passesDatas)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_passesDatas;
     self->_passesDatas = v6;
 
-    v4 = v8;
+    dataCopy = v8;
     passesDatas = self->_passesDatas;
   }
 
-  [(NSMutableArray *)passesDatas addObject:v4];
+  [(NSMutableArray *)passesDatas addObject:dataCopy];
 }
 
-- (void)addErrorsData:(id)a3
+- (void)addErrorsData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   errorsDatas = self->_errorsDatas;
-  v8 = v4;
+  v8 = dataCopy;
   if (!errorsDatas)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_errorsDatas;
     self->_errorsDatas = v6;
 
-    v4 = v8;
+    dataCopy = v8;
     errorsDatas = self->_errorsDatas;
   }
 
-  [(NSMutableArray *)errorsDatas addObject:v4];
+  [(NSMutableArray *)errorsDatas addObject:dataCopy];
 }
 
 - (id)description
@@ -54,20 +54,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoRegisterSubcredentialsResponse;
   v4 = [(NPKProtoRegisterSubcredentialsResponse *)&v8 description];
-  v5 = [(NPKProtoRegisterSubcredentialsResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoRegisterSubcredentialsResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   passesDatas = self->_passesDatas;
   if (passesDatas)
   {
-    [v3 setObject:passesDatas forKey:@"passesData"];
+    [dictionary setObject:passesDatas forKey:@"passesData"];
   }
 
   errorsDatas = self->_errorsDatas;
@@ -79,10 +79,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -150,44 +150,44 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(NPKProtoRegisterSubcredentialsResponse *)self passesDatasCount])
   {
-    [v12 clearPassesDatas];
-    v4 = [(NPKProtoRegisterSubcredentialsResponse *)self passesDatasCount];
-    if (v4)
+    [toCopy clearPassesDatas];
+    passesDatasCount = [(NPKProtoRegisterSubcredentialsResponse *)self passesDatasCount];
+    if (passesDatasCount)
     {
-      v5 = v4;
+      v5 = passesDatasCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NPKProtoRegisterSubcredentialsResponse *)self passesDataAtIndex:i];
-        [v12 addPassesData:v7];
+        [toCopy addPassesData:v7];
       }
     }
   }
 
   if ([(NPKProtoRegisterSubcredentialsResponse *)self errorsDatasCount])
   {
-    [v12 clearErrorsDatas];
-    v8 = [(NPKProtoRegisterSubcredentialsResponse *)self errorsDatasCount];
-    if (v8)
+    [toCopy clearErrorsDatas];
+    errorsDatasCount = [(NPKProtoRegisterSubcredentialsResponse *)self errorsDatasCount];
+    if (errorsDatasCount)
     {
-      v9 = v8;
+      v9 = errorsDatasCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(NPKProtoRegisterSubcredentialsResponse *)self errorsDataAtIndex:j];
-        [v12 addErrorsData:v11];
+        [toCopy addErrorsData:v11];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -208,7 +208,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addPassesData:v11];
 
         ++v10;
@@ -241,7 +241,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{a3, v20}];
+        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{zone, v20}];
         [v5 addErrorsData:v17];
 
         ++v16;
@@ -258,13 +258,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((passesDatas = self->_passesDatas, !(passesDatas | v4[2])) || -[NSMutableArray isEqual:](passesDatas, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((passesDatas = self->_passesDatas, !(passesDatas | equalCopy[2])) || -[NSMutableArray isEqual:](passesDatas, "isEqual:")))
   {
     errorsDatas = self->_errorsDatas;
-    if (errorsDatas | v4[1])
+    if (errorsDatas | equalCopy[1])
     {
       v7 = [(NSMutableArray *)errorsDatas isEqual:?];
     }
@@ -283,15 +283,15 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v4[2];
+  v5 = fromCopy[2];
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -321,7 +321,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = v4[1];
+  v10 = fromCopy[1];
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {

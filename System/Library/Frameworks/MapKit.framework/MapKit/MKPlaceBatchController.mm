@@ -1,15 +1,15 @@
 @interface MKPlaceBatchController
 - (MKPlaceBatchConsumer)batchConsumer;
-- (MKPlaceBatchController)initWithItemIdentifiers:(id)a3 withBatchSize:(unint64_t)a4 minimumNumberOfItemBeforeFetching:(unint64_t)a5 shouldLoadFirstBatchImmediately:(BOOL)a6 usingBatchFetcher:(id)a7 usingBatchConsumer:(id)a8 displayedItemCount:(unint64_t)a9;
+- (MKPlaceBatchController)initWithItemIdentifiers:(id)identifiers withBatchSize:(unint64_t)size minimumNumberOfItemBeforeFetching:(unint64_t)fetching shouldLoadFirstBatchImmediately:(BOOL)immediately usingBatchFetcher:(id)fetcher usingBatchConsumer:(id)consumer displayedItemCount:(unint64_t)count;
 - (MKPlaceBatchFetcher)batchFetcher;
 - (id)batchesForTesting;
 - (int64_t)lastDisplayedIndexForTesting;
 - (int64_t)lastFetchedBatchForTesting;
 - (int64_t)stateForTesting;
-- (void)buildBatchesFromIdentifiers:(id)a3;
-- (void)didDisplayItemAtIndex:(unint64_t)a3;
-- (void)fetchBatchItemsWithIdentifiers:(id)a3;
-- (void)handleFetchGuidesCompleted:(BOOL)a3 error:(id)a4 usingGuides:(id)a5;
+- (void)buildBatchesFromIdentifiers:(id)identifiers;
+- (void)didDisplayItemAtIndex:(unint64_t)index;
+- (void)fetchBatchItemsWithIdentifiers:(id)identifiers;
+- (void)handleFetchGuidesCompleted:(BOOL)completed error:(id)error usingGuides:(id)guides;
 @end
 
 @implementation MKPlaceBatchController
@@ -107,14 +107,14 @@
   return v3;
 }
 
-- (void)buildBatchesFromIdentifiers:(id)a3
+- (void)buildBatchesFromIdentifiers:(id)identifiers
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  self->_totalIdentifiers = [v4 count];
-  v5 = [(MKPlaceBatchController *)self batchSize];
-  v6 = [v4 count] / v5;
-  if ([v4 count] % v5)
+  identifiersCopy = identifiers;
+  self->_totalIdentifiers = [identifiersCopy count];
+  batchSize = [(MKPlaceBatchController *)self batchSize];
+  v6 = [identifiersCopy count] / batchSize;
+  if ([identifiersCopy count] % batchSize)
   {
     v7 = v6 + 1;
   }
@@ -130,16 +130,16 @@
   {
     v10 = 0;
     v11 = 0;
-    v12 = v5;
+    v12 = batchSize;
     do
     {
-      v13 = v11 + v5;
+      v13 = v11 + batchSize;
       v14 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:?];
-      v15 = [v4 objectsAtIndexes:v14];
+      v15 = [identifiersCopy objectsAtIndexes:v14];
       [v8 addObject:v15];
 
-      v10 -= v5;
-      v12 += v5;
+      v10 -= batchSize;
+      v12 += batchSize;
       v11 = v13;
     }
 
@@ -157,21 +157,21 @@
     v20 = 134218496;
     v21 = v19;
     v22 = 2048;
-    v23 = [v4 count];
+    v23 = [identifiersCopy count];
     v24 = 2048;
-    v25 = v5;
+    v25 = batchSize;
     _os_log_impl(&dword_1A2EA0000, v18, OS_LOG_TYPE_DEBUG, "[<-->] Built %ld batches from %ld identifiers. Maximum batch size: %ld", &v20, 0x20u);
   }
 }
 
-- (void)handleFetchGuidesCompleted:(BOOL)a3 error:(id)a4 usingGuides:(id)a5
+- (void)handleFetchGuidesCompleted:(BOOL)completed error:(id)error usingGuides:(id)guides
 {
-  v6 = a3;
+  completedCopy = completed;
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  errorCopy = error;
+  guidesCopy = guides;
+  v10 = guidesCopy;
+  if (errorCopy)
   {
     --self->_lastFetchedBatch;
     self->_state = 3;
@@ -182,24 +182,24 @@
       v20 = 134218242;
       v21 = lastFetchedBatch;
       v22 = 2112;
-      v23 = v8;
+      v23 = errorCopy;
       _os_log_impl(&dword_1A2EA0000, v11, OS_LOG_TYPE_INFO, "[<-->] Failed Fetching Batch: %ld. Informing cosumer. Error: %@", &v20, 0x16u);
     }
 
-    v13 = [(MKPlaceBatchController *)self batchConsumer];
-    v14 = v13;
+    batchConsumer = [(MKPlaceBatchController *)self batchConsumer];
+    v14 = batchConsumer;
     v15 = 0;
     v16 = 0;
 LABEL_9:
-    [v13 shouldConsumeBatch:v15 fetchedBatch:v16];
+    [batchConsumer shouldConsumeBatch:v15 fetchedBatch:v16];
 
     goto LABEL_10;
   }
 
-  if (v6)
+  if (completedCopy)
   {
     self->_state = 2;
-    self->_totalIdentifiersFetched += [v9 count];
+    self->_totalIdentifiersFetched += [guidesCopy count];
     v17 = MKGetCuratedCollectionsBatchControllerLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -212,8 +212,8 @@ LABEL_9:
       _os_log_impl(&dword_1A2EA0000, v17, OS_LOG_TYPE_INFO, "[<-->] Finished Fetching Batch: %ld. Informing cosumer.. Total Identifiers fetched: %ld", &v20, 0x16u);
     }
 
-    v13 = [(MKPlaceBatchController *)self batchConsumer];
-    v14 = v13;
+    batchConsumer = [(MKPlaceBatchController *)self batchConsumer];
+    v14 = batchConsumer;
     v15 = 1;
     v16 = v10;
     goto LABEL_9;
@@ -222,26 +222,26 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)fetchBatchItemsWithIdentifiers:(id)a3
+- (void)fetchBatchItemsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(MKPlaceBatchController *)self batchConsumer];
+  identifiersCopy = identifiers;
+  batchConsumer = [(MKPlaceBatchController *)self batchConsumer];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MKPlaceBatchController *)self batchConsumer];
-    [v7 didStartFetchingBatch];
+    batchConsumer2 = [(MKPlaceBatchController *)self batchConsumer];
+    [batchConsumer2 didStartFetchingBatch];
   }
 
   objc_initWeak(&location, self);
-  v8 = [(MKPlaceBatchController *)self batchFetcher];
+  batchFetcher = [(MKPlaceBatchController *)self batchFetcher];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __57__MKPlaceBatchController_fetchBatchItemsWithIdentifiers___block_invoke;
   v9[3] = &unk_1E76C6240;
   objc_copyWeak(&v10, &location);
-  [v8 fetchGuidesWithIdentifiers:v4 completion:v9];
+  [batchFetcher fetchGuidesWithIdentifiers:identifiersCopy completion:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -259,7 +259,7 @@ void __57__MKPlaceBatchController_fetchBatchItemsWithIdentifiers___block_invoke(
   }
 }
 
-- (void)didDisplayItemAtIndex:(unint64_t)a3
+- (void)didDisplayItemAtIndex:(unint64_t)index
 {
   batchControllerQueue = self->_batchControllerQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -267,7 +267,7 @@ void __57__MKPlaceBatchController_fetchBatchItemsWithIdentifiers___block_invoke(
   v4[2] = __48__MKPlaceBatchController_didDisplayItemAtIndex___block_invoke;
   v4[3] = &unk_1E76C9AD0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = index;
   dispatch_async(batchControllerQueue, v4);
 }
 
@@ -340,12 +340,12 @@ void __48__MKPlaceBatchController_didDisplayItemAtIndex___block_invoke(uint64_t 
   }
 }
 
-- (MKPlaceBatchController)initWithItemIdentifiers:(id)a3 withBatchSize:(unint64_t)a4 minimumNumberOfItemBeforeFetching:(unint64_t)a5 shouldLoadFirstBatchImmediately:(BOOL)a6 usingBatchFetcher:(id)a7 usingBatchConsumer:(id)a8 displayedItemCount:(unint64_t)a9
+- (MKPlaceBatchController)initWithItemIdentifiers:(id)identifiers withBatchSize:(unint64_t)size minimumNumberOfItemBeforeFetching:(unint64_t)fetching shouldLoadFirstBatchImmediately:(BOOL)immediately usingBatchFetcher:(id)fetcher usingBatchConsumer:(id)consumer displayedItemCount:(unint64_t)count
 {
-  v11 = a6;
-  v15 = a3;
-  v16 = a7;
-  v17 = a8;
+  immediatelyCopy = immediately;
+  identifiersCopy = identifiers;
+  fetcherCopy = fetcher;
+  consumerCopy = consumer;
   v24.receiver = self;
   v24.super_class = MKPlaceBatchController;
   v18 = [(MKPlaceBatchController *)&v24 init];
@@ -354,30 +354,30 @@ void __48__MKPlaceBatchController_didDisplayItemAtIndex___block_invoke(uint64_t 
     goto LABEL_8;
   }
 
-  v19 = [v15 count];
+  v19 = [identifiersCopy count];
   v20 = 0;
-  if (a5 <= a4 && a4 && v19)
+  if (fetching <= size && size && v19)
   {
-    *(v18 + 9) = a4;
-    *(v18 + 10) = a5;
-    objc_storeWeak(v18 + 11, v16);
-    objc_storeWeak(v18 + 12, v17);
+    *(v18 + 9) = size;
+    *(v18 + 10) = fetching;
+    objc_storeWeak(v18 + 11, fetcherCopy);
+    objc_storeWeak(v18 + 12, consumerCopy);
     v21 = geo_dispatch_queue_create_with_qos();
     v22 = *(v18 + 8);
     *(v18 + 8) = v21;
 
-    [v18 buildBatchesFromIdentifiers:v15];
+    [v18 buildBatchesFromIdentifiers:identifiersCopy];
     *(v18 + 24) = xmmword_1A30F6E20;
     *(v18 + 1) = 0;
-    if (v11)
+    if (immediatelyCopy)
     {
       *(v18 + 7) = 0;
-      [v18 didDisplayItemAtIndex:a5];
+      [v18 didDisplayItemAtIndex:fetching];
     }
 
     else
     {
-      *(v18 + 7) = a9;
+      *(v18 + 7) = count;
     }
 
 LABEL_8:

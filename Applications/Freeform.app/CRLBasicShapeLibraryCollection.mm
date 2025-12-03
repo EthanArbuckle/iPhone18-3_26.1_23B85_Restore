@@ -1,23 +1,23 @@
 @interface CRLBasicShapeLibraryCollection
-- (CRLBasicShapeLibraryCollection)initWithBasicShapeLibrary:(id)a3;
+- (CRLBasicShapeLibraryCollection)initWithBasicShapeLibrary:(id)library;
 - (NSString)name;
-- (id)shapeAtIndex:(unint64_t)a3;
-- (id)shapeWithIdentifier:(id)a3;
+- (id)shapeAtIndex:(unint64_t)index;
+- (id)shapeWithIdentifier:(id)identifier;
 - (unint64_t)numberOfShapes;
 @end
 
 @implementation CRLBasicShapeLibraryCollection
 
-- (CRLBasicShapeLibraryCollection)initWithBasicShapeLibrary:(id)a3
+- (CRLBasicShapeLibraryCollection)initWithBasicShapeLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v9.receiver = self;
   v9.super_class = CRLBasicShapeLibraryCollection;
   v6 = [(CRLBasicShapeLibraryCollection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_basicShapeLibrary, a3);
+    objc_storeStrong(&v6->_basicShapeLibrary, library);
   }
 
   return v7;
@@ -25,29 +25,29 @@
 
 - (NSString)name
 {
-  v2 = [(CRLBasicShapeLibraryCollection *)self p_basicShapeLibrary];
-  v3 = [v2 name];
+  p_basicShapeLibrary = [(CRLBasicShapeLibraryCollection *)self p_basicShapeLibrary];
+  name = [p_basicShapeLibrary name];
 
-  return v3;
+  return name;
 }
 
 - (unint64_t)numberOfShapes
 {
-  v2 = [(CRLBasicShapeLibraryCollection *)self p_basicShapeLibrary];
-  v3 = [v2 numberOfBasicShapes];
+  p_basicShapeLibrary = [(CRLBasicShapeLibraryCollection *)self p_basicShapeLibrary];
+  numberOfBasicShapes = [p_basicShapeLibrary numberOfBasicShapes];
 
-  return v3;
+  return numberOfBasicShapes;
 }
 
-- (id)shapeAtIndex:(unint64_t)a3
+- (id)shapeAtIndex:(unint64_t)index
 {
-  v4 = [(CRLBasicShapeLibraryCollection *)self p_basicShapeLibrary];
-  v5 = [v4 basicShapeAtIndex:a3];
+  p_basicShapeLibrary = [(CRLBasicShapeLibraryCollection *)self p_basicShapeLibrary];
+  v5 = [p_basicShapeLibrary basicShapeAtIndex:index];
 
   return v5;
 }
 
-- (id)shapeWithIdentifier:(id)a3
+- (id)shapeWithIdentifier:(id)identifier
 {
   v3 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)

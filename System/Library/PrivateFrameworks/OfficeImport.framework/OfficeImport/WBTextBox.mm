@@ -1,48 +1,48 @@
 @interface WBTextBox
-+ (void)checkForOleObject:(id)a3;
-+ (void)readFrom:(void *)a3 parent:(id)a4 reader:(id)a5;
-+ (void)readTextFrom:(id)a3 to:(id)a4 chain:(unsigned __int16)a5;
++ (void)checkForOleObject:(id)object;
++ (void)readFrom:(void *)from parent:(id)parent reader:(id)reader;
++ (void)readTextFrom:(id)from to:(id)to chain:(unsigned __int16)chain;
 @end
 
 @implementation WBTextBox
 
-+ (void)readFrom:(void *)a3 parent:(id)a4 reader:(id)a5
++ (void)readFrom:(void *)from parent:(id)parent reader:(id)reader
 {
-  v40 = a4;
-  v7 = a5;
-  isTextIDSet = EshTextBox::isTextIDSet((a3 + 272));
+  parentCopy = parent;
+  readerCopy = reader;
+  isTextIDSet = EshTextBox::isTextIDSet((from + 272));
   if (isTextIDSet)
   {
-    TextID = EshTextBox::getTextID((a3 + 272));
+    TextID = EshTextBox::getTextID((from + 272));
   }
 
   else
   {
-    if (!EshShapeImageData::isOLEIDSet((a3 + 480)))
+    if (!EshShapeImageData::isOLEIDSet((from + 480)))
     {
       goto LABEL_19;
     }
 
-    TextID = EshShapeImageData::getOLEID((a3 + 480));
+    TextID = EshShapeImageData::getOLEID((from + 480));
   }
 
   if (TextID != -1)
   {
     v39 = objc_alloc_init(WDATextBox);
-    v9 = [v7 targetDocument];
-    [v40 setTextBox:v39 document:v9];
+    targetDocument = [readerCopy targetDocument];
+    [parentCopy setTextBox:v39 document:targetDocument];
 
     [(WDATextBox *)v39 setOle:isTextIDSet ^ 1u];
-    [(WDATextBox *)v39 setParent:v40];
-    v10 = [v7 targetDocument];
-    [(WDATextBox *)v39 setDocument:v10];
+    [(WDATextBox *)v39 setParent:parentCopy];
+    targetDocument2 = [readerCopy targetDocument];
+    [(WDATextBox *)v39 setDocument:targetDocument2];
 
-    v11 = [v40 drawable];
-    v12 = [v11 id];
+    drawable = [parentCopy drawable];
+    v12 = [drawable id];
 
-    if (EshTextBox::isNextTextboxSet((a3 + 272)))
+    if (EshTextBox::isNextTextboxSet((from + 272)))
     {
-      NextTextbox = EshTextBox::getNextTextbox((a3 + 272));
+      NextTextbox = EshTextBox::getNextTextbox((from + 272));
       if (NextTextbox == v12)
       {
         v14 = 0;
@@ -60,34 +60,34 @@
     }
 
     [(WDATextBox *)v39 setNextTextBoxId:v14];
-    v15 = [v40 drawable];
-    v16 = [v7 previousFlowElement];
+    drawable2 = [parentCopy drawable];
+    previousFlowElement = [readerCopy previousFlowElement];
     v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{-[WDATextBox nextTextBoxId](v39, "nextTextBoxId")}];
-    [v16 setObject:v15 forKeyedSubscript:v17];
+    [previousFlowElement setObject:drawable2 forKeyedSubscript:v17];
 
-    v18 = [v7 previousFlowElement];
+    previousFlowElement2 = [readerCopy previousFlowElement];
     v19 = MEMORY[0x277CCABB0];
-    v20 = [v40 drawable];
-    v21 = [v19 numberWithUnsignedInt:{objc_msgSend(v20, "id")}];
-    v22 = [v18 objectForKeyedSubscript:v21];
+    drawable3 = [parentCopy drawable];
+    v21 = [v19 numberWithUnsignedInt:{objc_msgSend(drawable3, "id")}];
+    drawable5 = [previousFlowElement2 objectForKeyedSubscript:v21];
 
-    if (!v22)
+    if (!drawable5)
     {
       v23 = MEMORY[0x277CCABB0];
-      v24 = [v40 drawable];
-      v25 = [v23 numberWithUnsignedInt:{objc_msgSend(v24, "id")}];
+      drawable4 = [parentCopy drawable];
+      v25 = [v23 numberWithUnsignedInt:{objc_msgSend(drawable4, "id")}];
       [(WDATextBox *)v39 setFlowId:v25];
 
       [(WDATextBox *)v39 setFlowSequence:&unk_286F6DD28];
-      v22 = [v40 drawable];
+      drawable5 = [parentCopy drawable];
     }
 
-    v37 = [v22 clientData];
-    for (i = [v37 textBox];
+    clientData = [drawable5 clientData];
+    for (i = [clientData textBox];
     {
       v27 = objc_opt_class();
-      v28 = [v7 officeArtState];
-      v29 = [v28 drawableForShapeId:{objc_msgSend(i, "nextTextBoxId")}];
+      officeArtState = [readerCopy officeArtState];
+      v29 = [officeArtState drawableForShapeId:{objc_msgSend(i, "nextTextBoxId")}];
       v30 = TSUCheckedDynamicCast(v27, v29);
 
       if (!v30)
@@ -95,52 +95,52 @@
         break;
       }
 
-      v31 = [v30 clientData];
-      v32 = [v31 textBox];
-      v33 = [i flowId];
-      [v32 setFlowId:v33];
+      clientData2 = [v30 clientData];
+      textBox = [clientData2 textBox];
+      flowId = [i flowId];
+      [textBox setFlowId:flowId];
 
       v34 = MEMORY[0x277CCABB0];
-      v35 = [i flowSequence];
-      v36 = [v34 numberWithUnsignedInt:{objc_msgSend(v35, "unsignedIntValue") + 1}];
-      [v32 setFlowSequence:v36];
+      flowSequence = [i flowSequence];
+      v36 = [v34 numberWithUnsignedInt:{objc_msgSend(flowSequence, "unsignedIntValue") + 1}];
+      [textBox setFlowSequence:v36];
     }
 
     if (!TextID)
     {
-      [v7 cacheTextBox:v39 withChainIndex:HIWORD(TextID)];
+      [readerCopy cacheTextBox:v39 withChainIndex:HIWORD(TextID)];
     }
   }
 
 LABEL_19:
 }
 
-+ (void)readTextFrom:(id)a3 to:(id)a4 chain:(unsigned __int16)a5
++ (void)readTextFrom:(id)from to:(id)to chain:(unsigned __int16)chain
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 parent];
-  v11 = [v10 textType];
+  chainCopy = chain;
+  fromCopy = from;
+  toCopy = to;
+  parent = [toCopy parent];
+  textType = [parent textType];
 
-  if (v11 == 2)
+  if (textType == 2)
   {
-    v12 = [v8 headerStoryTable];
+    headerStoryTable = [fromCopy headerStoryTable];
   }
 
   else
   {
-    v12 = [v8 storyTable];
+    headerStoryTable = [fromCopy storyTable];
   }
 
-  if (v5 - 1 < ((*(v12 + 3) - *(v12 + 2)) >> 3))
+  if (chainCopy - 1 < ((*(headerStoryTable + 3) - *(headerStoryTable + 2)) >> 3))
   {
-    v13 = *(WrdBookmarkTable::getBookmark(v12, v5 - 1) + 8);
+    v13 = *(WrdBookmarkTable::getBookmark(headerStoryTable, chainCopy - 1) + 8);
     v22 = &unk_286ED3718;
-    v14 = [v9 parent];
-    v15 = [v14 textType];
+    parent2 = [toCopy parent];
+    textType2 = [parent2 textType];
 
-    if (v15 == 2)
+    if (textType2 == 2)
     {
       v16 = 7;
     }
@@ -152,47 +152,47 @@ LABEL_19:
 
     v23 = v16;
     v24 = v13;
-    v17 = [v9 text];
+    text = [toCopy text];
 
-    if (!v17)
+    if (!text)
     {
       v18 = [WDText alloc];
-      v19 = [v9 document];
-      v20 = [(WDText *)v18 initWithDocument:v19 textType:v23];
+      document = [toCopy document];
+      v20 = [(WDText *)v18 initWithDocument:document textType:v23];
 
-      [v9 setText:v20];
+      [toCopy setText:v20];
     }
 
-    v21 = [v9 text];
-    [WBText readFrom:v8 text:v21 textRun:&v22];
+    text2 = [toCopy text];
+    [WBText readFrom:fromCopy text:text2 textRun:&v22];
 
-    [a1 checkForOleObject:v9];
+    [self checkForOleObject:toCopy];
   }
 }
 
-+ (void)checkForOleObject:(id)a3
++ (void)checkForOleObject:(id)object
 {
-  v25 = a3;
-  if (([v25 isOle] & 1) == 0)
+  objectCopy = object;
+  if (([objectCopy isOle] & 1) == 0)
   {
     goto LABEL_43;
   }
 
-  v3 = [v25 text];
-  v4 = [v3 blockCount];
+  text = [objectCopy text];
+  blockCount = [text blockCount];
 
-  if (v4 != 1)
+  if (blockCount != 1)
   {
-    v16 = [v25 text];
-    v17 = [v16 blockCount];
+    text2 = [objectCopy text];
+    blockCount2 = [text2 blockCount];
 
-    if (v17 != 2)
+    if (blockCount2 != 2)
     {
       goto LABEL_43;
     }
 
-    v18 = [v25 text];
-    v6 = [v18 blockAt:1];
+    text3 = [objectCopy text];
+    v6 = [text3 blockAt:1];
 
     if ([v6 blockType])
     {
@@ -213,8 +213,8 @@ LABEL_19:
         goto LABEL_40;
       }
 
-      v19 = [v11 string];
-      v20 = [v19 length];
+      string = [v11 string];
+      v20 = [string length];
 
       if (v20)
       {
@@ -223,8 +223,8 @@ LABEL_19:
     }
   }
 
-  v5 = [v25 text];
-  v6 = [v5 blockAt:0];
+  text4 = [objectCopy text];
+  v6 = [text4 blockAt:0];
 
   if ([v6 blockType])
   {
@@ -232,8 +232,8 @@ LABEL_19:
   }
 
   v7 = v6;
-  v8 = [v7 runCount];
-  if (!v8)
+  runCount = [v7 runCount];
+  if (!runCount)
   {
     v11 = 0;
     goto LABEL_40;
@@ -244,8 +244,8 @@ LABEL_19:
   v11 = 0;
   do
   {
-    v12 = [v7 runAt:v9];
-    v13 = [v12 runType];
+    drawable = [v7 runAt:v9];
+    runType = [drawable runType];
     if (v10 > 1)
     {
       if (v10 != 2)
@@ -253,12 +253,12 @@ LABEL_19:
         goto LABEL_39;
       }
 
-      switch(v13)
+      switch(runType)
       {
         case 12:
           goto LABEL_19;
         case 7:
-          if ([v12 fieldMarkerType] != 21)
+          if ([drawable fieldMarkerType] != 21)
           {
             goto LABEL_39;
           }
@@ -267,7 +267,7 @@ LABEL_19:
           v15 = 1;
           break;
         case 5:
-          v14 = v12;
+          v14 = drawable;
 
           v15 = 0;
           v10 = 2;
@@ -282,9 +282,9 @@ LABEL_19:
     {
       if (v10)
       {
-        if (v13)
+        if (runType)
         {
-          if (v13 != 7 || [v12 fieldMarkerType] != 20)
+          if (runType != 7 || [drawable fieldMarkerType] != 20)
           {
             goto LABEL_39;
           }
@@ -296,7 +296,7 @@ LABEL_19:
         }
       }
 
-      else if (v13 != 7 || [v12 fieldMarkerType] != 19)
+      else if (runType != 7 || [drawable fieldMarkerType] != 19)
       {
         goto LABEL_39;
       }
@@ -310,7 +310,7 @@ LABEL_21:
     ++v9;
   }
 
-  while (v9 < v8);
+  while (v9 < runCount);
   if (v11)
   {
     v21 = v15;
@@ -323,15 +323,15 @@ LABEL_21:
 
   if (v21)
   {
-    v22 = [v25 parent];
-    v12 = [v22 drawable];
+    parent = [objectCopy parent];
+    drawable = [parent drawable];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = [v11 drawable];
-      v24 = [v23 ole];
-      [v12 setOle:v24];
+      drawable2 = [v11 drawable];
+      v24 = [drawable2 ole];
+      [drawable setOle:v24];
     }
 
 LABEL_39:

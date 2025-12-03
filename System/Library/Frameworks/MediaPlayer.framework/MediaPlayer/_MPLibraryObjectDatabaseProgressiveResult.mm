@@ -1,10 +1,10 @@
 @interface _MPLibraryObjectDatabaseProgressiveResult
-- ($2F6F4602BBD9A38257A07259C79964DD)tokenForDatabase:(id)a3;
+- ($2F6F4602BBD9A38257A07259C79964DD)tokenForDatabase:(id)database;
 @end
 
 @implementation _MPLibraryObjectDatabaseProgressiveResult
 
-- ($2F6F4602BBD9A38257A07259C79964DD)tokenForDatabase:(id)a3
+- ($2F6F4602BBD9A38257A07259C79964DD)tokenForDatabase:(id)database
 {
   v3 = *&self->_token.tokenRevision;
   tokenID = self->_token.tokenID;

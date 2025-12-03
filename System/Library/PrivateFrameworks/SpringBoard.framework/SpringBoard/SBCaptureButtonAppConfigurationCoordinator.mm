@@ -2,14 +2,14 @@
 - (SBCaptureButtonAppConfigurationCoordinator)init;
 - (void)_notifyObserversOfConfigurationUpdates;
 - (void)_reevaluateCurrentAssociatedApp;
-- (void)_setAssociatedAppBundleIdentifier:(id)a3 shouldPersistToDefaults:(BOOL)a4;
+- (void)_setAssociatedAppBundleIdentifier:(id)identifier shouldPersistToDefaults:(BOOL)defaults;
 - (void)_setAssociatedAppBundleIdentifierFromDefaults;
-- (void)_setEligibleApps:(id)a3;
-- (void)_updateLaunchActionsAssertionForAssociatedAppBundleIdentifier:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)captureApplicationCenter:(id)a3 didUpdateKnownApplications:(id)a4;
-- (void)captureButtonAppConfigurationServer:(id)a3 setCurrentAssociatedAppUsingBundleIdentifier:(id)a4;
-- (void)removeObserver:(id)a3;
+- (void)_setEligibleApps:(id)apps;
+- (void)_updateLaunchActionsAssertionForAssociatedAppBundleIdentifier:(id)identifier;
+- (void)addObserver:(id)observer;
+- (void)captureApplicationCenter:(id)center didUpdateKnownApplications:(id)applications;
+- (void)captureButtonAppConfigurationServer:(id)server setCurrentAssociatedAppUsingBundleIdentifier:(id)identifier;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation SBCaptureButtonAppConfigurationCoordinator
@@ -21,14 +21,14 @@
   v2 = [(SBCaptureButtonAppConfigurationCoordinator *)&v32 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
     v5 = +[SBDefaults localDefaults];
-    v6 = [v5 captureButtonDefaults];
+    captureButtonDefaults = [v5 captureButtonDefaults];
     captureButtonDefaults = v2->_captureButtonDefaults;
-    v2->_captureButtonDefaults = v6;
+    v2->_captureButtonDefaults = captureButtonDefaults;
 
     objc_initWeak(&location, v2);
     v8 = v2->_captureButtonDefaults;
@@ -57,9 +57,9 @@
 
     else
     {
-      v17 = [(SBCaptureButtonDefaults *)v2->_captureButtonDefaults captureButtonAssociatedAppBundleIdentifier];
+      captureButtonAssociatedAppBundleIdentifier = [(SBCaptureButtonDefaults *)v2->_captureButtonDefaults captureButtonAssociatedAppBundleIdentifier];
       v18 = v2->_associatedAppBundleIdentifier;
-      v2->_associatedAppBundleIdentifier = v17;
+      v2->_associatedAppBundleIdentifier = captureButtonAssociatedAppBundleIdentifier;
 
       v19 = MEMORY[0x277CBEB98];
       eligibleApps = [objc_alloc(MEMORY[0x277D66A30]) initWithBundleIdentifier:v2->_associatedAppBundleIdentifier cameraTCCIsAuthorized:1];
@@ -95,62 +95,62 @@ void __50__SBCaptureButtonAppConfigurationCoordinator_init__block_invoke(uint64_
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v6 = v4;
-    v5 = [(NSHashTable *)self->_observers containsObject:v4];
-    v4 = v6;
+    v6 = observerCopy;
+    v5 = [(NSHashTable *)self->_observers containsObject:observerCopy];
+    observerCopy = v6;
     if (!v5)
     {
       [(NSHashTable *)self->_observers addObject:v6];
-      v4 = v6;
+      observerCopy = v6;
     }
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
   }
 }
 
-- (void)captureButtonAppConfigurationServer:(id)a3 setCurrentAssociatedAppUsingBundleIdentifier:(id)a4
+- (void)captureButtonAppConfigurationServer:(id)server setCurrentAssociatedAppUsingBundleIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  serverCopy = server;
+  identifierCopy = identifier;
   v8 = SBLogCameraCaptureAppConfiguration();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
-    v13 = v7;
+    v13 = identifierCopy;
     v14 = 2114;
-    v15 = v6;
+    v15 = serverCopy;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Coordinator %p set current associated app to %{public}@ from server %{public}@", buf, 0x20u);
   }
 
-  v9 = v7;
+  v9 = identifierCopy;
   BSDispatchMain();
 }
 
-- (void)captureApplicationCenter:(id)a3 didUpdateKnownApplications:(id)a4
+- (void)captureApplicationCenter:(id)center didUpdateKnownApplications:(id)applications
 {
   v34 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v6 = a4;
+  centerCopy = center;
+  applicationsCopy = applications;
   v7 = [MEMORY[0x277CBEB58] set];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = v6;
+  v8 = applicationsCopy;
   v9 = [v8 countByEnumeratingWithState:&v23 objects:v33 count:16];
   if (v9)
   {
@@ -167,9 +167,9 @@ void __50__SBCaptureButtonAppConfigurationCoordinator_init__block_invoke(uint64_
 
         v13 = *(*(&v23 + 1) + 8 * i);
         v14 = objc_alloc(MEMORY[0x277D66A30]);
-        v15 = [v13 bundleIdentifier];
-        v16 = [v13 attributes];
-        v17 = [v14 initWithBundleIdentifier:v15 cameraTCCIsAuthorized:{objc_msgSend(v16, "cameraTCCStatus") == 4}];
+        bundleIdentifier = [v13 bundleIdentifier];
+        attributes = [v13 attributes];
+        v17 = [v14 initWithBundleIdentifier:bundleIdentifier cameraTCCIsAuthorized:{objc_msgSend(attributes, "cameraTCCStatus") == 4}];
 
         [v7 addObject:v17];
       }
@@ -182,17 +182,17 @@ void __50__SBCaptureButtonAppConfigurationCoordinator_init__block_invoke(uint64_
 
   v18 = [v7 copy];
   v19 = [v18 bs_map:&__block_literal_global_112];
-  v20 = [v19 allObjects];
+  allObjects = [v19 allObjects];
 
   v21 = SBLogCameraCaptureAppConfiguration();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v28 = self;
+    selfCopy = self;
     v29 = 2114;
-    v30 = v20;
+    v30 = allObjects;
     v31 = 2114;
-    v32 = v22;
+    v32 = centerCopy;
     _os_log_impl(&dword_21ED4E000, v21, OS_LOG_TYPE_DEFAULT, "Coordinator %p received updated eligible apps bundle identifiers %{public}@ according to source %{public}@", buf, 0x20u);
   }
 
@@ -203,10 +203,10 @@ void __50__SBCaptureButtonAppConfigurationCoordinator_init__block_invoke(uint64_
 - (void)_reevaluateCurrentAssociatedApp
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [SBApp authenticationController];
-  v4 = [v3 hasAuthenticatedAtLeastOnceSinceBoot];
+  authenticationController = [SBApp authenticationController];
+  hasAuthenticatedAtLeastOnceSinceBoot = [authenticationController hasAuthenticatedAtLeastOnceSinceBoot];
 
-  if (v4)
+  if (hasAuthenticatedAtLeastOnceSinceBoot)
   {
     *buf = 0;
     v12 = buf;
@@ -222,8 +222,8 @@ void __50__SBCaptureButtonAppConfigurationCoordinator_init__block_invoke(uint64_
     [(NSSet *)eligibleApps enumerateObjectsUsingBlock:v10];
     if (v12[24])
     {
-      v6 = [(SBCaptureButtonDefaults *)self->_captureButtonDefaults captureButtonAssociatedAppBundleIdentifier];
-      [(SBCaptureButtonAppConfigurationCoordinator *)self _setAssociatedAppBundleIdentifier:v6 shouldPersistToDefaults:0];
+      captureButtonAssociatedAppBundleIdentifier = [(SBCaptureButtonDefaults *)self->_captureButtonDefaults captureButtonAssociatedAppBundleIdentifier];
+      [(SBCaptureButtonAppConfigurationCoordinator *)self _setAssociatedAppBundleIdentifier:captureButtonAssociatedAppBundleIdentifier shouldPersistToDefaults:0];
     }
 
     else
@@ -236,7 +236,7 @@ void __50__SBCaptureButtonAppConfigurationCoordinator_init__block_invoke(uint64_
     {
       associatedAppBundleIdentifier = self->_associatedAppBundleIdentifier;
       *v15 = 134218242;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = associatedAppBundleIdentifier;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Coordinator %p reevaluated current associated app to %{public}@", v15, 0x16u);
@@ -285,14 +285,14 @@ void __77__SBCaptureButtonAppConfigurationCoordinator__reevaluateCurrentAssociat
   }
 
   v8 = associatedAppBundleIdentifier;
-  v4 = [(SBCaptureButtonDefaults *)self->_captureButtonDefaults captureButtonAssociatedAppBundleIdentifier];
+  captureButtonAssociatedAppBundleIdentifier = [(SBCaptureButtonDefaults *)self->_captureButtonDefaults captureButtonAssociatedAppBundleIdentifier];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(SBCaptureButtonDefaults *)self->_captureButtonDefaults captureButtonAssociatedAppBundleIdentifier];
+    captureButtonAssociatedAppBundleIdentifier2 = [(SBCaptureButtonDefaults *)self->_captureButtonDefaults captureButtonAssociatedAppBundleIdentifier];
     v7 = self->_associatedAppBundleIdentifier;
-    self->_associatedAppBundleIdentifier = v6;
+    self->_associatedAppBundleIdentifier = captureButtonAssociatedAppBundleIdentifier2;
 
     [(SBCaptureButtonAppConfigurationCoordinator *)self _notifyObserversOfConfigurationUpdates];
     [(SBSCaptureButtonAppConfigurationServer *)self->_server setAssociatedAppBundleIdentifier:self->_associatedAppBundleIdentifier];
@@ -301,14 +301,14 @@ void __77__SBCaptureButtonAppConfigurationCoordinator__reevaluateCurrentAssociat
   [(SBCaptureButtonAppConfigurationCoordinator *)self _updateLaunchActionsAssertionForAssociatedAppBundleIdentifier:v8];
 }
 
-- (void)_setAssociatedAppBundleIdentifier:(id)a3 shouldPersistToDefaults:(BOOL)a4
+- (void)_setAssociatedAppBundleIdentifier:(id)identifier shouldPersistToDefaults:(BOOL)defaults
 {
-  v4 = a4;
+  defaultsCopy = defaults;
   p_associatedAppBundleIdentifier = &self->_associatedAppBundleIdentifier;
-  v10 = a3;
+  identifierCopy = identifier;
   if ((BSEqualStrings() & 1) == 0)
   {
-    objc_storeStrong(&self->_associatedAppBundleIdentifier, a3);
+    objc_storeStrong(&self->_associatedAppBundleIdentifier, identifier);
     v8 = *p_associatedAppBundleIdentifier;
     if (!*p_associatedAppBundleIdentifier)
     {
@@ -316,26 +316,26 @@ void __77__SBCaptureButtonAppConfigurationCoordinator__reevaluateCurrentAssociat
     }
 
     v9 = v8;
-    if (v4)
+    if (defaultsCopy)
     {
       [(SBCaptureButtonDefaults *)self->_captureButtonDefaults setCaptureButtonAssociatedAppBundleIdentifier:v9];
     }
 
     [(SBCaptureButtonAppConfigurationCoordinator *)self _notifyObserversOfConfigurationUpdates];
-    [(SBSCaptureButtonAppConfigurationServer *)self->_server setAssociatedAppBundleIdentifier:v10];
+    [(SBSCaptureButtonAppConfigurationServer *)self->_server setAssociatedAppBundleIdentifier:identifierCopy];
   }
 
-  [(SBCaptureButtonAppConfigurationCoordinator *)self _updateLaunchActionsAssertionForAssociatedAppBundleIdentifier:v10];
+  [(SBCaptureButtonAppConfigurationCoordinator *)self _updateLaunchActionsAssertionForAssociatedAppBundleIdentifier:identifierCopy];
 }
 
-- (void)_setEligibleApps:(id)a3
+- (void)_setEligibleApps:(id)apps
 {
-  v5 = a3;
+  appsCopy = apps;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_eligibleApps, a3);
+    objc_storeStrong(&self->_eligibleApps, apps);
     [(SBCaptureButtonAppConfigurationCoordinator *)self _notifyObserversOfConfigurationUpdates];
-    [(SBSCaptureButtonAppConfigurationServer *)self->_server setEligibleApps:v5];
+    [(SBSCaptureButtonAppConfigurationServer *)self->_server setEligibleApps:appsCopy];
   }
 }
 
@@ -346,8 +346,8 @@ void __77__SBCaptureButtonAppConfigurationCoordinator__reevaluateCurrentAssociat
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSHashTable *)self->_observers allObjects];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v4 = [allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -359,28 +359,28 @@ void __77__SBCaptureButtonAppConfigurationCoordinator__reevaluateCurrentAssociat
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) captureButtonAppConfigurationUpdated:self];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_updateLaunchActionsAssertionForAssociatedAppBundleIdentifier:(id)a3
+- (void)_updateLaunchActionsAssertionForAssociatedAppBundleIdentifier:(id)identifier
 {
-  v12 = a3;
+  identifierCopy = identifier;
   [(BSInvalidatable *)self->_captureApplicationLaunchActionsAssertion invalidate];
-  if (v12)
+  if (identifierCopy)
   {
     v4 = +[SBCaptureApplicationCenter sharedInstance];
-    v5 = [v4 captureApplicationForBundleIdentifier:v12];
+    v5 = [v4 captureApplicationForBundleIdentifier:identifierCopy];
 
     v6 = objc_opt_class();
     v7 = v5;

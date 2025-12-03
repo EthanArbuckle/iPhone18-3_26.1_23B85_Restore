@@ -1,61 +1,61 @@
 @interface PGMemoryTriggerBeginningOfMonth
-- (PGMemoryTriggerBeginningOfMonth)initWithLoggingConnection:(id)a3 momentNodesWithBlockedFeatureCache:(id)a4;
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5;
+- (PGMemoryTriggerBeginningOfMonth)initWithLoggingConnection:(id)connection momentNodesWithBlockedFeatureCache:(id)cache;
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter;
 @end
 
 @implementation PGMemoryTriggerBeginningOfMonth
 
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter
 {
   v61 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  graphCopy = graph;
+  reporterCopy = reporter;
   v53 = 0;
   v54 = &v53;
   v55 = 0x2020000000;
   v56 = 0;
-  v11 = [v10 isCancelledWithProgress:0.0];
+  v11 = [reporterCopy isCancelledWithProgress:0.0];
   *(v54 + 24) = v11;
   if (!v11)
   {
-    v13 = [v8 localDate];
-    v49 = [MEMORY[0x277D27690] components:16 fromDate:v13];
-    v48 = v13;
+    localDate = [contextCopy localDate];
+    v49 = [MEMORY[0x277D27690] components:16 fromDate:localDate];
+    v48 = localDate;
     if ([v49 day] <= 7)
     {
-      v46 = self;
-      v14 = [MEMORY[0x277D27690] startOfMonthForDate:v13];
+      selfCopy = self;
+      v14 = [MEMORY[0x277D27690] startOfMonthForDate:localDate];
       v15 = MEMORY[0x277D27690];
-      v16 = [v8 timeZone];
-      v45 = [v15 universalDateFromLocalDate:v14 inTimeZone:v16];
+      timeZone = [contextCopy timeZone];
+      v45 = [v15 universalDateFromLocalDate:v14 inTimeZone:timeZone];
       v42 = v14;
 
       v17 = [MEMORY[0x277D27690] dateByAddingDays:-1 toDate:v45];
       v18 = MEMORY[0x277D27690];
-      v19 = [v8 timeZone];
-      v44 = [v18 localDateFromUniversalDate:v17 inTimeZone:v19];
+      timeZone2 = [contextCopy timeZone];
+      v44 = [v18 localDateFromUniversalDate:v17 inTimeZone:timeZone2];
       v41 = v17;
 
       v47 = [MEMORY[0x277D27690] components:12 fromDate:v44];
-      v20 = v9;
+      v20 = graphCopy;
       v21 = MEMORY[0x277D22C80];
       v50[0] = MEMORY[0x277D85DD0];
       v50[1] = 3221225472;
       v50[2] = __88__PGMemoryTriggerBeginningOfMonth_resultsTriggeredWithContext_inGraph_progressReporter___block_invoke;
       v50[3] = &unk_278889448;
       v52 = &v53;
-      v40 = v10;
+      v40 = reporterCopy;
       v51 = v40;
       v43 = [v21 progressReporterWithProgressBlock:v50];
-      v22 = [v47 month];
-      v23 = [v47 year];
-      momentNodesWithBlockedFeatureCache = v46->_momentNodesWithBlockedFeatureCache;
-      v25 = [v8 photoLibrary];
-      v26 = [(PGMemoryTrigger *)v46 loggingConnection];
-      v27 = [PGLastMonthAtHomeMemoryGenerator lastMonthAtHomeMemoriesForMonth:v22 year:v23 inGraph:v20 momentNodesWithBlockedFeatureCache:momentNodesWithBlockedFeatureCache photoLibrary:v25 loggingConnection:v26 progressReporter:v43];
+      month = [v47 month];
+      year = [v47 year];
+      momentNodesWithBlockedFeatureCache = selfCopy->_momentNodesWithBlockedFeatureCache;
+      photoLibrary = [contextCopy photoLibrary];
+      loggingConnection = [(PGMemoryTrigger *)selfCopy loggingConnection];
+      v27 = [PGLastMonthAtHomeMemoryGenerator lastMonthAtHomeMemoriesForMonth:month year:year inGraph:v20 momentNodesWithBlockedFeatureCache:momentNodesWithBlockedFeatureCache photoLibrary:photoLibrary loggingConnection:loggingConnection progressReporter:v43];
 
-      v9 = v20;
+      graphCopy = v20;
       if (*(v54 + 24) == 1)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -78,14 +78,14 @@ LABEL_27:
         if (v54[3])
         {
           *(v54 + 24) = 1;
-          v9 = v20;
+          graphCopy = v20;
         }
 
         else
         {
           v37 = [v40 isCancelledWithProgress:1.0];
           *(v54 + 24) = v37;
-          v9 = v20;
+          graphCopy = v20;
           if ((v37 & 1) == 0)
           {
             goto LABEL_28;
@@ -110,13 +110,13 @@ LABEL_31:
       }
 
       v30 = [MEMORY[0x277D27690] startOfMonthForDate:v48];
-      v9 = v20;
+      graphCopy = v20;
       v31 = [MEMORY[0x277D27690] dateComponentsWithLocalDate:v30];
       [v31 setDay:7];
       v32 = [MEMORY[0x277D27690] dateFromComponents:v31 inTimeZone:0];
       v33 = objc_opt_class();
-      v34 = [v8 timeZone];
-      v35 = [v33 validityIntervalForLocalStartDate:v30 localEndDate:v32 timeZone:v34];
+      timeZone3 = [contextCopy timeZone];
+      v35 = [v33 validityIntervalForLocalStartDate:v30 localEndDate:v32 timeZone:timeZone3];
 
       if (v54[3])
       {
@@ -156,7 +156,7 @@ LABEL_30:
 
     else
     {
-      v29 = [v10 isCancelledWithProgress:1.0];
+      v29 = [reporterCopy isCancelledWithProgress:1.0];
       *(v54 + 24) = v29;
       if ((v29 & 1) == 0)
       {
@@ -221,16 +221,16 @@ uint64_t __88__PGMemoryTriggerBeginningOfMonth_resultsTriggeredWithContext_inGra
   return result;
 }
 
-- (PGMemoryTriggerBeginningOfMonth)initWithLoggingConnection:(id)a3 momentNodesWithBlockedFeatureCache:(id)a4
+- (PGMemoryTriggerBeginningOfMonth)initWithLoggingConnection:(id)connection momentNodesWithBlockedFeatureCache:(id)cache
 {
-  v7 = a4;
+  cacheCopy = cache;
   v11.receiver = self;
   v11.super_class = PGMemoryTriggerBeginningOfMonth;
-  v8 = [(PGMemoryTrigger *)&v11 initWithLoggingConnection:a3];
+  v8 = [(PGMemoryTrigger *)&v11 initWithLoggingConnection:connection];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_momentNodesWithBlockedFeatureCache, a4);
+    objc_storeStrong(&v8->_momentNodesWithBlockedFeatureCache, cache);
   }
 
   return v9;

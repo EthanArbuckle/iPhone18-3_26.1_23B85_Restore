@@ -1,26 +1,26 @@
 @interface NWEndpoint
-+ (NWEndpoint)endpointWithInternalEndpoint:(id)a3;
-+ (NWEndpoint)endpointWithProtocolBufferData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (NWEndpoint)endpointWithInternalEndpoint:(id)endpoint;
++ (NWEndpoint)endpointWithProtocolBufferData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (NSData)txtRecord;
 - (NSString)parentEndpointDomain;
 - (NSString)privateDescription;
-- (NWEndpoint)initWithCoder:(id)a3;
-- (NWEndpoint)initWithEndpoint:(id)a3;
+- (NWEndpoint)initWithCoder:(id)coder;
+- (NWEndpoint)initWithEndpoint:(id)endpoint;
 - (NWInterface)interface;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createProtocolBufferObject;
 - (id)description;
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4;
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content;
 - (id)encodedData;
 - (int64_t)remoteInterfaceType;
 - (unint64_t)hash;
 - (unsigned)alternatePort;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAlternatePort:(unsigned __int16)a3;
-- (void)setInterface:(id)a3;
-- (void)setRemoteInterfaceType:(int64_t)a3;
-- (void)setTxtRecord:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAlternatePort:(unsigned __int16)port;
+- (void)setInterface:(id)interface;
+- (void)setRemoteInterfaceType:(int64_t)type;
+- (void)setTxtRecord:(id)record;
 @end
 
 @implementation NWEndpoint
@@ -34,8 +34,8 @@
 
 - (NSData)txtRecord
 {
-  v2 = [(NWEndpoint *)self internalEndpoint];
-  v3 = nw_endpoint_copy_txt_record(v2);
+  internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+  v3 = nw_endpoint_copy_txt_record(internalEndpoint);
 
   if (!v3 || ((isa = v3[1].isa, v5 = v3[2].isa, isa) ? (v6 = v5 == 0) : (v6 = 1), v6))
   {
@@ -52,8 +52,8 @@
 
 - (NSString)parentEndpointDomain
 {
-  v2 = [(NWEndpoint *)self internalEndpoint];
-  parent_endpoint_domain = nw_endpoint_get_parent_endpoint_domain(v2);
+  internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+  parent_endpoint_domain = nw_endpoint_get_parent_endpoint_domain(internalEndpoint);
 
   if (parent_endpoint_domain)
   {
@@ -70,11 +70,11 @@
 
 - (unint64_t)hash
 {
-  v2 = [(NWEndpoint *)self internalEndpoint];
-  v3 = v2;
-  if (v2)
+  internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+  v3 = internalEndpoint;
+  if (internalEndpoint)
   {
-    hash = _nw_endpoint_get_hash(v2);
+    hash = _nw_endpoint_get_hash(internalEndpoint);
   }
 
   else
@@ -85,16 +85,16 @@
   return hash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [(NWEndpoint *)self internalEndpoint];
-    v7 = [v5 internalEndpoint];
+    v5 = equalCopy;
+    internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+    internalEndpoint2 = [v5 internalEndpoint];
 
-    is_equal = nw_endpoint_is_equal(v6, v7, 1);
+    is_equal = nw_endpoint_is_equal(internalEndpoint, internalEndpoint2, 1);
   }
 
   else
@@ -117,14 +117,14 @@
       objc_storeStrong(&v3->_service, v4);
     }
 
-    v5 = [(NWEndpoint *)self name];
+    name = [(NWEndpoint *)self name];
     if (v3)
     {
       v6 = v3->_service;
       v7 = v6;
       if (v6)
       {
-        objc_storeStrong(&v6->_name, v5);
+        objc_storeStrong(&v6->_name, name);
       }
     }
 
@@ -133,14 +133,14 @@
       v7 = 0;
     }
 
-    v8 = [(NWEndpoint *)self type];
+    type = [(NWEndpoint *)self type];
     if (v3)
     {
       v9 = v3->_service;
       v10 = v9;
       if (v9)
       {
-        objc_storeStrong(&v9->_type, v8);
+        objc_storeStrong(&v9->_type, type);
       }
     }
 
@@ -149,7 +149,7 @@
       v10 = 0;
     }
 
-    v11 = [(NWEndpoint *)self domain];
+    domain = [(NWEndpoint *)self domain];
     if (v3)
     {
       v12 = v3->_service;
@@ -157,7 +157,7 @@
       {
         v13 = 8;
 LABEL_28:
-        objc_storeStrong((&v12->super.super.isa + v13), v11);
+        objc_storeStrong((&v12->super.super.isa + v13), domain);
         goto LABEL_29;
       }
 
@@ -184,7 +184,7 @@ LABEL_37:
       objc_storeStrong(&v3->_address, v18);
     }
 
-    v11 = [(NWEndpoint *)self addressData];
+    domain = [(NWEndpoint *)self addressData];
     if (v3)
     {
       v12 = v3->_address;
@@ -206,14 +206,14 @@ LABEL_37:
     objc_storeStrong(&v3->_host, v14);
   }
 
-  v15 = [(NWEndpoint *)self hostname];
+  hostname = [(NWEndpoint *)self hostname];
   if (v3)
   {
     v16 = v3->_host;
     v17 = v16;
     if (v16)
     {
-      objc_storeStrong(&v16->_hostname, v15);
+      objc_storeStrong(&v16->_hostname, hostname);
     }
   }
 
@@ -222,7 +222,7 @@ LABEL_37:
     v17 = 0;
   }
 
-  v11 = [(NWEndpoint *)self port];
+  domain = [(NWEndpoint *)self port];
   if (!v3)
   {
     goto LABEL_37;
@@ -240,81 +240,81 @@ LABEL_29:
 LABEL_30:
   if ([(NWEndpoint *)self isMemberOfClass:objc_opt_class()])
   {
-    v19 = [(NWEndpoint *)self txtRecord];
+    txtRecord = [(NWEndpoint *)self txtRecord];
     if (v3)
     {
-      objc_storeStrong(&v3->_txtRecord, v19);
+      objc_storeStrong(&v3->_txtRecord, txtRecord);
     }
   }
 
-  v20 = [(NWEndpoint *)self interface];
-  v21 = [v20 createProtocolBufferObject];
+  interface = [(NWEndpoint *)self interface];
+  createProtocolBufferObject = [interface createProtocolBufferObject];
   if (v3)
   {
-    objc_storeStrong(&v3->_interface, v21);
+    objc_storeStrong(&v3->_interface, createProtocolBufferObject);
   }
 
   return v3;
 }
 
-- (void)setAlternatePort:(unsigned __int16)a3
+- (void)setAlternatePort:(unsigned __int16)port
 {
-  v4 = [(NWEndpoint *)self internalEndpoint];
-  nw_endpoint_set_alternate_port(v4, a3);
+  internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+  nw_endpoint_set_alternate_port(internalEndpoint, port);
 }
 
 - (unsigned)alternatePort
 {
-  v2 = [(NWEndpoint *)self internalEndpoint];
-  alternate_port = nw_endpoint_get_alternate_port(v2);
+  internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+  alternate_port = nw_endpoint_get_alternate_port(internalEndpoint);
 
   return alternate_port;
 }
 
-- (void)setTxtRecord:(id)a3
+- (void)setTxtRecord:(id)record
 {
-  v6 = a3;
-  if ([v6 bytes] && objc_msgSend(v6, "length"))
+  recordCopy = record;
+  if ([recordCopy bytes] && objc_msgSend(recordCopy, "length"))
   {
-    v4 = nw_txt_record_create_with_bytes([v6 bytes], objc_msgSend(v6, "length"));
-    v5 = [(NWEndpoint *)self internalEndpoint];
-    nw_endpoint_set_txt_record(v5, v4);
+    internalEndpoint2 = nw_txt_record_create_with_bytes([recordCopy bytes], objc_msgSend(recordCopy, "length"));
+    internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+    nw_endpoint_set_txt_record(internalEndpoint, internalEndpoint2);
   }
 
   else
   {
-    v4 = [(NWEndpoint *)self internalEndpoint];
-    nw_endpoint_set_txt_record(v4, 0);
+    internalEndpoint2 = [(NWEndpoint *)self internalEndpoint];
+    nw_endpoint_set_txt_record(internalEndpoint2, 0);
   }
 }
 
-- (void)setRemoteInterfaceType:(int64_t)a3
+- (void)setRemoteInterfaceType:(int64_t)type
 {
-  v4 = [(NWEndpoint *)self internalEndpoint];
-  nw_endpoint_set_remote_interface_type(v4, a3);
+  internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+  nw_endpoint_set_remote_interface_type(internalEndpoint, type);
 }
 
 - (int64_t)remoteInterfaceType
 {
-  v2 = [(NWEndpoint *)self internalEndpoint];
-  remote_interface_type = nw_endpoint_get_remote_interface_type(v2);
+  internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+  remote_interface_type = nw_endpoint_get_remote_interface_type(internalEndpoint);
 
   return remote_interface_type;
 }
 
-- (void)setInterface:(id)a3
+- (void)setInterface:(id)interface
 {
-  v4 = a3;
-  v6 = [(NWEndpoint *)self internalEndpoint];
-  v5 = [v4 internalInterface];
+  interfaceCopy = interface;
+  internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+  internalInterface = [interfaceCopy internalInterface];
 
-  nw_endpoint_set_interface(v6, v5);
+  nw_endpoint_set_interface(internalEndpoint, internalInterface);
 }
 
 - (NWInterface)interface
 {
-  v2 = [(NWEndpoint *)self internalEndpoint];
-  v3 = nw_endpoint_copy_interface(v2);
+  internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+  v3 = nw_endpoint_copy_interface(internalEndpoint);
 
   if (v3)
   {
@@ -336,10 +336,10 @@ LABEL_30:
   return v2;
 }
 
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(NWEndpoint *)self internalEndpoint:*&a3];
+  v5 = [(NWEndpoint *)self internalEndpoint:*&indent];
   v6 = v5;
   if (v5)
   {
@@ -458,11 +458,11 @@ LABEL_11:
   return 0;
 }
 
-- (NWEndpoint)initWithEndpoint:(id)a3
+- (NWEndpoint)initWithEndpoint:(id)endpoint
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  endpointCopy = endpoint;
+  if (endpointCopy)
   {
     v23.receiver = self;
     v23.super_class = NWEndpoint;
@@ -470,7 +470,7 @@ LABEL_11:
     if (v6)
     {
       v7 = v6;
-      objc_storeStrong(&v6->_internalEndpoint, a3);
+      objc_storeStrong(&v6->_internalEndpoint, endpoint);
       goto LABEL_4;
     }
 
@@ -636,41 +636,41 @@ LABEL_4:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(NWEndpoint *)self internalEndpoint];
-  v6 = [v4 initWithEndpoint:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+  v6 = [v4 initWithEndpoint:internalEndpoint];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NWEndpoint *)self internalEndpoint];
-  if (v5)
+  coderCopy = coder;
+  internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+  if (internalEndpoint)
   {
-    v6 = v5;
-    v7 = _nw_endpoint_copy_dictionary(v5);
+    v6 = internalEndpoint;
+    v7 = _nw_endpoint_copy_dictionary(internalEndpoint);
 
     if (v7)
     {
       v8 = MEMORY[0x1E695DF90];
       v9 = v7;
-      v10 = [v8 dictionary];
+      dictionary = [v8 dictionary];
       *applier = MEMORY[0x1E69E9820];
       *&applier[8] = 3221225472;
       *&applier[16] = __NWUtilsCreateNSDictionaryFromXPCDictionary_block_invoke;
       v31 = &unk_1E6A39980;
-      v11 = v10;
+      v11 = dictionary;
       v32 = v11;
       xpc_dictionary_apply(v9, applier);
 
       if (v11)
       {
-        [v4 encodeObject:v11 forKey:@"dictionary"];
+        [coderCopy encodeObject:v11 forKey:@"dictionary"];
 LABEL_29:
 
         goto LABEL_30;
@@ -850,10 +850,10 @@ LABEL_12:
 LABEL_30:
 }
 
-- (NWEndpoint)initWithCoder:(id)a3
+- (NWEndpoint)initWithCoder:(id)coder
 {
   v58 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v53.receiver = self;
   v53.super_class = NWEndpoint;
   v5 = [(NWEndpoint *)&v53 init];
@@ -866,7 +866,7 @@ LABEL_30:
     v10 = objc_opt_class();
     v11 = objc_opt_class();
     v12 = [v6 initWithObjects:{v7, v8, v9, v10, v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"dictionary"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"dictionary"];
     v14 = v13;
     if (v13)
     {
@@ -878,8 +878,8 @@ LABEL_30:
         v18 = _nw_endpoint_create_from_dictionary(v17);
 
         [(NWEndpoint *)v5 setInternalEndpoint:v18];
-        v19 = [(NWEndpoint *)v5 internalEndpoint];
-        LODWORD(v18) = v19 == 0;
+        internalEndpoint = [(NWEndpoint *)v5 internalEndpoint];
+        LODWORD(v18) = internalEndpoint == 0;
 
         if (!v18)
         {
@@ -1225,11 +1225,11 @@ LABEL_64:
   return v20;
 }
 
-+ (NWEndpoint)endpointWithProtocolBufferData:(id)a3
++ (NWEndpoint)endpointWithProtocolBufferData:(id)data
 {
   v45 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [[NWPBEndpoint alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[NWPBEndpoint alloc] initWithData:dataCopy];
 
   if (!v4)
   {
@@ -1417,8 +1417,8 @@ LABEL_17:
   if (interface)
   {
     v28 = interface;
-    v29 = [(NWPBInterface *)v28 data];
-    v30 = [NWInterface interfaceWithProtocolBufferData:v29];
+    data = [(NWPBInterface *)v28 data];
+    v30 = [NWInterface interfaceWithProtocolBufferData:data];
     [v16 setInterface:v30];
   }
 
@@ -1427,11 +1427,11 @@ LABEL_35:
   return v16;
 }
 
-+ (NWEndpoint)endpointWithInternalEndpoint:(id)a3
++ (NWEndpoint)endpointWithInternalEndpoint:(id)endpoint
 {
-  v3 = a3;
-  v4 = [NWEndpoint copyClassForEndpointType:nw_endpoint_get_type(v3)];
-  v5 = [[v4 alloc] initWithEndpoint:v3];
+  endpointCopy = endpoint;
+  v4 = [NWEndpoint copyClassForEndpointType:nw_endpoint_get_type(endpointCopy)];
+  v5 = [[v4 alloc] initWithEndpoint:endpointCopy];
 
   return v5;
 }

@@ -3,15 +3,15 @@
 + (NSString)taskIdentifier;
 + (id)requiredEntitlements;
 - (NSUUID)workoutDataProcessorUUID;
-- (_TtC12HealthDaemon26HDWorkoutMetricsDataSource)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (_TtC12HealthDaemon26HDWorkoutMetricsDataSource)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (id)exportedInterface;
 - (id)remoteInterface;
 - (id)workoutDataFlowLink;
-- (void)onDemandSwimmingDataDidUpdate:(id)a3;
+- (void)onDemandSwimmingDataDidUpdate:(id)update;
 - (void)remote_registerSession;
-- (void)setWorkoutDataProcessorUUID:(id)a3;
-- (void)workoutDataDestination:(HDWorkoutDataDestination *)a3 requestsFinalDataFrom:(NSDate *)a4 to:(NSDate *)a5 completion:(id)a6;
-- (void)workoutDataDestination:(id)a3 requestsDataFrom:(id)a4 to:(id)a5;
+- (void)setWorkoutDataProcessorUUID:(id)d;
+- (void)workoutDataDestination:(HDWorkoutDataDestination *)destination requestsFinalDataFrom:(NSDate *)from to:(NSDate *)to completion:(id)completion;
+- (void)workoutDataDestination:(id)destination requestsDataFrom:(id)from to:(id)to;
 @end
 
 @implementation HDWorkoutMetricsDataSource
@@ -23,7 +23,7 @@
   v5 = *(v4 + 64);
   MEMORY[0x28223BE20](v3);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
+  selfCopy = self;
   sub_2289CD4C8(v7);
 
   v9 = sub_22911B8BC();
@@ -32,7 +32,7 @@
   return v9;
 }
 
-- (void)setWorkoutDataProcessorUUID:(id)a3
+- (void)setWorkoutDataProcessorUUID:(id)d
 {
   sub_2289CFD5C(0, &qword_27D8630C0, MEMORY[0x277CC95F0]);
   v5 = *(*(v4 - 8) + 64);
@@ -48,7 +48,7 @@
   (*(v9 + 56))(v7, 0, 1, v8);
   v13 = OBJC_IVAR____TtC12HealthDaemon26HDWorkoutMetricsDataSource____lazy_storage___workoutDataProcessorUUID;
   swift_beginAccess();
-  v14 = self;
+  selfCopy = self;
   sub_2289D0618(v7, self + v13);
   swift_endAccess();
 }
@@ -65,17 +65,17 @@
   return result;
 }
 
-- (_TtC12HealthDaemon26HDWorkoutMetricsDataSource)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (_TtC12HealthDaemon26HDWorkoutMetricsDataSource)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
   v9 = sub_22911B8DC();
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v16 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_22911B8CC();
-  v13 = a4;
-  v14 = a5;
+  configurationCopy = configuration;
+  clientCopy = client;
   swift_unknownObjectRetain();
-  return sub_2289CD8A0(v12, a4, v14, a6);
+  return sub_2289CD8A0(v12, configuration, clientCopy, delegate);
 }
 
 + (NSString)taskIdentifier
@@ -125,19 +125,19 @@
 
 - (void)remote_registerSession
 {
-  v2 = self;
+  selfCopy = self;
   sub_2289CDCE8();
 }
 
-- (void)onDemandSwimmingDataDidUpdate:(id)a3
+- (void)onDemandSwimmingDataDidUpdate:(id)update
 {
   type metadata accessor for HDCMSwimData();
   v4 = sub_22911C45C();
-  v5 = self;
+  selfCopy = self;
   sub_2289CE38C(v4);
 }
 
-- (void)workoutDataDestination:(id)a3 requestsDataFrom:(id)a4 to:(id)a5
+- (void)workoutDataDestination:(id)destination requestsDataFrom:(id)from to:(id)to
 {
   sub_2289CFD5C(0, &qword_27D862B48, MEMORY[0x277CC9578]);
   v8 = *(*(v7 - 8) + 64);
@@ -145,7 +145,7 @@
   v11 = &v19 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v9);
   v13 = &v19 - v12;
-  if (a4)
+  if (from)
   {
     sub_22911B86C();
     v14 = sub_22911B88C();
@@ -158,7 +158,7 @@
     (*(*(v15 - 8) + 56))(v13, 1, 1, v15);
   }
 
-  if (a5)
+  if (to)
   {
     sub_22911B86C();
     v16 = 0;
@@ -176,17 +176,17 @@
   sub_2289D0998(v11, &qword_27D862B48, v17);
 }
 
-- (void)workoutDataDestination:(HDWorkoutDataDestination *)a3 requestsFinalDataFrom:(NSDate *)a4 to:(NSDate *)a5 completion:(id)a6
+- (void)workoutDataDestination:(HDWorkoutDataDestination *)destination requestsFinalDataFrom:(NSDate *)from to:(NSDate *)to completion:(id)completion
 {
   sub_2289CFD5C(0, &qword_27D8630E8, MEMORY[0x277D85720]);
   v12 = *(*(v11 - 8) + 64);
   MEMORY[0x28223BE20](v11 - 8);
   v14 = &v23 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(completion);
   v16 = swift_allocObject();
-  v16[2] = a3;
-  v16[3] = a4;
-  v16[4] = a5;
+  v16[2] = destination;
+  v16[3] = from;
+  v16[4] = to;
   v16[5] = v15;
   v16[6] = self;
   v17 = sub_22911C4EC();
@@ -202,9 +202,9 @@
   v19[4] = &unk_229164658;
   v19[5] = v18;
   swift_unknownObjectRetain();
-  v20 = a4;
-  v21 = a5;
-  v22 = self;
+  fromCopy = from;
+  toCopy = to;
+  selfCopy = self;
   sub_2289D0074(0, 0, v14, &unk_229164668, v19);
 }
 

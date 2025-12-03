@@ -1,20 +1,20 @@
 @interface SVXInstrumentationUtilities
 - (SVXInstrumentationUtilities)init;
-- (SVXInstrumentationUtilities)initWithSiriAnalyticsProvider:(id)a3 powerInstrumentation:(id)a4;
-- (int)convertModeToResponseMode:(unint64_t)a3;
-- (int)rfSchemaRFPatternFromPatternType:(id)a3;
-- (int)rfSchemaRFSiriModeFromResponseMode:(id)a3;
-- (void)_emitUUFRSaidWithModeSupport:(id)a3 dialogIdentifier:(id)a4 dialogPhase:(id)a5 speakableText:(id)a6 currentMode:(unint64_t)a7;
-- (void)emitPatternExecutedEvent:(id)a3 addViews:(id)a4;
-- (void)emitUUFRSaid:(id)a3 dialogIdentifier:(id)a4 dialogPhase:(id)a5;
+- (SVXInstrumentationUtilities)initWithSiriAnalyticsProvider:(id)provider powerInstrumentation:(id)instrumentation;
+- (int)convertModeToResponseMode:(unint64_t)mode;
+- (int)rfSchemaRFPatternFromPatternType:(id)type;
+- (int)rfSchemaRFSiriModeFromResponseMode:(id)mode;
+- (void)_emitUUFRSaidWithModeSupport:(id)support dialogIdentifier:(id)identifier dialogPhase:(id)phase speakableText:(id)text currentMode:(unint64_t)mode;
+- (void)emitPatternExecutedEvent:(id)event addViews:(id)views;
+- (void)emitUUFRSaid:(id)said dialogIdentifier:(id)identifier dialogPhase:(id)phase;
 @end
 
 @implementation SVXInstrumentationUtilities
 
-- (int)convertModeToResponseMode:(unint64_t)a3
+- (int)convertModeToResponseMode:(unint64_t)mode
 {
   v8 = *MEMORY[0x277D85DE8];
-  if (a3 >= 3)
+  if (mode >= 3)
   {
     v4 = *MEMORY[0x277CEF098];
     result = os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR);
@@ -29,20 +29,20 @@
 
   else
   {
-    result = a3 + 1;
+    result = mode + 1;
   }
 
   v5 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)rfSchemaRFPatternFromPatternType:(id)a3
+- (int)rfSchemaRFPatternFromPatternType:(id)type
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  typeCopy = type;
+  v4 = typeCopy;
+  if (typeCopy)
   {
-    if ([v3 caseInsensitiveCompare:@"pattern.ResultSet"])
+    if ([typeCopy caseInsensitiveCompare:@"pattern.ResultSet"])
     {
       if ([v4 caseInsensitiveCompare:@"pattern.TableSet"])
       {
@@ -189,13 +189,13 @@
   return v5;
 }
 
-- (int)rfSchemaRFSiriModeFromResponseMode:(id)a3
+- (int)rfSchemaRFSiriModeFromResponseMode:(id)mode
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  modeCopy = mode;
+  v4 = modeCopy;
+  if (modeCopy)
   {
-    if ([v3 caseInsensitiveCompare:*MEMORY[0x277D48C98]])
+    if ([modeCopy caseInsensitiveCompare:*MEMORY[0x277D48C98]])
     {
       if ([v4 caseInsensitiveCompare:*MEMORY[0x277D48C90]])
       {
@@ -238,29 +238,29 @@
   return v5;
 }
 
-- (void)emitPatternExecutedEvent:(id)a3 addViews:(id)a4
+- (void)emitPatternExecutedEvent:(id)event addViews:(id)views
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 patternId];
+  eventCopy = event;
+  viewsCopy = views;
+  patternId = [viewsCopy patternId];
 
-  if (v8)
+  if (patternId)
   {
     v9 = objc_alloc_init(MEMORY[0x277D5A370]);
-    v10 = [v7 patternId];
-    [v9 setPatternId:v10];
+    patternId2 = [viewsCopy patternId];
+    [v9 setPatternId:patternId2];
 
-    v11 = [v7 patternType];
-    [v9 setPattern:{-[SVXInstrumentationUtilities rfSchemaRFPatternFromPatternType:](self, "rfSchemaRFPatternFromPatternType:", v11)}];
+    patternType = [viewsCopy patternType];
+    [v9 setPattern:{-[SVXInstrumentationUtilities rfSchemaRFPatternFromPatternType:](self, "rfSchemaRFPatternFromPatternType:", patternType)}];
 
-    v12 = [v7 responseMode];
-    [v9 setMode:{-[SVXInstrumentationUtilities rfSchemaRFSiriModeFromResponseMode:](self, "rfSchemaRFSiriModeFromResponseMode:", v12)}];
+    responseMode = [viewsCopy responseMode];
+    [v9 setMode:{-[SVXInstrumentationUtilities rfSchemaRFSiriModeFromResponseMode:](self, "rfSchemaRFSiriModeFromResponseMode:", responseMode)}];
 
     v13 = objc_alloc_init(MEMORY[0x277D5A330]);
     v14 = objc_alloc(MEMORY[0x277D5AC78]);
-    v15 = [v6 turnIdentifier];
-    v16 = [v14 initWithNSUUID:v15];
+    turnIdentifier = [eventCopy turnIdentifier];
+    v16 = [v14 initWithNSUUID:turnIdentifier];
     [v13 setTurnId:v16];
 
     v17 = objc_alloc_init(MEMORY[0x277D5A328]);
@@ -272,39 +272,39 @@
       v22 = 136315394;
       v23 = "[SVXInstrumentationUtilities emitPatternExecutedEvent:addViews:]";
       v24 = 2112;
-      v25 = v7;
+      v25 = viewsCopy;
       _os_log_impl(&dword_2695B9000, v18, OS_LOG_TYPE_INFO, "%s #SVXInstrumentation - Emit Pattern Executed event (addViews: %@)", &v22, 0x16u);
     }
 
     v19 = [(SVXAssistantSiriAnalyticsProvider *)self->_siriAnalyticsProvider get];
-    v20 = [v19 defaultMessageStream];
-    [v20 emitMessage:v17];
+    defaultMessageStream = [v19 defaultMessageStream];
+    [defaultMessageStream emitMessage:v17];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_emitUUFRSaidWithModeSupport:(id)a3 dialogIdentifier:(id)a4 dialogPhase:(id)a5 speakableText:(id)a6 currentMode:(unint64_t)a7
+- (void)_emitUUFRSaidWithModeSupport:(id)support dialogIdentifier:(id)identifier dialogPhase:(id)phase speakableText:(id)text currentMode:(unint64_t)mode
 {
   v31 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  phaseCopy = phase;
+  textCopy = text;
   v15 = MEMORY[0x277D5AA18];
-  v16 = a3;
+  supportCopy = support;
   v17 = objc_alloc_init(v15);
-  [v17 setDialogPhase:v13];
+  [v17 setDialogPhase:phaseCopy];
   [v17 setPresentationType:6];
-  [v17 setSiriResponseMode:{-[SVXInstrumentationUtilities convertModeToResponseMode:](self, "convertModeToResponseMode:", a7)}];
+  [v17 setSiriResponseMode:{-[SVXInstrumentationUtilities convertModeToResponseMode:](self, "convertModeToResponseMode:", mode)}];
   v18 = objc_alloc_init(MEMORY[0x277D5AC48]);
-  [v18 setDialogIdentifier:v12];
+  [v18 setDialogIdentifier:identifierCopy];
   [v18 setSiriResponseContext:v17];
-  v19 = [v14 containsString:@"\\audio=/successSonicResponse"];
+  v19 = [textCopy containsString:@"\\audio=/successSonicResponse"];
   v20 = MEMORY[0x277CEF098];
   if (v19)
   {
     [v18 setHasSonicResponse:1];
-    if ([v14 containsString:@"\\audio=/successSonicResponse&overlap"])
+    if ([textCopy containsString:@"\\audio=/successSonicResponse&overlap"])
     {
       [v18 setSonicResponse:2];
       v21 = *v20;
@@ -341,32 +341,32 @@ LABEL_7:
     *v27 = 136315906;
     *&v27[4] = "[SVXInstrumentationUtilities _emitUUFRSaidWithModeSupport:dialogIdentifier:dialogPhase:speakableText:currentMode:]";
     *&v27[12] = 2112;
-    *&v27[14] = v12;
+    *&v27[14] = identifierCopy;
     *&v27[22] = 2112;
-    v28 = v13;
+    v28 = phaseCopy;
     v29 = 2112;
     v30 = v25;
     _os_log_impl(&dword_2695B9000, v24, OS_LOG_TYPE_INFO, "%s #SVXInstrumentation - Emit UUFR said event (dialogIdentifier: %@, dialogPhase: %@, mode: %@)", v27, 0x2Au);
   }
 
-  [v16 emitInstrumentation:{v18, *v27, *&v27[16]}];
+  [supportCopy emitInstrumentation:{v18, *v27, *&v27[16]}];
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)emitUUFRSaid:(id)a3 dialogIdentifier:(id)a4 dialogPhase:(id)a5
+- (void)emitUUFRSaid:(id)said dialogIdentifier:(id)identifier dialogPhase:(id)phase
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  identifierCopy = identifier;
+  phaseCopy = phase;
   v9 = MEMORY[0x277D5AA18];
-  v10 = a3;
+  saidCopy = said;
   v11 = objc_alloc_init(v9);
-  [v11 setDialogPhase:v8];
+  [v11 setDialogPhase:phaseCopy];
   [v11 setPresentationType:6];
   [v11 setSiriResponseMode:1];
   v12 = objc_alloc_init(MEMORY[0x277D5AC48]);
-  [v12 setDialogIdentifier:v7];
+  [v12 setDialogIdentifier:identifierCopy];
   [v12 setSiriResponseContext:v11];
   v13 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
@@ -374,29 +374,29 @@ LABEL_7:
     v15 = 136315650;
     v16 = "[SVXInstrumentationUtilities emitUUFRSaid:dialogIdentifier:dialogPhase:]";
     v17 = 2112;
-    v18 = v7;
+    v18 = identifierCopy;
     v19 = 2112;
-    v20 = v8;
+    v20 = phaseCopy;
     _os_log_impl(&dword_2695B9000, v13, OS_LOG_TYPE_INFO, "%s #SVXInstrumentation - Emit UUFR said event (dialogIdentifier: %@, dialogPhase: %@)", &v15, 0x20u);
   }
 
-  [v10 emitInstrumentation:v12];
+  [saidCopy emitInstrumentation:v12];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (SVXInstrumentationUtilities)initWithSiriAnalyticsProvider:(id)a3 powerInstrumentation:(id)a4
+- (SVXInstrumentationUtilities)initWithSiriAnalyticsProvider:(id)provider powerInstrumentation:(id)instrumentation
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  instrumentationCopy = instrumentation;
   v12.receiver = self;
   v12.super_class = SVXInstrumentationUtilities;
   v9 = [(SVXInstrumentationUtilities *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_siriAnalyticsProvider, a3);
-    objc_storeStrong(&v10->_powerInstrumentation, a4);
+    objc_storeStrong(&v9->_siriAnalyticsProvider, provider);
+    objc_storeStrong(&v10->_powerInstrumentation, instrumentation);
   }
 
   return v10;

@@ -5,17 +5,17 @@
 - (void)clearAoSDeviceCounts;
 - (void)countBTConnections;
 - (void)dealloc;
-- (void)handleAADeviceFound:(id)a3;
-- (void)handleAADeviceLost:(id)a3;
-- (void)handleAudioConfig:(id)a3;
-- (void)handleCBDeviceFound:(id)a3;
-- (void)handleCBDeviceLost:(id)a3;
-- (void)handleLeAdvePaState:(id)a3;
-- (void)handleLocalDeviceState:(id)a3;
-- (void)handlePowerState:(BOOL)a3;
+- (void)handleAADeviceFound:(id)found;
+- (void)handleAADeviceLost:(id)lost;
+- (void)handleAudioConfig:(id)config;
+- (void)handleCBDeviceFound:(id)found;
+- (void)handleCBDeviceLost:(id)lost;
+- (void)handleLeAdvePaState:(id)state;
+- (void)handleLocalDeviceState:(id)state;
+- (void)handlePowerState:(BOOL)state;
 - (void)printBTConnections;
-- (void)syncAllBTConnections:(id)a3 shouldAdd:(BOOL)a4;
-- (void)updateThreadRadioStatus:(BOOL)a3;
+- (void)syncAllBTConnections:(id)connections shouldAdd:(BOOL)add;
+- (void)updateThreadRadioStatus:(BOOL)status;
 @end
 
 @implementation WCM_BTController
@@ -142,9 +142,9 @@
   [(WCM_Controller *)&v4 dealloc];
 }
 
-- (void)handleLocalDeviceState:(id)a3
+- (void)handleLocalDeviceState:(id)state
 {
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  value = xpc_dictionary_get_value(state, "kMessageArgs");
   if (value)
   {
     uint64 = xpc_dictionary_get_uint64(value, "kWCMBTLocalDeviceState");
@@ -165,9 +165,9 @@
   }
 }
 
-- (void)handleLeAdvePaState:(id)a3
+- (void)handleLeAdvePaState:(id)state
 {
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  value = xpc_dictionary_get_value(state, "kMessageArgs");
   if (value)
   {
     int64 = xpc_dictionary_get_int64(value, "kWCMBTLeADVePAStateChange");
@@ -187,9 +187,9 @@
   }
 }
 
-- (void)handleAudioConfig:(id)a3
+- (void)handleAudioConfig:(id)config
 {
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  value = xpc_dictionary_get_value(config, "kMessageArgs");
   uint64 = xpc_dictionary_get_uint64(value, "kWCMBTAudioConfiguration_Type");
   v7 = xpc_dictionary_get_uint64(value, "kWCMBTAudioConfiguration_PacketType");
   v8 = xpc_dictionary_get_uint64(value, "kWCMBTAudioConfiguration_ConnectionState");
@@ -201,7 +201,7 @@
     qword_1002B7CB8 = v10;
   }
 
-  if (xpc_equal(v10, a3))
+  if (xpc_equal(v10, config))
   {
     [WCM_Logging logLevel:2 message:@"HandleAudioConfig: Discard the same message %@", qword_1002B7CB8];
     return;
@@ -212,7 +212,7 @@
     xpc_release(qword_1002B7CB8);
   }
 
-  qword_1002B7CB8 = xpc_copy(a3);
+  qword_1002B7CB8 = xpc_copy(config);
   if (uint64 > 2)
   {
     if (uint64 == 3)
@@ -363,7 +363,7 @@ LABEL_42:
   [v15 updateControllerState:v16];
 }
 
-- (void)handlePowerState:(BOOL)a3
+- (void)handlePowerState:(BOOL)state
 {
   v3 = *(&self->deviceManager + 4);
   v4[0] = _NSConcreteStackBlock;
@@ -371,53 +371,53 @@ LABEL_42:
   v4[2] = sub_10009EA10;
   v4[3] = &unk_10023E008;
   v4[4] = self;
-  v5 = a3;
+  stateCopy = state;
   dispatch_sync(v3, v4);
 }
 
-- (void)syncAllBTConnections:(id)a3 shouldAdd:(BOOL)a4
+- (void)syncAllBTConnections:(id)connections shouldAdd:(BOOL)add
 {
-  v4 = a4;
-  v7 = [(WCM_BTController *)self allBTConnections];
-  objc_sync_enter(v7);
-  if (v4)
+  addCopy = add;
+  allBTConnections = [(WCM_BTController *)self allBTConnections];
+  objc_sync_enter(allBTConnections);
+  if (addCopy)
   {
-    if (([(NSMutableArray *)[(WCM_BTController *)self allBTConnections] containsObject:a3]& 1) == 0)
+    if (([(NSMutableArray *)[(WCM_BTController *)self allBTConnections] containsObject:connections]& 1) == 0)
     {
-      [(NSMutableArray *)[(WCM_BTController *)self allBTConnections] addObject:a3];
+      [(NSMutableArray *)[(WCM_BTController *)self allBTConnections] addObject:connections];
     }
   }
 
-  else if ([(NSMutableArray *)[(WCM_BTController *)self allBTConnections] containsObject:a3])
+  else if ([(NSMutableArray *)[(WCM_BTController *)self allBTConnections] containsObject:connections])
   {
-    [(NSMutableArray *)[(WCM_BTController *)self allBTConnections] removeObject:a3];
+    [(NSMutableArray *)[(WCM_BTController *)self allBTConnections] removeObject:connections];
   }
 
   [+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(allBTConnections);
 }
 
-- (void)handleCBDeviceFound:(id)a3
+- (void)handleCBDeviceFound:(id)found
 {
-  if ((([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")] & 1) != 0 || objc_msgSend(objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager, "singleton"), "activeCoexFeatures"), "containsObject:", @"hpcellularstatemonitorsupport")) && objc_msgSend(a3, "connectedServices"))
+  if ((([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")] & 1) != 0 || objc_msgSend(objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager, "singleton"), "activeCoexFeatures"), "containsObject:", @"hpcellularstatemonitorsupport")) && objc_msgSend(found, "connectedServices"))
   {
-    [a3 btAddressData];
+    [found btAddressData];
     [(WCM_BTController *)self syncAllBTConnections:CUPrintNSDataAddress() shouldAdd:1];
   }
 
-  if (([a3 connectedServices] & 0x20) != 0 || (objc_msgSend(a3, "connectedServices") & 0x400000) != 0)
+  if (([found connectedServices] & 0x20) != 0 || (objc_msgSend(found, "connectedServices") & 0x400000) != 0)
   {
     v5 = [WCM_BTConnection alloc];
-    [(WCM_BTConnection *)v5 initWithCBDevice:a3];
-    v6 = [(WCM_BTController *)self btConnections];
-    objc_sync_enter(v6);
+    [(WCM_BTConnection *)v5 initWithCBDevice:found];
+    btConnections = [(WCM_BTController *)self btConnections];
+    objc_sync_enter(btConnections);
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [(WCM_BTController *)self btConnections];
-    v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    btConnections2 = [(WCM_BTController *)self btConnections];
+    v8 = [(NSMutableArray *)btConnections2 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
       v9 = *v13;
@@ -427,7 +427,7 @@ LABEL_9:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(btConnections2);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
@@ -438,7 +438,7 @@ LABEL_9:
 
         if (v8 == ++v10)
         {
-          v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+          v8 = [(NSMutableArray *)btConnections2 countByEnumeratingWithState:&v12 objects:v16 count:16];
           if (v8)
           {
             goto LABEL_9;
@@ -471,13 +471,13 @@ LABEL_15:
     [+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")];
     [+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")];
 LABEL_19:
-    objc_sync_exit(v6);
+    objc_sync_exit(btConnections);
   }
 }
 
-- (void)handleCBDeviceLost:(id)a3
+- (void)handleCBDeviceLost:(id)lost
 {
-  [a3 btAddressData];
+  [lost btAddressData];
   v4 = CUPrintNSDataAddress();
   if (v4)
   {
@@ -487,14 +487,14 @@ LABEL_19:
       [(WCM_BTController *)self syncAllBTConnections:v5 shouldAdd:0];
     }
 
-    v6 = [(WCM_BTController *)self btConnections];
-    objc_sync_enter(v6);
+    btConnections = [(WCM_BTController *)self btConnections];
+    objc_sync_enter(btConnections);
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [(WCM_BTController *)self btConnections];
-    v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    btConnections2 = [(WCM_BTController *)self btConnections];
+    v8 = [(NSMutableArray *)btConnections2 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
       v9 = *v13;
@@ -504,7 +504,7 @@ LABEL_7:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(btConnections2);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
@@ -517,7 +517,7 @@ LABEL_7:
         {
           +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 2, @"Removing connection with info %@", [v11 description]);
           [(NSMutableArray *)[(WCM_BTController *)self btConnections] removeObject:v11];
-          objc_sync_exit(v6);
+          objc_sync_exit(btConnections);
           [(WCM_BTController *)self countBTConnections];
           [(WCM_BTController *)self printBTConnections];
           [+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")];
@@ -528,7 +528,7 @@ LABEL_7:
 
         if (v8 == ++v10)
         {
-          v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+          v8 = [(NSMutableArray *)btConnections2 countByEnumeratingWithState:&v12 objects:v16 count:16];
           if (v8)
           {
             goto LABEL_7;
@@ -539,7 +539,7 @@ LABEL_7:
       }
     }
 
-    objc_sync_exit(v6);
+    objc_sync_exit(btConnections);
     [WCM_Logging logLevel:3 message:@"Removing connection with address %@ did not exist", v5];
   }
 }
@@ -550,8 +550,8 @@ LABEL_7:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(WCM_BTController *)self btConnections];
-  v3 = [(NSMutableArray *)v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  btConnections = [(WCM_BTController *)self btConnections];
+  v3 = [(NSMutableArray *)btConnections countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -566,7 +566,7 @@ LABEL_7:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(btConnections);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
@@ -594,7 +594,7 @@ LABEL_7:
         }
       }
 
-      v4 = [(NSMutableArray *)v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [(NSMutableArray *)btConnections countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v4);
@@ -614,22 +614,22 @@ LABEL_7:
   [(WCM_BTController *)self setNumGameCtrlDev10ms:v8];
 }
 
-- (void)handleAADeviceFound:(id)a3
+- (void)handleAADeviceFound:(id)found
 {
-  v5 = -[NSString isEqualToString:](-[WCM_BTController AoSDeviceID](self, "AoSDeviceID"), "isEqualToString:", [a3 identifier]);
-  v6 = [a3 streamStateAoS];
+  v5 = -[NSString isEqualToString:](-[WCM_BTController AoSDeviceID](self, "AoSDeviceID"), "isEqualToString:", [found identifier]);
+  streamStateAoS = [found streamStateAoS];
   if ((v5 & 1) == 0)
   {
-    if (v6 != 2)
+    if (streamStateAoS != 2)
     {
-      v15 = [a3 streamStateAoS];
-      if (v15 != 3)
+      streamStateAoS2 = [found streamStateAoS];
+      if (streamStateAoS2 != 3)
       {
         return;
       }
 
-      v16 = [a3 frequencyBand];
-      if (v16 == 2)
+      frequencyBand = [found frequencyBand];
+      if (frequencyBand == 2)
       {
         v17 = @"BTController: New 5GHz Bi-Dir AoS session started";
       }
@@ -639,7 +639,7 @@ LABEL_7:
         v17 = @"BTController: New 2GHz Bi-Dir AoS session started";
       }
 
-      if (v16 == 2)
+      if (frequencyBand == 2)
       {
         v18 = &OBJC_IVAR___WCM_BTController_num5GHzAoSBiAudioDevice;
       }
@@ -651,12 +651,12 @@ LABEL_7:
 
       [WCM_Logging logLevel:2 message:v17];
       *(&self->super.super.isa + *v18) = 1;
-      -[WCM_BTController setAoSDeviceID:](self, "setAoSDeviceID:", [a3 identifier]);
+      -[WCM_BTController setAoSDeviceID:](self, "setAoSDeviceID:", [found identifier]);
       goto LABEL_42;
     }
 
-    v9 = [a3 frequencyBand];
-    if (v9 == 2)
+    frequencyBand2 = [found frequencyBand];
+    if (frequencyBand2 == 2)
     {
       v10 = @"BTController: New 5GHz Uni-Dir AoS session started";
     }
@@ -666,7 +666,7 @@ LABEL_7:
       v10 = @"BTController: New 2GHz Uni-Dir AoS session started";
     }
 
-    if (v9 == 2)
+    if (frequencyBand2 == 2)
     {
       v11 = &OBJC_IVAR___WCM_BTController_num5GHzAoSUniAudioDevice;
     }
@@ -678,18 +678,18 @@ LABEL_7:
 
     [WCM_Logging logLevel:2 message:v10];
     *(&self->super.super.isa + *v11) = 1;
-    -[WCM_BTController setAoSDeviceID:](self, "setAoSDeviceID:", [a3 identifier]);
+    -[WCM_BTController setAoSDeviceID:](self, "setAoSDeviceID:", [found identifier]);
 LABEL_39:
-    v21 = self;
+    selfCopy3 = self;
     v22 = 6;
 LABEL_43:
-    [(WCM_BTController *)v21 setAudioType:v22];
+    [(WCM_BTController *)selfCopy3 setAudioType:v22];
     goto LABEL_44;
   }
 
-  if (v6 == 2)
+  if (streamStateAoS == 2)
   {
-    if ([a3 frequencyBand] == 2)
+    if ([found frequencyBand] == 2)
     {
       v7 = &self->num2GHzAoSUniAudioDevice + 4;
       if (!*(&self->num2GHzAoSUniAudioDevice + 4))
@@ -713,13 +713,13 @@ LABEL_38:
       }
     }
 
-    v19 = self;
+    selfCopy4 = self;
     v20 = 6;
     goto LABEL_34;
   }
 
-  v12 = [a3 streamStateAoS];
-  if (v12 != 3)
+  streamStateAoS3 = [found streamStateAoS];
+  if (streamStateAoS3 != 3)
   {
     [(WCM_BTController *)self setAoSDeviceID:&stru_100255120];
     [(WCM_BTController *)self clearAoSDeviceCounts];
@@ -736,7 +736,7 @@ LABEL_44:
     return;
   }
 
-  if ([a3 frequencyBand] == 2)
+  if ([found frequencyBand] == 2)
   {
     v13 = &self->num2GHzAoSBiAudioDevice + 4;
     if (!*(&self->num2GHzAoSBiAudioDevice + 4))
@@ -747,7 +747,7 @@ LABEL_41:
       *v13 = 1;
       [WCM_Logging logLevel:2 message:v14];
 LABEL_42:
-      v21 = self;
+      selfCopy3 = self;
       v22 = 7;
       goto LABEL_43;
     }
@@ -763,16 +763,16 @@ LABEL_42:
     }
   }
 
-  v19 = self;
+  selfCopy4 = self;
   v20 = 7;
 LABEL_34:
 
-  [(WCM_BTController *)v19 setAudioType:v20];
+  [(WCM_BTController *)selfCopy4 setAudioType:v20];
 }
 
-- (void)handleAADeviceLost:(id)a3
+- (void)handleAADeviceLost:(id)lost
 {
-  if (-[NSString isEqualToString:](-[WCM_BTController AoSDeviceID](self, "AoSDeviceID"), "isEqualToString:", [a3 identifier]))
+  if (-[NSString isEqualToString:](-[WCM_BTController AoSDeviceID](self, "AoSDeviceID"), "isEqualToString:", [lost identifier]))
   {
     [(WCM_BTController *)self setAoSDeviceID:&stru_100255120];
     [(WCM_BTController *)self clearAoSDeviceCounts];
@@ -791,9 +791,9 @@ LABEL_34:
 {
   v3 = *&self->_audioType;
   v4 = *(&self->numSCODevice + 4);
-  v5 = [(WCM_BTController *)self getNum2GHzAclA2DPDevices];
+  getNum2GHzAclA2DPDevices = [(WCM_BTController *)self getNum2GHzAclA2DPDevices];
   v6 = *(&self->num2GHzAoSUniAudioDevice + 4);
-  [WCM_Logging logLevel:2 message:@"BT Connections: SCO:%lu eSCO:%lu ACL-A2DP:%lu HID:%lu LE:%lu LEA:%lu 2GAoSUni:%lu 2GAoSBi:%lu 5GAoSUni:%lu 5GAoSBi:%lu", v3, v4, v5, *(&self->numA2DPDevice + 4), *(&self->numLEADevice + 4), *(&self->numGameCtrlDev10ms + 4), *(&self->numLLADevice + 4), *(&self->num5GHzAoSUniAudioDevice + 4), v6, *(&self->num2GHzAoSBiAudioDevice + 4)];
+  [WCM_Logging logLevel:2 message:@"BT Connections: SCO:%lu eSCO:%lu ACL-A2DP:%lu HID:%lu LE:%lu LEA:%lu 2GAoSUni:%lu 2GAoSBi:%lu 5GAoSUni:%lu 5GAoSBi:%lu", v3, v4, getNum2GHzAclA2DPDevices, *(&self->numA2DPDevice + 4), *(&self->numLEADevice + 4), *(&self->numGameCtrlDev10ms + 4), *(&self->numLLADevice + 4), *(&self->num5GHzAoSUniAudioDevice + 4), v6, *(&self->num2GHzAoSBiAudioDevice + 4)];
 }
 
 - (void)clearAoSDeviceCounts
@@ -815,9 +815,9 @@ LABEL_34:
   return [(WCM_BTController *)self getNum2GHzAclA2DPDevices]+ *&self->_audioType + v3 + *(&self->numSCODevice + 4) + *(&self->numLLADevice + 4) + *(&self->num5GHzAoSUniAudioDevice + 4) != 0;
 }
 
-- (void)updateThreadRadioStatus:(BOOL)a3
+- (void)updateThreadRadioStatus:(BOOL)status
 {
-  v4 = xpc_BOOL_create(a3);
+  v4 = xpc_BOOL_create(status);
   [WCM_Logging logLevel:2 message:@"WCMBTSetThreadRadioStatus: %@", v4];
   [(WCM_Controller *)self sendMessage:1447 withArgs:v4];
 

@@ -2,7 +2,7 @@
 + (Class)layerClass;
 - (double)strokeWidth;
 - (void)layoutSubviews;
-- (void)setStrokeWidth:(double)a3;
+- (void)setStrokeWidth:(double)width;
 @end
 
 @implementation PBFCircleView
@@ -11,17 +11,17 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_21B6C9124();
 
   return v5;
 }
 
-- (void)setStrokeWidth:(double)a3
+- (void)setStrokeWidth:(double)width
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   sub_21B6C9134();
 }
 
@@ -34,7 +34,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   PBFCircleView.layoutSubviews()();
 }
 

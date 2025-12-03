@@ -1,9 +1,9 @@
 @interface RTIInputSystemDataPayload
-+ (id)payloadWithData:(id)a3;
-+ (id)payloadWithData:(id)a3 version:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (RTIInputSystemDataPayload)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)payloadWithData:(id)data;
++ (id)payloadWithData:(id)data version:(unint64_t)version;
+- (BOOL)isEqual:(id)equal;
+- (RTIInputSystemDataPayload)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)data;
 - (void)_unarchiveData;
 - (void)updateData;
@@ -11,11 +11,11 @@
 
 @implementation RTIInputSystemDataPayload
 
-- (RTIInputSystemDataPayload)initWithCoder:(id)a3
+- (RTIInputSystemDataPayload)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = RTIInputSystemDataPayload;
-  v3 = [(RTIDataPayload *)&v6 initWithCoder:a3];
+  v3 = [(RTIDataPayload *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -25,11 +25,11 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [RTIInputSystemDataPayload alloc];
-  v5 = [(RTIInputSystemDataPayload *)self data];
-  v6 = [(RTIDataPayload *)v4 initWithData:v5 version:[(RTIDataPayload *)self version]];
+  data = [(RTIInputSystemDataPayload *)self data];
+  v6 = [(RTIDataPayload *)v4 initWithData:data version:[(RTIDataPayload *)self version]];
 
   v7 = [(NSUUID *)self->_sessionUUID copy];
   v8 = *(v6 + 56);
@@ -47,10 +47,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -60,23 +60,23 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v32.receiver = self;
       v32.super_class = RTIInputSystemDataPayload;
       if ([(RTIDataPayload *)&v32 isEqual:v5])
       {
-        v6 = [(RTIInputSystemDataPayload *)self sessionUUID];
-        v7 = [v5 sessionUUID];
-        v8 = v7;
-        if (v6 == v7)
+        sessionUUID = [(RTIInputSystemDataPayload *)self sessionUUID];
+        sessionUUID2 = [v5 sessionUUID];
+        v8 = sessionUUID2;
+        if (sessionUUID == sessionUUID2)
         {
         }
 
         else
         {
-          v9 = [(RTIInputSystemDataPayload *)self sessionUUID];
-          v10 = [v5 sessionUUID];
-          v11 = [v9 isEqual:v10];
+          sessionUUID3 = [(RTIInputSystemDataPayload *)self sessionUUID];
+          sessionUUID4 = [v5 sessionUUID];
+          v11 = [sessionUUID3 isEqual:sessionUUID4];
 
           if (!v11)
           {
@@ -84,18 +84,18 @@
           }
         }
 
-        v13 = [(RTIInputSystemDataPayload *)self documentState];
-        v14 = [v5 documentState];
-        v15 = v14;
-        if (v13 == v14)
+        documentState = [(RTIInputSystemDataPayload *)self documentState];
+        documentState2 = [v5 documentState];
+        v15 = documentState2;
+        if (documentState == documentState2)
         {
         }
 
         else
         {
-          v16 = [(RTIInputSystemDataPayload *)self documentState];
-          v17 = [v5 documentState];
-          v18 = [v16 isEqual:v17];
+          documentState3 = [(RTIInputSystemDataPayload *)self documentState];
+          documentState4 = [v5 documentState];
+          v18 = [documentState3 isEqual:documentState4];
 
           if (!v18)
           {
@@ -103,18 +103,18 @@
           }
         }
 
-        v19 = [(RTIInputSystemDataPayload *)self documentTraits];
-        v20 = [v5 documentTraits];
-        v21 = v20;
-        if (v19 == v20)
+        documentTraits = [(RTIInputSystemDataPayload *)self documentTraits];
+        documentTraits2 = [v5 documentTraits];
+        v21 = documentTraits2;
+        if (documentTraits == documentTraits2)
         {
         }
 
         else
         {
-          v22 = [(RTIInputSystemDataPayload *)self documentTraits];
-          v23 = [v5 documentTraits];
-          v24 = [v22 isEqual:v23];
+          documentTraits3 = [(RTIInputSystemDataPayload *)self documentTraits];
+          documentTraits4 = [v5 documentTraits];
+          v24 = [documentTraits3 isEqual:documentTraits4];
 
           if (!v24)
           {
@@ -122,18 +122,18 @@
           }
         }
 
-        v25 = [(RTIInputSystemDataPayload *)self textOperations];
-        v26 = [v5 textOperations];
-        v27 = v26;
-        if (v25 == v26)
+        textOperations = [(RTIInputSystemDataPayload *)self textOperations];
+        textOperations2 = [v5 textOperations];
+        v27 = textOperations2;
+        if (textOperations == textOperations2)
         {
         }
 
         else
         {
-          v28 = [(RTIInputSystemDataPayload *)self textOperations];
-          v29 = [v5 textOperations];
-          v30 = [v28 isEqual:v29];
+          textOperations3 = [(RTIInputSystemDataPayload *)self textOperations];
+          textOperations4 = [v5 textOperations];
+          v30 = [textOperations3 isEqual:textOperations4];
 
           if (!v30)
           {
@@ -160,20 +160,20 @@ LABEL_22:
   return v12;
 }
 
-+ (id)payloadWithData:(id)a3
++ (id)payloadWithData:(id)data
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithData:v4 version:1];
+  dataCopy = data;
+  v5 = [[self alloc] initWithData:dataCopy version:1];
 
   [v5 _unarchiveData];
 
   return v5;
 }
 
-+ (id)payloadWithData:(id)a3 version:(unint64_t)a4
++ (id)payloadWithData:(id)data version:(unint64_t)version
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithData:v6 version:a4];
+  dataCopy = data;
+  v7 = [[self alloc] initWithData:dataCopy version:version];
 
   [v7 _unarchiveData];
 
@@ -186,9 +186,9 @@ LABEL_22:
   {
     v7.receiver = self;
     v7.super_class = RTIInputSystemDataPayload;
-    v3 = [(RTIDataPayload *)&v7 data];
+    data = [(RTIDataPayload *)&v7 data];
 
-    if (!v3)
+    if (!data)
     {
       [(RTIInputSystemDataPayload *)self updateData];
     }
@@ -196,17 +196,17 @@ LABEL_22:
 
   v6.receiver = self;
   v6.super_class = RTIInputSystemDataPayload;
-  v4 = [(RTIDataPayload *)&v6 data];
+  data2 = [(RTIDataPayload *)&v6 data];
 
-  return v4;
+  return data2;
 }
 
 - (void)updateData
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v3 = [(RTIDocumentTraits *)self->_documentTraits fenceHandle];
+  fenceHandle = [(RTIDocumentTraits *)self->_documentTraits fenceHandle];
 
-  if (!v3)
+  if (!fenceHandle)
   {
     v4 = [[RTIKeyedArchiver alloc] initRequiringSecureCoding:1];
     [v4 setRtiVersion:{-[RTIDataPayload version](self, "version")}];
@@ -238,8 +238,8 @@ LABEL_22:
       [v4 encodeObject:v9 forKey:@"sessionUUID"];
     }
 
-    v10 = [v4 encodedData];
-    [(RTIDataPayload *)self setData:v10];
+    encodedData = [v4 encodedData];
+    [(RTIDataPayload *)self setData:encodedData];
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -248,13 +248,13 @@ LABEL_22:
 - (void)_unarchiveData
 {
   self->_disableUpdate = 1;
-  v3 = [(RTIInputSystemDataPayload *)self data];
+  data = [(RTIInputSystemDataPayload *)self data];
 
-  if (v3)
+  if (data)
   {
     v4 = [RTIKeyedUnarchiver alloc];
-    v5 = [(RTIInputSystemDataPayload *)self data];
-    v15 = [(RTIKeyedUnarchiver *)v4 initForReadingFromData:v5 error:0];
+    data2 = [(RTIInputSystemDataPayload *)self data];
+    v15 = [(RTIKeyedUnarchiver *)v4 initForReadingFromData:data2 error:0];
 
     [v15 setRtiVersion:{-[RTIDataPayload version](self, "version")}];
     v6 = [v15 decodeObjectOfClass:objc_opt_class() forKey:@"documentState"];

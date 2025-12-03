@@ -1,66 +1,66 @@
 @interface ANValidationHelper
-+ (id)_runValidationCheck:(id)a3 isRetry:(BOOL)a4;
-+ (id)performBasicValidationForAnnouncement:(id)a3 type:(unint64_t)a4;
-+ (id)performPreflightChecksForSendingAnnouncementToHomeContext:(id)a3;
-+ (id)performPreflightChecksForSendingContent:(id)a3 toHome:(id)a4 rooms:(id)a5 zones:(id)a6;
++ (id)_runValidationCheck:(id)check isRetry:(BOOL)retry;
++ (id)performBasicValidationForAnnouncement:(id)announcement type:(unint64_t)type;
++ (id)performPreflightChecksForSendingAnnouncementToHomeContext:(id)context;
++ (id)performPreflightChecksForSendingContent:(id)content toHome:(id)home rooms:(id)rooms zones:(id)zones;
 @end
 
 @implementation ANValidationHelper
 
-+ (id)performBasicValidationForAnnouncement:(id)a3 type:(unint64_t)a4
++ (id)performBasicValidationForAnnouncement:(id)announcement type:(unint64_t)type
 {
-  v6 = a3;
+  announcementCopy = announcement;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__ANValidationHelper_performBasicValidationForAnnouncement_type___block_invoke;
   v10[3] = &unk_278C87570;
-  v11 = v6;
-  v12 = a4;
-  v7 = v6;
-  v8 = [a1 _runValidationCheck:v10 isRetry:0];
+  v11 = announcementCopy;
+  typeCopy = type;
+  v7 = announcementCopy;
+  v8 = [self _runValidationCheck:v10 isRetry:0];
 
   return v8;
 }
 
-+ (id)performPreflightChecksForSendingContent:(id)a3 toHome:(id)a4 rooms:(id)a5 zones:(id)a6
++ (id)performPreflightChecksForSendingContent:(id)content toHome:(id)home rooms:(id)rooms zones:(id)zones
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  contentCopy = content;
+  homeCopy = home;
+  roomsCopy = rooms;
+  zonesCopy = zones;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __81__ANValidationHelper_performPreflightChecksForSendingContent_toHome_rooms_zones___block_invoke;
   v20[3] = &unk_278C87598;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
-  v24 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  v18 = [a1 _runValidationCheck:v20 isRetry:0];
+  v21 = contentCopy;
+  v22 = homeCopy;
+  v23 = roomsCopy;
+  v24 = zonesCopy;
+  v14 = zonesCopy;
+  v15 = roomsCopy;
+  v16 = homeCopy;
+  v17 = contentCopy;
+  v18 = [self _runValidationCheck:v20 isRetry:0];
 
   return v18;
 }
 
-+ (id)performPreflightChecksForSendingAnnouncementToHomeContext:(id)a3
++ (id)performPreflightChecksForSendingAnnouncementToHomeContext:(id)context
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = ANLogHandleValidationHelper();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v40 = &stru_2851BDB18;
     v41 = 2114;
-    v42 = v4;
+    v42 = contextCopy;
     _os_log_impl(&dword_23F525000, v5, OS_LOG_TYPE_DEFAULT, "%@Performing preflight check for context: %{public}@", buf, 0x16u);
   }
 
-  v6 = [v4 homeName];
-  if (![v6 length] || objc_msgSend(v4, "isEmpty"))
+  homeName = [contextCopy homeName];
+  if (![homeName length] || objc_msgSend(contextCopy, "isEmpty"))
   {
     v7 = ANLogHandleValidationHelper();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -72,7 +72,7 @@
   }
 
   v8 = +[ANHomeManager shared];
-  v9 = [v8 homeNamesForContext:v4];
+  v9 = [v8 homeNamesForContext:contextCopy];
 
   v10 = ANLogHandleValidationHelper();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -90,9 +90,9 @@
     goto LABEL_31;
   }
 
-  v11 = [v4 roomNames];
-  v12 = [v4 zoneNames];
-  v13 = [MEMORY[0x277CEAB68] destinationWithHomeName:v6 zoneNames:v12 roomNames:v11];
+  roomNames = [contextCopy roomNames];
+  zoneNames = [contextCopy zoneNames];
+  v13 = [MEMORY[0x277CEAB68] destinationWithHomeName:homeName zoneNames:zoneNames roomNames:roomNames];
   v14 = ANLogHandleValidationHelper();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -103,42 +103,42 @@
     _os_log_impl(&dword_23F525000, v14, OS_LOG_TYPE_DEFAULT, "%@Destination from homeContext: %{public}@", buf, 0x16u);
   }
 
-  v15 = [v13 home];
-  if (v15)
+  home = [v13 home];
+  if (home)
   {
-    v16 = [v11 count];
-    v17 = [v13 rooms];
-    v33 = v12;
-    v34 = a1;
-    if (v16 == [v17 count])
+    v16 = [roomNames count];
+    rooms = [v13 rooms];
+    v33 = zoneNames;
+    selfCopy = self;
+    if (v16 == [rooms count])
     {
-      v18 = [v12 count];
-      v19 = [v13 zones];
-      v20 = [v19 count];
+      v18 = [zoneNames count];
+      zones = [v13 zones];
+      v20 = [zones count];
 
       if (v18 == v20)
       {
 LABEL_23:
-        v25 = [v13 rooms];
-        if ([v25 count])
+        rooms2 = [v13 rooms];
+        if ([rooms2 count])
         {
-          v26 = [v13 rooms];
+          rooms3 = [v13 rooms];
         }
 
         else
         {
-          v26 = MEMORY[0x277CBEBF8];
+          rooms3 = MEMORY[0x277CBEBF8];
         }
 
-        v27 = [v13 zones];
-        if ([v27 count])
+        zones2 = [v13 zones];
+        if ([zones2 count])
         {
-          v28 = [v13 zones];
+          zones3 = [v13 zones];
         }
 
         else
         {
-          v28 = MEMORY[0x277CBEBF8];
+          zones3 = MEMORY[0x277CBEBF8];
         }
 
         v35[0] = MEMORY[0x277D85DD0];
@@ -146,13 +146,13 @@ LABEL_23:
         v35[2] = __80__ANValidationHelper_performPreflightChecksForSendingAnnouncementToHomeContext___block_invoke;
         v35[3] = &unk_278C875C0;
         v36 = v13;
-        v37 = v26;
-        v38 = v28;
-        v29 = v28;
-        v30 = v26;
-        v21 = [v34 _runValidationCheck:v35 isRetry:0];
+        v37 = rooms3;
+        v38 = zones3;
+        v29 = zones3;
+        v30 = rooms3;
+        v21 = [selfCopy _runValidationCheck:v35 isRetry:0];
 
-        v12 = v33;
+        zoneNames = v33;
         goto LABEL_30;
       }
     }
@@ -164,14 +164,14 @@ LABEL_23:
     v22 = ANLogHandleValidationHelper();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
-      v23 = [v13 rooms];
-      v24 = [v13 zones];
+      rooms4 = [v13 rooms];
+      zones4 = [v13 zones];
       *buf = 138412802;
       v40 = &stru_2851BDB18;
       v41 = 2114;
-      v42 = v23;
+      v42 = rooms4;
       v43 = 2114;
-      v44 = v24;
+      v44 = zones4;
       _os_log_impl(&dword_23F525000, v22, OS_LOG_TYPE_ERROR, "%@Destination rooms: %{public}@ zones: %{public}@", buf, 0x20u);
     }
 
@@ -195,28 +195,28 @@ id __80__ANValidationHelper_performPreflightChecksForSendingAnnouncementToHomeCo
   return v3;
 }
 
-+ (id)_runValidationCheck:(id)a3 isRetry:(BOOL)a4
++ (id)_runValidationCheck:(id)check isRetry:(BOOL)retry
 {
-  v4 = a4;
+  retryCopy = retry;
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  checkCopy = check;
   v7 = ANLogHandleValidationHelper();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 138412546;
     v21 = &stru_2851BDB18;
     v22 = 1024;
-    v23 = v4;
+    v23 = retryCopy;
     _os_log_impl(&dword_23F525000, v7, OS_LOG_TYPE_DEFAULT, "%@Starting validation check (is retry = %d)", &v20, 0x12u);
   }
 
-  v8 = v6[2](v6);
+  v8 = checkCopy[2](checkCopy);
   v9 = v8;
   if (v8)
   {
     if ([v8 isHomeError])
     {
-      v10 = !v4;
+      v10 = !retryCopy;
     }
 
     else
@@ -235,9 +235,9 @@ id __80__ANValidationHelper_performPreflightChecksForSendingAnnouncementToHomeCo
       }
 
       v14 = +[ANHomeManager shared];
-      v15 = [v14 refreshHomeSynchronous];
+      refreshHomeSynchronous = [v14 refreshHomeSynchronous];
 
-      if (v15)
+      if (refreshHomeSynchronous)
       {
         v16 = ANLogHandleValidationHelper();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -247,12 +247,12 @@ id __80__ANValidationHelper_performPreflightChecksForSendingAnnouncementToHomeCo
           _os_log_impl(&dword_23F525000, v16, OS_LOG_TYPE_DEFAULT, "%@Validation check failed - HomeManager refresh error", &v20, 0xCu);
         }
 
-        v17 = v15;
+        v17 = refreshHomeSynchronous;
       }
 
       else
       {
-        v17 = [a1 _runValidationCheck:v6 isRetry:1];
+        v17 = [self _runValidationCheck:checkCopy isRetry:1];
       }
 
       v11 = v17;

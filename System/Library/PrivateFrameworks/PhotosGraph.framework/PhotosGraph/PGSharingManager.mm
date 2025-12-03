@@ -1,35 +1,35 @@
 @interface PGSharingManager
 + (id)_defaultOptions;
 - (BOOL)_canIncludeUnverified;
-- (BOOL)canProvideSuggestionsWithOptions:(id)a3 forGraph:(id)a4;
-- (PGSharingManager)initWithWorkingContext:(id)a3;
-- (id)_filteredSuggestionResults:(id)a3 withOptions:(id)a4 graph:(id)a5;
-- (id)_sortedSuggestionResults:(id)a3 withOptions:(id)a4;
+- (BOOL)canProvideSuggestionsWithOptions:(id)options forGraph:(id)graph;
+- (PGSharingManager)initWithWorkingContext:(id)context;
+- (id)_filteredSuggestionResults:(id)results withOptions:(id)options graph:(id)graph;
+- (id)_sortedSuggestionResults:(id)results withOptions:(id)options;
 - (id)contextualStream;
 - (id)presenceStream;
-- (id)suggestionResultsForAssetLocalIdentifiers:(id)a3 momentLocalIdentifiers:(id)a4 options:(id)a5;
-- (id)suggestionSourcesForSharingStream:(unint64_t)a3;
-- (void)_mergeSuggestionResultByPersonIdentifer:(id)a3 withSourceSuggestionResults:(id)a4;
+- (id)suggestionResultsForAssetLocalIdentifiers:(id)identifiers momentLocalIdentifiers:(id)localIdentifiers options:(id)options;
+- (id)suggestionSourcesForSharingStream:(unint64_t)stream;
+- (void)_mergeSuggestionResultByPersonIdentifer:(id)identifer withSourceSuggestionResults:(id)results;
 @end
 
 @implementation PGSharingManager
 
-- (id)_sortedSuggestionResults:(id)a3 withOptions:(id)a4
+- (id)_sortedSuggestionResults:(id)results withOptions:(id)options
 {
-  v5 = a4;
-  v6 = [a3 sortedArrayUsingComparator:&__block_literal_global_3408];
-  if ([v5 fetchLimit])
+  optionsCopy = options;
+  v6 = [results sortedArrayUsingComparator:&__block_literal_global_3408];
+  if ([optionsCopy fetchLimit])
   {
-    v7 = [v5 fetchLimit];
+    fetchLimit = [optionsCopy fetchLimit];
     v8 = [v6 count];
-    if (v7 >= v8)
+    if (fetchLimit >= v8)
     {
       v9 = v8;
     }
 
     else
     {
-      v9 = v7;
+      v9 = fetchLimit;
     }
 
     v10 = [v6 subarrayWithRange:{0, v9}];
@@ -73,23 +73,23 @@ uint64_t __57__PGSharingManager__sortedSuggestionResults_withOptions___block_inv
   return v9;
 }
 
-- (id)_filteredSuggestionResults:(id)a3 withOptions:(id)a4 graph:(id)a5
+- (id)_filteredSuggestionResults:(id)results withOptions:(id)options graph:(id)graph
 {
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PGManagerWorkingContext *)self->_workingContext serviceManager];
-  v12 = [(PGManagerWorkingContext *)self->_workingContext loggingConnection];
-  v13 = [v9 filterLowWeightResults];
-  v14 = v13;
-  if (v13)
+  resultsCopy = results;
+  optionsCopy = options;
+  graphCopy = graph;
+  serviceManager = [(PGManagerWorkingContext *)self->_workingContext serviceManager];
+  loggingConnection = [(PGManagerWorkingContext *)self->_workingContext loggingConnection];
+  filterLowWeightResults = [optionsCopy filterLowWeightResults];
+  v14 = filterLowWeightResults;
+  if (filterLowWeightResults)
   {
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v15 = v8;
+    v15 = resultsCopy;
     v16 = [v15 countByEnumeratingWithState:&v44 objects:v48 count:16];
     if (v16)
     {
@@ -126,26 +126,26 @@ uint64_t __57__PGSharingManager__sortedSuggestionResults_withOptions___block_inv
     v19 = 2.22507386e-308;
   }
 
-  v22 = [v11 mePerson];
-  v23 = [v22 fullName];
-  v24 = [v10 children];
+  mePerson = [serviceManager mePerson];
+  fullName = [mePerson fullName];
+  children = [graphCopy children];
   v25 = MEMORY[0x277CCAC30];
   v34 = MEMORY[0x277D85DD0];
   v35 = 3221225472;
   v36 = __65__PGSharingManager__filteredSuggestionResults_withOptions_graph___block_invoke;
   v37 = &unk_27887F3F0;
-  v38 = v24;
-  v39 = v11;
+  v38 = children;
+  v39 = serviceManager;
   v43 = v14;
   v42 = v19;
-  v40 = v23;
-  v41 = v12;
-  v26 = v12;
-  v27 = v23;
-  v28 = v11;
-  v29 = v24;
+  v40 = fullName;
+  v41 = loggingConnection;
+  v26 = loggingConnection;
+  v27 = fullName;
+  v28 = serviceManager;
+  v29 = children;
   v30 = [v25 predicateWithBlock:&v34];
-  v31 = [v8 filteredArrayUsingPredicate:{v30, v34, v35, v36, v37}];
+  v31 = [resultsCopy filteredArrayUsingPredicate:{v30, v34, v35, v36, v37}];
 
   v32 = *MEMORY[0x277D85DE8];
 
@@ -236,16 +236,16 @@ LABEL_22:
   return v6;
 }
 
-- (void)_mergeSuggestionResultByPersonIdentifer:(id)a3 withSourceSuggestionResults:(id)a4
+- (void)_mergeSuggestionResultByPersonIdentifer:(id)identifer withSourceSuggestionResults:(id)results
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  identiferCopy = identifer;
+  resultsCopy = results;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v7 = [resultsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -256,22 +256,22 @@ LABEL_22:
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(resultsCopy);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 person];
-        v13 = [v12 localIdentifier];
+        person = [v11 person];
+        localIdentifier = [person localIdentifier];
 
-        if (![v13 length])
+        if (![localIdentifier length])
         {
-          v14 = [v11 person];
-          v15 = [v14 contactIdentifier];
+          person2 = [v11 person];
+          contactIdentifier = [person2 contactIdentifier];
 
-          v13 = v15;
+          localIdentifier = contactIdentifier;
         }
 
-        v16 = [v5 objectForKeyedSubscript:v13];
+        v16 = [identiferCopy objectForKeyedSubscript:localIdentifier];
         v17 = v16;
         if (v16)
         {
@@ -280,11 +280,11 @@ LABEL_22:
 
         else
         {
-          [v5 setObject:v11 forKeyedSubscript:v13];
+          [identiferCopy setObject:v11 forKeyedSubscript:localIdentifier];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [resultsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v8);
@@ -296,11 +296,11 @@ LABEL_22:
 - (BOOL)_canIncludeUnverified
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
-  v4 = [v3 countOfClusteringEligibleFaces];
-  if (v4)
+  photoLibrary = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
+  countOfClusteringEligibleFaces = [photoLibrary countOfClusteringEligibleFaces];
+  if (countOfClusteringEligibleFaces)
   {
-    v5 = [v3 countOfUnclusteredFaces] / v4;
+    v5 = [photoLibrary countOfUnclusteredFaces] / countOfClusteringEligibleFaces;
     v6 = v5 < 0.1;
   }
 
@@ -310,29 +310,29 @@ LABEL_22:
     v5 = 0.0;
   }
 
-  v7 = [(PGManagerWorkingContext *)self->_workingContext loggingConnection];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  loggingConnection = [(PGManagerWorkingContext *)self->_workingContext loggingConnection];
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134218752;
-    v11 = v4;
+    v11 = countOfClusteringEligibleFaces;
     v12 = 2048;
     v13 = v5;
     v14 = 2048;
     v15 = 0x3FB999999999999ALL;
     v16 = 1024;
     v17 = v6;
-    _os_log_impl(&dword_22F0FC000, v7, OS_LOG_TYPE_DEFAULT, "[Sharing Suggestion] Can include unverified result: countOfClusteringEligibleFaces %lu, percentageOfFacesNotClustered %.2f < %.2f == %d", &v10, 0x26u);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "[Sharing Suggestion] Can include unverified result: countOfClusteringEligibleFaces %lu, percentageOfFacesNotClustered %.2f < %.2f == %d", &v10, 0x26u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
   return v6;
 }
 
-- (BOOL)canProvideSuggestionsWithOptions:(id)a3 forGraph:(id)a4
+- (BOOL)canProvideSuggestionsWithOptions:(id)options forGraph:(id)graph
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 includeUnverified])
+  optionsCopy = options;
+  graphCopy = graph;
+  if ([optionsCopy includeUnverified])
   {
     v7 = 1;
   }
@@ -352,9 +352,9 @@ LABEL_22:
     v9[2] = __62__PGSharingManager_canProvideSuggestionsWithOptions_forGraph___block_invoke;
     v9[3] = &unk_2788850E0;
     v11 = &v17;
-    v10 = v5;
+    v10 = optionsCopy;
     v12 = &v13;
-    [v6 enumeratePersonNodesIncludingMe:0 withBlock:v9];
+    [graphCopy enumeratePersonNodesIncludingMe:0 withBlock:v9];
     if (v18[3])
     {
       v7 = 1;
@@ -402,28 +402,28 @@ LABEL_3:
 LABEL_7:
 }
 
-- (id)suggestionResultsForAssetLocalIdentifiers:(id)a3 momentLocalIdentifiers:(id)a4 options:(id)a5
+- (id)suggestionResultsForAssetLocalIdentifiers:(id)identifiers momentLocalIdentifiers:(id)localIdentifiers options:(id)options
 {
   v76 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PGManagerWorkingContext *)self->_workingContext loggingConnection];
-  v12 = [v9 count];
+  identifiersCopy = identifiers;
+  localIdentifiersCopy = localIdentifiers;
+  optionsCopy = options;
+  loggingConnection = [(PGManagerWorkingContext *)self->_workingContext loggingConnection];
+  v12 = [localIdentifiersCopy count];
   v13 = MEMORY[0x277CBEBF8];
   if (v12)
   {
     info = 0;
     mach_timebase_info(&info);
     v14 = mach_absolute_time();
-    if (!v10)
+    if (!optionsCopy)
     {
-      v10 = [objc_opt_class() _defaultOptions];
+      optionsCopy = [objc_opt_class() _defaultOptions];
     }
 
-    if ([v10 includeUnverified])
+    if ([optionsCopy includeUnverified])
     {
-      [v10 setIncludeUnverified:{-[PGSharingManager _canIncludeUnverified](self, "_canIncludeUnverified")}];
+      [optionsCopy setIncludeUnverified:{-[PGSharingManager _canIncludeUnverified](self, "_canIncludeUnverified")}];
     }
 
     v63 = 0;
@@ -455,11 +455,11 @@ LABEL_7:
     v40[3] = &unk_27887F3A0;
     v44 = &v47;
     v40[4] = self;
-    v10 = v10;
-    v41 = v10;
+    optionsCopy = optionsCopy;
+    v41 = optionsCopy;
     v45 = &v51;
-    v42 = v8;
-    v43 = v9;
+    v42 = identifiersCopy;
+    v43 = localIdentifiersCopy;
     v46 = &v57;
     [(PGManagerWorkingContext *)workingContext performSynchronousConcurrentGraphReadUsingBlock:v40];
     if (v48[3])
@@ -473,9 +473,9 @@ LABEL_7:
       block[3] = &unk_27887F3C8;
       block[4] = self;
       v38 = &v57;
-      v19 = v10;
+      v19 = optionsCopy;
       v35 = v19;
-      v20 = v11;
+      v20 = loggingConnection;
       v36 = v20;
       v39 = &v51;
       v21 = v17;
@@ -523,11 +523,11 @@ LABEL_7:
 
     else
     {
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v71 = v10;
-        _os_log_impl(&dword_22F0FC000, v11, OS_LOG_TYPE_DEFAULT, "[Sharing Suggestion] Cannot run with options %@, no eligible persons to suggest", buf, 0xCu);
+        v71 = optionsCopy;
+        _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "[Sharing Suggestion] Cannot run with options %@, no eligible persons to suggest", buf, 0xCu);
       }
 
       v13 = MEMORY[0x277CBEBF8];
@@ -715,20 +715,20 @@ LABEL_11:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)suggestionSourcesForSharingStream:(unint64_t)a3
+- (id)suggestionSourcesForSharingStream:(unint64_t)stream
 {
-  v3 = a3;
+  streamCopy = stream;
   v5 = objc_opt_new();
-  if (v3)
+  if (streamCopy)
   {
-    v6 = [(PGSharingManager *)self presenceStream];
-    [v5 addObjectsFromArray:v6];
+    presenceStream = [(PGSharingManager *)self presenceStream];
+    [v5 addObjectsFromArray:presenceStream];
   }
 
-  if ((v3 & 2) != 0)
+  if ((streamCopy & 2) != 0)
   {
-    v7 = [(PGSharingManager *)self contextualStream];
-    [v5 addObjectsFromArray:v7];
+    contextualStream = [(PGSharingManager *)self contextualStream];
+    [v5 addObjectsFromArray:contextualStream];
   }
 
   return v5;
@@ -764,8 +764,8 @@ LABEL_11:
   v3 = objc_opt_new();
   v12[0] = v3;
   v4 = [PGSharingSuggestionSourceMergeCandidates alloc];
-  v5 = [(PGManagerWorkingContext *)self->_workingContext serviceManager];
-  v6 = [(PGSharingSuggestionSourceMergeCandidates *)v4 initWithServiceManager:v5];
+  serviceManager = [(PGManagerWorkingContext *)self->_workingContext serviceManager];
+  v6 = [(PGSharingSuggestionSourceMergeCandidates *)v4 initWithServiceManager:serviceManager];
   v12[1] = v6;
   v7 = objc_opt_new();
   v12[2] = v7;
@@ -778,16 +778,16 @@ LABEL_11:
   return v9;
 }
 
-- (PGSharingManager)initWithWorkingContext:(id)a3
+- (PGSharingManager)initWithWorkingContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = PGSharingManager;
   v6 = [(PGSharingManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_workingContext, a3);
+    objc_storeStrong(&v6->_workingContext, context);
   }
 
   return v7;

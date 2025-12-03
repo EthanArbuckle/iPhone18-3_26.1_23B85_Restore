@@ -1,30 +1,30 @@
 @interface ACUISActivityMetricsRequest
 - (ACUISActivityItemMetricsRequest)ambientMetrics;
 - (ACUISActivityItemMetricsRequest)lockScreenMetrics;
-- (ACUISActivityMetricsRequest)initWithCoder:(id)a3;
-- (ACUISActivityMetricsRequest)initWithLockScreenMetrics:(id)a3;
+- (ACUISActivityMetricsRequest)initWithCoder:(id)coder;
+- (ACUISActivityMetricsRequest)initWithLockScreenMetrics:(id)metrics;
 - (ACUISSystemApertureMetricsRequest)systemApertureMetrics;
-- (BOOL)isEqual:(id)a3;
-- (id)_ACUISItemMetricsRequestFromRequest:(id)a3;
-- (id)_initWithMetricsRequest:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)_ACUISItemMetricsRequestFromRequest:(id)request;
+- (id)_initWithMetricsRequest:(id)request;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)setAmbientMetrics:(id)a3;
-- (void)setLockScreenMetrics:(id)a3;
-- (void)setSystemApertureMetrics:(id)a3;
+- (void)setAmbientMetrics:(id)metrics;
+- (void)setLockScreenMetrics:(id)metrics;
+- (void)setSystemApertureMetrics:(id)metrics;
 @end
 
 @implementation ACUISActivityMetricsRequest
 
-- (id)_initWithMetricsRequest:(id)a3
+- (id)_initWithMetricsRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = ACUISActivityMetricsRequest;
   v5 = [(ACUISActivityMetricsRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [requestCopy copy];
     metricsRequest = v5->_metricsRequest;
     v5->_metricsRequest = v6;
   }
@@ -32,17 +32,17 @@
   return v5;
 }
 
-- (ACUISActivityMetricsRequest)initWithLockScreenMetrics:(id)a3
+- (ACUISActivityMetricsRequest)initWithLockScreenMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v11.receiver = self;
   v11.super_class = ACUISActivityMetricsRequest;
   v5 = [(ACUISActivityMetricsRequest *)&v11 init];
   if (v5)
   {
     v6 = [_TtC18ActivityUIServices22ActivityMetricsRequest alloc];
-    v7 = [v4 _activityItemMetricsRequest];
-    v8 = [(ActivityMetricsRequest *)v6 initWithLockScreenMetrics:v7 systemApertureMetrics:0 ambientMetrics:0];
+    _activityItemMetricsRequest = [metricsCopy _activityItemMetricsRequest];
+    v8 = [(ActivityMetricsRequest *)v6 initWithLockScreenMetrics:_activityItemMetricsRequest systemApertureMetrics:0 ambientMetrics:0];
     metricsRequest = v5->_metricsRequest;
     v5->_metricsRequest = v8;
   }
@@ -50,51 +50,51 @@
   return v5;
 }
 
-- (void)setAmbientMetrics:(id)a3
+- (void)setAmbientMetrics:(id)metrics
 {
-  v4 = [a3 _activityItemMetricsRequest];
-  [(ActivityMetricsRequest *)self->_metricsRequest setAmbientMetrics:v4];
+  _activityItemMetricsRequest = [metrics _activityItemMetricsRequest];
+  [(ActivityMetricsRequest *)self->_metricsRequest setAmbientMetrics:_activityItemMetricsRequest];
 }
 
 - (ACUISActivityItemMetricsRequest)ambientMetrics
 {
   v3 = [ACUISActivityItemMetricsRequest alloc];
-  v4 = [(ActivityMetricsRequest *)self->_metricsRequest ambientMetrics];
-  v5 = [(ACUISActivityItemMetricsRequest *)v3 _initWithItemMetrics:v4];
+  ambientMetrics = [(ActivityMetricsRequest *)self->_metricsRequest ambientMetrics];
+  v5 = [(ACUISActivityItemMetricsRequest *)v3 _initWithItemMetrics:ambientMetrics];
 
   return v5;
 }
 
-- (void)setLockScreenMetrics:(id)a3
+- (void)setLockScreenMetrics:(id)metrics
 {
-  v4 = [a3 _activityItemMetricsRequest];
-  [(ActivityMetricsRequest *)self->_metricsRequest setLockScreenMetrics:v4];
+  _activityItemMetricsRequest = [metrics _activityItemMetricsRequest];
+  [(ActivityMetricsRequest *)self->_metricsRequest setLockScreenMetrics:_activityItemMetricsRequest];
 }
 
 - (ACUISActivityItemMetricsRequest)lockScreenMetrics
 {
   v3 = [ACUISActivityItemMetricsRequest alloc];
-  v4 = [(ActivityMetricsRequest *)self->_metricsRequest lockScreenMetrics];
-  v5 = [(ACUISActivityItemMetricsRequest *)v3 _initWithItemMetrics:v4];
+  lockScreenMetrics = [(ActivityMetricsRequest *)self->_metricsRequest lockScreenMetrics];
+  v5 = [(ACUISActivityItemMetricsRequest *)v3 _initWithItemMetrics:lockScreenMetrics];
 
   return v5;
 }
 
-- (void)setSystemApertureMetrics:(id)a3
+- (void)setSystemApertureMetrics:(id)metrics
 {
-  v4 = [a3 _systemApertureMetricsRequest];
-  [(ActivityMetricsRequest *)self->_metricsRequest setSystemApertureMetrics:v4];
+  _systemApertureMetricsRequest = [metrics _systemApertureMetricsRequest];
+  [(ActivityMetricsRequest *)self->_metricsRequest setSystemApertureMetrics:_systemApertureMetricsRequest];
 }
 
 - (ACUISSystemApertureMetricsRequest)systemApertureMetrics
 {
-  v3 = [(ActivityMetricsRequest *)self->_metricsRequest systemApertureMetrics];
+  systemApertureMetrics = [(ActivityMetricsRequest *)self->_metricsRequest systemApertureMetrics];
 
-  if (v3)
+  if (systemApertureMetrics)
   {
     v4 = [ACUISSystemApertureMetricsRequest alloc];
-    v5 = [(ActivityMetricsRequest *)self->_metricsRequest systemApertureMetrics];
-    v6 = [(ACUISSystemApertureMetricsRequest *)v4 _initWithMetricsRequest:v5];
+    systemApertureMetrics2 = [(ActivityMetricsRequest *)self->_metricsRequest systemApertureMetrics];
+    v6 = [(ACUISSystemApertureMetricsRequest *)v4 _initWithMetricsRequest:systemApertureMetrics2];
   }
 
   else
@@ -105,10 +105,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -116,7 +116,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ActivityMetricsRequest *)self->_metricsRequest isEqual:v4->_metricsRequest];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ActivityMetricsRequest *)self->_metricsRequest isEqual:equalCopy->_metricsRequest];
   }
 
   return v5;
@@ -126,20 +126,20 @@
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   v4 = [v3 appendObject:self->_metricsRequest withName:@"metrics"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (id)_ACUISItemMetricsRequestFromRequest:(id)a3
+- (id)_ACUISItemMetricsRequestFromRequest:(id)request
 {
-  v3 = a3;
-  v4 = [[ACUISActivityItemMetricsRequest alloc] _initWithItemMetrics:v3];
+  requestCopy = request;
+  v4 = [[ACUISActivityItemMetricsRequest alloc] _initWithItemMetrics:requestCopy];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [ACUISActivityMetricsRequest alloc];
   v5 = [(ActivityMetricsRequest *)self->_metricsRequest copy];
@@ -148,10 +148,10 @@
   return v6;
 }
 
-- (ACUISActivityMetricsRequest)initWithCoder:(id)a3
+- (ACUISActivityMetricsRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metrics"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metrics"];
 
   v6 = [[ACUISActivityMetricsRequest alloc] _initWithMetricsRequest:v5];
   return v6;

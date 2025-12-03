@@ -1,23 +1,23 @@
 @interface IMAutomationGroupChat
-- (id)_runChangeParticipantsQueryWithGroupID:(id)a3 participants:(id)a4 timeOut:(double)a5 error:(id *)a6 optArguments:(id)a7 addParticipants:(BOOL)a8;
-- (id)changeGroupNameWithGroupID:(id)a3 newName:(id)a4 timeOut:(double)a5 error:(id *)a6 optArguments:(id)a7;
-- (id)createGroupChatWithDestinationIDs:(id)a3 error:(id *)a4 optArguments:(id)a5;
-- (id)groupNameWithGroupID:(id)a3 timeOut:(double)a4 error:(id *)a5 optArguments:(id)a6;
-- (id)groupParticipantsWithGroupID:(id)a3 timeOut:(double)a4 error:(id *)a5 optArguments:(id)a6;
+- (id)_runChangeParticipantsQueryWithGroupID:(id)d participants:(id)participants timeOut:(double)out error:(id *)error optArguments:(id)arguments addParticipants:(BOOL)addParticipants;
+- (id)changeGroupNameWithGroupID:(id)d newName:(id)name timeOut:(double)out error:(id *)error optArguments:(id)arguments;
+- (id)createGroupChatWithDestinationIDs:(id)ds error:(id *)error optArguments:(id)arguments;
+- (id)groupNameWithGroupID:(id)d timeOut:(double)out error:(id *)error optArguments:(id)arguments;
+- (id)groupParticipantsWithGroupID:(id)d timeOut:(double)out error:(id *)error optArguments:(id)arguments;
 @end
 
 @implementation IMAutomationGroupChat
 
-- (id)createGroupChatWithDestinationIDs:(id)a3 error:(id *)a4 optArguments:(id)a5
+- (id)createGroupChatWithDestinationIDs:(id)ds error:(id *)error optArguments:(id)arguments
 {
   v59[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v53 = a5;
+  dsCopy = ds;
+  argumentsCopy = arguments;
   v11 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v9, v10);
-  v14 = objc_msgSend_handlesFromStrings_error_results_(self, v12, v8, a4, v11);
+  v14 = objc_msgSend_handlesFromStrings_error_results_(self, v12, dsCopy, error, v11);
   if (v14)
   {
-    v16 = objc_msgSend_chatForHandles_error_results_(self, v13, v14, a4, v11);
+    v16 = objc_msgSend_chatForHandles_error_results_(self, v13, v14, error, v11);
     if (v16)
     {
       v17 = v11;
@@ -50,10 +50,10 @@
         }
       }
 
-      if (a4 && !*a4)
+      if (error && !*error)
       {
         v50 = v45;
-        *a4 = v45;
+        *error = v45;
       }
     }
   }
@@ -86,10 +86,10 @@
         }
       }
 
-      if (a4 && !*a4)
+      if (error && !*error)
       {
         v33 = v28;
-        *a4 = v28;
+        *error = v28;
       }
     }
   }
@@ -102,16 +102,16 @@ LABEL_23:
   return v17;
 }
 
-- (id)_runChangeParticipantsQueryWithGroupID:(id)a3 participants:(id)a4 timeOut:(double)a5 error:(id *)a6 optArguments:(id)a7 addParticipants:(BOOL)a8
+- (id)_runChangeParticipantsQueryWithGroupID:(id)d participants:(id)participants timeOut:(double)out error:(id *)error optArguments:(id)arguments addParticipants:(BOOL)addParticipants
 {
-  v8 = a8;
+  addParticipantsCopy = addParticipants;
   v131[2] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v119 = a7;
-  if (!v13)
+  dCopy = d;
+  participantsCopy = participants;
+  argumentsCopy = arguments;
+  if (!dCopy)
   {
-    v37 = a6;
+    errorCopy = error;
     v130[0] = *MEMORY[0x1E696A578];
     v38 = MEMORY[0x1E696AEC0];
     v39 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v15, @"Condition failed : '%s'", "(groupID) == nil");
@@ -138,11 +138,11 @@ LABEL_23:
         }
       }
 
-      if (v37 && !*v37)
+      if (errorCopy && !*errorCopy)
       {
         v52 = v24;
         v53 = 0;
-        *v37 = v24;
+        *errorCopy = v24;
 LABEL_25:
         v22 = v24;
         goto LABEL_57;
@@ -154,8 +154,8 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v118 = a6;
-  if (!objc_msgSend_count(v14, v15, v16))
+  errorCopy2 = error;
+  if (!objc_msgSend_count(participantsCopy, v15, v16))
   {
     v126[0] = *MEMORY[0x1E696A578];
     v54 = MEMORY[0x1E696AEC0];
@@ -183,11 +183,11 @@ LABEL_24:
         }
       }
 
-      if (v118 && !*v118)
+      if (errorCopy2 && !*errorCopy2)
       {
         v116 = v24;
         v53 = 0;
-        *v118 = v24;
+        *errorCopy2 = v24;
         goto LABEL_25;
       }
     }
@@ -196,11 +196,11 @@ LABEL_24:
   }
 
   v19 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v17, v18);
-  v22 = objc_msgSend_handlesFromStrings_error_results_(self, v20, v14, a6, v19);
+  v22 = objc_msgSend_handlesFromStrings_error_results_(self, v20, participantsCopy, error, v19);
   if (v22)
   {
-    v24 = objc_msgSend_existingChatForGroupID_error_results_(self, v21, v13, 0, v19);
-    if (v24 || (objc_msgSend_chatForHandles_error_results_(self, v23, v22, a6, v19), (v24 = objc_claimAutoreleasedReturnValue()) != 0))
+    v24 = objc_msgSend_existingChatForGroupID_error_results_(self, v21, dCopy, 0, v19);
+    if (v24 || (objc_msgSend_chatForHandles_error_results_(self, v23, v22, error, v19), (v24 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v26 = objc_alloc(MEMORY[0x1E696AAB0]);
       v29 = objc_msgSend_mainBundle(MEMORY[0x1E696AAE8], v27, v28);
@@ -210,7 +210,7 @@ LABEL_24:
 
       if (v35)
       {
-        if (v8)
+        if (addParticipantsCopy)
         {
           objc_msgSend_inviteParticipants_reason_(v24, v36, v22, v35);
         }
@@ -250,10 +250,10 @@ LABEL_24:
           }
         }
 
-        if (v118 && !*v118)
+        if (errorCopy2 && !*errorCopy2)
         {
           v98 = v93;
-          *v118 = v93;
+          *errorCopy2 = v93;
         }
       }
     }
@@ -286,10 +286,10 @@ LABEL_24:
           }
         }
 
-        if (v118 && !*v118)
+        if (errorCopy2 && !*errorCopy2)
         {
           v113 = v35;
-          *v118 = v35;
+          *errorCopy2 = v35;
         }
       }
     }
@@ -323,10 +323,10 @@ LABEL_24:
         }
       }
 
-      if (v118 && !*v118)
+      if (errorCopy2 && !*errorCopy2)
       {
         v82 = v35;
-        *v118 = v35;
+        *errorCopy2 = v35;
       }
     }
   }
@@ -340,23 +340,23 @@ LABEL_57:
   return v53;
 }
 
-- (id)changeGroupNameWithGroupID:(id)a3 newName:(id)a4 timeOut:(double)a5 error:(id *)a6 optArguments:(id)a7
+- (id)changeGroupNameWithGroupID:(id)d newName:(id)name timeOut:(double)out error:(id *)error optArguments:(id)arguments
 {
   v79[2] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v71 = a7;
-  if (v11)
+  dCopy = d;
+  nameCopy = name;
+  argumentsCopy = arguments;
+  if (dCopy)
   {
-    if (v12)
+    if (nameCopy)
     {
       v15 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v13, v14);
-      v17 = objc_msgSend_existingChatForGroupID_error_results_(self, v16, v11, a6, v15);
+      v17 = objc_msgSend_existingChatForGroupID_error_results_(self, v16, dCopy, error, v15);
       v19 = v17;
       if (v17)
       {
-        objc_msgSend_setDisplayName_(v17, v18, v12);
-        objc_msgSend_setObject_forKeyedSubscript_(v15, v20, v12, @"name");
+        objc_msgSend_setDisplayName_(v17, v18, nameCopy);
+        objc_msgSend_setObject_forKeyedSubscript_(v15, v20, nameCopy, @"name");
         v15 = v15;
         v21 = v15;
         goto LABEL_33;
@@ -388,10 +388,10 @@ LABEL_57:
           }
         }
 
-        if (a6 && !*a6)
+        if (error && !*error)
         {
           v68 = v63;
-          *a6 = v63;
+          *error = v63;
         }
       }
     }
@@ -424,10 +424,10 @@ LABEL_57:
           }
         }
 
-        if (a6 && !*a6)
+        if (error && !*error)
         {
           v51 = v19;
-          *a6 = v19;
+          *error = v19;
         }
       }
     }
@@ -461,10 +461,10 @@ LABEL_57:
         }
       }
 
-      if (a6 && !*a6)
+      if (error && !*error)
       {
         v36 = v19;
-        *a6 = v19;
+        *error = v19;
       }
     }
   }
@@ -477,15 +477,15 @@ LABEL_33:
   return v21;
 }
 
-- (id)groupParticipantsWithGroupID:(id)a3 timeOut:(double)a4 error:(id *)a5 optArguments:(id)a6
+- (id)groupParticipantsWithGroupID:(id)d timeOut:(double)out error:(id *)error optArguments:(id)arguments
 {
   v193[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v168 = a6;
-  if (v8)
+  dCopy = d;
+  argumentsCopy = arguments;
+  if (dCopy)
   {
     v11 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v9, v10);
-    v13 = objc_msgSend_existingChatForGroupID_error_results_(self, v12, v8, a5, v11);
+    v13 = objc_msgSend_existingChatForGroupID_error_results_(self, v12, dCopy, error, v11);
     v16 = v13;
     if (!v13)
     {
@@ -515,10 +515,10 @@ LABEL_33:
           }
         }
 
-        if (a5 && !*a5)
+        if (error && !*error)
         {
           v92 = v20;
-          *a5 = v20;
+          *error = v20;
         }
       }
 
@@ -577,10 +577,10 @@ LABEL_33:
                 }
               }
 
-              if (a5 && !*a5)
+              if (error && !*error)
               {
                 v77 = v72;
-                *a5 = v72;
+                *error = v72;
               }
             }
 
@@ -641,10 +641,10 @@ LABEL_33:
             }
           }
 
-          if (a5 && !*a5)
+          if (error && !*error)
           {
             v165 = v160;
-            *a5 = v160;
+            *error = v160;
           }
         }
 
@@ -698,10 +698,10 @@ LABEL_33:
                   }
                 }
 
-                if (a5 && !*a5)
+                if (error && !*error)
                 {
                   v148 = v143;
-                  *a5 = v143;
+                  *error = v143;
                 }
               }
 
@@ -737,7 +737,7 @@ LABEL_57:
         if (os_log_type_enabled(v107, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v191 = v8;
+          v191 = dCopy;
           _os_log_impl(&dword_1A823F000, v107, OS_LOG_TYPE_INFO, "groupParticipantsWithGroupID incoming ID %@ ", buf, 0xCu);
         }
       }
@@ -764,7 +764,7 @@ LABEL_57:
         }
       }
 
-      objc_msgSend_setObject_forKey_(v11, v109, v8, @"group_id");
+      objc_msgSend_setObject_forKey_(v11, v109, dCopy, @"group_id");
       v113 = objc_msgSend_allObjects(v20, v111, v112);
       objc_msgSend_setObject_forKey_(v11, v114, v113, @"members");
 
@@ -798,10 +798,10 @@ LABEL_57:
         }
       }
 
-      if (a5 && !*a5)
+      if (error && !*error)
       {
         v132 = v127;
-        *a5 = v127;
+        *error = v127;
       }
     }
 
@@ -841,11 +841,11 @@ LABEL_42:
     }
   }
 
-  if (a5 && !*a5)
+  if (error && !*error)
   {
     v115 = v21;
     v60 = 0;
-    *a5 = v21;
+    *error = v21;
   }
 
   else
@@ -862,15 +862,15 @@ LABEL_43:
   return v60;
 }
 
-- (id)groupNameWithGroupID:(id)a3 timeOut:(double)a4 error:(id *)a5 optArguments:(id)a6
+- (id)groupNameWithGroupID:(id)d timeOut:(double)out error:(id *)error optArguments:(id)arguments
 {
   v62[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v12 = a6;
-  if (v9)
+  dCopy = d;
+  argumentsCopy = arguments;
+  if (dCopy)
   {
     v13 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v10, v11);
-    v15 = objc_msgSend_existingChatForGroupID_error_results_(self, v14, v9, a5, v13);
+    v15 = objc_msgSend_existingChatForGroupID_error_results_(self, v14, dCopy, error, v13);
     v18 = v15;
     if (v15)
     {
@@ -919,10 +919,10 @@ LABEL_43:
         }
       }
 
-      if (a5 && !*a5)
+      if (error && !*error)
       {
         v54 = v49;
-        *a5 = v49;
+        *error = v49;
       }
     }
   }
@@ -955,10 +955,10 @@ LABEL_43:
         }
       }
 
-      if (a5 && !*a5)
+      if (error && !*error)
       {
         v37 = v18;
-        *a5 = v18;
+        *error = v18;
       }
     }
   }

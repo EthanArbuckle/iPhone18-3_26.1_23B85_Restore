@@ -1,42 +1,42 @@
 @interface PDDPSurveyStep
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAnswerFormatType:(id)a3;
-- (int)StringAsMultipleChoiceType:(id)a3;
-- (int)StringAsOpenResponseType:(id)a3;
-- (int)StringAsSliderType:(id)a3;
-- (int)StringAsSurveyStepType:(id)a3;
+- (int)StringAsAnswerFormatType:(id)type;
+- (int)StringAsMultipleChoiceType:(id)type;
+- (int)StringAsOpenResponseType:(id)type;
+- (int)StringAsSliderType:(id)type;
+- (int)StringAsSurveyStepType:(id)type;
 - (int)answerFormatType;
 - (int)multipleChoiceType;
 - (int)openResponseType;
 - (int)sliderType;
 - (int)surveyStepType;
 - (unint64_t)hash;
-- (void)addClassIds:(id)a3;
-- (void)addOptionItems:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAnswerFormatType:(BOOL)a3;
-- (void)setHasDisplayOrder:(BOOL)a3;
-- (void)setHasMultipleChoiceType:(BOOL)a3;
-- (void)setHasOpenResponseAllowMedia:(BOOL)a3;
-- (void)setHasOpenResponseMaximumTextLength:(BOOL)a3;
-- (void)setHasOpenResponseMinimumTextLength:(BOOL)a3;
-- (void)setHasOpenResponseType:(BOOL)a3;
-- (void)setHasSliderMinimum:(BOOL)a3;
-- (void)setHasSliderType:(BOOL)a3;
-- (void)setHasSurveyStepType:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addClassIds:(id)ids;
+- (void)addOptionItems:(id)items;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAnswerFormatType:(BOOL)type;
+- (void)setHasDisplayOrder:(BOOL)order;
+- (void)setHasMultipleChoiceType:(BOOL)type;
+- (void)setHasOpenResponseAllowMedia:(BOOL)media;
+- (void)setHasOpenResponseMaximumTextLength:(BOOL)length;
+- (void)setHasOpenResponseMinimumTextLength:(BOOL)length;
+- (void)setHasOpenResponseType:(BOOL)type;
+- (void)setHasSliderMinimum:(BOOL)minimum;
+- (void)setHasSliderType:(BOOL)type;
+- (void)setHasSurveyStepType:(BOOL)type;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPSurveyStep
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 1024;
   }
@@ -62,9 +62,9 @@
   }
 }
 
-- (void)setHasSurveyStepType:(BOOL)a3
+- (void)setHasSurveyStepType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 512;
   }
@@ -77,25 +77,25 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (int)StringAsSurveyStepType:(id)a3
+- (int)StringAsSurveyStepType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_STEP_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_STEP_TYPE"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"QUESTION_STEP_TYPE"];
+    v4 = [typeCopy isEqualToString:@"QUESTION_STEP_TYPE"];
   }
 
   return v4;
 }
 
-- (void)setHasDisplayOrder:(BOOL)a3
+- (void)setHasDisplayOrder:(BOOL)order
 {
-  if (a3)
+  if (order)
   {
     v3 = 8;
   }
@@ -121,9 +121,9 @@
   }
 }
 
-- (void)setHasAnswerFormatType:(BOOL)a3
+- (void)setHasAnswerFormatType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -136,25 +136,25 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (int)StringAsAnswerFormatType:(id)a3
+- (int)StringAsAnswerFormatType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_FORMAT_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_FORMAT_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"MULTIPLE_CHOICE_FORMAT_TYPE"])
+  else if ([typeCopy isEqualToString:@"MULTIPLE_CHOICE_FORMAT_TYPE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SLIDER_FORMAT_TYPE"])
+  else if ([typeCopy isEqualToString:@"SLIDER_FORMAT_TYPE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"OPEN_FORMAT_TYPE"])
+  else if ([typeCopy isEqualToString:@"OPEN_FORMAT_TYPE"])
   {
     v4 = 3;
   }
@@ -180,9 +180,9 @@
   }
 }
 
-- (void)setHasMultipleChoiceType:(BOOL)a3
+- (void)setHasMultipleChoiceType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -195,30 +195,30 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (int)StringAsMultipleChoiceType:(id)a3
+- (int)StringAsMultipleChoiceType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CUSTOM_TYPE"])
+  else if ([typeCopy isEqualToString:@"CUSTOM_TYPE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SMILEY_FACE_TYPE"])
+  else if ([typeCopy isEqualToString:@"SMILEY_FACE_TYPE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"STAR_RATING_TYPE"])
+  else if ([typeCopy isEqualToString:@"STAR_RATING_TYPE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"THUMB_UP_DOWN_TYPE"])
+  else if ([typeCopy isEqualToString:@"THUMB_UP_DOWN_TYPE"])
   {
     v4 = 4;
   }
@@ -231,22 +231,22 @@
   return v4;
 }
 
-- (void)addOptionItems:(id)a3
+- (void)addOptionItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   optionItems = self->_optionItems;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!optionItems)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_optionItems;
     self->_optionItems = v6;
 
-    v4 = v8;
+    itemsCopy = v8;
     optionItems = self->_optionItems;
   }
 
-  [(NSMutableArray *)optionItems addObject:v4];
+  [(NSMutableArray *)optionItems addObject:itemsCopy];
 }
 
 - (int)sliderType
@@ -262,9 +262,9 @@
   }
 }
 
-- (void)setHasSliderType:(BOOL)a3
+- (void)setHasSliderType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 256;
   }
@@ -277,25 +277,25 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (int)StringAsSliderType:(id)a3
+- (int)StringAsSliderType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_SLIDER_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_SLIDER_TYPE"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"CONTINUOUS_SLIDER_TYPE"];
+    v4 = [typeCopy isEqualToString:@"CONTINUOUS_SLIDER_TYPE"];
   }
 
   return v4;
 }
 
-- (void)setHasSliderMinimum:(BOOL)a3
+- (void)setHasSliderMinimum:(BOOL)minimum
 {
-  if (a3)
+  if (minimum)
   {
     v3 = 2;
   }
@@ -321,9 +321,9 @@
   }
 }
 
-- (void)setHasOpenResponseType:(BOOL)a3
+- (void)setHasOpenResponseType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 128;
   }
@@ -336,20 +336,20 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (int)StringAsOpenResponseType:(id)a3
+- (int)StringAsOpenResponseType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_OPEN_RESPONSE_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_OPEN_RESPONSE_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"OPEN_RESPONSE_SHORT_FORM"])
+  else if ([typeCopy isEqualToString:@"OPEN_RESPONSE_SHORT_FORM"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"OPEN_RESPONSE_LONG_FORM"])
+  else if ([typeCopy isEqualToString:@"OPEN_RESPONSE_LONG_FORM"])
   {
     v4 = 2;
   }
@@ -362,9 +362,9 @@
   return v4;
 }
 
-- (void)setHasOpenResponseAllowMedia:(BOOL)a3
+- (void)setHasOpenResponseAllowMedia:(BOOL)media
 {
-  if (a3)
+  if (media)
   {
     v3 = 2048;
   }
@@ -377,9 +377,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasOpenResponseMinimumTextLength:(BOOL)a3
+- (void)setHasOpenResponseMinimumTextLength:(BOOL)length
 {
-  if (a3)
+  if (length)
   {
     v3 = 64;
   }
@@ -392,9 +392,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasOpenResponseMaximumTextLength:(BOOL)a3
+- (void)setHasOpenResponseMaximumTextLength:(BOOL)length
 {
-  if (a3)
+  if (length)
   {
     v3 = 32;
   }
@@ -407,22 +407,22 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)addClassIds:(id)a3
+- (void)addClassIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   classIds = self->_classIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!classIds)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_classIds;
     self->_classIds = v6;
 
-    v4 = v8;
+    idsCopy = v8;
     classIds = self->_classIds;
   }
 
-  [(NSMutableArray *)classIds addObject:v4];
+  [(NSMutableArray *)classIds addObject:idsCopy];
 }
 
 - (id)description
@@ -430,8 +430,8 @@
   v7.receiver = self;
   v7.super_class = PDDPSurveyStep;
   v3 = [(PDDPSurveyStep *)&v7 description];
-  v4 = [(PDDPSurveyStep *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPSurveyStep *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -455,15 +455,15 @@
   dateCreated = self->_dateCreated;
   if (dateCreated)
   {
-    v8 = [(PDDPDate *)dateCreated dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"date_created"];
+    dictionaryRepresentation = [(PDDPDate *)dateCreated dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"date_created"];
   }
 
   dateLastModified = self->_dateLastModified;
   if (dateLastModified)
   {
-    v10 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"date_last_modified"];
+    dictionaryRepresentation2 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"date_last_modified"];
   }
 
   has = self->_has;
@@ -574,8 +574,8 @@
             objc_enumerationMutation(v24);
           }
 
-          v29 = [*(*(&v47 + 1) + 8 * i) dictionaryRepresentation];
-          [v23 addObject:v29];
+          dictionaryRepresentation3 = [*(*(&v47 + 1) + 8 * i) dictionaryRepresentation];
+          [v23 addObject:dictionaryRepresentation3];
         }
 
         v26 = [(NSMutableArray *)v24 countByEnumeratingWithState:&v47 objects:v51 count:16];
@@ -724,9 +724,9 @@ LABEL_67:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_objectId)
   {
     PBDataWriterWriteStringField();
@@ -942,87 +942,87 @@ LABEL_48:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v18 = v4;
+  toCopy = to;
+  v18 = toCopy;
   if (self->_objectId)
   {
-    [v4 setObjectId:?];
-    v4 = v18;
+    [toCopy setObjectId:?];
+    toCopy = v18;
   }
 
   if (self->_parentObjectId)
   {
     [v18 setParentObjectId:?];
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (self->_dateCreated)
   {
     [v18 setDateCreated:?];
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (self->_dateLastModified)
   {
     [v18 setDateLastModified:?];
-    v4 = v18;
+    toCopy = v18;
   }
 
   has = self->_has;
   if ((has & 0x400) != 0)
   {
-    *(v4 + 40) = self->_version;
-    *(v4 + 84) |= 0x400u;
+    *(toCopy + 40) = self->_version;
+    *(toCopy + 84) |= 0x400u;
     has = self->_has;
   }
 
   if ((has & 0x200) != 0)
   {
-    *(v4 + 39) = self->_surveyStepType;
-    *(v4 + 84) |= 0x200u;
+    *(toCopy + 39) = self->_surveyStepType;
+    *(toCopy + 84) |= 0x200u;
   }
 
   if (self->_questionText)
   {
     [v18 setQuestionText:?];
-    v4 = v18;
+    toCopy = v18;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 16) = self->_displayOrder;
-    *(v4 + 84) |= 8u;
+    *(toCopy + 16) = self->_displayOrder;
+    *(toCopy + 84) |= 8u;
   }
 
   if (self->_answerFormatObjectId)
   {
     [v18 setAnswerFormatObjectId:?];
-    v4 = v18;
+    toCopy = v18;
   }
 
   v6 = self->_has;
   if ((v6 & 4) != 0)
   {
-    *(v4 + 8) = self->_answerFormatType;
-    *(v4 + 84) |= 4u;
+    *(toCopy + 8) = self->_answerFormatType;
+    *(toCopy + 84) |= 4u;
     v6 = self->_has;
   }
 
   if ((v6 & 0x10) != 0)
   {
-    *(v4 + 17) = self->_multipleChoiceType;
-    *(v4 + 84) |= 0x10u;
+    *(toCopy + 17) = self->_multipleChoiceType;
+    *(toCopy + 84) |= 0x10u;
   }
 
   if ([(PDDPSurveyStep *)self optionItemsCount])
   {
     [v18 clearOptionItems];
-    v7 = [(PDDPSurveyStep *)self optionItemsCount];
-    if (v7)
+    optionItemsCount = [(PDDPSurveyStep *)self optionItemsCount];
+    if (optionItemsCount)
     {
-      v8 = v7;
+      v8 = optionItemsCount;
       for (i = 0; i != v8; ++i)
       {
         v10 = [(PDDPSurveyStep *)self optionItemsAtIndex:i];
@@ -1134,10 +1134,10 @@ LABEL_45:
   if ([(PDDPSurveyStep *)self classIdsCount])
   {
     [v18 clearClassIds];
-    v14 = [(PDDPSurveyStep *)self classIdsCount];
-    if (v14)
+    classIdsCount = [(PDDPSurveyStep *)self classIdsCount];
+    if (classIdsCount)
     {
-      v15 = v14;
+      v15 = classIdsCount;
       for (j = 0; j != v15; ++j)
       {
         v17 = [(PDDPSurveyStep *)self classIdsAtIndex:j];
@@ -1147,22 +1147,22 @@ LABEL_45:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_objectId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_objectId copyWithZone:zone];
   v7 = v5[9];
   v5[9] = v6;
 
-  v8 = [(NSString *)self->_parentObjectId copyWithZone:a3];
+  v8 = [(NSString *)self->_parentObjectId copyWithZone:zone];
   v9 = v5[14];
   v5[14] = v8;
 
-  v10 = [(PDDPDate *)self->_dateCreated copyWithZone:a3];
+  v10 = [(PDDPDate *)self->_dateCreated copyWithZone:zone];
   v11 = v5[6];
   v5[6] = v10;
 
-  v12 = [(PDDPDate *)self->_dateLastModified copyWithZone:a3];
+  v12 = [(PDDPDate *)self->_dateLastModified copyWithZone:zone];
   v13 = v5[7];
   v5[7] = v12;
 
@@ -1180,7 +1180,7 @@ LABEL_45:
     *(v5 + 84) |= 0x200u;
   }
 
-  v15 = [(NSString *)self->_questionText copyWithZone:a3];
+  v15 = [(NSString *)self->_questionText copyWithZone:zone];
   v16 = v5[15];
   v5[15] = v15;
 
@@ -1190,7 +1190,7 @@ LABEL_45:
     *(v5 + 84) |= 8u;
   }
 
-  v17 = [(NSString *)self->_answerFormatObjectId copyWithZone:a3];
+  v17 = [(NSString *)self->_answerFormatObjectId copyWithZone:zone];
   v18 = v5[3];
   v5[3] = v17;
 
@@ -1227,7 +1227,7 @@ LABEL_45:
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v47 + 1) + 8 * i) copyWithZone:a3];
+        v25 = [*(*(&v47 + 1) + 8 * i) copyWithZone:zone];
         [v5 addOptionItems:v25];
       }
 
@@ -1270,15 +1270,15 @@ LABEL_21:
   }
 
 LABEL_22:
-  v27 = [(NSString *)self->_sliderMinimumLabel copyWithZone:a3];
+  v27 = [(NSString *)self->_sliderMinimumLabel copyWithZone:zone];
   v28 = v5[18];
   v5[18] = v27;
 
-  v29 = [(NSString *)self->_sliderMaximumLabel copyWithZone:a3];
+  v29 = [(NSString *)self->_sliderMaximumLabel copyWithZone:zone];
   v30 = v5[16];
   v5[16] = v29;
 
-  v31 = [(NSString *)self->_sliderMiddleLabel copyWithZone:a3];
+  v31 = [(NSString *)self->_sliderMiddleLabel copyWithZone:zone];
   v32 = v5[17];
   v5[17] = v31;
 
@@ -1288,7 +1288,7 @@ LABEL_22:
     *(v5 + 84) |= 0x80u;
   }
 
-  v33 = [(NSString *)self->_openResponseTeacherProvidedText copyWithZone:a3];
+  v33 = [(NSString *)self->_openResponseTeacherProvidedText copyWithZone:zone];
   v34 = v5[11];
   v5[11] = v33;
 
@@ -1344,7 +1344,7 @@ LABEL_28:
           objc_enumerationMutation(v36);
         }
 
-        v41 = [*(*(&v43 + 1) + 8 * j) copyWithZone:{a3, v43}];
+        v41 = [*(*(&v43 + 1) + 8 * j) copyWithZone:{zone, v43}];
         [v5 addClassIds:v41];
       }
 
@@ -1357,16 +1357,16 @@ LABEL_28:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_93;
   }
 
   objectId = self->_objectId;
-  if (objectId | *(v4 + 9))
+  if (objectId | *(equalCopy + 9))
   {
     if (![(NSString *)objectId isEqual:?])
     {
@@ -1375,7 +1375,7 @@ LABEL_28:
   }
 
   parentObjectId = self->_parentObjectId;
-  if (parentObjectId | *(v4 + 14))
+  if (parentObjectId | *(equalCopy + 14))
   {
     if (![(NSString *)parentObjectId isEqual:?])
     {
@@ -1384,7 +1384,7 @@ LABEL_28:
   }
 
   dateCreated = self->_dateCreated;
-  if (dateCreated | *(v4 + 6))
+  if (dateCreated | *(equalCopy + 6))
   {
     if (![(PDDPDate *)dateCreated isEqual:?])
     {
@@ -1393,7 +1393,7 @@ LABEL_28:
   }
 
   dateLastModified = self->_dateLastModified;
-  if (dateLastModified | *(v4 + 7))
+  if (dateLastModified | *(equalCopy + 7))
   {
     if (![(PDDPDate *)dateLastModified isEqual:?])
     {
@@ -1402,35 +1402,35 @@ LABEL_28:
   }
 
   has = self->_has;
-  v10 = *(v4 + 84);
+  v10 = *(equalCopy + 84);
   if ((has & 0x400) != 0)
   {
-    if ((*(v4 + 84) & 0x400) == 0 || self->_version != *(v4 + 40))
+    if ((*(equalCopy + 84) & 0x400) == 0 || self->_version != *(equalCopy + 40))
     {
       goto LABEL_93;
     }
   }
 
-  else if ((*(v4 + 84) & 0x400) != 0)
+  else if ((*(equalCopy + 84) & 0x400) != 0)
   {
     goto LABEL_93;
   }
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 84) & 0x200) == 0 || self->_surveyStepType != *(v4 + 39))
+    if ((*(equalCopy + 84) & 0x200) == 0 || self->_surveyStepType != *(equalCopy + 39))
     {
       goto LABEL_93;
     }
   }
 
-  else if ((*(v4 + 84) & 0x200) != 0)
+  else if ((*(equalCopy + 84) & 0x200) != 0)
   {
     goto LABEL_93;
   }
 
   questionText = self->_questionText;
-  if (questionText | *(v4 + 15))
+  if (questionText | *(equalCopy + 15))
   {
     if (![(NSString *)questionText isEqual:?])
     {
@@ -1438,12 +1438,12 @@ LABEL_28:
     }
 
     has = self->_has;
-    v10 = *(v4 + 84);
+    v10 = *(equalCopy + 84);
   }
 
   if ((has & 8) != 0)
   {
-    if ((v10 & 8) == 0 || self->_displayOrder != *(v4 + 16))
+    if ((v10 & 8) == 0 || self->_displayOrder != *(equalCopy + 16))
     {
       goto LABEL_93;
     }
@@ -1455,7 +1455,7 @@ LABEL_28:
   }
 
   answerFormatObjectId = self->_answerFormatObjectId;
-  if (answerFormatObjectId | *(v4 + 3))
+  if (answerFormatObjectId | *(equalCopy + 3))
   {
     if (![(NSString *)answerFormatObjectId isEqual:?])
     {
@@ -1463,12 +1463,12 @@ LABEL_28:
     }
 
     has = self->_has;
-    v10 = *(v4 + 84);
+    v10 = *(equalCopy + 84);
   }
 
   if ((has & 4) != 0)
   {
-    if ((v10 & 4) == 0 || self->_answerFormatType != *(v4 + 8))
+    if ((v10 & 4) == 0 || self->_answerFormatType != *(equalCopy + 8))
     {
       goto LABEL_93;
     }
@@ -1481,7 +1481,7 @@ LABEL_28:
 
   if ((has & 0x10) != 0)
   {
-    if ((v10 & 0x10) == 0 || self->_multipleChoiceType != *(v4 + 17))
+    if ((v10 & 0x10) == 0 || self->_multipleChoiceType != *(equalCopy + 17))
     {
       goto LABEL_93;
     }
@@ -1493,7 +1493,7 @@ LABEL_28:
   }
 
   optionItems = self->_optionItems;
-  if (optionItems | *(v4 + 13))
+  if (optionItems | *(equalCopy + 13))
   {
     if (![(NSMutableArray *)optionItems isEqual:?])
     {
@@ -1501,12 +1501,12 @@ LABEL_28:
     }
 
     has = self->_has;
-    v10 = *(v4 + 84);
+    v10 = *(equalCopy + 84);
   }
 
   if ((has & 0x100) != 0)
   {
-    if ((v10 & 0x100) == 0 || self->_sliderType != *(v4 + 38))
+    if ((v10 & 0x100) == 0 || self->_sliderType != *(equalCopy + 38))
     {
       goto LABEL_93;
     }
@@ -1519,7 +1519,7 @@ LABEL_28:
 
   if ((has & 2) != 0)
   {
-    if ((v10 & 2) == 0 || self->_sliderMinimum != *(v4 + 2))
+    if ((v10 & 2) == 0 || self->_sliderMinimum != *(equalCopy + 2))
     {
       goto LABEL_93;
     }
@@ -1532,7 +1532,7 @@ LABEL_28:
 
   if (has)
   {
-    if ((v10 & 1) == 0 || self->_sliderMaximum != *(v4 + 1))
+    if ((v10 & 1) == 0 || self->_sliderMaximum != *(equalCopy + 1))
     {
       goto LABEL_93;
     }
@@ -1544,13 +1544,13 @@ LABEL_28:
   }
 
   sliderMinimumLabel = self->_sliderMinimumLabel;
-  if (sliderMinimumLabel | *(v4 + 18) && ![(NSString *)sliderMinimumLabel isEqual:?])
+  if (sliderMinimumLabel | *(equalCopy + 18) && ![(NSString *)sliderMinimumLabel isEqual:?])
   {
     goto LABEL_93;
   }
 
   sliderMaximumLabel = self->_sliderMaximumLabel;
-  if (sliderMaximumLabel | *(v4 + 16))
+  if (sliderMaximumLabel | *(equalCopy + 16))
   {
     if (![(NSString *)sliderMaximumLabel isEqual:?])
     {
@@ -1559,7 +1559,7 @@ LABEL_28:
   }
 
   sliderMiddleLabel = self->_sliderMiddleLabel;
-  if (sliderMiddleLabel | *(v4 + 17))
+  if (sliderMiddleLabel | *(equalCopy + 17))
   {
     if (![(NSString *)sliderMiddleLabel isEqual:?])
     {
@@ -1568,10 +1568,10 @@ LABEL_28:
   }
 
   v17 = self->_has;
-  v18 = *(v4 + 84);
+  v18 = *(equalCopy + 84);
   if ((v17 & 0x80) != 0)
   {
-    if ((v18 & 0x80) == 0 || self->_openResponseType != *(v4 + 24))
+    if ((v18 & 0x80) == 0 || self->_openResponseType != *(equalCopy + 24))
     {
       goto LABEL_93;
     }
@@ -1583,7 +1583,7 @@ LABEL_28:
   }
 
   openResponseTeacherProvidedText = self->_openResponseTeacherProvidedText;
-  if (openResponseTeacherProvidedText | *(v4 + 11))
+  if (openResponseTeacherProvidedText | *(equalCopy + 11))
   {
     if (![(NSString *)openResponseTeacherProvidedText isEqual:?])
     {
@@ -1591,7 +1591,7 @@ LABEL_28:
     }
 
     v17 = self->_has;
-    v18 = *(v4 + 84);
+    v18 = *(equalCopy + 84);
   }
 
   if ((v17 & 0x800) == 0)
@@ -1611,16 +1611,16 @@ LABEL_93:
     goto LABEL_93;
   }
 
-  v20 = *(v4 + 164);
+  v20 = *(equalCopy + 164);
   if (self->_openResponseAllowMedia)
   {
-    if ((*(v4 + 164) & 1) == 0)
+    if ((*(equalCopy + 164) & 1) == 0)
     {
       goto LABEL_93;
     }
   }
 
-  else if (*(v4 + 164))
+  else if (*(equalCopy + 164))
   {
     goto LABEL_93;
   }
@@ -1628,7 +1628,7 @@ LABEL_93:
 LABEL_75:
   if ((v17 & 0x40) != 0)
   {
-    if ((v18 & 0x40) == 0 || self->_openResponseMinimumTextLength != *(v4 + 21))
+    if ((v18 & 0x40) == 0 || self->_openResponseMinimumTextLength != *(equalCopy + 21))
     {
       goto LABEL_93;
     }
@@ -1641,7 +1641,7 @@ LABEL_75:
 
   if ((v17 & 0x20) != 0)
   {
-    if ((v18 & 0x20) == 0 || self->_openResponseMaximumTextLength != *(v4 + 20))
+    if ((v18 & 0x20) == 0 || self->_openResponseMaximumTextLength != *(equalCopy + 20))
     {
       goto LABEL_93;
     }
@@ -1653,7 +1653,7 @@ LABEL_75:
   }
 
   classIds = self->_classIds;
-  if (classIds | *(v4 + 5))
+  if (classIds | *(equalCopy + 5))
   {
     v22 = [(NSMutableArray *)classIds isEqual:?];
   }
@@ -1866,21 +1866,21 @@ LABEL_38:
   return v37 ^ v38 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v30 ^ v29 ^ v28 ^ v27 ^ v7 ^ v11 ^ v12 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v22 ^ v23 ^ v24 ^ [(NSMutableArray *)self->_classIds hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 9))
+  fromCopy = from;
+  if (*(fromCopy + 9))
   {
     [(PDDPSurveyStep *)self setObjectId:?];
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(PDDPSurveyStep *)self setParentObjectId:?];
   }
 
   dateCreated = self->_dateCreated;
-  v6 = *(v4 + 6);
+  v6 = *(fromCopy + 6);
   if (dateCreated)
   {
     if (v6)
@@ -1895,7 +1895,7 @@ LABEL_38:
   }
 
   dateLastModified = self->_dateLastModified;
-  v8 = *(v4 + 7);
+  v8 = *(fromCopy + 7);
   if (dateLastModified)
   {
     if (v8)
@@ -1909,47 +1909,47 @@ LABEL_38:
     [(PDDPSurveyStep *)self setDateLastModified:?];
   }
 
-  v9 = *(v4 + 84);
+  v9 = *(fromCopy + 84);
   if ((v9 & 0x400) != 0)
   {
-    self->_version = *(v4 + 40);
+    self->_version = *(fromCopy + 40);
     *&self->_has |= 0x400u;
-    v9 = *(v4 + 84);
+    v9 = *(fromCopy + 84);
   }
 
   if ((v9 & 0x200) != 0)
   {
-    self->_surveyStepType = *(v4 + 39);
+    self->_surveyStepType = *(fromCopy + 39);
     *&self->_has |= 0x200u;
   }
 
-  if (*(v4 + 15))
+  if (*(fromCopy + 15))
   {
     [(PDDPSurveyStep *)self setQuestionText:?];
   }
 
-  if ((*(v4 + 84) & 8) != 0)
+  if ((*(fromCopy + 84) & 8) != 0)
   {
-    self->_displayOrder = *(v4 + 16);
+    self->_displayOrder = *(fromCopy + 16);
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PDDPSurveyStep *)self setAnswerFormatObjectId:?];
   }
 
-  v10 = *(v4 + 84);
+  v10 = *(fromCopy + 84);
   if ((v10 & 4) != 0)
   {
-    self->_answerFormatType = *(v4 + 8);
+    self->_answerFormatType = *(fromCopy + 8);
     *&self->_has |= 4u;
-    v10 = *(v4 + 84);
+    v10 = *(fromCopy + 84);
   }
 
   if ((v10 & 0x10) != 0)
   {
-    self->_multipleChoiceType = *(v4 + 17);
+    self->_multipleChoiceType = *(fromCopy + 17);
     *&self->_has |= 0x10u;
   }
 
@@ -1957,7 +1957,7 @@ LABEL_38:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v11 = *(v4 + 13);
+  v11 = *(fromCopy + 13);
   v12 = [v11 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v12)
   {
@@ -1981,12 +1981,12 @@ LABEL_38:
     while (v13);
   }
 
-  v16 = *(v4 + 84);
+  v16 = *(fromCopy + 84);
   if ((v16 & 0x100) != 0)
   {
-    self->_sliderType = *(v4 + 38);
+    self->_sliderType = *(fromCopy + 38);
     *&self->_has |= 0x100u;
-    v16 = *(v4 + 84);
+    v16 = *(fromCopy + 84);
     if ((v16 & 2) == 0)
     {
 LABEL_38:
@@ -2004,48 +2004,48 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  self->_sliderMinimum = *(v4 + 2);
+  self->_sliderMinimum = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if (*(v4 + 84))
+  if (*(fromCopy + 84))
   {
 LABEL_39:
-    self->_sliderMaximum = *(v4 + 1);
+    self->_sliderMaximum = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_40:
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(PDDPSurveyStep *)self setSliderMinimumLabel:?];
   }
 
-  if (*(v4 + 16))
+  if (*(fromCopy + 16))
   {
     [(PDDPSurveyStep *)self setSliderMaximumLabel:?];
   }
 
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(PDDPSurveyStep *)self setSliderMiddleLabel:?];
   }
 
-  if ((*(v4 + 84) & 0x80) != 0)
+  if ((*(fromCopy + 84) & 0x80) != 0)
   {
-    self->_openResponseType = *(v4 + 24);
+    self->_openResponseType = *(fromCopy + 24);
     *&self->_has |= 0x80u;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(PDDPSurveyStep *)self setOpenResponseTeacherProvidedText:?];
   }
 
-  v17 = *(v4 + 84);
+  v17 = *(fromCopy + 84);
   if ((v17 & 0x800) != 0)
   {
-    self->_openResponseAllowMedia = *(v4 + 164);
+    self->_openResponseAllowMedia = *(fromCopy + 164);
     *&self->_has |= 0x800u;
-    v17 = *(v4 + 84);
+    v17 = *(fromCopy + 84);
     if ((v17 & 0x40) == 0)
     {
 LABEL_52:
@@ -2063,12 +2063,12 @@ LABEL_52:
     goto LABEL_52;
   }
 
-  self->_openResponseMinimumTextLength = *(v4 + 21);
+  self->_openResponseMinimumTextLength = *(fromCopy + 21);
   *&self->_has |= 0x40u;
-  if ((*(v4 + 84) & 0x20) != 0)
+  if ((*(fromCopy + 84) & 0x20) != 0)
   {
 LABEL_53:
-    self->_openResponseMaximumTextLength = *(v4 + 20);
+    self->_openResponseMaximumTextLength = *(fromCopy + 20);
     *&self->_has |= 0x20u;
   }
 
@@ -2077,7 +2077,7 @@ LABEL_54:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v18 = *(v4 + 5);
+  v18 = *(fromCopy + 5);
   v19 = [v18 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v19)
   {

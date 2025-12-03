@@ -1,16 +1,16 @@
 @interface HUIconPickerCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation HUIconPickerCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUIconPickerCollectionViewCell" hasInstanceMethod:@"iconButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUIconPickerCollectionViewCell" hasInstanceMethod:@"iconDescriptor" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUIconPickerCollectionViewCell" hasInstanceMethod:@"iconButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUIconPickerCollectionViewCell" hasInstanceMethod:@"iconDescriptor" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -31,9 +31,9 @@
   v3 = [(HUIconPickerCollectionViewCellAccessibility *)self safeValueForKey:@"iconButton"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 isSelected];
+  isSelected = [v4 isSelected];
   v6 = *MEMORY[0x29EDC7F70];
-  if (v5)
+  if (isSelected)
   {
     v7 = *MEMORY[0x29EDC7FC0];
   }

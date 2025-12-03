@@ -1,7 +1,7 @@
 @interface __HMDPairedAccessoryBrowseAssertion
 - (HMDAccessoryBrowser)accessoryBrowser;
-- (__HMDPairedAccessoryBrowseAssertion)initWithAccessoryBrowser:(id)a3 reason:(id)a4;
-- (__HMDPairedAccessoryBrowseAssertion)initWithName:(id)a3;
+- (__HMDPairedAccessoryBrowseAssertion)initWithAccessoryBrowser:(id)browser reason:(id)reason;
+- (__HMDPairedAccessoryBrowseAssertion)initWithName:(id)name;
 - (void)invalidate;
 @end
 
@@ -21,16 +21,16 @@
     v4.receiver = self;
     v4.super_class = __HMDPairedAccessoryBrowseAssertion;
     [(HMFAssertion *)&v4 invalidate];
-    v3 = [(__HMDPairedAccessoryBrowseAssertion *)self accessoryBrowser];
-    [v3 __inactivate];
+    accessoryBrowser = [(__HMDPairedAccessoryBrowseAssertion *)self accessoryBrowser];
+    [accessoryBrowser __inactivate];
   }
 }
 
-- (__HMDPairedAccessoryBrowseAssertion)initWithAccessoryBrowser:(id)a3 reason:(id)a4
+- (__HMDPairedAccessoryBrowseAssertion)initWithAccessoryBrowser:(id)browser reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  browserCopy = browser;
+  reasonCopy = reason;
+  if (!browserCopy)
   {
     _HMFPreconditionFailure();
 LABEL_9:
@@ -38,8 +38,8 @@ LABEL_9:
     [(__HMDPairedAccessoryBrowseAssertion *)v15 initWithName:v16, v17];
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = reasonCopy;
+  if (!reasonCopy)
   {
     goto LABEL_9;
   }
@@ -59,16 +59,16 @@ LABEL_9:
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_accessoryBrowser, v6);
-    [v6 __activate];
+    objc_storeWeak(&v12->_accessoryBrowser, browserCopy);
+    [browserCopy __activate];
   }
 
   return v13;
 }
 
-- (__HMDPairedAccessoryBrowseAssertion)initWithName:(id)a3
+- (__HMDPairedAccessoryBrowseAssertion)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];

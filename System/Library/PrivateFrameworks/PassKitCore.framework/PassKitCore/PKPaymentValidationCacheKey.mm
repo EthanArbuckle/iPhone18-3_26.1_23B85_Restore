@@ -1,28 +1,28 @@
 @interface PKPaymentValidationCacheKey
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentValidationCacheKey)initWithNetworks:(id)a3 issuerCountryCodes:(id)a4 capabilities:(unint64_t)a5 webDomain:(id)a6 paymentRequestType:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentValidationCacheKey)initWithNetworks:(id)networks issuerCountryCodes:(id)codes capabilities:(unint64_t)capabilities webDomain:(id)domain paymentRequestType:(id)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation PKPaymentValidationCacheKey
 
-- (PKPaymentValidationCacheKey)initWithNetworks:(id)a3 issuerCountryCodes:(id)a4 capabilities:(unint64_t)a5 webDomain:(id)a6 paymentRequestType:(id)a7
+- (PKPaymentValidationCacheKey)initWithNetworks:(id)networks issuerCountryCodes:(id)codes capabilities:(unint64_t)capabilities webDomain:(id)domain paymentRequestType:(id)type
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  networksCopy = networks;
+  codesCopy = codes;
+  domainCopy = domain;
+  typeCopy = type;
   v31.receiver = self;
   v31.super_class = PKPaymentValidationCacheKey;
   v16 = [(PKPaymentValidationCacheKey *)&v31 init];
   if (v16)
   {
     v17 = objc_alloc(MEMORY[0x1E695DFD8]);
-    if (v12)
+    if (networksCopy)
     {
-      v18 = v12;
+      v18 = networksCopy;
     }
 
     else
@@ -35,23 +35,23 @@
     supportedNetworks = v16->_supportedNetworks;
     v16->_supportedNetworks = v20;
 
-    v16->_merchantCapabilities = a5;
-    v22 = [v13 copy];
+    v16->_merchantCapabilities = capabilities;
+    v22 = [codesCopy copy];
     issuerCountryCodes = v16->_issuerCountryCodes;
     v16->_issuerCountryCodes = v22;
 
-    if (v13)
+    if (codesCopy)
     {
-      v24 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithSet:v13 copyItems:1];
+      v24 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithSet:codesCopy copyItems:1];
       v25 = v16->_issuerCountryCodes;
       v16->_issuerCountryCodes = v24;
     }
 
-    v26 = [v14 copy];
+    v26 = [domainCopy copy];
     webDomain = v16->_webDomain;
     v16->_webDomain = v26;
 
-    v28 = [v15 copy];
+    v28 = [typeCopy copy];
     paymentRequestType = v16->_paymentRequestType;
     v16->_paymentRequestType = v28;
   }
@@ -59,18 +59,18 @@
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -166,23 +166,23 @@ LABEL_26:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSSet *)self->_supportedNetworks copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSSet *)self->_supportedNetworks copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   v5[2] = self->_merchantCapabilities;
-  v8 = [(NSSet *)self->_issuerCountryCodes copyWithZone:a3];
+  v8 = [(NSSet *)self->_issuerCountryCodes copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_webDomain copyWithZone:a3];
+  v10 = [(NSString *)self->_webDomain copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
-  v12 = [(NSNumber *)self->_paymentRequestType copyWithZone:a3];
+  v12 = [(NSNumber *)self->_paymentRequestType copyWithZone:zone];
   v13 = v5[5];
   v5[5] = v12;
 

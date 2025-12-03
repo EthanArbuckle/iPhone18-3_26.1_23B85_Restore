@@ -1,13 +1,13 @@
 @interface TSCH3DUShortDataBuffer
-- (TSCH3DUShortDataBuffer)initWithCapacity:(unint64_t)a3;
+- (TSCH3DUShortDataBuffer)initWithCapacity:(unint64_t)capacity;
 - (id).cxx_construct;
-- (id)elementsAtIndices:(id)a3;
+- (id)elementsAtIndices:(id)indices;
 - (unint64_t)componentByteSize;
 @end
 
 @implementation TSCH3DUShortDataBuffer
 
-- (TSCH3DUShortDataBuffer)initWithCapacity:(unint64_t)a3
+- (TSCH3DUShortDataBuffer)initWithCapacity:(unint64_t)capacity
 {
   v7.receiver = self;
   v7.super_class = TSCH3DUShortDataBuffer;
@@ -15,7 +15,7 @@
   v5 = v4;
   if (v4)
   {
-    sub_2761FB7DC(&v4->_container.__begin_, a3);
+    sub_2761FB7DC(&v4->_container.__begin_, capacity);
   }
 
   return v5;
@@ -32,8 +32,8 @@
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, v10, v11, v12, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DVectorDataBuffer.mm");
     v25.receiver = self;
     v25.super_class = TSCH3DUShortDataBuffer;
-    v14 = [(TSCH3DDataBuffer *)&v25 componentByteSize];
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v15, v16, v17, v18, v8, v13, 347, 0, "componentByteSize mismatch %lu %lu", v14, 2);
+    componentByteSize = [(TSCH3DDataBuffer *)&v25 componentByteSize];
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v15, v16, v17, v18, v8, v13, 347, 0, "componentByteSize mismatch %lu %lu", componentByteSize, 2);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
   }
@@ -43,11 +43,11 @@
   return [(TSCH3DDataBuffer *)&v24 componentByteSize];
 }
 
-- (id)elementsAtIndices:(id)a3
+- (id)elementsAtIndices:(id)indices
 {
-  v4 = a3;
+  indicesCopy = indices;
   v5 = objc_opt_class();
-  v10 = objc_msgSend_count(v4, v6, v7, v8, v9);
+  v10 = objc_msgSend_count(indicesCopy, v6, v7, v8, v9);
   v15 = objc_msgSend_bufferWithCapacity_(v5, v11, v12, v13, v14, v10);
   v15[2] = v15[1];
   v21[0] = 0;
@@ -60,7 +60,7 @@
   v20[3] = &unk_27A6B6AC0;
   v20[4] = v21;
   v20[5] = &self->_container;
-  objc_msgSend_enumerateIndexesUsingBlock_(v4, v16, COERCE_DOUBLE(3221225472), v17, v18, v20);
+  objc_msgSend_enumerateIndexesUsingBlock_(indicesCopy, v16, COERCE_DOUBLE(3221225472), v17, v18, v20);
   _Block_object_dispose(v21, 8);
 
   return v15;

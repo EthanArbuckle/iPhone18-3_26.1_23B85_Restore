@@ -1,17 +1,17 @@
 @interface _MFSecureMIMEPersonHeaderLabel
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_MFSecureMIMEPersonHeaderLabel)initWithImage:(id)a3 text:(id)a4 textColor:(id)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_MFSecureMIMEPersonHeaderLabel)initWithImage:(id)image text:(id)text textColor:(id)color;
 - (void)layoutSubviews;
-- (void)setText:(id)a3;
+- (void)setText:(id)text;
 @end
 
 @implementation _MFSecureMIMEPersonHeaderLabel
 
-- (_MFSecureMIMEPersonHeaderLabel)initWithImage:(id)a3 text:(id)a4 textColor:(id)a5
+- (_MFSecureMIMEPersonHeaderLabel)initWithImage:(id)image text:(id)text textColor:(id)color
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  imageCopy = image;
+  textCopy = text;
+  colorCopy = color;
   v26.receiver = self;
   v26.super_class = _MFSecureMIMEPersonHeaderLabel;
   v11 = *MEMORY[0x1E695F058];
@@ -24,10 +24,10 @@
   {
     [(_MFSecureMIMEPersonHeaderLabel *)v15 setAutoresizesSubviews:1];
     [(_MFSecureMIMEPersonHeaderLabel *)v16 setAutoresizingMask:2];
-    v17 = [MEMORY[0x1E69DC888] clearColor];
-    [(_MFSecureMIMEPersonHeaderLabel *)v16 setBackgroundColor:v17];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(_MFSecureMIMEPersonHeaderLabel *)v16 setBackgroundColor:clearColor];
 
-    v18 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v8];
+    v18 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:imageCopy];
     imageView = v16->_imageView;
     v16->_imageView = v18;
 
@@ -37,11 +37,11 @@
     label = v16->_label;
     v16->_label = v21;
 
-    v23 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v16->_label setBackgroundColor:v23];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v16->_label setBackgroundColor:clearColor2];
 
-    [(UILabel *)v16->_label setText:v9];
-    [(UILabel *)v16->_label setTextColor:v10];
+    [(UILabel *)v16->_label setText:textCopy];
+    [(UILabel *)v16->_label setTextColor:colorCopy];
     v24 = [MEMORY[0x1E69DB878] fontWithDescriptor:v20 size:0.0];
     [(UILabel *)v16->_label setFont:v24];
 
@@ -51,23 +51,23 @@
   return v16;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   [(UILabel *)self->_label setText:?];
   [(_MFSecureMIMEPersonHeaderLabel *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   imageView = self->_imageView;
-  [(UIImageView *)imageView bounds:a3.width];
+  [(UIImageView *)imageView bounds:fits.width];
   [(UIImageView *)imageView sizeThatFits:v6, v7];
   v9 = v8;
-  v10 = [(UILabel *)self->_label text];
-  v11 = [(UILabel *)self->_label font];
-  [v10 _legacy_sizeWithFont:v11];
+  text = [(UILabel *)self->_label text];
+  font = [(UILabel *)self->_label font];
+  [text _legacy_sizeWithFont:font];
   v13 = v12;
 
   if (v9 >= v13)
@@ -97,8 +97,8 @@
   [(UILabel *)self->_label sizeToFit];
   [(UILabel *)self->_label frame];
   [(_MFSecureMIMEPersonHeaderLabel *)self bounds];
-  v8 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v8 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   UIRectCenteredYInRectScale();
   v10 = v9;
   v12 = v11;

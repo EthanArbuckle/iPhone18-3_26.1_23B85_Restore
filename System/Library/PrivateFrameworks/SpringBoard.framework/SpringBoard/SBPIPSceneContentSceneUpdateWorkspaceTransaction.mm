@@ -1,21 +1,21 @@
 @interface SBPIPSceneContentSceneUpdateWorkspaceTransaction
-- (SBPIPSceneContentSceneUpdateWorkspaceTransaction)initWithApplicationSceneEntity:(id)a3 transitionRequest:(id)a4;
+- (SBPIPSceneContentSceneUpdateWorkspaceTransaction)initWithApplicationSceneEntity:(id)entity transitionRequest:(id)request;
 - (void)_begin;
 - (void)_didComplete;
 @end
 
 @implementation SBPIPSceneContentSceneUpdateWorkspaceTransaction
 
-- (SBPIPSceneContentSceneUpdateWorkspaceTransaction)initWithApplicationSceneEntity:(id)a3 transitionRequest:(id)a4
+- (SBPIPSceneContentSceneUpdateWorkspaceTransaction)initWithApplicationSceneEntity:(id)entity transitionRequest:(id)request
 {
-  v7 = a3;
+  entityCopy = entity;
   v11.receiver = self;
   v11.super_class = SBPIPSceneContentSceneUpdateWorkspaceTransaction;
-  v8 = [(SBMainWorkspaceTransaction *)&v11 initWithTransitionRequest:a4];
+  v8 = [(SBMainWorkspaceTransaction *)&v11 initWithTransitionRequest:request];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_applicationSceneEntity, a3);
+    objc_storeStrong(&v8->_applicationSceneEntity, entity);
   }
 
   return v9;
@@ -27,8 +27,8 @@
   v6.super_class = SBPIPSceneContentSceneUpdateWorkspaceTransaction;
   [(SBPIPSceneContentSceneUpdateWorkspaceTransaction *)&v6 _begin];
   [(SBPIPSceneContentSceneUpdateWorkspaceTransaction *)self addMilestone:@"_SBPIPSceneContentSceneUpdateWorkspaceTransactionMilestoneSceneUpdate"];
-  v3 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v4 = [[SBApplicationSceneUpdateTransaction alloc] initWithApplicationSceneEntity:self->_applicationSceneEntity transitionRequest:v3];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  v4 = [[SBApplicationSceneUpdateTransaction alloc] initWithApplicationSceneEntity:self->_applicationSceneEntity transitionRequest:transitionRequest];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __58__SBPIPSceneContentSceneUpdateWorkspaceTransaction__begin__block_invoke;
@@ -43,9 +43,9 @@
   v5.receiver = self;
   v5.super_class = SBPIPSceneContentSceneUpdateWorkspaceTransaction;
   [(SBMainWorkspaceTransaction *)&v5 _didComplete];
-  v3 = [(SBWorkspaceTransaction *)self windowScene];
-  v4 = [v3 medusaHostedKeyboardWindowController];
-  [v4 updateMedusaHostedKeyboardWindow];
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
+  medusaHostedKeyboardWindowController = [windowScene medusaHostedKeyboardWindowController];
+  [medusaHostedKeyboardWindowController updateMedusaHostedKeyboardWindow];
 }
 
 @end

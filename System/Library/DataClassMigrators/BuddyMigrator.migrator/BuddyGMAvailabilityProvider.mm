@@ -1,17 +1,17 @@
 @interface BuddyGMAvailabilityProvider
 - (_TtC13BuddyMigrator27BuddyGMAvailabilityProvider)init;
-- (void)fetchLatestAvailabilityStatusWithCompletionHandler:(id)a3;
+- (void)fetchLatestAvailabilityStatusWithCompletionHandler:(id)handler;
 @end
 
 @implementation BuddyGMAvailabilityProvider
 
-- (void)fetchLatestAvailabilityStatusWithCompletionHandler:(id)a3
+- (void)fetchLatestAvailabilityStatusWithCompletionHandler:(id)handler
 {
   v5 = sub_ED0C(&qword_30030, "&w");
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8, v7);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   *(v11 + 24) = self;
@@ -27,7 +27,7 @@
   v14[3] = 0;
   v14[4] = &unk_1D1C0;
   v14[5] = v13;
-  v15 = self;
+  selfCopy = self;
   sub_17E1C(0, 0, v9, &unk_1D110, v14);
 }
 

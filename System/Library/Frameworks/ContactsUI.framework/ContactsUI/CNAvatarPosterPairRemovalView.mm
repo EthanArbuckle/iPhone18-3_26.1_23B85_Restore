@@ -1,5 +1,5 @@
 @interface CNAvatarPosterPairRemovalView
-- (_TtC10ContactsUI29CNAvatarPosterPairRemovalView)initWithCoder:(id)a3;
+- (_TtC10ContactsUI29CNAvatarPosterPairRemovalView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
@@ -16,7 +16,7 @@
   *&v2[OBJC_IVAR____TtC10ContactsUI29CNAvatarPosterPairRemovalView_avatarPosterPair] = 0;
 }
 
-- (_TtC10ContactsUI29CNAvatarPosterPairRemovalView)initWithCoder:(id)a3
+- (_TtC10ContactsUI29CNAvatarPosterPairRemovalView)initWithCoder:(id)coder
 {
   *(&self->super.super.super._responderFlags + OBJC_IVAR____TtC10ContactsUI29CNAvatarPosterPairRemovalView_delegate) = 0;
   swift_unknownObjectWeakInit();
@@ -30,7 +30,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_199AD7288();
 }
 

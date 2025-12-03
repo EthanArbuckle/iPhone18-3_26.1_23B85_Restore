@@ -1,16 +1,16 @@
 @interface CAMSemanticStyleStatusIndicatorAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation CAMSemanticStyleStatusIndicatorAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMSemanticStyleStatusIndicator" hasInstanceMethod:@"semanticStyle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMSemanticStyle" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMSemanticStyleStatusIndicator" hasInstanceMethod:@"semanticStyle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMSemanticStyle" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityValue

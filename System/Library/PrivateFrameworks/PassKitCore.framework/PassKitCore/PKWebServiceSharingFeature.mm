@@ -1,18 +1,18 @@
 @interface PKWebServiceSharingFeature
-- (PKWebServiceSharingFeature)initWithDictionary:(id)a3 region:(id)a4;
+- (PKWebServiceSharingFeature)initWithDictionary:(id)dictionary region:(id)region;
 @end
 
 @implementation PKWebServiceSharingFeature
 
-- (PKWebServiceSharingFeature)initWithDictionary:(id)a3 region:(id)a4
+- (PKWebServiceSharingFeature)initWithDictionary:(id)dictionary region:(id)region
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PKWebServiceRegionFeature *)self initWithFeatureType:5 dictionary:v6 region:a4];
+  dictionaryCopy = dictionary;
+  v7 = [(PKWebServiceRegionFeature *)self initWithFeatureType:5 dictionary:dictionaryCopy region:region];
   if (v7)
   {
-    v7->_relayServerPasswordLength = [v6 PKIntegerForKey:@"relayServerPasswordLength"];
-    v8 = [v6 PKArrayContaining:objc_opt_class() forKey:@"activationCodeConfigurations"];
+    v7->_relayServerPasswordLength = [dictionaryCopy PKIntegerForKey:@"relayServerPasswordLength"];
+    v8 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"activationCodeConfigurations"];
     if (v8)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -55,35 +55,35 @@
       v7->_activationCodeConfigurations = v9;
     }
 
-    v19 = [v6 PKStringForKey:{@"relayServerHost", v33}];
+    v19 = [dictionaryCopy PKStringForKey:{@"relayServerHost", v33}];
     relayServerHost = v7->_relayServerHost;
     v7->_relayServerHost = v19;
 
-    v21 = [v6 PKArrayContaining:objc_opt_class() forKey:@"allowedRelayServerHosts"];
+    v21 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"allowedRelayServerHosts"];
     allowedRelayServerHosts = v7->_allowedRelayServerHosts;
     v7->_allowedRelayServerHosts = v21;
 
-    v23 = [v6 PKArrayContaining:objc_opt_class() forKey:@"relayServerHostsToHandleUniversalLinks"];
+    v23 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"relayServerHostsToHandleUniversalLinks"];
     relayServerHostsToHandleUniversalLinks = v7->_relayServerHostsToHandleUniversalLinks;
     v7->_relayServerHostsToHandleUniversalLinks = v23;
 
-    v25 = [v6 PKArrayContaining:objc_opt_class() forKey:@"relayServerHostsToUseThirdPartyPushTopic"];
+    v25 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"relayServerHostsToUseThirdPartyPushTopic"];
     relayServerHostsToUseThirdPartyPushTopic = v7->_relayServerHostsToUseThirdPartyPushTopic;
     v7->_relayServerHostsToUseThirdPartyPushTopic = v25;
 
-    v27 = [v6 PKURLForKey:@"staticContentBaseURL"];
+    v27 = [dictionaryCopy PKURLForKey:@"staticContentBaseURL"];
     staticContentBaseURL = v7->_staticContentBaseURL;
     v7->_staticContentBaseURL = v27;
 
-    v29 = [v6 PKDictionaryForKey:@"openGraphPreviewUrls"];
+    v29 = [dictionaryCopy PKDictionaryForKey:@"openGraphPreviewUrls"];
     openGraphPreviewUrls = v7->_openGraphPreviewUrls;
     v7->_openGraphPreviewUrls = v29;
 
-    v31 = [v6 objectForKeyedSubscript:@"enabled"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"enabled"];
 
     if (v31)
     {
-      v7->_enabled = [v6 PKBoolForKey:@"enabled"];
+      v7->_enabled = [dictionaryCopy PKBoolForKey:@"enabled"];
     }
 
     else

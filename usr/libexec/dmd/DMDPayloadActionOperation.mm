@@ -2,17 +2,17 @@
 + (id)sharedDeclarationOperationQueue;
 - (BOOL)isReady;
 - (DMDPayloadActionOperation)init;
-- (DMDPayloadActionOperation)initWithDatabase:(id)a3 payloadMetadataObjectID:(id)a4 payloadIdentifier:(id)a5;
+- (DMDPayloadActionOperation)initWithDatabase:(id)database payloadMetadataObjectID:(id)d payloadIdentifier:(id)identifier;
 - (DMDPayloadContext)payloadContext;
-- (void)addStatusEntriesFromDictionary:(id)a3;
+- (void)addStatusEntriesFromDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)endOperationMarkingPayloadMetadata:(id)a3 failedWithError:(id)a4;
-- (void)endOperationWithPayloadMetadata:(id)a3;
-- (void)enqueueOperation:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)endOperationMarkingPayloadMetadata:(id)metadata failedWithError:(id)error;
+- (void)endOperationWithPayloadMetadata:(id)metadata;
+- (void)enqueueOperation:(id)operation;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)operationWillStart;
-- (void)performBackgroundContextBlock:(id)a3;
-- (void)setDeviceStateProvider:(id)a3;
+- (void)performBackgroundContextBlock:(id)block;
+- (void)setDeviceStateProvider:(id)provider;
 @end
 
 @implementation DMDPayloadActionOperation
@@ -77,10 +77,10 @@
 
   if ([(DMDPayloadActionOperation *)self requiresUnlockedKeychain])
   {
-    v3 = [(DMDPayloadActionOperation *)self deviceStateProvider];
-    v4 = [v3 isKeychainUnlocked];
+    deviceStateProvider = [(DMDPayloadActionOperation *)self deviceStateProvider];
+    isKeychainUnlocked = [deviceStateProvider isKeychainUnlocked];
 
-    if (!v4)
+    if (!isKeychainUnlocked)
     {
       return 0;
     }
@@ -91,10 +91,10 @@
     return 1;
   }
 
-  v5 = [(DMDPayloadActionOperation *)self deviceStateProvider];
-  v6 = [v5 isNetworkTethered];
+  deviceStateProvider2 = [(DMDPayloadActionOperation *)self deviceStateProvider];
+  isNetworkTethered = [deviceStateProvider2 isNetworkTethered];
 
-  return v6;
+  return isNetworkTethered;
 }
 
 - (void)operationWillStart
@@ -105,24 +105,24 @@
   [(DMDPayloadActionOperation *)&v3 operationWillStart];
 }
 
-- (void)setDeviceStateProvider:(id)a3
+- (void)setDeviceStateProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   [(DMDDeviceStateProvider *)self->_deviceStateProvider removeObserver:self forKeyPath:@"isNetworkTethered"];
   [(DMDDeviceStateProvider *)self->_deviceStateProvider removeObserver:self forKeyPath:@"isKeychainUnlocked"];
   deviceStateProvider = self->_deviceStateProvider;
-  self->_deviceStateProvider = v4;
-  v6 = v4;
+  self->_deviceStateProvider = providerCopy;
+  v6 = providerCopy;
 
   [(DMDDeviceStateProvider *)self->_deviceStateProvider addObserver:self forKeyPath:@"isKeychainUnlocked" options:0 context:"DMDPayloadActionOperationObservationContext"];
   [(DMDDeviceStateProvider *)self->_deviceStateProvider addObserver:self forKeyPath:@"isNetworkTethered" options:0 context:"DMDPayloadActionOperationObservationContext"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == "DMDPayloadActionOperationObservationContext")
+  if (context == "DMDPayloadActionOperationObservationContext")
   {
-    [(DMDPayloadActionOperation *)self willChangeValueForKey:@"isReady", a4, a5];
+    [(DMDPayloadActionOperation *)self willChangeValueForKey:@"isReady", object, change];
 
     [(DMDPayloadActionOperation *)self didChangeValueForKey:@"isReady"];
   }
@@ -131,27 +131,27 @@
   {
     v7.receiver = self;
     v7.super_class = DMDPayloadActionOperation;
-    [(DMDPayloadActionOperation *)&v7 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(DMDPayloadActionOperation *)&v7 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (DMDPayloadActionOperation)initWithDatabase:(id)a3 payloadMetadataObjectID:(id)a4 payloadIdentifier:(id)a5
+- (DMDPayloadActionOperation)initWithDatabase:(id)database payloadMetadataObjectID:(id)d payloadIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  databaseCopy = database;
+  dCopy = d;
+  identifierCopy = identifier;
   v21.receiver = self;
   v21.super_class = DMDPayloadActionOperation;
   v12 = [(DMDPayloadActionOperation *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_database, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_database, database);
+    v14 = [dCopy copy];
     payloadMetadataObjectID = v13->_payloadMetadataObjectID;
     v13->_payloadMetadataObjectID = v14;
 
-    v16 = [v11 copy];
+    v16 = [identifierCopy copy];
     payloadIdentifier = v13->_payloadIdentifier;
     v13->_payloadIdentifier = v16;
 
@@ -178,68 +178,68 @@
   return payloadContext;
 }
 
-- (void)performBackgroundContextBlock:(id)a3
+- (void)performBackgroundContextBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
     sub_100085E20(a2, self);
   }
 
-  v6 = [(DMDPayloadActionOperation *)self database];
+  database = [(DMDPayloadActionOperation *)self database];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10005C30C;
   v8[3] = &unk_1000CE810;
-  v9 = v5;
-  v7 = v5;
-  [v6 performBackgroundTask:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [database performBackgroundTask:v8];
 }
 
-- (void)enqueueOperation:(id)a3
+- (void)enqueueOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [(DMDPayloadActionOperation *)self subOperations];
+  operationCopy = operation;
+  subOperations = [(DMDPayloadActionOperation *)self subOperations];
 
-  if (!v5)
+  if (!subOperations)
   {
     v6 = objc_opt_new();
     [(DMDPayloadActionOperation *)self setSubOperations:v6];
   }
 
-  v7 = [(DMDPayloadActionOperation *)self subOperations];
-  [v7 addObject:v4];
+  subOperations2 = [(DMDPayloadActionOperation *)self subOperations];
+  [subOperations2 addObject:operationCopy];
 
-  v8 = [objc_opt_class() sharedDeclarationOperationQueue];
-  [v8 addOperation:v4];
+  sharedDeclarationOperationQueue = [objc_opt_class() sharedDeclarationOperationQueue];
+  [sharedDeclarationOperationQueue addOperation:operationCopy];
 }
 
-- (void)addStatusEntriesFromDictionary:(id)a3
+- (void)addStatusEntriesFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(DMDPayloadActionOperation *)self stateDictionary];
-  [v5 addEntriesFromDictionary:v4];
+  dictionaryCopy = dictionary;
+  stateDictionary = [(DMDPayloadActionOperation *)self stateDictionary];
+  [stateDictionary addEntriesFromDictionary:dictionaryCopy];
 }
 
-- (void)endOperationMarkingPayloadMetadata:(id)a3 failedWithError:(id)a4
+- (void)endOperationMarkingPayloadMetadata:(id)metadata failedWithError:(id)error
 {
-  v7 = [NSAssertionHandler currentHandler:a3];
+  v7 = [NSAssertionHandler currentHandler:metadata];
   v6 = NSStringFromSelector(a2);
   [v7 handleFailureInMethod:a2 object:self file:@"DMDPayloadActionOperation.m" lineNumber:142 description:{@"%@ must be implemented by subclasses", v6}];
 }
 
-- (void)endOperationWithPayloadMetadata:(id)a3
+- (void)endOperationWithPayloadMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(DMDPayloadActionOperation *)self stateDictionary];
-  [v4 setStateDictionary:v5];
+  metadataCopy = metadata;
+  stateDictionary = [(DMDPayloadActionOperation *)self stateDictionary];
+  [metadataCopy setStateDictionary:stateDictionary];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v4 incomingPayloadMetadataReferences];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  incomingPayloadMetadataReferences = [metadataCopy incomingPayloadMetadataReferences];
+  v7 = [incomingPayloadMetadataReferences countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -250,7 +250,7 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(incomingPayloadMetadataReferences);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
@@ -261,15 +261,15 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [incomingPayloadMetadataReferences countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
   }
 
-  v12 = [v4 managedObjectContext];
+  managedObjectContext = [metadataCopy managedObjectContext];
   v15 = 0;
-  v13 = [v12 save:&v15];
+  v13 = [managedObjectContext save:&v15];
   v14 = v15;
 
   if (v13)

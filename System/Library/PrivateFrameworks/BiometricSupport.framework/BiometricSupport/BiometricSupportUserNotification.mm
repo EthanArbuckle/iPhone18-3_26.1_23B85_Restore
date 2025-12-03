@@ -1,9 +1,9 @@
 @interface BiometricSupportUserNotification
-+ (BOOL)didDisplayPearlGlassesBannerNotificationRecently:(double)a3;
++ (BOOL)didDisplayPearlGlassesBannerNotificationRecently:(double)recently;
 + (BOOL)displayPearlGlassesBannerNotification;
-+ (void)displayPearlInterlockIssueNotification:(BOOL)a3;
++ (void)displayPearlInterlockIssueNotification:(BOOL)notification;
 + (void)displayPearlIssueNotification;
-+ (void)displaySensorIssueNotificationWithHeader:(id)a3 message:(id)a4 button:(id)a5;
++ (void)displaySensorIssueNotificationWithHeader:(id)header message:(id)message button:(id)button;
 + (void)displayTouchIDIssueNotification;
 @end
 
@@ -13,27 +13,27 @@
 {
   v8 = MGCopyAnswer();
   v3 = [BKLocalization getLocalizedString:@"TOUCH_ID_ISSUE_NOTIFICATION_TITLE"];
-  v4 = [v8 uppercaseString];
-  v5 = [@"TOUCH_ID_ISSUE_NOTIFICATION_TEXT_" stringByAppendingString:v4];
+  uppercaseString = [v8 uppercaseString];
+  v5 = [@"TOUCH_ID_ISSUE_NOTIFICATION_TEXT_" stringByAppendingString:uppercaseString];
   v6 = [BKLocalization getLocalizedString:v5];
   v7 = [BKLocalization getLocalizedString:@"TOUCH_ID_ISSUE_NOTIFICATION_CONFIRM"];
-  [a1 displaySensorIssueNotificationWithHeader:v3 message:v6 button:v7];
+  [self displaySensorIssueNotificationWithHeader:v3 message:v6 button:v7];
 }
 
 + (void)displayPearlIssueNotification
 {
   v8 = MGCopyAnswer();
   v3 = [BKLocalization getLocalizedString:@"FACE_ID_ISSUE_NOTIFICATION_TITLE"];
-  v4 = [v8 uppercaseString];
-  v5 = [@"FACE_ID_ISSUE_NOTIFICATION_TEXT_" stringByAppendingString:v4];
+  uppercaseString = [v8 uppercaseString];
+  v5 = [@"FACE_ID_ISSUE_NOTIFICATION_TEXT_" stringByAppendingString:uppercaseString];
   v6 = [BKLocalization getLocalizedString:v5];
   v7 = [BKLocalization getLocalizedString:@"FACE_ID_ISSUE_NOTIFICATION_CONFIRM"];
-  [a1 displaySensorIssueNotificationWithHeader:v3 message:v6 button:v7];
+  [self displaySensorIssueNotificationWithHeader:v3 message:v6 button:v7];
 }
 
-+ (void)displayPearlInterlockIssueNotification:(BOOL)a3
++ (void)displayPearlInterlockIssueNotification:(BOOL)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v25 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D86220];
   if (__osLogTrace)
@@ -50,7 +50,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 67109120;
-    LODWORD(v24) = v3;
+    LODWORD(v24) = notificationCopy;
     _os_log_impl(&dword_223E00000, v5, OS_LOG_TYPE_DEFAULT, "displayPearlInterlockIssueNotification: %d\n", &v23, 8u);
   }
 
@@ -60,11 +60,11 @@
     v8 = [objc_alloc(MEMORY[0x277CFE500]) initWithClientIdentifier:@"com.apple.BiometricKit"];
     v7 = [v8 countOfPendingFollowUpItems:0];
     displayPearlInterlockIssueNotification__count = v7;
-    if (!v3)
+    if (!notificationCopy)
     {
 LABEL_17:
       v19 = 1;
-      if (v3 || v7 < 1)
+      if (notificationCopy || v7 < 1)
       {
         v9 = v8;
       }
@@ -100,7 +100,7 @@ LABEL_17:
   else
   {
     v8 = 0;
-    if (!v3)
+    if (!notificationCopy)
     {
       goto LABEL_17;
     }
@@ -191,13 +191,13 @@ LABEL_26:
     _os_log_impl(&dword_223E00000, v3, OS_LOG_TYPE_DEFAULT, "displayPearlGlassesBannerNotification\n", &v19, 2u);
   }
 
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:@"/tmp/biokit_glasses_banner_notification"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:@"/tmp/biokit_glasses_banner_notification"];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
-    v7 = [v6 createFileAtPath:@"/tmp/biokit_glasses_banner_notification" contents:0 attributes:0];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    v7 = [defaultManager2 createFileAtPath:@"/tmp/biokit_glasses_banner_notification" contents:0 attributes:0];
 
     if ((v7 & 1) == 0)
     {
@@ -271,7 +271,7 @@ void __73__BiometricSupportUserNotification_displayPearlGlassesBannerNotificatio
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)didDisplayPearlGlassesBannerNotificationRecently:(double)a3
++ (BOOL)didDisplayPearlGlassesBannerNotificationRecently:(double)recently
 {
   v21 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D86220];
@@ -288,12 +288,12 @@ void __73__BiometricSupportUserNotification_displayPearlGlassesBannerNotificatio
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 134217984;
-    v20 = a3;
+    recentlyCopy = recently;
     _os_log_impl(&dword_223E00000, v5, OS_LOG_TYPE_DEFAULT, "didDisplayPearlGlassesBannerNotificationRecently: %f\n", &v19, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 attributesOfItemAtPath:@"/tmp/biokit_glasses_banner_notification" error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager attributesOfItemAtPath:@"/tmp/biokit_glasses_banner_notification" error:0];
   if (v7)
   {
     if (__osLog)
@@ -312,11 +312,11 @@ void __73__BiometricSupportUserNotification_displayPearlGlassesBannerNotificatio
       _os_log_impl(&dword_223E00000, v8, OS_LOG_TYPE_DEBUG, "Glasses banner markfile found, attributes retrieved\n", &v19, 2u);
     }
 
-    v9 = [v7 fileCreationDate];
-    v10 = v9;
-    if (v9)
+    fileCreationDate = [v7 fileCreationDate];
+    v10 = fileCreationDate;
+    if (fileCreationDate)
     {
-      [v9 timeIntervalSinceNow];
+      [fileCreationDate timeIntervalSinceNow];
       v12 = -v11;
       if (__osLog)
       {
@@ -331,11 +331,11 @@ void __73__BiometricSupportUserNotification_displayPearlGlassesBannerNotificatio
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         v19 = 134217984;
-        v20 = v12;
+        recentlyCopy = v12;
         _os_log_impl(&dword_223E00000, v13, OS_LOG_TYPE_INFO, "Glasses banner mark file age is %f\n", &v19, 0xCu);
       }
 
-      v14 = v12 < a3;
+      v14 = v12 < recently;
     }
 
     else
@@ -378,7 +378,7 @@ void __73__BiometricSupportUserNotification_displayPearlGlassesBannerNotificatio
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 67109120;
-    LODWORD(v20) = v14;
+    LODWORD(recentlyCopy) = v14;
     _os_log_impl(&dword_223E00000, v16, OS_LOG_TYPE_DEFAULT, "didDisplayPearlGlassesBannerNotificationRecently: -> %d\n", &v19, 8u);
   }
 
@@ -386,27 +386,27 @@ void __73__BiometricSupportUserNotification_displayPearlGlassesBannerNotificatio
   return v14;
 }
 
-+ (void)displaySensorIssueNotificationWithHeader:(id)a3 message:(id)a4 button:(id)a5
++ (void)displaySensorIssueNotificationWithHeader:(id)header message:(id)message button:(id)button
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
-  v11 = [v10 fileExistsAtPath:@"/tmp/biokit_hw_issue_notification"];
+  headerCopy = header;
+  messageCopy = message;
+  buttonCopy = button;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v11 = [defaultManager fileExistsAtPath:@"/tmp/biokit_hw_issue_notification"];
 
   if ((v11 & 1) == 0)
   {
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
-    [v12 createFileAtPath:@"/tmp/biokit_hw_issue_notification" contents:0 attributes:0];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager2 createFileAtPath:@"/tmp/biokit_hw_issue_notification" contents:0 attributes:0];
 
     v13 = dispatch_get_global_queue(33, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __92__BiometricSupportUserNotification_displaySensorIssueNotificationWithHeader_message_button___block_invoke;
     block[3] = &unk_2784FA5A0;
-    v15 = v7;
-    v16 = v8;
-    v17 = v9;
+    v15 = headerCopy;
+    v16 = messageCopy;
+    v17 = buttonCopy;
     dispatch_async(v13, block);
   }
 }

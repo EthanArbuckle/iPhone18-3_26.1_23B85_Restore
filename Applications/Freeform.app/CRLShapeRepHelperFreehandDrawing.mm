@@ -1,41 +1,41 @@
 @interface CRLShapeRepHelperFreehandDrawing
-- (CRLShapeRepHelperFreehandDrawing)initWithShapeRep:(id)a3;
-- (void)drawInContext:(CGContext *)a3 withContent:(BOOL)a4 strokeDrawOptions:(unint64_t)a5 withOpacity:(BOOL)a6 usingPathOverride:(id)a7 patternOffsetsBySubpathOverride:(id)a8 transparencyLayersBySubpath:(id)a9;
+- (CRLShapeRepHelperFreehandDrawing)initWithShapeRep:(id)rep;
+- (void)drawInContext:(CGContext *)context withContent:(BOOL)content strokeDrawOptions:(unint64_t)options withOpacity:(BOOL)opacity usingPathOverride:(id)override patternOffsetsBySubpathOverride:(id)subpathOverride transparencyLayersBySubpath:(id)subpath;
 @end
 
 @implementation CRLShapeRepHelperFreehandDrawing
 
-- (CRLShapeRepHelperFreehandDrawing)initWithShapeRep:(id)a3
+- (CRLShapeRepHelperFreehandDrawing)initWithShapeRep:(id)rep
 {
-  v4 = a3;
+  repCopy = rep;
   v12.receiver = self;
   v12.super_class = CRLShapeRepHelperFreehandDrawing;
   v5 = [(CRLShapeRepHelperFreehandDrawing *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_shapeRep, v4);
-    v7 = [v4 shapeLayout];
-    objc_storeWeak(&v6->_shapeLayout, v7);
+    objc_storeWeak(&v5->_shapeRep, repCopy);
+    shapeLayout = [repCopy shapeLayout];
+    objc_storeWeak(&v6->_shapeLayout, shapeLayout);
 
     v8 = objc_opt_class();
-    v9 = [v4 shapeInfo];
-    v10 = sub_100013F00(v8, v9);
+    shapeInfo = [repCopy shapeInfo];
+    v10 = sub_100013F00(v8, shapeInfo);
     objc_storeWeak(&v6->_shapeInfo, v10);
   }
 
   return v6;
 }
 
-- (void)drawInContext:(CGContext *)a3 withContent:(BOOL)a4 strokeDrawOptions:(unint64_t)a5 withOpacity:(BOOL)a6 usingPathOverride:(id)a7 patternOffsetsBySubpathOverride:(id)a8 transparencyLayersBySubpath:(id)a9
+- (void)drawInContext:(CGContext *)context withContent:(BOOL)content strokeDrawOptions:(unint64_t)options withOpacity:(BOOL)opacity usingPathOverride:(id)override patternOffsetsBySubpathOverride:(id)subpathOverride transparencyLayersBySubpath:(id)subpath
 {
-  v9 = a5;
-  CGContextSaveGState(a3);
+  optionsCopy = options;
+  CGContextSaveGState(context);
   WeakRetained = objc_loadWeakRetained(&self->_shapeRep);
-  v14 = [WeakRetained canvas];
+  canvas = [WeakRetained canvas];
 
-  v15 = [v14 shouldSuppressBackgrounds];
-  if (v15 != sub_1005106C8(a3))
+  shouldSuppressBackgrounds = [canvas shouldSuppressBackgrounds];
+  if (shouldSuppressBackgrounds != sub_1005106C8(context))
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -69,47 +69,47 @@
   v21 = v20;
   v23 = v22;
 
-  CGContextTranslateCTM(a3, -v21, -v23);
-  if (!(v15 & 1 | !a4))
+  CGContextTranslateCTM(context, -v21, -v23);
+  if (!(shouldSuppressBackgrounds & 1 | !content))
   {
     v24 = objc_loadWeakRetained(&self->_shapeLayout);
-    v25 = [v24 fill];
+    fill = [v24 fill];
 
-    if (v25 && ([v25 isClear] & 1) == 0)
+    if (fill && ([fill isClear] & 1) == 0)
     {
       v26 = objc_loadWeakRetained(&self->_shapeLayout);
-      v27 = [v26 path];
-      v28 = [v27 CGPath];
+      path = [v26 path];
+      cGPath = [path CGPath];
 
-      v29 = v25;
-      if (sub_100510090(a3))
+      v29 = fill;
+      if (sub_100510090(context))
       {
-        v30 = [v29 referenceColor];
-        [v30 alphaComponent];
+        referenceColor = [v29 referenceColor];
+        [referenceColor alphaComponent];
         v32 = [CRLColorFill colorWithWhite:0.0 alpha:v31];
 
         v29 = v32;
       }
 
-      [v29 paintPath:v28 inContext:a3];
+      [v29 paintPath:cGPath inContext:context];
     }
   }
 
   v33 = objc_loadWeakRetained(&self->_shapeLayout);
-  v34 = [v33 stroke];
+  stroke = [v33 stroke];
 
-  if (v34)
+  if (stroke)
   {
-    v35 = [v34 isNullStroke];
-    if ((v9 & 1) != 0 && (v35 & 1) == 0)
+    isNullStroke = [stroke isNullStroke];
+    if ((optionsCopy & 1) != 0 && (isNullStroke & 1) == 0)
     {
       v36 = objc_loadWeakRetained(&self->_shapeLayout);
-      v37 = [v36 pencilKitStrokes];
+      pencilKitStrokes = [v36 pencilKitStrokes];
 
-      if (v37)
+      if (pencilKitStrokes)
       {
-        v38 = [v14 backgroundColor];
-        [CRLPencilKitInkStroke drawStrokes:v37 inContext:a3 overTransparentCanvas:v38 == 0];
+        backgroundColor = [canvas backgroundColor];
+        [CRLPencilKitInkStroke drawStrokes:pencilKitStrokes inContext:context overTransparentCanvas:backgroundColor == 0];
       }
 
       else
@@ -141,14 +141,14 @@
         [CRLAssertionHandler handleFailureInFunction:v40 file:v41 lineNumber:105 isFatal:0 description:"invalid nil value for '%{public}s'", "pencilKitStrokes"];
 
         v42 = objc_loadWeakRetained(&self->_shapeLayout);
-        v38 = [v42 path];
+        backgroundColor = [v42 path];
 
-        [v34 paintPath:objc_msgSend(v38 inContext:{"CGPath"), a3}];
+        [stroke paintPath:objc_msgSend(backgroundColor inContext:{"CGPath"), context}];
       }
     }
   }
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
 @end

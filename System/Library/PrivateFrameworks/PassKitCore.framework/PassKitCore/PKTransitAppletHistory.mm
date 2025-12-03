@@ -1,10 +1,10 @@
 @interface PKTransitAppletHistory
 - (PKTransitAppletHistory)init;
-- (PKTransitAppletHistory)initWithCoder:(id)a3;
-- (PKTransitAppletHistory)initWithDictionary:(id)a3 source:(int64_t)a4;
+- (PKTransitAppletHistory)initWithCoder:(id)coder;
+- (PKTransitAppletHistory)initWithDictionary:(id)dictionary source:(int64_t)source;
 - (id)felicaHistory;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKTransitAppletHistory
@@ -22,11 +22,11 @@
   return result;
 }
 
-- (PKTransitAppletHistory)initWithDictionary:(id)a3 source:(int64_t)a4
+- (PKTransitAppletHistory)initWithDictionary:(id)dictionary source:(int64_t)source
 {
   v85 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"State"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"State"];
   if (v7)
   {
     v80.receiver = self;
@@ -35,7 +35,7 @@
     v9 = v8;
     if (v8)
     {
-      v8->_source = a4;
+      v8->_source = source;
       v10 = [v7 PKStringForKey:@"SP"];
       serviceProvider = v9->_serviceProvider;
       v9->_serviceProvider = v10;
@@ -119,7 +119,7 @@
 
       v40 = [v7 PKArrayContaining:objc_opt_class() forKey:@"CommutePlans"];
       v41 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v67 = v6;
+      v67 = dictionaryCopy;
       v64 = v40;
       if (v40)
       {
@@ -159,10 +159,10 @@
         commutePlans = v9->_commutePlans;
         v9->_commutePlans = v48;
 
-        v6 = v67;
+        dictionaryCopy = v67;
       }
 
-      v50 = [v6 PKDictionaryForKey:@"Transaction"];
+      v50 = [dictionaryCopy PKDictionaryForKey:@"Transaction"];
       if (v50)
       {
         v82 = v50;
@@ -171,7 +171,7 @@
 
       else
       {
-        [v6 PKArrayContaining:objc_opt_class() forKey:{@"TransactionHistory", 0}];
+        [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:{@"TransactionHistory", 0}];
       }
       v51 = ;
       v52 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -212,7 +212,7 @@
       v9->_historyRecords = v59;
 
       v7 = v66;
-      v6 = v67;
+      dictionaryCopy = v67;
       self = v63;
     }
 
@@ -230,40 +230,40 @@
   return v9;
 }
 
-- (PKTransitAppletHistory)initWithCoder:(id)a3
+- (PKTransitAppletHistory)initWithCoder:(id)coder
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v50.receiver = self;
   v50.super_class = PKTransitAppletHistory;
   v5 = [(PKTransitAppletHistory *)&v50 init];
   if (v5)
   {
-    v5->_source = [v4 decodeIntegerForKey:@"source"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serviceProvider"];
+    v5->_source = [coderCopy decodeIntegerForKey:@"source"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serviceProvider"];
     serviceProvider = v5->_serviceProvider;
     v5->_serviceProvider = v6;
 
-    v5->_blacklisted = [v4 decodeBoolForKey:@"blacklisted"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currency"];
+    v5->_blacklisted = [coderCopy decodeBoolForKey:@"blacklisted"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currency"];
     currency = v5->_currency;
     v5->_currency = v8;
 
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"inStationDetails"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"inStationDetails"];
     inStationDetails = v5->_inStationDetails;
     v5->_inStationDetails = v13;
 
     v15 = MEMORY[0x1E695DFD8];
     v16 = objc_opt_class();
     v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"enrouteFlagsKey"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"enrouteFlagsKey"];
     enrouteTransitTypes = v5->_enrouteTransitTypes;
     v5->_enrouteTransitTypes = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serverRefreshIdentifier"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serverRefreshIdentifier"];
     serverRefreshIdentifier = v5->_serverRefreshIdentifier;
     v5->_serverRefreshIdentifier = v20;
 
@@ -278,7 +278,7 @@
       }
     }
 
-    if ([v4 decodeBoolForKey:@"inStation"] && !-[NSSet count](v5->_enrouteTransitTypes, "count"))
+    if ([coderCopy decodeBoolForKey:@"inStation"] && !-[NSSet count](v5->_enrouteTransitTypes, "count"))
     {
       v51[0] = @"TransitMetro";
       v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:1];
@@ -287,36 +287,36 @@
       v5->_enrouteTransitTypes = v26;
     }
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"balance"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"balance"];
     balance = v5->_balance;
     v5->_balance = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"loyaltyBalance"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"loyaltyBalance"];
     loyaltyBalance = v5->_loyaltyBalance;
     v5->_loyaltyBalance = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v32;
 
     v34 = MEMORY[0x1E695DFD8];
     v35 = objc_opt_class();
     v36 = [v34 setWithObjects:{v35, objc_opt_class(), 0}];
-    v37 = [v4 decodeObjectOfClasses:v36 forKey:@"historyRecords"];
+    v37 = [coderCopy decodeObjectOfClasses:v36 forKey:@"historyRecords"];
     historyRecords = v5->_historyRecords;
     v5->_historyRecords = v37;
 
     v39 = MEMORY[0x1E695DFD8];
     v40 = objc_opt_class();
     v41 = [v39 setWithObjects:{v40, objc_opt_class(), 0}];
-    v42 = [v4 decodeObjectOfClasses:v41 forKey:@"balances"];
+    v42 = [coderCopy decodeObjectOfClasses:v41 forKey:@"balances"];
     balances = v5->_balances;
     v5->_balances = v42;
 
     v44 = MEMORY[0x1E695DFD8];
     v45 = objc_opt_class();
     v46 = [v44 setWithObjects:{v45, objc_opt_class(), 0}];
-    v47 = [v4 decodeObjectOfClasses:v46 forKey:@"commutePlans"];
+    v47 = [coderCopy decodeObjectOfClasses:v46 forKey:@"commutePlans"];
     commutePlans = v5->_commutePlans;
     v5->_commutePlans = v47;
   }
@@ -331,24 +331,24 @@
   [(PKTransitAppletHistory *)&v2 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   source = self->_source;
-  v5 = a3;
-  [v5 encodeInteger:source forKey:@"source"];
-  [v5 encodeObject:self->_serviceProvider forKey:@"serviceProvider"];
-  [v5 encodeObject:self->_serverRefreshIdentifier forKey:@"serverRefreshIdentifier"];
-  [v5 encodeBool:self->_blacklisted forKey:@"blacklisted"];
-  [v5 encodeObject:self->_currency forKey:@"currency"];
-  [v5 encodeObject:self->_balance forKey:@"balance"];
-  [v5 encodeObject:self->_loyaltyBalance forKey:@"loyaltyBalance"];
-  [v5 encodeObject:self->_expirationDate forKey:@"expirationDate"];
-  [v5 encodeObject:self->_historyRecords forKey:@"historyRecords"];
-  [v5 encodeObject:self->_inStationDetails forKey:@"inStationDetails"];
-  [v5 encodeObject:self->_enrouteTransitTypes forKey:@"enrouteFlagsKey"];
-  [v5 encodeBool:-[PKTransitAppletHistory isInStation](self forKey:{"isInStation"), @"inStation"}];
-  [v5 encodeObject:self->_balances forKey:@"balances"];
-  [v5 encodeObject:self->_commutePlans forKey:@"commutePlans"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:source forKey:@"source"];
+  [coderCopy encodeObject:self->_serviceProvider forKey:@"serviceProvider"];
+  [coderCopy encodeObject:self->_serverRefreshIdentifier forKey:@"serverRefreshIdentifier"];
+  [coderCopy encodeBool:self->_blacklisted forKey:@"blacklisted"];
+  [coderCopy encodeObject:self->_currency forKey:@"currency"];
+  [coderCopy encodeObject:self->_balance forKey:@"balance"];
+  [coderCopy encodeObject:self->_loyaltyBalance forKey:@"loyaltyBalance"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"expirationDate"];
+  [coderCopy encodeObject:self->_historyRecords forKey:@"historyRecords"];
+  [coderCopy encodeObject:self->_inStationDetails forKey:@"inStationDetails"];
+  [coderCopy encodeObject:self->_enrouteTransitTypes forKey:@"enrouteFlagsKey"];
+  [coderCopy encodeBool:-[PKTransitAppletHistory isInStation](self forKey:{"isInStation"), @"inStation"}];
+  [coderCopy encodeObject:self->_balances forKey:@"balances"];
+  [coderCopy encodeObject:self->_commutePlans forKey:@"commutePlans"];
 }
 
 - (id)felicaHistory
@@ -356,15 +356,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

@@ -1,29 +1,29 @@
 @interface PKApplyWebServiceApplicationsResponse
-- (PKApplyWebServiceApplicationsResponse)initWithCoder:(id)a3;
-- (PKApplyWebServiceApplicationsResponse)initWithData:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKApplyWebServiceApplicationsResponse)initWithCoder:(id)coder;
+- (PKApplyWebServiceApplicationsResponse)initWithData:(id)data;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKApplyWebServiceApplicationsResponse
 
-- (PKApplyWebServiceApplicationsResponse)initWithData:(id)a3
+- (PKApplyWebServiceApplicationsResponse)initWithData:(id)data
 {
   v45 = *MEMORY[0x1E69E9840];
   v39.receiver = self;
   v39.super_class = PKApplyWebServiceApplicationsResponse;
-  v3 = [(PKWebServiceResponse *)&v39 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v39 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 objectForKey:@"applications"];
+      v6 = [jSONObject objectForKey:@"applications"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [v5 PKStringForKey:@"lastUpdated"];
+        v7 = [jSONObject PKStringForKey:@"lastUpdated"];
         lastUpdated = v4->_lastUpdated;
         v4->_lastUpdated = v7;
 
@@ -70,7 +70,7 @@
         allFeatureApplications = v4->_allFeatureApplications;
         v4->_allFeatureApplications = v18;
 
-        v20 = [v5 objectForKey:@"featureFailures"];
+        v20 = [jSONObject objectForKey:@"featureFailures"];
         if (v20)
         {
           objc_opt_class();
@@ -128,22 +128,22 @@ LABEL_25:
   return v23;
 }
 
-- (PKApplyWebServiceApplicationsResponse)initWithCoder:(id)a3
+- (PKApplyWebServiceApplicationsResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PKApplyWebServiceApplicationsResponse;
-  v5 = [(PKWebServiceResponse *)&v14 initWithCoder:v4];
+  v5 = [(PKWebServiceResponse *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdated"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdated"];
     lastUpdated = v5->_lastUpdated;
     v5->_lastUpdated = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"allFeatureApplications"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"allFeatureApplications"];
     allFeatureApplications = v5->_allFeatureApplications;
     v5->_allFeatureApplications = v11;
   }
@@ -151,14 +151,14 @@ LABEL_25:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKApplyWebServiceApplicationsResponse;
-  v4 = a3;
-  [(PKWebServiceResponse *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_allFeatureApplications forKey:{@"allFeatureApplications", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_lastUpdated forKey:@"allFeatureApplications"];
+  coderCopy = coder;
+  [(PKWebServiceResponse *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_allFeatureApplications forKey:{@"allFeatureApplications", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_lastUpdated forKey:@"allFeatureApplications"];
 }
 
 @end

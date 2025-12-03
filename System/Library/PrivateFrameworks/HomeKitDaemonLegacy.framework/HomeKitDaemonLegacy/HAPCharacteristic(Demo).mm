@@ -6,7 +6,7 @@
 
 - (void)responseDelay
 {
-  v1 = objc_getAssociatedObject(a1, "responseDelay");
+  v1 = objc_getAssociatedObject(self, "responseDelay");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

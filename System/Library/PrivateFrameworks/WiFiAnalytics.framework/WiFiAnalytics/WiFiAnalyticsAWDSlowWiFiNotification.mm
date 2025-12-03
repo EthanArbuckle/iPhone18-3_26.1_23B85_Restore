@@ -1,24 +1,24 @@
 @interface WiFiAnalyticsAWDSlowWiFiNotification
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasActionField:(BOOL)a3;
-- (void)setHasFacetimeCallInProgress:(BOOL)a3;
-- (void)setHasRecoveryAction:(BOOL)a3;
-- (void)setHasRecoveryReason:(BOOL)a3;
-- (void)setHasUserInput:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasActionField:(BOOL)field;
+- (void)setHasFacetimeCallInProgress:(BOOL)progress;
+- (void)setHasRecoveryAction:(BOOL)action;
+- (void)setHasRecoveryReason:(BOOL)reason;
+- (void)setHasUserInput:(BOOL)input;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WiFiAnalyticsAWDSlowWiFiNotification
 
-- (void)setHasActionField:(BOOL)a3
+- (void)setHasActionField:(BOOL)field
 {
-  if (a3)
+  if (field)
   {
     v3 = 2;
   }
@@ -31,9 +31,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasRecoveryAction:(BOOL)a3
+- (void)setHasRecoveryAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = 4;
   }
@@ -46,9 +46,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasRecoveryReason:(BOOL)a3
+- (void)setHasRecoveryReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 8;
   }
@@ -61,9 +61,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasUserInput:(BOOL)a3
+- (void)setHasUserInput:(BOOL)input
 {
-  if (a3)
+  if (input)
   {
     v3 = 16;
   }
@@ -76,9 +76,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasFacetimeCallInProgress:(BOOL)a3
+- (void)setHasFacetimeCallInProgress:(BOOL)progress
 {
-  if (a3)
+  if (progress)
   {
     v3 = 32;
   }
@@ -97,20 +97,20 @@
   v8.receiver = self;
   v8.super_class = WiFiAnalyticsAWDSlowWiFiNotification;
   v4 = [(WiFiAnalyticsAWDSlowWiFiNotification *)&v8 description];
-  v5 = [(WiFiAnalyticsAWDSlowWiFiNotification *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WiFiAnalyticsAWDSlowWiFiNotification *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v7 forKey:@"timestamp"];
+    [dictionary setObject:v7 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -131,7 +131,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_actionField];
-  [v3 setObject:v8 forKey:@"actionField"];
+  [dictionary setObject:v8 forKey:@"actionField"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -147,7 +147,7 @@ LABEL_4:
 
 LABEL_13:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_recoveryAction];
-  [v3 setObject:v9 forKey:@"recoveryAction"];
+  [dictionary setObject:v9 forKey:@"recoveryAction"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -163,7 +163,7 @@ LABEL_5:
 
 LABEL_14:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_recoveryReason];
-  [v3 setObject:v10 forKey:@"recoveryReason"];
+  [dictionary setObject:v10 forKey:@"recoveryReason"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -179,23 +179,23 @@ LABEL_6:
 
 LABEL_15:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_userInput];
-  [v3 setObject:v11 forKey:@"userInput"];
+  [dictionary setObject:v11 forKey:@"userInput"];
 
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_7:
     v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_facetimeCallInProgress];
-    [v3 setObject:v5 forKey:@"facetimeCallInProgress"];
+    [dictionary setObject:v5 forKey:@"facetimeCallInProgress"];
   }
 
 LABEL_8:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -276,14 +276,14 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 36) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 36) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -302,8 +302,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 4) = self->_actionField;
-  *(v4 + 36) |= 2u;
+  *(toCopy + 4) = self->_actionField;
+  *(toCopy + 36) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -317,8 +317,8 @@ LABEL_4:
   }
 
 LABEL_13:
-  *(v4 + 5) = self->_recoveryAction;
-  *(v4 + 36) |= 4u;
+  *(toCopy + 5) = self->_recoveryAction;
+  *(toCopy + 36) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -332,8 +332,8 @@ LABEL_5:
   }
 
 LABEL_14:
-  *(v4 + 6) = self->_recoveryReason;
-  *(v4 + 36) |= 8u;
+  *(toCopy + 6) = self->_recoveryReason;
+  *(toCopy + 36) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -347,21 +347,21 @@ LABEL_6:
   }
 
 LABEL_15:
-  *(v4 + 7) = self->_userInput;
-  *(v4 + 36) |= 0x10u;
+  *(toCopy + 7) = self->_userInput;
+  *(toCopy + 36) |= 0x10u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_7:
-    *(v4 + 32) = self->_facetimeCallInProgress;
-    *(v4 + 36) |= 0x20u;
+    *(toCopy + 32) = self->_facetimeCallInProgress;
+    *(toCopy + 36) |= 0x20u;
   }
 
 LABEL_8:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -443,83 +443,83 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_29;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_29;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_actionField != *(v4 + 4))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_actionField != *(equalCopy + 4))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_29;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_recoveryAction != *(v4 + 5))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_recoveryAction != *(equalCopy + 5))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_29;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 36) & 8) == 0 || self->_recoveryReason != *(v4 + 6))
+    if ((*(equalCopy + 36) & 8) == 0 || self->_recoveryReason != *(equalCopy + 6))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 36) & 8) != 0)
+  else if ((*(equalCopy + 36) & 8) != 0)
   {
     goto LABEL_29;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 36) & 0x10) == 0 || self->_userInput != *(v4 + 7))
+    if ((*(equalCopy + 36) & 0x10) == 0 || self->_userInput != *(equalCopy + 7))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 36) & 0x10) != 0)
+  else if ((*(equalCopy + 36) & 0x10) != 0)
   {
     goto LABEL_29;
   }
 
-  v5 = (*(v4 + 36) & 0x20) == 0;
+  v5 = (*(equalCopy + 36) & 0x20) == 0;
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 36) & 0x20) == 0)
+    if ((*(equalCopy + 36) & 0x20) == 0)
     {
 LABEL_29:
       v5 = 0;
@@ -528,13 +528,13 @@ LABEL_29:
 
     if (self->_facetimeCallInProgress)
     {
-      if ((*(v4 + 32) & 1) == 0)
+      if ((*(equalCopy + 32) & 1) == 0)
       {
         goto LABEL_29;
       }
     }
 
-    else if (*(v4 + 32))
+    else if (*(equalCopy + 32))
     {
       goto LABEL_29;
     }
@@ -629,15 +629,15 @@ LABEL_7:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 36);
+  fromCopy = from;
+  v5 = *(fromCopy + 36);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -650,14 +650,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 36) & 2) == 0)
+  else if ((*(fromCopy + 36) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_actionField = *(v4 + 4);
+  self->_actionField = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -670,9 +670,9 @@ LABEL_4:
   }
 
 LABEL_13:
-  self->_recoveryAction = *(v4 + 5);
+  self->_recoveryAction = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 8) == 0)
   {
 LABEL_5:
@@ -685,9 +685,9 @@ LABEL_5:
   }
 
 LABEL_14:
-  self->_recoveryReason = *(v4 + 6);
+  self->_recoveryReason = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x10) == 0)
   {
 LABEL_6:
@@ -700,12 +700,12 @@ LABEL_6:
   }
 
 LABEL_15:
-  self->_userInput = *(v4 + 7);
+  self->_userInput = *(fromCopy + 7);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 36) & 0x20) != 0)
+  if ((*(fromCopy + 36) & 0x20) != 0)
   {
 LABEL_7:
-    self->_facetimeCallInProgress = *(v4 + 32);
+    self->_facetimeCallInProgress = *(fromCopy + 32);
     *&self->_has |= 0x20u;
   }
 

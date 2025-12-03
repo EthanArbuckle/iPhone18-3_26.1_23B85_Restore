@@ -1,21 +1,21 @@
 @interface MKHybridMapConfiguration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToHybridMapConfiguration:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToHybridMapConfiguration:(id)configuration;
 - (MKHybridMapConfiguration)init;
 - (MKHybridMapConfiguration)initWithElevationStyle:(MKMapElevationStyle)elevationStyle;
 @end
 
 @implementation MKHybridMapConfiguration
 
-- (BOOL)isEqualToHybridMapConfiguration:(id)a3
+- (BOOL)isEqualToHybridMapConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (v4 && (v13.receiver = self, v13.super_class = MKHybridMapConfiguration, [(MKMapConfiguration *)&v13 isEqual:v4]))
+  configurationCopy = configuration;
+  if (configurationCopy && (v13.receiver = self, v13.super_class = MKHybridMapConfiguration, [(MKMapConfiguration *)&v13 isEqual:configurationCopy]))
   {
-    v5 = [(MKHybridMapConfiguration *)self pointOfInterestFilter];
-    v6 = [v4 pointOfInterestFilter];
-    v7 = v5;
-    v8 = v6;
+    pointOfInterestFilter = [(MKHybridMapConfiguration *)self pointOfInterestFilter];
+    pointOfInterestFilter2 = [configurationCopy pointOfInterestFilter];
+    v7 = pointOfInterestFilter;
+    v8 = pointOfInterestFilter2;
     if (v7 | v8 && (v9 = [v7 isEqual:v8], v8, v7, !v9))
     {
       LOBYTE(v11) = 0;
@@ -23,8 +23,8 @@
 
     else
     {
-      v10 = [(MKHybridMapConfiguration *)self showsTraffic];
-      v11 = v10 ^ [v4 showsTraffic] ^ 1;
+      showsTraffic = [(MKHybridMapConfiguration *)self showsTraffic];
+      v11 = showsTraffic ^ [configurationCopy showsTraffic] ^ 1;
     }
   }
 
@@ -36,10 +36,10 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MKHybridMapConfiguration *)self isEqualToHybridMapConfiguration:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MKHybridMapConfiguration *)self isEqualToHybridMapConfiguration:equalCopy];
 
   return v5;
 }

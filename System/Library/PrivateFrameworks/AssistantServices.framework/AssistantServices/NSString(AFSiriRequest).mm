@@ -8,14 +8,14 @@
 - (id)_af_stringByRemovingSuffix:()AFSiriRequest
 {
   v4 = a3;
-  if ([a1 hasSuffix:v4])
+  if ([self hasSuffix:v4])
   {
-    v5 = [a1 substringToIndex:{objc_msgSend(a1, "length") - objc_msgSend(v4, "length")}];
+    v5 = [self substringToIndex:{objc_msgSend(self, "length") - objc_msgSend(v4, "length")}];
   }
 
   else
   {
-    v5 = [a1 copy];
+    v5 = [self copy];
   }
 
   v6 = v5;
@@ -25,9 +25,9 @@
 
 - (__CFString)_af_stringByRemovingPrefixWithLength:()AFSiriRequest
 {
-  if ([a1 length] >= a3)
+  if ([self length] >= a3)
   {
-    v5 = [a1 substringFromIndex:a3];
+    v5 = [self substringFromIndex:a3];
   }
 
   else

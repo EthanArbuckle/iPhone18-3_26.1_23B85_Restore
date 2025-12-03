@@ -1,19 +1,19 @@
 @interface SBSUserNotificationAssetDefinition
-+ (id)_definitionFromSerializedDefinition:(id)a3;
-- (id)_initWithDictionary:(id)a3;
++ (id)_definitionFromSerializedDefinition:(id)definition;
+- (id)_initWithDictionary:(id)dictionary;
 - (id)build;
 @end
 
 @implementation SBSUserNotificationAssetDefinition
 
-+ (id)_definitionFromSerializedDefinition:(id)a3
++ (id)_definitionFromSerializedDefinition:(id)definition
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"SBSCFUNAssetDefinitionType"];
+  definitionCopy = definition;
+  v4 = [definitionCopy objectForKey:@"SBSCFUNAssetDefinitionType"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ((v5 = off_1E735E858, +[SBSUserNotificationImageAssetDefinition _definitionType](SBSUserNotificationImageAssetDefinition, "_definitionType"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v4 isEqualToString:v6], v6, (v7) || (v5 = off_1E735E868, +[SBSUserNotificationSystemImageDefinition _definitionType](SBSUserNotificationSystemImageDefinition, "_definitionType"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v4, "isEqualToString:", v8), v8, (v9) || (v5 = off_1E735E848, +[SBSUserNotificationCAPackageDefinition _definitionType](SBSUserNotificationCAPackageDefinition, "_definitionType"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v4, "isEqualToString:", v10), v10, (v11) || (v5 = off_1E735E578, +[SBSCFUserNotificationGraphicIconDefinition _definitionType](SBSCFUserNotificationGraphicIconDefinition, "_definitionType"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v4, "isEqualToString:", v12), v12, v13)))
   {
-    v14 = [objc_alloc(*v5) _initWithDictionary:v3];
+    v14 = [objc_alloc(*v5) _initWithDictionary:definitionCopy];
   }
 
   else
@@ -24,10 +24,10 @@
   return v14;
 }
 
-- (id)_initWithDictionary:(id)a3
+- (id)_initWithDictionary:(id)dictionary
 {
-  v5 = a3;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     [(SBSUserNotificationAssetDefinition *)a2 _initWithDictionary:?];
   }
@@ -36,22 +36,22 @@
   if (objc_opt_isKindOfClass())
   {
     self = [(SBSUserNotificationAssetDefinition *)self init];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)build
 {
   v2 = MEMORY[0x1E695DF20];
-  v3 = [objc_opt_class() _definitionType];
-  v4 = [v2 dictionaryWithObject:v3 forKey:@"SBSCFUNAssetDefinitionType"];
+  _definitionType = [objc_opt_class() _definitionType];
+  v4 = [v2 dictionaryWithObject:_definitionType forKey:@"SBSCFUNAssetDefinitionType"];
 
   return v4;
 }

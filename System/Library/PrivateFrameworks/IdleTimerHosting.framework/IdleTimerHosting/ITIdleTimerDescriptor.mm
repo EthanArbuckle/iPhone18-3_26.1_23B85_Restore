@@ -1,22 +1,22 @@
 @interface ITIdleTimerDescriptor
 - (double)attentionSamplingStartBeforeFirstTimeout;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)attentionSamplingStartBeforeFirstTimeout;
-- (void)setAttentionSamplingStartBeforeFirstTimeout:(double)a3;
-- (void)setAttentionSamplingStartDelay:(double)a3;
-- (void)setTimeouts:(id)a3;
+- (void)setAttentionSamplingStartBeforeFirstTimeout:(double)timeout;
+- (void)setAttentionSamplingStartDelay:(double)delay;
+- (void)setTimeouts:(id)timeouts;
 @end
 
 @implementation ITIdleTimerDescriptor
 
-- (void)setTimeouts:(id)a3
+- (void)setTimeouts:(id)timeouts
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 count])
+  timeoutsCopy = timeouts;
+  if (![timeoutsCopy count])
   {
     [ITIdleTimerDescriptor setTimeouts:];
   }
@@ -25,7 +25,7 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v4;
+  v5 = timeoutsCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -74,14 +74,14 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAttentionSamplingStartDelay:(double)a3
+- (void)setAttentionSamplingStartDelay:(double)delay
 {
   if ((BSFloatGreaterThanOrEqualToFloat() & 1) == 0)
   {
     [ITIdleTimerDescriptor setAttentionSamplingStartDelay:];
   }
 
-  self->_attentionSamplingStartDelay = a3;
+  self->_attentionSamplingStartDelay = delay;
 }
 
 - (double)attentionSamplingStartBeforeFirstTimeout
@@ -91,26 +91,26 @@
     [ITIdleTimerDescriptor attentionSamplingStartBeforeFirstTimeout];
   }
 
-  v3 = [(NSArray *)self->_timeouts firstObject];
-  [v3 duration];
+  firstObject = [(NSArray *)self->_timeouts firstObject];
+  [firstObject duration];
   v5 = v4;
 
   return v5 - self->_attentionSamplingStartDelay;
 }
 
-- (void)setAttentionSamplingStartBeforeFirstTimeout:(double)a3
+- (void)setAttentionSamplingStartBeforeFirstTimeout:(double)timeout
 {
   if (![(NSArray *)self->_timeouts count])
   {
     [ITIdleTimerDescriptor setAttentionSamplingStartBeforeFirstTimeout:];
   }
 
-  v5 = [(NSArray *)self->_timeouts firstObject];
-  [v5 duration];
+  firstObject = [(NSArray *)self->_timeouts firstObject];
+  [firstObject duration];
   v7 = v6;
 
-  v8 = v7 - a3;
-  if (v7 - a3 < 0.0)
+  v8 = v7 - timeout;
+  if (v7 - timeout < 0.0)
   {
     v8 = 0.0;
   }
@@ -120,10 +120,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(ITIdleTimerDescriptor *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(ITIdleTimerDescriptor *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -138,22 +138,22 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(ITIdleTimerDescriptor *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(ITIdleTimerDescriptor *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[ITIdleTimerDescriptor allocWithZone:](ITIdleTimerDescriptor init];
   v5->_attentionMaintenanceEventMask = self->_attentionMaintenanceEventMask;
   v5->_attentionRecoveryEventMask = self->_attentionRecoveryEventMask;
   v5->_attentionSamplingPeriod = self->_attentionSamplingPeriod;
   v5->_attentionSamplingStartDelay = self->_attentionSamplingStartDelay;
-  v6 = [(NSArray *)self->_timeouts copyWithZone:a3];
+  v6 = [(NSArray *)self->_timeouts copyWithZone:zone];
   timeouts = v5->_timeouts;
   v5->_timeouts = v6;
 
@@ -191,9 +191,9 @@
 - (void)attentionSamplingStartBeforeFirstTimeout
 {
   OUTLINED_FUNCTION_0();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v3 = *v0;
-  v4 = v1;
+  v4 = currentHandler;
   OUTLINED_FUNCTION_1();
   [v2 handleFailureInMethod:v3 object:? file:? lineNumber:? description:?];
 }

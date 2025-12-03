@@ -1,24 +1,24 @@
 @interface CRKTransportInvalidator
-+ (void)invalidateTransport:(id)a3;
-+ (void)invalidateTransportOperationDidFinish:(id)a3;
++ (void)invalidateTransport:(id)transport;
++ (void)invalidateTransportOperationDidFinish:(id)finish;
 @end
 
 @implementation CRKTransportInvalidator
 
-+ (void)invalidateTransport:(id)a3
++ (void)invalidateTransport:(id)transport
 {
-  v4 = a3;
-  v6 = [[CRKInvalidateTransportOperation alloc] initWithTransport:v4];
+  transportCopy = transport;
+  v6 = [[CRKInvalidateTransportOperation alloc] initWithTransport:transportCopy];
 
-  [(CRKInvalidateTransportOperation *)v6 addTarget:a1 selector:sel_invalidateTransportOperationDidFinish_ forOperationEvents:6];
-  v5 = [MEMORY[0x277CF9540] crk_backgroundQueue];
-  [v5 addOperation:v6];
+  [(CRKInvalidateTransportOperation *)v6 addTarget:self selector:sel_invalidateTransportOperationDidFinish_ forOperationEvents:6];
+  crk_backgroundQueue = [MEMORY[0x277CF9540] crk_backgroundQueue];
+  [crk_backgroundQueue addOperation:v6];
 }
 
-+ (void)invalidateTransportOperationDidFinish:(id)a3
++ (void)invalidateTransportOperationDidFinish:(id)finish
 {
-  v3 = [a3 error];
-  if (v3)
+  error = [finish error];
+  if (error)
   {
     if (_CRKLogGeneral_onceToken_4 != -1)
     {
@@ -28,7 +28,7 @@
     v4 = _CRKLogGeneral_logObj_4;
     if (os_log_type_enabled(_CRKLogGeneral_logObj_4, OS_LOG_TYPE_ERROR))
     {
-      [(CRKTransportInvalidator *)v4 invalidateTransportOperationDidFinish:v3];
+      [(CRKTransportInvalidator *)v4 invalidateTransportOperationDidFinish:error];
     }
   }
 }

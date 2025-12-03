@@ -1,30 +1,30 @@
 @interface SLRemoteSessionProxy
 - (NSObject)exportedObject;
-- (id)initForRemoteServiceName:(id)a3 remoteInterface:(id)a4;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)initForRemoteServiceName:(id)name remoteInterface:(id)interface;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)_remoteSessionConnectionWasInterrupted;
 - (void)_setupConnection;
 - (void)dealloc;
 - (void)disconnect;
-- (void)dropGuaraneteedRemoteCall:(id)a3;
-- (void)forwardInvocation:(id)a3;
-- (void)registerGuaranteedRemoteCall:(id)a3;
+- (void)dropGuaraneteedRemoteCall:(id)call;
+- (void)forwardInvocation:(id)invocation;
+- (void)registerGuaranteedRemoteCall:(id)call;
 @end
 
 @implementation SLRemoteSessionProxy
 
-- (id)initForRemoteServiceName:(id)a3 remoteInterface:(id)a4
+- (id)initForRemoteServiceName:(id)name remoteInterface:(id)interface
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  interfaceCopy = interface;
   v16.receiver = self;
   v16.super_class = SLRemoteSessionProxy;
   v9 = [(SLRemoteSessionProxy *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_serviceName, a3);
-    objc_storeStrong(&v10->_remoteInterface, a4);
+    objc_storeStrong(&v9->_serviceName, name);
+    objc_storeStrong(&v10->_remoteInterface, interface);
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     guaranteedRemoteCalls = v10->_guaranteedRemoteCalls;
     v10->_guaranteedRemoteCalls = v11;
@@ -59,39 +59,39 @@
   connection = self->_connection;
   self->_connection = v4;
 
-  v6 = [(NSXPCInterface *)self->_remoteInterface protocol];
-  v21 = NSStringFromProtocol(v6);
+  protocol = [(NSXPCInterface *)self->_remoteInterface protocol];
+  v21 = NSStringFromProtocol(protocol);
   _SLLog(v2, 7, @"Proxy is expecting remote interface %@");
 
   [(NSXPCConnection *)self->_connection setRemoteObjectInterface:self->_remoteInterface, v21];
-  v7 = [(SLRemoteSessionProxy *)self exportedObject];
-  if (v7)
+  exportedObject = [(SLRemoteSessionProxy *)self exportedObject];
+  if (exportedObject)
   {
-    v8 = v7;
-    v9 = [(SLRemoteSessionProxy *)self exportedInterface];
+    v8 = exportedObject;
+    exportedInterface = [(SLRemoteSessionProxy *)self exportedInterface];
 
-    if (v9)
+    if (exportedInterface)
     {
-      v10 = [(SLRemoteSessionProxy *)self exportedInterface];
-      v11 = [v10 protocol];
-      v22 = NSStringFromProtocol(v11);
+      exportedInterface2 = [(SLRemoteSessionProxy *)self exportedInterface];
+      protocol2 = [exportedInterface2 protocol];
+      v22 = NSStringFromProtocol(protocol2);
       _SLLog(v2, 7, @"Exporting client session with advertised interface %@");
 
-      v12 = [(SLRemoteSessionProxy *)self exportedObject];
-      v13 = [(SLRemoteSessionProxy *)self exportedInterface];
-      v14 = [v13 protocol];
-      v15 = [v12 conformsToProtocol:v14];
+      exportedObject2 = [(SLRemoteSessionProxy *)self exportedObject];
+      exportedInterface3 = [(SLRemoteSessionProxy *)self exportedInterface];
+      protocol3 = [exportedInterface3 protocol];
+      v15 = [exportedObject2 conformsToProtocol:protocol3];
 
       if ((v15 & 1) == 0)
       {
         [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The provided client does not conform to the client protocol specified by the service."];
       }
 
-      v16 = [(SLRemoteSessionProxy *)self exportedObject];
-      [(NSXPCConnection *)self->_connection setExportedObject:v16];
+      exportedObject3 = [(SLRemoteSessionProxy *)self exportedObject];
+      [(NSXPCConnection *)self->_connection setExportedObject:exportedObject3];
 
-      v17 = [(SLRemoteSessionProxy *)self exportedInterface];
-      [(NSXPCConnection *)self->_connection setExportedInterface:v17];
+      exportedInterface4 = [(SLRemoteSessionProxy *)self exportedInterface];
+      [(NSXPCConnection *)self->_connection setExportedInterface:exportedInterface4];
     }
   }
 
@@ -157,13 +157,13 @@ void __40__SLRemoteSessionProxy__setupConnection__block_invoke_3(uint64_t a1, vo
   _SLLog(v2, 3, @"Connection to remote session was interrupted! Reconnecting...");
   v4 = self->_remoteProxy;
   v5 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:&__block_literal_global_30];
-  v6 = [(SLRemoteSessionProxy *)self connectionResetBlock];
+  connectionResetBlock = [(SLRemoteSessionProxy *)self connectionResetBlock];
 
-  if (v6)
+  if (connectionResetBlock)
   {
     _SLLog(v2, 7, @"Executing connection reset block.");
-    v7 = [(SLRemoteSessionProxy *)self connectionResetBlock];
-    v7[2]();
+    connectionResetBlock2 = [(SLRemoteSessionProxy *)self connectionResetBlock];
+    connectionResetBlock2[2]();
   }
 
   [(NSLock *)self->_guaranteedRemoteCallsLock lock];
@@ -191,13 +191,13 @@ void __40__SLRemoteSessionProxy__setupConnection__block_invoke_3(uint64_t a1, vo
 
         v14 = *(*(&v17 + 1) + 8 * v13);
         _SLLog(v2, 7, @"Processing guranteed remote call.");
-        v15 = [v14 proxy];
+        proxy = [v14 proxy];
 
-        if (v15 == v4)
+        if (proxy == v4)
         {
           [v14 setProxy:v5];
-          v16 = [v14 block];
-          v16[2]();
+          block = [v14 block];
+          block[2]();
         }
 
         ++v13;
@@ -217,7 +217,7 @@ void __62__SLRemoteSessionProxy__remoteSessionConnectionWasInterrupted__block_in
   _SLLog(v2, 3, @"Remote proxy hit an error: %@");
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   if (!self->_connection)
   {
@@ -231,12 +231,12 @@ void __62__SLRemoteSessionProxy__remoteSessionConnectionWasInterrupted__block_in
     remoteProxy = self->_remoteProxy;
   }
 
-  return [remoteProxy methodSignatureForSelector:a3];
+  return [remoteProxy methodSignatureForSelector:selector];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v7 = a3;
+  invocationCopy = invocation;
   if (!self->_connection)
   {
     [(SLRemoteSessionProxy *)self _setupConnection];
@@ -247,32 +247,32 @@ void __62__SLRemoteSessionProxy__remoteSessionConnectionWasInterrupted__block_in
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"SLRemoteSessionProxy: Cannot forward invocation to nil proxy"];
   }
 
-  v5 = NSStringFromSelector([v7 selector]);
+  v5 = NSStringFromSelector([invocationCopy selector]);
   remoteProxy = self->_remoteProxy;
   _SLLog(v3, 7, @"SLRemoteSessionProxy is forwarding invocation of %@ to %@");
 
-  [v7 invokeWithTarget:{self->_remoteProxy, v5, remoteProxy}];
+  [invocationCopy invokeWithTarget:{self->_remoteProxy, v5, remoteProxy}];
 }
 
-- (void)registerGuaranteedRemoteCall:(id)a3
+- (void)registerGuaranteedRemoteCall:(id)call
 {
-  v5 = a3;
+  callCopy = call;
   _SLLog(v3, 7, @"Registering guaranteed remote call %@");
-  [v5 setProxy:{self->_remoteProxy, v5}];
+  [callCopy setProxy:{self->_remoteProxy, callCopy}];
   [(NSLock *)self->_guaranteedRemoteCallsLock lock];
-  [(NSMutableArray *)self->_guaranteedRemoteCalls addObject:v5];
+  [(NSMutableArray *)self->_guaranteedRemoteCalls addObject:callCopy];
 
   guaranteedRemoteCallsLock = self->_guaranteedRemoteCallsLock;
 
   [(NSLock *)guaranteedRemoteCallsLock unlock];
 }
 
-- (void)dropGuaraneteedRemoteCall:(id)a3
+- (void)dropGuaraneteedRemoteCall:(id)call
 {
-  v5 = a3;
+  callCopy = call;
   _SLLog(v3, 7, @"No longer tracking guaranteed remote call %@");
   [(NSLock *)self->_guaranteedRemoteCallsLock lock];
-  [(NSMutableArray *)self->_guaranteedRemoteCalls removeObject:v5];
+  [(NSMutableArray *)self->_guaranteedRemoteCalls removeObject:callCopy];
 
   guaranteedRemoteCallsLock = self->_guaranteedRemoteCallsLock;
 

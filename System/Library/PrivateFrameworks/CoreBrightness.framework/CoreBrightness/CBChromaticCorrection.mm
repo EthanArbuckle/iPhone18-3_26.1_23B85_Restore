@@ -1,19 +1,19 @@
 @interface CBChromaticCorrection
 - (BOOL)enabled;
-- (BOOL)handleAODStateUpdate:(unint64_t)a3 transitionTime:(float)a4 context:(id)a5;
+- (BOOL)handleAODStateUpdate:(unint64_t)update transitionTime:(float)time context:(id)context;
 - (BOOL)isInActiveRange;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4;
-- (CBChromaticCorrection)initWithBacklightParams:(id)a3 andPolicy:(id)a4 andRamp:(id)a5;
+- (BOOL)setProperty:(id)property forKey:(id)key;
+- (CBChromaticCorrection)initWithBacklightParams:(id)params andPolicy:(id)policy andRamp:(id)ramp;
 - (float)currentStrength;
-- (float)luxAdjustedByInternalPolicies:(float)a3;
+- (float)luxAdjustedByInternalPolicies:(float)policies;
 - (void)dealloc;
-- (void)handleAutoBrightnessStateUpdate:(BOOL)a3;
-- (void)handleLuxUpdate:(float)a3;
-- (void)handleNotificationForKey:(id)a3 withProperty:(id)a4;
-- (void)handleRampResult:(int)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setReferenceModeActive:(BOOL)a3;
-- (void)setTrustedLux:(float)a3;
+- (void)handleAutoBrightnessStateUpdate:(BOOL)update;
+- (void)handleLuxUpdate:(float)update;
+- (void)handleNotificationForKey:(id)key withProperty:(id)property;
+- (void)handleRampResult:(int)result;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setReferenceModeActive:(BOOL)active;
+- (void)setTrustedLux:(float)lux;
 - (void)updateRamp;
 @end
 
@@ -44,9 +44,9 @@
     [(CBChromaticCorrectionPolicy *)policy strengthForNits:v5 andLux:v4];
     v17 = v6;
     context = objc_autoreleasePoolPush();
-    v15 = [(CBChromaticCorrectionPolicy *)self->_policy strengthNotification];
+    strengthNotification = [(CBChromaticCorrectionPolicy *)self->_policy strengthNotification];
     *&v7 = v17;
-    -[CBModule sendNotificationForKey:withValue:](self, "sendNotificationForKey:withValue:", v15, [MEMORY[0x1E696AD98] numberWithFloat:v7]);
+    -[CBModule sendNotificationForKey:withValue:](self, "sendNotificationForKey:withValue:", strengthNotification, [MEMORY[0x1E696AD98] numberWithFloat:v7]);
     objc_autoreleasePoolPop(context);
     if (self->super._logHandle)
     {
@@ -117,21 +117,21 @@
   return v3 & 1;
 }
 
-- (CBChromaticCorrection)initWithBacklightParams:(id)a3 andPolicy:(id)a4 andRamp:(id)a5
+- (CBChromaticCorrection)initWithBacklightParams:(id)params andPolicy:(id)policy andRamp:(id)ramp
 {
-  v36 = self;
+  selfCopy = self;
   v35 = a2;
-  v34 = a3;
-  v33 = a4;
-  v32 = a5;
+  paramsCopy = params;
+  policyCopy = policy;
+  rampCopy = ramp;
   v31.receiver = self;
   v31.super_class = CBChromaticCorrection;
-  v36 = [(CBChromaticCorrection *)&v31 init];
-  if (v36)
+  selfCopy = [(CBChromaticCorrection *)&v31 init];
+  if (selfCopy)
   {
-    if (v33)
+    if (policyCopy)
     {
-      v5 = os_log_create("com.apple.CoreBrightness.ChromaticCorrection", [v33 name]);
+      v5 = os_log_create("com.apple.CoreBrightness.ChromaticCorrection", [policyCopy name]);
     }
 
     else
@@ -139,12 +139,12 @@
       v5 = os_log_create("com.apple.CoreBrightness.ChromaticCorrection", "default");
     }
 
-    v36->super._logHandle = v5;
-    if (!v34)
+    selfCopy->super._logHandle = v5;
+    if (!paramsCopy)
     {
-      if (v36->super._logHandle)
+      if (selfCopy->super._logHandle)
       {
-        logHandle = v36->super._logHandle;
+        logHandle = selfCopy->super._logHandle;
       }
 
       else
@@ -173,16 +173,16 @@
       }
 
 LABEL_34:
-      MEMORY[0x1E69E5920](v36);
-      v36 = 0;
+      MEMORY[0x1E69E5920](selfCopy);
+      selfCopy = 0;
       return 0;
     }
 
-    if (!v33)
+    if (!policyCopy)
     {
-      if (v36->super._logHandle)
+      if (selfCopy->super._logHandle)
       {
-        v17 = v36->super._logHandle;
+        v17 = selfCopy->super._logHandle;
       }
 
       else
@@ -213,23 +213,23 @@ LABEL_34:
       goto LABEL_34;
     }
 
-    v36->_isEnabled = 1;
-    v36->_autoBrightnessIsEnabled = 1;
-    [(CBChromaticCorrection *)v36 setReferenceModeActive:0];
-    v6 = MEMORY[0x1E69E5928](v34);
-    v36->_params = v6;
-    v7 = MEMORY[0x1E69E5928](v33);
-    v36->_policy = v7;
-    v8 = MEMORY[0x1E69E5928](v32);
-    v36->_ramp = v8;
-    v36->_nits = NAN;
-    v36->_trustedLux = NAN;
-    v36->_currentTime = mach_time_now_in_seconds;
-    v36->_aodIsOn = 0;
-    v36->_aodRampHandoffPending = 0;
-    if (v36->super._logHandle)
+    selfCopy->_isEnabled = 1;
+    selfCopy->_autoBrightnessIsEnabled = 1;
+    [(CBChromaticCorrection *)selfCopy setReferenceModeActive:0];
+    v6 = MEMORY[0x1E69E5928](paramsCopy);
+    selfCopy->_params = v6;
+    v7 = MEMORY[0x1E69E5928](policyCopy);
+    selfCopy->_policy = v7;
+    v8 = MEMORY[0x1E69E5928](rampCopy);
+    selfCopy->_ramp = v8;
+    selfCopy->_nits = NAN;
+    selfCopy->_trustedLux = NAN;
+    selfCopy->_currentTime = mach_time_now_in_seconds;
+    selfCopy->_aodIsOn = 0;
+    selfCopy->_aodRampHandoffPending = 0;
+    if (selfCopy->super._logHandle)
     {
-      v13 = v36->super._logHandle;
+      v13 = selfCopy->super._logHandle;
     }
 
     else
@@ -258,39 +258,39 @@ LABEL_34:
     }
   }
 
-  return v36;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   MEMORY[0x1E69E5920](self->_params);
-  v5->_params = 0;
-  MEMORY[0x1E69E5920](v5->_policy);
-  v5->_policy = 0;
-  *&v2 = MEMORY[0x1E69E5920](v5->_ramp).n128_u64[0];
-  v5->_ramp = 0;
-  v3.receiver = v5;
+  selfCopy->_params = 0;
+  MEMORY[0x1E69E5920](selfCopy->_policy);
+  selfCopy->_policy = 0;
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->_ramp).n128_u64[0];
+  selfCopy->_ramp = 0;
+  v3.receiver = selfCopy;
   v3.super_class = CBChromaticCorrection;
   [(CBModule *)&v3 dealloc];
 }
 
-- (float)luxAdjustedByInternalPolicies:(float)a3
+- (float)luxAdjustedByInternalPolicies:(float)policies
 {
   if ([(CBChromaticCorrection *)self enabled])
   {
-    return a3;
+    return policies;
   }
 
   [(CBChromaticCorrectionPolicy *)self->_policy rampTargetLuxCap];
   return v3;
 }
 
-- (void)handleRampResult:(int)a3
+- (void)handleRampResult:(int)result
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a3 == 3 || a3 == 2)
+  if (result == 3 || result == 2)
   {
     if (self->super._logHandle)
     {
@@ -305,7 +305,7 @@ LABEL_34:
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [CBLuxRamp luxRampStateToString:a3];
+      v9 = [CBLuxRamp luxRampStateToString:result];
       [(CBLuxRamp *)self->_ramp lux];
       *&v10 = v3;
       [(CBLuxRamp *)self->_ramp startLux];
@@ -316,9 +316,9 @@ LABEL_34:
     }
   }
 
-  if (a3 > 1)
+  if (result > 1)
   {
-    if (a3 == 2)
+    if (result == 2)
     {
       [(CBModule *)self sendNotificationForKey:@"ExternalRampIsRunning" withValue:[(CBChromaticCorrectionPolicy *)self->_policy rampIdentifier]];
       if (!self->_aodIsOn)
@@ -330,7 +330,7 @@ LABEL_34:
       }
     }
 
-    else if (a3 == 3)
+    else if (result == 3)
     {
       [(CBModule *)self sendNotificationForKey:@"ExternalRampHasFinished" withValue:[(CBChromaticCorrectionPolicy *)self->_policy rampIdentifier]];
     }
@@ -339,12 +339,12 @@ LABEL_34:
   *MEMORY[0x1E69E9840];
 }
 
-- (void)handleLuxUpdate:(float)a3
+- (void)handleLuxUpdate:(float)update
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (!std::__math::isnan[abi:de200100](a3))
+  if (!std::__math::isnan[abi:de200100](update))
   {
-    *&v3 = a3;
+    *&v3 = update;
     [(CBChromaticCorrection *)self luxAdjustedByInternalPolicies:v3];
     v26 = v4;
     [(CBLuxRamp *)self->_ramp lux];
@@ -414,13 +414,13 @@ LABEL_34:
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)handleAODStateUpdate:(unint64_t)a3 transitionTime:(float)a4 context:(id)a5
+- (BOOL)handleAODStateUpdate:(unint64_t)update transitionTime:(float)time context:(id)context
 {
   v36 = *MEMORY[0x1E69E9840];
   v33 = 0;
-  if (a3)
+  if (update)
   {
-    if (a3 == 3)
+    if (update == 3)
     {
       self->_aodIsOn = 1;
       self->_isExternallyClocked = 1;
@@ -448,9 +448,9 @@ LABEL_34:
       v28 = self->_ramp;
       [(CBLuxRamp *)v28 lux];
       v30 = v9;
-      v10 = [(CBLuxRamp *)self->_ramp targetLux];
+      targetLux = [(CBLuxRamp *)self->_ramp targetLux];
       v29 = v11;
-      v12 = (self->_currentTime)(v10);
+      v12 = (self->_currentTime)(targetLux);
       LODWORD(v13) = v29;
       LODWORD(v14) = LODWORD(v12);
       LODWORD(v12) = v30;
@@ -497,7 +497,7 @@ LABEL_34:
   return 1;
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProperty:(id)property forKey:(id)key
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -505,15 +505,15 @@ LABEL_34:
     return 0;
   }
 
-  if ([a4 isEqualToString:@"DisplayBrightnessAuto"])
+  if ([key isEqualToString:@"DisplayBrightnessAuto"])
   {
-    -[CBChromaticCorrection handleAutoBrightnessStateUpdate:](self, "handleAutoBrightnessStateUpdate:", [a3 BOOLValue]);
+    -[CBChromaticCorrection handleAutoBrightnessStateUpdate:](self, "handleAutoBrightnessStateUpdate:", [property BOOLValue]);
     return 1;
   }
 
-  else if ([a4 isEqualToString:{-[CBChromaticCorrectionPolicy isEnabledPropertyKey](self->_policy, "isEnabledPropertyKey")}])
+  else if ([key isEqualToString:{-[CBChromaticCorrectionPolicy isEnabledPropertyKey](self->_policy, "isEnabledPropertyKey")}])
   {
-    -[CBChromaticCorrection setEnabled:](self, "setEnabled:", [a3 BOOLValue] & 1);
+    -[CBChromaticCorrection setEnabled:](self, "setEnabled:", [property BOOLValue] & 1);
     return 1;
   }
 
@@ -523,12 +523,12 @@ LABEL_34:
   }
 }
 
-- (void)handleAutoBrightnessStateUpdate:(BOOL)a3
+- (void)handleAutoBrightnessStateUpdate:(BOOL)update
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (self->_autoBrightnessIsEnabled != a3)
+  if (self->_autoBrightnessIsEnabled != update)
   {
-    self->_autoBrightnessIsEnabled = a3;
+    self->_autoBrightnessIsEnabled = update;
     if (self->super._logHandle)
     {
       logHandle = self->super._logHandle;
@@ -586,12 +586,12 @@ LABEL_34:
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (self->_isEnabled != a3)
+  if (self->_isEnabled != enabled)
   {
-    self->_isEnabled = a3;
+    self->_isEnabled = enabled;
     if (self->super._logHandle)
     {
       logHandle = self->super._logHandle;
@@ -638,9 +638,9 @@ LABEL_34:
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setTrustedLux:(float)a3
+- (void)setTrustedLux:(float)lux
 {
-  self->_trustedLux = a3;
+  self->_trustedLux = lux;
   if ([(CBChromaticCorrection *)self enabled]&& !self->_aodIsOn)
   {
     *&v3 = self->_trustedLux;
@@ -648,23 +648,23 @@ LABEL_34:
   }
 }
 
-- (void)handleNotificationForKey:(id)a3 withProperty:(id)a4
+- (void)handleNotificationForKey:(id)key withProperty:(id)property
 {
-  if (a3 && a4 && ([a3 isEqualToString:@"TrustedLux"] & 1) != 0)
+  if (key && property && ([key isEqualToString:@"TrustedLux"] & 1) != 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a4 floatValue];
+      [property floatValue];
       [(CBChromaticCorrection *)self setTrustedLux:?];
     }
   }
 }
 
-- (void)setReferenceModeActive:(BOOL)a3
+- (void)setReferenceModeActive:(BOOL)active
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3 != self->_referenceModeActive)
+  if (active != self->_referenceModeActive)
   {
     if (self->super._logHandle)
     {
@@ -688,11 +688,11 @@ LABEL_34:
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_1_4_0(v7, a3);
+      __os_log_helper_16_0_1_4_0(v7, active);
       _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "reference_mode: %d", v7, 8u);
     }
 
-    self->_referenceModeActive = a3;
+    self->_referenceModeActive = active;
   }
 
   *MEMORY[0x1E69E9840];

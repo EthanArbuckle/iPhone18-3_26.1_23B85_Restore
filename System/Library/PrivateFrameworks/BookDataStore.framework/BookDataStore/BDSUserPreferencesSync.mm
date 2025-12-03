@@ -1,8 +1,8 @@
 @interface BDSUserPreferencesSync
 + (NSArray)syncedPreferenceKeys;
-+ (id)objectFromGroupPreferencesForKey:(id)a3;
++ (id)objectFromGroupPreferencesForKey:(id)key;
 + (void)copyChangedGroupPreferencesToLocalContainer;
-+ (void)copyChangedLocalPreferencesToGroupContainerWithAppSuiteName:(id)a3 container:(id)a4 groupName:(id)a5 groupContainer:(id)a6;
++ (void)copyChangedLocalPreferencesToGroupContainerWithAppSuiteName:(id)name container:(id)container groupName:(id)groupName groupContainer:(id)groupContainer;
 @end
 
 @implementation BDSUserPreferencesSync
@@ -19,15 +19,15 @@
   return v3;
 }
 
-+ (id)objectFromGroupPreferencesForKey:(id)a3
++ (id)objectFromGroupPreferencesForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = objc_alloc(MEMORY[0x1E695E000]);
   v5 = +[BDSAppGroupContainer containerIdentifier];
   v6 = +[BDSAppGroupContainer containerURL];
   v7 = [v4 _initWithSuiteName:v5 container:v6];
 
-  v8 = [@"watchSynced-" stringByAppendingString:v3];
+  v8 = [@"watchSynced-" stringByAppendingString:keyCopy];
   v9 = [v7 objectForKey:v8];
 
   return v9;
@@ -41,12 +41,12 @@
   v5 = +[BDSAppGroupContainer containerURL];
   v6 = [v3 _initWithSuiteName:v4 container:v5];
 
-  v7 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = [a1 syncedPreferenceKeys];
+  obj = [self syncedPreferenceKeys];
   v8 = [obj countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (v8)
   {
@@ -66,7 +66,7 @@
         v13 = *(*(&v24 + 1) + 8 * i);
         v14 = [@"watchSynced-" stringByAppendingString:{v13, v22}];
         v15 = [v6 objectForKey:v14];
-        v16 = [v7 objectForKey:v13];
+        v16 = [standardUserDefaults objectForKey:v13];
         v17 = v16;
         if (v16)
         {
@@ -103,7 +103,7 @@
             _os_log_impl(&dword_1E45E0000, v20, OS_LOG_TYPE_DEFAULT, "Synced preference %@ changed in group, copying value locally (new value %@, old value %@)", buf, 0x20u);
           }
 
-          [v7 setObject:v15 forKey:v13];
+          [standardUserDefaults setObject:v15 forKey:v13];
         }
       }
 
@@ -116,60 +116,60 @@
   v21 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)copyChangedLocalPreferencesToGroupContainerWithAppSuiteName:(id)a3 container:(id)a4 groupName:(id)a5 groupContainer:(id)a6
++ (void)copyChangedLocalPreferencesToGroupContainerWithAppSuiteName:(id)name container:(id)container groupName:(id)groupName groupContainer:(id)groupContainer
 {
   v58 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  containerCopy = container;
+  groupNameCopy = groupName;
+  groupContainerCopy = groupContainer;
   v14 = BDSCloudKitAudiobookLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v51 = v10;
+    v51 = nameCopy;
     v52 = 2112;
-    v53 = v11;
+    v53 = containerCopy;
     v54 = 2112;
-    v55 = v12;
+    v55 = groupNameCopy;
     v56 = 2112;
-    v57 = v13;
+    v57 = groupContainerCopy;
     _os_log_impl(&dword_1E45E0000, v14, OS_LOG_TYPE_DEFAULT, "Checking local preferences with appSuite: %@ container: %@ groupName: %@ groupContainer: %@", buf, 0x2Au);
   }
 
   v15 = objc_alloc(MEMORY[0x1E695E000]);
   v16 = v15;
-  if (v12 && v13)
+  if (groupNameCopy && groupContainerCopy)
   {
-    v17 = [v15 _initWithSuiteName:v12 container:{v13, v13, v12}];
+    v17 = [v15 _initWithSuiteName:groupNameCopy container:{groupContainerCopy, groupContainerCopy, groupNameCopy}];
   }
 
   else
   {
-    v18 = [BDSAppGroupContainer containerIdentifier:v13];
+    v18 = [BDSAppGroupContainer containerIdentifier:groupContainerCopy];
     v19 = +[BDSAppGroupContainer containerURL];
     v17 = [v16 _initWithSuiteName:v18 container:v19];
   }
 
-  v41 = v11;
-  v42 = v10;
-  if (v10 && v11)
+  v41 = containerCopy;
+  v42 = nameCopy;
+  if (nameCopy && containerCopy)
   {
-    v20 = [objc_alloc(MEMORY[0x1E695E000]) _initWithSuiteName:v10 container:v11];
+    standardUserDefaults = [objc_alloc(MEMORY[0x1E695E000]) _initWithSuiteName:nameCopy container:containerCopy];
   }
 
   else
   {
-    v20 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   }
 
-  v21 = v20;
+  v21 = standardUserDefaults;
   v44 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = [a1 syncedPreferenceKeys];
+  obj = [self syncedPreferenceKeys];
   v22 = [obj countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (v22)
   {

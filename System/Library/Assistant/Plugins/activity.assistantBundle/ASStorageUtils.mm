@@ -1,5 +1,5 @@
 @interface ASStorageUtils
-+ (id)duetStoreForCommand:(id)a3;
++ (id)duetStoreForCommand:(id)command;
 + (id)privateDuetStore;
 + (id)publicDuetStore;
 @end
@@ -30,22 +30,22 @@
   return v3;
 }
 
-+ (id)duetStoreForCommand:(id)a3
++ (id)duetStoreForCommand:(id)command
 {
-  v4 = a3;
-  v5 = [a1 privateDuetStore];
+  commandCopy = command;
+  privateDuetStore = [self privateDuetStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v4 activity];
-    v7 = [v6 visibility];
-    v8 = [v7 isEqualToString:SAAceActivityVisibilityTypePublicValue];
+    activity = [commandCopy activity];
+    visibility = [activity visibility];
+    v8 = [visibility isEqualToString:SAAceActivityVisibilityTypePublicValue];
 
     if (v8)
     {
-      v9 = [a1 publicDuetStore];
+      publicDuetStore = [self publicDuetStore];
 
-      v5 = v9;
+      privateDuetStore = publicDuetStore;
     }
   }
 
@@ -64,8 +64,8 @@
         }
       }
 
-      v10 = [v4 visibility];
-      v11 = [v10 isEqualToString:SAAceActivityVisibilityTypePublicValue];
+      visibility2 = [commandCopy visibility];
+      v11 = [visibility2 isEqualToString:SAAceActivityVisibilityTypePublicValue];
 
       if (!v11)
       {
@@ -73,13 +73,13 @@
       }
     }
 
-    [a1 publicDuetStore];
-    v5 = v6 = v5;
+    [self publicDuetStore];
+    privateDuetStore = activity = privateDuetStore;
   }
 
 LABEL_10:
 
-  return v5;
+  return privateDuetStore;
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface ReadingGoalsAnalytics
-- (void)sessionActivityStateDidChange:(id)a3;
+- (void)sessionActivityStateDidChange:(id)change;
 @end
 
 @implementation ReadingGoalsAnalytics
 
-- (void)sessionActivityStateDidChange:(id)a3
+- (void)sessionActivityStateDidChange:(id)change
 {
   v3 = sub_1EDD64();
   v4 = *(v3 - 8);

@@ -1,15 +1,15 @@
 @interface _UITransformGestureRecognizer
 - (CGAffineTransform)transform;
-- (CGAffineTransform)transformInView:(SEL)a3;
-- (CGPoint)locationInView:(id)a3;
+- (CGAffineTransform)transformInView:(SEL)view;
+- (CGPoint)locationInView:(id)view;
 - (CGPoint)translation;
-- (CGPoint)translationInView:(id)a3;
+- (CGPoint)translationInView:(id)view;
 - (double)rotation;
 - (double)scale;
 - (float64x2_t)_anchorPoint;
 - (id)_driver;
-- (void)_stateUpdatedForDriver:(id)a3 previousState:(int64_t)a4;
-- (void)_transformChangedWithEvent:(id)a3;
+- (void)_stateUpdatedForDriver:(id)driver previousState:(int64_t)state;
+- (void)_transformChangedWithEvent:(id)event;
 - (void)reset;
 @end
 
@@ -49,11 +49,11 @@
   return composedDriver;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
   *&v5 = *&[(_UITransformGestureRecognizer *)self _anchorPoint];
 
-  [(UIGestureRecognizer *)self _convertPoint:a3 fromSceneReferenceCoordinatesToView:v5];
+  [(UIGestureRecognizer *)self _convertPoint:view fromSceneReferenceCoordinatesToView:v5];
   result.y = v7;
   result.x = v6;
   return result;
@@ -61,9 +61,9 @@
 
 - (float64x2_t)_anchorPoint
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 280);
+    v1 = *(self + 280);
     v2 = 0uLL;
     v3 = 0uLL;
     if (v1)
@@ -71,7 +71,7 @@
       v3 = *(v1 + 168);
     }
 
-    v4 = *(a1 + 288);
+    v4 = *(self + 288);
     if (v4)
     {
       v2 = v4[8];
@@ -80,7 +80,7 @@
     v5 = vaddq_f64(v3, v2);
     __asm { FMOV            V1.2D, #0.5 }
 
-    return vaddq_f64(vmulq_f64(v5, _Q1), *(a1 + 304));
+    return vaddq_f64(vmulq_f64(v5, _Q1), *(self + 304));
   }
 
   else
@@ -106,10 +106,10 @@
   self->_eventTranslation = *MEMORY[0x1E695EFF8];
 }
 
-- (void)_stateUpdatedForDriver:(id)a3 previousState:(int64_t)a4
+- (void)_stateUpdatedForDriver:(id)driver previousState:(int64_t)state
 {
-  v6 = [a3 state];
-  if ((a4 - 1) >= 2 && (v6 - 3) >= 0xFFFFFFFFFFFFFFFELL)
+  state = [driver state];
+  if ((state - 1) >= 2 && (state - 3) >= 0xFFFFFFFFFFFFFFFELL)
   {
     if (([(_UIGestureRecognizerDriver *)self->_pinchDriver state]- 1) <= 1 && ([(_UIGestureRecognizerDriver *)self->_rotationDriver state]- 1) >= 2)
     {
@@ -131,10 +131,10 @@
   }
 }
 
-- (void)_transformChangedWithEvent:(id)a3
+- (void)_transformChangedWithEvent:(id)event
 {
   p_eventTranslation = &self->_eventTranslation;
-  [a3 translation];
+  [event translation];
   p_eventTranslation->x = v4;
   p_eventTranslation->y = v5;
 }
@@ -169,8 +169,8 @@
 
 - (CGPoint)translation
 {
-  v3 = [(UIGestureRecognizer *)self view];
-  [(_UITransformGestureRecognizer *)self translationInView:v3];
+  view = [(UIGestureRecognizer *)self view];
+  [(_UITransformGestureRecognizer *)self translationInView:view];
   v5 = v4;
   v7 = v6;
 
@@ -183,13 +183,13 @@
 
 - (CGAffineTransform)transform
 {
-  v5 = [(UIGestureRecognizer *)self view];
-  [(_UITransformGestureRecognizer *)self transformInView:v5];
+  view = [(UIGestureRecognizer *)self view];
+  [(_UITransformGestureRecognizer *)self transformInView:view];
 
   return result;
 }
 
-- (CGAffineTransform)transformInView:(SEL)a3
+- (CGAffineTransform)transformInView:(SEL)view
 {
   [(_UITransformGestureRecognizer *)self scale];
   v8 = v7;
@@ -229,7 +229,7 @@
   return result;
 }
 
-- (CGPoint)translationInView:(id)a3
+- (CGPoint)translationInView:(id)view
 {
   if (self)
   {
@@ -263,10 +263,10 @@
     v13 = 0.0;
   }
 
-  [(UIGestureRecognizer *)self _convertPoint:a3 fromSceneReferenceCoordinatesToView:v13, v14];
+  [(UIGestureRecognizer *)self _convertPoint:view fromSceneReferenceCoordinatesToView:v13, v14];
   v16 = v15;
   v18 = v17;
-  [(UIGestureRecognizer *)self _convertPoint:a3 fromSceneReferenceCoordinatesToView:[(_UITransformGestureRecognizer *)self _anchorPoint].f64[0]];
+  [(UIGestureRecognizer *)self _convertPoint:view fromSceneReferenceCoordinatesToView:[(_UITransformGestureRecognizer *)self _anchorPoint].f64[0]];
   v20 = v19 - v16;
   v22 = v21 - v18;
   result.y = v22;

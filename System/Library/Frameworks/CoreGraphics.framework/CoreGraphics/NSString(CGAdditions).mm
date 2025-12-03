@@ -7,8 +7,8 @@
 - (uint64_t)enumerateComponentsSeparatedByCharactersInSet:()CGAdditions usingBlock:
 {
   v16 = 0;
-  v7 = [a1 length];
-  v8 = [a1 rangeOfCharacterFromSet:a3 options:0 range:{0, v7}];
+  v7 = [self length];
+  v8 = [self rangeOfCharacterFromSet:a3 options:0 range:{0, v7}];
   if (!v9)
   {
     return (*(a4 + 16))(a4, 0, v7, &v16);
@@ -30,7 +30,7 @@
 
     v12 = v10 + v11;
     v14 = v7 - (v10 + v11);
-    result = [a1 rangeOfCharacterFromSet:a3 options:0 range:{v10 + v11, v14}];
+    result = [self rangeOfCharacterFromSet:a3 options:0 range:{v10 + v11, v14}];
     v10 = result;
     v11 = v15;
     if (!v15)

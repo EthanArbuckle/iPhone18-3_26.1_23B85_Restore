@@ -1,18 +1,18 @@
 @interface VKUserReportedTrafficIncident
-- (VKUserReportedTrafficIncident)initWithIncidentType:(int64_t)a3 uniqueIdentifier:(id)a4 position:(id)a5 onRoute:(id)a6;
+- (VKUserReportedTrafficIncident)initWithIncidentType:(int64_t)type uniqueIdentifier:(id)identifier position:(id)position onRoute:(id)route;
 @end
 
 @implementation VKUserReportedTrafficIncident
 
-- (VKUserReportedTrafficIncident)initWithIncidentType:(int64_t)a3 uniqueIdentifier:(id)a4 position:(id)a5 onRoute:(id)a6
+- (VKUserReportedTrafficIncident)initWithIncidentType:(int64_t)type uniqueIdentifier:(id)identifier position:(id)position onRoute:(id)route
 {
   v11.receiver = self;
   v11.super_class = VKUserReportedTrafficIncident;
-  v7 = [(VKTrafficFeature *)&v11 initWithFeatureType:4 uniqueIdentifier:a4 position:a6 onRoute:a5.var0, a5.var1, a5.var2];
+  v7 = [(VKTrafficFeature *)&v11 initWithFeatureType:4 uniqueIdentifier:identifier position:route onRoute:position.var0, position.var1, position.var2];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a3;
+    v7->_type = type;
     v9 = v7;
   }
 

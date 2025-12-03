@@ -7,15 +7,15 @@
 
 - (id)pop
 {
-  v2 = [a1 lastObject];
-  [a1 removeLastObject];
+  lastObject = [self lastObject];
+  [self removeLastObject];
 
-  return v2;
+  return lastObject;
 }
 
 - (id)parent
 {
-  v2 = [a1 count];
+  v2 = [self count];
   if (v2 < 2)
   {
     v3 = 0;
@@ -23,7 +23,7 @@
 
   else
   {
-    v3 = [a1 objectAtIndex:v2 - 2];
+    v3 = [self objectAtIndex:v2 - 2];
   }
 
   return v3;

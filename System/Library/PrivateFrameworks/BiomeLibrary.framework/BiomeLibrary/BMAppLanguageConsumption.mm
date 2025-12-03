@@ -1,15 +1,15 @@
 @interface BMAppLanguageConsumption
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMAppLanguageConsumption)initWithDataSource:(int)a3 adamID:(id)a4 contentLanguage:(id)a5 contentGenre:(id)a6 timeSpent:(id)a7;
-- (BMAppLanguageConsumption)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMAppLanguageConsumption)initWithDataSource:(int)source adamID:(id)d contentLanguage:(id)language contentGenre:(id)genre timeSpent:(id)spent;
+- (BMAppLanguageConsumption)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMAppLanguageConsumption
@@ -34,28 +34,28 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMAppLanguageConsumption *)self dataSource];
-    if (v6 == [v5 dataSource])
+    v5 = equalCopy;
+    dataSource = [(BMAppLanguageConsumption *)self dataSource];
+    if (dataSource == [v5 dataSource])
     {
-      v7 = [(BMAppLanguageConsumption *)self adamID];
-      v8 = [v5 adamID];
-      v9 = v8;
-      if (v7 == v8)
+      adamID = [(BMAppLanguageConsumption *)self adamID];
+      adamID2 = [v5 adamID];
+      v9 = adamID2;
+      if (adamID == adamID2)
       {
       }
 
       else
       {
-        v10 = [(BMAppLanguageConsumption *)self adamID];
-        v11 = [v5 adamID];
-        v12 = [v10 isEqual:v11];
+        adamID3 = [(BMAppLanguageConsumption *)self adamID];
+        adamID4 = [v5 adamID];
+        v12 = [adamID3 isEqual:adamID4];
 
         if (!v12)
         {
@@ -63,18 +63,18 @@
         }
       }
 
-      v14 = [(BMAppLanguageConsumption *)self contentLanguage];
-      v15 = [v5 contentLanguage];
-      v16 = v15;
-      if (v14 == v15)
+      contentLanguage = [(BMAppLanguageConsumption *)self contentLanguage];
+      contentLanguage2 = [v5 contentLanguage];
+      v16 = contentLanguage2;
+      if (contentLanguage == contentLanguage2)
       {
       }
 
       else
       {
-        v17 = [(BMAppLanguageConsumption *)self contentLanguage];
-        v18 = [v5 contentLanguage];
-        v19 = [v17 isEqual:v18];
+        contentLanguage3 = [(BMAppLanguageConsumption *)self contentLanguage];
+        contentLanguage4 = [v5 contentLanguage];
+        v19 = [contentLanguage3 isEqual:contentLanguage4];
 
         if (!v19)
         {
@@ -82,18 +82,18 @@
         }
       }
 
-      v20 = [(BMAppLanguageConsumption *)self contentGenre];
-      v21 = [v5 contentGenre];
-      v22 = v21;
-      if (v20 == v21)
+      contentGenre = [(BMAppLanguageConsumption *)self contentGenre];
+      contentGenre2 = [v5 contentGenre];
+      v22 = contentGenre2;
+      if (contentGenre == contentGenre2)
       {
       }
 
       else
       {
-        v23 = [(BMAppLanguageConsumption *)self contentGenre];
-        v24 = [v5 contentGenre];
-        v25 = [v23 isEqual:v24];
+        contentGenre3 = [(BMAppLanguageConsumption *)self contentGenre];
+        contentGenre4 = [v5 contentGenre];
+        v25 = [contentGenre3 isEqual:contentGenre4];
 
         if (!v25)
         {
@@ -109,8 +109,8 @@
 
       if (-[BMAppLanguageConsumption hasTimeSpent](self, "hasTimeSpent") && [v5 hasTimeSpent])
       {
-        v26 = [(BMAppLanguageConsumption *)self timeSpent];
-        v13 = v26 == [v5 timeSpent];
+        timeSpent = [(BMAppLanguageConsumption *)self timeSpent];
+        v13 = timeSpent == [v5 timeSpent];
 LABEL_22:
 
         goto LABEL_23;
@@ -132,9 +132,9 @@ LABEL_23:
 {
   v23[5] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMAppLanguageConsumption dataSource](self, "dataSource")}];
-  v4 = [(BMAppLanguageConsumption *)self adamID];
-  v5 = [(BMAppLanguageConsumption *)self contentLanguage];
-  v6 = [(BMAppLanguageConsumption *)self contentGenre];
+  adamID = [(BMAppLanguageConsumption *)self adamID];
+  contentLanguage = [(BMAppLanguageConsumption *)self contentLanguage];
+  contentGenre = [(BMAppLanguageConsumption *)self contentGenre];
   if ([(BMAppLanguageConsumption *)self hasTimeSpent])
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMAppLanguageConsumption timeSpent](self, "timeSpent")}];
@@ -146,50 +146,50 @@ LABEL_23:
   }
 
   v18 = @"dataSource";
-  v8 = v3;
+  null = v3;
   if (!v3)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16 = v8;
-  v23[0] = v8;
+  v16 = null;
+  v23[0] = null;
   v19 = @"adamID";
-  v9 = v4;
-  if (!v4)
+  null2 = adamID;
+  if (!adamID)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[1] = v9;
+  v23[1] = null2;
   v20 = @"contentLanguage";
-  v10 = v5;
-  if (!v5)
+  null3 = contentLanguage;
+  if (!contentLanguage)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v10;
+  v23[2] = null3;
   v21 = @"contentGenre";
-  v11 = v6;
-  if (!v6)
+  null4 = contentGenre;
+  if (!contentGenre)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v11;
+  v23[3] = null4;
   v22 = @"timeSpent";
-  v12 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v12;
+  v23[4] = null5;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v18 count:{5, v16}];
   if (v7)
   {
-    if (v6)
+    if (contentGenre)
     {
       goto LABEL_16;
     }
@@ -198,10 +198,10 @@ LABEL_23:
   else
   {
 
-    if (v6)
+    if (contentGenre)
     {
 LABEL_16:
-      if (v5)
+      if (contentLanguage)
       {
         goto LABEL_17;
       }
@@ -210,10 +210,10 @@ LABEL_16:
     }
   }
 
-  if (v5)
+  if (contentLanguage)
   {
 LABEL_17:
-    if (v4)
+    if (adamID)
     {
       goto LABEL_18;
     }
@@ -230,7 +230,7 @@ LABEL_25:
 
 LABEL_24:
 
-  if (!v4)
+  if (!adamID)
   {
     goto LABEL_25;
   }
@@ -249,22 +249,22 @@ LABEL_19:
   return v13;
 }
 
-- (BMAppLanguageConsumption)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMAppLanguageConsumption)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"dataSource"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"dataSource"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v35 = 0;
 LABEL_9:
-    v9 = [v6 objectForKeyedSubscript:@"adamID"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"adamID"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v15 = 0;
           goto LABEL_43;
@@ -277,8 +277,8 @@ LABEL_9:
         v43 = v34;
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
         v15 = 0;
-        *a4 = [v16 initWithDomain:v17 code:2 userInfo:v10];
-        a4 = 0;
+        *error = [v16 initWithDomain:v17 code:2 userInfo:v10];
+        error = 0;
         goto LABEL_42;
       }
 
@@ -290,18 +290,18 @@ LABEL_9:
       v33 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"contentLanguage"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"contentLanguage"];
     v32 = v7;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v34 = 0;
           v15 = 0;
-          a4 = v33;
+          error = v33;
           goto LABEL_42;
         }
 
@@ -313,7 +313,7 @@ LABEL_9:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
         v34 = 0;
         v15 = 0;
-        *a4 = [v18 initWithDomain:v19 code:2 userInfo:v11];
+        *error = [v18 initWithDomain:v19 code:2 userInfo:v11];
         goto LABEL_50;
       }
 
@@ -325,7 +325,7 @@ LABEL_9:
       v34 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"contentGenre"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"contentGenre"];
     if (!v11 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v12 = 0;
@@ -337,12 +337,12 @@ LABEL_9:
     {
       v12 = v11;
 LABEL_18:
-      v13 = [v6 objectForKeyedSubscript:@"timeSpent"];
+      v13 = [dictionaryCopy objectForKeyedSubscript:@"timeSpent"];
       if (!v13 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v14 = 0;
 LABEL_21:
-        a4 = v33;
+        error = v33;
         v15 = -[BMAppLanguageConsumption initWithDataSource:adamID:contentLanguage:contentGenre:timeSpent:](self, "initWithDataSource:adamID:contentLanguage:contentGenre:timeSpent:", [v35 intValue], v33, v34, v12, v14);
         self = v15;
 LABEL_40:
@@ -361,7 +361,7 @@ LABEL_42:
         goto LABEL_21;
       }
 
-      if (a4)
+      if (error)
       {
         v31 = objc_alloc(MEMORY[0x1E696ABC0]);
         v29 = *MEMORY[0x1E698F240];
@@ -369,17 +369,17 @@ LABEL_42:
         v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"timeSpent"];
         v37 = v22;
         v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
-        *a4 = [v31 initWithDomain:v29 code:2 userInfo:v23];
+        *error = [v31 initWithDomain:v29 code:2 userInfo:v23];
       }
 
       v14 = 0;
       v15 = 0;
 LABEL_39:
-      a4 = v33;
+      error = v33;
       goto LABEL_40;
     }
 
-    if (a4)
+    if (error)
     {
       v30 = objc_alloc(MEMORY[0x1E696ABC0]);
       v20 = *MEMORY[0x1E698F240];
@@ -390,14 +390,14 @@ LABEL_39:
       v21 = [v30 initWithDomain:v20 code:2 userInfo:v13];
       v12 = 0;
       v15 = 0;
-      *a4 = v21;
+      *error = v21;
       goto LABEL_39;
     }
 
     v12 = 0;
     v15 = 0;
 LABEL_50:
-    a4 = v33;
+    error = v33;
     goto LABEL_41;
   }
 
@@ -417,7 +417,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!error)
   {
     v35 = 0;
     v15 = 0;
@@ -432,8 +432,8 @@ LABEL_8:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:&v44 count:1];
   v35 = 0;
   v15 = 0;
-  *a4 = [v26 initWithDomain:v27 code:2 userInfo:v9];
-  a4 = v28;
+  *error = [v26 initWithDomain:v27 code:2 userInfo:v9];
+  error = v28;
 LABEL_43:
 
 LABEL_44:
@@ -445,16 +445,16 @@ LABEL_44:
 {
   v3 = objc_opt_new();
   [(BMAppLanguageConsumption *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   dataSource = self->_dataSource;
-  v8 = v4;
+  v8 = toCopy;
   PBDataWriterWriteUint32Field();
   if (self->_adamID)
   {
@@ -481,9 +481,9 @@ LABEL_44:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v36.receiver = self;
   v36.super_class = BMAppLanguageConsumption;
   v5 = [(BMEventBase *)&v36 init];
@@ -492,12 +492,12 @@ LABEL_44:
     goto LABEL_59;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_57;
       }
@@ -508,18 +508,18 @@ LABEL_44:
       while (1)
       {
         v37 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v37 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v37 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v37 & 0x7F) << v7;
@@ -537,9 +537,9 @@ LABEL_44:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_57;
       }
@@ -555,18 +555,18 @@ LABEL_16:
           while (1)
           {
             v37 = 0;
-            v29 = [v4 position] + 1;
-            if (v29 >= [v4 position] && (v30 = objc_msgSend(v4, "position") + 1, v30 <= objc_msgSend(v4, "length")))
+            v29 = [fromCopy position] + 1;
+            if (v29 >= [fromCopy position] && (v30 = objc_msgSend(fromCopy, "position") + 1, v30 <= objc_msgSend(fromCopy, "length")))
             {
-              v31 = [v4 data];
-              [v31 getBytes:&v37 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v37 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v28 |= (v37 & 0x7F) << v26;
@@ -582,7 +582,7 @@ LABEL_16:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v28 > 7)
+          if (([fromCopy hasError] & 1) != 0 || v28 > 7)
           {
 LABEL_50:
             LODWORD(v28) = 0;
@@ -632,18 +632,18 @@ LABEL_46:
       while (1)
       {
         v37 = 0;
-        v19 = [v4 position] + 1;
-        if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+        v19 = [fromCopy position] + 1;
+        if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
         {
-          v21 = [v4 data];
-          [v21 getBytes:&v37 range:{objc_msgSend(v4, "position"), 1}];
+          data3 = [fromCopy data];
+          [data3 getBytes:&v37 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v18 |= (v37 & 0x7F) << v16;
@@ -661,7 +661,7 @@ LABEL_46:
         }
       }
 
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         v22 = 0;
       }
@@ -674,8 +674,8 @@ LABEL_46:
 LABEL_55:
       v5->_timeSpent = v22;
 LABEL_56:
-      v33 = [v4 position];
-      if (v33 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_57;
       }
@@ -691,7 +691,7 @@ LABEL_36:
   }
 
 LABEL_57:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_58:
     v34 = 0;
@@ -710,44 +710,44 @@ LABEL_59:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = BMAppLanguageConsumptionDataSourceAsString([(BMAppLanguageConsumption *)self dataSource]);
-  v5 = [(BMAppLanguageConsumption *)self adamID];
-  v6 = [(BMAppLanguageConsumption *)self contentLanguage];
-  v7 = [(BMAppLanguageConsumption *)self contentGenre];
+  adamID = [(BMAppLanguageConsumption *)self adamID];
+  contentLanguage = [(BMAppLanguageConsumption *)self contentLanguage];
+  contentGenre = [(BMAppLanguageConsumption *)self contentGenre];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMAppLanguageConsumption timeSpent](self, "timeSpent")}];
-  v9 = [v3 initWithFormat:@"BMAppLanguageConsumption with dataSource: %@, adamID: %@, contentLanguage: %@, contentGenre: %@, timeSpent: %@", v4, v5, v6, v7, v8];
+  v9 = [v3 initWithFormat:@"BMAppLanguageConsumption with dataSource: %@, adamID: %@, contentLanguage: %@, contentGenre: %@, timeSpent: %@", v4, adamID, contentLanguage, contentGenre, v8];
 
   return v9;
 }
 
-- (BMAppLanguageConsumption)initWithDataSource:(int)a3 adamID:(id)a4 contentLanguage:(id)a5 contentGenre:(id)a6 timeSpent:(id)a7
+- (BMAppLanguageConsumption)initWithDataSource:(int)source adamID:(id)d contentLanguage:(id)language contentGenre:(id)genre timeSpent:(id)spent
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  languageCopy = language;
+  genreCopy = genre;
+  spentCopy = spent;
   v20.receiver = self;
   v20.super_class = BMAppLanguageConsumption;
   v17 = [(BMEventBase *)&v20 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    v17->_dataSource = a3;
-    objc_storeStrong(&v17->_adamID, a4);
-    objc_storeStrong(&v17->_contentLanguage, a5);
-    objc_storeStrong(&v17->_contentGenre, a6);
-    if (v16)
+    v17->_dataSource = source;
+    objc_storeStrong(&v17->_adamID, d);
+    objc_storeStrong(&v17->_contentLanguage, language);
+    objc_storeStrong(&v17->_contentGenre, genre);
+    if (spentCopy)
     {
       v17->_hasTimeSpent = 1;
-      v18 = [v16 unsignedIntValue];
+      unsignedIntValue = [spentCopy unsignedIntValue];
     }
 
     else
     {
-      v18 = 0;
+      unsignedIntValue = 0;
       v17->_hasTimeSpent = 0;
     }
 
-    v17->_timeSpent = v18;
+    v17->_timeSpent = unsignedIntValue;
   }
 
   return v17;
@@ -772,9 +772,9 @@ LABEL_59:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -782,8 +782,8 @@ LABEL_59:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMAppLanguageConsumption alloc] initByReadFrom:v7];
     v4 = v8;

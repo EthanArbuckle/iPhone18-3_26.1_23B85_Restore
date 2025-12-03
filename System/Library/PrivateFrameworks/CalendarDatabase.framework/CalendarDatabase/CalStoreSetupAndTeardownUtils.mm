@@ -1,28 +1,28 @@
 @interface CalStoreSetupAndTeardownUtils
-+ (BOOL)_clearAllEventsFromStore:(void *)a3 inDatabase:(CalDatabase *)a4;
-+ (BOOL)_mergeEntityType:(int)a3 fromStore:(void *)a4 toStore:(void *)a5 inDatabase:(CalDatabase *)a6;
-+ (BOOL)clearAllEventsFromStoreForParentAccount:(id)a3 withChildren:(id)a4 inDatabase:(CalDatabase *)a5;
-+ (BOOL)drainLocalStoreInDatabase:(CalDatabase *)a3;
-+ (BOOL)isLocalStoreEmptyInDatabase:(CalDatabase *)a3;
-+ (BOOL)isLocalStoreEnabledInDatabase:(CalDatabase *)a3;
-+ (BOOL)isReadOnlyAccount:(id)a3;
-+ (BOOL)isStoreEmptyForAccount:(id)a3 inDatabase:(CalDatabase *)a4;
-+ (BOOL)mergeEventsFromLocalStoreIntoStore:(void *)a3 inDatabase:(CalDatabase *)a4;
-+ (BOOL)mergeEventsIntoLocalStoreFromStore:(void *)a3 inDatabase:(CalDatabase *)a4;
-+ (BOOL)setUpCalStoreForParentAccount:(id)a3 withChildren:(id)a4 inDatabase:(CalDatabase *)a5;
-+ (void)_cleanKeepAwayFromServerCalsInStore:(void *)a3;
-+ (void)_copyStoreWithExternalIdentifier:(id)a3 inDatabase:(CalDatabase *)a4;
-+ (void)_enableLocalStoreIfNecessaryIgnoringAccount:(id)a3 inDatabase:(CalDatabase *)a4 accountStore:(id)a5;
-+ (void)cleanupAuxDatabaseIfNeededForAccountID:(id)a3 auxDatabase:(CalDatabase *)a4 mainDatabase:(CalDatabase *)a5;
-+ (void)copyStoreForAccount:(id)a3 withChildren:(id)a4 inDatabase:(CalDatabase *)a5;
-+ (void)removeStoreForAccount:(id)a3 withChildren:(id)a4 inDatabase:(CalDatabase *)a5 mainDatabase:(CalDatabase *)a6 accountStore:(id)a7;
-+ (void)removeStoreForDeletedAccountWithIdentifier:(id)a3 inDatabase:(CalDatabase *)a4 mainDatabase:(CalDatabase *)a5 accountStore:(id)a6;
-+ (void)setLocalStoreEnabled:(BOOL)a3 inDatabase:(CalDatabase *)a4;
++ (BOOL)_clearAllEventsFromStore:(void *)store inDatabase:(CalDatabase *)database;
++ (BOOL)_mergeEntityType:(int)type fromStore:(void *)store toStore:(void *)toStore inDatabase:(CalDatabase *)database;
++ (BOOL)clearAllEventsFromStoreForParentAccount:(id)account withChildren:(id)children inDatabase:(CalDatabase *)database;
++ (BOOL)drainLocalStoreInDatabase:(CalDatabase *)database;
++ (BOOL)isLocalStoreEmptyInDatabase:(CalDatabase *)database;
++ (BOOL)isLocalStoreEnabledInDatabase:(CalDatabase *)database;
++ (BOOL)isReadOnlyAccount:(id)account;
++ (BOOL)isStoreEmptyForAccount:(id)account inDatabase:(CalDatabase *)database;
++ (BOOL)mergeEventsFromLocalStoreIntoStore:(void *)store inDatabase:(CalDatabase *)database;
++ (BOOL)mergeEventsIntoLocalStoreFromStore:(void *)store inDatabase:(CalDatabase *)database;
++ (BOOL)setUpCalStoreForParentAccount:(id)account withChildren:(id)children inDatabase:(CalDatabase *)database;
++ (void)_cleanKeepAwayFromServerCalsInStore:(void *)store;
++ (void)_copyStoreWithExternalIdentifier:(id)identifier inDatabase:(CalDatabase *)database;
++ (void)_enableLocalStoreIfNecessaryIgnoringAccount:(id)account inDatabase:(CalDatabase *)database accountStore:(id)store;
++ (void)cleanupAuxDatabaseIfNeededForAccountID:(id)d auxDatabase:(CalDatabase *)database mainDatabase:(CalDatabase *)mainDatabase;
++ (void)copyStoreForAccount:(id)account withChildren:(id)children inDatabase:(CalDatabase *)database;
++ (void)removeStoreForAccount:(id)account withChildren:(id)children inDatabase:(CalDatabase *)database mainDatabase:(CalDatabase *)mainDatabase accountStore:(id)store;
++ (void)removeStoreForDeletedAccountWithIdentifier:(id)identifier inDatabase:(CalDatabase *)database mainDatabase:(CalDatabase *)mainDatabase accountStore:(id)store;
++ (void)setLocalStoreEnabled:(BOOL)enabled inDatabase:(CalDatabase *)database;
 @end
 
 @implementation CalStoreSetupAndTeardownUtils
 
-+ (void)_cleanKeepAwayFromServerCalsInStore:(void *)a3
++ (void)_cleanKeepAwayFromServerCalsInStore:(void *)store
 {
   v23 = *MEMORY[0x1E69E9840];
   v4 = CDBLogHandle;
@@ -32,7 +32,7 @@
     _os_log_impl(&dword_1DEBB1000, v4, OS_LOG_TYPE_INFO, "Cleaning out keep away from server calendars", buf, 2u);
   }
 
-  v5 = CalStoreCopyCalendars(a3);
+  v5 = CalStoreCopyCalendars(store);
   if (v5)
   {
     v6 = v5;
@@ -77,16 +77,16 @@
   v18 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)_mergeEntityType:(int)a3 fromStore:(void *)a4 toStore:(void *)a5 inDatabase:(CalDatabase *)a6
++ (BOOL)_mergeEntityType:(int)type fromStore:(void *)store toStore:(void *)toStore inDatabase:(CalDatabase *)database
 {
-  v8 = a4;
+  storeCopy = store;
   v28[6] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (store)
   {
-    CountOfCalendarItemsInStore = CalDatabaseGetCountOfCalendarItemsInStore(a6, a3, a4);
-    if (a5)
+    CountOfCalendarItemsInStore = CalDatabaseGetCountOfCalendarItemsInStore(database, type, store);
+    if (toStore)
     {
-      v12 = CalDatabaseGetCountOfCalendarItemsInStore(a6, a3, a5);
+      v12 = CalDatabaseGetCountOfCalendarItemsInStore(database, type, toStore);
     }
 
     else
@@ -94,15 +94,15 @@
       v12 = 0;
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
-      [a1 _cleanKeepAwayFromServerCalsInStore:v8];
+      [self _cleanKeepAwayFromServerCalsInStore:storeCopy];
     }
 
-    v13 = CalDatabaseMigrateCalendarsWithEntityType(a6, a3, v8, a5);
+    v13 = CalDatabaseMigrateCalendarsWithEntityType(database, type, storeCopy, toStore);
     v14 = !v13;
-    v8 = CalDatabaseGetCountOfCalendarItemsInStore(a6, a3, v8);
-    if (a5)
+    storeCopy = CalDatabaseGetCountOfCalendarItemsInStore(database, type, storeCopy);
+    if (toStore)
     {
       goto LABEL_10;
     }
@@ -116,13 +116,13 @@ LABEL_5:
   CountOfCalendarItemsInStore = 0;
   v14 = 0;
   v12 = 0;
-  if (!a5)
+  if (!toStore)
   {
     goto LABEL_5;
   }
 
 LABEL_10:
-  v15 = CalDatabaseGetCountOfCalendarItemsInStore(a6, a3, a5);
+  v15 = CalDatabaseGetCountOfCalendarItemsInStore(database, type, toStore);
 LABEL_11:
   v16 = CountOfCalendarItemsInStore != v15 - v12;
   v27[0] = @"PreMergeSourceCalendarItemCount";
@@ -132,7 +132,7 @@ LABEL_11:
   v18 = [MEMORY[0x1E696AD98] numberWithInt:v12];
   v28[1] = v18;
   v27[2] = @"PostMergeSourceCalendarItemCount";
-  v19 = [MEMORY[0x1E696AD98] numberWithInt:v8];
+  v19 = [MEMORY[0x1E696AD98] numberWithInt:storeCopy];
   v28[2] = v19;
   v27[3] = @"PostMergeDestinationCalendarItemCount";
   v20 = [MEMORY[0x1E696AD98] numberWithInt:v15];
@@ -148,7 +148,7 @@ LABEL_11:
   CalAnalyticsSendEvent();
   if (v13)
   {
-    v24 = CalDatabaseSave(a6);
+    v24 = CalDatabaseSave(database);
   }
 
   else
@@ -160,16 +160,16 @@ LABEL_11:
   return v24;
 }
 
-+ (BOOL)setUpCalStoreForParentAccount:(id)a3 withChildren:(id)a4 inDatabase:(CalDatabase *)a5
++ (BOOL)setUpCalStoreForParentAccount:(id)account withChildren:(id)children inDatabase:(CalDatabase *)database
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [v8 calSyncingAccountUsingChildAccounts:a4];
+  accountCopy = account;
+  v9 = [accountCopy calSyncingAccountUsingChildAccounts:children];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 identifier];
-    v12 = [a1 _copyStoreWithExternalIdentifier:v11 inDatabase:a5];
+    identifier = [v9 identifier];
+    v12 = [self _copyStoreWithExternalIdentifier:identifier inDatabase:database];
 
     if (v12)
     {
@@ -184,7 +184,7 @@ LABEL_11:
       goto LABEL_20;
     }
 
-    Store = CalDatabaseCreateStore(a5);
+    Store = CalDatabaseCreateStore(database);
     v15 = CDBLogHandle;
     if (Store)
     {
@@ -192,15 +192,15 @@ LABEL_11:
       if (os_log_type_enabled(CDBLogHandle, OS_LOG_TYPE_INFO))
       {
         v16 = v15;
-        v17 = [v10 identifier];
+        identifier2 = [v10 identifier];
         v39 = 138543362;
-        v40 = v17;
+        v40 = identifier2;
         _os_log_impl(&dword_1DEBB1000, v16, OS_LOG_TYPE_INFO, "Creating new Cal store with External ID: %{public}@", &v39, 0xCu);
       }
 
-      v18 = [v10 accountType];
-      v19 = [v18 identifier];
-      v20 = [v19 isEqualToString:*MEMORY[0x1E6959818]];
+      accountType = [v10 accountType];
+      identifier3 = [accountType identifier];
+      v20 = [identifier3 isEqualToString:*MEMORY[0x1E6959818]];
 
       if (v20)
       {
@@ -208,23 +208,23 @@ LABEL_11:
         goto LABEL_18;
       }
 
-      v23 = [v10 accountType];
-      v24 = [v23 identifier];
-      if ([v24 isEqualToString:*MEMORY[0x1E6959840]])
+      accountType2 = [v10 accountType];
+      identifier4 = [accountType2 identifier];
+      if ([identifier4 isEqualToString:*MEMORY[0x1E6959840]])
       {
       }
 
       else
       {
-        v25 = [v10 accountType];
-        v26 = [v25 identifier];
-        v27 = [v26 isEqualToString:*MEMORY[0x1E6959878]];
+        accountType3 = [v10 accountType];
+        identifier5 = [accountType3 identifier];
+        v27 = [identifier5 isEqualToString:*MEMORY[0x1E6959878]];
 
         if (!v27)
         {
-          v33 = [v10 accountType];
-          v34 = [v33 identifier];
-          v35 = [v34 isEqualToString:*MEMORY[0x1E69598F8]];
+          accountType4 = [v10 accountType];
+          identifier6 = [accountType4 identifier];
+          v35 = [identifier6 isEqualToString:*MEMORY[0x1E69598F8]];
 
           if (!v35)
           {
@@ -232,9 +232,9 @@ LABEL_11:
             if (os_log_type_enabled(CDBLogHandle, OS_LOG_TYPE_ERROR))
             {
               v37 = v36;
-              v38 = [v8 accountType];
+              accountType5 = [accountCopy accountType];
               v39 = 138543362;
-              v40 = v38;
+              v40 = accountType5;
               _os_log_impl(&dword_1DEBB1000, v37, OS_LOG_TYPE_ERROR, "Don't know what CalStoreType to set for ACAccountType %{public}@", &v39, 0xCu);
             }
 
@@ -245,19 +245,19 @@ LABEL_11:
 LABEL_18:
           CalStoreSetType(v21);
 LABEL_19:
-          v28 = [v10 identifier];
+          identifier7 = [v10 identifier];
           CalStoreSetExternalID(v12);
 
-          v29 = [v10 identifier];
-          CalStoreSetUUID(v12, v29);
+          identifier8 = [v10 identifier];
+          CalStoreSetUUID(v12, identifier8);
 
           CalStoreSetAllowsEvents(v12, 1);
-          v30 = [v8 accountDescription];
+          accountDescription = [accountCopy accountDescription];
           CalStoreSetName(v12);
 
 LABEL_20:
           CFRelease(v12);
-          v22 = CalDatabaseSave(a5);
+          v22 = CalDatabaseSave(database);
           goto LABEL_21;
         }
       }
@@ -280,13 +280,13 @@ LABEL_21:
   return v22;
 }
 
-+ (BOOL)_clearAllEventsFromStore:(void *)a3 inDatabase:(CalDatabase *)a4
++ (BOOL)_clearAllEventsFromStore:(void *)store inDatabase:(CalDatabase *)database
 {
   v4 = 0;
   v20 = *MEMORY[0x1E69E9840];
-  if (a3 && a4)
+  if (store && database)
   {
-    v7 = CalStoreCopyCalendars(a3);
+    v7 = CalStoreCopyCalendars(store);
     if (v7)
     {
       v8 = v7;
@@ -298,8 +298,8 @@ LABEL_21:
         {
           ValueAtIndex = CFArrayGetValueAtIndex(v8, i);
           v13 = CalCalendarCopyTitle(ValueAtIndex);
-          v14 = [a1 _calDAVInfoStringForTitle:v13];
-          CalDatabaseSetProperty(a4, v14, 0);
+          v14 = [self _calDAVInfoStringForTitle:v13];
+          CalDatabaseSetProperty(database, v14, 0);
           v15 = CDBLogHandle;
           if (os_log_type_enabled(CDBLogHandle, OS_LOG_TYPE_INFO))
           {
@@ -312,7 +312,7 @@ LABEL_21:
         }
       }
 
-      v4 = CalDatabaseSave(a4);
+      v4 = CalDatabaseSave(database);
       CFRelease(v8);
     }
 
@@ -326,15 +326,15 @@ LABEL_21:
   return v4;
 }
 
-+ (BOOL)clearAllEventsFromStoreForParentAccount:(id)a3 withChildren:(id)a4 inDatabase:(CalDatabase *)a5
++ (BOOL)clearAllEventsFromStoreForParentAccount:(id)account withChildren:(id)children inDatabase:(CalDatabase *)database
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [a1 copyStoreForAccount:v8 withChildren:a4 inDatabase:a5];
+  accountCopy = account;
+  v9 = [self copyStoreForAccount:accountCopy withChildren:children inDatabase:database];
   if (v9)
   {
     v10 = v9;
-    v11 = [a1 _clearAllEventsFromStore:v9 inDatabase:a5];
+    v11 = [self _clearAllEventsFromStore:v9 inDatabase:database];
     CFRelease(v10);
   }
 
@@ -344,9 +344,9 @@ LABEL_21:
     if (os_log_type_enabled(CDBLogHandle, OS_LOG_TYPE_ERROR))
     {
       v13 = v12;
-      v14 = [v8 identifier];
+      identifier = [accountCopy identifier];
       v17 = 138543362;
-      v18 = v14;
+      v18 = identifier;
       _os_log_impl(&dword_1DEBB1000, v13, OS_LOG_TYPE_ERROR, "Could not clear events from store for account with identifier %{public}@ because no store was found.", &v17, 0xCu);
     }
 
@@ -357,33 +357,33 @@ LABEL_21:
   return v11;
 }
 
-+ (BOOL)drainLocalStoreInDatabase:(CalDatabase *)a3
++ (BOOL)drainLocalStoreInDatabase:(CalDatabase *)database
 {
-  if (!a3)
+  if (!database)
   {
     return 0;
   }
 
-  v5 = CalDatabaseCopyLocalStore(a3);
+  v5 = CalDatabaseCopyLocalStore(database);
   if (!v5)
   {
     return 0;
   }
 
   v6 = v5;
-  v7 = [a1 _clearAllEventsFromStore:v5 inDatabase:a3];
+  v7 = [self _clearAllEventsFromStore:v5 inDatabase:database];
   CFRelease(v6);
   return v7;
 }
 
-+ (void)copyStoreForAccount:(id)a3 withChildren:(id)a4 inDatabase:(CalDatabase *)a5
++ (void)copyStoreForAccount:(id)account withChildren:(id)children inDatabase:(CalDatabase *)database
 {
-  v7 = [a3 calSyncingAccountUsingChildAccounts:a4];
+  v7 = [account calSyncingAccountUsingChildAccounts:children];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 identifier];
-    v10 = [a1 _copyStoreWithExternalIdentifier:v9 inDatabase:a5];
+    identifier = [v7 identifier];
+    v10 = [self _copyStoreWithExternalIdentifier:identifier inDatabase:database];
   }
 
   else
@@ -394,11 +394,11 @@ LABEL_21:
   return v10;
 }
 
-+ (void)_copyStoreWithExternalIdentifier:(id)a3 inDatabase:(CalDatabase *)a4
++ (void)_copyStoreWithExternalIdentifier:(id)identifier inDatabase:(CalDatabase *)database
 {
-  if (a4)
+  if (database)
   {
-    return CalDatabaseCopyStoreWithExternalID(a4, a3);
+    return CalDatabaseCopyStoreWithExternalID(database, identifier);
   }
 
   else
@@ -407,14 +407,14 @@ LABEL_21:
   }
 }
 
-+ (BOOL)isLocalStoreEnabledInDatabase:(CalDatabase *)a3
++ (BOOL)isLocalStoreEnabledInDatabase:(CalDatabase *)database
 {
-  if (!a3)
+  if (!database)
   {
     return 0;
   }
 
-  v3 = CalDatabaseCopyLocalStore(a3);
+  v3 = CalDatabaseCopyLocalStore(database);
   if (!v3)
   {
     return 0;
@@ -426,16 +426,16 @@ LABEL_21:
   return v5;
 }
 
-+ (BOOL)isLocalStoreEmptyInDatabase:(CalDatabase *)a3
++ (BOOL)isLocalStoreEmptyInDatabase:(CalDatabase *)database
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (database)
   {
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = CalDatabaseCopyOfAllStores(a3);
+    v4 = CalDatabaseCopyOfAllStores(database);
     v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
@@ -451,7 +451,7 @@ LABEL_21:
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
-          if (!CalStoreGetType(v9) && CalStoreAllowsEvents(v9) && CalDatabaseGetCountOfEventsInStore(a3, v9))
+          if (!CalStoreGetType(v9) && CalStoreAllowsEvents(v9) && CalDatabaseGetCountOfEventsInStore(database, v9))
           {
             v10 = 0;
             goto LABEL_15;
@@ -481,17 +481,17 @@ LABEL_15:
   return v10;
 }
 
-+ (BOOL)isStoreEmptyForAccount:(id)a3 inDatabase:(CalDatabase *)a4
++ (BOOL)isStoreEmptyForAccount:(id)account inDatabase:(CalDatabase *)database
 {
-  v6 = a3;
-  v7 = [v6 childAccounts];
-  v8 = [a1 copyStoreForAccount:v6 withChildren:v7 inDatabase:a4];
+  accountCopy = account;
+  childAccounts = [accountCopy childAccounts];
+  v8 = [self copyStoreForAccount:accountCopy withChildren:childAccounts inDatabase:database];
 
   if (v8)
   {
-    if (a4)
+    if (database)
     {
-      LOBYTE(a4) = CalDatabaseGetCountOfEventsInStore(a4, v8) == 0;
+      LOBYTE(database) = CalDatabaseGetCountOfEventsInStore(database, v8) == 0;
     }
 
     CFRelease(v8);
@@ -499,30 +499,30 @@ LABEL_15:
 
   else
   {
-    LOBYTE(a4) = 1;
+    LOBYTE(database) = 1;
   }
 
-  return a4;
+  return database;
 }
 
-+ (void)setLocalStoreEnabled:(BOOL)a3 inDatabase:(CalDatabase *)a4
++ (void)setLocalStoreEnabled:(BOOL)enabled inDatabase:(CalDatabase *)database
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!database)
   {
     goto LABEL_37;
   }
 
-  v5 = a3;
-  if (CalDatabaseIsAuxiliaryDatabase(a4))
+  enabledCopy = enabled;
+  if (CalDatabaseIsAuxiliaryDatabase(database))
   {
-    [CalStoreSetupAndTeardownUtils setLocalStoreEnabled:a2 inDatabase:a1];
+    [CalStoreSetupAndTeardownUtils setLocalStoreEnabled:a2 inDatabase:self];
   }
 
-  v8 = CalDatabaseCopyLocalStore(a4);
+  v8 = CalDatabaseCopyLocalStore(database);
   if (!v8)
   {
-    if (v5)
+    if (enabledCopy)
     {
 LABEL_37:
       v22 = *MEMORY[0x1E69E9840];
@@ -535,12 +535,12 @@ LABEL_37:
 
   v9 = v8;
   v23 = CalStoreCopyCalendars(v8);
-  if (CalStoreAllowsEvents(v9) != v5)
+  if (CalStoreAllowsEvents(v9) != enabledCopy)
   {
     goto LABEL_6;
   }
 
-  if (!v5)
+  if (!enabledCopy)
   {
     v15 = 0;
 LABEL_24:
@@ -551,7 +551,7 @@ LABEL_25:
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v17 = CalDatabaseCopyOfAllStores(a4);
+    v17 = CalDatabaseCopyOfAllStores(database);
     v18 = [v17 countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (v18)
     {
@@ -590,7 +590,7 @@ LABEL_25:
   if (![(__CFArray *)v23 count])
   {
 LABEL_6:
-    CalStoreSetAllowsEvents(v9, v5);
+    CalStoreSetAllowsEvents(v9, enabledCopy);
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
@@ -619,13 +619,13 @@ LABEL_6:
       while (v12);
     }
 
-    if (v5)
+    if (enabledCopy)
     {
-      CalCalendarInsertInitialLocalCalendar(a4);
+      CalCalendarInsertInitialLocalCalendar(database);
       CFRelease(v9);
 
 LABEL_36:
-      CalDatabaseSave(a4);
+      CalDatabaseSave(database);
       goto LABEL_37;
     }
 
@@ -637,11 +637,11 @@ LABEL_36:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_enableLocalStoreIfNecessaryIgnoringAccount:(id)a3 inDatabase:(CalDatabase *)a4 accountStore:(id)a5
++ (void)_enableLocalStoreIfNecessaryIgnoringAccount:(id)account inDatabase:(CalDatabase *)database accountStore:(id)store
 {
   v46 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v29 = a5;
+  accountCopy = account;
+  storeCopy = store;
   v9 = CDBLogHandle;
   if (os_log_type_enabled(CDBLogHandle, OS_LOG_TYPE_INFO))
   {
@@ -649,7 +649,7 @@ LABEL_36:
     _os_log_impl(&dword_1DEBB1000, v9, OS_LOG_TYPE_INFO, "Calendars DCO was asked to enable the local store if necessary.", buf, 2u);
   }
 
-  [v29 allAccountTypes];
+  [storeCopy allAccountTypes];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -660,7 +660,7 @@ LABEL_36:
     goto LABEL_34;
   }
 
-  v25 = a4;
+  databaseCopy = database;
   v28 = *v39;
   v33 = *MEMORY[0x1E6959AE0];
   v27 = 1;
@@ -673,7 +673,7 @@ LABEL_36:
         objc_enumerationMutation(obj);
       }
 
-      v11 = [v29 accountsWithAccountType:*(*(&v38 + 1) + 8 * i)];
+      v11 = [storeCopy accountsWithAccountType:*(*(&v38 + 1) + 8 * i)];
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
@@ -695,24 +695,24 @@ LABEL_36:
             }
 
             v17 = *(*(&v34 + 1) + 8 * j);
-            if (v8 && ([*(*(&v34 + 1) + 8 * j) identifier], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "identifier"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "isEqualToString:", v9)))
+            if (accountCopy && ([*(*(&v34 + 1) + 8 * j) identifier], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(accountCopy, "identifier"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "isEqualToString:", v9)))
             {
             }
 
             else
             {
-              v18 = [v17 parentAccountIdentifier];
-              if (v18 || ![v17 isEnabledForDataclass:v33])
+              parentAccountIdentifier = [v17 parentAccountIdentifier];
+              if (parentAccountIdentifier || ![v17 isEnabledForDataclass:v33])
               {
                 v19 = 0;
               }
 
               else
               {
-                v19 = [a1 isReadOnlyAccount:v17] ^ 1;
+                v19 = [self isReadOnlyAccount:v17] ^ 1;
               }
 
-              if (v8)
+              if (accountCopy)
               {
 
                 if (v19)
@@ -728,9 +728,9 @@ LABEL_27:
                 if (os_log_type_enabled(CDBLogHandle, OS_LOG_TYPE_INFO))
                 {
                   v21 = v20;
-                  v22 = [v17 identifier];
+                  identifier = [v17 identifier];
                   *buf = 138543362;
-                  v43 = v22;
+                  v43 = identifier;
                   _os_log_impl(&dword_1DEBB1000, v21, OS_LOG_TYPE_INFO, "Account with identifier %{public}@ is syncing calendars. Will not enable local store!", buf, 0xCu);
                 }
 
@@ -758,7 +758,7 @@ LABEL_30:
   }
 
   while (v30);
-  a4 = v25;
+  database = databaseCopy;
   if (v27)
   {
 LABEL_34:
@@ -769,21 +769,21 @@ LABEL_34:
       _os_log_impl(&dword_1DEBB1000, v23, OS_LOG_TYPE_INFO, "Enabling local store for events because we didn't find any syncing accounts", buf, 2u);
     }
 
-    [a1 setLocalStoreEnabled:1 inDatabase:a4];
+    [self setLocalStoreEnabled:1 inDatabase:database];
   }
 
   v24 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)cleanupAuxDatabaseIfNeededForAccountID:(id)a3 auxDatabase:(CalDatabase *)a4 mainDatabase:(CalDatabase *)a5
++ (void)cleanupAuxDatabaseIfNeededForAccountID:(id)d auxDatabase:(CalDatabase *)database mainDatabase:(CalDatabase *)mainDatabase
 {
-  v7 = CalDatabaseCopyAuxDatabaseAccountForAccountID(a5);
+  v7 = CalDatabaseCopyAuxDatabaseAccountForAccountID(mainDatabase);
   if (v7)
   {
     v8 = v7;
     v9 = CalAuxDatabaseAccountCopyAuxDatabase(v7);
     CalRemoveAuxDatabaseAccount(v8);
-    CalDatabaseSave(a5);
+    CalDatabaseSave(mainDatabase);
     CFRelease(v8);
     if (v9)
     {
@@ -793,7 +793,7 @@ LABEL_34:
         v11 = v10;
         if (!CFArrayGetCount(v10))
         {
-          CalDatabaseVacuum(a4);
+          CalDatabaseVacuum(database);
         }
 
         CFRelease(v11);
@@ -804,13 +804,13 @@ LABEL_34:
   }
 }
 
-+ (void)removeStoreForAccount:(id)a3 withChildren:(id)a4 inDatabase:(CalDatabase *)a5 mainDatabase:(CalDatabase *)a6 accountStore:(id)a7
++ (void)removeStoreForAccount:(id)account withChildren:(id)children inDatabase:(CalDatabase *)database mainDatabase:(CalDatabase *)mainDatabase accountStore:(id)store
 {
-  v12 = a3;
-  v13 = a7;
-  v14 = [a1 copyStoreForAccount:v12 withChildren:a4 inDatabase:a5];
+  accountCopy = account;
+  storeCopy = store;
+  v14 = [self copyStoreForAccount:accountCopy withChildren:children inDatabase:database];
   v15 = v14;
-  if (a5 && v14)
+  if (database && v14)
   {
     v16 = CDBLogHandle;
     if (os_log_type_enabled(CDBLogHandle, OS_LOG_TYPE_INFO))
@@ -820,9 +820,9 @@ LABEL_34:
     }
 
     CalRemoveStore();
-    CalDatabaseSave(a5);
-    v17 = [v12 identifier];
-    [a1 cleanupAuxDatabaseIfNeededForAccountID:v17 auxDatabase:a5 mainDatabase:a6];
+    CalDatabaseSave(database);
+    identifier = [accountCopy identifier];
+    [self cleanupAuxDatabaseIfNeededForAccountID:identifier auxDatabase:database mainDatabase:mainDatabase];
 
     goto LABEL_7;
   }
@@ -833,16 +833,16 @@ LABEL_7:
     CFRelease(v15);
   }
 
-  [a1 _enableLocalStoreIfNecessaryIgnoringAccount:v12 inDatabase:a6 accountStore:v13];
+  [self _enableLocalStoreIfNecessaryIgnoringAccount:accountCopy inDatabase:mainDatabase accountStore:storeCopy];
 }
 
-+ (void)removeStoreForDeletedAccountWithIdentifier:(id)a3 inDatabase:(CalDatabase *)a4 mainDatabase:(CalDatabase *)a5 accountStore:(id)a6
++ (void)removeStoreForDeletedAccountWithIdentifier:(id)identifier inDatabase:(CalDatabase *)database mainDatabase:(CalDatabase *)mainDatabase accountStore:(id)store
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [a1 _copyStoreForAccountWithIdentifier:v10 inDatabase:a4];
+  identifierCopy = identifier;
+  storeCopy = store;
+  v12 = [self _copyStoreForAccountWithIdentifier:identifierCopy inDatabase:database];
   v13 = v12;
-  if (a4 && v12)
+  if (database && v12)
   {
     v14 = CDBLogHandle;
     if (os_log_type_enabled(CDBLogHandle, OS_LOG_TYPE_INFO))
@@ -852,8 +852,8 @@ LABEL_7:
     }
 
     CalRemoveStore();
-    CalDatabaseSave(a4);
-    [a1 cleanupAuxDatabaseIfNeededForAccountID:v10 auxDatabase:a4 mainDatabase:a5];
+    CalDatabaseSave(database);
+    [self cleanupAuxDatabaseIfNeededForAccountID:identifierCopy auxDatabase:database mainDatabase:mainDatabase];
     goto LABEL_7;
   }
 
@@ -863,10 +863,10 @@ LABEL_7:
     CFRelease(v13);
   }
 
-  [a1 _enableLocalStoreIfNecessaryIgnoringAccount:0 inDatabase:a5 accountStore:v11];
+  [self _enableLocalStoreIfNecessaryIgnoringAccount:0 inDatabase:mainDatabase accountStore:storeCopy];
 }
 
-+ (BOOL)mergeEventsFromLocalStoreIntoStore:(void *)a3 inDatabase:(CalDatabase *)a4
++ (BOOL)mergeEventsFromLocalStoreIntoStore:(void *)store inDatabase:(CalDatabase *)database
 {
   v23 = *MEMORY[0x1E69E9840];
   v7 = CDBLogHandle;
@@ -877,13 +877,13 @@ LABEL_7:
   }
 
   LOBYTE(v8) = 0;
-  if (a3 && a4)
+  if (store && database)
   {
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = CalDatabaseCopyOfAllStores(a4);
+    v9 = CalDatabaseCopyOfAllStores(database);
     v8 = [v9 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v8)
     {
@@ -902,7 +902,7 @@ LABEL_7:
           v14 = *(*(&v17 + 1) + 8 * i);
           if (!CalStoreGetType(v14) && CalStoreAllowsEvents(v14))
           {
-            v10 |= [a1 _mergeEntityType:2 fromStore:v14 toStore:a3 inDatabase:{a4, v17}] ^ 1;
+            v10 |= [self _mergeEntityType:2 fromStore:v14 toStore:store inDatabase:{database, v17}] ^ 1;
             v11 = 1;
           }
         }
@@ -919,7 +919,7 @@ LABEL_7:
   return v8 & 1;
 }
 
-+ (BOOL)mergeEventsIntoLocalStoreFromStore:(void *)a3 inDatabase:(CalDatabase *)a4
++ (BOOL)mergeEventsIntoLocalStoreFromStore:(void *)store inDatabase:(CalDatabase *)database
 {
   v7 = CDBLogHandle;
   if (os_log_type_enabled(CDBLogHandle, OS_LOG_TYPE_INFO))
@@ -929,13 +929,13 @@ LABEL_7:
   }
 
   v8 = 0;
-  if (a3 && a4)
+  if (store && database)
   {
-    v9 = CalDatabaseCopyLocalStore(a4);
+    v9 = CalDatabaseCopyLocalStore(database);
     if (v9)
     {
       v10 = v9;
-      v8 = [a1 _mergeEntityType:2 fromStore:a3 toStore:v9 inDatabase:a4];
+      v8 = [self _mergeEntityType:2 fromStore:store toStore:v9 inDatabase:database];
       CFRelease(v10);
     }
 
@@ -948,19 +948,19 @@ LABEL_7:
   return v8;
 }
 
-+ (BOOL)isReadOnlyAccount:(id)a3
++ (BOOL)isReadOnlyAccount:(id)account
 {
-  v3 = [a3 accountType];
-  v4 = [v3 identifier];
+  accountType = [account accountType];
+  identifier = [accountType identifier];
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69598F8]])
+  if ([identifier isEqualToString:*MEMORY[0x1E69598F8]])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:*MEMORY[0x1E6959870]];
+    v5 = [identifier isEqualToString:*MEMORY[0x1E6959870]];
   }
 
   return v5;

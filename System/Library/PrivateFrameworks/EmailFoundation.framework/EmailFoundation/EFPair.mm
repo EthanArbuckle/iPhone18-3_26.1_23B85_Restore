@@ -1,44 +1,44 @@
 @interface EFPair
-+ (id)pairWithFirst:(id)a3 second:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPair:(id)a3;
-- (EFPair)initWithCoder:(id)a3;
-- (EFPair)initWithFirst:(id)a3 second:(id)a4;
-- (void)encodeWithCoder:(id)a3;
++ (id)pairWithFirst:(id)first second:(id)second;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPair:(id)pair;
+- (EFPair)initWithCoder:(id)coder;
+- (EFPair)initWithFirst:(id)first second:(id)second;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EFPair
 
-+ (id)pairWithFirst:(id)a3 second:(id)a4
++ (id)pairWithFirst:(id)first second:(id)second
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[a1 alloc] initWithFirst:v6 second:v7];
+  firstCopy = first;
+  secondCopy = second;
+  v8 = [[self alloc] initWithFirst:firstCopy second:secondCopy];
 
   return v8;
 }
 
-- (EFPair)initWithFirst:(id)a3 second:(id)a4
+- (EFPair)initWithFirst:(id)first second:(id)second
 {
-  v7 = a3;
-  v8 = a4;
+  firstCopy = first;
+  secondCopy = second;
   v12.receiver = self;
   v12.super_class = EFPair;
   v9 = [(EFPair *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_first, a3);
-    objc_storeStrong(&v10->_second, a4);
+    objc_storeStrong(&v9->_first, first);
+    objc_storeStrong(&v10->_second, second);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -46,23 +46,23 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(EFPair *)self isEqualToPair:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(EFPair *)self isEqualToPair:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToPair:(id)a3
+- (BOOL)isEqualToPair:(id)pair
 {
-  v5 = a3;
-  v6 = v5;
-  if (self == v5)
+  pairCopy = pair;
+  v6 = pairCopy;
+  if (self == pairCopy)
   {
     v14 = 1;
     goto LABEL_18;
   }
 
-  if (!v5)
+  if (!pairCopy)
   {
     goto LABEL_15;
   }
@@ -72,8 +72,8 @@
   if (first)
   {
 LABEL_6:
-    v9 = [(EFPair *)v6 first];
-    v10 = [v8 isEqual:v9];
+    first = [(EFPair *)v6 first];
+    v10 = [v8 isEqual:first];
 
     if (first)
     {
@@ -97,8 +97,8 @@ LABEL_15:
     goto LABEL_18;
   }
 
-  v3 = [(EFPair *)v5 first];
-  if (v3)
+  first2 = [(EFPair *)pairCopy first];
+  if (first2)
   {
     v8 = self->_first;
     goto LABEL_6;
@@ -109,8 +109,8 @@ LABEL_8:
   v12 = second;
   if (!second)
   {
-    v3 = [(EFPair *)v6 second];
-    if (!v3)
+    first2 = [(EFPair *)v6 second];
+    if (!first2)
     {
       v14 = 1;
 LABEL_17:
@@ -121,8 +121,8 @@ LABEL_17:
     v12 = self->_second;
   }
 
-  v13 = [(EFPair *)v6 second];
-  v14 = [v12 isEqual:v13];
+  second = [(EFPair *)v6 second];
+  v14 = [v12 isEqual:second];
 
   if (!second)
   {
@@ -134,29 +134,29 @@ LABEL_18:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(EFPair *)self first];
-  [v6 encodeObject:v4 forKey:@"EFPropertyKey_first"];
+  coderCopy = coder;
+  first = [(EFPair *)self first];
+  [coderCopy encodeObject:first forKey:@"EFPropertyKey_first"];
 
-  v5 = [(EFPair *)self second];
-  [v6 encodeObject:v5 forKey:@"EFPropertyKey_second"];
+  second = [(EFPair *)self second];
+  [coderCopy encodeObject:second forKey:@"EFPropertyKey_second"];
 }
 
-- (EFPair)initWithCoder:(id)a3
+- (EFPair)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = EFPair;
   v5 = [(EFPair *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_first"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_first"];
     first = v5->_first;
     v5->_first = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_second"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_second"];
     second = v5->_second;
     v5->_second = v8;
   }

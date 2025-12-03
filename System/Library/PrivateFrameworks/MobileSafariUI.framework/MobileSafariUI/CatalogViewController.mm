@@ -1,5 +1,5 @@
 @interface CatalogViewController
-- (BOOL)_shouldPresentCompletionDetailViewControllerAfterSizeTransition:(id)a3;
+- (BOOL)_shouldPresentCompletionDetailViewControllerAfterSizeTransition:(id)transition;
 - (BOOL)_shouldTakeOwnershipOfCompletionsViewController;
 - (BOOL)_shouldUsePopoverForCompletions;
 - (BOOL)_showCompletionsInPopover;
@@ -8,14 +8,14 @@
 - (BOOL)isShowingUniversalSearchPrivacyDetails;
 - (BOOL)popoverIsDismissing;
 - (BOOL)popoverIsShowing;
-- (BOOL)shouldPutMetadataOnPasteboardForUnifiedField:(id)a3;
-- (BOOL)startPageViewControllerShouldDeferLoadingContentUntilKeyboardAnimatesIn:(id)a3;
-- (BOOL)textFieldShouldBeginEditing:(id)a3;
-- (BOOL)textFieldShouldClear:(id)a3;
-- (BOOL)unifiedField:(id)a3 shouldWaitForTopHitForText:(id)a4;
-- (BOOL)unifiedFieldCanBecomeFirstResponder:(id)a3;
-- (CGRect)snapshotContentRectInBounds:(CGRect)a3;
-- (CatalogViewController)initWithDelegate:(id)a3 browserController:(id)a4;
+- (BOOL)shouldPutMetadataOnPasteboardForUnifiedField:(id)field;
+- (BOOL)startPageViewControllerShouldDeferLoadingContentUntilKeyboardAnimatesIn:(id)in;
+- (BOOL)textFieldShouldBeginEditing:(id)editing;
+- (BOOL)textFieldShouldClear:(id)clear;
+- (BOOL)unifiedField:(id)field shouldWaitForTopHitForText:(id)text;
+- (BOOL)unifiedFieldCanBecomeFirstResponder:(id)responder;
+- (CGRect)snapshotContentRectInBounds:(CGRect)bounds;
+- (CatalogViewController)initWithDelegate:(id)delegate browserController:(id)controller;
 - (CatalogViewControllerDelegate)delegate;
 - (LoadProgressObserver)loadProgressObserver;
 - (NSString)libraryType;
@@ -26,180 +26,180 @@
 - (double)maxContentHeight;
 - (double)navigationBarHeight;
 - (double)requiredContentWidth;
-- (double)startPageViewControllerTopPadding:(id)a3;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)startPageViewControllerTopPadding:(id)padding;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_cancelBarButtonItem;
-- (id)_cellHeightCacheKeyForCompletionItem:(id)a3 indexPath:(id)a4;
-- (id)_completionItemAtIndexPath:(id)a3;
+- (id)_cellHeightCacheKeyForCompletionItem:(id)item indexPath:(id)path;
+- (id)_completionItemAtIndexPath:(id)path;
 - (id)_searchFieldIcon;
 - (id)browserController;
 - (id)childViewControllerForStatusBarStyle;
 - (id)completionsViewController;
-- (id)currentMetadataForUnifiedField:(id)a3;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
-- (id)startPageViewController:(id)a3 leadingBarItemsForSection:(id)a4;
-- (id)startPageViewController:(id)a3 trailingBarItemsForSection:(id)a4;
-- (id)startPageViewControllerTitleForRootView:(id)a3;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)tableView:(id)a3 previewForDismissingContextMenuWithConfiguration:(id)a4;
-- (id)tableView:(id)a3 previewForHighlightingContextMenuWithConfiguration:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (id)unifiedField:(id)a3 topHitForText:(id)a4;
+- (id)currentMetadataForUnifiedField:(id)field;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
+- (id)startPageViewController:(id)controller leadingBarItemsForSection:(id)section;
+- (id)startPageViewController:(id)controller trailingBarItemsForSection:(id)section;
+- (id)startPageViewControllerTitleForRootView:(id)view;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
+- (id)tableView:(id)view previewForDismissingContextMenuWithConfiguration:(id)configuration;
+- (id)tableView:(id)view previewForHighlightingContextMenuWithConfiguration:(id)configuration;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (id)unifiedField:(id)field topHitForText:(id)text;
 - (int64_t)_completionListQueryID;
-- (int64_t)_relevanceForItem:(id)a3;
-- (int64_t)_relevanceForResult:(id)a3;
+- (int64_t)_relevanceForItem:(id)item;
+- (int64_t)_relevanceForResult:(id)result;
 - (int64_t)startPageCustomizationPolicy;
 - (void)_beginParsecSessionIfNeeded;
 - (void)_cancelClearingCompletionListCaches;
 - (void)_clearCompletionListCachesSoon;
 - (void)_clearParsecSearchSession;
 - (void)_commitVoiceSearchIfNecessary;
-- (void)_contentSizeCategoryDidChange:(id)a3;
+- (void)_contentSizeCategoryDidChange:(id)change;
 - (void)_deselectCompletionsViewControllerSelectedRow;
-- (void)_dismissPopoverAnimated:(BOOL)a3 dismissalReason:(int64_t)a4 completionHandler:(id)a5;
-- (void)_dismissUniversalSearchFirstTimeExperience:(id)a3 dismissalReason:(int64_t)a4 completionHandler:(id)a5;
+- (void)_dismissPopoverAnimated:(BOOL)animated dismissalReason:(int64_t)reason completionHandler:(id)handler;
+- (void)_dismissUniversalSearchFirstTimeExperience:(id)experience dismissalReason:(int64_t)reason completionHandler:(id)handler;
 - (void)_ensureCompletionListAndParsecSession;
-- (void)_executeActionForParsecResultAtIndexPath:(id)a3 tableView:(id)a4 triggerEvent:(unint64_t)a5;
-- (void)_executeActionForParsecResultTableViewCell:(id)a3 completionItem:(id)a4 triggerEvent:(unint64_t)a5;
-- (void)_generateVisibleResultsFeedbackForEvent:(int64_t)a3;
+- (void)_executeActionForParsecResultAtIndexPath:(id)path tableView:(id)view triggerEvent:(unint64_t)event;
+- (void)_executeActionForParsecResultTableViewCell:(id)cell completionItem:(id)item triggerEvent:(unint64_t)event;
+- (void)_generateVisibleResultsFeedbackForEvent:(int64_t)event;
 - (void)_invalidatePendingVoiceSearchTimer;
-- (void)_keyboardDidShow:(id)a3;
-- (void)_keyboardWillHide:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
+- (void)_keyboardDidShow:(id)show;
+- (void)_keyboardWillHide:(id)hide;
+- (void)_keyboardWillShow:(id)show;
 - (void)_logQueryEngagement;
-- (void)_logTopHitWasChosen:(BOOL)a3;
-- (void)_parsecEnabledDidChange:(id)a3;
+- (void)_logTopHitWasChosen:(BOOL)chosen;
+- (void)_parsecEnabledDidChange:(id)change;
 - (void)_popoverDismissCompletion;
 - (void)_preferredContentSizeCategoryDidChange;
-- (void)_preselectCompletionItemIfNecessaryForQueryString:(id)a3;
-- (void)_presentPopoverWithViewController:(id)a3 completionHandler:(id)a4;
-- (void)_presentStagedCompletionDetailViewControllerAnimated:(BOOL)a3;
+- (void)_preselectCompletionItemIfNecessaryForQueryString:(id)string;
+- (void)_presentPopoverWithViewController:(id)controller completionHandler:(id)handler;
+- (void)_presentStagedCompletionDetailViewControllerAnimated:(BOOL)animated;
 - (void)_reloadCompletionTable;
 - (void)_removeNoRecentSearchesViewIfNecessary;
-- (void)_selectedCompletionItemAtIndexPath:(id)a3;
-- (void)_sendInputAnalyticsForItemWithMatchedText:(id)a3 matchType:(int64_t)a4;
-- (void)_setShowingCompletions:(BOOL)a3 popoverDismissalReason:(int64_t)a4 completionHandler:(id)a5;
+- (void)_selectedCompletionItemAtIndexPath:(id)path;
+- (void)_sendInputAnalyticsForItemWithMatchedText:(id)text matchType:(int64_t)type;
+- (void)_setShowingCompletions:(BOOL)completions popoverDismissalReason:(int64_t)reason completionHandler:(id)handler;
 - (void)_showCompletionsPopoverIfNecessary;
 - (void)_showStartPageInPopover;
-- (void)_textFieldEditingChangedForUpdatingCompletionListOnRestore:(BOOL)a3;
+- (void)_textFieldEditingChangedForUpdatingCompletionListOnRestore:(BOOL)restore;
 - (void)_updateAlternateContentViewController;
-- (void)_updatePersonalisationDataForDonation:(id)a3 forPosition:(unint64_t)a4;
+- (void)_updatePersonalisationDataForDonation:(id)donation forPosition:(unint64_t)position;
 - (void)_updateSearchFieldIcon;
 - (void)_updateStartPageSafeAreaInsets;
-- (void)_updateVisibilityForCompletionListTableView:(id)a3;
+- (void)_updateVisibilityForCompletionListTableView:(id)view;
 - (void)_updateVoiceSearchState;
-- (void)animateTransition:(id)a3;
-- (void)beginExtensionsOnboardingForStartPageViewController:(id)a3;
-- (void)beginTransitionToNewSizeClassWithState:(id)a3;
-- (void)completionList:(id)a3 didFetchFavicon:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)completionList:(id)a3 didRemoveItem:(id)a4 wasLastInSection:(BOOL)a5 atIndexPath:(id)a6 withCompletionHandler:(id)a7;
-- (void)completionList:(id)a3 topHitDidBecomeReadyForString:(id)a4;
-- (void)completionList:(id)a3 willGoToURL:(id)a4 fromPegasusSearchResult:(id)a5 forImageAttribution:(BOOL)a6;
-- (void)completionListDidRestoreCachedCompletions:(id)a3;
-- (void)completionListDidUpdate:(id)a3 forQuery:(id)a4;
+- (void)animateTransition:(id)transition;
+- (void)beginExtensionsOnboardingForStartPageViewController:(id)controller;
+- (void)beginTransitionToNewSizeClassWithState:(id)state;
+- (void)completionList:(id)list didFetchFavicon:(id)favicon forRowAtIndexPath:(id)path;
+- (void)completionList:(id)list didRemoveItem:(id)item wasLastInSection:(BOOL)section atIndexPath:(id)path withCompletionHandler:(id)handler;
+- (void)completionList:(id)list topHitDidBecomeReadyForString:(id)string;
+- (void)completionList:(id)list willGoToURL:(id)l fromPegasusSearchResult:(id)result forImageAttribution:(BOOL)attribution;
+- (void)completionListDidRestoreCachedCompletions:(id)completions;
+- (void)completionListDidUpdate:(id)update forQuery:(id)query;
 - (void)dealloc;
 - (void)didGainOwnershipOfCompletionsViewController;
 - (void)didGainOwnershipOfStartPageViewController;
 - (void)didGainOwnershipOfUniversalSearchFirstTimeExperienceViewController;
-- (void)didInteractWithUniversalSearchFirstTimeExperienceViewController:(id)a3;
+- (void)didInteractWithUniversalSearchFirstTimeExperienceViewController:(id)controller;
 - (void)didTogglePrivateBrowsing;
 - (void)didUpdateObscuredInsetsForSizeTransition;
-- (void)dismissCompletionDetailWindowAndResumeEditingIfNeeded:(BOOL)a3 completionHandler:(id)a4;
+- (void)dismissCompletionDetailWindowAndResumeEditingIfNeeded:(BOOL)needed completionHandler:(id)handler;
 - (void)dismissCompletionsForSizeClassTransition;
 - (void)dismissUniversalSearchFirstTimeExperienceViewControllerIfNeeded;
-- (void)endTransitionToNewSizeClassWithState:(id)a3;
+- (void)endTransitionToNewSizeClassWithState:(id)state;
 - (void)findOnPage;
-- (void)goToURL:(id)a3;
-- (void)goToURLString:(id)a3;
-- (void)horizontalSizeClassDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (void)goToURL:(id)l;
+- (void)goToURLString:(id)string;
+- (void)horizontalSizeClassDidChange:(id)change previousTraitCollection:(id)collection;
 - (void)ignorePreviousLayoutSize;
-- (void)openURLInExternalApplication:(id)a3;
-- (void)popoverPresentationController:(id)a3 willRepositionPopoverToRect:(CGRect *)a4 inView:(id *)a5;
-- (void)presentDetail:(id)a3;
-- (void)presentationControllerWillDismiss:(id)a3;
+- (void)openURLInExternalApplication:(id)application;
+- (void)popoverPresentationController:(id)controller willRepositionPopoverToRect:(CGRect *)rect inView:(id *)view;
+- (void)presentDetail:(id)detail;
+- (void)presentationControllerWillDismiss:(id)dismiss;
 - (void)relinquishOwnershipOfCompletionsViewControllerFromCurrentParent;
 - (void)relinquishOwnershipOfUniversalSearchFirstTimeExperienceViewControllerFromCurrentParent;
-- (void)reloadNavigationItemAnimated:(BOOL)a3;
+- (void)reloadNavigationItemAnimated:(BOOL)animated;
 - (void)reportUnifiedFieldSearchDidCancel;
 - (void)resetFavorites;
 - (void)resetPrivateBrowsingExplanation;
 - (void)resume;
-- (void)resumeEditingIfNeeded:(BOOL)a3;
-- (void)resumeSearchWithQuery:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)search:(id)a3;
-- (void)searchTextCompletionAccessoryButtonTappedForCompletionItem:(id)a3;
-- (void)setCompletionList:(id)a3;
-- (void)setLibraryType:(id)a3;
-- (void)setLibraryType:(id)a3 cloudTabDeviceID:(id)a4;
-- (void)setLoadProgressObserver:(id)a3;
-- (void)setNavigationBar:(id)a3;
-- (void)setObscuredInsets:(UIEdgeInsets)a3;
-- (void)setQueryString:(id)a3 forUpdatingCompletionListOnRestore:(BOOL)a4;
-- (void)setStartPageScrollObserver:(id)a3;
-- (void)setTextField:(id)a3;
-- (void)setTopScrollEdgeEffectColor:(id)a3;
-- (void)setTopScrollEdgeEffectStyle:(id)a3;
-- (void)setUsesPopoverStyleForFavorites:(BOOL)a3;
+- (void)resumeEditingIfNeeded:(BOOL)needed;
+- (void)resumeSearchWithQuery:(id)query;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)search:(id)search;
+- (void)searchTextCompletionAccessoryButtonTappedForCompletionItem:(id)item;
+- (void)setCompletionList:(id)list;
+- (void)setLibraryType:(id)type;
+- (void)setLibraryType:(id)type cloudTabDeviceID:(id)d;
+- (void)setLoadProgressObserver:(id)observer;
+- (void)setNavigationBar:(id)bar;
+- (void)setObscuredInsets:(UIEdgeInsets)insets;
+- (void)setQueryString:(id)string forUpdatingCompletionListOnRestore:(BOOL)restore;
+- (void)setStartPageScrollObserver:(id)observer;
+- (void)setTextField:(id)field;
+- (void)setTopScrollEdgeEffectColor:(id)color;
+- (void)setTopScrollEdgeEffectStyle:(id)style;
+- (void)setUsesPopoverStyleForFavorites:(BOOL)favorites;
 - (void)showNoRecentSearchesViewIfNotShowing;
 - (void)showRecentSearches;
 - (void)showUniversalSearchFirstTimeExperienceIfNotShowing;
-- (void)startPageControllerDidCompleteDismissGesture:(id)a3;
-- (void)startPageControllerDidCompleteUnfocusGesture:(id)a3;
+- (void)startPageControllerDidCompleteDismissGesture:(id)gesture;
+- (void)startPageControllerDidCompleteUnfocusGesture:(id)gesture;
 - (void)startPageUpdatePolicyDidChange;
-- (void)startPageViewController:(id)a3 willPresentCustomizationViewController:(id)a4;
-- (void)startPageViewControllerDidAppear:(id)a3;
-- (void)startPageViewControllerDidScroll:(id)a3 animated:(BOOL)a4;
-- (void)startPageViewControllerDidUpdateContent:(id)a3;
+- (void)startPageViewController:(id)controller willPresentCustomizationViewController:(id)viewController;
+- (void)startPageViewControllerDidAppear:(id)appear;
+- (void)startPageViewControllerDidScroll:(id)scroll animated:(BOOL)animated;
+- (void)startPageViewControllerDidUpdateContent:(id)content;
 - (void)stopCompleting;
-- (void)switchToTabWithUUID:(id)a3 inWindowWithUUID:(id)a4 forTabGroupWithUUID:(id)a5;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 willDisplayContextMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)tableView:(id)a3 willEndContextMenuInteractionWithConfiguration:(id)a4 animator:(id)a5;
-- (void)test_simulateTyping:(id)a3 inGroup:(id)a4 startIndex:(unint64_t)a5;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)switchToTabWithUUID:(id)d inWindowWithUUID:(id)iD forTabGroupWithUUID:(id)uID;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayContextMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)tableView:(id)view willEndContextMenuInteractionWithConfiguration:(id)configuration animator:(id)animator;
+- (void)test_simulateTyping:(id)typing inGroup:(id)group startIndex:(unint64_t)index;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
 - (void)toggleVoiceSearch;
-- (void)unifiedField:(id)a3 didEndEditingWithAddress:(id)a4;
-- (void)unifiedField:(id)a3 didEndEditingWithParsecTopHit:(id)a4;
-- (void)unifiedField:(id)a3 didEndEditingWithSearch:(id)a4;
-- (void)unifiedField:(id)a3 didEngageWithQuerySuggestion:(id)a4 forQueryString:(id)a5;
-- (void)unifiedField:(id)a3 focusNextKeyView:(BOOL)a4;
-- (void)unifiedField:(id)a3 moveCompletionSelectionByRowOffset:(int64_t)a4;
-- (void)unifiedField:(id)a3 moveCompletionSelectionBySectionOffset:(int64_t)a4;
-- (void)unifiedField:(id)a3 pasteAndNavigateWithText:(id)a4;
-- (void)unifiedField:(id)a3 willUpdateUserTypedText:(id)a4 toText:(id)a5;
-- (void)unifiedFieldExternalSearchDidEnd:(id)a3;
-- (void)unifiedFieldMakeWindowKey:(id)a3;
-- (void)unifiedFieldReflectedItemDidChange:(id)a3;
-- (void)unifiedFieldSelectCompletionItemIfAvailable:(id)a3;
-- (void)unifiedFieldVoiceSearchStateDidChange:(id)a3;
+- (void)unifiedField:(id)field didEndEditingWithAddress:(id)address;
+- (void)unifiedField:(id)field didEndEditingWithParsecTopHit:(id)hit;
+- (void)unifiedField:(id)field didEndEditingWithSearch:(id)search;
+- (void)unifiedField:(id)field didEngageWithQuerySuggestion:(id)suggestion forQueryString:(id)string;
+- (void)unifiedField:(id)field focusNextKeyView:(BOOL)view;
+- (void)unifiedField:(id)field moveCompletionSelectionByRowOffset:(int64_t)offset;
+- (void)unifiedField:(id)field moveCompletionSelectionBySectionOffset:(int64_t)offset;
+- (void)unifiedField:(id)field pasteAndNavigateWithText:(id)text;
+- (void)unifiedField:(id)field willUpdateUserTypedText:(id)text toText:(id)toText;
+- (void)unifiedFieldExternalSearchDidEnd:(id)end;
+- (void)unifiedFieldMakeWindowKey:(id)key;
+- (void)unifiedFieldReflectedItemDidChange:(id)change;
+- (void)unifiedFieldSelectCompletionItemIfAvailable:(id)available;
+- (void)unifiedFieldVoiceSearchStateDidChange:(id)change;
 - (void)updatePreferredContentSize;
-- (void)updateQuerySuggestionsFromResponse:(id)a3;
+- (void)updateQuerySuggestionsFromResponse:(id)response;
 - (void)updateStartPageControlTintColor;
 - (void)updateStartPageCustomizationPolicy;
 - (void)updateStartPageHidesEmptyRootViewNavigationBar;
 - (void)updateStartPageTopSpacing;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willGoToURLFromPegasusSearchResult:(id)a3;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willGoToURLFromPegasusSearchResult:(id)result;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation CatalogViewController
 
 - (void)updateStartPageCustomizationPolicy
 {
-  v3 = [(CatalogViewController *)self startPageCustomizationPolicy];
-  v4 = [(StartPageController *)self->_startPageController viewController];
-  [v4 setCustomizationPolicy:v3];
+  startPageCustomizationPolicy = [(CatalogViewController *)self startPageCustomizationPolicy];
+  viewController = [(StartPageController *)self->_startPageController viewController];
+  [viewController setCustomizationPolicy:startPageCustomizationPolicy];
 }
 
 - (int64_t)startPageCustomizationPolicy
@@ -210,8 +210,8 @@
     goto LABEL_8;
   }
 
-  v4 = [(StartPageController *)self->_startPageController libraryType];
-  if (v4)
+  libraryType = [(StartPageController *)self->_startPageController libraryType];
+  if (libraryType)
   {
 
 LABEL_8:
@@ -233,9 +233,9 @@ LABEL_8:
 
   else
   {
-    v8 = [WeakRetained tabController];
-    v9 = [v8 activeTabDocument];
-    v10 = ~[v9 isBlank];
+    tabController = [WeakRetained tabController];
+    activeTabDocument = [tabController activeTabDocument];
+    v10 = ~[activeTabDocument isBlank];
 
     v6 = v10 & 1;
   }
@@ -248,8 +248,8 @@ LABEL_9:
 - (void)updateStartPageHidesEmptyRootViewNavigationBar
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v3 = [WeakRetained rootViewController];
-  if ([v3 isUsingBottomCapsule])
+  rootViewController = [WeakRetained rootViewController];
+  if ([rootViewController isUsingBottomCapsule])
   {
     v4 = [WeakRetained usesNarrowLayout] ^ 1;
   }
@@ -260,8 +260,8 @@ LABEL_9:
   }
 
   v5 = [MEMORY[0x277D49A08] isSolariumEnabled] | v4;
-  v6 = [(StartPageController *)self->_startPageController viewController];
-  [v6 setRootViewHidesEmptyNavigationBar:v5 & 1];
+  viewController = [(StartPageController *)self->_startPageController viewController];
+  [viewController setRootViewHidesEmptyNavigationBar:v5 & 1];
 }
 
 - (void)viewDidLoad
@@ -269,31 +269,31 @@ LABEL_9:
   v14.receiver = self;
   v14.super_class = CatalogViewController;
   [(CatalogViewController *)&v14 viewDidLoad];
-  v3 = [(CatalogViewController *)self view];
-  [v3 setAutoresizingMask:0];
-  [v3 setClipsToBounds:1];
-  v4 = [v3 layer];
-  [v4 setAllowsGroupOpacity:0];
+  view = [(CatalogViewController *)self view];
+  [view setAutoresizingMask:0];
+  [view setClipsToBounds:1];
+  layer = [view layer];
+  [layer setAllowsGroupOpacity:0];
 
-  v5 = [MEMORY[0x277D75348] sf_safariAccentColor];
-  [v3 setTintColor:v5];
+  sf_safariAccentColor = [MEMORY[0x277D75348] sf_safariAccentColor];
+  [view setTintColor:sf_safariAccentColor];
 
-  v6 = [(SFStartPageViewController *)self->_startPageViewController title];
-  [(CatalogViewController *)self setTitle:v6];
+  title = [(SFStartPageViewController *)self->_startPageViewController title];
+  [(CatalogViewController *)self setTitle:title];
 
-  v7 = [(SFStartPageViewController *)self->_startPageViewController view];
-  [v7 setAutoresizingMask:0];
-  [v7 setInsetsLayoutMarginsFromSafeArea:0];
+  view2 = [(SFStartPageViewController *)self->_startPageViewController view];
+  [view2 setAutoresizingMask:0];
+  [view2 setInsetsLayoutMarginsFromSafeArea:0];
   if (self->_usesPopoverStyleForFavorites)
   {
     [(AbstractCatalogViewController *)self->_popoverCatalogViewController takeOwnershipOfStartPageViewController];
     [(PopoverCatalogViewController *)self->_popoverCatalogViewController updateStartPagePreferredContentSize];
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    v9 = [WeakRetained rootViewController];
-    v10 = [v9 _sf_viewControllerToPresentFrom];
-    v11 = [v10 presentedViewController];
+    rootViewController = [WeakRetained rootViewController];
+    _sf_viewControllerToPresentFrom = [rootViewController _sf_viewControllerToPresentFrom];
+    presentedViewController = [_sf_viewControllerToPresentFrom presentedViewController];
 
-    if (!v11)
+    if (!presentedViewController)
     {
       [(CatalogViewController *)self _presentPopoverWithViewController:self->_popoverCatalogViewController];
     }
@@ -309,13 +309,13 @@ LABEL_9:
   scrollPocketCollector = self->_scrollPocketCollector;
   self->_scrollPocketCollector = v12;
 
-  [v3 addInteraction:self->_scrollPocketCollector];
+  [view addInteraction:self->_scrollPocketCollector];
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v41 = [(CatalogViewController *)self view];
-  [v41 bounds];
+  view = [(CatalogViewController *)self view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -323,8 +323,8 @@ LABEL_9:
   v11 = self->_completionsViewController;
   if ([(AbstractCatalogViewController *)self isResponsibleForLayoutOfViewController:v11])
   {
-    v12 = [(CatalogViewController *)self view];
-    [v12 safeAreaInsets];
+    view2 = [(CatalogViewController *)self view];
+    [view2 safeAreaInsets];
     UIEdgeInsetsSubtract();
 
     UIEdgeInsetsMax();
@@ -332,17 +332,17 @@ LABEL_9:
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [(CompletionListTableViewController *)v11 tableView];
-    [v21 setFrame:{v4, v6, v8, v10}];
-    [v21 setContentInset:{v14, v16, v18, v20}];
-    [v21 setScrollIndicatorInsets:{v14, v16, v18, v20}];
+    tableView = [(CompletionListTableViewController *)v11 tableView];
+    [tableView setFrame:{v4, v6, v8, v10}];
+    [tableView setContentInset:{v14, v16, v18, v20}];
+    [tableView setScrollIndicatorInsets:{v14, v16, v18, v20}];
   }
 
   v22 = self->_startPageViewController;
   if ([(AbstractCatalogViewController *)self isResponsibleForLayoutOfViewController:v22])
   {
     [(_SFNavigationBarCommon *)self->_navigationBar layoutIfNeeded];
-    [(_SFNavigationBarCommon *)self->_navigationBar urlOutlineFrameRelativeToView:v41];
+    [(_SFNavigationBarCommon *)self->_navigationBar urlOutlineFrameRelativeToView:view];
     x = v43.origin.x;
     y = v43.origin.y;
     width = v43.size.width;
@@ -369,12 +369,12 @@ LABEL_9:
     startPageGeometryIsFrozen = self->_startPageGeometryIsFrozen;
     if (!startPageGeometryIsFrozen)
     {
-      v28 = [(SFStartPageViewController *)v22 view];
-      [v28 setFrame:{v4, v6, v8, v10}];
+      view3 = [(SFStartPageViewController *)v22 view];
+      [view3 setFrame:{v4, v6, v8, v10}];
       if ([MEMORY[0x277D49A08] is2024FavoritesEnabled])
       {
-        v29 = [(CatalogViewController *)self view];
-        [v29 _sf_hasLandscapeAspectRatio];
+        view4 = [(CatalogViewController *)self view];
+        [view4 _sf_hasLandscapeAspectRatio];
       }
 
       v47.origin.x = v4;
@@ -385,13 +385,13 @@ LABEL_9:
       _SFRoundFloatToPixels();
       if (!self->_usesPopoverStyleForFavorites)
       {
-        v30 = [(CatalogViewController *)self traitCollection];
-        [v30 horizontalSizeClass];
+        traitCollection = [(CatalogViewController *)self traitCollection];
+        [traitCollection horizontalSizeClass];
       }
 
       _SFDefaultLayoutMargins();
       UIEdgeInsetsReplace();
-      [v28 setLayoutMargins:?];
+      [view3 setLayoutMargins:?];
 
       startPageGeometryIsFrozen = self->_startPageGeometryIsFrozen;
     }
@@ -407,8 +407,8 @@ LABEL_9:
     v35 = v6 + v34;
     v37 = v8 - (v32 + v36);
     v39 = v10 - (v34 + v38);
-    v40 = [(UniversalSearchFirstTimeExperienceViewController *)v31 view];
-    [v40 setFrame:{v33, v35, v37, v39}];
+    view5 = [(UniversalSearchFirstTimeExperienceViewController *)v31 view];
+    [view5 setFrame:{v33, v35, v37, v39}];
   }
 }
 
@@ -437,53 +437,53 @@ LABEL_9:
   [(CatalogViewController *)self _updateBackgroundColorWhenShowingFavoritesNavigationController];
   [(StartPageController *)self->_startPageController setShowingAsPopover:0];
   topScrollEdgeEffectColor = self->_topScrollEdgeEffectColor;
-  v4 = [(StartPageController *)self->_startPageController viewController];
-  [v4 setTopScrollEdgeEffectColor:topScrollEdgeEffectColor];
+  viewController = [(StartPageController *)self->_startPageController viewController];
+  [viewController setTopScrollEdgeEffectColor:topScrollEdgeEffectColor];
 
   topScrollEdgeEffectStyle = self->_topScrollEdgeEffectStyle;
-  v6 = [(StartPageController *)self->_startPageController viewController];
-  [v6 setTopScrollEdgeEffectStyle:topScrollEdgeEffectStyle];
+  viewController2 = [(StartPageController *)self->_startPageController viewController];
+  [viewController2 setTopScrollEdgeEffectStyle:topScrollEdgeEffectStyle];
 }
 
 - (void)updateStartPageControlTintColor
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v3 = [WeakRetained isPrivateBrowsingEnabled];
-  if (v3)
+  isPrivateBrowsingEnabled = [WeakRetained isPrivateBrowsingEnabled];
+  if (isPrivateBrowsingEnabled)
   {
-    v4 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
   }
 
   else
   {
-    v4 = 0;
+    labelColor = 0;
   }
 
-  v5 = [(StartPageController *)self->_startPageController viewController];
-  [v5 setPreferredControlTintColor:v4];
+  viewController = [(StartPageController *)self->_startPageController viewController];
+  [viewController setPreferredControlTintColor:labelColor];
 
-  if (v3)
+  if (isPrivateBrowsingEnabled)
   {
   }
 }
 
 - (void)resetFavorites
 {
-  v3 = [(StartPageController *)self->_startPageController libraryType];
+  libraryType = [(StartPageController *)self->_startPageController libraryType];
 
-  if (!v3)
+  if (!libraryType)
   {
     [(StartPageController *)self->_startPageController updatePrivateBrowsingExplanationState];
-    v4 = [(StartPageController *)self->_startPageController viewController];
-    [v4 resetToRootViewWithCustomizationPolicy:{-[CatalogViewController startPageCustomizationPolicy](self, "startPageCustomizationPolicy")}];
+    viewController = [(StartPageController *)self->_startPageController viewController];
+    [viewController resetToRootViewWithCustomizationPolicy:{-[CatalogViewController startPageCustomizationPolicy](self, "startPageCustomizationPolicy")}];
   }
 }
 
 - (id)childViewControllerForStatusBarStyle
 {
-  v3 = [(AbstractCatalogViewController *)self foregroundChildViewController];
-  v4 = v3;
-  if (v3 == self->_startPageViewController)
+  foregroundChildViewController = [(AbstractCatalogViewController *)self foregroundChildViewController];
+  v4 = foregroundChildViewController;
+  if (foregroundChildViewController == self->_startPageViewController)
   {
     v5 = [(AbstractCatalogViewController *)self isResponsibleForLayoutOfViewController:?];
 
@@ -506,8 +506,8 @@ LABEL_6:
 
 - (void)updateStartPageTopSpacing
 {
-  v2 = [(StartPageController *)self->_startPageController viewController];
-  [v2 updateStartPageTopPadding];
+  viewController = [(StartPageController *)self->_startPageController viewController];
+  [viewController updateStartPageTopPadding];
 }
 
 - (UIButton)sidebarButton
@@ -516,9 +516,9 @@ LABEL_6:
   if (!sidebarButton)
   {
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    v5 = [WeakRetained makeSidebarButton];
+    makeSidebarButton = [WeakRetained makeSidebarButton];
     v6 = self->_sidebarButton;
-    self->_sidebarButton = v5;
+    self->_sidebarButton = makeSidebarButton;
 
     sidebarButton = self->_sidebarButton;
   }
@@ -560,25 +560,25 @@ LABEL_6:
 {
   if ([(AbstractCatalogViewController *)self isResponsibleForLayoutOfViewController:self->_startPageViewController])
   {
-    v12 = [(CatalogViewController *)self view];
-    [v12 safeAreaInsets];
+    view = [(CatalogViewController *)self view];
+    [view safeAreaInsets];
     UIEdgeInsetsSubtract();
     v4 = v3;
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(CatalogViewController *)self startPageViewController];
-    [v11 setAdditionalSafeAreaInsets:{v4, v6, v8, v10}];
+    startPageViewController = [(CatalogViewController *)self startPageViewController];
+    [startPageViewController setAdditionalSafeAreaInsets:{v4, v6, v8, v10}];
   }
 }
 
 - (BOOL)popoverIsShowing
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained rootViewController];
-  v5 = [v4 topBar];
+  rootViewController = [WeakRetained rootViewController];
+  topBar = [rootViewController topBar];
 
-  if (!v5)
+  if (!topBar)
   {
     return 0;
   }
@@ -594,17 +594,17 @@ LABEL_6:
   }
 
   v7 = v6;
-  v8 = [(UIPopoverPresentationController *)v6 containerView];
-  v9 = [v8 window];
-  if (v9)
+  containerView = [(UIPopoverPresentationController *)v6 containerView];
+  window = [containerView window];
+  if (window)
   {
     v10 = 1;
   }
 
   else
   {
-    v11 = [(UIPopoverPresentationController *)v7 presentingViewController];
-    v10 = v11 != 0;
+    presentingViewController = [(UIPopoverPresentationController *)v7 presentingViewController];
+    v10 = presentingViewController != 0;
   }
 
   return v10;
@@ -612,13 +612,13 @@ LABEL_6:
 
 - (void)startPageUpdatePolicyDidChange
 {
-  v3 = [(StartPageController *)self->_startPageController viewController];
+  viewController = [(StartPageController *)self->_startPageController viewController];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __55__CatalogViewController_startPageUpdatePolicyDidChange__block_invoke;
   v4[3] = &unk_2781D4D40;
   v4[4] = self;
-  [v3 coalesceDataReloadWithBlock:v4 animatingDifferences:1];
+  [viewController coalesceDataReloadWithBlock:v4 animatingDifferences:1];
 }
 
 uint64_t __55__CatalogViewController_startPageUpdatePolicyDidChange__block_invoke(uint64_t a1)
@@ -645,12 +645,12 @@ uint64_t __55__CatalogViewController_startPageUpdatePolicyDidChange__block_invok
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   v3 = +[UniversalSearchFirstTimeExperienceViewController hasShownParsecFirstTimeUserExperience];
-  v4 = [MEMORY[0x277D4A058] areSiriSearchSuggestionsEnabled];
+  areSiriSearchSuggestionsEnabled = [MEMORY[0x277D4A058] areSiriSearchSuggestionsEnabled];
   v5 = WeakRetained;
-  if (v4)
+  if (areSiriSearchSuggestionsEnabled)
   {
-    v6 = [WeakRetained configuration];
-    v7 = [v6 allowsSearchFeedback] & v3;
+    configuration = [WeakRetained configuration];
+    v7 = [configuration allowsSearchFeedback] & v3;
 
     v5 = WeakRetained;
     if (v7 == 1)
@@ -660,9 +660,9 @@ uint64_t __55__CatalogViewController_startPageUpdatePolicyDidChange__block_invok
         goto LABEL_7;
       }
 
-      v8 = [(CompletionList *)self->_completionList parsecSearchSession];
+      parsecSearchSession = [(CompletionList *)self->_completionList parsecSearchSession];
 
-      if (!v8)
+      if (!parsecSearchSession)
       {
         [(CompletionList *)self->_completionList setParsecSearchSession:self->_parsecSearchSession];
       }
@@ -671,13 +671,13 @@ uint64_t __55__CatalogViewController_startPageUpdatePolicyDidChange__block_invok
       if (!self->_parsecSearchSession)
       {
 LABEL_7:
-        v9 = [v5 universalSearchSession];
+        universalSearchSession = [v5 universalSearchSession];
         parsecSearchSession = self->_parsecSearchSession;
-        self->_parsecSearchSession = v9;
+        self->_parsecSearchSession = universalSearchSession;
 
         v11 = self->_parsecSearchSession;
-        v12 = [MEMORY[0x277D759A0] mainScreen];
-        [v12 scale];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen scale];
         [(WBSParsecDSession *)v11 setUIScale:?];
 
         [(CompletionList *)self->_completionList setParsecSearchSession:self->_parsecSearchSession];
@@ -689,11 +689,11 @@ LABEL_7:
 
 - (void)_deselectCompletionsViewControllerSelectedRow
 {
-  v4 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
-  v3 = [v4 indexPathForSelectedRow];
-  if (v3)
+  tableView = [(CompletionListTableViewController *)self->_completionsViewController tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
+  if (indexPathForSelectedRow)
   {
-    [v4 deselectRowAtIndexPath:v3 animated:0];
+    [tableView deselectRowAtIndexPath:indexPathForSelectedRow animated:0];
     [(CatalogViewController *)self _updateSearchFieldIcon];
   }
 }
@@ -702,43 +702,43 @@ LABEL_7:
 {
   if ([(CatalogViewController *)self isShowingUniversalSearchFirstTimeExperience])
   {
-    v3 = [(CatalogViewController *)self universalSearchFirstTimeExperienceViewController];
-    [(CatalogViewController *)self didCancelUniversalSearchFirstTimeExperienceViewController:v3];
+    universalSearchFirstTimeExperienceViewController = [(CatalogViewController *)self universalSearchFirstTimeExperienceViewController];
+    [(CatalogViewController *)self didCancelUniversalSearchFirstTimeExperienceViewController:universalSearchFirstTimeExperienceViewController];
   }
 }
 
 - (BOOL)isShowingUniversalSearchFirstTimeExperience
 {
-  v3 = [(UniversalSearchFirstTimeExperienceViewController *)self->_universalSearchFirstTimeExperienceViewController parentViewController];
-  if (v3)
+  parentViewController = [(UniversalSearchFirstTimeExperienceViewController *)self->_universalSearchFirstTimeExperienceViewController parentViewController];
+  if (parentViewController)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(UniversalSearchFirstTimeExperienceViewController *)self->_universalSearchFirstTimeExperienceViewController presentingViewController];
-    v4 = v5 != 0;
+    presentingViewController = [(UniversalSearchFirstTimeExperienceViewController *)self->_universalSearchFirstTimeExperienceViewController presentingViewController];
+    v4 = presentingViewController != 0;
   }
 
   return v4;
 }
 
-- (void)test_simulateTyping:(id)a3 inGroup:(id)a4 startIndex:(unint64_t)a5
+- (void)test_simulateTyping:(id)typing inGroup:(id)group startIndex:(unint64_t)index
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 length] >= a5)
+  typingCopy = typing;
+  groupCopy = group;
+  if ([typingCopy length] >= index)
   {
     v10 = dispatch_time(0, 500000000);
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __73__CatalogViewController_Testing__test_simulateTyping_inGroup_startIndex___block_invoke;
     v11[3] = &unk_2781D5AA0;
-    v15 = a5;
-    v12 = v8;
-    v13 = v9;
-    v14 = self;
+    indexCopy = index;
+    v12 = typingCopy;
+    v13 = groupCopy;
+    selfCopy = self;
     dispatch_after(v10, MEMORY[0x277D85CD0], v11);
   }
 }
@@ -786,17 +786,17 @@ void __73__CatalogViewController_Testing__test_simulateTyping_inGroup_startIndex
 
 - (int64_t)_completionListQueryID
 {
-  v2 = [(CompletionList *)self->_completionList query];
-  v3 = [v2 queryID];
-  if (!v3)
+  query = [(CompletionList *)self->_completionList query];
+  queryID = [query queryID];
+  if (!queryID)
   {
-    v3 = [MEMORY[0x277D49ED8] currentQueryID];
+    queryID = [MEMORY[0x277D49ED8] currentQueryID];
   }
 
-  return v3;
+  return queryID;
 }
 
-- (void)_parsecEnabledDidChange:(id)a3
+- (void)_parsecEnabledDidChange:(id)change
 {
   if (([MEMORY[0x277D4A058] areSiriSearchSuggestionsEnabled] & 1) == 0)
   {
@@ -805,20 +805,20 @@ void __73__CatalogViewController_Testing__test_simulateTyping_inGroup_startIndex
   }
 }
 
-- (CatalogViewController)initWithDelegate:(id)a3 browserController:(id)a4
+- (CatalogViewController)initWithDelegate:(id)delegate browserController:(id)controller
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  controllerCopy = controller;
   v34.receiver = self;
   v34.super_class = CatalogViewController;
   v8 = [(CatalogViewController *)&v34 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_browserController, v7);
-    objc_storeWeak(&v9->_delegate, v6);
-    v10 = [v6 catalogViewControllerStartPageVisualStyleProvider:v9];
+    objc_storeWeak(&v8->_browserController, controllerCopy);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    v10 = [delegateCopy catalogViewControllerStartPageVisualStyleProvider:v9];
     if (v10)
     {
       v11 = [[StartPageController alloc] initWithVisualStyleProvider:v10];
@@ -832,22 +832,22 @@ void __73__CatalogViewController_Testing__test_simulateTyping_inGroup_startIndex
     startPageController = v9->_startPageController;
     v9->_startPageController = v11;
 
-    [(StartPageController *)v9->_startPageController setDataSource:v7];
-    v13 = [v7 tabController];
-    v14 = [v13 activeTabDocument];
-    v15 = [v14 libraryType];
-    [(StartPageController *)v9->_startPageController setLibraryType:v15];
+    [(StartPageController *)v9->_startPageController setDataSource:controllerCopy];
+    tabController = [controllerCopy tabController];
+    activeTabDocument = [tabController activeTabDocument];
+    libraryType = [activeTabDocument libraryType];
+    [(StartPageController *)v9->_startPageController setLibraryType:libraryType];
 
     v16 = +[Application sharedApplication];
-    v17 = [v16 tabGroupManager];
+    tabGroupManager = [v16 tabGroupManager];
 
-    [v17 addTabGroupObserver:v9->_startPageController];
-    [v17 addCloudTabsObserver:v9->_startPageController];
+    [tabGroupManager addTabGroupObserver:v9->_startPageController];
+    [tabGroupManager addCloudTabsObserver:v9->_startPageController];
     [(CatalogViewController *)v9 updateStartPageCustomizationPolicy];
     [(CatalogViewController *)v9 updateStartPageHidesEmptyRootViewNavigationBar];
-    v18 = [(StartPageController *)v9->_startPageController viewController];
-    [v18 setDelegate:v9];
-    objc_storeStrong(&v9->_startPageViewController, v18);
+    viewController = [(StartPageController *)v9->_startPageController viewController];
+    [viewController setDelegate:v9];
+    objc_storeStrong(&v9->_startPageViewController, viewController);
     v19 = objc_alloc_init(PopoverCatalogViewController);
     popoverCatalogViewController = v9->_popoverCatalogViewController;
     v9->_popoverCatalogViewController = v19;
@@ -856,22 +856,22 @@ void __73__CatalogViewController_Testing__test_simulateTyping_inGroup_startIndex
     seenVisibleResults = v9->_seenVisibleResults;
     v9->_seenVisibleResults = v21;
 
-    v23 = [MEMORY[0x277D759B8] automaticStyle];
+    automaticStyle = [MEMORY[0x277D759B8] automaticStyle];
     topScrollEdgeEffectStyle = v9->_topScrollEdgeEffectStyle;
-    v9->_topScrollEdgeEffectStyle = v23;
+    v9->_topScrollEdgeEffectStyle = automaticStyle;
 
     [(PopoverCatalogViewController *)v9->_popoverCatalogViewController setPrimaryCatalogViewController:v9];
-    if ([v6 catalogViewControllerShouldRequestNetworkedSuggestions:v9])
+    if ([delegateCopy catalogViewControllerShouldRequestNetworkedSuggestions:v9])
     {
       [(CatalogViewController *)v9 _beginParsecSessionIfNeeded];
     }
 
-    v25 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v25 addObserver:v9 selector:sel__parsecEnabledDidChange_ name:*MEMORY[0x277D4A498] object:0];
-    [v25 addObserver:v9 selector:sel__keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
-    [v25 addObserver:v9 selector:sel__keyboardDidShow_ name:*MEMORY[0x277D76BA8] object:0];
-    [v25 addObserver:v9 selector:sel__keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
-    [v25 addObserver:v9 selector:sel__keyboardDidHide_ name:*MEMORY[0x277D76BA0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__parsecEnabledDidChange_ name:*MEMORY[0x277D4A498] object:0];
+    [defaultCenter addObserver:v9 selector:sel__keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
+    [defaultCenter addObserver:v9 selector:sel__keyboardDidShow_ name:*MEMORY[0x277D76BA8] object:0];
+    [defaultCenter addObserver:v9 selector:sel__keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
+    [defaultCenter addObserver:v9 selector:sel__keyboardDidHide_ name:*MEMORY[0x277D76BA0] object:0];
     v36[0] = objc_opt_class();
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:1];
     v27 = [(CatalogViewController *)v9 registerForTraitChanges:v26 withTarget:v9 action:sel_horizontalSizeClassDidChange_previousTraitCollection_];
@@ -895,62 +895,62 @@ void __73__CatalogViewController_Testing__test_simulateTyping_inGroup_startIndex
 {
   [(CatalogViewController *)self _invalidatePendingVoiceSearchTimer];
   [(CatalogViewController *)self _clearParsecSearchSession];
-  v3 = [(CatalogViewController *)self unifiedTextField];
-  [v3 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
-  v4 = [(CompletionList *)self->_completionList delegate];
+  unifiedTextField = [(CatalogViewController *)self unifiedTextField];
+  [unifiedTextField removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  delegate = [(CompletionList *)self->_completionList delegate];
 
-  if (v4 == self)
+  if (delegate == self)
   {
     [(CompletionList *)self->_completionList setDelegate:0];
   }
 
-  v5 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
-  [v5 setDataSource:0];
-  [v5 setDelegate:0];
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self];
+  tableView = [(CompletionListTableViewController *)self->_completionsViewController tableView];
+  [tableView setDataSource:0];
+  [tableView setDelegate:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v7 = +[Application sharedApplication];
-  v8 = [v7 tabGroupManager];
-  [v8 removeTabGroupObserver:self->_startPageController];
+  tabGroupManager = [v7 tabGroupManager];
+  [tabGroupManager removeTabGroupObserver:self->_startPageController];
 
   v9.receiver = self;
   v9.super_class = CatalogViewController;
   [(CatalogViewController *)&v9 dealloc];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CatalogViewController;
-  [(CatalogViewController *)&v4 viewDidAppear:a3];
+  [(CatalogViewController *)&v4 viewDidAppear:appear];
   [(CatalogViewController *)self _deselectCompletionsViewControllerSelectedRow];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v4 = a3;
-  if (!v4 && !self->_transitioningToNewSizeClass)
+  controllerCopy = controller;
+  if (!controllerCopy && !self->_transitioningToNewSizeClass)
   {
     [(CatalogViewController *)self dismissCompletionDetailWindowAndResumeEditingIfNeeded:0 completionHandler:0];
   }
 
-  v5 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
-  [(CatalogViewController *)self _updateVisibilityForCompletionListTableView:v5];
+  tableView = [(CompletionListTableViewController *)self->_completionsViewController tableView];
+  [(CatalogViewController *)self _updateVisibilityForCompletionListTableView:tableView];
 
   v6.receiver = self;
   v6.super_class = CatalogViewController;
-  [(CatalogViewController *)&v6 willMoveToParentViewController:v4];
+  [(CatalogViewController *)&v6 willMoveToParentViewController:controllerCopy];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __76__CatalogViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v4[3] = &unk_2781DC1C0;
   v4[4] = self;
-  [a4 animateAlongsideTransition:v4 completion:0];
+  [coordinator animateAlongsideTransition:v4 completion:0];
 }
 
 void __76__CatalogViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1, void *a2)
@@ -970,9 +970,9 @@ void __76__CatalogViewController_viewWillTransitionToSize_withTransitionCoordina
   [(CatalogViewController *)self _reloadCompletionTable];
 }
 
-- (void)horizontalSizeClassDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)horizontalSizeClassDidChange:(id)change previousTraitCollection:(id)collection
 {
-  if ([a4 horizontalSizeClass] && !self->_showingCompletions && (-[UnifiedField isFirstResponder](self->_textField, "isFirstResponder") & 1) == 0 && !self->_transitioningToNewSizeClass)
+  if ([collection horizontalSizeClass] && !self->_showingCompletions && (-[UnifiedField isFirstResponder](self->_textField, "isFirstResponder") & 1) == 0 && !self->_transitioningToNewSizeClass)
   {
     completionList = self->_completionList;
     self->_completionList = 0;
@@ -986,20 +986,20 @@ void __76__CatalogViewController_viewWillTransitionToSize_withTransitionCoordina
   self->_startPageGeometryIsFrozen = 0;
   if (self->_startPageGeometryWasFrozenDuringLastLayout)
   {
-    v3 = [(CatalogViewController *)self view];
-    [v3 setNeedsLayout];
+    view = [(CatalogViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
-- (void)_updateVisibilityForCompletionListTableView:(id)a3
+- (void)_updateVisibilityForCompletionListTableView:(id)view
 {
-  v6 = a3;
-  v4 = [MEMORY[0x277D28EB8] sharedManager];
-  v5 = [v4 liveCompletionList];
+  viewCopy = view;
+  mEMORY[0x277D28EB8] = [MEMORY[0x277D28EB8] sharedManager];
+  liveCompletionList = [mEMORY[0x277D28EB8] liveCompletionList];
 
-  if ((v5 & 1) == 0)
+  if ((liveCompletionList & 1) == 0)
   {
-    [v6 setHidden:{-[UnifiedField voiceSearchState](self->_textField, "voiceSearchState") == 1}];
+    [viewCopy setHidden:{-[UnifiedField voiceSearchState](self->_textField, "voiceSearchState") == 1}];
   }
 }
 
@@ -1011,25 +1011,25 @@ void __76__CatalogViewController_viewWillTransitionToSize_withTransitionCoordina
     v4 = objc_alloc_init(CompletionListTableViewController);
     [(CompletionListTableViewController *)v4 setClearsSelectionOnViewWillAppear:0];
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    v6 = [WeakRetained rootViewController];
-    v7 = [v6 tipsCoordinator];
-    v8 = [v7 webSearchTipView];
-    [(CompletionListTableViewController *)v4 setWebSearchTipView:v8];
+    rootViewController = [WeakRetained rootViewController];
+    tipsCoordinator = [rootViewController tipsCoordinator];
+    webSearchTipView = [tipsCoordinator webSearchTipView];
+    [(CompletionListTableViewController *)v4 setWebSearchTipView:webSearchTipView];
 
-    v9 = [(CompletionListTableViewController *)v4 tableView];
-    [v9 setDelegate:self];
-    [v9 setEstimatedRowHeight:+[UITableViewCell safari_defaultHeightOfTrivialInstance]()];
-    [v9 setLayoutMarginsFollowReadableWidth:0];
-    [v9 setRowHeight:*MEMORY[0x277D76F30]];
-    [(CatalogViewController *)self _updateVisibilityForCompletionListTableView:v9];
-    v10 = [(CompletionListTableViewController *)v4 dataSource];
-    [v10 setActionHandler:self];
+    tableView = [(CompletionListTableViewController *)v4 tableView];
+    [tableView setDelegate:self];
+    [tableView setEstimatedRowHeight:+[UITableViewCell safari_defaultHeightOfTrivialInstance]()];
+    [tableView setLayoutMarginsFollowReadableWidth:0];
+    [tableView setRowHeight:*MEMORY[0x277D76F30]];
+    [(CatalogViewController *)self _updateVisibilityForCompletionListTableView:tableView];
+    dataSource = [(CompletionListTableViewController *)v4 dataSource];
+    [dataSource setActionHandler:self];
 
     v11 = self->_completionsViewController;
     self->_completionsViewController = v4;
 
-    v12 = [(CompletionListTableViewController *)self->_completionsViewController dataSource];
-    [v12 updateTableViewWithCompletionList:self->_completionList animated:0 completion:0];
+    dataSource2 = [(CompletionListTableViewController *)self->_completionsViewController dataSource];
+    [dataSource2 updateTableViewWithCompletionList:self->_completionList animated:0 completion:0];
 
     v13 = objc_alloc_init(CompletionListDismissalAnalyticsReporter);
     completionDismissalReporter = self->_completionDismissalReporter;
@@ -1044,19 +1044,19 @@ void __76__CatalogViewController_viewWillTransitionToSize_withTransitionCoordina
 - (void)didGainOwnershipOfCompletionsViewController
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained rootViewController];
-  -[CompletionListTableViewController setShowsWebSearchTipIfExists:](self->_completionsViewController, "setShowsWebSearchTipIfExists:", [v4 isUsingBottomCapsule] ^ 1);
+  rootViewController = [WeakRetained rootViewController];
+  -[CompletionListTableViewController setShowsWebSearchTipIfExists:](self->_completionsViewController, "setShowsWebSearchTipIfExists:", [rootViewController isUsingBottomCapsule] ^ 1);
 
-  v14 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
-  v5 = [v14 separatorEffect];
-  [v14 setSeparatorEffect:0];
-  v6 = [v14 separatorEffect];
+  tableView = [(CompletionListTableViewController *)self->_completionsViewController tableView];
+  separatorEffect = [tableView separatorEffect];
+  [tableView setSeparatorEffect:0];
+  separatorEffect2 = [tableView separatorEffect];
   v7 = WBSIsEqual();
 
   if ((v7 & 1) == 0)
   {
-    v8 = [(CompletionListTableViewController *)self->_completionsViewController dataSource];
-    [v8 reloadVisibleRows];
+    dataSource = [(CompletionListTableViewController *)self->_completionsViewController dataSource];
+    [dataSource reloadVisibleRows];
   }
 
   if (!self->_usesPopoverStyleForFavorites)
@@ -1067,29 +1067,29 @@ void __76__CatalogViewController_viewWillTransitionToSize_withTransitionCoordina
     }
   }
 
-  [v14 setContentInset:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
-  v11 = [(StartPageController *)self->_startPageController viewController];
-  v12 = [v11 showsWallpaper];
+  [tableView setContentInset:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
+  viewController = [(StartPageController *)self->_startPageController viewController];
+  showsWallpaper = [viewController showsWallpaper];
 
-  if (v12)
+  if (showsWallpaper)
   {
-    v13 = [(UIBarButtonItem *)self->_cancelBarButton customView];
-    [v13 setOpaqueBackgroundVisibility:1.0];
+    customView = [(UIBarButtonItem *)self->_cancelBarButton customView];
+    [customView setOpaqueBackgroundVisibility:1.0];
   }
 }
 
 - (void)relinquishOwnershipOfCompletionsViewControllerFromCurrentParent
 {
-  v3 = [(StartPageController *)self->_startPageController viewController];
-  [v3 setAlternateContentViewController:0];
+  viewController = [(StartPageController *)self->_startPageController viewController];
+  [viewController setAlternateContentViewController:0];
 
-  v4 = [(StartPageController *)self->_startPageController viewController];
-  v5 = [v4 showsWallpaper];
+  viewController2 = [(StartPageController *)self->_startPageController viewController];
+  showsWallpaper = [viewController2 showsWallpaper];
 
-  if (v5)
+  if (showsWallpaper)
   {
-    v6 = [(UIBarButtonItem *)self->_cancelBarButton customView];
-    [v6 setOpaqueBackgroundVisibility:0.0];
+    customView = [(UIBarButtonItem *)self->_cancelBarButton customView];
+    [customView setOpaqueBackgroundVisibility:0.0];
   }
 
   v7.receiver = self;
@@ -1099,14 +1099,14 @@ void __76__CatalogViewController_viewWillTransitionToSize_withTransitionCoordina
 
 - (void)relinquishOwnershipOfUniversalSearchFirstTimeExperienceViewControllerFromCurrentParent
 {
-  v3 = [(StartPageController *)self->_startPageController viewController];
-  v4 = [v3 alternateContentViewController];
+  viewController = [(StartPageController *)self->_startPageController viewController];
+  alternateContentViewController = [viewController alternateContentViewController];
   universalSearchFirstTimeExperienceViewController = self->_universalSearchFirstTimeExperienceViewController;
 
-  if (v4 == universalSearchFirstTimeExperienceViewController)
+  if (alternateContentViewController == universalSearchFirstTimeExperienceViewController)
   {
-    v6 = [(StartPageController *)self->_startPageController viewController];
-    [v6 setAlternateContentViewController:0];
+    viewController2 = [(StartPageController *)self->_startPageController viewController];
+    [viewController2 setAlternateContentViewController:0];
   }
 
   v7.receiver = self;
@@ -1116,31 +1116,31 @@ void __76__CatalogViewController_viewWillTransitionToSize_withTransitionCoordina
 
 - (void)_updateAlternateContentViewController
 {
-  v3 = [(CompletionListTableViewController *)self->_completionsViewController parentViewController];
+  parentViewController = [(CompletionListTableViewController *)self->_completionsViewController parentViewController];
 
-  if (v3 == self)
+  if (parentViewController == self)
   {
     completionsViewController = self->_completionsViewController;
-    v5 = [(StartPageController *)self->_startPageController viewController];
-    [v5 setAlternateContentViewController:completionsViewController];
+    viewController = [(StartPageController *)self->_startPageController viewController];
+    [viewController setAlternateContentViewController:completionsViewController];
   }
 }
 
 - (void)didGainOwnershipOfUniversalSearchFirstTimeExperienceViewController
 {
-  v3 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-  v4 = [(UniversalSearchFirstTimeExperienceViewController *)self->_universalSearchFirstTimeExperienceViewController view];
-  [v4 setBackgroundColor:v3];
+  systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+  view = [(UniversalSearchFirstTimeExperienceViewController *)self->_universalSearchFirstTimeExperienceViewController view];
+  [view setBackgroundColor:systemGroupedBackgroundColor];
 
   universalSearchFirstTimeExperienceViewController = self->_universalSearchFirstTimeExperienceViewController;
-  v6 = [(StartPageController *)self->_startPageController viewController];
-  [v6 setAlternateContentViewController:universalSearchFirstTimeExperienceViewController];
+  viewController = [(StartPageController *)self->_startPageController viewController];
+  [viewController setAlternateContentViewController:universalSearchFirstTimeExperienceViewController];
 }
 
 - (double)navigationBarHeight
 {
-  v2 = [(StartPageController *)self->_startPageController viewController];
-  [v2 navigationBarHeight];
+  viewController = [(StartPageController *)self->_startPageController viewController];
+  [viewController navigationBarHeight];
   v4 = v3;
 
   return v4;
@@ -1148,45 +1148,45 @@ void __76__CatalogViewController_viewWillTransitionToSize_withTransitionCoordina
 
 - (void)ignorePreviousLayoutSize
 {
-  v2 = [(StartPageController *)self->_startPageController viewController];
-  [v2 ignorePreviousLayoutSize];
+  viewController = [(StartPageController *)self->_startPageController viewController];
+  [viewController ignorePreviousLayoutSize];
 }
 
-- (void)reloadNavigationItemAnimated:(BOOL)a3
+- (void)reloadNavigationItemAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(CatalogViewController *)self updateStartPageHidesEmptyRootViewNavigationBar];
-  v5 = [(StartPageController *)self->_startPageController viewController];
-  [v5 reloadNavigationItemAnimated:v3];
+  viewController = [(StartPageController *)self->_startPageController viewController];
+  [viewController reloadNavigationItemAnimated:animatedCopy];
 }
 
-- (void)setCompletionList:(id)a3
+- (void)setCompletionList:(id)list
 {
-  v5 = a3;
-  if (self->_completionList != v5)
+  listCopy = list;
+  if (self->_completionList != listCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_completionList, a3);
+    v9 = listCopy;
+    objc_storeStrong(&self->_completionList, list);
     [(CompletionList *)self->_completionList setDelegate:self];
     WeakRetained = objc_loadWeakRetained(&self->_loadProgressObserver);
     [(CompletionList *)self->_completionList setLoadProgressObserver:WeakRetained];
 
     [(CompletionList *)self->_completionList setParsecSearchSession:self->_parsecSearchSession];
-    v5 = v9;
+    listCopy = v9;
     if (self->_showingCompletions)
     {
       completionList = self->_completionList;
-      v8 = [(CompletionList *)completionList query];
-      [(CatalogViewController *)self completionListDidUpdate:completionList forQuery:v8];
+      query = [(CompletionList *)completionList query];
+      [(CatalogViewController *)self completionListDidUpdate:completionList forQuery:query];
 
-      v5 = v9;
+      listCopy = v9;
     }
   }
 }
 
-- (void)setLoadProgressObserver:(id)a3
+- (void)setLoadProgressObserver:(id)observer
 {
-  obj = a3;
+  obj = observer;
   WeakRetained = objc_loadWeakRetained(&self->_loadProgressObserver);
 
   if (WeakRetained != obj)
@@ -1208,21 +1208,21 @@ void __76__CatalogViewController_viewWillTransitionToSize_withTransitionCoordina
   return [(UIPopoverPresentationController *)popoverPresentationController dismissing];
 }
 
-- (void)setQueryString:(id)a3 forUpdatingCompletionListOnRestore:(BOOL)a4
+- (void)setQueryString:(id)string forUpdatingCompletionListOnRestore:(BOOL)restore
 {
-  v4 = a4;
-  v6 = a3;
+  restoreCopy = restore;
+  stringCopy = string;
   [(CatalogViewController *)self _ensureCompletionListAndParsecSession];
   [(UnifiedField *)self->_textField clearUserTypedText];
-  [(UnifiedField *)self->_textField setText:v6];
+  [(UnifiedField *)self->_textField setText:stringCopy];
 
-  [(CatalogViewController *)self _textFieldEditingChangedForUpdatingCompletionListOnRestore:v4];
+  [(CatalogViewController *)self _textFieldEditingChangedForUpdatingCompletionListOnRestore:restoreCopy];
 }
 
-- (void)_presentPopoverWithViewController:(id)a3 completionHandler:(id)a4
+- (void)_presentPopoverWithViewController:(id)controller completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (![MEMORY[0x277D49A08] isSolariumEnabled])
   {
@@ -1230,24 +1230,24 @@ void __76__CatalogViewController_viewWillTransitionToSize_withTransitionCoordina
     aBlock[1] = 3221225472;
     aBlock[2] = __77__CatalogViewController__presentPopoverWithViewController_completionHandler___block_invoke;
     aBlock[3] = &unk_2781D4D90;
-    v11 = v7;
+    v11 = handlerCopy;
     v18 = v11;
     v12 = _Block_copy(aBlock);
-    v13 = [v6 parentViewController];
-    if (v13 || ([v6 presentingViewController], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+    parentViewController = [controllerCopy parentViewController];
+    if (parentViewController || ([controllerCopy presentingViewController], (parentViewController = objc_claimAutoreleasedReturnValue()) != 0))
     {
     }
 
     else
     {
-      v14 = [v6 _popoverController];
+      _popoverController = [controllerCopy _popoverController];
 
-      if (!v14)
+      if (!_popoverController)
       {
-        [v6 setModalPresentationStyle:7];
-        v15 = [v6 popoverPresentationController];
+        [controllerCopy setModalPresentationStyle:7];
+        popoverPresentationController = [controllerCopy popoverPresentationController];
         popoverPresentationController = self->_popoverPresentationController;
-        self->_popoverPresentationController = v15;
+        self->_popoverPresentationController = popoverPresentationController;
 
         [(UIPopoverPresentationController *)self->_popoverPresentationController setDelegate:self];
         [(UIPopoverPresentationController *)self->_popoverPresentationController _setShouldDisableInteractionDuringTransitions:0];
@@ -1256,7 +1256,7 @@ void __76__CatalogViewController_viewWillTransitionToSize_withTransitionCoordina
           [(UIPopoverPresentationController *)self->_popoverPresentationController _setAllowsFocusInPresentingViewController:1];
         }
 
-        [WeakRetained catalogViewController:self presentViewControllerWithinPopover:v6 completionHandler:v11];
+        [WeakRetained catalogViewController:self presentViewControllerWithinPopover:controllerCopy completionHandler:v11];
         goto LABEL_8;
       }
     }
@@ -1267,13 +1267,13 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  [v6 setModalPresentationStyle:4];
-  [v6 setModalTransitionStyle:12];
-  [v6 setTransitioningDelegate:self];
+  [controllerCopy setModalPresentationStyle:4];
+  [controllerCopy setModalTransitionStyle:12];
+  [controllerCopy setTransitioningDelegate:self];
   if (self->_completionsViewController)
   {
-    v9 = [(AbstractCatalogViewController *)self->_popoverCatalogViewController foregroundChildViewController];
-    v10 = v9 != self->_completionsViewController;
+    foregroundChildViewController = [(AbstractCatalogViewController *)self->_popoverCatalogViewController foregroundChildViewController];
+    v10 = foregroundChildViewController != self->_completionsViewController;
   }
 
   else
@@ -1281,7 +1281,7 @@ LABEL_8:
     v10 = 1;
   }
 
-  [WeakRetained catalogViewController:self presentViewControllerInPlatter:v6 animated:v10 completionHandler:v7];
+  [WeakRetained catalogViewController:self presentViewControllerInPlatter:controllerCopy animated:v10 completionHandler:handlerCopy];
 LABEL_11:
 }
 
@@ -1299,9 +1299,9 @@ uint64_t __77__CatalogViewController__presentPopoverWithViewController_completio
 - (void)didTogglePrivateBrowsing
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained isPrivateBrowsingEnabled];
+  isPrivateBrowsingEnabled = [WeakRetained isPrivateBrowsingEnabled];
 
-  if (v4)
+  if (isPrivateBrowsingEnabled)
   {
     [(CatalogViewController *)self _clearParsecSearchSession];
   }
@@ -1314,15 +1314,15 @@ uint64_t __77__CatalogViewController__presentPopoverWithViewController_completio
 - (void)resetPrivateBrowsingExplanation
 {
   [(StartPageController *)self->_startPageController updatePrivateBrowsingExplanationState];
-  v3 = [(StartPageController *)self->_startPageController viewController];
-  [v3 reloadDataAnimatingDifferences:0];
+  viewController = [(StartPageController *)self->_startPageController viewController];
+  [viewController reloadDataAnimatingDifferences:0];
 }
 
 - (void)_reloadCompletionTable
 {
   self->_completionTableIsReloading = 1;
-  v3 = [(CompletionListTableViewController *)self->_completionsViewController dataSource];
-  [v3 updateTableViewWithCompletionList:self->_completionList animated:0 completion:0];
+  dataSource = [(CompletionListTableViewController *)self->_completionsViewController dataSource];
+  [dataSource updateTableViewWithCompletionList:self->_completionList animated:0 completion:0];
 
   completionsViewController = self->_completionsViewController;
 
@@ -1337,40 +1337,40 @@ uint64_t __77__CatalogViewController__presentPopoverWithViewController_completio
   return v4;
 }
 
-- (void)setTopScrollEdgeEffectColor:(id)a3
+- (void)setTopScrollEdgeEffectColor:(id)color
 {
-  v6 = a3;
+  colorCopy = color;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_topScrollEdgeEffectColor, a3);
-    v5 = [(StartPageController *)self->_startPageController viewController];
-    [v5 setTopScrollEdgeEffectColor:v6];
+    objc_storeStrong(&self->_topScrollEdgeEffectColor, color);
+    viewController = [(StartPageController *)self->_startPageController viewController];
+    [viewController setTopScrollEdgeEffectColor:colorCopy];
   }
 }
 
-- (void)setTopScrollEdgeEffectStyle:(id)a3
+- (void)setTopScrollEdgeEffectStyle:(id)style
 {
-  v5 = a3;
-  if (self->_topScrollEdgeEffectStyle != v5)
+  styleCopy = style;
+  if (self->_topScrollEdgeEffectStyle != styleCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_topScrollEdgeEffectStyle, a3);
-    v6 = [(StartPageController *)self->_startPageController viewController];
-    [v6 setTopScrollEdgeEffectStyle:v7];
+    v7 = styleCopy;
+    objc_storeStrong(&self->_topScrollEdgeEffectStyle, style);
+    viewController = [(StartPageController *)self->_startPageController viewController];
+    [viewController setTopScrollEdgeEffectStyle:v7];
 
-    v5 = v7;
+    styleCopy = v7;
   }
 }
 
-- (void)_dismissPopoverAnimated:(BOOL)a3 dismissalReason:(int64_t)a4 completionHandler:(id)a5
+- (void)_dismissPopoverAnimated:(BOOL)animated dismissalReason:(int64_t)reason completionHandler:(id)handler
 {
-  v6 = a3;
-  v8 = a5;
+  animatedCopy = animated;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __83__CatalogViewController__dismissPopoverAnimated_dismissalReason_completionHandler___block_invoke;
   aBlock[3] = &unk_2781D4D90;
-  v9 = v8;
+  v9 = handlerCopy;
   v23 = v9;
   v10 = _Block_copy(aBlock);
   v11 = self->_popoverPresentationController;
@@ -1391,19 +1391,19 @@ uint64_t __77__CatalogViewController__presentPopoverWithViewController_completio
   {
     self->_dismissingPopover = 1;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained catalogViewControllerPopoverWillDismiss:self dismissalReason:a4];
+    [WeakRetained catalogViewControllerPopoverWillDismiss:self dismissalReason:reason];
 
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __83__CatalogViewController__dismissPopoverAnimated_dismissalReason_completionHandler___block_invoke_2;
     v17[3] = &unk_2781D76E8;
-    v21 = v6;
+    v21 = animatedCopy;
     v18 = v11;
-    v19 = self;
+    selfCopy = self;
     v20 = v10;
     v15 = _Block_copy(v17);
     v16 = v15;
-    if (v6)
+    if (animatedCopy)
     {
       (*(v15 + 2))(v15);
     }
@@ -1461,13 +1461,13 @@ uint64_t __83__CatalogViewController__dismissPopoverAnimated_dismissalReason_com
   self->_dismissingPopover = 0;
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
   if (!self->_dismissingPopover)
   {
     self->_dismissingPopover = 1;
-    v4 = [a3 presentedViewController];
-    v5 = [v4 transitionCoordinator];
+    presentedViewController = [dismiss presentedViewController];
+    transitionCoordinator = [presentedViewController transitionCoordinator];
     v6[4] = self;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
@@ -1478,7 +1478,7 @@ uint64_t __83__CatalogViewController__dismissPopoverAnimated_dismissalReason_com
     v6[1] = 3221225472;
     v6[2] = __59__CatalogViewController_presentationControllerWillDismiss___block_invoke_2;
     v6[3] = &unk_2781DC1C0;
-    [v5 animateAlongsideTransition:v7 completion:v6];
+    [transitionCoordinator animateAlongsideTransition:v7 completion:v6];
   }
 }
 
@@ -1496,19 +1496,19 @@ uint64_t __59__CatalogViewController_presentationControllerWillDismiss___block_i
   return [v2 _popoverDismissCompletion];
 }
 
-- (void)popoverPresentationController:(id)a3 willRepositionPopoverToRect:(CGRect *)a4 inView:(id *)a5
+- (void)popoverPresentationController:(id)controller willRepositionPopoverToRect:(CGRect *)rect inView:(id *)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained catalogViewController:self willRepositionPopoverToRect:a4 inView:a5];
+  [WeakRetained catalogViewController:self willRepositionPopoverToRect:rect inView:view];
 }
 
-- (void)setUsesPopoverStyleForFavorites:(BOOL)a3
+- (void)setUsesPopoverStyleForFavorites:(BOOL)favorites
 {
-  if (self->_usesPopoverStyleForFavorites != a3)
+  if (self->_usesPopoverStyleForFavorites != favorites)
   {
-    self->_usesPopoverStyleForFavorites = a3;
-    v5 = [(StartPageController *)self->_startPageController viewController];
-    [v5 reloadNavigationItemAnimated:{objc_msgSend(MEMORY[0x277D75D18], "areAnimationsEnabled")}];
+    self->_usesPopoverStyleForFavorites = favorites;
+    viewController = [(StartPageController *)self->_startPageController viewController];
+    [viewController reloadNavigationItemAnimated:{objc_msgSend(MEMORY[0x277D75D18], "areAnimationsEnabled")}];
 
     [(CatalogViewController *)self updateStartPageCustomizationPolicy];
   }
@@ -1516,18 +1516,18 @@ uint64_t __59__CatalogViewController_presentationControllerWillDismiss___block_i
 
 - (SFStartPageScrollObserver)startPageScrollObserver
 {
-  v2 = [(StartPageController *)self->_startPageController viewController];
-  v3 = [v2 scrollObserver];
+  viewController = [(StartPageController *)self->_startPageController viewController];
+  scrollObserver = [viewController scrollObserver];
 
-  return v3;
+  return scrollObserver;
 }
 
-- (void)setStartPageScrollObserver:(id)a3
+- (void)setStartPageScrollObserver:(id)observer
 {
   startPageController = self->_startPageController;
-  v4 = a3;
-  v5 = [(StartPageController *)startPageController viewController];
-  [v5 setScrollObserver:v4];
+  observerCopy = observer;
+  viewController = [(StartPageController *)startPageController viewController];
+  [viewController setScrollObserver:observerCopy];
 }
 
 - (NSString)libraryType
@@ -1542,43 +1542,43 @@ uint64_t __59__CatalogViewController_presentationControllerWillDismiss___block_i
   return startPageController;
 }
 
-- (void)setLibraryType:(id)a3
+- (void)setLibraryType:(id)type
 {
-  v7 = a3;
-  v4 = [(StartPageController *)self->_startPageController libraryType];
+  typeCopy = type;
+  libraryType = [(StartPageController *)self->_startPageController libraryType];
   v5 = WBSIsEqual();
 
   if ((v5 & 1) == 0)
   {
-    [(StartPageController *)self->_startPageController setLibraryType:v7];
-    v6 = [(StartPageController *)self->_startPageController viewController];
-    [v6 resetToRootViewWithCustomizationPolicy:{-[CatalogViewController startPageCustomizationPolicy](self, "startPageCustomizationPolicy")}];
+    [(StartPageController *)self->_startPageController setLibraryType:typeCopy];
+    viewController = [(StartPageController *)self->_startPageController viewController];
+    [viewController resetToRootViewWithCustomizationPolicy:{-[CatalogViewController startPageCustomizationPolicy](self, "startPageCustomizationPolicy")}];
 
     [(CatalogViewController *)self reloadNavigationItemAnimated:0];
   }
 }
 
-- (void)setLibraryType:(id)a3 cloudTabDeviceID:(id)a4
+- (void)setLibraryType:(id)type cloudTabDeviceID:(id)d
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(StartPageController *)self->_startPageController libraryType];
+  typeCopy = type;
+  dCopy = d;
+  libraryType = [(StartPageController *)self->_startPageController libraryType];
   if ((WBSIsEqual() & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v8 = [(StartPageController *)self->_startPageController cloudTabDeviceID];
+  cloudTabDeviceID = [(StartPageController *)self->_startPageController cloudTabDeviceID];
   v9 = WBSIsEqual();
 
   if ((v9 & 1) == 0)
   {
 LABEL_5:
-    [(StartPageController *)self->_startPageController setLibraryType:v11];
-    [(StartPageController *)self->_startPageController setCloudTabDeviceID:v6];
-    v10 = [(StartPageController *)self->_startPageController viewController];
-    [v10 resetToRootViewWithCustomizationPolicy:{-[CatalogViewController startPageCustomizationPolicy](self, "startPageCustomizationPolicy")}];
+    [(StartPageController *)self->_startPageController setLibraryType:typeCopy];
+    [(StartPageController *)self->_startPageController setCloudTabDeviceID:dCopy];
+    viewController = [(StartPageController *)self->_startPageController viewController];
+    [viewController resetToRootViewWithCustomizationPolicy:{-[CatalogViewController startPageCustomizationPolicy](self, "startPageCustomizationPolicy")}];
 
     [(CatalogViewController *)self reloadNavigationItemAnimated:0];
   }
@@ -1586,10 +1586,10 @@ LABEL_5:
 
 - (double)chromelessScrollDistance
 {
-  v2 = [(StartPageController *)self->_startPageController viewController];
-  if ([v2 isShowingRootView])
+  viewController = [(StartPageController *)self->_startPageController viewController];
+  if ([viewController isShowingRootView])
   {
-    [v2 scrollDistance];
+    [viewController scrollDistance];
     v4 = v3;
   }
 
@@ -1601,42 +1601,42 @@ LABEL_5:
   return v4;
 }
 
-- (void)setObscuredInsets:(UIEdgeInsets)a3
+- (void)setObscuredInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_obscuredInsets.top, v3), vceqq_f64(*&self->_obscuredInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_obscuredInsets = a3;
+    self->_obscuredInsets = insets;
     [(CatalogViewController *)self _updateStartPageSafeAreaInsets];
-    v6 = [(CatalogViewController *)self view];
-    [v6 setNeedsLayout];
+    view = [(CatalogViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
-- (void)setTextField:(id)a3
+- (void)setTextField:(id)field
 {
-  v5 = a3;
-  if (self->_textField != v5)
+  fieldCopy = field;
+  if (self->_textField != fieldCopy)
   {
-    v8 = v5;
-    v6 = [(CatalogViewController *)self unifiedTextField];
-    [v6 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
-    [v6 setDelegate:0];
-    [v6 setInputAccessoryView:0];
-    objc_storeStrong(&self->_textField, a3);
+    v8 = fieldCopy;
+    unifiedTextField = [(CatalogViewController *)self unifiedTextField];
+    [unifiedTextField removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+    [unifiedTextField setDelegate:0];
+    [unifiedTextField setInputAccessoryView:0];
+    objc_storeStrong(&self->_textField, field);
     [(UnifiedField *)self->_textField setDelegate:self];
     if ([(UnifiedField *)self->_textField isFirstResponder])
     {
       [(CatalogViewController *)self _ensureCompletionListAndParsecSession];
     }
 
-    v7 = [(StartPageController *)self->_startPageController viewController];
-    [v7 reloadNavigationItemAnimated:1];
+    viewController = [(StartPageController *)self->_startPageController viewController];
+    [viewController reloadNavigationItemAnimated:1];
 
-    v5 = v8;
+    fieldCopy = v8;
   }
 }
 
@@ -1651,31 +1651,31 @@ LABEL_5:
   [(CompletionList *)completionList setParsecSearchSession:0];
 }
 
-- (void)_setShowingCompletions:(BOOL)a3 popoverDismissalReason:(int64_t)a4 completionHandler:(id)a5
+- (void)_setShowingCompletions:(BOOL)completions popoverDismissalReason:(int64_t)reason completionHandler:(id)handler
 {
-  v6 = a3;
-  v8 = a5;
+  completionsCopy = completions;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __89__CatalogViewController__setShowingCompletions_popoverDismissalReason_completionHandler___block_invoke;
   aBlock[3] = &unk_2781D4D90;
-  v9 = v8;
+  v9 = handlerCopy;
   v22 = v9;
   v10 = _Block_copy(aBlock);
   v11 = v10;
-  if (self->_showingCompletions != v6)
+  if (self->_showingCompletions != completionsCopy)
   {
     [(CatalogViewController *)self _removeNoRecentSearchesViewIfNecessary];
-    self->_showingCompletions = v6;
-    if (a4 != 1 && !v6)
+    self->_showingCompletions = completionsCopy;
+    if (reason != 1 && !completionsCopy)
     {
       [(CompletionList *)self->_completionList clearCompletionListings];
     }
 
     v12 = dispatch_group_create();
-    if (!v6)
+    if (!completionsCopy)
     {
-      if (a4 != 1)
+      if (reason != 1)
       {
         [(CatalogViewController *)self _clearParsecSearchSession];
       }
@@ -1688,7 +1688,7 @@ LABEL_5:
         v17[2] = __89__CatalogViewController__setShowingCompletions_popoverDismissalReason_completionHandler___block_invoke_3;
         v17[3] = &unk_2781D4D40;
         v18 = v12;
-        [(CatalogViewController *)self _dismissPopoverAnimated:0 dismissalReason:a4 completionHandler:v17];
+        [(CatalogViewController *)self _dismissPopoverAnimated:0 dismissalReason:reason completionHandler:v17];
       }
 
       [(CatalogViewController *)self relinquishOwnershipOfCompletionsViewControllerFromCurrentParent];
@@ -1716,8 +1716,8 @@ LABEL_5:
 
     [popoverCatalogViewController takeOwnershipOfCompletionsViewController];
 LABEL_18:
-    v16 = [(CatalogViewController *)self universalSearchFirstTimeExperienceViewController];
-    if (v16)
+    universalSearchFirstTimeExperienceViewController = [(CatalogViewController *)self universalSearchFirstTimeExperienceViewController];
+    if (universalSearchFirstTimeExperienceViewController)
     {
       dispatch_group_enter(v12);
       v19[0] = MEMORY[0x277D85DD0];
@@ -1725,7 +1725,7 @@ LABEL_18:
       v19[2] = __89__CatalogViewController__setShowingCompletions_popoverDismissalReason_completionHandler___block_invoke_2;
       v19[3] = &unk_2781D4D40;
       v20 = v12;
-      [(CatalogViewController *)self _dismissUniversalSearchFirstTimeExperience:v16 dismissalReason:a4 completionHandler:v19];
+      [(CatalogViewController *)self _dismissUniversalSearchFirstTimeExperience:universalSearchFirstTimeExperienceViewController dismissalReason:reason completionHandler:v19];
     }
 
 LABEL_21:
@@ -1751,8 +1751,8 @@ uint64_t __89__CatalogViewController__setShowingCompletions_popoverDismissalReas
 
 - (BOOL)_showCompletionsInPopover
 {
-  v3 = [(CatalogViewController *)self _shouldUsePopoverForCompletions];
-  if (v3)
+  _shouldUsePopoverForCompletions = [(CatalogViewController *)self _shouldUsePopoverForCompletions];
+  if (_shouldUsePopoverForCompletions)
   {
     usesPopoverStyleForFavorites = self->_usesPopoverStyleForFavorites;
     [(AbstractCatalogViewController *)self->_popoverCatalogViewController takeOwnershipOfCompletionsViewController];
@@ -1762,7 +1762,7 @@ uint64_t __89__CatalogViewController__setShowingCompletions_popoverDismissalReas
     }
   }
 
-  return v3;
+  return _shouldUsePopoverForCompletions;
 }
 
 - (void)_showStartPageInPopover
@@ -1783,13 +1783,13 @@ uint64_t __48__CatalogViewController__showStartPageInPopover__block_invoke(uint6
   return [v2 updatePreferredContentSize];
 }
 
-- (void)updateQuerySuggestionsFromResponse:(id)a3
+- (void)updateQuerySuggestionsFromResponse:(id)response
 {
-  v4 = a3;
-  v6 = [(CatalogViewController *)self textField];
-  v5 = [v4 completer];
+  responseCopy = response;
+  textField = [(CatalogViewController *)self textField];
+  completer = [responseCopy completer];
 
-  [v6 setContextCompleter:v5];
+  [textField setContextCompleter:completer];
 }
 
 - (void)stopCompleting
@@ -1804,11 +1804,11 @@ uint64_t __48__CatalogViewController__showStartPageInPopover__block_invoke(uint6
     [(CatalogViewController *)self _dismissUniversalSearchFirstTimeExperience:self->_universalSearchFirstTimeExperienceViewController dismissalReason:2];
   }
 
-  v5 = [(CatalogViewController *)self textField];
-  v4 = [v5 contextCompleter];
-  [v4 discard];
+  textField = [(CatalogViewController *)self textField];
+  contextCompleter = [textField contextCompleter];
+  [contextCompleter discard];
 
-  [v5 setContextCompleter:0];
+  [textField setContextCompleter:0];
   [(CompletionList *)self->_completionList stopCompleting];
   [(CatalogViewController *)self _reloadCompletionTable];
   [(CatalogViewController *)self setShowingCompletions:0];
@@ -1855,8 +1855,8 @@ void __55__CatalogViewController__clearCompletionListCachesSoon__block_invoke(ui
 
 - (void)reportUnifiedFieldSearchDidCancel
 {
-  v3 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
-  [v3 searchViewDisappearedBecauseOfEvent:4 forQueryID:{-[CatalogViewController _completionListQueryID](self, "_completionListQueryID")}];
+  feedbackDispatcher = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
+  [feedbackDispatcher searchViewDisappearedBecauseOfEvent:4 forQueryID:{-[CatalogViewController _completionListQueryID](self, "_completionListQueryID")}];
 }
 
 - (void)showRecentSearches
@@ -1872,12 +1872,12 @@ void __55__CatalogViewController__clearCompletionListCachesSoon__block_invoke(ui
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if ([WeakRetained catalogViewControllerShouldRequestNetworkedSuggestions:self])
   {
-    v4 = [MEMORY[0x277D4A058] areSiriSearchSuggestionsEnabled];
+    areSiriSearchSuggestionsEnabled = [MEMORY[0x277D4A058] areSiriSearchSuggestionsEnabled];
   }
 
   else
   {
-    v4 = 0;
+    areSiriSearchSuggestionsEnabled = 0;
   }
 
   v5 = objc_loadWeakRetained(&self->_browserController);
@@ -1895,14 +1895,14 @@ void __55__CatalogViewController__clearCompletionListCachesSoon__block_invoke(ui
     v5 = v15;
   }
 
-  v9 = [v5 shouldShowRecentSearches];
+  shouldShowRecentSearches = [v5 shouldShowRecentSearches];
   v10 = self->_completionList;
-  if (v9)
+  if (shouldShowRecentSearches)
   {
-    v11 = [(CompletionList *)v10 query];
-    v12 = [v11 queryString];
-    v13 = [MEMORY[0x277CCA900] safari_whitespaceAndNewlineCharacterSet];
-    v14 = [v12 stringByTrimmingCharactersInSet:v13];
+    query = [(CompletionList *)v10 query];
+    queryString = [query queryString];
+    safari_whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] safari_whitespaceAndNewlineCharacterSet];
+    v14 = [queryString stringByTrimmingCharactersInSet:safari_whitespaceAndNewlineCharacterSet];
     -[CompletionList setShowingRecentSearches:](self->_completionList, "setShowingRecentSearches:", [v14 length] == 0);
   }
 
@@ -1911,7 +1911,7 @@ void __55__CatalogViewController__clearCompletionListCachesSoon__block_invoke(ui
     [(CompletionList *)v10 setShowingRecentSearches:0];
   }
 
-  if (v4)
+  if (areSiriSearchSuggestionsEnabled)
   {
     [(CatalogViewController *)self _beginParsecSessionIfNeeded];
   }
@@ -1924,9 +1924,9 @@ void __55__CatalogViewController__clearCompletionListCachesSoon__block_invoke(ui
   [(CatalogViewController *)self _clearCompletionListCachesSoon];
 }
 
-- (void)_textFieldEditingChangedForUpdatingCompletionListOnRestore:(BOOL)a3
+- (void)_textFieldEditingChangedForUpdatingCompletionListOnRestore:(BOOL)restore
 {
-  v39 = a3;
+  restoreCopy = restore;
   v43[2] = *MEMORY[0x277D85DE8];
   self->_isCachedCompletionList = 0;
   [(UniversalSearchFirstTimeExperienceViewController *)self->_universalSearchFirstTimeExperienceViewController unifiedFieldDidChange];
@@ -1935,9 +1935,9 @@ void __55__CatalogViewController__clearCompletionListCachesSoon__block_invoke(ui
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if ([WeakRetained catalogViewControllerShouldRequestNetworkedSuggestions:self])
   {
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     p_completionList = &self->_completionList;
-    -[CompletionList setShouldIncludeNetworkedSearchSuggestions:](self->_completionList, "setShouldIncludeNetworkedSearchSuggestions:", [v5 BOOLForKey:*MEMORY[0x277D49B90]] ^ 1);
+    -[CompletionList setShouldIncludeNetworkedSearchSuggestions:](self->_completionList, "setShouldIncludeNetworkedSearchSuggestions:", [standardUserDefaults BOOLForKey:*MEMORY[0x277D49B90]] ^ 1);
 
     [(CatalogViewController *)self _beginParsecSessionIfNeeded];
   }
@@ -1949,9 +1949,9 @@ void __55__CatalogViewController__clearCompletionListCachesSoon__block_invoke(ui
     [(CatalogViewController *)self _clearParsecSearchSession];
   }
 
-  v7 = [(UnifiedField *)self->_textField text];
-  v8 = [MEMORY[0x277CCA900] safari_whitespaceAndNewlineCharacterSet];
-  v9 = [(__CFString *)v7 stringByTrimmingCharactersInSet:v8];
+  text = [(UnifiedField *)self->_textField text];
+  safari_whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] safari_whitespaceAndNewlineCharacterSet];
+  v9 = [(__CFString *)text stringByTrimmingCharactersInSet:safari_whitespaceAndNewlineCharacterSet];
   v10 = [v9 length];
 
   v42[0] = @"time";
@@ -1959,9 +1959,9 @@ void __55__CatalogViewController__clearCompletionListCachesSoon__block_invoke(ui
   v42[1] = @"query";
   v43[0] = v11;
   v12 = &stru_2827BF158;
-  if (v7)
+  if (text)
   {
-    v12 = v7;
+    v12 = text;
   }
 
   v43[1] = v12;
@@ -1971,11 +1971,11 @@ void __55__CatalogViewController__clearCompletionListCachesSoon__block_invoke(ui
   v14 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    [(CatalogViewController *)v7 _textFieldEditingChangedForUpdatingCompletionListOnRestore:v10, v14];
+    [(CatalogViewController *)text _textFieldEditingChangedForUpdatingCompletionListOnRestore:v10, v14];
   }
 
   v15 = objc_loadWeakRetained(&self->_browserController);
-  v16 = [v15 shouldShowRecentSearches];
+  shouldShowRecentSearches = [v15 shouldShowRecentSearches];
   if (v10)
   {
     v17 = 1;
@@ -1983,7 +1983,7 @@ void __55__CatalogViewController__clearCompletionListCachesSoon__block_invoke(ui
 
   else
   {
-    v17 = v16;
+    v17 = shouldShowRecentSearches;
   }
 
   [(CatalogViewController *)self _setShowingCompletions:v17 popoverDismissalReason:0 completionHandler:0];
@@ -1998,9 +1998,9 @@ void __55__CatalogViewController__clearCompletionListCachesSoon__block_invoke(ui
   v18 = p_completionList;
   v19 = WeakRetained;
   v20 = v18;
-  v21 = [*v18 query];
-  v22 = [v21 queryString];
-  v23 = [v22 isEqualToString:v7];
+  query = [*v18 query];
+  queryString = [query queryString];
+  v23 = [queryString isEqualToString:text];
 
   if (!v23)
   {
@@ -2026,14 +2026,14 @@ void __55__CatalogViewController__clearCompletionListCachesSoon__block_invoke(ui
 
         else
         {
-          v37 = [(UnifiedField *)self->_textField isPastingText];
+          isPastingText = [(UnifiedField *)self->_textField isPastingText];
           v38 = 26;
-          if (!v39)
+          if (!restoreCopy)
           {
             v38 = 1;
           }
 
-          if (v37)
+          if (isPastingText)
           {
             v25 = 6;
           }
@@ -2052,12 +2052,12 @@ void __55__CatalogViewController__clearCompletionListCachesSoon__block_invoke(ui
 
     v26 = v20;
 LABEL_21:
-    v27 = [objc_alloc(MEMORY[0x277D49ED8]) initWithQueryString:v7 triggerEvent:v25];
-    v28 = [v15 effectiveProfileIdentifier];
-    [v27 setProfileIdentifierToFilterResults:v28];
+    v27 = [objc_alloc(MEMORY[0x277D49ED8]) initWithQueryString:text triggerEvent:v25];
+    effectiveProfileIdentifier = [v15 effectiveProfileIdentifier];
+    [v27 setProfileIdentifierToFilterResults:effectiveProfileIdentifier];
 
-    v29 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
-    [v29 userDidTypeKey:{objc_msgSend(v27, "queryID")}];
+    feedbackDispatcher = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
+    [feedbackDispatcher userDidTypeKey:{objc_msgSend(v27, "queryID")}];
 
     if ([(UnifiedField *)self->_textField lastInputWasQuerySuggestion])
     {
@@ -2072,13 +2072,13 @@ LABEL_21:
     if ([(UnifiedField *)self->_textField voiceSearchState]== 1 || [(UnifiedField *)self->_textField performingExternalSearch])
     {
       [v27 setTriggerEvent:4];
-      v30 = [MEMORY[0x277D28EB8] sharedManager];
-      v31 = [v30 queryItems];
-      [v27 setQueryItems:v31];
+      mEMORY[0x277D28EB8] = [MEMORY[0x277D28EB8] sharedManager];
+      queryItems = [mEMORY[0x277D28EB8] queryItems];
+      [v27 setQueryItems:queryItems];
     }
 
-    v32 = [(UnifiedField *)self->_textField querySuggestions];
-    v33 = [v32 safari_mapObjectsUsingBlock:&__block_literal_global_75];
+    querySuggestions = [(UnifiedField *)self->_textField querySuggestions];
+    v33 = [querySuggestions safari_mapObjectsUsingBlock:&__block_literal_global_75];
     [v27 setQuerySuggestions:v33];
 
     [*v26 setUsingPencilInput:{-[UnifiedField isUsingPencilInput](self->_textField, "isUsingPencilInput")}];
@@ -2123,38 +2123,38 @@ id __84__CatalogViewController__textFieldEditingChangedForUpdatingCompletionList
   return v7;
 }
 
-- (void)setNavigationBar:(id)a3
+- (void)setNavigationBar:(id)bar
 {
-  v5 = a3;
-  if (self->_navigationBar != v5)
+  barCopy = bar;
+  if (self->_navigationBar != barCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_navigationBar, a3);
-    v6 = [(_SFNavigationBarCommon *)self->_navigationBar textField];
-    [(CatalogViewController *)self setTextField:v6];
+    v7 = barCopy;
+    objc_storeStrong(&self->_navigationBar, bar);
+    textField = [(_SFNavigationBarCommon *)self->_navigationBar textField];
+    [(CatalogViewController *)self setTextField:textField];
 
-    v5 = v7;
+    barCopy = v7;
   }
 }
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
-  v3 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
-  [v3 setNeedsLayout];
+  tableView = [(CompletionListTableViewController *)self->_completionsViewController tableView];
+  [tableView setNeedsLayout];
 }
 
-- (void)completionListDidUpdate:(id)a3 forQuery:(id)a4
+- (void)completionListDidUpdate:(id)update forQuery:(id)query
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  queryCopy = query;
   if (!self->_dismissingPopover)
   {
     [(CatalogViewController *)self _reloadCompletionTable];
     if (!self->_isCachedCompletionList)
     {
-      v8 = [v7 queryString];
-      [(CatalogViewController *)self _preselectCompletionItemIfNecessaryForQueryString:v8];
+      queryString = [queryCopy queryString];
+      [(CatalogViewController *)self _preselectCompletionItemIfNecessaryForQueryString:queryString];
 
       [(CatalogViewController *)self _showCompletionsPopoverIfNecessary];
     }
@@ -2180,12 +2180,12 @@ id __84__CatalogViewController__textFieldEditingChangedForUpdatingCompletionList
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:CFAbsoluteTimeGetCurrent()];
   v16[1] = @"query";
   v17[0] = v10;
-  v11 = [v7 queryString];
-  v12 = v11;
+  queryString2 = [queryCopy queryString];
+  v12 = queryString2;
   v13 = &stru_2827BF158;
-  if (v11)
+  if (queryString2)
   {
-    v13 = v11;
+    v13 = queryString2;
   }
 
   v17[1] = v13;
@@ -2193,9 +2193,9 @@ id __84__CatalogViewController__textFieldEditingChangedForUpdatingCompletionList
   [Application postTestNotificationName:@"catalogViewControllerDidFinish" object:self userInfo:v14];
 }
 
-- (void)_preselectCompletionItemIfNecessaryForQueryString:(id)a3
+- (void)_preselectCompletionItemIfNecessaryForQueryString:(id)string
 {
-  v14 = a3;
+  stringCopy = string;
   lastTopHitMatch = self->_lastTopHitMatch;
   if (lastTopHitMatch && ([(UnifiedField *)self->_textField reflectedItem], v5 = objc_claimAutoreleasedReturnValue(), v5, lastTopHitMatch == v5))
   {
@@ -2213,25 +2213,25 @@ id __84__CatalogViewController__textFieldEditingChangedForUpdatingCompletionList
 
   if (v6 && v9)
   {
-    v10 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
-    [v10 selectRowAtIndexPath:v7 animated:0 scrollPosition:0];
+    tableView = [(CompletionListTableViewController *)self->_completionsViewController tableView];
+    [tableView selectRowAtIndexPath:v7 animated:0 scrollPosition:0];
   }
 
   else
   {
-    v10 = [(CompletionList *)self->_completionList indexPathOfAsTypedSearchSuggestion];
+    tableView = [(CompletionList *)self->_completionList indexPathOfAsTypedSearchSuggestion];
     v11 = WBSUnifiedFieldInputTypeForString();
     if (!self->_lastInputWasSearchTextCompletion && (v11 == 3 || !v11))
     {
-      if ([v10 isEqual:v7])
+      if ([tableView isEqual:v7])
       {
-        v12 = [(CatalogViewController *)self _completionItemAtIndexPath:v10];
+        v12 = [(CatalogViewController *)self _completionItemAtIndexPath:tableView];
         [(UnifiedField *)self->_textField setReflectedItem:v12];
 
         if (![(UnifiedField *)self->_textField lastEditWasADeletion])
         {
-          v13 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
-          [v13 selectRowAtIndexPath:v10 animated:0 scrollPosition:0];
+          tableView2 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
+          [tableView2 selectRowAtIndexPath:tableView animated:0 scrollPosition:0];
         }
       }
     }
@@ -2261,13 +2261,13 @@ id __84__CatalogViewController__textFieldEditingChangedForUpdatingCompletionList
   }
 }
 
-- (void)_generateVisibleResultsFeedbackForEvent:(int64_t)a3
+- (void)_generateVisibleResultsFeedbackForEvent:(int64_t)event
 {
   v66 = *MEMORY[0x277D85DE8];
-  if (!self->_feedbackIsBeingGenerated && (a3 != 3 || !self->_lastFeedbackSentWasScrolling) && [(CompletionList *)self->_completionList hasCompletions]&& [(UnifiedField *)self->_textField voiceSearchState]!= 1)
+  if (!self->_feedbackIsBeingGenerated && (event != 3 || !self->_lastFeedbackSentWasScrolling) && [(CompletionList *)self->_completionList hasCompletions]&& [(UnifiedField *)self->_textField voiceSearchState]!= 1)
   {
     self->_feedbackIsBeingGenerated = 1;
-    if (a3)
+    if (event)
     {
       v48 = [MEMORY[0x277CBEB98] setWithSet:self->_seenVisibleResults];
     }
@@ -2279,9 +2279,9 @@ id __84__CatalogViewController__textFieldEditingChangedForUpdatingCompletionList
 
     [(NSMutableSet *)self->_seenVisibleResults removeAllObjects];
     v49 = objc_opt_new();
-    v4 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
-    v5 = [v4 window];
-    [v5 bounds];
+    tableView = [(CompletionListTableViewController *)self->_completionsViewController tableView];
+    window = [tableView window];
+    [window bounds];
     v53 = v7;
     v54 = v6;
     v51 = v9;
@@ -2291,8 +2291,8 @@ id __84__CatalogViewController__textFieldEditingChangedForUpdatingCompletionList
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v10 = [v4 indexPathsForVisibleRows];
-    v11 = [v10 countByEnumeratingWithState:&v59 objects:v65 count:16];
+    indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
+    v11 = [indexPathsForVisibleRows countByEnumeratingWithState:&v59 objects:v65 count:16];
     if (v11)
     {
       v12 = v11;
@@ -2307,11 +2307,11 @@ id __84__CatalogViewController__textFieldEditingChangedForUpdatingCompletionList
         {
           if (*v60 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(indexPathsForVisibleRows);
           }
 
           v18 = *(*(&v59 + 1) + 8 * i);
-          [v4 rectForRowAtIndexPath:v18];
+          [tableView rectForRowAtIndexPath:v18];
           x = v67.origin.x;
           y = v67.origin.y;
           width = v67.size.width;
@@ -2322,13 +2322,13 @@ id __84__CatalogViewController__textFieldEditingChangedForUpdatingCompletionList
           v74.size.height = rect2;
           if (!CGRectEqualToRect(v67, v74))
           {
-            [v4 convertRect:0 toView:{x, y, width, height}];
+            [tableView convertRect:0 toView:{x, y, width, height}];
             v56 = v24;
             v57 = v23;
             v55 = v25;
             v27 = v26;
-            v28 = [v4 window];
-            [v28 convertRect:0 fromWindow:{self->_keyboardFrame.origin.x, self->_keyboardFrame.origin.y, self->_keyboardFrame.size.width, self->_keyboardFrame.size.height}];
+            window2 = [tableView window];
+            [window2 convertRect:0 fromWindow:{self->_keyboardFrame.origin.x, self->_keyboardFrame.origin.y, self->_keyboardFrame.size.width, self->_keyboardFrame.size.height}];
             v30 = v29;
             v31 = v14;
             v33 = v32;
@@ -2376,7 +2376,7 @@ id __84__CatalogViewController__textFieldEditingChangedForUpdatingCompletionList
                 if (v42)
                 {
                   [(NSMutableSet *)self->_seenVisibleResults addObject:v42];
-                  if (!a3 || ([v48 containsObject:v42] & 1) == 0)
+                  if (!event || ([v48 containsObject:v42] & 1) == 0)
                   {
                     [v49 addObject:v42];
                   }
@@ -2397,29 +2397,29 @@ id __84__CatalogViewController__textFieldEditingChangedForUpdatingCompletionList
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v59 objects:v65 count:16];
+        v12 = [indexPathsForVisibleRows countByEnumeratingWithState:&v59 objects:v65 count:16];
       }
 
       while (v12);
     }
 
     v44 = [v49 count];
-    if (a3 == 3 || v44)
+    if (event == 3 || v44)
     {
-      v45 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
+      feedbackDispatcher = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
       v46 = [v49 copy];
-      v47 = [(CompletionList *)self->_completionList query];
-      [v45 didDisplayCompletionListItems:v46 forQuery:v47 forEvent:a3];
+      query = [(CompletionList *)self->_completionList query];
+      [feedbackDispatcher didDisplayCompletionListItems:v46 forQuery:query forEvent:event];
     }
 
     self->_feedbackIsBeingGenerated = 0;
-    self->_lastFeedbackSentWasScrolling = (a3 - 1) < 2;
+    self->_lastFeedbackSentWasScrolling = (event - 1) < 2;
   }
 }
 
-- (void)_logTopHitWasChosen:(BOOL)a3
+- (void)_logTopHitWasChosen:(BOOL)chosen
 {
-  v3 = a3;
+  chosenCopy = chosen;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   if (([WeakRetained isPrivateBrowsingEnabled] & 1) == 0)
   {
@@ -2439,55 +2439,55 @@ id __84__CatalogViewController__textFieldEditingChangedForUpdatingCompletionList
     v10 = v9;
 
     LODWORD(v11) = v10;
-    [WeakRetained didChooseTopHit:v3 matchLength:lastTopHitMatchLength matchScore:v11];
+    [WeakRetained didChooseTopHit:chosenCopy matchLength:lastTopHitMatchLength matchScore:v11];
   }
 }
 
-- (void)completionList:(id)a3 didRemoveItem:(id)a4 wasLastInSection:(BOOL)a5 atIndexPath:(id)a6 withCompletionHandler:(id)a7
+- (void)completionList:(id)list didRemoveItem:(id)item wasLastInSection:(BOOL)section atIndexPath:(id)path withCompletionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a7;
-  v11 = [(CompletionListTableViewController *)self->_completionsViewController dataSource];
+  itemCopy = item;
+  handlerCopy = handler;
+  dataSource = [(CompletionListTableViewController *)self->_completionsViewController dataSource];
   completionList = self->_completionList;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __105__CatalogViewController_completionList_didRemoveItem_wasLastInSection_atIndexPath_withCompletionHandler___block_invoke;
   v16[3] = &unk_2781D4D90;
-  v13 = v10;
+  v13 = handlerCopy;
   v17 = v13;
-  [v11 updateTableViewWithCompletionList:completionList rowAnimation:0 completion:v16];
+  [dataSource updateTableViewWithCompletionList:completionList rowAnimation:0 completion:v16];
 
   lastTopHitMatch = self->_lastTopHitMatch;
-  if (lastTopHitMatch == v9)
+  if (lastTopHitMatch == itemCopy)
   {
     self->_lastTopHitMatch = 0;
 
     [(UnifiedField *)self->_textField topHitDidBecomeReady];
   }
 
-  v15 = [(UnifiedField *)self->_textField reflectedItem];
+  reflectedItem = [(UnifiedField *)self->_textField reflectedItem];
 
-  if (v15 == v9)
+  if (reflectedItem == itemCopy)
   {
     [(UnifiedField *)self->_textField setReflectedItem:0];
   }
 }
 
-- (void)completionList:(id)a3 topHitDidBecomeReadyForString:(id)a4
+- (void)completionList:(id)list topHitDidBecomeReadyForString:(id)string
 {
-  v13 = a4;
+  stringCopy = string;
   textField = self->_textField;
-  v7 = a3;
+  listCopy = list;
   [(UnifiedField *)textField topHitDidBecomeReady];
-  v8 = [v7 topHitForString:v13];
+  v8 = [listCopy topHitForString:stringCopy];
 
   if (self->_lastTopHitMatch != v8)
   {
     if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
     {
-      v9 = [(CompletionItem *)self->_lastTopHitMatch originalURLString];
-      v10 = [(CompletionItem *)v8 originalURLString];
-      v11 = [v9 isEqualToString:v10];
+      originalURLString = [(CompletionItem *)self->_lastTopHitMatch originalURLString];
+      originalURLString2 = [(CompletionItem *)v8 originalURLString];
+      v11 = [originalURLString isEqualToString:originalURLString2];
 
       if ((v11 & 1) == 0)
       {
@@ -2496,66 +2496,66 @@ id __84__CatalogViewController__textFieldEditingChangedForUpdatingCompletionList
     }
 
     objc_storeStrong(&self->_lastTopHitMatch, v8);
-    self->_lastTopHitMatchLength = [v13 length];
+    self->_lastTopHitMatchLength = [stringCopy length];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained catalogViewController:self mightSelectCompletionItem:v8 forString:v13];
+  [WeakRetained catalogViewController:self mightSelectCompletionItem:v8 forString:stringCopy];
 }
 
-- (void)completionListDidRestoreCachedCompletions:(id)a3
+- (void)completionListDidRestoreCachedCompletions:(id)completions
 {
   self->_isCachedCompletionList = 1;
-  v4 = [(CompletionListTableViewController *)self->_completionsViewController dataSource];
-  [v4 updateTableViewWithCompletionList:self->_completionList animated:0 completion:0];
+  dataSource = [(CompletionListTableViewController *)self->_completionsViewController dataSource];
+  [dataSource updateTableViewWithCompletionList:self->_completionList animated:0 completion:0];
 }
 
-- (void)completionList:(id)a3 didFetchFavicon:(id)a4 forRowAtIndexPath:(id)a5
+- (void)completionList:(id)list didFetchFavicon:(id)favicon forRowAtIndexPath:(id)path
 {
-  if (self->_completionList == a3)
+  if (self->_completionList == list)
   {
     completionsViewController = self->_completionsViewController;
-    v9 = a5;
-    v10 = a4;
-    v11 = [(CompletionListTableViewController *)completionsViewController tableView];
-    v13 = [v11 cellForRowAtIndexPath:v9];
+    pathCopy = path;
+    faviconCopy = favicon;
+    tableView = [(CompletionListTableViewController *)completionsViewController tableView];
+    v13 = [tableView cellForRowAtIndexPath:pathCopy];
 
-    v12 = [v13 imageView];
-    [v12 setImage:v10];
+    imageView = [v13 imageView];
+    [imageView setImage:faviconCopy];
 
     [v13 setNeedsLayout];
     [(CatalogViewController *)self _updateSearchFieldIcon];
   }
 }
 
-- (void)completionList:(id)a3 willGoToURL:(id)a4 fromPegasusSearchResult:(id)a5 forImageAttribution:(BOOL)a6
+- (void)completionList:(id)list willGoToURL:(id)l fromPegasusSearchResult:(id)result forImageAttribution:(BOOL)attribution
 {
-  v6 = a6;
-  v9 = a4;
-  [(CatalogViewController *)self willGoToURLFromPegasusSearchResult:a5];
+  attributionCopy = attribution;
+  lCopy = l;
+  [(CatalogViewController *)self willGoToURLFromPegasusSearchResult:result];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained catalogViewController:self loadURL:v9 inExternalApplication:0 forImageAttribution:v6];
+  [WeakRetained catalogViewController:self loadURL:lCopy inExternalApplication:0 forImageAttribution:attributionCopy];
 }
 
-- (id)_completionItemAtIndexPath:(id)a3
+- (id)_completionItemAtIndexPath:(id)path
 {
   completionsViewController = self->_completionsViewController;
-  v4 = a3;
-  v5 = [(CompletionListTableViewController *)completionsViewController dataSource];
-  v6 = [v5 completionItemAtIndexPath:v4];
+  pathCopy = path;
+  dataSource = [(CompletionListTableViewController *)completionsViewController dataSource];
+  v6 = [dataSource completionItemAtIndexPath:pathCopy];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 previewForHighlightingContextMenuWithConfiguration:(id)a4
+- (id)tableView:(id)view previewForHighlightingContextMenuWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = [a4 identifier];
-  v8 = [(CatalogViewController *)self _completionItemAtIndexPath:v7];
+  viewCopy = view;
+  identifier = [configuration identifier];
+  v8 = [(CatalogViewController *)self _completionItemAtIndexPath:identifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v6 cellForRowAtIndexPath:v7];
+    v9 = [viewCopy cellForRowAtIndexPath:identifier];
     v10 = objc_alloc_init(MEMORY[0x277D758D8]);
     v11 = MEMORY[0x277D75208];
     [v9 bounds];
@@ -2574,15 +2574,15 @@ id __84__CatalogViewController__textFieldEditingChangedForUpdatingCompletionList
   return v13;
 }
 
-- (id)tableView:(id)a3 previewForDismissingContextMenuWithConfiguration:(id)a4
+- (id)tableView:(id)view previewForDismissingContextMenuWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = [a4 identifier];
-  v8 = [(CatalogViewController *)self _completionItemAtIndexPath:v7];
+  viewCopy = view;
+  identifier = [configuration identifier];
+  v8 = [(CatalogViewController *)self _completionItemAtIndexPath:identifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v6 cellForRowAtIndexPath:v7];
+    v9 = [viewCopy cellForRowAtIndexPath:identifier];
     v10 = objc_alloc_init(MEMORY[0x277D758D8]);
     v11 = MEMORY[0x277D75208];
     [v9 bounds];
@@ -2595,8 +2595,8 @@ id __84__CatalogViewController__textFieldEditingChangedForUpdatingCompletionList
 
     if (v14)
     {
-      v15 = [MEMORY[0x277D75348] clearColor];
-      [v10 setBackgroundColor:v15];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [v10 setBackgroundColor:clearColor];
     }
 
     v16 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:v9 parameters:v10];
@@ -2610,21 +2610,21 @@ id __84__CatalogViewController__textFieldEditingChangedForUpdatingCompletionList
   return v16;
 }
 
-- (void)tableView:(id)a3 willDisplayContextMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)tableView:(id)view willDisplayContextMenuWithConfiguration:(id)configuration animator:(id)animator
 {
   if ([MEMORY[0x277D75658] isInHardwareKeyboardMode])
   {
-    v6 = [(CatalogViewController *)self textField];
-    [v6 endEditing:1];
+    textField = [(CatalogViewController *)self textField];
+    [textField endEditing:1];
 
-    v9 = [(CatalogViewController *)self textField];
-    v7 = [v9 selectedTextRange];
+    textField2 = [(CatalogViewController *)self textField];
+    selectedTextRange = [textField2 selectedTextRange];
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    [WeakRetained setTextRangeToRestoreAfterCompletionDetailIsDismissed:v7];
+    [WeakRetained setTextRangeToRestoreAfterCompletionDetailIsDismissed:selectedTextRange];
   }
 }
 
-- (void)tableView:(id)a3 willEndContextMenuInteractionWithConfiguration:(id)a4 animator:(id)a5
+- (void)tableView:(id)view willEndContextMenuInteractionWithConfiguration:(id)configuration animator:(id)animator
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained catalogViewControllerSuppressSelectedItemUnfocus:self];
@@ -2632,23 +2632,23 @@ id __84__CatalogViewController__textFieldEditingChangedForUpdatingCompletionList
   self->_completionDetailIsPresented = 0;
   if ([MEMORY[0x277D75658] isInHardwareKeyboardMode])
   {
-    v7 = [(CatalogViewController *)self textField];
-    [v7 becomeFirstResponder];
+    textField = [(CatalogViewController *)self textField];
+    [textField becomeFirstResponder];
 
     v10 = objc_loadWeakRetained(&self->_browserController);
-    v8 = [v10 textRangeToRestoreAfterCompletionDetailIsDismissed];
-    v9 = [(CatalogViewController *)self textField];
-    [v9 setSelectedTextRange:v8];
+    textRangeToRestoreAfterCompletionDetailIsDismissed = [v10 textRangeToRestoreAfterCompletionDetailIsDismissed];
+    textField2 = [(CatalogViewController *)self textField];
+    [textField2 setSelectedTextRange:textRangeToRestoreAfterCompletionDetailIsDismissed];
 
     [v10 setTextRangeToRestoreAfterCompletionDetailIsDismissed:0];
   }
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(CatalogViewController *)self _completionItemAtIndexPath:v8];
+  viewCopy = view;
+  pathCopy = path;
+  v9 = [(CatalogViewController *)self _completionItemAtIndexPath:pathCopy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -2656,13 +2656,13 @@ id __84__CatalogViewController__textFieldEditingChangedForUpdatingCompletionList
     goto LABEL_13;
   }
 
-  v10 = [v7 cellForRowAtIndexPath:v8];
+  v10 = [viewCopy cellForRowAtIndexPath:pathCopy];
   if (!v10)
   {
     v14 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [CatalogViewController tableView:v8 contextMenuConfigurationForRowAtIndexPath:v14 point:?];
+      [CatalogViewController tableView:pathCopy contextMenuConfigurationForRowAtIndexPath:v14 point:?];
     }
 
     goto LABEL_11;
@@ -2689,8 +2689,8 @@ LABEL_11:
   }
 
   v11 = MEMORY[0x277D753B0];
-  v12 = [v10 contextMenuActionProvider];
-  v13 = [v11 configurationWithIdentifier:v8 previewProvider:0 actionProvider:v12];
+  contextMenuActionProvider = [v10 contextMenuActionProvider];
+  v13 = [v11 configurationWithIdentifier:pathCopy previewProvider:0 actionProvider:contextMenuActionProvider];
 
 LABEL_12:
 LABEL_13:
@@ -2698,11 +2698,11 @@ LABEL_13:
   return v13;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CatalogViewController *)self _completionItemAtIndexPath:v5];
-  v7 = [(CatalogViewController *)self _cellHeightCacheKeyForCompletionItem:v6 indexPath:v5];
+  pathCopy = path;
+  v6 = [(CatalogViewController *)self _completionItemAtIndexPath:pathCopy];
+  v7 = [(CatalogViewController *)self _cellHeightCacheKeyForCompletionItem:v6 indexPath:pathCopy];
 
   if (v7 && (-[NSCache objectForKey:](self->_tableViewCellHeightCache, "objectForKey:", v7), v8 = objc_claimAutoreleasedReturnValue(), [v8 floatValue], v10 = v9, v8, v10 != 0.0))
   {
@@ -2717,17 +2717,17 @@ LABEL_13:
   return v11;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v13 = a4;
-  v7 = a5;
-  v8 = [(CatalogViewController *)self _completionItemAtIndexPath:v7];
-  v9 = [(CatalogViewController *)self _cellHeightCacheKeyForCompletionItem:v8 indexPath:v7];
+  cellCopy = cell;
+  pathCopy = path;
+  v8 = [(CatalogViewController *)self _completionItemAtIndexPath:pathCopy];
+  v9 = [(CatalogViewController *)self _cellHeightCacheKeyForCompletionItem:v8 indexPath:pathCopy];
 
   if (v9)
   {
     v10 = MEMORY[0x277CCABB0];
-    [v13 bounds];
+    [cellCopy bounds];
     Height = CGRectGetHeight(v15);
     *&Height = Height;
     v12 = [v10 numberWithFloat:Height];
@@ -2735,25 +2735,25 @@ LABEL_13:
   }
 }
 
-- (id)_cellHeightCacheKeyForCompletionItem:(id)a3 indexPath:(id)a4
+- (id)_cellHeightCacheKeyForCompletionItem:(id)item indexPath:(id)path
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = 0;
+    identifier = 0;
   }
 
   else
   {
-    v6 = [v4 sfSearchResultValue];
-    v5 = [v6 identifier];
+    sfSearchResultValue = [itemCopy sfSearchResultValue];
+    identifier = [sfSearchResultValue identifier];
   }
 
-  return v5;
+  return identifier;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
   if ([(CompletionList *)self->_completionList showingRecentSearches])
   {
@@ -2762,30 +2762,30 @@ LABEL_13:
 
   else
   {
-    v6 = [(CompletionList *)self->_completionList defaultSectionTitleForGroupAtIndex:a4];
+    v6 = [(CompletionList *)self->_completionList defaultSectionTitleForGroupAtIndex:section];
   }
 
   return v6;
 }
 
-- (void)_selectedCompletionItemAtIndexPath:(id)a3
+- (void)_selectedCompletionItemAtIndexPath:(id)path
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CatalogViewController *)self _completionItemAtIndexPath:v4];
+  pathCopy = path;
+  v5 = [(CatalogViewController *)self _completionItemAtIndexPath:pathCopy];
   if (!v5)
   {
     goto LABEL_28;
   }
 
-  v6 = [v4 row] + 1;
-  v7 = [v4 section];
-  v8 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
-  if (v7)
+  v6 = [pathCopy row] + 1;
+  section = [pathCopy section];
+  tableView = [(CompletionListTableViewController *)self->_completionsViewController tableView];
+  if (section)
   {
-    for (i = 0; i != v7; ++i)
+    for (i = 0; i != section; ++i)
     {
-      v6 += [v8 numberOfRowsInSection:i];
+      v6 += [tableView numberOfRowsInSection:i];
     }
   }
 
@@ -2795,14 +2795,14 @@ LABEL_13:
     v10 = objc_opt_self();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v5 isTopHit];
+      isTopHit = [v5 isTopHit];
 
-      if (v11)
+      if (isTopHit)
       {
-        v12 = self;
+        selfCopy2 = self;
         v13 = 1;
 LABEL_12:
-        [(CatalogViewController *)v12 _logTopHitWasChosen:v13];
+        [(CatalogViewController *)selfCopy2 _logTopHitWasChosen:v13];
         goto LABEL_13;
       }
     }
@@ -2814,32 +2814,32 @@ LABEL_12:
 
   if (self->_lastTopHitMatch)
   {
-    v12 = self;
+    selfCopy2 = self;
     v13 = 0;
     goto LABEL_12;
   }
 
 LABEL_13:
-  v14 = [(UnifiedField *)self->_textField text];
-  [(CatalogViewController *)self _updatePersonalisationDataForDonation:v14 forPosition:v6];
+  text = [(UnifiedField *)self->_textField text];
+  [(CatalogViewController *)self _updatePersonalisationDataForDonation:text forPosition:v6];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v16 = [(UnifiedField *)self->_textField text];
-  [WeakRetained catalogViewController:self completionItem:v5 wasAcceptedForString:v16];
+  text2 = [(UnifiedField *)self->_textField text];
+  [WeakRetained catalogViewController:self completionItem:v5 wasAcceptedForString:text2];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = [v5 string];
+    string = [v5 string];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v18 = [(UnifiedField *)self->_textField querySuggestions];
-    v19 = [v18 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    querySuggestions = [(UnifiedField *)self->_textField querySuggestions];
+    v19 = [querySuggestions countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v19)
     {
-      v26 = v4;
+      v26 = pathCopy;
       v20 = *v28;
       while (2)
       {
@@ -2847,11 +2847,11 @@ LABEL_13:
         {
           if (*v28 != v20)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(querySuggestions);
           }
 
-          v22 = [*(*(&v27 + 1) + 8 * j) title];
-          v23 = [v22 safari_isCaseAndDiacriticInsensitiveEqualToString:v17];
+          title = [*(*(&v27 + 1) + 8 * j) title];
+          v23 = [title safari_isCaseAndDiacriticInsensitiveEqualToString:string];
 
           if (v23)
           {
@@ -2860,7 +2860,7 @@ LABEL_13:
           }
         }
 
-        v19 = [v18 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v19 = [querySuggestions countByEnumeratingWithState:&v27 objects:v31 count:16];
         if (v19)
         {
           continue;
@@ -2870,7 +2870,7 @@ LABEL_13:
       }
 
 LABEL_25:
-      v4 = v26;
+      pathCopy = v26;
     }
   }
 
@@ -2880,107 +2880,107 @@ LABEL_25:
   }
 
   [(CatalogViewController *)self _logQueryEngagement];
-  v24 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
-  [v24 userDidEngageWithCompletionListItem:v5 onActionButton:0 method:0 doesMatchSiriSuggestion:v19 voiceSearchQueryID:0];
+  feedbackDispatcher = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
+  [feedbackDispatcher userDidEngageWithCompletionListItem:v5 onActionButton:0 method:0 doesMatchSiriSuggestion:v19 voiceSearchQueryID:0];
 
   [(CompletionListDismissalAnalyticsReporter *)self->_completionDismissalReporter setAcceptedCompletionListItem:1];
-  v25 = [v5 matchedTextForInputAnalytics];
-  -[CatalogViewController _sendInputAnalyticsForItemWithMatchedText:matchType:](self, "_sendInputAnalyticsForItemWithMatchedText:matchType:", v25, [v5 matchTypeForInputAnalytics]);
+  matchedTextForInputAnalytics = [v5 matchedTextForInputAnalytics];
+  -[CatalogViewController _sendInputAnalyticsForItemWithMatchedText:matchType:](self, "_sendInputAnalyticsForItemWithMatchedText:matchType:", matchedTextForInputAnalytics, [v5 matchTypeForInputAnalytics]);
 
   [v5 acceptCompletionWithActionHandler:self];
-  [(CatalogViewController *)self _executeActionForParsecResultAtIndexPath:v4 tableView:v8 triggerEvent:2];
-  [v8 deselectRowAtIndexPath:v4 animated:1];
+  [(CatalogViewController *)self _executeActionForParsecResultAtIndexPath:pathCopy tableView:tableView triggerEvent:2];
+  [tableView deselectRowAtIndexPath:pathCopy animated:1];
 
 LABEL_28:
 }
 
-- (void)_executeActionForParsecResultAtIndexPath:(id)a3 tableView:(id)a4 triggerEvent:(unint64_t)a5
+- (void)_executeActionForParsecResultAtIndexPath:(id)path tableView:(id)view triggerEvent:(unint64_t)event
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = [v8 cellForRowAtIndexPath:v16];
+  pathCopy = path;
+  viewCopy = view;
+  v9 = [viewCopy cellForRowAtIndexPath:pathCopy];
   getSearchUITableViewCellClass();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v11 = [(CatalogViewController *)self _completionItemAtIndexPath:v16];
+    v11 = [(CatalogViewController *)self _completionItemAtIndexPath:pathCopy];
     getSearchUIClass_0();
     if ((objc_opt_respondsToSelector() & 1) == 0 || (SearchUIClass_0 = getSearchUIClass_0(), [v11 sfSearchResultValue], v13 = objc_claimAutoreleasedReturnValue(), +[WBSParsecDSession sharedPARSession](UniversalSearchSession, "sharedPARSession"), v14 = objc_claimAutoreleasedReturnValue(), LODWORD(SearchUIClass_0) = objc_msgSend(SearchUIClass_0, "hasValidCommandForResult:feedbackListener:", v13, v14), v14, v13, SearchUIClass_0))
     {
-      v15 = [v8 cellForRowAtIndexPath:v16];
-      [(CatalogViewController *)self _executeActionForParsecResultTableViewCell:v15 completionItem:v11 triggerEvent:a5];
+      v15 = [viewCopy cellForRowAtIndexPath:pathCopy];
+      [(CatalogViewController *)self _executeActionForParsecResultTableViewCell:v15 completionItem:v11 triggerEvent:event];
     }
   }
 }
 
-- (void)_executeActionForParsecResultTableViewCell:(id)a3 completionItem:(id)a4 triggerEvent:(unint64_t)a5
+- (void)_executeActionForParsecResultTableViewCell:(id)cell completionItem:(id)item triggerEvent:(unint64_t)event
 {
-  v16 = a3;
-  v8 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   getSearchUITableViewCellClass();
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_respondsToSelector())
   {
     self->_completionDetailIsPresented = 1;
-    v9 = [(CatalogViewController *)self navigationBar];
-    v10 = [v9 textField];
+    navigationBar = [(CatalogViewController *)self navigationBar];
+    textField = [navigationBar textField];
 
-    v11 = [v10 selectedTextRange];
+    selectedTextRange = [textField selectedTextRange];
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    [WeakRetained setTextRangeToRestoreAfterCompletionDetailIsDismissed:v11];
+    [WeakRetained setTextRangeToRestoreAfterCompletionDetailIsDismissed:selectedTextRange];
 
-    [v16 executeCommandWithTriggerEvent:a5];
+    [cellCopy executeCommandWithTriggerEvent:event];
     self->_completionDetailIsPresented = 0;
-    v13 = [MEMORY[0x277D4A808] sharedRecorder];
-    v14 = [v8 sfSearchResultValue];
-    v15 = [v14 url];
-    [v13 didActualizeImpressionForURL:v15 provenance:1];
+    mEMORY[0x277D4A808] = [MEMORY[0x277D4A808] sharedRecorder];
+    sfSearchResultValue = [itemCopy sfSearchResultValue];
+    v15 = [sfSearchResultValue url];
+    [mEMORY[0x277D4A808] didActualizeImpressionForURL:v15 provenance:1];
   }
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   if ([(CompletionList *)self->_completionList showingRecentSearches])
   {
-    v7 = [(CompletionListTableViewController *)self->_completionsViewController recentSearchesHeaderFooterView];
+    recentSearchesHeaderFooterView = [(CompletionListTableViewController *)self->_completionsViewController recentSearchesHeaderFooterView];
   }
 
   else
   {
-    v8 = [(CompletionList *)self->_completionList headerViewReuseIdentifierForGroupAtIndex:a4];
+    v8 = [(CompletionList *)self->_completionList headerViewReuseIdentifierForGroupAtIndex:section];
     if (v8)
     {
-      v7 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:v8];
-      if (!v7)
+      recentSearchesHeaderFooterView = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:v8];
+      if (!recentSearchesHeaderFooterView)
       {
-        v7 = [(CompletionList *)self->_completionList headerViewForGroupAtIndex:a4];
+        recentSearchesHeaderFooterView = [(CompletionList *)self->_completionList headerViewForGroupAtIndex:section];
       }
 
-      [(CompletionList *)self->_completionList configureHeaderView:v7 forGroupAtIndex:a4];
+      [(CompletionList *)self->_completionList configureHeaderView:recentSearchesHeaderFooterView forGroupAtIndex:section];
     }
 
     else
     {
-      v9 = [(CompletionList *)self->_completionList defaultSectionTitleForGroupAtIndex:a4];
+      v9 = [(CompletionList *)self->_completionList defaultSectionTitleForGroupAtIndex:section];
       if ([v9 length])
       {
-        v7 = [(CompletionListTableViewController *)self->_completionsViewController defaultHeaderFooterView];
+        recentSearchesHeaderFooterView = [(CompletionListTableViewController *)self->_completionsViewController defaultHeaderFooterView];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v6 indexPathForSelectedRow];
-          if ([v10 row])
+          indexPathForSelectedRow = [viewCopy indexPathForSelectedRow];
+          if ([indexPathForSelectedRow row])
           {
             v11 = 1;
           }
 
           else
           {
-            v11 = [v10 section] != a4;
+            v11 = [indexPathForSelectedRow section] != section;
           }
 
-          v12 = v10 == 0 || v11;
+          v12 = indexPathForSelectedRow == 0 || v11;
         }
 
         else
@@ -2988,42 +2988,42 @@ LABEL_28:
           v12 = 0;
         }
 
-        v13 = [MEMORY[0x277D756E0] headerConfiguration];
-        [v13 setText:v9];
+        headerConfiguration = [MEMORY[0x277D756E0] headerConfiguration];
+        [headerConfiguration setText:v9];
         v19[0] = MEMORY[0x277D85DD0];
         v19[1] = 3221225472;
         v19[2] = __58__CatalogViewController_tableView_viewForHeaderInSection___block_invoke;
         v19[3] = &unk_2781DC710;
-        v14 = v13;
-        v23 = a4;
+        v14 = headerConfiguration;
+        sectionCopy = section;
         v20 = v14;
-        v21 = self;
-        v22 = v6;
+        selfCopy = self;
+        v22 = viewCopy;
         v24 = v12 & 1;
         __58__CatalogViewController_tableView_viewForHeaderInSection___block_invoke(v19);
         [v14 setDirectionalLayoutMargins:?];
-        v15 = [v14 textProperties];
+        textProperties = [v14 textProperties];
         v16 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D769D0] weight:*MEMORY[0x277D74420]];
-        [v15 setFont:v16];
+        [textProperties setFont:v16];
 
-        [v15 setTransform:0];
-        [v7 setContentConfiguration:v14];
-        v17 = [MEMORY[0x277D49A08] isSolariumEnabled];
+        [textProperties setTransform:0];
+        [recentSearchesHeaderFooterView setContentConfiguration:v14];
+        isSolariumEnabled = [MEMORY[0x277D49A08] isSolariumEnabled];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v7 setShowsSeparator:(v17 ^ 1) & v12];
+          [recentSearchesHeaderFooterView setShowsSeparator:(isSolariumEnabled ^ 1) & v12];
         }
       }
 
       else
       {
-        v7 = 0;
+        recentSearchesHeaderFooterView = 0;
       }
     }
   }
 
-  return v7;
+  return recentSearchesHeaderFooterView;
 }
 
 double __58__CatalogViewController_tableView_viewForHeaderInSection___block_invoke(uint64_t a1)
@@ -3149,13 +3149,13 @@ double __58__CatalogViewController_tableView_viewForHeaderInSection___block_invo
   return result;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  if (a4 || ![(CompletionList *)self->_completionList showingRecentSearches])
+  if (section || ![(CompletionList *)self->_completionList showingRecentSearches])
   {
-    v17 = [(CompletionList *)self->_completionList headerViewReuseIdentifierForGroupAtIndex:a4];
+    v17 = [(CompletionList *)self->_completionList headerViewReuseIdentifierForGroupAtIndex:section];
     if (v17)
     {
       v16 = *MEMORY[0x277D76F30];
@@ -3163,7 +3163,7 @@ double __58__CatalogViewController_tableView_viewForHeaderInSection___block_invo
 
     else
     {
-      v18 = [(CompletionList *)self->_completionList defaultSectionTitleForGroupAtIndex:a4];
+      v18 = [(CompletionList *)self->_completionList defaultSectionTitleForGroupAtIndex:section];
       if ([v18 length])
       {
         v16 = *MEMORY[0x277D76F30];
@@ -3171,19 +3171,19 @@ double __58__CatalogViewController_tableView_viewForHeaderInSection___block_invo
 
       else
       {
-        v19 = [MEMORY[0x277D49A08] isSolariumEnabled];
-        if (a4 || !v19 || ([v6 traitCollection], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "sf_usesVibrantAppearance"), v20, v16 = 9.0, (v21 & 1) == 0))
+        isSolariumEnabled = [MEMORY[0x277D49A08] isSolariumEnabled];
+        if (section || !isSolariumEnabled || ([viewCopy traitCollection], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "sf_usesVibrantAppearance"), v20, v16 = 9.0, (v21 & 1) == 0))
         {
-          v22 = [MEMORY[0x277D756E0] headerConfiguration];
-          [v22 directionalLayoutMargins];
+          headerConfiguration = [MEMORY[0x277D756E0] headerConfiguration];
+          [headerConfiguration directionalLayoutMargins];
           v16 = v23;
 
-          if (!a4)
+          if (!section)
           {
-            v24 = [WeakRetained rootViewController];
-            v25 = [v24 isUsingBottomCapsule];
+            rootViewController = [WeakRetained rootViewController];
+            isUsingBottomCapsule = [rootViewController isUsingBottomCapsule];
 
-            if (v25)
+            if (isUsingBottomCapsule)
             {
               v16 = 1.0;
             }
@@ -3195,16 +3195,16 @@ double __58__CatalogViewController_tableView_viewForHeaderInSection___block_invo
 
   else
   {
-    v8 = [(CatalogViewController *)self view];
-    [v8 frame];
+    view = [(CatalogViewController *)self view];
+    [view frame];
     v10 = v9;
 
     v11 = +[RecentSearchesTableHeaderView clearAllAttributedString];
     [v11 boundingRectWithSize:1 options:0 context:{v10, 1.79769313e308}];
     v13 = v12;
 
-    v14 = [WeakRetained rootViewController];
-    if ([v14 isUsingBottomCapsule])
+    rootViewController2 = [WeakRetained rootViewController];
+    if ([rootViewController2 isUsingBottomCapsule])
     {
       v15 = 44.0;
     }
@@ -3228,20 +3228,20 @@ double __58__CatalogViewController_tableView_viewForHeaderInSection___block_invo
   return v16;
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
-  v4 = [(CompletionList *)self->_completionList swipeActionsForCompletionItemAtIndexPath:a4];
+  v4 = [(CompletionList *)self->_completionList swipeActionsForCompletionItemAtIndexPath:path];
   v5 = [MEMORY[0x277D75AD8] configurationWithActions:v4];
   [v5 setPerformsFirstActionWithFullSwipe:0];
 
   return v5;
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
   p_keyboardFrame = &self->_keyboardFrame;
-  v5 = [a3 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D76BB8]];
+  userInfo = [show userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D76BB8]];
   [v6 CGRectValue];
   p_keyboardFrame->origin.x = v7;
   p_keyboardFrame->origin.y = v8;
@@ -3256,7 +3256,7 @@ double __58__CatalogViewController_tableView_viewForHeaderInSection___block_invo
   }
 }
 
-- (void)_keyboardDidShow:(id)a3
+- (void)_keyboardDidShow:(id)show
 {
   if ([(UnifiedField *)self->_textField isFirstResponder])
   {
@@ -3269,15 +3269,15 @@ double __58__CatalogViewController_tableView_viewForHeaderInSection___block_invo
   }
 }
 
-- (void)_keyboardWillHide:(id)a3
+- (void)_keyboardWillHide:(id)hide
 {
   v4 = *(MEMORY[0x277CBF3A0] + 16);
   self->_keyboardFrame.origin = *MEMORY[0x277CBF3A0];
   self->_keyboardFrame.size = v4;
   self->_hasKeyboardBeenDismissedForThisQuery = 1;
   self->_keyboardIsBeingDismissed = 1;
-  v6 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
-  if ([v6 isDragging])
+  tableView = [(CompletionListTableViewController *)self->_completionsViewController tableView];
+  if ([tableView isDragging])
   {
   }
 
@@ -3293,15 +3293,15 @@ double __58__CatalogViewController_tableView_viewForHeaderInSection___block_invo
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v16 = a3;
-  [v16 contentOffset];
+  scrollCopy = scroll;
+  [scrollCopy contentOffset];
   v5 = v4;
-  [v16 contentInset];
-  if (self->_keyboardIsBeingDismissed || ((v10 = -v6, self->_lastScrollOffset != v5) ? (v11 = v5 < v10) : (v11 = 1), !v11 && (v12 = v7, [v16 contentSize], v14 = v12 + v13, objc_msgSend(v16, "bounds"), v5 <= v14 - v15)))
+  [scrollCopy contentInset];
+  if (self->_keyboardIsBeingDismissed || ((v10 = -v6, self->_lastScrollOffset != v5) ? (v11 = v5 < v10) : (v11 = 1), !v11 && (v12 = v7, [scrollCopy contentSize], v14 = v12 + v13, objc_msgSend(scrollCopy, "bounds"), v5 <= v14 - v15)))
   {
-    [v16 contentOffset];
+    [scrollCopy contentOffset];
     if (v8 < self->_lastScrollOffset)
     {
       v9 = 1;
@@ -3324,40 +3324,40 @@ double __58__CatalogViewController_tableView_viewForHeaderInSection___block_invo
   return WeakRetained;
 }
 
-- (void)search:(id)a3
+- (void)search:(id)search
 {
-  v4 = a3;
+  searchCopy = search;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained catalogViewController:self didSelectSearch:v4];
+  [WeakRetained catalogViewController:self didSelectSearch:searchCopy];
 }
 
-- (void)goToURLString:(id)a3
+- (void)goToURLString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained catalogViewController:self didSelectAddress:v4];
+  [WeakRetained catalogViewController:self didSelectAddress:stringCopy];
 }
 
-- (void)goToURL:(id)a3
+- (void)goToURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained catalogViewController:self loadURL:v4 inExternalApplication:0 forImageAttribution:0];
+  [WeakRetained catalogViewController:self loadURL:lCopy inExternalApplication:0 forImageAttribution:0];
 }
 
-- (void)openURLInExternalApplication:(id)a3
+- (void)openURLInExternalApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained catalogViewController:self loadURL:v4 inExternalApplication:1 forImageAttribution:0];
+  [WeakRetained catalogViewController:self loadURL:applicationCopy inExternalApplication:1 forImageAttribution:0];
 }
 
-- (void)willGoToURLFromPegasusSearchResult:(id)a3
+- (void)willGoToURLFromPegasusSearchResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [(UnifiedField *)self->_textField text];
-  [WeakRetained catalogViewController:self completionItem:v4 wasAcceptedForString:v5];
+  text = [(UnifiedField *)self->_textField text];
+  [WeakRetained catalogViewController:self completionItem:resultCopy wasAcceptedForString:text];
 }
 
 - (void)findOnPage
@@ -3366,28 +3366,28 @@ double __58__CatalogViewController_tableView_viewForHeaderInSection___block_invo
   [WeakRetained catalogViewControllerDidSelectFindOnPage:self];
 }
 
-- (void)presentDetail:(id)a3
+- (void)presentDetail:(id)detail
 {
   self->_completionDetailIsPresented = 1;
-  v4 = a3;
+  detailCopy = detail;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v5 = [(CatalogViewController *)self navigationBar];
-  v6 = [v5 textField];
+  navigationBar = [(CatalogViewController *)self navigationBar];
+  textField = [navigationBar textField];
 
-  if ([v6 isFirstResponder])
+  if ([textField isFirstResponder])
   {
-    v7 = [v6 selectedTextRange];
-    [WeakRetained setTextRangeToRestoreAfterCompletionDetailIsDismissed:v7];
+    selectedTextRange = [textField selectedTextRange];
+    [WeakRetained setTextRangeToRestoreAfterCompletionDetailIsDismissed:selectedTextRange];
 
-    [v6 resignFirstResponder];
+    [textField resignFirstResponder];
   }
 
-  v8 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
-  v9 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
-  v10 = [v9 indexPathForSelectedRow];
-  [v8 deselectRowAtIndexPath:v10 animated:0];
+  tableView = [(CompletionListTableViewController *)self->_completionsViewController tableView];
+  tableView2 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
+  indexPathForSelectedRow = [tableView2 indexPathForSelectedRow];
+  [tableView deselectRowAtIndexPath:indexPathForSelectedRow animated:0];
 
-  v11 = [[CompletionDetailViewController alloc] initWithRootViewController:v4];
+  v11 = [[CompletionDetailViewController alloc] initWithRootViewController:detailCopy];
   [(CompletionDetailViewController *)v11 setModalPresentationStyle:2];
   [(CompletionDetailViewController *)v11 setCompletionDetailViewControllerDelegate:WeakRetained];
   completionDetailViewController = self->_completionDetailViewController;
@@ -3396,11 +3396,11 @@ double __58__CatalogViewController_tableView_viewForHeaderInSection___block_invo
   [(CatalogViewController *)self _presentStagedCompletionDetailViewControllerAnimated:1];
 }
 
-- (void)_presentStagedCompletionDetailViewControllerAnimated:(BOOL)a3
+- (void)_presentStagedCompletionDetailViewControllerAnimated:(BOOL)animated
 {
   if (self->_completionDetailViewController != self->_completionDetailViewControllerBeingPresented)
   {
-    v3 = a3;
+    animatedCopy = animated;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained catalogViewController:self willPresentDetailViewController:self->_completionDetailViewController];
     popoverCatalogViewController = self;
@@ -3420,7 +3420,7 @@ double __58__CatalogViewController_tableView_viewForHeaderInSection___block_invo
     v11[2] = __78__CatalogViewController__presentStagedCompletionDetailViewControllerAnimated___block_invoke;
     v11[3] = &unk_2781D4D40;
     v11[4] = self;
-    [v9 presentViewController:completionDetailViewController animated:v3 completion:v11];
+    [v9 presentViewController:completionDetailViewController animated:animatedCopy completion:v11];
   }
 }
 
@@ -3431,10 +3431,10 @@ void __78__CatalogViewController__presentStagedCompletionDetailViewControllerAni
   *(v1 + 1040) = 0;
 }
 
-- (void)dismissCompletionDetailWindowAndResumeEditingIfNeeded:(BOOL)a3 completionHandler:(id)a4
+- (void)dismissCompletionDetailWindowAndResumeEditingIfNeeded:(BOOL)needed completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  neededCopy = needed;
+  handlerCopy = handler;
   v7 = dispatch_group_create();
   v8 = v7;
   if (self->_completionDetailViewController)
@@ -3456,9 +3456,9 @@ void __78__CatalogViewController__presentStagedCompletionDetailViewControllerAni
       popoverCatalogViewController = self->_popoverCatalogViewController;
       if (popoverCatalogViewController)
       {
-        v13 = [(PopoverCatalogViewController *)popoverCatalogViewController presentingViewController];
+        presentingViewController = [(PopoverCatalogViewController *)popoverCatalogViewController presentingViewController];
 
-        if (!v13)
+        if (!presentingViewController)
         {
           v14 = WBS_LOG_CHANNEL_PREFIXUserInteraction();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -3480,14 +3480,14 @@ void __78__CatalogViewController__presentStagedCompletionDetailViewControllerAni
     }
   }
 
-  [(CatalogViewController *)self resumeEditingIfNeeded:v4];
+  [(CatalogViewController *)self resumeEditingIfNeeded:neededCopy];
   self->_completionDetailIsPresented = 0;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __97__CatalogViewController_dismissCompletionDetailWindowAndResumeEditingIfNeeded_completionHandler___block_invoke_2;
   v17[3] = &unk_2781D4D90;
-  v18 = v6;
-  v16 = v6;
+  v18 = handlerCopy;
+  v16 = handlerCopy;
   dispatch_group_notify(v8, MEMORY[0x277D85CD0], v17);
 }
 
@@ -3502,87 +3502,87 @@ uint64_t __97__CatalogViewController_dismissCompletionDetailWindowAndResumeEditi
   return result;
 }
 
-- (void)resumeEditingIfNeeded:(BOOL)a3
+- (void)resumeEditingIfNeeded:(BOOL)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v5 = [WeakRetained textRangeToRestoreAfterCompletionDetailIsDismissed];
-  v6 = v5;
-  if (v3 && v5)
+  textRangeToRestoreAfterCompletionDetailIsDismissed = [WeakRetained textRangeToRestoreAfterCompletionDetailIsDismissed];
+  v6 = textRangeToRestoreAfterCompletionDetailIsDismissed;
+  if (neededCopy && textRangeToRestoreAfterCompletionDetailIsDismissed)
   {
-    v7 = [(CatalogViewController *)self navigationBar];
-    v8 = [v7 textField];
+    navigationBar = [(CatalogViewController *)self navigationBar];
+    textField = [navigationBar textField];
 
-    [v8 becomeFirstResponder];
-    [v8 setSelectedTextRange:v6];
+    [textField becomeFirstResponder];
+    [textField setSelectedTextRange:v6];
   }
 
   [WeakRetained setTextRangeToRestoreAfterCompletionDetailIsDismissed:0];
 }
 
-- (void)resumeSearchWithQuery:(id)a3
+- (void)resumeSearchWithQuery:(id)query
 {
-  v4 = a3;
-  v10 = [(CatalogViewController *)self unifiedTextField];
-  v5 = [v4 queryString];
-  [v10 setText:v5];
+  queryCopy = query;
+  unifiedTextField = [(CatalogViewController *)self unifiedTextField];
+  queryString = [queryCopy queryString];
+  [unifiedTextField setText:queryString];
 
-  [v10 becomeFirstResponder];
-  v6 = [v10 endOfDocument];
-  v7 = [v10 endOfDocument];
-  v8 = [v10 textRangeFromPosition:v6 toPosition:v7];
-  [v10 setSelectedTextRange:v8];
+  [unifiedTextField becomeFirstResponder];
+  endOfDocument = [unifiedTextField endOfDocument];
+  endOfDocument2 = [unifiedTextField endOfDocument];
+  v8 = [unifiedTextField textRangeFromPosition:endOfDocument toPosition:endOfDocument2];
+  [unifiedTextField setSelectedTextRange:v8];
 
-  [(CompletionList *)self->_completionList didResumeSearchWithQuery:v4];
-  v9 = [(CompletionListTableViewController *)self->_completionsViewController dataSource];
-  [v9 updateTableViewWithCompletionList:self->_completionList animated:1 completion:0];
+  [(CompletionList *)self->_completionList didResumeSearchWithQuery:queryCopy];
+  dataSource = [(CompletionListTableViewController *)self->_completionsViewController dataSource];
+  [dataSource updateTableViewWithCompletionList:self->_completionList animated:1 completion:0];
 
   [(CatalogViewController *)self _generateVisibleResultsFeedbackForEvent:0];
 }
 
-- (void)searchTextCompletionAccessoryButtonTappedForCompletionItem:(id)a3
+- (void)searchTextCompletionAccessoryButtonTappedForCompletionItem:(id)item
 {
   self->_lastInputWasSearchTextCompletion = 1;
-  v4 = a3;
-  v5 = [v4 string];
-  v6 = [v5 stringByAppendingString:@" "];
+  itemCopy = item;
+  string = [itemCopy string];
+  v6 = [string stringByAppendingString:@" "];
   [(CatalogViewController *)self setQueryString:v6];
 
   [(UnifiedField *)self->_textField sendActionsForControlEvents:0x20000];
   [(UnifiedField *)self->_textField focusAndInsertCursorAtEnd];
-  v7 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
-  [v7 userDidEngageWithCompletionListItem:v4 onActionButton:0 method:0];
+  feedbackDispatcher = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
+  [feedbackDispatcher userDidEngageWithCompletionListItem:itemCopy onActionButton:0 method:0];
 
   self->_lastInputWasSearchTextCompletion = 0;
 }
 
-- (void)switchToTabWithUUID:(id)a3 inWindowWithUUID:(id)a4 forTabGroupWithUUID:(id)a5
+- (void)switchToTabWithUUID:(id)d inWindowWithUUID:(id)iD forTabGroupWithUUID:(id)uID
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  uIDCopy = uID;
+  iDCopy = iD;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  [WeakRetained switchToTabWithUUID:v10 inWindowWithUUID:v9 forTabGroupWithUUID:v8];
+  [WeakRetained switchToTabWithUUID:dCopy inWindowWithUUID:iDCopy forTabGroupWithUUID:uIDCopy];
 }
 
 - (void)toggleVoiceSearch
 {
-  v3 = [(UnifiedField *)self->_textField voiceSearchState];
-  if (v3 == 2)
+  voiceSearchState = [(UnifiedField *)self->_textField voiceSearchState];
+  if (voiceSearchState == 2)
   {
 LABEL_4:
     v6 = [objc_alloc(MEMORY[0x277D49ED8]) initWithQueryString:&stru_2827BF158 triggerEvent:4];
-    v4 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
-    [v4 userDidTapMicKey:{objc_msgSend(v6, "queryID")}];
+    feedbackDispatcher = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
+    [feedbackDispatcher userDidTapMicKey:{objc_msgSend(v6, "queryID")}];
 
     [(UnifiedField *)self->_textField setVoiceSearchState:1];
 
     return;
   }
 
-  if (v3 != 1)
+  if (voiceSearchState != 1)
   {
-    if (v3)
+    if (voiceSearchState)
     {
       return;
     }
@@ -3601,9 +3601,9 @@ LABEL_4:
   [(CatalogViewController *)self _invalidatePendingVoiceSearchTimer];
   if (self->_hasPendingVoiceSearchUpdate)
   {
-    v3 = [(UnifiedField *)self->_textField text];
-    v4 = [MEMORY[0x277CCA900] safari_whitespaceAndNewlineCharacterSet];
-    v5 = [v3 stringByTrimmingCharactersInSet:v4];
+    text = [(UnifiedField *)self->_textField text];
+    safari_whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] safari_whitespaceAndNewlineCharacterSet];
+    v5 = [text stringByTrimmingCharactersInSet:safari_whitespaceAndNewlineCharacterSet];
     v6 = [v5 length];
 
     if (v6)
@@ -3612,13 +3612,13 @@ LABEL_4:
       {
         self->_hasPendingVoiceSearchUpdate = 0;
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
-        v29 = [(CompletionList *)self->_completionList numberOfGroups];
-        if (v29)
+        numberOfGroups = [(CompletionList *)self->_completionList numberOfGroups];
+        if (numberOfGroups)
         {
           v28 = WeakRetained;
           v8 = 0;
           v9 = 0;
-          for (i = 0; i != v29; ++i)
+          for (i = 0; i != numberOfGroups; ++i)
           {
             v11 = [(CompletionList *)self->_completionList completionsForGroupAtIndex:i, v28];
             v30 = 0u;
@@ -3662,7 +3662,7 @@ LABEL_4:
           {
             if (v8 != 2)
             {
-              v20 = [(UnifiedField *)self->_textField text];
+              text2 = [(UnifiedField *)self->_textField text];
               v21 = self->_textField;
               if (v8)
               {
@@ -3672,11 +3672,11 @@ LABEL_4:
                   if (v8 != 1)
                   {
 LABEL_30:
-                    v25 = [v9 matchedTextForInputAnalytics];
-                    -[CatalogViewController _sendInputAnalyticsForItemWithMatchedText:matchType:](self, "_sendInputAnalyticsForItemWithMatchedText:matchType:", v25, [v9 matchTypeForInputAnalytics]);
+                    matchedTextForInputAnalytics = [v9 matchedTextForInputAnalytics];
+                    -[CatalogViewController _sendInputAnalyticsForItemWithMatchedText:matchType:](self, "_sendInputAnalyticsForItemWithMatchedText:matchType:", matchedTextForInputAnalytics, [v9 matchTypeForInputAnalytics]);
 
-                    v26 = [(UnifiedField *)self->_textField text];
-                    [WeakRetained catalogViewController:self completionItem:v9 wasAcceptedForString:v26];
+                    text3 = [(UnifiedField *)self->_textField text];
+                    [WeakRetained catalogViewController:self completionItem:v9 wasAcceptedForString:text3];
 
                     [v9 acceptCompletionWithActionHandler:self];
                     objc_opt_class();
@@ -3692,25 +3692,25 @@ LABEL_30:
                     goto LABEL_33;
                   }
 
-                  v22 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
-                  v23 = objc_loadWeakRetained(&self->_browserController);
-                  v24 = [v23 activeSearchEngine];
-                  [v22 userTypedGoToSearch:v20 endpoint:objc_msgSend(v24 triggerEvent:"parsecSearchEndpointType") forQueryID:{1, -[CatalogViewController _completionListQueryID](self, "_completionListQueryID")}];
+                  feedbackDispatcher = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
+                  query = objc_loadWeakRetained(&self->_browserController);
+                  activeSearchEngine = [query activeSearchEngine];
+                  [feedbackDispatcher userTypedGoToSearch:text2 endpoint:objc_msgSend(activeSearchEngine triggerEvent:"parsecSearchEndpointType") forQueryID:{1, -[CatalogViewController _completionListQueryID](self, "_completionListQueryID")}];
 
 LABEL_29:
                   goto LABEL_30;
                 }
 
-                v22 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
-                v23 = [MEMORY[0x277CCABB0] numberWithInt:{-[CatalogViewController _completionListQueryID](self, "_completionListQueryID")}];
-                [v22 userDidEngageWithCompletionListItem:v9 onActionButton:0 method:2 doesMatchSiriSuggestion:1 voiceSearchQueryID:v23];
+                feedbackDispatcher = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
+                query = [MEMORY[0x277CCABB0] numberWithInt:{-[CatalogViewController _completionListQueryID](self, "_completionListQueryID")}];
+                [feedbackDispatcher userDidEngageWithCompletionListItem:v9 onActionButton:0 method:2 doesMatchSiriSuggestion:1 voiceSearchQueryID:query];
               }
 
               else
               {
-                v22 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
-                v23 = [(CompletionList *)self->_completionList query];
-                [v22 userTypedURLDirectlyForQuery:v23 triggerEvent:1];
+                feedbackDispatcher = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
+                query = [(CompletionList *)self->_completionList query];
+                [feedbackDispatcher userTypedURLDirectlyForQuery:query triggerEvent:1];
               }
 
               WeakRetained = v28;
@@ -3739,9 +3739,9 @@ LABEL_33:
   }
 }
 
-- (int64_t)_relevanceForItem:(id)a3
+- (int64_t)_relevanceForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -3761,7 +3761,7 @@ LABEL_33:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = [(CatalogViewController *)self _relevanceForResult:v4];
+        v5 = [(CatalogViewController *)self _relevanceForResult:itemCopy];
       }
 
       else
@@ -3774,15 +3774,15 @@ LABEL_33:
   return v5;
 }
 
-- (int64_t)_relevanceForResult:(id)a3
+- (int64_t)_relevanceForResult:(id)result
 {
-  v3 = a3;
-  if ([v3 shouldAutoNavigate])
+  resultCopy = result;
+  if ([resultCopy shouldAutoNavigate])
   {
     v4 = 3;
   }
 
-  else if ([v3 isInstantAnswer])
+  else if ([resultCopy isInstantAnswer])
   {
     v4 = 2;
   }
@@ -3802,9 +3802,9 @@ LABEL_33:
   self->_pendingVoiceSearchTimer = 0;
 }
 
-- (BOOL)textFieldShouldBeginEditing:(id)a3
+- (BOOL)textFieldShouldBeginEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   v5 = WBS_LOG_CHANNEL_PREFIXSignposts();
   if (os_signpost_enabled(v5))
   {
@@ -3812,29 +3812,29 @@ LABEL_33:
     _os_signpost_emit_with_name_impl(&dword_215819000, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "UnifiedFieldKeyboardPresentation", "", buf, 2u);
   }
 
-  if (([v4 isEditing] & 1) == 0)
+  if (([editingCopy isEditing] & 1) == 0)
   {
-    [v4 setClearingBehavior:3];
+    [editingCopy setClearingBehavior:3];
   }
 
-  v6 = [(CatalogViewController *)self textField];
-  [v6 setContextCompleter:0];
+  textField = [(CatalogViewController *)self textField];
+  [textField setContextCompleter:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v8 = [WeakRetained tabController];
-  v9 = [v8 activeTabDocument];
+  tabController = [WeakRetained tabController];
+  activeTabDocument = [tabController activeTabDocument];
 
-  v10 = [v9 URL];
+  v10 = [activeTabDocument URL];
   if (v10)
   {
     objc_initWeak(buf, self);
-    v11 = [v9 contextController];
+    contextController = [activeTabDocument contextController];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __53__CatalogViewController_textFieldShouldBeginEditing___block_invoke;
     v13[3] = &unk_2781DC738;
     objc_copyWeak(&v14, buf);
-    [v11 cachedResponseForURL:v10 completionHandler:v13];
+    [contextController cachedResponseForURL:v10 completionHandler:v13];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(buf);
@@ -3871,7 +3871,7 @@ void __53__CatalogViewController_textFieldShouldBeginEditing___block_invoke_2(ui
   [v2 setContextCompleter:v1];
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
   [(CompletionList *)self->_completionList setShouldForceSuppressionOfSiriSuggestedSite:1];
   [(CatalogViewController *)self _ensureCompletionListAndParsecSession];
@@ -3879,28 +3879,28 @@ void __53__CatalogViewController_textFieldShouldBeginEditing___block_invoke_2(ui
   [WeakRetained catalogViewControllerDidBeginEditing:self];
 
   v11 = objc_loadWeakRetained(&self->_browserController);
-  v5 = [v11 rootViewController];
-  v6 = [v5 capsuleCollectionViewLayout];
+  rootViewController = [v11 rootViewController];
+  capsuleCollectionViewLayout = [rootViewController capsuleCollectionViewLayout];
   v7 = WBSIsEqual();
 
-  v8 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
-  v9 = [v11 tabController];
-  v10 = [v9 activeTabDocument];
-  [v8 searchViewAppearedBecauseOfEvent:9 isSafariReaderAvailable:objc_msgSend(v10 forQueryID:"isReaderAvailable") usesLoweredSearchBar:{-[CatalogViewController _completionListQueryID](self, "_completionListQueryID"), v7}];
+  feedbackDispatcher = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
+  tabController = [v11 tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  [feedbackDispatcher searchViewAppearedBecauseOfEvent:9 isSafariReaderAvailable:objc_msgSend(activeTabDocument forQueryID:"isReaderAvailable") usesLoweredSearchBar:{-[CatalogViewController _completionListQueryID](self, "_completionListQueryID"), v7}];
 
   [(CompletionList *)self->_completionList unifiedFieldDidBecomeFirstResponder];
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained catalogViewControllerDidEndEditing:self];
 }
 
-- (BOOL)textFieldShouldClear:(id)a3
+- (BOOL)textFieldShouldClear:(id)clear
 {
-  v4 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
-  [v4 sendClearInputFeedbackWithTriggerEvent:1 forQueryID:{-[CatalogViewController _completionListQueryID](self, "_completionListQueryID")}];
+  feedbackDispatcher = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
+  [feedbackDispatcher sendClearInputFeedbackWithTriggerEvent:1 forQueryID:{-[CatalogViewController _completionListQueryID](self, "_completionListQueryID")}];
 
   return 1;
 }
@@ -3909,16 +3909,16 @@ void __53__CatalogViewController_textFieldShouldBeginEditing___block_invoke_2(ui
 {
   if ([(UnifiedField *)self->_textField hasSelectedQuerySuggestion])
   {
-    v4 = [(UnifiedField *)self->_textField contextCompleter];
-    v3 = [(UnifiedField *)self->_textField text];
-    [v4 logTransactionSuccessfulForInput:v3];
+    contextCompleter = [(UnifiedField *)self->_textField contextCompleter];
+    text = [(UnifiedField *)self->_textField text];
+    [contextCompleter logTransactionSuccessfulForInput:text];
   }
 }
 
-- (void)unifiedField:(id)a3 willUpdateUserTypedText:(id)a4 toText:(id)a5
+- (void)unifiedField:(id)field willUpdateUserTypedText:(id)text toText:(id)toText
 {
-  v7 = a5;
-  if (![a4 length] && objc_msgSend(v7, "length"))
+  toTextCopy = toText;
+  if (![text length] && objc_msgSend(toTextCopy, "length"))
   {
     v8 = WBS_LOG_CHANNEL_PREFIXSignposts();
     if (os_signpost_enabled(v8))
@@ -3931,23 +3931,23 @@ void __53__CatalogViewController_textFieldShouldBeginEditing___block_invoke_2(ui
   }
 }
 
-- (void)unifiedField:(id)a3 didEndEditingWithAddress:(id)a4
+- (void)unifiedField:(id)field didEndEditingWithAddress:(id)address
 {
-  v18 = a4;
+  addressCopy = address;
   [(CompletionListDismissalAnalyticsReporter *)self->_completionDismissalReporter setUnifiedFieldContentType:0];
-  if (objc_opt_respondsToSelector() & 1) != 0 && (-[CompletionItem userVisibleURLString](self->_lastTopHitMatch, "userVisibleURLString"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isEqualToString:v18], v5, (v6))
+  if (objc_opt_respondsToSelector() & 1) != 0 && (-[CompletionItem userVisibleURLString](self->_lastTopHitMatch, "userVisibleURLString"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isEqualToString:addressCopy], v5, (v6))
   {
     [(CatalogViewController *)self _logTopHitWasChosen:1];
-    v7 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
-    [v7 userDidEngageWithCompletionListItem:self->_lastTopHitMatch onActionButton:0 method:1];
+    feedbackDispatcher = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
+    [feedbackDispatcher userDidEngageWithCompletionListItem:self->_lastTopHitMatch onActionButton:0 method:1];
 
     [(CatalogViewController *)self _logQueryEngagement];
-    v8 = [(CompletionList *)self->_completionList query];
-    v9 = [v8 queryString];
-    [(CatalogViewController *)self _updatePersonalisationDataForDonation:v9 forPosition:1];
+    query = [(CompletionList *)self->_completionList query];
+    queryString = [query queryString];
+    [(CatalogViewController *)self _updatePersonalisationDataForDonation:queryString forPosition:1];
 
-    v10 = [(CompletionItem *)self->_lastTopHitMatch matchedTextForInputAnalytics];
-    v11 = [(CompletionItem *)self->_lastTopHitMatch matchTypeForInputAnalytics];
+    matchedTextForInputAnalytics = [(CompletionItem *)self->_lastTopHitMatch matchedTextForInputAnalytics];
+    matchTypeForInputAnalytics = [(CompletionItem *)self->_lastTopHitMatch matchTypeForInputAnalytics];
   }
 
   else
@@ -3958,28 +3958,28 @@ void __53__CatalogViewController_textFieldShouldBeginEditing___block_invoke_2(ui
     }
 
     v12 = [(UnifiedField *)self->_textField voiceSearchState]!= 0;
-    v13 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
-    v14 = [(CompletionList *)self->_completionList query];
-    [v13 userTypedURLDirectlyForQuery:v14 triggerEvent:v12];
+    feedbackDispatcher2 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
+    query2 = [(CompletionList *)self->_completionList query];
+    [feedbackDispatcher2 userTypedURLDirectlyForQuery:query2 triggerEvent:v12];
 
-    v15 = [(CompletionList *)self->_completionList query];
-    v16 = [v15 queryString];
-    [(CatalogViewController *)self _updatePersonalisationDataForDonation:v16 forPosition:-1];
+    query3 = [(CompletionList *)self->_completionList query];
+    queryString2 = [query3 queryString];
+    [(CatalogViewController *)self _updatePersonalisationDataForDonation:queryString2 forPosition:-1];
 
-    v10 = v18;
-    v11 = 1;
+    matchedTextForInputAnalytics = addressCopy;
+    matchTypeForInputAnalytics = 1;
   }
 
-  [(CatalogViewController *)self _sendInputAnalyticsForItemWithMatchedText:v10 matchType:v11];
+  [(CatalogViewController *)self _sendInputAnalyticsForItemWithMatchedText:matchedTextForInputAnalytics matchType:matchTypeForInputAnalytics];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained catalogViewController:self didSelectAddress:v18];
+  [WeakRetained catalogViewController:self didSelectAddress:addressCopy];
 
   [(CatalogViewController *)self _clearParsecSearchSession];
 }
 
-- (void)unifiedField:(id)a3 didEndEditingWithSearch:(id)a4
+- (void)unifiedField:(id)field didEndEditingWithSearch:(id)search
 {
-  v14 = a4;
+  searchCopy = search;
   [(CompletionListDismissalAnalyticsReporter *)self->_completionDismissalReporter setUnifiedFieldContentType:1];
   if (self->_lastTopHitMatch)
   {
@@ -3992,66 +3992,66 @@ void __53__CatalogViewController_textFieldShouldBeginEditing___block_invoke_2(ui
     [WeakRetained catalogViewController:self cacheSearchQueryID:{-[CatalogViewController _completionListQueryID](self, "_completionListQueryID")}];
   }
 
-  v6 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
+  feedbackDispatcher = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
   v7 = objc_loadWeakRetained(&self->_browserController);
-  v8 = [v7 activeSearchEngine];
-  [v6 userTypedGoToSearch:v14 endpoint:objc_msgSend(v8 triggerEvent:"parsecSearchEndpointType") forQueryID:{0, -[CatalogViewController _completionListQueryID](self, "_completionListQueryID")}];
+  activeSearchEngine = [v7 activeSearchEngine];
+  [feedbackDispatcher userTypedGoToSearch:searchCopy endpoint:objc_msgSend(activeSearchEngine triggerEvent:"parsecSearchEndpointType") forQueryID:{0, -[CatalogViewController _completionListQueryID](self, "_completionListQueryID")}];
 
   [(CatalogViewController *)self _logQueryEngagement];
-  v9 = [(CompletionList *)self->_completionList indexPathOfAsTypedSearchSuggestion];
+  indexPathOfAsTypedSearchSuggestion = [(CompletionList *)self->_completionList indexPathOfAsTypedSearchSuggestion];
 
-  if (v9)
+  if (indexPathOfAsTypedSearchSuggestion)
   {
-    v10 = [(CompletionList *)self->_completionList indexPathOfAsTypedSearchSuggestion];
-    v11 = [(CatalogViewController *)self _completionItemAtIndexPath:v10];
+    indexPathOfAsTypedSearchSuggestion2 = [(CompletionList *)self->_completionList indexPathOfAsTypedSearchSuggestion];
+    v11 = [(CatalogViewController *)self _completionItemAtIndexPath:indexPathOfAsTypedSearchSuggestion2];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v11 string];
-      v13 = [v12 isEqualToString:v14];
+      string = [v11 string];
+      v13 = [string isEqualToString:searchCopy];
 
       if (v13)
       {
-        [WeakRetained catalogViewController:self completionItem:v11 wasAcceptedForString:v14];
+        [WeakRetained catalogViewController:self completionItem:v11 wasAcceptedForString:searchCopy];
       }
     }
   }
 
-  [(CatalogViewController *)self _sendInputAnalyticsForItemWithMatchedText:v14 matchType:2];
-  [WeakRetained catalogViewController:self didSelectSearch:v14];
+  [(CatalogViewController *)self _sendInputAnalyticsForItemWithMatchedText:searchCopy matchType:2];
+  [WeakRetained catalogViewController:self didSelectSearch:searchCopy];
   [(CatalogViewController *)self _clearParsecSearchSession];
 }
 
-- (void)unifiedField:(id)a3 didEndEditingWithParsecTopHit:(id)a4
+- (void)unifiedField:(id)field didEndEditingWithParsecTopHit:(id)hit
 {
   completionDismissalReporter = self->_completionDismissalReporter;
-  v6 = a4;
+  hitCopy = hit;
   [(CompletionListDismissalAnalyticsReporter *)completionDismissalReporter setUnifiedFieldContentType:2];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = [(UnifiedField *)self->_textField text];
-  [WeakRetained catalogViewController:self completionItem:v6 wasAcceptedForString:v8];
+  text = [(UnifiedField *)self->_textField text];
+  [WeakRetained catalogViewController:self completionItem:hitCopy wasAcceptedForString:text];
 
-  v9 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
-  [v9 userDidEngageWithCompletionListItem:v6 onActionButton:0 method:1];
+  feedbackDispatcher = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
+  [feedbackDispatcher userDidEngageWithCompletionListItem:hitCopy onActionButton:0 method:1];
 
   [(CatalogViewController *)self _logQueryEngagement];
   [(CatalogViewController *)self _clearParsecSearchSession];
-  v10 = [v6 matchedTextForInputAnalytics];
-  -[CatalogViewController _sendInputAnalyticsForItemWithMatchedText:matchType:](self, "_sendInputAnalyticsForItemWithMatchedText:matchType:", v10, [v6 matchTypeForInputAnalytics]);
+  matchedTextForInputAnalytics = [hitCopy matchedTextForInputAnalytics];
+  -[CatalogViewController _sendInputAnalyticsForItemWithMatchedText:matchType:](self, "_sendInputAnalyticsForItemWithMatchedText:matchType:", matchedTextForInputAnalytics, [hitCopy matchTypeForInputAnalytics]);
 
-  [v6 acceptCompletionWithActionHandler:self];
-  v12 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
-  v11 = [v12 indexPathForSelectedRow];
-  [(CatalogViewController *)self _executeActionForParsecResultAtIndexPath:v11 tableView:v12 triggerEvent:1];
+  [hitCopy acceptCompletionWithActionHandler:self];
+  tableView = [(CompletionListTableViewController *)self->_completionsViewController tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
+  [(CatalogViewController *)self _executeActionForParsecResultAtIndexPath:indexPathForSelectedRow tableView:tableView triggerEvent:1];
 }
 
-- (BOOL)unifiedField:(id)a3 shouldWaitForTopHitForText:(id)a4
+- (BOOL)unifiedField:(id)field shouldWaitForTopHitForText:(id)text
 {
-  v5 = a4;
-  if ([v5 length] && (completionList = self->_completionList) != 0)
+  textCopy = text;
+  if ([textCopy length] && (completionList = self->_completionList) != 0)
   {
-    v7 = ![(CompletionList *)completionList isTopHitReadyForString:v5];
+    v7 = ![(CompletionList *)completionList isTopHitReadyForString:textCopy];
   }
 
   else
@@ -4062,12 +4062,12 @@ void __53__CatalogViewController_textFieldShouldBeginEditing___block_invoke_2(ui
   return v7;
 }
 
-- (id)unifiedField:(id)a3 topHitForText:(id)a4
+- (id)unifiedField:(id)field topHitForText:(id)text
 {
-  v5 = a4;
-  if ([v5 length])
+  textCopy = text;
+  if ([textCopy length])
   {
-    v6 = [(CompletionList *)self->_completionList topHitForString:v5];
+    v6 = [(CompletionList *)self->_completionList topHitForString:textCopy];
   }
 
   else
@@ -4078,17 +4078,17 @@ void __53__CatalogViewController_textFieldShouldBeginEditing___block_invoke_2(ui
   return v6;
 }
 
-- (void)unifiedFieldVoiceSearchStateDidChange:(id)a3
+- (void)unifiedFieldVoiceSearchStateDidChange:(id)change
 {
-  v4 = [a3 voiceSearchState];
-  if (v4 == 2)
+  voiceSearchState = [change voiceSearchState];
+  if (voiceSearchState == 2)
   {
     v5 = 0;
   }
 
   else
   {
-    if (v4)
+    if (voiceSearchState)
     {
       goto LABEL_6;
     }
@@ -4096,8 +4096,8 @@ void __53__CatalogViewController_textFieldShouldBeginEditing___block_invoke_2(ui
     v5 = 1;
   }
 
-  v6 = [MEMORY[0x277D499B8] sharedLogger];
-  [v6 didActivateVoiceSearchAccidentally:v5];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] didActivateVoiceSearchAccidentally:v5];
 
 LABEL_6:
 
@@ -4108,8 +4108,8 @@ LABEL_6:
 {
   if ([(UnifiedField *)self->_textField isFirstResponder]&& ![(CatalogViewController *)self _showCompletionsInPopover])
   {
-    v4 = [(CompletionListTableViewController *)self->_completionsViewController parentViewController];
-    if (v4 || self->_voiceSearchWasInProgress)
+    parentViewController = [(CompletionListTableViewController *)self->_completionsViewController parentViewController];
+    if (parentViewController || self->_voiceSearchWasInProgress)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -4131,11 +4131,11 @@ LABEL_6:
 
 - (void)_updateVoiceSearchState
 {
-  v3 = [(UnifiedField *)self->_textField voiceSearchState];
-  v4 = [MEMORY[0x277D28EB8] sharedManager];
-  v5 = [v4 liveCompletionList];
+  voiceSearchState = [(UnifiedField *)self->_textField voiceSearchState];
+  mEMORY[0x277D28EB8] = [MEMORY[0x277D28EB8] sharedManager];
+  liveCompletionList = [mEMORY[0x277D28EB8] liveCompletionList];
 
-  if (v3 == 2)
+  if (voiceSearchState == 2)
   {
     self->_voiceSearchWasInProgress = 0;
     self->_hasPendingVoiceSearchUpdate = 1;
@@ -4145,13 +4145,13 @@ LABEL_6:
     self->_pendingVoiceSearchTimer = v7;
   }
 
-  else if (v3 == 1)
+  else if (voiceSearchState == 1)
   {
     self->_voiceSearchWasInProgress = 1;
-    if ((v5 & 1) == 0 && ![(CompletionList *)self->_completionList showingRecentSearches])
+    if ((liveCompletionList & 1) == 0 && ![(CompletionList *)self->_completionList showingRecentSearches])
     {
-      v9 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
-      [v9 setHidden:1];
+      tableView = [(CompletionListTableViewController *)self->_completionsViewController tableView];
+      [tableView setHidden:1];
 
       [(CatalogViewController *)self relinquishOwnershipOfCompletionsViewControllerFromCurrentParent];
 
@@ -4159,10 +4159,10 @@ LABEL_6:
     }
   }
 
-  else if (!v3 && (v5 & 1) == 0)
+  else if (!voiceSearchState && (liveCompletionList & 1) == 0)
   {
-    v6 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
-    [v6 setHidden:0];
+    tableView2 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
+    [tableView2 setHidden:0];
 
     if ([(CatalogViewController *)self _shouldTakeOwnershipOfCompletionsViewController])
     {
@@ -4174,7 +4174,7 @@ LABEL_6:
   }
 }
 
-- (void)unifiedFieldExternalSearchDidEnd:(id)a3
+- (void)unifiedFieldExternalSearchDidEnd:(id)end
 {
   self->_hasPendingVoiceSearchUpdate = 1;
   [(CatalogViewController *)self _invalidatePendingVoiceSearchTimer];
@@ -4183,37 +4183,37 @@ LABEL_6:
   self->_pendingVoiceSearchTimer = v4;
 }
 
-- (void)unifiedFieldReflectedItemDidChange:(id)a3
+- (void)unifiedFieldReflectedItemDidChange:(id)change
 {
-  v8 = a3;
+  changeCopy = change;
   [(CatalogViewController *)self _updateSearchFieldIcon];
-  v4 = [v8 lastEditWasADeletion];
-  v5 = v8;
-  if ((v4 & 1) != 0 || (v6 = [v8 isResigningFirstResponder], v5 = v8, v6))
+  lastEditWasADeletion = [changeCopy lastEditWasADeletion];
+  v5 = changeCopy;
+  if ((lastEditWasADeletion & 1) != 0 || (v6 = [changeCopy isResigningFirstResponder], v5 = changeCopy, v6))
   {
-    v7 = [v5 reflectedItem];
-    if (!v7)
+    reflectedItem = [v5 reflectedItem];
+    if (!reflectedItem)
     {
       [(CatalogViewController *)self _deselectCompletionsViewControllerSelectedRow];
     }
 
-    v5 = v8;
+    v5 = changeCopy;
   }
 }
 
 - (id)_searchFieldIcon
 {
-  v3 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
-  v4 = [v3 indexPathForSelectedRow];
-  if (v4)
+  tableView = [(CompletionListTableViewController *)self->_completionsViewController tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
+  if (indexPathForSelectedRow)
   {
-    v5 = [(CatalogViewController *)self _completionItemAtIndexPath:v4];
+    v5 = [(CatalogViewController *)self _completionItemAtIndexPath:indexPathForSelectedRow];
     v6 = [v5 searchFieldIconForCompletionList:self->_completionList];
   }
 
   else
   {
-    v7 = [(UnifiedField *)self->_textField text];
+    text = [(UnifiedField *)self->_textField text];
     v6 = WBSUnifiedFieldInputTypeForString();
 
     if (v6 <= 4)
@@ -4239,39 +4239,39 @@ LABEL_6:
 {
   if (![(UnifiedField *)self->_textField isResigningFirstResponder])
   {
-    v5 = [(CatalogViewController *)self _searchFieldIcon];
+    _searchFieldIcon = [(CatalogViewController *)self _searchFieldIcon];
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    v4 = [WeakRetained tabBarManager];
-    [v4 setCompletionItemIcon:v5];
+    tabBarManager = [WeakRetained tabBarManager];
+    [tabBarManager setCompletionItemIcon:_searchFieldIcon];
   }
 }
 
-- (void)unifiedField:(id)a3 moveCompletionSelectionByRowOffset:(int64_t)a4
+- (void)unifiedField:(id)field moveCompletionSelectionByRowOffset:(int64_t)offset
 {
-  v8 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
-  [(UITableView *)v8 safari_moveSelectionByRowOffset:a4];
-  v6 = [v8 indexPathForSelectedRow];
-  v7 = [(CatalogViewController *)self _completionItemAtIndexPath:v6];
+  tableView = [(CompletionListTableViewController *)self->_completionsViewController tableView];
+  [(UITableView *)tableView safari_moveSelectionByRowOffset:offset];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
+  v7 = [(CatalogViewController *)self _completionItemAtIndexPath:indexPathForSelectedRow];
   [(UnifiedField *)self->_textField setReflectedItem:v7];
 }
 
-- (void)unifiedField:(id)a3 moveCompletionSelectionBySectionOffset:(int64_t)a4
+- (void)unifiedField:(id)field moveCompletionSelectionBySectionOffset:(int64_t)offset
 {
-  v8 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
-  [(UITableView *)v8 safari_moveSelectionBySectionOffset:a4];
-  v6 = [v8 indexPathForSelectedRow];
-  v7 = [(CatalogViewController *)self _completionItemAtIndexPath:v6];
+  tableView = [(CompletionListTableViewController *)self->_completionsViewController tableView];
+  [(UITableView *)tableView safari_moveSelectionBySectionOffset:offset];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
+  v7 = [(CatalogViewController *)self _completionItemAtIndexPath:indexPathForSelectedRow];
   [(UnifiedField *)self->_textField setReflectedItem:v7];
 }
 
-- (void)unifiedFieldSelectCompletionItemIfAvailable:(id)a3
+- (void)unifiedFieldSelectCompletionItemIfAvailable:(id)available
 {
-  v4 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
-  v5 = [v4 indexPathForSelectedRow];
+  tableView = [(CompletionListTableViewController *)self->_completionsViewController tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
-  if (v5)
+  if (indexPathForSelectedRow)
   {
-    [(CatalogViewController *)self _selectedCompletionItemAtIndexPath:v5];
+    [(CatalogViewController *)self _selectedCompletionItemAtIndexPath:indexPathForSelectedRow];
   }
 
   else
@@ -4280,83 +4280,83 @@ LABEL_6:
   }
 }
 
-- (void)unifiedField:(id)a3 focusNextKeyView:(BOOL)a4
+- (void)unifiedField:(id)field focusNextKeyView:(BOOL)view
 {
-  v4 = a4;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained catalogViewController:self focusNextKeyView:v4];
+  [WeakRetained catalogViewController:self focusNextKeyView:viewCopy];
 }
 
-- (BOOL)unifiedFieldCanBecomeFirstResponder:(id)a3
+- (BOOL)unifiedFieldCanBecomeFirstResponder:(id)responder
 {
-  v3 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v3) = [WeakRetained catalogViewControllerUnifiedFieldCanBecomeFirstResponder:v3];
+  LOBYTE(selfCopy) = [WeakRetained catalogViewControllerUnifiedFieldCanBecomeFirstResponder:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)unifiedFieldMakeWindowKey:(id)a3
+- (void)unifiedFieldMakeWindowKey:(id)key
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained catalogViewControllerMakeWindowKey:self];
 }
 
-- (void)unifiedField:(id)a3 pasteAndNavigateWithText:(id)a4
+- (void)unifiedField:(id)field pasteAndNavigateWithText:(id)text
 {
-  v5 = a4;
+  textCopy = text;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained catalogViewController:self didPasteText:v5];
+  [WeakRetained catalogViewController:self didPasteText:textCopy];
 }
 
-- (void)unifiedField:(id)a3 didEngageWithQuerySuggestion:(id)a4 forQueryString:(id)a5
+- (void)unifiedField:(id)field didEngageWithQuerySuggestion:(id)suggestion forQueryString:(id)string
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
+  suggestionCopy = suggestion;
+  stringCopy = string;
+  feedbackDispatcher = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
   v10 = objc_alloc(MEMORY[0x277D4C680]);
   v11 = MEMORY[0x277D4C5D8];
-  v18 = v7;
-  v12 = v8;
+  v18 = suggestionCopy;
+  v12 = stringCopy;
   v13 = [v11 alloc];
-  v14 = [v18 topicId];
-  v15 = [v18 title];
+  topicId = [v18 topicId];
+  title = [v18 title];
 
-  v16 = [v13 initWithIdentifier:v14 suggestion:v15 query:v12 score:2 type:0.0];
+  v16 = [v13 initWithIdentifier:topicId suggestion:title query:v12 score:2 type:0.0];
   v17 = [v10 initWithSuggestion:v16];
-  [v9 postFeedback:v17 forQueryID:{-[CatalogViewController _completionListQueryID](self, "_completionListQueryID")}];
+  [feedbackDispatcher postFeedback:v17 forQueryID:{-[CatalogViewController _completionListQueryID](self, "_completionListQueryID")}];
 }
 
-- (BOOL)shouldPutMetadataOnPasteboardForUnifiedField:(id)a3
+- (BOOL)shouldPutMetadataOnPasteboardForUnifiedField:(id)field
 {
-  v4 = [(UnifiedField *)self->_textField text];
-  if (-[UnifiedField selectionRange](self->_textField, "selectionRange") || v5 != [v4 length])
+  text = [(UnifiedField *)self->_textField text];
+  if (-[UnifiedField selectionRange](self->_textField, "selectionRange") || v5 != [text length])
   {
     v11 = 0;
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEBC0] safari_URLWithUserTypedString:v4];
+    v6 = [MEMORY[0x277CBEBC0] safari_URLWithUserTypedString:text];
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    v8 = [WeakRetained tabController];
-    v9 = [v8 activeTabDocument];
-    v10 = [v9 urlForSharing];
+    tabController = [WeakRetained tabController];
+    activeTabDocument = [tabController activeTabDocument];
+    urlForSharing = [activeTabDocument urlForSharing];
 
-    v11 = [v6 safari_isEqualToURL:v10];
+    v11 = [v6 safari_isEqualToURL:urlForSharing];
   }
 
   return v11;
 }
 
-- (id)currentMetadataForUnifiedField:(id)a3
+- (id)currentMetadataForUnifiedField:(id)field
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained tabController];
-  v5 = [v4 activeTabDocument];
-  v6 = [v5 linkMetadataForSharing];
+  tabController = [WeakRetained tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  linkMetadataForSharing = [activeTabDocument linkMetadataForSharing];
 
-  return v6;
+  return linkMetadataForSharing;
 }
 
 - (void)showUniversalSearchFirstTimeExperienceIfNotShowing
@@ -4365,8 +4365,8 @@ LABEL_6:
   {
     v3 = +[(WBSParsecDSession *)UniversalSearchSession];
     v4 = [v3 bag];
-    v5 = [v4 firstUseDescriptionText];
-    v6 = [v5 length];
+    firstUseDescriptionText = [v4 firstUseDescriptionText];
+    v6 = [firstUseDescriptionText length];
 
     if (v6)
     {
@@ -4374,16 +4374,16 @@ LABEL_6:
       [(UniversalSearchFirstTimeExperienceViewController *)v7 setDelegate:self];
       [(CatalogViewController *)self requiredContentWidth];
       [(UniversalSearchFirstTimeExperienceViewController *)v7 setPreferredContentSize:?];
-      v8 = [(UniversalSearchFirstTimeExperienceViewController *)v7 view];
-      [v8 setAccessibilityIdentifier:@"UniversalSearchFirstTimeExperienceView"];
+      view = [(UniversalSearchFirstTimeExperienceViewController *)v7 view];
+      [view setAccessibilityIdentifier:@"UniversalSearchFirstTimeExperienceView"];
 
       universalSearchFirstTimeExperienceViewController = self->_universalSearchFirstTimeExperienceViewController;
       self->_universalSearchFirstTimeExperienceViewController = v7;
 
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      LOBYTE(v8) = [WeakRetained catalogViewControllerShouldUsePopoverForCompletions:self];
+      LOBYTE(view) = [WeakRetained catalogViewControllerShouldUsePopoverForCompletions:self];
 
-      if (v8)
+      if (view)
       {
         [(AbstractCatalogViewController *)self->_popoverCatalogViewController takeOwnershipOfUniversalSearchFirstTimeExperienceViewController];
         if (![(CatalogViewController *)self popoverIsShowing])
@@ -4407,19 +4407,19 @@ LABEL_6:
 {
   if (!self->_noRecentSearchesView)
   {
-    v3 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
-    v4 = [v3 superview];
+    tableView = [(CompletionListTableViewController *)self->_completionsViewController tableView];
+    superview = [tableView superview];
 
-    if (v4)
+    if (superview)
     {
-      v31 = [MEMORY[0x277D75390] searchConfiguration];
-      [v31 setText:0];
+      searchConfiguration = [MEMORY[0x277D75390] searchConfiguration];
+      [searchConfiguration setText:0];
       v5 = _WBSLocalizedString();
-      [v31 setSecondaryText:v5];
+      [searchConfiguration setSecondaryText:v5];
 
-      v6 = [objc_alloc(MEMORY[0x277D753A8]) initWithConfiguration:v31];
-      v7 = [MEMORY[0x277D75348] systemBackgroundColor];
-      [(UIContentUnavailableView *)v6 setBackgroundColor:v7];
+      v6 = [objc_alloc(MEMORY[0x277D753A8]) initWithConfiguration:searchConfiguration];
+      systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+      [(UIContentUnavailableView *)v6 setBackgroundColor:systemBackgroundColor];
 
       [(UIContentUnavailableView *)v6 setUserInteractionEnabled:0];
       [(UIContentUnavailableView *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -4427,35 +4427,35 @@ LABEL_6:
       self->_noRecentSearchesView = v6;
       v30 = v6;
 
-      v9 = [(CatalogViewController *)self view];
-      [v9 addSubview:self->_noRecentSearchesView];
+      view = [(CatalogViewController *)self view];
+      [view addSubview:self->_noRecentSearchesView];
 
-      v10 = [(CatalogViewController *)self view];
-      [v10 setAccessibilityIdentifier:@"Recent Searches"];
+      view2 = [(CatalogViewController *)self view];
+      [view2 setAccessibilityIdentifier:@"Recent Searches"];
 
-      v11 = [(UIContentUnavailableView *)self->_noRecentSearchesView topAnchor];
-      v12 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
-      v13 = [v12 topAnchor];
+      topAnchor = [(UIContentUnavailableView *)self->_noRecentSearchesView topAnchor];
+      tableView2 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
+      topAnchor2 = [tableView2 topAnchor];
       [(CatalogViewController *)self navigationBarHeight];
       v15 = v14;
-      v16 = [(SFStartPageViewController *)self->_startPageViewController view];
-      v17 = [v16 window];
-      v18 = [v17 windowScene];
-      v19 = [v18 statusBarManager];
-      [v19 statusBarFrame];
-      v21 = [v11 constraintEqualToAnchor:v13 constant:v15 + v20];
+      view3 = [(SFStartPageViewController *)self->_startPageViewController view];
+      window = [view3 window];
+      windowScene = [window windowScene];
+      statusBarManager = [windowScene statusBarManager];
+      [statusBarManager statusBarFrame];
+      v21 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v15 + v20];
       [v21 setActive:1];
 
-      v22 = [(UIContentUnavailableView *)self->_noRecentSearchesView widthAnchor];
-      v23 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
-      v24 = [v23 widthAnchor];
-      v25 = [v22 constraintEqualToAnchor:v24];
+      widthAnchor = [(UIContentUnavailableView *)self->_noRecentSearchesView widthAnchor];
+      tableView3 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
+      widthAnchor2 = [tableView3 widthAnchor];
+      v25 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
       [v25 setActive:1];
 
-      v26 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
-      v27 = [v26 bottomAnchor];
-      v28 = [(UIContentUnavailableView *)self->_noRecentSearchesView bottomAnchor];
-      v29 = [v27 constraintEqualToAnchor:v28 constant:self->_keyboardFrame.size.height];
+      tableView4 = [(CompletionListTableViewController *)self->_completionsViewController tableView];
+      bottomAnchor = [tableView4 bottomAnchor];
+      bottomAnchor2 = [(UIContentUnavailableView *)self->_noRecentSearchesView bottomAnchor];
+      v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:self->_keyboardFrame.size.height];
       [v29 setActive:1];
 
       [(CompletionList *)self->_completionList clearCompletionListings];
@@ -4479,18 +4479,18 @@ LABEL_6:
   [(CatalogViewController *)self _dismissUniversalSearchFirstTimeExperience:universalSearchFirstTimeExperienceViewController dismissalReason:1];
 }
 
-- (void)didInteractWithUniversalSearchFirstTimeExperienceViewController:(id)a3
+- (void)didInteractWithUniversalSearchFirstTimeExperienceViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [objc_opt_class() userDidInteractWithParsecFirstTimeUserExperience];
-  [(CatalogViewController *)self _dismissUniversalSearchFirstTimeExperience:v4 dismissalReason:0];
+  [(CatalogViewController *)self _dismissUniversalSearchFirstTimeExperience:controllerCopy dismissalReason:0];
 }
 
-- (void)_dismissUniversalSearchFirstTimeExperience:(id)a3 dismissalReason:(int64_t)a4 completionHandler:(id)a5
+- (void)_dismissUniversalSearchFirstTimeExperience:(id)experience dismissalReason:(int64_t)reason completionHandler:(id)handler
 {
-  v14 = a5;
-  v7 = [(UniversalSearchFirstTimeExperienceViewController *)self->_universalSearchFirstTimeExperienceViewController presentedViewController];
-  [v7 dismissViewControllerAnimated:1 completion:0];
+  handlerCopy = handler;
+  presentedViewController = [(UniversalSearchFirstTimeExperienceViewController *)self->_universalSearchFirstTimeExperienceViewController presentedViewController];
+  [presentedViewController dismissViewControllerAnimated:1 completion:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (![WeakRetained catalogViewControllerShouldUsePopoverForCompletions:self])
@@ -4504,7 +4504,7 @@ LABEL_6:
   if (usesPopoverStyleForFavorites)
   {
 LABEL_6:
-    if (a4 == 1)
+    if (reason == 1)
     {
       [(CatalogViewController *)self _dismissPopoverAnimated:0 dismissalReason:1 completionHandler:0];
     }
@@ -4513,28 +4513,28 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  if (a4 == 2)
+  if (reason == 2)
   {
-    v10 = self;
+    selfCopy2 = self;
     v11 = 0;
-    v12 = 2;
+    reasonCopy = 2;
 LABEL_13:
-    [(CatalogViewController *)v10 _dismissPopoverAnimated:v11 dismissalReason:v12 completionHandler:v14];
+    [(CatalogViewController *)selfCopy2 _dismissPopoverAnimated:v11 dismissalReason:reasonCopy completionHandler:handlerCopy];
     goto LABEL_14;
   }
 
   if (([(UnifiedField *)self->_textField hasText]& 1) == 0)
   {
-    v10 = self;
+    selfCopy2 = self;
     v11 = 1;
-    v12 = a4;
+    reasonCopy = reason;
     goto LABEL_13;
   }
 
 LABEL_9:
-  if (v14)
+  if (handlerCopy)
   {
-    v14[2]();
+    handlerCopy[2]();
   }
 
 LABEL_14:
@@ -4545,32 +4545,32 @@ LABEL_14:
 
 - (BOOL)isShowingUniversalSearchPrivacyDetails
 {
-  v2 = [(UniversalSearchFirstTimeExperienceViewController *)self->_universalSearchFirstTimeExperienceViewController presentedViewController];
-  v3 = v2 != 0;
+  presentedViewController = [(UniversalSearchFirstTimeExperienceViewController *)self->_universalSearchFirstTimeExperienceViewController presentedViewController];
+  v3 = presentedViewController != 0;
 
   return v3;
 }
 
-- (void)_updatePersonalisationDataForDonation:(id)a3 forPosition:(unint64_t)a4
+- (void)_updatePersonalisationDataForDonation:(id)donation forPosition:(unint64_t)position
 {
-  v6 = a3;
+  donationCopy = donation;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v8 = [WeakRetained tabController];
-  v11 = [v8 activeTabDocument];
+  tabController = [WeakRetained tabController];
+  activeTabDocument = [tabController activeTabDocument];
 
-  v9 = [v11 personalizationData];
-  [v9 setSearchQuery:v6];
+  personalizationData = [activeTabDocument personalizationData];
+  [personalizationData setSearchQuery:donationCopy];
 
-  v10 = [v11 personalizationData];
-  [v10 setPosition:a4];
+  personalizationData2 = [activeTabDocument personalizationData];
+  [personalizationData2 setPosition:position];
 }
 
-- (CGRect)snapshotContentRectInBounds:(CGRect)a3
+- (CGRect)snapshotContentRectInBounds:(CGRect)bounds
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v6 = [(SFStartPageViewController *)self->_startPageViewController view];
-  [v6 frame];
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  view = [(SFStartPageViewController *)self->_startPageViewController view];
+  [view frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -4580,7 +4580,7 @@ LABEL_14:
   v16 = left + self->_obscuredInsets.right;
   v28.origin.x = x;
   v28.origin.y = y;
-  v28.size = a3.size;
+  v28.size = bounds.size;
   Width = CGRectGetWidth(v28);
   v29.origin.x = v8;
   v29.origin.y = v10;
@@ -4594,7 +4594,7 @@ LABEL_14:
   v30.size.width = v12;
   v30.size.height = v14;
   v21 = CGRectGetMinY(v30) * v19;
-  v22 = CGRectGetWidth(a3) + v18 * v19;
+  v22 = CGRectGetWidth(bounds) + v18 * v19;
   v31.origin.x = v8;
   v31.origin.y = v10;
   v31.size.width = v12;
@@ -4617,24 +4617,24 @@ LABEL_14:
   return nextSnapshotRequiresScreenUpdates;
 }
 
-- (void)beginTransitionToNewSizeClassWithState:(id)a3
+- (void)beginTransitionToNewSizeClassWithState:(id)state
 {
   self->_transitioningToNewSizeClass = 1;
-  v4 = a3;
-  v5 = [(CatalogViewController *)self queryString];
-  [v4 setQueryString:v5];
+  stateCopy = state;
+  queryString = [(CatalogViewController *)self queryString];
+  [stateCopy setQueryString:queryString];
 
-  [v4 setShowingCompletions:{-[CatalogViewController isShowingCompletions](self, "isShowingCompletions")}];
-  [v4 setShowingUniversalFirstTimeExperience:{-[CatalogViewController isShowingUniversalSearchFirstTimeExperience](self, "isShowingUniversalSearchFirstTimeExperience")}];
-  [v4 setCompletionDetailViewController:self->_completionDetailViewController];
-  v6 = [(UnifiedField *)self->_textField text];
-  [v4 setFieldIsEmpty:{objc_msgSend(v6, "length") == 0}];
+  [stateCopy setShowingCompletions:{-[CatalogViewController isShowingCompletions](self, "isShowingCompletions")}];
+  [stateCopy setShowingUniversalFirstTimeExperience:{-[CatalogViewController isShowingUniversalSearchFirstTimeExperience](self, "isShowingUniversalSearchFirstTimeExperience")}];
+  [stateCopy setCompletionDetailViewController:self->_completionDetailViewController];
+  text = [(UnifiedField *)self->_textField text];
+  [stateCopy setFieldIsEmpty:{objc_msgSend(text, "length") == 0}];
 
   completionDetailViewController = self->_completionDetailViewController;
   if (completionDetailViewController)
   {
-    v8 = [(UIViewController *)completionDetailViewController presentedViewController];
-    [v8 dismissViewControllerAnimated:0 completion:0];
+    presentedViewController = [(UIViewController *)completionDetailViewController presentedViewController];
+    [presentedViewController dismissViewControllerAnimated:0 completion:0];
 
     [(UIViewController *)self->_completionDetailViewController dismissViewControllerAnimated:0 completion:0];
     v9 = self->_completionDetailViewController;
@@ -4642,43 +4642,43 @@ LABEL_14:
   }
 }
 
-- (void)endTransitionToNewSizeClassWithState:(id)a3
+- (void)endTransitionToNewSizeClassWithState:(id)state
 {
-  v6 = a3;
+  stateCopy = state;
   self->_transitioningToNewSizeClass = 0;
   [(PopoverCatalogViewController *)self->_popoverCatalogViewController resetStartPagePreferredHeight];
-  if ([v6 isShowingCompletions])
+  if ([stateCopy isShowingCompletions])
   {
-    v4 = [v6 queryString];
-    [(CatalogViewController *)self setQueryString:v4];
+    queryString = [stateCopy queryString];
+    [(CatalogViewController *)self setQueryString:queryString];
 
     [(CatalogViewController *)self _reloadCompletionTable];
   }
 
-  else if ([v6 isShowingUniversalFirstTimeExperience])
+  else if ([stateCopy isShowingUniversalFirstTimeExperience])
   {
     [(CatalogViewController *)self showUniversalSearchFirstTimeExperienceIfNotShowing];
   }
 
-  if ([v6 fieldIsEmpty])
+  if ([stateCopy fieldIsEmpty])
   {
     [(UnifiedField *)self->_textField setText:0];
   }
 
-  v5 = [v6 completionDetailViewController];
-  if ([(CatalogViewController *)self _shouldPresentCompletionDetailViewControllerAfterSizeTransition:v5])
+  completionDetailViewController = [stateCopy completionDetailViewController];
+  if ([(CatalogViewController *)self _shouldPresentCompletionDetailViewControllerAfterSizeTransition:completionDetailViewController])
   {
-    objc_storeStrong(&self->_completionDetailViewController, v5);
+    objc_storeStrong(&self->_completionDetailViewController, completionDetailViewController);
     [(CatalogViewController *)self _presentStagedCompletionDetailViewControllerAnimated:0];
     self->_completionDetailIsPresented = 1;
   }
 }
 
-- (BOOL)_shouldPresentCompletionDetailViewControllerAfterSizeTransition:(id)a3
+- (BOOL)_shouldPresentCompletionDetailViewControllerAfterSizeTransition:(id)transition
 {
-  if (a3)
+  if (transition)
   {
-    return [a3 isBeingDismissed] ^ 1;
+    return [transition isBeingDismissed] ^ 1;
   }
 
   else
@@ -4709,8 +4709,8 @@ LABEL_14:
 
     v8 = objc_alloc(MEMORY[0x277D28C28]);
     v9 = [v8 initWithStyle:2 primaryAction:{v7, v15, v16, v17, v18}];
-    v10 = [(StartPageController *)self->_startPageController viewController];
-    [v9 setOpaqueBackgroundVisibility:{(objc_msgSend(v10, "showsWallpaper") ^ 1)}];
+    viewController = [(StartPageController *)self->_startPageController viewController];
+    [v9 setOpaqueBackgroundVisibility:{(objc_msgSend(viewController, "showsWallpaper") ^ 1)}];
 
     v11 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v9];
     v12 = self->_cancelBarButton;
@@ -4740,13 +4740,13 @@ void __45__CatalogViewController__cancelBarButtonItem__block_invoke(uint64_t a1)
   }
 }
 
-- (id)startPageViewControllerTitleForRootView:(id)a3
+- (id)startPageViewControllerTitleForRootView:(id)view
 {
-  v3 = [(StartPageController *)self->_startPageController libraryType];
-  v4 = v3;
-  if (v3)
+  libraryType = [(StartPageController *)self->_startPageController libraryType];
+  v4 = libraryType;
+  if (libraryType)
   {
-    v5 = startPageTitleForCollectionType(v3);
+    v5 = startPageTitleForCollectionType(libraryType);
   }
 
   else
@@ -4757,23 +4757,23 @@ void __45__CatalogViewController__cancelBarButtonItem__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)startPageViewController:(id)a3 leadingBarItemsForSection:(id)a4
+- (id)startPageViewController:(id)controller leadingBarItemsForSection:(id)section
 {
   v15[1] = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v6 = [WeakRetained sidebarUIProxy];
-  if ((![MEMORY[0x277D49A08] isSolariumEnabled] || !objc_msgSend(v6, "isShowingSidebar") || objc_msgSend(v6, "sidebarStyle")) && !self->_usesPopoverStyleForFavorites)
+  sidebarUIProxy = [WeakRetained sidebarUIProxy];
+  if ((![MEMORY[0x277D49A08] isSolariumEnabled] || !objc_msgSend(sidebarUIProxy, "isShowingSidebar") || objc_msgSend(sidebarUIProxy, "sidebarStyle")) && !self->_usesPopoverStyleForFavorites)
   {
-    v7 = [WeakRetained tabBarManager];
-    if ([v7 displayMode])
+    tabBarManager = [WeakRetained tabBarManager];
+    if ([tabBarManager displayMode])
     {
-      v8 = [(StartPageController *)self->_startPageController libraryType];
+      libraryType = [(StartPageController *)self->_startPageController libraryType];
 
-      if (v8)
+      if (libraryType)
       {
         v9 = objc_alloc(MEMORY[0x277D751E0]);
-        v10 = [(CatalogViewController *)self sidebarButton];
-        v11 = [v9 initWithCustomView:v10];
+        sidebarButton = [(CatalogViewController *)self sidebarButton];
+        v11 = [v9 initWithCustomView:sidebarButton];
 
         v12 = _SFAccessibilityIdentifierForBarItem();
         [v11 setAccessibilityIdentifier:v12];
@@ -4796,7 +4796,7 @@ LABEL_10:
   return v13;
 }
 
-- (id)startPageViewController:(id)a3 trailingBarItemsForSection:(id)a4
+- (id)startPageViewController:(id)controller trailingBarItemsForSection:(id)section
 {
   v17[1] = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
@@ -4806,21 +4806,21 @@ LABEL_10:
     goto LABEL_3;
   }
 
-  v7 = [WeakRetained tabBarManager];
-  v8 = [v7 displayMode];
+  tabBarManager = [WeakRetained tabBarManager];
+  displayMode = [tabBarManager displayMode];
 
-  if (v8)
+  if (displayMode)
   {
     goto LABEL_3;
   }
 
-  v11 = [v6 tabController];
-  v12 = [v11 activeTabDocument];
-  if ([v12 isBlank] && !objc_msgSend(v6, "isFavoritesFieldFocused"))
+  tabController = [v6 tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  if ([activeTabDocument isBlank] && !objc_msgSend(v6, "isFavoritesFieldFocused"))
   {
-    v16 = [(UnifiedField *)self->_textField superview];
+    superview = [(UnifiedField *)self->_textField superview];
 
-    if (!v16)
+    if (!superview)
     {
 LABEL_3:
       v9 = MEMORY[0x277CBEBF8];
@@ -4832,18 +4832,18 @@ LABEL_3:
   {
   }
 
-  v13 = [v6 rootViewController];
-  v14 = [v13 capsuleCollectionViewLayout];
+  rootViewController = [v6 rootViewController];
+  capsuleCollectionViewLayout = [rootViewController capsuleCollectionViewLayout];
 
-  if (v14 && [v14 integerValue] == 2 || (objc_msgSend(MEMORY[0x277D49A08], "isSolariumEnabled") & 1) != 0)
+  if (capsuleCollectionViewLayout && [capsuleCollectionViewLayout integerValue] == 2 || (objc_msgSend(MEMORY[0x277D49A08], "isSolariumEnabled") & 1) != 0)
   {
     v9 = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v15 = [(CatalogViewController *)self _cancelBarButtonItem];
-    v17[0] = v15;
+    _cancelBarButtonItem = [(CatalogViewController *)self _cancelBarButtonItem];
+    v17[0] = _cancelBarButtonItem;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
   }
 
@@ -4852,62 +4852,62 @@ LABEL_4:
   return v9;
 }
 
-- (void)startPageViewControllerDidScroll:(id)a3 animated:(BOOL)a4
+- (void)startPageViewControllerDidScroll:(id)scroll animated:(BOOL)animated
 {
-  v4 = a4;
-  v10 = a3;
-  if (!-[CatalogViewController isShowingCompletions](self, "isShowingCompletions") && [v10 showsWallpaper])
+  animatedCopy = animated;
+  scrollCopy = scroll;
+  if (!-[CatalogViewController isShowingCompletions](self, "isShowingCompletions") && [scrollCopy showsWallpaper])
   {
-    [v10 scrollDistance];
+    [scrollCopy scrollDistance];
     SFChromeVisibilityForScrollDistance();
     v7 = v6;
-    v8 = [(UIBarButtonItem *)self->_cancelBarButton customView];
-    [v8 setOpaqueBackgroundVisibility:v7];
+    customView = [(UIBarButtonItem *)self->_cancelBarButton customView];
+    [customView setOpaqueBackgroundVisibility:v7];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained catalogViewControllerDidScroll:self animated:v4];
+  [WeakRetained catalogViewControllerDidScroll:self animated:animatedCopy];
 }
 
-- (void)startPageControllerDidCompleteDismissGesture:(id)a3
+- (void)startPageControllerDidCompleteDismissGesture:(id)gesture
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained dismissCatalogViewController:self];
 }
 
-- (void)startPageControllerDidCompleteUnfocusGesture:(id)a3
+- (void)startPageControllerDidCompleteUnfocusGesture:(id)gesture
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained catalogViewControllerWillUnfocusUnifiedField:self showingRecentSearches:{-[CompletionList showingRecentSearches](self->_completionList, "showingRecentSearches")}];
-  v4 = [(CatalogViewController *)self textField];
-  [v4 endEditing:1];
+  textField = [(CatalogViewController *)self textField];
+  [textField endEditing:1];
 }
 
-- (void)startPageViewController:(id)a3 willPresentCustomizationViewController:(id)a4
+- (void)startPageViewController:(id)controller willPresentCustomizationViewController:(id)viewController
 {
-  v5 = a4;
+  viewControllerCopy = viewController;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained catalogViewController:self willPresentCustomizationViewController:v5];
+  [WeakRetained catalogViewController:self willPresentCustomizationViewController:viewControllerCopy];
 }
 
-- (BOOL)startPageViewControllerShouldDeferLoadingContentUntilKeyboardAnimatesIn:(id)a3
+- (BOOL)startPageViewControllerShouldDeferLoadingContentUntilKeyboardAnimatesIn:(id)in
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained tabController];
-  v5 = [v4 activeTabDocument];
-  v6 = [v5 isBlank];
+  tabController = [WeakRetained tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  isBlank = [activeTabDocument isBlank];
 
-  return v6 ^ 1;
+  return isBlank ^ 1;
 }
 
-- (double)startPageViewControllerTopPadding:(id)a3
+- (double)startPageViewControllerTopPadding:(id)padding
 {
   v4 = 0.0;
   if (![(StartPageController *)self->_startPageController shouldShowOnboardingSection])
   {
-    v5 = [(StartPageController *)self->_startPageController libraryType];
+    libraryType = [(StartPageController *)self->_startPageController libraryType];
 
-    if (!v5)
+    if (!libraryType)
     {
       WeakRetained = objc_loadWeakRetained(&self->_browserController);
       v7 = [WeakRetained shouldIncreaseTopSpacingForStartPageController:self->_startPageController];
@@ -4927,13 +4927,13 @@ LABEL_4:
   return v4;
 }
 
-- (void)startPageViewControllerDidUpdateContent:(id)a3
+- (void)startPageViewControllerDidUpdateContent:(id)content
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   [WeakRetained setNeedsSnapshotUpdateForActiveTabIfTabIsBlank];
 }
 
-- (void)startPageViewControllerDidAppear:(id)a3
+- (void)startPageViewControllerDidAppear:(id)appear
 {
   if (!self->_startPageDidAppearAtLeastOnce)
   {
@@ -4943,27 +4943,27 @@ LABEL_4:
   }
 }
 
-- (void)beginExtensionsOnboardingForStartPageViewController:(id)a3
+- (void)beginExtensionsOnboardingForStartPageViewController:(id)controller
 {
   v4 = MEMORY[0x277D28CB8];
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v6 = [WeakRetained tabController];
-  v7 = [v6 activeTabDocument];
-  v10 = [v4 createManageExtensionsNavigationControllerFromPageFormatMenu:0 activeDocument:v7];
+  tabController = [WeakRetained tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  v10 = [v4 createManageExtensionsNavigationControllerFromPageFormatMenu:0 activeDocument:activeTabDocument];
 
-  v8 = [v10 topViewController];
+  topViewController = [v10 topViewController];
   v9 = _WBSLocalizedString();
-  [v8 setTitle:v9];
+  [topViewController setTitle:v9];
 
   [(CatalogViewController *)self presentViewController:v10 animated:1 completion:0];
 }
 
-- (void)_sendInputAnalyticsForItemWithMatchedText:(id)a3 matchType:(int64_t)a4
+- (void)_sendInputAnalyticsForItemWithMatchedText:(id)text matchType:(int64_t)type
 {
   v24[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(CompletionList *)self->_completionList query];
-  v8 = [v7 queryString];
+  textCopy = text;
+  query = [(CompletionList *)self->_completionList query];
+  queryString = [query queryString];
 
   v9 = WBSUnifiedFieldInputTypeForString();
   v19 = 0;
@@ -4985,9 +4985,9 @@ LABEL_4:
   v11 = (v9 - 1) < 2;
   v12 = v10;
   _Block_object_dispose(&v19, 8);
-  if (v8)
+  if (queryString)
   {
-    v13 = v8;
+    v13 = queryString;
   }
 
   else
@@ -5000,9 +5000,9 @@ LABEL_4:
   v23[1] = @"UserTypedTextLooksLikeURL";
   v14 = [MEMORY[0x277CCABB0] numberWithBool:v11];
   v24[1] = v14;
-  if (v6)
+  if (textCopy)
   {
-    v15 = v6;
+    v15 = textCopy;
   }
 
   else
@@ -5013,26 +5013,26 @@ LABEL_4:
   v24[2] = v15;
   v23[2] = @"MatchedText";
   v23[3] = @"MatchType";
-  v16 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v16 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   v24[3] = v16;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:4];
   [v10 sendSignal:@"SearchEntered" toChannel:@"Safari" withPayload:v17];
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v7 = a4;
-  v8 = a3;
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v10 = [objc_alloc(MEMORY[0x277D28C18]) initWithPresentedViewController:v8 presentingViewController:v7];
+  v10 = [objc_alloc(MEMORY[0x277D28C18]) initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
 
   [v10 setDelegate:self];
   [(CatalogViewController *)self requiredContentWidth];
   [v10 setPreferredPresentedViewContentSize:?];
-  v11 = [WeakRetained tabBarManager];
-  v12 = [v11 inlineTabBar];
-  v13 = [v12 activeItemView];
-  [v10 setBarItemView:v13];
+  tabBarManager = [WeakRetained tabBarManager];
+  inlineTabBar = [tabBarManager inlineTabBar];
+  activeItemView = [inlineTabBar activeItemView];
+  [v10 setBarItemView:activeItemView];
 
   [v10 setCommandPerformer:WeakRetained];
   objc_storeStrong(&self->_platterPresentationController, v10);
@@ -5040,12 +5040,12 @@ LABEL_4:
   return v10;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v3 = a3;
-  v4 = [v3 viewForKey:*MEMORY[0x277D77248]];
-  v5 = [v3 containerView];
-  [v5 addSubview:v4];
+  transitionCopy = transition;
+  v4 = [transitionCopy viewForKey:*MEMORY[0x277D77248]];
+  containerView = [transitionCopy containerView];
+  [containerView addSubview:v4];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -5055,7 +5055,7 @@ LABEL_4:
   v6 = v4;
   v7 = _Block_copy(aBlock);
   v8 = MEMORY[0x277D75D18];
-  v12 = v3;
+  v12 = transitionCopy;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __43__CatalogViewController_animateTransition___block_invoke_2;
@@ -5065,7 +5065,7 @@ LABEL_4:
   v11[1] = 3221225472;
   v11[2] = __43__CatalogViewController_animateTransition___block_invoke_3;
   v11[3] = &unk_2781D4B18;
-  v9 = v3;
+  v9 = transitionCopy;
   v10 = v7;
   [v8 _animateUsingSpringWithDuration:2 delay:v13 options:v11 mass:0.4 stiffness:0.0 damping:3.0 initialVelocity:2000.0 animations:500.0 completion:0.0];
 }

@@ -1,6 +1,6 @@
 @interface CNMeCardSharingTextFieldTableViewCell
 - (void)layoutSubviews;
-- (void)setTextField:(id)a3;
+- (void)setTextField:(id)field;
 @end
 
 @implementation CNMeCardSharingTextFieldTableViewCell
@@ -12,35 +12,35 @@
   [(CNMeCardSharingTextFieldTableViewCell *)&v12 layoutSubviews];
   [(CNMeCardSharingTextFieldTableViewCell *)self directionalLayoutMargins];
   v4 = v3;
-  v5 = [(CNMeCardSharingTextFieldTableViewCell *)self contentView];
-  [v5 bounds];
+  contentView = [(CNMeCardSharingTextFieldTableViewCell *)self contentView];
+  [contentView bounds];
   Width = CGRectGetWidth(v13);
   [(CNMeCardSharingTextFieldTableViewCell *)self directionalLayoutMargins];
   v8 = v7;
   [(CNMeCardSharingTextFieldTableViewCell *)self directionalLayoutMargins];
   v10 = Width - (v8 + v9);
-  v11 = [(CNMeCardSharingTextFieldTableViewCell *)self contentView];
-  [v11 bounds];
+  contentView2 = [(CNMeCardSharingTextFieldTableViewCell *)self contentView];
+  [contentView2 bounds];
   [(UITextField *)self->_textField setFrame:v4, 0.0, v10, CGRectGetHeight(v14)];
 }
 
-- (void)setTextField:(id)a3
+- (void)setTextField:(id)field
 {
-  v5 = a3;
+  fieldCopy = field;
   textField = self->_textField;
-  if (textField != v5)
+  if (textField != fieldCopy)
   {
-    v7 = [(UITextField *)textField superview];
-    v8 = [(CNMeCardSharingTextFieldTableViewCell *)self contentView];
+    superview = [(UITextField *)textField superview];
+    contentView = [(CNMeCardSharingTextFieldTableViewCell *)self contentView];
 
-    if (v7 != v8)
+    if (superview != contentView)
     {
       [(UITextField *)self->_textField removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_textField, a3);
-    v9 = [(CNMeCardSharingTextFieldTableViewCell *)self contentView];
-    [v9 addSubview:self->_textField];
+    objc_storeStrong(&self->_textField, field);
+    contentView2 = [(CNMeCardSharingTextFieldTableViewCell *)self contentView];
+    [contentView2 addSubview:self->_textField];
   }
 
   MEMORY[0x1EEE66BB8]();

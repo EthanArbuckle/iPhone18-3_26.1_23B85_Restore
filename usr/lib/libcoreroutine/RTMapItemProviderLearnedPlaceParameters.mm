@@ -1,13 +1,13 @@
 @interface RTMapItemProviderLearnedPlaceParameters
-- (RTMapItemProviderLearnedPlaceParameters)initWithDefaultsManager:(id)a3;
-- (RTMapItemProviderLearnedPlaceParameters)initWithMaxDistanceThreshold:(double)a3 minDistanceThreshold:(double)a4 softDistanceThreshold:(double)a5 homeConfidence:(double)a6 workConfidence:(double)a7 schoolConfidence:(double)a8 gymConfidence:(double)a9 nonRevGeoConfidence:(double)a10 revGeoConfidence:(double)a11 revGeoSourceMask:(unint64_t)a12 removeSourceMask:(unint64_t)a13;
+- (RTMapItemProviderLearnedPlaceParameters)initWithDefaultsManager:(id)manager;
+- (RTMapItemProviderLearnedPlaceParameters)initWithMaxDistanceThreshold:(double)threshold minDistanceThreshold:(double)distanceThreshold softDistanceThreshold:(double)softDistanceThreshold homeConfidence:(double)confidence workConfidence:(double)workConfidence schoolConfidence:(double)schoolConfidence gymConfidence:(double)gymConfidence nonRevGeoConfidence:(double)self0 revGeoConfidence:(double)self1 revGeoSourceMask:(unint64_t)self2 removeSourceMask:(unint64_t)self3;
 @end
 
 @implementation RTMapItemProviderLearnedPlaceParameters
 
-- (RTMapItemProviderLearnedPlaceParameters)initWithMaxDistanceThreshold:(double)a3 minDistanceThreshold:(double)a4 softDistanceThreshold:(double)a5 homeConfidence:(double)a6 workConfidence:(double)a7 schoolConfidence:(double)a8 gymConfidence:(double)a9 nonRevGeoConfidence:(double)a10 revGeoConfidence:(double)a11 revGeoSourceMask:(unint64_t)a12 removeSourceMask:(unint64_t)a13
+- (RTMapItemProviderLearnedPlaceParameters)initWithMaxDistanceThreshold:(double)threshold minDistanceThreshold:(double)distanceThreshold softDistanceThreshold:(double)softDistanceThreshold homeConfidence:(double)confidence workConfidence:(double)workConfidence schoolConfidence:(double)schoolConfidence gymConfidence:(double)gymConfidence nonRevGeoConfidence:(double)self0 revGeoConfidence:(double)self1 revGeoSourceMask:(unint64_t)self2 removeSourceMask:(unint64_t)self3
 {
-  if (a3 <= 0.0)
+  if (threshold <= 0.0)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -19,11 +19,11 @@
 
 LABEL_32:
 
-    v26 = 0;
+    selfCopy = 0;
     goto LABEL_33;
   }
 
-  if (a4 <= 0.0)
+  if (distanceThreshold <= 0.0)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -36,7 +36,7 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  if (a5 <= 0.0)
+  if (softDistanceThreshold <= 0.0)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -127,7 +127,7 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  if ((a12 & 0xFFFFFFFFFFC00020) != 0)
+  if ((mask & 0xFFFFFFFFFFC00020) != 0)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -142,7 +142,7 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  if ((a13 & 0xFFFFFFFFFFC00020) != 0)
+  if ((sourceMask & 0xFFFFFFFFFFC00020) != 0)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -160,33 +160,33 @@ LABEL_31:
   v28 = [(RTMapItemProviderLearnedPlaceParameters *)&v29 init];
   if (v28)
   {
-    v28->_maxDistanceThreshold = a3;
-    v28->_minDistanceThreshold = a4;
-    v28->_softDistanceThreshold = a5;
-    v28->_homeConfidence = a6;
-    v28->_workConfidence = a7;
-    v28->_schoolConfidence = a8;
-    v28->_gymConfidence = a9;
-    v28->_nonRevGeoConfidence = a10;
-    v28->_revGeoConfidence = a11;
-    v28->_revGeoSourceMask = a12;
-    v28->_removeSourceMask = a13;
+    v28->_maxDistanceThreshold = threshold;
+    v28->_minDistanceThreshold = distanceThreshold;
+    v28->_softDistanceThreshold = softDistanceThreshold;
+    v28->_homeConfidence = confidence;
+    v28->_workConfidence = workConfidence;
+    v28->_schoolConfidence = schoolConfidence;
+    v28->_gymConfidence = gymConfidence;
+    v28->_nonRevGeoConfidence = geoConfidence;
+    v28->_revGeoConfidence = revGeoConfidence;
+    v28->_revGeoSourceMask = mask;
+    v28->_removeSourceMask = sourceMask;
   }
 
   self = v28;
-  v26 = self;
+  selfCopy = self;
 LABEL_33:
 
-  return v26;
+  return selfCopy;
 }
 
-- (RTMapItemProviderLearnedPlaceParameters)initWithDefaultsManager:(id)a3
+- (RTMapItemProviderLearnedPlaceParameters)initWithDefaultsManager:(id)manager
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  managerCopy = manager;
+  v5 = managerCopy;
+  if (managerCopy)
   {
-    v6 = [v4 objectForKey:@"RTDefaultsMapItemProviderLearnedPlaceMaxDistanceThreshold"];
+    v6 = [managerCopy objectForKey:@"RTDefaultsMapItemProviderLearnedPlaceMaxDistanceThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -296,35 +296,35 @@ LABEL_33:
     }
 
     v43 = v16;
-    v34 = self;
+    selfCopy = self;
     v35 = [v5 objectForKey:@"RTDefaultsMapItemProviderLearnedPlaceRevGeoSourceMask"];
     objc_opt_class();
     v36 = v13;
     if (objc_opt_isKindOfClass())
     {
-      v37 = [v35 unsignedIntegerValue];
+      unsignedIntegerValue = [v35 unsignedIntegerValue];
     }
 
     else
     {
-      v37 = 8193;
+      unsignedIntegerValue = 8193;
     }
 
     v38 = [v5 objectForKey:@"RTDefaultsMapItemProviderLearnedPlaceRemoveSourceMask"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v39 = [v38 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v38 unsignedIntegerValue];
     }
 
     else
     {
-      v39 = 0x4000;
+      unsignedIntegerValue2 = 0x4000;
     }
 
-    self = [(RTMapItemProviderLearnedPlaceParameters *)v34 initWithMaxDistanceThreshold:v37 minDistanceThreshold:v39 softDistanceThreshold:v44 homeConfidence:v12 workConfidence:v15 schoolConfidence:v18 gymConfidence:v21 nonRevGeoConfidence:v20 revGeoConfidence:v27 revGeoSourceMask:v30 removeSourceMask:*&v32];
+    self = [(RTMapItemProviderLearnedPlaceParameters *)selfCopy initWithMaxDistanceThreshold:unsignedIntegerValue minDistanceThreshold:unsignedIntegerValue2 softDistanceThreshold:v44 homeConfidence:v12 workConfidence:v15 schoolConfidence:v18 gymConfidence:v21 nonRevGeoConfidence:v20 revGeoConfidence:v27 revGeoSourceMask:v30 removeSourceMask:*&v32];
 
-    v9 = self;
+    selfCopy2 = self;
   }
 
   else
@@ -336,10 +336,10 @@ LABEL_33:
       _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager", buf, 2u);
     }
 
-    v9 = 0;
+    selfCopy2 = 0;
   }
 
-  return v9;
+  return selfCopy2;
 }
 
 @end

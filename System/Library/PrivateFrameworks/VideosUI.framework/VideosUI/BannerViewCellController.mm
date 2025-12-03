@@ -1,31 +1,31 @@
 @interface BannerViewCellController
-- (_TtC8VideosUI24BannerViewCellController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8VideosUI24BannerViewCellController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)vui_loadView;
-- (void)vui_viewWillAppear:(BOOL)a3;
+- (void)vui_viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BannerViewCellController
 
 - (void)vui_loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E391D5DC();
 }
 
-- (void)vui_viewWillAppear:(BOOL)a3
+- (void)vui_viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1E391D748(a3);
+  selfCopy = self;
+  sub_1E391D748(appear);
 }
 
-- (_TtC8VideosUI24BannerViewCellController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8VideosUI24BannerViewCellController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1E4205F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1E391D7E4();
 }
 

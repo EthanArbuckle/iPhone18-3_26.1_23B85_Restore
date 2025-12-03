@@ -1,31 +1,31 @@
 @interface TPSContextualBiomeEventBookmark
-+ (id)bookmarkWithSinkBookmark:(id)a3;
-- (TPSContextualBiomeEventBookmark)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)bookmarkWithSinkBookmark:(id)bookmark;
+- (TPSContextualBiomeEventBookmark)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSContextualBiomeEventBookmark
 
-+ (id)bookmarkWithSinkBookmark:(id)a3
++ (id)bookmarkWithSinkBookmark:(id)bookmark
 {
-  v3 = a3;
+  bookmarkCopy = bookmark;
   v4 = [(TPSContextualEventBookmark *)[TPSContextualBiomeEventBookmark alloc] initWithDataVersion:1];
-  [(TPSContextualBiomeEventBookmark *)v4 setSinkBookmark:v3];
+  [(TPSContextualBiomeEventBookmark *)v4 setSinkBookmark:bookmarkCopy];
 
   return v4;
 }
 
-- (TPSContextualBiomeEventBookmark)initWithCoder:(id)a3
+- (TPSContextualBiomeEventBookmark)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = TPSContextualBiomeEventBookmark;
-  v5 = [(TPSContextualEventBookmark *)&v10 initWithCoder:v4];
+  v5 = [(TPSContextualEventBookmark *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bookmarkData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bookmarkData"];
     if (v6)
     {
       v7 = [MEMORY[0x1E696ACD0] unarchiveObjectWithData:v6];
@@ -37,12 +37,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = TPSContextualBiomeEventBookmark;
-  [(TPSContextualEventBookmark *)&v10 encodeWithCoder:v4];
+  [(TPSContextualEventBookmark *)&v10 encodeWithCoder:coderCopy];
   sinkBookmark = self->_sinkBookmark;
   if (sinkBookmark)
   {
@@ -51,7 +51,7 @@
     v7 = v9;
     if (v6)
     {
-      [v4 encodeObject:v6 forKey:@"bookmarkData"];
+      [coderCopy encodeObject:v6 forKey:@"bookmarkData"];
     }
 
     else
@@ -65,11 +65,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = TPSContextualBiomeEventBookmark;
-  v4 = [(TPSContextualEventBookmark *)&v6 copyWithZone:a3];
+  v4 = [(TPSContextualEventBookmark *)&v6 copyWithZone:zone];
   [v4 setSinkBookmark:self->_sinkBookmark];
   return v4;
 }
@@ -82,8 +82,8 @@
   v4 = [(TPSContextualEventBookmark *)&v8 description];
   v5 = [v3 initWithString:v4];
 
-  v6 = [(TPSContextualBiomeEventBookmark *)self sinkBookmark];
-  [v5 appendFormat:@"; %@ = %@", @"bookmarkData", v6];
+  sinkBookmark = [(TPSContextualBiomeEventBookmark *)self sinkBookmark];
+  [v5 appendFormat:@"; %@ = %@", @"bookmarkData", sinkBookmark];
 
   return v5;
 }

@@ -1,48 +1,48 @@
 @interface CAFBitMaskUtilities
-+ (id)description:(unint64_t)a3 optionCount:(unsigned __int8)a4;
-+ (int64_t)compareBitmask1:(unint64_t)a3 bitmask2:(unint64_t)a4 optionsSort:(id)a5;
-+ (unint64_t)bitmask:(unint64_t)a3 setOption:(unint64_t)a4 on:(BOOL)a5;
++ (id)description:(unint64_t)description optionCount:(unsigned __int8)count;
++ (int64_t)compareBitmask1:(unint64_t)bitmask1 bitmask2:(unint64_t)bitmask2 optionsSort:(id)sort;
++ (unint64_t)bitmask:(unint64_t)bitmask setOption:(unint64_t)option on:(BOOL)on;
 @end
 
 @implementation CAFBitMaskUtilities
 
-+ (unint64_t)bitmask:(unint64_t)a3 setOption:(unint64_t)a4 on:(BOOL)a5
++ (unint64_t)bitmask:(unint64_t)bitmask setOption:(unint64_t)option on:(BOOL)on
 {
-  if (a5)
+  if (on)
   {
-    return a4 | a3;
+    return option | bitmask;
   }
 
   else
   {
-    return a3 & ~a4;
+    return bitmask & ~option;
   }
 }
 
-+ (id)description:(unint64_t)a3 optionCount:(unsigned __int8)a4
++ (id)description:(unint64_t)description optionCount:(unsigned __int8)count
 {
   v6 = objc_opt_new();
   v7 = 1;
   do
   {
-    [v6 appendFormat:@"%d", (v7 & a3) != 0];
+    [v6 appendFormat:@"%d", (v7 & description) != 0];
     v7 *= 2;
   }
 
-  while (v7 <= 1 << (a4 - 1));
+  while (v7 <= 1 << (count - 1));
 
   return v6;
 }
 
-+ (int64_t)compareBitmask1:(unint64_t)a3 bitmask2:(unint64_t)a4 optionsSort:(id)a5
++ (int64_t)compareBitmask1:(unint64_t)bitmask1 bitmask2:(unint64_t)bitmask2 optionsSort:(id)sort
 {
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = a5;
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  sortCopy = sort;
+  v9 = [sortCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -53,12 +53,12 @@
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(sortCopy);
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [a1 bitmask:a3 hasOption:{objc_msgSend(v13, "unsignedLongLongValue", v18)}];
-        if (v14 != [a1 bitmask:a4 hasOption:{objc_msgSend(v13, "unsignedLongLongValue")}])
+        v14 = [self bitmask:bitmask1 hasOption:{objc_msgSend(v13, "unsignedLongLongValue", v18)}];
+        if (v14 != [self bitmask:bitmask2 hasOption:{objc_msgSend(v13, "unsignedLongLongValue")}])
         {
           if (v14)
           {
@@ -74,7 +74,7 @@
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [sortCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v10)
       {
         continue;

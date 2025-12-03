@@ -1,19 +1,19 @@
 @interface GQHBounds
-+ (void)mapBounds:(CGRect)a3 angle:(float)a4 srcGraphicStyle:(id)a5 style:(id)a6 state:(id)a7;
-+ (void)mapPosition:(CGPoint)a3 srcGraphicStyle:(id)a4 style:(id)a5 state:(id)a6;
-+ (void)mapSize:(CGSize)a3 angle:(float)a4 flipX:(BOOL)a5 flipY:(BOOL)a6 srcGraphicStyle:(id)a7 style:(id)a8 state:(id)a9;
++ (void)mapBounds:(CGRect)bounds angle:(float)angle srcGraphicStyle:(id)style style:(id)a6 state:(id)state;
++ (void)mapPosition:(CGPoint)position srcGraphicStyle:(id)style style:(id)a5 state:(id)state;
++ (void)mapSize:(CGSize)size angle:(float)angle flipX:(BOOL)x flipY:(BOOL)y srcGraphicStyle:(id)style style:(id)a8 state:(id)state;
 @end
 
 @implementation GQHBounds
 
-+ (void)mapSize:(CGSize)a3 angle:(float)a4 flipX:(BOOL)a5 flipY:(BOOL)a6 srcGraphicStyle:(id)a7 style:(id)a8 state:(id)a9
++ (void)mapSize:(CGSize)size angle:(float)angle flipX:(BOOL)x flipY:(BOOL)y srcGraphicStyle:(id)style style:(id)a8 state:(id)state
 {
-  v11 = a6;
-  v12 = a5;
-  width = a3.width;
-  height = a3.height;
+  yCopy = y;
+  xCopy = x;
+  width = size.width;
+  height = size.height;
   v29 = 0;
-  if ([a7 hasValueForObjectProperty:68 value:&v29])
+  if ([style hasValueForObjectProperty:68 value:&v29])
   {
     v16 = [GQHGraphicStyle strokeWidth:v29];
     width = width - v16;
@@ -21,16 +21,16 @@
   }
 
   v17 = off_9CE98;
-  [a9 scale];
+  [state scale];
   [a8 addAttribute:v17 intValue:(v18 * llroundf(height))];
   v19 = off_9CF68;
-  [a9 scale];
+  [state scale];
   [a8 addAttribute:v19 intValue:(v20 * llroundf(width))];
-  if (a4 != 0.0 || v12 || v11)
+  if (angle != 0.0 || xCopy || yCopy)
   {
     memset(&v28, 0, sizeof(v28));
     v21 = 1.0;
-    if (v12)
+    if (xCopy)
     {
       v22 = -1.0;
     }
@@ -40,14 +40,14 @@
       v22 = 1.0;
     }
 
-    if (v11)
+    if (yCopy)
     {
       v21 = -1.0;
     }
 
     CGAffineTransformMakeScale(&v28, v22, v21);
     memset(&v27, 0, sizeof(v27));
-    CGAffineTransformMakeRotation(&v27, (360 - llroundf(a4)) * 3.14159265 / 180.0);
+    CGAffineTransformMakeRotation(&v27, (360 - llroundf(angle)) * 3.14159265 / 180.0);
     t1 = v28;
     memset(&v26, 0, sizeof(v26));
     t2 = v27;
@@ -58,12 +58,12 @@
   }
 }
 
-+ (void)mapPosition:(CGPoint)a3 srcGraphicStyle:(id)a4 style:(id)a5 state:(id)a6
++ (void)mapPosition:(CGPoint)position srcGraphicStyle:(id)style style:(id)a5 state:(id)state
 {
   v15 = 0;
-  y = a3.y;
-  x = a3.x;
-  if ([a4 hasValueForObjectProperty:68 value:&v15])
+  y = position.y;
+  x = position.x;
+  if ([style hasValueForObjectProperty:68 value:&v15])
   {
     v10 = ([GQHGraphicStyle strokeWidth:v15]/ 2);
     x = x - v10;
@@ -71,22 +71,22 @@
   }
 
   v11 = off_9CF50;
-  [a6 scale];
+  [state scale];
   [a5 addAttribute:v11 intValue:(v12 * llroundf(y))];
   v13 = off_9CEA0;
-  [a6 scale];
+  [state scale];
   [a5 addAttribute:v13 intValue:(v14 * llroundf(x))];
 }
 
-+ (void)mapBounds:(CGRect)a3 angle:(float)a4 srcGraphicStyle:(id)a5 style:(id)a6 state:(id)a7
++ (void)mapBounds:(CGRect)bounds angle:(float)angle srcGraphicStyle:(id)style style:(id)a6 state:(id)state
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
-  width = a3.size.width;
-  *&a3.size.width = a4;
-  [a1 mapSize:width angle:a3.size.height srcGraphicStyle:a3.size.width style:? state:?];
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  width = bounds.size.width;
+  *&bounds.size.width = angle;
+  [self mapSize:width angle:bounds.size.height srcGraphicStyle:bounds.size.width style:? state:?];
 
-  [a1 mapPosition:a5 srcGraphicStyle:a6 style:a7 state:{x, y}];
+  [self mapPosition:style srcGraphicStyle:a6 style:state state:{x, y}];
 }
 
 @end

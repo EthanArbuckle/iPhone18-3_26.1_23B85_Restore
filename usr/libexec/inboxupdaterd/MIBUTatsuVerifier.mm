@@ -1,7 +1,7 @@
 @interface MIBUTatsuVerifier
-+ (BOOL)verifyTatsuEntitlement:(id)a3 error:(id *)a4;
-+ (id)_copyDeviceTreeInt:(id)a3 key:(id)a4 defaultValue:(id)a5;
-+ (id)_copyDeviceTreeProperty:(id)a3 key:(id)a4;
++ (BOOL)verifyTatsuEntitlement:(id)entitlement error:(id *)error;
++ (id)_copyDeviceTreeInt:(id)int key:(id)key defaultValue:(id)value;
++ (id)_copyDeviceTreeProperty:(id)property key:(id)key;
 + (id)apNonce;
 + (id)sepNonce;
 + (id)sikaFuse;
@@ -34,14 +34,14 @@
 + (id)sikaFuse
 {
   v3 = [@"IODeviceTree" stringByAppendingString:@":/chosen"];
-  v4 = [a1 _copyDeviceTreeInt:v3 key:@"esdm-fuses" defaultValue:0];
+  v4 = [self _copyDeviceTreeInt:v3 key:@"esdm-fuses" defaultValue:0];
 
   return v4;
 }
 
-+ (BOOL)verifyTatsuEntitlement:(id)a3 error:(id *)a4
++ (BOOL)verifyTatsuEntitlement:(id)entitlement error:(id *)error
 {
-  v4 = a3;
+  entitlementCopy = entitlement;
   v45 = 0;
   v43 = 0u;
   v44 = 0u;
@@ -77,9 +77,9 @@
   if (os_variant_has_internal_content())
   {
     v5 = +[MIBUTestPreferences sharedInstance];
-    v6 = [v5 useLiveTatsu];
+    useLiveTatsu = [v5 useLiveTatsu];
 
-    if ((v6 & 1) == 0)
+    if ((useLiveTatsu & 1) == 0)
     {
       if (qword_1000B84A8[0] != -1)
       {
@@ -109,8 +109,8 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Verifying Tatsu entitlement...", v13, 2u);
   }
 
-  [v4 bytes];
-  [v4 length];
+  [entitlementCopy bytes];
+  [entitlementCopy length];
   inited = Img4DecodeInitManifest();
   if (inited)
   {
@@ -140,14 +140,14 @@ LABEL_11:
   return v10;
 }
 
-+ (id)_copyDeviceTreeProperty:(id)a3 key:(id)a4
++ (id)_copyDeviceTreeProperty:(id)property key:(id)key
 {
-  v5 = a4;
-  v6 = v5;
+  keyCopy = key;
+  v6 = keyCopy;
   CFProperty = 0;
-  if (a3 && v5)
+  if (property && keyCopy)
   {
-    v8 = IORegistryEntryFromPath(kIOMainPortDefault, [a3 fileSystemRepresentation]);
+    v8 = IORegistryEntryFromPath(kIOMainPortDefault, [property fileSystemRepresentation]);
     if (v8)
     {
       v9 = v8;
@@ -176,21 +176,21 @@ LABEL_11:
   return CFProperty;
 }
 
-+ (id)_copyDeviceTreeInt:(id)a3 key:(id)a4 defaultValue:(id)a5
++ (id)_copyDeviceTreeInt:(id)int key:(id)key defaultValue:(id)value
 {
-  v8 = a5;
-  v9 = v8;
+  valueCopy = value;
+  v9 = valueCopy;
   v10 = 0;
   v13 = 0;
-  if (!a3)
+  if (!int)
   {
     goto LABEL_6;
   }
 
-  v11 = v8;
-  if (a4)
+  v11 = valueCopy;
+  if (key)
   {
-    v10 = [a1 _copyDeviceTreeProperty:a3 key:a4];
+    v10 = [self _copyDeviceTreeProperty:int key:key];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v10 length] == 4)
     {

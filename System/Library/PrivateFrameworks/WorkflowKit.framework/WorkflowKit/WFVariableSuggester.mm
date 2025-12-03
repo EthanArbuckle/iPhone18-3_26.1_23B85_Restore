@@ -3,12 +3,12 @@
 - (WFVariableSuggester)init;
 - (WFVariableSuggesterDelegate)delegate;
 - (void)availableVariablesDidChange;
-- (void)setCurrentVariables:(id)a3;
-- (void)setMaxSuggestionsCount:(unint64_t)a3;
-- (void)setMinSuggestionsCount:(unint64_t)a3;
-- (void)setOutputActions:(id)a3;
-- (void)setSuggestedVariables:(id)a3;
-- (void)setUserDefinedVariableNames:(id)a3;
+- (void)setCurrentVariables:(id)variables;
+- (void)setMaxSuggestionsCount:(unint64_t)count;
+- (void)setMinSuggestionsCount:(unint64_t)count;
+- (void)setOutputActions:(id)actions;
+- (void)setSuggestedVariables:(id)variables;
+- (void)setUserDefinedVariableNames:(id)names;
 @end
 
 @implementation WFVariableSuggester
@@ -30,10 +30,10 @@
 - (void)availableVariablesDidChange
 {
   v48 = *MEMORY[0x1E69E9840];
-  v34 = [(WFVariableSuggester *)self outputActions];
-  v32 = [(WFVariableSuggester *)self userDefinedVariableNames];
-  v3 = [(WFVariableSuggester *)self currentVariables];
-  v33 = [v3 if_compactMap:&__block_literal_global_51092];
+  outputActions = [(WFVariableSuggester *)self outputActions];
+  userDefinedVariableNames = [(WFVariableSuggester *)self userDefinedVariableNames];
+  currentVariables = [(WFVariableSuggester *)self currentVariables];
+  v33 = [currentVariables if_compactMap:&__block_literal_global_51092];
 
   v4 = [MEMORY[0x1E695DFD8] setWithArray:v33];
   v5 = objc_opt_new();
@@ -42,8 +42,8 @@
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v7 = [v34 reverseObjectEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v43 objects:v47 count:16];
+  reverseObjectEnumerator = [outputActions reverseObjectEnumerator];
+  v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v8)
   {
     v9 = *v44;
@@ -53,15 +53,15 @@
       {
         if (*v44 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v11 = *(*(&v43 + 1) + 8 * i);
-        v12 = [v11 outputName];
-        if (([v5 containsObject:v12] & 1) == 0)
+        outputName = [v11 outputName];
+        if (([v5 containsObject:outputName] & 1) == 0)
         {
-          [v5 addObject:v12];
-          if ([v4 containsObject:v12])
+          [v5 addObject:outputName];
+          if ([v4 containsObject:outputName])
           {
             [v6 insertObject:v11 atIndex:0];
           }
@@ -73,30 +73,30 @@
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v43 objects:v47 count:16];
+      v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v43 objects:v47 count:16];
     }
 
     while (v8);
   }
 
-  v13 = [(WFVariableSuggester *)self maxSuggestionsCount];
-  v14 = [v32 count];
+  maxSuggestionsCount = [(WFVariableSuggester *)self maxSuggestionsCount];
+  v14 = [userDefinedVariableNames count];
   v15 = [v6 count];
-  if ((v13 - v14) >= v15)
+  if ((maxSuggestionsCount - v14) >= v15)
   {
     v16 = v15;
   }
 
   else
   {
-    v16 = v13 - v14;
+    v16 = maxSuggestionsCount - v14;
   }
 
   v17 = [v6 count];
-  v18 = [(WFVariableSuggester *)self minSuggestionsCount];
-  if (v17 >= v18)
+  minSuggestionsCount = [(WFVariableSuggester *)self minSuggestionsCount];
+  if (v17 >= minSuggestionsCount)
   {
-    v19 = v18;
+    v19 = minSuggestionsCount;
   }
 
   else
@@ -129,8 +129,8 @@
   v40[1] = v40;
   v40[2] = 0x2020000000;
   v40[3] = 0;
-  v24 = [v35 reverseObjectEnumerator];
-  v25 = [v24 allObjects];
+  reverseObjectEnumerator2 = [v35 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator2 allObjects];
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __50__WFVariableSuggester_availableVariablesDidChange__block_invoke_3;
@@ -138,11 +138,11 @@
   v39 = v40;
   v26 = v23;
   v37 = v26;
-  v38 = self;
-  v27 = [v25 if_map:v36];
-  v28 = [v27 reverseObjectEnumerator];
-  v29 = [v28 allObjects];
-  [(WFVariableSuggester *)self setSuggestedVariables:v29];
+  selfCopy = self;
+  v27 = [allObjects if_map:v36];
+  reverseObjectEnumerator3 = [v27 reverseObjectEnumerator];
+  allObjects2 = [reverseObjectEnumerator3 allObjects];
+  [(WFVariableSuggester *)self setSuggestedVariables:allObjects2];
 
   _Block_object_dispose(v40, 8);
   v30 = *MEMORY[0x1E69E9840];
@@ -211,52 +211,52 @@ id __50__WFVariableSuggester_availableVariablesDidChange__block_invoke(uint64_t 
   return v4;
 }
 
-- (void)setMinSuggestionsCount:(unint64_t)a3
+- (void)setMinSuggestionsCount:(unint64_t)count
 {
-  if (self->_minSuggestionsCount != a3)
+  if (self->_minSuggestionsCount != count)
   {
-    self->_minSuggestionsCount = a3;
+    self->_minSuggestionsCount = count;
     [(WFVariableSuggester *)self availableVariablesDidChange];
   }
 }
 
-- (void)setMaxSuggestionsCount:(unint64_t)a3
+- (void)setMaxSuggestionsCount:(unint64_t)count
 {
-  if (self->_maxSuggestionsCount != a3)
+  if (self->_maxSuggestionsCount != count)
   {
-    self->_maxSuggestionsCount = a3;
+    self->_maxSuggestionsCount = count;
     [(WFVariableSuggester *)self availableVariablesDidChange];
   }
 }
 
-- (void)setOutputActions:(id)a3
+- (void)setOutputActions:(id)actions
 {
-  v6 = a3;
-  if (([v6 isEqualToArray:self->_outputActions] & 1) == 0)
+  actionsCopy = actions;
+  if (([actionsCopy isEqualToArray:self->_outputActions] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [actionsCopy copy];
     outputActions = self->_outputActions;
     self->_outputActions = v4;
   }
 }
 
-- (void)setUserDefinedVariableNames:(id)a3
+- (void)setUserDefinedVariableNames:(id)names
 {
-  v6 = a3;
-  if (([v6 isEqualToArray:self->_userDefinedVariableNames] & 1) == 0)
+  namesCopy = names;
+  if (([namesCopy isEqualToArray:self->_userDefinedVariableNames] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [namesCopy copy];
     userDefinedVariableNames = self->_userDefinedVariableNames;
     self->_userDefinedVariableNames = v4;
   }
 }
 
-- (void)setCurrentVariables:(id)a3
+- (void)setCurrentVariables:(id)variables
 {
-  v6 = a3;
-  if (([v6 isEqualToArray:self->_currentVariables] & 1) == 0)
+  variablesCopy = variables;
+  if (([variablesCopy isEqualToArray:self->_currentVariables] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [variablesCopy copy];
     currentVariables = self->_currentVariables;
     self->_currentVariables = v4;
 
@@ -264,14 +264,14 @@ id __50__WFVariableSuggester_availableVariablesDidChange__block_invoke(uint64_t 
   }
 }
 
-- (void)setSuggestedVariables:(id)a3
+- (void)setSuggestedVariables:(id)variables
 {
-  v6 = a3;
-  if (([v6 isEqualToArray:self->_suggestedVariables] & 1) == 0)
+  variablesCopy = variables;
+  if (([variablesCopy isEqualToArray:self->_suggestedVariables] & 1) == 0)
   {
-    objc_storeStrong(&self->_suggestedVariables, a3);
-    v5 = [(WFVariableSuggester *)self delegate];
-    [v5 variableSuggesterSuggestionsDidChange:self];
+    objc_storeStrong(&self->_suggestedVariables, variables);
+    delegate = [(WFVariableSuggester *)self delegate];
+    [delegate variableSuggesterSuggestionsDidChange:self];
   }
 }
 

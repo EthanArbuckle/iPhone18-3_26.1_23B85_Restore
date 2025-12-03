@@ -1,26 +1,26 @@
 @interface VCPVideoFacePoseAnalyzer
-- (BOOL)updateFocalLengthInPixels:(float)a3;
-- (VCPVideoFacePoseAnalyzer)initWithFocalLengthInPixels:(float)a3;
-- (int)analyzeFrameForPose:(__CVBuffer *)a3 withFaceRect:(CGRect)a4 withTimestamp:(id *)a5;
-- (void)setPose:(__n128)a3;
+- (BOOL)updateFocalLengthInPixels:(float)pixels;
+- (VCPVideoFacePoseAnalyzer)initWithFocalLengthInPixels:(float)pixels;
+- (int)analyzeFrameForPose:(__CVBuffer *)pose withFaceRect:(CGRect)rect withTimestamp:(id *)timestamp;
+- (void)setPose:(__n128)pose;
 @end
 
 @implementation VCPVideoFacePoseAnalyzer
 
-- (VCPVideoFacePoseAnalyzer)initWithFocalLengthInPixels:(float)a3
+- (VCPVideoFacePoseAnalyzer)initWithFocalLengthInPixels:(float)pixels
 {
   v11.receiver = self;
   v11.super_class = VCPVideoFacePoseAnalyzer;
   v4 = [(VCPVideoFacePoseAnalyzer *)&v11 init];
   v5 = v4;
-  if (a3 < 1.0 || v4 == 0)
+  if (pixels < 1.0 || v4 == 0)
   {
     v8 = 0;
   }
 
   else
   {
-    *(v4 + 8) = a3;
+    *(v4 + 8) = pixels;
     v7 = MEMORY[0x1E6960C80];
     *(v4 + 36) = *MEMORY[0x1E6960C80];
     *(v4 + 52) = *(v7 + 16);
@@ -34,9 +34,9 @@
   return v9;
 }
 
-- (BOOL)updateFocalLengthInPixels:(float)a3
+- (BOOL)updateFocalLengthInPixels:(float)pixels
 {
-  self->_focalLengthInPixels = a3;
+  self->_focalLengthInPixels = pixels;
   poseEstimator = self->_poseEstimator;
   if (poseEstimator)
   {
@@ -52,14 +52,14 @@
   return 1;
 }
 
-- (int)analyzeFrameForPose:(__CVBuffer *)a3 withFaceRect:(CGRect)a4 withTimestamp:(id *)a5
+- (int)analyzeFrameForPose:(__CVBuffer *)pose withFaceRect:(CGRect)rect withTimestamp:(id *)timestamp
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = CVPixelBufferGetWidth(a3);
-  v13 = CVPixelBufferGetHeight(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v12 = CVPixelBufferGetWidth(pose);
+  v13 = CVPixelBufferGetHeight(pose);
   if (!self->_landmarkDetector)
   {
     v14 = +[VCPCNNFaceLandmarkDetector detector];
@@ -118,11 +118,11 @@ LABEL_8:
   v50.size.width = width;
   v50.size.height = height;
   v51 = CGRectApplyAffineTransform(v50, &v47);
-  v22 = [(VCPCNNFaceLandmarkDetector *)self->_landmarkDetector analyzeFrame:a3 withFaceBounds:v51.origin.x, v51.origin.y, v51.size.width, v51.size.height];
+  v22 = [(VCPCNNFaceLandmarkDetector *)self->_landmarkDetector analyzeFrame:pose withFaceBounds:v51.origin.x, v51.origin.y, v51.size.width, v51.size.height];
   if (!v22)
   {
-    v23 = [(VCPCNNFaceLandmarkDetector *)self->_landmarkDetector landmarks];
-    if ([v23 count] == 7)
+    landmarks = [(VCPCNNFaceLandmarkDetector *)self->_landmarkDetector landmarks];
+    if ([landmarks count] == 7)
     {
       v24 = 0;
       v25 = v12;
@@ -132,7 +132,7 @@ LABEL_8:
       v45 = &self->_points2D[13];
       do
       {
-        v29 = [v23 objectAtIndexedSubscript:{v24, v45}];
+        v29 = [landmarks objectAtIndexedSubscript:{v24, v45}];
         if ([v29 count] != 3 || (objc_msgSend(v29, "objectAtIndexedSubscript:", 0), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "intValue"), v30, v31 >= 0x35))
         {
 
@@ -167,8 +167,8 @@ LABEL_8:
         *&self[1]._landmarkDetector = v40;
         *&self[1]._filter = v41;
         *&self[1]._lastTimestamp.value = v42;
-        *&v47.a = *&a5->var0;
-        *&v47.c = a5->var3;
+        *&v47.a = *&timestamp->var0;
+        *&v47.c = timestamp->var3;
         rhs = *(&self->_focalLengthInPixels + 1);
         CMTimeSubtract(&time, &v47, &rhs);
         if (CMTimeGetSeconds(&time) > 2.0)
@@ -179,8 +179,8 @@ LABEL_8:
         v22 = [(VCPVideoFacePoseFilter *)self->_filter filteringPose:&self->_points3D[20]];
         if (!v22)
         {
-          v43 = *&a5->var0;
-          *&self->_lastTimestamp.flags = a5->var3;
+          v43 = *&timestamp->var0;
+          *&self->_lastTimestamp.flags = timestamp->var3;
           *(&self->_focalLengthInPixels + 1) = v43;
         }
       }
@@ -196,13 +196,13 @@ LABEL_23:
   return v22;
 }
 
-- (void)setPose:(__n128)a3
+- (void)setPose:(__n128)pose
 {
   v5[0] = a2;
-  v5[1] = a3;
+  v5[1] = pose;
   v5[2] = a4;
   v5[3] = a5;
-  objc_copyStruct((a1 + 208), v5, 64, 1, 0);
+  objc_copyStruct((self + 208), v5, 64, 1, 0);
 }
 
 @end

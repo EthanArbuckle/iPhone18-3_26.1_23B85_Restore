@@ -6,30 +6,30 @@
 - (UITextField)textField;
 - (double)adjustedVerticalOffset;
 - (double)contentHeight;
-- (id)indexPathForNextSelectableIndexPath:(id)a3 upward:(BOOL)a4;
-- (void)addKeyCommandForKey:(id)a3 action:(SEL)a4;
+- (id)indexPathForNextSelectableIndexPath:(id)path upward:(BOOL)upward;
+- (void)addKeyCommandForKey:(id)key action:(SEL)action;
 - (void)dealloc;
-- (void)downArrowPressed:(id)a3;
+- (void)downArrowPressed:(id)pressed;
 - (void)escapeButtonPressed;
 - (void)goBack;
-- (void)highlightNextRowAtIndexPath:(id)a3 upward:(BOOL)a4;
-- (void)highlightRowAtIndexPath:(id)a3;
-- (void)keyboardFrameChanged:(id)a3;
+- (void)highlightNextRowAtIndexPath:(id)path upward:(BOOL)upward;
+- (void)highlightRowAtIndexPath:(id)path;
+- (void)keyboardFrameChanged:(id)changed;
 - (void)leftArrowPressed;
 - (void)moveCursorToBeginning;
 - (void)moveCursorToEnd;
-- (void)moveCursorToPosition:(id)a3;
+- (void)moveCursorToPosition:(id)position;
 - (void)returnKeyPressed;
 - (void)rightArrowPressed;
-- (void)scrollIndexPathToVisible:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (void)scrollIndexPathToVisible:(id)visible;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 - (void)selectAllTextInTextField;
 - (void)selectHighlightedRow;
-- (void)setCollectionView:(id)a3;
+- (void)setCollectionView:(id)view;
 - (void)showKeyboard;
-- (void)upArrowPressed:(id)a3;
+- (void)upArrowPressed:(id)pressed;
 - (void)viewDidLoad;
 @end
 
@@ -42,8 +42,8 @@
   v2 = [(SearchUIKeyboardableCollectionViewController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel_keyboardFrameChanged_ name:*MEMORY[0x1E69DE068] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_keyboardFrameChanged_ name:*MEMORY[0x1E69DE068] object:0];
   }
 
   return v2;
@@ -58,10 +58,10 @@
 
 - (double)adjustedVerticalOffset
 {
-  v2 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
-  [v2 contentOffset];
+  collectionView = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
+  [collectionView contentOffset];
   v4 = v3;
-  [v2 adjustedContentInset];
+  [collectionView adjustedContentInset];
   v6 = v4 + v5;
 
   return v6;
@@ -76,8 +76,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DE068] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE068] object:0];
 
   v4.receiver = self;
   v4.super_class = SearchUIKeyboardableCollectionViewController;
@@ -91,52 +91,52 @@
   [(SearchUIKeyboardableCollectionViewController *)&v2 viewDidLoad];
 }
 
-- (void)setCollectionView:(id)a3
+- (void)setCollectionView:(id)view
 {
   v7.receiver = self;
   v7.super_class = SearchUIKeyboardableCollectionViewController;
-  v4 = a3;
-  [(SearchUIKeyboardableCollectionViewController *)&v7 setCollectionView:v4];
+  viewCopy = view;
+  [(SearchUIKeyboardableCollectionViewController *)&v7 setCollectionView:viewCopy];
   v5 = objc_opt_new();
   [v5 setDelegate:{self, v7.receiver, v7.super_class}];
-  [v4 addGestureRecognizer:v5];
-  v6 = [v4 panGestureRecognizer];
+  [viewCopy addGestureRecognizer:v5];
+  panGestureRecognizer = [viewCopy panGestureRecognizer];
 
-  [v6 requireGestureRecognizerToFail:v5];
+  [panGestureRecognizer requireGestureRecognizerToFail:v5];
 }
 
-- (void)addKeyCommandForKey:(id)a3 action:(SEL)a4
+- (void)addKeyCommandForKey:(id)key action:(SEL)action
 {
   v6 = MEMORY[0x1E69DCBA0];
-  v7 = a3;
-  v8 = [v6 keyCommandWithInput:v7 modifierFlags:0 action:a4];
+  keyCopy = key;
+  v8 = [v6 keyCommandWithInput:keyCopy modifierFlags:0 action:action];
   [(SearchUIKeyboardableCollectionViewController *)self addKeyCommand:v8];
 
-  v9 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:v7 modifierFlags:0x100000 action:a4];
+  v9 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:keyCopy modifierFlags:0x100000 action:action];
 
   [(SearchUIKeyboardableCollectionViewController *)self addKeyCommand:v9];
 }
 
 - (BOOL)isOnCard
 {
-  v2 = [(SearchUIKeyboardableCollectionViewController *)self navigationController];
-  v3 = [v2 viewControllers];
-  v4 = [v3 count] > 1;
+  navigationController = [(SearchUIKeyboardableCollectionViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v4 = [viewControllers count] > 1;
 
   return v4;
 }
 
 - (void)escapeButtonPressed
 {
-  v2 = [(SearchUIKeyboardableCollectionViewController *)self navigationController];
-  v3 = [v2 topViewController];
-  v4 = [v3 navigationItem];
-  v8 = [v4 rightBarButtonItem];
+  navigationController = [(SearchUIKeyboardableCollectionViewController *)self navigationController];
+  topViewController = [navigationController topViewController];
+  navigationItem = [topViewController navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
-  v6 = [v8 action];
-  v7 = [v8 target];
-  [v5 sendAction:v6 to:v7 from:0 forEvent:0];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  action = [rightBarButtonItem action];
+  target = [rightBarButtonItem target];
+  [mEMORY[0x1E69DC668] sendAction:action to:target from:0 forEvent:0];
 }
 
 - (void)rightArrowPressed
@@ -171,190 +171,190 @@
 
 - (void)goBack
 {
-  v3 = [(SearchUIKeyboardableCollectionViewController *)self navigationController];
-  v2 = [v3 popViewControllerAnimated:1];
+  navigationController = [(SearchUIKeyboardableCollectionViewController *)self navigationController];
+  v2 = [navigationController popViewControllerAnimated:1];
 }
 
 - (void)returnKeyPressed
 {
-  v3 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
-  v4 = [v3 indexPathsForSelectedItems];
-  v5 = [v4 count];
+  collectionView = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  v5 = [indexPathsForSelectedItems count];
 
   if (!v5)
   {
-    v6 = [(SearchUIKeyboardableCollectionViewController *)self indexPathToSelectForKeyboardOnQuickReturn];
-    [(SearchUIKeyboardableCollectionViewController *)self highlightNextRowAtIndexPath:v6 upward:0];
+    indexPathToSelectForKeyboardOnQuickReturn = [(SearchUIKeyboardableCollectionViewController *)self indexPathToSelectForKeyboardOnQuickReturn];
+    [(SearchUIKeyboardableCollectionViewController *)self highlightNextRowAtIndexPath:indexPathToSelectForKeyboardOnQuickReturn upward:0];
   }
 
   [(SearchUIKeyboardableCollectionViewController *)self selectHighlightedRow];
 }
 
-- (void)highlightRowAtIndexPath:(id)a3
+- (void)highlightRowAtIndexPath:(id)path
 {
-  v5 = a3;
-  if (v5 || [0 section] == 0x7FFFFFFFFFFFFFFFLL)
+  pathCopy = path;
+  if (pathCopy || [0 section] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
-    [v4 selectItemAtIndexPath:v5 animated:0 scrollPosition:0];
+    collectionView = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
+    [collectionView selectItemAtIndexPath:pathCopy animated:0 scrollPosition:0];
   }
 }
 
-- (void)upArrowPressed:(id)a3
+- (void)upArrowPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
-  v6 = [v5 indexPathsForSelectedItems];
-  v17 = [v6 firstObject];
+  pressedCopy = pressed;
+  collectionView = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  firstObject = [indexPathsForSelectedItems firstObject];
 
-  v7 = [v4 modifierFlags];
-  v8 = [v17 section];
-  v9 = [v17 row];
-  if (v17)
+  modifierFlags = [pressedCopy modifierFlags];
+  section = [firstObject section];
+  v9 = [firstObject row];
+  if (firstObject)
   {
-    if ([v17 row] < 1)
+    if ([firstObject row] < 1)
     {
-      v10 = [v17 section];
-      v11 = v10 - 1;
-      if (v10 < 1)
+      section2 = [firstObject section];
+      v11 = section2 - 1;
+      if (section2 < 1)
       {
-        v13 = [(SearchUIKeyboardableCollectionViewController *)self textField];
+        textField = [(SearchUIKeyboardableCollectionViewController *)self textField];
 
-        if (v13)
+        if (textField)
         {
-          v8 = 0x7FFFFFFFFFFFFFFFLL;
+          section = 0x7FFFFFFFFFFFFFFFLL;
         }
       }
 
       else
       {
-        if ((v7 & 0x100000) != 0)
+        if ((modifierFlags & 0x100000) != 0)
         {
           v9 = 0;
         }
 
         else
         {
-          v12 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
-          v9 = [v12 numberOfItemsInSection:v11] - 1;
+          collectionView2 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
+          v9 = [collectionView2 numberOfItemsInSection:v11] - 1;
         }
 
-        v8 = v11;
+        section = v11;
       }
     }
 
-    else if ((v7 & 0x100000) != 0)
+    else if ((modifierFlags & 0x100000) != 0)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = [v17 row] - 1;
+      v9 = [firstObject row] - 1;
     }
   }
 
   else
   {
-    v8 = 0x7FFFFFFFFFFFFFFFLL;
+    section = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v14 = [MEMORY[0x1E696AC88] indexPathForRow:v9 inSection:v8];
+  v14 = [MEMORY[0x1E696AC88] indexPathForRow:v9 inSection:section];
   [(SearchUIKeyboardableCollectionViewController *)self highlightNextRowAtIndexPath:v14 upward:1];
 
-  if (v8 == 0x7FFFFFFFFFFFFFFFLL)
+  if (section == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = [(SearchUIKeyboardableCollectionViewController *)self textField];
-    [v15 becomeFirstResponder];
+    textField2 = [(SearchUIKeyboardableCollectionViewController *)self textField];
+    [textField2 becomeFirstResponder];
 
-    if ([v17 section] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([firstObject section] == 0x7FFFFFFFFFFFFFFFLL)
     {
       [(SearchUIKeyboardableCollectionViewController *)self moveCursorToBeginning];
     }
 
     else
     {
-      v16 = [(SearchUIKeyboardableCollectionViewController *)self textField];
-      [v16 selectAll:0];
+      textField3 = [(SearchUIKeyboardableCollectionViewController *)self textField];
+      [textField3 selectAll:0];
     }
   }
 }
 
-- (void)downArrowPressed:(id)a3
+- (void)downArrowPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   [(SearchUIKeyboardableCollectionViewController *)self moveCursorToEnd];
-  v5 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
-  v6 = [v5 indexPathsForSelectedItems];
-  v20 = [v6 firstObject];
+  collectionView = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  firstObject = [indexPathsForSelectedItems firstObject];
 
-  v7 = [v4 modifierFlags];
-  v8 = [v20 section];
-  [v20 row];
-  if (v20)
+  modifierFlags = [pressedCopy modifierFlags];
+  section = [firstObject section];
+  [firstObject row];
+  if (firstObject)
   {
-    v9 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
-    v10 = [v9 numberOfItemsInSection:{objc_msgSend(v20, "section")}];
-    v11 = [v20 row] + 1;
+    collectionView2 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
+    v10 = [collectionView2 numberOfItemsInSection:{objc_msgSend(firstObject, "section")}];
+    v11 = [firstObject row] + 1;
 
     if (v10 <= v11)
     {
       v12 = 0;
-      v8 = [v20 section] + 1;
+      section = [firstObject section] + 1;
     }
 
-    else if ((v7 & 0x100000) != 0)
+    else if ((modifierFlags & 0x100000) != 0)
     {
-      v16 = [v20 section] + 1;
-      v17 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
-      v18 = [v17 numberOfSections];
+      v16 = [firstObject section] + 1;
+      collectionView3 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
+      numberOfSections = [collectionView3 numberOfSections];
 
-      if (v16 >= v18)
+      if (v16 >= numberOfSections)
       {
-        v19 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
-        v12 = [v19 numberOfItemsInSection:{objc_msgSend(v20, "section")}] - 1;
+        collectionView4 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
+        v12 = [collectionView4 numberOfItemsInSection:{objc_msgSend(firstObject, "section")}] - 1;
       }
 
       else
       {
         v12 = 0;
-        v8 = v16;
+        section = v16;
       }
     }
 
     else
     {
-      v12 = [v20 row] + 1;
+      v12 = [firstObject row] + 1;
     }
   }
 
   else
   {
     v12 = 0;
-    v8 = 0;
+    section = 0;
   }
 
-  v13 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
-  if (v8 < [v13 numberOfSections])
+  collectionView5 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
+  if (section < [collectionView5 numberOfSections])
   {
-    v14 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
-    v15 = [v14 numberOfItemsInSection:v8];
+    collectionView6 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
+    v15 = [collectionView6 numberOfItemsInSection:section];
 
     if (v12 >= v15)
     {
       goto LABEL_11;
     }
 
-    v13 = [MEMORY[0x1E696AC88] indexPathForRow:v12 inSection:v8];
-    [(SearchUIKeyboardableCollectionViewController *)self highlightNextRowAtIndexPath:v13 upward:0];
+    collectionView5 = [MEMORY[0x1E696AC88] indexPathForRow:v12 inSection:section];
+    [(SearchUIKeyboardableCollectionViewController *)self highlightNextRowAtIndexPath:collectionView5 upward:0];
   }
 
 LABEL_11:
 }
 
-- (void)highlightNextRowAtIndexPath:(id)a3 upward:(BOOL)a4
+- (void)highlightNextRowAtIndexPath:(id)path upward:(BOOL)upward
 {
-  v5 = [(SearchUIKeyboardableCollectionViewController *)self indexPathForNextSelectableIndexPath:a3 upward:a4];
+  v5 = [(SearchUIKeyboardableCollectionViewController *)self indexPathForNextSelectableIndexPath:path upward:upward];
   if ([v5 section] != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(SearchUIKeyboardableCollectionViewController *)self scrollIndexPathToVisible:v5];
@@ -363,27 +363,27 @@ LABEL_11:
   [(SearchUIKeyboardableCollectionViewController *)self highlightRowAtIndexPath:v5];
 }
 
-- (id)indexPathForNextSelectableIndexPath:(id)a3 upward:(BOOL)a4
+- (id)indexPathForNextSelectableIndexPath:(id)path upward:(BOOL)upward
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 row] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v6, "section") == 0x7FFFFFFFFFFFFFFFLL)
+  upwardCopy = upward;
+  pathCopy = path;
+  if ([pathCopy row] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(pathCopy, "section") == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = v6;
+    v7 = pathCopy;
     goto LABEL_4;
   }
 
-  v9 = [v6 section];
-  v10 = v9;
-  if (v4)
+  section = [pathCopy section];
+  v10 = section;
+  if (upwardCopy)
   {
-    if ((v9 & 0x8000000000000000) == 0)
+    if ((section & 0x8000000000000000) == 0)
     {
       while (1)
       {
-        if (v10 == [v6 section])
+        if (v10 == [pathCopy section])
         {
-          v11 = [v6 row];
+          v11 = [pathCopy row];
           if ((v11 & 0x8000000000000000) == 0)
           {
             goto LABEL_13;
@@ -392,8 +392,8 @@ LABEL_11:
 
         else
         {
-          v12 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
-          v11 = [v12 numberOfItemsInSection:v10] - 1;
+          collectionView = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
+          v11 = [collectionView numberOfItemsInSection:v10] - 1;
 
           if ((v11 & 0x8000000000000000) == 0)
           {
@@ -427,19 +427,19 @@ LABEL_28:
     goto LABEL_4;
   }
 
-  v14 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
-  v15 = [v14 numberOfSections];
+  collectionView2 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
+  numberOfSections = [collectionView2 numberOfSections];
 
-  if (v10 >= v15)
+  if (v10 >= numberOfSections)
   {
     goto LABEL_28;
   }
 
   do
   {
-    if (v10 == [v6 section])
+    if (v10 == [pathCopy section])
     {
-      v16 = [v6 row];
+      v16 = [pathCopy row];
     }
 
     else
@@ -449,8 +449,8 @@ LABEL_28:
 
     while (1)
     {
-      v17 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
-      v18 = [v17 numberOfItemsInSection:v10];
+      collectionView3 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
+      v18 = [collectionView3 numberOfItemsInSection:v10];
 
       if (v16 >= v18)
       {
@@ -467,13 +467,13 @@ LABEL_28:
     }
 
     ++v10;
-    v19 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
-    v20 = [v19 numberOfSections];
+    collectionView4 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
+    numberOfSections2 = [collectionView4 numberOfSections];
 
     v7 = 0;
   }
 
-  while (v10 < v20);
+  while (v10 < numberOfSections2);
 LABEL_4:
 
   return v7;
@@ -481,65 +481,65 @@ LABEL_4:
 
 - (void)selectHighlightedRow
 {
-  v3 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
-  v4 = [v3 indexPathsForSelectedItems];
-  v6 = [v4 firstObject];
+  collectionView = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  firstObject = [indexPathsForSelectedItems firstObject];
 
-  if (v6)
+  if (firstObject)
   {
-    [(SearchUIKeyboardableCollectionViewController *)self scrollIndexPathToVisible:v6];
-    v5 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
-    [v5 selectItemAtIndexPath:v6 animated:0 scrollPosition:0];
+    [(SearchUIKeyboardableCollectionViewController *)self scrollIndexPathToVisible:firstObject];
+    collectionView2 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
+    [collectionView2 selectItemAtIndexPath:firstObject animated:0 scrollPosition:0];
   }
 }
 
 - (void)moveCursorToBeginning
 {
-  v4 = [(SearchUIKeyboardableCollectionViewController *)self textField];
-  v3 = [v4 beginningOfDocument];
-  [(SearchUIKeyboardableCollectionViewController *)self moveCursorToPosition:v3];
+  textField = [(SearchUIKeyboardableCollectionViewController *)self textField];
+  beginningOfDocument = [textField beginningOfDocument];
+  [(SearchUIKeyboardableCollectionViewController *)self moveCursorToPosition:beginningOfDocument];
 }
 
 - (void)moveCursorToEnd
 {
-  v4 = [(SearchUIKeyboardableCollectionViewController *)self textField];
-  v3 = [v4 endOfDocument];
-  [(SearchUIKeyboardableCollectionViewController *)self moveCursorToPosition:v3];
+  textField = [(SearchUIKeyboardableCollectionViewController *)self textField];
+  endOfDocument = [textField endOfDocument];
+  [(SearchUIKeyboardableCollectionViewController *)self moveCursorToPosition:endOfDocument];
 }
 
-- (void)moveCursorToPosition:(id)a3
+- (void)moveCursorToPosition:(id)position
 {
-  v4 = a3;
-  v7 = [(SearchUIKeyboardableCollectionViewController *)self textField];
-  v5 = [v7 textRangeFromPosition:v4 toPosition:v4];
+  positionCopy = position;
+  textField = [(SearchUIKeyboardableCollectionViewController *)self textField];
+  v5 = [textField textRangeFromPosition:positionCopy toPosition:positionCopy];
 
-  v6 = [(SearchUIKeyboardableCollectionViewController *)self textField];
-  [v6 setSelectedTextRange:v5];
+  textField2 = [(SearchUIKeyboardableCollectionViewController *)self textField];
+  [textField2 setSelectedTextRange:v5];
 }
 
-- (void)scrollIndexPathToVisible:(id)a3
+- (void)scrollIndexPathToVisible:(id)visible
 {
-  v4 = a3;
-  v5 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
-  [v5 scrollToItemAtIndexPath:v4 atScrollPosition:0 animated:0];
+  visibleCopy = visible;
+  collectionView = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
+  [collectionView scrollToItemAtIndexPath:visibleCopy atScrollPosition:0 animated:0];
 
-  v6 = [(SearchUIKeyboardableCollectionViewController *)self interactionDelegate];
-  [v6 didBeginScrolling];
+  interactionDelegate = [(SearchUIKeyboardableCollectionViewController *)self interactionDelegate];
+  [interactionDelegate didBeginScrolling];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   [(SearchUIKeyboardableCollectionViewController *)self adjustedVerticalOffset];
   v6 = v5;
-  v7 = [v4 isTracking];
+  isTracking = [scrollCopy isTracking];
 
-  if (v7)
+  if (isTracking)
   {
     if (v6 > 0.0 && [(SearchUIKeyboardableCollectionViewController *)self contentIsTallEnoughToBeOccludedByCurrentKeyboardHeightAndTextField]&& !+[SearchUIUtilities isMinimizedHardwareKeyboardMode])
     {
-      v8 = [(SearchUIKeyboardableCollectionViewController *)self textField];
-      [v8 resignFirstResponder];
+      textField = [(SearchUIKeyboardableCollectionViewController *)self textField];
+      [textField resignFirstResponder];
     }
 
     else if (v6 < -50.0)
@@ -552,8 +552,8 @@ LABEL_4:
 
 - (double)contentHeight
 {
-  v2 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
-  [v2 contentSize];
+  collectionView = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
+  [collectionView contentSize];
   v4 = v3;
 
   return v4;
@@ -561,19 +561,19 @@ LABEL_4:
 
 - (BOOL)contentIsTallEnoughToBeOccludedByCurrentKeyboardHeightAndTextField
 {
-  v3 = [(SearchUIKeyboardableCollectionViewController *)self textField];
-  v4 = [(SearchUIKeyboardableCollectionViewController *)self textField];
-  [v4 bounds];
-  [v3 convertRect:0 toView:?];
+  textField = [(SearchUIKeyboardableCollectionViewController *)self textField];
+  textField2 = [(SearchUIKeyboardableCollectionViewController *)self textField];
+  [textField2 bounds];
+  [textField convertRect:0 toView:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(SearchUIKeyboardableCollectionViewController *)self view];
-  v14 = [v13 window];
-  v15 = [v14 screen];
-  [v15 bounds];
+  view = [(SearchUIKeyboardableCollectionViewController *)self view];
+  window = [view window];
+  screen = [window screen];
+  [screen bounds];
   Height = CGRectGetHeight(v30);
 
   v31.origin.x = v6;
@@ -593,10 +593,10 @@ LABEL_4:
     v19 = Height - MinY;
   }
 
-  v21 = [(SearchUIKeyboardableCollectionViewController *)self view];
-  v22 = [(SearchUIKeyboardableCollectionViewController *)self view];
-  [v22 bounds];
-  [v21 convertRect:0 toView:?];
+  view2 = [(SearchUIKeyboardableCollectionViewController *)self view];
+  view3 = [(SearchUIKeyboardableCollectionViewController *)self view];
+  [view3 bounds];
+  [view2 convertRect:0 toView:?];
   v23 = CGRectGetMinY(v32);
 
   if (v19 == 0.0)
@@ -606,40 +606,40 @@ LABEL_4:
 
   [(SearchUIKeyboardableCollectionViewController *)self contentHeight];
   v25 = v23 + v24;
-  v26 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
-  [v26 adjustedContentInset];
+  collectionView = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
+  [collectionView adjustedContentInset];
   v28 = v25 + v27 + 2.0 > Height - v19;
 
   return v28;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v21 = a3;
-  v4 = [(SearchUIKeyboardableCollectionViewController *)self interactionDelegate];
+  draggingCopy = dragging;
+  interactionDelegate = [(SearchUIKeyboardableCollectionViewController *)self interactionDelegate];
 
-  if (v4)
+  if (interactionDelegate)
   {
-    v5 = [(SearchUIKeyboardableCollectionViewController *)self interactionDelegate];
-    [v5 didBeginScrolling];
+    interactionDelegate2 = [(SearchUIKeyboardableCollectionViewController *)self interactionDelegate];
+    [interactionDelegate2 didBeginScrolling];
 
-    v6 = [(SearchUIKeyboardableCollectionViewController *)self interactionDelegate];
-    v7 = [v6 shouldMonitorScrollingPastBottomOfContent];
+    interactionDelegate3 = [(SearchUIKeyboardableCollectionViewController *)self interactionDelegate];
+    shouldMonitorScrollingPastBottomOfContent = [interactionDelegate3 shouldMonitorScrollingPastBottomOfContent];
 
-    if (v7)
+    if (shouldMonitorScrollingPastBottomOfContent)
     {
-      v8 = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
-      [v8 contentOffset];
+      collectionView = [(SearchUIKeyboardableCollectionViewController *)self collectionView];
+      [collectionView contentOffset];
       v10 = v9;
-      [v8 contentSize];
+      [collectionView contentSize];
       v12 = v11;
-      [v8 bounds];
+      [collectionView bounds];
       Height = CGRectGetHeight(v23);
-      [v8 adjustedContentInset];
+      [collectionView adjustedContentInset];
       v15 = v14;
-      v16 = [v8 panGestureRecognizer];
-      v17 = [v21 window];
-      [v16 velocityInView:v17];
+      panGestureRecognizer = [collectionView panGestureRecognizer];
+      window = [draggingCopy window];
+      [panGestureRecognizer velocityInView:window];
       if (v18 < 0.0)
       {
         if ([(SearchUIKeyboardableCollectionViewController *)self contentIsTallEnoughToBeOccludedByCurrentKeyboardHeightAndTextField])
@@ -664,10 +664,10 @@ LABEL_11:
         {
         }
 
-        [v21 setScrollEnabled:0];
-        [v21 setScrollEnabled:1];
-        v16 = [(SearchUIKeyboardableCollectionViewController *)self interactionDelegate];
-        [v16 didScrollPastBottomOfContent];
+        [draggingCopy setScrollEnabled:0];
+        [draggingCopy setScrollEnabled:1];
+        panGestureRecognizer = [(SearchUIKeyboardableCollectionViewController *)self interactionDelegate];
+        [panGestureRecognizer didScrollPastBottomOfContent];
         goto LABEL_10;
       }
 
@@ -681,26 +681,26 @@ LABEL_10:
 LABEL_12:
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  if (a4.y > 0.0 && ![(SearchUIKeyboardableCollectionViewController *)self shouldHideTableCellsUnderKeyboard:a3]&& [(SearchUIKeyboardableCollectionViewController *)self contentIsTallEnoughToBeOccludedByCurrentKeyboardHeightAndTextField]&& !+[SearchUIUtilities isMinimizedHardwareKeyboardMode])
+  if (velocity.y > 0.0 && ![(SearchUIKeyboardableCollectionViewController *)self shouldHideTableCellsUnderKeyboard:dragging]&& [(SearchUIKeyboardableCollectionViewController *)self contentIsTallEnoughToBeOccludedByCurrentKeyboardHeightAndTextField]&& !+[SearchUIUtilities isMinimizedHardwareKeyboardMode])
   {
-    v6 = [(SearchUIKeyboardableCollectionViewController *)self textField];
-    [v6 resignFirstResponder];
+    textField = [(SearchUIKeyboardableCollectionViewController *)self textField];
+    [textField resignFirstResponder];
   }
 }
 
 - (void)showKeyboard
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 isRunningTest];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  isRunningTest = [mEMORY[0x1E69DC668] isRunningTest];
 
-  if ((v4 & 1) == 0 && [(SearchUIKeyboardableCollectionViewController *)self _appearState]- 1 <= 1)
+  if ((isRunningTest & 1) == 0 && [(SearchUIKeyboardableCollectionViewController *)self _appearState]- 1 <= 1)
   {
-    v5 = [(SearchUIKeyboardableCollectionViewController *)self textField];
-    v6 = [v5 isFirstResponder];
+    textField = [(SearchUIKeyboardableCollectionViewController *)self textField];
+    isFirstResponder = [textField isFirstResponder];
 
-    if (v6)
+    if (isFirstResponder)
     {
 
       [(SearchUIKeyboardableCollectionViewController *)self selectAllTextInTextField];
@@ -733,24 +733,24 @@ void __60__SearchUIKeyboardableCollectionViewController_showKeyboard__block_invo
 
 - (void)selectAllTextInTextField
 {
-  v3 = [(SearchUIKeyboardableCollectionViewController *)self textField];
-  v4 = [v3 selectedTextRange];
-  if (([v4 isEmpty] & 1) == 0)
+  textField = [(SearchUIKeyboardableCollectionViewController *)self textField];
+  selectedTextRange = [textField selectedTextRange];
+  if (([selectedTextRange isEmpty] & 1) == 0)
   {
-    v5 = [(SearchUIKeyboardableCollectionViewController *)self textField];
-    v6 = [v5 selectedTextRange];
-    v7 = [v6 start];
-    v8 = [(SearchUIKeyboardableCollectionViewController *)self textField];
-    v9 = [v8 beginningOfDocument];
-    if ([v7 isEqual:v9])
+    textField2 = [(SearchUIKeyboardableCollectionViewController *)self textField];
+    selectedTextRange2 = [textField2 selectedTextRange];
+    start = [selectedTextRange2 start];
+    textField3 = [(SearchUIKeyboardableCollectionViewController *)self textField];
+    beginningOfDocument = [textField3 beginningOfDocument];
+    if ([start isEqual:beginningOfDocument])
     {
-      v15 = [(SearchUIKeyboardableCollectionViewController *)self textField];
-      v10 = [v15 selectedTextRange];
-      [v10 end];
-      v11 = v17 = v5;
-      v12 = [(SearchUIKeyboardableCollectionViewController *)self textField];
-      [v12 endOfDocument];
-      v13 = v14 = v6;
+      textField4 = [(SearchUIKeyboardableCollectionViewController *)self textField];
+      selectedTextRange3 = [textField4 selectedTextRange];
+      [selectedTextRange3 end];
+      v11 = v17 = textField2;
+      textField5 = [(SearchUIKeyboardableCollectionViewController *)self textField];
+      [textField5 endOfDocument];
+      v13 = v14 = selectedTextRange2;
       v16 = [v11 isEqual:v13];
 
       if (v16)
@@ -763,23 +763,23 @@ void __60__SearchUIKeyboardableCollectionViewController_showKeyboard__block_invo
   }
 
 LABEL_7:
-  v18 = [(SearchUIKeyboardableCollectionViewController *)self textField];
-  [v18 selectAll:0];
+  textField6 = [(SearchUIKeyboardableCollectionViewController *)self textField];
+  [textField6 selectAll:0];
 }
 
-- (void)keyboardFrameChanged:(id)a3
+- (void)keyboardFrameChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69DDFA0]];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69DDFA0]];
   [v5 CGRectValue];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(SearchUIKeyboardableCollectionViewController *)self view];
-  v15 = [v14 tlks_screen];
-  [v15 bounds];
+  view = [(SearchUIKeyboardableCollectionViewController *)self view];
+  tlks_screen = [view tlks_screen];
+  [tlks_screen bounds];
   v17 = v16;
   v19 = v18;
   v21 = v20;

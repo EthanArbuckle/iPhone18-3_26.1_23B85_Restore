@@ -1,54 +1,54 @@
 @interface _UIKeyboardSubstitutePhonePresentationController
 - (CGRect)frameOfPresentedViewInContainerView;
-- (_TtC5UIKitP33_0B439A980771A6A339CDA4EB17012E1948_UIKeyboardSubstitutePhonePresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+- (_TtC5UIKitP33_0B439A980771A6A339CDA4EB17012E1948_UIKeyboardSubstitutePhonePresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
 - (void)_containerViewLayoutSubviews;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
 @end
 
 @implementation _UIKeyboardSubstitutePhonePresentationController
 
-- (_TtC5UIKitP33_0B439A980771A6A339CDA4EB17012E1948_UIKeyboardSubstitutePhonePresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (_TtC5UIKitP33_0B439A980771A6A339CDA4EB17012E1948_UIKeyboardSubstitutePhonePresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
-  v5 = a3;
-  v6 = a4;
-  return sub_18912F590(v5, a4);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  return sub_18912F590(controllerCopy, viewController);
 }
 
 - (void)presentationTransitionWillBegin
 {
-  v2 = self;
+  selfCopy = self;
   sub_18912FB20();
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
-  v4 = self;
-  sub_189130AB0(a3);
+  selfCopy = self;
+  sub_189130AB0(end);
 }
 
 - (void)dismissalTransitionWillBegin
 {
-  v2 = self;
+  selfCopy = self;
   sub_189130E0C();
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
-  v4 = self;
-  sub_189131918(a3);
+  selfCopy = self;
+  sub_189131918(end);
 }
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v2 = self;
-  v3 = [(UIPresentationController *)v2 containerView];
-  if (v3)
+  selfCopy = self;
+  containerView = [(UIPresentationController *)selfCopy containerView];
+  if (containerView)
   {
-    v4 = v3;
-    [(UIView *)v3 bounds];
+    v4 = containerView;
+    [(UIView *)containerView bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -68,7 +68,7 @@
   v19.size.width = v10;
   v19.size.height = v12;
   Height = CGRectGetHeight(v19);
-  v14 = *(&v2->super.super.super.isa + OBJC_IVAR____TtC5UIKitP33_0B439A980771A6A339CDA4EB17012E1948_UIKeyboardSubstitutePhonePresentationController_preferredHeight);
+  v14 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC5UIKitP33_0B439A980771A6A339CDA4EB17012E1948_UIKeyboardSubstitutePhonePresentationController_preferredHeight);
 
   v15 = Height - v14;
   v16 = v6;
@@ -83,7 +83,7 @@
 
 - (void)_containerViewLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_189131FC4();
 }
 

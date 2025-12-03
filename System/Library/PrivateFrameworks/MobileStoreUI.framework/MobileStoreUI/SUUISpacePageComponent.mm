@@ -1,19 +1,19 @@
 @interface SUUISpacePageComponent
-- (SUUISpacePageComponent)initWithCustomPageContext:(id)a3;
+- (SUUISpacePageComponent)initWithCustomPageContext:(id)context;
 @end
 
 @implementation SUUISpacePageComponent
 
-- (SUUISpacePageComponent)initWithCustomPageContext:(id)a3
+- (SUUISpacePageComponent)initWithCustomPageContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = SUUISpacePageComponent;
-  v5 = [(SUUIPageComponent *)&v12 initWithCustomPageContext:v4];
+  v5 = [(SUUIPageComponent *)&v12 initWithCustomPageContext:contextCopy];
   if (v5)
   {
-    v6 = [v4 componentDictionary];
-    v7 = [v6 objectForKey:@"size"];
+    componentDictionary = [contextCopy componentDictionary];
+    v7 = [componentDictionary objectForKey:@"size"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

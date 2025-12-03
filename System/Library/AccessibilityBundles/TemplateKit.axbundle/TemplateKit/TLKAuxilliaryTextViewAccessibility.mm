@@ -1,15 +1,15 @@
 @interface TLKAuxilliaryTextViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation TLKAuxilliaryTextViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TLKAuxilliaryTextView" hasInstanceMethod:@"topLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TLKAuxilliaryTextView" hasInstanceMethod:@"middleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TLKAuxilliaryTextView" hasInstanceMethod:@"bottomLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TLKAuxilliaryTextView" hasInstanceMethod:@"topLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TLKAuxilliaryTextView" hasInstanceMethod:@"middleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TLKAuxilliaryTextView" hasInstanceMethod:@"bottomLabel" withFullSignature:{"@", 0}];
 }
 
 @end

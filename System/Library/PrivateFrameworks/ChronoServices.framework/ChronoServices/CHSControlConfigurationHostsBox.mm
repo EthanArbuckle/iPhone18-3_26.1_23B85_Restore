@@ -1,45 +1,45 @@
 @interface CHSControlConfigurationHostsBox
-- (CHSControlConfigurationHostsBox)initWithCoder:(id)a3;
-- (CHSControlConfigurationHostsBox)initWithConfigurationsByHost:(id)a3;
+- (CHSControlConfigurationHostsBox)initWithCoder:(id)coder;
+- (CHSControlConfigurationHostsBox)initWithConfigurationsByHost:(id)host;
 @end
 
 @implementation CHSControlConfigurationHostsBox
 
-- (CHSControlConfigurationHostsBox)initWithConfigurationsByHost:(id)a3
+- (CHSControlConfigurationHostsBox)initWithConfigurationsByHost:(id)host
 {
-  v5 = a3;
+  hostCopy = host;
   v9.receiver = self;
   v9.super_class = CHSControlConfigurationHostsBox;
   v6 = [(CHSControlConfigurationHostsBox *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configurationsByHost, a3);
+    objc_storeStrong(&v6->_configurationsByHost, host);
   }
 
   return v7;
 }
 
-- (CHSControlConfigurationHostsBox)initWithCoder:(id)a3
+- (CHSControlConfigurationHostsBox)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v5 setWithObjects:{v6, v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"c"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"c"];
   if (v9)
   {
     self = [(CHSControlConfigurationHostsBox *)self initWithConfigurationsByHost:v9];
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

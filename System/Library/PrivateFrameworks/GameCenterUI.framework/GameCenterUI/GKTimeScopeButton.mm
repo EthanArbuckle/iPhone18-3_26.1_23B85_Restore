@@ -1,18 +1,18 @@
 @interface GKTimeScopeButton
-- (GKTimeScopeButton)initWithFrame:(CGRect)a3;
+- (GKTimeScopeButton)initWithFrame:(CGRect)frame;
 - (void)awakeFromNib;
-- (void)setLeaderboardOccurrence:(int64_t)a3;
-- (void)setTimeScope:(int64_t)a3;
-- (void)updateWithTitle:(id)a3;
+- (void)setLeaderboardOccurrence:(int64_t)occurrence;
+- (void)setTimeScope:(int64_t)scope;
+- (void)updateWithTitle:(id)title;
 @end
 
 @implementation GKTimeScopeButton
 
-- (GKTimeScopeButton)initWithFrame:(CGRect)a3
+- (GKTimeScopeButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = GKTimeScopeButton;
-  v3 = [(GKTimeScopeButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GKTimeScopeButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -30,31 +30,31 @@
   [(GKTimeScopeButton *)self _commonInit];
 }
 
-- (void)setTimeScope:(int64_t)a3
+- (void)setTimeScope:(int64_t)scope
 {
-  self->_timeScope = a3;
+  self->_timeScope = scope;
   v4 = [MEMORY[0x277D0C0A0] localizedStringForTimeScope:?];
   [(GKTimeScopeButton *)self updateWithTitle:v4];
 }
 
-- (void)setLeaderboardOccurrence:(int64_t)a3
+- (void)setLeaderboardOccurrence:(int64_t)occurrence
 {
-  self->_leaderboardOccurrence = a3;
+  self->_leaderboardOccurrence = occurrence;
   v4 = [MEMORY[0x277D0C0A0] localizedStringForLeaderboardOccurrence:?];
   [(GKTimeScopeButton *)self updateWithTitle:v4];
 }
 
-- (void)updateWithTitle:(id)a3
+- (void)updateWithTitle:(id)title
 {
   v18[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAB48];
-  v5 = a3;
+  titleCopy = title;
   v6 = objc_alloc_init(v4);
   v7 = MEMORY[0x277D74270];
   v8 = [MEMORY[0x277D755B8] systemImageNamed:@"chevron.down"];
   v9 = [v7 textAttachmentWithImage:v8];
 
-  v10 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v5];
+  v10 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:titleCopy];
   [v6 appendAttributedString:v10];
 
   v11 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:@" "];

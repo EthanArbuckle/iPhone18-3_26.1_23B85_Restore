@@ -5,43 +5,43 @@
 - (BOOL)stop;
 - (id)_deviceMessageLink;
 - (id)allMessageLinkProxyListeners;
-- (id)proxyListenerForMessageLink:(id)a3;
-- (void)_addObserversToMessageLink:(id)a3;
-- (void)_cancelSyncForMessageLink:(id)a3;
+- (id)proxyListenerForMessageLink:(id)link;
+- (void)_addObserversToMessageLink:(id)link;
+- (void)_cancelSyncForMessageLink:(id)link;
 - (void)_endStartupTransaction;
-- (void)_removeObserversFromMessageLink:(id)a3;
-- (void)_requestSyncForLibrary:(id)a3 onMessageLink:(id)a4;
+- (void)_removeObserversFromMessageLink:(id)link;
+- (void)_requestSyncForLibrary:(id)library onMessageLink:(id)link;
 - (void)_scheduleNewSyncIfNeeded;
 - (void)_setupStartupTransaction;
-- (void)addMessageLink:(id)a3;
-- (void)applicationInstallsDidCancel:(id)a3;
-- (void)applicationInstallsDidPrioritize:(id)a3;
-- (void)cancelAssetTransferForFailedAsset:(id)a3;
-- (void)cancelSyncWithCompletion:(id)a3;
-- (void)clearSyncDataWithCompletion:(id)a3;
+- (void)addMessageLink:(id)link;
+- (void)applicationInstallsDidCancel:(id)cancel;
+- (void)applicationInstallsDidPrioritize:(id)prioritize;
+- (void)cancelAssetTransferForFailedAsset:(id)asset;
+- (void)cancelSyncWithCompletion:(id)completion;
+- (void)clearSyncDataWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)getAssetMetricswithCompletion:(id)a3;
-- (void)getDataRestoreIsCompleteWithCompletion:(id)a3;
-- (void)getSyncStateWithCompletion:(id)a3;
+- (void)getAssetMetricswithCompletion:(id)completion;
+- (void)getDataRestoreIsCompleteWithCompletion:(id)completion;
+- (void)getSyncStateWithCompletion:(id)completion;
 - (void)handleDataMigrationFinished;
-- (void)idsServiceDevicesDidChange:(id)a3;
-- (void)initiateAssetDownloadSessionsWithCompletion:(id)a3;
-- (void)keepATCAlive:(BOOL)a3 withCompletion:(id)a4;
-- (void)listener:(id)a3 didReceiveMessageLinkRequest:(id)a4;
-- (void)lowBatteryNotificationWithCompletion:(id)a3;
-- (void)messageLink:(id)a3 didReceiveRequest:(id)a4;
-- (void)messageLinkWasClosed:(id)a3;
-- (void)openDeviceMessageLinkWithPriority:(int)a3 withCompletion:(id)a4;
-- (void)prioritizeAsset:(id)a3 forDataclass:(id)a4 withCompletion:(id)a5;
-- (void)prioritizeAsset:(id)a3 withCompletion:(id)a4;
-- (void)purgePartialAsset:(id)a3 forDataclass:(id)a4 withCompletion:(id)a5;
-- (void)registerForStatusOfDataclasses:(id)a3 enabled:(id)a4 withCompletion:(id)a5;
-- (void)removeMessageLink:(id)a3;
-- (void)requestKeybagSyncToPairedDeviceWithCompletion:(id)a3;
-- (void)requestSyncForLibrary:(id)a3 withCompletion:(id)a4;
-- (void)requestSyncForPairedDeviceWithPriority:(int)a3 withCompletion:(id)a4;
-- (void)syncChangesForDataClass:(id)a3 withPriority:(int)a4;
-- (void)syncClient:(id)a3 hasChangesWithPriority:(int)a4;
+- (void)idsServiceDevicesDidChange:(id)change;
+- (void)initiateAssetDownloadSessionsWithCompletion:(id)completion;
+- (void)keepATCAlive:(BOOL)alive withCompletion:(id)completion;
+- (void)listener:(id)listener didReceiveMessageLinkRequest:(id)request;
+- (void)lowBatteryNotificationWithCompletion:(id)completion;
+- (void)messageLink:(id)link didReceiveRequest:(id)request;
+- (void)messageLinkWasClosed:(id)closed;
+- (void)openDeviceMessageLinkWithPriority:(int)priority withCompletion:(id)completion;
+- (void)prioritizeAsset:(id)asset forDataclass:(id)dataclass withCompletion:(id)completion;
+- (void)prioritizeAsset:(id)asset withCompletion:(id)completion;
+- (void)purgePartialAsset:(id)asset forDataclass:(id)dataclass withCompletion:(id)completion;
+- (void)registerForStatusOfDataclasses:(id)dataclasses enabled:(id)enabled withCompletion:(id)completion;
+- (void)removeMessageLink:(id)link;
+- (void)requestKeybagSyncToPairedDeviceWithCompletion:(id)completion;
+- (void)requestSyncForLibrary:(id)library withCompletion:(id)completion;
+- (void)requestSyncForPairedDeviceWithPriority:(int)priority withCompletion:(id)completion;
+- (void)syncChangesForDataClass:(id)class withPriority:(int)priority;
+- (void)syncClient:(id)client hasChangesWithPriority:(int)priority;
 @end
 
 @implementation ATDeviceService
@@ -95,8 +95,8 @@ void __46__ATDeviceService_handleDataMigrationFinished__block_invoke(uint64_t a1
 - (void)_scheduleNewSyncIfNeeded
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = [(ATDeviceSettings *)self->_settings dataClassesNeedingSync];
-  v4 = [v3 mutableCopy];
+  dataClassesNeedingSync = [(ATDeviceSettings *)self->_settings dataClassesNeedingSync];
+  v4 = [dataClassesNeedingSync mutableCopy];
 
   v28 = v4;
   obj = [v4 mutableCopy];
@@ -105,9 +105,9 @@ void __46__ATDeviceService_handleDataMigrationFinished__block_invoke(uint64_t a1
   v41 = 0u;
   v42 = 0u;
   v5 = +[ATClientController sharedInstance];
-  v6 = [v5 allClients];
+  allClients = [v5 allClients];
 
-  v7 = [v6 countByEnumeratingWithState:&v39 objects:v47 count:16];
+  v7 = [allClients countByEnumeratingWithState:&v39 objects:v47 count:16];
   if (v7)
   {
     v8 = v7;
@@ -118,24 +118,24 @@ void __46__ATDeviceService_handleDataMigrationFinished__block_invoke(uint64_t a1
       {
         if (*v40 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allClients);
         }
 
         v11 = *(*(&v39 + 1) + 8 * i);
         if ([v11 conformsToProtocol:&unk_2837092A8])
         {
-          v12 = [v11 syncDataClass];
-          v13 = [v12 length];
+          syncDataClass = [v11 syncDataClass];
+          v13 = [syncDataClass length];
 
           if (v13)
           {
-            v14 = [v11 syncDataClass];
-            [obj removeObject:v14];
+            syncDataClass2 = [v11 syncDataClass];
+            [obj removeObject:syncDataClass2];
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v39 objects:v47 count:16];
+      v8 = [allClients countByEnumeratingWithState:&v39 objects:v47 count:16];
     }
 
     while (v8);
@@ -253,8 +253,8 @@ void __43__ATDeviceService__scheduleNewSyncIfNeeded__block_invoke(uint64_t a1, v
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(ATService *)self messageLinks];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  messageLinks = [(ATService *)self messageLinks];
+  v3 = [messageLinks countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -264,7 +264,7 @@ void __43__ATDeviceService__scheduleNewSyncIfNeeded__block_invoke(uint64_t a1, v
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(messageLinks);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -276,7 +276,7 @@ void __43__ATDeviceService__scheduleNewSyncIfNeeded__block_invoke(uint64_t a1, v
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [messageLinks countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -291,15 +291,15 @@ LABEL_11:
   return v3;
 }
 
-- (void)_cancelSyncForMessageLink:(id)a3
+- (void)_cancelSyncForMessageLink:(id)link
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  linkCopy = link;
   v5 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v4;
+    v9 = linkCopy;
     _os_log_impl(&dword_223819000, v5, OS_LOG_TYPE_DEFAULT, "cancelling all sync on message link %{public}@", &v8, 0xCu);
   }
 
@@ -312,37 +312,37 @@ LABEL_11:
     p_super = &v7->super;
   }
 
-  [(ATDeviceSyncManager *)p_super cancelSyncOnMessageLink:v4];
+  [(ATDeviceSyncManager *)p_super cancelSyncOnMessageLink:linkCopy];
 }
 
-- (void)_requestSyncForLibrary:(id)a3 onMessageLink:(id)a4
+- (void)_requestSyncForLibrary:(id)library onMessageLink:(id)link
 {
-  v7 = a3;
-  v6 = a4;
+  libraryCopy = library;
+  linkCopy = link;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(ATLegacyDeviceSyncManager *)self->_legacyDeviceSyncManager initiateSyncForLibrary:v7 onMessageLink:v6];
+    [(ATLegacyDeviceSyncManager *)self->_legacyDeviceSyncManager initiateSyncForLibrary:libraryCopy onMessageLink:linkCopy];
   }
 
   else
   {
-    [(ATDeviceSyncManager *)self->_deviceSyncManager initiateSyncOnMessageLink:v6];
+    [(ATDeviceSyncManager *)self->_deviceSyncManager initiateSyncOnMessageLink:linkCopy];
   }
 }
 
-- (void)_removeObserversFromMessageLink:(id)a3
+- (void)_removeObserversFromMessageLink:(id)link
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  linkCopy = link;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v5 = +[ATClientController sharedInstance];
-  v6 = [v5 allClients];
+  allClients = [v5 allClients];
 
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [allClients countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -353,41 +353,41 @@ LABEL_11:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allClients);
         }
 
         v11 = *(*(&v12 + 1) + 8 * i);
         if ([v11 conformsToProtocol:&unk_2836F68C8])
         {
-          [v4 removeObserver:v11];
+          [linkCopy removeObserver:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [allClients countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
   }
 
-  [v4 removeObserver:self->_deviceSyncManager];
+  [linkCopy removeObserver:self->_deviceSyncManager];
   if (self->_pairedSyncManager)
   {
-    [v4 removeObserver:?];
+    [linkCopy removeObserver:?];
   }
 }
 
-- (void)_addObserversToMessageLink:(id)a3
+- (void)_addObserversToMessageLink:(id)link
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  linkCopy = link;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v5 = +[ATClientController sharedInstance];
-  v6 = [v5 allClients];
+  allClients = [v5 allClients];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [allClients countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -398,35 +398,35 @@ LABEL_11:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allClients);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
         if ([v11 conformsToProtocol:&unk_2836F68C8])
         {
-          [v4 addObserver:v11];
+          [linkCopy addObserver:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [allClients countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  [v4 addObserver:self->_deviceSyncManager];
-  [v4 addRequestHandler:self forDataClass:@"Control"];
+  [linkCopy addObserver:self->_deviceSyncManager];
+  [linkCopy addRequestHandler:self forDataClass:@"Control"];
   v12 = objc_alloc_init(ATDeviceProvisioningHandler);
-  [v4 addObserver:v12];
-  [v4 addRequestHandler:v12 forDataClass:@"Provisioning"];
-  v13 = [objc_alloc(MEMORY[0x277CE5400]) initWithMessageLink:v4];
-  v14 = [MEMORY[0x277CE53F0] sharedInstance];
-  [v14 addAssetLink:v13];
+  [linkCopy addObserver:v12];
+  [linkCopy addRequestHandler:v12 forDataClass:@"Provisioning"];
+  v13 = [objc_alloc(MEMORY[0x277CE5400]) initWithMessageLink:linkCopy];
+  mEMORY[0x277CE53F0] = [MEMORY[0x277CE53F0] sharedInstance];
+  [mEMORY[0x277CE53F0] addAssetLink:v13];
 
   [v13 open];
   if (self->_pairedSyncManager)
   {
-    [v4 addObserver:?];
+    [linkCopy addObserver:?];
   }
 }
 
@@ -477,17 +477,17 @@ uint64_t __43__ATDeviceService__setupStartupTransaction__block_invoke_2(uint64_t
   return [(dispatch_source_t *)v2 _endStartupTransaction];
 }
 
-- (void)idsServiceDevicesDidChange:(id)a3
+- (void)idsServiceDevicesDidChange:(id)change
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (([a3 hasPairedDevice] & 1) == 0)
+  if (([change hasPairedDevice] & 1) == 0)
   {
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v4 = [(ATDeviceSettings *)self->_settings dataClassesNeedingSync];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    dataClassesNeedingSync = [(ATDeviceSettings *)self->_settings dataClassesNeedingSync];
+    v5 = [dataClassesNeedingSync countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -499,14 +499,14 @@ uint64_t __43__ATDeviceService__setupStartupTransaction__block_invoke_2(uint64_t
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(dataClassesNeedingSync);
           }
 
           [(ATDeviceSettings *)self->_settings setSyncPending:0 forDataClass:*(*(&v9 + 1) + 8 * v8++)];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [dataClassesNeedingSync countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -514,16 +514,16 @@ uint64_t __43__ATDeviceService__setupStartupTransaction__block_invoke_2(uint64_t
   }
 }
 
-- (void)syncClient:(id)a3 hasChangesWithPriority:(int)a4
+- (void)syncClient:(id)client hasChangesWithPriority:(int)priority
 {
-  v4 = *&a4;
-  v6 = [a3 syncDataClass];
-  [(ATDeviceService *)self syncChangesForDataClass:v6 withPriority:v4];
+  v4 = *&priority;
+  syncDataClass = [client syncDataClass];
+  [(ATDeviceService *)self syncChangesForDataClass:syncDataClass withPriority:v4];
 }
 
-- (void)initiateAssetDownloadSessionsWithCompletion:(id)a3
+- (void)initiateAssetDownloadSessionsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -596,8 +596,8 @@ uint64_t __43__ATDeviceService__setupStartupTransaction__block_invoke_2(uint64_t
   v15[2] = __63__ATDeviceService_initiateAssetDownloadSessionsWithCompletion___block_invoke_179;
   v15[3] = &unk_2784E49B8;
   v17 = v8;
-  v16 = v3;
-  v14 = v3;
+  v16 = completionCopy;
+  v14 = completionCopy;
   dispatch_group_notify(v5, v13, v15);
 }
 
@@ -644,22 +644,22 @@ uint64_t __63__ATDeviceService_initiateAssetDownloadSessionsWithCompletion___blo
   return result;
 }
 
-- (void)syncChangesForDataClass:(id)a3 withPriority:(int)a4
+- (void)syncChangesForDataClass:(id)class withPriority:(int)priority
 {
-  v4 = *&a4;
+  v4 = *&priority;
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ATDeviceSettings *)self->_settings endpointInfo];
-  v8 = v7;
-  if (v7 && [v7 count])
+  classCopy = class;
+  endpointInfo = [(ATDeviceSettings *)self->_settings endpointInfo];
+  v8 = endpointInfo;
+  if (endpointInfo && [endpointInfo count])
   {
     v24 = v4;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v9 = [v8 allValues];
-    v10 = [v9 countByEnumeratingWithState:&v25 objects:v31 count:16];
+    allValues = [v8 allValues];
+    v10 = [allValues countByEnumeratingWithState:&v25 objects:v31 count:16];
     if (v10)
     {
       v11 = v10;
@@ -671,12 +671,12 @@ uint64_t __63__ATDeviceService_initiateAssetDownloadSessionsWithCompletion___blo
         {
           if (*v26 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allValues);
           }
 
           v14 = [*(*(&v25 + 1) + 8 * i) objectForKey:@"HostInfo"];
-          v15 = [v14 enabledDataClasses];
-          if (!v15 || (v16 = v15, [v14 enabledDataClasses], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "containsObject:", v6), v17, v16, (v18 & 1) != 0))
+          enabledDataClasses = [v14 enabledDataClasses];
+          if (!enabledDataClasses || (v16 = enabledDataClasses, [v14 enabledDataClasses], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "containsObject:", classCopy), v17, v16, (v18 & 1) != 0))
           {
 
             v8 = v23;
@@ -685,7 +685,7 @@ uint64_t __63__ATDeviceService_initiateAssetDownloadSessionsWithCompletion___blo
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v25 objects:v31 count:16];
+        v11 = [allValues countByEnumeratingWithState:&v25 objects:v31 count:16];
         v8 = v23;
         if (v11)
         {
@@ -700,7 +700,7 @@ uint64_t __63__ATDeviceService_initiateAssetDownloadSessionsWithCompletion___blo
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v30 = v6;
+      v30 = classCopy;
       _os_log_impl(&dword_223819000, v19, OS_LOG_TYPE_DEFAULT, "blocking sync request because no known endpoints support dataClass %{public}@", buf, 0xCu);
     }
   }
@@ -708,12 +708,12 @@ uint64_t __63__ATDeviceService_initiateAssetDownloadSessionsWithCompletion___blo
   else
   {
 LABEL_15:
-    [(ATDeviceSettings *)self->_settings setSyncPending:1 forDataClass:v6];
-    v20 = [(ATDeviceService *)self _deviceMessageLink];
-    if (v20)
+    [(ATDeviceSettings *)self->_settings setSyncPending:1 forDataClass:classCopy];
+    _deviceMessageLink = [(ATDeviceService *)self _deviceMessageLink];
+    if (_deviceMessageLink)
     {
-      v19 = v20;
-      v21 = [(ATDeviceSyncManager *)self->_deviceSyncManager initiateSyncForDataClass:v6 onMessageLink:v20];
+      v19 = _deviceMessageLink;
+      v21 = [(ATDeviceSyncManager *)self->_deviceSyncManager initiateSyncForDataClass:classCopy onMessageLink:_deviceMessageLink];
     }
 
     else
@@ -754,18 +754,18 @@ void __56__ATDeviceService_syncChangesForDataClass_withPriority___block_invoke(u
   }
 }
 
-- (void)getDataRestoreIsCompleteWithCompletion:(id)a3
+- (void)getDataRestoreIsCompleteWithCompletion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 1;
-  v5 = [MEMORY[0x277D7FBE8] sharedSecurityInfo];
-  v6 = [v5 isDeviceClassCUnlocked];
+  mEMORY[0x277D7FBE8] = [MEMORY[0x277D7FBE8] sharedSecurityInfo];
+  isDeviceClassCUnlocked = [mEMORY[0x277D7FBE8] isDeviceClassCUnlocked];
 
-  if (v6)
+  if (isDeviceClassCUnlocked)
   {
     v7 = +[ATRestoreManager sharedManager];
     v11[0] = MEMORY[0x277D85DD0];
@@ -773,7 +773,7 @@ void __56__ATDeviceService_syncChangesForDataClass_withPriority___block_invoke(u
     v11[2] = __58__ATDeviceService_getDataRestoreIsCompleteWithCompletion___block_invoke;
     v11[3] = &unk_2784E4990;
     v13 = &v14;
-    v12 = v4;
+    v12 = completionCopy;
     [v7 restoreSessionActiveWithCompletion:v11];
   }
 
@@ -790,9 +790,9 @@ void __56__ATDeviceService_syncChangesForDataClass_withPriority___block_invoke(u
       _os_log_impl(&dword_223819000, v9, OS_LOG_TYPE_DEFAULT, "device is locked - restoreComplete %d", buf, 8u);
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4, 0, *(v15 + 24));
+      (*(completionCopy + 2))(completionCopy, 0, *(v15 + 24));
     }
   }
 
@@ -815,48 +815,48 @@ uint64_t __58__ATDeviceService_getDataRestoreIsCompleteWithCompletion___block_in
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)getAssetMetricswithCompletion:(id)a3
+- (void)getAssetMetricswithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[ATDeviceDiskUsageProvider sharedInstance];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__ATDeviceService_getAssetMetricswithCompletion___block_invoke;
   v6[3] = &unk_2784E4968;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [v4 getUpdatedUsageWithCompletion:v6];
 }
 
-- (void)openDeviceMessageLinkWithPriority:(int)a3 withCompletion:(id)a4
+- (void)openDeviceMessageLinkWithPriority:(int)priority withCompletion:(id)completion
 {
-  v4 = *&a3;
+  v4 = *&priority;
   idsService = self->_idsService;
-  v6 = a4;
+  completionCopy = completion;
   [(ATIDSService *)idsService requestConnectionToPairedDeviceWithPriority:[ATIDSService openSocketPriorityFromATPendingChangePriority:v4]];
-  v6[2](v6, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)getSyncStateWithCompletion:(id)a3
+- (void)getSyncStateWithCompletion:(id)completion
 {
-  v5 = a3;
-  v4 = [(ATLegacyDeviceSyncManager *)self->_legacyDeviceSyncManager currentSyncState];
-  if (v5)
+  completionCopy = completion;
+  currentSyncState = [(ATLegacyDeviceSyncManager *)self->_legacyDeviceSyncManager currentSyncState];
+  if (completionCopy)
   {
-    v5[2](v5, 0, v4);
+    completionCopy[2](completionCopy, 0, currentSyncState);
   }
 }
 
-- (void)keepATCAlive:(BOOL)a3 withCompletion:(id)a4
+- (void)keepATCAlive:(BOOL)alive withCompletion:(id)completion
 {
-  v4 = a3;
+  aliveCopy = alive;
   v11 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = "enabling";
-    if (v4)
+    if (aliveCopy)
     {
       v8 = "disabling";
     }
@@ -867,15 +867,15 @@ uint64_t __58__ATDeviceService_getDataRestoreIsCompleteWithCompletion___block_in
   }
 
   [(MSVXPCTransaction *)self->_xpcTransaction beginTransaction];
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)lowBatteryNotificationWithCompletion:(id)a3
+- (void)lowBatteryNotificationWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -883,15 +883,15 @@ uint64_t __58__ATDeviceService_getDataRestoreIsCompleteWithCompletion___block_in
     _os_log_impl(&dword_223819000, v4, OS_LOG_TYPE_DEFAULT, "low battery notification", v5, 2u);
   }
 
-  if (v3)
+  if (completionCopy)
   {
-    v3[2](v3, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)clearSyncDataWithCompletion:(id)a3
+- (void)clearSyncDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -900,152 +900,152 @@ uint64_t __58__ATDeviceService_getDataRestoreIsCompleteWithCompletion___block_in
   }
 
   [(ATDeviceSettings *)self->_settings removeEndpointInfoForLibrary:0];
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)purgePartialAsset:(id)a3 forDataclass:(id)a4 withCompletion:(id)a5
+- (void)purgePartialAsset:(id)asset forDataclass:(id)dataclass withCompletion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  assetCopy = asset;
+  dataclassCopy = dataclass;
+  completionCopy = completion;
   v10 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543618;
-    v13 = v8;
+    v13 = dataclassCopy;
     v14 = 2114;
-    v15 = v7;
+    v15 = assetCopy;
     _os_log_impl(&dword_223819000, v10, OS_LOG_TYPE_DEFAULT, "purge partial asset dataclass:%{public}@, id:%{public}@", &v12, 0x16u);
   }
 
-  v11 = [MEMORY[0x277CEA430] sharedInstance];
-  [v11 purgeAssetWithIdentifier:v7 dataclass:v8];
+  mEMORY[0x277CEA430] = [MEMORY[0x277CEA430] sharedInstance];
+  [mEMORY[0x277CEA430] purgeAssetWithIdentifier:assetCopy dataclass:dataclassCopy];
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)cancelAssetTransferForFailedAsset:(id)a3
+- (void)cancelAssetTransferForFailedAsset:(id)asset
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetCopy = asset;
   v5 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v4;
+    v14 = assetCopy;
     _os_log_impl(&dword_223819000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ cancelling asset:%{public}@", buf, 0x16u);
   }
 
-  v6 = [MEMORY[0x277CE53F0] sharedInstance];
+  mEMORY[0x277CE53F0] = [MEMORY[0x277CE53F0] sharedInstance];
   v7 = MEMORY[0x277CCAC30];
-  v8 = [v4 dataclass];
-  v9 = [v4 identifier];
-  v10 = [v7 predicateWithFormat:@"dataclass = %@ and identifier = %@", v8, v9];
-  [v6 cancelAllAssetsMatchingPredicate:v10 excludeActiveDownloads:0 withError:0 completion:0];
+  dataclass = [assetCopy dataclass];
+  identifier = [assetCopy identifier];
+  v10 = [v7 predicateWithFormat:@"dataclass = %@ and identifier = %@", dataclass, identifier];
+  [mEMORY[0x277CE53F0] cancelAllAssetsMatchingPredicate:v10 excludeActiveDownloads:0 withError:0 completion:0];
 }
 
-- (void)prioritizeAsset:(id)a3 withCompletion:(id)a4
+- (void)prioritizeAsset:(id)asset withCompletion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  completionCopy = completion;
   v8 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
-    v15 = v6;
+    v15 = assetCopy;
     _os_log_impl(&dword_223819000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ prioritize asset:%{public}@", buf, 0x16u);
   }
 
-  v9 = [MEMORY[0x277CE53F0] sharedInstance];
-  if ([v6 isRestore] && (objc_msgSend(v9, "assetIsEnqueued:", v6) & 1) == 0)
+  mEMORY[0x277CE53F0] = [MEMORY[0x277CE53F0] sharedInstance];
+  if ([assetCopy isRestore] && (objc_msgSend(mEMORY[0x277CE53F0], "assetIsEnqueued:", assetCopy) & 1) == 0)
   {
-    v11 = v6;
+    v11 = assetCopy;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v11 count:1];
-    [v9 enqueueAssets:v10];
+    [mEMORY[0x277CE53F0] enqueueAssets:v10];
   }
 
-  [v9 prioritizeAsset:v6];
-  if (v7)
+  [mEMORY[0x277CE53F0] prioritizeAsset:assetCopy];
+  if (completionCopy)
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)prioritizeAsset:(id)a3 forDataclass:(id)a4 withCompletion:(id)a5
+- (void)prioritizeAsset:(id)asset forDataclass:(id)dataclass withCompletion:(id)completion
 {
   v8 = MEMORY[0x277CEA438];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v8 alloc] initWithIdentifier:v11 dataclass:v10 prettyName:0];
+  completionCopy = completion;
+  dataclassCopy = dataclass;
+  assetCopy = asset;
+  v12 = [[v8 alloc] initWithIdentifier:assetCopy dataclass:dataclassCopy prettyName:0];
 
   [v12 setIsRestore:1];
-  [(ATDeviceService *)self prioritizeAsset:v12 withCompletion:v9];
+  [(ATDeviceService *)self prioritizeAsset:v12 withCompletion:completionCopy];
 }
 
-- (void)registerForStatusOfDataclasses:(id)a3 enabled:(id)a4 withCompletion:(id)a5
+- (void)registerForStatusOfDataclasses:(id)dataclasses enabled:(id)enabled withCompletion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataclassesCopy = dataclasses;
+  enabledCopy = enabled;
+  completionCopy = completion;
   v11 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138543618;
-    v19 = v8;
+    v19 = dataclassesCopy;
     v20 = 2050;
-    v21 = [v9 longLongValue];
+    longLongValue = [enabledCopy longLongValue];
     _os_log_impl(&dword_223819000, v11, OS_LOG_TYPE_DEFAULT, "register for status:%{public}@ enabled:%{public}lld", &v18, 0x16u);
   }
 
   xpcListener = self->_xpcListener;
-  v13 = [MEMORY[0x277CCAE80] currentConnection];
-  v14 = [(ATXPCListener *)xpcListener proxyForConnection:v13];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  v14 = [(ATXPCListener *)xpcListener proxyForConnection:currentConnection];
 
-  if (([v9 BOOLValue] & 1) != 0 || objc_msgSend(v8, "count"))
+  if (([enabledCopy BOOLValue] & 1) != 0 || objc_msgSend(dataclassesCopy, "count"))
   {
-    v15 = [MEMORY[0x277CE5438] sharedMonitor];
-    [v15 addObserver:v14];
-    v16 = v8;
+    mEMORY[0x277CE5438] = [MEMORY[0x277CE5438] sharedMonitor];
+    [mEMORY[0x277CE5438] addObserver:v14];
+    v16 = dataclassesCopy;
   }
 
   else
   {
-    v15 = [MEMORY[0x277CE5438] sharedMonitor];
-    [v15 removeObserver:v14];
+    mEMORY[0x277CE5438] = [MEMORY[0x277CE5438] sharedMonitor];
+    [mEMORY[0x277CE5438] removeObserver:v14];
     v16 = 0;
   }
 
-  v17 = [MEMORY[0x277CE5438] sharedMonitor];
-  [v17 setDataClasses:v16 forObserver:v14];
+  mEMORY[0x277CE5438]2 = [MEMORY[0x277CE5438] sharedMonitor];
+  [mEMORY[0x277CE5438]2 setDataClasses:v16 forObserver:v14];
 
-  v10[2](v10, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)cancelSyncWithCompletion:(id)a3
+- (void)cancelSyncWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__ATDeviceService_cancelSyncWithCompletion___block_invoke;
   v7[3] = &unk_2784E4E80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1085,9 +1085,9 @@ uint64_t __44__ATDeviceService_cancelSyncWithCompletion___block_invoke(uint64_t 
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)requestKeybagSyncToPairedDeviceWithCompletion:(id)a3
+- (void)requestKeybagSyncToPairedDeviceWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1095,29 +1095,29 @@ uint64_t __44__ATDeviceService_cancelSyncWithCompletion___block_invoke(uint64_t 
     _os_log_impl(&dword_223819000, v4, OS_LOG_TYPE_DEFAULT, "request keybag sync to paired device", v6, 2u);
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:@"ATSyncKeybagToPairedDeviceRequestNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"ATSyncKeybagToPairedDeviceRequestNotification" object:0];
 
-  if (v3)
+  if (completionCopy)
   {
-    v3[2](v3, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)requestSyncForPairedDeviceWithPriority:(int)a3 withCompletion:(id)a4
+- (void)requestSyncForPairedDeviceWithPriority:(int)priority withCompletion:(id)completion
 {
-  v4 = *&a3;
-  v6 = a4;
-  v7 = [(ATDeviceService *)self _deviceMessageLink];
-  v8 = v7;
-  if (v7)
+  v4 = *&priority;
+  completionCopy = completion;
+  _deviceMessageLink = [(ATDeviceService *)self _deviceMessageLink];
+  v8 = _deviceMessageLink;
+  if (_deviceMessageLink)
   {
-    v9 = [v7 identifier];
-    [(ATDeviceService *)self _requestSyncForLibrary:v9 onMessageLink:v8];
+    identifier = [_deviceMessageLink identifier];
+    [(ATDeviceService *)self _requestSyncForLibrary:identifier onMessageLink:v8];
 
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -1127,7 +1127,7 @@ uint64_t __44__ATDeviceService_cancelSyncWithCompletion___block_invoke(uint64_t 
     v10[1] = 3221225472;
     v10[2] = __73__ATDeviceService_requestSyncForPairedDeviceWithPriority_withCompletion___block_invoke;
     v10[3] = &unk_2784E5410;
-    v11 = v6;
+    v11 = completionCopy;
     [(ATDeviceService *)self openDeviceMessageLinkWithPriority:v4 withCompletion:v10];
   }
 }
@@ -1154,25 +1154,25 @@ void __73__ATDeviceService_requestSyncForPairedDeviceWithPriority_withCompletion
   }
 }
 
-- (void)requestSyncForLibrary:(id)a3 withCompletion:(id)a4
+- (void)requestSyncForLibrary:(id)library withCompletion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  completionCopy = completion;
   v8 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v15 = v6;
+    v15 = libraryCopy;
     _os_log_impl(&dword_223819000, v8, OS_LOG_TYPE_DEFAULT, "request sync for library %{public}@", buf, 0xCu);
   }
 
-  if (v6)
+  if (libraryCopy)
   {
-    v9 = [(ATService *)self messageLinkForIdentifier:v6];
+    v9 = [(ATService *)self messageLinkForIdentifier:libraryCopy];
     if (v9)
     {
-      [(ATDeviceService *)self _requestSyncForLibrary:v6 onMessageLink:v9];
+      [(ATDeviceService *)self _requestSyncForLibrary:libraryCopy onMessageLink:v9];
     }
   }
 
@@ -1181,9 +1181,9 @@ void __73__ATDeviceService_requestSyncForPairedDeviceWithPriority_withCompletion
     v10 = _ATLogCategoryFramework();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(ATService *)self messageLinks];
+      messageLinks = [(ATService *)self messageLinks];
       *buf = 138543362;
-      v15 = v11;
+      v15 = messageLinks;
       _os_log_impl(&dword_223819000, v10, OS_LOG_TYPE_DEFAULT, "library id not specified - syncing all (%{public}@)", buf, 0xCu);
     }
 
@@ -1196,7 +1196,7 @@ void __73__ATDeviceService_requestSyncForPairedDeviceWithPriority_withCompletion
     dispatch_async(queue, block);
   }
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
 void __56__ATDeviceService_requestSyncForLibrary_withCompletion___block_invoke(uint64_t a1)
@@ -1242,14 +1242,14 @@ void __56__ATDeviceService_requestSyncForLibrary_withCompletion___block_invoke(u
   }
 }
 
-- (void)applicationInstallsDidCancel:(id)a3
+- (void)applicationInstallsDidCancel:(id)cancel
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  obj = a3;
+  obj = cancel;
   v3 = [obj countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
@@ -1266,11 +1266,11 @@ void __56__ATDeviceService_requestSyncForLibrary_withCompletion___block_invoke(u
         }
 
         v7 = *(*(&v13 + 1) + 8 * v6);
-        v8 = [MEMORY[0x277CE53F0] sharedInstance];
+        mEMORY[0x277CE53F0] = [MEMORY[0x277CE53F0] sharedInstance];
         v9 = MEMORY[0x277CCAC30];
-        v10 = [v7 bundleIdentifier];
-        v11 = [v9 predicateWithFormat:@"dataclass = %@ and identifier = %@", @"Application", v10];
-        [v8 cancelAllAssetsMatchingPredicate:v11 excludeActiveDownloads:0 withError:0 completion:0];
+        bundleIdentifier = [v7 bundleIdentifier];
+        v11 = [v9 predicateWithFormat:@"dataclass = %@ and identifier = %@", @"Application", bundleIdentifier];
+        [mEMORY[0x277CE53F0] cancelAllAssetsMatchingPredicate:v11 excludeActiveDownloads:0 withError:0 completion:0];
 
         ++v6;
       }
@@ -1283,15 +1283,15 @@ void __56__ATDeviceService_requestSyncForLibrary_withCompletion___block_invoke(u
   }
 }
 
-- (void)applicationInstallsDidPrioritize:(id)a3
+- (void)applicationInstallsDidPrioritize:(id)prioritize
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [a3 reverseObjectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  reverseObjectEnumerator = [prioritize reverseObjectEnumerator];
+  v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1303,37 +1303,37 @@ void __56__ATDeviceService_requestSyncForLibrary_withCompletion___block_invoke(u
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
-        v9 = [*(*(&v10 + 1) + 8 * v8) bundleIdentifier];
-        [(ATDeviceService *)self prioritizeAsset:v9 forDataclass:@"Application" withCompletion:&__block_literal_global_152];
+        bundleIdentifier = [*(*(&v10 + 1) + 8 * v8) bundleIdentifier];
+        [(ATDeviceService *)self prioritizeAsset:bundleIdentifier forDataclass:@"Application" withCompletion:&__block_literal_global_152];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)listener:(id)a3 didReceiveMessageLinkRequest:(id)a4
+- (void)listener:(id)listener didReceiveMessageLinkRequest:(id)request
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  listenerCopy = listener;
+  requestCopy = request;
   v9 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v36 = self;
+    selfCopy = self;
     v37 = 2114;
-    v38 = v7;
+    v38 = listenerCopy;
     v39 = 2114;
-    v40 = v8;
+    v40 = requestCopy;
     _os_log_impl(&dword_223819000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@ did receieve message link request %{public}@", buf, 0x20u);
   }
 
@@ -1344,8 +1344,8 @@ void __56__ATDeviceService_requestSyncForLibrary_withCompletion___block_invoke(u
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v12 = [(ATService *)self messageLinks];
-    v13 = [v12 countByEnumeratingWithState:&v29 objects:v34 count:16];
+    messageLinks = [(ATService *)self messageLinks];
+    v13 = [messageLinks countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v13)
     {
       v14 = v13;
@@ -1357,7 +1357,7 @@ void __56__ATDeviceService_requestSyncForLibrary_withCompletion___block_invoke(u
         {
           if (*v30 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(messageLinks);
           }
 
           v17 = *(*(&v29 + 1) + 8 * v16);
@@ -1371,24 +1371,24 @@ void __56__ATDeviceService_requestSyncForLibrary_withCompletion___block_invoke(u
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v29 objects:v34 count:16];
+        v14 = [messageLinks countByEnumeratingWithState:&v29 objects:v34 count:16];
       }
 
       while (v14);
     }
 
 LABEL_16:
-    [(ATDeviceService *)self _addObserversToMessageLink:v8];
+    [(ATDeviceService *)self _addObserversToMessageLink:requestCopy];
     goto LABEL_17;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(ATConcreteService *)v8 addObserver:self->_legacyDeviceSyncManager];
-    v10 = [[ATLocalCloudAssetLink alloc] initWithMessageLink:v8];
-    v11 = [MEMORY[0x277CE53F0] sharedInstance];
-    [v11 addAssetLink:v10];
+    [(ATConcreteService *)requestCopy addObserver:self->_legacyDeviceSyncManager];
+    v10 = [[ATLocalCloudAssetLink alloc] initWithMessageLink:requestCopy];
+    mEMORY[0x277CE53F0] = [MEMORY[0x277CE53F0] sharedInstance];
+    [mEMORY[0x277CE53F0] addAssetLink:v10];
 
     goto LABEL_17;
   }
@@ -1399,17 +1399,17 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v24 = [MEMORY[0x277CCA890] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"ATDeviceService.m" lineNumber:387 description:{@"received unknown message link type from lockdown listener: %@", v8}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATDeviceService.m" lineNumber:387 description:{@"received unknown message link type from lockdown listener: %@", requestCopy}];
 
 LABEL_17:
-  [(ATDeviceService *)self addMessageLink:v8];
+  [(ATDeviceService *)self addMessageLink:requestCopy];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v18 = [(ATService *)self observers];
-  v19 = [v18 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  observers = [(ATService *)self observers];
+  v19 = [observers countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v19)
   {
     v20 = v19;
@@ -1421,53 +1421,53 @@ LABEL_17:
       {
         if (*v26 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(observers);
         }
 
-        [*(*(&v25 + 1) + 8 * v22++) service:self willOpenMessageLink:v8];
+        [*(*(&v25 + 1) + 8 * v22++) service:self willOpenMessageLink:requestCopy];
       }
 
       while (v20 != v22);
-      v20 = [v18 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v20 = [observers countByEnumeratingWithState:&v25 objects:v33 count:16];
     }
 
     while (v20);
   }
 
-  if (([(ATDeviceService *)v8 open]& 1) == 0)
+  if (([(ATDeviceService *)requestCopy open]& 1) == 0)
   {
     v23 = _ATLogCategoryFramework();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v36 = v8;
+      selfCopy = requestCopy;
       v37 = 2114;
-      v38 = v7;
+      v38 = listenerCopy;
       _os_log_impl(&dword_223819000, v23, OS_LOG_TYPE_ERROR, "failed to open message link %{public}@ from listener %{public}@", buf, 0x16u);
     }
 
-    [(ATDeviceService *)v8 close];
+    [(ATDeviceService *)requestCopy close];
   }
 }
 
-- (void)messageLink:(id)a3 didReceiveRequest:(id)a4
+- (void)messageLink:(id)link didReceiveRequest:(id)request
 {
   v5 = MEMORY[0x277CCA9B8];
-  v6 = a4;
-  v7 = a3;
+  requestCopy = request;
+  linkCopy = link;
   v8 = [v5 errorWithDomain:@"ATError" code:21 userInfo:0];
-  v9 = [v6 responseWithError:v8 parameters:0];
+  v9 = [requestCopy responseWithError:v8 parameters:0];
 
-  [v7 sendResponse:v9 withCompletion:0];
+  [linkCopy sendResponse:v9 withCompletion:0];
 }
 
-- (void)messageLinkWasClosed:(id)a3
+- (void)messageLinkWasClosed:(id)closed
 {
-  v4 = a3;
-  [(ATDeviceService *)self _removeObserversFromMessageLink:v4];
+  closedCopy = closed;
+  [(ATDeviceService *)self _removeObserversFromMessageLink:closedCopy];
   v6.receiver = self;
   v6.super_class = ATDeviceService;
-  [(ATConcreteService *)&v6 messageLinkWasClosed:v4];
+  [(ATConcreteService *)&v6 messageLinkWasClosed:closedCopy];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1477,17 +1477,17 @@ LABEL_17:
   }
 }
 
-- (void)removeMessageLink:(id)a3
+- (void)removeMessageLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__ATDeviceService_removeMessageLink___block_invoke;
   v7[3] = &unk_2784E5960;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = linkCopy;
+  v6 = linkCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -1506,17 +1506,17 @@ void __37__ATDeviceService_removeMessageLink___block_invoke(uint64_t a1)
   }
 }
 
-- (void)addMessageLink:(id)a3
+- (void)addMessageLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34__ATDeviceService_addMessageLink___block_invoke;
   v7[3] = &unk_2784E5960;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = linkCopy;
+  v6 = linkCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -1567,9 +1567,9 @@ void __47__ATDeviceService_allMessageLinkProxyListeners__block_invoke(uint64_t a
   *(v3 + 40) = v2;
 }
 
-- (id)proxyListenerForMessageLink:(id)a3
+- (id)proxyListenerForMessageLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1581,10 +1581,10 @@ void __47__ATDeviceService_allMessageLinkProxyListeners__block_invoke(uint64_t a
   block[1] = 3221225472;
   block[2] = __47__ATDeviceService_proxyListenerForMessageLink___block_invoke;
   block[3] = &unk_2784E5988;
-  v10 = v4;
+  v10 = linkCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = linkCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -1607,7 +1607,7 @@ uint64_t __47__ATDeviceService_proxyListenerForMessageLink___block_invoke(void *
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_223819000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ stopping", buf, 0xCu);
   }
 
@@ -1621,11 +1621,11 @@ uint64_t __47__ATDeviceService_proxyListenerForMessageLink___block_invoke(void *
   [v4 stop];
 
   [(ATDevicePairedSyncManager *)self->_pairedSyncManager stop];
-  v5 = [MEMORY[0x277CEA430] sharedInstance];
-  [v5 evacuate];
+  mEMORY[0x277CEA430] = [MEMORY[0x277CEA430] sharedInstance];
+  [mEMORY[0x277CEA430] evacuate];
 
-  v6 = [MEMORY[0x277CE5410] sharedInstance];
-  [v6 stop];
+  mEMORY[0x277CE5410] = [MEMORY[0x277CE5410] sharedInstance];
+  [mEMORY[0x277CE5410] stop];
 
   v8.receiver = self;
   v8.super_class = ATDeviceService;
@@ -1639,13 +1639,13 @@ uint64_t __47__ATDeviceService_proxyListenerForMessageLink___block_invoke(void *
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v28 = self;
+    selfCopy = self;
     _os_log_impl(&dword_223819000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ starting up", buf, 0xCu);
   }
 
   [(ATDeviceService *)self _setupStartupTransaction];
-  v4 = [MEMORY[0x277CEA430] sharedInstance];
-  [v4 evacuate];
+  mEMORY[0x277CEA430] = [MEMORY[0x277CEA430] sharedInstance];
+  [mEMORY[0x277CEA430] evacuate];
 
   v25.receiver = self;
   v25.super_class = ATDeviceService;
@@ -1654,18 +1654,18 @@ uint64_t __47__ATDeviceService_proxyListenerForMessageLink___block_invoke(void *
     lockdownListener = self->_lockdownListener;
     if (lockdownListener)
     {
-      v10 = [(ATLockdownListener *)lockdownListener start];
+      start = [(ATLockdownListener *)lockdownListener start];
     }
 
     else
     {
-      v10 = 1;
+      start = 1;
     }
   }
 
   else
   {
-    v10 = 0;
+    start = 0;
   }
 
   v23 = 0u;
@@ -1673,9 +1673,9 @@ uint64_t __47__ATDeviceService_proxyListenerForMessageLink___block_invoke(void *
   v21 = 0u;
   v22 = 0u;
   v11 = +[ATClientController sharedInstance];
-  v12 = [v11 allClients];
+  allClients = [v11 allClients];
 
-  v13 = [v12 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  v13 = [allClients countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v13)
   {
     v14 = v13;
@@ -1686,7 +1686,7 @@ uint64_t __47__ATDeviceService_proxyListenerForMessageLink___block_invoke(void *
       {
         if (*v22 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allClients);
         }
 
         v17 = *(*(&v21 + 1) + 8 * i);
@@ -1696,24 +1696,24 @@ uint64_t __47__ATDeviceService_proxyListenerForMessageLink___block_invoke(void *
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v14 = [allClients countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v14);
   }
 
-  if (v10)
+  if (start)
   {
-    v18 = [MEMORY[0x277D7FBE8] sharedSecurityInfo];
+    mEMORY[0x277D7FBE8] = [MEMORY[0x277D7FBE8] sharedSecurityInfo];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __22__ATDeviceService_run__block_invoke;
     v20[3] = &unk_2784E5938;
     v20[4] = self;
-    [v18 performBlockAfterFirstUnlock:v20];
+    [mEMORY[0x277D7FBE8] performBlockAfterFirstUnlock:v20];
   }
 
-  return v10;
+  return start;
 }
 
 void __22__ATDeviceService_run__block_invoke(uint64_t a1)
@@ -1870,8 +1870,8 @@ void __22__ATDeviceService_run__block_invoke_111(uint64_t a1, int a2)
     v2->_deviceSyncManager = v21;
 
     v23 = [ATIDSService alloc];
-    v24 = [(ATDeviceSettings *)v2->_settings serviceName];
-    v25 = [(ATIDSService *)v23 initWithServiceName:v24];
+    serviceName = [(ATDeviceSettings *)v2->_settings serviceName];
+    v25 = [(ATIDSService *)v23 initWithServiceName:serviceName];
     idsService = v2->_idsService;
     v2->_idsService = v25;
 

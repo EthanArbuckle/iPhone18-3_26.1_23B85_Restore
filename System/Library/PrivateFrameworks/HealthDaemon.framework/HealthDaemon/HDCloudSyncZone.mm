@@ -1,36 +1,36 @@
 @interface HDCloudSyncZone
-- (BOOL)_addSubscriptionRecord:(id)a3 error:(id *)a4;
-- (BOOL)addRecord:(id)a3 error:(id *)a4;
+- (BOOL)_addSubscriptionRecord:(id)record error:(id *)error;
+- (BOOL)addRecord:(id)record error:(id *)error;
 - (CKRecordID)zoneShareRecordID;
 - (HDCloudSyncRepository)repository;
 - (NSArray)recordNames;
 - (NSArray)records;
 - (NSUUID)storeIdentifier;
 - (id)description;
-- (id)initForZoneIdentifier:(id)a3 repository:(id)a4 type:(int64_t)a5;
-- (void)removeRecord:(id)a3;
+- (id)initForZoneIdentifier:(id)identifier repository:(id)repository type:(int64_t)type;
+- (void)removeRecord:(id)record;
 @end
 
 @implementation HDCloudSyncZone
 
-- (id)initForZoneIdentifier:(id)a3 repository:(id)a4 type:(int64_t)a5
+- (id)initForZoneIdentifier:(id)identifier repository:(id)repository type:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  repositoryCopy = repository;
   v25.receiver = self;
   v25.super_class = HDCloudSyncZone;
   v10 = [(HDCloudSyncZone *)&v25 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_repository, v9);
-    v12 = [v8 copy];
+    objc_storeWeak(&v10->_repository, repositoryCopy);
+    v12 = [identifierCopy copy];
     zoneIdentifier = v11->_zoneIdentifier;
     v11->_zoneIdentifier = v12;
 
-    v11->_zoneType = a5;
+    v11->_zoneType = type;
     v11->_purpose = 2;
-    v11->_validatedForSharing = [v8 scope] == 2;
+    v11->_validatedForSharing = [identifierCopy scope] == 2;
     v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
     storeRecords = v11->_storeRecords;
     v11->_storeRecords = v14;
@@ -55,10 +55,10 @@
   return v11;
 }
 
-- (BOOL)addRecord:(id)a3 error:(id *)a4
+- (BOOL)addRecord:(id)record error:(id *)error
 {
   v81 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  recordCopy = record;
   records = self->_records;
   if (!records)
   {
@@ -69,11 +69,11 @@
     records = self->_records;
   }
 
-  [(NSMutableArray *)records addObject:v7];
+  [(NSMutableArray *)records addObject:recordCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [(HDCloudSyncZone *)self _addSubscriptionRecord:v7 error:a4];
+    v11 = [(HDCloudSyncZone *)self _addSubscriptionRecord:recordCopy error:error];
     goto LABEL_16;
   }
 
@@ -82,7 +82,7 @@
   {
     p_registryRecord = &self->_registryRecord;
 LABEL_7:
-    objc_storeStrong(p_registryRecord, a3);
+    objc_storeStrong(p_registryRecord, record);
 LABEL_15:
     v11 = 1;
     goto LABEL_16;
@@ -93,7 +93,7 @@ LABEL_15:
   {
     participantRecords = self->_participantRecords;
 LABEL_14:
-    [(NSMutableArray *)participantRecords addObject:v7];
+    [(NSMutableArray *)participantRecords addObject:recordCopy];
     goto LABEL_15;
   }
 
@@ -121,53 +121,53 @@ LABEL_14:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = v7;
-    v17 = [(HDCloudSyncZone *)self zoneType];
+    v16 = recordCopy;
+    zoneType = [(HDCloudSyncZone *)self zoneType];
     v11 = 1;
-    if (v17 > 3)
+    if (zoneType > 3)
     {
-      if (v17 > 5)
+      if (zoneType > 5)
       {
-        if (v17 == 6)
+        if (zoneType == 6)
         {
           v42 = MEMORY[0x277CCA9B8];
-          v27 = [v16 storeIdentifier];
-          [v42 hk_assignError:a4 code:719 format:{@"%@: Unexpected store record %@ in state sync zone.", self, v27}];
+          storeIdentifier = [v16 storeIdentifier];
+          [v42 hk_assignError:error code:719 format:{@"%@: Unexpected store record %@ in state sync zone.", self, storeIdentifier}];
         }
 
         else
         {
-          if (v17 != 7)
+          if (zoneType != 7)
           {
             goto LABEL_68;
           }
 
           v30 = MEMORY[0x277CCA9B8];
-          v27 = [v16 storeIdentifier];
-          [v30 hk_assignError:a4 code:719 format:{@"%@: Unexpected store record %@ in context sync zone.", self, v27}];
+          storeIdentifier = [v16 storeIdentifier];
+          [v30 hk_assignError:error code:719 format:{@"%@: Unexpected store record %@ in context sync zone.", self, storeIdentifier}];
         }
       }
 
       else
       {
         v26 = MEMORY[0x277CCA9B8];
-        if (v17 == 4)
+        if (zoneType == 4)
         {
-          v27 = [v16 storeIdentifier];
-          [v26 hk_assignError:a4 code:719 format:{@"%@: Unexpected store record %@ in private metadata zone.", self, v27}];
+          storeIdentifier = [v16 storeIdentifier];
+          [v26 hk_assignError:error code:719 format:{@"%@: Unexpected store record %@ in private metadata zone.", self, storeIdentifier}];
         }
 
         else
         {
-          v27 = [v16 storeIdentifier];
-          [v26 hk_assignError:a4 code:719 format:{@"%@: Unexpected store record %@ attachment zone.", self, v27}];
+          storeIdentifier = [v16 storeIdentifier];
+          [v26 hk_assignError:error code:719 format:{@"%@: Unexpected store record %@ attachment zone.", self, storeIdentifier}];
         }
       }
     }
 
-    else if (v17 > 1)
+    else if (zoneType > 1)
     {
-      if (v17 == 2)
+      if (zoneType == 2)
       {
         [(NSMutableArray *)self->_storeRecords addObject:v16];
         v68 = 0u;
@@ -190,10 +190,10 @@ LABEL_14:
               }
 
               v36 = *(*(&v66 + 1) + 8 * i);
-              v37 = [v36 storeIdentifier];
+              storeIdentifier2 = [v36 storeIdentifier];
               [v16 storeIdentifier];
               v39 = v38 = v16;
-              v40 = [v37 isEqual:v39];
+              v40 = [storeIdentifier2 isEqual:v39];
 
               v16 = v38;
               if (v40)
@@ -217,28 +217,28 @@ LABEL_65:
       }
 
       v29 = MEMORY[0x277CCA9B8];
-      v27 = [v16 storeIdentifier];
-      [v29 hk_assignError:a4 code:719 format:{@"%@: Unexpected store record %@ in shared summary zone.", self, v27}];
+      storeIdentifier = [v16 storeIdentifier];
+      [v29 hk_assignError:error code:719 format:{@"%@: Unexpected store record %@ in shared summary zone.", self, storeIdentifier}];
     }
 
     else
     {
-      if (v17)
+      if (zoneType)
       {
-        if (v17 == 1)
+        if (zoneType == 1)
         {
-          v18 = [v16 storeIdentifier];
-          v19 = [(HDCloudSyncZoneIdentifier *)self->_zoneIdentifier zoneIdentifier];
-          v20 = [v19 hd_storeIdentifier];
+          storeIdentifier3 = [v16 storeIdentifier];
+          zoneIdentifier = [(HDCloudSyncZoneIdentifier *)self->_zoneIdentifier zoneIdentifier];
+          hd_storeIdentifier = [zoneIdentifier hd_storeIdentifier];
           v21 = v16;
-          v22 = [v18 isEqual:v20];
+          v22 = [storeIdentifier3 isEqual:hd_storeIdentifier];
 
           if ((v22 & 1) == 0)
           {
             v51 = MEMORY[0x277CCA9B8];
             zoneIdentifier = self->_zoneIdentifier;
-            v53 = [v21 storeIdentifier];
-            [v51 hk_assignError:a4 code:719 format:{@"%@: Store record for zone %@ has unexpected store identifier %@", self, zoneIdentifier, v53}];
+            storeIdentifier4 = [v21 storeIdentifier];
+            [v51 hk_assignError:error code:719 format:{@"%@: Store record for zone %@ has unexpected store identifier %@", self, zoneIdentifier, storeIdentifier4}];
 
             v11 = 0;
             goto LABEL_84;
@@ -293,8 +293,8 @@ LABEL_68:
       }
 
       v31 = MEMORY[0x277CCA9B8];
-      v27 = [v16 storeIdentifier];
-      [v31 hk_assignError:a4 code:719 format:{@"%@: Unexpected store record %@ in master zone.", self, v27}];
+      storeIdentifier = [v16 storeIdentifier];
+      [v31 hk_assignError:error code:719 format:{@"%@: Unexpected store record %@ in master zone.", self, storeIdentifier}];
     }
 
     v11 = 0;
@@ -304,45 +304,45 @@ LABEL_68:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v23 = v7;
-    v24 = [(HDCloudSyncZone *)self zoneType];
+    v23 = recordCopy;
+    zoneType2 = [(HDCloudSyncZone *)self zoneType];
     v11 = 1;
-    if (v24 > 3)
+    if (zoneType2 > 3)
     {
-      if (v24 > 5)
+      if (zoneType2 > 5)
       {
-        if (v24 == 6)
+        if (zoneType2 == 6)
         {
-          [MEMORY[0x277CCA9B8] hk_assignError:a4 code:719 format:{@"%@: Unexpected sequence record %@ in state sync zone.", self, v23}];
+          [MEMORY[0x277CCA9B8] hk_assignError:error code:719 format:{@"%@: Unexpected sequence record %@ in state sync zone.", self, v23}];
         }
 
         else
         {
-          if (v24 != 7)
+          if (zoneType2 != 7)
           {
 LABEL_82:
 
             goto LABEL_16;
           }
 
-          [MEMORY[0x277CCA9B8] hk_assignError:a4 code:719 format:{@"%@: Unexpected sequence record %@ in context sync zone.", self, v23}];
+          [MEMORY[0x277CCA9B8] hk_assignError:error code:719 format:{@"%@: Unexpected sequence record %@ in context sync zone.", self, v23}];
         }
       }
 
-      else if (v24 == 4)
+      else if (zoneType2 == 4)
       {
-        [MEMORY[0x277CCA9B8] hk_assignError:a4 code:719 format:{@"%@: Unexpected sequence record %@ in Private Metadata zone.", self, v23}];
+        [MEMORY[0x277CCA9B8] hk_assignError:error code:719 format:{@"%@: Unexpected sequence record %@ in Private Metadata zone.", self, v23}];
       }
 
       else
       {
-        [MEMORY[0x277CCA9B8] hk_assignError:a4 code:719 format:{@"%@: Unexpected sequence record %@ in Attachment zone.", self, v23}];
+        [MEMORY[0x277CCA9B8] hk_assignError:error code:719 format:{@"%@: Unexpected sequence record %@ in Attachment zone.", self, v23}];
       }
     }
 
-    else if (v24 > 1)
+    else if (zoneType2 > 1)
     {
-      if (v24 == 2)
+      if (zoneType2 == 2)
       {
         v64 = 0u;
         v65 = 0u;
@@ -364,9 +364,9 @@ LABEL_82:
               }
 
               v47 = *(*(&v62 + 1) + 8 * k);
-              v48 = [v23 storeIdentifier];
-              v49 = [v47 storeIdentifier];
-              v50 = [v48 isEqual:v49];
+              storeIdentifier5 = [v23 storeIdentifier];
+              storeIdentifier6 = [v47 storeIdentifier];
+              v50 = [storeIdentifier5 isEqual:storeIdentifier6];
 
               if (v50)
               {
@@ -392,19 +392,19 @@ LABEL_86:
         goto LABEL_82;
       }
 
-      [MEMORY[0x277CCA9B8] hk_assignError:a4 code:719 format:{@"%@: Unexpected sequence record %@ in shared summary zone.", self, v23}];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:719 format:{@"%@: Unexpected sequence record %@ in shared summary zone.", self, v23}];
     }
 
     else
     {
-      if (v24)
+      if (zoneType2)
       {
-        if (v24 == 1)
+        if (zoneType2 == 1)
         {
           if ([(NSMutableArray *)self->_storeRecords count])
           {
-            v25 = [(NSMutableArray *)self->_storeRecords firstObject];
-            [v25 addSequenceHeaderRecord:v23];
+            firstObject = [(NSMutableArray *)self->_storeRecords firstObject];
+            [firstObject addSequenceHeaderRecord:v23];
           }
 
           else
@@ -416,7 +416,7 @@ LABEL_86:
         goto LABEL_82;
       }
 
-      [MEMORY[0x277CCA9B8] hk_assignError:a4 code:719 format:{@"%@: Unexpected sequence record %@ in master zone.", self, v23}];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:719 format:{@"%@: Unexpected sequence record %@ in master zone.", self, v23}];
     }
 
     v11 = 0;
@@ -429,7 +429,7 @@ LABEL_86:
   {
     v54 = v28;
     *buf = 138543618;
-    v75 = v7;
+    v75 = recordCopy;
     v76 = 2114;
     v77 = objc_opt_class();
     _os_log_error_impl(&dword_228986000, v54, OS_LOG_TYPE_ERROR, "Ignoring cloud sync record '%{public}@' because it is of unexpected type '%{public}@'", buf, 0x16u);
@@ -442,11 +442,11 @@ LABEL_16:
   return v11;
 }
 
-- (void)removeRecord:(id)a3
+- (void)removeRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(HDCloudSyncRecord *)self->_registryRecord recordID];
-  v6 = [v5 isEqual:v4];
+  recordCopy = record;
+  recordID = [(HDCloudSyncRecord *)self->_registryRecord recordID];
+  v6 = [recordID isEqual:recordCopy];
 
   if (v6)
   {
@@ -454,8 +454,8 @@ LABEL_16:
     self->_registryRecord = 0;
   }
 
-  v8 = [(HDCloudSyncRecord *)self->_masterRecord recordID];
-  v9 = [v8 isEqual:v4];
+  recordID2 = [(HDCloudSyncRecord *)self->_masterRecord recordID];
+  v9 = [recordID2 isEqual:recordCopy];
 
   if (v9)
   {
@@ -468,7 +468,7 @@ LABEL_16:
   v29[1] = 3221225472;
   v29[2] = __32__HDCloudSyncZone_removeRecord___block_invoke;
   v29[3] = &unk_27861AD28;
-  v12 = v4;
+  v12 = recordCopy;
   v30 = v12;
   [(NSMutableArray *)participantRecords hk_removeObjectsPassingTest:v29];
   authorizationRecords = self->_authorizationRecords;
@@ -569,15 +569,15 @@ id __30__HDCloudSyncZone_recordNames__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (BOOL)_addSubscriptionRecord:(id)a3 error:(id *)a4
+- (BOOL)_addSubscriptionRecord:(id)record error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 record];
-  v8 = [HDCloudSyncDataUploadRequestRecord isDataUploadRequestRecord:v7];
+  recordCopy = record;
+  record = [recordCopy record];
+  v8 = [HDCloudSyncDataUploadRequestRecord isDataUploadRequestRecord:record];
 
   if (v8)
   {
-    objc_storeStrong(&self->_dataUploadRequestRecord, a3);
+    objc_storeStrong(&self->_dataUploadRequestRecord, record);
   }
 
   return v8;
@@ -587,8 +587,8 @@ id __30__HDCloudSyncZone_recordNames__block_invoke(uint64_t a1, void *a2)
 {
   v3 = objc_alloc(MEMORY[0x277CBC5D0]);
   v4 = *MEMORY[0x277CBC020];
-  v5 = [(HDCloudSyncZoneIdentifier *)self->_zoneIdentifier zoneIdentifier];
-  v6 = [v3 initWithRecordName:v4 zoneID:v5];
+  zoneIdentifier = [(HDCloudSyncZoneIdentifier *)self->_zoneIdentifier zoneIdentifier];
+  v6 = [v3 initWithRecordName:v4 zoneID:zoneIdentifier];
 
   return v6;
 }
@@ -607,10 +607,10 @@ id __30__HDCloudSyncZone_recordNames__block_invoke(uint64_t a1, void *a2)
 
 - (NSUUID)storeIdentifier
 {
-  v2 = [(HDCloudSyncZone *)self storeRecord];
-  v3 = [v2 storeIdentifier];
+  storeRecord = [(HDCloudSyncZone *)self storeRecord];
+  storeIdentifier = [storeRecord storeIdentifier];
 
-  return v3;
+  return storeIdentifier;
 }
 
 - (HDCloudSyncRepository)repository

@@ -1,7 +1,7 @@
 @interface MUSizeLayout
 - (CGSize)size;
-- (MUSizeLayout)initWithItem:(id)a3 size:(CGSize)a4;
-- (MUSizeLayout)initWithItem:(id)a3 size:(CGSize)a4 priority:(float)a5;
+- (MUSizeLayout)initWithItem:(id)item size:(CGSize)size;
+- (MUSizeLayout)initWithItem:(id)item size:(CGSize)size priority:(float)priority;
 @end
 
 @implementation MUSizeLayout
@@ -14,14 +14,14 @@
   return result;
 }
 
-- (MUSizeLayout)initWithItem:(id)a3 size:(CGSize)a4 priority:(float)a5
+- (MUSizeLayout)initWithItem:(id)item size:(CGSize)size priority:(float)priority
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
+  height = size.height;
+  width = size.width;
+  itemCopy = item;
   v10 = [MUSizeLayoutInternal alloc];
-  *&v11 = a5;
-  v12 = [(MUSizeLayoutInternal *)v10 initWithItem:v9 size:width priority:height, v11];
+  *&v11 = priority;
+  v12 = [(MUSizeLayoutInternal *)v10 initWithItem:itemCopy size:width priority:height, v11];
 
   v16.receiver = self;
   v16.super_class = MUSizeLayout;
@@ -35,20 +35,20 @@
   return v14;
 }
 
-- (MUSizeLayout)initWithItem:(id)a3 size:(CGSize)a4
+- (MUSizeLayout)initWithItem:(id)item size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = [[MUSizeLayoutInternal alloc] initWithItem:v7 size:width, height];
+  height = size.height;
+  width = size.width;
+  itemCopy = item;
+  height = [[MUSizeLayoutInternal alloc] initWithItem:itemCopy size:width, height];
 
   v12.receiver = self;
   v12.super_class = MUSizeLayout;
-  v9 = [(MUConstraintLayout *)&v12 initWithInternal:v8];
+  v9 = [(MUConstraintLayout *)&v12 initWithInternal:height];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_internal, v8);
+    objc_storeStrong(&v9->_internal, height);
   }
 
   return v10;

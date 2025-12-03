@@ -1,16 +1,16 @@
 @interface CarSearchResultsViewModel
-- (void)quickRouteManager:(id)a3 didUpdateETA:(id)a4 error:(id)a5 animated:(BOOL)a6;
+- (void)quickRouteManager:(id)manager didUpdateETA:(id)a error:(id)error animated:(BOOL)animated;
 @end
 
 @implementation CarSearchResultsViewModel
 
-- (void)quickRouteManager:(id)a3 didUpdateETA:(id)a4 error:(id)a5 animated:(BOOL)a6
+- (void)quickRouteManager:(id)manager didUpdateETA:(id)a error:(id)error animated:(BOOL)animated
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  v13 = a5;
-  sub_100559840(a3, a4);
+  managerCopy = manager;
+  aCopy = a;
+  selfCopy = self;
+  errorCopy = error;
+  sub_100559840(manager, a);
 }
 
 @end

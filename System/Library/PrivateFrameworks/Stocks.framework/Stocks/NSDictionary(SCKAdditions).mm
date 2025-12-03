@@ -28,7 +28,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 objectForKeyedSubscript:{*(*(&v13 + 1) + 8 * i), v13}];
+        v11 = [self objectForKeyedSubscript:{*(*(&v13 + 1) + 8 * i), v13}];
         if (v11)
         {
           [v5 addObject:v11];

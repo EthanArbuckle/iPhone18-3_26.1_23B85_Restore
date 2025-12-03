@@ -1,14 +1,14 @@
 @interface USBSetupView
-- (USBSetupView)initWithFrame:(CGRect)a3;
+- (USBSetupView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation USBSetupView
 
-- (USBSetupView)initWithFrame:(CGRect)a3
+- (USBSetupView)initWithFrame:(CGRect)frame
 {
   v24.receiver = self;
   v24.super_class = USBSetupView;
-  v3 = [(SetupView *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SetupView *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -22,19 +22,19 @@
 
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v10 = MEMORY[0x277CCACA8];
-    v11 = [MEMORY[0x277D75418] currentDevice];
-    v12 = [v11 model];
-    v13 = [v12 uppercaseString];
-    v14 = [v10 stringWithFormat:@"%@_%@", @"CONNECT_OVER_USB_STEP_1", v13];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    model = [currentDevice model];
+    uppercaseString = [model uppercaseString];
+    v14 = [v10 stringWithFormat:@"%@_%@", @"CONNECT_OVER_USB_STEP_1", uppercaseString];
     v15 = [v9 localizedStringForKey:v14 value:&stru_284EED640 table:@"WirelessModemSettings"];
     [(SetupView *)v3 addStep:v15];
 
     v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v17 = MEMORY[0x277CCACA8];
-    v18 = [MEMORY[0x277D75418] currentDevice];
-    v19 = [v18 model];
-    v20 = [v19 uppercaseString];
-    v21 = [v17 stringWithFormat:@"%@_%@", @"CONNECT_OVER_USB_STEP_2", v20];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    model2 = [currentDevice2 model];
+    uppercaseString2 = [model2 uppercaseString];
+    v21 = [v17 stringWithFormat:@"%@_%@", @"CONNECT_OVER_USB_STEP_2", uppercaseString2];
     v22 = [v16 localizedStringForKey:v21 value:&stru_284EED640 table:@"WirelessModemSettings"];
     [(SetupView *)v3 addStep:v22];
   }

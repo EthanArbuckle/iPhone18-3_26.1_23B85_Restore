@@ -139,9 +139,9 @@ void __42__RbdcConverterHelper_createXPCConnection__block_invoke_47(uint64_t a1,
 - (void)isProcessRbdcAllowed
 {
   v11 = *MEMORY[0x1E69E9840];
-  v2 = *a1;
-  v3 = a1[1];
-  v4 = a1[2];
+  v2 = *self;
+  v3 = self[1];
+  v4 = self[2];
   v6[0] = 67109632;
   v6[1] = v2;
   v7 = 1024;

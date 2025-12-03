@@ -1,47 +1,47 @@
 @interface NTKWhistlerSubdialsFacesGalleryCollection
-- (id)_galleryEditOptionsForDevice:(id)a3;
-- (id)_galleryPigmentsForDevice:(id)a3;
-- (id)facesForDevice:(id)a3;
+- (id)_galleryEditOptionsForDevice:(id)device;
+- (id)_galleryPigmentsForDevice:(id)device;
+- (id)facesForDevice:(id)device;
 @end
 
 @implementation NTKWhistlerSubdialsFacesGalleryCollection
 
-- (id)facesForDevice:(id)a3
+- (id)facesForDevice:(id)device
 {
   v107[6] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isRunningNapiliGMOrLater])
+  deviceCopy = device;
+  if ([deviceCopy isRunningNapiliGMOrLater])
   {
-    v5 = [MEMORY[0x277CBEB18] array];
-    v6 = [(NTKWhistlerSubdialsFacesGalleryCollection *)self _galleryEditOptionsForDevice:v4];
-    v7 = [v6 objectForKeyedSubscript:&unk_2841824E8];
-    v8 = [v6 objectForKeyedSubscript:&unk_284182500];
-    v9 = [v6 objectForKeyedSubscript:&unk_284182518];
-    v10 = [(NTKWhistlerSubdialsFacesGalleryCollection *)self _galleryPigmentsForDevice:v4];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [(NTKWhistlerSubdialsFacesGalleryCollection *)self _galleryEditOptionsForDevice:deviceCopy];
+    v7 = [array2 objectForKeyedSubscript:&unk_2841824E8];
+    v8 = [array2 objectForKeyedSubscript:&unk_284182500];
+    v9 = [array2 objectForKeyedSubscript:&unk_284182518];
+    v10 = [(NTKWhistlerSubdialsFacesGalleryCollection *)self _galleryPigmentsForDevice:deviceCopy];
     v95[0] = MEMORY[0x277D85DD0];
     v95[1] = 3221225472;
     v95[2] = __60__NTKWhistlerSubdialsFacesGalleryCollection_facesForDevice___block_invoke;
     v95[3] = &unk_2787806E0;
-    v96 = v4;
+    v96 = deviceCopy;
     v97 = v7;
     v98 = v8;
     v99 = v9;
-    v11 = v5;
+    v11 = array;
     v100 = v11;
     v12 = v9;
     v13 = v8;
-    v14 = v7;
+    pigmentFaceDomain = v7;
     [v10 enumerateObjectsUsingBlock:v95];
     v15 = v100;
-    v16 = v11;
+    array4 = v11;
 
 LABEL_3:
     goto LABEL_47;
   }
 
-  if ([v4 supportsPDRCapability:3669496134])
+  if ([deviceCopy supportsPDRCapability:3669496134])
   {
-    if ([v4 supportsPDRCapability:3874532124])
+    if ([deviceCopy supportsPDRCapability:3874532124])
     {
       v107[0] = @"seasons.spring2025.peony";
       v107[1] = @"seasons.spring2025.tangerine";
@@ -76,49 +76,49 @@ LABEL_3:
     v93[2] = __60__NTKWhistlerSubdialsFacesGalleryCollection_facesForDevice___block_invoke_2;
     v93[3] = &unk_27877DED0;
     v94 = v30;
-    v14 = v30;
+    pigmentFaceDomain = v30;
     [v10 enumerateObjectsUsingBlock:v93];
-    v6 = [v14 copy];
-    v31 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
-    v32 = [NTKFaceBackgroundStyleEditOption optionWithBackgroundStyle:1 forDevice:v4];
+    array2 = [pigmentFaceDomain copy];
+    v31 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(array2, "count")}];
+    v32 = [NTKFaceBackgroundStyleEditOption optionWithBackgroundStyle:1 forDevice:deviceCopy];
     v89[0] = MEMORY[0x277D85DD0];
     v89[1] = 3221225472;
     v89[2] = __60__NTKWhistlerSubdialsFacesGalleryCollection_facesForDevice___block_invoke_3;
     v89[3] = &unk_278780730;
-    v90 = v4;
+    v90 = deviceCopy;
     v91 = v32;
     v33 = v31;
     v92 = v33;
     v34 = v32;
-    [v6 enumerateObjectsUsingBlock:v89];
+    [array2 enumerateObjectsUsingBlock:v89];
     v35 = v92;
-    v16 = v33;
+    array4 = v33;
 
     v13 = v94;
     goto LABEL_47;
   }
 
-  v6 = [MEMORY[0x277CBEB18] array];
-  if ([v4 supportsPDRCapability:3887189377])
+  array2 = [MEMORY[0x277CBEB18] array];
+  if ([deviceCopy supportsPDRCapability:3887189377])
   {
-    v10 = [NTKFace defaultFaceOfStyle:34 forDevice:v4];
-    v14 = [objc_opt_class() pigmentFaceDomain];
+    v10 = [NTKFace defaultFaceOfStyle:34 forDevice:deviceCopy];
+    pigmentFaceDomain = [objc_opt_class() pigmentFaceDomain];
     v20 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v21 = +[NTKPigmentEditOptionStore sharedInstance];
     v13 = v20;
-    v22 = [v21 pigmentSetForDomain:v14 bundle:v20];
+    v22 = [v21 pigmentSetForDomain:pigmentFaceDomain bundle:v20];
     v12 = [v22 pigmentsFromMostRecentAddableCollectionsForSlot:0];
 
-    v23 = [NTKFaceBackgroundStyleEditOption optionWithBackgroundStyle:1 forDevice:v4];
-    v24 = [MEMORY[0x277CBEB18] array];
+    v23 = [NTKFaceBackgroundStyleEditOption optionWithBackgroundStyle:1 forDevice:deviceCopy];
+    array3 = [MEMORY[0x277CBEB18] array];
     v85[0] = MEMORY[0x277D85DD0];
     v85[1] = 3221225472;
     v85[2] = __60__NTKWhistlerSubdialsFacesGalleryCollection_facesForDevice___block_invoke_2_122;
     v85[3] = &unk_278780730;
-    v25 = v4;
+    v25 = deviceCopy;
     v86 = v25;
     v87 = v23;
-    v26 = v24;
+    v26 = array3;
     v88 = v26;
     v27 = v23;
     [v12 enumerateObjectsUsingBlock:v85];
@@ -130,15 +130,15 @@ LABEL_3:
     }
 
     v29 = v88;
-    v16 = v26;
+    array4 = v26;
 
     goto LABEL_3;
   }
 
-  if (NTKShowGossamerUI(v4))
+  if (NTKShowGossamerUI(deviceCopy))
   {
     v36 = [NTKPigmentEditOption pigmentNamed:@"special.multicolor"];
-    [v6 addObject:v36];
+    [array2 addObject:v36];
 
     v37 = 4;
   }
@@ -167,7 +167,7 @@ LABEL_3:
           }
 
           v43 = [NTKPigmentEditOption pigmentNamed:*(*(&v81 + 1) + 8 * i)];
-          [v6 addObject:v43];
+          [array2 addObject:v43];
         }
 
         v40 = [v38 countByEnumeratingWithState:&v81 objects:v105 count:16];
@@ -179,7 +179,7 @@ LABEL_3:
     v37 = 3;
   }
 
-  v44 = [NTKFaceColorEditOption standardColorValuesForDevice:v4];
+  v44 = [NTKFaceColorEditOption standardColorValuesForDevice:deviceCopy];
   v45 = [v44 subarrayWithRange:{0, v37}];
 
   v79 = 0u;
@@ -201,9 +201,9 @@ LABEL_3:
           objc_enumerationMutation(v10);
         }
 
-        v50 = +[NTKFaceColorEditOption optionWithFaceColor:forDevice:](NTKFaceColorEditOption, "optionWithFaceColor:forDevice:", [*(*(&v77 + 1) + 8 * j) integerValue], v4);
-        v51 = [v50 pigmentEditOption];
-        [v6 addObject:v51];
+        v50 = +[NTKFaceColorEditOption optionWithFaceColor:forDevice:](NTKFaceColorEditOption, "optionWithFaceColor:forDevice:", [*(*(&v77 + 1) + 8 * j) integerValue], deviceCopy);
+        pigmentEditOption = [v50 pigmentEditOption];
+        [array2 addObject:pigmentEditOption];
       }
 
       v47 = [v10 countByEnumeratingWithState:&v77 objects:v103 count:16];
@@ -212,19 +212,19 @@ LABEL_3:
     while (v47);
   }
 
-  v14 = [MEMORY[0x277CBEB18] array];
-  v52 = [NTKDualTimeStyleEditOption optionWithStyle:0 forDevice:v4];
-  [v14 addObject:v52];
+  pigmentFaceDomain = [MEMORY[0x277CBEB18] array];
+  v52 = [NTKDualTimeStyleEditOption optionWithStyle:0 forDevice:deviceCopy];
+  [pigmentFaceDomain addObject:v52];
 
-  v53 = [NTKDualTimeStyleEditOption optionWithStyle:1 forDevice:v4];
-  [v14 addObject:v53];
+  v53 = [NTKDualTimeStyleEditOption optionWithStyle:1 forDevice:deviceCopy];
+  [pigmentFaceDomain addObject:v53];
 
-  v16 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v13 = v6;
+  v13 = array2;
   v67 = [v13 countByEnumeratingWithState:&v73 objects:v102 count:16];
   if (v67)
   {
@@ -247,7 +247,7 @@ LABEL_3:
         v70 = 0u;
         v71 = 0u;
         v72 = 0u;
-        v56 = v14;
+        v56 = pigmentFaceDomain;
         v57 = [v56 countByEnumeratingWithState:&v69 objects:v101 count:16];
         if (v57)
         {
@@ -263,10 +263,10 @@ LABEL_3:
               }
 
               v61 = *(*(&v69 + 1) + 8 * k);
-              v62 = [NTKFace defaultFaceOfStyle:34 forDevice:v4, v64];
+              v62 = [NTKFace defaultFaceOfStyle:34 forDevice:deviceCopy, v64];
               [v62 selectOption:v55 forCustomEditMode:10 slot:0];
               [v62 selectOption:v61 forCustomEditMode:15 slot:0];
-              [v16 addObject:v62];
+              [array4 addObject:v62];
             }
 
             v58 = [v56 countByEnumeratingWithState:&v69 objects:v101 count:16];
@@ -283,15 +283,15 @@ LABEL_3:
     }
 
     while (v67);
-    v14 = v56;
+    pigmentFaceDomain = v56;
     v10 = v64;
     v13 = obj;
   }
 
-  v6 = v13;
+  array2 = v13;
 LABEL_47:
 
-  return v16;
+  return array4;
 }
 
 void __60__NTKWhistlerSubdialsFacesGalleryCollection_facesForDevice___block_invoke(id *a1, void *a2, unint64_t a3)
@@ -1082,10 +1082,10 @@ LABEL_28:
 LABEL_29:
 }
 
-- (id)_galleryEditOptionsForDevice:(id)a3
+- (id)_galleryEditOptionsForDevice:(id)device
 {
   v6[3] = *MEMORY[0x277D85DE8];
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v5[0] = &unk_284182518;
     v5[1] = &unk_284182500;
@@ -1104,42 +1104,42 @@ LABEL_29:
   return v3;
 }
 
-- (id)_galleryPigmentsForDevice:(id)a3
+- (id)_galleryPigmentsForDevice:(id)device
 {
   v15[4] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  if ([v3 isRunningNapiliGMOrLater])
+  deviceCopy = device;
+  array = [MEMORY[0x277CBEB18] array];
+  if ([deviceCopy isRunningNapiliGMOrLater])
   {
     v15[0] = @"special.multicolor";
     v15[1] = @"special.multicolor";
     v15[2] = @"special.multicolor";
     v15[3] = @"special.multicolor";
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:4];
-    [v4 addObjectsFromArray:v5];
+    [array addObjectsFromArray:v5];
 
-    v6 = [NTKFace defaultFaceOfStyle:40 forDevice:v3];
+    v6 = [NTKFace defaultFaceOfStyle:40 forDevice:deviceCopy];
     v7 = [v6 defaultOptionForCustomEditMode:10 slot:0];
-    v8 = [v7 fullname];
-    v9 = [v8 isEqualToString:@"special.multicolor"];
+    fullname = [v7 fullname];
+    v9 = [fullname isEqualToString:@"special.multicolor"];
 
     if (v9)
     {
-      [v4 addObjectsFromArray:&unk_28418ADE0];
+      [array addObjectsFromArray:&unk_28418ADE0];
     }
 
     else
     {
-      v10 = [v7 fullname];
-      v14[0] = v10;
-      v11 = [v7 fullname];
-      v14[1] = v11;
+      fullname2 = [v7 fullname];
+      v14[0] = fullname2;
+      fullname3 = [v7 fullname];
+      v14[1] = fullname3;
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
-      [v4 addObjectsFromArray:v12];
+      [array addObjectsFromArray:v12];
     }
   }
 
-  return v4;
+  return array;
 }
 
 @end

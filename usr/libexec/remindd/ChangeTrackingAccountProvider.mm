@@ -4,9 +4,9 @@
 - (_TtC7reminddP33_38651BD03EE367A00C80EB4E8CAA4E4629ChangeTrackingAccountProvider)init;
 - (_TtC7reminddP33_45435200B10504FC9CF3E682DD4A9AA229ChangeTrackingAccountProvider)init;
 - (id)loggingDescription;
-- (void)setAccountDescription:(id)a3;
-- (void)setAccountID:(id)a3;
-- (void)setRem_accountObjectID:(id)a3;
+- (void)setAccountDescription:(id)description;
+- (void)setAccountID:(id)d;
+- (void)setRem_accountObjectID:(id)d;
 @end
 
 @implementation ChangeTrackingAccountProvider
@@ -21,7 +21,7 @@
   return v4;
 }
 
-- (void)setAccountID:(id)a3
+- (void)setAccountID:(id)d
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = (self + OBJC_IVAR____TtC7reminddP33_38651BD03EE367A00C80EB4E8CAA4E4629ChangeTrackingAccountProvider_accountID);
@@ -30,11 +30,11 @@
   v5[1] = v7;
 }
 
-- (void)setRem_accountObjectID:(id)a3
+- (void)setRem_accountObjectID:(id)d
 {
   v4 = *(self + OBJC_IVAR____TtC7reminddP33_38651BD03EE367A00C80EB4E8CAA4E4629ChangeTrackingAccountProvider_rem_accountObjectID);
-  *(self + OBJC_IVAR____TtC7reminddP33_38651BD03EE367A00C80EB4E8CAA4E4629ChangeTrackingAccountProvider_rem_accountObjectID) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC7reminddP33_38651BD03EE367A00C80EB4E8CAA4E4629ChangeTrackingAccountProvider_rem_accountObjectID) = d;
+  dCopy = d;
 }
 
 - (NSString)accountDescription
@@ -55,9 +55,9 @@
   return v4;
 }
 
-- (void)setAccountDescription:(id)a3
+- (void)setAccountDescription:(id)description
 {
-  if (a3)
+  if (description)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -76,7 +76,7 @@
 
 - (id)loggingDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_100206864();
 
   v3 = String._bridgeToObjectiveC()();

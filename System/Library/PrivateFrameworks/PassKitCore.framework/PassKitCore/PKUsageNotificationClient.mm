@@ -1,11 +1,11 @@
 @interface PKUsageNotificationClient
 - (PKUsageNotificationClient)init;
-- (void)setPassUsageHandler:(id)a3;
-- (void)setPaymentPassUsageHandler:(id)a3;
-- (void)setPaymentUsageHandler:(id)a3;
-- (void)usedPassFromSource:(int64_t)a3 withTypeIdentifier:(id)a4 info:(id)a5;
-- (void)usedPaymentPassWithTransactionIdentifier:(id)a3 info:(id)a4;
-- (void)usedPaymentPassWithUniqueIdentifier:(id)a3 transactionIdentifier:(id)a4 info:(id)a5;
+- (void)setPassUsageHandler:(id)handler;
+- (void)setPaymentPassUsageHandler:(id)handler;
+- (void)setPaymentUsageHandler:(id)handler;
+- (void)usedPassFromSource:(int64_t)source withTypeIdentifier:(id)identifier info:(id)info;
+- (void)usedPaymentPassWithTransactionIdentifier:(id)identifier info:(id)info;
+- (void)usedPaymentPassWithUniqueIdentifier:(id)identifier transactionIdentifier:(id)transactionIdentifier info:(id)info;
 @end
 
 @implementation PKUsageNotificationClient
@@ -28,51 +28,51 @@
   return v2;
 }
 
-- (void)setPassUsageHandler:(id)a3
+- (void)setPassUsageHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   handler = self->_handler;
   self->_handler = v4;
 }
 
-- (void)setPaymentUsageHandler:(id)a3
+- (void)setPaymentUsageHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   paymentHandler = self->_paymentHandler;
   self->_paymentHandler = v4;
 }
 
-- (void)setPaymentPassUsageHandler:(id)a3
+- (void)setPaymentPassUsageHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   paymentPassUsageHandler = self->_paymentPassUsageHandler;
   self->_paymentPassUsageHandler = v4;
 }
 
-- (void)usedPassFromSource:(int64_t)a3 withTypeIdentifier:(id)a4 info:(id)a5
+- (void)usedPassFromSource:(int64_t)source withTypeIdentifier:(id)identifier info:(id)info
 {
   handler = self->_handler;
   if (handler)
   {
-    handler[2](handler, a4, a3, a5);
+    handler[2](handler, identifier, source, info);
   }
 }
 
-- (void)usedPaymentPassWithUniqueIdentifier:(id)a3 transactionIdentifier:(id)a4 info:(id)a5
+- (void)usedPaymentPassWithUniqueIdentifier:(id)identifier transactionIdentifier:(id)transactionIdentifier info:(id)info
 {
   paymentHandler = self->_paymentHandler;
   if (paymentHandler)
   {
-    paymentHandler[2](paymentHandler, a3, a4, a5);
+    paymentHandler[2](paymentHandler, identifier, transactionIdentifier, info);
   }
 }
 
-- (void)usedPaymentPassWithTransactionIdentifier:(id)a3 info:(id)a4
+- (void)usedPaymentPassWithTransactionIdentifier:(id)identifier info:(id)info
 {
   paymentPassUsageHandler = self->_paymentPassUsageHandler;
   if (paymentPassUsageHandler)
   {
-    paymentPassUsageHandler[2](paymentPassUsageHandler, a3, a4);
+    paymentPassUsageHandler[2](paymentPassUsageHandler, identifier, info);
   }
 }
 

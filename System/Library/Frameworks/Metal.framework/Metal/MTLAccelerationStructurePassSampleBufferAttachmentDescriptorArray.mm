@@ -1,9 +1,9 @@
 @interface MTLAccelerationStructurePassSampleBufferAttachmentDescriptorArray
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLAccelerationStructurePassSampleBufferAttachmentDescriptor)objectAtIndexedSubscript:(NSUInteger)attachmentIndex;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)copyFrom:(id)a3 withZone:(_NSZone *)a4;
+- (void)copyFrom:(id)from withZone:(_NSZone *)zone;
 - (void)dealloc;
 - (void)setObject:(MTLAccelerationStructurePassSampleBufferAttachmentDescriptor *)attachment atIndexedSubscript:(NSUInteger)attachmentIndex;
 @end
@@ -65,29 +65,29 @@
   }
 }
 
-- (void)copyFrom:(id)a3 withZone:(_NSZone *)a4
+- (void)copyFrom:(id)from withZone:(_NSZone *)zone
 {
   v6 = 0;
   sampleDescriptors = self->_sampleDescriptors;
   do
   {
-    sampleDescriptors[v6] = [objc_msgSend(a3 _descriptorAtIndex:{v6), "copyWithZone:", a4}];
+    sampleDescriptors[v6] = [objc_msgSend(from _descriptorAtIndex:{v6), "copyWithZone:", zone}];
     ++v6;
   }
 
   while (v6 != 4);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
-  [v5 copyFrom:self withZone:a3];
+  [v5 copyFrom:self withZone:zone];
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v14) = 1;
   }
@@ -103,14 +103,14 @@
     v29 = v9;
     v30 = v10;
     Class = object_getClass(self);
-    if (Class == object_getClass(a3))
+    if (Class == object_getClass(equal))
     {
       v15 = 0;
       sampleDescriptors = self->_sampleDescriptors;
       do
       {
         v17 = sampleDescriptors[v15];
-        v18 = [a3 objectAtIndexedSubscript:{v15, v23, v24, v25, v26, v27, v28, v29, v30}];
+        v18 = [equal objectAtIndexedSubscript:{v15, v23, v24, v25, v26, v27, v28, v29, v30}];
         if (v17 != v18)
         {
           v19 = v18;
@@ -127,7 +127,7 @@
           if (v20)
           {
             v19 = objc_alloc_init(MTLAccelerationStructurePassSampleBufferAttachmentDescriptor);
-            *(a3 + v15 + 1) = v19;
+            *(equal + v15 + 1) = v19;
           }
 
           else if (v18 && !v17)

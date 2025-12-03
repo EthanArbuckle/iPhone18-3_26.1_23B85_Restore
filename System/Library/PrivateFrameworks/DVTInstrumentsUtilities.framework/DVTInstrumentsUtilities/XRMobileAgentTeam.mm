@@ -1,19 +1,19 @@
 @interface XRMobileAgentTeam
 - (XRMobileAgentTeam)init;
-- (XRMobileAgentTeam)initWithMembers:(id)a3;
+- (XRMobileAgentTeam)initWithMembers:(id)members;
 @end
 
 @implementation XRMobileAgentTeam
 
-- (XRMobileAgentTeam)initWithMembers:(id)a3
+- (XRMobileAgentTeam)initWithMembers:(id)members
 {
-  v4 = a3;
+  membersCopy = members;
   v13.receiver = self;
   v13.super_class = XRMobileAgentTeam;
   v9 = [(XRMobileAgentTeam *)&v13 init];
   if (v9)
   {
-    v10 = objc_msgSend_copy(v4, v5, v6, v7, v8);
+    v10 = objc_msgSend_copy(membersCopy, v5, v6, v7, v8);
     members = v9->_members;
     v9->_members = v10;
   }

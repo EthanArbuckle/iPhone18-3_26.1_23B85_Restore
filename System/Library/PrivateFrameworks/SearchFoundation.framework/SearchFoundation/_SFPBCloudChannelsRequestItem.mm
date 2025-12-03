@@ -1,47 +1,47 @@
 @interface _SFPBCloudChannelsRequestItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBCloudChannelsRequestItem)initWithDictionary:(id)a3;
-- (_SFPBCloudChannelsRequestItem)initWithFacade:(id)a3;
-- (_SFPBCloudChannelsRequestItem)initWithJSON:(id)a3;
+- (_SFPBCloudChannelsRequestItem)initWithDictionary:(id)dictionary;
+- (_SFPBCloudChannelsRequestItem)initWithFacade:(id)facade;
+- (_SFPBCloudChannelsRequestItem)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setChannelIdentifier:(id)a3;
-- (void)setPushTopic:(id)a3;
-- (void)setSubscribedEntityIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setChannelIdentifier:(id)identifier;
+- (void)setPushTopic:(id)topic;
+- (void)setSubscribedEntityIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBCloudChannelsRequestItem
 
-- (_SFPBCloudChannelsRequestItem)initWithFacade:(id)a3
+- (_SFPBCloudChannelsRequestItem)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBCloudChannelsRequestItem *)self init];
   if (v5)
   {
-    v6 = [v4 channelIdentifier];
+    channelIdentifier = [facadeCopy channelIdentifier];
 
-    if (v6)
+    if (channelIdentifier)
     {
-      v7 = [v4 channelIdentifier];
-      [(_SFPBCloudChannelsRequestItem *)v5 setChannelIdentifier:v7];
+      channelIdentifier2 = [facadeCopy channelIdentifier];
+      [(_SFPBCloudChannelsRequestItem *)v5 setChannelIdentifier:channelIdentifier2];
     }
 
-    v8 = [v4 pushTopic];
+    pushTopic = [facadeCopy pushTopic];
 
-    if (v8)
+    if (pushTopic)
     {
-      v9 = [v4 pushTopic];
-      [(_SFPBCloudChannelsRequestItem *)v5 setPushTopic:v9];
+      pushTopic2 = [facadeCopy pushTopic];
+      [(_SFPBCloudChannelsRequestItem *)v5 setPushTopic:pushTopic2];
     }
 
-    v10 = [v4 subscribedEntityIdentifier];
+    subscribedEntityIdentifier = [facadeCopy subscribedEntityIdentifier];
 
-    if (v10)
+    if (subscribedEntityIdentifier)
     {
-      v11 = [v4 subscribedEntityIdentifier];
-      [(_SFPBCloudChannelsRequestItem *)v5 setSubscribedEntityIdentifier:v11];
+      subscribedEntityIdentifier2 = [facadeCopy subscribedEntityIdentifier];
+      [(_SFPBCloudChannelsRequestItem *)v5 setSubscribedEntityIdentifier:subscribedEntityIdentifier2];
     }
 
     v12 = v5;
@@ -50,15 +50,15 @@
   return v5;
 }
 
-- (_SFPBCloudChannelsRequestItem)initWithDictionary:(id)a3
+- (_SFPBCloudChannelsRequestItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = _SFPBCloudChannelsRequestItem;
   v5 = [(_SFPBCloudChannelsRequestItem *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"channelIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"channelIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       [(_SFPBCloudChannelsRequestItem *)v5 setChannelIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"pushTopic"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"pushTopic"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       [(_SFPBCloudChannelsRequestItem *)v5 setPushTopic:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"subscribedEntityIdentifier"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"subscribedEntityIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,30 +88,30 @@
   return v5;
 }
 
-- (_SFPBCloudChannelsRequestItem)initWithJSON:(id)a3
+- (_SFPBCloudChannelsRequestItem)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBCloudChannelsRequestItem *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBCloudChannelsRequestItem *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBCloudChannelsRequestItem *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -124,29 +124,29 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_channelIdentifier)
   {
-    v4 = [(_SFPBCloudChannelsRequestItem *)self channelIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"channelIdentifier"];
+    channelIdentifier = [(_SFPBCloudChannelsRequestItem *)self channelIdentifier];
+    v5 = [channelIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"channelIdentifier"];
   }
 
   if (self->_pushTopic)
   {
-    v6 = [(_SFPBCloudChannelsRequestItem *)self pushTopic];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"pushTopic"];
+    pushTopic = [(_SFPBCloudChannelsRequestItem *)self pushTopic];
+    v7 = [pushTopic copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"pushTopic"];
   }
 
   if (self->_subscribedEntityIdentifier)
   {
-    v8 = [(_SFPBCloudChannelsRequestItem *)self subscribedEntityIdentifier];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"subscribedEntityIdentifier"];
+    subscribedEntityIdentifier = [(_SFPBCloudChannelsRequestItem *)self subscribedEntityIdentifier];
+    v9 = [subscribedEntityIdentifier copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"subscribedEntityIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -156,28 +156,28 @@
   return v4 ^ [(NSString *)self->_subscribedEntityIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_SFPBCloudChannelsRequestItem *)self channelIdentifier];
-  v6 = [v4 channelIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  channelIdentifier = [(_SFPBCloudChannelsRequestItem *)self channelIdentifier];
+  channelIdentifier2 = [equalCopy channelIdentifier];
+  if ((channelIdentifier != 0) == (channelIdentifier2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_SFPBCloudChannelsRequestItem *)self channelIdentifier];
-  if (v7)
+  channelIdentifier3 = [(_SFPBCloudChannelsRequestItem *)self channelIdentifier];
+  if (channelIdentifier3)
   {
-    v8 = v7;
-    v9 = [(_SFPBCloudChannelsRequestItem *)self channelIdentifier];
-    v10 = [v4 channelIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = channelIdentifier3;
+    channelIdentifier4 = [(_SFPBCloudChannelsRequestItem *)self channelIdentifier];
+    channelIdentifier5 = [equalCopy channelIdentifier];
+    v11 = [channelIdentifier4 isEqual:channelIdentifier5];
 
     if (!v11)
     {
@@ -189,20 +189,20 @@
   {
   }
 
-  v5 = [(_SFPBCloudChannelsRequestItem *)self pushTopic];
-  v6 = [v4 pushTopic];
-  if ((v5 != 0) == (v6 == 0))
+  channelIdentifier = [(_SFPBCloudChannelsRequestItem *)self pushTopic];
+  channelIdentifier2 = [equalCopy pushTopic];
+  if ((channelIdentifier != 0) == (channelIdentifier2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_SFPBCloudChannelsRequestItem *)self pushTopic];
-  if (v12)
+  pushTopic = [(_SFPBCloudChannelsRequestItem *)self pushTopic];
+  if (pushTopic)
   {
-    v13 = v12;
-    v14 = [(_SFPBCloudChannelsRequestItem *)self pushTopic];
-    v15 = [v4 pushTopic];
-    v16 = [v14 isEqual:v15];
+    v13 = pushTopic;
+    pushTopic2 = [(_SFPBCloudChannelsRequestItem *)self pushTopic];
+    pushTopic3 = [equalCopy pushTopic];
+    v16 = [pushTopic2 isEqual:pushTopic3];
 
     if (!v16)
     {
@@ -214,12 +214,12 @@
   {
   }
 
-  v5 = [(_SFPBCloudChannelsRequestItem *)self subscribedEntityIdentifier];
-  v6 = [v4 subscribedEntityIdentifier];
-  if ((v5 != 0) != (v6 == 0))
+  channelIdentifier = [(_SFPBCloudChannelsRequestItem *)self subscribedEntityIdentifier];
+  channelIdentifier2 = [equalCopy subscribedEntityIdentifier];
+  if ((channelIdentifier != 0) != (channelIdentifier2 == 0))
   {
-    v17 = [(_SFPBCloudChannelsRequestItem *)self subscribedEntityIdentifier];
-    if (!v17)
+    subscribedEntityIdentifier = [(_SFPBCloudChannelsRequestItem *)self subscribedEntityIdentifier];
+    if (!subscribedEntityIdentifier)
     {
 
 LABEL_20:
@@ -227,10 +227,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_SFPBCloudChannelsRequestItem *)self subscribedEntityIdentifier];
-    v20 = [v4 subscribedEntityIdentifier];
-    v21 = [v19 isEqual:v20];
+    v18 = subscribedEntityIdentifier;
+    subscribedEntityIdentifier2 = [(_SFPBCloudChannelsRequestItem *)self subscribedEntityIdentifier];
+    subscribedEntityIdentifier3 = [equalCopy subscribedEntityIdentifier];
+    v21 = [subscribedEntityIdentifier2 isEqual:subscribedEntityIdentifier3];
 
     if (v21)
     {
@@ -250,49 +250,49 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(_SFPBCloudChannelsRequestItem *)self channelIdentifier];
-  if (v4)
+  toCopy = to;
+  channelIdentifier = [(_SFPBCloudChannelsRequestItem *)self channelIdentifier];
+  if (channelIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBCloudChannelsRequestItem *)self pushTopic];
-  if (v5)
+  pushTopic = [(_SFPBCloudChannelsRequestItem *)self pushTopic];
+  if (pushTopic)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBCloudChannelsRequestItem *)self subscribedEntityIdentifier];
-  if (v6)
+  subscribedEntityIdentifier = [(_SFPBCloudChannelsRequestItem *)self subscribedEntityIdentifier];
+  if (subscribedEntityIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setSubscribedEntityIdentifier:(id)a3
+- (void)setSubscribedEntityIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   subscribedEntityIdentifier = self->_subscribedEntityIdentifier;
   self->_subscribedEntityIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPushTopic:(id)a3
+- (void)setPushTopic:(id)topic
 {
-  v4 = [a3 copy];
+  v4 = [topic copy];
   pushTopic = self->_pushTopic;
   self->_pushTopic = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setChannelIdentifier:(id)a3
+- (void)setChannelIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   channelIdentifier = self->_channelIdentifier;
   self->_channelIdentifier = v4;
 

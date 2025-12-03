@@ -1,16 +1,16 @@
 @interface TRIActiveExperimentsSysdiagnoseProvider
-+ (BOOL)_isFactorRecordFileType:(id)a3;
-- (TRIActiveExperimentsSysdiagnoseProvider)initWithAllocationStatusProvider:(id)a3 outputFilename:(id)a4 environments:(id)a5;
-- (id)sysdiagnoseLinesWithError:(id *)a3;
++ (BOOL)_isFactorRecordFileType:(id)type;
+- (TRIActiveExperimentsSysdiagnoseProvider)initWithAllocationStatusProvider:(id)provider outputFilename:(id)filename environments:(id)environments;
+- (id)sysdiagnoseLinesWithError:(id *)error;
 @end
 
 @implementation TRIActiveExperimentsSysdiagnoseProvider
 
-- (id)sysdiagnoseLinesWithError:(id *)a3
+- (id)sysdiagnoseLinesWithError:(id *)error
 {
   v95 = *MEMORY[0x277D85DE8];
   v5 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:self->_environments];
-  v6 = [(TRIAllocationStatusDefaultProvider *)self->_statusProvider activeExperimentInformationWithEnvironments:v5 error:a3];
+  v6 = [(TRIAllocationStatusDefaultProvider *)self->_statusProvider activeExperimentInformationWithEnvironments:v5 error:error];
   v7 = v6;
   if (v6)
   {
@@ -54,10 +54,10 @@
           v12 = objc_alloc(MEMORY[0x277CCACA8]);
           v13 = [v10 objectForKey:@"experiment"];
           v65 = v11;
-          v14 = [v11 intValue];
-          if (v14)
+          intValue = [v11 intValue];
+          if (intValue)
           {
-            v15 = v14;
+            v15 = intValue;
           }
 
           else
@@ -101,10 +101,10 @@
                 v23 = objc_alloc(MEMORY[0x277CCACA8]);
                 v24 = [v21 objectForKey:@"name"];
                 v70 = v22;
-                v25 = [v22 intValue];
-                if (v25)
+                intValue2 = [v22 intValue];
+                if (intValue2)
                 {
-                  v26 = v25;
+                  v26 = intValue2;
                 }
 
                 else
@@ -281,10 +281,10 @@ void __69__TRIActiveExperimentsSysdiagnoseProvider_sysdiagnoseLinesWithError___b
   [v4 addObject:v8];
 }
 
-+ (BOOL)_isFactorRecordFileType:(id)a3
++ (BOOL)_isFactorRecordFileType:(id)type
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"assetReference"];
+  typeCopy = type;
+  v4 = [typeCopy objectForKey:@"assetReference"];
   if (v4)
   {
     v5 = 1;
@@ -292,7 +292,7 @@ void __69__TRIActiveExperimentsSysdiagnoseProvider_sysdiagnoseLinesWithError___b
 
   else
   {
-    v6 = [v3 objectForKey:@"path"];
+    v6 = [typeCopy objectForKey:@"path"];
     if (v6)
     {
       v5 = 1;
@@ -300,7 +300,7 @@ void __69__TRIActiveExperimentsSysdiagnoseProvider_sysdiagnoseLinesWithError___b
 
     else
     {
-      v7 = [v3 objectForKey:@"type"];
+      v7 = [typeCopy objectForKey:@"type"];
       v5 = [@"file" isEqual:v7];
     }
   }
@@ -308,20 +308,20 @@ void __69__TRIActiveExperimentsSysdiagnoseProvider_sysdiagnoseLinesWithError___b
   return v5;
 }
 
-- (TRIActiveExperimentsSysdiagnoseProvider)initWithAllocationStatusProvider:(id)a3 outputFilename:(id)a4 environments:(id)a5
+- (TRIActiveExperimentsSysdiagnoseProvider)initWithAllocationStatusProvider:(id)provider outputFilename:(id)filename environments:(id)environments
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  filenameCopy = filename;
+  environmentsCopy = environments;
   v15.receiver = self;
   v15.super_class = TRIActiveExperimentsSysdiagnoseProvider;
   v12 = [(TRIActiveExperimentsSysdiagnoseProvider *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_statusProvider, a3);
-    objc_storeStrong(&v13->_filename, a4);
-    objc_storeStrong(&v13->_environments, a5);
+    objc_storeStrong(&v12->_statusProvider, provider);
+    objc_storeStrong(&v13->_filename, filename);
+    objc_storeStrong(&v13->_environments, environments);
   }
 
   return v13;

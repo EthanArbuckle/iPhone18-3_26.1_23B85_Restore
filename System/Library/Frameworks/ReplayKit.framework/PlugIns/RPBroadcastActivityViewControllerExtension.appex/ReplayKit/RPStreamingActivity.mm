@@ -1,23 +1,23 @@
 @interface RPStreamingActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
-- (RPStreamingActivity)initWithApplicationExtension:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
+- (RPStreamingActivity)initWithApplicationExtension:(id)extension;
 - (id)activityImage;
 - (id)activityTitle;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation RPStreamingActivity
 
-- (RPStreamingActivity)initWithApplicationExtension:(id)a3
+- (RPStreamingActivity)initWithApplicationExtension:(id)extension
 {
-  v5 = a3;
+  extensionCopy = extension;
   v9.receiver = self;
   v9.super_class = RPStreamingActivity;
   v6 = [(RPStreamingActivity *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_applicationExtension, a3);
+    objc_storeStrong(&v6->_applicationExtension, extension);
   }
 
   return v7;
@@ -25,28 +25,28 @@
 
 - (id)activityTitle
 {
-  v2 = [(NSExtension *)self->_applicationExtension infoDictionary];
-  v3 = [v2 objectForKey:_kCFBundleDisplayNameKey];
+  infoDictionary = [(NSExtension *)self->_applicationExtension infoDictionary];
+  v3 = [infoDictionary objectForKey:_kCFBundleDisplayNameKey];
 
   return v3;
 }
 
 - (id)activityImage
 {
-  v2 = [(NSExtension *)self->_applicationExtension icons];
-  v3 = [v2 firstObject];
+  icons = [(NSExtension *)self->_applicationExtension icons];
+  firstObject = [icons firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  itemsCopy = items;
+  v4 = [itemsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -56,7 +56,7 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -68,7 +68,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [itemsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -83,11 +83,11 @@ LABEL_11:
   return v4;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v3.receiver = self;
   v3.super_class = RPStreamingActivity;
-  [(RPStreamingActivity *)&v3 prepareWithActivityItems:a3];
+  [(RPStreamingActivity *)&v3 prepareWithActivityItems:items];
 }
 
 @end

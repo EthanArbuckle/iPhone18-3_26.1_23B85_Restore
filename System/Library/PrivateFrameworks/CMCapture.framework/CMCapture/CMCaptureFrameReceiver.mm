@@ -1,7 +1,7 @@
 @interface CMCaptureFrameReceiver
 + (NSDictionary)availableFrameSenderEndpointsByPID;
 + (void)initialize;
-- (CMCaptureFrameReceiver)initWithFrameSenderServerEndpoint:(id)a3 frameReceiverHandler:(id)a4;
+- (CMCaptureFrameReceiver)initWithFrameSenderServerEndpoint:(id)endpoint frameReceiverHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -9,7 +9,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = __60__CMCaptureFrameReceiver_availableFrameSenderEndpointsByPID__block_invoke;
   block[3] = &unk_1E798F870;
-  block[4] = a1;
+  block[4] = self;
   if (availableFrameSenderEndpointsByPID_initFrameSenderEndpoints != -1)
   {
     dispatch_once(&availableFrameSenderEndpointsByPID_initFrameSenderEndpoints, block);
@@ -182,28 +182,28 @@ void __60__CMCaptureFrameReceiver_availableFrameSenderEndpointsByPID__block_invo
   }
 }
 
-- (CMCaptureFrameReceiver)initWithFrameSenderServerEndpoint:(id)a3 frameReceiverHandler:(id)a4
+- (CMCaptureFrameReceiver)initWithFrameSenderServerEndpoint:(id)endpoint frameReceiverHandler:(id)handler
 {
-  v7 = [a3 endpoint];
+  endpoint = [endpoint endpoint];
   v8 = 0;
-  if (a4)
+  if (handler)
   {
-    if (v7)
+    if (endpoint)
     {
       v36.receiver = self;
       v36.super_class = CMCaptureFrameReceiver;
       v8 = [(CMCaptureFrameReceiver *)&v36 init];
       if (v8)
       {
-        v9 = xpc_connection_create_from_endpoint([a3 endpoint]);
+        v9 = xpc_connection_create_from_endpoint([endpoint endpoint]);
         if (v9)
         {
           v10 = v9;
           v8->_connection = v9;
-          v8->_endpointUniqueID = [a3 endpointUniqueID];
-          v8->_endpointAuditToken = [a3 endpointAuditToken];
-          v8->_endpointProxyAuditToken = [a3 endpointProxyAuditToken];
-          v8->_frameReceiverHandler = [a4 copy];
+          v8->_endpointUniqueID = [endpoint endpointUniqueID];
+          v8->_endpointAuditToken = [endpoint endpointAuditToken];
+          v8->_endpointProxyAuditToken = [endpoint endpointProxyAuditToken];
+          v8->_frameReceiverHandler = [handler copy];
           v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
           v12 = dispatch_queue_create("com.apple.cmio.frame-capture-receiver", v11);
           v8->_queue = v12;
@@ -219,7 +219,7 @@ void __60__CMCaptureFrameReceiver_availableFrameSenderEndpointsByPID__block_invo
           handler[4] = v10;
           xpc_connection_set_event_handler(v10, handler);
           xpc_connection_activate(v8->_connection);
-          v8->_endpointPID = [a3 endpointPID];
+          v8->_endpointPID = [endpoint endpointPID];
           if (dword_1EB58DE20)
           {
             v32 = 0;

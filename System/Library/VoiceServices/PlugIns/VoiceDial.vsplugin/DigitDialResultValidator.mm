@@ -1,12 +1,12 @@
 @interface DigitDialResultValidator
-- (BOOL)_hasMinimumNumberOfDigits:(id)a3 countryCode:(id)a4;
-- (BOOL)_isValidExceptionForDevice:(id)a3;
-- (BOOL)_isValidExceptionForNetwork:(id)a3;
+- (BOOL)_hasMinimumNumberOfDigits:(id)digits countryCode:(id)code;
+- (BOOL)_isValidExceptionForDevice:(id)device;
+- (BOOL)_isValidExceptionForNetwork:(id)network;
 - (NSString)deviceCountryCode;
 - (NSString)networkCountryCode;
-- (id)_copyExceptionsForCountryCode:(id)a3;
-- (id)validRecognitionResultFromRecognitionResult:(id)a3;
-- (unint64_t)indexOfValidPhoneNumber:(id)a3;
+- (id)_copyExceptionsForCountryCode:(id)code;
+- (id)validRecognitionResultFromRecognitionResult:(id)result;
+- (unint64_t)indexOfValidPhoneNumber:(id)number;
 @end
 
 @implementation DigitDialResultValidator
@@ -41,77 +41,77 @@
   return networkCountryCode;
 }
 
-- (id)_copyExceptionsForCountryCode:(id)a3
+- (id)_copyExceptionsForCountryCode:(id)code
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  codeCopy = code;
+  v4 = codeCopy;
+  if (codeCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x29EDBA0F8]) initWithFormat:@"Exceptions-%@", v3];
+    codeCopy = [objc_alloc(MEMORY[0x29EDBA0F8]) initWithFormat:@"Exceptions-%@", codeCopy];
     v6 = VoiceDialBundle();
-    v7 = [v6 pathForResource:v5 ofType:@"plist" inDirectory:@"DigitDialExceptions"];
+    v7 = [v6 pathForResource:codeCopy ofType:@"plist" inDirectory:@"DigitDialExceptions"];
 
     if (v7)
     {
-      v3 = [objc_alloc(MEMORY[0x29EDB8D80]) initWithContentsOfFile:v7];
+      codeCopy = [objc_alloc(MEMORY[0x29EDB8D80]) initWithContentsOfFile:v7];
     }
 
     else
     {
-      v3 = 0;
+      codeCopy = 0;
     }
   }
 
   else
   {
     v7 = 0;
-    v5 = 0;
+    codeCopy = 0;
   }
 
-  v8 = v3;
+  v8 = codeCopy;
 
   return v8;
 }
 
-- (BOOL)_isValidExceptionForDevice:(id)a3
+- (BOOL)_isValidExceptionForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   deviceExceptions = self->_deviceExceptions;
   if (!deviceExceptions)
   {
-    v6 = [(DigitDialResultValidator *)self deviceCountryCode];
-    v7 = [(DigitDialResultValidator *)self _copyExceptionsForCountryCode:v6];
+    deviceCountryCode = [(DigitDialResultValidator *)self deviceCountryCode];
+    v7 = [(DigitDialResultValidator *)self _copyExceptionsForCountryCode:deviceCountryCode];
     v8 = self->_deviceExceptions;
     self->_deviceExceptions = v7;
 
     deviceExceptions = self->_deviceExceptions;
   }
 
-  v9 = [(NSArray *)deviceExceptions containsObject:v4];
+  v9 = [(NSArray *)deviceExceptions containsObject:deviceCopy];
 
   return v9;
 }
 
-- (BOOL)_isValidExceptionForNetwork:(id)a3
+- (BOOL)_isValidExceptionForNetwork:(id)network
 {
-  v4 = a3;
+  networkCopy = network;
   networkExceptions = self->_networkExceptions;
   if (!networkExceptions)
   {
-    v6 = [(DigitDialResultValidator *)self networkCountryCode];
-    v7 = [(DigitDialResultValidator *)self _copyExceptionsForCountryCode:v6];
+    networkCountryCode = [(DigitDialResultValidator *)self networkCountryCode];
+    v7 = [(DigitDialResultValidator *)self _copyExceptionsForCountryCode:networkCountryCode];
     v8 = self->_networkExceptions;
     self->_networkExceptions = v7;
 
     networkExceptions = self->_networkExceptions;
   }
 
-  v9 = [(NSArray *)networkExceptions containsObject:v4];
+  v9 = [(NSArray *)networkExceptions containsObject:networkCopy];
 
   return v9;
 }
 
-- (BOOL)_hasMinimumNumberOfDigits:(id)a3 countryCode:(id)a4
+- (BOOL)_hasMinimumNumberOfDigits:(id)digits countryCode:(id)code
 {
   v4 = CFPhoneNumberCreate();
   if (!v4)
@@ -137,14 +137,14 @@
   return v8;
 }
 
-- (unint64_t)indexOfValidPhoneNumber:(id)a3
+- (unint64_t)indexOfValidPhoneNumber:(id)number
 {
-  v4 = a3;
-  v5 = [v4 count];
+  numberCopy = number;
+  v5 = [numberCopy count];
   if (!v5)
   {
     v11 = 0;
-    v10 = 0;
+    networkCountryCode = 0;
     v7 = 0;
 LABEL_24:
     v12 = 0x7FFFFFFFFFFFFFFFLL;
@@ -155,13 +155,13 @@ LABEL_24:
   v7 = 0;
   v8 = 0;
   v9 = 0;
-  v10 = 0;
+  networkCountryCode = 0;
   v11 = 0;
   do
   {
     v12 = v8;
     v13 = v7;
-    v7 = [v4 objectAtIndex:v8];
+    v7 = [numberCopy objectAtIndex:v8];
 
     v14 = [v7 length];
     if (!v14)
@@ -169,14 +169,14 @@ LABEL_24:
       goto LABEL_18;
     }
 
-    v15 = [(DigitDialResultValidator *)self deviceCountryCode];
+    deviceCountryCode = [(DigitDialResultValidator *)self deviceCountryCode];
 
-    if (PNIsValidPhoneNumberForCountry() && [(DigitDialResultValidator *)self _hasMinimumNumberOfDigits:v7 countryCode:v15])
+    if (PNIsValidPhoneNumberForCountry() && [(DigitDialResultValidator *)self _hasMinimumNumberOfDigits:v7 countryCode:deviceCountryCode])
     {
       goto LABEL_22;
     }
 
-    if (v10)
+    if (networkCountryCode)
     {
       if (v9)
       {
@@ -186,11 +186,11 @@ LABEL_24:
 
     else
     {
-      v10 = [(DigitDialResultValidator *)self networkCountryCode];
+      networkCountryCode = [(DigitDialResultValidator *)self networkCountryCode];
       if ((TUStringsAreEqualOrNil() & 1) == 0)
       {
 LABEL_8:
-        if (PNIsValidPhoneNumberForCountry() && [(DigitDialResultValidator *)self _hasMinimumNumberOfDigits:v7 countryCode:v10])
+        if (PNIsValidPhoneNumberForCountry() && [(DigitDialResultValidator *)self _hasMinimumNumberOfDigits:v7 countryCode:networkCountryCode])
         {
           goto LABEL_22;
         }
@@ -219,7 +219,7 @@ LABEL_13:
       v9 = 0;
     }
 
-    v11 = v15;
+    v11 = deviceCountryCode;
 LABEL_18:
     if (v14)
     {
@@ -235,19 +235,19 @@ LABEL_18:
     goto LABEL_24;
   }
 
-  v15 = v11;
+  deviceCountryCode = v11;
 LABEL_22:
-  v11 = v15;
+  v11 = deviceCountryCode;
 LABEL_25:
 
   return v12;
 }
 
-- (id)validRecognitionResultFromRecognitionResult:(id)a3
+- (id)validRecognitionResultFromRecognitionResult:(id)result
 {
   v9 = 0;
-  v4 = a3;
-  DigitDialPhoneNumberFromResult(v4, &v9, 0);
+  resultCopy = result;
+  DigitDialPhoneNumberFromResult(resultCopy, &v9, 0);
   v5 = v9;
   if ([(DigitDialResultValidator *)self indexOfValidPhoneNumber:v5]== 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -256,7 +256,7 @@ LABEL_25:
 
   else
   {
-    v6 = v4;
+    v6 = resultCopy;
   }
 
   v7 = v6;

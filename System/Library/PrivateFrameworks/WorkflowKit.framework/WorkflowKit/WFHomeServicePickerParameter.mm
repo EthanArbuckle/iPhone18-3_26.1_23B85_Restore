@@ -1,23 +1,23 @@
 @interface WFHomeServicePickerParameter
-- (id)localizedLabelForState:(id)a3;
+- (id)localizedLabelForState:(id)state;
 @end
 
 @implementation WFHomeServicePickerParameter
 
-- (id)localizedLabelForState:(id)a3
+- (id)localizedLabelForState:(id)state
 {
-  if (a3)
+  if (state)
   {
-    v3 = [a3 service];
-    v4 = [v3 name];
+    service = [state service];
+    name = [service name];
   }
 
   else
   {
-    v4 = 0;
+    name = 0;
   }
 
-  return v4;
+  return name;
 }
 
 @end

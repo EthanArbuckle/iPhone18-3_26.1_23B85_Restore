@@ -5,8 +5,8 @@
 - (HMDHomeManager)homeManager;
 - (id)flushBackingStore;
 - (id)resetBackingStore;
-- (id)schemaHashForObject:(id)a3;
-- (void)setHomeManager:(id)a3;
+- (id)schemaHashForObject:(id)object;
+- (void)setHomeManager:(id)manager;
 @end
 
 @implementation HMDBackingStoreSingleton
@@ -18,12 +18,12 @@
   return WeakRetained;
 }
 
-- (void)setHomeManager:(id)a3
+- (void)setHomeManager:(id)manager
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  managerCopy = manager;
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -94,22 +94,22 @@
   return 0;
 }
 
-- (id)schemaHashForObject:(id)a3
+- (id)schemaHashForObject:(id)object
 {
-  v4 = a3;
-  v5 = [(HMDBackingStoreSingleton *)self objectPropertyHashLookup];
-  v6 = [v4 bsoType];
-  v7 = [v5 objectForKey:v6];
+  objectCopy = object;
+  objectPropertyHashLookup = [(HMDBackingStoreSingleton *)self objectPropertyHashLookup];
+  bsoType = [objectCopy bsoType];
+  bsoSchemaHash = [objectPropertyHashLookup objectForKey:bsoType];
 
-  if (!v7)
+  if (!bsoSchemaHash)
   {
-    v7 = [objc_opt_class() bsoSchemaHash];
-    v8 = [(HMDBackingStoreSingleton *)self objectPropertyHashLookup];
-    v9 = [v4 bsoType];
-    [v8 setObject:v7 forKey:v9];
+    bsoSchemaHash = [objc_opt_class() bsoSchemaHash];
+    objectPropertyHashLookup2 = [(HMDBackingStoreSingleton *)self objectPropertyHashLookup];
+    bsoType2 = [objectCopy bsoType];
+    [objectPropertyHashLookup2 setObject:bsoSchemaHash forKey:bsoType2];
   }
 
-  v10 = v7;
+  v10 = bsoSchemaHash;
 
   return v10;
 }
@@ -122,21 +122,21 @@
   v2 = [(HMDBackingStoreSingleton *)&v24 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     objectLookup = v2->_objectLookup;
-    v2->_objectLookup = v3;
+    v2->_objectLookup = strongToWeakObjectsMapTable;
 
-    v5 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     classToNameTransform = v2->_classToNameTransform;
-    v2->_classToNameTransform = v5;
+    v2->_classToNameTransform = strongToStrongObjectsMapTable;
 
-    v7 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     nameToClassTransform = v2->_nameToClassTransform;
-    v2->_nameToClassTransform = v7;
+    v2->_nameToClassTransform = strongToStrongObjectsMapTable2;
 
-    v9 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     objectPropertyHashLookup = v2->_objectPropertyHashLookup;
-    v2->_objectPropertyHashLookup = v9;
+    v2->_objectPropertyHashLookup = strongToStrongObjectsMapTable3;
 
     v11 = objc_alloc_init(MEMORY[0x277CCABD8]);
     queue = v2->_queue;

@@ -1,22 +1,22 @@
 @interface QLRoundProgressView
-- (QLRoundProgressView)initWithFrame:(CGRect)a3;
+- (QLRoundProgressView)initWithFrame:(CGRect)frame;
 - (double)progress;
 - (void)didMoveToWindow;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
-- (void)setProgress:(double)a3 animated:(BOOL)a4;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
+- (void)setProgress:(double)progress animated:(BOOL)animated;
 @end
 
 @implementation QLRoundProgressView
 
-- (QLRoundProgressView)initWithFrame:(CGRect)a3
+- (QLRoundProgressView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = QLRoundProgressView;
-  v3 = [(QLRoundProgressView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(QLRoundProgressView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(QLRoundProgressView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(QLRoundProgressView *)v3 setBackgroundColor:clearColor];
 
     v5 = v3;
   }
@@ -29,17 +29,17 @@
   v8.receiver = self;
   v8.super_class = QLRoundProgressView;
   [(QLRoundProgressView *)&v8 didMoveToWindow];
-  v3 = [(QLRoundProgressView *)self window];
-  v4 = [v3 screen];
-  [v4 scale];
+  window = [(QLRoundProgressView *)self window];
+  screen = [window screen];
+  [screen scale];
   v6 = v5;
-  v7 = [(QLRoundProgressView *)self layer];
-  [v7 setContentsScale:v6];
+  layer = [(QLRoundProgressView *)self layer];
+  [layer setContentsScale:v6];
 }
 
-- (void)setProgress:(double)a3 animated:(BOOL)a4
+- (void)setProgress:(double)progress animated:(BOOL)animated
 {
-  v5 = fmin(a3, 1.0);
+  v5 = fmin(progress, 1.0);
   if (v5 >= 0.0)
   {
     v6 = v5;
@@ -50,13 +50,13 @@
     v6 = 0.0;
   }
 
-  if (a4)
+  if (animated)
   {
     v7 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"progress"];
     v8 = MEMORY[0x277CCABB0];
-    v9 = [(QLRoundProgressView *)self layer];
-    v10 = [v9 presentationLayer];
-    [v10 progress];
+    layer = [(QLRoundProgressView *)self layer];
+    presentationLayer = [layer presentationLayer];
+    [presentationLayer progress];
     v11 = [v8 numberWithDouble:?];
     [v7 setFromValue:v11];
 
@@ -64,13 +64,13 @@
     [v7 setToValue:v12];
 
     [v7 setDuration:0.2];
-    v13 = [(QLRoundProgressView *)self layer];
-    [v13 addAnimation:v7 forKey:@"progress"];
+    layer2 = [(QLRoundProgressView *)self layer];
+    [layer2 addAnimation:v7 forKey:@"progress"];
   }
 
   [MEMORY[0x277CD9FF0] begin];
-  v14 = [(QLRoundProgressView *)self layer];
-  [v14 setProgress:v6];
+  layer3 = [(QLRoundProgressView *)self layer];
+  [layer3 setProgress:v6];
 
   v15 = MEMORY[0x277CD9FF0];
 
@@ -79,16 +79,16 @@
 
 - (double)progress
 {
-  v2 = [(QLRoundProgressView *)self layer];
-  [v2 progress];
+  layer = [(QLRoundProgressView *)self layer];
+  [layer progress];
   v4 = v3;
 
   return v4;
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
-  [a3 progress];
+  [layer progress];
   v7 = v6 * 6.28318531 + -1.57079633;
   [(QLRoundProgressView *)self bounds];
   v9 = v8 * 0.5;
@@ -116,36 +116,36 @@
   }
 
   v15 = v14 - v13 * 0.5;
-  CGContextSaveGState(a4);
-  CGContextBeginPath(a4);
-  CGContextMoveToPoint(a4, v9, v11);
-  CGContextAddLineToPoint(a4, v9, 0.0);
-  CGContextAddArc(a4, v9, v11, v15, -1.57079633, v7, 0);
-  CGContextClosePath(a4);
-  v16 = [MEMORY[0x277D75348] lightGrayColor];
-  CGContextSetFillColorWithColor(a4, [v16 CGColor]);
+  CGContextSaveGState(context);
+  CGContextBeginPath(context);
+  CGContextMoveToPoint(context, v9, v11);
+  CGContextAddLineToPoint(context, v9, 0.0);
+  CGContextAddArc(context, v9, v11, v15, -1.57079633, v7, 0);
+  CGContextClosePath(context);
+  lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+  CGContextSetFillColorWithColor(context, [lightGrayColor CGColor]);
 
-  v17 = [MEMORY[0x277D75348] clearColor];
-  CGContextSetStrokeColorWithColor(a4, [v17 CGColor]);
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  CGContextSetStrokeColorWithColor(context, [clearColor CGColor]);
 
-  CGContextDrawPath(a4, kCGPathFillStroke);
-  CGContextRestoreGState(a4);
-  CGContextSaveGState(a4);
-  CGContextBeginPath(a4);
-  CGContextMoveToPoint(a4, v9 + v15, v11);
-  CGContextAddArc(a4, v9, v11, v15, 0.0, 3.14159265, 1);
-  CGContextAddArc(a4, v9, v11, v15, 3.14159265, 6.28318531, 1);
-  CGContextClosePath(a4);
-  v18 = [MEMORY[0x277D75348] clearColor];
-  CGContextSetFillColorWithColor(a4, [v18 CGColor]);
+  CGContextDrawPath(context, kCGPathFillStroke);
+  CGContextRestoreGState(context);
+  CGContextSaveGState(context);
+  CGContextBeginPath(context);
+  CGContextMoveToPoint(context, v9 + v15, v11);
+  CGContextAddArc(context, v9, v11, v15, 0.0, 3.14159265, 1);
+  CGContextAddArc(context, v9, v11, v15, 3.14159265, 6.28318531, 1);
+  CGContextClosePath(context);
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  CGContextSetFillColorWithColor(context, [clearColor2 CGColor]);
 
-  v19 = [MEMORY[0x277D75348] lightGrayColor];
-  CGContextSetStrokeColorWithColor(a4, [v19 CGColor]);
+  lightGrayColor2 = [MEMORY[0x277D75348] lightGrayColor];
+  CGContextSetStrokeColorWithColor(context, [lightGrayColor2 CGColor]);
 
-  CGContextSetLineWidth(a4, v13);
-  CGContextDrawPath(a4, kCGPathFillStroke);
+  CGContextSetLineWidth(context, v13);
+  CGContextDrawPath(context, kCGPathFillStroke);
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface HKInteractiveChartStackHeight
-- (HKInteractiveChartStackHeight)initWithKind:(unint64_t)a3 heightValue:(double)a4;
+- (HKInteractiveChartStackHeight)initWithKind:(unint64_t)kind heightValue:(double)value;
 - (id)debugDescription;
 @end
 
 @implementation HKInteractiveChartStackHeight
 
-- (HKInteractiveChartStackHeight)initWithKind:(unint64_t)a3 heightValue:(double)a4
+- (HKInteractiveChartStackHeight)initWithKind:(unint64_t)kind heightValue:(double)value
 {
   v7.receiver = self;
   v7.super_class = HKInteractiveChartStackHeight;
   result = [(HKInteractiveChartStackHeight *)&v7 init];
   if (result)
   {
-    result->_kind = a3;
-    result->_heightValue = a4;
+    result->_kind = kind;
+    result->_heightValue = value;
   }
 
   return result;
@@ -21,14 +21,14 @@
 
 - (id)debugDescription
 {
-  v3 = [(HKInteractiveChartStackHeight *)self kind];
+  kind = [(HKInteractiveChartStackHeight *)self kind];
   v4 = @"Unknown";
-  if (v3 == 1)
+  if (kind == 1)
   {
     v4 = @"Points";
   }
 
-  if (v3)
+  if (kind)
   {
     v5 = v4;
   }

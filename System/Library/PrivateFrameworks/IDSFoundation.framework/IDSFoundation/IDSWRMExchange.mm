@@ -1,18 +1,18 @@
 @interface IDSWRMExchange
 + (id)sharedInstance;
-- (BOOL)_processLinkPreferenceNotificationEvent:(id)a3;
-- (BOOL)_processMetricsConfigEvent:(id)a3;
-- (BOOL)_processXPCMessage:(id)a3;
-- (BOOL)_setRecommendedLinkType:(unint64_t)a3;
+- (BOOL)_processLinkPreferenceNotificationEvent:(id)event;
+- (BOOL)_processMetricsConfigEvent:(id)event;
+- (BOOL)_processXPCMessage:(id)message;
+- (BOOL)_setRecommendedLinkType:(unint64_t)type;
 - (IDSWRMExchange)init;
 - (id)_newMetricReportMessage;
-- (id)_newPrefSubscribeMessage:(BOOL)a3;
+- (id)_newPrefSubscribeMessage:(BOOL)message;
 - (id)_newRegisterMessage;
-- (id)_newSubscribeStatusUpdateMessage:(BOOL)a3 nearby:(BOOL)a4;
+- (id)_newSubscribeStatusUpdateMessage:(BOOL)message nearby:(BOOL)nearby;
 - (id)_newUnsubscribeMessage;
-- (void)_dispatchAfter:(double)a3 block:(id)a4;
+- (void)_dispatchAfter:(double)after block:(id)block;
 - (void)_notifyDelegate;
-- (void)_processXPCEvent:(id)a3;
+- (void)_processXPCEvent:(id)event;
 - (void)_reconnectUntilTimeout;
 - (void)_registerWithWRM;
 - (void)_resetLocalMetric;
@@ -20,16 +20,16 @@
 - (void)_restartSubscriptionIfNeeded;
 - (void)_sendMetricReport;
 - (void)_sendMetricReportPeriodically;
-- (void)_sendXPCMessage:(id)a3;
-- (void)_setReportInterval:(unint64_t)a3;
+- (void)_sendXPCMessage:(id)message;
+- (void)_setReportInterval:(unint64_t)interval;
 - (void)_startXPCConnection;
 - (void)_stopXPCConnection;
-- (void)_submitBlockAsync:(id)a3;
-- (void)_updateLocalMetric:(id)a3;
+- (void)_submitBlockAsync:(id)async;
+- (void)_updateLocalMetric:(id)metric;
 - (void)dealloc;
-- (void)handleActiveLinkChange:(unint64_t)a3;
-- (void)submitMetric:(id)a3;
-- (void)subscribeForRecommendation:(id)a3 recommendationType:(unint64_t)a4 block:(id)a5;
+- (void)handleActiveLinkChange:(unint64_t)change;
+- (void)submitMetric:(id)metric;
+- (void)subscribeForRecommendation:(id)recommendation recommendationType:(unint64_t)type block:(id)block;
 - (void)unsubscribeForRecommendation;
 @end
 
@@ -51,10 +51,10 @@
 {
   if (self->_shouldSendReport)
   {
-    v4 = [(IDSWRMExchange *)self _newMetricReportMessage];
-    if (v4)
+    _newMetricReportMessage = [(IDSWRMExchange *)self _newMetricReportMessage];
+    if (_newMetricReportMessage)
     {
-      [(IDSWRMExchange *)self _sendXPCMessage:v4];
+      [(IDSWRMExchange *)self _sendXPCMessage:_newMetricReportMessage];
     }
 
     self->_shouldSendReport = 0;
@@ -247,11 +247,11 @@ LABEL_35:
   [(IDSWRMExchange *)&v3 dealloc];
 }
 
-- (void)_submitBlockAsync:(id)a3
+- (void)_submitBlockAsync:(id)async
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  asyncCopy = async;
+  v5 = asyncCopy;
+  if (asyncCopy)
   {
     queue = self->_queue;
     if (queue)
@@ -260,21 +260,21 @@ LABEL_35:
       block[1] = 3221225472;
       block[2] = sub_1A7C68D50;
       block[3] = &unk_1E77E0B48;
-      v8 = v4;
+      v8 = asyncCopy;
       dispatch_async(queue, block);
     }
   }
 }
 
-- (void)_dispatchAfter:(double)a3 block:(id)a4
+- (void)_dispatchAfter:(double)after block:(id)block
 {
-  v6 = a4;
-  if (v6 && self->_queue)
+  blockCopy2 = block;
+  if (blockCopy2 && self->_queue)
   {
-    block = v6;
-    v7 = dispatch_time(0, (a3 * 1000000.0));
+    block = blockCopy2;
+    v7 = dispatch_time(0, (after * 1000000.0));
     dispatch_after(v7, self->_queue, block);
-    v6 = block;
+    blockCopy2 = block;
   }
 }
 
@@ -370,17 +370,17 @@ LABEL_16:
   [(IDSWRMExchange *)self _submitBlockAsync:v2];
 }
 
-- (void)_processXPCEvent:(id)a3
+- (void)_processXPCEvent:(id)event
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v5 = MEMORY[0x1AC5658A0]();
   v6 = MEMORY[0x1E69E9E80];
   if (v5 == MEMORY[0x1E69E9E80])
   {
-    if (![(IDSWRMExchange *)self _processXPCMessage:v4])
+    if (![(IDSWRMExchange *)self _processXPCMessage:eventCopy])
     {
-      v10 = MEMORY[0x1AC5657E0](v4);
+      v10 = MEMORY[0x1AC5657E0](eventCopy);
       v11 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
@@ -413,7 +413,7 @@ LABEL_16:
   {
     if (v5 != MEMORY[0x1E69E9E98])
     {
-      v7 = MEMORY[0x1AC5657E0](v4);
+      v7 = MEMORY[0x1AC5657E0](eventCopy);
       v8 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
@@ -439,7 +439,7 @@ LABEL_21:
       goto LABEL_64;
     }
 
-    string = xpc_dictionary_get_string(v4, *MEMORY[0x1E69E9E28]);
+    string = xpc_dictionary_get_string(eventCopy, *MEMORY[0x1E69E9E28]);
     v14 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -466,7 +466,7 @@ LABEL_21:
       }
     }
 
-    if (v4 == MEMORY[0x1E69E9E20])
+    if (eventCopy == MEMORY[0x1E69E9E20])
     {
       v19 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -488,7 +488,7 @@ LABEL_21:
       }
     }
 
-    else if (v4 == MEMORY[0x1E69E9E18])
+    else if (eventCopy == MEMORY[0x1E69E9E18])
     {
       v20 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -583,17 +583,17 @@ LABEL_64:
   }
 }
 
-- (void)_sendXPCMessage:(id)a3
+- (void)_sendXPCMessage:(id)message
 {
-  v4 = a3;
-  if ([(IDSWRMExchange *)self _isXPCDictionary:v4])
+  messageCopy = message;
+  if ([(IDSWRMExchange *)self _isXPCDictionary:messageCopy])
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1A7C699E0;
     v5[3] = &unk_1E77E0C88;
     v5[4] = self;
-    v6 = v4;
+    v6 = messageCopy;
     [(IDSWRMExchange *)self _submitBlockAsync:v5];
   }
 }
@@ -632,16 +632,16 @@ LABEL_64:
   return v7;
 }
 
-- (id)_newSubscribeStatusUpdateMessage:(BOOL)a3 nearby:(BOOL)a4
+- (id)_newSubscribeStatusUpdateMessage:(BOOL)message nearby:(BOOL)nearby
 {
-  self->_isNearby = a4;
-  self->_isConnected = a3;
+  self->_isNearby = nearby;
+  self->_isConnected = message;
   return MEMORY[0x1EEE66B58](self, sel__newPrefSubscribeMessage_);
 }
 
-- (id)_newPrefSubscribeMessage:(BOOL)a3
+- (id)_newPrefSubscribeMessage:(BOOL)message
 {
-  v3 = a3;
+  messageCopy = message;
   v5 = xpc_dictionary_create(0, 0, 0);
   v6 = v5;
   if (!v5)
@@ -650,7 +650,7 @@ LABEL_64:
     goto LABEL_23;
   }
 
-  if (v3)
+  if (messageCopy)
   {
     v7 = 403;
   }
@@ -688,7 +688,7 @@ LABEL_16:
 
     xpc_dictionary_set_uint64(v10, "kWRMApplicationType", 0);
     xpc_dictionary_set_uint64(v11, "kWRMLinkDirection", 2uLL);
-    if (v3)
+    if (messageCopy)
     {
       xpc_dictionary_set_uint64(v11, "kWRMLinkType", self->_activeLinkType);
       xpc_dictionary_set_uint64(v11, "kWRMCompPairedWithGizmo", self->_isPaired);
@@ -777,39 +777,39 @@ LABEL_23:
 - (void)_registerWithWRM
 {
   self->_registered = 1;
-  v3 = [(IDSWRMExchange *)self _newRegisterMessage];
-  [(IDSWRMExchange *)self _sendXPCMessage:v3];
+  _newRegisterMessage = [(IDSWRMExchange *)self _newRegisterMessage];
+  [(IDSWRMExchange *)self _sendXPCMessage:_newRegisterMessage];
 }
 
-- (void)subscribeForRecommendation:(id)a3 recommendationType:(unint64_t)a4 block:(id)a5
+- (void)subscribeForRecommendation:(id)recommendation recommendationType:(unint64_t)type block:(id)block
 {
-  v9 = a3;
-  v10 = a5;
+  recommendationCopy = recommendation;
+  blockCopy = block;
   activeRecommendationType = self->_activeRecommendationType;
-  if (activeRecommendationType != 2 && activeRecommendationType != a4)
+  if (activeRecommendationType != 2 && activeRecommendationType != type)
   {
     [(IDSWRMExchange *)self unsubscribeForRecommendation];
   }
 
-  v13 = self;
-  objc_sync_enter(v13);
-  objc_storeStrong(&v13->_delegateQueue, a3);
-  if (v10)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_delegateQueue, recommendation);
+  if (blockCopy)
   {
-    v14 = [v10 copy];
-    delegateBlock = v13->_delegateBlock;
-    v13->_delegateBlock = v14;
+    v14 = [blockCopy copy];
+    delegateBlock = selfCopy->_delegateBlock;
+    selfCopy->_delegateBlock = v14;
   }
 
-  objc_sync_exit(v13);
+  objc_sync_exit(selfCopy);
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = sub_1A7C6A100;
   v16[3] = &unk_1E77E21D0;
-  v16[4] = v13;
-  v16[5] = a4;
-  [(IDSWRMExchange *)v13 _submitBlockAsync:v16];
+  v16[4] = selfCopy;
+  v16[5] = type;
+  [(IDSWRMExchange *)selfCopy _submitBlockAsync:v16];
 }
 
 - (void)_restartSubscriptionIfNeeded
@@ -835,8 +835,8 @@ LABEL_23:
       }
     }
 
-    v5 = [(IDSWRMExchange *)self _newSubscribeMessage];
-    [(IDSWRMExchange *)self _sendXPCMessage:v5];
+    _newSubscribeMessage = [(IDSWRMExchange *)self _newSubscribeMessage];
+    [(IDSWRMExchange *)self _sendXPCMessage:_newSubscribeMessage];
   }
 }
 
@@ -850,13 +850,13 @@ LABEL_23:
   [(IDSWRMExchange *)self _submitBlockAsync:v2];
 }
 
-- (BOOL)_processXPCMessage:(id)a3
+- (BOOL)_processXPCMessage:(id)message
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(IDSWRMExchange *)self _isXPCDictionary:v4])
+  messageCopy = message;
+  if ([(IDSWRMExchange *)self _isXPCDictionary:messageCopy])
   {
-    v5 = MEMORY[0x1AC5657E0](v4);
+    v5 = MEMORY[0x1AC5657E0](messageCopy);
     v6 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -871,16 +871,16 @@ LABEL_23:
     }
 
     free(v5);
-    uint64 = xpc_dictionary_get_uint64(v4, "kMessageId");
+    uint64 = xpc_dictionary_get_uint64(messageCopy, "kMessageId");
     if (uint64 == 1103)
     {
-      v8 = [(IDSWRMExchange *)self _processMetricsConfigEvent:v4];
+      v8 = [(IDSWRMExchange *)self _processMetricsConfigEvent:messageCopy];
       goto LABEL_12;
     }
 
     if (uint64 == 1301)
     {
-      v8 = [(IDSWRMExchange *)self _processLinkPreferenceNotificationEvent:v4];
+      v8 = [(IDSWRMExchange *)self _processLinkPreferenceNotificationEvent:messageCopy];
 LABEL_12:
       v9 = v8;
       goto LABEL_13;
@@ -893,12 +893,12 @@ LABEL_13:
   return v9;
 }
 
-- (BOOL)_processLinkPreferenceNotificationEvent:(id)a3
+- (BOOL)_processLinkPreferenceNotificationEvent:(id)event
 {
-  v4 = a3;
-  if ([(IDSWRMExchange *)self _isXPCDictionary:v4]&& xpc_dictionary_get_uint64(v4, "kMessageId") == 1301)
+  eventCopy = event;
+  if ([(IDSWRMExchange *)self _isXPCDictionary:eventCopy]&& xpc_dictionary_get_uint64(eventCopy, "kMessageId") == 1301)
   {
-    v5 = xpc_dictionary_get_value(v4, "kMessageArgs");
+    v5 = xpc_dictionary_get_value(eventCopy, "kMessageArgs");
     if ([(IDSWRMExchange *)self _isXPCDictionary:v5])
     {
       v6 = xpc_dictionary_get_value(v5, "kWRMApplicationTypeList");
@@ -942,13 +942,13 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)_setRecommendedLinkType:(unint64_t)a3
+- (BOOL)_setRecommendedLinkType:(unint64_t)type
 {
   v13 = *MEMORY[0x1E69E9840];
   recommendedLinkType = self->_recommendedLinkType;
-  if (recommendedLinkType != a3)
+  if (recommendedLinkType != type)
   {
-    self->_recommendedLinkType = a3;
+    self->_recommendedLinkType = type;
     v6 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -980,7 +980,7 @@ LABEL_13:
     }
   }
 
-  return recommendedLinkType != a3;
+  return recommendedLinkType != type;
 }
 
 - (void)_notifyDelegate
@@ -992,19 +992,19 @@ LABEL_13:
   }
 }
 
-- (void)_setReportInterval:(unint64_t)a3
+- (void)_setReportInterval:(unint64_t)interval
 {
-  if (a3 && !self->_reportInterval)
+  if (interval && !self->_reportInterval)
   {
     block[5] = v3;
     block[6] = v4;
-    v5 = 5000;
-    if (a3 > 0x1388)
+    intervalCopy = 5000;
+    if (interval > 0x1388)
     {
-      v5 = a3;
+      intervalCopy = interval;
     }
 
-    self->_reportInterval = v5;
+    self->_reportInterval = intervalCopy;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1A7C6AAE8;
@@ -1017,12 +1017,12 @@ LABEL_13:
   }
 }
 
-- (BOOL)_processMetricsConfigEvent:(id)a3
+- (BOOL)_processMetricsConfigEvent:(id)event
 {
-  v4 = a3;
-  if ([(IDSWRMExchange *)self _isXPCDictionary:v4]&& xpc_dictionary_get_uint64(v4, "kMessageId") == 1103)
+  eventCopy = event;
+  if ([(IDSWRMExchange *)self _isXPCDictionary:eventCopy]&& xpc_dictionary_get_uint64(eventCopy, "kMessageId") == 1103)
   {
-    v5 = xpc_dictionary_get_value(v4, "kMessageArgs");
+    v5 = xpc_dictionary_get_value(eventCopy, "kMessageArgs");
     if ([(IDSWRMExchange *)self _isXPCDictionary:v5]&& (uint64 = xpc_dictionary_get_uint64(v5, "PeriodRptInval")) != 0)
     {
       [(IDSWRMExchange *)self _setReportInterval:uint64];
@@ -1043,29 +1043,29 @@ LABEL_13:
   return v7;
 }
 
-- (void)submitMetric:(id)a3
+- (void)submitMetric:(id)metric
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  metricCopy = metric;
+  v5 = metricCopy;
+  if (metricCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = sub_1A7C6AC4C;
     v6[3] = &unk_1E77E0C88;
     v6[4] = self;
-    v7 = v4;
+    v7 = metricCopy;
     [(IDSWRMExchange *)self _submitBlockAsync:v6];
   }
 }
 
-- (void)_updateLocalMetric:(id)a3
+- (void)_updateLocalMetric:(id)metric
 {
-  v4 = a3;
-  if (v4 && self->_metrics)
+  metricCopy = metric;
+  if (metricCopy && self->_metrics)
   {
-    v5 = v4;
-    if ([v4 StreamBytesSent] != -1)
+    v5 = metricCopy;
+    if ([metricCopy StreamBytesSent] != -1)
     {
       -[IDSWRMMetricContainer setStreamBytesSent:](self->_metrics, "setStreamBytesSent:", [v5 StreamBytesSent]);
     }
@@ -1111,14 +1111,14 @@ LABEL_13:
     }
 
     self->_shouldSendReport = 1;
-    v4 = v5;
+    metricCopy = v5;
   }
 }
 
-- (void)handleActiveLinkChange:(unint64_t)a3
+- (void)handleActiveLinkChange:(unint64_t)change
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a3 == 2 || self->_activeLinkType != a3)
+  if (change == 2 || self->_activeLinkType != change)
   {
     v5 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1145,12 +1145,12 @@ LABEL_13:
         v9 = v8;
       }
 
-      if (a3 == 3)
+      if (change == 3)
       {
         v6 = "BT";
       }
 
-      if (a3 == 1)
+      if (change == 1)
       {
         v6 = "WiFi";
       }
@@ -1186,12 +1186,12 @@ LABEL_13:
         v13 = v12;
       }
 
-      if (a3 == 3)
+      if (change == 3)
       {
         v11 = "BT";
       }
 
-      if (a3 == 1)
+      if (change == 1)
       {
         v11 = "WiFi";
       }
@@ -1201,7 +1201,7 @@ LABEL_13:
       _IDSLogV(0, @"IDSFoundation", @"IDSWRMExchange", @"Active link changed from '%s' to '%s'");
     }
 
-    self->_activeLinkType = a3;
+    self->_activeLinkType = change;
     v14 = [(IDSWRMExchange *)self _newSubscribeStatusUpdateMessage:v16];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;

@@ -1,24 +1,24 @@
 @interface WFSaveDropboxFileActionUIKitUserInterface
-- (id)selectedStorageServiceForName:(id)a3;
+- (id)selectedStorageServiceForName:(id)name;
 - (void)cancel;
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)showWithServiceName:(id)a3 input:(id)a4 managedLevel:(unint64_t)a5 options:(unint64_t)a6 completionHandler:(id)a7;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)showWithServiceName:(id)name input:(id)input managedLevel:(unint64_t)level options:(unint64_t)options completionHandler:(id)handler;
 @end
 
 @implementation WFSaveDropboxFileActionUIKitUserInterface
 
 - (void)cancel
 {
-  v3 = [(WFSaveDropboxFileActionUIKitUserInterface *)self saveOperation];
-  [v3 cancel];
+  saveOperation = [(WFSaveDropboxFileActionUIKitUserInterface *)self saveOperation];
+  [saveOperation cancel];
 
-  v4 = [(WFSaveDropboxFileActionUIKitUserInterface *)self completionHandler];
+  completionHandler = [(WFSaveDropboxFileActionUIKitUserInterface *)self completionHandler];
 
-  if (v4)
+  if (completionHandler)
   {
-    v5 = [(WFSaveDropboxFileActionUIKitUserInterface *)self completionHandler];
-    v6 = [MEMORY[0x277CCA9B8] userCancelledError];
-    (v5)[2](v5, 0, v6);
+    completionHandler2 = [(WFSaveDropboxFileActionUIKitUserInterface *)self completionHandler];
+    userCancelledError = [MEMORY[0x277CCA9B8] userCancelledError];
+    (completionHandler2)[2](completionHandler2, 0, userCancelledError);
   }
 
   [(WFSaveDropboxFileActionUIKitUserInterface *)self setCompletionHandler:0];
@@ -26,18 +26,18 @@
   [(WFSaveDropboxFileActionUIKitUserInterface *)self setSaveOperation:0];
 }
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __85__WFSaveDropboxFileActionUIKitUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C375C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFSaveDropboxFileActionUIKitUserInterface;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFEmbeddableActionUserInterface *)&v6 cancelPresentationWithCompletionHandler:v7];
 }
 
@@ -49,30 +49,30 @@ uint64_t __85__WFSaveDropboxFileActionUIKitUserInterface_cancelPresentationWithC
   return v2();
 }
 
-- (void)showWithServiceName:(id)a3 input:(id)a4 managedLevel:(unint64_t)a5 options:(unint64_t)a6 completionHandler:(id)a7
+- (void)showWithServiceName:(id)name input:(id)input managedLevel:(unint64_t)level options:(unint64_t)options completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  if (!v14)
+  nameCopy = name;
+  inputCopy = input;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"WFSaveDropboxFileActionUIKitUserInterface.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSaveDropboxFileActionUIKitUserInterface.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  [(WFSaveDropboxFileActionUIKitUserInterface *)self setCompletionHandler:v14];
-  v15 = [(WFSaveDropboxFileActionUIKitUserInterface *)self selectedStorageServiceForName:v12];
+  [(WFSaveDropboxFileActionUIKitUserInterface *)self setCompletionHandler:handlerCopy];
+  v15 = [(WFSaveDropboxFileActionUIKitUserInterface *)self selectedStorageServiceForName:nameCopy];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __110__WFSaveDropboxFileActionUIKitUserInterface_showWithServiceName_input_managedLevel_options_completionHandler___block_invoke;
   block[3] = &unk_278C36960;
   v21 = v15;
-  v22 = v13;
-  v23 = self;
-  v24 = v14;
-  v25 = a5;
-  v16 = v13;
-  v17 = v14;
+  v22 = inputCopy;
+  selfCopy = self;
+  v24 = handlerCopy;
+  levelCopy = level;
+  v16 = inputCopy;
+  v17 = handlerCopy;
   v18 = v15;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
@@ -161,12 +161,12 @@ id __110__WFSaveDropboxFileActionUIKitUserInterface_showWithServiceName_input_ma
   return v5;
 }
 
-- (id)selectedStorageServiceForName:(id)a3
+- (id)selectedStorageServiceForName:(id)name
 {
   v3 = MEMORY[0x277CE8890];
-  v4 = a3;
-  v5 = [v3 sharedRegistry];
-  v6 = [v5 storageServiceWithName:v4];
+  nameCopy = name;
+  sharedRegistry = [v3 sharedRegistry];
+  v6 = [sharedRegistry storageServiceWithName:nameCopy];
 
   return v6;
 }

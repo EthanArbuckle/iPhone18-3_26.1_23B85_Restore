@@ -1,8 +1,8 @@
 @interface ULBidirectionalDictionary
 - (ULBidirectionalDictionary)init;
-- (id)keyForObject:(id)a3;
-- (id)objectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (id)keyForObject:(id)object;
+- (id)objectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation ULBidirectionalDictionary
@@ -14,41 +14,41 @@
   v2 = [(ULBidirectionalDictionary *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
-    [(ULBidirectionalDictionary *)v2 setKeyToValueMap:v3];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(ULBidirectionalDictionary *)v2 setKeyToValueMap:dictionary];
 
-    v4 = [MEMORY[0x277CBEB38] dictionary];
-    [(ULBidirectionalDictionary *)v2 setValueToKeyMap:v4];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    [(ULBidirectionalDictionary *)v2 setValueToKeyMap:dictionary2];
   }
 
   return v2;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ULBidirectionalDictionary *)self keyToValueMap];
-  [v8 setObject:v7 forKey:v6];
+  keyCopy = key;
+  objectCopy = object;
+  keyToValueMap = [(ULBidirectionalDictionary *)self keyToValueMap];
+  [keyToValueMap setObject:objectCopy forKey:keyCopy];
 
-  v9 = [(ULBidirectionalDictionary *)self valueToKeyMap];
-  [v9 setObject:v6 forKey:v7];
+  valueToKeyMap = [(ULBidirectionalDictionary *)self valueToKeyMap];
+  [valueToKeyMap setObject:keyCopy forKey:objectCopy];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ULBidirectionalDictionary *)self keyToValueMap];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  keyToValueMap = [(ULBidirectionalDictionary *)self keyToValueMap];
+  v6 = [keyToValueMap objectForKey:keyCopy];
 
   return v6;
 }
 
-- (id)keyForObject:(id)a3
+- (id)keyForObject:(id)object
 {
-  v4 = a3;
-  v5 = [(ULBidirectionalDictionary *)self valueToKeyMap];
-  v6 = [v5 objectForKey:v4];
+  objectCopy = object;
+  valueToKeyMap = [(ULBidirectionalDictionary *)self valueToKeyMap];
+  v6 = [valueToKeyMap objectForKey:objectCopy];
 
   return v6;
 }

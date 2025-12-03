@@ -1,9 +1,9 @@
 @interface MIOPixelBufferSampler
 + (id)sharedSampler;
-- (id)findNormalizedRGBInSampleInfo:(id)a3;
-- (id)pixelBuffer:(__CVBuffer *)a3 sampleAtNormalizedX:(double)a4 normalizedY:(double)a5 error:(id *)a6;
-- (id)pixelBuffer:(__CVBuffer *)a3 sampleAtX:(unint64_t)a4 y:(unint64_t)a5 error:(id *)a6;
-- (id)quantizedRGBFromNormalizedRGB:(id)a3 bitDepth:(unsigned __int8)a4 fullRange:(BOOL)a5 error:(id *)a6;
+- (id)findNormalizedRGBInSampleInfo:(id)info;
+- (id)pixelBuffer:(__CVBuffer *)buffer sampleAtNormalizedX:(double)x normalizedY:(double)y error:(id *)error;
+- (id)pixelBuffer:(__CVBuffer *)buffer sampleAtX:(unint64_t)x y:(unint64_t)y error:(id *)error;
+- (id)quantizedRGBFromNormalizedRGB:(id)b bitDepth:(unsigned __int8)depth fullRange:(BOOL)range error:(id *)error;
 @end
 
 @implementation MIOPixelBufferSampler
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __38__MIOPixelBufferSampler_sharedSampler__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[MIOPixelBufferSampler sharedSampler]::onceToken != -1)
   {
     dispatch_once(&+[MIOPixelBufferSampler sharedSampler]::onceToken, block);
@@ -32,40 +32,40 @@ uint64_t __38__MIOPixelBufferSampler_sharedSampler__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)pixelBuffer:(__CVBuffer *)a3 sampleAtX:(unint64_t)a4 y:(unint64_t)a5 error:(id *)a6
+- (id)pixelBuffer:(__CVBuffer *)buffer sampleAtX:(unint64_t)x y:(unint64_t)y error:(id *)error
 {
-  v7 = pixelBufferSampler::sample(a3, a4, a5);
+  v7 = pixelBufferSampler::sample(buffer, x, y);
   v8 = v7;
-  if (a6 && !v7)
+  if (error && !v7)
   {
-    [MEMORY[0x277CCA9B8] populateReaderError:a6 message:@"Cannot retrieve sample from pixel buffer." code:0];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:@"Cannot retrieve sample from pixel buffer." code:0];
   }
 
   return v8;
 }
 
-- (id)pixelBuffer:(__CVBuffer *)a3 sampleAtNormalizedX:(double)a4 normalizedY:(double)a5 error:(id *)a6
+- (id)pixelBuffer:(__CVBuffer *)buffer sampleAtNormalizedX:(double)x normalizedY:(double)y error:(id *)error
 {
-  v7 = pixelBufferSampler::sample(a3, a2, a4, a5);
+  v7 = pixelBufferSampler::sample(buffer, a2, x, y);
   v8 = v7;
-  if (a6 && !v7)
+  if (error && !v7)
   {
-    [MEMORY[0x277CCA9B8] populateReaderError:a6 message:@"Cannot retrieve sample from pixel buffer." code:0];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:@"Cannot retrieve sample from pixel buffer." code:0];
   }
 
   return v8;
 }
 
-- (id)findNormalizedRGBInSampleInfo:(id)a3
+- (id)findNormalizedRGBInSampleInfo:(id)info
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allKeys = [infoCopy allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -75,11 +75,11 @@ uint64_t __38__MIOPixelBufferSampler_sharedSampler__block_invoke(uint64_t a1)
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v4 objectForKey:v9];
+        v10 = [infoCopy objectForKey:v9];
         if ([v9 isEqualToString:@"r′g′b′"])
         {
           v11 = v10;
@@ -100,7 +100,7 @@ LABEL_13:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -116,30 +116,30 @@ LABEL_14:
   return v11;
 }
 
-- (id)quantizedRGBFromNormalizedRGB:(id)a3 bitDepth:(unsigned __int8)a4 fullRange:(BOOL)a5 error:(id *)a6
+- (id)quantizedRGBFromNormalizedRGB:(id)b bitDepth:(unsigned __int8)depth fullRange:(BOOL)range error:(id *)error
 {
-  v7 = a5;
-  v8 = a4;
+  rangeCopy = range;
+  depthCopy = depth;
   v42[3] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if ([v9 count] > 2)
+  bCopy = b;
+  if ([bCopy count] > 2)
   {
-    if (v8 > 7)
+    if (depthCopy > 7)
     {
-      v12 = [v9 objectAtIndexedSubscript:0];
+      v12 = [bCopy objectAtIndexedSubscript:0];
       [v12 doubleValue];
       v14 = v13;
 
-      v15 = [v9 objectAtIndexedSubscript:1];
+      v15 = [bCopy objectAtIndexedSubscript:1];
       [v15 doubleValue];
       v17 = v16;
 
-      v18 = [v9 objectAtIndexedSubscript:2];
+      v18 = [bCopy objectAtIndexedSubscript:2];
       [v18 doubleValue];
       v20 = v19;
 
-      v21 = ~(-1 << v8);
-      if (v7)
+      v21 = ~(-1 << depthCopy);
+      if (rangeCopy)
       {
         v22 = round(v21 * v14 + 1.0e-12);
         v23 = 0.0;
@@ -155,7 +155,7 @@ LABEL_14:
 
         if (v22 > v21)
         {
-          v25 = ~(-1 << v8);
+          v25 = ~(-1 << depthCopy);
         }
 
         else
@@ -176,7 +176,7 @@ LABEL_14:
 
         if (v26 > v21)
         {
-          v28 = ~(-1 << v8);
+          v28 = ~(-1 << depthCopy);
         }
 
         else
@@ -192,7 +192,7 @@ LABEL_14:
 
         if (v29 > v21)
         {
-          v30 = ~(-1 << v8);
+          v30 = ~(-1 << depthCopy);
         }
 
         else
@@ -203,7 +203,7 @@ LABEL_14:
 
       else
       {
-        v31 = (1 << (v8 - 8));
+        v31 = (1 << (depthCopy - 8));
         v32 = (v14 * 219.0 + 16.0) * v31;
         if (v32 >= 0.0)
         {
@@ -222,7 +222,7 @@ LABEL_14:
 
         else
         {
-          v25 = ~(-1 << v8);
+          v25 = ~(-1 << depthCopy);
         }
 
         v34 = (v17 * 219.0 + 16.0) * v31;
@@ -243,7 +243,7 @@ LABEL_14:
 
         else
         {
-          v28 = ~(-1 << v8);
+          v28 = ~(-1 << depthCopy);
         }
 
         v36 = (v20 * 219.0 + 16.0) * v31;
@@ -264,7 +264,7 @@ LABEL_14:
 
         else
         {
-          v30 = ~(-1 << v8);
+          v30 = ~(-1 << depthCopy);
         }
       }
 
@@ -279,8 +279,8 @@ LABEL_14:
 
     else
     {
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"bitDepth (%d) must be greater than or equal to 8.", v8];
-      [MEMORY[0x277CCA9B8] populateReaderError:a6 message:v11 code:0];
+      depthCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"bitDepth (%d) must be greater than or equal to 8.", depthCopy];
+      [MEMORY[0x277CCA9B8] populateReaderError:error message:depthCopy code:0];
 
       v10 = 0;
     }
@@ -288,7 +288,7 @@ LABEL_14:
 
   else
   {
-    [MEMORY[0x277CCA9B8] populateReaderError:a6 message:@"Missing r'g'b' values." code:0];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:@"Missing r'g'b' values." code:0];
     v10 = 0;
   }
 

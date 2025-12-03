@@ -1,6 +1,6 @@
 @interface PuffView
-- (_TtC10StickersUI8PuffView)initWithCoder:(id)a3;
-- (_TtC10StickersUI8PuffView)initWithFrame:(CGRect)a3;
+- (_TtC10StickersUI8PuffView)initWithCoder:(id)coder;
+- (_TtC10StickersUI8PuffView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -8,11 +8,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_26BA93A60();
 }
 
-- (_TtC10StickersUI8PuffView)initWithCoder:(id)a3
+- (_TtC10StickersUI8PuffView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC10StickersUI8PuffView_angle) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC10StickersUI8PuffView_favorsCenter) = 0;
@@ -26,7 +26,7 @@
   return result;
 }
 
-- (_TtC10StickersUI8PuffView)initWithFrame:(CGRect)a3
+- (_TtC10StickersUI8PuffView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

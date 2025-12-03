@@ -2,9 +2,9 @@
 - (BOOL)shouldUseDirectConnection;
 - (BRShareOperation)init;
 - (BRShareOperation)initWithDirectConnection;
-- (BRShareOperation)initWithItemIdentifier:(id)a3;
-- (BRShareOperation)initWithShare:(id)a3;
-- (BRShareOperation)initWithURL:(id)a3;
+- (BRShareOperation)initWithItemIdentifier:(id)identifier;
+- (BRShareOperation)initWithShare:(id)share;
+- (BRShareOperation)initWithURL:(id)l;
 - (id)remoteLegacyObject;
 - (id)remoteObject;
 - (void)remoteLegacyObject;
@@ -30,15 +30,15 @@
   }
 
   brc_append_system_info_to_message(v2);
-  v6 = [objc_claimAutoreleasedReturnValue() UTF8String];
-  __assert_rtn("[BRShareOperation init]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs/framework/operations/BRShareOperations.m", 204, v6);
+  uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+  __assert_rtn("[BRShareOperation init]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs/framework/operations/BRShareOperations.m", 204, uTF8String);
 }
 
-- (BRShareOperation)initWithShare:(id)a3
+- (BRShareOperation)initWithShare:(id)share
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = br_shareAssociatedURL(v4);
+  shareCopy = share;
+  v5 = br_shareAssociatedURL(shareCopy);
   if (!v5)
   {
     if (BRShareProcessShouldUseDirectConnection())
@@ -58,9 +58,9 @@
       if (os_log_type_enabled(v7, 0x90u))
       {
         v11 = 138412802;
-        v12 = self;
+        selfCopy = self;
         v13 = 2112;
-        v14 = v4;
+        v14 = shareCopy;
         v15 = 2112;
         v16 = v6;
         _os_log_error_impl(&dword_1AE2A9000, v7, 0x90u, "[ERROR] %@ initialized with CKShare %@ that wasn't returned by BRShareCopyShareOperation. Falling back to default connection.%@", &v11, 0x20u);
@@ -96,9 +96,9 @@
   return v2;
 }
 
-- (BRShareOperation)initWithItemIdentifier:(id)a3
+- (BRShareOperation)initWithItemIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = BRShareOperation;
   v6 = [(BROperation *)&v13 init];
@@ -111,20 +111,20 @@
       [BRShareOperation initWithItemIdentifier:];
     }
 
-    objc_storeStrong(&v6->_itemID, a3);
+    objc_storeStrong(&v6->_itemID, identifier);
     v9 = +[BRDaemonConnection defaultConnection];
-    v10 = [v9 remoteObjectProxy];
+    remoteObjectProxy = [v9 remoteObjectProxy];
     remoteObject = v6->_remoteObject;
-    v6->_remoteObject = v10;
+    v6->_remoteObject = remoteObjectProxy;
   }
 
   return v6;
 }
 
-- (BRShareOperation)initWithURL:(id)a3
+- (BRShareOperation)initWithURL:(id)l
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v33.receiver = self;
   v33.super_class = BRShareOperation;
   v5 = [(BROperation *)&v33 init];
@@ -143,7 +143,7 @@ LABEL_15:
   }
 
   v32 = 0;
-  [v4 getResourceValue:&v32 forKey:@"FPOriginalDocumentURL" error:0];
+  [lCopy getResourceValue:&v32 forKey:@"FPOriginalDocumentURL" error:0];
   v8 = v32;
   if (v8)
   {
@@ -152,7 +152,7 @@ LABEL_15:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v35 = v4;
+      v35 = lCopy;
       v36 = 2112;
       v37 = v8;
       v38 = 2112;
@@ -161,39 +161,39 @@ LABEL_15:
     }
 
     v11 = v8;
-    v4 = v11;
+    lCopy = v11;
   }
 
-  v12 = [v4 filePathURL];
+  filePathURL = [lCopy filePathURL];
   v13 = *(v5 + 41);
-  *(v5 + 41) = v12;
+  *(v5 + 41) = filePathURL;
 
-  if (!v4 || *(v5 + 41))
+  if (!lCopy || *(v5 + 41))
   {
     v14 = dispatch_group_create();
     v15 = *(v5 + 37);
     *(v5 + 37) = v14;
 
     ShouldUseDirectConnection = BRShareProcessShouldUseDirectConnection();
-    if (!v4 || ShouldUseDirectConnection)
+    if (!lCopy || ShouldUseDirectConnection)
     {
       v18 = +[BRDaemonConnection defaultConnection];
-      v19 = [v18 remoteObjectProxy];
+      remoteObjectProxy = [v18 remoteObjectProxy];
       v20 = *(v5 + 40);
-      *(v5 + 40) = v19;
+      *(v5 + 40) = remoteObjectProxy;
     }
 
     else
     {
       dispatch_group_enter(*(v5 + 37));
-      v17 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __32__BRShareOperation_initWithURL___block_invoke;
       v29[3] = &unk_1E7A14C58;
       v30 = v5;
-      v31 = v4;
-      [v17 getFileProviderServicesForItemAtURL:v31 completionHandler:v29];
+      v31 = lCopy;
+      [defaultManager getFileProviderServicesForItemAtURL:v31 completionHandler:v29];
 
       v18 = v30;
     }
@@ -201,7 +201,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v24 = [MEMORY[0x1E696ABC0] brc_errorInvalidParameter:@"url" value:v4];
+  v24 = [MEMORY[0x1E696ABC0] brc_errorInvalidParameter:@"url" value:lCopy];
   v25 = *(v5 + 38);
   *(v5 + 38) = v24;
 
@@ -395,8 +395,8 @@ void __32__BRShareOperation_initWithURL___block_invoke_53(uint64_t a1, void *a2,
 
 - (BOOL)shouldUseDirectConnection
 {
-  v3 = [(BRShareOperation *)self itemID];
-  if (v3)
+  itemID = [(BRShareOperation *)self itemID];
+  if (itemID)
   {
     v4 = 1;
   }

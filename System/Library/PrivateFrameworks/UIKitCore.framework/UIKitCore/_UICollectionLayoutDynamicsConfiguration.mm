@@ -2,10 +2,10 @@
 - (CGRect)currentVisibleBounds;
 - (CGRect)previousVisibleBounds;
 - (_UICollectionLayoutDynamicsConfiguration)init;
-- (id)behaviorsForItem:(id)a3;
+- (id)behaviorsForItem:(id)item;
 - (void)_reset;
-- (void)_setBehaviors:(id)a3 forItem:(id)a4;
-- (void)setBehaviors:(id)a3 forItem:(id)a4;
+- (void)_setBehaviors:(id)behaviors forItem:(id)item;
+- (void)setBehaviors:(id)behaviors forItem:(id)item;
 @end
 
 @implementation _UICollectionLayoutDynamicsConfiguration
@@ -29,71 +29,71 @@
   return v2;
 }
 
-- (id)behaviorsForItem:(id)a3
+- (id)behaviorsForItem:(id)item
 {
-  if (a3)
+  if (item)
   {
-    v5 = *(a3 + 2);
+    v5 = *(item + 2);
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutHelpers.m" lineNumber:1213 description:{@"Invalid parameter not satisfying: %@", @"item"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutHelpers.m" lineNumber:1213 description:{@"Invalid parameter not satisfying: %@", @"item"}];
 
     v5 = 0;
   }
 
   v6 = [_UICollectionViewItemKey collectionItemKeyForLayoutAttributes:v5];
-  v7 = [(_UICollectionLayoutDynamicsConfiguration *)self behaviorDict];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  behaviorDict = [(_UICollectionLayoutDynamicsConfiguration *)self behaviorDict];
+  v8 = [behaviorDict objectForKeyedSubscript:v6];
 
   return v8;
 }
 
-- (void)setBehaviors:(id)a3 forItem:(id)a4
+- (void)setBehaviors:(id)behaviors forItem:(id)item
 {
-  if (!a4)
+  if (!item)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutHelpers.m" lineNumber:1221 description:{@"Invalid parameter not satisfying: %@", @"item"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutHelpers.m" lineNumber:1221 description:{@"Invalid parameter not satisfying: %@", @"item"}];
   }
 
-  [(NSMutableArray *)self->_dirtyItems addObject:a4];
+  [(NSMutableArray *)self->_dirtyItems addObject:item];
 
-  [(_UICollectionLayoutDynamicsConfiguration *)self _setBehaviors:a3 forItem:a4];
+  [(_UICollectionLayoutDynamicsConfiguration *)self _setBehaviors:behaviors forItem:item];
 }
 
-- (void)_setBehaviors:(id)a3 forItem:(id)a4
+- (void)_setBehaviors:(id)behaviors forItem:(id)item
 {
-  if (a4)
+  if (item)
   {
-    v6 = *(a4 + 2);
+    v6 = *(item + 2);
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutHelpers.m" lineNumber:1237 description:{@"Invalid parameter not satisfying: %@", @"item"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutHelpers.m" lineNumber:1237 description:{@"Invalid parameter not satisfying: %@", @"item"}];
 
     v6 = 0;
   }
 
   v10 = [_UICollectionViewItemKey collectionItemKeyForLayoutAttributes:v6];
-  if (!a3)
+  if (!behaviors)
   {
-    a3 = MEMORY[0x1E695E0F0];
+    behaviors = MEMORY[0x1E695E0F0];
   }
 
-  v7 = [(_UICollectionLayoutDynamicsConfiguration *)self behaviorDict];
-  [v7 setObject:a3 forKeyedSubscript:v10];
+  behaviorDict = [(_UICollectionLayoutDynamicsConfiguration *)self behaviorDict];
+  [behaviorDict setObject:behaviors forKeyedSubscript:v10];
 }
 
 - (void)_reset
 {
   [(NSMutableArray *)self->_dirtyItems removeAllObjects];
-  v3 = [(_UICollectionLayoutDynamicsConfiguration *)self behaviorDict];
-  [v3 removeAllObjects];
+  behaviorDict = [(_UICollectionLayoutDynamicsConfiguration *)self behaviorDict];
+  [behaviorDict removeAllObjects];
 
   items = self->_items;
   self->_items = MEMORY[0x1E695E0F0];

@@ -1,6 +1,6 @@
 @interface _UIUserDefaultsActivity
-- (_UIUserDefaultsActivity)initWithActivityCategory:(int64_t)a3;
-- (_UIUserDefaultsActivity)initWithUserDefaults:(id)a3 activityCategory:(int64_t)a4;
+- (_UIUserDefaultsActivity)initWithActivityCategory:(int64_t)category;
+- (_UIUserDefaultsActivity)initWithUserDefaults:(id)defaults activityCategory:(int64_t)category;
 - (id)_actionImage;
 - (id)_activityImage;
 - (id)_systemImageName;
@@ -9,27 +9,27 @@
 
 @implementation _UIUserDefaultsActivity
 
-- (_UIUserDefaultsActivity)initWithActivityCategory:(int64_t)a3
+- (_UIUserDefaultsActivity)initWithActivityCategory:(int64_t)category
 {
   v5.receiver = self;
   v5.super_class = _UIUserDefaultsActivity;
   result = [(UIActivity *)&v5 init];
   if (result)
   {
-    result->_activityCategory = a3;
+    result->_activityCategory = category;
   }
 
   return result;
 }
 
-- (_UIUserDefaultsActivity)initWithUserDefaults:(id)a3 activityCategory:(int64_t)a4
+- (_UIUserDefaultsActivity)initWithUserDefaults:(id)defaults activityCategory:(int64_t)category
 {
-  v7 = a3;
-  v8 = [(_UIUserDefaultsActivity *)self initWithActivityCategory:a4];
+  defaultsCopy = defaults;
+  v8 = [(_UIUserDefaultsActivity *)self initWithActivityCategory:category];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_userDefaults, a3);
+    objc_storeStrong(&v8->_userDefaults, defaults);
   }
 
   return v9;
@@ -61,8 +61,8 @@
   v4 = MEMORY[0x1E69DCAB8];
   v5 = _ShareSheetBundle();
   v6 = [v4 imageNamed:@"UIActivityUserDefaults" inBundle:v5];
-  v7 = [(UIActivity *)self contentSizeCategory];
-  v8 = [v3 _actionImageForActionRepresentationImage:v6 contentSizeCategory:v7];
+  contentSizeCategory = [(UIActivity *)self contentSizeCategory];
+  v8 = [v3 _actionImageForActionRepresentationImage:v6 contentSizeCategory:contentSizeCategory];
 
   return v8;
 }

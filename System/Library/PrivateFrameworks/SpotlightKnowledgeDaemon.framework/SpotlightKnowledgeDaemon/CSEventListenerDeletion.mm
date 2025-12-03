@@ -1,43 +1,43 @@
 @interface CSEventListenerDeletion
-- (CSEventListenerDeletion)initWithSerialNumber:(unint64_t)a3 bundle:(const char *)a4 journalCookie:(const char *)a5 itemsObj:(id *)a6 indexType:(int)a7 bundleHash:(unsigned int)a8;
+- (CSEventListenerDeletion)initWithSerialNumber:(unint64_t)number bundle:(const char *)bundle journalCookie:(const char *)cookie itemsObj:(id *)obj indexType:(int)type bundleHash:(unsigned int)hash;
 - (uint64_t)setIsManaged:(uint64_t)result;
-- (void)iterateIdentifiers:(id)a3;
+- (void)iterateIdentifiers:(id)identifiers;
 @end
 
 @implementation CSEventListenerDeletion
 
-- (CSEventListenerDeletion)initWithSerialNumber:(unint64_t)a3 bundle:(const char *)a4 journalCookie:(const char *)a5 itemsObj:(id *)a6 indexType:(int)a7 bundleHash:(unsigned int)a8
+- (CSEventListenerDeletion)initWithSerialNumber:(unint64_t)number bundle:(const char *)bundle journalCookie:(const char *)cookie itemsObj:(id *)obj indexType:(int)type bundleHash:(unsigned int)hash
 {
   v16.receiver = self;
   v16.super_class = CSEventListenerDeletion;
   result = [(CSEventListenerDeletion *)&v16 init];
   if (result)
   {
-    result->_serialNumber = a3;
-    result->_bundle = a4;
-    result->_journalCookie = a5;
-    v15 = *&a6->var0;
-    result->_itemsObj.reference = a6->var2;
+    result->_serialNumber = number;
+    result->_bundle = bundle;
+    result->_journalCookie = cookie;
+    v15 = *&obj->var0;
+    result->_itemsObj.reference = obj->var2;
     *&result->_itemsObj.containerBytes = v15;
-    result->_indexType = a7;
-    result->_bundleHash = a8;
+    result->_indexType = type;
+    result->_bundleHash = hash;
   }
 
   return result;
 }
 
-- (void)iterateIdentifiers:(id)a3
+- (void)iterateIdentifiers:(id)identifiers
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  identifiersCopy = identifiers;
+  v5 = identifiersCopy;
   if (self && self->_isDict)
   {
     v19 = MEMORY[0x277D85DD0];
     v20 = 3221225472;
     v21 = __46__CSEventListenerDeletion_iterateIdentifiers___block_invoke;
     v22 = &unk_27893CF58;
-    v23 = v4;
+    v23 = identifiersCopy;
     v17 = *&self->_itemsObj.containerBytes;
     reference = self->_itemsObj.reference;
     _MDPlistArrayIterate();

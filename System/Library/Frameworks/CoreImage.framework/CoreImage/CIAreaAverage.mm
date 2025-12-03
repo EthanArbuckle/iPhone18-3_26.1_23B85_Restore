@@ -1,14 +1,14 @@
 @interface CIAreaAverage
 - (id)outputImage;
-- (id)outputImageNonMPS:(id)a3;
+- (id)outputImageNonMPS:(id)s;
 @end
 
 @implementation CIAreaAverage
 
-- (id)outputImageNonMPS:(id)a3
+- (id)outputImageNonMPS:(id)s
 {
   v76[1] = *MEMORY[0x1E69E9840];
-  if (a3 && (v3 = a3, [a3 extent], !CGRectIsEmpty(v78)))
+  if (s && (v3 = s, [s extent], !CGRectIsEmpty(v78)))
   {
     [(CIImage *)v3 extent];
     v65 = v5;
@@ -228,8 +228,8 @@
 - (id)outputImage
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CIReductionFilter *)self offsetAndCrop];
-  if (v3 && (v4 = v3, [v3 extent], !CGRectIsEmpty(v23)))
+  offsetAndCrop = [(CIReductionFilter *)self offsetAndCrop];
+  if (offsetAndCrop && (v4 = offsetAndCrop, [offsetAndCrop extent], !CGRectIsEmpty(v23)))
   {
     [v4 extent];
     if (v6 != 1.0 || ([v4 extent], v7 != 1.0))

@@ -1,5 +1,5 @@
 @interface AVMobileChromeControlsViewController
-- (AVMobileChromeControlsViewController)initWithPlayerViewController:(id)a3;
+- (AVMobileChromeControlsViewController)initWithPlayerViewController:(id)controller;
 - (AVPlaybackControlsController)playbackControlsController;
 - (BOOL)showsFullScreenControl;
 - (CGAffineTransform)transformForProminentPlayButton;
@@ -12,28 +12,28 @@
 - (void)dealloc;
 - (void)didBeginIndirectUserInteraction;
 - (void)didEndIndirectUserInteraction;
-- (void)flashControlsWithDuration:(double)a3;
+- (void)flashControlsWithDuration:(double)duration;
 - (void)loadView;
-- (void)setControlItems:(id)a3;
-- (void)setEmbeddedInlineLayoutMargins:(id)a3;
-- (void)setIncludedControls:(unint64_t)a3;
-- (void)setOptimizeForPerformance:(BOOL)a3;
-- (void)setPrefersCompactFullScreenControls:(BOOL)a3;
-- (void)setRoutingConfiguration:(id)a3;
-- (void)setShowsFullScreenControl:(BOOL)a3;
-- (void)setTransformForProminentPlayButton:(CGAffineTransform *)a3;
-- (void)setTransportBarCustomMenuItems:(id)a3;
-- (void)setVolumeController:(id)a3;
-- (void)toggleVisibility:(id)a3;
+- (void)setControlItems:(id)items;
+- (void)setEmbeddedInlineLayoutMargins:(id)margins;
+- (void)setIncludedControls:(unint64_t)controls;
+- (void)setOptimizeForPerformance:(BOOL)performance;
+- (void)setPrefersCompactFullScreenControls:(BOOL)controls;
+- (void)setRoutingConfiguration:(id)configuration;
+- (void)setShowsFullScreenControl:(BOOL)control;
+- (void)setTransformForProminentPlayButton:(CGAffineTransform *)button;
+- (void)setTransportBarCustomMenuItems:(id)items;
+- (void)setVolumeController:(id)controller;
+- (void)toggleVisibility:(id)visibility;
 @end
 
 @implementation AVMobileChromeControlsViewController
 
-- (void)setTransformForProminentPlayButton:(CGAffineTransform *)a3
+- (void)setTransformForProminentPlayButton:(CGAffineTransform *)button
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_transformForProminentPlayButton.a = *&a3->a;
+  v4 = *&button->c;
+  v3 = *&button->tx;
+  *&self->_transformForProminentPlayButton.a = *&button->a;
   *&self->_transformForProminentPlayButton.c = v4;
   *&self->_transformForProminentPlayButton.tx = v3;
 }
@@ -50,9 +50,9 @@
 - (void)_updateStyleSheet
 {
   v3 = [AVMobileChromeControlsStyleSheet alloc];
-  v4 = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
-  v5 = [v4 traitCollection];
-  v6 = [(AVMobileChromeControlsStyleSheet *)v3 initWithTraitCollection:v5 shouldUseCompactFullScreenSize:self->_prefersCompactFullScreenControls];
+  avkit_mainScreen = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
+  traitCollection = [avkit_mainScreen traitCollection];
+  v6 = [(AVMobileChromeControlsStyleSheet *)v3 initWithTraitCollection:traitCollection shouldUseCompactFullScreenSize:self->_prefersCompactFullScreenControls];
   styleSheet = self->_styleSheet;
   self->_styleSheet = v6;
 
@@ -65,40 +65,40 @@
 
 - (void)_loadControlsViewIfNeeded
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v2 = [a1 viewIfLoaded];
-  if (v2 && !*(a1 + 1216))
+  viewIfLoaded = [self viewIfLoaded];
+  if (viewIfLoaded && !*(self + 1216))
   {
-    v14 = v2;
-    if (!*(a1 + 1192))
+    v14 = viewIfLoaded;
+    if (!*(self + 1192))
     {
-      v3 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v3 addObserver:a1 selector:sel__updateStyleSheet name:*MEMORY[0x1E69DDC48] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__updateStyleSheet name:*MEMORY[0x1E69DDC48] object:0];
 
       v4 = [AVMobileChromeControlsStyleSheet alloc];
-      v5 = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
-      v6 = [v5 traitCollection];
-      v7 = [(AVMobileChromeControlsStyleSheet *)v4 initWithTraitCollection:v6 shouldUseCompactFullScreenSize:*(a1 + 1200)];
-      v8 = *(a1 + 1192);
-      *(a1 + 1192) = v7;
+      avkit_mainScreen = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
+      traitCollection = [avkit_mainScreen traitCollection];
+      v7 = [(AVMobileChromeControlsStyleSheet *)v4 initWithTraitCollection:traitCollection shouldUseCompactFullScreenSize:*(self + 1200)];
+      v8 = *(self + 1192);
+      *(self + 1192) = v7;
     }
 
-    if (([a1 optimizeForPerformance] & 1) == 0)
+    if (([self optimizeForPerformance] & 1) == 0)
     {
-      [(AVMobileChromeControlsViewController *)a1 _loadPlaybackControlsViewIfNeeded];
+      [(AVMobileChromeControlsViewController *)self _loadPlaybackControlsViewIfNeeded];
 LABEL_14:
-      v2 = v14;
+      viewIfLoaded = v14;
       goto LABEL_15;
     }
 
-    v2 = v14;
-    if (!*(a1 + 1224))
+    viewIfLoaded = v14;
+    if (!*(self + 1224))
     {
-      if (*(a1 + 1216))
+      if (*(self + 1216))
       {
         v9 = _AVLog();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -109,15 +109,15 @@ LABEL_14:
       }
 
       v10 = [AVTurboModePlaybackControlsPlaceholderView alloc];
-      [*(a1 + 1176) bounds];
-      v11 = [(AVTurboModePlaybackControlsPlaceholderView *)v10 initWithFrame:*(a1 + 1192) styleSheet:?];
-      v12 = *(a1 + 1224);
-      *(a1 + 1224) = v11;
+      [*(self + 1176) bounds];
+      v11 = [(AVTurboModePlaybackControlsPlaceholderView *)v10 initWithFrame:*(self + 1192) styleSheet:?];
+      v12 = *(self + 1224);
+      *(self + 1224) = v11;
 
-      v13 = [a1 playbackControlsController];
-      [v13 turboModePlaybackControlsPlaceholderViewDidLoad:*(a1 + 1224)];
+      playbackControlsController = [self playbackControlsController];
+      [playbackControlsController turboModePlaybackControlsPlaceholderViewDidLoad:*(self + 1224)];
 
-      [*(a1 + 1176) setActivePlaybackControlsView:*(a1 + 1224)];
+      [*(self + 1176) setActivePlaybackControlsView:*(self + 1224)];
       goto LABEL_14;
     }
   }
@@ -127,25 +127,25 @@ LABEL_15:
 
 - (void)_loadPlaybackControlsViewIfNeeded
 {
-  if (a1 && !*(a1 + 1216))
+  if (self && !*(self + 1216))
   {
     v2 = [AVPlaybackControlsView alloc];
-    [*(a1 + 1176) bounds];
-    v3 = [(AVPlaybackControlsView *)v2 initWithFrame:*(a1 + 1192) styleSheet:?];
-    v4 = *(a1 + 1216);
-    *(a1 + 1216) = v3;
+    [*(self + 1176) bounds];
+    v3 = [(AVPlaybackControlsView *)v2 initWithFrame:*(self + 1192) styleSheet:?];
+    v4 = *(self + 1216);
+    *(self + 1216) = v3;
 
-    [*(a1 + 1216) setOverrideLayoutMarginsWhenEmbeddedInline:*(a1 + 1208)];
-    v5 = [*(a1 + 1216) routePickerView];
-    v6 = [a1 routingConfiguration];
-    [v5 setRoutingConfiguration:v6];
+    [*(self + 1216) setOverrideLayoutMarginsWhenEmbeddedInline:*(self + 1208)];
+    routePickerView = [*(self + 1216) routePickerView];
+    routingConfiguration = [self routingConfiguration];
+    [routePickerView setRoutingConfiguration:routingConfiguration];
 
-    v7 = [a1 playbackControlsController];
-    [v7 playbackControlsViewDidLoad:*(a1 + 1216)];
+    playbackControlsController = [self playbackControlsController];
+    [playbackControlsController playbackControlsViewDidLoad:*(self + 1216)];
 
-    [*(a1 + 1176) setActivePlaybackControlsView:*(a1 + 1216)];
-    v8 = *(a1 + 1224);
-    *(a1 + 1224) = 0;
+    [*(self + 1176) setActivePlaybackControlsView:*(self + 1216)];
+    v8 = *(self + 1224);
+    *(self + 1224) = 0;
   }
 }
 
@@ -156,51 +156,51 @@ LABEL_15:
   self->_controlsView = v3;
 
   v5 = self->_controlsView;
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  [(AVMobileChromeControlsView *)v5 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(AVMobileChromeControlsView *)v5 setBackgroundColor:clearColor];
 
   v7 = self->_controlsView;
 
   [(AVMobileChromeControlsViewController *)self setView:v7];
 }
 
-- (void)toggleVisibility:(id)a3
+- (void)toggleVisibility:(id)visibility
 {
-  v3 = [(AVMobileChromeControlsViewController *)self playbackControlsController];
-  [v3 togglePlaybackControlsVisibility];
+  playbackControlsController = [(AVMobileChromeControlsViewController *)self playbackControlsController];
+  [playbackControlsController togglePlaybackControlsVisibility];
 }
 
-- (void)flashControlsWithDuration:(double)a3
+- (void)flashControlsWithDuration:(double)duration
 {
-  v4 = [(AVMobileChromeControlsViewController *)self playbackControlsController];
-  [v4 flashPlaybackControlsWithDuration:a3];
+  playbackControlsController = [(AVMobileChromeControlsViewController *)self playbackControlsController];
+  [playbackControlsController flashPlaybackControlsWithDuration:duration];
 }
 
 - (void)didEndIndirectUserInteraction
 {
-  v2 = [(AVMobileChromeControlsViewController *)self playbackControlsController];
-  [v2 endShowingItemsDueToIndirectUserInteraction];
+  playbackControlsController = [(AVMobileChromeControlsViewController *)self playbackControlsController];
+  [playbackControlsController endShowingItemsDueToIndirectUserInteraction];
 }
 
 - (void)didBeginIndirectUserInteraction
 {
-  v2 = [(AVMobileChromeControlsViewController *)self playbackControlsController];
-  [v2 beginShowingItemsDueToIndirectUserInteraction];
+  playbackControlsController = [(AVMobileChromeControlsViewController *)self playbackControlsController];
+  [playbackControlsController beginShowingItemsDueToIndirectUserInteraction];
 }
 
 - (BOOL)showsFullScreenControl
 {
-  v2 = [(AVMobileChromeControlsViewController *)self playbackControlsController];
-  v3 = [v2 allowsEnteringFullScreen];
+  playbackControlsController = [(AVMobileChromeControlsViewController *)self playbackControlsController];
+  allowsEnteringFullScreen = [playbackControlsController allowsEnteringFullScreen];
 
-  return v3;
+  return allowsEnteringFullScreen;
 }
 
-- (void)setShowsFullScreenControl:(BOOL)a3
+- (void)setShowsFullScreenControl:(BOOL)control
 {
-  v3 = a3;
-  v4 = [(AVMobileChromeControlsViewController *)self playbackControlsController];
-  [v4 setAllowsEnteringFullScreen:v3];
+  controlCopy = control;
+  playbackControlsController = [(AVMobileChromeControlsViewController *)self playbackControlsController];
+  [playbackControlsController setAllowsEnteringFullScreen:controlCopy];
 }
 
 - (id)volumeControlsLayoutItem
@@ -211,14 +211,14 @@ LABEL_15:
   return [(AVPlaybackControlsView *)playbackControlsView volumeControls];
 }
 
-- (void)setVolumeController:(id)a3
+- (void)setVolumeController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = AVMobileChromeControlsViewController;
-  v4 = a3;
-  [(AVMobileControlsViewController *)&v6 setVolumeController:v4];
+  controllerCopy = controller;
+  [(AVMobileControlsViewController *)&v6 setVolumeController:controllerCopy];
   v5 = [(AVMobileChromeControlsViewController *)self playbackControlsController:v6.receiver];
-  [v5 setVolumeController:v4];
+  [v5 setVolumeController:controllerCopy];
 }
 
 - (id)transportControlsLayoutItem
@@ -229,39 +229,39 @@ LABEL_15:
   return [(AVPlaybackControlsView *)playbackControlsView transportControlsView];
 }
 
-- (void)setTransportBarCustomMenuItems:(id)a3
+- (void)setTransportBarCustomMenuItems:(id)items
 {
   v6.receiver = self;
   v6.super_class = AVMobileChromeControlsViewController;
-  v4 = a3;
-  [(AVMobileControlsViewController *)&v6 setTransportBarCustomMenuItems:v4];
+  itemsCopy = items;
+  [(AVMobileControlsViewController *)&v6 setTransportBarCustomMenuItems:itemsCopy];
   v5 = [(AVMobileChromeControlsViewController *)self playbackControlsController:v6.receiver];
-  [v5 setTransportBarCustomMenuItems:v4];
+  [v5 setTransportBarCustomMenuItems:itemsCopy];
 }
 
-- (void)setOptimizeForPerformance:(BOOL)a3
+- (void)setOptimizeForPerformance:(BOOL)performance
 {
   v4.receiver = self;
   v4.super_class = AVMobileChromeControlsViewController;
-  [(AVMobileControlsViewController *)&v4 setOptimizeForPerformance:a3];
+  [(AVMobileControlsViewController *)&v4 setOptimizeForPerformance:performance];
   [(AVMobileChromeControlsViewController *)self _loadControlsViewIfNeeded];
 }
 
-- (void)setIncludedControls:(unint64_t)a3
+- (void)setIncludedControls:(unint64_t)controls
 {
-  if ([(AVMobileControlsViewController *)self includedControls]!= a3)
+  if ([(AVMobileControlsViewController *)self includedControls]!= controls)
   {
     v8.receiver = self;
     v8.super_class = AVMobileChromeControlsViewController;
-    [(AVMobileControlsViewController *)&v8 setIncludedControls:a3];
-    v5 = [(AVMobileChromeControlsViewController *)self playbackControlsController];
-    [v5 setPlaybackControlsIncludeTransportControls:(a3 & 0x19) != 0];
+    [(AVMobileControlsViewController *)&v8 setIncludedControls:controls];
+    playbackControlsController = [(AVMobileChromeControlsViewController *)self playbackControlsController];
+    [playbackControlsController setPlaybackControlsIncludeTransportControls:(controls & 0x19) != 0];
 
-    v6 = [(AVMobileChromeControlsViewController *)self playbackControlsController];
-    [v6 setPlaybackControlsIncludeDisplayModeControls:(a3 >> 2) & 1];
+    playbackControlsController2 = [(AVMobileChromeControlsViewController *)self playbackControlsController];
+    [playbackControlsController2 setPlaybackControlsIncludeDisplayModeControls:(controls >> 2) & 1];
 
-    v7 = [(AVMobileChromeControlsViewController *)self playbackControlsController];
-    [v7 setPlaybackControlsIncludeVolumeControls:(a3 >> 1) & 1];
+    playbackControlsController3 = [(AVMobileChromeControlsViewController *)self playbackControlsController];
+    [playbackControlsController3 setPlaybackControlsIncludeVolumeControls:(controls >> 1) & 1];
   }
 }
 
@@ -273,21 +273,21 @@ LABEL_15:
   return [(AVPlaybackControlsView *)playbackControlsView screenModeControls];
 }
 
-- (void)setRoutingConfiguration:(id)a3
+- (void)setRoutingConfiguration:(id)configuration
 {
   v6.receiver = self;
   v6.super_class = AVMobileChromeControlsViewController;
-  v4 = a3;
-  [(AVMobileControlsViewController *)&v6 setRoutingConfiguration:v4];
+  configurationCopy = configuration;
+  [(AVMobileControlsViewController *)&v6 setRoutingConfiguration:configurationCopy];
   v5 = [(AVPlaybackControlsView *)self->_playbackControlsView routePickerView:v6.receiver];
-  [v5 setRoutingConfiguration:v4];
+  [v5 setRoutingConfiguration:configurationCopy];
 }
 
-- (void)setPrefersCompactFullScreenControls:(BOOL)a3
+- (void)setPrefersCompactFullScreenControls:(BOOL)controls
 {
-  if (self->_prefersCompactFullScreenControls != a3)
+  if (self->_prefersCompactFullScreenControls != controls)
   {
-    self->_prefersCompactFullScreenControls = a3;
+    self->_prefersCompactFullScreenControls = controls;
     [(AVMobileChromeControlsViewController *)self _updateStyleSheet];
   }
 }
@@ -309,34 +309,34 @@ LABEL_15:
   return playbackControlsController;
 }
 
-- (void)setEmbeddedInlineLayoutMargins:(id)a3
+- (void)setEmbeddedInlineLayoutMargins:(id)margins
 {
-  v5 = a3;
-  if (self->_embeddedInlineLayoutMargins != v5)
+  marginsCopy = margins;
+  if (self->_embeddedInlineLayoutMargins != marginsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_embeddedInlineLayoutMargins, a3);
+    v6 = marginsCopy;
+    objc_storeStrong(&self->_embeddedInlineLayoutMargins, margins);
     [(AVPlaybackControlsView *)self->_playbackControlsView setOverrideLayoutMarginsWhenEmbeddedInline:v6];
-    v5 = v6;
+    marginsCopy = v6;
   }
 }
 
-- (void)setControlItems:(id)a3
+- (void)setControlItems:(id)items
 {
   v6.receiver = self;
   v6.super_class = AVMobileChromeControlsViewController;
-  v4 = a3;
-  [(AVMobileControlsViewController *)&v6 setControlItems:v4];
+  itemsCopy = items;
+  [(AVMobileControlsViewController *)&v6 setControlItems:itemsCopy];
   v5 = [(AVMobileChromeControlsViewController *)self playbackControlsController:v6.receiver];
-  [v5 setCustomControlItems:v4];
+  [v5 setCustomControlItems:itemsCopy];
 }
 
 - (void)dealloc
 {
   if (self->_styleSheet)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   v4.receiver = self;
@@ -344,16 +344,16 @@ LABEL_15:
   [(AVMobileChromeControlsViewController *)&v4 dealloc];
 }
 
-- (AVMobileChromeControlsViewController)initWithPlayerViewController:(id)a3
+- (AVMobileChromeControlsViewController)initWithPlayerViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = AVMobileChromeControlsViewController;
   v5 = [(AVMobileChromeControlsViewController *)&v8 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_playerViewController, v4);
+    objc_storeWeak(&v5->_playerViewController, controllerCopy);
   }
 
   return v6;

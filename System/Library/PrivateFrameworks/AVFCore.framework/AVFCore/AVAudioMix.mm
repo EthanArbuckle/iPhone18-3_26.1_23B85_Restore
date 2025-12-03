@@ -1,13 +1,13 @@
 @interface AVAudioMix
 - (AVAudioMix)init;
-- (BOOL)isEqual:(id)a3;
-- (id)audioMixInputParametersForTrackID:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)audioMixInputParametersForTrackID:(int)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setInputParameters:(id)a3;
+- (void)setInputParameters:(id)parameters;
 @end
 
 @implementation AVAudioMix
@@ -58,7 +58,7 @@
   return [v3 stringWithFormat:@"<%@: %p, input parameters = %@>", NSStringFromClass(v4), self, -[AVAudioMix inputParameters](self, "inputParameters")];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if ([(AVAudioMix *)self isMemberOfClass:objc_opt_class()])
   {
@@ -79,7 +79,7 @@
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(AVAudioMix *)[AVMutableAudioMix allocWithZone:?]];
   v5 = v4;
@@ -91,12 +91,12 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[NSArray count](-[AVAudioMix inputParameters](self, "inputParameters"), "count"), v5 == [objc_msgSend(a3 "inputParameters")]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[NSArray count](-[AVAudioMix inputParameters](self, "inputParameters"), "count"), v5 == [objc_msgSend(equal "inputParameters")]))
   {
-    if (!-[AVAudioMix inputParameters](self, "inputParameters") || (v6 = -[NSArray isEqualToArray:](-[AVAudioMix inputParameters](self, "inputParameters"), "isEqualToArray:", [a3 inputParameters])))
+    if (!-[AVAudioMix inputParameters](self, "inputParameters") || (v6 = -[NSArray isEqualToArray:](-[AVAudioMix inputParameters](self, "inputParameters"), "isEqualToArray:", [equal inputParameters])))
     {
       LOBYTE(v6) = 1;
     }
@@ -112,40 +112,40 @@
 
 - (unint64_t)hash
 {
-  v2 = [(AVAudioMix *)self inputParameters];
+  inputParameters = [(AVAudioMix *)self inputParameters];
 
-  return [(NSArray *)v2 hash];
+  return [(NSArray *)inputParameters hash];
 }
 
-- (void)setInputParameters:(id)a3
+- (void)setInputParameters:(id)parameters
 {
-  if (a3)
+  if (parameters)
   {
-    v3 = a3;
+    parametersCopy = parameters;
   }
 
   else
   {
-    v3 = MEMORY[0x1E695E0F0];
+    parametersCopy = MEMORY[0x1E695E0F0];
   }
 
   inputParameters = self->_audioMix->inputParameters;
-  if (inputParameters != v3)
+  if (inputParameters != parametersCopy)
   {
 
-    self->_audioMix->inputParameters = [(NSArray *)v3 copy];
+    self->_audioMix->inputParameters = [(NSArray *)parametersCopy copy];
   }
 }
 
-- (id)audioMixInputParametersForTrackID:(int)a3
+- (id)audioMixInputParametersForTrackID:(int)d
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(AVAudioMix *)self inputParameters];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  inputParameters = [(AVAudioMix *)self inputParameters];
+  v5 = [(NSArray *)inputParameters countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (!v5)
   {
     return 0;
@@ -159,18 +159,18 @@ LABEL_3:
   {
     if (*v12 != v7)
     {
-      objc_enumerationMutation(v4);
+      objc_enumerationMutation(inputParameters);
     }
 
     v9 = *(*(&v11 + 1) + 8 * v8);
-    if ([v9 trackID] == a3)
+    if ([v9 trackID] == d)
     {
       return v9;
     }
 
     if (v6 == ++v8)
     {
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [(NSArray *)inputParameters countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         goto LABEL_3;

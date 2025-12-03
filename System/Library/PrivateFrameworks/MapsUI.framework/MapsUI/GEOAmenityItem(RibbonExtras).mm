@@ -6,18 +6,18 @@
 
 - (__CFString)resolvedRibbonSymbolName
 {
-  if ([a1 isApplePayAmenity])
+  if ([self isApplePayAmenity])
   {
-    v2 = @"applePay";
+    symbolImageName = @"applePay";
     v3 = @"applePay";
   }
 
   else
   {
-    v2 = [a1 symbolImageName];
+    symbolImageName = [self symbolImageName];
   }
 
-  return v2;
+  return symbolImageName;
 }
 
 @end

@@ -1,57 +1,57 @@
 @interface NTKCloudrakerFaceBundle
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryEditOptionsForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryPigmentsForDevice:(id)a3;
-- (id)heroFacesForDevice:(id)a3;
-- (void)_addGalleryFaceWithTopComplication:(unint64_t)a3 centerComplicationType:(unint64_t)a4 bottomComplicationType:(unint64_t)a5 toCollection:(id)a6 withBaseFace:(id)a7;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryEditOptionsForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryPigmentsForDevice:(id)device;
+- (id)heroFacesForDevice:(id)device;
+- (void)_addGalleryFaceWithTopComplication:(unint64_t)complication centerComplicationType:(unint64_t)type bottomComplicationType:(unint64_t)complicationType toCollection:(id)collection withBaseFace:(id)face;
 @end
 
 @implementation NTKCloudrakerFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [objc_opt_class() identifier];
-  v5 = [objc_opt_class() analyticsIdentifier];
-  v6 = [NTKCloudrakerFace bundledFaceWithIdentifier:v4 analyticsIdentifier:v5 forDevice:v3 initCustomization:0];
+  deviceCopy = device;
+  identifier = [objc_opt_class() identifier];
+  analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+  v6 = [NTKCloudrakerFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
   return v6;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[NSMutableArray array];
-  v6 = [objc_opt_class() identifier];
-  v7 = [objc_opt_class() analyticsIdentifier];
+  identifier = [objc_opt_class() identifier];
+  analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
   v101[0] = _NSConcreteStackBlock;
   v101[1] = 3221225472;
   v101[2] = sub_2344;
   v101[3] = &unk_82E8;
   v8 = [[NTKPigmentEditOption alloc] initWithOptionName:@"multicolor" collectionName:@"special"];
   v102 = v8;
-  v9 = [NTKCloudrakerFace bundledFaceWithIdentifier:v6 analyticsIdentifier:v7 forDevice:v4 initCustomization:v101];
-  if ([v4 isRunningNapiliGMOrLater])
+  v9 = [NTKCloudrakerFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:v101];
+  if ([deviceCopy isRunningNapiliGMOrLater])
   {
     v100.receiver = self;
     v100.super_class = NTKCloudrakerFaceBundle;
-    v10 = [(NTKCloudrakerFaceBundle *)&v100 galleryFacesForDevice:v4];
+    v10 = [(NTKCloudrakerFaceBundle *)&v100 galleryFacesForDevice:deviceCopy];
     [v5 addObjectsFromArray:v10];
 
     v98[0] = _NSConcreteStackBlock;
     v98[1] = 3221225472;
     v98[2] = sub_2358;
     v98[3] = &unk_8310;
-    v99 = v4;
+    v99 = deviceCopy;
     [v5 enumerateObjectsUsingBlock:v98];
   }
 
-  else if ([v4 supportsPDRCapability:3669496134])
+  else if ([deviceCopy supportsPDRCapability:3669496134])
   {
     if (v9)
     {
-      v69 = v6;
+      v69 = identifier;
       v93 = [[CLKWidgetComplicationDescriptor alloc] initWithExtensionBundleIdentifier:@"com.apple.boardwalk.watchapp.widgets" containerBundleIdentifier:@"com.apple.boardwalk.watchapp" kind:@"Tides" intent:0];
       v92 = [[CLKWidgetComplicationDescriptor alloc] initWithExtensionBundleIdentifier:@"com.apple.Mind.MindComplication" containerBundleIdentifier:@"com.apple.Mind" kind:@"MentalHealthLauncherComplication" intent:0];
       v91 = [[CLKWidgetComplicationDescriptor alloc] initWithExtensionBundleIdentifier:@"com.apple.nanomusicrecognition.NanoMusicRecognitionWidget" containerBundleIdentifier:@"com.apple.nanomusicrecognition" kind:@"com.apple.nanomusicrecognition.NanoMusicRecognitionWidget" intent:0];
@@ -70,7 +70,7 @@
       v84 = _complicationOrDie(v12);
 
       v83 = [NTKComplication anyComplicationOfType:18];
-      if ([v4 supportsUrsa])
+      if ([deviceCopy supportsUrsa])
       {
         v13 = [NTKBundleComplication bundledComplicationWithBundleIdentifier:NTKComplicationCompassSmartWaypointIdentifier appBundleIdentifier:NTKBundleComplicationUrsaAppBundleIdentifier complicationDescriptor:0];
         v82 = _complicationOrDie(v13);
@@ -81,7 +81,7 @@
         v82 = _complicationOrDie(0);
       }
 
-      if ([v4 supportsUrsa])
+      if ([deviceCopy supportsUrsa])
       {
         v21 = [NTKBundleComplication bundledComplicationWithBundleIdentifier:NTKBundleComplicationUrsaCompassBundleIdentifier appBundleIdentifier:NTKBundleComplicationUrsaAppBundleIdentifier complicationDescriptor:0];
         v81 = _complicationOrDie(v21);
@@ -92,7 +92,7 @@
         v81 = _complicationOrDie(0);
       }
 
-      if ([v4 supportsUrsa])
+      if ([deviceCopy supportsUrsa])
       {
         v22 = [NTKBundleComplication bundledComplicationWithBundleIdentifier:NTKBundleComplicationUrsaBearingBundleIdentifier appBundleIdentifier:NTKBundleComplicationUrsaAppBundleIdentifier complicationDescriptor:0];
         v94 = _complicationOrDie(v22);
@@ -106,10 +106,10 @@
       v23 = [NTKComplication anyComplicationOfType:43];
       v80 = _complicationOrDie(v23);
 
-      v68 = v7;
+      v68 = analyticsIdentifier;
       v63 = v9;
       v64 = v8;
-      if ([v4 supportsUrsa])
+      if ([deviceCopy supportsUrsa])
       {
         v24 = [NTKBundleComplication bundledComplicationWithBundleIdentifier:@"com.apple.NanoCompass.complications.altitude" appBundleIdentifier:NTKBundleComplicationUrsaAppBundleIdentifier complicationDescriptor:0];
         v79 = _complicationOrDie(v24);
@@ -164,7 +164,7 @@
       v40 = [NSMutableArray arrayWithCapacity:12];
       v41 = NTKComplicationSlotTopLeft;
       v119[0] = NTKComplicationSlotTopLeft;
-      if ([v4 supportsCharon])
+      if ([deviceCopy supportsCharon])
       {
         v42 = v34;
       }
@@ -180,7 +180,7 @@
       v44 = NTKComplicationSlotBottom;
       v119[1] = NTKComplicationSlotCenter;
       v119[2] = NTKComplicationSlotBottom;
-      if ([v4 supportsCharon])
+      if ([deviceCopy supportsCharon])
       {
         v45 = v27;
       }
@@ -204,7 +204,7 @@
       [v40 addObject:v47];
 
       v115[0] = v41;
-      if ([v4 supportsCharon])
+      if ([deviceCopy supportsCharon])
       {
         v48 = v34;
       }
@@ -218,7 +218,7 @@
       v116[1] = v72;
       v115[1] = v43;
       v115[2] = v44;
-      if ([v4 supportsCharon])
+      if ([deviceCopy supportsCharon])
       {
         v49 = v27;
       }
@@ -295,8 +295,8 @@
       v97 = v5;
       [v40 enumerateObjectsUsingBlock:v95];
 
-      v7 = v68;
-      v6 = v69;
+      analyticsIdentifier = v68;
+      identifier = v69;
       v8 = v64;
     }
   }
@@ -318,10 +318,10 @@
     [(NTKCloudrakerFaceBundle *)self _addGalleryFaceWithTopComplication:39 centerComplicationType:40 bottomComplicationType:5 toCollection:v5 withBaseFace:v9];
     [(NTKCloudrakerFaceBundle *)self _addGalleryFaceWithTopComplication:19 centerComplicationType:15 bottomComplicationType:7 toCollection:v5 withBaseFace:v9];
     [(NTKCloudrakerFaceBundle *)self _addGalleryFaceWithTopComplication:10 centerComplicationType:43 bottomComplicationType:22 toCollection:v5 withBaseFace:v9];
-    v18 = [v4 pdrDevice];
-    v19 = [v18 pairingID];
+    pdrDevice = [deviceCopy pdrDevice];
+    pairingID = [pdrDevice pairingID];
 
-    if (v19)
+    if (pairingID)
     {
       v20 = 9;
     }
@@ -339,9 +339,9 @@
   return v57;
 }
 
-- (id)galleryEditOptionsForDevice:(id)a3
+- (id)galleryEditOptionsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v5 = &off_8A70;
     v6 = &off_8D10;
@@ -356,20 +356,20 @@
   return v3;
 }
 
-- (id)galleryPigmentsForDevice:(id)a3
+- (id)galleryPigmentsForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 isRunningNapiliGMOrLater])
+  deviceCopy = device;
+  if ([deviceCopy isRunningNapiliGMOrLater])
   {
-    v5 = [(NTKCloudrakerFaceBundle *)self defaultFaceForDevice:v4];
+    v5 = [(NTKCloudrakerFaceBundle *)self defaultFaceForDevice:deviceCopy];
     v6 = [v5 defaultOptionForCustomEditMode:10 slot:0];
     v7 = ntk_special_multicolor;
     v11[0] = ntk_special_multicolor;
     v11[1] = ntk_special_multicolor;
     v11[2] = ntk_special_multicolor;
     v11[3] = ntk_special_multicolor;
-    v8 = [v6 fullname];
-    v11[4] = v8;
+    fullname = [v6 fullname];
+    v11[4] = fullname;
     v11[5] = v7;
     v9 = [NSArray arrayWithObjects:v11 count:6];
   }
@@ -382,28 +382,28 @@
   return v9;
 }
 
-- (void)_addGalleryFaceWithTopComplication:(unint64_t)a3 centerComplicationType:(unint64_t)a4 bottomComplicationType:(unint64_t)a5 toCollection:(id)a6 withBaseFace:(id)a7
+- (void)_addGalleryFaceWithTopComplication:(unint64_t)complication centerComplicationType:(unint64_t)type bottomComplicationType:(unint64_t)complicationType toCollection:(id)collection withBaseFace:(id)face
 {
-  v11 = a6;
-  v15 = [a7 copy];
-  v12 = [NTKComplication anyComplicationOfType:a3];
+  collectionCopy = collection;
+  v15 = [face copy];
+  v12 = [NTKComplication anyComplicationOfType:complication];
   [v15 setComplication:v12 forSlot:NTKComplicationSlotTopLeft];
 
-  v13 = [NTKComplication anyComplicationOfType:a4];
+  v13 = [NTKComplication anyComplicationOfType:type];
   [v15 setComplication:v13 forSlot:NTKComplicationSlotCenter];
 
-  v14 = [NTKComplication anyComplicationOfType:a5];
+  v14 = [NTKComplication anyComplicationOfType:complicationType];
   [v15 setComplication:v14 forSlot:NTKComplicationSlotBottom];
 
-  [v11 addObject:v15];
+  [collectionCopy addObject:v15];
 }
 
-- (id)heroFacesForDevice:(id)a3
+- (id)heroFacesForDevice:(id)device
 {
-  v4 = a3;
-  if (([v4 supportsPDRCapability:360081074] & 1) == 0 && objc_msgSend(v4, "supportsPDRCapability:", 4094027452) && objc_msgSend(v4, "deviceCategory") == &dword_0 + 3)
+  deviceCopy = device;
+  if (([deviceCopy supportsPDRCapability:360081074] & 1) == 0 && objc_msgSend(deviceCopy, "supportsPDRCapability:", 4094027452) && objc_msgSend(deviceCopy, "deviceCategory") == &dword_0 + 3)
   {
-    v5 = [(NTKCloudrakerFaceBundle *)self defaultFaceForDevice:v4];
+    v5 = [(NTKCloudrakerFaceBundle *)self defaultFaceForDevice:deviceCopy];
     v6 = [[NTKFaceBundleSortableGalleryFace alloc] initWithFace:v5 priority:300];
     v7 = v6;
     if (v6)

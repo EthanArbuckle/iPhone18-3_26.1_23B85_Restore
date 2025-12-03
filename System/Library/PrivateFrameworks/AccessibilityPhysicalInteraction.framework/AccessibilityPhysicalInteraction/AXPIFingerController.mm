@@ -1,71 +1,71 @@
 @interface AXPIFingerController
 - (AXAssertionCoordinator)suppressVisualsAssertionCoodinator;
 - (AXPIFingerAppearanceDelegate)appearanceDelegate;
-- (AXPIFingerController)initWithDisplayUUID:(id)a3;
-- (BOOL)moveFingersTo3DPoints:(id)a3;
-- (BOOL)moveFingersToPoints:(id)a3;
-- (CGPoint)_fingerLocationFromSceneReferencePoint:(CGPoint)a3;
-- (CGPoint)_sceneReferencePointFromFingerLocation:(CGPoint)a3;
+- (AXPIFingerController)initWithDisplayUUID:(id)d;
+- (BOOL)moveFingersTo3DPoints:(id)points;
+- (BOOL)moveFingersToPoints:(id)points;
+- (CGPoint)_fingerLocationFromSceneReferencePoint:(CGPoint)point;
+- (CGPoint)_sceneReferencePointFromFingerLocation:(CGPoint)location;
 - (CGPoint)midpointForFingers;
-- (CGPoint)midpointOfStartingFingersForGesture:(id)a3;
+- (CGPoint)midpointOfStartingFingersForGesture:(id)gesture;
 - (CGRect)fixedReferenceBounds;
-- (CGRect)rectForFingersAtPoints:(id)a3;
-- (id)_eventTouchInfoForFinger:(id)a3;
-- (id)_eventTouchInfoForFingerLocation:(CGPoint)a3 force:(double)a4;
-- (id)_handleStartingFingersForGesture:(id)a3 animated:(BOOL)a4 startPointForAnimation:(CGPoint)a5 midpoint:(CGPoint *)a6 showFingers:(BOOL)a7;
+- (CGRect)rectForFingersAtPoints:(id)points;
+- (id)_eventTouchInfoForFinger:(id)finger;
+- (id)_eventTouchInfoForFingerLocation:(CGPoint)location force:(double)force;
+- (id)_handleStartingFingersForGesture:(id)gesture animated:(BOOL)animated startPointForAnimation:(CGPoint)animation midpoint:(CGPoint *)midpoint showFingers:(BOOL)fingers;
 - (id)_pointStringsFromFingers;
 - (id)_touchInfosByIdentifierForPressedFingers;
-- (id)acquireAssertionToSuppressVisualsWithReason:(id)a3;
-- (id)fingerModelAtPoint:(CGPoint)a3;
+- (id)acquireAssertionToSuppressVisualsWithReason:(id)reason;
+- (id)fingerModelAtPoint:(CGPoint)point;
 - (id)legacyLiftFingersUp;
 - (id)legacyPressFingersDown;
 - (unint64_t)eventSenderServiceID;
-- (void)_endGestureWithSuccess:(BOOL)a3;
+- (void)_endGestureWithSuccess:(BOOL)success;
 - (void)_interruptGestureIfNeeded;
-- (void)_performGesture:(id)a3 shouldShowFingers:(BOOL)a4 completion:(id)a5;
-- (void)_replayEventAtIndex:(unint64_t)a3 inGesture:(id)a4 allFingerIdentifiers:(id)a5;
-- (void)_sendMoveEventIfNeededForFingerModel:(id)a3 atIndex:(unint64_t)a4;
-- (void)_showFingerModels:(id)a3 animated:(BOOL)a4 startPointForAnimation:(CGPoint)a5 shouldShowPinchChain:(BOOL)a6 shouldReuseFingers:(BOOL)a7;
-- (void)cancelGestureWithCompletion:(id)a3;
-- (void)clearAllFingersAnimated:(BOOL)a3 endPointForAnimation:(CGPoint)a4;
+- (void)_performGesture:(id)gesture shouldShowFingers:(BOOL)fingers completion:(id)completion;
+- (void)_replayEventAtIndex:(unint64_t)index inGesture:(id)gesture allFingerIdentifiers:(id)identifiers;
+- (void)_sendMoveEventIfNeededForFingerModel:(id)model atIndex:(unint64_t)index;
+- (void)_showFingerModels:(id)models animated:(BOOL)animated startPointForAnimation:(CGPoint)animation shouldShowPinchChain:(BOOL)chain shouldReuseFingers:(BOOL)fingers;
+- (void)cancelGestureWithCompletion:(id)completion;
+- (void)clearAllFingersAnimated:(BOOL)animated endPointForAnimation:(CGPoint)animation;
 - (void)dealloc;
-- (void)didUpdateForceForFingerModel:(id)a3;
-- (void)didUpdateLocationForFingerModel:(id)a3;
-- (void)didUpdatePressStateForFingerModel:(id)a3;
-- (void)didUpdateSelectedStateForFingerModel:(id)a3;
-- (void)didUpdateShapeForFingerModel:(id)a3;
-- (void)endGestureWithCompletion:(id)a3;
+- (void)didUpdateForceForFingerModel:(id)model;
+- (void)didUpdateLocationForFingerModel:(id)model;
+- (void)didUpdatePressStateForFingerModel:(id)model;
+- (void)didUpdateSelectedStateForFingerModel:(id)model;
+- (void)didUpdateShapeForFingerModel:(id)model;
+- (void)endGestureWithCompletion:(id)completion;
 - (void)endUpdates;
-- (void)enumerateFingersUsingBlock:(id)a3;
-- (void)liftFingersUpAnimated:(BOOL)a3 sendTouchEvents:(BOOL)a4;
-- (void)performCircularProgressAnimationOnFingersWithDuration:(double)a3 completion:(id)a4;
-- (void)performDownAtPoint:(CGPoint)a3;
-- (void)performGesture:(id)a3;
-- (void)performGesture:(id)a3 completion:(id)a4;
-- (void)performMoveToPoint:(CGPoint)a3;
-- (void)performUpAtPoint:(CGPoint)a3;
-- (void)performWithoutPreparingGesture:(id)a3 completion:(id)a4;
-- (void)pressFingersDownAnimated:(BOOL)a3 sendTouchEvents:(BOOL)a4;
+- (void)enumerateFingersUsingBlock:(id)block;
+- (void)liftFingersUpAnimated:(BOOL)animated sendTouchEvents:(BOOL)events;
+- (void)performCircularProgressAnimationOnFingersWithDuration:(double)duration completion:(id)completion;
+- (void)performDownAtPoint:(CGPoint)point;
+- (void)performGesture:(id)gesture;
+- (void)performGesture:(id)gesture completion:(id)completion;
+- (void)performMoveToPoint:(CGPoint)point;
+- (void)performUpAtPoint:(CGPoint)point;
+- (void)performWithoutPreparingGesture:(id)gesture completion:(id)completion;
+- (void)pressFingersDownAnimated:(BOOL)animated sendTouchEvents:(BOOL)events;
 - (void)resetPinchFingers;
-- (void)setAppearanceDelegate:(id)a3;
-- (void)showPinchFingersAnimated:(BOOL)a3 midpoint:(CGPoint)a4;
+- (void)setAppearanceDelegate:(id)delegate;
+- (void)showPinchFingersAnimated:(BOOL)animated midpoint:(CGPoint)midpoint;
 @end
 
 @implementation AXPIFingerController
 
-- (AXPIFingerController)initWithDisplayUUID:(id)a3
+- (AXPIFingerController)initWithDisplayUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = AXPIFingerController;
   v5 = [(AXPIFingerController *)&v15 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     fingerModels = v5->_fingerModels;
-    v5->_fingerModels = v6;
+    v5->_fingerModels = array;
 
-    v8 = [[AXPIFingerEventSender alloc] initWithDisplayUUID:v4];
+    v8 = [[AXPIFingerEventSender alloc] initWithDisplayUUID:dCopy];
     eventSender = v5->_eventSender;
     v5->_eventSender = v8;
 
@@ -125,36 +125,36 @@
 
 - (unint64_t)eventSenderServiceID
 {
-  v2 = [(AXPIFingerEventSender *)self->_eventSender eventService];
-  v3 = [v2 serviceID];
+  eventService = [(AXPIFingerEventSender *)self->_eventSender eventService];
+  serviceID = [eventService serviceID];
 
-  return v3;
+  return serviceID;
 }
 
-- (void)clearAllFingersAnimated:(BOOL)a3 endPointForAnimation:(CGPoint)a4
+- (void)clearAllFingersAnimated:(BOOL)animated endPointForAnimation:(CGPoint)animation
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3;
+  y = animation.y;
+  x = animation.x;
+  animatedCopy = animated;
   [(AXPIFingerController *)self liftFingersUpAnimated:?];
   [(AXPIFingerController *)self _interruptGestureIfNeeded];
   [(AXPIFingerController *)self enumerateFingersUsingBlock:&__block_literal_global_3];
-  [(AXPIFingerContainerView *)self->_fingerContainerView clearAllFingersAnimated:v6 endPointForAnimation:x, y];
+  [(AXPIFingerContainerView *)self->_fingerContainerView clearAllFingersAnimated:animatedCopy endPointForAnimation:x, y];
   fingerModels = self->_fingerModels;
 
   [(NSMutableArray *)fingerModels removeAllObjects];
 }
 
-- (void)_showFingerModels:(id)a3 animated:(BOOL)a4 startPointForAnimation:(CGPoint)a5 shouldShowPinchChain:(BOOL)a6 shouldReuseFingers:(BOOL)a7
+- (void)_showFingerModels:(id)models animated:(BOOL)animated startPointForAnimation:(CGPoint)animation shouldShowPinchChain:(BOOL)chain shouldReuseFingers:(BOOL)fingers
 {
-  v7 = a7;
-  v8 = a6;
-  y = a5.y;
-  x = a5.x;
-  v11 = a4;
+  fingersCopy = fingers;
+  chainCopy = chain;
+  y = animation.y;
+  x = animation.x;
+  animatedCopy = animated;
   v28 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  if (v7)
+  modelsCopy = models;
+  if (fingersCopy)
   {
     [(AXPIFingerController *)self _interruptGestureIfNeeded];
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -162,10 +162,10 @@
     aBlock[2] = __114__AXPIFingerController__showFingerModels_animated_startPointForAnimation_shouldShowPinchChain_shouldReuseFingers___block_invoke;
     aBlock[3] = &unk_278BE6330;
     aBlock[4] = self;
-    v26 = v13;
+    v26 = modelsCopy;
     v14 = _Block_copy(aBlock);
     v15 = v14;
-    if (v11)
+    if (animatedCopy)
     {
       [MEMORY[0x277D75D18] animateWithDuration:v14 animations:0.25];
     }
@@ -180,15 +180,15 @@
   {
     if ([(NSMutableArray *)self->_fingerModels count])
     {
-      [(AXPIFingerController *)self clearAllFingersAnimated:v11 endPointForAnimation:x, y];
+      [(AXPIFingerController *)self clearAllFingersAnimated:animatedCopy endPointForAnimation:x, y];
     }
 
-    [(NSMutableArray *)self->_fingerModels addObjectsFromArray:v13];
+    [(NSMutableArray *)self->_fingerModels addObjectsFromArray:modelsCopy];
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v16 = v13;
+    v16 = modelsCopy;
     v17 = [v16 countByEnumeratingWithState:&v21 objects:v27 count:16];
     if (v17)
     {
@@ -212,7 +212,7 @@
       while (v18);
     }
 
-    [(AXPIFingerContainerView *)self->_fingerContainerView showFingerModels:v16 animated:v11 startPointForAnimation:v8 shouldShowPinchChain:x, y];
+    [(AXPIFingerContainerView *)self->_fingerContainerView showFingerModels:v16 animated:animatedCopy startPointForAnimation:chainCopy shouldShowPinchChain:x, y];
   }
 }
 
@@ -235,20 +235,20 @@ void __114__AXPIFingerController__showFingerModels_animated_startPointForAnimati
   [v5 updateWithPropertiesFromFingerModel:v6];
 }
 
-- (void)showPinchFingersAnimated:(BOOL)a3 midpoint:(CGPoint)a4
+- (void)showPinchFingersAnimated:(BOOL)animated midpoint:(CGPoint)midpoint
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3;
+  y = midpoint.y;
+  x = midpoint.x;
+  animatedCopy = animated;
   if ([(NSMutableArray *)self->_fingerModels count])
   {
-    [(AXPIFingerController *)self clearAllFingersAnimated:v6 endPointForAnimation:x, y];
+    [(AXPIFingerController *)self clearAllFingersAnimated:animatedCopy endPointForAnimation:x, y];
   }
 
   [(AXPIFingerContainerView *)self->_fingerContainerView bounds];
   v13 = [AXPIFingerUtilities defaultPinchLocationsAroundPoint:x withinBounds:y, v8, v9, v10, v11];
   v12 = [AXPIFingerUtilities fingerModelsForPointStrings:v13];
-  [(AXPIFingerController *)self _showFingerModels:v12 animated:v6 startPointForAnimation:1 shouldShowPinchChain:0 shouldReuseFingers:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
+  [(AXPIFingerController *)self _showFingerModels:v12 animated:animatedCopy startPointForAnimation:1 shouldShowPinchChain:0 shouldReuseFingers:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
 }
 
 - (void)resetPinchFingers
@@ -258,32 +258,32 @@ void __114__AXPIFingerController__showFingerModels_animated_startPointForAnimati
   v6 = v5;
   [(AXPIFingerContainerView *)self->_fingerContainerView bounds];
   v17 = [AXPIFingerUtilities defaultPinchLocationsAroundPoint:v4 withinBounds:v6, v7, v8, v9, v10];
-  v11 = [v17 firstObject];
-  v12 = CGPointFromString(v11);
+  firstObject = [v17 firstObject];
+  v12 = CGPointFromString(firstObject);
   v13 = [(NSMutableArray *)self->_fingerModels objectAtIndexedSubscript:0];
   [v13 setLocation:{v12.x, v12.y}];
 
-  v14 = [v17 lastObject];
-  v15 = CGPointFromString(v14);
+  lastObject = [v17 lastObject];
+  v15 = CGPointFromString(lastObject);
   v16 = [(NSMutableArray *)self->_fingerModels objectAtIndexedSubscript:1];
   [v16 setLocation:{v15.x, v15.y}];
 }
 
-- (CGPoint)_sceneReferencePointFromFingerLocation:(CGPoint)a3
+- (CGPoint)_sceneReferencePointFromFingerLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(AXPIFingerController *)self fixedReferenceWindow];
+  y = location.y;
+  x = location.x;
+  fixedReferenceWindow = [(AXPIFingerController *)self fixedReferenceWindow];
 
   fingerContainerView = self->_fingerContainerView;
-  if (v6)
+  if (fixedReferenceWindow)
   {
-    v8 = [(AXPIFingerContainerView *)fingerContainerView window];
+    window = [(AXPIFingerContainerView *)fingerContainerView window];
     [(AXPIFingerContainerView *)self->_fingerContainerView convertPoint:0 toView:x, y];
     v10 = v9;
     v12 = v11;
-    v13 = [(AXPIFingerController *)self fixedReferenceWindow];
-    [v8 convertPoint:v13 toWindow:{v10, v12}];
+    fixedReferenceWindow2 = [(AXPIFingerController *)self fixedReferenceWindow];
+    [window convertPoint:fixedReferenceWindow2 toWindow:{v10, v12}];
     v15 = v14;
     v17 = v16;
   }
@@ -293,13 +293,13 @@ void __114__AXPIFingerController__showFingerModels_animated_startPointForAnimati
     [(AXPIFingerContainerView *)fingerContainerView convertPoint:0 toView:x, y];
     v19 = v18;
     v21 = v20;
-    v8 = [MEMORY[0x277CE7D28] server];
-    v13 = [(AXPIFingerContainerView *)self->_fingerContainerView window];
-    v22 = [v13 _contextId];
-    v23 = [(AXPIFingerContainerView *)self->_fingerContainerView window];
-    v24 = [v23 screen];
-    v25 = [v24 displayIdentity];
-    [v8 convertPoint:v22 fromContextId:objc_msgSend(v25 displayId:{"displayID"), v19, v21}];
+    window = [MEMORY[0x277CE7D28] server];
+    fixedReferenceWindow2 = [(AXPIFingerContainerView *)self->_fingerContainerView window];
+    _contextId = [fixedReferenceWindow2 _contextId];
+    window2 = [(AXPIFingerContainerView *)self->_fingerContainerView window];
+    screen = [window2 screen];
+    displayIdentity = [screen displayIdentity];
+    [window convertPoint:_contextId fromContextId:objc_msgSend(displayIdentity displayId:{"displayID"), v19, v21}];
     v15 = v26;
     v17 = v27;
   }
@@ -311,19 +311,19 @@ void __114__AXPIFingerController__showFingerModels_animated_startPointForAnimati
   return result;
 }
 
-- (CGPoint)_fingerLocationFromSceneReferencePoint:(CGPoint)a3
+- (CGPoint)_fingerLocationFromSceneReferencePoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(AXPIFingerController *)self fixedReferenceWindow];
+  y = point.y;
+  x = point.x;
+  fixedReferenceWindow = [(AXPIFingerController *)self fixedReferenceWindow];
 
   fingerContainerView = self->_fingerContainerView;
-  v8 = [(AXPIFingerContainerView *)fingerContainerView window];
-  v9 = v8;
-  if (v6)
+  window = [(AXPIFingerContainerView *)fingerContainerView window];
+  v9 = window;
+  if (fixedReferenceWindow)
   {
-    v10 = [(AXPIFingerController *)self fixedReferenceWindow];
-    [v9 convertPoint:v10 fromWindow:{x, y}];
+    fixedReferenceWindow2 = [(AXPIFingerController *)self fixedReferenceWindow];
+    [v9 convertPoint:fixedReferenceWindow2 fromWindow:{x, y}];
     [(AXPIFingerContainerView *)fingerContainerView convertPoint:0 fromView:?];
     v12 = v11;
     v14 = v13;
@@ -331,9 +331,9 @@ void __114__AXPIFingerController__showFingerModels_animated_startPointForAnimati
 
   else
   {
-    v10 = [v8 screen];
-    v15 = [v10 fixedCoordinateSpace];
-    [(AXPIFingerContainerView *)fingerContainerView convertPoint:v15 fromCoordinateSpace:x, y];
+    fixedReferenceWindow2 = [window screen];
+    fixedCoordinateSpace = [fixedReferenceWindow2 fixedCoordinateSpace];
+    [(AXPIFingerContainerView *)fingerContainerView convertPoint:fixedCoordinateSpace fromCoordinateSpace:x, y];
     v12 = v16;
     v14 = v17;
   }
@@ -345,10 +345,10 @@ void __114__AXPIFingerController__showFingerModels_animated_startPointForAnimati
   return result;
 }
 
-- (id)_eventTouchInfoForFingerLocation:(CGPoint)a3 force:(double)a4
+- (id)_eventTouchInfoForFingerLocation:(CGPoint)location force:(double)force
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v8 = objc_alloc_init(AXPIFingerEventTouchInfo);
   [(AXPIFingerController *)self _sceneReferencePointFromFingerLocation:x, y];
   v10 = v9;
@@ -356,21 +356,21 @@ void __114__AXPIFingerController__showFingerModels_animated_startPointForAnimati
   [(AXPIFingerController *)self fixedReferenceBounds];
   if (CGRectIsNull(v26))
   {
-    v13 = [(AXPIFingerContainerView *)self->_fingerContainerView window];
+    window = [(AXPIFingerContainerView *)self->_fingerContainerView window];
 
-    if (v13)
+    if (window)
     {
-      v14 = [(AXPIFingerContainerView *)self->_fingerContainerView window];
-      v15 = [v14 screen];
-      [v15 _referenceBounds];
+      window2 = [(AXPIFingerContainerView *)self->_fingerContainerView window];
+      screen = [window2 screen];
+      [screen _referenceBounds];
       v17 = v16;
       v19 = v18;
     }
 
     else
     {
-      v14 = [MEMORY[0x277D759A0] mainScreen];
-      [v14 _referenceBounds];
+      window2 = [MEMORY[0x277D759A0] mainScreen];
+      [window2 _referenceBounds];
       v17 = v22;
       v19 = v23;
     }
@@ -384,22 +384,22 @@ void __114__AXPIFingerController__showFingerModels_animated_startPointForAnimati
   }
 
   [(AXPIFingerEventTouchInfo *)v8 setNormalizedLocation:v10 / v17, v12 / v19];
-  [(AXPIFingerEventTouchInfo *)v8 setForce:a4];
+  [(AXPIFingerEventTouchInfo *)v8 setForce:force];
 
   return v8;
 }
 
-- (id)_eventTouchInfoForFinger:(id)a3
+- (id)_eventTouchInfoForFinger:(id)finger
 {
-  v4 = a3;
-  [v4 location];
+  fingerCopy = finger;
+  [fingerCopy location];
   v6 = v5;
   v8 = v7;
-  [v4 force];
+  [fingerCopy force];
   v10 = [(AXPIFingerController *)self _eventTouchInfoForFingerLocation:v6 force:v8, v9];
-  v11 = [v4 location3D];
+  location3D = [fingerCopy location3D];
 
-  [v10 setLocation3D:v11];
+  [v10 setLocation3D:location3D];
 
   return v10;
 }
@@ -407,7 +407,7 @@ void __114__AXPIFingerController__showFingerModels_animated_startPointForAnimati
 - (id)_touchInfosByIdentifierForPressedFingers
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -433,7 +433,7 @@ void __114__AXPIFingerController__showFingerModels_animated_startPointForAnimati
         {
           v11 = [(AXPIFingerController *)self _eventTouchInfoForFinger:v10];
           v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
-          [v3 setObject:v11 forKeyedSubscript:v12];
+          [dictionary setObject:v11 forKeyedSubscript:v12];
         }
 
         ++v8;
@@ -445,17 +445,17 @@ void __114__AXPIFingerController__showFingerModels_animated_startPointForAnimati
     while (v6);
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)pressFingersDownAnimated:(BOOL)a3 sendTouchEvents:(BOOL)a4
+- (void)pressFingersDownAnimated:(BOOL)animated sendTouchEvents:(BOOL)events
 {
-  [(AXPIFingerContainerView *)self->_fingerContainerView setShouldAnimatePress:a3];
+  [(AXPIFingerContainerView *)self->_fingerContainerView setShouldAnimatePress:animated];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __65__AXPIFingerController_pressFingersDownAnimated_sendTouchEvents___block_invoke;
   v6[3] = &unk_278BE6640;
-  v7 = a4;
+  eventsCopy = events;
   v6[4] = self;
   [(AXPIFingerController *)self enumerateFingersUsingBlock:v6];
   [(AXPIFingerContainerView *)self->_fingerContainerView setShouldAnimatePress:0];
@@ -481,14 +481,14 @@ void __65__AXPIFingerController_pressFingersDownAnimated_sendTouchEvents___block
   }
 }
 
-- (void)liftFingersUpAnimated:(BOOL)a3 sendTouchEvents:(BOOL)a4
+- (void)liftFingersUpAnimated:(BOOL)animated sendTouchEvents:(BOOL)events
 {
-  [(AXPIFingerContainerView *)self->_fingerContainerView setShouldAnimatePress:a3];
+  [(AXPIFingerContainerView *)self->_fingerContainerView setShouldAnimatePress:animated];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__AXPIFingerController_liftFingersUpAnimated_sendTouchEvents___block_invoke;
   v6[3] = &unk_278BE6640;
-  v7 = a4;
+  eventsCopy = events;
   v6[4] = self;
   [(AXPIFingerController *)self enumerateFingersUsingBlock:v6];
   [(AXPIFingerContainerView *)self->_fingerContainerView setShouldAnimatePress:0];
@@ -514,24 +514,24 @@ void __62__AXPIFingerController_liftFingersUpAnimated_sendTouchEvents___block_in
   }
 }
 
-- (void)performCircularProgressAnimationOnFingersWithDuration:(double)a3 completion:(id)a4
+- (void)performCircularProgressAnimationOnFingersWithDuration:(double)duration completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   [(AXPIFingerController *)self cancelCircularProgressAnimation];
-  [(AXPIFingerContainerView *)self->_fingerContainerView performCircularProgressAnimationOnFingersWithDuration:v6 completion:a3];
+  [(AXPIFingerContainerView *)self->_fingerContainerView performCircularProgressAnimationOnFingersWithDuration:completionCopy completion:duration];
 }
 
-- (void)enumerateFingersUsingBlock:(id)a3
+- (void)enumerateFingersUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(AXPIFingerController *)self beginUpdates];
   fingerModels = self->_fingerModels;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__AXPIFingerController_enumerateFingersUsingBlock___block_invoke;
   v7[3] = &unk_278BE6668;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableArray *)fingerModels enumerateObjectsUsingBlock:v7];
   [(AXPIFingerController *)self endUpdates];
 }
@@ -550,10 +550,10 @@ void __62__AXPIFingerController_liftFingersUpAnimated_sendTouchEvents___block_in
   return result;
 }
 
-- (CGPoint)midpointOfStartingFingersForGesture:(id)a3
+- (CGPoint)midpointOfStartingFingersForGesture:(id)gesture
 {
   v6 = *MEMORY[0x277CBF348];
-  v3 = [(AXPIFingerController *)self _handleStartingFingersForGesture:a3 animated:0 startPointForAnimation:&v6 midpoint:0 showFingers:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
+  v3 = [(AXPIFingerController *)self _handleStartingFingersForGesture:gesture animated:0 startPointForAnimation:&v6 midpoint:0 showFingers:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
   v5 = *(&v6 + 1);
   v4 = *&v6;
   result.y = v5;
@@ -561,28 +561,28 @@ void __62__AXPIFingerController_liftFingersUpAnimated_sendTouchEvents___block_in
   return result;
 }
 
-- (id)_handleStartingFingersForGesture:(id)a3 animated:(BOOL)a4 startPointForAnimation:(CGPoint)a5 midpoint:(CGPoint *)a6 showFingers:(BOOL)a7
+- (id)_handleStartingFingersForGesture:(id)gesture animated:(BOOL)animated startPointForAnimation:(CGPoint)animation midpoint:(CGPoint *)midpoint showFingers:(BOOL)fingers
 {
-  v7 = a7;
-  y = a5.y;
-  x = a5.x;
-  v33 = a4;
+  fingersCopy = fingers;
+  y = animation.y;
+  x = animation.x;
+  animatedCopy = animated;
   v42 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  gestureCopy = gesture;
   v12 = *MEMORY[0x277CBF348];
   v11 = *(MEMORY[0x277CBF348] + 8);
-  v13 = [MEMORY[0x277CE7E58] server];
-  v14 = [v13 activeInterfaceOrientation];
+  server = [MEMORY[0x277CE7E58] server];
+  activeInterfaceOrientation = [server activeInterfaceOrientation];
 
-  [v10 updateForLandscape:(v14 - 3) < 2];
-  v15 = [MEMORY[0x277CBEB18] array];
-  v16 = [MEMORY[0x277CBEB18] array];
-  v35 = [v10 numberOfEvents];
-  if (v35)
+  [gestureCopy updateForLandscape:(activeInterfaceOrientation - 3) < 2];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  numberOfEvents = [gestureCopy numberOfEvents];
+  if (numberOfEvents)
   {
-    for (i = 0; i != v35; ++i)
+    for (i = 0; i != numberOfEvents; ++i)
     {
-      v18 = [v10 fingerIdentifiersAtEventIndex:i];
+      v18 = [gestureCopy fingerIdentifiersAtEventIndex:i];
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
@@ -602,13 +602,13 @@ void __62__AXPIFingerController_liftFingersUpAnimated_sendTouchEvents___block_in
             }
 
             v23 = *(*(&v37 + 1) + 8 * j);
-            if (([v15 containsObject:v23] & 1) == 0)
+            if (([array containsObject:v23] & 1) == 0)
             {
-              [v15 addObject:v23];
-              [v10 pointForFingerIdentifier:v23 atEventIndex:i];
+              [array addObject:v23];
+              [gestureCopy pointForFingerIdentifier:v23 atEventIndex:i];
               v25 = v24;
               v27 = v26;
-              if ([v10 arePointsDeviceRelative])
+              if ([gestureCopy arePointsDeviceRelative])
               {
                 [(AXPIFingerController *)self _fingerLocationFromSceneReferencePoint:v25, v27];
                 v25 = v28;
@@ -617,10 +617,10 @@ void __62__AXPIFingerController_liftFingersUpAnimated_sendTouchEvents___block_in
 
               v12 = v12 + v25;
               v11 = v11 + v27;
-              if (v7)
+              if (fingersCopy)
               {
                 v30 = [AXPIFingerModel fingerModelForLocation:v25, v27];
-                [v16 addObject:v30];
+                [array2 addObject:v30];
               }
             }
           }
@@ -633,56 +633,56 @@ void __62__AXPIFingerController_liftFingersUpAnimated_sendTouchEvents___block_in
     }
   }
 
-  v31 = [v15 count];
+  v31 = [array count];
   if (v31)
   {
     v12 = v12 / v31;
     v11 = v11 / v31;
   }
 
-  if (a6)
+  if (midpoint)
   {
-    a6->x = v12;
-    a6->y = v11;
+    midpoint->x = v12;
+    midpoint->y = v11;
   }
 
-  if (v7)
+  if (fingersCopy)
   {
-    -[AXPIFingerController _showFingerModels:animated:startPointForAnimation:shouldShowPinchChain:shouldReuseFingers:](self, "_showFingerModels:animated:startPointForAnimation:shouldShowPinchChain:shouldReuseFingers:", v16, v33, 0, [v16 count] == -[NSMutableArray count](self->_fingerModels, "count"), x, y);
+    -[AXPIFingerController _showFingerModels:animated:startPointForAnimation:shouldShowPinchChain:shouldReuseFingers:](self, "_showFingerModels:animated:startPointForAnimation:shouldShowPinchChain:shouldReuseFingers:", array2, animatedCopy, 0, [array2 count] == -[NSMutableArray count](self->_fingerModels, "count"), x, y);
   }
 
-  return v15;
+  return array;
 }
 
-- (void)_replayEventAtIndex:(unint64_t)a3 inGesture:(id)a4 allFingerIdentifiers:(id)a5
+- (void)_replayEventAtIndex:(unint64_t)index inGesture:(id)gesture allFingerIdentifiers:(id)identifiers
 {
-  v8 = a4;
-  v9 = a5;
+  gestureCopy = gesture;
+  identifiersCopy = identifiers;
   [(AXPIFingerController *)self beginUpdates];
-  v10 = [v8 numberOfEvents];
-  v11 = [v8 fingerIdentifiersAtEventIndex:a3];
+  numberOfEvents = [gestureCopy numberOfEvents];
+  v11 = [gestureCopy fingerIdentifiersAtEventIndex:index];
   v20 = MEMORY[0x277D85DD0];
   v21 = 3221225472;
   v22 = __75__AXPIFingerController__replayEventAtIndex_inGesture_allFingerIdentifiers___block_invoke;
   v23 = &unk_278BE6690;
-  v24 = self;
+  selfCopy = self;
   v12 = v11;
   v25 = v12;
-  v13 = v8;
+  v13 = gestureCopy;
   v26 = v13;
-  v27 = a3;
-  [v9 enumerateObjectsUsingBlock:&v20];
+  indexCopy = index;
+  [identifiersCopy enumerateObjectsUsingBlock:&v20];
 
   [(AXPIFingerController *)self endUpdates:v20];
-  [v13 timeAtEventIndex:a3];
-  if (v10 - 1 > a3)
+  [v13 timeAtEventIndex:index];
+  if (numberOfEvents - 1 > index)
   {
     v15 = v14;
-    [v13 timeAtEventIndex:a3 + 1];
+    [v13 timeAtEventIndex:index + 1];
     v17 = v16 - v15;
-    v18 = [MEMORY[0x277CBEB88] currentRunLoop];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
     v19 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v17];
-    [v18 runUntilDate:v19];
+    [currentRunLoop runUntilDate:v19];
   }
 }
 
@@ -714,37 +714,37 @@ void __75__AXPIFingerController__replayEventAtIndex_inGesture_allFingerIdentifie
   }
 }
 
-- (void)performGesture:(id)a3
+- (void)performGesture:(id)gesture
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __39__AXPIFingerController_performGesture___block_invoke;
   v4[3] = &unk_278BE66B8;
   v4[4] = self;
-  [(AXPIFingerController *)self performGesture:a3 completion:v4];
+  [(AXPIFingerController *)self performGesture:gesture completion:v4];
   [(AXPIFingerController *)self _endGestureWithSuccess:self->_isGestureSuccessful];
 }
 
-- (void)performGesture:(id)a3 completion:(id)a4
+- (void)performGesture:(id)gesture completion:(id)completion
 {
-  [(AXPIFingerController *)self _performGesture:a3 shouldShowFingers:1 completion:a4];
+  [(AXPIFingerController *)self _performGesture:gesture shouldShowFingers:1 completion:completion];
   isGestureSuccessful = self->_isGestureSuccessful;
 
   [(AXPIFingerController *)self _endGestureWithSuccess:isGestureSuccessful];
 }
 
-- (void)performWithoutPreparingGesture:(id)a3 completion:(id)a4
+- (void)performWithoutPreparingGesture:(id)gesture completion:(id)completion
 {
-  [(AXPIFingerController *)self _performGesture:a3 shouldShowFingers:0 completion:a4];
+  [(AXPIFingerController *)self _performGesture:gesture shouldShowFingers:0 completion:completion];
   isGestureSuccessful = self->_isGestureSuccessful;
 
   [(AXPIFingerController *)self _endGestureWithSuccess:isGestureSuccessful];
 }
 
-- (void)endGestureWithCompletion:(id)a3
+- (void)endGestureWithCompletion:(id)completion
 {
   self->_isPerformingMultiStepGesture = 0;
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   gestureCompletion = self->_gestureCompletion;
   self->_gestureCompletion = v4;
 
@@ -753,49 +753,49 @@ void __75__AXPIFingerController__replayEventAtIndex_inGesture_allFingerIdentifie
   [(AXPIFingerController *)self _endGestureWithSuccess:isGestureSuccessful];
 }
 
-- (void)cancelGestureWithCompletion:(id)a3
+- (void)cancelGestureWithCompletion:(id)completion
 {
-  v7 = a3;
+  completionCopy = completion;
   self->_isPerformingGesture = 0;
   eventSender = self->_eventSender;
-  v5 = [(AXPIFingerController *)self _touchInfosByIdentifierForPressedFingers];
-  [(AXPIFingerEventSender *)eventSender performCancelWithTouchesByFingerIdentifier:v5];
+  _touchInfosByIdentifierForPressedFingers = [(AXPIFingerController *)self _touchInfosByIdentifierForPressedFingers];
+  [(AXPIFingerEventSender *)eventSender performCancelWithTouchesByFingerIdentifier:_touchInfosByIdentifierForPressedFingers];
 
   [(AXPIFingerController *)self liftFingersUpAnimated:0 sendTouchEvents:0];
-  v6 = v7;
-  if (v7)
+  v6 = completionCopy;
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0);
-    v6 = v7;
+    (*(completionCopy + 2))(completionCopy, 0);
+    v6 = completionCopy;
   }
 }
 
-- (void)_performGesture:(id)a3 shouldShowFingers:(BOOL)a4 completion:(id)a5
+- (void)_performGesture:(id)gesture shouldShowFingers:(BOOL)fingers completion:(id)completion
 {
-  v6 = a4;
-  v14 = a3;
-  v8 = a5;
+  fingersCopy = fingers;
+  gestureCopy = gesture;
+  completionCopy = completion;
   [(AXPIFingerEventSender *)self->_eventSender startNewGeneration];
-  v9 = [(AXPIFingerController *)self _handleStartingFingersForGesture:v14 animated:0 startPointForAnimation:0 midpoint:v6 showFingers:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
-  v10 = [v14 numberOfEvents];
+  v9 = [(AXPIFingerController *)self _handleStartingFingersForGesture:gestureCopy animated:0 startPointForAnimation:0 midpoint:fingersCopy showFingers:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
+  numberOfEvents = [gestureCopy numberOfEvents];
   self->_isPerformingGesture = 1;
-  v11 = _Block_copy(v8);
+  v11 = _Block_copy(completionCopy);
   gestureCompletion = self->_gestureCompletion;
   self->_gestureCompletion = v11;
 
   self->_isGestureSuccessful = 1;
-  if (v10)
+  if (numberOfEvents)
   {
     v13 = 0;
     while (1)
     {
-      [(AXPIFingerController *)self _replayEventAtIndex:v13 inGesture:v14 allFingerIdentifiers:v9];
+      [(AXPIFingerController *)self _replayEventAtIndex:v13 inGesture:gestureCopy allFingerIdentifiers:v9];
       if (!self->_isPerformingGesture)
       {
         break;
       }
 
-      if (v10 == ++v13)
+      if (numberOfEvents == ++v13)
       {
         goto LABEL_7;
       }
@@ -815,9 +815,9 @@ LABEL_7:
   }
 }
 
-- (void)_endGestureWithSuccess:(BOOL)a3
+- (void)_endGestureWithSuccess:(BOOL)success
 {
-  v3 = a3;
+  successCopy = success;
   [(AXPIFingerController *)self liftFingersUpAnimated:1];
   self->_isPerformingGesture = 0;
   gestureCompletion = self->_gestureCompletion;
@@ -827,13 +827,13 @@ LABEL_7:
     v6 = self->_gestureCompletion;
     self->_gestureCompletion = 0;
 
-    v7[2](v7, v3);
+    v7[2](v7, successCopy);
   }
 }
 
-- (id)fingerModelAtPoint:(CGPoint)a3
+- (id)fingerModelAtPoint:(CGPoint)point
 {
-  v4 = [(AXPIFingerContainerView *)self->_fingerContainerView indexOfFingerAtPoint:a3.x, a3.y];
+  v4 = [(AXPIFingerContainerView *)self->_fingerContainerView indexOfFingerAtPoint:point.x, point.y];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -862,11 +862,11 @@ LABEL_7:
   return suppressVisualsAssertionCoodinator;
 }
 
-- (id)acquireAssertionToSuppressVisualsWithReason:(id)a3
+- (id)acquireAssertionToSuppressVisualsWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(AXPIFingerController *)self suppressVisualsAssertionCoodinator];
-  v6 = [v5 acquireAssertionWithReason:v4];
+  reasonCopy = reason;
+  suppressVisualsAssertionCoodinator = [(AXPIFingerController *)self suppressVisualsAssertionCoodinator];
+  v6 = [suppressVisualsAssertionCoodinator acquireAssertionWithReason:reasonCopy];
 
   return v6;
 }
@@ -874,7 +874,7 @@ LABEL_7:
 - (id)_pointStringsFromFingers
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -896,7 +896,7 @@ LABEL_7:
 
         [*(*(&v11 + 1) + 8 * i) location];
         v9 = NSStringFromCGPoint(v18);
-        [v3 addObject:v9];
+        [array addObject:v9];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -905,7 +905,7 @@ LABEL_7:
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)legacyPressFingersDown
@@ -922,10 +922,10 @@ LABEL_7:
   return [(AXPIFingerController *)self _pointStringsFromFingers];
 }
 
-- (BOOL)moveFingersToPoints:(id)a3
+- (BOOL)moveFingersToPoints:(id)points
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pointsCopy = points;
   [(AXPIFingerContainerView *)self->_fingerContainerView bounds];
   v6 = v5;
   v8 = v7;
@@ -935,7 +935,7 @@ LABEL_7:
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v13 = v4;
+  v13 = pointsCopy;
   v14 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v14)
   {
@@ -1005,17 +1005,17 @@ void __44__AXPIFingerController_moveFingersToPoints___block_invoke(uint64_t a1, 
   [v7 setLocation:{v6.x, v6.y}];
 }
 
-- (BOOL)moveFingersTo3DPoints:(id)a3
+- (BOOL)moveFingersTo3DPoints:(id)points
 {
-  v4 = a3;
+  pointsCopy = points;
   v5 = [(NSMutableArray *)self->_fingerModels count];
-  if (v5 == [v4 count])
+  if (v5 == [pointsCopy count])
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __46__AXPIFingerController_moveFingersTo3DPoints___block_invoke;
     v7[3] = &unk_278BE6618;
-    v8 = v4;
+    v8 = pointsCopy;
     [(AXPIFingerController *)self enumerateFingersUsingBlock:v7];
   }
 
@@ -1030,9 +1030,9 @@ void __46__AXPIFingerController_moveFingersTo3DPoints___block_invoke(uint64_t a1
   [v5 setLocation3D:v6];
 }
 
-- (CGRect)rectForFingersAtPoints:(id)a3
+- (CGRect)rectForFingersAtPoints:(id)points
 {
-  [(AXPIFingerContainerView *)self->_fingerContainerView rectForFingersAtPoints:a3];
+  [(AXPIFingerContainerView *)self->_fingerContainerView rectForFingersAtPoints:points];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -1040,39 +1040,39 @@ void __46__AXPIFingerController_moveFingersTo3DPoints___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)performDownAtPoint:(CGPoint)a3
+- (void)performDownAtPoint:(CGPoint)point
 {
   v6[1] = *MEMORY[0x277D85DE8];
   eventSender = self->_eventSender;
-  v4 = [(AXPIFingerController *)self _eventTouchInfoForFingerLocation:a3.x force:a3.y, 0.0];
+  v4 = [(AXPIFingerController *)self _eventTouchInfoForFingerLocation:point.x force:point.y, 0.0];
   v6[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
   [(AXPIFingerEventSender *)eventSender performDownWithTouches:v5];
 }
 
-- (void)performMoveToPoint:(CGPoint)a3
+- (void)performMoveToPoint:(CGPoint)point
 {
   v6[1] = *MEMORY[0x277D85DE8];
   eventSender = self->_eventSender;
-  v4 = [(AXPIFingerController *)self _eventTouchInfoForFingerLocation:a3.x force:a3.y, 0.0];
+  v4 = [(AXPIFingerController *)self _eventTouchInfoForFingerLocation:point.x force:point.y, 0.0];
   v6[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
   [(AXPIFingerEventSender *)eventSender performMoveWithTouches:v5];
 }
 
-- (void)performUpAtPoint:(CGPoint)a3
+- (void)performUpAtPoint:(CGPoint)point
 {
   v6[1] = *MEMORY[0x277D85DE8];
   eventSender = self->_eventSender;
-  v4 = [(AXPIFingerController *)self _eventTouchInfoForFingerLocation:a3.x force:a3.y, 0.0];
+  v4 = [(AXPIFingerController *)self _eventTouchInfoForFingerLocation:point.x force:point.y, 0.0];
   v6[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
   [(AXPIFingerEventSender *)eventSender performUpWithTouches:v5];
 }
 
-- (void)_sendMoveEventIfNeededForFingerModel:(id)a3 atIndex:(unint64_t)a4
+- (void)_sendMoveEventIfNeededForFingerModel:(id)model atIndex:(unint64_t)index
 {
-  if ([a3 isPressed])
+  if ([model isPressed])
   {
     if ([(AXPIFingerController *)self _isInUpdateBlock])
     {
@@ -1082,57 +1082,57 @@ void __46__AXPIFingerController_moveFingersTo3DPoints___block_invoke(uint64_t a1
     else
     {
       eventSender = self->_eventSender;
-      v6 = [(AXPIFingerController *)self _touchInfosByIdentifierForPressedFingers];
-      [(AXPIFingerEventSender *)eventSender performMoveWithTouchesByFingerIdentifier:v6];
+      _touchInfosByIdentifierForPressedFingers = [(AXPIFingerController *)self _touchInfosByIdentifierForPressedFingers];
+      [(AXPIFingerEventSender *)eventSender performMoveWithTouchesByFingerIdentifier:_touchInfosByIdentifierForPressedFingers];
     }
   }
 }
 
-- (void)didUpdateForceForFingerModel:(id)a3
+- (void)didUpdateForceForFingerModel:(id)model
 {
-  v6 = a3;
+  modelCopy = model;
   v4 = [(NSMutableArray *)self->_fingerModels indexOfObject:?];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = v4;
-    [(AXPIFingerController *)self updateWithFingerModel:v6 forFingerAtIndex:v4];
-    [(AXPIFingerController *)self _sendMoveEventIfNeededForFingerModel:v6 atIndex:v5];
+    [(AXPIFingerController *)self updateWithFingerModel:modelCopy forFingerAtIndex:v4];
+    [(AXPIFingerController *)self _sendMoveEventIfNeededForFingerModel:modelCopy atIndex:v5];
   }
 }
 
-- (void)didUpdateLocationForFingerModel:(id)a3
+- (void)didUpdateLocationForFingerModel:(id)model
 {
-  v6 = a3;
+  modelCopy = model;
   v4 = [(NSMutableArray *)self->_fingerModels indexOfObject:?];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = v4;
-    [(AXPIFingerController *)self updateWithFingerModel:v6 forFingerAtIndex:v4];
-    [(AXPIFingerController *)self _sendMoveEventIfNeededForFingerModel:v6 atIndex:v5];
+    [(AXPIFingerController *)self updateWithFingerModel:modelCopy forFingerAtIndex:v4];
+    [(AXPIFingerController *)self _sendMoveEventIfNeededForFingerModel:modelCopy atIndex:v5];
   }
 }
 
-- (void)didUpdatePressStateForFingerModel:(id)a3
+- (void)didUpdatePressStateForFingerModel:(id)model
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableArray *)self->_fingerModels indexOfObject:v4];
+  modelCopy = model;
+  v5 = [(NSMutableArray *)self->_fingerModels indexOfObject:modelCopy];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = v5;
-    [(AXPIFingerController *)self updateWithFingerModel:v4 forFingerAtIndex:v5];
+    [(AXPIFingerController *)self updateWithFingerModel:modelCopy forFingerAtIndex:v5];
     v7 = [(AXPIFingerController *)self _fingerIdentifierForIndex:v6];
-    v8 = [(AXPIFingerController *)self _eventTouchInfoForFinger:v4];
+    v8 = [(AXPIFingerController *)self _eventTouchInfoForFinger:modelCopy];
     if ([(AXPIFingerController *)self _isInUpdateBlock])
     {
-      if ([v4 isPressed])
+      if ([modelCopy isPressed])
       {
         downInfosByIdentifier = self->_downInfosByIdentifier;
         if (!downInfosByIdentifier)
         {
-          v10 = [MEMORY[0x277CBEB38] dictionary];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
           v11 = self->_downInfosByIdentifier;
-          self->_downInfosByIdentifier = v10;
+          self->_downInfosByIdentifier = dictionary;
 
           downInfosByIdentifier = self->_downInfosByIdentifier;
         }
@@ -1143,9 +1143,9 @@ void __46__AXPIFingerController_moveFingersTo3DPoints___block_invoke(uint64_t a1
         downInfosByIdentifier = self->_upInfosByIdentifier;
         if (!downInfosByIdentifier)
         {
-          v16 = [MEMORY[0x277CBEB38] dictionary];
+          dictionary2 = [MEMORY[0x277CBEB38] dictionary];
           upInfosByIdentifier = self->_upInfosByIdentifier;
-          self->_upInfosByIdentifier = v16;
+          self->_upInfosByIdentifier = dictionary2;
 
           downInfosByIdentifier = self->_upInfosByIdentifier;
         }
@@ -1162,9 +1162,9 @@ void __46__AXPIFingerController_moveFingersTo3DPoints___block_invoke(uint64_t a1
       v20[0] = v8;
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
 
-      v14 = [v4 isPressed];
+      isPressed = [modelCopy isPressed];
       eventSender = self->_eventSender;
-      if (v14)
+      if (isPressed)
       {
         [(AXPIFingerEventSender *)eventSender performDownWithTouchesByFingerIdentifier:v13];
       }
@@ -1177,23 +1177,23 @@ void __46__AXPIFingerController_moveFingersTo3DPoints___block_invoke(uint64_t a1
   }
 }
 
-- (void)didUpdateSelectedStateForFingerModel:(id)a3
+- (void)didUpdateSelectedStateForFingerModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v4 = [(NSMutableArray *)self->_fingerModels indexOfObject:?];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(AXPIFingerController *)self updateWithFingerModel:v5 forFingerAtIndex:v4];
+    [(AXPIFingerController *)self updateWithFingerModel:modelCopy forFingerAtIndex:v4];
   }
 }
 
-- (void)didUpdateShapeForFingerModel:(id)a3
+- (void)didUpdateShapeForFingerModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v4 = [(NSMutableArray *)self->_fingerModels indexOfObject:?];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(AXPIFingerController *)self updateWithFingerModel:v5 forFingerAtIndex:v4];
+    [(AXPIFingerController *)self updateWithFingerModel:modelCopy forFingerAtIndex:v4];
   }
 }
 
@@ -1210,8 +1210,8 @@ void __46__AXPIFingerController_moveFingersTo3DPoints___block_invoke(uint64_t a1
       if (self->_didMoveFingersDuringUpdate)
       {
         eventSender = self->_eventSender;
-        v6 = [(AXPIFingerController *)self _touchInfosByIdentifierForPressedFingers];
-        [(AXPIFingerEventSender *)eventSender performMoveWithTouchesByFingerIdentifier:v6];
+        _touchInfosByIdentifierForPressedFingers = [(AXPIFingerController *)self _touchInfosByIdentifierForPressedFingers];
+        [(AXPIFingerEventSender *)eventSender performMoveWithTouchesByFingerIdentifier:_touchInfosByIdentifierForPressedFingers];
       }
 
       [(AXPIFingerEventSender *)self->_eventSender performUpWithTouchesByFingerIdentifier:self->_upInfosByIdentifier];
@@ -1226,16 +1226,16 @@ void __46__AXPIFingerController_moveFingersTo3DPoints___block_invoke(uint64_t a1
   }
 }
 
-- (void)setAppearanceDelegate:(id)a3
+- (void)setAppearanceDelegate:(id)delegate
 {
-  v4 = a3;
-  if (!v4)
+  delegateCopy = delegate;
+  if (!delegateCopy)
   {
-    v4 = AXPIDefaultAppearanceForDevice();
+    delegateCopy = AXPIDefaultAppearanceForDevice();
   }
 
-  v5 = v4;
-  objc_storeWeak(&self->_appearanceDelegate, v4);
+  v5 = delegateCopy;
+  objc_storeWeak(&self->_appearanceDelegate, delegateCopy);
   [(AXPIFingerContainerView *)self->_fingerContainerView setAppearanceDelegate:v5];
 }
 

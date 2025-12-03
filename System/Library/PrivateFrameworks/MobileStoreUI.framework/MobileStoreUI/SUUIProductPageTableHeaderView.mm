@@ -1,35 +1,35 @@
 @interface SUUIProductPageTableHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)contentInsets;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setContentInsets:(UIEdgeInsets)a3;
-- (void)setTitle:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setContentInsets:(UIEdgeInsets)insets;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SUUIProductPageTableHeaderView
 
-- (void)setContentInsets:(UIEdgeInsets)a3
+- (void)setContentInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInsets.top, v3), vceqq_f64(*&self->_contentInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInsets = a3;
+    self->_contentInsets = insets;
     [(SUUIProductPageTableHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v14 = a3;
-  v4 = [(SUUIProductPageTableHeaderView *)self title];
-  if (v4 != v14 && ([v4 isEqualToString:v14] & 1) == 0)
+  titleCopy = title;
+  title = [(SUUIProductPageTableHeaderView *)self title];
+  if (title != titleCopy && ([title isEqualToString:titleCopy] & 1) == 0)
   {
     titleLabel = self->_titleLabel;
-    if (v14)
+    if (titleCopy)
     {
       if (!titleLabel)
       {
@@ -38,23 +38,23 @@
         self->_titleLabel = v6;
 
         v8 = self->_titleLabel;
-        v9 = [(SUUIProductPageTableHeaderView *)self backgroundColor];
-        [(UILabel *)v8 setBackgroundColor:v9];
+        backgroundColor = [(SUUIProductPageTableHeaderView *)self backgroundColor];
+        [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
         v10 = self->_titleLabel;
         v11 = [MEMORY[0x277D74300] systemFontOfSize:17.0];
         [(UILabel *)v10 setFont:v11];
 
         v12 = self->_titleLabel;
-        v13 = [MEMORY[0x277D75348] blackColor];
-        [(UILabel *)v12 setTextColor:v13];
+        blackColor = [MEMORY[0x277D75348] blackColor];
+        [(UILabel *)v12 setTextColor:blackColor];
 
         [(SUUIProductPageTableHeaderView *)self addSubview:self->_titleLabel];
         titleLabel = self->_titleLabel;
       }
 
       [(UILabel *)titleLabel setHidden:0];
-      [(UILabel *)self->_titleLabel setText:v14];
+      [(UILabel *)self->_titleLabel setText:titleCopy];
       [(UILabel *)self->_titleLabel sizeToFit];
       [(SUUIProductPageTableHeaderView *)self setNeedsLayout];
     }
@@ -75,19 +75,19 @@
   [(UILabel *)titleLabel setFrame:?];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   titleLabel = self->_titleLabel;
-  v5 = a3;
-  [(UILabel *)titleLabel setBackgroundColor:v5];
+  colorCopy = color;
+  [(UILabel *)titleLabel setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SUUIProductPageTableHeaderView;
-  [(SUUIProductPageTableHeaderView *)&v6 setBackgroundColor:v5];
+  [(SUUIProductPageTableHeaderView *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UILabel *)self->_titleLabel frame:a3.width];
+  [(UILabel *)self->_titleLabel frame:fits.width];
   v5 = v4 + self->_contentInsets.bottom + self->_contentInsets.top;
   v7 = v6 + self->_contentInsets.left + self->_contentInsets.right;
   result.height = v5;

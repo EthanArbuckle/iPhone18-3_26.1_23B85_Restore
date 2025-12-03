@@ -1,23 +1,23 @@
 @interface RTSCProcessorV1
-- (CGPoint)warpCGPoint:(CGPoint)a3;
-- (CGRect)_calculateCropRectForOutputFOV:(float)a3;
-- (CGRect)_confineCropRectToValidImageCircle:(CGRect)a3;
+- (CGPoint)warpCGPoint:(CGPoint)point;
+- (CGRect)_calculateCropRectForOutputFOV:(float)v;
+- (CGRect)_confineCropRectToValidImageCircle:(CGRect)circle;
 - (CGRect)outputROI;
-- (CGRect)warpCGRect:(CGRect)a3;
+- (CGRect)warpCGRect:(CGRect)rect;
 - (RTSCProcessorV1)init;
 - (__n128)cameraExtrinsicMatrix;
 - (__n128)outputCameraIntrinsic;
 - (__n128)renderingHomography;
-- (__n128)setCameraExtrinsicMatrix:(__n128)a3;
-- (__n128)setRenderingHomography:(__n128)a3;
-- (id)_bindCVPixleBuffer:(__CVBuffer *)a3 usage:(unint64_t)a4;
-- (id)_cachedTextureFromPixelBuffer:(__CVBuffer *)a3 usage:(unint64_t)a4;
-- (int)_createRenderTargetForOutputTex:(id)a3 renderTargetTex:(id *)a4;
-- (int)_encodeDownsample:(id)a3 inputTex:(id)a4 outputTex:(id)a5;
-- (int)_encodeRender:(id)a3 inputTex:(id)a4 outputTex:(id)a5;
-- (int)_encodeRenderTargetResolve:(id)a3 renderTargetTex:(id)a4 outputTex:(id)a5;
+- (__n128)setCameraExtrinsicMatrix:(__n128)matrix;
+- (__n128)setRenderingHomography:(__n128)homography;
+- (id)_bindCVPixleBuffer:(__CVBuffer *)buffer usage:(unint64_t)usage;
+- (id)_cachedTextureFromPixelBuffer:(__CVBuffer *)buffer usage:(unint64_t)usage;
+- (int)_createRenderTargetForOutputTex:(id)tex renderTargetTex:(id *)targetTex;
+- (int)_encodeDownsample:(id)downsample inputTex:(id)tex outputTex:(id)outputTex;
+- (int)_encodeRender:(id)render inputTex:(id)tex outputTex:(id)outputTex;
+- (int)_encodeRenderTargetResolve:(id)resolve renderTargetTex:(id)tex outputTex:(id)outputTex;
 - (int)_extractFinalCropRect;
-- (int)_fillRenderParams:(id *)a3;
+- (int)_fillRenderParams:(id *)params;
 - (int)_loadTuningParameters;
 - (int)_processPreview;
 - (int)_processStill;
@@ -27,7 +27,7 @@
 - (int)_updateInputCameraCalibration;
 - (int)_updateOutputFOVRect;
 - (int)_updateStabilization;
-- (int)prepareToProcess:(unsigned int)a3;
+- (int)prepareToProcess:(unsigned int)process;
 - (int)prewarm;
 - (int)process;
 - (int)purgeResources;
@@ -40,12 +40,12 @@
 - (uint64_t)prewarm;
 - (uint64_t)process;
 - (uint64_t)setup;
-- (void)_updateOutputIntrinsicForCropRect:(CGRect)a3;
+- (void)_updateOutputIntrinsicForCropRect:(CGRect)rect;
 - (void)dealloc;
-- (void)setInputPTS:(id *)a3;
-- (void)setMetalCommandQueue:(id)a3;
-- (void)setOutputFOV:(float)a3;
-- (void)setOutputFOVPreset:(unint64_t)a3;
+- (void)setInputPTS:(id *)s;
+- (void)setMetalCommandQueue:(id)queue;
+- (void)setOutputFOV:(float)v;
+- (void)setOutputFOVPreset:(unint64_t)preset;
 @end
 
 @implementation RTSCProcessorV1
@@ -73,28 +73,28 @@
   if (self->_context)
   {
     v7 = [FigMetalAllocator alloc];
-    v8 = [(FigMetalContext *)self->_context device];
-    v9 = [v7 initWithDevice:v8 allocatorType:2];
+    device = [(FigMetalContext *)self->_context device];
+    v9 = [v7 initWithDevice:device allocatorType:2];
     [(FigMetalContext *)self->_context setAllocator:v9];
 
-    v10 = [(FigMetalContext *)self->_context allocator];
+    allocator = [(FigMetalContext *)self->_context allocator];
 
-    if (v10)
+    if (allocator)
     {
       v11 = objc_alloc_init(FigMetalAllocatorDescriptor);
       [v11 setLabel:@"RTSCMetalAllocator"];
       [v11 setWireMemory:1];
       [v11 setMemSize:20971520];
       [v11 setResourceOptions:512];
-      v12 = [(FigMetalContext *)self->_context allocator];
-      [v12 setupWithDescriptor:v11];
+      allocator2 = [(FigMetalContext *)self->_context allocator];
+      [allocator2 setupWithDescriptor:v11];
 
-      v13 = [(FigMetalContext *)self->_context commandQueue];
+      commandQueue = [(FigMetalContext *)self->_context commandQueue];
       metalCommandQueue = self->_metalCommandQueue;
-      self->_metalCommandQueue = v13;
+      self->_metalCommandQueue = commandQueue;
 
-      v15 = [(RTSCProcessorV1 *)self _loadTuningParameters];
-      if (v15)
+      _loadTuningParameters = [(RTSCProcessorV1 *)self _loadTuningParameters];
+      if (_loadTuningParameters)
       {
         [RTSCProcessorV1 setup];
       }
@@ -129,7 +129,7 @@
     return 0;
   }
 
-  return v15;
+  return _loadTuningParameters;
 }
 
 - (int)prewarm
@@ -146,8 +146,8 @@
       v9 = kCVMetalTextureCacheMaximumTextureAgeKey;
       v10 = &off_18750;
       v6 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-      v7 = [(FigMetalContext *)self->_context device];
-      CVMetalTextureCacheCreate(kCFAllocatorDefault, v6, v7, 0, p_cvMetalTextureCacheRef);
+      device = [(FigMetalContext *)self->_context device];
+      CVMetalTextureCacheCreate(kCFAllocatorDefault, v6, device, 0, p_cvMetalTextureCacheRef);
     }
   }
 
@@ -210,11 +210,11 @@
     }
   }
 
-  v5 = [(FigMetalContext *)self->_context allocator];
-  [v5 reset];
+  allocator = [(FigMetalContext *)self->_context allocator];
+  [allocator reset];
 
-  v6 = [(FigMetalContext *)self->_context allocator];
-  [v6 purgeResources];
+  allocator2 = [(FigMetalContext *)self->_context allocator];
+  [allocator2 purgeResources];
 
   return 0;
 }
@@ -227,14 +227,14 @@
   [(RTSCProcessorV1 *)&v3 dealloc];
 }
 
-- (void)setMetalCommandQueue:(id)a3
+- (void)setMetalCommandQueue:(id)queue
 {
-  v5 = a3;
-  if (self->_metalCommandQueue == v5)
+  queueCopy = queue;
+  if (self->_metalCommandQueue == queueCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_metalCommandQueue, a3);
-    v5 = v6;
+    v6 = queueCopy;
+    objc_storeStrong(&self->_metalCommandQueue, queue);
+    queueCopy = v6;
   }
 }
 
@@ -268,19 +268,19 @@ LABEL_6:
   return -16680;
 }
 
-- (void)setOutputFOVPreset:(unint64_t)a3
+- (void)setOutputFOVPreset:(unint64_t)preset
 {
-  if (a3 <= 4)
+  if (preset <= 4)
   {
-    self->_outputFOVPreset = a3;
+    self->_outputFOVPreset = preset;
   }
 }
 
-- (void)setOutputFOV:(float)a3
+- (void)setOutputFOV:(float)v
 {
   if (!self->_outputFOVPreset)
   {
-    self->_outputFOV = a3;
+    self->_outputFOV = v;
   }
 }
 
@@ -288,44 +288,44 @@ LABEL_6:
 {
   if (self->_inputCalibrationData)
   {
-    v3 = [(RTSCProcessorV1 *)self _updateInputCameraCalibration];
-    if (v3)
+    _updateInputCameraCalibration = [(RTSCProcessorV1 *)self _updateInputCameraCalibration];
+    if (_updateInputCameraCalibration)
     {
-      v7 = v3;
+      _render = _updateInputCameraCalibration;
       [RTSCProcessorV1 _processVideo];
     }
 
     else
     {
-      v4 = [(RTSCProcessorV1 *)self _updateOutputFOVRect];
-      if (v4)
+      _updateOutputFOVRect = [(RTSCProcessorV1 *)self _updateOutputFOVRect];
+      if (_updateOutputFOVRect)
       {
-        v7 = v4;
+        _render = _updateOutputFOVRect;
         [RTSCProcessorV1 _processVideo];
       }
 
       else
       {
-        v5 = [(RTSCProcessorV1 *)self _updateStabilization];
-        if (v5)
+        _updateStabilization = [(RTSCProcessorV1 *)self _updateStabilization];
+        if (_updateStabilization)
         {
-          v7 = v5;
+          _render = _updateStabilization;
           [RTSCProcessorV1 _processVideo];
         }
 
         else
         {
-          v6 = [(RTSCProcessorV1 *)self _updateCandidateFramingCropRects];
-          if (v6)
+          _updateCandidateFramingCropRects = [(RTSCProcessorV1 *)self _updateCandidateFramingCropRects];
+          if (_updateCandidateFramingCropRects)
           {
-            v7 = v6;
+            _render = _updateCandidateFramingCropRects;
             [RTSCProcessorV1 _processVideo];
           }
 
           else
           {
-            v7 = [(RTSCProcessorV1 *)self _render];
-            if (v7)
+            _render = [(RTSCProcessorV1 *)self _render];
+            if (_render)
             {
               [RTSCProcessorV1 _processVideo];
             }
@@ -346,18 +346,18 @@ LABEL_6:
     return -1;
   }
 
-  return v7;
+  return _render;
 }
 
 - (int)_processStill
 {
-  v2 = [(RTSCProcessorV1 *)self _render];
-  if (v2)
+  _render = [(RTSCProcessorV1 *)self _render];
+  if (_render)
   {
     [RTSCProcessorV1 _processStill];
   }
 
-  return v2;
+  return _render;
 }
 
 - (int)_processPreview
@@ -367,44 +367,44 @@ LABEL_6:
     Width = CVPixelBufferGetWidth(self->_outputPixelBuffer);
     if (Width == CVPixelBufferGetWidth(self->_inputPixelBuffer) && (Height = CVPixelBufferGetHeight(self->_outputPixelBuffer), Height == CVPixelBufferGetHeight(self->_inputPixelBuffer)))
     {
-      v5 = [(RTSCProcessorV1 *)self _updateInputCameraCalibration];
-      if (v5)
+      _updateInputCameraCalibration = [(RTSCProcessorV1 *)self _updateInputCameraCalibration];
+      if (_updateInputCameraCalibration)
       {
-        v9 = v5;
+        _render = _updateInputCameraCalibration;
         [RTSCProcessorV1 _processPreview];
       }
 
       else
       {
-        v6 = [(RTSCProcessorV1 *)self _updateOutputFOVRect];
-        if (v6)
+        _updateOutputFOVRect = [(RTSCProcessorV1 *)self _updateOutputFOVRect];
+        if (_updateOutputFOVRect)
         {
-          v9 = v6;
+          _render = _updateOutputFOVRect;
           [RTSCProcessorV1 _processPreview];
         }
 
         else
         {
-          v7 = [(RTSCProcessorV1 *)self _updateStabilization];
-          if (v7)
+          _updateStabilization = [(RTSCProcessorV1 *)self _updateStabilization];
+          if (_updateStabilization)
           {
-            v9 = v7;
+            _render = _updateStabilization;
             [RTSCProcessorV1 _processPreview];
           }
 
           else
           {
-            v8 = [(RTSCProcessorV1 *)self _updateTransformAndMetadataForPreview];
-            if (v8)
+            _updateTransformAndMetadataForPreview = [(RTSCProcessorV1 *)self _updateTransformAndMetadataForPreview];
+            if (_updateTransformAndMetadataForPreview)
             {
-              v9 = v8;
+              _render = _updateTransformAndMetadataForPreview;
               [RTSCProcessorV1 _processPreview];
             }
 
             else
             {
-              v9 = [(RTSCProcessorV1 *)self _render];
-              if (v9)
+              _render = [(RTSCProcessorV1 *)self _render];
+              if (_render)
               {
                 [RTSCProcessorV1 _processPreview];
               }
@@ -432,16 +432,16 @@ LABEL_6:
     return -1;
   }
 
-  return v9;
+  return _render;
 }
 
-- (id)_cachedTextureFromPixelBuffer:(__CVBuffer *)a3 usage:(unint64_t)a4
+- (id)_cachedTextureFromPixelBuffer:(__CVBuffer *)buffer usage:(unint64_t)usage
 {
   v4 = 0;
   image = 0;
-  if (a3 && self->_cvMetalTextureCacheRef)
+  if (buffer && self->_cvMetalTextureCacheRef)
   {
-    CVPixelBufferGetPixelFormatType(a3);
+    CVPixelBufferGetPixelFormatType(buffer);
     v21 = 1;
     v20 = 0;
     v8 = CMIGetMetalPixelFormatForPixelBuffer();
@@ -452,14 +452,14 @@ LABEL_6:
     }
 
     v9 = v8;
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
     v18 = kCVMetalTextureUsage;
-    v12 = [NSNumber numberWithUnsignedInteger:a4];
+    v12 = [NSNumber numberWithUnsignedInteger:usage];
     v19 = v12;
     v13 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
 
-    v14 = CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, self->_cvMetalTextureCacheRef, a3, v13, v9, Width, Height, 0, &image);
+    v14 = CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, self->_cvMetalTextureCacheRef, buffer, v13, v9, Width, Height, 0, &image);
     v15 = image;
     if (v14)
     {
@@ -489,40 +489,40 @@ LABEL_10:
   return v4;
 }
 
-- (id)_bindCVPixleBuffer:(__CVBuffer *)a3 usage:(unint64_t)a4
+- (id)_bindCVPixleBuffer:(__CVBuffer *)buffer usage:(unint64_t)usage
 {
   v7 = [RTSCProcessorV1 _cachedTextureFromPixelBuffer:"_cachedTextureFromPixelBuffer:usage:" usage:?];
   if (!v7)
   {
-    CVPixelBufferGetPixelFormatType(a3);
+    CVPixelBufferGetPixelFormatType(buffer);
     v7 = CMIGetMetalPixelFormatForPixelBuffer();
     if (v7)
     {
-      v7 = [(FigMetalContext *)self->_context bindPixelBufferToMTL2DTexture:a3 pixelFormat:v7 usage:a4 plane:0];
+      v7 = [(FigMetalContext *)self->_context bindPixelBufferToMTL2DTexture:buffer pixelFormat:v7 usage:usage plane:0];
     }
   }
 
   return v7;
 }
 
-- (int)_fillRenderParams:(id *)a3
+- (int)_fillRenderParams:(id *)params
 {
   v3 = *&self->_anon_b0[16];
   v4 = *&self->_anon_b0[32];
-  *a3 = *self->_anon_b0;
-  *(a3 + 1) = v3;
-  *(a3 + 2) = v4;
+  *params = *self->_anon_b0;
+  *(params + 1) = v3;
+  *(params + 2) = v4;
   *&v3 = vcvt_f32_f64(self->_outputROI.size);
-  *(a3 + 6) = vcvt_f32_f64(self->_outputROI.origin);
-  *(a3 + 7) = v3;
+  *(params + 6) = vcvt_f32_f64(self->_outputROI.origin);
+  *(params + 7) = v3;
   return 0;
 }
 
-- (int)_encodeRender:(id)a3 inputTex:(id)a4 outputTex:(id)a5
+- (int)_encodeRender:(id)render inputTex:(id)tex outputTex:(id)outputTex
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  renderCopy = render;
+  texCopy = tex;
+  outputTexCopy = outputTex;
   memset(v17, 0, 48);
   v11 = [(RTSCProcessorV1 *)self _fillRenderParams:v17];
   if (v11)
@@ -534,47 +534,47 @@ LABEL_10:
   else
   {
     v12 = [(RTSCShadersV1 *)self->_shaders objectAtIndexedSubscript:0];
-    [v8 setComputePipelineState:v12];
+    [renderCopy setComputePipelineState:v12];
 
-    [v8 setTexture:v9 atIndex:0];
-    [v8 setTexture:v10 atIndex:1];
-    [v8 setBytes:v17 length:64 atIndex:0];
-    [v8 setImageblockWidth:32 height:32];
-    v16[0] = [v10 width];
-    v16[1] = [v10 height];
+    [renderCopy setTexture:texCopy atIndex:0];
+    [renderCopy setTexture:outputTexCopy atIndex:1];
+    [renderCopy setBytes:v17 length:64 atIndex:0];
+    [renderCopy setImageblockWidth:32 height:32];
+    v16[0] = [outputTexCopy width];
+    v16[1] = [outputTexCopy height];
     v16[2] = 1;
     v14 = vdupq_n_s64(0x20uLL);
     v15 = 1;
-    [v8 dispatchThreads:v16 threadsPerThreadgroup:&v14];
+    [renderCopy dispatchThreads:v16 threadsPerThreadgroup:&v14];
   }
 
   return v11;
 }
 
-- (int)_encodeDownsample:(id)a3 inputTex:(id)a4 outputTex:(id)a5
+- (int)_encodeDownsample:(id)downsample inputTex:(id)tex outputTex:(id)outputTex
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  downsampleCopy = downsample;
+  texCopy = tex;
+  outputTexCopy = outputTex;
   v11 = [(RTSCShadersV1 *)self->_shaders objectAtIndexedSubscript:1];
-  [v8 setComputePipelineState:v11];
+  [downsampleCopy setComputePipelineState:v11];
 
-  [v8 setTexture:v9 atIndex:0];
-  [v8 setTexture:v10 atIndex:1];
-  [v8 setImageblockWidth:32 height:32];
-  v15[0] = [v10 width];
-  v15[1] = [v10 height];
+  [downsampleCopy setTexture:texCopy atIndex:0];
+  [downsampleCopy setTexture:outputTexCopy atIndex:1];
+  [downsampleCopy setImageblockWidth:32 height:32];
+  v15[0] = [outputTexCopy width];
+  v15[1] = [outputTexCopy height];
   v15[2] = 1;
   v13 = vdupq_n_s64(0x20uLL);
   v14 = 1;
-  [v8 dispatchThreads:v15 threadsPerThreadgroup:&v13];
+  [downsampleCopy dispatchThreads:v15 threadsPerThreadgroup:&v13];
 
   return 0;
 }
 
-- (int)_createRenderTargetForOutputTex:(id)a3 renderTargetTex:(id *)a4
+- (int)_createRenderTargetForOutputTex:(id)tex renderTargetTex:(id *)targetTex
 {
-  v6 = a3;
+  texCopy = tex;
   Width = CVPixelBufferGetWidth(self->_inputPixelBuffer);
   Height = CVPixelBufferGetHeight(self->_inputPixelBuffer);
   inputPixelBuffer = self->_inputPixelBuffer;
@@ -626,28 +626,28 @@ LABEL_10:
 
   if (v19)
   {
-    v20 = [(FigMetalContext *)self->_context allocator];
-    v21 = [v20 newTextureDescriptor];
+    allocator = [(FigMetalContext *)self->_context allocator];
+    newTextureDescriptor = [allocator newTextureDescriptor];
 
-    [v21 setLabel:0];
-    v22 = [v21 desc];
-    [v22 setPixelFormat:115];
+    [newTextureDescriptor setLabel:0];
+    desc = [newTextureDescriptor desc];
+    [desc setPixelFormat:115];
 
-    v23 = [v6 width];
-    v24 = [v21 desc];
-    [v24 setWidth:v23 << v19];
+    width = [texCopy width];
+    desc2 = [newTextureDescriptor desc];
+    [desc2 setWidth:width << v19];
 
-    v25 = [v6 height];
-    v26 = [v21 desc];
-    [v26 setHeight:v25 << v19];
+    height = [texCopy height];
+    desc3 = [newTextureDescriptor desc];
+    [desc3 setHeight:height << v19];
 
-    v27 = [v21 desc];
-    [v27 setUsage:65543];
+    desc4 = [newTextureDescriptor desc];
+    [desc4 setUsage:65543];
 
-    v28 = [(FigMetalContext *)self->_context allocator];
-    *a4 = [v28 newTextureWithDescriptor:v21];
+    allocator2 = [(FigMetalContext *)self->_context allocator];
+    *targetTex = [allocator2 newTextureWithDescriptor:newTextureDescriptor];
 
-    if (*a4)
+    if (*targetTex)
     {
       v29 = 0;
     }
@@ -663,57 +663,57 @@ LABEL_10:
   else
   {
     FigMetalIncRef();
-    v30 = v6;
+    v30 = texCopy;
     v29 = 0;
-    *a4 = v6;
+    *targetTex = texCopy;
   }
 
   return v29;
 }
 
-- (int)_encodeRenderTargetResolve:(id)a3 renderTargetTex:(id)a4 outputTex:(id)a5
+- (int)_encodeRenderTargetResolve:(id)resolve renderTargetTex:(id)tex outputTex:(id)outputTex
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resolveCopy = resolve;
+  texCopy = tex;
+  outputTexCopy = outputTex;
   location = 0;
-  if (v9 != v10)
+  if (texCopy != outputTexCopy)
   {
     FigMetalIncRef();
-    objc_storeStrong(&location, a4);
+    objc_storeStrong(&location, tex);
     v11 = 0;
-    for (i = v9; ; i = location)
+    for (i = texCopy; ; i = location)
     {
-      v13 = [i width];
-      if ([v10 width] >= v13 >> 1)
+      width = [i width];
+      if ([outputTexCopy width] >= width >> 1)
       {
-        v15 = v11;
-        v11 = v10;
+        newTextureDescriptor = v11;
+        v11 = outputTexCopy;
       }
 
       else
       {
-        v14 = [(FigMetalContext *)self->_context allocator];
-        v15 = [v14 newTextureDescriptor];
+        allocator = [(FigMetalContext *)self->_context allocator];
+        newTextureDescriptor = [allocator newTextureDescriptor];
 
-        [v15 setLabel:0];
-        v16 = [location pixelFormat];
-        v17 = [v15 desc];
-        [v17 setPixelFormat:v16];
+        [newTextureDescriptor setLabel:0];
+        pixelFormat = [location pixelFormat];
+        desc = [newTextureDescriptor desc];
+        [desc setPixelFormat:pixelFormat];
 
-        v18 = [location width];
-        v19 = [v15 desc];
-        [v19 setWidth:v18 >> 1];
+        width2 = [location width];
+        desc2 = [newTextureDescriptor desc];
+        [desc2 setWidth:width2 >> 1];
 
-        v20 = [location height];
-        v21 = [v15 desc];
-        [v21 setHeight:v20 >> 1];
+        height = [location height];
+        desc3 = [newTextureDescriptor desc];
+        [desc3 setHeight:height >> 1];
 
-        v22 = [v15 desc];
-        [v22 setUsage:65543];
+        desc4 = [newTextureDescriptor desc];
+        [desc4 setUsage:65543];
 
-        v23 = [(FigMetalContext *)self->_context allocator];
-        v24 = [v23 newTextureWithDescriptor:v15];
+        allocator2 = [(FigMetalContext *)self->_context allocator];
+        v24 = [allocator2 newTextureWithDescriptor:newTextureDescriptor];
 
         if (!v24)
         {
@@ -728,7 +728,7 @@ LABEL_10:
         v11 = v24;
       }
 
-      v25 = [(RTSCProcessorV1 *)self _encodeDownsample:v8 inputTex:location outputTex:v11];
+      v25 = [(RTSCProcessorV1 *)self _encodeDownsample:resolveCopy inputTex:location outputTex:v11];
       if (v25)
       {
         fig_log_get_emitter();
@@ -737,7 +737,7 @@ LABEL_10:
       }
 
       FigMetalDecRef();
-      if (v11 == v10)
+      if (v11 == outputTexCopy)
       {
         goto LABEL_11;
       }
@@ -762,14 +762,14 @@ LABEL_12:
   {
     v5 = v4;
     v13 = v5;
-    v6 = [(FigMetalContext *)self->_context commandBuffer];
-    v7 = v6;
-    if (v6)
+    commandBuffer = [(FigMetalContext *)self->_context commandBuffer];
+    v7 = commandBuffer;
+    if (commandBuffer)
     {
-      v8 = [v6 computeCommandEncoder];
-      if (v8)
+      computeCommandEncoder = [commandBuffer computeCommandEncoder];
+      if (computeCommandEncoder)
       {
-        v9 = [(RTSCProcessorV1 *)self _encodeRender:v8 inputTex:v3 outputTex:v5];
+        v9 = [(RTSCProcessorV1 *)self _encodeRender:computeCommandEncoder inputTex:v3 outputTex:v5];
         if (v9)
         {
           fig_log_get_emitter();
@@ -778,13 +778,13 @@ LABEL_12:
 
         else
         {
-          [v8 endEncoding];
+          [computeCommandEncoder endEncoding];
           [(FigMetalContext *)self->_context commit];
           v9 = 0;
         }
 
         v10 = v7;
-        v11 = v8;
+        v11 = computeCommandEncoder;
       }
 
       else
@@ -823,11 +823,11 @@ LABEL_12:
   return v9;
 }
 
-- (CGPoint)warpCGPoint:(CGPoint)a3
+- (CGPoint)warpCGPoint:(CGPoint)point
 {
-  x = a3.x;
+  x = point.x;
   v8 = x;
-  y = a3.y;
+  y = point.y;
   v9 = y;
   v10 = __invert_f3(*self->_anon_b0);
   v10.columns[0] = vaddq_f32(v10.columns[2], vmlaq_n_f32(vmulq_n_f32(v10.columns[0], v8), v10.columns[1], v9));
@@ -838,13 +838,13 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)warpCGRect:(CGRect)a3
+- (CGRect)warpCGRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  MinX = CGRectGetMinX(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  MinX = CGRectGetMinX(rect);
   v33 = MinX;
   v36.origin.x = x;
   v36.origin.y = y;
@@ -962,8 +962,8 @@ LABEL_12:
 {
   if (self->_outputFOVPreset == 4)
   {
-    v2 = [(RTSCProcessorV1 *)self _extractFinalCropRect];
-    if (v2)
+    _extractFinalCropRect = [(RTSCProcessorV1 *)self _extractFinalCropRect];
+    if (_extractFinalCropRect)
     {
       [RTSCProcessorV1 _updateOutputFOVRect];
     }
@@ -971,14 +971,14 @@ LABEL_12:
 
   else
   {
-    v2 = [(RTSCProcessorV1 *)self _updateOutputFOV];
-    if (v2)
+    _extractFinalCropRect = [(RTSCProcessorV1 *)self _updateOutputFOV];
+    if (_extractFinalCropRect)
     {
       [RTSCProcessorV1 _updateOutputFOVRect];
     }
   }
 
-  return v2;
+  return _extractFinalCropRect;
 }
 
 - (int)_extractFinalCropRect
@@ -1085,7 +1085,7 @@ LABEL_12:
   return 0;
 }
 
-- (CGRect)_calculateCropRectForOutputFOV:(float)a3
+- (CGRect)_calculateCropRectForOutputFOV:(float)v
 {
   v5 = (self->_outputROI.size.width * CVPixelBufferGetWidth(self->_outputPixelBuffer));
   v6 = (self->_outputROI.size.height * CVPixelBufferGetHeight(self->_outputPixelBuffer));
@@ -1095,14 +1095,14 @@ LABEL_12:
   if (v5 <= v6)
   {
     v13 = (*&self->_anon_60[20] + *&self->_anon_60[20]);
-    v12 = tan(a3 * 3.14159265 / 180.0 * 0.5) * v13;
+    v12 = tan(v * 3.14159265 / 180.0 * 0.5) * v13;
     v11 = v12 * (v5 / v9);
   }
 
   else
   {
     v10 = (*self->_anon_60 + *self->_anon_60);
-    v11 = tan(a3 * 3.14159265 / 180.0 * 0.5) * v10;
+    v11 = tan(v * 3.14159265 / 180.0 * 0.5) * v10;
     v12 = v11 * (v9 / v5);
   }
 
@@ -1117,12 +1117,12 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)_confineCropRectToValidImageCircle:(CGRect)a3
+- (CGRect)_confineCropRectToValidImageCircle:(CGRect)circle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = circle.size.height;
+  width = circle.size.width;
+  y = circle.origin.y;
+  x = circle.origin.x;
   v7 = [(NSMutableDictionary *)self->_inputMetadata objectForKeyedSubscript:kFigCaptureSampleBufferMetadata_ImageCircle];
   if (v7 && FigCFDictionaryGetCGPointIfPresent() && FigCFDictionaryGetCGSizeIfPresent())
   {
@@ -1151,12 +1151,12 @@ LABEL_12:
   return result;
 }
 
-- (void)_updateOutputIntrinsicForCropRect:(CGRect)a3
+- (void)_updateOutputIntrinsicForCropRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = CVPixelBufferGetWidth(self->_outputPixelBuffer);
   v9 = self->_outputROI.size.width;
   v10 = CVPixelBufferGetHeight(self->_outputPixelBuffer);
@@ -1201,48 +1201,48 @@ LABEL_12:
 
 - (__n128)renderingHomography
 {
-  result = *(a1 + 176);
-  v2 = *(a1 + 192);
-  v3 = *(a1 + 208);
+  result = *(self + 176);
+  v2 = *(self + 192);
+  v3 = *(self + 208);
   return result;
 }
 
-- (__n128)setRenderingHomography:(__n128)a3
+- (__n128)setRenderingHomography:(__n128)homography
 {
   result[11] = a2;
-  result[12] = a3;
+  result[12] = homography;
   result[13] = a4;
   return result;
 }
 
 - (__n128)cameraExtrinsicMatrix
 {
-  result = *(a1 + 368);
-  v2 = *(a1 + 384);
-  v3 = *(a1 + 400);
+  result = *(self + 368);
+  v2 = *(self + 384);
+  v3 = *(self + 400);
   return result;
 }
 
-- (__n128)setCameraExtrinsicMatrix:(__n128)a3
+- (__n128)setCameraExtrinsicMatrix:(__n128)matrix
 {
   result[23] = a2;
-  result[24] = a3;
+  result[24] = matrix;
   result[25] = a4;
   return result;
 }
 
-- (void)setInputPTS:(id *)a3
+- (void)setInputPTS:(id *)s
 {
-  v3 = *&a3->var0;
-  self->_inputPTS.epoch = a3->var3;
+  v3 = *&s->var0;
+  self->_inputPTS.epoch = s->var3;
   *&self->_inputPTS.value = v3;
 }
 
 - (__n128)outputCameraIntrinsic
 {
-  result = *(a1 + 416);
-  v2 = *(a1 + 432);
-  v3 = *(a1 + 448);
+  result = *(self + 416);
+  v2 = *(self + 432);
+  v3 = *(self + 448);
   return result;
 }
 
@@ -1259,14 +1259,14 @@ LABEL_12:
   return result;
 }
 
-- (int)prepareToProcess:(unsigned int)a3
+- (int)prepareToProcess:(unsigned int)process
 {
-  if (a3 > 2)
+  if (process > 2)
   {
     return -1;
   }
 
-  if (a3 == 2)
+  if (process == 2)
   {
     if (self->_zoomOutForMultiSubjects)
     {
@@ -1310,7 +1310,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!a3)
+  if (!process)
   {
     if (self->_zoomOutForMultiSubjects && self->_outputFOVPreset - 4 < 0xFFFFFFFFFFFFFFFELL)
     {
@@ -1322,7 +1322,7 @@ LABEL_11:
 
 LABEL_12:
   result = 0;
-  self->_processingType = a3;
+  self->_processingType = process;
   return result;
 }
 

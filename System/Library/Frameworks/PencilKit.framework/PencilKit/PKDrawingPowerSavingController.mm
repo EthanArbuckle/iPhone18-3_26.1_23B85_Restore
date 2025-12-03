@@ -1,5 +1,5 @@
 @interface PKDrawingPowerSavingController
-- (BOOL)shouldSkipFrameWithFrameStartTimestamp:(double)a3 framesAfterStart:;
+- (BOOL)shouldSkipFrameWithFrameStartTimestamp:(double)timestamp framesAfterStart:;
 - (PKDrawingPowerSavingController)init;
 - (double)accumulateMovementForCurrentFrame;
 - (id).cxx_construct;
@@ -14,23 +14,23 @@
   v2 = [(PKDrawingPowerSavingController *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v3 doubleForKey:@"internalSettings.drawing.apt.minimumMovementDistanceFinger"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults doubleForKey:@"internalSettings.drawing.apt.minimumMovementDistanceFinger"];
     v2->_minimumMovementDistanceFinger = v4;
 
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v5 doubleForKey:@"internalSettings.drawing.apt.minimumMovementDistancePencil"];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults2 doubleForKey:@"internalSettings.drawing.apt.minimumMovementDistancePencil"];
     v2->_minimumMovementDistancePencil = v6;
 
-    v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v7 doubleForKey:@"internalSettings.drawing.apt.minimumMovementDistanceTimeout"];
+    standardUserDefaults3 = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults3 doubleForKey:@"internalSettings.drawing.apt.minimumMovementDistanceTimeout"];
     v2->_minimumMovementDistanceTimeout = v8;
   }
 
   return v2;
 }
 
-- (BOOL)shouldSkipFrameWithFrameStartTimestamp:(double)a3 framesAfterStart:
+- (BOOL)shouldSkipFrameWithFrameStartTimestamp:(double)timestamp framesAfterStart:
 {
   if (!result)
   {
@@ -86,20 +86,20 @@
     return 0;
   }
 
-  return a3 - *(v5 + 64) < *(v5 + 96) && a2 > 4;
+  return timestamp - *(v5 + 64) < *(v5 + 96) && a2 > 4;
 }
 
 - (double)accumulateMovementForCurrentFrame
 {
-  if (a1)
+  if (self)
   {
-    v3 = a1 + 8;
-    std::vector<double>::insert((a1 + 8), *(a1 + 8), (a1 + 48));
+    v3 = self + 8;
+    std::vector<double>::insert((self + 8), *(self + 8), (self + 48));
     v5 = *v3;
     v4 = *(v3 + 8);
     if (v4 - *v3 >= 0x29)
     {
-      *(a1 + 16) = --v4;
+      *(self + 16) = --v4;
     }
 
     v6 = *(v3 + 40);
@@ -126,9 +126,9 @@
       }
     }
 
-    result = v6 + *(a1 + 56);
-    *(a1 + 56) = result;
-    *(a1 + 48) = 0;
+    result = v6 + *(self + 56);
+    *(self + 56) = result;
+    *(self + 48) = 0;
   }
 
   return result;

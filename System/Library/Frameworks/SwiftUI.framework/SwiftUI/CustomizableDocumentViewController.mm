@@ -1,10 +1,10 @@
 @interface CustomizableDocumentViewController
-- (_TtC7SwiftUI34CustomizableDocumentViewController)initWithCoder:(id)a3;
+- (_TtC7SwiftUI34CustomizableDocumentViewController)initWithCoder:(id)coder;
 @end
 
 @implementation CustomizableDocumentViewController
 
-- (_TtC7SwiftUI34CustomizableDocumentViewController)initWithCoder:(id)a3
+- (_TtC7SwiftUI34CustomizableDocumentViewController)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC7SwiftUI34CustomizableDocumentViewController_cardTitle);
   *v3 = 0;

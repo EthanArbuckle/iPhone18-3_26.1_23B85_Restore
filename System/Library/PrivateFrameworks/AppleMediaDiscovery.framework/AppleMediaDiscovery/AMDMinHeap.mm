@@ -1,72 +1,72 @@
 @interface AMDMinHeap
-- (AMDMinHeap)initWithCapacity:(unint64_t)a3 comparator:(id)a4;
-- (BOOL)add:(id)a3;
+- (AMDMinHeap)initWithCapacity:(unint64_t)capacity comparator:(id)comparator;
+- (BOOL)add:(id)add;
 - (id)poll;
 - (id)topN;
 - (void)bubbleUp;
 - (void)pushDown;
-- (void)swap:(unint64_t)a3 with:(unint64_t)a4;
+- (void)swap:(unint64_t)swap with:(unint64_t)with;
 @end
 
 @implementation AMDMinHeap
 
-- (AMDMinHeap)initWithCapacity:(unint64_t)a3 comparator:(id)a4
+- (AMDMinHeap)initWithCapacity:(unint64_t)capacity comparator:(id)comparator
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  capacityCopy = capacity;
   location = 0;
-  objc_storeStrong(&location, a4);
-  [(AMDMinHeap *)v13 setCapacity:v11];
-  [(AMDMinHeap *)v13 setComparator:location];
-  [(AMDMinHeap *)v13 setPosition:1];
+  objc_storeStrong(&location, comparator);
+  [(AMDMinHeap *)selfCopy setCapacity:capacityCopy];
+  [(AMDMinHeap *)selfCopy setComparator:location];
+  [(AMDMinHeap *)selfCopy setPosition:1];
   v5 = objc_alloc(MEMORY[0x277CBEB18]);
-  v6 = [v5 initWithCapacity:{-[AMDMinHeap capacity](v13, "capacity") + 1}];
-  [(AMDMinHeap *)v13 setObjects:?];
+  v6 = [v5 initWithCapacity:{-[AMDMinHeap capacity](selfCopy, "capacity") + 1}];
+  [(AMDMinHeap *)selfCopy setObjects:?];
   MEMORY[0x277D82BD8](v6);
-  v8 = [(AMDMinHeap *)v13 objects];
+  objects = [(AMDMinHeap *)selfCopy objects];
   v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:1];
-  [(NSMutableArray *)v8 addObject:?];
+  [(NSMutableArray *)objects addObject:?];
   MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v8);
-  v9 = MEMORY[0x277D82BE0](v13);
+  MEMORY[0x277D82BD8](objects);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
-- (BOOL)add:(id)a3
+- (BOOL)add:(id)add
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v12 = [(AMDMinHeap *)v14 position];
-  if (v12 != [(AMDMinHeap *)v14 capacity]+ 1)
+  objc_storeStrong(location, add);
+  position = [(AMDMinHeap *)selfCopy position];
+  if (position != [(AMDMinHeap *)selfCopy capacity]+ 1)
   {
-    v4 = [(AMDMinHeap *)v14 objects];
-    [(NSMutableArray *)v4 addObject:location[0]];
-    MEMORY[0x277D82BD8](v4);
-    [(AMDMinHeap *)v14 setPosition:[(AMDMinHeap *)v14 position]+ 1];
-    [(AMDMinHeap *)v14 bubbleUp];
+    objects = [(AMDMinHeap *)selfCopy objects];
+    [(NSMutableArray *)objects addObject:location[0]];
+    MEMORY[0x277D82BD8](objects);
+    [(AMDMinHeap *)selfCopy setPosition:[(AMDMinHeap *)selfCopy position]+ 1];
+    [(AMDMinHeap *)selfCopy bubbleUp];
     goto LABEL_6;
   }
 
-  v10 = [(AMDMinHeap *)v14 comparator];
+  comparator = [(AMDMinHeap *)selfCopy comparator];
   v7 = location[0];
-  v9 = [(AMDMinHeap *)v14 objects];
-  v8 = [(NSMutableArray *)v9 objectAtIndexedSubscript:1];
-  v11 = v10[2](v10, v7);
+  objects2 = [(AMDMinHeap *)selfCopy objects];
+  v8 = [(NSMutableArray *)objects2 objectAtIndexedSubscript:1];
+  v11 = comparator[2](comparator, v7);
   MEMORY[0x277D82BD8](v8);
-  MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
+  MEMORY[0x277D82BD8](objects2);
+  MEMORY[0x277D82BD8](comparator);
   if (v11 == 1)
   {
     v5 = location[0];
-    v6 = [(AMDMinHeap *)v14 objects];
-    [(NSMutableArray *)v6 setObject:v5 atIndexedSubscript:1];
-    MEMORY[0x277D82BD8](v6);
-    [(AMDMinHeap *)v14 pushDown];
+    objects3 = [(AMDMinHeap *)selfCopy objects];
+    [(NSMutableArray *)objects3 setObject:v5 atIndexedSubscript:1];
+    MEMORY[0x277D82BD8](objects3);
+    [(AMDMinHeap *)selfCopy pushDown];
 LABEL_6:
     v15 = 1;
     goto LABEL_7;
@@ -80,7 +80,7 @@ LABEL_7:
 
 - (id)poll
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   if ([(AMDMinHeap *)self isEmpty])
   {
@@ -89,25 +89,25 @@ LABEL_7:
 
   else
   {
-    v7 = [(AMDMinHeap *)v9 objects];
-    v8[0] = [(NSMutableArray *)v7 objectAtIndexedSubscript:1];
-    MEMORY[0x277D82BD8](v7);
-    if ([(AMDMinHeap *)v9 size]<= 1)
+    objects = [(AMDMinHeap *)selfCopy objects];
+    v8[0] = [(NSMutableArray *)objects objectAtIndexedSubscript:1];
+    MEMORY[0x277D82BD8](objects);
+    if ([(AMDMinHeap *)selfCopy size]<= 1)
     {
-      [(AMDMinHeap *)v9 setPosition:[(AMDMinHeap *)v9 position]- 1];
+      [(AMDMinHeap *)selfCopy setPosition:[(AMDMinHeap *)selfCopy position]- 1];
     }
 
     else
     {
-      v6 = [(AMDMinHeap *)v9 objects];
-      v5 = [(NSMutableArray *)v6 objectAtIndexedSubscript:[(AMDMinHeap *)v9 position]- 1];
-      v4 = [(AMDMinHeap *)v9 objects];
-      [(NSMutableArray *)v4 setObject:v5 atIndexedSubscript:1];
-      MEMORY[0x277D82BD8](v4);
+      objects2 = [(AMDMinHeap *)selfCopy objects];
+      v5 = [(NSMutableArray *)objects2 objectAtIndexedSubscript:[(AMDMinHeap *)selfCopy position]- 1];
+      objects3 = [(AMDMinHeap *)selfCopy objects];
+      [(NSMutableArray *)objects3 setObject:v5 atIndexedSubscript:1];
+      MEMORY[0x277D82BD8](objects3);
       MEMORY[0x277D82BD8](v5);
-      MEMORY[0x277D82BD8](v6);
-      [(AMDMinHeap *)v9 setPosition:[(AMDMinHeap *)v9 position]- 1];
-      [(AMDMinHeap *)v9 pushDown];
+      MEMORY[0x277D82BD8](objects2);
+      [(AMDMinHeap *)selfCopy setPosition:[(AMDMinHeap *)selfCopy position]- 1];
+      [(AMDMinHeap *)selfCopy pushDown];
     }
 
     v10 = MEMORY[0x277D82BE0](v8[0]);
@@ -121,17 +121,17 @@ LABEL_7:
 
 - (id)topN
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v7[0] = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[AMDMinHeap size](self, "size")}];
   do
   {
-    if ([(AMDMinHeap *)v8 isEmpty])
+    if ([(AMDMinHeap *)selfCopy isEmpty])
     {
       break;
     }
 
-    location = [(AMDMinHeap *)v8 poll];
+    location = [(AMDMinHeap *)selfCopy poll];
     if (location)
     {
       [v7[0] addObject:location];
@@ -147,29 +147,29 @@ LABEL_7:
   }
 
   while (!v5);
-  v3 = [v7[0] reverseObjectEnumerator];
-  v4 = [v3 allObjects];
-  MEMORY[0x277D82BD8](v3);
+  reverseObjectEnumerator = [v7[0] reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
+  MEMORY[0x277D82BD8](reverseObjectEnumerator);
   objc_storeStrong(v7, 0);
 
-  return v4;
+  return allObjects;
 }
 
 - (void)bubbleUp
 {
   for (i = [(AMDMinHeap *)self position]- 1; i > 1; i /= 2uLL)
   {
-    v6 = [(AMDMinHeap *)self comparator];
-    v5 = [(AMDMinHeap *)self objects];
-    v4 = [(NSMutableArray *)v5 objectAtIndexedSubscript:i];
-    v3 = [(AMDMinHeap *)self objects];
-    v2 = [(NSMutableArray *)v3 objectAtIndexedSubscript:i / 2];
-    v7 = v6[2](v6, v4);
+    comparator = [(AMDMinHeap *)self comparator];
+    objects = [(AMDMinHeap *)self objects];
+    v4 = [(NSMutableArray *)objects objectAtIndexedSubscript:i];
+    objects2 = [(AMDMinHeap *)self objects];
+    v2 = [(NSMutableArray *)objects2 objectAtIndexedSubscript:i / 2];
+    v7 = comparator[2](comparator, v4);
     MEMORY[0x277D82BD8](v2);
-    MEMORY[0x277D82BD8](v3);
+    MEMORY[0x277D82BD8](objects2);
     MEMORY[0x277D82BD8](v4);
-    MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](objects);
+    MEMORY[0x277D82BD8](comparator);
     if (v7 != -1)
     {
       break;
@@ -197,17 +197,17 @@ LABEL_7:
     v8 = 0;
     if (v20 < [(AMDMinHeap *)self position])
     {
-      v18 = [(AMDMinHeap *)self comparator];
+      comparator = [(AMDMinHeap *)self comparator];
       v17 = 1;
-      v16 = [(AMDMinHeap *)self objects];
+      objects = [(AMDMinHeap *)self objects];
       v15 = 1;
-      v14 = [(NSMutableArray *)v16 objectAtIndexedSubscript:v20];
+      v14 = [(NSMutableArray *)objects objectAtIndexedSubscript:v20];
       v13 = 1;
-      v12 = [(AMDMinHeap *)self objects];
+      objects2 = [(AMDMinHeap *)self objects];
       v11 = 1;
-      v10 = [(NSMutableArray *)v12 objectAtIndexedSubscript:2 * i];
+      v10 = [(NSMutableArray *)objects2 objectAtIndexedSubscript:2 * i];
       v9 = 1;
-      v8 = v18[2](v18, v14) == -1;
+      v8 = comparator[2](comparator, v14) == -1;
     }
 
     if (v9)
@@ -217,7 +217,7 @@ LABEL_7:
 
     if (v11)
     {
-      MEMORY[0x277D82BD8](v12);
+      MEMORY[0x277D82BD8](objects2);
     }
 
     if (v13)
@@ -227,26 +227,26 @@ LABEL_7:
 
     if (v15)
     {
-      MEMORY[0x277D82BD8](v16);
+      MEMORY[0x277D82BD8](objects);
     }
 
     if (v17)
     {
-      MEMORY[0x277D82BD8](v18);
+      MEMORY[0x277D82BD8](comparator);
     }
 
     v19 = v8 ? 2 * i + 1 : 2 * i;
-    v6 = [(AMDMinHeap *)self comparator];
-    v5 = [(AMDMinHeap *)self objects];
-    v4 = [(NSMutableArray *)v5 objectAtIndexedSubscript:v19];
-    v3 = [(AMDMinHeap *)self objects];
-    v2 = [(NSMutableArray *)v3 objectAtIndexedSubscript:i];
-    v7 = v6[2](v6, v4);
+    comparator2 = [(AMDMinHeap *)self comparator];
+    objects3 = [(AMDMinHeap *)self objects];
+    v4 = [(NSMutableArray *)objects3 objectAtIndexedSubscript:v19];
+    objects4 = [(AMDMinHeap *)self objects];
+    v2 = [(NSMutableArray *)objects4 objectAtIndexedSubscript:i];
+    v7 = comparator2[2](comparator2, v4);
     MEMORY[0x277D82BD8](v2);
-    MEMORY[0x277D82BD8](v3);
+    MEMORY[0x277D82BD8](objects4);
     MEMORY[0x277D82BD8](v4);
-    MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](objects3);
+    MEMORY[0x277D82BD8](comparator2);
     if (v7 != -1)
     {
       break;
@@ -256,26 +256,26 @@ LABEL_7:
   }
 }
 
-- (void)swap:(unint64_t)a3 with:(unint64_t)a4
+- (void)swap:(unint64_t)swap with:(unint64_t)with
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
-  v11 = a4;
-  v4 = [(AMDMinHeap *)self objects];
-  v10 = [(NSMutableArray *)v4 objectAtIndexedSubscript:v12];
-  MEMORY[0x277D82BD8](v4);
-  v7 = [(AMDMinHeap *)v14 objects];
-  v6 = [(NSMutableArray *)v7 objectAtIndexedSubscript:v11];
-  v5 = [(AMDMinHeap *)v14 objects];
-  [(NSMutableArray *)v5 setObject:v6 atIndexedSubscript:v12];
-  MEMORY[0x277D82BD8](v5);
+  swapCopy = swap;
+  withCopy = with;
+  objects = [(AMDMinHeap *)self objects];
+  v10 = [(NSMutableArray *)objects objectAtIndexedSubscript:swapCopy];
+  MEMORY[0x277D82BD8](objects);
+  objects2 = [(AMDMinHeap *)selfCopy objects];
+  v6 = [(NSMutableArray *)objects2 objectAtIndexedSubscript:withCopy];
+  objects3 = [(AMDMinHeap *)selfCopy objects];
+  [(NSMutableArray *)objects3 setObject:v6 atIndexedSubscript:swapCopy];
+  MEMORY[0x277D82BD8](objects3);
   MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
+  MEMORY[0x277D82BD8](objects2);
   v8 = v10;
-  v9 = [(AMDMinHeap *)v14 objects];
-  [(NSMutableArray *)v9 setObject:v8 atIndexedSubscript:v11];
-  MEMORY[0x277D82BD8](v9);
+  objects4 = [(AMDMinHeap *)selfCopy objects];
+  [(NSMutableArray *)objects4 setObject:v8 atIndexedSubscript:withCopy];
+  MEMORY[0x277D82BD8](objects4);
   objc_storeStrong(&v10, 0);
 }
 

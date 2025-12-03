@@ -2,7 +2,7 @@
 - (PCSCKKSItemModifyContext)init;
 - (void)dealloc;
 - (void)resetIdentities;
-- (void)setCurrentIdentityForService:(id)a3 identity:(_PCSIdentityData *)a4 persistentReference:(id)a5;
+- (void)setCurrentIdentityForService:(id)service identity:(_PCSIdentityData *)identity persistentReference:(id)reference;
 @end
 
 @implementation PCSCKKSItemModifyContext
@@ -30,9 +30,9 @@
     }
 
     v2->_timeoutValue = v5;
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     serviceContexts = v2->_serviceContexts;
-    v2->_serviceContexts = v7;
+    v2->_serviceContexts = dictionary;
 
     v9 = v2;
   }
@@ -47,10 +47,10 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(PCSCKKSItemModifyContext *)self serviceContexts];
-  v4 = [v3 allKeys];
+  serviceContexts = [(PCSCKKSItemModifyContext *)self serviceContexts];
+  allKeys = [serviceContexts allKeys];
 
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -62,19 +62,19 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
-        v10 = [(PCSCKKSItemModifyContext *)self serviceContexts];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        serviceContexts2 = [(PCSCKKSItemModifyContext *)self serviceContexts];
+        v11 = [serviceContexts2 objectForKeyedSubscript:v9];
 
         [v11 resetIdentity];
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -83,14 +83,14 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCurrentIdentityForService:(id)a3 identity:(_PCSIdentityData *)a4 persistentReference:(id)a5
+- (void)setCurrentIdentityForService:(id)service identity:(_PCSIdentityData *)identity persistentReference:(id)reference
 {
-  v8 = a5;
-  v9 = a3;
-  v11 = [(PCSCKKSItemModifyContext *)self serviceContexts];
-  v10 = [v11 objectForKeyedSubscript:v9];
+  referenceCopy = reference;
+  serviceCopy = service;
+  serviceContexts = [(PCSCKKSItemModifyContext *)self serviceContexts];
+  v10 = [serviceContexts objectForKeyedSubscript:serviceCopy];
 
-  [v10 setCurrentIdentity:a4 persistentReference:v8];
+  [v10 setCurrentIdentity:identity persistentReference:referenceCopy];
 }
 
 - (void)dealloc

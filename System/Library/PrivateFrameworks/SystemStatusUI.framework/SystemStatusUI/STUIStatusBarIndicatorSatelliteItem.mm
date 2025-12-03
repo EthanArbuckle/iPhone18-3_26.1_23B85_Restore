@@ -1,16 +1,16 @@
 @interface STUIStatusBarIndicatorSatelliteItem
-- (id)systemImageNameForUpdate:(id)a3;
+- (id)systemImageNameForUpdate:(id)update;
 @end
 
 @implementation STUIStatusBarIndicatorSatelliteItem
 
-- (id)systemImageNameForUpdate:(id)a3
+- (id)systemImageNameForUpdate:(id)update
 {
-  v3 = [a3 data];
-  v4 = [v3 satelliteEntry];
-  v5 = [v4 connectionStatus];
+  data = [update data];
+  satelliteEntry = [data satelliteEntry];
+  connectionStatus = [satelliteEntry connectionStatus];
 
-  if (v5 == 1)
+  if (connectionStatus == 1)
   {
     v6 = @"satellite.wave.2.fill";
   }

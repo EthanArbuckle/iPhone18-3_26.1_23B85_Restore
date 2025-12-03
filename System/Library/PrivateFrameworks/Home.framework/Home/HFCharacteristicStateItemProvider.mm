@@ -1,13 +1,13 @@
 @interface HFCharacteristicStateItemProvider
-+ (id)_createBatteryItemWithSourceItem:(id)a3 characteristicType:(id)a4 valueFormatBlock:(id)a5;
-+ (id)_setupCharacteristicStateItemForCharacteristic:(id)a3 valueSource:(id)a4 serviceType:(id)a5;
++ (id)_createBatteryItemWithSourceItem:(id)item characteristicType:(id)type valueFormatBlock:(id)block;
++ (id)_setupCharacteristicStateItemForCharacteristic:(id)characteristic valueSource:(id)source serviceType:(id)type;
 + (id)standardCharacteristicTypes;
 - (HFCharacteristicStateItemProvider)init;
-- (HFCharacteristicStateItemProvider)initWithValueSource:(id)a3 accessory:(id)a4 service:(id)a5;
-- (HFCharacteristicStateItemProvider)initWithValueSource:(id)a3 service:(id)a4;
+- (HFCharacteristicStateItemProvider)initWithValueSource:(id)source accessory:(id)accessory service:(id)service;
+- (HFCharacteristicStateItemProvider)initWithValueSource:(id)source service:(id)service;
 - (id)_reloadBatteryItems;
 - (id)_reloadCharacteristicStateItems;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)items;
 - (id)reloadItems;
@@ -15,30 +15,30 @@
 
 @implementation HFCharacteristicStateItemProvider
 
-- (HFCharacteristicStateItemProvider)initWithValueSource:(id)a3 service:(id)a4
+- (HFCharacteristicStateItemProvider)initWithValueSource:(id)source service:(id)service
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 accessory];
-  v9 = [(HFCharacteristicStateItemProvider *)self initWithValueSource:v7 accessory:v8 service:v6];
+  serviceCopy = service;
+  sourceCopy = source;
+  accessory = [serviceCopy accessory];
+  v9 = [(HFCharacteristicStateItemProvider *)self initWithValueSource:sourceCopy accessory:accessory service:serviceCopy];
 
   return v9;
 }
 
-- (HFCharacteristicStateItemProvider)initWithValueSource:(id)a3 accessory:(id)a4 service:(id)a5
+- (HFCharacteristicStateItemProvider)initWithValueSource:(id)source accessory:(id)accessory service:(id)service
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sourceCopy = source;
+  accessoryCopy = accessory;
+  serviceCopy = service;
   v19.receiver = self;
   v19.super_class = HFCharacteristicStateItemProvider;
   v12 = [(HFItemProvider *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_accessory, a4);
-    objc_storeStrong(&v13->_service, a5);
-    objc_storeStrong(&v13->_valueSource, a3);
+    objc_storeStrong(&v12->_accessory, accessory);
+    objc_storeStrong(&v13->_service, service);
+    objc_storeStrong(&v13->_valueSource, source);
     v14 = [MEMORY[0x277CBEB98] set];
     characteristicStateItems = v13->_characteristicStateItems;
     v13->_characteristicStateItems = v14;
@@ -53,20 +53,20 @@
 
 - (HFCharacteristicStateItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithValueSource_accessory_service_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFCharacteristicStateItemProvider.m" lineNumber:61 description:{@"%s is unavailable; use %@ instead", "-[HFCharacteristicStateItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFCharacteristicStateItemProvider.m" lineNumber:61 description:{@"%s is unavailable; use %@ instead", "-[HFCharacteristicStateItemProvider init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFCharacteristicStateItemProvider *)self valueSource];
-  v6 = [(HFCharacteristicStateItemProvider *)self accessory];
-  v7 = [(HFCharacteristicStateItemProvider *)self service];
-  v8 = [v4 initWithValueSource:v5 accessory:v6 service:v7];
+  valueSource = [(HFCharacteristicStateItemProvider *)self valueSource];
+  accessory = [(HFCharacteristicStateItemProvider *)self accessory];
+  service = [(HFCharacteristicStateItemProvider *)self service];
+  v8 = [v4 initWithValueSource:valueSource accessory:accessory service:service];
 
   return v8;
 }
@@ -75,26 +75,26 @@
 {
   v5.receiver = self;
   v5.super_class = HFCharacteristicStateItemProvider;
-  v2 = [(HFItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:@"service"];
+  invalidationReasons = [(HFItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:@"service"];
 
   return v3;
 }
 
 - (id)items
 {
-  v3 = [(HFCharacteristicStateItemProvider *)self characteristicStateItems];
-  v4 = [(HFCharacteristicStateItemProvider *)self batteryItems];
-  v5 = [v3 setByAddingObjectsFromSet:v4];
+  characteristicStateItems = [(HFCharacteristicStateItemProvider *)self characteristicStateItems];
+  batteryItems = [(HFCharacteristicStateItemProvider *)self batteryItems];
+  v5 = [characteristicStateItems setByAddingObjectsFromSet:batteryItems];
 
   return v5;
 }
 
 - (id)reloadItems
 {
-  v3 = [(HFCharacteristicStateItemProvider *)self _reloadCharacteristicStateItems];
-  v4 = [(HFCharacteristicStateItemProvider *)self _reloadBatteryItems];
-  v5 = [v3 resultsByMergingWithResults:v4];
+  _reloadCharacteristicStateItems = [(HFCharacteristicStateItemProvider *)self _reloadCharacteristicStateItems];
+  _reloadBatteryItems = [(HFCharacteristicStateItemProvider *)self _reloadBatteryItems];
+  v5 = [_reloadCharacteristicStateItems resultsByMergingWithResults:_reloadBatteryItems];
 
   v6 = [MEMORY[0x277D2C900] futureWithResult:v5];
 
@@ -103,28 +103,28 @@
 
 - (id)_reloadBatteryItems
 {
-  v3 = [(HFCharacteristicStateItemProvider *)self batteryItems];
-  v4 = [v3 count];
+  batteryItems = [(HFCharacteristicStateItemProvider *)self batteryItems];
+  v4 = [batteryItems count];
 
   if (v4)
   {
     v5 = [HFItemProviderReloadResults alloc];
     v6 = [MEMORY[0x277CBEB98] set];
     v7 = [MEMORY[0x277CBEB98] set];
-    v8 = [(HFCharacteristicStateItemProvider *)self batteryItems];
-    v9 = [(HFItemProviderReloadResults *)v5 initWithAddedItems:v6 removedItems:v7 existingItems:v8];
+    batteryItems2 = [(HFCharacteristicStateItemProvider *)self batteryItems];
+    v9 = [(HFItemProviderReloadResults *)v5 initWithAddedItems:v6 removedItems:v7 existingItems:batteryItems2];
   }
 
   else
   {
     v10 = [HFAccessoryBatteryLevelItem alloc];
-    v11 = [(HFCharacteristicStateItemProvider *)self accessory];
-    v12 = [(HFCharacteristicStateItemProvider *)self valueSource];
-    v6 = [(HFAccessoryBatteryLevelItem *)v10 initWithAccessory:v11 valueSource:v12];
+    accessory = [(HFCharacteristicStateItemProvider *)self accessory];
+    valueSource = [(HFCharacteristicStateItemProvider *)self valueSource];
+    v6 = [(HFAccessoryBatteryLevelItem *)v10 initWithAccessory:accessory valueSource:valueSource];
 
     v7 = [MEMORY[0x277CBEB58] set];
-    v8 = [objc_opt_class() _createBatteryItemWithSourceItem:v6 characteristicType:*MEMORY[0x277CCF780] valueFormatBlock:&__block_literal_global_229];
-    [v7 addObject:v8];
+    batteryItems2 = [objc_opt_class() _createBatteryItemWithSourceItem:v6 characteristicType:*MEMORY[0x277CCF780] valueFormatBlock:&__block_literal_global_229];
+    [v7 addObject:batteryItems2];
     v13 = [objc_opt_class() _createBatteryItemWithSourceItem:v6 characteristicType:*MEMORY[0x277CCF7D0] valueFormatBlock:&__block_literal_global_17_10];
     [v7 addObject:v13];
     [(HFCharacteristicStateItemProvider *)self setBatteryItems:v7];
@@ -183,18 +183,18 @@ id __56__HFCharacteristicStateItemProvider__reloadBatteryItems__block_invoke_15(
 - (id)_reloadCharacteristicStateItems
 {
   v81 = *MEMORY[0x277D85DE8];
-  v3 = [(HFCharacteristicStateItemProvider *)self characteristicStateItems];
-  v54 = [v3 na_map:&__block_literal_global_20_10];
+  characteristicStateItems = [(HFCharacteristicStateItemProvider *)self characteristicStateItems];
+  v54 = [characteristicStateItems na_map:&__block_literal_global_20_10];
 
-  v4 = [objc_opt_class() standardCharacteristicTypes];
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [(HFCharacteristicStateItemProvider *)self service];
-  if (v6)
+  standardCharacteristicTypes = [objc_opt_class() standardCharacteristicTypes];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  service = [(HFCharacteristicStateItemProvider *)self service];
+  if (service)
   {
-    v7 = [(HFCharacteristicStateItemProvider *)self service];
-    v8 = [v7 hf_childServices];
-    v9 = [(HFCharacteristicStateItemProvider *)self service];
-    v10 = [v8 setByAddingObject:v9];
+    service2 = [(HFCharacteristicStateItemProvider *)self service];
+    hf_childServices = [service2 hf_childServices];
+    service3 = [(HFCharacteristicStateItemProvider *)self service];
+    v10 = [hf_childServices setByAddingObject:service3];
   }
 
   else
@@ -202,7 +202,7 @@ id __56__HFCharacteristicStateItemProvider__reloadBatteryItems__block_invoke_15(
     v10 = [MEMORY[0x277CBEB98] set];
   }
 
-  v53 = self;
+  selfCopy = self;
 
   v77 = 0u;
   v78 = 0u;
@@ -229,8 +229,8 @@ id __56__HFCharacteristicStateItemProvider__reloadBatteryItems__block_invoke_15(
         v72 = 0u;
         v73 = 0u;
         v74 = 0u;
-        v13 = [v12 characteristics];
-        v14 = [v13 countByEnumeratingWithState:&v71 objects:v79 count:16];
+        characteristics = [v12 characteristics];
+        v14 = [characteristics countByEnumeratingWithState:&v71 objects:v79 count:16];
         if (v14)
         {
           v15 = v14;
@@ -241,37 +241,37 @@ id __56__HFCharacteristicStateItemProvider__reloadBatteryItems__block_invoke_15(
             {
               if (*v72 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(characteristics);
               }
 
               v18 = *(*(&v71 + 1) + 8 * i);
-              v19 = [v18 characteristicType];
-              if (v19)
+              characteristicType = [v18 characteristicType];
+              if (characteristicType)
               {
-                v20 = v19;
-                v21 = [v18 characteristicType];
-                v22 = [v4 containsObject:v21];
+                v20 = characteristicType;
+                characteristicType2 = [v18 characteristicType];
+                v22 = [standardCharacteristicTypes containsObject:characteristicType2];
 
                 if (v22)
                 {
-                  v23 = [v18 characteristicType];
-                  v24 = [v5 objectForKeyedSubscript:v23];
+                  characteristicType3 = [v18 characteristicType];
+                  v24 = [dictionary objectForKeyedSubscript:characteristicType3];
 
                   if (v24)
                   {
                     v25 = MEMORY[0x277CD1970];
-                    v26 = [v18 characteristicType];
-                    v27 = [v25 localizedDescriptionForCharacteristicType:v26];
+                    characteristicType4 = [v18 characteristicType];
+                    v27 = [v25 localizedDescriptionForCharacteristicType:characteristicType4];
                     NSLog(&cfstr_AlreadyHaveACh.isa, v27);
                   }
 
-                  v28 = [v18 characteristicType];
-                  [v5 setObject:v18 forKeyedSubscript:v28];
+                  characteristicType5 = [v18 characteristicType];
+                  [dictionary setObject:v18 forKeyedSubscript:characteristicType5];
                 }
               }
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v71 objects:v79 count:16];
+            v15 = [characteristics countByEnumeratingWithState:&v71 objects:v79 count:16];
           }
 
           while (v15);
@@ -288,58 +288,58 @@ id __56__HFCharacteristicStateItemProvider__reloadBatteryItems__block_invoke_15(
   }
 
   v29 = MEMORY[0x277CBEB98];
-  v30 = [v5 allKeys];
-  v59 = [v29 setWithArray:v30];
+  allKeys = [dictionary allKeys];
+  v59 = [v29 setWithArray:allKeys];
 
   v31 = MEMORY[0x277CBEB98];
-  v32 = [v5 allValues];
-  v61 = [v31 setWithArray:v32];
+  allValues = [dictionary allValues];
+  v61 = [v31 setWithArray:allValues];
 
   v33 = [HFSimpleAggregatedCharacteristicValueSource alloc];
-  v34 = [(HFCharacteristicStateItemProvider *)v53 valueSource];
-  v35 = [(HFCharacteristicStateItemProvider *)v53 service];
-  v36 = [v35 hf_serviceDescriptor];
-  v37 = [(HFSimpleAggregatedCharacteristicValueSource *)v33 initWithValueSource:v34 characteristics:v61 primaryServiceDescriptor:v36];
+  valueSource = [(HFCharacteristicStateItemProvider *)selfCopy valueSource];
+  service4 = [(HFCharacteristicStateItemProvider *)selfCopy service];
+  hf_serviceDescriptor = [service4 hf_serviceDescriptor];
+  v37 = [(HFSimpleAggregatedCharacteristicValueSource *)v33 initWithValueSource:valueSource characteristics:v61 primaryServiceDescriptor:hf_serviceDescriptor];
 
   v38 = [HFSetDiff diffFromSet:v54 toSet:v59];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __68__HFCharacteristicStateItemProvider__reloadCharacteristicStateItems__block_invoke_2;
   aBlock[3] = &unk_277E01E40;
-  aBlock[4] = v53;
+  aBlock[4] = selfCopy;
   v39 = _Block_copy(aBlock);
-  v40 = [v38 additions];
+  additions = [v38 additions];
   v66[0] = MEMORY[0x277D85DD0];
   v66[1] = 3221225472;
   v66[2] = __68__HFCharacteristicStateItemProvider__reloadCharacteristicStateItems__block_invoke_4;
   v66[3] = &unk_277E01E68;
-  v67 = v5;
-  v68 = v53;
+  v67 = dictionary;
+  v68 = selfCopy;
   v69 = v37;
   v57 = v37;
-  v41 = v5;
-  v42 = [v40 na_map:v66];
+  v41 = dictionary;
+  v42 = [additions na_map:v66];
 
-  v43 = [v38 deletions];
+  deletions = [v38 deletions];
   v64[0] = MEMORY[0x277D85DD0];
   v64[1] = 3221225472;
   v64[2] = __68__HFCharacteristicStateItemProvider__reloadCharacteristicStateItems__block_invoke_5;
   v64[3] = &unk_277E01E90;
   v44 = v39;
   v65 = v44;
-  v45 = [v43 na_map:v64];
+  v45 = [deletions na_map:v64];
 
-  v46 = [v38 updates];
+  updates = [v38 updates];
   v62[0] = MEMORY[0x277D85DD0];
   v62[1] = 3221225472;
   v62[2] = __68__HFCharacteristicStateItemProvider__reloadCharacteristicStateItems__block_invoke_6;
   v62[3] = &unk_277E01E90;
   v63 = v44;
   v47 = v44;
-  v48 = [v46 na_map:v62];
+  v48 = [updates na_map:v62];
 
   v49 = [v48 setByAddingObjectsFromSet:v42];
-  [(HFCharacteristicStateItemProvider *)v53 setCharacteristicStateItems:v49];
+  [(HFCharacteristicStateItemProvider *)selfCopy setCharacteristicStateItems:v49];
 
   v50 = [[HFItemProviderReloadResults alloc] initWithAddedItems:v42 removedItems:v45 existingItems:v48];
   v51 = *MEMORY[0x277D85DE8];
@@ -424,37 +424,37 @@ void __64__HFCharacteristicStateItemProvider_standardCharacteristicTypes__block_
   qword_27C84C580 = v3;
 }
 
-+ (id)_setupCharacteristicStateItemForCharacteristic:(id)a3 valueSource:(id)a4 serviceType:(id)a5
++ (id)_setupCharacteristicStateItemForCharacteristic:(id)characteristic valueSource:(id)source serviceType:(id)type
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  characteristicCopy = characteristic;
+  sourceCopy = source;
+  typeCopy = type;
   v10 = MEMORY[0x277CCAA28];
   v31 = @"serviceType";
-  v32[0] = v9;
+  v32[0] = typeCopy;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
-  v12 = [v10 hf_valueFormatterForCharacteristic:v7 options:v11];
+  v12 = [v10 hf_valueFormatterForCharacteristic:characteristicCopy options:v11];
 
   if (v12)
   {
-    v13 = [v7 localizedDescription];
-    v14 = [v7 characteristicType];
-    v15 = [HFCharacteristicGroup groupedTitleForCharacteristicType:v14];
+    localizedDescription = [characteristicCopy localizedDescription];
+    characteristicType = [characteristicCopy characteristicType];
+    v15 = [HFCharacteristicGroup groupedTitleForCharacteristicType:characteristicType];
 
     v24 = MEMORY[0x277D85DD0];
     v25 = 3221225472;
     v26 = __108__HFCharacteristicStateItemProvider__setupCharacteristicStateItemForCharacteristic_valueSource_serviceType___block_invoke;
     v27 = &unk_277E01EB8;
-    v28 = v13;
+    v28 = localizedDescription;
     v29 = v15;
     v30 = v12;
     v16 = v15;
-    v17 = v13;
+    v17 = localizedDescription;
     v18 = _Block_copy(&v24);
     v19 = [HFCharacteristicStateItem alloc];
-    v20 = [v7 characteristicType];
-    v21 = [(HFCharacteristicStateItem *)v19 initWithCharacteristicType:v20 valueSource:v8 resultsProvider:v18];
+    characteristicType2 = [characteristicCopy characteristicType];
+    v21 = [(HFCharacteristicStateItem *)v19 initWithCharacteristicType:characteristicType2 valueSource:sourceCopy resultsProvider:v18];
   }
 
   else
@@ -493,22 +493,22 @@ id __108__HFCharacteristicStateItemProvider__setupCharacteristicStateItemForChar
   return v4;
 }
 
-+ (id)_createBatteryItemWithSourceItem:(id)a3 characteristicType:(id)a4 valueFormatBlock:(id)a5
++ (id)_createBatteryItemWithSourceItem:(id)item characteristicType:(id)type valueFormatBlock:(id)block
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  typeCopy = type;
+  blockCopy = block;
+  itemCopy = item;
   v10 = [HFTransformItem alloc];
-  v11 = [v9 copy];
+  v11 = [itemCopy copy];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __106__HFCharacteristicStateItemProvider__createBatteryItemWithSourceItem_characteristicType_valueFormatBlock___block_invoke;
   v16[3] = &unk_277E01EE0;
-  v17 = v7;
-  v18 = v8;
-  v12 = v8;
-  v13 = v7;
+  v17 = typeCopy;
+  v18 = blockCopy;
+  v12 = blockCopy;
+  v13 = typeCopy;
   v14 = [(HFTransformItem *)v10 initWithSourceItem:v11 transformationBlock:v16];
 
   return v14;

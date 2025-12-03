@@ -1,27 +1,27 @@
 @interface BLPDFInstallOperation
-- (BLPDFInstallOperation)initWithInfo:(id)a3 metadataStoreManager:(id)a4;
-- (BOOL)_installMediaAsset:(id)a3 assetInstalledPath:(id *)a4 error:(id *)a5;
+- (BLPDFInstallOperation)initWithInfo:(id)info metadataStoreManager:(id)manager;
+- (BOOL)_installMediaAsset:(id)asset assetInstalledPath:(id *)path error:(id *)error;
 - (id)_newManifestEntry;
 - (void)_addPurchaseManifestItem;
-- (void)_insertAdditionalEntryProperties:(id)a3;
-- (void)_removeDuplicateEntry:(id)a3;
-- (void)_repairManifestEntryIfNeeded:(id)a3 manifest:(id)a4;
+- (void)_insertAdditionalEntryProperties:(id)properties;
+- (void)_removeDuplicateEntry:(id)entry;
+- (void)_repairManifestEntryIfNeeded:(id)needed manifest:(id)manifest;
 - (void)_saveMigrationState;
 - (void)main;
 @end
 
 @implementation BLPDFInstallOperation
 
-- (BLPDFInstallOperation)initWithInfo:(id)a3 metadataStoreManager:(id)a4
+- (BLPDFInstallOperation)initWithInfo:(id)info metadataStoreManager:(id)manager
 {
-  v7 = a4;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = BLPDFInstallOperation;
-  v8 = [(BLBaseBookInstallOperation *)&v15 initWithInfo:a3];
+  v8 = [(BLBaseBookInstallOperation *)&v15 initWithInfo:info];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_metadataStoreManager, a4);
+    objc_storeStrong(&v8->_metadataStoreManager, manager);
     v10 = +[BLBookManifest purchasedBookManifest];
     purchaseManifest = v9->_purchaseManifest;
     v9->_purchaseManifest = v10;
@@ -36,10 +36,10 @@
 
 - (void)main
 {
-  v3 = [(BLBaseBookInstallOperation *)self installInfo];
-  v4 = [v3 databaseManager];
-  v5 = [(BLBaseBookInstallOperation *)self downloadID];
-  [v4 syncSaveDownloadStateWithId:v5 state:8];
+  installInfo = [(BLBaseBookInstallOperation *)self installInfo];
+  databaseManager = [installInfo databaseManager];
+  downloadID = [(BLBaseBookInstallOperation *)self downloadID];
+  [databaseManager syncSaveDownloadStateWithId:downloadID state:8];
 
   v6 = +[NSUserDefaults standardUserDefaults];
   if ([v6 BOOLForKey:@"BKSimulateCrashAtInstallStart"])
@@ -47,9 +47,9 @@
     v7 = BLBookInstallLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(BLBaseBookInstallOperation *)self downloadID];
+      downloadID2 = [(BLBaseBookInstallOperation *)self downloadID];
       *buf = 138543362;
-      v75 = v8;
+      v75 = downloadID2;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [PDFInstall-Op]: Simulating a crash during install start", buf, 0xCu);
     }
 
@@ -58,16 +58,16 @@
     raise(11);
   }
 
-  v9 = [(BLBaseBookInstallOperation *)self downloadID];
-  v10 = [(BLBaseBookInstallOperation *)self installInfo];
-  v11 = [(BLPDFInstallOperation *)self _bookManifest];
-  v12 = [v10 storeIdentifier];
-  v13 = [v10 storePublicationVersion];
-  v14 = [v11 bookPathForAdamID:v12 withPublicationVersion:v13];
+  downloadID3 = [(BLBaseBookInstallOperation *)self downloadID];
+  installInfo2 = [(BLBaseBookInstallOperation *)self installInfo];
+  _bookManifest = [(BLPDFInstallOperation *)self _bookManifest];
+  storeIdentifier = [installInfo2 storeIdentifier];
+  storePublicationVersion = [installInfo2 storePublicationVersion];
+  v14 = [_bookManifest bookPathForAdamID:storeIdentifier withPublicationVersion:storePublicationVersion];
   [(BLPDFInstallOperation *)self setBookPath:v14];
 
-  v15 = [(BLPDFInstallOperation *)self bookPath];
-  v16 = [v15 length];
+  bookPath = [(BLPDFInstallOperation *)self bookPath];
+  v16 = [bookPath length];
 
   if (v16)
   {
@@ -75,35 +75,35 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v75 = v9;
+      v75 = downloadID3;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [PDFInstall-Op]: Skipping asset installation because we have an existing download.", buf, 0xCu);
     }
   }
 
-  v18 = [(BLBaseBookInstallOperation *)self downloadedAssetPath];
-  v19 = [NSURL fileURLWithPath:v18];
+  downloadedAssetPath = [(BLBaseBookInstallOperation *)self downloadedAssetPath];
+  v19 = [NSURL fileURLWithPath:downloadedAssetPath];
 
   if (!v16)
   {
-    v22 = [v10 databaseManager];
-    [v22 syncSaveDownloadStateWithId:v9 state:11];
+    databaseManager2 = [installInfo2 databaseManager];
+    [databaseManager2 syncSaveDownloadStateWithId:downloadID3 state:11];
 
-    v23 = [v10 encryptionKey];
-    v24 = [v10 salt];
+    encryptionKey = [installInfo2 encryptionKey];
+    salt = [installInfo2 salt];
     v73 = 0;
-    LODWORD(v22) = [BLPDFInstallUtils decryptFileAtURL:v19 encryptionKey:v23 salt:v24 error:&v73];
+    LODWORD(databaseManager2) = [BLPDFInstallUtils decryptFileAtURL:v19 encryptionKey:encryptionKey salt:salt error:&v73];
     v25 = v73;
 
-    v26 = [v10 databaseManager];
-    [v26 syncSaveDownloadStateWithId:v9 state:12];
+    databaseManager3 = [installInfo2 databaseManager];
+    [databaseManager3 syncSaveDownloadStateWithId:downloadID3 state:12];
 
-    if (!v22)
+    if (!databaseManager2)
     {
       v37 = BLBookInstallLog();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
       {
         *buf = 138544130;
-        v75 = v9;
+        v75 = downloadID3;
         v76 = 2160;
         v77 = 1752392040;
         v78 = 2112;
@@ -118,37 +118,37 @@
     }
 
     v67 = v25;
-    v27 = [(BLBaseBookInstallOperation *)self downloadedAssetPath];
-    v28 = [BLLibraryUtility generateFileUniqueIdFromPath:v27];
-    [v10 setUniqueID:v28];
+    downloadedAssetPath2 = [(BLBaseBookInstallOperation *)self downloadedAssetPath];
+    v28 = [BLLibraryUtility generateFileUniqueIdFromPath:downloadedAssetPath2];
+    [installInfo2 setUniqueID:v28];
 
     v29 = BLBookInstallLog();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v75 = v9;
+      v75 = downloadID3;
       v76 = 2112;
       v77 = v28;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [PDFInstall-Op]: Added package hash: %@", buf, 0x16u);
     }
 
-    v30 = [(BLPDFInstallOperation *)self purchaseManifest];
+    purchaseManifest = [(BLPDFInstallOperation *)self purchaseManifest];
     v31 = +[IMLibraryPlist keyNameForUniqueId];
-    [v30 manifestEntriesWithProperty:v31 equalToValue:v28 limitCount:1];
+    [purchaseManifest manifestEntriesWithProperty:v31 equalToValue:v28 limitCount:1];
     v33 = v32 = v28;
 
     v69 = v32;
     if ([v33 count] == 1)
     {
-      v34 = [v33 firstObject];
-      v35 = [(BLPDFInstallOperation *)self purchaseManifest];
-      [(BLPDFInstallOperation *)self _repairManifestEntryIfNeeded:v34 manifest:v35];
+      firstObject = [v33 firstObject];
+      purchaseManifest2 = [(BLPDFInstallOperation *)self purchaseManifest];
+      [(BLPDFInstallOperation *)self _repairManifestEntryIfNeeded:firstObject manifest:purchaseManifest2];
 
       v36 = BLBookInstallLog();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
-        v75 = v9;
+        v75 = downloadID3;
         v76 = 2160;
         v77 = 1752392040;
         v78 = 2112;
@@ -161,22 +161,22 @@
 
     else
     {
-      v38 = [(BLPDFInstallOperation *)self syncManifest];
+      syncManifest = [(BLPDFInstallOperation *)self syncManifest];
       v39 = +[IMLibraryPlist keyNameForUniqueId];
-      v40 = [v38 manifestEntriesWithProperty:v39 equalToValue:v32 limitCount:1];
+      v40 = [syncManifest manifestEntriesWithProperty:v39 equalToValue:v32 limitCount:1];
 
       if ([v40 count] != 1)
       {
         v66 = v40;
-        v44 = [(BLPDFInstallOperation *)self purchaseManifest];
-        v45 = [v10 storeIdentifier];
-        v46 = [v44 manifestEntriesWithProperty:@"s" equalToNumber:v45 limitCount:1];
+        purchaseManifest3 = [(BLPDFInstallOperation *)self purchaseManifest];
+        storeIdentifier2 = [installInfo2 storeIdentifier];
+        v46 = [purchaseManifest3 manifestEntriesWithProperty:@"s" equalToNumber:storeIdentifier2 limitCount:1];
 
         if ([v46 count] == 1)
         {
           objc_opt_class();
           v65 = v46;
-          v47 = [v46 firstObject];
+          firstObject2 = [v46 firstObject];
           v48 = BUDynamicCast();
 
           v49 = +[IMLibraryPlist keyNameForUniqueId];
@@ -185,13 +185,13 @@
           v51 = BLBookInstallLog();
           if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
           {
-            v52 = [v10 storeIdentifier];
+            storeIdentifier3 = [installInfo2 storeIdentifier];
             *buf = 138544386;
-            v75 = v9;
+            v75 = downloadID3;
             v76 = 2160;
             v77 = 1752392040;
             v78 = 2112;
-            v79 = v52;
+            v79 = storeIdentifier3;
             v80 = 2160;
             v81 = 1752392040;
             v82 = 2112;
@@ -202,16 +202,16 @@
 
         else
         {
-          v53 = [(BLPDFInstallOperation *)self syncManifest];
-          v54 = [v10 storeIdentifier];
-          v55 = [v53 manifestEntriesWithProperty:@"Item ID" equalToNumber:v54 limitCount:1];
+          syncManifest2 = [(BLPDFInstallOperation *)self syncManifest];
+          storeIdentifier4 = [installInfo2 storeIdentifier];
+          v55 = [syncManifest2 manifestEntriesWithProperty:@"Item ID" equalToNumber:storeIdentifier4 limitCount:1];
 
           if ([v55 count] != 1)
           {
 
             v71 = v67;
             v72 = 0;
-            v61 = [(BLPDFInstallOperation *)self _installMediaAsset:v10 assetInstalledPath:&v72 error:&v71];
+            v61 = [(BLPDFInstallOperation *)self _installMediaAsset:installInfo2 assetInstalledPath:&v72 error:&v71];
             v20 = v72;
             v21 = v71;
 
@@ -220,8 +220,8 @@
               goto LABEL_27;
             }
 
-            v62 = [v10 databaseManager];
-            [v62 syncSaveDownloadStateWithId:v9 state:15];
+            databaseManager4 = [installInfo2 databaseManager];
+            [databaseManager4 syncSaveDownloadStateWithId:downloadID3 state:15];
 
             v37 = +[NSUserDefaults standardUserDefaults];
             if ([v37 BOOLForKey:@"BKSimulateCrashAtInstallDuringFinish"])
@@ -230,7 +230,7 @@
               if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543362;
-                v75 = v9;
+                v75 = downloadID3;
                 _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [PDFInstall-Op]: Simulating a crash during install finish", buf, 0xCu);
               }
 
@@ -240,17 +240,17 @@
             }
 
             [(BLPDFInstallOperation *)self _addPurchaseManifestItem];
-            v68 = [(BLBaseBookInstallOperation *)self installInfo];
-            v70 = [v68 databaseManager];
-            v64 = [(BLBaseBookInstallOperation *)self downloadID];
-            [v70 syncSaveDownloadStateWithId:v64 state:16];
+            installInfo3 = [(BLBaseBookInstallOperation *)self installInfo];
+            databaseManager5 = [installInfo3 databaseManager];
+            downloadID4 = [(BLBaseBookInstallOperation *)self downloadID];
+            [databaseManager5 syncSaveDownloadStateWithId:downloadID4 state:16];
 
             v25 = v21;
             goto LABEL_26;
           }
 
           objc_opt_class();
-          v56 = [v55 firstObject];
+          firstObject3 = [v55 firstObject];
           v57 = BUDynamicCast();
 
           v48 = v57;
@@ -260,11 +260,11 @@
           v51 = BLBookInstallLog();
           if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
           {
-            [v10 storeIdentifier];
+            [installInfo2 storeIdentifier];
             v65 = v55;
             v60 = v59 = v48;
             *buf = 138544386;
-            v75 = v9;
+            v75 = downloadID3;
             v76 = 2160;
             v77 = 1752392040;
             v78 = 2112;
@@ -293,16 +293,16 @@ LABEL_26:
         goto LABEL_27;
       }
 
-      v41 = [v40 firstObject];
+      firstObject4 = [v40 firstObject];
       [(BLPDFInstallOperation *)self syncManifest];
       v42 = v33 = v40;
-      [(BLPDFInstallOperation *)self _repairManifestEntryIfNeeded:v41 manifest:v42];
+      [(BLPDFInstallOperation *)self _repairManifestEntryIfNeeded:firstObject4 manifest:v42];
 
       v36 = BLBookInstallLog();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
-        v75 = v9;
+        v75 = downloadID3;
         v76 = 2160;
         v77 = 1752392040;
         v78 = 2112;
@@ -322,35 +322,35 @@ LABEL_26:
   v21 = 0;
 LABEL_27:
   [(BLBaseBookInstallOperation *)self setError:v21, v65];
-  v43 = [(BLBaseBookInstallOperation *)self error];
-  [(BLBaseBookInstallOperation *)self setSuccess:v43 == 0];
+  error = [(BLBaseBookInstallOperation *)self error];
+  [(BLBaseBookInstallOperation *)self setSuccess:error == 0];
 }
 
-- (void)_removeDuplicateEntry:(id)a3
+- (void)_removeDuplicateEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [(BLBaseBookInstallOperation *)self downloadID];
-  v6 = [(BLBaseBookInstallOperation *)self installInfo];
-  v7 = [v6 uniqueID];
+  entryCopy = entry;
+  downloadID = [(BLBaseBookInstallOperation *)self downloadID];
+  installInfo = [(BLBaseBookInstallOperation *)self installInfo];
+  uniqueID = [installInfo uniqueID];
 
-  v8 = [(BLBaseBookInstallOperation *)self installInfo];
-  v9 = [v8 storeIdentifier];
+  installInfo2 = [(BLBaseBookInstallOperation *)self installInfo];
+  storeIdentifier = [installInfo2 storeIdentifier];
 
-  if (v7)
+  if (uniqueID)
   {
     v10 = BLBookInstallLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v4 manifestPath];
+      manifestPath = [entryCopy manifestPath];
       v25 = 138543618;
-      v26 = v5;
+      v26 = downloadID;
       v27 = 2114;
-      v28 = v11;
+      v28 = manifestPath;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [PDFInstall-Op]: Looking for duplicate from manifest with path %{public}@ for PDF book: ", &v25, 0x16u);
     }
 
     v12 = +[IMLibraryPlist keyNameForUniqueId];
-    v13 = [v4 manifestEntriesWithProperty:v12 equalToValue:v7 limitCount:1];
+    v13 = [entryCopy manifestEntriesWithProperty:v12 equalToValue:uniqueID limitCount:1];
 
     v14 = [v13 count];
     v15 = BLBookInstallLog();
@@ -359,15 +359,15 @@ LABEL_27:
     {
       if (v16)
       {
-        v17 = [v13 firstObject];
+        firstObject = [v13 firstObject];
         v25 = 138543618;
-        v26 = v5;
+        v26 = downloadID;
         v27 = 2112;
-        v28 = v17;
+        v28 = firstObject;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [PDFInstall-Op]: Removing for duplicate PDF book entry from manifest: %@", &v25, 0x16u);
       }
 
-      [v4 removeManifestEntryWithPackageHash:v7];
+      [entryCopy removeManifestEntryWithPackageHash:uniqueID];
     }
 
     else
@@ -375,26 +375,26 @@ LABEL_27:
       if (v16)
       {
         v25 = 138543362;
-        v26 = v5;
+        v26 = downloadID;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [PDFInstall-Op]: Did not find a duplicate PDF book entry in manifest", &v25, 0xCu);
       }
     }
   }
 
-  if (v9)
+  if (storeIdentifier)
   {
     v18 = BLBookInstallLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v4 manifestPath];
+      manifestPath2 = [entryCopy manifestPath];
       v25 = 138543618;
-      v26 = v5;
+      v26 = downloadID;
       v27 = 2114;
-      v28 = v19;
+      v28 = manifestPath2;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [PDFInstall-Op]: Looking for duplicate from manifest with path %{public}@ for store book: ", &v25, 0x16u);
     }
 
-    v20 = [v4 manifestEntriesWithProperty:@"s" equalToNumber:v9 limitCount:1];
+    v20 = [entryCopy manifestEntriesWithProperty:@"s" equalToNumber:storeIdentifier limitCount:1];
     v21 = [v20 count];
     v22 = BLBookInstallLog();
     v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
@@ -402,15 +402,15 @@ LABEL_27:
     {
       if (v23)
       {
-        v24 = [v20 firstObject];
+        firstObject2 = [v20 firstObject];
         v25 = 138543618;
-        v26 = v5;
+        v26 = downloadID;
         v27 = 2112;
-        v28 = v24;
+        v28 = firstObject2;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [PDFInstall-Op]: Removing for duplicate store book entry from purchase manifest: %@", &v25, 0x16u);
       }
 
-      [v4 removeManifestEntryWithStoreItemID:v9];
+      [entryCopy removeManifestEntryWithStoreItemID:storeIdentifier];
     }
 
     else
@@ -418,36 +418,36 @@ LABEL_27:
       if (v23)
       {
         v25 = 138543362;
-        v26 = v5;
+        v26 = downloadID;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [PDFInstall-Op]: Did not find a duplicate store book entry in purchase manifest", &v25, 0xCu);
       }
     }
   }
 }
 
-- (void)_repairManifestEntryIfNeeded:(id)a3 manifest:(id)a4
+- (void)_repairManifestEntryIfNeeded:(id)needed manifest:(id)manifest
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BLBaseBookInstallOperation *)self downloadID];
-  v9 = [(BLBaseBookInstallOperation *)self installInfo];
-  v10 = [v9 uniqueID];
-  v11 = [IMLibraryPlist uniqueIdFromPlistEntry:v6];
-  if ([v11 isEqualToString:v10])
+  neededCopy = needed;
+  manifestCopy = manifest;
+  downloadID = [(BLBaseBookInstallOperation *)self downloadID];
+  installInfo = [(BLBaseBookInstallOperation *)self installInfo];
+  uniqueID = [installInfo uniqueID];
+  v11 = [IMLibraryPlist uniqueIdFromPlistEntry:neededCopy];
+  if ([v11 isEqualToString:uniqueID])
   {
-    v12 = [v6 mutableCopy];
-    v13 = [v9 storeIdentifier];
-    v28 = [v9 storePlaylistIdentifier];
-    if (![v28 longLongValue] || !v13)
+    v12 = [neededCopy mutableCopy];
+    storeIdentifier = [installInfo storeIdentifier];
+    storePlaylistIdentifier = [installInfo storePlaylistIdentifier];
+    if (![storePlaylistIdentifier longLongValue] || !storeIdentifier)
     {
       goto LABEL_25;
     }
 
-    v27 = v8;
-    v25 = v7;
-    v14 = [IMLibraryPlist storeIdFromPlistEntry:v6];
-    v15 = [IMLibraryPlist storePlaylistIdFromPlistEntry:v6];
-    v16 = [IMLibraryPlist isSupplementalContentFromPlistEntry:v6];
+    v27 = downloadID;
+    v25 = manifestCopy;
+    v14 = [IMLibraryPlist storeIdFromPlistEntry:neededCopy];
+    v15 = [IMLibraryPlist storePlaylistIdFromPlistEntry:neededCopy];
+    v16 = [IMLibraryPlist isSupplementalContentFromPlistEntry:neededCopy];
     v26 = v14;
     if (![v14 length] || ((objc_msgSend(v15, "length") != 0) & v16) == 0)
     {
@@ -459,30 +459,30 @@ LABEL_27:
         v31 = 2160;
         v32 = 1752392040;
         v33 = 2112;
-        v34 = v10;
+        v34 = uniqueID;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [PDFInstall-Op]: Will repair entry %{mask.hash}@ for missing supplemental content properties", buf, 0x20u);
       }
 
-      v7 = v25;
+      manifestCopy = v25;
       goto LABEL_19;
     }
 
-    v24 = v13;
-    v17 = [v28 stringValue];
-    v18 = [v15 isEqual:v17];
+    v24 = storeIdentifier;
+    stringValue = [storePlaylistIdentifier stringValue];
+    v18 = [v15 isEqual:stringValue];
 
     if (v18)
     {
-      v19 = [v24 stringValue];
-      v20 = [v14 isEqual:v19];
+      stringValue2 = [v24 stringValue];
+      v20 = [v14 isEqual:stringValue2];
 
-      v7 = v25;
+      manifestCopy = v25;
       if (v20)
       {
 
-        v13 = v24;
+        storeIdentifier = v24;
 LABEL_21:
-        v8 = v27;
+        downloadID = v27;
 LABEL_25:
 
         goto LABEL_26;
@@ -494,7 +494,7 @@ LABEL_25:
         *buf = 138544642;
         v30 = v27;
         v31 = 2112;
-        v32 = v10;
+        v32 = uniqueID;
         v33 = 2160;
         v34 = 1752392040;
         v35 = 2112;
@@ -502,19 +502,19 @@ LABEL_25:
         v37 = 2160;
         v38 = 1752392040;
         v39 = 2112;
-        v13 = v24;
+        storeIdentifier = v24;
         v40 = v24;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "(dID=%{public}@) [PDFInstall-Op]: Will repair entry %@ for different storeID (old=%{mask.hash}@, new=%{mask.hash}@)", buf, 0x3Eu);
 LABEL_19:
 
-        v22 = [v9 storeInfoEntries];
-        [v12 addEntriesFromDictionary:v22];
+        storeInfoEntries = [installInfo storeInfoEntries];
+        [v12 addEntriesFromDictionary:storeInfoEntries];
 
         [(BLPDFInstallOperation *)self _insertAdditionalEntryProperties:v12];
-        if (![v7 removeManifestEntryWithPackageHash:v10])
+        if (![manifestCopy removeManifestEntryWithPackageHash:uniqueID])
         {
           v23 = BLBookInstallLog();
-          v8 = v27;
+          downloadID = v27;
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543874;
@@ -522,15 +522,15 @@ LABEL_19:
             v31 = 2160;
             v32 = 1752392040;
             v33 = 2112;
-            v34 = v10;
+            v34 = uniqueID;
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [PDFInstall-Op]: During repair, failed to remove entry %{mask.hash}@", buf, 0x20u);
           }
 
           goto LABEL_25;
         }
 
-        [v7 addManifestEntry:v12];
-        [v7 synchronizeData];
+        [manifestCopy addManifestEntry:v12];
+        [manifestCopy synchronizeData];
         goto LABEL_21;
       }
     }
@@ -538,13 +538,13 @@ LABEL_19:
     else
     {
       v21 = BLBookInstallLog();
-      v7 = v25;
+      manifestCopy = v25;
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         *buf = 138544642;
         v30 = v27;
         v31 = 2112;
-        v32 = v10;
+        v32 = uniqueID;
         v33 = 2160;
         v34 = 1752392040;
         v35 = 2112;
@@ -552,12 +552,12 @@ LABEL_19:
         v37 = 2160;
         v38 = 1752392040;
         v39 = 2112;
-        v40 = v28;
+        v40 = storePlaylistIdentifier;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "(dID=%{public}@) [PDFInstall-Op]: Will repair entry %@ for different storePlaylistID (old=%{mask.hash}@, new=%{mask.hash}@)", buf, 0x3Eu);
       }
     }
 
-    v13 = v24;
+    storeIdentifier = v24;
     goto LABEL_19;
   }
 
@@ -565,11 +565,11 @@ LABEL_19:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v30 = v8;
+    v30 = downloadID;
     v31 = 2160;
     v32 = 1752392040;
     v33 = 2112;
-    v34 = v10;
+    v34 = uniqueID;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [PDFInstall-Op]: During repair, unexpected mismatch uniqueID %{mask.hash}@", buf, 0x20u);
   }
 
@@ -578,168 +578,168 @@ LABEL_26:
 
 - (id)_newManifestEntry
 {
-  v3 = [(BLBaseBookInstallOperation *)self installInfo];
-  v4 = [v3 manifestEntry:1 withFileName:0];
+  installInfo = [(BLBaseBookInstallOperation *)self installInfo];
+  v4 = [installInfo manifestEntry:1 withFileName:0];
   v5 = [v4 mutableCopy];
 
   [(BLPDFInstallOperation *)self _insertAdditionalEntryProperties:v5];
   return v5;
 }
 
-- (void)_insertAdditionalEntryProperties:(id)a3
+- (void)_insertAdditionalEntryProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(BLBaseBookInstallOperation *)self installInfo];
-  v6 = [v5 storePlaylistIdentifier];
-  v7 = [v6 longLongValue];
+  propertiesCopy = properties;
+  installInfo = [(BLBaseBookInstallOperation *)self installInfo];
+  storePlaylistIdentifier = [installInfo storePlaylistIdentifier];
+  longLongValue = [storePlaylistIdentifier longLongValue];
   v8 = BLBookInstallLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(BLBaseBookInstallOperation *)self downloadID];
-    v10 = [v5 uniqueID];
-    v11 = [v5 assetFlavor];
+    downloadID = [(BLBaseBookInstallOperation *)self downloadID];
+    uniqueID = [installInfo uniqueID];
+    assetFlavor = [installInfo assetFlavor];
     v12 = 138544898;
-    v13 = v9;
+    v13 = downloadID;
     v14 = 1024;
-    v15 = v7 != 0;
+    v15 = longLongValue != 0;
     v16 = 2160;
     v17 = 1752392040;
     v18 = 2112;
-    v19 = v10;
+    v19 = uniqueID;
     v20 = 2160;
     v21 = 1752392040;
     v22 = 2112;
-    v23 = v6;
+    v23 = storePlaylistIdentifier;
     v24 = 2114;
-    v25 = v11;
+    v25 = assetFlavor;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [PDFInstall-Op]: isSupplementalContent=%d, uniqueID=%{mask.hash}@, playlistIdentifier=%{mask.hash}@, flavor=%{public}@", &v12, 0x44u);
   }
 
-  if (v7)
+  if (longLongValue)
   {
-    [v4 setObject:&__kCFBooleanTrue forKeyedSubscript:@"isSupplementalContent"];
+    [propertiesCopy setObject:&__kCFBooleanTrue forKeyedSubscript:@"isSupplementalContent"];
   }
 }
 
 - (void)_addPurchaseManifestItem
 {
-  v3 = [(BLBaseBookInstallOperation *)self downloadID];
+  downloadID = [(BLBaseBookInstallOperation *)self downloadID];
   v4 = BLBookInstallLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v12 = 138543362;
-    v13 = v3;
+    v13 = downloadID;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "(dID=%{public}@) [PDFInstall-Op]: Adding purchase manifest", &v12, 0xCu);
   }
 
-  v5 = [(BLPDFInstallOperation *)self _bookManifest];
+  _bookManifest = [(BLPDFInstallOperation *)self _bookManifest];
   v6 = BLBookInstallLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 manifestPath];
+    manifestPath = [_bookManifest manifestPath];
     v12 = 138543618;
-    v13 = v3;
+    v13 = downloadID;
     v14 = 2114;
-    v15 = v7;
+    v15 = manifestPath;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [PDFInstall-Op]: Updating purchase single user manifest: %{public}@", &v12, 0x16u);
   }
 
-  v8 = [(BLBaseBookInstallOperation *)self destinationFilename];
+  destinationFilename = [(BLBaseBookInstallOperation *)self destinationFilename];
   v9 = BLBookInstallLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543362;
-    v13 = v3;
+    v13 = downloadID;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [PDFInstall-Op]: Updating purchase manifest since isRestore == NO.", &v12, 0xCu);
   }
 
-  v10 = [v5 manifestEntriesWithProperty:@"Path" equalToValue:v8 limitCount:1];
+  v10 = [_bookManifest manifestEntriesWithProperty:@"Path" equalToValue:destinationFilename limitCount:1];
   if ([v10 count])
   {
-    v11 = BLBookInstallLog();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    _newManifestEntry = BLBookInstallLog();
+    if (os_log_type_enabled(_newManifestEntry, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543874;
-      v13 = v3;
+      v13 = downloadID;
       v14 = 2160;
       v15 = 1752392040;
       v16 = 2112;
-      v17 = v8;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [PDFInstall-Op]: An entry with fileName %{mask.hash}@ already exists.", &v12, 0x20u);
+      v17 = destinationFilename;
+      _os_log_impl(&_mh_execute_header, _newManifestEntry, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [PDFInstall-Op]: An entry with fileName %{mask.hash}@ already exists.", &v12, 0x20u);
     }
   }
 
   else
   {
-    [(BLPDFInstallOperation *)self _removeDuplicateEntry:v5];
-    v11 = [(BLPDFInstallOperation *)self _newManifestEntry];
-    [v5 addManifestEntry:v11];
-    [v5 synchronizeData];
+    [(BLPDFInstallOperation *)self _removeDuplicateEntry:_bookManifest];
+    _newManifestEntry = [(BLPDFInstallOperation *)self _newManifestEntry];
+    [_bookManifest addManifestEntry:_newManifestEntry];
+    [_bookManifest synchronizeData];
   }
 }
 
-- (BOOL)_installMediaAsset:(id)a3 assetInstalledPath:(id *)a4 error:(id *)a5
+- (BOOL)_installMediaAsset:(id)asset assetInstalledPath:(id *)path error:(id *)error
 {
-  v8 = a3;
-  v9 = [(BLBaseBookInstallOperation *)self downloadID];
+  assetCopy = asset;
+  downloadID = [(BLBaseBookInstallOperation *)self downloadID];
   v10 = objc_alloc_init(NSFileManager);
-  v11 = [(BLBaseBookInstallOperation *)self downloadedAssetPath];
-  if (([v10 fileExistsAtPath:v11] & 1) == 0)
+  downloadedAssetPath = [(BLBaseBookInstallOperation *)self downloadedAssetPath];
+  if (([v10 fileExistsAtPath:downloadedAssetPath] & 1) == 0)
   {
     v24 = BLBookInstallLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v37 = v9;
+      v37 = downloadID;
       v38 = 2112;
-      v39 = v11;
+      v39 = downloadedAssetPath;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "(dID=%{public}@) [PDFInstall-Op]: Could not install non-existant file: %@", buf, 0x16u);
     }
 
-    v13 = [NSString stringWithFormat:@"Could not install non-existant file: %@", v11];
+    v13 = [NSString stringWithFormat:@"Could not install non-existant file: %@", downloadedAssetPath];
     v22 = sub_1000A8F44(7, 0, v13);
     v23 = 0;
     goto LABEL_15;
   }
 
-  v12 = [(BLPDFInstallOperation *)self _bookManifest];
-  v13 = v12;
-  if (!v12)
+  _bookManifest = [(BLPDFInstallOperation *)self _bookManifest];
+  v13 = _bookManifest;
+  if (!_bookManifest)
   {
     v25 = BLBookInstallLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v37 = v9;
+      v37 = downloadID;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "(dID=%{public}@) [PDFInstall-Op]: No manifest entry found for book.", buf, 0xCu);
     }
 
     v23 = 0;
     v22 = 0;
 LABEL_15:
-    v16 = 0;
+    destinationFilename = 0;
     goto LABEL_16;
   }
 
-  v32 = a4;
-  v33 = v8;
-  v14 = [(__CFString *)v12 manifestPath];
-  v15 = [v14 stringByDeletingLastPathComponent];
+  pathCopy = path;
+  v33 = assetCopy;
+  manifestPath = [(__CFString *)_bookManifest manifestPath];
+  stringByDeletingLastPathComponent = [manifestPath stringByDeletingLastPathComponent];
 
-  v16 = [(BLBaseBookInstallOperation *)self destinationFilename];
-  v17 = [v15 stringByAppendingPathComponent:v16];
+  destinationFilename = [(BLBaseBookInstallOperation *)self destinationFilename];
+  v17 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:destinationFilename];
 
   v18 = BLBookInstallLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v37 = v9;
+    v37 = downloadID;
     v38 = 2112;
     v39 = v17;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [PDFInstall-Op]: Saving Book to %@", buf, 0x16u);
   }
 
-  v19 = [v11 isEqualToString:v17];
+  v19 = [downloadedAssetPath isEqualToString:v17];
   v20 = BLBookInstallLog();
   v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
   if (!v19)
@@ -747,9 +747,9 @@ LABEL_15:
     if (v21)
     {
       *buf = 138543874;
-      v37 = v9;
+      v37 = downloadID;
       v38 = 2112;
-      v39 = v11;
+      v39 = downloadedAssetPath;
       v40 = 2112;
       v41 = v17;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [PDFInstall-Op]: Moving file: %@ to path: %@", buf, 0x20u);
@@ -757,7 +757,7 @@ LABEL_15:
 
     v34 = 0;
     v35 = v17;
-    v28 = [(BLBaseBookInstallOperation *)self _moveFile:v11 toPath:&v35 installBehavior:0 error:&v34];
+    v28 = [(BLBaseBookInstallOperation *)self _moveFile:downloadedAssetPath toPath:&v35 installBehavior:0 error:&v34];
     v23 = v35;
 
     v22 = v34;
@@ -766,14 +766,14 @@ LABEL_15:
       goto LABEL_22;
     }
 
-    v8 = v33;
+    assetCopy = v33;
 LABEL_16:
 
-    if (a5)
+    if (error)
     {
       v26 = v22;
       v27 = 0;
-      *a5 = v22;
+      *error = v22;
     }
 
     else
@@ -787,7 +787,7 @@ LABEL_16:
   if (v21)
   {
     *buf = 138543618;
-    v37 = v9;
+    v37 = downloadID;
     v38 = 2112;
     v39 = v17;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [PDFInstall-Op]: Book already at destination: %@", buf, 0x16u);
@@ -796,17 +796,17 @@ LABEL_16:
   v22 = 0;
   v23 = v17;
 LABEL_22:
-  v8 = v33;
-  v29 = [v33 fileAttributes];
-  if ([v29 count])
+  assetCopy = v33;
+  fileAttributes = [v33 fileAttributes];
+  if ([fileAttributes count])
   {
-    [v10 setAttributes:v29 ofItemAtPath:v23 error:0];
+    [v10 setAttributes:fileAttributes ofItemAtPath:v23 error:0];
   }
 
-  if (v32)
+  if (pathCopy)
   {
     v30 = v23;
-    *v32 = v23;
+    *pathCopy = v23;
   }
 
   v27 = 1;
@@ -817,14 +817,14 @@ LABEL_27:
 
 - (void)_saveMigrationState
 {
-  v3 = [(BLBaseBookInstallOperation *)self downloadID];
-  v4 = [(BLBaseBookInstallOperation *)self installInfo];
-  v5 = [v4 storeIdentifier];
+  downloadID = [(BLBaseBookInstallOperation *)self downloadID];
+  installInfo = [(BLBaseBookInstallOperation *)self installInfo];
+  storeIdentifier = [installInfo storeIdentifier];
   v6 = BUStoreIdFromObject();
-  v7 = [(BLPDFInstallOperation *)self metadataStoreManager];
-  v8 = [v7 metadataStore];
+  metadataStoreManager = [(BLPDFInstallOperation *)self metadataStoreManager];
+  metadataStore = [metadataStoreManager metadataStore];
   v17 = 0;
-  v9 = [v8 setMigrationState:800 forStoreID:v6 error:&v17];
+  v9 = [metadataStore setMigrationState:800 forStoreID:v6 error:&v17];
   v10 = v17;
 
   v11 = BLBookInstallLog();
@@ -834,13 +834,13 @@ LABEL_27:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138544130;
-      v19 = v3;
+      v19 = downloadID;
       v20 = 2048;
       v21 = 800;
       v22 = 2160;
       v23 = 1752392040;
       v24 = 2112;
-      v25 = v5;
+      v25 = storeIdentifier;
       v13 = "(dID=%{public}@) [PDFInstall-Op] Saved migration state %lu for %{mask.hash}@";
       v14 = v12;
       v15 = OS_LOG_TYPE_DEFAULT;
@@ -853,13 +853,13 @@ LABEL_6:
   else if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
     *buf = 138544386;
-    v19 = v3;
+    v19 = downloadID;
     v20 = 2048;
     v21 = 800;
     v22 = 2160;
     v23 = 1752392040;
     v24 = 2112;
-    v25 = v5;
+    v25 = storeIdentifier;
     v26 = 2112;
     v27 = v10;
     v13 = "(dID=%{public}@) [PDFInstall-Op] Error saving migration state %lu for %{mask.hash}@:  %@";

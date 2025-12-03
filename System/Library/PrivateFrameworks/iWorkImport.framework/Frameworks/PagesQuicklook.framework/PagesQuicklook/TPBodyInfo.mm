@@ -1,28 +1,28 @@
 @interface TPBodyInfo
-- (TPBodyInfo)initWithBodyStorage:(id)a3;
+- (TPBodyInfo)initWithBodyStorage:(id)storage;
 - (TSDInfo)parentInfo;
-- (void)clearBackPointerToParentInfoIfNeeded:(id)a3;
-- (void)setGeometry:(id)a3;
+- (void)clearBackPointerToParentInfoIfNeeded:(id)needed;
+- (void)setGeometry:(id)geometry;
 @end
 
 @implementation TPBodyInfo
 
-- (TPBodyInfo)initWithBodyStorage:(id)a3
+- (TPBodyInfo)initWithBodyStorage:(id)storage
 {
-  v5 = a3;
+  storageCopy = storage;
   v9.receiver = self;
   v9.super_class = TPBodyInfo;
   v6 = [(TPBodyInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bodyStorage, a3);
+    objc_storeStrong(&v6->_bodyStorage, storage);
   }
 
   return v7;
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
   v7 = MEMORY[0x277D81150];
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, v6, "[TPBodyInfo setGeometry:]");
@@ -34,12 +34,12 @@
   objc_msgSend_logBacktraceThrottled(v25, v20, v21, v22, v23, v24);
 }
 
-- (void)clearBackPointerToParentInfoIfNeeded:(id)a3
+- (void)clearBackPointerToParentInfoIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   WeakRetained = objc_loadWeakRetained(&self->_parentInfo);
 
-  if (WeakRetained == v4)
+  if (WeakRetained == neededCopy)
   {
 
     objc_storeWeak(&self->_parentInfo, 0);

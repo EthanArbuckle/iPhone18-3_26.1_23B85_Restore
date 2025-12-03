@@ -1,23 +1,23 @@
 @interface PGGraphPublicEventBusinessEdge
 + (id)filter;
-- (PGGraphPublicEventBusinessEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7;
+- (PGGraphPublicEventBusinessEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain properties:(id)properties;
 @end
 
 @implementation PGGraphPublicEventBusinessEdge
 
-- (PGGraphPublicEventBusinessEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7
+- (PGGraphPublicEventBusinessEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain properties:(id)properties
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a7;
-  v13 = [v12 objectForKeyedSubscript:@"confidence"];
+  nodeCopy = node;
+  targetNodeCopy = targetNode;
+  propertiesCopy = properties;
+  v13 = [propertiesCopy objectForKeyedSubscript:@"confidence"];
   [v13 doubleValue];
   v15 = v14;
 
-  v16 = [v12 objectForKeyedSubscript:@"routine"];
-  v17 = [v16 BOOLValue];
+  v16 = [propertiesCopy objectForKeyedSubscript:@"routine"];
+  bOOLValue = [v16 BOOLValue];
 
-  v18 = [v12 objectForKeyedSubscript:@"universalStartDate"];
+  v18 = [propertiesCopy objectForKeyedSubscript:@"universalStartDate"];
   if (v18)
   {
     v19 = objc_alloc(MEMORY[0x277CBEAA8]);
@@ -30,7 +30,7 @@
     v20 = 0;
   }
 
-  v21 = [v12 objectForKeyedSubscript:@"universalEndDate"];
+  v21 = [propertiesCopy objectForKeyedSubscript:@"universalEndDate"];
 
   if (v21)
   {
@@ -44,7 +44,7 @@
     v23 = 0;
   }
 
-  v24 = [(PGGraphPublicEventBusinessEdge *)self initFromPublicEventNode:v10 toBusinessNode:v11 confidence:v17 hasRoutineInfo:v20 universalStartDate:v23 universalEndDate:v15];
+  v24 = [(PGGraphPublicEventBusinessEdge *)self initFromPublicEventNode:nodeCopy toBusinessNode:targetNodeCopy confidence:bOOLValue hasRoutineInfo:v20 universalStartDate:v23 universalEndDate:v15];
 
   return v24;
 }

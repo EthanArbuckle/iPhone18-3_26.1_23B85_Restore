@@ -1,6 +1,6 @@
 @interface ActionDetailsView
-- (_TtC27ActionButtonConfigurationUI17ActionDetailsView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC27ActionButtonConfigurationUI17ActionDetailsView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
 - (void)pageControlValueChanged;
 @end
@@ -9,16 +9,16 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_23DE04320();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = self;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
   v9 = sub_23DE04D44(x, y);
 
   return v9;
@@ -26,11 +26,11 @@
 
 - (void)pageControlValueChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_23DE047B0();
 }
 
-- (_TtC27ActionButtonConfigurationUI17ActionDetailsView)initWithFrame:(CGRect)a3
+- (_TtC27ActionButtonConfigurationUI17ActionDetailsView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

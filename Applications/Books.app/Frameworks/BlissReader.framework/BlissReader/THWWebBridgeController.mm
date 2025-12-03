@@ -1,22 +1,22 @@
 @interface THWWebBridgeController
-+ (id)pParameterStringFromParameterArray:(id)a3 addQuoting:(BOOL)a4;
-+ (id)parseQuery:(id)a3;
-- (BOOL)handleURL:(id)a3;
-- (THWWebBridgeController)initWithView:(id)a3;
-- (id)callBrowserObject:(id)a3 methodName:(id)a4 parameterString:(id)a5 addQuoting:(BOOL)a6;
-- (id)callBrowserObject:(id)a3 methodName:(id)a4 parameters:(id)a5 addQuoting:(BOOL)a6;
-- (void)callBrowserWithURLEncoding:(id)a3;
++ (id)pParameterStringFromParameterArray:(id)array addQuoting:(BOOL)quoting;
++ (id)parseQuery:(id)query;
+- (BOOL)handleURL:(id)l;
+- (THWWebBridgeController)initWithView:(id)view;
+- (id)callBrowserObject:(id)object methodName:(id)name parameterString:(id)string addQuoting:(BOOL)quoting;
+- (id)callBrowserObject:(id)object methodName:(id)name parameters:(id)parameters addQuoting:(BOOL)quoting;
+- (void)callBrowserWithURLEncoding:(id)encoding;
 - (void)dealloc;
 - (void)ensureWidgetObjectInjected;
-- (void)pServeWidgetControllerRequest:(id)a3;
-- (void)tellBrowserDidEnterWidgetMode:(int)a3;
+- (void)pServeWidgetControllerRequest:(id)request;
+- (void)tellBrowserDidEnterWidgetMode:(int)mode;
 - (void)tellBrowserToPauseAudioVisual;
-- (void)tellBrowserWillEnterWidgetMode:(int)a3;
+- (void)tellBrowserWillEnterWidgetMode:(int)mode;
 @end
 
 @implementation THWWebBridgeController
 
-- (THWWebBridgeController)initWithView:(id)a3
+- (THWWebBridgeController)initWithView:(id)view
 {
   v7.receiver = self;
   v7.super_class = THWWebBridgeController;
@@ -24,7 +24,7 @@
   v5 = v4;
   if (v4)
   {
-    [(THWWebBridgeController *)v4 setWebView:a3];
+    [(THWWebBridgeController *)v4 setWebView:view];
     [(THWWebBridgeController *)v5 setInjectedWidgetObject:0];
   }
 
@@ -39,27 +39,27 @@
   [(THWWebBridgeController *)&v3 dealloc];
 }
 
-- (BOOL)handleURL:(id)a3
+- (BOOL)handleURL:(id)l
 {
-  if ([objc_msgSend(a3 "scheme")])
+  if ([objc_msgSend(l "scheme")])
   {
-    v5 = [a3 relativePath];
-    if (v5)
+    relativePath = [l relativePath];
+    if (relativePath)
     {
-      v6 = v5;
-      if ([v5 length])
+      v6 = relativePath;
+      if ([relativePath length])
       {
-        if ([a3 query])
+        if ([l query])
         {
           v7 = [v6 substringFromIndex:1];
           if ([v7 isEqualToString:@"js"])
           {
-            [(THWWebBridgeController *)self callBrowserWithURLEncoding:a3];
+            [(THWWebBridgeController *)self callBrowserWithURLEncoding:l];
           }
 
           else if (([v7 isEqualToString:@"getpref"] & 1) == 0 && (objc_msgSend(v7, "isEqualToString:", @"setpref") & 1) == 0 && objc_msgSend(v7, "isEqualToString:", @"do"))
           {
-            [(THWWebBridgeController *)self pServeWidgetControllerRequest:a3];
+            [(THWWebBridgeController *)self pServeWidgetControllerRequest:l];
           }
         }
       }
@@ -70,16 +70,16 @@
 
   else
   {
-    v8 = [objc_msgSend(a3 "scheme")];
+    v8 = [objc_msgSend(l "scheme")];
     if (v8)
     {
       [(THWPlatformWebViewProtocol *)[(THWWebBridgeController *)self webView] webViewDelegate];
       if (objc_opt_respondsToSelector())
       {
-        v9 = [(THWPlatformWebViewProtocol *)[(THWWebBridgeController *)self webView] webViewDelegate];
-        v10 = [(THWWebBridgeController *)self webView];
+        webViewDelegate = [(THWPlatformWebViewProtocol *)[(THWWebBridgeController *)self webView] webViewDelegate];
+        webView = [(THWWebBridgeController *)self webView];
 
-        LOBYTE(v8) = [v9 webView:v10 handleURL:a3];
+        LOBYTE(v8) = [webViewDelegate webView:webView handleURL:l];
       }
 
       else
@@ -92,10 +92,10 @@
   return v8;
 }
 
-+ (id)parseQuery:(id)a3
++ (id)parseQuery:(id)query
 {
   v4 = [[NSMutableDictionary alloc] initWithCapacity:3];
-  v5 = [a3 componentsSeparatedByString:@"&"];
+  v5 = [query componentsSeparatedByString:@"&"];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -141,13 +141,13 @@
   return v4;
 }
 
-- (void)callBrowserWithURLEncoding:(id)a3
+- (void)callBrowserWithURLEncoding:(id)encoding
 {
-  v5 = [a3 query];
-  if (v5)
+  query = [encoding query];
+  if (query)
   {
-    v6 = [objc_opt_class() parseQuery:v5];
-    if ([objc_msgSend(a3 "scheme")])
+    v6 = [objc_opt_class() parseQuery:query];
+    if ([objc_msgSend(encoding "scheme")])
     {
       v7 = [v6 objectForKey:@"o"];
       v8 = [v6 objectForKey:@"m"];
@@ -167,39 +167,39 @@
   }
 }
 
-- (id)callBrowserObject:(id)a3 methodName:(id)a4 parameterString:(id)a5 addQuoting:(BOOL)a6
+- (id)callBrowserObject:(id)object methodName:(id)name parameterString:(id)string addQuoting:(BOOL)quoting
 {
-  if (!a3 || !a4)
+  if (!object || !name)
   {
     return 0;
   }
 
-  if (a5)
+  if (string)
   {
-    v9 = a5;
+    stringCopy = string;
   }
 
   else
   {
-    v9 = &stru_471858;
+    stringCopy = &stru_471858;
   }
 
-  if (a6 && [(__CFString *)v9 length])
+  if (quoting && [(__CFString *)stringCopy length])
   {
-    v9 = [NSString stringWithFormat:@"%@", v9];
+    stringCopy = [NSString stringWithFormat:@"%@", stringCopy];
   }
 
-  v10 = [NSString stringWithFormat:@"%@.%@(%@);", a3, a4, v9];
-  v11 = [(THWWebBridgeController *)self webView];
+  stringCopy = [NSString stringWithFormat:@"%@.%@(%@);", object, name, stringCopy];
+  webView = [(THWWebBridgeController *)self webView];
 
-  return [(THWPlatformWebViewProtocol *)v11 stringByEvaluatingJavaScriptFromString:v10];
+  return [(THWPlatformWebViewProtocol *)webView stringByEvaluatingJavaScriptFromString:stringCopy];
 }
 
-- (id)callBrowserObject:(id)a3 methodName:(id)a4 parameters:(id)a5 addQuoting:(BOOL)a6
+- (id)callBrowserObject:(id)object methodName:(id)name parameters:(id)parameters addQuoting:(BOOL)quoting
 {
-  v9 = [objc_opt_class() pParameterStringFromParameterArray:a5 addQuoting:a6];
+  v9 = [objc_opt_class() pParameterStringFromParameterArray:parameters addQuoting:quoting];
 
-  return [(THWWebBridgeController *)self callBrowserObject:a3 methodName:a4 parameterString:v9 addQuoting:0];
+  return [(THWWebBridgeController *)self callBrowserObject:object methodName:name parameterString:v9 addQuoting:0];
 }
 
 - (void)ensureWidgetObjectInjected
@@ -211,18 +211,18 @@
   }
 }
 
-- (void)tellBrowserWillEnterWidgetMode:(int)a3
+- (void)tellBrowserWillEnterWidgetMode:(int)mode
 {
-  v3 = *&a3;
+  v3 = *&mode;
   [(THWWebBridgeController *)self ensureWidgetObjectInjected];
   v5 = [THWConstants modeStringForMode:v3];
 
   [(THWWebBridgeController *)self callBrowserObject:@"widget" methodName:@"willEnterWidgetMode" parameterString:v5 addQuoting:1];
 }
 
-- (void)tellBrowserDidEnterWidgetMode:(int)a3
+- (void)tellBrowserDidEnterWidgetMode:(int)mode
 {
-  v3 = *&a3;
+  v3 = *&mode;
   [(THWWebBridgeController *)self ensureWidgetObjectInjected];
   v5 = [THWConstants modeStringForMode:v3];
 
@@ -236,18 +236,18 @@
   [(THWWebBridgeController *)self callBrowserObject:@"widget" methodName:@"pauseAudioVisual" parameterString:0 addQuoting:1];
 }
 
-+ (id)pParameterStringFromParameterArray:(id)a3 addQuoting:(BOOL)a4
++ (id)pParameterStringFromParameterArray:(id)array addQuoting:(BOOL)quoting
 {
-  if (!a3)
+  if (!array)
   {
     return 0;
   }
 
-  v4 = a4;
-  result = [a3 count];
+  quotingCopy = quoting;
+  result = [array count];
   if (result)
   {
-    if (v4)
+    if (quotingCopy)
     {
       v7 = @",";
     }
@@ -257,8 +257,8 @@
       v7 = @",";
     }
 
-    result = [a3 componentsJoinedByString:v7];
-    if (v4)
+    result = [array componentsJoinedByString:v7];
+    if (quotingCopy)
     {
       return [NSString stringWithFormat:@"%@", result];
     }
@@ -267,16 +267,16 @@
   return result;
 }
 
-- (void)pServeWidgetControllerRequest:(id)a3
+- (void)pServeWidgetControllerRequest:(id)request
 {
-  v5 = [a3 query];
-  if (!v5)
+  query = [request query];
+  if (!query)
   {
     return;
   }
 
-  v6 = [objc_opt_class() parseQuery:v5];
-  if (![objc_msgSend(a3 "scheme")])
+  v6 = [objc_opt_class() parseQuery:query];
+  if (![objc_msgSend(request "scheme")])
   {
     return;
   }
@@ -298,9 +298,9 @@
     [(THWWebBridgeController *)self javascriptHandler];
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(THWWebBridgeController *)self javascriptHandler];
+      javascriptHandler = [(THWWebBridgeController *)self javascriptHandler];
 
-      [(THWWebJSControllerDelegate *)v9 contentDidLoad];
+      [(THWWebJSControllerDelegate *)javascriptHandler contentDidLoad];
     }
 
     return;
@@ -311,9 +311,9 @@
     [(THWWebBridgeController *)self javascriptHandler];
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(THWWebBridgeController *)self javascriptHandler];
+      javascriptHandler2 = [(THWWebBridgeController *)self javascriptHandler];
 
-      [(THWWebJSControllerDelegate *)v10 contentIsReady];
+      [(THWWebJSControllerDelegate *)javascriptHandler2 contentIsReady];
     }
 
     return;
@@ -324,9 +324,9 @@
     [(THWWebBridgeController *)self javascriptHandler];
     if (objc_opt_respondsToSelector())
     {
-      v11 = [(THWWebBridgeController *)self javascriptHandler];
+      javascriptHandler3 = [(THWWebBridgeController *)self javascriptHandler];
 
-      [(THWWebJSControllerDelegate *)v11 contentDidExit];
+      [(THWWebJSControllerDelegate *)javascriptHandler3 contentDidExit];
     }
 
     return;
@@ -339,9 +339,9 @@
     [(THWWebBridgeController *)self javascriptHandler];
     if (objc_opt_respondsToSelector())
     {
-      v12 = [(THWWebBridgeController *)self javascriptHandler];
+      javascriptHandler4 = [(THWWebBridgeController *)self javascriptHandler];
 
-      [THWWebJSControllerDelegate contentProperty:v12 didChangeTo:"contentProperty:didChangeTo:"];
+      [THWWebJSControllerDelegate contentProperty:javascriptHandler4 didChangeTo:"contentProperty:didChangeTo:"];
     }
   }
 
@@ -350,9 +350,9 @@
 LABEL_32:
     if ([(THWWebBridgeController *)self optionalDispatcher])
     {
-      v13 = [(THWWebBridgeController *)self optionalDispatcher];
+      optionalDispatcher = [(THWWebBridgeController *)self optionalDispatcher];
 
-      [(TSWNativeCommandDispatcher *)v13 shouldDispatchRequestToNativeCode:?];
+      [(TSWNativeCommandDispatcher *)optionalDispatcher shouldDispatchRequestToNativeCode:?];
     }
   }
 }

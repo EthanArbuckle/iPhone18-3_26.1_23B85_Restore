@@ -1,5 +1,5 @@
 @interface HKObjectPickerTableViewCell
-- (HKObjectPickerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 presentationOptions:(int64_t)a5;
+- (HKObjectPickerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier presentationOptions:(int64_t)options;
 - (NSArray)patientDetails;
 - (NSString)patientName;
 - (void)_setupConstraints;
@@ -7,21 +7,21 @@
 - (void)_updateAccessibilityIdentifiers;
 - (void)_updateRecordDetailAccessibilityIdentifiers;
 - (void)prepareForReuse;
-- (void)setBaseAccessibilityIdentifier:(id)a3;
-- (void)setChecked:(BOOL)a3;
-- (void)setDetailItems:(id)a3;
-- (void)setPatientDetails:(id)a3;
-- (void)setPatientName:(id)a3;
+- (void)setBaseAccessibilityIdentifier:(id)identifier;
+- (void)setChecked:(BOOL)checked;
+- (void)setDetailItems:(id)items;
+- (void)setPatientDetails:(id)details;
+- (void)setPatientName:(id)name;
 @end
 
 @implementation HKObjectPickerTableViewCell
 
-- (HKObjectPickerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 presentationOptions:(int64_t)a5
+- (HKObjectPickerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier presentationOptions:(int64_t)options
 {
-  self->_presentationOptions = a5;
+  self->_presentationOptions = options;
   v8.receiver = self;
   v8.super_class = HKObjectPickerTableViewCell;
-  v5 = [(HKObjectPickerTableViewCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v5 = [(HKObjectPickerTableViewCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   v6 = v5;
   if (v5)
   {
@@ -37,13 +37,13 @@
   v51[1] = *MEMORY[0x1E69E9840];
   [(HKObjectPickerTableViewCell *)self _setContinuousCornerRadius:10.0];
   [(HKObjectPickerTableViewCell *)self setSelectionStyle:3];
-  v3 = [(HKObjectPickerTableViewCell *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(HKObjectPickerTableViewCell *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 != 6)
+  if (userInterfaceIdiom != 6)
   {
-    v5 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [(HKObjectPickerTableViewCell *)self setBackgroundColor:v5];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [(HKObjectPickerTableViewCell *)self setBackgroundColor:secondarySystemBackgroundColor];
   }
 
   v6 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -61,8 +61,8 @@
   [(UILabel *)self->_primaryLabel setFont:v14];
 
   [(UILabel *)self->_primaryLabel setNumberOfLines:0];
-  v15 = [MEMORY[0x1E69DC888] labelColor];
-  [(UILabel *)self->_primaryLabel setTextColor:v15];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(UILabel *)self->_primaryLabel setTextColor:labelColor];
 
   [(UILabel *)self->_primaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   v16 = [[HKAttributedTextLabel alloc] initWithFrame:v7, v8, v9, v10];
@@ -74,16 +74,16 @@
   [(UILabel *)self->_secondaryLabel setFont:v18];
 
   [(UILabel *)self->_secondaryLabel setNumberOfLines:0];
-  v19 = [MEMORY[0x1E69DC888] labelColor];
-  [(UILabel *)self->_secondaryLabel setTextColor:v19];
+  labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+  [(UILabel *)self->_secondaryLabel setTextColor:labelColor2];
 
   [(UILabel *)self->_secondaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   v20 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v7, v8, v9, v10}];
   separatorView = self->_separatorView;
   self->_separatorView = v20;
 
-  v22 = [MEMORY[0x1E69DC888] separatorColor];
-  [(UIView *)self->_separatorView setBackgroundColor:v22];
+  separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+  [(UIView *)self->_separatorView setBackgroundColor:separatorColor];
 
   [(UIView *)self->_separatorView setTranslatesAutoresizingMaskIntoConstraints:0];
   v23 = objc_alloc(MEMORY[0x1E69DCF90]);
@@ -102,8 +102,8 @@
   secondSeparatorView = self->_secondSeparatorView;
   self->_secondSeparatorView = v27;
 
-  v29 = [MEMORY[0x1E69DC888] separatorColor];
-  [(UIView *)self->_secondSeparatorView setBackgroundColor:v29];
+  separatorColor2 = [MEMORY[0x1E69DC888] separatorColor];
+  [(UIView *)self->_secondSeparatorView setBackgroundColor:separatorColor2];
 
   [(UIView *)self->_secondSeparatorView setTranslatesAutoresizingMaskIntoConstraints:0];
   v30 = [[HKObjectPickerDetailView alloc] initWithFrame:v7, v8, v9, v10];
@@ -176,61 +176,61 @@
 
   [(UIStackView *)self->_contentStackView setDirectionalLayoutMargins:v46, v46, v47, v46];
   [(HKObjectPickerTableViewCell *)self _updateAccessibilityIdentifiers];
-  v48 = [(HKObjectPickerTableViewCell *)self contentView];
-  [v48 addSubview:self->_contentStackView];
+  contentView = [(HKObjectPickerTableViewCell *)self contentView];
+  [contentView addSubview:self->_contentStackView];
 }
 
 - (void)_setupConstraints
 {
   v43[10] = *MEMORY[0x1E69E9840];
   v27 = MEMORY[0x1E696ACD8];
-  v41 = [(UIStackView *)self->_contentStackView topAnchor];
-  v42 = [(HKObjectPickerTableViewCell *)self contentView];
-  v40 = [v42 topAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  topAnchor = [(UIStackView *)self->_contentStackView topAnchor];
+  contentView = [(HKObjectPickerTableViewCell *)self contentView];
+  topAnchor2 = [contentView topAnchor];
+  v39 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v43[0] = v39;
-  v37 = [(UIStackView *)self->_contentStackView leadingAnchor];
-  v38 = [(HKObjectPickerTableViewCell *)self contentView];
-  v36 = [v38 leadingAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  leadingAnchor = [(UIStackView *)self->_contentStackView leadingAnchor];
+  contentView2 = [(HKObjectPickerTableViewCell *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v43[1] = v35;
-  v34 = [(HKObjectPickerTableViewCell *)self contentView];
-  v33 = [v34 trailingAnchor];
-  v32 = [(UIStackView *)self->_contentStackView trailingAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  contentView3 = [(HKObjectPickerTableViewCell *)self contentView];
+  trailingAnchor = [contentView3 trailingAnchor];
+  trailingAnchor2 = [(UIStackView *)self->_contentStackView trailingAnchor];
+  v31 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v43[2] = v31;
-  v30 = [(HKObjectPickerTableViewCell *)self contentView];
-  v29 = [v30 bottomAnchor];
-  v28 = [(UIStackView *)self->_contentStackView bottomAnchor];
-  v26 = [v29 constraintEqualToAnchor:v28];
+  contentView4 = [(HKObjectPickerTableViewCell *)self contentView];
+  bottomAnchor = [contentView4 bottomAnchor];
+  bottomAnchor2 = [(UIStackView *)self->_contentStackView bottomAnchor];
+  v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v43[3] = v26;
-  v24 = [(UIView *)self->_separatorView heightAnchor];
-  v25 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v25 scale];
-  v23 = [v24 constraintEqualToConstant:1.0 / v3];
+  heightAnchor = [(UIView *)self->_separatorView heightAnchor];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
+  v23 = [heightAnchor constraintEqualToConstant:1.0 / v3];
   v43[4] = v23;
-  v22 = [(UIView *)self->_separatorView leadingAnchor];
-  v21 = [(UILabel *)self->_primaryLabel leadingAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  leadingAnchor3 = [(UIView *)self->_separatorView leadingAnchor];
+  leadingAnchor4 = [(UILabel *)self->_primaryLabel leadingAnchor];
+  v20 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v43[5] = v20;
-  v18 = [(UIView *)self->_separatorView trailingAnchor];
-  v19 = [(HKObjectPickerTableViewCell *)self contentView];
-  v17 = [v19 trailingAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17];
+  trailingAnchor3 = [(UIView *)self->_separatorView trailingAnchor];
+  contentView5 = [(HKObjectPickerTableViewCell *)self contentView];
+  trailingAnchor4 = [contentView5 trailingAnchor];
+  v16 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v43[6] = v16;
-  v15 = [(UIView *)self->_secondSeparatorView heightAnchor];
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v4 scale];
-  v6 = [v15 constraintEqualToConstant:1.0 / v5];
+  heightAnchor2 = [(UIView *)self->_secondSeparatorView heightAnchor];
+  mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen2 scale];
+  v6 = [heightAnchor2 constraintEqualToConstant:1.0 / v5];
   v43[7] = v6;
-  v7 = [(UIView *)self->_secondSeparatorView leadingAnchor];
-  v8 = [(UILabel *)self->_primaryLabel leadingAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  leadingAnchor5 = [(UIView *)self->_secondSeparatorView leadingAnchor];
+  leadingAnchor6 = [(UILabel *)self->_primaryLabel leadingAnchor];
+  v9 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v43[8] = v9;
-  v10 = [(UIView *)self->_secondSeparatorView trailingAnchor];
-  v11 = [(HKObjectPickerTableViewCell *)self contentView];
-  v12 = [v11 trailingAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  trailingAnchor5 = [(UIView *)self->_secondSeparatorView trailingAnchor];
+  contentView6 = [(HKObjectPickerTableViewCell *)self contentView];
+  trailingAnchor6 = [contentView6 trailingAnchor];
+  v13 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v43[9] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:10];
   [v27 activateConstraints:v14];
@@ -245,16 +245,16 @@
   [(UILabel *)self->_primaryLabel setText:0];
   [(UILabel *)self->_secondaryLabel setText:0];
   [(UIImageView *)self->_checkboxView setImage:0];
-  v3 = [(HKObjectPickerDetailView *)self->_patientDetailView primaryLabel];
-  [v3 setText:0];
+  primaryLabel = [(HKObjectPickerDetailView *)self->_patientDetailView primaryLabel];
+  [primaryLabel setText:0];
 
-  v4 = [(HKObjectPickerDetailView *)self->_patientDetailView secondaryLabel];
-  [v4 setText:0];
+  secondaryLabel = [(HKObjectPickerDetailView *)self->_patientDetailView secondaryLabel];
+  [secondaryLabel setText:0];
 }
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
-  self->_checked = a3;
+  self->_checked = checked;
   v9 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   v4 = [MEMORY[0x1E69DCAD8] configurationWithFont:? scale:?];
   checked = self->_checked;
@@ -278,19 +278,19 @@
   [(UIImageView *)self->_checkboxView setTintColor:v8];
 }
 
-- (void)setDetailItems:(id)a3
+- (void)setDetailItems:(id)items
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_detailItems, a3);
-  v6 = [(UIStackView *)self->_recordDetailStackView subviews];
-  [v6 makeObjectsPerformSelector:sel_removeFromSuperview];
+  itemsCopy = items;
+  objc_storeStrong(&self->_detailItems, items);
+  subviews = [(UIStackView *)self->_recordDetailStackView subviews];
+  [subviews makeObjectsPerformSelector:sel_removeFromSuperview];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = v5;
+  v7 = itemsCopy;
   v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v8)
   {
@@ -310,28 +310,28 @@
         }
 
         v16 = *(*(&v24 + 1) + 8 * i);
-        v17 = [v16 primaryText];
-        if ([(HKObjectPickerDetailView *)v17 length])
+        primaryText = [v16 primaryText];
+        if ([(HKObjectPickerDetailView *)primaryText length])
         {
-          v18 = [v16 secondaryText];
-          v19 = [v18 length];
+          secondaryText = [v16 secondaryText];
+          v19 = [secondaryText length];
 
           if (!v19)
           {
             continue;
           }
 
-          v17 = [[HKObjectPickerDetailView alloc] initWithFrame:v11, v12, v13, v14];
-          v20 = [v16 primaryText];
-          v21 = [(HKObjectPickerDetailView *)v17 primaryLabel];
-          [v21 setText:v20];
+          primaryText = [[HKObjectPickerDetailView alloc] initWithFrame:v11, v12, v13, v14];
+          primaryText2 = [v16 primaryText];
+          primaryLabel = [(HKObjectPickerDetailView *)primaryText primaryLabel];
+          [primaryLabel setText:primaryText2];
 
-          v22 = [v16 secondaryText];
-          v23 = [(HKObjectPickerDetailView *)v17 secondaryLabel];
-          [v23 setText:v22];
+          secondaryText2 = [v16 secondaryText];
+          secondaryLabel = [(HKObjectPickerDetailView *)primaryText secondaryLabel];
+          [secondaryLabel setText:secondaryText2];
 
-          [(HKObjectPickerDetailView *)v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-          [(UIStackView *)self->_recordDetailStackView addArrangedSubview:v17];
+          [(HKObjectPickerDetailView *)primaryText setTranslatesAutoresizingMaskIntoConstraints:0];
+          [(UIStackView *)self->_recordDetailStackView addArrangedSubview:primaryText];
         }
       }
 
@@ -347,40 +347,40 @@
 
 - (NSString)patientName
 {
-  v2 = [(HKObjectPickerDetailView *)self->_patientDetailView primaryLabel];
-  v3 = [v2 text];
+  primaryLabel = [(HKObjectPickerDetailView *)self->_patientDetailView primaryLabel];
+  text = [primaryLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setPatientName:(id)a3
+- (void)setPatientName:(id)name
 {
   patientDetailView = self->_patientDetailView;
-  v4 = a3;
-  v5 = [(HKObjectPickerDetailView *)patientDetailView primaryLabel];
-  [v5 setText:v4];
+  nameCopy = name;
+  primaryLabel = [(HKObjectPickerDetailView *)patientDetailView primaryLabel];
+  [primaryLabel setText:nameCopy];
 }
 
 - (NSArray)patientDetails
 {
-  v2 = [(HKObjectPickerDetailView *)self->_patientDetailView secondaryLabel];
-  v3 = [v2 text];
+  secondaryLabel = [(HKObjectPickerDetailView *)self->_patientDetailView secondaryLabel];
+  text = [secondaryLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setPatientDetails:(id)a3
+- (void)setPatientDetails:(id)details
 {
-  v5 = [a3 componentsJoinedByString:@"\n"];
-  v4 = [(HKObjectPickerDetailView *)self->_patientDetailView secondaryLabel];
-  [v4 setText:v5];
+  v5 = [details componentsJoinedByString:@"\n"];
+  secondaryLabel = [(HKObjectPickerDetailView *)self->_patientDetailView secondaryLabel];
+  [secondaryLabel setText:v5];
 }
 
-- (void)setBaseAccessibilityIdentifier:(id)a3
+- (void)setBaseAccessibilityIdentifier:(id)identifier
 {
-  if (self->_baseAccessibilityIdentifier != a3)
+  if (self->_baseAccessibilityIdentifier != identifier)
   {
-    v4 = [a3 copy];
+    v4 = [identifier copy];
     baseAccessibilityIdentifier = self->_baseAccessibilityIdentifier;
     self->_baseAccessibilityIdentifier = v4;
 
@@ -410,27 +410,27 @@
     v15[2] = @"Primary";
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:3];
     v8 = HKUIJoinStringsForAutomationIdentifier(v7);
-    v9 = [(HKObjectPickerDetailView *)self->_patientDetailView primaryLabel];
-    [v9 setAccessibilityIdentifier:v8];
+    primaryLabel = [(HKObjectPickerDetailView *)self->_patientDetailView primaryLabel];
+    [primaryLabel setAccessibilityIdentifier:v8];
 
     v14[0] = self->_baseAccessibilityIdentifier;
     v14[1] = @"PatientDetails";
     v14[2] = @"Secondary";
-    v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:3];
-    v11 = HKUIJoinStringsForAutomationIdentifier(v10);
-    v12 = [(HKObjectPickerDetailView *)self->_patientDetailView secondaryLabel];
-    [v12 setAccessibilityIdentifier:v11];
+    secondaryLabel2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:3];
+    v11 = HKUIJoinStringsForAutomationIdentifier(secondaryLabel2);
+    secondaryLabel = [(HKObjectPickerDetailView *)self->_patientDetailView secondaryLabel];
+    [secondaryLabel setAccessibilityIdentifier:v11];
   }
 
   else
   {
     [(UILabel *)self->_primaryLabel setAccessibilityIdentifier:0];
     [(UILabel *)self->_secondaryLabel setAccessibilityIdentifier:0];
-    v13 = [(HKObjectPickerDetailView *)self->_patientDetailView primaryLabel];
-    [v13 setAccessibilityIdentifier:0];
+    primaryLabel2 = [(HKObjectPickerDetailView *)self->_patientDetailView primaryLabel];
+    [primaryLabel2 setAccessibilityIdentifier:0];
 
-    v10 = [(HKObjectPickerDetailView *)self->_patientDetailView secondaryLabel];
-    [v10 setAccessibilityIdentifier:0];
+    secondaryLabel2 = [(HKObjectPickerDetailView *)self->_patientDetailView secondaryLabel];
+    [secondaryLabel2 setAccessibilityIdentifier:0];
   }
 
   [(HKObjectPickerTableViewCell *)self _updateRecordDetailAccessibilityIdentifiers];
@@ -438,7 +438,7 @@
 
 - (void)_updateRecordDetailAccessibilityIdentifiers
 {
-  v2 = self;
+  selfCopy = self;
   v35 = *MEMORY[0x1E69E9840];
   v29 = 0u;
   v30 = 0u;
@@ -466,37 +466,37 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          baseAccessibilityIdentifier = v2->_baseAccessibilityIdentifier;
+          baseAccessibilityIdentifier = selfCopy->_baseAccessibilityIdentifier;
           v11 = v9;
           if ([(NSString *)baseAccessibilityIdentifier length])
           {
-            v33[0] = v2->_baseAccessibilityIdentifier;
+            v33[0] = selfCopy->_baseAccessibilityIdentifier;
             v33[1] = @"DetailItems";
             [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v5];
             v28 = v5;
             v12 = v4;
             v13 = v7;
-            v14 = v2;
+            v14 = selfCopy;
             v16 = v15 = p_info;
             v17 = [v16 description];
             v33[2] = v17;
-            v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:3];
+            secondaryLabel2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:3];
 
-            v19 = HKUIJoinStringsForAutomationIdentifier(v18);
+            v19 = HKUIJoinStringsForAutomationIdentifier(secondaryLabel2);
             [v11 setAccessibilityIdentifier:v19];
 
-            v20 = [v18 arrayByAddingObject:@"Primary"];
+            v20 = [secondaryLabel2 arrayByAddingObject:@"Primary"];
             v21 = HKUIJoinStringsForAutomationIdentifier(v20);
-            v22 = [v11 primaryLabel];
-            [v22 setAccessibilityIdentifier:v21];
+            primaryLabel = [v11 primaryLabel];
+            [primaryLabel setAccessibilityIdentifier:v21];
 
-            v23 = [v18 arrayByAddingObject:@"Secondary"];
+            v23 = [secondaryLabel2 arrayByAddingObject:@"Secondary"];
             v24 = HKUIJoinStringsForAutomationIdentifier(v23);
-            v25 = [v11 secondaryLabel];
+            secondaryLabel = [v11 secondaryLabel];
 
-            [v25 setAccessibilityIdentifier:v24];
+            [secondaryLabel setAccessibilityIdentifier:v24];
             p_info = v15;
-            v2 = v14;
+            selfCopy = v14;
             v7 = v13;
             v4 = v12;
             v5 = v28;
@@ -505,12 +505,12 @@
           else
           {
             [v11 setAccessibilityIdentifier:0];
-            v26 = [v11 primaryLabel];
-            [v26 setAccessibilityIdentifier:0];
+            primaryLabel2 = [v11 primaryLabel];
+            [primaryLabel2 setAccessibilityIdentifier:0];
 
-            v18 = [v11 secondaryLabel];
+            secondaryLabel2 = [v11 secondaryLabel];
 
-            [v18 setAccessibilityIdentifier:0];
+            [secondaryLabel2 setAccessibilityIdentifier:0];
           }
 
           ++v5;

@@ -1,75 +1,75 @@
 @interface ULLocationOfInterest
 + (id)emptyLocationOfInterest;
-- (BOOL)isEqual:(id)a3;
-- (ULLocationOfInterest)initWithCoder:(id)a3;
-- (ULLocationOfInterest)initWithLocationOfInterestType:(unint64_t)a3 locationOfInterestUUID:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ULLocationOfInterest)initWithCoder:(id)coder;
+- (ULLocationOfInterest)initWithLocationOfInterestType:(unint64_t)type locationOfInterestUUID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ULLocationOfInterest
 
 + (id)emptyLocationOfInterest
 {
-  v2 = [[a1 alloc] initWithLocationOfInterestType:3 locationOfInterestUUID:0];
+  v2 = [[self alloc] initWithLocationOfInterestType:3 locationOfInterestUUID:0];
 
   return v2;
 }
 
-- (ULLocationOfInterest)initWithLocationOfInterestType:(unint64_t)a3 locationOfInterestUUID:(id)a4
+- (ULLocationOfInterest)initWithLocationOfInterestType:(unint64_t)type locationOfInterestUUID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = ULLocationOfInterest;
   v7 = [(ULLocationOfInterest *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(ULLocationOfInterest *)v7 setLocationOfInterestType:a3];
-    [(ULLocationOfInterest *)v8 setLocationOfInterestUUID:v6];
+    [(ULLocationOfInterest *)v7 setLocationOfInterestType:type];
+    [(ULLocationOfInterest *)v8 setLocationOfInterestUUID:dCopy];
   }
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(ULLocationOfInterest *)self locationOfInterestType];
-  v6 = [(ULLocationOfInterest *)self locationOfInterestUUID];
-  v7 = [v4 initWithLocationOfInterestType:v5 locationOfInterestUUID:v6];
+  locationOfInterestType = [(ULLocationOfInterest *)self locationOfInterestType];
+  locationOfInterestUUID = [(ULLocationOfInterest *)self locationOfInterestUUID];
+  v7 = [v4 initWithLocationOfInterestType:locationOfInterestType locationOfInterestUUID:locationOfInterestUUID];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   locationOfInterestType = self->_locationOfInterestType;
-  v7 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:locationOfInterestType];
-  [v7 encodeObject:v6 forKey:@"locationOfInterestType"];
+  [coderCopy encodeObject:v6 forKey:@"locationOfInterestType"];
 
-  [v7 encodeObject:self->_locationOfInterestUUID forKey:@"locationOfInterestUUID"];
+  [coderCopy encodeObject:self->_locationOfInterestUUID forKey:@"locationOfInterestUUID"];
 }
 
-- (ULLocationOfInterest)initWithCoder:(id)a3
+- (ULLocationOfInterest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = ULLocationOfInterest;
   v5 = [(ULLocationOfInterest *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locationOfInterestType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locationOfInterestType"];
     v7 = v6;
     if (v6)
     {
-      v8 = [(ULLocationOfInterest *)v6 unsignedIntegerValue];
+      unsignedIntegerValue = [(ULLocationOfInterest *)v6 unsignedIntegerValue];
 
-      v5->_locationOfInterestType = v8;
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locationOfInterestUUID"];
+      v5->_locationOfInterestType = unsignedIntegerValue;
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locationOfInterestUUID"];
       v10 = objc_opt_self();
 
       locationOfInterestUUID = v5->_locationOfInterestUUID;
@@ -97,21 +97,21 @@
   v7 = ULLocationTypeToString([(ULLocationOfInterest *)self locationOfInterestType]);
   [v6 appendFormat:@", locationOfInterestType: %@", v7];
 
-  v8 = [(ULLocationOfInterest *)self locationOfInterestUUID];
-  [v6 appendFormat:@", locationOfInterestUUID: %@", v8];
+  locationOfInterestUUID = [(ULLocationOfInterest *)self locationOfInterestUUID];
+  [v6 appendFormat:@", locationOfInterestUUID: %@", locationOfInterestUUID];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[ULLocationOfInterest locationOfInterestType](self, "locationOfInterestType"), v5 == [v4 locationOfInterestType]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[ULLocationOfInterest locationOfInterestType](self, "locationOfInterestType"), v5 == [equalCopy locationOfInterestType]))
   {
-    v6 = [(ULLocationOfInterest *)self locationOfInterestUUID];
-    v7 = [v4 locationOfInterestUUID];
-    if ([v6 isEqual:v7])
+    locationOfInterestUUID = [(ULLocationOfInterest *)self locationOfInterestUUID];
+    locationOfInterestUUID2 = [equalCopy locationOfInterestUUID];
+    if ([locationOfInterestUUID isEqual:locationOfInterestUUID2])
     {
 
       v8 = 1;
@@ -119,9 +119,9 @@
 
     else
     {
-      v10 = [(ULLocationOfInterest *)self locationOfInterestUUID];
-      v11 = [v4 locationOfInterestUUID];
-      v8 = v10 == v11;
+      locationOfInterestUUID3 = [(ULLocationOfInterest *)self locationOfInterestUUID];
+      locationOfInterestUUID4 = [equalCopy locationOfInterestUUID];
+      v8 = locationOfInterestUUID3 == locationOfInterestUUID4;
     }
   }
 

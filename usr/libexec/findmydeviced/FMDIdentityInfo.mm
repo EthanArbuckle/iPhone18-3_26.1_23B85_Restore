@@ -1,39 +1,39 @@
 @interface FMDIdentityInfo
-- (FMDIdentityInfo)initWithDictionary:(id)a3;
-- (FMDIdentityInfo)initWithVersion:(int64_t)a3 timeoutIntervalInSec:(int64_t)a4 commandID:(id)a5 identityURL:(id)a6;
+- (FMDIdentityInfo)initWithDictionary:(id)dictionary;
+- (FMDIdentityInfo)initWithVersion:(int64_t)version timeoutIntervalInSec:(int64_t)sec commandID:(id)d identityURL:(id)l;
 - (NSDictionary)dictionaryValue;
 @end
 
 @implementation FMDIdentityInfo
 
-- (FMDIdentityInfo)initWithDictionary:(id)a3
+- (FMDIdentityInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"version"];
-  v6 = [v5 integerValue];
-  v7 = [v4 objectForKeyedSubscript:@"timeout"];
-  v8 = [v7 integerValue];
-  v9 = [v4 objectForKeyedSubscript:@"commandID"];
-  v10 = [v4 objectForKeyedSubscript:@"identityURL"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"version"];
+  integerValue = [v5 integerValue];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"timeout"];
+  integerValue2 = [v7 integerValue];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"commandID"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"identityURL"];
 
-  v11 = [(FMDIdentityInfo *)self initWithVersion:v6 timeoutIntervalInSec:v8 commandID:v9 identityURL:v10];
+  v11 = [(FMDIdentityInfo *)self initWithVersion:integerValue timeoutIntervalInSec:integerValue2 commandID:v9 identityURL:v10];
   return v11;
 }
 
-- (FMDIdentityInfo)initWithVersion:(int64_t)a3 timeoutIntervalInSec:(int64_t)a4 commandID:(id)a5 identityURL:(id)a6
+- (FMDIdentityInfo)initWithVersion:(int64_t)version timeoutIntervalInSec:(int64_t)sec commandID:(id)d identityURL:(id)l
 {
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  lCopy = l;
   v16.receiver = self;
   v16.super_class = FMDIdentityInfo;
   v13 = [(FMDIdentityInfo *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_version = a3;
-    v13->_timeoutIntervalInSec = a4;
-    objc_storeStrong(&v13->_commandID, a5);
-    objc_storeStrong(&v14->_identityURL, a6);
+    v13->_version = version;
+    v13->_timeoutIntervalInSec = sec;
+    objc_storeStrong(&v13->_commandID, d);
+    objc_storeStrong(&v14->_identityURL, l);
   }
 
   return v14;
@@ -48,20 +48,20 @@
   v5 = [NSNumber numberWithInteger:[(FMDIdentityInfo *)self timeoutIntervalInSec]];
   [v3 setObject:v5 forKeyedSubscript:@"timeout"];
 
-  v6 = [(FMDIdentityInfo *)self commandID];
+  commandID = [(FMDIdentityInfo *)self commandID];
 
-  if (v6)
+  if (commandID)
   {
-    v7 = [(FMDIdentityInfo *)self commandID];
-    [v3 setObject:v7 forKeyedSubscript:@"commandID"];
+    commandID2 = [(FMDIdentityInfo *)self commandID];
+    [v3 setObject:commandID2 forKeyedSubscript:@"commandID"];
   }
 
-  v8 = [(FMDIdentityInfo *)self identityURL];
+  identityURL = [(FMDIdentityInfo *)self identityURL];
 
-  if (v8)
+  if (identityURL)
   {
-    v9 = [(FMDIdentityInfo *)self identityURL];
-    [v3 setObject:v9 forKeyedSubscript:@"identityURL"];
+    identityURL2 = [(FMDIdentityInfo *)self identityURL];
+    [v3 setObject:identityURL2 forKeyedSubscript:@"identityURL"];
   }
 
   v10 = [v3 copy];

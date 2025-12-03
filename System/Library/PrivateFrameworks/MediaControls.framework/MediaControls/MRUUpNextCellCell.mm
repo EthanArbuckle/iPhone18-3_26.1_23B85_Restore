@@ -1,16 +1,16 @@
 @interface MRUUpNextCellCell
-- (MRUUpNextCellCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (MRUUpNextCellCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
-- (void)setArtworkCatalog:(id)a3;
+- (void)setArtworkCatalog:(id)catalog;
 @end
 
 @implementation MRUUpNextCellCell
 
-- (MRUUpNextCellCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MRUUpNextCellCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v5.receiver = self;
   v5.super_class = MRUUpNextCellCell;
-  return [(MRUUpNextCellCell *)&v5 initWithStyle:3 reuseIdentifier:a4];
+  return [(MRUUpNextCellCell *)&v5 initWithStyle:3 reuseIdentifier:identifier];
 }
 
 - (void)prepareForReuse
@@ -20,21 +20,21 @@
   [(MRUUpNextCellCell *)&v2 prepareForReuse];
 }
 
-- (void)setArtworkCatalog:(id)a3
+- (void)setArtworkCatalog:(id)catalog
 {
-  v5 = a3;
-  if (self->_artworkCatalog != v5)
+  catalogCopy = catalog;
+  if (self->_artworkCatalog != catalogCopy)
   {
-    objc_storeStrong(&self->_artworkCatalog, a3);
+    objc_storeStrong(&self->_artworkCatalog, catalog);
     objc_initWeak(&location, self);
     artworkCatalog = self->_artworkCatalog;
-    v7 = [(MRUUpNextCellCell *)self imageView];
+    imageView = [(MRUUpNextCellCell *)self imageView];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __39__MRUUpNextCellCell_setArtworkCatalog___block_invoke;
     v8[3] = &unk_1E7665168;
     objc_copyWeak(&v9, &location);
-    [(MPArtworkCatalog *)artworkCatalog setDestination:v7 configurationBlock:v8];
+    [(MPArtworkCatalog *)artworkCatalog setDestination:imageView configurationBlock:v8];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);

@@ -1,11 +1,11 @@
 @interface CompassLabelsView
-- (CompassLabelsView)initWithFrame:(CGRect)a3;
+- (CompassLabelsView)initWithFrame:(CGRect)frame;
 - (id)bearingLabel;
 - (id)degreeLabels;
 - (id)directionLabels;
 - (void)layoutSubviews;
-- (void)setCompassHeading:(double)a3;
-- (void)updateLabelsAnimated:(BOOL)a3;
+- (void)setCompassHeading:(double)heading;
+- (void)updateLabelsAnimated:(BOOL)animated;
 @end
 
 @implementation CompassLabelsView
@@ -21,20 +21,20 @@
   MidY = CGRectGetMidY(v57);
   if (self->_bearing != 1.79769313e308)
   {
-    v5 = [(CompassLabelsView *)self bearingLabel];
+    bearingLabel = [(CompassLabelsView *)self bearingLabel];
     [(CompassLabelsView *)self compassHeading];
     v7 = fmod(v6 + self->_bearing + 270.0, 360.0);
     bearingLabelRadius = self->_bearingLabelRadius;
     v9 = __sincos_stret(v7 * 3.14159265 / 180.0);
-    [v5 setCenter:{MidX + bearingLabelRadius * v9.__cosval, MidY + bearingLabelRadius * v9.__sinval}];
+    [bearingLabel setCenter:{MidX + bearingLabelRadius * v9.__cosval, MidY + bearingLabelRadius * v9.__sinval}];
   }
 
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v10 = [(CompassLabelsView *)self degreeLabels];
-  v11 = [v10 countByEnumeratingWithState:&v50 objects:v55 count:16];
+  degreeLabels = [(CompassLabelsView *)self degreeLabels];
+  v11 = [degreeLabels countByEnumeratingWithState:&v50 objects:v55 count:16];
   if (v11)
   {
     v12 = v11;
@@ -45,21 +45,21 @@
       {
         if (*v51 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(degreeLabels);
         }
 
         v15 = *(*(&v50 + 1) + 8 * i);
-        v16 = [v15 text];
-        v17 = [v16 intValue];
+        text = [v15 text];
+        intValue = [text intValue];
 
         [(CompassLabelsView *)self compassHeading];
-        v19 = fmod(v18 + v17 + 270.0, 360.0);
+        v19 = fmod(v18 + intValue + 270.0, 360.0);
         degreesRadius = self->_degreesRadius;
         v21 = __sincos_stret(v19 * 3.14159265 / 180.0);
         [v15 setCenter:{MidX + degreesRadius * v21.__cosval, MidY + degreesRadius * v21.__sinval}];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v50 objects:v55 count:16];
+      v12 = [degreeLabels countByEnumeratingWithState:&v50 objects:v55 count:16];
     }
 
     while (v12);
@@ -69,43 +69,43 @@
   v23 = fmod(v22 + 0.0 + 270.0, 360.0);
   directionLabelRadius = self->_directionLabelRadius;
   v25 = __sincos_stret(v23 * 3.14159265 / 180.0);
-  v26 = [(CompassLabelsView *)self directionLabels];
+  directionLabels = [(CompassLabelsView *)self directionLabels];
   v27 = WebLocalizedString();
-  v28 = [v26 objectForKeyedSubscript:v27];
+  v28 = [directionLabels objectForKeyedSubscript:v27];
 
   [v28 setCenter:{MidX + directionLabelRadius * v25.__cosval, MidY + directionLabelRadius * v25.__sinval}];
   [(CompassLabelsView *)self compassHeading];
   v30 = fmod(v29 + 90.0 + 270.0, 360.0);
   v31 = self->_directionLabelRadius;
   v32 = __sincos_stret(v30 * 3.14159265 / 180.0);
-  v33 = [(CompassLabelsView *)self directionLabels];
+  directionLabels2 = [(CompassLabelsView *)self directionLabels];
   v34 = WebLocalizedString();
-  v35 = [v33 objectForKeyedSubscript:v34];
+  v35 = [directionLabels2 objectForKeyedSubscript:v34];
 
   [v35 setCenter:{MidX + v31 * v32.__cosval, MidY + v31 * v32.__sinval}];
   [(CompassLabelsView *)self compassHeading];
   v37 = fmod(v36 + 180.0 + 270.0, 360.0);
   v38 = self->_directionLabelRadius;
   v39 = __sincos_stret(v37 * 3.14159265 / 180.0);
-  v40 = [(CompassLabelsView *)self directionLabels];
+  directionLabels3 = [(CompassLabelsView *)self directionLabels];
   v41 = WebLocalizedString();
-  v42 = [v40 objectForKeyedSubscript:v41];
+  v42 = [directionLabels3 objectForKeyedSubscript:v41];
 
   [v42 setCenter:{MidX + v38 * v39.__cosval, MidY + v38 * v39.__sinval}];
   [(CompassLabelsView *)self compassHeading];
   v44 = fmod(v43 + 270.0 + 270.0, 360.0);
   v45 = self->_directionLabelRadius;
   v46 = __sincos_stret(v44 * 3.14159265 / 180.0);
-  v47 = [(CompassLabelsView *)self directionLabels];
+  directionLabels4 = [(CompassLabelsView *)self directionLabels];
   v48 = WebLocalizedString();
-  v49 = [v47 objectForKeyedSubscript:v48];
+  v49 = [directionLabels4 objectForKeyedSubscript:v48];
 
   [v49 setCenter:{MidX + v45 * v46.__cosval, MidY + v45 * v46.__sinval}];
 }
 
 - (id)degreeLabels
 {
-  v2 = self;
+  selfCopy = self;
   degreeLabels = self->_degreeLabels;
   if (!degreeLabels)
   {
@@ -131,7 +131,7 @@
       [v16 bounds];
       v35 = [UIFont systemFontOfSize:round(v15 * v17 / 320.0)];
 
-      v18 = [v35 fontDescriptor];
+      fontDescriptor = [v35 fontDescriptor];
       v39 = UIFontDescriptorFeatureSettingsAttribute;
       v36[0] = UIFontFeatureTypeIdentifierKey;
       v36[1] = UIFontFeatureSelectorIdentifierKey;
@@ -143,9 +143,9 @@
       v40 = v20;
       [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
       v21 = v5;
-      v22 = v2;
+      v22 = selfCopy;
       v24 = v23 = v4;
-      v25 = [v18 fontDescriptorByAddingAttributes:v24];
+      v25 = [fontDescriptor fontDescriptorByAddingAttributes:v24];
 
       v26 = +[UIScreen mainScreen];
       [v26 bounds];
@@ -160,21 +160,21 @@
       [v10 setBackgroundColor:v31];
 
       v4 = v23;
-      v2 = v22;
+      selfCopy = v22;
       v5 = v21;
       [v10 sizeToFit];
       [v4 addObject:v10];
-      [(CompassLabelsView *)v2 addSubview:v10];
+      [(CompassLabelsView *)selfCopy addSubview:v10];
 
       v6 += 30;
     }
 
     while (v6 < 0x168);
     v32 = [objc_alloc(v21[119]) initWithArray:v4];
-    v33 = v2->_degreeLabels;
-    v2->_degreeLabels = v32;
+    v33 = selfCopy->_degreeLabels;
+    selfCopy->_degreeLabels = v32;
 
-    degreeLabels = v2->_degreeLabels;
+    degreeLabels = selfCopy->_degreeLabels;
   }
 
   return degreeLabels;
@@ -271,11 +271,11 @@
   return directionLabels;
 }
 
-- (CompassLabelsView)initWithFrame:(CGRect)a3
+- (CompassLabelsView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = CompassLabelsView;
-  result = [(CompassLabelsView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(CompassLabelsView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_bearing = 1.79769313e308;
@@ -284,12 +284,12 @@
   return result;
 }
 
-- (void)updateLabelsAnimated:(BOOL)a3
+- (void)updateLabelsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   bearing = self->_bearing;
-  v6 = [(CompassLabelsView *)self bearingLabel];
-  [v6 alpha];
+  bearingLabel = [(CompassLabelsView *)self bearingLabel];
+  [bearingLabel alpha];
   v8 = v7;
 
   if ((bearing != 1.79769313e308) == (v8 == 0.0))
@@ -304,15 +304,15 @@
       v9 = 0.0;
     }
 
-    v10 = [(CompassLabelsView *)self bearingLabel];
-    [v10 setAlpha:v9];
+    bearingLabel2 = [(CompassLabelsView *)self bearingLabel];
+    [bearingLabel2 setAlpha:v9];
 
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v11 = [(CompassLabelsView *)self degreeLabels];
-    v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    degreeLabels = [(CompassLabelsView *)self degreeLabels];
+    v12 = [degreeLabels countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v12)
     {
       v13 = *v23;
@@ -332,13 +332,13 @@
         {
           if (*v23 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(degreeLabels);
           }
 
           [*(*(&v22 + 1) + 8 * i) setAlpha:v14];
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v12 = [degreeLabels countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v12);
@@ -353,7 +353,7 @@
     v20 = bearing != 1.79769313e308;
     v16 = objc_retainBlock(v18);
     v17 = v16;
-    if (v3)
+    if (animatedCopy)
     {
       [UIView animateWithDuration:v16 animations:0.200000003];
     }
@@ -398,11 +398,11 @@
   return bearingLabel;
 }
 
-- (void)setCompassHeading:(double)a3
+- (void)setCompassHeading:(double)heading
 {
   v4.receiver = self;
   v4.super_class = CompassLabelsView;
-  [(CompassLabelsView *)&v4 setCompassHeading:a3];
+  [(CompassLabelsView *)&v4 setCompassHeading:heading];
   [(CompassLabelsView *)self setNeedsLayout];
 }
 

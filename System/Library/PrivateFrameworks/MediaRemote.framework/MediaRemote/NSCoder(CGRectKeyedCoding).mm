@@ -14,13 +14,13 @@
   v8 = MEMORY[0x1E696B098];
   v9 = a7;
   v10 = [v8 value:&v11 withObjCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
-  [a1 encodeObject:v10 forKey:{v9, *&v11, *&v12, *&v13, *&v14}];
+  [self encodeObject:v10 forKey:{v9, *&v11, *&v12, *&v13, *&v14}];
 }
 
 - (double)mr_decodeCGRectForKey:()CGRectKeyedCoding
 {
   v4 = a3;
-  v5 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self decodeObjectOfClass:objc_opt_class() forKey:v4];
 
   if (v5 && !strcmp([v5 objCType], "{CGRect={CGPoint=dd}{CGSize=dd}}"))
   {

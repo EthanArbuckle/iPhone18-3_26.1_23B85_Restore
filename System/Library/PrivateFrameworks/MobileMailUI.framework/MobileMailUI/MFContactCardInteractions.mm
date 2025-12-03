@@ -1,19 +1,19 @@
 @interface MFContactCardInteractions
-+ (id)contactCardInteractionWithViewController:(id)a3 blockedSenderManager:(id)a4;
++ (id)contactCardInteractionWithViewController:(id)controller blockedSenderManager:(id)manager;
 + (id)log;
 - (CNContactViewController)contactViewController;
 - (MFContactCardInteractionDelegate)delegate;
-- (MFContactCardInteractions)initWithViewController:(id)a3 blockedSenderManager:(id)a4;
+- (MFContactCardInteractions)initWithViewController:(id)controller blockedSenderManager:(id)manager;
 - (id)contact;
-- (void)_addVIP:(id)a3;
-- (void)_removeVIP:(id)a3;
-- (void)_startSearch:(id)a3;
-- (void)_unblockContact:(id)a3;
-- (void)_updateBlockContactCardButtonForViewController:(id)a3;
-- (void)_updateContactCardButtonsForViewController:(id)a3;
-- (void)_updateSearchContactCardButtonForViewController:(id)a3;
-- (void)_updateVIPContactCardButtonForViewController:(id)a3;
-- (void)configureInteractionsWithInteractionDelegate:(id)a3;
+- (void)_addVIP:(id)p;
+- (void)_removeVIP:(id)p;
+- (void)_startSearch:(id)search;
+- (void)_unblockContact:(id)contact;
+- (void)_updateBlockContactCardButtonForViewController:(id)controller;
+- (void)_updateContactCardButtonsForViewController:(id)controller;
+- (void)_updateSearchContactCardButtonForViewController:(id)controller;
+- (void)_updateVIPContactCardButtonForViewController:(id)controller;
+- (void)configureInteractionsWithInteractionDelegate:(id)delegate;
 @end
 
 @implementation MFContactCardInteractions
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = __32__MFContactCardInteractions_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_3 != -1)
   {
     dispatch_once(&log_onceToken_3, block);
@@ -43,31 +43,31 @@ void __32__MFContactCardInteractions_log__block_invoke(uint64_t a1)
   log_log_3 = v1;
 }
 
-+ (id)contactCardInteractionWithViewController:(id)a3 blockedSenderManager:(id)a4
++ (id)contactCardInteractionWithViewController:(id)controller blockedSenderManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[a1 alloc] initWithViewController:v6 blockedSenderManager:v7];
+  controllerCopy = controller;
+  managerCopy = manager;
+  v8 = [[self alloc] initWithViewController:controllerCopy blockedSenderManager:managerCopy];
 
   return v8;
 }
 
-- (MFContactCardInteractions)initWithViewController:(id)a3 blockedSenderManager:(id)a4
+- (MFContactCardInteractions)initWithViewController:(id)controller blockedSenderManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = MFContactCardInteractions;
   v8 = [(MFContactCardInteractions *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_contactViewController, v6);
+    objc_storeWeak(&v8->_contactViewController, controllerCopy);
     v10 = [MEMORY[0x277D071B8] serialDispatchQueueSchedulerWithName:@"com.apple.email.MFContactCardInteractions.workerScheduler" qualityOfService:17];
     workerScheduler = v9->_workerScheduler;
     v9->_workerScheduler = v10;
 
-    objc_storeStrong(&v9->_blockedSenderManager, a4);
+    objc_storeStrong(&v9->_blockedSenderManager, manager);
   }
 
   return v9;
@@ -75,51 +75,51 @@ void __32__MFContactCardInteractions_log__block_invoke(uint64_t a1)
 
 - (id)contact
 {
-  v2 = [(MFContactCardInteractions *)self contactViewController];
-  v3 = [v2 contact];
+  contactViewController = [(MFContactCardInteractions *)self contactViewController];
+  contact = [contactViewController contact];
 
-  return v3;
+  return contact;
 }
 
-- (void)configureInteractionsWithInteractionDelegate:(id)a3
+- (void)configureInteractionsWithInteractionDelegate:(id)delegate
 {
-  v19 = a3;
-  v4 = [(MFContactCardInteractions *)self contact];
-  [(MFContactCardInteractions *)self setDelegate:v19];
-  v5 = [v4 emailAddresses];
-  v6 = [v5 ef_map:&__block_literal_global_2];
+  delegateCopy = delegate;
+  contact = [(MFContactCardInteractions *)self contact];
+  [(MFContactCardInteractions *)self setDelegate:delegateCopy];
+  emailAddresses = [contact emailAddresses];
+  v6 = [emailAddresses ef_map:&__block_literal_global_2];
 
   if ([v6 count])
   {
     v7 = objc_alloc_init(MEMORY[0x277D06F18]);
     [(MFContactCardInteractions *)self setEmailAddressSet:v7];
 
-    v8 = [(MFContactCardInteractions *)self emailAddressSet];
-    [v8 addObjectsFromArray:v6];
+    emailAddressSet = [(MFContactCardInteractions *)self emailAddressSet];
+    [emailAddressSet addObjectsFromArray:v6];
 
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v10 = [MEMORY[0x277CBDA78] stringFromContact:v4 style:0];
+    v10 = [MEMORY[0x277CBDA78] stringFromContact:contact style:0];
     [(MFContactCardInteractions *)self setDisplayName:v10];
 
-    v11 = [(MFContactCardInteractions *)self displayName];
+    displayName = [(MFContactCardInteractions *)self displayName];
 
-    if (v11)
+    if (displayName)
     {
-      v12 = [(MFContactCardInteractions *)self displayName];
-      [v9 addObject:v12];
+      displayName2 = [(MFContactCardInteractions *)self displayName];
+      [v9 addObject:displayName2];
     }
 
-    v13 = [(MFContactCardInteractions *)self contactViewController];
+    contactViewController = [(MFContactCardInteractions *)self contactViewController];
     v14 = +[VIPManager defaultInstance];
-    v15 = [(MFContactCardInteractions *)self emailAddressSet];
-    v16 = [v14 vipForEmailAddresses:v15 andDisplayNames:v9];
+    emailAddressSet2 = [(MFContactCardInteractions *)self emailAddressSet];
+    v16 = [v14 vipForEmailAddresses:emailAddressSet2 andDisplayNames:v9];
     [(MFContactCardInteractions *)self setCurrentVIP:v16];
 
-    v17 = [(MFContactCardInteractions *)self blockedSenderManager];
-    v18 = [v13 contact];
-    -[MFContactCardInteractions setIsBlocked:](self, "setIsBlocked:", [v17 isContactBlocked:v18]);
+    blockedSenderManager = [(MFContactCardInteractions *)self blockedSenderManager];
+    contact2 = [contactViewController contact];
+    -[MFContactCardInteractions setIsBlocked:](self, "setIsBlocked:", [blockedSenderManager isContactBlocked:contact2]);
 
-    [(MFContactCardInteractions *)self _updateContactCardButtonsForViewController:v13];
+    [(MFContactCardInteractions *)self _updateContactCardButtonsForViewController:contactViewController];
   }
 }
 
@@ -130,91 +130,91 @@ id __74__MFContactCardInteractions_configureInteractionsWithInteractionDelegate_
   return v2;
 }
 
-- (void)_updateContactCardButtonsForViewController:(id)a3
+- (void)_updateContactCardButtonsForViewController:(id)controller
 {
-  v6 = a3;
+  controllerCopy = controller;
   [(MFContactCardInteractions *)self _updateVIPContactCardButtonForViewController:?];
-  [(MFContactCardInteractions *)self _updateBlockContactCardButtonForViewController:v6];
-  v4 = [(MFContactCardInteractions *)self delegate];
-  v5 = [v4 canSearchForContactFromContactCardInteractions:self];
+  [(MFContactCardInteractions *)self _updateBlockContactCardButtonForViewController:controllerCopy];
+  delegate = [(MFContactCardInteractions *)self delegate];
+  v5 = [delegate canSearchForContactFromContactCardInteractions:self];
 
   if (v5)
   {
-    [(MFContactCardInteractions *)self _updateSearchContactCardButtonForViewController:v6];
+    [(MFContactCardInteractions *)self _updateSearchContactCardButtonForViewController:controllerCopy];
   }
 }
 
-- (void)_updateSearchContactCardButtonForViewController:(id)a3
+- (void)_updateSearchContactCardButtonForViewController:(id)controller
 {
-  v7 = [a3 contentViewController];
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 localizedStringForKey:@"SEARCH_MAIL_FOR_CONTACT_ADDRESSES" value:&stru_2826D1AD8 table:@"Main"];
+  contentViewController = [controller contentViewController];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v5 = [mainBundle localizedStringForKey:@"SEARCH_MAIL_FOR_CONTACT_ADDRESSES" value:&stru_2826D1AD8 table:@"Main"];
 
-  v6 = [v7 cardBottomGroup];
-  [v7 addActionWithTitle:v5 target:self selector:sel__startSearch_ inGroup:v6 destructive:0];
+  cardBottomGroup = [contentViewController cardBottomGroup];
+  [contentViewController addActionWithTitle:v5 target:self selector:sel__startSearch_ inGroup:cardBottomGroup destructive:0];
 }
 
-- (void)_startSearch:(id)a3
+- (void)_startSearch:(id)search
 {
-  v4 = [(MFContactCardInteractions *)self displayName];
-  v5 = v4;
-  if (v4)
+  displayName = [(MFContactCardInteractions *)self displayName];
+  v5 = displayName;
+  if (displayName)
   {
-    v11 = v4;
+    v11 = displayName;
   }
 
   else
   {
-    v12 = [(MFContactCardInteractions *)self emailAddressSet];
-    v6 = [v12 allObjects];
-    v7 = [v6 firstObject];
+    emailAddressSet = [(MFContactCardInteractions *)self emailAddressSet];
+    allObjects = [emailAddressSet allObjects];
+    firstObject = [allObjects firstObject];
 
-    v11 = v7;
+    v11 = firstObject;
   }
 
-  v8 = [(MFContactCardInteractions *)self delegate];
-  v9 = [(MFContactCardInteractions *)self emailAddressSet];
-  v10 = [v9 allObjects];
-  [v8 contactCardInteractions:self triggerSearchForDisplayName:v11 emailAddresses:v10];
+  delegate = [(MFContactCardInteractions *)self delegate];
+  emailAddressSet2 = [(MFContactCardInteractions *)self emailAddressSet];
+  allObjects2 = [emailAddressSet2 allObjects];
+  [delegate contactCardInteractions:self triggerSearchForDisplayName:v11 emailAddresses:allObjects2];
 }
 
-- (void)_removeVIP:(id)a3
+- (void)_removeVIP:(id)p
 {
   v6 = +[VIPManager defaultInstance];
-  v4 = [(MFContactCardInteractions *)self currentVIP];
-  v5 = [v4 identifier];
-  [v6 deleteVIPWithIdentifier:v5];
+  currentVIP = [(MFContactCardInteractions *)self currentVIP];
+  identifier = [currentVIP identifier];
+  [v6 deleteVIPWithIdentifier:identifier];
 
   [(MFContactCardInteractions *)self setCurrentVIP:0];
-  v7 = [(MFContactCardInteractions *)self contactViewController];
+  contactViewController = [(MFContactCardInteractions *)self contactViewController];
   [(MFContactCardInteractions *)self _updateContactCardButtonsForViewController:?];
 }
 
-- (void)_addVIP:(id)a3
+- (void)_addVIP:(id)p
 {
   v4 = objc_alloc(MEMORY[0x277D06EE0]);
-  v5 = [(MFContactCardInteractions *)self displayName];
-  v6 = [(MFContactCardInteractions *)self emailAddressSet];
-  v10 = [v4 initWithIdentifier:0 name:v5 emailAddresses:v6];
+  displayName = [(MFContactCardInteractions *)self displayName];
+  emailAddressSet = [(MFContactCardInteractions *)self emailAddressSet];
+  v10 = [v4 initWithIdentifier:0 name:displayName emailAddresses:emailAddressSet];
 
   [(MFContactCardInteractions *)self setCurrentVIP:v10];
   v7 = +[VIPManager defaultInstance];
-  v8 = [(MFContactCardInteractions *)self currentVIP];
-  [v7 saveVIP:v8];
+  currentVIP = [(MFContactCardInteractions *)self currentVIP];
+  [v7 saveVIP:currentVIP];
 
-  v9 = [(MFContactCardInteractions *)self contactViewController];
-  [(MFContactCardInteractions *)self _updateContactCardButtonsForViewController:v9];
+  contactViewController = [(MFContactCardInteractions *)self contactViewController];
+  [(MFContactCardInteractions *)self _updateContactCardButtonsForViewController:contactViewController];
 }
 
-- (void)_updateVIPContactCardButtonForViewController:(id)a3
+- (void)_updateVIPContactCardButtonForViewController:(id)controller
 {
-  v4 = [a3 contentViewController];
-  v5 = [v4 cardBottomGroup];
+  contentViewController = [controller contentViewController];
+  cardBottomGroup = [contentViewController cardBottomGroup];
   v6 = sel__removeVIP_;
-  [v4 removeActionWithTarget:self selector:sel__removeVIP_ inGroup:v5];
+  [contentViewController removeActionWithTarget:self selector:sel__removeVIP_ inGroup:cardBottomGroup];
 
-  v7 = [v4 cardBottomGroup];
-  [v4 removeActionWithTarget:self selector:sel__addVIP_ inGroup:v7];
+  cardBottomGroup2 = [contentViewController cardBottomGroup];
+  [contentViewController removeActionWithTarget:self selector:sel__addVIP_ inGroup:cardBottomGroup2];
 
   if ([(MFContactCardInteractions *)self isBlocked]&& ([(MFContactCardInteractions *)self currentVIP], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
   {
@@ -223,10 +223,10 @@ id __74__MFContactCardInteractions_configureInteractionsWithInteractionDelegate_
 
   else
   {
-    v9 = [(MFContactCardInteractions *)self currentVIP];
+    currentVIP = [(MFContactCardInteractions *)self currentVIP];
 
     [MEMORY[0x277CCA8D8] mainBundle];
-    if (v9)
+    if (currentVIP)
       v10 = {;
       v13 = [v10 localizedStringForKey:@"REMOVE_VIP" value:&stru_2826D1AD8 table:@"Main"];
     }
@@ -237,14 +237,14 @@ id __74__MFContactCardInteractions_configureInteractionsWithInteractionDelegate_
       v6 = sel__addVIP_;
     }
 
-    v11 = [v4 cardBottomGroup];
-    [v4 addActionWithTitle:v13 target:self selector:v6 inGroup:v11 destructive:0];
+    cardBottomGroup3 = [contentViewController cardBottomGroup];
+    [contentViewController addActionWithTitle:v13 target:self selector:v6 inGroup:cardBottomGroup3 destructive:0];
 
-    v12 = [(MFContactCardInteractions *)self currentVIP];
+    currentVIP2 = [(MFContactCardInteractions *)self currentVIP];
 
-    if ((v12 != 0) != [v4 isMailVIP])
+    if ((currentVIP2 != 0) != [contentViewController isMailVIP])
     {
-      [v4 setIsMailVIP:v12 != 0];
+      [contentViewController setIsMailVIP:currentVIP2 != 0];
     }
   }
 }
@@ -299,19 +299,19 @@ void __43__MFContactCardInteractions__blockContact___block_invoke_4(uint64_t a1)
   [v3 blockContact:v2];
 }
 
-- (void)_unblockContact:(id)a3
+- (void)_unblockContact:(id)contact
 {
-  v4 = [(MFContactCardInteractions *)self contactViewController];
+  contactViewController = [(MFContactCardInteractions *)self contactViewController];
   workerScheduler = self->_workerScheduler;
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
   v9 = __45__MFContactCardInteractions__unblockContact___block_invoke;
   v10 = &unk_278181710;
-  v11 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = contactViewController;
   v12 = v6;
   [(EFScheduler *)workerScheduler performBlock:&v7];
-  [(MFContactCardInteractions *)self setIsBlocked:0, v7, v8, v9, v10, v11];
+  [(MFContactCardInteractions *)self setIsBlocked:0, v7, v8, v9, v10, selfCopy];
   [(MFContactCardInteractions *)self _updateContactCardButtonsForViewController:v6];
 }
 
@@ -322,42 +322,42 @@ void __45__MFContactCardInteractions__unblockContact___block_invoke(uint64_t a1)
   [v3 unblockContact:v2];
 }
 
-- (void)_updateBlockContactCardButtonForViewController:(id)a3
+- (void)_updateBlockContactCardButtonForViewController:(id)controller
 {
-  v14 = [a3 contentViewController];
-  v4 = [v14 cardBottomGroup];
+  contentViewController = [controller contentViewController];
+  cardBottomGroup = [contentViewController cardBottomGroup];
   v5 = sel__unblockContact_;
-  [v14 removeActionWithTarget:self selector:sel__unblockContact_ inGroup:v4];
+  [contentViewController removeActionWithTarget:self selector:sel__unblockContact_ inGroup:cardBottomGroup];
 
-  v6 = [v14 cardBottomGroup];
-  [v14 removeActionWithTarget:self selector:sel__blockContact_ inGroup:v6];
+  cardBottomGroup2 = [contentViewController cardBottomGroup];
+  [contentViewController removeActionWithTarget:self selector:sel__blockContact_ inGroup:cardBottomGroup2];
 
-  v7 = [(MFContactCardInteractions *)self currentVIP];
-  if (!v7 || (v8 = [(MFContactCardInteractions *)self isBlocked], v7, v8))
+  currentVIP = [(MFContactCardInteractions *)self currentVIP];
+  if (!currentVIP || (v8 = [(MFContactCardInteractions *)self isBlocked], currentVIP, v8))
   {
     if ([(MFContactCardInteractions *)self isBlocked])
     {
-      v9 = [MEMORY[0x277CCA8D8] mainBundle];
-      v10 = [v9 localizedStringForKey:@"UNBLOCK_CONTACT" value:&stru_2826D1AD8 table:@"Main"];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v10 = [mainBundle localizedStringForKey:@"UNBLOCK_CONTACT" value:&stru_2826D1AD8 table:@"Main"];
     }
 
     else
     {
-      v11 = [(MFContactCardInteractions *)self blockedSenderManager];
-      v12 = [v11 isBlockedSenderEnabled];
+      blockedSenderManager = [(MFContactCardInteractions *)self blockedSenderManager];
+      isBlockedSenderEnabled = [blockedSenderManager isBlockedSenderEnabled];
 
-      if (!v12)
+      if (!isBlockedSenderEnabled)
       {
         goto LABEL_8;
       }
 
-      v9 = [MEMORY[0x277CCA8D8] mainBundle];
-      v10 = [v9 localizedStringForKey:@"BLOCK_CONTACT" value:&stru_2826D1AD8 table:@"Main"];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v10 = [mainBundle localizedStringForKey:@"BLOCK_CONTACT" value:&stru_2826D1AD8 table:@"Main"];
       v5 = sel__blockContact_;
     }
 
-    v13 = [v14 cardBottomGroup];
-    [v14 addActionWithTitle:v10 target:self selector:v5 inGroup:v13 destructive:0];
+    cardBottomGroup3 = [contentViewController cardBottomGroup];
+    [contentViewController addActionWithTitle:v10 target:self selector:v5 inGroup:cardBottomGroup3 destructive:0];
   }
 
 LABEL_8:

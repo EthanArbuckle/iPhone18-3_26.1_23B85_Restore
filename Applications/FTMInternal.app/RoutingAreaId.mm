@@ -1,20 +1,20 @@
 @interface RoutingAreaId
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRac:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRac:(BOOL)rac;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RoutingAreaId
 
-- (void)setHasRac:(BOOL)a3
+- (void)setHasRac:(BOOL)rac
 {
-  if (a3)
+  if (rac)
   {
     v3 = 2;
   }
@@ -32,8 +32,8 @@
   v7.receiver = self;
   v7.super_class = RoutingAreaId;
   v3 = [(RoutingAreaId *)&v7 description];
-  v4 = [(RoutingAreaId *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(RoutingAreaId *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -66,14 +66,14 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_encodedPlmn)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -81,7 +81,7 @@
   {
     lac = self->_lac;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -89,39 +89,39 @@
   {
     rac = self->_rac;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_encodedPlmn)
   {
-    v6 = v4;
-    [v4 setEncodedPlmn:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setEncodedPlmn:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 4) = self->_lac;
-    *(v4 + 24) |= 1u;
+    *(toCopy + 4) = self->_lac;
+    *(toCopy + 24) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 5) = self->_rac;
-    *(v4 + 24) |= 2u;
+    *(toCopy + 5) = self->_rac;
+    *(toCopy + 24) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_encodedPlmn copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_encodedPlmn copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -142,16 +142,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   encodedPlmn = self->_encodedPlmn;
-  if (encodedPlmn | *(v4 + 1))
+  if (encodedPlmn | *(equalCopy + 1))
   {
     if (![(NSData *)encodedPlmn isEqual:?])
     {
@@ -161,23 +161,23 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_lac != *(v4 + 4))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_lac != *(equalCopy + 4))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_13:
     v6 = 0;
     goto LABEL_14;
   }
 
-  v6 = (*(v4 + 24) & 2) == 0;
+  v6 = (*(equalCopy + 24) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0 || self->_rac != *(v4 + 5))
+    if ((*(equalCopy + 24) & 2) == 0 || self->_rac != *(equalCopy + 5))
     {
       goto LABEL_13;
     }
@@ -217,27 +217,27 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(RoutingAreaId *)self setEncodedPlmn:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if (v5)
   {
-    self->_lac = v4[4];
+    self->_lac = fromCopy[4];
     *&self->_has |= 1u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_rac = v4[5];
+    self->_rac = fromCopy[5];
     *&self->_has |= 2u;
   }
 }

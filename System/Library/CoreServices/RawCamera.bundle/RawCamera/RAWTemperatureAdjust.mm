@@ -1,44 +1,44 @@
 @interface RAWTemperatureAdjust
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 + (id)customAttributes;
 - (id)customAttributes;
 - (id)outputImage;
 - (id)outputMatrix;
-- (void)setInputWhitePoint:(id)a3;
+- (void)setInputWhitePoint:(id)point;
 @end
 
 @implementation RAWTemperatureAdjust
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v4 = a3;
-  if (objc_msgSend_isEqualToString_(v4, v5, @"inputExposure", v6, v7) & 1) != 0 || (objc_msgSend_isEqualToString_(v4, v8, @"inputWhitePoint", v9, v10))
+  keyCopy = key;
+  if (objc_msgSend_isEqualToString_(keyCopy, v5, @"inputExposure", v6, v7) & 1) != 0 || (objc_msgSend_isEqualToString_(keyCopy, v8, @"inputWhitePoint", v9, v10))
   {
     v11 = 0;
   }
 
   else
   {
-    v13.receiver = a1;
+    v13.receiver = self;
     v13.super_class = &OBJC_METACLASS___RAWTemperatureAdjust;
-    v11 = objc_msgSendSuper2(&v13, sel_automaticallyNotifiesObserversForKey_, v4);
+    v11 = objc_msgSendSuper2(&v13, sel_automaticallyNotifiesObserversForKey_, keyCopy);
   }
 
   return v11;
 }
 
-- (void)setInputWhitePoint:(id)a3
+- (void)setInputWhitePoint:(id)point
 {
-  v30 = a3;
-  if (self->inputWhitePoint != v30)
+  pointCopy = point;
+  if (self->inputWhitePoint != pointCopy)
   {
-    objc_msgSend_X(v30, v5, v6, v7, v8);
+    objc_msgSend_X(pointCopy, v5, v6, v7, v8);
     v10 = v9;
     objc_msgSend_X(self->inputWhitePoint, v11, v12, v13, v14);
-    if (v10 != v19 || (objc_msgSend_Y(v30, v15, v16, v17, v18), v21 = v20, objc_msgSend_Y(self->inputWhitePoint, v22, v23, v24, v25), v21 != v26))
+    if (v10 != v19 || (objc_msgSend_Y(pointCopy, v15, v16, v17, v18), v21 = v20, objc_msgSend_Y(self->inputWhitePoint, v22, v23, v24, v25), v21 != v26))
     {
       objc_msgSend_willChangeValueForKey_(self, v15, @"inputWhitePoint", v17, v18);
-      objc_storeStrong(&self->inputWhitePoint, a3);
+      objc_storeStrong(&self->inputWhitePoint, point);
       objc_msgSend_didChangeValueForKey_(self, v27, @"inputWhitePoint", v28, v29);
     }
   }

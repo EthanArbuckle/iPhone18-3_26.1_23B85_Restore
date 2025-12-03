@@ -7,57 +7,57 @@
 - (BOOL)shouldShowGreetingButton;
 - (BOOL)shouldShowTrashSubFolder;
 - (BOOL)showTipView;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (NSString)folderName;
-- (PHVoicemailInboxListViewController)initWithNavigationController:(id)a3 voicemailController:(id)a4;
+- (PHVoicemailInboxListViewController)initWithNavigationController:(id)controller voicemailController:(id)voicemailController;
 - (PHVoicemailNavigationController)voicemailNavigationController;
 - (id)cellDetailDestructiveActionText;
 - (id)navigationBarText;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)viewControllerAtIndexPath:(id)a3;
-- (int)sectionTypeAt:(int64_t)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_delete:(id)a3;
-- (void)_markAsRead:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)viewControllerAtIndexPath:(id)path;
+- (int)sectionTypeAt:(int64_t)at;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_delete:(id)_delete;
+- (void)_markAsRead:(id)read;
 - (void)_updateGreetingButtonAllowed;
 - (void)greetingButtonTapped;
-- (void)hideTipViewWithCompletionHandler:(id)a3;
-- (void)performTableViewDestructiveActionAtIndexPath:(id)a3;
+- (void)hideTipViewWithCompletionHandler:(id)handler;
+- (void)performTableViewDestructiveActionAtIndexPath:(id)path;
 - (void)reloadLegacyVoicemails;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 - (void)startObservingPreferences;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didEndEditingRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willBeginEditingRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didEndEditingRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willBeginEditingRowAtIndexPath:(id)path;
 - (void)tipKitStartObservation;
 - (void)tipKitStopObservation;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willShowVoicemails:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willShowVoicemails:(id)voicemails;
 @end
 
 @implementation PHVoicemailInboxListViewController
 
-- (PHVoicemailInboxListViewController)initWithNavigationController:(id)a3 voicemailController:(id)a4
+- (PHVoicemailInboxListViewController)initWithNavigationController:(id)controller voicemailController:(id)voicemailController
 {
-  v6 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = PHVoicemailInboxListViewController;
-  v7 = [(MPVoicemailTableViewController *)&v12 initWithNavigationController:v6 voicemailController:a4];
+  v7 = [(MPVoicemailTableViewController *)&v12 initWithNavigationController:controllerCopy voicemailController:voicemailController];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_voicemailNavigationController, v6);
+    objc_storeWeak(&v7->_voicemailNavigationController, controllerCopy);
     [(PHVoicemailInboxListViewController *)v8 _updateGreetingButtonAllowed];
-    v9 = [(PHVoicemailInboxListViewController *)v8 editButtonItem];
-    v10 = [(PHVoicemailInboxListViewController *)v8 navigationItem];
-    [v10 setLeftBarButtonItem:v9];
+    editButtonItem = [(PHVoicemailInboxListViewController *)v8 editButtonItem];
+    navigationItem = [(PHVoicemailInboxListViewController *)v8 navigationItem];
+    [navigationItem setLeftBarButtonItem:editButtonItem];
   }
 
   return v8;
@@ -68,17 +68,17 @@
   v24.receiver = self;
   v24.super_class = PHVoicemailInboxListViewController;
   [(MPVoicemailTableViewController *)&v24 viewDidLoad];
-  v3 = [(PHVoicemailInboxListViewController *)self navigationBarText];
-  v4 = [(PHVoicemailInboxListViewController *)self navigationItem];
-  [v4 setTitle:v3];
+  navigationBarText = [(PHVoicemailInboxListViewController *)self navigationBarText];
+  navigationItem = [(PHVoicemailInboxListViewController *)self navigationItem];
+  [navigationItem setTitle:navigationBarText];
 
-  v5 = [(PHVoicemailInboxListViewController *)self tableView];
+  tableView = [(PHVoicemailInboxListViewController *)self tableView];
   v6 = objc_opt_class();
   v7 = +[MPVoicemailMailboxTableViewCell reuseIdentifier];
-  [v5 registerClass:v6 forCellReuseIdentifier:v7];
+  [tableView registerClass:v6 forCellReuseIdentifier:v7];
 
-  v8 = [(PHVoicemailInboxListViewController *)self tableView];
-  [v8 setAllowsMultipleSelectionDuringEditing:1];
+  tableView2 = [(PHVoicemailInboxListViewController *)self tableView];
+  [tableView2 setAllowsMultipleSelectionDuringEditing:1];
 
   v9 = +[NSBundle mainBundle];
   v10 = [v9 localizedStringForKey:@"NO_VOICEMAIL" value:&stru_10028F310 table:@"Voicemail"];
@@ -97,27 +97,27 @@
   [(PHVoicemailInboxListViewController *)self setDeleteButton:v18];
 
   v19 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:5 target:0 action:0];
-  v20 = [(PHVoicemailInboxListViewController *)self readButton];
-  v25[0] = v20;
+  readButton = [(PHVoicemailInboxListViewController *)self readButton];
+  v25[0] = readButton;
   v25[1] = v19;
-  v21 = [(PHVoicemailInboxListViewController *)self deleteButton];
-  v25[2] = v21;
+  deleteButton = [(PHVoicemailInboxListViewController *)self deleteButton];
+  v25[2] = deleteButton;
   v22 = [NSArray arrayWithObjects:v25 count:3];
   [(PHVoicemailInboxListViewController *)self setToolbarItems:v22];
 
-  v23 = [(PHVoicemailInboxListViewController *)self navigationController];
-  [v23 setToolbarHidden:1];
+  navigationController = [(PHVoicemailInboxListViewController *)self navigationController];
+  [navigationController setToolbarHidden:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = PHVoicemailInboxListViewController;
-  [(MPVoicemailTableViewController *)&v13 viewWillAppear:a3];
+  [(MPVoicemailTableViewController *)&v13 viewWillAppear:appear];
   v4 = objc_alloc_init(TUFeatureFlags);
-  v5 = [v4 nameAndPhotoEnabledC3];
+  nameAndPhotoEnabledC3 = [v4 nameAndPhotoEnabledC3];
 
-  if (v5)
+  if (nameAndPhotoEnabledC3)
   {
     v6 = PHDefaultLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -126,36 +126,36 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Going to present CNKCNSharedProfileOnboardingController on launch", v12, 2u);
     }
 
-    v7 = [(PHVoicemailInboxListViewController *)self onboardingController];
+    onboardingController = [(PHVoicemailInboxListViewController *)self onboardingController];
 
-    if (!v7)
+    if (!onboardingController)
     {
       v8 = objc_opt_new();
       [(PHVoicemailInboxListViewController *)self setOnboardingController:v8];
     }
 
-    v9 = [(PHVoicemailInboxListViewController *)self onboardingController];
+    onboardingController2 = [(PHVoicemailInboxListViewController *)self onboardingController];
     v10 = +[TUCallCenter sharedInstance];
-    v11 = [v10 contactStore];
-    [v9 presentOnboardingControllerOnLaunchIfNeededFrom:self withContactStore:v11];
+    contactStore = [v10 contactStore];
+    [onboardingController2 presentOnboardingControllerOnLaunchIfNeededFrom:self withContactStore:contactStore];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = PHVoicemailInboxListViewController;
-  [(MPVoicemailTableViewController *)&v13 viewDidAppear:a3];
+  [(MPVoicemailTableViewController *)&v13 viewDidAppear:appear];
   [(PHVoicemailInboxListViewController *)self tipKitStartObservation];
   objc_initWeak(&location, self);
   v4 = +[(PHApplicationServices *)MPApplicationServices];
-  v5 = [v4 accountManager];
+  accountManager = [v4 accountManager];
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = __52__PHVoicemailInboxListViewController_viewDidAppear___block_invoke;
   v10 = &unk_100285148;
   objc_copyWeak(&v11, &location);
-  v6 = [v5 listenForChangesWithHandler:&v7];
+  v6 = [accountManager listenForChangesWithHandler:&v7];
   [(PHVoicemailInboxListViewController *)self setInboxListeners:v6, v7, v8, v9, v10];
 
   [(PHVoicemailInboxListViewController *)self reloadLegacyVoicemails];
@@ -196,11 +196,11 @@ void __52__PHVoicemailInboxListViewController_viewDidAppear___block_invoke(uint6
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PHVoicemailInboxListViewController;
-  [(MPVoicemailTableViewController *)&v4 viewDidDisappear:a3];
+  [(MPVoicemailTableViewController *)&v4 viewDidDisappear:disappear];
   [(PHVoicemailInboxListViewController *)self tipKitStopObservation];
   [(PHVoicemailInboxListViewController *)self setInboxListeners:0];
 }
@@ -219,7 +219,7 @@ void __52__PHVoicemailInboxListViewController_viewDidAppear___block_invoke(uint6
   }
 
   objc_initWeak(&location, self);
-  v5 = [(MPVoicemailTableViewController *)self voicemailController];
+  voicemailController = [(MPVoicemailTableViewController *)self voicemailController];
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
   v12 = __60__PHVoicemailInboxListViewController_reloadLegacyVoicemails__block_invoke;
@@ -227,13 +227,13 @@ void __52__PHVoicemailInboxListViewController_viewDidAppear___block_invoke(uint6
   objc_copyWeak(&v16, &location);
   v6 = v4;
   v14 = v6;
-  v15 = self;
-  [v5 fetchLegacyVoicemailsCompletion:&v10];
+  selfCopy = self;
+  [voicemailController fetchLegacyVoicemailsCompletion:&v10];
 
   v7 = [(MPVoicemailTableViewController *)self voicemailController:v10];
-  v8 = [v7 accountManager];
-  v9 = [v8 accounts];
-  -[PHVoicemailInboxListViewController setShowLegacyVoicemailLabel:](self, "setShowLegacyVoicemailLabel:", [v9 count] > 1);
+  accountManager = [v7 accountManager];
+  accounts = [accountManager accounts];
+  -[PHVoicemailInboxListViewController setShowLegacyVoicemailLabel:](self, "setShowLegacyVoicemailLabel:", [accounts count] > 1);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -325,24 +325,24 @@ LABEL_14:
 
 - (BOOL)hasLegacyVoicemailInboxes
 {
-  v2 = [(PHVoicemailInboxListViewController *)self legacyVoicemails];
-  v3 = [v2 count] != 0;
+  legacyVoicemails = [(PHVoicemailInboxListViewController *)self legacyVoicemails];
+  v3 = [legacyVoicemails count] != 0;
 
   return v3;
 }
 
-- (int)sectionTypeAt:(int64_t)a3
+- (int)sectionTypeAt:(int64_t)at
 {
-  v4 = [(PHVoicemailInboxListViewController *)self tableView];
-  v5 = [v4 numberOfSections];
-  if (a3)
+  tableView = [(PHVoicemailInboxListViewController *)self tableView];
+  numberOfSections = [tableView numberOfSections];
+  if (at)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = v5 == 2;
+    v6 = numberOfSections == 2;
   }
 
   v7 = !v6;
@@ -350,7 +350,7 @@ LABEL_14:
   return v7;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if ([(PHVoicemailInboxListViewController *)self hasLegacyVoicemailInboxes])
   {
@@ -363,83 +363,83 @@ LABEL_14:
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(PHVoicemailInboxListViewController *)self sectionTypeAt:a4];
+  viewCopy = view;
+  v7 = [(PHVoicemailInboxListViewController *)self sectionTypeAt:section];
   if (v7 == 1)
   {
     v12.receiver = self;
     v12.super_class = PHVoicemailInboxListViewController;
-    v9 = [(MPVoicemailTableViewController *)&v12 tableView:v6 numberOfRowsInSection:a4];
+    v9 = [(MPVoicemailTableViewController *)&v12 tableView:viewCopy numberOfRowsInSection:section];
     v10 = &v9[[(PHVoicemailInboxListViewController *)self shouldShowTrashSubFolder]];
-    a4 = &v10[[(PHVoicemailInboxListViewController *)self shouldShowBlockedSubFolder]];
+    section = &v10[[(PHVoicemailInboxListViewController *)self shouldShowBlockedSubFolder]];
     [(PHTableViewController *)self setContentUnavailable:[(PHVoicemailInboxListViewController *)self hasContentToDisplay]^ 1 animated:0];
   }
 
   else if (!v7)
   {
-    v8 = [(PHVoicemailInboxListViewController *)self legacyVoicemails];
-    a4 = [v8 count];
+    legacyVoicemails = [(PHVoicemailInboxListViewController *)self legacyVoicemails];
+    section = [legacyVoicemails count];
   }
 
-  return a4;
+  return section;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[PHVoicemailInboxListViewController sectionTypeAt:](self, "sectionTypeAt:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[PHVoicemailInboxListViewController sectionTypeAt:](self, "sectionTypeAt:", [pathCopy section]);
   if (v8 == 1)
   {
-    v13 = [v7 row];
-    v14 = [(MPVoicemailTableViewController *)self voicemails];
-    v15 = [v14 count];
+    v13 = [pathCopy row];
+    voicemails = [(MPVoicemailTableViewController *)self voicemails];
+    v15 = [voicemails count];
 
     if (v13 >= v15)
     {
-      v20 = [(PHVoicemailInboxListViewController *)self tableView];
+      tableView = [(PHVoicemailInboxListViewController *)self tableView];
       v21 = +[MPVoicemailMailboxTableViewCell reuseIdentifier];
-      v12 = [v20 dequeueReusableCellWithIdentifier:v21 forIndexPath:v7];
+      v12 = [tableView dequeueReusableCellWithIdentifier:v21 forIndexPath:pathCopy];
 
-      v22 = [(PHVoicemailInboxListViewController *)self viewControllerAtIndexPath:v7];
-      v23 = [v22 folderName];
-      v24 = [v12 titleLabel];
-      [v24 setText:v23];
+      v22 = [(PHVoicemailInboxListViewController *)self viewControllerAtIndexPath:pathCopy];
+      folderName = [v22 folderName];
+      titleLabel = [v12 titleLabel];
+      [titleLabel setText:folderName];
 
-      v25 = [v22 messageCountText];
-      v26 = [v12 countLabel];
-      [v26 setText:v25];
+      messageCountText = [v22 messageCountText];
+      countLabel = [v12 countLabel];
+      [countLabel setText:messageCountText];
     }
 
     else
     {
       v28.receiver = self;
       v28.super_class = PHVoicemailInboxListViewController;
-      v12 = [(MPVoicemailTableViewController *)&v28 tableView:v6 cellForRowAtIndexPath:v7];
+      v12 = [(MPVoicemailTableViewController *)&v28 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
     }
   }
 
-  else if (v8 || (-[PHVoicemailInboxListViewController legacyVoicemails](self, "legacyVoicemails"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 count], v11 = objc_msgSend(v7, "row"), v9, v10 < v11))
+  else if (v8 || (-[PHVoicemailInboxListViewController legacyVoicemails](self, "legacyVoicemails"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 count], v11 = objc_msgSend(pathCopy, "row"), v9, v10 < v11))
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = [v6 dequeueReusableCellWithIdentifier:@"CallVoicemail" forIndexPath:v7];
-    v16 = [(PHVoicemailInboxListViewController *)self legacyVoicemails];
-    v17 = [v16 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+    v12 = [viewCopy dequeueReusableCellWithIdentifier:@"CallVoicemail" forIndexPath:pathCopy];
+    legacyVoicemails = [(PHVoicemailInboxListViewController *)self legacyVoicemails];
+    v17 = [legacyVoicemails objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-    v18 = [(PHVoicemailInboxListViewController *)self showLegacyVoicemailLabel];
+    showLegacyVoicemailLabel = [(PHVoicemailInboxListViewController *)self showLegacyVoicemailLabel];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = __70__PHVoicemailInboxListViewController_tableView_cellForRowAtIndexPath___block_invoke;
     v29[3] = &unk_100284FD0;
     v30 = v17;
     v19 = v17;
-    [(MPVoicemailTableViewController *)self configureLegacyVoicemailCell:v12 for:v19 showLabel:v18 onCallTapped:v29];
+    [(MPVoicemailTableViewController *)self configureLegacyVoicemailCell:v12 for:v19 showLabel:showLegacyVoicemailLabel onCallTapped:v29];
   }
 
   return v12;
@@ -452,9 +452,9 @@ void __70__PHVoicemailInboxListViewController_tableView_cellForRowAtIndexPath___
   [v1 dialVoicemailWithAccountID:v2];
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4 == 1 && [(PHVoicemailInboxListViewController *)self tableView:a3 numberOfRowsInSection:?]>= 1)
+  if (section == 1 && [(PHVoicemailInboxListViewController *)self tableView:view numberOfRowsInSection:?]>= 1)
   {
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:@"OTHERS" value:&stru_10028F310 table:@"Voicemail"];
@@ -490,11 +490,11 @@ void __70__PHVoicemailInboxListViewController_tableView_cellForRowAtIndexPath___
   return [(PHVoicemailInboxListViewController *)self navigationBarText];
 }
 
-- (void)performTableViewDestructiveActionAtIndexPath:(id)a3
+- (void)performTableViewDestructiveActionAtIndexPath:(id)path
 {
-  v7 = a3;
-  v4 = a3;
-  v5 = [NSArray arrayWithObjects:&v7 count:1];
+  pathCopy = path;
+  pathCopy2 = path;
+  v5 = [NSArray arrayWithObjects:&pathCopy count:1];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __83__PHVoicemailInboxListViewController_performTableViewDestructiveActionAtIndexPath___block_invoke;
@@ -521,63 +521,63 @@ void __83__PHVoicemailInboxListViewController_performTableViewDestructiveActionA
 
 - (BOOL)hasContentToDisplay
 {
-  v3 = [(PHVoicemailInboxListViewController *)self trashVoicemails];
-  if ([v3 count])
+  trashVoicemails = [(PHVoicemailInboxListViewController *)self trashVoicemails];
+  if ([trashVoicemails count])
   {
-    v4 = 1;
+    hasLegacyVoicemailInboxes = 1;
   }
 
   else
   {
-    v5 = [(MPVoicemailTableViewController *)self voicemails];
-    if ([v5 count])
+    voicemails = [(MPVoicemailTableViewController *)self voicemails];
+    if ([voicemails count])
     {
-      v4 = 1;
+      hasLegacyVoicemailInboxes = 1;
     }
 
     else
     {
-      v6 = [(PHVoicemailInboxListViewController *)self blockedVoicemails];
-      if ([v6 count])
+      blockedVoicemails = [(PHVoicemailInboxListViewController *)self blockedVoicemails];
+      if ([blockedVoicemails count])
       {
-        v4 = 1;
+        hasLegacyVoicemailInboxes = 1;
       }
 
       else
       {
-        v4 = [(PHVoicemailInboxListViewController *)self hasLegacyVoicemailInboxes];
+        hasLegacyVoicemailInboxes = [(PHVoicemailInboxListViewController *)self hasLegacyVoicemailInboxes];
       }
     }
   }
 
-  return v4;
+  return hasLegacyVoicemailInboxes;
 }
 
 - (BOOL)shouldShowTrashSubFolder
 {
-  v2 = [(PHVoicemailInboxListViewController *)self trashVoicemails];
-  v3 = [v2 count] != 0;
+  trashVoicemails = [(PHVoicemailInboxListViewController *)self trashVoicemails];
+  v3 = [trashVoicemails count] != 0;
 
   return v3;
 }
 
 - (BOOL)shouldShowBlockedSubFolder
 {
-  v2 = [(PHVoicemailInboxListViewController *)self blockedVoicemails];
-  v3 = [v2 count] != 0;
+  blockedVoicemails = [(PHVoicemailInboxListViewController *)self blockedVoicemails];
+  v3 = [blockedVoicemails count] != 0;
 
   return v3;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (-[PHVoicemailInboxListViewController sectionTypeAt:](self, "sectionTypeAt:", [v7 section]))
+  viewCopy = view;
+  pathCopy = path;
+  if (-[PHVoicemailInboxListViewController sectionTypeAt:](self, "sectionTypeAt:", [pathCopy section]))
   {
     v10.receiver = self;
     v10.super_class = PHVoicemailInboxListViewController;
-    v8 = [(MPVoicemailTableViewController *)&v10 tableView:v6 shouldHighlightRowAtIndexPath:v7];
+    v8 = [(MPVoicemailTableViewController *)&v10 tableView:viewCopy shouldHighlightRowAtIndexPath:pathCopy];
   }
 
   else
@@ -588,15 +588,15 @@ void __83__PHVoicemailInboxListViewController_performTableViewDestructiveActionA
   return v8;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (-[PHVoicemailInboxListViewController sectionTypeAt:](self, "sectionTypeAt:", [v7 section]) == 1)
+  viewCopy = view;
+  pathCopy = path;
+  if (-[PHVoicemailInboxListViewController sectionTypeAt:](self, "sectionTypeAt:", [pathCopy section]) == 1)
   {
     v10.receiver = self;
     v10.super_class = PHVoicemailInboxListViewController;
-    v8 = [(MPVoicemailTableViewController *)&v10 tableView:v6 canEditRowAtIndexPath:v7];
+    v8 = [(MPVoicemailTableViewController *)&v10 tableView:viewCopy canEditRowAtIndexPath:pathCopy];
   }
 
   else
@@ -607,77 +607,77 @@ void __83__PHVoicemailInboxListViewController_performTableViewDestructiveActionA
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (!-[PHVoicemailInboxListViewController sectionTypeAt:](self, "sectionTypeAt:", [v7 section]))
+  viewCopy = view;
+  pathCopy = path;
+  if (!-[PHVoicemailInboxListViewController sectionTypeAt:](self, "sectionTypeAt:", [pathCopy section]))
   {
-    v15 = [(PHVoicemailInboxListViewController *)self legacyVoicemails];
-    v16 = [v15 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+    legacyVoicemails = [(PHVoicemailInboxListViewController *)self legacyVoicemails];
+    navigationController = [legacyVoicemails objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
     v17 = UIApp;
-    v18 = [v16 accountID];
-    [v17 dialVoicemailWithAccountID:v18];
+    accountID = [navigationController accountID];
+    [v17 dialVoicemailWithAccountID:accountID];
 
-    [v6 deselectRowAtIndexPath:v7 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
     goto LABEL_10;
   }
 
   v27.receiver = self;
   v27.super_class = PHVoicemailInboxListViewController;
-  [(MPVoicemailTableViewController *)&v27 tableView:v6 didSelectRowAtIndexPath:v7];
-  [v6 setSeparatorStyle:0];
-  [v6 setSeparatorStyle:1];
-  v8 = [v7 row];
-  v9 = [(MPVoicemailTableViewController *)self voicemails];
-  v10 = [v9 count];
+  [(MPVoicemailTableViewController *)&v27 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  [viewCopy setSeparatorStyle:0];
+  [viewCopy setSeparatorStyle:1];
+  v8 = [pathCopy row];
+  voicemails = [(MPVoicemailTableViewController *)self voicemails];
+  v10 = [voicemails count];
 
   if (v8 >= v10)
   {
-    v19 = [v7 row];
-    v20 = [(MPVoicemailTableViewController *)self voicemails];
-    v21 = [v20 count];
+    v19 = [pathCopy row];
+    voicemails2 = [(MPVoicemailTableViewController *)self voicemails];
+    v21 = [voicemails2 count];
 
     if (v19 < v21)
     {
       goto LABEL_11;
     }
 
-    v16 = [(PHVoicemailInboxListViewController *)self navigationController];
-    v22 = [(PHVoicemailInboxListViewController *)self viewControllerAtIndexPath:v7];
-    [v16 pushViewController:v22 animated:1];
+    navigationController = [(PHVoicemailInboxListViewController *)self navigationController];
+    v22 = [(PHVoicemailInboxListViewController *)self viewControllerAtIndexPath:pathCopy];
+    [navigationController pushViewController:v22 animated:1];
 
 LABEL_10:
     goto LABEL_11;
   }
 
-  v11 = [(PHVoicemailInboxListViewController *)self readButton];
-  if (v11)
+  readButton = [(PHVoicemailInboxListViewController *)self readButton];
+  if (readButton)
   {
-    v12 = v11;
-    v13 = [(PHVoicemailInboxListViewController *)self deleteButton];
+    v12 = readButton;
+    deleteButton = [(PHVoicemailInboxListViewController *)self deleteButton];
 
-    if (v13)
+    if (deleteButton)
     {
       if ([(PHVoicemailInboxListViewController *)self isEditing])
       {
-        v14 = [(PHVoicemailInboxListViewController *)self _selectionContainsUnreadVoicemail];
+        _selectionContainsUnreadVoicemail = [(PHVoicemailInboxListViewController *)self _selectionContainsUnreadVoicemail];
       }
 
       else
       {
-        v14 = 0;
+        _selectionContainsUnreadVoicemail = 0;
       }
 
-      v23 = [(PHVoicemailInboxListViewController *)self readButton];
-      [v23 setEnabled:v14];
+      readButton2 = [(PHVoicemailInboxListViewController *)self readButton];
+      [readButton2 setEnabled:_selectionContainsUnreadVoicemail];
 
-      v24 = [(PHVoicemailInboxListViewController *)self isEditing];
-      if (v24)
+      isEditing = [(PHVoicemailInboxListViewController *)self isEditing];
+      if (isEditing)
       {
-        v23 = [v6 indexPathsForSelectedRows];
-        v25 = [v23 count] != 0;
+        readButton2 = [viewCopy indexPathsForSelectedRows];
+        v25 = [readButton2 count] != 0;
       }
 
       else
@@ -685,10 +685,10 @@ LABEL_10:
         v25 = 0;
       }
 
-      v26 = [(PHVoicemailInboxListViewController *)self deleteButton];
-      [v26 setEnabled:v25];
+      deleteButton2 = [(PHVoicemailInboxListViewController *)self deleteButton];
+      [deleteButton2 setEnabled:v25];
 
-      if (v24)
+      if (isEditing)
       {
       }
     }
@@ -697,78 +697,78 @@ LABEL_10:
 LABEL_11:
 }
 
-- (id)viewControllerAtIndexPath:(id)a3
+- (id)viewControllerAtIndexPath:(id)path
 {
-  v4 = [a3 row];
-  v5 = [(MPVoicemailTableViewController *)self voicemails];
-  v6 = [v5 count];
+  v4 = [path row];
+  voicemails = [(MPVoicemailTableViewController *)self voicemails];
+  v6 = [voicemails count];
 
   if (v4 == v6)
   {
-    v7 = [(PHVoicemailInboxListViewController *)self shouldShowTrashSubFolder];
-    v8 = [(PHVoicemailInboxListViewController *)self voicemailNavigationController];
-    v9 = v8;
-    if (v7)
+    shouldShowTrashSubFolder = [(PHVoicemailInboxListViewController *)self shouldShowTrashSubFolder];
+    voicemailNavigationController = [(PHVoicemailInboxListViewController *)self voicemailNavigationController];
+    v9 = voicemailNavigationController;
+    if (shouldShowTrashSubFolder)
     {
-      v10 = [v8 trashViewController];
+      trashViewController = [voicemailNavigationController trashViewController];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v8 = [(PHVoicemailInboxListViewController *)self voicemailNavigationController];
-    v9 = v8;
+    voicemailNavigationController = [(PHVoicemailInboxListViewController *)self voicemailNavigationController];
+    v9 = voicemailNavigationController;
   }
 
-  v10 = [v8 blockedViewController];
+  trashViewController = [voicemailNavigationController blockedViewController];
 LABEL_6:
-  v11 = v10;
+  v11 = trashViewController;
 
   return v11;
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (-[PHVoicemailInboxListViewController sectionTypeAt:](self, "sectionTypeAt:", [v7 section]))
+  viewCopy = view;
+  pathCopy = path;
+  if (-[PHVoicemailInboxListViewController sectionTypeAt:](self, "sectionTypeAt:", [pathCopy section]))
   {
     v19.receiver = self;
     v19.super_class = PHVoicemailInboxListViewController;
-    [(MPVoicemailTableViewController *)&v19 tableView:v6 didDeselectRowAtIndexPath:v7];
-    v8 = [v7 row];
-    v9 = [(MPVoicemailTableViewController *)self voicemails];
-    v10 = [v9 count];
+    [(MPVoicemailTableViewController *)&v19 tableView:viewCopy didDeselectRowAtIndexPath:pathCopy];
+    v8 = [pathCopy row];
+    voicemails = [(MPVoicemailTableViewController *)self voicemails];
+    v10 = [voicemails count];
 
     if (v8 < v10)
     {
-      v11 = [(PHVoicemailInboxListViewController *)self readButton];
-      if (v11)
+      readButton = [(PHVoicemailInboxListViewController *)self readButton];
+      if (readButton)
       {
-        v12 = v11;
-        v13 = [(PHVoicemailInboxListViewController *)self deleteButton];
+        v12 = readButton;
+        deleteButton = [(PHVoicemailInboxListViewController *)self deleteButton];
 
-        if (v13)
+        if (deleteButton)
         {
           if ([(PHVoicemailInboxListViewController *)self isEditing])
           {
-            v14 = [(PHVoicemailInboxListViewController *)self _selectionContainsUnreadVoicemail];
+            _selectionContainsUnreadVoicemail = [(PHVoicemailInboxListViewController *)self _selectionContainsUnreadVoicemail];
           }
 
           else
           {
-            v14 = 0;
+            _selectionContainsUnreadVoicemail = 0;
           }
 
-          v15 = [(PHVoicemailInboxListViewController *)self readButton];
-          [v15 setEnabled:v14];
+          readButton2 = [(PHVoicemailInboxListViewController *)self readButton];
+          [readButton2 setEnabled:_selectionContainsUnreadVoicemail];
 
-          v16 = [(PHVoicemailInboxListViewController *)self isEditing];
-          if (v16)
+          isEditing = [(PHVoicemailInboxListViewController *)self isEditing];
+          if (isEditing)
           {
-            v15 = [v6 indexPathsForSelectedRows];
-            v17 = [v15 count] != 0;
+            readButton2 = [viewCopy indexPathsForSelectedRows];
+            v17 = [readButton2 count] != 0;
           }
 
           else
@@ -776,10 +776,10 @@ LABEL_6:
             v17 = 0;
           }
 
-          v18 = [(PHVoicemailInboxListViewController *)self deleteButton];
-          [v18 setEnabled:v17];
+          deleteButton2 = [(PHVoicemailInboxListViewController *)self deleteButton];
+          [deleteButton2 setEnabled:v17];
 
-          if (v16)
+          if (isEditing)
           {
           }
         }
@@ -788,66 +788,66 @@ LABEL_6:
   }
 }
 
-- (void)tableView:(id)a3 willBeginEditingRowAtIndexPath:(id)a4
+- (void)tableView:(id)view willBeginEditingRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   [(PHVoicemailInboxListViewController *)self setIsSwipeToDelete:1];
   v8.receiver = self;
   v8.super_class = PHVoicemailInboxListViewController;
-  [(PHTableViewController *)&v8 tableView:v7 willBeginEditingRowAtIndexPath:v6];
+  [(PHTableViewController *)&v8 tableView:viewCopy willBeginEditingRowAtIndexPath:pathCopy];
 }
 
-- (void)tableView:(id)a3 didEndEditingRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didEndEditingRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   [(PHVoicemailInboxListViewController *)self setIsSwipeToDelete:0];
   v8.receiver = self;
   v8.super_class = PHVoicemailInboxListViewController;
-  [(PHTableViewController *)&v8 tableView:v7 didEndEditingRowAtIndexPath:v6];
+  [(PHTableViewController *)&v8 tableView:viewCopy didEndEditingRowAtIndexPath:pathCopy];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a3;
+  editingCopy = editing;
   v15.receiver = self;
   v15.super_class = PHVoicemailInboxListViewController;
-  [(MPVoicemailTableViewController *)&v15 setEditing:a3 animated:a4];
-  v6 = [(PHVoicemailInboxListViewController *)self tabBarController];
-  if (v4 && ![(PHVoicemailInboxListViewController *)self isSwipeToDelete])
+  [(MPVoicemailTableViewController *)&v15 setEditing:editing animated:animated];
+  tabBarController = [(PHVoicemailInboxListViewController *)self tabBarController];
+  if (editingCopy && ![(PHVoicemailInboxListViewController *)self isSwipeToDelete])
   {
-    [v6 hideBarWithTransition:9];
-    v8 = [(PHVoicemailInboxListViewController *)self _selectionContainsUnreadVoicemail];
-    v9 = [(PHVoicemailInboxListViewController *)self readButton];
-    [v9 setEnabled:v8];
+    [tabBarController hideBarWithTransition:9];
+    _selectionContainsUnreadVoicemail = [(PHVoicemailInboxListViewController *)self _selectionContainsUnreadVoicemail];
+    readButton = [(PHVoicemailInboxListViewController *)self readButton];
+    [readButton setEnabled:_selectionContainsUnreadVoicemail];
 
-    v10 = [(PHVoicemailInboxListViewController *)self tableView];
-    v11 = [v10 indexPathsForSelectedRows];
-    v12 = [v11 count] != 0;
-    v13 = [(PHVoicemailInboxListViewController *)self deleteButton];
-    [v13 setEnabled:v12];
+    tableView = [(PHVoicemailInboxListViewController *)self tableView];
+    indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
+    v12 = [indexPathsForSelectedRows count] != 0;
+    deleteButton = [(PHVoicemailInboxListViewController *)self deleteButton];
+    [deleteButton setEnabled:v12];
 
-    v14 = [(PHVoicemailInboxListViewController *)self navigationController];
-    [v14 setToolbarHidden:0];
+    navigationController = [(PHVoicemailInboxListViewController *)self navigationController];
+    [navigationController setToolbarHidden:0];
   }
 
   else
   {
-    v7 = [(PHVoicemailInboxListViewController *)self navigationController];
-    [v7 setToolbarHidden:1];
+    navigationController2 = [(PHVoicemailInboxListViewController *)self navigationController];
+    [navigationController2 setToolbarHidden:1];
 
-    [v6 showBarWithTransition:12];
+    [tabBarController showBarWithTransition:12];
   }
 }
 
-- (void)willShowVoicemails:(id)a3
+- (void)willShowVoicemails:(id)voicemails
 {
-  v4 = a3;
-  v5 = [v4 count];
+  voicemailsCopy = voicemails;
+  v5 = [voicemailsCopy count];
   if (v5)
   {
-    v6 = [(PHVoicemailInboxListViewController *)self editButtonItem];
+    editButtonItem = [(PHVoicemailInboxListViewController *)self editButtonItem];
   }
 
   else
@@ -857,34 +857,34 @@ LABEL_6:
       [(PHVoicemailInboxListViewController *)self setEditing:0 animated:1];
     }
 
-    v6 = 0;
+    editButtonItem = 0;
   }
 
-  v7 = [(PHVoicemailInboxListViewController *)self navigationItem];
-  [v7 setLeftBarButtonItem:v6];
+  navigationItem = [(PHVoicemailInboxListViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:editButtonItem];
 
   if (v5)
   {
   }
 
   v8 = +[PHVoicemailTrashListViewController voicemailPredicate];
-  v9 = [(MPVoicemailTableViewController *)self voicemails:v4 passingTest:v8];
+  v9 = [(MPVoicemailTableViewController *)self voicemails:voicemailsCopy passingTest:v8];
   [(PHVoicemailInboxListViewController *)self setTrashVoicemails:v9];
 
   v10 = +[PHVoicemailBlockedListViewController voicemailPredicate];
-  v11 = [(MPVoicemailTableViewController *)self voicemails:v4 passingTest:v10];
+  v11 = [(MPVoicemailTableViewController *)self voicemails:voicemailsCopy passingTest:v10];
 
   [(PHVoicemailInboxListViewController *)self setBlockedVoicemails:v11];
   v12 = PHDefaultLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(PHVoicemailInboxListViewController *)self trashVoicemails];
-    v14 = [v13 count];
-    v15 = [(PHVoicemailInboxListViewController *)self blockedVoicemails];
+    trashVoicemails = [(PHVoicemailInboxListViewController *)self trashVoicemails];
+    v14 = [trashVoicemails count];
+    blockedVoicemails = [(PHVoicemailInboxListViewController *)self blockedVoicemails];
     v16 = 134218240;
     v17 = v14;
     v18 = 2048;
-    v19 = [v15 count];
+    v19 = [blockedVoicemails count];
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Found trashVoicemails.count: %ld blockedVoicemails.count: %ld", &v16, 0x16u);
   }
 }
@@ -892,9 +892,9 @@ LABEL_6:
 - (void)greetingButtonTapped
 {
   v3 = [VMGreetingChangeViewController alloc];
-  v4 = [(MPVoicemailTableViewController *)self voicemailController];
-  v5 = [v4 accountManager];
-  v6 = [(VMNavigationController *)v3 initWithManager:v5];
+  voicemailController = [(MPVoicemailTableViewController *)self voicemailController];
+  accountManager = [voicemailController accountManager];
+  v6 = [(VMNavigationController *)v3 initWithManager:accountManager];
 
   [(PHVoicemailInboxListViewController *)self presentViewController:v6 animated:1 completion:0];
 }
@@ -914,8 +914,8 @@ LABEL_6:
     v7 = 0;
   }
 
-  v6 = [(PHVoicemailInboxListViewController *)self navigationItem];
-  [v6 setRightBarButtonItem:v7];
+  navigationItem = [(PHVoicemailInboxListViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v7];
 }
 
 - (BOOL)_selectionContainsUnreadVoicemail
@@ -924,10 +924,10 @@ LABEL_6:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(PHVoicemailInboxListViewController *)self tableView];
-  v4 = [v3 indexPathsForSelectedRows];
+  tableView = [(PHVoicemailInboxListViewController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
 
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [indexPathsForSelectedRows countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -938,17 +938,17 @@ LABEL_6:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(indexPathsForSelectedRows);
         }
 
         v9 = [*(*(&v16 + 1) + 8 * i) row];
-        v10 = [(MPVoicemailTableViewController *)self voicemails];
-        v11 = [v10 count];
+        voicemails = [(MPVoicemailTableViewController *)self voicemails];
+        v11 = [voicemails count];
 
         if (v9 < v11)
         {
-          v12 = [(MPVoicemailTableViewController *)self voicemails];
-          v13 = [v12 objectAtIndex:v9];
+          voicemails2 = [(MPVoicemailTableViewController *)self voicemails];
+          v13 = [voicemails2 objectAtIndex:v9];
 
           if (v13 && ![v13 isRead])
           {
@@ -959,7 +959,7 @@ LABEL_6:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [indexPathsForSelectedRows countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v6)
       {
         continue;
@@ -975,17 +975,17 @@ LABEL_14:
   return v14;
 }
 
-- (void)_markAsRead:(id)a3
+- (void)_markAsRead:(id)read
 {
   v4 = objc_alloc_init(NSMutableSet);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(PHVoicemailInboxListViewController *)self tableView];
-  v6 = [v5 indexPathsForSelectedRows];
+  tableView = [(PHVoicemailInboxListViewController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [indexPathsForSelectedRows countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -997,7 +997,7 @@ LABEL_14:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(indexPathsForSelectedRows);
         }
 
         v11 = -[MPVoicemailTableViewController messageAtIndex:](self, "messageAtIndex:", [*(*(&v14 + 1) + 8 * v10) row]);
@@ -1010,7 +1010,7 @@ LABEL_14:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [indexPathsForSelectedRows countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -1018,18 +1018,18 @@ LABEL_14:
 
   if ([v4 count])
   {
-    v12 = [(MPVoicemailTableViewController *)self voicemailController];
-    v13 = [v4 allObjects];
-    [v12 markMessagesAsRead:v13];
+    voicemailController = [(MPVoicemailTableViewController *)self voicemailController];
+    allObjects = [v4 allObjects];
+    [voicemailController markMessagesAsRead:allObjects];
   }
 
   [(PHVoicemailInboxListViewController *)self setEditing:0 animated:1];
 }
 
-- (void)_delete:(id)a3
+- (void)_delete:(id)_delete
 {
-  v4 = [(PHVoicemailInboxListViewController *)self tableView];
-  v5 = [v4 indexPathsForSelectedRows];
+  tableView = [(PHVoicemailInboxListViewController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
   v6[4] = self;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -1040,7 +1040,7 @@ LABEL_14:
   v6[1] = 3221225472;
   v6[2] = __46__PHVoicemailInboxListViewController__delete___block_invoke_2;
   v6[3] = &unk_1002854D0;
-  [(MPVoicemailTableViewController *)self performDeleteAtIndexPaths:v5 dataSourceActions:v7 completionBlock:v6];
+  [(MPVoicemailTableViewController *)self performDeleteAtIndexPaths:indexPathsForSelectedRows dataSourceActions:v7 completionBlock:v6];
 }
 
 void __46__PHVoicemailInboxListViewController__delete___block_invoke(uint64_t a1, void *a2)
@@ -1060,22 +1060,22 @@ void __46__PHVoicemailInboxListViewController__delete___block_invoke(uint64_t a1
 
 - (void)tipKitStartObservation
 {
-  v2 = self;
+  selfCopy = self;
   PHVoicemailInboxListViewController.tipKitStartObservation()();
 }
 
 - (void)tipKitStopObservation
 {
-  v2 = self;
+  selfCopy = self;
   PHVoicemailInboxListViewController.tipKitStopObservation()();
 }
 
-- (void)hideTipViewWithCompletionHandler:(id)a3
+- (void)hideTipViewWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -1091,13 +1091,13 @@ void __46__PHVoicemailInboxListViewController__delete___block_invoke(uint64_t a1
   v12[3] = 0;
   v12[4] = &_sIeghH_IeAgH_TRTATu;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v7, &_sIeAgH_ytIeAgHr_TRTATu, v12);
 }
 
 - (BOOL)showTipView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PHVoicemailInboxListViewController.showTipView()();
 
   return v3;
@@ -1105,13 +1105,13 @@ void __46__PHVoicemailInboxListViewController__delete___block_invoke(uint64_t a1
 
 - (void)startObservingPreferences
 {
-  v2 = self;
+  selfCopy = self;
   PHVoicemailInboxListViewController.startObservingPreferences()();
 }
 
 - (BOOL)shouldShowGreetingButton
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PHVoicemailInboxListViewController.shouldShowGreetingButton()();
 
   return v3;

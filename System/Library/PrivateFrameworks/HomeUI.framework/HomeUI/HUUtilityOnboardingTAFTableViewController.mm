@@ -1,49 +1,49 @@
 @interface HUUtilityOnboardingTAFTableViewController
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HUUtilityOnboardingTAFTableViewController)initWithContext:(id)a3 itemManager:(id)a4 tableViewStyle:(int64_t)a5;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HUUtilityOnboardingTAFTableViewController)initWithContext:(id)context itemManager:(id)manager tableViewStyle:(int64_t)style;
 - (TAFTableDelegate)delegate;
-- (id)tafFieldForItem:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)textDidChange:(id)a3 forTextField:(id)a4 item:(id)a5;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
+- (id)tafFieldForItem:(id)item;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)textDidChange:(id)change forTextField:(id)field item:(id)item;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
 @end
 
 @implementation HUUtilityOnboardingTAFTableViewController
 
-- (HUUtilityOnboardingTAFTableViewController)initWithContext:(id)a3 itemManager:(id)a4 tableViewStyle:(int64_t)a5
+- (HUUtilityOnboardingTAFTableViewController)initWithContext:(id)context itemManager:(id)manager tableViewStyle:(int64_t)style
 {
-  v9 = a3;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = HUUtilityOnboardingTAFTableViewController;
-  v10 = [(HUItemTableViewController *)&v13 initWithItemManager:a4 tableViewStyle:a5];
+  v10 = [(HUItemTableViewController *)&v13 initWithItemManager:manager tableViewStyle:style];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_context, a3);
+    objc_storeStrong(&v10->_context, context);
   }
 
   return v11;
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  pathCopy = path;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 latestResults];
+    latestResults = [itemCopy latestResults];
     v12 = 138413058;
-    v13 = self;
+    selfCopy = self;
     v14 = 2080;
     v15 = "[HUUtilityOnboardingTAFTableViewController cellClassForItem:indexPath:]";
     v16 = 2112;
-    v17 = v9;
+    v17 = latestResults;
     v18 = 2112;
-    v19 = v7;
+    v19 = pathCopy;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@:%s cell class for item %@ with index %@ ", &v12, 0x2Au);
   }
 
@@ -52,48 +52,48 @@
   return v10;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v9 = HFLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 latestResults];
+    latestResults = [itemCopy latestResults];
     *buf = 138412802;
-    v36 = self;
+    selfCopy = self;
     v37 = 2080;
     v38 = "[HUUtilityOnboardingTAFTableViewController setupCell:forItem:indexPath:]";
     v39 = 2112;
-    v40 = v10;
+    v40 = latestResults;
     _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "%@:%s Set up cell %@ ", buf, 0x20u);
   }
 
-  v11 = v7;
-  v12 = [v8 latestResults];
-  v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-  v14 = [v11 textField];
-  [v14 setPlaceholder:v13];
+  v11 = cellCopy;
+  latestResults2 = [itemCopy latestResults];
+  v13 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  textField = [v11 textField];
+  [textField setPlaceholder:v13];
 
   v15 = MEMORY[0x277CCACA8];
-  v16 = [v8 latestResults];
+  latestResults3 = [itemCopy latestResults];
   v17 = *MEMORY[0x277D13E30];
-  v18 = [v16 objectForKeyedSubscript:*MEMORY[0x277D13E30]];
+  v18 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D13E30]];
   v19 = [v15 stringWithFormat:@"Home.OnboardingView.Utility.TAF.TextField.%@", v18];
-  v20 = [v11 textField];
-  [v20 setAccessibilityIdentifier:v19];
+  textField2 = [v11 textField];
+  [textField2 setAccessibilityIdentifier:v19];
 
-  v21 = [MEMORY[0x277D75348] tertiarySystemFillColor];
-  [v11 setBackgroundColor:v21];
+  tertiarySystemFillColor = [MEMORY[0x277D75348] tertiarySystemFillColor];
+  [v11 setBackgroundColor:tertiarySystemFillColor];
 
-  v22 = [v8 latestResults];
-  v23 = [v22 objectForKeyedSubscript:v17];
+  latestResults4 = [itemCopy latestResults];
+  v23 = [latestResults4 objectForKeyedSubscript:v17];
 
   v24 = +[_TtC6HomeUI12TAFFieldName phone];
-  LOBYTE(v16) = [v23 isEqualToString:v24];
+  LOBYTE(latestResults3) = [v23 isEqualToString:v24];
 
-  if ((v16 & 1) == 0)
+  if ((latestResults3 & 1) == 0)
   {
     v26 = +[_TtC6HomeUI12TAFFieldName email];
     v27 = [v23 isEqualToString:v26];
@@ -115,119 +115,119 @@
 
   v25 = 2;
 LABEL_7:
-  v28 = [v11 textField];
-  [v28 setKeyboardType:v25];
+  textField3 = [v11 textField];
+  [textField3 setKeyboardType:v25];
 
 LABEL_8:
-  v29 = [(HUUtilityOnboardingTAFTableViewController *)self context];
-  v30 = [v29 tafResponses];
-  v31 = [v30 objectForKeyedSubscript:v23];
-  v32 = [v11 textField];
-  [v32 setText:v31];
+  context = [(HUUtilityOnboardingTAFTableViewController *)self context];
+  tafResponses = [context tafResponses];
+  v31 = [tafResponses objectForKeyedSubscript:v23];
+  textField4 = [v11 textField];
+  [textField4 setText:v31];
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
+  animatedCopy = animated;
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v25.receiver = self;
   v25.super_class = HUUtilityOnboardingTAFTableViewController;
-  [(HUItemTableViewController *)&v25 updateCell:v10 forItem:v11 indexPath:a5 animated:v6];
+  [(HUItemTableViewController *)&v25 updateCell:cellCopy forItem:itemCopy indexPath:path animated:animatedCopy];
   v12 = HFLogForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v11 latestResults];
+    latestResults = [itemCopy latestResults];
     *buf = 138412802;
-    v27 = self;
+    selfCopy = self;
     v28 = 2080;
     v29 = "[HUUtilityOnboardingTAFTableViewController updateCell:forItem:indexPath:animated:]";
     v30 = 2112;
-    v31 = v13;
+    v31 = latestResults;
     _os_log_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_DEFAULT, "%@:%s item with results%@ ", buf, 0x20u);
   }
 
-  v14 = v10;
-  v15 = [v11 latestResults];
-  v16 = [v15 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-  v17 = [v14 textField];
-  [v17 setPlaceholder:v16];
+  v14 = cellCopy;
+  latestResults2 = [itemCopy latestResults];
+  v16 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  textField = [v14 textField];
+  [textField setPlaceholder:v16];
 
-  v18 = [MEMORY[0x277D75348] tertiarySystemFillColor];
-  [v14 setBackgroundColor:v18];
+  tertiarySystemFillColor = [MEMORY[0x277D75348] tertiarySystemFillColor];
+  [v14 setBackgroundColor:tertiarySystemFillColor];
 
-  v19 = [v11 latestResults];
-  v20 = [v19 objectForKeyedSubscript:*MEMORY[0x277D13E30]];
+  latestResults3 = [itemCopy latestResults];
+  v20 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D13E30]];
 
-  v21 = [(HUUtilityOnboardingTAFTableViewController *)self context];
-  v22 = [v21 tafResponses];
-  v23 = [v22 objectForKeyedSubscript:v20];
-  v24 = [v14 textField];
+  context = [(HUUtilityOnboardingTAFTableViewController *)self context];
+  tafResponses = [context tafResponses];
+  v23 = [tafResponses objectForKeyedSubscript:v20];
+  textField2 = [v14 textField];
 
-  [v24 setText:v23];
+  [textField2 setText:v23];
 }
 
-- (void)textDidChange:(id)a3 forTextField:(id)a4 item:(id)a5
+- (void)textDidChange:(id)change forTextField:(id)field item:(id)item
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [a5 latestResults];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D13E30]];
+  changeCopy = change;
+  latestResults = [item latestResults];
+  v9 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E30]];
   v10 = [(HUUtilityOnboardingTAFTableViewController *)self tafFieldForItem:v9];
 
   if (v10)
   {
-    v11 = [(HUUtilityOnboardingTAFTableViewController *)self context];
-    [v11 setResponseFor:v10 value:v7];
+    context = [(HUUtilityOnboardingTAFTableViewController *)self context];
+    [context setResponseFor:v10 value:changeCopy];
 
-    v12 = [(UtilityOnboardingContext *)self->_context allRequiredFieldsComplete];
+    allRequiredFieldsComplete = [(UtilityOnboardingContext *)self->_context allRequiredFieldsComplete];
     v13 = HFLogForCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       v15 = 138412802;
-      v16 = self;
+      selfCopy = self;
       v17 = 2080;
       v18 = "[HUUtilityOnboardingTAFTableViewController textDidChange:forTextField:item:]";
       v19 = 1024;
-      v20 = v12;
+      v20 = allRequiredFieldsComplete;
       _os_log_debug_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_DEBUG, "%@:%s ENABLING BUTTON --> %{BOOL}d", &v15, 0x1Cu);
     }
 
-    v14 = [(HUUtilityOnboardingTAFTableViewController *)self delegate];
-    [v14 didCompleteAllFields:v12];
+    delegate = [(HUUtilityOnboardingTAFTableViewController *)self delegate];
+    [delegate didCompleteAllFields:allRequiredFieldsComplete];
   }
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = [(HUUtilityOnboardingTAFTableViewController *)self delegate];
-  [v5 selectedTextField:v4];
+  editingCopy = editing;
+  delegate = [(HUUtilityOnboardingTAFTableViewController *)self delegate];
+  [delegate selectedTextField:editingCopy];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = HUUtilityOnboardingTAFTableViewController;
-  v5 = a4;
-  v6 = a3;
-  [(HUItemTableViewController *)&v7 tableView:v6 didSelectRowAtIndexPath:v5];
-  [v6 deselectRowAtIndexPath:v5 animated:{1, v7.receiver, v7.super_class}];
+  pathCopy = path;
+  viewCopy = view;
+  [(HUItemTableViewController *)&v7 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:{1, v7.receiver, v7.super_class}];
 }
 
-- (id)tafFieldForItem:(id)a3
+- (id)tafFieldForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(UtilityOnboardingContext *)self->_context config];
-  v6 = [v5 fields];
+  itemCopy = item;
+  config = [(UtilityOnboardingContext *)self->_context config];
+  fields = [config fields];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __61__HUUtilityOnboardingTAFTableViewController_tafFieldForItem___block_invoke;
   v10[3] = &unk_277DBF968;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v6 na_firstObjectPassingTest:v10];
+  v11 = itemCopy;
+  v7 = itemCopy;
+  v8 = [fields na_firstObjectPassingTest:v10];
 
   return v8;
 }

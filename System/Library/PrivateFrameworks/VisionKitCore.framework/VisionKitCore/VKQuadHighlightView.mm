@@ -1,75 +1,75 @@
 @interface VKQuadHighlightView
-- (VKQuadHighlightView)initWithFrame:(CGRect)a3;
+- (VKQuadHighlightView)initWithFrame:(CGRect)frame;
 - (void)_drawHighlight;
-- (void)animateToQuad:(id)a3;
+- (void)animateToQuad:(id)quad;
 - (void)layoutSubviews;
-- (void)setQuad:(id)a3;
+- (void)setQuad:(id)quad;
 @end
 
 @implementation VKQuadHighlightView
 
-- (VKQuadHighlightView)initWithFrame:(CGRect)a3
+- (VKQuadHighlightView)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = VKQuadHighlightView;
-  v3 = [(VKQuadHighlightView *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VKQuadHighlightView *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69794A0] layer];
+    layer = [MEMORY[0x1E69794A0] layer];
     shadowLayerMaskLayer = v3->_shadowLayerMaskLayer;
-    v3->_shadowLayerMaskLayer = v4;
+    v3->_shadowLayerMaskLayer = layer;
 
-    v6 = [MEMORY[0x1E69DC888] greenColor];
-    -[CAShapeLayer setFillColor:](v3->_shadowLayerMaskLayer, "setFillColor:", [v6 CGColor]);
+    greenColor = [MEMORY[0x1E69DC888] greenColor];
+    -[CAShapeLayer setFillColor:](v3->_shadowLayerMaskLayer, "setFillColor:", [greenColor CGColor]);
 
     [(CAShapeLayer *)v3->_shadowLayerMaskLayer setFillRule:*MEMORY[0x1E69797F8]];
-    v7 = [MEMORY[0x1E69794A0] layer];
+    layer2 = [MEMORY[0x1E69794A0] layer];
     shadowLayer = v3->_shadowLayer;
-    v3->_shadowLayer = v7;
+    v3->_shadowLayer = layer2;
 
-    v9 = [MEMORY[0x1E69DC888] whiteColor];
-    -[CAShapeLayer setFillColor:](v3->_shadowLayer, "setFillColor:", [v9 CGColor]);
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    -[CAShapeLayer setFillColor:](v3->_shadowLayer, "setFillColor:", [whiteColor CGColor]);
 
     [(CAShapeLayer *)v3->_shadowLayer setShadowRadius:3.0];
-    v10 = [MEMORY[0x1E69DC888] blackColor];
-    -[CAShapeLayer setShadowColor:](v3->_shadowLayer, "setShadowColor:", [v10 CGColor]);
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    -[CAShapeLayer setShadowColor:](v3->_shadowLayer, "setShadowColor:", [blackColor CGColor]);
 
     LODWORD(v11) = 0.5;
     [(CAShapeLayer *)v3->_shadowLayer setShadowOpacity:v11];
     [(CAShapeLayer *)v3->_shadowLayer setShadowOffset:2.0, 2.0];
     [(CAShapeLayer *)v3->_shadowLayer setMask:v3->_shadowLayerMaskLayer];
-    v12 = [MEMORY[0x1E69794A0] layer];
+    layer3 = [MEMORY[0x1E69794A0] layer];
     highlightLayer = v3->_highlightLayer;
-    v3->_highlightLayer = v12;
+    v3->_highlightLayer = layer3;
 
-    v14 = [MEMORY[0x1E69DC888] whiteColor];
-    v15 = [v14 colorWithAlphaComponent:0.2];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    v15 = [whiteColor2 colorWithAlphaComponent:0.2];
     -[CAShapeLayer setFillColor:](v3->_highlightLayer, "setFillColor:", [v15 CGColor]);
 
-    v16 = [(VKQuadHighlightView *)v3 layer];
-    [v16 addSublayer:v3->_shadowLayer];
+    layer4 = [(VKQuadHighlightView *)v3 layer];
+    [layer4 addSublayer:v3->_shadowLayer];
 
-    v17 = [(VKQuadHighlightView *)v3 layer];
-    [v17 addSublayer:v3->_highlightLayer];
+    layer5 = [(VKQuadHighlightView *)v3 layer];
+    [layer5 addSublayer:v3->_highlightLayer];
   }
 
   return v3;
 }
 
-- (void)setQuad:(id)a3
+- (void)setQuad:(id)quad
 {
   v25[8] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_quad, a3);
+  quadCopy = quad;
+  objc_storeStrong(&self->_quad, quad);
   if (self->_topLeft)
   {
-    [v5 topLeft];
+    [quadCopy topLeft];
     [(VKPointAnimatableProperty *)self->_topLeft setValue:?];
-    [v5 topRight];
+    [quadCopy topRight];
     [(VKPointAnimatableProperty *)self->_topRight setValue:?];
-    [v5 bottomRight];
+    [quadCopy bottomRight];
     [(VKPointAnimatableProperty *)self->_bottomRight setValue:?];
-    [v5 bottomLeft];
+    [quadCopy bottomLeft];
     [(VKPointAnimatableProperty *)self->_bottomLeft setValue:?];
     [(VKQuadHighlightView *)self _drawHighlight];
   }
@@ -92,13 +92,13 @@
     bottomLeft = self->_bottomLeft;
     self->_bottomLeft = v12;
 
-    [v5 topLeft];
+    [quadCopy topLeft];
     [(VKPointAnimatableProperty *)self->_topLeft setValue:?];
-    [v5 topRight];
+    [quadCopy topRight];
     [(VKPointAnimatableProperty *)self->_topRight setValue:?];
-    [v5 bottomRight];
+    [quadCopy bottomRight];
     [(VKPointAnimatableProperty *)self->_bottomRight setValue:?];
-    [v5 bottomLeft];
+    [quadCopy bottomLeft];
     [(VKPointAnimatableProperty *)self->_bottomLeft setValue:?];
     v22 = MEMORY[0x1E69DD250];
     v23 = [(VKPointAnimatableProperty *)self->_topLeft x];
@@ -132,8 +132,8 @@
   v12.receiver = self;
   v12.super_class = VKQuadHighlightView;
   [(VKQuadHighlightView *)&v12 layoutSubviews];
-  v3 = [(VKQuadHighlightView *)self layer];
-  [v3 bounds];
+  layer = [(VKQuadHighlightView *)self layer];
+  [layer bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -144,9 +144,9 @@
   [(CAShapeLayer *)self->_shadowLayerMaskLayer setFrame:v5, v7, v9, v11];
 }
 
-- (void)animateToQuad:(id)a3
+- (void)animateToQuad:(id)quad
 {
-  [(VKQuadHighlightView *)self setQuad:a3];
+  [(VKQuadHighlightView *)self setQuad:quad];
 
   [(VKQuadHighlightView *)self _drawHighlight];
 }
@@ -166,14 +166,14 @@
   v15 = v14;
   [(VKPointAnimatableProperty *)self->_bottomRight presentationValue];
   v18 = [(VKQuad *)v3 initWithTopLeft:v5 topRight:v7 bottomLeft:v9 bottomRight:v11, v13, v15, v16, v17];
-  v19 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v19 nativeScale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen nativeScale];
   v21 = v20;
-  [v19 scale];
+  [mainScreen scale];
   v22 = MEMORY[0x1E69DC728];
   v24 = v21 / v23;
-  v25 = [(VKQuad *)v18 path];
-  v30[0] = v25;
+  path = [(VKQuad *)v18 path];
+  v30[0] = path;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
   v27 = [v22 vk_groupAndRoundPaths:v26 radius:4.0 / v24 offset:4.0 / v24];
 

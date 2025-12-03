@@ -1,40 +1,40 @@
 @interface PosterEditor
-- (id)looksForEditor:(id)a3;
-- (id)titleContentStylePickerConfigurationForEditor:(id)a3;
-- (void)editor:(id)a3 didInitializeWithEnvironment:(id)a4;
-- (void)editor:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5;
-- (void)editor:(id)a3 finalizeWithCompletion:(id)a4;
-- (void)editor:(id)a3 populateViews:(id)a4 forLook:(id)a5;
-- (void)editorDidInvalidate:(id)a3;
+- (id)looksForEditor:(id)editor;
+- (id)titleContentStylePickerConfigurationForEditor:(id)editor;
+- (void)editor:(id)editor didInitializeWithEnvironment:(id)environment;
+- (void)editor:(id)editor didUpdateEnvironment:(id)environment withTransition:(id)transition;
+- (void)editor:(id)editor finalizeWithCompletion:(id)completion;
+- (void)editor:(id)editor populateViews:(id)views forLook:(id)look;
+- (void)editorDidInvalidate:(id)invalidate;
 @end
 
 @implementation PosterEditor
 
-- (void)editor:(id)a3 didInitializeWithEnvironment:(id)a4
+- (void)editor:(id)editor didInitializeWithEnvironment:(id)environment
 {
-  v6 = a3;
+  editorCopy = editor;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_100035AEC(v6, a4);
+  selfCopy = self;
+  sub_100035AEC(editorCopy, environment);
 
   swift_unknownObjectRelease();
 }
 
-- (void)editor:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5
+- (void)editor:(id)editor didUpdateEnvironment:(id)environment withTransition:(id)transition
 {
-  v8 = a3;
+  editorCopy = editor;
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  sub_10003619C(v10, a4, a5);
+  transitionCopy = transition;
+  selfCopy = self;
+  sub_10003619C(selfCopy, environment, transition);
 
   swift_unknownObjectRelease();
 }
 
-- (id)looksForEditor:(id)a3
+- (id)looksForEditor:(id)editor
 {
-  v4 = a3;
-  v5 = self;
+  editorCopy = editor;
+  selfCopy = self;
   sub_100036438();
 
   sub_100013820(0, &qword_100064CE8, PREditingLook_ptr);
@@ -43,40 +43,40 @@
   return v6.super.isa;
 }
 
-- (id)titleContentStylePickerConfigurationForEditor:(id)a3
+- (id)titleContentStylePickerConfigurationForEditor:(id)editor
 {
-  v4 = a3;
-  v5 = self;
+  editorCopy = editor;
+  selfCopy = self;
   v6 = sub_100036674();
 
   return v6;
 }
 
-- (void)editor:(id)a3 populateViews:(id)a4 forLook:(id)a5
+- (void)editor:(id)editor populateViews:(id)views forLook:(id)look
 {
-  v8 = a3;
+  editorCopy = editor;
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  sub_1000367C4(v10, a4);
+  lookCopy = look;
+  selfCopy = self;
+  sub_1000367C4(selfCopy, views);
 
   swift_unknownObjectRelease();
 }
 
-- (void)editor:(id)a3 finalizeWithCompletion:(id)a4
+- (void)editor:(id)editor finalizeWithCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_100037A34(v7, v8, v6);
+  editorCopy = editor;
+  selfCopy = self;
+  sub_100037A34(editorCopy, selfCopy, v6);
   _Block_release(v6);
 }
 
-- (void)editorDidInvalidate:(id)a3
+- (void)editorDidInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = self;
+  invalidateCopy = invalidate;
+  selfCopy = self;
   sub_100037CDC();
 }
 

@@ -1,14 +1,14 @@
 @interface MSVCallback
-+ (id)callbackWithQueue:(id)a3 block:(id)a4;
++ (id)callbackWithQueue:(id)queue block:(id)block;
 - (void)invoke;
-- (void)invokeWithObject:(id)a3;
+- (void)invokeWithObject:(id)object;
 @end
 
 @implementation MSVCallback
 
-- (void)invokeWithObject:(id)a3
+- (void)invokeWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   if (self->_block)
   {
     v5 = MEMORY[0x1B26EC6C0]();
@@ -18,7 +18,7 @@
     v8[2] = __32__MSVCallback_invokeWithObject___block_invoke;
     v8[3] = &unk_1E7982B00;
     v10 = v5;
-    v9 = v4;
+    v9 = objectCopy;
     v7 = v5;
     dispatch_async(queue, v8);
   }
@@ -41,16 +41,16 @@
   }
 }
 
-+ (id)callbackWithQueue:(id)a3 block:(id)a4
++ (id)callbackWithQueue:(id)queue block:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  queueCopy = queue;
+  blockCopy = block;
   v7 = objc_alloc_init(MSVCallback);
-  [(MSVCallback *)v7 setBlock:v6];
+  [(MSVCallback *)v7 setBlock:blockCopy];
 
-  if (v5)
+  if (queueCopy)
   {
-    [(MSVCallback *)v7 setQueue:v5];
+    [(MSVCallback *)v7 setQueue:queueCopy];
   }
 
   else

@@ -1,9 +1,9 @@
 @interface AFUISiriLanguage
-- (AFUISiriLanguage)initWithDelegate:(id)a3;
+- (AFUISiriLanguage)initWithDelegate:(id)delegate;
 - (AFUISiriLanguageDelegate)_delegate;
 - (BOOL)_setupAssistantHasCompletedInitialRunAvailable;
 - (id)_computeSpokenLanguageCode;
-- (void)_setSpokenLanguageCode:(id)a3;
+- (void)_setSpokenLanguageCode:(id)code;
 - (void)_updateSpokenLanguageCode;
 - (void)dealloc;
 @end
@@ -12,13 +12,13 @@
 
 - (id)_computeSpokenLanguageCode
 {
-  v3 = [MEMORY[0x277CEF368] sharedPreferences];
-  v4 = [v3 languageCode];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  languageCode = [mEMORY[0x277CEF368] languageCode];
 
-  if (!v4)
+  if (!languageCode)
   {
-    v5 = [MEMORY[0x277CEF368] sharedPreferences];
-    v4 = [v5 bestSupportedLanguageCodeForLanguageCode:0];
+    mEMORY[0x277CEF368]2 = [MEMORY[0x277CEF368] sharedPreferences];
+    languageCode = [mEMORY[0x277CEF368]2 bestSupportedLanguageCodeForLanguageCode:0];
 
     if ([(AFUISiriLanguage *)self _setupAssistantHasCompletedInitialRunAvailable])
     {
@@ -51,12 +51,12 @@
     }
   }
 
-  return v4;
+  return languageCode;
 }
 
-- (AFUISiriLanguage)initWithDelegate:(id)a3
+- (AFUISiriLanguage)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = AFUISiriLanguage;
   v5 = [(AFUISiriLanguage *)&v12 init];
@@ -64,16 +64,16 @@
   if (v5)
   {
     *&v5->_setupAssistantHasCompletedInitialRunChecked = 0;
-    objc_storeWeak(&v5->_delegate, v4);
-    v7 = [(AFUISiriLanguage *)v6 _computeSpokenLanguageCode];
+    objc_storeWeak(&v5->_delegate, delegateCopy);
+    _computeSpokenLanguageCode = [(AFUISiriLanguage *)v6 _computeSpokenLanguageCode];
     spokenLanguageCode = v6->_spokenLanguageCode;
-    v6->_spokenLanguageCode = v7;
+    v6->_spokenLanguageCode = _computeSpokenLanguageCode;
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v6 selector:sel__spokenLanguageDidChange_ name:*MEMORY[0x277CEF018] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__spokenLanguageDidChange_ name:*MEMORY[0x277CEF018] object:0];
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v6 selector:sel__currentLocaleDidChange_ name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel__currentLocaleDidChange_ name:*MEMORY[0x277CBE620] object:0];
   }
 
   return v6;
@@ -81,8 +81,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = AFUISiriLanguage;
@@ -91,21 +91,21 @@
 
 - (void)_updateSpokenLanguageCode
 {
-  v3 = [(AFUISiriLanguage *)self _computeSpokenLanguageCode];
-  [(AFUISiriLanguage *)self _setSpokenLanguageCode:v3];
+  _computeSpokenLanguageCode = [(AFUISiriLanguage *)self _computeSpokenLanguageCode];
+  [(AFUISiriLanguage *)self _setSpokenLanguageCode:_computeSpokenLanguageCode];
 }
 
-- (void)_setSpokenLanguageCode:(id)a3
+- (void)_setSpokenLanguageCode:(id)code
 {
-  v7 = a3;
+  codeCopy = code;
   if (![(NSString *)self->_spokenLanguageCode isEqualToString:?])
   {
-    v4 = [v7 copy];
+    v4 = [codeCopy copy];
     spokenLanguageCode = self->_spokenLanguageCode;
     self->_spokenLanguageCode = v4;
 
-    v6 = [(AFUISiriLanguage *)self _delegate];
-    [v6 siriLanguageSpokenLanguageCodeDidChange:self];
+    _delegate = [(AFUISiriLanguage *)self _delegate];
+    [_delegate siriLanguageSpokenLanguageCodeDidChange:self];
   }
 }
 

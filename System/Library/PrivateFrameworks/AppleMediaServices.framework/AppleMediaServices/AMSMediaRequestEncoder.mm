@@ -2,7 +2,7 @@
 + (id)createBagForSubProfile;
 - (ACAccount)account;
 - (AMSBagProtocol)bag;
-- (AMSMediaRequestEncoder)initWithTokenService:(id)a3 bag:(id)a4;
+- (AMSMediaRequestEncoder)initWithTokenService:(id)service bag:(id)bag;
 - (AMSProcessInfo)clientInfo;
 - (AMSResponseDecoding)responseDecoder;
 - (BOOL)URLKnownToBeTrusted;
@@ -12,45 +12,45 @@
 - (BOOL)excludeIdentifierHeadersForAccount;
 - (NSString)gsTokenIdentifier;
 - (NSString)logKey;
-- (id)requestByEncodingRequest:(id)a3 parameters:(id)a4;
-- (id)requestWithComponents:(id)a3;
-- (id)requestWithURL:(id)a3;
+- (id)requestByEncodingRequest:(id)request parameters:(id)parameters;
+- (id)requestWithComponents:(id)components;
+- (id)requestWithURL:(id)l;
 - (int64_t)requestEncoding;
-- (void)setAccount:(id)a3;
-- (void)setAlwaysIncludeAuthKitHeaders:(BOOL)a3;
-- (void)setAlwaysIncludeMMeClientInfoAndDeviceHeaders:(BOOL)a3;
-- (void)setClientInfo:(id)a3;
-- (void)setDisableResponseDecoding:(BOOL)a3;
-- (void)setExcludeIdentifierHeadersForAccount:(BOOL)a3;
-- (void)setGsTokenIdentifier:(id)a3;
-- (void)setLogKey:(id)a3;
-- (void)setRequestEncoding:(int64_t)a3;
-- (void)setResponseDecoder:(id)a3;
-- (void)setURLKnownToBeTrusted:(BOOL)a3;
+- (void)setAccount:(id)account;
+- (void)setAlwaysIncludeAuthKitHeaders:(BOOL)headers;
+- (void)setAlwaysIncludeMMeClientInfoAndDeviceHeaders:(BOOL)headers;
+- (void)setClientInfo:(id)info;
+- (void)setDisableResponseDecoding:(BOOL)decoding;
+- (void)setExcludeIdentifierHeadersForAccount:(BOOL)account;
+- (void)setGsTokenIdentifier:(id)identifier;
+- (void)setLogKey:(id)key;
+- (void)setRequestEncoding:(int64_t)encoding;
+- (void)setResponseDecoder:(id)decoder;
+- (void)setURLKnownToBeTrusted:(BOOL)trusted;
 @end
 
 @implementation AMSMediaRequestEncoder
 
 - (AMSBagProtocol)bag
 {
-  v2 = [(AMSMediaRequestEncoder *)self requestEncoder];
-  v3 = [v2 bag];
+  requestEncoder = [(AMSMediaRequestEncoder *)self requestEncoder];
+  v3 = [requestEncoder bag];
 
   return v3;
 }
 
-- (AMSMediaRequestEncoder)initWithTokenService:(id)a3 bag:(id)a4
+- (AMSMediaRequestEncoder)initWithTokenService:(id)service bag:(id)bag
 {
-  v7 = a3;
-  v8 = a4;
+  serviceCopy = service;
+  bagCopy = bag;
   v14.receiver = self;
   v14.super_class = AMSMediaRequestEncoder;
   v9 = [(AMSMediaRequestEncoder *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_tokenService, a3);
-    v11 = [[AMSURLRequestEncoder alloc] initWithBag:v8];
+    objc_storeStrong(&v9->_tokenService, service);
+    v11 = [[AMSURLRequestEncoder alloc] initWithBag:bagCopy];
     requestEncoder = v10->_requestEncoder;
     v10->_requestEncoder = v11;
   }
@@ -60,212 +60,212 @@
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }
 
 - (ACAccount)account
 {
-  v2 = [(AMSMediaRequestEncoder *)self requestEncoder];
-  v3 = [v2 account];
+  requestEncoder = [(AMSMediaRequestEncoder *)self requestEncoder];
+  account = [requestEncoder account];
 
-  return v3;
+  return account;
 }
 
 - (AMSProcessInfo)clientInfo
 {
-  v2 = [(AMSMediaRequestEncoder *)self requestEncoder];
-  v3 = [v2 clientInfo];
+  requestEncoder = [(AMSMediaRequestEncoder *)self requestEncoder];
+  clientInfo = [requestEncoder clientInfo];
 
-  return v3;
+  return clientInfo;
 }
 
 - (BOOL)disableResponseDecoding
 {
-  v2 = [(AMSMediaRequestEncoder *)self requestEncoder];
-  v3 = [v2 disableResponseDecoding];
+  requestEncoder = [(AMSMediaRequestEncoder *)self requestEncoder];
+  disableResponseDecoding = [requestEncoder disableResponseDecoding];
 
-  return v3;
+  return disableResponseDecoding;
 }
 
 - (BOOL)excludeIdentifierHeadersForAccount
 {
-  v2 = [(AMSMediaRequestEncoder *)self requestEncoder];
-  v3 = [v2 excludeIdentifierHeadersForAccount];
+  requestEncoder = [(AMSMediaRequestEncoder *)self requestEncoder];
+  excludeIdentifierHeadersForAccount = [requestEncoder excludeIdentifierHeadersForAccount];
 
-  return v3;
+  return excludeIdentifierHeadersForAccount;
 }
 
 - (BOOL)alwaysIncludeAuthKitHeaders
 {
-  v2 = [(AMSMediaRequestEncoder *)self requestEncoder];
-  v3 = [v2 alwaysIncludeAuthKitHeaders];
+  requestEncoder = [(AMSMediaRequestEncoder *)self requestEncoder];
+  alwaysIncludeAuthKitHeaders = [requestEncoder alwaysIncludeAuthKitHeaders];
 
-  return v3;
+  return alwaysIncludeAuthKitHeaders;
 }
 
 - (BOOL)alwaysIncludeMMeClientInfoAndDeviceHeaders
 {
-  v2 = [(AMSMediaRequestEncoder *)self requestEncoder];
-  v3 = [v2 alwaysIncludeMMeClientInfoAndDeviceHeaders];
+  requestEncoder = [(AMSMediaRequestEncoder *)self requestEncoder];
+  alwaysIncludeMMeClientInfoAndDeviceHeaders = [requestEncoder alwaysIncludeMMeClientInfoAndDeviceHeaders];
 
-  return v3;
+  return alwaysIncludeMMeClientInfoAndDeviceHeaders;
 }
 
 - (NSString)gsTokenIdentifier
 {
-  v2 = [(AMSMediaRequestEncoder *)self requestEncoder];
-  v3 = [v2 gsTokenIdentifier];
+  requestEncoder = [(AMSMediaRequestEncoder *)self requestEncoder];
+  gsTokenIdentifier = [requestEncoder gsTokenIdentifier];
 
-  return v3;
+  return gsTokenIdentifier;
 }
 
 - (NSString)logKey
 {
-  v2 = [(AMSMediaRequestEncoder *)self requestEncoder];
-  v3 = [v2 logUUID];
+  requestEncoder = [(AMSMediaRequestEncoder *)self requestEncoder];
+  logUUID = [requestEncoder logUUID];
 
-  return v3;
+  return logUUID;
 }
 
 - (int64_t)requestEncoding
 {
-  v2 = [(AMSMediaRequestEncoder *)self requestEncoder];
-  v3 = [v2 requestEncoding];
+  requestEncoder = [(AMSMediaRequestEncoder *)self requestEncoder];
+  requestEncoding = [requestEncoder requestEncoding];
 
-  return v3;
+  return requestEncoding;
 }
 
 - (AMSResponseDecoding)responseDecoder
 {
-  v2 = [(AMSMediaRequestEncoder *)self requestEncoder];
-  v3 = [v2 responseDecoder];
+  requestEncoder = [(AMSMediaRequestEncoder *)self requestEncoder];
+  responseDecoder = [requestEncoder responseDecoder];
 
-  return v3;
+  return responseDecoder;
 }
 
 - (BOOL)URLKnownToBeTrusted
 {
-  v2 = [(AMSMediaRequestEncoder *)self requestEncoder];
-  v3 = [v2 urlKnownToBeTrusted];
+  requestEncoder = [(AMSMediaRequestEncoder *)self requestEncoder];
+  urlKnownToBeTrusted = [requestEncoder urlKnownToBeTrusted];
 
-  return v3;
+  return urlKnownToBeTrusted;
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(AMSMediaRequestEncoder *)self requestEncoder];
-  [v5 setAccount:v4];
+  accountCopy = account;
+  requestEncoder = [(AMSMediaRequestEncoder *)self requestEncoder];
+  [requestEncoder setAccount:accountCopy];
 }
 
-- (void)setAlwaysIncludeAuthKitHeaders:(BOOL)a3
+- (void)setAlwaysIncludeAuthKitHeaders:(BOOL)headers
 {
-  v3 = a3;
-  v4 = [(AMSMediaRequestEncoder *)self requestEncoder];
-  [v4 setAlwaysIncludeAuthKitHeaders:v3];
+  headersCopy = headers;
+  requestEncoder = [(AMSMediaRequestEncoder *)self requestEncoder];
+  [requestEncoder setAlwaysIncludeAuthKitHeaders:headersCopy];
 }
 
-- (void)setAlwaysIncludeMMeClientInfoAndDeviceHeaders:(BOOL)a3
+- (void)setAlwaysIncludeMMeClientInfoAndDeviceHeaders:(BOOL)headers
 {
-  v3 = a3;
-  v4 = [(AMSMediaRequestEncoder *)self requestEncoder];
-  [v4 setAlwaysIncludeMMeClientInfoAndDeviceHeaders:v3];
+  headersCopy = headers;
+  requestEncoder = [(AMSMediaRequestEncoder *)self requestEncoder];
+  [requestEncoder setAlwaysIncludeMMeClientInfoAndDeviceHeaders:headersCopy];
 }
 
-- (void)setClientInfo:(id)a3
+- (void)setClientInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(AMSMediaRequestEncoder *)self requestEncoder];
-  [v5 setClientInfo:v4];
+  infoCopy = info;
+  requestEncoder = [(AMSMediaRequestEncoder *)self requestEncoder];
+  [requestEncoder setClientInfo:infoCopy];
 }
 
-- (void)setDisableResponseDecoding:(BOOL)a3
+- (void)setDisableResponseDecoding:(BOOL)decoding
 {
-  v3 = a3;
-  v4 = [(AMSMediaRequestEncoder *)self requestEncoder];
-  [v4 setDisableResponseDecoding:v3];
+  decodingCopy = decoding;
+  requestEncoder = [(AMSMediaRequestEncoder *)self requestEncoder];
+  [requestEncoder setDisableResponseDecoding:decodingCopy];
 }
 
-- (void)setExcludeIdentifierHeadersForAccount:(BOOL)a3
+- (void)setExcludeIdentifierHeadersForAccount:(BOOL)account
 {
-  v3 = a3;
-  v4 = [(AMSMediaRequestEncoder *)self requestEncoder];
-  [v4 setExcludeIdentifierHeadersForAccount:v3];
+  accountCopy = account;
+  requestEncoder = [(AMSMediaRequestEncoder *)self requestEncoder];
+  [requestEncoder setExcludeIdentifierHeadersForAccount:accountCopy];
 }
 
-- (void)setGsTokenIdentifier:(id)a3
+- (void)setGsTokenIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(AMSMediaRequestEncoder *)self requestEncoder];
-  [v5 setGsTokenIdentifier:v4];
+  identifierCopy = identifier;
+  requestEncoder = [(AMSMediaRequestEncoder *)self requestEncoder];
+  [requestEncoder setGsTokenIdentifier:identifierCopy];
 }
 
-- (void)setLogKey:(id)a3
+- (void)setLogKey:(id)key
 {
-  v4 = a3;
-  v5 = [(AMSMediaRequestEncoder *)self requestEncoder];
-  [v5 setLogUUID:v4];
+  keyCopy = key;
+  requestEncoder = [(AMSMediaRequestEncoder *)self requestEncoder];
+  [requestEncoder setLogUUID:keyCopy];
 }
 
-- (void)setRequestEncoding:(int64_t)a3
+- (void)setRequestEncoding:(int64_t)encoding
 {
-  v4 = [(AMSMediaRequestEncoder *)self requestEncoder];
-  [v4 setRequestEncoding:a3];
+  requestEncoder = [(AMSMediaRequestEncoder *)self requestEncoder];
+  [requestEncoder setRequestEncoding:encoding];
 }
 
-- (void)setResponseDecoder:(id)a3
+- (void)setResponseDecoder:(id)decoder
 {
-  v4 = a3;
-  v5 = [(AMSMediaRequestEncoder *)self requestEncoder];
-  [v5 setResponseDecoder:v4];
+  decoderCopy = decoder;
+  requestEncoder = [(AMSMediaRequestEncoder *)self requestEncoder];
+  [requestEncoder setResponseDecoder:decoderCopy];
 }
 
-- (void)setURLKnownToBeTrusted:(BOOL)a3
+- (void)setURLKnownToBeTrusted:(BOOL)trusted
 {
-  v3 = a3;
-  v4 = [(AMSMediaRequestEncoder *)self requestEncoder];
-  [v4 setUrlKnownToBeTrusted:v3];
+  trustedCopy = trusted;
+  requestEncoder = [(AMSMediaRequestEncoder *)self requestEncoder];
+  [requestEncoder setUrlKnownToBeTrusted:trustedCopy];
 }
 
-- (id)requestWithComponents:(id)a3
+- (id)requestWithComponents:(id)components
 {
-  v4 = [a3 URL];
+  v4 = [components URL];
   v5 = [(AMSMediaRequestEncoder *)self requestWithURL:v4];
 
   return v5;
 }
 
-- (id)requestWithURL:(id)a3
+- (id)requestWithURL:(id)l
 {
-  v4 = [MEMORY[0x1E695AC68] requestWithURL:a3];
+  v4 = [MEMORY[0x1E695AC68] requestWithURL:l];
   v5 = [(AMSMediaRequestEncoder *)self requestByEncodingRequest:v4 parameters:0];
 
   return v5;
 }
 
-- (id)requestByEncodingRequest:(id)a3 parameters:(id)a4
+- (id)requestByEncodingRequest:(id)request parameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  parametersCopy = parameters;
   v8 = objc_alloc_init(AMSMutablePromise);
-  v9 = [(AMSMediaRequestEncoder *)self tokenService];
-  v10 = [v9 fetchMediaToken];
+  tokenService = [(AMSMediaRequestEncoder *)self tokenService];
+  fetchMediaToken = [tokenService fetchMediaToken];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __62__AMSMediaRequestEncoder_requestByEncodingRequest_parameters___block_invoke;
   v17[3] = &unk_1E73B8E40;
   v17[4] = self;
-  v18 = v6;
-  v19 = v7;
+  v18 = requestCopy;
+  v19 = parametersCopy;
   v11 = v8;
   v20 = v11;
-  v12 = v7;
-  v13 = v6;
-  [v10 addFinishBlock:v17];
+  v12 = parametersCopy;
+  v13 = requestCopy;
+  [fetchMediaToken addFinishBlock:v17];
 
   v14 = v20;
   v15 = v11;

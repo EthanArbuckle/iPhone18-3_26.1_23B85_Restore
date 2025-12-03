@@ -1,10 +1,10 @@
 @interface MKMapsSuggestionsPredictor
 + (id)sharedPredictor;
 - (BOOL)_openConnectionIfNecessary;
-- (BOOL)transportModeForDestinationEntryData:(id)a3 originCoordinateData:(id)a4 handler:(id)a5;
-- (BOOL)transportModeForDestinationMapItemData:(id)a3 originCoordinateData:(id)a4 handler:(id)a5;
+- (BOOL)transportModeForDestinationEntryData:(id)data originCoordinateData:(id)coordinateData handler:(id)handler;
+- (BOOL)transportModeForDestinationMapItemData:(id)data originCoordinateData:(id)coordinateData handler:(id)handler;
 - (MKMapsSuggestionsPredictor)init;
-- (id)NSDataToMKMapsSuggestionsTransportModes:(id)a3 error:(id *)a4;
+- (id)NSDataToMKMapsSuggestionsTransportModes:(id)modes error:(id *)error;
 - (void)_closeConnection;
 - (void)_initCloseTimerIfNecessary;
 - (void)_scheduleCloseConnection;
@@ -437,14 +437,14 @@ void __56__MKMapsSuggestionsPredictor__openConnectionIfNecessary__block_invoke_2
   }
 }
 
-- (BOOL)transportModeForDestinationEntryData:(id)a3 originCoordinateData:(id)a4 handler:(id)a5
+- (BOOL)transportModeForDestinationEntryData:(id)data originCoordinateData:(id)coordinateData handler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8)
+  dataCopy = data;
+  coordinateDataCopy = coordinateData;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (!dataCopy)
   {
     v14 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -463,7 +463,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v9)
+  if (!coordinateDataCopy)
   {
     v14 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -480,7 +480,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!v10)
+  if (!handlerCopy)
   {
     v14 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -507,8 +507,8 @@ LABEL_12:
   v16[2] = __96__MKMapsSuggestionsPredictor_transportModeForDestinationEntryData_originCoordinateData_handler___block_invoke;
   v16[3] = &unk_1E76C8140;
   objc_copyWeak(&v20, location);
-  v17 = v8;
-  v18 = v9;
+  v17 = dataCopy;
+  v18 = coordinateDataCopy;
   v19 = v11;
   dispatch_async(queue, v16);
 
@@ -600,13 +600,13 @@ void __96__MKMapsSuggestionsPredictor_transportModeForDestinationEntryData_origi
   }
 }
 
-- (BOOL)transportModeForDestinationMapItemData:(id)a3 originCoordinateData:(id)a4 handler:(id)a5
+- (BOOL)transportModeForDestinationMapItemData:(id)data originCoordinateData:(id)coordinateData handler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  dataCopy = data;
+  coordinateDataCopy = coordinateData;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -627,7 +627,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v8)
+  if (!dataCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -651,9 +651,9 @@ LABEL_9:
   v15[2] = __98__MKMapsSuggestionsPredictor_transportModeForDestinationMapItemData_originCoordinateData_handler___block_invoke;
   v15[3] = &unk_1E76C8140;
   objc_copyWeak(&v19, location);
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
+  v16 = dataCopy;
+  v17 = coordinateDataCopy;
+  v18 = handlerCopy;
   dispatch_async(queue, v15);
 
   objc_destroyWeak(&v19);
@@ -756,13 +756,13 @@ void __98__MKMapsSuggestionsPredictor_transportModeForDestinationMapItemData_ori
   [(MKMapsSuggestionsPredictor *)&v4 dealloc];
 }
 
-- (id)NSDataToMKMapsSuggestionsTransportModes:(id)a3 error:(id *)a4
+- (id)NSDataToMKMapsSuggestionsTransportModes:(id)modes error:(id *)error
 {
   v5 = MEMORY[0x1E695DFD8];
-  v6 = a3;
+  modesCopy = modes;
   v7 = objc_opt_class();
   v8 = [v5 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v8 fromData:v6 error:a4];
+  v9 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v8 fromData:modesCopy error:error];
 
   return v9;
 }

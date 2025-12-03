@@ -1,15 +1,15 @@
 @interface CBDisplayStateUtilities
-+ (id)stringForDisplayMode:(int64_t)a3;
-+ (id)stringForFlipbookState:(int64_t)a3;
-+ (int64_t)displayModeFromProperty:(id)a3;
++ (id)stringForDisplayMode:(int64_t)mode;
++ (id)stringForFlipbookState:(int64_t)state;
++ (int64_t)displayModeFromProperty:(id)property;
 @end
 
 @implementation CBDisplayStateUtilities
 
-+ (id)stringForDisplayMode:(int64_t)a3
++ (id)stringForDisplayMode:(int64_t)mode
 {
   v4 = @"Unknown";
-  switch(a3)
+  switch(mode)
   {
     case 0:
       return @"Off";
@@ -28,10 +28,10 @@
   return v4;
 }
 
-+ (id)stringForFlipbookState:(int64_t)a3
++ (id)stringForFlipbookState:(int64_t)state
 {
   v4 = @"Unknown";
-  switch(a3)
+  switch(state)
   {
     case 0:
       return @"Flipbook Will Turn On";
@@ -46,13 +46,13 @@
   return v4;
 }
 
-+ (int64_t)displayModeFromProperty:(id)a3
++ (int64_t)displayModeFromProperty:(id)property
 {
   v5 = 5;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [a3 objectForKey:@"Value"];
+    v4 = [property objectForKey:@"Value"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

@@ -1,5 +1,5 @@
 @interface SUUIButtonViewElementAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityIdentifier;
 - (id)accessibilityLabel;
 - (id)accessibilityText;
@@ -8,43 +8,43 @@
 
 @implementation SUUIButtonViewElementAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIButtonViewElement" hasInstanceMethod:@"buttonImage" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIButtonViewElement" hasInstanceMethod:@"buttonText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIButtonViewElement" isKindOfClass:@"IKViewElement"];
-  [v3 validateClass:@"IKViewElement" hasInstanceMethod:@"accessibilityText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIImageViewElement" hasInstanceMethod:@"resourceName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIButtonViewElement" hasInstanceMethod:@"buttonImage" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIButtonViewElement" hasInstanceMethod:@"buttonText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIButtonViewElement" isKindOfClass:@"IKViewElement"];
+  [validationsCopy validateClass:@"IKViewElement" hasInstanceMethod:@"accessibilityText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIImageViewElement" hasInstanceMethod:@"resourceName" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(SUUIButtonViewElementAccessibility *)self safeValueForKey:@"buttonText"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
-  if ([v4 length])
+  if ([accessibilityLabel length])
   {
-    v5 = v4;
+    v5 = accessibilityLabel;
     goto LABEL_11;
   }
 
-  v6 = [(SUUIButtonViewElementAccessibility *)self accessibilityIdentifier];
-  if ([v6 isEqualToString:@"post"])
+  accessibilityIdentifier = [(SUUIButtonViewElementAccessibility *)self accessibilityIdentifier];
+  if ([accessibilityIdentifier isEqualToString:@"post"])
   {
     v7 = @"post.label";
   }
 
-  else if ([v6 isEqualToString:@"LoveHateControlNeutral"])
+  else if ([accessibilityIdentifier isEqualToString:@"LoveHateControlNeutral"])
   {
     v7 = @"connect.comment.likes";
   }
 
   else
   {
-    if (![v6 isEqualToString:@"share"])
+    if (![accessibilityIdentifier isEqualToString:@"share"])
     {
-      v8 = v4;
+      v8 = accessibilityLabel;
       goto LABEL_10;
     }
 
@@ -74,21 +74,21 @@ LABEL_11:
 {
   v7.receiver = self;
   v7.super_class = SUUIButtonViewElementAccessibility;
-  v3 = [(SUUIButtonViewElementAccessibility *)&v7 accessibilityText];
+  accessibilityText = [(SUUIButtonViewElementAccessibility *)&v7 accessibilityText];
 
-  if (v3)
+  if (accessibilityText)
   {
     v6.receiver = self;
     v6.super_class = SUUIButtonViewElementAccessibility;
-    v4 = [(SUUIButtonViewElementAccessibility *)&v6 accessibilityText];
+    accessibilityText2 = [(SUUIButtonViewElementAccessibility *)&v6 accessibilityText];
   }
 
   else
   {
-    v4 = 0;
+    accessibilityText2 = 0;
   }
 
-  return v4;
+  return accessibilityText2;
 }
 
 - (unint64_t)accessibilityTraits

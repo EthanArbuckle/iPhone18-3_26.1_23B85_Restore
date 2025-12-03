@@ -1,13 +1,13 @@
 @interface CardAnimation
-+ (CardAnimation)animationWithDuration:(double)a3 curve:(int64_t)a4 delay:(double)a5;
-+ (CardAnimation)animationWithMass:(double)a3 stiffness:(double)a4 damping:(double)a5 initialVelocity:(double)a6 delay:(double)a7;
-+ (id)animationUsingDefaultSpringWithInitialVelocity:(double)a3 delay:(double)a4;
++ (CardAnimation)animationWithDuration:(double)duration curve:(int64_t)curve delay:(double)delay;
++ (CardAnimation)animationWithMass:(double)mass stiffness:(double)stiffness damping:(double)damping initialVelocity:(double)velocity delay:(double)delay;
++ (id)animationUsingDefaultSpringWithInitialVelocity:(double)velocity delay:(double)delay;
 - (CardAnimation)coordinatedUnitAnimation;
-- (CardAnimation)initWithDuration:(double)a3 curve:(int64_t)a4 delay:(double)a5;
-- (CardAnimation)initWithMass:(double)a3 stiffness:(double)a4 damping:(double)a5 initialVelocity:(double)a6 delay:(double)a7 calculateCoordinatedAnimation:(BOOL)a8;
+- (CardAnimation)initWithDuration:(double)duration curve:(int64_t)curve delay:(double)delay;
+- (CardAnimation)initWithMass:(double)mass stiffness:(double)stiffness damping:(double)damping initialVelocity:(double)velocity delay:(double)delay calculateCoordinatedAnimation:(BOOL)animation;
 - (id)description;
-- (id)initUsingDefaultSpringWithInitialVelocity:(double)a3 delay:(double)a4;
-- (void)applyWithAnimations:(id)a3 completion:(id)a4;
+- (id)initUsingDefaultSpringWithInitialVelocity:(double)velocity delay:(double)delay;
+- (void)applyWithAnimations:(id)animations completion:(id)completion;
 @end
 
 @implementation CardAnimation
@@ -40,21 +40,21 @@ LABEL_8:
   return a2;
 }
 
-- (void)applyWithAnimations:(id)a3 completion:(id)a4
+- (void)applyWithAnimations:(id)animations completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  animationsCopy = animations;
+  completionCopy = completion;
   type = self->_type;
   switch(type)
   {
     case 2:
-      [UIView _animateUsingDefaultDampedSpringWithDelay:2 initialSpringVelocity:v8 options:v6 animations:self->_delay completion:self->_typeParameters.spring.mass];
+      [UIView _animateUsingDefaultDampedSpringWithDelay:2 initialSpringVelocity:animationsCopy options:completionCopy animations:self->_delay completion:self->_typeParameters.spring.mass];
       break;
     case 1:
-      [UIView _animateUsingSpringWithDuration:2 delay:v8 options:v6 mass:self->_duration stiffness:self->_delay damping:self->_typeParameters.spring.mass initialVelocity:self->_typeParameters.spring.stiffness animations:self->_typeParameters.spring.damping completion:self->_typeParameters.spring.initialVelocity];
+      [UIView _animateUsingSpringWithDuration:2 delay:animationsCopy options:completionCopy mass:self->_duration stiffness:self->_delay damping:self->_typeParameters.spring.mass initialVelocity:self->_typeParameters.spring.stiffness animations:self->_typeParameters.spring.damping completion:self->_typeParameters.spring.initialVelocity];
       break;
     case 0:
-      [UIView animateWithDuration:(self->_typeParameters.basic.curve << 16) | 2 delay:v8 options:v6 animations:self->_duration completion:self->_delay];
+      [UIView animateWithDuration:(self->_typeParameters.basic.curve << 16) | 2 delay:animationsCopy options:completionCopy animations:self->_duration completion:self->_delay];
       break;
   }
 }
@@ -69,7 +69,7 @@ LABEL_8:
   return self;
 }
 
-- (id)initUsingDefaultSpringWithInitialVelocity:(double)a3 delay:(double)a4
+- (id)initUsingDefaultSpringWithInitialVelocity:(double)velocity delay:(double)delay
 {
   v10.receiver = self;
   v10.super_class = CardAnimation;
@@ -78,17 +78,17 @@ LABEL_8:
   if (v6)
   {
     v6->_type = 2;
-    v6->_typeParameters.spring.mass = a3;
-    v6->_delay = a4;
+    v6->_typeParameters.spring.mass = velocity;
+    v6->_delay = delay;
     v8 = v6;
   }
 
   return v7;
 }
 
-- (CardAnimation)initWithMass:(double)a3 stiffness:(double)a4 damping:(double)a5 initialVelocity:(double)a6 delay:(double)a7 calculateCoordinatedAnimation:(BOOL)a8
+- (CardAnimation)initWithMass:(double)mass stiffness:(double)stiffness damping:(double)damping initialVelocity:(double)velocity delay:(double)delay calculateCoordinatedAnimation:(BOOL)animation
 {
-  v8 = a8;
+  animationCopy = animation;
   v32.receiver = self;
   v32.super_class = CardAnimation;
   v14 = [(CardAnimation *)&v32 init];
@@ -96,15 +96,15 @@ LABEL_8:
   if (v14)
   {
     v14->_type = 1;
-    v14->_typeParameters.spring.mass = a3;
-    v14->_typeParameters.spring.stiffness = a4;
-    v14->_typeParameters.spring.damping = a5;
-    v14->_typeParameters.spring.initialVelocity = a6;
-    v16 = [[SpringInfo alloc] initWithMass:a3 stiffness:a4 damping:a5 initialVelocity:a6];
+    v14->_typeParameters.spring.mass = mass;
+    v14->_typeParameters.spring.stiffness = stiffness;
+    v14->_typeParameters.spring.damping = damping;
+    v14->_typeParameters.spring.initialVelocity = velocity;
+    v16 = [[SpringInfo alloc] initWithMass:mass stiffness:stiffness damping:damping initialVelocity:velocity];
     [(SpringInfo *)v16 settlingTime];
     v15->_duration = v17;
-    v15->_delay = a7;
-    if (v8)
+    v15->_delay = delay;
+    if (animationCopy)
     {
       [(SpringInfo *)v16 undershootTime];
       v19 = v18;
@@ -130,26 +130,26 @@ LABEL_8:
           if (v23)
           {
             v26 = v21 - v19;
-            v27 = v19 + a7;
+            delayCopy = v19 + delay;
           }
 
           else
           {
             v26 = v21;
-            v27 = a7;
+            delayCopy = delay;
           }
 
-          v28 = [(CardAnimation *)v25 initWithDuration:5 curve:v26 delay:v27];
+          delay = [(CardAnimation *)v25 initWithDuration:5 curve:v26 delay:delayCopy];
           goto LABEL_14;
         }
       }
 
       if (v23)
       {
-        v28 = [[CardAnimation alloc] initWithMass:0 stiffness:a3 damping:a4 initialVelocity:a5 delay:0.0 calculateCoordinatedAnimation:v19 + a7];
+        delay = [[CardAnimation alloc] initWithMass:0 stiffness:mass damping:stiffness initialVelocity:damping delay:0.0 calculateCoordinatedAnimation:v19 + delay];
 LABEL_14:
         coordinatedUnitAnimation = v15->_coordinatedUnitAnimation;
-        v15->_coordinatedUnitAnimation = v28;
+        v15->_coordinatedUnitAnimation = delay;
       }
     }
 
@@ -159,7 +159,7 @@ LABEL_14:
   return v15;
 }
 
-- (CardAnimation)initWithDuration:(double)a3 curve:(int64_t)a4 delay:(double)a5
+- (CardAnimation)initWithDuration:(double)duration curve:(int64_t)curve delay:(double)delay
 {
   v12.receiver = self;
   v12.super_class = CardAnimation;
@@ -168,32 +168,32 @@ LABEL_14:
   if (v8)
   {
     v8->_type = 0;
-    v8->_typeParameters.basic.curve = a4;
-    v8->_duration = a3;
-    v8->_delay = a5;
+    v8->_typeParameters.basic.curve = curve;
+    v8->_duration = duration;
+    v8->_delay = delay;
     v10 = v8;
   }
 
   return v9;
 }
 
-+ (id)animationUsingDefaultSpringWithInitialVelocity:(double)a3 delay:(double)a4
++ (id)animationUsingDefaultSpringWithInitialVelocity:(double)velocity delay:(double)delay
 {
-  v4 = [[a1 alloc] initUsingDefaultSpringWithInitialVelocity:a3 delay:a4];
+  v4 = [[self alloc] initUsingDefaultSpringWithInitialVelocity:velocity delay:delay];
 
   return v4;
 }
 
-+ (CardAnimation)animationWithMass:(double)a3 stiffness:(double)a4 damping:(double)a5 initialVelocity:(double)a6 delay:(double)a7
++ (CardAnimation)animationWithMass:(double)mass stiffness:(double)stiffness damping:(double)damping initialVelocity:(double)velocity delay:(double)delay
 {
-  v7 = [[a1 alloc] initWithMass:a3 stiffness:a4 damping:a5 initialVelocity:a6 delay:a7];
+  v7 = [[self alloc] initWithMass:mass stiffness:stiffness damping:damping initialVelocity:velocity delay:delay];
 
   return v7;
 }
 
-+ (CardAnimation)animationWithDuration:(double)a3 curve:(int64_t)a4 delay:(double)a5
++ (CardAnimation)animationWithDuration:(double)duration curve:(int64_t)curve delay:(double)delay
 {
-  v5 = [[a1 alloc] initWithDuration:a4 curve:a3 delay:a5];
+  v5 = [[self alloc] initWithDuration:curve curve:duration delay:delay];
 
   return v5;
 }

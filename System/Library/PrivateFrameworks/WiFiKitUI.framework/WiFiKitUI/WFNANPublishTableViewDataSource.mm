@@ -1,43 +1,43 @@
 @interface WFNANPublishTableViewDataSource
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (WFNANPublishTableViewDataSource)initWithTableView:(id)a3 context:(id)a4 sections:(id)a5 cellProvider:(id)a6;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (WFNANPublishTableViewDataSource)initWithTableView:(id)view context:(id)context sections:(id)sections cellProvider:(id)provider;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 @end
 
 @implementation WFNANPublishTableViewDataSource
 
-- (WFNANPublishTableViewDataSource)initWithTableView:(id)a3 context:(id)a4 sections:(id)a5 cellProvider:(id)a6
+- (WFNANPublishTableViewDataSource)initWithTableView:(id)view context:(id)context sections:(id)sections cellProvider:(id)provider
 {
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  sectionsCopy = sections;
   v15.receiver = self;
   v15.super_class = WFNANPublishTableViewDataSource;
-  v12 = [(UITableViewDiffableDataSource *)&v15 initWithTableView:a3 cellProvider:a6];
+  v12 = [(UITableViewDiffableDataSource *)&v15 initWithTableView:view cellProvider:provider];
   v13 = v12;
   if (v12)
   {
-    [(WFNANPublishTableViewDataSource *)v12 setSections:v11];
-    [(WFNANPublishTableViewDataSource *)v13 setContext:v10];
+    [(WFNANPublishTableViewDataSource *)v12 setSections:sectionsCopy];
+    [(WFNANPublishTableViewDataSource *)v13 setContext:contextCopy];
   }
 
   return v13;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(WFNANPublishTableViewDataSource *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
-  v7 = [v6 unsignedIntegerValue];
+  sections = [(WFNANPublishTableViewDataSource *)self sections];
+  v6 = [sections objectAtIndexedSubscript:section];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  if (!v7)
+  if (!unsignedIntegerValue)
   {
     v8 = @"kWFLocNANAddPublisher";
     goto LABEL_5;
   }
 
-  if (v7 == 1)
+  if (unsignedIntegerValue == 1)
   {
     v8 = @"kWFLocNANPublishers";
 LABEL_5:
@@ -53,13 +53,13 @@ LABEL_7:
   return v10;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v5 = [(WFNANPublishTableViewDataSource *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
-  v7 = [v6 unsignedIntegerValue];
+  sections = [(WFNANPublishTableViewDataSource *)self sections];
+  v6 = [sections objectAtIndexedSubscript:section];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  if (v7)
+  if (unsignedIntegerValue)
   {
     v8 = 0;
   }
@@ -73,24 +73,24 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(WFNANPublishTableViewDataSource *)self sections];
-  v7 = [v5 section];
+  pathCopy = path;
+  sections = [(WFNANPublishTableViewDataSource *)self sections];
+  section = [pathCopy section];
 
-  v8 = [v6 objectAtIndexedSubscript:v7];
-  v9 = [v8 unsignedIntegerValue];
+  v8 = [sections objectAtIndexedSubscript:section];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  return v9 == 1 && [(WFNANTableViewContext *)self->_context getPublishersCount]> 0;
+  return unsignedIntegerValue == 1 && [(WFNANTableViewContext *)self->_context getPublishersCount]> 0;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
     context = self->_context;
-    v7 = [a5 row];
+    v7 = [path row];
 
     [(WFNANTableViewContext *)context removePublisherAtIndex:v7];
   }

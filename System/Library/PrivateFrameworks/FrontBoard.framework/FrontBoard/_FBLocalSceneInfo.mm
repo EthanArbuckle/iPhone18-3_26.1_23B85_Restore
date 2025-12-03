@@ -1,39 +1,39 @@
 @interface _FBLocalSceneInfo
-- (id)initWithScene:(id *)a1;
-- (void)setPendingTransitionContext:(uint64_t)a1;
+- (id)initWithScene:(id *)scene;
+- (void)setPendingTransitionContext:(uint64_t)context;
 @end
 
 @implementation _FBLocalSceneInfo
 
-- (id)initWithScene:(id *)a1
+- (id)initWithScene:(id *)scene
 {
   v4 = a2;
   v5 = v4;
-  if (a1)
+  if (scene)
   {
     if (!v4)
     {
       [_FBLocalSceneInfo initWithScene:?];
     }
 
-    v8.receiver = a1;
+    v8.receiver = scene;
     v8.super_class = _FBLocalSceneInfo;
     v6 = objc_msgSendSuper2(&v8, sel_init);
-    a1 = v6;
+    scene = v6;
     if (v6)
     {
       objc_storeStrong(v6 + 2, a2);
     }
   }
 
-  return a1;
+  return scene;
 }
 
-- (void)setPendingTransitionContext:(uint64_t)a1
+- (void)setPendingTransitionContext:(uint64_t)context
 {
-  if (a1)
+  if (context)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((context + 24), a2);
   }
 }
 

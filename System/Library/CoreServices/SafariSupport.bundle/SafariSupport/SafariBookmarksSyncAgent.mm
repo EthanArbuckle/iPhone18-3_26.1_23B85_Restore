@@ -2,8 +2,8 @@
 - (SafariBookmarksSyncAgent)init;
 - (id)_pushTopics;
 - (void)_setUpPushConnection;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)setUsesOpportunisticPushTopic:(BOOL)a3;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)setUsesOpportunisticPushTopic:(BOOL)topic;
 - (void)updatePushTopicSubscriptions;
 @end
 
@@ -25,42 +25,42 @@
   return v3;
 }
 
-- (void)setUsesOpportunisticPushTopic:(BOOL)a3
+- (void)setUsesOpportunisticPushTopic:(BOOL)topic
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100025430;
   v3[3] = &unk_100131D10;
-  v4 = a3;
+  topicCopy = topic;
   v3[4] = self;
   dispatch_async(&_dispatch_main_q, v3);
 }
 
 - (void)updatePushTopicSubscriptions
 {
-  v3 = [(SafariSyncController *)self isSyncEnabled];
+  isSyncEnabled = [(SafariSyncController *)self isSyncEnabled];
   v4 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v15[0] = 67109120;
-    v15[1] = v3;
+    v15[1] = isSyncEnabled;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Updating push topic subscriptions with sync enabled = %d", v15, 8u);
   }
 
-  v5 = [(SafariBookmarksSyncAgent *)self _pushTopics];
-  if (v3)
+  _pushTopics = [(SafariBookmarksSyncAgent *)self _pushTopics];
+  if (isSyncEnabled)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = v5;
+    v6 = _pushTopics;
   }
 
-  if (v3)
+  if (isSyncEnabled)
   {
-    v7 = v5;
+    v7 = _pushTopics;
   }
 
   else
@@ -102,13 +102,13 @@
   [(APSConnection *)pushConnection setEnabledTopics:v12 ignoredTopics:v13 opportunisticTopics:v14];
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v5 = a4;
-  v7 = [v5 topic];
-  v6 = [v5 userInfo];
+  messageCopy = message;
+  topic = [messageCopy topic];
+  userInfo = [messageCopy userInfo];
 
-  [(SafariSyncController *)self didReceivePushNotificationWithTopic:v7 userInfo:v6];
+  [(SafariSyncController *)self didReceivePushNotificationWithTopic:topic userInfo:userInfo];
 }
 
 - (void)_setUpPushConnection

@@ -1,5 +1,5 @@
 @interface SRFramesStoreOffsetEnumerator
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)dealloc;
 @end
 
@@ -13,11 +13,11 @@
   [(SRFramesStoreOffsetEnumerator *)&v2 dealloc];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  if (!a3->var0)
+  if (!state->var0)
   {
-    a3->var0 = self->_offset;
+    state->var0 = self->_offset;
   }
 
   return [SRFrameStore countByEnumeratingWithState:"countByEnumeratingWithState:objects:count:" objects:? count:?];

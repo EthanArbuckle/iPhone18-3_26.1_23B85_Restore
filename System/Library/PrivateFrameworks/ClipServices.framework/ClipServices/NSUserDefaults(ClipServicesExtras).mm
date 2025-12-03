@@ -23,38 +23,38 @@
 
 - (uint64_t)cps_didShowFirstTimeLocationConsent
 {
-  v0 = [MEMORY[0x277CBEBD0] cps_clipServicesDefaults];
-  v1 = [v0 BOOLForKey:@"CPSDidShowFirstTimeLocationConsent"];
+  cps_clipServicesDefaults = [MEMORY[0x277CBEBD0] cps_clipServicesDefaults];
+  v1 = [cps_clipServicesDefaults BOOLForKey:@"CPSDidShowFirstTimeLocationConsent"];
 
   return v1;
 }
 
 - (void)setCps_didShowFirstTimeLocationConsent:()ClipServicesExtras
 {
-  v4 = [MEMORY[0x277CBEBD0] cps_clipServicesDefaults];
-  [v4 setBool:a3 forKey:@"CPSDidShowFirstTimeLocationConsent"];
+  cps_clipServicesDefaults = [MEMORY[0x277CBEBD0] cps_clipServicesDefaults];
+  [cps_clipServicesDefaults setBool:a3 forKey:@"CPSDidShowFirstTimeLocationConsent"];
 }
 
 - (uint64_t)cps_forceReportProblemErrorFetchProblemTypes
 {
-  v0 = [MEMORY[0x277CBEBD0] cps_clipServicesDefaults];
-  v1 = [v0 BOOLForKey:@"CPSForceReportProblemErrorFetchProblemTypes"];
+  cps_clipServicesDefaults = [MEMORY[0x277CBEBD0] cps_clipServicesDefaults];
+  v1 = [cps_clipServicesDefaults BOOLForKey:@"CPSForceReportProblemErrorFetchProblemTypes"];
 
   return v1;
 }
 
 - (uint64_t)cps_forceReportProblemErrorNoDeveloperSupportURL
 {
-  v0 = [MEMORY[0x277CBEBD0] cps_clipServicesDefaults];
-  v1 = [v0 BOOLForKey:@"CPSForceReportProblemErrorNoDeveloperSupportURL"];
+  cps_clipServicesDefaults = [MEMORY[0x277CBEBD0] cps_clipServicesDefaults];
+  v1 = [cps_clipServicesDefaults BOOLForKey:@"CPSForceReportProblemErrorNoDeveloperSupportURL"];
 
   return v1;
 }
 
 - (uint64_t)cps_forceReportProblemErrorUnableToSubmitResponse
 {
-  v0 = [MEMORY[0x277CBEBD0] cps_clipServicesDefaults];
-  v1 = [v0 BOOLForKey:@"CPSForceReportProblemErrorUnableToSubmitResponse"];
+  cps_clipServicesDefaults = [MEMORY[0x277CBEBD0] cps_clipServicesDefaults];
+  v1 = [cps_clipServicesDefaults BOOLForKey:@"CPSForceReportProblemErrorUnableToSubmitResponse"];
 
   return v1;
 }

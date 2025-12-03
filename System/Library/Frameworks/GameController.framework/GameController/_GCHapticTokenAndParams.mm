@@ -1,28 +1,28 @@
 @interface _GCHapticTokenAndParams
-- (_GCHapticTokenAndParams)initWithHapticCommand:(const void *)a3;
+- (_GCHapticTokenAndParams)initWithHapticCommand:(const void *)command;
 @end
 
 @implementation _GCHapticTokenAndParams
 
-- (_GCHapticTokenAndParams)initWithHapticCommand:(const void *)a3
+- (_GCHapticTokenAndParams)initWithHapticCommand:(const void *)command
 {
   v20.receiver = self;
   v20.super_class = _GCHapticTokenAndParams;
   v4 = [(_GCHapticTokenAndParams *)&v20 init];
   if (v4)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     params = v4->_params;
-    v4->_params = v5;
+    v4->_params = array;
 
-    v4->_token = *(a3 + 4);
-    v7 = *(a3 + 56);
-    v18[0] = *(a3 + 40);
+    v4->_token = *(command + 4);
+    v7 = *(command + 56);
+    v18[0] = *(command + 40);
     v18[1] = v7;
-    v8 = *(a3 + 88);
-    v18[2] = *(a3 + 72);
+    v8 = *(command + 88);
+    v18[2] = *(command + 72);
     v18[3] = v8;
-    v19 = *(a3 + 26);
+    v19 = *(command + 26);
     if (LODWORD(v18[0]))
     {
       if (LODWORD(v18[0]) >= 8)

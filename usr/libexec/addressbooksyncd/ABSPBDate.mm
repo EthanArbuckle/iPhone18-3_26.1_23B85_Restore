@@ -1,19 +1,19 @@
 @interface ABSPBDate
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCalendar:(id)a3;
+- (int)StringAsCalendar:(id)calendar;
 - (int)calendar;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDay:(BOOL)a3;
-- (void)setHasEra:(BOOL)a3;
-- (void)setHasIsLeapMonth:(BOOL)a3;
-- (void)setHasMonth:(BOOL)a3;
-- (void)setHasYear:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDay:(BOOL)day;
+- (void)setHasEra:(BOOL)era;
+- (void)setHasIsLeapMonth:(BOOL)month;
+- (void)setHasMonth:(BOOL)month;
+- (void)setHasYear:(BOOL)year;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ABSPBDate
@@ -31,85 +31,85 @@
   }
 }
 
-- (int)StringAsCalendar:(id)a3
+- (int)StringAsCalendar:(id)calendar
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"GREGORIAN"])
+  calendarCopy = calendar;
+  if ([calendarCopy isEqualToString:@"GREGORIAN"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"BUDDHIST"])
+  else if ([calendarCopy isEqualToString:@"BUDDHIST"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CHINESE"])
+  else if ([calendarCopy isEqualToString:@"CHINESE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"COPTIC"])
+  else if ([calendarCopy isEqualToString:@"COPTIC"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ETHIOPICAMETEMIHRET"])
+  else if ([calendarCopy isEqualToString:@"ETHIOPICAMETEMIHRET"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"ETHIOPICAMETEALEM"])
+  else if ([calendarCopy isEqualToString:@"ETHIOPICAMETEALEM"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"HEBREW"])
+  else if ([calendarCopy isEqualToString:@"HEBREW"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"ISO8601"])
+  else if ([calendarCopy isEqualToString:@"ISO8601"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"INDIAN"])
+  else if ([calendarCopy isEqualToString:@"INDIAN"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ISLAMIC"])
+  else if ([calendarCopy isEqualToString:@"ISLAMIC"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"ISLAMICCIVIL"])
+  else if ([calendarCopy isEqualToString:@"ISLAMICCIVIL"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"JAPANESE"])
+  else if ([calendarCopy isEqualToString:@"JAPANESE"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"PERSIAN"])
+  else if ([calendarCopy isEqualToString:@"PERSIAN"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"REPUBLICOFCHINA"])
+  else if ([calendarCopy isEqualToString:@"REPUBLICOFCHINA"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"ISLAMICTABULAR"])
+  else if ([calendarCopy isEqualToString:@"ISLAMICTABULAR"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"ISLAMICUMMALQURA"])
+  else if ([calendarCopy isEqualToString:@"ISLAMICUMMALQURA"])
   {
     v4 = 16;
   }
@@ -122,9 +122,9 @@
   return v4;
 }
 
-- (void)setHasIsLeapMonth:(BOOL)a3
+- (void)setHasIsLeapMonth:(BOOL)month
 {
-  if (a3)
+  if (month)
   {
     v3 = 32;
   }
@@ -137,9 +137,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasEra:(BOOL)a3
+- (void)setHasEra:(BOOL)era
 {
-  if (a3)
+  if (era)
   {
     v3 = 4;
   }
@@ -152,9 +152,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasYear:(BOOL)a3
+- (void)setHasYear:(BOOL)year
 {
-  if (a3)
+  if (year)
   {
     v3 = 16;
   }
@@ -167,9 +167,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasMonth:(BOOL)a3
+- (void)setHasMonth:(BOOL)month
 {
-  if (a3)
+  if (month)
   {
     v3 = 8;
   }
@@ -182,9 +182,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasDay:(BOOL)a3
+- (void)setHasDay:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 2;
   }
@@ -202,8 +202,8 @@
   v7.receiver = self;
   v7.super_class = ABSPBDate;
   v3 = [(ABSPBDate *)&v7 description];
-  v4 = [(ABSPBDate *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(ABSPBDate *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -300,9 +300,9 @@ LABEL_12:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -383,14 +383,14 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_calendar;
-    *(v4 + 32) |= 1u;
+    toCopy[2] = self->_calendar;
+    *(toCopy + 32) |= 1u;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -409,8 +409,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 28) = self->_isLeapMonth;
-  *(v4 + 32) |= 0x20u;
+  *(toCopy + 28) = self->_isLeapMonth;
+  *(toCopy + 32) |= 0x20u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -424,8 +424,8 @@ LABEL_4:
   }
 
 LABEL_13:
-  v4[4] = self->_era;
-  *(v4 + 32) |= 4u;
+  toCopy[4] = self->_era;
+  *(toCopy + 32) |= 4u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -439,8 +439,8 @@ LABEL_5:
   }
 
 LABEL_14:
-  v4[6] = self->_year;
-  *(v4 + 32) |= 0x10u;
+  toCopy[6] = self->_year;
+  *(toCopy + 32) |= 0x10u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -454,21 +454,21 @@ LABEL_6:
   }
 
 LABEL_15:
-  v4[5] = self->_month;
-  *(v4 + 32) |= 8u;
+  toCopy[5] = self->_month;
+  *(toCopy + 32) |= 8u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_7:
-    v4[3] = self->_day;
-    *(v4 + 32) |= 2u;
+    toCopy[3] = self->_day;
+    *(toCopy + 32) |= 2u;
   }
 
 LABEL_8:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -550,30 +550,30 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_calendar != *(v4 + 2))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_calendar != *(equalCopy + 2))
     {
       goto LABEL_34;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 0x20) == 0)
   {
-    if ((*(v4 + 32) & 0x20) == 0)
+    if ((*(equalCopy + 32) & 0x20) == 0)
     {
       goto LABEL_9;
     }
@@ -583,21 +583,21 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if ((*(v4 + 32) & 0x20) == 0)
+  if ((*(equalCopy + 32) & 0x20) == 0)
   {
     goto LABEL_34;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(equalCopy + 28);
   if (self->_isLeapMonth)
   {
-    if ((*(v4 + 28) & 1) == 0)
+    if ((*(equalCopy + 28) & 1) == 0)
     {
       goto LABEL_34;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_34;
   }
@@ -605,47 +605,47 @@ LABEL_34:
 LABEL_9:
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) == 0 || self->_era != *(v4 + 4))
+    if ((*(equalCopy + 32) & 4) == 0 || self->_era != *(equalCopy + 4))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 32) & 4) != 0)
+  else if ((*(equalCopy + 32) & 4) != 0)
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 32) & 0x10) == 0 || self->_year != *(v4 + 6))
+    if ((*(equalCopy + 32) & 0x10) == 0 || self->_year != *(equalCopy + 6))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 32) & 0x10) != 0)
+  else if ((*(equalCopy + 32) & 0x10) != 0)
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 32) & 8) == 0 || self->_month != *(v4 + 5))
+    if ((*(equalCopy + 32) & 8) == 0 || self->_month != *(equalCopy + 5))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 32) & 8) != 0)
+  else if ((*(equalCopy + 32) & 8) != 0)
   {
     goto LABEL_34;
   }
 
-  v6 = (*(v4 + 32) & 2) == 0;
+  v6 = (*(equalCopy + 32) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_day != *(v4 + 3))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_day != *(equalCopy + 3))
     {
       goto LABEL_34;
     }
@@ -740,15 +740,15 @@ LABEL_7:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 32);
+  fromCopy = from;
+  v5 = *(fromCopy + 32);
   if (v5)
   {
-    self->_calendar = *(v4 + 2);
+    self->_calendar = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
     if ((v5 & 0x20) == 0)
     {
 LABEL_3:
@@ -761,14 +761,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 32) & 0x20) == 0)
+  else if ((*(fromCopy + 32) & 0x20) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_isLeapMonth = *(v4 + 28);
+  self->_isLeapMonth = *(fromCopy + 28);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -781,9 +781,9 @@ LABEL_4:
   }
 
 LABEL_13:
-  self->_era = *(v4 + 4);
+  self->_era = *(fromCopy + 4);
   *&self->_has |= 4u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x10) == 0)
   {
 LABEL_5:
@@ -796,9 +796,9 @@ LABEL_5:
   }
 
 LABEL_14:
-  self->_year = *(v4 + 6);
+  self->_year = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 8) == 0)
   {
 LABEL_6:
@@ -811,12 +811,12 @@ LABEL_6:
   }
 
 LABEL_15:
-  self->_month = *(v4 + 5);
+  self->_month = *(fromCopy + 5);
   *&self->_has |= 8u;
-  if ((*(v4 + 32) & 2) != 0)
+  if ((*(fromCopy + 32) & 2) != 0)
   {
 LABEL_7:
-    self->_day = *(v4 + 3);
+    self->_day = *(fromCopy + 3);
     *&self->_has |= 2u;
   }
 

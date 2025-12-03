@@ -1,9 +1,9 @@
 @interface RBDisplayListPredicate
 + (id)predicate;
 - (id).cxx_construct;
-- (id)copyFilteredDisplayList:(id)a3;
-- (id)filteringDisplayList:(id)a3;
-- (void)addConditionWithFillColor:(id)a3 colorSpace:(int)a4;
+- (id)copyFilteredDisplayList:(id)list;
+- (id)filteringDisplayList:(id)list;
+- (void)addConditionWithFillColor:(id)color colorSpace:(int)space;
 @end
 
 @implementation RBDisplayListPredicate
@@ -23,7 +23,7 @@
   return v2;
 }
 
-- (void)addConditionWithFillColor:(id)a3 colorSpace:(int)a4
+- (void)addConditionWithFillColor:(id)color colorSpace:(int)space
 {
   __asm
   {
@@ -38,23 +38,23 @@
   v13[2] = _H10;
   v13[3] = _H11;
   v14 = 0;
-  v15 = rb_color_space(a4);
+  v15 = rb_color_space(space);
   RB::DisplayList::Predicate::add_color(self->_predicate.predicate._terms._p, v13);
 }
 
-- (id)copyFilteredDisplayList:(id)a3
+- (id)copyFilteredDisplayList:(id)list
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [a3 _rb_contents];
-  if (v5)
+  _rb_contents = [list _rb_contents];
+  if (_rb_contents)
   {
-    v6 = v5;
+    v6 = _rb_contents;
     RB::DisplayList::Builder::Builder(v16);
     RB::DisplayList::Builder::draw(v16, v6, v18, 1.0, &self->_predicate, 0);
     if (*(v17 + 336) || *(v17 + 352))
     {
       v15 = 0;
-      if ([a3 _rb_xml_document])
+      if ([list _rb_xml_document])
       {
         operator new();
       }
@@ -85,9 +85,9 @@
   }
 }
 
-- (id)filteringDisplayList:(id)a3
+- (id)filteringDisplayList:(id)list
 {
-  v3 = [(RBDisplayListPredicate *)self copyFilteredDisplayList:a3];
+  v3 = [(RBDisplayListPredicate *)self copyFilteredDisplayList:list];
 
   return v3;
 }

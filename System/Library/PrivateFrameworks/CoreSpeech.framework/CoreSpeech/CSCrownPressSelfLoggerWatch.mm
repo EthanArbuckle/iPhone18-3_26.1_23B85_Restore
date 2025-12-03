@@ -1,62 +1,62 @@
 @interface CSCrownPressSelfLoggerWatch
 - (CSCrownPressSelfLoggerWatch)init;
-- (void)CSSiriAssertionMonitor:(id)a3 didReceiveBacklightOnEnabled:(BOOL)a4 atHostTime:(unint64_t)a5;
-- (void)_handleDidStartStreamWithContext:(id)a3 withOption:(id)a4 successfully:(BOOL)a5;
+- (void)CSSiriAssertionMonitor:(id)monitor didReceiveBacklightOnEnabled:(BOOL)enabled atHostTime:(unint64_t)time;
+- (void)_handleDidStartStreamWithContext:(id)context withOption:(id)option successfully:(BOOL)successfully;
 - (void)dealloc;
 - (void)setup;
-- (void)siriClientBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6 withEventUUID:(id)a7;
+- (void)siriClientBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d;
 @end
 
 @implementation CSCrownPressSelfLoggerWatch
 
-- (void)CSSiriAssertionMonitor:(id)a3 didReceiveBacklightOnEnabled:(BOOL)a4 atHostTime:(unint64_t)a5
+- (void)CSSiriAssertionMonitor:(id)monitor didReceiveBacklightOnEnabled:(BOOL)enabled atHostTime:(unint64_t)time
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000DD020;
   block[3] = &unk_100253028;
-  v7 = a4;
+  enabledCopy = enabled;
   block[4] = self;
-  block[5] = a5;
+  block[5] = time;
   dispatch_async(queue, block);
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6 withEventUUID:(id)a7
+- (void)siriClientBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d
 {
-  v10 = a4;
-  v11 = a6;
+  contextCopy = context;
+  optionCopy = option;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000DD118;
   v15[3] = &unk_100252420;
   v15[4] = self;
-  v16 = v10;
-  v17 = v11;
-  v18 = a5;
-  v13 = v11;
-  v14 = v10;
+  v16 = contextCopy;
+  v17 = optionCopy;
+  successfullyCopy = successfully;
+  v13 = optionCopy;
+  v14 = contextCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)_handleDidStartStreamWithContext:(id)a3 withOption:(id)a4 successfully:(BOOL)a5
+- (void)_handleDidStartStreamWithContext:(id)context withOption:(id)option successfully:(BOOL)successfully
 {
-  v5 = a5;
-  v8 = a4;
-  if (v5)
+  successfullyCopy = successfully;
+  optionCopy = option;
+  if (successfullyCopy)
   {
-    v14 = v8;
-    v9 = [a3 isHomePressed];
-    v8 = v14;
-    if (v9)
+    v14 = optionCopy;
+    isHomePressed = [context isHomePressed];
+    optionCopy = v14;
+    if (isHomePressed)
     {
       if (self->_listeningEnabled)
       {
-        v10 = [(CSCrownPressSelfLoggerWatch *)self displayWakeHostTime];
-        v11 = [v14 startRecordingHostTime];
-        v8 = v14;
-        v12 = v10 > v11;
+        displayWakeHostTime = [(CSCrownPressSelfLoggerWatch *)self displayWakeHostTime];
+        startRecordingHostTime = [v14 startRecordingHostTime];
+        optionCopy = v14;
+        v12 = displayWakeHostTime > startRecordingHostTime;
       }
 
       else
@@ -64,10 +64,10 @@
         v12 = 1;
       }
 
-      v13 = [v8 requestMHUUID];
-      [(CSCrownPressSelfLoggerWatch *)self _emitCrownPressedEventwithMHUUID:v13 didUseAOM:v12];
+      requestMHUUID = [optionCopy requestMHUUID];
+      [(CSCrownPressSelfLoggerWatch *)self _emitCrownPressedEventwithMHUUID:requestMHUUID didUseAOM:v12];
 
-      v8 = v14;
+      optionCopy = v14;
     }
   }
 }

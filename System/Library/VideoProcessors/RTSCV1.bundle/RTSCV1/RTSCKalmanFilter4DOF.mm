@@ -1,12 +1,12 @@
 @interface RTSCKalmanFilter4DOF
 - (RTSCKalmanFilter4DOF)init;
-- (_OWORD)_updateInternalForIndex:(float32x4_t)a3 withMeasurement:(float32x4_t)a4 noiseCovariance:(float32x4_t)a5;
+- (_OWORD)_updateInternalForIndex:(float32x4_t)index withMeasurement:(float32x4_t)measurement noiseCovariance:(float32x4_t)covariance;
 - (__n128)positionCovariance;
-- (void)_updateStateTransitionModelWithTimeStep:(float)a3;
-- (void)predictTimeStep:(float)a3 input:(id)a4[3] processCovariance:;
+- (void)_updateStateTransitionModelWithTimeStep:(float)step;
+- (void)predictTimeStep:(float)step input:(id)input[3] processCovariance:;
 - (void)reset;
-- (void)updateWithPosition:(__n128)a3 noiseCovariance:(__n128)a4;
-- (void)updateWithVelocity:(void *)a1 noiseCovariance:(const char *)a2;
+- (void)updateWithPosition:(__n128)position noiseCovariance:(__n128)covariance;
+- (void)updateWithVelocity:(void *)velocity noiseCovariance:(const char *)covariance;
 @end
 
 @implementation RTSCKalmanFilter4DOF
@@ -57,7 +57,7 @@
   while (v2 != 3);
 }
 
-- (void)_updateStateTransitionModelWithTimeStep:(float)a3
+- (void)_updateStateTransitionModelWithTimeStep:(float)step
 {
   *&self->_stateTransitionModel[0][0] = 0;
   self->_stateTransitionModel[0][2] = 0.0;
@@ -66,11 +66,11 @@
   self->_stateTransitionModel[1][1] = 1.0;
   *&self->_stateTransitionModel[2][0] = 0;
   self->_stateTransitionModel[2][2] = 1.0;
-  self->_stateTransitionModel[0][1] = a3;
-  self->_stateTransitionModel[1][2] = a3;
+  self->_stateTransitionModel[0][1] = step;
+  self->_stateTransitionModel[1][2] = step;
 }
 
-- (void)predictTimeStep:(float)a3 input:(id)a4[3] processCovariance:
+- (void)predictTimeStep:(float)step input:(id)input[3] processCovariance:
 {
   if (self->_isInitialized)
   {
@@ -80,7 +80,7 @@
     [(RTSCKalmanFilter4DOF *)self _updateStateTransitionModelWithTimeStep:?];
     v9 = 0;
     stateEstimate = self->_stateEstimate;
-    v11 = self;
+    selfCopy = self;
     do
     {
       if (v9 <= 1)
@@ -89,7 +89,7 @@
         v13 = *&stateEstimate[16 * v9];
         do
         {
-          v13 = vmlaq_n_f32(v13, *&v11->_stateEstimate[16 * v12 + 16], v11->_stateTransitionModel[0][v12 + 1]);
+          v13 = vmlaq_n_f32(v13, *&selfCopy->_stateEstimate[16 * v12 + 16], selfCopy->_stateTransitionModel[0][v12 + 1]);
           *&stateEstimate[16 * v9] = v13;
           ++v12;
         }
@@ -98,7 +98,7 @@
       }
 
       ++v9;
-      v11 = (v11 + 16);
+      selfCopy = (selfCopy + 16);
     }
 
     while (v9 != 3);
@@ -198,7 +198,7 @@
 
     while (v26 != 3);
     v42 = &self->_anon_40[48];
-    v43 = (a4 + 32);
+    v43 = (input + 32);
     do
     {
       v44 = v43[-2];
@@ -221,44 +221,44 @@
   }
 }
 
-- (void)updateWithPosition:(__n128)a3 noiseCovariance:(__n128)a4
+- (void)updateWithPosition:(__n128)position noiseCovariance:(__n128)covariance
 {
-  if (*(a1 + 676) == 1)
+  if (*(self + 676) == 1)
   {
-    return [a1 _updateInternalForIndex:0 withMeasurement:? noiseCovariance:?];
+    return [self _updateInternalForIndex:0 withMeasurement:? noiseCovariance:?];
   }
 
-  *(a1 + 1) = a3;
-  *(a1 + 4) = a4;
-  *(a1 + 5) = a5;
-  *(a1 + 6) = a6;
-  *(a1 + 7) = a7;
-  *(a1 + 676) = 1;
-  return a1;
+  *(self + 1) = position;
+  *(self + 4) = covariance;
+  *(self + 5) = a5;
+  *(self + 6) = a6;
+  *(self + 7) = a7;
+  *(self + 676) = 1;
+  return self;
 }
 
-- (void)updateWithVelocity:(void *)a1 noiseCovariance:(const char *)a2
+- (void)updateWithVelocity:(void *)velocity noiseCovariance:(const char *)covariance
 {
-  if (*(a1 + 676) == 1)
+  if (*(velocity + 676) == 1)
   {
-    return [a1 _updateInternalForIndex:1 withMeasurement:? noiseCovariance:?];
+    return [velocity _updateInternalForIndex:1 withMeasurement:? noiseCovariance:?];
   }
 
-  return a1;
+  return velocity;
 }
 
-- (_OWORD)_updateInternalForIndex:(float32x4_t)a3 withMeasurement:(float32x4_t)a4 noiseCovariance:(float32x4_t)a5
+- (_OWORD)_updateInternalForIndex:(float32x4_t)index withMeasurement:(float32x4_t)measurement noiseCovariance:(float32x4_t)covariance
 {
-  v10 = (a1 + 64);
+  v10 = (self + 64);
   v11 = a8;
-  v12 = (a1 + 64 + 192 * a8 + (a8 << 6));
-  v76.columns[0] = vaddq_f32(a3, *v12);
-  v76.columns[1] = vaddq_f32(a4, v12[1]);
-  v76.columns[2] = vaddq_f32(a5, v12[2]);
+  v12 = (self + 64 + 192 * a8 + (a8 << 6));
+  v76.columns[0] = vaddq_f32(index, *v12);
+  v76.columns[1] = vaddq_f32(measurement, v12[1]);
+  v76.columns[2] = vaddq_f32(covariance, v12[2]);
   v76.columns[3] = vaddq_f32(a6, v12[3]);
   v77 = __invert_f4(v76);
   v13 = 0;
-  v14 = vsubq_f32(a2, *(a1 + 16 + 16 * a8));
+  v14 = vsubq_f32(a2, *(self + 16 + 16 * a8));
   v15 = vdupq_lane_s32(*v14.i8, 1);
   v16 = vdupq_laneq_s32(v14, 2);
   v17 = vdupq_laneq_s32(v14, 3);
@@ -291,7 +291,7 @@
     v24[1] = v26;
     v24[2] = v27;
     v24[3] = v28;
-    *(a1 + 16 + 16 * v13) = vaddq_f32(vmlaq_f32(vmlaq_f32(vmlaq_f32(vmulq_n_f32(v25, *v14.i32), v15, v26), v16, v27), v17, v28), *(a1 + 16 + 16 * v13));
+    *(self + 16 + 16 * v13) = vaddq_f32(vmlaq_f32(vmlaq_f32(vmlaq_f32(vmulq_n_f32(v25, *v14.i32), v15, v26), v16, v27), v17, v28), *(self + 16 + 16 * v13));
     ++v13;
   }
 
@@ -407,10 +407,10 @@
 
 - (__n128)positionCovariance
 {
-  result = *(a1 + 64);
-  v2 = *(a1 + 80);
-  v3 = *(a1 + 96);
-  v4 = *(a1 + 112);
+  result = *(self + 64);
+  v2 = *(self + 80);
+  v3 = *(self + 96);
+  v4 = *(self + 112);
   return result;
 }
 

@@ -1,5 +1,5 @@
 @interface HMFExponentialBackoffTimer
-- (HMFExponentialBackoffTimer)initWithMinimumTimeInterval:(double)a3 maximumTimeInterval:(double)a4 exponentialFactor:(int64_t)a5 options:(unsigned int)a6;
+- (HMFExponentialBackoffTimer)initWithMinimumTimeInterval:(double)interval maximumTimeInterval:(double)timeInterval exponentialFactor:(int64_t)factor options:(unsigned int)options;
 - (double)timeInterval;
 - (void)__fire;
 - (void)reset;
@@ -9,12 +9,12 @@
 
 - (void)__fire
 {
-  v3 = [(HMFExponentialBackoffTimer *)self isIncreasing];
+  isIncreasing = [(HMFExponentialBackoffTimer *)self isIncreasing];
   timeInterval = self->super._timeInterval;
-  v5 = [(HMFExponentialBackoffTimer *)self exponentialFactor];
-  if (v3)
+  exponentialFactor = [(HMFExponentialBackoffTimer *)self exponentialFactor];
+  if (isIncreasing)
   {
-    v6 = timeInterval * v5;
+    v6 = timeInterval * exponentialFactor;
     [(HMFExponentialBackoffTimer *)self maximumTimeInterval];
     if (v6 > v7)
     {
@@ -26,7 +26,7 @@ LABEL_6:
 
   else
   {
-    v6 = timeInterval / v5;
+    v6 = timeInterval / exponentialFactor;
     [(HMFExponentialBackoffTimer *)self minimumTimeInterval];
     if (v6 < v9)
     {
@@ -41,11 +41,11 @@ LABEL_6:
   [(HMFTimer *)&v10 __fire];
 }
 
-- (HMFExponentialBackoffTimer)initWithMinimumTimeInterval:(double)a3 maximumTimeInterval:(double)a4 exponentialFactor:(int64_t)a5 options:(unsigned int)a6
+- (HMFExponentialBackoffTimer)initWithMinimumTimeInterval:(double)interval maximumTimeInterval:(double)timeInterval exponentialFactor:(int64_t)factor options:(unsigned int)options
 {
-  v6 = self;
+  selfCopy = self;
   v28 = *MEMORY[0x277D85DE8];
-  if (!a5)
+  if (!factor)
   {
     v11 = objc_autoreleasePoolPush();
     v12 = HMFGetOSLogHandle();
@@ -67,9 +67,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v8 = a3;
-  v9 = a5 > 0;
-  if (a3 <= 0.0)
+  intervalCopy = interval;
+  v9 = factor > 0;
+  if (interval <= 0.0)
   {
     v11 = objc_autoreleasePoolPush();
     v12 = HMFGetOSLogHandle();
@@ -79,7 +79,7 @@ LABEL_11:
       *buf = 138543618;
       v23 = v13;
       v24 = 2048;
-      v25 = v8;
+      timeIntervalCopy = intervalCopy;
       v14 = "%{public}@[HMFExponentialBackoffTimer] The minimum time interval, %f, must be greater than 0";
       v15 = v12;
       v16 = 22;
@@ -89,7 +89,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (a4 < a3)
+  if (timeInterval < interval)
   {
     v11 = objc_autoreleasePoolPush();
     v12 = HMFGetOSLogHandle();
@@ -99,9 +99,9 @@ LABEL_11:
       *buf = 138543874;
       v23 = v13;
       v24 = 2048;
-      v25 = a4;
+      timeIntervalCopy = timeInterval;
       v26 = 2048;
-      v27 = v8;
+      v27 = intervalCopy;
       v14 = "%{public}@[HMFExponentialBackoffTimer] The maximum time interval, %f, must be greater than or equal to the minimum time interval, %f";
       v15 = v12;
       v16 = 32;
@@ -114,24 +114,24 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (a5 <= 0)
+  if (factor <= 0)
   {
-    a3 = a4;
+    interval = timeInterval;
   }
 
   v21.receiver = self;
   v21.super_class = HMFExponentialBackoffTimer;
-  v20 = [(HMFTimer *)&v21 initWithTimeInterval:a6 | 4 options:a3];
+  v20 = [(HMFTimer *)&v21 initWithTimeInterval:options | 4 options:interval];
   if (v20)
   {
-    v20->_minimumTimeInterval = v8;
-    v20->_maximumTimeInterval = a4;
-    v20->_exponentialFactor = a5;
+    v20->_minimumTimeInterval = intervalCopy;
+    v20->_maximumTimeInterval = timeInterval;
+    v20->_exponentialFactor = factor;
     v20->_increasing = v9;
   }
 
-  v6 = v20;
-  v17 = v6;
+  selfCopy = v20;
+  v17 = selfCopy;
 LABEL_12:
 
   v18 = *MEMORY[0x277D85DE8];

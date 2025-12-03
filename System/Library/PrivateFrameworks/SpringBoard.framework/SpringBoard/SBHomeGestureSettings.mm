@@ -33,8 +33,8 @@
   [(SBHomeGestureSettings *)self setResetSwitcherListAfterAppInteraction:1];
   [(SBHomeGestureSettings *)self setTravelDistanceForTranslatingScreenHeight:180.0];
   [(SBHomeGestureSettings *)self setMinimumDistanceThresholdToScaleMultiplier:32.0];
-  v7 = [(SBHomeGestureSettings *)self exclusionTrapezoidSettings];
-  [v7 setDefaultValues];
+  exclusionTrapezoidSettings = [(SBHomeGestureSettings *)self exclusionTrapezoidSettings];
+  [exclusionTrapezoidSettings setDefaultValues];
 
   [(SBHomeGestureSettings *)self setHomeGestureXOffsetFactor:1.0];
   [(SBHomeGestureSettings *)self setHomeGestureCenterZoomDownCenterYOffsetFactor:-0.2];
@@ -46,11 +46,11 @@
 
 - (void)setHomeGestureTuningDefaults
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 10.0;
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v5 = 12.0;
   }
@@ -68,14 +68,14 @@
   [(SBHomeGestureSettings *)self setMinimumYVelocityForHome:-51.0];
   [(SBHomeGestureSettings *)self setVelocityXThresholdForUnconditionalArcSwipe:208.0];
   [(SBHomeGestureSettings *)self setMinimumYVelocityForArcSwipe:51.0];
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  [(SBHomeGestureSettings *)self setNormalizedDistanceYThresholdForUnconditionalHome:dbl_21F8A84E0[(v7 & 0xFFFFFFFFFFFFFFFBLL) == 1]];
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  [(SBHomeGestureSettings *)self setNormalizedDistanceYThresholdForUnconditionalHome:dbl_21F8A84E0[(userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1]];
+  currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
-  if ((v9 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v10 = 0.1;
   }
@@ -90,10 +90,10 @@
   [(SBHomeGestureSettings *)self setNormalizedDistanceYThresholdRangeForUnconditionalHomeInSlideOver:0.2];
   [(SBHomeGestureSettings *)self setPauseVelocityThresholdForAppSwitcher:51.0];
   [(SBHomeGestureSettings *)self setPauseVelocityThresholdForDefiniteAppSwitcher:27.0];
-  v11 = [MEMORY[0x277D75418] currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom4 = [currentDevice4 userInterfaceIdiom];
 
-  [(SBHomeGestureSettings *)self setMaximumAdaptivePauseVelocityThresholdForAppSwitcher:dbl_21F8A84F0[(v12 & 0xFFFFFFFFFFFFFFFBLL) == 1]];
+  [(SBHomeGestureSettings *)self setMaximumAdaptivePauseVelocityThresholdForAppSwitcher:dbl_21F8A84F0[(userInterfaceIdiom4 & 0xFFFFFFFFFFFFFFFBLL) == 1]];
   [(SBHomeGestureSettings *)self setSnapToMaxVelocityThresholdAfterAccelerationDip:1];
   [(SBHomeGestureSettings *)self setMaximumAdaptiveVelocityThresholdForDock:308.0];
   [(SBHomeGestureSettings *)self setAppSwitcherVelocityThresholdIncreasingRateFraction:0.2];
@@ -120,26 +120,26 @@
   [(SBHomeGestureSettings *)self setHorizontalRubberbandDistance:16.0];
   [(SBHomeGestureSettings *)self setHorizontalRubberbandExponent:4.0];
   [(SBHomeGestureSettings *)self setInjectGestureVelocityForZoomDown:1];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  [(SBHomeGestureSettings *)self setOnlyInjectVelocityForShortFlicks:(v4 & 0xFFFFFFFFFFFFFFFBLL) != 1];
+  [(SBHomeGestureSettings *)self setOnlyInjectVelocityForShortFlicks:(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1];
   [(SBHomeGestureSettings *)self setPositionVelocityXPercentOfGestureVelocityX:1.0];
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
   v7 = 0.3;
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v7 = 0.5;
   }
 
   [(SBHomeGestureSettings *)self setPositionVelocityYPercentOfGestureVelocityY:v7];
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
   v10 = 1.4;
-  if ((v9 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v10 = 1.5;
   }
@@ -166,10 +166,10 @@
 
   v141 = [MEMORY[0x277D43210] sectionWithRows:v136];
   v8 = MEMORY[0x277CCAC30];
-  v9 = [MEMORY[0x277D75418] currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v11 = [v8 predicateWithValue:(v10 & 0xFFFFFFFFFFFFFFFBLL) == 1];
+  v11 = [v8 predicateWithValue:(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1];
   v137 = [MEMORY[0x277D431E8] rowWithTitle:@"Min Y Distance For Home Or Switcher" valueKeyPath:@"minimumYDistanceForHomeOrAppSwitcher"];
   v134 = [v137 between:0.0 and:500.0];
   v150[0] = v134;

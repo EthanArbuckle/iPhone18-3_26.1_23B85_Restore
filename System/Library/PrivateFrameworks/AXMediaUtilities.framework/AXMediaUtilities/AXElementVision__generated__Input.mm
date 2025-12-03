@@ -1,26 +1,26 @@
 @interface AXElementVision__generated__Input
-- (AXElementVision__generated__Input)initWithImage:(__CVBuffer *)a3 iouThreshold:(double)a4 confidenceThreshold:(double)a5;
-- (id)featureValueForName:(id)a3;
+- (AXElementVision__generated__Input)initWithImage:(__CVBuffer *)image iouThreshold:(double)threshold confidenceThreshold:(double)confidenceThreshold;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation AXElementVision__generated__Input
 
-- (AXElementVision__generated__Input)initWithImage:(__CVBuffer *)a3 iouThreshold:(double)a4 confidenceThreshold:(double)a5
+- (AXElementVision__generated__Input)initWithImage:(__CVBuffer *)image iouThreshold:(double)threshold confidenceThreshold:(double)confidenceThreshold
 {
   if (self)
   {
-    self->_image = a3;
-    self->_iouThreshold = a4;
-    self->_confidenceThreshold = a5;
+    self->_image = image;
+    self->_iouThreshold = threshold;
+    self->_confidenceThreshold = confidenceThreshold;
   }
 
   return self;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"image"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"image"])
   {
     v5 = [MEMORY[0x1E695FE60] featureValueWithPixelBuffer:self->_image];
 LABEL_8:
@@ -28,7 +28,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"iouThreshold"])
+  if ([nameCopy isEqualToString:@"iouThreshold"])
   {
     v6 = MEMORY[0x1E695FE60];
     iouThreshold = self->_iouThreshold;
@@ -37,7 +37,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"confidenceThreshold"])
+  if ([nameCopy isEqualToString:@"confidenceThreshold"])
   {
     v6 = MEMORY[0x1E695FE60];
     iouThreshold = self->_confidenceThreshold;

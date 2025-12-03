@@ -1,72 +1,72 @@
 @interface HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager
-- (BOOL)_countryCodeIsSupportedForDevicePairing:(id)a3 device:(id)a4;
-- (BOOL)_isFeatureSupportedOnDevice:(id)a3;
-- (HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager)initWithProfile:(id)a3;
-- (HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager)initWithProfile:(id)a3 disableAndExpiryProvider:(id)a4 notificationSettingDefaults:(id)a5;
-- (id)_onboardingCompletionWithError:(id *)a3;
-- (id)_onboardingEligibilityForCountryCode:(id)a3 error:(id *)a4;
-- (id)canCompleteOnboardingForCountryCode:(id)a3 error:(id *)a4;
+- (BOOL)_countryCodeIsSupportedForDevicePairing:(id)pairing device:(id)device;
+- (BOOL)_isFeatureSupportedOnDevice:(id)device;
+- (HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager)initWithProfile:(id)profile;
+- (HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager)initWithProfile:(id)profile disableAndExpiryProvider:(id)provider notificationSettingDefaults:(id)defaults;
+- (id)_onboardingCompletionWithError:(id *)error;
+- (id)_onboardingEligibilityForCountryCode:(id)code error:(id *)error;
+- (id)canCompleteOnboardingForCountryCode:(id)code error:(id *)error;
 - (id)countryAvailabilityVersion;
-- (id)earliestDateLowestOnboardingVersionCompletedWithError:(id *)a3;
-- (id)featureOnboardingRecordWithError:(id *)a3;
-- (id)isCurrentOnboardingVersionCompletedWithError:(id *)a3;
-- (id)isFeatureCapabilitySupportedOnActivePairedDeviceWithError:(id *)a3;
-- (id)onboardedCountryCodeSupportedStateWithError:(id *)a3;
-- (id)onboardingEligibilityForCountryCode:(id)a3 error:(id *)a4;
-- (id)pairedFeatureAttributesWithError:(id *)a3;
-- (void)daemonReady:(id)a3;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
+- (id)earliestDateLowestOnboardingVersionCompletedWithError:(id *)error;
+- (id)featureOnboardingRecordWithError:(id *)error;
+- (id)isCurrentOnboardingVersionCompletedWithError:(id *)error;
+- (id)isFeatureCapabilitySupportedOnActivePairedDeviceWithError:(id *)error;
+- (id)onboardedCountryCodeSupportedStateWithError:(id *)error;
+- (id)onboardingEligibilityForCountryCode:(id)code error:(id *)error;
+- (id)pairedFeatureAttributesWithError:(id *)error;
+- (void)daemonReady:(id)ready;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
 - (void)dealloc;
-- (void)getFeatureOnboardingRecordWithCompletion:(id)a3;
-- (void)isCurrentOnboardingVersionCompletedWithCompletion:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)registerObserver:(id)a3 queue:(id)a4;
-- (void)removeFeatureSettingValueForKey:(id)a3 completion:(id)a4;
-- (void)resetOnboardingWithCompletion:(id)a3;
-- (void)saveOnboardingCompletion:(id)a3 settings:(id)a4 completion:(id)a5;
-- (void)setCurrentOnboardingVersionCompletedForCountryCode:(id)a3 countryCodeProvenance:(int64_t)a4 date:(id)a5 settings:(id)a6 completion:(id)a7;
-- (void)setFeatureSettingData:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)setFeatureSettingNumber:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)setFeatureSettingString:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)unregisterObserver:(id)a3;
+- (void)getFeatureOnboardingRecordWithCompletion:(id)completion;
+- (void)isCurrentOnboardingVersionCompletedWithCompletion:(id)completion;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)registerObserver:(id)observer queue:(id)queue;
+- (void)removeFeatureSettingValueForKey:(id)key completion:(id)completion;
+- (void)resetOnboardingWithCompletion:(id)completion;
+- (void)saveOnboardingCompletion:(id)completion settings:(id)settings completion:(id)a5;
+- (void)setCurrentOnboardingVersionCompletedForCountryCode:(id)code countryCodeProvenance:(int64_t)provenance date:(id)date settings:(id)settings completion:(id)completion;
+- (void)setFeatureSettingData:(id)data forKey:(id)key completion:(id)completion;
+- (void)setFeatureSettingNumber:(id)number forKey:(id)key completion:(id)completion;
+- (void)setFeatureSettingString:(id)string forKey:(id)key completion:(id)completion;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager
 
-- (HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager)initWithProfile:(id)a3
+- (HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager)initWithProfile:(id)profile
 {
   v4 = MEMORY[0x277D107C0];
-  v5 = a3;
+  profileCopy = profile;
   v6 = [v4 alloc];
-  v7 = [v5 daemon];
-  v8 = [v6 initWithDaemon:v7 remoteDisableCondition:*MEMORY[0x277CCCCE8] seedExpirationCondition:*MEMORY[0x277CCCCF8]];
+  daemon = [profileCopy daemon];
+  v8 = [v6 initWithDaemon:daemon remoteDisableCondition:*MEMORY[0x277CCCCE8] seedExpirationCondition:*MEMORY[0x277CCCCF8]];
 
   v9 = objc_alloc(MEMORY[0x277CBEBD0]);
   v10 = [v9 initWithSuiteName:*MEMORY[0x277CCE458]];
-  v11 = [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self initWithProfile:v5 disableAndExpiryProvider:v8 notificationSettingDefaults:v10];
+  v11 = [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self initWithProfile:profileCopy disableAndExpiryProvider:v8 notificationSettingDefaults:v10];
 
   return v11;
 }
 
-- (HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager)initWithProfile:(id)a3 disableAndExpiryProvider:(id)a4 notificationSettingDefaults:(id)a5
+- (HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager)initWithProfile:(id)profile disableAndExpiryProvider:(id)provider notificationSettingDefaults:(id)defaults
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  profileCopy = profile;
+  providerCopy = provider;
+  defaultsCopy = defaults;
   v24.receiver = self;
   v24.super_class = HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager;
   v11 = [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)&v24 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_profile, v8);
-    v13 = [v8 daemon];
-    v14 = [v13 nanoRegistryDeviceCapabilityProvider];
+    objc_storeWeak(&v11->_profile, profileCopy);
+    daemon = [profileCopy daemon];
+    nanoRegistryDeviceCapabilityProvider = [daemon nanoRegistryDeviceCapabilityProvider];
     pairedDeviceProvider = v12->_pairedDeviceProvider;
-    v12->_pairedDeviceProvider = v14;
+    v12->_pairedDeviceProvider = nanoRegistryDeviceCapabilityProvider;
 
-    objc_storeStrong(&v12->_disableAndExpiryProvider, a4);
-    objc_storeStrong(&v12->_notificationSettingDefaults, a5);
+    objc_storeStrong(&v12->_disableAndExpiryProvider, provider);
+    objc_storeStrong(&v12->_notificationSettingDefaults, defaults);
     v16 = objc_alloc(MEMORY[0x277CCD738]);
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
@@ -75,8 +75,8 @@
     v12->_observers = v19;
 
     WeakRetained = objc_loadWeakRetained(&v12->_profile);
-    v22 = [WeakRetained daemon];
-    [v22 registerDaemonReadyObserver:v12 queue:0];
+    daemon2 = [WeakRetained daemon];
+    [daemon2 registerDaemonReadyObserver:v12 queue:0];
   }
 
   return v12;
@@ -94,22 +94,22 @@
   [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)&v3 dealloc];
 }
 
-- (BOOL)_countryCodeIsSupportedForDevicePairing:(id)a3 device:(id)a4
+- (BOOL)_countryCodeIsSupportedForDevicePairing:(id)pairing device:(id)device
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v8 = [v7 isAppleWatch];
+  pairingCopy = pairing;
+  deviceCopy = device;
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-  if (v8)
+  if (isAppleWatch)
   {
-    v9 = _LocalWatchDeviceSupportsCountryCode(v5);
+    v9 = _LocalWatchDeviceSupportsCountryCode(pairingCopy);
   }
 
   else
   {
-    v10 = _PairedWatchDeviceSupportsCountryCode(v6, v5);
-    v11 = v5;
+    v10 = _PairedWatchDeviceSupportsCountryCode(deviceCopy, pairingCopy);
+    v11 = pairingCopy;
     v12 = HKAtrialFibrillationDetectionSupportedCountries();
     v13 = [v12 containsObject:v11];
 
@@ -119,26 +119,26 @@
   return v9;
 }
 
-- (BOOL)_isFeatureSupportedOnDevice:(id)a3
+- (BOOL)_isFeatureSupportedOnDevice:(id)device
 {
-  v3 = a3;
-  if (v3)
+  deviceCopy = device;
+  if (deviceCopy)
   {
-    v4 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v5 = [v4 isAppleWatch];
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-    if (v5)
+    if (isAppleWatch)
     {
       v6 = 1;
     }
 
     else
     {
-      v7 = [v3 valueForProperty:*MEMORY[0x277D2BA98]];
+      v7 = [deviceCopy valueForProperty:*MEMORY[0x277D2BA98]];
       v8 = v7 != 0;
 
       v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"38627122-E97A-4089-861C-81704B480D2E"];
-      v10 = [v3 supportsCapability:v9];
+      v10 = [deviceCopy supportsCapability:v9];
 
       v6 = v8 & (v10 ^ 1);
     }
@@ -152,21 +152,21 @@
   return v6;
 }
 
-- (id)_onboardingCompletionWithError:(id *)a3
+- (id)_onboardingCompletionWithError:(id *)error
 {
   v5 = MEMORY[0x277D10718];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v7 = [v5 hdhr_heartRhythmProtectedSyncedDomainForProfile:WeakRetained];
 
-  v8 = [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self featureIdentifier];
-  v9 = [v7 hdhr_irregularRhythmNotificationsOnboardingCompletionForFeatureIdentifier:v8 error:a3];
+  featureIdentifier = [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self featureIdentifier];
+  v9 = [v7 hdhr_irregularRhythmNotificationsOnboardingCompletionForFeatureIdentifier:featureIdentifier error:error];
 
   return v9;
 }
 
-- (id)canCompleteOnboardingForCountryCode:(id)a3 error:(id *)a4
+- (id)canCompleteOnboardingForCountryCode:(id)code error:(id *)error
 {
-  v4 = [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self onboardingEligibilityForCountryCode:a3 error:a4];
+  v4 = [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self onboardingEligibilityForCountryCode:code error:error];
   v5 = v4;
   if (v4)
   {
@@ -181,20 +181,20 @@
   return v6;
 }
 
-- (id)onboardingEligibilityForCountryCode:(id)a3 error:(id *)a4
+- (id)onboardingEligibilityForCountryCode:(id)code error:(id *)error
 {
-  v5 = [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self _onboardingEligibilityForCountryCode:a3 error:a4];
-  v6 = [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self featureIdentifier];
-  v7 = [v5 eligibilityRespectingOverridesForFeatureIdentifier:v6];
+  v5 = [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self _onboardingEligibilityForCountryCode:code error:error];
+  featureIdentifier = [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self featureIdentifier];
+  v7 = [v5 eligibilityRespectingOverridesForFeatureIdentifier:featureIdentifier];
 
   return v7;
 }
 
-- (id)_onboardingEligibilityForCountryCode:(id)a3 error:(id *)a4
+- (id)_onboardingEligibilityForCountryCode:(id)code error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDPairedDeviceCapabilityProviding *)self->_pairedDeviceProvider activePairedDevice];
-  v8 = [(HDFeatureDisableAndExpiryProviding *)self->_disableAndExpiryProvider rescindedStatusForCountryCode:v6 device:v7 error:a4];
+  codeCopy = code;
+  activePairedDevice = [(HDPairedDeviceCapabilityProviding *)self->_pairedDeviceProvider activePairedDevice];
+  v8 = [(HDFeatureDisableAndExpiryProviding *)self->_disableAndExpiryProvider rescindedStatusForCountryCode:codeCopy device:activePairedDevice error:error];
   v9 = v8;
   if (!v8)
   {
@@ -203,20 +203,20 @@
   }
 
   [v8 integerValue];
-  v10 = HKFeatureAvailabilityOnboardingIneligibilityReasonsForRescindedStatus() | (2 * (v7 == 0));
-  if (v6)
+  v10 = HKFeatureAvailabilityOnboardingIneligibilityReasonsForRescindedStatus() | (2 * (activePairedDevice == 0));
+  if (codeCopy)
   {
-    v11 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v12 = [v11 isAppleWatch];
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-    if (v12)
+    if (isAppleWatch)
     {
-      v13 = _LocalWatchDeviceSupportsCountryCode(v6);
-      v14 = [MEMORY[0x277CCDD30] sharedBehavior];
-      v15 = [v14 features];
-      v16 = [v15 deprecateIRN1];
+      v13 = _LocalWatchDeviceSupportsCountryCode(codeCopy);
+      mEMORY[0x277CCDD30]2 = [MEMORY[0x277CCDD30] sharedBehavior];
+      features = [mEMORY[0x277CCDD30]2 features];
+      deprecateIRN1 = [features deprecateIRN1];
 
-      if (v16 & 1 | ((v13 & 1) == 0))
+      if (deprecateIRN1 & 1 | ((v13 & 1) == 0))
       {
         v17 = v10 | 8;
       }
@@ -226,7 +226,7 @@
         v17 = v10;
       }
 
-      if (!v7)
+      if (!activePairedDevice)
       {
         goto LABEL_20;
       }
@@ -234,12 +234,12 @@
 
     else
     {
-      if (v7 && !_PairedWatchDeviceSupportsCountryCode(v7, v6))
+      if (activePairedDevice && !_PairedWatchDeviceSupportsCountryCode(activePairedDevice, codeCopy))
       {
         v10 |= 0x20uLL;
       }
 
-      v19 = v6;
+      v19 = codeCopy;
       v20 = HKAtrialFibrillationDetectionSupportedCountries();
       v21 = [v20 containsObject:v19];
 
@@ -253,13 +253,13 @@
         v17 = v10 | 8;
       }
 
-      if (!v7)
+      if (!activePairedDevice)
       {
         goto LABEL_20;
       }
     }
 
-    if (![(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self _isFeatureSupportedOnDevice:v7])
+    if (![(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self _isFeatureSupportedOnDevice:activePairedDevice])
     {
       v17 |= 4uLL;
     }
@@ -270,26 +270,26 @@
   v17 = v10 | 1;
 LABEL_20:
   v22 = objc_alloc(MEMORY[0x277CCD3F8]);
-  v23 = [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self countryAvailabilityVersion];
-  v18 = [v22 initWithIneligibilityReasons:v17 countryAvailabilityVersion:v23];
+  countryAvailabilityVersion = [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self countryAvailabilityVersion];
+  v18 = [v22 initWithIneligibilityReasons:v17 countryAvailabilityVersion:countryAvailabilityVersion];
 
 LABEL_21:
 
   return v18;
 }
 
-- (id)earliestDateLowestOnboardingVersionCompletedWithError:(id *)a3
+- (id)earliestDateLowestOnboardingVersionCompletedWithError:(id *)error
 {
   v4 = MEMORY[0x277D10718];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v6 = [v4 hdhr_heartRhythmProtectedSyncedDomainForProfile:WeakRetained];
 
-  v7 = [v6 hdhr_atrialFibrillationOnboardingCompletedDateWithError:a3];
+  v7 = [v6 hdhr_atrialFibrillationOnboardingCompletedDateWithError:error];
 
   return v7;
 }
 
-- (id)featureOnboardingRecordWithError:(id *)a3
+- (id)featureOnboardingRecordWithError:(id *)error
 {
   v18 = 0;
   v5 = [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self onboardedCountryCodeSupportedStateWithError:&v18];
@@ -314,7 +314,7 @@ LABEL_4:
     {
       if (v9)
       {
-        if (!a3)
+        if (!error)
         {
           goto LABEL_11;
         }
@@ -324,7 +324,7 @@ LABEL_4:
 
       if ([v5 integerValue] != 1)
       {
-        [MEMORY[0x277CCA9B8] hk_assignError:a3 code:100 description:@"Unexpectedly in an onboarded state with no onboarding completion"];
+        [MEMORY[0x277CCA9B8] hk_assignError:error code:100 description:@"Unexpectedly in an onboarded state with no onboarding completion"];
         goto LABEL_12;
       }
 
@@ -340,9 +340,9 @@ LABEL_4:
       }
 
       v14 = objc_alloc(MEMORY[0x277CCD740]);
-      v15 = [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self featureIdentifier];
-      v16 = [MEMORY[0x277CBEAA8] distantPast];
-      v8 = [v14 initWithFeatureIdentifier:v15 version:1 completionDate:v16 countryCode:0 countryCodeProvenance:0];
+      featureIdentifier = [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self featureIdentifier];
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
+      v8 = [v14 initWithFeatureIdentifier:featureIdentifier version:1 completionDate:distantPast countryCode:0 countryCodeProvenance:0];
 
       if (v8)
       {
@@ -357,7 +357,7 @@ LABEL_4:
   v9 = v6;
   if (v9)
   {
-    if (!a3)
+    if (!error)
     {
 LABEL_11:
       _HKLogDroppedError();
@@ -367,7 +367,7 @@ LABEL_11:
 LABEL_7:
     v12 = v9;
     v11 = 0;
-    *a3 = v9;
+    *error = v9;
     goto LABEL_13;
   }
 
@@ -378,27 +378,27 @@ LABEL_13:
   return v11;
 }
 
-- (void)getFeatureOnboardingRecordWithCompletion:(id)a3
+- (void)getFeatureOnboardingRecordWithCompletion:(id)completion
 {
   v7 = 0;
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self featureOnboardingRecordWithError:&v7];
   v6 = v7;
-  v4[2](v4, v5, v6);
+  completionCopy[2](completionCopy, v5, v6);
 }
 
-- (void)isCurrentOnboardingVersionCompletedWithCompletion:(id)a3
+- (void)isCurrentOnboardingVersionCompletedWithCompletion:(id)completion
 {
   v7 = 0;
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self isCurrentOnboardingVersionCompletedWithError:&v7];
   v6 = v7;
-  v4[2](v4, v5, v6);
+  completionCopy[2](completionCopy, v5, v6);
 }
 
-- (id)isCurrentOnboardingVersionCompletedWithError:(id *)a3
+- (id)isCurrentOnboardingVersionCompletedWithError:(id *)error
 {
-  v3 = [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self onboardedCountryCodeSupportedStateWithError:a3];
+  v3 = [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self onboardedCountryCodeSupportedStateWithError:error];
   v4 = v3;
   if (v3)
   {
@@ -421,29 +421,29 @@ LABEL_13:
   return v5;
 }
 
-- (id)isFeatureCapabilitySupportedOnActivePairedDeviceWithError:(id *)a3
+- (id)isFeatureCapabilitySupportedOnActivePairedDeviceWithError:(id *)error
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = [(HDPairedDeviceCapabilityProviding *)self->_pairedDeviceProvider activePairedDevice];
-  v6 = [v4 numberWithBool:{-[HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager _isFeatureSupportedOnDevice:](self, "_isFeatureSupportedOnDevice:", v5)}];
+  activePairedDevice = [(HDPairedDeviceCapabilityProviding *)self->_pairedDeviceProvider activePairedDevice];
+  v6 = [v4 numberWithBool:{-[HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager _isFeatureSupportedOnDevice:](self, "_isFeatureSupportedOnDevice:", activePairedDevice)}];
 
   return v6;
 }
 
-- (id)onboardedCountryCodeSupportedStateWithError:(id *)a3
+- (id)onboardedCountryCodeSupportedStateWithError:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
   v38 = 0;
   v5 = [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self _onboardingCompletionWithError:&v38];
   v6 = v38;
-  v7 = [v5 countryCode];
+  countryCode = [v5 countryCode];
   if (v5)
   {
 LABEL_12:
-    v15 = [(HDPairedDeviceCapabilityProviding *)self->_pairedDeviceProvider activePairedDevice];
-    if (v15)
+    activePairedDevice = [(HDPairedDeviceCapabilityProviding *)self->_pairedDeviceProvider activePairedDevice];
+    if (activePairedDevice)
     {
-      if (!v7)
+      if (!countryCode)
       {
         _HKInitializeLogging();
         v22 = *MEMORY[0x277CCC2D8];
@@ -455,7 +455,7 @@ LABEL_12:
             [HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager onboardedCountryCodeSupportedStateWithError:v22];
           }
 
-          v7 = @"OnboardedInHealthDatabaseWithoutACountryCode";
+          countryCode = @"OnboardedInHealthDatabaseWithoutACountryCode";
           goto LABEL_34;
         }
 
@@ -464,18 +464,18 @@ LABEL_12:
           [HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager onboardedCountryCodeSupportedStateWithError:];
         }
 
-        if (a3)
+        if (error)
         {
           v24 = v6;
-          v7 = 0;
+          countryCode = 0;
           v20 = 0;
-          *a3 = v6;
+          *error = v6;
         }
 
         else
         {
           _HKLogDroppedError();
-          v7 = 0;
+          countryCode = 0;
           v20 = 0;
         }
 
@@ -486,25 +486,25 @@ LABEL_53:
         goto LABEL_54;
       }
 
-      if (!v5 || [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self _countryCodeIsSupportedForDevicePairing:v7 device:v15])
+      if (!v5 || [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self _countryCodeIsSupportedForDevicePairing:countryCode device:activePairedDevice])
       {
 LABEL_34:
         disableAndExpiryProvider = self->_disableAndExpiryProvider;
         v37 = v6;
-        v28 = [(HDFeatureDisableAndExpiryProviding *)disableAndExpiryProvider rescindedStatusForCountryCode:v7 device:v15 error:&v37];
+        v28 = [(HDFeatureDisableAndExpiryProviding *)disableAndExpiryProvider rescindedStatusForCountryCode:countryCode device:activePairedDevice error:&v37];
         v21 = v37;
 
         if (v28)
         {
-          v29 = [v28 integerValue];
-          if (v29 > 2)
+          integerValue = [v28 integerValue];
+          if (integerValue > 2)
           {
             v20 = &unk_283CD26E0;
           }
 
           else
           {
-            v20 = qword_27865FDB0[v29];
+            v20 = qword_27865FDB0[integerValue];
           }
         }
 
@@ -519,10 +519,10 @@ LABEL_34:
           v30 = v21;
           if (v30)
           {
-            if (a3)
+            if (error)
             {
               v31 = v30;
-              *a3 = v30;
+              *error = v30;
             }
 
             else
@@ -560,10 +560,10 @@ LABEL_34:
   if (v6 && [v6 hk_isDatabaseAccessibilityError])
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v9 = [WeakRetained database];
-    v10 = [v9 isDataProtectedByFirstUnlockAvailable];
+    database = [WeakRetained database];
+    isDataProtectedByFirstUnlockAvailable = [database isDataProtectedByFirstUnlockAvailable];
 
-    v11 = v10 ^ 1;
+    v11 = isDataProtectedByFirstUnlockAvailable ^ 1;
   }
 
   else
@@ -585,7 +585,7 @@ LABEL_34:
     v14 = @"HealthDatabaseIsUnavailableButSettingIsPresent";
 LABEL_11:
 
-    v7 = v14;
+    countryCode = v14;
     goto LABEL_12;
   }
 
@@ -597,10 +597,10 @@ LABEL_11:
       [HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager onboardedCountryCodeSupportedStateWithError:];
     }
 
-    if (a3)
+    if (error)
     {
       v26 = v6;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -643,14 +643,14 @@ LABEL_54:
   return v20;
 }
 
-- (id)pairedFeatureAttributesWithError:(id *)a3
+- (id)pairedFeatureAttributesWithError:(id *)error
 {
   v4 = [MEMORY[0x277CCD3D8] featureAttributesDerivedFromOSBuildAndFeatureVersion:*MEMORY[0x277CCC200] watchDeviceIdentifier:*MEMORY[0x277CCC210] phoneDeviceIdentifier:*MEMORY[0x277CCC208]];
-  v5 = [(HDPairedDeviceCapabilityProviding *)self->_pairedDeviceProvider activePairedDevice];
-  v6 = v5;
-  if (v5)
+  activePairedDevice = [(HDPairedDeviceCapabilityProviding *)self->_pairedDeviceProvider activePairedDevice];
+  v6 = activePairedDevice;
+  if (activePairedDevice)
   {
-    v7 = [v5 valueForProperty:*MEMORY[0x277D2BA98]];
+    v7 = [activePairedDevice valueForProperty:*MEMORY[0x277D2BA98]];
     if (v7)
     {
       v8 = [v6 valueForProperty:*MEMORY[0x277D2BA90]];
@@ -676,18 +676,18 @@ LABEL_54:
 
 - (id)countryAvailabilityVersion
 {
-  v2 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v3 = [v2 currentOSBuild];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  currentOSBuild = [mEMORY[0x277CCDD30] currentOSBuild];
 
-  return v3;
+  return currentOSBuild;
 }
 
-- (void)removeFeatureSettingValueForKey:(id)a3 completion:(id)a4
+- (void)removeFeatureSettingValueForKey:(id)key completion:(id)completion
 {
-  v6 = a3;
+  keyCopy = key;
   v7 = *MEMORY[0x277CCC120];
-  v8 = a4;
-  if ([v6 isEqual:v7])
+  completionCopy = completion;
+  if ([keyCopy isEqual:v7])
   {
     notificationSettingDefaults = self->_notificationSettingDefaults;
     v10 = *MEMORY[0x277CCE430];
@@ -696,7 +696,7 @@ LABEL_54:
     v12 = [MEMORY[0x277CBEB98] setWithObject:v10];
     HKSynchronizeNanoPreferencesUserDefaults();
 
-    v8[2](v8, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   else
@@ -708,17 +708,17 @@ LABEL_54:
     }
 
     v13 = [MEMORY[0x277CCA9B8] hk_error:3 description:@"Cannot remove unknown setting for IRN 1.0"];
-    v8[2](v8, 0, v13);
+    completionCopy[2](completionCopy, 0, v13);
 
-    v8 = v13;
+    completionCopy = v13;
   }
 }
 
-- (void)resetOnboardingWithCompletion:(id)a3
+- (void)resetOnboardingWithCompletion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D10718];
-  v5 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v7 = [v4 hdhr_heartRhythmProtectedSyncedDomainForProfile:WeakRetained];
 
@@ -727,9 +727,9 @@ LABEL_54:
   v9 = v26;
   if (v8)
   {
-    v10 = [MEMORY[0x277CBEBD0] hk_heartRhythmDefaults];
+    hk_heartRhythmDefaults = [MEMORY[0x277CBEBD0] hk_heartRhythmDefaults];
     v11 = *MEMORY[0x277CCB840];
-    [v10 removeObjectForKey:*MEMORY[0x277CCB840]];
+    [hk_heartRhythmDefaults removeObjectForKey:*MEMORY[0x277CCB840]];
     v12 = *MEMORY[0x277CCE460];
     v13 = [MEMORY[0x277CBEB98] setWithObject:v11];
     HKSynchronizeNanoPreferencesUserDefaults();
@@ -769,19 +769,19 @@ LABEL_54:
     }
   }
 
-  v5[2](v5, v8, v9);
+  completionCopy[2](completionCopy, v8, v9);
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCurrentOnboardingVersionCompletedForCountryCode:(id)a3 countryCodeProvenance:(int64_t)a4 date:(id)a5 settings:(id)a6 completion:(id)a7
+- (void)setCurrentOnboardingVersionCompletedForCountryCode:(id)code countryCodeProvenance:(int64_t)provenance date:(id)date settings:(id)settings completion:(id)completion
 {
   v62 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  if (v12)
+  codeCopy = code;
+  dateCopy = date;
+  settingsCopy = settings;
+  completionCopy = completion;
+  if (dateCopy)
   {
     _HKInitializeLogging();
     v15 = *MEMORY[0x277CCC2D8];
@@ -790,7 +790,7 @@ LABEL_54:
       v16 = v15;
       v17 = objc_opt_class();
       v18 = v17;
-      v19 = [v12 debugDescription];
+      v19 = [dateCopy debugDescription];
       *buf = 138543618;
       v57 = v17;
       v58 = 2114;
@@ -799,7 +799,7 @@ LABEL_54:
     }
   }
 
-  if (v11)
+  if (codeCopy)
   {
     v55 = 0;
     v20 = [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self featureOnboardingRecordWithError:&v55];
@@ -812,12 +812,12 @@ LABEL_54:
         [HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager setCurrentOnboardingVersionCompletedForCountryCode:countryCodeProvenance:date:settings:completion:];
       }
 
-      v14[2](v14, 0, v21);
+      completionCopy[2](completionCopy, 0, v21);
       goto LABEL_23;
     }
 
-    v22 = [v20 allOnboardedCountryCodesRegardlessOfSupportedState];
-    v23 = [v22 containsObject:v11];
+    allOnboardedCountryCodesRegardlessOfSupportedState = [v20 allOnboardedCountryCodesRegardlessOfSupportedState];
+    v23 = [allOnboardedCountryCodesRegardlessOfSupportedState containsObject:codeCopy];
 
     if (v23)
     {
@@ -827,8 +827,8 @@ LABEL_54:
         [HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager setCurrentOnboardingVersionCompletedForCountryCode:countryCodeProvenance:date:settings:completion:];
       }
 
-      v24 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"IRN is already onboarded for %@", v11}];
-      v14[2](v14, 0, v24);
+      v24 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"IRN is already onboarded for %@", codeCopy}];
+      completionCopy[2](completionCopy, 0, v24);
 
       goto LABEL_23;
     }
@@ -839,7 +839,7 @@ LABEL_54:
 
     v54 = v21;
     v43 = v27;
-    v28 = [v27 hdhr_setAtrialFibrillationDetectionCurrentOnboardingVersionCompletedInCountryCode:v11 error:&v54];
+    v28 = [v27 hdhr_setAtrialFibrillationDetectionCurrentOnboardingVersionCompletedInCountryCode:codeCopy error:&v54];
     v45 = v54;
 
     if (v28)
@@ -851,14 +851,14 @@ LABEL_54:
       {
 LABEL_19:
         v34 = *MEMORY[0x277CCC120];
-        v44 = v13;
-        v35 = [v13 numberForKey:*MEMORY[0x277CCC120]];
+        v44 = settingsCopy;
+        v35 = [settingsCopy numberForKey:*MEMORY[0x277CCC120]];
         v50[0] = MEMORY[0x277D85DD0];
         v50[1] = 3221225472;
         v50[2] = __162__HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager_setCurrentOnboardingVersionCompletedForCountryCode_countryCodeProvenance_date_settings_completion___block_invoke;
         v50[3] = &unk_27865FD40;
         v50[4] = self;
-        v52 = v14;
+        v52 = completionCopy;
         v53 = v28;
         v21 = v45;
         v51 = v21;
@@ -890,7 +890,7 @@ LABEL_19:
           [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)self removeFeatureSettingValueForKey:v34 completion:v46];
         }
 
-        v13 = v44;
+        settingsCopy = v44;
 LABEL_23:
 
         goto LABEL_24;
@@ -901,7 +901,7 @@ LABEL_23:
       *buf = 138543618;
       v57 = v31;
       v58 = 2114;
-      v59 = v11;
+      v59 = codeCopy;
       v32 = v31;
       _os_log_impl(&dword_229486000, v30, OS_LOG_TYPE_DEFAULT, "[%{public}@] Set onboarding completed in country %{public}@", buf, 0x16u);
     }
@@ -920,7 +920,7 @@ LABEL_23:
       *buf = 138543874;
       v57 = v42;
       v58 = 2114;
-      v59 = v11;
+      v59 = codeCopy;
       v60 = 2114;
       v61 = v45;
       v32 = v42;
@@ -931,7 +931,7 @@ LABEL_23:
   }
 
   v21 = [MEMORY[0x277CCA9B8] hk_error:3 description:@"A non-nil country code is required to onboard this feature"];
-  v14[2](v14, 0, v21);
+  completionCopy[2](completionCopy, 0, v21);
 LABEL_24:
 
   v41 = *MEMORY[0x277D85DE8];
@@ -989,7 +989,7 @@ void __162__HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager_setCurr
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)saveOnboardingCompletion:(id)a3 settings:(id)a4 completion:(id)a5
+- (void)saveOnboardingCompletion:(id)completion settings:(id)settings completion:(id)a5
 {
   v5 = a5;
   _HKInitializeLogging();
@@ -1003,10 +1003,10 @@ void __162__HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager_setCurr
   v5[2](v5, 0, v7);
 }
 
-- (void)setFeatureSettingData:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setFeatureSettingData:(id)data forKey:(id)key completion:(id)completion
 {
-  v6 = a4;
-  v7 = a5;
+  keyCopy = key;
+  completionCopy = completion;
   _HKInitializeLogging();
   if (os_log_type_enabled(*MEMORY[0x277CCC2D8], OS_LOG_TYPE_ERROR))
   {
@@ -1014,13 +1014,13 @@ void __162__HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager_setCurr
   }
 
   v8 = [MEMORY[0x277CCA9B8] hk_error:3 description:@"Cannot set unknown data setting for IRN 1.0"];
-  v7[2](v7, 0, v8);
+  completionCopy[2](completionCopy, 0, v8);
 }
 
-- (void)setFeatureSettingString:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setFeatureSettingString:(id)string forKey:(id)key completion:(id)completion
 {
-  v6 = a4;
-  v7 = a5;
+  keyCopy = key;
+  completionCopy = completion;
   _HKInitializeLogging();
   if (os_log_type_enabled(*MEMORY[0x277CCC2D8], OS_LOG_TYPE_ERROR))
   {
@@ -1028,26 +1028,26 @@ void __162__HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager_setCurr
   }
 
   v8 = [MEMORY[0x277CCA9B8] hk_error:3 description:@"Cannot set unknown string setting for IRN 1.0"];
-  v7[2](v7, 0, v8);
+  completionCopy[2](completionCopy, 0, v8);
 }
 
-- (void)setFeatureSettingNumber:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setFeatureSettingNumber:(id)number forKey:(id)key completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  numberCopy = number;
+  keyCopy = key;
   v10 = *MEMORY[0x277CCC120];
-  v11 = a5;
-  if ([v9 isEqual:v10])
+  completionCopy = completion;
+  if ([keyCopy isEqual:v10])
   {
     notificationSettingDefaults = self->_notificationSettingDefaults;
-    v13 = [v8 BOOLValue];
+    bOOLValue = [numberCopy BOOLValue];
     v14 = *MEMORY[0x277CCE430];
-    [(NSUserDefaults *)notificationSettingDefaults setBool:v13 forKey:*MEMORY[0x277CCE430]];
+    [(NSUserDefaults *)notificationSettingDefaults setBool:bOOLValue forKey:*MEMORY[0x277CCE430]];
     v15 = *MEMORY[0x277CCE458];
     v16 = [MEMORY[0x277CBEB98] setWithObject:v14];
     HKSynchronizeNanoPreferencesUserDefaults();
 
-    v11[2](v11, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   else
@@ -1059,13 +1059,13 @@ void __162__HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager_setCurr
     }
 
     v17 = [MEMORY[0x277CCA9B8] hk_error:3 description:@"Cannot set number string setting for IRN 1.0"];
-    v11[2](v11, 0, v17);
+    completionCopy[2](completionCopy, 0, v17);
 
-    v11 = v17;
+    completionCopy = v17;
   }
 }
 
-- (void)registerObserver:(id)a3 queue:(id)a4
+- (void)registerObserver:(id)observer queue:(id)queue
 {
   observers = self->_observers;
   v5[0] = MEMORY[0x277D85DD0];
@@ -1073,10 +1073,10 @@ void __162__HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager_setCurr
   v5[2] = __87__HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager_registerObserver_queue___block_invoke;
   v5[3] = &unk_27865FD90;
   v5[4] = self;
-  [(HKFeatureAvailabilityProvidingObserver *)observers registerObserver:a3 queue:a4 runIfFirstObserver:v5];
+  [(HKFeatureAvailabilityProvidingObserver *)observers registerObserver:observer queue:queue runIfFirstObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1084,20 +1084,20 @@ void __162__HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager_setCurr
   v4[2] = __83__HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager_unregisterObserver___block_invoke;
   v4[3] = &unk_27865FD90;
   v4[4] = self;
-  [(HKFeatureAvailabilityProvidingObserver *)observers unregisterObserver:a3 runIfLastObserver:v4];
+  [(HKFeatureAvailabilityProvidingObserver *)observers unregisterObserver:observer runIfLastObserver:v4];
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained database];
-  [v4 addProtectedDataObserver:self];
+  database = [WeakRetained database];
+  [database addProtectedDataObserver:self];
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (available)
   {
     _HKInitializeLogging();
     v5 = HKLogInfrastructure();
@@ -1142,15 +1142,15 @@ void __105__HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager_databas
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (HDHRIrregularRhythmNotificationsSettingObservingContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (HDHRIrregularRhythmNotificationsSettingObservingContext == context)
   {
-    if (v10 && ([v10 isEqualToString:*MEMORY[0x277CCE430]] & 1) != 0)
+    if (pathCopy && ([pathCopy isEqualToString:*MEMORY[0x277CCE430]] & 1) != 0)
     {
       _HKInitializeLogging();
       v13 = HKLogInfrastructure();
@@ -1171,7 +1171,7 @@ void __105__HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager_databas
           v28 = 2114;
           v29 = v20;
           v30 = 2114;
-          v31 = v10;
+          v31 = pathCopy;
           _os_log_impl(&dword_229486000, v15, OS_LOG_TYPE_INFO, "[%{public}@] Notifying %{public}@ observers for change in setting %{public}@", buf, 0x20u);
         }
       }
@@ -1189,7 +1189,7 @@ void __105__HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager_databas
     {
       v24.receiver = self;
       v24.super_class = HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager;
-      [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)&v24 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+      [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)&v24 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     }
   }
 
@@ -1197,7 +1197,7 @@ void __105__HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager_databas
   {
     v25.receiver = self;
     v25.super_class = HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager;
-    [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)&v25 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager *)&v25 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
   v22 = *MEMORY[0x277D85DE8];

@@ -1,18 +1,18 @@
 @interface BKAssetPresentationController
-- (BKAssetPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (BKAssetPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
 @end
 
 @implementation BKAssetPresentationController
 
-- (BKAssetPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (BKAssetPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
   v6.receiver = self;
   v6.super_class = BKAssetPresentationController;
-  v4 = [(BKAssetPresentationController *)&v6 initWithPresentedViewController:a3 presentingViewController:a4];
+  v4 = [(BKAssetPresentationController *)&v6 initWithPresentedViewController:controller presentingViewController:viewController];
   if (v4)
   {
     v4->_useUIPFluidOpenTransition = +[BKUIPFeatures useUIPFluidBookOpenTransition];
@@ -32,13 +32,13 @@
   v5.receiver = self;
   v5.super_class = BKAssetPresentationController;
   [(BKAssetPresentationController *)&v5 presentationTransitionWillBegin];
-  v4 = [(BKAssetPresentationController *)self assetPresenter];
-  [v4 setStateShouldOpen:1];
+  assetPresenter = [(BKAssetPresentationController *)self assetPresenter];
+  [assetPresenter setStateShouldOpen:1];
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
-  v3 = a3;
+  endCopy = end;
   if ([(BKAssetPresentationController *)self useUIPFluidOpenTransition])
   {
     v5 = +[AETestDriver shared];
@@ -48,12 +48,12 @@
     [v6 postEvent:kBETestDriverOpenAnimationRevealStart sender:self];
   }
 
-  v7 = [(BKAssetPresentationController *)self assetPresenter];
-  [v7 setStateShouldClose:v3 ^ 1];
+  assetPresenter = [(BKAssetPresentationController *)self assetPresenter];
+  [assetPresenter setStateShouldClose:endCopy ^ 1];
 
   v9.receiver = self;
   v9.super_class = BKAssetPresentationController;
-  [(BKAssetPresentationController *)&v9 presentationTransitionDidEnd:v3];
+  [(BKAssetPresentationController *)&v9 presentationTransitionDidEnd:endCopy];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100072764;
@@ -82,44 +82,44 @@
   v10.receiver = self;
   v10.super_class = BKAssetPresentationController;
   [(BKAssetPresentationController *)&v10 dismissalTransitionWillBegin];
-  v7 = [(BKAssetPresentationController *)self useUIPFluidOpenTransition];
-  v8 = [(BKAssetPresentationController *)self assetPresenter];
-  v9 = v8;
-  if (v7)
+  useUIPFluidOpenTransition = [(BKAssetPresentationController *)self useUIPFluidOpenTransition];
+  assetPresenter = [(BKAssetPresentationController *)self assetPresenter];
+  v9 = assetPresenter;
+  if (useUIPFluidOpenTransition)
   {
-    [v8 assetPresenterDismissalTransitionWillBegin];
+    [assetPresenter assetPresenterDismissalTransitionWillBegin];
   }
 
   else
   {
-    [v8 assetPresenterPrepareForDismissal];
+    [assetPresenter assetPresenterPrepareForDismissal];
   }
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
-  v3 = a3;
+  endCopy = end;
   if ([(BKAssetPresentationController *)self useUIPFluidOpenTransition])
   {
     v5 = +[AETestDriver shared];
     [v5 postEvent:kBETestDriverOpenAnimationZoomEnd sender:self];
 
-    if (v3)
+    if (endCopy)
     {
-      v6 = [(BKAssetPresentationController *)self assetPresenter];
-      [v6 assetPresenterPrepareForDismissal];
+      assetPresenter = [(BKAssetPresentationController *)self assetPresenter];
+      [assetPresenter assetPresenterPrepareForDismissal];
     }
   }
 
   v9.receiver = self;
   v9.super_class = BKAssetPresentationController;
-  [(BKAssetPresentationController *)&v9 dismissalTransitionDidEnd:v3];
+  [(BKAssetPresentationController *)&v9 dismissalTransitionDidEnd:endCopy];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100072A4C;
   v7[3] = &unk_100A044C8;
   v7[4] = self;
-  v8 = v3;
+  v8 = endCopy;
   [UIApp _performBlockAfterCATransactionCommits:v7];
 }
 

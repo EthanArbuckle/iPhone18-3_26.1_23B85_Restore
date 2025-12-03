@@ -1,37 +1,37 @@
 @interface ScrollViewContentOffsetObserver
-- (ScrollViewContentOffsetObserver)initWithScrollView:(id)a3 changeHandler:(id)a4;
+- (ScrollViewContentOffsetObserver)initWithScrollView:(id)view changeHandler:(id)handler;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation ScrollViewContentOffsetObserver
 
-- (ScrollViewContentOffsetObserver)initWithScrollView:(id)a3 changeHandler:(id)a4
+- (ScrollViewContentOffsetObserver)initWithScrollView:(id)view changeHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = ScrollViewContentOffsetObserver;
   v9 = [(ScrollViewContentOffsetObserver *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_scrollView, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_scrollView, view);
+    v11 = [handlerCopy copy];
     changeHandler = v10->_changeHandler;
     v10->_changeHandler = v11;
 
-    [v7 addObserver:v10 forKeyPath:@"contentOffset" options:1 context:&MusicScrollViewObserverKVOContext];
+    [viewCopy addObserver:v10 forKeyPath:@"contentOffset" options:1 context:&MusicScrollViewObserverKVOContext];
   }
 
   return v10;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == &MusicScrollViewObserverKVOContext)
+  if (context == &MusicScrollViewObserverKVOContext)
   {
-    v7 = [(ScrollViewContentOffsetObserver *)self changeHandler:a3];
+    v7 = [(ScrollViewContentOffsetObserver *)self changeHandler:path];
     if (v7)
     {
       scrollView = self->_scrollView;
@@ -46,7 +46,7 @@
   {
     v10.receiver = self;
     v10.super_class = ScrollViewContentOffsetObserver;
-    [(ScrollViewContentOffsetObserver *)&v10 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(ScrollViewContentOffsetObserver *)&v10 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 

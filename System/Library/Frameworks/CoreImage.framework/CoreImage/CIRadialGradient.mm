@@ -125,7 +125,7 @@
     v24 = -8.98846567e307;
   }
 
-  v26 = [(CIRadialGradient *)self _kernel];
+  _kernel = [(CIRadialGradient *)self _kernel];
   if (v25 == 1.79769313e308 && v22 == -8.98846567e307)
   {
     v27 = v25;
@@ -147,7 +147,7 @@
   v29[0] = v17;
   v29[1] = v28;
   v29[2] = self->inputColor1;
-  return [v26 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v29, 3), v22, v24, v25, v27}];
+  return [_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v29, 3), v22, v24, v25, v27}];
 }
 
 @end

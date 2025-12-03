@@ -1,9 +1,9 @@
 @interface AASessionGroup
 + (AASessionGroup)default;
 - (AASessionGroup)init;
-- (AASessionGroup)initWithGroupName:(id)a3;
+- (AASessionGroup)initWithGroupName:(id)name;
 - (NSString)groupName;
-- (void)setGroupName:(id)a3;
+- (void)setGroupName:(id)name;
 @end
 
 @implementation AASessionGroup
@@ -32,7 +32,7 @@
   return v5;
 }
 
-- (void)setGroupName:(id)a3
+- (void)setGroupName:(id)name
 {
   v4 = sub_1B6AB92E0();
   v6 = v5;
@@ -43,7 +43,7 @@
   v7[1] = v6;
 }
 
-- (AASessionGroup)initWithGroupName:(id)a3
+- (AASessionGroup)initWithGroupName:(id)name
 {
   ObjectType = swift_getObjectType();
   v5 = sub_1B6AB92E0();

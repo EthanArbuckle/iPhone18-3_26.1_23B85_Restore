@@ -1,42 +1,42 @@
 @interface VehicleDisambiguator
-+ (BOOL)isAccessory:(id)a3 alreadyPairedWithVehicleInGarage:(id)a4;
-+ (id)findPossibleMatchesForAccessory:(id)a3 inVehicles:(id)a4;
-+ (void)pairAccessory:(id)a3 withVehicle:(id)a4;
++ (BOOL)isAccessory:(id)accessory alreadyPairedWithVehicleInGarage:(id)garage;
++ (id)findPossibleMatchesForAccessory:(id)accessory inVehicles:(id)vehicles;
++ (void)pairAccessory:(id)accessory withVehicle:(id)vehicle;
 @end
 
 @implementation VehicleDisambiguator
 
-+ (void)pairAccessory:(id)a3 withVehicle:(id)a4
++ (void)pairAccessory:(id)accessory withVehicle:(id)vehicle
 {
-  v5 = a3;
-  v6 = a4;
+  accessoryCopy = accessory;
+  vehicleCopy = vehicle;
   v7 = sub_100798E54();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 identifier];
-    v9 = [v5 bluetoothIdentifier];
+    identifier = [accessoryCopy identifier];
+    bluetoothIdentifier = [accessoryCopy bluetoothIdentifier];
     v13 = 138412802;
-    v14 = v8;
+    v14 = identifier;
     v15 = 2112;
-    v16 = v9;
+    v16 = bluetoothIdentifier;
     v17 = 2112;
-    v18 = v6;
+    v18 = vehicleCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Will pair accessory with identifier: %@, bluetoothIdentifier: %@ to vehicle: %@", &v13, 0x20u);
   }
 
-  v10 = [v5 identifier];
-  v11 = [v5 bluetoothIdentifier];
-  [v6 pairToIapIdentifier:v10 bluetoothIdentifier:v11];
+  identifier2 = [accessoryCopy identifier];
+  bluetoothIdentifier2 = [accessoryCopy bluetoothIdentifier];
+  [vehicleCopy pairToIapIdentifier:identifier2 bluetoothIdentifier:bluetoothIdentifier2];
 
   v12 = +[VGVirtualGarageService sharedService];
-  [v12 virtualGarageSaveVehicle:v6];
+  [v12 virtualGarageSaveVehicle:vehicleCopy];
 }
 
-+ (id)findPossibleMatchesForAccessory:(id)a3 inVehicles:(id)a4
++ (id)findPossibleMatchesForAccessory:(id)accessory inVehicles:(id)vehicles
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v6 count])
+  accessoryCopy = accessory;
+  vehiclesCopy = vehicles;
+  if (![vehiclesCopy count])
   {
     v13 = sub_100798E54();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -53,20 +53,20 @@
   v81[1] = 3221225472;
   v81[2] = sub_100ECEE88;
   v81[3] = &unk_1016588C0;
-  v7 = v5;
+  v7 = accessoryCopy;
   v82 = v7;
-  v8 = sub_1000282CC(v6, v81);
+  v8 = sub_1000282CC(vehiclesCopy, v81);
   if (![v8 count])
   {
     v71 = v8;
-    v73 = v5;
-    v76 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v6 count]);
+    v73 = accessoryCopy;
+    v76 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [vehiclesCopy count]);
     v77 = 0u;
     v78 = 0u;
     v79 = 0u;
     v80 = 0u;
-    v72 = v6;
-    v14 = v6;
+    v72 = vehiclesCopy;
+    v14 = vehiclesCopy;
     v15 = [v14 countByEnumeratingWithState:&v77 objects:v83 count:16];
     if (!v15)
     {
@@ -88,19 +88,19 @@
         }
 
         v19 = *(*(&v77 + 1) + 8 * v18);
-        v20 = [v19 iapIdentifier];
-        v21 = [v20 length];
+        iapIdentifier = [v19 iapIdentifier];
+        v21 = [iapIdentifier length];
 
         if (!v21)
         {
-          v22 = [v19 siriIntentsIdentifier];
-          v23 = [v22 length];
+          siriIntentsIdentifier = [v19 siriIntentsIdentifier];
+          v23 = [siriIntentsIdentifier length];
 
           if (v23)
           {
-            v24 = [v19 headUnitIdentifier];
-            v25 = [v7 identifier];
-            if ([v24 isEqualToString:v25])
+            headUnitIdentifier = [v19 headUnitIdentifier];
+            identifier = [v7 identifier];
+            if ([headUnitIdentifier isEqualToString:identifier])
             {
 
 LABEL_46:
@@ -109,28 +109,28 @@ LABEL_46:
               goto LABEL_47;
             }
 
-            v26 = [v19 headUnitBluetoothIdentifier];
-            v27 = [v7 bluetoothIdentifier];
-            v28 = [v26 isEqualToString:v27];
+            headUnitBluetoothIdentifier = [v19 headUnitBluetoothIdentifier];
+            bluetoothIdentifier = [v7 bluetoothIdentifier];
+            v28 = [headUnitBluetoothIdentifier isEqualToString:bluetoothIdentifier];
 
             if (v28)
             {
               goto LABEL_46;
             }
 
-            v29 = [v19 model];
+            model = [v19 model];
             v30 = 1.0;
-            if (v29 && (v31 = v29, [v7 model], v32 = objc_claimAutoreleasedReturnValue(), v32, v31, v32))
+            if (model && (v31 = model, [v7 model], v32 = objc_claimAutoreleasedReturnValue(), v32, v31, v32))
             {
-              v33 = [v19 model];
-              v34 = [v7 model];
-              v35 = [v33 lowercaseString];
+              model2 = [v19 model];
+              model3 = [v7 model];
+              lowercaseString = [model2 lowercaseString];
               v36 = +[NSCharacterSet whitespaceCharacterSet];
-              v37 = [v35 stringByTrimmingCharactersInSet:v36];
+              v37 = [lowercaseString stringByTrimmingCharactersInSet:v36];
 
-              v38 = [v34 lowercaseString];
+              lowercaseString2 = [model3 lowercaseString];
               v39 = +[NSCharacterSet whitespaceCharacterSet];
-              v40 = [v38 stringByTrimmingCharactersInSet:v39];
+              v40 = [lowercaseString2 stringByTrimmingCharactersInSet:v39];
 
               v41 = [v37 _navigation_distanceLevenshtein:v40];
               v42 = [v37 length];
@@ -154,23 +154,23 @@ LABEL_46:
               v44 = 0;
             }
 
-            v45 = [v19 manufacturer];
-            if (v45)
+            manufacturer = [v19 manufacturer];
+            if (manufacturer)
             {
-              v46 = v45;
-              v47 = [v7 manufacturer];
+              v46 = manufacturer;
+              manufacturer2 = [v7 manufacturer];
 
-              if (v47)
+              if (manufacturer2)
               {
-                v48 = [v19 manufacturer];
-                v49 = [v7 manufacturer];
-                v50 = [v48 lowercaseString];
+                manufacturer3 = [v19 manufacturer];
+                manufacturer4 = [v7 manufacturer];
+                lowercaseString3 = [manufacturer3 lowercaseString];
                 v51 = +[NSCharacterSet whitespaceCharacterSet];
-                v52 = [v50 stringByTrimmingCharactersInSet:v51];
+                v52 = [lowercaseString3 stringByTrimmingCharactersInSet:v51];
 
-                v53 = [v49 lowercaseString];
+                lowercaseString4 = [manufacturer4 lowercaseString];
                 v54 = +[NSCharacterSet whitespaceCharacterSet];
-                v55 = [v53 stringByTrimmingCharactersInSet:v54];
+                v55 = [lowercaseString4 stringByTrimmingCharactersInSet:v54];
 
                 v56 = [v52 _navigation_distanceLevenshtein:v55];
                 v57 = [v52 length];
@@ -191,18 +191,18 @@ LABEL_46:
               }
             }
 
-            v60 = [v19 year];
-            if (v60)
+            year = [v19 year];
+            if (year)
             {
-              v61 = v60;
-              v62 = [v7 year];
+              v61 = year;
+              year2 = [v7 year];
 
-              if (v62)
+              if (year2)
               {
-                v63 = [v19 year];
-                v64 = [v7 year];
-                v65 = [v64 stringValue];
-                v66 = [v63 isEqualToString:v65];
+                year3 = [v19 year];
+                year4 = [v7 year];
+                stringValue = [year4 stringValue];
+                v66 = [year3 isEqualToString:stringValue];
 
                 if (!v66)
                 {
@@ -252,8 +252,8 @@ LABEL_47:
 
         v9 = v76;
         v12 = [v76 copy];
-        v6 = v72;
-        v5 = v73;
+        vehiclesCopy = v72;
+        accessoryCopy = v73;
         v8 = v71;
         goto LABEL_48;
       }
@@ -263,12 +263,12 @@ LABEL_47:
   v9 = sub_100798E54();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 identifier];
-    v11 = [v8 firstObject];
+    identifier2 = [v7 identifier];
+    firstObject = [v8 firstObject];
     *buf = 138412546;
-    v85 = v10;
+    v85 = identifier2;
     v86 = 2112;
-    v87 = v11;
+    v87 = firstObject;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "There is already a vehicle in the garage that matches this accessory: %@, vehicle: %@", buf, 0x16u);
   }
 
@@ -281,15 +281,15 @@ LABEL_49:
   return v12;
 }
 
-+ (BOOL)isAccessory:(id)a3 alreadyPairedWithVehicleInGarage:(id)a4
++ (BOOL)isAccessory:(id)accessory alreadyPairedWithVehicleInGarage:(id)garage
 {
-  v5 = a3;
+  accessoryCopy = accessory;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [a4 vehicles];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  vehicles = [garage vehicles];
+  v7 = [vehicles countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -299,12 +299,12 @@ LABEL_49:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(vehicles);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) iapIdentifier];
-        v11 = [v5 identifier];
-        v12 = [v10 isEqualToString:v11];
+        iapIdentifier = [*(*(&v14 + 1) + 8 * i) iapIdentifier];
+        identifier = [accessoryCopy identifier];
+        v12 = [iapIdentifier isEqualToString:identifier];
 
         if (v12)
         {
@@ -313,7 +313,7 @@ LABEL_49:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [vehicles countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;

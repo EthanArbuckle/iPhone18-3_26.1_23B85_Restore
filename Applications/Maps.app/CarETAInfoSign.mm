@@ -1,14 +1,14 @@
 @interface CarETAInfoSign
 - ($F24F406B2B787EFB06265DBA3D28CBD5)etaInfoSignMetrics;
 - (CarETACardSignDelegate)delegate;
-- (CarETAInfoSign)initWithDelegate:(id)a3 metricsDelegate:(id)a4 interruptPresenter:(id)a5;
+- (CarETAInfoSign)initWithDelegate:(id)delegate metricsDelegate:(id)metricsDelegate interruptPresenter:(id)presenter;
 - (NSArray)focusOrderSubItems;
 - (NSArray)preferredFocusEnvironments;
 - (double)tappableHeight;
-- (void)_onExpandTapped:(id)a3;
-- (void)infoViewDidTapShareTripButton:(id)a3;
-- (void)setLatestETA:(id)a3;
-- (void)setShareButtonHidden:(BOOL)a3 animated:(BOOL)a4;
+- (void)_onExpandTapped:(id)tapped;
+- (void)infoViewDidTapShareTripButton:(id)button;
+- (void)setLatestETA:(id)a;
+- (void)setShareButtonHidden:(BOOL)hidden animated:(BOOL)animated;
 @end
 
 @implementation CarETAInfoSign
@@ -38,8 +38,8 @@
   v3 = objc_alloc_init(NSMutableArray);
   if (![(CarETAInfoSign *)self isShareButtonHidden])
   {
-    v4 = [(CarShareETAInfoView *)self->_shareETAInfoView focusOrderSubItems];
-    [v3 addObjectsFromArray:v4];
+    focusOrderSubItems = [(CarShareETAInfoView *)self->_shareETAInfoView focusOrderSubItems];
+    [v3 addObjectsFromArray:focusOrderSubItems];
   }
 
   v5 = [v3 copy];
@@ -47,28 +47,28 @@
   return v5;
 }
 
-- (void)infoViewDidTapShareTripButton:(id)a3
+- (void)infoViewDidTapShareTripButton:(id)button
 {
-  v4 = [(CarETAInfoSign *)self delegate];
-  [v4 etaCardSign:self didSelectAction:6];
+  delegate = [(CarETAInfoSign *)self delegate];
+  [delegate etaCardSign:self didSelectAction:6];
 }
 
-- (void)setLatestETA:(id)a3
+- (void)setLatestETA:(id)a
 {
-  v5 = a3;
-  if (self->_latestETA != v5)
+  aCopy = a;
+  if (self->_latestETA != aCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_latestETA, a3);
+    v6 = aCopy;
+    objc_storeStrong(&self->_latestETA, a);
     [(NavMetricsView *)self->_metricsView setEta:v6];
-    v5 = v6;
+    aCopy = v6;
   }
 }
 
-- (void)_onExpandTapped:(id)a3
+- (void)_onExpandTapped:(id)tapped
 {
-  v4 = [(CarETAInfoSign *)self delegate];
-  [v4 etaCardSign:self didSelectAction:0];
+  delegate = [(CarETAInfoSign *)self delegate];
+  [delegate etaCardSign:self didSelectAction:0];
 
   v5 = dispatch_time(0, 500000000);
   block[0] = _NSConcreteStackBlock;
@@ -79,17 +79,17 @@
   dispatch_after(v5, &_dispatch_main_q, block);
 }
 
-- (void)setShareButtonHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setShareButtonHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  if (self->_shareButtonHidden != a3)
+  if (self->_shareButtonHidden != hidden)
   {
     v16[5] = v7;
     v16[6] = v6;
     v16[11] = v4;
     v16[12] = v5;
-    v8 = a4;
-    self->_shareButtonHidden = a3;
-    if (a3)
+    animatedCopy = animated;
+    self->_shareButtonHidden = hidden;
+    if (hidden)
     {
       v10 = &OBJC_IVAR___CarETAInfoSign__showingShareTripButtonConstraints;
     }
@@ -99,7 +99,7 @@
       v10 = &OBJC_IVAR___CarETAInfoSign__hidingShareTripButtonConstraints;
     }
 
-    if (a3)
+    if (hidden)
     {
       v11 = &OBJC_IVAR___CarETAInfoSign__hidingShareTripButtonConstraints;
     }
@@ -118,7 +118,7 @@
     v16[4] = self;
     v12 = objc_retainBlock(v16);
     v13 = v12;
-    if (v8)
+    if (animatedCopy)
     {
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
@@ -143,25 +143,25 @@
   return CGRectGetMaxY(*&v2);
 }
 
-- (CarETAInfoSign)initWithDelegate:(id)a3 metricsDelegate:(id)a4 interruptPresenter:(id)a5
+- (CarETAInfoSign)initWithDelegate:(id)delegate metricsDelegate:(id)metricsDelegate interruptPresenter:(id)presenter
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  metricsDelegateCopy = metricsDelegate;
+  presenterCopy = presenter;
   v53.receiver = self;
   v53.super_class = CarETAInfoSign;
   v11 = [(CarETAInfoSign *)&v53 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v8);
-    v13 = [[_TtC4Maps14NavMetricsView alloc] initWithParentViewController:v9 delegate:v9 eta:0 isCarPlay:1];
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    v13 = [[_TtC4Maps14NavMetricsView alloc] initWithParentViewController:metricsDelegateCopy delegate:metricsDelegateCopy eta:0 isCarPlay:1];
     metricsView = v12->_metricsView;
     v12->_metricsView = v13;
 
     [(NavMetricsView *)v12->_metricsView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(CarETAInfoSign *)v12 addSubview:v12->_metricsView];
-    v15 = [[CarShareETAInfoView alloc] initWithDelegate:v12 interruptPresenter:v10];
+    v15 = [[CarShareETAInfoView alloc] initWithDelegate:v12 interruptPresenter:presenterCopy];
     shareETAInfoView = v12->_shareETAInfoView;
     v12->_shareETAInfoView = v15;
 
@@ -169,57 +169,57 @@
     [(CarETAInfoSign *)v12 addSubview:v12->_shareETAInfoView];
     v52 = objc_alloc_init(NSMutableArray);
     [(CarETAInfoSign *)v12 trailingAnchor];
-    v17 = v49 = v10;
+    v17 = v49 = presenterCopy;
     [(NavMetricsView *)v12->_metricsView trailingAnchor];
-    v18 = v50 = v9;
+    v18 = v50 = metricsDelegateCopy;
     v19 = [v17 constraintEqualToAnchor:v18];
     v57 = v19;
     [NSArray arrayWithObjects:&v57 count:1];
-    v20 = v51 = v8;
+    v20 = v51 = delegateCopy;
     [v52 addObjectsFromArray:v20];
 
-    v48 = [(NavMetricsView *)v12->_metricsView topAnchor];
-    v47 = [(CarETAInfoSign *)v12 topAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47];
+    topAnchor = [(NavMetricsView *)v12->_metricsView topAnchor];
+    topAnchor2 = [(CarETAInfoSign *)v12 topAnchor];
+    v46 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v56[0] = v46;
-    v45 = [(NavMetricsView *)v12->_metricsView leadingAnchor];
-    v44 = [(CarETAInfoSign *)v12 leadingAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44];
+    leadingAnchor = [(NavMetricsView *)v12->_metricsView leadingAnchor];
+    leadingAnchor2 = [(CarETAInfoSign *)v12 leadingAnchor];
+    v43 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v56[1] = v43;
-    v42 = [(CarShareETAInfoView *)v12->_shareETAInfoView topAnchor];
-    v41 = [(NavMetricsView *)v12->_metricsView bottomAnchor];
-    v21 = [v42 constraintEqualToAnchor:v41];
+    topAnchor3 = [(CarShareETAInfoView *)v12->_shareETAInfoView topAnchor];
+    bottomAnchor = [(NavMetricsView *)v12->_metricsView bottomAnchor];
+    v21 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
     v56[2] = v21;
-    v22 = [(CarShareETAInfoView *)v12->_shareETAInfoView leadingAnchor];
-    v23 = [(CarETAInfoSign *)v12 leadingAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    leadingAnchor3 = [(CarShareETAInfoView *)v12->_shareETAInfoView leadingAnchor];
+    leadingAnchor4 = [(CarETAInfoSign *)v12 leadingAnchor];
+    v24 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v56[3] = v24;
-    v25 = [(CarETAInfoSign *)v12 trailingAnchor];
-    v26 = [(CarShareETAInfoView *)v12->_shareETAInfoView trailingAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    trailingAnchor = [(CarETAInfoSign *)v12 trailingAnchor];
+    trailingAnchor2 = [(CarShareETAInfoView *)v12->_shareETAInfoView trailingAnchor];
+    v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v56[4] = v27;
     v28 = [NSArray arrayWithObjects:v56 count:5];
     [v52 addObjectsFromArray:v28];
 
-    v29 = [(CarShareETAInfoView *)v12->_shareETAInfoView bottomAnchor];
-    v30 = [(CarETAInfoSign *)v12 bottomAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    bottomAnchor2 = [(CarShareETAInfoView *)v12->_shareETAInfoView bottomAnchor];
+    bottomAnchor3 = [(CarETAInfoSign *)v12 bottomAnchor];
+    v31 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v55 = v31;
     v32 = [NSArray arrayWithObjects:&v55 count:1];
     showingShareTripButtonConstraints = v12->_showingShareTripButtonConstraints;
     v12->_showingShareTripButtonConstraints = v32;
 
-    v34 = [(CarShareETAInfoView *)v12->_shareETAInfoView topAnchor];
-    v35 = [(CarETAInfoSign *)v12 bottomAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35];
+    topAnchor4 = [(CarShareETAInfoView *)v12->_shareETAInfoView topAnchor];
+    bottomAnchor4 = [(CarETAInfoSign *)v12 bottomAnchor];
+    v36 = [topAnchor4 constraintEqualToAnchor:bottomAnchor4];
     v54 = v36;
     v37 = [NSArray arrayWithObjects:&v54 count:1];
     hidingShareTripButtonConstraints = v12->_hidingShareTripButtonConstraints;
     v12->_hidingShareTripButtonConstraints = v37;
 
-    v9 = v50;
+    metricsDelegateCopy = v50;
     [NSLayoutConstraint activateConstraints:v52];
-    v10 = v49;
+    presenterCopy = v49;
     if (v12->_shareButtonHidden)
     {
       v39 = 32;
@@ -230,7 +230,7 @@
       v39 = 24;
     }
 
-    v8 = v51;
+    delegateCopy = v51;
     [NSLayoutConstraint activateConstraints:*(&v12->super.super.super.isa + v39)];
   }
 

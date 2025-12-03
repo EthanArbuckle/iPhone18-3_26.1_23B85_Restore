@@ -1,25 +1,25 @@
 @interface SUUIShareSheetActivityViewElement
 - (SUUILabelViewElement)message;
 - (SUUILabelViewElement)title;
-- (SUUIShareSheetActivityViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUIShareSheetActivityViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUIShareSheetActivityViewElement
 
-- (SUUIShareSheetActivityViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIShareSheetActivityViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v16.receiver = self;
   v16.super_class = SUUIShareSheetActivityViewElement;
-  v9 = [(SUUIViewElement *)&v16 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v16 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"type"];
+    v10 = [elementCopy getAttribute:@"type"];
     activityType = v9->_activityType;
     v9->_activityType = v10;
 
-    v12 = [v8 getAttribute:@"src"];
+    v12 = [elementCopy getAttribute:@"src"];
     if ([v12 length])
     {
       v13 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v12];
@@ -91,22 +91,22 @@ void __42__SUUIShareSheetActivityViewElement_title__block_invoke(uint64_t a1, vo
   }
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v12.receiver = self;
   v12.super_class = SUUIShareSheetActivityViewElement;
-  v5 = [(SUUIViewElement *)&v12 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v12 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    v7 = [(SUUIShareSheetActivityViewElement *)v4 activityType];
+    activityType = [(SUUIShareSheetActivityViewElement *)elementCopy activityType];
     activityType = self->_activityType;
-    self->_activityType = v7;
+    self->_activityType = activityType;
 
-    v9 = [(SUUIShareSheetActivityViewElement *)v4 contentSourceURL];
+    contentSourceURL = [(SUUIShareSheetActivityViewElement *)elementCopy contentSourceURL];
     contentSourceURL = self->_contentSourceURL;
-    self->_contentSourceURL = v9;
+    self->_contentSourceURL = contentSourceURL;
   }
 
   return v6;

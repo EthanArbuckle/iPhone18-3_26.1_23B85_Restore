@@ -1,14 +1,14 @@
 @interface PSPointerSceneSettingsExtension
-+ (id)valueForUndefinedSetting:(id)a3;
++ (id)valueForUndefinedSetting:(id)setting;
 - (CGAffineTransform)rootWindowTransform;
-- (void)rootWindowTransform:(CGAffineTransform *)a3;
+- (void)rootWindowTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation PSPointerSceneSettingsExtension
 
-+ (id)valueForUndefinedSetting:(id)a3
++ (id)valueForUndefinedSetting:(id)setting
 {
-  if ([a3 matchesProperty:sel_rootWindowTransform])
+  if ([setting matchesProperty:sel_rootWindowTransform])
   {
     v3 = [MEMORY[0x277CCAE60] valueWithBytes:MEMORY[0x277CBF2C0] objCType:"{CGAffineTransform=dddddd}"];
   }
@@ -40,9 +40,9 @@
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)rootWindowTransform:(CGAffineTransform *)a3
+- (void)rootWindowTransform:(CGAffineTransform *)transform
 {
-  v5 = [MEMORY[0x277CCAE60] valueWithBytes:a3 objCType:"{CGAffineTransform=dddddd}"];
+  v5 = [MEMORY[0x277CCAE60] valueWithBytes:transform objCType:"{CGAffineTransform=dddddd}"];
   [(PSPointerSceneSettingsExtension *)self setValue:v5 forProperty:a2];
 }
 

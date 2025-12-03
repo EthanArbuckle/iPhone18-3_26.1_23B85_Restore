@@ -1,15 +1,15 @@
 @interface WFJapanDatingTag
-- (WFJapanDatingTag)tagWithWebpage:(id)a3;
+- (WFJapanDatingTag)tagWithWebpage:(id)webpage;
 @end
 
 @implementation WFJapanDatingTag
 
-- (WFJapanDatingTag)tagWithWebpage:(id)a3
+- (WFJapanDatingTag)tagWithWebpage:(id)webpage
 {
-  v3 = [a3 pageContent];
+  pageContent = [webpage pageContent];
   v4 = @"18歳以上";
   v5 = off_279E7DC30;
-  while (![v3 WF_containsWord:v4])
+  while (![pageContent WF_containsWord:v4])
   {
     v6 = *v5++;
     v4 = v6;
@@ -19,10 +19,10 @@
     }
   }
 
-  v7 = [MEMORY[0x277CCAB68] string];
-  -[WFJapanDatingTag appendString:](v7, "appendString:", [objc_opt_class() japanDatingTag]);
-  [(WFJapanDatingTag *)v7 appendString:@" "];
-  return v7;
+  string = [MEMORY[0x277CCAB68] string];
+  -[WFJapanDatingTag appendString:](string, "appendString:", [objc_opt_class() japanDatingTag]);
+  [(WFJapanDatingTag *)string appendString:@" "];
+  return string;
 }
 
 @end

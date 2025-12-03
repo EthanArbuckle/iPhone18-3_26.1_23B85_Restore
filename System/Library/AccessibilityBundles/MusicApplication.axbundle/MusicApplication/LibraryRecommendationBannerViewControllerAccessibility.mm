@@ -1,34 +1,34 @@
 @interface LibraryRecommendationBannerViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)accessibilityUpdateBannerDisplay;
 @end
 
 @implementation LibraryRecommendationBannerViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.LibraryRecommendationBannerViewController" hasInstanceMethod:@"accessibilityBannerView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.LibraryRecommendationBannerViewController" hasInstanceMethod:@"accessibilityHeadlineText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.LibraryRecommendationBannerViewController" hasInstanceMethod:@"accessibilityTitleText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.LibraryRecommendationBannerViewController" hasInstanceMethod:@"accessibilitySubtitleText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.LibraryRecommendationBannerViewController" hasInstanceMethod:@"accessibilityIsExplicit" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MusicApplication.LibraryRecommendationBannerViewController" hasInstanceMethod:@"accessibilityUpdateBannerDisplay" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.LibraryRecommendationBannerViewController" hasInstanceMethod:@"accessibilityBannerView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.LibraryRecommendationBannerViewController" hasInstanceMethod:@"accessibilityHeadlineText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.LibraryRecommendationBannerViewController" hasInstanceMethod:@"accessibilityTitleText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.LibraryRecommendationBannerViewController" hasInstanceMethod:@"accessibilitySubtitleText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.LibraryRecommendationBannerViewController" hasInstanceMethod:@"accessibilityIsExplicit" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MusicApplication.LibraryRecommendationBannerViewController" hasInstanceMethod:@"accessibilityUpdateBannerDisplay" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v2 = self;
+  selfCopy = self;
   v18.receiver = self;
   v18.super_class = LibraryRecommendationBannerViewControllerAccessibility;
   [(LibraryRecommendationBannerViewControllerAccessibility *)&v18 _accessibilityLoadAccessibilityInformation];
-  v3 = [(LibraryRecommendationBannerViewControllerAccessibility *)v2 safeValueForKey:@"accessibilityBannerView"];
+  v3 = [(LibraryRecommendationBannerViewControllerAccessibility *)selfCopy safeValueForKey:@"accessibilityBannerView"];
   [v3 _setAccessibilityIdentifierBlock:&__block_literal_global_5];
-  v4 = [(LibraryRecommendationBannerViewControllerAccessibility *)v2 safeStringForKey:@"accessibilityHeadlineText"];
-  v5 = [(LibraryRecommendationBannerViewControllerAccessibility *)v2 safeStringForKey:@"accessibilityTitleText"];
-  v6 = [(LibraryRecommendationBannerViewControllerAccessibility *)v2 safeStringForKey:@"accessibilitySubtitleText"];
-  LOBYTE(v2) = [(LibraryRecommendationBannerViewControllerAccessibility *)v2 safeBoolForKey:@"accessibilityIsExplicit"];
+  v4 = [(LibraryRecommendationBannerViewControllerAccessibility *)selfCopy safeStringForKey:@"accessibilityHeadlineText"];
+  v5 = [(LibraryRecommendationBannerViewControllerAccessibility *)selfCopy safeStringForKey:@"accessibilityTitleText"];
+  v6 = [(LibraryRecommendationBannerViewControllerAccessibility *)selfCopy safeStringForKey:@"accessibilitySubtitleText"];
+  LOBYTE(selfCopy) = [(LibraryRecommendationBannerViewControllerAccessibility *)selfCopy safeBoolForKey:@"accessibilityIsExplicit"];
   v7 = accessibilityMusicLocalizedString(@"apple.music");
   v12[0] = MEMORY[0x29EDCA5F8];
   v12[1] = 3221225472;
@@ -38,7 +38,7 @@
   v14 = v4;
   v15 = v5;
   v16 = v6;
-  v17 = v2;
+  v17 = selfCopy;
   v8 = v6;
   v9 = v5;
   v10 = v4;

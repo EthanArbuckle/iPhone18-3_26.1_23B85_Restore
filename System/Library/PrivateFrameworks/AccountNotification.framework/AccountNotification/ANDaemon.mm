@@ -1,8 +1,8 @@
 @interface ANDaemon
-+ (id)_nameForProcessWithPID:(int)a3;
++ (id)_nameForProcessWithPID:(int)d;
 + (id)sharedInstance;
 - (ANDaemon)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (void)dealloc;
 - (void)start;
 @end
@@ -65,11 +65,11 @@
   [(NSXPCListener *)v6 resume];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = +[ANDaemon _nameForProcessWithPID:](ANDaemon, "_nameForProcessWithPID:", [v5 processIdentifier]);
-  v7 = [v5 valueForEntitlement:ANAccountNotificationClientEntitlement];
+  connectionCopy = connection;
+  v6 = +[ANDaemon _nameForProcessWithPID:](ANDaemon, "_nameForProcessWithPID:", [connectionCopy processIdentifier]);
+  v7 = [connectionCopy valueForEntitlement:ANAccountNotificationClientEntitlement];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -82,10 +82,10 @@
     goto LABEL_10;
   }
 
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
   v9 = _ANLogSystem();
   v10 = v9;
-  if ((v8 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -109,23 +109,23 @@ LABEL_10:
   }
 
   v11 = +[ANDaemonInterface XPCInterface];
-  [v5 setExportedInterface:v11];
+  [connectionCopy setExportedInterface:v11];
 
-  [v5 setExportedObject:self->_notificationController];
+  [connectionCopy setExportedObject:self->_notificationController];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100003FB8;
   v20[3] = &unk_10000C398;
   v12 = v6;
   v21 = v12;
-  [v5 setInterruptionHandler:v20];
+  [connectionCopy setInterruptionHandler:v20];
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_100004004;
   v18 = &unk_10000C398;
   v19 = v12;
-  [v5 setInvalidationHandler:&v15];
-  [v5 resume];
+  [connectionCopy setInvalidationHandler:&v15];
+  [connectionCopy resume];
 
   v13 = 1;
   v10 = v21;
@@ -134,10 +134,10 @@ LABEL_11:
   return v13;
 }
 
-+ (id)_nameForProcessWithPID:(int)a3
++ (id)_nameForProcessWithPID:(int)d
 {
   v5 = 648;
-  dword_1000112F4 = a3;
+  dword_1000112F4 = d;
   byte_10001153B = 0;
   if (sysctl(dword_1000112E8, 4u, &unk_100011448, &v5, 0, 0))
   {

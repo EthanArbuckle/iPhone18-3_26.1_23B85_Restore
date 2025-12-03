@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneUtilFstReverseBytesReader
-- (OrgApacheLuceneUtilFstReverseBytesReader)initWithByteArray:(id)a3;
+- (OrgApacheLuceneUtilFstReverseBytesReader)initWithByteArray:(id)array;
 - (char)readByte;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilFstReverseBytesReader
 
-- (OrgApacheLuceneUtilFstReverseBytesReader)initWithByteArray:(id)a3
+- (OrgApacheLuceneUtilFstReverseBytesReader)initWithByteArray:(id)array
 {
   OrgApacheLuceneUtilFstFST_BytesReader_init(self, a2);
-  JreStrongAssign(&self->bytes_, a3);
+  JreStrongAssign(&self->bytes_, array);
   return self;
 }
 

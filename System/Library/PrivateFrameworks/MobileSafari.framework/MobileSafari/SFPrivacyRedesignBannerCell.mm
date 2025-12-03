@@ -1,39 +1,39 @@
 @interface SFPrivacyRedesignBannerCell
-- (SFPrivacyRedesignBannerCell)initWithFrame:(CGRect)a3;
+- (SFPrivacyRedesignBannerCell)initWithFrame:(CGRect)frame;
 - (id)_createGridLabel;
-- (void)_changeActionTextForState:(unint64_t)a3;
+- (void)_changeActionTextForState:(unint64_t)state;
 - (void)_createGrid;
 - (void)_updateGridVisibilityIfNeeded;
 - (void)_updateState;
-- (void)configureUsingBanner:(id)a3;
-- (void)gridViewDidUpdateContentSize:(id)a3;
+- (void)configureUsingBanner:(id)banner;
+- (void)gridViewDidUpdateContentSize:(id)size;
 - (void)layoutSubviews;
 @end
 
 @implementation SFPrivacyRedesignBannerCell
 
-- (SFPrivacyRedesignBannerCell)initWithFrame:(CGRect)a3
+- (SFPrivacyRedesignBannerCell)initWithFrame:(CGRect)frame
 {
   v82[1] = *MEMORY[0x1E69E9840];
   v79.receiver = self;
   v79.super_class = SFPrivacyRedesignBannerCell;
-  v3 = [(SFStartPageFilledBackgroundCell *)&v79 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFStartPageFilledBackgroundCell *)&v79 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v78 = [(SFStartPageFilledBackgroundCell *)v3 defaultBackgroundConfiguration];
-    [v78 setCornerRadius:20.0];
-    [(SFPrivacyRedesignBannerCell *)v4 setBackgroundConfiguration:v78];
-    v5 = [(SFPrivacyRedesignBannerCell *)v4 contentView];
-    [v5 setLayoutMargins:{20.0, 20.0, 20.0, 20.0}];
+    defaultBackgroundConfiguration = [(SFStartPageFilledBackgroundCell *)v3 defaultBackgroundConfiguration];
+    [defaultBackgroundConfiguration setCornerRadius:20.0];
+    [(SFPrivacyRedesignBannerCell *)v4 setBackgroundConfiguration:defaultBackgroundConfiguration];
+    contentView = [(SFPrivacyRedesignBannerCell *)v4 contentView];
+    [contentView setLayoutMargins:{20.0, 20.0, 20.0, 20.0}];
     v6 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
     v7 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"shield.lefthalf.fill"];
     [v6 setImage:v7];
 
     v8 = MEMORY[0x1E69DCAD8];
-    v9 = [MEMORY[0x1E69DC888] systemGreenColor];
-    v82[0] = v9;
+    systemGreenColor = [MEMORY[0x1E69DC888] systemGreenColor];
+    v82[0] = systemGreenColor;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v82 count:1];
     v77 = [v8 configurationWithPaletteColors:v10];
 
@@ -56,8 +56,8 @@
     v15 = _WBSLocalizedString();
     [(UILabel *)v4->_actionLabel setText:v15];
 
-    v16 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [(UILabel *)v4->_actionLabel setTextColor:v16];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [(UILabel *)v4->_actionLabel setTextColor:systemBlueColor];
 
     v17 = objc_alloc_init(MEMORY[0x1E69DD250]);
     [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -78,71 +78,71 @@
     LODWORD(v23) = 1144750080;
     [(UIStackView *)v4->_privacyCellStackView setContentCompressionResistancePriority:1 forAxis:v23];
     [(UIStackView *)v4->_privacyCellStackView setDistribution:1];
-    v76 = v5;
-    [v5 addSubview:v4->_privacyCellStackView];
-    v24 = [v5 layoutMarginsGuide];
+    v76 = contentView;
+    [contentView addSubview:v4->_privacyCellStackView];
+    layoutMarginsGuide = [contentView layoutMarginsGuide];
     v57 = MEMORY[0x1E696ACD8];
-    v75 = [v6 widthAnchor];
-    v74 = [v75 constraintEqualToConstant:56.0];
+    widthAnchor = [v6 widthAnchor];
+    v74 = [widthAnchor constraintEqualToConstant:56.0];
     v80[0] = v74;
-    v73 = [v6 heightAnchor];
-    v72 = [v73 constraintEqualToConstant:56.0];
+    heightAnchor = [v6 heightAnchor];
+    v72 = [heightAnchor constraintEqualToConstant:56.0];
     v80[1] = v72;
-    v70 = [v6 leadingAnchor];
-    v69 = [v18 leadingAnchor];
-    v68 = [v70 constraintEqualToAnchor:v69];
+    leadingAnchor = [v6 leadingAnchor];
+    leadingAnchor2 = [v18 leadingAnchor];
+    v68 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v80[2] = v68;
     v71 = v6;
-    v67 = [v6 topAnchor];
-    v66 = [v18 topAnchor];
-    v65 = [v67 constraintEqualToAnchor:v66];
+    topAnchor = [v6 topAnchor];
+    topAnchor2 = [v18 topAnchor];
+    v65 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v80[3] = v65;
-    v64 = [(UILabel *)v4->_textLabel topAnchor];
-    v63 = [v6 bottomAnchor];
-    v62 = [v64 constraintGreaterThanOrEqualToAnchor:v63 constant:8.0];
+    topAnchor3 = [(UILabel *)v4->_textLabel topAnchor];
+    bottomAnchor = [v6 bottomAnchor];
+    v62 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:bottomAnchor constant:8.0];
     v80[4] = v62;
-    v61 = [(UILabel *)v4->_textLabel leadingAnchor];
-    v59 = [v18 leadingAnchor];
-    v58 = [v61 constraintEqualToAnchor:v59];
+    leadingAnchor3 = [(UILabel *)v4->_textLabel leadingAnchor];
+    leadingAnchor4 = [v18 leadingAnchor];
+    v58 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v80[5] = v58;
-    v56 = [(UILabel *)v4->_textLabel trailingAnchor];
-    v55 = [v18 trailingAnchor];
-    v54 = [v56 constraintEqualToAnchor:v55];
+    trailingAnchor = [(UILabel *)v4->_textLabel trailingAnchor];
+    trailingAnchor2 = [v18 trailingAnchor];
+    v54 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v80[6] = v54;
-    v53 = [(UILabel *)v4->_textLabel centerYAnchor];
-    v52 = [v18 centerYAnchor];
-    v51 = [v53 constraintEqualToAnchor:v52];
+    centerYAnchor = [(UILabel *)v4->_textLabel centerYAnchor];
+    centerYAnchor2 = [v18 centerYAnchor];
+    v51 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v80[7] = v51;
-    v50 = [(UILabel *)v4->_actionLabel leadingAnchor];
+    leadingAnchor5 = [(UILabel *)v4->_actionLabel leadingAnchor];
     v60 = v18;
-    v48 = [v18 leadingAnchor];
-    v47 = [v50 constraintEqualToAnchor:v48];
+    leadingAnchor6 = [v18 leadingAnchor];
+    v47 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v80[8] = v47;
-    v46 = [(UILabel *)v4->_actionLabel bottomAnchor];
-    v45 = [v18 bottomAnchor];
-    v44 = [v46 constraintEqualToAnchor:v45];
+    bottomAnchor2 = [(UILabel *)v4->_actionLabel bottomAnchor];
+    bottomAnchor3 = [v18 bottomAnchor];
+    v44 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v80[9] = v44;
-    v43 = [(UILabel *)v4->_actionLabel widthAnchor];
-    v42 = [v43 constraintGreaterThanOrEqualToConstant:50.0];
+    widthAnchor2 = [(UILabel *)v4->_actionLabel widthAnchor];
+    v42 = [widthAnchor2 constraintGreaterThanOrEqualToConstant:50.0];
     v80[10] = v42;
-    v41 = [(UIStackView *)v4->_privacyCellStackView leadingAnchor];
-    v40 = [v24 leadingAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40];
+    leadingAnchor7 = [(UIStackView *)v4->_privacyCellStackView leadingAnchor];
+    leadingAnchor8 = [layoutMarginsGuide leadingAnchor];
+    v39 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     v80[11] = v39;
-    v38 = [(UIStackView *)v4->_privacyCellStackView trailingAnchor];
-    v25 = v24;
-    v26 = [v24 trailingAnchor];
-    v27 = [v38 constraintEqualToAnchor:v26];
+    trailingAnchor3 = [(UIStackView *)v4->_privacyCellStackView trailingAnchor];
+    v25 = layoutMarginsGuide;
+    trailingAnchor4 = [layoutMarginsGuide trailingAnchor];
+    v27 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v80[12] = v27;
-    v28 = [(UIStackView *)v4->_privacyCellStackView topAnchor];
+    topAnchor4 = [(UIStackView *)v4->_privacyCellStackView topAnchor];
     v29 = v25;
     v49 = v25;
-    v30 = [v25 topAnchor];
-    v31 = [v28 constraintEqualToAnchor:v30];
+    topAnchor5 = [v25 topAnchor];
+    v31 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
     v80[13] = v31;
-    v32 = [(UIStackView *)v4->_privacyCellStackView bottomAnchor];
-    v33 = [v29 bottomAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33];
+    bottomAnchor4 = [(UIStackView *)v4->_privacyCellStackView bottomAnchor];
+    bottomAnchor5 = [v29 bottomAnchor];
+    v34 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
     v80[14] = v34;
     v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v80 count:15];
     [v57 activateConstraints:v35];
@@ -155,18 +155,18 @@
 
 - (void)_updateState
 {
-  v13 = [MEMORY[0x1E69C9808] sharedManager];
-  v3 = [v13 isPrivacyProxyActive];
-  v4 = [v13 state];
+  mEMORY[0x1E69C9808] = [MEMORY[0x1E69C9808] sharedManager];
+  isPrivacyProxyActive = [mEMORY[0x1E69C9808] isPrivacyProxyActive];
+  state = [mEMORY[0x1E69C9808] state];
   if (self->_privateBrowsingEnabled)
   {
     [(SFPrivacyRedesignBannerCell *)self _changeActionTextForState:0];
-    v5 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    v6 = [v5 safari_enableAdvancedPrivacyProtections:1];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    v6 = [safari_browserDefaults safari_enableAdvancedPrivacyProtections:1];
 
     if (v6)
     {
-      v7 = v4 ? v3 : 0;
+      v7 = state ? isPrivacyProxyActive : 0;
       if (self->_numberOfTrackers)
       {
         if (!v7)
@@ -174,13 +174,13 @@
           goto LABEL_15;
         }
 
-        if (v4 == 2)
+        if (state == 2)
         {
           v8 = MEMORY[0x1E696AEC0];
           goto LABEL_16;
         }
 
-        if (v4 == 1)
+        if (state == 1)
         {
           v8 = MEMORY[0x1E696AEC0];
         }
@@ -203,10 +203,10 @@ LABEL_16:
 
   else
   {
-    v9 = [MEMORY[0x1E696AC60] sharedHTTPCookieStorage];
-    v10 = [v9 webui_trackerProtectionEnabled];
+    mEMORY[0x1E696AC60] = [MEMORY[0x1E696AC60] sharedHTTPCookieStorage];
+    webui_trackerProtectionEnabled = [mEMORY[0x1E696AC60] webui_trackerProtectionEnabled];
 
-    if (v10)
+    if (webui_trackerProtectionEnabled)
     {
       [(SFPrivacyRedesignBannerCell *)self _changeActionTextForState:0];
     }
@@ -222,18 +222,18 @@ LABEL_16:
 LABEL_20:
 }
 
-- (void)configureUsingBanner:(id)a3
+- (void)configureUsingBanner:(id)banner
 {
-  v4 = a3;
-  self->_privateBrowsingEnabled = [v4 isPrivateBrowsingEnabled];
-  v5 = [(WBSPrivacyReportData *)self->_privacyReportData knownTrackers];
-  self->_numberOfTrackers = [v5 count];
+  bannerCopy = banner;
+  self->_privateBrowsingEnabled = [bannerCopy isPrivateBrowsingEnabled];
+  knownTrackers = [(WBSPrivacyReportData *)self->_privacyReportData knownTrackers];
+  self->_numberOfTrackers = [knownTrackers count];
 
   [(SFPrivacyRedesignBannerCell *)self _updateState];
-  v6 = [v4 privacyReportData];
+  privacyReportData = [bannerCopy privacyReportData];
 
   privacyReportData = self->_privacyReportData;
-  self->_privacyReportData = v6;
+  self->_privacyReportData = privacyReportData;
 
   [(SFPrivacyRedesignBannerCell *)self _updateGridVisibilityIfNeeded];
 }
@@ -272,8 +272,8 @@ LABEL_20:
   v9 = [MEMORY[0x1E69DB878] fontWithDescriptor:v8 size:0.0];
   [v2 setFont:v9];
 
-  v10 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v2 setTextColor:v10];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [v2 setTextColor:secondaryLabelColor];
 
   [v2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
@@ -282,12 +282,12 @@ LABEL_20:
 
 - (void)_updateGridVisibilityIfNeeded
 {
-  v3 = [MEMORY[0x1E696AC60] sharedHTTPCookieStorage];
-  if ([v3 webui_trackerProtectionEnabled])
+  mEMORY[0x1E696AC60] = [MEMORY[0x1E696AC60] sharedHTTPCookieStorage];
+  if ([mEMORY[0x1E696AC60] webui_trackerProtectionEnabled])
   {
-    v4 = [(WBSPrivacyReportData *)self->_privacyReportData hasData];
+    hasData = [(WBSPrivacyReportData *)self->_privacyReportData hasData];
 
-    if (v4)
+    if (hasData)
     {
       if (self->_gridAndTitleView)
       {
@@ -321,7 +321,7 @@ LABEL_8:
 - (void)_createGrid
 {
   v31[7] = *MEMORY[0x1E69E9840];
-  v24 = [(SFPrivacyRedesignBannerCell *)self _createGridLabel];
+  _createGridLabel = [(SFPrivacyRedesignBannerCell *)self _createGridLabel];
   v3 = [[SFPrivacyReportOverviewView alloc] initWithPrivacyReportDataProvider:self->_privacyReportData];
   gridView = self->_gridView;
   self->_gridView = v3;
@@ -334,47 +334,47 @@ LABEL_8:
   gridAndTitleView = self->_gridAndTitleView;
   self->_gridAndTitleView = v5;
 
-  [(UIView *)self->_gridAndTitleView addSubview:v24];
+  [(UIView *)self->_gridAndTitleView addSubview:_createGridLabel];
   [(UIView *)self->_gridAndTitleView addSubview:self->_gridView];
   [(UIView *)self->_gridAndTitleView setPreservesSuperviewLayoutMargins:1];
   [(UIView *)self->_gridAndTitleView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIStackView *)self->_privacyCellStackView addArrangedSubview:self->_gridAndTitleView];
   v20 = MEMORY[0x1E696ACD8];
-  v30 = [v24 topAnchor];
-  v29 = [(UIView *)self->_gridAndTitleView topAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  topAnchor = [_createGridLabel topAnchor];
+  topAnchor2 = [(UIView *)self->_gridAndTitleView topAnchor];
+  v28 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v31[0] = v28;
-  v27 = [v24 leadingAnchor];
-  v26 = [(UIView *)self->_gridAndTitleView leadingAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  leadingAnchor = [_createGridLabel leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->_gridAndTitleView leadingAnchor];
+  v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v31[1] = v25;
-  v23 = [v24 trailingAnchor];
-  v22 = [(UIView *)self->_gridAndTitleView trailingAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  trailingAnchor = [_createGridLabel trailingAnchor];
+  trailingAnchor2 = [(UIView *)self->_gridAndTitleView trailingAnchor];
+  v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v31[2] = v21;
-  v19 = [(SFPrivacyReportOverviewView *)self->_gridView topAnchor];
-  v18 = [v24 bottomAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18 constant:12.0];
+  topAnchor3 = [(SFPrivacyReportOverviewView *)self->_gridView topAnchor];
+  bottomAnchor = [_createGridLabel bottomAnchor];
+  v17 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:12.0];
   v31[3] = v17;
-  v7 = [(SFPrivacyReportOverviewView *)self->_gridView leadingAnchor];
-  v8 = [(UIView *)self->_gridAndTitleView leadingAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  leadingAnchor3 = [(SFPrivacyReportOverviewView *)self->_gridView leadingAnchor];
+  leadingAnchor4 = [(UIView *)self->_gridAndTitleView leadingAnchor];
+  v9 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v31[4] = v9;
-  v10 = [(SFPrivacyReportOverviewView *)self->_gridView trailingAnchor];
-  v11 = [(UIView *)self->_gridAndTitleView trailingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  trailingAnchor3 = [(SFPrivacyReportOverviewView *)self->_gridView trailingAnchor];
+  trailingAnchor4 = [(UIView *)self->_gridAndTitleView trailingAnchor];
+  v12 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v31[5] = v12;
-  v13 = [(SFPrivacyReportOverviewView *)self->_gridView bottomAnchor];
-  v14 = [(UIView *)self->_gridAndTitleView bottomAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  bottomAnchor2 = [(SFPrivacyReportOverviewView *)self->_gridView bottomAnchor];
+  bottomAnchor3 = [(UIView *)self->_gridAndTitleView bottomAnchor];
+  v15 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v31[6] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:7];
   [v20 activateConstraints:v16];
 }
 
-- (void)_changeActionTextForState:(unint64_t)a3
+- (void)_changeActionTextForState:(unint64_t)state
 {
-  if (a3 > 1)
+  if (state > 1)
   {
     v4 = 0;
   }
@@ -388,7 +388,7 @@ LABEL_8:
   [(UILabel *)self->_actionLabel setText:v4];
 }
 
-- (void)gridViewDidUpdateContentSize:(id)a3
+- (void)gridViewDidUpdateContentSize:(id)size
 {
   [(SFPrivacyRedesignBannerCell *)self invalidateIntrinsicContentSize];
 

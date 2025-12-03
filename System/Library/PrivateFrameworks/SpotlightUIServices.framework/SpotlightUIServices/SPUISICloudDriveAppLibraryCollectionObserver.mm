@@ -2,7 +2,7 @@
 + (SPUISICloudDriveAppLibraryCollectionObserver)shared;
 - (void)beginObserving;
 - (void)endObserving;
-- (void)updateWithDomains:(id)a3;
+- (void)updateWithDomains:(id)domains;
 @end
 
 @implementation SPUISICloudDriveAppLibraryCollectionObserver
@@ -21,19 +21,19 @@
 
 - (void)beginObserving
 {
-  v2 = self;
+  selfCopy = self;
   sub_26B8BC9B4();
 }
 
 - (void)endObserving
 {
-  v2 = self;
+  selfCopy = self;
   sub_26B8BD228();
 }
 
-- (void)updateWithDomains:(id)a3
+- (void)updateWithDomains:(id)domains
 {
-  if (a3)
+  if (domains)
   {
     sub_26B8C0840(0, &qword_280425158, 0x277CC6420);
     v4 = sub_26B8C7EF4();
@@ -44,7 +44,7 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_26B8BD694(v4);
 }
 

@@ -1,16 +1,16 @@
 @interface ULDeviceManager
-- (void)deviceConnectedWithDeviceClass:(unint64_t)a3;
-- (void)deviceDisconnectedWithDeviceClass:(unint64_t)a3;
-- (void)setDeviceConnectedHandler:(id)a3;
-- (void)setDeviceDisconnectedHandler:(id)a3;
+- (void)deviceConnectedWithDeviceClass:(unint64_t)class;
+- (void)deviceDisconnectedWithDeviceClass:(unint64_t)class;
+- (void)setDeviceConnectedHandler:(id)handler;
+- (void)setDeviceDisconnectedHandler:(id)handler;
 - (void)updateTrackedDevice;
 @end
 
 @implementation ULDeviceManager
 
-- (void)setDeviceConnectedHandler:(id)a3
+- (void)setDeviceConnectedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -29,13 +29,13 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_2591EBD18(v7);
 }
 
-- (void)setDeviceDisconnectedHandler:(id)a3
+- (void)setDeviceDisconnectedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -54,31 +54,31 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_2591EBD18(v7);
 }
 
 - (void)updateTrackedDevice
 {
-  v2 = self;
+  selfCopy = self;
   sub_2591FE4E8();
 }
 
-- (void)deviceConnectedWithDeviceClass:(unint64_t)a3
+- (void)deviceConnectedWithDeviceClass:(unint64_t)class
 {
   swift_beginAccess();
-  v5 = self;
-  sub_2591FE854(&v9, a3);
+  selfCopy = self;
+  sub_2591FE854(&v9, class);
   swift_endAccess();
   sub_2591FE4E8();
-  v6 = v5 + OBJC_IVAR____TtC19MicroLocationDaemon15ULDeviceManager_deviceConnectedHandler;
+  v6 = selfCopy + OBJC_IVAR____TtC19MicroLocationDaemon15ULDeviceManager_deviceConnectedHandler;
   swift_beginAccess();
   v7 = *v6;
   if (*v6)
   {
     v8 = *(v6 + 1);
 
-    v7(a3);
+    v7(class);
 
     sub_2591EBD18(v7);
   }
@@ -88,21 +88,21 @@
   }
 }
 
-- (void)deviceDisconnectedWithDeviceClass:(unint64_t)a3
+- (void)deviceDisconnectedWithDeviceClass:(unint64_t)class
 {
   swift_beginAccess();
-  v5 = self;
-  sub_2591FF234(a3);
+  selfCopy = self;
+  sub_2591FF234(class);
   swift_endAccess();
   sub_2591FE4E8();
-  v6 = v5 + OBJC_IVAR____TtC19MicroLocationDaemon15ULDeviceManager_deviceDisconnectedHandler;
+  v6 = selfCopy + OBJC_IVAR____TtC19MicroLocationDaemon15ULDeviceManager_deviceDisconnectedHandler;
   swift_beginAccess();
   v7 = *v6;
   if (*v6)
   {
     v8 = *(v6 + 1);
 
-    v7(a3);
+    v7(class);
 
     sub_2591EBD18(v7);
   }

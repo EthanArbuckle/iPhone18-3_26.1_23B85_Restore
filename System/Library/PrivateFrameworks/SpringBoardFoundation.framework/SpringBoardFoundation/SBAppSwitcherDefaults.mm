@@ -92,9 +92,9 @@
       return v2 > 3.0 && v3 == 2;
     }
 
-    v6 = [MEMORY[0x1E69DC938] currentDevice];
-    v7 = [v6 userInterfaceIdiom];
-    v8 = v2 > 3.0 && v7 == 1;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
+    v8 = v2 > 3.0 && userInterfaceIdiom == 1;
   }
 
   else
@@ -104,8 +104,8 @@
       return SBFEffectiveDeviceClass() == 2;
     }
 
-    v6 = [MEMORY[0x1E69DC938] currentDevice];
-    v8 = [v6 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    v8 = [currentDevice userInterfaceIdiom] == 1;
   }
 
   v5 = v8;
@@ -115,14 +115,14 @@
 
 - (void)clearLegacyDefaults
 {
-  v3 = [(BSAbstractDefaultDomain *)self _store];
-  [v3 removeObjectForKey:@"SBRecentDisplays"];
+  _store = [(BSAbstractDefaultDomain *)self _store];
+  [_store removeObjectForKey:@"SBRecentDisplays"];
 
-  v4 = [(BSAbstractDefaultDomain *)self _store];
-  [v4 removeObjectForKey:@"SBRecentDisplayItems"];
+  _store2 = [(BSAbstractDefaultDomain *)self _store];
+  [_store2 removeObjectForKey:@"SBRecentDisplayItems"];
 
-  v5 = [(BSAbstractDefaultDomain *)self _store];
-  [v5 removeObjectForKey:@"SBRecentDisplayItemRoles"];
+  _store3 = [(BSAbstractDefaultDomain *)self _store];
+  [_store3 removeObjectForKey:@"SBRecentDisplayItemRoles"];
 }
 
 @end

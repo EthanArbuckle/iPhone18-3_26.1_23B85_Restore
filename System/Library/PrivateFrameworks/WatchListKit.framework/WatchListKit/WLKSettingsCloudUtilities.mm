@@ -1,22 +1,22 @@
 @interface WLKSettingsCloudUtilities
-+ (BOOL)_shouldContinueWithCloudSyncResult:(BOOL)a3 onDisabledHandler:(id)a4;
-+ (BOOL)synchronizeSettingsFromCloudIfNeeded:(id *)a3;
++ (BOOL)_shouldContinueWithCloudSyncResult:(BOOL)result onDisabledHandler:(id)handler;
++ (BOOL)synchronizeSettingsFromCloudIfNeeded:(id *)needed;
 + (id)_connection;
 + (id)_queue;
-+ (id)_syncDictionaryForAppSettings:(id)a3;
++ (id)_syncDictionaryForAppSettings:(id)settings;
 + (id)_syncDictionaryForLocalStore;
-+ (void)_cloudSyncEnabledWithCompletion:(id)a3;
-+ (void)_fetchSyncDictionary:(id)a3;
-+ (void)_postChangeDictionaryToCloud:(id)a3 completion:(id)a4;
-+ (void)_runResetAccountWithCompletion:(id)a3;
-+ (void)_runSynchronizeSettingsFromCloudIfNeededWithCompletion:(id)a3;
-+ (void)_runUpdateCloudStoreAppSettings:(id)a3 deleteHistory:(BOOL)a4 removeEntry:(BOOL)a5 completion:(id)a6;
-+ (void)resetAccountWithCompletion:(id)a3;
-+ (void)synchronizeSettingsFromCloudIfNeededWithCompletion:(id)a3;
-+ (void)updateCloudStoreAccountLevelSetting:(id)a3 value:(id)a4 completion:(id)a5;
-+ (void)updateCloudStoreAppSettings:(id)a3 deleteHistory:(BOOL)a4 removeEntry:(BOOL)a5 completion:(id)a6;
-+ (void)updateCloudStoreWithCompletion:(id)a3;
-+ (void)updateLocalStoreWithCompletion:(id)a3;
++ (void)_cloudSyncEnabledWithCompletion:(id)completion;
++ (void)_fetchSyncDictionary:(id)dictionary;
++ (void)_postChangeDictionaryToCloud:(id)cloud completion:(id)completion;
++ (void)_runResetAccountWithCompletion:(id)completion;
++ (void)_runSynchronizeSettingsFromCloudIfNeededWithCompletion:(id)completion;
++ (void)_runUpdateCloudStoreAppSettings:(id)settings deleteHistory:(BOOL)history removeEntry:(BOOL)entry completion:(id)completion;
++ (void)resetAccountWithCompletion:(id)completion;
++ (void)synchronizeSettingsFromCloudIfNeededWithCompletion:(id)completion;
++ (void)updateCloudStoreAccountLevelSetting:(id)setting value:(id)value completion:(id)completion;
++ (void)updateCloudStoreAppSettings:(id)settings deleteHistory:(BOOL)history removeEntry:(BOOL)entry completion:(id)completion;
++ (void)updateCloudStoreWithCompletion:(id)completion;
++ (void)updateLocalStoreWithCompletion:(id)completion;
 @end
 
 @implementation WLKSettingsCloudUtilities
@@ -40,17 +40,17 @@ uint64_t __35__WLKSettingsCloudUtilities__queue__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)updateCloudStoreWithCompletion:(id)a3
++ (void)updateCloudStoreWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __60__WLKSettingsCloudUtilities_updateCloudStoreWithCompletion___block_invoke;
   v6[3] = &unk_279E5F7F0;
-  v7 = v4;
-  v8 = a1;
-  v5 = v4;
-  [a1 _cloudSyncEnabledWithCompletion:v6];
+  v7 = completionCopy;
+  selfCopy = self;
+  v5 = completionCopy;
+  [self _cloudSyncEnabledWithCompletion:v6];
 }
 
 void __60__WLKSettingsCloudUtilities_updateCloudStoreWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -75,22 +75,22 @@ void __60__WLKSettingsCloudUtilities_updateCloudStoreWithCompletion___block_invo
   [*(a1 + 40) _postChangeDictionaryToCloud:v2 completion:*(a1 + 32)];
 }
 
-+ (void)updateCloudStoreAppSettings:(id)a3 deleteHistory:(BOOL)a4 removeEntry:(BOOL)a5 completion:(id)a6
++ (void)updateCloudStoreAppSettings:(id)settings deleteHistory:(BOOL)history removeEntry:(BOOL)entry completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  settingsCopy = settings;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __94__WLKSettingsCloudUtilities_updateCloudStoreAppSettings_deleteHistory_removeEntry_completion___block_invoke;
   v14[3] = &unk_279E5F818;
-  v16 = v11;
-  v17 = a1;
-  v15 = v10;
-  v18 = a4;
-  v19 = a5;
-  v12 = v10;
-  v13 = v11;
-  [a1 _cloudSyncEnabledWithCompletion:v14];
+  v16 = completionCopy;
+  selfCopy = self;
+  v15 = settingsCopy;
+  historyCopy = history;
+  entryCopy = entry;
+  v12 = settingsCopy;
+  v13 = completionCopy;
+  [self _cloudSyncEnabledWithCompletion:v14];
 }
 
 uint64_t __94__WLKSettingsCloudUtilities_updateCloudStoreAppSettings_deleteHistory_removeEntry_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -110,23 +110,23 @@ uint64_t __94__WLKSettingsCloudUtilities_updateCloudStoreAppSettings_deleteHisto
   return result;
 }
 
-+ (void)updateCloudStoreAccountLevelSetting:(id)a3 value:(id)a4 completion:(id)a5
++ (void)updateCloudStoreAccountLevelSetting:(id)setting value:(id)value completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  settingCopy = setting;
+  valueCopy = value;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __82__WLKSettingsCloudUtilities_updateCloudStoreAccountLevelSetting_value_completion___block_invoke;
   v14[3] = &unk_279E5F868;
-  v17 = v10;
-  v18 = a1;
-  v15 = v8;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
-  v13 = v10;
-  [a1 _cloudSyncEnabledWithCompletion:v14];
+  v17 = completionCopy;
+  selfCopy = self;
+  v15 = settingCopy;
+  v16 = valueCopy;
+  v11 = valueCopy;
+  v12 = settingCopy;
+  v13 = completionCopy;
+  [self _cloudSyncEnabledWithCompletion:v14];
 }
 
 void __82__WLKSettingsCloudUtilities_updateCloudStoreAccountLevelSetting_value_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -159,17 +159,17 @@ void __82__WLKSettingsCloudUtilities_updateCloudStoreAccountLevelSetting_value_c
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)resetAccountWithCompletion:(id)a3
++ (void)resetAccountWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__WLKSettingsCloudUtilities_resetAccountWithCompletion___block_invoke;
   v6[3] = &unk_279E5F7F0;
-  v7 = v4;
-  v8 = a1;
-  v5 = v4;
-  [a1 _cloudSyncEnabledWithCompletion:v6];
+  v7 = completionCopy;
+  selfCopy = self;
+  v5 = completionCopy;
+  [self _cloudSyncEnabledWithCompletion:v6];
 }
 
 uint64_t __56__WLKSettingsCloudUtilities_resetAccountWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -186,9 +186,9 @@ uint64_t __56__WLKSettingsCloudUtilities_resetAccountWithCompletion___block_invo
   return result;
 }
 
-+ (void)updateLocalStoreWithCompletion:(id)a3
++ (void)updateLocalStoreWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = WLKStartupSignpostLogObject();
   if (os_signpost_enabled(v5))
   {
@@ -200,10 +200,10 @@ uint64_t __56__WLKSettingsCloudUtilities_resetAccountWithCompletion___block_invo
   v7[1] = 3221225472;
   v7[2] = __60__WLKSettingsCloudUtilities_updateLocalStoreWithCompletion___block_invoke;
   v7[3] = &unk_279E5F7F0;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
-  [a1 _cloudSyncEnabledWithCompletion:v7];
+  v8 = completionCopy;
+  selfCopy = self;
+  v6 = completionCopy;
+  [self _cloudSyncEnabledWithCompletion:v7];
 }
 
 void __60__WLKSettingsCloudUtilities_updateLocalStoreWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -251,7 +251,7 @@ uint64_t __60__WLKSettingsCloudUtilities_updateLocalStoreWithCompletion___block_
   return result;
 }
 
-+ (BOOL)synchronizeSettingsFromCloudIfNeeded:(id *)a3
++ (BOOL)synchronizeSettingsFromCloudIfNeeded:(id *)needed
 {
   v19 = 0;
   v20 = &v19;
@@ -272,11 +272,11 @@ uint64_t __60__WLKSettingsCloudUtilities_updateLocalStoreWithCompletion___block_
   v12 = &v13;
   v6 = v5;
   v10 = v6;
-  [a1 synchronizeSettingsFromCloudIfNeededWithCompletion:v9];
+  [self synchronizeSettingsFromCloudIfNeededWithCompletion:v9];
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
-  if (a3)
+  if (needed)
   {
-    *a3 = v14[5];
+    *needed = v14[5];
   }
 
   v7 = *(v20 + 24);
@@ -294,9 +294,9 @@ void __66__WLKSettingsCloudUtilities_synchronizeSettingsFromCloudIfNeeded___bloc
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (void)synchronizeSettingsFromCloudIfNeededWithCompletion:(id)a3
++ (void)synchronizeSettingsFromCloudIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = WLKStartupSignpostLogObject();
   if (os_signpost_enabled(v5))
   {
@@ -308,10 +308,10 @@ void __66__WLKSettingsCloudUtilities_synchronizeSettingsFromCloudIfNeeded___bloc
   v7[1] = 3221225472;
   v7[2] = __80__WLKSettingsCloudUtilities_synchronizeSettingsFromCloudIfNeededWithCompletion___block_invoke;
   v7[3] = &unk_279E5F7F0;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
-  [a1 _cloudSyncEnabledWithCompletion:v7];
+  v8 = completionCopy;
+  selfCopy = self;
+  v6 = completionCopy;
+  [self _cloudSyncEnabledWithCompletion:v7];
 }
 
 uint64_t __80__WLKSettingsCloudUtilities_synchronizeSettingsFromCloudIfNeededWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -332,23 +332,23 @@ uint64_t __80__WLKSettingsCloudUtilities_synchronizeSettingsFromCloudIfNeededWit
   return result;
 }
 
-+ (void)_runUpdateCloudStoreAppSettings:(id)a3 deleteHistory:(BOOL)a4 removeEntry:(BOOL)a5 completion:(id)a6
++ (void)_runUpdateCloudStoreAppSettings:(id)settings deleteHistory:(BOOL)history removeEntry:(BOOL)entry completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [a1 _queue];
+  settingsCopy = settings;
+  completionCopy = completion;
+  _queue = [self _queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __98__WLKSettingsCloudUtilities__runUpdateCloudStoreAppSettings_deleteHistory_removeEntry_completion___block_invoke;
   v15[3] = &unk_279E5F8B8;
-  v17 = v11;
-  v18 = a1;
-  v19 = a4;
-  v20 = a5;
-  v16 = v10;
-  v13 = v11;
-  v14 = v10;
-  dispatch_async(v12, v15);
+  v17 = completionCopy;
+  selfCopy = self;
+  historyCopy = history;
+  entryCopy = entry;
+  v16 = settingsCopy;
+  v13 = completionCopy;
+  v14 = settingsCopy;
+  dispatch_async(_queue, v15);
 }
 
 void __98__WLKSettingsCloudUtilities__runUpdateCloudStoreAppSettings_deleteHistory_removeEntry_completion___block_invoke(uint64_t a1)
@@ -401,18 +401,18 @@ LABEL_12:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_runResetAccountWithCompletion:(id)a3
++ (void)_runResetAccountWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [a1 _queue];
+  completionCopy = completion;
+  _queue = [self _queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__WLKSettingsCloudUtilities__runResetAccountWithCompletion___block_invoke;
   v7[3] = &unk_279E5F7C8;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  selfCopy = self;
+  v6 = completionCopy;
+  dispatch_async(_queue, v7);
 }
 
 void __60__WLKSettingsCloudUtilities__runResetAccountWithCompletion___block_invoke(uint64_t a1)
@@ -457,18 +457,18 @@ void __60__WLKSettingsCloudUtilities__runResetAccountWithCompletion___block_invo
   }
 }
 
-+ (void)_runSynchronizeSettingsFromCloudIfNeededWithCompletion:(id)a3
++ (void)_runSynchronizeSettingsFromCloudIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [a1 _queue];
+  completionCopy = completion;
+  _queue = [self _queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __84__WLKSettingsCloudUtilities__runSynchronizeSettingsFromCloudIfNeededWithCompletion___block_invoke;
   v7[3] = &unk_279E5F7C8;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  selfCopy = self;
+  v6 = completionCopy;
+  dispatch_async(_queue, v7);
 }
 
 void __84__WLKSettingsCloudUtilities__runSynchronizeSettingsFromCloudIfNeededWithCompletion___block_invoke(uint64_t a1)
@@ -712,15 +712,15 @@ void __84__WLKSettingsCloudUtilities__runSynchronizeSettingsFromCloudIfNeededWit
 + (id)_syncDictionaryForLocalStore
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = +[WLKSettingsStore sharedSettings];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [v5 watchListApps];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  watchListApps = [v5 watchListApps];
+  v7 = [watchListApps countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -731,89 +731,89 @@ void __84__WLKSettingsCloudUtilities__runSynchronizeSettingsFromCloudIfNeededWit
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(watchListApps);
         }
 
-        v11 = [a1 _syncDictionaryForAppSettings:*(*(&v17 + 1) + 8 * i)];
+        v11 = [self _syncDictionaryForAppSettings:*(*(&v17 + 1) + 8 * i)];
         if (v11)
         {
-          [v4 addObject:v11];
+          [array addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [watchListApps countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
   }
 
-  if ([v4 count])
+  if ([array count])
   {
-    [v3 setObject:v4 forKeyedSubscript:@"watchListSettingsEntries"];
+    [dictionary setObject:array forKeyedSubscript:@"watchListSettingsEntries"];
   }
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v5, "optedIn")}];
-  [v3 setObject:v12 forKeyedSubscript:@"isOptedIn"];
+  [dictionary setObject:v12 forKeyedSubscript:@"isOptedIn"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v5, "migratedtvOS")}];
-  [v3 setObject:v13 forKeyedSubscript:@"isTvOSMigrated"];
+  [dictionary setObject:v13 forKeyedSubscript:@"isTvOSMigrated"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v5, "migratediOS")}];
-  [v3 setObject:v14 forKeyedSubscript:@"isIOSMigrated"];
+  [dictionary setObject:v14 forKeyedSubscript:@"isIOSMigrated"];
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-+ (id)_syncDictionaryForAppSettings:(id)a3
++ (id)_syncDictionaryForAppSettings:(id)settings
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [v3 channelID];
-  if (v5)
+  settingsCopy = settings;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  channelID = [settingsCopy channelID];
+  if (channelID)
   {
-    [v4 setObject:v5 forKeyedSubscript:@"searchBrandId"];
+    [dictionary setObject:channelID forKeyedSubscript:@"searchBrandId"];
   }
 
-  v6 = [v3 externalID];
-  if ([v6 length])
+  externalID = [settingsCopy externalID];
+  if ([externalID length])
   {
-    [v4 setObject:v6 forKeyedSubscript:@"externalAccountId"];
+    [dictionary setObject:externalID forKeyedSubscript:@"externalAccountId"];
   }
 
-  if ([v3 accessStatus] == 1)
+  if ([settingsCopy accessStatus] == 1)
   {
     v7 = MEMORY[0x277CBEC38];
 LABEL_9:
-    [v4 setObject:v7 forKeyedSubscript:@"enabled"];
+    [dictionary setObject:v7 forKeyedSubscript:@"enabled"];
     goto LABEL_11;
   }
 
-  if ([v3 accessStatus] == 2)
+  if ([settingsCopy accessStatus] == 2)
   {
     v7 = MEMORY[0x277CBEC28];
     goto LABEL_9;
   }
 
-  v4 = 0;
+  dictionary = 0;
 LABEL_11:
-  if ([v3 obsolete])
+  if ([settingsCopy obsolete])
   {
-    [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"removeEntry"];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"removeEntry"];
   }
 
-  v8 = [v4 copy];
+  v8 = [dictionary copy];
 
   return v8;
 }
 
-+ (void)_fetchSyncDictionary:(id)a3
++ (void)_fetchSyncDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D6C478] activeAccount];
-  v5 = v4;
-  if (v4 && ([v4 ams_DSID], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "stringValue"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
+  dictionaryCopy = dictionary;
+  activeAccount = [MEMORY[0x277D6C478] activeAccount];
+  v5 = activeAccount;
+  if (activeAccount && ([activeAccount ams_DSID], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "stringValue"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
   {
     if (WLKShouldRunInProcess())
     {
@@ -831,24 +831,24 @@ LABEL_11:
       v21[2] = __50__WLKSettingsCloudUtilities__fetchSyncDictionary___block_invoke;
       v21[3] = &unk_279E5E660;
       objc_copyWeak(&v23, buf);
-      v22 = v3;
+      v22 = dictionaryCopy;
       [(WLKSettingsRequestOperation *)v10 setCompletionBlock:v21];
-      v11 = [MEMORY[0x277CCABD8] wlkDefaultConcurrentQueue];
-      [v11 addOperation:v10];
+      wlkDefaultConcurrentQueue = [MEMORY[0x277CCABD8] wlkDefaultConcurrentQueue];
+      [wlkDefaultConcurrentQueue addOperation:v10];
 
       objc_destroyWeak(&v23);
       objc_destroyWeak(buf);
       goto LABEL_9;
     }
 
-    v12 = [objc_opt_class() _connection];
+    _connection = [objc_opt_class() _connection];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __50__WLKSettingsCloudUtilities__fetchSyncDictionary___block_invoke_95;
     v19[3] = &unk_279E5EB38;
-    v13 = v3;
+    v13 = dictionaryCopy;
     v20 = v13;
-    v14 = [v12 remoteObjectProxyWithErrorHandler:v19];
+    v14 = [_connection remoteObjectProxyWithErrorHandler:v19];
 
     v15 = WLKStartupSignpostLogObject();
     if (os_signpost_enabled(v15))
@@ -872,10 +872,10 @@ LABEL_11:
     [v14 fetchSettings:v17];
   }
 
-  else if (v3)
+  else if (dictionaryCopy)
   {
     v10 = WLKError(700, 0, @"Login required for this operation");
-    (*(v3 + 2))(v3, 0, v10);
+    (*(dictionaryCopy + 2))(dictionaryCopy, 0, v10);
 LABEL_9:
   }
 }
@@ -1093,39 +1093,39 @@ uint64_t __50__WLKSettingsCloudUtilities__fetchSyncDictionary___block_invoke_98(
   return result;
 }
 
-+ (void)_postChangeDictionaryToCloud:(id)a3 completion:(id)a4
++ (void)_postChangeDictionaryToCloud:(id)cloud completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277D6C478] activeAccount];
-  v8 = v7;
-  if (v7 && ([v7 ams_DSID], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "stringValue"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "length"), v10, v9, v11))
+  cloudCopy = cloud;
+  completionCopy = completion;
+  activeAccount = [MEMORY[0x277D6C478] activeAccount];
+  v8 = activeAccount;
+  if (activeAccount && ([activeAccount ams_DSID], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "stringValue"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "length"), v10, v9, v11))
   {
     if (WLKShouldRunInProcess())
     {
       v12 = +[WLKSettingsStore sharedSettings];
-      v13 = [v12 pushToken];
+      pushToken = [v12 pushToken];
 
-      if ([v13 length])
+      if ([pushToken length])
       {
-        v14 = [v5 mutableCopy];
-        [v14 setObject:v13 forKeyedSubscript:@"fromPushToken"];
+        v14 = [cloudCopy mutableCopy];
+        [v14 setObject:pushToken forKeyedSubscript:@"fromPushToken"];
         v15 = [v14 copy];
 
-        v5 = v15;
+        cloudCopy = v15;
       }
 
-      v16 = [[WLKSettingsModificationRequestOperation alloc] initWithModifications:v5];
+      v16 = [[WLKSettingsModificationRequestOperation alloc] initWithModifications:cloudCopy];
       objc_initWeak(location, v16);
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __69__WLKSettingsCloudUtilities__postChangeDictionaryToCloud_completion___block_invoke;
       v26[3] = &unk_279E5E660;
       objc_copyWeak(&v28, location);
-      v27 = v6;
+      v27 = completionCopy;
       [(WLKSettingsModificationRequestOperation *)v16 setCompletionBlock:v26];
-      v17 = [MEMORY[0x277CCABD8] wlkDefaultQueue];
-      [v17 addOperation:v16];
+      wlkDefaultQueue = [MEMORY[0x277CCABD8] wlkDefaultQueue];
+      [wlkDefaultQueue addOperation:v16];
 
       objc_destroyWeak(&v28);
       objc_destroyWeak(location);
@@ -1133,14 +1133,14 @@ uint64_t __50__WLKSettingsCloudUtilities__fetchSyncDictionary___block_invoke_98(
       goto LABEL_9;
     }
 
-    v18 = [objc_opt_class() _connection];
+    _connection = [objc_opt_class() _connection];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __69__WLKSettingsCloudUtilities__postChangeDictionaryToCloud_completion___block_invoke_2;
     v24[3] = &unk_279E5EB38;
-    v19 = v6;
+    v19 = completionCopy;
     v25 = v19;
-    v20 = [v18 remoteObjectProxyWithErrorHandler:v24];
+    v20 = [_connection remoteObjectProxyWithErrorHandler:v24];
 
     v21 = WLKSystemLogObject();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -1154,13 +1154,13 @@ uint64_t __50__WLKSettingsCloudUtilities__fetchSyncDictionary___block_invoke_98(
     v22[2] = __69__WLKSettingsCloudUtilities__postChangeDictionaryToCloud_completion___block_invoke_101;
     v22[3] = &unk_279E5EA68;
     v23 = v19;
-    [v20 postSettings:v5 replyHandler:v22];
+    [v20 postSettings:cloudCopy replyHandler:v22];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v13 = WLKError(700, 0, @"Login required for this operation");
-    (*(v6 + 2))(v6, 0, v13);
+    pushToken = WLKError(700, 0, @"Login required for this operation");
+    (*(completionCopy + 2))(completionCopy, 0, pushToken);
 LABEL_9:
   }
 }
@@ -1262,7 +1262,7 @@ void __69__WLKSettingsCloudUtilities__postChangeDictionaryToCloud_completion___b
     v7 = WLKConnectionClientInterface();
     [v6 setExportedInterface:v7];
 
-    [_connection___connection setExportedObject:a1];
+    [_connection___connection setExportedObject:self];
     v8 = _connection___connection;
     v9 = WLKConnectionServerInterface();
     [v8 setRemoteObjectInterface:v9];
@@ -1305,11 +1305,11 @@ void __40__WLKSettingsCloudUtilities__connection__block_invoke_2()
   _connection___connection = 0;
 }
 
-+ (BOOL)_shouldContinueWithCloudSyncResult:(BOOL)a3 onDisabledHandler:(id)a4
++ (BOOL)_shouldContinueWithCloudSyncResult:(BOOL)result onDisabledHandler:(id)handler
 {
-  if (a4 && !a3)
+  if (handler && !result)
   {
-    v5 = a4;
+    handlerCopy = handler;
     v6 = WLKSystemLogObject();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -1318,23 +1318,23 @@ void __40__WLKSettingsCloudUtilities__connection__block_invoke_2()
     }
 
     v7 = WLKError(201, 0, @"Cloud sync disabled");
-    v5[2](v5, 0, v7);
+    handlerCopy[2](handlerCopy, 0, v7);
   }
 
-  return a3;
+  return result;
 }
 
-+ (void)_cloudSyncEnabledWithCompletion:(id)a3
++ (void)_cloudSyncEnabledWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [a1 _queue];
+  completionCopy = completion;
+  _queue = [self _queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__WLKSettingsCloudUtilities__cloudSyncEnabledWithCompletion___block_invoke;
   block[3] = &unk_279E5EA90;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(_queue, block);
 }
 
 void __61__WLKSettingsCloudUtilities__cloudSyncEnabledWithCompletion___block_invoke(uint64_t a1)

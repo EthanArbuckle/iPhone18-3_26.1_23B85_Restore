@@ -1,21 +1,21 @@
 @interface IMBalloonApp
-+ (IMBalloonApp)appWithPluginBundle:(id)a3;
-+ (IMBalloonApp)appWithPluginBundle:(id)a3 appBundle:(id)a4;
-+ (IMBalloonApp)appWithPluginBundle:(id)a3 extension:(id)a4;
-+ (IMBalloonApp)appWithPluginBundle:(id)a3 pluginKitProxy:(id)a4 extension:(id)a5;
++ (IMBalloonApp)appWithPluginBundle:(id)bundle;
++ (IMBalloonApp)appWithPluginBundle:(id)bundle appBundle:(id)appBundle;
++ (IMBalloonApp)appWithPluginBundle:(id)bundle extension:(id)extension;
++ (IMBalloonApp)appWithPluginBundle:(id)bundle pluginKitProxy:(id)proxy extension:(id)extension;
 + (id)_unremovableDisabledApps;
-+ (void)_setUnremovableDisabledApps:(id)a3;
++ (void)_setUnremovableDisabledApps:(id)apps;
 - (BOOL)isEnabledUnremovableApp;
 - (Class)browserClass;
 - (Class)bubbleClass;
 - (Class)customTypingIndicatorLayerClass;
 - (Class)dataSourceClass;
 - (Class)entryClass;
-- (IMBalloonApp)initWithPluginBundle:(id)a3 appBundle:(id)a4;
+- (IMBalloonApp)initWithPluginBundle:(id)bundle appBundle:(id)appBundle;
 - (LSVersionNumber)sdkVersionNumber;
-- (unint64_t)presentationContextsForInfoPlistArray:(id)a3;
+- (unint64_t)presentationContextsForInfoPlistArray:(id)array;
 - (void)_loadBundle;
-- (void)setSdkVersionNumber:(LSVersionNumber *)a3;
+- (void)setSdkVersionNumber:(LSVersionNumber *)number;
 @end
 
 @implementation IMBalloonApp
@@ -58,61 +58,61 @@
   return v2;
 }
 
-+ (IMBalloonApp)appWithPluginBundle:(id)a3 pluginKitProxy:(id)a4 extension:(id)a5
++ (IMBalloonApp)appWithPluginBundle:(id)bundle pluginKitProxy:(id)proxy extension:(id)extension
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  extensionCopy = extension;
+  proxyCopy = proxy;
+  bundleCopy = bundle;
   v10 = [_IMBalloonExtensionApp alloc];
-  v12 = objc_msgSend_initWithPluginBundle_pluginKitProxy_extension_(v10, v11, v9, v8, v7);
+  v12 = objc_msgSend_initWithPluginBundle_pluginKitProxy_extension_(v10, v11, bundleCopy, proxyCopy, extensionCopy);
 
   return v12;
 }
 
-+ (IMBalloonApp)appWithPluginBundle:(id)a3 extension:(id)a4
++ (IMBalloonApp)appWithPluginBundle:(id)bundle extension:(id)extension
 {
-  v5 = a4;
-  v6 = a3;
+  extensionCopy = extension;
+  bundleCopy = bundle;
   v7 = [_IMBalloonExtensionApp alloc];
-  v9 = objc_msgSend_initWithPluginBundle_extension_(v7, v8, v6, v5);
+  v9 = objc_msgSend_initWithPluginBundle_extension_(v7, v8, bundleCopy, extensionCopy);
 
   return v9;
 }
 
-+ (IMBalloonApp)appWithPluginBundle:(id)a3
++ (IMBalloonApp)appWithPluginBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v4 = [IMBalloonApp alloc];
-  v6 = objc_msgSend_initWithPluginBundle_appBundle_(v4, v5, v3, 0);
+  v6 = objc_msgSend_initWithPluginBundle_appBundle_(v4, v5, bundleCopy, 0);
 
   return v6;
 }
 
-+ (IMBalloonApp)appWithPluginBundle:(id)a3 appBundle:(id)a4
++ (IMBalloonApp)appWithPluginBundle:(id)bundle appBundle:(id)appBundle
 {
-  v5 = a4;
-  v6 = a3;
+  appBundleCopy = appBundle;
+  bundleCopy = bundle;
   v7 = [_IMBalloonBundleApp alloc];
-  v9 = objc_msgSend_initWithPluginBundle_appBundle_(v7, v8, v6, v5);
+  v9 = objc_msgSend_initWithPluginBundle_appBundle_(v7, v8, bundleCopy, appBundleCopy);
 
   return v9;
 }
 
-- (IMBalloonApp)initWithPluginBundle:(id)a3 appBundle:(id)a4
+- (IMBalloonApp)initWithPluginBundle:(id)bundle appBundle:(id)appBundle
 {
-  v7 = a3;
-  v8 = a4;
+  bundleCopy = bundle;
+  appBundleCopy = appBundle;
   v28.receiver = self;
   v28.super_class = IMBalloonApp;
   v9 = [(IMBalloonApp *)&v28 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_pluginBundle, a3);
-    objc_storeStrong(&v10->_appBundle, a4);
+    objc_storeStrong(&v9->_pluginBundle, bundle);
+    objc_storeStrong(&v10->_appBundle, appBundle);
     *&v10->_showInSendMenu = 257;
     v10->_presentationContexts = 1;
-    v13 = objc_msgSend_localizedInfoDictionary(v7, v11, v12);
+    v13 = objc_msgSend_localizedInfoDictionary(bundleCopy, v11, v12);
     v15 = objc_msgSend_objectForKeyedSubscript_(v13, v14, @"CFBundleDisplayName");
     if (v15 || (objc_msgSend_objectForKeyedSubscript_(v13, v16, @"CKBrowserDisplayName"), (v15 = objc_claimAutoreleasedReturnValue()) != 0))
     {
@@ -121,7 +121,7 @@
 
     else
     {
-      v26 = objc_msgSend_infoDictionary(v7, v16, v17);
+      v26 = objc_msgSend_infoDictionary(bundleCopy, v16, v17);
       v18 = objc_msgSend_objectForKeyedSubscript_(v26, v27, @"CKBrowserDisplayName");
     }
 
@@ -130,7 +130,7 @@
       objc_msgSend_setBrowserDisplayName_(v10, v19, v18);
     }
 
-    v21 = objc_msgSend_bundleIdentifier(v7, v19, v20);
+    v21 = objc_msgSend_bundleIdentifier(bundleCopy, v19, v20);
     isEqualToString = objc_msgSend_isEqualToString_(v21, v22, *MEMORY[0x1E69A6A00]);
 
     if (isEqualToString)
@@ -199,16 +199,16 @@
   return entryClass;
 }
 
-+ (void)_setUnremovableDisabledApps:(id)a3
++ (void)_setUnremovableDisabledApps:(id)apps
 {
-  objc_storeStrong(&qword_1ED767670, a3);
-  v4 = a3;
+  objc_storeStrong(&qword_1ED767670, apps);
+  appsCopy = apps;
   IMSetDomainValueForKey();
 }
 
-- (unint64_t)presentationContextsForInfoPlistArray:(id)a3
+- (unint64_t)presentationContextsForInfoPlistArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   if (objc_msgSend_isStickerPackOnly(self, v5, v6))
   {
     v9 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v7, v8);
@@ -225,9 +225,9 @@
     }
   }
 
-  else if ((v4 || objc_msgSend_isPreDawnAndAppStoreStickerGenre(self, v7, v8)) && (objc_msgSend_shouldForceIntoSendMenu(self, v7, v8) & 1) == 0)
+  else if ((arrayCopy || objc_msgSend_isPreDawnAndAppStoreStickerGenre(self, v7, v8)) && (objc_msgSend_shouldForceIntoSendMenu(self, v7, v8) & 1) == 0)
   {
-    if (objc_msgSend_containsObject_(v4, v14, @"MSMessagesAppPresentationContextMessages"))
+    if (objc_msgSend_containsObject_(arrayCopy, v14, @"MSMessagesAppPresentationContextMessages"))
     {
       v13 = objc_msgSend_isPreDawnAndAppStoreStickerGenre(self, v15, v16) ^ 1;
     }
@@ -237,7 +237,7 @@
       v13 = 0;
     }
 
-    if ((objc_msgSend_containsObject_(v4, v15, @"MSMessagesAppPresentationContextMedia") & 1) != 0 || objc_msgSend_isPreDawnAndAppStoreStickerGenre(self, v17, v18))
+    if ((objc_msgSend_containsObject_(arrayCopy, v15, @"MSMessagesAppPresentationContextMedia") & 1) != 0 || objc_msgSend_isPreDawnAndAppStoreStickerGenre(self, v17, v18))
     {
       v13 |= 2uLL;
     }
@@ -259,10 +259,10 @@
   return self;
 }
 
-- (void)setSdkVersionNumber:(LSVersionNumber *)a3
+- (void)setSdkVersionNumber:(LSVersionNumber *)number
 {
-  v3 = *&a3->_opaque[16];
-  *self->_sdkVersionNumber._opaque = *a3->_opaque;
+  v3 = *&number->_opaque[16];
+  *self->_sdkVersionNumber._opaque = *number->_opaque;
   *&self->_sdkVersionNumber._opaque[16] = v3;
 }
 

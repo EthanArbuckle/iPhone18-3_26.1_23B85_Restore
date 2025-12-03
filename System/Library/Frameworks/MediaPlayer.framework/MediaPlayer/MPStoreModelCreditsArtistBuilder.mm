@@ -1,6 +1,6 @@
 @interface MPStoreModelCreditsArtistBuilder
 + (id)allSupportedProperties;
-- (id)modelObjectWithStoreItemMetadata:(id)a3 sourceModelObject:(id)a4 userIdentity:(id)a5;
+- (id)modelObjectWithStoreItemMetadata:(id)metadata sourceModelObject:(id)object userIdentity:(id)identity;
 @end
 
 @implementation MPStoreModelCreditsArtistBuilder
@@ -23,16 +23,16 @@
   return v7;
 }
 
-- (id)modelObjectWithStoreItemMetadata:(id)a3 sourceModelObject:(id)a4 userIdentity:(id)a5
+- (id)modelObjectWithStoreItemMetadata:(id)metadata sourceModelObject:(id)object userIdentity:(id)identity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  objectCopy = object;
+  identityCopy = identity;
   if ((*&self->_requestedCreditsArtistProperties & 1) == 0)
   {
-    v11 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
-    v12 = [v11 properties];
-    if ([v12 containsObject:@"MPModelPropertyPersonName"])
+    requestedPropertySet = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
+    properties = [requestedPropertySet properties];
+    if ([properties containsObject:@"MPModelPropertyPersonName"])
     {
       v13 = 2;
     }
@@ -43,7 +43,7 @@
     }
 
     *&self->_requestedCreditsArtistProperties = *&self->_requestedCreditsArtistProperties & 0xFD | v13;
-    if ([v12 containsObject:@"MPModelPropertyCreditsArtistArtwork"])
+    if ([properties containsObject:@"MPModelPropertyCreditsArtistArtwork"])
     {
       v14 = 5;
     }
@@ -60,32 +60,32 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __100__MPStoreModelCreditsArtistBuilder_modelObjectWithStoreItemMetadata_sourceModelObject_userIdentity___block_invoke;
   aBlock[3] = &unk_1E767EE00;
-  v15 = v8;
+  v15 = metadataCopy;
   v35 = v15;
-  v16 = v10;
+  v16 = identityCopy;
   v36 = v16;
   v17 = _Block_copy(aBlock);
   v28 = MEMORY[0x1E69E9820];
   v29 = 3221225472;
   v30 = __100__MPStoreModelCreditsArtistBuilder_modelObjectWithStoreItemMetadata_sourceModelObject_userIdentity___block_invoke_4;
   v31 = &unk_1E767E5C0;
-  v32 = self;
+  selfCopy = self;
   v18 = v15;
   v33 = v18;
   v19 = _Block_copy(&v28);
-  if (v9)
+  if (objectCopy)
   {
-    v20 = [v9 identifiers];
-    v21 = [v20 copyWithSource:@"StorePlatform" block:v17];
-    v22 = [v9 copyWithIdentifiers:v21 block:v19];
+    identifiers = [objectCopy identifiers];
+    v21 = [identifiers copyWithSource:@"StorePlatform" block:v17];
+    v22 = [objectCopy copyWithIdentifiers:v21 block:v19];
   }
 
   else
   {
     v23 = [MPModelCreditsArtist alloc];
     v24 = [MPIdentifierSet alloc];
-    v20 = [MPModelArtistKind identityKind:v28];
-    v21 = [(MPIdentifierSet *)v24 initWithSource:@"StorePlatform" modelKind:v20 block:v17];
+    identifiers = [MPModelArtistKind identityKind:v28];
+    v21 = [(MPIdentifierSet *)v24 initWithSource:@"StorePlatform" modelKind:identifiers block:v17];
     v22 = [(MPModelObject *)v23 initWithIdentifiers:v21 block:v19];
   }
 

@@ -1,58 +1,58 @@
 @interface PXProactiveSuggester
-+ (id)_clientIDForTimelineSize:(unint64_t)a3;
-+ (id)_proactiveSuggestionsFromTimelineEntries:(id)a3 withClient:(id)a4 forTimelineSize:(unint64_t)a5;
-+ (id)proactiveCriterionForFeaturedPhoto:(id)a3;
-+ (id)proactiveCriterionForMemory:(id)a3;
-+ (unint64_t)_applicableLayoutForTimelineSize:(unint64_t)a3;
-+ (void)updateProactiveSuggestionsFromTimelineEntries:(id)a3 forTimelineSize:(unint64_t)a4;
++ (id)_clientIDForTimelineSize:(unint64_t)size;
++ (id)_proactiveSuggestionsFromTimelineEntries:(id)entries withClient:(id)client forTimelineSize:(unint64_t)size;
++ (id)proactiveCriterionForFeaturedPhoto:(id)photo;
++ (id)proactiveCriterionForMemory:(id)memory;
++ (unint64_t)_applicableLayoutForTimelineSize:(unint64_t)size;
++ (void)updateProactiveSuggestionsFromTimelineEntries:(id)entries forTimelineSize:(unint64_t)size;
 @end
 
 @implementation PXProactiveSuggester
 
-+ (unint64_t)_applicableLayoutForTimelineSize:(unint64_t)a3
++ (unint64_t)_applicableLayoutForTimelineSize:(unint64_t)size
 {
-  if (a3 > 3)
+  if (size > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_1A53817D0[a3];
+    return qword_1A53817D0[size];
   }
 }
 
-+ (id)_clientIDForTimelineSize:(unint64_t)a3
++ (id)_clientIDForTimelineSize:(unint64_t)size
 {
-  if (a3 > 3)
+  if (size > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7730978[a3];
+    return off_1E7730978[size];
   }
 }
 
-+ (id)_proactiveSuggestionsFromTimelineEntries:(id)a3 withClient:(id)a4 forTimelineSize:(unint64_t)a5
++ (id)_proactiveSuggestionsFromTimelineEntries:(id)entries withClient:(id)client forTimelineSize:(unint64_t)size
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v34 = a4;
-  v9 = [v8 count];
+  entriesCopy = entries;
+  clientCopy = client;
+  v9 = [entriesCopy count];
   if (v9)
   {
     v10 = v9;
     v11 = @"com.apple.mobileslideshow.PhotosReliveWidget";
-    v33 = [a1 _applicableLayoutForTimelineSize:a5];
-    v31 = v8;
+    v33 = [self _applicableLayoutForTimelineSize:size];
+    v31 = entriesCopy;
     v32 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v10];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    obj = v8;
+    obj = entriesCopy;
     v12 = [obj countByEnumeratingWithState:&v37 objects:v43 count:16];
     if (v12)
     {
@@ -70,15 +70,15 @@
           }
 
           v16 = *(*(&v37 + 1) + 8 * v15);
-          v17 = [v16 proactiveCriterion];
-          if ([v17 length])
+          proactiveCriterion = [v16 proactiveCriterion];
+          if ([proactiveCriterion length])
           {
-            v18 = [v16 assetLocalIdentifier];
-            v19 = [v16 startTime];
-            v20 = [v16 endTime];
-            if ([v18 length])
+            assetLocalIdentifier = [v16 assetLocalIdentifier];
+            startTime = [v16 startTime];
+            endTime = [v16 endTime];
+            if ([assetLocalIdentifier length])
             {
-              v21 = v19 == 0;
+              v21 = startTime == 0;
             }
 
             else
@@ -86,7 +86,7 @@
               v21 = 1;
             }
 
-            if (v21 || v20 == 0)
+            if (v21 || endTime == 0)
             {
               v25 = PLMemoriesGetLog();
               if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -100,9 +100,9 @@
             else
             {
               v23 = MEMORY[0x1E696AEC0];
-              [v20 timeIntervalSinceReferenceDate];
-              v25 = [v23 stringWithFormat:@"%@_%.f", v18, v24];
-              v26 = [v34 createSuggestionWithAppBundleIdentifier:@"com.apple.mobileslideshow" widgetBundleIdentifier:@"com.apple.mobileslideshow.PhotosReliveWidget" widgetKind:@"com.apple.mobileslideshow.PhotosReliveWidget" criterion:v17 applicableLayouts:v33 suggestionIdentifier:v25 startDate:v19 endDate:v20 intent:0 metadata:0];
+              [endTime timeIntervalSinceReferenceDate];
+              v25 = [v23 stringWithFormat:@"%@_%.f", assetLocalIdentifier, v24];
+              v26 = [clientCopy createSuggestionWithAppBundleIdentifier:@"com.apple.mobileslideshow" widgetBundleIdentifier:@"com.apple.mobileslideshow.PhotosReliveWidget" widgetKind:@"com.apple.mobileslideshow.PhotosReliveWidget" criterion:proactiveCriterion applicableLayouts:v33 suggestionIdentifier:v25 startDate:startTime endDate:endTime intent:0 metadata:0];
               v27 = v26;
               if (v26)
               {
@@ -135,7 +135,7 @@
     }
 
     v29 = @"com.apple.mobileslideshow.PhotosReliveWidget";
-    v8 = v31;
+    entriesCopy = v31;
   }
 
   else
@@ -153,12 +153,12 @@
   return v32;
 }
 
-+ (void)updateProactiveSuggestionsFromTimelineEntries:(id)a3 forTimelineSize:(unint64_t)a4
++ (void)updateProactiveSuggestionsFromTimelineEntries:(id)entries forTimelineSize:(unint64_t)size
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  entriesCopy = entries;
   v7 = PLTimelineGetLog();
-  v8 = os_signpost_id_make_with_pointer(v7, a1);
+  v8 = os_signpost_id_make_with_pointer(v7, self);
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v9 = v8;
@@ -169,7 +169,7 @@
     }
   }
 
-  v10 = [a1 _clientIDForTimelineSize:a4];
+  v10 = [self _clientIDForTimelineSize:size];
   if (!v10)
   {
     goto LABEL_12;
@@ -196,7 +196,7 @@
   v13 = [[v11 alloc] initWithSourceId:v10];
   if (v13)
   {
-    v14 = [a1 _proactiveSuggestionsFromTimelineEntries:v6 withClient:v13 forTimelineSize:a4];
+    v14 = [self _proactiveSuggestionsFromTimelineEntries:entriesCopy withClient:v13 forTimelineSize:size];
     v15 = PLMemoriesGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
@@ -231,7 +231,7 @@
     }
 
     v21 = PLTimelineGetLog();
-    v22 = os_signpost_id_make_with_pointer(v21, a1);
+    v22 = os_signpost_id_make_with_pointer(v21, self);
     if (v22 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
       v23 = v22;
@@ -250,12 +250,12 @@ LABEL_12:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      *&buf[4] = a4;
+      *&buf[4] = size;
       _os_log_impl(&dword_1A3C1C000, v18, OS_LOG_TYPE_ERROR, "ProactiveSuggester: client is nil for %tu", buf, 0xCu);
     }
 
     v14 = PLTimelineGetLog();
-    v19 = os_signpost_id_make_with_pointer(v14, a1);
+    v19 = os_signpost_id_make_with_pointer(v14, self);
     if (v19 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
       v20 = v19;
@@ -344,24 +344,24 @@ LABEL_6:
   }
 }
 
-+ (id)proactiveCriterionForFeaturedPhoto:(id)a3
++ (id)proactiveCriterionForFeaturedPhoto:(id)photo
 {
-  v3 = a3;
-  v4 = [v3 type];
-  v5 = [v3 subtype];
+  photoCopy = photo;
+  type = [photoCopy type];
+  subtype = [photoCopy subtype];
 
   v6 = @"PhotosContentFallback";
-  if (v4 == 5)
+  if (type == 5)
   {
     v6 = @"PhotosFeaturedPhotoOutstander";
   }
 
-  if (v4 == 3)
+  if (type == 3)
   {
     v6 = @"PhotosFeaturedPhotoRecentInterest";
   }
 
-  if (v5 == 401)
+  if (subtype == 401)
   {
     return @"PhotosFeaturedPhotoOnThisDay";
   }
@@ -372,33 +372,33 @@ LABEL_6:
   }
 }
 
-+ (id)proactiveCriterionForMemory:(id)a3
++ (id)proactiveCriterionForMemory:(id)memory
 {
-  v3 = a3;
-  v4 = [v3 category];
-  v5 = [v3 subcategory];
+  memoryCopy = memory;
+  category = [memoryCopy category];
+  subcategory = [memoryCopy subcategory];
   v6 = MEMORY[0x1E6978918];
-  v7 = [MEMORY[0x1E695DF00] date];
-  LODWORD(v6) = [v6 isMemory:v3 proactiveWorthyAtDate:v7];
+  date = [MEMORY[0x1E695DF00] date];
+  LODWORD(v6) = [v6 isMemory:memoryCopy proactiveWorthyAtDate:date];
 
   if (v6)
   {
-    if (v5 == 210)
+    if (subcategory == 210)
     {
       v8 = @"PhotosMemoryBirthday";
     }
 
     else
     {
-      if (v4 <= 201)
+      if (category <= 201)
       {
-        if (v4 == 23)
+        if (category == 23)
         {
           v8 = @"PhotosMemoryDayInHistoryAggregation";
           goto LABEL_5;
         }
 
-        if (v4 == 24)
+        if (category == 24)
         {
           v8 = @"PhotosMemoryRecentHighlights";
           goto LABEL_5;
@@ -407,7 +407,7 @@ LABEL_6:
 
       else
       {
-        switch(v4)
+        switch(category)
         {
           case 213:
             v8 = @"PhotosMemoryHolidayInHistory";
@@ -421,17 +421,17 @@ LABEL_6:
         }
       }
 
-      if ([v3 isMustSee])
+      if ([memoryCopy isMustSee])
       {
         v8 = @"PhotosMemoryFeaturedMustSee";
       }
 
-      else if ([v3 isStellar])
+      else if ([memoryCopy isStellar])
       {
         v8 = @"PhotosMemoryFeaturedStellar";
       }
 
-      else if ([v3 isGreat])
+      else if ([memoryCopy isGreat])
       {
         v8 = @"PhotosMemoryFeaturedGreat";
       }

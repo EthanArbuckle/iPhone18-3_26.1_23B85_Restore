@@ -1,22 +1,22 @@
 @interface BRTransportRegionView
-- (BRTransportRegionView)initWithTransportView:(id)a3;
-- (void)setCompactMode:(BOOL)a3;
-- (void)setIsLoading:(BOOL)a3;
-- (void)setIsPreparingForFolderSharing:(BOOL)a3;
+- (BRTransportRegionView)initWithTransportView:(id)view;
+- (void)setCompactMode:(BOOL)mode;
+- (void)setIsLoading:(BOOL)loading;
+- (void)setIsPreparingForFolderSharing:(BOOL)sharing;
 @end
 
 @implementation BRTransportRegionView
 
-- (BRTransportRegionView)initWithTransportView:(id)a3
+- (BRTransportRegionView)initWithTransportView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v44.receiver = self;
   v44.super_class = BRTransportRegionView;
   v6 = [(BRTransportRegionView *)&v44 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_activityView, a3);
+    objc_storeStrong(&v6->_activityView, view);
     [(BRTransportRegionView *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(BRTransportRegionView *)v7 setAlignment:3];
     [(BRTransportRegionView *)v7 setDistribution:0];
@@ -28,8 +28,8 @@
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v8 = [v5 allSubViews];
-    v9 = [v8 countByEnumeratingWithState:&v40 objects:v45 count:16];
+    allSubViews = [viewCopy allSubViews];
+    v9 = [allSubViews countByEnumeratingWithState:&v40 objects:v45 count:16];
     if (v9)
     {
       v10 = v9;
@@ -41,7 +41,7 @@
         {
           if (*v41 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allSubViews);
           }
 
           v13 = *(*(&v40 + 1) + 8 * v12);
@@ -66,7 +66,7 @@
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v40 objects:v45 count:16];
+        v10 = [allSubViews countByEnumeratingWithState:&v40 objects:v45 count:16];
       }
 
       while (v10);
@@ -92,31 +92,31 @@
     LODWORD(v23) = 1148846080;
     [(UILabel *)v7->_infoLabel setContentHuggingPriority:1 forAxis:v23];
     [(BRTransportRegionView *)v7 addArrangedSubview:v7->_infoLabel];
-    v24 = [(UILabel *)v7->_infoLabel leadingAnchor];
-    v25 = [(BRTransportRegionView *)v7 leadingAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25 constant:16.0];
+    leadingAnchor = [(UILabel *)v7->_infoLabel leadingAnchor];
+    leadingAnchor2 = [(BRTransportRegionView *)v7 leadingAnchor];
+    v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     [v16 addObject:v26];
 
-    v27 = [(UILabel *)v7->_infoLabel trailingAnchor];
-    v28 = [(BRTransportRegionView *)v7 trailingAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28 constant:-16.0];
+    trailingAnchor = [(UILabel *)v7->_infoLabel trailingAnchor];
+    trailingAnchor2 = [(BRTransportRegionView *)v7 trailingAnchor];
+    v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
     [v16 addObject:v29];
 
-    [(BRTransportRegionView *)v7 addArrangedSubview:v5];
-    v30 = [v5 heightAnchor];
-    v31 = [v30 constraintEqualToConstant:129.0];
+    [(BRTransportRegionView *)v7 addArrangedSubview:viewCopy];
+    heightAnchor = [viewCopy heightAnchor];
+    v31 = [heightAnchor constraintEqualToConstant:129.0];
     heightConstraint = v7->_heightConstraint;
     v7->_heightConstraint = v31;
 
     [v16 addObject:v7->_heightConstraint];
-    v33 = [v5 leadingAnchor];
-    v34 = [(BRTransportRegionView *)v7 leadingAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34];
+    leadingAnchor3 = [viewCopy leadingAnchor];
+    leadingAnchor4 = [(BRTransportRegionView *)v7 leadingAnchor];
+    v35 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [v16 addObject:v35];
 
-    v36 = [v5 trailingAnchor];
-    v37 = [(BRTransportRegionView *)v7 trailingAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37];
+    trailingAnchor3 = [viewCopy trailingAnchor];
+    trailingAnchor4 = [(BRTransportRegionView *)v7 trailingAnchor];
+    v38 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     [v16 addObject:v38];
 
     [NSLayoutConstraint activateConstraints:v16];
@@ -125,12 +125,12 @@
   return v7;
 }
 
-- (void)setCompactMode:(BOOL)a3
+- (void)setCompactMode:(BOOL)mode
 {
-  self->_compactMode = a3;
+  self->_compactMode = mode;
   heightConstraint = self->_heightConstraint;
   v4 = 129.0;
-  if (a3)
+  if (mode)
   {
     v4 = 119.0;
   }
@@ -138,12 +138,12 @@
   [(NSLayoutConstraint *)heightConstraint setConstant:v4];
 }
 
-- (void)setIsPreparingForFolderSharing:(BOOL)a3
+- (void)setIsPreparingForFolderSharing:(BOOL)sharing
 {
-  if (self->_isPreparingForFolderSharing != a3)
+  if (self->_isPreparingForFolderSharing != sharing)
   {
-    self->_isPreparingForFolderSharing = a3;
-    if (a3)
+    self->_isPreparingForFolderSharing = sharing;
+    if (sharing)
     {
       [(UIView *)self->_activityView setHidden:1];
       v4 = dispatch_time(0, 500000000);
@@ -163,13 +163,13 @@
   }
 }
 
-- (void)setIsLoading:(BOOL)a3
+- (void)setIsLoading:(BOOL)loading
 {
-  if (self->_isLoading != a3)
+  if (self->_isLoading != loading)
   {
-    self->_isLoading = a3;
+    self->_isLoading = loading;
     activityView = self->_activityView;
-    if (a3)
+    if (loading)
     {
       [(UIView *)activityView setHidden:1];
       v5 = objc_alloc_init(BRLoadingView);
@@ -178,13 +178,13 @@
 
       v7 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
       v8 = [v7 localizedStringForKey:@"PREPARING_FOLDER" value:@"Preparing Folder" table:@"Localizable"];
-      v9 = [(BRLoadingView *)self->_loadingView loadingLabel];
-      [v9 setText:v8];
+      loadingLabel = [(BRLoadingView *)self->_loadingView loadingLabel];
+      [loadingLabel setText:v8];
 
       [(BRLoadingView *)self->_loadingView setTranslatesAutoresizingMaskIntoConstraints:0];
-      v10 = [(BRLoadingView *)self->_loadingView heightAnchor];
+      heightAnchor = [(BRLoadingView *)self->_loadingView heightAnchor];
       [(NSLayoutConstraint *)self->_heightConstraint constant];
-      v11 = [v10 constraintEqualToConstant:?];
+      v11 = [heightAnchor constraintEqualToConstant:?];
       [v11 setActive:1];
 
       v12 = self->_loadingView;

@@ -1,58 +1,58 @@
 @interface SBFullscreenZoomView
-- (SBFullscreenZoomView)initWithView:(id)a3 containingSceneSnapshot:(id)a4 forDisplayConfiguration:(id)a5;
-- (id)_initWithFrame:(CGRect)a3;
-- (id)_initWithView:(id)a3 displayConfiguration:(id)a4;
-- (id)initWithContainingBounds:(double)a3 contentFrame:(double)a4 statusBarFrame:(double)a5 snapshot:(double)a6 snapshotOrientation:(double)a7 interfaceOrientation:(double)a8 doubleHeightStatusBar:(double)a9 allowStatusBarToOverlap:(uint64_t)a10 useLargerCornerRadii:(void *)a11 preventSplit:(uint64_t)a12 needsZoomFilter:(uint64_t)a13 asyncDecodeImage:(uint64_t)a14 forJail:(uint64_t)a15 hasOrientationMismatchForClassicApp:(uint64_t)a16;
+- (SBFullscreenZoomView)initWithView:(id)view containingSceneSnapshot:(id)snapshot forDisplayConfiguration:(id)configuration;
+- (id)_initWithFrame:(CGRect)frame;
+- (id)_initWithView:(id)view displayConfiguration:(id)configuration;
+- (id)initWithContainingBounds:(double)bounds contentFrame:(double)frame statusBarFrame:(double)barFrame snapshot:(double)snapshot snapshotOrientation:(double)orientation interfaceOrientation:(double)interfaceOrientation doubleHeightStatusBar:(double)bar allowStatusBarToOverlap:(uint64_t)self0 useLargerCornerRadii:(void *)self1 preventSplit:(uint64_t)self2 needsZoomFilter:(uint64_t)self3 asyncDecodeImage:(uint64_t)self4 forJail:(uint64_t)self5 hasOrientationMismatchForClassicApp:(uint64_t)self6;
 - (void)_addBlackBackground;
 @end
 
 @implementation SBFullscreenZoomView
 
-- (id)_initWithFrame:(CGRect)a3
+- (id)_initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SBFullscreenZoomView;
-  v3 = [(SBZoomView *)&v7 _initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBZoomView *)&v7 _initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 layer];
-    [v5 setEdgeAntialiasingMask:0];
-    [v5 setName:@"zoomView"];
-    SBSetShouldRasterizeLayer(v5, 1);
+    layer = [v3 layer];
+    [layer setEdgeAntialiasingMask:0];
+    [layer setName:@"zoomView"];
+    SBSetShouldRasterizeLayer(layer, 1);
   }
 
   return v4;
 }
 
-- (id)_initWithView:(id)a3 displayConfiguration:(id)a4
+- (id)_initWithView:(id)view displayConfiguration:(id)configuration
 {
-  v6 = a3;
-  [a4 bounds];
+  viewCopy = view;
+  [configuration bounds];
   v7 = [(SBFullscreenZoomView *)self _initWithFrame:?];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 layer];
-    SBSetShouldRasterizeLayer(v9, 0);
+    layer = [v7 layer];
+    SBSetShouldRasterizeLayer(layer, 0);
 
-    [v8[51] addSubview:v6];
+    [v8[51] addSubview:viewCopy];
   }
 
   return v8;
 }
 
-- (id)initWithContainingBounds:(double)a3 contentFrame:(double)a4 statusBarFrame:(double)a5 snapshot:(double)a6 snapshotOrientation:(double)a7 interfaceOrientation:(double)a8 doubleHeightStatusBar:(double)a9 allowStatusBarToOverlap:(uint64_t)a10 useLargerCornerRadii:(void *)a11 preventSplit:(uint64_t)a12 needsZoomFilter:(uint64_t)a13 asyncDecodeImage:(uint64_t)a14 forJail:(uint64_t)a15 hasOrientationMismatchForClassicApp:(uint64_t)a16
+- (id)initWithContainingBounds:(double)bounds contentFrame:(double)frame statusBarFrame:(double)barFrame snapshot:(double)snapshot snapshotOrientation:(double)orientation interfaceOrientation:(double)interfaceOrientation doubleHeightStatusBar:(double)bar allowStatusBarToOverlap:(uint64_t)self0 useLargerCornerRadii:(void *)self1 preventSplit:(uint64_t)self2 needsZoomFilter:(uint64_t)self3 asyncDecodeImage:(uint64_t)self4 forJail:(uint64_t)self5 hasOrientationMismatchForClassicApp:(uint64_t)self6
 {
-  v37 = a11;
-  v38 = [a1 _initWithFrame:{a2, a3, a4, a5}];
+  radiiCopy = radii;
+  v38 = [self _initWithFrame:{a2, bounds, frame, barFrame}];
   v39 = v38;
   if (v38)
   {
-    v40 = [v38 layer];
-    SBSetShouldRasterizeLayer(v40, 0);
+    layer = [v38 layer];
+    SBSetShouldRasterizeLayer(layer, 0);
 
-    v41 = [v37 imageForInterfaceOrientation:a12 generationOptions:1];
+    v41 = [radiiCopy imageForInterfaceOrientation:split generationOptions:1];
     if (v41)
     {
       v42 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v41];
@@ -78,7 +78,7 @@
         dispatch_async(v44, &v50);
       }
 
-      [v39[51] setFrame:{a6, a7, a8, a9, v50, v51, v52, v53}];
+      [v39[51] setFrame:{snapshot, orientation, interfaceOrientation, bar, v50, v51, v52, v53}];
       if (a24)
       {
         [v39[51] center];
@@ -87,17 +87,17 @@
 
       [v39[51] bounds];
       [v42 setFrame:?];
-      v47 = [v42 layer];
-      [v47 setAllowsDisplayCompositing:0];
+      layer2 = [v42 layer];
+      [layer2 setAllowsDisplayCompositing:0];
 
       [v39[51] addSubview:v42];
       if (SBFEffectiveHomeButtonType() == 2 && a23)
       {
-        [v39[51] sbClassicLayout_applyTransformsForClassicPresentationInReferenceSpaceForInterfaceOrientation:a13 allowStatusBarToOverlap:a15 useDeviceCornerRadius:a16];
+        [v39[51] sbClassicLayout_applyTransformsForClassicPresentationInReferenceSpaceForInterfaceOrientation:filter allowStatusBarToOverlap:jail useDeviceCornerRadius:app];
       }
 
-      v48 = [v41 sbs_hasAlpha];
-      if ((a23 & 1) == 0 && ([v37 isImageOpaque] & v48) != 1)
+      sbs_hasAlpha = [v41 sbs_hasAlpha];
+      if ((a23 & 1) == 0 && ([radiiCopy isImageOpaque] & sbs_hasAlpha) != 1)
       {
         goto LABEL_19;
       }
@@ -136,27 +136,27 @@ void __284__SBFullscreenZoomView_initWithContainingBounds_contentFrame_statusBar
   dispatch_async(MEMORY[0x277D85CD0], v8);
 }
 
-- (SBFullscreenZoomView)initWithView:(id)a3 containingSceneSnapshot:(id)a4 forDisplayConfiguration:(id)a5
+- (SBFullscreenZoomView)initWithView:(id)view containingSceneSnapshot:(id)snapshot forDisplayConfiguration:(id)configuration
 {
-  v8 = a3;
-  v9 = a4;
+  viewCopy = view;
+  snapshotCopy = snapshot;
   v10 = MEMORY[0x277CF0D78];
-  v11 = a5;
+  configurationCopy = configuration;
   v12 = [v10 alloc];
-  [v11 bounds];
+  [configurationCopy bounds];
   v13 = [v12 initWithFrame:?];
-  v14 = [(SBFullscreenZoomView *)self _initWithView:v13 displayConfiguration:v11];
+  v14 = [(SBFullscreenZoomView *)self _initWithView:v13 displayConfiguration:configurationCopy];
 
   if (v14)
   {
-    v15 = [v9 IOSurface];
+    iOSurface = [snapshotCopy IOSurface];
     surface = v14->_surface;
-    v14->_surface = v15;
+    v14->_surface = iOSurface;
 
-    [v13 addContentView:v8];
-    v17 = [v9 configuration];
-    v18 = [v17 settings];
-    [v13 setContentOrientation:{objc_msgSend(v18, "interfaceOrientation")}];
+    [v13 addContentView:viewCopy];
+    configuration = [snapshotCopy configuration];
+    settings = [configuration settings];
+    [v13 setContentOrientation:{objc_msgSend(settings, "interfaceOrientation")}];
   }
 
   return v14;
@@ -164,12 +164,12 @@ void __284__SBFullscreenZoomView_initWithContainingBounds_contentFrame_statusBar
 
 - (void)_addBlackBackground
 {
-  v3 = [MEMORY[0x277D75348] blackColor];
-  [(SBFullscreenZoomView *)self setBackgroundColor:v3];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(SBFullscreenZoomView *)self setBackgroundColor:blackColor];
 
-  v4 = [(SBFullscreenZoomView *)self layer];
-  SBSetShouldRasterizeLayer(v4, 1);
-  [v4 setAllowsGroupOpacity:1];
+  layer = [(SBFullscreenZoomView *)self layer];
+  SBSetShouldRasterizeLayer(layer, 1);
+  [layer setAllowsGroupOpacity:1];
 }
 
 @end

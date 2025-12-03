@@ -1,34 +1,34 @@
 @interface TSACaptionPlacement
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCaptionPlacement:(id)a3;
-- (TSACaptionPlacement)initWithContext:(id)a3 drawableAnchorLocation:(int64_t)a4 captionAnchorLocation:(int64_t)a5;
-- (id)copyWithContext:(id)a3;
-- (void)loadFromMessage:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)saveToMessage:(void *)a3 archiver:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCaptionPlacement:(id)placement;
+- (TSACaptionPlacement)initWithContext:(id)context drawableAnchorLocation:(int64_t)location captionAnchorLocation:(int64_t)anchorLocation;
+- (id)copyWithContext:(id)context;
+- (void)loadFromMessage:(const void *)message unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)saveToMessage:(void *)message archiver:(id)archiver;
 @end
 
 @implementation TSACaptionPlacement
 
-- (TSACaptionPlacement)initWithContext:(id)a3 drawableAnchorLocation:(int64_t)a4 captionAnchorLocation:(int64_t)a5
+- (TSACaptionPlacement)initWithContext:(id)context drawableAnchorLocation:(int64_t)location captionAnchorLocation:(int64_t)anchorLocation
 {
   v8.receiver = self;
   v8.super_class = TSACaptionPlacement;
-  result = [(TSACaptionPlacement *)&v8 initWithContext:a3];
+  result = [(TSACaptionPlacement *)&v8 initWithContext:context];
   if (result)
   {
-    result->_drawableAnchorLocation = a4;
-    result->_captionAnchorLocation = a5;
+    result->_drawableAnchorLocation = location;
+    result->_captionAnchorLocation = anchorLocation;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqualToCaptionPlacement = 1;
   }
@@ -38,7 +38,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      isEqualToCaptionPlacement = objc_msgSend_isEqualToCaptionPlacement_(self, v5, v4, v6);
+      isEqualToCaptionPlacement = objc_msgSend_isEqualToCaptionPlacement_(self, v5, equalCopy, v6);
     }
 
     else
@@ -50,13 +50,13 @@
   return isEqualToCaptionPlacement;
 }
 
-- (BOOL)isEqualToCaptionPlacement:(id)a3
+- (BOOL)isEqualToCaptionPlacement:(id)placement
 {
-  v7 = a3;
-  if (v7 && (v8 = objc_msgSend_captionAnchorLocation(self, v4, v5, v6), v8 == objc_msgSend_captionAnchorLocation(v7, v9, v10, v11)))
+  placementCopy = placement;
+  if (placementCopy && (v8 = objc_msgSend_captionAnchorLocation(self, v4, v5, v6), v8 == objc_msgSend_captionAnchorLocation(placementCopy, v9, v10, v11)))
   {
     v15 = objc_msgSend_drawableAnchorLocation(self, v12, v13, v14);
-    v19 = v15 == objc_msgSend_drawableAnchorLocation(v7, v16, v17, v18);
+    v19 = v15 == objc_msgSend_drawableAnchorLocation(placementCopy, v16, v17, v18);
   }
 
   else
@@ -67,27 +67,27 @@
   return v19;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v8 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithDescriptor_(v8, v4, off_2812F3500[62], v5);
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812F3500[62], v5);
 
-  objc_msgSend_loadFromMessage_unarchiver_(self, v7, v6, v8);
+  objc_msgSend_loadFromMessage_unarchiver_(self, v7, v6, unarchiverCopy);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_2760B2F8C, off_2812F3500[62]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_2760B2F8C, off_2812F3500[62]);
 
-  objc_msgSend_saveToMessage_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToMessage_archiver_(self, v6, v5, archiverCopy);
 }
 
-- (void)loadFromMessage:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromMessage:(const void *)message unarchiver:(id)unarchiver
 {
-  v4 = *(a3 + 4);
+  v4 = *(message + 4);
   if ((v4 & 1) == 0)
   {
     if ((v4 & 2) == 0)
@@ -96,34 +96,34 @@
     }
 
 LABEL_5:
-    self->_drawableAnchorLocation = *(a3 + 7);
+    self->_drawableAnchorLocation = *(message + 7);
     return;
   }
 
-  self->_captionAnchorLocation = *(a3 + 6);
+  self->_captionAnchorLocation = *(message + 6);
   if ((v4 & 2) != 0)
   {
     goto LABEL_5;
   }
 }
 
-- (void)saveToMessage:(void *)a3 archiver:(id)a4
+- (void)saveToMessage:(void *)message archiver:(id)archiver
 {
-  v16 = a4;
-  objc_msgSend_setMessageVersion_(v16, v6, *MEMORY[0x277D808D0], v7);
+  archiverCopy = archiver;
+  objc_msgSend_setMessageVersion_(archiverCopy, v6, *MEMORY[0x277D808D0], v7);
   v11 = objc_msgSend_captionAnchorLocation(self, v8, v9, v10);
-  *(a3 + 4) |= 1u;
-  *(a3 + 6) = v11;
+  *(message + 4) |= 1u;
+  *(message + 6) = v11;
   v15 = objc_msgSend_drawableAnchorLocation(self, v12, v13, v14);
-  *(a3 + 4) |= 2u;
-  *(a3 + 7) = v15;
+  *(message + 4) |= 2u;
+  *(message + 7) = v15;
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc(objc_opt_class());
-  v8 = objc_msgSend_initWithContext_(v5, v6, v4, v7);
+  v8 = objc_msgSend_initWithContext_(v5, v6, contextCopy, v7);
   v9 = v8;
   if (v8)
   {

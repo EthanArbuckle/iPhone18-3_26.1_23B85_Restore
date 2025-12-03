@@ -1,13 +1,13 @@
 @interface CNContactFormatterSmartFetcher
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CNContactFormatterSmartFetcher)init;
-- (CNContactFormatterSmartFetcher)initWithCoder:(id)a3;
+- (CNContactFormatterSmartFetcher)initWithCoder:(id)coder;
 - (id)_cn_optionalKeys;
 - (id)_cn_requiredKeys;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_cn_executeGetterForRepresentedKeys:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_cn_executeGetterForRepresentedKeys:(id)keys;
+- (void)encodeWithCoder:(id)coder;
 - (void)setupNameKeys;
 @end
 
@@ -31,16 +31,16 @@
 - (void)setupNameKeys
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = [MEMORY[0x1E695DFA8] set];
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __47__CNContactFormatterSmartFetcher_setupNameKeys__block_invoke;
     aBlock[3] = &unk_1E7416BD0;
-    v18 = v3;
-    v4 = v3;
+    v18 = dictionary;
+    v4 = dictionary;
     v5 = _Block_copy(aBlock);
     v6 = +[CN requiredPropertiesForNameScriptDetection];
     [v2 addObjectsFromArray:v6];
@@ -60,8 +60,8 @@
     v11 = v2;
     [v9 _cn_each:v14];
 
-    objc_setProperty_nonatomic_copy(a1, v12, v11, 16);
-    objc_setProperty_nonatomic_copy(a1, v13, v4, 24);
+    objc_setProperty_nonatomic_copy(self, v12, v11, 16);
+    objc_setProperty_nonatomic_copy(self, v13, v4, 24);
   }
 }
 
@@ -161,7 +161,7 @@ uint64_t __38__CNContactFormatterSmartFetcher_hash__block_invoke(uint64_t a1)
 - (id)_cn_optionalKeys
 {
   v20[3] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (self)
   {
     fallBackNamePropertyByNameKey = self->_fallBackNamePropertyByNameKey;
@@ -173,15 +173,15 @@ uint64_t __38__CNContactFormatterSmartFetcher_hash__block_invoke(uint64_t a1)
   }
 
   v5 = fallBackNamePropertyByNameKey;
-  v6 = [(NSDictionary *)v5 allValues];
+  allValues = [(NSDictionary *)v5 allValues];
   OUTLINED_FUNCTION_0();
   v14 = 3221225472;
   v15 = __50__CNContactFormatterSmartFetcher__cn_optionalKeys__block_invoke;
   v16 = &unk_1E7416CC0;
-  v7 = v3;
+  v7 = array;
 
   v17 = v7;
-  [v6 _cn_each:v13];
+  [allValues _cn_each:v13];
 
   v20[0] = @"contactType";
   v20[1] = @"emailAddresses";
@@ -216,21 +216,21 @@ uint64_t __38__CNContactFormatterSmartFetcher_hash__block_invoke_2(uint64_t a1)
   return [v1 BOOLHash:v2];
 }
 
-- (CNContactFormatterSmartFetcher)initWithCoder:(id)a3
+- (CNContactFormatterSmartFetcher)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = CNContactFormatterSmartFetcher;
-  v5 = [(CNSmartPropertyFetcher *)&v24 initWithCoder:v4];
+  v5 = [(CNSmartPropertyFetcher *)&v24 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_ignoresNickname = [v4 decodeBoolForKey:@"ignoresNickname"];
-    v5->_ignoresOrganization = [v4 decodeBoolForKey:@"ignoresOrganization"];
+    v5->_ignoresNickname = [coderCopy decodeBoolForKey:@"ignoresNickname"];
+    v5->_ignoresOrganization = [coderCopy decodeBoolForKey:@"ignoresOrganization"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"mandatoryNameProperties"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"mandatoryNameProperties"];
     v11 = [v10 copy];
     mandatoryNameProperties = v5->_mandatoryNameProperties;
     v5->_mandatoryNameProperties = v11;
@@ -241,7 +241,7 @@ uint64_t __38__CNContactFormatterSmartFetcher_hash__block_invoke_2(uint64_t a1)
     v16 = objc_opt_class();
     v17 = objc_opt_class();
     v18 = [v13 setWithObjects:{v14, v15, v16, v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"fallBackNamePropertyByNameKey"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"fallBackNamePropertyByNameKey"];
     v20 = [v19 copy];
     fallBackNamePropertyByNameKey = v5->_fallBackNamePropertyByNameKey;
     v5->_fallBackNamePropertyByNameKey = v20;
@@ -252,21 +252,21 @@ uint64_t __38__CNContactFormatterSmartFetcher_hash__block_invoke_2(uint64_t a1)
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNContactFormatterSmartFetcher;
-  v4 = a3;
-  [(CNSmartPropertyFetcher *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_ignoresNickname forKey:{@"ignoresNickname", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_ignoresOrganization forKey:@"ignoresOrganization"];
-  [v4 encodeObject:self->_mandatoryNameProperties forKey:@"mandatoryNameProperties"];
-  [v4 encodeObject:self->_fallBackNamePropertyByNameKey forKey:@"fallBackNamePropertyByNameKey"];
+  coderCopy = coder;
+  [(CNSmartPropertyFetcher *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_ignoresNickname forKey:{@"ignoresNickname", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_ignoresOrganization forKey:@"ignoresOrganization"];
+  [coderCopy encodeObject:self->_mandatoryNameProperties forKey:@"mandatoryNameProperties"];
+  [coderCopy encodeObject:self->_fallBackNamePropertyByNameKey forKey:@"fallBackNamePropertyByNameKey"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v6 = objc_opt_class();
   v16[0] = MEMORY[0x1E69E9820];
@@ -274,16 +274,16 @@ uint64_t __38__CNContactFormatterSmartFetcher_hash__block_invoke_2(uint64_t a1)
   v16[2] = __42__CNContactFormatterSmartFetcher_isEqual___block_invoke;
   v16[3] = &unk_1E7412228;
   v16[4] = self;
-  v17 = v4;
+  v17 = equalCopy;
   aBlock = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __42__CNContactFormatterSmartFetcher_isEqual___block_invoke_2;
   v13 = &unk_1E7412228;
-  v14 = self;
-  v15 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v15 = equalCopy;
+  v7 = equalCopy;
   v8 = _Block_copy(&aBlock);
-  LOBYTE(self) = [v5 isObject:v7 kindOfClass:v6 andEqualToObject:self withBlocks:{v16, v8, 0, aBlock, v11, v12, v13, v14}];
+  LOBYTE(self) = [v5 isObject:v7 kindOfClass:v6 andEqualToObject:self withBlocks:{v16, v8, 0, aBlock, v11, v12, v13, selfCopy}];
 
   return self;
 }
@@ -361,11 +361,11 @@ void __50__CNContactFormatterSmartFetcher__cn_optionalKeys__block_invoke_2(uint6
   [v2 addObject:v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = CNContactFormatterSmartFetcher;
-  v4 = [(CNSmartPropertyFetcher *)&v9 copyWithZone:a3];
+  v4 = [(CNSmartPropertyFetcher *)&v9 copyWithZone:zone];
   [v4 setIgnoresNickname:{-[CNContactFormatterSmartFetcher ignoresNickname](self, "ignoresNickname")}];
   [v4 setIgnoresOrganization:{-[CNContactFormatterSmartFetcher ignoresOrganization](self, "ignoresOrganization")}];
   if (self)
@@ -408,9 +408,9 @@ LABEL_6:
   return v4;
 }
 
-- (void)_cn_executeGetterForRepresentedKeys:(id)a3
+- (void)_cn_executeGetterForRepresentedKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
@@ -430,17 +430,17 @@ LABEL_6:
   v27 = 3221225472;
   v28 = __70__CNContactFormatterSmartFetcher__cn_executeGetterForRepresentedKeys___block_invoke;
   v29 = &unk_1E7416C70;
-  v7 = v4;
-  v30 = self;
+  v7 = keysCopy;
+  selfCopy = self;
   v31 = v7;
   v32 = &v33;
   [(NSSet *)v6 enumerateObjectsUsingBlock:v26];
 
   v8 = (*(v7 + 2))(v7, @"contactType");
-  v9 = [v8 integerValue];
+  integerValue = [v8 integerValue];
 
-  v10 = [(CNContactFormatterSmartFetcher *)self ignoresOrganization];
-  v11 = v9 != 1 || v10;
+  ignoresOrganization = [(CNContactFormatterSmartFetcher *)self ignoresOrganization];
+  v11 = integerValue != 1 || ignoresOrganization;
   if (v11 & 1) != 0 || ((*(v7 + 2))(v7, @"organizationName"), v12 = objc_claimAutoreleasedReturnValue(), v13 = OUTLINED_FUNCTION_2_8(), v15 = v14(v13, v12), v12, (v15))
   {
     if ((v34[3] & 1) == 0)

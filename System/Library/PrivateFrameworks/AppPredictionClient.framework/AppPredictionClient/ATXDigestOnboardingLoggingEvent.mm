@@ -1,48 +1,48 @@
 @interface ATXDigestOnboardingLoggingEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ATXDigestOnboardingLoggingEvent)initWithProto:(id)a3;
-- (ATXDigestOnboardingLoggingEvent)initWithProtoData:(id)a3;
-- (ATXDigestOnboardingLoggingEvent)initWithSessionUUID:(id)a3 entrySource:(int)a4 digestOnboardingOutcome:(int)a5 finalUIShown:(int)a6 didSelectShowMore:(BOOL)a7 timeTaken:(double)a8 deliveryTimes:(id)a9;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ATXDigestOnboardingLoggingEvent)initWithProto:(id)proto;
+- (ATXDigestOnboardingLoggingEvent)initWithProtoData:(id)data;
+- (ATXDigestOnboardingLoggingEvent)initWithSessionUUID:(id)d entrySource:(int)source digestOnboardingOutcome:(int)outcome finalUIShown:(int)shown didSelectShowMore:(BOOL)more timeTaken:(double)taken deliveryTimes:(id)times;
 - (id)encodeAsProto;
 - (id)proto;
 @end
 
 @implementation ATXDigestOnboardingLoggingEvent
 
-- (ATXDigestOnboardingLoggingEvent)initWithSessionUUID:(id)a3 entrySource:(int)a4 digestOnboardingOutcome:(int)a5 finalUIShown:(int)a6 didSelectShowMore:(BOOL)a7 timeTaken:(double)a8 deliveryTimes:(id)a9
+- (ATXDigestOnboardingLoggingEvent)initWithSessionUUID:(id)d entrySource:(int)source digestOnboardingOutcome:(int)outcome finalUIShown:(int)shown didSelectShowMore:(BOOL)more timeTaken:(double)taken deliveryTimes:(id)times
 {
-  v17 = a3;
-  v18 = a9;
+  dCopy = d;
+  timesCopy = times;
   v22.receiver = self;
   v22.super_class = ATXDigestOnboardingLoggingEvent;
   v19 = [(ATXDigestOnboardingLoggingEvent *)&v22 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_sessionUUID, a3);
-    v20->_entrySource = a4;
-    v20->_digestOnboardingOutcome = a5;
-    v20->_finalUIShown = a6;
-    v20->_didSelectShowMore = a7;
-    v20->_timeTaken = a8;
-    objc_storeStrong(&v20->_deliveryTimes, a9);
+    objc_storeStrong(&v19->_sessionUUID, d);
+    v20->_entrySource = source;
+    v20->_digestOnboardingOutcome = outcome;
+    v20->_finalUIShown = shown;
+    v20->_didSelectShowMore = more;
+    v20->_timeTaken = taken;
+    objc_storeStrong(&v20->_deliveryTimes, times);
   }
 
   return v20;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  v6 = [[a1 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[self alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
 
-- (ATXDigestOnboardingLoggingEvent)initWithProtoData:(id)a3
+- (ATXDigestOnboardingLoggingEvent)initWithProtoData:(id)data
 {
-  v4 = a3;
-  v5 = [[ATXPBDigestOnboardingLoggingEvent alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[ATXPBDigestOnboardingLoggingEvent alloc] initWithData:dataCopy];
 
   v6 = [(ATXDigestOnboardingLoggingEvent *)self initWithProto:v5];
   return v6;
@@ -50,32 +50,32 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXDigestOnboardingLoggingEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXDigestOnboardingLoggingEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXDigestOnboardingLoggingEvent)initWithProto:(id)a3
+- (ATXDigestOnboardingLoggingEvent)initWithProto:(id)proto
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v30 = self;
-      v31 = v4;
-      v5 = v4;
+      selfCopy = self;
+      v31 = protoCopy;
+      v5 = protoCopy;
       v6 = objc_alloc(MEMORY[0x1E696AFB0]);
-      v7 = [v5 sessionUUID];
-      v28 = [v6 initWithUUIDString:v7];
+      sessionUUID = [v5 sessionUUID];
+      v28 = [v6 initWithUUIDString:sessionUUID];
 
-      v27 = [v5 entrySource];
-      v26 = [v5 digestOnboardingOutcome];
-      v25 = [v5 finalUIShown];
-      v24 = [v5 didSelectShowMore];
+      entrySource = [v5 entrySource];
+      digestOnboardingOutcome = [v5 digestOnboardingOutcome];
+      finalUIShown = [v5 finalUIShown];
+      didSelectShowMore = [v5 didSelectShowMore];
       [v5 timeTaken];
       v9 = v8;
       v10 = objc_opt_new();
@@ -84,8 +84,8 @@
       v34 = 0u;
       v35 = 0u;
       v29 = v5;
-      v11 = [v5 deliveryTimes];
-      v12 = [v11 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      deliveryTimes = [v5 deliveryTimes];
+      v12 = [deliveryTimes countByEnumeratingWithState:&v32 objects:v36 count:16];
       if (v12)
       {
         v13 = v12;
@@ -96,7 +96,7 @@
           {
             if (*v33 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(deliveryTimes);
             }
 
             v16 = *(*(&v32 + 1) + 8 * i);
@@ -111,15 +111,15 @@
             [v10 addObject:v17];
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v32 objects:v36 count:16];
+          v13 = [deliveryTimes countByEnumeratingWithState:&v32 objects:v36 count:16];
         }
 
         while (v13);
       }
 
-      self = [(ATXDigestOnboardingLoggingEvent *)v30 initWithSessionUUID:v28 entrySource:v27 digestOnboardingOutcome:v26 finalUIShown:v25 didSelectShowMore:v24 timeTaken:v10 deliveryTimes:v9];
-      v21 = self;
-      v4 = v31;
+      self = [(ATXDigestOnboardingLoggingEvent *)selfCopy initWithSessionUUID:v28 entrySource:entrySource digestOnboardingOutcome:digestOnboardingOutcome finalUIShown:finalUIShown didSelectShowMore:didSelectShowMore timeTaken:v10 deliveryTimes:v9];
+      selfCopy2 = self;
+      protoCopy = v31;
       v22 = v29;
     }
 
@@ -131,24 +131,24 @@
         [(ATXDigestTimeline *)self initWithProto:v22];
       }
 
-      v21 = 0;
+      selfCopy2 = 0;
     }
   }
 
   else
   {
-    v21 = 0;
+    selfCopy2 = 0;
   }
 
-  return v21;
+  return selfCopy2;
 }
 
 - (id)proto
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(NSUUID *)self->_sessionUUID UUIDString];
-  [v3 setSessionUUID:v4];
+  uUIDString = [(NSUUID *)self->_sessionUUID UUIDString];
+  [v3 setSessionUUID:uUIDString];
 
   [v3 setEntrySource:self->_entrySource];
   [v3 setDigestOnboardingOutcome:self->_digestOnboardingOutcome];

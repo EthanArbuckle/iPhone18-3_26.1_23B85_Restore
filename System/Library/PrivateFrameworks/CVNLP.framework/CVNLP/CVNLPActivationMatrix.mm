@@ -1,76 +1,76 @@
 @interface CVNLPActivationMatrix
 - ($FD4688982923A924290ECB669CAF1EC2)_espressoBuffer;
 - ($FD4688982923A924290ECB669CAF1EC2)_indexBuffer;
-- (CVNLPActivationMatrix)initWithBuffer:(id *)a3 domainType:(int64_t)a4 characterObservations:(id)a5 blankIndex:(int64_t)a6 pruningPolicy:(CVNLPTextDecodingPruningPolicy *)a7;
-- (CVNLPActivationMatrix)initWithBuffer:(id *)a3 indexBuffer:(id *)a4 domainType:(int64_t)a5 characterObservations:(id)a6 blankIndex:(int64_t)a7 pruningPolicy:(CVNLPTextDecodingPruningPolicy *)a8;
-- (CVNLPActivationMatrix)initWithMultiArray:(id)a3 domainType:(int64_t)a4 characterObservations:(id)a5 blankIndex:(int64_t)a6 pruningPolicy:(CVNLPTextDecodingPruningPolicy *)a7;
-- (CVNLPActivationMatrix)initWithMultiArray:(id)a3 indexArray:(id)a4 domainType:(int64_t)a5 characterObservations:(id)a6 blankIndex:(int64_t)a7 pruningPolicy:(CVNLPTextDecodingPruningPolicy *)a8;
-- (double)_valueForObservationIndex:(int64_t)a3 timestep:(int64_t)a4;
-- (double)logProbabilityForBlankAtTimestep:(int64_t)a3;
-- (double)logProbabilityForObservationIndex:(int64_t)a3 timestep:(int64_t)a4;
-- (double)probabilityForBlankAtTimestep:(int64_t)a3;
-- (double)probabilityForObservationIndex:(int64_t)a3 timestep:(int64_t)a4;
-- (id)_candidateSymbolAtIndex:(int64_t)a3 forTimestep:(int64_t)a4 outputScore:(double *)a5;
+- (CVNLPActivationMatrix)initWithBuffer:(id *)buffer domainType:(int64_t)type characterObservations:(id)observations blankIndex:(int64_t)index pruningPolicy:(CVNLPTextDecodingPruningPolicy *)policy;
+- (CVNLPActivationMatrix)initWithBuffer:(id *)buffer indexBuffer:(id *)indexBuffer domainType:(int64_t)type characterObservations:(id)observations blankIndex:(int64_t)index pruningPolicy:(CVNLPTextDecodingPruningPolicy *)policy;
+- (CVNLPActivationMatrix)initWithMultiArray:(id)array domainType:(int64_t)type characterObservations:(id)observations blankIndex:(int64_t)index pruningPolicy:(CVNLPTextDecodingPruningPolicy *)policy;
+- (CVNLPActivationMatrix)initWithMultiArray:(id)array indexArray:(id)indexArray domainType:(int64_t)type characterObservations:(id)observations blankIndex:(int64_t)index pruningPolicy:(CVNLPTextDecodingPruningPolicy *)policy;
+- (double)_valueForObservationIndex:(int64_t)index timestep:(int64_t)timestep;
+- (double)logProbabilityForBlankAtTimestep:(int64_t)timestep;
+- (double)logProbabilityForObservationIndex:(int64_t)index timestep:(int64_t)timestep;
+- (double)probabilityForBlankAtTimestep:(int64_t)timestep;
+- (double)probabilityForObservationIndex:(int64_t)index timestep:(int64_t)timestep;
+- (id)_candidateSymbolAtIndex:(int64_t)index forTimestep:(int64_t)timestep outputScore:(double *)score;
 - (id)debugDescription;
-- (id)topCandidateForTimestep:(int64_t)a3 outputLogProbability:(double *)a4 outputIndex:(int64_t *)a5;
-- (id)topCandidateForTimestep:(int64_t)a3 outputProbability:(double *)a4 outputIndex:(int64_t *)a5;
-- (int64_t)blankIndexForTimestep:(int64_t)a3;
-- (int64_t)characterIndexForObservationIndex:(int64_t)a3 timestep:(int64_t)a4;
-- (void)_enumerateNonBlankCandidatesInTimestep:(int64_t)a3 block:(id)a4;
-- (void)_sortNonBlankCandidatesForTimestep:(int64_t)a3;
+- (id)topCandidateForTimestep:(int64_t)timestep outputLogProbability:(double *)probability outputIndex:(int64_t *)index;
+- (id)topCandidateForTimestep:(int64_t)timestep outputProbability:(double *)probability outputIndex:(int64_t *)index;
+- (int64_t)blankIndexForTimestep:(int64_t)timestep;
+- (int64_t)characterIndexForObservationIndex:(int64_t)index timestep:(int64_t)timestep;
+- (void)_enumerateNonBlankCandidatesInTimestep:(int64_t)timestep block:(id)block;
+- (void)_sortNonBlankCandidatesForTimestep:(int64_t)timestep;
 - (void)dealloc;
-- (void)enumerateNonBlankCandidatesInTimestep:(int64_t)a3 block:(id)a4;
-- (void)set_espressoBuffer:(id *)a3;
-- (void)set_indexBuffer:(id *)a3;
-- (void)set_pruningPolicy:(CVNLPTextDecodingPruningPolicy *)a3;
+- (void)enumerateNonBlankCandidatesInTimestep:(int64_t)timestep block:(id)block;
+- (void)set_espressoBuffer:(id *)buffer;
+- (void)set_indexBuffer:(id *)buffer;
+- (void)set_pruningPolicy:(CVNLPTextDecodingPruningPolicy *)policy;
 @end
 
 @implementation CVNLPActivationMatrix
 
-- (CVNLPActivationMatrix)initWithBuffer:(id *)a3 domainType:(int64_t)a4 characterObservations:(id)a5 blankIndex:(int64_t)a6 pruningPolicy:(CVNLPTextDecodingPruningPolicy *)a7
+- (CVNLPActivationMatrix)initWithBuffer:(id *)buffer domainType:(int64_t)type characterObservations:(id)observations blankIndex:(int64_t)index pruningPolicy:(CVNLPTextDecodingPruningPolicy *)policy
 {
-  v13 = a5;
-  var6 = a3->var6;
-  var8 = a3->var8;
+  observationsCopy = observations;
+  var6 = buffer->var6;
+  var8 = buffer->var8;
   v30.receiver = self;
   v30.super_class = CVNLPActivationMatrix;
   v16 = [(CVNLPActivationMatrix *)&v30 init];
   v17 = v16;
   if (v16)
   {
-    v18 = *&a3->var0;
-    v19 = *&a3->var2[2];
-    *v16->$70B10377DC9035999D77C63B14D421A0::dim = *a3->var2;
+    v18 = *&buffer->var0;
+    v19 = *&buffer->var2[2];
+    *v16->$70B10377DC9035999D77C63B14D421A0::dim = *buffer->var2;
     *&v16->$70B10377DC9035999D77C63B14D421A0::dim[2] = v19;
     *&v16->$70B10377DC9035999D77C63B14D421A0::data = v18;
-    v20 = *a3->var3;
-    v21 = *&a3->var3[2];
-    v22 = *&a3->var6;
-    *&v16->$70B10377DC9035999D77C63B14D421A0::width = *&a3->var4;
+    v20 = *buffer->var3;
+    v21 = *&buffer->var3[2];
+    v22 = *&buffer->var6;
+    *&v16->$70B10377DC9035999D77C63B14D421A0::width = *&buffer->var4;
     *&v16->$70B10377DC9035999D77C63B14D421A0::channels = v22;
     *v16->$70B10377DC9035999D77C63B14D421A0::stride = v20;
     *&v16->$70B10377DC9035999D77C63B14D421A0::stride[2] = v21;
-    v23 = *&a3->var8;
-    v24 = *&a3->var10;
-    v25 = *&a3->var12;
-    *&v16->$70B10377DC9035999D77C63B14D421A0::storage_type = *&a3->var14;
+    v23 = *&buffer->var8;
+    v24 = *&buffer->var10;
+    v25 = *&buffer->var12;
+    *&v16->$70B10377DC9035999D77C63B14D421A0::storage_type = *&buffer->var14;
     *&v16->$70B10377DC9035999D77C63B14D421A0::stride_height = v24;
     *&v16->$70B10377DC9035999D77C63B14D421A0::stride_batch_number = v25;
     *&v16->$70B10377DC9035999D77C63B14D421A0::sequence_length = v23;
     v16->__doubleScoreMatrix = 0;
     v16->__timestepCount = var8;
-    objc_storeStrong(&v16->_characterObservations, a5);
+    objc_storeStrong(&v16->_characterObservations, observations);
     v17->__observationCount = var6;
-    v17->__timeStride = a3->var13;
-    var11 = a3->var11;
-    v17->_blankIndex = a6;
+    v17->__timeStride = buffer->var13;
+    var11 = buffer->var11;
+    v17->_blankIndex = index;
     v17->__observationStride = var11;
     v17->__type = 1;
-    v27 = *&a7->strategy;
-    *&v17->__pruningPolicy.maxNumberOfCandidates = *&a7->maxNumberOfCandidates;
+    v27 = *&policy->strategy;
+    *&v17->__pruningPolicy.maxNumberOfCandidates = *&policy->maxNumberOfCandidates;
     *&v17->__pruningPolicy.strategy = v27;
     v17->__cachedPriorityQueueTimestep = -1;
-    v17->_domainType = a4;
+    v17->_domainType = type;
     v17->__isDoubleDataType = 0;
     indexArray = v17->__indexArray;
     v17->__indexArray = 0;
@@ -82,66 +82,66 @@
   return v17;
 }
 
-- (CVNLPActivationMatrix)initWithBuffer:(id *)a3 indexBuffer:(id *)a4 domainType:(int64_t)a5 characterObservations:(id)a6 blankIndex:(int64_t)a7 pruningPolicy:(CVNLPTextDecodingPruningPolicy *)a8
+- (CVNLPActivationMatrix)initWithBuffer:(id *)buffer indexBuffer:(id *)indexBuffer domainType:(int64_t)type characterObservations:(id)observations blankIndex:(int64_t)index pruningPolicy:(CVNLPTextDecodingPruningPolicy *)policy
 {
-  v9 = *&a3->var12;
-  v24[8] = *&a3->var10;
+  v9 = *&buffer->var12;
+  v24[8] = *&buffer->var10;
   v24[9] = v9;
-  v25 = *&a3->var14;
-  v10 = *&a3->var4;
-  v24[4] = *&a3->var3[2];
+  v25 = *&buffer->var14;
+  v10 = *&buffer->var4;
+  v24[4] = *&buffer->var3[2];
   v24[5] = v10;
-  v11 = *&a3->var8;
-  v24[6] = *&a3->var6;
+  v11 = *&buffer->var8;
+  v24[6] = *&buffer->var6;
   v24[7] = v11;
-  v12 = *a3->var2;
-  v24[0] = *&a3->var0;
+  v12 = *buffer->var2;
+  v24[0] = *&buffer->var0;
   v24[1] = v12;
-  v13 = *a3->var3;
-  v24[2] = *&a3->var2[2];
+  v13 = *buffer->var3;
+  v24[2] = *&buffer->var2[2];
   v24[3] = v13;
-  v23 = *a8;
-  result = objc_msgSend_initWithBuffer_domainType_characterObservations_blankIndex_pruningPolicy_(self, a2, v24, a5, a6, a7, &v23);
+  v23 = *policy;
+  result = objc_msgSend_initWithBuffer_domainType_characterObservations_blankIndex_pruningPolicy_(self, a2, v24, type, observations, index, &v23);
   if (result)
   {
-    v15 = *&a4->var0;
-    v16 = *&a4->var2[2];
-    *result->$70B10377DC9035999D77C63B14D421A0::dim = *a4->var2;
+    v15 = *&indexBuffer->var0;
+    v16 = *&indexBuffer->var2[2];
+    *result->$70B10377DC9035999D77C63B14D421A0::dim = *indexBuffer->var2;
     *&result->$70B10377DC9035999D77C63B14D421A0::dim[2] = v16;
     *&result->$70B10377DC9035999D77C63B14D421A0::data = v15;
-    v17 = *a4->var3;
-    v18 = *&a4->var3[2];
-    v19 = *&a4->var6;
-    *&result->$70B10377DC9035999D77C63B14D421A0::width = *&a4->var4;
+    v17 = *indexBuffer->var3;
+    v18 = *&indexBuffer->var3[2];
+    v19 = *&indexBuffer->var6;
+    *&result->$70B10377DC9035999D77C63B14D421A0::width = *&indexBuffer->var4;
     *&result->$70B10377DC9035999D77C63B14D421A0::channels = v19;
     *result->$70B10377DC9035999D77C63B14D421A0::stride = v17;
     *&result->$70B10377DC9035999D77C63B14D421A0::stride[2] = v18;
-    v20 = *&a4->var8;
-    v21 = *&a4->var10;
-    v22 = *&a4->var12;
-    *&result->$70B10377DC9035999D77C63B14D421A0::storage_type = *&a4->var14;
+    v20 = *&indexBuffer->var8;
+    v21 = *&indexBuffer->var10;
+    v22 = *&indexBuffer->var12;
+    *&result->$70B10377DC9035999D77C63B14D421A0::storage_type = *&indexBuffer->var14;
     *&result->$70B10377DC9035999D77C63B14D421A0::stride_height = v21;
     *&result->$70B10377DC9035999D77C63B14D421A0::stride_batch_number = v22;
     *&result->$70B10377DC9035999D77C63B14D421A0::sequence_length = v20;
-    result->__usingIndexes = a4->var0 != 0;
+    result->__usingIndexes = indexBuffer->var0 != 0;
   }
 
   return result;
 }
 
-- (CVNLPActivationMatrix)initWithMultiArray:(id)a3 domainType:(int64_t)a4 characterObservations:(id)a5 blankIndex:(int64_t)a6 pruningPolicy:(CVNLPTextDecodingPruningPolicy *)a7
+- (CVNLPActivationMatrix)initWithMultiArray:(id)array domainType:(int64_t)type characterObservations:(id)observations blankIndex:(int64_t)index pruningPolicy:(CVNLPTextDecodingPruningPolicy *)policy
 {
-  v13 = a3;
-  v72 = a5;
-  v17 = objc_msgSend_shape(v13, v14, v15, v16);
-  v71 = a4;
+  arrayCopy = array;
+  observationsCopy = observations;
+  v17 = objc_msgSend_shape(arrayCopy, v14, v15, v16);
+  typeCopy = type;
   objc_msgSend_count(v17, v18, v19, v20);
 
-  v24 = objc_msgSend_shape(v13, v21, v22, v23);
+  v24 = objc_msgSend_shape(arrayCopy, v21, v22, v23);
   v27 = objc_msgSend_objectAtIndexedSubscript_(v24, v25, 1, v26);
   v31 = objc_msgSend_integerValue(v27, v28, v29, v30);
 
-  v35 = objc_msgSend_shape(v13, v32, v33, v34);
+  v35 = objc_msgSend_shape(arrayCopy, v32, v33, v34);
   v38 = objc_msgSend_objectAtIndexedSubscript_(v35, v36, 0, v37);
   v42 = objc_msgSend_integerValue(v38, v39, v40, v41);
 
@@ -151,25 +151,25 @@
   v44 = v43;
   if (v43)
   {
-    objc_storeStrong(&v43->__multiArray, a3);
+    objc_storeStrong(&v43->__multiArray, array);
     v44->__timestepCount = v42;
     v44->__observationCount = v31;
-    v48 = objc_msgSend_strides(v13, v45, v46, v47);
+    v48 = objc_msgSend_strides(arrayCopy, v45, v46, v47);
     v51 = objc_msgSend_objectAtIndexedSubscript_(v48, v49, 0, v50);
     v44->__timeStride = objc_msgSend_integerValue(v51, v52, v53, v54);
 
-    v58 = objc_msgSend_strides(v13, v55, v56, v57);
+    v58 = objc_msgSend_strides(arrayCopy, v55, v56, v57);
     v61 = objc_msgSend_objectAtIndexedSubscript_(v58, v59, 1, v60);
     v44->__observationStride = objc_msgSend_integerValue(v61, v62, v63, v64);
 
-    objc_storeStrong(&v44->_characterObservations, a5);
-    v44->_blankIndex = a6;
+    objc_storeStrong(&v44->_characterObservations, observations);
+    v44->_blankIndex = index;
     v44->__type = 0;
-    v65 = *&a7->strategy;
-    *&v44->__pruningPolicy.maxNumberOfCandidates = *&a7->maxNumberOfCandidates;
+    v65 = *&policy->strategy;
+    *&v44->__pruningPolicy.maxNumberOfCandidates = *&policy->maxNumberOfCandidates;
     *&v44->__pruningPolicy.strategy = v65;
     v44->__cachedPriorityQueueTimestep = -1;
-    v44->_domainType = v71;
+    v44->_domainType = typeCopy;
     v44->__isDoubleDataType = objc_msgSend_dataType(v44->__multiArray, v66, v67, v68) == 65600;
     v44->__usingIndexes = 0;
     indexArray = v44->__indexArray;
@@ -181,16 +181,16 @@
   return v44;
 }
 
-- (CVNLPActivationMatrix)initWithMultiArray:(id)a3 indexArray:(id)a4 domainType:(int64_t)a5 characterObservations:(id)a6 blankIndex:(int64_t)a7 pruningPolicy:(CVNLPTextDecodingPruningPolicy *)a8
+- (CVNLPActivationMatrix)initWithMultiArray:(id)array indexArray:(id)indexArray domainType:(int64_t)type characterObservations:(id)observations blankIndex:(int64_t)index pruningPolicy:(CVNLPTextDecodingPruningPolicy *)policy
 {
-  v15 = a4;
-  v20 = *a8;
-  v17 = objc_msgSend_initWithMultiArray_domainType_characterObservations_blankIndex_pruningPolicy_(self, v16, a3, a5, a6, a7, &v20);
+  indexArrayCopy = indexArray;
+  v20 = *policy;
+  v17 = objc_msgSend_initWithMultiArray_domainType_characterObservations_blankIndex_pruningPolicy_(self, v16, array, type, observations, index, &v20);
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong((v17 + 56), a4);
-    v18->__usingIndexes = v15 != 0;
+    objc_storeStrong((v17 + 56), indexArray);
+    v18->__usingIndexes = indexArrayCopy != 0;
   }
 
   return v18;
@@ -229,9 +229,9 @@
   [(CVNLPActivationMatrix *)&v14 dealloc];
 }
 
-- (double)probabilityForObservationIndex:(int64_t)a3 timestep:(int64_t)a4
+- (double)probabilityForObservationIndex:(int64_t)index timestep:(int64_t)timestep
 {
-  objc_msgSend__valueForObservationIndex_timestep_(self, a2, a3, a4);
+  objc_msgSend__valueForObservationIndex_timestep_(self, a2, index, timestep);
   domainType = self->_domainType;
   if (domainType == 1)
   {
@@ -246,9 +246,9 @@
   return result;
 }
 
-- (double)logProbabilityForObservationIndex:(int64_t)a3 timestep:(int64_t)a4
+- (double)logProbabilityForObservationIndex:(int64_t)index timestep:(int64_t)timestep
 {
-  objc_msgSend__valueForObservationIndex_timestep_(self, a2, a3, a4);
+  objc_msgSend__valueForObservationIndex_timestep_(self, a2, index, timestep);
   domainType = self->_domainType;
   if (domainType == 1)
   {
@@ -264,9 +264,9 @@
   return v7;
 }
 
-- (double)_valueForObservationIndex:(int64_t)a3 timestep:(int64_t)a4
+- (double)_valueForObservationIndex:(int64_t)index timestep:(int64_t)timestep
 {
-  v4 = self->__observationStride * a3 + self->__timeStride * a4;
+  v4 = self->__observationStride * index + self->__timeStride * timestep;
   type = self->__type;
   if (type == 1)
   {
@@ -277,7 +277,7 @@
   if (!type)
   {
     isDoubleDataType = self->__isDoubleDataType;
-    v8 = objc_msgSend_dataPointer(self->__multiArray, a2, a3, a4, 0.0);
+    v8 = objc_msgSend_dataPointer(self->__multiArray, a2, index, timestep, 0.0);
     if (isDoubleDataType)
     {
       return *(v8 + 8 * v4);
@@ -292,20 +292,20 @@
   return result;
 }
 
-- (int64_t)blankIndexForTimestep:(int64_t)a3
+- (int64_t)blankIndexForTimestep:(int64_t)timestep
 {
   if (!self->__usingIndexes)
   {
     return self->_blankIndex;
   }
 
-  if (self->__cachedBlankIndexTimestep != a3)
+  if (self->__cachedBlankIndexTimestep != timestep)
   {
     self->__cachedBlankIndex = -1;
     if (self->__observationCount >= 1)
     {
       v5 = 0;
-      while (objc_msgSend_characterIndexForObservationIndex_timestep_(self, a2, v5, a3) != self->_blankIndex)
+      while (objc_msgSend_characterIndexForObservationIndex_timestep_(self, a2, v5, timestep) != self->_blankIndex)
       {
         if (++v5 >= self->__observationCount)
         {
@@ -317,41 +317,41 @@
     }
 
 LABEL_10:
-    self->__cachedBlankIndexTimestep = a3;
+    self->__cachedBlankIndexTimestep = timestep;
   }
 
   return self->__cachedBlankIndex;
 }
 
-- (double)probabilityForBlankAtTimestep:(int64_t)a3
+- (double)probabilityForBlankAtTimestep:(int64_t)timestep
 {
-  v6 = objc_msgSend_blankIndexForTimestep_(self, a2, a3, v3);
+  v6 = objc_msgSend_blankIndexForTimestep_(self, a2, timestep, v3);
   if (v6 == -1)
   {
     return 0.01;
   }
 
-  objc_msgSend_probabilityForObservationIndex_timestep_(self, v7, v6, a3);
+  objc_msgSend_probabilityForObservationIndex_timestep_(self, v7, v6, timestep);
   return result;
 }
 
-- (double)logProbabilityForBlankAtTimestep:(int64_t)a3
+- (double)logProbabilityForBlankAtTimestep:(int64_t)timestep
 {
-  v6 = objc_msgSend_blankIndexForTimestep_(self, a2, a3, v3);
+  v6 = objc_msgSend_blankIndexForTimestep_(self, a2, timestep, v3);
   if (v6 == -1)
   {
     return -4.60517019;
   }
 
-  objc_msgSend_logProbabilityForObservationIndex_timestep_(self, v7, v6, a3);
+  objc_msgSend_logProbabilityForObservationIndex_timestep_(self, v7, v6, timestep);
   return result;
 }
 
-- (int64_t)characterIndexForObservationIndex:(int64_t)a3 timestep:(int64_t)a4
+- (int64_t)characterIndexForObservationIndex:(int64_t)index timestep:(int64_t)timestep
 {
   if (self->__usingIndexes)
   {
-    v4 = self->__observationStride * a3 + self->__timeStride * a4;
+    v4 = self->__observationStride * index + self->__timeStride * timestep;
     type = self->__type;
     if (type == 1)
     {
@@ -361,7 +361,7 @@ LABEL_10:
     if (!type)
     {
       isDoubleDataType = self->__isDoubleDataType;
-      v7 = objc_msgSend_dataPointer(self->__indexArray, a2, a3, a4);
+      v7 = objc_msgSend_dataPointer(self->__indexArray, a2, index, timestep);
       if (isDoubleDataType)
       {
         return *(v7 + 8 * v4);
@@ -371,40 +371,40 @@ LABEL_10:
     }
   }
 
-  return a3;
+  return index;
 }
 
-- (void)enumerateNonBlankCandidatesInTimestep:(int64_t)a3 block:(id)a4
+- (void)enumerateNonBlankCandidatesInTimestep:(int64_t)timestep block:(id)block
 {
-  v8 = a4;
-  if (self->__pruningPolicy.shouldSort && self->__cachedPriorityQueueTimestep != a3 && !self->__usingIndexes)
+  blockCopy = block;
+  if (self->__pruningPolicy.shouldSort && self->__cachedPriorityQueueTimestep != timestep && !self->__usingIndexes)
   {
-    objc_msgSend__sortNonBlankCandidatesForTimestep_(self, v6, a3, v7);
+    objc_msgSend__sortNonBlankCandidatesForTimestep_(self, v6, timestep, v7);
   }
 
-  objc_msgSend__enumerateNonBlankCandidatesInTimestep_block_(self, v6, a3, v8);
+  objc_msgSend__enumerateNonBlankCandidatesInTimestep_block_(self, v6, timestep, blockCopy);
 }
 
-- (id)_candidateSymbolAtIndex:(int64_t)a3 forTimestep:(int64_t)a4 outputScore:(double *)a5
+- (id)_candidateSymbolAtIndex:(int64_t)index forTimestep:(int64_t)timestep outputScore:(double *)score
 {
   if (self->__pruningPolicy.shouldSort && !self->__usingIndexes)
   {
     v17 = sub_1D9D9294C(self->__cachedTimesample);
-    if (a3 >= ((v17[1] - *v17) >> 3))
+    if (index >= ((v17[1] - *v17) >> 3))
     {
       sub_1D9D939A0();
     }
 
-    v18 = (*v17 + 8 * a3);
-    *a5 = v18[1];
+    v18 = (*v17 + 8 * index);
+    *score = v18[1];
     v9 = *v18;
   }
 
   else
   {
-    v9 = objc_msgSend_characterIndexForObservationIndex_timestep_(self, a2, a3, a4);
-    objc_msgSend__valueForObservationIndex_timestep_(self, v10, a3, a4);
-    *a5 = v13;
+    v9 = objc_msgSend_characterIndexForObservationIndex_timestep_(self, a2, index, timestep);
+    objc_msgSend__valueForObservationIndex_timestep_(self, v10, index, timestep);
+    *score = v13;
     if (v9 == -1)
     {
       v14 = 0;
@@ -418,14 +418,14 @@ LABEL_10:
   return v14;
 }
 
-- (void)_enumerateNonBlankCandidatesInTimestep:(int64_t)a3 block:(id)a4
+- (void)_enumerateNonBlankCandidatesInTimestep:(int64_t)timestep block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v34 = 0;
-  v10 = objc_msgSend_blankIndexForTimestep_(self, v7, a3, v8);
+  v10 = objc_msgSend_blankIndexForTimestep_(self, v7, timestep, v8);
   if (v10 != -1)
   {
-    objc_msgSend__valueForObservationIndex_timestep_(self, v9, v10, a3);
+    objc_msgSend__valueForObservationIndex_timestep_(self, v9, v10, timestep);
     v12 = v11;
     observationCount = self->__observationCount;
     if (!self->__pruningPolicy.shouldSort)
@@ -490,7 +490,7 @@ LABEL_16:
     }
 
     v33 = 0.0;
-    v21 = objc_msgSend__candidateSymbolAtIndex_forTimestep_outputScore_(self, v9, v17, a3, &v33);
+    v21 = objc_msgSend__candidateSymbolAtIndex_forTimestep_outputScore_(self, v9, v17, timestep, &v33);
     if (!v21)
     {
       v20 = v12;
@@ -528,7 +528,7 @@ LABEL_15:
 
     if (strategy != 1 || v22.n128_f64[0] > self->__pruningPolicy.threshold)
     {
-      v6[2](v6, v21, &v34, v22);
+      blockCopy[2](blockCopy, v21, &v34, v22);
       ++v18;
       if (strategy != 1)
       {
@@ -590,7 +590,7 @@ LABEL_43:
 LABEL_45:
 }
 
-- (void)_sortNonBlankCandidatesForTimestep:(int64_t)a3
+- (void)_sortNonBlankCandidatesForTimestep:(int64_t)timestep
 {
   cachedTimesample = self->__cachedTimesample;
   if (cachedTimesample)
@@ -609,7 +609,7 @@ LABEL_45:
       operator delete(v6);
     }
 
-    MEMORY[0x1DA741280](cachedTimesample, 0x1020C40A634FBC0, a3);
+    MEMORY[0x1DA741280](cachedTimesample, 0x1020C40A634FBC0, timestep);
     self->__cachedPriorityQueueTimestep = -1;
     self->__cachedTimesample = 0;
   }
@@ -617,18 +617,18 @@ LABEL_45:
   operator new();
 }
 
-- (id)topCandidateForTimestep:(int64_t)a3 outputLogProbability:(double *)a4 outputIndex:(int64_t *)a5
+- (id)topCandidateForTimestep:(int64_t)timestep outputLogProbability:(double *)probability outputIndex:(int64_t *)index
 {
   if (self->__usingIndexes)
   {
-    if (a4)
+    if (probability)
     {
-      objc_msgSend_logProbabilityForObservationIndex_timestep_(self, a2, 0, a3);
-      *a4 = v9;
+      objc_msgSend_logProbabilityForObservationIndex_timestep_(self, a2, 0, timestep);
+      *probability = v9;
     }
 
-    blankIndex = objc_msgSend_characterIndexForObservationIndex_timestep_(self, a2, 0, a3);
-    if (a5)
+    blankIndex = objc_msgSend_characterIndexForObservationIndex_timestep_(self, a2, 0, timestep);
+    if (index)
     {
       goto LABEL_5;
     }
@@ -636,14 +636,14 @@ LABEL_45:
     goto LABEL_6;
   }
 
-  if (self->__cachedPriorityQueueTimestep == a3)
+  if (self->__cachedPriorityQueueTimestep == timestep)
   {
     cachedTimesample = self->__cachedTimesample;
     if (cachedTimesample)
     {
       if (*(self->__cachedTimesample + 1) != *cachedTimesample)
       {
-        objc_msgSend_logProbabilityForBlankAtTimestep_(self, a2, a3, a4);
+        objc_msgSend_logProbabilityForBlankAtTimestep_(self, a2, timestep, probability);
         v17 = *self->__cachedTimesample;
         blankIndex = *v17;
         v18 = v17[1];
@@ -668,7 +668,7 @@ LABEL_45:
 
         if (v18 > v21)
         {
-          if (!a4)
+          if (!probability)
           {
             goto LABEL_37;
           }
@@ -678,18 +678,18 @@ LABEL_45:
         }
 
 LABEL_39:
-        if (a4)
+        if (probability)
         {
           if (v16 != 0.0)
           {
             v16 = 1.0;
           }
 
-          *a4 = v16;
+          *probability = v16;
         }
 
         blankIndex = self->_blankIndex;
-        if (a5)
+        if (index)
         {
           goto LABEL_5;
         }
@@ -699,7 +699,7 @@ LABEL_39:
     }
   }
 
-  v26 = objc_msgSend_blankIndexForTimestep_(self, a2, a3, a4);
+  v26 = objc_msgSend_blankIndexForTimestep_(self, a2, timestep, probability);
   if (v26 == -1)
   {
     v28 = 0.01;
@@ -711,7 +711,7 @@ LABEL_39:
 
   else
   {
-    objc_msgSend_probabilityForObservationIndex_timestep_(self, v23, v26, a3);
+    objc_msgSend_probabilityForObservationIndex_timestep_(self, v23, v26, timestep);
     v28 = v27;
     if (objc_msgSend_observationCount(self, v29, v30, v31) < 1)
     {
@@ -728,7 +728,7 @@ LABEL_39:
     {
       if (v26 != v33)
       {
-        objc_msgSend_probabilityForObservationIndex_timestep_(self, v10, v33, a3);
+        objc_msgSend_probabilityForObservationIndex_timestep_(self, v10, v33, timestep);
         v36 = v35 <= v34;
         v34 = fmax(v35, v34);
         if (!v36)
@@ -750,19 +750,19 @@ LABEL_33:
   v34 = v28;
   blankIndex = v26;
 LABEL_34:
-  if (!a4)
+  if (!probability)
   {
     goto LABEL_37;
   }
 
   v22 = log(v34);
 LABEL_36:
-  *a4 = v22;
+  *probability = v22;
 LABEL_37:
-  if (a5)
+  if (index)
   {
 LABEL_5:
-    *a5 = blankIndex;
+    *index = blankIndex;
   }
 
 LABEL_6:
@@ -771,16 +771,16 @@ LABEL_6:
   return v13;
 }
 
-- (id)topCandidateForTimestep:(int64_t)a3 outputProbability:(double *)a4 outputIndex:(int64_t *)a5
+- (id)topCandidateForTimestep:(int64_t)timestep outputProbability:(double *)probability outputIndex:(int64_t *)index
 {
   __x = 0.0;
-  v6 = objc_msgSend_topCandidateForTimestep_outputLogProbability_outputIndex_(self, a2, a3, &__x, a5);
-  if (a4)
+  v6 = objc_msgSend_topCandidateForTimestep_outputLogProbability_outputIndex_(self, a2, timestep, &__x, index);
+  if (probability)
   {
     v7 = v6;
     v8 = exp(__x);
     v6 = v7;
-    *a4 = v8;
+    *probability = v8;
   }
 
   return v6;
@@ -871,24 +871,24 @@ LABEL_6:
   return self;
 }
 
-- (void)set_espressoBuffer:(id *)a3
+- (void)set_espressoBuffer:(id *)buffer
 {
-  v3 = *&a3->var0;
-  v4 = *&a3->var2[2];
-  *self->$70B10377DC9035999D77C63B14D421A0::dim = *a3->var2;
+  v3 = *&buffer->var0;
+  v4 = *&buffer->var2[2];
+  *self->$70B10377DC9035999D77C63B14D421A0::dim = *buffer->var2;
   *&self->$70B10377DC9035999D77C63B14D421A0::dim[2] = v4;
   *&self->$70B10377DC9035999D77C63B14D421A0::data = v3;
-  v5 = *a3->var3;
-  v6 = *&a3->var3[2];
-  v7 = *&a3->var6;
-  *&self->$70B10377DC9035999D77C63B14D421A0::width = *&a3->var4;
+  v5 = *buffer->var3;
+  v6 = *&buffer->var3[2];
+  v7 = *&buffer->var6;
+  *&self->$70B10377DC9035999D77C63B14D421A0::width = *&buffer->var4;
   *&self->$70B10377DC9035999D77C63B14D421A0::channels = v7;
   *self->$70B10377DC9035999D77C63B14D421A0::stride = v5;
   *&self->$70B10377DC9035999D77C63B14D421A0::stride[2] = v6;
-  v8 = *&a3->var8;
-  v9 = *&a3->var10;
-  v10 = *&a3->var12;
-  *&self->$70B10377DC9035999D77C63B14D421A0::storage_type = *&a3->var14;
+  v8 = *&buffer->var8;
+  v9 = *&buffer->var10;
+  v10 = *&buffer->var12;
+  *&self->$70B10377DC9035999D77C63B14D421A0::storage_type = *&buffer->var14;
   *&self->$70B10377DC9035999D77C63B14D421A0::stride_height = v9;
   *&self->$70B10377DC9035999D77C63B14D421A0::stride_batch_number = v10;
   *&self->$70B10377DC9035999D77C63B14D421A0::sequence_length = v8;
@@ -915,33 +915,33 @@ LABEL_6:
   return self;
 }
 
-- (void)set_indexBuffer:(id *)a3
+- (void)set_indexBuffer:(id *)buffer
 {
-  v3 = *&a3->var0;
-  v4 = *&a3->var2[2];
-  *self->$70B10377DC9035999D77C63B14D421A0::dim = *a3->var2;
+  v3 = *&buffer->var0;
+  v4 = *&buffer->var2[2];
+  *self->$70B10377DC9035999D77C63B14D421A0::dim = *buffer->var2;
   *&self->$70B10377DC9035999D77C63B14D421A0::dim[2] = v4;
   *&self->$70B10377DC9035999D77C63B14D421A0::data = v3;
-  v5 = *a3->var3;
-  v6 = *&a3->var3[2];
-  v7 = *&a3->var6;
-  *&self->$70B10377DC9035999D77C63B14D421A0::width = *&a3->var4;
+  v5 = *buffer->var3;
+  v6 = *&buffer->var3[2];
+  v7 = *&buffer->var6;
+  *&self->$70B10377DC9035999D77C63B14D421A0::width = *&buffer->var4;
   *&self->$70B10377DC9035999D77C63B14D421A0::channels = v7;
   *self->$70B10377DC9035999D77C63B14D421A0::stride = v5;
   *&self->$70B10377DC9035999D77C63B14D421A0::stride[2] = v6;
-  v8 = *&a3->var8;
-  v9 = *&a3->var10;
-  v10 = *&a3->var12;
-  *&self->$70B10377DC9035999D77C63B14D421A0::storage_type = *&a3->var14;
+  v8 = *&buffer->var8;
+  v9 = *&buffer->var10;
+  v10 = *&buffer->var12;
+  *&self->$70B10377DC9035999D77C63B14D421A0::storage_type = *&buffer->var14;
   *&self->$70B10377DC9035999D77C63B14D421A0::stride_height = v9;
   *&self->$70B10377DC9035999D77C63B14D421A0::stride_batch_number = v10;
   *&self->$70B10377DC9035999D77C63B14D421A0::sequence_length = v8;
 }
 
-- (void)set_pruningPolicy:(CVNLPTextDecodingPruningPolicy *)a3
+- (void)set_pruningPolicy:(CVNLPTextDecodingPruningPolicy *)policy
 {
-  v3 = *&a3->strategy;
-  *&self->__pruningPolicy.maxNumberOfCandidates = *&a3->maxNumberOfCandidates;
+  v3 = *&policy->strategy;
+  *&self->__pruningPolicy.maxNumberOfCandidates = *&policy->maxNumberOfCandidates;
   *&self->__pruningPolicy.strategy = v3;
 }
 

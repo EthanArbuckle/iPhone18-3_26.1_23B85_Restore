@@ -1,8 +1,8 @@
 @interface PXViewControllerExtendedTraitCollection
-+ (int64_t)userInterfaceFeatureForViewController:(id)a3;
-- (PXViewControllerExtendedTraitCollection)initWithViewController:(id)a3;
++ (int64_t)userInterfaceFeatureForViewController:(id)controller;
+- (PXViewControllerExtendedTraitCollection)initWithViewController:(id)controller;
 - (UIViewController)viewController;
-- (id)_initForSubclassWithUserInterfaceFeature:(int64_t)a3;
+- (id)_initForSubclassWithUserInterfaceFeature:(int64_t)feature;
 - (id)rootExtendedTraitCollection;
 - (id)viewIfLoaded;
 @end
@@ -18,78 +18,78 @@
 
 - (id)rootExtendedTraitCollection
 {
-  v2 = self;
-  v3 = [(PXViewControllerExtendedTraitCollection *)v2 viewController];
-  v4 = v3;
-  if (v3)
+  selfCopy = self;
+  viewController = [(PXViewControllerExtendedTraitCollection *)selfCopy viewController];
+  v4 = viewController;
+  if (viewController)
   {
-    v5 = PXGetRootViewController(v3);
+    v5 = PXGetRootViewController(viewController);
     v6 = v5;
     if (v5 != v4)
     {
-      v7 = [v5 px_extendedTraitCollection];
+      px_extendedTraitCollection = [v5 px_extendedTraitCollection];
 
-      if ([(PXExtendedTraitCollection *)v7 isEnabled])
+      if ([(PXExtendedTraitCollection *)px_extendedTraitCollection isEnabled])
       {
-        v2 = v7;
+        selfCopy = px_extendedTraitCollection;
       }
 
       else
       {
-        v2 = v2;
+        selfCopy = selfCopy;
       }
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)viewIfLoaded
 {
-  v2 = [(PXViewControllerExtendedTraitCollection *)self viewController];
-  v3 = [v2 viewIfLoaded];
+  viewController = [(PXViewControllerExtendedTraitCollection *)self viewController];
+  viewIfLoaded = [viewController viewIfLoaded];
 
-  return v3;
+  return viewIfLoaded;
 }
 
-- (PXViewControllerExtendedTraitCollection)initWithViewController:(id)a3
+- (PXViewControllerExtendedTraitCollection)initWithViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [objc_opt_class() userInterfaceFeatureForViewController:v4];
+  controllerCopy = controller;
+  v5 = [objc_opt_class() userInterfaceFeatureForViewController:controllerCopy];
   v9.receiver = self;
   v9.super_class = PXViewControllerExtendedTraitCollection;
   v6 = [(PXExtendedTraitCollection *)&v9 _initForSubclassWithUserInterfaceFeature:v5];
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(v6 + 48, v4);
+    objc_storeWeak(v6 + 48, controllerCopy);
   }
 
   return v7;
 }
 
-- (id)_initForSubclassWithUserInterfaceFeature:(int64_t)a3
+- (id)_initForSubclassWithUserInterfaceFeature:(int64_t)feature
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PXViewControllerExtendedTraitCollection.m" lineNumber:23 description:{@"%s is not available as initializer", "-[PXViewControllerExtendedTraitCollection _initForSubclassWithUserInterfaceFeature:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXViewControllerExtendedTraitCollection.m" lineNumber:23 description:{@"%s is not available as initializer", "-[PXViewControllerExtendedTraitCollection _initForSubclassWithUserInterfaceFeature:]"}];
 
   abort();
 }
 
-+ (int64_t)userInterfaceFeatureForViewController:(id)a3
++ (int64_t)userInterfaceFeatureForViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 userInterfaceFeature];
+    userInterfaceFeature = [controllerCopy userInterfaceFeature];
   }
 
   else
   {
-    v4 = 0;
+    userInterfaceFeature = 0;
   }
 
-  return v4;
+  return userInterfaceFeature;
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface _NSJSONRoundTrippingNumber
-+ (BOOL)isSubclassOfClass:(Class)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToNumber:(id)a3;
-- (BOOL)isKindOfClass:(Class)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (_NSJSONRoundTrippingNumber)initWithCoder:(id)a3;
-- (_NSJSONRoundTrippingNumber)initWithNumber:(id)a3 representation:(id)a4;
++ (BOOL)isSubclassOfClass:(Class)class;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToNumber:(id)number;
+- (BOOL)isKindOfClass:(Class)class;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (_NSJSONRoundTrippingNumber)initWithCoder:(id)coder;
+- (_NSJSONRoundTrippingNumber)initWithNumber:(id)number representation:(id)representation;
 - (id)stringValue;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _NSJSONRoundTrippingNumber
 
-- (_NSJSONRoundTrippingNumber)initWithNumber:(id)a3 representation:(id)a4
+- (_NSJSONRoundTrippingNumber)initWithNumber:(id)number representation:(id)representation
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -21,8 +21,8 @@
   v6 = [(_NSJSONRoundTrippingNumber *)&v8 init];
   if (v6)
   {
-    v6->_number = a3;
-    v6->_representation = [a4 copy];
+    v6->_number = number;
+    v6->_representation = [representation copy];
   }
 
   return v6;
@@ -44,53 +44,53 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    if (self == a3)
+    if (self == equal)
     {
-      LOBYTE(v5) = 1;
+      LOBYTE(isNSNumber) = 1;
     }
 
     else
     {
-      v5 = [a3 isNSNumber];
-      if (v5)
+      isNSNumber = [equal isNSNumber];
+      if (isNSNumber)
       {
 
-        LOBYTE(v5) = [(_NSJSONRoundTrippingNumber *)self isEqualToNumber:a3];
+        LOBYTE(isNSNumber) = [(_NSJSONRoundTrippingNumber *)self isEqualToNumber:equal];
       }
     }
   }
 
   else
   {
-    LOBYTE(v5) = 0;
+    LOBYTE(isNSNumber) = 0;
   }
 
-  return v5;
+  return isNSNumber;
 }
 
-- (BOOL)isEqualToNumber:(id)a3
+- (BOOL)isEqualToNumber:(id)number
 {
-  if (a3 == self)
+  if (number == self)
   {
     return 1;
   }
 
-  if (!a3 || object_getClass(a3) != _NSJSONRoundTrippingNumber)
+  if (!number || object_getClass(number) != _NSJSONRoundTrippingNumber)
   {
     return 0;
   }
 
   representation = self->_representation;
-  v7 = *(a3 + 2);
+  v7 = *(number + 2);
 
   return [(NSString *)representation isEqualToString:v7];
 }
 
-- (_NSJSONRoundTrippingNumber)initWithCoder:(id)a3
+- (_NSJSONRoundTrippingNumber)initWithCoder:(id)coder
 {
   v15[1] = *MEMORY[0x1E69E9840];
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -99,7 +99,7 @@
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"_NSJSONRoundTrippingNumber can only be decoded by NSXPCCoder." userInfo:0]);
   }
 
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NS.number"];
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NS.number"];
   if (!v5)
   {
 
@@ -109,12 +109,12 @@
     v10 = v15;
     v11 = &v14;
 LABEL_9:
-    [a3 failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, objc_msgSend(v9, "dictionaryWithObjects:forKeys:count:", v10, v11, 1))}];
+    [coder failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, objc_msgSend(v9, "dictionaryWithObjects:forKeys:count:", v10, v11, 1))}];
     return 0;
   }
 
   v6 = v5;
-  v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NS.representation"];
+  v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NS.representation"];
   if (!v7)
   {
 
@@ -129,36 +129,36 @@ LABEL_9:
   return [(_NSJSONRoundTrippingNumber *)self initWithNumber:v6 representation:v7];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"_NSJSONRoundTrippingNumber can only be encoded by NSXPCCoder." userInfo:0]);
   }
 
-  [a3 encodeObject:self->_number forKey:@"NS.number"];
+  [coder encodeObject:self->_number forKey:@"NS.number"];
   representation = self->_representation;
 
-  [a3 encodeObject:representation forKey:@"NS.representation"];
+  [coder encodeObject:representation forKey:@"NS.representation"];
 }
 
-+ (BOOL)isSubclassOfClass:(Class)a3
++ (BOOL)isSubclassOfClass:(Class)class
 {
   v5 = *MEMORY[0x1E69E9840];
-  if (NSNumber == a3)
+  if (NSNumber == class)
   {
     return 1;
   }
 
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS____NSJSONRoundTrippingNumber;
   return objc_msgSendSuper2(&v4, sel_isSubclassOfClass_);
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v5 = *MEMORY[0x1E69E9840];
-  if (NSNumber == a3)
+  if (NSNumber == class)
   {
     return 1;
   }
@@ -168,11 +168,11 @@ LABEL_9:
   return [(_NSJSONRoundTrippingNumber *)&v4 isKindOfClass:?];
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v4 = objc_opt_class();
 
-  return [v4 instancesRespondToSelector:a3];
+  return [v4 instancesRespondToSelector:selector];
 }
 
 @end

@@ -1,32 +1,32 @@
 @interface _GCDevicePhysicalInputComponent
 - (_GCDevicePhysicalInputComponent)init;
-- (_GCDevicePhysicalInputComponent)initWithIdentifier:(id)a3 defaultPhysicalInput:(id)a4;
-- (_GCDevicePhysicalInputComponent)initWithIdentifier:(id)a3 physicalInputs:(id)a4;
-- (id)_initWithIdentifier:(void *)a3 physicalInputGroup:;
+- (_GCDevicePhysicalInputComponent)initWithIdentifier:(id)identifier defaultPhysicalInput:(id)input;
+- (_GCDevicePhysicalInputComponent)initWithIdentifier:(id)identifier physicalInputs:(id)inputs;
+- (id)_initWithIdentifier:(void *)identifier physicalInputGroup:;
 - (id)capture;
 - (id)defaultPhysicalInput;
 - (id)device;
-- (void)handleCollectionEvent:(id)a3;
-- (void)handleGamepadEvent:(id)a3;
-- (void)setCollectionEventSource:(id)a3;
-- (void)setGamepadEventSource:(id)a3;
+- (void)handleCollectionEvent:(id)event;
+- (void)handleGamepadEvent:(id)event;
+- (void)setCollectionEventSource:(id)source;
+- (void)setGamepadEventSource:(id)source;
 @end
 
 @implementation _GCDevicePhysicalInputComponent
 
-- (_GCDevicePhysicalInputComponent)initWithIdentifier:(id)a3 defaultPhysicalInput:(id)a4
+- (_GCDevicePhysicalInputComponent)initWithIdentifier:(id)identifier defaultPhysicalInput:(id)input
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  identifierCopy = identifier;
+  inputCopy = input;
+  if (!inputCopy)
   {
     [_GCDevicePhysicalInputComponent initWithIdentifier:a2 defaultPhysicalInput:self];
   }
 
-  v13[0] = v8;
+  v13[0] = inputCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-  v10 = [(_GCDevicePhysicalInputComponent *)self initWithIdentifier:v7 physicalInputs:v9];
+  v10 = [(_GCDevicePhysicalInputComponent *)self initWithIdentifier:identifierCopy physicalInputs:v9];
 
   v11 = *MEMORY[0x1E69E9840];
   return v10;
@@ -39,41 +39,41 @@
   return 0;
 }
 
-- (void)handleGamepadEvent:(id)a3
+- (void)handleGamepadEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(_GCDevicePhysicalInputGroup *)self->_defaultPhysicalInputGroup queue];
-  if (v5)
+  eventCopy = event;
+  queue = [(_GCDevicePhysicalInputGroup *)self->_defaultPhysicalInputGroup queue];
+  if (queue)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __62___GCDevicePhysicalInputComponent_PubSub__handleGamepadEvent___block_invoke;
     v6[3] = &unk_1E8418C50;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = eventCopy;
+    dispatch_async(queue, v6);
   }
 }
 
-- (void)handleCollectionEvent:(id)a3
+- (void)handleCollectionEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(_GCDevicePhysicalInputGroup *)self->_defaultPhysicalInputGroup queue];
-  if (v5)
+  eventCopy = event;
+  queue = [(_GCDevicePhysicalInputGroup *)self->_defaultPhysicalInputGroup queue];
+  if (queue)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __65___GCDevicePhysicalInputComponent_PubSub__handleCollectionEvent___block_invoke;
     v6[3] = &unk_1E8418C50;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = eventCopy;
+    dispatch_async(queue, v6);
   }
 }
 
-- (void)setGamepadEventSource:(id)a3
+- (void)setGamepadEventSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   objc_initWeak(&location, self);
   if (([(_GCDevicePhysicalInputGroup *)self->_defaultPhysicalInputGroup isSnapshot]& 1) == 0)
   {
@@ -85,7 +85,7 @@
     v8[2] = __65___GCDevicePhysicalInputComponent_PubSub__setGamepadEventSource___block_invoke;
     v8[3] = &unk_1E841A588;
     objc_copyWeak(&v9, &location);
-    v6 = [v4 observeGamepadEvents:v8];
+    v6 = [sourceCopy observeGamepadEvents:v8];
     v7 = self->_gamepadEventObservation;
     self->_gamepadEventObservation = v6;
 
@@ -95,9 +95,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)setCollectionEventSource:(id)a3
+- (void)setCollectionEventSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   objc_initWeak(&location, self);
   if (([(_GCDevicePhysicalInputGroup *)self->_defaultPhysicalInputGroup isSnapshot]& 1) == 0)
   {
@@ -109,7 +109,7 @@
     v8[2] = __68___GCDevicePhysicalInputComponent_PubSub__setCollectionEventSource___block_invoke;
     v8[3] = &unk_1E841A5B0;
     objc_copyWeak(&v9, &location);
-    v6 = [v4 observeCollectionEvents:v8];
+    v6 = [sourceCopy observeCollectionEvents:v8];
     v7 = self->_collectionEventObservation;
     self->_collectionEventObservation = v6;
 
@@ -119,59 +119,59 @@
   objc_destroyWeak(&location);
 }
 
-- (id)_initWithIdentifier:(void *)a3 physicalInputGroup:
+- (id)_initWithIdentifier:(void *)identifier physicalInputGroup:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  identifierCopy = identifier;
+  if (self)
   {
     if (!v5)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:sel__initWithIdentifier_physicalInputGroup_ object:a1 file:@"_GCDevicePhysicalInputComponent.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %s", "identifier != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__initWithIdentifier_physicalInputGroup_ object:self file:@"_GCDevicePhysicalInputComponent.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %s", "identifier != nil"}];
     }
 
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = _GCDevicePhysicalInputComponent;
-    a1 = objc_msgSendSuper2(&v11, sel_init);
+    self = objc_msgSendSuper2(&v11, sel_init);
     v7 = [v5 copyWithZone:0];
-    v8 = a1[4];
-    a1[4] = v7;
+    v8 = self[4];
+    self[4] = v7;
 
-    objc_storeStrong(a1 + 1, a3);
-    [(_GCDevicePhysicalInputGroup *)a1[1] setDataSource:a1];
+    objc_storeStrong(self + 1, identifier);
+    [(_GCDevicePhysicalInputGroup *)self[1] setDataSource:self];
   }
 
-  return a1;
+  return self;
 }
 
-- (_GCDevicePhysicalInputComponent)initWithIdentifier:(id)a3 physicalInputs:(id)a4
+- (_GCDevicePhysicalInputComponent)initWithIdentifier:(id)identifier physicalInputs:(id)inputs
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_GCDevicePhysicalInputGroup alloc] initWithPhysicalInputs:v6];
+  inputsCopy = inputs;
+  identifierCopy = identifier;
+  v8 = [[_GCDevicePhysicalInputGroup alloc] initWithPhysicalInputs:inputsCopy];
 
-  v9 = [(_GCDevicePhysicalInputComponent *)&self->super.isa _initWithIdentifier:v7 physicalInputGroup:v8];
+  v9 = [(_GCDevicePhysicalInputComponent *)&self->super.isa _initWithIdentifier:identifierCopy physicalInputGroup:v8];
   return v9;
 }
 
 - (id)defaultPhysicalInput
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(_GCDevicePhysicalInputGroup *)a1[1] defaultPhysicalInput];
+    self = [(_GCDevicePhysicalInputGroup *)self[1] defaultPhysicalInput];
     v2 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)capture
 {
   v3 = [_GCDevicePhysicalInputComponent alloc];
-  v4 = [(_GCDevicePhysicalInputComponent *)self identifier];
-  v5 = [(_GCDevicePhysicalInputGroup *)self->_defaultPhysicalInputGroup capture];
-  v6 = [(_GCDevicePhysicalInputComponent *)&v3->super.isa _initWithIdentifier:v4 physicalInputGroup:v5];
+  identifier = [(_GCDevicePhysicalInputComponent *)self identifier];
+  capture = [(_GCDevicePhysicalInputGroup *)self->_defaultPhysicalInputGroup capture];
+  v6 = [(_GCDevicePhysicalInputComponent *)&v3->super.isa _initWithIdentifier:identifier physicalInputGroup:capture];
 
   return v6;
 }

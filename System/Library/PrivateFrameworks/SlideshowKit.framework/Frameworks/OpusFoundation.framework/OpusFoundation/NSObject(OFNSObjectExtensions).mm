@@ -76,9 +76,9 @@
 - (uint64_t)performBlock:()OFNSObjectExtensions withAnimationDuration:
 {
   [MEMORY[0x277D75D18] beginAnimations:0 context:0];
-  [MEMORY[0x277D75D18] setAnimationDuration:a1];
+  [MEMORY[0x277D75D18] setAnimationDuration:self];
   [MEMORY[0x277CD9FF0] begin];
-  [MEMORY[0x277CD9FF0] setAnimationDuration:a1];
+  [MEMORY[0x277CD9FF0] setAnimationDuration:self];
   (*(a4 + 16))(a4);
   [MEMORY[0x277CD9FF0] commit];
   v6 = MEMORY[0x277D75D18];

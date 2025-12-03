@@ -41,7 +41,7 @@
       width = v46.size.width;
       height = v46.size.height;
       v20 = v11 * 4.0 / 3.0;
-      v21 = [(CICheapBlur *)self _CICheapBlur];
+      _CICheapBlur = [(CICheapBlur *)self _CICheapBlur];
       v40[0] = MEMORY[0x1E69E9820];
       v40[1] = 3221225472;
       v40[2] = __26__CICheapBlur_outputImage__block_invoke;
@@ -49,7 +49,7 @@
       v41 = v20;
       v44[0] = v13;
       v44[1] = v15;
-      inputImage = [v21 applyWithExtent:v40 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v44, 2), x, y, width, height}];
+      inputImage = [_CICheapBlur applyWithExtent:v40 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v44, 2), x, y, width, height}];
       v11 = v14 * 1.4142;
       v12 = -v12;
       --v8;
@@ -90,11 +90,11 @@
             height = v49.size.height;
           }
 
-          v35 = [(CICheapBlur *)self _CILerp];
+          _CILerp = [(CICheapBlur *)self _CILerp];
           v43[0] = inputImage;
           v43[1] = v13;
           v43[2] = v22;
-          inputImage = [v35 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v43, 3), x, y, width, height}];
+          inputImage = [_CILerp applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v43, 3), x, y, width, height}];
         }
       }
 

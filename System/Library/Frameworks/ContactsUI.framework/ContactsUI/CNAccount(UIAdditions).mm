@@ -11,30 +11,30 @@
 
 - (id)_cnui_displayName
 {
-  v1 = [a1 externalIdentifierString];
+  externalIdentifierString = [self externalIdentifierString];
   v2 = objc_opt_class();
-  if (v1)
+  if (externalIdentifierString)
   {
-    v3 = [v2 _cnui_accountStore];
-    v4 = [v3 accountWithIdentifier:v1];
-    v5 = [v4 displayAccount];
+    _cnui_accountStore = [v2 _cnui_accountStore];
+    v4 = [_cnui_accountStore accountWithIdentifier:externalIdentifierString];
+    displayAccount = [v4 displayAccount];
 
-    v6 = [objc_opt_class() _cnui_displayNameForACAccount:v5];
+    _cnui_displayNameForLocal = [objc_opt_class() _cnui_displayNameForACAccount:displayAccount];
   }
 
   else
   {
-    v6 = [v2 _cnui_displayNameForLocal];
+    _cnui_displayNameForLocal = [v2 _cnui_displayNameForLocal];
   }
 
-  return v6;
+  return _cnui_displayNameForLocal;
 }
 
 + (uint64_t)_cnui_isFacebookACAccount:()UIAdditions
 {
-  v3 = [a3 accountType];
-  v4 = [v3 identifier];
-  v5 = [v4 isEqualToString:*MEMORY[0x1E6959848]];
+  accountType = [a3 accountType];
+  identifier = [accountType identifier];
+  v5 = [identifier isEqualToString:*MEMORY[0x1E6959848]];
 
   return v5;
 }
@@ -45,38 +45,38 @@
   v5 = v4;
   if (!v4)
   {
-    v6 = [a1 _cnui_displayNameForLocal];
+    _cnui_displayNameForLocal = [self _cnui_displayNameForLocal];
     goto LABEL_6;
   }
 
-  v6 = [v4 accountDescription];
-  if (v6)
+  _cnui_displayNameForLocal = [v4 accountDescription];
+  if (_cnui_displayNameForLocal)
   {
 LABEL_6:
-    v8 = v6;
+    accountTypeDescription = _cnui_displayNameForLocal;
     goto LABEL_7;
   }
 
-  v7 = [v5 accountType];
-  v8 = [v7 accountTypeDescription];
+  accountType = [v5 accountType];
+  accountTypeDescription = [accountType accountTypeDescription];
 
-  if (!v8)
+  if (!accountTypeDescription)
   {
     v9 = CNContactsUIBundle();
-    v8 = [v9 localizedStringForKey:@"UNKNOWN_SOURCE_STRING" value:&stru_1F0CE7398 table:@"Localized"];
+    accountTypeDescription = [v9 localizedStringForKey:@"UNKNOWN_SOURCE_STRING" value:&stru_1F0CE7398 table:@"Localized"];
   }
 
 LABEL_7:
 
-  return v8;
+  return accountTypeDescription;
 }
 
 + (id)_cnui_displayNameForLocal
 {
-  v0 = [MEMORY[0x1E69DC938] currentDevice];
-  v1 = [v0 model];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  model = [currentDevice model];
 
-  return v1;
+  return model;
 }
 
 + (uint64_t)_cnui_requestRefreshWithUserAction:()UIAdditions
@@ -90,7 +90,7 @@ LABEL_7:
   aBlock[2] = __61__CNAccount_UIAdditions___cnui_requestRefreshWithUserAction___block_invoke;
   aBlock[3] = &unk_1E74E5810;
   aBlock[4] = &v12;
-  aBlock[5] = a1;
+  aBlock[5] = self;
   v11 = a3;
   v4 = _Block_copy(aBlock);
   v5 = v4;
@@ -122,7 +122,7 @@ LABEL_7:
   v8[2] = __64__CNAccount_UIAdditions___cnui_canRequestRefreshWithCompletion___block_invoke;
   v8[3] = &unk_1E74E57E8;
   v9 = v4;
-  v10 = a1;
+  selfCopy = self;
   v7 = v4;
   dispatch_after(v5, v6, v8);
 }

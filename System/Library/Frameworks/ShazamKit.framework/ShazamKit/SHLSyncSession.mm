@@ -1,25 +1,25 @@
 @interface SHLSyncSession
-- (BOOL)commitTransactionWithError:(id *)a3;
-- (BOOL)startTransactionWithError:(id *)a3;
-- (BOOL)undoTransactionWithError:(id *)a3;
-- (SHLSyncSession)initWithConfiguration:(id)a3;
+- (BOOL)commitTransactionWithError:(id *)error;
+- (BOOL)startTransactionWithError:(id *)error;
+- (BOOL)undoTransactionWithError:(id *)error;
+- (SHLSyncSession)initWithConfiguration:(id)configuration;
 - (SHLSyncSessionDelegate)delegate;
-- (void)executeFetchTask:(id)a3;
-- (void)executeModifyTask:(id)a3;
-- (void)executeTask:(id)a3;
+- (void)executeFetchTask:(id)task;
+- (void)executeModifyTask:(id)task;
+- (void)executeTask:(id)task;
 @end
 
 @implementation SHLSyncSession
 
-- (SHLSyncSession)initWithConfiguration:(id)a3
+- (SHLSyncSession)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = SHLSyncSession;
   v5 = [(SHLSyncSession *)&v11 init];
   if (v5)
   {
-    v6 = [[SHLTaskSchedulerFactory alloc] initWithConfiguration:v4];
+    v6 = [[SHLTaskSchedulerFactory alloc] initWithConfiguration:configurationCopy];
     schedulerFactory = v5->_schedulerFactory;
     v5->_schedulerFactory = v6;
 
@@ -31,28 +31,28 @@
   return v5;
 }
 
-- (void)executeTask:(id)a3
+- (void)executeTask:(id)task
 {
-  v5 = a3;
-  v4 = [v5 type];
-  if (v4 == 1)
+  taskCopy = task;
+  type = [taskCopy type];
+  if (type == 1)
   {
-    [(SHLSyncSession *)self executeFetchTask:v5];
+    [(SHLSyncSession *)self executeFetchTask:taskCopy];
   }
 
-  else if (!v4)
+  else if (!type)
   {
-    [(SHLSyncSession *)self executeModifyTask:v5];
+    [(SHLSyncSession *)self executeModifyTask:taskCopy];
   }
 
   _objc_release_x1();
 }
 
-- (void)executeModifyTask:(id)a3
+- (void)executeModifyTask:(id)task
 {
-  v4 = a3;
-  v5 = [(SHLSyncSession *)self delegate];
-  v6 = [v5 conformsToProtocol:&OBJC_PROTOCOL___SHLSyncSessionModifyTaskDelegate];
+  taskCopy = task;
+  delegate = [(SHLSyncSession *)self delegate];
+  v6 = [delegate conformsToProtocol:&OBJC_PROTOCOL___SHLSyncSessionModifyTaskDelegate];
 
   if ((v6 & 1) == 0)
   {
@@ -60,35 +60,35 @@
     objc_exception_throw(v13);
   }
 
-  v7 = [(SHLSyncSession *)self delegate];
-  [v4 setDelegate:v7];
+  delegate2 = [(SHLSyncSession *)self delegate];
+  [taskCopy setDelegate:delegate2];
 
-  [v4 setSession:self];
-  v8 = [(SHLSyncSession *)self schedulerFactory];
-  v9 = [v8 modifyTaskScheduler];
+  [taskCopy setSession:self];
+  schedulerFactory = [(SHLSyncSession *)self schedulerFactory];
+  modifyTaskScheduler = [schedulerFactory modifyTaskScheduler];
 
   objc_initWeak(&location, self);
-  v10 = [v9 preconditions];
+  preconditions = [modifyTaskScheduler preconditions];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000413BC;
   v14[3] = &unk_10007E050;
   objc_copyWeak(&v17, &location);
-  v11 = v4;
+  v11 = taskCopy;
   v15 = v11;
-  v12 = v9;
+  v12 = modifyTaskScheduler;
   v16 = v12;
-  [SHLTaskPreconditionEvaluator evaluatePreconditions:v10 withCompletion:v14];
+  [SHLTaskPreconditionEvaluator evaluatePreconditions:preconditions withCompletion:v14];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
 }
 
-- (void)executeFetchTask:(id)a3
+- (void)executeFetchTask:(id)task
 {
-  v4 = a3;
-  v5 = [(SHLSyncSession *)self delegate];
-  v6 = [v5 conformsToProtocol:&OBJC_PROTOCOL___SHLSyncSessionFetchTaskDelegate];
+  taskCopy = task;
+  delegate = [(SHLSyncSession *)self delegate];
+  v6 = [delegate conformsToProtocol:&OBJC_PROTOCOL___SHLSyncSessionFetchTaskDelegate];
 
   if ((v6 & 1) == 0)
   {
@@ -96,58 +96,58 @@
     objc_exception_throw(v13);
   }
 
-  v7 = [(SHLSyncSession *)self delegate];
-  [v4 setDelegate:v7];
+  delegate2 = [(SHLSyncSession *)self delegate];
+  [taskCopy setDelegate:delegate2];
 
-  [v4 setSession:self];
-  v8 = [(SHLSyncSession *)self schedulerFactory];
-  v9 = [v8 fetchTaskScheduler];
+  [taskCopy setSession:self];
+  schedulerFactory = [(SHLSyncSession *)self schedulerFactory];
+  fetchTaskScheduler = [schedulerFactory fetchTaskScheduler];
 
   objc_initWeak(&location, self);
-  v10 = [v9 preconditions];
+  preconditions = [fetchTaskScheduler preconditions];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000417E8;
   v14[3] = &unk_10007E050;
   objc_copyWeak(&v17, &location);
-  v11 = v4;
+  v11 = taskCopy;
   v15 = v11;
-  v12 = v9;
+  v12 = fetchTaskScheduler;
   v16 = v12;
-  [SHLTaskPreconditionEvaluator evaluatePreconditions:v10 withCompletion:v14];
+  [SHLTaskPreconditionEvaluator evaluatePreconditions:preconditions withCompletion:v14];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)startTransactionWithError:(id *)a3
+- (BOOL)startTransactionWithError:(id *)error
 {
-  v5 = [(SHLSyncSession *)self schedulerFactory];
-  v6 = [v5 createTransaction];
-  [(SHLSyncSession *)self setTransaction:v6];
+  schedulerFactory = [(SHLSyncSession *)self schedulerFactory];
+  createTransaction = [schedulerFactory createTransaction];
+  [(SHLSyncSession *)self setTransaction:createTransaction];
 
-  v7 = [(SHLSyncSession *)self transaction];
-  LOBYTE(a3) = [v7 startTransactionWithError:a3];
+  transaction = [(SHLSyncSession *)self transaction];
+  LOBYTE(error) = [transaction startTransactionWithError:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)commitTransactionWithError:(id *)a3
+- (BOOL)commitTransactionWithError:(id *)error
 {
-  v5 = [(SHLSyncSession *)self transaction];
-  LOBYTE(a3) = [v5 commitTransactionWithError:a3];
+  transaction = [(SHLSyncSession *)self transaction];
+  LOBYTE(error) = [transaction commitTransactionWithError:error];
 
   [(SHLSyncSession *)self setTransaction:0];
-  return a3;
+  return error;
 }
 
-- (BOOL)undoTransactionWithError:(id *)a3
+- (BOOL)undoTransactionWithError:(id *)error
 {
-  v5 = [(SHLSyncSession *)self transaction];
-  LOBYTE(a3) = [v5 undoTransactionWithError:a3];
+  transaction = [(SHLSyncSession *)self transaction];
+  LOBYTE(error) = [transaction undoTransactionWithError:error];
 
   [(SHLSyncSession *)self setTransaction:0];
-  return a3;
+  return error;
 }
 
 - (SHLSyncSessionDelegate)delegate

@@ -1,26 +1,26 @@
 @interface PFStoryClusteringProperties
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPFStoryClusteringProperties:(id)a3;
-- (PFStoryClusteringProperties)initWithAlgorithmName:(id)a3 algorithmProperties:(id)a4 distanceWeights:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPFStoryClusteringProperties:(id)properties;
+- (PFStoryClusteringProperties)initWithAlgorithmName:(id)name algorithmProperties:(id)properties distanceWeights:(id)weights;
 - (id)description;
 @end
 
 @implementation PFStoryClusteringProperties
 
-- (BOOL)isEqualToPFStoryClusteringProperties:(id)a3
+- (BOOL)isEqualToPFStoryClusteringProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(PFStoryClusteringProperties *)self algorithm];
-  v6 = [v4 algorithm];
-  if ([v5 isEqualToString:v6])
+  propertiesCopy = properties;
+  algorithm = [(PFStoryClusteringProperties *)self algorithm];
+  algorithm2 = [propertiesCopy algorithm];
+  if ([algorithm isEqualToString:algorithm2])
   {
-    v7 = [(PFStoryClusteringProperties *)self algorithmProperties];
-    v8 = [v4 algorithmProperties];
-    if ([v7 isEqualToDictionary:v8])
+    algorithmProperties = [(PFStoryClusteringProperties *)self algorithmProperties];
+    algorithmProperties2 = [propertiesCopy algorithmProperties];
+    if ([algorithmProperties isEqualToDictionary:algorithmProperties2])
     {
-      v9 = [(PFStoryClusteringProperties *)self distanceWeights];
-      v10 = [v4 distanceWeights];
-      v11 = [v9 isEqualToDictionary:v10];
+      distanceWeights = [(PFStoryClusteringProperties *)self distanceWeights];
+      distanceWeights2 = [propertiesCopy distanceWeights];
+      v11 = [distanceWeights isEqualToDictionary:distanceWeights2];
     }
 
     else
@@ -37,10 +37,10 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -48,7 +48,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PFStoryClusteringProperties *)self isEqualToPFStoryClusteringProperties:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PFStoryClusteringProperties *)self isEqualToPFStoryClusteringProperties:equalCopy];
   }
 
   return v5;
@@ -58,26 +58,26 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PFStoryClusteringProperties *)self algorithm];
-  v6 = [(PFStoryClusteringProperties *)self algorithmProperties];
-  v7 = [(PFStoryClusteringProperties *)self distanceWeights];
-  v8 = [v3 stringWithFormat:@"<%@: %p algorithm = %@, algorithm properties = %@, distance weights = %@>", v4, self, v5, v6, v7];;
+  algorithm = [(PFStoryClusteringProperties *)self algorithm];
+  algorithmProperties = [(PFStoryClusteringProperties *)self algorithmProperties];
+  distanceWeights = [(PFStoryClusteringProperties *)self distanceWeights];
+  v8 = [v3 stringWithFormat:@"<%@: %p algorithm = %@, algorithm properties = %@, distance weights = %@>", v4, self, algorithm, algorithmProperties, distanceWeights];;
 
   return v8;
 }
 
-- (PFStoryClusteringProperties)initWithAlgorithmName:(id)a3 algorithmProperties:(id)a4 distanceWeights:(id)a5
+- (PFStoryClusteringProperties)initWithAlgorithmName:(id)name algorithmProperties:(id)properties distanceWeights:(id)weights
 {
   v17.receiver = self;
   v17.super_class = PFStoryClusteringProperties;
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  weightsCopy = weights;
+  propertiesCopy = properties;
+  nameCopy = name;
   v10 = [(PFStoryClusteringProperties *)&v17 init];
   v11 = v10;
-  if (v9)
+  if (nameCopy)
   {
-    v12 = v9;
+    v12 = nameCopy;
   }
 
   else
@@ -87,9 +87,9 @@
 
   objc_storeStrong(&v10->_algorithm, v12);
   v13 = MEMORY[0x1E695E0F8];
-  if (v8)
+  if (propertiesCopy)
   {
-    v14 = v8;
+    v14 = propertiesCopy;
   }
 
   else
@@ -98,9 +98,9 @@
   }
 
   objc_storeStrong(&v11->_algorithmProperties, v14);
-  if (v7)
+  if (weightsCopy)
   {
-    v15 = v7;
+    v15 = weightsCopy;
   }
 
   else

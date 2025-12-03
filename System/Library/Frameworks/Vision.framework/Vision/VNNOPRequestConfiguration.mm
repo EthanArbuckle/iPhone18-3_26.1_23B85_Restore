@@ -1,15 +1,15 @@
 @interface VNNOPRequestConfiguration
-- (VNNOPRequestConfiguration)initWithRequestClass:(Class)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VNNOPRequestConfiguration)initWithRequestClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VNNOPRequestConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = VNNOPRequestConfiguration;
-  v4 = [(VNImageBasedRequestConfiguration *)&v7 copyWithZone:a3];
+  v4 = [(VNImageBasedRequestConfiguration *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -21,11 +21,11 @@
   return v5;
 }
 
-- (VNNOPRequestConfiguration)initWithRequestClass:(Class)a3
+- (VNNOPRequestConfiguration)initWithRequestClass:(Class)class
 {
   v9.receiver = self;
   v9.super_class = VNNOPRequestConfiguration;
-  v3 = [(VNImageBasedRequestConfiguration *)&v9 initWithRequestClass:a3];
+  v3 = [(VNImageBasedRequestConfiguration *)&v9 initWithRequestClass:class];
   if (v3)
   {
     v4 = [[VNSizeRange alloc] initWithMinimumDimension:299 maximumDimension:299 idealDimension:299];

@@ -1,24 +1,24 @@
 @interface CSHandshakeResponseMessage
 + (id)requiredParameters;
-- (CSHandshakeResponseMessage)initWithMessage:(id)a3;
-- (CSHandshakeResponseMessage)initWithMicrophoneActivation:(BOOL)a3;
+- (CSHandshakeResponseMessage)initWithMessage:(id)message;
+- (CSHandshakeResponseMessage)initWithMicrophoneActivation:(BOOL)activation;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation CSHandshakeResponseMessage
 
-- (CSHandshakeResponseMessage)initWithMicrophoneActivation:(BOOL)a3
+- (CSHandshakeResponseMessage)initWithMicrophoneActivation:(BOOL)activation
 {
   v10.receiver = self;
   v10.super_class = CSHandshakeResponseMessage;
   v4 = [(CSHandshakeResponseMessage *)&v10 init];
   if (v4)
   {
-    v5 = [MEMORY[0x277CCAC38] processInfo];
-    v6 = v5;
-    if (v5)
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    v6 = processInfo;
+    if (processInfo)
     {
-      [v5 operatingSystemVersion];
+      [processInfo operatingSystemVersion];
     }
 
     else
@@ -31,25 +31,25 @@
     *(v4 + 24) = v8;
 
     *(v4 + 2) = 0x3FF51EB851EB851FLL;
-    v4[8] = a3;
+    v4[8] = activation;
   }
 
   return v4;
 }
 
-- (CSHandshakeResponseMessage)initWithMessage:(id)a3
+- (CSHandshakeResponseMessage)initWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v13.receiver = self;
   v13.super_class = CSHandshakeResponseMessage;
-  v5 = [(CSMessage *)&v13 initWithMessage:v4];
+  v5 = [(CSMessage *)&v13 initWithMessage:messageCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"OSMajorVersion"];
-    v7 = [v4 objectForKeyedSubscript:@"OSMinorVersion"];
-    v8 = [v4 objectForKeyedSubscript:@"OSPatchVersion"];
-    v9 = [v4 objectForKeyedSubscript:@"ProtocolVersion"];
-    v10 = [v4 objectForKeyedSubscript:@"ShouldActivateMicrophone"];
+    v6 = [messageCopy objectForKeyedSubscript:@"OSMajorVersion"];
+    v7 = [messageCopy objectForKeyedSubscript:@"OSMinorVersion"];
+    v8 = [messageCopy objectForKeyedSubscript:@"OSPatchVersion"];
+    v9 = [messageCopy objectForKeyedSubscript:@"ProtocolVersion"];
+    v10 = [messageCopy objectForKeyedSubscript:@"ShouldActivateMicrophone"];
     v5->_operatingSystemVersion.majorVersion = [v6 integerValue];
     v5->_operatingSystemVersion.minorVersion = [v7 integerValue];
     v5->_operatingSystemVersion.patchVersion = [v8 integerValue];
@@ -63,7 +63,7 @@
 
 + (id)requiredParameters
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CSHandshakeResponseMessage;
   v2 = objc_msgSendSuper2(&v5, sel_requiredParameters);
   v3 = [v2 mutableCopy];
@@ -80,8 +80,8 @@
 {
   v11.receiver = self;
   v11.super_class = CSHandshakeResponseMessage;
-  v3 = [(CSMessage *)&v11 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(CSMessage *)&v11 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:self->_operatingSystemVersion.majorVersion];
   [v4 setObject:v5 forKeyedSubscript:@"OSMajorVersion"];

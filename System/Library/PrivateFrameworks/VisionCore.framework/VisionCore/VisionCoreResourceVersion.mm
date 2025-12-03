@@ -1,101 +1,101 @@
 @interface VisionCoreResourceVersion
 + (id)invalidVersion;
-+ (id)versionForStringRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToResourceVersion:(id)a3;
++ (id)versionForStringRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToResourceVersion:(id)version;
 - (BOOL)isValid;
 - (NSString)stringRepresentation;
-- (VisionCoreResourceVersion)initWithCoder:(id)a3;
-- (VisionCoreResourceVersion)initWithMajor:(unsigned int)a3 minor:(unsigned int)a4 micro:(unsigned int)a5;
-- (int64_t)compare:(id)a3;
+- (VisionCoreResourceVersion)initWithCoder:(id)coder;
+- (VisionCoreResourceVersion)initWithMajor:(unsigned int)major minor:(unsigned int)minor micro:(unsigned int)micro;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VisionCoreResourceVersion
 
-- (VisionCoreResourceVersion)initWithCoder:(id)a3
+- (VisionCoreResourceVersion)initWithCoder:(id)coder
 {
   v7 = *MEMORY[0x1E69E9840];
   v6 = 0;
   v5 = 0;
-  [a3 decodeArrayOfObjCType:"I" count:3 at:&v5];
+  [coder decodeArrayOfObjCType:"I" count:3 at:&v5];
   return [(VisionCoreResourceVersion *)self initWithMajor:v5 minor:HIDWORD(v5) micro:v6];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5[0] = [(VisionCoreResourceVersion *)self major];
   v5[1] = [(VisionCoreResourceVersion *)self minor];
   v5[2] = [(VisionCoreResourceVersion *)self micro];
-  [v4 encodeArrayOfObjCType:"I" count:3 at:v5];
+  [coderCopy encodeArrayOfObjCType:"I" count:3 at:v5];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(VisionCoreResourceVersion *)self isEqualToResourceVersion:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(VisionCoreResourceVersion *)self isEqualToResourceVersion:equalCopy];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(VisionCoreResourceVersion *)self major];
-  v4 = ([(VisionCoreResourceVersion *)self minor]<< 16) | (v3 << 32);
+  major = [(VisionCoreResourceVersion *)self major];
+  v4 = ([(VisionCoreResourceVersion *)self minor]<< 16) | (major << 32);
   return v4 | [(VisionCoreResourceVersion *)self micro];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  if (self == v4)
+  compareCopy = compare;
+  if (self == compareCopy)
   {
     v7 = 0;
     goto LABEL_8;
   }
 
-  v5 = [(VisionCoreResourceVersion *)self major];
-  v6 = [(VisionCoreResourceVersion *)v4 major];
-  if (v5 < v6)
+  major = [(VisionCoreResourceVersion *)self major];
+  major2 = [(VisionCoreResourceVersion *)compareCopy major];
+  if (major < major2)
   {
     goto LABEL_3;
   }
 
-  if (v5 > v6)
+  if (major > major2)
   {
     goto LABEL_7;
   }
 
-  v9 = [(VisionCoreResourceVersion *)self minor];
-  v10 = [(VisionCoreResourceVersion *)v4 minor];
-  if (v9 < v10)
+  minor = [(VisionCoreResourceVersion *)self minor];
+  minor2 = [(VisionCoreResourceVersion *)compareCopy minor];
+  if (minor < minor2)
   {
 LABEL_3:
     v7 = -1;
     goto LABEL_8;
   }
 
-  if (v9 > v10)
+  if (minor > minor2)
   {
 LABEL_7:
     v7 = 1;
     goto LABEL_8;
   }
 
-  v11 = [(VisionCoreResourceVersion *)self micro];
-  v12 = [(VisionCoreResourceVersion *)v4 micro];
-  if (v11 < v12)
+  micro = [(VisionCoreResourceVersion *)self micro];
+  micro2 = [(VisionCoreResourceVersion *)compareCopy micro];
+  if (micro < micro2)
   {
     v7 = -1;
   }
 
   else
   {
-    v7 = v11 > v12;
+    v7 = micro > micro2;
   }
 
 LABEL_8:
@@ -103,21 +103,21 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)isEqualToResourceVersion:(id)a3
+- (BOOL)isEqualToResourceVersion:(id)version
 {
-  v4 = a3;
-  if (self == v4)
+  versionCopy = version;
+  if (self == versionCopy)
   {
     v8 = 1;
   }
 
   else
   {
-    v5 = [(VisionCoreResourceVersion *)self major];
-    if (v5 == [(VisionCoreResourceVersion *)v4 major]&& (v6 = [(VisionCoreResourceVersion *)self minor], v6 == [(VisionCoreResourceVersion *)v4 minor]))
+    major = [(VisionCoreResourceVersion *)self major];
+    if (major == [(VisionCoreResourceVersion *)versionCopy major]&& (v6 = [(VisionCoreResourceVersion *)self minor], v6 == [(VisionCoreResourceVersion *)versionCopy minor]))
     {
-      v7 = [(VisionCoreResourceVersion *)self micro];
-      v8 = v7 == [(VisionCoreResourceVersion *)v4 micro];
+      micro = [(VisionCoreResourceVersion *)self micro];
+      v8 = micro == [(VisionCoreResourceVersion *)versionCopy micro];
     }
 
     else
@@ -144,26 +144,26 @@ LABEL_8:
   return self;
 }
 
-- (VisionCoreResourceVersion)initWithMajor:(unsigned int)a3 minor:(unsigned int)a4 micro:(unsigned int)a5
+- (VisionCoreResourceVersion)initWithMajor:(unsigned int)major minor:(unsigned int)minor micro:(unsigned int)micro
 {
   v9.receiver = self;
   v9.super_class = VisionCoreResourceVersion;
   result = [(VisionCoreResourceVersion *)&v9 init];
   if (result)
   {
-    result->_major = a3;
-    result->_minor = a4;
-    result->_micro = a5;
+    result->_major = major;
+    result->_minor = minor;
+    result->_micro = micro;
   }
 
   return result;
 }
 
-+ (id)versionForStringRepresentation:(id)a3
++ (id)versionForStringRepresentation:(id)representation
 {
   v4 = MEMORY[0x1E696AE88];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithString:v5];
+  representationCopy = representation;
+  v6 = [[v4 alloc] initWithString:representationCopy];
 
   v12 = 0;
   v13 = 0;
@@ -199,7 +199,7 @@ LABEL_8:
     if ([v6 isAtEnd])
     {
 LABEL_7:
-      v9 = [a1 alloc];
+      v9 = [self alloc];
       v8 = [v9 initWithMajor:v13 minor:v12 micro:v11];
       goto LABEL_8;
     }

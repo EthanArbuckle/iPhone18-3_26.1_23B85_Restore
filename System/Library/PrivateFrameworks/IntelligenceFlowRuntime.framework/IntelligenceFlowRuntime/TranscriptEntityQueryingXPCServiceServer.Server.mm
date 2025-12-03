@@ -1,14 +1,14 @@
 @interface TranscriptEntityQueryingXPCServiceServer.Server
-- (void)getTranscriptEntitiesWithParameters:(id)a3 reply:(id)a4;
+- (void)getTranscriptEntitiesWithParameters:(id)parameters reply:(id)reply;
 @end
 
 @implementation TranscriptEntityQueryingXPCServiceServer.Server
 
-- (void)getTranscriptEntitiesWithParameters:(id)a3 reply:(id)a4
+- (void)getTranscriptEntitiesWithParameters:(id)parameters reply:(id)reply
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
-  v11 = self;
+  v6 = _Block_copy(reply);
+  parametersCopy = parameters;
+  selfCopy = self;
   v8 = sub_22BDB4304();
   v10 = v9;
 

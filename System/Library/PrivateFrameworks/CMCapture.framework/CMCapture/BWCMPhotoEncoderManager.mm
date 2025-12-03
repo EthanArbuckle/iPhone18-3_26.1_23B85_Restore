@@ -1,17 +1,17 @@
 @interface BWCMPhotoEncoderManager
 + (void)initialize;
-- (BWCMPhotoEncoderManager)initWithDeferredPhotoProcessorEnabled:(BOOL)a3;
+- (BWCMPhotoEncoderManager)initWithDeferredPhotoProcessorEnabled:(BOOL)enabled;
 - (NSString)description;
-- (int)addAlternateImageWithDerivedImageHandles:(id)a3 options:(id)a4 parentImageHandle:(int64_t)a5 alternateGroupHandleInOut:(int64_t *)a6;
-- (int)addAuxImage:(__CVBuffer *)a3 type:(int)a4 auxImageMetadata:(CGImageMetadata *)a5 options:(id)a6 parentImageHandle:(int64_t)a7 auxImageHandleOut:(int64_t *)a8;
-- (int)addAuxImageMetadata:(CGImageMetadata *)a3 type:(int)a4 auxImageHandle:(int64_t)a5 options:(id)a6 parentImageHandle:(int64_t)a7;
-- (int)addCustomMetadataContents:(id)a3 URI:(id)a4 name:(id)a5;
-- (int)addMainImage:(__CVBuffer *)a3 metadata:(id)a4 options:(id)a5 imageHandleOut:(int64_t *)a6;
-- (int)addThumbnailImage:(__CVBuffer *)a3 options:(id)a4 parentImageHandle:(int64_t)a5;
+- (int)addAlternateImageWithDerivedImageHandles:(id)handles options:(id)options parentImageHandle:(int64_t)handle alternateGroupHandleInOut:(int64_t *)out;
+- (int)addAuxImage:(__CVBuffer *)image type:(int)type auxImageMetadata:(CGImageMetadata *)metadata options:(id)options parentImageHandle:(int64_t)handle auxImageHandleOut:(int64_t *)out;
+- (int)addAuxImageMetadata:(CGImageMetadata *)metadata type:(int)type auxImageHandle:(int64_t)handle options:(id)options parentImageHandle:(int64_t)imageHandle;
+- (int)addCustomMetadataContents:(id)contents URI:(id)i name:(id)name;
+- (int)addMainImage:(__CVBuffer *)image metadata:(id)metadata options:(id)options imageHandleOut:(int64_t *)out;
+- (int)addThumbnailImage:(__CVBuffer *)image options:(id)options parentImageHandle:(int64_t)handle;
 - (int)closeContainer;
-- (int)closeContainerAndCopySurfaceOut:(__IOSurface *)a3;
-- (int)openContainerWithOptions:(id)a3 settingsID:(int64_t)a4;
-- (int)tagStereoPairGroupWithStereoPhotoImageHandles:(id *)a3 groupMetadata:(id)a4;
+- (int)closeContainerAndCopySurfaceOut:(__IOSurface *)out;
+- (int)openContainerWithOptions:(id)options settingsID:(int64_t)d;
+- (int)tagStereoPairGroupWithStereoPhotoImageHandles:(id *)handles groupMetadata:(id)metadata;
 - (void)dealloc;
 @end
 
@@ -19,7 +19,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -28,9 +28,9 @@
   }
 }
 
-- (BWCMPhotoEncoderManager)initWithDeferredPhotoProcessorEnabled:(BOOL)a3
+- (BWCMPhotoEncoderManager)initWithDeferredPhotoProcessorEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v20.receiver = self;
   v20.super_class = BWCMPhotoEncoderManager;
   v21 = 0;
@@ -46,7 +46,7 @@
     v19[1] = MEMORY[0x1E695E118];
     v7 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v19, v18, 2)}];
     v8 = v7;
-    if (v3)
+    if (enabledCopy)
     {
       [v7 setObject:&unk_1F2246120 forKeyedSubscript:*MEMORY[0x1E69919D0]];
     }
@@ -117,19 +117,19 @@
   return [v3 stringWithFormat:@"<%@ %p>: CMPhotoCompressionSession: %p%@", v4, self, photoCompressionSession, v6];
 }
 
-- (int)openContainerWithOptions:(id)a3 settingsID:(int64_t)a4
+- (int)openContainerWithOptions:(id)options settingsID:(int64_t)d
 {
   v7 = CMPhotoCompressionSessionOpenEmptyContainer();
   if (!v7)
   {
-    self->_currentSettingsID = a4;
+    self->_currentSettingsID = d;
   }
 
-  self->_containerFormat = [objc_msgSend(a3 objectForKeyedSubscript:{*MEMORY[0x1E6991870]), "intValue"}];
+  self->_containerFormat = [objc_msgSend(options objectForKeyedSubscript:{*MEMORY[0x1E6991870]), "intValue"}];
   return v7;
 }
 
-- (int)addMainImage:(__CVBuffer *)a3 metadata:(id)a4 options:(id)a5 imageHandleOut:(int64_t *)a6
+- (int)addMainImage:(__CVBuffer *)image metadata:(id)metadata options:(id)options imageHandleOut:(int64_t *)out
 {
   if (self->_asyncEncoding)
   {
@@ -142,31 +142,31 @@
   }
 }
 
-- (int)addThumbnailImage:(__CVBuffer *)a3 options:(id)a4 parentImageHandle:(int64_t)a5
+- (int)addThumbnailImage:(__CVBuffer *)image options:(id)options parentImageHandle:(int64_t)handle
 {
   asyncEncoding = self->_asyncEncoding;
   photoCompressionSession = self->_photoCompressionSession;
   if (asyncEncoding)
   {
-    return MEMORY[0x1EEDF11B8](photoCompressionSession, a5, a4, a3, 0);
+    return MEMORY[0x1EEDF11B8](photoCompressionSession, handle, options, image, 0);
   }
 
   else
   {
-    return MEMORY[0x1EEDF11B0](photoCompressionSession, a5, a4, a3);
+    return MEMORY[0x1EEDF11B0](photoCompressionSession, handle, options, image);
   }
 }
 
-- (int)addAuxImage:(__CVBuffer *)a3 type:(int)a4 auxImageMetadata:(CGImageMetadata *)a5 options:(id)a6 parentImageHandle:(int64_t)a7 auxImageHandleOut:(int64_t *)a8
+- (int)addAuxImage:(__CVBuffer *)image type:(int)type auxImageMetadata:(CGImageMetadata *)metadata options:(id)options parentImageHandle:(int64_t)handle auxImageHandleOut:(int64_t *)out
 {
-  v13 = pem_cmPhotoAuxImageTypeForPhotoEncoderNodeAuxImageType(a4);
+  v13 = pem_cmPhotoAuxImageTypeForPhotoEncoderNodeAuxImageType(type);
   if (v13 == 4)
   {
-    v15 = pem_cmPhotoAuxImageCustomTypeURNForPhotoEncoderNodeAuxImageType(a4);
+    v15 = pem_cmPhotoAuxImageCustomTypeURNForPhotoEncoderNodeAuxImageType(type);
     if (v15)
     {
       v16 = v15;
-      v17 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a6];
+      v17 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:options];
       [v17 setObject:v16 forKeyedSubscript:*MEMORY[0x1E69918B0]];
     }
   }
@@ -176,11 +176,11 @@
     return -12780;
   }
 
-  if (a3)
+  if (image)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
-      IOSurface = CVPixelBufferGetIOSurface(a3);
+      IOSurface = CVPixelBufferGetIOSurface(image);
       if (IOSurface)
       {
         v19 = IOSurface;
@@ -209,16 +209,16 @@
   else
   {
     v14 = 0;
-    if (a8)
+    if (out)
     {
-      *a8 = 0;
+      *out = 0;
     }
   }
 
   return v14;
 }
 
-- (int)tagStereoPairGroupWithStereoPhotoImageHandles:(id *)a3 groupMetadata:(id)a4
+- (int)tagStereoPairGroupWithStereoPhotoImageHandles:(id *)handles groupMetadata:(id)metadata
 {
   v4 = CMPhotoCompressionSessionAddGroup();
   if (v4)
@@ -269,9 +269,9 @@
   return v8;
 }
 
-- (int)closeContainerAndCopySurfaceOut:(__IOSurface *)a3
+- (int)closeContainerAndCopySurfaceOut:(__IOSurface *)out
 {
-  if (a3)
+  if (out)
   {
     v4 = CMPhotoCompressionSessionCloseContainerAndCopyBacking();
     if (!v4)
@@ -316,9 +316,9 @@ LABEL_4:
   return v3;
 }
 
-- (int)addAuxImageMetadata:(CGImageMetadata *)a3 type:(int)a4 auxImageHandle:(int64_t)a5 options:(id)a6 parentImageHandle:(int64_t)a7
+- (int)addAuxImageMetadata:(CGImageMetadata *)metadata type:(int)type auxImageHandle:(int64_t)handle options:(id)options parentImageHandle:(int64_t)imageHandle
 {
-  if (!pem_cmPhotoAuxImageTypeForPhotoEncoderNodeAuxImageType(a4))
+  if (!pem_cmPhotoAuxImageTypeForPhotoEncoderNodeAuxImageType(type))
   {
     return -12780;
   }
@@ -332,11 +332,11 @@ LABEL_4:
   return v7;
 }
 
-- (int)addAlternateImageWithDerivedImageHandles:(id)a3 options:(id)a4 parentImageHandle:(int64_t)a5 alternateGroupHandleInOut:(int64_t *)a6
+- (int)addAlternateImageWithDerivedImageHandles:(id)handles options:(id)options parentImageHandle:(int64_t)handle alternateGroupHandleInOut:(int64_t *)out
 {
-  if (a6)
+  if (out)
   {
-    if (*a6 == -1)
+    if (*out == -1)
     {
       v9 = OUTLINED_FUNCTION_2_97();
       if (v9)
@@ -344,7 +344,7 @@ LABEL_4:
         goto LABEL_18;
       }
 
-      *a6 = -1;
+      *out = -1;
     }
   }
 
@@ -357,7 +357,7 @@ LABEL_4:
     }
   }
 
-  if (![a3 count])
+  if (![handles count])
   {
     return 0;
   }
@@ -399,14 +399,14 @@ LABEL_19:
   return v11;
 }
 
-- (int)addCustomMetadataContents:(id)a3 URI:(id)a4 name:(id)a5
+- (int)addCustomMetadataContents:(id)contents URI:(id)i name:(id)name
 {
   v5 = 0;
-  if (a3)
+  if (contents)
   {
-    if (a4)
+    if (i)
     {
-      if (a5)
+      if (name)
       {
         v12[3] = 0;
         v8 = [MEMORY[0x1E696AE40] dataWithPropertyList:? format:? options:? error:?];
@@ -415,9 +415,9 @@ LABEL_19:
         v11[0] = *MEMORY[0x1E6991A00];
         v11[1] = v9;
         v12[0] = v8;
-        v12[1] = a4;
+        v12[1] = i;
         v11[2] = *MEMORY[0x1E6991A08];
-        v12[2] = a5;
+        v12[2] = name;
         [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:3];
         v5 = CMPhotoCompressionSessionAddCustomMetadata();
         if (v5)

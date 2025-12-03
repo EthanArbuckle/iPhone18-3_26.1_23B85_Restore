@@ -7,16 +7,16 @@
 
 - (uint64_t)accessibilityContainerType
 {
-  v1 = [a1 storedAccessibilityContainerType];
-  v2 = [v1 integerValue];
+  storedAccessibilityContainerType = [self storedAccessibilityContainerType];
+  integerValue = [storedAccessibilityContainerType integerValue];
 
-  return v2;
+  return integerValue;
 }
 
 - (void)setAccessibilityContainerType:()UIAccessibilityContainer
 {
   v2 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-  objc_setAssociatedObject(a1, &AXContainerTypeIdentifier, v2, 1);
+  objc_setAssociatedObject(self, &AXContainerTypeIdentifier, v2, 1);
 }
 
 @end

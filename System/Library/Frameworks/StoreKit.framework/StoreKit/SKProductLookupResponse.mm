@@ -1,44 +1,44 @@
 @interface SKProductLookupResponse
-- (SKProductLookupResponse)initWithCoder:(id)a3;
-- (SKProductLookupResponse)initWithResult:(id)a3 extensionID:(id)a4 productURL:(id)a5 isEntitled:(BOOL)a6 parameters:(id)a7 deepLinkURL:(id)a8 hasPresentationEntitlement:(BOOL)a9;
-- (void)encodeWithCoder:(id)a3;
+- (SKProductLookupResponse)initWithCoder:(id)coder;
+- (SKProductLookupResponse)initWithResult:(id)result extensionID:(id)d productURL:(id)l isEntitled:(BOOL)entitled parameters:(id)parameters deepLinkURL:(id)rL hasPresentationEntitlement:(BOOL)entitlement;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKProductLookupResponse
 
-- (SKProductLookupResponse)initWithResult:(id)a3 extensionID:(id)a4 productURL:(id)a5 isEntitled:(BOOL)a6 parameters:(id)a7 deepLinkURL:(id)a8 hasPresentationEntitlement:(BOOL)a9
+- (SKProductLookupResponse)initWithResult:(id)result extensionID:(id)d productURL:(id)l isEntitled:(BOOL)entitled parameters:(id)parameters deepLinkURL:(id)rL hasPresentationEntitlement:(BOOL)entitlement
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v23 = a7;
-  v18 = a8;
+  resultCopy = result;
+  dCopy = d;
+  lCopy = l;
+  parametersCopy = parameters;
+  rLCopy = rL;
   v24.receiver = self;
   v24.super_class = SKProductLookupResponse;
   v19 = [(SKProductLookupResponse *)&v24 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_resultDictionary, a3);
-    objc_storeStrong(&v20->_extensionBundleID, a4);
-    objc_storeStrong(&v20->_productURL, a5);
-    v20->_isEntitled = a6;
-    objc_storeStrong(&v20->_parameters, a7);
-    objc_storeStrong(&v20->_deepLinkURL, a8);
-    v20->_hasPresentationEntitlement = a9;
+    objc_storeStrong(&v19->_resultDictionary, result);
+    objc_storeStrong(&v20->_extensionBundleID, d);
+    objc_storeStrong(&v20->_productURL, l);
+    v20->_isEntitled = entitled;
+    objc_storeStrong(&v20->_parameters, parameters);
+    objc_storeStrong(&v20->_deepLinkURL, rL);
+    v20->_hasPresentationEntitlement = entitlement;
   }
 
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   resultDictionary = self->_resultDictionary;
   v12 = 0;
   v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:resultDictionary requiringSecureCoding:1 error:&v12];
   v7 = v12;
-  [v4 encodeObject:v6 forKey:@"resultDictionary"];
+  [coderCopy encodeObject:v6 forKey:@"resultDictionary"];
   if (v7)
   {
     if (SKLogHandleForCategory_onceToken_1 != -1)
@@ -69,23 +69,23 @@
     }
   }
 
-  [v4 encodeObject:v9 forKey:@"parameters"];
-  [v4 encodeObject:self->_extensionBundleID forKey:@"extensionBundleID"];
-  [v4 encodeObject:self->_productURL forKey:@"productURL"];
-  [v4 encodeObject:self->_deepLinkURL forKey:@"deepLinkURL"];
-  [v4 encodeBool:self->_isEntitled forKey:@"isEntitled"];
-  [v4 encodeBool:self->_hasPresentationEntitlement forKey:@"hasPresentationEntitlement"];
+  [coderCopy encodeObject:v9 forKey:@"parameters"];
+  [coderCopy encodeObject:self->_extensionBundleID forKey:@"extensionBundleID"];
+  [coderCopy encodeObject:self->_productURL forKey:@"productURL"];
+  [coderCopy encodeObject:self->_deepLinkURL forKey:@"deepLinkURL"];
+  [coderCopy encodeBool:self->_isEntitled forKey:@"isEntitled"];
+  [coderCopy encodeBool:self->_hasPresentationEntitlement forKey:@"hasPresentationEntitlement"];
 }
 
-- (SKProductLookupResponse)initWithCoder:(id)a3
+- (SKProductLookupResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v33.receiver = self;
   v33.super_class = SKProductLookupResponse;
   v5 = [(SKProductLookupResponse *)&v33 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resultDictionary"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resultDictionary"];
     v7 = MEMORY[0x1E695DFD8];
     v8 = objc_opt_class();
     v9 = objc_opt_class();
@@ -114,21 +114,21 @@
     resultDictionary = v5->_resultDictionary;
     v5->_resultDictionary = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleID"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleID"];
     extensionBundleID = v5->_extensionBundleID;
     v5->_extensionBundleID = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productURL"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productURL"];
     productURL = v5->_productURL;
     v5->_productURL = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deepLinkURL"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deepLinkURL"];
     deepLinkURL = v5->_deepLinkURL;
     v5->_deepLinkURL = v23;
 
-    v5->_isEntitled = [v4 decodeBoolForKey:@"isEntitled"];
-    v5->_hasPresentationEntitlement = [v4 decodeBoolForKey:@"hasPresentationEntitlement"];
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parameters"];
+    v5->_isEntitled = [coderCopy decodeBoolForKey:@"isEntitled"];
+    v5->_hasPresentationEntitlement = [coderCopy decodeBoolForKey:@"hasPresentationEntitlement"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parameters"];
     v31 = 0;
     v26 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v14 fromData:v25 error:&v31];
     v27 = v31;

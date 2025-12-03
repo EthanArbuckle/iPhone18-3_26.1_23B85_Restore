@@ -1,76 +1,76 @@
 @interface CHSynthesisResult
 - ($196E0A09E4C4E138EEBEC6372622051A)principalLines;
-- (CHSynthesisResult)initWithCoder:(id)a3;
-- (CHSynthesisResult)initWithContent:(id)a3 drawing:(id)a4;
-- (CHSynthesisResult)initWithContent:(id)a3 drawing:(id)a4 segmentContents:(id)a5 segmentStrokeIndexes:(id)a6 inventoryDebuggingStyleDrawing:(id)a7 inventoryDebuggingStyleContent:(id)a8 numberOfNotSynthesizedCharacters:(unint64_t)a9;
+- (CHSynthesisResult)initWithCoder:(id)coder;
+- (CHSynthesisResult)initWithContent:(id)content drawing:(id)drawing;
+- (CHSynthesisResult)initWithContent:(id)content drawing:(id)drawing segmentContents:(id)contents segmentStrokeIndexes:(id)indexes inventoryDebuggingStyleDrawing:(id)styleDrawing inventoryDebuggingStyleContent:(id)styleContent numberOfNotSynthesizedCharacters:(unint64_t)characters;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)alignAlphaShapesToDrawing:(id)a3 allowAnisotropicScaling:(BOOL)a4;
-- (void)alignProportionsAndPositionsToDrawing:(id)a3 allowAnisotropicScaling:(BOOL)a4;
-- (void)append:(id)a3;
-- (void)applyDesiredDistanceBetweenDigitCenters:(double)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateSubresultsWithBlock:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)alignAlphaShapesToDrawing:(id)drawing allowAnisotropicScaling:(BOOL)scaling;
+- (void)alignProportionsAndPositionsToDrawing:(id)drawing allowAnisotropicScaling:(BOOL)scaling;
+- (void)append:(id)append;
+- (void)applyDesiredDistanceBetweenDigitCenters:(double)centers;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateSubresultsWithBlock:(id)block;
 - (void)resampleDrawing;
-- (void)scaleDrawingWithWidth:(double)a3 height:(double)a4 desiredDistanceBetweenDigitCenters:(double)a5;
-- (void)setPrincipalLines:(id *)a3;
+- (void)scaleDrawingWithWidth:(double)width height:(double)height desiredDistanceBetweenDigitCenters:(double)centers;
+- (void)setPrincipalLines:(id *)lines;
 @end
 
 @implementation CHSynthesisResult
 
-- (CHSynthesisResult)initWithContent:(id)a3 drawing:(id)a4
+- (CHSynthesisResult)initWithContent:(id)content drawing:(id)drawing
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v13 = objc_msgSend_copy(v6, v8, v9, v10, v11, v12);
+  contentCopy = content;
+  drawingCopy = drawing;
+  v13 = objc_msgSend_copy(contentCopy, v8, v9, v10, v11, v12);
   v37[0] = v13;
   v17 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v14, v37, 1, v15, v16);
   v18 = MEMORY[0x1E696AC90];
-  v24 = objc_msgSend_strokeCount(v7, v19, v20, v21, v22, v23);
+  v24 = objc_msgSend_strokeCount(drawingCopy, v19, v20, v21, v22, v23);
   v28 = objc_msgSend_indexSetWithIndexesInRange_(v18, v25, 0, v24, v26, v27);
   v36 = v28;
   v32 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v29, &v36, 1, v30, v31);
-  v34 = objc_msgSend_initWithContent_drawing_segmentContents_segmentStrokeIndexes_numberOfNotSynthesizedCharacters_(self, v33, v6, v7, v17, v32, 0);
+  v34 = objc_msgSend_initWithContent_drawing_segmentContents_segmentStrokeIndexes_numberOfNotSynthesizedCharacters_(self, v33, contentCopy, drawingCopy, v17, v32, 0);
 
   return v34;
 }
 
-- (CHSynthesisResult)initWithContent:(id)a3 drawing:(id)a4 segmentContents:(id)a5 segmentStrokeIndexes:(id)a6 inventoryDebuggingStyleDrawing:(id)a7 inventoryDebuggingStyleContent:(id)a8 numberOfNotSynthesizedCharacters:(unint64_t)a9
+- (CHSynthesisResult)initWithContent:(id)content drawing:(id)drawing segmentContents:(id)contents segmentStrokeIndexes:(id)indexes inventoryDebuggingStyleDrawing:(id)styleDrawing inventoryDebuggingStyleContent:(id)styleContent numberOfNotSynthesizedCharacters:(unint64_t)characters
 {
   v118 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  contentCopy = content;
+  drawingCopy = drawing;
+  contentsCopy = contents;
+  indexesCopy = indexes;
+  styleDrawingCopy = styleDrawing;
+  styleContentCopy = styleContent;
   v113.receiver = self;
   v113.super_class = CHSynthesisResult;
   v26 = [(CHSynthesisResult *)&v113 init];
   if (v26)
   {
-    v27 = objc_msgSend_copy(v15, v21, v22, v23, v24, v25);
+    v27 = objc_msgSend_copy(contentCopy, v21, v22, v23, v24, v25);
     content = v26->_content;
     v26->_content = v27;
 
-    v34 = objc_msgSend_copy(v16, v29, v30, v31, v32, v33);
+    v34 = objc_msgSend_copy(drawingCopy, v29, v30, v31, v32, v33);
     drawing = v26->_drawing;
     v26->_drawing = v34;
 
-    v41 = objc_msgSend_copy(v17, v36, v37, v38, v39, v40);
+    v41 = objc_msgSend_copy(contentsCopy, v36, v37, v38, v39, v40);
     segmentContents = v26->_segmentContents;
     v26->_segmentContents = v41;
 
-    v48 = objc_msgSend_copy(v18, v43, v44, v45, v46, v47);
+    v48 = objc_msgSend_copy(indexesCopy, v43, v44, v45, v46, v47);
     segmentStrokeIndexes = v26->_segmentStrokeIndexes;
     v26->_segmentStrokeIndexes = v48;
 
-    v55 = objc_msgSend_copy(v19, v50, v51, v52, v53, v54);
+    v55 = objc_msgSend_copy(styleDrawingCopy, v50, v51, v52, v53, v54);
     inventoryDebuggingStyleDrawing = v26->_inventoryDebuggingStyleDrawing;
     v26->_inventoryDebuggingStyleDrawing = v55;
 
-    v62 = objc_msgSend_copy(v20, v57, v58, v59, v60, v61);
+    v62 = objc_msgSend_copy(styleContentCopy, v57, v58, v59, v60, v61);
     inventoryDebuggingStyleContent = v26->_inventoryDebuggingStyleContent;
     v26->_inventoryDebuggingStyleContent = v62;
 
@@ -116,38 +116,38 @@
       }
     }
 
-    v26->_numberOfNotSynthesizedCharacters = a9;
+    v26->_numberOfNotSynthesizedCharacters = characters;
     v26->_averageDistanceBetweenElements = -1.0;
   }
 
   return v26;
 }
 
-- (CHSynthesisResult)initWithCoder:(id)a3
+- (CHSynthesisResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v6, v5, @"content", v7, v8);
+  v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v6, v5, @"content", v7, v8);
   v10 = objc_opt_class();
-  v14 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v10, @"drawing", v12, v13);
+  v14 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v10, @"drawing", v12, v13);
   v15 = objc_opt_class();
-  v19 = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(v4, v16, v15, @"segmentContents", v17, v18);
+  v19 = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(coderCopy, v16, v15, @"segmentContents", v17, v18);
   v20 = objc_opt_class();
-  v24 = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(v4, v21, v20, @"segmentStrokeIndexes", v22, v23);
+  v24 = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(coderCopy, v21, v20, @"segmentStrokeIndexes", v22, v23);
   v25 = objc_opt_class();
-  v29 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v26, v25, @"inventoryDebuggingStyleDrawing", v27, v28);
+  v29 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v26, v25, @"inventoryDebuggingStyleDrawing", v27, v28);
   v30 = objc_opt_class();
-  v34 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v31, v30, @"inventoryDebuggingStyleContent", v32, v33);
-  v39 = objc_msgSend_decodeIntegerForKey_(v4, v35, @"numberOfNotSynthesizedCharacters", v36, v37, v38);
+  v34 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v31, v30, @"inventoryDebuggingStyleContent", v32, v33);
+  v39 = objc_msgSend_decodeIntegerForKey_(coderCopy, v35, @"numberOfNotSynthesizedCharacters", v36, v37, v38);
   v41 = objc_msgSend_initWithContent_drawing_segmentContents_segmentStrokeIndexes_inventoryDebuggingStyleDrawing_inventoryDebuggingStyleContent_numberOfNotSynthesizedCharacters_(self, v40, v9, v14, v19, v24, v29, v34, v39);
   v42 = objc_opt_class();
-  v46 = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(v4, v43, v42, @"subresults", v44, v45);
+  v46 = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(coderCopy, v43, v42, @"subresults", v44, v45);
   v52 = objc_msgSend_mutableCopy(v46, v47, v48, v49, v50, v51);
   subresults = v41->_subresults;
   v41->_subresults = v52;
 
   v65 = 0;
-  v54 = v4;
+  v54 = coderCopy;
   v58 = objc_msgSend_decodeBytesForKey_returnedLength_(v54, v55, @"principalLines", &v65, v56, v57);
   if (v58)
   {
@@ -162,7 +162,7 @@
     }
   }
 
-  objc_msgSend_decodeFloatForKey_(v4, v58, @"elementsDistance", v59, v60, v61);
+  objc_msgSend_decodeFloatForKey_(coderCopy, v58, @"elementsDistance", v59, v60, v61);
   v41->_averageDistanceBetweenElements = v63;
 
   return v41;
@@ -192,37 +192,37 @@
   return self;
 }
 
-- (void)setPrincipalLines:(id *)a3
+- (void)setPrincipalLines:(id *)lines
 {
   drawing = self->_drawing;
   if (drawing)
   {
-    objc_msgSend_bounds(drawing, a2, a3, v3, v4, v5);
+    objc_msgSend_bounds(drawing, a2, lines, v3, v4, v5);
     MinX = CGRectGetMinX(v23);
     objc_msgSend_bounds(self->_drawing, v10, v11, v12, v13, v14);
     MaxX = CGRectGetMaxX(v24);
-    a3->var3.var0.x = MinX;
-    a3->var1.var0.x = MinX;
-    a3->var0.var0.x = MinX;
-    a3->var2.var0.x = MinX;
-    a3->var3.var1.x = MaxX;
-    a3->var1.var1.x = MaxX;
-    a3->var0.var1.x = MaxX;
-    a3->var2.var1.x = MaxX;
+    lines->var3.var0.x = MinX;
+    lines->var1.var0.x = MinX;
+    lines->var0.var0.x = MinX;
+    lines->var2.var0.x = MinX;
+    lines->var3.var1.x = MaxX;
+    lines->var1.var1.x = MaxX;
+    lines->var0.var1.x = MaxX;
+    lines->var2.var1.x = MaxX;
   }
 
   engaged = self->_principalLines.__engaged_;
-  var0 = a3->var1.var0;
-  var1 = a3->var1.var1;
-  v19 = a3->var0.var1;
-  *&self->_principalLines.var0.__null_state_ = a3->var0.var0;
+  var0 = lines->var1.var0;
+  var1 = lines->var1.var1;
+  v19 = lines->var0.var1;
+  *&self->_principalLines.var0.__null_state_ = lines->var0.var0;
   self->_principalLines.var0.base.end = var1;
   self->_principalLines.var0.base.start = var0;
   self->_principalLines.var0.descender.end = v19;
-  v20 = a3->var3.var0;
-  v21 = a3->var3.var1;
-  v22 = a3->var2.var1;
-  self->_principalLines.var0.median.start = a3->var2.var0;
+  v20 = lines->var3.var0;
+  v21 = lines->var3.var1;
+  v22 = lines->var2.var1;
+  self->_principalLines.var0.median.start = lines->var2.var0;
   self->_principalLines.var0.top.end = v21;
   self->_principalLines.var0.top.start = v20;
   self->_principalLines.var0.median.end = v22;
@@ -232,7 +232,7 @@
   }
 }
 
-- (void)applyDesiredDistanceBetweenDigitCenters:(double)a3
+- (void)applyDesiredDistanceBetweenDigitCenters:(double)centers
 {
   objc_msgSend_bounds(self->_drawing, a2, v3, v4, v5, v6);
   Height = CGRectGetHeight(v103);
@@ -242,7 +242,7 @@
   {
     v21 = 0;
     v22 = Height * 0.05;
-    v23 = a3 * 0.5;
+    v23 = centers * 0.5;
     v24 = 0x8000000000000000;
     v25 = 0.0;
     v99 = 0x8000000000000000;
@@ -283,7 +283,7 @@
       if (v21 - 1 == v24)
       {
         objc_msgSend_bounds(v32, v61, v62, v63, v64, v65);
-        v67 = fmax(MidX + a3 - MaxX + v66 * -0.5, 0.0);
+        v67 = fmax(MidX + centers - MaxX + v66 * -0.5, 0.0);
       }
 
       else
@@ -320,7 +320,7 @@ LABEL_17:
   self->_drawing = v97;
 }
 
-- (void)scaleDrawingWithWidth:(double)a3 height:(double)a4 desiredDistanceBetweenDigitCenters:(double)a5
+- (void)scaleDrawingWithWidth:(double)width height:(double)height desiredDistanceBetweenDigitCenters:(double)centers
 {
   v256 = *MEMORY[0x1E69E9840];
   drawing = self->_drawing;
@@ -352,18 +352,18 @@ LABEL_17:
     objc_msgSend_bounds(v10, v11, v12, v13, v14, v15);
     v19 = v18;
     objc_msgSend_bounds(v16, v20, v21, v22, v23, v24);
-    if (v19 < 0.001 || v30 < 0.001 || a3 < 0.001 && a4 < 0.001)
+    if (v19 < 0.001 || v30 < 0.001 || width < 0.001 && height < 0.001)
     {
       goto LABEL_40;
     }
 
-    v31 = a3 / v19;
-    v32 = a4 / v30;
-    if (a3 < 0.001 || a4 < 0.001)
+    v31 = width / v19;
+    v32 = height / v30;
+    if (width < 0.001 || height < 0.001)
     {
-      if (a3 < 0.001)
+      if (width < 0.001)
       {
-        if (a4 >= 0.001)
+        if (height >= 0.001)
         {
           objc_msgSend_bounds(v16, v25, v26, v27, v28, v29);
           v105 = v104;
@@ -407,9 +407,9 @@ LABEL_17:
             }
           }
 
-          if (a5 > 0.0)
+          if (centers > 0.0)
           {
-            objc_msgSend_applyDesiredDistanceBetweenDigitCenters_(self, v119, v120, v121, v122, v123, a5);
+            objc_msgSend_applyDesiredDistanceBetweenDigitCenters_(self, v119, v120, v121, v122, v123, centers);
           }
         }
       }
@@ -480,8 +480,8 @@ LABEL_17:
       v166 = objc_msgSend_drawingTransformedWithTranslation_scaleFactor_(v16, v161, v162, v163, v164, v165, -v154, -v160, v32);
 
       objc_msgSend_bounds(v166, v167, v168, v169, v170, v171);
-      v178 = a3 - v177;
-      if (a3 - v177 < 0.0)
+      v178 = width - v177;
+      if (width - v177 < 0.0)
       {
         v215 = sub_183761FE4(9);
         if (os_log_type_enabled(v215, OS_LOG_TYPE_ERROR))
@@ -641,39 +641,39 @@ LABEL_40:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v46 = a3;
-  objc_msgSend_encodeObject_forKey_(v46, v4, self->_content, @"content", v5, v6);
-  objc_msgSend_encodeObject_forKey_(v46, v7, self->_drawing, @"drawing", v8, v9);
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v4, self->_content, @"content", v5, v6);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->_drawing, @"drawing", v8, v9);
   if (self->_principalLines.__engaged_)
   {
     v13 = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], v10, &self->_principalLines, 128, v11, v12);
     v14 = v13;
     v20 = objc_msgSend_bytes(v14, v15, v16, v17, v18, v19);
     v26 = objc_msgSend_length(v13, v21, v22, v23, v24, v25);
-    objc_msgSend_encodeBytes_length_forKey_(v46, v27, v20, v26, @"principalLines", v28);
+    objc_msgSend_encodeBytes_length_forKey_(coderCopy, v27, v20, v26, @"principalLines", v28);
   }
 
-  objc_msgSend_encodeObject_forKey_(v46, v10, self->_segmentContents, @"segmentContents", v11, v12);
-  objc_msgSend_encodeObject_forKey_(v46, v29, self->_segmentStrokeIndexes, @"segmentStrokeIndexes", v30, v31);
-  objc_msgSend_encodeObject_forKey_(v46, v32, self->_subresults, @"subresults", v33, v34);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v10, self->_segmentContents, @"segmentContents", v11, v12);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v29, self->_segmentStrokeIndexes, @"segmentStrokeIndexes", v30, v31);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v32, self->_subresults, @"subresults", v33, v34);
   if (os_variant_has_internal_diagnostics())
   {
-    objc_msgSend_encodeObject_forKey_(v46, v35, self->_inventoryDebuggingStyleDrawing, @"inventoryDebuggingStyleDrawing", v36, v37);
-    objc_msgSend_encodeObject_forKey_(v46, v38, self->_inventoryDebuggingStyleContent, @"inventoryDebuggingStyleContent", v39, v40);
+    objc_msgSend_encodeObject_forKey_(coderCopy, v35, self->_inventoryDebuggingStyleDrawing, @"inventoryDebuggingStyleDrawing", v36, v37);
+    objc_msgSend_encodeObject_forKey_(coderCopy, v38, self->_inventoryDebuggingStyleContent, @"inventoryDebuggingStyleContent", v39, v40);
   }
 
-  objc_msgSend_encodeInteger_forKey_(v46, v35, self->_numberOfNotSynthesizedCharacters, @"numberOfNotSynthesizedCharacters", v36, v37);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v35, self->_numberOfNotSynthesizedCharacters, @"numberOfNotSynthesizedCharacters", v36, v37);
   averageDistanceBetweenElements = self->_averageDistanceBetweenElements;
   *&averageDistanceBetweenElements = averageDistanceBetweenElements;
-  objc_msgSend_encodeFloat_forKey_(v46, v42, @"elementsDistance", v43, v44, v45, averageDistanceBetweenElements);
+  objc_msgSend_encodeFloat_forKey_(coderCopy, v42, @"elementsDistance", v43, v44, v45, averageDistanceBetweenElements);
 }
 
-- (void)append:(id)a3
+- (void)append:(id)append
 {
   v109 = *MEMORY[0x1E69E9840];
-  v98 = a3;
+  appendCopy = append;
   if (!self->_subresults)
   {
     v9 = MEMORY[0x1E695DF70];
@@ -688,20 +688,20 @@ LABEL_40:
     }
   }
 
-  objc_msgSend_addObject_(self->_subresults, v4, v98, v6, v7, v8);
+  objc_msgSend_addObject_(self->_subresults, v4, appendCopy, v6, v7, v8);
   v22 = objc_msgSend_strokeCount(self->_drawing, v17, v18, v19, v20, v21);
   drawing = self->_drawing;
-  v29 = objc_msgSend_drawing(v98, v24, v25, v26, v27, v28);
+  v29 = objc_msgSend_drawing(appendCopy, v24, v25, v26, v27, v28);
   objc_msgSend_appendDrawing_(drawing, v30, v29, v31, v32, v33);
 
   content = self->_content;
-  v40 = objc_msgSend_content(v98, v35, v36, v37, v38, v39);
+  v40 = objc_msgSend_content(appendCopy, v35, v36, v37, v38, v39);
   v45 = objc_msgSend_stringByAppendingFormat_(content, v41, @"%@", v42, v43, v44, v40);
   v46 = self->_content;
   self->_content = v45;
 
   segmentContents = self->_segmentContents;
-  v53 = objc_msgSend_segmentContents(v98, v48, v49, v50, v51, v52);
+  v53 = objc_msgSend_segmentContents(appendCopy, v48, v49, v50, v51, v52);
   v58 = objc_msgSend_arrayByAddingObjectsFromArray_(segmentContents, v54, v53, v55, v56, v57);
   v59 = self->_segmentContents;
   self->_segmentContents = v58;
@@ -711,7 +711,7 @@ LABEL_40:
   v107 = 0u;
   v104 = 0u;
   v105 = 0u;
-  v70 = objc_msgSend_segmentStrokeIndexes(v98, v65, v66, v67, v68, v69);
+  v70 = objc_msgSend_segmentStrokeIndexes(appendCopy, v65, v66, v67, v68, v69);
   obj = v70;
   v78 = objc_msgSend_countByEnumeratingWithState_objects_count_(v70, v71, &v104, v108, 16, v72);
   if (v78)
@@ -755,10 +755,10 @@ LABEL_40:
   self->_segmentStrokeIndexes = v96;
 }
 
-- (void)enumerateSubresultsWithBlock:(id)a3
+- (void)enumerateSubresultsWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
+  blockCopy = block;
+  v5 = blockCopy;
   subresults = self->_subresults;
   if (subresults)
   {
@@ -766,18 +766,18 @@ LABEL_40:
     v12[1] = 3221225472;
     v12[2] = sub_1838D1D50;
     v12[3] = &unk_1E6DDF838;
-    v13 = v4;
+    v13 = blockCopy;
     objc_msgSend_enumerateObjectsUsingBlock_(subresults, v7, v12, v8, v9, v10);
   }
 
   else
   {
     v11 = 0;
-    (*(v4 + 2))(v4, self, &v11);
+    (*(blockCopy + 2))(blockCopy, self, &v11);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CHSynthesisResult alloc];
   result = objc_msgSend_initWithContent_drawing_segmentContents_segmentStrokeIndexes_inventoryDebuggingStyleDrawing_inventoryDebuggingStyleContent_numberOfNotSynthesizedCharacters_(v4, v5, self->_content, self->_drawing, self->_segmentContents, self->_segmentStrokeIndexes, self->_inventoryDebuggingStyleDrawing, self->_inventoryDebuggingStyleContent, self->_numberOfNotSynthesizedCharacters);
@@ -803,16 +803,16 @@ LABEL_40:
   return result;
 }
 
-- (void)alignProportionsAndPositionsToDrawing:(id)a3 allowAnisotropicScaling:(BOOL)a4
+- (void)alignProportionsAndPositionsToDrawing:(id)drawing allowAnisotropicScaling:(BOOL)scaling
 {
   v133 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v12 = v6;
-  if (v6)
+  drawingCopy = drawing;
+  v12 = drawingCopy;
+  if (drawingCopy)
   {
     if (self->_drawing)
     {
-      objc_msgSend_bounds(v6, v7, v8, v9, v10, v11);
+      objc_msgSend_bounds(drawingCopy, v7, v8, v9, v10, v11);
       rect = v13;
       v15 = v14;
       v17 = v16;
@@ -851,7 +851,7 @@ LABEL_40:
           v139.size.height = height;
           v31 = CGRectGetHeight(v139);
           v32 = v30 / v31;
-          if (a4)
+          if (scaling)
           {
             if (v29 / v122 <= v32)
             {
@@ -969,10 +969,10 @@ LABEL_40:
   }
 }
 
-- (void)alignAlphaShapesToDrawing:(id)a3 allowAnisotropicScaling:(BOOL)a4
+- (void)alignAlphaShapesToDrawing:(id)drawing allowAnisotropicScaling:(BOOL)scaling
 {
   v7 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  drawingCopy = drawing;
   sub_1838D25F0(&v6, self->_drawing);
 }
 

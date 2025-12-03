@@ -1,14 +1,14 @@
 @interface PhotosSlideTransition
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation PhotosSlideTransition
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1B3FC49E8(a3);
+  selfCopy = self;
+  sub_1B3FC49E8(transition);
   swift_unknownObjectRelease();
 }
 

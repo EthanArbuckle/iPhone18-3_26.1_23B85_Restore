@@ -1,11 +1,11 @@
 @interface TTRIIntentsSnippetViewController
 - (UITableView)tableView;
-- (_TtC27RemindersIntentsUIExtension32TTRIIntentsSnippetViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)desiredHeightForWidth:(double)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)configureViewForParameters:(id)a3 ofInteraction:(id)a4 context:(unint64_t)a5 completion:(id)a6;
-- (void)desiresInteractivity:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (_TtC27RemindersIntentsUIExtension32TTRIIntentsSnippetViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)desiredHeightForWidth:(double)width;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)configureViewForParameters:(id)parameters ofInteraction:(id)interaction context:(unint64_t)context completion:(id)completion;
+- (void)desiresInteractivity:(id)interactivity;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -18,7 +18,7 @@
   return Strong;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_10001F614();
   v7 = *(v6 - 8);
@@ -26,8 +26,8 @@
   __chkstk_darwin(v6);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_10001F5D4();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   v13 = sub_10001DE90(v10);
 
   (*(v7 + 8))(v10, v6);
@@ -37,11 +37,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100019530();
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_10001F614();
   v7 = *(v6 - 8);
@@ -49,16 +49,16 @@
   __chkstk_darwin(v6);
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_10001F5D4();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_10001E2C0();
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (_TtC27RemindersIntentsUIExtension32TTRIIntentsSnippetViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC27RemindersIntentsUIExtension32TTRIIntentsSnippetViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_10001FA84();
     v7 = v6;
@@ -70,11 +70,11 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10001A668(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10001A668(v5, v7, bundle);
 }
 
-- (double)desiredHeightForWidth:(double)a3
+- (double)desiredHeightForWidth:(double)width
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (!Strong)
@@ -83,7 +83,7 @@
   }
 
   v5 = Strong;
-  v6 = self;
+  selfCopy = self;
   [v5 contentSize];
   sub_10001AF6C(0, v7, v8, v7, v8);
   v10 = v9;
@@ -91,9 +91,9 @@
   return v10;
 }
 
-- (void)desiresInteractivity:(id)a3
+- (void)desiresInteractivity:(id)interactivity
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(interactivity);
   if (v3)
   {
     v4 = v3;
@@ -108,14 +108,14 @@
   }
 }
 
-- (void)configureViewForParameters:(id)a3 ofInteraction:(id)a4 context:(unint64_t)a5 completion:(id)a6
+- (void)configureViewForParameters:(id)parameters ofInteraction:(id)interaction context:(unint64_t)context completion:(id)completion
 {
-  v9 = _Block_copy(a6);
-  if (a3)
+  v9 = _Block_copy(completion);
+  if (parameters)
   {
     sub_100010E38(0, &qword_10002E018, INParameter_ptr);
     sub_10001F1D4(&qword_10002E020, &qword_10002E018, INParameter_ptr);
-    a3 = sub_10001FB74();
+    parameters = sub_10001FB74();
   }
 
   if (v9)
@@ -124,9 +124,9 @@
     v9 = sub_10001F0C4;
   }
 
-  v10 = a4;
-  v11 = self;
-  sub_10001EDE0(a3, a4, v9, v12, v13);
+  interactionCopy = interaction;
+  selfCopy = self;
+  sub_10001EDE0(parameters, interaction, v9, v12, v13);
   sub_10001F07C(v9);
 }
 

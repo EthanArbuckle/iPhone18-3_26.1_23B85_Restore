@@ -1,24 +1,24 @@
 @interface SSQueryIntentManager
-+ (BOOL)_demoteParsecForIntent:(id)a3 section:(id)a4 config:(id)a5;
-+ (BOOL)_hasMapsPOIResults:(id)a3;
-+ (BOOL)_isJaJP:(id)a3;
++ (BOOL)_demoteParsecForIntent:(id)intent section:(id)section config:(id)config;
++ (BOOL)_hasMapsPOIResults:(id)results;
++ (BOOL)_isJaJP:(id)p;
 + (BOOL)isEnabled;
-+ (BOOL)isServerResult:(id)a3;
-+ (id)_determineIntentAndStrength:(id)a3;
-+ (id)_getParsecMapsDetailedIdentifier:(id)a3;
-+ (id)_intentForQueryContext:(id)a3 sections:(id)a4;
-+ (id)_sectionConfigurationForIntentType:(id)a3 sections:(id)a4 config:(id)a5;
-+ (id)_suggestionConfigurationForIntent:(id)a3 queryContext:(id)a4 config:(id)a5;
-+ (id)_suggestionConfigurationOverrideForQueryContext:(id)a3 config:(id)a4;
-+ (id)applySectionPolicyForQueryContext:(id)a3 sections:(id)a4;
-+ (int)_intentForSection:(id)a3 withTopHit:(BOOL)a4;
-+ (int)_nextSectionModeling:(id)a3;
-+ (int)_postRetrievalModeling:(id)a3;
-+ (int)_prefixLengthModeling:(id)a3;
-+ (int)_queryUnderstandingModeling:(id)a3 intentHelper:(id)a4;
-+ (int)_ruleBasedIntent:(id)a3;
-+ (void)_prepareSectionInformation:(id)a3 intentHelper:(id)a4;
-+ (void)setQueryIntentForQueryContext:(id)a3 sections:(id)a4 rankingInfo:(id)a5;
++ (BOOL)isServerResult:(id)result;
++ (id)_determineIntentAndStrength:(id)strength;
++ (id)_getParsecMapsDetailedIdentifier:(id)identifier;
++ (id)_intentForQueryContext:(id)context sections:(id)sections;
++ (id)_sectionConfigurationForIntentType:(id)type sections:(id)sections config:(id)config;
++ (id)_suggestionConfigurationForIntent:(id)intent queryContext:(id)context config:(id)config;
++ (id)_suggestionConfigurationOverrideForQueryContext:(id)context config:(id)config;
++ (id)applySectionPolicyForQueryContext:(id)context sections:(id)sections;
++ (int)_intentForSection:(id)section withTopHit:(BOOL)hit;
++ (int)_nextSectionModeling:(id)modeling;
++ (int)_postRetrievalModeling:(id)modeling;
++ (int)_prefixLengthModeling:(id)modeling;
++ (int)_queryUnderstandingModeling:(id)modeling intentHelper:(id)helper;
++ (int)_ruleBasedIntent:(id)intent;
++ (void)_prepareSectionInformation:(id)information intentHelper:(id)helper;
++ (void)setQueryIntentForQueryContext:(id)context sections:(id)sections rankingInfo:(id)info;
 @end
 
 @implementation SSQueryIntentManager
@@ -32,55 +32,55 @@
   return v4 & v3;
 }
 
-+ (void)setQueryIntentForQueryContext:(id)a3 sections:(id)a4 rankingInfo:(id)a5
++ (void)setQueryIntentForQueryContext:(id)context sections:(id)sections rankingInfo:(id)info
 {
-  v13 = a3;
-  v7 = a4;
-  if ([a1 isEnabled])
+  contextCopy = context;
+  sectionsCopy = sections;
+  if ([self isEnabled])
   {
     v8 = +[SSQueryIntentManagerConfig sharedInstance];
-    v9 = [a1 _intentForQueryContext:v13 sections:v7];
+    v9 = [self _intentForQueryContext:contextCopy sections:sectionsCopy];
     v10 = objc_opt_new();
     [v10 setIntentType:{objc_msgSend(v9, "intentType")}];
-    v11 = [a1 _suggestionConfigurationForIntent:v9 queryContext:v13 config:v8];
+    v11 = [self _suggestionConfigurationForIntent:v9 queryContext:contextCopy config:v8];
     [v10 setSuggestionConfig:v11];
 
-    v12 = [a1 _sectionConfigurationForIntentType:v9 sections:v7 config:v8];
+    v12 = [self _sectionConfigurationForIntentType:v9 sections:sectionsCopy config:v8];
     [v10 setSectionConfig:v12];
 
-    [v13 setQueryIntent:v10];
+    [contextCopy setQueryIntent:v10];
   }
 }
 
-+ (id)applySectionPolicyForQueryContext:(id)a3 sections:(id)a4
++ (id)applySectionPolicyForQueryContext:(id)context sections:(id)sections
 {
   v65 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = [MEMORY[0x1E695DF70] array];
-  v10 = [MEMORY[0x1E695DF70] array];
-  v49 = [MEMORY[0x1E695DF70] array];
-  v11 = [v5 queryIntent];
-  if ([v11 intentType])
+  contextCopy = context;
+  sectionsCopy = sections;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
+  array5 = [MEMORY[0x1E695DF70] array];
+  queryIntent = [contextCopy queryIntent];
+  if ([queryIntent intentType])
   {
-    v12 = [v11 sectionConfig];
+    sectionConfig = [queryIntent sectionConfig];
 
-    if (v12)
+    if (sectionConfig)
     {
-      v48 = v10;
-      v46 = v8;
-      v45 = v5;
-      v43 = v11;
-      v13 = [v11 sectionConfig];
+      v48 = array4;
+      v46 = array2;
+      v45 = contextCopy;
+      v43 = queryIntent;
+      sectionConfig2 = [queryIntent sectionConfig];
       v57 = 0u;
       v58 = 0u;
       v59 = 0u;
       v60 = 0u;
-      v44 = v6;
-      obj = v6;
-      v14 = v49;
+      v44 = sectionsCopy;
+      obj = sectionsCopy;
+      v14 = array5;
       v52 = [obj countByEnumeratingWithState:&v57 objects:v64 count:16];
       if (!v52)
       {
@@ -88,7 +88,7 @@
       }
 
       v51 = *v58;
-      v47 = v13;
+      v47 = sectionConfig2;
       while (1)
       {
         for (i = 0; i != v52; ++i)
@@ -99,24 +99,24 @@
           }
 
           v16 = *(*(&v57 + 1) + 8 * i);
-          v17 = [v16 bundleIdentifier];
-          v18 = [v13 sectionDisplayStrategies];
-          v19 = [v18 objectForKeyedSubscript:v17];
-          v20 = [v19 intValue];
+          bundleIdentifier = [v16 bundleIdentifier];
+          sectionDisplayStrategies = [sectionConfig2 sectionDisplayStrategies];
+          v19 = [sectionDisplayStrategies objectForKeyedSubscript:bundleIdentifier];
+          intValue = [v19 intValue];
 
-          if (v20 > 2)
+          if (intValue > 2)
           {
-            if (v20 != 3)
+            if (intValue != 3)
             {
-              if (v20 == 5)
+              if (intValue == 5)
               {
-                v23 = v9;
-                v24 = v7;
+                v23 = array3;
+                v24 = array;
                 v25 = SSGeneralLog();
                 if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412290;
-                  v63 = v17;
+                  v63 = bundleIdentifier;
                   _os_log_impl(&dword_1D9F69000, v25, OS_LOG_TYPE_DEFAULT, "[SpotlightRanking][IntentModeling][Rule] Unhiding section %@ and results due to QU intent match", buf, 0xCu);
                 }
 
@@ -125,8 +125,8 @@
                 v56 = 0u;
                 v53 = 0u;
                 v54 = 0u;
-                v26 = [v16 resultSet];
-                v27 = [v26 countByEnumeratingWithState:&v53 objects:v61 count:16];
+                resultSet = [v16 resultSet];
+                v27 = [resultSet countByEnumeratingWithState:&v53 objects:v61 count:16];
                 if (v27)
                 {
                   v28 = v27;
@@ -137,45 +137,45 @@
                     {
                       if (*v54 != v29)
                       {
-                        objc_enumerationMutation(v26);
+                        objc_enumerationMutation(resultSet);
                       }
 
-                      v31 = [*(*(&v53 + 1) + 8 * j) rankingItem];
-                      [v31 setShouldHideUnderShowMore:0];
+                      rankingItem = [*(*(&v53 + 1) + 8 * j) rankingItem];
+                      [rankingItem setShouldHideUnderShowMore:0];
                     }
 
-                    v28 = [v26 countByEnumeratingWithState:&v53 objects:v61 count:16];
+                    v28 = [resultSet countByEnumeratingWithState:&v53 objects:v61 count:16];
                   }
 
                   while (v28);
                 }
 
-                v7 = v24;
-                v9 = v23;
-                v14 = v49;
-                v13 = v47;
+                array = v24;
+                array3 = v23;
+                v14 = array5;
+                sectionConfig2 = v47;
               }
 
 LABEL_26:
-              v32 = [v16 isInitiallyHidden];
+              isInitiallyHidden = [v16 isInitiallyHidden];
               v22 = v14;
-              if ((v32 & 1) == 0)
+              if ((isInitiallyHidden & 1) == 0)
               {
-                v33 = [v16 bundleIdentifier];
-                if ([v33 isEqualToString:@"com.apple.spotlight.tophits"])
+                bundleIdentifier2 = [v16 bundleIdentifier];
+                if ([bundleIdentifier2 isEqualToString:@"com.apple.spotlight.tophits"])
                 {
 
-                  v22 = v7;
+                  v22 = array;
                 }
 
                 else
                 {
-                  v36 = [v16 bundleIdentifier];
-                  v37 = [v36 isEqualToString:@"com.apple.searchd.suggestions"];
+                  bundleIdentifier3 = [v16 bundleIdentifier];
+                  v37 = [bundleIdentifier3 isEqualToString:@"com.apple.searchd.suggestions"];
 
                   if (v37)
                   {
-                    v22 = v7;
+                    v22 = array;
                   }
 
                   else
@@ -192,7 +192,7 @@ LABEL_26:
             if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v63 = v17;
+              v63 = bundleIdentifier;
               _os_log_impl(&dword_1D9F69000, v35, OS_LOG_TYPE_DEFAULT, "[SpotlightRanking][IntentModeling][Rule] Hiding section %@ under show more due to strong local intent.", buf, 0xCu);
             }
 
@@ -202,15 +202,15 @@ LABEL_26:
 
           else
           {
-            if (v20 != 1)
+            if (intValue != 1)
             {
-              if (v20 == 2)
+              if (intValue == 2)
               {
                 v21 = SSGeneralLog();
                 if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412290;
-                  v63 = v17;
+                  v63 = bundleIdentifier;
                   _os_log_impl(&dword_1D9F69000, v21, OS_LOG_TYPE_DEFAULT, "[SpotlightRanking][IntentModeling][Rule] Demoting section %@ due to local intent.", buf, 0xCu);
                 }
 
@@ -225,12 +225,12 @@ LABEL_26:
             if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v63 = v17;
+              v63 = bundleIdentifier;
               _os_log_impl(&dword_1D9F69000, v34, OS_LOG_TYPE_DEFAULT, "[SpotlightRanking][IntentModeling][Rule] Promoting section %@ due to intent.", buf, 0xCu);
             }
 
             [v16 setIsInitiallyHidden:0];
-            v22 = v9;
+            v22 = array3;
           }
 
 LABEL_38:
@@ -242,27 +242,27 @@ LABEL_38:
         {
 LABEL_40:
 
-          [v7 addObjectsFromArray:v9];
-          v38 = v13;
-          v8 = v46;
-          [v7 addObjectsFromArray:v46];
-          v10 = v48;
-          [v7 addObjectsFromArray:v48];
-          [v7 addObjectsFromArray:v14];
-          v39 = v7;
+          [array addObjectsFromArray:array3];
+          v38 = sectionConfig2;
+          array2 = v46;
+          [array addObjectsFromArray:v46];
+          array4 = v48;
+          [array addObjectsFromArray:v48];
+          [array addObjectsFromArray:v14];
+          v39 = array;
 
           v40 = v14;
-          v6 = v44;
-          v5 = v45;
-          v11 = v43;
+          sectionsCopy = v44;
+          contextCopy = v45;
+          queryIntent = v43;
           goto LABEL_42;
         }
       }
     }
   }
 
-  v39 = v6;
-  v40 = v49;
+  v39 = sectionsCopy;
+  v40 = array5;
 LABEL_42:
 
   v41 = *MEMORY[0x1E69E9840];
@@ -270,93 +270,93 @@ LABEL_42:
   return v39;
 }
 
-+ (id)_intentForQueryContext:(id)a3 sections:(id)a4
++ (id)_intentForQueryContext:(id)context sections:(id)sections
 {
-  v6 = a4;
-  v7 = a3;
+  sectionsCopy = sections;
+  contextCopy = context;
   v8 = objc_opt_new();
-  [SSQueryIntentManager _prepareSectionInformation:v6 intentHelper:v8];
-  [v8 setIntentPrefixLength:{objc_msgSend(a1, "_prefixLengthModeling:", v7)}];
-  v9 = [a1 _postRetrievalModeling:v6];
+  [SSQueryIntentManager _prepareSectionInformation:sectionsCopy intentHelper:v8];
+  [v8 setIntentPrefixLength:{objc_msgSend(self, "_prefixLengthModeling:", contextCopy)}];
+  v9 = [self _postRetrievalModeling:sectionsCopy];
 
   [v8 setIntentPostRetrieval:v9];
-  [v8 setIntentNextSection:{objc_msgSend(a1, "_nextSectionModeling:", v8)}];
-  v10 = [a1 _queryUnderstandingModeling:v7 intentHelper:v8];
+  [v8 setIntentNextSection:{objc_msgSend(self, "_nextSectionModeling:", v8)}];
+  v10 = [self _queryUnderstandingModeling:contextCopy intentHelper:v8];
 
   [v8 setIntentQU:v10];
-  v11 = [a1 _determineIntentAndStrength:v8];
+  v11 = [self _determineIntentAndStrength:v8];
 
   return v11;
 }
 
-+ (id)_determineIntentAndStrength:(id)a3
++ (id)_determineIntentAndStrength:(id)strength
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 setIntentType:{objc_msgSend(a1, "_ruleBasedIntent:", v4)}];
-  if (![v4 intentType])
+  strengthCopy = strength;
+  [strengthCopy setIntentType:{objc_msgSend(self, "_ruleBasedIntent:", strengthCopy)}];
+  if (![strengthCopy intentType])
   {
-    if ([v4 intentPostRetrieval])
+    if ([strengthCopy intentPostRetrieval])
     {
-      v5 = [v4 intentPostRetrieval];
+      intentPostRetrieval = [strengthCopy intentPostRetrieval];
     }
 
-    else if ([v4 intentQU])
+    else if ([strengthCopy intentQU])
     {
-      v5 = [v4 intentQU];
+      intentPostRetrieval = [strengthCopy intentQU];
     }
 
-    else if ([v4 intentNextSection])
+    else if ([strengthCopy intentNextSection])
     {
-      v5 = [v4 intentNextSection];
+      intentPostRetrieval = [strengthCopy intentNextSection];
     }
 
     else
     {
-      v5 = [v4 intentPrefixLength];
+      intentPostRetrieval = [strengthCopy intentPrefixLength];
     }
 
-    [v4 setIntentType:v5];
+    [strengthCopy setIntentType:intentPostRetrieval];
   }
 
   v6 = +[SSQueryIntentManagerConfig sharedInstance];
-  v7 = [v6 intentOverrides];
+  intentOverrides = [v6 intentOverrides];
 
-  if (v7)
+  if (intentOverrides)
   {
-    v8 = [v6 intentOverrides];
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v4, "intentType")}];
-    v10 = [v8 objectForKeyedSubscript:v9];
-    v11 = [v10 intValue];
+    intentOverrides2 = [v6 intentOverrides];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(strengthCopy, "intentType")}];
+    v10 = [intentOverrides2 objectForKeyedSubscript:v9];
+    intValue = [v10 intValue];
 
-    if ((v11 - 1) <= 0x14)
+    if ((intValue - 1) <= 0x14)
     {
-      [v4 setIntentType:v11];
+      [strengthCopy setIntentType:intValue];
     }
   }
 
-  [v4 setIntentStrength:{+[SSQueryIntent intentStrength:](SSQueryIntent, "intentStrength:", objc_msgSend(v4, "intentType"))}];
+  [strengthCopy setIntentStrength:{+[SSQueryIntent intentStrength:](SSQueryIntent, "intentStrength:", objc_msgSend(strengthCopy, "intentType"))}];
   v12 = SSGeneralLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v4;
+    v16 = strengthCopy;
     _os_log_impl(&dword_1D9F69000, v12, OS_LOG_TYPE_DEFAULT, "[SpotlightRanking][IntentModeling] %@", &v15, 0xCu);
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return strengthCopy;
 }
 
-+ (int)_ruleBasedIntent:(id)a3
++ (int)_ruleBasedIntent:(id)intent
 {
-  v3 = a3;
-  v4 = [v3 topHitResultBundleId];
-  if ([v4 isEqualToString:@"com.apple.weather"])
+  intentCopy = intent;
+  topHitResultBundleId = [intentCopy topHitResultBundleId];
+  if ([topHitResultBundleId isEqualToString:@"com.apple.weather"])
   {
-    v5 = [v3 retrievedBundleIDs];
-    v6 = [v5 containsObject:@"com.apple.parsec.weather"];
+    retrievedBundleIDs = [intentCopy retrievedBundleIDs];
+    v6 = [retrievedBundleIDs containsObject:@"com.apple.parsec.weather"];
 
     if (v6)
     {
@@ -378,20 +378,20 @@ LABEL_42:
   return v7;
 }
 
-+ (id)_suggestionConfigurationOverrideForQueryContext:(id)a3 config:(id)a4
++ (id)_suggestionConfigurationOverrideForQueryContext:(id)context config:(id)config
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 getIntParameter:@"IntentModelingSuppressSuggestionsUpToPrefixLength"];
-  v9 = [v7 getIntParameter:@"IntentModelingShowSuggestionsAsOfPrefixLength"];
+  contextCopy = context;
+  configCopy = config;
+  v8 = [configCopy getIntParameter:@"IntentModelingSuppressSuggestionsUpToPrefixLength"];
+  v9 = [configCopy getIntParameter:@"IntentModelingShowSuggestionsAsOfPrefixLength"];
   v10 = v9;
   if (v8 < 0 && v9 < 0)
   {
     goto LABEL_18;
   }
 
-  v11 = [v6 searchString];
-  v12 = [v11 length];
+  searchString = [contextCopy searchString];
+  v12 = [searchString length];
 
   if (v12 < 0 || (v8 >= 0 ? (v13 = v8 < v12) : (v13 = 1), v13 ? (v14 = 0) : (v14 = 1), v10 >= 0 ? (v15 = v10 <= v12) : (v15 = 0), !v15 ? (v16 = 0) : (v16 = 1), (v14 & 1) == 0 && !v16))
   {
@@ -401,9 +401,9 @@ LABEL_18:
   }
 
   v17 = objc_opt_new();
-  [v17 setShowWebAsTypedSuggestion:{objc_msgSend(v7, "getBoolParameter:", @"IntentModelingShowWebAsTypedBaseline"}];
-  [v17 setLocalSuggestionQuota:{objc_msgSend(v7, "getIntParameter:", @"IntentModelingLocalSuggestionQuotaLocal"}];
-  if (![a1 _isJaJP:v6])
+  [v17 setShowWebAsTypedSuggestion:{objc_msgSend(configCopy, "getBoolParameter:", @"IntentModelingShowWebAsTypedBaseline"}];
+  [v17 setLocalSuggestionQuota:{objc_msgSend(configCopy, "getIntParameter:", @"IntentModelingLocalSuggestionQuotaLocal"}];
+  if (![self _isJaJP:contextCopy])
   {
     if (!v14)
     {
@@ -420,7 +420,7 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  [v17 setLocalSuggestionQuota:{objc_msgSend(v7, "getIntParameter:", @"IntentModelingLocalSuggestionQuotaBaseline"}];
+  [v17 setLocalSuggestionQuota:{objc_msgSend(configCopy, "getIntParameter:", @"IntentModelingLocalSuggestionQuotaBaseline"}];
   if (v14)
   {
     goto LABEL_27;
@@ -433,61 +433,61 @@ LABEL_24:
   }
 
 LABEL_28:
-  [v17 setServerSuggestionQuota:{objc_msgSend(v7, "getIntParameter:", @"IntentModelingServerSuggestionQuotaBaseline"}];
+  [v17 setServerSuggestionQuota:{objc_msgSend(configCopy, "getIntParameter:", @"IntentModelingServerSuggestionQuotaBaseline"}];
 LABEL_19:
 
   return v17;
 }
 
-+ (id)_suggestionConfigurationForIntent:(id)a3 queryContext:(id)a4 config:(id)a5
++ (id)_suggestionConfigurationForIntent:(id)intent queryContext:(id)context config:(id)config
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a1 _suggestionConfigurationOverrideForQueryContext:v9 config:v10];
+  intentCopy = intent;
+  contextCopy = context;
+  configCopy = config;
+  v11 = [self _suggestionConfigurationOverrideForQueryContext:contextCopy config:configCopy];
   if (!v11)
   {
     v11 = objc_opt_new();
-    if ([a1 _isJaJP:v9])
+    if ([self _isJaJP:contextCopy])
     {
-      [v11 setShowWebAsTypedSuggestion:{objc_msgSend(v10, "getBoolParameter:", @"IntentModelingShowWebAsTypedBaseline"}];
-      [v11 setLocalSuggestionQuota:{objc_msgSend(v10, "getIntParameter:", @"IntentModelingLocalSuggestionQuotaBaseline"}];
-      [v11 setServerSuggestionQuota:{objc_msgSend(v10, "getIntParameter:", @"IntentModelingServerSuggestionQuotaBaseline"}];
+      [v11 setShowWebAsTypedSuggestion:{objc_msgSend(configCopy, "getBoolParameter:", @"IntentModelingShowWebAsTypedBaseline"}];
+      [v11 setLocalSuggestionQuota:{objc_msgSend(configCopy, "getIntParameter:", @"IntentModelingLocalSuggestionQuotaBaseline"}];
+      [v11 setServerSuggestionQuota:{objc_msgSend(configCopy, "getIntParameter:", @"IntentModelingServerSuggestionQuotaBaseline"}];
     }
 
     else
     {
-      [v11 setShowWebAsTypedSuggestion:{objc_msgSend(v10, "getBoolParameter:", @"IntentModelingShowWebAsTypedLocal"}];
-      [v11 setLocalSuggestionQuota:{objc_msgSend(v10, "getIntParameter:", @"IntentModelingLocalSuggestionQuotaLocal"}];
-      [v11 setServerSuggestionQuota:{objc_msgSend(v10, "getIntParameter:", @"IntentModelingServerSuggestionQuotaLocal"}];
-      if ([v8 intentStrength] == 2)
+      [v11 setShowWebAsTypedSuggestion:{objc_msgSend(configCopy, "getBoolParameter:", @"IntentModelingShowWebAsTypedLocal"}];
+      [v11 setLocalSuggestionQuota:{objc_msgSend(configCopy, "getIntParameter:", @"IntentModelingLocalSuggestionQuotaLocal"}];
+      [v11 setServerSuggestionQuota:{objc_msgSend(configCopy, "getIntParameter:", @"IntentModelingServerSuggestionQuotaLocal"}];
+      if ([intentCopy intentStrength] == 2)
       {
-        [v11 setShowWebAsTypedSuggestion:{objc_msgSend(v10, "getBoolParameter:", @"IntentModelingShowWebAsTypedLocalStrong"}];
+        [v11 setShowWebAsTypedSuggestion:{objc_msgSend(configCopy, "getBoolParameter:", @"IntentModelingShowWebAsTypedLocalStrong"}];
       }
 
       else
       {
-        v12 = [v8 intentType];
-        if (v12 <= 0x12 && (((1 << v12) & 0x76000) != 0 || v12 == 3))
+        intentType = [intentCopy intentType];
+        if (intentType <= 0x12 && (((1 << intentType) & 0x76000) != 0 || intentType == 3))
         {
-          [v11 setServerSuggestionQuota:{objc_msgSend(v10, "getIntParameter:", @"IntentModelingServerSuggestionQuotaServer"}];
+          [v11 setServerSuggestionQuota:{objc_msgSend(configCopy, "getIntParameter:", @"IntentModelingServerSuggestionQuotaServer"}];
         }
       }
 
-      if ([v8 intentType] != 15 && objc_msgSend(v8, "resultSetHasAppSectionWithinTop3") && !objc_msgSend(v11, "serverSuggestionQuota") && objc_msgSend(v10, "getBoolParameter:", @"IntentModelingServerAppAccelerator"))
+      if ([intentCopy intentType] != 15 && objc_msgSend(intentCopy, "resultSetHasAppSectionWithinTop3") && !objc_msgSend(v11, "serverSuggestionQuota") && objc_msgSend(configCopy, "getBoolParameter:", @"IntentModelingServerAppAccelerator"))
       {
         [v11 setServerSuggestionQuota:1];
       }
 
-      v13 = [v10 conditionalExtraSuggestions];
+      conditionalExtraSuggestions = [configCopy conditionalExtraSuggestions];
 
-      if (v13)
+      if (conditionalExtraSuggestions)
       {
-        v14 = [v10 conditionalExtraSuggestions];
-        v15 = [v8 serverTopBundleId];
-        v16 = [v14 objectForKeyedSubscript:v15];
+        conditionalExtraSuggestions2 = [configCopy conditionalExtraSuggestions];
+        serverTopBundleId = [intentCopy serverTopBundleId];
+        v16 = [conditionalExtraSuggestions2 objectForKeyedSubscript:serverTopBundleId];
 
-        if (v16 && [v8 serverHasTopHit] && !objc_msgSend(v11, "serverSuggestionQuota"))
+        if (v16 && [intentCopy serverHasTopHit] && !objc_msgSend(v11, "serverSuggestionQuota"))
         {
           [v11 setServerSuggestionQuota:{objc_msgSend(v16, "intValue")}];
         }
@@ -500,42 +500,42 @@ LABEL_19:
   return v17;
 }
 
-+ (id)_sectionConfigurationForIntentType:(id)a3 sections:(id)a4 config:(id)a5
++ (id)_sectionConfigurationForIntentType:(id)type sections:(id)sections config:(id)config
 {
   v49 = *MEMORY[0x1E69E9840];
-  v39 = a3;
-  v8 = a4;
-  v41 = a5;
+  typeCopy = type;
+  sectionsCopy = sections;
+  configCopy = config;
   if (_sectionConfigurationForIntentType_sections_config__onceToken != -1)
   {
     +[SSQueryIntentManager _sectionConfigurationForIntentType:sections:config:];
   }
 
   v9 = objc_opt_new();
-  v10 = [MEMORY[0x1E695DF90] dictionary];
-  [v9 setSectionDisplayStrategies:v10];
-  v11 = v39;
-  v12 = [v39 intentStrength];
-  if (v12 == 1)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [v9 setSectionDisplayStrategies:dictionary];
+  v11 = typeCopy;
+  intentStrength = [typeCopy intentStrength];
+  if (intentStrength == 1)
   {
     v13 = SSIntentModelingServerSectionDisplayStrategyLocal;
     goto LABEL_7;
   }
 
-  if (v12 == 2)
+  if (intentStrength == 2)
   {
     v13 = SSIntentModelingServerSectionDisplayStrategyLocalStrong;
 LABEL_7:
-    v43 = [v41 getIntParameter:*v13];
+    v43 = [configCopy getIntParameter:*v13];
     goto LABEL_9;
   }
 
   v43 = 0;
 LABEL_9:
-  v40 = a1;
-  if ([v39 intentType] == 20)
+  selfCopy = self;
+  if ([typeCopy intentType] == 20)
   {
-    v14 = [v41 getBoolParameter:@"IntentModelingServerWeatherIntent"];
+    v14 = [configCopy getBoolParameter:@"IntentModelingServerWeatherIntent"];
   }
 
   else
@@ -544,9 +544,9 @@ LABEL_9:
   }
 
   v38 = v9;
-  if ([a1 isPhotosRelatedIntent:{objc_msgSend(v39, "intentType")}])
+  if ([self isPhotosRelatedIntent:{objc_msgSend(typeCopy, "intentType")}])
   {
-    v15 = [v41 getBoolParameter:@"IntentModelingPhotosIntent"];
+    v15 = [configCopy getBoolParameter:@"IntentModelingPhotosIntent"];
   }
 
   else
@@ -558,7 +558,7 @@ LABEL_9:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v8;
+  obj = sectionsCopy;
   v16 = [obj countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (v16)
   {
@@ -568,7 +568,7 @@ LABEL_9:
     do
     {
       v20 = 0;
-      v21 = v40;
+      v21 = selfCopy;
       do
       {
         if (*v45 != v19)
@@ -577,40 +577,40 @@ LABEL_9:
         }
 
         v22 = *(*(&v44 + 1) + 8 * v20);
-        v23 = [v22 bundleIdentifier];
-        if (v43 && [v21 _isParsecSection:v23] && objc_msgSend(v21, "_demoteParsecForIntent:section:config:", v11, v22, v41))
+        bundleIdentifier = [v22 bundleIdentifier];
+        if (v43 && [v21 _isParsecSection:bundleIdentifier] && objc_msgSend(v21, "_demoteParsecForIntent:section:config:", v11, v22, configCopy))
         {
           v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v43];
-          [v10 setObject:v24 forKeyedSubscript:v23];
+          [dictionary setObject:v24 forKeyedSubscript:bundleIdentifier];
         }
 
-        if ((v18 & 1) != 0 && ([_sectionConfigurationForIntentType_sections_config___weatherSectionIdentifiersForPromotion containsObject:v23] && objc_msgSend(v11, "intentType") == 20 || objc_msgSend(_sectionConfigurationForIntentType_sections_config___photosSectionIdentifiersForPromotion, "containsObject:", v23) && objc_msgSend(v21, "isPhotosRelatedIntent:", objc_msgSend(v11, "intentType"))))
+        if ((v18 & 1) != 0 && ([_sectionConfigurationForIntentType_sections_config___weatherSectionIdentifiersForPromotion containsObject:bundleIdentifier] && objc_msgSend(v11, "intentType") == 20 || objc_msgSend(_sectionConfigurationForIntentType_sections_config___photosSectionIdentifiersForPromotion, "containsObject:", bundleIdentifier) && objc_msgSend(v21, "isPhotosRelatedIntent:", objc_msgSend(v11, "intentType"))))
         {
           v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:1];
-          [v10 setObject:v25 forKeyedSubscript:v23];
+          [dictionary setObject:v25 forKeyedSubscript:bundleIdentifier];
         }
 
-        v26 = [v10 objectForKeyedSubscript:v23];
+        v26 = [dictionary objectForKeyedSubscript:bundleIdentifier];
         if (v26)
         {
         }
 
         else
         {
-          v27 = [v11 quIntentLabel];
-          if (v27)
+          quIntentLabel = [v11 quIntentLabel];
+          if (quIntentLabel)
           {
-            v28 = v27;
-            v29 = [v11 quIntentLabel];
-            v30 = [SSRankingManager bundleIDSetsForQUIntent:v29];
-            v31 = [v30 containsObject:v23];
+            v28 = quIntentLabel;
+            quIntentLabel2 = [v11 quIntentLabel];
+            v30 = [SSRankingManager bundleIDSetsForQUIntent:quIntentLabel2];
+            v31 = [v30 containsObject:bundleIdentifier];
 
-            v21 = v40;
-            v11 = v39;
+            v21 = selfCopy;
+            v11 = typeCopy;
 
             if (v31)
             {
-              [v10 setObject:&unk_1F55B3A68 forKeyedSubscript:v23];
+              [dictionary setObject:&unk_1F55B3A68 forKeyedSubscript:bundleIdentifier];
             }
           }
         }
@@ -628,15 +628,15 @@ LABEL_9:
 
   if (([v11 resultSetHasTopHits] & 1) == 0 && v43 == 3)
   {
-    v33 = [v10 count];
-    v34 = v33 == [v39 resultSetSectionCount];
-    v11 = v39;
+    v33 = [dictionary count];
+    v34 = v33 == [typeCopy resultSetSectionCount];
+    v11 = typeCopy;
     if (v34)
     {
-      v35 = [MEMORY[0x1E695DF90] dictionary];
-      [v38 setSectionDisplayStrategies:v35];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+      [v38 setSectionDisplayStrategies:dictionary2];
 
-      v11 = v39;
+      v11 = typeCopy;
     }
   }
 
@@ -665,38 +665,38 @@ void __75__SSQueryIntentManager__sectionConfigurationForIntentType_sections_conf
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (int)_intentForSection:(id)a3 withTopHit:(BOOL)a4
++ (int)_intentForSection:(id)section withTopHit:(BOOL)hit
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  hitCopy = hit;
+  sectionCopy = section;
+  v7 = sectionCopy;
+  if (sectionCopy)
   {
-    v8 = [v6 results];
-    if (v8)
+    results = [sectionCopy results];
+    if (results)
     {
-      v9 = v8;
-      v10 = [v7 isInitiallyHidden];
+      v9 = results;
+      isInitiallyHidden = [v7 isInitiallyHidden];
 
-      if ((v10 & 1) == 0)
+      if ((isInitiallyHidden & 1) == 0)
       {
-        v13 = [v7 bundleIdentifier];
-        v14 = [v7 results];
-        v15 = [v14 firstObject];
+        bundleIdentifier = [v7 bundleIdentifier];
+        results2 = [v7 results];
+        firstObject = [results2 firstObject];
 
-        if (v4)
+        if (hitCopy)
         {
-          if (![v13 isEqualToString:@"com.apple.spotlight.tophits"] || !objc_msgSend(v15, "topHit"))
+          if (![bundleIdentifier isEqualToString:@"com.apple.spotlight.tophits"] || !objc_msgSend(firstObject, "topHit"))
           {
-            v11 = 0;
+            intValue = 0;
 LABEL_33:
 
             goto LABEL_5;
           }
 
-          v16 = [v15 sectionBundleIdentifier];
+          sectionBundleIdentifier = [firstObject sectionBundleIdentifier];
 
-          v13 = v16;
+          bundleIdentifier = sectionBundleIdentifier;
         }
 
         if (_intentForSection_withTopHit__onceToken != -1)
@@ -704,19 +704,19 @@ LABEL_33:
           +[SSQueryIntentManager _intentForSection:withTopHit:];
         }
 
-        v17 = [a1 isServerResult:v15];
-        v18 = [_intentForSection_withTopHit___bundleIntents objectForKey:v13];
+        v17 = [self isServerResult:firstObject];
+        v18 = [_intentForSection_withTopHit___bundleIntents objectForKey:bundleIdentifier];
         v19 = v18;
         if (v17)
         {
           if (v18)
           {
-            v11 = [v18 intValue];
+            intValue = [v18 intValue];
           }
 
           else
           {
-            v11 = 14;
+            intValue = 14;
           }
 
           goto LABEL_32;
@@ -724,54 +724,54 @@ LABEL_33:
 
         if (v18)
         {
-          v20 = [v7 results];
-          v21 = [v20 firstObject];
+          results3 = [v7 results];
+          firstObject2 = [results3 firstObject];
 
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) != 0 && ([v21 rankingItem], v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "likelihood"), v24 = v23, v22, v24 > 0.0500000007))
+          if ((objc_opt_isKindOfClass() & 1) != 0 && ([firstObject2 rankingItem], v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "likelihood"), v24 = v23, v22, v24 > 0.0500000007))
           {
-            v11 = [v19 intValue];
+            intValue = [v19 intValue];
           }
 
           else
           {
-            v11 = 0;
+            intValue = 0;
           }
         }
 
-        else if ([v13 isEqualToString:@"com.apple.calculation"])
+        else if ([bundleIdentifier isEqualToString:@"com.apple.calculation"])
         {
-          v21 = [v15 sectionHeader];
+          firstObject2 = [firstObject sectionHeader];
           v25 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
           v26 = [v25 localizedStringForKey:@"CONVERSION_SECTION_TITLE" value:&stru_1F556FE60 table:@"SpotlightServices"];
-          if ([v21 isEqualToString:v26])
+          if ([firstObject2 isEqualToString:v26])
           {
-            v11 = 3;
+            intValue = 3;
           }
 
           else
           {
-            v11 = 2;
+            intValue = 2;
           }
         }
 
         else
         {
-          if (![v13 isEqualToString:@"com.apple.mobilesafari"])
+          if (![bundleIdentifier isEqualToString:@"com.apple.mobilesafari"])
           {
-            v11 = 1;
+            intValue = 1;
             goto LABEL_32;
           }
 
-          v21 = [v15 resultBundleId];
-          if ([v21 isEqualToString:@"com.apple.safari.userTypedURL"])
+          firstObject2 = [firstObject resultBundleId];
+          if ([firstObject2 isEqualToString:@"com.apple.safari.userTypedURL"])
           {
-            v11 = 19;
+            intValue = 19;
           }
 
           else
           {
-            v11 = 13;
+            intValue = 13;
           }
         }
 
@@ -781,10 +781,10 @@ LABEL_32:
     }
   }
 
-  v11 = 0;
+  intValue = 0;
 LABEL_5:
 
-  return v11;
+  return intValue;
 }
 
 void __53__SSQueryIntentManager__intentForSection_withTopHit___block_invoke()
@@ -837,26 +837,26 @@ void __53__SSQueryIntentManager__intentForSection_withTopHit___block_invoke()
   v2 = *MEMORY[0x1E69E9840];
 }
 
-+ (int)_postRetrievalModeling:(id)a3
++ (int)_postRetrievalModeling:(id)modeling
 {
-  v4 = [a3 firstObject];
-  LODWORD(a1) = [a1 _intentForSection:v4 withTopHit:1];
+  firstObject = [modeling firstObject];
+  LODWORD(self) = [self _intentForSection:firstObject withTopHit:1];
 
-  return a1;
+  return self;
 }
 
-+ (int)_nextSectionModeling:(id)a3
++ (int)_nextSectionModeling:(id)modeling
 {
-  v4 = [a3 nextSectionForIntent];
-  LODWORD(a1) = [a1 _intentForSection:v4 withTopHit:0];
+  nextSectionForIntent = [modeling nextSectionForIntent];
+  LODWORD(self) = [self _intentForSection:nextSectionForIntent withTopHit:0];
 
-  return a1;
+  return self;
 }
 
-+ (int)_prefixLengthModeling:(id)a3
++ (int)_prefixLengthModeling:(id)modeling
 {
-  v3 = [a3 searchString];
-  v4 = [v3 length];
+  searchString = [modeling searchString];
+  v4 = [searchString length];
 
   if (v4 < 0xB)
   {
@@ -869,11 +869,11 @@ void __53__SSQueryIntentManager__intentForSection_withTopHit___block_invoke()
   }
 }
 
-+ (int)_queryUnderstandingModeling:(id)a3 intentHelper:(id)a4
++ (int)_queryUnderstandingModeling:(id)modeling intentHelper:(id)helper
 {
   v65 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  modelingCopy = modeling;
+  helperCopy = helper;
   if (!_os_feature_enabled_impl())
   {
     goto LABEL_40;
@@ -884,55 +884,55 @@ void __53__SSQueryIntentManager__intentForSection_withTopHit___block_invoke()
     +[SSQueryIntentManager _queryUnderstandingModeling:intentHelper:];
   }
 
-  v8 = [v6 queryUnderstandingOutput];
-  v9 = [v8 count];
+  queryUnderstandingOutput = [modelingCopy queryUnderstandingOutput];
+  v9 = [queryUnderstandingOutput count];
 
   if (v9 < 2)
   {
     goto LABEL_40;
   }
 
-  v10 = [v6 queryUnderstandingOutput];
-  v11 = [v10 objectForKeyedSubscript:@"kQPQUIntentLabels"];
+  queryUnderstandingOutput2 = [modelingCopy queryUnderstandingOutput];
+  v11 = [queryUnderstandingOutput2 objectForKeyedSubscript:@"kQPQUIntentLabels"];
 
-  v12 = [v6 queryUnderstandingOutput];
-  v13 = [v12 objectForKeyedSubscript:@"kQPQUIntentScores"];
+  queryUnderstandingOutput3 = [modelingCopy queryUnderstandingOutput];
+  v13 = [queryUnderstandingOutput3 objectForKeyedSubscript:@"kQPQUIntentScores"];
 
-  v14 = [v6 queryUnderstandingOutput];
-  v15 = [v14 objectForKeyedSubscript:@"kQPQUIntentIds"];
+  queryUnderstandingOutput4 = [modelingCopy queryUnderstandingOutput];
+  v15 = [queryUnderstandingOutput4 objectForKeyedSubscript:@"kQPQUIntentIds"];
 
-  v16 = [v11 firstObject];
-  v17 = [v15 firstObject];
-  v18 = [v17 intValue];
+  firstObject = [v11 firstObject];
+  firstObject2 = [v15 firstObject];
+  intValue = [firstObject2 intValue];
 
-  v19 = [v13 firstObject];
-  [v19 floatValue];
+  firstObject3 = [v13 firstObject];
+  [firstObject3 floatValue];
   v21 = v20;
 
-  if (v18 < 1 || v21 < 0.9)
+  if (intValue < 1 || v21 < 0.9)
   {
     goto LABEL_38;
   }
 
   v54 = v11;
-  [v7 setQuIntentLabel:v16];
-  v22 = [_queryUnderstandingModeling_intentHelper___quIntentsLocalFiles objectForKeyedSubscript:v16];
+  [helperCopy setQuIntentLabel:firstObject];
+  v22 = [_queryUnderstandingModeling_intentHelper___quIntentsLocalFiles objectForKeyedSubscript:firstObject];
   if (v22)
   {
     v23 = v22;
-    v4 = [v7 retrievedBundleIDs];
-    v24 = [_queryUnderstandingModeling_intentHelper___quIntentsLocalFiles objectForKeyedSubscript:v16];
-    v25 = [v4 containsObject:v24];
+    retrievedBundleIDs = [helperCopy retrievedBundleIDs];
+    v24 = [_queryUnderstandingModeling_intentHelper___quIntentsLocalFiles objectForKeyedSubscript:firstObject];
+    v25 = [retrievedBundleIDs containsObject:v24];
 
     if (v25)
     {
       v26 = 0;
-      LODWORD(v4) = 10;
+      LODWORD(retrievedBundleIDs) = 10;
       goto LABEL_39;
     }
   }
 
-  v27 = [_queryUnderstandingModeling_intentHelper___quIntentsLocalPhotos objectForKeyedSubscript:v16];
+  v27 = [_queryUnderstandingModeling_intentHelper___quIntentsLocalPhotos objectForKeyedSubscript:firstObject];
 
   if (v27)
   {
@@ -940,11 +940,11 @@ void __53__SSQueryIntentManager__intentForSection_withTopHit___block_invoke()
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v28 = [_queryUnderstandingModeling_intentHelper___quIntentsLocalPhotos objectForKeyedSubscript:v16];
-    v29 = [v28 countByEnumeratingWithState:&v59 objects:v64 count:16];
+    allValues = [_queryUnderstandingModeling_intentHelper___quIntentsLocalPhotos objectForKeyedSubscript:firstObject];
+    v29 = [allValues countByEnumeratingWithState:&v59 objects:v64 count:16];
     if (!v29)
     {
-      LODWORD(v4) = 9;
+      LODWORD(retrievedBundleIDs) = 9;
       goto LABEL_37;
     }
 
@@ -957,23 +957,23 @@ void __53__SSQueryIntentManager__intentForSection_withTopHit___block_invoke()
       {
         if (*v60 != v31)
         {
-          objc_enumerationMutation(v28);
+          objc_enumerationMutation(allValues);
         }
 
         v33 = *(*(&v59 + 1) + 8 * i);
-        v34 = [v7 retrievedBundleIDs];
-        LOBYTE(v33) = [v34 containsObject:v33];
+        retrievedBundleIDs2 = [helperCopy retrievedBundleIDs];
+        LOBYTE(v33) = [retrievedBundleIDs2 containsObject:v33];
 
         if (v33)
         {
 
           v26 = 0;
-          LODWORD(v4) = 9;
+          LODWORD(retrievedBundleIDs) = 9;
           goto LABEL_22;
         }
       }
 
-      v30 = [v28 countByEnumeratingWithState:&v59 objects:v64 count:16];
+      v30 = [allValues countByEnumeratingWithState:&v59 objects:v64 count:16];
       if (v30)
       {
         continue;
@@ -982,7 +982,7 @@ void __53__SSQueryIntentManager__intentForSection_withTopHit___block_invoke()
       break;
     }
 
-    LODWORD(v4) = 9;
+    LODWORD(retrievedBundleIDs) = 9;
 LABEL_20:
     v13 = v53;
 LABEL_37:
@@ -993,30 +993,30 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  if ([v16 isEqualToString:@"INTENT_MAIL_SEARCH"])
+  if ([firstObject isEqualToString:@"INTENT_MAIL_SEARCH"])
   {
-    v35 = [v7 retrievedBundleIDs];
-    LODWORD(v4) = [v35 containsObject:@"com.apple.mobilemail"];
+    retrievedBundleIDs3 = [helperCopy retrievedBundleIDs];
+    LODWORD(retrievedBundleIDs) = [retrievedBundleIDs3 containsObject:@"com.apple.mobilemail"];
 
-    if (v4)
+    if (retrievedBundleIDs)
     {
       v26 = 0;
-      LODWORD(v4) = 11;
+      LODWORD(retrievedBundleIDs) = 11;
       goto LABEL_39;
     }
   }
 
-  if ([v16 isEqualToString:@"INTENT_MESSAGE_SEARCH"])
+  if ([firstObject isEqualToString:@"INTENT_MESSAGE_SEARCH"])
   {
     v57 = 0u;
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v28 = [_queryUnderstandingModeling_intentHelper___quIntentsLocalCommunications allValues];
-    v36 = [v28 countByEnumeratingWithState:&v55 objects:v63 count:16];
+    allValues = [_queryUnderstandingModeling_intentHelper___quIntentsLocalCommunications allValues];
+    v36 = [allValues countByEnumeratingWithState:&v55 objects:v63 count:16];
     if (!v36)
     {
-      LODWORD(v4) = 11;
+      LODWORD(retrievedBundleIDs) = 11;
       goto LABEL_37;
     }
 
@@ -1029,18 +1029,18 @@ LABEL_38:
       {
         if (*v56 != v38)
         {
-          objc_enumerationMutation(v28);
+          objc_enumerationMutation(allValues);
         }
 
         v40 = *(*(&v55 + 1) + 8 * j);
-        v41 = [v7 retrievedBundleIDs];
-        LOBYTE(v40) = [v41 containsObject:v40];
+        retrievedBundleIDs4 = [helperCopy retrievedBundleIDs];
+        LOBYTE(v40) = [retrievedBundleIDs4 containsObject:v40];
 
         if (v40)
         {
 
           v26 = 0;
-          LODWORD(v4) = 11;
+          LODWORD(retrievedBundleIDs) = 11;
 LABEL_22:
           v13 = v53;
           v11 = v54;
@@ -1048,8 +1048,8 @@ LABEL_22:
         }
       }
 
-      v37 = [v28 countByEnumeratingWithState:&v55 objects:v63 count:16];
-      LODWORD(v4) = 11;
+      v37 = [allValues countByEnumeratingWithState:&v55 objects:v63 count:16];
+      LODWORD(retrievedBundleIDs) = 11;
       if (v37)
       {
         continue;
@@ -1059,61 +1059,61 @@ LABEL_22:
     }
   }
 
-  v44 = [_queryUnderstandingModeling_intentHelper___quIntentsLocalEvents objectForKeyedSubscript:v16];
+  v44 = [_queryUnderstandingModeling_intentHelper___quIntentsLocalEvents objectForKeyedSubscript:firstObject];
   if (!v44)
   {
     goto LABEL_61;
   }
 
   v45 = v44;
-  v4 = [v7 retrievedBundleIDs];
-  v46 = [_queryUnderstandingModeling_intentHelper___quIntentsLocalEvents objectForKeyedSubscript:v16];
-  v47 = [v4 containsObject:v46];
+  retrievedBundleIDs = [helperCopy retrievedBundleIDs];
+  v46 = [_queryUnderstandingModeling_intentHelper___quIntentsLocalEvents objectForKeyedSubscript:firstObject];
+  v47 = [retrievedBundleIDs containsObject:v46];
 
   if (v47)
   {
     v26 = 0;
-    LODWORD(v4) = 12;
+    LODWORD(retrievedBundleIDs) = 12;
   }
 
   else
   {
 LABEL_61:
-    if ([v16 isEqualToString:@"INTENT_SETTINGS_SEARCH"] && (objc_msgSend(v7, "retrievedBundleIDs"), v48 = objc_claimAutoreleasedReturnValue(), LODWORD(v4) = objc_msgSend(v48, "containsObject:", @"com.apple.Preferences"), v48, (v4 & 1) != 0))
+    if ([firstObject isEqualToString:@"INTENT_SETTINGS_SEARCH"] && (objc_msgSend(helperCopy, "retrievedBundleIDs"), v48 = objc_claimAutoreleasedReturnValue(), LODWORD(retrievedBundleIDs) = objc_msgSend(v48, "containsObject:", @"com.apple.Preferences"), v48, (retrievedBundleIDs & 1) != 0))
     {
       v26 = 0;
-      LODWORD(v4) = 6;
+      LODWORD(retrievedBundleIDs) = 6;
     }
 
     else
     {
-      v49 = [_queryUnderstandingModeling_intentHelper___quIntentsLocalGeneric objectForKeyedSubscript:v16];
+      v49 = [_queryUnderstandingModeling_intentHelper___quIntentsLocalGeneric objectForKeyedSubscript:firstObject];
       if (!v49)
       {
         goto LABEL_56;
       }
 
       v50 = v49;
-      v4 = [v7 retrievedBundleIDs];
-      v51 = [_queryUnderstandingModeling_intentHelper___quIntentsLocalGeneric objectForKeyedSubscript:v16];
-      v52 = [v4 containsObject:v51];
+      retrievedBundleIDs = [helperCopy retrievedBundleIDs];
+      v51 = [_queryUnderstandingModeling_intentHelper___quIntentsLocalGeneric objectForKeyedSubscript:firstObject];
+      v52 = [retrievedBundleIDs containsObject:v51];
 
       if (v52)
       {
         v26 = 0;
-        LODWORD(v4) = 1;
+        LODWORD(retrievedBundleIDs) = 1;
       }
 
       else
       {
 LABEL_56:
-        if (([v16 hasPrefix:@"INTENT_FLIGHT"] & 1) == 0 && (objc_msgSend(v16, "hasPrefix:", @"INTENT_HOTEL") & 1) == 0 && !objc_msgSend(v16, "hasPrefix:", @"INTENT_RESTAURANT") || objc_msgSend(v7, "resultSetSectionCount") <= 0)
+        if (([firstObject hasPrefix:@"INTENT_FLIGHT"] & 1) == 0 && (objc_msgSend(firstObject, "hasPrefix:", @"INTENT_HOTEL") & 1) == 0 && !objc_msgSend(firstObject, "hasPrefix:", @"INTENT_RESTAURANT") || objc_msgSend(helperCopy, "resultSetSectionCount") <= 0)
         {
           goto LABEL_38;
         }
 
         v26 = 0;
-        LODWORD(v4) = 1;
+        LODWORD(retrievedBundleIDs) = 1;
       }
     }
   }
@@ -1123,11 +1123,11 @@ LABEL_39:
   if (v26)
   {
 LABEL_40:
-    LODWORD(v4) = 0;
+    LODWORD(retrievedBundleIDs) = 0;
   }
 
   v42 = *MEMORY[0x1E69E9840];
-  return v4;
+  return retrievedBundleIDs;
 }
 
 void __65__SSQueryIntentManager__queryUnderstandingModeling_intentHelper___block_invoke()
@@ -1183,19 +1183,19 @@ void __65__SSQueryIntentManager__queryUnderstandingModeling_intentHelper___block
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_prepareSectionInformation:(id)a3 intentHelper:(id)a4
++ (void)_prepareSectionInformation:(id)information intentHelper:(id)helper
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v39 = [MEMORY[0x1E695DF70] array];
-  [v6 setResultSetHasTopHits:0];
-  [v6 setResultSetHasSuggestions:0];
+  informationCopy = information;
+  helperCopy = helper;
+  array = [MEMORY[0x1E695DF70] array];
+  [helperCopy setResultSetHasTopHits:0];
+  [helperCopy setResultSetHasSuggestions:0];
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v5;
+  obj = informationCopy;
   v7 = [obj countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v7)
   {
@@ -1214,22 +1214,22 @@ void __65__SSQueryIntentManager__queryUnderstandingModeling_intentHelper___block
         }
 
         v11 = *(*(&v40 + 1) + 8 * v10);
-        v12 = [v11 bundleIdentifier];
-        [v39 addObject:v12];
+        bundleIdentifier = [v11 bundleIdentifier];
+        [array addObject:bundleIdentifier];
 
-        v13 = [v11 bundleIdentifier];
-        if ([v13 isEqualToString:@"com.apple.spotlight.tophits"])
+        bundleIdentifier2 = [v11 bundleIdentifier];
+        if ([bundleIdentifier2 isEqualToString:@"com.apple.spotlight.tophits"])
         {
-          v14 = [v11 results];
-          v15 = [v14 count];
+          results = [v11 results];
+          v15 = [results count];
 
           if (v15)
           {
-            [v6 setResultSetHasTopHits:1];
-            v16 = [v11 results];
-            v17 = [v16 firstObject];
-            v18 = [v17 resultBundleId];
-            [v6 setTopHitResultBundleId:v18];
+            [helperCopy setResultSetHasTopHits:1];
+            results2 = [v11 results];
+            firstObject = [results2 firstObject];
+            resultBundleId = [firstObject resultBundleId];
+            [helperCopy setTopHitResultBundleId:resultBundleId];
 
             goto LABEL_15;
           }
@@ -1239,52 +1239,52 @@ void __65__SSQueryIntentManager__queryUnderstandingModeling_intentHelper___block
         {
         }
 
-        v19 = [v11 bundleIdentifier];
-        v20 = [v19 isEqualToString:@"com.apple.searchd.suggestions"];
+        bundleIdentifier3 = [v11 bundleIdentifier];
+        v20 = [bundleIdentifier3 isEqualToString:@"com.apple.searchd.suggestions"];
 
         if (v20)
         {
-          [v6 setResultSetHasSuggestions:1];
+          [helperCopy setResultSetHasSuggestions:1];
         }
 
         else
         {
-          v21 = [v11 bundleIdentifier];
-          v22 = [v21 isEqualToString:@"com.apple.parsec.itunes.iosSoftware"];
+          bundleIdentifier4 = [v11 bundleIdentifier];
+          v22 = [bundleIdentifier4 isEqualToString:@"com.apple.parsec.itunes.iosSoftware"];
 
           if (v22 && v9 <= 2)
           {
-            [v6 setResultSetHasAppSectionWithinTop3:1];
+            [helperCopy setResultSetHasAppSectionWithinTop3:1];
           }
         }
 
 LABEL_15:
-        v23 = [v11 bundleIdentifier];
-        if (![v23 hasPrefix:@"com.apple.parsec"])
+        bundleIdentifier5 = [v11 bundleIdentifier];
+        if (![bundleIdentifier5 hasPrefix:@"com.apple.parsec"])
         {
           goto LABEL_21;
         }
 
-        v24 = [v6 serverTopBundleId];
-        if (!v24)
+        serverTopBundleId = [helperCopy serverTopBundleId];
+        if (!serverTopBundleId)
         {
 
 LABEL_20:
-          v28 = [v11 bundleIdentifier];
-          [v6 setServerTopBundleId:v28];
+          bundleIdentifier6 = [v11 bundleIdentifier];
+          [helperCopy setServerTopBundleId:bundleIdentifier6];
 
-          v29 = [v11 results];
-          v23 = [v29 firstObject];
+          results3 = [v11 results];
+          bundleIdentifier5 = [results3 firstObject];
 
-          [v6 setServerHasTopHit:{objc_msgSend(v23, "topHit") != 0}];
+          [helperCopy setServerHasTopHit:{objc_msgSend(bundleIdentifier5, "topHit") != 0}];
 LABEL_21:
 
           goto LABEL_22;
         }
 
-        v25 = v24;
-        v26 = [v6 serverTopBundleId];
-        v27 = [v26 length];
+        v25 = serverTopBundleId;
+        serverTopBundleId2 = [helperCopy serverTopBundleId];
+        v27 = [serverTopBundleId2 length];
 
         if (!v27)
         {
@@ -1292,19 +1292,19 @@ LABEL_21:
         }
 
 LABEL_22:
-        v30 = [v6 nextSectionForIntent];
-        if (v30 || ([v6 resultSetHasSuggestions] & 1) == 0)
+        nextSectionForIntent = [helperCopy nextSectionForIntent];
+        if (nextSectionForIntent || ([helperCopy resultSetHasSuggestions] & 1) == 0)
         {
         }
 
         else
         {
-          v31 = [v11 bundleIdentifier];
-          v32 = [v31 isEqualToString:@"com.apple.searchd.suggestions"];
+          bundleIdentifier7 = [v11 bundleIdentifier];
+          v32 = [bundleIdentifier7 isEqualToString:@"com.apple.searchd.suggestions"];
 
           if ((v32 & 1) == 0)
           {
-            [v6 setNextSectionForIntent:v11];
+            [helperCopy setNextSectionForIntent:v11];
           }
         }
 
@@ -1320,33 +1320,33 @@ LABEL_22:
     while (v8);
   }
 
-  v33 = [MEMORY[0x1E695DFD8] setWithArray:v39];
-  [v6 setRetrievedBundleIDs:v33];
+  v33 = [MEMORY[0x1E695DFD8] setWithArray:array];
+  [helperCopy setRetrievedBundleIDs:v33];
 
-  v34 = [v6 retrievedBundleIDs];
-  [v6 setResultSetSectionCount:{objc_msgSend(v34, "count") - objc_msgSend(v6, "resultSetHasSuggestions")}];
+  retrievedBundleIDs = [helperCopy retrievedBundleIDs];
+  [helperCopy setResultSetSectionCount:{objc_msgSend(retrievedBundleIDs, "count") - objc_msgSend(helperCopy, "resultSetHasSuggestions")}];
 
   v35 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)_demoteParsecForIntent:(id)a3 section:(id)a4 config:(id)a5
++ (BOOL)_demoteParsecForIntent:(id)intent section:(id)section config:(id)config
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 bundleIdentifier];
-  v12 = [v10 serverDomainDemotionExclusionSet];
-  v16 = (!v12 || (v13 = v12, [v10 serverDomainDemotionExclusionSet], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "containsObject:", v11), v14, v13, (v15 & 1) == 0)) && (!objc_msgSend(a1, "isPhotosRelatedIntent:", objc_msgSend(v8, "intentType")) || (objc_msgSend(v11, "isEqualToString:", @"com.apple.parsec.web_images") & 1) == 0) && objc_msgSend(v8, "intentType") != 20 && (!objc_msgSend(v11, "isEqualToString:", @"com.apple.parsec.maps") || !objc_msgSend(v10, "getBoolParameter:", @"IntentModelingMapsPoiIntent") || (objc_msgSend(a1, "_hasMapsPOIResults:", v9) & 1) == 0);
+  intentCopy = intent;
+  sectionCopy = section;
+  configCopy = config;
+  bundleIdentifier = [sectionCopy bundleIdentifier];
+  serverDomainDemotionExclusionSet = [configCopy serverDomainDemotionExclusionSet];
+  v16 = (!serverDomainDemotionExclusionSet || (v13 = serverDomainDemotionExclusionSet, [configCopy serverDomainDemotionExclusionSet], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "containsObject:", bundleIdentifier), v14, v13, (v15 & 1) == 0)) && (!objc_msgSend(self, "isPhotosRelatedIntent:", objc_msgSend(intentCopy, "intentType")) || (objc_msgSend(bundleIdentifier, "isEqualToString:", @"com.apple.parsec.web_images") & 1) == 0) && objc_msgSend(intentCopy, "intentType") != 20 && (!objc_msgSend(bundleIdentifier, "isEqualToString:", @"com.apple.parsec.maps") || !objc_msgSend(configCopy, "getBoolParameter:", @"IntentModelingMapsPoiIntent") || (objc_msgSend(self, "_hasMapsPOIResults:", sectionCopy) & 1) == 0);
 
   return v16;
 }
 
-+ (BOOL)_hasMapsPOIResults:(id)a3
++ (BOOL)_hasMapsPOIResults:(id)results
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  v6 = [v5 isEqualToString:@"com.apple.parsec.maps"];
+  resultsCopy = results;
+  bundleIdentifier = [resultsCopy bundleIdentifier];
+  v6 = [bundleIdentifier isEqualToString:@"com.apple.parsec.maps"];
 
   if (v6)
   {
@@ -1359,8 +1359,8 @@ LABEL_22:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [v4 results];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    results = [resultsCopy results];
+    v8 = [results countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1371,10 +1371,10 @@ LABEL_22:
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(results);
           }
 
-          v12 = [a1 _getParsecMapsDetailedIdentifier:*(*(&v16 + 1) + 8 * i)];
+          v12 = [self _getParsecMapsDetailedIdentifier:*(*(&v16 + 1) + 8 * i)];
           if ([v12 hasPrefix:_hasMapsPOIResults__mapsCategoryPrefix] & 1) != 0 || (objc_msgSend(v12, "hasPrefix:", _hasMapsPOIResults__mapsChainBizPrefix))
           {
 
@@ -1383,7 +1383,7 @@ LABEL_22:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v9 = [results countByEnumeratingWithState:&v16 objects:v20 count:16];
         v13 = 0;
         if (v9)
         {
@@ -1420,59 +1420,59 @@ void __43__SSQueryIntentManager__hasMapsPOIResults___block_invoke()
   _hasMapsPOIResults__mapsChainBizPrefix = @"m:chainBusiness:";
 }
 
-+ (id)_getParsecMapsDetailedIdentifier:(id)a3
++ (id)_getParsecMapsDetailedIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [v3 inlineCard];
-  v5 = [v4 cardSections];
-  if (!v5)
+  identifierCopy = identifier;
+  inlineCard = [identifierCopy inlineCard];
+  cardSections = [inlineCard cardSections];
+  if (!cardSections)
   {
     goto LABEL_4;
   }
 
-  v6 = [v3 inlineCard];
-  v7 = [v6 cardSections];
-  v8 = [v7 count];
+  inlineCard2 = [identifierCopy inlineCard];
+  cardSections2 = [inlineCard2 cardSections];
+  v8 = [cardSections2 count];
 
   if (v8)
   {
-    v9 = [v3 inlineCard];
-    v10 = [v9 cardSections];
-    v4 = [v10 firstObject];
+    inlineCard3 = [identifierCopy inlineCard];
+    cardSections3 = [inlineCard3 cardSections];
+    inlineCard = [cardSections3 firstObject];
 
-    v5 = [v4 resultIdentifier];
+    cardSections = [inlineCard resultIdentifier];
 LABEL_4:
 
     goto LABEL_6;
   }
 
-  v5 = 0;
+  cardSections = 0;
 LABEL_6:
 
-  return v5;
+  return cardSections;
 }
 
-+ (BOOL)isServerResult:(id)a3
++ (BOOL)isServerResult:(id)result
 {
-  v4 = a3;
-  if (SSResultTypeIsServer([v4 type]))
+  resultCopy = result;
+  if (SSResultTypeIsServer([resultCopy type]))
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v4 resultBundleId];
-    v5 = [a1 _isParsecSection:v6];
+    resultBundleId = [resultCopy resultBundleId];
+    v5 = [self _isParsecSection:resultBundleId];
   }
 
   return v5;
 }
 
-+ (BOOL)_isJaJP:(id)a3
++ (BOOL)_isJaJP:(id)p
 {
-  v3 = [a3 keyboardPrimaryLanguage];
-  v4 = [v3 isEqualToString:@"ja-JP"];
+  keyboardPrimaryLanguage = [p keyboardPrimaryLanguage];
+  v4 = [keyboardPrimaryLanguage isEqualToString:@"ja-JP"];
 
   return v4;
 }

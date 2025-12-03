@@ -1,35 +1,35 @@
 @interface CSSmartSiriVolumeEstimate
-- (CSSmartSiriVolumeEstimate)initWithCoder:(id)a3;
-- (CSSmartSiriVolumeEstimate)initWithVolumeEstimate:(float)a3 debugLogFile:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (CSSmartSiriVolumeEstimate)initWithCoder:(id)coder;
+- (CSSmartSiriVolumeEstimate)initWithVolumeEstimate:(float)estimate debugLogFile:(id)file;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CSSmartSiriVolumeEstimate
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   volumeEstimate = self->_volumeEstimate;
-  v7 = a3;
+  coderCopy = coder;
   *&v5 = volumeEstimate;
   v6 = [NSNumber numberWithFloat:v5];
-  [v7 encodeObject:v6 forKey:@"estimatedTTSVolume"];
+  [coderCopy encodeObject:v6 forKey:@"estimatedTTSVolume"];
 
-  [v7 encodeObject:self->_debugLogPath forKey:@"debugLogPath"];
+  [coderCopy encodeObject:self->_debugLogPath forKey:@"debugLogPath"];
 }
 
-- (CSSmartSiriVolumeEstimate)initWithCoder:(id)a3
+- (CSSmartSiriVolumeEstimate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CSSmartSiriVolumeEstimate;
   v5 = [(CSSmartSiriVolumeEstimate *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"estimatedTTSVolume"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"estimatedTTSVolume"];
     [v6 floatValue];
     v5->_volumeEstimate = v7;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"debugLogPath"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"debugLogPath"];
     debugLogPath = v5->_debugLogPath;
     v5->_debugLogPath = v8;
   }
@@ -37,17 +37,17 @@
   return v5;
 }
 
-- (CSSmartSiriVolumeEstimate)initWithVolumeEstimate:(float)a3 debugLogFile:(id)a4
+- (CSSmartSiriVolumeEstimate)initWithVolumeEstimate:(float)estimate debugLogFile:(id)file
 {
-  v7 = a4;
+  fileCopy = file;
   v11.receiver = self;
   v11.super_class = CSSmartSiriVolumeEstimate;
   v8 = [(CSSmartSiriVolumeEstimate *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_volumeEstimate = a3;
-    objc_storeStrong(&v8->_debugLogPath, a4);
+    v8->_volumeEstimate = estimate;
+    objc_storeStrong(&v8->_debugLogPath, file);
   }
 
   return v9;

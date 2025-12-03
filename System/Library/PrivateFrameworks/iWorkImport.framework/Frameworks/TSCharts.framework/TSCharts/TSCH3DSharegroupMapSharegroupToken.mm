@@ -1,43 +1,43 @@
 @interface TSCH3DSharegroupMapSharegroupToken
-+ (id)tokenWithDevice:(id)a3;
-- (TSCH3DSharegroupMapSharegroupToken)initWithDevice:(id)a3;
++ (id)tokenWithDevice:(id)device;
+- (TSCH3DSharegroupMapSharegroupToken)initWithDevice:(id)device;
 - (id)tokenSharegroup;
 - (void)dealloc;
-- (void)releaseSharegroup:(id)a3;
+- (void)releaseSharegroup:(id)sharegroup;
 @end
 
 @implementation TSCH3DSharegroupMapSharegroupToken
 
-+ (id)tokenWithDevice:(id)a3
++ (id)tokenWithDevice:(id)device
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v10 = objc_msgSend_initWithDevice_(v5, v6, v7, v8, v9, v4);
+  deviceCopy = device;
+  v5 = [self alloc];
+  v10 = objc_msgSend_initWithDevice_(v5, v6, v7, v8, v9, deviceCopy);
 
   return v10;
 }
 
-- (TSCH3DSharegroupMapSharegroupToken)initWithDevice:(id)a3
+- (TSCH3DSharegroupMapSharegroupToken)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = TSCH3DSharegroupMapSharegroupToken;
   v6 = [(TSCH3DSharegroupMapSharegroupToken *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
 }
 
-- (void)releaseSharegroup:(id)a3
+- (void)releaseSharegroup:(id)sharegroup
 {
-  v28 = a3;
+  sharegroupCopy = sharegroup;
   v8 = objc_msgSend_sharegroup(self, v4, v5, v6, v7);
 
-  if (v8 != v28)
+  if (v8 != sharegroupCopy)
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, v10, v11, v12, "[TSCH3DSharegroupMapSharegroupToken releaseSharegroup:]");
@@ -47,7 +47,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v24, v25, v26, v27);
   }
 
-  objc_msgSend_setOwningThread_(v28, v9, v10, v11, v12, 0);
+  objc_msgSend_setOwningThread_(sharegroupCopy, v9, v10, v11, v12, 0);
 }
 
 - (void)dealloc

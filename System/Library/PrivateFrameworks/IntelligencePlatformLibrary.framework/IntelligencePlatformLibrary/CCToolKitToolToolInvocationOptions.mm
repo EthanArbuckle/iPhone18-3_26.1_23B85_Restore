@@ -1,50 +1,50 @@
 @interface CCToolKitToolToolInvocationOptions
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolToolInvocationOptions)initWithInteractionMode:(unsigned int)a3 locale:(id)a4 requestIdentifier:(id)a5 interfaceIdiom:(unsigned int)a6 shortcutOutput:(id)a7 error:(id *)a8;
-- (CCToolKitToolToolInvocationOptions)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolToolInvocationOptions)initWithInteractionMode:(unsigned int)mode locale:(id)locale requestIdentifier:(id)identifier interfaceIdiom:(unsigned int)idiom shortcutOutput:(id)output error:(id *)error;
+- (CCToolKitToolToolInvocationOptions)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (NSString)locale;
 - (NSString)requestIdentifier;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolToolInvocationOptions
 
-- (CCToolKitToolToolInvocationOptions)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolToolInvocationOptions)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"interactionMode"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"interactionMode"];
     v10 = v9;
     if (v9)
     {
-      [v6 objectForKeyedSubscript:{@"locale", objc_msgSend(v9, "unsignedIntegerValue")}];
+      [dictionaryCopy objectForKeyedSubscript:{@"locale", objc_msgSend(v9, "unsignedIntegerValue")}];
     }
 
     else
     {
-      [v6 objectForKeyedSubscript:{@"locale", 0}];
+      [dictionaryCopy objectForKeyedSubscript:{@"locale", 0}];
     }
     v12 = ;
-    v13 = [v6 objectForKeyedSubscript:@"requestIdentifier"];
-    v14 = [v6 objectForKeyedSubscript:@"interfaceIdiom"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"requestIdentifier"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"interfaceIdiom"];
     v15 = v14;
     if (v14)
     {
-      v16 = [v14 unsignedIntegerValue];
+      unsignedIntegerValue = [v14 unsignedIntegerValue];
     }
 
     else
     {
-      v16 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    v17 = [v6 objectForKeyedSubscript:@"shortcutOutput"];
-    v11 = [[CCToolKitToolToolInvocationOptions alloc] initWithInteractionMode:v19 locale:v12 requestIdentifier:v13 interfaceIdiom:v16 shortcutOutput:v17 error:a4];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"shortcutOutput"];
+    v11 = [[CCToolKitToolToolInvocationOptions alloc] initWithInteractionMode:v19 locale:v12 requestIdentifier:v13 interfaceIdiom:unsignedIntegerValue shortcutOutput:v17 error:error];
   }
 
   else
@@ -64,14 +64,14 @@
 
   if (self->_locale)
   {
-    v5 = [(CCToolKitToolToolInvocationOptions *)self locale];
-    [v3 setObject:v5 forKeyedSubscript:@"locale"];
+    locale = [(CCToolKitToolToolInvocationOptions *)self locale];
+    [v3 setObject:locale forKeyedSubscript:@"locale"];
   }
 
   if (self->_requestIdentifier)
   {
-    v6 = [(CCToolKitToolToolInvocationOptions *)self requestIdentifier];
-    [v3 setObject:v6 forKeyedSubscript:@"requestIdentifier"];
+    requestIdentifier = [(CCToolKitToolToolInvocationOptions *)self requestIdentifier];
+    [v3 setObject:requestIdentifier forKeyedSubscript:@"requestIdentifier"];
   }
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CCToolKitToolToolInvocationOptions interfaceIdiom](self, "interfaceIdiom")}];
@@ -88,33 +88,33 @@
   return v9;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v12 = a3;
+  blockCopy = block;
   v5 = objc_alloc(MEMORY[0x1E69939F0]);
   v6 = *MEMORY[0x1E69939A8];
   v7 = [v5 initWithFieldType:v6 enumValue:self->_interactionMode];
-  v12[2](v12, v7);
+  blockCopy[2](blockCopy, v7);
 
   if (self->_locale)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 stringValue:self->_locale];
-    v12[2](v12, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_requestIdentifier)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 stringValue:self->_requestIdentifier];
-    v12[2](v12, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 enumValue:self->_interfaceIdiom];
-  v12[2](v12, v10);
+  blockCopy[2](blockCopy, v10);
 
   if (self->_hasShortcutOutput)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 BOOLValue:self->_shortcutOutput];
-    v12[2](v12, v11);
+    blockCopy[2](blockCopy, v11);
   }
 }
 
@@ -132,10 +132,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   v10 = MEMORY[0x1E6993AA8];
@@ -269,15 +269,15 @@ LABEL_52:
           {
             v49 = objc_opt_class();
             NSStringFromClass(v49);
-            v61 = self;
-            v50 = a4;
-            v52 = v51 = v6;
+            selfCopy = self;
+            errorCopy = error;
+            v52 = v51 = dataCopy;
             v53 = *&v7[*v10];
             v11 = CCSkipFieldErrorForMessage();
 
-            v6 = v51;
-            a4 = v50;
-            self = v61;
+            dataCopy = v51;
+            error = errorCopy;
+            self = selfCopy;
             goto LABEL_71;
           }
 
@@ -442,13 +442,13 @@ LABEL_78:
   return v59;
 }
 
-- (CCToolKitToolToolInvocationOptions)initWithInteractionMode:(unsigned int)a3 locale:(id)a4 requestIdentifier:(id)a5 interfaceIdiom:(unsigned int)a6 shortcutOutput:(id)a7 error:(id *)a8
+- (CCToolKitToolToolInvocationOptions)initWithInteractionMode:(unsigned int)mode locale:(id)locale requestIdentifier:(id)identifier interfaceIdiom:(unsigned int)idiom shortcutOutput:(id)output error:(id *)error
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  localeCopy = locale;
+  identifierCopy = identifier;
+  outputCopy = output;
   v17 = objc_opt_new();
-  if (a3)
+  if (mode)
   {
     v18 = CCValidateEnumField();
     v19 = 0;
@@ -457,21 +457,21 @@ LABEL_78:
       goto LABEL_23;
     }
 
-    v31 = a6;
-    v20 = v16;
-    v21 = self;
+    idiomCopy2 = idiom;
+    v20 = outputCopy;
+    selfCopy2 = self;
     CCPBDataWriterWriteUint32Field();
   }
 
   else
   {
-    v31 = a6;
-    v20 = v16;
-    v21 = self;
+    idiomCopy2 = idiom;
+    v20 = outputCopy;
+    selfCopy2 = self;
     v19 = 0;
   }
 
-  if (v14)
+  if (localeCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -480,20 +480,20 @@ LABEL_78:
     if (!IsInstanceOfExpectedClass)
     {
       CCSetError();
-      v27 = 0;
+      selfCopy3 = 0;
       v19 = v23;
       goto LABEL_18;
     }
 
     CCPBDataWriterWriteStringField();
-    if (!v15)
+    if (!identifierCopy)
     {
 LABEL_8:
       v19 = v23;
 LABEL_12:
-      self = v21;
-      v16 = v20;
-      if (v31)
+      self = selfCopy2;
+      outputCopy = v20;
+      if (idiomCopy2)
       {
         v25 = CCValidateEnumField();
         v26 = v19;
@@ -501,7 +501,7 @@ LABEL_12:
         if (!v25)
         {
           CCSetError();
-          v27 = 0;
+          selfCopy3 = 0;
           v19 = v26;
           goto LABEL_25;
         }
@@ -521,10 +521,10 @@ LABEL_12:
 LABEL_15:
           v19 = v26;
 LABEL_22:
-          v29 = [v17 immutableData];
-          self = [(CCItemMessage *)self initWithData:v29 error:a8];
+          immutableData = [v17 immutableData];
+          self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-          v27 = self;
+          selfCopy3 = self;
           goto LABEL_25;
         }
       }
@@ -535,14 +535,14 @@ LABEL_22:
 
       if (v28)
       {
-        [v16 BOOLValue];
+        [outputCopy BOOLValue];
         CCPBDataWriterWriteBOOLField();
         goto LABEL_22;
       }
 
 LABEL_23:
       CCSetError();
-      v27 = 0;
+      selfCopy3 = 0;
       goto LABEL_25;
     }
   }
@@ -550,7 +550,7 @@ LABEL_23:
   else
   {
     v23 = v19;
-    if (!v15)
+    if (!identifierCopy)
     {
       goto LABEL_8;
     }
@@ -567,13 +567,13 @@ LABEL_23:
   }
 
   CCSetError();
-  v27 = 0;
+  selfCopy3 = 0;
 LABEL_18:
-  self = v21;
-  v16 = v20;
+  self = selfCopy2;
+  outputCopy = v20;
 LABEL_25:
 
-  return v27;
+  return selfCopy3;
 }
 
 @end

@@ -81,8 +81,8 @@ void __55__ARSkeletonDefinition_defaultBody3DSkeletonDefinition__block_invoke()
           [v3 addObject:&unk_1F4258260];
         }
 
-        v19 = [v15 lastPathComponent];
-        [v41 addObject:v19];
+        lastPathComponent = [v15 lastPathComponent];
+        [v41 addObject:lastPathComponent];
 
         ++v14;
       }
@@ -202,15 +202,15 @@ void __55__ARSkeletonDefinition_defaultBody2DSkeletonDefinition__block_invoke()
 - (NSUInteger)indexForJointName:(ARSkeletonJointName)jointName
 {
   v4 = jointName;
-  v8 = [(NSString *)v4 UTF8String];
-  v9 = strlen(v8);
-  if (std::__hash_table<std::__hash_value_type<std::string_view,unsigned long>,std::__unordered_map_hasher<std::string_view,std::__hash_value_type<std::string_view,unsigned long>,std::hash<std::string_view>,std::equal_to<std::string_view>,true>,std::__unordered_map_equal<std::string_view,std::__hash_value_type<std::string_view,unsigned long>,std::equal_to<std::string_view>,std::hash<std::string_view>,true>,std::allocator<std::__hash_value_type<std::string_view,unsigned long>>>::find<std::string_view>(&self->_jointname_to_index.__table_.__bucket_list_.__ptr_, &v8))
+  uTF8String = [(NSString *)v4 UTF8String];
+  v9 = strlen(uTF8String);
+  if (std::__hash_table<std::__hash_value_type<std::string_view,unsigned long>,std::__unordered_map_hasher<std::string_view,std::__hash_value_type<std::string_view,unsigned long>,std::hash<std::string_view>,std::equal_to<std::string_view>,true>,std::__unordered_map_equal<std::string_view,std::__hash_value_type<std::string_view,unsigned long>,std::equal_to<std::string_view>,std::hash<std::string_view>,true>,std::allocator<std::__hash_value_type<std::string_view,unsigned long>>>::find<std::string_view>(&self->_jointname_to_index.__table_.__bucket_list_.__ptr_, &uTF8String))
   {
     v5 = v4;
-    v8 = [(NSString *)v5 UTF8String];
-    v9 = strlen(v8);
-    v10 = &v8;
-    v6 = std::__hash_table<std::__hash_value_type<std::string_view,unsigned long>,std::__unordered_map_hasher<std::string_view,std::__hash_value_type<std::string_view,unsigned long>,std::hash<std::string_view>,std::equal_to<std::string_view>,true>,std::__unordered_map_equal<std::string_view,std::__hash_value_type<std::string_view,unsigned long>,std::equal_to<std::string_view>,std::hash<std::string_view>,true>,std::allocator<std::__hash_value_type<std::string_view,unsigned long>>>::__emplace_unique_key_args<std::string_view,std::piecewise_construct_t const&,std::tuple<std::string_view&&>,std::tuple<>>(&self->_jointname_to_index.__table_.__bucket_list_.__ptr_, &v8)[4];
+    uTF8String = [(NSString *)v5 UTF8String];
+    v9 = strlen(uTF8String);
+    v10 = &uTF8String;
+    v6 = std::__hash_table<std::__hash_value_type<std::string_view,unsigned long>,std::__unordered_map_hasher<std::string_view,std::__hash_value_type<std::string_view,unsigned long>,std::hash<std::string_view>,std::equal_to<std::string_view>,true>,std::__unordered_map_equal<std::string_view,std::__hash_value_type<std::string_view,unsigned long>,std::equal_to<std::string_view>,std::hash<std::string_view>,true>,std::allocator<std::__hash_value_type<std::string_view,unsigned long>>>::__emplace_unique_key_args<std::string_view,std::piecewise_construct_t const&,std::tuple<std::string_view&&>,std::tuple<>>(&self->_jointname_to_index.__table_.__bucket_list_.__ptr_, &uTF8String)[4];
   }
 
   else
@@ -223,8 +223,8 @@ void __55__ARSkeletonDefinition_defaultBody2DSkeletonDefinition__block_invoke()
 
 - (NSUInteger)jointCount
 {
-  v2 = [(ARSkeletonDefinition *)self jointNames];
-  v3 = [v2 count];
+  jointNames = [(ARSkeletonDefinition *)self jointNames];
+  v3 = [jointNames count];
 
   return v3;
 }

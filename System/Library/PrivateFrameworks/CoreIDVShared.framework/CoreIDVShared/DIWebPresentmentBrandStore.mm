@@ -1,7 +1,7 @@
 @interface DIWebPresentmentBrandStore
 - (DIWebPresentmentBrandStore)init;
-- (void)brandWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)permissionsForBrandWithIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)brandWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)permissionsForBrandWithIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation DIWebPresentmentBrandStore
@@ -39,17 +39,17 @@
   return v2;
 }
 
-- (void)brandWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)brandWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   queryService = self->_queryService;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __68__DIWebPresentmentBrandStore_brandWithIdentifier_completionHandler___block_invoke;
   v9[3] = &unk_2785733B0;
-  v10 = v6;
-  v8 = v6;
-  [(BCSBusinessQueryService *)queryService fetchBrandWithIdentifier:a3 serviceType:5 completion:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [(BCSBusinessQueryService *)queryService fetchBrandWithIdentifier:identifier serviceType:5 completion:v9];
 }
 
 void __68__DIWebPresentmentBrandStore_brandWithIdentifier_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -101,17 +101,17 @@ void __68__DIWebPresentmentBrandStore_brandWithIdentifier_completionHandler___bl
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v8];
 }
 
-- (void)permissionsForBrandWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)permissionsForBrandWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   queryService = self->_queryService;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __82__DIWebPresentmentBrandStore_permissionsForBrandWithIdentifier_completionHandler___block_invoke;
   v9[3] = &unk_2785733D8;
-  v10 = v6;
-  v8 = v6;
-  [(BCSBusinessQueryService *)queryService fetchWebPresentmentPermissionsWithIdentifier:a3 completion:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [(BCSBusinessQueryService *)queryService fetchWebPresentmentPermissionsWithIdentifier:identifier completion:v9];
 }
 
 uint64_t __82__DIWebPresentmentBrandStore_permissionsForBrandWithIdentifier_completionHandler___block_invoke(uint64_t a1)

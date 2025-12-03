@@ -1,39 +1,39 @@
 @interface MPCMRContentItemRemoteArtworkToken
-- (BOOL)isEqual:(id)a3;
-- (MPCMRContentItemRemoteArtworkToken)initWithIdentifier:(id)a3 artworkIdentifier:(id)a4 supportedRemoteArtworkFormats:(id)a5 remoteArtworks:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (MPCMRContentItemRemoteArtworkToken)initWithIdentifier:(id)identifier artworkIdentifier:(id)artworkIdentifier supportedRemoteArtworkFormats:(id)formats remoteArtworks:(id)artworks;
 - (id)stringRepresentation;
-- (void)setDestinationScale:(double)a3;
-- (void)setFittingSize:(CGSize)a3;
+- (void)setDestinationScale:(double)scale;
+- (void)setFittingSize:(CGSize)size;
 @end
 
 @implementation MPCMRContentItemRemoteArtworkToken
 
-- (void)setDestinationScale:(double)a3
+- (void)setDestinationScale:(double)scale
 {
-  v4 = [(MPCMRContentItemRemoteArtworkToken *)self storeArtworkCatalog];
-  [v4 setDestinationScale:a3];
+  storeArtworkCatalog = [(MPCMRContentItemRemoteArtworkToken *)self storeArtworkCatalog];
+  [storeArtworkCatalog setDestinationScale:scale];
 }
 
-- (void)setFittingSize:(CGSize)a3
+- (void)setFittingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(MPCMRContentItemRemoteArtworkToken *)self storeArtworkCatalog];
-  [v5 setFittingSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  storeArtworkCatalog = [(MPCMRContentItemRemoteArtworkToken *)self storeArtworkCatalog];
+  [storeArtworkCatalog setFittingSize:{width, height}];
 }
 
 - (id)stringRepresentation
 {
-  v2 = [(MPCMRContentItemRemoteArtworkToken *)self artworkIdentifier];
-  v3 = [v2 copy];
+  artworkIdentifier = [(MPCMRContentItemRemoteArtworkToken *)self artworkIdentifier];
+  v3 = [artworkIdentifier copy];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -43,29 +43,29 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       identifier = self->_identifier;
-      v7 = [(MPCMRContentItemRemoteArtworkToken *)v5 identifier];
-      if (identifier == v7 || [(NSString *)identifier isEqual:v7])
+      identifier = [(MPCMRContentItemRemoteArtworkToken *)v5 identifier];
+      if (identifier == identifier || [(NSString *)identifier isEqual:identifier])
       {
         artworkIdentifier = self->_artworkIdentifier;
-        v9 = [(MPCMRContentItemRemoteArtworkToken *)v5 artworkIdentifier];
-        if (artworkIdentifier == v9 || [(NSString *)artworkIdentifier isEqual:v9])
+        artworkIdentifier = [(MPCMRContentItemRemoteArtworkToken *)v5 artworkIdentifier];
+        if (artworkIdentifier == artworkIdentifier || [(NSString *)artworkIdentifier isEqual:artworkIdentifier])
         {
           supportedRemoteArtworkFormats = self->_supportedRemoteArtworkFormats;
-          v11 = [(MPCMRContentItemRemoteArtworkToken *)v5 supportedRemoteArtworkFormats];
-          if (supportedRemoteArtworkFormats == v11 || [(NSArray *)supportedRemoteArtworkFormats isEqual:v11])
+          supportedRemoteArtworkFormats = [(MPCMRContentItemRemoteArtworkToken *)v5 supportedRemoteArtworkFormats];
+          if (supportedRemoteArtworkFormats == supportedRemoteArtworkFormats || [(NSArray *)supportedRemoteArtworkFormats isEqual:supportedRemoteArtworkFormats])
           {
             remoteArtworks = self->_remoteArtworks;
-            v13 = [(MPCMRContentItemRemoteArtworkToken *)v5 remoteArtworks];
-            if (remoteArtworks == v13)
+            remoteArtworks = [(MPCMRContentItemRemoteArtworkToken *)v5 remoteArtworks];
+            if (remoteArtworks == remoteArtworks)
             {
               v14 = 1;
             }
 
             else
             {
-              v14 = [(NSDictionary *)remoteArtworks isEqual:v13];
+              v14 = [(NSDictionary *)remoteArtworks isEqual:remoteArtworks];
             }
           }
 
@@ -96,30 +96,30 @@
   return v14;
 }
 
-- (MPCMRContentItemRemoteArtworkToken)initWithIdentifier:(id)a3 artworkIdentifier:(id)a4 supportedRemoteArtworkFormats:(id)a5 remoteArtworks:(id)a6
+- (MPCMRContentItemRemoteArtworkToken)initWithIdentifier:(id)identifier artworkIdentifier:(id)artworkIdentifier supportedRemoteArtworkFormats:(id)formats remoteArtworks:(id)artworks
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  artworkIdentifierCopy = artworkIdentifier;
+  formatsCopy = formats;
+  artworksCopy = artworks;
   v37.receiver = self;
   v37.super_class = MPCMRContentItemRemoteArtworkToken;
   v14 = [(MPCMRContentItemRemoteArtworkToken *)&v37 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     identifier = v14->_identifier;
     v14->_identifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [artworkIdentifierCopy copy];
     artworkIdentifier = v14->_artworkIdentifier;
     v14->_artworkIdentifier = v17;
 
-    v19 = [v12 copy];
+    v19 = [formatsCopy copy];
     supportedRemoteArtworkFormats = v14->_supportedRemoteArtworkFormats;
     v14->_supportedRemoteArtworkFormats = v19;
 
-    objc_storeStrong(&v14->_remoteArtworks, a6);
+    objc_storeStrong(&v14->_remoteArtworks, artworks);
     v21 = v14->_remoteArtworks;
     if (![(NSDictionary *)v21 count])
     {
@@ -139,13 +139,13 @@ LABEL_14:
       goto LABEL_12;
     }
 
-    v24 = [v22 artworkURLTemplateData];
+    artworkURLTemplateData = [v22 artworkURLTemplateData];
 
-    if (v24)
+    if (artworkURLTemplateData)
     {
       v25 = MEMORY[0x1E696ACB0];
-      v26 = [v23 artworkURLTemplateData];
-      v27 = [v25 JSONObjectWithData:v26 options:0 error:0];
+      artworkURLTemplateData2 = [v23 artworkURLTemplateData];
+      v27 = [v25 JSONObjectWithData:artworkURLTemplateData2 options:0 error:0];
 
       if (v27)
       {
@@ -158,8 +158,8 @@ LABEL_14:
       }
     }
 
-    v29 = [v23 artworkURLString];
-    v30 = [v29 length];
+    artworkURLString = [v23 artworkURLString];
+    v30 = [artworkURLString length];
 
     if (!v30)
     {
@@ -167,8 +167,8 @@ LABEL_14:
     }
 
     v31 = MEMORY[0x1E695DFF8];
-    v32 = [v23 artworkURLString];
-    v30 = [v31 URLWithString:v32];
+    artworkURLString2 = [v23 artworkURLString];
+    v30 = [v31 URLWithString:artworkURLString2];
 
     if (!v30)
     {
@@ -181,8 +181,8 @@ LABEL_14:
     {
 LABEL_10:
       v36 = [MEMORY[0x1E6970988] tokenWithImageArtworkInfo:v28];
-      v33 = [MEMORY[0x1E6970980] sharedStoreArtworkDataSource];
-      v30 = [objc_alloc(MEMORY[0x1E69704A0]) initWithToken:v36 dataSource:v33];
+      mEMORY[0x1E6970980] = [MEMORY[0x1E6970980] sharedStoreArtworkDataSource];
+      v30 = [objc_alloc(MEMORY[0x1E69704A0]) initWithToken:v36 dataSource:mEMORY[0x1E6970980]];
     }
 
     else

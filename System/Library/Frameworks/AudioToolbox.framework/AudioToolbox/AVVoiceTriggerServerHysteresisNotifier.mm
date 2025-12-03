@@ -1,41 +1,41 @@
 @interface AVVoiceTriggerServerHysteresisNotifier
-- (AVVoiceTriggerServerHysteresisNotifier)initWithSerialQueue:(id)a3;
-- (BOOL)isPortActive:(unint64_t)a3 activePortsToken:(unint64_t)a4;
-- (id)addPortToMonitor:(unint64_t)a3 hysteresisDurationSeconds:(float)a4 notificationBlock:(id)a5;
-- (id)getPortManagerForType:(unint64_t)a3;
+- (AVVoiceTriggerServerHysteresisNotifier)initWithSerialQueue:(id)queue;
+- (BOOL)isPortActive:(unint64_t)active activePortsToken:(unint64_t)token;
+- (id)addPortToMonitor:(unint64_t)monitor hysteresisDurationSeconds:(float)seconds notificationBlock:(id)block;
+- (id)getPortManagerForType:(unint64_t)type;
 - (void)dealloc;
-- (void)processState:(unint64_t)a3;
-- (void)removePortToMonitor:(unint64_t)a3;
-- (void)sendState:(id)a3;
+- (void)processState:(unint64_t)state;
+- (void)removePortToMonitor:(unint64_t)monitor;
+- (void)sendState:(id)state;
 @end
 
 @implementation AVVoiceTriggerServerHysteresisNotifier
 
-- (void)removePortToMonitor:(unint64_t)a3
+- (void)removePortToMonitor:(unint64_t)monitor
 {
-  v4 = [(AVVoiceTriggerServerHysteresisNotifier *)self getPortManagerForType:a3];
+  v4 = [(AVVoiceTriggerServerHysteresisNotifier *)self getPortManagerForType:monitor];
   if (v4)
   {
     [(NSMutableArray *)self->_portsToMonitor removeObject:v4];
   }
 }
 
-- (id)addPortToMonitor:(unint64_t)a3 hysteresisDurationSeconds:(float)a4 notificationBlock:(id)a5
+- (id)addPortToMonitor:(unint64_t)monitor hysteresisDurationSeconds:(float)seconds notificationBlock:(id)block
 {
-  v8 = a5;
-  v9 = [(AVVoiceTriggerServerHysteresisNotifier *)self getPortManagerForType:a3];
+  blockCopy = block;
+  v9 = [(AVVoiceTriggerServerHysteresisNotifier *)self getPortManagerForType:monitor];
   if (!v9)
   {
     v10 = [AVVoiceTriggerServerPortManager alloc];
-    *&v11 = a4;
-    v9 = [(AVVoiceTriggerServerPortManager *)v10 initWithPortType:a3 hysteresisDurationSeconds:v8 notificationBlock:v11];
+    *&v11 = seconds;
+    v9 = [(AVVoiceTriggerServerPortManager *)v10 initWithPortType:monitor hysteresisDurationSeconds:blockCopy notificationBlock:v11];
     [(NSMutableArray *)self->_portsToMonitor addObject:v9];
   }
 
   return v9;
 }
 
-- (void)processState:(unint64_t)a3
+- (void)processState:(unint64_t)state
 {
   v29 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
@@ -43,8 +43,8 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(AVVoiceTriggerServerHysteresisNotifier *)self portsToMonitor];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v28 count:16];
+  portsToMonitor = [(AVVoiceTriggerServerHysteresisNotifier *)self portsToMonitor];
+  v6 = [portsToMonitor countByEnumeratingWithState:&v16 objects:v28 count:16];
   if (v6)
   {
     v8 = MEMORY[0x1E69E9C10];
@@ -57,20 +57,20 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(portsToMonitor);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = -[AVVoiceTriggerServerHysteresisNotifier isPortActive:activePortsToken:](self, "isPortActive:activePortsToken:", [v11 portType], a3);
+        v12 = -[AVVoiceTriggerServerHysteresisNotifier isPortActive:activePortsToken:](self, "isPortActive:activePortsToken:", [v11 portType], state);
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
-          v13 = [v11 portType];
+          portType = [v11 portType];
           *buf = v15;
           v21 = "AVVoiceTriggerServer.mm";
           v22 = 1024;
           v23 = 385;
           v24 = 2048;
-          v25 = v13;
+          v25 = portType;
           v26 = 1024;
           v27 = v12;
           _os_log_impl(&dword_1B9A08000, v8, OS_LOG_TYPE_DEBUG, "%25s:%-5d State may have changed for port: %lu current state: %d", buf, 0x22u);
@@ -79,7 +79,7 @@
         [(AVVoiceTriggerServerHysteresisNotifier *)self stateChanged:v12 forPort:v11];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v16 objects:v28 count:16];
+      v6 = [portsToMonitor countByEnumeratingWithState:&v16 objects:v28 count:16];
     }
 
     while (v6);
@@ -88,17 +88,17 @@
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isPortActive:(unint64_t)a3 activePortsToken:(unint64_t)a4
+- (BOOL)isPortActive:(unint64_t)active activePortsToken:(unint64_t)token
 {
-  v4 = (a4 >> 1) & 1;
-  if (a3 != 1)
+  v4 = (token >> 1) & 1;
+  if (active != 1)
   {
     LOBYTE(v4) = 0;
   }
 
-  if (a3 == 2)
+  if (active == 2)
   {
-    return (a4 & 0xC) != 0;
+    return (token & 0xC) != 0;
   }
 
   else
@@ -107,7 +107,7 @@
   }
 }
 
-- (id)getPortManagerForType:(unint64_t)a3
+- (id)getPortManagerForType:(unint64_t)type
 {
   v18 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
@@ -115,8 +115,8 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(AVVoiceTriggerServerHysteresisNotifier *)self portsToMonitor];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  portsToMonitor = [(AVVoiceTriggerServerHysteresisNotifier *)self portsToMonitor];
+  v6 = [portsToMonitor countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -126,18 +126,18 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(portsToMonitor);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([v9 portType] == a3)
+        if ([v9 portType] == type)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [portsToMonitor countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -155,16 +155,16 @@ LABEL_11:
   return v10;
 }
 
-- (void)sendState:(id)a3
+- (void)sendState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__AVVoiceTriggerServerHysteresisNotifier_sendState___block_invoke;
   block[3] = &unk_1E7ED02F0;
-  v8 = v4;
-  v6 = v4;
+  v8 = stateCopy;
+  v6 = stateCopy;
   dispatch_async(queue, block);
 }
 
@@ -190,17 +190,17 @@ uint64_t __52__AVVoiceTriggerServerHysteresisNotifier_sendState___block_invoke(u
   [(AVVoiceTriggerServerHysteresisNotifier *)&v5 dealloc];
 }
 
-- (AVVoiceTriggerServerHysteresisNotifier)initWithSerialQueue:(id)a3
+- (AVVoiceTriggerServerHysteresisNotifier)initWithSerialQueue:(id)queue
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = AVVoiceTriggerServerHysteresisNotifier;
   v6 = [(AVVoiceTriggerServerHysteresisNotifier *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     portsToMonitor = v7->_portsToMonitor;
     v7->_portsToMonitor = v8;

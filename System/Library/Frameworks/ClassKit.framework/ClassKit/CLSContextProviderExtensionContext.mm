@@ -1,9 +1,9 @@
 @interface CLSContextProviderExtensionContext
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (void)getMainAppContextPathWithCompletion:(id)a3;
-- (void)updateDescendantsOfContext:(id)a3 completion:(id)a4;
-- (void)updateDescendantsOfContextPath:(id)a3 completion:(id)a4;
+- (void)getMainAppContextPathWithCompletion:(id)completion;
+- (void)updateDescendantsOfContext:(id)context completion:(id)completion;
+- (void)updateDescendantsOfContextPath:(id)path completion:(id)completion;
 @end
 
 @implementation CLSContextProviderExtensionContext
@@ -32,10 +32,10 @@
   return v3;
 }
 
-- (void)getMainAppContextPathWithCompletion:(id)a3
+- (void)getMainAppContextPathWithCompletion:(id)completion
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  completionCopy = completion;
   v6 = objc_msgSend_shared(CLSDataStore, v4, v5);
   v10 = objc_msgSend_mainAppContext(v6, v7, v8);
   if (v10)
@@ -44,7 +44,7 @@
     v19[1] = 3221225472;
     v19[2] = sub_236F9F910;
     v19[3] = &unk_278A182E0;
-    v21 = v3;
+    v21 = completionCopy;
     v20 = v10;
     objc_msgSend_saveWithCompletion_(v6, v11, v19);
 
@@ -60,17 +60,17 @@
     v16 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v15, v23, &v22, 1);
     v12 = objc_msgSend_errorWithDomain_code_userInfo_(v13, v17, @"com.apple.ClassKit", 100, v16);
 
-    (*(v3 + 2))(v3, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateDescendantsOfContextPath:(id)a3 completion:(id)a4
+- (void)updateDescendantsOfContextPath:(id)path completion:(id)completion
 {
   v63[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  completionCopy = completion;
   v10 = objc_msgSend_shared(CLSDataStore, v8, v9);
   v13 = objc_msgSend_mainAppContext(v10, v11, v12);
   v56 = 0;
@@ -85,7 +85,7 @@
   v53 = sub_236F9FD78;
   v54 = sub_236F9FD88;
   v55 = 0;
-  if (!objc_msgSend_count(v6, v14, v15))
+  if (!objc_msgSend_count(pathCopy, v14, v15))
   {
     v29 = v57;
     v30 = v13;
@@ -94,7 +94,7 @@
     goto LABEL_12;
   }
 
-  v20 = objc_msgSend_firstObject(v6, v16, v17);
+  v20 = objc_msgSend_firstObject(pathCopy, v16, v17);
   if (!v20)
   {
     v31 = objc_msgSend_identifier(v13, v18, v19);
@@ -117,7 +117,7 @@
     if (isEqualToString)
     {
 LABEL_9:
-      if (objc_msgSend_count(v6, v27, v28) == 1)
+      if (objc_msgSend_count(pathCopy, v27, v28) == 1)
       {
         objc_storeStrong(v57 + 5, v13);
       }
@@ -130,7 +130,7 @@ LABEL_9:
         v45[2] = sub_236F9FD94;
         v45[3] = &unk_278A18308;
         v48 = &v50;
-        v46 = v6;
+        v46 = pathCopy;
         v49 = &v56;
         v33 = v32;
         v47 = v33;
@@ -145,7 +145,7 @@ LABEL_12:
   v36 = v57[5];
   if (v36)
   {
-    objc_msgSend_updateDescendantsOfContext_completion_(self, v35, v36, v7);
+    objc_msgSend_updateDescendantsOfContext_completion_(self, v35, v36, completionCopy);
   }
 
   else
@@ -154,7 +154,7 @@ LABEL_12:
     {
       v37 = MEMORY[0x277CCA9B8];
       v62 = *MEMORY[0x277CCA450];
-      v38 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v35, @"Invalid context path: %@", v6);
+      v38 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v35, @"Invalid context path: %@", pathCopy);
       v63[0] = v38;
       v40 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v39, v63, &v62, 1);
       v42 = objc_msgSend_errorWithDomain_code_userInfo_(v37, v41, @"com.apple.ClassKit", 2, v40);
@@ -162,9 +162,9 @@ LABEL_12:
       v51[5] = v42;
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, v51[5]);
+      completionCopy[2](completionCopy, v51[5]);
     }
   }
 
@@ -174,12 +174,12 @@ LABEL_12:
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateDescendantsOfContext:(id)a3 completion:(id)a4
+- (void)updateDescendantsOfContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  contextCopy = context;
   v11 = objc_msgSend__principalObject(self, v8, v9);
-  objc_msgSend_updateDescendantsOfContext_completion_(v11, v10, v7, v6);
+  objc_msgSend_updateDescendantsOfContext_completion_(v11, v10, contextCopy, completionCopy);
 }
 
 @end

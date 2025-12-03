@@ -1,19 +1,19 @@
 @interface PXTilingControllerCompositionInvalidationContext
-+ (id)defaultAnimationOptionsForTilingController:(id)a3 withInvalidationContexts:(id)a4;
++ (id)defaultAnimationOptionsForTilingController:(id)controller withInvalidationContexts:(id)contexts;
 @end
 
 @implementation PXTilingControllerCompositionInvalidationContext
 
-+ (id)defaultAnimationOptionsForTilingController:(id)a3 withInvalidationContexts:(id)a4
++ (id)defaultAnimationOptionsForTilingController:(id)controller withInvalidationContexts:(id)contexts
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  controllerCopy = controller;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  contextsCopy = contexts;
+  v7 = [contextsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -24,24 +24,24 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(contextsCopy);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 originatingTilingController];
+        originatingTilingController = [v11 originatingTilingController];
 
-        if (v12 != v5)
+        if (originatingTilingController != controllerCopy)
         {
-          v13 = [v11 animationOptions];
-          if (v13)
+          animationOptions = [v11 animationOptions];
+          if (animationOptions)
           {
-            v14 = v13;
+            v14 = animationOptions;
             goto LABEL_12;
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [contextsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;

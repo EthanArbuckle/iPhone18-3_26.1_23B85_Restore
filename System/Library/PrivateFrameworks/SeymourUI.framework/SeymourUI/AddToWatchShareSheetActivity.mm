@@ -1,11 +1,11 @@
 @interface AddToWatchShareSheetActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (NSString)activityTitle;
 - (NSString)activityType;
 - (UIImage)activityImage;
 - (_TtC9SeymourUI28AddToWatchShareSheetActivity)init;
 - (void)performActivity;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation AddToWatchShareSheetActivity
@@ -25,7 +25,7 @@
 - (NSString)activityTitle
 {
   __swift_project_boxed_opaque_existential_1((&self->super.super.isa + OBJC_IVAR____TtC9SeymourUI28AddToWatchShareSheetActivity_storefrontLocalizer), *(&self->super._activitySettingsImageLoader + OBJC_IVAR____TtC9SeymourUI28AddToWatchShareSheetActivity_storefrontLocalizer));
-  v3 = self;
+  selfCopy = self;
   sub_20C138D34();
 
   v4 = sub_20C13C914();
@@ -41,25 +41,25 @@
   return v3;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v4 = sub_20C13CC74();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_20B624760(v4);
 
   return v6 & 1;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v4 = sub_20C13CC74();
-  v5 = self;
+  selfCopy = self;
   sub_20B624304(v4);
 }
 
 - (void)performActivity
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B624428();
 }
 

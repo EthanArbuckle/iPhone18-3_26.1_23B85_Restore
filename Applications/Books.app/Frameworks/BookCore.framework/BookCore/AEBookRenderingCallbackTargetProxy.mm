@@ -1,41 +1,41 @@
 @interface AEBookRenderingCallbackTargetProxy
-- (AEBookRenderingCallbackTargetProxy)initWithTarget:(id)a3;
+- (AEBookRenderingCallbackTargetProxy)initWithTarget:(id)target;
 - (IMRenderingCacheCallback)target;
-- (void)renderingCacheCallbackImage:(id)a3 context:(id)a4;
-- (void)renderingCacheCallbackImage:(id)a3 context:(id)a4 pageNumber:(int64_t)a5;
+- (void)renderingCacheCallbackImage:(id)image context:(id)context;
+- (void)renderingCacheCallbackImage:(id)image context:(id)context pageNumber:(int64_t)number;
 @end
 
 @implementation AEBookRenderingCallbackTargetProxy
 
-- (AEBookRenderingCallbackTargetProxy)initWithTarget:(id)a3
+- (AEBookRenderingCallbackTargetProxy)initWithTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v8.receiver = self;
   v8.super_class = AEBookRenderingCallbackTargetProxy;
   v5 = [(AEBookRenderingCallbackTargetProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_target, v4);
+    objc_storeWeak(&v5->_target, targetCopy);
   }
 
   return v6;
 }
 
-- (void)renderingCacheCallbackImage:(id)a3 context:(id)a4
+- (void)renderingCacheCallbackImage:(id)image context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  imageCopy = image;
   WeakRetained = objc_loadWeakRetained(&self->_target);
-  [WeakRetained renderingCacheCallbackImage:v7 context:v6];
+  [WeakRetained renderingCacheCallbackImage:imageCopy context:contextCopy];
 }
 
-- (void)renderingCacheCallbackImage:(id)a3 context:(id)a4 pageNumber:(int64_t)a5
+- (void)renderingCacheCallbackImage:(id)image context:(id)context pageNumber:(int64_t)number
 {
-  v8 = a4;
-  v9 = a3;
+  contextCopy = context;
+  imageCopy = image;
   WeakRetained = objc_loadWeakRetained(&self->_target);
-  [WeakRetained renderingCacheCallbackImage:v9 context:v8 pageNumber:a5];
+  [WeakRetained renderingCacheCallbackImage:imageCopy context:contextCopy pageNumber:number];
 }
 
 - (IMRenderingCacheCallback)target

@@ -1,18 +1,18 @@
 @interface ICQUIOutOfProcessUpgradeFlowManager
 + (id)sharedManager;
-- (BOOL)_canUseExtensionKitForURL:(id)a3;
-- (BOOL)_isDefaultOfferFlow:(id)a3;
+- (BOOL)_canUseExtensionKitForURL:(id)l;
+- (BOOL)_isDefaultOfferFlow:(id)flow;
 - (ICQUIOutOfProcessUpgradeFlowManager)init;
 - (ICQUpgradeFlowManager)flowManager;
 - (ICQUpgradeFlowManagerDelegate)delegate;
 - (id)_rootViewController;
 - (id)_topMostPresentingViewController;
-- (void)_beginExtensionKitFlowWithViewController:(id)a3;
+- (void)_beginExtensionKitFlowWithViewController:(id)controller;
 - (void)_beginSBRemoteAlertFlow;
-- (void)_startUpsellWithOffer:(id)a3 link:(id)a4 preloadedRemoteUIData:(id)a5 error:(id)a6 isPostPurchaseFlow:(BOOL)a7;
+- (void)_startUpsellWithOffer:(id)offer link:(id)link preloadedRemoteUIData:(id)data error:(id)error isPostPurchaseFlow:(BOOL)flow;
 - (void)_topMostPresentingViewController;
-- (void)beginFlowWithViewController:(id)a3;
-- (void)beginPostPurchaseFlowWithOffer:(id)a3 link:(id)a4;
+- (void)beginFlowWithViewController:(id)controller;
+- (void)beginPostPurchaseFlowWithOffer:(id)offer link:(id)link;
 @end
 
 @implementation ICQUIOutOfProcessUpgradeFlowManager
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __52__ICQUIOutOfProcessUpgradeFlowManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -58,49 +58,49 @@ void __52__ICQUIOutOfProcessUpgradeFlowManager_sharedManager__block_invoke()
   return v2;
 }
 
-- (void)beginPostPurchaseFlowWithOffer:(id)a3 link:(id)a4
+- (void)beginPostPurchaseFlowWithOffer:(id)offer link:(id)link
 {
-  v6 = a3;
-  v7 = a4;
+  offerCopy = offer;
+  linkCopy = link;
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [ICQUIOutOfProcessUpgradeFlowManager beginPostPurchaseFlowWithOffer:link:];
   }
 
-  v9 = [v7 actionURL];
-  [v6 _updateRequestedServerUIURLWithURL:v9];
+  actionURL = [linkCopy actionURL];
+  [offerCopy _updateRequestedServerUIURLWithURL:actionURL];
 
-  [(ICQUIOutOfProcessUpgradeFlowManager *)self _startUpsellWithOffer:v6 link:v7 preloadedRemoteUIData:0 error:0 isPostPurchaseFlow:1];
+  [(ICQUIOutOfProcessUpgradeFlowManager *)self _startUpsellWithOffer:offerCopy link:linkCopy preloadedRemoteUIData:0 error:0 isPostPurchaseFlow:1];
 }
 
-- (void)beginFlowWithViewController:(id)a3
+- (void)beginFlowWithViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(ICQUIOutOfProcessUpgradeFlowManager *)self offer];
-  v6 = [(ICQUIOutOfProcessUpgradeFlowManager *)self _isDefaultOfferFlow:v5];
+  controllerCopy = controller;
+  offer = [(ICQUIOutOfProcessUpgradeFlowManager *)self offer];
+  v6 = [(ICQUIOutOfProcessUpgradeFlowManager *)self _isDefaultOfferFlow:offer];
 
-  v7 = [(ICQUIOutOfProcessUpgradeFlowManager *)self offer];
-  v8 = [v7 serverUIURL];
-  v9 = [(ICQUIOutOfProcessUpgradeFlowManager *)self _canUseExtensionKitForURL:v8];
+  offer2 = [(ICQUIOutOfProcessUpgradeFlowManager *)self offer];
+  serverUIURL = [offer2 serverUIURL];
+  v9 = [(ICQUIOutOfProcessUpgradeFlowManager *)self _canUseExtensionKitForURL:serverUIURL];
 
-  if (v4)
+  if (controllerCopy)
   {
     v10 = 0;
   }
 
   else
   {
-    v11 = [(ICQUIOutOfProcessUpgradeFlowManager *)self _topMostPresentingViewController];
-    v10 = v11 == 0;
+    _topMostPresentingViewController = [(ICQUIOutOfProcessUpgradeFlowManager *)self _topMostPresentingViewController];
+    v10 = _topMostPresentingViewController == 0;
   }
 
-  v12 = [(ICQUIOutOfProcessUpgradeFlowManager *)self link];
-  v13 = [v12 action];
+  link = [(ICQUIOutOfProcessUpgradeFlowManager *)self link];
+  action = [link action];
 
-  v14 = [(ICQUIOutOfProcessUpgradeFlowManager *)self presentingSceneIdentifier];
+  presentingSceneIdentifier = [(ICQUIOutOfProcessUpgradeFlowManager *)self presentingSceneIdentifier];
 
-  if (!v14)
+  if (!presentingSceneIdentifier)
   {
     v21 = v6;
     v15 = _ICQGetLogSystem();
@@ -110,32 +110,32 @@ void __52__ICQUIOutOfProcessUpgradeFlowManager_sharedManager__block_invoke()
       _os_log_impl(&dword_275623000, v15, OS_LOG_TYPE_DEFAULT, "Unknown scene identifier! Falling back to topmost viewcontroller's scene", buf, 2u);
     }
 
-    v16 = [(ICQUIOutOfProcessUpgradeFlowManager *)self _topMostPresentingViewController];
-    v17 = [v16 view];
-    v18 = [v17 window];
-    v19 = [v18 windowScene];
-    v20 = [v19 _sceneIdentifier];
-    [(ICQUIOutOfProcessUpgradeFlowManager *)self setPresentingSceneIdentifier:v20];
+    _topMostPresentingViewController2 = [(ICQUIOutOfProcessUpgradeFlowManager *)self _topMostPresentingViewController];
+    view = [_topMostPresentingViewController2 view];
+    window = [view window];
+    windowScene = [window windowScene];
+    _sceneIdentifier = [windowScene _sceneIdentifier];
+    [(ICQUIOutOfProcessUpgradeFlowManager *)self setPresentingSceneIdentifier:_sceneIdentifier];
 
     v6 = v21;
   }
 
-  if (v6 || !v9 || v10 || v13 == 127)
+  if (v6 || !v9 || v10 || action == 127)
   {
     [(ICQUIOutOfProcessUpgradeFlowManager *)self _beginSBRemoteAlertFlow];
   }
 
   else
   {
-    [(ICQUIOutOfProcessUpgradeFlowManager *)self _beginExtensionKitFlowWithViewController:v4];
+    [(ICQUIOutOfProcessUpgradeFlowManager *)self _beginExtensionKitFlowWithViewController:controllerCopy];
   }
 }
 
-- (BOOL)_canUseExtensionKitForURL:(id)a3
+- (BOOL)_canUseExtensionKitForURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[ICQUIExtensionKitHelpers isExtensionKitFlagEnabled];
-  v5 = [ICQUIExtensionKitHelpers isExtensionKitURL:v3];
+  v5 = [ICQUIExtensionKitHelpers isExtensionKitURL:lCopy];
 
   v6 = _ICQGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -146,15 +146,15 @@ void __52__ICQUIOutOfProcessUpgradeFlowManager_sharedManager__block_invoke()
   return (v4 | v5) & 1;
 }
 
-- (BOOL)_isDefaultOfferFlow:(id)a3
+- (BOOL)_isDefaultOfferFlow:(id)flow
 {
-  v3 = a3;
-  v4 = [v3 bundleIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.icq"];
+  flowCopy = flow;
+  bundleIdentifier = [flowCopy bundleIdentifier];
+  v5 = [bundleIdentifier isEqualToString:@"com.apple.icq"];
 
-  v6 = [v3 serverUIURL];
+  serverUIURL = [flowCopy serverUIURL];
 
-  if (v6)
+  if (serverUIURL)
   {
     return v5;
   }
@@ -172,42 +172,42 @@ void __52__ICQUIOutOfProcessUpgradeFlowManager_sharedManager__block_invoke()
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__6;
   v27 = __Block_byref_object_dispose__6;
-  v28 = [(ICQUIOutOfProcessUpgradeFlowManager *)self offer];
+  offer = [(ICQUIOutOfProcessUpgradeFlowManager *)self offer];
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__6;
   v21 = __Block_byref_object_dispose__6;
-  v22 = [(ICQUIOutOfProcessUpgradeFlowManager *)self link];
+  link = [(ICQUIOutOfProcessUpgradeFlowManager *)self link];
   os_unfair_lock_lock(&self->_presentationLock);
   if (!self->_isPresented)
   {
     self->_isPresented = 1;
     os_unfair_lock_unlock(&self->_presentationLock);
-    v8 = [v24[5] requestedServerUIURL];
-    if (v8)
+    requestedServerUIURL = [v24[5] requestedServerUIURL];
+    if (requestedServerUIURL)
     {
       if ([v18[5] action] != 115 && objc_msgSend(v18[5], "action") != 121)
       {
         objc_initWeak(buf, self);
-        v9 = [(ICQUIOutOfProcessUpgradeFlowManager *)self loader];
-        v10 = [v24[5] serverUIURL];
+        loader = [(ICQUIOutOfProcessUpgradeFlowManager *)self loader];
+        serverUIURL = [v24[5] serverUIURL];
         v11[0] = MEMORY[0x277D85DD0];
         v11[1] = 3221225472;
         v11[2] = __62__ICQUIOutOfProcessUpgradeFlowManager__beginSBRemoteAlertFlow__block_invoke;
         v11[3] = &unk_27A65BC40;
         objc_copyWeak(&v15, buf);
         v13 = &v23;
-        v12 = v8;
+        v12 = requestedServerUIURL;
         v14 = &v17;
-        [v9 loadDataFromURL:v10 completion:v11];
+        [loader loadDataFromURL:serverUIURL completion:v11];
 
         objc_destroyWeak(&v15);
         objc_destroyWeak(buf);
         goto LABEL_12;
       }
 
-      [v24[5] _updateRequestedServerUIURLWithURL:v8];
+      [v24[5] _updateRequestedServerUIURLWithURL:requestedServerUIURL];
     }
 
     [(ICQUIOutOfProcessUpgradeFlowManager *)self _startUpsellWithOffer:v24[5] link:v18[5] preloadedRemoteUIData:0 error:0 isPostPurchaseFlow:0];
@@ -223,14 +223,14 @@ LABEL_12:
     _os_log_impl(&dword_275623000, v3, OS_LOG_TYPE_DEFAULT, "Remote flow already presented! Wait until it's complete.", buf, 2u);
   }
 
-  v4 = [(ICQUIOutOfProcessUpgradeFlowManager *)self delegate];
+  delegate = [(ICQUIOutOfProcessUpgradeFlowManager *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICQUIOutOfProcessUpgradeFlowManager *)self delegate];
-    v7 = [(ICQUIOutOfProcessUpgradeFlowManager *)self flowManager];
-    [v6 upgradeFlowManagerDidCancel:v7];
+    delegate2 = [(ICQUIOutOfProcessUpgradeFlowManager *)self delegate];
+    flowManager = [(ICQUIOutOfProcessUpgradeFlowManager *)self flowManager];
+    [delegate2 upgradeFlowManagerDidCancel:flowManager];
   }
 
   os_unfair_lock_unlock(&self->_presentationLock);
@@ -267,32 +267,32 @@ void __62__ICQUIOutOfProcessUpgradeFlowManager__beginSBRemoteAlertFlow__block_in
   }
 }
 
-- (void)_startUpsellWithOffer:(id)a3 link:(id)a4 preloadedRemoteUIData:(id)a5 error:(id)a6 isPostPurchaseFlow:(BOOL)a7
+- (void)_startUpsellWithOffer:(id)offer link:(id)link preloadedRemoteUIData:(id)data error:(id)error isPostPurchaseFlow:(BOOL)flow
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  flowCopy = flow;
+  offerCopy = offer;
+  linkCopy = link;
+  dataCopy = data;
+  errorCopy = error;
   v16 = _ICQGetLogSystem();
   v17 = v16;
-  if (v15)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      [ICQUIOutOfProcessUpgradeFlowManager _startUpsellWithOffer:v15 link:? preloadedRemoteUIData:? error:? isPostPurchaseFlow:?];
+      [ICQUIOutOfProcessUpgradeFlowManager _startUpsellWithOffer:errorCopy link:? preloadedRemoteUIData:? error:? isPostPurchaseFlow:?];
     }
 
     self->_isPresented = 0;
     [(ICQUIOutOfProcessUpgradeFlowManager *)self _clearServerUIURL];
-    v18 = [(ICQUIOutOfProcessUpgradeFlowManager *)self delegate];
+    delegate = [(ICQUIOutOfProcessUpgradeFlowManager *)self delegate];
     v19 = objc_opt_respondsToSelector();
 
     if (v19)
     {
-      v20 = [(ICQUIOutOfProcessUpgradeFlowManager *)self delegate];
-      v21 = [(ICQUIOutOfProcessUpgradeFlowManager *)self flowManager];
-      [v20 upgradeFlowManagerDidCancel:v21];
+      delegate2 = [(ICQUIOutOfProcessUpgradeFlowManager *)self delegate];
+      flowManager = [(ICQUIOutOfProcessUpgradeFlowManager *)self flowManager];
+      [delegate2 upgradeFlowManagerDidCancel:flowManager];
     }
   }
 
@@ -305,9 +305,9 @@ void __62__ICQUIOutOfProcessUpgradeFlowManager__beginSBRemoteAlertFlow__block_in
     }
 
     v22 = objc_alloc(MEMORY[0x277D7F3A0]);
-    v23 = [(ICQUIOutOfProcessUpgradeFlowManager *)self flowOptions];
-    v24 = [v23 serializedData];
-    v25 = [v22 initWithOffer:v12 link:v13 flowOptionsData:v24 preloadedRemoteUIData:v14 isPostPurchaseFlow:v7];
+    flowOptions = [(ICQUIOutOfProcessUpgradeFlowManager *)self flowOptions];
+    serializedData = [flowOptions serializedData];
+    v25 = [v22 initWithOffer:offerCopy link:linkCopy flowOptionsData:serializedData preloadedRemoteUIData:dataCopy isPostPurchaseFlow:flowCopy];
     [(ICQUIOutOfProcessUpgradeFlowManager *)self setRemoteContext:v25];
 
     [(ICQRemoteContext *)self->_remoteContext setPresentingSceneIdentifier:self->_presentingSceneIdentifier];
@@ -332,14 +332,14 @@ void __62__ICQUIOutOfProcessUpgradeFlowManager__beginSBRemoteAlertFlow__block_in
     v27 = v26;
     _Block_object_dispose(&v38, 8);
     v28 = objc_alloc_init(v26);
-    v29 = [(ICQUIOutOfProcessUpgradeFlowManager *)self remoteContext];
+    remoteContext = [(ICQUIOutOfProcessUpgradeFlowManager *)self remoteContext];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __113__ICQUIOutOfProcessUpgradeFlowManager__startUpsellWithOffer_link_preloadedRemoteUIData_error_isPostPurchaseFlow___block_invoke;
     v30[3] = &unk_27A65BC68;
     objc_copyWeak(&v31, &location);
     v30[4] = self;
-    [v28 presentHiddenFreshmintWithContext:v29 completion:v30];
+    [v28 presentHiddenFreshmintWithContext:remoteContext completion:v30];
 
     objc_destroyWeak(&v31);
     objc_destroyWeak(&location);
@@ -434,17 +434,17 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)_beginExtensionKitFlowWithViewController:(id)a3
+- (void)_beginExtensionKitFlowWithViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   os_unfair_lock_lock(&self->_presentationLock);
   if (!self->_isPresented)
   {
     self->_isPresented = 1;
     os_unfair_lock_unlock(&self->_presentationLock);
-    v10 = [v4 presentedViewController];
+    presentedViewController = [controllerCopy presentedViewController];
 
-    if (v10)
+    if (presentedViewController)
     {
       v11 = _ICQGetLogSystem();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -453,17 +453,17 @@ LABEL_19:
       }
     }
 
-    else if (v4)
+    else if (controllerCopy)
     {
-      v12 = v4;
+      _topMostPresentingViewController = controllerCopy;
       goto LABEL_13;
     }
 
-    v12 = [(ICQUIOutOfProcessUpgradeFlowManager *)self _topMostPresentingViewController];
+    _topMostPresentingViewController = [(ICQUIOutOfProcessUpgradeFlowManager *)self _topMostPresentingViewController];
 LABEL_13:
-    v8 = v12;
-    v9 = [(ICQUIOutOfProcessUpgradeFlowManager *)self delegate];
-    if (!v8)
+    delegate3 = _topMostPresentingViewController;
+    delegate = [(ICQUIOutOfProcessUpgradeFlowManager *)self delegate];
+    if (!delegate3)
     {
       v21 = _ICQGetLogSystem();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -475,9 +475,9 @@ LABEL_13:
       [(ICQUIOutOfProcessUpgradeFlowManager *)self _clearServerUIURL];
       if (objc_opt_respondsToSelector())
       {
-        v22 = [(ICQUIOutOfProcessUpgradeFlowManager *)self flowManager];
+        flowManager = [(ICQUIOutOfProcessUpgradeFlowManager *)self flowManager];
         v23 = ICQCreateError();
-        [v9 upgradeFlowManagerDidFail:v22 error:v23];
+        [delegate upgradeFlowManagerDidFail:flowManager error:v23];
       }
 
       else
@@ -487,33 +487,33 @@ LABEL_13:
           goto LABEL_22;
         }
 
-        v22 = [(ICQUIOutOfProcessUpgradeFlowManager *)self flowManager];
-        [v9 upgradeFlowManagerDidCancel:v22];
+        flowManager = [(ICQUIOutOfProcessUpgradeFlowManager *)self flowManager];
+        [delegate upgradeFlowManagerDidCancel:flowManager];
       }
 
       goto LABEL_22;
     }
 
     v13 = objc_alloc(MEMORY[0x277D7F3A0]);
-    v14 = [(ICQUIOutOfProcessUpgradeFlowManager *)self offer];
-    v15 = [(ICQUIOutOfProcessUpgradeFlowManager *)self link];
-    v16 = [(ICQUIOutOfProcessUpgradeFlowManager *)self flowOptions];
-    v17 = [v16 serializedData];
-    v18 = [v13 initWithOffer:v14 link:v15 flowOptionsData:v17 preloadedRemoteUIData:0];
+    offer = [(ICQUIOutOfProcessUpgradeFlowManager *)self offer];
+    link = [(ICQUIOutOfProcessUpgradeFlowManager *)self link];
+    flowOptions = [(ICQUIOutOfProcessUpgradeFlowManager *)self flowOptions];
+    serializedData = [flowOptions serializedData];
+    v18 = [v13 initWithOffer:offer link:link flowOptionsData:serializedData preloadedRemoteUIData:0];
     [(ICQUIOutOfProcessUpgradeFlowManager *)self setRemoteContext:v18];
 
     [(ICQRemoteContext *)self->_remoteContext setPresentingSceneIdentifier:self->_presentingSceneIdentifier];
     [(ICQRemoteContext *)self->_remoteContext setPresentingSceneBundleIdentifier:self->_presentingSceneBundleIdentifier];
-    v19 = [(ICQUIOutOfProcessUpgradeFlowManager *)self remoteContext];
-    v20 = [v19 toDictionary];
+    remoteContext = [(ICQUIOutOfProcessUpgradeFlowManager *)self remoteContext];
+    toDictionary = [remoteContext toDictionary];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __80__ICQUIOutOfProcessUpgradeFlowManager__beginExtensionKitFlowWithViewController___block_invoke;
     v24[3] = &unk_27A65BC90;
     v24[4] = self;
-    v9 = v9;
-    v25 = v9;
-    [ICQUIRemoteExtensionEntry presentRemoteViewControllerWithContext:v20 presentingViewController:v8 completion:v24];
+    delegate = delegate;
+    v25 = delegate;
+    [ICQUIRemoteExtensionEntry presentRemoteViewControllerWithContext:toDictionary presentingViewController:delegate3 completion:v24];
 
 LABEL_22:
     goto LABEL_23;
@@ -527,14 +527,14 @@ LABEL_22:
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "Remote extension flow already presented! Wait until it's complete.", buf, 2u);
   }
 
-  v6 = [(ICQUIOutOfProcessUpgradeFlowManager *)self delegate];
+  delegate2 = [(ICQUIOutOfProcessUpgradeFlowManager *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(ICQUIOutOfProcessUpgradeFlowManager *)self delegate];
-    v9 = [(ICQUIOutOfProcessUpgradeFlowManager *)self flowManager];
-    [v8 upgradeFlowManagerDidCancel:v9];
+    delegate3 = [(ICQUIOutOfProcessUpgradeFlowManager *)self delegate];
+    delegate = [(ICQUIOutOfProcessUpgradeFlowManager *)self flowManager];
+    [delegate3 upgradeFlowManagerDidCancel:delegate];
     goto LABEL_22;
   }
 
@@ -574,17 +574,17 @@ void __80__ICQUIOutOfProcessUpgradeFlowManager__beginExtensionKitFlowWithViewCon
 
 - (id)_topMostPresentingViewController
 {
-  v2 = [(ICQUIOutOfProcessUpgradeFlowManager *)self _rootViewController];
-  v3 = [v2 topMostViewController];
+  _rootViewController = [(ICQUIOutOfProcessUpgradeFlowManager *)self _rootViewController];
+  topMostViewController = [_rootViewController topMostViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 presentingViewController];
-    if (v4)
+    presentingViewController = [topMostViewController presentingViewController];
+    if (presentingViewController)
     {
-      [v3 dismissViewControllerAnimated:1 completion:0];
-      v5 = v4;
+      [topMostViewController dismissViewControllerAnimated:1 completion:0];
+      v5 = presentingViewController;
 
       v6 = _ICQGetLogSystem();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -592,7 +592,7 @@ void __80__ICQUIOutOfProcessUpgradeFlowManager__beginExtensionKitFlowWithViewCon
         [ICQUIOutOfProcessUpgradeFlowManager _topMostPresentingViewController];
       }
 
-      v3 = v5;
+      topMostViewController = v5;
     }
   }
 
@@ -602,16 +602,16 @@ void __80__ICQUIOutOfProcessUpgradeFlowManager__beginExtensionKitFlowWithViewCon
     [ICQUIOutOfProcessUpgradeFlowManager _topMostPresentingViewController];
   }
 
-  return v3;
+  return topMostViewController;
 }
 
 - (id)_rootViewController
 {
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  v3 = [v2 keyWindow];
-  v4 = [v3 rootViewController];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  keyWindow = [mEMORY[0x277D75128] keyWindow];
+  rootViewController = [keyWindow rootViewController];
 
-  return v4;
+  return rootViewController;
 }
 
 - (ICQUpgradeFlowManager)flowManager

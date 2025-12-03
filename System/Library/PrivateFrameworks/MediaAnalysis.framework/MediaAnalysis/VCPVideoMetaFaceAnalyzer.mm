@@ -1,14 +1,14 @@
 @interface VCPVideoMetaFaceAnalyzer
-- (CGAffineTransform)flipTransform:(SEL)a3;
-- (VCPVideoMetaFaceAnalyzer)initWithTransform:(CGAffineTransform *)a3;
+- (CGAffineTransform)flipTransform:(SEL)transform;
+- (VCPVideoMetaFaceAnalyzer)initWithTransform:(CGAffineTransform *)transform;
 - (id)publicResults;
 - (int)finalizeAnalysis;
-- (int)processMetadataGroup:(id)a3 flags:(unint64_t *)a4;
+- (int)processMetadataGroup:(id)group flags:(unint64_t *)flags;
 @end
 
 @implementation VCPVideoMetaFaceAnalyzer
 
-- (VCPVideoMetaFaceAnalyzer)initWithTransform:(CGAffineTransform *)a3
+- (VCPVideoMetaFaceAnalyzer)initWithTransform:(CGAffineTransform *)transform
 {
   v14.receiver = self;
   v14.super_class = VCPVideoMetaFaceAnalyzer;
@@ -19,10 +19,10 @@
     activeFaces = v4->_activeFaces;
     v4->_activeFaces = 0;
 
-    v7 = *&a3->c;
-    v13[0] = *&a3->a;
+    v7 = *&transform->c;
+    v13[0] = *&transform->a;
     v13[1] = v7;
-    v13[2] = *&a3->tx;
+    v13[2] = *&transform->tx;
     [(VCPVideoMetaFaceAnalyzer *)v5 flipTransform:v13];
     v9 = v13[4];
     v8 = v13[5];
@@ -38,7 +38,7 @@
   return v5;
 }
 
-- (CGAffineTransform)flipTransform:(SEL)a3
+- (CGAffineTransform)flipTransform:(SEL)transform
 {
   if (a4->tx != 0.0)
   {
@@ -64,22 +64,22 @@
   return CGAffineTransformConcat(retstr, &t1, &v8);
 }
 
-- (int)processMetadataGroup:(id)a3 flags:(unint64_t *)a4
+- (int)processMetadataGroup:(id)group flags:(unint64_t *)flags
 {
   v44 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v24 = v5;
-  if (v5)
+  groupCopy = group;
+  v24 = groupCopy;
+  if (groupCopy)
   {
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v6 = [v5 items];
-    v7 = [v6 countByEnumeratingWithState:&v38 objects:v43 count:16];
+    items = [groupCopy items];
+    v7 = [items countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v7)
     {
-      obj = v6;
+      obj = items;
       v26 = *v39;
       while (2)
       {
@@ -92,9 +92,9 @@
           }
 
           v9 = *(*(&v38 + 1) + 8 * i);
-          v10 = [v9 value];
+          value = [v9 value];
           memset(&v37, 0, sizeof(v37));
-          [v10 bounds];
+          [value bounds];
           v11 = *&self->_transform.c;
           *&v36.a = *&self->_transform.a;
           v12 = *&self->_transform.tx;
@@ -102,13 +102,13 @@
           *&v36.tx = v12;
           v37 = CGRectApplyAffineTransform(v45, &v36);
           v13 = MediaAnalysisFacePosition(&v37);
-          *a4 |= 0x20uLL;
+          *flags |= 0x20uLL;
           activeFaces = self->_activeFaces;
           if (!activeFaces)
           {
-            v15 = [MEMORY[0x1E695DF90] dictionary];
+            dictionary = [MEMORY[0x1E695DF90] dictionary];
             v16 = self->_activeFaces;
-            self->_activeFaces = v15;
+            self->_activeFaces = dictionary;
 
             activeFaces = self->_activeFaces;
             if (!activeFaces)
@@ -119,7 +119,7 @@
             }
           }
 
-          v17 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v10, "faceID")}];
+          v17 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(value, "faceID")}];
           v18 = [(NSMutableDictionary *)activeFaces objectForKey:v17];
 
           if (v18)
@@ -187,7 +187,7 @@
             [(VCPFaceDetectionRange *)v19 setBounds:v37.origin.x, v37.origin.y, v37.size.width, v37.size.height];
             [(VCPFaceDetectionRange *)v19 setPosition:v13];
             v20 = self->_activeFaces;
-            v21 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v10, "faceID")}];
+            v21 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(value, "faceID")}];
             [(NSMutableDictionary *)v20 setObject:v19 forKey:v21];
           }
         }
@@ -203,7 +203,7 @@
 
       v22 = 0;
 LABEL_26:
-      v6 = obj;
+      items = obj;
     }
 
     else
@@ -225,9 +225,9 @@ LABEL_26:
   v33 = *MEMORY[0x1E69E9840];
   if (!self->_faceResults)
   {
-    v2 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     faceResults = self->_faceResults;
-    self->_faceResults = v2;
+    self->_faceResults = array;
 
     if (!self->_faceResults)
     {

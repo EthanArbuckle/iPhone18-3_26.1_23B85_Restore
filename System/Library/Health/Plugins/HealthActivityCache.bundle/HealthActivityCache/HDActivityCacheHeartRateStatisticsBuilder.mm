@@ -1,12 +1,12 @@
 @interface HDActivityCacheHeartRateStatisticsBuilder
-- (HDActivityCacheHeartRateStatisticsBuilder)initWithDateInterval:(id)a3 activityCacheIndex:(int64_t)a4;
+- (HDActivityCacheHeartRateStatisticsBuilder)initWithDateInterval:(id)interval activityCacheIndex:(int64_t)index;
 - (HKHeartRateSummary)heartRateSummary;
 - (id).cxx_construct;
-- (void)addAsleepTimeIntervals:(id)a3;
-- (void)addBreatheSessions:(const void *)a3;
-- (void)addHeartRateSamples:(const void *)a3;
-- (void)addWorkouts:(const void *)a3;
-- (void)reportDailyAnalyticsWithProfile:(id)a3;
+- (void)addAsleepTimeIntervals:(id)intervals;
+- (void)addBreatheSessions:(const void *)sessions;
+- (void)addHeartRateSamples:(const void *)samples;
+- (void)addWorkouts:(const void *)workouts;
+- (void)reportDailyAnalyticsWithProfile:(id)profile;
 @end
 
 @implementation HDActivityCacheHeartRateStatisticsBuilder
@@ -26,19 +26,19 @@
   return v8;
 }
 
-- (HDActivityCacheHeartRateStatisticsBuilder)initWithDateInterval:(id)a3 activityCacheIndex:(int64_t)a4
+- (HDActivityCacheHeartRateStatisticsBuilder)initWithDateInterval:(id)interval activityCacheIndex:(int64_t)index
 {
-  v7 = a3;
+  intervalCopy = interval;
   v32.receiver = self;
   v32.super_class = HDActivityCacheHeartRateStatisticsBuilder;
   v8 = [(HDActivityCacheHeartRateStatisticsBuilder *)&v32 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_dateInterval, a3);
-    v9->_activityCacheIndex = a4;
+    objc_storeStrong(&v8->_dateInterval, interval);
+    v9->_activityCacheIndex = index;
     v10 = [HKHeartRateSummaryStatistics alloc];
-    v11 = [v10 initWithDateInterval:v7 numberOfBuckets:HDActivityCacheHeartRateStatisticsBuilderNumberOfHeartRateBuckets sessionUUID:0];
+    v11 = [v10 initWithDateInterval:intervalCopy numberOfBuckets:HDActivityCacheHeartRateStatisticsBuilderNumberOfHeartRateBuckets sessionUUID:0];
     allDayStatistics = v9->_allDayStatistics;
     v9->_allDayStatistics = v11;
 
@@ -82,11 +82,11 @@
   return v9;
 }
 
-- (void)addHeartRateSamples:(const void *)a3
+- (void)addHeartRateSamples:(const void *)samples
 {
-  v5 = *a3;
-  v6 = *(a3 + 1);
-  v7 = *a3;
+  v5 = *samples;
+  v6 = *(samples + 1);
+  v7 = *samples;
   if (v6 != v7)
   {
     v8 = 0xAAAAAAAAAAAAAAABLL * ((v6 - v7) >> 3);
@@ -101,15 +101,15 @@
     else
     {
       sub_12D90(&self->_heartRateSamples.__begin_, v8 - 0x5555555555555555 * (v11 >> 3));
-      sub_12E50(&self->_heartRateSamples.__begin_, self->_heartRateSamples.__end_, *a3, *(a3 + 1), 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 3));
+      sub_12E50(&self->_heartRateSamples.__begin_, self->_heartRateSamples.__end_, *samples, *(samples + 1), 0xAAAAAAAAAAAAAAABLL * ((*(samples + 1) - *samples) >> 3));
       sub_130C8(self->_heartRateSamples.__begin_, self->_heartRateSamples.__begin_ + v11, self->_heartRateSamples.__end_, &v21);
     }
   }
 
-  sub_14948(self, a3);
-  v12 = *a3;
-  v13 = *(a3 + 1);
-  if (*a3 != v13)
+  sub_14948(self, samples);
+  v12 = *samples;
+  v13 = *(samples + 1);
+  if (*samples != v13)
   {
     v14 = 0;
     v15 = 0;
@@ -161,9 +161,9 @@ LABEL_21:
   }
 }
 
-- (void)addAsleepTimeIntervals:(id)a3
+- (void)addAsleepTimeIntervals:(id)intervals
 {
-  v4 = a3;
+  intervalsCopy = intervals;
   restingHeartRate = self->_restingHeartRate;
   self->_restingHeartRate = 0;
 
@@ -171,8 +171,8 @@ LABEL_21:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v6 = [v4 mergedIntervals];
-  v7 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  mergedIntervals = [intervalsCopy mergedIntervals];
+  v7 = [mergedIntervals countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v7)
   {
     v8 = *v11;
@@ -183,7 +183,7 @@ LABEL_21:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(mergedIntervals);
         }
 
         [(HKDateIntervalTree *)self->_asleepTimeIntervals insertInterval:*(*(&v10 + 1) + 8 * v9)];
@@ -191,18 +191,18 @@ LABEL_21:
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [mergedIntervals countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)addWorkouts:(const void *)a3
+- (void)addWorkouts:(const void *)workouts
 {
-  v5 = *a3;
-  v6 = *(a3 + 1);
-  v7 = *a3;
+  v5 = *workouts;
+  v6 = *(workouts + 1);
+  v7 = *workouts;
   if (v6 != v7)
   {
     v8 = (v6 - v7) >> 6;
@@ -217,13 +217,13 @@ LABEL_21:
     else
     {
       sub_169C0(&self->_workouts.__begin_, v8 + (v11 >> 6));
-      sub_16A60(&self->_workouts.__begin_, self->_workouts.__end_, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 6);
+      sub_16A60(&self->_workouts.__begin_, self->_workouts.__end_, *workouts, *(workouts + 1), (*(workouts + 1) - *workouts) >> 6);
       sub_16C90(self->_workouts.__begin_, self->_workouts.__begin_ + v11, self->_workouts.__end_, &v14);
     }
   }
 
-  sub_15CE0(self, a3);
-  for (i = *a3; i != *(a3 + 1); i += 64)
+  sub_15CE0(self, workouts);
+  for (i = *workouts; i != *(workouts + 1); i += 64)
   {
     if (*(i + 2) == 52)
     {
@@ -235,12 +235,12 @@ LABEL_21:
   }
 }
 
-- (void)addBreatheSessions:(const void *)a3
+- (void)addBreatheSessions:(const void *)sessions
 {
   v16 = +[NSMutableArray array];
-  v5 = *a3;
-  v6 = *(a3 + 1);
-  if (*a3 != v6)
+  v5 = *sessions;
+  v6 = *(sessions + 1);
+  if (*sessions != v6)
   {
     do
     {
@@ -267,14 +267,14 @@ LABEL_21:
   sub_149F8(&self->super.isa, &self->_heartRateSamples, v16);
 }
 
-- (void)reportDailyAnalyticsWithProfile:(id)a3
+- (void)reportDailyAnalyticsWithProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [v4 daemon];
-  v6 = [v5 analyticsSubmissionCoordinator];
-  v7 = [v6 isImprovedHealthAndActivityEnabled];
+  profileCopy = profile;
+  daemon = [profileCopy daemon];
+  analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
+  isImprovedHealthAndActivityEnabled = [analyticsSubmissionCoordinator isImprovedHealthAndActivityEnabled];
 
-  if (v7)
+  if (isImprovedHealthAndActivityEnabled)
   {
     restingHeartRate = self->_restingHeartRate;
     self->_restingHeartRate = 0;
@@ -287,12 +287,12 @@ LABEL_21:
     [v9 doubleValueForUnit:v10];
     v12 = v11;
 
-    v13 = [(HKDateIntervalTree *)self->_asleepTimeIntervals mergedIntervals];
-    v14 = [v13 count];
+    mergedIntervals = [(HKDateIntervalTree *)self->_asleepTimeIntervals mergedIntervals];
+    v14 = [mergedIntervals count];
 
-    v15 = [v4 daemon];
-    v16 = [v15 analyticsSubmissionCoordinator];
-    [v16 heartRate_reportDailyRestingHeartRate:HIDWORD(v19) sedentaryHeartRateCount:v19 filteredSedentaryHeartRateCount:v14 != 0 hasTimeAsleep:v18 hasBGHRSleepMode:objc_msgSend(v4 unfilteredRestingHeartRate:"profileType") profileType:{v12, v17}];
+    daemon2 = [profileCopy daemon];
+    analyticsSubmissionCoordinator2 = [daemon2 analyticsSubmissionCoordinator];
+    [analyticsSubmissionCoordinator2 heartRate_reportDailyRestingHeartRate:HIDWORD(v19) sedentaryHeartRateCount:v19 filteredSedentaryHeartRateCount:v14 != 0 hasTimeAsleep:v18 hasBGHRSleepMode:objc_msgSend(profileCopy unfilteredRestingHeartRate:"profileType") profileType:{v12, v17}];
   }
 }
 

@@ -1,20 +1,20 @@
 @interface CSLPRFIconCache
 + (id)sharedIconCache;
 - (CSLPRFIconCache)init;
-- (id)_loadMMappedImageWithName:(id)a3;
+- (id)_loadMMappedImageWithName:(id)name;
 - (id)_path;
-- (id)_pathForIconName:(id)a3;
-- (id)iconForName:(id)a3 fallBackToPersistentStoreIfNecessary:(BOOL)a4;
-- (void)_writeMMappedImage:(id)a3 withName:(id)a4;
-- (void)setIcon:(id)a3 forName:(id)a4;
+- (id)_pathForIconName:(id)name;
+- (id)iconForName:(id)name fallBackToPersistentStoreIfNecessary:(BOOL)necessary;
+- (void)_writeMMappedImage:(id)image withName:(id)name;
+- (void)setIcon:(id)icon forName:(id)name;
 @end
 
 @implementation CSLPRFIconCache
 
-- (void)_writeMMappedImage:(id)a3 withName:(id)a4
+- (void)_writeMMappedImage:(id)image withName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  nameCopy = name;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__CSLPRFIconCache__writeMMappedImage_withName___block_invoke;
@@ -30,11 +30,11 @@
   v11[1] = 3221225472;
   v11[2] = __47__CSLPRFIconCache__writeMMappedImage_withName___block_invoke_2;
   v11[3] = &unk_2787453E0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = imageCopy;
+  selfCopy = self;
+  v14 = nameCopy;
+  v9 = nameCopy;
+  v10 = imageCopy;
   dispatch_async(v8, v11);
 }
 
@@ -53,23 +53,23 @@ void __47__CSLPRFIconCache__writeMMappedImage_withName___block_invoke_2(uint64_t
   [v1 writeToCPBitmapFile:v2 flags:0];
 }
 
-- (id)_loadMMappedImageWithName:(id)a3
+- (id)_loadMMappedImageWithName:(id)name
 {
   v3 = MEMORY[0x277D755B8];
-  v4 = [(CSLPRFIconCache *)self _pathForIconName:a3];
+  v4 = [(CSLPRFIconCache *)self _pathForIconName:name];
   v5 = [v3 imageWithContentsOfCPBitmapFile:v4 flags:0];
 
   return v5;
 }
 
-- (id)_pathForIconName:(id)a3
+- (id)_pathForIconName:(id)name
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [(CSLPRFIconCache *)self _path];
-  v7 = [v4 stringWithFormat:@"%@%@.cpbitmap", v6, v5];
+  nameCopy = name;
+  _path = [(CSLPRFIconCache *)self _path];
+  nameCopy = [v4 stringWithFormat:@"%@%@.cpbitmap", _path, nameCopy];
 
-  return v7;
+  return nameCopy;
 }
 
 - (id)_path
@@ -94,20 +94,20 @@ void __24__CSLPRFIconCache__path__block_invoke()
   _path_path = v2;
 }
 
-- (void)setIcon:(id)a3 forName:(id)a4
+- (void)setIcon:(id)icon forName:(id)name
 {
   cache = self->_cache;
-  v7 = a4;
-  v8 = a3;
-  [(NSCache *)cache setObject:v8 forKey:v7];
-  [(CSLPRFIconCache *)self _writeMMappedImage:v8 withName:v7];
+  nameCopy = name;
+  iconCopy = icon;
+  [(NSCache *)cache setObject:iconCopy forKey:nameCopy];
+  [(CSLPRFIconCache *)self _writeMMappedImage:iconCopy withName:nameCopy];
 }
 
-- (id)iconForName:(id)a3 fallBackToPersistentStoreIfNecessary:(BOOL)a4
+- (id)iconForName:(id)name fallBackToPersistentStoreIfNecessary:(BOOL)necessary
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(NSCache *)self->_cache objectForKey:v6];
+  necessaryCopy = necessary;
+  nameCopy = name;
+  v7 = [(NSCache *)self->_cache objectForKey:nameCopy];
   if (v7)
   {
     v8 = 1;
@@ -115,12 +115,12 @@ void __24__CSLPRFIconCache__path__block_invoke()
 
   else
   {
-    v8 = !v4;
+    v8 = !necessaryCopy;
   }
 
   if (!v8)
   {
-    v7 = [(CSLPRFIconCache *)self _loadMMappedImageWithName:v6];
+    v7 = [(CSLPRFIconCache *)self _loadMMappedImageWithName:nameCopy];
   }
 
   return v7;

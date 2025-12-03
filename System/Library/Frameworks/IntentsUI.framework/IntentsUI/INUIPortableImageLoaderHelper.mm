@@ -1,21 +1,21 @@
 @interface INUIPortableImageLoaderHelper
-- (INUIPortableImageLoaderHelper)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)loadImageDataFromBundle:(id)a3 withImageName:(id)a4 accessSpecifier:(id)a5 completion:(id)a6;
-- (void)loadImageSizeFromData:(id)a3 completion:(id)a4;
+- (INUIPortableImageLoaderHelper)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)loadImageDataFromBundle:(id)bundle withImageName:(id)name accessSpecifier:(id)specifier completion:(id)completion;
+- (void)loadImageSizeFromData:(id)data completion:(id)completion;
 @end
 
 @implementation INUIPortableImageLoaderHelper
 
-- (INUIPortableImageLoaderHelper)initWithCoder:(id)a3
+- (INUIPortableImageLoaderHelper)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = INUIPortableImageLoaderHelper;
   v5 = [(INUIPortableImageLoaderHelper *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"traitCollection"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"traitCollection"];
     traitCollection = v5->_traitCollection;
     v5->_traitCollection = v6;
   }
@@ -23,33 +23,33 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(INUIPortableImageLoaderHelper *)self traitCollection];
-  [v4 encodeObject:v5 forKey:@"traitCollection"];
+  coderCopy = coder;
+  traitCollection = [(INUIPortableImageLoaderHelper *)self traitCollection];
+  [coderCopy encodeObject:traitCollection forKey:@"traitCollection"];
 }
 
-- (void)loadImageDataFromBundle:(id)a3 withImageName:(id)a4 accessSpecifier:(id)a5 completion:(id)a6
+- (void)loadImageDataFromBundle:(id)bundle withImageName:(id)name accessSpecifier:(id)specifier completion:(id)completion
 {
   v79 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v13)
+  bundleCopy = bundle;
+  nameCopy = name;
+  specifierCopy = specifier;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     goto LABEL_37;
   }
 
-  if (!v12)
+  if (!specifierCopy)
   {
-    v12 = [MEMORY[0x277CD3CC8] accessSpecifierWithNoAccess];
+    specifierCopy = [MEMORY[0x277CD3CC8] accessSpecifierWithNoAccess];
   }
 
-  v14 = [(INUIPortableImageLoaderHelper *)self traitCollection];
+  traitCollection = [(INUIPortableImageLoaderHelper *)self traitCollection];
 
-  if (!v14)
+  if (!traitCollection)
   {
     v15 = *MEMORY[0x277CD38C8];
     if (os_log_type_enabled(*MEMORY[0x277CD38C8], OS_LOG_TYPE_ERROR))
@@ -60,24 +60,24 @@
     }
   }
 
-  v16 = [(INUIPortableImageLoaderHelper *)self traitCollection];
-  if (v16)
+  traitCollection2 = [(INUIPortableImageLoaderHelper *)self traitCollection];
+  if (traitCollection2)
   {
-    v17 = [(INUIPortableImageLoaderHelper *)self traitCollection];
+    traitCollection3 = [(INUIPortableImageLoaderHelper *)self traitCollection];
   }
 
   else
   {
-    v18 = [MEMORY[0x277D759A0] mainScreen];
-    v17 = [v18 traitCollection];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    traitCollection3 = [mainScreen traitCollection];
   }
 
-  v68 = v17;
-  if ([v10 bundleType] == 2)
+  v68 = traitCollection3;
+  if ([bundleCopy bundleType] == 2)
   {
-    v19 = [MEMORY[0x277D755D0] configurationWithPointSize:44.0];
-    v20 = [(INUIPortableImageLoaderHelper *)self traitCollection];
-    if ([v20 userInterfaceStyle] == 1)
+    path = [MEMORY[0x277D755D0] configurationWithPointSize:44.0];
+    traitCollection4 = [(INUIPortableImageLoaderHelper *)self traitCollection];
+    if ([traitCollection4 userInterfaceStyle] == 1)
     {
       [MEMORY[0x277D75348] labelColor];
     }
@@ -88,8 +88,8 @@
     }
     v36 = ;
 
-    v34 = v11;
-    v37 = [MEMORY[0x277D755B8] systemImageNamed:v11 withConfiguration:v19];
+    v34 = nameCopy;
+    v37 = [MEMORY[0x277D755B8] systemImageNamed:nameCopy withConfiguration:path];
     v67 = v36;
     v38 = [v37 imageWithTintColor:v36];
 
@@ -102,7 +102,7 @@
     }
 
     v42 = objc_alloc(MEMORY[0x277D75560]);
-    v43 = [MEMORY[0x277D75568] formatForTraitCollection:v17];
+    v43 = [MEMORY[0x277D75568] formatForTraitCollection:traitCollection3];
     v30 = [v42 initWithSize:v43 format:{v40, v40}];
 
     v70[0] = MEMORY[0x277D85DD0];
@@ -122,42 +122,42 @@ LABEL_24:
     goto LABEL_33;
   }
 
-  v21 = [v10 bundleIdentifier];
+  bundleIdentifier = [bundleCopy bundleIdentifier];
 
-  if (!v21)
+  if (!bundleIdentifier)
   {
     goto LABEL_15;
   }
 
   v22 = MEMORY[0x277CC1E88];
-  v23 = [v10 bundleIdentifier];
-  v24 = [v22 bundleProxyForIdentifier:v23];
+  bundleIdentifier2 = [bundleCopy bundleIdentifier];
+  v24 = [v22 bundleProxyForIdentifier:bundleIdentifier2];
 
-  v25 = [v24 bundleURL];
-  v19 = [v25 path];
+  bundleURL = [v24 bundleURL];
+  path = [bundleURL path];
 
-  if (!v19)
+  if (!path)
   {
 LABEL_15:
-    v19 = [v10 bundlePath];
+    path = [bundleCopy bundlePath];
   }
 
   v26 = objc_alloc(MEMORY[0x277CCA9B8]);
   v27 = *MEMORY[0x277CD3848];
   v65 = *MEMORY[0x277CCA068];
   v76 = *MEMORY[0x277CCA068];
-  v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"Loader client does not have sufficient permissions to load bundle image %@ %@", v11, v19];
+  v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"Loader client does not have sufficient permissions to load bundle image %@ %@", nameCopy, path];
   v77 = v28;
   v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v77 forKeys:&v76 count:1];
   v66 = v27;
   v67 = [v26 initWithDomain:v27 code:6010 userInfo:v29];
 
-  v30 = [MEMORY[0x277CCA8D8] bundleWithPath:v19];
-  v31 = [v12 accessLevel];
-  if (v31 != 1)
+  v30 = [MEMORY[0x277CCA8D8] bundleWithPath:path];
+  accessLevel = [specifierCopy accessLevel];
+  if (accessLevel != 1)
   {
     v32 = v67;
-    if (!v31)
+    if (!accessLevel)
     {
       v33 = v67;
       if (v33)
@@ -167,8 +167,8 @@ LABEL_15:
     }
 
 LABEL_31:
-    v34 = v11;
-    v54 = [MEMORY[0x277D755B8] imageNamed:v11 inBundle:v30 compatibleWithTraitCollection:v68];
+    v34 = nameCopy;
+    v54 = [MEMORY[0x277D755B8] imageNamed:nameCopy inBundle:v30 compatibleWithTraitCollection:v68];
     if (v54)
     {
       v35 = v54;
@@ -178,7 +178,7 @@ LABEL_31:
 
     v63 = objc_alloc(MEMORY[0x277CCA9B8]);
     v74 = v65;
-    v44 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to load image from bundle %@", v19];
+    v44 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to load image from bundle %@", path];
     v75 = v44;
     v45 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v75 forKeys:&v74 count:1];
     v33 = [v63 initWithDomain:v66 code:6000 userInfo:v45];
@@ -186,13 +186,13 @@ LABEL_31:
     goto LABEL_24;
   }
 
-  v64 = v11;
+  v64 = nameCopy;
   v46 = MEMORY[0x277CC1E88];
-  v47 = [v12 associatedAppBundleIdentifier];
-  v48 = [v46 bundleProxyForIdentifier:v47];
+  associatedAppBundleIdentifier = [specifierCopy associatedAppBundleIdentifier];
+  v48 = [v46 bundleProxyForIdentifier:associatedAppBundleIdentifier];
 
-  v49 = [v30 bundleURL];
-  if (!v49)
+  bundleURL2 = [v30 bundleURL];
+  if (!bundleURL2)
   {
     v51 = v48;
     v33 = 0;
@@ -201,11 +201,11 @@ LABEL_31:
   }
 
   *buf = 2;
-  v50 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v51 = v48;
-  v52 = [v48 bundleURL];
+  bundleURL3 = [v48 bundleURL];
   v69 = 0;
-  [v50 getRelationship:buf ofDirectoryAtURL:v52 toItemAtURL:v49 error:&v69];
+  [defaultManager getRelationship:buf ofDirectoryAtURL:bundleURL3 toItemAtURL:bundleURL2 error:&v69];
   v33 = v69;
 
   v32 = v67;
@@ -217,35 +217,35 @@ LABEL_29:
     v33 = v53;
   }
 
-  v11 = v64;
+  nameCopy = v64;
   if (!v33)
   {
     goto LABEL_31;
   }
 
 LABEL_19:
-  v34 = v11;
+  v34 = nameCopy;
   v35 = 0;
 LABEL_33:
 
   [(UIImage *)v35 size];
   v56 = v55;
   v58 = v57;
-  v59 = [(UIImage *)v35 renderingMode];
-  if (v59 == 2)
+  renderingMode = [(UIImage *)v35 renderingMode];
+  if (renderingMode == 2)
   {
     v60 = 2;
   }
 
   else
   {
-    v60 = v59 == 1;
+    v60 = renderingMode == 1;
   }
 
   v61 = UIImagePNGRepresentation(v35);
-  v13[2](v13, v61, v60, v33, v56, v58);
+  completionCopy[2](completionCopy, v61, v60, v33, v56, v58);
 
-  v11 = v34;
+  nameCopy = v34;
 LABEL_37:
 
   v62 = *MEMORY[0x277D85DE8];
@@ -266,19 +266,19 @@ uint64_t __98__INUIPortableImageLoaderHelper_loadImageDataFromBundle_withImageNa
   return [v5 drawInRect:{v9.origin.x, v9.origin.y, v9.size.width, v9.size.height}];
 }
 
-- (void)loadImageSizeFromData:(id)a3 completion:(id)a4
+- (void)loadImageSizeFromData:(id)data completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dataCopy = data;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = [objc_alloc(MEMORY[0x277D755B8]) initWithData:v5];
+    v7 = [objc_alloc(MEMORY[0x277D755B8]) initWithData:dataCopy];
     v8 = v7;
     if (v7)
     {
       [v7 size];
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     else
@@ -294,14 +294,14 @@ uint64_t __98__INUIPortableImageLoaderHelper_loadImageDataFromBundle_withImageNa
         v19 = 2114;
         v20 = v16;
         v21 = 2048;
-        v22 = [v5 length];
+        v22 = [dataCopy length];
         _os_log_error_impl(&dword_22CA36000, v14, OS_LOG_TYPE_ERROR, "%s Failed to load image size from data: %{public}@, %lu bytes", &v17, 0x20u);
       }
 
       v10 = *MEMORY[0x277CBF3A8];
       v11 = *(MEMORY[0x277CBF3A8] + 8);
       v12 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CD3848] code:6003 userInfo:0];
-      (v6[2])(v6, v12, v10, v11);
+      (completionCopy[2])(completionCopy, v12, v10, v11);
     }
   }
 

@@ -1,26 +1,26 @@
 @interface STAskForTimeNotApprovedResponseReceivedUserNotificationContext
-- (STAskForTimeNotApprovedResponseReceivedUserNotificationContext)initWithAskForTimeRequestIdentifier:(id)a3 parentName:(id)a4 requestedResourceName:(id)a5;
-- (STAskForTimeNotApprovedResponseReceivedUserNotificationContext)initWithCoder:(id)a3;
-- (void)customizeNotificationContent:(id)a3 withCompletionBlock:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (STAskForTimeNotApprovedResponseReceivedUserNotificationContext)initWithAskForTimeRequestIdentifier:(id)identifier parentName:(id)name requestedResourceName:(id)resourceName;
+- (STAskForTimeNotApprovedResponseReceivedUserNotificationContext)initWithCoder:(id)coder;
+- (void)customizeNotificationContent:(id)content withCompletionBlock:(id)block;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STAskForTimeNotApprovedResponseReceivedUserNotificationContext
 
-- (STAskForTimeNotApprovedResponseReceivedUserNotificationContext)initWithAskForTimeRequestIdentifier:(id)a3 parentName:(id)a4 requestedResourceName:(id)a5
+- (STAskForTimeNotApprovedResponseReceivedUserNotificationContext)initWithAskForTimeRequestIdentifier:(id)identifier parentName:(id)name requestedResourceName:(id)resourceName
 {
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  resourceNameCopy = resourceName;
   v16.receiver = self;
   v16.super_class = STAskForTimeNotApprovedResponseReceivedUserNotificationContext;
-  v10 = [(STUserNotificationContext *)&v16 initWithIdentifier:a3];
+  v10 = [(STUserNotificationContext *)&v16 initWithIdentifier:identifier];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [nameCopy copy];
     parentName = v10->_parentName;
     v10->_parentName = v11;
 
-    v13 = [v9 copy];
+    v13 = [resourceNameCopy copy];
     requestedResourceName = v10->_requestedResourceName;
     v10->_requestedResourceName = v13;
   }
@@ -28,19 +28,19 @@
   return v10;
 }
 
-- (STAskForTimeNotApprovedResponseReceivedUserNotificationContext)initWithCoder:(id)a3
+- (STAskForTimeNotApprovedResponseReceivedUserNotificationContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = STAskForTimeNotApprovedResponseReceivedUserNotificationContext;
-  v5 = [(STUserNotificationContext *)&v11 initWithCoder:v4];
+  v5 = [(STUserNotificationContext *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parentName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parentName"];
     parentName = v5->_parentName;
     v5->_parentName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestedResourceName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestedResourceName"];
     requestedResourceName = v5->_requestedResourceName;
     v5->_requestedResourceName = v8;
   }
@@ -48,31 +48,31 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STAskForTimeNotApprovedResponseReceivedUserNotificationContext;
-  v4 = a3;
-  [(STUserNotificationContext *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_parentName forKey:{@"parentName", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_requestedResourceName forKey:@"requestedResourceName"];
+  coderCopy = coder;
+  [(STUserNotificationContext *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_parentName forKey:{@"parentName", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_requestedResourceName forKey:@"requestedResourceName"];
 }
 
-- (void)customizeNotificationContent:(id)a3 withCompletionBlock:(id)a4
+- (void)customizeNotificationContent:(id)content withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  contentCopy = content;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __115__STAskForTimeNotApprovedResponseReceivedUserNotificationContext_customizeNotificationContent_withCompletionBlock___block_invoke;
   v11[3] = &unk_1E7CE6B80;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
+  v12 = contentCopy;
+  selfCopy = self;
+  v14 = blockCopy;
   v10.receiver = self;
   v10.super_class = STAskForTimeNotApprovedResponseReceivedUserNotificationContext;
-  v8 = v7;
-  v9 = v6;
+  v8 = blockCopy;
+  v9 = contentCopy;
   [(STUserNotificationContext *)&v10 customizeNotificationContent:v9 withCompletionBlock:v11];
 }
 

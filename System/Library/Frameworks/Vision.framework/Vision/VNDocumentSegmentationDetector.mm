@@ -1,17 +1,17 @@
 @interface VNDocumentSegmentationDetector
-+ (id)inputImageBlobNameForConfiguration:(id)a3;
-+ (id)modelPathForConfiguration:(id)a3 error:(id *)a4;
-+ (id)segmentationLabelsFilePathForConfiguration:(id)a3 error:(id *)a4;
-- (BOOL)configureImageAnalyzerOptions:(void *)a3 error:(id *)a4;
-- (id)observationsForLastAnalysisOfImageAnalyzer:(void *)a3 processOptions:(id)a4 originatingRequestSpecifier:(id)a5 qosClass:(unsigned int)a6 error:(id *)a7;
++ (id)inputImageBlobNameForConfiguration:(id)configuration;
++ (id)modelPathForConfiguration:(id)configuration error:(id *)error;
++ (id)segmentationLabelsFilePathForConfiguration:(id)configuration error:(id *)error;
+- (BOOL)configureImageAnalyzerOptions:(void *)options error:(id *)error;
+- (id)observationsForLastAnalysisOfImageAnalyzer:(void *)analyzer processOptions:(id)options originatingRequestSpecifier:(id)specifier qosClass:(unsigned int)class error:(id *)error;
 @end
 
 @implementation VNDocumentSegmentationDetector
 
-- (id)observationsForLastAnalysisOfImageAnalyzer:(void *)a3 processOptions:(id)a4 originatingRequestSpecifier:(id)a5 qosClass:(unsigned int)a6 error:(id *)a7
+- (id)observationsForLastAnalysisOfImageAnalyzer:(void *)analyzer processOptions:(id)options originatingRequestSpecifier:(id)specifier qosClass:(unsigned int)class error:(id *)error
 {
   v324[1] = *MEMORY[0x1E69E9840];
-  v239 = a5;
+  specifierCopy = specifier;
   if (!self)
   {
     goto LABEL_325;
@@ -19,7 +19,7 @@
 
   baseAddress[0].i32[0] = 2048;
   texture.i64[0] = baseAddress;
-  if ((*(std::__hash_table<std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,BOOL>,std::__unordered_map_hasher<vision::mod::ImageAnalyzer_AnalysisType,std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,BOOL>,std::hash<vision::mod::ImageAnalyzer_AnalysisType>,std::equal_to<vision::mod::ImageAnalyzer_AnalysisType>,true>,std::__unordered_map_equal<vision::mod::ImageAnalyzer_AnalysisType,std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,BOOL>,std::equal_to<vision::mod::ImageAnalyzer_AnalysisType>,std::hash<vision::mod::ImageAnalyzer_AnalysisType>,true>,std::allocator<std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,BOOL>>>::__emplace_unique_key_args<vision::mod::ImageAnalyzer_AnalysisType,std::piecewise_construct_t const&,std::tuple<vision::mod::ImageAnalyzer_AnalysisType&&>,std::tuple<>>(a3 + 103, 0x800u) + 20) & 1) == 0)
+  if ((*(std::__hash_table<std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,BOOL>,std::__unordered_map_hasher<vision::mod::ImageAnalyzer_AnalysisType,std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,BOOL>,std::hash<vision::mod::ImageAnalyzer_AnalysisType>,std::equal_to<vision::mod::ImageAnalyzer_AnalysisType>,true>,std::__unordered_map_equal<vision::mod::ImageAnalyzer_AnalysisType,std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,BOOL>,std::equal_to<vision::mod::ImageAnalyzer_AnalysisType>,std::hash<vision::mod::ImageAnalyzer_AnalysisType>,true>,std::allocator<std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,BOOL>>>::__emplace_unique_key_args<vision::mod::ImageAnalyzer_AnalysisType,std::piecewise_construct_t const&,std::tuple<vision::mod::ImageAnalyzer_AnalysisType&&>,std::tuple<>>(analyzer + 103, 0x800u) + 20) & 1) == 0)
   {
     exception = __cxa_allocate_exception(8uLL);
     *exception = 8574;
@@ -28,11 +28,11 @@
 
   baseAddress[0].i32[0] = 2048;
   texture.i64[0] = baseAddress;
-  v9 = std::__hash_table<std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,espresso_buffer_t>,std::__unordered_map_hasher<vision::mod::ImageAnalyzer_AnalysisType,std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,espresso_buffer_t>,std::hash<vision::mod::ImageAnalyzer_AnalysisType>,std::equal_to<vision::mod::ImageAnalyzer_AnalysisType>,true>,std::__unordered_map_equal<vision::mod::ImageAnalyzer_AnalysisType,std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,espresso_buffer_t>,std::equal_to<vision::mod::ImageAnalyzer_AnalysisType>,std::hash<vision::mod::ImageAnalyzer_AnalysisType>,true>,std::allocator<std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,espresso_buffer_t>>>::__emplace_unique_key_args<vision::mod::ImageAnalyzer_AnalysisType,std::piecewise_construct_t const&,std::tuple<vision::mod::ImageAnalyzer_AnalysisType&&>,std::tuple<>>(a3 + 98, 0x800u);
+  v9 = std::__hash_table<std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,espresso_buffer_t>,std::__unordered_map_hasher<vision::mod::ImageAnalyzer_AnalysisType,std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,espresso_buffer_t>,std::hash<vision::mod::ImageAnalyzer_AnalysisType>,std::equal_to<vision::mod::ImageAnalyzer_AnalysisType>,true>,std::__unordered_map_equal<vision::mod::ImageAnalyzer_AnalysisType,std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,espresso_buffer_t>,std::equal_to<vision::mod::ImageAnalyzer_AnalysisType>,std::hash<vision::mod::ImageAnalyzer_AnalysisType>,true>,std::allocator<std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,espresso_buffer_t>>>::__emplace_unique_key_args<vision::mod::ImageAnalyzer_AnalysisType,std::piecewise_construct_t const&,std::tuple<vision::mod::ImageAnalyzer_AnalysisType&&>,std::tuple<>>(analyzer + 98, 0x800u);
   vision::mod::ImageAnalyzer_Tensor1D<float>::ImageAnalyzer_Tensor1D(&__src, (v9 + 3), 1);
   vision::mod::ImageAnalyzer_Tensor1D<float>::getVectorFromTensor(__p, &__src);
   v10 = *__p[0];
-  vision::mod::ImageAnalyzer::getSceneSegmentation(&texture, a3);
+  vision::mod::ImageAnalyzer::getSceneSegmentation(&texture, analyzer);
   v11 = v301;
   v12 = v300;
   v292[0] = v301;
@@ -42,7 +42,7 @@
   vision::mod::ImageAnalyzer_Tensor3D::getVImageBufferFromTensorChannel(&v287, &texture, 1uLL, v292, &v291);
   vision::mod::ImageAnalyzer_Tensor3D::getVImageBufferFromTensorChannel(&v285, &texture, 2uLL, v292, &v291);
   vision::mod::ImageAnalyzer_Tensor3D::getVImageBufferFromTensorChannel(&v283, &texture, 3uLL, v292, &v291);
-  vision::mod::ImageAnalyzer::getSceneSaliency(baseAddress, a3);
+  vision::mod::ImageAnalyzer::getSceneSaliency(baseAddress, analyzer);
   v279 = 0;
   vision::mod::ImageAnalyzer_Tensor2D::getVImageBufferFromTensor(v276, baseAddress, &v279);
   v14 = v276[0];
@@ -59,7 +59,7 @@
   v319 = 1;
   v18 = v13 - 1;
   v19 = v13 - 1;
-  v236 = a3;
+  analyzerCopy = analyzer;
   if (v13 < 1)
   {
     goto LABEL_12;
@@ -907,7 +907,7 @@ LABEL_38:
     v53 = 0.0;
   }
 
-  v54 = v236;
+  v54 = analyzerCopy;
   if (v45 != v46)
   {
     v55 = v276;
@@ -1015,7 +1015,7 @@ LABEL_38:
 
   vision::mod::ImageAnalyzer_Tensor1D<float>::~ImageAnalyzer_Tensor1D(&__src);
   LODWORD(v315) = 0;
-  vision::mod::ImageAnalyzer::getSceneSaliency(&texture, v236);
+  vision::mod::ImageAnalyzer::getSceneSaliency(&texture, analyzerCopy);
   vision::mod::ImageAnalyzer_Tensor2D::getVImageBufferFromTensor(baseAddress, &texture, &v315);
   v263 = *(baseAddress + 8);
   v77 = baseAddress[0].i64[0];
@@ -1024,13 +1024,13 @@ LABEL_38:
   free(v303);
   if (!v77)
   {
-    if (a7)
+    if (error)
     {
       v89 = [VNError errorForInternalErrorWithLocalizedDescription:@"failed to get image from tensor"];
 LABEL_193:
       v167 = 0;
       v168 = 0;
-      *a7 = v89;
+      *error = v89;
       goto LABEL_324;
     }
 
@@ -1053,7 +1053,7 @@ LABEL_194:
   v80 = __92__VNDocumentSegmentationDetector__calculateIoUWithImageAnalyzer_quadrilateral_bounds_error___block_invoke(&texture);
   if (!v80)
   {
-    if (a7)
+    if (error)
     {
       v89 = [VNError errorForInternalErrorWithLocalizedDescription:@"failed to create comparison image"];
       goto LABEL_193;
@@ -1267,7 +1267,7 @@ LABEL_284:
       {
         syslog(5, "ERROR: Invalid image type");
 LABEL_303:
-        v54 = v236;
+        v54 = analyzerCopy;
         goto LABEL_304;
       }
     }
@@ -1302,7 +1302,7 @@ LABEL_303:
     __src = v177;
     v306 = v266;
     v307 = v81;
-    v54 = v236;
+    v54 = analyzerCopy;
     if (MEMORY[0x1AC5588A0](&__src, baseAddress, &v320, v80, 768))
     {
       goto LABEL_304;
@@ -1330,7 +1330,7 @@ LABEL_303:
     goto LABEL_303;
   }
 
-  v54 = v236;
+  v54 = analyzerCopy;
   v177 = v259;
   v172 = 0;
 LABEL_304:
@@ -1381,11 +1381,11 @@ LABEL_304:
     v167 = 0x100000000;
   }
 
-  else if (a7)
+  else if (error)
   {
     [VNError errorForInternalErrorWithLocalizedDescription:@"failed to create comparison image"];
     v167 = 0;
-    *a7 = v168 = 0;
+    *error = v168 = 0;
   }
 
   else
@@ -1409,7 +1409,7 @@ LABEL_325:
     goto LABEL_338;
   }
 
-  v214 = v239;
+  v214 = specifierCopy;
   LODWORD(__src) = 0;
   memset(baseAddress, 0, 32);
   vision::mod::ImageAnalyzer::getSceneSaliency(&texture, v54);
@@ -1418,7 +1418,7 @@ LABEL_325:
   free(v303);
   if (__src != 32)
   {
-    if (a7)
+    if (error)
     {
       v220 = [VNError errorForInternalErrorWithLocalizedDescription:@"unsupported pixel format type"];
       goto LABEL_334;
@@ -1443,11 +1443,11 @@ LABEL_335:
   v219 = CVPixelBufferCreateWithBytes(v215, v218.u64[0], v216, 0x4C303066u, v217, v218.u64[1], 0, 0, VNIOSurfaceBackedPixelBufferAttributes::pixelBufferAttributes, &texture);
   if (v219)
   {
-    if (a7)
+    if (error)
     {
       v220 = [VNError errorForCVReturnCode:v219 localizedDescription:@"failed to create pixel buffer"];
 LABEL_334:
-      *a7 = v220;
+      *error = v220;
       goto LABEL_335;
     }
 
@@ -1510,77 +1510,77 @@ CGImageRef __92__VNDocumentSegmentationDetector__calculateIoUWithImageAnalyzer_q
   return Image;
 }
 
-- (BOOL)configureImageAnalyzerOptions:(void *)a3 error:(id *)a4
+- (BOOL)configureImageAnalyzerOptions:(void *)options error:(id *)error
 {
   v10.receiver = self;
   v10.super_class = VNDocumentSegmentationDetector;
-  v5 = [(VNImageAnalyzerBasedDetector *)&v10 configureImageAnalyzerOptions:a3 error:a4];
+  v5 = [(VNImageAnalyzerBasedDetector *)&v10 configureImageAnalyzerOptions:options error:error];
   if (v5)
   {
-    if (*(a3 + 215) < 0)
+    if (*(options + 215) < 0)
     {
-      *(a3 + 25) = 7;
-      v6 = *(a3 + 24);
+      *(options + 25) = 7;
+      v6 = *(options + 24);
     }
 
     else
     {
-      v6 = a3 + 192;
-      *(a3 + 215) = 7;
+      v6 = options + 192;
+      *(options + 215) = 7;
     }
 
     strcpy(v6, "sigmoid");
-    if (*(a3 + 335) < 0)
+    if (*(options + 335) < 0)
     {
-      *(a3 + 40) = 7;
-      v7 = *(a3 + 39);
+      *(options + 40) = 7;
+      v7 = *(options + 39);
     }
 
     else
     {
-      v7 = a3 + 312;
-      *(a3 + 335) = 7;
+      v7 = options + 312;
+      *(options + 335) = 7;
     }
 
     strcpy(v7, "finalFC");
-    if (*(a3 + 311) < 0)
+    if (*(options + 311) < 0)
     {
-      *(a3 + 37) = 11;
-      v8 = *(a3 + 36);
+      *(options + 37) = 11;
+      v8 = *(options + 36);
     }
 
     else
     {
-      v8 = a3 + 288;
-      *(a3 + 311) = 11;
+      v8 = options + 288;
+      *(options + 311) = 11;
     }
 
     strcpy(v8, "BL_BR_TR_TL");
-    *(a3 + 385) = 1;
+    *(options + 385) = 1;
   }
 
   return v5;
 }
 
-+ (id)segmentationLabelsFilePathForConfiguration:(id)a3 error:(id *)a4
++ (id)segmentationLabelsFilePathForConfiguration:(id)configuration error:(id *)error
 {
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"docseg_segflow-xde2zmcdh5_64000_4ch.segmentation_labels.txt"];
-  v6 = [VNEspressoHelpers pathForEspressoResourceWithFilename:v5 error:a4];
+  v6 = [VNEspressoHelpers pathForEspressoResourceWithFilename:v5 error:error];
 
   return v6;
 }
 
-+ (id)inputImageBlobNameForConfiguration:(id)a3
++ (id)inputImageBlobNameForConfiguration:(id)configuration
 {
   v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"image"];
 
   return v3;
 }
 
-+ (id)modelPathForConfiguration:(id)a3 error:(id *)a4
++ (id)modelPathForConfiguration:(id)configuration error:(id *)error
 {
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"docseg_segflow-xde2zmcdh5_64000_4ch_512x288_finalFC.espresso"];
-  v6 = [VNEspressoHelpers pathForEspressoNetworkModelFileWithName:v5 error:a4];
+  v6 = [VNEspressoHelpers pathForEspressoNetworkModelFileWithName:v5 error:error];
 
   return v6;
 }

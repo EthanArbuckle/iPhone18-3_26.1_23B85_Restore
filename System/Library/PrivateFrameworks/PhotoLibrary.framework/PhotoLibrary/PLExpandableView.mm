@@ -1,53 +1,53 @@
 @interface PLExpandableView
 - (CGRect)contractedFrame;
 - (CGRect)expandedFrame;
-- (CGRect)pinchRect:(CGRect)a3 inView:(id)a4 insetTouches:(BOOL)a5;
-- (PLExpandableView)initWithFrame:(CGRect)a3;
-- (int)snapState:(BOOL)a3;
+- (CGRect)pinchRect:(CGRect)rect inView:(id)view insetTouches:(BOOL)touches;
+- (PLExpandableView)initWithFrame:(CGRect)frame;
+- (int)snapState:(BOOL)state;
 - (void)_notifyDidCancelCollapsing;
 - (void)_notifyDidCancelExpanding;
 - (void)_notifyDidCompleteCollapsing;
 - (void)_notifyDidCompleteExpanding;
 - (void)_notifyWillBeginCollapsing;
 - (void)_notifyWillBeginExpanding;
-- (void)_notifyWillCancelCollapsingWithDuration:(double)a3;
-- (void)_notifyWillCancelExpandingWithDuration:(double)a3;
-- (void)_notifyWillCompleteCollapsingWithDuration:(double)a3;
-- (void)_notifyWillCompleteExpandingWithDuration:(double)a3;
-- (void)_setAutorotationDisabled:(BOOL)a3;
-- (void)_transitionFromCancelContract:(int)a3 withDuration:(double)a4;
-- (void)_transitionFromCancelExpand:(int)a3 withDuration:(double)a4;
-- (void)_transitionFromCompleteContract:(int)a3 withDuration:(double)a4;
-- (void)_transitionFromCompleteExpand:(int)a3 withDuration:(double)a4;
-- (void)_transitionFromContracted:(int)a3 withDuration:(double)a4;
-- (void)_transitionFromContracting:(int)a3 withDuration:(double)a4;
-- (void)_transitionFromExpanded:(int)a3 withDuration:(double)a4;
-- (void)_transitionFromExpanding:(int)a3 withDuration:(double)a4;
-- (void)canceledPinch:(id)a3;
-- (void)collapseWithAnimation:(BOOL)a3 completion:(id)a4;
-- (void)continuedPinch:(id)a3;
+- (void)_notifyWillCancelCollapsingWithDuration:(double)duration;
+- (void)_notifyWillCancelExpandingWithDuration:(double)duration;
+- (void)_notifyWillCompleteCollapsingWithDuration:(double)duration;
+- (void)_notifyWillCompleteExpandingWithDuration:(double)duration;
+- (void)_setAutorotationDisabled:(BOOL)disabled;
+- (void)_transitionFromCancelContract:(int)contract withDuration:(double)duration;
+- (void)_transitionFromCancelExpand:(int)expand withDuration:(double)duration;
+- (void)_transitionFromCompleteContract:(int)contract withDuration:(double)duration;
+- (void)_transitionFromCompleteExpand:(int)expand withDuration:(double)duration;
+- (void)_transitionFromContracted:(int)contracted withDuration:(double)duration;
+- (void)_transitionFromContracting:(int)contracting withDuration:(double)duration;
+- (void)_transitionFromExpanded:(int)expanded withDuration:(double)duration;
+- (void)_transitionFromExpanding:(int)expanding withDuration:(double)duration;
+- (void)canceledPinch:(id)pinch;
+- (void)collapseWithAnimation:(BOOL)animation completion:(id)completion;
+- (void)continuedPinch:(id)pinch;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)expandWithAnimation:(BOOL)a3 completion:(id)a4;
+- (void)expandWithAnimation:(BOOL)animation completion:(id)completion;
 - (void)finishTransition;
-- (void)finishTransitionToState:(int)a3;
-- (void)finishedPinch:(id)a3;
-- (void)notifyExpansionFraction:(float)a3 force:(BOOL)a4;
-- (void)setAllowsExpansion:(BOOL)a3;
-- (void)setContractedFrame:(CGRect)a3;
-- (void)setDelegate:(id)a3;
-- (void)setExpandedFrame:(CGRect)a3;
-- (void)setState:(int)a3 withDuration:(double)a4;
-- (void)startedPinch:(id)a3;
-- (void)updatePinchState:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)finishTransitionToState:(int)state;
+- (void)finishedPinch:(id)pinch;
+- (void)notifyExpansionFraction:(float)fraction force:(BOOL)force;
+- (void)setAllowsExpansion:(BOOL)expansion;
+- (void)setContractedFrame:(CGRect)frame;
+- (void)setDelegate:(id)delegate;
+- (void)setExpandedFrame:(CGRect)frame;
+- (void)setState:(int)state withDuration:(double)duration;
+- (void)startedPinch:(id)pinch;
+- (void)updatePinchState:(id)state;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation PLExpandableView
 
-- (void)setAllowsExpansion:(BOOL)a3
+- (void)setAllowsExpansion:(BOOL)expansion
 {
-  if (a3)
+  if (expansion)
   {
     v3 = 2048;
   }
@@ -65,8 +65,8 @@
   p_expandedFrame = &self->_expandedFrame;
   if (!CGRectIsEmpty(self->_expandedFrame))
   {
-    v8 = [(PLExpandableView *)self window];
-    if (v8)
+    window = [(PLExpandableView *)self window];
+    if (window)
     {
       [-[PLExpandableView superview](self "superview")];
       goto LABEL_7;
@@ -91,14 +91,14 @@ LABEL_7:
   return result;
 }
 
-- (void)setExpandedFrame:(CGRect)a3
+- (void)setExpandedFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(PLExpandableView *)self window];
-  if (v8)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  window = [(PLExpandableView *)self window];
+  if (window)
   {
     [-[PLExpandableView superview](self "superview")];
     self->_expandedFrame.origin.x = v9;
@@ -130,8 +130,8 @@ LABEL_7:
 
   else
   {
-    v8 = [(PLExpandableView *)self window];
-    if (v8)
+    window = [(PLExpandableView *)self window];
+    if (window)
     {
       [-[PLExpandableView superview](self "superview")];
     }
@@ -152,14 +152,14 @@ LABEL_7:
   return result;
 }
 
-- (void)setContractedFrame:(CGRect)a3
+- (void)setContractedFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(PLExpandableView *)self window];
-  if (v8)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  window = [(PLExpandableView *)self window];
+  if (window)
   {
     [-[PLExpandableView superview](self "superview")];
     self->_contractedFrame.origin.x = v9;
@@ -181,11 +181,11 @@ LABEL_7:
   self->_expandFlags = v13;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  if (self->_delegate != a3)
+  if (self->_delegate != delegate)
   {
-    self->_delegate = a3;
+    self->_delegate = delegate;
     if (objc_opt_respondsToSelector())
     {
       v4 = 4096;
@@ -310,12 +310,12 @@ LABEL_7:
   }
 }
 
-- (void)expandWithAnimation:(BOOL)a3 completion:(id)a4
+- (void)expandWithAnimation:(BOOL)animation completion:(id)completion
 {
-  v5 = a3;
+  animationCopy = animation;
   if ([(PLExpandableView *)self allowsExpansion])
   {
-    if (v5)
+    if (animationCopy)
     {
       v7 = 0.3;
     }
@@ -325,26 +325,26 @@ LABEL_7:
       v7 = 0.0;
     }
 
-    if (!v5)
+    if (!animationCopy)
     {
       *&self->_expandFlags |= 0x100u;
     }
 
-    self->_expansionCompletionHandler = [a4 copy];
+    self->_expansionCompletionHandler = [completion copy];
     [(PLExpandableView *)self setState:1 withDuration:0.0];
     [(PLExpandableView *)self setState:2 withDuration:v7];
     [(PLExpandableView *)self completeTrackingPinch:0 toState:4 duration:v7];
     [(PLExpandableView *)self setExpansionFraction:v8];
-    if (!v5)
+    if (!animationCopy)
     {
       *&self->_expandFlags &= ~0x100u;
     }
   }
 }
 
-- (void)collapseWithAnimation:(BOOL)a3 completion:(id)a4
+- (void)collapseWithAnimation:(BOOL)animation completion:(id)completion
 {
-  if (a3)
+  if (animation)
   {
     v7 = 0.3;
   }
@@ -354,49 +354,49 @@ LABEL_7:
     v7 = 0.0;
   }
 
-  if (!a3)
+  if (!animation)
   {
-    v8 = self;
+    selfCopy = self;
     *&self->_expandFlags |= 0x100u;
   }
 
-  self->_collapsingCompletionHandler = [a4 copy];
+  self->_collapsingCompletionHandler = [completion copy];
   [(PLExpandableView *)self setState:5 withDuration:0.0];
   [(PLExpandableView *)self setState:7 withDuration:v7];
   [(PLExpandableView *)self completeTrackingPinch:0 toState:0 duration:v7];
   [(PLExpandableView *)self setExpansionFraction:v9];
-  if (!a3)
+  if (!animation)
   {
     *&self->_expandFlags &= ~0x100u;
   }
 }
 
-- (CGRect)pinchRect:(CGRect)a3 inView:(id)a4 insetTouches:(BOOL)a5
+- (CGRect)pinchRect:(CGRect)rect inView:(id)view insetTouches:(BOOL)touches
 {
-  v7 = a3.size.width * 0.21;
+  v7 = rect.size.width * 0.21;
   v8 = 0.0;
-  if (!a5)
+  if (!touches)
   {
     v7 = 0.0;
   }
 
-  v9 = a3.size.height * 0.21;
-  if (!a5)
+  v9 = rect.size.height * 0.21;
+  if (!touches)
   {
     v9 = 0.0;
   }
 
   v36 = v7;
   v38 = v9;
-  v44 = CGRectInset(a3, v7, v9);
+  v44 = CGRectInset(rect, v7, v9);
   x = v44.origin.x;
   y = v44.origin.y;
   width = v44.size.width;
   height = v44.size.height;
-  [(PLExpandableView *)self convertPoint:a4 toView:self->_leftTouchLocation.x, self->_leftTouchLocation.y];
+  [(PLExpandableView *)self convertPoint:view toView:self->_leftTouchLocation.x, self->_leftTouchLocation.y];
   v15 = v14;
   v17 = v16;
-  [(PLExpandableView *)self convertPoint:a4 toView:self->_rightTouchLocation.x, self->_rightTouchLocation.y];
+  [(PLExpandableView *)self convertPoint:view toView:self->_rightTouchLocation.x, self->_rightTouchLocation.y];
   v19 = v18;
   v40 = v20;
   v45.origin.x = x;
@@ -457,19 +457,19 @@ LABEL_7:
   }
 
   memset(&v43, 0, sizeof(v43));
-  if (a4)
+  if (view)
   {
-    [a4 transform];
+    [view transform];
     v24 = v40;
   }
 
-  v27 = (vabdd_f64(v34, v19) + v36 * 2.0) / a3.size.width;
+  v27 = (vabdd_f64(v34, v19) + v36 * 2.0) / rect.size.width;
   if (v27 < 1.0)
   {
     v27 = 1.0;
   }
 
-  v28 = (vabdd_f64(v35, v24) + v38 * 2.0) / a3.size.height;
+  v28 = (vabdd_f64(v35, v24) + v38 * 2.0) / rect.size.height;
   if (v28 < 1.0)
   {
     v28 = 1.0;
@@ -500,32 +500,32 @@ LABEL_7:
   v41 = v42;
   CGAffineTransformTranslate(&v42, &v41, -v31, -v33);
   v43 = v42;
-  return CGRectApplyAffineTransform(a3, &v42);
+  return CGRectApplyAffineTransform(rect, &v42);
 }
 
-- (void)updatePinchState:(id)a3
+- (void)updatePinchState:(id)state
 {
-  if ([a3 numberOfTouches] == 2)
+  if ([state numberOfTouches] == 2)
   {
     self->_previousLeftLocation = self->_leftTouchLocation;
     self->_previousRightLocation = self->_rightTouchLocation;
-    [a3 locationOfTouch:self->_leftTouchIndex inView:self];
+    [state locationOfTouch:self->_leftTouchIndex inView:self];
     self->_leftTouchLocation.x = v5;
     self->_leftTouchLocation.y = v6;
-    [a3 locationOfTouch:self->_rightTouchIndex inView:self];
+    [state locationOfTouch:self->_rightTouchIndex inView:self];
     self->_rightTouchLocation.x = v7;
     self->_rightTouchLocation.y = v8;
-    [a3 velocity];
+    [state velocity];
     self->_pinchVelocity = v9;
-    [a3 scale];
+    [state scale];
     self->_trackingTimeInterval = v10 / self->_pinchVelocity;
   }
 }
 
-- (int)snapState:(BOOL)a3
+- (int)snapState:(BOOL)state
 {
   expansionFraction = self->_expansionFraction;
-  if (a3)
+  if (state)
   {
     pinchVelocity = self->_pinchVelocity;
   }
@@ -549,7 +549,7 @@ LABEL_7:
     v7 = 4;
   }
 
-  if (a3)
+  if (state)
   {
     return v7;
   }
@@ -560,11 +560,11 @@ LABEL_7:
   }
 }
 
-- (void)finishTransitionToState:(int)a3
+- (void)finishTransitionToState:(int)state
 {
-  if (a3)
+  if (state)
   {
-    if (a3 != 4)
+    if (state != 4)
     {
       return;
     }
@@ -607,14 +607,14 @@ LABEL_7:
   }
 }
 
-- (void)canceledPinch:(id)a3
+- (void)canceledPinch:(id)pinch
 {
   expandFlags = self->_expandFlags;
   if ((*&expandFlags & 0x40) != 0)
   {
     self->_expandFlags = (*&expandFlags & 0xFFFFFFBF);
-    v6 = [(PLExpandableView *)self state];
-    if (v6 == 5)
+    state = [(PLExpandableView *)self state];
+    if (state == 5)
     {
       expansionFraction = 1.0 - self->_expansionFraction;
       v7 = 4;
@@ -623,7 +623,7 @@ LABEL_7:
 
     else
     {
-      if (v6 != 1)
+      if (state != 1)
       {
         return;
       }
@@ -635,7 +635,7 @@ LABEL_7:
 
     v10 = expansionFraction * 0.3;
     [(PLExpandableView *)self setState:v9 withDuration:expansionFraction * 0.3];
-    [(PLExpandableView *)self completeTrackingPinch:a3 toState:v7 duration:v10];
+    [(PLExpandableView *)self completeTrackingPinch:pinch toState:v7 duration:v10];
     [(PLExpandableView *)self setExpansionFraction:v11];
     v12 = *MEMORY[0x277CBF348];
     self->_leftTouchLocation = *MEMORY[0x277CBF348];
@@ -645,7 +645,7 @@ LABEL_7:
   }
 }
 
-- (void)finishedPinch:(id)a3
+- (void)finishedPinch:(id)pinch
 {
   if ((*&self->_expandFlags & 0x40) != 0)
   {
@@ -693,7 +693,7 @@ LABEL_10:
 LABEL_14:
           v11 = expansionFraction * 0.3;
           [(PLExpandableView *)self setState:v8 withDuration:expansionFraction * 0.3];
-          [(PLExpandableView *)self completeTrackingPinch:a3 toState:v10 duration:v11];
+          [(PLExpandableView *)self completeTrackingPinch:pinch toState:v10 duration:v11];
           [(PLExpandableView *)self setExpansionFraction:v12];
           goto LABEL_15;
         }
@@ -710,23 +710,23 @@ LABEL_14:
   }
 }
 
-- (void)continuedPinch:(id)a3
+- (void)continuedPinch:(id)pinch
 {
   if ((*&self->_expandFlags & 0x40) != 0)
   {
     [(PLExpandableView *)self updatePinchState:?];
     if ((*&self->_expandFlags & 3 | 4) == 5)
     {
-      [(PLExpandableView *)self continueTrackingPinch:a3];
+      [(PLExpandableView *)self continueTrackingPinch:pinch];
 
       [(PLExpandableView *)self notifyExpansionFraction:0 force:?];
     }
   }
 }
 
-- (void)startedPinch:(id)a3
+- (void)startedPinch:(id)pinch
 {
-  if ([a3 numberOfTouches] >= 2 && -[PLExpandableView _canPinch](self, "_canPinch"))
+  if ([pinch numberOfTouches] >= 2 && -[PLExpandableView _canPinch](self, "_canPinch"))
   {
     [(PLExpandableView *)self _removeAllAnimations:1];
     *&self->_expandFlags |= 0x40u;
@@ -735,7 +735,7 @@ LABEL_14:
     v5 = *MEMORY[0x277CBF348];
     self->_leftTouchLocation = *MEMORY[0x277CBF348];
     self->_rightTouchLocation = v5;
-    [(PLExpandableView *)self updatePinchState:a3];
+    [(PLExpandableView *)self updatePinchState:pinch];
     if (self->_leftTouchLocation.x >= self->_rightTouchLocation.x)
     {
       leftTouchLocation = self->_leftTouchLocation;
@@ -760,7 +760,7 @@ LABEL_14:
 
     [(PLExpandableView *)self setState:v8 withDuration:0.0];
     [(PLExpandableView *)self setState:v9 withDuration:0.0];
-    [(PLExpandableView *)self beginTrackingPinch:a3];
+    [(PLExpandableView *)self beginTrackingPinch:pinch];
     expansionFraction = self->_expansionFraction;
     *&expansionFraction = expansionFraction;
 
@@ -773,26 +773,26 @@ LABEL_14:
   }
 }
 
-- (void)notifyExpansionFraction:(float)a3 force:(BOOL)a4
+- (void)notifyExpansionFraction:(float)fraction force:(BOOL)force
 {
-  v4 = a3;
-  if (self->_expansionFraction != a3 || a4)
+  fractionCopy = fraction;
+  if (self->_expansionFraction != fraction || force)
   {
     if ((*(&self->_expandFlags + 2) & 0x40) != 0)
     {
       [(PLExpandableViewDelegate *)self->_delegate expandableView:self expansionFractionChanged:?];
     }
 
-    [(PLExpandableView *)self setExpansionFraction:a4, v4];
+    [(PLExpandableView *)self setExpansionFraction:force, fractionCopy];
   }
 }
 
 - (void)didMoveToWindow
 {
-  v3 = [(PLExpandableView *)self window];
-  v4 = v3;
+  window = [(PLExpandableView *)self window];
+  v4 = window;
   expandFlags = self->_expandFlags;
-  if ((*&expandFlags & 0x200) != 0 && v3)
+  if ((*&expandFlags & 0x200) != 0 && window)
   {
     p_contractedFrame = &self->_contractedFrame;
     if (!CGRectIsEmpty(self->_contractedFrame))
@@ -824,19 +824,19 @@ LABEL_14:
   }
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  if (!a3 && (*&self->_expandFlags & 0x80) != 0)
+  if (!window && (*&self->_expandFlags & 0x80) != 0)
   {
     [(PLExpandableView *)self _setAutorotationDisabled:0];
   }
 }
 
-- (void)setState:(int)a3 withDuration:(double)a4
+- (void)setState:(int)state withDuration:(double)duration
 {
-  if ((*&self->_expandFlags & 7) != a3)
+  if ((*&self->_expandFlags & 7) != state)
   {
-    v5 = *&a3;
+    v5 = *&state;
     [(PLExpandableView *)self stateWillChangeTo:?];
     expandFlags = self->_expandFlags;
     self->_expandFlags = (*&expandFlags & 0xFFFFFFC0 | v5 & 7 | (8 * (*&expandFlags & 7)));
@@ -847,23 +847,23 @@ LABEL_14:
       {
         if (v8 == 6)
         {
-          [(PLExpandableView *)self _transitionFromCancelContract:v5 withDuration:a4];
+          [(PLExpandableView *)self _transitionFromCancelContract:v5 withDuration:duration];
         }
 
         else
         {
-          [(PLExpandableView *)self _transitionFromCompleteContract:v5 withDuration:a4];
+          [(PLExpandableView *)self _transitionFromCompleteContract:v5 withDuration:duration];
         }
       }
 
       else if (v8 == 4)
       {
-        [(PLExpandableView *)self _transitionFromExpanded:v5 withDuration:a4];
+        [(PLExpandableView *)self _transitionFromExpanded:v5 withDuration:duration];
       }
 
       else
       {
-        [(PLExpandableView *)self _transitionFromContracting:v5 withDuration:a4];
+        [(PLExpandableView *)self _transitionFromContracting:v5 withDuration:duration];
       }
     }
 
@@ -871,18 +871,18 @@ LABEL_14:
     {
       if (v8 == 2)
       {
-        [(PLExpandableView *)self _transitionFromCompleteExpand:v5 withDuration:a4];
+        [(PLExpandableView *)self _transitionFromCompleteExpand:v5 withDuration:duration];
       }
 
       else
       {
-        [(PLExpandableView *)self _transitionFromCancelExpand:v5 withDuration:a4];
+        [(PLExpandableView *)self _transitionFromCancelExpand:v5 withDuration:duration];
       }
     }
 
     else if (v8)
     {
-      [(PLExpandableView *)self _transitionFromExpanding:v5 withDuration:a4];
+      [(PLExpandableView *)self _transitionFromExpanding:v5 withDuration:duration];
     }
 
     else
@@ -893,7 +893,7 @@ LABEL_14:
         [(PLExpandableView *)self setContractedFrame:?];
       }
 
-      [(PLExpandableView *)self _transitionFromContracted:v5 withDuration:a4];
+      [(PLExpandableView *)self _transitionFromContracted:v5 withDuration:duration];
     }
 
     [(PLExpandableView *)self stateDidChangeFrom:(*&self->_expandFlags >> 3) & 7];
@@ -937,107 +937,107 @@ LABEL_14:
   }
 }
 
-- (void)_transitionFromCompleteContract:(int)a3 withDuration:(double)a4
+- (void)_transitionFromCompleteContract:(int)contract withDuration:(double)duration
 {
-  if (a3 == 1)
+  if (contract == 1)
   {
     [(PLExpandableView *)self _notifyDidCompleteCollapsing];
 
     [(PLExpandableView *)self _notifyWillBeginExpanding];
   }
 
-  else if (!a3)
+  else if (!contract)
   {
 
     [(PLExpandableView *)self _notifyDidCompleteCollapsing];
   }
 }
 
-- (void)_transitionFromCancelContract:(int)a3 withDuration:(double)a4
+- (void)_transitionFromCancelContract:(int)contract withDuration:(double)duration
 {
-  if (a3 == 5)
+  if (contract == 5)
   {
     [(PLExpandableView *)self _notifyDidCancelCollapsing];
 
     [(PLExpandableView *)self _notifyWillBeginCollapsing];
   }
 
-  else if (a3 == 4)
+  else if (contract == 4)
   {
 
     [(PLExpandableView *)self _notifyDidCancelCollapsing];
   }
 }
 
-- (void)_transitionFromContracting:(int)a3 withDuration:(double)a4
+- (void)_transitionFromContracting:(int)contracting withDuration:(double)duration
 {
-  if (a3 == 7)
+  if (contracting == 7)
   {
-    [(PLExpandableView *)self _notifyWillCompleteCollapsingWithDuration:a4];
+    [(PLExpandableView *)self _notifyWillCompleteCollapsingWithDuration:duration];
   }
 
-  else if (a3 == 6)
+  else if (contracting == 6)
   {
-    [(PLExpandableView *)self _notifyWillCancelCollapsingWithDuration:a4];
+    [(PLExpandableView *)self _notifyWillCancelCollapsingWithDuration:duration];
   }
 }
 
-- (void)_transitionFromExpanded:(int)a3 withDuration:(double)a4
+- (void)_transitionFromExpanded:(int)expanded withDuration:(double)duration
 {
-  if (a3 == 5)
+  if (expanded == 5)
   {
     [(PLExpandableView *)self _notifyWillBeginCollapsing];
   }
 }
 
-- (void)_transitionFromCancelExpand:(int)a3 withDuration:(double)a4
+- (void)_transitionFromCancelExpand:(int)expand withDuration:(double)duration
 {
-  if (a3 == 1)
+  if (expand == 1)
   {
     [(PLExpandableView *)self _notifyDidCancelExpanding];
 
     [(PLExpandableView *)self _notifyWillBeginExpanding];
   }
 
-  else if (!a3)
+  else if (!expand)
   {
 
     [(PLExpandableView *)self _notifyDidCancelExpanding];
   }
 }
 
-- (void)_transitionFromCompleteExpand:(int)a3 withDuration:(double)a4
+- (void)_transitionFromCompleteExpand:(int)expand withDuration:(double)duration
 {
-  if (a3 == 5)
+  if (expand == 5)
   {
     [(PLExpandableView *)self _notifyDidCompleteExpanding];
 
     [(PLExpandableView *)self _notifyWillBeginCollapsing];
   }
 
-  else if (a3 == 4)
+  else if (expand == 4)
   {
 
     [(PLExpandableView *)self _notifyDidCompleteExpanding];
   }
 }
 
-- (void)_transitionFromExpanding:(int)a3 withDuration:(double)a4
+- (void)_transitionFromExpanding:(int)expanding withDuration:(double)duration
 {
-  if (a3 == 3)
+  if (expanding == 3)
   {
-    [(PLExpandableView *)self _notifyWillCancelExpandingWithDuration:a4];
+    [(PLExpandableView *)self _notifyWillCancelExpandingWithDuration:duration];
   }
 
-  else if (a3 == 2)
+  else if (expanding == 2)
   {
-    [(PLExpandableView *)self _notifyWillCompleteExpandingWithDuration:a4];
+    [(PLExpandableView *)self _notifyWillCompleteExpandingWithDuration:duration];
   }
 }
 
-- (void)_transitionFromContracted:(int)a3 withDuration:(double)a4
+- (void)_transitionFromContracted:(int)contracted withDuration:(double)duration
 {
-  if (a3 == 1)
+  if (contracted == 1)
   {
     [(PLExpandableView *)self _notifyWillBeginExpanding];
   }
@@ -1087,35 +1087,35 @@ LABEL_14:
   }
 }
 
-- (void)_notifyWillCancelExpandingWithDuration:(double)a3
+- (void)_notifyWillCancelExpandingWithDuration:(double)duration
 {
   if ((*(&self->_expandFlags + 1) & 0x80) != 0)
   {
-    [(PLExpandableViewDelegate *)self->_delegate expandableView:self willCancelExpandingWithDuration:a3];
+    [(PLExpandableViewDelegate *)self->_delegate expandableView:self willCancelExpandingWithDuration:duration];
   }
 }
 
-- (void)_notifyWillCompleteExpandingWithDuration:(double)a3
+- (void)_notifyWillCompleteExpandingWithDuration:(double)duration
 {
   if ((*(&self->_expandFlags + 1) & 0x20) != 0)
   {
-    [(PLExpandableViewDelegate *)self->_delegate expandableView:self willCompleteExpandingWithDuration:a3];
+    [(PLExpandableViewDelegate *)self->_delegate expandableView:self willCompleteExpandingWithDuration:duration];
   }
 }
 
-- (void)_notifyWillCompleteCollapsingWithDuration:(double)a3
+- (void)_notifyWillCompleteCollapsingWithDuration:(double)duration
 {
   if ((*(&self->_expandFlags + 2) & 4) != 0)
   {
-    [(PLExpandableViewDelegate *)self->_delegate expandableView:self willCompleteCollapsingWithDuration:a3];
+    [(PLExpandableViewDelegate *)self->_delegate expandableView:self willCompleteCollapsingWithDuration:duration];
   }
 }
 
-- (void)_notifyWillCancelCollapsingWithDuration:(double)a3
+- (void)_notifyWillCancelCollapsingWithDuration:(double)duration
 {
   if ((*(&self->_expandFlags + 2) & 0x10) != 0)
   {
-    [(PLExpandableViewDelegate *)self->_delegate expandableView:self willCancelCollapsingWithDuration:a3];
+    [(PLExpandableViewDelegate *)self->_delegate expandableView:self willCancelCollapsingWithDuration:duration];
   }
 }
 
@@ -1141,17 +1141,17 @@ LABEL_14:
   }
 }
 
-- (void)_setAutorotationDisabled:(BOOL)a3
+- (void)_setAutorotationDisabled:(BOOL)disabled
 {
   expandFlags = self->_expandFlags;
-  if (a3)
+  if (disabled)
   {
     if ((*&expandFlags & 0x80) == 0)
     {
       self->_expandFlags = (*&expandFlags | 0x80);
-      v5 = [(PLExpandableView *)self window];
+      window = [(PLExpandableView *)self window];
 
-      [v5 beginDisablingInterfaceAutorotation];
+      [window beginDisablingInterfaceAutorotation];
     }
   }
 
@@ -1160,9 +1160,9 @@ LABEL_14:
     self->_expandFlags = (*&expandFlags & 0xFFFFFF7F);
     if ([-[PLExpandableView window](self "window")])
     {
-      v6 = [(PLExpandableView *)self window];
+      window2 = [(PLExpandableView *)self window];
 
-      [v6 endDisablingInterfaceAutorotation];
+      [window2 endDisablingInterfaceAutorotation];
     }
   }
 }
@@ -1177,11 +1177,11 @@ LABEL_14:
   [(PLExpandableView *)&v3 dealloc];
 }
 
-- (PLExpandableView)initWithFrame:(CGRect)a3
+- (PLExpandableView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = PLExpandableView;
-  result = [(PLExpandableView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(PLExpandableView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   result->_expandFlags = (*&result->_expandFlags & 0xFFFFF7F8 | 0x800);
   return result;
 }

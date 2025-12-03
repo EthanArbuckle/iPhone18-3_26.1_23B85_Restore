@@ -7,8 +7,8 @@
 
 + (id)stringWithFileSystemRepresentation:()CacheManagementAdditions length:
 {
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v6 stringWithFileSystemRepresentation:a3 length:a4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v7 = [defaultManager stringWithFileSystemRepresentation:a3 length:a4];
 
   return v7;
 }

@@ -1,18 +1,18 @@
 @interface VSIdentityProviderInfoCenter
 + (id)sharedCenter;
 - (VSIdentityProviderInfoCenter)init;
-- (id)_value:(id)a3 withDefault:(id)a4;
-- (void)_fetch:(id)a3;
-- (void)_identityProviderForSetTopBoxProfile:(id)a3 completion:(id)a4;
+- (id)_value:(id)_value withDefault:(id)default;
+- (void)_fetch:(id)_fetch;
+- (void)_identityProviderForSetTopBoxProfile:(id)profile completion:(id)completion;
 - (void)_postdentityProviderInfoDidChangeNotification;
 - (void)dealloc;
-- (void)enqueueIdentityProviderAppsQueryWithCompletion:(id)a3;
-- (void)enqueueInfoQueryWithCompletion:(id)a3;
-- (void)enqueueManagedSetTopBoxInfoQueryWithCompletion:(id)a3;
-- (void)enqueueSetTopBoxInfoQueryWithCompletion:(id)a3;
-- (void)enqueueSetTopBoxProfileProviderQueryWithCompletion:(id)a3;
-- (void)fetchAccountAndIdentityProvider:(id)a3;
-- (void)fetchIdentityProviderAppBundleIdFromDeveloperSettings:(id)a3;
+- (void)enqueueIdentityProviderAppsQueryWithCompletion:(id)completion;
+- (void)enqueueInfoQueryWithCompletion:(id)completion;
+- (void)enqueueManagedSetTopBoxInfoQueryWithCompletion:(id)completion;
+- (void)enqueueSetTopBoxInfoQueryWithCompletion:(id)completion;
+- (void)enqueueSetTopBoxProfileProviderQueryWithCompletion:(id)completion;
+- (void)fetchAccountAndIdentityProvider:(id)provider;
+- (void)fetchIdentityProviderAppBundleIdFromDeveloperSettings:(id)settings;
 @end
 
 @implementation VSIdentityProviderInfoCenter
@@ -43,8 +43,8 @@ uint64_t __44__VSIdentityProviderInfoCenter_sharedCenter__block_invoke()
   v2 = [(VSIdentityProviderInfoCenter *)&v20 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel__accountStoreDidChange name:@"VSAccountStoreDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__accountStoreDidChange name:@"VSAccountStoreDidChangeNotification" object:0];
 
     v4 = objc_alloc_init(MEMORY[0x277CCABD8]);
     privateQueue = v2->_privateQueue;
@@ -134,38 +134,38 @@ id __36__VSIdentityProviderInfoCenter_init__block_invoke_52(uint64_t a1, void *a
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"VSAccountStoreDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"VSAccountStoreDidChangeNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = VSIdentityProviderInfoCenter;
   [(VSIdentityProviderInfoCenter *)&v4 dealloc];
 }
 
-- (void)enqueueInfoQueryWithCompletion:(id)a3
+- (void)enqueueInfoQueryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __63__VSIdentityProviderInfoCenter_enqueueInfoQueryWithCompletion___block_invoke;
   v6[3] = &unk_278B74420;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(VSIdentityProviderInfoCenter *)self _fetch:v6];
 }
 
-- (void)enqueueSetTopBoxProfileProviderQueryWithCompletion:(id)a3
+- (void)enqueueSetTopBoxProfileProviderQueryWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(VSIdentityProviderInfoCenter *)self device];
+  completionCopy = completion;
+  device = [(VSIdentityProviderInfoCenter *)self device];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __83__VSIdentityProviderInfoCenter_enqueueSetTopBoxProfileProviderQueryWithCompletion___block_invoke;
   v7[3] = &unk_278B74470;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchSetTopBoxProfileWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [device fetchSetTopBoxProfileWithCompletion:v7];
 }
 
 void __83__VSIdentityProviderInfoCenter_enqueueSetTopBoxProfileProviderQueryWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -188,9 +188,9 @@ void __83__VSIdentityProviderInfoCenter_enqueueSetTopBoxProfileProviderQueryWith
   }
 }
 
-- (void)enqueueIdentityProviderAppsQueryWithCompletion:(id)a3
+- (void)enqueueIdentityProviderAppsQueryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v17 = 0;
   v5 = VSLoadInterfaceFramework(&v17);
   v6 = v17;
@@ -203,15 +203,15 @@ void __83__VSIdentityProviderInfoCenter_enqueueSetTopBoxProfileProviderQueryWith
     v14[2] = __79__VSIdentityProviderInfoCenter_enqueueIdentityProviderAppsQueryWithCompletion___block_invoke;
     v14[3] = &unk_278B73758;
     v15 = v7;
-    v16 = v4;
+    v16 = completionCopy;
     v9 = v7;
     v10 = [v8 blockOperationWithBlock:v14];
     [v10 addDependency:v9];
-    v11 = [(VSIdentityProviderInfoCenter *)self privateQueue];
-    [v11 addOperation:v9];
+    privateQueue = [(VSIdentityProviderInfoCenter *)self privateQueue];
+    [privateQueue addOperation:v9];
 
-    v12 = [(VSIdentityProviderInfoCenter *)self privateQueue];
-    [v12 addOperation:v10];
+    privateQueue2 = [(VSIdentityProviderInfoCenter *)self privateQueue];
+    [privateQueue2 addOperation:v10];
   }
 
   else
@@ -222,7 +222,7 @@ void __83__VSIdentityProviderInfoCenter_enqueueSetTopBoxProfileProviderQueryWith
       [VSIdentityProviderInfoCenter enqueueIdentityProviderAppsQueryWithCompletion:];
     }
 
-    (*(v4 + 2))(v4, 0, v6);
+    (*(completionCopy + 2))(completionCopy, 0, v6);
   }
 }
 
@@ -334,18 +334,18 @@ void __79__VSIdentityProviderInfoCenter_enqueueIdentityProviderAppsQueryWithComp
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)enqueueSetTopBoxInfoQueryWithCompletion:(id)a3
+- (void)enqueueSetTopBoxInfoQueryWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(VSIdentityProviderInfoCenter *)self device];
+  completionCopy = completion;
+  device = [(VSIdentityProviderInfoCenter *)self device];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__VSIdentityProviderInfoCenter_enqueueSetTopBoxInfoQueryWithCompletion___block_invoke;
   v7[3] = &unk_278B74470;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchSetTopBoxProfileWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [device fetchSetTopBoxProfileWithCompletion:v7];
 }
 
 void __72__VSIdentityProviderInfoCenter_enqueueSetTopBoxInfoQueryWithCompletion___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -381,18 +381,18 @@ void __72__VSIdentityProviderInfoCenter_enqueueSetTopBoxInfoQueryWithCompletion_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)enqueueManagedSetTopBoxInfoQueryWithCompletion:(id)a3
+- (void)enqueueManagedSetTopBoxInfoQueryWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(VSIdentityProviderInfoCenter *)self device];
+  completionCopy = completion;
+  device = [(VSIdentityProviderInfoCenter *)self device];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __79__VSIdentityProviderInfoCenter_enqueueManagedSetTopBoxInfoQueryWithCompletion___block_invoke;
   v7[3] = &unk_278B744C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchDeviceManagedSetTopBoxProfileWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [device fetchDeviceManagedSetTopBoxProfileWithCompletion:v7];
 }
 
 void __79__VSIdentityProviderInfoCenter_enqueueManagedSetTopBoxInfoQueryWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -428,13 +428,13 @@ void __79__VSIdentityProviderInfoCenter_enqueueManagedSetTopBoxInfoQueryWithComp
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_identityProviderForSetTopBoxProfile:(id)a3 completion:(id)a4
+- (void)_identityProviderForSetTopBoxProfile:(id)profile completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 providerID];
-  v9 = [(VSIdentityProviderInfoCenter *)self newIdentityProviderFetchAllOperationBlock];
-  v10 = v9[2]();
+  profileCopy = profile;
+  completionCopy = completion;
+  providerID = [profileCopy providerID];
+  newIdentityProviderFetchAllOperationBlock = [(VSIdentityProviderInfoCenter *)self newIdentityProviderFetchAllOperationBlock];
+  v10 = newIdentityProviderFetchAllOperationBlock[2]();
 
   if (v10)
   {
@@ -444,20 +444,20 @@ void __79__VSIdentityProviderInfoCenter_enqueueManagedSetTopBoxInfoQueryWithComp
     v16 = __80__VSIdentityProviderInfoCenter__identityProviderForSetTopBoxProfile_completion___block_invoke;
     v17 = &unk_278B74510;
     v18 = v11;
-    v19 = v8;
-    v20 = v6;
-    v21 = v7;
+    v19 = providerID;
+    v20 = profileCopy;
+    v21 = completionCopy;
     v12 = VSMainThreadOperationWithBlock(&v14);
     [v12 addDependency:{v11, v14, v15, v16, v17}];
-    v13 = [(VSIdentityProviderInfoCenter *)self privateQueue];
-    [v13 addOperation:v11];
+    privateQueue = [(VSIdentityProviderInfoCenter *)self privateQueue];
+    [privateQueue addOperation:v11];
 
     VSEnqueueCompletionOperation(v12);
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -536,23 +536,23 @@ LABEL_11:
 
 - (void)_postdentityProviderInfoDidChangeNotification
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"VSIdentityProviderInfoDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"VSIdentityProviderInfoDidChangeNotification" object:0];
 }
 
-- (void)_fetch:(id)a3
+- (void)_fetch:(id)_fetch
 {
-  v4 = a3;
-  v5 = [(VSIdentityProviderInfoCenter *)self device];
+  _fetchCopy = _fetch;
+  device = [(VSIdentityProviderInfoCenter *)self device];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __39__VSIdentityProviderInfoCenter__fetch___block_invoke;
   v8[3] = &unk_278B74588;
-  v10 = self;
-  v11 = v4;
-  v9 = v5;
-  v6 = v5;
-  v7 = v4;
+  selfCopy = self;
+  v11 = _fetchCopy;
+  v9 = device;
+  v6 = device;
+  v7 = _fetchCopy;
   [(VSIdentityProviderInfoCenter *)self fetchAccountAndIdentityProvider:v8];
 }
 
@@ -716,18 +716,18 @@ void __39__VSIdentityProviderInfoCenter__fetch___block_invoke_3(uint64_t a1, voi
   }
 }
 
-- (void)fetchAccountAndIdentityProvider:(id)a3
+- (void)fetchAccountAndIdentityProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(VSIdentityProviderInfoCenter *)self accountStore];
+  providerCopy = provider;
+  accountStore = [(VSIdentityProviderInfoCenter *)self accountStore];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__VSIdentityProviderInfoCenter_fetchAccountAndIdentityProvider___block_invoke;
   v7[3] = &unk_278B73988;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchAccountsWithCompletionHandler:v7];
+  v8 = providerCopy;
+  v6 = providerCopy;
+  [accountStore fetchAccountsWithCompletionHandler:v7];
 }
 
 void __64__VSIdentityProviderInfoCenter_fetchAccountAndIdentityProvider___block_invoke(uint64_t a1, void *a2)
@@ -853,9 +853,9 @@ void __64__VSIdentityProviderInfoCenter_fetchAccountAndIdentityProvider___block_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchIdentityProviderAppBundleIdFromDeveloperSettings:(id)a3
+- (void)fetchIdentityProviderAppBundleIdFromDeveloperSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v5 = objc_alloc_init(VSDeveloperSettingsFetchOperation);
   objc_initWeak(&location, v5);
   v8[0] = MEMORY[0x277D85DD0];
@@ -863,11 +863,11 @@ void __64__VSIdentityProviderInfoCenter_fetchAccountAndIdentityProvider___block_
   v8[2] = __86__VSIdentityProviderInfoCenter_fetchIdentityProviderAppBundleIdFromDeveloperSettings___block_invoke;
   v8[3] = &unk_278B74628;
   objc_copyWeak(&v10, &location);
-  v6 = v4;
+  v6 = settingsCopy;
   v9 = v6;
   [(VSDeveloperSettingsFetchOperation *)v5 setCompletionBlock:v8];
-  v7 = [(VSIdentityProviderInfoCenter *)self privateQueue];
-  [v7 addOperation:v5];
+  privateQueue = [(VSIdentityProviderInfoCenter *)self privateQueue];
+  [privateQueue addOperation:v5];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -910,16 +910,16 @@ void __86__VSIdentityProviderInfoCenter_fetchIdentityProviderAppBundleIdFromDeve
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)_value:(id)a3 withDefault:(id)a4
+- (id)_value:(id)_value withDefault:(id)default
 {
-  if (a3)
+  if (_value)
   {
-    return a3;
+    return _value;
   }
 
   else
   {
-    return a4;
+    return default;
   }
 }
 

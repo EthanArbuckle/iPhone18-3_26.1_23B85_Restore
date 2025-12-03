@@ -1,29 +1,29 @@
 @interface STSharedReactorCoreComponent
-+ (id)buildAddressesFromTargetableFamilyMembers:(id)a3 signedInUserHasMultipleDevices:(BOOL)a4;
-+ (id)buildAddressesOfParentsFromTargetableFamilyMembers:(id)a3;
-+ (id)targetableParentsInTargetableFamilyMembers:(id)a3;
++ (id)buildAddressesFromTargetableFamilyMembers:(id)members signedInUserHasMultipleDevices:(BOOL)devices;
++ (id)buildAddressesOfParentsFromTargetableFamilyMembers:(id)members;
++ (id)targetableParentsInTargetableFamilyMembers:(id)members;
 @end
 
 @implementation STSharedReactorCoreComponent
 
-+ (id)targetableParentsInTargetableFamilyMembers:(id)a3
++ (id)targetableParentsInTargetableFamilyMembers:(id)members
 {
-  v3 = a3;
+  membersCopy = members;
   v4 = [NSPredicate predicateWithFormat:@"%K == YES", @"isParent"];
-  v5 = [v3 filteredSetUsingPredicate:v4];
+  v5 = [membersCopy filteredSetUsingPredicate:v4];
 
   return v5;
 }
 
-+ (id)buildAddressesFromTargetableFamilyMembers:(id)a3 signedInUserHasMultipleDevices:(BOOL)a4
++ (id)buildAddressesFromTargetableFamilyMembers:(id)members signedInUserHasMultipleDevices:(BOOL)devices
 {
-  v5 = a3;
+  membersCopy = members;
   v6 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v5;
+  v7 = membersCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -39,21 +39,21 @@
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        if (![v12 isSignedInMember] || a4)
+        if (![v12 isSignedInMember] || devices)
         {
           v14 = [STMessageTransportMessageAddress alloc];
-          v13 = [v12 dsid];
-          v15 = [(STMessageTransportMessageAddress *)v14 initWithUserDSID:v13];
+          dsid = [v12 dsid];
+          v15 = [(STMessageTransportMessageAddress *)v14 initWithUserDSID:dsid];
           [v6 addObject:v15];
         }
 
         else
         {
-          v13 = +[STLog reactorCore];
-          if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+          dsid = +[STLog reactorCore];
+          if (os_log_type_enabled(dsid, OS_LOG_TYPE_DEFAULT))
           {
             *v18 = 0;
-            _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Not including self-address as user only has one device", v18, 2u);
+            _os_log_impl(&_mh_execute_header, dsid, OS_LOG_TYPE_DEFAULT, "Not including self-address as user only has one device", v18, 2u);
           }
         }
       }
@@ -69,9 +69,9 @@
   return v16;
 }
 
-+ (id)buildAddressesOfParentsFromTargetableFamilyMembers:(id)a3
++ (id)buildAddressesOfParentsFromTargetableFamilyMembers:(id)members
 {
-  v3 = [a1 targetableParentsInTargetableFamilyMembers:a3];
+  v3 = [self targetableParentsInTargetableFamilyMembers:members];
   v4 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
@@ -94,8 +94,8 @@
 
         v10 = *(*(&v16 + 1) + 8 * i);
         v11 = [STMessageTransportMessageAddress alloc];
-        v12 = [v10 dsid];
-        v13 = [(STMessageTransportMessageAddress *)v11 initWithUserDSID:v12];
+        dsid = [v10 dsid];
+        v13 = [(STMessageTransportMessageAddress *)v11 initWithUserDSID:dsid];
         [v4 addObject:v13];
       }
 

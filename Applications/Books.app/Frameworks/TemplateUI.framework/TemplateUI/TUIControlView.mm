@@ -1,51 +1,51 @@
 @interface TUIControlView
-+ (id)renderModelWithStateToButtonAttributes:(id)a3 stateToRenderModel:(id)a4 imageModelIDToResource:(id)a5 actionHandler:(id)a6 viewState:(id)a7 linkEntities:(id)a8 type:(unint64_t)a9 role:(unint64_t)a10 userInterfaceStyle:(unint64_t)a11 enabled:(BOOL)a12 pressScale:(double)a13 touchInsets:(UIEdgeInsets)a14 identifier:(id)a15 style:(id)a16 pointer:(id)a17 focusStyle:(id)a18 menu:(id)a19 contextMenuIsPrimaryAction:(BOOL)a20 name:(id)a21 axAttributes:(id)a22 enableBackgroundForHighlightPreview:(BOOL)a23 enableShadowForHighlightPreview:(BOOL)a24;
-+ (int64_t)uiButtonRoleFromTUIButtonRole:(unint64_t)a3;
-+ (int64_t)uiButtonTypeFromTUIButtonType:(unint64_t)a3;
-+ (int64_t)uiUserInterfaceStyleFromTUIUserInterfaceStyle:(unint64_t)a3;
-+ (unint64_t)uiControlStateFromTUIElementState:(id)a3;
++ (id)renderModelWithStateToButtonAttributes:(id)attributes stateToRenderModel:(id)model imageModelIDToResource:(id)resource actionHandler:(id)handler viewState:(id)state linkEntities:(id)entities type:(unint64_t)type role:(unint64_t)self0 userInterfaceStyle:(unint64_t)self1 enabled:(BOOL)self2 pressScale:(double)self3 touchInsets:(UIEdgeInsets)self4 identifier:(id)self5 style:(id)self6 pointer:(id)self7 focusStyle:(id)self8 menu:(id)self9 contextMenuIsPrimaryAction:(BOOL)action name:(id)name axAttributes:(id)axAttributes enableBackgroundForHighlightPreview:(BOOL)preview enableShadowForHighlightPreview:(BOOL)highlightPreview;
++ (int64_t)uiButtonRoleFromTUIButtonRole:(unint64_t)role;
++ (int64_t)uiButtonTypeFromTUIButtonType:(unint64_t)type;
++ (int64_t)uiUserInterfaceStyleFromTUIUserInterfaceStyle:(unint64_t)style;
++ (unint64_t)uiControlStateFromTUIElementState:(id)state;
 - (BOOL)presentContextMenuForAccessibility;
-- (TUIControlView)initWithFrame:(CGRect)a3;
-- (id)_contextMenuConfigurationForPoint:(CGPoint)a3;
-- (id)_pointerTargetViewWithRefId:(id)a3;
+- (TUIControlView)initWithFrame:(CGRect)frame;
+- (id)_contextMenuConfigurationForPoint:(CGPoint)point;
+- (id)_pointerTargetViewWithRefId:(id)id;
 - (id)accessibilityLabel;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 dismissalPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration dismissalPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
 - (id)currentState;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)keyCommands;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)_buttonPressed:(id)a3;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)_buttonPressed:(id)pressed;
 - (void)_cleanUp;
-- (void)_selectGesture:(id)a3;
-- (void)_showContextMenu:(id)a3;
+- (void)_selectGesture:(id)gesture;
+- (void)_showContextMenu:(id)menu;
 - (void)_updateHoverActive;
-- (void)configureWithModel:(id)a3 outsets:(UIEdgeInsets)a4;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (void)configureWithModel:(id)model outsets:(UIEdgeInsets)outsets;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 - (void)dealloc;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)didUpdateSubviews;
-- (void)imageResourceDidChangeImage:(id)a3;
+- (void)imageResourceDidChangeImage:(id)image;
 - (void)loadControlIfNeeded;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5;
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator;
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator;
 - (void)prepareForReuse;
 - (void)renderModelUpdated;
-- (void)tui_handleContextMenuKey:(id)a3;
-- (void)tui_handleSelectKey:(id)a3;
+- (void)tui_handleContextMenuKey:(id)key;
+- (void)tui_handleSelectKey:(id)key;
 - (void)viewDidEndDisplay;
 @end
 
 @implementation TUIControlView
 
-- (TUIControlView)initWithFrame:(CGRect)a3
+- (TUIControlView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = TUIControlView;
-  result = [(TUIControlView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(TUIControlView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_cachedDynamicMenuDataLock._os_unfair_lock_opaque = 0;
@@ -54,60 +54,60 @@
   return result;
 }
 
-+ (id)renderModelWithStateToButtonAttributes:(id)a3 stateToRenderModel:(id)a4 imageModelIDToResource:(id)a5 actionHandler:(id)a6 viewState:(id)a7 linkEntities:(id)a8 type:(unint64_t)a9 role:(unint64_t)a10 userInterfaceStyle:(unint64_t)a11 enabled:(BOOL)a12 pressScale:(double)a13 touchInsets:(UIEdgeInsets)a14 identifier:(id)a15 style:(id)a16 pointer:(id)a17 focusStyle:(id)a18 menu:(id)a19 contextMenuIsPrimaryAction:(BOOL)a20 name:(id)a21 axAttributes:(id)a22 enableBackgroundForHighlightPreview:(BOOL)a23 enableShadowForHighlightPreview:(BOOL)a24
++ (id)renderModelWithStateToButtonAttributes:(id)attributes stateToRenderModel:(id)model imageModelIDToResource:(id)resource actionHandler:(id)handler viewState:(id)state linkEntities:(id)entities type:(unint64_t)type role:(unint64_t)self0 userInterfaceStyle:(unint64_t)self1 enabled:(BOOL)self2 pressScale:(double)self3 touchInsets:(UIEdgeInsets)self4 identifier:(id)self5 style:(id)self6 pointer:(id)self7 focusStyle:(id)self8 menu:(id)self9 contextMenuIsPrimaryAction:(BOOL)action name:(id)name axAttributes:(id)axAttributes enableBackgroundForHighlightPreview:(BOOL)preview enableShadowForHighlightPreview:(BOOL)highlightPreview
 {
-  right = a14.right;
-  bottom = a14.bottom;
-  left = a14.left;
-  top = a14.top;
-  v44 = a22;
-  v41 = a21;
-  v40 = a19;
-  v30 = a18;
-  v31 = a17;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  axAttributesCopy = axAttributes;
+  nameCopy = name;
+  menuCopy = menu;
+  focusStyleCopy = focusStyle;
+  pointerCopy = pointer;
   v43 = a16;
-  v55 = a15;
-  v39 = a8;
-  v32 = a7;
-  v46 = a6;
-  v49 = a5;
-  v51 = a4;
-  v33 = a3;
+  identifierCopy = identifier;
+  entitiesCopy = entities;
+  stateCopy = state;
+  handlerCopy = handler;
+  resourceCopy = resource;
+  modelCopy = model;
+  attributesCopy = attributes;
   v34 = [TUIRenderModelButton alloc];
-  v53 = [a1 tuiReuseIdentifier];
-  LOWORD(v38) = __PAIR16__(a24, a23);
-  LOBYTE(v37) = a20;
-  LOBYTE(v36) = a12;
-  v54 = [(TUIRenderModelButton *)v34 initWithReuseIdentifier:v53 identifier:v55 style:v43 stateToButtonAttributes:v33 stateToRenderModel:v51 imageModelIDToResource:v49 actionHandler:a13 viewState:top linkEntities:left type:bottom role:right userInterfaceStyle:v46 enabled:v32 pressScale:v39 touchInsets:a9 pointer:a10 focusStyle:a11 menu:v36 contextMenuIsPrimaryAction:v31 name:v30 axAttributes:v40 enableBackgroundForHighlightPreview:v37 enableShadowForHighlightPreview:v41, v44, v38];
+  tuiReuseIdentifier = [self tuiReuseIdentifier];
+  LOWORD(v38) = __PAIR16__(highlightPreview, preview);
+  LOBYTE(v37) = action;
+  LOBYTE(v36) = enabled;
+  v54 = [(TUIRenderModelButton *)v34 initWithReuseIdentifier:tuiReuseIdentifier identifier:identifierCopy style:v43 stateToButtonAttributes:attributesCopy stateToRenderModel:modelCopy imageModelIDToResource:resourceCopy actionHandler:scale viewState:top linkEntities:left type:bottom role:right userInterfaceStyle:handlerCopy enabled:stateCopy pressScale:entitiesCopy touchInsets:type pointer:role focusStyle:style menu:v36 contextMenuIsPrimaryAction:pointerCopy name:focusStyleCopy axAttributes:menuCopy enableBackgroundForHighlightPreview:v37 enableShadowForHighlightPreview:nameCopy, axAttributesCopy, v38];
 
   return v54;
 }
 
 - (void)dealloc
 {
-  v3 = [(TUIInteractiveBaseView *)self control];
-  [v3 removeTarget:self action:"_buttonPressed:" forControlEvents:64];
-  [v3 removeObserver:self forKeyPath:@"enabled"];
-  [v3 removeObserver:self forKeyPath:@"highlighted"];
-  v4 = [(TUIInteractiveBaseView *)self renderModel];
-  v5 = [v4 imageModelIDToResource];
+  control = [(TUIInteractiveBaseView *)self control];
+  [control removeTarget:self action:"_buttonPressed:" forControlEvents:64];
+  [control removeObserver:self forKeyPath:@"enabled"];
+  [control removeObserver:self forKeyPath:@"highlighted"];
+  renderModel = [(TUIInteractiveBaseView *)self renderModel];
+  imageModelIDToResource = [renderModel imageModelIDToResource];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_183C78;
   v7[3] = &unk_25DD98;
   v7[4] = self;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  [imageModelIDToResource enumerateKeysAndObjectsUsingBlock:v7];
 
   v6.receiver = self;
   v6.super_class = TUIControlView;
   [(TUIControlView *)&v6 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_2E5620 == a6)
+  if (off_2E5620 == context)
   {
-    if ([NSThread isMainThread:a3])
+    if ([NSThread isMainThread:path])
     {
 
       [(TUIInteractiveBaseView *)self updateFromState];
@@ -128,31 +128,31 @@
   {
     v7.receiver = self;
     v7.super_class = TUIControlView;
-    [(TUIControlView *)&v7 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(TUIControlView *)&v7 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(TUIInteractiveBaseView *)self control];
-  [v8 convertPoint:self fromView:{x, y}];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  control = [(TUIInteractiveBaseView *)self control];
+  [control convertPoint:self fromView:{x, y}];
   v10 = v9;
   v12 = v11;
 
-  if ((-[TUIControlView isHidden](self, "isHidden") & 1) != 0 || (-[TUIControlView alpha](self, "alpha"), v13 < 0.01) || (-[TUIInteractiveBaseView control](self, "control"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 pointInside:v7 withEvent:{v10, v12}], v14, !v15))
+  if ((-[TUIControlView isHidden](self, "isHidden") & 1) != 0 || (-[TUIControlView alpha](self, "alpha"), v13 < 0.01) || (-[TUIInteractiveBaseView control](self, "control"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 pointInside:eventCopy withEvent:{v10, v12}], v14, !v15))
   {
     v19.receiver = self;
     v19.super_class = TUIControlView;
-    v17 = [(TUIControlView *)&v19 hitTest:v7 withEvent:x, y];
+    v17 = [(TUIControlView *)&v19 hitTest:eventCopy withEvent:x, y];
   }
 
   else
   {
-    v16 = [(TUIInteractiveBaseView *)self control];
-    v17 = [v16 hitTest:v7 withEvent:{v10, v12}];
+    control2 = [(TUIInteractiveBaseView *)self control];
+    v17 = [control2 hitTest:eventCopy withEvent:{v10, v12}];
   }
 
   return v17;
@@ -166,18 +166,18 @@
   focusHelper = self->_focusHelper;
   if (focusHelper)
   {
-    v4 = [(TUIInteractiveBaseView *)self renderModel];
-    v5 = [v4 focusStyle];
-    [(TUIFocusStylingHelper *)focusHelper updateStyle:v5];
+    renderModel = [(TUIInteractiveBaseView *)self renderModel];
+    focusStyle = [renderModel focusStyle];
+    [(TUIFocusStylingHelper *)focusHelper updateStyle:focusStyle];
   }
 
   else
   {
     v6 = [TUIFocusStylingHelper alloc];
-    v4 = [(TUIInteractiveBaseView *)self control];
-    v5 = [(TUIInteractiveBaseView *)self renderModel];
-    v7 = [v5 focusStyle];
-    v8 = [(TUIFocusStylingHelper *)v6 initWithContainer:self reference:v4 style:v7];
+    renderModel = [(TUIInteractiveBaseView *)self control];
+    focusStyle = [(TUIInteractiveBaseView *)self renderModel];
+    v5FocusStyle = [focusStyle focusStyle];
+    v8 = [(TUIFocusStylingHelper *)v6 initWithContainer:self reference:renderModel style:v5FocusStyle];
     v9 = self->_focusHelper;
     self->_focusHelper = v8;
   }
@@ -192,14 +192,14 @@
     interactionHelper = self->_interactionHelper;
   }
 
-  v13 = [(TUIInteractiveBaseView *)self renderModel];
-  v14 = [v13 linkEntities];
-  [(TUIInteractionsHelper *)interactionHelper updateWithLinkEntities:v14];
+  renderModel2 = [(TUIInteractiveBaseView *)self renderModel];
+  linkEntities = [renderModel2 linkEntities];
+  [(TUIInteractionsHelper *)interactionHelper updateWithLinkEntities:linkEntities];
 
   v15 = self->_interactionHelper;
-  v16 = [(TUIReusableBaseView *)self feedControllerHost];
-  v17 = [v16 interactionBuilder];
-  [(TUIInteractionsHelper *)v15 updateInteractionsWithBuilder:v17];
+  feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+  interactionBuilder = [feedControllerHost interactionBuilder];
+  [(TUIInteractionsHelper *)v15 updateInteractionsWithBuilder:interactionBuilder];
 }
 
 - (void)prepareForReuse
@@ -230,8 +230,8 @@
 
   if (self->_pointerInteraction)
   {
-    v5 = [(TUIInteractiveBaseView *)self control];
-    [v5 removeInteraction:self->_pointerInteraction];
+    control = [(TUIInteractiveBaseView *)self control];
+    [control removeInteraction:self->_pointerInteraction];
 
     pointerInteraction = self->_pointerInteraction;
     self->_pointerInteraction = 0;
@@ -262,69 +262,69 @@
   }
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [v9 nextFocusedItem];
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  nextFocusedItem = [contextCopy nextFocusedItem];
 
-  if (v7 == self)
+  if (nextFocusedItem == self)
   {
-    [(TUIFocusStylingHelper *)self->_focusHelper activateEffectWithAnimationCoordinator:v6];
+    [(TUIFocusStylingHelper *)self->_focusHelper activateEffectWithAnimationCoordinator:coordinatorCopy];
   }
 
   else
   {
-    v8 = [v9 previouslyFocusedItem];
+    previouslyFocusedItem = [contextCopy previouslyFocusedItem];
 
-    if (v8 == self)
+    if (previouslyFocusedItem == self)
     {
-      [(TUIFocusStylingHelper *)self->_focusHelper deactivateEffectWithAnimationCoordinator:v6];
+      [(TUIFocusStylingHelper *)self->_focusHelper deactivateEffectWithAnimationCoordinator:coordinatorCopy];
     }
   }
 }
 
 - (id)keyCommands
 {
-  v2 = [(TUIInteractiveBaseView *)self renderModel];
-  v3 = [v2 actionHandler];
-  v4 = [v3 keyCommands];
+  renderModel = [(TUIInteractiveBaseView *)self renderModel];
+  actionHandler = [renderModel actionHandler];
+  keyCommands = [actionHandler keyCommands];
 
-  return v4;
+  return keyCommands;
 }
 
-- (void)tui_handleSelectKey:(id)a3
+- (void)tui_handleSelectKey:(id)key
 {
-  v5 = [(TUIInteractiveBaseView *)self renderModel];
-  v4 = [v5 actionHandler];
-  [v4 invoke:@"press" view:self];
+  renderModel = [(TUIInteractiveBaseView *)self renderModel];
+  actionHandler = [renderModel actionHandler];
+  [actionHandler invoke:@"press" view:self];
 }
 
-- (void)tui_handleContextMenuKey:(id)a3
+- (void)tui_handleContextMenuKey:(id)key
 {
-  v5 = [(TUIInteractiveBaseView *)self renderModel];
-  v4 = [v5 actionHandler];
-  [v4 invoke:@"context-menu" view:self];
+  renderModel = [(TUIInteractiveBaseView *)self renderModel];
+  actionHandler = [renderModel actionHandler];
+  [actionHandler invoke:@"context-menu" view:self];
 }
 
 - (id)currentState
 {
-  v3 = [(TUIInteractiveBaseView *)self control];
-  v4 = [v3 isEnabled];
+  control = [(TUIInteractiveBaseView *)self control];
+  isEnabled = [control isEnabled];
 
-  v5 = [(TUIInteractiveBaseView *)self control];
-  v6 = [v5 isHighlighted];
+  control2 = [(TUIInteractiveBaseView *)self control];
+  isHighlighted = [control2 isHighlighted];
 
-  v7 = [(TUIInteractiveBaseView *)self renderModel];
-  v8 = [v7 pointer];
-  v9 = [v8 refId];
+  renderModel = [(TUIInteractiveBaseView *)self renderModel];
+  pointer = [renderModel pointer];
+  refId = [pointer refId];
 
   v10 = TUIElementStateHover;
   if (!self->_hoverActive)
   {
-    if ([v9 length])
+    if ([refId length])
     {
-      if (![(NSMutableSet *)self->_cursorEnteredIdentifiers containsObject:v9])
+      if (![(NSMutableSet *)self->_cursorEnteredIdentifiers containsObject:refId])
       {
         v10 = TUIElementStateDefault;
       }
@@ -337,12 +337,12 @@
   }
 
   v11 = TUIElementStateDisabled;
-  if (v4)
+  if (isEnabled)
   {
     v11 = v10;
   }
 
-  if (v6)
+  if (isHighlighted)
   {
     v11 = TUIElementStateHighlighted;
   }
@@ -363,25 +363,25 @@
 
 - (void)loadControlIfNeeded
 {
-  v55 = [(TUIInteractiveBaseView *)self control];
-  if (!v55)
+  control = [(TUIInteractiveBaseView *)self control];
+  if (!control)
   {
     v3 = objc_opt_class();
-    v4 = [(TUIInteractiveBaseView *)self renderModel];
-    v5 = TUIDynamicCast(v3, v4);
+    renderModel = [(TUIInteractiveBaseView *)self renderModel];
+    v5 = TUIDynamicCast(v3, renderModel);
 
-    v55 = +[TUIUIKitButton buttonWithType:](TUIUIKitButton, "buttonWithType:", +[TUIControlView uiButtonTypeFromTUIButtonType:](TUIControlView, "uiButtonTypeFromTUIButtonType:", [v5 type]));
+    control = +[TUIUIKitButton buttonWithType:](TUIUIKitButton, "buttonWithType:", +[TUIControlView uiButtonTypeFromTUIButtonType:](TUIControlView, "uiButtonTypeFromTUIButtonType:", [v5 type]));
     [(TUIControlView *)self bounds];
-    [v55 frameForAlignmentRect:?];
-    [v55 setFrame:?];
-    [v55 setEnabled:1];
-    [v55 setAutoresizingMask:18];
-    [v55 addTarget:self action:"_buttonPressed:" forControlEvents:64];
-    [v55 addObserver:self forKeyPath:@"enabled" options:0 context:off_2E5620];
-    [v55 addObserver:self forKeyPath:@"highlighted" options:0 context:off_2E5620];
-    [v55 setTui_delegate:self];
-    [(TUIControlView *)self addSubview:v55];
-    [(TUIInteractiveBaseView *)self setControl:v55];
+    [control frameForAlignmentRect:?];
+    [control setFrame:?];
+    [control setEnabled:1];
+    [control setAutoresizingMask:18];
+    [control addTarget:self action:"_buttonPressed:" forControlEvents:64];
+    [control addObserver:self forKeyPath:@"enabled" options:0 context:off_2E5620];
+    [control addObserver:self forKeyPath:@"highlighted" options:0 context:off_2E5620];
+    [control setTui_delegate:self];
+    [(TUIControlView *)self addSubview:control];
+    [(TUIInteractiveBaseView *)self setControl:control];
   }
 
   if (!self->_selectGestureRecognizer)
@@ -397,11 +397,11 @@
 
   if (_TUIDeviceHasInternalInstall())
   {
-    v8 = [(TUIInteractiveBaseView *)self renderModel];
-    if (v8)
+    renderModel2 = [(TUIInteractiveBaseView *)self renderModel];
+    if (renderModel2)
     {
-      v9 = v8;
-      v10 = [(TUIInteractiveBaseView *)self renderModel];
+      v9 = renderModel2;
+      renderModel3 = [(TUIInteractiveBaseView *)self renderModel];
       v11 = objc_opt_respondsToSelector();
 
       if ((v11 & 1) == 0)
@@ -412,19 +412,19 @@
           sub_19C074(self);
         }
 
-        v22 = self;
+        selfCopy = self;
         v23 = 0;
-        v54 = v22;
+        v54 = selfCopy;
         do
         {
           v24 = objc_opt_class();
-          v25 = TUIDynamicCast(v24, v22);
+          v25 = TUIDynamicCast(v24, selfCopy);
           if (v25)
           {
             v26 = v25;
             v27 = objc_opt_class();
-            v28 = [(TUIControlView *)v22 scrollingDelegate];
-            v29 = TUIDynamicCast(v27, v28);
+            scrollingDelegate = [(TUIControlView *)selfCopy scrollingDelegate];
+            v29 = TUIDynamicCast(v27, scrollingDelegate);
 
             if (v29)
             {
@@ -433,21 +433,21 @@
           }
 
           v30 = objc_opt_class();
-          v31 = TUIDynamicCast(v30, v22);
+          v31 = TUIDynamicCast(v30, selfCopy);
           v32 = TUIRenderModelLog();
           v33 = os_log_type_enabled(v32, OS_LOG_TYPE_ERROR);
           if (v31)
           {
             if (v33)
             {
-              v34 = [(TUIReusableBaseView *)v31 layoutAttributes];
-              v35 = [v34 renderModel];
+              layoutAttributes = [(TUIReusableBaseView *)v31 layoutAttributes];
+              renderModel4 = [layoutAttributes renderModel];
               *buf = 134218498;
               v59 = v23;
               v60 = 2112;
               v61 = v31;
               v62 = 2112;
-              v63 = v35;
+              v63 = renderModel4;
               _os_log_error_impl(&dword_0, v32, OS_LOG_TYPE_ERROR, "superview[%lu]: %@, renderModel=%@", buf, 0x20u);
             }
           }
@@ -457,19 +457,19 @@
             *buf = 134218242;
             v59 = v23;
             v60 = 2112;
-            v61 = v22;
+            v61 = selfCopy;
             _os_log_error_impl(&dword_0, v32, OS_LOG_TYPE_ERROR, "superView[%lu]: %@ (not renderModel based)", buf, 0x16u);
           }
 
           ++v23;
-          v36 = [(TUIControlView *)v22 superview];
+          superview = [(TUIControlView *)selfCopy superview];
 
-          v22 = v36;
+          selfCopy = superview;
         }
 
-        while (v36);
+        while (superview);
         v37 = objc_opt_class();
-        v38 = TUIDynamicCast(v37, v22);
+        v38 = TUIDynamicCast(v37, selfCopy);
         v39 = TUIRenderModelLog();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
         {
@@ -478,16 +478,16 @@
 
         v40 = [NSException alloc];
         v56[0] = @"renderModel";
-        v41 = [(TUIInteractiveBaseView *)v54 renderModel];
-        v57[0] = v41;
+        renderModel5 = [(TUIInteractiveBaseView *)v54 renderModel];
+        v57[0] = renderModel5;
         v56[1] = @"renderModelIdentifier";
-        v42 = [(TUIInteractiveBaseView *)v54 renderModel];
-        v43 = [v42 identifier];
-        v44 = [v43 tui_identifierToString];
-        v45 = v44;
-        if (v44)
+        renderModel6 = [(TUIInteractiveBaseView *)v54 renderModel];
+        identifier = [renderModel6 identifier];
+        tui_identifierToString = [identifier tui_identifierToString];
+        v45 = tui_identifierToString;
+        if (tui_identifierToString)
         {
-          v46 = v44;
+          v46 = tui_identifierToString;
         }
 
         else
@@ -497,12 +497,12 @@
 
         v57[1] = v46;
         v56[2] = @"renderModelReuseIdentifier";
-        v47 = [(TUIInteractiveBaseView *)v54 renderModel];
-        v48 = [v47 reuseIdentifier];
-        v49 = v48;
-        if (v48)
+        renderModel7 = [(TUIInteractiveBaseView *)v54 renderModel];
+        reuseIdentifier = [renderModel7 reuseIdentifier];
+        v49 = reuseIdentifier;
+        if (reuseIdentifier)
         {
-          v50 = v48;
+          v50 = reuseIdentifier;
         }
 
         else
@@ -520,10 +520,10 @@
     }
   }
 
-  v12 = [(TUIInteractiveBaseView *)self renderModel];
-  v13 = [v12 pointer];
-  v14 = [v13 refId];
-  v15 = [v14 length];
+  renderModel8 = [(TUIInteractiveBaseView *)self renderModel];
+  pointer = [renderModel8 pointer];
+  refId = [pointer refId];
+  v15 = [refId length];
 
   pointerInteraction = self->_pointerInteraction;
   if (pointerInteraction)
@@ -540,7 +540,7 @@
   {
     if (pointerInteraction && !v15)
     {
-      [v55 removeInteraction:?];
+      [control removeInteraction:?];
       v18 = self->_pointerInteraction;
       self->_pointerInteraction = 0;
     }
@@ -552,16 +552,16 @@
     v20 = self->_pointerInteraction;
     self->_pointerInteraction = v19;
 
-    [v55 addInteraction:self->_pointerInteraction];
+    [control addInteraction:self->_pointerInteraction];
   }
 }
 
 - (BOOL)presentContextMenuForAccessibility
 {
-  v3 = [(TUIInteractiveBaseView *)self control];
-  if ([v3 showsMenuAsPrimaryAction])
+  control = [(TUIInteractiveBaseView *)self control];
+  if ([control showsMenuAsPrimaryAction])
   {
-    WeakRetained = [v3 contextMenuInteraction];
+    WeakRetained = [control contextMenuInteraction];
   }
 
   else
@@ -572,7 +572,7 @@
   v5 = WeakRetained;
   if (WeakRetained)
   {
-    [v3 accessibilityActivationPoint];
+    [control accessibilityActivationPoint];
     [v5 _presentMenuAtLocation:?];
   }
 
@@ -590,31 +590,31 @@
   }
 }
 
-- (void)configureWithModel:(id)a3 outsets:(UIEdgeInsets)a4
+- (void)configureWithModel:(id)model outsets:(UIEdgeInsets)outsets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v9 = a3;
+  right = outsets.right;
+  bottom = outsets.bottom;
+  left = outsets.left;
+  top = outsets.top;
+  modelCopy = model;
   v10 = objc_opt_class();
-  v11 = [(TUIInteractiveBaseView *)self renderModel];
-  v12 = TUIDynamicCast(v10, v11);
+  renderModel = [(TUIInteractiveBaseView *)self renderModel];
+  v12 = TUIDynamicCast(v10, renderModel);
 
   v13 = objc_opt_class();
-  v14 = TUIDynamicCast(v13, v9);
-  v15 = [(TUIInteractiveBaseView *)self control];
-  v16 = [v15 buttonType];
+  v14 = TUIDynamicCast(v13, modelCopy);
+  control = [(TUIInteractiveBaseView *)self control];
+  buttonType = [control buttonType];
 
-  if (v16 != +[TUIControlView uiButtonTypeFromTUIButtonType:](TUIControlView, "uiButtonTypeFromTUIButtonType:", [v14 type]))
+  if (buttonType != +[TUIControlView uiButtonTypeFromTUIButtonType:](TUIControlView, "uiButtonTypeFromTUIButtonType:", [v14 type]))
   {
-    v17 = [(TUIInteractiveBaseView *)self control];
-    [v17 removeFromSuperview];
+    control2 = [(TUIInteractiveBaseView *)self control];
+    [control2 removeFromSuperview];
 
     if (self->_pointerInteraction)
     {
-      v18 = [(TUIInteractiveBaseView *)self control];
-      [v18 removeInteraction:self->_pointerInteraction];
+      control3 = [(TUIInteractiveBaseView *)self control];
+      [control3 removeInteraction:self->_pointerInteraction];
 
       pointerInteraction = self->_pointerInteraction;
       self->_pointerInteraction = 0;
@@ -623,8 +623,8 @@
     [(TUIInteractiveBaseView *)self setControl:0];
   }
 
-  v20 = [v14 stateToModel];
-  v21 = [v20 objectForKeyedSubscript:@"hover"];
+  stateToModel = [v14 stateToModel];
+  v21 = [stateToModel objectForKeyedSubscript:@"hover"];
 
   hoverGestureRecognizer = self->_hoverGestureRecognizer;
   if (v21)
@@ -652,17 +652,17 @@ LABEL_10:
 
   v104.receiver = self;
   v104.super_class = TUIControlView;
-  [(TUIInteractiveBaseView *)&v104 configureWithModel:v9 outsets:top, left, bottom, right];
+  [(TUIInteractiveBaseView *)&v104 configureWithModel:modelCopy outsets:top, left, bottom, right];
   if (v12 == v14 || ([v12 isEqualToRenderModel:v14] & 1) != 0)
   {
     goto LABEL_36;
   }
 
   v96 = v12;
-  v97 = v9;
+  v97 = modelCopy;
   v26 = +[TUIControlView uiButtonRoleFromTUIButtonRole:](TUIControlView, "uiButtonRoleFromTUIButtonRole:", [v14 role]);
-  v27 = [(TUIInteractiveBaseView *)self control];
-  [v27 setRole:v26];
+  control4 = [(TUIInteractiveBaseView *)self control];
+  [control4 setRole:v26];
 
   -[TUIControlView setOverrideUserInterfaceStyle:](self, "setOverrideUserInterfaceStyle:", +[TUIControlView uiUserInterfaceStyleFromTUIUserInterfaceStyle:](TUIControlView, "uiUserInterfaceStyleFromTUIUserInterfaceStyle:", [v14 userInterfaceStyle]));
   [v14 touchInsets];
@@ -670,28 +670,28 @@ LABEL_10:
   v31 = v30;
   v33 = v32;
   v35 = v34;
-  v36 = [(TUIInteractiveBaseView *)self control];
-  [v36 setTouchInsets:{v29, v31, v33, v35}];
+  control5 = [(TUIInteractiveBaseView *)self control];
+  [control5 setTouchInsets:{v29, v31, v33, v35}];
 
-  v37 = [v14 axAttributes];
-  v38 = [v37 axLabel];
-  v39 = [(TUIInteractiveBaseView *)self control];
-  [v39 setAccessibilityLabel:v38];
+  axAttributes = [v14 axAttributes];
+  axLabel = [axAttributes axLabel];
+  control6 = [(TUIInteractiveBaseView *)self control];
+  [control6 setAccessibilityLabel:axLabel];
 
-  v40 = [v14 axAttributes];
-  v41 = [v40 axValue];
-  v42 = [(TUIInteractiveBaseView *)self control];
-  [v42 setAccessibilityValue:v41];
+  axAttributes2 = [v14 axAttributes];
+  axValue = [axAttributes2 axValue];
+  control7 = [(TUIInteractiveBaseView *)self control];
+  [control7 setAccessibilityValue:axValue];
 
-  v43 = [v14 axAttributes];
-  v44 = [v43 axHint];
-  v45 = [(TUIInteractiveBaseView *)self control];
-  [v45 setAccessibilityHint:v44];
+  axAttributes3 = [v14 axAttributes];
+  axHint = [axAttributes3 axHint];
+  control8 = [(TUIInteractiveBaseView *)self control];
+  [control8 setAccessibilityHint:axHint];
 
-  v46 = [v14 axAttributes];
-  v47 = [v46 axIdentifier];
-  v48 = [(TUIInteractiveBaseView *)self control];
-  [v48 setAccessibilityIdentifier:v47];
+  axAttributes4 = [v14 axAttributes];
+  axIdentifier = [axAttributes4 axIdentifier];
+  control9 = [(TUIInteractiveBaseView *)self control];
+  [control9 setAccessibilityIdentifier:axIdentifier];
 
   v102 = 0u;
   v103 = 0u;
@@ -717,16 +717,16 @@ LABEL_10:
 
         v54 = *(*(&v100 + 1) + 8 * i);
         v55 = [TUIControlView uiControlStateFromTUIElementState:v54];
-        v56 = [v14 stateToButtonAttributes];
-        v57 = [v56 objectForKeyedSubscript:v54];
+        stateToButtonAttributes = [v14 stateToButtonAttributes];
+        v57 = [stateToButtonAttributes objectForKeyedSubscript:v54];
 
-        v58 = [(TUIInteractiveBaseView *)self control];
-        v59 = [v57 image];
-        [v58 setImage:v59 forState:v55];
+        control10 = [(TUIInteractiveBaseView *)self control];
+        image = [v57 image];
+        [control10 setImage:image forState:v55];
 
-        v60 = [(TUIInteractiveBaseView *)self control];
-        v61 = [v57 title];
-        [v60 setAttributedTitle:v61 forState:v55];
+        control11 = [(TUIInteractiveBaseView *)self control];
+        title = [v57 title];
+        [control11 setAttributedTitle:title forState:v55];
       }
 
       v51 = [v49 countByEnumeratingWithState:&v100 objects:v106 count:16];
@@ -735,96 +735,96 @@ LABEL_10:
     while (v51);
   }
 
-  v62 = [v14 imageModelIDToResource];
-  [v62 enumerateKeysAndObjectsUsingBlock:&stru_263908];
+  imageModelIDToResource = [v14 imageModelIDToResource];
+  [imageModelIDToResource enumerateKeysAndObjectsUsingBlock:&stru_263908];
 
   v12 = v96;
-  v63 = [v96 imageModelIDToResource];
+  imageModelIDToResource2 = [v96 imageModelIDToResource];
   v99[0] = _NSConcreteStackBlock;
   v99[1] = 3221225472;
   v99[2] = sub_185630;
   v99[3] = &unk_25DD98;
   v99[4] = self;
-  [v63 enumerateKeysAndObjectsUsingBlock:v99];
+  [imageModelIDToResource2 enumerateKeysAndObjectsUsingBlock:v99];
 
-  v64 = [v14 imageModelIDToResource];
+  imageModelIDToResource3 = [v14 imageModelIDToResource];
   v98[0] = _NSConcreteStackBlock;
   v98[1] = 3221225472;
   v98[2] = sub_185684;
   v98[3] = &unk_25DD98;
   v98[4] = self;
-  [v64 enumerateKeysAndObjectsUsingBlock:v98];
+  [imageModelIDToResource3 enumerateKeysAndObjectsUsingBlock:v98];
 
-  v65 = [(TUIInteractiveBaseView *)self control];
+  control12 = [(TUIInteractiveBaseView *)self control];
   [(TUIControlView *)self bounds];
-  [v65 frameForAlignmentRect:?];
+  [control12 frameForAlignmentRect:?];
   v67 = v66;
   v69 = v68;
   v71 = v70;
   v73 = v72;
-  v74 = [(TUIInteractiveBaseView *)self control];
-  [v74 setFrame:{v67, v69, v71, v73}];
+  control13 = [(TUIInteractiveBaseView *)self control];
+  [control13 setFrame:{v67, v69, v71, v73}];
 
-  v75 = [(TUIInteractiveBaseView *)self renderModel];
-  v76 = [v75 actionHandler];
-  v77 = [v76 hasActionForTrigger:@"context-menu"];
+  renderModel2 = [(TUIInteractiveBaseView *)self renderModel];
+  actionHandler = [renderModel2 actionHandler];
+  v77 = [actionHandler hasActionForTrigger:@"context-menu"];
 
-  v78 = [v14 enabled];
-  v79 = v78;
-  if (!v77 || !v78)
+  enabled = [v14 enabled];
+  v79 = enabled;
+  if (!v77 || !enabled)
   {
-    v85 = [v14 menu];
-    v86 = (v85 != 0) & v79;
+    menu = [v14 menu];
+    v86 = (menu != 0) & v79;
 
     if (v86 == 1)
     {
-      v84 = [v14 menu];
-      v87 = [v14 imageModelIDToResource];
-      [v84 loadImagesFromResourceMap:v87];
+      menu2 = [v14 menu];
+      imageModelIDToResource4 = [v14 imageModelIDToResource];
+      [menu2 loadImagesFromResourceMap:imageModelIDToResource4];
 
-      v88 = [(TUIInteractiveBaseView *)self control];
-      [v88 setTui_menu:v84];
+      control14 = [(TUIInteractiveBaseView *)self control];
+      [control14 setTui_menu:menu2];
     }
 
     else
     {
-      v89 = [(TUIInteractiveBaseView *)self control];
-      [v89 setContextMenuInteractionEnabled:0];
+      control15 = [(TUIInteractiveBaseView *)self control];
+      [control15 setContextMenuInteractionEnabled:0];
 
-      v90 = [(TUIInteractiveBaseView *)self control];
-      [v90 setShowsMenuAsPrimaryAction:0];
+      control16 = [(TUIInteractiveBaseView *)self control];
+      [control16 setShowsMenuAsPrimaryAction:0];
 
-      v84 = [(TUIInteractiveBaseView *)self control];
-      [v84 setTui_menu:0];
+      menu2 = [(TUIInteractiveBaseView *)self control];
+      [menu2 setTui_menu:0];
     }
 
     goto LABEL_27;
   }
 
-  v80 = [v14 contextMenuIsPrimaryAction];
-  v81 = [(TUIInteractiveBaseView *)self control];
-  [v81 setTui_menu:0];
+  contextMenuIsPrimaryAction = [v14 contextMenuIsPrimaryAction];
+  control17 = [(TUIInteractiveBaseView *)self control];
+  [control17 setTui_menu:0];
 
-  v82 = [(TUIInteractiveBaseView *)self control];
-  v83 = v82;
-  if (v80)
+  control18 = [(TUIInteractiveBaseView *)self control];
+  v83 = control18;
+  if (contextMenuIsPrimaryAction)
   {
-    [v82 setContextMenuInteractionEnabled:1];
+    [control18 setContextMenuInteractionEnabled:1];
 
-    v84 = [(TUIInteractiveBaseView *)self control];
-    [v84 setShowsMenuAsPrimaryAction:1];
+    menu2 = [(TUIInteractiveBaseView *)self control];
+    [menu2 setShowsMenuAsPrimaryAction:1];
 LABEL_27:
     v91 = 0;
     goto LABEL_29;
   }
 
-  [v82 setContextMenuInteractionEnabled:0];
+  [control18 setContextMenuInteractionEnabled:0];
 
-  v84 = [(TUIInteractiveBaseView *)self control];
-  [v84 setShowsMenuAsPrimaryAction:0];
+  menu2 = [(TUIInteractiveBaseView *)self control];
+  [menu2 setShowsMenuAsPrimaryAction:0];
   v91 = 1;
 LABEL_29:
-  v9 = v97;
+  modelCopy = v97;
 
   WeakRetained = objc_loadWeakRetained(&self->_customContextMenuInteraction);
   if (v91 && !WeakRetained)
@@ -851,24 +851,24 @@ LABEL_29:
 LABEL_36:
 }
 
-- (void)imageResourceDidChangeImage:(id)a3
+- (void)imageResourceDidChangeImage:(id)image
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_18572C;
   v4[3] = &unk_25DCA0;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  imageCopy = image;
+  v3 = imageCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (id)_pointerTargetViewWithRefId:(id)a3
+- (id)_pointerTargetViewWithRefId:(id)id
 {
-  v4 = a3;
-  if ([v4 length])
+  idCopy = id;
+  if ([idCopy length])
   {
-    v5 = [(TUIInteractiveBaseView *)self descendentViewWithRefId:v4];
+    v5 = [(TUIInteractiveBaseView *)self descendentViewWithRefId:idCopy];
   }
 
   else
@@ -879,16 +879,16 @@ LABEL_36:
   return v5;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v7 = a4;
-  if (self->_pointerInteraction == a3)
+  requestCopy = request;
+  if (self->_pointerInteraction == interaction)
   {
-    v9 = [(TUIInteractiveBaseView *)self renderModel];
-    v10 = [v9 pointer];
-    v11 = [v10 refId];
+    renderModel = [(TUIInteractiveBaseView *)self renderModel];
+    pointer = [renderModel pointer];
+    refId = [pointer refId];
 
-    v12 = [(TUIControlView *)self _pointerTargetViewWithRefId:v11];
+    v12 = [(TUIControlView *)self _pointerTargetViewWithRefId:refId];
     if (v12)
     {
       v13 = TUIProtocolCast(&OBJC_PROTOCOL___TUITouchInsetting, v12);
@@ -916,7 +916,7 @@ LABEL_36:
       v30 = v29;
       v32 = v31;
       v34 = v33;
-      [v7 location];
+      [requestCopy location];
       v52.x = v35;
       v52.y = v36;
       v53.origin.x = v28;
@@ -931,10 +931,10 @@ LABEL_36:
         v42 = v41;
         v44 = v43;
         v46 = v45;
-        v47 = [(TUIInteractiveBaseView *)self renderModel];
-        v48 = [v47 pointer];
-        v49 = [v48 refId];
-        v8 = [UIPointerRegion regionWithRect:v49 identifier:v40, v42, v44, v46];
+        renderModel2 = [(TUIInteractiveBaseView *)self renderModel];
+        pointer2 = [renderModel2 pointer];
+        refId2 = [pointer2 refId];
+        v8 = [UIPointerRegion regionWithRect:refId2 identifier:v40, v42, v44, v46];
       }
 
       else
@@ -957,35 +957,35 @@ LABEL_36:
   return v8;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = [a4 identifier];
-  v6 = [(TUIControlView *)self _pointerTargetViewWithRefId:v5];
+  identifier = [region identifier];
+  v6 = [(TUIControlView *)self _pointerTargetViewWithRefId:identifier];
   v7 = v6;
   if (v6)
   {
-    v60 = v5;
+    v60 = identifier;
     [(TUIControlView *)v6 bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(TUIReusableBaseView *)self feedControllerHost];
-    v17 = [v16 hostingContainerView];
+    feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+    hostingContainerView = [feedControllerHost hostingContainerView];
 
-    if (([(TUIControlView *)v7 isDescendantOfView:v17]& 1) == 0)
+    if (([(TUIControlView *)v7 isDescendantOfView:hostingContainerView]& 1) == 0)
     {
-      v18 = [(TUIReusableBaseView *)self feedControllerHost];
-      v19 = [v18 hostingNavigationBar];
+      feedControllerHost2 = [(TUIReusableBaseView *)self feedControllerHost];
+      hostingNavigationBar = [feedControllerHost2 hostingNavigationBar];
 
-      if (([(TUIControlView *)v7 isDescendantOfView:v19]& 1) != 0)
+      if (([(TUIControlView *)v7 isDescendantOfView:hostingNavigationBar]& 1) != 0)
       {
-        v17 = v19;
+        hostingContainerView = hostingNavigationBar;
       }
 
       else
       {
-        v17 = [(TUIControlView *)v7 superview];
+        hostingContainerView = [(TUIControlView *)v7 superview];
       }
     }
 
@@ -995,7 +995,7 @@ LABEL_36:
     v24 = v9;
     if (v7 == self)
     {
-      v25 = [(TUIControlView *)self superview];
+      superview = [(TUIControlView *)self superview];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1005,15 +1005,15 @@ LABEL_36:
       v24 = v9;
       if (isKindOfClass)
       {
-        v27 = [(TUIControlView *)self superview];
-        v28 = [v27 superview];
-        v29 = [v28 superview];
+        superview2 = [(TUIControlView *)self superview];
+        v27Superview = [superview2 superview];
+        v28Superview = [v27Superview superview];
 
-        [(TUIControlView *)v7 convertRect:v29 toView:v9, v11, v13, v15];
+        [(TUIControlView *)v7 convertRect:v28Superview toView:v9, v11, v13, v15];
         v31 = v30;
         v33 = v32;
-        [v29 bounds];
-        [v29 convertRect:v7 toView:{v31, 0.0, v33, CGRectGetHeight(v62)}];
+        [v28Superview bounds];
+        [v28Superview convertRect:v7 toView:{v31, 0.0, v33, CGRectGetHeight(v62)}];
         v24 = v34;
         v23 = v35;
         v22 = v36;
@@ -1032,15 +1032,15 @@ LABEL_36:
     v64.origin.y = v11;
     v64.size.width = v13;
     v64.size.height = v15;
-    [v17 convertPoint:v7 fromView:{MidX, CGRectGetMidY(v64)}];
-    v59 = v17;
-    v42 = [[UIPreviewTarget alloc] initWithContainer:v17 center:{v40, v41}];
+    [hostingContainerView convertPoint:v7 fromView:{MidX, CGRectGetMidY(v64)}];
+    v59 = hostingContainerView;
+    v42 = [[UIPreviewTarget alloc] initWithContainer:hostingContainerView center:{v40, v41}];
     v43 = objc_alloc_init(UIPreviewParameters);
     v44 = [[UITargetedPreview alloc] initWithView:v7 parameters:v43 target:v42];
-    v45 = [(TUIInteractiveBaseView *)self renderModel];
-    v46 = [v45 pointer];
-    v47 = [v46 style];
-    v48 = [v47 pointerEffectWithPreview:v44];
+    renderModel = [(TUIInteractiveBaseView *)self renderModel];
+    pointer = [renderModel pointer];
+    style = [pointer style];
+    v48 = [style pointerEffectWithPreview:v44];
     v49 = v48;
     if (v48)
     {
@@ -1054,15 +1054,15 @@ LABEL_36:
 
     v51 = v50;
 
-    v52 = [(TUIInteractiveBaseView *)self renderModel];
-    v53 = [v52 pointer];
-    v54 = [v53 style];
-    v55 = [v54 cursor];
-    v56 = [v55 pointerShapeWithBounds:v44 preview:{v24, v23, v58, v38}];
+    renderModel2 = [(TUIInteractiveBaseView *)self renderModel];
+    pointer2 = [renderModel2 pointer];
+    style2 = [pointer2 style];
+    cursor = [style2 cursor];
+    v56 = [cursor pointerShapeWithBounds:v44 preview:{v24, v23, v58, v38}];
 
     v20 = [UIPointerStyle styleWithEffect:v51 shape:v56];
 
-    v5 = v60;
+    identifier = v60;
   }
 
   else
@@ -1073,14 +1073,14 @@ LABEL_36:
   return v20;
 }
 
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator
 {
-  v7 = a5;
-  v8 = [a4 identifier];
+  animatorCopy = animator;
+  identifier = [region identifier];
   cursorEnteredIdentifiers = self->_cursorEnteredIdentifiers;
   if (cursorEnteredIdentifiers)
   {
-    if (([(NSMutableSet *)cursorEnteredIdentifiers containsObject:v8]& 1) != 0)
+    if (([(NSMutableSet *)cursorEnteredIdentifiers containsObject:identifier]& 1) != 0)
     {
       goto LABEL_6;
     }
@@ -1093,22 +1093,22 @@ LABEL_36:
     self->_cursorEnteredIdentifiers = v10;
   }
 
-  [(NSMutableSet *)self->_cursorEnteredIdentifiers addObject:v8];
+  [(NSMutableSet *)self->_cursorEnteredIdentifiers addObject:identifier];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_186044;
   v12[3] = &unk_25DE30;
   v12[4] = self;
-  [v7 addAnimations:v12];
+  [animatorCopy addAnimations:v12];
 LABEL_6:
 }
 
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator
 {
-  v7 = a5;
-  v8 = [a4 identifier];
+  animatorCopy = animator;
+  identifier = [region identifier];
   cursorEnteredIdentifiers = self->_cursorEnteredIdentifiers;
-  if (cursorEnteredIdentifiers && [(NSMutableSet *)cursorEnteredIdentifiers containsObject:v8])
+  if (cursorEnteredIdentifiers && [(NSMutableSet *)cursorEnteredIdentifiers containsObject:identifier])
   {
     v10 = [(NSMutableSet *)self->_cursorEnteredIdentifiers count];
     v11 = self->_cursorEnteredIdentifiers;
@@ -1119,7 +1119,7 @@ LABEL_6:
 
     else
     {
-      [(NSMutableSet *)v11 removeObject:v8];
+      [(NSMutableSet *)v11 removeObject:identifier];
     }
 
     v12[0] = _NSConcreteStackBlock;
@@ -1127,37 +1127,37 @@ LABEL_6:
     v12[2] = sub_186170;
     v12[3] = &unk_25DE30;
     v12[4] = self;
-    [v7 addAnimations:v12];
+    [animatorCopy addAnimations:v12];
   }
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TUIInteractiveBaseView *)self control];
-  if ([v11 isStaticMenu])
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  animatorCopy = animator;
+  control = [(TUIInteractiveBaseView *)self control];
+  if ([control isStaticMenu])
   {
   }
 
   else
   {
-    v12 = [(TUIInteractiveBaseView *)self control];
-    v13 = [v12 tui_menu];
+    control2 = [(TUIInteractiveBaseView *)self control];
+    tui_menu = [control2 tui_menu];
 
-    if (!v13)
+    if (!tui_menu)
     {
-      v14 = [(TUIReusableBaseView *)self feedControllerHost];
-      v15 = [v14 contextMenuConfigurationProvider];
-      [v15 contextMenuInteraction:v8 willDisplayMenuForConfiguration:v9];
+      feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+      contextMenuConfigurationProvider = [feedControllerHost contextMenuConfigurationProvider];
+      [contextMenuConfigurationProvider contextMenuInteraction:interactionCopy willDisplayMenuForConfiguration:configurationCopy];
       goto LABEL_5;
     }
   }
 
-  v14 = [(TUIInteractiveBaseView *)self renderModel];
-  v15 = [v14 actionHandler];
-  [v15 invoke:@"menuPresent" view:self];
+  feedControllerHost = [(TUIInteractiveBaseView *)self renderModel];
+  contextMenuConfigurationProvider = [feedControllerHost actionHandler];
+  [contextMenuConfigurationProvider invoke:@"menuPresent" view:self];
 LABEL_5:
 
   v17[0] = _NSConcreteStackBlock;
@@ -1165,40 +1165,40 @@ LABEL_5:
   v17[2] = sub_186330;
   v17[3] = &unk_25DCA0;
   v17[4] = self;
-  v18 = v8;
-  v16 = v8;
-  [v10 addCompletion:v17];
+  v18 = interactionCopy;
+  v16 = interactionCopy;
+  [animatorCopy addCompletion:v17];
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
   v6 = objc_alloc_init(UIPreviewParameters);
-  v7 = [(TUIInteractiveBaseView *)self renderModel];
-  v8 = [v7 enableBackgroundForHighlightPreview];
+  renderModel = [(TUIInteractiveBaseView *)self renderModel];
+  enableBackgroundForHighlightPreview = [renderModel enableBackgroundForHighlightPreview];
 
-  if ((v8 & 1) == 0)
+  if ((enableBackgroundForHighlightPreview & 1) == 0)
   {
     v9 = +[UIColor clearColor];
     [v6 setBackgroundColor:v9];
   }
 
-  v10 = [(TUIInteractiveBaseView *)self renderModel];
-  v11 = [v10 enableShadowForHighlightPreview];
+  renderModel2 = [(TUIInteractiveBaseView *)self renderModel];
+  enableShadowForHighlightPreview = [renderModel2 enableShadowForHighlightPreview];
 
-  if ((v11 & 1) == 0)
+  if ((enableShadowForHighlightPreview & 1) == 0)
   {
     v12 = +[UIBezierPath bezierPath];
     [v6 setShadowPath:v12];
   }
 
   v13 = [UITargetedPreview alloc];
-  v14 = [(TUIInteractiveBaseView *)self control];
-  v15 = [v13 initWithView:v14 parameters:v6];
+  control = [(TUIInteractiveBaseView *)self control];
+  v15 = [v13 initWithView:control parameters:v6];
 
   return v15;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 dismissalPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration dismissalPreviewForItemWithIdentifier:(id)identifier
 {
   v6 = objc_alloc_init(UIPreviewParameters);
   v7 = +[UIColor clearColor];
@@ -1208,31 +1208,31 @@ LABEL_5:
   [v6 setShadowPath:v8];
 
   v9 = [UITargetedPreview alloc];
-  v10 = [(TUIInteractiveBaseView *)self control];
-  v11 = [v9 initWithView:v10 parameters:v6];
+  control = [(TUIInteractiveBaseView *)self control];
+  v11 = [v9 initWithView:control parameters:v6];
 
   return v11;
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v15 = a3;
-  v7 = a4;
-  v8 = [(TUIInteractiveBaseView *)self control];
-  if ([v8 isStaticMenu])
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  control = [(TUIInteractiveBaseView *)self control];
+  if ([control isStaticMenu])
   {
 
 LABEL_4:
-    v11 = [(TUIInteractiveBaseView *)self renderModel];
-    v12 = [v11 actionHandler];
-    [v12 invoke:@"menuDismiss" view:self];
+    renderModel = [(TUIInteractiveBaseView *)self renderModel];
+    actionHandler = [renderModel actionHandler];
+    [actionHandler invoke:@"menuDismiss" view:self];
     goto LABEL_5;
   }
 
-  v9 = [(TUIInteractiveBaseView *)self control];
-  v10 = [v9 tui_menu];
+  control2 = [(TUIInteractiveBaseView *)self control];
+  tui_menu = [control2 tui_menu];
 
-  if (v10)
+  if (tui_menu)
   {
     goto LABEL_4;
   }
@@ -1243,43 +1243,43 @@ LABEL_4:
   v14 = cachedDynamicMenuData;
 
   os_unfair_lock_unlock(&self->_cachedDynamicMenuDataLock);
-  v11 = [(TUIReusableBaseView *)self feedControllerHost];
-  v12 = [v11 contextMenuConfigurationProvider];
-  [v12 contextMenuInteraction:v15 willEndForConfiguration:v7 withData:v14];
+  renderModel = [(TUIReusableBaseView *)self feedControllerHost];
+  actionHandler = [renderModel contextMenuConfigurationProvider];
+  [actionHandler contextMenuInteraction:interactionCopy willEndForConfiguration:configurationCopy withData:v14];
 
 LABEL_5:
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(TUIInteractiveBaseView *)self control];
-  v3 = [v2 accessibilityLabel];
+  control = [(TUIInteractiveBaseView *)self control];
+  accessibilityLabel = [control accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
-- (void)_buttonPressed:(id)a3
+- (void)_buttonPressed:(id)pressed
 {
-  v5 = [(TUIInteractiveBaseView *)self renderModel];
-  v4 = [v5 actionHandler];
-  [v4 invoke:@"press" view:self];
+  renderModel = [(TUIInteractiveBaseView *)self renderModel];
+  actionHandler = [renderModel actionHandler];
+  [actionHandler invoke:@"press" view:self];
 }
 
-- (void)_showContextMenu:(id)a3
+- (void)_showContextMenu:(id)menu
 {
-  v5 = [(TUIInteractiveBaseView *)self renderModel];
-  v4 = [v5 actionHandler];
-  [v4 invoke:@"context-menu" view:self];
+  renderModel = [(TUIInteractiveBaseView *)self renderModel];
+  actionHandler = [renderModel actionHandler];
+  [actionHandler invoke:@"context-menu" view:self];
 }
 
-- (void)_selectGesture:(id)a3
+- (void)_selectGesture:(id)gesture
 {
-  v5 = [(TUIInteractiveBaseView *)self renderModel];
-  v4 = [v5 actionHandler];
-  [v4 invoke:@"press" view:self];
+  renderModel = [(TUIInteractiveBaseView *)self renderModel];
+  actionHandler = [renderModel actionHandler];
+  [actionHandler invoke:@"press" view:self];
 }
 
-+ (int64_t)uiButtonTypeFromTUIButtonType:(unint64_t)a3
++ (int64_t)uiButtonTypeFromTUIButtonType:(unint64_t)type
 {
   if (qword_2E68C0 != -1)
   {
@@ -1287,23 +1287,23 @@ LABEL_5:
   }
 
   v4 = qword_2E68B8;
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
+  v5 = [NSNumber numberWithUnsignedInteger:type];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   if (v6)
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = 0;
+    integerValue = 0;
   }
 
-  return v7;
+  return integerValue;
 }
 
-+ (int64_t)uiButtonRoleFromTUIButtonRole:(unint64_t)a3
++ (int64_t)uiButtonRoleFromTUIButtonRole:(unint64_t)role
 {
   if (qword_2E68D0 != -1)
   {
@@ -1311,46 +1311,46 @@ LABEL_5:
   }
 
   v4 = qword_2E68C8;
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
+  v5 = [NSNumber numberWithUnsignedInteger:role];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   if (v6)
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = 0;
+    integerValue = 0;
   }
 
-  return v7;
+  return integerValue;
 }
 
-+ (unint64_t)uiControlStateFromTUIElementState:(id)a3
++ (unint64_t)uiControlStateFromTUIElementState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   if (qword_2E68E0 != -1)
   {
     sub_19C200();
   }
 
-  v4 = [qword_2E68D8 objectForKeyedSubscript:v3];
+  v4 = [qword_2E68D8 objectForKeyedSubscript:stateCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 unsignedIntegerValue];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v6;
+  return unsignedIntegerValue;
 }
 
-+ (int64_t)uiUserInterfaceStyleFromTUIUserInterfaceStyle:(unint64_t)a3
++ (int64_t)uiUserInterfaceStyleFromTUIUserInterfaceStyle:(unint64_t)style
 {
   if (qword_2E68F0 != -1)
   {
@@ -1358,29 +1358,29 @@ LABEL_5:
   }
 
   v4 = qword_2E68E8;
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
+  v5 = [NSNumber numberWithUnsignedInteger:style];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   if (v6)
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = 0;
+    integerValue = 0;
   }
 
-  return v7;
+  return integerValue;
 }
 
-- (id)_contextMenuConfigurationForPoint:(CGPoint)a3
+- (id)_contextMenuConfigurationForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(TUIInteractiveBaseView *)self renderModel];
-  v7 = [v6 actionHandler];
-  v8 = [v7 hasActionForTrigger:@"context-menu"];
+  y = point.y;
+  x = point.x;
+  renderModel = [(TUIInteractiveBaseView *)self renderModel];
+  actionHandler = [renderModel actionHandler];
+  v8 = [actionHandler hasActionForTrigger:@"context-menu"];
 
   if (v8 && (-[TUIReusableBaseView feedControllerHost](self, "feedControllerHost"), v9 = objc_claimAutoreleasedReturnValue(), [v9 contextMenuConfigurationProvider], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
   {

@@ -1,32 +1,32 @@
 @interface GKLeaderboardCacheObject
 - (id)internalRepresentation;
-- (void)updateWithServerRepresentation:(id)a3;
+- (void)updateWithServerRepresentation:(id)representation;
 @end
 
 @implementation GKLeaderboardCacheObject
 
-- (void)updateWithServerRepresentation:(id)a3
+- (void)updateWithServerRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = dispatch_get_current_queue();
   if (dispatch_queue_get_specific(v5, @"com.apple.gamed.cachequeue") != @"com.apple.gamed.cachequeue")
   {
     v6 = +[NSThread callStackSymbols];
     v7 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKLeaderboardCacheObject updateWithServerRepresentation:]", v6];
     v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v9 = [v8 lastPathComponent];
-    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v7, "-[GKLeaderboardCacheObject updateWithServerRepresentation:]", [v9 UTF8String], 3179);
+    lastPathComponent = [v8 lastPathComponent];
+    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v7, "-[GKLeaderboardCacheObject updateWithServerRepresentation:]", [lastPathComponent UTF8String], 3179);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v10];
   }
 
   v56.receiver = self;
   v56.super_class = GKLeaderboardCacheObject;
-  [(GKCacheObject *)&v56 updateWithServerRepresentation:v4];
-  v11 = [v4 objectForKeyedSubscript:@"global-alltime-info"];
+  [(GKCacheObject *)&v56 updateWithServerRepresentation:representationCopy];
+  v11 = [representationCopy objectForKeyedSubscript:@"global-alltime-info"];
   if (!v11)
   {
-    v11 = v4;
+    v11 = representationCopy;
   }
 
   v12 = [v11 objectForKeyedSubscript:@"leaderboard-id"];
@@ -46,20 +46,20 @@
   }
 
   [(GKLeaderboardCacheObject *)self setReleaseState:v13];
-  v14 = [(GKLeaderboardCacheObject *)self identifier];
-  v15 = [v14 isEqualToString:v12];
+  identifier = [(GKLeaderboardCacheObject *)self identifier];
+  v15 = [identifier isEqualToString:v12];
 
   if ((v15 & 1) == 0)
   {
     [(GKLeaderboardCacheObject *)self setIdentifier:v12];
-    v16 = [v4 objectForKeyedSubscript:@"title"];
-    if (v16 || ([v4 objectForKeyedSubscript:@"category-title"], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
+    v16 = [representationCopy objectForKeyedSubscript:@"title"];
+    if (v16 || ([representationCopy objectForKeyedSubscript:@"category-title"], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v17 = v16;
       [(GKLeaderboardCacheObject *)self setLocalizedTitle:v16];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"score-type"];
+    v18 = [representationCopy objectForKeyedSubscript:@"score-type"];
     if (v18)
     {
       [(GKLeaderboardCacheObject *)self setScoreType:v18];
@@ -70,9 +70,9 @@
     if (v19)
     {
       [(GKLeaderboardCacheObject *)self setBaseLeaderboardID:v19];
-      v20 = [(GKLeaderboardCacheObject *)self identifier];
+      identifier2 = [(GKLeaderboardCacheObject *)self identifier];
 
-      if (!v20)
+      if (!identifier2)
       {
         [(GKLeaderboardCacheObject *)self setIdentifier:v19];
       }
@@ -80,8 +80,8 @@
 
     else
     {
-      v21 = [(GKLeaderboardCacheObject *)self identifier];
-      [(GKLeaderboardCacheObject *)self setBaseLeaderboardID:v21];
+      identifier3 = [(GKLeaderboardCacheObject *)self identifier];
+      [(GKLeaderboardCacheObject *)self setBaseLeaderboardID:identifier3];
     }
 
     v22 = [v11 objectForKeyedSubscript:@"group-id"];
@@ -169,19 +169,19 @@ LABEL_24:
 
         [(GKLeaderboardCacheObject *)self setIsPrimary:1];
         [(GKLeaderboardCacheObject *)self setPreviousInstanceLoaded:0];
-        v39 = [(GKLeaderboardCacheObject *)self previousInstance];
+        previousInstance = [(GKLeaderboardCacheObject *)self previousInstance];
 
-        if (v39)
+        if (previousInstance)
         {
-          v40 = [(GKLeaderboardCacheObject *)self managedObjectContext];
-          v41 = [(GKLeaderboardCacheObject *)self previousInstance];
-          [v40 deleteObject:v41];
+          managedObjectContext = [(GKLeaderboardCacheObject *)self managedObjectContext];
+          previousInstance2 = [(GKLeaderboardCacheObject *)self previousInstance];
+          [managedObjectContext deleteObject:previousInstance2];
         }
 
         [(GKLeaderboardCacheObject *)self setPreviousInstance:0];
         v42 = +[NSUUID UUID];
-        v43 = [v42 UUIDString];
-        [(GKLeaderboardCacheObject *)self setRecordID:v43];
+        uUIDString = [v42 UUIDString];
+        [(GKLeaderboardCacheObject *)self setRecordID:uUIDString];
 
         v44 = [v11 objectForKeyedSubscript:@"image-urls"];
         if (v44 || ([v11 objectForKeyedSubscript:@"category-image-urls"], (v44 = objc_claimAutoreleasedReturnValue()) != 0))
@@ -238,68 +238,68 @@ LABEL_52:
     v4 = +[NSThread callStackSymbols];
     v5 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKLeaderboardCacheObject internalRepresentation]", v4];
     v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v7 = [v6 lastPathComponent];
-    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKLeaderboardCacheObject internalRepresentation]", [v7 UTF8String], 3298);
+    lastPathComponent = [v6 lastPathComponent];
+    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKLeaderboardCacheObject internalRepresentation]", [lastPathComponent UTF8String], 3298);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v8];
   }
 
   v9 = +[GKLeaderboardInternal internalRepresentation];
-  v10 = [(GKLeaderboardCacheObject *)self recordID];
-  [v9 setRecordID:v10];
+  recordID = [(GKLeaderboardCacheObject *)self recordID];
+  [v9 setRecordID:recordID];
 
-  v11 = [(GKLeaderboardCacheObject *)self ascResourceID];
-  [v9 setAscResourceID:v11];
+  ascResourceID = [(GKLeaderboardCacheObject *)self ascResourceID];
+  [v9 setAscResourceID:ascResourceID];
 
-  v12 = [(GKLeaderboardCacheObject *)self baseLeaderboardID];
-  [v9 setBaseLeaderboardID:v12];
+  baseLeaderboardID = [(GKLeaderboardCacheObject *)self baseLeaderboardID];
+  [v9 setBaseLeaderboardID:baseLeaderboardID];
 
-  v13 = [(GKLeaderboardCacheObject *)self duration];
-  [v13 doubleValue];
+  duration = [(GKLeaderboardCacheObject *)self duration];
+  [duration doubleValue];
   [v9 setDuration:?];
 
-  v14 = [(GKLeaderboardCacheObject *)self friendRank];
-  [v9 setFriendRank:{objc_msgSend(v14, "unsignedIntegerValue")}];
+  friendRank = [(GKLeaderboardCacheObject *)self friendRank];
+  [v9 setFriendRank:{objc_msgSend(friendRank, "unsignedIntegerValue")}];
 
-  v15 = [(GKLeaderboardCacheObject *)self maxFriendRank];
-  [v9 setFriendRankCount:{objc_msgSend(v15, "unsignedIntegerValue")}];
+  maxFriendRank = [(GKLeaderboardCacheObject *)self maxFriendRank];
+  [v9 setFriendRankCount:{objc_msgSend(maxFriendRank, "unsignedIntegerValue")}];
 
-  v16 = [(GKLeaderboardCacheObject *)self groupIdentifier];
-  [v9 setGroupIdentifier:v16];
+  groupIdentifier = [(GKLeaderboardCacheObject *)self groupIdentifier];
+  [v9 setGroupIdentifier:groupIdentifier];
 
-  v17 = [(GKCacheObject *)self imageURLDictionary];
-  [v9 setIcons:v17];
+  imageURLDictionary = [(GKCacheObject *)self imageURLDictionary];
+  [v9 setIcons:imageURLDictionary];
 
-  v18 = [(GKLeaderboardCacheObject *)self identifier];
-  [v9 setIdentifier:v18];
+  identifier = [(GKLeaderboardCacheObject *)self identifier];
+  [v9 setIdentifier:identifier];
 
-  v19 = [(GKLeaderboardCacheObject *)self localizedTitle];
-  [v9 setLocalizedTitle:v19];
+  localizedTitle = [(GKLeaderboardCacheObject *)self localizedTitle];
+  [v9 setLocalizedTitle:localizedTitle];
 
-  v20 = [(GKLeaderboardCacheObject *)self nextStartDate];
-  [v9 setNextStartDate:v20];
+  nextStartDate = [(GKLeaderboardCacheObject *)self nextStartDate];
+  [v9 setNextStartDate:nextStartDate];
 
-  v21 = [(GKLeaderboardCacheObject *)self rank];
-  [v9 setOverallRank:{objc_msgSend(v21, "unsignedIntegerValue")}];
+  rank = [(GKLeaderboardCacheObject *)self rank];
+  [v9 setOverallRank:{objc_msgSend(rank, "unsignedIntegerValue")}];
 
-  v22 = [(GKLeaderboardCacheObject *)self maxRank];
-  [v9 setOverallRankCount:{objc_msgSend(v22, "unsignedIntegerValue")}];
+  maxRank = [(GKLeaderboardCacheObject *)self maxRank];
+  [v9 setOverallRankCount:{objc_msgSend(maxRank, "unsignedIntegerValue")}];
 
-  v23 = [(GKLeaderboardCacheObject *)self recordID];
-  [v9 setRecordID:v23];
+  recordID2 = [(GKLeaderboardCacheObject *)self recordID];
+  [v9 setRecordID:recordID2];
 
   [v9 setReleaseState:{-[GKLeaderboardCacheObject releaseState](self, "releaseState")}];
-  v24 = [(GKLeaderboardCacheObject *)self startDate];
-  [v9 setStartDate:v24];
+  startDate = [(GKLeaderboardCacheObject *)self startDate];
+  [v9 setStartDate:startDate];
 
-  v25 = [(GKLeaderboardCacheObject *)self activityIdentifier];
-  [v9 setActivityIdentifier:v25];
+  activityIdentifier = [(GKLeaderboardCacheObject *)self activityIdentifier];
+  [v9 setActivityIdentifier:activityIdentifier];
 
-  v26 = [(GKLeaderboardCacheObject *)self activityProperties];
-  if (v26)
+  activityProperties = [(GKLeaderboardCacheObject *)self activityProperties];
+  if (activityProperties)
   {
-    v27 = [(GKLeaderboardCacheObject *)self activityProperties];
-    [v9 setActivityProperties:v27];
+    activityProperties2 = [(GKLeaderboardCacheObject *)self activityProperties];
+    [v9 setActivityProperties:activityProperties2];
   }
 
   else
@@ -307,14 +307,14 @@ LABEL_52:
     [v9 setActivityProperties:&__NSDictionary0__struct];
   }
 
-  v28 = [(GKLeaderboardCacheObject *)self leaderboardDescription];
-  [v9 setLeaderboardDescription:v28];
+  leaderboardDescription = [(GKLeaderboardCacheObject *)self leaderboardDescription];
+  [v9 setLeaderboardDescription:leaderboardDescription];
 
-  v29 = [(GKLeaderboardCacheObject *)self visibility];
-  [v9 setVisibility:v29];
+  visibility = [(GKLeaderboardCacheObject *)self visibility];
+  [v9 setVisibility:visibility];
 
-  v30 = [(GKLeaderboardCacheObject *)self type];
-  v31 = [v30 isEqualToString:@"recurring"];
+  type = [(GKLeaderboardCacheObject *)self type];
+  v31 = [type isEqualToString:@"recurring"];
 
   [v9 setType:v31];
   [v9 setSupportsChallenges:{-[GKLeaderboardCacheObject supportsChallenges](self, "supportsChallenges")}];

@@ -18,11 +18,11 @@
 {
   v11.receiver = self;
   v11.super_class = TIWordSearchThai;
-  v3 = [(TIWordSearch *)&v11 mecabraCreationOptionsDictionary];
-  v4 = [v3 mutableCopy];
+  mecabraCreationOptionsDictionary = [(TIWordSearch *)&v11 mecabraCreationOptionsDictionary];
+  v4 = [mecabraCreationOptionsDictionary mutableCopy];
 
-  v5 = [(TIWordSearch *)self inputMode];
-  v6 = [v5 originalIdentifier];
+  inputMode = [(TIWordSearch *)self inputMode];
+  originalIdentifier = [inputMode originalIdentifier];
   v7 = TIInputModeGetSWLayout();
   v8 = [v7 isEqualToString:@"Thai-24-Key"];
 

@@ -8,19 +8,19 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_27484BA18();
 }
 
 - (void)switchValueChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_27484BD14();
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_27484BDF0();
 }
 

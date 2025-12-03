@@ -1,6 +1,6 @@
 @interface WCM_AriCoexCache
 - (WCM_AriCoexCache)init;
-- (void)removeKey:(id)a3 subId:(unsigned int)a4;
+- (void)removeKey:(id)key subId:(unsigned int)id;
 @end
 
 @implementation WCM_AriCoexCache
@@ -21,18 +21,18 @@
   return v2;
 }
 
-- (void)removeKey:(id)a3 subId:(unsigned int)a4
+- (void)removeKey:(id)key subId:(unsigned int)id
 {
-  v7 = a3;
-  if (v7)
+  keyCopy = key;
+  if (keyCopy)
   {
     v6 = 16;
-    if (!a4)
+    if (!id)
     {
       v6 = 8;
     }
 
-    [*(&self->super.isa + v6) removeObjectForKey:v7];
+    [*(&self->super.isa + v6) removeObjectForKey:keyCopy];
   }
 }
 

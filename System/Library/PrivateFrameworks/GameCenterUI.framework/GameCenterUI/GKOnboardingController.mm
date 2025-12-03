@@ -1,11 +1,11 @@
 @interface GKOnboardingController
 + (GKOnboardingController)shared;
-+ (id)describePlayerComparisonsBetween:(id)a3 and:(id)a4;
++ (id)describePlayerComparisonsBetween:(id)between and:(id)and;
 - (GKOnboardingFlowDelegate)delegate;
-- (id)landingViewControllerWithGameBundleId:(id)a3;
-- (void)presentContactsIntegrationConsentScreen:(id)a3;
-- (void)presentFriendSuggestionsScreen:(id)a3;
-- (void)presentPersonalizationScreen:(id)a3;
+- (id)landingViewControllerWithGameBundleId:(id)id;
+- (void)presentContactsIntegrationConsentScreen:(id)screen;
+- (void)presentFriendSuggestionsScreen:(id)screen;
+- (void)presentPersonalizationScreen:(id)screen;
 @end
 
 @implementation GKOnboardingController
@@ -29,13 +29,13 @@ uint64_t __32__GKOnboardingController_shared__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)landingViewControllerWithGameBundleId:(id)a3
+- (id)landingViewControllerWithGameBundleId:(id)id
 {
   v27 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D0C138];
-  v5 = a3;
-  v6 = [v4 authenticatedLocalPlayers];
-  v7 = [v6 firstObject];
+  idCopy = id;
+  authenticatedLocalPlayers = [v4 authenticatedLocalPlayers];
+  firstObject = [authenticatedLocalPlayers firstObject];
 
   v8 = MEMORY[0x277D0C2A0];
   if (!*MEMORY[0x277D0C2A0])
@@ -49,15 +49,15 @@ uint64_t __32__GKOnboardingController_shared__block_invoke()
   {
     v12 = MEMORY[0x277D0C138];
     v13 = v11;
-    v14 = [v12 local];
-    v15 = [GKOnboardingController describePlayerComparisonsBetween:v7 and:v14];
+    local = [v12 local];
+    v15 = [GKOnboardingController describePlayerComparisonsBetween:firstObject and:local];
     v25 = 138412290;
     v26 = v15;
     _os_log_impl(&dword_24DE53000, v13, OS_LOG_TYPE_INFO, "landingViewController before update -- authFirst.internal VS local.internal\n%@", &v25, 0xCu);
   }
 
-  v16 = [MEMORY[0x277D0C138] local];
-  [v16 updateFromLocalPlayer:v7];
+  local2 = [MEMORY[0x277D0C138] local];
+  [local2 updateFromLocalPlayer:firstObject];
 
   if (!*v8)
   {
@@ -69,87 +69,87 @@ uint64_t __32__GKOnboardingController_shared__block_invoke()
   {
     v19 = MEMORY[0x277D0C138];
     v20 = v18;
-    v21 = [v19 local];
-    v22 = [GKOnboardingController describePlayerComparisonsBetween:v7 and:v21];
+    local3 = [v19 local];
+    v22 = [GKOnboardingController describePlayerComparisonsBetween:firstObject and:local3];
     v25 = 138412290;
     v26 = v22;
     _os_log_impl(&dword_24DE53000, v20, OS_LOG_TYPE_INFO, "landingViewController after update -- authFirst.internal VS local.internal\n%@", &v25, 0xCu);
   }
 
-  [(GKOnboardingController *)self setGameBundleId:v5];
+  [(GKOnboardingController *)self setGameBundleId:idCopy];
 
   v23 = objc_alloc_init(GKWelcomeOnboardingViewController);
 
   return v23;
 }
 
-+ (id)describePlayerComparisonsBetween:(id)a3 and:(id)a4
++ (id)describePlayerComparisonsBetween:(id)between and:(id)and
 {
   v43 = MEMORY[0x277CCACA8];
   v5 = MEMORY[0x277CCABB0];
-  v6 = a4;
-  v7 = a3;
-  v54 = [v7 internal];
-  v53 = [v54 onboarding];
-  v61 = [v5 numberWithUnsignedInteger:{objc_msgSend(v53, "lastWelcomeWhatsNewCopyVersionDisplayed")}];
+  andCopy = and;
+  betweenCopy = between;
+  internal = [betweenCopy internal];
+  onboarding = [internal onboarding];
+  v61 = [v5 numberWithUnsignedInteger:{objc_msgSend(onboarding, "lastWelcomeWhatsNewCopyVersionDisplayed")}];
   v8 = MEMORY[0x277CCABB0];
-  v52 = [v6 internal];
-  v51 = [v52 onboarding];
-  v60 = [v8 numberWithUnsignedInteger:{objc_msgSend(v51, "lastWelcomeWhatsNewCopyVersionDisplayed")}];
+  internal2 = [andCopy internal];
+  onboarding2 = [internal2 onboarding];
+  v60 = [v8 numberWithUnsignedInteger:{objc_msgSend(onboarding2, "lastWelcomeWhatsNewCopyVersionDisplayed")}];
   v9 = MEMORY[0x277CCABB0];
-  v50 = [v7 internal];
-  v49 = [v50 onboarding];
-  v59 = [v9 numberWithUnsignedInteger:{objc_msgSend(v49, "lastPrivacyNoticeVersionDisplayed")}];
+  internal3 = [betweenCopy internal];
+  onboarding3 = [internal3 onboarding];
+  v59 = [v9 numberWithUnsignedInteger:{objc_msgSend(onboarding3, "lastPrivacyNoticeVersionDisplayed")}];
   v10 = MEMORY[0x277CCABB0];
-  v48 = [v6 internal];
-  v47 = [v48 onboarding];
-  v58 = [v10 numberWithUnsignedInteger:{objc_msgSend(v47, "lastPrivacyNoticeVersionDisplayed")}];
-  v46 = [v7 internal];
-  v34 = [v46 isDefaultNickname];
-  v45 = [v6 internal];
-  v32 = [v45 isDefaultNickname];
-  v42 = [v7 internal];
-  v41 = [v42 onboarding];
-  v56 = [v41 lastPersonalizationVersionDisplayed];
-  v40 = [v6 internal];
-  v39 = [v40 onboarding];
-  v57 = [v39 lastPersonalizationVersionDisplayed];
-  v38 = [v7 internal];
-  v28 = [v38 isDefaultPrivacyVisibility];
-  v37 = [v6 internal];
-  v25 = [v37 isDefaultPrivacyVisibility];
-  v36 = [v7 internal];
-  v35 = [v36 onboarding];
-  v55 = [v35 lastProfilePrivacyVersionDisplayed];
-  v33 = [v6 internal];
-  v31 = [v33 onboarding];
-  v23 = [v31 lastProfilePrivacyVersionDisplayed];
-  v30 = [v7 internal];
-  v22 = [v30 isDefaultContactsIntegrationConsent];
-  v29 = [v6 internal];
-  v21 = [v29 isDefaultContactsIntegrationConsent];
-  v27 = [v7 internal];
-  v26 = [v27 onboarding];
-  v11 = [v26 lastContactsIntegrationConsentVersionDisplayed];
-  v24 = [v6 internal];
-  v12 = [v24 onboarding];
-  v13 = [v12 lastContactsIntegrationConsentVersionDisplayed];
-  v14 = [v7 internal];
+  internal4 = [andCopy internal];
+  onboarding4 = [internal4 onboarding];
+  v58 = [v10 numberWithUnsignedInteger:{objc_msgSend(onboarding4, "lastPrivacyNoticeVersionDisplayed")}];
+  internal5 = [betweenCopy internal];
+  isDefaultNickname = [internal5 isDefaultNickname];
+  internal6 = [andCopy internal];
+  isDefaultNickname2 = [internal6 isDefaultNickname];
+  internal7 = [betweenCopy internal];
+  onboarding5 = [internal7 onboarding];
+  lastPersonalizationVersionDisplayed = [onboarding5 lastPersonalizationVersionDisplayed];
+  internal8 = [andCopy internal];
+  onboarding6 = [internal8 onboarding];
+  lastPersonalizationVersionDisplayed2 = [onboarding6 lastPersonalizationVersionDisplayed];
+  internal9 = [betweenCopy internal];
+  isDefaultPrivacyVisibility = [internal9 isDefaultPrivacyVisibility];
+  internal10 = [andCopy internal];
+  isDefaultPrivacyVisibility2 = [internal10 isDefaultPrivacyVisibility];
+  internal11 = [betweenCopy internal];
+  onboarding7 = [internal11 onboarding];
+  lastProfilePrivacyVersionDisplayed = [onboarding7 lastProfilePrivacyVersionDisplayed];
+  internal12 = [andCopy internal];
+  onboarding8 = [internal12 onboarding];
+  lastProfilePrivacyVersionDisplayed2 = [onboarding8 lastProfilePrivacyVersionDisplayed];
+  internal13 = [betweenCopy internal];
+  isDefaultContactsIntegrationConsent = [internal13 isDefaultContactsIntegrationConsent];
+  internal14 = [andCopy internal];
+  isDefaultContactsIntegrationConsent2 = [internal14 isDefaultContactsIntegrationConsent];
+  internal15 = [betweenCopy internal];
+  onboarding9 = [internal15 onboarding];
+  lastContactsIntegrationConsentVersionDisplayed = [onboarding9 lastContactsIntegrationConsentVersionDisplayed];
+  internal16 = [andCopy internal];
+  onboarding10 = [internal16 onboarding];
+  lastContactsIntegrationConsentVersionDisplayed2 = [onboarding10 lastContactsIntegrationConsentVersionDisplayed];
+  internal17 = [betweenCopy internal];
 
-  v15 = [v14 onboarding];
-  v16 = [v15 lastFriendSuggestionsVersionDisplayed];
-  v17 = [v6 internal];
+  onboarding11 = [internal17 onboarding];
+  lastFriendSuggestionsVersionDisplayed = [onboarding11 lastFriendSuggestionsVersionDisplayed];
+  internal18 = [andCopy internal];
 
-  v18 = [v17 onboarding];
-  v19 = [v18 lastFriendSuggestionsVersionDisplayed];
-  v44 = [v43 stringWithFormat:@" WhatsNew copy version %@ VS %@\n privacy notice version %@ VS %@\n nickname: default %d VS %d | version %@ VS %@\n profile privacy: default %d VS %d | version %@ VS %@\n contacts integration: default %d VS %d | version %@ VS %@ friend suggestions: version %@ VS %@", v61, v60, v59, v58, v34, v32, v56, v57, v28, v25, v55, v23, v22, v21, v11, v13, v16, v19];
+  onboarding12 = [internal18 onboarding];
+  lastFriendSuggestionsVersionDisplayed2 = [onboarding12 lastFriendSuggestionsVersionDisplayed];
+  v44 = [v43 stringWithFormat:@" WhatsNew copy version %@ VS %@\n privacy notice version %@ VS %@\n nickname: default %d VS %d | version %@ VS %@\n profile privacy: default %d VS %d | version %@ VS %@\n contacts integration: default %d VS %d | version %@ VS %@ friend suggestions: version %@ VS %@", v61, v60, v59, v58, isDefaultNickname, isDefaultNickname2, lastPersonalizationVersionDisplayed, lastPersonalizationVersionDisplayed2, isDefaultPrivacyVisibility, isDefaultPrivacyVisibility2, lastProfilePrivacyVersionDisplayed, lastProfilePrivacyVersionDisplayed2, isDefaultContactsIntegrationConsent, isDefaultContactsIntegrationConsent2, lastContactsIntegrationConsentVersionDisplayed, lastContactsIntegrationConsentVersionDisplayed2, lastFriendSuggestionsVersionDisplayed, lastFriendSuggestionsVersionDisplayed2];
 
   return v44;
 }
 
-- (void)presentFriendSuggestionsScreen:(id)a3
+- (void)presentFriendSuggestionsScreen:(id)screen
 {
-  v4 = a3;
+  screenCopy = screen;
   if (!*MEMORY[0x277D0C2A0])
   {
     v5 = GKOSLoggers();
@@ -163,14 +163,14 @@ uint64_t __32__GKOnboardingController_shared__block_invoke()
   }
 
   v7 = [GKOnboardingFriendsSuggestionsViewController alloc];
-  v8 = [(GKOnboardingController *)self gameBundleId];
-  v9 = [(GKOnboardingFriendsSuggestionsViewController *)v7 initWithGameBundleId:v8];
-  [(GKOnboardingController *)self presentViewController:v9 presentingViewController:v4];
+  gameBundleId = [(GKOnboardingController *)self gameBundleId];
+  v9 = [(GKOnboardingFriendsSuggestionsViewController *)v7 initWithGameBundleId:gameBundleId];
+  [(GKOnboardingController *)self presentViewController:v9 presentingViewController:screenCopy];
 }
 
-- (void)presentContactsIntegrationConsentScreen:(id)a3
+- (void)presentContactsIntegrationConsentScreen:(id)screen
 {
-  v4 = a3;
+  screenCopy = screen;
   if (!*MEMORY[0x277D0C2A0])
   {
     v5 = GKOSLoggers();
@@ -184,12 +184,12 @@ uint64_t __32__GKOnboardingController_shared__block_invoke()
   }
 
   v7 = objc_alloc_init(GKContactsIntegrationConsentViewController);
-  [(GKOnboardingController *)self presentViewController:v7 presentingViewController:v4];
+  [(GKOnboardingController *)self presentViewController:v7 presentingViewController:screenCopy];
 }
 
-- (void)presentPersonalizationScreen:(id)a3
+- (void)presentPersonalizationScreen:(id)screen
 {
-  v4 = a3;
+  screenCopy = screen;
   if (!*MEMORY[0x277D0C2A0])
   {
     v5 = GKOSLoggers();
@@ -203,7 +203,7 @@ uint64_t __32__GKOnboardingController_shared__block_invoke()
   }
 
   v7 = objc_alloc_init(GKOnboardingProfileCreationViewController);
-  [(GKOnboardingController *)self presentViewController:v7 presentingViewController:v4];
+  [(GKOnboardingController *)self presentViewController:v7 presentingViewController:screenCopy];
 }
 
 - (GKOnboardingFlowDelegate)delegate

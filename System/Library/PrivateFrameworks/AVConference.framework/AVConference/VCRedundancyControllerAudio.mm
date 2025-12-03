@@ -1,17 +1,17 @@
 @interface VCRedundancyControllerAudio
-- (VCRedundancyControllerAudio)initWithDelegate:(id)a3 statisticsCollector:(id)a4 mode:(int)a5 experimentManager:(id)a6;
+- (VCRedundancyControllerAudio)initWithDelegate:(id)delegate statisticsCollector:(id)collector mode:(int)mode experimentManager:(id)manager;
 - (void)dealloc;
-- (void)registerStatistics:(id)a3 redundancyControllerMode:(int)a4;
-- (void)reportRedundancyPercentage:(unsigned int)a3 redundancyInterval:(double)a4;
+- (void)registerStatistics:(id)statistics redundancyControllerMode:(int)mode;
+- (void)reportRedundancyPercentage:(unsigned int)percentage redundancyInterval:(double)interval;
 - (void)unregisterStatistics;
-- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)a3;
+- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)statistics;
 @end
 
 @implementation VCRedundancyControllerAudio
 
-- (VCRedundancyControllerAudio)initWithDelegate:(id)a3 statisticsCollector:(id)a4 mode:(int)a5 experimentManager:(id)a6
+- (VCRedundancyControllerAudio)initWithDelegate:(id)delegate statisticsCollector:(id)collector mode:(int)mode experimentManager:(id)manager
 {
-  v7 = *&a5;
+  v7 = *&mode;
   v28 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
   v21.super_class = VCRedundancyControllerAudio;
@@ -19,12 +19,12 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_redundancyControllerDelegate, a3);
-    v12 = a4;
+    objc_storeWeak(&v10->_redundancyControllerDelegate, delegate);
+    collectorCopy = collector;
     v11->_mode = v7;
-    v11->_statisticsCollector = v12;
+    v11->_statisticsCollector = collectorCopy;
     v11->_networkStatisticsType = 0;
-    v11->_experimentManager = a6;
+    v11->_experimentManager = manager;
     mode = v11->_mode;
     if (mode <= 1)
     {
@@ -62,12 +62,12 @@ LABEL_10:
     {
       if ((mode - 2) < 2)
       {
-        v14 = [[VCRedundancyControlAlgorithmAudio alloc] initWithMode:v11->_mode experimentManager:a6];
+        v14 = [[VCRedundancyControlAlgorithmAudio alloc] initWithMode:v11->_mode experimentManager:manager];
 LABEL_11:
         v11->_algorithm = v14;
         v11->_networkStatisticsType = 3;
 LABEL_12:
-        [(VCRedundancyControllerAudio *)v11 registerStatistics:a4 redundancyControllerMode:v7];
+        [(VCRedundancyControllerAudio *)v11 registerStatistics:collector redundancyControllerMode:v7];
         return v11;
       }
 
@@ -94,9 +94,9 @@ LABEL_12:
   return v11;
 }
 
-- (void)registerStatistics:(id)a3 redundancyControllerMode:(int)a4
+- (void)registerStatistics:(id)statistics redundancyControllerMode:(int)mode
 {
-  v4 = *&a4;
+  v4 = *&mode;
   v10[5] = *MEMORY[0x1E69E9840];
   statisticsCollector = self->_statisticsCollector;
   networkStatisticsType = self->_networkStatisticsType;
@@ -196,40 +196,40 @@ uint64_t __75__VCRedundancyControllerAudio_registerStatistics_redundancyControll
   [(VCRedundancyControllerAudio *)&v3 dealloc];
 }
 
-- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)a3
+- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)statistics
 {
   v14 = *MEMORY[0x1E69E9840];
   algorithm = self->_algorithm;
-  v5 = *(&a3->var0.addRemoveEndPoint + 19);
-  v12[10] = *(&a3->var0.addRemoveEndPoint + 17);
+  v5 = *(&statistics->var0.addRemoveEndPoint + 19);
+  v12[10] = *(&statistics->var0.addRemoveEndPoint + 17);
   v12[11] = v5;
-  v13 = *(&a3->var0.addRemoveEndPoint + 21);
-  v6 = *(&a3->var0.addRemoveEndPoint + 11);
-  v12[6] = *(&a3->var0.addRemoveEndPoint + 9);
+  v13 = *(&statistics->var0.addRemoveEndPoint + 21);
+  v6 = *(&statistics->var0.addRemoveEndPoint + 11);
+  v12[6] = *(&statistics->var0.addRemoveEndPoint + 9);
   v12[7] = v6;
-  v7 = *(&a3->var0.addRemoveEndPoint + 15);
-  v12[8] = *(&a3->var0.addRemoveEndPoint + 13);
+  v7 = *(&statistics->var0.addRemoveEndPoint + 15);
+  v12[8] = *(&statistics->var0.addRemoveEndPoint + 13);
   v12[9] = v7;
-  v8 = *(&a3->var0.addRemoveEndPoint + 3);
-  v12[2] = *&a3->var0.rtcpRR.lastSequenceNumber;
+  v8 = *(&statistics->var0.addRemoveEndPoint + 3);
+  v12[2] = *&statistics->var0.rtcpRR.lastSequenceNumber;
   v12[3] = v8;
-  v9 = *(&a3->var0.addRemoveEndPoint + 7);
-  v12[4] = *(&a3->var0.addRemoveEndPoint + 5);
+  v9 = *(&statistics->var0.addRemoveEndPoint + 7);
+  v12[4] = *(&statistics->var0.addRemoveEndPoint + 5);
   v12[5] = v9;
-  v10 = *&a3->isVCRCInternal;
-  v12[0] = *&a3->type;
+  v10 = *&statistics->isVCRCInternal;
+  v12[0] = *&statistics->type;
   v12[1] = v10;
   [(VCRedundancyControlAlgorithm *)algorithm updateRedundancyStrategyWithNetworkStatistics:v12];
-  v11 = [(VCRedundancyControlAlgorithm *)self->_algorithm redundancyPercentage];
+  redundancyPercentage = [(VCRedundancyControlAlgorithm *)self->_algorithm redundancyPercentage];
   [(VCRedundancyControlAlgorithm *)self->_algorithm redundancyInterval];
-  [(VCRedundancyControllerAudio *)self reportRedundancyPercentage:v11 redundancyInterval:?];
+  [(VCRedundancyControllerAudio *)self reportRedundancyPercentage:redundancyPercentage redundancyInterval:?];
 }
 
-- (void)reportRedundancyPercentage:(unsigned int)a3 redundancyInterval:(double)a4
+- (void)reportRedundancyPercentage:(unsigned int)percentage redundancyInterval:(double)interval
 {
   v29 = *MEMORY[0x1E69E9840];
-  IntValueForKey = VCDefaults_GetIntValueForKey(@"forceAudioRedundancyPercentage", *&a3);
-  v7 = VCDefaults_GetIntValueForKey(@"forceAudioRedundancyInterval", a4);
+  IntValueForKey = VCDefaults_GetIntValueForKey(@"forceAudioRedundancyPercentage", *&percentage);
+  v7 = VCDefaults_GetIntValueForKey(@"forceAudioRedundancyInterval", interval);
   if (self->_currentRedundancyPercentage != IntValueForKey)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -253,7 +253,7 @@ uint64_t __75__VCRedundancyControllerAudio_registerStatistics_redundancyControll
         LOWORD(v26) = 1024;
         *(&v26 + 2) = mode;
         HIWORD(v26) = 2048;
-        v27 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Audio redundancy percentage changed from %d to %d with mode %d, %p", &v18, 0x38u);
       }
     }
@@ -287,10 +287,10 @@ uint64_t __75__VCRedundancyControllerAudio_registerStatistics_redundancyControll
         *v25 = currentRedundancyInterval;
         *&v25[8] = 2048;
         v26 = v7;
-        LOWORD(v27) = 1024;
-        *(&v27 + 2) = v16;
-        HIWORD(v27) = 2048;
-        v28 = self;
+        LOWORD(selfCopy) = 1024;
+        *(&selfCopy + 2) = v16;
+        HIWORD(selfCopy) = 2048;
+        selfCopy2 = self;
         _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Audio redundancy interval changed from %f to %f with mode %d, %p", &v18, 0x40u);
       }
     }

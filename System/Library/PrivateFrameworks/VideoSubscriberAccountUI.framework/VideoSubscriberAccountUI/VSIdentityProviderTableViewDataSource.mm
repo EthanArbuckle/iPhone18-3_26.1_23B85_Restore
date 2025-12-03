@@ -1,26 +1,26 @@
 @interface VSIdentityProviderTableViewDataSource
-- (BOOL)hasStorefrontOrIdentityProviderAtIndexPath:(id)a3;
+- (BOOL)hasStorefrontOrIdentityProviderAtIndexPath:(id)path;
 - (VSIdentityProviderTableViewDataSource)init;
 - (id)_additionalProvidersRowTitle;
-- (id)_cellReuseIdentifierForRowAtIndexPath:(id)a3;
-- (id)_textColorForRowAtIndexPath:(id)a3;
-- (id)_titleForRowAtIndexPath:(id)a3;
-- (id)identityProviderForRowAtIndexPath:(id)a3;
-- (id)preferredIndexPathForIdentityProviderWithName:(id)a3;
-- (id)sectionIndexTitlesForTableView:(id)a3;
-- (id)storefrontAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 indexPathForSectionIndexTitle:(id)a4 atIndex:(int64_t)a5;
-- (int64_t)_cellStyleForRowAtIndexPath:(id)a3;
-- (int64_t)_textAlignmentForRowAtIndexPath:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)_cellReuseIdentifierForRowAtIndexPath:(id)path;
+- (id)_textColorForRowAtIndexPath:(id)path;
+- (id)_titleForRowAtIndexPath:(id)path;
+- (id)identityProviderForRowAtIndexPath:(id)path;
+- (id)preferredIndexPathForIdentityProviderWithName:(id)name;
+- (id)sectionIndexTitlesForTableView:(id)view;
+- (id)storefrontAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view indexPathForSectionIndexTitle:(id)title atIndex:(int64_t)index;
+- (int64_t)_cellStyleForRowAtIndexPath:(id)path;
+- (int64_t)_textAlignmentForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_scrollToTableHeaderView;
-- (void)setAdditionalProvidersMode:(unint64_t)a3;
-- (void)setIdentityProviders:(id)a3;
-- (void)setNumberOfLinesForCell:(id)a3 atIndexPath:(id)a4;
-- (void)setTableView:(id)a3;
-- (void)setTvProviderSupportedStorefronts:(id)a3;
+- (void)setAdditionalProvidersMode:(unint64_t)mode;
+- (void)setIdentityProviders:(id)providers;
+- (void)setNumberOfLinesForCell:(id)cell atIndexPath:(id)path;
+- (void)setTableView:(id)view;
+- (void)setTvProviderSupportedStorefronts:(id)storefronts;
 @end
 
 @implementation VSIdentityProviderTableViewDataSource
@@ -50,14 +50,14 @@
   return v3;
 }
 
-- (void)setIdentityProviders:(id)a3
+- (void)setIdentityProviders:(id)providers
 {
   v87[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v61 = self;
-  objc_storeStrong(&self->_identityProviders, a3);
+  providersCopy = providers;
+  selfCopy = self;
+  objc_storeStrong(&self->_identityProviders, providers);
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [v5 mutableCopy];
+  v7 = [providersCopy mutableCopy];
   v8 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"rankForSorting" ascending:1];
   v9 = [MEMORY[0x277CCA9C0] expressionForKeyPath:@"rankForSorting"];
   v55 = [MEMORY[0x277CCA9C0] expressionForConstantValue:0];
@@ -87,8 +87,8 @@
     _os_log_impl(&dword_270DD4000, v12, OS_LOG_TYPE_DEFAULT, "Found %@ featured providers: %@", buf, 0x16u);
   }
 
-  v60 = v5;
-  v14 = [v5 mutableCopy];
+  v60 = providersCopy;
+  v14 = [providersCopy mutableCopy];
   v15 = [v14 count];
   if (v15 < [(VSIdentityProviderTableViewDataSource *)self _minimumProviderCountForIndexes])
   {
@@ -98,10 +98,10 @@
   v58 = v7;
   v59 = v6;
   v53 = [v14 count];
-  v16 = [MEMORY[0x277D75700] currentCollation];
+  currentCollation = [MEMORY[0x277D75700] currentCollation];
   v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v18 = [v16 sectionIndexTitles];
-  v19 = [v18 count];
+  sectionIndexTitles = [currentCollation sectionIndexTitles];
+  v19 = [sectionIndexTitles count];
 
   if (v19)
   {
@@ -112,8 +112,8 @@
       [v17 addObject:v21];
 
       ++v20;
-      v22 = [v16 sectionIndexTitles];
-      v23 = [v22 count];
+      sectionIndexTitles2 = [currentCollation sectionIndexTitles];
+      v23 = [sectionIndexTitles2 count];
     }
 
     while (v20 < v23);
@@ -139,7 +139,7 @@
         }
 
         v29 = *(*(&v76 + 1) + 8 * i);
-        v30 = [v17 objectAtIndex:{objc_msgSend(v16, "sectionForObject:collationStringSelector:", v29, sel_nameForSorting)}];
+        v30 = [v17 objectAtIndex:{objc_msgSend(currentCollation, "sectionForObject:collationStringSelector:", v29, sel_nameForSorting)}];
         [v30 addObject:v29];
       }
 
@@ -169,7 +169,7 @@
           objc_enumerationMutation(v32);
         }
 
-        v37 = [v16 sortedArrayFromArray:*(*(&v72 + 1) + 8 * j) collationStringSelector:sel_nameForSorting];
+        v37 = [currentCollation sortedArrayFromArray:*(*(&v72 + 1) + 8 * j) collationStringSelector:sel_nameForSorting];
         [v31 addObject:v37];
       }
 
@@ -181,12 +181,12 @@
 
   v38 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v39 = [v59 count];
-  v40 = [v16 sectionIndexTitles];
+  sectionIndexTitles3 = [currentCollation sectionIndexTitles];
   v66[0] = MEMORY[0x277D85DD0];
   v66[1] = 3221225472;
   v66[2] = __62__VSIdentityProviderTableViewDataSource_setIdentityProviders___block_invoke;
   v66[3] = &unk_279E1AA40;
-  v41 = v16;
+  v41 = currentCollation;
   v67 = v41;
   v42 = v31;
   v68 = v42;
@@ -194,7 +194,7 @@
   v71 = v39;
   v43 = v38;
   v69 = v43;
-  [v40 enumerateObjectsUsingBlock:v66];
+  [sectionIndexTitles3 enumerateObjectsUsingBlock:v66];
 
   [(VSIdentityProviderTableViewDataSource *)self setDestinationsBySectionIndexTitle:v43];
   v44 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -229,9 +229,9 @@
   v50 = objc_alloc_init(VSIdentityProviderSection);
   [(VSIdentityProviderSection *)v50 setIdentityProviders:v44];
   [v59 addObject:v50];
-  [(VSIdentityProviderTableViewDataSource *)v61 setProviderSections:v59];
-  v51 = [(VSIdentityProviderTableViewDataSource *)v61 tableView];
-  [v51 reloadData];
+  [(VSIdentityProviderTableViewDataSource *)selfCopy setProviderSections:v59];
+  tableView = [(VSIdentityProviderTableViewDataSource *)selfCopy tableView];
+  [tableView reloadData];
 
   v52 = *MEMORY[0x277D85DE8];
 }
@@ -270,11 +270,11 @@ void __62__VSIdentityProviderTableViewDataSource_setIdentityProviders___block_in
   [*(a1 + 48) setObject:v11 forKey:v12];
 }
 
-- (void)setTvProviderSupportedStorefronts:(id)a3
+- (void)setTvProviderSupportedStorefronts:(id)storefronts
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_tvProviderSupportedStorefronts, a3);
+  storefrontsCopy = storefronts;
+  objc_storeStrong(&self->_tvProviderSupportedStorefronts, storefronts);
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -282,7 +282,7 @@ void __62__VSIdentityProviderTableViewDataSource_setIdentityProviders___block_in
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v5;
+  v9 = storefrontsCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
@@ -328,81 +328,81 @@ void __62__VSIdentityProviderTableViewDataSource_setIdentityProviders___block_in
   [(VSStorefrontSection *)v17 setStorefronts:v7];
   [v8 addObject:v17];
   [(VSIdentityProviderTableViewDataSource *)self setStorefrontSections:v8];
-  v18 = [(VSIdentityProviderTableViewDataSource *)self tableView];
-  [v18 reloadData];
+  tableView = [(VSIdentityProviderTableViewDataSource *)self tableView];
+  [tableView reloadData];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTableView:(id)a3
+- (void)setTableView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   tableView = self->_tableView;
-  if (tableView != v5)
+  if (tableView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UITableView *)tableView setDataSource:0];
-    objc_storeStrong(&self->_tableView, a3);
+    objc_storeStrong(&self->_tableView, view);
     [(UITableView *)self->_tableView setDataSource:self];
     tableView = [(UITableView *)self->_tableView setSectionIndexMinimumDisplayRowCount:[(VSIdentityProviderTableViewDataSource *)self _minimumProviderCountForIndexes]];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](tableView, v5);
+  MEMORY[0x2821F96F8](tableView, viewCopy);
 }
 
-- (void)setAdditionalProvidersMode:(unint64_t)a3
+- (void)setAdditionalProvidersMode:(unint64_t)mode
 {
-  if (self->_additionalProvidersMode != a3)
+  if (self->_additionalProvidersMode != mode)
   {
-    self->_additionalProvidersMode = a3;
-    v5 = [(VSIdentityProviderTableViewDataSource *)self tableView];
-    [v5 reloadData];
+    self->_additionalProvidersMode = mode;
+    tableView = [(VSIdentityProviderTableViewDataSource *)self tableView];
+    [tableView reloadData];
 
-    if (a3 - 5 <= 1)
+    if (mode - 5 <= 1)
     {
-      v6 = [(VSIdentityProviderTableViewDataSource *)self tableView];
-      [v6 vs_scrollToTopAnimated:0];
+      tableView2 = [(VSIdentityProviderTableViewDataSource *)self tableView];
+      [tableView2 vs_scrollToTopAnimated:0];
 
-      v7 = [(VSIdentityProviderTableViewDataSource *)self tableView];
-      [v7 setNeedsFocusUpdate];
+      tableView3 = [(VSIdentityProviderTableViewDataSource *)self tableView];
+      [tableView3 setNeedsFocusUpdate];
     }
   }
 }
 
-- (id)identityProviderForRowAtIndexPath:(id)a3
+- (id)identityProviderForRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [(VSIdentityProviderTableViewDataSource *)self providerSections];
-  if (v5 >= [v6 count])
+  pathCopy = path;
+  section = [pathCopy section];
+  providerSections = [(VSIdentityProviderTableViewDataSource *)self providerSections];
+  if (section >= [providerSections count])
   {
     v10 = 0;
   }
 
   else
   {
-    v7 = [v6 objectAtIndex:v5];
-    v8 = [v4 row];
-    v9 = [v7 identityProviders];
-    if (v8 >= [v9 count])
+    v7 = [providerSections objectAtIndex:section];
+    v8 = [pathCopy row];
+    identityProviders = [v7 identityProviders];
+    if (v8 >= [identityProviders count])
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = [v9 objectAtIndex:v8];
+      v10 = [identityProviders objectAtIndex:v8];
     }
   }
 
   return v10;
 }
 
-- (id)preferredIndexPathForIdentityProviderWithName:(id)a3
+- (id)preferredIndexPathForIdentityProviderWithName:(id)name
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -428,8 +428,8 @@ void __62__VSIdentityProviderTableViewDataSource_setIdentityProviders___block_in
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v8 = [v7 identityProviders];
-        v9 = [v8 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        identityProviders = [v7 identityProviders];
+        v9 = [identityProviders countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v9)
         {
           v10 = v9;
@@ -442,12 +442,12 @@ LABEL_8:
           {
             if (*v27 != v12)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(identityProviders);
             }
 
-            v14 = [*(*(&v26 + 1) + 8 * v13) displayName];
-            v15 = [v14 object];
-            v16 = [v15 isEqualToString:v4];
+            displayName = [*(*(&v26 + 1) + 8 * v13) displayName];
+            object = [displayName object];
+            v16 = [object isEqualToString:nameCopy];
 
             if (v16)
             {
@@ -457,7 +457,7 @@ LABEL_8:
             ++v11;
             if (v10 == ++v13)
             {
-              v10 = [v8 countByEnumeratingWithState:&v26 objects:v34 count:16];
+              v10 = [identityProviders countByEnumeratingWithState:&v26 objects:v34 count:16];
               v11 = v24;
               if (v10)
               {
@@ -501,28 +501,28 @@ LABEL_19:
   return v18;
 }
 
-- (id)storefrontAtIndexPath:(id)a3
+- (id)storefrontAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [v4 row];
+  pathCopy = path;
+  section = [pathCopy section];
+  v6 = [pathCopy row];
 
-  v7 = [(VSIdentityProviderTableViewDataSource *)self storefrontSections];
-  v8 = [v7 objectAtIndex:v5];
+  storefrontSections = [(VSIdentityProviderTableViewDataSource *)self storefrontSections];
+  v8 = [storefrontSections objectAtIndex:section];
 
-  v9 = [v8 storefronts];
-  v10 = [v9 objectAtIndex:v6];
+  storefronts = [v8 storefronts];
+  v10 = [storefronts objectAtIndex:v6];
 
   return v10;
 }
 
-- (BOOL)hasStorefrontOrIdentityProviderAtIndexPath:(id)a3
+- (BOOL)hasStorefrontOrIdentityProviderAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   additionalProvidersMode = self->_additionalProvidersMode;
   if (additionalProvidersMode == 5)
   {
-    v6 = [(VSIdentityProviderTableViewDataSource *)self identityProviderForRowAtIndexPath:v4];
+    v6 = [(VSIdentityProviderTableViewDataSource *)self identityProviderForRowAtIndexPath:pathCopy];
   }
 
   else
@@ -533,7 +533,7 @@ LABEL_19:
       goto LABEL_7;
     }
 
-    v6 = [(VSIdentityProviderTableViewDataSource *)self storefrontAtIndexPath:v4];
+    v6 = [(VSIdentityProviderTableViewDataSource *)self storefrontAtIndexPath:pathCopy];
   }
 
   v7 = v6 != 0;
@@ -544,8 +544,8 @@ LABEL_7:
 
 - (id)_additionalProvidersRowTitle
 {
-  v2 = [(VSIdentityProviderTableViewDataSource *)self additionalProvidersMode];
-  switch(v2)
+  additionalProvidersMode = [(VSIdentityProviderTableViewDataSource *)self additionalProvidersMode];
+  switch(additionalProvidersMode)
   {
     case 1uLL:
       v3 = @"IDENTITY_PROVIDER_PICKER_OTHER_PROVIDERS_ROW_TITLE";
@@ -556,8 +556,8 @@ LABEL_7:
     case 3uLL:
       v3 = @"IDENTITY_PROVIDER_PICKER_OTHER_PROVIDERS_ROW_TITLE_DEVELOPER";
 LABEL_7:
-      v4 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-      v5 = [v4 localizedStringForKey:v3 value:0 table:0];
+      vs_frameworkBundle = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+      v5 = [vs_frameworkBundle localizedStringForKey:v3 value:0 table:0];
 
       goto LABEL_9;
   }
@@ -568,9 +568,9 @@ LABEL_9:
   return v5;
 }
 
-- (id)_cellReuseIdentifierForRowAtIndexPath:(id)a3
+- (id)_cellReuseIdentifierForRowAtIndexPath:(id)path
 {
-  v3 = [(VSIdentityProviderTableViewDataSource *)self identityProviderForRowAtIndexPath:a3];
+  v3 = [(VSIdentityProviderTableViewDataSource *)self identityProviderForRowAtIndexPath:path];
 
   if (v3)
   {
@@ -583,23 +583,23 @@ LABEL_9:
   }
 }
 
-- (int64_t)_cellStyleForRowAtIndexPath:(id)a3
+- (int64_t)_cellStyleForRowAtIndexPath:(id)path
 {
-  v3 = [(VSIdentityProviderTableViewDataSource *)self identityProviderForRowAtIndexPath:a3];
+  v3 = [(VSIdentityProviderTableViewDataSource *)self identityProviderForRowAtIndexPath:path];
 
   return v3 != 0;
 }
 
-- (id)_titleForRowAtIndexPath:(id)a3
+- (id)_titleForRowAtIndexPath:(id)path
 {
-  v4 = [(VSIdentityProviderTableViewDataSource *)self identityProviderForRowAtIndexPath:a3];
+  v4 = [(VSIdentityProviderTableViewDataSource *)self identityProviderForRowAtIndexPath:path];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 displayName];
-    v7 = [v6 forceUnwrapObject];
+    displayName = [v4 displayName];
+    forceUnwrapObject = [displayName forceUnwrapObject];
 
-    if (v7)
+    if (forceUnwrapObject)
     {
       goto LABEL_4;
     }
@@ -607,8 +607,8 @@ LABEL_9:
     goto LABEL_3;
   }
 
-  v7 = [(VSIdentityProviderTableViewDataSource *)self _additionalProvidersRowTitle];
-  if (!v7)
+  forceUnwrapObject = [(VSIdentityProviderTableViewDataSource *)self _additionalProvidersRowTitle];
+  if (!forceUnwrapObject)
   {
 LABEL_3:
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The title parameter must not be nil."];
@@ -616,13 +616,13 @@ LABEL_3:
 
 LABEL_4:
 
-  return v7;
+  return forceUnwrapObject;
 }
 
-- (int64_t)_textAlignmentForRowAtIndexPath:(id)a3
+- (int64_t)_textAlignmentForRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  if ([(VSIdentityProviderTableViewDataSource *)self additionalProvidersMode]== 6 || ([(VSIdentityProviderTableViewDataSource *)self identityProviderForRowAtIndexPath:v4], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
+  pathCopy = path;
+  if ([(VSIdentityProviderTableViewDataSource *)self additionalProvidersMode]== 6 || ([(VSIdentityProviderTableViewDataSource *)self identityProviderForRowAtIndexPath:pathCopy], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
     v6 = 4;
   }
@@ -635,63 +635,63 @@ LABEL_4:
   return v6;
 }
 
-- (id)_textColorForRowAtIndexPath:(id)a3
+- (id)_textColorForRowAtIndexPath:(id)path
 {
   v4 = MEMORY[0x277D75348];
-  v5 = a3;
-  v6 = [v4 vsa_primaryLabelColor];
+  pathCopy = path;
+  vsa_primaryLabelColor = [v4 vsa_primaryLabelColor];
   if ([(VSIdentityProviderTableViewDataSource *)self additionalProvidersMode]== 6)
   {
-    [(VSIdentityProviderTableViewDataSource *)self storefrontAtIndexPath:v5];
+    [(VSIdentityProviderTableViewDataSource *)self storefrontAtIndexPath:pathCopy];
   }
 
   else
   {
-    [(VSIdentityProviderTableViewDataSource *)self identityProviderForRowAtIndexPath:v5];
+    [(VSIdentityProviderTableViewDataSource *)self identityProviderForRowAtIndexPath:pathCopy];
   }
   v7 = ;
 
   if (v7)
   {
-    v8 = [MEMORY[0x277D75348] vsa_primaryLabelColor];
+    vsa_primaryLabelColor2 = [MEMORY[0x277D75348] vsa_primaryLabelColor];
 
-    v6 = v8;
+    vsa_primaryLabelColor = vsa_primaryLabelColor2;
   }
 
-  return v6;
+  return vsa_primaryLabelColor;
 }
 
 - (void)_scrollToTableHeaderView
 {
-  v3 = [(VSIdentityProviderTableViewDataSource *)self tableView];
-  v2 = [v3 tableHeaderView];
-  [v2 bounds];
-  [v3 convertRect:v2 fromView:?];
-  [v3 scrollRectToVisible:0 animated:?];
+  tableView = [(VSIdentityProviderTableViewDataSource *)self tableView];
+  tableHeaderView = [tableView tableHeaderView];
+  [tableHeaderView bounds];
+  [tableView convertRect:tableHeaderView fromView:?];
+  [tableView scrollRectToVisible:0 animated:?];
 }
 
-- (void)setNumberOfLinesForCell:(id)a3 atIndexPath:(id)a4
+- (void)setNumberOfLinesForCell:(id)cell atIndexPath:(id)path
 {
-  v4 = [a3 textLabel];
-  [v4 setNumberOfLines:0];
+  textLabel = [cell textLabel];
+  [textLabel setNumberOfLines:0];
 }
 
-- (id)tableView:(id)a3 indexPathForSectionIndexTitle:(id)a4 atIndex:(int64_t)a5
+- (id)tableView:(id)view indexPathForSectionIndexTitle:(id)title atIndex:(int64_t)index
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  titleCopy = title;
   v8 = VSDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:index];
     v15 = 138412546;
-    v16 = v7;
+    v16 = titleCopy;
     v17 = 2112;
     v18 = v9;
     _os_log_impl(&dword_270DD4000, v8, OS_LOG_TYPE_DEFAULT, "Requesting index path for title %@ at index %@", &v15, 0x16u);
   }
 
-  if ([v7 isEqualToString:*MEMORY[0x277D76F40]])
+  if ([titleCopy isEqualToString:*MEMORY[0x277D76F40]])
   {
     [(VSIdentityProviderTableViewDataSource *)self performSelector:sel__scrollToTableHeaderView withObject:0 afterDelay:0.0];
     v10 = 0;
@@ -699,8 +699,8 @@ LABEL_4:
 
   else
   {
-    v11 = [(VSIdentityProviderTableViewDataSource *)self destinationsBySectionIndexTitle];
-    v10 = [v11 objectForKey:v7];
+    destinationsBySectionIndexTitle = [(VSIdentityProviderTableViewDataSource *)self destinationsBySectionIndexTitle];
+    v10 = [destinationsBySectionIndexTitle objectForKey:titleCopy];
   }
 
   v12 = VSDefaultLogObject();
@@ -716,26 +716,26 @@ LABEL_4:
   return v10;
 }
 
-- (id)sectionIndexTitlesForTableView:(id)a3
+- (id)sectionIndexTitlesForTableView:(id)view
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   [v3 addObject:*MEMORY[0x277D76F40]];
-  v4 = [MEMORY[0x277D75700] currentCollation];
-  v5 = [v4 sectionIndexTitles];
-  [v3 addObjectsFromArray:v5];
+  currentCollation = [MEMORY[0x277D75700] currentCollation];
+  sectionIndexTitles = [currentCollation sectionIndexTitles];
+  [v3 addObjectsFromArray:sectionIndexTitles];
 
   return v3;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v4 = [(VSIdentityProviderTableViewDataSource *)self providerSections];
-  v5 = [v4 count];
+  providerSections = [(VSIdentityProviderTableViewDataSource *)self providerSections];
+  v5 = [providerSections count];
 
-  v6 = [(VSIdentityProviderTableViewDataSource *)self additionalProvidersMode];
-  if (v6 <= 4)
+  additionalProvidersMode = [(VSIdentityProviderTableViewDataSource *)self additionalProvidersMode];
+  if (additionalProvidersMode <= 4)
   {
-    if (v6 != 1 && v6 != 3)
+    if (additionalProvidersMode != 1 && additionalProvidersMode != 3)
     {
       return v5;
     }
@@ -743,9 +743,9 @@ LABEL_4:
     return ++v5;
   }
 
-  if (v6 != 6)
+  if (additionalProvidersMode != 6)
   {
-    if (v6 != 5)
+    if (additionalProvidersMode != 5)
     {
       return v5;
     }
@@ -753,41 +753,41 @@ LABEL_4:
     return ++v5;
   }
 
-  v8 = [(VSIdentityProviderTableViewDataSource *)self storefrontSections];
-  v9 = [v8 count];
+  storefrontSections = [(VSIdentityProviderTableViewDataSource *)self storefrontSections];
+  v9 = [storefrontSections count];
 
   return v9;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if ([(VSIdentityProviderTableViewDataSource *)self additionalProvidersMode]== 6)
   {
-    v6 = [(VSIdentityProviderTableViewDataSource *)self storefrontSections];
-    v7 = [v6 objectAtIndex:a4];
+    storefrontSections = [(VSIdentityProviderTableViewDataSource *)self storefrontSections];
+    providerSections = [storefrontSections objectAtIndex:section];
 
-    v8 = [v7 storefronts];
-    v9 = [v8 count];
+    storefronts = [providerSections storefronts];
+    v9 = [storefronts count];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v7 = [(VSIdentityProviderTableViewDataSource *)self providerSections];
-  v10 = [v7 count];
-  if (v10 > a4)
+  providerSections = [(VSIdentityProviderTableViewDataSource *)self providerSections];
+  v10 = [providerSections count];
+  if (v10 > section)
   {
-    v8 = [v7 objectAtIndex:a4];
-    v11 = [v8 identityProviders];
-    v9 = [v11 count];
+    storefronts = [providerSections objectAtIndex:section];
+    identityProviders = [storefronts identityProviders];
+    v9 = [identityProviders count];
 
     goto LABEL_5;
   }
 
-  if (v10 == a4)
+  if (v10 == section)
   {
-    v13 = [(VSIdentityProviderTableViewDataSource *)self additionalProvidersMode];
-    v9 = v13 <= 5 && ((1 << v13) & 0x2A) != 0;
+    additionalProvidersMode = [(VSIdentityProviderTableViewDataSource *)self additionalProvidersMode];
+    v9 = additionalProvidersMode <= 5 && ((1 << additionalProvidersMode) & 0x2A) != 0;
   }
 
   else
@@ -800,48 +800,48 @@ LABEL_6:
   return v9;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if ([(VSIdentityProviderTableViewDataSource *)self additionalProvidersMode]== 6)
   {
-    v8 = [v6 dequeueReusableCellWithIdentifier:@"IdentityProviderCell"];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:@"IdentityProviderCell"];
     if (!v8)
     {
       v8 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"IdentityProviderCell"];
     }
 
-    v9 = [(VSIdentityProviderTableViewDataSource *)self storefrontAtIndexPath:v7];
-    v10 = [v9 displayName];
+    v9 = [(VSIdentityProviderTableViewDataSource *)self storefrontAtIndexPath:pathCopy];
+    displayName = [v9 displayName];
     [v8 setAccessoryType:{-[VSIdentityProviderTableViewDataSource cellAccessoryType](self, "cellAccessoryType")}];
-    v11 = [v8 textLabel];
-    [v11 setText:v10];
+    textLabel = [v8 textLabel];
+    [textLabel setText:displayName];
   }
 
   else
   {
-    v9 = [(VSIdentityProviderTableViewDataSource *)self _cellReuseIdentifierForRowAtIndexPath:v7];
-    v8 = [v6 dequeueReusableCellWithIdentifier:v9];
+    v9 = [(VSIdentityProviderTableViewDataSource *)self _cellReuseIdentifierForRowAtIndexPath:pathCopy];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:v9];
     if (!v8)
     {
-      v12 = [(VSIdentityProviderTableViewDataSource *)self _cellStyleForRowAtIndexPath:v7];
+      v12 = [(VSIdentityProviderTableViewDataSource *)self _cellStyleForRowAtIndexPath:pathCopy];
       v8 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:v12 reuseIdentifier:v9];
     }
 
-    v10 = [(VSIdentityProviderTableViewDataSource *)self _titleForRowAtIndexPath:v7];
-    v13 = [v8 textLabel];
-    [v13 setText:v10];
+    displayName = [(VSIdentityProviderTableViewDataSource *)self _titleForRowAtIndexPath:pathCopy];
+    textLabel2 = [v8 textLabel];
+    [textLabel2 setText:displayName];
 
-    [(VSIdentityProviderTableViewDataSource *)self setNumberOfLinesForCell:v8 atIndexPath:v7];
+    [(VSIdentityProviderTableViewDataSource *)self setNumberOfLinesForCell:v8 atIndexPath:pathCopy];
     [v8 setAccessoryType:{-[VSIdentityProviderTableViewDataSource cellAccessoryType](self, "cellAccessoryType")}];
-    v11 = [v8 textLabel];
+    textLabel = [v8 textLabel];
   }
 
-  [v11 setTextAlignment:{-[VSIdentityProviderTableViewDataSource _textAlignmentForRowAtIndexPath:](self, "_textAlignmentForRowAtIndexPath:", v7)}];
-  v14 = [(VSIdentityProviderTableViewDataSource *)self _textColorForRowAtIndexPath:v7];
-  [v11 setTextColor:v14];
-  [v11 setLineBreakMode:0];
+  [textLabel setTextAlignment:{-[VSIdentityProviderTableViewDataSource _textAlignmentForRowAtIndexPath:](self, "_textAlignmentForRowAtIndexPath:", pathCopy)}];
+  v14 = [(VSIdentityProviderTableViewDataSource *)self _textColorForRowAtIndexPath:pathCopy];
+  [textLabel setTextColor:v14];
+  [textLabel setLineBreakMode:0];
   if (!v8)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The cell parameter must not be nil."];

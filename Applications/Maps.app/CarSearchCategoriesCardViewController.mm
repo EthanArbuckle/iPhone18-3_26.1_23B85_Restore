@@ -1,13 +1,13 @@
 @interface CarSearchCategoriesCardViewController
 - (BOOL)showSearchBar;
 - (NSArray)categories;
-- (_TtC4Maps37CarSearchCategoriesCardViewController)initWithCategories:(id)a3 delegate:(id)a4;
-- (_TtC4Maps37CarSearchCategoriesCardViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC4Maps37CarSearchCategoriesCardViewController)initWithCategories:(id)categories delegate:(id)delegate;
+- (_TtC4Maps37CarSearchCategoriesCardViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_TtP4Maps45CarSearchCategoriesCardViewControllerDelegate_)delegate;
-- (void)didSelectCategoryWithName:(id)a3;
-- (void)didSelectUserInputWithAction:(unint64_t)a3 interactionModel:(unint64_t)a4;
-- (void)setCategories:(id)a3;
-- (void)setShowSearchBar:(BOOL)a3;
+- (void)didSelectCategoryWithName:(id)name;
+- (void)didSelectUserInputWithAction:(unint64_t)action interactionModel:(unint64_t)model;
+- (void)setCategories:(id)categories;
+- (void)setShowSearchBar:(BOOL)bar;
 @end
 
 @implementation CarSearchCategoriesCardViewController
@@ -21,11 +21,11 @@
   return v2.super.isa;
 }
 
-- (void)setCategories:(id)a3
+- (void)setCategories:(id)categories
 {
   sub_1004A37CC();
   *(self + OBJC_IVAR____TtC4Maps37CarSearchCategoriesCardViewController_categories) = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
 
   sub_1004A1384();
 }
@@ -37,12 +37,12 @@
   return Strong;
 }
 
-- (_TtC4Maps37CarSearchCategoriesCardViewController)initWithCategories:(id)a3 delegate:(id)a4
+- (_TtC4Maps37CarSearchCategoriesCardViewController)initWithCategories:(id)categories delegate:(id)delegate
 {
   sub_1004A37CC();
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   swift_unknownObjectRetain();
-  v6 = sub_1004A3364(v5, a4);
+  v6 = sub_1004A3364(v5, delegate);
   swift_unknownObjectRelease();
   return v6;
 }
@@ -51,35 +51,35 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   return v5;
 }
 
-- (void)setShowSearchBar:(BOOL)a3
+- (void)setShowSearchBar:(BOOL)bar
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   static Published.subscript.setter();
 }
 
-- (void)didSelectCategoryWithName:(id)a3
+- (void)didSelectCategoryWithName:(id)name
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1004A1CF8(v4, v6);
 }
 
-- (void)didSelectUserInputWithAction:(unint64_t)a3 interactionModel:(unint64_t)a4
+- (void)didSelectUserInputWithAction:(unint64_t)action interactionModel:(unint64_t)model
 {
-  v6 = self;
-  sub_1004A1FAC(a3, a4);
+  selfCopy = self;
+  sub_1004A1FAC(action, model);
 }
 
-- (_TtC4Maps37CarSearchCategoriesCardViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps37CarSearchCategoriesCardViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

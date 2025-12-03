@@ -1,33 +1,33 @@
 @interface FTAsrService
-- (id)performRecognitionWithDelegate:(id)a3 requestBuilder:(id)a4 completion:(id)a5;
-- (void)performCorrectionsValidator:(id)a3 requestBuilder:(id)a4 completion:(id)a5;
-- (void)performErrorBlamer:(id)a3 requestBuilder:(id)a4 completion:(id)a5;
-- (void)performGraphemeToPhoneme:(id)a3 requestBuilder:(id)a4 completion:(id)a5;
-- (void)performItn:(id)a3 requestBuilder:(id)a4 completion:(id)a5;
-- (void)performKeywordFinder:(id)a3 requestBuilder:(id)a4 completion:(id)a5;
-- (void)performPostItnHammer:(id)a3 requestBuilder:(id)a4 completion:(id)a5;
-- (void)performTextNormalization:(id)a3 requestBuilder:(id)a4 completion:(id)a5;
+- (id)performRecognitionWithDelegate:(id)delegate requestBuilder:(id)builder completion:(id)completion;
+- (void)performCorrectionsValidator:(id)validator requestBuilder:(id)builder completion:(id)completion;
+- (void)performErrorBlamer:(id)blamer requestBuilder:(id)builder completion:(id)completion;
+- (void)performGraphemeToPhoneme:(id)phoneme requestBuilder:(id)builder completion:(id)completion;
+- (void)performItn:(id)itn requestBuilder:(id)builder completion:(id)completion;
+- (void)performKeywordFinder:(id)finder requestBuilder:(id)builder completion:(id)completion;
+- (void)performPostItnHammer:(id)hammer requestBuilder:(id)builder completion:(id)completion;
+- (void)performTextNormalization:(id)normalization requestBuilder:(id)builder completion:(id)completion;
 @end
 
 @implementation FTAsrService
 
-- (id)performRecognitionWithDelegate:(id)a3 requestBuilder:(id)a4 completion:(id)a5
+- (id)performRecognitionWithDelegate:(id)delegate requestBuilder:(id)builder completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  delegateCopy = delegate;
+  completionCopy = completion;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __73__FTAsrService_performRecognitionWithDelegate_requestBuilder_completion___block_invoke;
   v21[3] = &unk_2789B7AA0;
-  v10 = v8;
+  v10 = delegateCopy;
   v22 = v10;
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __73__FTAsrService_performRecognitionWithDelegate_requestBuilder_completion___block_invoke_2;
   v19 = &unk_2789B9130;
-  v11 = v9;
+  v11 = completionCopy;
   v20 = v11;
-  v12 = [(OspreyChannel *)self bidirectionalStreamingRequestWithMethodName:@"/siri.speech.qss_fb.Asr/Recognition" requestBuilder:a4 streamingResponseHandler:v21 completion:&v16];
+  v12 = [(OspreyChannel *)self bidirectionalStreamingRequestWithMethodName:@"/siri.speech.qss_fb.Asr/Recognition" requestBuilder:builder streamingResponseHandler:v21 completion:&v16];
   v13 = [FTRecognitionStreamingContext alloc];
   v14 = [(FTRecognitionStreamingContext *)v13 initWithGRPCStreamingCallContext:v12, v16, v17, v18, v19];
 
@@ -54,18 +54,18 @@ void __73__FTAsrService_performRecognitionWithDelegate_requestBuilder_completion
   }
 }
 
-- (void)performErrorBlamer:(id)a3 requestBuilder:(id)a4 completion:(id)a5
+- (void)performErrorBlamer:(id)blamer requestBuilder:(id)builder completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 flatbuffData];
+  builderCopy = builder;
+  completionCopy = completion;
+  flatbuffData = [blamer flatbuffData];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __61__FTAsrService_performErrorBlamer_requestBuilder_completion___block_invoke;
   v12[3] = &unk_2789B9158;
-  v11 = v9;
+  v11 = completionCopy;
   v13 = v11;
-  [(OspreyChannel *)self unaryRequestWithMethodName:@"/siri.speech.qss_fb.Asr/ErrorBlamer" requestData:v10 requestBuilder:v8 responseHandler:v12];
+  [(OspreyChannel *)self unaryRequestWithMethodName:@"/siri.speech.qss_fb.Asr/ErrorBlamer" requestData:flatbuffData requestBuilder:builderCopy responseHandler:v12];
 }
 
 void __61__FTAsrService_performErrorBlamer_requestBuilder_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -93,18 +93,18 @@ void __61__FTAsrService_performErrorBlamer_requestBuilder_completion___block_inv
   }
 }
 
-- (void)performItn:(id)a3 requestBuilder:(id)a4 completion:(id)a5
+- (void)performItn:(id)itn requestBuilder:(id)builder completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 flatbuffData];
+  builderCopy = builder;
+  completionCopy = completion;
+  flatbuffData = [itn flatbuffData];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __53__FTAsrService_performItn_requestBuilder_completion___block_invoke;
   v12[3] = &unk_2789B9158;
-  v11 = v9;
+  v11 = completionCopy;
   v13 = v11;
-  [(OspreyChannel *)self unaryRequestWithMethodName:@"/siri.speech.qss_fb.Asr/Itn" requestData:v10 requestBuilder:v8 responseHandler:v12];
+  [(OspreyChannel *)self unaryRequestWithMethodName:@"/siri.speech.qss_fb.Asr/Itn" requestData:flatbuffData requestBuilder:builderCopy responseHandler:v12];
 }
 
 void __53__FTAsrService_performItn_requestBuilder_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -132,18 +132,18 @@ void __53__FTAsrService_performItn_requestBuilder_completion___block_invoke(uint
   }
 }
 
-- (void)performTextNormalization:(id)a3 requestBuilder:(id)a4 completion:(id)a5
+- (void)performTextNormalization:(id)normalization requestBuilder:(id)builder completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 flatbuffData];
+  builderCopy = builder;
+  completionCopy = completion;
+  flatbuffData = [normalization flatbuffData];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __67__FTAsrService_performTextNormalization_requestBuilder_completion___block_invoke;
   v12[3] = &unk_2789B9158;
-  v11 = v9;
+  v11 = completionCopy;
   v13 = v11;
-  [(OspreyChannel *)self unaryRequestWithMethodName:@"/siri.speech.qss_fb.Asr/TextNormalization" requestData:v10 requestBuilder:v8 responseHandler:v12];
+  [(OspreyChannel *)self unaryRequestWithMethodName:@"/siri.speech.qss_fb.Asr/TextNormalization" requestData:flatbuffData requestBuilder:builderCopy responseHandler:v12];
 }
 
 void __67__FTAsrService_performTextNormalization_requestBuilder_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -171,18 +171,18 @@ void __67__FTAsrService_performTextNormalization_requestBuilder_completion___blo
   }
 }
 
-- (void)performPostItnHammer:(id)a3 requestBuilder:(id)a4 completion:(id)a5
+- (void)performPostItnHammer:(id)hammer requestBuilder:(id)builder completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 flatbuffData];
+  builderCopy = builder;
+  completionCopy = completion;
+  flatbuffData = [hammer flatbuffData];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __63__FTAsrService_performPostItnHammer_requestBuilder_completion___block_invoke;
   v12[3] = &unk_2789B9158;
-  v11 = v9;
+  v11 = completionCopy;
   v13 = v11;
-  [(OspreyChannel *)self unaryRequestWithMethodName:@"/siri.speech.qss_fb.Asr/PostItnHammer" requestData:v10 requestBuilder:v8 responseHandler:v12];
+  [(OspreyChannel *)self unaryRequestWithMethodName:@"/siri.speech.qss_fb.Asr/PostItnHammer" requestData:flatbuffData requestBuilder:builderCopy responseHandler:v12];
 }
 
 void __63__FTAsrService_performPostItnHammer_requestBuilder_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -210,18 +210,18 @@ void __63__FTAsrService_performPostItnHammer_requestBuilder_completion___block_i
   }
 }
 
-- (void)performKeywordFinder:(id)a3 requestBuilder:(id)a4 completion:(id)a5
+- (void)performKeywordFinder:(id)finder requestBuilder:(id)builder completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 flatbuffData];
+  builderCopy = builder;
+  completionCopy = completion;
+  flatbuffData = [finder flatbuffData];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __63__FTAsrService_performKeywordFinder_requestBuilder_completion___block_invoke;
   v12[3] = &unk_2789B9158;
-  v11 = v9;
+  v11 = completionCopy;
   v13 = v11;
-  [(OspreyChannel *)self unaryRequestWithMethodName:@"/siri.speech.qss_fb.Asr/KeywordFinder" requestData:v10 requestBuilder:v8 responseHandler:v12];
+  [(OspreyChannel *)self unaryRequestWithMethodName:@"/siri.speech.qss_fb.Asr/KeywordFinder" requestData:flatbuffData requestBuilder:builderCopy responseHandler:v12];
 }
 
 void __63__FTAsrService_performKeywordFinder_requestBuilder_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -249,18 +249,18 @@ void __63__FTAsrService_performKeywordFinder_requestBuilder_completion___block_i
   }
 }
 
-- (void)performCorrectionsValidator:(id)a3 requestBuilder:(id)a4 completion:(id)a5
+- (void)performCorrectionsValidator:(id)validator requestBuilder:(id)builder completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 flatbuffData];
+  builderCopy = builder;
+  completionCopy = completion;
+  flatbuffData = [validator flatbuffData];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __70__FTAsrService_performCorrectionsValidator_requestBuilder_completion___block_invoke;
   v12[3] = &unk_2789B9158;
-  v11 = v9;
+  v11 = completionCopy;
   v13 = v11;
-  [(OspreyChannel *)self unaryRequestWithMethodName:@"/siri.speech.qss_fb.Asr/CorrectionsValidator" requestData:v10 requestBuilder:v8 responseHandler:v12];
+  [(OspreyChannel *)self unaryRequestWithMethodName:@"/siri.speech.qss_fb.Asr/CorrectionsValidator" requestData:flatbuffData requestBuilder:builderCopy responseHandler:v12];
 }
 
 void __70__FTAsrService_performCorrectionsValidator_requestBuilder_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -288,18 +288,18 @@ void __70__FTAsrService_performCorrectionsValidator_requestBuilder_completion___
   }
 }
 
-- (void)performGraphemeToPhoneme:(id)a3 requestBuilder:(id)a4 completion:(id)a5
+- (void)performGraphemeToPhoneme:(id)phoneme requestBuilder:(id)builder completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 flatbuffData];
+  builderCopy = builder;
+  completionCopy = completion;
+  flatbuffData = [phoneme flatbuffData];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __67__FTAsrService_performGraphemeToPhoneme_requestBuilder_completion___block_invoke;
   v12[3] = &unk_2789B9158;
-  v11 = v9;
+  v11 = completionCopy;
   v13 = v11;
-  [(OspreyChannel *)self unaryRequestWithMethodName:@"/siri.speech.qss_fb.Asr/GraphemeToPhoneme" requestData:v10 requestBuilder:v8 responseHandler:v12];
+  [(OspreyChannel *)self unaryRequestWithMethodName:@"/siri.speech.qss_fb.Asr/GraphemeToPhoneme" requestData:flatbuffData requestBuilder:builderCopy responseHandler:v12];
 }
 
 void __67__FTAsrService_performGraphemeToPhoneme_requestBuilder_completion___block_invoke(uint64_t a1, void *a2, void *a3)

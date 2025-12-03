@@ -1,9 +1,9 @@
 @interface _EDMessageItemIDCollector
 - (_EDMessageItemIDCollector)init;
-- (id)collectItemIDsWithQuery:(id)a3 messagePersistence:(id)a4 hookRegistry:(id)a5 remindMeNotificationController:(id)a6 searchProvider:(id)a7 errorString:(id *)a8;
-- (void)queryHelper:(id)a3 didFindMessages:(id)a4 searchInfo:(id)a5 forInitialBatch:(BOOL)a6;
-- (void)queryHelperDidFindAllMessages:(id)a3 localSearchInfoCollector:(id)a4;
-- (void)queryHelperNeedsRestart:(id)a3;
+- (id)collectItemIDsWithQuery:(id)query messagePersistence:(id)persistence hookRegistry:(id)registry remindMeNotificationController:(id)controller searchProvider:(id)provider errorString:(id *)string;
+- (void)queryHelper:(id)helper didFindMessages:(id)messages searchInfo:(id)info forInitialBatch:(BOOL)batch;
+- (void)queryHelperDidFindAllMessages:(id)messages localSearchInfoCollector:(id)collector;
+- (void)queryHelperNeedsRestart:(id)restart;
 @end
 
 @implementation _EDMessageItemIDCollector
@@ -31,13 +31,13 @@
   return v2;
 }
 
-- (id)collectItemIDsWithQuery:(id)a3 messagePersistence:(id)a4 hookRegistry:(id)a5 remindMeNotificationController:(id)a6 searchProvider:(id)a7 errorString:(id *)a8
+- (id)collectItemIDsWithQuery:(id)query messagePersistence:(id)persistence hookRegistry:(id)registry remindMeNotificationController:(id)controller searchProvider:(id)provider errorString:(id *)string
 {
-  v28 = a3;
-  v27 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  queryCopy = query;
+  persistenceCopy = persistence;
+  registryCopy = registry;
+  controllerCopy = controller;
+  providerCopy = provider;
   [(NSConditionLock *)self->_collectionLock lockWhenCondition:0];
   [(NSConditionLock *)self->_collectionLock unlockWithCondition:1];
   [(NSMutableArray *)self->_messageItemIDs removeAllObjects];
@@ -46,13 +46,13 @@
 
   BYTE2(v26) = 0;
   LOWORD(v26) = 0;
-  v18 = [EDMessageQueryHelper initWithQuery:"initWithQuery:initialBatchSize:maximumBatchSize:messagePersistence:hookRegistry:searchProvider:scheduler:remindMeNotificationController:delegate:shouldReconcileJournal:shouldAddMessagesSynchronously:keepMessagesInListOnBucketChange:" initialBatchSize:v28 maximumBatchSize:100 messagePersistence:15000 hookRegistry:v27 searchProvider:v14 scheduler:v16 remindMeNotificationController:self->_scheduler delegate:v15 shouldReconcileJournal:self shouldAddMessagesSynchronously:v26 keepMessagesInListOnBucketChange:?];
+  v18 = [EDMessageQueryHelper initWithQuery:"initWithQuery:initialBatchSize:maximumBatchSize:messagePersistence:hookRegistry:searchProvider:scheduler:remindMeNotificationController:delegate:shouldReconcileJournal:shouldAddMessagesSynchronously:keepMessagesInListOnBucketChange:" initialBatchSize:queryCopy maximumBatchSize:100 messagePersistence:15000 hookRegistry:persistenceCopy searchProvider:registryCopy scheduler:providerCopy remindMeNotificationController:self->_scheduler delegate:controllerCopy shouldReconcileJournal:self shouldAddMessagesSynchronously:v26 keepMessagesInListOnBucketChange:?];
   [(EDMessageQueryHelper *)v18 start];
   collectionLock = self->_collectionLock;
   v20 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:10.0];
-  LODWORD(a7) = [(NSConditionLock *)collectionLock lockWhenCondition:2 beforeDate:v20];
+  LODWORD(provider) = [(NSConditionLock *)collectionLock lockWhenCondition:2 beforeDate:v20];
 
-  if (a7)
+  if (provider)
   {
     v21 = [(NSMutableArray *)self->_messageItemIDs copy];
     v22 = [(NSString *)self->_errorString copy];
@@ -67,32 +67,32 @@
   }
 
   [(NSConditionLock *)self->_collectionLock unlockWithCondition:0];
-  if (a8)
+  if (string)
   {
     v24 = v22;
-    *a8 = v22;
+    *string = v22;
   }
 
   return v23;
 }
 
-- (void)queryHelper:(id)a3 didFindMessages:(id)a4 searchInfo:(id)a5 forInitialBatch:(BOOL)a6
+- (void)queryHelper:(id)helper didFindMessages:(id)messages searchInfo:(id)info forInitialBatch:(BOOL)batch
 {
   messageItemIDs = self->_messageItemIDs;
-  v7 = [a4 ef_compactMapSelector:sel_itemID];
+  v7 = [messages ef_compactMapSelector:sel_itemID];
   [(NSMutableArray *)messageItemIDs addObjectsFromArray:?];
 }
 
-- (void)queryHelperDidFindAllMessages:(id)a3 localSearchInfoCollector:(id)a4
+- (void)queryHelperDidFindAllMessages:(id)messages localSearchInfoCollector:(id)collector
 {
-  [(NSConditionLock *)self->_collectionLock lock:a3];
+  [(NSConditionLock *)self->_collectionLock lock:messages];
   v5 = [(NSConditionLock *)self->_collectionLock condition]== 1;
   collectionLock = self->_collectionLock;
 
   [(NSConditionLock *)collectionLock unlockWithCondition:2 * v5];
 }
 
-- (void)queryHelperNeedsRestart:(id)a3
+- (void)queryHelperNeedsRestart:(id)restart
 {
   errorString = self->_errorString;
   self->_errorString = @"Query helper requested restart";

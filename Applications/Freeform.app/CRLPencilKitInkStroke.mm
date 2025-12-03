@@ -1,30 +1,30 @@
 @interface CRLPencilKitInkStroke
-+ (CGRect)boundsOfStrokes:(id)a3;
-+ (double)adjustedStrokeWidthFromWidth:(double)a3 forInkType:(id)a4;
-+ (double)unadjustedStrokeWidthFromAdjustedWidth:(double)a3 forInkType:(id)a4;
-- (BOOL)canDrawWithOtherStroke:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CRLPencilKitInkStroke)initWithInk:(id)a3 adjustedWidth:(double)a4;
-- (CRLPencilKitInkStroke)initWithInk:(id)a3 unadjustedPencilKitWidth:(double)a4;
-- (CRLPencilKitInkStroke)initWithInkType:(id)a3 color:(id)a4 adjustedWidth:(double)a5;
-- (CRLPencilKitInkStroke)initWithInkType:(id)a3 color:(id)a4 adjustedWidth:(double)a5 isFountainPenInkV2:(BOOL)a6;
-- (CRLPencilKitInkStroke)initWithInkType:(id)a3 color:(id)a4 unadjustedPencilKitWidth:(double)a5;
++ (CGRect)boundsOfStrokes:(id)strokes;
++ (double)adjustedStrokeWidthFromWidth:(double)width forInkType:(id)type;
++ (double)unadjustedStrokeWidthFromAdjustedWidth:(double)width forInkType:(id)type;
+- (BOOL)canDrawWithOtherStroke:(id)stroke;
+- (BOOL)isEqual:(id)equal;
+- (CRLPencilKitInkStroke)initWithInk:(id)ink adjustedWidth:(double)width;
+- (CRLPencilKitInkStroke)initWithInk:(id)ink unadjustedPencilKitWidth:(double)width;
+- (CRLPencilKitInkStroke)initWithInkType:(id)type color:(id)color adjustedWidth:(double)width;
+- (CRLPencilKitInkStroke)initWithInkType:(id)type color:(id)color adjustedWidth:(double)width isFountainPenInkV2:(BOOL)v2;
+- (CRLPencilKitInkStroke)initWithInkType:(id)type color:(id)color unadjustedPencilKitWidth:(double)width;
 - (CRLSmartStroke)fallbackSmartStrokeForPersistence;
 - (double)widthForDefaultAndDowngradePersistence;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)paintPath:(CGPath *)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6 parameterized:(BOOL)a7 shouldReverseDrawOrder:(BOOL)a8;
+- (void)paintPath:(CGPath *)path wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order;
 @end
 
 @implementation CRLPencilKitInkStroke
 
-- (CRLPencilKitInkStroke)initWithInkType:(id)a3 color:(id)a4 adjustedWidth:(double)a5 isFountainPenInkV2:(BOOL)a6
+- (CRLPencilKitInkStroke)initWithInkType:(id)type color:(id)color adjustedWidth:(double)width isFountainPenInkV2:(BOOL)v2
 {
-  v11 = a3;
-  v12 = a4;
+  typeCopy = type;
+  colorCopy = color;
   v13 = +[CRLStrokePattern solidPattern];
-  if (([v11 isEqualToString:PKInkTypePencil] & 1) != 0 || objc_msgSend(v11, "isEqualToString:", PKInkTypeCrayon))
+  if (([typeCopy isEqualToString:PKInkTypePencil] & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", PKInkTypeCrayon))
   {
     v14 = 0;
     v15 = 1.0;
@@ -38,67 +38,67 @@
 
   v19.receiver = self;
   v19.super_class = CRLPencilKitInkStroke;
-  v16 = [(CRLStroke *)&v19 initWithColor:v12 width:1 cap:v14 join:v13 pattern:a5 miterLimit:v15];
+  v16 = [(CRLStroke *)&v19 initWithColor:colorCopy width:1 cap:v14 join:v13 pattern:width miterLimit:v15];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_inkType, a3);
-    v17->_isFountainPenInkV2 = a6;
+    objc_storeStrong(&v16->_inkType, type);
+    v17->_isFountainPenInkV2 = v2;
   }
 
   return v17;
 }
 
-- (CRLPencilKitInkStroke)initWithInkType:(id)a3 color:(id)a4 adjustedWidth:(double)a5
+- (CRLPencilKitInkStroke)initWithInkType:(id)type color:(id)color adjustedWidth:(double)width
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = -[CRLPencilKitInkStroke initWithInkType:color:adjustedWidth:isFountainPenInkV2:](self, "initWithInkType:color:adjustedWidth:isFountainPenInkV2:", v9, v8, [v9 isEqualToString:PKInkTypeFountainPen], a5);
+  colorCopy = color;
+  typeCopy = type;
+  v10 = -[CRLPencilKitInkStroke initWithInkType:color:adjustedWidth:isFountainPenInkV2:](self, "initWithInkType:color:adjustedWidth:isFountainPenInkV2:", typeCopy, colorCopy, [typeCopy isEqualToString:PKInkTypeFountainPen], width);
 
   return v10;
 }
 
-- (CRLPencilKitInkStroke)initWithInkType:(id)a3 color:(id)a4 unadjustedPencilKitWidth:(double)a5
+- (CRLPencilKitInkStroke)initWithInkType:(id)type color:(id)color unadjustedPencilKitWidth:(double)width
 {
-  v8 = a4;
-  v9 = a3;
-  [CRLPencilKitInkStroke adjustedStrokeWidthFromWidth:v9 forInkType:a5];
-  v11 = -[CRLPencilKitInkStroke initWithInkType:color:adjustedWidth:isFountainPenInkV2:](self, "initWithInkType:color:adjustedWidth:isFountainPenInkV2:", v9, v8, [v9 isEqualToString:PKInkTypeFountainPen], v10);
+  colorCopy = color;
+  typeCopy = type;
+  [CRLPencilKitInkStroke adjustedStrokeWidthFromWidth:typeCopy forInkType:width];
+  v11 = -[CRLPencilKitInkStroke initWithInkType:color:adjustedWidth:isFountainPenInkV2:](self, "initWithInkType:color:adjustedWidth:isFountainPenInkV2:", typeCopy, colorCopy, [typeCopy isEqualToString:PKInkTypeFountainPen], v10);
 
   return v11;
 }
 
-- (CRLPencilKitInkStroke)initWithInk:(id)a3 adjustedWidth:(double)a4
+- (CRLPencilKitInkStroke)initWithInk:(id)ink adjustedWidth:(double)width
 {
-  v6 = a3;
-  v7 = [v6 color];
-  v8 = [CRLColor colorWithUIColor:v7];
+  inkCopy = ink;
+  color = [inkCopy color];
+  v8 = [CRLColor colorWithUIColor:color];
 
-  v9 = [v6 _isFountainPenInkV2];
-  v10 = [v6 inkType];
+  _isFountainPenInkV2 = [inkCopy _isFountainPenInkV2];
+  inkType = [inkCopy inkType];
 
-  v11 = [(CRLPencilKitInkStroke *)self initWithInkType:v10 color:v8 adjustedWidth:v9 isFountainPenInkV2:a4];
+  v11 = [(CRLPencilKitInkStroke *)self initWithInkType:inkType color:v8 adjustedWidth:_isFountainPenInkV2 isFountainPenInkV2:width];
   return v11;
 }
 
-- (CRLPencilKitInkStroke)initWithInk:(id)a3 unadjustedPencilKitWidth:(double)a4
+- (CRLPencilKitInkStroke)initWithInk:(id)ink unadjustedPencilKitWidth:(double)width
 {
-  v6 = a3;
-  v7 = [v6 inkType];
-  [CRLPencilKitInkStroke adjustedStrokeWidthFromWidth:v7 forInkType:a4];
+  inkCopy = ink;
+  inkType = [inkCopy inkType];
+  [CRLPencilKitInkStroke adjustedStrokeWidthFromWidth:inkType forInkType:width];
   v9 = v8;
 
-  v10 = [(CRLPencilKitInkStroke *)self initWithInk:v6 adjustedWidth:v9];
+  v10 = [(CRLPencilKitInkStroke *)self initWithInk:inkCopy adjustedWidth:v9];
   return v10;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CRLMutablePencilKitInkStroke alloc];
-  v5 = [(CRLPencilKitInkStroke *)self inkType];
-  v6 = [(CRLStroke *)self color];
+  inkType = [(CRLPencilKitInkStroke *)self inkType];
+  color = [(CRLStroke *)self color];
   [(CRLStroke *)self width];
-  v7 = [(CRLPencilKitInkStroke *)v4 initWithInkType:v5 color:v6 adjustedWidth:?];
+  v7 = [(CRLPencilKitInkStroke *)v4 initWithInkType:inkType color:color adjustedWidth:?];
 
   return v7;
 }
@@ -107,16 +107,16 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CRLPencilKitInkStroke *)self inkType];
+  inkType = [(CRLPencilKitInkStroke *)self inkType];
   [(CRLStroke *)self width];
-  v7 = [NSString stringWithFormat:@"<%@ %p inkType='%@' width=%f>", v4, self, v5, v6];
+  v7 = [NSString stringWithFormat:@"<%@ %p inkType='%@' width=%f>", v4, self, inkType, v6];
 
   return v7;
 }
 
-- (BOOL)canDrawWithOtherStroke:(id)a3
+- (BOOL)canDrawWithOtherStroke:(id)stroke
 {
-  v3 = a3;
+  strokeCopy = stroke;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -125,23 +125,23 @@
 
 - (CRLSmartStroke)fallbackSmartStrokeForPersistence
 {
-  v3 = [(CRLPencilKitInkStroke *)self inkType];
-  v4 = [v3 isEqualToString:PKInkTypePencil];
+  inkType = [(CRLPencilKitInkStroke *)self inkType];
+  v4 = [inkType isEqualToString:PKInkTypePencil];
 
   if (v4)
   {
     v5 = &off_101852268;
 LABEL_5:
     v8 = *v5;
-    v9 = [(CRLStroke *)self color];
+    color = [(CRLStroke *)self color];
     [(CRLStroke *)self i_width];
-    v10 = [(CRLSmartStroke *)CRLBrushStroke strokeWithName:v8 color:v9 width:?];
+    v10 = [(CRLSmartStroke *)CRLBrushStroke strokeWithName:v8 color:color width:?];
 
     goto LABEL_7;
   }
 
-  v6 = [(CRLPencilKitInkStroke *)self inkType];
-  v7 = [v6 isEqualToString:PKInkTypeCrayon];
+  inkType2 = [(CRLPencilKitInkStroke *)self inkType];
+  v7 = [inkType2 isEqualToString:PKInkTypeCrayon];
 
   if (v7)
   {
@@ -161,8 +161,8 @@ LABEL_7:
   v8.super_class = CRLPencilKitInkStroke;
   [(CRLStroke *)&v8 widthForDefaultAndDowngradePersistence];
   v4 = v3;
-  v5 = [(CRLPencilKitInkStroke *)self inkType];
-  v6 = [v5 isEqualToString:PKInkTypeWatercolor];
+  inkType = [(CRLPencilKitInkStroke *)self inkType];
+  v6 = [inkType isEqualToString:PKInkTypeWatercolor];
 
   result = v4 * 0.25;
   if (!v6)
@@ -173,77 +173,77 @@ LABEL_7:
   return result;
 }
 
-+ (double)adjustedStrokeWidthFromWidth:(double)a3 forInkType:(id)a4
++ (double)adjustedStrokeWidthFromWidth:(double)width forInkType:(id)type
 {
-  v5 = a4;
-  if ([v5 isEqualToString:PKInkTypeMonoline])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:PKInkTypeMonoline])
   {
-    a3 = a3 + a3;
+    width = width + width;
   }
 
-  else if (([v5 isEqualToString:PKInkTypePen] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", PKInkTypeCrayon) & 1) != 0 || objc_msgSend(v5, "isEqualToString:", PKInkTypeMarker))
+  else if (([typeCopy isEqualToString:PKInkTypePen] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", PKInkTypeCrayon) & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", PKInkTypeMarker))
   {
-    v6 = sub_1004C3240((a3 + -5.0) / 21.0, 0.0, 1.0);
-    a3 = sub_1004C3260(1.0, 0.5, v6) * a3;
+    v6 = sub_1004C3240((width + -5.0) / 21.0, 0.0, 1.0);
+    width = sub_1004C3260(1.0, 0.5, v6) * width;
   }
 
-  return a3;
+  return width;
 }
 
-+ (double)unadjustedStrokeWidthFromAdjustedWidth:(double)a3 forInkType:(id)a4
++ (double)unadjustedStrokeWidthFromAdjustedWidth:(double)width forInkType:(id)type
 {
-  v5 = a4;
-  if ([v5 isEqualToString:PKInkTypeMonoline])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:PKInkTypeMonoline])
   {
-    v6 = a3 * 0.5;
+    widthCopy = width * 0.5;
   }
 
   else
   {
-    if (([v5 isEqualToString:PKInkTypePen] & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", PKInkTypeCrayon) & 1) == 0 && !objc_msgSend(v5, "isEqualToString:", PKInkTypeMarker))
+    if (([typeCopy isEqualToString:PKInkTypePen] & 1) == 0 && (objc_msgSend(typeCopy, "isEqualToString:", PKInkTypeCrayon) & 1) == 0 && !objc_msgSend(typeCopy, "isEqualToString:", PKInkTypeMarker))
     {
       goto LABEL_11;
     }
 
-    v6 = 0.0;
-    if (a3 < 0.0)
+    widthCopy = 0.0;
+    if (width < 0.0)
     {
       goto LABEL_14;
     }
 
-    if (a3 <= 5.0)
+    if (width <= 5.0)
     {
 LABEL_11:
-      v6 = a3;
+      widthCopy = width;
       goto LABEL_14;
     }
 
-    if (a3 <= 13.0)
+    if (width <= 13.0)
     {
-      v6 = (47.0 - sqrt(a3 * -168.0 + 2209.0)) * 0.5;
+      widthCopy = (47.0 - sqrt(width * -168.0 + 2209.0)) * 0.5;
     }
 
-    else if (a3 <= 13.1488095)
+    else if (width <= 13.1488095)
     {
-      v6 = 23.5;
+      widthCopy = 23.5;
     }
 
     else
     {
-      v6 = a3 + a3;
+      widthCopy = width + width;
     }
   }
 
 LABEL_14:
 
-  return v6;
+  return widthCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, equalCopy);
 
   if (v6 && ([v6 inkType], v7 = objc_claimAutoreleasedReturnValue(), -[CRLPencilKitInkStroke inkType](self, "inkType"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqual:", v8), v8, v7, v9))
   {
@@ -265,15 +265,15 @@ LABEL_14:
   v7.receiver = self;
   v7.super_class = CRLPencilKitInkStroke;
   v3 = [(CRLStroke *)&v7 hash];
-  v4 = [(CRLPencilKitInkStroke *)self inkType];
-  v5 = [v4 hash];
+  inkType = [(CRLPencilKitInkStroke *)self inkType];
+  v5 = [inkType hash];
 
   return v5 ^ v3;
 }
 
-+ (CGRect)boundsOfStrokes:(id)a3
++ (CGRect)boundsOfStrokes:(id)strokes
 {
-  v3 = a3;
+  strokesCopy = strokes;
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
@@ -282,7 +282,7 @@ LABEL_14:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v8 = [strokesCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -294,7 +294,7 @@ LABEL_14:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(strokesCopy);
         }
 
         [*(*(&v20 + 1) + 8 * v11) renderBounds];
@@ -315,7 +315,7 @@ LABEL_14:
       }
 
       while (v9 != v11);
-      v9 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [strokesCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v9);
@@ -344,7 +344,7 @@ LABEL_14:
   return result;
 }
 
-- (void)paintPath:(CGPath *)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6 parameterized:(BOOL)a7 shouldReverseDrawOrder:(BOOL)a8
+- (void)paintPath:(CGPath *)path wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

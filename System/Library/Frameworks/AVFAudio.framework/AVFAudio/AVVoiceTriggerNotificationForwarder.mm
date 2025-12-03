@@ -1,8 +1,8 @@
 @interface AVVoiceTriggerNotificationForwarder
 - (VoiceTriggerNotificationInterface)target;
-- (void)portStateChangedNotification:(id)a3;
-- (void)speakerStateChangedNotification:(id)a3;
-- (void)voiceTriggerNotification:(id)a3;
+- (void)portStateChangedNotification:(id)notification;
+- (void)speakerStateChangedNotification:(id)notification;
+- (void)voiceTriggerNotification:(id)notification;
 @end
 
 @implementation AVVoiceTriggerNotificationForwarder
@@ -14,25 +14,25 @@
   return WeakRetained;
 }
 
-- (void)portStateChangedNotification:(id)a3
+- (void)portStateChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   WeakRetained = objc_loadWeakRetained(&self->_target);
-  [WeakRetained portStateChangedNotification:v4];
+  [WeakRetained portStateChangedNotification:notificationCopy];
 }
 
-- (void)speakerStateChangedNotification:(id)a3
+- (void)speakerStateChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   WeakRetained = objc_loadWeakRetained(&self->_target);
-  [WeakRetained speakerStateChangedNotification:v4];
+  [WeakRetained speakerStateChangedNotification:notificationCopy];
 }
 
-- (void)voiceTriggerNotification:(id)a3
+- (void)voiceTriggerNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   WeakRetained = objc_loadWeakRetained(&self->_target);
-  [WeakRetained voiceTriggerNotification:v4];
+  [WeakRetained voiceTriggerNotification:notificationCopy];
 }
 
 @end

@@ -1,30 +1,30 @@
 @interface RUIObjectModelParser
-- (BOOL)parseActionSignalWithElementName:(id)a3;
-- (RUIObjectModelParser)initWithBaseURL:(id)a3 style:(id)a4 delegate:(id)a5 decodingUserInfo:(id)a6;
+- (BOOL)parseActionSignalWithElementName:(id)name;
+- (RUIObjectModelParser)initWithBaseURL:(id)l style:(id)style delegate:(id)delegate decodingUserInfo:(id)info;
 - (RUIObjectModelParserDelegate)delegate;
-- (id)_createAndAddPageWithAttributes:(id)a3;
-- (id)_createPageWithName:(id)a3 attributes:(id)a4;
+- (id)_createAndAddPageWithAttributes:(id)attributes;
+- (id)_createPageWithName:(id)name attributes:(id)attributes;
 - (id)_lastPageCreateIfNeeded;
 - (id)_lastRow;
-- (void)_addNavigationBarWithAttributes:(id)a3;
-- (void)_logDeprecation:(id)a3 value:(id)a4;
+- (void)_addNavigationBarWithAttributes:(id)attributes;
+- (void)_logDeprecation:(id)deprecation value:(id)value;
 - (void)_validateDocumentContent;
 - (void)dealloc;
-- (void)parseXMLElement:(id)a3;
-- (void)parser:(id)a3 setDefaultActionSignal:(id)a4;
-- (void)traversalDelegateDidEndlement:(id)a3;
-- (void)traversalDelegateDidStartElement:(id)a3;
-- (void)traversalDelegateFoundCData:(id)a3;
+- (void)parseXMLElement:(id)element;
+- (void)parser:(id)parser setDefaultActionSignal:(id)signal;
+- (void)traversalDelegateDidEndlement:(id)endlement;
+- (void)traversalDelegateDidStartElement:(id)element;
+- (void)traversalDelegateFoundCData:(id)data;
 @end
 
 @implementation RUIObjectModelParser
 
-- (RUIObjectModelParser)initWithBaseURL:(id)a3 style:(id)a4 delegate:(id)a5 decodingUserInfo:(id)a6
+- (RUIObjectModelParser)initWithBaseURL:(id)l style:(id)style delegate:(id)delegate decodingUserInfo:(id)info
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  styleCopy = style;
+  delegateCopy = delegate;
+  infoCopy = info;
   v26.receiver = self;
   v26.super_class = RUIObjectModelParser;
   v14 = [(RUIObjectModelParser *)&v26 init];
@@ -34,11 +34,11 @@
     uiObjectModel = v14->_uiObjectModel;
     v14->_uiObjectModel = v15;
 
-    [(RUIObjectModel *)v14->_uiObjectModel setDecodingUserInfo:v13];
-    [(RUIObjectModel *)v14->_uiObjectModel setSourceURL:v10];
-    [(RUIObjectModel *)v14->_uiObjectModel setStyle:v11];
-    [(RUIObjectModelParser *)v14 setBaseURL:v10];
-    [(RUIObjectModelParser *)v14 setDelegate:v12];
+    [(RUIObjectModel *)v14->_uiObjectModel setDecodingUserInfo:infoCopy];
+    [(RUIObjectModel *)v14->_uiObjectModel setSourceURL:lCopy];
+    [(RUIObjectModel *)v14->_uiObjectModel setStyle:styleCopy];
+    [(RUIObjectModelParser *)v14 setBaseURL:lCopy];
+    [(RUIObjectModelParser *)v14 setDelegate:delegateCopy];
     v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
     pages = v14->_pages;
     v14->_pages = v17;
@@ -59,11 +59,11 @@
   return v14;
 }
 
-- (void)parseXMLElement:(id)a3
+- (void)parseXMLElement:(id)element
 {
-  [(RUIObjectModelParser *)self setXmlElement:a3];
-  v4 = [(RUIObjectModelParser *)self xmlElement];
-  [v4 traverseWithDelegate:self];
+  [(RUIObjectModelParser *)self setXmlElement:element];
+  xmlElement = [(RUIObjectModelParser *)self xmlElement];
+  [xmlElement traverseWithDelegate:self];
 
   [(RUIObjectModelParser *)self _validateDocumentContent];
   uiObjectModel = self->_uiObjectModel;
@@ -139,22 +139,22 @@
   [(RUIObjectModelParser *)&v13 dealloc];
 }
 
-- (id)_createPageWithName:(id)a3 attributes:(id)a4
+- (id)_createPageWithName:(id)name attributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  attributesCopy = attributes;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = objc_opt_respondsToSelector();
 
-  if ((v9 & 1) == 0 || (v10 = objc_loadWeakRetained(&self->_delegate), [v10 objectModelParser:self createPageWithName:v6 attributes:v7], v11 = objc_claimAutoreleasedReturnValue(), v10, -[RUIPage setAttributes:](v11, "setAttributes:", v7), !v11))
+  if ((v9 & 1) == 0 || (v10 = objc_loadWeakRetained(&self->_delegate), [v10 objectModelParser:self createPageWithName:nameCopy attributes:attributesCopy], v11 = objc_claimAutoreleasedReturnValue(), v10, -[RUIPage setAttributes:](v11, "setAttributes:", attributesCopy), !v11))
   {
-    v11 = [[RUIPage alloc] initWithAttributes:v7];
+    v11 = [[RUIPage alloc] initWithAttributes:attributesCopy];
   }
 
-  v12 = [(RUIElement *)[RUIPageElement alloc] initWithAttributes:v7 parent:0];
+  v12 = [(RUIElement *)[RUIPageElement alloc] initWithAttributes:attributesCopy parent:0];
   [(RUIPage *)v11 setPageElement:v12];
-  v13 = [(RUIObjectModel *)self->_uiObjectModel style];
-  [(RUIPage *)v11 setStyle:v13];
+  style = [(RUIObjectModel *)self->_uiObjectModel style];
+  [(RUIPage *)v11 setStyle:style];
 
   [(RUIPage *)v11 setObjectModel:self->_uiObjectModel];
   [(NSMutableArray *)self->_currentPageStack addObject:v11];
@@ -162,26 +162,26 @@
   return v11;
 }
 
-- (id)_createAndAddPageWithAttributes:(id)a3
+- (id)_createAndAddPageWithAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"name"];
-  v6 = [(RUIObjectModelParser *)self _createPageWithName:v5 attributes:v4];
+  attributesCopy = attributes;
+  v5 = [attributesCopy objectForKeyedSubscript:@"name"];
+  v6 = [(RUIObjectModelParser *)self _createPageWithName:v5 attributes:attributesCopy];
 
-  if (v4)
+  if (attributesCopy)
   {
-    v7 = [v4 objectForKeyedSubscript:@"validationFunction"];
+    v7 = [attributesCopy objectForKeyedSubscript:@"validationFunction"];
     [v6 setValidationFunction:v7];
 
-    v8 = [v4 objectForKeyedSubscript:@"id"];
+    v8 = [attributesCopy objectForKeyedSubscript:@"id"];
     [v6 setPageID:v8];
 
-    v9 = [v4 objectForKeyedSubscript:@"backgroundColor"];
+    v9 = [attributesCopy objectForKeyedSubscript:@"backgroundColor"];
     if (v9)
     {
       v10 = [MEMORY[0x277D75348] _remoteUI_colorWithString:v9];
-      v11 = [v6 view];
-      [v11 setBackgroundColor:v10];
+      view = [v6 view];
+      [view setBackgroundColor:v10];
     }
   }
 
@@ -192,67 +192,67 @@
 
 - (id)_lastPageCreateIfNeeded
 {
-  v3 = [(NSMutableArray *)self->_currentPageStack lastObject];
-  if (!v3)
+  lastObject = [(NSMutableArray *)self->_currentPageStack lastObject];
+  if (!lastObject)
   {
-    v3 = [(RUIObjectModelParser *)self _createAndAddPageWithAttributes:0];
+    lastObject = [(RUIObjectModelParser *)self _createAndAddPageWithAttributes:0];
   }
 
-  return v3;
+  return lastObject;
 }
 
 - (id)_lastRow
 {
-  v2 = [(NSMutableArray *)self->_currentPageStack lastObject];
-  v3 = [v2 tableViewOM];
-  v4 = [v3 sections];
-  v5 = [v4 lastObject];
+  lastObject = [(NSMutableArray *)self->_currentPageStack lastObject];
+  tableViewOM = [lastObject tableViewOM];
+  sections = [tableViewOM sections];
+  lastObject2 = [sections lastObject];
 
-  v6 = [v5 rows];
-  v7 = [v6 lastObject];
+  rows = [lastObject2 rows];
+  lastObject3 = [rows lastObject];
 
-  return v7;
+  return lastObject3;
 }
 
-- (void)_addNavigationBarWithAttributes:(id)a3
+- (void)_addNavigationBarWithAttributes:(id)attributes
 {
-  v9 = a3;
-  v4 = [(RUIObjectModelParser *)self _lastPageCreateIfNeeded];
-  v5 = [v9 objectForKey:@"title"];
+  attributesCopy = attributes;
+  _lastPageCreateIfNeeded = [(RUIObjectModelParser *)self _lastPageCreateIfNeeded];
+  v5 = [attributesCopy objectForKey:@"title"];
   if ([v5 length])
   {
-    [v4 setNavTitle:v5];
+    [_lastPageCreateIfNeeded setNavTitle:v5];
   }
 
-  v6 = [v9 objectForKey:@"subTitle"];
+  v6 = [attributesCopy objectForKey:@"subTitle"];
   if ([v6 length])
   {
-    [v4 setNavSubTitle:v6];
+    [_lastPageCreateIfNeeded setNavSubTitle:v6];
   }
 
-  v7 = [v9 objectForKey:@"backButtonTitle"];
+  v7 = [attributesCopy objectForKey:@"backButtonTitle"];
   if (v7)
   {
-    [v4 setBackButtonTitle:v7];
+    [_lastPageCreateIfNeeded setBackButtonTitle:v7];
   }
 
-  v8 = [v9 objectForKey:@"hidesBackButton"];
-  [v4 setHidesBackButton:{objc_msgSend(v8, "BOOLValue")}];
+  v8 = [attributesCopy objectForKey:@"hidesBackButton"];
+  [_lastPageCreateIfNeeded setHidesBackButton:{objc_msgSend(v8, "BOOLValue")}];
 }
 
-- (void)_logDeprecation:(id)a3 value:(id)a4
+- (void)_logDeprecation:(id)deprecation value:(id)value
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  deprecationCopy = deprecation;
+  valueCopy = value;
+  if (valueCopy)
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@" = %@", v7];
+    valueCopy = [MEMORY[0x277CCACA8] stringWithFormat:@" = %@", valueCopy];
   }
 
   else
   {
-    v8 = &stru_282D68F58;
+    valueCopy = &stru_282D68F58;
   }
 
   if (_isInternalInstall())
@@ -260,38 +260,38 @@
     v9 = _RUILoggingFacility();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(RUIObjectModelParser *)self baseURL];
-      v11 = [(NSMutableArray *)self->_elementStack lastObject];
+      baseURL = [(RUIObjectModelParser *)self baseURL];
+      lastObject = [(NSMutableArray *)self->_elementStack lastObject];
       *buf = 138413058;
-      v13 = v10;
+      v13 = baseURL;
       v14 = 2112;
-      v15 = v6;
+      v15 = deprecationCopy;
       v16 = 2112;
-      v17 = v8;
+      v17 = valueCopy;
       v18 = 2112;
-      v19 = v11;
+      v19 = lastObject;
       _os_log_impl(&dword_21B93D000, v9, OS_LOG_TYPE_DEFAULT, "Page with baseURL %@ is using deprecated feature %@%@ in %@ element", buf, 0x2Au);
     }
   }
 }
 
-- (BOOL)parseActionSignalWithElementName:(id)a3
+- (BOOL)parseActionSignalWithElementName:(id)name
 {
-  v4 = a3;
-  v5 = [RUIActionSignal signalWithString:v4];
+  nameCopy = name;
+  v5 = [RUIActionSignal signalWithString:nameCopy];
   if (v5)
   {
     actionSignal = self->_actionSignal;
     if (actionSignal)
     {
-      v7 = [(RUIActionSignal *)actionSignal subActions];
-      [v7 addObject:v4];
+      subActions = [(RUIActionSignal *)actionSignal subActions];
+      [subActions addObject:nameCopy];
     }
 
     else
     {
       v8 = v5;
-      v7 = self->_actionSignal;
+      subActions = self->_actionSignal;
       self->_actionSignal = v8;
     }
   }
@@ -299,14 +299,14 @@
   return v5 != 0;
 }
 
-- (void)traversalDelegateDidStartElement:(id)a3
+- (void)traversalDelegateDidStartElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   [(NSMutableString *)self->_accumulator setString:&stru_282D68F58];
-  v5 = [v4 attributtes];
-  v6 = [v4 name];
-  objc_storeStrong(&self->_currentElementAttributes, v5);
-  if ([v6 isEqualToString:@"buddyFlowComplete"])
+  attributtes = [elementCopy attributtes];
+  name = [elementCopy name];
+  objc_storeStrong(&self->_currentElementAttributes, attributtes);
+  if ([name isEqualToString:@"buddyFlowComplete"])
   {
     if (_isInternalInstall())
     {
@@ -327,9 +327,9 @@
 
   else
   {
-    if (![v6 isEqualToString:@"xmlui"])
+    if (![name isEqualToString:@"xmlui"])
     {
-      if ([v6 isEqualToString:@"actions"])
+      if ([name isEqualToString:@"actions"])
       {
         if (!_isInternalInstall())
         {
@@ -346,10 +346,10 @@
 
       else
       {
-        if ([v6 isEqualToString:@"script"])
+        if ([name isEqualToString:@"script"])
         {
           v18 = MEMORY[0x277CBEBC0];
-          v19 = [v5 objectForKey:@"src"];
+          v19 = [attributtes objectForKey:@"src"];
           v20 = [v18 URLWithString:v19];
           [(RUIObjectModel *)self->_uiObjectModel setScriptURL:v20];
 
@@ -357,62 +357,62 @@
           goto LABEL_55;
         }
 
-        if ([v6 isEqualToString:@"page"])
+        if ([name isEqualToString:@"page"])
         {
-          v17 = [(RUIObjectModelParser *)self _createAndAddPageWithAttributes:v5];
+          v17 = [(RUIObjectModelParser *)self _createAndAddPageWithAttributes:attributtes];
           v31 = [RUITopLevelElementParser alloc];
-          v32 = [v17 elementProvider];
-          v33 = [(RUITopLevelElementParser *)v31 initWithXMLElement:v4 elementProvider:v32 objectModel:self->_uiObjectModel delegate:self];
+          elementProvider = [v17 elementProvider];
+          v33 = [(RUITopLevelElementParser *)v31 initWithXMLElement:elementCopy elementProvider:elementProvider objectModel:self->_uiObjectModel delegate:self];
 
-          v34 = [v17 pageElement];
-          [v34 setSourceXMLElement:v4];
+          pageElement = [v17 pageElement];
+          [pageElement setSourceXMLElement:elementCopy];
 
           [(RUITopLevelElementParser *)v33 parse];
         }
 
         else
         {
-          if (![v6 isEqualToString:@"alert"])
+          if (![name isEqualToString:@"alert"])
           {
-            if ([v6 isEqualToString:@"clientInfo"])
+            if ([name isEqualToString:@"clientInfo"])
             {
-              [(RUIObjectModel *)self->_uiObjectModel setClientInfo:v5];
+              [(RUIObjectModel *)self->_uiObjectModel setClientInfo:attributtes];
             }
 
-            else if ([v6 isEqualToString:@"serverInfo"])
+            else if ([name isEqualToString:@"serverInfo"])
             {
-              [(RUIObjectModel *)self->_uiObjectModel setServerInfo:v5];
+              [(RUIObjectModel *)self->_uiObjectModel setServerInfo:attributtes];
             }
 
-            else if ([v6 isEqualToString:@"updateInfo"])
+            else if ([name isEqualToString:@"updateInfo"])
             {
-              [(RUIObjectModel *)self->_uiObjectModel setUpdateInfo:v5];
+              [(RUIObjectModel *)self->_uiObjectModel setUpdateInfo:attributtes];
             }
 
             else
             {
-              [(RUIObjectModelParser *)self parseActionSignalWithElementName:v6];
+              [(RUIObjectModelParser *)self parseActionSignalWithElementName:name];
             }
 
             goto LABEL_55;
           }
 
           self->_parserState = 2;
-          v35 = [[RUIAlertView alloc] initWithAttributes:v5 parent:0];
-          v36 = [(RUIObjectModel *)self->_uiObjectModel style];
-          [(RUIElement *)v35 setStyle:v36];
+          v35 = [[RUIAlertView alloc] initWithAttributes:attributtes parent:0];
+          style = [(RUIObjectModel *)self->_uiObjectModel style];
+          [(RUIElement *)v35 setStyle:style];
 
-          v37 = [v5 objectForKey:@"title"];
+          v37 = [attributtes objectForKey:@"title"];
           [(RUIAlertView *)v35 setTitle:v37];
 
-          v38 = [v5 objectForKey:@"message"];
+          v38 = [attributtes objectForKey:@"message"];
           [(RUIAlertView *)v35 setMessage:v38];
 
-          v39 = [v5 objectForKey:@"cancelButtonTitle"];
+          v39 = [attributtes objectForKey:@"cancelButtonTitle"];
 
           if (v39)
           {
-            v40 = [v5 objectForKeyedSubscript:@"cancelButtonTitle"];
+            v40 = [attributtes objectForKeyedSubscript:@"cancelButtonTitle"];
             [(RUIAlertView *)v35 addButtonWithTitle:v40 URL:0 style:1 attributes:0];
           }
 
@@ -420,7 +420,7 @@
           self->_currentAlert = v35;
           v17 = v35;
 
-          [v17 setSourceXMLElement:v4];
+          [v17 setSourceXMLElement:elementCopy];
         }
       }
 
@@ -432,16 +432,16 @@
       *&self->_foundXMLUI = 257;
     }
 
-    v10 = [v5 objectForKey:@"action"];
+    v10 = [attributtes objectForKey:@"action"];
     uiObjectModel = self->_uiObjectModel;
-    v12 = [v5 objectForKey:@"id"];
+    v12 = [attributtes objectForKey:@"id"];
     [(RUIObjectModel *)uiObjectModel setIdentifier:v12];
 
     v13 = self->_uiObjectModel;
-    v14 = [v5 objectForKey:@"idOfOldestObjectModelToRemoveAfterPush"];
+    v14 = [attributtes objectForKey:@"idOfOldestObjectModelToRemoveAfterPush"];
     [(RUIObjectModel *)v13 setIdentifierMarkingStackRemovalAfterPush:v14];
 
-    v15 = [v5 objectForKeyedSubscript:@"idOfObjectModelToReplace"];
+    v15 = [attributtes objectForKeyedSubscript:@"idOfObjectModelToReplace"];
     [(RUIObjectModel *)self->_uiObjectModel setIdOfObjectModelToReplace:v15];
 
     v16 = [RUIActionSignal signalWithString:v10];
@@ -459,10 +459,10 @@
       }
     }
 
-    v22 = [v5 objectForKey:@"validationFunction"];
+    v22 = [attributtes objectForKey:@"validationFunction"];
     [(RUIObjectModel *)self->_uiObjectModel setValidationFunction:v22];
 
-    v23 = [v5 objectForKey:@"refresh"];
+    v23 = [attributtes objectForKey:@"refresh"];
     v24 = [v23 componentsSeparatedByString:@""];;
     if ([v24 count] == 2)
     {
@@ -473,34 +473,34 @@
       [(RUIObjectModel *)self->_uiObjectModel setRefreshURL:v26];
     }
 
-    v27 = [(RUIObjectModel *)self->_uiObjectModel style];
+    style2 = [(RUIObjectModel *)self->_uiObjectModel style];
 
-    if (!v27)
+    if (!style2)
     {
-      v28 = [v5 objectForKey:@"style"];
+      v28 = [attributtes objectForKey:@"style"];
       v50 = v10;
       if ([v28 isEqualToString:@"setupAssistant"])
       {
         v29 = self->_uiObjectModel;
-        v30 = +[RUIStyle setupAssistantStyle];
+        defaultStyle = +[RUIStyle setupAssistantStyle];
       }
 
       else if ([v28 isEqualToString:@"setupAssistantModal"])
       {
         v29 = self->_uiObjectModel;
-        v30 = +[RUIStyle setupAssistantModalStyle];
+        defaultStyle = +[RUIStyle setupAssistantModalStyle];
       }
 
       else if ([v28 isEqualToString:@"oslo"])
       {
         v29 = self->_uiObjectModel;
-        v30 = +[RUIStyle osloStyle];
+        defaultStyle = +[RUIStyle osloStyle];
       }
 
       else if ([v28 isEqualToString:@"atv"])
       {
         v29 = self->_uiObjectModel;
-        v30 = +[RUIStyle frontRowStyle];
+        defaultStyle = +[RUIStyle frontRowStyle];
       }
 
       else
@@ -517,46 +517,46 @@
           v43 = RUIStyle;
         }
 
-        v30 = [(__objc2_class *)v43 defaultStyle];
+        defaultStyle = [(__objc2_class *)v43 defaultStyle];
       }
 
-      v44 = v30;
-      [(RUIObjectModel *)v29 setStyle:v30];
+      v44 = defaultStyle;
+      [(RUIObjectModel *)v29 setStyle:defaultStyle];
 
       v10 = v50;
     }
 
-    v45 = [v5 objectForKeyedSubscript:@"tintColor"];
+    v45 = [attributtes objectForKeyedSubscript:@"tintColor"];
 
     if (v45)
     {
       v46 = MEMORY[0x277D75348];
-      v47 = [v5 objectForKeyedSubscript:@"tintColor"];
+      v47 = [attributtes objectForKeyedSubscript:@"tintColor"];
       v48 = [v46 _remoteUI_colorWithString:v47 defaultColor:0];
 
-      v49 = [(RUIObjectModel *)self->_uiObjectModel style];
-      [v49 setTintColor:v48];
+      style3 = [(RUIObjectModel *)self->_uiObjectModel style];
+      [style3 setTintColor:v48];
     }
   }
 
 LABEL_55:
-  [(NSMutableArray *)self->_elementStack addObject:v6];
+  [(NSMutableArray *)self->_elementStack addObject:name];
 }
 
-- (void)traversalDelegateDidEndlement:(id)a3
+- (void)traversalDelegateDidEndlement:(id)endlement
 {
-  v15 = a3;
+  endlementCopy = endlement;
   v4 = [(NSMutableString *)self->_accumulator copy];
-  v5 = [v15 name];
-  v6 = v5;
+  name = [endlementCopy name];
+  v6 = name;
   parserState = self->_parserState;
   if (parserState)
   {
     if (parserState == 2)
     {
-      if ([v5 isEqualToString:@"cancelButton"])
+      if ([name isEqualToString:@"cancelButton"])
       {
-        [(RUIAlertView *)self->_currentAlert addButtonWithTitle:v4 URL:0 style:1 attributes:self->_currentElementAttributes xmlElement:v15];
+        [(RUIAlertView *)self->_currentAlert addButtonWithTitle:v4 URL:0 style:1 attributes:self->_currentElementAttributes xmlElement:endlementCopy];
       }
 
       else if ([v6 isEqualToString:@"button"])
@@ -576,7 +576,7 @@ LABEL_55:
         currentAlert = self->_currentAlert;
         v12 = [(NSDictionary *)self->_currentElementAttributes objectForKeyedSubscript:@"url"];
         v13 = [v10 URLWithString:v12];
-        [(RUIAlertView *)currentAlert addButtonWithTitle:v4 URL:v13 style:v9 attributes:self->_currentElementAttributes xmlElement:v15];
+        [(RUIAlertView *)currentAlert addButtonWithTitle:v4 URL:v13 style:v9 attributes:self->_currentElementAttributes xmlElement:endlementCopy];
       }
 
       else if ([v6 isEqualToString:@"alert"])
@@ -588,13 +588,13 @@ LABEL_55:
       }
     }
 
-    else if (parserState == 1 && [v5 isEqualToString:@"script"])
+    else if (parserState == 1 && [name isEqualToString:@"script"])
     {
       self->_parserState = 0;
     }
   }
 
-  else if ([v5 isEqualToString:@"xmlui"])
+  else if ([name isEqualToString:@"xmlui"])
   {
     [(RUIObjectModel *)self->_uiObjectModel setPages:self->_pages];
     [(NSMutableArray *)self->_currentPageStack removeAllObjects];
@@ -611,24 +611,24 @@ LABEL_55:
 
 - (void)_validateDocumentContent
 {
-  v9 = [(RUIObjectModel *)self->_uiObjectModel allPages];
-  if ([v9 count] || self->_actionSignal)
+  allPages = [(RUIObjectModel *)self->_uiObjectModel allPages];
+  if ([allPages count] || self->_actionSignal)
   {
 LABEL_8:
 
     return;
   }
 
-  v3 = [(RUIObjectModel *)self->_uiObjectModel primaryAlert];
-  if (v3 || ([(RUIObjectModel *)self->_uiObjectModel scriptURL], (v3 = objc_claimAutoreleasedReturnValue()) != 0) || ([(RUIObjectModel *)self->_uiObjectModel inlineScript], (v3 = objc_claimAutoreleasedReturnValue()) != 0) || ([(RUIObjectModel *)self->_uiObjectModel clientInfo], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  primaryAlert = [(RUIObjectModel *)self->_uiObjectModel primaryAlert];
+  if (primaryAlert || ([(RUIObjectModel *)self->_uiObjectModel scriptURL], (primaryAlert = objc_claimAutoreleasedReturnValue()) != 0) || ([(RUIObjectModel *)self->_uiObjectModel inlineScript], (primaryAlert = objc_claimAutoreleasedReturnValue()) != 0) || ([(RUIObjectModel *)self->_uiObjectModel clientInfo], (primaryAlert = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
     goto LABEL_8;
   }
 
-  v4 = [(RUIObjectModel *)self->_uiObjectModel serverInfo];
+  serverInfo = [(RUIObjectModel *)self->_uiObjectModel serverInfo];
 
-  if (!v4 && !self->_foundXMLUI)
+  if (!serverInfo && !self->_foundXMLUI)
   {
     if (_isInternalInstall())
     {
@@ -650,30 +650,30 @@ LABEL_8:
   }
 }
 
-- (void)traversalDelegateFoundCData:(id)a3
+- (void)traversalDelegateFoundCData:(id)data
 {
-  v7 = a3;
+  dataCopy = data;
   accumulator = self->_accumulator;
-  v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v7 encoding:4];
+  v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:dataCopy encoding:4];
   [(NSMutableString *)accumulator appendString:v5];
 
   if (self->_parserState == 1)
   {
-    v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v7 encoding:4];
+    v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:dataCopy encoding:4];
     [(RUIObjectModel *)self->_uiObjectModel setInlineScript:v6];
   }
 }
 
-- (void)parser:(id)a3 setDefaultActionSignal:(id)a4
+- (void)parser:(id)parser setDefaultActionSignal:(id)signal
 {
-  v6 = a4;
+  signalCopy = signal;
   actionSignal = self->_actionSignal;
   p_actionSignal = &self->_actionSignal;
   if (!actionSignal)
   {
-    v9 = v6;
-    objc_storeStrong(p_actionSignal, a4);
-    v6 = v9;
+    v9 = signalCopy;
+    objc_storeStrong(p_actionSignal, signal);
+    signalCopy = v9;
   }
 }
 

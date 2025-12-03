@@ -1,5 +1,5 @@
 @interface VNMPClusteringTreeNodeWrapper
-- (VNMPClusteringTreeNodeWrapper)initWithNode:(void *)a3 freeNodeOnDealloc:(BOOL)a4;
+- (VNMPClusteringTreeNodeWrapper)initWithNode:(void *)node freeNodeOnDealloc:(BOOL)dealloc;
 - (id)getLeafNodes;
 - (id)left;
 - (id)right;
@@ -25,7 +25,7 @@
 - (id)getLeafNodes
 {
   MPClusteringTreeNode::getLeafNodes(&v8, self->_node);
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   var0 = v8.var0;
   v4 = *&v8.var1;
   if (v8.var0 != *&v8.var1)
@@ -34,7 +34,7 @@
     do
     {
       v6 = [[VNMPClusteringTreeNodeWrapper alloc] initWithNode:*v5 freeNodeOnDealloc:0];
-      [v2 addObject:v6];
+      [array addObject:v6];
 
       ++v5;
     }
@@ -47,7 +47,7 @@
     operator delete(var0);
   }
 
-  return v2;
+  return array;
 }
 
 - (id)right
@@ -82,17 +82,17 @@
   return v3;
 }
 
-- (VNMPClusteringTreeNodeWrapper)initWithNode:(void *)a3 freeNodeOnDealloc:(BOOL)a4
+- (VNMPClusteringTreeNodeWrapper)initWithNode:(void *)node freeNodeOnDealloc:(BOOL)dealloc
 {
-  v4 = a4;
+  deallocCopy = dealloc;
   v9.receiver = self;
   v9.super_class = VNMPClusteringTreeNodeWrapper;
   v6 = [(VNMPClusteringTreeNodeWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    [(VNMPClusteringTreeNodeWrapper *)v6 setNode:a3];
-    [(VNMPClusteringTreeNodeWrapper *)v7 setFreeNodeOnDealloc:v4];
+    [(VNMPClusteringTreeNodeWrapper *)v6 setNode:node];
+    [(VNMPClusteringTreeNodeWrapper *)v7 setFreeNodeOnDealloc:deallocCopy];
   }
 
   return v7;

@@ -1,12 +1,12 @@
 @interface _PASBundleIdResolver
-- (_PASBundleIdResolver)initWithProcessIdentifier:(int)a3;
-- (id)bundleIdentifierOrProcessName:(BOOL *)a3;
-- (void)_populateResultWithLockWitness:(id)a3;
+- (_PASBundleIdResolver)initWithProcessIdentifier:(int)identifier;
+- (id)bundleIdentifierOrProcessName:(BOOL *)name;
+- (void)_populateResultWithLockWitness:(id)witness;
 @end
 
 @implementation _PASBundleIdResolver
 
-- (id)bundleIdentifierOrProcessName:(BOOL *)a3
+- (id)bundleIdentifierOrProcessName:(BOOL *)name
 {
   if (self->_exePath)
   {
@@ -22,7 +22,7 @@
     v6[2] = __54___PASBundleIdResolver_bundleIdentifierOrProcessName___block_invoke;
     v6[3] = &unk_1E77F1BE0;
     v6[5] = &v7;
-    v6[6] = a3;
+    v6[6] = name;
     v6[4] = self;
     [(_PASLock *)lock runWithLockAcquired:v6];
     v4 = v8[5];
@@ -37,14 +37,14 @@
   return v4;
 }
 
-- (void)_populateResultWithLockWitness:(id)a3
+- (void)_populateResultWithLockWitness:(id)witness
 {
-  v18 = a3;
+  witnessCopy = witness;
   v5 = CFURLCreateWithFileSystemPath(0, self->_exePath, kCFURLPOSIXPathStyle, 0);
   if (!v5)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"_PASBundleIdResolver.m" lineNumber:55 description:{@"Failed to compute URL for filesystem path: %@", self->_exePath}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASBundleIdResolver.m" lineNumber:55 description:{@"Failed to compute URL for filesystem path: %@", self->_exePath}];
   }
 
   v6 = _CFBundleCopyBundleURLForExecutableURL();
@@ -61,16 +61,16 @@
         Copy = CFStringCreateCopy(0, Identifier);
         if (!Copy)
         {
-          v17 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v17 handleFailureInMethod:a2 object:self file:@"_PASBundleIdResolver.m" lineNumber:65 description:@"Failed to copy bundleIdentifier."];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"_PASBundleIdResolver.m" lineNumber:65 description:@"Failed to copy bundleIdentifier."];
 
           Copy = 0;
         }
 
-        v12 = v18[1];
-        v18[1] = Copy;
+        v12 = witnessCopy[1];
+        witnessCopy[1] = Copy;
 
-        *(v18 + 16) = 0;
+        *(witnessCopy + 16) = 0;
       }
 
       CFRelease(v9);
@@ -80,19 +80,19 @@
   }
 
   CFRelease(v5);
-  v13 = v18;
-  if (!v18[1])
+  v13 = witnessCopy;
+  if (!witnessCopy[1])
   {
-    v14 = [(NSString *)self->_exePath lastPathComponent];
-    v15 = v18[1];
-    v18[1] = v14;
+    lastPathComponent = [(NSString *)self->_exePath lastPathComponent];
+    v15 = witnessCopy[1];
+    witnessCopy[1] = lastPathComponent;
 
-    v13 = v18;
-    *(v18 + 16) = 1;
+    v13 = witnessCopy;
+    *(witnessCopy + 16) = 1;
   }
 }
 
-- (_PASBundleIdResolver)initWithProcessIdentifier:(int)a3
+- (_PASBundleIdResolver)initWithProcessIdentifier:(int)identifier
 {
   v3 = MEMORY[0x1EEE9AC00](self);
   v5 = v4;

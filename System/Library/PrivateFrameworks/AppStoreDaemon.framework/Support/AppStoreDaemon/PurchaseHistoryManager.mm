@@ -1,8 +1,8 @@
 @interface PurchaseHistoryManager
 - (PurchaseHistoryManager)init;
 - (void)_handleAccountChangedNotification;
-- (void)pushService:(id)a3 didReceiveMessage:(id)a4 completionHandler:(id)a5;
-- (void)pushService:(id)a3 recoverFromDroppedMessagesOfActionType:(unint64_t)a4 completionHandler:(id)a5;
+- (void)pushService:(id)service didReceiveMessage:(id)message completionHandler:(id)handler;
+- (void)pushService:(id)service recoverFromDroppedMessagesOfActionType:(unint64_t)type completionHandler:(id)handler;
 @end
 
 @implementation PurchaseHistoryManager
@@ -41,11 +41,11 @@
         v15 = objc_opt_class();
         v16 = v15;
         v17 = +[ActiveAccountObserver activeAccount];
-        v18 = [v17 hashedDescription];
+        hashedDescription = [v17 hashedDescription];
         *buf = 138412546;
         v27 = v15;
         v28 = 2114;
-        v29 = v18;
+        v29 = hashedDescription;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[%@]: Begin observing, current account: %{public}@", buf, 0x16u);
       }
 
@@ -66,27 +66,27 @@
   return v2;
 }
 
-- (void)pushService:(id)a3 didReceiveMessage:(id)a4 completionHandler:(id)a5
+- (void)pushService:(id)service didReceiveMessage:(id)message completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  messageCopy = message;
+  handlerCopy = handler;
   bagService = self->_bagService;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10021E940;
   v13[3] = &unk_10051D970;
-  v15 = self;
-  v16 = v8;
-  v14 = v7;
-  v11 = v7;
-  v12 = v8;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v14 = messageCopy;
+  v11 = messageCopy;
+  v12 = handlerCopy;
   [(BagService *)bagService recentBagOnQueue:dispatchQueue completionHandler:v13];
 }
 
-- (void)pushService:(id)a3 recoverFromDroppedMessagesOfActionType:(unint64_t)a4 completionHandler:(id)a5
+- (void)pushService:(id)service recoverFromDroppedMessagesOfActionType:(unint64_t)type completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   bagService = self->_bagService;
   dispatchQueue = self->_dispatchQueue;
   v10[0] = _NSConcreteStackBlock;
@@ -94,8 +94,8 @@
   v10[2] = sub_10021EEC4;
   v10[3] = &unk_10051D998;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   [(BagService *)bagService recentBagOnQueue:dispatchQueue completionHandler:v10];
 }
 

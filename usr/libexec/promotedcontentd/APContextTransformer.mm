@@ -1,26 +1,26 @@
 @interface APContextTransformer
-- (APContextTransformer)initWithContext:(id)a3 contentIdentifier:(id)a4 placementType:(int64_t)a5;
+- (APContextTransformer)initWithContext:(id)context contentIdentifier:(id)identifier placementType:(int64_t)type;
 - (id)transformedContext;
 - (void)_addAdjacentContext;
-- (void)_addContext:(id)a3;
+- (void)_addContext:(id)context;
 - (void)_addCurrentArticleContext;
 @end
 
 @implementation APContextTransformer
 
-- (APContextTransformer)initWithContext:(id)a3 contentIdentifier:(id)a4 placementType:(int64_t)a5
+- (APContextTransformer)initWithContext:(id)context contentIdentifier:(id)identifier placementType:(int64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  contextCopy = context;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = APContextTransformer;
   v11 = [(APContextTransformer *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_contentIdentifier, a4);
-    objc_storeStrong(&v12->_originalContext, a3);
-    v12->_placementType = a5;
+    objc_storeStrong(&v11->_contentIdentifier, identifier);
+    objc_storeStrong(&v12->_originalContext, context);
+    v12->_placementType = type;
     v13 = [[NSMutableDictionary alloc] initWithCapacity:1];
     bodyContext = v12->_bodyContext;
     v12->_bodyContext = v13;
@@ -35,45 +35,45 @@
 
 - (void)_addCurrentArticleContext
 {
-  v11 = [(APContextTransformer *)self originalContext];
-  v3 = [(APContextTransformer *)self bodyContext];
-  v4 = [v3 objectForKey:@"currentArticle"];
-  v5 = [v11 current];
-  v6 = [v5 categories];
+  originalContext = [(APContextTransformer *)self originalContext];
+  bodyContext = [(APContextTransformer *)self bodyContext];
+  v4 = [bodyContext objectForKey:@"currentArticle"];
+  current = [originalContext current];
+  categories = [current categories];
 
-  v7 = [v11 current];
-  v8 = [v7 keywords];
+  current2 = [originalContext current];
+  keywords = [current2 keywords];
 
-  v9 = [v11 current];
-  v10 = [v9 language];
+  current3 = [originalContext current];
+  language = [current3 language];
 
-  [v4 setValue:v6 forKey:@"categories"];
-  [v4 setValue:v8 forKey:@"keywords"];
-  [v4 setValue:v10 forKey:@"sourceContentLanguage"];
-  [v3 setValue:v4 forKey:@"currentArticle"];
+  [v4 setValue:categories forKey:@"categories"];
+  [v4 setValue:keywords forKey:@"keywords"];
+  [v4 setValue:language forKey:@"sourceContentLanguage"];
+  [bodyContext setValue:v4 forKey:@"currentArticle"];
 }
 
-- (void)_addContext:(id)a3
+- (void)_addContext:(id)context
 {
-  v23 = a3;
-  if ([v23 adjacency] == 151)
+  contextCopy = context;
+  if ([contextCopy adjacency] == 151)
   {
     v4 = &APLegacyNextArticleKey;
   }
 
-  else if ([v23 adjacency] == 150)
+  else if ([contextCopy adjacency] == 150)
   {
     v4 = &APLegacyGroupContextKey;
   }
 
-  else if ([v23 adjacency] == 152)
+  else if ([contextCopy adjacency] == 152)
   {
     v4 = &APLegacyGroupContextAboveKey;
   }
 
   else
   {
-    if ([v23 adjacency] != 156)
+    if ([contextCopy adjacency] != 156)
     {
       goto LABEL_22;
     }
@@ -82,9 +82,9 @@
   }
 
   v5 = *v4;
-  v6 = [(APContextTransformer *)self bodyContext];
+  bodyContext = [(APContextTransformer *)self bodyContext];
   v22 = v5;
-  v7 = [v6 objectForKey:v5];
+  v7 = [bodyContext objectForKey:v5];
   v8 = [v7 mutableCopy];
 
   if (!v8)
@@ -93,12 +93,12 @@
   }
 
   v9 = objc_alloc_init(NSMutableArray);
-  v10 = [v23 categories];
+  categories = [contextCopy categories];
 
-  if (v10)
+  if (categories)
   {
-    v11 = [v23 categories];
-    [v9 addObjectsFromArray:v11];
+    categories2 = [contextCopy categories];
+    [v9 addObjectsFromArray:categories2];
   }
 
   v21 = [v8 valueForKey:@"categories"];
@@ -109,12 +109,12 @@
   }
 
   v13 = objc_alloc_init(NSMutableArray);
-  v14 = [v23 keywords];
+  keywords = [contextCopy keywords];
 
-  if (v14)
+  if (keywords)
   {
-    v15 = [v23 keywords];
-    [v13 addObjectsFromArray:v15];
+    keywords2 = [contextCopy keywords];
+    [v13 addObjectsFromArray:keywords2];
   }
 
   v16 = [v8 valueForKey:@"keywords"];
@@ -124,30 +124,30 @@
     [v8 setObject:v17 forKey:@"keywords"];
   }
 
-  v18 = [v23 language];
+  language = [contextCopy language];
 
-  if (v18)
+  if (language)
   {
-    v18 = [v23 language];
+    language = [contextCopy language];
   }
 
-  [v8 setValue:v18 forKey:@"languages"];
-  v19 = [(APContextTransformer *)self bodyContext];
+  [v8 setValue:language forKey:@"languages"];
+  bodyContext2 = [(APContextTransformer *)self bodyContext];
   v20 = [NSDictionary dictionaryWithDictionary:v8];
-  [v19 setValue:v20 forKey:v22];
+  [bodyContext2 setValue:v20 forKey:v22];
 
 LABEL_22:
 }
 
 - (void)_addAdjacentContext
 {
-  v3 = [(APContextTransformer *)self originalContext];
+  originalContext = [(APContextTransformer *)self originalContext];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 adjacent];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  adjacent = [originalContext adjacent];
+  v5 = [adjacent countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -159,7 +159,7 @@ LABEL_22:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(adjacent);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
@@ -170,7 +170,7 @@ LABEL_22:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [adjacent countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -179,12 +179,12 @@ LABEL_22:
 
 - (id)transformedContext
 {
-  v30 = [(APContextTransformer *)self originalContext];
-  v3 = [v30 supplementalContext];
-  v4 = [(APContextTransformer *)self bodyContext];
-  v31 = [(APContextTransformer *)self headerContext];
-  v32 = v4;
-  v29 = self;
+  originalContext = [(APContextTransformer *)self originalContext];
+  supplementalContext = [originalContext supplementalContext];
+  bodyContext = [(APContextTransformer *)self bodyContext];
+  headerContext = [(APContextTransformer *)self headerContext];
+  v32 = bodyContext;
+  selfCopy = self;
   if (![(APContextTransformer *)self placementType]|| [(APContextTransformer *)self placementType]== 4)
   {
     if (qword_1004E6B60 != -1)
@@ -192,11 +192,11 @@ LABEL_22:
       sub_10039412C();
     }
 
-    v5 = [v3 valueForKey:qword_1004E6B58];
+    v5 = [supplementalContext valueForKey:qword_1004E6B58];
 
     if (!v5)
     {
-      v6 = [v3 mutableCopy];
+      v6 = [supplementalContext mutableCopy];
       if ([(APContextTransformer *)self placementType])
       {
         v7 = @"NATIVE";
@@ -210,7 +210,7 @@ LABEL_22:
       [v6 setObject:v7 forKey:qword_1004E6B58];
       v8 = [v6 copy];
 
-      v3 = v8;
+      supplementalContext = v8;
     }
   }
 
@@ -218,7 +218,7 @@ LABEL_22:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v3;
+  obj = supplementalContext;
   v9 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v9)
   {
@@ -236,11 +236,11 @@ LABEL_22:
         v13 = *(*(&v34 + 1) + 8 * i);
         v14 = objc_autoreleasePoolPush();
         v15 = [v13 componentsSeparatedByString:@"."];
-        v16 = [v15 firstObject];
-        v17 = [v16 isEqualToString:@"body"];
+        firstObject = [v15 firstObject];
+        v17 = [firstObject isEqualToString:@"body"];
 
         v18 = v32;
-        if ((v17 & 1) != 0 || ([v15 firstObject], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isEqualToString:", @"header"), v19, v18 = v31, v20))
+        if ((v17 & 1) != 0 || ([v15 firstObject], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isEqualToString:", @"header"), v19, v18 = headerContext, v20))
         {
           [v18 _addProperty:v13 fromSupplementalContext:obj];
         }
@@ -255,16 +255,16 @@ LABEL_22:
   }
 
   v21 = [NSNumber numberWithInt:1];
-  [v31 setObject:v21 forKey:@"onboard_status"];
+  [headerContext setObject:v21 forKey:@"onboard_status"];
 
-  v22 = [(APContextTransformer *)v29 contentIdentifier];
-  [v32 setValue:v22 forKey:@"adOpId"];
+  contentIdentifier = [(APContextTransformer *)selfCopy contentIdentifier];
+  [v32 setValue:contentIdentifier forKey:@"adOpId"];
 
-  [(APContextTransformer *)v29 _addCurrentArticleContext];
-  [(APContextTransformer *)v29 _addAdjacentContext];
-  v23 = [v30 requestedAdIdentifier];
+  [(APContextTransformer *)selfCopy _addCurrentArticleContext];
+  [(APContextTransformer *)selfCopy _addAdjacentContext];
+  requestedAdIdentifier = [originalContext requestedAdIdentifier];
 
-  if (v23)
+  if (requestedAdIdentifier)
   {
     v24 = [v32 objectForKey:@"feedMetadata"];
     if (!v24)
@@ -272,15 +272,15 @@ LABEL_22:
       v24 = [[NSMutableDictionary alloc] initWithCapacity:1];
     }
 
-    v25 = [v30 requestedAdIdentifier];
-    [v24 setValue:v25 forKey:@"customTargetingId"];
+    requestedAdIdentifier2 = [originalContext requestedAdIdentifier];
+    [v24 setValue:requestedAdIdentifier2 forKey:@"customTargetingId"];
 
     [v32 setValue:v24 forKey:@"feedMetadata"];
-    v26 = [v30 requestedAdIdentifier];
-    [v32 setValue:v26 forKey:@"customTargetingId"];
+    requestedAdIdentifier3 = [originalContext requestedAdIdentifier];
+    [v32 setValue:requestedAdIdentifier3 forKey:@"customTargetingId"];
   }
 
-  v27 = [[NSDictionary alloc] initWithObjectsAndKeys:{v32, @"body", v31, @"header", 0}];
+  v27 = [[NSDictionary alloc] initWithObjectsAndKeys:{v32, @"body", headerContext, @"header", 0}];
 
   return v27;
 }

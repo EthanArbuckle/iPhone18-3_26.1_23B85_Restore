@@ -1,21 +1,21 @@
 @interface MTKTextureIOBuffer
-- (MTKTextureIOBuffer)initWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 deallocNotification:(id)a5 device:(id)a6 error:(id *)a7;
-- (MTKTextureIOBuffer)initWithLength:(unint64_t)a3 device:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTKTextureIOBuffer)initWithBytesNoCopy:(void *)copy length:(unint64_t)length deallocNotification:(id)notification device:(id)device error:(id *)error;
+- (MTKTextureIOBuffer)initWithLength:(unint64_t)length device:(id)device;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)map;
 @end
 
 @implementation MTKTextureIOBuffer
 
-- (MTKTextureIOBuffer)initWithLength:(unint64_t)a3 device:(id)a4
+- (MTKTextureIOBuffer)initWithLength:(unint64_t)length device:(id)device
 {
-  v6 = a4;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = MTKTextureIOBuffer;
   v7 = [(MTKTextureIOBuffer *)&v11 init];
   if (v7)
   {
-    v8 = [v6 newBufferWithLength:a3 options:0];
+    v8 = [deviceCopy newBufferWithLength:length options:0];
     buffer = v7->_buffer;
     v7->_buffer = v8;
   }
@@ -23,16 +23,16 @@
   return v7;
 }
 
-- (MTKTextureIOBuffer)initWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 deallocNotification:(id)a5 device:(id)a6 error:(id *)a7
+- (MTKTextureIOBuffer)initWithBytesNoCopy:(void *)copy length:(unint64_t)length deallocNotification:(id)notification device:(id)device error:(id *)error
 {
-  v11 = a5;
-  v12 = a6;
+  notificationCopy = notification;
+  deviceCopy = device;
   v17.receiver = self;
   v17.super_class = MTKTextureIOBuffer;
   v13 = [(MTKTextureIOBuffer *)&v17 init];
   if (v13)
   {
-    v14 = [v12 newBufferWithBytesNoCopy:a3 length:a4 options:0 deallocator:v11];
+    v14 = [deviceCopy newBufferWithBytesNoCopy:copy length:length options:0 deallocator:notificationCopy];
     buffer = v13->_buffer;
     v13->_buffer = v14;
   }
@@ -47,12 +47,12 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MTKTextureIOBuffer alloc];
   v5 = [(MTLBuffer *)self->_buffer length];
-  v6 = [(MTLBuffer *)self->_buffer device];
-  v7 = [(MTKTextureIOBuffer *)v4 initWithLength:v5 device:v6];
+  device = [(MTLBuffer *)self->_buffer device];
+  v7 = [(MTKTextureIOBuffer *)v4 initWithLength:v5 device:device];
 
   memcpy([v7[1] contents], -[MTLBuffer contents](self->_buffer, "contents"), -[MTLBuffer length](self->_buffer, "length"));
   return v7;

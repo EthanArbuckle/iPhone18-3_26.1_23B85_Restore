@@ -1,35 +1,35 @@
 @interface UNCRemoteNotificationRepository
-- (UNCRemoteNotificationRepository)initWithServiceClient:(id)a3;
-- (id)_coreServiceClientOrNilWithWarningForSelector:(SEL)a3;
+- (UNCRemoteNotificationRepository)initWithServiceClient:(id)client;
+- (id)_coreServiceClientOrNilWithWarningForSelector:(SEL)selector;
 - (id)allBundleIdentifiers;
-- (id)badgeNumberForBundleIdentifier:(id)a3;
-- (id)notificationRecordForIdentifier:(id)a3 bundleIdentifier:(id)a4;
-- (id)notificationRecordsForBundleIdentifier:(id)a3;
-- (void)notifyDidDiscoverContentOnFirstUnlockForBundleIdentifier:(id)a3;
-- (void)notifyDidPerformUpdates:(id)a3 forBundleIdentifier:(id)a4;
-- (void)removeAllNotificationRecordsForBundleIdentifier:(id)a3;
-- (void)removeInvalidNotificationRecordsForBundleIdentifier:(id)a3;
-- (void)removeNotificationRecordsForIdentifiers:(id)a3 bundleIdentifier:(id)a4;
-- (void)removeNotificationRecordsWithNonPushTriggerForBundleIdentifier:(id)a3;
-- (void)removeSimilarNotificationRecords:(id)a3 bundleIdentifier:(id)a4;
-- (void)removeStoreForBundleIdentifier:(id)a3;
-- (void)setBadgeCount:(int64_t)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5;
-- (void)setBadgeNumber:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5;
-- (void)setBadgeString:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5;
+- (id)badgeNumberForBundleIdentifier:(id)identifier;
+- (id)notificationRecordForIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier;
+- (id)notificationRecordsForBundleIdentifier:(id)identifier;
+- (void)notifyDidDiscoverContentOnFirstUnlockForBundleIdentifier:(id)identifier;
+- (void)notifyDidPerformUpdates:(id)updates forBundleIdentifier:(id)identifier;
+- (void)removeAllNotificationRecordsForBundleIdentifier:(id)identifier;
+- (void)removeInvalidNotificationRecordsForBundleIdentifier:(id)identifier;
+- (void)removeNotificationRecordsForIdentifiers:(id)identifiers bundleIdentifier:(id)identifier;
+- (void)removeNotificationRecordsWithNonPushTriggerForBundleIdentifier:(id)identifier;
+- (void)removeSimilarNotificationRecords:(id)records bundleIdentifier:(id)identifier;
+- (void)removeStoreForBundleIdentifier:(id)identifier;
+- (void)setBadgeCount:(int64_t)count forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)setBadgeNumber:(id)number forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)setBadgeString:(id)string forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler;
 @end
 
 @implementation UNCRemoteNotificationRepository
 
-- (UNCRemoteNotificationRepository)initWithServiceClient:(id)a3
+- (UNCRemoteNotificationRepository)initWithServiceClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v15.receiver = self;
   v15.super_class = UNCRemoteNotificationRepository;
   v6 = [(UNCRemoteNotificationRepository *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serviceClient, a3);
+    objc_storeStrong(&v6->_serviceClient, client);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.UserNotificationsCore.UNCRemoteNotificationRepository", v8);
 
@@ -44,34 +44,34 @@
   return v7;
 }
 
-- (void)notifyDidPerformUpdates:(id)a3 forBundleIdentifier:(id)a4
+- (void)notifyDidPerformUpdates:(id)updates forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  updatesCopy = updates;
+  identifierCopy = identifier;
   observable = self->_observable;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __79__UNCRemoteNotificationRepository_notifyDidPerformUpdates_forBundleIdentifier___block_invoke;
   v11[3] = &unk_1E85D6FC0;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = updatesCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = updatesCopy;
   [(UNCKeyedObservable *)observable notifyObserversKey:v9 usingBlock:v11];
 }
 
-- (void)notifyDidDiscoverContentOnFirstUnlockForBundleIdentifier:(id)a3
+- (void)notifyDidDiscoverContentOnFirstUnlockForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   observable = self->_observable;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __92__UNCRemoteNotificationRepository_notifyDidDiscoverContentOnFirstUnlockForBundleIdentifier___block_invoke;
   v7[3] = &unk_1E85D6FE8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   [(UNCKeyedObservable *)observable notifyObserversKey:v6 usingBlock:v7];
 }
 
@@ -87,110 +87,110 @@ void __92__UNCRemoteNotificationRepository_notifyDidDiscoverContentOnFirstUnlock
 - (id)allBundleIdentifiers
 {
   v2 = [(UNCRemoteNotificationRepository *)self _coreServiceClientOrNilWithWarningForSelector:a2];
-  v3 = [v2 allBundleIdentifiersForNotifications];
+  allBundleIdentifiersForNotifications = [v2 allBundleIdentifiersForNotifications];
 
-  return v3;
+  return allBundleIdentifiersForNotifications;
 }
 
-- (id)notificationRecordsForBundleIdentifier:(id)a3
+- (id)notificationRecordsForBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [(UNCRemoteNotificationRepository *)self _coreServiceClientOrNilWithWarningForSelector:a2];
-  v7 = [v6 notificationRecordsForBundleIdentifier:v5];
+  v7 = [v6 notificationRecordsForBundleIdentifier:identifierCopy];
 
   return v7;
 }
 
-- (id)notificationRecordForIdentifier:(id)a3 bundleIdentifier:(id)a4
+- (id)notificationRecordForIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier
 {
-  v7 = a4;
-  v8 = a3;
+  bundleIdentifierCopy = bundleIdentifier;
+  identifierCopy = identifier;
   v9 = [(UNCRemoteNotificationRepository *)self _coreServiceClientOrNilWithWarningForSelector:a2];
-  v10 = [v9 notificationRecordForIdentifier:v8 bundleIdentifier:v7];
+  v10 = [v9 notificationRecordForIdentifier:identifierCopy bundleIdentifier:bundleIdentifierCopy];
 
   return v10;
 }
 
-- (void)removeNotificationRecordsForIdentifiers:(id)a3 bundleIdentifier:(id)a4
+- (void)removeNotificationRecordsForIdentifiers:(id)identifiers bundleIdentifier:(id)identifier
 {
   serviceClient = self->_serviceClient;
-  v6 = a4;
-  v7 = [a3 allObjects];
-  [(UNCNotificationCommonServiceServerProtocol *)serviceClient removeNotificationRecordsForIdentifiers:v7 bundleIdentifier:v6];
+  identifierCopy = identifier;
+  allObjects = [identifiers allObjects];
+  [(UNCNotificationCommonServiceServerProtocol *)serviceClient removeNotificationRecordsForIdentifiers:allObjects bundleIdentifier:identifierCopy];
 }
 
-- (void)removeSimilarNotificationRecords:(id)a3 bundleIdentifier:(id)a4
+- (void)removeSimilarNotificationRecords:(id)records bundleIdentifier:(id)identifier
 {
-  v7 = a4;
-  v8 = a3;
+  identifierCopy = identifier;
+  recordsCopy = records;
   v9 = [(UNCRemoteNotificationRepository *)self _coreServiceClientOrNilWithWarningForSelector:a2];
-  [v9 removeSimilarNotificationRecords:v8 forBundleIdentifier:v7];
+  [v9 removeSimilarNotificationRecords:recordsCopy forBundleIdentifier:identifierCopy];
 }
 
-- (void)removeNotificationRecordsWithNonPushTriggerForBundleIdentifier:(id)a3
+- (void)removeNotificationRecordsWithNonPushTriggerForBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [(UNCRemoteNotificationRepository *)self _coreServiceClientOrNilWithWarningForSelector:a2];
-  [v6 removeNotificationRecordsWithNonPushTriggerForBundleIdentifier:v5];
+  [v6 removeNotificationRecordsWithNonPushTriggerForBundleIdentifier:identifierCopy];
 }
 
-- (void)removeInvalidNotificationRecordsForBundleIdentifier:(id)a3
+- (void)removeInvalidNotificationRecordsForBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [(UNCRemoteNotificationRepository *)self _coreServiceClientOrNilWithWarningForSelector:a2];
-  [v6 removeInvalidNotificationRecordsForBundleIdentifier:v5];
+  [v6 removeInvalidNotificationRecordsForBundleIdentifier:identifierCopy];
 }
 
-- (void)removeAllNotificationRecordsForBundleIdentifier:(id)a3
+- (void)removeAllNotificationRecordsForBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [(UNCRemoteNotificationRepository *)self _coreServiceClientOrNilWithWarningForSelector:a2];
-  [v6 removeAllNotificationRecordsForBundleIdentifier:v5];
+  [v6 removeAllNotificationRecordsForBundleIdentifier:identifierCopy];
 }
 
-- (void)removeStoreForBundleIdentifier:(id)a3
+- (void)removeStoreForBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [(UNCRemoteNotificationRepository *)self _coreServiceClientOrNilWithWarningForSelector:a2];
-  [v6 removeStoreForBundleIdentifier:v5];
+  [v6 removeStoreForBundleIdentifier:identifierCopy];
 }
 
-- (id)badgeNumberForBundleIdentifier:(id)a3
+- (id)badgeNumberForBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [(UNCRemoteNotificationRepository *)self _coreServiceClientOrNilWithWarningForSelector:a2];
-  v7 = [v6 badgeNumberForBundleIdentifier:v5];
+  v7 = [v6 badgeNumberForBundleIdentifier:identifierCopy];
 
   return v7;
 }
 
-- (void)setBadgeNumber:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5
+- (void)setBadgeNumber:(id)number forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  numberCopy = number;
   v12 = [(UNCRemoteNotificationRepository *)self _coreServiceClientOrNilWithWarningForSelector:a2];
-  [v12 setBadgeNumber:v11 forBundleIdentifier:v10 completionHandler:v9];
+  [v12 setBadgeNumber:numberCopy forBundleIdentifier:identifierCopy completionHandler:handlerCopy];
 }
 
-- (void)setBadgeCount:(int64_t)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5
+- (void)setBadgeCount:(int64_t)count forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
-  v9 = a5;
-  v10 = a4;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v11 = [(UNCRemoteNotificationRepository *)self _coreServiceClientOrNilWithWarningForSelector:a2];
-  [v11 setBadgeCount:a3 forBundleIdentifier:v10 completionHandler:v9];
+  [v11 setBadgeCount:count forBundleIdentifier:identifierCopy completionHandler:handlerCopy];
 }
 
-- (void)setBadgeString:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5
+- (void)setBadgeString:(id)string forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  stringCopy = string;
   v12 = [(UNCRemoteNotificationRepository *)self _coreServiceClientOrNilWithWarningForSelector:a2];
-  [v12 setBadgeString:v11 forBundleIdentifier:v10 completionHandler:v9];
+  [v12 setBadgeString:stringCopy forBundleIdentifier:identifierCopy completionHandler:handlerCopy];
 }
 
-- (id)_coreServiceClientOrNilWithWarningForSelector:(SEL)a3
+- (id)_coreServiceClientOrNilWithWarningForSelector:(SEL)selector
 {
   serviceClient = self->_serviceClient;
   if (objc_opt_respondsToSelector())
@@ -201,7 +201,7 @@ void __92__UNCRemoteNotificationRepository_notifyDidDiscoverContentOnFirstUnlock
   else
   {
     v7 = *MEMORY[0x1E6983370];
-    v9 = NSStringFromSelector(a3);
+    v9 = NSStringFromSelector(selector);
     UNLogToDeveloper();
 
     v6 = 0;

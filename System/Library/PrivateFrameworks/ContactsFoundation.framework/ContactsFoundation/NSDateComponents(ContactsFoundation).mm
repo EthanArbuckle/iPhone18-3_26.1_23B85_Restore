@@ -7,27 +7,27 @@
 
 - (id)_cn_dictionaryRepresentation
 {
-  v2 = [MEMORY[0x1E695DF90] dictionary];
-  v3 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "era")}];
-  [v2 setObject:v3 forKeyedSubscript:__CNDateComponentEra];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v3 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "era")}];
+  [dictionary setObject:v3 forKeyedSubscript:__CNDateComponentEra];
 
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "year")}];
-  [v2 setObject:v4 forKeyedSubscript:__CNDateComponentYear];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "year")}];
+  [dictionary setObject:v4 forKeyedSubscript:__CNDateComponentYear];
 
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "month")}];
-  [v2 setObject:v5 forKeyedSubscript:__CNDateComponentMonth];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "month")}];
+  [dictionary setObject:v5 forKeyedSubscript:__CNDateComponentMonth];
 
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "day")}];
-  [v2 setObject:v6 forKeyedSubscript:__CNDateComponentDay];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "day")}];
+  [dictionary setObject:v6 forKeyedSubscript:__CNDateComponentDay];
 
-  v7 = [a1 calendar];
-  v8 = [v7 calendarIdentifier];
-  [v2 setObject:v8 forKeyedSubscript:__CNDateComponentCalendarIdentifier];
+  calendar = [self calendar];
+  calendarIdentifier = [calendar calendarIdentifier];
+  [dictionary setObject:calendarIdentifier forKeyedSubscript:__CNDateComponentCalendarIdentifier];
 
-  v9 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a1, "isLeapMonth")}];
-  [v2 setObject:v9 forKeyedSubscript:__CNIsLeapMonthKey];
+  v9 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(self, "isLeapMonth")}];
+  [dictionary setObject:v9 forKeyedSubscript:__CNIsLeapMonthKey];
 
-  return v2;
+  return dictionary;
 }
 
 + (id)_cn_dateComponentsFromDictionary:()ContactsFoundation
@@ -41,14 +41,14 @@
     if (v6)
     {
       v7 = v6;
-      v8 = v5;
+      lowercaseString = v5;
     }
 
     else
     {
-      v8 = [v5 lowercaseString];
+      lowercaseString = [v5 lowercaseString];
 
-      v9 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:v8];
+      v9 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:lowercaseString];
       if (!v9)
       {
         v5 = 0;

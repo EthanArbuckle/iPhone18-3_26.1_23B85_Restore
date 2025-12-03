@@ -1,7 +1,7 @@
 @interface TTSSpeechAction
 - (TTSSpeechAction)init;
 - (id)_detectLanguageFromContent;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 - (void)preprocessAction;
 @end
@@ -37,7 +37,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TTSSpeechAction);
   v9 = objc_msgSend_string(self, v5, v6, v7, v8);

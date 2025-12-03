@@ -1,22 +1,22 @@
 @interface _UIORegisteringSceneDelegate
 - (_UIOverlayViewController)rootViewController;
-- (id)_setupScene:(id)a3;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
+- (id)_setupScene:(id)scene;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation _UIORegisteringSceneDelegate
 
-- (id)_setupScene:(id)a3
+- (id)_setupScene:(id)scene
 {
-  v4 = a3;
-  v5 = [[_UIOverlayWindow alloc] initWithWindowScene:v4];
+  sceneCopy = scene;
+  v5 = [[_UIOverlayWindow alloc] initWithWindowScene:sceneCopy];
 
   window = self->_window;
   self->_window = &v5->super;
 
-  v7 = [(_UIORegisteringSceneDelegate *)self rootViewController];
-  [(UIWindow *)self->_window setRootViewController:v7];
+  rootViewController = [(_UIORegisteringSceneDelegate *)self rootViewController];
+  [(UIWindow *)self->_window setRootViewController:rootViewController];
 
   [(UIWindow *)self->_window makeKeyAndVisible];
 
@@ -38,9 +38,9 @@
   return rootViewController;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v6 = a3;
+  sceneCopy = scene;
   v7 = UIOLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -50,16 +50,16 @@
   }
 
   v8 = +[UIOServer sharedInstance];
-  v9 = [(_UIORegisteringSceneDelegate *)self _setupScene:v6];
-  v10 = [UIOServer displayDelegateIdentifierForScene:v6];
+  v9 = [(_UIORegisteringSceneDelegate *)self _setupScene:sceneCopy];
+  v10 = [UIOServer displayDelegateIdentifierForScene:sceneCopy];
 
   [v8 registerDisplayDelegate:v9 forIdentifier:v10];
   [v8 activate];
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = [UIOServer displayDelegateIdentifierForScene:a3];
+  v4 = [UIOServer displayDelegateIdentifierForScene:disconnect];
   v3 = +[UIOServer sharedInstance];
   [v3 unregisterDisplayDelegateForIdentifier:v4];
 }

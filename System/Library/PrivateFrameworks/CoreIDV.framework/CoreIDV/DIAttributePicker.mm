@@ -1,42 +1,42 @@
 @interface DIAttributePicker
 - (DIAttributePicker)init;
-- (DIAttributePicker)initWithCoder:(id)a3;
+- (DIAttributePicker)initWithCoder:(id)coder;
 - (DIAttributePickerItem)defaultValue;
 - (DIAttributePickerItem)getCurrentValue;
 - (NSArray)pickerItems;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCurrentValue:(id)a3;
-- (void)setDefaultValue:(id)a3;
-- (void)setPickerItems:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCurrentValue:(id)value;
+- (void)setDefaultValue:(id)value;
+- (void)setPickerItems:(id)items;
 @end
 
 @implementation DIAttributePicker
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = DIAttributePicker;
-  v4 = a3;
-  [(DIAttribute *)&v5 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(DIAttribute *)&v5 encodeWithCoder:coderCopy];
   os_unfair_lock_lock(&self->super._lock);
-  [v4 encodeObject:self->_pickerItems forKey:{@"pickerItems", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_pickerItems forKey:{@"pickerItems", v5.receiver, v5.super_class}];
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (DIAttributePicker)initWithCoder:(id)a3
+- (DIAttributePicker)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = DIAttributePicker;
-  v5 = [(DIAttribute *)&v12 initWithCoder:v4];
+  v5 = [(DIAttribute *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"pickerItems"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"pickerItems"];
     pickerItems = v5->_pickerItems;
     v5->_pickerItems = v9;
   }
@@ -58,27 +58,27 @@
   return v3;
 }
 
-- (void)setCurrentValue:(id)a3
+- (void)setCurrentValue:(id)value
 {
   v3.receiver = self;
   v3.super_class = DIAttributePicker;
-  [(DIAttribute *)&v3 setCurrentValue:a3];
+  [(DIAttribute *)&v3 setCurrentValue:value];
 }
 
-- (void)setDefaultValue:(id)a3
+- (void)setDefaultValue:(id)value
 {
   v3.receiver = self;
   v3.super_class = DIAttributePicker;
-  [(DIAttribute *)&v3 setDefaultValue:a3];
+  [(DIAttribute *)&v3 setDefaultValue:value];
 }
 
-- (void)setPickerItems:(id)a3
+- (void)setPickerItems:(id)items
 {
-  v6 = a3;
+  itemsCopy = items;
   os_unfair_lock_lock(&self->super._lock);
-  if (self->_pickerItems != v6)
+  if (self->_pickerItems != itemsCopy)
   {
-    v4 = [(NSArray *)v6 copyWithZone:0];
+    v4 = [(NSArray *)itemsCopy copyWithZone:0];
     pickerItems = self->_pickerItems;
     self->_pickerItems = v4;
   }
@@ -90,18 +90,18 @@
 {
   v4.receiver = self;
   v4.super_class = DIAttributePicker;
-  v2 = [(DIAttribute *)&v4 getCurrentValue];
+  getCurrentValue = [(DIAttribute *)&v4 getCurrentValue];
 
-  return v2;
+  return getCurrentValue;
 }
 
 - (DIAttributePickerItem)defaultValue
 {
   v4.receiver = self;
   v4.super_class = DIAttributePicker;
-  v2 = [(DIAttribute *)&v4 defaultValue];
+  defaultValue = [(DIAttribute *)&v4 defaultValue];
 
-  return v2;
+  return defaultValue;
 }
 
 - (NSArray)pickerItems
@@ -122,12 +122,12 @@
   v4 = [(DIAttribute *)&v21 description];
   [v3 appendFormat:@"%@", v4];
 
-  v5 = [(DIAttributePicker *)self defaultValue];
-  v6 = [v5 description];
+  defaultValue = [(DIAttributePicker *)self defaultValue];
+  v6 = [defaultValue description];
   [v3 appendFormat:@"defaultValue: '%@'; ", v6];
 
-  v7 = [(DIAttributePicker *)self getCurrentValue];
-  v8 = [v7 description];
+  getCurrentValue = [(DIAttributePicker *)self getCurrentValue];
+  v8 = [getCurrentValue description];
   [v3 appendFormat:@"currentValue: '%@'; ", v8];
 
   os_unfair_lock_lock(&self->super._lock);

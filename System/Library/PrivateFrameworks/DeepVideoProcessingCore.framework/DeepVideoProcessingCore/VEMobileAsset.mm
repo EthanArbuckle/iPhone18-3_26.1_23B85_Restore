@@ -1,23 +1,23 @@
 @interface VEMobileAsset
-+ (id)getLocalMobileAssetURLWithAssetType:(id)a3 assetSpecifier:(id)a4 forClientName:(id)a5;
-+ (int64_t)getMobileAssetStatusWithAssetType:(id)a3 assetSpecifier:(id)a4 forClientName:(id)a5 percentCompleted:(int64_t *)a6;
-+ (void)downloadMobileAssetType:(id)a3 assetSpecifier:(id)a4 forClientName:(id)a5 completionHandler:(id)a6;
-+ (void)endAllLocksWithAssetType:(id)a3 assetSpecifier:(id)a4 forClientName:(id)a5;
++ (id)getLocalMobileAssetURLWithAssetType:(id)type assetSpecifier:(id)specifier forClientName:(id)name;
++ (int64_t)getMobileAssetStatusWithAssetType:(id)type assetSpecifier:(id)specifier forClientName:(id)name percentCompleted:(int64_t *)completed;
++ (void)downloadMobileAssetType:(id)type assetSpecifier:(id)specifier forClientName:(id)name completionHandler:(id)handler;
++ (void)endAllLocksWithAssetType:(id)type assetSpecifier:(id)specifier forClientName:(id)name;
 @end
 
 @implementation VEMobileAsset
 
-+ (void)downloadMobileAssetType:(id)a3 assetSpecifier:(id)a4 forClientName:(id)a5 completionHandler:(id)a6
++ (void)downloadMobileAssetType:(id)type assetSpecifier:(id)specifier forClientName:(id)name completionHandler:(id)handler
 {
-  v9 = a6;
+  handlerCopy = handler;
   v10 = MEMORY[0x277D289F8];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[v10 alloc] initForAssetType:v13 withAssetSpecifier:v12];
+  nameCopy = name;
+  specifierCopy = specifier;
+  typeCopy = type;
+  v14 = [[v10 alloc] initForAssetType:typeCopy withAssetSpecifier:specifierCopy];
 
   v20 = 0;
-  v15 = [objc_alloc(MEMORY[0x277D289E0]) initForClientName:v11 selectingAsset:v14 error:&v20];
+  v15 = [objc_alloc(MEMORY[0x277D289E0]) initForClientName:nameCopy selectingAsset:v14 error:&v20];
 
   v16 = v20;
   if (v16)
@@ -27,7 +27,7 @@
       +[VEMobileAsset downloadMobileAssetType:assetSpecifier:forClientName:completionHandler:];
     }
 
-    v9[2](v9, 3, v16);
+    handlerCopy[2](handlerCopy, 3, v16);
   }
 
   else
@@ -38,7 +38,7 @@
     v18[1] = 3221225472;
     v18[2] = __88__VEMobileAsset_downloadMobileAssetType_assetSpecifier_forClientName_completionHandler___block_invoke;
     v18[3] = &unk_278F53898;
-    v19 = v9;
+    v19 = handlerCopy;
     [v15 lockContent:@"mobileAssetLockReasonDownload" withUsagePolicy:v17 withTimeout:-2 completion:v18];
   }
 }
@@ -174,23 +174,23 @@ void __88__VEMobileAsset_downloadMobileAssetType_assetSpecifier_forClientName_co
   }
 }
 
-+ (int64_t)getMobileAssetStatusWithAssetType:(id)a3 assetSpecifier:(id)a4 forClientName:(id)a5 percentCompleted:(int64_t *)a6
++ (int64_t)getMobileAssetStatusWithAssetType:(id)type assetSpecifier:(id)specifier forClientName:(id)name percentCompleted:(int64_t *)completed
 {
   v36 = *MEMORY[0x277D85DE8];
   v9 = MEMORY[0x277D289F8];
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[v9 alloc] initForAssetType:v12 withAssetSpecifier:v11];
+  nameCopy = name;
+  specifierCopy = specifier;
+  typeCopy = type;
+  v13 = [[v9 alloc] initForAssetType:typeCopy withAssetSpecifier:specifierCopy];
 
   v33 = 0;
-  v14 = [objc_alloc(MEMORY[0x277D289E0]) initForClientName:v10 selectingAsset:v13 error:&v33];
+  v14 = [objc_alloc(MEMORY[0x277D289E0]) initForClientName:nameCopy selectingAsset:v13 error:&v33];
 
   v15 = v33;
   v16 = v15;
-  if (a6)
+  if (completed)
   {
-    *a6 = 0;
+    *completed = 0;
   }
 
   if (v15)
@@ -229,8 +229,8 @@ void __88__VEMobileAsset_downloadMobileAssetType_assetSpecifier_forClientName_co
 
       else
       {
-        v24 = [v23 downloadProgress];
-        [v24 expectedTimeRemainingSecs];
+        downloadProgress = [v23 downloadProgress];
+        [downloadProgress expectedTimeRemainingSecs];
         if (v25 <= 0.0)
         {
           v17 = 0;
@@ -244,17 +244,17 @@ void __88__VEMobileAsset_downloadMobileAssetType_assetSpecifier_forClientName_co
             if (os_log_type_enabled(global_logger, OS_LOG_TYPE_INFO))
             {
               v27 = v26;
-              [v24 expectedTimeRemainingSecs];
+              [downloadProgress expectedTimeRemainingSecs];
               *buf = 134217984;
               v35 = v28;
               _os_log_impl(&dword_24874B000, v27, OS_LOG_TYPE_INFO, "[VEMobileAsset] getMobileAssetStatus - expectedTimeRemainingSecs: %f", buf, 0xCu);
             }
           }
 
-          if (a6 && [v24 totalExpectedBytes])
+          if (completed && [downloadProgress totalExpectedBytes])
           {
-            v29 = 100 * [v24 totalWrittenBytes];
-            *a6 = v29 / [v24 totalExpectedBytes];
+            v29 = 100 * [downloadProgress totalWrittenBytes];
+            *completed = v29 / [downloadProgress totalExpectedBytes];
           }
 
           v17 = 2;
@@ -276,9 +276,9 @@ void __88__VEMobileAsset_downloadMobileAssetType_assetSpecifier_forClientName_co
       }
 
       v16 = 0;
-      if (a6)
+      if (completed)
       {
-        *a6 = 100;
+        *completed = 100;
       }
 
       v17 = 1;
@@ -288,16 +288,16 @@ void __88__VEMobileAsset_downloadMobileAssetType_assetSpecifier_forClientName_co
   return v17;
 }
 
-+ (id)getLocalMobileAssetURLWithAssetType:(id)a3 assetSpecifier:(id)a4 forClientName:(id)a5
++ (id)getLocalMobileAssetURLWithAssetType:(id)type assetSpecifier:(id)specifier forClientName:(id)name
 {
   v7 = MEMORY[0x277D289F8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v7 alloc] initForAssetType:v10 withAssetSpecifier:v9];
+  nameCopy = name;
+  specifierCopy = specifier;
+  typeCopy = type;
+  v11 = [[v7 alloc] initForAssetType:typeCopy withAssetSpecifier:specifierCopy];
 
   v18 = 0;
-  v12 = [objc_alloc(MEMORY[0x277D289E0]) initForClientName:v8 selectingAsset:v11 error:&v18];
+  v12 = [objc_alloc(MEMORY[0x277D289E0]) initForClientName:nameCopy selectingAsset:v11 error:&v18];
 
   v13 = v18;
   if (v13)
@@ -321,17 +321,17 @@ void __88__VEMobileAsset_downloadMobileAssetType_assetSpecifier_forClientName_co
   return v15;
 }
 
-+ (void)endAllLocksWithAssetType:(id)a3 assetSpecifier:(id)a4 forClientName:(id)a5
++ (void)endAllLocksWithAssetType:(id)type assetSpecifier:(id)specifier forClientName:(id)name
 {
-  v7 = a5;
+  nameCopy = name;
   v8 = MEMORY[0x277D289F8];
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v8 alloc] initForAssetType:v10 withAssetSpecifier:v9];
+  specifierCopy = specifier;
+  typeCopy = type;
+  v11 = [[v8 alloc] initForAssetType:typeCopy withAssetSpecifier:specifierCopy];
 
   if (v11)
   {
-    v12 = [MEMORY[0x277D289E0] endAllPreviousLocksOfSelectorSync:v11 forClientName:v7];
+    v12 = [MEMORY[0x277D289E0] endAllPreviousLocksOfSelectorSync:v11 forClientName:nameCopy];
     if (v12)
     {
       if ((global_logLevel & 0x10) != 0)

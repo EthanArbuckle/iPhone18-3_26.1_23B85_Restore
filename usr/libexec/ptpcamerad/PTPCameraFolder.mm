@@ -1,30 +1,30 @@
 @interface PTPCameraFolder
-- (PTPCameraFolder)initWithObjectInfo:(id)a3 parent:(id)a4 initiator:(id)a5;
-- (id)newFolderWithObjectInfo:(id)a3 inFolder:(id)a4 notify:(BOOL)a5;
+- (PTPCameraFolder)initWithObjectInfo:(id)info parent:(id)parent initiator:(id)initiator;
+- (id)newFolderWithObjectInfo:(id)info inFolder:(id)folder notify:(BOOL)notify;
 - (void)dealloc;
-- (void)newItemWithObjectInfo:(id)a3 notify:(BOOL)a4;
+- (void)newItemWithObjectInfo:(id)info notify:(BOOL)notify;
 @end
 
 @implementation PTPCameraFolder
 
-- (PTPCameraFolder)initWithObjectInfo:(id)a3 parent:(id)a4 initiator:(id)a5
+- (PTPCameraFolder)initWithObjectInfo:(id)info parent:(id)parent initiator:(id)initiator
 {
-  v8 = a3;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = PTPCameraFolder;
-  v9 = [(PTPCameraItem *)&v14 initWithObjectInfo:v8 parent:a4 initiator:a5];
+  v9 = [(PTPCameraItem *)&v14 initWithObjectInfo:infoCopy parent:parent initiator:initiator];
   v10 = v9;
   if (v9)
   {
     [(PTPCameraItem *)v9 setType:3];
-    v11 = [(PTPCameraItem *)v10 cameraItemProxy];
-    [v11 setType:ICCameraItemProxyTypeFolder];
+    cameraItemProxy = [(PTPCameraItem *)v10 cameraItemProxy];
+    [cameraItemProxy setType:ICCameraItemProxyTypeFolder];
 
-    LODWORD(v11) = [v8 parentObject];
-    if (v11 == [v8 storageID])
+    LODWORD(cameraItemProxy) = [infoCopy parentObject];
+    if (cameraItemProxy == [infoCopy storageID])
     {
-      v12 = [(PTPCameraItem *)v10 cameraItemProxy];
-      [v12 setTopLevel:1];
+      cameraItemProxy2 = [(PTPCameraItem *)v10 cameraItemProxy];
+      [cameraItemProxy2 setTopLevel:1];
     }
   }
 
@@ -39,21 +39,21 @@
   [(PTPCameraFolder *)&v3 dealloc];
 }
 
-- (void)newItemWithObjectInfo:(id)a3 notify:(BOOL)a4
+- (void)newItemWithObjectInfo:(id)info notify:(BOOL)notify
 {
-  v6 = a3;
-  if (a4)
+  infoCopy = info;
+  if (notify)
   {
-    v7 = [(PTPCameraItem *)self initiator];
-    v8 = [v7 delegate];
+    initiator = [(PTPCameraItem *)self initiator];
+    delegate = [initiator delegate];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_100014E74;
     v18[3] = &unk_10002C900;
-    v19 = v6;
-    v20 = self;
+    v19 = infoCopy;
+    selfCopy = self;
     v9 = [NSBlockOperation blockOperationWithBlock:v18];
-    [v8 addInitiatedOperation:v9];
+    [delegate addInitiatedOperation:v9];
 
     v10 = v19;
   }
@@ -61,8 +61,8 @@
   else
   {
     v11 = [PTPCameraFile alloc];
-    v12 = [(PTPCameraItem *)self initiator];
-    v10 = [(PTPCameraFile *)v11 initWithObjectInfo:v6 parent:self initiator:v12];
+    initiator2 = [(PTPCameraItem *)self initiator];
+    v10 = [(PTPCameraFile *)v11 initWithObjectInfo:infoCopy parent:self initiator:initiator2];
 
     __ICOSLogCreate();
     v13 = [NSString stringWithFormat:@"File queued: %@\n", v10];
@@ -80,37 +80,37 @@
       }
     }
 
-    v17 = [(PTPCameraItem *)self storage];
-    [v17 addCameraFileToIndex:v10];
+    storage = [(PTPCameraItem *)self storage];
+    [storage addCameraFileToIndex:v10];
   }
 }
 
-- (id)newFolderWithObjectInfo:(id)a3 inFolder:(id)a4 notify:(BOOL)a5
+- (id)newFolderWithObjectInfo:(id)info inFolder:(id)folder notify:(BOOL)notify
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
+  notifyCopy = notify;
+  folderCopy = folder;
+  infoCopy = info;
   v10 = [PTPCameraFolder alloc];
-  v11 = [(PTPCameraItem *)self initiator];
-  v12 = [(PTPCameraFolder *)v10 initWithObjectInfo:v9 parent:v8 initiator:v11];
+  initiator = [(PTPCameraItem *)self initiator];
+  v12 = [(PTPCameraFolder *)v10 initWithObjectInfo:infoCopy parent:folderCopy initiator:initiator];
 
-  v13 = [(PTPCameraItem *)self storage];
-  [v13 addCameraFolderToIndex:v12];
+  storage = [(PTPCameraItem *)self storage];
+  [storage addCameraFolderToIndex:v12];
 
-  if (v5)
+  if (notifyCopy)
   {
-    v14 = [(PTPCameraItem *)self initiator];
-    v15 = [v14 delegate];
+    initiator2 = [(PTPCameraItem *)self initiator];
+    delegate = [initiator2 delegate];
 
     v22 = @"ICCameraItemProxyArray";
-    v16 = [(PTPCameraItem *)v12 cameraItemProxy];
-    v21 = v16;
+    cameraItemProxy = [(PTPCameraItem *)v12 cameraItemProxy];
+    v21 = cameraItemProxy;
     v17 = [NSArray arrayWithObjects:&v21 count:1];
     v23 = v17;
     v18 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
 
-    v19 = [v15 allConnections];
-    [v15 sendAddedItemsNotification:v18 toConnections:v19];
+    allConnections = [delegate allConnections];
+    [delegate sendAddedItemsNotification:v18 toConnections:allConnections];
   }
 
   return v12;

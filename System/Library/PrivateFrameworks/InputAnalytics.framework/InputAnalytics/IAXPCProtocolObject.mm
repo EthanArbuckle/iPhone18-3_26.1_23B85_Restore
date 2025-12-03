@@ -1,15 +1,15 @@
 @interface IAXPCProtocolObject
-- (void)didAction:(id)a3;
-- (void)didSessionBeginWithSessionMetadata:(id)a3;
-- (void)didSessionEndWithSessionMetadata:(id)a3;
-- (void)getDateWithReply:(id)a3;
-- (void)logMessage:(id)a3;
+- (void)didAction:(id)action;
+- (void)didSessionBeginWithSessionMetadata:(id)metadata;
+- (void)didSessionEndWithSessionMetadata:(id)metadata;
+- (void)getDateWithReply:(id)reply;
+- (void)logMessage:(id)message;
 - (void)reportStatus;
 @end
 
 @implementation IAXPCProtocolObject
 
-- (void)didAction:(id)a3
+- (void)didAction:(id)action
 {
   v3 = sub_1D4610F0C();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
@@ -18,7 +18,7 @@
   }
 }
 
-- (void)didSessionBeginWithSessionMetadata:(id)a3
+- (void)didSessionBeginWithSessionMetadata:(id)metadata
 {
   v3 = sub_1D4610F0C();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
@@ -27,7 +27,7 @@
   }
 }
 
-- (void)didSessionEndWithSessionMetadata:(id)a3
+- (void)didSessionEndWithSessionMetadata:(id)metadata
 {
   v3 = sub_1D4610F0C();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
@@ -36,7 +36,7 @@
   }
 }
 
-- (void)getDateWithReply:(id)a3
+- (void)getDateWithReply:(id)reply
 {
   if (os_variant_has_internal_diagnostics())
   {
@@ -48,7 +48,7 @@
   }
 }
 
-- (void)logMessage:(id)a3
+- (void)logMessage:(id)message
 {
   if (os_variant_has_internal_diagnostics())
   {

@@ -1,10 +1,10 @@
 @interface CarCardStackViewController
-- (CarCardStackViewController)initWithCarCardContentControllers:(id)a3 layout:(id *)a4;
+- (CarCardStackViewController)initWithCarCardContentControllers:(id)controllers layout:(id *)layout;
 - (NSArray)cardContentControllers;
 - (NSArray)cardViews;
-- (void)addCardContentController:(id)a3;
-- (void)insertCardContentController:(id)a3 atIndex:(unint64_t)a4;
-- (void)removeCardContentController:(id)a3;
+- (void)addCardContentController:(id)controller;
+- (void)insertCardContentController:(id)controller atIndex:(unint64_t)index;
+- (void)removeCardContentController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -15,44 +15,44 @@
   v21.receiver = self;
   v21.super_class = CarCardStackViewController;
   [(CarCardStackViewController *)&v21 viewDidLoad];
-  v3 = [(CarCardStackViewController *)self view];
-  [v3 addSubview:self->_cardContentStack];
+  view = [(CarCardStackViewController *)self view];
+  [view addSubview:self->_cardContentStack];
 
-  v19 = [(UIStackView *)self->_cardContentStack topAnchor];
-  v20 = [(CarCardStackViewController *)self view];
-  v18 = [v20 topAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  topAnchor = [(UIStackView *)self->_cardContentStack topAnchor];
+  view2 = [(CarCardStackViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v22[0] = v17;
-  v15 = [(UIStackView *)self->_cardContentStack bottomAnchor];
-  v16 = [(CarCardStackViewController *)self view];
-  v14 = [v16 bottomAnchor];
-  v4 = [v15 constraintEqualToAnchor:v14];
+  bottomAnchor = [(UIStackView *)self->_cardContentStack bottomAnchor];
+  view3 = [(CarCardStackViewController *)self view];
+  bottomAnchor2 = [view3 bottomAnchor];
+  v4 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v22[1] = v4;
-  v5 = [(UIStackView *)self->_cardContentStack leftAnchor];
-  v6 = [(CarCardStackViewController *)self view];
-  v7 = [v6 leftAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7];
+  leftAnchor = [(UIStackView *)self->_cardContentStack leftAnchor];
+  view4 = [(CarCardStackViewController *)self view];
+  leftAnchor2 = [view4 leftAnchor];
+  v8 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v22[2] = v8;
-  v9 = [(UIStackView *)self->_cardContentStack rightAnchor];
-  v10 = [(CarCardStackViewController *)self view];
-  v11 = [v10 rightAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  rightAnchor = [(UIStackView *)self->_cardContentStack rightAnchor];
+  view5 = [(CarCardStackViewController *)self view];
+  rightAnchor2 = [view5 rightAnchor];
+  v12 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v22[3] = v12;
   v13 = [NSArray arrayWithObjects:v22 count:4];
   [NSLayoutConstraint activateConstraints:v13];
 }
 
-- (void)removeCardContentController:(id)a3
+- (void)removeCardContentController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(CarCardStackViewController *)self cardContentStack];
-  v6 = [v5 arrangedSubviews];
+  cardContentStack = [(CarCardStackViewController *)self cardContentStack];
+  arrangedSubviews = [cardContentStack arrangedSubviews];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [arrangedSubviews countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -63,22 +63,22 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v11 content];
+        content = [v11 content];
 
-        if (v12 == v4)
+        if (content == controllerCopy)
         {
-          v13 = [(CarCardStackViewController *)self cardContentStack];
-          [v13 _maps_removeArrangedSubview:v11];
+          cardContentStack2 = [(CarCardStackViewController *)self cardContentStack];
+          [cardContentStack2 _maps_removeArrangedSubview:v11];
 
           goto LABEL_11;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [arrangedSubviews countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v8)
       {
         continue;
@@ -91,44 +91,44 @@
 LABEL_11:
 }
 
-- (void)insertCardContentController:(id)a3 atIndex:(unint64_t)a4
+- (void)insertCardContentController:(id)controller atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v8 = [[CarCardView alloc] initWithContent:v6];
+  controllerCopy = controller;
+  v8 = [[CarCardView alloc] initWithContent:controllerCopy];
 
-  v7 = [(CarCardStackViewController *)self cardContentStack];
-  [v7 insertArrangedSubview:v8 atIndex:a4];
+  cardContentStack = [(CarCardStackViewController *)self cardContentStack];
+  [cardContentStack insertArrangedSubview:v8 atIndex:index];
 }
 
-- (void)addCardContentController:(id)a3
+- (void)addCardContentController:(id)controller
 {
-  v4 = a3;
-  v6 = [[CarCardView alloc] initWithContent:v4];
+  controllerCopy = controller;
+  v6 = [[CarCardView alloc] initWithContent:controllerCopy];
 
-  v5 = [(CarCardStackViewController *)self cardContentStack];
-  [v5 addArrangedSubview:v6];
+  cardContentStack = [(CarCardStackViewController *)self cardContentStack];
+  [cardContentStack addArrangedSubview:v6];
 }
 
 - (NSArray)cardViews
 {
-  v2 = [(CarCardStackViewController *)self cardContentStack];
-  v3 = [v2 arrangedSubviews];
+  cardContentStack = [(CarCardStackViewController *)self cardContentStack];
+  arrangedSubviews = [cardContentStack arrangedSubviews];
 
-  return v3;
+  return arrangedSubviews;
 }
 
 - (NSArray)cardContentControllers
 {
-  v2 = [(CarCardStackViewController *)self cardContentStack];
-  v3 = [v2 arrangedSubviews];
-  v4 = [v3 valueForKey:@"content"];
+  cardContentStack = [(CarCardStackViewController *)self cardContentStack];
+  arrangedSubviews = [cardContentStack arrangedSubviews];
+  v4 = [arrangedSubviews valueForKey:@"content"];
 
   return v4;
 }
 
-- (CarCardStackViewController)initWithCarCardContentControllers:(id)a3 layout:(id *)a4
+- (CarCardStackViewController)initWithCarCardContentControllers:(id)controllers layout:(id *)layout
 {
-  v6 = a3;
+  controllersCopy = controllers;
   v23.receiver = self;
   v23.super_class = CarCardStackViewController;
   v7 = [(CarCardStackViewController *)&v23 init];
@@ -139,15 +139,15 @@ LABEL_11:
     v7->_cardContentStack = v8;
 
     [(UIStackView *)v7->_cardContentStack setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UIStackView *)v7->_cardContentStack setAxis:a4->var0];
-    [(UIStackView *)v7->_cardContentStack setDistribution:a4->var1];
-    [(UIStackView *)v7->_cardContentStack setAlignment:a4->var2];
+    [(UIStackView *)v7->_cardContentStack setAxis:layout->var0];
+    [(UIStackView *)v7->_cardContentStack setDistribution:layout->var1];
+    [(UIStackView *)v7->_cardContentStack setAlignment:layout->var2];
     [(UIStackView *)v7->_cardContentStack setSpacing:*&qword_10193E338];
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = v6;
+    v10 = controllersCopy;
     v11 = [v10 countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v11)
     {

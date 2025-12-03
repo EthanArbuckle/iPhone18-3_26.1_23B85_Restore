@@ -5,7 +5,7 @@
 - (BOOL)_wristDetectionEnabledRestriction;
 - (void)_updateWristDetectSetting;
 - (void)dealloc;
-- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)notification userInfo:(id)info;
 @end
 
 @implementation BLTWristStateObserver
@@ -21,8 +21,8 @@
     [(BLTWristStateObserver *)v2 _updateWristDetectSetting];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v3, WristDetectSettingChanged, @"CSLDisableWristDetectionChangedNotification", 0, 0);
-    v5 = [MEMORY[0x277D262A0] sharedConnection];
-    [v5 addObserver:v3];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0] addObserver:v3];
   }
 
   return v3;
@@ -32,15 +32,15 @@
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"CSLDisableWristDetectionChangedNotification", 0);
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  [v4 removeObserver:self];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = BLTWristStateObserver;
   [(BLTWristStateObserver *)&v5 dealloc];
 }
 
-- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)notification userInfo:(id)info
 {
   v5 = BLTWorkQueue();
   block[0] = MEMORY[0x277D85DD0];
@@ -53,8 +53,8 @@
 
 - (BOOL)_wristDetectionEnabledRestriction
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x277D260D8]] == 1;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D260D8]] == 1;
 
   return v3;
 }
@@ -63,9 +63,9 @@
 {
   v2 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:@"com.apple.Carousel"];
   v3 = [v2 objectForKey:@"DisableWristDetection"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)_isWristDetectionDisabled
@@ -81,7 +81,7 @@
 - (void)_updateWristDetectSetting
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(BLTWristStateObserver *)self _isWristDetectionDisabled];
+  _isWristDetectionDisabled = [(BLTWristStateObserver *)self _isWristDetectionDisabled];
   v4 = blt_settings_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -96,7 +96,7 @@
       v6 = "ENABLED";
     }
 
-    if (v3)
+    if (_isWristDetectionDisabled)
     {
       v5 = "DISABLED";
     }
@@ -108,7 +108,7 @@
     _os_log_impl(&dword_241FB3000, v4, OS_LOG_TYPE_INFO, "Updating wrist detect from %s to %s", &v8, 0x16u);
   }
 
-  self->_isWristDetectDisabled = v3;
+  self->_isWristDetectDisabled = _isWristDetectionDisabled;
   v7 = *MEMORY[0x277D85DE8];
 }
 

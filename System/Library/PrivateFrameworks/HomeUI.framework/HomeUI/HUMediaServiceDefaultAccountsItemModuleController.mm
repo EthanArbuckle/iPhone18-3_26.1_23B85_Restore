@@ -1,28 +1,28 @@
 @interface HUMediaServiceDefaultAccountsItemModuleController
-- (HUMediaServiceDefaultAccountsItemModuleController)initWithModule:(id)a3 delegate:(id)a4 host:(id)a5;
+- (HUMediaServiceDefaultAccountsItemModuleController)initWithModule:(id)module delegate:(id)delegate host:(id)host;
 - (HUMediaServiceDefaultAccountsItemModuleControllerDelegate)delegate;
-- (id)_indexPathForItem:(id)a3;
+- (id)_indexPathForItem:(id)item;
 - (id)host;
-- (id)updateDefaultAccount:(id)a3;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)setSelectedMediaServiceIndex:(int64_t)a3;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (id)updateDefaultAccount:(id)account;
+- (unint64_t)didSelectItem:(id)item;
+- (void)setSelectedMediaServiceIndex:(int64_t)index;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUMediaServiceDefaultAccountsItemModuleController
 
-- (HUMediaServiceDefaultAccountsItemModuleController)initWithModule:(id)a3 delegate:(id)a4 host:(id)a5
+- (HUMediaServiceDefaultAccountsItemModuleController)initWithModule:(id)module delegate:(id)delegate host:(id)host
 {
-  v8 = a4;
-  v9 = a5;
+  delegateCopy = delegate;
+  hostCopy = host;
   v13.receiver = self;
   v13.super_class = HUMediaServiceDefaultAccountsItemModuleController;
-  v10 = [(HUItemModuleController *)&v13 initWithModule:a3];
+  v10 = [(HUItemModuleController *)&v13 initWithModule:module];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_delegate, v8);
-    objc_storeWeak(&v11->_host, v9);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
+    objc_storeWeak(&v11->_host, hostCopy);
     v11->_selectedMediaServiceIndex = 0x7FFFFFFFFFFFFFFFLL;
     v11->_shouldClearSpinnerOnNextUpdate = 0;
   }
@@ -30,18 +30,18 @@
   return v11;
 }
 
-- (id)updateDefaultAccount:(id)a3
+- (id)updateDefaultAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   objc_initWeak(&location, self);
-  v5 = [(HUItemModuleController *)self module];
-  v6 = [v5 updateDefaultAccount:v4];
+  module = [(HUItemModuleController *)self module];
+  v6 = [module updateDefaultAccount:accountCopy];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __74__HUMediaServiceDefaultAccountsItemModuleController_updateDefaultAccount___block_invoke;
   v10[3] = &unk_277DB8620;
   objc_copyWeak(&v12, &location);
-  v7 = v4;
+  v7 = accountCopy;
   v11 = v7;
   v8 = [v6 addCompletionBlock:v10];
 
@@ -93,10 +93,10 @@ void __74__HUMediaServiceDefaultAccountsItemModuleController_updateDefaultAccoun
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   if ([(HUMediaServiceDefaultAccountsItemModuleController *)self shouldClearSpinnerOnNextUpdate])
   {
     [(HUMediaServiceDefaultAccountsItemModuleController *)self setShouldClearSpinnerOnNextUpdate:0];
@@ -104,7 +104,7 @@ void __74__HUMediaServiceDefaultAccountsItemModuleController_updateDefaultAccoun
   }
 
   objc_opt_class();
-  v21 = v7;
+  v21 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v9 = v21;
@@ -117,15 +117,15 @@ void __74__HUMediaServiceDefaultAccountsItemModuleController_updateDefaultAccoun
 
   v10 = v9;
 
-  v11 = [v8 latestResults];
-  v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  latestResults = [itemCopy latestResults];
+  v12 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
   [v10 setTitleText:v12];
 
-  v13 = [v8 latestResults];
-  v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
-  v15 = [v14 BOOLValue];
+  latestResults2 = [itemCopy latestResults];
+  v14 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
+  bOOLValue = [v14 BOOLValue];
 
-  if (v15)
+  if (bOOLValue)
   {
     v16 = 3;
   }
@@ -136,7 +136,7 @@ void __74__HUMediaServiceDefaultAccountsItemModuleController_updateDefaultAccoun
   }
 
   [v10 setAccessoryType:v16];
-  v17 = [(HUMediaServiceDefaultAccountsItemModuleController *)self _indexPathForItem:v8];
+  v17 = [(HUMediaServiceDefaultAccountsItemModuleController *)self _indexPathForItem:itemCopy];
   v18 = v17;
   if (v17 && (v19 = [v17 row] - 1, v19 == -[HUMediaServiceDefaultAccountsItemModuleController selectedMediaServiceIndex](self, "selectedMediaServiceIndex")))
   {
@@ -151,18 +151,18 @@ void __74__HUMediaServiceDefaultAccountsItemModuleController_updateDefaultAccoun
   }
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUItemModuleController *)self module];
-  v6 = [v5 mediaServiceItemProvider];
-  v7 = [v6 items];
-  v8 = [v7 containsObject:v4];
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  mediaServiceItemProvider = [module mediaServiceItemProvider];
+  items = [mediaServiceItemProvider items];
+  v8 = [items containsObject:itemCopy];
 
   if (v8)
   {
     objc_opt_class();
-    v9 = v4;
+    v9 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v10 = v9;
@@ -182,8 +182,8 @@ void __74__HUMediaServiceDefaultAccountsItemModuleController_updateDefaultAccoun
       if (v12)
       {
         -[HUMediaServiceDefaultAccountsItemModuleController setSelectedMediaServiceIndex:](self, "setSelectedMediaServiceIndex:", [v12 row] - 1);
-        v14 = [v11 mediaService];
-        v15 = [(HUMediaServiceDefaultAccountsItemModuleController *)self updateDefaultAccount:v14];
+        mediaService = [v11 mediaService];
+        v15 = [(HUMediaServiceDefaultAccountsItemModuleController *)self updateDefaultAccount:mediaService];
       }
     }
   }
@@ -191,15 +191,15 @@ void __74__HUMediaServiceDefaultAccountsItemModuleController_updateDefaultAccoun
   return 0;
 }
 
-- (void)setSelectedMediaServiceIndex:(int64_t)a3
+- (void)setSelectedMediaServiceIndex:(int64_t)index
 {
-  if (self->_selectedMediaServiceIndex != a3)
+  if (self->_selectedMediaServiceIndex != index)
   {
     v18 = objc_opt_new();
-    v5 = [(HUItemModuleController *)self module];
-    v6 = [v5 mediaServiceItemProvider];
-    v7 = [v6 items];
-    v8 = [v7 count];
+    module = [(HUItemModuleController *)self module];
+    mediaServiceItemProvider = [module mediaServiceItemProvider];
+    items = [mediaServiceItemProvider items];
+    v8 = [items count];
 
     selectedMediaServiceIndex = self->_selectedMediaServiceIndex;
     if (selectedMediaServiceIndex != 0x7FFFFFFFFFFFFFFFLL && selectedMediaServiceIndex + 1 < v8)
@@ -208,30 +208,30 @@ void __74__HUMediaServiceDefaultAccountsItemModuleController_updateDefaultAccoun
       [v18 addObject:v11];
     }
 
-    if (a3 != 0x7FFFFFFFFFFFFFFFLL && a3 + 1 < v8)
+    if (index != 0x7FFFFFFFFFFFFFFFLL && index + 1 < v8)
     {
       v12 = [MEMORY[0x277CCAA70] indexPathForRow:? inSection:?];
       [v18 addObject:v12];
     }
 
-    self->_selectedMediaServiceIndex = a3;
+    self->_selectedMediaServiceIndex = index;
     if ([v18 count])
     {
-      v13 = [(HUMediaServiceDefaultAccountsItemModuleController *)self host];
-      v14 = [(HUItemModuleController *)self module];
-      v15 = [v14 mediaServiceItemProvider];
-      v16 = [v15 items];
-      v17 = [v16 allObjects];
-      [v13 updateCellForItems:v17];
+      host = [(HUMediaServiceDefaultAccountsItemModuleController *)self host];
+      module2 = [(HUItemModuleController *)self module];
+      mediaServiceItemProvider2 = [module2 mediaServiceItemProvider];
+      items2 = [mediaServiceItemProvider2 items];
+      allObjects = [items2 allObjects];
+      [host updateCellForItems:allObjects];
     }
   }
 }
 
-- (id)_indexPathForItem:(id)a3
+- (id)_indexPathForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUMediaServiceDefaultAccountsItemModuleController *)self host];
-  v6 = [v5 presentingViewControllerForModuleController:self];
+  itemCopy = item;
+  host = [(HUMediaServiceDefaultAccountsItemModuleController *)self host];
+  v6 = [host presentingViewControllerForModuleController:self];
 
   objc_opt_class();
   v7 = v6;
@@ -249,8 +249,8 @@ void __74__HUMediaServiceDefaultAccountsItemModuleController_updateDefaultAccoun
 
   if (v9)
   {
-    v10 = [v9 itemManager];
-    v11 = [v10 indexPathForItem:v4];
+    itemManager = [v9 itemManager];
+    v11 = [itemManager indexPathForItem:itemCopy];
   }
 
   else

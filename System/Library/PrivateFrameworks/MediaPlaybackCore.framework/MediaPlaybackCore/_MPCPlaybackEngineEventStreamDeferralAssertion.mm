@@ -1,6 +1,6 @@
 @interface _MPCPlaybackEngineEventStreamDeferralAssertion
 - (MPCPlaybackEngineEventStream)eventStream;
-- (_MPCPlaybackEngineEventStreamDeferralAssertion)initWithEventStream:(id)a3 type:(int64_t)a4 reason:(id)a5 timeout:(double)a6;
+- (_MPCPlaybackEngineEventStreamDeferralAssertion)initWithEventStream:(id)stream type:(int64_t)type reason:(id)reason timeout:(double)timeout;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -22,23 +22,23 @@
   {
     self->_invalidated = 1;
     WeakRetained = objc_loadWeakRetained(&self->_eventStream);
-    v4 = self;
+    selfCopy = self;
     if (WeakRetained)
     {
       os_unfair_lock_lock(WeakRetained + 2);
-      [*(WeakRetained + 6) removeObject:v4];
+      [*(WeakRetained + 6) removeObject:selfCopy];
       v5 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEventStream");
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         v6 = *(WeakRetained + 3);
-        v7 = [(_MPCPlaybackEngineEventStreamDeferralAssertion *)v4 identifier];
-        v8 = [(_MPCPlaybackEngineEventStreamDeferralAssertion *)v4 reason];
+        identifier = [(_MPCPlaybackEngineEventStreamDeferralAssertion *)selfCopy identifier];
+        reason = [(_MPCPlaybackEngineEventStreamDeferralAssertion *)selfCopy reason];
         *v11 = 138543874;
         *&v11[4] = v6;
         *&v11[12] = 2114;
-        *&v11[14] = v7;
+        *&v11[14] = identifier;
         *&v11[22] = 2114;
-        v12 = v8;
+        v12 = reason;
         _os_log_impl(&dword_1C5C61000, v5, OS_LOG_TYPE_DEFAULT, "[EVS:%{public}@] _invalidateAssertion:%{public}@ | invalidating [] assertion.reason=%{public}@", v11, 0x20u);
       }
 
@@ -68,10 +68,10 @@
   [(_MPCPlaybackEngineEventStreamDeferralAssertion *)&v3 dealloc];
 }
 
-- (_MPCPlaybackEngineEventStreamDeferralAssertion)initWithEventStream:(id)a3 type:(int64_t)a4 reason:(id)a5 timeout:(double)a6
+- (_MPCPlaybackEngineEventStreamDeferralAssertion)initWithEventStream:(id)stream type:(int64_t)type reason:(id)reason timeout:(double)timeout
 {
-  v10 = a3;
-  v11 = a5;
+  streamCopy = stream;
+  reasonCopy = reason;
   v25.receiver = self;
   v25.super_class = _MPCPlaybackEngineEventStreamDeferralAssertion;
   v12 = [(_MPCPlaybackEngineEventStreamDeferralAssertion *)&v25 init];
@@ -79,9 +79,9 @@
   if (v12)
   {
     v12->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v12->_eventStream, v10);
-    v13->_type = a4;
-    v14 = [v11 copy];
+    objc_storeWeak(&v12->_eventStream, streamCopy);
+    v13->_type = type;
+    v14 = [reasonCopy copy];
     reason = v13->_reason;
     v13->_reason = v14;
 
@@ -89,7 +89,7 @@
     identifier = v13->_identifier;
     v13->_identifier = v16;
 
-    if (a6 > 0.0)
+    if (timeout > 0.0)
     {
       objc_initWeak(&location, v13);
       v18 = objc_alloc(MEMORY[0x1E69B13F0]);
@@ -98,7 +98,7 @@
       v22[2] = __90___MPCPlaybackEngineEventStreamDeferralAssertion_initWithEventStream_type_reason_timeout___block_invoke;
       v22[3] = &unk_1E8234200;
       objc_copyWeak(&v23, &location);
-      v19 = [v18 initWithTimeout:v22 interruptionHandler:a6];
+      v19 = [v18 initWithTimeout:v22 interruptionHandler:timeout];
       timeoutGuard = v13->_timeoutGuard;
       v13->_timeoutGuard = v19;
 

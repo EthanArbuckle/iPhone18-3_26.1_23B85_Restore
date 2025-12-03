@@ -1,16 +1,16 @@
 @interface MapsActivityController
 - (MapsActivityController)init;
 - (MapsActivityControllerDelegate)delegate;
-- (id)_cleanArray:(id)a3;
-- (id)_cleanDictionary:(id)a3;
+- (id)_cleanArray:(id)array;
+- (id)_cleanDictionary:(id)dictionary;
 - (id)_mapsUserActivity;
 - (id)mapsUserActivityForStateRestoration;
 - (void)_updateUserActivity;
-- (void)_updateUserActivityWithMapsActivityAtFullFidelity:(id)a3 atCompactFidelity:(id)a4 title:(id)a5 expirationDate:(id)a6;
+- (void)_updateUserActivityWithMapsActivityAtFullFidelity:(id)fidelity atCompactFidelity:(id)compactFidelity title:(id)title expirationDate:(id)date;
 - (void)archiveMapsActivity;
 - (void)setNeedsUserActivityUpdate;
-- (void)userActivityWillSave:(id)a3;
-- (void)writeCurrentState:(id)a3;
+- (void)userActivityWillSave:(id)save;
+- (void)writeCurrentState:(id)state;
 @end
 
 @implementation MapsActivityController
@@ -59,15 +59,15 @@
 - (void)_updateUserActivity
 {
   [(MapsActivityController *)self _maps_setNeedsUpdate:0 withSelector:a2];
-  v3 = [(MapsActivityController *)self delegate];
-  v4 = [v3 mapsActivityWithFidelity:268435439];
+  delegate = [(MapsActivityController *)self delegate];
+  v4 = [delegate mapsActivityWithFidelity:268435439];
 
-  v5 = [(MapsActivityController *)self delegate];
-  v6 = [v5 mapsActivityWithFidelity:268435407];
+  delegate2 = [(MapsActivityController *)self delegate];
+  v6 = [delegate2 mapsActivityWithFidelity:268435407];
 
   if (v4 && v6)
   {
-    v7 = [v4 name];
+    name = [v4 name];
     v8 = [NSDate dateWithTimeIntervalSinceNow:3600.0];
     v23[0] = @"f";
     v23[1] = @"c";
@@ -75,18 +75,18 @@
     v24[1] = v6;
     v23[2] = @"t";
     v23[3] = @"x";
-    v24[2] = v7;
+    v24[2] = name;
     v24[3] = v8;
     v9 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:4];
-    v10 = [(MapsActivityController *)self delegate];
-    v11 = [v10 appCoordinator];
-    v12 = [v11 baseActionCoordinator];
-    v13 = [v12 currentMapItem];
+    delegate3 = [(MapsActivityController *)self delegate];
+    appCoordinator = [delegate3 appCoordinator];
+    baseActionCoordinator = [appCoordinator baseActionCoordinator];
+    currentMapItem = [baseActionCoordinator currentMapItem];
 
-    if (v13)
+    if (currentMapItem)
     {
       v14 = [v9 mutableCopy];
-      [v14 setObject:v13 forKeyedSubscript:@"m"];
+      [v14 setObject:currentMapItem forKeyedSubscript:@"m"];
       v15 = [v14 copy];
 
       v9 = v15;
@@ -98,9 +98,9 @@
     block[1] = 3221225472;
     block[2] = sub_100028624;
     block[3] = &unk_101661A90;
-    v17 = v7;
+    v17 = name;
     v21 = v17;
-    v22 = self;
+    selfCopy = self;
     dispatch_async(accessQueue, block);
     v18 = +[NSUserDefaults standardUserDefaults];
     v19 = [v18 BOOLForKey:@"__internal__EnableTestMode"];
@@ -138,9 +138,9 @@
   return mapsUserActivity;
 }
 
-- (void)writeCurrentState:(id)a3
+- (void)writeCurrentState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (qword_10195F0A8 != -1)
   {
     dispatch_once(&qword_10195F0A8, &stru_101651B90);
@@ -148,8 +148,8 @@
 
   if (qword_10195F0A0)
   {
-    v5 = [v4 dictionaryRepresentation];
-    v6 = [(MapsActivityController *)self _cleanDictionary:v5];
+    dictionaryRepresentation = [stateCopy dictionaryRepresentation];
+    v6 = [(MapsActivityController *)self _cleanDictionary:dictionaryRepresentation];
 
     v16 = 0;
     v7 = [NSJSONSerialization dataWithJSONObject:v6 options:1 error:&v16];
@@ -190,15 +190,15 @@
   }
 }
 
-- (id)_cleanArray:(id)a3
+- (id)_cleanArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v5 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = arrayCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -250,11 +250,11 @@ LABEL_11:
   return v14;
 }
 
-- (id)_cleanDictionary:(id)a3
+- (id)_cleanDictionary:(id)dictionary
 {
-  v4 = [a3 mutableCopy];
-  v5 = [v4 allKeys];
-  v6 = [v5 copy];
+  v4 = [dictionary mutableCopy];
+  allKeys = [v4 allKeys];
+  v6 = [allKeys copy];
 
   v20 = 0u;
   v21 = 0u;
@@ -332,14 +332,14 @@ LABEL_13:
   }
 
   v7 = +[NSUUID UUID];
-  v8 = [v7 UUIDString];
+  uUIDString = [v7 UUIDString];
 
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_100D34B64;
   v33[3] = &unk_101661A90;
   v33[4] = self;
-  v9 = v8;
+  v9 = uUIDString;
   v34 = v9;
   v10 = objc_retainBlock(v33);
   if (+[NSThread isMainThread])
@@ -352,35 +352,35 @@ LABEL_13:
     dispatch_async(&_dispatch_main_q, v10);
   }
 
-  v11 = [(MapsActivityController *)self delegate];
-  v12 = [v11 mapsActivity];
+  delegate = [(MapsActivityController *)self delegate];
+  mapsActivity = [delegate mapsActivity];
 
-  v13 = [v12 displayOptions];
-  v14 = [v13 hasCamera];
+  displayOptions = [mapsActivity displayOptions];
+  hasCamera = [displayOptions hasCamera];
 
-  if (v14)
+  if (hasCamera)
   {
-    v15 = [v12 displayOptions];
-    v16 = [v15 camera];
+    displayOptions2 = [mapsActivity displayOptions];
+    camera = [displayOptions2 camera];
 
-    v17 = [v16 data];
-    if (v17)
+    data = [camera data];
+    if (data)
     {
       v18 = +[NSUserDefaults __maps_groupUserDefaults];
-      [v18 setObject:v17 forKey:@"MapsLastActivityCamera"];
+      [v18 setObject:data forKey:@"MapsLastActivityCamera"];
     }
   }
 
-  v19 = [v12 displayOptions];
-  v20 = [v19 hasMapType];
+  displayOptions3 = [mapsActivity displayOptions];
+  hasMapType = [displayOptions3 hasMapType];
 
-  if (v20)
+  if (hasMapType)
   {
-    v21 = [v12 displayOptions];
-    v22 = [v21 mapType];
+    displayOptions4 = [mapsActivity displayOptions];
+    mapType = [displayOptions4 mapType];
 
     v23 = +[NSUserDefaults __maps_groupUserDefaults];
-    [v23 setInteger:v22 forKey:@"MapsLastActivityMapType"];
+    [v23 setInteger:mapType forKey:@"MapsLastActivityMapType"];
   }
 
   v24 = sub_100028730();
@@ -397,8 +397,8 @@ LABEL_13:
   v30[2] = sub_100D34D10;
   v30[3] = &unk_101661A90;
   v31 = v9;
-  v32 = v12;
-  v26 = v12;
+  v32 = mapsActivity;
+  v26 = mapsActivity;
   v27 = v9;
   dispatch_async(loggingQueue, v30);
   v28 = sub_100028730();
@@ -410,125 +410,125 @@ LABEL_13:
   }
 }
 
-- (void)userActivityWillSave:(id)a3
+- (void)userActivityWillSave:(id)save
 {
-  v4 = a3;
+  saveCopy = save;
   accessQueue = self->_accessQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100D34E5C;
   v7[3] = &unk_101661A90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = saveCopy;
+  v6 = saveCopy;
   dispatch_sync(accessQueue, v7);
 }
 
-- (void)_updateUserActivityWithMapsActivityAtFullFidelity:(id)a3 atCompactFidelity:(id)a4 title:(id)a5 expirationDate:(id)a6
+- (void)_updateUserActivityWithMapsActivityAtFullFidelity:(id)fidelity atCompactFidelity:(id)compactFidelity title:(id)title expirationDate:(id)date
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  fidelityCopy = fidelity;
+  compactFidelityCopy = compactFidelity;
+  titleCopy = title;
+  dateCopy = date;
   v14 = objc_alloc_init(NSMutableDictionary);
-  v15 = [(MapsActivityController *)self _mapsUserActivity];
-  v16 = [v10 bzip2CompressedData];
-  if ([v16 length] >= 0x2329)
+  _mapsUserActivity = [(MapsActivityController *)self _mapsUserActivity];
+  bzip2CompressedData = [fidelityCopy bzip2CompressedData];
+  if ([bzip2CompressedData length] >= 0x2329)
   {
-    v17 = [v11 bzip2DataByIterativelyReducingIfNeeded];
+    bzip2DataByIterativelyReducingIfNeeded = [compactFidelityCopy bzip2DataByIterativelyReducingIfNeeded];
 
-    v16 = v17;
+    bzip2CompressedData = bzip2DataByIterativelyReducingIfNeeded;
   }
 
-  if (v16)
+  if (bzip2CompressedData)
   {
-    [v14 setObject:v16 forKeyedSubscript:@"bs"];
+    [v14 setObject:bzip2CompressedData forKeyedSubscript:@"bs"];
   }
 
-  [v15 setTitle:v12];
-  [v15 setExpirationDate:v13];
+  [_mapsUserActivity setTitle:titleCopy];
+  [_mapsUserActivity setExpirationDate:dateCopy];
 
-  [v15 setRequiredUserInfoKeys:0];
-  [v15 setUserInfo:v14];
-  [v15 setEligibleForSearch:{objc_msgSend(v10, "shouldIndex")}];
-  [v15 setEligibleForPrediction:0];
-  v18 = [v10 mapsSiriAction];
-  if (v18)
+  [_mapsUserActivity setRequiredUserInfoKeys:0];
+  [_mapsUserActivity setUserInfo:v14];
+  [_mapsUserActivity setEligibleForSearch:{objc_msgSend(fidelityCopy, "shouldIndex")}];
+  [_mapsUserActivity setEligibleForPrediction:0];
+  mapsSiriAction = [fidelityCopy mapsSiriAction];
+  if (mapsSiriAction)
   {
     v34 = v14;
-    v36 = v11;
+    v36 = compactFidelityCopy;
     v19 = sub_100028730();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
-      v20 = [v18 title];
+      title = [mapsSiriAction title];
       *buf = 138477827;
-      v39 = v20;
+      v39 = title;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Created Siri Action for '%{private}@'", buf, 0xCu);
     }
 
-    v21 = v12;
+    v21 = titleCopy;
 
-    v22 = [v18 userInfo];
-    v23 = [v22 mutableCopy];
+    userInfo = [mapsSiriAction userInfo];
+    v23 = [userInfo mutableCopy];
 
-    if (v16)
+    if (bzip2CompressedData)
     {
-      [v23 setObject:v16 forKeyedSubscript:@"bs"];
+      [v23 setObject:bzip2CompressedData forKeyedSubscript:@"bs"];
     }
 
-    v24 = [v18 title];
-    [v15 setTitle:v24];
+    title2 = [mapsSiriAction title];
+    [_mapsUserActivity setTitle:title2];
 
-    [v15 setUserInfo:v23];
+    [_mapsUserActivity setUserInfo:v23];
     v25 = [NSSet alloc];
-    v26 = [v18 userInfo];
-    v27 = [v26 allKeys];
-    v28 = [v25 initWithArray:v27];
-    [v15 setRequiredUserInfoKeys:v28];
+    userInfo2 = [mapsSiriAction userInfo];
+    allKeys = [userInfo2 allKeys];
+    v28 = [v25 initWithArray:allKeys];
+    [_mapsUserActivity setRequiredUserInfoKeys:v28];
 
-    [v15 setEligibleForPrediction:1];
-    v12 = v21;
+    [_mapsUserActivity setEligibleForPrediction:1];
+    titleCopy = v21;
     v14 = v35;
-    v11 = v37;
+    compactFidelityCopy = v37;
   }
 
-  v29 = [(MapsActivityController *)self _cachedMapsActivityDataDictionary];
-  v30 = [v29 objectForKeyedSubscript:@"m"];
+  _cachedMapsActivityDataDictionary = [(MapsActivityController *)self _cachedMapsActivityDataDictionary];
+  v30 = [_cachedMapsActivityDataDictionary objectForKeyedSubscript:@"m"];
 
-  [v15 setContentAttributeSet:0];
+  [_mapsUserActivity setContentAttributeSet:0];
   if (v30)
   {
     v31 = sub_100028730();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
-      v32 = [v30 name];
+      name = [v30 name];
       *buf = 138477827;
-      v39 = v32;
+      v39 = name;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "Add App Donation for '%{private}@'", buf, 0xCu);
     }
 
-    [v15 _mapkit_populateFieldsForDonationOfMapItem:v30];
+    [_mapsUserActivity _mapkit_populateFieldsForDonationOfMapItem:v30];
     v33 = [v30 _fullSharingURLIncludingSensitiveFields:1];
-    [v15 setWebpageURL:v33];
+    [_mapsUserActivity setWebpageURL:v33];
   }
 
   else
   {
-    [v15 _mapkit_clearMapItemDonationFields];
+    [_mapsUserActivity _mapkit_clearMapItemDonationFields];
   }
 }
 
 - (id)mapsUserActivityForStateRestoration
 {
-  v2 = [(MapsActivityController *)self delegate];
-  v3 = [v2 mapsActivity];
-  v4 = [v3 data];
+  delegate = [(MapsActivityController *)self delegate];
+  mapsActivity = [delegate mapsActivity];
+  data = [mapsActivity data];
 
   v5 = +[NSDate date];
   v6 = [[NSUserActivity alloc] initWithActivityType:@"com.apple.Maps.Restore"];
   v9[0] = @"MapsActivity";
   v9[1] = @"MapsActivityTimestamp";
-  v10[0] = v4;
+  v10[0] = data;
   v10[1] = v5;
   v7 = [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:2];
   [v6 setUserInfo:v7];

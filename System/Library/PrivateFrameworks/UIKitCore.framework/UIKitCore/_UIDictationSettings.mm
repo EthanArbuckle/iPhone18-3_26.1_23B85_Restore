@@ -28,11 +28,11 @@
   [(_UIDictationSettings *)self setGlowEffectEnabled:1];
   [(_UIDictationSettings *)self setPulseAnimationEnabled:1];
   [(_UIDictationSettings *)self setTrailAnimationEnabled:1];
-  v3 = [objc_opt_self() mainScreen];
-  -[_UIDictationSettings setPulseFrameRate:](self, "setPulseFrameRate:", [v3 maximumFramesPerSecond]);
+  mainScreen = [objc_opt_self() mainScreen];
+  -[_UIDictationSettings setPulseFrameRate:](self, "setPulseFrameRate:", [mainScreen maximumFramesPerSecond]);
 
-  v4 = [objc_opt_self() mainScreen];
-  -[_UIDictationSettings setTrailFrameRate:](self, "setTrailFrameRate:", [v4 maximumFramesPerSecond]);
+  mainScreen2 = [objc_opt_self() mainScreen];
+  -[_UIDictationSettings setTrailFrameRate:](self, "setTrailFrameRate:", [mainScreen2 maximumFramesPerSecond]);
 
   [(_UIDictationSettings *)self setSoundReactiveCursorEnabled:1];
   [(_UIDictationSettings *)self setAudioPollingRate:60.0];
@@ -61,9 +61,9 @@
   v111 = [MEMORY[0x1E69C66A8] rowWithTitle:@"Sound Reactive Cursor" valueKeyPath:@"soundReactiveCursorEnabled"];
   v116[0] = v111;
   v110 = [MEMORY[0x1E69C65F8] rowWithTitle:@"Audio Polling Rate" valueKeyPath:@"audioPollingRate"];
-  v109 = [a1 frameRates];
-  v108 = [a1 frameRatesTitles];
-  v107 = [v110 possibleValues:v109 titles:v108];
+  frameRates = [self frameRates];
+  frameRatesTitles = [self frameRatesTitles];
+  v107 = [v110 possibleValues:frameRates titles:frameRatesTitles];
   v116[1] = v107;
   v106 = [MEMORY[0x1E69C6618] rowWithTitle:@"Audio Width Bump" valueKeyPath:@"audioWidthMaxBump"];
   v105 = [v106 between:0.0 and:10.0];
@@ -96,9 +96,9 @@
   v85 = [MEMORY[0x1E69C66A8] rowWithTitle:@"Command Haptic Fedeback" valueKeyPath:@"commandHapticFeedbackEnabled"];
   v116[9] = v85;
   v84 = [MEMORY[0x1E69C65F8] rowWithTitle:@"Impact Style" valueKeyPath:@"impactStyle"];
-  v83 = [a1 impactStyles];
-  v82 = [a1 impactStylesTitles];
-  v81 = [v84 possibleValues:v83 titles:v82];
+  impactStyles = [self impactStyles];
+  impactStylesTitles = [self impactStylesTitles];
+  v81 = [v84 possibleValues:impactStyles titles:impactStylesTitles];
   v116[10] = v81;
   v80 = [MEMORY[0x1E69C6618] rowWithTitle:@"Impact Intensity" valueKeyPath:@"impactIntensity"];
   v79 = [v80 between:0.0 and:1.0];
@@ -127,14 +127,14 @@
   v63 = [v64 precision:2];
   v115[2] = v63;
   v62 = [MEMORY[0x1E69C65F8] rowWithTitle:@"lightMode compositingFiler" valueKeyPath:@"lightModeCompositingFiler"];
-  v61 = [a1 compositingFilters];
-  v60 = [a1 compositingFilters];
-  v59 = [v62 possibleValues:v61 titles:v60];
+  compositingFilters = [self compositingFilters];
+  compositingFilters2 = [self compositingFilters];
+  v59 = [v62 possibleValues:compositingFilters titles:compositingFilters2];
   v115[3] = v59;
   v58 = [MEMORY[0x1E69C65F8] rowWithTitle:@"darkMode compositingFiler" valueKeyPath:@"darkModeCompositingFiler"];
-  v57 = [a1 compositingFilters];
-  v56 = [a1 compositingFilters];
-  v55 = [v58 possibleValues:v57 titles:v56];
+  compositingFilters3 = [self compositingFilters];
+  compositingFilters4 = [self compositingFilters];
+  v55 = [v58 possibleValues:compositingFilters3 titles:compositingFilters4];
   v115[4] = v55;
   v54 = [MEMORY[0x1E69C66A0] rowWithTitle:@"Trailing Glow Duration" valueKeyPath:@"trailingGlowDuration"];
   v53 = [v54 minValue:0.01 maxValue:2.0];
@@ -162,8 +162,8 @@
   v117[1] = v37;
   v5 = MEMORY[0x1E69C6638];
   v35 = [MEMORY[0x1E69C66A0] rowWithTitle:@"framesPerSecond" valueKeyPath:@"typewriterEffectFramesPerSecond"];
-  v36 = [objc_opt_self() mainScreen];
-  v34 = [v35 minValue:0.0 maxValue:{objc_msgSend(v36, "maximumFramesPerSecond")}];
+  mainScreen = [objc_opt_self() mainScreen];
+  v34 = [v35 minValue:0.0 maxValue:{objc_msgSend(mainScreen, "maximumFramesPerSecond")}];
   v114[0] = v34;
   v33 = [MEMORY[0x1E69C66A0] rowWithTitle:@"charInsertionRate" valueKeyPath:@"typewriterEffectStreamingCharacterInsertionRate"];
   v32 = [v33 minValue:0.0 maxValue:100.0];
@@ -182,14 +182,14 @@
   v25 = [MEMORY[0x1E69C66A8] rowWithTitle:@"Trail Animation" valueKeyPath:@"trailAnimationEnabled"];
   v113[2] = v25;
   v24 = [MEMORY[0x1E69C65F8] rowWithTitle:@"PulseFrameRate" valueKeyPath:@"pulseFrameRate"];
-  v23 = [a1 frameRates];
-  v22 = [a1 frameRatesTitles];
-  v21 = [v24 possibleValues:v23 titles:v22];
+  frameRates2 = [self frameRates];
+  frameRatesTitles2 = [self frameRatesTitles];
+  v21 = [v24 possibleValues:frameRates2 titles:frameRatesTitles2];
   v113[3] = v21;
   v20 = [MEMORY[0x1E69C65F8] rowWithTitle:@"TrailFrameRate" valueKeyPath:@"trailFrameRate"];
-  v7 = [a1 frameRates];
-  v8 = [a1 frameRatesTitles];
-  v9 = [v20 possibleValues:v7 titles:v8];
+  frameRates3 = [self frameRates];
+  frameRatesTitles3 = [self frameRatesTitles];
+  v9 = [v20 possibleValues:frameRates3 titles:frameRatesTitles3];
   v113[4] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v113 count:5];
   v11 = [v6 sectionWithRows:v10 title:@"Power Evaluation"];
@@ -211,10 +211,10 @@
 + (id)frameRates
 {
   v9[4] = *MEMORY[0x1E69E9840];
-  v2 = [objc_opt_self() mainScreen];
-  v3 = [v2 maximumFramesPerSecond];
+  mainScreen = [objc_opt_self() mainScreen];
+  maximumFramesPerSecond = [mainScreen maximumFramesPerSecond];
 
-  if (v3 < 61)
+  if (maximumFramesPerSecond < 61)
   {
     v7 = &unk_1EFE2CB50;
   }
@@ -225,8 +225,8 @@
     v9[1] = &unk_1EFE317E0;
     v9[2] = &unk_1EFE317F8;
     v4 = MEMORY[0x1E696AD98];
-    v5 = [objc_opt_self() mainScreen];
-    v6 = [v4 numberWithInteger:{objc_msgSend(v5, "maximumFramesPerSecond")}];
+    mainScreen2 = [objc_opt_self() mainScreen];
+    v6 = [v4 numberWithInteger:{objc_msgSend(mainScreen2, "maximumFramesPerSecond")}];
     v9[3] = v6;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:4];
   }
@@ -237,13 +237,13 @@
 + (id)frameRatesTitles
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [a1 frameRates];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  frameRates = [self frameRates];
+  v5 = [frameRates countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -254,20 +254,20 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(frameRates);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) stringValue];
-        [v3 addObject:v9];
+        stringValue = [*(*(&v11 + 1) + 8 * i) stringValue];
+        [array addObject:stringValue];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [frameRates countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 + (id)compositingFilters

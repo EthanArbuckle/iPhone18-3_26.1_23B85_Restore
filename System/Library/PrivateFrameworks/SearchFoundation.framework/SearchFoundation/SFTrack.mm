@@ -1,49 +1,49 @@
 @interface SFTrack
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFTrack)initWithCoder:(id)a3;
-- (SFTrack)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFTrack)initWithCoder:(id)coder;
+- (SFTrack)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFTrack
 
 - (unint64_t)hash
 {
-  v3 = [(SFTrack *)self title];
-  v4 = [v3 hash];
-  v5 = [(SFTrack *)self number];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(SFTrack *)self duration];
-  v8 = v6 ^ [v7 hash];
-  v9 = [(SFTrack *)self highlighted];
-  v10 = [(SFTrack *)self preview];
-  v11 = v8 ^ v9 ^ [v10 hash];
-  v12 = [(SFTrack *)self playAction];
-  v13 = [v12 hash];
+  title = [(SFTrack *)self title];
+  v4 = [title hash];
+  number = [(SFTrack *)self number];
+  v6 = [number hash] ^ v4;
+  duration = [(SFTrack *)self duration];
+  v8 = v6 ^ [duration hash];
+  highlighted = [(SFTrack *)self highlighted];
+  preview = [(SFTrack *)self preview];
+  v11 = v8 ^ highlighted ^ [preview hash];
+  playAction = [(SFTrack *)self playAction];
+  v13 = [playAction hash];
 
   return v11 ^ v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    if ([(SFTrack *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(SFTrack *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
-      v6 = [(SFTrack *)self title];
-      v7 = [(SFTrack *)v5 title];
-      if ((v6 != 0) == (v7 == 0))
+      v5 = equalCopy;
+      title = [(SFTrack *)self title];
+      title2 = [(SFTrack *)v5 title];
+      if ((title != 0) == (title2 == 0))
       {
         v10 = 0;
 LABEL_41:
@@ -51,32 +51,32 @@ LABEL_41:
         goto LABEL_42;
       }
 
-      v8 = [(SFTrack *)self title];
-      if (v8)
+      title3 = [(SFTrack *)self title];
+      if (title3)
       {
-        v9 = [(SFTrack *)self title];
-        v50 = [(SFTrack *)v5 title];
-        if (![v9 isEqual:?])
+        title4 = [(SFTrack *)self title];
+        title5 = [(SFTrack *)v5 title];
+        if (![title4 isEqual:?])
         {
           v10 = 0;
           goto LABEL_39;
         }
 
-        v49 = v9;
+        v49 = title4;
       }
 
-      v51 = [(SFTrack *)self number];
-      v11 = [(SFTrack *)v5 number];
-      if ((v51 != 0) != (v11 == 0))
+      number = [(SFTrack *)self number];
+      number2 = [(SFTrack *)v5 number];
+      if ((number != 0) != (number2 == 0))
       {
-        v12 = [(SFTrack *)self number];
-        if (v12)
+        number3 = [(SFTrack *)self number];
+        if (number3)
         {
-          v13 = v12;
-          v14 = [(SFTrack *)self number];
+          v13 = number3;
+          number4 = [(SFTrack *)self number];
           [(SFTrack *)v5 number];
-          v48 = v46 = v14;
-          if (![v14 isEqual:?])
+          v48 = v46 = number4;
+          if (![number4 isEqual:?])
           {
             v10 = 0;
             v19 = v48;
@@ -92,19 +92,19 @@ LABEL_41:
           v47 = 0;
         }
 
-        v15 = [(SFTrack *)self duration];
-        v16 = [(SFTrack *)v5 duration];
-        if ((v15 != 0) != (v16 == 0))
+        duration = [(SFTrack *)self duration];
+        duration2 = [(SFTrack *)v5 duration];
+        if ((duration != 0) != (duration2 == 0))
         {
-          v44 = v15;
-          v45 = v16;
-          v17 = [(SFTrack *)self duration];
-          if (v17)
+          v44 = duration;
+          v45 = duration2;
+          duration3 = [(SFTrack *)self duration];
+          if (duration3)
           {
-            v18 = [(SFTrack *)self duration];
-            v41 = [(SFTrack *)v5 duration];
-            v42 = v18;
-            if (![v18 isEqual:?])
+            duration4 = [(SFTrack *)self duration];
+            duration5 = [(SFTrack *)v5 duration];
+            v42 = duration4;
+            if (![duration4 isEqual:?])
             {
               v10 = 0;
               v20 = v47;
@@ -112,7 +112,7 @@ LABEL_41:
               goto LABEL_34;
             }
 
-            v43 = v17;
+            v43 = duration3;
           }
 
           else
@@ -120,25 +120,25 @@ LABEL_41:
             v43 = 0;
           }
 
-          v21 = [(SFTrack *)self highlighted];
-          if (v21 == [(SFTrack *)v5 highlighted])
+          highlighted = [(SFTrack *)self highlighted];
+          if (highlighted == [(SFTrack *)v5 highlighted])
           {
-            v22 = [(SFTrack *)self preview];
-            v23 = [(SFTrack *)v5 preview];
-            if ((v22 != 0) != (v23 == 0))
+            preview = [(SFTrack *)self preview];
+            preview2 = [(SFTrack *)v5 preview];
+            if ((preview != 0) != (preview2 == 0))
             {
-              v39 = v23;
-              v40 = v22;
-              v24 = [(SFTrack *)self preview];
-              v25 = v24;
+              v39 = preview2;
+              v40 = preview;
+              preview3 = [(SFTrack *)self preview];
+              v25 = preview3;
               v26 = v48;
-              if (v24)
+              if (preview3)
               {
-                v35 = v24;
-                v27 = [(SFTrack *)self preview];
-                v37 = [(SFTrack *)v5 preview];
-                v38 = v27;
-                if (![v27 isEqual:?])
+                v35 = preview3;
+                preview4 = [(SFTrack *)self preview];
+                preview5 = [(SFTrack *)v5 preview];
+                v38 = preview4;
+                if (![preview4 isEqual:?])
                 {
                   v10 = 0;
                   v25 = v35;
@@ -148,9 +148,9 @@ LABEL_41:
                 v25 = v35;
               }
 
-              v29 = [(SFTrack *)self playAction];
-              v30 = [(SFTrack *)v5 playAction];
-              if ((v29 != 0) == (v30 == 0))
+              playAction = [(SFTrack *)self playAction];
+              playAction2 = [(SFTrack *)v5 playAction];
+              if ((playAction != 0) == (playAction2 == 0))
               {
 
                 v10 = 0;
@@ -158,14 +158,14 @@ LABEL_41:
 
               else
               {
-                v36 = v30;
-                v31 = [(SFTrack *)self playAction];
-                if (v31)
+                v36 = playAction2;
+                playAction3 = [(SFTrack *)self playAction];
+                if (playAction3)
                 {
-                  v34 = v31;
-                  v33 = [(SFTrack *)self playAction];
-                  v32 = [(SFTrack *)v5 playAction];
-                  v10 = [v33 isEqual:v32];
+                  v34 = playAction3;
+                  playAction4 = [(SFTrack *)self playAction];
+                  playAction5 = [(SFTrack *)v5 playAction];
+                  v10 = [playAction4 isEqual:playAction5];
                 }
 
                 else
@@ -180,7 +180,7 @@ LABEL_41:
               {
 LABEL_51:
 
-                v17 = v43;
+                duration3 = v43;
                 v20 = v47;
                 if (!v43)
                 {
@@ -192,8 +192,8 @@ LABEL_35:
 LABEL_37:
 
 LABEL_38:
-                    v9 = v49;
-                    if (!v8)
+                    title4 = v49;
+                    if (!title3)
                     {
 LABEL_40:
 
@@ -224,7 +224,7 @@ LABEL_50:
           v10 = 0;
           v20 = v47;
           v26 = v48;
-          v17 = v43;
+          duration3 = v43;
           if (!v43)
           {
             goto LABEL_35;
@@ -250,28 +250,28 @@ LABEL_42:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFTrack *)self title];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  title = [(SFTrack *)self title];
+  v6 = [title copy];
   [v4 setTitle:v6];
 
-  v7 = [(SFTrack *)self number];
-  v8 = [v7 copy];
+  number = [(SFTrack *)self number];
+  v8 = [number copy];
   [v4 setNumber:v8];
 
-  v9 = [(SFTrack *)self duration];
-  v10 = [v9 copy];
+  duration = [(SFTrack *)self duration];
+  v10 = [duration copy];
   [v4 setDuration:v10];
 
   [v4 setHighlighted:{-[SFTrack highlighted](self, "highlighted")}];
-  v11 = [(SFTrack *)self preview];
-  v12 = [v11 copy];
+  preview = [(SFTrack *)self preview];
+  v12 = [preview copy];
   [v4 setPreview:v12];
 
-  v13 = [(SFTrack *)self playAction];
-  v14 = [v13 copy];
+  playAction = [(SFTrack *)self playAction];
+  v14 = [playAction copy];
   [v4 setPlayAction:v14];
 
   return v4;
@@ -280,31 +280,31 @@ LABEL_42:
 - (NSData)jsonData
 {
   v2 = [[_SFPBTrack alloc] initWithFacade:self];
-  v3 = [(_SFPBTrack *)v2 jsonData];
+  jsonData = [(_SFPBTrack *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBTrack alloc] initWithFacade:self];
-  v3 = [(_SFPBTrack *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBTrack *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBTrack alloc] initWithFacade:self];
-  v5 = [(_SFPBTrack *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBTrack *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFTrack)initWithCoder:(id)a3
+- (SFTrack)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBTrack alloc] initWithData:v5];
   v7 = [(SFTrack *)self initWithProtobuf:v6];
@@ -312,59 +312,59 @@ LABEL_42:
   return v7;
 }
 
-- (SFTrack)initWithProtobuf:(id)a3
+- (SFTrack)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v21.receiver = self;
   v21.super_class = SFTrack;
   v5 = [(SFTrack *)&v21 init];
   if (v5)
   {
-    v6 = [v4 title];
+    title = [protobufCopy title];
 
-    if (v6)
+    if (title)
     {
-      v7 = [v4 title];
-      [(SFTrack *)v5 setTitle:v7];
+      title2 = [protobufCopy title];
+      [(SFTrack *)v5 setTitle:title2];
     }
 
-    v8 = [v4 number];
+    number = [protobufCopy number];
 
-    if (v8)
+    if (number)
     {
-      v9 = [v4 number];
-      [(SFTrack *)v5 setNumber:v9];
+      number2 = [protobufCopy number];
+      [(SFTrack *)v5 setNumber:number2];
     }
 
-    v10 = [v4 duration];
+    duration = [protobufCopy duration];
 
-    if (v10)
+    if (duration)
     {
-      v11 = [v4 duration];
-      [(SFTrack *)v5 setDuration:v11];
+      duration2 = [protobufCopy duration];
+      [(SFTrack *)v5 setDuration:duration2];
     }
 
-    if ([v4 highlighted])
+    if ([protobufCopy highlighted])
     {
-      -[SFTrack setHighlighted:](v5, "setHighlighted:", [v4 highlighted]);
+      -[SFTrack setHighlighted:](v5, "setHighlighted:", [protobufCopy highlighted]);
     }
 
-    v12 = [v4 preview];
+    preview = [protobufCopy preview];
 
-    if (v12)
+    if (preview)
     {
-      v13 = [v4 preview];
-      v14 = _SFPBURLHandwrittenTranslator(v13);
+      preview2 = [protobufCopy preview];
+      v14 = _SFPBURLHandwrittenTranslator(preview2);
       [(SFTrack *)v5 setPreview:v14];
     }
 
-    v15 = [v4 playAction];
+    playAction = [protobufCopy playAction];
 
-    if (v15)
+    if (playAction)
     {
       v16 = [SFActionItem alloc];
-      v17 = [v4 playAction];
-      v18 = [(SFActionItem *)v16 initWithProtobuf:v17];
+      playAction2 = [protobufCopy playAction];
+      v18 = [(SFActionItem *)v16 initWithProtobuf:playAction2];
       [(SFTrack *)v5 setPlayAction:v18];
     }
 

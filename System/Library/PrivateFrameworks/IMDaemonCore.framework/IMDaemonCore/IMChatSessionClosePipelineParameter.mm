@@ -1,72 +1,72 @@
 @interface IMChatSessionClosePipelineParameter
-- (IMChatSessionClosePipelineParameter)initWithDefusedMessage:(id)a3 idsTrustedData:(id)a4;
+- (IMChatSessionClosePipelineParameter)initWithDefusedMessage:(id)message idsTrustedData:(id)data;
 - (id)description;
 @end
 
 @implementation IMChatSessionClosePipelineParameter
 
-- (IMChatSessionClosePipelineParameter)initWithDefusedMessage:(id)a3 idsTrustedData:(id)a4
+- (IMChatSessionClosePipelineParameter)initWithDefusedMessage:(id)message idsTrustedData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  dataCopy = data;
   v30.receiver = self;
   v30.super_class = IMChatSessionClosePipelineParameter;
   v8 = [(IMChatSessionClosePipelineParameter *)&v30 init];
   if (v8)
   {
-    v9 = [v6 metadata];
-    v10 = [v9 messageGUID];
-    v11 = [v10 UUIDString];
+    metadata = [messageCopy metadata];
+    messageGUID = [metadata messageGUID];
+    uUIDString = [messageGUID UUIDString];
 
-    v12 = [v9 timestamp];
-    -[IMChatSessionClosePipelineParameter setIsEmergencySOS:](v8, "setIsEmergencySOS:", [v6 isEmergencySOS]);
-    -[IMChatSessionClosePipelineParameter setDeleteConversation:](v8, "setDeleteConversation:", [v6 deleteConversation]);
-    v13 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v6, "version")}];
+    timestamp = [metadata timestamp];
+    -[IMChatSessionClosePipelineParameter setIsEmergencySOS:](v8, "setIsEmergencySOS:", [messageCopy isEmergencySOS]);
+    -[IMChatSessionClosePipelineParameter setDeleteConversation:](v8, "setDeleteConversation:", [messageCopy deleteConversation]);
+    v13 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(messageCopy, "version")}];
     [(IMChatSessionClosePipelineParameter *)v8 setVersion:v13];
 
-    v14 = [v6 handle];
-    [(IMChatSessionClosePipelineParameter *)v8 setSenderHandle:v14];
+    handle = [messageCopy handle];
+    [(IMChatSessionClosePipelineParameter *)v8 setSenderHandle:handle];
 
-    v15 = [v6 name];
-    [(IMChatSessionClosePipelineParameter *)v8 setSenderName:v15];
+    name = [messageCopy name];
+    [(IMChatSessionClosePipelineParameter *)v8 setSenderName:name];
 
-    v16 = [v6 conversationID];
-    [(IMChatSessionClosePipelineParameter *)v8 setConversationID:v16];
+    conversationID = [messageCopy conversationID];
+    [(IMChatSessionClosePipelineParameter *)v8 setConversationID:conversationID];
 
-    [(IMChatSessionClosePipelineParameter *)v8 setGUID:v11];
-    v17 = [v9 has_timestamp];
+    [(IMChatSessionClosePipelineParameter *)v8 setGUID:uUIDString];
+    has_timestamp = [metadata has_timestamp];
     v18 = MEMORY[0x277CCABB0];
-    if (v17)
+    if (has_timestamp)
     {
-      v19 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v12];
-      [(IMChatSessionClosePipelineParameter *)v8 setTimestamp:v19];
+      date = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:timestamp];
+      [(IMChatSessionClosePipelineParameter *)v8 setTimestamp:date];
     }
 
     else
     {
-      v19 = [MEMORY[0x277CBEAA8] date];
-      [v19 timeIntervalSince1970];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSince1970];
       v20 = [v18 numberWithDouble:?];
       [(IMChatSessionClosePipelineParameter *)v8 setTimestamp:v20];
     }
 
-    v21 = [v9 storageContext];
-    -[IMChatSessionClosePipelineParameter setIsFromStorage:](v8, "setIsFromStorage:", [v21 isFromStorage]);
+    storageContext = [metadata storageContext];
+    -[IMChatSessionClosePipelineParameter setIsFromStorage:](v8, "setIsFromStorage:", [storageContext isFromStorage]);
 
-    v22 = [v9 storageContext];
-    -[IMChatSessionClosePipelineParameter setIsLastFromStorage:](v8, "setIsLastFromStorage:", [v22 isLastFromStorage]);
+    storageContext2 = [metadata storageContext];
+    -[IMChatSessionClosePipelineParameter setIsLastFromStorage:](v8, "setIsLastFromStorage:", [storageContext2 isLastFromStorage]);
 
-    v23 = [v7 batchContext];
+    batchContext = [dataCopy batchContext];
     batchContext = v8->_batchContext;
-    v8->_batchContext = v23;
+    v8->_batchContext = batchContext;
 
-    v25 = [v7 fromIdentifier];
+    fromIdentifier = [dataCopy fromIdentifier];
     fromIdentifier = v8->_fromIdentifier;
-    v8->_fromIdentifier = v25;
+    v8->_fromIdentifier = fromIdentifier;
 
-    v27 = [v7 toIdentifier];
+    toIdentifier = [dataCopy toIdentifier];
     toIdentifier = v8->_toIdentifier;
-    v8->_toIdentifier = v27;
+    v8->_toIdentifier = toIdentifier;
   }
 
   return v8;
@@ -75,12 +75,12 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(IMChatSessionClosePipelineParameter *)self GUID];
-  v5 = [(IMChatSessionClosePipelineParameter *)self timestamp];
+  gUID = [(IMChatSessionClosePipelineParameter *)self GUID];
+  timestamp = [(IMChatSessionClosePipelineParameter *)self timestamp];
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[IMChatSessionClosePipelineParameter isFromStorage](self, "isFromStorage")}];
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[IMChatSessionClosePipelineParameter isLastFromStorage](self, "isLastFromStorage")}];
-  v8 = [(IMChatSessionClosePipelineParameter *)self messageItems];
-  v9 = [v3 stringWithFormat:@"<IMChatSessionClosePipelineParameter %p> { guid: %@, timestamp: %@, isFromStorage: %@, isLastFromStorage: %@, output messageItems: %lu}", self, v4, v5, v6, v7, objc_msgSend(v8, "count")];
+  messageItems = [(IMChatSessionClosePipelineParameter *)self messageItems];
+  v9 = [v3 stringWithFormat:@"<IMChatSessionClosePipelineParameter %p> { guid: %@, timestamp: %@, isFromStorage: %@, isLastFromStorage: %@, output messageItems: %lu}", self, gUID, timestamp, v6, v7, objc_msgSend(messageItems, "count")];
 
   return v9;
 }

@@ -1,11 +1,11 @@
 @interface NEIKEv2EAP
-+ (uint64_t)codeForPayload:(uint64_t)a1;
-+ (uint64_t)loadModuleForType:(uint64_t)a1;
-+ (uint64_t)typeForPayload:(uint64_t)a1;
++ (uint64_t)codeForPayload:(uint64_t)payload;
++ (uint64_t)loadModuleForType:(uint64_t)type;
++ (uint64_t)typeForPayload:(uint64_t)payload;
 - (CFDataRef)sessionKey;
 - (NEIKEv2EAP)init;
-- (uint64_t)createPayloadResponseForRequest:(void *)a3 ikeSA:(BOOL *)a4 success:(BOOL *)a5 reportEAPError:;
-- (void)createPayloadResponseForRequest:(void *)a1 type:(char)a2 typeData:(void *)a3 typeString:(void *)a4;
+- (uint64_t)createPayloadResponseForRequest:(void *)request ikeSA:(BOOL *)a success:(BOOL *)success reportEAPError:;
+- (void)createPayloadResponseForRequest:(void *)request type:(char)type typeData:(void *)data typeString:(void *)string;
 - (void)dealloc;
 @end
 
@@ -16,7 +16,7 @@
   if (!MEMORY[0x1EEE86C70])
   {
 LABEL_7:
-    v3 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -47,10 +47,10 @@ LABEL_7:
   *(v2 + 24) = 0u;
   *(v2 + 8) = 0u;
   self = v2;
-  v3 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -114,7 +114,7 @@ uint64_t __27__NEIKEv2EAP_getPEAPModule__block_invoke()
   return result;
 }
 
-+ (uint64_t)codeForPayload:(uint64_t)a1
++ (uint64_t)codeForPayload:(uint64_t)payload
 {
   v9 = *MEMORY[0x1E69E9840];
   v2 = a2;
@@ -141,7 +141,7 @@ uint64_t __27__NEIKEv2EAP_getPEAPModule__block_invoke()
   return v3;
 }
 
-+ (uint64_t)typeForPayload:(uint64_t)a1
++ (uint64_t)typeForPayload:(uint64_t)payload
 {
   v9 = *MEMORY[0x1E69E9840];
   v2 = a2;
@@ -173,33 +173,33 @@ LABEL_6:
   return v3;
 }
 
-- (void)createPayloadResponseForRequest:(void *)a1 type:(char)a2 typeData:(void *)a3 typeString:(void *)a4
+- (void)createPayloadResponseForRequest:(void *)request type:(char)type typeData:(void *)data typeString:(void *)string
 {
-  v7 = a1;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v7 bytes];
-  if (!v8 && v9)
+  requestCopy = request;
+  dataCopy = data;
+  stringCopy = string;
+  bytes = [requestCopy bytes];
+  if (!dataCopy && stringCopy)
   {
-    v8 = [v9 dataUsingEncoding:4];
+    dataCopy = [stringCopy dataUsingEncoding:4];
   }
 
-  v11 = [v8 length] + 5;
+  v11 = [dataCopy length] + 5;
   v14[0] = 2;
   v15 = bswap32(v11) >> 16;
-  v14[1] = *(v10 + 1);
-  v16 = a2;
+  v14[1] = *(bytes + 1);
+  typeCopy = type;
   v12 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:v11];
   [v12 appendBytes:v14 length:5];
-  if ([v8 length])
+  if ([dataCopy length])
   {
-    [v12 appendData:v8];
+    [v12 appendData:dataCopy];
   }
 
   return v12;
 }
 
-+ (uint64_t)loadModuleForType:(uint64_t)a1
++ (uint64_t)loadModuleForType:(uint64_t)type
 {
   objc_opt_self();
   if (a2 <= 22)
@@ -323,19 +323,19 @@ LABEL_26:
   return EAPClientModuleLookup();
 }
 
-- (uint64_t)createPayloadResponseForRequest:(void *)a3 ikeSA:(BOOL *)a4 success:(BOOL *)a5 reportEAPError:
+- (uint64_t)createPayloadResponseForRequest:(void *)request ikeSA:(BOOL *)a success:(BOOL *)success reportEAPError:
 {
   v221 = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
-  if (!a1)
+  requestCopy = request;
+  if (!self)
   {
     goto LABEL_165;
   }
 
-  if (a4)
+  if (a)
   {
-    *a4 = 0;
+    *a = 0;
   }
 
   if (!v9)
@@ -352,21 +352,21 @@ LABEL_26:
   }
 
   v11 = 0x1E7F04000uLL;
-  if (*(a1 + 168))
+  if (*(self + 168))
   {
     v12 = 0;
     goto LABEL_7;
   }
 
-  v31 = v9;
-  v32 = v10;
+  username = v9;
+  v32 = requestCopy;
   self = v32;
   if (v32)
   {
     v33 = v32;
-    v201 = a4;
+    aCopy = a;
     v212 = 0;
-    v34 = [NEIKEv2EAP codeForPayload:v31];
+    v34 = [NEIKEv2EAP codeForPayload:username];
     if (v34 != 1)
     {
       v55 = v34;
@@ -389,8 +389,8 @@ LABEL_26:
       goto LABEL_160;
     }
 
-    v200 = v31;
-    v35 = [NEIKEv2EAP typeForPayload:v31];
+    v200 = username;
+    v35 = [NEIKEv2EAP typeForPayload:username];
     v36 = v33;
     v37 = v35;
     v39 = objc_getProperty(v36, v38, 96, 1);
@@ -399,31 +399,31 @@ LABEL_26:
     {
       [v39 eapProtocols];
       v42 = v41 = v40;
-      v31 = [v42 count];
+      username = [v42 count];
 
       v40 = v41;
-      if (v31)
+      if (username)
       {
-        v195 = a5;
-        v197 = v10;
+        successCopy = success;
+        v197 = requestCopy;
         v210 = 0u;
         v211 = 0u;
         v208 = 0u;
         v209 = 0u;
-        v43 = [v41 eapProtocols];
-        v44 = [v43 countByEnumeratingWithState:&v208 objects:v214 count:16];
+        eapProtocols = [v41 eapProtocols];
+        v44 = [eapProtocols countByEnumeratingWithState:&v208 objects:v214 count:16];
         if (v44)
         {
           v45 = v44;
           v46 = *v209;
-          v31 = dword_1BAA4F728;
+          username = dword_1BAA4F728;
           while (2)
           {
             for (i = 0; i != v45; ++i)
             {
               if (*v209 != v46)
               {
-                objc_enumerationMutation(v43);
+                objc_enumerationMutation(eapProtocols);
               }
 
               v48 = *(*(&v208 + 1) + 8 * i);
@@ -432,13 +432,13 @@ LABEL_26:
                 v50 = [*(*(&v208 + 1) + 8 * i) method] - 2;
                 if (v50 <= 5 && dword_1BAA4F728[v50] == v37)
                 {
-                  objc_setProperty_atomic(a1, v49, v48, 160);
+                  objc_setProperty_atomic(self, v49, v48, 160);
                   goto LABEL_75;
                 }
               }
             }
 
-            v45 = [v43 countByEnumeratingWithState:&v208 objects:v214 count:16];
+            v45 = [eapProtocols countByEnumeratingWithState:&v208 objects:v214 count:16];
             if (v45)
             {
               continue;
@@ -450,29 +450,29 @@ LABEL_26:
 
 LABEL_75:
 
-        a5 = v195;
-        v10 = v197;
+        success = successCopy;
+        requestCopy = v197;
         v11 = 0x1E7F04000uLL;
         v40 = v41;
-        if (!objc_getProperty(a1, v67, 160, 1))
+        if (!objc_getProperty(self, v67, 160, 1))
         {
-          v70 = [v41 eapProtocols];
-          v12 = [v70 copy];
+          eapProtocols2 = [v41 eapProtocols];
+          v12 = [eapProtocols2 copy];
           goto LABEL_91;
         }
       }
     }
 
     v68 = [NEIKEv2EAP loadModuleForType:v37];
-    *(a1 + 168) = v68;
+    *(self + 168) = v68;
     if (v37 != 1 && !v68)
     {
-      v70 = ne_log_obj();
-      if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
+      eapProtocols2 = ne_log_obj();
+      if (os_log_type_enabled(eapProtocols2, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109120;
         *&buf[4] = v37;
-        _os_log_error_impl(&dword_1BA83C000, v70, OS_LOG_TYPE_ERROR, "error: module is null for type %u", buf, 8u);
+        _os_log_error_impl(&dword_1BA83C000, eapProtocols2, OS_LOG_TYPE_ERROR, "error: module is null for type %u", buf, 8u);
       }
 
       v12 = MEMORY[0x1E695E0F0];
@@ -485,41 +485,41 @@ LABEL_75:
       {
         case 0x17u:
           v71 = v40;
-          v31 = @"EAPAKAProperties";
+          username = @"EAPAKAProperties";
           break;
         case 0x19u:
           v71 = v40;
-          v31 = @"EAPPEAPProperties";
+          username = @"EAPPEAPProperties";
           break;
         case 0x1Au:
           v71 = v40;
-          v31 = @"EAPMSCHAPv2Properties";
+          username = @"EAPMSCHAPv2Properties";
           break;
         default:
 LABEL_94:
           if (v68)
           {
-            *(a1 + 8) = 0u;
-            *(a1 + 152) = 0;
-            *(a1 + 120) = 0u;
-            *(a1 + 136) = 0u;
-            *(a1 + 88) = 0u;
-            *(a1 + 104) = 0u;
-            *(a1 + 56) = 0u;
-            *(a1 + 72) = 0u;
-            *(a1 + 24) = 0u;
-            *(a1 + 40) = 0u;
+            *(self + 8) = 0u;
+            *(self + 152) = 0;
+            *(self + 120) = 0u;
+            *(self + 136) = 0u;
+            *(self + 88) = 0u;
+            *(self + 104) = 0u;
+            *(self + 56) = 0u;
+            *(self + 72) = 0u;
+            *(self + 24) = 0u;
+            *(self + 40) = 0u;
             goto LABEL_102;
           }
 
-          v70 = 0;
+          eapProtocols2 = 0;
           v12 = 0;
 LABEL_91:
-          v31 = v200;
+          username = v200;
 LABEL_159:
 
 LABEL_160:
-          a4 = v201;
+          a = aCopy;
           goto LABEL_161;
       }
     }
@@ -530,52 +530,52 @@ LABEL_160:
       {
         case 6u:
           v71 = v40;
-          v31 = @"EAPGTCProperties";
+          username = @"EAPGTCProperties";
           break;
         case 0xDu:
           v71 = v40;
-          v31 = @"EAPTLSProperties";
+          username = @"EAPTLSProperties";
           break;
         case 0x12u:
           v71 = v40;
-          v31 = @"EAPSIMProperties";
+          username = @"EAPSIMProperties";
           break;
         default:
           goto LABEL_94;
       }
     }
 
-    v72 = [objc_getProperty(a1 v69];
-    v70 = [v72 objectForKeyedSubscript:v31];
+    v72 = [objc_getProperty(self v69];
+    eapProtocols2 = [v72 objectForKeyedSubscript:username];
 
-    if (!*(a1 + 168))
+    if (!*(self + 168))
     {
       v12 = 0;
-      v31 = v200;
+      username = v200;
       v40 = v71;
       goto LABEL_159;
     }
 
-    *(a1 + 8) = 0u;
-    *(a1 + 152) = 0;
-    *(a1 + 120) = 0u;
-    *(a1 + 136) = 0u;
-    *(a1 + 88) = 0u;
-    *(a1 + 104) = 0u;
-    *(a1 + 56) = 0u;
-    *(a1 + 72) = 0u;
-    *(a1 + 24) = 0u;
-    *(a1 + 40) = 0u;
+    *(self + 8) = 0u;
+    *(self + 152) = 0;
+    *(self + 120) = 0u;
+    *(self + 136) = 0u;
+    *(self + 88) = 0u;
+    *(self + 104) = 0u;
+    *(self + 56) = 0u;
+    *(self + 72) = 0u;
+    *(self + 24) = 0u;
+    *(self + 40) = 0u;
     v40 = v71;
-    if (v70)
+    if (eapProtocols2)
     {
-      v198 = v10;
-      v194 = [v70 mutableCopy];
+      v198 = requestCopy;
+      v194 = [eapProtocols2 mutableCopy];
 LABEL_103:
-      v74 = objc_getProperty(a1, v73, 160, 1);
+      v74 = objc_getProperty(self, v73, 160, 1);
       v76 = v74;
-      v196 = a5;
-      v191 = v70;
+      successCopy2 = success;
+      v191 = eapProtocols2;
       v192 = v40;
       if (v74 && ([v74 method] == 4 || objc_msgSend(v76, "method") == 5 || objc_msgSend(v76, "method") == 7))
       {
@@ -591,65 +591,65 @@ LABEL_103:
         }
       }
 
-      a5 = objc_getProperty(self, v75, 88, 1);
-      v31 = [a5 username];
-      v78 = [(__CFString *)v31 length];
+      success = objc_getProperty(self, v75, 88, 1);
+      username = [success username];
+      v78 = [(__CFString *)username length];
       if (v77)
       {
         v79 = v78;
 
-        v81 = self;
+        selfCopy3 = self;
         if (v79)
         {
 LABEL_110:
-          v82 = objc_getProperty(v81, v80, 88, 1);
-          v83 = [v82 username];
-          v10 = v198;
+          v82 = objc_getProperty(selfCopy3, v80, 88, 1);
+          username2 = [v82 username];
+          requestCopy = v198;
           goto LABEL_123;
         }
 
 LABEL_119:
-        v84 = objc_getProperty(v81, v80, 88, 1);
-        v85 = [v84 localPrivateEAPIdentity];
+        v84 = objc_getProperty(selfCopy3, v80, 88, 1);
+        localPrivateEAPIdentity = [v84 localPrivateEAPIdentity];
 
-        v87 = objc_getProperty(v81, v86, 88, 1);
+        v87 = objc_getProperty(selfCopy3, v86, 88, 1);
         v82 = v87;
-        v10 = v198;
-        if (v85)
+        requestCopy = v198;
+        if (localPrivateEAPIdentity)
         {
-          v83 = [v87 localPrivateEAPIdentity];
+          username2 = [v87 localPrivateEAPIdentity];
         }
 
         else
         {
-          v88 = [v87 localIdentifier];
-          v83 = [v88 stringValue];
+          localIdentifier = [v87 localIdentifier];
+          username2 = [localIdentifier stringValue];
         }
 
 LABEL_123:
         v11 = 0x1E7F04000;
 
-        a5 = v196;
-        if (v83)
+        success = successCopy2;
+        if (username2)
         {
-          v90 = [v83 maximumLengthOfBytesUsingEncoding:4];
+          v90 = [username2 maximumLengthOfBytesUsingEncoding:4];
           v91 = malloc_type_malloc(v90, 0xAAFC57D3uLL);
-          *(a1 + 48) = v91;
-          [v83 getCString:v91 maxLength:v90 encoding:4];
-          *(a1 + 56) = strnlen(*(a1 + 48), v90);
+          *(self + 48) = v91;
+          [username2 getCString:v91 maxLength:v90 encoding:4];
+          *(self + 56) = strnlen(*(self + 48), v90);
         }
 
-        v193 = v83;
-        v92 = objc_getProperty(v81, v89, 88, 1);
-        v93 = [v92 localEncryptedEAPIdentity];
+        v193 = username2;
+        v92 = objc_getProperty(selfCopy3, v89, 88, 1);
+        localEncryptedEAPIdentity = [v92 localEncryptedEAPIdentity];
 
-        if (v93)
+        if (localEncryptedEAPIdentity)
         {
-          v95 = objc_getProperty(v81, v94, 88, 1);
-          *(a1 + 64) = [v95 localEncryptedEAPIdentity];
+          v95 = objc_getProperty(selfCopy3, v94, 88, 1);
+          *(self + 64) = [v95 localEncryptedEAPIdentity];
         }
 
-        v96 = objc_getProperty(a1, v94, 160, 1);
+        v96 = objc_getProperty(self, v94, 160, 1);
         if (v96)
         {
           v98 = v96;
@@ -659,14 +659,14 @@ LABEL_123:
             goto LABEL_131;
           }
 
-          v122 = [v98 method];
+          method = [v98 method];
 
-          if (v122 == 7)
+          if (method == 7)
           {
 LABEL_131:
-            if (!objc_getProperty(v81, v97, 88, 1))
+            if (!objc_getProperty(selfCopy3, v97, 88, 1))
             {
-              v120 = v196;
+              successCopy5 = successCopy2;
               v121 = ne_log_obj();
               if (os_log_type_enabled(v121, OS_LOG_TYPE_FAULT))
               {
@@ -678,50 +678,50 @@ LABEL_131:
               goto LABEL_154;
             }
 
-            if (!objc_getProperty(v81, v99, 520, 1))
+            if (!objc_getProperty(selfCopy3, v99, 520, 1))
             {
-              v101 = [objc_getProperty(v81 v100];
+              v100 = [objc_getProperty(selfCopy3 v100];
 
-              if (v101)
+              if (v100)
               {
-                v103 = [objc_getProperty(v81 v102];
-                v104 = [NEIKEv2Crypto copyDataFromPersistentReference:v103];
-                objc_setProperty_atomic(v81, v105, v104, 520);
+                v102 = [objc_getProperty(selfCopy3 v102];
+                v104 = [NEIKEv2Crypto copyDataFromPersistentReference:v102];
+                objc_setProperty_atomic(selfCopy3, v105, v104, 520);
 
-                if (!objc_getProperty(v81, v106, 520, 1))
+                if (!objc_getProperty(selfCopy3, v106, 520, 1))
                 {
                   v107 = ne_log_obj();
                   if (os_log_type_enabled(v107, OS_LOG_TYPE_ERROR))
                   {
                     *buf = 138412290;
-                    *&buf[4] = v81;
+                    *&buf[4] = selfCopy3;
                     _os_log_error_impl(&dword_1BA83C000, v107, OS_LOG_TYPE_ERROR, "%@ Failed to retrieve password by reference", buf, 0xCu);
                   }
                 }
               }
 
-              v109 = objc_getProperty(v81, v102, 520, 1);
-              if (v109)
+              v1002 = objc_getProperty(selfCopy3, v102, 520, 1);
+              if (v1002)
               {
                 goto LABEL_141;
               }
 
-              v110 = [objc_getProperty(v81 v108];
+              v108 = [objc_getProperty(selfCopy3 v108];
 
-              if (v110)
+              if (v108)
               {
                 v111 = MEMORY[0x1E695DEF0];
-                v109 = [objc_getProperty(v81 v100];
-                v112 = [v109 dataUsingEncoding:4];
+                v1002 = [objc_getProperty(selfCopy3 v100];
+                v112 = [v1002 dataUsingEncoding:4];
                 v113 = [(NSData *)v111 sensitiveDataWithData:v112];
-                objc_setProperty_atomic(v81, v114, v113, 520);
+                objc_setProperty_atomic(selfCopy3, v114, v113, 520);
 
-                a5 = v196;
+                success = successCopy2;
 LABEL_141:
               }
             }
 
-            v115 = objc_getProperty(v81, v100, 520, 1);
+            v115 = objc_getProperty(selfCopy3, v100, 520, 1);
             if (v115)
             {
               v116 = v115;
@@ -729,7 +729,7 @@ LABEL_141:
               v118 = v116;
               if (!v117)
               {
-                v120 = a5;
+                successCopy5 = success;
                 v126 = ne_log_obj();
                 if (os_log_type_enabled(v126, OS_LOG_TYPE_FAULT))
                 {
@@ -739,24 +739,24 @@ LABEL_141:
                   _os_log_fault_impl(&dword_1BA83C000, v126, OS_LOG_TYPE_FAULT, "malloc(%zu) failed", buf, 0xCu);
                 }
 
-                v31 = v200;
+                username = v200;
                 goto LABEL_156;
               }
 
               v119 = v117;
               memcpy(v117, [v116 bytes], [v116 length]);
               v119[[v116 length]] = 0;
-              *(a1 + 72) = v119;
-              *(a1 + 80) = [v116 length];
+              *(self + 72) = v119;
+              *(self + 80) = [v116 length];
               if (v193)
               {
 
                 goto LABEL_150;
               }
 
-              v120 = a5;
+              successCopy5 = success;
 LABEL_155:
-              v31 = v200;
+              username = v200;
               v126 = ne_log_obj();
               if (os_log_type_enabled(v126, OS_LOG_TYPE_ERROR))
               {
@@ -774,17 +774,17 @@ LABEL_155:
 LABEL_156:
               v40 = v192;
 
-              a5 = v120;
+              success = successCopy5;
 LABEL_157:
 
               v12 = MEMORY[0x1E695E0F0];
 LABEL_158:
 
-              v70 = v191;
+              eapProtocols2 = v191;
               goto LABEL_159;
             }
 
-            v120 = a5;
+            successCopy5 = success;
 LABEL_154:
             v118 = 0;
             goto LABEL_155;
@@ -792,8 +792,8 @@ LABEL_154:
         }
 
 LABEL_150:
-        v123 = objc_getProperty(a1, v97, 160, 1);
-        v31 = v200;
+        v123 = objc_getProperty(self, v97, 160, 1);
+        username = v200;
         if (!v123)
         {
           goto LABEL_226;
@@ -806,19 +806,19 @@ LABEL_150:
 
         else
         {
-          v129 = [v124 method];
+          method2 = [v124 method];
 
-          v130 = v129 == 7;
-          v31 = v200;
+          v130 = method2 == 7;
+          username = v200;
           if (!v130)
           {
             goto LABEL_226;
           }
         }
 
-        v131 = [(NEIKEv2IKESA *)v81 copyLocalSecIdentity];
-        *(a1 + 104) = v131;
-        if (!v131)
+        copyLocalSecIdentity = [(NEIKEv2IKESA *)selfCopy3 copyLocalSecIdentity];
+        *(self + 104) = copyLocalSecIdentity;
+        if (!copyLocalSecIdentity)
         {
           v118 = ne_log_obj();
           v40 = v192;
@@ -833,17 +833,17 @@ LABEL_150:
 
         [v194 setObject:*MEMORY[0x1E695E4D0] forKeyedSubscript:@"TLSCertificateIsRequired"];
         v132 = objc_alloc_init(MEMORY[0x1E695DF70]);
-        v199 = v10;
+        v199 = requestCopy;
         if (v132)
         {
-          v133 = [(NEIKEv2IKESA *)self copyRemoteCertificateAuthorityArray];
-          if (v133)
+          copyRemoteCertificateAuthorityArray = [(NEIKEv2IKESA *)self copyRemoteCertificateAuthorityArray];
+          if (copyRemoteCertificateAuthorityArray)
           {
             v219 = 0u;
             v220 = 0u;
             v217 = 0u;
             v218 = 0u;
-            v134 = v133;
+            v134 = copyRemoteCertificateAuthorityArray;
             v135 = [v134 countByEnumeratingWithState:&v217 objects:buf count:16];
             if (v135)
             {
@@ -882,26 +882,26 @@ LABEL_150:
             }
 
             v141 = v132;
-            a5 = v196;
+            success = successCopy2;
             v11 = 0x1E7F04000;
 LABEL_206:
 
             if ([v141 count])
             {
               [v194 setObject:v141 forKeyedSubscript:@"TLSTrustedCertificates"];
-              v145 = 0;
-              v10 = v199;
+              remoteCertificateHostname = 0;
+              requestCopy = v199;
               goto LABEL_216;
             }
 
             v146 = objc_getProperty(self, v144, 88, 1);
-            v145 = [v146 remoteCertificateHostname];
+            remoteCertificateHostname = [v146 remoteCertificateHostname];
 
-            v10 = v199;
-            if (v145)
+            requestCopy = v199;
+            if (remoteCertificateHostname)
             {
 LABEL_215:
-              *&v217 = v145;
+              *&v217 = remoteCertificateHostname;
               v159 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v217 count:1];
               [v194 setObject:v159 forKeyedSubscript:@"TLSTrustedServerNames"];
 
@@ -909,36 +909,36 @@ LABEL_215:
             }
 
             v148 = objc_getProperty(self, v147, 88, 1);
-            v149 = [v148 remoteIdentifier];
-            if ([v149 identifierType] != 2)
+            remoteIdentifier = [v148 remoteIdentifier];
+            if ([remoteIdentifier identifierType] != 2)
             {
               v151 = objc_getProperty(self, v150, 88, 1);
-              v152 = [v151 remoteIdentifier];
-              if ([v152 identifierType] != 1)
+              remoteIdentifier2 = [v151 remoteIdentifier];
+              if ([remoteIdentifier2 identifierType] != 1)
               {
                 v154 = v141;
                 v182 = objc_getProperty(self, v153, 88, 1);
-                v183 = [v182 remoteIdentifier];
-                v190 = [v183 identifierType];
+                remoteIdentifier3 = [v182 remoteIdentifier];
+                identifierType = [remoteIdentifier3 identifierType];
 
-                v10 = v199;
-                if (v190 != 5)
+                requestCopy = v199;
+                if (identifierType != 5)
                 {
                   v184 = objc_getProperty(self, v155, 80, 1);
-                  v185 = [v184 remoteEndpoint];
+                  remoteEndpoint = [v184 remoteEndpoint];
                   objc_opt_class();
                   isKindOfClass = objc_opt_isKindOfClass();
 
                   if ((isKindOfClass & 1) == 0)
                   {
-                    v145 = 0;
-                    a5 = v196;
+                    remoteCertificateHostname = 0;
+                    success = successCopy2;
                     v11 = 0x1E7F04000;
                     v141 = v154;
 LABEL_216:
                     v118 = v141;
                     v160 = [v141 count];
-                    if (!v145 && !v160)
+                    if (!remoteCertificateHostname && !v160)
                     {
                       v162 = ne_log_obj();
                       v40 = v192;
@@ -948,35 +948,35 @@ LABEL_216:
                         _os_log_error_impl(&dword_1BA83C000, v162, OS_LOG_TYPE_ERROR, "EAP plugin data initialization failed, missing server certificate validation info", buf, 2u);
                       }
 
-                      v31 = v200;
+                      username = v200;
                       goto LABEL_157;
                     }
 
                     v163 = objc_getProperty(self, v161, 88, 1);
-                    v164 = [v163 tlsMinimumVersion];
+                    tlsMinimumVersion = [v163 tlsMinimumVersion];
 
-                    if (v164)
+                    if (tlsMinimumVersion)
                     {
                       v166 = objc_getProperty(self, v165, 88, 1);
-                      v167 = [v166 tlsMinimumVersion];
-                      [v194 setObject:v167 forKeyedSubscript:@"TLSMinimumVersion"];
+                      tlsMinimumVersion2 = [v166 tlsMinimumVersion];
+                      [v194 setObject:tlsMinimumVersion2 forKeyedSubscript:@"TLSMinimumVersion"];
                     }
 
                     v168 = objc_getProperty(self, v165, 88, 1);
-                    v169 = [v168 tlsMaximumVersion];
+                    tlsMaximumVersion = [v168 tlsMaximumVersion];
 
-                    if (v169)
+                    if (tlsMaximumVersion)
                     {
                       v171 = objc_getProperty(self, v170, 88, 1);
-                      v172 = [v171 tlsMaximumVersion];
-                      [v194 setObject:v172 forKeyedSubscript:@"TLSMaximumVersion"];
+                      tlsMaximumVersion2 = [v171 tlsMaximumVersion];
+                      [v194 setObject:tlsMaximumVersion2 forKeyedSubscript:@"TLSMaximumVersion"];
                     }
 
 LABEL_226:
-                    *(a1 + 24) = 1024;
-                    *(a1 + 88) = v194;
+                    *(self + 24) = 1024;
+                    *(self + 88) = v194;
                     *v207 = 0;
-                    v173 = *(a1 + 168);
+                    v173 = *(self + 168);
                     v174 = EAPClientModulePluginInit();
                     if (*v207)
                     {
@@ -987,11 +987,11 @@ LABEL_226:
                     v40 = v192;
                     if (v174)
                     {
-                      v175 = a5;
+                      successCopy6 = success;
                       v176 = ne_log_obj();
                       if (os_log_type_enabled(v176, OS_LOG_TYPE_ERROR))
                       {
-                        Property = objc_getProperty(a1, v177, 160, 1);
+                        Property = objc_getProperty(self, v177, 160, 1);
                         *buf = 138412546;
                         *&buf[4] = Property;
                         *&buf[12] = 1024;
@@ -999,10 +999,10 @@ LABEL_226:
                         _os_log_error_impl(&dword_1BA83C000, v176, OS_LOG_TYPE_ERROR, "%@ EAP client module init failed with status %u", buf, 0x12u);
                       }
 
-                      objc_setProperty_atomic(a1, v178, 0, 160);
-                      *(a1 + 168) = 0;
+                      objc_setProperty_atomic(self, v178, 0, 160);
+                      *(self + 168) = 0;
                       v12 = MEMORY[0x1E695E0F0];
-                      a5 = v175;
+                      success = successCopy6;
                     }
 
                     else
@@ -1010,27 +1010,27 @@ LABEL_226:
                       v12 = 0;
                     }
 
-                    v31 = v200;
+                    username = v200;
                     goto LABEL_158;
                   }
 
                   v156 = objc_getProperty(self, v187, 80, 1);
-                  v157 = [v156 remoteEndpoint];
-                  v158 = [v157 hostname];
+                  remoteEndpoint2 = [v156 remoteEndpoint];
+                  hostname = [remoteEndpoint2 hostname];
                   goto LABEL_214;
                 }
 
 LABEL_213:
                 v156 = objc_getProperty(self, v155, 88, 1);
-                v157 = [v156 remoteIdentifier];
-                v158 = [v157 stringValue];
+                remoteEndpoint2 = [v156 remoteIdentifier];
+                hostname = [remoteEndpoint2 stringValue];
 LABEL_214:
-                v145 = v158;
+                remoteCertificateHostname = hostname;
 
-                a5 = v196;
+                success = successCopy2;
                 v11 = 0x1E7F04000;
                 v141 = v154;
-                if (!v145)
+                if (!remoteCertificateHostname)
                 {
                   goto LABEL_216;
                 }
@@ -1038,7 +1038,7 @@ LABEL_214:
                 goto LABEL_215;
               }
 
-              v10 = v199;
+              requestCopy = v199;
             }
 
             v154 = v141;
@@ -1072,10 +1072,10 @@ LABEL_214:
 
       v77 = v78 != 0;
 LABEL_112:
-      if ((v37 == 23 || v37 == 18) && ((v31, v37 == 23) || v37 == 18))
+      if ((v37 == 23 || v37 == 18) && ((username, v37 == 23) || v37 == 18))
       {
 
-        v81 = self;
+        selfCopy3 = self;
         if (v77)
         {
           goto LABEL_110;
@@ -1085,7 +1085,7 @@ LABEL_112:
       else
       {
 
-        v81 = self;
+        selfCopy3 = self;
         if (v77)
         {
           goto LABEL_110;
@@ -1096,13 +1096,13 @@ LABEL_112:
     }
 
 LABEL_102:
-    v198 = v10;
+    v198 = requestCopy;
     v194 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v70 = 0;
+    eapProtocols2 = 0;
     goto LABEL_103;
   }
 
-  v188 = v31;
+  v188 = username;
   v189 = ne_log_obj();
   if (os_log_type_enabled(v189, OS_LOG_TYPE_FAULT))
   {
@@ -1112,7 +1112,7 @@ LABEL_102:
   }
 
   v12 = MEMORY[0x1E695E0F0];
-  v31 = v188;
+  username = v188;
 LABEL_161:
 
   if (v12 && ![v12 count])
@@ -1136,7 +1136,7 @@ LABEL_7:
   {
     v26 = 0;
 LABEL_23:
-    if (*(a1 + 168))
+    if (*(self + 168))
     {
       [v9 bytes];
       [v9 length];
@@ -1145,7 +1145,7 @@ LABEL_23:
         *buf = 0;
         v214[0] = 0;
         LODWORD(v217) = 0;
-        v27 = *(a1 + 168);
+        v27 = *(self + 168);
         [v9 bytes];
         v28 = EAPClientModulePluginProcess();
         if (*buf)
@@ -1153,7 +1153,7 @@ LABEL_23:
           v29 = objc_alloc(MEMORY[0x1E695DEF0]);
           v30 = bswap32(*(*buf + 2));
           v25 = [v29 initWithBytes:? length:?];
-          if (!a5)
+          if (!success)
           {
             goto LABEL_61;
           }
@@ -1162,7 +1162,7 @@ LABEL_23:
         else
         {
           v25 = 0;
-          if (!a5)
+          if (!success)
           {
             goto LABEL_61;
           }
@@ -1170,19 +1170,19 @@ LABEL_23:
 
         if (v217)
         {
-          *a5 = v217 == 19;
+          *success = v217 == 19;
         }
 
 LABEL_61:
         if (v28 == 1)
         {
-          if (v10)
+          if (requestCopy)
           {
-            v10[18] = 1;
-            v10[20] = 1;
+            requestCopy[18] = 1;
+            requestCopy[20] = 1;
           }
 
-          if (!a4)
+          if (!a)
           {
             goto LABEL_73;
           }
@@ -1193,22 +1193,22 @@ LABEL_61:
 
         if (v28 || v214[0])
         {
-          if (a4)
+          if (a)
           {
             v65 = 0;
 LABEL_72:
-            *a4 = v65;
+            *a = v65;
           }
         }
 
-        else if (a4)
+        else if (a)
         {
           v65 = *buf != 0;
           goto LABEL_72;
         }
 
 LABEL_73:
-        v66 = *(a1 + 168);
+        v66 = *(self + 168);
         EAPClientModulePluginFreePacket();
 
         goto LABEL_166;
@@ -1293,9 +1293,9 @@ LABEL_165:
 
     v24 = [NEIKEv2EAP createPayloadResponseForRequest:v9 type:3 typeData:v16 typeString:0];
     v25 = v24;
-    if (a4)
+    if (a)
     {
-      *a4 = v24 != 0;
+      *a = v24 != 0;
     }
 
     goto LABEL_166;
@@ -1307,9 +1307,9 @@ LABEL_165:
     goto LABEL_23;
   }
 
-  if (v10)
+  if (requestCopy)
   {
-    v57 = objc_getProperty(v10, v15, 88, 1);
+    v57 = objc_getProperty(requestCopy, v15, 88, 1);
   }
 
   else
@@ -1318,13 +1318,13 @@ LABEL_165:
   }
 
   v58 = v57;
-  v59 = [v58 username];
+  username3 = [v58 username];
 
-  if (!v59)
+  if (!username3)
   {
-    if (v10)
+    if (requestCopy)
     {
-      v61 = objc_getProperty(v10, v60, 88, 1);
+      v61 = objc_getProperty(requestCopy, v60, 88, 1);
     }
 
     else
@@ -1333,15 +1333,15 @@ LABEL_165:
     }
 
     v62 = v61;
-    v63 = [v62 localIdentifier];
-    v59 = [v63 stringValue];
+    localIdentifier2 = [v62 localIdentifier];
+    username3 = [localIdentifier2 stringValue];
   }
 
-  v64 = [NEIKEv2EAP createPayloadResponseForRequest:v9 type:1 typeData:0 typeString:v59];
+  v64 = [NEIKEv2EAP createPayloadResponseForRequest:v9 type:1 typeData:0 typeString:username3];
   v25 = v64;
-  if (a4)
+  if (a)
   {
-    *a4 = v64 != 0;
+    *a = v64 != 0;
   }
 
 LABEL_166:
@@ -1352,11 +1352,11 @@ LABEL_166:
 - (CFDataRef)sessionKey
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 168))
+    if (*(self + 168))
     {
-      v1 = *(a1 + 168);
+      v1 = *(self + 168);
       v2 = EAPClientModulePluginMasterSessionKeyCopyBytes();
       if (v2 >= 1)
       {

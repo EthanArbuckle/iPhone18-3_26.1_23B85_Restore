@@ -11,14 +11,14 @@
 
 - (void)_wk_parentScrollView
 {
-  v1 = [a1 superview];
-  if (!v1)
+  superview = [self superview];
+  if (!superview)
   {
     return 0;
   }
 
-  v2 = v1;
-  v3 = v1;
+  v2 = superview;
+  v3 = superview;
   while (1)
   {
     objc_opt_class();
@@ -27,14 +27,14 @@
       break;
     }
 
-    v4 = [v2 superview];
-    v5 = v4;
-    if (!v4)
+    superview2 = [v2 superview];
+    v5 = superview2;
+    if (!superview2)
     {
       goto LABEL_8;
     }
 
-    v6 = v4;
+    v6 = superview2;
 
     v2 = v5;
   }
@@ -49,15 +49,15 @@ LABEL_8:
 
 - (BOOL)_wk_isAncestorOf:()WebKitInternal
 {
-  v4 = [a3 superview];
-  if (!v4)
+  superview = [a3 superview];
+  if (!superview)
   {
     return 0;
   }
 
-  v5 = v4;
-  v6 = v4;
-  if (v5 == a1)
+  v5 = superview;
+  v6 = superview;
+  if (v5 == self)
   {
     v9 = 1;
   }
@@ -67,18 +67,18 @@ LABEL_8:
     v7 = v5;
     while (1)
     {
-      v8 = [v7 superview];
-      v5 = v8;
-      v9 = v8 != 0;
-      if (!v8)
+      superview2 = [v7 superview];
+      v5 = superview2;
+      v9 = superview2 != 0;
+      if (!superview2)
       {
         break;
       }
 
-      v10 = v8;
+      v10 = superview2;
 
       v7 = v5;
-      if (v5 == a1)
+      if (v5 == self)
       {
         goto LABEL_10;
       }
@@ -95,7 +95,7 @@ LABEL_10:
 - (uint64_t)_wk_collectDescendantsIncludingSelf:()WebKitInternal matching:
 {
   v21 = *MEMORY[0x1E69E9840];
-  if ((*(a4 + 16))(a4, a1))
+  if ((*(a4 + 16))(a4, self))
   {
     v7 = *(a3 + 12);
     if (v7 == *(a3 + 8))
@@ -122,8 +122,8 @@ LABEL_10:
 
       WTF::Vector<WTF::RetainPtr<UIView>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::reserveCapacity<(WTF::FailureAction)0>(a3, v9);
       v7 = *(a3 + 12);
-      *(*a3 + 8 * v7) = a1;
-      if (!a1)
+      *(*a3 + 8 * v7) = self;
+      if (!self)
       {
         goto LABEL_13;
       }
@@ -131,8 +131,8 @@ LABEL_10:
 
     else
     {
-      *(*a3 + 8 * v7) = a1;
-      if (!a1)
+      *(*a3 + 8 * v7) = self;
+      if (!self)
       {
 LABEL_13:
         *(a3 + 12) = v7 + 1;
@@ -140,7 +140,7 @@ LABEL_13:
       }
     }
 
-    v10 = a1;
+    selfCopy = self;
     LODWORD(v7) = *(a3 + 12);
     goto LABEL_13;
   }
@@ -150,8 +150,8 @@ LABEL_14:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v11 = [a1 subviews];
-  result = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  subviews = [self subviews];
+  result = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (result)
   {
     v13 = result;
@@ -163,14 +163,14 @@ LABEL_14:
       {
         if (*v17 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v16 + 1) + 8 * v15++) _wk_collectDescendantsIncludingSelf:a3 matching:a4];
       }
 
       while (v13 != v15);
-      result = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      result = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
       v13 = result;
     }
 
@@ -182,16 +182,16 @@ LABEL_14:
 
 - (void)_wk_viewControllerForFullScreenPresentation
 {
-  v2 = [objc_msgSend(a1 "window")];
+  presentedViewController = [objc_msgSend(self "window")];
   do
   {
-    v3 = v2;
-    v2 = [v2 presentedViewController];
+    v3 = presentedViewController;
+    presentedViewController = [presentedViewController presentedViewController];
   }
 
-  while (v2);
+  while (presentedViewController);
   v4 = [objc_msgSend(v3 "viewIfLoaded")];
-  if (v4 == [a1 window])
+  if (v4 == [self window])
   {
     return v3;
   }
@@ -205,22 +205,22 @@ LABEL_14:
 - (uint64_t)_wk_convertQuad:()WebKitInternal toCoordinateSpace:
 {
   WebCore::FloatPoint::operator CGPoint();
-  [a1 convertPoint:a2 toCoordinateSpace:?];
+  [self convertPoint:a2 toCoordinateSpace:?];
   v21.x = v6;
   v21.y = v7;
   WebCore::FloatPoint::FloatPoint(&v22, &v21);
   WebCore::FloatPoint::operator CGPoint();
-  [a1 convertPoint:a2 toCoordinateSpace:?];
+  [self convertPoint:a2 toCoordinateSpace:?];
   v19.x = v8;
   v19.y = v9;
   WebCore::FloatPoint::FloatPoint(&v20, &v19);
   WebCore::FloatPoint::operator CGPoint();
-  [a1 convertPoint:a2 toCoordinateSpace:?];
+  [self convertPoint:a2 toCoordinateSpace:?];
   v17.x = v10;
   v17.y = v11;
   WebCore::FloatPoint::FloatPoint(&v18, &v17);
   WebCore::FloatPoint::operator CGPoint();
-  [a1 convertPoint:a2 toCoordinateSpace:?];
+  [self convertPoint:a2 toCoordinateSpace:?];
   v16.x = v12;
   v16.y = v13;
   result = WebCore::FloatPoint::FloatPoint((a3 + 3), &v16);
@@ -234,20 +234,20 @@ LABEL_14:
 - (void)_wk_previousSibling
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [a1 superview];
-  if (!v2)
+  superview = [self superview];
+  if (!superview)
   {
     return 0;
   }
 
-  v3 = v2;
-  v4 = v2;
+  v3 = superview;
+  v4 = superview;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v3 subviews];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  subviews = [v3 subviews];
+  v6 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = 0;
@@ -259,11 +259,11 @@ LABEL_4:
     {
       if (*v13 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(subviews);
       }
 
       v7 = *(*(&v12 + 1) + 8 * v9);
-      if (v7 == a1)
+      if (v7 == self)
       {
         break;
       }
@@ -272,7 +272,7 @@ LABEL_4:
       v10 = v7;
       if (v6 == v9)
       {
-        v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
         v10 = v7;
         if (v6)
         {

@@ -1,25 +1,25 @@
 @interface _SFPBDate
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBDate)initWithDictionary:(id)a3;
-- (_SFPBDate)initWithJSON:(id)a3;
-- (_SFPBDate)initWithNSDate:(id)a3;
+- (_SFPBDate)initWithDictionary:(id)dictionary;
+- (_SFPBDate)initWithJSON:(id)n;
+- (_SFPBDate)initWithNSDate:(id)date;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBDate
 
-- (_SFPBDate)initWithNSDate:(id)a3
+- (_SFPBDate)initWithNSDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v8.receiver = self;
   v8.super_class = _SFPBDate;
   v5 = [(_SFPBDate *)&v8 init];
   if (v5)
   {
-    [v4 timeIntervalSince1970];
+    [dateCopy timeIntervalSince1970];
     [(_SFPBDate *)v5 setSecondsSince1970:?];
     v6 = v5;
   }
@@ -27,15 +27,15 @@
   return v5;
 }
 
-- (_SFPBDate)initWithDictionary:(id)a3
+- (_SFPBDate)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = _SFPBDate;
   v5 = [(_SFPBDate *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"secondsSince1970"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"secondsSince1970"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (_SFPBDate)initWithJSON:(id)a3
+- (_SFPBDate)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBDate *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBDate *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBDate *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,16 +85,16 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_secondsSince1970 != 0.0)
   {
     v4 = MEMORY[0x1E696AD98];
     [(_SFPBDate *)self secondsSince1970];
     v5 = [v4 numberWithDouble:?];
-    [v3 setObject:v5 forKeyedSubscript:@"secondsSince1970"];
+    [dictionary setObject:v5 forKeyedSubscript:@"secondsSince1970"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -132,13 +132,13 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     secondsSince1970 = self->_secondsSince1970;
-    [v4 secondsSince1970];
+    [equalCopy secondsSince1970];
     v7 = secondsSince1970 == v6;
   }
 
@@ -150,9 +150,9 @@
   return v7;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   [(_SFPBDate *)self secondsSince1970];
   if (v4 != 0.0)
   {

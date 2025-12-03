@@ -6,10 +6,10 @@
 
 - (id)parentViewForTextContentView
 {
-  v2 = [(_UITextFieldVisualStyle *)self styleSubject];
-  v3 = [v2 _contentView];
+  styleSubject = [(_UITextFieldVisualStyle *)self styleSubject];
+  _contentView = [styleSubject _contentView];
 
-  return v3;
+  return _contentView;
 }
 
 @end

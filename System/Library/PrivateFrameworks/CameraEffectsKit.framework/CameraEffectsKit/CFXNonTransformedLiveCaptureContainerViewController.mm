@@ -1,5 +1,5 @@
 @interface CFXNonTransformedLiveCaptureContainerViewController
-- (void)prepareForSegue:(id)a3 sender:(id)a4;
+- (void)prepareForSegue:(id)segue sender:(id)sender;
 - (void)viewDidLoad;
 @end
 
@@ -12,18 +12,18 @@
   [(CFXNonTransformedLiveCaptureContainerViewController *)&v2 viewDidLoad];
 }
 
-- (void)prepareForSegue:(id)a3 sender:(id)a4
+- (void)prepareForSegue:(id)segue sender:(id)sender
 {
-  v9 = a3;
-  v5 = [v9 destinationViewController];
+  segueCopy = segue;
+  destinationViewController = [segueCopy destinationViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v9 destinationViewController];
+    destinationViewController2 = [segueCopy destinationViewController];
     liveCaptureViewController = self->_liveCaptureViewController;
-    self->_liveCaptureViewController = v7;
+    self->_liveCaptureViewController = destinationViewController2;
   }
 }
 

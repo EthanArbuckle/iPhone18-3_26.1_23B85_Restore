@@ -1,39 +1,39 @@
 @interface RoutePlanningWaypointTextField
-- (CGRect)clearButtonRectForBounds:(CGRect)a3;
-- (CGRect)editingRectForBounds:(CGRect)a3;
-- (CGRect)leftViewRectForBounds:(CGRect)a3;
-- (CGRect)placeholderRectForBounds:(CGRect)a3;
-- (CGRect)rightViewRectForBounds:(CGRect)a3;
-- (CGRect)textRectForBounds:(CGRect)a3;
-- (RoutePlanningWaypointTextField)initWithFrame:(CGRect)a3;
+- (CGRect)clearButtonRectForBounds:(CGRect)bounds;
+- (CGRect)editingRectForBounds:(CGRect)bounds;
+- (CGRect)leftViewRectForBounds:(CGRect)bounds;
+- (CGRect)placeholderRectForBounds:(CGRect)bounds;
+- (CGRect)rightViewRectForBounds:(CGRect)bounds;
+- (CGRect)textRectForBounds:(CGRect)bounds;
+- (RoutePlanningWaypointTextField)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)alignmentRectInsets;
 - (double)_textMinimumLeadingMargin;
 - (double)_textMinimumTrailingMargin;
-- (void)_hoverGesture:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)_hoverGesture:(id)gesture;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation RoutePlanningWaypointTextField
 
-- (CGRect)clearButtonRectForBounds:(CGRect)a3
+- (CGRect)clearButtonRectForBounds:(CGRect)bounds
 {
   v19.receiver = self;
   v19.super_class = RoutePlanningWaypointTextField;
-  [(RoutePlanningWaypointTextField *)&v19 clearButtonRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(RoutePlanningWaypointTextField *)&v19 clearButtonRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v12 = +[UIApplication sharedApplication];
-  v13 = [v12 userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [v12 userInterfaceLayoutDirection];
 
   if (sub_10000FA08(self) == 5)
   {
     sub_10000FA08(self);
     v14 = -10.0;
-    if (v13 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v14 = 10.0;
     }
@@ -52,9 +52,9 @@
   return result;
 }
 
-- (CGRect)editingRectForBounds:(CGRect)a3
+- (CGRect)editingRectForBounds:(CGRect)bounds
 {
-  [(RoutePlanningWaypointTextField *)self textRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(RoutePlanningWaypointTextField *)self textRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -62,9 +62,9 @@
   return result;
 }
 
-- (CGRect)placeholderRectForBounds:(CGRect)a3
+- (CGRect)placeholderRectForBounds:(CGRect)bounds
 {
-  [(RoutePlanningWaypointTextField *)self textRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(RoutePlanningWaypointTextField *)self textRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -72,15 +72,15 @@
   return result;
 }
 
-- (CGRect)textRectForBounds:(CGRect)a3
+- (CGRect)textRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   sub_10000FA08(self);
   v8 = +[UIApplication sharedApplication];
-  v9 = [v8 userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [v8 userInterfaceLayoutDirection];
 
   [(RoutePlanningWaypointTextField *)self leftViewRectForBounds:x, y, width, height];
   v10 = v56.origin.x;
@@ -113,7 +113,7 @@
   v58.size.width = v19;
   v58.size.height = v21;
   v26 = CGRectGetWidth(v58);
-  if (v9 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v27 = 0.0;
     if (v26 > 0.0)
@@ -135,10 +135,10 @@
       v27 = v28 + 8.0 + v51 - CGRectGetMaxX(v61);
     }
 
-    v29 = [(RoutePlanningWaypointTextField *)self _clearButton];
-    v30 = [v29 superview];
+    _clearButton = [(RoutePlanningWaypointTextField *)self _clearButton];
+    superview = [_clearButton superview];
     v31 = 0.0;
-    if (v30)
+    if (superview)
     {
       v31 = CGRectGetMaxX(v53) + 8.0;
     }
@@ -166,9 +166,9 @@
     }
 
     v36 = v35;
-    v37 = [(RoutePlanningWaypointTextField *)self _clearButton];
-    v38 = [v37 superview];
-    if (v38)
+    _clearButton2 = [(RoutePlanningWaypointTextField *)self _clearButton];
+    superview2 = [_clearButton2 superview];
+    if (superview2)
     {
       v64.origin.x = x;
       v64.origin.y = y;
@@ -189,7 +189,7 @@
   v44 = fmax(v27, v41);
   v45 = fmax(v32, v41);
   v46 = fmax(v27, v42);
-  if (v9 != 1)
+  if (userInterfaceLayoutDirection != 1)
   {
     v43 = v45;
     v44 = v46;
@@ -232,16 +232,16 @@
   return result;
 }
 
-- (CGRect)rightViewRectForBounds:(CGRect)a3
+- (CGRect)rightViewRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8 = +[UIApplication sharedApplication];
-  v9 = [v8 userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [v8 userInterfaceLayoutDirection];
 
-  if (v9 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     [(RoutePlanningWaypointTextField *)self leftView];
   }
@@ -276,7 +276,7 @@
   {
     sub_10000FA08(self);
     v20 = 10.0;
-    if (v9 != 1)
+    if (userInterfaceLayoutDirection != 1)
     {
       v20 = -10.0;
     }
@@ -295,16 +295,16 @@
   return result;
 }
 
-- (CGRect)leftViewRectForBounds:(CGRect)a3
+- (CGRect)leftViewRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8 = +[UIApplication sharedApplication];
-  v9 = [v8 userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [v8 userInterfaceLayoutDirection];
 
-  if (v9 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     [(RoutePlanningWaypointTextField *)self rightView];
   }
@@ -334,7 +334,7 @@
   {
     sub_10000FA08(self);
     v19 = -10.0;
-    if (v9 != 1)
+    if (userInterfaceLayoutDirection != 1)
     {
       v19 = 10.0;
     }
@@ -378,56 +378,56 @@
   return result;
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = RoutePlanningWaypointTextField;
-  [(RoutePlanningWaypointTextField *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(RoutePlanningWaypointTextField *)&v5 touchesCancelled:cancelled withEvent:event];
   self->_isHandlingTouch = 0;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = RoutePlanningWaypointTextField;
-  [(RoutePlanningWaypointTextField *)&v5 touchesEnded:a3 withEvent:a4];
+  [(RoutePlanningWaypointTextField *)&v5 touchesEnded:ended withEvent:event];
   self->_isHandlingTouch = 0;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   self->_isHandlingTouch = 1;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RoutePlanningWaypointTextField *)self isEditing];
+  eventCopy = event;
+  beganCopy = began;
+  isEditing = [(RoutePlanningWaypointTextField *)self isEditing];
   v12.receiver = self;
   v12.super_class = RoutePlanningWaypointTextField;
-  [(RoutePlanningWaypointTextField *)&v12 touchesBegan:v7 withEvent:v6];
+  [(RoutePlanningWaypointTextField *)&v12 touchesBegan:beganCopy withEvent:eventCopy];
 
-  if (sub_10000FA08(self) == 5 && v8 && !self->_didBeginEditingFromTouch)
+  if (sub_10000FA08(self) == 5 && isEditing && !self->_didBeginEditingFromTouch)
   {
-    v9 = [(RoutePlanningWaypointTextField *)self delegate];
+    delegate = [(RoutePlanningWaypointTextField *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(RoutePlanningWaypointTextField *)self delegate];
-      [v11 textFieldDidBeginEditing:self];
+      delegate2 = [(RoutePlanningWaypointTextField *)self delegate];
+      [delegate2 textFieldDidBeginEditing:self];
     }
   }
 }
 
-- (void)_hoverGesture:(id)a3
+- (void)_hoverGesture:(id)gesture
 {
-  v5 = a3;
-  if ([v5 state] == 1 && -[RoutePlanningWaypointTextField clearButtonMode](self, "clearButtonMode") != 3)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 1 && -[RoutePlanningWaypointTextField clearButtonMode](self, "clearButtonMode") != 3)
   {
     v4 = 3;
   }
 
   else
   {
-    if ([v5 state] != 3 && objc_msgSend(v5, "state") != 4 || -[RoutePlanningWaypointTextField clearButtonMode](self, "clearButtonMode") != 3)
+    if ([gestureCopy state] != 3 && objc_msgSend(gestureCopy, "state") != 4 || -[RoutePlanningWaypointTextField clearButtonMode](self, "clearButtonMode") != 3)
     {
       goto LABEL_9;
     }
@@ -439,11 +439,11 @@
 LABEL_9:
 }
 
-- (RoutePlanningWaypointTextField)initWithFrame:(CGRect)a3
+- (RoutePlanningWaypointTextField)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = RoutePlanningWaypointTextField;
-  v3 = [(RoutePlanningWaypointTextField *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RoutePlanningWaypointTextField *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

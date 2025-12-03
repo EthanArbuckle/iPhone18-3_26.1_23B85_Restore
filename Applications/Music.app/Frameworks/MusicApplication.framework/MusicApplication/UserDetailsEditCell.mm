@@ -1,32 +1,32 @@
 @interface UserDetailsEditCell
 - (BOOL)becomeFirstResponder;
 - (BOOL)resignFirstResponder;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
 - (void)layoutSubviews;
 - (void)music_inheritedLayoutInsetsDidChange;
-- (void)setName:(id)a3;
-- (void)setNickname:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setName:(id)name;
+- (void)setNickname:(id)nickname;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UserDetailsEditCell
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v6 = a3;
-  v4 = self;
+  nameCopy = name;
+  selfCopy = self;
   v5 = sub_11B408();
-  [v5 setText:v6];
+  [v5 setText:nameCopy];
 }
 
-- (void)setNickname:(id)a3
+- (void)setNickname:(id)nickname
 {
   v5 = sub_AB92A0();
   v7 = v6;
-  v8 = a3;
-  v9 = self;
+  nicknameCopy = nickname;
+  selfCopy = self;
   v10 = sub_11B428();
-  [v10 setText:v8];
+  [v10 setText:nicknameCopy];
 
   sub_11B9B4(v5, v7);
 }
@@ -42,58 +42,58 @@
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_11B408();
-  v4 = [v3 becomeFirstResponder];
+  becomeFirstResponder = [v3 becomeFirstResponder];
 
-  return v4;
+  return becomeFirstResponder;
 }
 
 - (BOOL)resignFirstResponder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_11B408();
-  v4 = [v3 resignFirstResponder];
+  resignFirstResponder = [v3 resignFirstResponder];
 
-  if (v4)
+  if (resignFirstResponder)
   {
-    v5 = 1;
+    resignFirstResponder2 = 1;
   }
 
   else
   {
     v6 = sub_11B428();
-    v5 = [(UserDetailsEditCell *)v6 resignFirstResponder];
+    resignFirstResponder2 = [(UserDetailsEditCell *)v6 resignFirstResponder];
 
-    v2 = v6;
+    selfCopy = v6;
   }
 
-  return v5;
+  return resignFirstResponder2;
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_11A460();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_11AB00(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_11AB00(change);
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v10 = sub_AB92A0();
   v12 = v11;
-  v13 = a3;
-  v14 = a5;
-  v15 = self;
-  LOBYTE(length) = sub_11AF74(v13, location, length, v10, v12);
+  fieldCopy = field;
+  stringCopy = string;
+  selfCopy = self;
+  LOBYTE(length) = sub_11AF74(fieldCopy, location, length, v10, v12);
 
   return length & 1;
 }

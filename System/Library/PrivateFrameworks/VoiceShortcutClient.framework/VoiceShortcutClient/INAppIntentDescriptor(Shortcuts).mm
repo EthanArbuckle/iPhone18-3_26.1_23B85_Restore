@@ -10,13 +10,13 @@
 
 - (id)serializedRepresentation
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &off_1F294C268;
   v2 = objc_msgSendSuper2(&v6, sel_serializedRepresentation);
   v3 = [v2 mutableCopy];
 
-  v4 = [a1 intentIdentifier];
-  [v3 setValue:v4 forKey:@"AppIntentIdentifier"];
+  intentIdentifier = [self intentIdentifier];
+  [v3 setValue:intentIdentifier forKey:@"AppIntentIdentifier"];
 
   return v3;
 }
@@ -24,7 +24,7 @@
 - (uint64_t)isEqualForSmartPromptPurposes:()Shortcuts
 {
   v4 = a3;
-  if (a1 == v4)
+  if (self == v4)
   {
     v8 = 1;
   }
@@ -34,7 +34,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16.receiver = a1;
+      v16.receiver = self;
       v16.super_class = &off_1F294C268;
       v5 = objc_msgSendSuper2(&v16, sel_isEqualForSmartPromptPurposes_, v4);
       v6 = v4;
@@ -61,10 +61,10 @@
 
       if (v5)
       {
-        v10 = [a1 intentIdentifier];
-        v11 = [v9 intentIdentifier];
-        v12 = v10;
-        v13 = v11;
+        intentIdentifier = [self intentIdentifier];
+        intentIdentifier2 = [v9 intentIdentifier];
+        v12 = intentIdentifier;
+        v13 = intentIdentifier2;
         v14 = v13;
         if (v12 == v13)
         {
@@ -98,11 +98,11 @@
 
 - (unint64_t)hashForSmartPromptPurposes
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &off_1F294C268;
   v2 = objc_msgSendSuper2(&v6, sel_hashForSmartPromptPurposes);
-  v3 = [a1 intentIdentifier];
-  v4 = [v3 hash];
+  intentIdentifier = [self intentIdentifier];
+  v4 = [intentIdentifier hash];
 
   return v4 ^ v2;
 }
@@ -220,7 +220,7 @@
 
   v19 = v18;
 
-  v20 = [a1 initWithIntentIdentifier:v19 localizedName:v7 bundleIdentifier:v10 extensionBundleIdentifier:v13 counterpartIdentifiers:0 teamIdentifier:v16 supportedIntents:0 supportedEntities:0 bundleURL:0 documentTypes:0];
+  v20 = [self initWithIntentIdentifier:v19 localizedName:v7 bundleIdentifier:v10 extensionBundleIdentifier:v13 counterpartIdentifiers:0 teamIdentifier:v16 supportedIntents:0 supportedEntities:0 bundleURL:0 documentTypes:0];
   return v20;
 }
 
@@ -228,28 +228,28 @@
 {
   v4 = a3;
   v5 = MEMORY[0x1E6963620];
-  v6 = [v4 bundleIdentifier];
-  v7 = [v5 bundleRecordWithBundleIdentifier:v6 allowPlaceholder:0 error:0];
+  bundleIdentifier = [v4 bundleIdentifier];
+  v7 = [v5 bundleRecordWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:0];
 
   v8 = v7;
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v9 = [v8 containingBundleRecord];
+    containingBundleRecord = [v8 containingBundleRecord];
     v10 = 0;
     v11 = v8;
-    if (!v9)
+    if (!containingBundleRecord)
     {
 LABEL_9:
 
-      v12 = 0;
-      v9 = 0;
+      bundleIdentifier3 = 0;
+      containingBundleRecord = 0;
       if (v10)
       {
         goto LABEL_10;
       }
 
 LABEL_8:
-      v13 = [v11 bundleIdentifier];
+      bundleIdentifier2 = [v11 bundleIdentifier];
       goto LABEL_11;
     }
   }
@@ -257,10 +257,10 @@ LABEL_8:
   else
   {
 
-    v9 = v8;
+    containingBundleRecord = v8;
     v11 = 0;
     v10 = 1;
-    if (!v9)
+    if (!containingBundleRecord)
     {
       goto LABEL_9;
     }
@@ -272,24 +272,24 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v12 = [v9 bundleIdentifier];
+  bundleIdentifier3 = [containingBundleRecord bundleIdentifier];
   if ((v10 & 1) == 0)
   {
     goto LABEL_8;
   }
 
 LABEL_10:
-  v13 = 0;
+  bundleIdentifier2 = 0;
 LABEL_11:
-  if (!(v12 | v13))
+  if (!(bundleIdentifier3 | bundleIdentifier2))
   {
-    v12 = [v4 bundleIdentifier];
+    bundleIdentifier3 = [v4 bundleIdentifier];
   }
 
-  v14 = [v4 actionIdentifier];
-  v15 = [v9 localizedName];
-  v16 = [v9 teamIdentifier];
-  v17 = [a1 initWithIntentIdentifier:v14 localizedName:v15 bundleIdentifier:v12 extensionBundleIdentifier:v13 counterpartIdentifiers:0 teamIdentifier:v16 supportedIntents:0 supportedEntities:0 bundleURL:0 documentTypes:0];
+  actionIdentifier = [v4 actionIdentifier];
+  localizedName = [containingBundleRecord localizedName];
+  teamIdentifier = [containingBundleRecord teamIdentifier];
+  v17 = [self initWithIntentIdentifier:actionIdentifier localizedName:localizedName bundleIdentifier:bundleIdentifier3 extensionBundleIdentifier:bundleIdentifier2 counterpartIdentifiers:0 teamIdentifier:teamIdentifier supportedIntents:0 supportedEntities:0 bundleURL:0 documentTypes:0];
 
   return v17;
 }

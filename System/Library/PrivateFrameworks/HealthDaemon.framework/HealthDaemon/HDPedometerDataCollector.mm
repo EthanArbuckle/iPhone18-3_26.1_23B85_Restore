@@ -1,11 +1,11 @@
 @interface HDPedometerDataCollector
 + (BOOL)isPedometerDataCollectionSupported;
-- (HDPedometerDataCollector)initWithProfile:(id)a3;
-- (double)queue_differenceFromDatum:(id)a3 toDatum:(id)a4 type:(id)a5;
+- (HDPedometerDataCollector)initWithProfile:(id)profile;
+- (double)queue_differenceFromDatum:(id)datum toDatum:(id)toDatum type:(id)type;
 - (id)collectedTypes;
 - (id)queue_newDataSource;
 - (void)dealloc;
-- (void)userCharacteristicsManager:(id)a3 didUpdateUserProfile:(id)a4;
+- (void)userCharacteristicsManager:(id)manager didUpdateUserProfile:(id)profile;
 @end
 
 @implementation HDPedometerDataCollector
@@ -22,19 +22,19 @@
   return [v3 isDistanceAvailable];
 }
 
-- (HDPedometerDataCollector)initWithProfile:(id)a3
+- (HDPedometerDataCollector)initWithProfile:(id)profile
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  profileCopy = profile;
   if (![objc_opt_class() isPedometerDataCollectionSupported])
   {
 LABEL_8:
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_9;
   }
 
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [v5 BOOLForKey:@"HDDataCollectionDisablePedometer"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v6 = [standardUserDefaults BOOLForKey:@"HDDataCollectionDisablePedometer"];
 
   if (v6)
   {
@@ -44,8 +44,8 @@ LABEL_8:
     {
       v8 = MEMORY[0x277CBEBD0];
       v9 = v7;
-      v10 = [v8 standardUserDefaults];
-      v11 = [v10 valueForKey:@"HDDataCollectionDisablePedometer"];
+      standardUserDefaults2 = [v8 standardUserDefaults];
+      v11 = [standardUserDefaults2 valueForKey:@"HDDataCollectionDisablePedometer"];
       *buf = 138543618;
       v23 = @"HDDataCollectionDisablePedometer";
       v24 = 2114;
@@ -56,11 +56,11 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v12 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v13 = [v12 features];
-  v14 = [v13 cmPedometerPush];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  features = [mEMORY[0x277CCDD30] features];
+  cmPedometerPush = [features cmPedometerPush];
 
-  if (v14)
+  if (cmPedometerPush)
   {
     _HKInitializeLogging();
     v15 = *MEMORY[0x277CCC298];
@@ -75,26 +75,26 @@ LABEL_8:
 
   v21.receiver = self;
   v21.super_class = HDPedometerDataCollector;
-  v19 = [(HDCoreMotionDataCollector *)&v21 initWithProfile:v4];
+  v19 = [(HDCoreMotionDataCollector *)&v21 initWithProfile:profileCopy];
   if (v19)
   {
-    v20 = [v4 userCharacteristicsManager];
-    [v20 addProfileObserver:v19];
+    userCharacteristicsManager = [profileCopy userCharacteristicsManager];
+    [userCharacteristicsManager addProfileObserver:v19];
   }
 
   self = v19;
-  v16 = self;
+  selfCopy = self;
 LABEL_9:
 
   v17 = *MEMORY[0x277D85DE8];
-  return v16;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v3 = [(HDCoreMotionDataCollector *)self profile];
-  v4 = [v3 userCharacteristicsManager];
-  [v4 removeProfileObserver:self];
+  profile = [(HDCoreMotionDataCollector *)self profile];
+  userCharacteristicsManager = [profile userCharacteristicsManager];
+  [userCharacteristicsManager removeProfileObserver:self];
 
   v5.receiver = self;
   v5.super_class = HDPedometerDataCollector;
@@ -136,7 +136,7 @@ LABEL_9:
     if (os_log_type_enabled(*MEMORY[0x277CCC298], OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_228986000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Not creating data source: user condition is not yet set.", &v7, 0xCu);
     }
 
@@ -148,46 +148,46 @@ LABEL_9:
   return v3;
 }
 
-- (double)queue_differenceFromDatum:(id)a3 toDatum:(id)a4 type:(id)a5
+- (double)queue_differenceFromDatum:(id)datum toDatum:(id)toDatum type:(id)type
 {
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 hd_epochDatestamp];
-  v12 = [v8 hd_epochDatestamp];
-  v13 = [v11 isEqualToDate:v12];
+  datumCopy = datum;
+  toDatumCopy = toDatum;
+  typeCopy = type;
+  hd_epochDatestamp = [toDatumCopy hd_epochDatestamp];
+  hd_epochDatestamp2 = [datumCopy hd_epochDatestamp];
+  v13 = [hd_epochDatestamp isEqualToDate:hd_epochDatestamp2];
 
-  v14 = [v8 hd_epochDatestamp];
-  v15 = [v8 hd_datestamp];
-  if ([v14 isEqualToDate:v15])
+  hd_epochDatestamp3 = [datumCopy hd_epochDatestamp];
+  hd_datestamp = [datumCopy hd_datestamp];
+  if ([hd_epochDatestamp3 isEqualToDate:hd_datestamp])
   {
     v16 = 1;
   }
 
   else
   {
-    v17 = [v9 hd_epochDatestamp];
-    v18 = [v9 hd_datestamp];
-    v16 = [v17 isEqualToDate:v18];
+    hd_epochDatestamp4 = [toDatumCopy hd_epochDatestamp];
+    hd_datestamp2 = [toDatumCopy hd_datestamp];
+    v16 = [hd_epochDatestamp4 isEqualToDate:hd_datestamp2];
   }
 
-  v19 = [v10 identifier];
-  v20 = [v19 isEqualToString:*MEMORY[0x277CCCB40]];
+  identifier = [typeCopy identifier];
+  v20 = [identifier isEqualToString:*MEMORY[0x277CCCB40]];
 
   if (v20)
   {
-    if (self && !-[NSNumber integerValue](self->_userCondition, "integerValue") || (v21 = 0.0, [v9 hd_hasWorkout]))
+    if (self && !-[NSNumber integerValue](self->_userCondition, "integerValue") || (v21 = 0.0, [toDatumCopy hd_hasWorkout]))
     {
-      v22 = [v9 distance];
-      [v22 doubleValue];
+      distance = [toDatumCopy distance];
+      [distance doubleValue];
       v21 = v23;
       if ((v13 | v16))
       {
-        v24 = [v8 distance];
+        distance2 = [datumCopy distance];
 LABEL_16:
-        v31 = v24;
-        [v24 doubleValue];
+        v31 = distance2;
+        [distance2 doubleValue];
         v21 = v21 - v32;
 
 LABEL_17:
@@ -205,17 +205,17 @@ LABEL_17:
 
   else
   {
-    v25 = [v10 identifier];
-    v26 = [v25 isEqualToString:*MEMORY[0x277CCCB70]];
+    identifier2 = [typeCopy identifier];
+    v26 = [identifier2 isEqualToString:*MEMORY[0x277CCCB70]];
 
     if (v26)
     {
-      v22 = [v9 floorsAscended];
-      [v22 doubleValue];
+      distance = [toDatumCopy floorsAscended];
+      [distance doubleValue];
       v21 = v27;
       if ((v13 | v16))
       {
-        v24 = [v8 floorsAscended];
+        distance2 = [datumCopy floorsAscended];
         goto LABEL_16;
       }
 
@@ -224,37 +224,37 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v28 = [v10 identifier];
-    v29 = [v28 isEqualToString:*MEMORY[0x277CCCC10]];
+    identifier3 = [typeCopy identifier];
+    v29 = [identifier3 isEqualToString:*MEMORY[0x277CCCC10]];
 
     if (v29)
     {
-      v22 = [v9 numberOfPushes];
-      [v22 doubleValue];
+      distance = [toDatumCopy numberOfPushes];
+      [distance doubleValue];
       v21 = v30;
       if ((v13 | v16))
       {
-        v24 = [v8 numberOfPushes];
+        distance2 = [datumCopy numberOfPushes];
         goto LABEL_16;
       }
 
       goto LABEL_20;
     }
 
-    v35 = [v10 identifier];
-    v36 = [v35 isEqualToString:*MEMORY[0x277CCCC70]];
+    identifier4 = [typeCopy identifier];
+    v36 = [identifier4 isEqualToString:*MEMORY[0x277CCCC70]];
 
     if (v36)
     {
-      if (self && !-[NSNumber integerValue](self->_userCondition, "integerValue") || (v21 = 0.0, [v9 hd_hasWorkout]))
+      if (self && !-[NSNumber integerValue](self->_userCondition, "integerValue") || (v21 = 0.0, [toDatumCopy hd_hasWorkout]))
       {
-        v37 = [v9 numberOfSteps];
-        [v37 doubleValue];
+        numberOfSteps = [toDatumCopy numberOfSteps];
+        [numberOfSteps doubleValue];
         v21 = v38;
         if ((v13 | v16))
         {
-          v39 = [v8 numberOfSteps];
-          [v39 doubleValue];
+          numberOfSteps2 = [datumCopy numberOfSteps];
+          [numberOfSteps2 doubleValue];
           v21 = v21 - v40;
         }
 
@@ -265,11 +265,11 @@ LABEL_20:
           if (os_log_type_enabled(*MEMORY[0x277CCC298], OS_LOG_TYPE_DEFAULT))
           {
             v43 = 134218498;
-            v44 = *&v21;
+            selfCopy = *&v21;
             v45 = 2112;
-            v46 = v8;
+            v46 = datumCopy;
             v47 = 2112;
-            v48 = v9;
+            v48 = toDatumCopy;
             _os_log_impl(&dword_228986000, v41, OS_LOG_TYPE_DEFAULT, "Unexpectedly large step count (%lf) between %@ and %@", &v43, 0x20u);
           }
         }
@@ -286,9 +286,9 @@ LABEL_20:
       if (os_log_type_enabled(*MEMORY[0x277CCC298], OS_LOG_TYPE_FAULT))
       {
         v43 = 138412546;
-        v44 = self;
+        selfCopy = self;
         v45 = 2112;
-        v46 = v10;
+        v46 = typeCopy;
         _os_log_fault_impl(&dword_228986000, v42, OS_LOG_TYPE_FAULT, "%@: Unexpected type '%@' during difference calculation.", &v43, 0x16u);
       }
     }
@@ -300,18 +300,18 @@ LABEL_21:
   return v21;
 }
 
-- (void)userCharacteristicsManager:(id)a3 didUpdateUserProfile:(id)a4
+- (void)userCharacteristicsManager:(id)manager didUpdateUserProfile:(id)profile
 {
-  v5 = a4;
-  v6 = [(HDCoreMotionDataCollector *)self queue];
+  profileCopy = profile;
+  queue = [(HDCoreMotionDataCollector *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __76__HDPedometerDataCollector_userCharacteristicsManager_didUpdateUserProfile___block_invoke;
   v8[3] = &unk_278613920;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = profileCopy;
+  v7 = profileCopy;
+  dispatch_async(queue, v8);
 }
 
 uint64_t __76__HDPedometerDataCollector_userCharacteristicsManager_didUpdateUserProfile___block_invoke(uint64_t a1)

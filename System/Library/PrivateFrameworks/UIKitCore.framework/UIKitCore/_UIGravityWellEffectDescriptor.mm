@@ -1,5 +1,5 @@
 @interface _UIGravityWellEffectDescriptor
-- (BOOL)canTransitionInPlaceToEffectWithDescriptor:(id)a3;
+- (BOOL)canTransitionInPlaceToEffectWithDescriptor:(id)descriptor;
 - (NSArray)compatibleDescriptors;
 @end
 
@@ -14,17 +14,17 @@
   return v2;
 }
 
-- (BOOL)canTransitionInPlaceToEffectWithDescriptor:(id)a3
+- (BOOL)canTransitionInPlaceToEffectWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(_UIGravityWellEffectDescriptor *)self targetedPreview];
-  v6 = [v5 view];
-  v7 = [v4 targetedPreview];
+  descriptorCopy = descriptor;
+  targetedPreview = [(_UIGravityWellEffectDescriptor *)self targetedPreview];
+  view = [targetedPreview view];
+  targetedPreview2 = [descriptorCopy targetedPreview];
 
-  v8 = [v7 view];
-  LOBYTE(v4) = v6 == v8;
+  view2 = [targetedPreview2 view];
+  LOBYTE(descriptorCopy) = view == view2;
 
-  return v4;
+  return descriptorCopy;
 }
 
 @end

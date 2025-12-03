@@ -1,17 +1,17 @@
 @interface CKDXPCConnectionManager
 + (id)sharedConnectionManager;
 + (void)clouddStarted;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (id)CKStatusReportArray;
 - (id)initInternal;
-- (id)previousProcTearDownOperations:(id)a3;
-- (void)_dumpStatusReportArrayToOsTrace:(id)a3;
-- (void)_dumpStatusReportToFileHandle:(id)a3;
+- (id)previousProcTearDownOperations:(id)operations;
+- (void)_dumpStatusReportArrayToOsTrace:(id)trace;
+- (void)_dumpStatusReportToFileHandle:(id)handle;
 - (void)activate;
 - (void)dealloc;
-- (void)dumpStatusReportToFileHandle:(id)a3;
-- (void)enumerateConnections:(id)a3;
-- (void)statusReportWithCompletionHandler:(id)a3;
+- (void)dumpStatusReportToFileHandle:(id)handle;
+- (void)enumerateConnections:(id)connections;
+- (void)statusReportWithCompletionHandler:(id)handler;
 @end
 
 @implementation CKDXPCConnectionManager
@@ -195,12 +195,12 @@ LABEL_7:
   qword_280D54E90 = 0;
 }
 
-- (id)previousProcTearDownOperations:(id)a3
+- (id)previousProcTearDownOperations:(id)operations
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  operationsCopy = operations;
   v7 = objc_opt_new();
-  if (v4)
+  if (operationsCopy)
   {
     v8 = objc_msgSend_tearDownOperations(self, v5, v6);
     objc_sync_enter(v8);
@@ -224,7 +224,7 @@ LABEL_7:
 
           v18 = *(*(&v24 + 1) + 8 * i);
           v19 = objc_msgSend_name(v18, v13, v14);
-          isEqualToString = objc_msgSend_isEqualToString_(v19, v20, v4);
+          isEqualToString = objc_msgSend_isEqualToString_(v19, v20, operationsCopy);
 
           if (isEqualToString)
           {
@@ -246,25 +246,25 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = objc_autoreleasePoolPush();
   v9 = _os_activity_create(&dword_22506F000, "xpcConnection", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v9, &state);
   v12 = objc_msgSend_CKXPCDaemonToClientMuxerInterface(MEMORY[0x277CBC7D8], v10, v11);
-  objc_msgSend_setRemoteObjectInterface_(v7, v13, v12);
+  objc_msgSend_setRemoteObjectInterface_(connectionCopy, v13, v12);
 
   v16 = objc_msgSend_CKXPCClientToDaemonMuxerInterface(MEMORY[0x277CBC7D8], v14, v15);
-  objc_msgSend_setExportedInterface_(v7, v17, v16);
+  objc_msgSend_setExportedInterface_(connectionCopy, v17, v16);
 
   v18 = [CKDXPCConnection alloc];
-  v20 = objc_msgSend_initWithXPCConnection_(v18, v19, v7);
-  objc_msgSend_setExportedObject_(v7, v21, v20);
+  v20 = objc_msgSend_initWithXPCConnection_(v18, v19, connectionCopy);
+  objc_msgSend_setExportedObject_(connectionCopy, v21, v20);
   objc_initWeak(&location, v20);
   if (*MEMORY[0x277CBC880] != -1)
   {
@@ -284,20 +284,20 @@ LABEL_7:
   v38[2] = sub_225195F2C;
   v38[3] = &unk_278547098;
   objc_copyWeak(&v39, &location);
-  objc_msgSend_setInterruptionHandler_(v7, v23, v38);
+  objc_msgSend_setInterruptionHandler_(connectionCopy, v23, v38);
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = sub_22519600C;
   v36[3] = &unk_278547098;
   objc_copyWeak(&v37, &location);
-  objc_msgSend_setInvalidationHandler_(v7, v24, v36);
+  objc_msgSend_setInvalidationHandler_(connectionCopy, v24, v36);
   v27 = objc_msgSend_clientConnections(self, v25, v26);
   objc_sync_enter(v27);
   v30 = objc_msgSend_clientConnections(self, v28, v29);
   objc_msgSend_addObject_(v30, v31, v20);
 
   objc_sync_exit(v27);
-  objc_msgSend_resume(v7, v32, v33);
+  objc_msgSend_resume(connectionCopy, v32, v33);
   objc_destroyWeak(&v37);
   objc_destroyWeak(&v39);
   objc_destroyWeak(&location);
@@ -309,9 +309,9 @@ LABEL_7:
   return 1;
 }
 
-- (void)enumerateConnections:(id)a3
+- (void)enumerateConnections:(id)connections
 {
-  v4 = a3;
+  connectionsCopy = connections;
   v7 = objc_msgSend_clientConnections(self, v5, v6);
   objc_sync_enter(v7);
   v10 = objc_msgSend_clientConnections(self, v8, v9);
@@ -322,8 +322,8 @@ LABEL_7:
   v16[1] = 3221225472;
   v16[2] = sub_2251965D4;
   v16[3] = &unk_2785483E0;
-  v17 = v4;
-  v14 = v4;
+  v17 = connectionsCopy;
+  v14 = connectionsCopy;
   objc_msgSend_enumerateObjectsUsingBlock_(v13, v15, v16);
 }
 
@@ -483,10 +483,10 @@ LABEL_7:
   return v3;
 }
 
-- (void)_dumpStatusReportArrayToOsTrace:(id)a3
+- (void)_dumpStatusReportArrayToOsTrace:(id)trace
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  traceCopy = trace;
   v7 = objc_msgSend_statusReportQueue(self, v5, v6);
   dispatch_assert_queue_V2(v7);
 
@@ -494,7 +494,7 @@ LABEL_7:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v4;
+  v8 = traceCopy;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v21, v27, 16);
   if (v10)
   {
@@ -548,15 +548,15 @@ LABEL_7:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_dumpStatusReportToFileHandle:(id)a3
+- (void)_dumpStatusReportToFileHandle:(id)handle
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handleCopy = handle;
   v7 = objc_msgSend_statusReportQueue(self, v5, v6);
   dispatch_assert_queue_V2(v7);
 
   v11 = objc_msgSend_CKStatusReportArray(self, v8, v9);
-  if (v4)
+  if (handleCopy)
   {
     v12 = objc_autoreleasePoolPush();
     v13 = MEMORY[0x277CCACA8];
@@ -564,7 +564,7 @@ LABEL_7:
     v17 = objc_msgSend_stringWithFormat_(v13, v16, @"%@", v15);
 
     v19 = objc_msgSend_dataUsingEncoding_(v17, v18, 4);
-    objc_msgSend_writeData_(v4, v20, v19);
+    objc_msgSend_writeData_(handleCopy, v20, v19);
 
     objc_autoreleasePoolPop(v12);
   }
@@ -578,7 +578,7 @@ LABEL_7:
   v22 = CKNotificationKey();
   v25 = objc_msgSend_UTF8String(v22, v23, v24);
   notify_post(v25);
-  if (!v4)
+  if (!handleCopy)
   {
     obj = objc_msgSend_statusReportCallbacks(self, v26, v27);
     objc_sync_enter(obj);
@@ -620,23 +620,23 @@ LABEL_7:
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dumpStatusReportToFileHandle:(id)a3
+- (void)dumpStatusReportToFileHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v7 = objc_msgSend_statusReportQueue(self, v5, v6);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_2251970FC;
   v9[3] = &unk_278545898;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = handleCopy;
+  v8 = handleCopy;
   dispatch_sync(v7, v9);
 }
 
-- (void)statusReportWithCompletionHandler:(id)a3
+- (void)statusReportWithCompletionHandler:(id)handler
 {
-  aBlock = a3;
+  aBlock = handler;
   if (aBlock)
   {
     v6 = objc_msgSend_statusReportCallbacks(self, v4, v5);

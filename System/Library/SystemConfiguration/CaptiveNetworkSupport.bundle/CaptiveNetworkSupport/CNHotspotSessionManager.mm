@@ -1,12 +1,12 @@
 @interface CNHotspotSessionManager
-+ (id)eventTypeString:(int)a3;
++ (id)eventTypeString:(int)string;
 + (id)hotspotSessionQueue;
-+ (id)sessionStatusString:(int)a3;
-+ (id)sessionTypeString:(int)a3;
++ (id)sessionStatusString:(int)string;
++ (id)sessionTypeString:(int)string;
 - (CNHotspotSessionManager)init;
 - (void)dealloc;
 - (void)invalidate;
-- (void)scheduleRequestCompletionHandler:(int)a3;
+- (void)scheduleRequestCompletionHandler:(int)handler;
 - (void)stop;
 @end
 
@@ -52,7 +52,7 @@ uint64_t __46__CNHotspotSessionManager_hotspotSessionQueue__block_invoke()
   if (os_log_type_enabled(v3, v4))
   {
     *buf = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_277237000, v3, v4, "%@: dealloc", buf, 0xCu);
   }
 
@@ -73,9 +73,9 @@ uint64_t __46__CNHotspotSessionManager_hotspotSessionQueue__block_invoke()
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scheduleRequestCompletionHandler:(int)a3
+- (void)scheduleRequestCompletionHandler:(int)handler
 {
-  if (a3 == 1)
+  if (handler == 1)
   {
     hotspotSession = self->_hotspotSession;
     ne_session_cancel();
@@ -92,22 +92,22 @@ uint64_t __46__CNHotspotSessionManager_hotspotSessionQueue__block_invoke()
       v8[2] = __60__CNHotspotSessionManager_scheduleRequestCompletionHandler___block_invoke;
       v8[3] = &unk_27A714630;
       v8[4] = self;
-      v9 = a3;
+      handlerCopy = handler;
       CFRunLoopPerformBlock(runloop, runloopMode, v8);
       CFRunLoopWakeUp(self->_runloop);
     }
   }
 }
 
-+ (id)sessionTypeString:(int)a3
++ (id)sessionTypeString:(int)string
 {
   v3 = @"Unsupported";
-  if (a3 == 12)
+  if (string == 12)
   {
     v3 = @"Authentication";
   }
 
-  if (a3 == 11)
+  if (string == 11)
   {
     return @"Evaluation";
   }
@@ -118,29 +118,29 @@ uint64_t __46__CNHotspotSessionManager_hotspotSessionQueue__block_invoke()
   }
 }
 
-+ (id)eventTypeString:(int)a3
++ (id)eventTypeString:(int)string
 {
-  if ((a3 - 1) > 2)
+  if ((string - 1) > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_27A7146A0[a3 - 1];
+    return off_27A7146A0[string - 1];
   }
 }
 
-+ (id)sessionStatusString:(int)a3
++ (id)sessionStatusString:(int)string
 {
-  if (a3 > 5)
+  if (string > 5)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_27A7146B8[a3];
+    return off_27A7146B8[string];
   }
 }
 

@@ -1,14 +1,14 @@
 @interface SUUIMDMSoftwareUpdatePathUtilities
-+ (id)description:(unint64_t)a3;
++ (id)description:(unint64_t)description;
 @end
 
 @implementation SUUIMDMSoftwareUpdatePathUtilities
 
-+ (id)description:(unint64_t)a3
++ (id)description:(unint64_t)description
 {
-  if (a3)
+  if (description)
   {
-    switch(a3)
+    switch(description)
     {
       case 1uLL:
         v4 = MEMORY[0x277D82BE0](@"SUUIMDMSoftwareUpdatePathSlow");

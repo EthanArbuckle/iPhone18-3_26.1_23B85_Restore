@@ -1,14 +1,14 @@
 @interface MPULayoutInterpolator
-- (Point3D)_pointForEntry:(Entry)a3 andPrimaryReferenceMetric:(double)a4 usingFallbackSecondaryReferenceMetric:(double)a5;
-- (double)_interpolatedValueForPrimaryReferenceMetric:(double)a3 secondaryReferenceMetric:(double)a4 betweenFirstEntriesContainer:(void *)a5 andSecondEntriesContainer:(void *)a6;
-- (double)valueForReferenceMetric:(double)a3 secondaryReferenceMetric:(double)a4;
+- (Point3D)_pointForEntry:(Entry)entry andPrimaryReferenceMetric:(double)metric usingFallbackSecondaryReferenceMetric:(double)referenceMetric;
+- (double)_interpolatedValueForPrimaryReferenceMetric:(double)metric secondaryReferenceMetric:(double)referenceMetric betweenFirstEntriesContainer:(void *)container andSecondEntriesContainer:(void *)entriesContainer;
+- (double)valueForReferenceMetric:(double)metric secondaryReferenceMetric:(double)referenceMetric;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (vector<MPU::Point3D,)_sortedPointsFor3DInterpolationFromEntriesContainer:(MPULayoutInterpolator *)self usingQueriedPoint:(SEL)a3 fallbackSecondaryReferenceMetric:(void *)a4;
-- (void)_sortPointsFor3DInterpolation:(double *)a3 usingQueriedPoint:(uint64_t)a4;
-- (void)_sortPointsFor3DInterpolation:(void *)a3 usingQueriedPoint:(Point3D)a4;
-- (void)addValue:(double)a3 forReferenceMetric:(double)a4 secondaryReferenceMetric:(double)a5;
+- (vector<MPU::Point3D,)_sortedPointsFor3DInterpolationFromEntriesContainer:(MPULayoutInterpolator *)self usingQueriedPoint:(SEL)point fallbackSecondaryReferenceMetric:(void *)metric;
+- (void)_sortPointsFor3DInterpolation:(double *)interpolation usingQueriedPoint:(uint64_t)point;
+- (void)_sortPointsFor3DInterpolation:(void *)interpolation usingQueriedPoint:(Point3D)point;
+- (void)addValue:(double)value forReferenceMetric:(double)metric secondaryReferenceMetric:(double)referenceMetric;
 @end
 
 @implementation MPULayoutInterpolator
@@ -94,7 +94,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4;
@@ -111,9 +111,9 @@
   return v5;
 }
 
-- (void)addValue:(double)a3 forReferenceMetric:(double)a4 secondaryReferenceMetric:(double)a5
+- (void)addValue:(double)value forReferenceMetric:(double)metric secondaryReferenceMetric:(double)referenceMetric
 {
-  MPU::LayoutInterpolator::EntriesContainer::EntriesContainer(v28, a4);
+  MPU::LayoutInterpolator::EntriesContainer::EntriesContainer(v28, metric);
   begin = self->_entriesContainers.__begin_;
   end = self->_entriesContainers.__end_;
   if (end == begin)
@@ -154,8 +154,8 @@
   LOBYTE(__p) = 0;
   if (end == begin)
   {
-    v29.n128_f64[0] = a5;
-    v29.n128_f64[1] = a3;
+    v29.n128_f64[0] = referenceMetric;
+    v29.n128_f64[1] = value;
     MPU::LayoutInterpolator::EntriesContainer::insertEntry(v28, v29, &v22);
     v19 = v22;
     v25 = v22;
@@ -169,11 +169,11 @@
     v14 = MPU::LayoutInterpolator::EntriesContainer::primaryReferenceMetric(begin);
     v15 = MPU::LayoutInterpolator::EntriesContainer::primaryReferenceMetric(v28);
     v16 = MPUFloatEqualToFloat(v14, v15);
-    v17 = a5;
-    v18 = a3;
+    referenceMetricCopy = referenceMetric;
+    valueCopy = value;
     if (v16)
     {
-      MPU::LayoutInterpolator::EntriesContainer::insertEntry(begin, *&v17, &v22);
+      MPU::LayoutInterpolator::EntriesContainer::insertEntry(begin, *&referenceMetricCopy, &v22);
       v19 = v22;
       v25 = v22;
       __p = v23;
@@ -182,7 +182,7 @@
 
     else
     {
-      MPU::LayoutInterpolator::EntriesContainer::insertEntry(v28, *&v17, &v22);
+      MPU::LayoutInterpolator::EntriesContainer::insertEntry(v28, *&referenceMetricCopy, &v22);
       v19 = v22;
       v25 = v22;
       __p = v23;
@@ -208,7 +208,7 @@
       NSLog(&cfstr_S.isa, p_p);
     }
 
-    else if (!v19 && !self->_hasEntryWithSpecificSecondaryReferenceMetric && !MPUFloatEqualToFloat(a5, -1.13427449e38))
+    else if (!v19 && !self->_hasEntryWithSpecificSecondaryReferenceMetric && !MPUFloatEqualToFloat(referenceMetric, -1.13427449e38))
     {
       self->_hasEntryWithSpecificSecondaryReferenceMetric = 1;
     }
@@ -241,7 +241,7 @@
   }
 }
 
-- (double)valueForReferenceMetric:(double)a3 secondaryReferenceMetric:(double)a4
+- (double)valueForReferenceMetric:(double)metric secondaryReferenceMetric:(double)referenceMetric
 {
   begin = self->_entriesContainers.__begin_;
   end = self->_entriesContainers.__end_;
@@ -260,7 +260,7 @@
     goto LABEL_10;
   }
 
-  if (self->_hasEntryWithSpecificSecondaryReferenceMetric && MPUFloatEqualToFloat(a4, -1.13427449e38))
+  if (self->_hasEntryWithSpecificSecondaryReferenceMetric && MPUFloatEqualToFloat(referenceMetric, -1.13427449e38))
   {
     v11 = MEMORY[0x277CBEAD8];
     v12 = objc_opt_class();
@@ -276,7 +276,7 @@ LABEL_10:
 
   if (v8 != 32)
   {
-    MPU::LayoutInterpolator::EntriesContainer::EntriesContainer(__p, a3);
+    MPU::LayoutInterpolator::EntriesContainer::EntriesContainer(__p, metric);
     v27 = self->_entriesContainers.__begin_;
     v26 = self->_entriesContainers.__end_;
     if (v26 == v27)
@@ -314,7 +314,7 @@ LABEL_10:
 
     if (v26 == v27)
     {
-      [(MPULayoutInterpolator *)self _interpolatedValueForPrimaryReferenceMetric:v27 - 64 secondaryReferenceMetric:v27 - 32 betweenFirstEntriesContainer:a3 andSecondEntriesContainer:a4];
+      [(MPULayoutInterpolator *)self _interpolatedValueForPrimaryReferenceMetric:v27 - 64 secondaryReferenceMetric:v27 - 32 betweenFirstEntriesContainer:metric andSecondEntriesContainer:referenceMetric];
     }
 
     else
@@ -323,17 +323,17 @@ LABEL_10:
       v33 = MPU::LayoutInterpolator::EntriesContainer::primaryReferenceMetric(__p);
       if (MPUFloatEqualToFloat(v32, v33))
       {
-        v34 = MPU::LayoutInterpolator::EntriesContainer::valueForSecondaryReferenceMetric(v27, a4);
+        v34 = MPU::LayoutInterpolator::EntriesContainer::valueForSecondaryReferenceMetric(v27, referenceMetric);
       }
 
       else if (self->_entriesContainers.__begin_ == v27)
       {
-        [(MPULayoutInterpolator *)self _interpolatedValueForPrimaryReferenceMetric:v27 secondaryReferenceMetric:v27 + 32 betweenFirstEntriesContainer:a3 andSecondEntriesContainer:a4];
+        [(MPULayoutInterpolator *)self _interpolatedValueForPrimaryReferenceMetric:v27 secondaryReferenceMetric:v27 + 32 betweenFirstEntriesContainer:metric andSecondEntriesContainer:referenceMetric];
       }
 
       else
       {
-        [(MPULayoutInterpolator *)self _interpolatedValueForPrimaryReferenceMetric:v27 - 32 secondaryReferenceMetric:v27 betweenFirstEntriesContainer:a3 andSecondEntriesContainer:a4];
+        [(MPULayoutInterpolator *)self _interpolatedValueForPrimaryReferenceMetric:v27 - 32 secondaryReferenceMetric:v27 betweenFirstEntriesContainer:metric andSecondEntriesContainer:referenceMetric];
       }
     }
 
@@ -349,23 +349,23 @@ LABEL_10:
 
   v17 = self->_entriesContainers.__begin_;
 
-  return MPU::LayoutInterpolator::EntriesContainer::valueForSecondaryReferenceMetric(v17, a4);
+  return MPU::LayoutInterpolator::EntriesContainer::valueForSecondaryReferenceMetric(v17, referenceMetric);
 }
 
-- (double)_interpolatedValueForPrimaryReferenceMetric:(double)a3 secondaryReferenceMetric:(double)a4 betweenFirstEntriesContainer:(void *)a5 andSecondEntriesContainer:(void *)a6
+- (double)_interpolatedValueForPrimaryReferenceMetric:(double)metric secondaryReferenceMetric:(double)referenceMetric betweenFirstEntriesContainer:(void *)container andSecondEntriesContainer:(void *)entriesContainer
 {
-  v11 = MPU::LayoutInterpolator::EntriesContainer::entriesCount(a5);
-  v12 = MPU::LayoutInterpolator::EntriesContainer::entriesCount(a6);
+  v11 = MPU::LayoutInterpolator::EntriesContainer::entriesCount(container);
+  v12 = MPU::LayoutInterpolator::EntriesContainer::entriesCount(entriesContainer);
   if (v11 == 1 && v12 == 1)
   {
-    MPU::LayoutInterpolator::EntriesContainer::copyEntriesVector(a5, &v62);
+    MPU::LayoutInterpolator::EntriesContainer::copyEntriesVector(container, &v62);
     v13 = *(v62.n128_u64[0] + 8);
-    v14 = MPU::LayoutInterpolator::EntriesContainer::primaryReferenceMetric(a5);
-    MPU::LayoutInterpolator::EntriesContainer::copyEntriesVector(a6, &__p);
+    v14 = MPU::LayoutInterpolator::EntriesContainer::primaryReferenceMetric(container);
+    MPU::LayoutInterpolator::EntriesContainer::copyEntriesVector(entriesContainer, &__p);
     v15 = *(__p + 1);
-    v16 = MPU::LayoutInterpolator::EntriesContainer::primaryReferenceMetric(a6);
+    v16 = MPU::LayoutInterpolator::EntriesContainer::primaryReferenceMetric(entriesContainer);
     v17 = MPULayoutLinearRelationMake(v14, v13, v16, v15);
-    v19 = MPULayoutLinearRelationEvaluate(v17, v18, a3);
+    v19 = MPULayoutLinearRelationEvaluate(v17, v18, metric);
     if (*&__p != 0.0)
     {
       v60 = __p;
@@ -384,9 +384,9 @@ LABEL_46:
   else
   {
     v19 = 0.0;
-    MPU::Point3D::Point3D(&__p, a3, a4, 0.0);
-    [(MPULayoutInterpolator *)self _sortedPointsFor3DInterpolationFromEntriesContainer:a5 usingQueriedPoint:*&__p fallbackSecondaryReferenceMetric:*&v60, v61, a4];
-    [(MPULayoutInterpolator *)self _sortedPointsFor3DInterpolationFromEntriesContainer:a6 usingQueriedPoint:*&__p fallbackSecondaryReferenceMetric:*&v60, v61, a4];
+    MPU::Point3D::Point3D(&__p, metric, referenceMetric, 0.0);
+    [(MPULayoutInterpolator *)self _sortedPointsFor3DInterpolationFromEntriesContainer:container usingQueriedPoint:*&__p fallbackSecondaryReferenceMetric:*&v60, v61, referenceMetric];
+    [(MPULayoutInterpolator *)self _sortedPointsFor3DInterpolationFromEntriesContainer:entriesContainer usingQueriedPoint:*&__p fallbackSecondaryReferenceMetric:*&v60, v61, referenceMetric];
     __src = 0;
     v53 = 0;
     v54 = 0;
@@ -562,21 +562,21 @@ LABEL_46:
   return v19;
 }
 
-- (Point3D)_pointForEntry:(Entry)a3 andPrimaryReferenceMetric:(double)a4 usingFallbackSecondaryReferenceMetric:(double)a5
+- (Point3D)_pointForEntry:(Entry)entry andPrimaryReferenceMetric:(double)metric usingFallbackSecondaryReferenceMetric:(double)referenceMetric
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  if (MPUFloatEqualToFloat(a3.var0, -1.13427449e38))
+  var1 = entry.var1;
+  var0 = entry.var0;
+  if (MPUFloatEqualToFloat(entry.var0, -1.13427449e38))
   {
-    v9 = a5;
+    referenceMetricCopy = referenceMetric;
   }
 
   else
   {
-    v9 = var0;
+    referenceMetricCopy = var0;
   }
 
-  MPU::Point3D::Point3D(v13, a4, v9, var1);
+  MPU::Point3D::Point3D(v13, metric, referenceMetricCopy, var1);
   v10 = v13[0];
   v11 = v13[1];
   v12 = v13[2];
@@ -586,7 +586,7 @@ LABEL_46:
   return result;
 }
 
-- (vector<MPU::Point3D,)_sortedPointsFor3DInterpolationFromEntriesContainer:(MPULayoutInterpolator *)self usingQueriedPoint:(SEL)a3 fallbackSecondaryReferenceMetric:(void *)a4
+- (vector<MPU::Point3D,)_sortedPointsFor3DInterpolationFromEntriesContainer:(MPULayoutInterpolator *)self usingQueriedPoint:(SEL)point fallbackSecondaryReferenceMetric:(void *)metric
 {
   var2 = a5.var2;
   var1 = a5.var1;
@@ -594,12 +594,12 @@ LABEL_46:
   retstr->var0 = 0;
   retstr->var1 = 0;
   retstr->var2 = 0;
-  MPU::LayoutInterpolator::EntriesContainer::copyEntriesVector(a4, &__p);
+  MPU::LayoutInterpolator::EntriesContainer::copyEntriesVector(metric, &__p);
   v13 = __p;
   v14 = v22;
   while (v13 != v14)
   {
-    [(MPULayoutInterpolator *)self _pointForEntry:*v13 andPrimaryReferenceMetric:v13[1] usingFallbackSecondaryReferenceMetric:MPU::LayoutInterpolator::EntriesContainer::primaryReferenceMetric(a4), a6];
+    [(MPULayoutInterpolator *)self _pointForEntry:*v13 andPrimaryReferenceMetric:v13[1] usingFallbackSecondaryReferenceMetric:MPU::LayoutInterpolator::EntriesContainer::primaryReferenceMetric(metric), a6];
     v19.n128_u64[0] = v15;
     v19.n128_u64[1] = v16;
     v20 = v17;
@@ -618,16 +618,16 @@ LABEL_46:
   return result;
 }
 
-- (void)_sortPointsFor3DInterpolation:(void *)a3 usingQueriedPoint:(Point3D)a4
+- (void)_sortPointsFor3DInterpolation:(void *)interpolation usingQueriedPoint:(Point3D)point
 {
-  v6 = *a3;
-  v7 = *(a3 + 1);
-  v8 = 0xAAAAAAAAAAAAAAABLL * ((v7 - *a3) >> 3);
+  v6 = *interpolation;
+  v7 = *(interpolation + 1);
+  v8 = 0xAAAAAAAAAAAAAAABLL * ((v7 - *interpolation) >> 3);
   if (v8 >= 2)
   {
     v12 = v4;
     v13 = v5;
-    v11 = a4;
+    pointCopy = point;
     v9 = 126 - 2 * __clz(v8);
     if (v7 == v6)
     {
@@ -639,7 +639,7 @@ LABEL_46:
       v10 = v9;
     }
 
-    std::__introsort<std::_ClassicAlgPolicy,[MPULayoutInterpolator _sortPointsFor3DInterpolation:usingQueriedPoint:]::$_4 &,MPU::Point3D *,false>(v6, v7, &v11.var0, v10, 1);
+    std::__introsort<std::_ClassicAlgPolicy,[MPULayoutInterpolator _sortPointsFor3DInterpolation:usingQueriedPoint:]::$_4 &,MPU::Point3D *,false>(v6, v7, &pointCopy.var0, v10, 1);
   }
 }
 
@@ -651,61 +651,61 @@ LABEL_46:
   return self;
 }
 
-- (void)_sortPointsFor3DInterpolation:(double *)a3 usingQueriedPoint:(uint64_t)a4
+- (void)_sortPointsFor3DInterpolation:(double *)interpolation usingQueriedPoint:(uint64_t)point
 {
   while (2)
   {
-    v10 = a1;
+    selfCopy2 = self;
     while (1)
     {
       while (1)
       {
         while (1)
         {
-          a1 = v10;
-          v11 = a2 - v10;
-          v12 = 0xAAAAAAAAAAAAAAABLL * ((a2 - v10) >> 3);
+          self = selfCopy2;
+          v11 = a2 - selfCopy2;
+          v12 = 0xAAAAAAAAAAAAAAABLL * ((a2 - selfCopy2) >> 3);
           if (v12 > 2)
           {
             switch(v12)
             {
               case 3:
 
-                std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[MPULayoutInterpolator _sortPointsFor3DInterpolation:usingQueriedPoint:]::$_4 &,MPU::Point3D *,0>(v10, (v10 + 24), (a2 - 24), a3);
+                std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[MPULayoutInterpolator _sortPointsFor3DInterpolation:usingQueriedPoint:]::$_4 &,MPU::Point3D *,0>(selfCopy2, (selfCopy2 + 24), (a2 - 24), interpolation);
                 return;
               case 4:
-                std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[MPULayoutInterpolator _sortPointsFor3DInterpolation:usingQueriedPoint:]::$_4 &,MPU::Point3D *,0>(v10, (v10 + 24), (v10 + 48), a3);
+                std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[MPULayoutInterpolator _sortPointsFor3DInterpolation:usingQueriedPoint:]::$_4 &,MPU::Point3D *,0>(selfCopy2, (selfCopy2 + 24), (selfCopy2 + 48), interpolation);
                 v65 = *(a2 - 24);
                 v66 = *(a2 - 16);
                 v64 = a2 - 24;
-                v67 = a3[1];
-                if ((v67 - v66) * (v67 - v66) + (*a3 - v65) * (*a3 - v65) < (v67 - *(v10 + 56)) * (v67 - *(v10 + 56)) + (*a3 - *(v10 + 48)) * (*a3 - *(v10 + 48)))
+                v67 = interpolation[1];
+                if ((v67 - v66) * (v67 - v66) + (*interpolation - v65) * (*interpolation - v65) < (v67 - *(selfCopy2 + 56)) * (v67 - *(selfCopy2 + 56)) + (*interpolation - *(selfCopy2 + 48)) * (*interpolation - *(selfCopy2 + 48)))
                 {
-                  v68 = *(v10 + 48);
-                  v69 = *(v10 + 64);
+                  v68 = *(selfCopy2 + 48);
+                  v69 = *(selfCopy2 + 64);
                   v70 = *(v64 + 16);
-                  *(v10 + 48) = *v64;
-                  *(v10 + 64) = v70;
+                  *(selfCopy2 + 48) = *v64;
+                  *(selfCopy2 + 64) = v70;
                   *(v64 + 16) = v69;
                   *v64 = v68;
-                  v71 = a3[1];
-                  if ((v71 - *(v10 + 56)) * (v71 - *(v10 + 56)) + (*a3 - *(v10 + 48)) * (*a3 - *(v10 + 48)) < (v71 - *(v10 + 32)) * (v71 - *(v10 + 32)) + (*a3 - *(v10 + 24)) * (*a3 - *(v10 + 24)))
+                  v71 = interpolation[1];
+                  if ((v71 - *(selfCopy2 + 56)) * (v71 - *(selfCopy2 + 56)) + (*interpolation - *(selfCopy2 + 48)) * (*interpolation - *(selfCopy2 + 48)) < (v71 - *(selfCopy2 + 32)) * (v71 - *(selfCopy2 + 32)) + (*interpolation - *(selfCopy2 + 24)) * (*interpolation - *(selfCopy2 + 24)))
                   {
-                    v72 = *(v10 + 40);
-                    v73 = *(v10 + 24);
-                    *(v10 + 24) = *(v10 + 48);
-                    *(v10 + 40) = *(v10 + 64);
-                    *(v10 + 48) = v73;
-                    *(v10 + 64) = v72;
-                    v74 = a3[1];
-                    if ((v74 - *(v10 + 32)) * (v74 - *(v10 + 32)) + (*a3 - *(v10 + 24)) * (*a3 - *(v10 + 24)) < (v74 - *(v10 + 8)) * (v74 - *(v10 + 8)) + (*a3 - *v10) * (*a3 - *v10))
+                    v72 = *(selfCopy2 + 40);
+                    v73 = *(selfCopy2 + 24);
+                    *(selfCopy2 + 24) = *(selfCopy2 + 48);
+                    *(selfCopy2 + 40) = *(selfCopy2 + 64);
+                    *(selfCopy2 + 48) = v73;
+                    *(selfCopy2 + 64) = v72;
+                    v74 = interpolation[1];
+                    if ((v74 - *(selfCopy2 + 32)) * (v74 - *(selfCopy2 + 32)) + (*interpolation - *(selfCopy2 + 24)) * (*interpolation - *(selfCopy2 + 24)) < (v74 - *(selfCopy2 + 8)) * (v74 - *(selfCopy2 + 8)) + (*interpolation - *selfCopy2) * (*interpolation - *selfCopy2))
                     {
-                      v144 = *(v10 + 16);
-                      v138 = *v10;
-                      *v10 = *(v10 + 24);
-                      *(v10 + 16) = *(v10 + 40);
-                      *(v10 + 24) = v138;
-                      *(v10 + 40) = v144;
+                      v144 = *(selfCopy2 + 16);
+                      v138 = *selfCopy2;
+                      *selfCopy2 = *(selfCopy2 + 24);
+                      *(selfCopy2 + 16) = *(selfCopy2 + 40);
+                      *(selfCopy2 + 24) = v138;
+                      *(selfCopy2 + 40) = v144;
                     }
                   }
                 }
@@ -713,7 +713,7 @@ LABEL_46:
                 return;
               case 5:
 
-                std::__sort5[abi:ne200100]<std::_ClassicAlgPolicy,-[MPULayoutInterpolator _sortPointsFor3DInterpolation:usingQueriedPoint:]::$_4 &,MPU::Point3D *,0>(v10, v10 + 24, v10 + 48, v10 + 72, a2 - 24, a3);
+                std::__sort5[abi:ne200100]<std::_ClassicAlgPolicy,-[MPULayoutInterpolator _sortPointsFor3DInterpolation:usingQueriedPoint:]::$_4 &,MPU::Point3D *,0>(selfCopy2, selfCopy2 + 24, selfCopy2 + 48, selfCopy2 + 72, a2 - 24, interpolation);
                 return;
             }
           }
@@ -730,14 +730,14 @@ LABEL_46:
               v60 = *(a2 - 24);
               v61 = *(a2 - 16);
               v59 = a2 - 24;
-              v62 = a3[1];
-              if ((v62 - v61) * (v62 - v61) + (*a3 - v60) * (*a3 - v60) < (v62 - *(v10 + 8)) * (v62 - *(v10 + 8)) + (*a3 - *v10) * (*a3 - *v10))
+              v62 = interpolation[1];
+              if ((v62 - v61) * (v62 - v61) + (*interpolation - v60) * (*interpolation - v60) < (v62 - *(selfCopy2 + 8)) * (v62 - *(selfCopy2 + 8)) + (*interpolation - *selfCopy2) * (*interpolation - *selfCopy2))
               {
-                v143 = *(v10 + 16);
-                v137 = *v10;
+                v143 = *(selfCopy2 + 16);
+                v137 = *selfCopy2;
                 v63 = *v59;
-                *(v10 + 16) = *(v59 + 16);
-                *v10 = v63;
+                *(selfCopy2 + 16) = *(v59 + 16);
+                *selfCopy2 = v63;
                 *(v59 + 16) = v143;
                 *v59 = v137;
               }
@@ -750,48 +750,48 @@ LABEL_46:
           {
             if (a5)
             {
-              if (v10 != a2)
+              if (selfCopy2 != a2)
               {
-                v75 = v10 + 24;
-                if (v10 + 24 != a2)
+                v75 = selfCopy2 + 24;
+                if (selfCopy2 + 24 != a2)
                 {
                   v76 = 0;
-                  v77 = *a3;
-                  v78 = v10;
+                  v77 = *interpolation;
+                  v78 = selfCopy2;
                   do
                   {
                     v79 = v75;
                     v80 = *(v78 + 24);
                     v81 = *(v78 + 32);
-                    if ((a3[1] - v81) * (a3[1] - v81) + (v77 - v80) * (v77 - v80) < (a3[1] - *(v78 + 8)) * (a3[1] - *(v78 + 8)) + (v77 - *v78) * (v77 - *v78))
+                    if ((interpolation[1] - v81) * (interpolation[1] - v81) + (v77 - v80) * (v77 - v80) < (interpolation[1] - *(v78 + 8)) * (interpolation[1] - *(v78 + 8)) + (v77 - *v78) * (v77 - *v78))
                     {
                       v82 = *(v78 + 40);
                       v83 = v76;
                       while (1)
                       {
-                        v84 = v10 + v83;
-                        *(v84 + 24) = *(v10 + v83);
-                        *(v84 + 40) = *(v10 + v83 + 16);
+                        v84 = selfCopy2 + v83;
+                        *(v84 + 24) = *(selfCopy2 + v83);
+                        *(v84 + 40) = *(selfCopy2 + v83 + 16);
                         if (!v83)
                         {
                           break;
                         }
 
-                        v85 = a3[1];
+                        v85 = interpolation[1];
                         v83 -= 24;
-                        if ((v85 - v81) * (v85 - v81) + (*a3 - v80) * (*a3 - v80) >= (v85 - *(v84 - 16)) * (v85 - *(v84 - 16)) + (*a3 - *(v84 - 24)) * (*a3 - *(v84 - 24)))
+                        if ((v85 - v81) * (v85 - v81) + (*interpolation - v80) * (*interpolation - v80) >= (v85 - *(v84 - 16)) * (v85 - *(v84 - 16)) + (*interpolation - *(v84 - 24)) * (*interpolation - *(v84 - 24)))
                         {
-                          v86 = v10 + v83 + 24;
+                          v86 = selfCopy2 + v83 + 24;
                           goto LABEL_79;
                         }
                       }
 
-                      v86 = v10;
+                      v86 = selfCopy2;
 LABEL_79:
                       *v86 = v80;
                       *(v86 + 8) = v81;
                       *(v86 + 16) = v82;
-                      v77 = *a3;
+                      v77 = *interpolation;
                     }
 
                     v75 = v79 + 24;
@@ -804,20 +804,20 @@ LABEL_79:
               }
             }
 
-            else if (v10 != a2)
+            else if (selfCopy2 != a2)
             {
-              v126 = v10 + 24;
-              if (v10 + 24 != a2)
+              v126 = selfCopy2 + 24;
+              if (selfCopy2 + 24 != a2)
               {
-                v127 = *a3;
+                v127 = *interpolation;
                 do
                 {
                   v128 = v126;
-                  v129 = *(a1 + 24);
-                  v130 = *(a1 + 32);
-                  if ((a3[1] - v130) * (a3[1] - v130) + (v127 - v129) * (v127 - v129) < (a3[1] - *(a1 + 8)) * (a3[1] - *(a1 + 8)) + (v127 - *a1) * (v127 - *a1))
+                  v129 = *(self + 24);
+                  v130 = *(self + 32);
+                  if ((interpolation[1] - v130) * (interpolation[1] - v130) + (v127 - v129) * (v127 - v129) < (interpolation[1] - *(self + 8)) * (interpolation[1] - *(self + 8)) + (v127 - *self) * (v127 - *self))
                   {
-                    v131 = *(a1 + 40);
+                    v131 = *(self + 40);
                     do
                     {
                       *v126 = *(v126 - 24);
@@ -827,15 +827,15 @@ LABEL_79:
                       v126 -= 24;
                     }
 
-                    while ((a3[1] - v130) * (a3[1] - v130) + (*a3 - v129) * (*a3 - v129) < (a3[1] - v133) * (a3[1] - v133) + (*a3 - v132) * (*a3 - v132));
+                    while ((interpolation[1] - v130) * (interpolation[1] - v130) + (*interpolation - v129) * (*interpolation - v129) < (interpolation[1] - v133) * (interpolation[1] - v133) + (*interpolation - v132) * (*interpolation - v132));
                     *v126 = v129;
                     *(v126 + 8) = v130;
                     *(v126 + 16) = v131;
-                    v127 = *a3;
+                    v127 = *interpolation;
                   }
 
                   v126 = v128 + 24;
-                  a1 = v128;
+                  self = v128;
                 }
 
                 while (v128 + 24 != a2);
@@ -845,9 +845,9 @@ LABEL_79:
             return;
           }
 
-          if (!a4)
+          if (!point)
           {
-            if (v10 != a2)
+            if (selfCopy2 != a2)
             {
               v87 = (v12 - 2) >> 1;
               v88 = v87;
@@ -857,16 +857,16 @@ LABEL_79:
                 if (v87 >= v88)
                 {
                   v90 = (2 * v88) | 1;
-                  v91 = v10 + 24 * v90;
-                  v92 = *a3;
+                  v91 = selfCopy2 + 24 * v90;
+                  v92 = *interpolation;
                   if (2 * v89 + 2 >= v12)
                   {
-                    v93 = a3[1];
+                    v93 = interpolation[1];
                   }
 
                   else
                   {
-                    v93 = a3[1];
+                    v93 = interpolation[1];
                     if ((v93 - *(v91 + 8)) * (v93 - *(v91 + 8)) + (v92 - *v91) * (v92 - *v91) < (v93 - *(v91 + 32)) * (v93 - *(v91 + 32)) + (v92 - *(v91 + 24)) * (v92 - *(v91 + 24)))
                     {
                       v91 += 24;
@@ -874,7 +874,7 @@ LABEL_79:
                     }
                   }
 
-                  v94 = v10 + 24 * v89;
+                  v94 = selfCopy2 + 24 * v89;
                   v95 = *v94;
                   v96 = *(v94 + 8);
                   if ((v93 - *(v91 + 8)) * (v93 - *(v91 + 8)) + (v92 - *v91) * (v92 - *v91) >= (v93 - *&v96) * (v93 - *&v96) + (v92 - *v94) * (v92 - *v94))
@@ -892,10 +892,10 @@ LABEL_79:
 
                       v99 = 2 * v90;
                       v90 = (2 * v90) | 1;
-                      v91 = v10 + 24 * v90;
+                      v91 = selfCopy2 + 24 * v90;
                       v100 = v99 + 2;
-                      v101 = *a3;
-                      v102 = a3[1];
+                      v101 = *interpolation;
+                      v102 = interpolation[1];
                       if (v100 < v12 && (v102 - *(v91 + 8)) * (v102 - *(v91 + 8)) + (v101 - *v91) * (v101 - *v91) < (v102 - *(v91 + 32)) * (v102 - *(v91 + 32)) + (v101 - *(v91 + 24)) * (v101 - *(v91 + 24)))
                       {
                         v91 += 24;
@@ -919,9 +919,9 @@ LABEL_79:
               do
               {
                 v104 = 0;
-                v145 = *(v10 + 16);
-                v139 = *v10;
-                v105 = v10;
+                v145 = *(selfCopy2 + 16);
+                v139 = *selfCopy2;
+                v105 = selfCopy2;
                 do
                 {
                   v106 = v105;
@@ -934,8 +934,8 @@ LABEL_79:
                   {
                     v111 = *(v107 + 48);
                     v110 = v107 + 48;
-                    v112 = a3[1];
-                    if ((v112 - *(v110 - 16)) * (v112 - *(v110 - 16)) + (*a3 - *(v110 - 24)) * (*a3 - *(v110 - 24)) < (v112 - *(v110 + 8)) * (v112 - *(v110 + 8)) + (*a3 - v111) * (*a3 - v111))
+                    v112 = interpolation[1];
+                    if ((v112 - *(v110 - 16)) * (v112 - *(v110 - 16)) + (*interpolation - *(v110 - 24)) * (*interpolation - *(v110 - 24)) < (v112 - *(v110 + 8)) * (v112 - *(v110 + 8)) + (*interpolation - v111) * (*interpolation - v111))
                     {
                       v105 = v110;
                       v104 = v109;
@@ -962,15 +962,15 @@ LABEL_79:
                   *v105 = v114;
                   *(a2 + 16) = v145;
                   *a2 = v139;
-                  v115 = v105 - v10 + 24;
+                  v115 = v105 - selfCopy2 + 24;
                   if (v115 >= 25)
                   {
                     v116 = (-2 - 0x5555555555555555 * (v115 >> 3)) >> 1;
-                    v117 = v10 + 24 * v116;
+                    v117 = selfCopy2 + 24 * v116;
                     v118 = *v105;
                     v119 = *(v105 + 8);
-                    v120 = a3[1];
-                    if ((v120 - *(v117 + 8)) * (v120 - *(v117 + 8)) + (*a3 - *v117) * (*a3 - *v117) < (v120 - v119) * (v120 - v119) + (*a3 - *v105) * (*a3 - *v105))
+                    v120 = interpolation[1];
+                    if ((v120 - *(v117 + 8)) * (v120 - *(v117 + 8)) + (*interpolation - *v117) * (*interpolation - *v117) < (v120 - v119) * (v120 - v119) + (*interpolation - *v105) * (*interpolation - *v105))
                     {
                       v121 = *(v105 + 16);
                       do
@@ -985,12 +985,12 @@ LABEL_79:
                         }
 
                         v116 = (v116 - 1) >> 1;
-                        v117 = v10 + 24 * v116;
-                        v124 = a3[1];
+                        v117 = selfCopy2 + 24 * v116;
+                        v124 = interpolation[1];
                         v105 = v122;
                       }
 
-                      while ((v124 - *(v117 + 8)) * (v124 - *(v117 + 8)) + (*a3 - *v117) * (*a3 - *v117) < (v124 - v119) * (v124 - v119) + (*a3 - v118) * (*a3 - v118));
+                      while ((v124 - *(v117 + 8)) * (v124 - *(v117 + 8)) + (*interpolation - *v117) * (*interpolation - *v117) < (v124 - v119) * (v124 - v119) + (*interpolation - v118) * (*interpolation - v118));
                       *v122 = v118;
                       *(v122 + 8) = v119;
                       *(v122 + 16) = v121;
@@ -1006,52 +1006,52 @@ LABEL_79:
           }
 
           v13 = v12 >> 1;
-          v14 = v10 + 24 * (v12 >> 1);
+          v14 = selfCopy2 + 24 * (v12 >> 1);
           if (v11 < 0xC01)
           {
-            std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[MPULayoutInterpolator _sortPointsFor3DInterpolation:usingQueriedPoint:]::$_4 &,MPU::Point3D *,0>((a1 + 24 * v13), a1, (a2 - 24), a3);
+            std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[MPULayoutInterpolator _sortPointsFor3DInterpolation:usingQueriedPoint:]::$_4 &,MPU::Point3D *,0>((self + 24 * v13), self, (a2 - 24), interpolation);
           }
 
           else
           {
-            std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[MPULayoutInterpolator _sortPointsFor3DInterpolation:usingQueriedPoint:]::$_4 &,MPU::Point3D *,0>(a1, (a1 + 24 * v13), (a2 - 24), a3);
+            std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[MPULayoutInterpolator _sortPointsFor3DInterpolation:usingQueriedPoint:]::$_4 &,MPU::Point3D *,0>(self, (self + 24 * v13), (a2 - 24), interpolation);
             v15 = 3 * v13;
-            v16 = (a1 + 24 * v13 - 24);
-            std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[MPULayoutInterpolator _sortPointsFor3DInterpolation:usingQueriedPoint:]::$_4 &,MPU::Point3D *,0>((a1 + 24), v16, (a2 - 48), a3);
-            v17 = (a1 + 24 + 8 * v15);
-            std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[MPULayoutInterpolator _sortPointsFor3DInterpolation:usingQueriedPoint:]::$_4 &,MPU::Point3D *,0>((a1 + 48), v17, (a2 - 72), a3);
-            std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[MPULayoutInterpolator _sortPointsFor3DInterpolation:usingQueriedPoint:]::$_4 &,MPU::Point3D *,0>(v16, v14, v17, a3);
-            v140 = *(a1 + 16);
-            v134 = *a1;
+            v16 = (self + 24 * v13 - 24);
+            std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[MPULayoutInterpolator _sortPointsFor3DInterpolation:usingQueriedPoint:]::$_4 &,MPU::Point3D *,0>((self + 24), v16, (a2 - 48), interpolation);
+            v17 = (self + 24 + 8 * v15);
+            std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[MPULayoutInterpolator _sortPointsFor3DInterpolation:usingQueriedPoint:]::$_4 &,MPU::Point3D *,0>((self + 48), v17, (a2 - 72), interpolation);
+            std::__sort3[abi:ne200100]<std::_ClassicAlgPolicy,-[MPULayoutInterpolator _sortPointsFor3DInterpolation:usingQueriedPoint:]::$_4 &,MPU::Point3D *,0>(v16, v14, v17, interpolation);
+            v140 = *(self + 16);
+            v134 = *self;
             v18 = *(v14 + 16);
-            *a1 = *v14;
-            *(a1 + 16) = v18;
+            *self = *v14;
+            *(self + 16) = v18;
             *(v14 + 16) = v140;
             *v14 = v134;
           }
 
-          --a4;
-          v19 = *a1;
+          --point;
+          v19 = *self;
           if (a5)
           {
             break;
           }
 
-          v20 = *(a1 + 8);
-          v21 = *a3;
-          v22 = a3[1];
-          v23 = (v22 - *&v20) * (v22 - *&v20) + (*a3 - v19) * (*a3 - v19);
-          if ((v22 - *(a1 - 16)) * (v22 - *(a1 - 16)) + (*a3 - *(a1 - 24)) * (*a3 - *(a1 - 24)) < v23)
+          v20 = *(self + 8);
+          v21 = *interpolation;
+          v22 = interpolation[1];
+          v23 = (v22 - *&v20) * (v22 - *&v20) + (*interpolation - v19) * (*interpolation - v19);
+          if ((v22 - *(self - 16)) * (v22 - *(self - 16)) + (*interpolation - *(self - 24)) * (*interpolation - *(self - 24)) < v23)
           {
             goto LABEL_17;
           }
 
           if (v23 >= (v22 - *(a2 - 16)) * (v22 - *(a2 - 16)) + (v21 - *(a2 - 24)) * (v21 - *(a2 - 24)))
           {
-            v45 = (a1 + 24);
+            v45 = (self + 24);
             do
             {
-              v10 = v45;
+              selfCopy2 = v45;
               if (v45 >= a2)
               {
                 break;
@@ -1066,19 +1066,19 @@ LABEL_79:
 
           else
           {
-            v10 = a1;
+            selfCopy2 = self;
             do
             {
-              v43 = *(v10 + 24);
-              v44 = *(v10 + 32);
-              v10 += 24;
+              v43 = *(selfCopy2 + 24);
+              v44 = *(selfCopy2 + 32);
+              selfCopy2 += 24;
             }
 
             while (v23 >= (v22 - v44) * (v22 - v44) + (v21 - v43) * (v21 - v43));
           }
 
           v47 = a2;
-          if (v10 < a2)
+          if (selfCopy2 < a2)
           {
             v47 = a2;
             do
@@ -1091,23 +1091,23 @@ LABEL_79:
             while (v23 < (v22 - v49) * (v22 - v49) + (v21 - v48) * (v21 - v48));
           }
 
-          while (v10 < v47)
+          while (selfCopy2 < v47)
           {
-            v142 = *(v10 + 16);
-            v136 = *v10;
+            v142 = *(selfCopy2 + 16);
+            v136 = *selfCopy2;
             v50 = *v47;
-            *(v10 + 16) = *(v47 + 16);
-            *v10 = v50;
+            *(selfCopy2 + 16) = *(v47 + 16);
+            *selfCopy2 = v50;
             *(v47 + 16) = v142;
             *v47 = v136;
-            v51 = *a3;
-            v52 = a3[1];
-            v53 = (v52 - *&v20) * (v52 - *&v20) + (*a3 - v19) * (*a3 - v19);
+            v51 = *interpolation;
+            v52 = interpolation[1];
+            v53 = (v52 - *&v20) * (v52 - *&v20) + (*interpolation - v19) * (*interpolation - v19);
             do
             {
-              v54 = *(v10 + 24);
-              v55 = *(v10 + 32);
-              v10 += 24;
+              v54 = *(selfCopy2 + 24);
+              v55 = *(selfCopy2 + 32);
+              selfCopy2 += 24;
             }
 
             while (v53 >= (v52 - v55) * (v52 - v55) + (v51 - v54) * (v51 - v54));
@@ -1121,32 +1121,32 @@ LABEL_79:
             while (v53 < (v52 - v57) * (v52 - v57) + (v51 - v56) * (v51 - v56));
           }
 
-          if (v10 - 24 != a1)
+          if (selfCopy2 - 24 != self)
           {
-            v58 = *(v10 - 24);
-            *(a1 + 16) = *(v10 - 8);
-            *a1 = v58;
+            v58 = *(selfCopy2 - 24);
+            *(self + 16) = *(selfCopy2 - 8);
+            *self = v58;
           }
 
           a5 = 0;
-          *(v10 - 24) = v19;
-          *(v10 - 16) = v20;
+          *(selfCopy2 - 24) = v19;
+          *(selfCopy2 - 16) = v20;
         }
 
-        v20 = *(a1 + 8);
-        v21 = *a3;
-        v22 = a3[1];
-        v23 = (v22 - *&v20) * (v22 - *&v20) + (*a3 - v19) * (*a3 - v19);
+        v20 = *(self + 8);
+        v21 = *interpolation;
+        v22 = interpolation[1];
+        v23 = (v22 - *&v20) * (v22 - *&v20) + (*interpolation - v19) * (*interpolation - v19);
 LABEL_17:
         v24 = 0;
         do
         {
-          v25 = (v22 - *(a1 + v24 + 32)) * (v22 - *(a1 + v24 + 32)) + (v21 - *(a1 + v24 + 24)) * (v21 - *(a1 + v24 + 24));
+          v25 = (v22 - *(self + v24 + 32)) * (v22 - *(self + v24 + 32)) + (v21 - *(self + v24 + 24)) * (v21 - *(self + v24 + 24));
           v24 += 24;
         }
 
         while (v25 < v23);
-        v26 = a1 + v24;
+        v26 = self + v24;
         v27 = a2;
         if (v24 == 24)
         {
@@ -1178,27 +1178,27 @@ LABEL_17:
           while ((v22 - v29) * (v22 - v29) + (v21 - v28) * (v21 - v28) >= v23);
         }
 
-        v10 = a1 + v24;
+        selfCopy2 = self + v24;
         if (v26 < v27)
         {
           v32 = v27;
           do
           {
-            v141 = *(v10 + 16);
-            v135 = *v10;
+            v141 = *(selfCopy2 + 16);
+            v135 = *selfCopy2;
             v33 = *v32;
-            *(v10 + 16) = *(v32 + 16);
-            *v10 = v33;
+            *(selfCopy2 + 16) = *(v32 + 16);
+            *selfCopy2 = v33;
             *(v32 + 16) = v141;
             *v32 = v135;
-            v34 = *a3;
-            v35 = a3[1];
-            v36 = (v35 - *&v20) * (v35 - *&v20) + (*a3 - v19) * (*a3 - v19);
+            v34 = *interpolation;
+            v35 = interpolation[1];
+            v36 = (v35 - *&v20) * (v35 - *&v20) + (*interpolation - v19) * (*interpolation - v19);
             do
             {
-              v37 = *(v10 + 24);
-              v38 = *(v10 + 32);
-              v10 += 24;
+              v37 = *(selfCopy2 + 24);
+              v38 = *(selfCopy2 + 32);
+              selfCopy2 += 24;
             }
 
             while ((v35 - v38) * (v35 - v38) + (v34 - v37) * (v34 - v37) < v36);
@@ -1212,30 +1212,30 @@ LABEL_17:
             while ((v35 - v40) * (v35 - v40) + (v34 - v39) * (v34 - v39) >= v36);
           }
 
-          while (v10 < v32);
+          while (selfCopy2 < v32);
         }
 
-        if (v10 - 24 != a1)
+        if (selfCopy2 - 24 != self)
         {
-          v41 = *(v10 - 24);
-          *(a1 + 16) = *(v10 - 8);
-          *a1 = v41;
+          v41 = *(selfCopy2 - 24);
+          *(self + 16) = *(selfCopy2 - 8);
+          *self = v41;
         }
 
-        *(v10 - 24) = v19;
-        *(v10 - 16) = v20;
+        *(selfCopy2 - 24) = v19;
+        *(selfCopy2 - 16) = v20;
         if (v26 >= v27)
         {
           break;
         }
 
 LABEL_36:
-        std::__introsort<std::_ClassicAlgPolicy,[MPULayoutInterpolator _sortPointsFor3DInterpolation:usingQueriedPoint:]::$_4 &,MPU::Point3D *,false>(a1, v10 - 24, a3, a4, a5 & 1);
+        std::__introsort<std::_ClassicAlgPolicy,[MPULayoutInterpolator _sortPointsFor3DInterpolation:usingQueriedPoint:]::$_4 &,MPU::Point3D *,false>(self, selfCopy2 - 24, interpolation, point, a5 & 1);
         a5 = 0;
       }
 
-      v42 = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[MPULayoutInterpolator _sortPointsFor3DInterpolation:usingQueriedPoint:]::$_4 &,MPU::Point3D *>(a1, v10 - 24, a3);
-      if (std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[MPULayoutInterpolator _sortPointsFor3DInterpolation:usingQueriedPoint:]::$_4 &,MPU::Point3D *>(v10, a2, a3))
+      v42 = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[MPULayoutInterpolator _sortPointsFor3DInterpolation:usingQueriedPoint:]::$_4 &,MPU::Point3D *>(self, selfCopy2 - 24, interpolation);
+      if (std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[MPULayoutInterpolator _sortPointsFor3DInterpolation:usingQueriedPoint:]::$_4 &,MPU::Point3D *>(selfCopy2, a2, interpolation))
       {
         break;
       }
@@ -1246,7 +1246,7 @@ LABEL_36:
       }
     }
 
-    a2 = v10 - 24;
+    a2 = selfCopy2 - 24;
     if (!v42)
     {
       continue;

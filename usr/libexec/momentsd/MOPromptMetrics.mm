@@ -1,31 +1,31 @@
 @interface MOPromptMetrics
 + (id)getTimeDeltaMetricMap;
-+ (id)meanOf:(id)a3;
-+ (id)medianOf:(id)a3;
-+ (id)standardDeviationOf:(id)a3;
++ (id)meanOf:(id)of;
++ (id)medianOf:(id)of;
++ (id)standardDeviationOf:(id)of;
 + (id)supportedMetricKeys;
-- (BOOL)doesInterval:(id)a3 overlapWithAnyIntervalFromArray:(id)a4;
-- (BOOL)submitMetricsWithError:(id *)a3;
-- (MOPromptMetrics)initWithStartDate:(id)a3 endDate:(id)a4;
-- (MOPromptMetrics)initWithStartDate:(id)a3 endDate:(id)a4 EventManager:(id)a5;
-- (id)calculateZeroCountsForEvents:(id)a3 withCalendar:(id)a4;
-- (void)calculateAndSetMetricsForCorrelatedEvents:(id)a3;
-- (void)calculateAndSetMetricsForRawEvents:(id)a3;
-- (void)calculateAndSetMetricsForSemanticallyBundledEvents:(id)a3;
+- (BOOL)doesInterval:(id)interval overlapWithAnyIntervalFromArray:(id)array;
+- (BOOL)submitMetricsWithError:(id *)error;
+- (MOPromptMetrics)initWithStartDate:(id)date endDate:(id)endDate;
+- (MOPromptMetrics)initWithStartDate:(id)date endDate:(id)endDate EventManager:(id)manager;
+- (id)calculateZeroCountsForEvents:(id)events withCalendar:(id)calendar;
+- (void)calculateAndSetMetricsForCorrelatedEvents:(id)events;
+- (void)calculateAndSetMetricsForRawEvents:(id)events;
+- (void)calculateAndSetMetricsForSemanticallyBundledEvents:(id)events;
 - (void)getAndSetAgeGender;
-- (void)setAge:(id)a3;
-- (void)setBiologicalSex:(id)a3;
+- (void)setAge:(id)age;
+- (void)setBiologicalSex:(id)sex;
 - (void)setDerivedMetrics;
 @end
 
 @implementation MOPromptMetrics
 
-- (MOPromptMetrics)initWithStartDate:(id)a3 endDate:(id)a4
+- (MOPromptMetrics)initWithStartDate:(id)date endDate:(id)endDate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  dateCopy = date;
+  endDateCopy = endDate;
+  v10 = endDateCopy;
+  if (!dateCopy)
   {
     v16 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -37,12 +37,12 @@
     v18 = v17;
     v19 = @"Invalid parameter not satisfying: startDate";
     v20 = a2;
-    v21 = self;
+    selfCopy2 = self;
     v22 = 38;
     goto LABEL_12;
   }
 
-  if (!v9)
+  if (!endDateCopy)
   {
     v23 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -54,12 +54,12 @@
     v18 = v17;
     v19 = @"Invalid parameter not satisfying: endDate";
     v20 = a2;
-    v21 = self;
+    selfCopy2 = self;
     v22 = 39;
 LABEL_12:
-    [v17 handleFailureInMethod:v20 object:v21 file:@"MOPromptMetrics.m" lineNumber:v22 description:v19];
+    [v17 handleFailureInMethod:v20 object:selfCopy2 file:@"MOPromptMetrics.m" lineNumber:v22 description:v19];
 
-    v15 = 0;
+    selfCopy3 = 0;
     goto LABEL_13;
   }
 
@@ -67,35 +67,35 @@ LABEL_12:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_startDate, a3);
-    objc_storeStrong(&v12->_endDate, a4);
+    objc_storeStrong(&v11->_startDate, date);
+    objc_storeStrong(&v12->_endDate, endDate);
     [(NSDate *)v12->_endDate timeIntervalSinceDate:v12->_startDate];
     v13 = [NSNumber numberWithDouble:?];
-    v14 = [(MOMetric *)v12 metrics];
-    [v14 setObject:v13 forKeyedSubscript:@"QueryTimeDuration"];
+    metrics = [(MOMetric *)v12 metrics];
+    [metrics setObject:v13 forKeyedSubscript:@"QueryTimeDuration"];
   }
 
   self = v12;
-  v15 = self;
+  selfCopy3 = self;
 LABEL_13:
 
-  return v15;
+  return selfCopy3;
 }
 
-- (MOPromptMetrics)initWithStartDate:(id)a3 endDate:(id)a4 EventManager:(id)a5
+- (MOPromptMetrics)initWithStartDate:(id)date endDate:(id)endDate EventManager:(id)manager
 {
-  v10 = a5;
-  if (v10)
+  managerCopy = manager;
+  if (managerCopy)
   {
-    v11 = [(MOPromptMetrics *)self initWithStartDate:a3 endDate:a4];
+    v11 = [(MOPromptMetrics *)self initWithStartDate:date endDate:endDate];
     v12 = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_eventManager, a5);
+      objc_storeStrong(&v11->_eventManager, manager);
     }
 
     self = v12;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
@@ -109,56 +109,56 @@ LABEL_13:
     v15 = +[NSAssertionHandler currentHandler];
     [v15 handleFailureInMethod:a2 object:self file:@"MOPromptMetrics.m" lineNumber:54 description:@"Invalid parameter not satisfying: eventManager"];
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 + (id)supportedMetricKeys
 {
-  v2 = [objc_opt_class() integerKeys];
-  v3 = [NSMutableSet setWithSet:v2];
+  integerKeys = [objc_opt_class() integerKeys];
+  v3 = [NSMutableSet setWithSet:integerKeys];
 
-  v4 = [objc_opt_class() BOOLeanKeys];
-  v5 = [v4 allObjects];
-  [v3 addObjectsFromArray:v5];
+  bOOLeanKeys = [objc_opt_class() BOOLeanKeys];
+  allObjects = [bOOLeanKeys allObjects];
+  [v3 addObjectsFromArray:allObjects];
 
-  v6 = [objc_opt_class() doubleKeys];
-  v7 = [v6 allObjects];
-  [v3 addObjectsFromArray:v7];
+  doubleKeys = [objc_opt_class() doubleKeys];
+  allObjects2 = [doubleKeys allObjects];
+  [v3 addObjectsFromArray:allObjects2];
 
-  v8 = [objc_opt_class() bucketedKeys];
-  v9 = [v8 allObjects];
-  [v3 addObjectsFromArray:v9];
+  bucketedKeys = [objc_opt_class() bucketedKeys];
+  allObjects3 = [bucketedKeys allObjects];
+  [v3 addObjectsFromArray:allObjects3];
 
   return v3;
 }
 
-- (BOOL)submitMetricsWithError:(id *)a3
+- (BOOL)submitMetricsWithError:(id *)error
 {
   [(MOPromptMetrics *)self setDerivedMetrics];
   v6.receiver = self;
   v6.super_class = MOPromptMetrics;
-  return [(MOMetric *)&v6 submitMetricsWithError:a3];
+  return [(MOMetric *)&v6 submitMetricsWithError:error];
 }
 
-+ (id)medianOf:(id)a3
++ (id)medianOf:(id)of
 {
-  v3 = a3;
-  if ([v3 count])
+  ofCopy = of;
+  if ([ofCopy count])
   {
-    if ([v3 count] == 1)
+    if ([ofCopy count] == 1)
     {
-      v4 = [v3 objectAtIndexedSubscript:0];
+      v4 = [ofCopy objectAtIndexedSubscript:0];
       [v4 doubleValue];
       v5 = [NSNumber numberWithDouble:?];
     }
 
     else
     {
-      v4 = [v3 sortedArrayUsingSelector:"compare:"];
-      v6 = [v3 count];
+      v4 = [ofCopy sortedArrayUsingSelector:"compare:"];
+      v6 = [ofCopy count];
       v7 = [v4 count] >> 1;
       if (v6)
       {
@@ -187,14 +187,14 @@ LABEL_13:
   return v5;
 }
 
-+ (id)meanOf:(id)a3
++ (id)meanOf:(id)of
 {
-  v3 = a3;
-  if ([v3 count])
+  ofCopy = of;
+  if ([ofCopy count])
   {
-    if ([v3 count] == 1)
+    if ([ofCopy count] == 1)
     {
-      v4 = [v3 objectAtIndexedSubscript:0];
+      v4 = [ofCopy objectAtIndexedSubscript:0];
       [v4 doubleValue];
       v5 = [NSNumber numberWithDouble:?];
     }
@@ -202,14 +202,14 @@ LABEL_13:
     else
     {
       v6 = 0.0;
-      if ([v3 count])
+      if ([ofCopy count])
       {
         v7 = 1;
         do
         {
-          if ([v3 count] >= v7)
+          if ([ofCopy count] >= v7)
           {
-            v8 = [v3 objectAtIndexedSubscript:v7 - 1];
+            v8 = [ofCopy objectAtIndexedSubscript:v7 - 1];
             [v8 doubleValue];
             v6 = v6 + (v9 - v6) / v7;
           }
@@ -220,7 +220,7 @@ LABEL_13:
           }
         }
 
-        while ([v3 count] > v7++);
+        while ([ofCopy count] > v7++);
       }
 
       v5 = [NSNumber numberWithDouble:v6];
@@ -235,19 +235,19 @@ LABEL_13:
   return v5;
 }
 
-+ (id)standardDeviationOf:(id)a3
++ (id)standardDeviationOf:(id)of
 {
-  v3 = a3;
-  if ([v3 count])
+  ofCopy = of;
+  if ([ofCopy count])
   {
-    if ([v3 count] == 1)
+    if ([ofCopy count] == 1)
     {
       v4 = &off_10036E7B0;
     }
 
     else
     {
-      v5 = [MOPromptMetrics meanOf:v3];
+      v5 = [MOPromptMetrics meanOf:ofCopy];
       [v5 doubleValue];
       v7 = v6;
 
@@ -255,7 +255,7 @@ LABEL_13:
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v8 = v3;
+      v8 = ofCopy;
       v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v9)
       {
@@ -488,26 +488,26 @@ LABEL_13:
   v3 = [MOMetric binsFromStart:&off_10036C1D8 toEnd:&off_10036E7E0 gap:&off_10036E7F0];
   v289 = [MOMetric binsFromStart:&off_10036C1D8 toEnd:&off_10036E7E0 gap:&off_10036E800];
   v283 = [MOMetric binsFromStart:&off_10036C1D8 toEnd:&off_10036C280 gap:&off_10036E810];
-  v4 = [(MOMetric *)self metrics];
-  v5 = [v4 objectForKeyedSubscript:@"QueryTimeDuration"];
+  metrics = [(MOMetric *)self metrics];
+  v5 = [metrics objectForKeyedSubscript:@"QueryTimeDuration"];
   v284 = v3;
   v6 = [MOMetric binForNumber:v5 bins:v3];
-  v7 = [(MOMetric *)self metrics];
-  [v7 setObject:v6 forKeyedSubscript:@"QueryTimeDuration_Bucketed"];
+  metrics2 = [(MOMetric *)self metrics];
+  [metrics2 setObject:v6 forKeyedSubscript:@"QueryTimeDuration_Bucketed"];
 
-  v8 = [(MOMetric *)self metrics];
-  v9 = [v8 objectForKeyedSubscript:@"Age"];
+  metrics3 = [(MOMetric *)self metrics];
+  v9 = [metrics3 objectForKeyedSubscript:@"Age"];
   v10 = [MOMetric binForNumber:v9 bins:&off_10036E2F8];
-  v11 = [(MOMetric *)self metrics];
-  [v11 setObject:v10 forKeyedSubscript:@"Age_Bucketed"];
+  metrics4 = [(MOMetric *)self metrics];
+  [metrics4 setObject:v10 forKeyedSubscript:@"Age_Bucketed"];
 
   +[MOPromptMetrics getTimeDeltaMetricMap];
   v294 = 0u;
   v295 = 0u;
   v296 = 0u;
   v288 = v297 = 0u;
-  v12 = [v288 allKeys];
-  v13 = [v12 countByEnumeratingWithState:&v294 objects:v301 count:16];
+  allKeys = [v288 allKeys];
+  v13 = [allKeys countByEnumeratingWithState:&v294 objects:v301 count:16];
   if (v13)
   {
     v14 = v13;
@@ -518,108 +518,108 @@ LABEL_13:
       {
         if (*v295 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allKeys);
         }
 
         v17 = *(*(&v294 + 1) + 8 * i);
         v18 = [v288 objectForKey:v17];
-        v19 = [(MOMetric *)self metrics];
-        v20 = [v19 objectForKeyedSubscript:v17];
+        metrics5 = [(MOMetric *)self metrics];
+        v20 = [metrics5 objectForKeyedSubscript:v17];
         v21 = [MOMetric binForNumber:v20 bins:v289];
-        v22 = [(MOMetric *)self metrics];
-        [v22 setObject:v21 forKeyedSubscript:v18];
+        metrics6 = [(MOMetric *)self metrics];
+        [metrics6 setObject:v21 forKeyedSubscript:v18];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v294 objects:v301 count:16];
+      v14 = [allKeys countByEnumeratingWithState:&v294 objects:v301 count:16];
     }
 
     while (v14);
   }
 
-  v23 = [(MOMetric *)self metrics];
-  v24 = [v23 objectForKeyedSubscript:@"Routine_nVisits"];
+  metrics7 = [(MOMetric *)self metrics];
+  v24 = [metrics7 objectForKeyedSubscript:@"Routine_nVisits"];
   v25 = [MOMetric binForNumber:v24 bins:v286];
-  v26 = [(MOMetric *)self metrics];
-  [v26 setObject:v25 forKeyedSubscript:@"Routine_nVisits_Bucketed"];
+  metrics8 = [(MOMetric *)self metrics];
+  [metrics8 setObject:v25 forKeyedSubscript:@"Routine_nVisits_Bucketed"];
 
-  v27 = [(MOMetric *)self metrics];
-  v28 = [v27 objectForKeyedSubscript:@"Routine_nHomeVisits"];
+  metrics9 = [(MOMetric *)self metrics];
+  v28 = [metrics9 objectForKeyedSubscript:@"Routine_nHomeVisits"];
   v29 = [MOMetric binForNumber:v28 bins:v286];
-  v30 = [(MOMetric *)self metrics];
-  [v30 setObject:v29 forKeyedSubscript:@"Routine_nHomeVisits_Bucketed"];
+  metrics10 = [(MOMetric *)self metrics];
+  [metrics10 setObject:v29 forKeyedSubscript:@"Routine_nHomeVisits_Bucketed"];
 
-  v31 = [(MOMetric *)self metrics];
-  v32 = [v31 objectForKeyedSubscript:@"Routine_nWorkVisits"];
+  metrics11 = [(MOMetric *)self metrics];
+  v32 = [metrics11 objectForKeyedSubscript:@"Routine_nWorkVisits"];
   v33 = [MOMetric binForNumber:v32 bins:v286];
-  v34 = [(MOMetric *)self metrics];
-  [v34 setObject:v33 forKeyedSubscript:@"Routine_nWorkVisits_Bucketed"];
+  metrics12 = [(MOMetric *)self metrics];
+  [metrics12 setObject:v33 forKeyedSubscript:@"Routine_nWorkVisits_Bucketed"];
 
-  v35 = [(MOMetric *)self metrics];
-  v36 = [v35 objectForKeyedSubscript:@"Routine_nGymVisits"];
+  metrics13 = [(MOMetric *)self metrics];
+  v36 = [metrics13 objectForKeyedSubscript:@"Routine_nGymVisits"];
   v37 = [MOMetric binForNumber:v36 bins:v286];
-  v38 = [(MOMetric *)self metrics];
-  [v38 setObject:v37 forKeyedSubscript:@"Routine_nGymVisits_Bucketed"];
+  metrics14 = [(MOMetric *)self metrics];
+  [metrics14 setObject:v37 forKeyedSubscript:@"Routine_nGymVisits_Bucketed"];
 
-  v39 = [(MOMetric *)self metrics];
-  v40 = [v39 objectForKeyedSubscript:@"Routine_nSchoolVisits"];
+  metrics15 = [(MOMetric *)self metrics];
+  v40 = [metrics15 objectForKeyedSubscript:@"Routine_nSchoolVisits"];
   v41 = [MOMetric binForNumber:v40 bins:v286];
-  v42 = [(MOMetric *)self metrics];
-  [v42 setObject:v41 forKeyedSubscript:@"Routine_nSchoolVisits_Bucketed"];
+  metrics16 = [(MOMetric *)self metrics];
+  [metrics16 setObject:v41 forKeyedSubscript:@"Routine_nSchoolVisits_Bucketed"];
 
-  v43 = [(MOMetric *)self metrics];
-  v44 = [v43 objectForKeyedSubscript:@"Routine_AverageVisitsLatency"];
+  metrics17 = [(MOMetric *)self metrics];
+  v44 = [metrics17 objectForKeyedSubscript:@"Routine_AverageVisitsLatency"];
   v45 = [MOMetric binForNumber:v44 bins:v285];
-  v46 = [(MOMetric *)self metrics];
-  [v46 setObject:v45 forKeyedSubscript:@"Routine_AverageVisitsLatency_Bucketed"];
+  metrics18 = [(MOMetric *)self metrics];
+  [metrics18 setObject:v45 forKeyedSubscript:@"Routine_AverageVisitsLatency_Bucketed"];
 
-  v47 = [(MOMetric *)self metrics];
-  v48 = [v47 objectForKeyedSubscript:@"Routine_AverageVisitsRealLatency"];
+  metrics19 = [(MOMetric *)self metrics];
+  v48 = [metrics19 objectForKeyedSubscript:@"Routine_AverageVisitsRealLatency"];
   v49 = [MOMetric binForNumber:v48 bins:v285];
-  v50 = [(MOMetric *)self metrics];
-  [v50 setObject:v49 forKeyedSubscript:@"Routine_AverageVisitsRealLatency_Bucketed"];
+  metrics20 = [(MOMetric *)self metrics];
+  [metrics20 setObject:v49 forKeyedSubscript:@"Routine_AverageVisitsRealLatency_Bucketed"];
 
-  v51 = [(MOMetric *)self metrics];
-  v52 = [v51 objectForKeyedSubscript:@"Storytelling_NumMoments"];
+  metrics21 = [(MOMetric *)self metrics];
+  v52 = [metrics21 objectForKeyedSubscript:@"Storytelling_NumMoments"];
   v53 = [MOMetric binForNumber:v52 bins:v286];
-  v54 = [(MOMetric *)self metrics];
-  [v54 setObject:v53 forKeyedSubscript:@"Storytelling_NumMoments_Bucketed"];
+  metrics22 = [(MOMetric *)self metrics];
+  [metrics22 setObject:v53 forKeyedSubscript:@"Storytelling_NumMoments_Bucketed"];
 
-  v55 = [(MOMetric *)self metrics];
-  v56 = [v55 objectForKeyedSubscript:@"Storytelling_NumMomentsWithEvent"];
+  metrics23 = [(MOMetric *)self metrics];
+  v56 = [metrics23 objectForKeyedSubscript:@"Storytelling_NumMomentsWithEvent"];
   v57 = [MOMetric binForNumber:v56 bins:v286];
-  v58 = [(MOMetric *)self metrics];
-  [v58 setObject:v57 forKeyedSubscript:@"Storytelling_NumMomentsWithEvent_Bucketed"];
+  metrics24 = [(MOMetric *)self metrics];
+  [metrics24 setObject:v57 forKeyedSubscript:@"Storytelling_NumMomentsWithEvent_Bucketed"];
 
-  v59 = [(MOMetric *)self metrics];
-  v60 = [v59 objectForKeyedSubscript:@"Storytelling_NumMomentsWithEventAndArtist"];
+  metrics25 = [(MOMetric *)self metrics];
+  v60 = [metrics25 objectForKeyedSubscript:@"Storytelling_NumMomentsWithEventAndArtist"];
   v61 = [MOMetric binForNumber:v60 bins:v286];
-  v62 = [(MOMetric *)self metrics];
-  [v62 setObject:v61 forKeyedSubscript:@"Storytelling_NumMomentsWithEventAndArtist_Bucketed"];
+  metrics26 = [(MOMetric *)self metrics];
+  [metrics26 setObject:v61 forKeyedSubscript:@"Storytelling_NumMomentsWithEventAndArtist_Bucketed"];
 
-  v63 = [(MOMetric *)self metrics];
-  v64 = [v63 objectForKeyedSubscript:@"Storytelling_NumMomentsWithFamily"];
+  metrics27 = [(MOMetric *)self metrics];
+  v64 = [metrics27 objectForKeyedSubscript:@"Storytelling_NumMomentsWithFamily"];
   v65 = [MOMetric binForNumber:v64 bins:v286];
-  v66 = [(MOMetric *)self metrics];
-  [v66 setObject:v65 forKeyedSubscript:@"Storytelling_NumMomentsWithFamily_Bucketed"];
+  metrics28 = [(MOMetric *)self metrics];
+  [metrics28 setObject:v65 forKeyedSubscript:@"Storytelling_NumMomentsWithFamily_Bucketed"];
 
-  v67 = [(MOMetric *)self metrics];
-  v68 = [v67 objectForKeyedSubscript:@"Storytelling_NumMomentsWithPeople"];
+  metrics29 = [(MOMetric *)self metrics];
+  v68 = [metrics29 objectForKeyedSubscript:@"Storytelling_NumMomentsWithPeople"];
   v69 = [MOMetric binForNumber:v68 bins:v286];
-  v70 = [(MOMetric *)self metrics];
-  [v70 setObject:v69 forKeyedSubscript:@"Storytelling_NumMomentsWithPeople_Bucketed"];
+  metrics30 = [(MOMetric *)self metrics];
+  [metrics30 setObject:v69 forKeyedSubscript:@"Storytelling_NumMomentsWithPeople_Bucketed"];
 
-  v71 = [(MOMetric *)self metrics];
-  v72 = [v71 objectForKeyedSubscript:@"Storytelling_AverageMomentsLatency"];
+  metrics31 = [(MOMetric *)self metrics];
+  v72 = [metrics31 objectForKeyedSubscript:@"Storytelling_AverageMomentsLatency"];
   v73 = [MOMetric binForNumber:v72 bins:v285];
-  v74 = [(MOMetric *)self metrics];
-  [v74 setObject:v73 forKeyedSubscript:@"Storytelling_AverageMomentsLatency_Bucketed"];
+  metrics32 = [(MOMetric *)self metrics];
+  [metrics32 setObject:v73 forKeyedSubscript:@"Storytelling_AverageMomentsLatency_Bucketed"];
 
-  v75 = [(MOMetric *)self metrics];
-  v76 = [v75 objectForKeyedSubscript:@"Storytelling_AverageMomentsRealLatency"];
+  metrics33 = [(MOMetric *)self metrics];
+  v76 = [metrics33 objectForKeyedSubscript:@"Storytelling_AverageMomentsRealLatency"];
   v77 = [MOMetric binForNumber:v76 bins:v285];
-  v287 = self;
-  v78 = [(MOMetric *)self metrics];
-  [v78 setObject:v77 forKeyedSubscript:@"Storytelling_AverageMomentsRealLatency_Bucketed"];
+  selfCopy = self;
+  metrics34 = [(MOMetric *)self metrics];
+  [metrics34 setObject:v77 forKeyedSubscript:@"Storytelling_AverageMomentsRealLatency_Bucketed"];
 
   v299[0] = @"Storytelling_MomenetInferenceTag_1_1";
   v299[1] = @"Storytelling_MomenetInferenceTag_1_2";
@@ -665,15 +665,15 @@ LABEL_13:
         }
 
         v84 = *(*(&v290 + 1) + 8 * j);
-        v85 = [(MOMetric *)v287 metrics];
-        v86 = [v85 objectForKeyedSubscript:v84];
+        metrics35 = [(MOMetric *)selfCopy metrics];
+        v86 = [metrics35 objectForKeyedSubscript:v84];
         v87 = [MOPhotoMomentTags getCoarseInferenceTag:v86];
 
         if (v87)
         {
           v88 = [v79 objectForKeyedSubscript:v84];
-          v89 = [(MOMetric *)v287 metrics];
-          [v89 setObject:v87 forKeyedSubscript:v88];
+          metrics36 = [(MOMetric *)selfCopy metrics];
+          [metrics36 setObject:v87 forKeyedSubscript:v88];
         }
       }
 
@@ -685,302 +685,302 @@ LABEL_13:
 
   v90 = v79;
 
-  v91 = [(MOMetric *)v287 metrics];
-  v92 = [v91 objectForKeyedSubscript:@"Workout_NumWorkouts"];
+  metrics37 = [(MOMetric *)selfCopy metrics];
+  v92 = [metrics37 objectForKeyedSubscript:@"Workout_NumWorkouts"];
   v93 = [MOMetric binForNumber:v92 bins:v286];
-  v94 = [(MOMetric *)v287 metrics];
-  [v94 setObject:v93 forKeyedSubscript:@"Workout_NumWorkouts_Bucketed"];
+  metrics38 = [(MOMetric *)selfCopy metrics];
+  [metrics38 setObject:v93 forKeyedSubscript:@"Workout_NumWorkouts_Bucketed"];
 
-  v95 = [(MOMetric *)v287 metrics];
-  v96 = [v95 objectForKeyedSubscript:@"Workout_AverageWorkoutLatency"];
+  metrics39 = [(MOMetric *)selfCopy metrics];
+  v96 = [metrics39 objectForKeyedSubscript:@"Workout_AverageWorkoutLatency"];
   v97 = [MOMetric binForNumber:v96 bins:v285];
-  v98 = [(MOMetric *)v287 metrics];
-  [v98 setObject:v97 forKeyedSubscript:@"Workout_AverageWorkoutLatency_Bucketed"];
+  metrics40 = [(MOMetric *)selfCopy metrics];
+  [metrics40 setObject:v97 forKeyedSubscript:@"Workout_AverageWorkoutLatency_Bucketed"];
 
-  v99 = [(MOMetric *)v287 metrics];
-  v100 = [v99 objectForKeyedSubscript:@"Proactive_NumAllEvents"];
+  metrics41 = [(MOMetric *)selfCopy metrics];
+  v100 = [metrics41 objectForKeyedSubscript:@"Proactive_NumAllEvents"];
   v101 = [MOMetric binForNumber:v100 bins:v286];
-  v102 = [(MOMetric *)v287 metrics];
-  [v102 setObject:v101 forKeyedSubscript:@"Proactive_NumAllEvents_Bucketed"];
+  metrics42 = [(MOMetric *)selfCopy metrics];
+  [metrics42 setObject:v101 forKeyedSubscript:@"Proactive_NumAllEvents_Bucketed"];
 
-  v103 = [(MOMetric *)v287 metrics];
-  v104 = [v103 objectForKeyedSubscript:@"Proactive_NumMediaOnRepeatEvents"];
+  metrics43 = [(MOMetric *)selfCopy metrics];
+  v104 = [metrics43 objectForKeyedSubscript:@"Proactive_NumMediaOnRepeatEvents"];
   v105 = [MOMetric binForNumber:v104 bins:v286];
-  v106 = [(MOMetric *)v287 metrics];
-  [v106 setObject:v105 forKeyedSubscript:@"Proactive_NumMediaOnRepeatEvents_Bucketed"];
+  metrics44 = [(MOMetric *)selfCopy metrics];
+  [metrics44 setObject:v105 forKeyedSubscript:@"Proactive_NumMediaOnRepeatEvents_Bucketed"];
 
-  v107 = [(MOMetric *)v287 metrics];
-  v108 = [v107 objectForKeyedSubscript:@"Proactive_NumTopicEvents"];
+  metrics45 = [(MOMetric *)selfCopy metrics];
+  v108 = [metrics45 objectForKeyedSubscript:@"Proactive_NumTopicEvents"];
   v109 = [MOMetric binForNumber:v108 bins:v286];
-  v110 = [(MOMetric *)v287 metrics];
-  [v110 setObject:v109 forKeyedSubscript:@"Proactive_NumTopicEvents_Bucketed"];
+  metrics46 = [(MOMetric *)selfCopy metrics];
+  [metrics46 setObject:v109 forKeyedSubscript:@"Proactive_NumTopicEvents_Bucketed"];
 
-  v111 = [(MOMetric *)v287 metrics];
-  v112 = [v111 objectForKeyedSubscript:@"Proactive_NumTravelEvents"];
+  metrics47 = [(MOMetric *)selfCopy metrics];
+  v112 = [metrics47 objectForKeyedSubscript:@"Proactive_NumTravelEvents"];
   v113 = [MOMetric binForNumber:v112 bins:v286];
-  v114 = [(MOMetric *)v287 metrics];
-  [v114 setObject:v113 forKeyedSubscript:@"Proactive_NumTravelEvents_Bucketed"];
+  metrics48 = [(MOMetric *)selfCopy metrics];
+  [metrics48 setObject:v113 forKeyedSubscript:@"Proactive_NumTravelEvents_Bucketed"];
 
-  v115 = [(MOMetric *)v287 metrics];
-  v116 = [v115 objectForKeyedSubscript:@"Proactive_NumSharedWithYouEvents"];
+  metrics49 = [(MOMetric *)selfCopy metrics];
+  v116 = [metrics49 objectForKeyedSubscript:@"Proactive_NumSharedWithYouEvents"];
   v117 = [MOMetric binForNumber:v116 bins:v286];
-  v118 = [(MOMetric *)v287 metrics];
-  [v118 setObject:v117 forKeyedSubscript:@"Proactive_NumSharedWithYouEvents_Bucketed"];
+  metrics50 = [(MOMetric *)selfCopy metrics];
+  [metrics50 setObject:v117 forKeyedSubscript:@"Proactive_NumSharedWithYouEvents_Bucketed"];
 
-  v119 = [(MOMetric *)v287 metrics];
-  v120 = [v119 objectForKeyedSubscript:@"Proactive_NumSignificantContactEvents"];
+  metrics51 = [(MOMetric *)selfCopy metrics];
+  v120 = [metrics51 objectForKeyedSubscript:@"Proactive_NumSignificantContactEvents"];
   v121 = [MOMetric binForNumber:v120 bins:v286];
-  v122 = [(MOMetric *)v287 metrics];
-  [v122 setObject:v121 forKeyedSubscript:@"Proactive_NumSignificantContactEvents_Bucketed"];
+  metrics52 = [(MOMetric *)selfCopy metrics];
+  [metrics52 setObject:v121 forKeyedSubscript:@"Proactive_NumSignificantContactEvents_Bucketed"];
 
-  v123 = [(MOMetric *)v287 metrics];
-  v124 = [v123 objectForKeyedSubscript:@"Proactive_NumStructuredEvents"];
+  metrics53 = [(MOMetric *)selfCopy metrics];
+  v124 = [metrics53 objectForKeyedSubscript:@"Proactive_NumStructuredEvents"];
   v125 = [MOMetric binForNumber:v124 bins:v286];
-  v126 = [(MOMetric *)v287 metrics];
-  [v126 setObject:v125 forKeyedSubscript:@"Proactive_NumStructuredEvents_Bucketed"];
+  metrics54 = [(MOMetric *)selfCopy metrics];
+  [metrics54 setObject:v125 forKeyedSubscript:@"Proactive_NumStructuredEvents_Bucketed"];
 
-  v127 = [(MOMetric *)v287 metrics];
-  v128 = [v127 objectForKeyedSubscript:@"Proactive_NumLeisureMediaEvents"];
+  metrics55 = [(MOMetric *)selfCopy metrics];
+  v128 = [metrics55 objectForKeyedSubscript:@"Proactive_NumLeisureMediaEvents"];
   v129 = [MOMetric binForNumber:v128 bins:v286];
-  v130 = [(MOMetric *)v287 metrics];
-  [v130 setObject:v129 forKeyedSubscript:@"Proactive_NumLeisureMediaEvents_Bucketed"];
+  metrics56 = [(MOMetric *)selfCopy metrics];
+  [metrics56 setObject:v129 forKeyedSubscript:@"Proactive_NumLeisureMediaEvents_Bucketed"];
 
-  v131 = [(MOMetric *)v287 metrics];
-  v132 = [v131 objectForKeyedSubscript:@"Proactive_NumNLEvents"];
+  metrics57 = [(MOMetric *)selfCopy metrics];
+  v132 = [metrics57 objectForKeyedSubscript:@"Proactive_NumNLEvents"];
   v133 = [MOMetric binForNumber:v132 bins:v286];
-  v134 = [(MOMetric *)v287 metrics];
-  [v134 setObject:v133 forKeyedSubscript:@"Proactive_NumNLEvents_Bucketed"];
+  metrics58 = [(MOMetric *)selfCopy metrics];
+  [metrics58 setObject:v133 forKeyedSubscript:@"Proactive_NumNLEvents_Bucketed"];
 
-  v135 = [(MOMetric *)v287 metrics];
-  v136 = [v135 objectForKeyedSubscript:@"Proactive_EventsAverageLatency"];
+  metrics59 = [(MOMetric *)selfCopy metrics];
+  v136 = [metrics59 objectForKeyedSubscript:@"Proactive_EventsAverageLatency"];
   v137 = [MOMetric binForNumber:v136 bins:v285];
-  v138 = [(MOMetric *)v287 metrics];
-  [v138 setObject:v137 forKeyedSubscript:@"Proactive_EventsAverageLatency_Bucketed"];
+  metrics60 = [(MOMetric *)selfCopy metrics];
+  [metrics60 setObject:v137 forKeyedSubscript:@"Proactive_EventsAverageLatency_Bucketed"];
 
-  v139 = [(MOMetric *)v287 metrics];
-  v140 = [v139 objectForKeyedSubscript:@"Proactive_MediaOnRepeatAverageLatency"];
+  metrics61 = [(MOMetric *)selfCopy metrics];
+  v140 = [metrics61 objectForKeyedSubscript:@"Proactive_MediaOnRepeatAverageLatency"];
   v141 = [MOMetric binForNumber:v140 bins:v285];
-  v142 = [(MOMetric *)v287 metrics];
-  [v142 setObject:v141 forKeyedSubscript:@"Proactive_MediaOnRepeatAverageLatency_Bucketed"];
+  metrics62 = [(MOMetric *)selfCopy metrics];
+  [metrics62 setObject:v141 forKeyedSubscript:@"Proactive_MediaOnRepeatAverageLatency_Bucketed"];
 
-  v143 = [(MOMetric *)v287 metrics];
-  v144 = [v143 objectForKeyedSubscript:@"Proactive_TopicAverageLatency"];
+  metrics63 = [(MOMetric *)selfCopy metrics];
+  v144 = [metrics63 objectForKeyedSubscript:@"Proactive_TopicAverageLatency"];
   v145 = [MOMetric binForNumber:v144 bins:v285];
-  v146 = [(MOMetric *)v287 metrics];
-  [v146 setObject:v145 forKeyedSubscript:@"Proactive_TopicAverageLatency_Bucketed"];
+  metrics64 = [(MOMetric *)selfCopy metrics];
+  [metrics64 setObject:v145 forKeyedSubscript:@"Proactive_TopicAverageLatency_Bucketed"];
 
-  v147 = [(MOMetric *)v287 metrics];
-  v148 = [v147 objectForKeyedSubscript:@"Proactive_TravelAverageLatency"];
+  metrics65 = [(MOMetric *)selfCopy metrics];
+  v148 = [metrics65 objectForKeyedSubscript:@"Proactive_TravelAverageLatency"];
   v149 = [MOMetric binForNumber:v148 bins:v285];
-  v150 = [(MOMetric *)v287 metrics];
-  [v150 setObject:v149 forKeyedSubscript:@"Proactive_TravelAverageLatency_Bucketed"];
+  metrics66 = [(MOMetric *)selfCopy metrics];
+  [metrics66 setObject:v149 forKeyedSubscript:@"Proactive_TravelAverageLatency_Bucketed"];
 
-  v151 = [(MOMetric *)v287 metrics];
-  v152 = [v151 objectForKeyedSubscript:@"Proactive_SharedWithYouAverageLatency"];
+  metrics67 = [(MOMetric *)selfCopy metrics];
+  v152 = [metrics67 objectForKeyedSubscript:@"Proactive_SharedWithYouAverageLatency"];
   v153 = [MOMetric binForNumber:v152 bins:v285];
-  v154 = [(MOMetric *)v287 metrics];
-  [v154 setObject:v153 forKeyedSubscript:@"Proactive_SharedWithYouAverageLatency_Bucketed"];
+  metrics68 = [(MOMetric *)selfCopy metrics];
+  [metrics68 setObject:v153 forKeyedSubscript:@"Proactive_SharedWithYouAverageLatency_Bucketed"];
 
-  v155 = [(MOMetric *)v287 metrics];
-  v156 = [v155 objectForKeyedSubscript:@"Proactive_SignificantContactAverageLatency"];
+  metrics69 = [(MOMetric *)selfCopy metrics];
+  v156 = [metrics69 objectForKeyedSubscript:@"Proactive_SignificantContactAverageLatency"];
   v157 = [MOMetric binForNumber:v156 bins:v285];
-  v158 = [(MOMetric *)v287 metrics];
-  [v158 setObject:v157 forKeyedSubscript:@"Proactive_SignificantContactAverageLatency_Bucketed"];
+  metrics70 = [(MOMetric *)selfCopy metrics];
+  [metrics70 setObject:v157 forKeyedSubscript:@"Proactive_SignificantContactAverageLatency_Bucketed"];
 
-  v159 = [(MOMetric *)v287 metrics];
-  v160 = [v159 objectForKeyedSubscript:@"Proactive_StructuredEventsAverageLatency"];
+  metrics71 = [(MOMetric *)selfCopy metrics];
+  v160 = [metrics71 objectForKeyedSubscript:@"Proactive_StructuredEventsAverageLatency"];
   v161 = [MOMetric binForNumber:v160 bins:v285];
-  v162 = [(MOMetric *)v287 metrics];
-  [v162 setObject:v161 forKeyedSubscript:@"Proactive_StructuredEventsAverageLatency_Bucketed"];
+  metrics72 = [(MOMetric *)selfCopy metrics];
+  [metrics72 setObject:v161 forKeyedSubscript:@"Proactive_StructuredEventsAverageLatency_Bucketed"];
 
-  v163 = [(MOMetric *)v287 metrics];
-  v164 = [v163 objectForKeyedSubscript:@"Proactive_LeisureMediaEventsAverageLatency"];
+  metrics73 = [(MOMetric *)selfCopy metrics];
+  v164 = [metrics73 objectForKeyedSubscript:@"Proactive_LeisureMediaEventsAverageLatency"];
   v165 = [MOMetric binForNumber:v164 bins:v285];
-  v166 = [(MOMetric *)v287 metrics];
-  [v166 setObject:v165 forKeyedSubscript:@"Proactive_LeisureMediaEventsAverageLatency_Bucketed"];
+  metrics74 = [(MOMetric *)selfCopy metrics];
+  [metrics74 setObject:v165 forKeyedSubscript:@"Proactive_LeisureMediaEventsAverageLatency_Bucketed"];
 
-  v167 = [(MOMetric *)v287 metrics];
-  v168 = [v167 objectForKeyedSubscript:@"Proactive_NLEventsAverageLatency"];
+  metrics75 = [(MOMetric *)selfCopy metrics];
+  v168 = [metrics75 objectForKeyedSubscript:@"Proactive_NLEventsAverageLatency"];
   v169 = [MOMetric binForNumber:v168 bins:v285];
-  v170 = [(MOMetric *)v287 metrics];
-  [v170 setObject:v169 forKeyedSubscript:@"Proactive_NLEventsAverageLatency_Bucketed"];
+  metrics76 = [(MOMetric *)selfCopy metrics];
+  [metrics76 setObject:v169 forKeyedSubscript:@"Proactive_NLEventsAverageLatency_Bucketed"];
 
-  v171 = [(MOMetric *)v287 metrics];
-  v172 = [v171 objectForKeyedSubscript:@"Storytelling_PercentageOfMomentEventsNoLOI"];
+  metrics77 = [(MOMetric *)selfCopy metrics];
+  v172 = [metrics77 objectForKeyedSubscript:@"Storytelling_PercentageOfMomentEventsNoLOI"];
   v173 = [MOMetric binForNumber:v172 bins:v283];
-  v174 = [(MOMetric *)v287 metrics];
-  [v174 setObject:v173 forKeyedSubscript:@"Storytelling_PercentageOfMomentEventsNoLOI_Bucketed"];
+  metrics78 = [(MOMetric *)selfCopy metrics];
+  [metrics78 setObject:v173 forKeyedSubscript:@"Storytelling_PercentageOfMomentEventsNoLOI_Bucketed"];
 
-  v175 = [(MOMetric *)v287 metrics];
-  v176 = [v175 objectForKeyedSubscript:@"Workout_PercentageOfWorkoutEventsNoLOI"];
+  metrics79 = [(MOMetric *)selfCopy metrics];
+  v176 = [metrics79 objectForKeyedSubscript:@"Workout_PercentageOfWorkoutEventsNoLOI"];
   v177 = [MOMetric binForNumber:v176 bins:v283];
-  v178 = [(MOMetric *)v287 metrics];
-  [v178 setObject:v177 forKeyedSubscript:@"Workout_PercentageOfWorkoutEventsNoLOI_Bucketed"];
+  metrics80 = [(MOMetric *)selfCopy metrics];
+  [metrics80 setObject:v177 forKeyedSubscript:@"Workout_PercentageOfWorkoutEventsNoLOI_Bucketed"];
 
-  v179 = [(MOMetric *)v287 metrics];
-  v180 = [v179 objectForKeyedSubscript:@"Proactive_PercentageOfMediaOnRepeatEventsNoLOI"];
+  metrics81 = [(MOMetric *)selfCopy metrics];
+  v180 = [metrics81 objectForKeyedSubscript:@"Proactive_PercentageOfMediaOnRepeatEventsNoLOI"];
   v181 = [MOMetric binForNumber:v180 bins:v283];
-  v182 = [(MOMetric *)v287 metrics];
-  [v182 setObject:v181 forKeyedSubscript:@"Proactive_PercentageOfMediaOnRepeatEventsNoLOI_Bucketed"];
+  metrics82 = [(MOMetric *)selfCopy metrics];
+  [metrics82 setObject:v181 forKeyedSubscript:@"Proactive_PercentageOfMediaOnRepeatEventsNoLOI_Bucketed"];
 
-  v183 = [(MOMetric *)v287 metrics];
-  v184 = [v183 objectForKeyedSubscript:@"Proactive_PercentageOfTopicEventsNoLOI"];
+  metrics83 = [(MOMetric *)selfCopy metrics];
+  v184 = [metrics83 objectForKeyedSubscript:@"Proactive_PercentageOfTopicEventsNoLOI"];
   v185 = [MOMetric binForNumber:v184 bins:v283];
-  v186 = [(MOMetric *)v287 metrics];
-  [v186 setObject:v185 forKeyedSubscript:@"Proactive_PercentageOfTopicEventsNoLOI_Bucketed"];
+  metrics84 = [(MOMetric *)selfCopy metrics];
+  [metrics84 setObject:v185 forKeyedSubscript:@"Proactive_PercentageOfTopicEventsNoLOI_Bucketed"];
 
-  v187 = [(MOMetric *)v287 metrics];
-  v188 = [v187 objectForKeyedSubscript:@"Proactive_PercentageOfTravelEventsNoLOI"];
+  metrics85 = [(MOMetric *)selfCopy metrics];
+  v188 = [metrics85 objectForKeyedSubscript:@"Proactive_PercentageOfTravelEventsNoLOI"];
   v189 = [MOMetric binForNumber:v188 bins:v283];
-  v190 = [(MOMetric *)v287 metrics];
-  [v190 setObject:v189 forKeyedSubscript:@"Proactive_PercentageOfTravelEventsNoLOI_Bucketed"];
+  metrics86 = [(MOMetric *)selfCopy metrics];
+  [metrics86 setObject:v189 forKeyedSubscript:@"Proactive_PercentageOfTravelEventsNoLOI_Bucketed"];
 
-  v191 = [(MOMetric *)v287 metrics];
-  v192 = [v191 objectForKeyedSubscript:@"Proactive_PercentageOfSharedWithYouEventsNoLOI"];
+  metrics87 = [(MOMetric *)selfCopy metrics];
+  v192 = [metrics87 objectForKeyedSubscript:@"Proactive_PercentageOfSharedWithYouEventsNoLOI"];
   v193 = [MOMetric binForNumber:v192 bins:v283];
-  v194 = [(MOMetric *)v287 metrics];
-  [v194 setObject:v193 forKeyedSubscript:@"Proactive_PercentageOfSharedWithYouEventsNoLOI_Bucketed"];
+  metrics88 = [(MOMetric *)selfCopy metrics];
+  [metrics88 setObject:v193 forKeyedSubscript:@"Proactive_PercentageOfSharedWithYouEventsNoLOI_Bucketed"];
 
-  v195 = [(MOMetric *)v287 metrics];
-  v196 = [v195 objectForKeyedSubscript:@"Proactive_PercentageOfSignificantContactEventsNoLOI"];
+  metrics89 = [(MOMetric *)selfCopy metrics];
+  v196 = [metrics89 objectForKeyedSubscript:@"Proactive_PercentageOfSignificantContactEventsNoLOI"];
   v197 = [MOMetric binForNumber:v196 bins:v283];
-  v198 = [(MOMetric *)v287 metrics];
-  [v198 setObject:v197 forKeyedSubscript:@"Proactive_PercentageOfSignificantContactEventsNoLOI_Bucketed"];
+  metrics90 = [(MOMetric *)selfCopy metrics];
+  [metrics90 setObject:v197 forKeyedSubscript:@"Proactive_PercentageOfSignificantContactEventsNoLOI_Bucketed"];
 
-  v199 = [(MOMetric *)v287 metrics];
-  v200 = [v199 objectForKeyedSubscript:@"Proactive_PercentageOfStructuredEventsNoLOI"];
+  metrics91 = [(MOMetric *)selfCopy metrics];
+  v200 = [metrics91 objectForKeyedSubscript:@"Proactive_PercentageOfStructuredEventsNoLOI"];
   v201 = [MOMetric binForNumber:v200 bins:v283];
-  v202 = [(MOMetric *)v287 metrics];
-  [v202 setObject:v201 forKeyedSubscript:@"Proactive_PercentageOfStructuredEventsNoLOI_Bucketed"];
+  metrics92 = [(MOMetric *)selfCopy metrics];
+  [metrics92 setObject:v201 forKeyedSubscript:@"Proactive_PercentageOfStructuredEventsNoLOI_Bucketed"];
 
-  v203 = [(MOMetric *)v287 metrics];
-  v204 = [v203 objectForKeyedSubscript:@"Proactive_PercentageOfLeisureMediaEventsNoLOI"];
+  metrics93 = [(MOMetric *)selfCopy metrics];
+  v204 = [metrics93 objectForKeyedSubscript:@"Proactive_PercentageOfLeisureMediaEventsNoLOI"];
   v205 = [MOMetric binForNumber:v204 bins:v283];
-  v206 = [(MOMetric *)v287 metrics];
-  [v206 setObject:v205 forKeyedSubscript:@"Proactive_PercentageOfLeisureMediaEventsNoLOI_Bucketed"];
+  metrics94 = [(MOMetric *)selfCopy metrics];
+  [metrics94 setObject:v205 forKeyedSubscript:@"Proactive_PercentageOfLeisureMediaEventsNoLOI_Bucketed"];
 
-  v207 = [(MOMetric *)v287 metrics];
-  v208 = [v207 objectForKeyedSubscript:@"Proactive_PercentageOfNLEventsNoLOI"];
+  metrics95 = [(MOMetric *)selfCopy metrics];
+  v208 = [metrics95 objectForKeyedSubscript:@"Proactive_PercentageOfNLEventsNoLOI"];
   v209 = [MOMetric binForNumber:v208 bins:v283];
-  v210 = [(MOMetric *)v287 metrics];
-  [v210 setObject:v209 forKeyedSubscript:@"Proactive_PercentageOfNLEventsNoLOI_Bucketed"];
+  metrics96 = [(MOMetric *)selfCopy metrics];
+  [metrics96 setObject:v209 forKeyedSubscript:@"Proactive_PercentageOfNLEventsNoLOI_Bucketed"];
 
-  v211 = [(MOMetric *)v287 metrics];
-  v212 = [v211 objectForKeyedSubscript:@"numPreBundles"];
+  metrics97 = [(MOMetric *)selfCopy metrics];
+  v212 = [metrics97 objectForKeyedSubscript:@"numPreBundles"];
   v213 = [MOMetric binForNumber:v212 bins:v286];
-  v214 = [(MOMetric *)v287 metrics];
-  [v214 setObject:v213 forKeyedSubscript:@"numPreBundles_Bucketed"];
+  metrics98 = [(MOMetric *)selfCopy metrics];
+  [metrics98 setObject:v213 forKeyedSubscript:@"numPreBundles_Bucketed"];
 
-  v215 = [(MOMetric *)v287 metrics];
-  v216 = [v215 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_0_routineEvent_0_proactiveEvent_0"];
+  metrics99 = [(MOMetric *)selfCopy metrics];
+  v216 = [metrics99 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_0_routineEvent_0_proactiveEvent_0"];
   v217 = [MOMetric binForNumber:v216 bins:v286];
-  v218 = [(MOMetric *)v287 metrics];
-  [v218 setObject:v217 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_0_routineEvent_0_proactiveEvent_0_Bucketed"];
+  metrics100 = [(MOMetric *)selfCopy metrics];
+  [metrics100 setObject:v217 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_0_routineEvent_0_proactiveEvent_0_Bucketed"];
 
-  v219 = [(MOMetric *)v287 metrics];
-  v220 = [v219 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_0_routineEvent_0_proactiveEvent_1"];
+  metrics101 = [(MOMetric *)selfCopy metrics];
+  v220 = [metrics101 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_0_routineEvent_0_proactiveEvent_1"];
   v221 = [MOMetric binForNumber:v220 bins:v286];
-  v222 = [(MOMetric *)v287 metrics];
-  [v222 setObject:v221 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_0_routineEvent_0_proactiveEvent_1_Bucketed"];
+  metrics102 = [(MOMetric *)selfCopy metrics];
+  [metrics102 setObject:v221 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_0_routineEvent_0_proactiveEvent_1_Bucketed"];
 
-  v223 = [(MOMetric *)v287 metrics];
-  v224 = [v223 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_0_routineEvent_1_proactiveEvent_0"];
+  metrics103 = [(MOMetric *)selfCopy metrics];
+  v224 = [metrics103 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_0_routineEvent_1_proactiveEvent_0"];
   v225 = [MOMetric binForNumber:v224 bins:v286];
-  v226 = [(MOMetric *)v287 metrics];
-  [v226 setObject:v225 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_0_routineEvent_1_proactiveEvent_0_Bucketed"];
+  metrics104 = [(MOMetric *)selfCopy metrics];
+  [metrics104 setObject:v225 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_0_routineEvent_1_proactiveEvent_0_Bucketed"];
 
-  v227 = [(MOMetric *)v287 metrics];
-  v228 = [v227 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_0_routineEvent_1_proactiveEvent_1"];
+  metrics105 = [(MOMetric *)selfCopy metrics];
+  v228 = [metrics105 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_0_routineEvent_1_proactiveEvent_1"];
   v229 = [MOMetric binForNumber:v228 bins:v286];
-  v230 = [(MOMetric *)v287 metrics];
-  [v230 setObject:v229 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_0_routineEvent_1_proactiveEvent_1_Bucketed"];
+  metrics106 = [(MOMetric *)selfCopy metrics];
+  [metrics106 setObject:v229 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_0_routineEvent_1_proactiveEvent_1_Bucketed"];
 
-  v231 = [(MOMetric *)v287 metrics];
-  v232 = [v231 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_1_routineEvent_0_proactiveEvent_0"];
+  metrics107 = [(MOMetric *)selfCopy metrics];
+  v232 = [metrics107 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_1_routineEvent_0_proactiveEvent_0"];
   v233 = [MOMetric binForNumber:v232 bins:v286];
-  v234 = [(MOMetric *)v287 metrics];
-  [v234 setObject:v233 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_1_routineEvent_0_proactiveEvent_0_Bucketed"];
+  metrics108 = [(MOMetric *)selfCopy metrics];
+  [metrics108 setObject:v233 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_1_routineEvent_0_proactiveEvent_0_Bucketed"];
 
-  v235 = [(MOMetric *)v287 metrics];
-  v236 = [v235 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_1_routineEvent_0_proactiveEvent_1"];
+  metrics109 = [(MOMetric *)selfCopy metrics];
+  v236 = [metrics109 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_1_routineEvent_0_proactiveEvent_1"];
   v237 = [MOMetric binForNumber:v236 bins:v286];
-  v238 = [(MOMetric *)v287 metrics];
-  [v238 setObject:v237 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_1_routineEvent_0_proactiveEvent_1_Bucketed"];
+  metrics110 = [(MOMetric *)selfCopy metrics];
+  [metrics110 setObject:v237 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_1_routineEvent_0_proactiveEvent_1_Bucketed"];
 
-  v239 = [(MOMetric *)v287 metrics];
-  v240 = [v239 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_1_routineEvent_1_proactiveEvent_0"];
+  metrics111 = [(MOMetric *)selfCopy metrics];
+  v240 = [metrics111 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_1_routineEvent_1_proactiveEvent_0"];
   v241 = [MOMetric binForNumber:v240 bins:v286];
-  v242 = [(MOMetric *)v287 metrics];
-  [v242 setObject:v241 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_1_routineEvent_1_proactiveEvent_0_Bucketed"];
+  metrics112 = [(MOMetric *)selfCopy metrics];
+  [metrics112 setObject:v241 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_1_routineEvent_1_proactiveEvent_0_Bucketed"];
 
-  v243 = [(MOMetric *)v287 metrics];
-  v244 = [v243 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_1_routineEvent_1_proactiveEvent_1"];
+  metrics113 = [(MOMetric *)selfCopy metrics];
+  v244 = [metrics113 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_1_routineEvent_1_proactiveEvent_1"];
   v245 = [MOMetric binForNumber:v244 bins:v286];
-  v246 = [(MOMetric *)v287 metrics];
-  [v246 setObject:v245 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_1_routineEvent_1_proactiveEvent_1_Bucketed"];
+  metrics114 = [(MOMetric *)selfCopy metrics];
+  [metrics114 setObject:v245 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_1_routineEvent_1_proactiveEvent_1_Bucketed"];
 
-  v247 = [(MOMetric *)v287 metrics];
-  v248 = [v247 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_0_routineEvent_0_proactiveEvent_0"];
+  metrics115 = [(MOMetric *)selfCopy metrics];
+  v248 = [metrics115 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_0_routineEvent_0_proactiveEvent_0"];
   v249 = [MOMetric binForNumber:v248 bins:v286];
-  v250 = [(MOMetric *)v287 metrics];
-  [v250 setObject:v249 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_0_routineEvent_0_proactiveEvent_0_Bucketed"];
+  metrics116 = [(MOMetric *)selfCopy metrics];
+  [metrics116 setObject:v249 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_0_routineEvent_0_proactiveEvent_0_Bucketed"];
 
-  v251 = [(MOMetric *)v287 metrics];
-  v252 = [v251 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_0_routineEvent_0_proactiveEvent_1"];
+  metrics117 = [(MOMetric *)selfCopy metrics];
+  v252 = [metrics117 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_0_routineEvent_0_proactiveEvent_1"];
   v253 = [MOMetric binForNumber:v252 bins:v286];
-  v254 = [(MOMetric *)v287 metrics];
-  [v254 setObject:v253 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_0_routineEvent_0_proactiveEvent_1_Bucketed"];
+  metrics118 = [(MOMetric *)selfCopy metrics];
+  [metrics118 setObject:v253 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_0_routineEvent_0_proactiveEvent_1_Bucketed"];
 
-  v255 = [(MOMetric *)v287 metrics];
-  v256 = [v255 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_0_routineEvent_1_proactiveEvent_0"];
+  metrics119 = [(MOMetric *)selfCopy metrics];
+  v256 = [metrics119 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_0_routineEvent_1_proactiveEvent_0"];
   v257 = [MOMetric binForNumber:v256 bins:v286];
-  v258 = [(MOMetric *)v287 metrics];
-  [v258 setObject:v257 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_0_routineEvent_1_proactiveEvent_0_Bucketed"];
+  metrics120 = [(MOMetric *)selfCopy metrics];
+  [metrics120 setObject:v257 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_0_routineEvent_1_proactiveEvent_0_Bucketed"];
 
-  v259 = [(MOMetric *)v287 metrics];
-  v260 = [v259 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_0_routineEvent_1_proactiveEvent_1"];
+  metrics121 = [(MOMetric *)selfCopy metrics];
+  v260 = [metrics121 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_0_routineEvent_1_proactiveEvent_1"];
   v261 = [MOMetric binForNumber:v260 bins:v286];
-  v262 = [(MOMetric *)v287 metrics];
-  [v262 setObject:v261 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_0_routineEvent_1_proactiveEvent_1_Bucketed"];
+  metrics122 = [(MOMetric *)selfCopy metrics];
+  [metrics122 setObject:v261 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_0_routineEvent_1_proactiveEvent_1_Bucketed"];
 
-  v263 = [(MOMetric *)v287 metrics];
-  v264 = [v263 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_1_routineEvent_0_proactiveEvent_0"];
+  metrics123 = [(MOMetric *)selfCopy metrics];
+  v264 = [metrics123 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_1_routineEvent_0_proactiveEvent_0"];
   v265 = [MOMetric binForNumber:v264 bins:v286];
-  v266 = [(MOMetric *)v287 metrics];
-  [v266 setObject:v265 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_1_routineEvent_0_proactiveEvent_0_Bucketed"];
+  metrics124 = [(MOMetric *)selfCopy metrics];
+  [metrics124 setObject:v265 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_1_routineEvent_0_proactiveEvent_0_Bucketed"];
 
-  v267 = [(MOMetric *)v287 metrics];
-  v268 = [v267 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_1_routineEvent_0_proactiveEvent_1"];
+  metrics125 = [(MOMetric *)selfCopy metrics];
+  v268 = [metrics125 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_1_routineEvent_0_proactiveEvent_1"];
   v269 = [MOMetric binForNumber:v268 bins:v286];
-  v270 = [(MOMetric *)v287 metrics];
-  [v270 setObject:v269 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_1_routineEvent_0_proactiveEvent_1_Bucketed"];
+  metrics126 = [(MOMetric *)selfCopy metrics];
+  [metrics126 setObject:v269 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_1_routineEvent_0_proactiveEvent_1_Bucketed"];
 
-  v271 = [(MOMetric *)v287 metrics];
-  v272 = [v271 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_1_routineEvent_1_proactiveEvent_0"];
+  metrics127 = [(MOMetric *)selfCopy metrics];
+  v272 = [metrics127 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_1_routineEvent_1_proactiveEvent_0"];
   v273 = [MOMetric binForNumber:v272 bins:v286];
-  v274 = [(MOMetric *)v287 metrics];
-  [v274 setObject:v273 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_1_routineEvent_1_proactiveEvent_0_Bucketed"];
+  metrics128 = [(MOMetric *)selfCopy metrics];
+  [metrics128 setObject:v273 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_1_routineEvent_1_proactiveEvent_0_Bucketed"];
 
-  v275 = [(MOMetric *)v287 metrics];
-  v276 = [v275 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_1_routineEvent_1_proactiveEvent_1"];
+  metrics129 = [(MOMetric *)selfCopy metrics];
+  v276 = [metrics129 objectForKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_1_routineEvent_1_proactiveEvent_1"];
   v277 = [MOMetric binForNumber:v276 bins:v286];
-  v278 = [(MOMetric *)v287 metrics];
-  [v278 setObject:v277 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_1_routineEvent_1_proactiveEvent_1_Bucketed"];
+  metrics130 = [(MOMetric *)selfCopy metrics];
+  [metrics130 setObject:v277 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_1_routineEvent_1_proactiveEvent_1_Bucketed"];
 
-  v279 = [(MOMetric *)v287 metrics];
-  v280 = [v279 objectForKeyedSubscript:@"numBundles"];
+  metrics131 = [(MOMetric *)selfCopy metrics];
+  v280 = [metrics131 objectForKeyedSubscript:@"numBundles"];
   v281 = [MOMetric binForNumber:v280 bins:v286];
-  v282 = [(MOMetric *)v287 metrics];
-  [v282 setObject:v281 forKeyedSubscript:@"numBundles_Bucketed"];
+  metrics132 = [(MOMetric *)selfCopy metrics];
+  [metrics132 setObject:v281 forKeyedSubscript:@"numBundles_Bucketed"];
 }
 
-- (id)calculateZeroCountsForEvents:(id)a3 withCalendar:(id)a4
+- (id)calculateZeroCountsForEvents:(id)events withCalendar:(id)calendar
 {
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  calendarCopy = calendar;
   v8 = objc_alloc_init(NSDateComponents);
   [v8 setDay:0];
-  v9 = [v7 startOfDayForDate:self->_startDate];
+  v9 = [calendarCopy startOfDayForDate:self->_startDate];
   v34 = objc_opt_new();
   v10 = 32;
   v11 = [v9 earlierDate:self->_endDate];
@@ -991,17 +991,17 @@ LABEL_13:
     v35 = 0;
     v14 = v9;
     v32 = v8;
-    v33 = v7;
-    v30 = self;
+    v33 = calendarCopy;
+    selfCopy = self;
     v31 = v9;
     v29 = 32;
     do
     {
       v36 = [v8 day] / 7 + 1;
       [v8 setDay:{objc_msgSend(v8, "day") + 1}];
-      v12 = [v7 dateByAddingComponents:v8 toDate:v9 options:0];
+      v12 = [calendarCopy dateByAddingComponents:v8 toDate:v9 options:0];
       v37 = v13;
-      if ([v6 count] <= v13)
+      if ([eventsCopy count] <= v13)
       {
 LABEL_11:
         ++v35;
@@ -1013,25 +1013,25 @@ LABEL_11:
         v16 = v13;
         while (1)
         {
-          v17 = [v6 objectAtIndexedSubscript:v16];
-          v18 = [v17 endDate];
-          v19 = [v18 earlierDate:v12];
-          v20 = [v6 objectAtIndexedSubscript:v16];
-          v21 = [v20 endDate];
+          v17 = [eventsCopy objectAtIndexedSubscript:v16];
+          endDate = [v17 endDate];
+          v19 = [endDate earlierDate:v12];
+          v20 = [eventsCopy objectAtIndexedSubscript:v16];
+          endDate2 = [v20 endDate];
 
-          if (v19 != v21)
+          if (v19 != endDate2)
           {
             break;
           }
 
           ++v16;
           --v15;
-          if ([v6 count] <= v16)
+          if ([eventsCopy count] <= v16)
           {
             v37 = (v37 - v15);
             v8 = v32;
-            v7 = v33;
-            self = v30;
+            calendarCopy = v33;
+            self = selfCopy;
             v9 = v31;
             v10 = v29;
             goto LABEL_10;
@@ -1040,8 +1040,8 @@ LABEL_11:
 
         v37 = (v37 - v15);
         v8 = v32;
-        v7 = v33;
-        self = v30;
+        calendarCopy = v33;
+        self = selfCopy;
         v9 = v31;
         v10 = v29;
         if (!v15)
@@ -1082,15 +1082,15 @@ LABEL_10:
   return v27;
 }
 
-- (BOOL)doesInterval:(id)a3 overlapWithAnyIntervalFromArray:(id)a4
+- (BOOL)doesInterval:(id)interval overlapWithAnyIntervalFromArray:(id)array
 {
-  v5 = a3;
+  intervalCopy = interval;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  arrayCopy = array;
+  v7 = [arrayCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = *v17;
@@ -1100,13 +1100,13 @@ LABEL_10:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrayCopy);
         }
 
-        v10 = [v5 intersectionWithDateInterval:{*(*(&v16 + 1) + 8 * i), v16}];
-        v11 = [v10 endDate];
-        v12 = [v10 startDate];
-        [v11 timeIntervalSinceDate:v12];
+        v10 = [intervalCopy intersectionWithDateInterval:{*(*(&v16 + 1) + 8 * i), v16}];
+        endDate = [v10 endDate];
+        startDate = [v10 startDate];
+        [endDate timeIntervalSinceDate:startDate];
         v14 = v13;
 
         if (v14 > 0.0)
@@ -1116,7 +1116,7 @@ LABEL_10:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [arrayCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -1131,28 +1131,28 @@ LABEL_11:
   return v7;
 }
 
-- (void)calculateAndSetMetricsForRawEvents:(id)a3
+- (void)calculateAndSetMetricsForRawEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v5 = self->_endDate;
   v1128 = +[NSCalendar currentCalendar];
   v1146 = v5;
   v6 = [v1128 components:736 fromDate:v5];
-  v7 = [v6 weekday];
-  v8 = [v6 hour];
-  v9 = [v6 minute];
+  weekday = [v6 weekday];
+  hour = [v6 hour];
+  minute = [v6 minute];
   v1126 = v6;
-  v10 = (v9 * 60.0 + v8 * 3600.0 + [v6 second]);
-  v11 = [NSNumber numberWithInteger:v7];
-  v12 = [(MOMetric *)self metrics];
-  [v12 setObject:v11 forKeyedSubscript:@"DayIDSubmission"];
+  v10 = (minute * 60.0 + hour * 3600.0 + [v6 second]);
+  v11 = [NSNumber numberWithInteger:weekday];
+  metrics = [(MOMetric *)self metrics];
+  [metrics setObject:v11 forKeyedSubscript:@"DayIDSubmission"];
 
   v13 = [MOMetric binsFromStart:&off_10036C1D8 toEnd:&off_10036E820 gap:&off_10036E830];
   v14 = [NSNumber numberWithLong:v10];
   v1125 = v13;
   v15 = [MOMetric binForNumber:v14 bins:v13];
-  v16 = [(MOMetric *)self metrics];
-  [v16 setObject:v15 forKeyedSubscript:@"HourIDSubmission"];
+  metrics2 = [(MOMetric *)self metrics];
+  [metrics2 setObject:v15 forKeyedSubscript:@"HourIDSubmission"];
 
   [(NSDate *)self->_endDate timeIntervalSinceDate:self->_startDate];
   v17 = [NSNumber numberWithDouble:?];
@@ -1161,8 +1161,8 @@ LABEL_11:
   v18 = +[MOEventBundler propertyNameDictionary];
   startDate = self->_startDate;
   v20 = [NSPredicate predicateWithFormat:@"endDate >= %@ && endDate <= %@", startDate, self->_endDate];
-  v1127 = v4;
-  v21 = [v4 filteredArrayUsingPredicate:v20];
+  v1127 = eventsCopy;
+  v21 = [eventsCopy filteredArrayUsingPredicate:v20];
   v1143 = [v21 mutableCopy];
 
   v22 = [NSSortDescriptor sortDescriptorWithKey:@"endDate" ascending:1];
@@ -1172,12 +1172,12 @@ LABEL_11:
 
   v24 = [(MOPromptMetrics *)self calculateZeroCountsForEvents:v1143 withCalendar:v1128];
   v25 = [v24 objectForKey:@"CountOfZeroEventDays"];
-  v26 = [(MOMetric *)self metrics];
-  [v26 setObject:v25 forKeyedSubscript:@"ZeroEventDayCountAcrossAllEvents"];
+  metrics3 = [(MOMetric *)self metrics];
+  [metrics3 setObject:v25 forKeyedSubscript:@"ZeroEventDayCountAcrossAllEvents"];
 
   v27 = [v24 objectForKey:@"CountOfZeroEventWeeks"];
-  v28 = [(MOMetric *)self metrics];
-  [v28 setObject:v27 forKeyedSubscript:@"ZeroEventWeekCountAcrossAllEvents"];
+  metrics4 = [(MOMetric *)self metrics];
+  [metrics4 setObject:v27 forKeyedSubscript:@"ZeroEventWeekCountAcrossAllEvents"];
 
   v1144 = v18;
   v29 = [v18 objectForKeyedSubscript:@"strProvider"];
@@ -1194,13 +1194,13 @@ LABEL_11:
   v35 = [MOPromptMetrics calculateZeroCountsForEvents:"calculateZeroCountsForEvents:withCalendar:" withCalendar:?];
 
   v36 = [v35 objectForKey:@"CountOfZeroEventDays"];
-  v37 = [(MOMetric *)self metrics];
-  [v37 setObject:v36 forKeyedSubscript:@"ZeroEventDayCount"];
+  metrics5 = [(MOMetric *)self metrics];
+  [metrics5 setObject:v36 forKeyedSubscript:@"ZeroEventDayCount"];
 
   v1123 = v35;
   v38 = [v35 objectForKey:@"CountOfZeroEventWeeks"];
-  v39 = [(MOMetric *)self metrics];
-  [v39 setObject:v38 forKeyedSubscript:@"ZeroEventWeekCount"];
+  metrics6 = [(MOMetric *)self metrics];
+  [metrics6 setObject:v38 forKeyedSubscript:@"ZeroEventWeekCount"];
 
   v1148 = objc_opt_new();
   v40 = [v1144 objectForKeyedSubscript:@"strProvider"];
@@ -1215,9 +1215,9 @@ LABEL_11:
   v1121 = v45;
   v46 = [v1143 filteredArrayUsingPredicate:v45];
   v47 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v46 count]);
-  v1205 = self;
-  v48 = [(MOMetric *)self metrics];
-  [v48 setObject:v47 forKeyedSubscript:@"Routine_nVisits"];
+  selfCopy = self;
+  metrics7 = [(MOMetric *)self metrics];
+  [metrics7 setObject:v47 forKeyedSubscript:@"Routine_nVisits"];
 
   v1158 = objc_opt_new();
   v49 = objc_opt_new();
@@ -1235,11 +1235,11 @@ LABEL_11:
     while (1)
     {
       v52 = [v46 objectAtIndexedSubscript:v50];
-      v53 = [v52 placeName];
-      v54 = [v53 lowercaseString];
+      placeName = [v52 placeName];
+      lowercaseString = [placeName lowercaseString];
 
-      v1199 = v54;
-      if ([v54 containsString:@"home"])
+      v1199 = lowercaseString;
+      if ([lowercaseString containsString:@"home"])
       {
         v51 = (v51 + 1);
         v55 = v1148;
@@ -1248,17 +1248,17 @@ LABEL_11:
       else
       {
         v55 = v1148;
-        if ([v54 containsString:@"work"])
+        if ([lowercaseString containsString:@"work"])
         {
           ++v1195;
         }
 
-        else if ([v54 containsString:@"gym"])
+        else if ([lowercaseString containsString:@"gym"])
         {
           ++v1172;
         }
 
-        else if ([v54 containsString:@"school"])
+        else if ([lowercaseString containsString:@"school"])
         {
           ++v1159;
         }
@@ -1269,40 +1269,40 @@ LABEL_11:
         }
       }
 
-      v56 = [v52 startDate];
-      if (v56)
+      startDate = [v52 startDate];
+      if (startDate)
       {
-        v57 = v56;
-        v58 = [v52 endDate];
+        v57 = startDate;
+        endDate = [v52 endDate];
 
-        if (v58)
+        if (endDate)
         {
           v59 = [NSDateInterval alloc];
-          v60 = [v52 startDate];
-          v61 = [v52 endDate];
-          v62 = [v59 initWithStartDate:v60 endDate:v61];
+          startDate2 = [v52 startDate];
+          endDate2 = [v52 endDate];
+          v62 = [v59 initWithStartDate:startDate2 endDate:endDate2];
 
           [v1158 addObject:v62];
         }
       }
 
 LABEL_15:
-      v63 = [v52 endDate];
+      endDate3 = [v52 endDate];
 
-      if (v63)
+      if (endDate3)
       {
         if (v50)
         {
           v64 = [v46 objectAtIndexedSubscript:v50 - 1];
-          v65 = [v64 endDate];
+          endDate4 = [v64 endDate];
 
-          if (v65)
+          if (endDate4)
           {
-            v66 = [v52 endDate];
+            endDate5 = [v52 endDate];
             v67 = [v46 objectAtIndexedSubscript:v50 - 1];
             [v67 endDate];
             v69 = v68 = v51;
-            [v66 timeIntervalSinceDate:v69];
+            [endDate5 timeIntervalSinceDate:v69];
             v70 = [NSNumber numberWithDouble:?];
             [v55 addObject:v70];
 
@@ -1310,26 +1310,26 @@ LABEL_15:
           }
         }
 
-        v71 = [v52 creationDate];
+        creationDate = [v52 creationDate];
 
-        if (v71)
+        if (creationDate)
         {
-          v72 = [v52 creationDate];
-          v73 = [v52 endDate];
-          [v72 timeIntervalSinceDate:v73];
+          creationDate2 = [v52 creationDate];
+          endDate6 = [v52 endDate];
+          [creationDate2 timeIntervalSinceDate:endDate6];
           v75 = v74;
 
           v76 = [NSNumber numberWithDouble:v75];
           [v49 addObject:v76];
         }
 
-        v77 = [v52 sourceCreationDate];
+        sourceCreationDate = [v52 sourceCreationDate];
 
-        if (v77)
+        if (sourceCreationDate)
         {
-          v78 = [v52 sourceCreationDate];
-          v79 = [v52 endDate];
-          [v78 timeIntervalSinceDate:v79];
+          sourceCreationDate2 = [v52 sourceCreationDate];
+          endDate7 = [v52 endDate];
+          [sourceCreationDate2 timeIntervalSinceDate:endDate7];
           v81 = v80;
 
           v82 = [NSNumber numberWithDouble:v81];
@@ -1337,27 +1337,27 @@ LABEL_15:
         }
       }
 
-      v83 = [v52 creationDate];
-      if (!v83)
+      creationDate3 = [v52 creationDate];
+      if (!creationDate3)
       {
         goto LABEL_32;
       }
 
-      v84 = v83;
-      v85 = [v52 endDate];
-      if (!v85)
+      endDate11 = creationDate3;
+      endDate8 = [v52 endDate];
+      if (!endDate8)
       {
         goto LABEL_31;
       }
 
-      v86 = v85;
-      v87 = [v52 endDate];
+      v86 = endDate8;
+      endDate9 = [v52 endDate];
 
-      if (v87)
+      if (endDate9)
       {
-        v88 = [v52 creationDate];
-        v89 = [v52 endDate];
-        [v88 timeIntervalSinceDate:v89];
+        creationDate4 = [v52 creationDate];
+        endDate10 = [v52 endDate];
+        [creationDate4 timeIntervalSinceDate:endDate10];
         v91 = v90;
 
         v92 = [NSNumber numberWithDouble:v91];
@@ -1386,19 +1386,19 @@ LABEL_15:
           v1162 = @"Routine_HourIDVisit_End_1";
         }
 
-        v95 = [v52 startDate];
-        [(NSDate *)v1146 timeIntervalSinceDate:v95];
+        startDate3 = [v52 startDate];
+        [(NSDate *)v1146 timeIntervalSinceDate:startDate3];
         v96 = [NSNumber numberWithDouble:?];
         v97 = [MOMetric binForNumber:v96 bins:v1147];
-        v98 = [(MOMetric *)v1205 metrics];
-        [v98 setObject:v97 forKeyedSubscript:v94];
+        metrics8 = [(MOMetric *)selfCopy metrics];
+        [metrics8 setObject:v97 forKeyedSubscript:v94];
 
-        v84 = [v52 endDate];
-        [(NSDate *)v1146 timeIntervalSinceDate:v84];
+        endDate11 = [v52 endDate];
+        [(NSDate *)v1146 timeIntervalSinceDate:endDate11];
         v99 = [NSNumber numberWithDouble:?];
         v100 = [MOMetric binForNumber:v99 bins:v1147];
-        v101 = [(MOMetric *)v1205 metrics];
-        [v101 setObject:v100 forKeyedSubscript:v1162];
+        metrics9 = [(MOMetric *)selfCopy metrics];
+        [metrics9 setObject:v100 forKeyedSubscript:v1162];
 
         v49 = v1129;
         v46 = v1130;
@@ -1421,103 +1421,103 @@ LABEL_32:
   v51 = 0;
 LABEL_36:
   v102 = [NSNumber numberWithInt:v51];
-  v103 = [(MOMetric *)v1205 metrics];
-  [v103 setObject:v102 forKeyedSubscript:@"Routine_nHomeVisits"];
+  metrics10 = [(MOMetric *)selfCopy metrics];
+  [metrics10 setObject:v102 forKeyedSubscript:@"Routine_nHomeVisits"];
 
   v104 = [NSNumber numberWithInt:v1195];
-  v105 = [(MOMetric *)v1205 metrics];
-  [v105 setObject:v104 forKeyedSubscript:@"Routine_nWorkVisits"];
+  metrics11 = [(MOMetric *)selfCopy metrics];
+  [metrics11 setObject:v104 forKeyedSubscript:@"Routine_nWorkVisits"];
 
   v106 = [NSNumber numberWithInt:v1172];
-  v107 = [(MOMetric *)v1205 metrics];
-  [v107 setObject:v106 forKeyedSubscript:@"Routine_nGymVisits"];
+  metrics12 = [(MOMetric *)selfCopy metrics];
+  [metrics12 setObject:v106 forKeyedSubscript:@"Routine_nGymVisits"];
 
   v108 = [NSNumber numberWithInt:v1159];
-  v109 = [(MOMetric *)v1205 metrics];
-  [v109 setObject:v108 forKeyedSubscript:@"Routine_nSchoolVisits"];
+  metrics13 = [(MOMetric *)selfCopy metrics];
+  [metrics13 setObject:v108 forKeyedSubscript:@"Routine_nSchoolVisits"];
 
   v110 = [MOPromptMetrics meanOf:v49];
-  v111 = [(MOMetric *)v1205 metrics];
-  [v111 setObject:v110 forKeyedSubscript:@"Routine_AverageVisitsLatency"];
+  metrics14 = [(MOMetric *)selfCopy metrics];
+  [metrics14 setObject:v110 forKeyedSubscript:@"Routine_AverageVisitsLatency"];
 
   v112 = [MOPromptMetrics meanOf:v1140];
-  v113 = [(MOMetric *)v1205 metrics];
-  [v113 setObject:v112 forKeyedSubscript:@"Routine_AverageVisitsRealLatency"];
+  metrics15 = [(MOMetric *)selfCopy metrics];
+  [metrics15 setObject:v112 forKeyedSubscript:@"Routine_AverageVisitsRealLatency"];
 
   if ([v1148 count])
   {
     v114 = [MOPromptMetrics meanOf:v1148];
-    v115 = [(MOMetric *)v1205 metrics];
-    [v115 setObject:v114 forKeyedSubscript:@"Routine_MeanDeltaBetweenVisits"];
+    metrics16 = [(MOMetric *)selfCopy metrics];
+    [metrics16 setObject:v114 forKeyedSubscript:@"Routine_MeanDeltaBetweenVisits"];
 
     v116 = [v1148 valueForKeyPath:@"@min.doubleValue"];
-    v117 = [(MOMetric *)v1205 metrics];
-    [v117 setObject:v116 forKeyedSubscript:@"Routine_MinDeltaBetweenVisits"];
+    metrics17 = [(MOMetric *)selfCopy metrics];
+    [metrics17 setObject:v116 forKeyedSubscript:@"Routine_MinDeltaBetweenVisits"];
 
     v118 = [v1148 valueForKeyPath:@"@max.doubleValue"];
-    v119 = [(MOMetric *)v1205 metrics];
-    [v119 setObject:v118 forKeyedSubscript:@"Routine_MaxDeltaBetweenVisits"];
+    metrics18 = [(MOMetric *)selfCopy metrics];
+    [metrics18 setObject:v118 forKeyedSubscript:@"Routine_MaxDeltaBetweenVisits"];
 
     v120 = [MOPromptMetrics standardDeviationOf:v1148];
-    v121 = [(MOMetric *)v1205 metrics];
-    [v121 setObject:v120 forKeyedSubscript:@"Routine_SDDeltaBetweenVisits"];
+    metrics19 = [(MOMetric *)selfCopy metrics];
+    [metrics19 setObject:v120 forKeyedSubscript:@"Routine_SDDeltaBetweenVisits"];
   }
 
   if ([v46 count])
   {
-    v122 = [v46 firstObject];
-    v123 = [v122 endDate];
-    [v123 timeIntervalSinceDate:v1205->_startDate];
+    firstObject = [v46 firstObject];
+    endDate12 = [firstObject endDate];
+    [endDate12 timeIntervalSinceDate:selfCopy->_startDate];
     v124 = [NSNumber numberWithDouble:?];
     v125 = v1148;
     [v1148 addObject:v124];
 
-    endDate = v1205->_endDate;
-    v127 = [v46 lastObject];
-    v128 = [v127 endDate];
-    [(NSDate *)endDate timeIntervalSinceDate:v128];
+    endDate = selfCopy->_endDate;
+    lastObject = [v46 lastObject];
+    endDate13 = [lastObject endDate];
+    [(NSDate *)endDate timeIntervalSinceDate:endDate13];
     v129 = [NSNumber numberWithDouble:?];
     [v1148 addObject:v129];
 
     v130 = [MOPromptMetrics meanOf:v1148];
-    v131 = [(MOMetric *)v1205 metrics];
-    [v131 setObject:v130 forKeyedSubscript:@"Routine_MeanDeltaBetweenVisitsBoundariesIncluded"];
+    metrics20 = [(MOMetric *)selfCopy metrics];
+    [metrics20 setObject:v130 forKeyedSubscript:@"Routine_MeanDeltaBetweenVisitsBoundariesIncluded"];
 
     v132 = [v1148 valueForKeyPath:@"@min.doubleValue"];
-    v133 = [(MOMetric *)v1205 metrics];
-    [v133 setObject:v132 forKeyedSubscript:@"Routine_MinDeltaBetweenVisitsBoundariesIncluded"];
+    metrics21 = [(MOMetric *)selfCopy metrics];
+    [metrics21 setObject:v132 forKeyedSubscript:@"Routine_MinDeltaBetweenVisitsBoundariesIncluded"];
 
     v134 = [v1148 valueForKeyPath:@"@max.doubleValue"];
-    v135 = [(MOMetric *)v1205 metrics];
-    [v135 setObject:v134 forKeyedSubscript:@"Routine_MaxDeltaBetweenVisitsBoundariesIncluded"];
+    metrics22 = [(MOMetric *)selfCopy metrics];
+    [metrics22 setObject:v134 forKeyedSubscript:@"Routine_MaxDeltaBetweenVisitsBoundariesIncluded"];
 
-    v136 = [MOPromptMetrics standardDeviationOf:v1148];
-    v137 = [(MOMetric *)v1205 metrics];
-    [v137 setObject:v136 forKeyedSubscript:@"Routine_SDDeltaBetweenVisitsBoundariesIncluded"];
+    metrics27 = [MOPromptMetrics standardDeviationOf:v1148];
+    metrics23 = [(MOMetric *)selfCopy metrics];
+    [metrics23 setObject:metrics27 forKeyedSubscript:@"Routine_SDDeltaBetweenVisitsBoundariesIncluded"];
 
-    v138 = v1205;
+    v138 = selfCopy;
   }
 
   else
   {
-    [(NSDate *)v1205->_endDate timeIntervalSinceDate:v1205->_startDate];
+    [(NSDate *)selfCopy->_endDate timeIntervalSinceDate:selfCopy->_startDate];
     v139 = [NSNumber numberWithDouble:?];
-    v140 = [(MOMetric *)v1205 metrics];
-    [v140 setObject:v139 forKeyedSubscript:@"Routine_MeanDeltaBetweenVisitsBoundariesIncluded"];
+    metrics24 = [(MOMetric *)selfCopy metrics];
+    [metrics24 setObject:v139 forKeyedSubscript:@"Routine_MeanDeltaBetweenVisitsBoundariesIncluded"];
 
-    [(NSDate *)v1205->_endDate timeIntervalSinceDate:v1205->_startDate];
+    [(NSDate *)selfCopy->_endDate timeIntervalSinceDate:selfCopy->_startDate];
     v141 = [NSNumber numberWithDouble:?];
-    v142 = [(MOMetric *)v1205 metrics];
-    [v142 setObject:v141 forKeyedSubscript:@"Routine_MinDeltaBetweenVisitsBoundariesIncluded"];
+    metrics25 = [(MOMetric *)selfCopy metrics];
+    [metrics25 setObject:v141 forKeyedSubscript:@"Routine_MinDeltaBetweenVisitsBoundariesIncluded"];
 
-    [(NSDate *)v1205->_endDate timeIntervalSinceDate:v1205->_startDate];
+    [(NSDate *)selfCopy->_endDate timeIntervalSinceDate:selfCopy->_startDate];
     v143 = [NSNumber numberWithDouble:?];
-    v144 = [(MOMetric *)v1205 metrics];
-    [v144 setObject:v143 forKeyedSubscript:@"Routine_MaxDeltaBetweenVisitsBoundariesIncluded"];
+    metrics26 = [(MOMetric *)selfCopy metrics];
+    [metrics26 setObject:v143 forKeyedSubscript:@"Routine_MaxDeltaBetweenVisitsBoundariesIncluded"];
 
-    v136 = [(MOMetric *)v1205 metrics];
-    [v136 setObject:&off_10036E7B0 forKeyedSubscript:@"Routine_SDDeltaBetweenVisitsBoundariesIncluded"];
-    v138 = v1205;
+    metrics27 = [(MOMetric *)selfCopy metrics];
+    [metrics27 setObject:&off_10036E7B0 forKeyedSubscript:@"Routine_SDDeltaBetweenVisitsBoundariesIncluded"];
+    v138 = selfCopy;
     v125 = v1148;
   }
 
@@ -1534,8 +1534,8 @@ LABEL_36:
   v1120 = v150;
   v151 = [v1143 filteredArrayUsingPredicate:v150];
   v152 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v151 count]);
-  v153 = [(MOMetric *)v138 metrics];
-  [v153 setObject:v152 forKeyedSubscript:@"Storytelling_NumMoments"];
+  metrics28 = [(MOMetric *)v138 metrics];
+  [metrics28 setObject:v152 forKeyedSubscript:@"Storytelling_NumMoments"];
 
   v1228 = 0u;
   v1229 = 0u;
@@ -1566,20 +1566,20 @@ LABEL_36:
         v1173 = v157;
         v159 = *(*(&v1226 + 1) + 8 * i);
         v160 = [NSDateInterval alloc];
-        v161 = [v159 startDate];
-        v162 = [v159 endDate];
-        v163 = [v160 initWithStartDate:v161 endDate:v162];
+        startDate4 = [v159 startDate];
+        endDate14 = [v159 endDate];
+        v163 = [v160 initWithStartDate:startDate4 endDate:endDate14];
 
         v1163 = v163;
-        v1160 = [(MOPromptMetrics *)v1205 doesInterval:v163 overlapWithAnyIntervalFromArray:v1158];
-        v164 = [v159 extendedAttributes];
-        v165 = [v164 photoMomentPersons];
+        v1160 = [(MOPromptMetrics *)selfCopy doesInterval:v163 overlapWithAnyIntervalFromArray:v1158];
+        extendedAttributes = [v159 extendedAttributes];
+        photoMomentPersons = [extendedAttributes photoMomentPersons];
 
         v1224 = 0u;
         v1225 = 0u;
         v1222 = 0u;
         v1223 = 0u;
-        v166 = v165;
+        v166 = photoMomentPersons;
         v167 = [v166 countByEnumeratingWithState:&v1222 objects:v1244 count:16];
         if (!v167)
         {
@@ -1603,10 +1603,10 @@ LABEL_36:
             }
 
             v173 = *(*(&v1222 + 1) + 8 * j);
-            v174 = [v173 name];
-            v170 |= [v174 length] != 0;
-            v175 = [v173 family];
-            v169 |= [v175 length] != 0;
+            name = [v173 name];
+            v170 |= [name length] != 0;
+            family = [v173 family];
+            v169 |= [family length] != 0;
           }
 
           v168 = [v166 countByEnumeratingWithState:&v1222 objects:v1244 count:16];
@@ -1638,14 +1638,14 @@ LABEL_58:
 LABEL_59:
         v1196 = v176;
         v1200 = v177;
-        v178 = [v159 extendedAttributes];
-        v179 = [v178 photoMomentPublicEvents];
+        extendedAttributes2 = [v159 extendedAttributes];
+        photoMomentPublicEvents = [extendedAttributes2 photoMomentPublicEvents];
 
         v1220 = 0u;
         v1221 = 0u;
         v1218 = 0u;
         v1219 = 0u;
-        v180 = v179;
+        v180 = photoMomentPublicEvents;
         v181 = [v180 countByEnumeratingWithState:&v1218 objects:v1243 count:16];
         if (v181)
         {
@@ -1663,10 +1663,10 @@ LABEL_59:
               }
 
               v187 = *(*(&v1218 + 1) + 8 * k);
-              v188 = [v187 name];
-              v189 = [v187 performers];
-              v184 |= [v188 length] != 0;
-              v183 |= [v189 count] != 0;
+              name2 = [v187 name];
+              performers = [v187 performers];
+              v184 |= [name2 length] != 0;
+              v183 |= [performers count] != 0;
             }
 
             v182 = [v180 countByEnumeratingWithState:&v1218 objects:v1243 count:16];
@@ -1709,7 +1709,7 @@ LABEL_59:
       if (!obj)
       {
         v191 = v155;
-        v192 = v1205;
+        v192 = selfCopy;
         v193 = v1200;
         v194 = v1196;
         goto LABEL_76;
@@ -1726,27 +1726,27 @@ LABEL_59:
 LABEL_76:
 
   v195 = [NSNumber numberWithInt:v194];
-  v196 = [(MOMetric *)v192 metrics];
-  [v196 setObject:v195 forKeyedSubscript:@"Storytelling_NumMomentsWithPeople"];
+  metrics29 = [(MOMetric *)v192 metrics];
+  [metrics29 setObject:v195 forKeyedSubscript:@"Storytelling_NumMomentsWithPeople"];
 
   v197 = [NSNumber numberWithInt:v193];
-  v198 = [(MOMetric *)v192 metrics];
-  [v198 setObject:v197 forKeyedSubscript:@"Storytelling_NumMomentsWithFamily"];
+  metrics30 = [(MOMetric *)v192 metrics];
+  [metrics30 setObject:v197 forKeyedSubscript:@"Storytelling_NumMomentsWithFamily"];
 
   v199 = [NSNumber numberWithInt:v157];
-  v200 = [(MOMetric *)v192 metrics];
-  [v200 setObject:v199 forKeyedSubscript:@"Storytelling_NumMomentsWithEvent"];
+  metrics31 = [(MOMetric *)v192 metrics];
+  [metrics31 setObject:v199 forKeyedSubscript:@"Storytelling_NumMomentsWithEvent"];
 
   v201 = [NSNumber numberWithInt:v156];
-  v202 = [(MOMetric *)v192 metrics];
-  [v202 setObject:v201 forKeyedSubscript:@"Storytelling_NumMomentsWithEventAndArtist"];
+  metrics32 = [(MOMetric *)v192 metrics];
+  [metrics32 setObject:v201 forKeyedSubscript:@"Storytelling_NumMomentsWithEventAndArtist"];
 
   v203 = v1157;
   if ([v1157 count])
   {
     v204 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", 1.0 - v191 / [v1157 count]);
-    v205 = [(MOMetric *)v192 metrics];
-    [v205 setObject:v204 forKeyedSubscript:@"Storytelling_PercentageOfMomentEventsNoLOI"];
+    metrics33 = [(MOMetric *)v192 metrics];
+    [metrics33 setObject:v204 forKeyedSubscript:@"Storytelling_PercentageOfMomentEventsNoLOI"];
 
     v203 = v1157;
   }
@@ -1762,28 +1762,28 @@ LABEL_76:
     {
       v1197 = v207;
       v208 = [v203 objectAtIndexedSubscript:v207];
-      v209 = [v208 creationDate];
+      creationDate5 = [v208 creationDate];
       v1150 = v208;
-      if (!v209)
+      if (!creationDate5)
       {
         goto LABEL_86;
       }
 
-      v210 = v209;
-      v211 = [v208 startDate];
-      if (!v211)
+      endDate23 = creationDate5;
+      startDate5 = [v208 startDate];
+      if (!startDate5)
       {
         goto LABEL_85;
       }
 
-      v212 = v211;
-      v213 = [v208 endDate];
+      v212 = startDate5;
+      endDate15 = [v208 endDate];
 
-      if (v213)
+      if (endDate15)
       {
-        v214 = [v208 creationDate];
-        v215 = [v208 endDate];
-        [v214 timeIntervalSinceDate:v215];
+        creationDate6 = [v208 creationDate];
+        endDate16 = [v208 endDate];
+        [creationDate6 timeIntervalSinceDate:endDate16];
         v217 = v216;
 
         v218 = [NSNumber numberWithDouble:v217];
@@ -1796,48 +1796,48 @@ LABEL_76:
       }
 
 LABEL_86:
-      v227 = [v208 endDate];
+      endDate17 = [v208 endDate];
 
       v228 = v1197;
-      if (v227)
+      if (endDate17)
       {
         if (v1197)
         {
           v229 = [v1157 objectAtIndexedSubscript:v1197 - 1];
-          v230 = [v229 endDate];
+          endDate18 = [v229 endDate];
 
-          if (v230)
+          if (endDate18)
           {
-            v231 = [v208 endDate];
+            endDate19 = [v208 endDate];
             v232 = [v1157 objectAtIndexedSubscript:v1197 - 1];
-            v233 = [v232 endDate];
-            [v231 timeIntervalSinceDate:v233];
+            endDate20 = [v232 endDate];
+            [endDate19 timeIntervalSinceDate:endDate20];
             v234 = [NSNumber numberWithDouble:?];
             [v206 addObject:v234];
           }
         }
 
-        v235 = [v208 creationDate];
+        creationDate7 = [v208 creationDate];
 
-        if (v235)
+        if (creationDate7)
         {
-          v236 = [v208 creationDate];
-          v237 = [v208 endDate];
-          [v236 timeIntervalSinceDate:v237];
+          creationDate8 = [v208 creationDate];
+          endDate21 = [v208 endDate];
+          [creationDate8 timeIntervalSinceDate:endDate21];
           v239 = v238;
 
           v240 = [NSNumber numberWithDouble:v239];
           [v1145 addObject:v240];
         }
 
-        v241 = [v208 sourceCreationDate];
+        sourceCreationDate3 = [v208 sourceCreationDate];
 
         v228 = v1197;
-        if (v241)
+        if (sourceCreationDate3)
         {
-          v242 = [v208 sourceCreationDate];
-          v243 = [v208 endDate];
-          [v242 timeIntervalSinceDate:v243];
+          sourceCreationDate4 = [v208 sourceCreationDate];
+          endDate22 = [v208 endDate];
+          [sourceCreationDate4 timeIntervalSinceDate:endDate22];
           v245 = v244;
 
           v246 = [NSNumber numberWithDouble:v245];
@@ -1851,11 +1851,11 @@ LABEL_86:
         v1217 = 0u;
         v1214 = 0u;
         v1215 = 0u;
-        v247 = [v208 extendedAttributes];
-        v248 = [v247 photoMomentInferences];
+        extendedAttributes3 = [v208 extendedAttributes];
+        photoMomentInferences = [extendedAttributes3 photoMomentInferences];
 
-        obja = v248;
-        v1169 = [v248 countByEnumeratingWithState:&v1214 objects:v1242 count:16];
+        obja = photoMomentInferences;
+        v1169 = [photoMomentInferences countByEnumeratingWithState:&v1214 objects:v1242 count:16];
         if (!v1169)
         {
           goto LABEL_126;
@@ -1884,7 +1884,7 @@ LABEL_86:
               objc_enumerationMutation(obja);
             }
 
-            v1202 = [*(*(&v1214 + 1) + 8 * v250) lowercaseString];
+            lowercaseString2 = [*(*(&v1214 + 1) + 8 * v250) lowercaseString];
             if (v250 == v1174)
             {
 
@@ -1898,7 +1898,7 @@ LABEL_86:
             v1211 = 0u;
             v252 = v1161;
             v253 = [v252 countByEnumeratingWithState:&v1210 objects:v1241 count:16];
-            v254 = v1202;
+            v254 = lowercaseString2;
             if (!v253)
             {
               goto LABEL_122;
@@ -1918,8 +1918,8 @@ LABEL_86:
 
                 v258 = *(*(&v1210 + 1) + 8 * v257);
                 v259 = [v252 objectForKeyedSubscript:v258];
-                v260 = [v259 lowercaseString];
-                if ([v254 containsString:v260])
+                lowercaseString3 = [v259 lowercaseString];
+                if ([v254 containsString:lowercaseString3])
                 {
                   if (v228 == 2)
                   {
@@ -1951,10 +1951,10 @@ LABEL_86:
                     {
 LABEL_116:
                       v262 = v261[v249];
-                      v263 = [(MOMetric *)v1205 metrics];
+                      metrics34 = [(MOMetric *)selfCopy metrics];
                       v264 = v262;
-                      v254 = v1202;
-                      [v263 setObject:v258 forKeyedSubscript:v264];
+                      v254 = lowercaseString2;
+                      [metrics34 setObject:v258 forKeyedSubscript:v264];
 
                       v228 = v1197;
                     }
@@ -1985,7 +1985,7 @@ LABEL_122:
           {
 LABEL_126:
 
-            v192 = v1205;
+            v192 = selfCopy;
             break;
           }
         }
@@ -2002,22 +2002,22 @@ LABEL_126:
 
     v219 = *(&off_1003402D0 + v1197);
     v1201 = *(&off_1003402E8 + v1197);
-    v220 = [v208 startDate];
-    [(NSDate *)v1146 timeIntervalSinceDate:v220];
+    startDate6 = [v208 startDate];
+    [(NSDate *)v1146 timeIntervalSinceDate:startDate6];
     v221 = [NSNumber numberWithDouble:?];
     v222 = [MOMetric binForNumber:v221 bins:v1147];
-    v223 = [(MOMetric *)v1205 metrics];
-    [v223 setObject:v222 forKeyedSubscript:v219];
+    metrics35 = [(MOMetric *)selfCopy metrics];
+    [metrics35 setObject:v222 forKeyedSubscript:v219];
 
-    v210 = [v208 endDate];
+    endDate23 = [v208 endDate];
     v206 = v1148;
-    [(NSDate *)v1146 timeIntervalSinceDate:v210];
+    [(NSDate *)v1146 timeIntervalSinceDate:endDate23];
     v224 = [NSNumber numberWithDouble:?];
     v225 = [MOMetric binForNumber:v224 bins:v1147];
-    v226 = [(MOMetric *)v1205 metrics];
-    [v226 setObject:v225 forKeyedSubscript:v1201];
+    metrics36 = [(MOMetric *)selfCopy metrics];
+    [metrics36 setObject:v225 forKeyedSubscript:v1201];
 
-    v192 = v1205;
+    v192 = selfCopy;
 LABEL_85:
 
     goto LABEL_86;
@@ -2025,63 +2025,63 @@ LABEL_85:
 
 LABEL_128:
   v266 = [MOPromptMetrics meanOf:v1145];
-  v267 = [(MOMetric *)v192 metrics];
-  [v267 setObject:v266 forKeyedSubscript:@"Storytelling_AverageMomentsLatency"];
+  metrics37 = [(MOMetric *)v192 metrics];
+  [metrics37 setObject:v266 forKeyedSubscript:@"Storytelling_AverageMomentsLatency"];
 
   v268 = [MOPromptMetrics meanOf:v1139];
-  v269 = [(MOMetric *)v192 metrics];
-  [v269 setObject:v268 forKeyedSubscript:@"Storytelling_AverageMomentsRealLatency"];
+  metrics38 = [(MOMetric *)v192 metrics];
+  [metrics38 setObject:v268 forKeyedSubscript:@"Storytelling_AverageMomentsRealLatency"];
 
   if ([v1148 count])
   {
     v270 = [MOPromptMetrics meanOf:v1148];
-    v271 = [(MOMetric *)v192 metrics];
-    [v271 setObject:v270 forKeyedSubscript:@"Storytelling_MeanDeltaBetweenMoments"];
+    metrics39 = [(MOMetric *)v192 metrics];
+    [metrics39 setObject:v270 forKeyedSubscript:@"Storytelling_MeanDeltaBetweenMoments"];
 
     v272 = [v1148 valueForKeyPath:@"@min.doubleValue"];
-    v273 = [(MOMetric *)v192 metrics];
-    [v273 setObject:v272 forKeyedSubscript:@"Storytelling_MinDeltaBetweenMoments"];
+    metrics40 = [(MOMetric *)v192 metrics];
+    [metrics40 setObject:v272 forKeyedSubscript:@"Storytelling_MinDeltaBetweenMoments"];
 
     v274 = [v1148 valueForKeyPath:@"@max.doubleValue"];
-    v275 = [(MOMetric *)v192 metrics];
-    [v275 setObject:v274 forKeyedSubscript:@"Storytelling_MaxDeltaBetweenMoments"];
+    metrics41 = [(MOMetric *)v192 metrics];
+    [metrics41 setObject:v274 forKeyedSubscript:@"Storytelling_MaxDeltaBetweenMoments"];
 
     v276 = [MOPromptMetrics standardDeviationOf:v1148];
-    v277 = [(MOMetric *)v192 metrics];
-    [v277 setObject:v276 forKeyedSubscript:@"Storytelling_SDDeltaBetweenMoments"];
+    metrics42 = [(MOMetric *)v192 metrics];
+    [metrics42 setObject:v276 forKeyedSubscript:@"Storytelling_SDDeltaBetweenMoments"];
   }
 
   if ([v1157 count])
   {
-    v278 = [v1157 firstObject];
-    v279 = [v278 endDate];
-    [v279 timeIntervalSinceDate:v192->_startDate];
+    firstObject2 = [v1157 firstObject];
+    endDate24 = [firstObject2 endDate];
+    [endDate24 timeIntervalSinceDate:v192->_startDate];
     v280 = [NSNumber numberWithDouble:?];
     v281 = v1148;
     [v1148 addObject:v280];
 
     v282 = v192->_endDate;
-    v283 = [v1157 lastObject];
-    v284 = [v283 endDate];
-    [(NSDate *)v282 timeIntervalSinceDate:v284];
+    lastObject2 = [v1157 lastObject];
+    endDate25 = [lastObject2 endDate];
+    [(NSDate *)v282 timeIntervalSinceDate:endDate25];
     v285 = [NSNumber numberWithDouble:?];
     [v1148 addObject:v285];
 
     v286 = [MOPromptMetrics meanOf:v1148];
-    v287 = [(MOMetric *)v192 metrics];
-    [v287 setObject:v286 forKeyedSubscript:@"Storytelling_MeanDeltaBetweenMomentsBoundariesIncluded"];
+    metrics43 = [(MOMetric *)v192 metrics];
+    [metrics43 setObject:v286 forKeyedSubscript:@"Storytelling_MeanDeltaBetweenMomentsBoundariesIncluded"];
 
     v288 = [v1148 valueForKeyPath:@"@min.doubleValue"];
-    v289 = [(MOMetric *)v192 metrics];
-    [v289 setObject:v288 forKeyedSubscript:@"Storytelling_MinDeltaBetweenMomentsBoundariesIncluded"];
+    metrics44 = [(MOMetric *)v192 metrics];
+    [metrics44 setObject:v288 forKeyedSubscript:@"Storytelling_MinDeltaBetweenMomentsBoundariesIncluded"];
 
     v290 = [v1148 valueForKeyPath:@"@max.doubleValue"];
-    v291 = [(MOMetric *)v192 metrics];
-    [v291 setObject:v290 forKeyedSubscript:@"Storytelling_MaxDeltaBetweenMomentsBoundariesIncluded"];
+    metrics45 = [(MOMetric *)v192 metrics];
+    [metrics45 setObject:v290 forKeyedSubscript:@"Storytelling_MaxDeltaBetweenMomentsBoundariesIncluded"];
 
-    v292 = [MOPromptMetrics standardDeviationOf:v1148];
-    v293 = [(MOMetric *)v192 metrics];
-    [v293 setObject:v292 forKeyedSubscript:@"Storytelling_SDDeltaBetweenMomentsBoundariesIncluded"];
+    metrics50 = [MOPromptMetrics standardDeviationOf:v1148];
+    metrics46 = [(MOMetric *)v192 metrics];
+    [metrics46 setObject:metrics50 forKeyedSubscript:@"Storytelling_SDDeltaBetweenMomentsBoundariesIncluded"];
 
     v294 = v192;
   }
@@ -2090,21 +2090,21 @@ LABEL_128:
   {
     [(NSDate *)v192->_endDate timeIntervalSinceDate:v192->_startDate];
     v295 = [NSNumber numberWithDouble:?];
-    v296 = [(MOMetric *)v192 metrics];
-    [v296 setObject:v295 forKeyedSubscript:@"Storytelling_MeanDeltaBetweenMomentsBoundariesIncluded"];
+    metrics47 = [(MOMetric *)v192 metrics];
+    [metrics47 setObject:v295 forKeyedSubscript:@"Storytelling_MeanDeltaBetweenMomentsBoundariesIncluded"];
 
     [(NSDate *)v192->_endDate timeIntervalSinceDate:v192->_startDate];
     v297 = [NSNumber numberWithDouble:?];
-    v298 = [(MOMetric *)v192 metrics];
-    [v298 setObject:v297 forKeyedSubscript:@"Storytelling_MinDeltaBetweenMomentsBoundariesIncluded"];
+    metrics48 = [(MOMetric *)v192 metrics];
+    [metrics48 setObject:v297 forKeyedSubscript:@"Storytelling_MinDeltaBetweenMomentsBoundariesIncluded"];
 
     [(NSDate *)v192->_endDate timeIntervalSinceDate:v192->_startDate];
     v299 = [NSNumber numberWithDouble:?];
-    v300 = [(MOMetric *)v192 metrics];
-    [v300 setObject:v299 forKeyedSubscript:@"Storytelling_MaxDeltaBetweenMomentsBoundariesIncluded"];
+    metrics49 = [(MOMetric *)v192 metrics];
+    [metrics49 setObject:v299 forKeyedSubscript:@"Storytelling_MaxDeltaBetweenMomentsBoundariesIncluded"];
 
-    v292 = [(MOMetric *)v192 metrics];
-    [v292 setObject:&off_10036E7B0 forKeyedSubscript:@"Storytelling_SDDeltaBetweenMomentsBoundariesIncluded"];
+    metrics50 = [(MOMetric *)v192 metrics];
+    [metrics50 setObject:&off_10036E7B0 forKeyedSubscript:@"Storytelling_SDDeltaBetweenMomentsBoundariesIncluded"];
     v294 = v192;
     v281 = v1148;
   }
@@ -2122,8 +2122,8 @@ LABEL_128:
   v1119 = v306;
   v307 = [v1143 filteredArrayUsingPredicate:v306];
   v308 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v307 count]);
-  v309 = [(MOMetric *)v294 metrics];
-  [v309 setObject:v308 forKeyedSubscript:@"Workout_NumWorkouts"];
+  metrics51 = [(MOMetric *)v294 metrics];
+  [metrics51 setObject:v308 forKeyedSubscript:@"Workout_NumWorkouts"];
 
   v1134 = objc_opt_new();
   v1198 = v307;
@@ -2136,29 +2136,29 @@ LABEL_128:
     {
       v313 = [v307 objectAtIndexedSubscript:v310];
       v314 = [NSDateInterval alloc];
-      v315 = [v313 startDate];
-      v316 = [v313 endDate];
-      v317 = [v314 initWithStartDate:v315 endDate:v316];
+      startDate7 = [v313 startDate];
+      endDate26 = [v313 endDate];
+      v317 = [v314 initWithStartDate:startDate7 endDate:endDate26];
 
-      v318 = [(MOPromptMetrics *)v1205 doesInterval:v317 overlapWithAnyIntervalFromArray:v1158];
-      v319 = [v313 creationDate];
-      if (!v319)
+      v318 = [(MOPromptMetrics *)selfCopy doesInterval:v317 overlapWithAnyIntervalFromArray:v1158];
+      creationDate9 = [v313 creationDate];
+      if (!creationDate9)
       {
         break;
       }
 
-      v320 = v319;
-      v321 = [v313 startDate];
-      if (!v321)
+      endDate32 = creationDate9;
+      startDate8 = [v313 startDate];
+      if (!startDate8)
       {
         p_cache = (&OBJC_METACLASS___MOEngagementHistoryManager + 16);
         goto LABEL_147;
       }
 
-      v322 = v321;
-      v323 = [v313 endDate];
+      v322 = startDate8;
+      endDate27 = [v313 endDate];
 
-      if (!v323)
+      if (!endDate27)
       {
         break;
       }
@@ -2166,23 +2166,23 @@ LABEL_128:
       if (v310)
       {
         v324 = [v1198 objectAtIndexedSubscript:v310 - 1];
-        v325 = [v324 endDate];
+        endDate28 = [v324 endDate];
 
-        if (v325)
+        if (endDate28)
         {
-          v326 = [v313 endDate];
+          endDate29 = [v313 endDate];
           v327 = [v1198 objectAtIndexedSubscript:v310 - 1];
-          v328 = [v327 endDate];
-          [v326 timeIntervalSinceDate:v328];
+          endDate30 = [v327 endDate];
+          [endDate29 timeIntervalSinceDate:endDate30];
           v329 = [NSNumber numberWithDouble:?];
           [v1148 addObject:v329];
         }
       }
 
       v330 = (v311 + 1);
-      v331 = [v313 creationDate];
-      v332 = [v313 endDate];
-      [v331 timeIntervalSinceDate:v332];
+      creationDate10 = [v313 creationDate];
+      endDate31 = [v313 endDate];
+      [creationDate10 timeIntervalSinceDate:endDate31];
       v334 = v333;
 
       v335 = [NSNumber numberWithDouble:v334];
@@ -2193,8 +2193,8 @@ LABEL_128:
         goto LABEL_145;
       }
 
-      v336 = [v313 workoutType];
-      v337 = [HKWorkout _workoutActivityTypeFromString:v336];
+      workoutType = [v313 workoutType];
+      v337 = [HKWorkout _workoutActivityTypeFromString:workoutType];
 
       p_cache = (&OBJC_METACLASS___MOEngagementHistoryManager + 16);
       if (v311 <= 9)
@@ -2204,22 +2204,22 @@ LABEL_128:
         v1203 = *(&off_1003403A0 + v311);
         v311 = (v311 + 1);
         v340 = [NSNumber numberWithUnsignedInteger:v337];
-        v341 = [(MOMetric *)v1205 metrics];
-        [v341 setObject:v340 forKeyedSubscript:v339];
+        metrics52 = [(MOMetric *)selfCopy metrics];
+        [metrics52 setObject:v340 forKeyedSubscript:v339];
 
-        v342 = [v313 startDate];
-        [(NSDate *)v1146 timeIntervalSinceDate:v342];
+        startDate9 = [v313 startDate];
+        [(NSDate *)v1146 timeIntervalSinceDate:startDate9];
         v343 = [NSNumber numberWithDouble:?];
         v344 = [MOMetric binForNumber:v343 bins:v1147];
-        v345 = [(MOMetric *)v1205 metrics];
-        [v345 setObject:v344 forKeyedSubscript:v1186];
+        metrics53 = [(MOMetric *)selfCopy metrics];
+        [metrics53 setObject:v344 forKeyedSubscript:v1186];
 
-        v320 = [v313 endDate];
-        [(NSDate *)v1146 timeIntervalSinceDate:v320];
+        endDate32 = [v313 endDate];
+        [(NSDate *)v1146 timeIntervalSinceDate:endDate32];
         v346 = [NSNumber numberWithDouble:?];
         v347 = [MOMetric binForNumber:v346 bins:v1147];
-        v348 = [(MOMetric *)v1205 metrics];
-        [v348 setObject:v347 forKeyedSubscript:v1203];
+        metrics54 = [(MOMetric *)selfCopy metrics];
+        [metrics54 setObject:v347 forKeyedSubscript:v1203];
 
         p_cache = (&OBJC_METACLASS___MOEngagementHistoryManager + 16);
 LABEL_147:
@@ -2236,7 +2236,7 @@ LABEL_148:
       if ([v1198 count] <= v310)
       {
         v349 = v312;
-        v350 = v1205;
+        v350 = selfCopy;
         v351 = &GEOPOICategoryGasStation_ptr;
         goto LABEL_151;
       }
@@ -2256,93 +2256,93 @@ LABEL_151:
   if ([v307 count])
   {
     v352 = [v351[190] numberWithDouble:{1.0 - v349 / objc_msgSend(v307, "count")}];
-    v353 = [(MOMetric *)v350 metrics];
-    [v353 setObject:v352 forKeyedSubscript:@"Workout_PercentageOfWorkoutEventsNoLOI"];
+    metrics55 = [(MOMetric *)v350 metrics];
+    [metrics55 setObject:v352 forKeyedSubscript:@"Workout_PercentageOfWorkoutEventsNoLOI"];
 
     p_cache = &OBJC_METACLASS___MOEngagementHistoryManager.cache;
   }
 
   [p_cache + 363 meanOf:v1134];
   v355 = v354 = p_cache;
-  v356 = [(MOMetric *)v350 metrics];
-  [v356 setObject:v355 forKeyedSubscript:@"Workout_AverageWorkoutLatency"];
+  metrics56 = [(MOMetric *)v350 metrics];
+  [metrics56 setObject:v355 forKeyedSubscript:@"Workout_AverageWorkoutLatency"];
 
   if ([v1148 count])
   {
     v357 = [v354 + 363 meanOf:v1148];
-    v358 = [(MOMetric *)v350 metrics];
-    [v358 setObject:v357 forKeyedSubscript:@"Workout_MeanDeltaBetweenWorkouts"];
+    metrics57 = [(MOMetric *)v350 metrics];
+    [metrics57 setObject:v357 forKeyedSubscript:@"Workout_MeanDeltaBetweenWorkouts"];
 
     v359 = [v1148 valueForKeyPath:@"@min.doubleValue"];
-    v360 = [(MOMetric *)v350 metrics];
-    [v360 setObject:v359 forKeyedSubscript:@"Workout_MinDeltaBetweenWorkouts"];
+    metrics58 = [(MOMetric *)v350 metrics];
+    [metrics58 setObject:v359 forKeyedSubscript:@"Workout_MinDeltaBetweenWorkouts"];
 
     v361 = [v1148 valueForKeyPath:@"@max.doubleValue"];
-    v362 = [(MOMetric *)v350 metrics];
-    [v362 setObject:v361 forKeyedSubscript:@"Workout_MaxDeltaBetweenWorkouts"];
+    metrics59 = [(MOMetric *)v350 metrics];
+    [metrics59 setObject:v361 forKeyedSubscript:@"Workout_MaxDeltaBetweenWorkouts"];
 
     v363 = [v354 + 363 standardDeviationOf:v1148];
-    v364 = [(MOMetric *)v350 metrics];
-    [v364 setObject:v363 forKeyedSubscript:@"Workout_SDDeltaBetweenWorkouts"];
+    metrics60 = [(MOMetric *)v350 metrics];
+    [metrics60 setObject:v363 forKeyedSubscript:@"Workout_SDDeltaBetweenWorkouts"];
   }
 
   v365 = [v307 count];
   v366 = v351[190];
   if (v365)
   {
-    v367 = [v307 firstObject];
-    v368 = [v367 endDate];
-    [v368 timeIntervalSinceDate:v350->_startDate];
+    firstObject3 = [v307 firstObject];
+    endDate33 = [firstObject3 endDate];
+    [endDate33 timeIntervalSinceDate:v350->_startDate];
     v369 = [v366 numberWithDouble:?];
     v370 = v1148;
     [v1148 addObject:v369];
 
     v371 = v351[190];
     v372 = v350->_endDate;
-    v373 = [v307 lastObject];
-    v374 = [v373 endDate];
-    [(NSDate *)v372 timeIntervalSinceDate:v374];
+    lastObject3 = [v307 lastObject];
+    endDate34 = [lastObject3 endDate];
+    [(NSDate *)v372 timeIntervalSinceDate:endDate34];
     v375 = [v371 numberWithDouble:?];
     [v1148 addObject:v375];
 
     v376 = [MOPromptMetrics meanOf:v1148];
-    v377 = [(MOMetric *)v350 metrics];
-    [v377 setObject:v376 forKeyedSubscript:@"Workout_MeanDeltaBetweenWorkoutsBoundariesIncluded"];
+    metrics61 = [(MOMetric *)v350 metrics];
+    [metrics61 setObject:v376 forKeyedSubscript:@"Workout_MeanDeltaBetweenWorkoutsBoundariesIncluded"];
 
     v378 = [v1148 valueForKeyPath:@"@min.doubleValue"];
-    v379 = [(MOMetric *)v350 metrics];
-    [v379 setObject:v378 forKeyedSubscript:@"Workout_MinDeltaBetweenWorkoutsBoundariesIncluded"];
+    metrics62 = [(MOMetric *)v350 metrics];
+    [metrics62 setObject:v378 forKeyedSubscript:@"Workout_MinDeltaBetweenWorkoutsBoundariesIncluded"];
 
     v380 = [v1148 valueForKeyPath:@"@max.doubleValue"];
-    v381 = [(MOMetric *)v350 metrics];
-    [v381 setObject:v380 forKeyedSubscript:@"Workout_MaxDeltaBetweenWorkoutsBoundariesIncluded"];
+    metrics63 = [(MOMetric *)v350 metrics];
+    [metrics63 setObject:v380 forKeyedSubscript:@"Workout_MaxDeltaBetweenWorkoutsBoundariesIncluded"];
 
-    v382 = [MOPromptMetrics standardDeviationOf:v1148];
-    v383 = [(MOMetric *)v350 metrics];
-    [v383 setObject:v382 forKeyedSubscript:@"Workout_SDDeltaBetweenWorkoutsBoundariesIncluded"];
+    metrics68 = [MOPromptMetrics standardDeviationOf:v1148];
+    metrics64 = [(MOMetric *)v350 metrics];
+    [metrics64 setObject:metrics68 forKeyedSubscript:@"Workout_SDDeltaBetweenWorkoutsBoundariesIncluded"];
   }
 
   else
   {
     [(NSDate *)v350->_endDate timeIntervalSinceDate:v350->_startDate];
     v384 = [v366 numberWithDouble:?];
-    v385 = [(MOMetric *)v350 metrics];
-    [v385 setObject:v384 forKeyedSubscript:@"Workout_MeanDeltaBetweenWorkoutsBoundariesIncluded"];
+    metrics65 = [(MOMetric *)v350 metrics];
+    [metrics65 setObject:v384 forKeyedSubscript:@"Workout_MeanDeltaBetweenWorkoutsBoundariesIncluded"];
 
     v386 = v351[190];
     [(NSDate *)v350->_endDate timeIntervalSinceDate:v350->_startDate];
     v387 = [v386 numberWithDouble:?];
-    v388 = [(MOMetric *)v350 metrics];
-    [v388 setObject:v387 forKeyedSubscript:@"Workout_MinDeltaBetweenWorkoutsBoundariesIncluded"];
+    metrics66 = [(MOMetric *)v350 metrics];
+    [metrics66 setObject:v387 forKeyedSubscript:@"Workout_MinDeltaBetweenWorkoutsBoundariesIncluded"];
 
     v389 = v351[190];
     [(NSDate *)v350->_endDate timeIntervalSinceDate:v350->_startDate];
     v390 = [v389 numberWithDouble:?];
-    v391 = [(MOMetric *)v350 metrics];
-    [v391 setObject:v390 forKeyedSubscript:@"Workout_MaxDeltaBetweenWorkoutsBoundariesIncluded"];
+    metrics67 = [(MOMetric *)v350 metrics];
+    [metrics67 setObject:v390 forKeyedSubscript:@"Workout_MaxDeltaBetweenWorkoutsBoundariesIncluded"];
 
-    v382 = [(MOMetric *)v350 metrics];
-    [v382 setObject:&off_10036E7B0 forKeyedSubscript:@"Workout_SDDeltaBetweenWorkoutsBoundariesIncluded"];
+    metrics68 = [(MOMetric *)v350 metrics];
+    [metrics68 setObject:&off_10036E7B0 forKeyedSubscript:@"Workout_SDDeltaBetweenWorkoutsBoundariesIncluded"];
     v370 = v1148;
   }
 
@@ -2356,8 +2356,8 @@ LABEL_151:
   v1118 = v395;
   v396 = [v1143 filteredArrayUsingPredicate:v395];
   v397 = [v351[190] numberWithUnsignedInteger:{objc_msgSend(v396, "count")}];
-  v398 = [(MOMetric *)v350 metrics];
-  [v398 setObject:v397 forKeyedSubscript:@"Proactive_NumAllEvents"];
+  metrics69 = [(MOMetric *)v350 metrics];
+  [metrics69 setObject:v397 forKeyedSubscript:@"Proactive_NumAllEvents"];
 
   v399 = objc_opt_new();
   v1206 = 0u;
@@ -2380,17 +2380,17 @@ LABEL_151:
         }
 
         v405 = *(*(&v1206 + 1) + 8 * m);
-        v406 = [v405 creationDate];
-        if (v406)
+        creationDate11 = [v405 creationDate];
+        if (creationDate11)
         {
-          v407 = v406;
-          v408 = [v405 endDate];
+          v407 = creationDate11;
+          endDate35 = [v405 endDate];
 
-          if (v408)
+          if (endDate35)
           {
-            v409 = [v405 creationDate];
-            v410 = [v405 endDate];
-            [v409 timeIntervalSinceDate:v410];
+            creationDate12 = [v405 creationDate];
+            endDate36 = [v405 endDate];
+            [creationDate12 timeIntervalSinceDate:endDate36];
             v412 = v411;
 
             v413 = [NSNumber numberWithDouble:v412];
@@ -2407,12 +2407,12 @@ LABEL_151:
 
   v1117 = v400;
 
-  v414 = v1205;
+  v414 = selfCopy;
   if ([v399 count])
   {
     v415 = [MOPromptMetrics meanOf:v399];
-    v416 = [(MOMetric *)v1205 metrics];
-    [v416 setObject:v415 forKeyedSubscript:@"Proactive_EventsAverageLatency"];
+    metrics70 = [(MOMetric *)selfCopy metrics];
+    [metrics70 setObject:v415 forKeyedSubscript:@"Proactive_EventsAverageLatency"];
 
     [v399 removeAllObjects];
   }
@@ -2431,8 +2431,8 @@ LABEL_151:
   v423 = [v1143 filteredArrayUsingPredicate:v422];
   v424 = &GEOPOICategoryGasStation_ptr;
   v425 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v423 count]);
-  v426 = [(MOMetric *)v1205 metrics];
-  [v426 setObject:v425 forKeyedSubscript:@"Proactive_NumMediaOnRepeatEvents"];
+  metrics71 = [(MOMetric *)selfCopy metrics];
+  [metrics71 setObject:v425 forKeyedSubscript:@"Proactive_NumMediaOnRepeatEvents"];
 
   v1133 = v423;
   if ([v423 count])
@@ -2444,25 +2444,25 @@ LABEL_151:
     {
       v430 = [v423 objectAtIndexedSubscript:v427];
       v431 = [NSDateInterval alloc];
-      v432 = [v430 startDate];
-      v433 = [v430 endDate];
-      v434 = [v431 initWithStartDate:v432 endDate:v433];
+      startDate10 = [v430 startDate];
+      endDate37 = [v430 endDate];
+      v434 = [v431 initWithStartDate:startDate10 endDate:endDate37];
 
-      v435 = [(MOPromptMetrics *)v1205 doesInterval:v434 overlapWithAnyIntervalFromArray:v1158];
-      v436 = [v430 creationDate];
-      if (v436)
+      v435 = [(MOPromptMetrics *)selfCopy doesInterval:v434 overlapWithAnyIntervalFromArray:v1158];
+      creationDate13 = [v430 creationDate];
+      if (creationDate13)
       {
-        v437 = v436;
-        v438 = [v430 startDate];
-        if (!v438)
+        endDate43 = creationDate13;
+        startDate11 = [v430 startDate];
+        if (!startDate11)
         {
           goto LABEL_183;
         }
 
-        v439 = v438;
-        v440 = [v430 endDate];
+        v439 = startDate11;
+        endDate38 = [v430 endDate];
 
-        if (v440)
+        if (endDate38)
         {
           break;
         }
@@ -2474,7 +2474,7 @@ LABEL_184:
       if ([v423 count] <= ++v427)
       {
         v461 = v428;
-        v414 = v1205;
+        v414 = selfCopy;
         v424 = &GEOPOICategoryGasStation_ptr;
         goto LABEL_188;
       }
@@ -2483,14 +2483,14 @@ LABEL_184:
     if (v427)
     {
       v441 = [v423 objectAtIndexedSubscript:v427 - 1];
-      v442 = [v441 endDate];
+      endDate39 = [v441 endDate];
 
-      if (v442)
+      if (endDate39)
       {
-        v443 = [v430 endDate];
+        endDate40 = [v430 endDate];
         v444 = [v423 objectAtIndexedSubscript:v427 - 1];
-        v445 = [v444 endDate];
-        [v443 timeIntervalSinceDate:v445];
+        endDate41 = [v444 endDate];
+        [endDate40 timeIntervalSinceDate:endDate41];
         v446 = [NSNumber numberWithDouble:?];
         [v1148 addObject:v446];
 
@@ -2498,9 +2498,9 @@ LABEL_184:
       }
     }
 
-    v447 = [v430 creationDate];
-    v448 = [v430 endDate];
-    [v447 timeIntervalSinceDate:v448];
+    creationDate14 = [v430 creationDate];
+    endDate42 = [v430 endDate];
+    [creationDate14 timeIntervalSinceDate:endDate42];
     v450 = v449;
 
     v451 = [NSNumber numberWithDouble:v450];
@@ -2529,19 +2529,19 @@ LABEL_184:
       v1170 = @"Proactive_HourIDMediaOnRepeat_End_1";
     }
 
-    v454 = [v430 startDate];
-    [(NSDate *)v1146 timeIntervalSinceDate:v454];
+    startDate12 = [v430 startDate];
+    [(NSDate *)v1146 timeIntervalSinceDate:startDate12];
     v455 = [NSNumber numberWithDouble:?];
     v456 = [MOMetric binForNumber:v455 bins:v1147];
-    v457 = [(MOMetric *)v1205 metrics];
-    [v457 setObject:v456 forKeyedSubscript:v453];
+    metrics72 = [(MOMetric *)selfCopy metrics];
+    [metrics72 setObject:v456 forKeyedSubscript:v453];
 
-    v437 = [v430 endDate];
-    [(NSDate *)v1146 timeIntervalSinceDate:v437];
+    endDate43 = [v430 endDate];
+    [(NSDate *)v1146 timeIntervalSinceDate:endDate43];
     v458 = [NSNumber numberWithDouble:?];
     v459 = [MOMetric binForNumber:v458 bins:v1147];
-    v460 = [(MOMetric *)v1205 metrics];
-    [v460 setObject:v459 forKeyedSubscript:v1170];
+    metrics73 = [(MOMetric *)selfCopy metrics];
+    [metrics73 setObject:v459 forKeyedSubscript:v1170];
 
     v423 = v1133;
     v429 = v1187;
@@ -2556,15 +2556,15 @@ LABEL_188:
   if ([v423 count])
   {
     v462 = [v424[190] numberWithDouble:{1.0 - v461 / objc_msgSend(v423, "count")}];
-    v463 = [(MOMetric *)v414 metrics];
-    [v463 setObject:v462 forKeyedSubscript:@"Proactive_PercentageOfMediaOnRepeatEventsNoLOI"];
+    metrics74 = [(MOMetric *)v414 metrics];
+    [metrics74 setObject:v462 forKeyedSubscript:@"Proactive_PercentageOfMediaOnRepeatEventsNoLOI"];
   }
 
   if ([v1204 count])
   {
     v464 = [MOPromptMetrics meanOf:v1204];
-    v465 = [(MOMetric *)v414 metrics];
-    [v465 setObject:v464 forKeyedSubscript:@"Proactive_MediaOnRepeatAverageLatency"];
+    metrics75 = [(MOMetric *)v414 metrics];
+    [metrics75 setObject:v464 forKeyedSubscript:@"Proactive_MediaOnRepeatAverageLatency"];
 
     [v1204 removeAllObjects];
   }
@@ -2572,56 +2572,56 @@ LABEL_188:
   if ([v1148 count])
   {
     v466 = [MOPromptMetrics meanOf:v1148];
-    v467 = [(MOMetric *)v414 metrics];
-    [v467 setObject:v466 forKeyedSubscript:@"Proactive_MeanDeltaBetweenMediaOnRepeatEvents"];
+    metrics76 = [(MOMetric *)v414 metrics];
+    [metrics76 setObject:v466 forKeyedSubscript:@"Proactive_MeanDeltaBetweenMediaOnRepeatEvents"];
 
     v468 = [v1148 valueForKeyPath:@"@min.doubleValue"];
-    v469 = [(MOMetric *)v414 metrics];
-    [v469 setObject:v468 forKeyedSubscript:@"Proactive_MinDeltaBetweenMediaOnRepeatEvents"];
+    metrics77 = [(MOMetric *)v414 metrics];
+    [metrics77 setObject:v468 forKeyedSubscript:@"Proactive_MinDeltaBetweenMediaOnRepeatEvents"];
 
     v470 = [v1148 valueForKeyPath:@"@max.doubleValue"];
-    v471 = [(MOMetric *)v414 metrics];
-    [v471 setObject:v470 forKeyedSubscript:@"Proactive_MaxDeltaBetweenMediaOnRepeatEvents"];
+    metrics78 = [(MOMetric *)v414 metrics];
+    [metrics78 setObject:v470 forKeyedSubscript:@"Proactive_MaxDeltaBetweenMediaOnRepeatEvents"];
 
     v472 = [MOPromptMetrics standardDeviationOf:v1148];
-    v473 = [(MOMetric *)v414 metrics];
-    [v473 setObject:v472 forKeyedSubscript:@"Proactive_SDDeltaBetweenMediaOnRepeatEvents"];
+    metrics79 = [(MOMetric *)v414 metrics];
+    [metrics79 setObject:v472 forKeyedSubscript:@"Proactive_SDDeltaBetweenMediaOnRepeatEvents"];
   }
 
   v474 = [v423 count];
   v475 = v424[190];
   if (v474)
   {
-    v476 = [v423 firstObject];
-    v477 = [v476 endDate];
-    [v477 timeIntervalSinceDate:v414->_startDate];
+    firstObject4 = [v423 firstObject];
+    endDate44 = [firstObject4 endDate];
+    [endDate44 timeIntervalSinceDate:v414->_startDate];
     v478 = [v475 numberWithDouble:?];
     v479 = v1148;
     [v1148 addObject:v478];
 
     v480 = v424[190];
     v481 = v414->_endDate;
-    v482 = [v423 lastObject];
-    v483 = [v482 endDate];
-    [(NSDate *)v481 timeIntervalSinceDate:v483];
+    lastObject4 = [v423 lastObject];
+    endDate45 = [lastObject4 endDate];
+    [(NSDate *)v481 timeIntervalSinceDate:endDate45];
     v484 = [v480 numberWithDouble:?];
     [v1148 addObject:v484];
 
     v485 = [MOPromptMetrics meanOf:v1148];
-    v486 = [(MOMetric *)v414 metrics];
-    [v486 setObject:v485 forKeyedSubscript:@"Proactive_MeanDeltaBetweenMediaOnRepeatEventsBoundariesIncluded"];
+    metrics80 = [(MOMetric *)v414 metrics];
+    [metrics80 setObject:v485 forKeyedSubscript:@"Proactive_MeanDeltaBetweenMediaOnRepeatEventsBoundariesIncluded"];
 
     v487 = [v1148 valueForKeyPath:@"@min.doubleValue"];
-    v488 = [(MOMetric *)v414 metrics];
-    [v488 setObject:v487 forKeyedSubscript:@"Proactive_MinDeltaBetweenMediaOnRepeatEventsBoundariesIncluded"];
+    metrics81 = [(MOMetric *)v414 metrics];
+    [metrics81 setObject:v487 forKeyedSubscript:@"Proactive_MinDeltaBetweenMediaOnRepeatEventsBoundariesIncluded"];
 
     v489 = [v1148 valueForKeyPath:@"@max.doubleValue"];
-    v490 = [(MOMetric *)v414 metrics];
-    [v490 setObject:v489 forKeyedSubscript:@"Proactive_MaxDeltaBetweenMediaOnRepeatEventsBoundariesIncluded"];
+    metrics82 = [(MOMetric *)v414 metrics];
+    [metrics82 setObject:v489 forKeyedSubscript:@"Proactive_MaxDeltaBetweenMediaOnRepeatEventsBoundariesIncluded"];
 
-    v491 = [MOPromptMetrics standardDeviationOf:v1148];
-    v492 = [(MOMetric *)v414 metrics];
-    [v492 setObject:v491 forKeyedSubscript:@"Proactive_SDDeltaBetweenMediaOnRepeatEventsBoundariesIncluded"];
+    metrics87 = [MOPromptMetrics standardDeviationOf:v1148];
+    metrics83 = [(MOMetric *)v414 metrics];
+    [metrics83 setObject:metrics87 forKeyedSubscript:@"Proactive_SDDeltaBetweenMediaOnRepeatEventsBoundariesIncluded"];
 
     v493 = v414;
     v494 = v424;
@@ -2631,23 +2631,23 @@ LABEL_188:
   {
     [(NSDate *)v414->_endDate timeIntervalSinceDate:v414->_startDate];
     v495 = [v475 numberWithDouble:?];
-    v496 = [(MOMetric *)v414 metrics];
-    [v496 setObject:v495 forKeyedSubscript:@"Proactive_MeanDeltaBetweenMediaOnRepeatEventsBoundariesIncluded"];
+    metrics84 = [(MOMetric *)v414 metrics];
+    [metrics84 setObject:v495 forKeyedSubscript:@"Proactive_MeanDeltaBetweenMediaOnRepeatEventsBoundariesIncluded"];
 
     v497 = v424[190];
     [(NSDate *)v414->_endDate timeIntervalSinceDate:v414->_startDate];
     v498 = [v497 numberWithDouble:?];
-    v499 = [(MOMetric *)v414 metrics];
-    [v499 setObject:v498 forKeyedSubscript:@"Proactive_MinDeltaBetweenMediaOnRepeatEventsBoundariesIncluded"];
+    metrics85 = [(MOMetric *)v414 metrics];
+    [metrics85 setObject:v498 forKeyedSubscript:@"Proactive_MinDeltaBetweenMediaOnRepeatEventsBoundariesIncluded"];
 
     v500 = v424[190];
     [(NSDate *)v414->_endDate timeIntervalSinceDate:v414->_startDate];
     v501 = [v500 numberWithDouble:?];
-    v502 = [(MOMetric *)v414 metrics];
-    [v502 setObject:v501 forKeyedSubscript:@"Proactive_MaxDeltaBetweenMediaOnRepeatEventsBoundariesIncluded"];
+    metrics86 = [(MOMetric *)v414 metrics];
+    [metrics86 setObject:v501 forKeyedSubscript:@"Proactive_MaxDeltaBetweenMediaOnRepeatEventsBoundariesIncluded"];
 
-    v491 = [(MOMetric *)v414 metrics];
-    [v491 setObject:&off_10036E7B0 forKeyedSubscript:@"Proactive_SDDeltaBetweenMediaOnRepeatEventsBoundariesIncluded"];
+    metrics87 = [(MOMetric *)v414 metrics];
+    [metrics87 setObject:&off_10036E7B0 forKeyedSubscript:@"Proactive_SDDeltaBetweenMediaOnRepeatEventsBoundariesIncluded"];
     v493 = v414;
     v494 = v424;
     v479 = v1148;
@@ -2666,8 +2666,8 @@ LABEL_188:
   v1115 = v508;
   v509 = [v1143 filteredArrayUsingPredicate:v508];
   v510 = [v494[190] numberWithUnsignedInteger:{objc_msgSend(v509, "count")}];
-  v511 = [(MOMetric *)v493 metrics];
-  [v511 setObject:v510 forKeyedSubscript:@"Proactive_NumTopicEvents"];
+  metrics88 = [(MOMetric *)v493 metrics];
+  [metrics88 setObject:v510 forKeyedSubscript:@"Proactive_NumTopicEvents"];
 
   v1171 = v509;
   if ([v509 count])
@@ -2680,25 +2680,25 @@ LABEL_188:
     {
       v516 = [v515 objectAtIndexedSubscript:v512];
       v517 = [NSDateInterval alloc];
-      v518 = [v516 startDate];
-      v519 = [v516 endDate];
-      v520 = [v517 initWithStartDate:v518 endDate:v519];
+      startDate13 = [v516 startDate];
+      endDate46 = [v516 endDate];
+      v520 = [v517 initWithStartDate:startDate13 endDate:endDate46];
 
-      v521 = [(MOPromptMetrics *)v1205 doesInterval:v520 overlapWithAnyIntervalFromArray:v1158];
-      v522 = [v516 creationDate];
-      if (v522)
+      v521 = [(MOPromptMetrics *)selfCopy doesInterval:v520 overlapWithAnyIntervalFromArray:v1158];
+      creationDate15 = [v516 creationDate];
+      if (creationDate15)
       {
-        v523 = v522;
-        v524 = [v516 startDate];
-        if (!v524)
+        endDate52 = creationDate15;
+        startDate14 = [v516 startDate];
+        if (!startDate14)
         {
           goto LABEL_210;
         }
 
-        v525 = v524;
-        v526 = [v516 endDate];
+        v525 = startDate14;
+        endDate47 = [v516 endDate];
 
-        if (v526)
+        if (endDate47)
         {
           break;
         }
@@ -2710,7 +2710,7 @@ LABEL_211:
       if ([v515 count] <= ++v512)
       {
         v547 = v513;
-        v548 = v1205;
+        v548 = selfCopy;
         v549 = 0x100335000;
         goto LABEL_215;
       }
@@ -2719,14 +2719,14 @@ LABEL_211:
     if (v512)
     {
       v527 = [v515 objectAtIndexedSubscript:v512 - 1];
-      v528 = [v527 endDate];
+      endDate48 = [v527 endDate];
 
-      if (v528)
+      if (endDate48)
       {
-        v529 = [v516 endDate];
+        endDate49 = [v516 endDate];
         v530 = [v515 objectAtIndexedSubscript:v512 - 1];
-        v531 = [v530 endDate];
-        [v529 timeIntervalSinceDate:v531];
+        endDate50 = [v530 endDate];
+        [endDate49 timeIntervalSinceDate:endDate50];
         v532 = [NSNumber numberWithDouble:?];
         [v1148 addObject:v532];
 
@@ -2734,9 +2734,9 @@ LABEL_211:
       }
     }
 
-    v533 = [v516 creationDate];
-    v534 = [v516 endDate];
-    [v533 timeIntervalSinceDate:v534];
+    creationDate16 = [v516 creationDate];
+    endDate51 = [v516 endDate];
+    [creationDate16 timeIntervalSinceDate:endDate51];
     v536 = v535;
 
     v537 = [NSNumber numberWithDouble:v536];
@@ -2765,19 +2765,19 @@ LABEL_211:
       v1165 = @"Proactive_HourIDTopicEvent_End_1";
     }
 
-    v540 = [v516 startDate];
-    [(NSDate *)v1146 timeIntervalSinceDate:v540];
+    startDate15 = [v516 startDate];
+    [(NSDate *)v1146 timeIntervalSinceDate:startDate15];
     v541 = [NSNumber numberWithDouble:?];
     v542 = [MOMetric binForNumber:v541 bins:v1147];
-    v543 = [(MOMetric *)v1205 metrics];
-    [v543 setObject:v542 forKeyedSubscript:v539];
+    metrics89 = [(MOMetric *)selfCopy metrics];
+    [metrics89 setObject:v542 forKeyedSubscript:v539];
 
-    v523 = [v516 endDate];
-    [(NSDate *)v1146 timeIntervalSinceDate:v523];
+    endDate52 = [v516 endDate];
+    [(NSDate *)v1146 timeIntervalSinceDate:endDate52];
     v544 = [NSNumber numberWithDouble:?];
     v545 = [MOMetric binForNumber:v544 bins:v1147];
-    v546 = [(MOMetric *)v1205 metrics];
-    [v546 setObject:v545 forKeyedSubscript:v1165];
+    metrics90 = [(MOMetric *)selfCopy metrics];
+    [metrics90 setObject:v545 forKeyedSubscript:v1165];
 
     v515 = v1171;
     v514 = v1188;
@@ -2795,15 +2795,15 @@ LABEL_215:
   if ([v515 count])
   {
     v550 = [*(v549 + 1520) numberWithDouble:{1.0 - v547 / objc_msgSend(v515, "count")}];
-    v551 = [(MOMetric *)v548 metrics];
-    [v551 setObject:v550 forKeyedSubscript:@"Proactive_PercentageOfTopicEventsNoLOI"];
+    metrics91 = [(MOMetric *)v548 metrics];
+    [metrics91 setObject:v550 forKeyedSubscript:@"Proactive_PercentageOfTopicEventsNoLOI"];
   }
 
   if ([v1204 count])
   {
     v552 = [MOPromptMetrics meanOf:v1204];
-    v553 = [(MOMetric *)v548 metrics];
-    [v553 setObject:v552 forKeyedSubscript:@"Proactive_TopicAverageLatency"];
+    metrics92 = [(MOMetric *)v548 metrics];
+    [metrics92 setObject:v552 forKeyedSubscript:@"Proactive_TopicAverageLatency"];
 
     [v1204 removeAllObjects];
   }
@@ -2811,56 +2811,56 @@ LABEL_215:
   if ([v1148 count])
   {
     v554 = [MOPromptMetrics meanOf:v1148];
-    v555 = [(MOMetric *)v548 metrics];
-    [v555 setObject:v554 forKeyedSubscript:@"Proactive_MeanDeltaBetweenTopicEvents"];
+    metrics93 = [(MOMetric *)v548 metrics];
+    [metrics93 setObject:v554 forKeyedSubscript:@"Proactive_MeanDeltaBetweenTopicEvents"];
 
     v556 = [v1148 valueForKeyPath:@"@min.doubleValue"];
-    v557 = [(MOMetric *)v548 metrics];
-    [v557 setObject:v556 forKeyedSubscript:@"Proactive_MinDeltaBetweenTopicEvents"];
+    metrics94 = [(MOMetric *)v548 metrics];
+    [metrics94 setObject:v556 forKeyedSubscript:@"Proactive_MinDeltaBetweenTopicEvents"];
 
     v558 = [v1148 valueForKeyPath:@"@max.doubleValue"];
-    v559 = [(MOMetric *)v548 metrics];
-    [v559 setObject:v558 forKeyedSubscript:@"Proactive_MaxDeltaBetweenTopicEvents"];
+    metrics95 = [(MOMetric *)v548 metrics];
+    [metrics95 setObject:v558 forKeyedSubscript:@"Proactive_MaxDeltaBetweenTopicEvents"];
 
     v560 = [MOPromptMetrics standardDeviationOf:v1148];
-    v561 = [(MOMetric *)v548 metrics];
-    [v561 setObject:v560 forKeyedSubscript:@"Proactive_SDDeltaBetweenTopicEvents"];
+    metrics96 = [(MOMetric *)v548 metrics];
+    [metrics96 setObject:v560 forKeyedSubscript:@"Proactive_SDDeltaBetweenTopicEvents"];
   }
 
   v562 = [v515 count];
   v563 = *(v549 + 1520);
   if (v562)
   {
-    v564 = [v515 firstObject];
-    v565 = [v564 endDate];
-    [v565 timeIntervalSinceDate:v548->_startDate];
+    firstObject5 = [v515 firstObject];
+    endDate53 = [firstObject5 endDate];
+    [endDate53 timeIntervalSinceDate:v548->_startDate];
     v566 = [v563 numberWithDouble:?];
     v567 = v1148;
     [v1148 addObject:v566];
 
     v568 = *(v549 + 1520);
     v569 = v548->_endDate;
-    v570 = [v515 lastObject];
-    v571 = [v570 endDate];
-    [(NSDate *)v569 timeIntervalSinceDate:v571];
+    lastObject5 = [v515 lastObject];
+    endDate54 = [lastObject5 endDate];
+    [(NSDate *)v569 timeIntervalSinceDate:endDate54];
     v572 = [v568 numberWithDouble:?];
     [v1148 addObject:v572];
 
     v573 = [MOPromptMetrics meanOf:v1148];
-    v574 = [(MOMetric *)v548 metrics];
-    [v574 setObject:v573 forKeyedSubscript:@"Proactive_MeanDeltaBetweenTopicEventsBoundariesIncluded"];
+    metrics97 = [(MOMetric *)v548 metrics];
+    [metrics97 setObject:v573 forKeyedSubscript:@"Proactive_MeanDeltaBetweenTopicEventsBoundariesIncluded"];
 
     v575 = [v1148 valueForKeyPath:@"@min.doubleValue"];
-    v576 = [(MOMetric *)v548 metrics];
-    [v576 setObject:v575 forKeyedSubscript:@"Proactive_MinDeltaBetweenTopicEventsBoundariesIncluded"];
+    metrics98 = [(MOMetric *)v548 metrics];
+    [metrics98 setObject:v575 forKeyedSubscript:@"Proactive_MinDeltaBetweenTopicEventsBoundariesIncluded"];
 
     v577 = [v1148 valueForKeyPath:@"@max.doubleValue"];
-    v578 = [(MOMetric *)v548 metrics];
-    [v578 setObject:v577 forKeyedSubscript:@"Proactive_MaxDeltaBetweenTopicEventsBoundariesIncluded"];
+    metrics99 = [(MOMetric *)v548 metrics];
+    [metrics99 setObject:v577 forKeyedSubscript:@"Proactive_MaxDeltaBetweenTopicEventsBoundariesIncluded"];
 
-    v579 = [MOPromptMetrics standardDeviationOf:v1148];
-    v580 = [(MOMetric *)v548 metrics];
-    [v580 setObject:v579 forKeyedSubscript:@"Proactive_SDDeltaBetweenTopicEventsBoundariesIncluded"];
+    metrics104 = [MOPromptMetrics standardDeviationOf:v1148];
+    metrics100 = [(MOMetric *)v548 metrics];
+    [metrics100 setObject:metrics104 forKeyedSubscript:@"Proactive_SDDeltaBetweenTopicEventsBoundariesIncluded"];
 
     v581 = v548;
     v582 = v549;
@@ -2870,23 +2870,23 @@ LABEL_215:
   {
     [(NSDate *)v548->_endDate timeIntervalSinceDate:v548->_startDate];
     v583 = [v563 numberWithDouble:?];
-    v584 = [(MOMetric *)v548 metrics];
-    [v584 setObject:v583 forKeyedSubscript:@"Proactive_MeanDeltaBetweenTopicEventsBoundariesIncluded"];
+    metrics101 = [(MOMetric *)v548 metrics];
+    [metrics101 setObject:v583 forKeyedSubscript:@"Proactive_MeanDeltaBetweenTopicEventsBoundariesIncluded"];
 
     v585 = *(v549 + 1520);
     [(NSDate *)v548->_endDate timeIntervalSinceDate:v548->_startDate];
     v586 = [v585 numberWithDouble:?];
-    v587 = [(MOMetric *)v548 metrics];
-    [v587 setObject:v586 forKeyedSubscript:@"Proactive_MinDeltaBetweenTopicEventsBoundariesIncluded"];
+    metrics102 = [(MOMetric *)v548 metrics];
+    [metrics102 setObject:v586 forKeyedSubscript:@"Proactive_MinDeltaBetweenTopicEventsBoundariesIncluded"];
 
     v588 = *(v549 + 1520);
     [(NSDate *)v548->_endDate timeIntervalSinceDate:v548->_startDate];
     v589 = [v588 numberWithDouble:?];
-    v590 = [(MOMetric *)v548 metrics];
-    [v590 setObject:v589 forKeyedSubscript:@"Proactive_MaxDeltaBetweenTopicEventsBoundariesIncluded"];
+    metrics103 = [(MOMetric *)v548 metrics];
+    [metrics103 setObject:v589 forKeyedSubscript:@"Proactive_MaxDeltaBetweenTopicEventsBoundariesIncluded"];
 
-    v579 = [(MOMetric *)v548 metrics];
-    [v579 setObject:&off_10036E7B0 forKeyedSubscript:@"Proactive_SDDeltaBetweenTopicEventsBoundariesIncluded"];
+    metrics104 = [(MOMetric *)v548 metrics];
+    [metrics104 setObject:&off_10036E7B0 forKeyedSubscript:@"Proactive_SDDeltaBetweenTopicEventsBoundariesIncluded"];
     v581 = v548;
     v582 = v549;
     v567 = v1148;
@@ -2905,8 +2905,8 @@ LABEL_215:
   v1114 = v596;
   v597 = [v1143 filteredArrayUsingPredicate:v596];
   v598 = [*(v582 + 1520) numberWithUnsignedInteger:{objc_msgSend(v597, "count")}];
-  v599 = [(MOMetric *)v581 metrics];
-  [v599 setObject:v598 forKeyedSubscript:@"Proactive_NumTravelEvents"];
+  metrics105 = [(MOMetric *)v581 metrics];
+  [metrics105 setObject:v598 forKeyedSubscript:@"Proactive_NumTravelEvents"];
 
   v1166 = v597;
   if ([v597 count])
@@ -2919,25 +2919,25 @@ LABEL_215:
     {
       v604 = [v603 objectAtIndexedSubscript:v600];
       v605 = [NSDateInterval alloc];
-      v606 = [v604 startDate];
-      v607 = [v604 endDate];
-      v608 = [v605 initWithStartDate:v606 endDate:v607];
+      startDate16 = [v604 startDate];
+      endDate55 = [v604 endDate];
+      v608 = [v605 initWithStartDate:startDate16 endDate:endDate55];
 
-      v609 = [(MOPromptMetrics *)v1205 doesInterval:v608 overlapWithAnyIntervalFromArray:v1158];
-      v610 = [v604 creationDate];
-      if (v610)
+      v609 = [(MOPromptMetrics *)selfCopy doesInterval:v608 overlapWithAnyIntervalFromArray:v1158];
+      creationDate17 = [v604 creationDate];
+      if (creationDate17)
       {
-        v611 = v610;
-        v612 = [v604 startDate];
-        if (!v612)
+        endDate61 = creationDate17;
+        startDate17 = [v604 startDate];
+        if (!startDate17)
         {
           goto LABEL_237;
         }
 
-        v613 = v612;
-        v614 = [v604 endDate];
+        v613 = startDate17;
+        endDate56 = [v604 endDate];
 
-        if (v614)
+        if (endDate56)
         {
           break;
         }
@@ -2949,7 +2949,7 @@ LABEL_238:
       if ([v603 count] <= ++v600)
       {
         v635 = v601;
-        v636 = v1205;
+        v636 = selfCopy;
         v637 = 0x100335000;
         goto LABEL_242;
       }
@@ -2958,14 +2958,14 @@ LABEL_238:
     if (v600)
     {
       v615 = [v603 objectAtIndexedSubscript:v600 - 1];
-      v616 = [v615 endDate];
+      endDate57 = [v615 endDate];
 
-      if (v616)
+      if (endDate57)
       {
-        v617 = [v604 endDate];
+        endDate58 = [v604 endDate];
         v618 = [v603 objectAtIndexedSubscript:v600 - 1];
-        v619 = [v618 endDate];
-        [v617 timeIntervalSinceDate:v619];
+        endDate59 = [v618 endDate];
+        [endDate58 timeIntervalSinceDate:endDate59];
         v620 = [NSNumber numberWithDouble:?];
         [v1148 addObject:v620];
 
@@ -2973,9 +2973,9 @@ LABEL_238:
       }
     }
 
-    v621 = [v604 creationDate];
-    v622 = [v604 endDate];
-    [v621 timeIntervalSinceDate:v622];
+    creationDate18 = [v604 creationDate];
+    endDate60 = [v604 endDate];
+    [creationDate18 timeIntervalSinceDate:endDate60];
     v624 = v623;
 
     v625 = [NSNumber numberWithDouble:v624];
@@ -3004,19 +3004,19 @@ LABEL_238:
       objb = @"Proactive_HourIDTravelEvent_End_1";
     }
 
-    v628 = [v604 startDate];
-    [(NSDate *)v1146 timeIntervalSinceDate:v628];
+    startDate18 = [v604 startDate];
+    [(NSDate *)v1146 timeIntervalSinceDate:startDate18];
     v629 = [NSNumber numberWithDouble:?];
     v630 = [MOMetric binForNumber:v629 bins:v1147];
-    v631 = [(MOMetric *)v1205 metrics];
-    [v631 setObject:v630 forKeyedSubscript:v627];
+    metrics106 = [(MOMetric *)selfCopy metrics];
+    [metrics106 setObject:v630 forKeyedSubscript:v627];
 
-    v611 = [v604 endDate];
-    [(NSDate *)v1146 timeIntervalSinceDate:v611];
+    endDate61 = [v604 endDate];
+    [(NSDate *)v1146 timeIntervalSinceDate:endDate61];
     v632 = [NSNumber numberWithDouble:?];
     v633 = [MOMetric binForNumber:v632 bins:v1147];
-    v634 = [(MOMetric *)v1205 metrics];
-    [v634 setObject:v633 forKeyedSubscript:objb];
+    metrics107 = [(MOMetric *)selfCopy metrics];
+    [metrics107 setObject:v633 forKeyedSubscript:objb];
 
     v603 = v1166;
     v602 = v1189;
@@ -3034,15 +3034,15 @@ LABEL_242:
   if ([v603 count])
   {
     v638 = [*(v637 + 1520) numberWithDouble:{1.0 - v635 / objc_msgSend(v603, "count")}];
-    v639 = [(MOMetric *)v636 metrics];
-    [v639 setObject:v638 forKeyedSubscript:@"Proactive_PercentageOfTravelEventsNoLOI"];
+    metrics108 = [(MOMetric *)v636 metrics];
+    [metrics108 setObject:v638 forKeyedSubscript:@"Proactive_PercentageOfTravelEventsNoLOI"];
   }
 
   if ([v1204 count])
   {
     v640 = [MOPromptMetrics meanOf:v1204];
-    v641 = [(MOMetric *)v636 metrics];
-    [v641 setObject:v640 forKeyedSubscript:@"Proactive_TravelAverageLatency"];
+    metrics109 = [(MOMetric *)v636 metrics];
+    [metrics109 setObject:v640 forKeyedSubscript:@"Proactive_TravelAverageLatency"];
 
     [v1204 removeAllObjects];
   }
@@ -3050,56 +3050,56 @@ LABEL_242:
   if ([v1148 count])
   {
     v642 = [MOPromptMetrics meanOf:v1148];
-    v643 = [(MOMetric *)v636 metrics];
-    [v643 setObject:v642 forKeyedSubscript:@"Proactive_MeanDeltaBetweenTravelEvents"];
+    metrics110 = [(MOMetric *)v636 metrics];
+    [metrics110 setObject:v642 forKeyedSubscript:@"Proactive_MeanDeltaBetweenTravelEvents"];
 
     v644 = [v1148 valueForKeyPath:@"@min.doubleValue"];
-    v645 = [(MOMetric *)v636 metrics];
-    [v645 setObject:v644 forKeyedSubscript:@"Proactive_MinDeltaBetweenTravelEvents"];
+    metrics111 = [(MOMetric *)v636 metrics];
+    [metrics111 setObject:v644 forKeyedSubscript:@"Proactive_MinDeltaBetweenTravelEvents"];
 
     v646 = [v1148 valueForKeyPath:@"@max.doubleValue"];
-    v647 = [(MOMetric *)v636 metrics];
-    [v647 setObject:v646 forKeyedSubscript:@"Proactive_MaxDeltaBetweenTravelEvents"];
+    metrics112 = [(MOMetric *)v636 metrics];
+    [metrics112 setObject:v646 forKeyedSubscript:@"Proactive_MaxDeltaBetweenTravelEvents"];
 
     v648 = [MOPromptMetrics standardDeviationOf:v1148];
-    v649 = [(MOMetric *)v636 metrics];
-    [v649 setObject:v648 forKeyedSubscript:@"Proactive_SDDeltaBetweenTravelEvents"];
+    metrics113 = [(MOMetric *)v636 metrics];
+    [metrics113 setObject:v648 forKeyedSubscript:@"Proactive_SDDeltaBetweenTravelEvents"];
   }
 
   v650 = [v603 count];
   v651 = *(v637 + 1520);
   if (v650)
   {
-    v652 = [v603 firstObject];
-    v653 = [v652 endDate];
-    [v653 timeIntervalSinceDate:v636->_startDate];
+    firstObject6 = [v603 firstObject];
+    endDate62 = [firstObject6 endDate];
+    [endDate62 timeIntervalSinceDate:v636->_startDate];
     v654 = [v651 numberWithDouble:?];
     v655 = v1148;
     [v1148 addObject:v654];
 
     v656 = *(v637 + 1520);
     v657 = v636->_endDate;
-    v658 = [v603 lastObject];
-    v659 = [v658 endDate];
-    [(NSDate *)v657 timeIntervalSinceDate:v659];
+    lastObject6 = [v603 lastObject];
+    endDate63 = [lastObject6 endDate];
+    [(NSDate *)v657 timeIntervalSinceDate:endDate63];
     v660 = [v656 numberWithDouble:?];
     [v1148 addObject:v660];
 
     v661 = [MOPromptMetrics meanOf:v1148];
-    v662 = [(MOMetric *)v636 metrics];
-    [v662 setObject:v661 forKeyedSubscript:@"Proactive_MeanDeltaBetweenTravelEventsBoundariesIncluded"];
+    metrics114 = [(MOMetric *)v636 metrics];
+    [metrics114 setObject:v661 forKeyedSubscript:@"Proactive_MeanDeltaBetweenTravelEventsBoundariesIncluded"];
 
     v663 = [v1148 valueForKeyPath:@"@min.doubleValue"];
-    v664 = [(MOMetric *)v636 metrics];
-    [v664 setObject:v663 forKeyedSubscript:@"Proactive_MinDeltaBetweenTravelEventsBoundariesIncluded"];
+    metrics115 = [(MOMetric *)v636 metrics];
+    [metrics115 setObject:v663 forKeyedSubscript:@"Proactive_MinDeltaBetweenTravelEventsBoundariesIncluded"];
 
     v665 = [v1148 valueForKeyPath:@"@max.doubleValue"];
-    v666 = [(MOMetric *)v636 metrics];
-    [v666 setObject:v665 forKeyedSubscript:@"Proactive_MaxDeltaBetweenTravelEventsBoundariesIncluded"];
+    metrics116 = [(MOMetric *)v636 metrics];
+    [metrics116 setObject:v665 forKeyedSubscript:@"Proactive_MaxDeltaBetweenTravelEventsBoundariesIncluded"];
 
-    v667 = [MOPromptMetrics standardDeviationOf:v1148];
-    v668 = [(MOMetric *)v636 metrics];
-    [v668 setObject:v667 forKeyedSubscript:@"Proactive_SDDeltaBetweenTravelEventsBoundariesIncluded"];
+    metrics121 = [MOPromptMetrics standardDeviationOf:v1148];
+    metrics117 = [(MOMetric *)v636 metrics];
+    [metrics117 setObject:metrics121 forKeyedSubscript:@"Proactive_SDDeltaBetweenTravelEventsBoundariesIncluded"];
 
     v669 = v636;
     v670 = v637;
@@ -3109,23 +3109,23 @@ LABEL_242:
   {
     [(NSDate *)v636->_endDate timeIntervalSinceDate:v636->_startDate];
     v671 = [v651 numberWithDouble:?];
-    v672 = [(MOMetric *)v636 metrics];
-    [v672 setObject:v671 forKeyedSubscript:@"Proactive_MeanDeltaBetweenTravelEventsBoundariesIncluded"];
+    metrics118 = [(MOMetric *)v636 metrics];
+    [metrics118 setObject:v671 forKeyedSubscript:@"Proactive_MeanDeltaBetweenTravelEventsBoundariesIncluded"];
 
     v673 = *(v637 + 1520);
     [(NSDate *)v636->_endDate timeIntervalSinceDate:v636->_startDate];
     v674 = [v673 numberWithDouble:?];
-    v675 = [(MOMetric *)v636 metrics];
-    [v675 setObject:v674 forKeyedSubscript:@"Proactive_MinDeltaBetweenTravelEventsBoundariesIncluded"];
+    metrics119 = [(MOMetric *)v636 metrics];
+    [metrics119 setObject:v674 forKeyedSubscript:@"Proactive_MinDeltaBetweenTravelEventsBoundariesIncluded"];
 
     v676 = *(v637 + 1520);
     [(NSDate *)v636->_endDate timeIntervalSinceDate:v636->_startDate];
     v677 = [v676 numberWithDouble:?];
-    v678 = [(MOMetric *)v636 metrics];
-    [v678 setObject:v677 forKeyedSubscript:@"Proactive_MaxDeltaBetweenTravelEventsBoundariesIncluded"];
+    metrics120 = [(MOMetric *)v636 metrics];
+    [metrics120 setObject:v677 forKeyedSubscript:@"Proactive_MaxDeltaBetweenTravelEventsBoundariesIncluded"];
 
-    v667 = [(MOMetric *)v636 metrics];
-    [v667 setObject:&off_10036E7B0 forKeyedSubscript:@"Proactive_SDDeltaBetweenTravelEventsBoundariesIncluded"];
+    metrics121 = [(MOMetric *)v636 metrics];
+    [metrics121 setObject:&off_10036E7B0 forKeyedSubscript:@"Proactive_SDDeltaBetweenTravelEventsBoundariesIncluded"];
     v669 = v636;
     v670 = v637;
     v655 = v1148;
@@ -3144,8 +3144,8 @@ LABEL_242:
   v1113 = v684;
   v685 = [v1143 filteredArrayUsingPredicate:v684];
   v686 = [*(v670 + 1520) numberWithUnsignedInteger:{objc_msgSend(v685, "count")}];
-  v687 = [(MOMetric *)v669 metrics];
-  [v687 setObject:v686 forKeyedSubscript:@"Proactive_NumSharedWithYouEvents"];
+  metrics122 = [(MOMetric *)v669 metrics];
+  [metrics122 setObject:v686 forKeyedSubscript:@"Proactive_NumSharedWithYouEvents"];
 
   objc = v685;
   if ([v685 count])
@@ -3158,25 +3158,25 @@ LABEL_242:
     {
       v692 = [v691 objectAtIndexedSubscript:v688];
       v693 = [NSDateInterval alloc];
-      v694 = [v692 startDate];
-      v695 = [v692 endDate];
-      v696 = [v693 initWithStartDate:v694 endDate:v695];
+      startDate19 = [v692 startDate];
+      endDate64 = [v692 endDate];
+      v696 = [v693 initWithStartDate:startDate19 endDate:endDate64];
 
-      v697 = [(MOPromptMetrics *)v1205 doesInterval:v696 overlapWithAnyIntervalFromArray:v1158];
-      v698 = [v692 creationDate];
-      if (v698)
+      v697 = [(MOPromptMetrics *)selfCopy doesInterval:v696 overlapWithAnyIntervalFromArray:v1158];
+      creationDate19 = [v692 creationDate];
+      if (creationDate19)
       {
-        v699 = v698;
-        v700 = [v692 startDate];
-        if (!v700)
+        endDate70 = creationDate19;
+        startDate20 = [v692 startDate];
+        if (!startDate20)
         {
           goto LABEL_264;
         }
 
-        v701 = v700;
-        v702 = [v692 endDate];
+        v701 = startDate20;
+        endDate65 = [v692 endDate];
 
-        if (v702)
+        if (endDate65)
         {
           break;
         }
@@ -3188,7 +3188,7 @@ LABEL_265:
       if ([v691 count] <= ++v688)
       {
         v723 = v689;
-        v724 = v1205;
+        v724 = selfCopy;
         v725 = 0x100335000;
         goto LABEL_269;
       }
@@ -3197,14 +3197,14 @@ LABEL_265:
     if (v688)
     {
       v703 = [v691 objectAtIndexedSubscript:v688 - 1];
-      v704 = [v703 endDate];
+      endDate66 = [v703 endDate];
 
-      if (v704)
+      if (endDate66)
       {
-        v705 = [v692 endDate];
+        endDate67 = [v692 endDate];
         v706 = [v691 objectAtIndexedSubscript:v688 - 1];
-        v707 = [v706 endDate];
-        [v705 timeIntervalSinceDate:v707];
+        endDate68 = [v706 endDate];
+        [endDate67 timeIntervalSinceDate:endDate68];
         v708 = [NSNumber numberWithDouble:?];
         [v1148 addObject:v708];
 
@@ -3212,9 +3212,9 @@ LABEL_265:
       }
     }
 
-    v709 = [v692 creationDate];
-    v710 = [v692 endDate];
-    [v709 timeIntervalSinceDate:v710];
+    creationDate20 = [v692 creationDate];
+    endDate69 = [v692 endDate];
+    [creationDate20 timeIntervalSinceDate:endDate69];
     v712 = v711;
 
     v713 = [NSNumber numberWithDouble:v712];
@@ -3243,19 +3243,19 @@ LABEL_265:
       v1151 = @"Proactive_HourIDSharedWithYouEvent_End_1";
     }
 
-    v716 = [v692 startDate];
-    [(NSDate *)v1146 timeIntervalSinceDate:v716];
+    startDate21 = [v692 startDate];
+    [(NSDate *)v1146 timeIntervalSinceDate:startDate21];
     v717 = [NSNumber numberWithDouble:?];
     v718 = [MOMetric binForNumber:v717 bins:v1147];
-    v719 = [(MOMetric *)v1205 metrics];
-    [v719 setObject:v718 forKeyedSubscript:v715];
+    metrics123 = [(MOMetric *)selfCopy metrics];
+    [metrics123 setObject:v718 forKeyedSubscript:v715];
 
-    v699 = [v692 endDate];
-    [(NSDate *)v1146 timeIntervalSinceDate:v699];
+    endDate70 = [v692 endDate];
+    [(NSDate *)v1146 timeIntervalSinceDate:endDate70];
     v720 = [NSNumber numberWithDouble:?];
     v721 = [MOMetric binForNumber:v720 bins:v1147];
-    v722 = [(MOMetric *)v1205 metrics];
-    [v722 setObject:v721 forKeyedSubscript:v1151];
+    metrics124 = [(MOMetric *)selfCopy metrics];
+    [metrics124 setObject:v721 forKeyedSubscript:v1151];
 
     v691 = objc;
     v690 = v1190;
@@ -3273,15 +3273,15 @@ LABEL_269:
   if ([v691 count])
   {
     v726 = [*(v725 + 1520) numberWithDouble:{1.0 - v723 / objc_msgSend(v691, "count")}];
-    v727 = [(MOMetric *)v724 metrics];
-    [v727 setObject:v726 forKeyedSubscript:@"Proactive_PercentageOfSharedWithYouEventsNoLOI"];
+    metrics125 = [(MOMetric *)v724 metrics];
+    [metrics125 setObject:v726 forKeyedSubscript:@"Proactive_PercentageOfSharedWithYouEventsNoLOI"];
   }
 
   if ([v1204 count])
   {
     v728 = [MOPromptMetrics meanOf:v1204];
-    v729 = [(MOMetric *)v724 metrics];
-    [v729 setObject:v728 forKeyedSubscript:@"Proactive_SharedWithYouAverageLatency"];
+    metrics126 = [(MOMetric *)v724 metrics];
+    [metrics126 setObject:v728 forKeyedSubscript:@"Proactive_SharedWithYouAverageLatency"];
 
     [v1204 removeAllObjects];
   }
@@ -3289,56 +3289,56 @@ LABEL_269:
   if ([v1148 count])
   {
     v730 = [MOPromptMetrics meanOf:v1148];
-    v731 = [(MOMetric *)v724 metrics];
-    [v731 setObject:v730 forKeyedSubscript:@"Proactive_MeanDeltaBetweenSharedWithYouEvents"];
+    metrics127 = [(MOMetric *)v724 metrics];
+    [metrics127 setObject:v730 forKeyedSubscript:@"Proactive_MeanDeltaBetweenSharedWithYouEvents"];
 
     v732 = [v1148 valueForKeyPath:@"@min.doubleValue"];
-    v733 = [(MOMetric *)v724 metrics];
-    [v733 setObject:v732 forKeyedSubscript:@"Proactive_MinDeltaBetweenSharedWithYouEvents"];
+    metrics128 = [(MOMetric *)v724 metrics];
+    [metrics128 setObject:v732 forKeyedSubscript:@"Proactive_MinDeltaBetweenSharedWithYouEvents"];
 
     v734 = [v1148 valueForKeyPath:@"@max.doubleValue"];
-    v735 = [(MOMetric *)v724 metrics];
-    [v735 setObject:v734 forKeyedSubscript:@"Proactive_MaxDeltaBetweenSharedWithYouEvents"];
+    metrics129 = [(MOMetric *)v724 metrics];
+    [metrics129 setObject:v734 forKeyedSubscript:@"Proactive_MaxDeltaBetweenSharedWithYouEvents"];
 
     v736 = [MOPromptMetrics standardDeviationOf:v1148];
-    v737 = [(MOMetric *)v724 metrics];
-    [v737 setObject:v736 forKeyedSubscript:@"Proactive_SDDeltaBetweenSharedWithYouEvents"];
+    metrics130 = [(MOMetric *)v724 metrics];
+    [metrics130 setObject:v736 forKeyedSubscript:@"Proactive_SDDeltaBetweenSharedWithYouEvents"];
   }
 
   v738 = [v691 count];
   v739 = *(v725 + 1520);
   if (v738)
   {
-    v740 = [v691 firstObject];
-    v741 = [v740 endDate];
-    [v741 timeIntervalSinceDate:v724->_startDate];
+    firstObject7 = [v691 firstObject];
+    endDate71 = [firstObject7 endDate];
+    [endDate71 timeIntervalSinceDate:v724->_startDate];
     v742 = [v739 numberWithDouble:?];
     v743 = v1148;
     [v1148 addObject:v742];
 
     v744 = *(v725 + 1520);
     v745 = v724->_endDate;
-    v746 = [v691 lastObject];
-    v747 = [v746 endDate];
-    [(NSDate *)v745 timeIntervalSinceDate:v747];
+    lastObject7 = [v691 lastObject];
+    endDate72 = [lastObject7 endDate];
+    [(NSDate *)v745 timeIntervalSinceDate:endDate72];
     v748 = [v744 numberWithDouble:?];
     [v1148 addObject:v748];
 
     v749 = [MOPromptMetrics meanOf:v1148];
-    v750 = [(MOMetric *)v724 metrics];
-    [v750 setObject:v749 forKeyedSubscript:@"Proactive_MeanDeltaBetweenSharedWithYouEventsBoundariesIncluded"];
+    metrics131 = [(MOMetric *)v724 metrics];
+    [metrics131 setObject:v749 forKeyedSubscript:@"Proactive_MeanDeltaBetweenSharedWithYouEventsBoundariesIncluded"];
 
     v751 = [v1148 valueForKeyPath:@"@min.doubleValue"];
-    v752 = [(MOMetric *)v724 metrics];
-    [v752 setObject:v751 forKeyedSubscript:@"Proactive_MinDeltaBetweenSharedWithYouEventsBoundariesIncluded"];
+    metrics132 = [(MOMetric *)v724 metrics];
+    [metrics132 setObject:v751 forKeyedSubscript:@"Proactive_MinDeltaBetweenSharedWithYouEventsBoundariesIncluded"];
 
     v753 = [v1148 valueForKeyPath:@"@max.doubleValue"];
-    v754 = [(MOMetric *)v724 metrics];
-    [v754 setObject:v753 forKeyedSubscript:@"Proactive_MaxDeltaBetweenSharedWithYouEventsBoundariesIncluded"];
+    metrics133 = [(MOMetric *)v724 metrics];
+    [metrics133 setObject:v753 forKeyedSubscript:@"Proactive_MaxDeltaBetweenSharedWithYouEventsBoundariesIncluded"];
 
-    v755 = [MOPromptMetrics standardDeviationOf:v1148];
-    v756 = [(MOMetric *)v724 metrics];
-    [v756 setObject:v755 forKeyedSubscript:@"Proactive_SDDeltaBetweenSharedWithYouEventsBoundariesIncluded"];
+    metrics138 = [MOPromptMetrics standardDeviationOf:v1148];
+    metrics134 = [(MOMetric *)v724 metrics];
+    [metrics134 setObject:metrics138 forKeyedSubscript:@"Proactive_SDDeltaBetweenSharedWithYouEventsBoundariesIncluded"];
 
     v757 = v724;
     v758 = v725;
@@ -3348,23 +3348,23 @@ LABEL_269:
   {
     [(NSDate *)v724->_endDate timeIntervalSinceDate:v724->_startDate];
     v759 = [v739 numberWithDouble:?];
-    v760 = [(MOMetric *)v724 metrics];
-    [v760 setObject:v759 forKeyedSubscript:@"Proactive_MeanDeltaBetweenSharedWithYouEventsBoundariesIncluded"];
+    metrics135 = [(MOMetric *)v724 metrics];
+    [metrics135 setObject:v759 forKeyedSubscript:@"Proactive_MeanDeltaBetweenSharedWithYouEventsBoundariesIncluded"];
 
     v761 = *(v725 + 1520);
     [(NSDate *)v724->_endDate timeIntervalSinceDate:v724->_startDate];
     v762 = [v761 numberWithDouble:?];
-    v763 = [(MOMetric *)v724 metrics];
-    [v763 setObject:v762 forKeyedSubscript:@"Proactive_MinDeltaBetweenSharedWithYouEventsBoundariesIncluded"];
+    metrics136 = [(MOMetric *)v724 metrics];
+    [metrics136 setObject:v762 forKeyedSubscript:@"Proactive_MinDeltaBetweenSharedWithYouEventsBoundariesIncluded"];
 
     v764 = *(v725 + 1520);
     [(NSDate *)v724->_endDate timeIntervalSinceDate:v724->_startDate];
     v765 = [v764 numberWithDouble:?];
-    v766 = [(MOMetric *)v724 metrics];
-    [v766 setObject:v765 forKeyedSubscript:@"Proactive_MaxDeltaBetweenSharedWithYouEventsBoundariesIncluded"];
+    metrics137 = [(MOMetric *)v724 metrics];
+    [metrics137 setObject:v765 forKeyedSubscript:@"Proactive_MaxDeltaBetweenSharedWithYouEventsBoundariesIncluded"];
 
-    v755 = [(MOMetric *)v724 metrics];
-    [v755 setObject:&off_10036E7B0 forKeyedSubscript:@"Proactive_SDDeltaBetweenSharedWithYouEventsBoundariesIncluded"];
+    metrics138 = [(MOMetric *)v724 metrics];
+    [metrics138 setObject:&off_10036E7B0 forKeyedSubscript:@"Proactive_SDDeltaBetweenSharedWithYouEventsBoundariesIncluded"];
     v757 = v724;
     v758 = v725;
     v743 = v1148;
@@ -3383,8 +3383,8 @@ LABEL_269:
   v1112 = v772;
   v773 = [v1143 filteredArrayUsingPredicate:v772];
   v774 = [*(v758 + 1520) numberWithUnsignedInteger:{objc_msgSend(v773, "count")}];
-  v775 = [(MOMetric *)v757 metrics];
-  [v775 setObject:v774 forKeyedSubscript:@"Proactive_NumSignificantContactEvents"];
+  metrics139 = [(MOMetric *)v757 metrics];
+  [metrics139 setObject:v774 forKeyedSubscript:@"Proactive_NumSignificantContactEvents"];
 
   v1152 = v773;
   if ([v773 count])
@@ -3397,25 +3397,25 @@ LABEL_269:
     {
       v780 = [v779 objectAtIndexedSubscript:v776];
       v781 = [NSDateInterval alloc];
-      v782 = [v780 startDate];
-      v783 = [v780 endDate];
-      v784 = [v781 initWithStartDate:v782 endDate:v783];
+      startDate22 = [v780 startDate];
+      endDate73 = [v780 endDate];
+      v784 = [v781 initWithStartDate:startDate22 endDate:endDate73];
 
-      v785 = [(MOPromptMetrics *)v1205 doesInterval:v784 overlapWithAnyIntervalFromArray:v1158];
-      v786 = [v780 creationDate];
-      if (v786)
+      v785 = [(MOPromptMetrics *)selfCopy doesInterval:v784 overlapWithAnyIntervalFromArray:v1158];
+      creationDate21 = [v780 creationDate];
+      if (creationDate21)
       {
-        v787 = v786;
-        v788 = [v780 startDate];
-        if (!v788)
+        endDate79 = creationDate21;
+        startDate23 = [v780 startDate];
+        if (!startDate23)
         {
           goto LABEL_291;
         }
 
-        v789 = v788;
-        v790 = [v780 endDate];
+        v789 = startDate23;
+        endDate74 = [v780 endDate];
 
-        if (v790)
+        if (endDate74)
         {
           break;
         }
@@ -3427,7 +3427,7 @@ LABEL_292:
       if ([v779 count] <= ++v776)
       {
         v811 = v777;
-        v812 = v1205;
+        v812 = selfCopy;
         v813 = 0x100335000;
         goto LABEL_296;
       }
@@ -3436,14 +3436,14 @@ LABEL_292:
     if (v776)
     {
       v791 = [v779 objectAtIndexedSubscript:v776 - 1];
-      v792 = [v791 endDate];
+      endDate75 = [v791 endDate];
 
-      if (v792)
+      if (endDate75)
       {
-        v793 = [v780 endDate];
+        endDate76 = [v780 endDate];
         v794 = [v779 objectAtIndexedSubscript:v776 - 1];
-        v795 = [v794 endDate];
-        [v793 timeIntervalSinceDate:v795];
+        endDate77 = [v794 endDate];
+        [endDate76 timeIntervalSinceDate:endDate77];
         v796 = [NSNumber numberWithDouble:?];
         [v1148 addObject:v796];
 
@@ -3451,9 +3451,9 @@ LABEL_292:
       }
     }
 
-    v797 = [v780 creationDate];
-    v798 = [v780 endDate];
-    [v797 timeIntervalSinceDate:v798];
+    creationDate22 = [v780 creationDate];
+    endDate78 = [v780 endDate];
+    [creationDate22 timeIntervalSinceDate:endDate78];
     v800 = v799;
 
     v801 = [NSNumber numberWithDouble:v800];
@@ -3482,19 +3482,19 @@ LABEL_292:
       v1137 = @"Proactive_HourIDSignificantContactEvent_End_1";
     }
 
-    v804 = [v780 startDate];
-    [(NSDate *)v1146 timeIntervalSinceDate:v804];
+    startDate24 = [v780 startDate];
+    [(NSDate *)v1146 timeIntervalSinceDate:startDate24];
     v805 = [NSNumber numberWithDouble:?];
     v806 = [MOMetric binForNumber:v805 bins:v1147];
-    v807 = [(MOMetric *)v1205 metrics];
-    [v807 setObject:v806 forKeyedSubscript:v803];
+    metrics140 = [(MOMetric *)selfCopy metrics];
+    [metrics140 setObject:v806 forKeyedSubscript:v803];
 
-    v787 = [v780 endDate];
-    [(NSDate *)v1146 timeIntervalSinceDate:v787];
+    endDate79 = [v780 endDate];
+    [(NSDate *)v1146 timeIntervalSinceDate:endDate79];
     v808 = [NSNumber numberWithDouble:?];
     v809 = [MOMetric binForNumber:v808 bins:v1147];
-    v810 = [(MOMetric *)v1205 metrics];
-    [v810 setObject:v809 forKeyedSubscript:v1137];
+    metrics141 = [(MOMetric *)selfCopy metrics];
+    [metrics141 setObject:v809 forKeyedSubscript:v1137];
 
     v779 = v1152;
     v778 = v1191;
@@ -3512,15 +3512,15 @@ LABEL_296:
   if ([v779 count])
   {
     v814 = [*(v813 + 1520) numberWithDouble:{1.0 - v811 / objc_msgSend(v779, "count")}];
-    v815 = [(MOMetric *)v812 metrics];
-    [v815 setObject:v814 forKeyedSubscript:@"Proactive_PercentageOfSignificantContactEventsNoLOI"];
+    metrics142 = [(MOMetric *)v812 metrics];
+    [metrics142 setObject:v814 forKeyedSubscript:@"Proactive_PercentageOfSignificantContactEventsNoLOI"];
   }
 
   if ([v1204 count])
   {
     v816 = [MOPromptMetrics meanOf:v1204];
-    v817 = [(MOMetric *)v812 metrics];
-    [v817 setObject:v816 forKeyedSubscript:@"Proactive_SignificantContactAverageLatency"];
+    metrics143 = [(MOMetric *)v812 metrics];
+    [metrics143 setObject:v816 forKeyedSubscript:@"Proactive_SignificantContactAverageLatency"];
 
     [v1204 removeAllObjects];
   }
@@ -3528,56 +3528,56 @@ LABEL_296:
   if ([v1148 count])
   {
     v818 = [MOPromptMetrics meanOf:v1148];
-    v819 = [(MOMetric *)v812 metrics];
-    [v819 setObject:v818 forKeyedSubscript:@"Proactive_MeanDeltaBetweenSignificantContactEvents"];
+    metrics144 = [(MOMetric *)v812 metrics];
+    [metrics144 setObject:v818 forKeyedSubscript:@"Proactive_MeanDeltaBetweenSignificantContactEvents"];
 
     v820 = [v1148 valueForKeyPath:@"@min.doubleValue"];
-    v821 = [(MOMetric *)v812 metrics];
-    [v821 setObject:v820 forKeyedSubscript:@"Proactive_MinDeltaBetweenSignificantContactEvents"];
+    metrics145 = [(MOMetric *)v812 metrics];
+    [metrics145 setObject:v820 forKeyedSubscript:@"Proactive_MinDeltaBetweenSignificantContactEvents"];
 
     v822 = [v1148 valueForKeyPath:@"@max.doubleValue"];
-    v823 = [(MOMetric *)v812 metrics];
-    [v823 setObject:v822 forKeyedSubscript:@"Proactive_MaxDeltaBetweenSignificantContactEvents"];
+    metrics146 = [(MOMetric *)v812 metrics];
+    [metrics146 setObject:v822 forKeyedSubscript:@"Proactive_MaxDeltaBetweenSignificantContactEvents"];
 
     v824 = [MOPromptMetrics standardDeviationOf:v1148];
-    v825 = [(MOMetric *)v812 metrics];
-    [v825 setObject:v824 forKeyedSubscript:@"Proactive_SDDeltaBetweenSignificantContactEvents"];
+    metrics147 = [(MOMetric *)v812 metrics];
+    [metrics147 setObject:v824 forKeyedSubscript:@"Proactive_SDDeltaBetweenSignificantContactEvents"];
   }
 
   v826 = [v779 count];
   v827 = *(v813 + 1520);
   if (v826)
   {
-    v828 = [v779 firstObject];
-    v829 = [v828 endDate];
-    [v829 timeIntervalSinceDate:v812->_startDate];
+    firstObject8 = [v779 firstObject];
+    endDate80 = [firstObject8 endDate];
+    [endDate80 timeIntervalSinceDate:v812->_startDate];
     v830 = [v827 numberWithDouble:?];
     v831 = v1148;
     [v1148 addObject:v830];
 
     v832 = *(v813 + 1520);
     v833 = v812->_endDate;
-    v834 = [v779 lastObject];
-    v835 = [v834 endDate];
-    [(NSDate *)v833 timeIntervalSinceDate:v835];
+    lastObject8 = [v779 lastObject];
+    endDate81 = [lastObject8 endDate];
+    [(NSDate *)v833 timeIntervalSinceDate:endDate81];
     v836 = [v832 numberWithDouble:?];
     [v1148 addObject:v836];
 
     v837 = [MOPromptMetrics meanOf:v1148];
-    v838 = [(MOMetric *)v812 metrics];
-    [v838 setObject:v837 forKeyedSubscript:@"Proactive_MeanDeltaBetweenSignificantContactEventsBoundariesIncluded"];
+    metrics148 = [(MOMetric *)v812 metrics];
+    [metrics148 setObject:v837 forKeyedSubscript:@"Proactive_MeanDeltaBetweenSignificantContactEventsBoundariesIncluded"];
 
     v839 = [v1148 valueForKeyPath:@"@min.doubleValue"];
-    v840 = [(MOMetric *)v812 metrics];
-    [v840 setObject:v839 forKeyedSubscript:@"Proactive_MinDeltaBetweenSignificantContactEventsBoundariesIncluded"];
+    metrics149 = [(MOMetric *)v812 metrics];
+    [metrics149 setObject:v839 forKeyedSubscript:@"Proactive_MinDeltaBetweenSignificantContactEventsBoundariesIncluded"];
 
     v841 = [v1148 valueForKeyPath:@"@max.doubleValue"];
-    v842 = [(MOMetric *)v812 metrics];
-    [v842 setObject:v841 forKeyedSubscript:@"Proactive_MaxDeltaBetweenSignificantContactEventsBoundariesIncluded"];
+    metrics150 = [(MOMetric *)v812 metrics];
+    [metrics150 setObject:v841 forKeyedSubscript:@"Proactive_MaxDeltaBetweenSignificantContactEventsBoundariesIncluded"];
 
-    v843 = [MOPromptMetrics standardDeviationOf:v1148];
-    v844 = [(MOMetric *)v812 metrics];
-    [v844 setObject:v843 forKeyedSubscript:@"Proactive_SDDeltaBetweenSignificantContactEventsBoundariesIncluded"];
+    metrics155 = [MOPromptMetrics standardDeviationOf:v1148];
+    metrics151 = [(MOMetric *)v812 metrics];
+    [metrics151 setObject:metrics155 forKeyedSubscript:@"Proactive_SDDeltaBetweenSignificantContactEventsBoundariesIncluded"];
 
     v845 = v812;
     v846 = v813;
@@ -3587,23 +3587,23 @@ LABEL_296:
   {
     [(NSDate *)v812->_endDate timeIntervalSinceDate:v812->_startDate];
     v847 = [v827 numberWithDouble:?];
-    v848 = [(MOMetric *)v812 metrics];
-    [v848 setObject:v847 forKeyedSubscript:@"Proactive_MeanDeltaBetweenSignificantContactEventsBoundariesIncluded"];
+    metrics152 = [(MOMetric *)v812 metrics];
+    [metrics152 setObject:v847 forKeyedSubscript:@"Proactive_MeanDeltaBetweenSignificantContactEventsBoundariesIncluded"];
 
     v849 = *(v813 + 1520);
     [(NSDate *)v812->_endDate timeIntervalSinceDate:v812->_startDate];
     v850 = [v849 numberWithDouble:?];
-    v851 = [(MOMetric *)v812 metrics];
-    [v851 setObject:v850 forKeyedSubscript:@"Proactive_MinDeltaBetweenSignificantContactEventsBoundariesIncluded"];
+    metrics153 = [(MOMetric *)v812 metrics];
+    [metrics153 setObject:v850 forKeyedSubscript:@"Proactive_MinDeltaBetweenSignificantContactEventsBoundariesIncluded"];
 
     v852 = *(v813 + 1520);
     [(NSDate *)v812->_endDate timeIntervalSinceDate:v812->_startDate];
     v853 = [v852 numberWithDouble:?];
-    v854 = [(MOMetric *)v812 metrics];
-    [v854 setObject:v853 forKeyedSubscript:@"Proactive_MaxDeltaBetweenSignificantContactEventsBoundariesIncluded"];
+    metrics154 = [(MOMetric *)v812 metrics];
+    [metrics154 setObject:v853 forKeyedSubscript:@"Proactive_MaxDeltaBetweenSignificantContactEventsBoundariesIncluded"];
 
-    v843 = [(MOMetric *)v812 metrics];
-    [v843 setObject:&off_10036E7B0 forKeyedSubscript:@"Proactive_SDDeltaBetweenSignificantContactEventsBoundariesIncluded"];
+    metrics155 = [(MOMetric *)v812 metrics];
+    [metrics155 setObject:&off_10036E7B0 forKeyedSubscript:@"Proactive_SDDeltaBetweenSignificantContactEventsBoundariesIncluded"];
     v845 = v812;
     v846 = v813;
     v831 = v1148;
@@ -3622,8 +3622,8 @@ LABEL_296:
   v1111 = v860;
   v861 = [v1143 filteredArrayUsingPredicate:v860];
   v862 = [*(v846 + 1520) numberWithUnsignedInteger:{objc_msgSend(v861, "count")}];
-  v863 = [(MOMetric *)v845 metrics];
-  [v863 setObject:v862 forKeyedSubscript:@"Proactive_NumStructuredEvents"];
+  metrics156 = [(MOMetric *)v845 metrics];
+  [metrics156 setObject:v862 forKeyedSubscript:@"Proactive_NumStructuredEvents"];
 
   v1138 = v861;
   if ([v861 count])
@@ -3636,25 +3636,25 @@ LABEL_296:
     {
       v868 = [v867 objectAtIndexedSubscript:v864];
       v869 = [NSDateInterval alloc];
-      v870 = [v868 startDate];
-      v871 = [v868 endDate];
-      v872 = [v869 initWithStartDate:v870 endDate:v871];
+      startDate25 = [v868 startDate];
+      endDate82 = [v868 endDate];
+      v872 = [v869 initWithStartDate:startDate25 endDate:endDate82];
 
-      v873 = [(MOPromptMetrics *)v1205 doesInterval:v872 overlapWithAnyIntervalFromArray:v1158];
-      v874 = [v868 creationDate];
-      if (v874)
+      v873 = [(MOPromptMetrics *)selfCopy doesInterval:v872 overlapWithAnyIntervalFromArray:v1158];
+      creationDate23 = [v868 creationDate];
+      if (creationDate23)
       {
-        v875 = v874;
-        v876 = [v868 startDate];
-        if (!v876)
+        endDate88 = creationDate23;
+        startDate26 = [v868 startDate];
+        if (!startDate26)
         {
           goto LABEL_318;
         }
 
-        v877 = v876;
-        v878 = [v868 endDate];
+        v877 = startDate26;
+        endDate83 = [v868 endDate];
 
-        if (v878)
+        if (endDate83)
         {
           break;
         }
@@ -3666,7 +3666,7 @@ LABEL_319:
       if ([v867 count] <= ++v864)
       {
         v899 = v865;
-        v900 = v1205;
+        v900 = selfCopy;
         v901 = 0x100335000;
         goto LABEL_323;
       }
@@ -3675,14 +3675,14 @@ LABEL_319:
     if (v864)
     {
       v879 = [v867 objectAtIndexedSubscript:v864 - 1];
-      v880 = [v879 endDate];
+      endDate84 = [v879 endDate];
 
-      if (v880)
+      if (endDate84)
       {
-        v881 = [v868 endDate];
+        endDate85 = [v868 endDate];
         v882 = [v867 objectAtIndexedSubscript:v864 - 1];
-        v883 = [v882 endDate];
-        [v881 timeIntervalSinceDate:v883];
+        endDate86 = [v882 endDate];
+        [endDate85 timeIntervalSinceDate:endDate86];
         v884 = [NSNumber numberWithDouble:?];
         [v1148 addObject:v884];
 
@@ -3690,9 +3690,9 @@ LABEL_319:
       }
     }
 
-    v885 = [v868 creationDate];
-    v886 = [v868 endDate];
-    [v885 timeIntervalSinceDate:v886];
+    creationDate24 = [v868 creationDate];
+    endDate87 = [v868 endDate];
+    [creationDate24 timeIntervalSinceDate:endDate87];
     v888 = v887;
 
     v889 = [NSNumber numberWithDouble:v888];
@@ -3721,19 +3721,19 @@ LABEL_319:
       v1135 = @"Proactive_HourIDStructuredEvent_End_1";
     }
 
-    v892 = [v868 startDate];
-    [(NSDate *)v1146 timeIntervalSinceDate:v892];
+    startDate27 = [v868 startDate];
+    [(NSDate *)v1146 timeIntervalSinceDate:startDate27];
     v893 = [NSNumber numberWithDouble:?];
     v894 = [MOMetric binForNumber:v893 bins:v1147];
-    v895 = [(MOMetric *)v1205 metrics];
-    [v895 setObject:v894 forKeyedSubscript:v891];
+    metrics157 = [(MOMetric *)selfCopy metrics];
+    [metrics157 setObject:v894 forKeyedSubscript:v891];
 
-    v875 = [v868 endDate];
-    [(NSDate *)v1146 timeIntervalSinceDate:v875];
+    endDate88 = [v868 endDate];
+    [(NSDate *)v1146 timeIntervalSinceDate:endDate88];
     v896 = [NSNumber numberWithDouble:?];
     v897 = [MOMetric binForNumber:v896 bins:v1147];
-    v898 = [(MOMetric *)v1205 metrics];
-    [v898 setObject:v897 forKeyedSubscript:v1135];
+    metrics158 = [(MOMetric *)selfCopy metrics];
+    [metrics158 setObject:v897 forKeyedSubscript:v1135];
 
     v867 = v1138;
     v866 = v1192;
@@ -3751,15 +3751,15 @@ LABEL_323:
   if ([v867 count])
   {
     v902 = [*(v901 + 1520) numberWithDouble:{1.0 - v899 / objc_msgSend(v867, "count")}];
-    v903 = [(MOMetric *)v900 metrics];
-    [v903 setObject:v902 forKeyedSubscript:@"Proactive_PercentageOfStructuredEventsNoLOI"];
+    metrics159 = [(MOMetric *)v900 metrics];
+    [metrics159 setObject:v902 forKeyedSubscript:@"Proactive_PercentageOfStructuredEventsNoLOI"];
   }
 
   if ([v1204 count])
   {
     v904 = [MOPromptMetrics meanOf:v1204];
-    v905 = [(MOMetric *)v900 metrics];
-    [v905 setObject:v904 forKeyedSubscript:@"Proactive_StructuredEventsAverageLatency"];
+    metrics160 = [(MOMetric *)v900 metrics];
+    [metrics160 setObject:v904 forKeyedSubscript:@"Proactive_StructuredEventsAverageLatency"];
 
     [v1204 removeAllObjects];
   }
@@ -3767,56 +3767,56 @@ LABEL_323:
   if ([v1148 count])
   {
     v906 = [MOPromptMetrics meanOf:v1148];
-    v907 = [(MOMetric *)v900 metrics];
-    [v907 setObject:v906 forKeyedSubscript:@"Proactive_MeanDeltaBetweenStructuredEvents"];
+    metrics161 = [(MOMetric *)v900 metrics];
+    [metrics161 setObject:v906 forKeyedSubscript:@"Proactive_MeanDeltaBetweenStructuredEvents"];
 
     v908 = [v1148 valueForKeyPath:@"@min.doubleValue"];
-    v909 = [(MOMetric *)v900 metrics];
-    [v909 setObject:v908 forKeyedSubscript:@"Proactive_MinDeltaBetweenStructuredEvents"];
+    metrics162 = [(MOMetric *)v900 metrics];
+    [metrics162 setObject:v908 forKeyedSubscript:@"Proactive_MinDeltaBetweenStructuredEvents"];
 
     v910 = [v1148 valueForKeyPath:@"@max.doubleValue"];
-    v911 = [(MOMetric *)v900 metrics];
-    [v911 setObject:v910 forKeyedSubscript:@"Proactive_MaxDeltaBetweenStructuredEvents"];
+    metrics163 = [(MOMetric *)v900 metrics];
+    [metrics163 setObject:v910 forKeyedSubscript:@"Proactive_MaxDeltaBetweenStructuredEvents"];
 
     v912 = [MOPromptMetrics standardDeviationOf:v1148];
-    v913 = [(MOMetric *)v900 metrics];
-    [v913 setObject:v912 forKeyedSubscript:@"Proactive_SDDeltaBetweenStructuredEvents"];
+    metrics164 = [(MOMetric *)v900 metrics];
+    [metrics164 setObject:v912 forKeyedSubscript:@"Proactive_SDDeltaBetweenStructuredEvents"];
   }
 
   v914 = [v867 count];
   v915 = *(v901 + 1520);
   if (v914)
   {
-    v916 = [v867 firstObject];
-    v917 = [v916 endDate];
-    [v917 timeIntervalSinceDate:v900->_startDate];
+    firstObject9 = [v867 firstObject];
+    endDate89 = [firstObject9 endDate];
+    [endDate89 timeIntervalSinceDate:v900->_startDate];
     v918 = [v915 numberWithDouble:?];
     v919 = v1148;
     [v1148 addObject:v918];
 
     v920 = *(v901 + 1520);
     v921 = v900->_endDate;
-    v922 = [v867 lastObject];
-    v923 = [v922 endDate];
-    [(NSDate *)v921 timeIntervalSinceDate:v923];
+    lastObject9 = [v867 lastObject];
+    endDate90 = [lastObject9 endDate];
+    [(NSDate *)v921 timeIntervalSinceDate:endDate90];
     v924 = [v920 numberWithDouble:?];
     [v1148 addObject:v924];
 
     v925 = [MOPromptMetrics meanOf:v1148];
-    v926 = [(MOMetric *)v900 metrics];
-    [v926 setObject:v925 forKeyedSubscript:@"Proactive_MeanDeltaBetweenStructuredEventsBoundariesIncluded"];
+    metrics165 = [(MOMetric *)v900 metrics];
+    [metrics165 setObject:v925 forKeyedSubscript:@"Proactive_MeanDeltaBetweenStructuredEventsBoundariesIncluded"];
 
     v927 = [v1148 valueForKeyPath:@"@min.doubleValue"];
-    v928 = [(MOMetric *)v900 metrics];
-    [v928 setObject:v927 forKeyedSubscript:@"Proactive_MinDeltaBetweenStructuredEventsBoundariesIncluded"];
+    metrics166 = [(MOMetric *)v900 metrics];
+    [metrics166 setObject:v927 forKeyedSubscript:@"Proactive_MinDeltaBetweenStructuredEventsBoundariesIncluded"];
 
     v929 = [v1148 valueForKeyPath:@"@max.doubleValue"];
-    v930 = [(MOMetric *)v900 metrics];
-    [v930 setObject:v929 forKeyedSubscript:@"Proactive_MaxDeltaBetweenStructuredEventsBoundariesIncluded"];
+    metrics167 = [(MOMetric *)v900 metrics];
+    [metrics167 setObject:v929 forKeyedSubscript:@"Proactive_MaxDeltaBetweenStructuredEventsBoundariesIncluded"];
 
-    v931 = [MOPromptMetrics standardDeviationOf:v1148];
-    v932 = [(MOMetric *)v900 metrics];
-    [v932 setObject:v931 forKeyedSubscript:@"Proactive_SDDeltaBetweenStructuredEventsBoundariesIncluded"];
+    metrics172 = [MOPromptMetrics standardDeviationOf:v1148];
+    metrics168 = [(MOMetric *)v900 metrics];
+    [metrics168 setObject:metrics172 forKeyedSubscript:@"Proactive_SDDeltaBetweenStructuredEventsBoundariesIncluded"];
 
     v933 = v900;
     v934 = v901;
@@ -3826,23 +3826,23 @@ LABEL_323:
   {
     [(NSDate *)v900->_endDate timeIntervalSinceDate:v900->_startDate];
     v935 = [v915 numberWithDouble:?];
-    v936 = [(MOMetric *)v900 metrics];
-    [v936 setObject:v935 forKeyedSubscript:@"Proactive_MeanDeltaBetweenStructuredEventsBoundariesIncluded"];
+    metrics169 = [(MOMetric *)v900 metrics];
+    [metrics169 setObject:v935 forKeyedSubscript:@"Proactive_MeanDeltaBetweenStructuredEventsBoundariesIncluded"];
 
     v937 = *(v901 + 1520);
     [(NSDate *)v900->_endDate timeIntervalSinceDate:v900->_startDate];
     v938 = [v937 numberWithDouble:?];
-    v939 = [(MOMetric *)v900 metrics];
-    [v939 setObject:v938 forKeyedSubscript:@"Proactive_MinDeltaBetweenStructuredEventsBoundariesIncluded"];
+    metrics170 = [(MOMetric *)v900 metrics];
+    [metrics170 setObject:v938 forKeyedSubscript:@"Proactive_MinDeltaBetweenStructuredEventsBoundariesIncluded"];
 
     v940 = *(v901 + 1520);
     [(NSDate *)v900->_endDate timeIntervalSinceDate:v900->_startDate];
     v941 = [v940 numberWithDouble:?];
-    v942 = [(MOMetric *)v900 metrics];
-    [v942 setObject:v941 forKeyedSubscript:@"Proactive_MaxDeltaBetweenStructuredEventsBoundariesIncluded"];
+    metrics171 = [(MOMetric *)v900 metrics];
+    [metrics171 setObject:v941 forKeyedSubscript:@"Proactive_MaxDeltaBetweenStructuredEventsBoundariesIncluded"];
 
-    v931 = [(MOMetric *)v900 metrics];
-    [v931 setObject:&off_10036E7B0 forKeyedSubscript:@"Proactive_SDDeltaBetweenStructuredEventsBoundariesIncluded"];
+    metrics172 = [(MOMetric *)v900 metrics];
+    [metrics172 setObject:&off_10036E7B0 forKeyedSubscript:@"Proactive_SDDeltaBetweenStructuredEventsBoundariesIncluded"];
     v933 = v900;
     v934 = v901;
     v919 = v1148;
@@ -3861,8 +3861,8 @@ LABEL_323:
   v1110 = v948;
   v949 = [v1143 filteredArrayUsingPredicate:v948];
   v950 = [*(v934 + 1520) numberWithUnsignedInteger:{objc_msgSend(v949, "count")}];
-  v951 = [(MOMetric *)v933 metrics];
-  [v951 setObject:v950 forKeyedSubscript:@"Proactive_NumLeisureMediaEvents"];
+  metrics173 = [(MOMetric *)v933 metrics];
+  [metrics173 setObject:v950 forKeyedSubscript:@"Proactive_NumLeisureMediaEvents"];
 
   v1136 = v949;
   if ([v949 count])
@@ -3875,25 +3875,25 @@ LABEL_323:
     {
       v956 = [v955 objectAtIndexedSubscript:v952];
       v957 = [NSDateInterval alloc];
-      v958 = [v956 startDate];
-      v959 = [v956 endDate];
-      v960 = [v957 initWithStartDate:v958 endDate:v959];
+      startDate28 = [v956 startDate];
+      endDate91 = [v956 endDate];
+      v960 = [v957 initWithStartDate:startDate28 endDate:endDate91];
 
-      v961 = [(MOPromptMetrics *)v1205 doesInterval:v960 overlapWithAnyIntervalFromArray:v1158];
-      v962 = [v956 creationDate];
-      if (v962)
+      v961 = [(MOPromptMetrics *)selfCopy doesInterval:v960 overlapWithAnyIntervalFromArray:v1158];
+      creationDate25 = [v956 creationDate];
+      if (creationDate25)
       {
-        v963 = v962;
-        v964 = [v956 startDate];
-        if (!v964)
+        endDate97 = creationDate25;
+        startDate29 = [v956 startDate];
+        if (!startDate29)
         {
           goto LABEL_345;
         }
 
-        v965 = v964;
-        v966 = [v956 endDate];
+        v965 = startDate29;
+        endDate92 = [v956 endDate];
 
-        if (v966)
+        if (endDate92)
         {
           break;
         }
@@ -3905,7 +3905,7 @@ LABEL_346:
       if ([v955 count] <= ++v952)
       {
         v987 = v953;
-        v988 = v1205;
+        v988 = selfCopy;
         v989 = 0x100335000;
         goto LABEL_350;
       }
@@ -3914,14 +3914,14 @@ LABEL_346:
     if (v952)
     {
       v967 = [v955 objectAtIndexedSubscript:v952 - 1];
-      v968 = [v967 endDate];
+      endDate93 = [v967 endDate];
 
-      if (v968)
+      if (endDate93)
       {
-        v969 = [v956 endDate];
+        endDate94 = [v956 endDate];
         v970 = [v955 objectAtIndexedSubscript:v952 - 1];
-        v971 = [v970 endDate];
-        [v969 timeIntervalSinceDate:v971];
+        endDate95 = [v970 endDate];
+        [endDate94 timeIntervalSinceDate:endDate95];
         v972 = [NSNumber numberWithDouble:?];
         [v1148 addObject:v972];
 
@@ -3929,9 +3929,9 @@ LABEL_346:
       }
     }
 
-    v973 = [v956 creationDate];
-    v974 = [v956 endDate];
-    [v973 timeIntervalSinceDate:v974];
+    creationDate26 = [v956 creationDate];
+    endDate96 = [v956 endDate];
+    [creationDate26 timeIntervalSinceDate:endDate96];
     v976 = v975;
 
     v977 = [NSNumber numberWithDouble:v976];
@@ -3960,19 +3960,19 @@ LABEL_346:
       v1131 = @"Proactive_HourIDLeisureMediaEvent_End_1";
     }
 
-    v980 = [v956 startDate];
-    [(NSDate *)v1146 timeIntervalSinceDate:v980];
+    startDate30 = [v956 startDate];
+    [(NSDate *)v1146 timeIntervalSinceDate:startDate30];
     v981 = [NSNumber numberWithDouble:?];
     v982 = [MOMetric binForNumber:v981 bins:v1147];
-    v983 = [(MOMetric *)v1205 metrics];
-    [v983 setObject:v982 forKeyedSubscript:v979];
+    metrics174 = [(MOMetric *)selfCopy metrics];
+    [metrics174 setObject:v982 forKeyedSubscript:v979];
 
-    v963 = [v956 endDate];
-    [(NSDate *)v1146 timeIntervalSinceDate:v963];
+    endDate97 = [v956 endDate];
+    [(NSDate *)v1146 timeIntervalSinceDate:endDate97];
     v984 = [NSNumber numberWithDouble:?];
     v985 = [MOMetric binForNumber:v984 bins:v1147];
-    v986 = [(MOMetric *)v1205 metrics];
-    [v986 setObject:v985 forKeyedSubscript:v1131];
+    metrics175 = [(MOMetric *)selfCopy metrics];
+    [metrics175 setObject:v985 forKeyedSubscript:v1131];
 
     v955 = v1136;
     v954 = v1193;
@@ -3990,15 +3990,15 @@ LABEL_350:
   if ([v955 count])
   {
     v990 = [*(v989 + 1520) numberWithDouble:{1.0 - v987 / objc_msgSend(v955, "count")}];
-    v991 = [(MOMetric *)v988 metrics];
-    [v991 setObject:v990 forKeyedSubscript:@"Proactive_PercentageOfLeisureMediaEventsNoLOI"];
+    metrics176 = [(MOMetric *)v988 metrics];
+    [metrics176 setObject:v990 forKeyedSubscript:@"Proactive_PercentageOfLeisureMediaEventsNoLOI"];
   }
 
   if ([v1204 count])
   {
     v992 = [MOPromptMetrics meanOf:v1204];
-    v993 = [(MOMetric *)v988 metrics];
-    [v993 setObject:v992 forKeyedSubscript:@"Proactive_LeisureMediaEventsAverageLatency"];
+    metrics177 = [(MOMetric *)v988 metrics];
+    [metrics177 setObject:v992 forKeyedSubscript:@"Proactive_LeisureMediaEventsAverageLatency"];
 
     [v1204 removeAllObjects];
   }
@@ -4006,56 +4006,56 @@ LABEL_350:
   if ([v1148 count])
   {
     v994 = [MOPromptMetrics meanOf:v1148];
-    v995 = [(MOMetric *)v988 metrics];
-    [v995 setObject:v994 forKeyedSubscript:@"Proactive_MeanDeltaBetweenLeisureMediaEvents"];
+    metrics178 = [(MOMetric *)v988 metrics];
+    [metrics178 setObject:v994 forKeyedSubscript:@"Proactive_MeanDeltaBetweenLeisureMediaEvents"];
 
     v996 = [v1148 valueForKeyPath:@"@min.doubleValue"];
-    v997 = [(MOMetric *)v988 metrics];
-    [v997 setObject:v996 forKeyedSubscript:@"Proactive_MinDeltaBetweenLeisureMediaEvents"];
+    metrics179 = [(MOMetric *)v988 metrics];
+    [metrics179 setObject:v996 forKeyedSubscript:@"Proactive_MinDeltaBetweenLeisureMediaEvents"];
 
     v998 = [v1148 valueForKeyPath:@"@max.doubleValue"];
-    v999 = [(MOMetric *)v988 metrics];
-    [v999 setObject:v998 forKeyedSubscript:@"Proactive_MaxDeltaBetweenLeisureMediaEvents"];
+    metrics180 = [(MOMetric *)v988 metrics];
+    [metrics180 setObject:v998 forKeyedSubscript:@"Proactive_MaxDeltaBetweenLeisureMediaEvents"];
 
     v1000 = [MOPromptMetrics standardDeviationOf:v1148];
-    v1001 = [(MOMetric *)v988 metrics];
-    [v1001 setObject:v1000 forKeyedSubscript:@"Proactive_SDDeltaBetweenLeisureMediaEvents"];
+    metrics181 = [(MOMetric *)v988 metrics];
+    [metrics181 setObject:v1000 forKeyedSubscript:@"Proactive_SDDeltaBetweenLeisureMediaEvents"];
   }
 
   v1002 = [v955 count];
   v1003 = *(v989 + 1520);
   if (v1002)
   {
-    v1004 = [v955 firstObject];
-    v1005 = [v1004 endDate];
-    [v1005 timeIntervalSinceDate:v988->_startDate];
+    firstObject10 = [v955 firstObject];
+    endDate98 = [firstObject10 endDate];
+    [endDate98 timeIntervalSinceDate:v988->_startDate];
     v1006 = [v1003 numberWithDouble:?];
     v1007 = v1148;
     [v1148 addObject:v1006];
 
     v1008 = *(v989 + 1520);
     v1009 = v988->_endDate;
-    v1010 = [v955 lastObject];
-    v1011 = [v1010 endDate];
-    [(NSDate *)v1009 timeIntervalSinceDate:v1011];
+    lastObject10 = [v955 lastObject];
+    endDate99 = [lastObject10 endDate];
+    [(NSDate *)v1009 timeIntervalSinceDate:endDate99];
     v1012 = [v1008 numberWithDouble:?];
     [v1148 addObject:v1012];
 
     v1013 = [MOPromptMetrics meanOf:v1148];
-    v1014 = [(MOMetric *)v988 metrics];
-    [v1014 setObject:v1013 forKeyedSubscript:@"Proactive_MeanDeltaBetweenLeisureMediaEventsBoundariesIncluded"];
+    metrics182 = [(MOMetric *)v988 metrics];
+    [metrics182 setObject:v1013 forKeyedSubscript:@"Proactive_MeanDeltaBetweenLeisureMediaEventsBoundariesIncluded"];
 
     v1015 = [v1148 valueForKeyPath:@"@min.doubleValue"];
-    v1016 = [(MOMetric *)v988 metrics];
-    [v1016 setObject:v1015 forKeyedSubscript:@"Proactive_MinDeltaBetweenLeisureMediaEventsBoundariesIncluded"];
+    metrics183 = [(MOMetric *)v988 metrics];
+    [metrics183 setObject:v1015 forKeyedSubscript:@"Proactive_MinDeltaBetweenLeisureMediaEventsBoundariesIncluded"];
 
     v1017 = [v1148 valueForKeyPath:@"@max.doubleValue"];
-    v1018 = [(MOMetric *)v988 metrics];
-    [v1018 setObject:v1017 forKeyedSubscript:@"Proactive_MaxDeltaBetweenLeisureMediaEventsBoundariesIncluded"];
+    metrics184 = [(MOMetric *)v988 metrics];
+    [metrics184 setObject:v1017 forKeyedSubscript:@"Proactive_MaxDeltaBetweenLeisureMediaEventsBoundariesIncluded"];
 
-    v1019 = [MOPromptMetrics standardDeviationOf:v1148];
-    v1020 = [(MOMetric *)v988 metrics];
-    [v1020 setObject:v1019 forKeyedSubscript:@"Proactive_SDDeltaBetweenLeisureMediaEventsBoundariesIncluded"];
+    metrics189 = [MOPromptMetrics standardDeviationOf:v1148];
+    metrics185 = [(MOMetric *)v988 metrics];
+    [metrics185 setObject:metrics189 forKeyedSubscript:@"Proactive_SDDeltaBetweenLeisureMediaEventsBoundariesIncluded"];
 
     v1021 = v988;
     v1022 = v989;
@@ -4065,23 +4065,23 @@ LABEL_350:
   {
     [(NSDate *)v988->_endDate timeIntervalSinceDate:v988->_startDate];
     v1023 = [v1003 numberWithDouble:?];
-    v1024 = [(MOMetric *)v988 metrics];
-    [v1024 setObject:v1023 forKeyedSubscript:@"Proactive_MeanDeltaBetweenLeisureMediaEventsBoundariesIncluded"];
+    metrics186 = [(MOMetric *)v988 metrics];
+    [metrics186 setObject:v1023 forKeyedSubscript:@"Proactive_MeanDeltaBetweenLeisureMediaEventsBoundariesIncluded"];
 
     v1025 = *(v989 + 1520);
     [(NSDate *)v988->_endDate timeIntervalSinceDate:v988->_startDate];
     v1026 = [v1025 numberWithDouble:?];
-    v1027 = [(MOMetric *)v988 metrics];
-    [v1027 setObject:v1026 forKeyedSubscript:@"Proactive_MinDeltaBetweenLeisureMediaEventsBoundariesIncluded"];
+    metrics187 = [(MOMetric *)v988 metrics];
+    [metrics187 setObject:v1026 forKeyedSubscript:@"Proactive_MinDeltaBetweenLeisureMediaEventsBoundariesIncluded"];
 
     v1028 = *(v989 + 1520);
     [(NSDate *)v988->_endDate timeIntervalSinceDate:v988->_startDate];
     v1029 = [v1028 numberWithDouble:?];
-    v1030 = [(MOMetric *)v988 metrics];
-    [v1030 setObject:v1029 forKeyedSubscript:@"Proactive_MaxDeltaBetweenLeisureMediaEventsBoundariesIncluded"];
+    metrics188 = [(MOMetric *)v988 metrics];
+    [metrics188 setObject:v1029 forKeyedSubscript:@"Proactive_MaxDeltaBetweenLeisureMediaEventsBoundariesIncluded"];
 
-    v1019 = [(MOMetric *)v988 metrics];
-    [v1019 setObject:&off_10036E7B0 forKeyedSubscript:@"Proactive_SDDeltaBetweenLeisureMediaEventsBoundariesIncluded"];
+    metrics189 = [(MOMetric *)v988 metrics];
+    [metrics189 setObject:&off_10036E7B0 forKeyedSubscript:@"Proactive_SDDeltaBetweenLeisureMediaEventsBoundariesIncluded"];
     v1021 = v988;
     v1022 = v989;
     v1007 = v1148;
@@ -4099,8 +4099,8 @@ LABEL_350:
 
   v1037 = [v1143 filteredArrayUsingPredicate:v1036];
   v1038 = [*(v1022 + 1520) numberWithUnsignedInteger:{objc_msgSend(v1037, "count")}];
-  v1039 = [(MOMetric *)v1021 metrics];
-  [v1039 setObject:v1038 forKeyedSubscript:@"Proactive_NumNLEvents"];
+  metrics190 = [(MOMetric *)v1021 metrics];
+  [metrics190 setObject:v1038 forKeyedSubscript:@"Proactive_NumNLEvents"];
 
   v1194 = v1037;
   v1040 = v1021;
@@ -4115,25 +4115,25 @@ LABEL_350:
     {
       v1044 = [v1043 objectAtIndexedSubscript:v1041];
       v1045 = [NSDateInterval alloc];
-      v1046 = [v1044 startDate];
-      v1047 = [v1044 endDate];
-      v1048 = [v1045 initWithStartDate:v1046 endDate:v1047];
+      startDate31 = [v1044 startDate];
+      endDate100 = [v1044 endDate];
+      v1048 = [v1045 initWithStartDate:startDate31 endDate:endDate100];
 
       v1049 = [(MOPromptMetrics *)v1040 doesInterval:v1048 overlapWithAnyIntervalFromArray:v1158];
-      v1050 = [v1044 creationDate];
-      if (v1050)
+      creationDate27 = [v1044 creationDate];
+      if (creationDate27)
       {
-        v1051 = v1050;
-        v1052 = [v1044 startDate];
-        if (!v1052)
+        endDate106 = creationDate27;
+        startDate32 = [v1044 startDate];
+        if (!startDate32)
         {
           goto LABEL_372;
         }
 
-        v1053 = v1052;
-        v1054 = [v1044 endDate];
+        v1053 = startDate32;
+        endDate101 = [v1044 endDate];
 
-        if (v1054)
+        if (endDate101)
         {
           break;
         }
@@ -4153,22 +4153,22 @@ LABEL_373:
     if (v1041)
     {
       v1055 = [v1194 objectAtIndexedSubscript:v1041 - 1];
-      v1056 = [v1055 endDate];
+      endDate102 = [v1055 endDate];
 
-      if (v1056)
+      if (endDate102)
       {
-        v1057 = [v1044 endDate];
+        endDate103 = [v1044 endDate];
         v1058 = [v1194 objectAtIndexedSubscript:v1041 - 1];
-        v1059 = [v1058 endDate];
-        [v1057 timeIntervalSinceDate:v1059];
+        endDate104 = [v1058 endDate];
+        [endDate103 timeIntervalSinceDate:endDate104];
         v1060 = [NSNumber numberWithDouble:?];
         [v1148 addObject:v1060];
       }
     }
 
-    v1061 = [v1044 creationDate];
-    v1062 = [v1044 endDate];
-    [v1061 timeIntervalSinceDate:v1062];
+    creationDate28 = [v1044 creationDate];
+    endDate105 = [v1044 endDate];
+    [creationDate28 timeIntervalSinceDate:endDate105];
     v1064 = v1063;
 
     v1065 = [NSNumber numberWithDouble:v1064];
@@ -4198,21 +4198,21 @@ LABEL_373:
       v1141 = @"Proactive_HourIDNLEvent_End_1";
     }
 
-    v1068 = [v1044 startDate];
-    [(NSDate *)v1146 timeIntervalSinceDate:v1068];
+    startDate33 = [v1044 startDate];
+    [(NSDate *)v1146 timeIntervalSinceDate:startDate33];
     v1069 = [NSNumber numberWithDouble:?];
     v1070 = [MOMetric binForNumber:v1069 bins:v1147];
-    v1071 = [(MOMetric *)v1205 metrics];
-    [v1071 setObject:v1070 forKeyedSubscript:v1067];
+    metrics191 = [(MOMetric *)selfCopy metrics];
+    [metrics191 setObject:v1070 forKeyedSubscript:v1067];
 
-    v1051 = [v1044 endDate];
-    [(NSDate *)v1146 timeIntervalSinceDate:v1051];
+    endDate106 = [v1044 endDate];
+    [(NSDate *)v1146 timeIntervalSinceDate:endDate106];
     v1072 = [NSNumber numberWithDouble:?];
     v1073 = [MOMetric binForNumber:v1072 bins:v1147];
-    v1074 = [(MOMetric *)v1205 metrics];
-    [v1074 setObject:v1073 forKeyedSubscript:v1141];
+    metrics192 = [(MOMetric *)selfCopy metrics];
+    [metrics192 setObject:v1073 forKeyedSubscript:v1141];
 
-    v1040 = v1205;
+    v1040 = selfCopy;
     v1043 = v1194;
     v1049 = v1142;
 LABEL_372:
@@ -4226,15 +4226,15 @@ LABEL_377:
   if ([v1043 count])
   {
     v1076 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", 1.0 - v1075 / [v1043 count]);
-    v1077 = [(MOMetric *)v1040 metrics];
-    [v1077 setObject:v1076 forKeyedSubscript:@"Proactive_PercentageOfNLEventsNoLOI"];
+    metrics193 = [(MOMetric *)v1040 metrics];
+    [metrics193 setObject:v1076 forKeyedSubscript:@"Proactive_PercentageOfNLEventsNoLOI"];
   }
 
   if ([v1204 count])
   {
     v1078 = [MOPromptMetrics meanOf:v1204];
-    v1079 = [(MOMetric *)v1040 metrics];
-    [v1079 setObject:v1078 forKeyedSubscript:@"Proactive_NLEventsAverageLatency"];
+    metrics194 = [(MOMetric *)v1040 metrics];
+    [metrics194 setObject:v1078 forKeyedSubscript:@"Proactive_NLEventsAverageLatency"];
 
     [v1204 removeAllObjects];
   }
@@ -4242,141 +4242,141 @@ LABEL_377:
   if ([v1148 count])
   {
     v1080 = [MOPromptMetrics meanOf:v1148];
-    v1081 = [(MOMetric *)v1040 metrics];
-    [v1081 setObject:v1080 forKeyedSubscript:@"Proactive_MeanDeltaBetweenNLEvents"];
+    metrics195 = [(MOMetric *)v1040 metrics];
+    [metrics195 setObject:v1080 forKeyedSubscript:@"Proactive_MeanDeltaBetweenNLEvents"];
 
     v1082 = [v1148 valueForKeyPath:@"@min.doubleValue"];
-    v1083 = [(MOMetric *)v1040 metrics];
-    [v1083 setObject:v1082 forKeyedSubscript:@"Proactive_MinDeltaBetweenNLEvents"];
+    metrics196 = [(MOMetric *)v1040 metrics];
+    [metrics196 setObject:v1082 forKeyedSubscript:@"Proactive_MinDeltaBetweenNLEvents"];
 
     v1084 = [v1148 valueForKeyPath:@"@max.doubleValue"];
-    v1085 = [(MOMetric *)v1040 metrics];
-    [v1085 setObject:v1084 forKeyedSubscript:@"Proactive_MaxDeltaBetweenNLEvents"];
+    metrics197 = [(MOMetric *)v1040 metrics];
+    [metrics197 setObject:v1084 forKeyedSubscript:@"Proactive_MaxDeltaBetweenNLEvents"];
 
     v1086 = [MOPromptMetrics standardDeviationOf:v1148];
-    v1087 = [(MOMetric *)v1040 metrics];
-    [v1087 setObject:v1086 forKeyedSubscript:@"Proactive_SDDeltaBetweenNLEvents"];
+    metrics198 = [(MOMetric *)v1040 metrics];
+    [metrics198 setObject:v1086 forKeyedSubscript:@"Proactive_SDDeltaBetweenNLEvents"];
   }
 
   if ([v1194 count])
   {
-    v1088 = [v1194 firstObject];
-    v1089 = [v1088 endDate];
-    [v1089 timeIntervalSinceDate:v1040->_startDate];
+    firstObject11 = [v1194 firstObject];
+    endDate107 = [firstObject11 endDate];
+    [endDate107 timeIntervalSinceDate:v1040->_startDate];
     v1090 = [NSNumber numberWithDouble:?];
     v1091 = v1148;
     [v1148 addObject:v1090];
 
     v1092 = v1040->_endDate;
-    v1093 = [v1194 lastObject];
-    v1094 = [v1093 endDate];
-    [(NSDate *)v1092 timeIntervalSinceDate:v1094];
+    lastObject11 = [v1194 lastObject];
+    endDate108 = [lastObject11 endDate];
+    [(NSDate *)v1092 timeIntervalSinceDate:endDate108];
     v1095 = [NSNumber numberWithDouble:?];
     [v1148 addObject:v1095];
 
     v1096 = [MOPromptMetrics meanOf:v1148];
-    v1097 = [(MOMetric *)v1040 metrics];
-    [v1097 setObject:v1096 forKeyedSubscript:@"Proactive_MeanDeltaBetweenNLEventsBoundariesIncluded"];
+    metrics199 = [(MOMetric *)v1040 metrics];
+    [metrics199 setObject:v1096 forKeyedSubscript:@"Proactive_MeanDeltaBetweenNLEventsBoundariesIncluded"];
 
     v1098 = [v1148 valueForKeyPath:@"@min.doubleValue"];
-    v1099 = [(MOMetric *)v1040 metrics];
-    [v1099 setObject:v1098 forKeyedSubscript:@"Proactive_MinDeltaBetweenNLEventsBoundariesIncluded"];
+    metrics200 = [(MOMetric *)v1040 metrics];
+    [metrics200 setObject:v1098 forKeyedSubscript:@"Proactive_MinDeltaBetweenNLEventsBoundariesIncluded"];
 
     v1100 = [v1148 valueForKeyPath:@"@max.doubleValue"];
-    v1101 = [(MOMetric *)v1040 metrics];
-    [v1101 setObject:v1100 forKeyedSubscript:@"Proactive_MaxDeltaBetweenNLEventsBoundariesIncluded"];
+    metrics201 = [(MOMetric *)v1040 metrics];
+    [metrics201 setObject:v1100 forKeyedSubscript:@"Proactive_MaxDeltaBetweenNLEventsBoundariesIncluded"];
 
-    v1102 = [MOPromptMetrics standardDeviationOf:v1148];
-    v1103 = [(MOMetric *)v1040 metrics];
-    [v1103 setObject:v1102 forKeyedSubscript:@"Proactive_SDDeltaBetweenNLEventsBoundariesIncluded"];
+    metrics206 = [MOPromptMetrics standardDeviationOf:v1148];
+    metrics202 = [(MOMetric *)v1040 metrics];
+    [metrics202 setObject:metrics206 forKeyedSubscript:@"Proactive_SDDeltaBetweenNLEventsBoundariesIncluded"];
   }
 
   else
   {
     [(NSDate *)v1040->_endDate timeIntervalSinceDate:v1040->_startDate];
     v1104 = [NSNumber numberWithDouble:?];
-    v1105 = [(MOMetric *)v1040 metrics];
-    [v1105 setObject:v1104 forKeyedSubscript:@"Proactive_MeanDeltaBetweenNLEventsBoundariesIncluded"];
+    metrics203 = [(MOMetric *)v1040 metrics];
+    [metrics203 setObject:v1104 forKeyedSubscript:@"Proactive_MeanDeltaBetweenNLEventsBoundariesIncluded"];
 
     [(NSDate *)v1040->_endDate timeIntervalSinceDate:v1040->_startDate];
     v1106 = [NSNumber numberWithDouble:?];
-    v1107 = [(MOMetric *)v1040 metrics];
-    [v1107 setObject:v1106 forKeyedSubscript:@"Proactive_MinDeltaBetweenNLEventsBoundariesIncluded"];
+    metrics204 = [(MOMetric *)v1040 metrics];
+    [metrics204 setObject:v1106 forKeyedSubscript:@"Proactive_MinDeltaBetweenNLEventsBoundariesIncluded"];
 
     [(NSDate *)v1040->_endDate timeIntervalSinceDate:v1040->_startDate];
     v1108 = [NSNumber numberWithDouble:?];
-    v1109 = [(MOMetric *)v1040 metrics];
-    [v1109 setObject:v1108 forKeyedSubscript:@"Proactive_MaxDeltaBetweenNLEventsBoundariesIncluded"];
+    metrics205 = [(MOMetric *)v1040 metrics];
+    [metrics205 setObject:v1108 forKeyedSubscript:@"Proactive_MaxDeltaBetweenNLEventsBoundariesIncluded"];
 
-    v1102 = [(MOMetric *)v1040 metrics];
-    [v1102 setObject:&off_10036E7B0 forKeyedSubscript:@"Proactive_SDDeltaBetweenNLEventsBoundariesIncluded"];
+    metrics206 = [(MOMetric *)v1040 metrics];
+    [metrics206 setObject:&off_10036E7B0 forKeyedSubscript:@"Proactive_SDDeltaBetweenNLEventsBoundariesIncluded"];
     v1091 = v1148;
   }
 
   [v1091 removeAllObjects];
 }
 
-- (void)calculateAndSetMetricsForCorrelatedEvents:(id)a3
+- (void)calculateAndSetMetricsForCorrelatedEvents:(id)events
 {
-  v4 = a3;
-  v5 = [(MOMetric *)self metrics];
-  [v5 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundles"];
+  eventsCopy = events;
+  metrics = [(MOMetric *)self metrics];
+  [metrics setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundles"];
 
-  v6 = [(MOMetric *)self metrics];
-  [v6 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_0_routineEvent_0_proactiveEvent_0"];
+  metrics2 = [(MOMetric *)self metrics];
+  [metrics2 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_0_routineEvent_0_proactiveEvent_0"];
 
-  v7 = [(MOMetric *)self metrics];
-  [v7 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_0_routineEvent_0_proactiveEvent_1"];
+  metrics3 = [(MOMetric *)self metrics];
+  [metrics3 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_0_routineEvent_0_proactiveEvent_1"];
 
-  v8 = [(MOMetric *)self metrics];
-  [v8 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_0_routineEvent_1_proactiveEvent_0"];
+  metrics4 = [(MOMetric *)self metrics];
+  [metrics4 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_0_routineEvent_1_proactiveEvent_0"];
 
-  v9 = [(MOMetric *)self metrics];
-  [v9 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_0_routineEvent_1_proactiveEvent_1"];
+  metrics5 = [(MOMetric *)self metrics];
+  [metrics5 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_0_routineEvent_1_proactiveEvent_1"];
 
-  v10 = [(MOMetric *)self metrics];
-  [v10 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_1_routineEvent_0_proactiveEvent_0"];
+  metrics6 = [(MOMetric *)self metrics];
+  [metrics6 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_1_routineEvent_0_proactiveEvent_0"];
 
-  v11 = [(MOMetric *)self metrics];
-  [v11 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_1_routineEvent_0_proactiveEvent_1"];
+  metrics7 = [(MOMetric *)self metrics];
+  [metrics7 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_1_routineEvent_0_proactiveEvent_1"];
 
-  v12 = [(MOMetric *)self metrics];
-  [v12 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_1_routineEvent_1_proactiveEvent_0"];
+  metrics8 = [(MOMetric *)self metrics];
+  [metrics8 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_1_routineEvent_1_proactiveEvent_0"];
 
-  v13 = [(MOMetric *)self metrics];
-  [v13 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_1_routineEvent_1_proactiveEvent_1"];
+  metrics9 = [(MOMetric *)self metrics];
+  [metrics9 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_0_storytellingEvent_1_routineEvent_1_proactiveEvent_1"];
 
-  v14 = [(MOMetric *)self metrics];
-  [v14 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_0_routineEvent_0_proactiveEvent_0"];
+  metrics10 = [(MOMetric *)self metrics];
+  [metrics10 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_0_routineEvent_0_proactiveEvent_0"];
 
-  v15 = [(MOMetric *)self metrics];
-  [v15 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_0_routineEvent_0_proactiveEvent_1"];
+  metrics11 = [(MOMetric *)self metrics];
+  [metrics11 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_0_routineEvent_0_proactiveEvent_1"];
 
-  v16 = [(MOMetric *)self metrics];
-  [v16 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_0_routineEvent_1_proactiveEvent_0"];
+  metrics12 = [(MOMetric *)self metrics];
+  [metrics12 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_0_routineEvent_1_proactiveEvent_0"];
 
-  v17 = [(MOMetric *)self metrics];
-  [v17 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_0_routineEvent_1_proactiveEvent_1"];
+  metrics13 = [(MOMetric *)self metrics];
+  [metrics13 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_0_routineEvent_1_proactiveEvent_1"];
 
-  v18 = [(MOMetric *)self metrics];
-  [v18 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_1_routineEvent_0_proactiveEvent_0"];
+  metrics14 = [(MOMetric *)self metrics];
+  [metrics14 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_1_routineEvent_0_proactiveEvent_0"];
 
-  v19 = [(MOMetric *)self metrics];
-  [v19 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_1_routineEvent_0_proactiveEvent_1"];
+  metrics15 = [(MOMetric *)self metrics];
+  [metrics15 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_1_routineEvent_0_proactiveEvent_1"];
 
-  v20 = [(MOMetric *)self metrics];
-  [v20 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_1_routineEvent_1_proactiveEvent_0"];
+  metrics16 = [(MOMetric *)self metrics];
+  [metrics16 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_1_routineEvent_1_proactiveEvent_0"];
 
-  v82 = self;
-  v21 = [(MOMetric *)self metrics];
-  [v21 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_1_routineEvent_1_proactiveEvent_1"];
+  selfCopy = self;
+  metrics17 = [(MOMetric *)self metrics];
+  [metrics17 setObject:&off_10036C1D8 forKeyedSubscript:@"numPreBundlesWith_workoutEvent_1_storytellingEvent_1_routineEvent_1_proactiveEvent_1"];
 
-  if (v4 && [v4 count])
+  if (eventsCopy && [eventsCopy count])
   {
-    v79 = v4;
-    v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 count]);
-    v23 = [(MOMetric *)self metrics];
-    [v23 setObject:v22 forKeyedSubscript:@"numPreBundles"];
+    v79 = eventsCopy;
+    v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [eventsCopy count]);
+    metrics18 = [(MOMetric *)self metrics];
+    [metrics18 setObject:v22 forKeyedSubscript:@"numPreBundles"];
 
     v24 = +[MOEventBundler propertyNameDictionary];
     v25 = [v24 objectForKeyedSubscript:@"strProvider"];
@@ -4600,12 +4600,12 @@ LABEL_377:
           else
           {
 LABEL_44:
-            v71 = [(MOMetric *)v82 metrics];
-            v46 = [v71 objectForKeyedSubscript:v61];
+            metrics19 = [(MOMetric *)selfCopy metrics];
+            v46 = [metrics19 objectForKeyedSubscript:v61];
 
             v72 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v46 intValue] + 1);
-            v73 = [(MOMetric *)v82 metrics];
-            [v73 setObject:v72 forKeyedSubscript:v61];
+            metrics20 = [(MOMetric *)selfCopy metrics];
+            [metrics20 setObject:v72 forKeyedSubscript:v61];
           }
 
           v47 = v85 + 1;
@@ -4618,24 +4618,24 @@ LABEL_44:
       while (v83);
     }
 
-    v4 = v79;
+    eventsCopy = v79;
   }
 }
 
-- (void)calculateAndSetMetricsForSemanticallyBundledEvents:(id)a3
+- (void)calculateAndSetMetricsForSemanticallyBundledEvents:(id)events
 {
-  v8 = a3;
-  v4 = [(MOMetric *)self metrics];
-  [v4 setObject:&off_10036C1D8 forKeyedSubscript:@"numBundles"];
+  eventsCopy = events;
+  metrics = [(MOMetric *)self metrics];
+  [metrics setObject:&off_10036C1D8 forKeyedSubscript:@"numBundles"];
 
-  v5 = v8;
-  if (v8)
+  v5 = eventsCopy;
+  if (eventsCopy)
   {
-    v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 count]);
-    v7 = [(MOMetric *)self metrics];
-    [v7 setObject:v6 forKeyedSubscript:@"numBundles"];
+    v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [eventsCopy count]);
+    metrics2 = [(MOMetric *)self metrics];
+    [metrics2 setObject:v6 forKeyedSubscript:@"numBundles"];
 
-    v5 = v8;
+    v5 = eventsCopy;
   }
 }
 
@@ -4664,7 +4664,7 @@ LABEL_44:
     v35[4] = __Block_byref_object_dispose__46;
     v36 = 0;
     v4 = dispatch_semaphore_create(0);
-    v5 = [(MOEventManager *)self->_eventManager getHealthKitManager];
+    getHealthKitManager = [(MOEventManager *)self->_eventManager getHealthKitManager];
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = __37__MOPromptMetrics_getAndSetAgeGender__block_invoke;
@@ -4673,7 +4673,7 @@ LABEL_44:
     v32 = v6;
     v33 = buf;
     v34 = v35;
-    [v5 fetchUserBiologicalSexWithHandler:v31];
+    [getHealthKitManager fetchUserBiologicalSexWithHandler:v31];
     v7 = [NSString stringWithFormat:@"%@ - [%s] - %d - %s", @"MOSemaphoreWait", "/Library/Caches/com.apple.xbs/Sources/Moments/momentsd/PromptEngine/Analytics/MOPromptMetrics.m", 2199, "[MOPromptMetrics getAndSetAgeGender]"];
     v30 = 0;
     v8 = MOSemaphoreWaitAndFaultIfTimeoutDefaultTimeout_Internal(v6, &v30, v7);
@@ -4708,7 +4708,7 @@ LABEL_44:
     v19 = v10;
     v20 = &v24;
     v21 = v22;
-    [v5 fetchUserAgeWithHandler:v18];
+    [getHealthKitManager fetchUserAgeWithHandler:v18];
     v11 = [NSString stringWithFormat:@"%@ - [%s] - %d - %s", @"MOSemaphoreWait", "/Library/Caches/com.apple.xbs/Sources/Moments/momentsd/PromptEngine/Analytics/MOPromptMetrics.m", 2216, "[MOPromptMetrics getAndSetAgeGender]"];
     v17 = 0;
     v12 = MOSemaphoreWaitAndFaultIfTimeoutDefaultTimeout_Internal(v10, &v17, v11);
@@ -4773,23 +4773,23 @@ void __37__MOPromptMetrics_getAndSetAgeGender__block_invoke_1931(uint64_t a1, vo
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)setBiologicalSex:(id)a3
+- (void)setBiologicalSex:(id)sex
 {
-  if (a3)
+  if (sex)
   {
-    v5 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [a3 biologicalSex]);
-    v4 = [(MOMetric *)self metrics];
-    [v4 setObject:v5 forKeyedSubscript:@"BiologicalSex"];
+    v5 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [sex biologicalSex]);
+    metrics = [(MOMetric *)self metrics];
+    [metrics setObject:v5 forKeyedSubscript:@"BiologicalSex"];
   }
 }
 
-- (void)setAge:(id)a3
+- (void)setAge:(id)age
 {
-  if (a3)
+  if (age)
   {
-    v5 = [a3 copy];
-    v4 = [(MOMetric *)self metrics];
-    [v4 setObject:v5 forKeyedSubscript:@"Age"];
+    v5 = [age copy];
+    metrics = [(MOMetric *)self metrics];
+    [metrics setObject:v5 forKeyedSubscript:@"Age"];
   }
 }
 

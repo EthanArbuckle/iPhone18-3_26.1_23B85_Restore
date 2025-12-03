@@ -1,7 +1,7 @@
 @interface ICDonateDynamicAppVocabularyLaunchTask
 - (BOOL)shouldAttemptLaunchTask;
 - (ICDonateDynamicAppVocabularyLaunchTask)init;
-- (void)runLaunchTaskWithCompletionHandler:(id)a3;
+- (void)runLaunchTaskWithCompletionHandler:(id)handler;
 @end
 
 @implementation ICDonateDynamicAppVocabularyLaunchTask
@@ -27,12 +27,12 @@
   return v2 & 1;
 }
 
-- (void)runLaunchTaskWithCompletionHandler:(id)a3
+- (void)runLaunchTaskWithCompletionHandler:(id)handler
 {
   v5 = sub_10015DA04(&qword_1006C2170);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -48,7 +48,7 @@
   v12[3] = 0;
   v12[4] = &unk_100548DF0;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_1004A09D8(0, 0, v7, &unk_100544850, v12);
 }
 

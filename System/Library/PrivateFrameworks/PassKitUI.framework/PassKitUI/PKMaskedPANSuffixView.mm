@@ -1,13 +1,13 @@
 @interface PKMaskedPANSuffixView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKMaskedPANSuffixView)initWithCoder:(id)a3;
-- (PKMaskedPANSuffixView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKMaskedPANSuffixView)initWithCoder:(id)coder;
+- (PKMaskedPANSuffixView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation PKMaskedPANSuffixView
 
-- (PKMaskedPANSuffixView)initWithCoder:(id)a3
+- (PKMaskedPANSuffixView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR___PKMaskedPANSuffixView_fontSize;
   PKPaymentPassPANSuffixFontSize();
@@ -18,11 +18,11 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_1BD74136C(width, height);
   v7 = v6;
   v9 = v8;
@@ -44,7 +44,7 @@
   sub_1BD741504(0);
 }
 
-- (PKMaskedPANSuffixView)initWithFrame:(CGRect)a3
+- (PKMaskedPANSuffixView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,11 +1,11 @@
 @interface UIDebuggingInformationHierarchyCell
 - (UIDebuggingInformationHierarchyCellDelegate)delegate;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)deliverToggle;
 - (void)displayDetailsForCell;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setName:(id)a3;
+- (void)setName:(id)name;
 @end
 
 @implementation UIDebuggingInformationHierarchyCell
@@ -19,32 +19,32 @@
     v4 = [(UIButton *)v3 initWithFrame:?];
     [(UIView *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
     v5 = [off_1E70ECC18 fontWithName:@"Menlo" size:12.0];
-    v6 = [(UIButton *)v4 titleLabel];
-    [v6 setFont:v5];
+    titleLabel = [(UIButton *)v4 titleLabel];
+    [titleLabel setFont:v5];
 
-    v7 = [(UICollectionViewCell *)self contentView];
-    [v7 addSubview:v4];
+    contentView = [(UICollectionViewCell *)self contentView];
+    [contentView addSubview:v4];
 
-    v8 = [(UIView *)v4 leadingAnchor];
-    v9 = [(UICollectionViewCell *)self contentView];
-    v10 = [v9 leadingAnchor];
-    v11 = [v8 constraintEqualToSystemSpacingAfterAnchor:v10 multiplier:1.0];
+    leadingAnchor = [(UIView *)v4 leadingAnchor];
+    contentView2 = [(UICollectionViewCell *)self contentView];
+    leadingAnchor2 = [contentView2 leadingAnchor];
+    v11 = [leadingAnchor constraintEqualToSystemSpacingAfterAnchor:leadingAnchor2 multiplier:1.0];
     [v11 setActive:1];
 
-    v12 = [(UIView *)v4 widthAnchor];
-    v13 = [v12 constraintEqualToConstant:10.0];
+    widthAnchor = [(UIView *)v4 widthAnchor];
+    v13 = [widthAnchor constraintEqualToConstant:10.0];
     [v13 setActive:1];
 
-    v14 = [(UIView *)v4 topAnchor];
-    v15 = [(UICollectionViewCell *)self contentView];
-    v16 = [v15 topAnchor];
-    v17 = [v14 constraintEqualToAnchor:v16];
+    topAnchor = [(UIView *)v4 topAnchor];
+    contentView3 = [(UICollectionViewCell *)self contentView];
+    topAnchor2 = [contentView3 topAnchor];
+    v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v17 setActive:1];
 
-    v18 = [(UIView *)v4 bottomAnchor];
-    v19 = [(UICollectionViewCell *)self contentView];
-    v20 = [v19 bottomAnchor];
-    v21 = [v18 constraintEqualToAnchor:v20];
+    bottomAnchor = [(UIView *)v4 bottomAnchor];
+    contentView4 = [(UICollectionViewCell *)self contentView];
+    bottomAnchor2 = [contentView4 bottomAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v21 setActive:1];
 
     [(UIButton *)v4 setTitle:@"▶︎" forState:0];
@@ -80,26 +80,26 @@
     v28 = [UIImage kitImageNamed:@"UIAccessoryButtonInfo"];
     [(UIButton *)v27 setImage:v28 forState:0];
     [(UIView *)v27 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v29 = [(UICollectionViewCell *)self contentView];
-    [v29 addSubview:v27];
+    contentView5 = [(UICollectionViewCell *)self contentView];
+    [contentView5 addSubview:v27];
 
-    v30 = [(UIView *)v27 trailingAnchor];
-    v31 = [(UIView *)self trailingAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31 constant:-8.0];
+    trailingAnchor = [(UIView *)v27 trailingAnchor];
+    trailingAnchor2 = [(UIView *)self trailingAnchor];
+    v32 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-8.0];
     [v32 setActive:1];
 
-    v33 = [(UIView *)v27 centerYAnchor];
-    v34 = [(UICollectionViewCell *)self contentView];
-    v35 = [v34 centerYAnchor];
-    v36 = [v33 constraintEqualToAnchor:v35];
+    centerYAnchor = [(UIView *)v27 centerYAnchor];
+    contentView6 = [(UICollectionViewCell *)self contentView];
+    centerYAnchor2 = [contentView6 centerYAnchor];
+    v36 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v36 setActive:1];
 
-    v37 = [(UIView *)v27 heightAnchor];
-    v38 = [v37 constraintEqualToConstant:24.0];
+    heightAnchor = [(UIView *)v27 heightAnchor];
+    v38 = [heightAnchor constraintEqualToConstant:24.0];
     [v38 setActive:1];
 
-    v39 = [(UIView *)v27 widthAnchor];
-    v40 = [v39 constraintEqualToConstant:24.0];
+    widthAnchor2 = [(UIView *)v27 widthAnchor];
+    v40 = [widthAnchor2 constraintEqualToConstant:24.0];
     [v40 setActive:1];
 
     [(UIControl *)v27 addTarget:self action:sel_displayDetailsForCell forControlEvents:64];
@@ -117,36 +117,36 @@
     v45 = [off_1E70ECC18 fontWithName:@"Menlo" size:12.0];
     [(UILabel *)v44 setFont:v45];
 
-    v46 = [(UICollectionViewCell *)self contentView];
-    [v46 addSubview:v44];
+    contentView7 = [(UICollectionViewCell *)self contentView];
+    [contentView7 addSubview:v44];
 
-    v47 = [(UIView *)v44 leadingAnchor];
-    v48 = [(UIView *)self->_disclosureButton trailingAnchor];
-    v49 = [v47 constraintEqualToAnchor:v48 constant:3.0];
+    leadingAnchor3 = [(UIView *)v44 leadingAnchor];
+    trailingAnchor3 = [(UIView *)self->_disclosureButton trailingAnchor];
+    v49 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor3 constant:3.0];
     disclosureButtonAvailableConstraint = self->_disclosureButtonAvailableConstraint;
     self->_disclosureButtonAvailableConstraint = v49;
 
-    v51 = [(UIView *)v44 leadingAnchor];
-    v52 = [(UIView *)self leadingAnchor];
-    v53 = [v51 constraintEqualToAnchor:v52 constant:8.0];
+    leadingAnchor4 = [(UIView *)v44 leadingAnchor];
+    leadingAnchor5 = [(UIView *)self leadingAnchor];
+    v53 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5 constant:8.0];
     disclosureButtonUnavailableConstraint = self->_disclosureButtonUnavailableConstraint;
     self->_disclosureButtonUnavailableConstraint = v53;
 
-    v55 = [(UIView *)v44 trailingAnchor];
-    v56 = [(UIView *)self->_infoButton trailingAnchor];
-    v57 = [v55 constraintEqualToAnchor:v56 constant:-3.0];
+    trailingAnchor4 = [(UIView *)v44 trailingAnchor];
+    trailingAnchor5 = [(UIView *)self->_infoButton trailingAnchor];
+    v57 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-3.0];
     [v57 setActive:1];
 
-    v58 = [(UIView *)v44 topAnchor];
-    v59 = [(UICollectionViewCell *)self contentView];
-    v60 = [v59 topAnchor];
-    v61 = [v58 constraintEqualToAnchor:v60];
+    topAnchor3 = [(UIView *)v44 topAnchor];
+    contentView8 = [(UICollectionViewCell *)self contentView];
+    topAnchor4 = [contentView8 topAnchor];
+    v61 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     [v61 setActive:1];
 
-    v62 = [(UIView *)v44 bottomAnchor];
-    v63 = [(UICollectionViewCell *)self contentView];
-    v64 = [v63 bottomAnchor];
-    v65 = [v62 constraintEqualToAnchor:v64];
+    bottomAnchor3 = [(UIView *)v44 bottomAnchor];
+    contentView9 = [(UICollectionViewCell *)self contentView];
+    bottomAnchor4 = [contentView9 bottomAnchor];
+    v65 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     [v65 setActive:1];
 
     v66 = self->_mainLabel;
@@ -160,22 +160,22 @@
   [(UICollectionViewCell *)self setBackgroundColor:v67];
 
   v68 = +[UIColor redColor];
-  v69 = [v68 CGColor];
-  v70 = [(UIView *)self layer];
-  [v70 setBorderColor:v69];
+  cGColor = [v68 CGColor];
+  layer = [(UIView *)self layer];
+  [layer setBorderColor:cGColor];
 
   if (!-[UICollectionViewCell isSelected](self, "isSelected") || (WeakRetained = objc_loadWeakRetained(&self->_delegate), v72 = [WeakRetained shouldHighlightSelectedCells], WeakRetained, v73 = 2.0, (v72 & 1) == 0))
   {
     v73 = 0.0;
   }
 
-  v74 = [(UIView *)self layer];
-  [v74 setBorderWidth:v73];
+  layer2 = [(UIView *)self layer];
+  [layer2 setBorderWidth:v73];
 
   [(NSLayoutConstraint *)self->_disclosureButtonUnavailableConstraint setActive:self->_disclosureIndicatorHidden];
   [(NSLayoutConstraint *)self->_disclosureButtonAvailableConstraint setActive:!self->_disclosureIndicatorHidden];
-  v75 = [(UICollectionViewCell *)self contentView];
-  [v75 bringSubviewToFront:self->_disclosureButton];
+  contentView10 = [(UICollectionViewCell *)self contentView];
+  [contentView10 bringSubviewToFront:self->_disclosureButton];
 }
 
 - (void)deliverToggle
@@ -204,23 +204,23 @@
   [WeakRetained displayDetailsForCell:self];
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  objc_storeStrong(&self->_name, a3);
+  objc_storeStrong(&self->_name, name);
 
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v7.receiver = self;
   v7.super_class = UIDebuggingInformationHierarchyCell;
-  v4 = a3;
-  [(UICollectionReusableView *)&v7 applyLayoutAttributes:v4];
-  v5 = [v4 indexPath];
+  attributesCopy = attributes;
+  [(UICollectionReusableView *)&v7 applyLayoutAttributes:attributesCopy];
+  indexPath = [attributesCopy indexPath];
 
   indexPath = self->_indexPath;
-  self->_indexPath = v5;
+  self->_indexPath = indexPath;
 }
 
 - (void)prepareForReuse

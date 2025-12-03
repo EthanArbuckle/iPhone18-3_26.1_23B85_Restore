@@ -1,20 +1,20 @@
 @interface FMDCoreAccessoryManager
-- (FMDCoreAccessoryManager)initWithDelegate:(id)a3;
+- (FMDCoreAccessoryManager)initWithDelegate:(id)delegate;
 - (FMDCoreAccessoryManagerDelegateProtocol)delegate;
 - (NSDictionary)accessoryRawInfo;
-- (void)accessoryConnectionAttached:(id)a3 type:(int)a4 info:(id)a5 properties:(id)a6;
-- (void)accessoryConnectionDetached:(id)a3;
-- (void)accessoryConnectionInfoPropertyChanged:(id)a3 properties:(id)a4;
-- (void)accessoryEndpointAttached:(id)a3 transportType:(int)a4 protocol:(int)a5 properties:(id)a6 forConnection:(id)a7;
-- (void)accessoryEndpointInfoPropertyChanged:(id)a3 properties:(id)a4 forConnection:(id)a5;
-- (void)accessoryEndpointUpdate:(id)a3 protocol:(int)a4 properties:(id)a5 forConnection:(id)a6;
+- (void)accessoryConnectionAttached:(id)attached type:(int)type info:(id)info properties:(id)properties;
+- (void)accessoryConnectionDetached:(id)detached;
+- (void)accessoryConnectionInfoPropertyChanged:(id)changed properties:(id)properties;
+- (void)accessoryEndpointAttached:(id)attached transportType:(int)type protocol:(int)protocol properties:(id)properties forConnection:(id)connection;
+- (void)accessoryEndpointInfoPropertyChanged:(id)changed properties:(id)properties forConnection:(id)connection;
+- (void)accessoryEndpointUpdate:(id)update protocol:(int)protocol properties:(id)properties forConnection:(id)connection;
 @end
 
 @implementation FMDCoreAccessoryManager
 
-- (FMDCoreAccessoryManager)initWithDelegate:(id)a3
+- (FMDCoreAccessoryManager)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = FMDCoreAccessoryManager;
   v5 = [(FMDCoreAccessoryManager *)&v15 init];
@@ -24,7 +24,7 @@
     cache = v5->_cache;
     v5->_cache = v6;
 
-    [(FMDCoreAccessoryManager *)v5 setDelegate:v4];
+    [(FMDCoreAccessoryManager *)v5 setDelegate:delegateCopy];
     v8 = dispatch_queue_create("FMDCoreAccessoryManager.serialQueue", 0);
     [(FMDCoreAccessoryManager *)v5 setSerialQueue:v8];
 
@@ -34,8 +34,8 @@
     v16 = ACCConnectionInfoFilterAllowConnectionType;
     v17 = &off_100028C00;
     v10 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-    v11 = [(FMDCoreAccessoryManager *)v5 connectionInfo];
-    [v11 registerDelegate:v5 withFilter:v10];
+    connectionInfo = [(FMDCoreAccessoryManager *)v5 connectionInfo];
+    [connectionInfo registerDelegate:v5 withFilter:v10];
 
     v12 = sub_100004FC8();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -50,139 +50,139 @@
 
 - (NSDictionary)accessoryRawInfo
 {
-  v2 = [(FMDCoreAccessoryManager *)self cache];
-  v3 = [v2 accessoriesRawInfo];
+  cache = [(FMDCoreAccessoryManager *)self cache];
+  accessoriesRawInfo = [cache accessoriesRawInfo];
 
-  return v3;
+  return accessoriesRawInfo;
 }
 
-- (void)accessoryConnectionAttached:(id)a3 type:(int)a4 info:(id)a5 properties:(id)a6
+- (void)accessoryConnectionAttached:(id)attached type:(int)type info:(id)info properties:(id)properties
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(FMDCoreAccessoryManager *)self serialQueue];
+  attachedCopy = attached;
+  infoCopy = info;
+  propertiesCopy = properties;
+  serialQueue = [(FMDCoreAccessoryManager *)self serialQueue];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100008234;
   v16[3] = &unk_100024A38;
-  v17 = v9;
-  v18 = v10;
-  v19 = v11;
-  v20 = self;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
-  dispatch_async(v12, v16);
+  v17 = attachedCopy;
+  v18 = infoCopy;
+  v19 = propertiesCopy;
+  selfCopy = self;
+  v13 = propertiesCopy;
+  v14 = infoCopy;
+  v15 = attachedCopy;
+  dispatch_async(serialQueue, v16);
 }
 
-- (void)accessoryEndpointAttached:(id)a3 transportType:(int)a4 protocol:(int)a5 properties:(id)a6 forConnection:(id)a7
+- (void)accessoryEndpointAttached:(id)attached transportType:(int)type protocol:(int)protocol properties:(id)properties forConnection:(id)connection
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(FMDCoreAccessoryManager *)self serialQueue];
+  attachedCopy = attached;
+  propertiesCopy = properties;
+  connectionCopy = connection;
+  serialQueue = [(FMDCoreAccessoryManager *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000084E0;
   block[3] = &unk_100024A60;
-  v20 = v14;
-  v21 = v13;
-  v22 = self;
-  v23 = v12;
-  v24 = a5;
-  v25 = a4;
-  v16 = v12;
-  v17 = v13;
-  v18 = v14;
-  dispatch_async(v15, block);
+  v20 = connectionCopy;
+  v21 = propertiesCopy;
+  selfCopy = self;
+  v23 = attachedCopy;
+  protocolCopy = protocol;
+  typeCopy = type;
+  v16 = attachedCopy;
+  v17 = propertiesCopy;
+  v18 = connectionCopy;
+  dispatch_async(serialQueue, block);
 }
 
-- (void)accessoryConnectionDetached:(id)a3
+- (void)accessoryConnectionDetached:(id)detached
 {
-  v4 = a3;
+  detachedCopy = detached;
   v5 = sub_100004FC8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v11 = "[FMDCoreAccessoryManager accessoryConnectionDetached:]";
     v12 = 2112;
-    v13 = v4;
+    v13 = detachedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#CA %s %@", buf, 0x16u);
   }
 
-  v6 = [(FMDCoreAccessoryManager *)self serialQueue];
+  serialQueue = [(FMDCoreAccessoryManager *)self serialQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000089B8;
   v8[3] = &unk_1000249C8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = detachedCopy;
+  v7 = detachedCopy;
+  dispatch_async(serialQueue, v8);
 }
 
-- (void)accessoryEndpointUpdate:(id)a3 protocol:(int)a4 properties:(id)a5 forConnection:(id)a6
+- (void)accessoryEndpointUpdate:(id)update protocol:(int)protocol properties:(id)properties forConnection:(id)connection
 {
-  v7 = a5;
-  v8 = a6;
+  propertiesCopy = properties;
+  connectionCopy = connection;
   v9 = sub_100004FC8();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315650;
     v11 = "[FMDCoreAccessoryManager accessoryEndpointUpdate:protocol:properties:forConnection:]";
     v12 = 2112;
-    v13 = v8;
+    v13 = connectionCopy;
     v14 = 2112;
-    v15 = v7;
+    v15 = propertiesCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#CA %s %@ %@", &v10, 0x20u);
   }
 }
 
-- (void)accessoryConnectionInfoPropertyChanged:(id)a3 properties:(id)a4
+- (void)accessoryConnectionInfoPropertyChanged:(id)changed properties:(id)properties
 {
-  v5 = a3;
-  v6 = a4;
+  changedCopy = changed;
+  propertiesCopy = properties;
   v7 = sub_100004FC8();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315650;
     v9 = "[FMDCoreAccessoryManager accessoryConnectionInfoPropertyChanged:properties:]";
     v10 = 2112;
-    v11 = v5;
+    v11 = changedCopy;
     v12 = 2112;
-    v13 = v6;
+    v13 = propertiesCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#CA %s %@ %@", &v8, 0x20u);
   }
 }
 
-- (void)accessoryEndpointInfoPropertyChanged:(id)a3 properties:(id)a4 forConnection:(id)a5
+- (void)accessoryEndpointInfoPropertyChanged:(id)changed properties:(id)properties forConnection:(id)connection
 {
-  v7 = a4;
-  v8 = a5;
+  propertiesCopy = properties;
+  connectionCopy = connection;
   v9 = sub_100004FC8();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v17 = "[FMDCoreAccessoryManager accessoryEndpointInfoPropertyChanged:properties:forConnection:]";
     v18 = 2112;
-    v19 = v8;
+    v19 = connectionCopy;
     v20 = 2112;
-    v21 = v7;
+    v21 = propertiesCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#CA %s %@ %@", buf, 0x20u);
   }
 
-  v10 = [(FMDCoreAccessoryManager *)self serialQueue];
+  serialQueue = [(FMDCoreAccessoryManager *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100008EBC;
   block[3] = &unk_100024AD8;
   block[4] = self;
-  v14 = v8;
-  v15 = v7;
-  v11 = v7;
-  v12 = v8;
-  dispatch_async(v10, block);
+  v14 = connectionCopy;
+  v15 = propertiesCopy;
+  v11 = propertiesCopy;
+  v12 = connectionCopy;
+  dispatch_async(serialQueue, block);
 }
 
 - (FMDCoreAccessoryManagerDelegateProtocol)delegate

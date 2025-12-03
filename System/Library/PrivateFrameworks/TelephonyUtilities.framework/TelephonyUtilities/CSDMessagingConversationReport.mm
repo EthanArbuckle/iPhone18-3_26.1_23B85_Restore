@@ -1,36 +1,36 @@
 @interface CSDMessagingConversationReport
-- (BOOL)isEqual:(id)a3;
-- (CSDMessagingConversationReport)initWithTUConversationReport:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CSDMessagingConversationReport)initWithTUConversationReport:(id)report;
 - (TUConversationReport)tuConversationReport;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingConversationReport
 
-- (CSDMessagingConversationReport)initWithTUConversationReport:(id)a3
+- (CSDMessagingConversationReport)initWithTUConversationReport:(id)report
 {
-  v4 = a3;
+  reportCopy = report;
   v12.receiver = self;
   v12.super_class = CSDMessagingConversationReport;
   v5 = [(CSDMessagingConversationReport *)&v12 init];
   if (v5)
   {
-    v6 = [v4 conversationID];
-    v7 = [v6 UUIDString];
-    [(CSDMessagingConversationReport *)v5 setConversationID:v7];
+    conversationID = [reportCopy conversationID];
+    uUIDString = [conversationID UUIDString];
+    [(CSDMessagingConversationReport *)v5 setConversationID:uUIDString];
 
-    v8 = [v4 paddingForHashedValue];
-    v9 = [v8 UUIDString];
-    [(CSDMessagingConversationReport *)v5 setPaddingForHashedValue:v9];
+    paddingForHashedValue = [reportCopy paddingForHashedValue];
+    uUIDString2 = [paddingForHashedValue UUIDString];
+    [(CSDMessagingConversationReport *)v5 setPaddingForHashedValue:uUIDString2];
 
-    v10 = [v4 timebase];
-    [v10 timeIntervalSinceReferenceDate];
+    timebase = [reportCopy timebase];
+    [timebase timeIntervalSinceReferenceDate];
     [(CSDMessagingConversationReport *)v5 setTimebase:?];
   }
 
@@ -42,8 +42,8 @@
   if ([(CSDMessagingConversationReport *)self hasConversationID])
   {
     v3 = [NSUUID alloc];
-    v4 = [(CSDMessagingConversationReport *)self conversationID];
-    v5 = [v3 initWithUUIDString:v4];
+    conversationID = [(CSDMessagingConversationReport *)self conversationID];
+    v5 = [v3 initWithUUIDString:conversationID];
   }
 
   else
@@ -54,8 +54,8 @@
   if ([(CSDMessagingConversationReport *)self hasPaddingForHashedValue])
   {
     v6 = [NSUUID alloc];
-    v7 = [(CSDMessagingConversationReport *)self paddingForHashedValue];
-    v8 = [v6 initWithUUIDString:v7];
+    paddingForHashedValue = [(CSDMessagingConversationReport *)self paddingForHashedValue];
+    v8 = [v6 initWithUUIDString:paddingForHashedValue];
   }
 
   else
@@ -98,8 +98,8 @@
   v7.receiver = self;
   v7.super_class = CSDMessagingConversationReport;
   v3 = [(CSDMessagingConversationReport *)&v7 description];
-  v4 = [(CSDMessagingConversationReport *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingConversationReport *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -129,57 +129,57 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_conversationID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     timebase = self->_timebase;
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_paddingForHashedValue)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_conversationID)
   {
-    [v4 setConversationID:?];
-    v4 = v5;
+    [toCopy setConversationID:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_timebase;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 1) = *&self->_timebase;
+    *(toCopy + 32) |= 1u;
   }
 
   if (self->_paddingForHashedValue)
   {
     [v5 setPaddingForHashedValue:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_conversationID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_conversationID copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -189,23 +189,23 @@
     *(v5 + 32) |= 1u;
   }
 
-  v8 = [(NSString *)self->_paddingForHashedValue copyWithZone:a3];
+  v8 = [(NSString *)self->_paddingForHashedValue copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   conversationID = self->_conversationID;
-  if (conversationID | *(v4 + 2))
+  if (conversationID | *(equalCopy + 2))
   {
     if (![(NSString *)conversationID isEqual:?])
     {
@@ -213,16 +213,16 @@
     }
   }
 
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_timebase != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_timebase != *(equalCopy + 1))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_11:
     v8 = 0;
@@ -230,7 +230,7 @@ LABEL_11:
   }
 
   paddingForHashedValue = self->_paddingForHashedValue;
-  if (paddingForHashedValue | *(v4 + 3))
+  if (paddingForHashedValue | *(equalCopy + 3))
   {
     v8 = [(NSString *)paddingForHashedValue isEqual:?];
   }
@@ -284,26 +284,26 @@ LABEL_12:
   return v6 ^ v3 ^ [(NSString *)self->_paddingForHashedValue hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(CSDMessagingConversationReport *)self setConversationID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
-    self->_timebase = v4[1];
+    self->_timebase = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(CSDMessagingConversationReport *)self setPaddingForHashedValue:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

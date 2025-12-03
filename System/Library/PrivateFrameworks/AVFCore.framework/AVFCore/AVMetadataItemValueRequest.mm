@@ -1,21 +1,21 @@
 @interface AVMetadataItemValueRequest
-+ (AVMetadataItemValueRequest)metadataItemValueRequestWithMetadataItem:(id)a3;
-- (AVMetadataItemValueRequest)initWithMetadataItem:(id)a3;
++ (AVMetadataItemValueRequest)metadataItemValueRequestWithMetadataItem:(id)item;
+- (AVMetadataItemValueRequest)initWithMetadataItem:(id)item;
 - (void)dealloc;
 - (void)respondWithError:(NSError *)error;
-- (void)respondWithValue:(id)a3 dataType:(id)a4;
+- (void)respondWithValue:(id)value dataType:(id)type;
 @end
 
 @implementation AVMetadataItemValueRequest
 
-+ (AVMetadataItemValueRequest)metadataItemValueRequestWithMetadataItem:(id)a3
++ (AVMetadataItemValueRequest)metadataItemValueRequestWithMetadataItem:(id)item
 {
-  v3 = [[a1 alloc] initWithMetadataItem:a3];
+  v3 = [[self alloc] initWithMetadataItem:item];
 
   return v3;
 }
 
-- (AVMetadataItemValueRequest)initWithMetadataItem:(id)a3
+- (AVMetadataItemValueRequest)initWithMetadataItem:(id)item
 {
   v7.receiver = self;
   v7.super_class = AVMetadataItemValueRequest;
@@ -27,7 +27,7 @@
     if (v5)
     {
       CFRetain(v5);
-      v4->_valueRequest->weakReferenceToMetadataItem = [[AVWeakReference alloc] initWithReferencedObject:a3];
+      v4->_valueRequest->weakReferenceToMetadataItem = [[AVWeakReference alloc] initWithReferencedObject:item];
     }
 
     else
@@ -54,21 +54,21 @@
   [(AVMetadataItemValueRequest *)&v4 dealloc];
 }
 
-- (void)respondWithValue:(id)a3 dataType:(id)a4
+- (void)respondWithValue:(id)value dataType:(id)type
 {
-  self->_valueRequest->value = [a3 copyWithZone:{-[AVMetadataItemValueRequest zone](self, "zone")}];
-  self->_valueRequest->dataType = [a4 copy];
-  v6 = [(AVMetadataItemValueRequest *)self metadataItem];
+  self->_valueRequest->value = [value copyWithZone:{-[AVMetadataItemValueRequest zone](self, "zone")}];
+  self->_valueRequest->dataType = [type copy];
+  metadataItem = [(AVMetadataItemValueRequest *)self metadataItem];
 
-  [(AVMetadataItem *)v6 _valueRequestDidFinish];
+  [(AVMetadataItem *)metadataItem _valueRequestDidFinish];
 }
 
 - (void)respondWithError:(NSError *)error
 {
   self->_valueRequest->error = error;
-  v4 = [(AVMetadataItemValueRequest *)self metadataItem];
+  metadataItem = [(AVMetadataItemValueRequest *)self metadataItem];
 
-  [(AVMetadataItem *)v4 _valueRequestDidFinish];
+  [(AVMetadataItem *)metadataItem _valueRequestDidFinish];
 }
 
 @end

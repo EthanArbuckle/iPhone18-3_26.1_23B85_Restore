@@ -1,28 +1,28 @@
 @interface UIAutocorrectInlinePrompt
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)isAcceptableTextEffectsFrame:(CGRect)a3 afterScrollBy:(double)a4;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (BOOL)prepareForAnimation:(CGRect)a3;
-- (CGRect)correctionFrameFromDesiredFrame:(CGRect)a3 textHeight:(int)a4 withExtraGap:(double)a5;
-- (CGRect)horizontallySquishedCorrectionFrame:(CGRect)a3;
-- (UIAutocorrectInlinePrompt)initWithFrame:(CGRect)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)isAcceptableTextEffectsFrame:(CGRect)frame afterScrollBy:(double)by;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (BOOL)prepareForAnimation:(CGRect)animation;
+- (CGRect)correctionFrameFromDesiredFrame:(CGRect)frame textHeight:(int)height withExtraGap:(double)gap;
+- (CGRect)horizontallySquishedCorrectionFrame:(CGRect)frame;
+- (UIAutocorrectInlinePrompt)initWithFrame:(CGRect)frame;
 - (id)typedTextView;
 - (int)textEffectsVisibilityLevel;
-- (void)addTypedTextRect:(CGRect)a3;
+- (void)addTypedTextRect:(CGRect)rect;
 - (void)dealloc;
 - (void)dismiss;
 - (void)removePromptSubviews;
-- (void)setCorrection:(id)a3 typedText:(id)a4 inRect:(CGRect)a5 maxX:(double)a6;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)setCorrection:(id)correction typedText:(id)text inRect:(CGRect)rect maxX:(double)x;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation UIAutocorrectInlinePrompt
 
-- (UIAutocorrectInlinePrompt)initWithFrame:(CGRect)a3
+- (UIAutocorrectInlinePrompt)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = UIAutocorrectInlinePrompt;
-  v3 = [(UIView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -39,17 +39,17 @@
 
 - (int)textEffectsVisibilityLevel
 {
-  v2 = [(UIView *)self superview];
-  v3 = [v2 textEffectsVisibilityLevel];
+  superview = [(UIView *)self superview];
+  textEffectsVisibilityLevel = [superview textEffectsVisibilityLevel];
 
-  if (v3 <= 8)
+  if (textEffectsVisibilityLevel <= 8)
   {
     return 8;
   }
 
   else
   {
-    return v3;
+    return textEffectsVisibilityLevel;
   }
 }
 
@@ -82,34 +82,34 @@
   self->m_correctionShadowView = 0;
 }
 
-- (void)setCorrection:(id)a3 typedText:(id)a4 inRect:(CGRect)a5 maxX:(double)a6
+- (void)setCorrection:(id)correction typedText:(id)text inRect:(CGRect)rect maxX:(double)x
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a3 == 0;
-  v14 = a4;
-  v15 = [a3 copy];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v13 = correction == 0;
+  textCopy = text;
+  v15 = [correction copy];
   m_correction = self->m_correction;
   self->m_correction = v15;
 
-  v17 = [v14 copy];
+  v17 = [textCopy copy];
   m_typedText = self->m_typedText;
   self->m_typedText = v17;
 
   [(UIAutocorrectInlinePrompt *)self removePromptSubviews];
   [(UIView *)self setHidden:v13];
-  if (a3)
+  if (correction)
   {
-    v19 = [(UIView *)self superview];
+    superview = [(UIView *)self superview];
 
-    if (!v19)
+    if (!superview)
     {
       v20 = +[UIKeyboardImpl activeInstance];
-      v21 = [v20 inputOverlayContainer];
+      inputOverlayContainer = [v20 inputOverlayContainer];
 
-      [v21 addSubview:self];
+      [inputOverlayContainer addSubview:self];
     }
   }
 
@@ -118,15 +118,15 @@
     self->m_fits = 1;
     self->m_originalTypedTextRectCorrectionAmount = 0.0;
     v22 = self->m_typedText;
-    v23 = [(UIView *)self superview];
-    v24 = AutocorrectAdjustedInlineRect(v22, v23, x, y, width, height);
+    superview2 = [(UIView *)self superview];
+    v24 = AutocorrectAdjustedInlineRect(v22, superview2, x, y, width, height);
     v26 = v25;
     v28 = v27;
     v30 = v29;
 
     self->m_originalTypedTextRectCorrectionAmount = vabdd_f64(y, v26);
-    v31 = [objc_opt_self() mainScreen];
-    [v31 scale];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen scale];
     v33 = v32;
 
     v34 = floor(v24 * v33) / v33;
@@ -139,11 +139,11 @@
     self->m_originalTypedTextRect.origin.y = v35;
     self->m_originalTypedTextRect.size.width = v36;
     self->m_originalTypedTextRect.size.height = v37;
-    v106 = [(UIView *)self superview];
-    v105 = a6;
+    superview3 = [(UIView *)self superview];
+    xCopy = x;
     if (objc_opt_respondsToSelector())
     {
-      [v106 selectionClipRect];
+      [superview3 selectionClipRect];
     }
 
     else
@@ -168,7 +168,7 @@ LABEL_12:
 
         else
         {
-          [(UIView *)self convertRect:v106 fromView:v42, v43, v44, v45];
+          [(UIView *)self convertRect:superview3 fromView:v42, v43, v44, v45];
           v112.origin.x = 0.0;
           v112.origin.y = 0.0;
           v112.size.width = v36;
@@ -213,23 +213,23 @@ LABEL_12:
         v68 = v67;
         v70 = v69;
         v71 = v104 + v63 + v67;
-        if (v71 > v105)
+        if (v71 > xCopy)
         {
           [(UIView *)v49 frame];
           v64 = v72 + v73 - v68;
           v74 = v104 + v64;
           if (v104 + v64 <= 0.0)
           {
-            if (v68 <= v105)
+            if (v68 <= xCopy)
             {
-              v64 = v105 - v68 - v104;
+              v64 = xCopy - v68 - v104;
             }
 
             else
             {
               [(UIView *)self->m_correctionView setIsLongString:1, v74];
               v64 = -v104;
-              v68 = v105;
+              v68 = xCopy;
             }
           }
 
@@ -239,7 +239,7 @@ LABEL_12:
           }
 
           [(UIView *)self->m_correctionView setFrame:v64, v66, v68, v70];
-          if (v71 + v70 * -0.68 > v105)
+          if (v71 + v70 * -0.68 > xCopy)
           {
             self->m_fits = 0;
           }
@@ -261,9 +261,9 @@ LABEL_12:
         else
         {
           v85 = +[UIKeyboardImpl activeInstance];
-          v86 = [v85 accessibilityUsesExtendedKeyboardPredictionsEnabled];
+          accessibilityUsesExtendedKeyboardPredictionsEnabled = [v85 accessibilityUsesExtendedKeyboardPredictionsEnabled];
 
-          if (!v86)
+          if (!accessibilityUsesExtendedKeyboardPredictionsEnabled)
           {
             [(UIView *)self setUserInteractionEnabled:1];
             [(UIView *)self addSubview:self->m_correctionView];
@@ -274,8 +274,8 @@ LABEL_12:
         [(UIView *)self->m_correctionView removeFromSuperview];
         [(UIView *)self setUserInteractionEnabled:0];
 LABEL_32:
-        v87 = [(UIView *)self window];
-        if ([v87 _isTextEffectsWindow])
+        window = [(UIView *)self window];
+        if ([window _isTextEffectsWindow])
         {
           v88 = +[UIPeripheralHost sharedInstance];
           [v88 _inputViewRectToAvoid];
@@ -283,11 +283,11 @@ LABEL_32:
           v92 = v91;
           v94 = v93;
           v96 = v95;
-          v97 = [(UIView *)self window];
-          v98 = [(UIView *)self superview];
+          window2 = [(UIView *)self window];
+          superview4 = [(UIView *)self superview];
           [(UIView *)self frame];
-          [v98 convertRect:0 toView:?];
-          [v97 convertRect:0 toWindow:?];
+          [superview4 convertRect:0 toView:?];
+          [window2 convertRect:0 toWindow:?];
           v113.origin.x = v99;
           v113.origin.y = v100;
           v113.size.width = v101;
@@ -311,7 +311,7 @@ LABEL_32:
         return;
       }
 
-      [v106 _selectionClipRect];
+      [superview3 _selectionClipRect];
     }
 
     v42 = v38;
@@ -322,52 +322,52 @@ LABEL_32:
   }
 }
 
-- (void)addTypedTextRect:(CGRect)a3
+- (void)addTypedTextRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UIView *)self superview];
-  [v8 convertRect:self toView:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  superview = [(UIView *)self superview];
+  [superview convertRect:self toView:{x, y, width, height}];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
   v18 = [[UIAutocorrectTextView alloc] initWithFrame:0 string:2 type:0 edgeType:v10, v12, v14, v16 + 2.0];
-  v17 = [(UIAutocorrectInlinePrompt *)self typedTextView];
-  [(UIView *)self _addSubview:v18 positioned:-3 relativeTo:v17];
+  typedTextView = [(UIAutocorrectInlinePrompt *)self typedTextView];
+  [(UIView *)self _addSubview:v18 positioned:-3 relativeTo:typedTextView];
 
   [(NSMutableArray *)self->m_typedTextViews addObject:v18];
 }
 
-- (BOOL)isAcceptableTextEffectsFrame:(CGRect)a3 afterScrollBy:(double)a4
+- (BOOL)isAcceptableTextEffectsFrame:(CGRect)frame afterScrollBy:(double)by
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  x = a3.origin.x;
-  v8 = a3.origin.y - a4;
-  v9 = [(UIView *)self superview];
+  height = frame.size.height;
+  width = frame.size.width;
+  x = frame.origin.x;
+  v8 = frame.origin.y - by;
+  superview = [(UIView *)self superview];
   v62 = v8;
   v63 = x;
   v64 = width;
   v65 = height;
-  [(UIView *)self convertRect:v9 toView:x, v8, width, height];
+  [(UIView *)self convertRect:superview toView:x, v8, width, height];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  v18 = [(UIView *)self superview];
-  [v18 bounds];
+  superview2 = [(UIView *)self superview];
+  [superview2 bounds];
   IsEmpty = CGRectIsEmpty(v66);
-  v20 = [(UIView *)self superview];
-  v21 = v20;
+  superview3 = [(UIView *)self superview];
+  v21 = superview3;
   if (IsEmpty)
   {
-    v22 = [v20 superview];
-    [v22 bounds];
+    v20Superview = [superview3 superview];
+    [v20Superview bounds];
     v24 = v23;
     v26 = v25;
     v28 = v27;
@@ -376,7 +376,7 @@ LABEL_32:
 
   else
   {
-    [v20 bounds];
+    [superview3 bounds];
     v24 = v31;
     v26 = v32;
     v28 = v33;
@@ -389,25 +389,25 @@ LABEL_32:
   }
 
   v35 = +[UIKeyboardImpl activeInstance];
-  v36 = [v35 _window];
-  v37 = [v36 screen];
-  v38 = [(UIView *)self _window];
-  v39 = [v38 screen];
+  _window = [v35 _window];
+  screen = [_window screen];
+  _window2 = [(UIView *)self _window];
+  screen2 = [_window2 screen];
 
   v60 = 1;
-  if (v37 == v39)
+  if (screen == screen2)
   {
-    v40 = [(UIView *)self _window];
-    v41 = [v40 screen];
-    v42 = [v41 coordinateSpace];
+    _window3 = [(UIView *)self _window];
+    screen3 = [_window3 screen];
+    coordinateSpace = [screen3 coordinateSpace];
 
-    [(UIView *)self convertRect:v42 toCoordinateSpace:v63, v62, v64, v65];
+    [(UIView *)self convertRect:coordinateSpace toCoordinateSpace:v63, v62, v64, v65];
     v44 = v43;
     v46 = v45;
     v48 = v47;
     v50 = v49;
-    v51 = [v35 _rootInputWindowController];
-    [v51 visibleInputViewFrame];
+    _rootInputWindowController = [v35 _rootInputWindowController];
+    [_rootInputWindowController visibleInputViewFrame];
     v53 = v52;
     v55 = v54;
     v57 = v56;
@@ -421,9 +421,9 @@ LABEL_32:
     v68.origin.y = v55;
     v68.size.width = v57;
     v68.size.height = v59;
-    LOBYTE(v51) = CGRectIntersectsRect(v67, v68);
+    LOBYTE(_rootInputWindowController) = CGRectIntersectsRect(v67, v68);
 
-    if (v51)
+    if (_rootInputWindowController)
     {
       v60 = 0;
     }
@@ -432,51 +432,51 @@ LABEL_32:
   return v60;
 }
 
-- (CGRect)horizontallySquishedCorrectionFrame:(CGRect)a3
+- (CGRect)horizontallySquishedCorrectionFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = +[UIKeyboardImpl activeInstance];
-  v9 = [v8 inputDelegateManager];
-  v10 = [v9 keyInputDelegate];
+  inputDelegateManager = [v8 inputDelegateManager];
+  keyInputDelegate = [inputDelegateManager keyInputDelegate];
 
   v11 = +[UIKeyboardImpl activeInstance];
-  v12 = [v11 textInputTraits];
-  v13 = [v12 isSingleLineDocument];
+  textInputTraits = [v11 textInputTraits];
+  isSingleLineDocument = [textInputTraits isSingleLineDocument];
 
-  if (v13 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (isSingleLineDocument && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v14 = [(UIView *)self window];
-    [(UIView *)self convertRect:v14 toView:x, y, width, height];
+    window = [(UIView *)self window];
+    [(UIView *)self convertRect:window toView:x, y, width, height];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
 
-    v23 = [(UIView *)self window];
-    [v23 convertRect:0 toWindow:{v16, v18, v20, v22}];
+    window2 = [(UIView *)self window];
+    [window2 convertRect:0 toWindow:{v16, v18, v20, v22}];
     v25 = v24;
     v27 = v26;
     v29 = v28;
     v31 = v30;
 
-    v32 = [v10 window];
-    [v32 convertRect:0 fromWindow:{v25, v27, v29, v31}];
+    window3 = [keyInputDelegate window];
+    [window3 convertRect:0 fromWindow:{v25, v27, v29, v31}];
     v34 = v33;
     v36 = v35;
     v38 = v37;
     v40 = v39;
 
-    v41 = [v10 window];
-    [v10 convertRect:v41 fromView:{v34, v36, v38, v40}];
+    window4 = [keyInputDelegate window];
+    [keyInputDelegate convertRect:window4 fromView:{v34, v36, v38, v40}];
     v113 = v43;
     v114 = v42;
     v111 = v45;
     v112 = v44;
 
-    [v10 bounds];
+    [keyInputDelegate bounds];
     v47 = v46;
     v49 = v48;
     v110 = v50;
@@ -484,9 +484,9 @@ LABEL_32:
     v53 = UIRectGetMaxX;
     if (objc_opt_respondsToSelector())
     {
-      v54 = [v10 effectiveUserInterfaceLayoutDirection];
-      v55 = v54 == 1;
-      if (v54 == 1)
+      effectiveUserInterfaceLayoutDirection = [keyInputDelegate effectiveUserInterfaceLayoutDirection];
+      v55 = effectiveUserInterfaceLayoutDirection == 1;
+      if (effectiveUserInterfaceLayoutDirection == 1)
       {
         v56 = UIRectGetMaxX;
       }
@@ -496,7 +496,7 @@ LABEL_32:
         v56 = UIRectGetMinX;
       }
 
-      if (v54 == 1)
+      if (effectiveUserInterfaceLayoutDirection == 1)
       {
         v53 = UIRectGetMinX;
       }
@@ -580,29 +580,29 @@ LABEL_19:
     }
 
     v64(v65, v68, v69, v62, v111, v63);
-    v74 = [v10 window];
-    [v10 convertRect:v74 toView:{v66, v67, v62, v111}];
+    window5 = [keyInputDelegate window];
+    [keyInputDelegate convertRect:window5 toView:{v66, v67, v62, v111}];
     v76 = v75;
     v78 = v77;
     v80 = v79;
     v82 = v81;
 
-    v83 = [v10 window];
-    [v83 convertRect:0 toWindow:{v76, v78, v80, v82}];
+    window6 = [keyInputDelegate window];
+    [window6 convertRect:0 toWindow:{v76, v78, v80, v82}];
     v85 = v84;
     v87 = v86;
     v89 = v88;
     v91 = v90;
 
-    v92 = [(UIView *)self window];
-    [v92 convertRect:0 fromWindow:{v85, v87, v89, v91}];
+    window7 = [(UIView *)self window];
+    [window7 convertRect:0 fromWindow:{v85, v87, v89, v91}];
     v94 = v93;
     v96 = v95;
     v98 = v97;
     v100 = v99;
 
-    v101 = [(UIView *)self window];
-    [(UIView *)self convertRect:v101 fromView:v94, v96, v98, v100];
+    window8 = [(UIView *)self window];
+    [(UIView *)self convertRect:window8 fromView:v94, v96, v98, v100];
     x = v102;
     y = v103;
     width = v104;
@@ -637,14 +637,14 @@ BOOL __65__UIAutocorrectInlinePrompt_horizontallySquishedCorrectionFrame___block
   }
 }
 
-- (CGRect)correctionFrameFromDesiredFrame:(CGRect)a3 textHeight:(int)a4 withExtraGap:(double)a5
+- (CGRect)correctionFrameFromDesiredFrame:(CGRect)frame textHeight:(int)height withExtraGap:(double)gap
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a3.origin.y + a4 + a5 + -1.0;
-  if (![(UIAutocorrectInlinePrompt *)self isAcceptableTextEffectsFrame:a3.origin.x afterScrollBy:v10, a3.size.width, a3.size.height, 0.0])
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v10 = frame.origin.y + height + gap + -1.0;
+  if (![(UIAutocorrectInlinePrompt *)self isAcceptableTextEffectsFrame:frame.origin.x afterScrollBy:v10, frame.size.width, frame.size.height, 0.0])
   {
     v11 = *(MEMORY[0x1E695F058] + 8);
     if (v11 <= 0.0)
@@ -653,12 +653,12 @@ BOOL __65__UIAutocorrectInlinePrompt_horizontallySquishedCorrectionFrame___block
     }
 
     v12 = y - height + v11;
-    v13 = [(UIView *)self window];
-    [(UIView *)self convertRect:v13 toView:x, v12, width, height];
+    window = [(UIView *)self window];
+    [(UIView *)self convertRect:window toView:x, v12, width, height];
     v15 = v14;
 
-    v16 = [(UIView *)self window];
-    v17 = __UIStatusBarManagerForWindow(v16);
+    window2 = [(UIView *)self window];
+    v17 = __UIStatusBarManagerForWindow(window2);
     [v17 statusBarHeight];
     v19 = v18;
 
@@ -676,8 +676,8 @@ BOOL __65__UIAutocorrectInlinePrompt_horizontallySquishedCorrectionFrame___block
   v20 = x;
   v21 = v10;
   v22 = width;
-  v23 = height;
-  result.size.height = v23;
+  heightCopy = height;
+  result.size.height = heightCopy;
   result.size.width = v22;
   result.origin.y = v21;
   result.origin.x = v20;
@@ -695,17 +695,17 @@ BOOL __65__UIAutocorrectInlinePrompt_horizontallySquishedCorrectionFrame___block
   return v3;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
   m_correctionView = self->m_correctionView;
-  v8 = a4;
-  [(UIView *)m_correctionView convertPoint:v6 fromView:x, y];
-  LOBYTE(v6) = [(UIView *)m_correctionView pointInside:v8 withEvent:?];
+  eventCopy = event;
+  [(UIView *)m_correctionView convertPoint:selfCopy fromView:x, y];
+  LOBYTE(selfCopy) = [(UIView *)m_correctionView pointInside:eventCopy withEvent:?];
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)dismiss
@@ -714,12 +714,12 @@ BOOL __65__UIAutocorrectInlinePrompt_horizontallySquishedCorrectionFrame___block
   [v2 fadeAutocorrectPrompt];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   m_correctionView = self->m_correctionView;
-  v6 = a4;
+  eventCopy = event;
   [(UIView *)m_correctionView frame];
-  v7 = [(UIAutocorrectInlinePrompt *)self pointInside:v6 withEvent:?];
+  v7 = [(UIAutocorrectInlinePrompt *)self pointInside:eventCopy withEvent:?];
 
   if (self->m_mouseDown && v7)
   {
@@ -729,10 +729,10 @@ BOOL __65__UIAutocorrectInlinePrompt_horizontallySquishedCorrectionFrame___block
   self->m_mouseDown = 0;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  if ([v4 _isGestureType:0] && objc_msgSend(v4, "numberOfTouchesRequired") == 1 && objc_msgSend(v4, "numberOfTapsRequired") == 1 || objc_msgSend(v4, "_isGestureType:", 1) && objc_msgSend(v4, "numberOfTouchesRequired") == 1)
+  beginCopy = begin;
+  if ([beginCopy _isGestureType:0] && objc_msgSend(beginCopy, "numberOfTouchesRequired") == 1 && objc_msgSend(beginCopy, "numberOfTapsRequired") == 1 || objc_msgSend(beginCopy, "_isGestureType:", 1) && objc_msgSend(beginCopy, "numberOfTouchesRequired") == 1)
   {
     v5 = 0;
   }
@@ -741,13 +741,13 @@ BOOL __65__UIAutocorrectInlinePrompt_horizontallySquishedCorrectionFrame___block
   {
     v7.receiver = self;
     v7.super_class = UIAutocorrectInlinePrompt;
-    v5 = [(UIView *)&v7 gestureRecognizerShouldBegin:v4];
+    v5 = [(UIView *)&v7 gestureRecognizerShouldBegin:beginCopy];
   }
 
   return v5;
 }
 
-- (BOOL)prepareForAnimation:(CGRect)a3
+- (BOOL)prepareForAnimation:(CGRect)animation
 {
   if (!self->m_fits)
   {
@@ -761,13 +761,13 @@ BOOL __65__UIAutocorrectInlinePrompt_horizontallySquishedCorrectionFrame___block
   v40 = v5;
   v41 = v4;
   v42 = v3;
-  if (vabdd_f64(self->m_originalTypedTextRect.origin.y, a3.origin.y) > self->m_originalTypedTextRectCorrectionAmount + 0.00000011920929)
+  if (vabdd_f64(self->m_originalTypedTextRect.origin.y, animation.origin.y) > self->m_originalTypedTextRectCorrectionAmount + 0.00000011920929)
   {
     return 0;
   }
 
-  v19 = [(UIAutocorrectInlinePrompt *)self typedTextView];
-  [v19 reduceWidth:3.0];
+  typedTextView = [(UIAutocorrectInlinePrompt *)self typedTextView];
+  [typedTextView reduceWidth:3.0];
   v20 = [UIAutocorrectTextView alloc];
   v21 = *MEMORY[0x1E695F058];
   v22 = *(MEMORY[0x1E695F058] + 8);
@@ -778,9 +778,9 @@ BOOL __65__UIAutocorrectInlinePrompt_horizontallySquishedCorrectionFrame___block
   self->m_typedTextAnimationView = v25;
 
   v27 = self->m_typedTextAnimationView;
-  [v19 frame];
+  [typedTextView frame];
   [(UIView *)v27 setFrame:?];
-  [(UIView *)self _addSubview:self->m_typedTextAnimationView positioned:-2 relativeTo:v19];
+  [(UIView *)self _addSubview:self->m_typedTextAnimationView positioned:-2 relativeTo:typedTextView];
   [(NSMutableArray *)self->m_typedTextViews makeObjectsPerformSelector:sel_removeFromSuperview];
   if ([(NSMutableArray *)self->m_typedTextViews count]>= 2)
   {
@@ -794,13 +794,13 @@ BOOL __65__UIAutocorrectInlinePrompt_horizontallySquishedCorrectionFrame___block
   [(UIView *)self->m_correctionView frame];
   v29 = v28;
   v31 = v30;
-  [v19 frame];
+  [typedTextView frame];
   if (v29 >= v32)
   {
     if (v32 < v29)
     {
       [(UIView *)self->m_typedTextAnimationView setSize:v29, v31];
-      [v19 setSize:{v29, v31}];
+      [typedTextView setSize:{v29, v31}];
     }
   }
 

@@ -1,14 +1,14 @@
 @interface ADEspressoJasperColorV2InferenceDescriptor
-- (ADEspressoJasperColorV2InferenceDescriptor)initWithNetworkProvider:(id)a3 espressoEngine:(unint64_t)a4 lidarType:(unint64_t)a5;
+- (ADEspressoJasperColorV2InferenceDescriptor)initWithNetworkProvider:(id)provider espressoEngine:(unint64_t)engine lidarType:(unint64_t)type;
 @end
 
 @implementation ADEspressoJasperColorV2InferenceDescriptor
 
-- (ADEspressoJasperColorV2InferenceDescriptor)initWithNetworkProvider:(id)a3 espressoEngine:(unint64_t)a4 lidarType:(unint64_t)a5
+- (ADEspressoJasperColorV2InferenceDescriptor)initWithNetworkProvider:(id)provider espressoEngine:(unint64_t)engine lidarType:(unint64_t)type
 {
-  v8 = a3;
-  v9 = v8;
-  if (a4 - 3 >= 2)
+  providerCopy = provider;
+  v9 = providerCopy;
+  if (engine - 3 >= 2)
   {
     v10 = 1717855600;
   }
@@ -18,7 +18,7 @@
     v10 = 1751410032;
   }
 
-  if (a4 - 3 >= 2)
+  if (engine - 3 >= 2)
   {
     v11 = 1278226534;
   }
@@ -28,11 +28,11 @@
     v11 = 1278226536;
   }
 
-  v12 = [v8 url];
-  v13 = [v9 layoutNamesDict];
+  v12 = [providerCopy url];
+  layoutNamesDict = [v9 layoutNamesDict];
   v36.receiver = self;
   v36.super_class = ADEspressoJasperColorV2InferenceDescriptor;
-  v14 = [(ADEspressoInferenceDescriptor *)&v36 initWithUrl:v12 layoutNames:v13];
+  v14 = [(ADEspressoInferenceDescriptor *)&v36 initWithUrl:v12 layoutNames:layoutNamesDict];
 
   if (v14)
   {
@@ -40,7 +40,7 @@
     colorInput = v14->_colorInput;
     v14->_colorInput = v15;
 
-    if (a5 == 1)
+    if (type == 1)
     {
       v17 = [v9 descriptorForBuffer:@"prev_rgb" isInput:1 pixelFormat:1111970369];
       v18 = @"prev_depth";

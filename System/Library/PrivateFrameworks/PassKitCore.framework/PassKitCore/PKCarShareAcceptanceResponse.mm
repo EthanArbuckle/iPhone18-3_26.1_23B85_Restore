@@ -1,27 +1,27 @@
 @interface PKCarShareAcceptanceResponse
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCarShareAcceptanceResponse:(id)a3;
-- (PKCarShareAcceptanceResponse)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCarShareAcceptanceResponse:(id)response;
+- (PKCarShareAcceptanceResponse)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCarShareAcceptanceResponse
 
-- (PKCarShareAcceptanceResponse)initWithCoder:(id)a3
+- (PKCarShareAcceptanceResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKCarShareAcceptanceResponse;
   v5 = [(PKCarShareAcceptanceResponse *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subcredential"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subcredential"];
     subcredential = v5->_subcredential;
     v5->_subcredential = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueIdentifier"];
     passUniqueIdentifier = v5->_passUniqueIdentifier;
     v5->_passUniqueIdentifier = v8;
   }
@@ -29,12 +29,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   subcredential = self->_subcredential;
-  v5 = a3;
-  [v5 encodeObject:subcredential forKey:@"subcredential"];
-  [v5 encodeObject:self->_passUniqueIdentifier forKey:@"passUniqueIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:subcredential forKey:@"subcredential"];
+  [coderCopy encodeObject:self->_passUniqueIdentifier forKey:@"passUniqueIdentifier"];
 }
 
 - (id)description
@@ -54,41 +54,41 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_subcredential];
-  [v3 safelyAddObject:self->_passUniqueIdentifier];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_subcredential];
+  [array safelyAddObject:self->_passUniqueIdentifier];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKCarShareAcceptanceResponse *)self isEqualToCarShareAcceptanceResponse:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKCarShareAcceptanceResponse *)self isEqualToCarShareAcceptanceResponse:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToCarShareAcceptanceResponse:(id)a3
+- (BOOL)isEqualToCarShareAcceptanceResponse:(id)response
 {
-  v4 = a3;
-  if (!v4)
+  responseCopy = response;
+  if (!responseCopy)
   {
     goto LABEL_8;
   }
 
   subcredential = self->_subcredential;
-  v6 = v4[1];
+  v6 = responseCopy[1];
   if (subcredential)
   {
     v7 = v6 == 0;
@@ -118,7 +118,7 @@ LABEL_8:
 
 LABEL_11:
   passUniqueIdentifier = self->_passUniqueIdentifier;
-  v11 = v4[2];
+  v11 = responseCopy[2];
   if (passUniqueIdentifier && v11)
   {
     v8 = [(NSString *)passUniqueIdentifier isEqual:?];

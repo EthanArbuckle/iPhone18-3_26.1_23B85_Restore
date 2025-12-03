@@ -3,9 +3,9 @@
 - (void)clearTelemetry;
 - (void)dealloc;
 - (void)sendTelemetry;
-- (void)setResultCode:(int)a3 forKey:(__CFString *)a4;
-- (void)setTime:(int64_t)a3 forKey:(__CFString *)a4;
-- (void)setTimeRange:(int64_t)a3 end:(int64_t)a4 forKey:(__CFString *)a5;
+- (void)setResultCode:(int)code forKey:(__CFString *)key;
+- (void)setTime:(int64_t)time forKey:(__CFString *)key;
+- (void)setTimeRange:(int64_t)range end:(int64_t)end forKey:(__CFString *)key;
 @end
 
 @implementation FigPWDKeyExchangeSenderTelementryHelper
@@ -37,7 +37,7 @@
   [(FigPWDKeyExchangeSenderTelementryHelper *)&v4 dealloc];
 }
 
-- (void)setTime:(int64_t)a3 forKey:(__CFString *)a4
+- (void)setTime:(int64_t)time forKey:(__CFString *)key
 {
   [(NSLock *)self->_telemetryLock lock];
   FigCFDictionarySetInt64();
@@ -46,7 +46,7 @@
   [(NSLock *)telemetryLock unlock];
 }
 
-- (void)setTimeRange:(int64_t)a3 end:(int64_t)a4 forKey:(__CFString *)a5
+- (void)setTimeRange:(int64_t)range end:(int64_t)end forKey:(__CFString *)key
 {
   [(NSLock *)self->_telemetryLock lock];
   FigCFDictionarySetInt64();
@@ -55,7 +55,7 @@
   [(NSLock *)telemetryLock unlock];
 }
 
-- (void)setResultCode:(int)a3 forKey:(__CFString *)a4
+- (void)setResultCode:(int)code forKey:(__CFString *)key
 {
   [(NSLock *)self->_telemetryLock lock];
   FigCFDictionarySetInt32();

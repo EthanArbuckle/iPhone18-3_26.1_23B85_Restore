@@ -1,6 +1,6 @@
 @interface AVFigRouteDiscovererInputDeviceDiscoverySessionImpl
 - (AVFigRouteDiscovererInputDeviceDiscoverySessionImpl)init;
-- (AVFigRouteDiscovererInputDeviceDiscoverySessionImpl)initWithFigRouteDiscovererCreator:(id)a3;
+- (AVFigRouteDiscovererInputDeviceDiscoverySessionImpl)initWithFigRouteDiscovererCreator:(id)creator;
 - (AVInputDevice)fallbackInputDevice;
 - (BOOL)devicePresenceDetected;
 - (NSArray)availableInputDevices;
@@ -11,25 +11,25 @@
 - (void)_routePresentChanged;
 - (void)_serverDied;
 - (void)dealloc;
-- (void)inputDeviceDiscoverySessionDidChangeDiscoveryMode:(id)a3 forClientIdentifiers:(id)a4;
-- (void)inputDeviceDiscoverySessionFastDiscoveryDidChange:(id)a3;
-- (void)setAudioSessionId:(id)a3;
+- (void)inputDeviceDiscoverySessionDidChangeDiscoveryMode:(id)mode forClientIdentifiers:(id)identifiers;
+- (void)inputDeviceDiscoverySessionFastDiscoveryDidChange:(id)change;
+- (void)setAudioSessionId:(id)id;
 @end
 
 @implementation AVFigRouteDiscovererInputDeviceDiscoverySessionImpl
 
 - (void)_availableRoutesChanged
 {
-  v3 = [(AVFigRouteDiscovererInputDeviceDiscoverySessionImpl *)self parentInputDeviceDiscoverySession];
+  parentInputDeviceDiscoverySession = [(AVFigRouteDiscovererInputDeviceDiscoverySessionImpl *)self parentInputDeviceDiscoverySession];
 
-  [(AVInputDeviceDiscoverySession *)v3 inputDeviceDiscoverySessionImplDidChangeAvailableInputDevices:self];
+  [(AVInputDeviceDiscoverySession *)parentInputDeviceDiscoverySession inputDeviceDiscoverySessionImplDidChangeAvailableInputDevices:self];
 }
 
 - (void)_routePresentChanged
 {
-  v3 = [(AVFigRouteDiscovererInputDeviceDiscoverySessionImpl *)self parentInputDeviceDiscoverySession];
+  parentInputDeviceDiscoverySession = [(AVFigRouteDiscovererInputDeviceDiscoverySessionImpl *)self parentInputDeviceDiscoverySession];
 
-  [(AVInputDeviceDiscoverySession *)v3 inputDeviceDiscoverySessionImplDidChangeAvailableInputDevices:self];
+  [(AVInputDeviceDiscoverySession *)parentInputDeviceDiscoverySession inputDeviceDiscoverySessionImplDidChangeAvailableInputDevices:self];
 }
 
 - (AVFigRouteDiscovererInputDeviceDiscoverySessionImpl)init
@@ -72,7 +72,7 @@
   [(AVFigRouteDiscovererInputDeviceDiscoverySessionImpl *)&v10 dealloc];
 }
 
-- (void)setAudioSessionId:(id)a3
+- (void)setAudioSessionId:(id)id
 {
   discoverer = self->_discoverer;
   VTable = CMBaseObjectGetVTable();
@@ -80,20 +80,20 @@
   if (v6)
   {
     v7 = *(VTable + 8) + 56;
-    v6(discoverer, *MEMORY[0x1E69AF308], a3);
+    v6(discoverer, *MEMORY[0x1E69AF308], id);
   }
 
-  if (a3)
+  if (id)
   {
 
-    CFRelease(a3);
+    CFRelease(id);
   }
 }
 
 - (NSArray)availableInputDevices
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   cf = 0;
   discoverer = self->_discoverer;
   v5 = *MEMORY[0x1E695E480];
@@ -122,7 +122,7 @@
           objc_enumerationMutation(v8);
         }
 
-        [(NSArray *)v3 addObject:[AVInputDevice inputDeviceWithRouteDescriptor:*(*(&v16 + 1) + 8 * i) routeDiscoverer:self->_discoverer]];
+        [(NSArray *)array addObject:[AVInputDevice inputDeviceWithRouteDescriptor:*(*(&v16 + 1) + 8 * i) routeDiscoverer:self->_discoverer]];
       }
 
       v11 = [v8 countByEnumeratingWithState:&v16 objects:v21 count:16];
@@ -137,14 +137,14 @@
   }
 
   v14 = *MEMORY[0x1E69E9840];
-  return v3;
+  return array;
 }
 
 - (void)_endpointDescriptorChanged
 {
-  v3 = [(AVFigRouteDiscovererInputDeviceDiscoverySessionImpl *)self parentInputDeviceDiscoverySession];
+  parentInputDeviceDiscoverySession = [(AVFigRouteDiscovererInputDeviceDiscoverySessionImpl *)self parentInputDeviceDiscoverySession];
 
-  [(AVInputDeviceDiscoverySession *)v3 inputDeviceDiscoverySessionImplDidChangeAvailableInputDevices:self];
+  [(AVInputDeviceDiscoverySession *)parentInputDeviceDiscoverySession inputDeviceDiscoverySessionImplDidChangeAvailableInputDevices:self];
 }
 
 - (void)_serverDied
@@ -161,11 +161,11 @@
   }
 }
 
-- (void)inputDeviceDiscoverySessionDidChangeDiscoveryMode:(id)a3 forClientIdentifiers:(id)a4
+- (void)inputDeviceDiscoverySessionDidChangeDiscoveryMode:(id)mode forClientIdentifiers:(id)identifiers
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = [a3 discoveryMode];
-  switch(v6)
+  discoveryMode = [mode discoveryMode];
+  switch(discoveryMode)
   {
     case 2:
       v7 = MEMORY[0x1E69AF2D0];
@@ -196,7 +196,7 @@ LABEL_9:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v14 = [a4 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v14 = [identifiers countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v14)
   {
     v15 = v14;
@@ -207,13 +207,13 @@ LABEL_9:
       {
         if (*v24 != v16)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(identifiers);
         }
 
         CFDictionarySetValue(Mutable, *(*(&v23 + 1) + 8 * i), v8);
       }
 
-      v15 = [a4 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v15 = [identifiers countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v15);
@@ -236,10 +236,10 @@ LABEL_9:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)inputDeviceDiscoverySessionFastDiscoveryDidChange:(id)a3
+- (void)inputDeviceDiscoverySessionFastDiscoveryDidChange:(id)change
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [a3 fastDiscoveryEnabled];
+  fastDiscoveryEnabled = [change fastDiscoveryEnabled];
   if (dword_1ED6F6BA8)
   {
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -248,7 +248,7 @@ LABEL_9:
   }
 
   discoverer = self->_discoverer;
-  if (v4)
+  if (fastDiscoveryEnabled)
   {
     v7 = MEMORY[0x1E695E4D0];
   }
@@ -267,13 +267,13 @@ LABEL_9:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (AVFigRouteDiscovererInputDeviceDiscoverySessionImpl)initWithFigRouteDiscovererCreator:(id)a3
+- (AVFigRouteDiscovererInputDeviceDiscoverySessionImpl)initWithFigRouteDiscovererCreator:(id)creator
 {
   [AVRoutingCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
   v25.receiver = self;
   v25.super_class = AVFigRouteDiscovererInputDeviceDiscoverySessionImpl;
   v5 = [(AVFigRouteDiscovererInputDeviceDiscoverySessionImpl *)&v25 init];
-  v6 = [a3 copy];
+  v6 = [creator copy];
   *(v5 + 1) = v6;
   if (!v6)
   {

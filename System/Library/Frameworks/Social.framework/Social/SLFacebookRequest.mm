@@ -1,22 +1,22 @@
 @interface SLFacebookRequest
-- (SLFacebookRequest)initWithURL:(id)a3 parameters:(id)a4 requestMethod:(int64_t)a5;
+- (SLFacebookRequest)initWithURL:(id)l parameters:(id)parameters requestMethod:(int64_t)method;
 - (id)preparedURLRequest;
 - (int)responseDataFormat;
-- (void)setAccessToken:(id)a3;
-- (void)setResponseDataFormat:(int)a3;
+- (void)setAccessToken:(id)token;
+- (void)setResponseDataFormat:(int)format;
 @end
 
 @implementation SLFacebookRequest
 
-- (SLFacebookRequest)initWithURL:(id)a3 parameters:(id)a4 requestMethod:(int64_t)a5
+- (SLFacebookRequest)initWithURL:(id)l parameters:(id)parameters requestMethod:(int64_t)method
 {
-  v8 = a4;
+  parametersCopy = parameters;
   v12.receiver = self;
   v12.super_class = SLFacebookRequest;
-  v9 = [(SLRequest *)&v12 initWithServiceType:@"com.apple.social.facebook" URL:a3 parameters:v8 requestMethod:a5];
+  v9 = [(SLRequest *)&v12 initWithServiceType:@"com.apple.social.facebook" URL:l parameters:parametersCopy requestMethod:method];
   if (v9)
   {
-    v10 = [v8 objectForKey:@"format"];
+    v10 = [parametersCopy objectForKey:@"format"];
 
     if (!v10)
     {
@@ -32,16 +32,16 @@
   [(SLFacebookRequest *)self preflightRequest];
   v5.receiver = self;
   v5.super_class = SLFacebookRequest;
-  v3 = [(SLRequest *)&v5 preparedURLRequest];
+  preparedURLRequest = [(SLRequest *)&v5 preparedURLRequest];
 
-  return v3;
+  return preparedURLRequest;
 }
 
-- (void)setAccessToken:(id)a3
+- (void)setAccessToken:(id)token
 {
-  if (a3)
+  if (token)
   {
-    [(SLRequest *)self setParameterValue:a3 forKey:@"access_token"];
+    [(SLRequest *)self setParameterValue:token forKey:@"access_token"];
   }
 
   else
@@ -50,9 +50,9 @@
   }
 }
 
-- (void)setResponseDataFormat:(int)a3
+- (void)setResponseDataFormat:(int)format
 {
-  if (a3 == 2)
+  if (format == 2)
   {
     v3 = @"json";
   }

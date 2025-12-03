@@ -1,25 +1,25 @@
 @interface ETBrowserViewController
 - (DTSCanvasViewController)canvasViewController;
-- (ETBrowserViewController)initWithBalloonPlugin:(id)a3 dataSource:(id)a4;
-- (void)canvasViewController:(id)a3 sendMessage:(id)a4;
-- (void)dataSource:(id)a3 didReceiveSessionMessage:(id)a4;
+- (ETBrowserViewController)initWithBalloonPlugin:(id)plugin dataSource:(id)source;
+- (void)canvasViewController:(id)controller sendMessage:(id)message;
+- (void)dataSource:(id)source didReceiveSessionMessage:(id)message;
 - (void)dismiss;
-- (void)setBalloonPluginDataSource:(id)a3;
+- (void)setBalloonPluginDataSource:(id)source;
 - (void)viewDidLoad;
 @end
 
 @implementation ETBrowserViewController
 
-- (ETBrowserViewController)initWithBalloonPlugin:(id)a3 dataSource:(id)a4
+- (ETBrowserViewController)initWithBalloonPlugin:(id)plugin dataSource:(id)source
 {
-  v7 = a4;
+  sourceCopy = source;
   v11.receiver = self;
   v11.super_class = ETBrowserViewController;
-  v8 = [(ETBrowserViewController *)&v11 initWithBalloonPlugin:a3 dataSource:v7];
+  v8 = [(ETBrowserViewController *)&v11 initWithBalloonPlugin:plugin dataSource:sourceCopy];
   v9 = v8;
-  if (v7 && v8)
+  if (sourceCopy && v8)
   {
-    objc_storeStrong(&v8->_dataSource, a4);
+    objc_storeStrong(&v8->_dataSource, source);
   }
 
   return v9;
@@ -30,23 +30,23 @@
   v10.receiver = self;
   v10.super_class = ETBrowserViewController;
   [(ETBrowserViewController *)&v10 viewDidLoad];
-  v3 = [(ETBrowserViewController *)self view];
-  v4 = [(ETBrowserViewController *)self canvasViewController];
-  [(ETBrowserViewController *)self addChildViewController:v4];
-  v5 = [v4 view];
-  [v3 addSubview:v5];
+  view = [(ETBrowserViewController *)self view];
+  canvasViewController = [(ETBrowserViewController *)self canvasViewController];
+  [(ETBrowserViewController *)self addChildViewController:canvasViewController];
+  view2 = [canvasViewController view];
+  [view addSubview:view2];
 
-  [v4 didMoveToParentViewController:self];
-  [v4 setSendDelegate:self];
-  [v4 setDataSource:self->_dataSource];
+  [canvasViewController didMoveToParentViewController:self];
+  [canvasViewController setSendDelegate:self];
+  [canvasViewController setDataSource:self->_dataSource];
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       dataSource = self->_dataSource;
-      v8 = [(ETBalloonPluginDataSource *)dataSource allPayloads];
-      v9 = [v8 count];
+      allPayloads = [(ETBalloonPluginDataSource *)dataSource allPayloads];
+      v9 = [allPayloads count];
       *buf = 138412546;
       v12 = dataSource;
       v13 = 2048;
@@ -56,36 +56,36 @@
   }
 }
 
-- (void)setBalloonPluginDataSource:(id)a3
+- (void)setBalloonPluginDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v8.receiver = self;
   v8.super_class = ETBrowserViewController;
-  [(ETBrowserViewController *)&v8 setBalloonPluginDataSource:v4];
+  [(ETBrowserViewController *)&v8 setBalloonPluginDataSource:sourceCopy];
   dataSource = self->_dataSource;
-  self->_dataSource = v4;
-  v6 = v4;
+  self->_dataSource = sourceCopy;
+  v6 = sourceCopy;
 
-  v7 = [(ETBrowserViewController *)self canvasViewController];
-  [v7 setDataSource:self->_dataSource];
+  canvasViewController = [(ETBrowserViewController *)self canvasViewController];
+  [canvasViewController setDataSource:self->_dataSource];
 }
 
-- (void)canvasViewController:(id)a3 sendMessage:(id)a4
+- (void)canvasViewController:(id)controller sendMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 archive];
+  controllerCopy = controller;
+  messageCopy = message;
+  archive = [messageCopy archive];
   v9 = objc_alloc_init(CKBrowserItemPayload);
-  [v9 setData:v8];
+  [v9 setData:archive];
   [v9 setShouldExpire:1];
-  v10 = [v7 messageType];
-  if (v10 != 8)
+  messageType = [messageCopy messageType];
+  if (messageType != 8)
   {
 LABEL_4:
-    v14 = v10 != 8;
-    v15 = [(ETBalloonPluginDataSource *)self->_dataSource pluginPayload];
-    v16 = [v15 attachments];
-    v17 = [v16 count];
+    v14 = messageType != 8;
+    pluginPayload = [(ETBalloonPluginDataSource *)self->_dataSource pluginPayload];
+    attachments = [pluginPayload attachments];
+    v17 = [attachments count];
 
     if (v17)
     {
@@ -117,13 +117,13 @@ LABEL_4:
         v21 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
         {
-          v22 = [(ETBalloonPluginDataSource *)self->_dataSource allPayloads];
-          v23 = [v22 count];
-          v24 = [(ETBalloonPluginDataSource *)self->_dataSource messageGUID];
+          allPayloads = [(ETBalloonPluginDataSource *)self->_dataSource allPayloads];
+          v23 = [allPayloads count];
+          messageGUID = [(ETBalloonPluginDataSource *)self->_dataSource messageGUID];
           v30 = 134218242;
           v31 = v23;
           v32 = 2112;
-          v33 = v24;
+          v33 = messageGUID;
           _os_log_impl(&dword_0, v21, OS_LOG_TYPE_INFO, "Sending breadbrumb with session message count: %lu, message GUID: %@)", &v30, 0x16u);
         }
       }
@@ -134,17 +134,17 @@ LABEL_4:
       [v9 setBreadcrumbText:v26];
     }
 
-    v28 = [(ETBrowserViewController *)self sendDelegate];
-    [v28 commitPayload:v9];
+    sendDelegate = [(ETBrowserViewController *)self sendDelegate];
+    [sendDelegate commitPayload:v9];
 
     goto LABEL_19;
   }
 
-  v11 = [v7 mediaURL];
-  v12 = v11;
-  if (v11)
+  mediaURL = [messageCopy mediaURL];
+  v12 = mediaURL;
+  if (mediaURL)
   {
-    v34 = v11;
+    v34 = mediaURL;
     v13 = [NSArray arrayWithObjects:&v34 count:1];
     [v9 setAttachments:v13];
 
@@ -166,15 +166,15 @@ LABEL_19:
 
 - (void)dismiss
 {
-  v2 = [(ETBrowserViewController *)self sendDelegate];
-  [v2 dismiss];
+  sendDelegate = [(ETBrowserViewController *)self sendDelegate];
+  [sendDelegate dismiss];
 }
 
-- (void)dataSource:(id)a3 didReceiveSessionMessage:(id)a4
+- (void)dataSource:(id)source didReceiveSessionMessage:(id)message
 {
-  v5 = a4;
-  v6 = [(ETBrowserViewController *)self canvasViewController];
-  [v6 addUnplayedMessage:v5];
+  messageCopy = message;
+  canvasViewController = [(ETBrowserViewController *)self canvasViewController];
+  [canvasViewController addUnplayedMessage:messageCopy];
 }
 
 - (DTSCanvasViewController)canvasViewController

@@ -1,21 +1,21 @@
 @interface WFTriggerEventRunner
-- (BOOL)isRunningWorkflowWithIdentifier:(id)a3;
-- (BOOL)startRunningWorkflow:(id)a3 forTrigger:(id)a4 eventInfo:(id)a5;
-- (WFTriggerEventRunner)initWithDatabaseProvider:(id)a3 delegate:(id)a4;
-- (void)logPowerLogEventForConfiguredTrigger:(id)a3 workflowReference:(id)a4;
+- (BOOL)isRunningWorkflowWithIdentifier:(id)identifier;
+- (BOOL)startRunningWorkflow:(id)workflow forTrigger:(id)trigger eventInfo:(id)info;
+- (WFTriggerEventRunner)initWithDatabaseProvider:(id)provider delegate:(id)delegate;
+- (void)logPowerLogEventForConfiguredTrigger:(id)trigger workflowReference:(id)reference;
 @end
 
 @implementation WFTriggerEventRunner
 
-- (void)logPowerLogEventForConfiguredTrigger:(id)a3 workflowReference:(id)a4
+- (void)logPowerLogEventForConfiguredTrigger:(id)trigger workflowReference:(id)reference
 {
   v50 = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v37 = a4;
-  if (!v36)
+  triggerCopy = trigger;
+  referenceCopy = reference;
+  if (!triggerCopy)
   {
-    v29 = [MEMORY[0x277CCA890] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"WFTriggerEventRunner.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"configuredTrigger"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTriggerEventRunner.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"configuredTrigger"}];
   }
 
   v7 = MEMORY[0x277CBEB98];
@@ -25,41 +25,41 @@
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:3];
   v35 = [v7 setWithArray:v8];
 
-  v9 = [(WFTriggerEventRunner *)self databaseProvider];
+  databaseProvider = [(WFTriggerEventRunner *)self databaseProvider];
   v39 = 0;
-  v10 = [v9 databaseWithError:&v39];
+  v10 = [databaseProvider databaseWithError:&v39];
   v11 = v39;
 
   if (v10)
   {
     v38 = v11;
-    v12 = [v10 recordWithDescriptor:v37 properties:v35 error:&v38];
+    v12 = [v10 recordWithDescriptor:referenceCopy properties:v35 error:&v38];
     v34 = v38;
 
     if (v12)
     {
       v44[0] = @"WFTriggerKind";
       v13 = MEMORY[0x277D7C970];
-      v33 = [v36 trigger];
-      v32 = [v13 powerLogEventKindForTrigger:v33];
+      trigger = [triggerCopy trigger];
+      v32 = [v13 powerLogEventKindForTrigger:trigger];
       v45[0] = v32;
       v44[1] = @"WFActionCount";
       v14 = MEMORY[0x277CCABB0];
-      v15 = [v12 actions];
-      v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(v15, "count")}];
+      actions = [v12 actions];
+      v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(actions, "count")}];
       v45[1] = v16;
       v44[2] = @"WFTriggerID";
-      v17 = [v36 identifier];
-      v45[2] = v17;
+      identifier = [triggerCopy identifier];
+      v45[2] = identifier;
       v44[3] = @"WFWorkflowID";
-      v18 = [v37 identifier];
-      v45[3] = v18;
+      identifier2 = [referenceCopy identifier];
+      v45[3] = identifier2;
       v44[4] = @"WFWorkflowName";
-      v19 = [v12 name];
-      v20 = v19;
-      if (v19)
+      name = [v12 name];
+      v20 = name;
+      if (name)
       {
-        v21 = v19;
+        v21 = name;
       }
 
       else
@@ -69,11 +69,11 @@
 
       v45[4] = v21;
       v44[5] = @"WFAssociatedAppIdentifier";
-      v22 = [v12 associatedAppBundleIdentifier];
-      v23 = v22;
-      if (v22)
+      associatedAppBundleIdentifier = [v12 associatedAppBundleIdentifier];
+      v23 = associatedAppBundleIdentifier;
+      if (associatedAppBundleIdentifier)
       {
-        v24 = v22;
+        v24 = associatedAppBundleIdentifier;
       }
 
       else
@@ -115,9 +115,9 @@
       _Block_object_dispose(&v40, 8);
       if (!v27)
       {
-        v30 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
         v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void softPLLogTimeSensitiveRegisteredEvent(PLClientID, CFStringRef, CFDictionaryRef, CFArrayRef)"}];
-        [v30 handleFailureInFunction:v31 file:@"WFTriggerEventRunner.m" lineNumber:28 description:{@"%s", dlerror()}];
+        [currentHandler2 handleFailureInFunction:v31 file:@"WFTriggerEventRunner.m" lineNumber:28 description:{@"%s", dlerror()}];
 
         __break(1u);
       }
@@ -133,7 +133,7 @@
         *buf = 136315650;
         *&buf[4] = "[WFTriggerEventRunner logPowerLogEventForConfiguredTrigger:workflowReference:]";
         *&buf[12] = 2112;
-        *&buf[14] = v37;
+        *&buf[14] = referenceCopy;
         *&buf[22] = 2114;
         v48 = v34;
         _os_log_impl(&dword_23103C000, v25, OS_LOG_TYPE_ERROR, "%s Failed to get workflow record for reference (%@): %{public}@", buf, 0x20u);
@@ -151,7 +151,7 @@
       *buf = 136315650;
       *&buf[4] = "[WFTriggerEventRunner logPowerLogEventForConfiguredTrigger:workflowReference:]";
       *&buf[12] = 2112;
-      *&buf[14] = v37;
+      *&buf[14] = referenceCopy;
       *&buf[22] = 2114;
       v48 = v11;
       _os_log_impl(&dword_23103C000, v12, OS_LOG_TYPE_ERROR, "%s Failed to get workflow record for reference (%@) because database could not be loaded: %{public}@", buf, 0x20u);
@@ -161,16 +161,16 @@
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isRunningWorkflowWithIdentifier:(id)a3
+- (BOOL)isRunningWorkflowWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(WFTriggerEventRunner *)self inProgressRunnerClient];
-  v6 = [v5 descriptor];
+  identifierCopy = identifier;
+  inProgressRunnerClient = [(WFTriggerEventRunner *)self inProgressRunnerClient];
+  descriptor = [inProgressRunnerClient descriptor];
 
-  if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (descriptor && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = [v6 identifier];
-    v8 = [v7 isEqualToString:v4];
+    identifier = [descriptor identifier];
+    v8 = [identifier isEqualToString:identifierCopy];
   }
 
   else
@@ -181,20 +181,20 @@
   return v8;
 }
 
-- (BOOL)startRunningWorkflow:(id)a3 forTrigger:(id)a4 eventInfo:(id)a5
+- (BOOL)startRunningWorkflow:(id)workflow forTrigger:(id)trigger eventInfo:(id)info
 {
   v58 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v10)
+  workflowCopy = workflow;
+  triggerCopy = trigger;
+  infoCopy = info;
+  if (!triggerCopy)
   {
-    v47 = [MEMORY[0x277CCA890] currentHandler];
-    [v47 handleFailureInMethod:a2 object:self file:@"WFTriggerEventRunner.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"configuredTrigger"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTriggerEventRunner.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"configuredTrigger"}];
   }
 
-  v12 = [v9 identifier];
-  LODWORD(v13) = [(WFTriggerEventRunner *)self isRunningWorkflowWithIdentifier:v12];
+  identifier = [workflowCopy identifier];
+  LODWORD(v13) = [(WFTriggerEventRunner *)self isRunningWorkflowWithIdentifier:identifier];
 
   v14 = getWFTriggersLogObject();
   v15 = v14;
@@ -202,11 +202,11 @@
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
     {
-      v16 = [(WFTriggerEventRunner *)self inProgressTrigger];
-      v17 = [v16 trigger];
+      inProgressTrigger = [(WFTriggerEventRunner *)self inProgressTrigger];
+      trigger = [inProgressTrigger trigger];
       v18 = objc_opt_class();
       v19 = NSStringFromClass(v18);
-      v20 = [v10 trigger];
+      trigger2 = [triggerCopy trigger];
       v21 = objc_opt_class();
       v22 = NSStringFromClass(v21);
       *buf = 136315650;
@@ -223,35 +223,35 @@
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v10 trigger];
+      trigger3 = [triggerCopy trigger];
       v24 = objc_opt_class();
       v25 = NSStringFromClass(v24);
       *buf = 136315650;
       v53 = "[WFTriggerEventRunner startRunningWorkflow:forTrigger:eventInfo:]";
       v54 = 2112;
-      v55 = v10;
+      v55 = triggerCopy;
       v56 = 2114;
       v57 = v25;
       _os_log_impl(&dword_23103C000, v15, OS_LOG_TYPE_DEFAULT, "%s 🤖 Launching extension to run trigger: %@ of type: %{public}@", buf, 0x20u);
     }
 
-    [(WFTriggerEventRunner *)self logPowerLogEventForConfiguredTrigger:v10 workflowReference:v9];
-    v26 = [v10 trigger];
+    [(WFTriggerEventRunner *)self logPowerLogEventForConfiguredTrigger:triggerCopy workflowReference:workflowCopy];
+    trigger4 = [triggerCopy trigger];
     v27 = objc_opt_class();
     v28 = NSStringFromClass(v27);
 
-    v29 = [v10 trigger];
-    v30 = [v29 contentCollectionWithEventInfo:v11];
+    trigger5 = [triggerCopy trigger];
+    v30 = [trigger5 contentCollectionWithEventInfo:infoCopy];
 
-    v51 = v11;
-    if ([v10 shouldPrompt])
+    v51 = infoCopy;
+    if ([triggerCopy shouldPrompt])
     {
       v31 = 0;
     }
 
     else
     {
-      v32 = [v10 trigger];
+      trigger6 = [triggerCopy trigger];
       if ([objc_opt_class() isAllowedToRunAutomatically])
       {
         v31 = 2;
@@ -264,20 +264,20 @@
     }
 
     v33 = objc_alloc(MEMORY[0x277D7A1C8]);
-    v34 = [v9 identifier];
-    v49 = [v33 initWithIdentifier:v34];
+    identifier2 = [workflowCopy identifier];
+    v49 = [v33 initWithIdentifier:identifier2];
 
     v13 = [objc_alloc(MEMORY[0x277D7A200]) initWithInput:v30 presentationMode:v31];
     [v13 setAutomationType:v28];
-    v35 = [v10 identifier];
-    [v13 setFiringTriggerID:v35];
+    identifier3 = [triggerCopy identifier];
+    [v13 setFiringTriggerID:identifier3];
 
     v36 = *MEMORY[0x277D7A868];
     [v13 setRunSource:*MEMORY[0x277D7A868]];
     [v13 setLogRunEvent:0];
     [v13 setDonateInteraction:0];
-    v37 = [v10 trigger];
-    [v37 urlNeedingAccessWithContentCollection:v30];
+    trigger7 = [triggerCopy trigger];
+    [trigger7 urlNeedingAccessWithContentCollection:v30];
     v38 = v50 = v28;
 
     [v13 setUrlNeedingAccess:v38];
@@ -285,19 +285,19 @@
     [v39 setDelegate:self];
     [v39 start];
     [(WFTriggerEventRunner *)self setInProgressRunnerClient:v39];
-    v40 = [(WFTriggerEventRunner *)self databaseProvider];
-    [v40 databaseWithError:0];
+    databaseProvider = [(WFTriggerEventRunner *)self databaseProvider];
+    [databaseProvider databaseWithError:0];
     v41 = v48 = v30;
-    [v10 identifier];
-    v43 = v42 = v9;
+    [triggerCopy identifier];
+    v43 = v42 = workflowCopy;
     v44 = [v41 logRunOfWorkflow:v42 withSource:v36 triggerID:v43];
     [(WFTriggerEventRunner *)self setInProgressRunEvent:v44];
 
-    v9 = v42;
-    [(WFTriggerEventRunner *)self setInProgressTrigger:v10];
+    workflowCopy = v42;
+    [(WFTriggerEventRunner *)self setInProgressTrigger:triggerCopy];
 
     v15 = v50;
-    v11 = v51;
+    infoCopy = v51;
     LOBYTE(v13) = 0;
   }
 
@@ -305,14 +305,14 @@
   return v13 ^ 1;
 }
 
-- (WFTriggerEventRunner)initWithDatabaseProvider:(id)a3 delegate:(id)a4
+- (WFTriggerEventRunner)initWithDatabaseProvider:(id)provider delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  providerCopy = provider;
+  delegateCopy = delegate;
+  if (!providerCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFTriggerEventRunner.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"databaseProvider"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTriggerEventRunner.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"databaseProvider"}];
   }
 
   v15.receiver = self;
@@ -321,8 +321,8 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_databaseProvider, a3);
-    objc_storeStrong(&v11->_delegate, a4);
+    objc_storeStrong(&v10->_databaseProvider, provider);
+    objc_storeStrong(&v11->_delegate, delegate);
     v12 = v11;
   }
 

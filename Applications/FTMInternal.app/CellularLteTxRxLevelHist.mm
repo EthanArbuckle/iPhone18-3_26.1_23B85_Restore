@@ -1,25 +1,25 @@
 @interface CellularLteTxRxLevelHist
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addRxHist:(id)a3;
-- (void)addTxHist:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasNumSubs:(BOOL)a3;
-- (void)setHasPsPref:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addRxHist:(id)hist;
+- (void)addTxHist:(id)hist;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasNumSubs:(BOOL)subs;
+- (void)setHasPsPref:(BOOL)pref;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularLteTxRxLevelHist
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -32,45 +32,45 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addTxHist:(id)a3
+- (void)addTxHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   txHists = self->_txHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!txHists)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_txHists;
     self->_txHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     txHists = self->_txHists;
   }
 
-  [(NSMutableArray *)txHists addObject:v4];
+  [(NSMutableArray *)txHists addObject:histCopy];
 }
 
-- (void)addRxHist:(id)a3
+- (void)addRxHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   rxHists = self->_rxHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!rxHists)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_rxHists;
     self->_rxHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     rxHists = self->_rxHists;
   }
 
-  [(NSMutableArray *)rxHists addObject:v4];
+  [(NSMutableArray *)rxHists addObject:histCopy];
 }
 
-- (void)setHasNumSubs:(BOOL)a3
+- (void)setHasNumSubs:(BOOL)subs
 {
-  if (a3)
+  if (subs)
   {
     v3 = 4;
   }
@@ -83,9 +83,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasPsPref:(BOOL)a3
+- (void)setHasPsPref:(BOOL)pref
 {
-  if (a3)
+  if (pref)
   {
     v3 = 8;
   }
@@ -98,9 +98,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 16;
   }
@@ -118,8 +118,8 @@
   v7.receiver = self;
   v7.super_class = CellularLteTxRxLevelHist;
   v3 = [(CellularLteTxRxLevelHist *)&v7 description];
-  v4 = [(CellularLteTxRxLevelHist *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularLteTxRxLevelHist *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -164,8 +164,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v31 objects:v36 count:16];
@@ -199,8 +199,8 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v27 + 1) + 8 * j) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation2 = [*(*(&v27 + 1) + 8 * j) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation2];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v27 objects:v35 count:16];
@@ -242,9 +242,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -343,31 +343,31 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 64) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 64) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 4) = self->_duration;
-    *(v4 + 64) |= 2u;
+    *(toCopy + 4) = self->_duration;
+    *(toCopy + 64) |= 2u;
   }
 
-  v16 = v4;
+  v16 = toCopy;
   if ([(CellularLteTxRxLevelHist *)self txHistsCount])
   {
     [v16 clearTxHists];
-    v6 = [(CellularLteTxRxLevelHist *)self txHistsCount];
-    if (v6)
+    txHistsCount = [(CellularLteTxRxLevelHist *)self txHistsCount];
+    if (txHistsCount)
     {
-      v7 = v6;
+      v7 = txHistsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(CellularLteTxRxLevelHist *)self txHistAtIndex:i];
@@ -379,10 +379,10 @@
   if ([(CellularLteTxRxLevelHist *)self rxHistsCount])
   {
     [v16 clearRxHists];
-    v10 = [(CellularLteTxRxLevelHist *)self rxHistsCount];
-    if (v10)
+    rxHistsCount = [(CellularLteTxRxLevelHist *)self rxHistsCount];
+    if (rxHistsCount)
     {
-      v11 = v10;
+      v11 = rxHistsCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(CellularLteTxRxLevelHist *)self rxHistAtIndex:j];
@@ -419,9 +419,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -456,7 +456,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v28 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v28 + 1) + 8 * i) copyWithZone:zone];
         [v6 addTxHist:v13];
       }
 
@@ -485,7 +485,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v24 + 1) + 8 * j) copyWithZone:{a3, v24}];
+        v19 = [*(*(&v24 + 1) + 8 * j) copyWithZone:{zone, v24}];
         [v6 addRxHist:v19];
       }
 
@@ -509,7 +509,7 @@
     *(v6 + 64) |= 8u;
   }
 
-  v21 = [(NSData *)self->_plmn copyWithZone:a3, v24];
+  v21 = [(NSData *)self->_plmn copyWithZone:zone, v24];
   v22 = *(v6 + 3);
   *(v6 + 3) = v21;
 
@@ -522,49 +522,49 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_33;
   }
 
-  v5 = *(v4 + 64);
+  v5 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_33;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_33;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_duration != *(v4 + 4))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_duration != *(equalCopy + 4))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(v4 + 64) & 2) != 0)
+  else if ((*(equalCopy + 64) & 2) != 0)
   {
     goto LABEL_33;
   }
 
   txHists = self->_txHists;
-  if (txHists | *(v4 + 7) && ![(NSMutableArray *)txHists isEqual:?])
+  if (txHists | *(equalCopy + 7) && ![(NSMutableArray *)txHists isEqual:?])
   {
     goto LABEL_33;
   }
 
   rxHists = self->_rxHists;
-  if (rxHists | *(v4 + 5))
+  if (rxHists | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)rxHists isEqual:?])
     {
@@ -573,35 +573,35 @@
   }
 
   has = self->_has;
-  v9 = *(v4 + 64);
+  v9 = *(equalCopy + 64);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 64) & 4) == 0 || self->_numSubs != *(v4 + 5))
+    if ((*(equalCopy + 64) & 4) == 0 || self->_numSubs != *(equalCopy + 5))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(v4 + 64) & 4) != 0)
+  else if ((*(equalCopy + 64) & 4) != 0)
   {
     goto LABEL_33;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 64) & 8) == 0 || self->_psPref != *(v4 + 8))
+    if ((*(equalCopy + 64) & 8) == 0 || self->_psPref != *(equalCopy + 8))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(v4 + 64) & 8) != 0)
+  else if ((*(equalCopy + 64) & 8) != 0)
   {
     goto LABEL_33;
   }
 
   plmn = self->_plmn;
-  if (plmn | *(v4 + 3))
+  if (plmn | *(equalCopy + 3))
   {
     if (![(NSData *)plmn isEqual:?])
     {
@@ -613,10 +613,10 @@ LABEL_33:
     has = self->_has;
   }
 
-  v11 = (*(v4 + 64) & 0x10) == 0;
+  v11 = (*(equalCopy + 64) & 0x10) == 0;
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 64) & 0x10) == 0 || self->_subsId != *(v4 + 12))
+    if ((*(equalCopy + 64) & 0x10) == 0 || self->_subsId != *(equalCopy + 12))
     {
       goto LABEL_33;
     }
@@ -691,21 +691,21 @@ LABEL_11:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 64);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 64);
   if (v6)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 64);
+    v6 = *(fromCopy + 64);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_duration = *(v4 + 4);
+    self->_duration = *(fromCopy + 4);
     *&self->_has |= 2u;
   }
 
@@ -713,7 +713,7 @@ LABEL_11:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = *(v4 + 7);
+  v7 = *(fromCopy + 7);
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v8)
   {

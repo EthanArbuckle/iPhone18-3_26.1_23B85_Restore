@@ -19,7 +19,7 @@
   v6 = v4;
   v10 = v6;
   v11 = &v12;
-  [a1 enumerateObjectsUsingBlock:v9];
+  [self enumerateObjectsUsingBlock:v9];
   v7 = v13[3];
 
   _Block_object_dispose(&v12, 8);

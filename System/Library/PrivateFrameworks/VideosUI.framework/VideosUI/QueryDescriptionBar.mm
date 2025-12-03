@@ -1,23 +1,23 @@
 @interface QueryDescriptionBar
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)singlePressWithGesture:(id)a3;
+- (void)singlePressWithGesture:(id)gesture;
 @end
 
 @implementation QueryDescriptionBar
 
-- (void)singlePressWithGesture:(id)a3
+- (void)singlePressWithGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
+  gestureCopy = gesture;
+  selfCopy = self;
   sub_1E3EFA5B8();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_1E3EFB57C(width, height);
   v8 = v7;
 
@@ -30,7 +30,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3EFBB44();
 }
 

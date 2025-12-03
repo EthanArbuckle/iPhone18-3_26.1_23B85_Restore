@@ -1,19 +1,19 @@
 @interface MFGetAccountsIntent
-- (MFGetAccountsIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5;
-- (MFGetAccountsIntent)initWithIdentifier:(id)a3 backingStore:(id)a4;
+- (MFGetAccountsIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name;
+- (MFGetAccountsIntent)initWithIdentifier:(id)identifier backingStore:(id)store;
 @end
 
 @implementation MFGetAccountsIntent
 
-- (MFGetAccountsIntent)initWithIdentifier:(id)a3 backingStore:(id)a4
+- (MFGetAccountsIntent)initWithIdentifier:(id)identifier backingStore:(id)store
 {
-  _objc_retain(a3);
-  _objc_retain(a4);
-  if (a3)
+  _objc_retain(identifier);
+  _objc_retain(store);
+  if (identifier)
   {
     v6 = sub_10007D868();
     v7 = v4;
-    _objc_release(a3);
+    _objc_release(identifier);
     v8 = v6;
     v9 = v7;
   }
@@ -24,22 +24,22 @@
     v9 = 0;
   }
 
-  return MFGetAccountsIntent.init(identifier:backingStore:)(v8, v9, a4);
+  return MFGetAccountsIntent.init(identifier:backingStore:)(v8, v9, store);
 }
 
-- (MFGetAccountsIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5
+- (MFGetAccountsIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name
 {
-  _objc_retain(a3);
-  _objc_retain(a4);
-  _objc_retain(a5);
+  _objc_retain(domain);
+  _objc_retain(verb);
+  _objc_retain(name);
   v13 = sub_10007D868();
   v14 = v5;
   v16 = sub_10007D868();
   v17 = v6;
-  if (a5)
+  if (name)
   {
     v9 = sub_10007D7D8();
-    _objc_release(a5);
+    _objc_release(name);
     v10 = v9;
   }
 
@@ -49,8 +49,8 @@
   }
 
   v8 = MFGetAccountsIntent.init(domain:verb:parametersByName:)(v13, v14, v16, v17, v10);
-  _objc_release(a4);
-  _objc_release(a3);
+  _objc_release(verb);
+  _objc_release(domain);
   return v8;
 }
 

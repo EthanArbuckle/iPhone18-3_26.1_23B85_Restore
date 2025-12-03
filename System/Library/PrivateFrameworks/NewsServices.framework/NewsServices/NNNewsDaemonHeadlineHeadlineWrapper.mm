@@ -1,5 +1,5 @@
 @interface NNNewsDaemonHeadlineHeadlineWrapper
-- (NNNewsDaemonHeadlineHeadlineWrapper)initWithHeadline:(id)a3 assetFileURLsByRemoteURL:(id)a4;
+- (NNNewsDaemonHeadlineHeadlineWrapper)initWithHeadline:(id)headline assetFileURLsByRemoteURL:(id)l;
 - (NSString)sync_NewsURLString;
 - (NSString)sync_excerpt;
 - (NSString)sync_identifier;
@@ -10,40 +10,40 @@
 
 @implementation NNNewsDaemonHeadlineHeadlineWrapper
 
-- (NNNewsDaemonHeadlineHeadlineWrapper)initWithHeadline:(id)a3 assetFileURLsByRemoteURL:(id)a4
+- (NNNewsDaemonHeadlineHeadlineWrapper)initWithHeadline:(id)headline assetFileURLsByRemoteURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  headlineCopy = headline;
+  lCopy = l;
   v24.receiver = self;
   v24.super_class = NNNewsDaemonHeadlineHeadlineWrapper;
   v9 = [(NNNewsDaemonHeadlineHeadlineWrapper *)&v24 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_headline, a3);
-    v11 = [v7 thumbnailRemoteURL];
-    if (v11)
+    objc_storeStrong(&v9->_headline, headline);
+    thumbnailRemoteURL = [headlineCopy thumbnailRemoteURL];
+    if (thumbnailRemoteURL)
     {
-      v12 = [v8 objectForKeyedSubscript:v11];
+      v12 = [lCopy objectForKeyedSubscript:thumbnailRemoteURL];
       v13 = v12;
       if (v12)
       {
-        v14 = [v12 path];
-        v15 = [NSData dataWithContentsOfFile:v14];
+        path = [v12 path];
+        v15 = [NSData dataWithContentsOfFile:path];
         thumbnailData = v10->_thumbnailData;
         v10->_thumbnailData = v15;
       }
     }
 
-    v17 = [v7 sourceNameImageRemoteURL];
-    if (v17)
+    sourceNameImageRemoteURL = [headlineCopy sourceNameImageRemoteURL];
+    if (sourceNameImageRemoteURL)
     {
-      v18 = [v8 objectForKeyedSubscript:v17];
+      v18 = [lCopy objectForKeyedSubscript:sourceNameImageRemoteURL];
       v19 = v18;
       if (v18)
       {
-        v20 = [v18 path];
-        v21 = [NSData dataWithContentsOfFile:v20];
+        path2 = [v18 path];
+        v21 = [NSData dataWithContentsOfFile:path2];
         publisherLogoData = v10->_publisherLogoData;
         v10->_publisherLogoData = v21;
       }
@@ -55,74 +55,74 @@
 
 - (NSString)sync_identifier
 {
-  v2 = [(NNNewsDaemonHeadlineHeadlineWrapper *)self headline];
-  v3 = [v2 identifier];
+  headline = [(NNNewsDaemonHeadlineHeadlineWrapper *)self headline];
+  identifier = [headline identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSString)sync_title
 {
-  v3 = [(NNNewsDaemonHeadlineHeadlineWrapper *)self headline];
-  v4 = [v3 titleCompact];
-  v5 = v4;
-  if (v4)
+  headline = [(NNNewsDaemonHeadlineHeadlineWrapper *)self headline];
+  titleCompact = [headline titleCompact];
+  v5 = titleCompact;
+  if (titleCompact)
   {
-    v6 = v4;
+    title = titleCompact;
   }
 
   else
   {
-    v7 = [(NNNewsDaemonHeadlineHeadlineWrapper *)self headline];
-    v6 = [v7 title];
+    headline2 = [(NNNewsDaemonHeadlineHeadlineWrapper *)self headline];
+    title = [headline2 title];
   }
 
-  return v6;
+  return title;
 }
 
 - (NSString)sync_excerpt
 {
-  v2 = [(NNNewsDaemonHeadlineHeadlineWrapper *)self headline];
-  v3 = [v2 shortExcerpt];
+  headline = [(NNNewsDaemonHeadlineHeadlineWrapper *)self headline];
+  shortExcerpt = [headline shortExcerpt];
 
-  return v3;
+  return shortExcerpt;
 }
 
 - (NSString)sync_publisherName
 {
-  v3 = [(NNNewsDaemonHeadlineHeadlineWrapper *)self headline];
-  v4 = [v3 compactSourceName];
-  v5 = v4;
-  if (v4)
+  headline = [(NNNewsDaemonHeadlineHeadlineWrapper *)self headline];
+  compactSourceName = [headline compactSourceName];
+  v5 = compactSourceName;
+  if (compactSourceName)
   {
-    v6 = v4;
+    sourceName = compactSourceName;
   }
 
   else
   {
-    v7 = [(NNNewsDaemonHeadlineHeadlineWrapper *)self headline];
-    v6 = [v7 sourceName];
+    headline2 = [(NNNewsDaemonHeadlineHeadlineWrapper *)self headline];
+    sourceName = [headline2 sourceName];
   }
 
-  return v6;
+  return sourceName;
 }
 
 - (NSString)sync_publisherIdentifier
 {
-  v2 = [(NNNewsDaemonHeadlineHeadlineWrapper *)self headline];
-  v3 = [v2 personalizationMetadata];
-  v4 = [v3 publisherID];
+  headline = [(NNNewsDaemonHeadlineHeadlineWrapper *)self headline];
+  personalizationMetadata = [headline personalizationMetadata];
+  publisherID = [personalizationMetadata publisherID];
 
-  return v4;
+  return publisherID;
 }
 
 - (NSString)sync_NewsURLString
 {
-  v2 = [(NNNewsDaemonHeadlineHeadlineWrapper *)self headline];
-  v3 = [v2 NewsURL];
-  v4 = [v3 absoluteString];
+  headline = [(NNNewsDaemonHeadlineHeadlineWrapper *)self headline];
+  newsURL = [headline NewsURL];
+  absoluteString = [newsURL absoluteString];
 
-  return v4;
+  return absoluteString;
 }
 
 @end

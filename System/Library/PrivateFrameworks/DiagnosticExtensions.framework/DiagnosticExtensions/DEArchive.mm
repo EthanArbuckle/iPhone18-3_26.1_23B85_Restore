@@ -1,40 +1,40 @@
 @interface DEArchive
-- (BOOL)addFile:(id)a3 withPathName:(id)a4 progressHandler:(id)a5;
-- (DEArchive)initWithURL:(id)a3;
-- (archive)archiverForUrl:(id)a3;
+- (BOOL)addFile:(id)file withPathName:(id)name progressHandler:(id)handler;
+- (DEArchive)initWithURL:(id)l;
+- (archive)archiverForUrl:(id)url;
 - (void)closeArchive;
 - (void)dealloc;
 @end
 
 @implementation DEArchive
 
-- (DEArchive)initWithURL:(id)a3
+- (DEArchive)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = DEArchive;
   v6 = [(DEArchive *)&v14 init];
   if (v6)
   {
     v13 = 0;
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    v8 = [v5 path];
-    [v7 fileExistsAtPath:v8 isDirectory:&v13];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [lCopy path];
+    [defaultManager fileExistsAtPath:path isDirectory:&v13];
 
     if (v13 == 1)
     {
-      [DEUtils tarGzForDirectoryUrl:v5];
+      [DEUtils tarGzForDirectoryUrl:lCopy];
     }
 
     else
     {
-      [v5 URLByAppendingPathExtension:@"tar.gz"];
+      [lCopy URLByAppendingPathExtension:@"tar.gz"];
     }
     v9 = ;
     tarGzUrl = v6->_tarGzUrl;
     v6->_tarGzUrl = v9;
 
-    objc_storeStrong(&v6->_sourceDir, a3);
+    objc_storeStrong(&v6->_sourceDir, l);
     v6->_hasClosedArchive = 0;
     if (!v6->_tarGzUrl)
     {
@@ -51,9 +51,9 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)addFile:(id)a3 withPathName:(id)a4 progressHandler:(id)a5
+- (BOOL)addFile:(id)file withPathName:(id)name progressHandler:(id)handler
 {
-  v5 = MEMORY[0x28223BE20](self, a2, a3, a4, a5);
+  v5 = MEMORY[0x28223BE20](self, a2, file, name, handler);
   v7 = v6;
   v9 = v8;
   v10 = v5;
@@ -179,8 +179,8 @@ LABEL_20:
     }
 
     memset(&v42, 0, sizeof(v42));
-    v30 = [v12 path];
-    stat([v30 UTF8String], &v42);
+    path = [v12 path];
+    stat([path UTF8String], &v42);
     if (archive_entry_new())
     {
       archive_entry_copy_stat();
@@ -200,7 +200,7 @@ LABEL_20:
 
       else
       {
-        v35 = open([v30 UTF8String], 0);
+        v35 = open([path UTF8String], 0);
         if (v35 != -1)
         {
           v36 = v35;
@@ -302,20 +302,20 @@ LABEL_24:
   [(DEArchive *)&v3 dealloc];
 }
 
-- (archive)archiverForUrl:(id)a3
+- (archive)archiverForUrl:(id)url
 {
-  v4 = a3;
-  if ([v4 checkResourceIsReachableAndReturnError:0])
+  urlCopy = url;
+  if ([urlCopy checkResourceIsReachableAndReturnError:0])
   {
     v5 = +[DELogging fwHandle];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [DEArchive archiverForUrl:v4];
+      [DEArchive archiverForUrl:urlCopy];
     }
 
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v14 = 0;
-    [v6 removeItemAtURL:v4 error:&v14];
+    [defaultManager removeItemAtURL:urlCopy error:&v14];
     v7 = v14;
 
     if (v7)
@@ -331,8 +331,8 @@ LABEL_24:
   v9 = archive_write_new();
   archive_write_add_filter_gzip();
   archive_write_set_format_pax();
-  v10 = [v4 path];
-  [v10 UTF8String];
+  path = [urlCopy path];
+  [path UTF8String];
   v11 = archive_write_open_filename();
 
   if (v11)

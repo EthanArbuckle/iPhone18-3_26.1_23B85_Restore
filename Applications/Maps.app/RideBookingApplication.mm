@@ -3,27 +3,27 @@
 - (NSString)description;
 - (NSString)name;
 - (NSString)uniqueName;
-- (RideBookingApplication)initWithExtension:(id)a3;
+- (RideBookingApplication)initWithExtension:(id)extension;
 - (RideBookingApplicationRideStatusDelegate)delegate;
-- (id)_connectionWithIntent:(id)a3;
-- (id)_passengersChoiceFromAvailablePartySizeOptions:(id)a3 optionPriceRange:(id)a4;
-- (id)_statusWithGetRideStatusIntentResponse:(id)a3;
-- (id)_statusWithListRideOptionsResponse:(id)a3;
-- (id)_statusWithRequestRideStatusIntentResponse:(id)a3;
-- (id)_statusWithRideOption:(id)a3 requestRideIntent:(id)a4 requestRideEtaResponse:(id)a5;
-- (id)iconWithFormat:(int)a3;
-- (void)cancelRideWithRideStatus:(id)a3 completion:(id)a4;
-- (void)checkIfCanCancelRideWithRideStatus:(id)a3 completion:(id)a4;
+- (id)_connectionWithIntent:(id)intent;
+- (id)_passengersChoiceFromAvailablePartySizeOptions:(id)options optionPriceRange:(id)range;
+- (id)_statusWithGetRideStatusIntentResponse:(id)response;
+- (id)_statusWithListRideOptionsResponse:(id)response;
+- (id)_statusWithRequestRideStatusIntentResponse:(id)response;
+- (id)_statusWithRideOption:(id)option requestRideIntent:(id)intent requestRideEtaResponse:(id)response;
+- (id)iconWithFormat:(int)format;
+- (void)cancelRideWithRideStatus:(id)status completion:(id)completion;
+- (void)checkIfCanCancelRideWithRideStatus:(id)status completion:(id)completion;
 - (void)dealloc;
-- (void)didChangeProtectionStatusForBundleId:(id)a3;
+- (void)didChangeProtectionStatusForBundleId:(id)id;
 - (void)enableForUse;
-- (void)getRequestRideStatusWithPickupLocation:(id)a3 dropOffLocation:(id)a4 rideOption:(id)a5 completion:(id)a6;
-- (void)getRideOptionStatusWithPickupLocation:(id)a3 dropOffLocation:(id)a4 completion:(id)a5;
-- (void)getRideStatusWithCompletion:(id)a3;
-- (void)getRideStatusWithPickupLocation:(id)a3 dropOffLocation:(id)a4 rideOption:(id)a5 partySize:(unint64_t)a6 paymentMethod:(id)a7 completion:(id)a8;
-- (void)intentResponseDidUpdate:(id)a3 withSerializedCacheItems:(id)a4;
-- (void)openWithActivity:(id)a3;
-- (void)sendFeedbackForRideStatus:(id)a3 feedbackRating:(id)a4 feedbackTip:(id)a5 completion:(id)a6;
+- (void)getRequestRideStatusWithPickupLocation:(id)location dropOffLocation:(id)offLocation rideOption:(id)option completion:(id)completion;
+- (void)getRideOptionStatusWithPickupLocation:(id)location dropOffLocation:(id)offLocation completion:(id)completion;
+- (void)getRideStatusWithCompletion:(id)completion;
+- (void)getRideStatusWithPickupLocation:(id)location dropOffLocation:(id)offLocation rideOption:(id)option partySize:(unint64_t)size paymentMethod:(id)method completion:(id)completion;
+- (void)intentResponseDidUpdate:(id)update withSerializedCacheItems:(id)items;
+- (void)openWithActivity:(id)activity;
+- (void)sendFeedbackForRideStatus:(id)status feedbackRating:(id)rating feedbackTip:(id)tip completion:(id)completion;
 - (void)startUpdates;
 - (void)stopUpdates;
 @end
@@ -45,11 +45,11 @@
   [(RideBookingApplication *)&v3 dealloc];
 }
 
-- (void)didChangeProtectionStatusForBundleId:(id)a3
+- (void)didChangeProtectionStatusForBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   objc_initWeak(&location, self);
-  v5 = [(RideBookingApplication *)self identifier];
+  identifier = [(RideBookingApplication *)self identifier];
   v6 = isExtensionLocked();
 
   if (v6)
@@ -75,27 +75,27 @@
   return [v2 description];
 }
 
-- (id)_statusWithListRideOptionsResponse:(id)a3
+- (id)_statusWithListRideOptionsResponse:(id)response
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  responseCopy = response;
+  v5 = responseCopy;
+  if (responseCopy)
   {
-    v6 = [v4 code];
+    code = [responseCopy code];
     v7 = 0;
     v8 = 1;
-    v59 = self;
-    if (v6 > 6)
+    selfCopy = self;
+    if (code > 6)
     {
-      if (v6 > 8)
+      if (code > 8)
       {
-        if (v6 == 9)
+        if (code == 9)
         {
           v8 = 0;
           v7 = 10;
         }
 
-        else if (v6 == 10)
+        else if (code == 10)
         {
           v8 = 0;
           v7 = 11;
@@ -105,7 +105,7 @@
       else
       {
         v8 = 0;
-        if (v6 == 7)
+        if (code == 7)
         {
           v7 = 8;
         }
@@ -117,10 +117,10 @@
       }
     }
 
-    else if (v6 > 4)
+    else if (code > 4)
     {
       v8 = 0;
-      if (v6 == 5)
+      if (code == 5)
       {
         v7 = 6;
       }
@@ -131,7 +131,7 @@
       }
     }
 
-    else if (!v6 || v6 == 4)
+    else if (!code || code == 4)
     {
       v8 = 0;
       v7 = 5;
@@ -145,8 +145,8 @@
     v70 = 0u;
     v71 = 0u;
     v58 = v5;
-    v10 = [v5 paymentMethods];
-    v11 = [v10 countByEnumeratingWithState:&v68 objects:v77 count:16];
+    paymentMethods = [v5 paymentMethods];
+    v11 = [paymentMethods countByEnumeratingWithState:&v68 objects:v77 count:16];
     if (v11)
     {
       v12 = v11;
@@ -157,7 +157,7 @@
         {
           if (*v69 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(paymentMethods);
           }
 
           v15 = *(*(&v68 + 1) + 8 * i);
@@ -177,15 +177,15 @@
           [v63 addObject:v18];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v68 objects:v77 count:16];
+        v12 = [paymentMethods countByEnumeratingWithState:&v68 objects:v77 count:16];
       }
 
       while (v12);
     }
 
     v60 = objc_opt_new();
-    v19 = [v58 rideOptions];
-    v20 = [v19 sortedArrayUsingComparator:&stru_101626CB0];
+    rideOptions = [v58 rideOptions];
+    v20 = [rideOptions sortedArrayUsingComparator:&stru_101626CB0];
 
     v66 = 0u;
     v67 = 0u;
@@ -210,28 +210,28 @@
           }
 
           v27 = *(*(&v64 + 1) + 8 * v26);
-          v28 = [v27 name];
-          if (![v28 length])
+          name = [v27 name];
+          if (![name length])
           {
             goto LABEL_43;
           }
 
-          v29 = [v27 estimatedPickupDate];
+          estimatedPickupDate = [v27 estimatedPickupDate];
 
-          if (!v29)
+          if (!estimatedPickupDate)
           {
             goto LABEL_44;
           }
 
-          v30 = [v27 priceRange];
-          v31 = [v30 minimumPrice];
-          v32 = [v25[419] notANumber];
-          if ([v31 isEqualToNumber:v32])
+          priceRange = [v27 priceRange];
+          minimumPrice = [priceRange minimumPrice];
+          notANumber = [v25[419] notANumber];
+          if ([minimumPrice isEqualToNumber:notANumber])
           {
 
 LABEL_39:
-            v28 = GEOFindOrCreateLog();
-            if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
+            name = GEOFindOrCreateLog();
+            if (os_log_type_enabled(name, OS_LOG_TYPE_INFO))
             {
               v38 = basename("/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Ride Booking/RideBookingApplication/RideBookingApplication.m");
               v39 = [[NSString alloc] initWithFormat:@"Skipping INRideOption because the pricing is malformed: %@", v27];
@@ -239,18 +239,18 @@ LABEL_39:
               v73 = v38;
               v74 = 2112;
               v75 = v39;
-              _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "{RBInfo}{%s}: %@", buf, 0x16u);
+              _os_log_impl(&_mh_execute_header, name, OS_LOG_TYPE_INFO, "{RBInfo}{%s}: %@", buf, 0x16u);
             }
 
             goto LABEL_42;
           }
 
-          v33 = [v27 priceRange];
-          v34 = [v33 maximumPrice];
+          priceRange2 = [v27 priceRange];
+          maximumPrice = [priceRange2 maximumPrice];
           [v25[419] notANumber];
           v35 = v24;
           v37 = v36 = v21;
-          v62 = [v34 isEqualToNumber:v37];
+          v62 = [maximumPrice isEqualToNumber:v37];
 
           v21 = v36;
           v24 = v35;
@@ -261,14 +261,14 @@ LABEL_39:
             goto LABEL_39;
           }
 
-          v40 = [v27 availablePartySizeOptions];
-          v41 = [v27 priceRange];
-          v28 = [(RideBookingApplication *)v59 _passengersChoiceFromAvailablePartySizeOptions:v40 optionPriceRange:v41];
+          availablePartySizeOptions = [v27 availablePartySizeOptions];
+          priceRange3 = [v27 priceRange];
+          name = [(RideBookingApplication *)selfCopy _passengersChoiceFromAvailablePartySizeOptions:availablePartySizeOptions optionPriceRange:priceRange3];
 
           v42 = [RideBookingRideOption alloc];
-          v43 = [v27 name];
-          v44 = [v27 estimatedPickupDate];
-          v45 = [(RideBookingRideOption *)v42 initWithApplication:v59 optionName:v43 paymentMethods:v63 estimatedPickupDate:v44 passengersChoice:v28];
+          name2 = [v27 name];
+          estimatedPickupDate2 = [v27 estimatedPickupDate];
+          v45 = [(RideBookingRideOption *)v42 initWithApplication:selfCopy optionName:name2 paymentMethods:v63 estimatedPickupDate:estimatedPickupDate2 passengersChoice:name];
 
           [(RideBookingRideOption *)v45 setIntentsRideOption:v27];
           [v60 addObject:v45];
@@ -299,15 +299,15 @@ LABEL_44:
     }
 
     v5 = v58;
-    v47 = [v58 expirationDate];
-    if (!v47)
+    expirationDate = [v58 expirationDate];
+    if (!expirationDate)
     {
       v48 = [NSDate alloc];
       GEOConfigGetDouble();
-      v47 = [v48 initWithTimeIntervalSinceNow:?];
+      expirationDate = [v48 initWithTimeIntervalSinceNow:?];
     }
 
-    [v47 timeIntervalSinceNow];
+    [expirationDate timeIntervalSinceNow];
     v50 = v49;
     GEOConfigGetDouble();
     if (v50 < v51)
@@ -316,11 +316,11 @@ LABEL_44:
       GEOConfigGetDouble();
       v53 = [v52 initWithTimeIntervalSinceNow:?];
 
-      v47 = v53;
+      expirationDate = v53;
     }
 
-    v54 = [v58 userActivity];
-    v9 = [RideBookingRideOptionStatus statusWithApplication:v59 rideOptions:v60 expirationDate:v47 userActivity:v54 rideOptionStatusError:v46];
+    userActivity = [v58 userActivity];
+    v9 = [RideBookingRideOptionStatus statusWithApplication:selfCopy rideOptions:v60 expirationDate:expirationDate userActivity:userActivity rideOptionStatusError:v46];
   }
 
   else
@@ -331,13 +331,13 @@ LABEL_44:
   return v9;
 }
 
-- (id)_statusWithRideOption:(id)a3 requestRideIntent:(id)a4 requestRideEtaResponse:(id)a5
+- (id)_statusWithRideOption:(id)option requestRideIntent:(id)intent requestRideEtaResponse:(id)response
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8)
+  optionCopy = option;
+  intentCopy = intent;
+  responseCopy = response;
+  v11 = responseCopy;
+  if (!optionCopy)
   {
     v17 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
@@ -361,7 +361,7 @@ LABEL_13:
     goto LABEL_24;
   }
 
-  if (!v9)
+  if (!intentCopy)
   {
     v17 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
@@ -381,25 +381,25 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if ([v10 code] != 1 && objc_msgSend(v11, "code") != 3)
+  if ([responseCopy code] != 1 && objc_msgSend(v11, "code") != 3)
   {
-    v20 = self;
+    selfCopy2 = self;
     v21 = 3;
     goto LABEL_16;
   }
 
   if (!v11)
   {
-    v20 = self;
+    selfCopy2 = self;
     v21 = 2;
 LABEL_16:
-    v19 = [RideBookingRequestRideStatus statusWithApplication:v20 error:v21];
+    v19 = [RideBookingRequestRideStatus statusWithApplication:selfCopy2 error:v21];
     goto LABEL_24;
   }
 
-  v12 = [v11 rideStatus];
-  v13 = [v12 estimatedPickupDate];
-  v14 = [v13 copy];
+  rideStatus = [v11 rideStatus];
+  estimatedPickupDate = [rideStatus estimatedPickupDate];
+  v14 = [estimatedPickupDate copy];
 
   v44 = v14;
   if (v14)
@@ -413,45 +413,45 @@ LABEL_16:
     v16 = 0;
   }
 
-  v22 = [v11 rideStatus];
-  v23 = [v22 rideOption];
+  rideStatus2 = [v11 rideStatus];
+  rideOption = [rideStatus2 rideOption];
 
-  v24 = [v23 name];
-  if (![v24 length])
+  name = [rideOption name];
+  if (![name length])
   {
 
     goto LABEL_22;
   }
 
-  v25 = [v23 estimatedPickupDate];
+  estimatedPickupDate2 = [rideOption estimatedPickupDate];
 
-  if (!v25)
+  if (!estimatedPickupDate2)
   {
 LABEL_22:
     v19 = [RideBookingRequestRideStatus statusWithApplication:self error:3];
     goto LABEL_23;
   }
 
-  v26 = [v23 availablePartySizeOptions];
-  v27 = [v23 priceRange];
-  v42 = [(RideBookingApplication *)self _passengersChoiceFromAvailablePartySizeOptions:v26 optionPriceRange:v27];
+  availablePartySizeOptions = [rideOption availablePartySizeOptions];
+  priceRange = [rideOption priceRange];
+  v42 = [(RideBookingApplication *)self _passengersChoiceFromAvailablePartySizeOptions:availablePartySizeOptions optionPriceRange:priceRange];
 
   v28 = [RideBookingRideOption alloc];
-  v29 = [v23 name];
-  v30 = [v8 paymentMethods];
-  [v23 estimatedPickupDate];
+  name2 = [rideOption name];
+  paymentMethods = [optionCopy paymentMethods];
+  [rideOption estimatedPickupDate];
   v31 = v43 = v16;
-  v32 = [(RideBookingRideOption *)v28 initWithApplication:self optionName:v29 paymentMethods:v30 estimatedPickupDate:v31 passengersChoice:v42];
+  v32 = [(RideBookingRideOption *)v28 initWithApplication:self optionName:name2 paymentMethods:paymentMethods estimatedPickupDate:v31 passengersChoice:v42];
 
-  [(RideBookingRideOption *)v32 setIntentsRideOption:v23];
-  v33 = [v9 pickupLocation];
-  v34 = [v33 location];
-  [v34 coordinate];
+  [(RideBookingRideOption *)v32 setIntentsRideOption:rideOption];
+  pickupLocation = [intentCopy pickupLocation];
+  location = [pickupLocation location];
+  [location coordinate];
   v36 = v35;
   v38 = v37;
-  v39 = [v9 pickupLocation];
-  v40 = [v9 dropOffLocation];
-  v19 = [RideBookingRequestRideStatus statusWithApplication:self rideOption:v32 startingWaypointCoordinate:v39 origin:v40 destination:0 loadingRequestRideStatus:v43 etaMinutesAtStartWaypoint:v36, v38];
+  pickupLocation2 = [intentCopy pickupLocation];
+  dropOffLocation = [intentCopy dropOffLocation];
+  v19 = [RideBookingRequestRideStatus statusWithApplication:self rideOption:v32 startingWaypointCoordinate:pickupLocation2 origin:dropOffLocation destination:0 loadingRequestRideStatus:v43 etaMinutesAtStartWaypoint:v36, v38];
 
   v16 = v43;
 LABEL_23:
@@ -461,179 +461,179 @@ LABEL_24:
   return v19;
 }
 
-- (id)_statusWithRequestRideStatusIntentResponse:(id)a3
+- (id)_statusWithRequestRideStatusIntentResponse:(id)response
 {
-  v4 = a3;
-  v5 = [v4 code];
-  if (v5 > 0xA)
+  responseCopy = response;
+  code = [responseCopy code];
+  if (code > 0xA)
   {
     v29 = 0;
   }
 
   else
   {
-    v29 = qword_1012132F0[v5];
+    v29 = qword_1012132F0[code];
   }
 
-  v6 = [v4 rideStatus];
-  v7 = [v6 rideOption];
+  rideStatus = [responseCopy rideStatus];
+  rideOption = [rideStatus rideOption];
 
-  v8 = [v4 rideStatus];
-  v9 = [v7 availablePartySizeOptions];
-  v10 = [v7 priceRange];
-  v28 = [(RideBookingApplication *)self _passengersChoiceFromAvailablePartySizeOptions:v9 optionPriceRange:v10];
+  rideStatus2 = [responseCopy rideStatus];
+  availablePartySizeOptions = [rideOption availablePartySizeOptions];
+  priceRange = [rideOption priceRange];
+  v28 = [(RideBookingApplication *)self _passengersChoiceFromAvailablePartySizeOptions:availablePartySizeOptions optionPriceRange:priceRange];
 
   v11 = [RideBookingRideOption alloc];
-  v12 = [v7 name];
-  v13 = [v7 estimatedPickupDate];
-  v14 = [(RideBookingRideOption *)v11 initWithApplication:self optionName:v12 paymentMethods:&__NSArray0__struct estimatedPickupDate:v13 passengersChoice:v28];
+  name = [rideOption name];
+  estimatedPickupDate = [rideOption estimatedPickupDate];
+  v14 = [(RideBookingRideOption *)v11 initWithApplication:self optionName:name paymentMethods:&__NSArray0__struct estimatedPickupDate:estimatedPickupDate passengersChoice:v28];
 
-  [(RideBookingRideOption *)v14 setIntentsRideOption:v7];
+  [(RideBookingRideOption *)v14 setIntentsRideOption:rideOption];
   v27 = [RideBookingRideStatus alloc];
-  v15 = [v8 completionStatus];
-  v26 = [v15 isCanceled];
-  v16 = [v8 completionStatus];
-  v17 = [v16 isCanceledByService];
-  [v8 userActivityForCancelingInApplication];
+  completionStatus = [rideStatus2 completionStatus];
+  isCanceled = [completionStatus isCanceled];
+  completionStatus2 = [rideStatus2 completionStatus];
+  isCanceledByService = [completionStatus2 isCanceledByService];
+  [rideStatus2 userActivityForCancelingInApplication];
   v19 = v18 = self;
-  v20 = [v8 rideIdentifier];
-  v21 = [v8 phase];
-  if ((v21 - 1) >= 6)
+  rideIdentifier = [rideStatus2 rideIdentifier];
+  phase = [rideStatus2 phase];
+  if ((phase - 1) >= 6)
   {
     v22 = 0;
   }
 
   else
   {
-    v22 = v21;
+    v22 = phase;
   }
 
   v23 = 3;
-  if (v4)
+  if (responseCopy)
   {
     v23 = v29;
   }
 
-  v24 = [(RideBookingRideStatus *)v27 initWithApplication:v18 rideOption:v14 canceled:v26 canceledByService:v17 userActivityForCanceling:v19 identifier:v20 phase:v22 error:v23];
+  v24 = [(RideBookingRideStatus *)v27 initWithApplication:v18 rideOption:v14 canceled:isCanceled canceledByService:isCanceledByService userActivityForCanceling:v19 identifier:rideIdentifier phase:v22 error:v23];
 
-  [(RideBookingRideStatus *)v24 setIntentsRideStatus:v8];
-  [(RideBookingRideStatus *)v24 setRequestRideIntentResponse:v4];
+  [(RideBookingRideStatus *)v24 setIntentsRideStatus:rideStatus2];
+  [(RideBookingRideStatus *)v24 setRequestRideIntentResponse:responseCopy];
 
   return v24;
 }
 
-- (id)_statusWithGetRideStatusIntentResponse:(id)a3
+- (id)_statusWithGetRideStatusIntentResponse:(id)response
 {
-  v4 = a3;
-  v5 = [v4 code];
-  if (v5 > 7)
+  responseCopy = response;
+  code = [responseCopy code];
+  if (code > 7)
   {
     v29 = 0;
   }
 
   else
   {
-    v29 = qword_1012132B0[v5];
+    v29 = qword_1012132B0[code];
   }
 
-  v6 = [v4 rideStatus];
-  v7 = [v6 rideOption];
+  rideStatus = [responseCopy rideStatus];
+  rideOption = [rideStatus rideOption];
 
-  v8 = [v4 rideStatus];
-  v9 = [v7 availablePartySizeOptions];
-  v10 = [v7 priceRange];
-  v28 = [(RideBookingApplication *)self _passengersChoiceFromAvailablePartySizeOptions:v9 optionPriceRange:v10];
+  rideStatus2 = [responseCopy rideStatus];
+  availablePartySizeOptions = [rideOption availablePartySizeOptions];
+  priceRange = [rideOption priceRange];
+  v28 = [(RideBookingApplication *)self _passengersChoiceFromAvailablePartySizeOptions:availablePartySizeOptions optionPriceRange:priceRange];
 
   v11 = [RideBookingRideOption alloc];
-  v12 = [v7 name];
-  v13 = [v7 estimatedPickupDate];
-  v14 = [(RideBookingRideOption *)v11 initWithApplication:self optionName:v12 paymentMethods:&__NSArray0__struct estimatedPickupDate:v13 passengersChoice:v28];
+  name = [rideOption name];
+  estimatedPickupDate = [rideOption estimatedPickupDate];
+  v14 = [(RideBookingRideOption *)v11 initWithApplication:self optionName:name paymentMethods:&__NSArray0__struct estimatedPickupDate:estimatedPickupDate passengersChoice:v28];
 
-  [(RideBookingRideOption *)v14 setIntentsRideOption:v7];
+  [(RideBookingRideOption *)v14 setIntentsRideOption:rideOption];
   v27 = [RideBookingRideStatus alloc];
-  v15 = [v8 completionStatus];
-  v26 = [v15 isCanceled];
-  v16 = [v8 completionStatus];
-  v17 = [v16 isCanceledByService];
-  [v8 userActivityForCancelingInApplication];
+  completionStatus = [rideStatus2 completionStatus];
+  isCanceled = [completionStatus isCanceled];
+  completionStatus2 = [rideStatus2 completionStatus];
+  isCanceledByService = [completionStatus2 isCanceledByService];
+  [rideStatus2 userActivityForCancelingInApplication];
   v19 = v18 = self;
-  v20 = [v8 rideIdentifier];
-  v21 = [v8 phase];
-  if ((v21 - 1) >= 6)
+  rideIdentifier = [rideStatus2 rideIdentifier];
+  phase = [rideStatus2 phase];
+  if ((phase - 1) >= 6)
   {
     v22 = 0;
   }
 
   else
   {
-    v22 = v21;
+    v22 = phase;
   }
 
   v23 = 3;
-  if (v4)
+  if (responseCopy)
   {
     v23 = v29;
   }
 
-  v24 = [(RideBookingRideStatus *)v27 initWithApplication:v18 rideOption:v14 canceled:v26 canceledByService:v17 userActivityForCanceling:v19 identifier:v20 phase:v22 error:v23];
+  v24 = [(RideBookingRideStatus *)v27 initWithApplication:v18 rideOption:v14 canceled:isCanceled canceledByService:isCanceledByService userActivityForCanceling:v19 identifier:rideIdentifier phase:v22 error:v23];
 
-  [(RideBookingRideStatus *)v24 setIntentsRideStatus:v8];
-  [(RideBookingRideStatus *)v24 setGetRideStatusIntentResponse:v4];
+  [(RideBookingRideStatus *)v24 setIntentsRideStatus:rideStatus2];
+  [(RideBookingRideStatus *)v24 setGetRideStatusIntentResponse:responseCopy];
 
   return v24;
 }
 
-- (id)_passengersChoiceFromAvailablePartySizeOptions:(id)a3 optionPriceRange:(id)a4
+- (id)_passengersChoiceFromAvailablePartySizeOptions:(id)options optionPriceRange:(id)range
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3)
+  rangeCopy = range;
+  v6 = rangeCopy;
+  if (options)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_1006D5A74;
     v8[3] = &unk_101626C70;
-    v9 = v5;
-    a3 = sub_100021DB0(a3, v8);
+    v9 = rangeCopy;
+    options = sub_100021DB0(options, v8);
   }
 
-  return a3;
+  return options;
 }
 
-- (void)openWithActivity:(id)a3
+- (void)openWithActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1006D5BC8;
   block[3] = &unk_101661340;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = activityCopy;
+  v5 = activityCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
 
-- (void)cancelRideWithRideStatus:(id)a3 completion:(id)a4
+- (void)cancelRideWithRideStatus:(id)status completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  statusCopy = status;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = [INCancelRideIntent alloc];
-    v9 = [v6 identifier];
-    v10 = [v8 initWithRideIdentifier:v9];
+    identifier = [statusCopy identifier];
+    v10 = [v8 initWithRideIdentifier:identifier];
 
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = basename("/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Ride Booking/RideBookingApplication/RideBookingApplication.m");
       v13 = [NSString alloc];
-      v14 = [(RideBookingApplication *)self identifier];
-      v15 = [v13 initWithFormat:@"%@ handling CancelRide: %@", v14, v10];
+      identifier2 = [(RideBookingApplication *)self identifier];
+      v15 = [v13 initWithFormat:@"%@ handling CancelRide: %@", identifier2, v10];
       *buf = 136315394;
       v27 = v12;
       v28 = 2112;
@@ -646,9 +646,9 @@ LABEL_24:
     v17 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v18 = [(RideBookingApplication *)self uniqueName];
+      uniqueName = [(RideBookingApplication *)self uniqueName];
       *buf = 138412546;
-      v27 = v18;
+      v27 = uniqueName;
       v28 = 2080;
       *v29 = "cancelRide_resumeWithCompletionHandler";
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -666,7 +666,7 @@ LABEL_24:
     v21[2] = sub_1006D62E4;
     v21[3] = &unk_101626AE0;
     objc_copyWeak(&v24, &location);
-    v23 = v7;
+    v23 = completionCopy;
     v20 = v16;
     v22 = v20;
     [v20 resumeWithCompletionHandler:v21];
@@ -693,15 +693,15 @@ LABEL_24:
   }
 }
 
-- (void)checkIfCanCancelRideWithRideStatus:(id)a3 completion:(id)a4
+- (void)checkIfCanCancelRideWithRideStatus:(id)status completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  statusCopy = status;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = [INCancelRideIntent alloc];
-    v9 = [v6 identifier];
-    v10 = [v8 initWithRideIdentifier:v9];
+    identifier = [statusCopy identifier];
+    v10 = [v8 initWithRideIdentifier:identifier];
 
     v11 = [(RideBookingApplication *)self _connectionWithIntent:v10];
     v12 = GEOFindOrCreateLog();
@@ -709,8 +709,8 @@ LABEL_24:
     {
       v13 = basename("/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Ride Booking/RideBookingApplication/RideBookingApplication.m");
       v14 = [NSString alloc];
-      v15 = [(RideBookingApplication *)self identifier];
-      v16 = [v14 initWithFormat:@"%@ confirming CancelRide: %@", v15, v10];
+      identifier2 = [(RideBookingApplication *)self identifier];
+      v16 = [v14 initWithFormat:@"%@ confirming CancelRide: %@", identifier2, v10];
       *buf = 136315394;
       v27 = v13;
       v28 = 2112;
@@ -722,9 +722,9 @@ LABEL_24:
     v17 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v18 = [(RideBookingApplication *)self uniqueName];
+      uniqueName = [(RideBookingApplication *)self uniqueName];
       *buf = 138412546;
-      v27 = v18;
+      v27 = uniqueName;
       v28 = 2080;
       *v29 = "checkIfCanCancelRide_resumeWithCompletionHandler";
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -742,7 +742,7 @@ LABEL_24:
     v21[2] = sub_1006D7634;
     v21[3] = &unk_101626AE0;
     objc_copyWeak(&v24, &location);
-    v23 = v7;
+    v23 = completionCopy;
     v20 = v11;
     v22 = v20;
     [v20 resumeWithCompletionHandler:v21];
@@ -769,23 +769,23 @@ LABEL_24:
   }
 }
 
-- (void)sendFeedbackForRideStatus:(id)a3 feedbackRating:(id)a4 feedbackTip:(id)a5 completion:(id)a6
+- (void)sendFeedbackForRideStatus:(id)status feedbackRating:(id)rating feedbackTip:(id)tip completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v31 = v10;
-  if (v13)
+  statusCopy = status;
+  ratingCopy = rating;
+  tipCopy = tip;
+  completionCopy = completion;
+  v31 = statusCopy;
+  if (completionCopy)
   {
     v14 = [INSendRideFeedbackIntent alloc];
-    v15 = [v10 identifier];
-    v16 = [v14 initWithRideIdentifier:v15];
+    identifier = [statusCopy identifier];
+    v16 = [v14 initWithRideIdentifier:identifier];
 
-    if (v11)
+    if (ratingCopy)
     {
-      [v16 setRating:v11];
-      if (!v12)
+      [v16 setRating:ratingCopy];
+      if (!tipCopy)
       {
         goto LABEL_9;
       }
@@ -793,10 +793,10 @@ LABEL_24:
 
     else
     {
-      v17 = [v16 rating];
-      [v16 setRating:v17];
+      rating = [v16 rating];
+      [v16 setRating:rating];
 
-      if (!v12)
+      if (!tipCopy)
       {
 LABEL_9:
         v22 = [(RideBookingApplication *)self _connectionWithIntent:v16];
@@ -805,8 +805,8 @@ LABEL_9:
         {
           v24 = basename("/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Ride Booking/RideBookingApplication/RideBookingApplication.m");
           v25 = [NSString alloc];
-          v26 = [(RideBookingApplication *)self identifier];
-          v27 = [v25 initWithFormat:@"%@ handling SendRideFeeback: %@", v26, v16, v31];
+          identifier2 = [(RideBookingApplication *)self identifier];
+          v27 = [v25 initWithFormat:@"%@ handling SendRideFeeback: %@", identifier2, v16, v31];
           *buf = 136315394;
           v37 = v24;
           v38 = 2112;
@@ -818,9 +818,9 @@ LABEL_9:
         v28 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
         {
-          v29 = [(RideBookingApplication *)self uniqueName];
+          uniqueName = [(RideBookingApplication *)self uniqueName];
           *buf = 138412546;
-          v37 = v29;
+          v37 = uniqueName;
           v38 = 2080;
           *v39 = "sendFeedbackForRide_resumeWithCompletionHandler";
           _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -838,7 +838,7 @@ LABEL_9:
         v32[2] = sub_1006D88EC;
         v32[3] = &unk_101626BA8;
         objc_copyWeak(&v34, &location);
-        v33 = v13;
+        v33 = completionCopy;
         [v22 resumeWithCompletionHandler:v32];
 
         objc_destroyWeak(&v34);
@@ -849,9 +849,9 @@ LABEL_9:
     }
 
     v18 = [INCurrencyAmount alloc];
-    v19 = [v12 amount];
-    v20 = [v12 currencyCode];
-    v21 = [v18 initWithAmount:v19 currencyCode:v20];
+    amount = [tipCopy amount];
+    currencyCode = [tipCopy currencyCode];
+    v21 = [v18 initWithAmount:amount currencyCode:currencyCode];
     [v16 setTip:v21];
 
     goto LABEL_9;
@@ -874,9 +874,9 @@ LABEL_9:
 LABEL_16:
 }
 
-- (void)intentResponseDidUpdate:(id)a3 withSerializedCacheItems:(id)a4
+- (void)intentResponseDidUpdate:(id)update withSerializedCacheItems:(id)items
 {
-  v5 = a3;
+  updateCopy = update;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
@@ -884,9 +884,9 @@ LABEL_16:
   v8[2] = sub_1006D9580;
   v8[3] = &unk_101661480;
   objc_copyWeak(&v11, &location);
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = updateCopy;
+  selfCopy = self;
+  v7 = updateCopy;
   dispatch_async(queue, v8);
 
   objc_destroyWeak(&v11);
@@ -900,8 +900,8 @@ LABEL_16:
   {
     v4 = basename("/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Ride Booking/RideBookingApplication/RideBookingApplication.m");
     v5 = [NSString alloc];
-    v6 = [(RideBookingApplication *)self identifier];
-    v7 = [v5 initWithFormat:@"%@ stopping updates", v6];
+    identifier = [(RideBookingApplication *)self identifier];
+    v7 = [v5 initWithFormat:@"%@ stopping updates", identifier];
     *buf = 136315394;
     v21 = v4;
     v22 = 2112;
@@ -918,17 +918,17 @@ LABEL_16:
     self->_getRideStatusConnection = v10;
 
     [(INCExtensionConnection *)self->_getRideStatusConnection setRequiresTCC:0];
-    v12 = [(RideBookingApplication *)self identifier];
-    v13 = [(INCExtensionConnection *)self->_getRideStatusConnection intent];
-    [v13 _setLaunchId:v12];
+    identifier2 = [(RideBookingApplication *)self identifier];
+    intent = [(INCExtensionConnection *)self->_getRideStatusConnection intent];
+    [intent _setLaunchId:identifier2];
   }
 
   v14 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v15 = [(RideBookingApplication *)self uniqueName];
+    uniqueName = [(RideBookingApplication *)self uniqueName];
     *buf = 138412546;
-    v21 = v15;
+    v21 = uniqueName;
     v22 = 2080;
     v23 = "stopGetRideStatusUpdates_resumeWithCompletionHandler";
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -960,8 +960,8 @@ LABEL_16:
   {
     v4 = basename("/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Ride Booking/RideBookingApplication/RideBookingApplication.m");
     v5 = [NSString alloc];
-    v6 = [(RideBookingApplication *)self identifier];
-    v7 = [v5 initWithFormat:@"%@ starting updates", v6];
+    identifier = [(RideBookingApplication *)self identifier];
+    v7 = [v5 initWithFormat:@"%@ starting updates", identifier];
     *buf = 136315394;
     v21 = v4;
     v22 = 2112;
@@ -978,17 +978,17 @@ LABEL_16:
     self->_getRideStatusConnection = v10;
 
     [(INCExtensionConnection *)self->_getRideStatusConnection setRequiresTCC:0];
-    v12 = [(RideBookingApplication *)self identifier];
-    v13 = [(INCExtensionConnection *)self->_getRideStatusConnection intent];
-    [v13 _setLaunchId:v12];
+    identifier2 = [(RideBookingApplication *)self identifier];
+    intent = [(INCExtensionConnection *)self->_getRideStatusConnection intent];
+    [intent _setLaunchId:identifier2];
   }
 
   v14 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v15 = [(RideBookingApplication *)self uniqueName];
+    uniqueName = [(RideBookingApplication *)self uniqueName];
     *buf = 138412546;
-    v21 = v15;
+    v21 = uniqueName;
     v22 = 2080;
     v23 = "startGetRideStatusUpdates_resumeWithCompletionHandler";
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -1013,18 +1013,18 @@ LABEL_16:
   objc_destroyWeak(buf);
 }
 
-- (void)getRideStatusWithCompletion:(id)a3
+- (void)getRideStatusWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = basename("/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Ride Booking/RideBookingApplication/RideBookingApplication.m");
       v7 = [NSString alloc];
-      v8 = [(RideBookingApplication *)self identifier];
-      v9 = [v7 initWithFormat:@"%@ handling GetRideStatus", v8];
+      identifier = [(RideBookingApplication *)self identifier];
+      v9 = [v7 initWithFormat:@"%@ handling GetRideStatus", identifier];
       *buf = 136315394;
       v20 = v6;
       v21 = 2112;
@@ -1039,9 +1039,9 @@ LABEL_16:
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [(RideBookingApplication *)self uniqueName];
+      uniqueName = [(RideBookingApplication *)self uniqueName];
       *buf = 138412546;
-      v20 = v13;
+      v20 = uniqueName;
       v21 = 2080;
       *v22 = "getRideStatusWithCompletion_resumeWithCompletionHandler";
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -1059,7 +1059,7 @@ LABEL_16:
     v15[2] = sub_1006DA66C;
     v15[3] = &unk_101626BA8;
     objc_copyWeak(&v17, &location);
-    v16 = v4;
+    v16 = completionCopy;
     [v11 resumeWithCompletionHandler:v15];
 
     objc_destroyWeak(&v17);
@@ -1084,22 +1084,22 @@ LABEL_16:
   }
 }
 
-- (void)getRideStatusWithPickupLocation:(id)a3 dropOffLocation:(id)a4 rideOption:(id)a5 partySize:(unint64_t)a6 paymentMethod:(id)a7 completion:(id)a8
+- (void)getRideStatusWithPickupLocation:(id)location dropOffLocation:(id)offLocation rideOption:(id)option partySize:(unint64_t)size paymentMethod:(id)method completion:(id)completion
 {
-  v33 = a3;
-  v34 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = a8;
-  v32 = v14;
-  if (v16)
+  locationCopy = location;
+  offLocationCopy = offLocation;
+  optionCopy = option;
+  methodCopy = method;
+  completionCopy = completion;
+  v32 = optionCopy;
+  if (completionCopy)
   {
-    v17 = [v14 name];
-    v31 = [[INSpeakableString alloc] initWithVocabularyIdentifier:v17 spokenPhrase:v17 pronunciationHint:v17];
+    name = [optionCopy name];
+    v31 = [[INSpeakableString alloc] initWithVocabularyIdentifier:name spokenPhrase:name pronunciationHint:name];
     v18 = [INRequestRideIntent alloc];
-    v19 = [NSNumber numberWithUnsignedInteger:a6];
-    v20 = [v15 intentsPaymentMethod];
-    v21 = [v18 initWithPickupLocation:v33 dropOffLocation:v34 rideOptionName:v31 partySize:v19 paymentMethod:v20 scheduledPickupTime:0];
+    v19 = [NSNumber numberWithUnsignedInteger:size];
+    intentsPaymentMethod = [methodCopy intentsPaymentMethod];
+    v21 = [v18 initWithPickupLocation:locationCopy dropOffLocation:offLocationCopy rideOptionName:v31 partySize:v19 paymentMethod:intentsPaymentMethod scheduledPickupTime:0];
 
     v22 = [(RideBookingApplication *)self _connectionWithIntent:v21];
     v23 = GEOFindOrCreateLog();
@@ -1107,8 +1107,8 @@ LABEL_16:
     {
       v24 = basename("/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Ride Booking/RideBookingApplication/RideBookingApplication.m");
       v25 = [NSString alloc];
-      v26 = [(RideBookingApplication *)self identifier];
-      v27 = [v25 initWithFormat:@"%@ handling RequestRide: %@", v26, v21];
+      identifier = [(RideBookingApplication *)self identifier];
+      v27 = [v25 initWithFormat:@"%@ handling RequestRide: %@", identifier, v21];
       *buf = 136315394;
       v40 = v24;
       v41 = 2112;
@@ -1120,9 +1120,9 @@ LABEL_16:
     v28 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
     {
-      v29 = [(RideBookingApplication *)self uniqueName];
+      uniqueName = [(RideBookingApplication *)self uniqueName];
       *buf = 138412546;
-      v40 = v29;
+      v40 = uniqueName;
       v41 = 2080;
       *v42 = "getRideStatus_resumeWithCompletionHandler";
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -1140,7 +1140,7 @@ LABEL_16:
     v35[2] = sub_1006DB7F4;
     v35[3] = &unk_101626BA8;
     objc_copyWeak(&v37, &location);
-    v36 = v16;
+    v36 = completionCopy;
     [v22 resumeWithCompletionHandler:v35];
 
     objc_destroyWeak(&v37);
@@ -1149,8 +1149,8 @@ LABEL_16:
 
   else
   {
-    v17 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
+    name = GEOFindOrCreateLog();
+    if (os_log_type_enabled(name, OS_LOG_TYPE_FAULT))
     {
       *buf = 136446978;
       v40 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Ride Booking/RideBookingApplication/RideBookingApplication.m";
@@ -1160,30 +1160,30 @@ LABEL_16:
       *&v42[6] = "[RideBookingApplication getRideStatusWithPickupLocation:dropOffLocation:rideOption:partySize:paymentMethod:completion:]";
       v43 = 2082;
       v44 = "nil == (completion)";
-      _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_FAULT, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires completion block", buf, 0x26u);
+      _os_log_impl(&_mh_execute_header, name, OS_LOG_TYPE_FAULT, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires completion block", buf, 0x26u);
     }
   }
 }
 
-- (void)getRequestRideStatusWithPickupLocation:(id)a3 dropOffLocation:(id)a4 rideOption:(id)a5 completion:(id)a6
+- (void)getRequestRideStatusWithPickupLocation:(id)location dropOffLocation:(id)offLocation rideOption:(id)option completion:(id)completion
 {
-  v10 = a3;
-  v27 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v12)
+  locationCopy = location;
+  offLocationCopy = offLocation;
+  optionCopy = option;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v13 = [v11 name];
-    v25 = [[INSpeakableString alloc] initWithVocabularyIdentifier:v13 spokenPhrase:v13 pronunciationHint:v13];
-    v14 = [[INRequestRideIntent alloc] initWithPickupLocation:v10 dropOffLocation:v27 rideOptionName:v25 partySize:0 paymentMethod:0 scheduledPickupTime:0];
+    name = [optionCopy name];
+    v25 = [[INSpeakableString alloc] initWithVocabularyIdentifier:name spokenPhrase:name pronunciationHint:name];
+    v14 = [[INRequestRideIntent alloc] initWithPickupLocation:locationCopy dropOffLocation:offLocationCopy rideOptionName:v25 partySize:0 paymentMethod:0 scheduledPickupTime:0];
     v26 = [(RideBookingApplication *)self _connectionWithIntent:v14];
     v15 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = basename("/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Ride Booking/RideBookingApplication/RideBookingApplication.m");
       v17 = [NSString alloc];
-      v18 = [(RideBookingApplication *)self identifier];
-      v19 = [v17 initWithFormat:@"%@ confirming RequestRide: %@", v18, v14];
+      identifier = [(RideBookingApplication *)self identifier];
+      v19 = [v17 initWithFormat:@"%@ confirming RequestRide: %@", identifier, v14];
       *buf = 136315394;
       v37 = v16;
       v38 = 2112;
@@ -1195,9 +1195,9 @@ LABEL_16:
     v20 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      v21 = [(RideBookingApplication *)self uniqueName];
+      uniqueName = [(RideBookingApplication *)self uniqueName];
       *buf = 138412546;
-      v37 = v21;
+      v37 = uniqueName;
       v38 = 2080;
       *v39 = "requestRideStatus_resumeWithCompletionHandler";
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -1215,11 +1215,11 @@ LABEL_16:
     v28[2] = sub_1006DC974;
     v28[3] = &unk_101626B58;
     objc_copyWeak(&v34, &location);
-    v33 = v12;
-    v29 = v10;
+    v33 = completionCopy;
+    v29 = locationCopy;
     v23 = v14;
     v30 = v23;
-    v31 = v11;
+    v31 = optionCopy;
     v24 = v26;
     v32 = v24;
     [v24 resumeWithCompletionHandler:v28];
@@ -1230,8 +1230,8 @@ LABEL_16:
 
   else
   {
-    v13 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
+    name = GEOFindOrCreateLog();
+    if (os_log_type_enabled(name, OS_LOG_TYPE_FAULT))
     {
       *buf = 136446978;
       v37 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Ride Booking/RideBookingApplication/RideBookingApplication.m";
@@ -1241,25 +1241,25 @@ LABEL_16:
       *&v39[6] = "[RideBookingApplication getRequestRideStatusWithPickupLocation:dropOffLocation:rideOption:completion:]";
       v40 = 2082;
       v41 = "nil == (completion)";
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_FAULT, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires completion block", buf, 0x26u);
+      _os_log_impl(&_mh_execute_header, name, OS_LOG_TYPE_FAULT, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires completion block", buf, 0x26u);
     }
   }
 }
 
-- (void)getRideOptionStatusWithPickupLocation:(id)a3 dropOffLocation:(id)a4 completion:(id)a5
+- (void)getRideOptionStatusWithPickupLocation:(id)location dropOffLocation:(id)offLocation completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  locationCopy = location;
+  offLocationCopy = offLocation;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = basename("/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Ride Booking/RideBookingApplication/RideBookingApplication.m");
       v13 = [NSString alloc];
-      v14 = [(RideBookingApplication *)self identifier];
-      v15 = [v13 initWithFormat:@"%@ handling ListRideOptions", v14];
+      identifier = [(RideBookingApplication *)self identifier];
+      v15 = [v13 initWithFormat:@"%@ handling ListRideOptions", identifier];
       *buf = 136315394;
       v35 = v12;
       v36 = 2112;
@@ -1268,7 +1268,7 @@ LABEL_16:
     }
 
     objc_initWeak(&location, self);
-    v16 = [(RideBookingApplication *)self identifier];
+    identifier2 = [(RideBookingApplication *)self identifier];
     v17 = isExtensionLocked();
 
     if (v17)
@@ -1279,7 +1279,7 @@ LABEL_16:
       block[2] = sub_1006DDCA8;
       block[3] = &unk_101660648;
       objc_copyWeak(&v32, &location);
-      v31 = v10;
+      v31 = completionCopy;
       dispatch_async(queue, block);
 
       objc_destroyWeak(&v32);
@@ -1287,14 +1287,14 @@ LABEL_16:
 
     else
     {
-      v20 = [[INListRideOptionsIntent alloc] initWithPickupLocation:v8 dropOffLocation:v9];
+      v20 = [[INListRideOptionsIntent alloc] initWithPickupLocation:locationCopy dropOffLocation:offLocationCopy];
       v21 = [(RideBookingApplication *)self _connectionWithIntent:v20];
       v22 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
       {
-        v23 = [(RideBookingApplication *)self uniqueName];
+        uniqueName = [(RideBookingApplication *)self uniqueName];
         *buf = 138412546;
-        v35 = v23;
+        v35 = uniqueName;
         v36 = 2080;
         *v37 = "listRideOptions_resumeWithCompletionHandler";
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -1312,7 +1312,7 @@ LABEL_16:
       v26[2] = sub_1006DDDEC;
       v26[3] = &unk_101626AE0;
       objc_copyWeak(&v29, &location);
-      v28 = v10;
+      v28 = completionCopy;
       v25 = v21;
       v27 = v25;
       [v25 resumeWithCompletionHandler:v26];
@@ -1341,13 +1341,13 @@ LABEL_16:
   }
 }
 
-- (id)_connectionWithIntent:(id)a3
+- (id)_connectionWithIntent:(id)intent
 {
-  v4 = a3;
-  v5 = [(RideBookingApplication *)self identifier];
-  [v4 _setLaunchId:v5];
+  intentCopy = intent;
+  identifier = [(RideBookingApplication *)self identifier];
+  [intentCopy _setLaunchId:identifier];
 
-  v6 = [[INCExtensionConnection alloc] initWithIntent:v4];
+  v6 = [[INCExtensionConnection alloc] initWithIntent:intentCopy];
   [v6 setRequiresTCC:0];
 
   return v6;
@@ -1355,13 +1355,13 @@ LABEL_16:
 
 - (NSString)name
 {
-  v3 = [(RideBookingApplication *)self identifier];
+  identifier = [(RideBookingApplication *)self identifier];
 
-  if (!v3 || (-[RideBookingApplication identifier](self, "identifier"), v4 = objc_claimAutoreleasedReturnValue(), +[LSBundleRecord bundleRecordWithBundleIdentifier:allowPlaceholder:error:](LSBundleRecord, "bundleRecordWithBundleIdentifier:allowPlaceholder:error:", v4, 0, 0), v5 = objc_claimAutoreleasedReturnValue(), v4, [v5 localizedName], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "copy"), v6, v5, !v7))
+  if (!identifier || (-[RideBookingApplication identifier](self, "identifier"), v4 = objc_claimAutoreleasedReturnValue(), +[LSBundleRecord bundleRecordWithBundleIdentifier:allowPlaceholder:error:](LSBundleRecord, "bundleRecordWithBundleIdentifier:allowPlaceholder:error:", v4, 0, 0), v5 = objc_claimAutoreleasedReturnValue(), v4, [v5 localizedName], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "copy"), v6, v5, !v7))
   {
-    v8 = [(RideBookingApplication *)self extension];
-    v9 = [v8 displayName];
-    v7 = [v9 copy];
+    extension = [(RideBookingApplication *)self extension];
+    displayName = [extension displayName];
+    v7 = [displayName copy];
   }
 
   return v7;
@@ -1369,39 +1369,39 @@ LABEL_16:
 
 - (BOOL)enabled
 {
-  v2 = [(RideBookingApplication *)self extension];
-  v3 = [v2 isEnabled];
+  extension = [(RideBookingApplication *)self extension];
+  isEnabled = [extension isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
 - (void)enableForUse
 {
-  v2 = [(RideBookingApplication *)self extension];
-  [v2 _setEnabled:1 error:0];
+  extension = [(RideBookingApplication *)self extension];
+  [extension _setEnabled:1 error:0];
 }
 
 - (NSString)description
 {
   identifier = self->_identifier;
-  v4 = [(RideBookingApplication *)self name];
-  v5 = [NSString stringWithFormat:@"Pointer: %p, Identifier: %@, Name: %@", self, identifier, v4];
+  name = [(RideBookingApplication *)self name];
+  v5 = [NSString stringWithFormat:@"Pointer: %p, Identifier: %@, Name: %@", self, identifier, name];
 
   return v5;
 }
 
-- (RideBookingApplication)initWithExtension:(id)a3
+- (RideBookingApplication)initWithExtension:(id)extension
 {
-  v5 = a3;
+  extensionCopy = extension;
   v22.receiver = self;
   v22.super_class = RideBookingApplication;
   v6 = [(RideBookingApplication *)&v22 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_extension, a3);
-    v8 = [v5 _containingAppIdentifer];
-    v9 = [v8 copy];
+    objc_storeStrong(&v6->_extension, extension);
+    _containingAppIdentifer = [extensionCopy _containingAppIdentifer];
+    v9 = [_containingAppIdentifer copy];
     identifier = v7->_identifier;
     v7->_identifier = v9;
 
@@ -1416,9 +1416,9 @@ LABEL_16:
       v12 = 0;
     }
 
-    v13 = [v12 bundleVersion];
+    bundleVersion = [v12 bundleVersion];
     version = v7->_version;
-    v7->_version = v13;
+    v7->_version = bundleVersion;
 
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v16 = dispatch_queue_create("RideBookingApplication", v15);
@@ -1426,9 +1426,9 @@ LABEL_16:
     v7->_queue = v16;
 
     v18 = MapsSuggestionsResourceDepotForMapsProcess();
-    v19 = [v18 oneAppGuardian];
+    oneAppGuardian = [v18 oneAppGuardian];
     appGuardian = v7->_appGuardian;
-    v7->_appGuardian = v19;
+    v7->_appGuardian = oneAppGuardian;
 
     [(MapsSuggestionsAppGuardian *)v7->_appGuardian registerAppTracker:v7];
   }
@@ -1436,11 +1436,11 @@ LABEL_16:
   return v7;
 }
 
-- (id)iconWithFormat:(int)a3
+- (id)iconWithFormat:(int)format
 {
-  v3 = *&a3;
-  v4 = [(RideBookingApplication *)self extension];
-  v5 = [v4 _iconWithFormat:v3];
+  v3 = *&format;
+  extension = [(RideBookingApplication *)self extension];
+  v5 = [extension _iconWithFormat:v3];
 
   return v5;
 }

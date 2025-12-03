@@ -1,8 +1,8 @@
 @interface VUIMPMediaLibraryIdentifier
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (VUIMPMediaLibraryIdentifier)init;
-- (VUIMPMediaLibraryIdentifier)initWithIdentifier:(id)a3;
+- (VUIMPMediaLibraryIdentifier)initWithIdentifier:(id)identifier;
 - (unint64_t)hash;
 @end
 
@@ -18,15 +18,15 @@
   return 0;
 }
 
-- (VUIMPMediaLibraryIdentifier)initWithIdentifier:(id)a3
+- (VUIMPMediaLibraryIdentifier)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = VUIMPMediaLibraryIdentifier;
   v5 = [(VUIMPMediaLibraryIdentifier *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -36,28 +36,28 @@
 
 - (unint64_t)hash
 {
-  v2 = [(VUIMPMediaLibraryIdentifier *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(VUIMPMediaLibraryIdentifier *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(VUIMPMediaLibraryIdentifier *)self identifier];
-    v8 = [(VUIMPMediaLibraryIdentifier *)v6 identifier];
-    v9 = v7;
-    v10 = v8;
+    identifier = [(VUIMPMediaLibraryIdentifier *)self identifier];
+    identifier2 = [(VUIMPMediaLibraryIdentifier *)v6 identifier];
+    v9 = identifier;
+    v10 = identifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -91,8 +91,8 @@
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VUIMPMediaLibraryIdentifier *)self identifier];
-  v7 = [v5 stringWithFormat:@"%@=%@", @"identifier", v6];
+  identifier = [(VUIMPMediaLibraryIdentifier *)self identifier];
+  v7 = [v5 stringWithFormat:@"%@=%@", @"identifier", identifier];
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];

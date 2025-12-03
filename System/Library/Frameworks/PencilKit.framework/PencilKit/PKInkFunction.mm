@@ -1,72 +1,72 @@
 @interface PKInkFunction
-- (PKInkFunction)initWithInputPoints:(id)a3 outputPoints:(id)a4 functionType:(unint64_t)a5;
-- (PKInkFunction)initWithProperty:(unint64_t)a3 input:(unint64_t)a4 math:(unint64_t)a5 inputMask:(unint64_t)a6 deviceMask:(unint64_t)a7 inputPoints:(id)a8 maxInputPoints:(id)a9 minOutputPoints:(id)a10 maxOutputPoints:(id)a11 outputPoints:(id)a12 controlPoints:(id)a13 functionType:(unint64_t)a14;
-- (double)solveForInput:(double)a3;
+- (PKInkFunction)initWithInputPoints:(id)points outputPoints:(id)outputPoints functionType:(unint64_t)type;
+- (PKInkFunction)initWithProperty:(unint64_t)property input:(unint64_t)input math:(unint64_t)math inputMask:(unint64_t)mask deviceMask:(unint64_t)deviceMask inputPoints:(id)points maxInputPoints:(id)inputPoints minOutputPoints:(id)self0 maxOutputPoints:(id)self1 outputPoints:(id)self2 controlPoints:(id)self3 functionType:(unint64_t)self4;
+- (double)solveForInput:(double)input;
 - (id)description;
-- (void)setControlPoints:(id)a3;
+- (void)setControlPoints:(id)points;
 @end
 
 @implementation PKInkFunction
 
-- (PKInkFunction)initWithProperty:(unint64_t)a3 input:(unint64_t)a4 math:(unint64_t)a5 inputMask:(unint64_t)a6 deviceMask:(unint64_t)a7 inputPoints:(id)a8 maxInputPoints:(id)a9 minOutputPoints:(id)a10 maxOutputPoints:(id)a11 outputPoints:(id)a12 controlPoints:(id)a13 functionType:(unint64_t)a14
+- (PKInkFunction)initWithProperty:(unint64_t)property input:(unint64_t)input math:(unint64_t)math inputMask:(unint64_t)mask deviceMask:(unint64_t)deviceMask inputPoints:(id)points maxInputPoints:(id)inputPoints minOutputPoints:(id)self0 maxOutputPoints:(id)self1 outputPoints:(id)self2 controlPoints:(id)self3 functionType:(unint64_t)self4
 {
-  v16 = a8;
-  v17 = a9;
-  v29 = a10;
-  v28 = a11;
+  pointsCopy = points;
+  inputPointsCopy = inputPoints;
+  outputPointsCopy = outputPoints;
+  maxOutputPointsCopy = maxOutputPoints;
   v27 = a12;
-  v18 = a13;
+  controlPointsCopy = controlPoints;
   v30.receiver = self;
   v30.super_class = PKInkFunction;
   v19 = [(PKInkFunction *)&v30 init];
   v20 = v19;
   if (v19)
   {
-    v19->_inkProperty = a3;
-    v19->_inkInput = a4;
-    v19->_inputMask = a6;
-    v19->_deviceMask = a7;
-    v19->_math = a5;
-    objc_storeStrong(&v19->_inputPoints, a8);
-    objc_storeStrong(&v20->_maxInputPoints, a9);
+    v19->_inkProperty = property;
+    v19->_inkInput = input;
+    v19->_inputMask = mask;
+    v19->_deviceMask = deviceMask;
+    v19->_math = math;
+    objc_storeStrong(&v19->_inputPoints, points);
+    objc_storeStrong(&v20->_maxInputPoints, inputPoints);
     objc_storeStrong(&v20->_outputPoints, a12);
-    objc_storeStrong(&v20->_controlPoints, a13);
-    objc_storeStrong(&v20->_minOutputPoints, a10);
-    objc_storeStrong(&v20->_maxOutputPoints, a11);
-    v20->_functionType = a14;
+    objc_storeStrong(&v20->_controlPoints, controlPoints);
+    objc_storeStrong(&v20->_minOutputPoints, outputPoints);
+    objc_storeStrong(&v20->_maxOutputPoints, maxOutputPoints);
+    v20->_functionType = type;
   }
 
   return v20;
 }
 
-- (PKInkFunction)initWithInputPoints:(id)a3 outputPoints:(id)a4 functionType:(unint64_t)a5
+- (PKInkFunction)initWithInputPoints:(id)points outputPoints:(id)outputPoints functionType:(unint64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  pointsCopy = points;
+  outputPointsCopy = outputPoints;
   v15.receiver = self;
   v15.super_class = PKInkFunction;
   v11 = [(PKInkFunction *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_inputPoints, a3);
+    objc_storeStrong(&v11->_inputPoints, points);
     maxInputPoints = v12->_maxInputPoints;
     v12->_maxInputPoints = 0;
 
-    objc_storeStrong(&v12->_outputPoints, a4);
-    objc_storeStrong(&v12->_minOutputPoints, a4);
-    objc_storeStrong(&v12->_maxOutputPoints, a4);
-    v12->_functionType = a5;
+    objc_storeStrong(&v12->_outputPoints, outputPoints);
+    objc_storeStrong(&v12->_minOutputPoints, outputPoints);
+    objc_storeStrong(&v12->_maxOutputPoints, outputPoints);
+    v12->_functionType = type;
     v12->_math = 0;
   }
 
   return v12;
 }
 
-- (void)setControlPoints:(id)a3
+- (void)setControlPoints:(id)points
 {
-  v17 = a3;
-  objc_storeStrong(&self->_controlPoints, a3);
+  pointsCopy = points;
+  objc_storeStrong(&self->_controlPoints, points);
   self->_functionType = 0;
   if ([(NSMutableArray *)self->_controlPoints count]== 4)
   {
@@ -87,11 +87,11 @@
   }
 }
 
-- (double)solveForInput:(double)a3
+- (double)solveForInput:(double)input
 {
   [(PKInkBehavior *)v7 outputFunctionFromInkFunction:self];
   v4 = v8;
-  v5 = (**v8)(v8, a3, 0.0);
+  v5 = (**v8)(v8, input, 0.0);
   ((*v4)[5])(v4);
   return v5;
 }

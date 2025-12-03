@@ -1,15 +1,15 @@
 @interface InputManager
 + (id)sharedInstance;
-- (BOOL)_onQueue_saveInputsWithError:(id *)a3;
-- (BOOL)_saveInputsWithError:(id *)a3;
-- (BOOL)setInput:(id)a3 withError:(id *)a4;
+- (BOOL)_onQueue_saveInputsWithError:(id *)error;
+- (BOOL)_saveInputsWithError:(id *)error;
+- (BOOL)setInput:(id)input withError:(id *)error;
 - (InputManager)init;
 - (NSDictionary)debugDictionary;
 - (id)_createDefaultInputs;
-- (id)_loadInputsWithError:(id *)a3;
+- (id)_loadInputsWithError:(id *)error;
 - (id)_onQueue_debugDictionary;
-- (id)objectForInputValue:(unint64_t)a3;
-- (void)enumerateInputsUsingBlock:(id)a3;
+- (id)objectForInputValue:(unint64_t)value;
+- (void)enumerateInputsUsingBlock:(id)block;
 @end
 
 @implementation InputManager
@@ -22,14 +22,14 @@
   v10 = sub_10001C2F0;
   v11 = sub_10001C300;
   v12 = 0;
-  v3 = [(InputManager *)self internalQueue];
+  internalQueue = [(InputManager *)self internalQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10001C308;
   v6[3] = &unk_100046A18;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(internalQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -39,51 +39,51 @@
 
 - (id)_onQueue_debugDictionary
 {
-  v3 = [(InputManager *)self internalQueue];
-  dispatch_assert_queue_V2(v3);
+  internalQueue = [(InputManager *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   v4 = objc_opt_new();
-  v5 = [(InputManager *)self eligibilityInputs];
+  eligibilityInputs = [(InputManager *)self eligibilityInputs];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10001C43C;
   v9[3] = &unk_1000464B8;
   v10 = v4;
   v6 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [eligibilityInputs enumerateKeysAndObjectsUsingBlock:v9];
 
   v7 = [v6 copy];
 
   return v7;
 }
 
-- (BOOL)_saveInputsWithError:(id *)a3
+- (BOOL)_saveInputsWithError:(id *)error
 {
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [(InputManager *)self internalQueue];
+  internalQueue = [(InputManager *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001C590;
   block[3] = &unk_1000469F0;
   block[4] = self;
   block[5] = &v8;
-  block[6] = a3;
-  dispatch_sync(v5, block);
+  block[6] = error;
+  dispatch_sync(internalQueue, block);
 
-  LOBYTE(a3) = *(v9 + 24);
+  LOBYTE(error) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
-  return a3;
+  return error;
 }
 
-- (BOOL)_onQueue_saveInputsWithError:(id *)a3
+- (BOOL)_onQueue_saveInputsWithError:(id *)error
 {
-  v5 = [(InputManager *)self internalQueue];
-  dispatch_assert_queue_V2(v5);
+  internalQueue = [(InputManager *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v6 = [(InputManager *)self eligibilityInputs];
+  eligibilityInputs = [(InputManager *)self eligibilityInputs];
   v22 = 0;
   if (asprintf(&v22, "%s%s", "/", "/private/var/db/eligibilityd/eligibility_inputs.plist") == -1)
   {
@@ -103,12 +103,12 @@
   {
     v9 = [NSString stringWithUTF8String:v22];
     v10 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
-    [v10 encodeObject:v6 forKey:NSKeyedArchiveRootObjectKey];
-    v11 = [v10 encodedData];
+    [v10 encodeObject:eligibilityInputs forKey:NSKeyedArchiveRootObjectKey];
+    encodedData = [v10 encodedData];
 
     v12 = [NSURL fileURLWithPath:v9 isDirectory:0];
     v21 = 0;
-    v13 = [v11 writeToURL:v12 options:268435457 error:&v21];
+    v13 = [encodedData writeToURL:v12 options:268435457 error:&v21];
     v14 = v21;
     if (v13)
     {
@@ -120,13 +120,13 @@
     v17 = sub_10001F638();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v12 path];
+      path = [v12 path];
       *buf = 136315906;
       v24 = "[InputManager _onQueue_saveInputsWithError:]";
       v25 = 2112;
-      v26 = v6;
+      v26 = eligibilityInputs;
       v27 = 2112;
-      v28 = v20;
+      v28 = path;
       v29 = 2112;
       v30 = v14;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%s: Failed to write eligibility data %@ to disk at %@: %@", buf, 0x2Au);
@@ -145,16 +145,16 @@
 
     v9 = 0;
     v12 = 0;
-    v11 = 0;
+    encodedData = 0;
     v14 = 0;
   }
 
   free(v8);
-  if (a3)
+  if (error)
   {
     v18 = v14;
     v15 = 0;
-    *a3 = v14;
+    *error = v14;
   }
 
   else
@@ -167,7 +167,7 @@ LABEL_16:
   return v15;
 }
 
-- (id)_loadInputsWithError:(id *)a3
+- (id)_loadInputsWithError:(id *)error
 {
   v4 = objc_opt_class();
   v5 = objc_opt_class();
@@ -201,7 +201,7 @@ LABEL_16:
     v11 = 0;
     v10 = 0;
     v13 = 0;
-    v12 = 0;
+    error2 = 0;
     goto LABEL_22;
   }
 
@@ -209,19 +209,19 @@ LABEL_16:
   v10 = [NSURL fileURLWithPath:v9 isDirectory:0];
   v30 = 0;
   v11 = [NSData dataWithContentsOfURL:v10 options:3 error:&v30];
-  v12 = v30;
+  error2 = v30;
   if (!v11)
   {
     v19 = sub_10001F638();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v25 = [v10 path];
+      path = [v10 path];
       *buf = 136315650;
       v33 = "[InputManager _loadInputsWithError:]";
       v34 = 2112;
-      v35 = v25;
+      v35 = path;
       v36 = 2112;
-      v37 = v12;
+      v37 = error2;
       _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%s: Failed to deserialize data in %@: %@", buf, 0x20u);
     }
 
@@ -230,7 +230,7 @@ LABEL_16:
     goto LABEL_22;
   }
 
-  v29 = v12;
+  v29 = error2;
   v13 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v11 error:&v29];
   v14 = v29;
 
@@ -257,19 +257,19 @@ LABEL_16:
     v21 = sub_10001F638();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v28 = [v10 path];
-      v26 = [v13 error];
+      path2 = [v10 path];
+      error = [v13 error];
       *buf = 136315650;
       v33 = "[InputManager _loadInputsWithError:]";
       v34 = 2112;
-      v35 = v28;
+      v35 = path2;
       v36 = 2112;
-      v37 = v26;
-      v27 = v26;
+      v37 = error;
+      v27 = error;
       _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "%s: Failed to decode input from data at %@ : %@", buf, 0x20u);
     }
 
-    v12 = [v13 error];
+    error2 = [v13 error];
 
 LABEL_22:
     v17 = 0;
@@ -280,13 +280,13 @@ LABEL_22:
   [v13 finishDecoding];
   v17 = v16;
 LABEL_18:
-  v12 = v14;
+  error2 = v14;
 LABEL_23:
   free(v8);
-  if (a3 && !v17)
+  if (error && !v17)
   {
-    v22 = v12;
-    *a3 = v12;
+    v22 = error2;
+    *error = error2;
   }
 
   v23 = v17;
@@ -294,23 +294,23 @@ LABEL_23:
   return v17;
 }
 
-- (void)enumerateInputsUsingBlock:(id)a3
+- (void)enumerateInputsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(InputManager *)self eligibilityInputs];
+  blockCopy = block;
+  eligibilityInputs = [(InputManager *)self eligibilityInputs];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001CF18;
   v7[3] = &unk_100046490;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [eligibilityInputs enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (BOOL)setInput:(id)a3 withError:(id *)a4
+- (BOOL)setInput:(id)input withError:(id *)error
 {
-  v6 = a3;
-  v7 = sub_10001F3E4([v6 type]);
+  inputCopy = input;
+  v7 = sub_10001F3E4([inputCopy type]);
   if (v7)
   {
     v8 = [NSString stringWithUTF8String:v7];
@@ -318,18 +318,18 @@ LABEL_23:
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     v20 = 0;
-    v9 = [(InputManager *)self internalQueue];
+    internalQueue = [(InputManager *)self internalQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10001D158;
     block[3] = &unk_100046468;
     block[4] = self;
     v15 = v8;
-    v16 = v6;
+    v16 = inputCopy;
     v17 = buf;
-    v18 = a4;
+    errorCopy = error;
     v10 = v8;
-    dispatch_sync(v9, block);
+    dispatch_sync(internalQueue, block);
 
     v11 = *(*&buf[8] + 24);
     _Block_object_dispose(buf, 8);
@@ -343,14 +343,14 @@ LABEL_23:
       *buf = 136315394;
       *&buf[4] = "[InputManager setInput:withError:]";
       *&buf[12] = 2112;
-      *&buf[14] = v6;
+      *&buf[14] = inputCopy;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%s: Unknown input %@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      *a4 = v11 = 0;
+      *error = v11 = 0;
     }
 
     else
@@ -362,9 +362,9 @@ LABEL_23:
   return v11 & 1;
 }
 
-- (id)objectForInputValue:(unint64_t)a3
+- (id)objectForInputValue:(unint64_t)value
 {
-  v5 = sub_10001F3E4(a3);
+  v5 = sub_10001F3E4(value);
   if (v5)
   {
     v6 = [NSString stringWithUTF8String:v5];
@@ -374,7 +374,7 @@ LABEL_23:
     v16 = sub_10001C2F0;
     v17 = sub_10001C300;
     v18 = 0;
-    v7 = [(InputManager *)self internalQueue];
+    internalQueue = [(InputManager *)self internalQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10001D3FC;
@@ -383,7 +383,7 @@ LABEL_23:
     v14 = buf;
     block[4] = self;
     v8 = v6;
-    dispatch_sync(v7, block);
+    dispatch_sync(internalQueue, block);
 
     v9 = *(*&buf[8] + 40);
     _Block_object_dispose(buf, 8);
@@ -397,7 +397,7 @@ LABEL_23:
       *buf = 136315394;
       *&buf[4] = "[InputManager objectForInputValue:]";
       *&buf[12] = 2048;
-      *&buf[14] = a3;
+      *&buf[14] = value;
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%s: Unknown input %llu", buf, 0x16u);
     }
 
@@ -531,8 +531,8 @@ LABEL_23:
   v3 = v2;
   if (v2)
   {
-    v4 = [(InputManager *)v2 _createDefaultInputs];
-    v5 = [v4 mutableCopy];
+    _createDefaultInputs = [(InputManager *)v2 _createDefaultInputs];
+    v5 = [_createDefaultInputs mutableCopy];
 
     v15 = 0;
     v6 = [(InputManager *)v3 _loadInputsWithError:&v15];
@@ -575,7 +575,7 @@ LABEL_23:
   block[1] = 3221225472;
   block[2] = sub_10001DAA0;
   block[3] = &unk_100046900;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10005D4B8 != -1)
   {
     dispatch_once(&qword_10005D4B8, block);

@@ -1,12 +1,12 @@
 @interface NSFileHandle
-- (BOOL)writeBytes:(const void *)a3 length:(unint64_t)a4;
+- (BOOL)writeBytes:(const void *)bytes length:(unint64_t)length;
 @end
 
 @implementation NSFileHandle
 
-- (BOOL)writeBytes:(const void *)a3 length:(unint64_t)a4
+- (BOOL)writeBytes:(const void *)bytes length:(unint64_t)length
 {
-  v5 = [NSData dataWithBytes:a3 length:a4];
+  v5 = [NSData dataWithBytes:bytes length:length];
   LOBYTE(self) = [(NSFileHandle *)self uarpWriteData:v5 error:0];
 
   return self;

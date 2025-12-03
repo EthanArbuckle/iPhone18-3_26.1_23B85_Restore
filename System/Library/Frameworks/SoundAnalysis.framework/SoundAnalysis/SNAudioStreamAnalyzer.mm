@@ -1,7 +1,7 @@
 @interface SNAudioStreamAnalyzer
 - (SNAudioStreamAnalyzer)init;
 - (SNAudioStreamAnalyzer)initWithFormat:(AVAudioFormat *)format;
-- (SNAudioStreamAnalyzer)initWithImpl:(id)a3;
+- (SNAudioStreamAnalyzer)initWithImpl:(id)impl;
 @end
 
 @implementation SNAudioStreamAnalyzer
@@ -37,16 +37,16 @@
   return v5;
 }
 
-- (SNAudioStreamAnalyzer)initWithImpl:(id)a3
+- (SNAudioStreamAnalyzer)initWithImpl:(id)impl
 {
-  v5 = a3;
+  implCopy = impl;
   v9.receiver = self;
   v9.super_class = SNAudioStreamAnalyzer;
   v6 = [(SNAudioStreamAnalyzer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_impl, a3);
+    objc_storeStrong(&v6->_impl, impl);
   }
 
   return v7;

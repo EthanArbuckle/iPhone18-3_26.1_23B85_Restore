@@ -1,12 +1,12 @@
 @interface ABDowntimeWhitelistMigrator
-+ (BOOL)moveDowntimeWhitelistFromUnknownProperties:(CPSqliteConnection *)a3;
-+ (id)externalRepresentationFromUnknownProperties:(id)a3;
-+ (id)unknownPropertiesFromExternalRepresentation:(id)a3;
++ (BOOL)moveDowntimeWhitelistFromUnknownProperties:(CPSqliteConnection *)properties;
++ (id)externalRepresentationFromUnknownProperties:(id)properties;
++ (id)unknownPropertiesFromExternalRepresentation:(id)representation;
 @end
 
 @implementation ABDowntimeWhitelistMigrator
 
-+ (BOOL)moveDowntimeWhitelistFromUnknownProperties:(CPSqliteConnection *)a3
++ (BOOL)moveDowntimeWhitelistFromUnknownProperties:(CPSqliteConnection *)properties
 {
   v3 = CPSqliteConnectionStatementForSQL();
   if (v3)
@@ -19,14 +19,14 @@
   return v3 != 0;
 }
 
-+ (id)unknownPropertiesFromExternalRepresentation:(id)a3
++ (id)unknownPropertiesFromExternalRepresentation:(id)representation
 {
   v14[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  representationCopy = representation;
+  if (representationCopy)
   {
     v13 = 0;
-    v4 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v3 error:&v13];
+    v4 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:representationCopy error:&v13];
     v5 = v13;
     if (v4)
     {
@@ -57,22 +57,22 @@
   return v8;
 }
 
-+ (id)externalRepresentationFromUnknownProperties:(id)a3
++ (id)externalRepresentationFromUnknownProperties:(id)properties
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DEF0] data];
-  if ([v3 count])
+  propertiesCopy = properties;
+  data = [MEMORY[0x1E695DEF0] data];
+  if ([propertiesCopy count])
   {
     v5 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
     [v5 setOutputFormat:200];
-    [v5 encodeObject:v3 forKey:*MEMORY[0x1E696A508]];
+    [v5 encodeObject:propertiesCopy forKey:*MEMORY[0x1E696A508]];
     [v5 finishEncoding];
-    v6 = [v5 encodedData];
+    encodedData = [v5 encodedData];
 
-    v4 = v6;
+    data = encodedData;
   }
 
-  return v4;
+  return data;
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface PUAccessoryTileLayoutInfo
-- (BOOL)isGeometryEqualToLayoutInfo:(id)a3;
+- (BOOL)isGeometryEqualToLayoutInfo:(id)info;
 - (CGRect)untransformedContentFrame;
-- (PUAccessoryTileLayoutInfo)initWithTileIdentifier:(id)a3 center:(CGPoint)a4 size:(CGSize)a5 alpha:(double)a6 transform:(CGAffineTransform *)a7 zPosition:(double)a8 coordinateSystem:(id)a9;
+- (PUAccessoryTileLayoutInfo)initWithTileIdentifier:(id)identifier center:(CGPoint)center size:(CGSize)size alpha:(double)alpha transform:(CGAffineTransform *)transform zPosition:(double)position coordinateSystem:(id)system;
 - (UIEdgeInsets)contentInsets;
-- (double)initWithTileIdentifier:(uint64_t)a3 center:(_OWORD *)a4 size:(uint64_t)a5 alpha:(uint64_t)a6 transform:(uint64_t)a7 zPosition:(uint64_t)a8 coordinateSystem:(double)a9 untransformedContentFrame:(double)a10 contentInsets:(double)a11 minimumVisibleHeight:(double)a12;
+- (double)initWithTileIdentifier:(uint64_t)identifier center:(_OWORD *)center size:(uint64_t)size alpha:(uint64_t)alpha transform:(uint64_t)transform zPosition:(uint64_t)position coordinateSystem:(double)system untransformedContentFrame:(double)self0 contentInsets:(double)self1 minimumVisibleHeight:(double)self2;
 - (id)clone;
 @end
 
@@ -38,7 +38,7 @@
 - (id)clone
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [(PUTileLayoutInfo *)self tileIdentifier];
+  tileIdentifier = [(PUTileLayoutInfo *)self tileIdentifier];
   [(PUTileLayoutInfo *)self center];
   v35 = v6;
   v36 = v5;
@@ -50,7 +50,7 @@
   [(PUTileLayoutInfo *)self transform];
   [(PUTileLayoutInfo *)self zPosition];
   v31 = v10;
-  v11 = [(PUTileLayoutInfo *)self coordinateSystem];
+  coordinateSystem = [(PUTileLayoutInfo *)self coordinateSystem];
   [(PUAccessoryTileLayoutInfo *)self untransformedContentFrame];
   v13 = v12;
   v15 = v14;
@@ -62,30 +62,30 @@
   v25 = v24;
   v27 = v26;
   [(PUAccessoryTileLayoutInfo *)self minimumVisibleHeight];
-  v29 = [v3 initWithTileIdentifier:v4 center:v37 size:v11 alpha:v36 transform:v35 zPosition:v34 coordinateSystem:v33 untransformedContentFrame:v32 contentInsets:v31 minimumVisibleHeight:{v13, v15, v17, v19, v21, v23, v25, v27, v28}];
+  v29 = [v3 initWithTileIdentifier:tileIdentifier center:v37 size:coordinateSystem alpha:v36 transform:v35 zPosition:v34 coordinateSystem:v33 untransformedContentFrame:v32 contentInsets:v31 minimumVisibleHeight:{v13, v15, v17, v19, v21, v23, v25, v27, v28}];
 
   return v29;
 }
 
-- (BOOL)isGeometryEqualToLayoutInfo:(id)a3
+- (BOOL)isGeometryEqualToLayoutInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v34.receiver = self;
   v34.super_class = PUAccessoryTileLayoutInfo;
-  if (-[PUTileLayoutInfo isGeometryEqualToLayoutInfo:](&v34, sel_isGeometryEqualToLayoutInfo_, v4) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (-[PUAccessoryTileLayoutInfo untransformedContentFrame](self, "untransformedContentFrame"), v6 = v5, v8 = v7, v10 = v9, v12 = v11, [v4 untransformedContentFrame], v36.origin.x = v13, v36.origin.y = v14, v36.size.width = v15, v36.size.height = v16, v35.origin.x = v6, v35.origin.y = v8, v35.size.width = v10, v35.size.height = v12, CGRectEqualToRect(v35, v36)))
+  if (-[PUTileLayoutInfo isGeometryEqualToLayoutInfo:](&v34, sel_isGeometryEqualToLayoutInfo_, infoCopy) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (-[PUAccessoryTileLayoutInfo untransformedContentFrame](self, "untransformedContentFrame"), v6 = v5, v8 = v7, v10 = v9, v12 = v11, [infoCopy untransformedContentFrame], v36.origin.x = v13, v36.origin.y = v14, v36.size.width = v15, v36.size.height = v16, v35.origin.x = v6, v35.origin.y = v8, v35.size.width = v10, v35.size.height = v12, CGRectEqualToRect(v35, v36)))
   {
     [(PUAccessoryTileLayoutInfo *)self contentInsets];
     v18 = v17;
     v20 = v19;
     v22 = v21;
     v24 = v23;
-    [v4 contentInsets];
+    [infoCopy contentInsets];
     v28 = 0;
     if (v20 == v29 && v18 == v25 && v24 == v27 && v22 == v26)
     {
       [(PUAccessoryTileLayoutInfo *)self minimumVisibleHeight];
       v31 = v30;
-      [v4 minimumVisibleHeight];
+      [infoCopy minimumVisibleHeight];
       v28 = v31 == v32;
     }
   }
@@ -98,15 +98,15 @@
   return v28;
 }
 
-- (double)initWithTileIdentifier:(uint64_t)a3 center:(_OWORD *)a4 size:(uint64_t)a5 alpha:(uint64_t)a6 transform:(uint64_t)a7 zPosition:(uint64_t)a8 coordinateSystem:(double)a9 untransformedContentFrame:(double)a10 contentInsets:(double)a11 minimumVisibleHeight:(double)a12
+- (double)initWithTileIdentifier:(uint64_t)identifier center:(_OWORD *)center size:(uint64_t)size alpha:(uint64_t)alpha transform:(uint64_t)transform zPosition:(uint64_t)position coordinateSystem:(double)system untransformedContentFrame:(double)self0 contentInsets:(double)self1 minimumVisibleHeight:(double)self2
 {
-  v21.receiver = a1;
+  v21.receiver = self;
   v21.super_class = PUAccessoryTileLayoutInfo;
-  v17 = a4[1];
-  v20[0] = *a4;
+  v17 = center[1];
+  v20[0] = *center;
   v20[1] = v17;
-  v20[2] = a4[2];
-  v18 = objc_msgSendSuper2(&v21, sel_initWithTileIdentifier_center_size_alpha_transform_zPosition_coordinateSystem_, a3, v20);
+  v20[2] = center[2];
+  v18 = objc_msgSendSuper2(&v21, sel_initWithTileIdentifier_center_size_alpha_transform_zPosition_coordinateSystem_, identifier, v20);
   if (v18)
   {
     result = a24;
@@ -124,13 +124,13 @@
   return result;
 }
 
-- (PUAccessoryTileLayoutInfo)initWithTileIdentifier:(id)a3 center:(CGPoint)a4 size:(CGSize)a5 alpha:(double)a6 transform:(CGAffineTransform *)a7 zPosition:(double)a8 coordinateSystem:(id)a9
+- (PUAccessoryTileLayoutInfo)initWithTileIdentifier:(id)identifier center:(CGPoint)center size:(CGSize)size alpha:(double)alpha transform:(CGAffineTransform *)transform zPosition:(double)position coordinateSystem:(id)system
 {
-  v9 = *&a7->c;
-  v11[0] = *&a7->a;
+  v9 = *&transform->c;
+  v11[0] = *&transform->a;
   v11[1] = v9;
-  v11[2] = *&a7->tx;
-  return [(PUAccessoryTileLayoutInfo *)self initWithTileIdentifier:a3 center:v11 size:a9 alpha:a4.x transform:a4.y zPosition:a5.width coordinateSystem:a5.height untransformedContentFrame:a6 contentInsets:a8 minimumVisibleHeight:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), *MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24), 0];
+  v11[2] = *&transform->tx;
+  return [(PUAccessoryTileLayoutInfo *)self initWithTileIdentifier:identifier center:v11 size:system alpha:center.x transform:center.y zPosition:size.width coordinateSystem:size.height untransformedContentFrame:alpha contentInsets:position minimumVisibleHeight:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), *MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24), 0];
 }
 
 @end

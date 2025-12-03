@@ -2,16 +2,16 @@
 + (id)_emailExtensionAttributeDictionary;
 + (id)log;
 + (id)sharedInstance;
-- (BOOL)_extension:(id)a3 matchesCapabilities:(id)a4;
-- (BOOL)_extension:(id)a3 matchesCriteria:(id)a4;
-- (BOOL)_extension:(id)a3 matchesOldCriteria:(id)a4;
+- (BOOL)_extension:(id)_extension matchesCapabilities:(id)capabilities;
+- (BOOL)_extension:(id)_extension matchesCriteria:(id)criteria;
+- (BOOL)_extension:(id)_extension matchesOldCriteria:(id)criteria;
 - (BOOL)hasSecurityExtensionsEnabled;
 - (MEAppExtensionsController)init;
-- (id)_extensionsNewlyMatchingFromNewExtensions:(id)a3 currentExtensions:(id)a4 forCriteria:(id)a5;
-- (id)_extensionsNoLongerMatchingFromNewExtensions:(id)a3 currentExtensions:(id)a4 forCriteria:(id)a5;
-- (id)_remoteEmailExtensionsForExtensions:(id)a3 enabledOnly:(BOOL)a4;
-- (id)extensionForIdentifier:(id)a3;
-- (void)_logExtensionsStateWithReason:(id)a3;
+- (id)_extensionsNewlyMatchingFromNewExtensions:(id)extensions currentExtensions:(id)currentExtensions forCriteria:(id)criteria;
+- (id)_extensionsNoLongerMatchingFromNewExtensions:(id)extensions currentExtensions:(id)currentExtensions forCriteria:(id)criteria;
+- (id)_remoteEmailExtensionsForExtensions:(id)extensions enabledOnly:(BOOL)only;
+- (id)extensionForIdentifier:(id)identifier;
+- (void)_logExtensionsStateWithReason:(id)reason;
 - (void)_startMatchingExtensions;
 - (void)dealloc;
 @end
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = __32__MEAppExtensionsController_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken != -1)
   {
     dispatch_once(&log_onceToken, block);
@@ -97,9 +97,9 @@ void __63__MEAppExtensionsController__emailExtensionAttributeDictionary__block_i
     v4 = dispatch_queue_create("com.apple.email.extension.remoteExtensionLoader", v3);
     [(MEAppExtensionsController *)v2 setQueue:v4];
 
-    v5 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     observers = v2->_observers;
-    v2->_observers = v5;
+    v2->_observers = weakToStrongObjectsMapTable;
 
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_attr_make_with_qos_class(v7, QOS_CLASS_BACKGROUND, 0);
@@ -201,9 +201,9 @@ void __103__MEAppExtensionsController_registerMailAppExtensionsObserver_capabili
   os_unfair_lock_unlock(WeakRetained + 4);
 }
 
-- (id)extensionForIdentifier:(id)a3
+- (id)extensionForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
   v5 = self->_allRemoteExtensions;
   os_unfair_lock_unlock(&self->_lock);
@@ -211,8 +211,8 @@ void __103__MEAppExtensionsController_registerMailAppExtensionsObserver_capabili
   v9[1] = 3221225472;
   v9[2] = __52__MEAppExtensionsController_extensionForIdentifier___block_invoke;
   v9[3] = &unk_279858E10;
-  v10 = v4;
-  v6 = v4;
+  v10 = identifierCopy;
+  v6 = identifierCopy;
   v7 = [(NSArray *)v5 ef_firstObjectPassingTest:v9];
 
   return v7;
@@ -251,8 +251,8 @@ uint64_t __52__MEAppExtensionsController_extensionForIdentifier___block_invoke(u
         v7 = *(*(&v13 + 1) + 8 * i);
         if ([v7 isEnabled])
         {
-          v8 = [v7 capabilities];
-          v9 = [v8 containsObject:@"MEMessageSecurityHandler"];
+          capabilities = [v7 capabilities];
+          v9 = [capabilities containsObject:@"MEMessageSecurityHandler"];
 
           if (v9)
           {
@@ -456,19 +456,19 @@ id __53__MEAppExtensionsController__startMatchingExtensions__block_invoke_3(uint
   return v3;
 }
 
-- (id)_extensionsNewlyMatchingFromNewExtensions:(id)a3 currentExtensions:(id)a4 forCriteria:(id)a5
+- (id)_extensionsNewlyMatchingFromNewExtensions:(id)extensions currentExtensions:(id)currentExtensions forCriteria:(id)criteria
 {
   v29 = *MEMORY[0x277D85DE8];
-  v20 = a3;
-  v22 = a4;
-  v8 = a5;
-  v9 = [v8 includeDisabled];
+  extensionsCopy = extensions;
+  currentExtensionsCopy = currentExtensions;
+  criteriaCopy = criteria;
+  includeDisabled = [criteriaCopy includeDisabled];
   v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = [v20 allValues];
+  obj = [extensionsCopy allValues];
   v10 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
@@ -483,12 +483,12 @@ id __53__MEAppExtensionsController__startMatchingExtensions__block_invoke_3(uint
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
-        if ([(MEAppExtensionsController *)self _extension:v13 matchesCriteria:v8, v20])
+        if ([(MEAppExtensionsController *)self _extension:v13 matchesCriteria:criteriaCopy, extensionsCopy])
         {
-          v14 = [v13 extensionID];
-          v15 = [v22 objectForKeyedSubscript:v14];
+          extensionID = [v13 extensionID];
+          v15 = [currentExtensionsCopy objectForKeyedSubscript:extensionID];
 
-          if (v9)
+          if (includeDisabled)
           {
             if (!v15)
             {
@@ -499,8 +499,8 @@ id __53__MEAppExtensionsController__startMatchingExtensions__block_invoke_3(uint
           else if ([v13 isEnabled])
           {
             previouslyEnabledExtensionIdentifiers = self->_previouslyEnabledExtensionIdentifiers;
-            v17 = [v13 extensionID];
-            LOBYTE(previouslyEnabledExtensionIdentifiers) = [(NSArray *)previouslyEnabledExtensionIdentifiers containsObject:v17];
+            extensionID2 = [v13 extensionID];
+            LOBYTE(previouslyEnabledExtensionIdentifiers) = [(NSArray *)previouslyEnabledExtensionIdentifiers containsObject:extensionID2];
 
             if ((previouslyEnabledExtensionIdentifiers & 1) == 0)
             {
@@ -524,19 +524,19 @@ LABEL_12:
   return v21;
 }
 
-- (id)_extensionsNoLongerMatchingFromNewExtensions:(id)a3 currentExtensions:(id)a4 forCriteria:(id)a5
+- (id)_extensionsNoLongerMatchingFromNewExtensions:(id)extensions currentExtensions:(id)currentExtensions forCriteria:(id)criteria
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v20 = a4;
-  v9 = a5;
-  v22 = [v9 includeDisabled];
+  extensionsCopy = extensions;
+  currentExtensionsCopy = currentExtensions;
+  criteriaCopy = criteria;
+  includeDisabled = [criteriaCopy includeDisabled];
   v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = [v20 allValues];
+  obj = [currentExtensionsCopy allValues];
   v10 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
@@ -551,12 +551,12 @@ LABEL_12:
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
-        v14 = [v13 extensionID];
-        v15 = [v8 objectForKeyedSubscript:v14];
+        extensionID = [v13 extensionID];
+        v15 = [extensionsCopy objectForKeyedSubscript:extensionID];
 
-        if (![(MEAppExtensionsController *)self _extension:v15 matchesCriteria:v9]&& [(MEAppExtensionsController *)self _extension:v13 matchesOldCriteria:v9])
+        if (![(MEAppExtensionsController *)self _extension:v15 matchesCriteria:criteriaCopy]&& [(MEAppExtensionsController *)self _extension:v13 matchesOldCriteria:criteriaCopy])
         {
-          if (v22)
+          if (includeDisabled)
           {
             if (v15)
             {
@@ -571,8 +571,8 @@ LABEL_13:
           if (([v15 isEnabled] & 1) == 0)
           {
             previouslyEnabledExtensionIdentifiers = self->_previouslyEnabledExtensionIdentifiers;
-            v17 = [v15 extensionID];
-            LOBYTE(previouslyEnabledExtensionIdentifiers) = [(NSArray *)previouslyEnabledExtensionIdentifiers containsObject:v17];
+            extensionID2 = [v15 extensionID];
+            LOBYTE(previouslyEnabledExtensionIdentifiers) = [(NSArray *)previouslyEnabledExtensionIdentifiers containsObject:extensionID2];
 
             if (previouslyEnabledExtensionIdentifiers)
             {
@@ -595,14 +595,14 @@ LABEL_14:
   return v21;
 }
 
-- (BOOL)_extension:(id)a3 matchesOldCriteria:(id)a4
+- (BOOL)_extension:(id)_extension matchesOldCriteria:(id)criteria
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 includeDisabled] & 1) != 0 || (previouslyEnabledExtensionIdentifiers = self->_previouslyEnabledExtensionIdentifiers, objc_msgSend(v6, "extensionID"), v9 = objc_claimAutoreleasedReturnValue(), LOBYTE(previouslyEnabledExtensionIdentifiers) = -[NSArray containsObject:](previouslyEnabledExtensionIdentifiers, "containsObject:", v9), v9, (previouslyEnabledExtensionIdentifiers))
+  _extensionCopy = _extension;
+  criteriaCopy = criteria;
+  if ([criteriaCopy includeDisabled] & 1) != 0 || (previouslyEnabledExtensionIdentifiers = self->_previouslyEnabledExtensionIdentifiers, objc_msgSend(_extensionCopy, "extensionID"), v9 = objc_claimAutoreleasedReturnValue(), LOBYTE(previouslyEnabledExtensionIdentifiers) = -[NSArray containsObject:](previouslyEnabledExtensionIdentifiers, "containsObject:", v9), v9, (previouslyEnabledExtensionIdentifiers))
   {
-    v10 = [v7 capabilities];
-    v11 = [(MEAppExtensionsController *)self _extension:v6 matchesCapabilities:v10];
+    capabilities = [criteriaCopy capabilities];
+    v11 = [(MEAppExtensionsController *)self _extension:_extensionCopy matchesCapabilities:capabilities];
   }
 
   else
@@ -613,14 +613,14 @@ LABEL_14:
   return v11;
 }
 
-- (BOOL)_extension:(id)a3 matchesCriteria:(id)a4
+- (BOOL)_extension:(id)_extension matchesCriteria:(id)criteria
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 includeDisabled] & 1) != 0 || (objc_msgSend(v6, "isEnabled"))
+  _extensionCopy = _extension;
+  criteriaCopy = criteria;
+  if ([criteriaCopy includeDisabled] & 1) != 0 || (objc_msgSend(_extensionCopy, "isEnabled"))
   {
-    v8 = [v7 capabilities];
-    v9 = [(MEAppExtensionsController *)self _extension:v6 matchesCapabilities:v8];
+    capabilities = [criteriaCopy capabilities];
+    v9 = [(MEAppExtensionsController *)self _extension:_extensionCopy matchesCapabilities:capabilities];
   }
 
   else
@@ -631,34 +631,34 @@ LABEL_14:
   return v9;
 }
 
-- (BOOL)_extension:(id)a3 matchesCapabilities:(id)a4
+- (BOOL)_extension:(id)_extension matchesCapabilities:(id)capabilities
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB98] setWithArray:a4];
+  _extensionCopy = _extension;
+  v6 = [MEMORY[0x277CBEB98] setWithArray:capabilities];
   v7 = MEMORY[0x277CBEB98];
-  v8 = [v5 capabilities];
-  v9 = [v7 setWithArray:v8];
+  capabilities = [_extensionCopy capabilities];
+  v9 = [v7 setWithArray:capabilities];
 
-  LOBYTE(v8) = [v6 intersectsSet:v9];
-  return v8;
+  LOBYTE(capabilities) = [v6 intersectsSet:v9];
+  return capabilities;
 }
 
-- (id)_remoteEmailExtensionsForExtensions:(id)a3 enabledOnly:(BOOL)a4
+- (id)_remoteEmailExtensionsForExtensions:(id)extensions enabledOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   v35 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v23 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v22, "count")}];
+  extensionsCopy = extensions;
+  v23 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(extensionsCopy, "count")}];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = v22;
+  v5 = extensionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (v6)
   {
     v7 = *v25;
-    v8 = !v4;
+    v8 = !onlyCopy;
     do
     {
       for (i = 0; i != v6; ++i)
@@ -669,38 +669,38 @@ LABEL_14:
         }
 
         v10 = *(*(&v24 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v10 _plugIn];
-        v13 = [v12 userElection];
+        identifier = [v10 identifier];
+        _plugIn = [v10 _plugIn];
+        userElection = [_plugIn userElection];
 
-        if (((v8 | [v10 optedIn]) & 1) != 0 || v13 < 2uLL)
+        if (((v8 | [v10 optedIn]) & 1) != 0 || userElection < 2uLL)
         {
-          v14 = [v10 _plugIn];
+          _plugIn2 = [v10 _plugIn];
           v15 = [[MERemoteExtension alloc] initWithExtension:v10];
-          v16 = [v14 identifier];
-          [v23 setObject:v15 forKeyedSubscript:v16];
+          identifier2 = [_plugIn2 identifier];
+          [v23 setObject:v15 forKeyedSubscript:identifier2];
 
           v17 = +[MEAppExtensionsController log];
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v29 = v11;
+            v29 = identifier;
             _os_log_impl(&dword_257F67000, v17, OS_LOG_TYPE_DEFAULT, "Found email extension with identifier:%@", buf, 0xCu);
           }
         }
 
         else
         {
-          v14 = +[MEAppExtensionsController log];
-          if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+          _plugIn2 = +[MEAppExtensionsController log];
+          if (os_log_type_enabled(_plugIn2, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412802;
-            v29 = v11;
+            v29 = identifier;
             v30 = 2080;
             v31 = "NO";
             v32 = 2048;
-            v33 = v13;
-            _os_log_debug_impl(&dword_257F67000, v14, OS_LOG_TYPE_DEBUG, "Skipping extension:%@, optedIn:%s, election:%ld", buf, 0x20u);
+            v33 = userElection;
+            _os_log_debug_impl(&dword_257F67000, _plugIn2, OS_LOG_TYPE_DEBUG, "Skipping extension:%@, optedIn:%s, election:%ld", buf, 0x20u);
           }
         }
       }
@@ -725,10 +725,10 @@ LABEL_14:
   return v23;
 }
 
-- (void)_logExtensionsStateWithReason:(id)a3
+- (void)_logExtensionsStateWithReason:(id)reason
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   os_unfair_lock_lock(&self->_lock);
@@ -753,13 +753,13 @@ LABEL_14:
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 ef_publicDescription];
-        [v5 addObject:v13];
+        ef_publicDescription = [v12 ef_publicDescription];
+        [v5 addObject:ef_publicDescription];
 
         if ([v12 isEnabled])
         {
-          v14 = [v12 ef_publicDescription];
-          [v6 addObject:v14];
+          ef_publicDescription2 = [v12 ef_publicDescription];
+          [v6 addObject:ef_publicDescription2];
         }
       }
 
@@ -773,7 +773,7 @@ LABEL_14:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v22 = v4;
+    v22 = reasonCopy;
     v23 = 2114;
     v24 = v6;
     v25 = 2114;

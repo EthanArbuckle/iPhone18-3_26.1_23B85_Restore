@@ -1,34 +1,34 @@
 @interface SupportAppStoreComponent.AppStoreCoordinator
 - (_TtCV5NDOUIP33_6BC22319AD482AF5176C41E8E708800424SupportAppStoreComponent19AppStoreCoordinator)init;
-- (void)lockupView:(id)a3 appStateDidChange:(id)a4;
-- (void)lockupView:(id)a3 didFailRequestWithError:(id)a4;
+- (void)lockupView:(id)view appStateDidChange:(id)change;
+- (void)lockupView:(id)view didFailRequestWithError:(id)error;
 - (void)lockupViewDidBeginRequest:;
-- (void)lockupViewDidFinishRequest:(id)a3;
+- (void)lockupViewDidFinishRequest:(id)request;
 @end
 
 @implementation SupportAppStoreComponent.AppStoreCoordinator
 
-- (void)lockupViewDidFinishRequest:(id)a3
+- (void)lockupViewDidFinishRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  sub_25ADDC614(v4);
+  requestCopy = request;
+  selfCopy = self;
+  sub_25ADDC614(requestCopy);
 }
 
-- (void)lockupView:(id)a3 didFailRequestWithError:(id)a4
+- (void)lockupView:(id)view didFailRequestWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_25ADDE770(v8);
+  viewCopy = view;
+  errorCopy = error;
+  selfCopy = self;
+  sub_25ADDE770(errorCopy);
 }
 
-- (void)lockupView:(id)a3 appStateDidChange:(id)a4
+- (void)lockupView:(id)view appStateDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_25ADDC92C(v6, v7);
+  viewCopy = view;
+  changeCopy = change;
+  selfCopy = self;
+  sub_25ADDC92C(viewCopy, changeCopy);
 }
 
 - (_TtCV5NDOUIP33_6BC22319AD482AF5176C41E8E708800424SupportAppStoreComponent19AppStoreCoordinator)init

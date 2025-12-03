@@ -8,32 +8,32 @@
 + (id)storeConfigurationForGazeEnrollment;
 + (id)storeConfigurationForGazeMotionClassifier;
 + (id)storeConfigurationForGazeTracking;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMOasisAnalyticsGazeKitLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"GazeEnrollment"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"GazeEnrollment"])
   {
-    v5 = [a1 GazeEnrollment];
+    gazeEnrollment = [self GazeEnrollment];
 LABEL_7:
-    v6 = v5;
+    v6 = gazeEnrollment;
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"GazeMotionClassifier"])
+  if ([nameCopy isEqualToString:@"GazeMotionClassifier"])
   {
-    v5 = [a1 GazeMotionClassifier];
+    gazeEnrollment = [self GazeMotionClassifier];
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"GazeTracking"])
+  if ([nameCopy isEqualToString:@"GazeTracking"])
   {
-    v5 = [a1 GazeTracking];
+    gazeEnrollment = [self GazeTracking];
     goto LABEL_7;
   }
 
@@ -62,13 +62,13 @@ LABEL_8:
 
 + (id)configurationForGazeTracking
 {
-  v3 = [a1 storeConfigurationForGazeTracking];
-  v4 = [a1 syncPolicyForGazeTracking];
+  storeConfigurationForGazeTracking = [self storeConfigurationForGazeTracking];
+  syncPolicyForGazeTracking = [self syncPolicyForGazeTracking];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"CD80618E-FA35-4F92-8105-D0D7DC9B61CE"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"OasisAnalytics.GazeKit.GazeTracking" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"OasisAnalytics.GazeKit.GazeTracking" eventClass:objc_opt_class() storeConfig:storeConfigurationForGazeTracking syncPolicy:syncPolicyForGazeTracking legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -84,13 +84,13 @@ LABEL_8:
 
 + (id)configurationForGazeMotionClassifier
 {
-  v3 = [a1 storeConfigurationForGazeMotionClassifier];
-  v4 = [a1 syncPolicyForGazeMotionClassifier];
+  storeConfigurationForGazeMotionClassifier = [self storeConfigurationForGazeMotionClassifier];
+  syncPolicyForGazeMotionClassifier = [self syncPolicyForGazeMotionClassifier];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"1F8330DA-8916-426F-9A48-8999C730377D"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"OasisAnalytics.GazeKit.GazeMotionClassifier" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"OasisAnalytics.GazeKit.GazeMotionClassifier" eventClass:objc_opt_class() storeConfig:storeConfigurationForGazeMotionClassifier syncPolicy:syncPolicyForGazeMotionClassifier legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -106,13 +106,13 @@ LABEL_8:
 
 + (id)configurationForGazeEnrollment
 {
-  v3 = [a1 storeConfigurationForGazeEnrollment];
-  v4 = [a1 syncPolicyForGazeEnrollment];
+  storeConfigurationForGazeEnrollment = [self storeConfigurationForGazeEnrollment];
+  syncPolicyForGazeEnrollment = [self syncPolicyForGazeEnrollment];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"0775AE5E-BC14-4C33-A835-A043E4826103"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"OasisAnalytics.GazeKit.GazeEnrollment" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"OasisAnalytics.GazeKit.GazeEnrollment" eventClass:objc_opt_class() storeConfig:storeConfigurationForGazeEnrollment syncPolicy:syncPolicyForGazeEnrollment legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -128,7 +128,7 @@ LABEL_8:
 + (id)GazeTracking
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForGazeTracking];
+  configurationForGazeTracking = [self configurationForGazeTracking];
   v3 = +[BMOasisAnalyticsGazeTracking columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -140,7 +140,7 @@ LABEL_8:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"OasisAnalytics.GazeKit.GazeTracking" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"OasisAnalytics.GazeKit.GazeTracking" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"OasisAnalytics.GazeKit.GazeTracking" schema:v9 configuration:configurationForGazeTracking];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -150,7 +150,7 @@ LABEL_8:
 + (id)GazeMotionClassifier
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForGazeMotionClassifier];
+  configurationForGazeMotionClassifier = [self configurationForGazeMotionClassifier];
   v3 = +[BMOasisAnalyticsGazeMotionClassifier columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -162,7 +162,7 @@ LABEL_8:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"OasisAnalytics.GazeKit.GazeMotionClassifier" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"OasisAnalytics.GazeKit.GazeMotionClassifier" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"OasisAnalytics.GazeKit.GazeMotionClassifier" schema:v9 configuration:configurationForGazeMotionClassifier];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -172,7 +172,7 @@ LABEL_8:
 + (id)GazeEnrollment
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForGazeEnrollment];
+  configurationForGazeEnrollment = [self configurationForGazeEnrollment];
   v3 = +[BMOasisAnalyticsGazeEnrollment columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -184,7 +184,7 @@ LABEL_8:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"OasisAnalytics.GazeKit.GazeEnrollment" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"OasisAnalytics.GazeKit.GazeEnrollment" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"OasisAnalytics.GazeKit.GazeEnrollment" schema:v9 configuration:configurationForGazeEnrollment];
 
   v11 = *MEMORY[0x1E69E9840];
 

@@ -1,15 +1,15 @@
 @interface STSSuggestionTableViewCell
-- (STSSuggestionTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (STSSuggestionTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation STSSuggestionTableViewCell
 
-- (STSSuggestionTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (STSSuggestionTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v16.receiver = self;
   v16.super_class = STSSuggestionTableViewCell;
-  v4 = [(STSSuggestionTableViewCell *)&v16 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(STSSuggestionTableViewCell *)&v16 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = _UIImageGetSearchGlass();
@@ -17,12 +17,12 @@
     [v5 size];
     v8 = v7;
     v10 = v9;
-    v11 = [MEMORY[0x277D75348] systemWhiteColor];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
     v12 = _UIImageGetSearchGlass();
-    v13 = [v6 _tintedImageForSize:v11 withTint:0 effectsImage:v12 maskImage:0 style:{v8, v10}];
+    v13 = [v6 _tintedImageForSize:systemWhiteColor withTint:0 effectsImage:v12 maskImage:0 style:{v8, v10}];
 
-    v14 = [(STSSuggestionTableViewCell *)v4 imageView];
-    [v14 setImage:v13];
+    imageView = [(STSSuggestionTableViewCell *)v4 imageView];
+    [imageView setImage:v13];
   }
 
   return v4;
@@ -33,20 +33,20 @@
   v13.receiver = self;
   v13.super_class = STSSuggestionTableViewCell;
   [(STSSuggestionTableViewCell *)&v13 layoutSubviews];
-  v3 = [(STSSuggestionTableViewCell *)self imageView];
-  [v3 frame];
+  imageView = [(STSSuggestionTableViewCell *)self imageView];
+  [imageView frame];
 
-  v4 = [(STSSuggestionTableViewCell *)self imageView];
-  [v4 setFrame:{14.0, 22.0, 18.0, 18.0}];
+  imageView2 = [(STSSuggestionTableViewCell *)self imageView];
+  [imageView2 setFrame:{14.0, 22.0, 18.0, 18.0}];
 
-  v5 = [(STSSuggestionTableViewCell *)self textLabel];
-  [v5 frame];
+  textLabel = [(STSSuggestionTableViewCell *)self textLabel];
+  [textLabel frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(STSSuggestionTableViewCell *)self textLabel];
-  [v12 setFrame:{38.0, v7, v9, v11}];
+  textLabel2 = [(STSSuggestionTableViewCell *)self textLabel];
+  [textLabel2 setFrame:{38.0, v7, v9, v11}];
 }
 
 @end

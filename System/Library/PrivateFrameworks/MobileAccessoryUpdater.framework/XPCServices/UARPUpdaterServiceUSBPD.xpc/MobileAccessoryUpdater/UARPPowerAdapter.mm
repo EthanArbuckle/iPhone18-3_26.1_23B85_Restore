@@ -1,21 +1,21 @@
 @interface UARPPowerAdapter
-- (BOOL)firmwareApply:(id *)a3;
-- (BOOL)firmwareHasStagedAssets:(id *)a3;
-- (BOOL)firmwareRescind:(id *)a3;
-- (BOOL)firmwareUpdateAllowed:(id *)a3;
-- (BOOL)firmwareUpdateCleanup:(id *)a3;
-- (BOOL)firmwareUpdateInitialize:(id *)a3;
-- (BOOL)firmwareUpdateWriteData:(id)a3 offset:(unint64_t)a4 error:(id *)a5;
-- (BOOL)firmwareVerifyStagedAsset:(id *)a3;
-- (BOOL)solicitAnalytics:(id)a3 error:(id *)a4;
-- (BOOL)solicitLogs:(id)a3 error:(id *)a4;
+- (BOOL)firmwareApply:(id *)apply;
+- (BOOL)firmwareHasStagedAssets:(id *)assets;
+- (BOOL)firmwareRescind:(id *)rescind;
+- (BOOL)firmwareUpdateAllowed:(id *)allowed;
+- (BOOL)firmwareUpdateCleanup:(id *)cleanup;
+- (BOOL)firmwareUpdateInitialize:(id *)initialize;
+- (BOOL)firmwareUpdateWriteData:(id)data offset:(unint64_t)offset error:(id *)error;
+- (BOOL)firmwareVerifyStagedAsset:(id *)asset;
+- (BOOL)solicitAnalytics:(id)analytics error:(id *)error;
+- (BOOL)solicitLogs:(id)logs error:(id *)error;
 - (NSString)description;
 - (UARPPowerAdapter)init;
-- (UARPPowerAdapter)initWithHPM:(id)a3 supportsAccMode7:(BOOL)a4;
+- (UARPPowerAdapter)initWithHPM:(id)m supportsAccMode7:(BOOL)mode7;
 - (id)activeFwVersion;
 - (id)stagedFwVersion;
 - (void)prepareFirmwareVersion;
-- (void)updateWithHPM:(id)a3;
+- (void)updateWithHPM:(id)m;
 @end
 
 @implementation UARPPowerAdapter
@@ -27,9 +27,9 @@
   return 0;
 }
 
-- (UARPPowerAdapter)initWithHPM:(id)a3 supportsAccMode7:(BOOL)a4
+- (UARPPowerAdapter)initWithHPM:(id)m supportsAccMode7:(BOOL)mode7
 {
-  v7 = a3;
+  mCopy = m;
   v13.receiver = self;
   v13.super_class = UARPPowerAdapter;
   v8 = [(UARPPowerAdapter *)&v13 init];
@@ -39,29 +39,29 @@
     log = v8->_log;
     v8->_log = v9;
 
-    objc_storeStrong(&v8->_hpm, a3);
+    objc_storeStrong(&v8->_hpm, m);
     *&v11 = 0xFFFFLL;
     *(&v11 + 1) = 0xFFFFLL;
     *&v8->_routerID = v11;
     v8->_productID = 0xFFFFLL;
     *&v8->_requiresAuthentication = 0;
     v8->_authenticationStatus = 0;
-    v8->_supportsAccMode7 = a4;
+    v8->_supportsAccMode7 = mode7;
   }
 
   return v8;
 }
 
-- (void)updateWithHPM:(id)a3
+- (void)updateWithHPM:(id)m
 {
   self->_isConnected = [(UARPAppleHPM *)self->_hpm connected];
   self->_routerID = [(UARPAppleHPM *)self->_hpm rid];
-  v4 = [(UARPAppleHPM *)self->_hpm manufacturerVDO];
-  v5 = [v4 UTF8String];
+  manufacturerVDO = [(UARPAppleHPM *)self->_hpm manufacturerVDO];
+  uTF8String = [manufacturerVDO UTF8String];
 
-  if (v5)
+  if (uTF8String)
   {
-    v6 = strtoul(v5, 0, 16);
+    v6 = strtoul(uTF8String, 0, 16);
   }
 
   else
@@ -70,12 +70,12 @@
   }
 
   self->_vendorID = v6;
-  v7 = [(UARPAppleHPM *)self->_hpm modelStringVDO];
-  v8 = [v7 UTF8String];
+  modelStringVDO = [(UARPAppleHPM *)self->_hpm modelStringVDO];
+  uTF8String2 = [modelStringVDO UTF8String];
 
-  if (v8)
+  if (uTF8String2)
   {
-    v9 = strtoul(v8, 0, 16);
+    v9 = strtoul(uTF8String2, 0, 16);
   }
 
   else
@@ -103,13 +103,13 @@
   fwVersion = self->_fwVersion;
   if (!fwVersion)
   {
-    v4 = [(UARPAppleHPM *)self->_hpm firmwareVersionVDO];
-    v5 = [v4 UTF8String];
+    firmwareVersionVDO = [(UARPAppleHPM *)self->_hpm firmwareVersionVDO];
+    uTF8String = [firmwareVersionVDO UTF8String];
 
-    if (v5)
+    if (uTF8String)
     {
-      v6 = [(UARPAppleHPM *)self->_hpm firmwareVersionVDO];
-      v7 = strtoul([v6 UTF8String], 0, 16);
+      firmwareVersionVDO2 = [(UARPAppleHPM *)self->_hpm firmwareVersionVDO];
+      v7 = strtoul([firmwareVersionVDO2 UTF8String], 0, 16);
     }
 
     else
@@ -144,13 +144,13 @@
 
 - (void)prepareFirmwareVersion
 {
-  v3 = [(UARPAppleHPM *)self->_hpm firmwareVersionVDO];
-  v4 = [v3 UTF8String];
+  firmwareVersionVDO = [(UARPAppleHPM *)self->_hpm firmwareVersionVDO];
+  uTF8String = [firmwareVersionVDO UTF8String];
 
-  if (v4)
+  if (uTF8String)
   {
-    v5 = [(UARPAppleHPM *)self->_hpm firmwareVersionVDO];
-    v6 = strtoul([v5 UTF8String], 0, 16);
+    firmwareVersionVDO2 = [(UARPAppleHPM *)self->_hpm firmwareVersionVDO];
+    v6 = strtoul([firmwareVersionVDO2 UTF8String], 0, 16);
 
     v7 = [[UARPAssetVersion alloc] initWithMajorVersion:(HIBYTE(v6) - 6 * (HIBYTE(v6) >> 4)) minorVersion:(BYTE2(v6) - 6 * (BYTE2(v6) >> 4)) releaseVersion:(v6 - 6 * (v6 >> 4)) buildVersion:0];
     fwVersion = self->_fwVersion;
@@ -160,11 +160,11 @@
   }
 }
 
-- (BOOL)firmwareUpdateAllowed:(id *)a3
+- (BOOL)firmwareUpdateAllowed:(id *)allowed
 {
   if (self->_supportsAccMode7)
   {
-    return [(UARPAppleHPM *)self->_hpm accMode7FirmwareUpdateAllowed:a3];
+    return [(UARPAppleHPM *)self->_hpm accMode7FirmwareUpdateAllowed:allowed];
   }
 
   else
@@ -173,73 +173,73 @@
   }
 }
 
-- (BOOL)firmwareUpdateInitialize:(id *)a3
+- (BOOL)firmwareUpdateInitialize:(id *)initialize
 {
   supportsAccMode7 = self->_supportsAccMode7;
   hpm = self->_hpm;
   if (supportsAccMode7)
   {
-    return [(UARPAppleHPM *)hpm accMode7FirmwareUpdateInitialize:a3];
+    return [(UARPAppleHPM *)hpm accMode7FirmwareUpdateInitialize:initialize];
   }
 
   else
   {
-    return [(UARPAppleHPM *)hpm legacyPAFirmwareUpdateInitialize:a3];
+    return [(UARPAppleHPM *)hpm legacyPAFirmwareUpdateInitialize:initialize];
   }
 }
 
-- (BOOL)firmwareUpdateWriteData:(id)a3 offset:(unint64_t)a4 error:(id *)a5
+- (BOOL)firmwareUpdateWriteData:(id)data offset:(unint64_t)offset error:(id *)error
 {
   supportsAccMode7 = self->_supportsAccMode7;
   hpm = self->_hpm;
   if (supportsAccMode7)
   {
-    return [(UARPAppleHPM *)hpm accMode7FirmwareUpdateWriteData:a3 offset:a4 error:a5];
+    return [(UARPAppleHPM *)hpm accMode7FirmwareUpdateWriteData:data offset:offset error:error];
   }
 
   else
   {
-    return [(UARPAppleHPM *)hpm legacyPAFirmwareUpdateWriteData:a3 offset:a4 error:a5];
+    return [(UARPAppleHPM *)hpm legacyPAFirmwareUpdateWriteData:data offset:offset error:error];
   }
 }
 
-- (BOOL)firmwareVerifyStagedAsset:(id *)a3
+- (BOOL)firmwareVerifyStagedAsset:(id *)asset
 {
   supportsAccMode7 = self->_supportsAccMode7;
   hpm = self->_hpm;
   if (supportsAccMode7)
   {
-    return [(UARPAppleHPM *)hpm accMode7FirmwareVerifyStagedAsset:a3];
+    return [(UARPAppleHPM *)hpm accMode7FirmwareVerifyStagedAsset:asset];
   }
 
   else
   {
-    return [(UARPAppleHPM *)hpm legacyPAFirmwareVerifyStagedAsset:a3];
+    return [(UARPAppleHPM *)hpm legacyPAFirmwareVerifyStagedAsset:asset];
   }
 }
 
-- (BOOL)firmwareUpdateCleanup:(id *)a3
+- (BOOL)firmwareUpdateCleanup:(id *)cleanup
 {
   supportsAccMode7 = self->_supportsAccMode7;
   hpm = self->_hpm;
   if (supportsAccMode7)
   {
-    return [(UARPAppleHPM *)hpm accMode7FirmwareUpdateCleanup:a3];
+    return [(UARPAppleHPM *)hpm accMode7FirmwareUpdateCleanup:cleanup];
   }
 
   else
   {
-    return [(UARPAppleHPM *)hpm legacyPAFirmwareUpdateCleanup:a3];
+    return [(UARPAppleHPM *)hpm legacyPAFirmwareUpdateCleanup:cleanup];
   }
 }
 
-- (BOOL)firmwareApply:(id *)a3
+- (BOOL)firmwareApply:(id *)apply
 {
   if (self->_supportsAccMode7)
   {
     hpm = self->_hpm;
 
-    return [(UARPAppleHPM *)hpm accMode7FirmwareApply:a3];
+    return [(UARPAppleHPM *)hpm accMode7FirmwareApply:apply];
   }
 
   else
@@ -254,13 +254,13 @@
   }
 }
 
-- (BOOL)firmwareHasStagedAssets:(id *)a3
+- (BOOL)firmwareHasStagedAssets:(id *)assets
 {
   if (self->_supportsAccMode7)
   {
     hpm = self->_hpm;
 
-    return [(UARPAppleHPM *)hpm accMode7FirmwareHasStagedAssets:a3];
+    return [(UARPAppleHPM *)hpm accMode7FirmwareHasStagedAssets:assets];
   }
 
   else
@@ -275,13 +275,13 @@
   }
 }
 
-- (BOOL)firmwareRescind:(id *)a3
+- (BOOL)firmwareRescind:(id *)rescind
 {
   if (self->_supportsAccMode7)
   {
     hpm = self->_hpm;
 
-    return [(UARPAppleHPM *)hpm accMode7FirmwareRescind:a3];
+    return [(UARPAppleHPM *)hpm accMode7FirmwareRescind:rescind];
   }
 
   else
@@ -296,15 +296,15 @@
   }
 }
 
-- (BOOL)solicitLogs:(id)a3 error:(id *)a4
+- (BOOL)solicitLogs:(id)logs error:(id *)error
 {
-  v6 = a3;
+  logsCopy = logs;
   if (self->_supportsAccMode7)
   {
     hpm = self->_hpm;
-    v8 = [(UARPPowerAdapter *)self modelName];
-    v9 = [(UARPPowerAdapter *)self serialNumber];
-    v10 = [(UARPAppleHPM *)hpm accMode7SolicitLogs:v6 modelName:v8 serialNumber:v9 error:a4];
+    modelName = [(UARPPowerAdapter *)self modelName];
+    serialNumber = [(UARPPowerAdapter *)self serialNumber];
+    v10 = [(UARPAppleHPM *)hpm accMode7SolicitLogs:logsCopy modelName:modelName serialNumber:serialNumber error:error];
   }
 
   else
@@ -321,12 +321,12 @@
   return v10;
 }
 
-- (BOOL)solicitAnalytics:(id)a3 error:(id *)a4
+- (BOOL)solicitAnalytics:(id)analytics error:(id *)error
 {
-  v6 = a3;
+  analyticsCopy = analytics;
   if (self->_supportsAccMode7)
   {
-    v7 = [(UARPAppleHPM *)self->_hpm accMode7SolicitAnalytics:v6 error:a4];
+    v7 = [(UARPAppleHPM *)self->_hpm accMode7SolicitAnalytics:analyticsCopy error:error];
   }
 
   else

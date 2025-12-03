@@ -1,67 +1,67 @@
 @interface KGTransactionToken
-- (BOOL)isEqualToToken:(id)a3;
-- (id)initForGraph:(id)a3 transactionSequence:(unint64_t)a4;
-- (id)initForGraph:(id)a3 withString:(id)a4;
-- (id)initForGraphIdentifier:(id)a3 transactionSequence:(unint64_t)a4;
+- (BOOL)isEqualToToken:(id)token;
+- (id)initForGraph:(id)graph transactionSequence:(unint64_t)sequence;
+- (id)initForGraph:(id)graph withString:(id)string;
+- (id)initForGraphIdentifier:(id)identifier transactionSequence:(unint64_t)sequence;
 @end
 
 @implementation KGTransactionToken
 
-- (BOOL)isEqualToToken:(id)a3
+- (BOOL)isEqualToToken:(id)token
 {
   stringRepresentation = self->_stringRepresentation;
-  v4 = [a3 stringRepresentation];
-  LOBYTE(stringRepresentation) = [(NSString *)stringRepresentation isEqualToString:v4];
+  stringRepresentation = [token stringRepresentation];
+  LOBYTE(stringRepresentation) = [(NSString *)stringRepresentation isEqualToString:stringRepresentation];
 
   return stringRepresentation;
 }
 
-- (id)initForGraphIdentifier:(id)a3 transactionSequence:(unint64_t)a4
+- (id)initForGraphIdentifier:(id)identifier transactionSequence:(unint64_t)sequence
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = KGTransactionToken;
   v7 = [(KGTransactionToken *)&v11 init];
   if (v7)
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%lu", v6, a4];
+    sequence = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%lu", identifierCopy, sequence];
     stringRepresentation = v7->_stringRepresentation;
-    v7->_stringRepresentation = v8;
+    v7->_stringRepresentation = sequence;
 
-    v7->_transactionSequenceNumber = a4;
+    v7->_transactionSequenceNumber = sequence;
   }
 
   return v7;
 }
 
-- (id)initForGraph:(id)a3 transactionSequence:(unint64_t)a4
+- (id)initForGraph:(id)graph transactionSequence:(unint64_t)sequence
 {
-  v6 = a3;
+  graphCopy = graph;
   v12.receiver = self;
   v12.super_class = KGTransactionToken;
   v7 = [(KGTransactionToken *)&v12 init];
   if (v7)
   {
-    v8 = [v6 graphIdentifier];
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%lu", v8, a4];
+    graphIdentifier = [graphCopy graphIdentifier];
+    sequence = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%lu", graphIdentifier, sequence];
     stringRepresentation = v7->_stringRepresentation;
-    v7->_stringRepresentation = v9;
+    v7->_stringRepresentation = sequence;
 
-    v7->_transactionSequenceNumber = a4;
+    v7->_transactionSequenceNumber = sequence;
   }
 
   return v7;
 }
 
-- (id)initForGraph:(id)a3 withString:(id)a4
+- (id)initForGraph:(id)graph withString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
+  graphCopy = graph;
+  stringCopy = string;
   v20.receiver = self;
   v20.super_class = KGTransactionToken;
   v8 = [(KGTransactionToken *)&v20 init];
-  v9 = v6;
-  v10 = [v7 componentsSeparatedByString:@":"];
+  v9 = graphCopy;
+  v10 = [stringCopy componentsSeparatedByString:@":"];
   if ([v10 count] != 2)
   {
 
@@ -74,27 +74,27 @@ LABEL_8:
   v12 = [v10 objectAtIndexedSubscript:0];
   v13 = [v11 initWithUUIDString:v12];
 
-  v14 = [v9 graphIdentifier];
-  v15 = [v13 isEqual:v14];
+  graphIdentifier = [v9 graphIdentifier];
+  v15 = [v13 isEqual:graphIdentifier];
 
   if (v15)
   {
     v16 = [v10 objectAtIndexedSubscript:1];
-    v17 = [v16 integerValue];
+    integerValue = [v16 integerValue];
   }
 
   else
   {
-    v17 = -1;
+    integerValue = -1;
   }
 
-  if (v17 < 0)
+  if (integerValue < 0)
   {
     goto LABEL_8;
   }
 
-  objc_storeStrong(&v8->_stringRepresentation, a4);
-  v8->_transactionSequenceNumber = v17;
+  objc_storeStrong(&v8->_stringRepresentation, string);
+  v8->_transactionSequenceNumber = integerValue;
   v18 = v8;
 LABEL_9:
 

@@ -1,15 +1,15 @@
 @interface SecurelyCodableTopicRequest
 - (_TtC16HealthTopicsCore27SecurelyCodableTopicRequest)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SecurelyCodableTopicRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SecurelyCodableTopicRequest.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SecurelyCodableTopicRequest.encode(with:)(coderCopy);
 }
 
 - (_TtC16HealthTopicsCore27SecurelyCodableTopicRequest)init

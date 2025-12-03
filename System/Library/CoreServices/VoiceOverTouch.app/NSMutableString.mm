@@ -1,31 +1,31 @@
 @interface NSMutableString
-- (void)appendStringWithComma:(id)a3;
-- (void)replaceOccurrencesOfString:(id)a3 withString:(id)a4 overallRange:(_NSRange)a5 avoidingRanges:(id)a6;
+- (void)appendStringWithComma:(id)comma;
+- (void)replaceOccurrencesOfString:(id)string withString:(id)withString overallRange:(_NSRange)range avoidingRanges:(id)ranges;
 @end
 
 @implementation NSMutableString
 
-- (void)appendStringWithComma:(id)a3
+- (void)appendStringWithComma:(id)comma
 {
-  v4 = a3;
-  if ([v4 length])
+  commaCopy = comma;
+  if ([commaCopy length])
   {
     if ([(NSMutableString *)self length])
     {
       [(NSMutableString *)self appendString:@", "];
     }
 
-    [(NSMutableString *)self appendString:v4];
+    [(NSMutableString *)self appendString:commaCopy];
   }
 }
 
-- (void)replaceOccurrencesOfString:(id)a3 withString:(id)a4 overallRange:(_NSRange)a5 avoidingRanges:(id)a6
+- (void)replaceOccurrencesOfString:(id)string withString:(id)withString overallRange:(_NSRange)range avoidingRanges:(id)ranges
 {
-  length = a5.length;
-  location = a5.location;
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  withStringCopy = withString;
+  rangesCopy = ranges;
   if (location != 0x7FFFFFFFFFFFFFFFLL)
   {
     v25 = &length[location];
@@ -34,7 +34,7 @@
 LABEL_4:
       while (location < v25)
       {
-        v14 = [(NSMutableString *)self rangeOfString:v11 options:0 range:location, length];
+        v14 = [(NSMutableString *)self rangeOfString:stringCopy options:0 range:location, length];
         if (v14 == 0x7FFFFFFFFFFFFFFFLL)
         {
           break;
@@ -46,7 +46,7 @@ LABEL_4:
         v29 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v18 = v13;
+        v18 = rangesCopy;
         v19 = [v18 countByEnumeratingWithState:&v26 objects:v30 count:16];
         if (v19)
         {
@@ -84,10 +84,10 @@ LABEL_4:
           }
         }
 
-        [(NSMutableString *)self replaceCharactersInRange:v16 withString:v17, v12];
-        location = [v12 length] + v16;
+        [(NSMutableString *)self replaceCharactersInRange:v16 withString:v17, withStringCopy];
+        location = [withStringCopy length] + v16;
         v24 = [(NSMutableString *)self length];
-        length = (v24 - ([v12 length] + v16));
+        length = (v24 - ([withStringCopy length] + v16));
       }
     }
   }

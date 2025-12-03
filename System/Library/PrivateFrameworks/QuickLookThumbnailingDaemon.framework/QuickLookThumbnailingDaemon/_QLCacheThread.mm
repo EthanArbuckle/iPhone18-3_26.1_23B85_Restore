@@ -1,58 +1,58 @@
 @interface _QLCacheThread
 + (int64_t)defaultCacheSize;
-- (BOOL)_shouldQuitCleanUpDatabaseModeForMode:(unint64_t)a3;
-- (BOOL)_shouldQuitClosedModeForMode:(unint64_t)a3;
-- (BOOL)_shouldQuitLowSpaceModeForMode:(unint64_t)a3;
-- (BOOL)_shouldQuitWorkingModeForMode:(unint64_t)a3;
-- (BOOL)addNoThumbnailIntoCache:(id)a3;
-- (BOOL)addThumbnailIntoCache:(id)a3 bitmapFormat:(id)a4 bitmapData:(id)a5 metadata:(id)a6 flavor:(int)a7 contentRect:(CGRect)a8 badgeType:(unint64_t)a9 externalGeneratorDataHash:(unint64_t)a10;
-- (BOOL)addThumbnailRequest:(id)a3;
+- (BOOL)_shouldQuitCleanUpDatabaseModeForMode:(unint64_t)mode;
+- (BOOL)_shouldQuitClosedModeForMode:(unint64_t)mode;
+- (BOOL)_shouldQuitLowSpaceModeForMode:(unint64_t)mode;
+- (BOOL)_shouldQuitWorkingModeForMode:(unint64_t)mode;
+- (BOOL)addNoThumbnailIntoCache:(id)cache;
+- (BOOL)addThumbnailIntoCache:(id)cache bitmapFormat:(id)format bitmapData:(id)data metadata:(id)metadata flavor:(int)flavor contentRect:(CGRect)rect badgeType:(unint64_t)type externalGeneratorDataHash:(unint64_t)self0;
+- (BOOL)addThumbnailRequest:(id)request;
 - (BOOL)isIdle;
-- (BOOL)itemIsMissingRemoteThumbnail:(id)a3;
-- (BOOL)locked_removeCachedThumbnailsFromUninstalledFileProvidersWithIdentifiers:(id)a3;
-- (BOOL)locked_removeCachedThumbnailsFromUninstalledFileProvidersWithRemainingFileProviderIdentifiers:(id)a3;
-- (BOOL)setLastHitDateOfAllCachedThumbnailsToDate:(id)a3;
+- (BOOL)itemIsMissingRemoteThumbnail:(id)thumbnail;
+- (BOOL)locked_removeCachedThumbnailsFromUninstalledFileProvidersWithIdentifiers:(id)identifiers;
+- (BOOL)locked_removeCachedThumbnailsFromUninstalledFileProvidersWithRemainingFileProviderIdentifiers:(id)identifiers;
+- (BOOL)setLastHitDateOfAllCachedThumbnailsToDate:(id)date;
 - (NSString)modeDescription;
 - (QLServerThread)serverThread;
-- (_QLCacheThread)initWithServerThread:(id)a3 cacheSize:(int64_t)a4 location:(id)a5;
-- (id)_allThumbnailsEnumerateWithEnumerator:(id)a3;
-- (id)allThumbnailsForFPItemID:(id)a3;
-- (id)allThumbnailsForFileIdentifier:(id)a3;
-- (id)allThumbnailsForIno:(unint64_t)a3 fsid:(fsid)a4;
+- (_QLCacheThread)initWithServerThread:(id)thread cacheSize:(int64_t)size location:(id)location;
+- (id)_allThumbnailsEnumerateWithEnumerator:(id)enumerator;
+- (id)allThumbnailsForFPItemID:(id)d;
+- (id)allThumbnailsForFileIdentifier:(id)identifier;
+- (id)allThumbnailsForIno:(unint64_t)ino fsid:(fsid)fsid;
 - (id)allThumbnailsInfo;
 - (id)cacheInfo;
-- (id)contentDescriptionForURL:(__CFURL *)a3;
-- (id)itemsAfterFilteringOutItemsWithMissingThumbnails:(id)a3;
-- (int64_t)purgeOnMountPoint:(id)a3 withUrgency:(int)a4 beforeDate:(id)a5;
-- (int64_t)purgeableSpaceOnMountPoint:(id)a3 withUrgency:(int)a4 beforeDate:(id)a5;
-- (void)_addThumbnailRequestIntoDiskCacheQueryQueue:(id)a3;
+- (id)contentDescriptionForURL:(__CFURL *)l;
+- (id)itemsAfterFilteringOutItemsWithMissingThumbnails:(id)thumbnails;
+- (int64_t)purgeOnMountPoint:(id)point withUrgency:(int)urgency beforeDate:(id)date;
+- (int64_t)purgeableSpaceOnMountPoint:(id)point withUrgency:(int)urgency beforeDate:(id)date;
+- (void)_addThumbnailRequestIntoDiskCacheQueryQueue:(id)queue;
 - (void)_cleanUpDatabaseDone;
 - (void)_destroyDrainTimer;
-- (void)_dispatchThumbnailRequestInServerThread:(id)a3;
+- (void)_dispatchThumbnailRequestInServerThread:(id)thread;
 - (void)_drainPendingBlocks;
 - (void)_drainPendingBlocksNow;
 - (void)_registerMachPortForLowDiskSpaceNotification;
 - (void)_scheduleBlockDrain;
 - (void)_scheduledDrainPendingBlocks;
-- (void)_sendThumbnailData:(id)a3 forThumbnailRequest:(id)a4;
-- (void)_setLowDiskSpace:(BOOL)a3;
-- (void)_setMode:(unint64_t)a3;
-- (void)_thumbnailHasBeenCancelled:(id)a3;
+- (void)_sendThumbnailData:(id)data forThumbnailRequest:(id)request;
+- (void)_setLowDiskSpace:(BOOL)space;
+- (void)_setMode:(unint64_t)mode;
+- (void)_thumbnailHasBeenCancelled:(id)cancelled;
 - (void)_unregisterMachPortForLowDiskSpaceNotification;
 - (void)_unscheduleBlockDrain;
 - (void)_updateLowDisk;
 - (void)_updateMode;
 - (void)_waitForEndOfDatabaseCleanup;
-- (void)_willStartCleanUpDatabaseModeFromMode:(unint64_t)a3;
-- (void)_willStartClosedModeFromMode:(unint64_t)a3;
-- (void)_willStartResetingModeFromMode:(unint64_t)a3;
+- (void)_willStartCleanUpDatabaseModeFromMode:(unint64_t)mode;
+- (void)_willStartClosedModeFromMode:(unint64_t)mode;
+- (void)_willStartResetingModeFromMode:(unint64_t)mode;
 - (void)closeCache;
 - (void)databaseCorruptionDetected;
-- (void)enqueueWriting:(id)a3;
+- (void)enqueueWriting:(id)writing;
 - (void)forceCommit;
 - (void)forceCommitAndClose;
-- (void)noteRemoteThumbnailMissingForItems:(id)a3;
-- (void)noteRemoteThumbnailPresentForItems:(id)a3;
+- (void)noteRemoteThumbnailMissingForItems:(id)items;
+- (void)noteRemoteThumbnailPresentForItems:(id)items;
 - (void)openCache;
 - (void)prepareToExit;
 - (void)reset;
@@ -92,11 +92,11 @@
 
   if (!self->_lowDiskSpace)
   {
-    v4 = [(NSOperationQueue *)self->_diskCacheQueryOperationQueue operations];
-    if ([v4 count])
+    operations = [(NSOperationQueue *)self->_diskCacheQueryOperationQueue operations];
+    if ([operations count])
     {
-      v5 = [(NSOperationQueue *)self->_memoryCacheQueryOperationQueue operations];
-      v6 = [v5 count];
+      operations2 = [(NSOperationQueue *)self->_memoryCacheQueryOperationQueue operations];
+      v6 = [operations2 count];
 
       if (v6)
       {
@@ -242,26 +242,26 @@ LABEL_11:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)purgeableSpaceOnMountPoint:(id)a3 withUrgency:(int)a4 beforeDate:(id)a5
+- (int64_t)purgeableSpaceOnMountPoint:(id)point withUrgency:(int)urgency beforeDate:(id)date
 {
-  v7 = a3;
-  v8 = a5;
+  pointCopy = point;
+  dateCopy = date;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v9 = [(_QLCacheThread *)self diskCache];
+  diskCache = [(_QLCacheThread *)self diskCache];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __81___QLCacheThread_CacheDelete__purgeableSpaceOnMountPoint_withUrgency_beforeDate___block_invoke;
   v14[3] = &unk_279ADDE08;
   v16 = &v17;
   v14[4] = self;
-  v10 = v8;
+  v10 = dateCopy;
   v15 = v10;
-  LOBYTE(v8) = [v9 doReading:v14];
+  LOBYTE(dateCopy) = [diskCache doReading:v14];
 
-  if (v8)
+  if (dateCopy)
   {
     v11 = v18[3];
   }
@@ -281,26 +281,26 @@ LABEL_11:
   return v11;
 }
 
-- (int64_t)purgeOnMountPoint:(id)a3 withUrgency:(int)a4 beforeDate:(id)a5
+- (int64_t)purgeOnMountPoint:(id)point withUrgency:(int)urgency beforeDate:(id)date
 {
-  v7 = a3;
-  v8 = a5;
+  pointCopy = point;
+  dateCopy = date;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v9 = [(_QLCacheThread *)self diskCache];
+  diskCache = [(_QLCacheThread *)self diskCache];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __72___QLCacheThread_CacheDelete__purgeOnMountPoint_withUrgency_beforeDate___block_invoke;
   v14[3] = &unk_279ADDE80;
   v16 = &v17;
   v14[4] = self;
-  v10 = v8;
+  v10 = dateCopy;
   v15 = v10;
-  LOBYTE(v8) = [v9 doWriting:v14];
+  LOBYTE(dateCopy) = [diskCache doWriting:v14];
 
-  if (v8)
+  if (dateCopy)
   {
     v11 = v18[3];
   }
@@ -338,16 +338,16 @@ LABEL_11:
   }
 }
 
-- (_QLCacheThread)initWithServerThread:(id)a3 cacheSize:(int64_t)a4 location:(id)a5
+- (_QLCacheThread)initWithServerThread:(id)thread cacheSize:(int64_t)size location:(id)location
 {
-  v8 = a3;
-  v9 = a5;
+  threadCopy = thread;
+  locationCopy = location;
   v31.receiver = self;
   v31.super_class = _QLCacheThread;
   v10 = [(_QLCacheThread *)&v31 init];
   if (v10)
   {
-    if (!v9)
+    if (!locationCopy)
     {
       v29 = 0;
       goto LABEL_6;
@@ -372,7 +372,7 @@ LABEL_11:
     v10->_diskCacheQueryOperationQueue = v17;
 
     [(NSOperationQueue *)v10->_diskCacheQueryOperationQueue setMaxConcurrentOperationCount:1];
-    v19 = [[QLDiskCache alloc] initWithPathLocation:v9 cacheSize:a4 cacheThread:v10];
+    v19 = [[QLDiskCache alloc] initWithPathLocation:locationCopy cacheSize:size cacheThread:v10];
     diskCache = v10->_diskCache;
     v10->_diskCache = v19;
 
@@ -390,8 +390,8 @@ LABEL_11:
     modeLock = v10->_modeLock;
     v10->_modeLock = v25;
 
-    objc_storeWeak(&v10->_serverThread, v8);
-    v27 = [MEMORY[0x277CBEBC0] fileURLWithPath:v9];
+    objc_storeWeak(&v10->_serverThread, threadCopy);
+    v27 = [MEMORY[0x277CBEBC0] fileURLWithPath:locationCopy];
     diskCacheURL = v10->_diskCacheURL;
     v10->_diskCacheURL = v27;
   }
@@ -465,24 +465,24 @@ LABEL_6:
   }
 }
 
-- (void)enqueueWriting:(id)a3
+- (void)enqueueWriting:(id)writing
 {
-  v4 = a3;
+  writingCopy = writing;
   writeCoalesceQueue = self->_writeCoalesceQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33___QLCacheThread_enqueueWriting___block_invoke;
   v7[3] = &unk_279ADD550;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = writingCopy;
+  v6 = writingCopy;
   dispatch_async(writeCoalesceQueue, v7);
 }
 
-- (BOOL)addThumbnailRequest:(id)a3
+- (BOOL)addThumbnailRequest:(id)request
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = _log_3();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -516,11 +516,11 @@ LABEL_6:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v14 = 138412290;
-      v15 = v4;
+      v15 = requestCopy;
       _os_log_impl(&dword_2615D3000, v10, OS_LOG_TYPE_INFO, "Trying memory cache for %@", &v14, 0xCu);
     }
 
-    v7 = [[QLMemoryCacheQueryOperation alloc] initWithThumbnailRequest:v4 cacheThread:self];
+    v7 = [[QLMemoryCacheQueryOperation alloc] initWithThumbnailRequest:requestCopy cacheThread:self];
     [(NSOperationQueue *)self->_memoryCacheQueryOperationQueue addOperation:v7];
     [(_QLCacheThread *)self _updateMode];
     v9 = 1;
@@ -537,20 +537,20 @@ LABEL_6:
   return v9;
 }
 
-- (BOOL)addNoThumbnailIntoCache:(id)a3
+- (BOOL)addNoThumbnailIntoCache:(id)cache
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 request];
+  cacheCopy = cache;
+  request = [cacheCopy request];
   v6 = _log_3();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v5 fileIdentifier];
-    [v5 size];
+    fileIdentifier = [request fileIdentifier];
+    [request size];
     v9 = v8;
-    [v5 size];
+    [request size];
     v19 = 138412802;
-    v20 = v7;
+    v20 = fileIdentifier;
     v21 = 2048;
     v22 = v9;
     v23 = 2048;
@@ -559,52 +559,52 @@ LABEL_6:
   }
 
   v11 = [QLCacheThumbnailData alloc];
-  [v5 maximumPixelSize];
+  [request maximumPixelSize];
   v13 = v12;
-  v14 = [v4 badgeType];
+  badgeType = [cacheCopy badgeType];
 
   LODWORD(v15) = v13;
-  v16 = [(QLCacheThumbnailData *)v11 initWithCacheId:0 thumbnailRequest:v5 size:v14 badgeType:v15];
+  v16 = [(QLCacheThumbnailData *)v11 initWithCacheId:0 thumbnailRequest:request size:badgeType badgeType:v15];
   [(QLMemoryCache *)self->_memoryCache addThumbnailData:v16];
 
   v17 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-- (BOOL)addThumbnailIntoCache:(id)a3 bitmapFormat:(id)a4 bitmapData:(id)a5 metadata:(id)a6 flavor:(int)a7 contentRect:(CGRect)a8 badgeType:(unint64_t)a9 externalGeneratorDataHash:(unint64_t)a10
+- (BOOL)addThumbnailIntoCache:(id)cache bitmapFormat:(id)format bitmapData:(id)data metadata:(id)metadata flavor:(int)flavor contentRect:(CGRect)rect badgeType:(unint64_t)type externalGeneratorDataHash:(unint64_t)self0
 {
   v46 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
+  cacheCopy = cache;
+  formatCopy = format;
+  dataCopy = data;
+  metadataCopy = metadata;
   v20 = _log_3();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
-    v21 = [v16 fileIdentifier];
-    [v16 size];
+    fileIdentifier = [cacheCopy fileIdentifier];
+    [cacheCopy size];
     v23 = v22;
-    [v16 size];
+    [cacheCopy size];
     *buf = 138413314;
-    v37 = v21;
+    v37 = fileIdentifier;
     v38 = 2048;
     v39 = v23;
     v40 = 2048;
     v41 = v24;
     v42 = 2048;
-    v43 = [v17 width];
+    width = [formatCopy width];
     v44 = 2048;
-    v45 = [v17 height];
+    height = [formatCopy height];
     _os_log_impl(&dword_2615D3000, v20, OS_LOG_TYPE_INFO, "adding thumbnail for %@ @ {%.1f, %.1f} (actual size %zd %zd)", buf, 0x34u);
   }
 
-  v25 = [(QLDiskCache *)self->_diskCache reserveBufferForData:v18];
+  v25 = [(QLDiskCache *)self->_diskCache reserveBufferForData:dataCopy];
   if (!v25)
   {
-    if (![v18 length])
+    if (![dataCopy length])
     {
       v25 = 0;
-      if (v19)
+      if (metadataCopy)
       {
         goto LABEL_7;
       }
@@ -613,13 +613,13 @@ LABEL_6:
     }
 
     [(QLDiskCache *)self->_diskCache freeDiskSpaceForNewThumbnails];
-    v25 = [(QLDiskCache *)self->_diskCache reserveBufferForData:v18];
+    v25 = [(QLDiskCache *)self->_diskCache reserveBufferForData:dataCopy];
   }
 
-  if (v19)
+  if (metadataCopy)
   {
 LABEL_7:
-    v26 = [(QLDiskCache *)self->_diskCache reserveBufferForData:v19];
+    v26 = [(QLDiskCache *)self->_diskCache reserveBufferForData:metadataCopy];
     v27 = v26;
     if (v25 && v26)
     {
@@ -635,9 +635,9 @@ LABEL_11:
   {
 LABEL_9:
     v28 = [QLCacheThumbnailData alloc];
-    [v16 maximumPixelSize];
-    LODWORD(v35) = a7;
-    v29 = [QLCacheThumbnailData initWithUnsavedDataForThumbnailRequest:v28 size:"initWithUnsavedDataForThumbnailRequest:size:bitmapFormat:bitmapData:reservationInfo:metadata:reservationInfo:flavor:contentRect:badgeType:" bitmapFormat:v16 bitmapData:v17 reservationInfo:v18 metadata:v25 reservationInfo:v19 flavor:v27 contentRect:v35 badgeType:a9];
+    [cacheCopy maximumPixelSize];
+    LODWORD(v35) = flavor;
+    v29 = [QLCacheThumbnailData initWithUnsavedDataForThumbnailRequest:v28 size:"initWithUnsavedDataForThumbnailRequest:size:bitmapFormat:bitmapData:reservationInfo:metadata:reservationInfo:flavor:contentRect:badgeType:" bitmapFormat:cacheCopy bitmapData:formatCopy reservationInfo:dataCopy metadata:v25 reservationInfo:metadataCopy flavor:v27 contentRect:v35 badgeType:type];
     v30 = [(QLMemoryCache *)self->_memoryCache addThumbnailData:v29];
 
     goto LABEL_18;
@@ -647,9 +647,9 @@ LABEL_12:
   v31 = _log_3();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
   {
-    v32 = [v16 fileIdentifier];
+    fileIdentifier2 = [cacheCopy fileIdentifier];
     *buf = 138412290;
-    v37 = v32;
+    v37 = fileIdentifier2;
     _os_log_impl(&dword_2615D3000, v31, OS_LOG_TYPE_INFO, "addThumbnailIntoCache: failed, discarding buffers for %@", buf, 0xCu);
   }
 
@@ -871,12 +871,12 @@ LABEL_19:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     v7 = stringForCacheMode(self->_currentMode);
-    v8 = [(NSOperationQueue *)self->_diskCacheQueryOperationQueue operations];
-    v9 = [v8 count];
-    v10 = [(NSOperationQueue *)self->_memoryCacheQueryOperationQueue operations];
-    v11 = [v10 count];
-    v12 = [(QLMemoryCache *)self->_memoryCache thumbnailToSaveCount];
-    v13 = [(_QLCacheThread *)self hitToSaveCount];
+    operations = [(NSOperationQueue *)self->_diskCacheQueryOperationQueue operations];
+    v9 = [operations count];
+    operations2 = [(NSOperationQueue *)self->_memoryCacheQueryOperationQueue operations];
+    v11 = [operations2 count];
+    thumbnailToSaveCount = [(QLMemoryCache *)self->_memoryCache thumbnailToSaveCount];
+    hitToSaveCount = [(_QLCacheThread *)self hitToSaveCount];
     v14 = @"is not idle";
     v15 = 138413570;
     v16 = v7;
@@ -890,9 +890,9 @@ LABEL_19:
     v19 = 2048;
     v20 = v11;
     v21 = 2048;
-    v22 = v12;
+    v22 = thumbnailToSaveCount;
     v23 = 2048;
-    v24 = v13;
+    v24 = hitToSaveCount;
     v25 = 2112;
     v26 = v14;
     _os_log_debug_impl(&dword_2615D3000, v4, OS_LOG_TYPE_DEBUG, "current mode %@, disk cache queries: %lu, memory cache queries: %lu, thumbnail left to write: %lu, hit count left to save: %lu, result %@", &v15, 0x3Eu);
@@ -911,20 +911,20 @@ LABEL_19:
   }
 }
 
-- (id)contentDescriptionForURL:(__CFURL *)a3
+- (id)contentDescriptionForURL:(__CFURL *)l
 {
   v5 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v6 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v17 = 0;
-  v7 = [objc_alloc(MEMORY[0x277CDAA80]) initWithFileURL:a3 error:&v17];
+  v7 = [objc_alloc(MEMORY[0x277CDAA80]) initWithFileURL:l error:&v17];
   v8 = v17;
   if (v7)
   {
     v9 = [(QLDiskCache *)self->_diskCache enumeratorForAllThumbnailsWithFileIdentifier:v7];
-    v10 = [v9 nextThumbnailData];
-    if (v10)
+    nextThumbnailData = [v9 nextThumbnailData];
+    if (nextThumbnailData)
     {
-      v11 = v10;
+      v11 = nextThumbnailData;
       while (![v11 iconMode])
       {
         v12 = v5;
@@ -936,10 +936,10 @@ LABEL_19:
 LABEL_9:
         [v11 size];
         [v12 appendFormat:@"%.1f", v13];
-        v14 = [v9 nextThumbnailData];
+        nextThumbnailData2 = [v9 nextThumbnailData];
 
-        v11 = v14;
-        if (!v14)
+        v11 = nextThumbnailData2;
+        if (!nextThumbnailData2)
         {
           goto LABEL_10;
         }
@@ -1026,31 +1026,31 @@ LABEL_10:
   }
 }
 
-- (BOOL)_shouldQuitWorkingModeForMode:(unint64_t)a3
+- (BOOL)_shouldQuitWorkingModeForMode:(unint64_t)mode
 {
   v27 = *MEMORY[0x277D85DE8];
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) != 2)
+  if ((mode & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
     goto LABEL_7;
   }
 
-  v5 = [(NSOperationQueue *)self->_diskCacheQueryOperationQueue operations];
-  if ([v5 count])
+  operations = [(NSOperationQueue *)self->_diskCacheQueryOperationQueue operations];
+  if ([operations count])
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [(NSOperationQueue *)self->_memoryCacheQueryOperationQueue operations];
-    v6 = [v7 count] == 0;
+    operations2 = [(NSOperationQueue *)self->_memoryCacheQueryOperationQueue operations];
+    v6 = [operations2 count] == 0;
   }
 
   v8 = _log_3();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v13 = stringForCacheMode(self->_currentMode);
-    v14 = stringForCacheMode(a3);
+    v14 = stringForCacheMode(mode);
     if (v6)
     {
       v15 = @"accepted";
@@ -1061,9 +1061,9 @@ LABEL_10:
       v15 = @"denied";
     }
 
-    v16 = [(NSOperationQueue *)self->_diskCacheQueryOperationQueue operations];
-    v17 = [v16 count];
-    v18 = [(NSOperationQueue *)self->_memoryCacheQueryOperationQueue operations];
+    operations3 = [(NSOperationQueue *)self->_diskCacheQueryOperationQueue operations];
+    v17 = [operations3 count];
+    operations4 = [(NSOperationQueue *)self->_memoryCacheQueryOperationQueue operations];
     *buf = 138413314;
     *&buf[4] = v13;
     *&buf[12] = 2112;
@@ -1073,7 +1073,7 @@ LABEL_10:
     v23 = 2048;
     v24 = v17;
     v25 = 2048;
-    v26 = [v18 count];
+    v26 = [operations4 count];
     _os_log_debug_impl(&dword_2615D3000, v8, OS_LOG_TYPE_DEBUG, "changing from %@ to %@: %@ (_diskCacheQueryOperationQueue %lu, _memoryCacheQueryOperationQueue %lu)", buf, 0x34u);
   }
 
@@ -1116,9 +1116,9 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)_shouldQuitLowSpaceModeForMode:(unint64_t)a3
+- (BOOL)_shouldQuitLowSpaceModeForMode:(unint64_t)mode
 {
-  v3 = a3 != 4 && self->_lowDiskSpace;
+  v3 = mode != 4 && self->_lowDiskSpace;
   if (v3)
   {
     v4 = _log_3();
@@ -1131,16 +1131,16 @@ LABEL_7:
   return !v3;
 }
 
-- (BOOL)_shouldQuitClosedModeForMode:(unint64_t)a3
+- (BOOL)_shouldQuitClosedModeForMode:(unint64_t)mode
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) != 1)
+  if ((mode & 0xFFFFFFFFFFFFFFFDLL) != 1)
   {
-    if (a3 != 5)
+    if (mode != 5)
     {
       v9 = _log_3();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        [(_QLCacheThread *)a3 _shouldQuitClosedModeForMode:v9];
+        [(_QLCacheThread *)mode _shouldQuitClosedModeForMode:v9];
       }
 
       return 0;
@@ -1177,13 +1177,13 @@ LABEL_7:
   return 0;
 }
 
-- (BOOL)_shouldQuitCleanUpDatabaseModeForMode:(unint64_t)a3
+- (BOOL)_shouldQuitCleanUpDatabaseModeForMode:(unint64_t)mode
 {
-  if (a3 <= 2)
+  if (mode <= 2)
   {
-    if (a3)
+    if (mode)
     {
-      if (a3 != 1)
+      if (mode != 1)
       {
         return 1;
       }
@@ -1196,14 +1196,14 @@ LABEL_7:
     return 1;
   }
 
-  if (a3 == 4)
+  if (mode == 4)
   {
 LABEL_8:
     [(QLCacheCleanUpDatabaseThread *)self->_cleanUpDatabaseThread stop];
     return 1;
   }
 
-  if (a3 == 3)
+  if (mode == 3)
   {
     goto LABEL_7;
   }
@@ -1211,11 +1211,11 @@ LABEL_8:
   return 1;
 }
 
-- (void)_willStartClosedModeFromMode:(unint64_t)a3
+- (void)_willStartClosedModeFromMode:(unint64_t)mode
 {
   self->_missedCount = 0;
   self->_hitCount = 0;
-  if (a3 != 5)
+  if (mode != 5)
   {
     block[7] = v3;
     block[8] = v4;
@@ -1249,7 +1249,7 @@ LABEL_8:
   }
 }
 
-- (void)_willStartResetingModeFromMode:(unint64_t)a3
+- (void)_willStartResetingModeFromMode:(unint64_t)mode
 {
   v4 = _log_3();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -1262,7 +1262,7 @@ LABEL_8:
   [(QLDiskCache *)self->_diskCache reset];
 }
 
-- (void)_willStartCleanUpDatabaseModeFromMode:(unint64_t)a3
+- (void)_willStartCleanUpDatabaseModeFromMode:(unint64_t)mode
 {
   v4 = _log_3();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -1280,10 +1280,10 @@ LABEL_8:
   _os_log_debug_impl(&dword_2615D3000, log, OS_LOG_TYPE_DEBUG, "Loop waiting for clean-up end", buf, 2u);
 }
 
-- (void)_setMode:(unint64_t)a3
+- (void)_setMode:(unint64_t)mode
 {
   p_currentMode = &self->_currentMode;
-  if (self->_currentMode == a3)
+  if (self->_currentMode == mode)
   {
     return;
   }
@@ -1291,7 +1291,7 @@ LABEL_8:
   v6 = _log_3();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(_QLCacheThread *)p_currentMode _setMode:a3];
+    [(_QLCacheThread *)p_currentMode _setMode:mode];
   }
 
   v7 = *p_currentMode;
@@ -1300,21 +1300,21 @@ LABEL_8:
     switch(v7)
     {
       case 3uLL:
-        if (![(_QLCacheThread *)self _shouldQuitPauseModeForMode:a3])
+        if (![(_QLCacheThread *)self _shouldQuitPauseModeForMode:mode])
         {
           goto LABEL_16;
         }
 
         break;
       case 4uLL:
-        if (![(_QLCacheThread *)self _shouldQuitClosedModeForMode:a3])
+        if (![(_QLCacheThread *)self _shouldQuitClosedModeForMode:mode])
         {
           goto LABEL_16;
         }
 
         break;
       case 5uLL:
-        if ([(_QLCacheThread *)self _shouldQuitResetingModeForMode:a3])
+        if ([(_QLCacheThread *)self _shouldQuitResetingModeForMode:mode])
         {
           break;
         }
@@ -1334,7 +1334,7 @@ LABEL_8:
         return;
       }
 
-      if ([(_QLCacheThread *)self _shouldQuitCleanUpDatabaseModeForMode:a3])
+      if ([(_QLCacheThread *)self _shouldQuitCleanUpDatabaseModeForMode:mode])
       {
         goto LABEL_24;
       }
@@ -1349,20 +1349,20 @@ LABEL_16:
       goto LABEL_19;
     }
 
-    if (![(_QLCacheThread *)self _shouldQuitLowSpaceModeForMode:a3])
+    if (![(_QLCacheThread *)self _shouldQuitLowSpaceModeForMode:mode])
     {
       goto LABEL_16;
     }
   }
 
-  else if (![(_QLCacheThread *)self _shouldQuitWorkingModeForMode:a3])
+  else if (![(_QLCacheThread *)self _shouldQuitWorkingModeForMode:mode])
   {
     goto LABEL_16;
   }
 
 LABEL_24:
   v10 = *p_currentMode;
-  *p_currentMode = a3;
+  *p_currentMode = mode;
   v11 = _log_3();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -1461,28 +1461,28 @@ LABEL_19:
   return v3;
 }
 
-- (id)_allThumbnailsEnumerateWithEnumerator:(id)a3
+- (id)_allThumbnailsEnumerateWithEnumerator:(id)enumerator
 {
   v38[2] = *MEMORY[0x277D85DE8];
-  v36 = a3;
+  enumeratorCopy = enumerator;
   v37 = objc_opt_new();
-  v3 = [v36 nextFileInfo];
-  if (v3)
+  nextFileInfo = [enumeratorCopy nextFileInfo];
+  if (nextFileInfo)
   {
-    v4 = v3;
+    v4 = nextFileInfo;
     while (1)
     {
-      v5 = [v4 fileIdentifier];
-      v6 = [v5 fileIdentifier];
+      fileIdentifier = [v4 fileIdentifier];
+      v5FileIdentifier = [fileIdentifier fileIdentifier];
 
-      v7 = [v4 fileIdentifier];
-      v8 = [v7 version];
+      fileIdentifier2 = [v4 fileIdentifier];
+      version = [fileIdentifier2 version];
 
-      if (v8)
+      if (version)
       {
-        v9 = [v4 fileIdentifier];
-        v10 = [v9 version];
-        v11 = [v10 description];
+        fileIdentifier3 = [v4 fileIdentifier];
+        version2 = [fileIdentifier3 version];
+        v11 = [version2 description];
       }
 
       else
@@ -1511,14 +1511,14 @@ LABEL_19:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v31 = [v6 itemID];
-        v32 = [v31 providerDomainID];
-        [v20 setObject:v32 forKeyedSubscript:@"fpid"];
+        itemID = [v5FileIdentifier itemID];
+        providerDomainID = [itemID providerDomainID];
+        [v20 setObject:providerDomainID forKeyedSubscript:@"fpid"];
 
-        v26 = [v6 itemID];
-        v27 = [v26 identifier];
+        itemID2 = [v5FileIdentifier itemID];
+        identifier = [itemID2 identifier];
         v28 = v20;
-        v29 = v27;
+        v29 = identifier;
         v30 = @"itemid";
         goto LABEL_10;
       }
@@ -1526,28 +1526,28 @@ LABEL_19:
 LABEL_11:
       [v37 addObject:v20];
 
-      v33 = [v36 nextFileInfo];
+      nextFileInfo2 = [enumeratorCopy nextFileInfo];
 
-      v4 = v33;
-      if (!v33)
+      v4 = nextFileInfo2;
+      if (!nextFileInfo2)
       {
         goto LABEL_12;
       }
     }
 
-    v21 = [v6 fsid];
-    v22 = HIDWORD(v21);
-    v23 = [v6 fileId];
-    v24 = [MEMORY[0x277CCABB0] numberWithInt:v21];
+    fsid = [v5FileIdentifier fsid];
+    v22 = HIDWORD(fsid);
+    fileId = [v5FileIdentifier fileId];
+    v24 = [MEMORY[0x277CCABB0] numberWithInt:fsid];
     v38[0] = v24;
     v25 = [MEMORY[0x277CCABB0] numberWithInt:v22];
     v38[1] = v25;
-    v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:2];
+    itemID2 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:2];
 
-    [v20 setObject:v26 forKeyedSubscript:@"fsid"];
-    v27 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v23];
+    [v20 setObject:itemID2 forKeyedSubscript:@"fsid"];
+    identifier = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:fileId];
     v28 = v20;
-    v29 = v27;
+    v29 = identifier;
     v30 = @"ino";
 LABEL_10:
     [v28 setObject:v29 forKeyedSubscript:v30];
@@ -1562,9 +1562,9 @@ LABEL_12:
   return v37;
 }
 
-- (id)allThumbnailsForIno:(unint64_t)a3 fsid:(fsid)a4
+- (id)allThumbnailsForIno:(unint64_t)ino fsid:(fsid)fsid
 {
-  v5 = [objc_alloc(MEMORY[0x277CDAA80]) initWithFileId:a3 fsid:a4];
+  v5 = [objc_alloc(MEMORY[0x277CDAA80]) initWithFileId:ino fsid:fsid];
   if (v5)
   {
     v6 = [(_QLCacheThread *)self allThumbnailsForFileIdentifier:v5];
@@ -1584,10 +1584,10 @@ LABEL_12:
   return v6;
 }
 
-- (id)allThumbnailsForFPItemID:(id)a3
+- (id)allThumbnailsForFPItemID:(id)d
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CDAA90]) initWithItemID:v4];
+  dCopy = d;
+  v5 = [objc_alloc(MEMORY[0x277CDAA90]) initWithItemID:dCopy];
   if (v5)
   {
     v6 = [(_QLCacheThread *)self allThumbnailsForFileIdentifier:v5];
@@ -1607,9 +1607,9 @@ LABEL_12:
   return v6;
 }
 
-- (id)allThumbnailsForFileIdentifier:(id)a3
+- (id)allThumbnailsForFileIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1623,7 +1623,7 @@ LABEL_12:
   v9[3] = &unk_279ADDE08;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
   [(QLDiskCache *)diskCache doReading:v9];
   v7 = v13[5];
@@ -1633,29 +1633,29 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)locked_removeCachedThumbnailsFromUninstalledFileProvidersWithRemainingFileProviderIdentifiers:(id)a3
+- (BOOL)locked_removeCachedThumbnailsFromUninstalledFileProvidersWithRemainingFileProviderIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(_QLCacheThread *)self diskCache];
-  v6 = [v5 removeCachedThumbnailsFromUninstalledFileProvidersWithRemainingFileProviderIdentifiers:v4];
+  identifiersCopy = identifiers;
+  diskCache = [(_QLCacheThread *)self diskCache];
+  v6 = [diskCache removeCachedThumbnailsFromUninstalledFileProvidersWithRemainingFileProviderIdentifiers:identifiersCopy];
 
-  [(QLMemoryCache *)self->_memoryCache removeCachedThumbnailsFromUninstalledFileProvidersWithRemainingFileProviderIdentifiers:v4];
+  [(QLMemoryCache *)self->_memoryCache removeCachedThumbnailsFromUninstalledFileProvidersWithRemainingFileProviderIdentifiers:identifiersCopy];
   return v6;
 }
 
-- (BOOL)locked_removeCachedThumbnailsFromUninstalledFileProvidersWithIdentifiers:(id)a3
+- (BOOL)locked_removeCachedThumbnailsFromUninstalledFileProvidersWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(_QLCacheThread *)self diskCache];
-  v6 = [v5 removeCachedThumbnailsFromUninstalledFileProvidersWithIdentifiers:v4];
+  identifiersCopy = identifiers;
+  diskCache = [(_QLCacheThread *)self diskCache];
+  v6 = [diskCache removeCachedThumbnailsFromUninstalledFileProvidersWithIdentifiers:identifiersCopy];
 
-  [(QLMemoryCache *)self->_memoryCache removeCachedThumbnailsFromUninstalledFileProvidersWithIdentifiers:v4];
+  [(QLMemoryCache *)self->_memoryCache removeCachedThumbnailsFromUninstalledFileProvidersWithIdentifiers:identifiersCopy];
   return v6;
 }
 
-- (BOOL)setLastHitDateOfAllCachedThumbnailsToDate:(id)a3
+- (BOOL)setLastHitDateOfAllCachedThumbnailsToDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1667,7 +1667,7 @@ LABEL_12:
   v8[3] = &unk_279ADDE80;
   v10 = &v11;
   v8[4] = self;
-  v6 = v4;
+  v6 = dateCopy;
   v9 = v6;
   [(QLDiskCache *)diskCache doWriting:v8];
   LOBYTE(diskCache) = *(v12 + 24);
@@ -1676,37 +1676,37 @@ LABEL_12:
   return diskCache;
 }
 
-- (void)noteRemoteThumbnailMissingForItems:(id)a3
+- (void)noteRemoteThumbnailMissingForItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   diskCache = self->_diskCache;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53___QLCacheThread_noteRemoteThumbnailMissingForItems___block_invoke;
   v7[3] = &unk_279ADDED0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = itemsCopy;
+  v6 = itemsCopy;
   [(QLDiskCache *)diskCache doWriting:v7];
 }
 
-- (void)noteRemoteThumbnailPresentForItems:(id)a3
+- (void)noteRemoteThumbnailPresentForItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   diskCache = self->_diskCache;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53___QLCacheThread_noteRemoteThumbnailPresentForItems___block_invoke;
   v7[3] = &unk_279ADDED0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = itemsCopy;
+  v6 = itemsCopy;
   [(QLDiskCache *)diskCache doWriting:v7];
 }
 
-- (id)itemsAfterFilteringOutItemsWithMissingThumbnails:(id)a3
+- (id)itemsAfterFilteringOutItemsWithMissingThumbnails:(id)thumbnails
 {
-  v4 = a3;
+  thumbnailsCopy = thumbnails;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1720,7 +1720,7 @@ LABEL_12:
   v9[3] = &unk_279ADDE08;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = thumbnailsCopy;
   v10 = v6;
   [(QLDiskCache *)diskCache doReading:v9];
   v7 = v13[5];
@@ -1730,9 +1730,9 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)itemIsMissingRemoteThumbnail:(id)a3
+- (BOOL)itemIsMissingRemoteThumbnail:(id)thumbnail
 {
-  v4 = a3;
+  thumbnailCopy = thumbnail;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1744,7 +1744,7 @@ LABEL_12:
   v8[3] = &unk_279ADDE08;
   v10 = &v11;
   v8[4] = self;
-  v6 = v4;
+  v6 = thumbnailCopy;
   v9 = v6;
   [(QLDiskCache *)diskCache doReading:v8];
   LOBYTE(diskCache) = *(v12 + 24);
@@ -1753,19 +1753,19 @@ LABEL_12:
   return diskCache;
 }
 
-- (void)_setLowDiskSpace:(BOOL)a3
+- (void)_setLowDiskSpace:(BOOL)space
 {
-  if (self->_lowDiskSpace != a3)
+  if (self->_lowDiskSpace != space)
   {
     v12 = v3;
     v13 = v4;
-    v5 = a3;
+    spaceCopy = space;
     [(_QLCacheThread *)self willChangeValueForKey:@"lowDiskSpace"];
     [(NSLock *)self->_modeLock lock];
-    self->_lowDiskSpace = v5;
+    self->_lowDiskSpace = spaceCopy;
     v7 = _log_3();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-    if (v5)
+    if (spaceCopy)
     {
       if (v8)
       {
@@ -1809,63 +1809,63 @@ LABEL_13:
   }
 }
 
-- (void)_dispatchThumbnailRequestInServerThread:(id)a3
+- (void)_dispatchThumbnailRequestInServerThread:(id)thread
 {
-  v4 = a3;
+  threadCopy = thread;
   WeakRetained = objc_loadWeakRetained(&self->_serverThread);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67___QLCacheThread_Private___dispatchThumbnailRequestInServerThread___block_invoke;
   v7[3] = &unk_279ADD200;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = threadCopy;
+  selfCopy = self;
+  v6 = threadCopy;
   [WeakRetained perform:v7];
 }
 
-- (void)_addThumbnailRequestIntoDiskCacheQueryQueue:(id)a3
+- (void)_addThumbnailRequestIntoDiskCacheQueryQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = _log_3();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [_QLCacheThread(Private) _addThumbnailRequestIntoDiskCacheQueryQueue:];
   }
 
-  v6 = [v4 request];
+  request = [queueCopy request];
   WeakRetained = objc_loadWeakRetained(&self->_serverThread);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __71___QLCacheThread_Private___addThumbnailRequestIntoDiskCacheQueryQueue___block_invoke;
   v10[3] = &unk_279ADD2A0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v4;
-  v8 = v4;
-  v9 = v6;
+  v11 = request;
+  v12 = queueCopy;
+  v8 = queueCopy;
+  v9 = request;
   [WeakRetained perform:v10];
 }
 
-- (void)_sendThumbnailData:(id)a3 forThumbnailRequest:(id)a4
+- (void)_sendThumbnailData:(id)data forThumbnailRequest:(id)request
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 request];
-  v9 = [v6 hasData];
+  dataCopy = data;
+  requestCopy = request;
+  request = [requestCopy request];
+  hasData = [dataCopy hasData];
   v10 = _log_3();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
-  if (v9)
+  if (hasData)
   {
     if (v11)
     {
-      [v8 size];
+      [request size];
       v13 = v12;
-      [v8 size];
+      [request size];
       v15 = v14;
-      [v8 maximumPixelSize];
+      [request maximumPixelSize];
       v17 = v16;
-      [v6 size];
+      [dataCopy size];
       v18 = &stru_2873E31F0;
       if (v17 == v19)
       {
@@ -1877,7 +1877,7 @@ LABEL_13:
         v20 = @"Low quality returned";
       }
 
-      if ([v6 iconMode])
+      if ([dataCopy iconMode])
       {
         v21 = @"Icon mode";
       }
@@ -1887,15 +1887,15 @@ LABEL_13:
         v21 = &stru_2873E31F0;
       }
 
-      v22 = [v6 bitmapData];
-      v23 = [v6 badgeType];
-      if (v23)
+      bitmapData = [dataCopy bitmapData];
+      badgeType = [dataCopy badgeType];
+      if (badgeType)
       {
-        v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(v6, "badgeType")];
+        v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(dataCopy, "badgeType")];
       }
 
       *buf = 138413826;
-      v36 = v8;
+      v36 = request;
       v37 = 2048;
       v38 = v13;
       v39 = 2048;
@@ -1905,11 +1905,11 @@ LABEL_13:
       v43 = 2112;
       v44 = v21;
       v45 = 2048;
-      v46 = v22;
+      v46 = bitmapData;
       v47 = 2112;
       v48 = v18;
       _os_log_impl(&dword_2615D3000, v10, OS_LOG_TYPE_INFO, "cache : hit thumbnail for %@ @ %.1fx%.1f %@ %@ %p %@", buf, 0x48u);
-      if (v23)
+      if (badgeType)
       {
       }
     }
@@ -1918,23 +1918,23 @@ LABEL_13:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v36 = v7;
+      v36 = requestCopy;
       _os_log_impl(&dword_2615D3000, v24, OS_LOG_TYPE_INFO, "completing thumbnail request %@ after cache hit", buf, 0xCu);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_serverThread);
-    [WeakRetained completeThumbnailRequest:v7 thumbnailData:v6 updatedMetadata:0];
+    [WeakRetained completeThumbnailRequest:requestCopy thumbnailData:dataCopy updatedMetadata:0];
   }
 
   else
   {
     if (v11)
     {
-      [v8 size];
+      [request size];
       v27 = v26;
-      [v8 size];
+      [request size];
       *buf = 138412802;
-      v36 = v8;
+      v36 = request;
       v37 = 2048;
       v38 = v27;
       v39 = 2048;
@@ -1943,14 +1943,14 @@ LABEL_13:
     }
 
     v29 = MEMORY[0x277CDAAE0];
-    v30 = [v7 request];
-    WeakRetained = [v29 errorWithCode:2 request:v30 additionalUserInfo:0];
+    request2 = [requestCopy request];
+    WeakRetained = [v29 errorWithCode:2 request:request2 additionalUserInfo:0];
 
     v31 = objc_loadWeakRetained(&self->_serverThread);
-    [v31 failedToCompleteThumbnailRequest:v7 error:WeakRetained];
+    [v31 failedToCompleteThumbnailRequest:requestCopy error:WeakRetained];
   }
 
-  [(QLCacheCleanUpDatabaseThread *)self->_cleanUpDatabaseThread addHitWithThumbnailData:v6];
+  [(QLCacheCleanUpDatabaseThread *)self->_cleanUpDatabaseThread addHitWithThumbnailData:dataCopy];
   v32 = objc_loadWeakRetained(&self->_serverThread);
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
@@ -1962,20 +1962,20 @@ LABEL_13:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_thumbnailHasBeenCancelled:(id)a3
+- (void)_thumbnailHasBeenCancelled:(id)cancelled
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cancelledCopy = cancelled;
   v5 = _log_3();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 request];
-    [v6 size];
+    request = [cancelledCopy request];
+    [request size];
     v8 = v7;
-    v9 = [v4 request];
-    [v9 size];
+    request2 = [cancelledCopy request];
+    [request2 size];
     *buf = 138412802;
-    v19 = v4;
+    v19 = cancelledCopy;
     v20 = 2048;
     v21 = v8;
     v22 = 2048;
@@ -1984,11 +1984,11 @@ LABEL_13:
   }
 
   v11 = MEMORY[0x277CDAAE0];
-  v12 = [v4 request];
-  v13 = [v11 errorWithCode:5 request:v12 additionalUserInfo:0];
+  request3 = [cancelledCopy request];
+  v13 = [v11 errorWithCode:5 request:request3 additionalUserInfo:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_serverThread);
-  [WeakRetained failedToCompleteThumbnailRequest:v4 error:v13];
+  [WeakRetained failedToCompleteThumbnailRequest:cancelledCopy error:v13];
 
   v15 = objc_loadWeakRetained(&self->_serverThread);
   v17[0] = MEMORY[0x277D85DD0];

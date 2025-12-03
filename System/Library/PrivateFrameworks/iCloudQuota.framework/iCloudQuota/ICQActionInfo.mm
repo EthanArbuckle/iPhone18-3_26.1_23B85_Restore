@@ -1,17 +1,17 @@
 @interface ICQActionInfo
-- (ICQActionInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ICQActionInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initFromConfirmationAction:(id)a3;
-- (id)initFromDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)initFromConfirmationAction:(id)action;
+- (id)initFromDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICQActionInfo
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v32.receiver = self;
   v32.super_class = ICQActionInfo;
   v5 = [(ICQActionInfo *)&v32 init];
@@ -20,29 +20,29 @@
     goto LABEL_27;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"isDefault"];
-  v7 = [v6 BOOLValue];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"isDefault"];
+  bOOLValue = [v6 BOOLValue];
 
-  [(ICQActionInfo *)v5 setIsDefault:v7];
-  v8 = [v4 objectForKeyedSubscript:@"isDestructive"];
-  v9 = [v8 BOOLValue];
+  [(ICQActionInfo *)v5 setIsDefault:bOOLValue];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"isDestructive"];
+  bOOLValue2 = [v8 BOOLValue];
 
-  [(ICQActionInfo *)v5 setIsDestructive:v9];
-  v10 = [v4 objectForKeyedSubscript:@"title"];
+  [(ICQActionInfo *)v5 setIsDestructive:bOOLValue2];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"title"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(ICQActionInfo *)v5 setTitle:v10];
   }
 
-  v11 = [v4 objectForKeyedSubscript:@"subTitle"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"subTitle"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(ICQActionInfo *)v5 setSubtitle:v11];
   }
 
-  v12 = [v4 objectForKeyedSubscript:@"actionURL"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"actionURL"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -53,7 +53,7 @@
     }
   }
 
-  v14 = [v4 objectForKeyedSubscript:@"confirmation"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"confirmation"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -61,8 +61,8 @@
     [(ICQActionInfo *)v5 setConfirmation:v15];
   }
 
-  v16 = [v4 objectForKeyedSubscript:@"actionType"];
-  v17 = [v4 objectForKeyedSubscript:@"actionParameters"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"actionType"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"actionParameters"];
   if (v16)
   {
     v18 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -101,8 +101,8 @@
 
     v22 = v12;
     v23 = [[ICQLink alloc] initWithText:v10 action:_ICQActionForServerActionString(v16) parameters:v18];
-    v24 = [(ICQActionInfo *)v5 actionURL];
-    [(ICQLink *)v23 setActionURL:v24];
+    actionURL = [(ICQActionInfo *)v5 actionURL];
+    [(ICQLink *)v23 setActionURL:actionURL];
 
     goto LABEL_26;
   }
@@ -133,28 +133,28 @@ LABEL_28:
   return v25;
 }
 
-- (id)initFromConfirmationAction:(id)a3
+- (id)initFromConfirmationAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v11.receiver = self;
   v11.super_class = ICQActionInfo;
   v5 = [(ICQActionInfo *)&v11 init];
   if (v5)
   {
-    v6 = [v4 title];
-    [(ICQActionInfo *)v5 setTitle:v6];
+    title = [actionCopy title];
+    [(ICQActionInfo *)v5 setTitle:title];
 
-    v7 = [v4 subtitle];
-    [(ICQActionInfo *)v5 setSubtitle:v7];
+    subtitle = [actionCopy subtitle];
+    [(ICQActionInfo *)v5 setSubtitle:subtitle];
 
-    v8 = [v4 icqLink];
-    [(ICQActionInfo *)v5 setIcqLink:v8];
+    icqLink = [actionCopy icqLink];
+    [(ICQActionInfo *)v5 setIcqLink:icqLink];
 
-    v9 = [v4 actionURL];
-    [(ICQActionInfo *)v5 setActionURL:v9];
+    actionURL = [actionCopy actionURL];
+    [(ICQActionInfo *)v5 setActionURL:actionURL];
 
-    -[ICQActionInfo setIsDefault:](v5, "setIsDefault:", [v4 isDefault]);
-    -[ICQActionInfo setIsDestructive:](v5, "setIsDestructive:", [v4 isDestructive]);
+    -[ICQActionInfo setIsDefault:](v5, "setIsDefault:", [actionCopy isDefault]);
+    -[ICQActionInfo setIsDestructive:](v5, "setIsDestructive:", [actionCopy isDestructive]);
   }
 
   return v5;
@@ -171,7 +171,7 @@ LABEL_28:
   return [MEMORY[0x277CCACA8] stringWithFormat:@"title: %@, subtitle: %@, actionURL: %@, icqLink: %@, isDefault: %hhd, isDestructive: %@, confirmation: %@", *&self->_title, self->_actionURL, self->_icqLink, self->_isDefault, v2, self->_confirmation];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(ICQActionInfo);
   [(ICQActionInfo *)v4 setTitle:self->_title];
@@ -184,49 +184,49 @@ LABEL_28:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"title"];
-  [v5 encodeObject:self->_subtitle forKey:@"subTitle"];
-  [v5 encodeObject:self->_icqLink forKey:@"icqLink"];
-  [v5 encodeObject:self->_actionURL forKey:@"actionURL"];
-  [v5 encodeObject:self->_confirmation forKey:@"confirmation"];
-  [v5 encodeBool:self->_isDefault forKey:@"isDefault"];
-  [v5 encodeBool:self->_isDestructive forKey:@"isDestructive"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"title"];
+  [coderCopy encodeObject:self->_subtitle forKey:@"subTitle"];
+  [coderCopy encodeObject:self->_icqLink forKey:@"icqLink"];
+  [coderCopy encodeObject:self->_actionURL forKey:@"actionURL"];
+  [coderCopy encodeObject:self->_confirmation forKey:@"confirmation"];
+  [coderCopy encodeBool:self->_isDefault forKey:@"isDefault"];
+  [coderCopy encodeBool:self->_isDestructive forKey:@"isDestructive"];
 }
 
-- (ICQActionInfo)initWithCoder:(id)a3
+- (ICQActionInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = ICQActionInfo;
   v5 = [(ICQActionInfo *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subTitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subTitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"icqLink"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"icqLink"];
     icqLink = v5->_icqLink;
     v5->_icqLink = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionURL"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionURL"];
     actionURL = v5->_actionURL;
     v5->_actionURL = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"confirmation"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"confirmation"];
     confirmation = v5->_confirmation;
     v5->_confirmation = v14;
 
-    v5->_isDefault = [v4 decodeBoolForKey:@"isDefault"];
-    v5->_isDestructive = [v4 decodeBoolForKey:@"isDestructive"];
+    v5->_isDefault = [coderCopy decodeBoolForKey:@"isDefault"];
+    v5->_isDestructive = [coderCopy decodeBoolForKey:@"isDestructive"];
   }
 
   return v5;

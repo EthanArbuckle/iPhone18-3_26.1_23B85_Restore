@@ -1,53 +1,53 @@
 @interface CKSenderChatItem
-- (BOOL)shouldUnloadTranscriptTextForChangeFromTraitCollection:(id)a3 toTraitCollection:(id)a4;
+- (BOOL)shouldUnloadTranscriptTextForChangeFromTraitCollection:(id)collection toTraitCollection:(id)traitCollection;
 - (BOOL)wantsAddToContactsButton;
 - (BOOL)wantsDrawerLayout;
-- (CGSize)_transcriptTextSizeThatFitsForSize:(CGSize)a3;
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)_transcriptTextSizeThatFitsForSize:(CGSize)size;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (Class)cellClass;
 - (UIEdgeInsets)contentInsets;
 - (id)cellIdentifier;
-- (id)getAttributeTextForMessagesFromEmergencyUser:(id)a3 transcriptSharingMessageType:(int64_t)a4;
+- (id)getAttributeTextForMessagesFromEmergencyUser:(id)user transcriptSharingMessageType:(int64_t)type;
 - (id)handle;
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7;
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override;
 - (id)loadTranscriptText;
-- (id)unknownSenderAttributedStringForControlState:(unint64_t)a3;
+- (id)unknownSenderAttributedStringForControlState:(unint64_t)state;
 @end
 
 @implementation CKSenderChatItem
 
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override
 {
   v51 = *MEMORY[0x1E69E9840];
-  v42 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4 - 1;
-  if (a4 < 1)
+  environmentCopy = environment;
+  itemsCopy = items;
+  supplementryItemsCopy = supplementryItems;
+  v13 = index - 1;
+  if (index < 1)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = [v11 objectAtIndexedSubscript:a4 - 1];
+    v14 = [itemsCopy objectAtIndexedSubscript:index - 1];
   }
 
-  if (a4 + 1 >= [v11 count])
+  if (index + 1 >= [itemsCopy count])
   {
     v15 = 0;
   }
 
   else
   {
-    v15 = [v11 objectAtIndexedSubscript:a4 + 1];
+    v15 = [itemsCopy objectAtIndexedSubscript:index + 1];
   }
 
-  v16 = [CKChatItemLayoutUtilities nextItemIsOriginatorWithRepliesForIndex:a4 allDatasourceItems:v11];
-  v17 = [v14 layoutType];
+  v16 = [CKChatItemLayoutUtilities nextItemIsOriginatorWithRepliesForIndex:index allDatasourceItems:itemsCopy];
+  layoutType = [v14 layoutType];
   if (v16)
   {
-    v18 = v17 == 8;
+    v18 = layoutType == 8;
     v19 = +[CKUIBehavior sharedBehaviors];
     v20 = v19;
     if (v18)
@@ -65,21 +65,21 @@
     goto LABEL_52;
   }
 
-  if (v17 <= 12)
+  if (layoutType <= 12)
   {
-    if (v17 > 7)
+    if (layoutType > 7)
     {
-      if ((v17 - 8) >= 2 && (v17 - 11) >= 2)
+      if ((layoutType - 8) >= 2 && (layoutType - 11) >= 2)
       {
         goto LABEL_55;
       }
     }
 
-    else if ((v17 - 2) >= 2)
+    else if ((layoutType - 2) >= 2)
     {
-      if ((v17 - 5) < 2)
+      if ((layoutType - 5) < 2)
       {
-        v22 = [CKChatItemLayoutUtilities prevMessageIsReplyForIndex:v13 allDatasourceItems:v11];
+        v22 = [CKChatItemLayoutUtilities prevMessageIsReplyForIndex:v13 allDatasourceItems:itemsCopy];
         v23 = +[CKUIBehavior sharedBehaviors];
         if (v22)
         {
@@ -89,7 +89,7 @@
         goto LABEL_32;
       }
 
-      if (v17 == 1)
+      if (layoutType == 1)
       {
 LABEL_37:
         v23 = +[CKUIBehavior sharedBehaviors];
@@ -103,21 +103,21 @@ LABEL_37:
     goto LABEL_31;
   }
 
-  if (v17 > 17)
+  if (layoutType > 17)
   {
-    if ((v17 - 23) < 2)
+    if ((layoutType - 23) < 2)
     {
 LABEL_31:
       v23 = +[CKUIBehavior sharedBehaviors];
       goto LABEL_32;
     }
 
-    if (v17 == 18)
+    if (layoutType == 18)
     {
       goto LABEL_37;
     }
 
-    if (v17 != 19)
+    if (layoutType != 19)
     {
 LABEL_55:
       if (IMOSLoggingEnabled())
@@ -148,12 +148,12 @@ LABEL_55:
 
   else
   {
-    if ((v17 - 14) < 2)
+    if ((layoutType - 14) < 2)
     {
       goto LABEL_37;
     }
 
-    if (v17 == 13)
+    if (layoutType == 13)
     {
       v23 = +[CKUIBehavior sharedBehaviors];
 LABEL_36:
@@ -161,16 +161,16 @@ LABEL_36:
       goto LABEL_38;
     }
 
-    if (v17 != 16)
+    if (layoutType != 16)
     {
       goto LABEL_55;
     }
 
-    v25 = [(CKChatItem *)self itemIsFromMe];
-    v26 = [v14 itemIsFromMe];
+    itemIsFromMe = [(CKChatItem *)self itemIsFromMe];
+    itemIsFromMe2 = [v14 itemIsFromMe];
     v27 = +[CKUIBehavior sharedBehaviors];
     v23 = v27;
-    if (v25 == v26)
+    if (itemIsFromMe == itemIsFromMe2)
     {
 LABEL_32:
       [v23 mediumTranscriptSpace];
@@ -188,8 +188,8 @@ LABEL_39:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v29 = [v15 visibleAssociatedMessageChatItems];
-  v30 = [v29 countByEnumeratingWithState:&v43 objects:v50 count:16];
+  visibleAssociatedMessageChatItems = [v15 visibleAssociatedMessageChatItems];
+  v30 = [visibleAssociatedMessageChatItems countByEnumeratingWithState:&v43 objects:v50 count:16];
   if (v30)
   {
     v31 = *v44;
@@ -199,7 +199,7 @@ LABEL_39:
       {
         if (*v44 != v31)
         {
-          objc_enumerationMutation(v29);
+          objc_enumerationMutation(visibleAssociatedMessageChatItems);
         }
 
         v33 = *(*(&v43 + 1) + 8 * i);
@@ -222,7 +222,7 @@ LABEL_39:
         }
       }
 
-      v30 = [v29 countByEnumeratingWithState:&v43 objects:v50 count:16];
+      v30 = [visibleAssociatedMessageChatItems countByEnumeratingWithState:&v43 objects:v50 count:16];
       if (v30)
       {
         continue;
@@ -279,10 +279,10 @@ LABEL_52:
 
 - (id)cellIdentifier
 {
-  v2 = [(CKChatItem *)self transcriptText];
-  v3 = [v2 string];
+  transcriptText = [(CKChatItem *)self transcriptText];
+  string = [transcriptText string];
 
-  return v3;
+  return string;
 }
 
 - (BOOL)wantsDrawerLayout
@@ -305,65 +305,65 @@ LABEL_52:
 
 - (id)handle
 {
-  v3 = [(CKChatItem *)self IMChatItem];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(CKChatItem *)self IMChatItem];
-    v6 = [v5 handle];
+    iMChatItem2 = [(CKChatItem *)self IMChatItem];
+    handle = [iMChatItem2 handle];
   }
 
   else
   {
-    v6 = 0;
+    handle = 0;
   }
 
-  return v6;
+  return handle;
 }
 
 - (BOOL)wantsAddToContactsButton
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isIntroductionsEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isIntroductionsEnabled = [mEMORY[0x1E69A8070] isIntroductionsEnabled];
 
-  if (v4)
+  if (isIntroductionsEnabled)
   {
-    v5 = [(CKChatItem *)self IMChatItem];
+    iMChatItem = [(CKChatItem *)self IMChatItem];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v7 = [(CKChatItem *)self IMChatItem];
-      v8 = [(CKSenderChatItem *)self handle];
-      v9 = v8;
-      if (!v8 || ([v8 isBusiness] & 1) != 0 || (objc_msgSend(v9, "isMako") & 1) != 0 || (objc_msgSend(v7, "isMergedBusinessThread") & 1) != 0 || objc_msgSend(v7, "transcriptSharingMessageType") || (objc_msgSend(v9, "isStewie") & 1) != 0)
+      iMChatItem2 = [(CKChatItem *)self IMChatItem];
+      handle = [(CKSenderChatItem *)self handle];
+      v9 = handle;
+      if (!handle || ([handle isBusiness] & 1) != 0 || (objc_msgSend(v9, "isMako") & 1) != 0 || (objc_msgSend(iMChatItem2, "isMergedBusinessThread") & 1) != 0 || objc_msgSend(iMChatItem2, "transcriptSharingMessageType") || (objc_msgSend(v9, "isStewie") & 1) != 0)
       {
-        LOBYTE(v4) = 0;
+        LOBYTE(isIntroductionsEnabled) = 0;
       }
 
       else
       {
-        v4 = [v9 isContact] ^ 1;
+        isIntroductionsEnabled = [v9 isContact] ^ 1;
       }
     }
 
     else
     {
-      LOBYTE(v4) = 0;
+      LOBYTE(isIntroductionsEnabled) = 0;
     }
   }
 
-  return v4;
+  return isIntroductionsEnabled;
 }
 
-- (id)getAttributeTextForMessagesFromEmergencyUser:(id)a3 transcriptSharingMessageType:(int64_t)a4
+- (id)getAttributeTextForMessagesFromEmergencyUser:(id)user transcriptSharingMessageType:(int64_t)type
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!a4)
+  userCopy = user;
+  if (!type)
   {
     goto LABEL_7;
   }
@@ -371,13 +371,13 @@ LABEL_52:
   v6 = IMLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:type];
     *buf = 138412290;
     v16 = v7;
     _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "transcriptSharingMessageType: %@", buf, 0xCu);
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
     v12 = MEMORY[0x1E696AEC0];
     v9 = CKFrameworkBundle();
@@ -386,7 +386,7 @@ LABEL_52:
     goto LABEL_9;
   }
 
-  if (a4 != 1)
+  if (type != 1)
   {
 LABEL_7:
     v11 = 0;
@@ -396,7 +396,7 @@ LABEL_7:
   v8 = MEMORY[0x1E696AEC0];
   v9 = CKFrameworkBundle();
   v10 = [v9 localizedStringForKey:@"TS_EMERGENCY_USER_ATTRIBUTE_MESSAGE" value:&stru_1F04268F8 table:@"TranscriptSharing-SYDROB_FEATURES"];
-  [v8 localizedStringWithFormat:v10, v5];
+  [v8 localizedStringWithFormat:v10, userCopy];
   v11 = LABEL_9:;
 
 LABEL_10:
@@ -407,20 +407,20 @@ LABEL_10:
 - (id)loadTranscriptText
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 senderTranscriptTextAttributes];
+  senderTranscriptTextAttributes = [v3 senderTranscriptTextAttributes];
 
-  v5 = [(CKChatItem *)self notification];
+  notification = [(CKChatItem *)self notification];
 
-  if (v5)
+  if (notification)
   {
-    v6 = [(CKChatItem *)self notification];
-    v7 = [v6 request];
-    v8 = [v7 content];
-    v9 = [v8 title];
-    v10 = v9;
-    if (v9)
+    notification2 = [(CKChatItem *)self notification];
+    request = [notification2 request];
+    content = [request content];
+    title = [content title];
+    v10 = title;
+    if (title)
     {
-      v11 = v9;
+      v11 = title;
     }
 
     else
@@ -429,24 +429,24 @@ LABEL_10:
       v11 = [v13 localizedStringForKey:@"Unknown" value:&stru_1F04268F8 table:@"ChatKit"];
     }
 
-    v12 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v11 attributes:v4];
+    _unknownSenderAttributedString = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v11 attributes:senderTranscriptTextAttributes];
   }
 
   else
   {
     if ([(CKSenderChatItem *)self wantsAddToContactsButton])
     {
-      v12 = [(CKSenderChatItem *)self _unknownSenderAttributedString];
+      _unknownSenderAttributedString = [(CKSenderChatItem *)self _unknownSenderAttributedString];
       goto LABEL_26;
     }
 
-    v14 = [(CKChatItem *)self IMChatItem];
-    v15 = [(CKSenderChatItem *)self handle];
-    v16 = [v15 name];
-    v17 = v16;
-    if (v16)
+    iMChatItem = [(CKChatItem *)self IMChatItem];
+    handle = [(CKSenderChatItem *)self handle];
+    name = [handle name];
+    v17 = name;
+    if (name)
     {
-      v11 = v16;
+      v11 = name;
     }
 
     else
@@ -455,35 +455,35 @@ LABEL_10:
       v11 = [v18 localizedStringForKey:@"Unknown" value:&stru_1F04268F8 table:@"ChatKit"];
     }
 
-    v19 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v20 = [v19 isMergeBusinessSenderIndiaEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isMergeBusinessSenderIndiaEnabled = [mEMORY[0x1E69A8070] isMergeBusinessSenderIndiaEnabled];
 
-    if (v20)
+    if (isMergeBusinessSenderIndiaEnabled)
     {
-      if ([v14 isMergedBusinessThread])
+      if ([iMChatItem isMergedBusinessThread])
       {
-        v21 = [v14 displayName];
-        v22 = [v21 length];
+        displayName = [iMChatItem displayName];
+        v22 = [displayName length];
 
         if (v22)
         {
-          v23 = [v14 displayName];
+          displayName2 = [iMChatItem displayName];
 
-          v11 = v23;
+          v11 = displayName2;
         }
       }
     }
 
-    v24 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v25 = [v24 isTranscriptSharingEnabled];
+    mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isTranscriptSharingEnabled = [mEMORY[0x1E69A8070]2 isTranscriptSharingEnabled];
 
-    if (v25 && [v14 transcriptSharingMessageType])
+    if (isTranscriptSharingEnabled && [iMChatItem transcriptSharingMessageType])
     {
-      v26 = [v14 displayName];
-      v27 = v26;
-      if (v26)
+      displayName3 = [iMChatItem displayName];
+      v27 = displayName3;
+      if (displayName3)
       {
-        v28 = v26;
+        v28 = displayName3;
       }
 
       else
@@ -494,7 +494,7 @@ LABEL_10:
         v11 = v29;
       }
 
-      if ([v15 isStewieEmergencyServices])
+      if ([handle isStewieEmergencyServices])
       {
         v30 = MEMORY[0x1E696AEC0];
         v31 = CKFrameworkBundle();
@@ -507,34 +507,34 @@ LABEL_10:
 
       else
       {
-        v11 = -[CKSenderChatItem getAttributeTextForMessagesFromEmergencyUser:transcriptSharingMessageType:](self, "getAttributeTextForMessagesFromEmergencyUser:transcriptSharingMessageType:", v28, [v14 transcriptSharingMessageType]);
+        v11 = -[CKSenderChatItem getAttributeTextForMessagesFromEmergencyUser:transcriptSharingMessageType:](self, "getAttributeTextForMessagesFromEmergencyUser:transcriptSharingMessageType:", v28, [iMChatItem transcriptSharingMessageType]);
 
         v33 = +[CKUIBehavior sharedBehaviors];
         [v33 stewieTranscriptEmergencyUserAttributes];
       }
       v34 = ;
 
-      v4 = v34;
+      senderTranscriptTextAttributes = v34;
     }
 
-    v12 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v11 attributes:v4];
+    _unknownSenderAttributedString = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v11 attributes:senderTranscriptTextAttributes];
   }
 
 LABEL_26:
 
-  return v12;
+  return _unknownSenderAttributedString;
 }
 
-- (BOOL)shouldUnloadTranscriptTextForChangeFromTraitCollection:(id)a3 toTraitCollection:(id)a4
+- (BOOL)shouldUnloadTranscriptTextForChangeFromTraitCollection:(id)collection toTraitCollection:(id)traitCollection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 isTranscriptBackgroundActive];
-  if (v8 == [v7 isTranscriptBackgroundActive])
+  collectionCopy = collection;
+  traitCollectionCopy = traitCollection;
+  isTranscriptBackgroundActive = [collectionCopy isTranscriptBackgroundActive];
+  if (isTranscriptBackgroundActive == [traitCollectionCopy isTranscriptBackgroundActive])
   {
     v11.receiver = self;
     v11.super_class = CKSenderChatItem;
-    v9 = [(CKChatItem *)&v11 shouldUnloadTranscriptTextForChangeFromTraitCollection:v6 toTraitCollection:v7];
+    v9 = [(CKChatItem *)&v11 shouldUnloadTranscriptTextForChangeFromTraitCollection:collectionCopy toTraitCollection:traitCollectionCopy];
   }
 
   else
@@ -545,16 +545,16 @@ LABEL_26:
   return v9;
 }
 
-- (id)unknownSenderAttributedStringForControlState:(unint64_t)a3
+- (id)unknownSenderAttributedStringForControlState:(unint64_t)state
 {
-  v3 = [(CKSenderChatItem *)self handle];
-  v4 = [v3 hasName];
-  v5 = [v3 name];
+  handle = [(CKSenderChatItem *)self handle];
+  hasName = [handle hasName];
+  name = [handle name];
 
-  if (v5)
+  if (name)
   {
-    v6 = [v3 name];
-    if (v4)
+    name2 = [handle name];
+    if (hasName)
     {
       v7 = @"HANDLE_ADD_LINK_TEXT";
     }
@@ -568,7 +568,7 @@ LABEL_26:
   else
   {
     v8 = CKFrameworkBundle();
-    v6 = [v8 localizedStringForKey:@"Unknown" value:&stru_1F04268F8 table:@"ChatKit"];
+    name2 = [v8 localizedStringForKey:@"Unknown" value:&stru_1F04268F8 table:@"ChatKit"];
 
     v7 = @"HANDLE_ADD_LINK_TEXT";
   }
@@ -579,13 +579,13 @@ LABEL_26:
   v11 = MEMORY[0x1E696AEC0];
   v12 = CKFrameworkBundle();
   v13 = [v12 localizedStringForKey:v7 value:&stru_1F04268F8 table:@"ChatKit"];
-  v37 = v6;
-  v14 = [v11 stringWithFormat:v13, v6, v10];
+  v37 = name2;
+  v14 = [v11 stringWithFormat:v13, name2, v10];
 
-  v15 = [MEMORY[0x1E69DC668] sharedApplication];
-  v16 = [v15 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v16 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v17 = @"\u200F";
   }
@@ -599,20 +599,20 @@ LABEL_26:
 
   v19 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v18];
   v20 = +[CKUIBehavior sharedBehaviors];
-  v21 = [v20 senderTranscriptTextAttributes];
-  v22 = [v21 mutableCopy];
+  senderTranscriptTextAttributes = [v20 senderTranscriptTextAttributes];
+  v22 = [senderTranscriptTextAttributes mutableCopy];
 
   v23 = +[CKUIBehavior sharedBehaviors];
-  v24 = [v23 senderAddToContactsTranscriptTextAttributes];
-  v25 = [v24 mutableCopy];
+  senderAddToContactsTranscriptTextAttributes = [v23 senderAddToContactsTranscriptTextAttributes];
+  v25 = [senderAddToContactsTranscriptTextAttributes mutableCopy];
 
   v26 = +[CKUIBehavior sharedBehaviors];
-  v27 = [v26 theme];
-  v28 = [v27 messageSenderAddToContactTextColor];
+  theme = [v26 theme];
+  messageSenderAddToContactTextColor = [theme messageSenderAddToContactTextColor];
 
   [v19 addAttributes:v22 range:{0, objc_msgSend(v19, "length")}];
-  v29 = [v19 string];
-  v30 = [v29 rangeOfString:v10 options:4];
+  string = [v19 string];
+  v30 = [string rangeOfString:v10 options:4];
   v32 = v31;
 
   if (v32)
@@ -620,12 +620,12 @@ LABEL_26:
     if (v30 != 0x7FFFFFFFFFFFFFFFLL)
     {
       [v19 addAttributes:v25 range:{v30, v32}];
-      v33 = [(CKChatItem *)self transcriptTraitCollection];
-      v34 = [v33 isTranscriptBackgroundActive];
+      transcriptTraitCollection = [(CKChatItem *)self transcriptTraitCollection];
+      isTranscriptBackgroundActive = [transcriptTraitCollection isTranscriptBackgroundActive];
 
-      if (v34)
+      if (isTranscriptBackgroundActive)
       {
-        [CKMessageStatusChatItem appendChevronToStatusText:v19 withButtonTextColor:v28 textAttributes:v25];
+        [CKMessageStatusChatItem appendChevronToStatusText:v19 withButtonTextColor:messageSenderAddToContactTextColor textAttributes:v25];
       }
     }
   }
@@ -633,39 +633,39 @@ LABEL_26:
   return v19;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
-  if (a4)
+  height = fits.height;
+  width = fits.width;
+  if (insets)
   {
     v7 = *(MEMORY[0x1E69DDCE0] + 16);
-    *&a4->top = *MEMORY[0x1E69DDCE0];
-    *&a4->bottom = v7;
+    *&insets->top = *MEMORY[0x1E69DDCE0];
+    *&insets->bottom = v7;
   }
 
   v8 = +[CKUIBehavior sharedBehaviors];
-  v9 = [v8 isAccessibilityPreferredContentSizeCategory];
+  isAccessibilityPreferredContentSizeCategory = [v8 isAccessibilityPreferredContentSizeCategory];
 
-  if (v9)
+  if (isAccessibilityPreferredContentSizeCategory)
   {
-    v10 = [(CKSenderChatItem *)self wantsAddToContactsButton];
-    v11 = [(CKSenderChatItem *)self cellClass];
-    if (v10)
+    wantsAddToContactsButton = [(CKSenderChatItem *)self wantsAddToContactsButton];
+    cellClass = [(CKSenderChatItem *)self cellClass];
+    if (wantsAddToContactsButton)
     {
-      v12 = [(objc_class *)v11 createStampButtonView];
-      v13 = [(CKChatItem *)self transcriptText];
-      [v12 setAttributedTitle:v13 forState:0];
+      createStampButtonView = [(objc_class *)cellClass createStampButtonView];
+      transcriptText = [(CKChatItem *)self transcriptText];
+      [createStampButtonView setAttributedTitle:transcriptText forState:0];
     }
 
     else
     {
-      v12 = [(objc_class *)v11 createStampLabelView];
-      v13 = [(CKChatItem *)self transcriptText];
-      [v12 setAttributedText:v13];
+      createStampButtonView = [(objc_class *)cellClass createStampLabelView];
+      transcriptText = [(CKChatItem *)self transcriptText];
+      [createStampButtonView setAttributedText:transcriptText];
     }
 
-    [v12 sizeThatFits:{width, height}];
+    [createStampButtonView sizeThatFits:{width, height}];
     v17 = v16;
     v19 = v18;
 
@@ -684,12 +684,12 @@ LABEL_26:
   return result;
 }
 
-- (CGSize)_transcriptTextSizeThatFitsForSize:(CGSize)a3
+- (CGSize)_transcriptTextSizeThatFitsForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(CKChatItem *)self transcriptText];
-  [v5 boundingRectWithSize:3 options:0 context:{width, height}];
+  height = size.height;
+  width = size.width;
+  transcriptText = [(CKChatItem *)self transcriptText];
+  [transcriptText boundingRectWithSize:3 options:0 context:{width, height}];
   v7 = v6;
   v9 = v8;
 

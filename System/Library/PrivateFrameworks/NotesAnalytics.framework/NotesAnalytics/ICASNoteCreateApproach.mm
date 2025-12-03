@@ -1,34 +1,34 @@
 @interface ICASNoteCreateApproach
-- (ICASNoteCreateApproach)initWithNoteCreateApproach:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASNoteCreateApproach)initWithNoteCreateApproach:(int64_t)approach;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASNoteCreateApproach
 
-- (ICASNoteCreateApproach)initWithNoteCreateApproach:(int64_t)a3
+- (ICASNoteCreateApproach)initWithNoteCreateApproach:(int64_t)approach
 {
   v5.receiver = self;
   v5.super_class = ICASNoteCreateApproach;
   result = [(ICASNoteCreateApproach *)&v5 init];
   if (result)
   {
-    result->_noteCreateApproach = a3;
+    result->_noteCreateApproach = approach;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASNoteCreateApproach *)self noteCreateApproach];
-  if ((v3 - 1) > 0x15)
+  noteCreateApproach = [(ICASNoteCreateApproach *)self noteCreateApproach];
+  if ((noteCreateApproach - 1) > 0x15)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799AF828[v3 - 1];
+    return off_2799AF828[noteCreateApproach - 1];
   }
 }
 

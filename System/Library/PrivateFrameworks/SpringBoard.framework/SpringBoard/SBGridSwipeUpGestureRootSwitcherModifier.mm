@@ -1,69 +1,69 @@
 @interface SBGridSwipeUpGestureRootSwitcherModifier
-- (SBGridSwipeUpGestureRootSwitcherModifier)initWithStartingEnvironmentMode:(int64_t)a3 multitaskingModifier:(id)a4;
-- (id)gestureChildModifierForGestureEvent:(id)a3 activeTransitionModifier:(id)a4;
-- (id)transitionChildModifierForMainTransitionEvent:(id)a3 activeGestureModifier:(id)a4;
+- (SBGridSwipeUpGestureRootSwitcherModifier)initWithStartingEnvironmentMode:(int64_t)mode multitaskingModifier:(id)modifier;
+- (id)gestureChildModifierForGestureEvent:(id)event activeTransitionModifier:(id)modifier;
+- (id)transitionChildModifierForMainTransitionEvent:(id)event activeGestureModifier:(id)modifier;
 @end
 
 @implementation SBGridSwipeUpGestureRootSwitcherModifier
 
-- (SBGridSwipeUpGestureRootSwitcherModifier)initWithStartingEnvironmentMode:(int64_t)a3 multitaskingModifier:(id)a4
+- (SBGridSwipeUpGestureRootSwitcherModifier)initWithStartingEnvironmentMode:(int64_t)mode multitaskingModifier:(id)modifier
 {
-  v8 = a4;
+  modifierCopy = modifier;
   v11.receiver = self;
   v11.super_class = SBGridSwipeUpGestureRootSwitcherModifier;
-  v9 = [(SBGestureRootSwitcherModifier *)&v11 initWithStartingEnvironmentMode:a3];
+  v9 = [(SBGestureRootSwitcherModifier *)&v11 initWithStartingEnvironmentMode:mode];
   if (v9)
   {
-    if (!v8)
+    if (!modifierCopy)
     {
       [SBGridSwipeUpGestureRootSwitcherModifier initWithStartingEnvironmentMode:a2 multitaskingModifier:v9];
     }
 
-    objc_storeStrong(&v9->_multitaskingModifier, a4);
+    objc_storeStrong(&v9->_multitaskingModifier, modifier);
   }
 
   return v9;
 }
 
-- (id)gestureChildModifierForGestureEvent:(id)a3 activeTransitionModifier:(id)a4
+- (id)gestureChildModifierForGestureEvent:(id)event activeTransitionModifier:(id)modifier
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = [SBGridSwipeUpGestureSwitcherModifier alloc];
-  v6 = [v4 gestureID];
+  gestureID = [eventCopy gestureID];
 
-  v7 = [(SBGridSwipeUpGestureSwitcherModifier *)v5 initWithGestureID:v6 delayCompletionUntilTransitionBegins:1];
+  v7 = [(SBGridSwipeUpGestureSwitcherModifier *)v5 initWithGestureID:gestureID delayCompletionUntilTransitionBegins:1];
 
   return v7;
 }
 
-- (id)transitionChildModifierForMainTransitionEvent:(id)a3 activeGestureModifier:(id)a4
+- (id)transitionChildModifierForMainTransitionEvent:(id)event activeGestureModifier:(id)modifier
 {
-  v5 = a3;
-  if ([v5 fromEnvironmentMode] != 2 || objc_msgSend(v5, "toEnvironmentMode") != 1)
+  eventCopy = event;
+  if ([eventCopy fromEnvironmentMode] != 2 || objc_msgSend(eventCopy, "toEnvironmentMode") != 1)
   {
-    v10 = 0;
+    transitionID = 0;
     goto LABEL_20;
   }
 
-  v6 = [v5 fromAppExposeBundleID];
+  fromAppExposeBundleID = [eventCopy fromAppExposeBundleID];
 
-  if (v6)
+  if (fromAppExposeBundleID)
   {
     v7 = [SBAppExposeWindowingModifier alloc];
-    v8 = [v5 fromAppExposeBundleID];
-    v9 = [(SBAppExposeWindowingModifier *)v7 initWithBundleIdentifier:v8];
+    fromAppExposeBundleID2 = [eventCopy fromAppExposeBundleID];
+    v9 = [(SBAppExposeWindowingModifier *)v7 initWithBundleIdentifier:fromAppExposeBundleID2];
   }
 
   else
   {
-    v11 = [(SBGridSwipeUpGestureRootSwitcherModifier *)self _newMultitaskingModifier];
+    _newMultitaskingModifier = [(SBGridSwipeUpGestureRootSwitcherModifier *)self _newMultitaskingModifier];
     v12 = objc_opt_class();
-    v8 = v11;
+    fromAppExposeBundleID2 = _newMultitaskingModifier;
     if (v12)
     {
       if (objc_opt_isKindOfClass())
       {
-        v13 = v8;
+        v13 = fromAppExposeBundleID2;
       }
 
       else
@@ -82,41 +82,41 @@
 
   if (v9)
   {
-    if (SBPeekConfigurationIsValid([v5 toPeekConfiguration]))
+    if (SBPeekConfigurationIsValid([eventCopy toPeekConfiguration]))
     {
       v14 = [SBFlexibleWindowingExposeToHomePeekWindowingModifier alloc];
-      v10 = [v5 transitionID];
-      v15 = [(SBFlexibleWindowingExposeToHomePeekWindowingModifier *)v14 initWithTransitionID:v10 direction:0 exposeModifier:v9];
+      transitionID = [eventCopy transitionID];
+      v15 = [(SBFlexibleWindowingExposeToHomePeekWindowingModifier *)v14 initWithTransitionID:transitionID direction:0 exposeModifier:v9];
 LABEL_18:
       v19 = v15;
 
-      v10 = v19;
+      transitionID = v19;
       goto LABEL_19;
     }
 
     v16 = [SBContinuousExposeToHomeSwitcherModifier alloc];
-    v17 = [v5 transitionID];
-    v10 = [(SBContinuousExposeToHomeSwitcherModifier *)v16 initWithTransitionID:v17 direction:0 exposeModifier:v9];
+    transitionID2 = [eventCopy transitionID];
+    transitionID = [(SBContinuousExposeToHomeSwitcherModifier *)v16 initWithTransitionID:transitionID2 direction:0 exposeModifier:v9];
 
-    v18 = [v5 fromAppExposeBundleID];
+    fromAppExposeBundleID3 = [eventCopy fromAppExposeBundleID];
 
-    if (v18)
+    if (fromAppExposeBundleID3)
     {
-      v15 = [[SBAppExposeToHomeWindowingModifier alloc] initWithTransitionModifier:v10 appExposeModifier:v9];
+      v15 = [[SBAppExposeToHomeWindowingModifier alloc] initWithTransitionModifier:transitionID appExposeModifier:v9];
       goto LABEL_18;
     }
   }
 
   else
   {
-    v10 = 0;
+    transitionID = 0;
   }
 
 LABEL_19:
 
 LABEL_20:
 
-  return v10;
+  return transitionID;
 }
 
 - (void)initWithStartingEnvironmentMode:(uint64_t)a1 multitaskingModifier:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

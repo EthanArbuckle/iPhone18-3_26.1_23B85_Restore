@@ -1,8 +1,8 @@
 @interface EKSliceDescription
-+ (id)sliceDescriptionForSlicingEvent:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)sliceDescriptionForSlicingEvent:(id)event;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)setOriginalEventToSliceOn:(id)a3;
+- (void)setOriginalEventToSliceOn:(id)on;
 @end
 
 @implementation EKSliceDescription
@@ -12,47 +12,47 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(EKSliceDescription *)self originalMainSeriesDetails];
-  v7 = [v6 masterEvent];
-  v8 = [v7 localUID];
-  v9 = [(EKSliceDescription *)self originalMainSeriesDetails];
-  v10 = [v9 masterEvent];
-  v11 = [v10 title];
-  v12 = [v3 stringWithFormat:@"%@ <%p> :: Original master - localUID: %@, title: %@", v5, self, v8, v11];
+  originalMainSeriesDetails = [(EKSliceDescription *)self originalMainSeriesDetails];
+  masterEvent = [originalMainSeriesDetails masterEvent];
+  localUID = [masterEvent localUID];
+  originalMainSeriesDetails2 = [(EKSliceDescription *)self originalMainSeriesDetails];
+  masterEvent2 = [originalMainSeriesDetails2 masterEvent];
+  title = [masterEvent2 title];
+  v12 = [v3 stringWithFormat:@"%@ <%p> :: Original master - localUID: %@, title: %@", v5, self, localUID, title];
 
   return v12;
 }
 
-- (void)setOriginalEventToSliceOn:(id)a3
+- (void)setOriginalEventToSliceOn:(id)on
 {
-  v4 = [a3 copy];
+  v4 = [on copy];
   originalEventToSliceOn = self->_originalEventToSliceOn;
   self->_originalEventToSliceOn = v4;
 
   MEMORY[0x1EEE66BB8](v4, originalEventToSliceOn);
 }
 
-+ (id)sliceDescriptionForSlicingEvent:(id)a3
++ (id)sliceDescriptionForSlicingEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   objc_opt_class();
   v4 = objc_opt_new();
-  [v4 setOriginalEventToSliceOn:v3];
-  v5 = [[EKSeriesDetails alloc] initWithEvent:v3];
+  [v4 setOriginalEventToSliceOn:eventCopy];
+  v5 = [[EKSeriesDetails alloc] initWithEvent:eventCopy];
 
   [v4 setOriginalMainSeriesDetails:v5];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(EKSliceDescription *)self originalEventToSliceOn];
-  [v4 setOriginalEventToSliceOn:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  originalEventToSliceOn = [(EKSliceDescription *)self originalEventToSliceOn];
+  [v4 setOriginalEventToSliceOn:originalEventToSliceOn];
 
-  v6 = [(EKSliceDescription *)self originalMainSeriesDetails];
-  [v4 setOriginalMainSeriesDetails:v6];
+  originalMainSeriesDetails = [(EKSliceDescription *)self originalMainSeriesDetails];
+  [v4 setOriginalMainSeriesDetails:originalMainSeriesDetails];
 
   return v4;
 }

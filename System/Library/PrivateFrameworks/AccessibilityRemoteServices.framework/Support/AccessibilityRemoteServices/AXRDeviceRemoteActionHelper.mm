@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 - (float)_getCurrentVolume;
 - (id)_init;
-- (void)_setVolumeBy:(float)a3;
-- (void)performAction:(id)a3;
+- (void)_setVolumeBy:(float)by;
+- (void)performAction:(id)action;
 @end
 
 @implementation AXRDeviceRemoteActionHelper
@@ -34,20 +34,20 @@
   return v2;
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = ax_remote_daemon_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v15 = 138412290;
-    v16 = v4;
+    v16 = actionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "performing action: %@", &v15, 0xCu);
   }
 
-  if (([v4 isEqualToString:AXRDeviceRemoteActionNone] & 1) == 0)
+  if (([actionCopy isEqualToString:AXRDeviceRemoteActionNone] & 1) == 0)
   {
-    if ([v4 isEqualToString:AXRDeviceRemoteActionHome])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionHome])
     {
       v6 = +[AXPISystemActionHelper sharedInstance];
       [v6 activateHomeButton];
@@ -56,216 +56,216 @@ LABEL_51:
       goto LABEL_52;
     }
 
-    if ([v4 isEqualToString:AXRDeviceRemoteActionAppSwitcher])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionAppSwitcher])
     {
       v6 = +[AXPISystemActionHelper sharedInstance];
       [v6 toggleAppSwitcher];
       goto LABEL_51;
     }
 
-    if ([v4 isEqualToString:AXRDeviceRemoteActionNotificationCenter])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionNotificationCenter])
     {
       v6 = +[AXPISystemActionHelper sharedInstance];
       [v6 toggleNotificationCenter];
       goto LABEL_51;
     }
 
-    if ([v4 isEqualToString:AXRDeviceRemoteActionControlCenter])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionControlCenter])
     {
       v6 = +[AXPISystemActionHelper sharedInstance];
       [v6 toggleControlCenter];
       goto LABEL_51;
     }
 
-    if ([v4 isEqualToString:AXRDeviceRemoteActionSiri])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionSiri])
     {
       v6 = +[AXPISystemActionHelper sharedInstance];
       [v6 activateSiri];
       goto LABEL_51;
     }
 
-    if ([v4 isEqualToString:AXRDeviceRemoteActionTVMenu])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionTVMenu])
     {
       v6 = +[AXPISystemActionHelper sharedInstance];
       [v6 pressTVMenuButton];
       goto LABEL_51;
     }
 
-    if ([v4 isEqualToString:AXRDeviceRemoteActionTVSelect])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionTVSelect])
     {
       v6 = +[AXPISystemActionHelper sharedInstance];
       [v6 pressTVSelectButton];
       goto LABEL_51;
     }
 
-    if ([v4 isEqualToString:AXRDeviceRemoteActionSwitchControlCommandActivate])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionSwitchControlCommandActivate])
     {
-      v7 = +[AXSwitchControlServer server];
-      v6 = v7;
+      server = +[AXSwitchControlServer server];
+      v6 = server;
       v8 = 1;
 LABEL_50:
-      [v7 triggerCommand:v8];
+      [server triggerCommand:v8];
       goto LABEL_51;
     }
 
-    if ([v4 isEqualToString:AXRDeviceRemoteActionSwitchControlCommandMenu])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionSwitchControlCommandMenu])
     {
-      v7 = +[AXSwitchControlServer server];
-      v6 = v7;
+      server = +[AXSwitchControlServer server];
+      v6 = server;
       v8 = 2;
       goto LABEL_50;
     }
 
-    if ([v4 isEqualToString:AXRDeviceRemoteActionSwitchControlCommandStartScanning])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionSwitchControlCommandStartScanning])
     {
       v9 = AXSwitchControlServer;
 LABEL_24:
-      v7 = [v9 server];
-      v6 = v7;
+      server = [v9 server];
+      v6 = server;
       v8 = 3;
       goto LABEL_50;
     }
 
-    if ([v4 isEqualToString:AXRDeviceRemoteActionSwitchControlCommandSelect])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionSwitchControlCommandSelect])
     {
       v10 = AXSwitchControlServer;
 LABEL_27:
-      v7 = [v10 server];
-      v6 = v7;
+      server = [v10 server];
+      v6 = server;
       v8 = 4;
       goto LABEL_50;
     }
 
-    if ([v4 isEqualToString:AXRDeviceRemoteActionSwitchControlCommandMoveNext])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionSwitchControlCommandMoveNext])
     {
       v11 = AXSwitchControlServer;
 LABEL_30:
-      v7 = [v11 server];
-      v6 = v7;
+      server = [v11 server];
+      v6 = server;
       v8 = 5;
       goto LABEL_50;
     }
 
-    if ([v4 isEqualToString:AXRDeviceRemoteActionSwitchControlCommandMovePrevious])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionSwitchControlCommandMovePrevious])
     {
       v12 = AXSwitchControlServer;
 LABEL_33:
-      v7 = [v12 server];
-      v6 = v7;
+      server = [v12 server];
+      v6 = server;
       v8 = 6;
       goto LABEL_50;
     }
 
-    if ([v4 isEqualToString:AXRDeviceRemoteActionSwitchControlCommandStopScanning])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionSwitchControlCommandStopScanning])
     {
-      v7 = +[AXSwitchControlServer server];
-      v6 = v7;
+      server = +[AXSwitchControlServer server];
+      v6 = server;
       v8 = 7;
       goto LABEL_50;
     }
 
-    if ([v4 isEqualToString:AXRDeviceRemoteActionVoiceOverCommandSimpleTap])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionVoiceOverCommandSimpleTap])
     {
-      v7 = +[AXVoiceOverServer server];
-      v6 = v7;
+      server = +[AXVoiceOverServer server];
+      v6 = server;
       v8 = 19;
       goto LABEL_50;
     }
 
-    if ([v4 isEqualToString:AXRDeviceRemoteActionVoiceOverCommandNextElement])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionVoiceOverCommandNextElement])
     {
-      v7 = +[AXVoiceOverServer server];
-      v6 = v7;
+      server = +[AXVoiceOverServer server];
+      v6 = server;
       v8 = 9;
       goto LABEL_50;
     }
 
-    if ([v4 isEqualToString:AXRDeviceRemoteActionVoiceOverCommandPreviousElement])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionVoiceOverCommandPreviousElement])
     {
-      v7 = +[AXVoiceOverServer server];
-      v6 = v7;
+      server = +[AXVoiceOverServer server];
+      v6 = server;
       v8 = 8;
       goto LABEL_50;
     }
 
-    if ([v4 isEqualToString:AXRDeviceRemoteActionVoiceOverCommandNextRotorOption])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionVoiceOverCommandNextRotorOption])
     {
-      v7 = +[AXVoiceOverServer server];
-      v6 = v7;
+      server = +[AXVoiceOverServer server];
+      v6 = server;
       v8 = 14;
       goto LABEL_50;
     }
 
-    if ([v4 isEqualToString:AXRDeviceRemoteActionVoiceOverCommandPreviousRotorOption])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionVoiceOverCommandPreviousRotorOption])
     {
-      v7 = +[AXVoiceOverServer server];
-      v6 = v7;
+      server = +[AXVoiceOverServer server];
+      v6 = server;
       v8 = 15;
       goto LABEL_50;
     }
 
-    if ([v4 isEqualToString:AXRDeviceRemoteActionVoiceOverCommandNextRotorItem])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionVoiceOverCommandNextRotorItem])
     {
-      v7 = +[AXVoiceOverServer server];
-      v6 = v7;
+      server = +[AXVoiceOverServer server];
+      v6 = server;
       v8 = 17;
       goto LABEL_50;
     }
 
-    if ([v4 isEqualToString:AXRDeviceRemoteActionVoiceOverCommandPreviousRotorItem])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionVoiceOverCommandPreviousRotorItem])
     {
-      v7 = +[AXVoiceOverServer server];
-      v6 = v7;
+      server = +[AXVoiceOverServer server];
+      v6 = server;
       v8 = 16;
       goto LABEL_50;
     }
 
-    if ([v4 isEqualToString:AXRDeviceRemoteActionVoiceOverCommandScrollUpPage])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionVoiceOverCommandScrollUpPage])
     {
       v9 = AXVoiceOverServer;
       goto LABEL_24;
     }
 
-    if ([v4 isEqualToString:AXRDeviceRemoteActionVoiceOverCommandScrollDownPage])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionVoiceOverCommandScrollDownPage])
     {
       v10 = AXVoiceOverServer;
       goto LABEL_27;
     }
 
-    if ([v4 isEqualToString:AXRDeviceRemoteActionVoiceOverCommandScrollLeftPage])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionVoiceOverCommandScrollLeftPage])
     {
       v11 = AXVoiceOverServer;
       goto LABEL_30;
     }
 
-    if ([v4 isEqualToString:AXRDeviceRemoteActionVoiceOverCommandScrollRightPage])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionVoiceOverCommandScrollRightPage])
     {
       v12 = AXVoiceOverServer;
       goto LABEL_33;
     }
 
-    if ([v4 isEqualToString:AXRDeviceRemoteActionMediaPlayPause])
+    if ([actionCopy isEqualToString:AXRDeviceRemoteActionMediaPlayPause])
     {
       v13 = 2;
     }
 
-    else if ([v4 isEqualToString:AXRDeviceRemoteActionMediaNextTrack])
+    else if ([actionCopy isEqualToString:AXRDeviceRemoteActionMediaNextTrack])
     {
       v13 = 4;
     }
 
     else
     {
-      if (![v4 isEqualToString:AXRDeviceRemoteActionMediaPreviousTrack])
+      if (![actionCopy isEqualToString:AXRDeviceRemoteActionMediaPreviousTrack])
       {
-        if ([v4 isEqualToString:AXRDeviceRemoteActionMediaVolumeUp])
+        if ([actionCopy isEqualToString:AXRDeviceRemoteActionMediaVolumeUp])
         {
           LODWORD(v14) = 1028443341;
         }
 
         else
         {
-          if (![v4 isEqualToString:AXRDeviceRemoteActionMediaVolumeDown])
+          if (![actionCopy isEqualToString:AXRDeviceRemoteActionMediaVolumeDown])
           {
             goto LABEL_52;
           }
@@ -288,20 +288,20 @@ LABEL_52:
 
 - (float)_getCurrentVolume
 {
-  v2 = [sub_100003714() sharedAVSystemController];
+  sharedAVSystemController = [sub_100003714() sharedAVSystemController];
   v5 = 0.0;
-  [v2 getVolume:&v5 forCategory:@"MediaPlayback"];
+  [sharedAVSystemController getVolume:&v5 forCategory:@"MediaPlayback"];
   v3 = v5;
 
   return v3;
 }
 
-- (void)_setVolumeBy:(float)a3
+- (void)_setVolumeBy:(float)by
 {
   [(AXRDeviceRemoteActionHelper *)self _getCurrentVolume];
   v6 = v5;
   [(AXRDeviceRemoteActionHelper *)self _getCurrentVolume];
-  v8 = fmin((v7 + a3), 1.0);
+  v8 = fmin((v7 + by), 1.0);
   if (v8 < 0.0)
   {
     v8 = 0.0;
@@ -310,9 +310,9 @@ LABEL_52:
   v9 = v8;
   if (vabds_f32(v6, v9) >= 0.00000011921)
   {
-    v11 = [sub_100003714() sharedAVSystemController];
+    sharedAVSystemController = [sub_100003714() sharedAVSystemController];
     *&v10 = v9;
-    [v11 setVolumeTo:@"MediaPlayback" forCategory:v10];
+    [sharedAVSystemController setVolumeTo:@"MediaPlayback" forCategory:v10];
   }
 }
 

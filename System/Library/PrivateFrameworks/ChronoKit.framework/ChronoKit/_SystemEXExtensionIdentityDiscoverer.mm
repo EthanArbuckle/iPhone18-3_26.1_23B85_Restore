@@ -1,6 +1,6 @@
 @interface _SystemEXExtensionIdentityDiscoverer
 - (_SystemEXExtensionIdentityDiscoverer)init;
-- (void)queryControllerDidUpdate:(id)a3;
+- (void)queryControllerDidUpdate:(id)update;
 @end
 
 @implementation _SystemEXExtensionIdentityDiscoverer
@@ -19,11 +19,11 @@
   return [(_SystemEXExtensionIdentityDiscoverer *)&v8 init];
 }
 
-- (void)queryControllerDidUpdate:(id)a3
+- (void)queryControllerDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BF433648(v4);
+  updateCopy = update;
+  selfCopy = self;
+  sub_1BF433648(updateCopy);
 }
 
 @end

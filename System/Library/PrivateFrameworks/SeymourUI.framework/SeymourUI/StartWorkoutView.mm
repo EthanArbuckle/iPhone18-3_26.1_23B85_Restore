@@ -1,6 +1,6 @@
 @interface StartWorkoutView
 - (CGSize)intrinsicContentSize;
-- (_TtC9SeymourUI16StartWorkoutView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI16StartWorkoutView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation StartWorkoutView
@@ -14,7 +14,7 @@
   return result;
 }
 
-- (_TtC9SeymourUI16StartWorkoutView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI16StartWorkoutView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

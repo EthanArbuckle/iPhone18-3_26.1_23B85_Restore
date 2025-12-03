@@ -1,10 +1,10 @@
 @interface CWFLocalDeviceDiscovery
-- (BOOL)_filterName:(id)a3 forLexicon:(_LXLexicon *)a4;
+- (BOOL)_filterName:(id)name forLexicon:(_LXLexicon *)lexicon;
 - (CWFLocalDeviceDiscovery)init;
-- (id)_combineDevicesWithDifferentSourceAddresses:(id)a3;
-- (id)_tokenizeStringForSpecialCharacters:(id)a3;
-- (void)_callHandlerWithValidResults:(id)a3 filtered:(id)a4;
-- (void)_processMRCRecord:(id)a3;
+- (id)_combineDevicesWithDifferentSourceAddresses:(id)addresses;
+- (id)_tokenizeStringForSpecialCharacters:(id)characters;
+- (void)_callHandlerWithValidResults:(id)results filtered:(id)filtered;
+- (void)_processMRCRecord:(id)record;
 - (void)activate;
 - (void)dealloc;
 - (void)invalidate;
@@ -23,14 +23,14 @@
     v4 = dispatch_queue_create("CWFLocalNetworkDeviceDiscoveryQueue", v3);
     [(CWFLocalDeviceDiscovery *)v2 setMrcQueue:v4];
 
-    v5 = [MEMORY[0x1E695DF58] currentLocale];
-    v6 = [v5 localeIdentifier];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
 
-    v7 = [(__CFString *)v6 hasPrefix:@"en"];
+    v7 = [(__CFString *)localeIdentifier hasPrefix:@"en"];
     v8 = v7;
     if (v7)
     {
-      v9 = v6;
+      v9 = localeIdentifier;
     }
 
     else
@@ -42,17 +42,17 @@
     v2->_lexiconEnglish = sub_1E0C5E87C(v10);
     if ((v8 & 1) == 0)
     {
-      v2->_lexiconUserLocale = sub_1E0C5E87C(v6);
+      v2->_lexiconUserLocale = sub_1E0C5E87C(localeIdentifier);
     }
 
-    v11 = [MEMORY[0x1E696AD48] whitespaceAndNewlineCharacterSet];
-    v12 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
-    [v11 formUnionWithCharacterSet:v12];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AD48] whitespaceAndNewlineCharacterSet];
+    punctuationCharacterSet = [MEMORY[0x1E696AB08] punctuationCharacterSet];
+    [whitespaceAndNewlineCharacterSet formUnionWithCharacterSet:punctuationCharacterSet];
 
-    v13 = [MEMORY[0x1E696AB08] symbolCharacterSet];
-    [v11 formUnionWithCharacterSet:v13];
+    symbolCharacterSet = [MEMORY[0x1E696AB08] symbolCharacterSet];
+    [whitespaceAndNewlineCharacterSet formUnionWithCharacterSet:symbolCharacterSet];
 
-    v14 = [v11 copy];
+    v14 = [whitespaceAndNewlineCharacterSet copy];
     tokenizationCharacterSet = v2->_tokenizationCharacterSet;
     v2->_tokenizationCharacterSet = v14;
   }
@@ -125,8 +125,8 @@
     self->_mrcInquiry = v12;
 
     v14 = self->_mrcInquiry;
-    v15 = [(CWFLocalDeviceDiscovery *)self mrcQueue];
-    MEMORY[0x1E12EA050](v14, v15);
+    mrcQueue = [(CWFLocalDeviceDiscovery *)self mrcQueue];
+    MEMORY[0x1E12EA050](v14, mrcQueue);
 
     v16 = self->_mrcInquiry;
     mrc_cached_local_records_inquiry_set_result_handler();
@@ -188,16 +188,16 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_callHandlerWithValidResults:(id)a3 filtered:(id)a4
+- (void)_callHandlerWithValidResults:(id)results filtered:(id)filtered
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CWFLocalDeviceDiscovery *)self handler];
+  resultsCopy = results;
+  filteredCopy = filtered;
+  handler = [(CWFLocalDeviceDiscovery *)self handler];
 
   v9 = CWFGetOSLog();
   v10 = v9;
-  if (v8)
+  if (handler)
   {
     if (v9)
     {
@@ -222,8 +222,8 @@
     block[2] = sub_1E0C5F5C0;
     block[3] = &unk_1E86E6060;
     block[4] = self;
-    v17 = v6;
-    v18 = v7;
+    v17 = resultsCopy;
+    v18 = filteredCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
@@ -251,19 +251,19 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_processMRCRecord:(id)a3
+- (void)_processMRCRecord:(id)record
 {
   v114 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recordCopy = record;
   v91 = [MEMORY[0x1E695DFA8] set];
   v80 = [MEMORY[0x1E695DFA8] set];
   v101 = 0u;
   v102 = 0u;
   v103 = 0u;
   v104 = 0u;
-  v83 = v4;
-  obj = [v4 allKeys];
-  v90 = self;
+  v83 = recordCopy;
+  obj = [recordCopy allKeys];
+  selfCopy = self;
   v84 = [obj countByEnumeratingWithState:&v101 objects:v113 count:16];
   if (!v84)
   {
@@ -338,23 +338,23 @@
               _os_log_send_and_compose_impl();
             }
 
-            v20 = [(CWFLocalNetworkDevice *)v15 serviceName];
-            v21 = [v20 length];
+            serviceName = [(CWFLocalNetworkDevice *)v15 serviceName];
+            v21 = [serviceName length];
 
             if (v21)
             {
-              v22 = [(CWFLocalNetworkDevice *)v15 serviceName];
-              [v8 addObject:v22];
+              serviceName2 = [(CWFLocalNetworkDevice *)v15 serviceName];
+              [v8 addObject:serviceName2];
             }
 
             v23 = [(CWFLocalNetworkDevice *)v15 deviceName:v78];
-            v24 = v23;
+            _stringByReplacingHyphensWithSpaces = v23;
             if (v23 && [(CWFLocalNetworkDevice *)v23 length])
             {
-              v25 = [(CWFLocalNetworkDevice *)v15 rawString];
-              v26 = [v25 _stringContainsFilteredServiceName];
+              rawString = [(CWFLocalNetworkDevice *)v15 rawString];
+              _stringContainsFilteredServiceName = [rawString _stringContainsFilteredServiceName];
 
-              if (v26)
+              if (_stringContainsFilteredServiceName)
               {
                 v27 = CWFGetOSLog();
                 if (v27)
@@ -370,20 +370,20 @@
 
                 if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
                 {
-                  v34 = [(CWFLocalNetworkDevice *)v15 rawString];
+                  rawString2 = [(CWFLocalNetworkDevice *)v15 rawString];
                   v106 = 136315650;
                   v107 = "[CWFLocalDeviceDiscovery _processMRCRecord:]";
                   v108 = 2112;
-                  v109 = v24;
+                  v109 = _stringByReplacingHyphensWithSpaces;
                   v110 = 2112;
-                  v111 = v34;
+                  v111 = rawString2;
                   LODWORD(v79) = 32;
                   v78 = &v106;
                   _os_log_send_and_compose_impl();
                 }
 
-                v35 = [(CWFLocalNetworkDevice *)v15 rawString];
-                v36 = v35;
+                rawString3 = [(CWFLocalNetworkDevice *)v15 rawString];
+                v36 = rawString3;
                 v37 = 1;
 LABEL_48:
                 v45 = [CWFLocalNetworkFilteredName filteredName:v36 reason:v37, v78, v79];
@@ -392,7 +392,7 @@ LABEL_48:
                 goto LABEL_49;
               }
 
-              if ([(CWFLocalNetworkDevice *)v24 _stringContainsGeneratedName])
+              if ([(CWFLocalNetworkDevice *)_stringByReplacingHyphensWithSpaces _stringContainsGeneratedName])
               {
                 v29 = CWFGetOSLog();
                 if (v29)
@@ -408,25 +408,25 @@ LABEL_48:
 
                 if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
                 {
-                  v42 = [(CWFLocalNetworkDevice *)v15 rawString];
+                  rawString4 = [(CWFLocalNetworkDevice *)v15 rawString];
                   v106 = 136315650;
                   v107 = "[CWFLocalDeviceDiscovery _processMRCRecord:]";
                   v108 = 2112;
-                  v109 = v24;
+                  v109 = _stringByReplacingHyphensWithSpaces;
                   v110 = 2112;
-                  v111 = v42;
+                  v111 = rawString4;
                   LODWORD(v79) = 32;
                   v78 = &v106;
                   _os_log_send_and_compose_impl();
                 }
 
-                v35 = [(CWFLocalNetworkDevice *)v15 rawString];
-                v36 = v35;
+                rawString3 = [(CWFLocalNetworkDevice *)v15 rawString];
+                v36 = rawString3;
                 v37 = 3;
                 goto LABEL_48;
               }
 
-              if ([(CWFLocalNetworkDevice *)v24 _stringContainsUnwantedCharactersAtStartOrEnd])
+              if ([(CWFLocalNetworkDevice *)_stringByReplacingHyphensWithSpaces _stringContainsUnwantedCharactersAtStartOrEnd])
               {
                 v31 = CWFGetOSLog();
                 if (v31)
@@ -442,33 +442,33 @@ LABEL_48:
 
                 if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
                 {
-                  v44 = [(CWFLocalNetworkDevice *)v15 rawString];
+                  rawString5 = [(CWFLocalNetworkDevice *)v15 rawString];
                   v106 = 136315650;
                   v107 = "[CWFLocalDeviceDiscovery _processMRCRecord:]";
                   v108 = 2112;
-                  v109 = v24;
+                  v109 = _stringByReplacingHyphensWithSpaces;
                   v110 = 2112;
-                  v111 = v44;
+                  v111 = rawString5;
                   LODWORD(v79) = 32;
                   v78 = &v106;
                   _os_log_send_and_compose_impl();
                 }
 
-                v35 = [(CWFLocalNetworkDevice *)v15 rawString];
-                v36 = v35;
+                rawString3 = [(CWFLocalNetworkDevice *)v15 rawString];
+                v36 = rawString3;
                 v37 = 2;
                 goto LABEL_48;
               }
 
-              v38 = [(CWFLocalNetworkDevice *)v24 _stringByRemovingUnwantedCharacters];
+              _stringByRemovingUnwantedCharacters = [(CWFLocalNetworkDevice *)_stringByReplacingHyphensWithSpaces _stringByRemovingUnwantedCharacters];
 
-              if ([(CWFLocalNetworkDevice *)v38 length])
+              if ([(CWFLocalNetworkDevice *)_stringByRemovingUnwantedCharacters length])
               {
-                if (!v90->_lexiconEnglish || ![(CWFLocalDeviceDiscovery *)v90 _filterName:v38 forLexicon:?]&& (!v90->_lexiconUserLocale || ![(CWFLocalDeviceDiscovery *)v90 _filterName:v38 forLexicon:?]))
+                if (!selfCopy->_lexiconEnglish || ![(CWFLocalDeviceDiscovery *)selfCopy _filterName:_stringByRemovingUnwantedCharacters forLexicon:?]&& (!selfCopy->_lexiconUserLocale || ![(CWFLocalDeviceDiscovery *)selfCopy _filterName:_stringByRemovingUnwantedCharacters forLexicon:?]))
                 {
-                  v24 = [(CWFLocalNetworkDevice *)v38 _stringByReplacingHyphensWithSpaces];
+                  _stringByReplacingHyphensWithSpaces = [(CWFLocalNetworkDevice *)_stringByRemovingUnwantedCharacters _stringByReplacingHyphensWithSpaces];
 
-                  [v89 addObject:v24];
+                  [v89 addObject:_stringByReplacingHyphensWithSpaces];
                   goto LABEL_49;
                 }
 
@@ -489,18 +489,18 @@ LABEL_48:
                   v106 = 136315394;
                   v107 = "[CWFLocalDeviceDiscovery _processMRCRecord:]";
                   v108 = 2112;
-                  v109 = v38;
+                  v109 = _stringByRemovingUnwantedCharacters;
                   LODWORD(v79) = 22;
                   v78 = &v106;
                   _os_log_send_and_compose_impl();
                 }
 
-                v47 = [(CWFLocalNetworkDevice *)v15 rawString];
-                v48 = [CWFLocalNetworkFilteredName filteredName:v47 reason:4];
+                rawString6 = [(CWFLocalNetworkDevice *)v15 rawString];
+                v48 = [CWFLocalNetworkFilteredName filteredName:rawString6 reason:4];
                 [v91 addObject:v48];
               }
 
-              v24 = v38;
+              _stringByReplacingHyphensWithSpaces = _stringByRemovingUnwantedCharacters;
             }
 
 LABEL_49:
@@ -518,7 +518,7 @@ LABEL_49:
       }
 
       [(CWFLocalNetworkDevice *)v86 setServiceNames:v8];
-      self = v90;
+      self = selfCopy;
       if ([v89 count])
       {
         v50 = CWFGetOSLog();
@@ -535,11 +535,11 @@ LABEL_49:
 
         if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
         {
-          v53 = [v89 _prettyDescription];
+          _prettyDescription = [v89 _prettyDescription];
           v106 = 136315394;
           v107 = "[CWFLocalDeviceDiscovery _processMRCRecord:]";
           v108 = 2112;
-          v109 = v53;
+          v109 = _prettyDescription;
           LODWORD(v79) = 22;
           v78 = &v106;
           _os_log_send_and_compose_impl();
@@ -547,23 +547,23 @@ LABEL_49:
 
         if ([v89 count] == 1)
         {
-          v54 = [v89 anyObject];
-          [(CWFLocalNetworkDevice *)v86 setName:v54];
+          anyObject = [v89 anyObject];
+          [(CWFLocalNetworkDevice *)v86 setName:anyObject];
         }
 
         else
         {
-          v55 = [v89 allObjects];
-          v54 = [v55 sortedArrayUsingComparator:&unk_1F5B89B50];
+          allObjects = [v89 allObjects];
+          anyObject = [allObjects sortedArrayUsingComparator:&unk_1F5B89B50];
 
-          v56 = [v54 firstObject];
-          [(CWFLocalNetworkDevice *)v86 setName:v56];
+          firstObject = [anyObject firstObject];
+          [(CWFLocalNetworkDevice *)v86 setName:firstObject];
         }
 
         if ([v85 _isLocalAddress])
         {
-          v57 = [(CWFLocalNetworkDevice *)v86 name];
-          v58 = [CWFLocalNetworkFilteredName filteredName:v57 reason:5];
+          name = [(CWFLocalNetworkDevice *)v86 name];
+          v58 = [CWFLocalNetworkFilteredName filteredName:name reason:5];
           [v91 addObject:v58];
 
           v59 = CWFGetOSLog();
@@ -677,23 +677,23 @@ LABEL_77:
     while (v69);
   }
 
-  [(CWFLocalDeviceDiscovery *)v90 _callHandlerWithValidResults:v67 filtered:v91];
+  [(CWFLocalDeviceDiscovery *)selfCopy _callHandlerWithValidResults:v67 filtered:v91];
   v77 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_combineDevicesWithDifferentSourceAddresses:(id)a3
+- (id)_combineDevicesWithDifferentSourceAddresses:(id)addresses
 {
   v77 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  addressesCopy = addresses;
+  if (addressesCopy)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v49 = v3;
-    v5 = v3;
+    v49 = addressesCopy;
+    v5 = addressesCopy;
     v6 = [v5 countByEnumeratingWithState:&v66 objects:v76 count:16];
     if (v6)
     {
@@ -709,15 +709,15 @@ LABEL_77:
           }
 
           v10 = *(*(&v66 + 1) + 8 * i);
-          v11 = [v10 name];
+          name = [v10 name];
 
-          if (v11)
+          if (name)
           {
-            v12 = [v10 sanitizedName];
-            v13 = [v4 objectForKey:v12];
+            sanitizedName = [v10 sanitizedName];
+            v13 = [dictionary objectForKey:sanitizedName];
             if (v13)
             {
-              [v4 objectForKey:v12];
+              [dictionary objectForKey:sanitizedName];
             }
 
             else
@@ -727,7 +727,7 @@ LABEL_77:
             v15 = ;
 
             [v15 addObject:v10];
-            [v4 setObject:v15 forKey:v12];
+            [dictionary setObject:v15 forKey:sanitizedName];
           }
 
           else
@@ -735,16 +735,16 @@ LABEL_77:
             v14 = CWFGetOSLog();
             if (v14)
             {
-              v12 = CWFGetOSLog();
+              sanitizedName = CWFGetOSLog();
             }
 
             else
             {
-              v12 = MEMORY[0x1E69E9C10];
+              sanitizedName = MEMORY[0x1E69E9C10];
               v16 = MEMORY[0x1E69E9C10];
             }
 
-            if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(sanitizedName, OS_LOG_TYPE_DEFAULT))
             {
               v72 = 136315394;
               v73 = "[CWFLocalDeviceDiscovery _combineDevicesWithDifferentSourceAddresses:]";
@@ -768,14 +768,14 @@ LABEL_77:
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
-    obj = [v4 allKeys];
+    obj = [dictionary allKeys];
     v18 = [obj countByEnumeratingWithState:&v62 objects:v71 count:16];
     if (v18)
     {
       v19 = v18;
       v20 = *v63;
       v51 = v17;
-      v52 = v4;
+      v52 = dictionary;
       v50 = *v63;
       do
       {
@@ -789,18 +789,18 @@ LABEL_77:
           }
 
           v22 = *(*(&v62 + 1) + 8 * v21);
-          v23 = [v4 objectForKey:{v22, v47, v48}];
+          v23 = [dictionary objectForKey:{v22, v47, v48}];
           if ([v23 count] == 1)
           {
-            v24 = [v23 anyObject];
-            [v17 addObject:v24];
+            anyObject = [v23 anyObject];
+            [v17 addObject:anyObject];
           }
 
           else
           {
             v55 = v22;
             v57 = v21;
-            v24 = [MEMORY[0x1E695DFA8] set];
+            anyObject = [MEMORY[0x1E695DFA8] set];
             v25 = [MEMORY[0x1E695DFA8] set];
             v58 = 0u;
             v59 = 0u;
@@ -823,33 +823,33 @@ LABEL_77:
                   }
 
                   v31 = *(*(&v58 + 1) + 8 * j);
-                  v32 = [v31 serviceNames];
-                  if (v32)
+                  serviceNames = [v31 serviceNames];
+                  if (serviceNames)
                   {
-                    v33 = v32;
-                    v34 = [v31 serviceNames];
-                    v35 = [v34 count];
+                    v33 = serviceNames;
+                    serviceNames2 = [v31 serviceNames];
+                    v35 = [serviceNames2 count];
 
                     if (v35)
                     {
-                      v36 = [v31 serviceNames];
-                      v37 = [v36 allObjects];
-                      [v24 addObjectsFromArray:v37];
+                      serviceNames3 = [v31 serviceNames];
+                      allObjects = [serviceNames3 allObjects];
+                      [anyObject addObjectsFromArray:allObjects];
                     }
                   }
 
-                  v38 = [v31 sourceAddresses];
-                  if (v38)
+                  sourceAddresses = [v31 sourceAddresses];
+                  if (sourceAddresses)
                   {
-                    v39 = v38;
-                    v40 = [v31 sourceAddresses];
-                    v41 = [v40 count];
+                    v39 = sourceAddresses;
+                    sourceAddresses2 = [v31 sourceAddresses];
+                    v41 = [sourceAddresses2 count];
 
                     if (v41)
                     {
-                      v42 = [v31 sourceAddresses];
-                      v43 = [v42 allObjects];
-                      [v25 addObjectsFromArray:v43];
+                      sourceAddresses3 = [v31 sourceAddresses];
+                      allObjects2 = [sourceAddresses3 allObjects];
+                      [v25 addObjectsFromArray:allObjects2];
                     }
                   }
                 }
@@ -862,12 +862,12 @@ LABEL_77:
 
             v44 = objc_alloc_init(CWFLocalNetworkDevice);
             [(CWFLocalNetworkDevice *)v44 setName:v55];
-            [(CWFLocalNetworkDevice *)v44 setServiceNames:v24];
+            [(CWFLocalNetworkDevice *)v44 setServiceNames:anyObject];
             [(CWFLocalNetworkDevice *)v44 setSourceAddresses:v25];
             v17 = v51;
             [v51 addObject:v44];
 
-            v4 = v52;
+            dictionary = v52;
             v19 = v53;
             v20 = v50;
             v23 = v56;
@@ -884,7 +884,7 @@ LABEL_77:
       while (v19);
     }
 
-    v3 = v49;
+    addressesCopy = v49;
   }
 
   else
@@ -897,11 +897,11 @@ LABEL_77:
   return v17;
 }
 
-- (BOOL)_filterName:(id)a3 forLexicon:(_LXLexicon *)a4
+- (BOOL)_filterName:(id)name forLexicon:(_LXLexicon *)lexicon
 {
   v57 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CWFLocalDeviceDiscovery *)self _tokenizeStringForSpecialCharacters:v6];
+  nameCopy = name;
+  v7 = [(CWFLocalDeviceDiscovery *)self _tokenizeStringForSpecialCharacters:nameCopy];
   v8 = CWFGetOSLog();
   if (v8)
   {
@@ -917,7 +917,7 @@ LABEL_77:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v45 = 138412546;
-    v46 = v6;
+    v46 = nameCopy;
     v47 = 2112;
     v48 = v7;
     _os_log_send_and_compose_impl();
@@ -941,8 +941,8 @@ LABEL_77:
     v27[1] = 3221225472;
     v27[2] = sub_1E0C60C34;
     v27[3] = &unk_1E86E7370;
-    v32 = a4;
-    v11 = v6;
+    lexiconCopy = lexicon;
+    v11 = nameCopy;
     v28 = v11;
     v29 = &v41;
     v30 = &v33;
@@ -1019,7 +1019,7 @@ LABEL_77:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v45 = 138412290;
-      v46 = v6;
+      v46 = nameCopy;
       _os_log_send_and_compose_impl();
     }
 
@@ -1030,15 +1030,15 @@ LABEL_77:
   return v23;
 }
 
-- (id)_tokenizeStringForSpecialCharacters:(id)a3
+- (id)_tokenizeStringForSpecialCharacters:(id)characters
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  charactersCopy = characters;
   v18 = [MEMORY[0x1E695DFA8] set];
-  if ([v3 length])
+  if ([charactersCopy length])
   {
     context = objc_autoreleasePoolPush();
-    v19 = [v3 length];
+    v19 = [charactersCopy length];
     v4 = v19 - 2;
     if (v19 >= 2)
     {
@@ -1047,9 +1047,9 @@ LABEL_77:
       do
       {
         v7 = v5 + 1;
-        v8 = [v3 characterAtIndex:v5 + 1];
-        v9 = [(CWFLocalDeviceDiscovery *)self tokenizationCharacterSet];
-        LODWORD(v8) = [v9 characterIsMember:v8];
+        v8 = [charactersCopy characterAtIndex:v5 + 1];
+        tokenizationCharacterSet = [(CWFLocalDeviceDiscovery *)self tokenizationCharacterSet];
+        LODWORD(v8) = [tokenizationCharacterSet characterIsMember:v8];
 
         if ((v4 == v5) | v8)
         {
@@ -1059,14 +1059,14 @@ LABEL_77:
             v10 = v5 + 1;
           }
 
-          v11 = [v3 substringWithRange:{v6, v10 - v6}];
-          v12 = [(CWFLocalDeviceDiscovery *)self tokenizationCharacterSet];
-          v13 = [v11 stringByTrimmingCharactersInSet:v12];
-          v14 = [v13 lowercaseString];
+          v11 = [charactersCopy substringWithRange:{v6, v10 - v6}];
+          tokenizationCharacterSet2 = [(CWFLocalDeviceDiscovery *)self tokenizationCharacterSet];
+          v13 = [v11 stringByTrimmingCharactersInSet:tokenizationCharacterSet2];
+          lowercaseString = [v13 lowercaseString];
 
-          if ([v14 length] >= 2)
+          if ([lowercaseString length] >= 2)
           {
-            [v18 addObject:v14];
+            [v18 addObject:lowercaseString];
           }
         }
 

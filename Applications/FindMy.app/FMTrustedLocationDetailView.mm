@@ -1,38 +1,38 @@
 @interface FMTrustedLocationDetailView
-- (void)deleteRowTapWithSender:(id)a3;
-- (void)dismissPresentedVCWithSender:(id)a3;
-- (void)editLocationRowTapWithSender:(id)a3;
+- (void)deleteRowTapWithSender:(id)sender;
+- (void)dismissPresentedVCWithSender:(id)sender;
+- (void)editLocationRowTapWithSender:(id)sender;
 - (void)handleAction;
-- (void)meRowTapWithSender:(id)a3;
+- (void)meRowTapWithSender:(id)sender;
 @end
 
 @implementation FMTrustedLocationDetailView
 
-- (void)editLocationRowTapWithSender:(id)a3
+- (void)editLocationRowTapWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_100331634(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_100331634(senderCopy);
 }
 
-- (void)deleteRowTapWithSender:(id)a3
+- (void)deleteRowTapWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_100331C7C(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_100331C7C(senderCopy);
 }
 
-- (void)meRowTapWithSender:(id)a3
+- (void)meRowTapWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_100338498();
 }
 
-- (void)dismissPresentedVCWithSender:(id)a3
+- (void)dismissPresentedVCWithSender:(id)sender
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   sub_100332DC4();
@@ -42,7 +42,7 @@
 
 - (void)handleAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_100332F64();
 }
 

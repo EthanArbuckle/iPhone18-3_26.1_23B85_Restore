@@ -1,36 +1,36 @@
 @interface FindMyDeviceHelperXPCServer
 - (BOOL)isEntitled;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (FMDAccessoryAudioController)accessoryAudioController;
 - (FMDMessageAudioController)messageAudioController;
 - (id)_disableBiometricID;
 - (id)getManagedLostModeFileURL;
 - (id)getNeedsLocateAckLostModeFileURL;
-- (void)_stopPlayingForAccessory:(id)a3 rampDownDuration:(double)a4 completion:(id)a5;
-- (void)_stopSoundTimerFired:(id)a3;
-- (void)_updateLostModeInfo:(id)a3 toFile:(id)a4 completion:(id)a5;
-- (void)disableBiometricIDWithCompletion:(id)a3;
+- (void)_stopPlayingForAccessory:(id)accessory rampDownDuration:(double)duration completion:(id)completion;
+- (void)_stopSoundTimerFired:(id)fired;
+- (void)_updateLostModeInfo:(id)info toFile:(id)file completion:(id)completion;
+- (void)disableBiometricIDWithCompletion:(id)completion;
 - (void)invalidateStopSoundTimer;
-- (void)setTimeoutForDuration:(double)a3;
-- (void)startPlayingSoundForAccessory:(id)a3 duration:(double)a4 rampUpDuration:(double)a5 channels:(id)a6 completion:(id)a7;
-- (void)startPlayingSoundForMessage:(id)a3 completion:(id)a4;
-- (void)stopPlayingForAccessory:(id)a3 rampDownDuration:(double)a4 completion:(id)a5;
-- (void)stopSoundMessageWithCompletion:(id)a3;
-- (void)updateManagedLostModeInfo:(id)a3 completion:(id)a4;
-- (void)updateNeedsLocateAckLostModeInfo:(id)a3 completion:(id)a4;
-- (void)waitForRoutableAccessory:(id)a3 timeout:(double)a4 completion:(id)a5;
+- (void)setTimeoutForDuration:(double)duration;
+- (void)startPlayingSoundForAccessory:(id)accessory duration:(double)duration rampUpDuration:(double)upDuration channels:(id)channels completion:(id)completion;
+- (void)startPlayingSoundForMessage:(id)message completion:(id)completion;
+- (void)stopPlayingForAccessory:(id)accessory rampDownDuration:(double)duration completion:(id)completion;
+- (void)stopSoundMessageWithCompletion:(id)completion;
+- (void)updateManagedLostModeInfo:(id)info completion:(id)completion;
+- (void)updateNeedsLocateAckLostModeInfo:(id)info completion:(id)completion;
+- (void)waitForRoutableAccessory:(id)accessory timeout:(double)timeout completion:(id)completion;
 @end
 
 @implementation FindMyDeviceHelperXPCServer
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = sub_1000070C0();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v5;
+    v15 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Received new XPC connection %@", buf, 0xCu);
   }
 
@@ -47,18 +47,18 @@
   [v12 setClasses:v11 forSelector:"stopSoundMessageWithCompletion:" argumentIndex:0 ofReply:1];
   [v12 setClasses:v11 forSelector:"didAddLocalFindableAccessory:completion:" argumentIndex:0 ofReply:1];
   [v12 setClasses:v11 forSelector:"didRemoveLocalFindableAccessory:completion:" argumentIndex:0 ofReply:1];
-  [v5 setExportedInterface:v12];
-  [v5 setExportedObject:self];
-  [v5 resume];
+  [connectionCopy setExportedInterface:v12];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (void)startPlayingSoundForAccessory:(id)a3 duration:(double)a4 rampUpDuration:(double)a5 channels:(id)a6 completion:(id)a7
+- (void)startPlayingSoundForAccessory:(id)accessory duration:(double)duration rampUpDuration:(double)upDuration channels:(id)channels completion:(id)completion
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  accessoryCopy = accessory;
+  channelsCopy = channels;
+  completionCopy = completion;
   v16 = +[NSXPCConnection currentConnection];
   v17 = [v16 valueForEntitlement:@"com.apple.icloud.FindMyDevice.FindMyDeviceHelperXPCService.access"];
 
@@ -68,37 +68,37 @@
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v38 = v13;
+      v38 = accessoryCopy;
       v39 = 2048;
-      v40 = a4;
+      durationCopy = duration;
       v41 = 2048;
-      v42 = a5;
+      upDurationCopy = upDuration;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Start playing sound for accessory: %@ duration: %f rampUpDuration: %f", buf, 0x20u);
     }
 
-    if (v13)
+    if (accessoryCopy)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100007FA4;
       block[3] = &unk_1000152C0;
-      v33 = a5;
+      upDurationCopy2 = upDuration;
       block[4] = self;
-      v30 = v13;
-      v31 = v14;
-      v34 = a4;
-      v32 = v15;
+      v30 = accessoryCopy;
+      v31 = channelsCopy;
+      durationCopy2 = duration;
+      v32 = completionCopy;
       dispatch_async(&_dispatch_main_q, block);
     }
 
-    else if (v15)
+    else if (completionCopy)
     {
       v26 = [NSError alloc];
       v35 = NSLocalizedFailureReasonErrorKey;
       v36 = @"Accessory cannot be nil";
       v27 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
       v28 = [v26 initWithDomain:@"com.apple.icloud.FindMyDevice" code:1 userInfo:v27];
-      (*(v15 + 2))(v15, v28);
+      (*(completionCopy + 2))(completionCopy, v28);
     }
   }
 
@@ -129,23 +129,23 @@
       sub_10000B120();
     }
 
-    if (v15)
+    if (completionCopy)
     {
-      (*(v15 + 2))(v15, v24);
+      (*(completionCopy + 2))(completionCopy, v24);
     }
   }
 }
 
-- (void)stopPlayingForAccessory:(id)a3 rampDownDuration:(double)a4 completion:(id)a5
+- (void)stopPlayingForAccessory:(id)accessory rampDownDuration:(double)duration completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
+  accessoryCopy = accessory;
+  completionCopy = completion;
   v11 = +[NSXPCConnection currentConnection];
   v12 = [v11 valueForEntitlement:@"com.apple.icloud.FindMyDevice.FindMyDeviceHelperXPCService.access"];
 
   if (v12 && ([&__kCFBooleanTrue isEqual:v12] & 1) != 0)
   {
-    [(FindMyDeviceHelperXPCServer *)self _stopPlayingForAccessory:v9 rampDownDuration:v10 completion:a4];
+    [(FindMyDeviceHelperXPCServer *)self _stopPlayingForAccessory:accessoryCopy rampDownDuration:completionCopy completion:duration];
   }
 
   else
@@ -175,62 +175,62 @@
       sub_10000B120();
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, v18);
+      completionCopy[2](completionCopy, v18);
     }
   }
 }
 
-- (void)_stopPlayingForAccessory:(id)a3 rampDownDuration:(double)a4 completion:(id)a5
+- (void)_stopPlayingForAccessory:(id)accessory rampDownDuration:(double)duration completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  accessoryCopy = accessory;
+  completionCopy = completion;
   v10 = sub_1000070C0();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v21 = v8;
+    v21 = accessoryCopy;
     v22 = 2048;
-    v23 = a4;
+    durationCopy = duration;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Stop playing sound for accessory: %@ rampDownDuration: %f", buf, 0x16u);
   }
 
-  if (v8)
+  if (accessoryCopy)
   {
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100008590;
     v14[3] = &unk_100015310;
-    v17 = a4;
+    durationCopy2 = duration;
     v14[4] = self;
-    v15 = v8;
-    v16 = v9;
+    v15 = accessoryCopy;
+    v16 = completionCopy;
     dispatch_async(&_dispatch_main_q, v14);
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
     v11 = [NSError alloc];
     v18 = NSLocalizedFailureReasonErrorKey;
     v19 = @"Accessory cannot be nil";
     v12 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     v13 = [v11 initWithDomain:@"com.apple.icloud.FindMyDevice" code:1 userInfo:v12];
-    (*(v9 + 2))(v9, v13);
+    (*(completionCopy + 2))(completionCopy, v13);
   }
 }
 
-- (void)waitForRoutableAccessory:(id)a3 timeout:(double)a4 completion:(id)a5
+- (void)waitForRoutableAccessory:(id)accessory timeout:(double)timeout completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
+  accessoryCopy = accessory;
+  completionCopy = completion;
   v11 = sub_1000070C0();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v30 = v9;
+    v30 = accessoryCopy;
     v31 = 2048;
-    v32 = a4;
+    timeoutCopy = timeout;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Wait for routable accessories: %@ timeout: %f", buf, 0x16u);
   }
 
@@ -244,10 +244,10 @@
     block[1] = 3221225472;
     block[2] = sub_100008998;
     block[3] = &unk_100015310;
-    v26 = a4;
-    v23 = v9;
-    v24 = self;
-    v25 = v10;
+    timeoutCopy2 = timeout;
+    v23 = accessoryCopy;
+    selfCopy = self;
+    v25 = completionCopy;
     dispatch_after(v14, &_dispatch_main_q, block);
 
     v15 = v23;
@@ -280,38 +280,38 @@
       sub_10000B120();
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      (*(v10 + 2))(v10, v20);
+      (*(completionCopy + 2))(completionCopy, v20);
     }
   }
 }
 
-- (void)setTimeoutForDuration:(double)a3
+- (void)setTimeoutForDuration:(double)duration
 {
   v5 = sub_1000070C0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = +[NSThread currentThread];
     v11 = 134218240;
-    v12 = a3;
+    durationCopy = duration;
     v13 = 1024;
-    v14 = [v6 isMainThread];
+    isMainThread = [v6 isMainThread];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Set timeout for duration: %f inMainThread: %d", &v11, 0x12u);
   }
 
-  v7 = [(FindMyDeviceHelperXPCServer *)self stopSoundTimer];
-  [v7 invalidate];
+  stopSoundTimer = [(FindMyDeviceHelperXPCServer *)self stopSoundTimer];
+  [stopSoundTimer invalidate];
 
-  v8 = [NSTimer timerWithTimeInterval:self target:"_stopSoundTimerFired:" selector:0 userInfo:0 repeats:a3];
+  v8 = [NSTimer timerWithTimeInterval:self target:"_stopSoundTimerFired:" selector:0 userInfo:0 repeats:duration];
   [(FindMyDeviceHelperXPCServer *)self setStopSoundTimer:v8];
 
   v9 = +[NSRunLoop currentRunLoop];
-  v10 = [(FindMyDeviceHelperXPCServer *)self stopSoundTimer];
-  [v9 addTimer:v10 forMode:NSRunLoopCommonModes];
+  stopSoundTimer2 = [(FindMyDeviceHelperXPCServer *)self stopSoundTimer];
+  [v9 addTimer:stopSoundTimer2 forMode:NSRunLoopCommonModes];
 }
 
-- (void)_stopSoundTimerFired:(id)a3
+- (void)_stopSoundTimerFired:(id)fired
 {
   v4 = sub_1000070C0();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -320,8 +320,8 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Stop sound timer fired", v6, 2u);
   }
 
-  v5 = [(FindMyDeviceHelperXPCServer *)self currentAccessory];
-  [(FindMyDeviceHelperXPCServer *)self _stopPlayingForAccessory:v5 rampDownDuration:0 completion:0.5];
+  currentAccessory = [(FindMyDeviceHelperXPCServer *)self currentAccessory];
+  [(FindMyDeviceHelperXPCServer *)self _stopPlayingForAccessory:currentAccessory rampDownDuration:0 completion:0.5];
 }
 
 - (void)invalidateStopSoundTimer
@@ -333,8 +333,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Invalidating stop sound timer", v5, 2u);
   }
 
-  v4 = [(FindMyDeviceHelperXPCServer *)self stopSoundTimer];
-  [v4 invalidate];
+  stopSoundTimer = [(FindMyDeviceHelperXPCServer *)self stopSoundTimer];
+  [stopSoundTimer invalidate];
 
   [(FindMyDeviceHelperXPCServer *)self setStopSoundTimer:0];
 }
@@ -370,9 +370,9 @@
   return messageAudioController;
 }
 
-- (void)disableBiometricIDWithCompletion:(id)a3
+- (void)disableBiometricIDWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = sub_1000070C0();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -386,22 +386,22 @@
 
   if (v8 && ([&__kCFBooleanTrue isEqual:v8] & 1) != 0)
   {
-    v9 = [(FindMyDeviceHelperXPCServer *)self _disableBiometricID];
-    if (v5)
+    _disableBiometricID = [(FindMyDeviceHelperXPCServer *)self _disableBiometricID];
+    if (completionCopy)
     {
-      v5[2](v5, v9);
+      completionCopy[2](completionCopy, _disableBiometricID);
     }
   }
 
   else
   {
     v10 = NSStringFromSelector(a2);
-    v9 = [NSString stringWithFormat:@"Entitlement not found for %@", v10];
+    _disableBiometricID = [NSString stringWithFormat:@"Entitlement not found for %@", v10];
 
     v11 = [NSError alloc];
-    if (v9)
+    if (_disableBiometricID)
     {
-      v12 = v9;
+      v12 = _disableBiometricID;
     }
 
     else
@@ -420,17 +420,17 @@
       sub_10000B120();
     }
 
-    if (v5)
+    if (completionCopy)
     {
-      v5[2](v5, v14);
+      completionCopy[2](completionCopy, v14);
     }
   }
 }
 
-- (void)updateNeedsLocateAckLostModeInfo:(id)a3 completion:(id)a4
+- (void)updateNeedsLocateAckLostModeInfo:(id)info completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   v9 = sub_1000070C0();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -441,23 +441,23 @@
 
   if ([(FindMyDeviceHelperXPCServer *)self isEntitled])
   {
-    if (v7)
+    if (infoCopy)
     {
-      if ([v7 lostModeType] == 5)
+      if ([infoCopy lostModeType] == 5)
       {
-        v10 = [(FindMyDeviceHelperXPCServer *)self getNeedsLocateAckLostModeFileURL];
-        [(FindMyDeviceHelperXPCServer *)self _updateLostModeInfo:v7 toFile:v10 completion:v8];
+        getNeedsLocateAckLostModeFileURL = [(FindMyDeviceHelperXPCServer *)self getNeedsLocateAckLostModeFileURL];
+        [(FindMyDeviceHelperXPCServer *)self _updateLostModeInfo:infoCopy toFile:getNeedsLocateAckLostModeFileURL completion:completionCopy];
         goto LABEL_25;
       }
 
-      v21 = [v7 lostModeType];
+      lostModeType = [infoCopy lostModeType];
       v22 = NSStringFromSelector(a2);
-      v10 = [NSString stringWithFormat:@"LostMode type (%ld) passed to %@ is not valid", v21, v22];
+      getNeedsLocateAckLostModeFileURL = [NSString stringWithFormat:@"LostMode type (%ld) passed to %@ is not valid", lostModeType, v22];
 
       v23 = [NSError alloc];
-      if (v10)
+      if (getNeedsLocateAckLostModeFileURL)
       {
-        v24 = v10;
+        v24 = getNeedsLocateAckLostModeFileURL;
       }
 
       else
@@ -480,12 +480,12 @@
     else
     {
       v17 = NSStringFromSelector(a2);
-      v10 = [NSString stringWithFormat:@"LostMode info not passed to %@", v17];
+      getNeedsLocateAckLostModeFileURL = [NSString stringWithFormat:@"LostMode info not passed to %@", v17];
 
       v18 = [NSError alloc];
-      if (v10)
+      if (getNeedsLocateAckLostModeFileURL)
       {
-        v19 = v10;
+        v19 = getNeedsLocateAckLostModeFileURL;
       }
 
       else
@@ -509,12 +509,12 @@
   else
   {
     v11 = NSStringFromSelector(a2);
-    v10 = [NSString stringWithFormat:@"Entitlement not found for %@", v11];
+    getNeedsLocateAckLostModeFileURL = [NSString stringWithFormat:@"Entitlement not found for %@", v11];
 
     v12 = [NSError alloc];
-    if (v10)
+    if (getNeedsLocateAckLostModeFileURL)
     {
-      v13 = v10;
+      v13 = getNeedsLocateAckLostModeFileURL;
     }
 
     else
@@ -534,18 +534,18 @@
     }
   }
 
-  if (v8)
+  if (completionCopy)
   {
-    v8[2](v8, v15);
+    completionCopy[2](completionCopy, v15);
   }
 
 LABEL_25:
 }
 
-- (void)updateManagedLostModeInfo:(id)a3 completion:(id)a4
+- (void)updateManagedLostModeInfo:(id)info completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   v9 = sub_1000070C0();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -556,23 +556,23 @@ LABEL_25:
 
   if ([(FindMyDeviceHelperXPCServer *)self isEntitled])
   {
-    if (v7)
+    if (infoCopy)
     {
-      if ([v7 lostModeType] == 3)
+      if ([infoCopy lostModeType] == 3)
       {
-        v10 = [(FindMyDeviceHelperXPCServer *)self getManagedLostModeFileURL];
-        [(FindMyDeviceHelperXPCServer *)self _updateLostModeInfo:v7 toFile:v10 completion:v8];
+        getManagedLostModeFileURL = [(FindMyDeviceHelperXPCServer *)self getManagedLostModeFileURL];
+        [(FindMyDeviceHelperXPCServer *)self _updateLostModeInfo:infoCopy toFile:getManagedLostModeFileURL completion:completionCopy];
         goto LABEL_25;
       }
 
-      v21 = [v7 lostModeType];
+      lostModeType = [infoCopy lostModeType];
       v22 = NSStringFromSelector(a2);
-      v10 = [NSString stringWithFormat:@"LostMode type (%ld) passed to %@ is not valid", v21, v22];
+      getManagedLostModeFileURL = [NSString stringWithFormat:@"LostMode type (%ld) passed to %@ is not valid", lostModeType, v22];
 
       v23 = [NSError alloc];
-      if (v10)
+      if (getManagedLostModeFileURL)
       {
-        v24 = v10;
+        v24 = getManagedLostModeFileURL;
       }
 
       else
@@ -595,12 +595,12 @@ LABEL_25:
     else
     {
       v17 = NSStringFromSelector(a2);
-      v10 = [NSString stringWithFormat:@"LostMode info not passed to %@", v17];
+      getManagedLostModeFileURL = [NSString stringWithFormat:@"LostMode info not passed to %@", v17];
 
       v18 = [NSError alloc];
-      if (v10)
+      if (getManagedLostModeFileURL)
       {
-        v19 = v10;
+        v19 = getManagedLostModeFileURL;
       }
 
       else
@@ -624,12 +624,12 @@ LABEL_25:
   else
   {
     v11 = NSStringFromSelector(a2);
-    v10 = [NSString stringWithFormat:@"Entitlement not found for %@", v11];
+    getManagedLostModeFileURL = [NSString stringWithFormat:@"Entitlement not found for %@", v11];
 
     v12 = [NSError alloc];
-    if (v10)
+    if (getManagedLostModeFileURL)
     {
-      v13 = v10;
+      v13 = getManagedLostModeFileURL;
     }
 
     else
@@ -649,18 +649,18 @@ LABEL_25:
     }
   }
 
-  if (v8)
+  if (completionCopy)
   {
-    v8[2](v8, v15);
+    completionCopy[2](completionCopy, v15);
   }
 
 LABEL_25:
 }
 
-- (void)startPlayingSoundForMessage:(id)a3 completion:(id)a4
+- (void)startPlayingSoundForMessage:(id)message completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   v9 = sub_1000070C0();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -671,17 +671,17 @@ LABEL_25:
 
   if ([(FindMyDeviceHelperXPCServer *)self isEntitled])
   {
-    v10 = [(FindMyDeviceHelperXPCServer *)self messageAudioController];
+    messageAudioController = [(FindMyDeviceHelperXPCServer *)self messageAudioController];
     v11 = +[NSXPCConnection currentConnection];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_100009D24;
     v19[3] = &unk_100014478;
-    v20 = v10;
-    v12 = v10;
+    v20 = messageAudioController;
+    v12 = messageAudioController;
     [v11 setInvalidationHandler:v19];
 
-    [(__CFString *)v12 playSoundWithMessage:v7 completion:v8];
+    [(__CFString *)v12 playSoundWithMessage:messageCopy completion:completionCopy];
     v13 = v20;
   }
 
@@ -712,16 +712,16 @@ LABEL_25:
       sub_10000B120();
     }
 
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, v13);
+      completionCopy[2](completionCopy, v13);
     }
   }
 }
 
-- (void)stopSoundMessageWithCompletion:(id)a3
+- (void)stopSoundMessageWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = sub_1000070C0();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -732,19 +732,19 @@ LABEL_25:
 
   if ([(FindMyDeviceHelperXPCServer *)self isEntitled])
   {
-    v7 = [(FindMyDeviceHelperXPCServer *)self messageAudioController];
-    [(__CFString *)v7 stopSoundWithCompletion:v5];
+    messageAudioController = [(FindMyDeviceHelperXPCServer *)self messageAudioController];
+    [(__CFString *)messageAudioController stopSoundWithCompletion:completionCopy];
   }
 
   else
   {
     v8 = NSStringFromSelector(a2);
-    v7 = [NSString stringWithFormat:@"Entitlement not found for %@", v8];
+    messageAudioController = [NSString stringWithFormat:@"Entitlement not found for %@", v8];
 
     v9 = [NSError alloc];
-    if (v7)
+    if (messageAudioController)
     {
-      v10 = v7;
+      v10 = messageAudioController;
     }
 
     else
@@ -763,45 +763,45 @@ LABEL_25:
       sub_10000B120();
     }
 
-    if (v5)
+    if (completionCopy)
     {
-      v5[2](v5, v12);
+      completionCopy[2](completionCopy, v12);
     }
   }
 }
 
-- (void)_updateLostModeInfo:(id)a3 toFile:(id)a4 completion:(id)a5
+- (void)_updateLostModeInfo:(id)info toFile:(id)file completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 lostModeEnabled];
+  infoCopy = info;
+  fileCopy = file;
+  completionCopy = completion;
+  lostModeEnabled = [infoCopy lostModeEnabled];
   v12 = sub_1000070C0();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG);
-  if (v11)
+  if (lostModeEnabled)
   {
-    v45 = self;
+    selfCopy = self;
     if (v13)
     {
       sub_10000B2A8();
     }
 
     v53[0] = @"lostModeEnabled";
-    v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 lostModeEnabled]);
+    v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [infoCopy lostModeEnabled]);
     v54[0] = v14;
     v53[1] = @"lostModeType";
-    v15 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 lostModeType]);
+    v15 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [infoCopy lostModeType]);
     v54[1] = v15;
     v53[2] = @"disableSlideToUnlock";
-    v16 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 disableSlideToUnlock]);
+    v16 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [infoCopy disableSlideToUnlock]);
     v54[2] = v16;
     v53[3] = @"lostModeMessage";
-    v17 = [v8 message];
-    v46 = v9;
-    v18 = v17;
-    if (v17)
+    message = [infoCopy message];
+    v46 = fileCopy;
+    v18 = message;
+    if (message)
     {
-      v19 = v17;
+      v19 = message;
     }
 
     else
@@ -811,11 +811,11 @@ LABEL_25:
 
     v54[3] = v19;
     v53[4] = @"lostModeOwnerNumber";
-    v20 = [v8 phoneNumber];
-    v21 = v20;
-    if (v20)
+    phoneNumber = [infoCopy phoneNumber];
+    v21 = phoneNumber;
+    if (phoneNumber)
     {
-      v22 = v20;
+      v22 = phoneNumber;
     }
 
     else
@@ -825,14 +825,14 @@ LABEL_25:
 
     v54[4] = v22;
     v53[5] = @"lostModeFacetimeCapable";
-    v23 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 facetimeCapable]);
+    v23 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [infoCopy facetimeCapable]);
     v54[5] = v23;
     v53[6] = @"lostModeFootnoteTextPrefKey";
-    v24 = [v8 footnoteText];
-    v25 = v24;
-    if (v24)
+    footnoteText = [infoCopy footnoteText];
+    v25 = footnoteText;
+    if (footnoteText)
     {
-      v26 = v24;
+      v26 = footnoteText;
     }
 
     else
@@ -843,17 +843,17 @@ LABEL_25:
     v54[6] = v26;
     v27 = [NSDictionary dictionaryWithObjects:v54 forKeys:v53 count:7];
 
-    v9 = v46;
-    v28 = [v46 URLByDeletingLastPathComponent];
-    v29 = [v28 path];
+    fileCopy = v46;
+    uRLByDeletingLastPathComponent = [v46 URLByDeletingLastPathComponent];
+    path = [uRLByDeletingLastPathComponent path];
     v30 = +[NSFileManager defaultManager];
-    v31 = [v30 fileExistsAtPath:v29];
+    v31 = [v30 fileExistsAtPath:path];
 
     if ((v31 & 1) == 0)
     {
       v32 = +[NSFileManager defaultManager];
       v50 = 0;
-      [v32 createDirectoryAtPath:v29 withIntermediateDirectories:1 attributes:0 error:&v50];
+      [v32 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v50];
       v33 = v50;
 
       if (v33)
@@ -864,19 +864,19 @@ LABEL_25:
           sub_10000B31C();
         }
 
-        v9 = v46;
+        fileCopy = v46;
       }
     }
 
     v35 = [NSPropertyListSerialization dataWithPropertyList:v27 format:200 options:0 error:0];
     v49 = 0;
-    [v35 writeToURL:v9 options:268435457 error:&v49];
-    v36 = v49;
-    if (!v36)
+    [v35 writeToURL:fileCopy options:268435457 error:&v49];
+    _disableBiometricID = v49;
+    if (!_disableBiometricID)
     {
       v37 = [NSNumber numberWithBool:1];
       v48 = 0;
-      [v9 setResourceValue:v37 forKey:NSURLIsExcludedFromBackupKey error:&v48];
+      [fileCopy setResourceValue:v37 forKey:NSURLIsExcludedFromBackupKey error:&v48];
       v38 = v48;
 
       if (v38)
@@ -892,13 +892,13 @@ LABEL_25:
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v52 = v8;
+        v52 = infoCopy;
         _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Lost mode info written on disk - %@", buf, 0xCu);
       }
 
-      v36 = [(FindMyDeviceHelperXPCServer *)v45 _disableBiometricID];
+      _disableBiometricID = [(FindMyDeviceHelperXPCServer *)selfCopy _disableBiometricID];
 
-      v9 = v46;
+      fileCopy = v46;
     }
   }
 
@@ -910,8 +910,8 @@ LABEL_25:
     }
 
     v27 = +[NSFileManager defaultManager];
-    v41 = [v9 path];
-    v42 = [v27 fileExistsAtPath:v41];
+    path2 = [fileCopy path];
+    v42 = [v27 fileExistsAtPath:path2];
 
     if (v42)
     {
@@ -922,22 +922,22 @@ LABEL_25:
       }
 
       v47 = 0;
-      [v27 removeItemAtURL:v9 error:&v47];
-      v36 = v47;
+      [v27 removeItemAtURL:fileCopy error:&v47];
+      _disableBiometricID = v47;
     }
 
     else
     {
-      v36 = 0;
+      _disableBiometricID = 0;
     }
   }
 
   v44 = +[FMDFMIPSharedStateManager sharedInstance];
   [v44 recalculateLostMode];
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, v36);
+    completionCopy[2](completionCopy, _disableBiometricID);
   }
 }
 
@@ -951,11 +951,11 @@ LABEL_25:
   }
 
   v3 = objc_alloc_init(EmbeddedOSSupport);
-  v4 = [(EmbeddedOSSupport *)v3 disableBiometricID];
+  disableBiometricID = [(EmbeddedOSSupport *)v3 disableBiometricID];
 
   v5 = sub_1000070C0();
   v6 = v5;
-  if (v4)
+  if (disableBiometricID)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
@@ -969,7 +969,7 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Disabled Biometry ID success.", v8, 2u);
   }
 
-  return v4;
+  return disableBiometricID;
 }
 
 - (id)getManagedLostModeFileURL

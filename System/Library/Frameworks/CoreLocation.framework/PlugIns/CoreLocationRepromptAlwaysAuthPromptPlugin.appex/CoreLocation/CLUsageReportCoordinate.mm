@@ -1,12 +1,12 @@
 @interface CLUsageReportCoordinate
-- (CLUsageReportCoordinate)initWithCoder:(id)a3;
-- (CLUsageReportCoordinate)initWithLatitude:(double)a3 longitude:(double)a4;
-- (void)encodeWithCoder:(id)a3;
+- (CLUsageReportCoordinate)initWithCoder:(id)coder;
+- (CLUsageReportCoordinate)initWithLatitude:(double)latitude longitude:(double)longitude;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLUsageReportCoordinate
 
-- (CLUsageReportCoordinate)initWithLatitude:(double)a3 longitude:(double)a4
+- (CLUsageReportCoordinate)initWithLatitude:(double)latitude longitude:(double)longitude
 {
   v9.receiver = self;
   v9.super_class = CLUsageReportCoordinate;
@@ -14,31 +14,31 @@
   v7 = v6;
   if (v6)
   {
-    [(CLUsageReportCoordinate *)v6 setLatitude:a3];
-    [(CLUsageReportCoordinate *)v7 setLongitude:a4];
+    [(CLUsageReportCoordinate *)v6 setLatitude:latitude];
+    [(CLUsageReportCoordinate *)v7 setLongitude:longitude];
   }
 
   return v7;
 }
 
-- (CLUsageReportCoordinate)initWithCoder:(id)a3
+- (CLUsageReportCoordinate)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"CL2dLocationLatCodingKey"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"CL2dLocationLatCodingKey"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"CL2dLocationLonCodingKey"];
+  [coderCopy decodeDoubleForKey:@"CL2dLocationLonCodingKey"];
   v8 = [(CLUsageReportCoordinate *)self initWithLatitude:v6 longitude:v7];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(CLUsageReportCoordinate *)self latitude];
-  [v4 encodeDouble:@"CL2dLocationLatCodingKey" forKey:?];
+  [coderCopy encodeDouble:@"CL2dLocationLatCodingKey" forKey:?];
   [(CLUsageReportCoordinate *)self longitude];
-  [v4 encodeDouble:@"CL2dLocationLonCodingKey" forKey:?];
+  [coderCopy encodeDouble:@"CL2dLocationLonCodingKey" forKey:?];
 }
 
 @end

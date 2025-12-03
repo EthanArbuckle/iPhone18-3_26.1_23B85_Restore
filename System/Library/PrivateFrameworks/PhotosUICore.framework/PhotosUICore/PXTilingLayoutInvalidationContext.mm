@@ -1,9 +1,9 @@
 @interface PXTilingLayoutInvalidationContext
 - (NSIndexSet)invalidatedTileGroups;
-- (void)enumerateInvalidatedTileIdentifiersUsingBlock:(id)a3;
+- (void)enumerateInvalidatedTileIdentifiersUsingBlock:(id)block;
 - (void)invalidateEverything;
-- (void)invalidateTileWithIdentifier:(PXTileIdentifier *)a3;
-- (void)invalidateTilesInGroup:(unint64_t)a3;
+- (void)invalidateTileWithIdentifier:(PXTileIdentifier *)identifier;
+- (void)invalidateTilesInGroup:(unint64_t)group;
 @end
 
 @implementation PXTilingLayoutInvalidationContext
@@ -25,16 +25,16 @@
   [(PXTilingLayoutInvalidationContext *)self invalidateScrollInfo];
 }
 
-- (void)enumerateInvalidatedTileIdentifiersUsingBlock:(id)a3
+- (void)enumerateInvalidatedTileIdentifiersUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   invalidatedTileIdentifiers = self->_invalidatedTileIdentifiers;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __83__PXTilingLayoutInvalidationContext_enumerateInvalidatedTileIdentifiersUsingBlock___block_invoke;
   v7[3] = &unk_1E77454A0;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableArray *)invalidatedTileIdentifiers enumerateObjectsUsingBlock:v7];
 }
 
@@ -62,42 +62,42 @@ uint64_t __83__PXTilingLayoutInvalidationContext_enumerateInvalidatedTileIdentif
   return v11(v10, v13, a4, a4, a5, a6, a7, a8);
 }
 
-- (void)invalidateTilesInGroup:(unint64_t)a3
+- (void)invalidateTilesInGroup:(unint64_t)group
 {
   invalidatedTileGroups = self->_invalidatedTileGroups;
   if (invalidatedTileGroups)
   {
 
-    [(NSMutableIndexSet *)invalidatedTileGroups addIndex:a3];
+    [(NSMutableIndexSet *)invalidatedTileGroups addIndex:group];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E696AD50] indexSetWithIndex:a3];
+    v5 = [MEMORY[0x1E696AD50] indexSetWithIndex:group];
     v6 = self->_invalidatedTileGroups;
     self->_invalidatedTileGroups = v5;
   }
 }
 
-- (void)invalidateTileWithIdentifier:(PXTileIdentifier *)a3
+- (void)invalidateTileWithIdentifier:(PXTileIdentifier *)identifier
 {
   invalidatedTileIdentifiers = self->_invalidatedTileIdentifiers;
   if (!invalidatedTileIdentifiers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_invalidatedTileIdentifiers;
-    self->_invalidatedTileIdentifiers = v6;
+    self->_invalidatedTileIdentifiers = array;
 
     invalidatedTileIdentifiers = self->_invalidatedTileIdentifiers;
   }
 
-  v8 = *&a3->index[5];
-  v11[2] = *&a3->index[3];
+  v8 = *&identifier->index[5];
+  v11[2] = *&identifier->index[3];
   v11[3] = v8;
-  v11[4] = *&a3->index[7];
-  v12 = a3->index[9];
-  v9 = *&a3->index[1];
-  v11[0] = *&a3->length;
+  v11[4] = *&identifier->index[7];
+  v12 = identifier->index[9];
+  v9 = *&identifier->index[1];
+  v11[0] = *&identifier->length;
   v11[1] = v9;
   v10 = [MEMORY[0x1E696B098] valueWithPXTileIdentifier:v11];
   [(NSMutableArray *)invalidatedTileIdentifiers addObject:v10];

@@ -1,9 +1,9 @@
 @interface CLSSDModel
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3;
-- (CLSSDModel)initWithSceneAnalysisVersion:(unint64_t)a3;
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version;
+- (CLSSDModel)initWithSceneAnalysisVersion:(unint64_t)version;
 - (id)modelInfo;
-- (id)nodeForSignalIdentifier:(unint64_t)a3;
-- (void)processSignals:(id)a3 intoProcessedSignals:(id)a4;
+- (id)nodeForSignalIdentifier:(unint64_t)identifier;
+- (void)processSignals:(id)signals intoProcessedSignals:(id)processedSignals;
 - (void)setupVersion33;
 - (void)setupVersion51_4;
 - (void)setupVersion85;
@@ -35,17 +35,17 @@ void __23__CLSSDModel_modelInfo__block_invoke(uint64_t a1, void *a2)
   [v2 addObject:v3];
 }
 
-- (void)processSignals:(id)a3 intoProcessedSignals:(id)a4
+- (void)processSignals:(id)signals intoProcessedSignals:(id)processedSignals
 {
-  v12 = a4;
-  v6 = [a3 objectForKeyedSubscript:&unk_287051CE0];
+  processedSignalsCopy = processedSignals;
+  v6 = [signals objectForKeyedSubscript:&unk_287051CE0];
   [v6 doubleValue];
   v8 = v7;
 
   version = self->_version;
   if (version <= 0x54)
   {
-    v11 = v12;
+    v11 = processedSignalsCopy;
     if (version < 0x21)
     {
       goto LABEL_6;
@@ -57,23 +57,23 @@ void __23__CLSSDModel_modelInfo__block_invoke(uint64_t a1, void *a2)
   else
   {
     v10 = 0.962;
-    v11 = v12;
+    v11 = processedSignalsCopy;
   }
 
   [v11 setIsShowcasingFood:v8 >= v10];
-  v11 = v12;
+  v11 = processedSignalsCopy;
 LABEL_6:
 }
 
-- (id)nodeForSignalIdentifier:(unint64_t)a3
+- (id)nodeForSignalIdentifier:(unint64_t)identifier
 {
-  if (a3 == 2147482623)
+  if (identifier == 2147482623)
   {
     landscapeCityscapeNode = self->_landscapeCityscapeNode;
     goto LABEL_5;
   }
 
-  if (a3 == 2147482622)
+  if (identifier == 2147482622)
   {
     landscapeCityscapeNode = self->_foodDrinkNode;
 LABEL_5:
@@ -81,10 +81,10 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([(CLSSDModel *)self isResponsibleForSignalIdentifier:a3])
+  if ([(CLSSDModel *)self isResponsibleForSignalIdentifier:identifier])
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"SD - Unknown (%X)", a3];
-    v5 = [[CLSSignalNode alloc] initWithIdentifier:a3 name:v7 operatingPoint:0.0 highPrecisionOperatingPoint:0.0 highRecallOperatingPoint:0.0];
+    identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"SD - Unknown (%X)", identifier];
+    v5 = [[CLSSignalNode alloc] initWithIdentifier:identifier name:identifier operatingPoint:0.0 highPrecisionOperatingPoint:0.0 highRecallOperatingPoint:0.0];
   }
 
   else
@@ -151,7 +151,7 @@ LABEL_6:
   MEMORY[0x2821F96F8]();
 }
 
-- (CLSSDModel)initWithSceneAnalysisVersion:(unint64_t)a3
+- (CLSSDModel)initWithSceneAnalysisVersion:(unint64_t)version
 {
   v14 = *MEMORY[0x277D85DE8];
   v9.receiver = self;
@@ -160,17 +160,17 @@ LABEL_6:
   v5 = v4;
   if (v4)
   {
-    if (a3 < 0x55)
+    if (version < 0x55)
     {
-      if (a3 < 0x33)
+      if (version < 0x33)
       {
-        if (a3 < 0x21)
+        if (version < 0x21)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
           {
             v6 = objc_opt_class();
             *buf = 67109378;
-            v11 = a3;
+            versionCopy = version;
             v12 = 2112;
             v13 = v6;
             _os_log_impl(&dword_25E5F0000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Unsupported version %d in %@", buf, 0x12u);
@@ -201,21 +201,21 @@ LABEL_6:
   return v5;
 }
 
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version
 {
   v3 = 51;
   v4 = 33;
-  if (a3 < 0x21)
+  if (version < 0x21)
   {
     v4 = 0;
   }
 
-  if (a3 <= 0x32)
+  if (version <= 0x32)
   {
     v3 = v4;
   }
 
-  if (a3 <= 0x54)
+  if (version <= 0x54)
   {
     return v3;
   }

@@ -1,30 +1,30 @@
 @interface PNPersonPromoter
-+ (BOOL)_writePersonPromoterInformation:(id)a3 atURL:(id)a4;
-+ (BOOL)hasProcessedForLibrary:(id)a3;
-+ (id)_personPromoterInformationAtURL:(id)a3;
-+ (id)requestSuggestedMePersonIdentifierAtURL:(id)a3 withError:(id *)a4;
-+ (unint64_t)numberOfFacesProcessedOnLastRunAtURL:(id)a3;
-+ (void)cumulativeNormalDistributionWithData:(id)a3 sigmaFactor:(double)a4 usingBlock:(id)a5;
-+ (void)probabilityDensityNormalDistributionWithData:(id)a3 sigmaFactor:(double)a4 usingBlock:(id)a5;
-+ (void)setProcessed:(BOOL)a3 forLibrary:(id)a4;
-- (BOOL)_personClusterShouldBeVerified:(id)a3;
-- (BOOL)_promoteInterestingPersons:(id)a3 updateBlock:(id)a4;
++ (BOOL)_writePersonPromoterInformation:(id)information atURL:(id)l;
++ (BOOL)hasProcessedForLibrary:(id)library;
++ (id)_personPromoterInformationAtURL:(id)l;
++ (id)requestSuggestedMePersonIdentifierAtURL:(id)l withError:(id *)error;
++ (unint64_t)numberOfFacesProcessedOnLastRunAtURL:(id)l;
++ (void)cumulativeNormalDistributionWithData:(id)data sigmaFactor:(double)factor usingBlock:(id)block;
++ (void)probabilityDensityNormalDistributionWithData:(id)data sigmaFactor:(double)factor usingBlock:(id)block;
++ (void)setProcessed:(BOOL)processed forLibrary:(id)library;
+- (BOOL)_personClusterShouldBeVerified:(id)verified;
+- (BOOL)_promoteInterestingPersons:(id)persons updateBlock:(id)block;
 - (BOOL)isInQuiescentState;
-- (BOOL)promoteUnverifiedPersonsWithUpdateBlock:(id)a3;
-- (PNPersonPromoter)initWithPhotoLibrary:(id)a3 andDelegate:(id)a4;
+- (BOOL)promoteUnverifiedPersonsWithUpdateBlock:(id)block;
+- (PNPersonPromoter)initWithPhotoLibrary:(id)library andDelegate:(id)delegate;
 - (PNPersonPromoterDelegate)delegate;
-- (double)_personTimespan:(id)a3;
-- (id)_graphOrderedPersonsWithPersons:(id)a3 withAllPersons:(id)a4 updateBlock:(id)a5;
-- (id)_interestingPersonsFromVerifiedPersons:(id)a3 unverifiedPersons:(id)a4 updateBlock:(id)a5;
-- (id)_newPersonDeduperWithVerifiedPersons:(id)a3;
-- (id)_promoteUnverifiedPersons:(id)a3 withVerifiedPersons:(id)a4 updateBlock:(id)a5;
-- (id)_sortedSocialGroups:(id)a3 withPersonsByLocalIdentifier:(id)a4;
-- (id)_sortedUnverifiedPersonsToDedupForVerifiedPersons:(id)a3 type:(unint64_t)a4 updateBlock:(id)a5;
+- (double)_personTimespan:(id)timespan;
+- (id)_graphOrderedPersonsWithPersons:(id)persons withAllPersons:(id)allPersons updateBlock:(id)block;
+- (id)_interestingPersonsFromVerifiedPersons:(id)persons unverifiedPersons:(id)unverifiedPersons updateBlock:(id)block;
+- (id)_newPersonDeduperWithVerifiedPersons:(id)persons;
+- (id)_promoteUnverifiedPersons:(id)persons withVerifiedPersons:(id)verifiedPersons updateBlock:(id)block;
+- (id)_sortedSocialGroups:(id)groups withPersonsByLocalIdentifier:(id)identifier;
+- (id)_sortedUnverifiedPersonsToDedupForVerifiedPersons:(id)persons type:(unint64_t)type updateBlock:(id)block;
 - (id)_verifiedPersonsToProcess;
 - (id)advancedStatus;
-- (id)evaluatePersonPromoterWithUpdateBlock:(id)a3;
-- (id)interestingPersonsFromPersons:(id)a3 detectionType:(signed __int16)a4 updateBlock:(id)a5;
-- (void)incrementMetricForKey:(id)a3 withValue:(unint64_t)a4;
+- (id)evaluatePersonPromoterWithUpdateBlock:(id)block;
+- (id)interestingPersonsFromPersons:(id)persons detectionType:(signed __int16)type updateBlock:(id)block;
+- (void)incrementMetricForKey:(id)key withValue:(unint64_t)value;
 - (void)reportMetrics;
 @end
 
@@ -37,17 +37,17 @@
   return WeakRetained;
 }
 
-- (id)_sortedSocialGroups:(id)a3 withPersonsByLocalIdentifier:(id)a4
+- (id)_sortedSocialGroups:(id)groups withPersonsByLocalIdentifier:(id)identifier
 {
   v48 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:5 valueOptions:0 capacity:{objc_msgSend(v5, "count")}];
+  groupsCopy = groups;
+  identifierCopy = identifier;
+  v7 = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:5 valueOptions:0 capacity:{objc_msgSend(groupsCopy, "count")}];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v5;
+  obj = groupsCopy;
   v8 = [obj countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v8)
   {
@@ -81,7 +81,7 @@
                 objc_enumerationMutation(v12);
               }
 
-              v17 = [v6 objectForKeyedSubscript:*(*(&v38 + 1) + 8 * j)];
+              v17 = [identifierCopy objectForKeyedSubscript:*(*(&v38 + 1) + 8 * j)];
               [v17 interestingScore];
               v19 = v18;
 
@@ -122,7 +122,7 @@
   v32 = 0x3032000000;
   v33 = __Block_byref_object_copy__688;
   v34 = __Block_byref_object_dispose__689;
-  v35 = [v23 firstObject];
+  firstObject = [v23 firstObject];
   if ([v31[5] count] >= 3)
   {
     v24 = v31[5];
@@ -161,18 +161,18 @@ BOOL __69__PNPersonPromoter__sortedSocialGroups_withPersonsByLocalIdentifier___b
   return v4;
 }
 
-- (id)_graphOrderedPersonsWithPersons:(id)a3 withAllPersons:(id)a4 updateBlock:(id)a5
+- (id)_graphOrderedPersonsWithPersons:(id)persons withAllPersons:(id)allPersons updateBlock:(id)block
 {
   v69 = *MEMORY[0x1E69E9840];
-  v42 = a3;
-  v8 = a4;
-  v9 = a5;
+  personsCopy = persons;
+  allPersonsCopy = allPersons;
+  blockCopy = block;
   v10 = objc_opt_new();
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  obj = v8;
+  obj = allPersonsCopy;
   v11 = [obj countByEnumeratingWithState:&v59 objects:v68 count:16];
   if (v11)
   {
@@ -188,8 +188,8 @@ BOOL __69__PNPersonPromoter__sortedSocialGroups_withPersonsByLocalIdentifier___b
         }
 
         v15 = *(*(&v59 + 1) + 8 * i);
-        v16 = [v15 localIdentifier];
-        [v10 setObject:v15 forKeyedSubscript:v16];
+        localIdentifier = [v15 localIdentifier];
+        [v10 setObject:v15 forKeyedSubscript:localIdentifier];
       }
 
       v12 = [obj countByEnumeratingWithState:&v59 objects:v68 count:16];
@@ -198,10 +198,10 @@ BOOL __69__PNPersonPromoter__sortedSocialGroups_withPersonsByLocalIdentifier___b
     while (v12);
   }
 
-  v17 = [(PNPersonPromoter *)self delegate];
-  v18 = [(PNPersonPromoter *)self personClusterManager];
-  v43 = v9;
-  v19 = [v17 performSocialGroupsIdentifiersWithPersonClusterManager:v18 forPersons:obj overTheYearsComputation:0 updateBlock:v9];
+  delegate = [(PNPersonPromoter *)self delegate];
+  personClusterManager = [(PNPersonPromoter *)self personClusterManager];
+  v43 = blockCopy;
+  v19 = [delegate performSocialGroupsIdentifiersWithPersonClusterManager:personClusterManager forPersons:obj overTheYearsComputation:0 updateBlock:blockCopy];
 
   v20 = [(PNPersonPromoter *)self _sortedSocialGroups:v19 withPersonsByLocalIdentifier:v10];
 
@@ -255,7 +255,7 @@ BOOL __69__PNPersonPromoter__sortedSocialGroups_withPersonsByLocalIdentifier___b
               }
 
               v34 = *(*(&v51 + 1) + 8 * k);
-              v35 = [v10 objectForKeyedSubscript:{v34, v42}];
+              v35 = [v10 objectForKeyedSubscript:{v34, personsCopy}];
               if (v35)
               {
                 [v28 addObject:v35];
@@ -288,10 +288,10 @@ BOOL __69__PNPersonPromoter__sortedSocialGroups_withPersonsByLocalIdentifier___b
     while (v25);
   }
 
-  v36 = [v10 allValues];
-  if ([v36 count])
+  allValues = [v10 allValues];
+  if ([allValues count])
   {
-    v37 = [v36 sortedArrayUsingDescriptors:v47];
+    v37 = [allValues sortedArrayUsingDescriptors:v47];
     [v46 addObjectsFromArray:v37];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
@@ -306,39 +306,39 @@ BOOL __69__PNPersonPromoter__sortedSocialGroups_withPersonsByLocalIdentifier___b
   v49[1] = 3221225472;
   v49[2] = __79__PNPersonPromoter__graphOrderedPersonsWithPersons_withAllPersons_updateBlock___block_invoke;
   v49[3] = &unk_1E82A1F80;
-  v50 = v42;
-  v39 = v42;
+  v50 = personsCopy;
+  v39 = personsCopy;
   v40 = [v38 predicateWithBlock:v49];
   [v46 filterUsingPredicate:v40];
 
   return v46;
 }
 
-- (BOOL)_promoteInterestingPersons:(id)a3 updateBlock:(id)a4
+- (BOOL)_promoteInterestingPersons:(id)persons updateBlock:(id)block
 {
   v125[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v67 = a4;
+  personsCopy = persons;
+  blockCopy = block;
   Current = CFAbsoluteTimeGetCurrent();
   v111 = 0;
   v112 = &v111;
   v113 = 0x2020000000;
   v114 = 0;
-  v53 = [(PNPersonPromoter *)self photoLibrary];
+  photoLibrary = [(PNPersonPromoter *)self photoLibrary];
   v55 = objc_opt_new();
   v65 = objc_opt_new();
   v66 = objc_opt_new();
-  v54 = self;
-  v8 = [(PNPersonPromoter *)self delegate];
+  selfCopy = self;
+  delegate = [(PNPersonPromoter *)self delegate];
   v107 = 0;
   v108 = &v107;
   v109 = 0x2020000000;
   v110 = 0;
-  v9 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   v10 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"manualOrder" ascending:1];
   v125[0] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v125 count:1];
-  v61 = [v6 sortedArrayUsingDescriptors:v11];
+  v61 = [personsCopy sortedArrayUsingDescriptors:v11];
 
   v12 = 0;
   v58 = *MEMORY[0x1E6978F10];
@@ -346,19 +346,19 @@ BOOL __69__PNPersonPromoter__sortedSocialGroups_withPersonsByLocalIdentifier___b
   while (v12 < [v61 count] - 1)
   {
     v14 = [v61 objectAtIndexedSubscript:v12];
-    v15 = [v14 manualOrder];
+    manualOrder = [v14 manualOrder];
 
     v16 = [v61 objectAtIndexedSubscript:v12 + 1];
-    v17 = [v16 manualOrder];
+    manualOrder2 = [v16 manualOrder];
 
-    if (v15 == v58 || v17 == v58)
+    if (manualOrder == v58 || manualOrder2 == v58)
     {
       break;
     }
 
-    if (v17 - v15 < v13)
+    if (manualOrder2 - manualOrder < v13)
     {
-      v108[3] = v17;
+      v108[3] = manualOrder2;
     }
 
     ++v12;
@@ -368,7 +368,7 @@ BOOL __69__PNPersonPromoter__sortedSocialGroups_withPersonsByLocalIdentifier___b
   v106 = 0u;
   v103 = 0u;
   v104 = 0u;
-  obj = v6;
+  obj = personsCopy;
   v18 = [obj countByEnumeratingWithState:&v103 objects:v124 count:16];
   if (v18)
   {
@@ -386,7 +386,7 @@ BOOL __69__PNPersonPromoter__sortedSocialGroups_withPersonsByLocalIdentifier___b
 
         v64 = *(*(&v103 + 1) + 8 * v63);
         context = objc_autoreleasePoolPush();
-        v67[2](v67, (v112 + 3), 0.9);
+        blockCopy[2](blockCopy, (v112 + 3), 0.9);
         if (v112[3])
         {
           v19 = 1;
@@ -399,18 +399,18 @@ BOOL __69__PNPersonPromoter__sortedSocialGroups_withPersonsByLocalIdentifier___b
 
         else
         {
-          v20 = [v64 manualOrder];
-          v57 = [v64 mergedPersonIdentifiers];
+          manualOrder3 = [v64 manualOrder];
+          mergedPersonIdentifiers = [v64 mergedPersonIdentifiers];
           if ([v64 isVerified])
           {
-            if ([v64 verifiedType] == 1 && v20 == v58 || objc_msgSend(v64, "verifiedType") == 2)
+            if ([v64 verifiedType] == 1 && manualOrder3 == v58 || objc_msgSend(v64, "verifiedType") == 2)
             {
               [v55 addObject:v64];
             }
 
-            else if ([v64 verifiedType] == 1 && v20 > v108[3])
+            else if ([v64 verifiedType] == 1 && manualOrder3 > v108[3])
             {
-              v108[3] = v20;
+              v108[3] = manualOrder3;
             }
           }
 
@@ -424,14 +424,14 @@ BOOL __69__PNPersonPromoter__sortedSocialGroups_withPersonsByLocalIdentifier___b
               _os_log_debug_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[PersonPromoter] Upgrading person %@", buf, 0xCu);
             }
 
-            v22 = [v64 sourcePerson];
-            v23 = [v64 mergedPersonIdentifiers];
+            sourcePerson = [v64 sourcePerson];
+            mergedPersonIdentifiers2 = [v64 mergedPersonIdentifiers];
 
-            v24 = [v8 keyFaceForPerson:v22 qualityMeasureByFace:v9 updateBlock:v67];
+            v24 = [delegate keyFaceForPerson:sourcePerson qualityMeasureByFace:strongToStrongObjectsMapTable updateBlock:blockCopy];
             if (v24)
             {
-              v25 = [v22 localIdentifier];
-              [v66 setObject:v24 forKeyedSubscript:v25];
+              localIdentifier = [sourcePerson localIdentifier];
+              [v66 setObject:v24 forKeyedSubscript:localIdentifier];
             }
 
             else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -444,12 +444,12 @@ BOOL __69__PNPersonPromoter__sortedSocialGroups_withPersonsByLocalIdentifier___b
             [v55 addObject:v64];
 
             objc_autoreleasePoolPop(v21);
-            v57 = v23;
+            mergedPersonIdentifiers = mergedPersonIdentifiers2;
           }
 
-          v26 = [(PNPersonPromoter *)v54 photoLibrary];
-          v27 = [v57 allObjects];
-          v28 = [v26 pn_fetchPersonsWithLocalIdentifiers:v27];
+          photoLibrary2 = [(PNPersonPromoter *)selfCopy photoLibrary];
+          allObjects = [mergedPersonIdentifiers allObjects];
+          v28 = [photoLibrary2 pn_fetchPersonsWithLocalIdentifiers:allObjects];
 
           v101 = 0u;
           v102 = 0u;
@@ -470,17 +470,17 @@ BOOL __69__PNPersonPromoter__sortedSocialGroups_withPersonsByLocalIdentifier___b
                 }
 
                 v33 = *(*(&v99 + 1) + 8 * i);
-                v34 = [v33 keyFace];
-                v35 = v34 == 0;
+                keyFace = [v33 keyFace];
+                v35 = keyFace == 0;
 
                 if (v35)
                 {
                   v36 = objc_autoreleasePoolPush();
-                  v37 = [v8 keyFaceForPerson:v33 qualityMeasureByFace:v9 updateBlock:v67];
+                  v37 = [delegate keyFaceForPerson:v33 qualityMeasureByFace:strongToStrongObjectsMapTable updateBlock:blockCopy];
                   if (v37)
                   {
-                    v38 = [v33 localIdentifier];
-                    [v66 setObject:v37 forKeyedSubscript:v38];
+                    localIdentifier2 = [v33 localIdentifier];
+                    [v66 setObject:v37 forKeyedSubscript:localIdentifier2];
 
                     [v65 addObject:v33];
                   }
@@ -554,9 +554,9 @@ BOOL __69__PNPersonPromoter__sortedSocialGroups_withPersonsByLocalIdentifier___b
       v95[1] = 3221225472;
       v95[2] = __59__PNPersonPromoter__promoteInterestingPersons_updateBlock___block_invoke_440;
       v95[3] = &unk_1E82A1F30;
-      v96 = v67;
+      v96 = blockCopy;
       v97 = &v111;
-      v43 = [(PNPersonPromoter *)v54 _graphOrderedPersonsWithPersons:v55 withAllPersons:obj updateBlock:v95];
+      v43 = [(PNPersonPromoter *)selfCopy _graphOrderedPersonsWithPersons:v55 withAllPersons:obj updateBlock:v95];
 
       if (v112[3])
       {
@@ -595,14 +595,14 @@ LABEL_54:
     v69[1] = 3221225472;
     v69[2] = __59__PNPersonPromoter__promoteInterestingPersons_updateBlock___block_invoke_441;
     v69[3] = &unk_1E82A1F58;
-    v70 = v9;
-    v71 = v54;
+    v70 = strongToStrongObjectsMapTable;
+    v71 = selfCopy;
     v72 = obj;
     v73 = v66;
     v77 = &v83;
     v78 = buf;
     v79 = &v91;
-    v49 = v53;
+    v49 = photoLibrary;
     v74 = v49;
     v80 = &v87;
     v75 = v65;
@@ -615,11 +615,11 @@ LABEL_54:
     v41 = v68;
     if (v42)
     {
-      [(PNPersonPromoter *)v54 incrementMetricForKey:@"numberOfPersonsPromotedToGraphVerified" withValue:v92[3]];
-      [(PNPersonPromoter *)v54 incrementMetricForKey:@"numberOfGraphMergeCandidatesAdded" withValue:v88[3]];
-      [(PNPersonPromoter *)v54 incrementMetricForKey:@"numberOfFacesAvailableInPeopleHome" withValue:v84[3]];
-      -[PNPersonPromoter incrementMetricForKey:withValue:](v54, "incrementMetricForKey:withValue:", @"numberOfAssetsAvailableInPeopleHome", [*(*&buf[8] + 40) count]);
-      [(PNPersonPromoter *)v54 reportMetrics];
+      [(PNPersonPromoter *)selfCopy incrementMetricForKey:@"numberOfPersonsPromotedToGraphVerified" withValue:v92[3]];
+      [(PNPersonPromoter *)selfCopy incrementMetricForKey:@"numberOfGraphMergeCandidatesAdded" withValue:v88[3]];
+      [(PNPersonPromoter *)selfCopy incrementMetricForKey:@"numberOfFacesAvailableInPeopleHome" withValue:v84[3]];
+      -[PNPersonPromoter incrementMetricForKey:withValue:](selfCopy, "incrementMetricForKey:withValue:", @"numberOfAssetsAvailableInPeopleHome", [*(*&buf[8] + 40) count]);
+      [(PNPersonPromoter *)selfCopy reportMetrics];
     }
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1070,16 +1070,16 @@ void __59__PNPersonPromoter__promoteInterestingPersons_updateBlock___block_invok
   }
 }
 
-- (id)_interestingPersonsFromVerifiedPersons:(id)a3 unverifiedPersons:(id)a4 updateBlock:(id)a5
+- (id)_interestingPersonsFromVerifiedPersons:(id)persons unverifiedPersons:(id)unverifiedPersons updateBlock:(id)block
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (-[PNPersonPromoter isInQuiescentState](self, "isInQuiescentState") && ![v8 count])
+  personsCopy = persons;
+  unverifiedPersonsCopy = unverifiedPersons;
+  blockCopy = block;
+  if (-[PNPersonPromoter isInQuiescentState](self, "isInQuiescentState") && ![personsCopy count])
   {
     v27 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_430];
-    v11 = [v9 filteredSetUsingPredicate:v27];
+    v11 = [unverifiedPersonsCopy filteredSetUsingPredicate:v27];
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
@@ -1091,12 +1091,12 @@ void __59__PNPersonPromoter__promoteInterestingPersons_updateBlock___block_invok
 
   else
   {
-    v11 = v8;
+    v11 = personsCopy;
   }
 
   if ([v11 count])
   {
-    v12 = [(PNPersonPromoter *)self interestingPersonsFromPersons:v11 updateBlock:v10];
+    v12 = [(PNPersonPromoter *)self interestingPersonsFromPersons:v11 updateBlock:blockCopy];
     v13 = [v12 mutableCopy];
 
     if (v13)
@@ -1245,16 +1245,16 @@ BOOL __89__PNPersonPromoter__interestingPersonsFromVerifiedPersons_unverifiedPer
   return v7;
 }
 
-- (BOOL)_personClusterShouldBeVerified:(id)a3
+- (BOOL)_personClusterShouldBeVerified:(id)verified
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 quarantined])
+  verifiedCopy = verified;
+  if ([verifiedCopy quarantined])
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       v22 = 138412290;
-      v23 = *&v4;
+      v23 = *&verifiedCopy;
       v5 = MEMORY[0x1E69E9C10];
       v6 = "[PersonPromoter] Cannot promote quarantined person %@";
       v7 = 12;
@@ -1266,35 +1266,35 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  [v4 sideFaceRatio];
+  [verifiedCopy sideFaceRatio];
   v9 = v8;
   if (v8 < 0.5)
   {
-    v10 = [v4 backingAssetIdentifiers];
-    v11 = [v10 mutableCopy];
+    backingAssetIdentifiers = [verifiedCopy backingAssetIdentifiers];
+    v11 = [backingAssetIdentifiers mutableCopy];
 
-    v12 = [(PNPersonPromoter *)self personClusterManager];
-    v13 = [v12 assetsToIgnore];
-    [v11 minusSet:v13];
+    personClusterManager = [(PNPersonPromoter *)self personClusterManager];
+    assetsToIgnore = [personClusterManager assetsToIgnore];
+    [v11 minusSet:assetsToIgnore];
 
     v14 = [v11 count];
-    LODWORD(v12) = [(PNPersonPromoter *)self isInQuiescentState];
-    v15 = [v4 backingMomentIdentifiers];
-    v16 = [v15 count];
-    if (v12)
+    LODWORD(personClusterManager) = [(PNPersonPromoter *)self isInQuiescentState];
+    backingMomentIdentifiers = [verifiedCopy backingMomentIdentifiers];
+    v16 = [backingMomentIdentifiers count];
+    if (personClusterManager)
     {
       if (v16 >= 3)
       {
-        v17 = [v4 backingFaceIdentifiers];
+        backingFaceIdentifiers = [verifiedCopy backingFaceIdentifiers];
         v18 = 0;
-        if ([v17 count] < 0xF || v14 <= 0xE)
+        if ([backingFaceIdentifiers count] < 0xF || v14 <= 0xE)
         {
           goto LABEL_19;
         }
 
         v19 = 604800.0;
 LABEL_18:
-        [v4 libraryTimespan];
+        [verifiedCopy libraryTimespan];
         v18 = v20 >= v19;
 LABEL_19:
 
@@ -1305,9 +1305,9 @@ LABEL_21:
 
     else if (v16 >= 6)
     {
-      v17 = [v4 backingFaceIdentifiers];
+      backingFaceIdentifiers = [verifiedCopy backingFaceIdentifiers];
       v18 = 0;
-      if ([v17 count] < 0x64 || v14 < 0x32)
+      if ([backingFaceIdentifiers count] < 0x64 || v14 < 0x32)
       {
         goto LABEL_19;
       }
@@ -1325,7 +1325,7 @@ LABEL_21:
     v22 = 134218242;
     v23 = v9;
     v24 = 2112;
-    v25 = v4;
+    v25 = verifiedCopy;
     v5 = MEMORY[0x1E69E9C10];
     v6 = "[PersonPromoter] Cannot promote person with too many side faces, %.3f%% - %@";
     v7 = 22;
@@ -1339,23 +1339,23 @@ LABEL_22:
   return v18;
 }
 
-- (id)_sortedUnverifiedPersonsToDedupForVerifiedPersons:(id)a3 type:(unint64_t)a4 updateBlock:(id)a5
+- (id)_sortedUnverifiedPersonsToDedupForVerifiedPersons:(id)persons type:(unint64_t)type updateBlock:(id)block
 {
   v82 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  personsCopy = persons;
+  blockCopy = block;
   Current = CFAbsoluteTimeGetCurrent();
-  v58 = self;
-  v11 = [(PNPersonPromoter *)self personClusterManager];
-  v12 = [v11 pn_fetchPersonsWithType:a4];
+  selfCopy = self;
+  personClusterManager = [(PNPersonPromoter *)self personClusterManager];
+  v12 = [personClusterManager pn_fetchPersonsWithType:type];
 
   if ([v12 count])
   {
     v71 = 0;
     v13 = MEMORY[0x1E695DF70];
     v54 = v12;
-    v14 = [v12 fetchedObjects];
-    v15 = [v13 arrayWithArray:v14];
+    fetchedObjects = [v12 fetchedObjects];
+    v15 = [v13 arrayWithArray:fetchedObjects];
 
     v16 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_424];
     v57 = v15;
@@ -1365,15 +1365,15 @@ LABEL_22:
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v55 = v8;
-    obj = v8;
+    v55 = personsCopy;
+    obj = personsCopy;
     v17 = [obj countByEnumeratingWithState:&v67 objects:v81 count:16];
     if (v17)
     {
       v18 = v17;
       v19 = *v68;
       v49 = *v68;
-      v50 = a4;
+      typeCopy = type;
       while (2)
       {
         v20 = 0;
@@ -1387,7 +1387,7 @@ LABEL_22:
 
           v21 = *(*(&v67 + 1) + 8 * v20);
           v22 = objc_autoreleasePoolPush();
-          v9[2](v9, &v71, 0.0);
+          blockCopy[2](blockCopy, &v71, 0.0);
           if (v71)
           {
 LABEL_24:
@@ -1399,8 +1399,8 @@ LABEL_25:
 
           v52 = v20;
           context = v22;
-          v23 = [(PNPersonPromoter *)v58 personClusterManager];
-          v24 = [v23 pn_fetchCandidatePersonsForPerson:v21];
+          personClusterManager2 = [(PNPersonPromoter *)selfCopy personClusterManager];
+          v24 = [personClusterManager2 pn_fetchCandidatePersonsForPerson:v21];
 
           v65 = 0u;
           v66 = 0u;
@@ -1422,7 +1422,7 @@ LABEL_25:
                 }
 
                 v30 = *(*(&v63 + 1) + 8 * i);
-                v9[2](v9, &v71, 0.0);
+                blockCopy[2](blockCopy, &v71, 0.0);
                 if (v71)
                 {
 
@@ -1434,10 +1434,10 @@ LABEL_25:
                 {
                   v31 = objc_autoreleasePoolPush();
                   [v57 removeObject:v30];
-                  v32 = [(PNPersonPromoter *)v58 personClusterManager];
+                  personClusterManager3 = [(PNPersonPromoter *)selfCopy personClusterManager];
                   v79 = v30;
                   v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v79 count:1];
-                  [v32 mergePersons:v33 withPerson:v21];
+                  [personClusterManager3 mergePersons:v33 withPerson:v21];
 
                   objc_autoreleasePoolPop(v31);
                 }
@@ -1456,7 +1456,7 @@ LABEL_25:
           objc_autoreleasePoolPop(context);
           v20 = v52 + 1;
           v19 = v49;
-          a4 = v50;
+          type = typeCopy;
         }
 
         while (v52 + 1 != v51);
@@ -1470,7 +1470,7 @@ LABEL_25:
       }
     }
 
-    if (a4)
+    if (type)
     {
       v34 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"sourcePerson.faceCount" ascending:0];
       v77 = v34;
@@ -1484,13 +1484,13 @@ LABEL_25:
       v35 = &v78;
     }
 
-    v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:{1, v49, v50}];
+    v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:{1, v49, typeCopy}];
     [v57 sortUsingDescriptors:v37];
 
     obj = objc_opt_new();
     v59 = 0u;
     v60 = 0u;
-    if ([(PNPersonPromoter *)v58 isInQuiescentState])
+    if ([(PNPersonPromoter *)selfCopy isInQuiescentState])
     {
       v38 = 7;
     }
@@ -1519,7 +1519,7 @@ LABEL_25:
 
           v44 = *(*(&v59 + 1) + 8 * j);
           v45 = objc_autoreleasePoolPush();
-          v9[2](v9, &v71, 0.0);
+          blockCopy[2](blockCopy, &v71, 0.0);
           if (v71)
           {
             objc_autoreleasePoolPop(v45);
@@ -1577,7 +1577,7 @@ LABEL_45:
     obj = v36;
 LABEL_48:
     v12 = v54;
-    v8 = v55;
+    personsCopy = v55;
   }
 
   else
@@ -1591,14 +1591,14 @@ LABEL_48:
 - (id)_verifiedPersonsToProcess
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [(PNPersonPromoter *)self personClusterManager];
-  v3 = [v2 pn_fetchPersonsWithType:1];
+  personClusterManager = [(PNPersonPromoter *)self personClusterManager];
+  v3 = [personClusterManager pn_fetchPersonsWithType:1];
 
   if ([v3 count] < 0x81)
   {
     v10 = MEMORY[0x1E695DFA8];
-    v11 = [v3 fetchedObjects];
-    v9 = [v10 setWithArray:v11];
+    fetchedObjects = [v3 fetchedObjects];
+    v9 = [v10 setWithArray:fetchedObjects];
   }
 
   else
@@ -1612,11 +1612,11 @@ LABEL_48:
       _os_log_debug_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[PersonPromoter] Too many verified persons to dedup, truncating the verified person array. %lu > %lu", buf, 0x16u);
     }
 
-    v4 = [v3 fetchedObjects];
+    fetchedObjects2 = [v3 fetchedObjects];
     v5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"sourcePerson.faceCount" ascending:0];
     v13 = v5;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1];
-    v7 = [v4 sortedArrayUsingDescriptors:v6];
+    v7 = [fetchedObjects2 sortedArrayUsingDescriptors:v6];
 
     v8 = [v7 subarrayWithRange:{0, 128}];
     v9 = [MEMORY[0x1E695DFA8] setWithArray:v8];
@@ -1625,16 +1625,16 @@ LABEL_48:
   return v9;
 }
 
-- (id)_newPersonDeduperWithVerifiedPersons:(id)a3
+- (id)_newPersonDeduperWithVerifiedPersons:(id)persons
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  personsCopy = persons;
   v24 = objc_opt_new();
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v3;
+  obj = personsCopy;
   v4 = [obj countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v4)
   {
@@ -1651,8 +1651,8 @@ LABEL_48:
         }
 
         v7 = *(*(&v31 + 1) + 8 * v6);
-        v8 = [(PNPersonPromoter *)self personClusterManager];
-        v9 = [v8 pn_fetchInvalidCandidatePersonsForPerson:v7];
+        personClusterManager = [(PNPersonPromoter *)self personClusterManager];
+        v9 = [personClusterManager pn_fetchInvalidCandidatePersonsForPerson:v7];
 
         if ([v9 count])
         {
@@ -1677,8 +1677,8 @@ LABEL_48:
                   objc_enumerationMutation(v11);
                 }
 
-                v16 = [*(*(&v27 + 1) + 8 * v15) localIdentifier];
-                [v10 addObject:v16];
+                localIdentifier = [*(*(&v27 + 1) + 8 * v15) localIdentifier];
+                [v10 addObject:localIdentifier];
 
                 ++v15;
               }
@@ -1690,8 +1690,8 @@ LABEL_48:
             while (v13);
           }
 
-          v17 = [v7 localIdentifier];
-          [v24 setObject:v10 forKeyedSubscript:v17];
+          localIdentifier2 = [v7 localIdentifier];
+          [v24 setObject:v10 forKeyedSubscript:localIdentifier2];
         }
 
         ++v6;
@@ -1705,28 +1705,28 @@ LABEL_48:
   }
 
   v18 = [PNPersonDeduper alloc];
-  v19 = [(PNPersonPromoter *)self personClusterManager];
-  v20 = [(PNPersonDeduper *)v18 initWithPersonClusterManager:v19 andInvalidCandidatesMapping:v24 profile:self->_deduperProfile];
+  personClusterManager2 = [(PNPersonPromoter *)self personClusterManager];
+  v20 = [(PNPersonDeduper *)v18 initWithPersonClusterManager:personClusterManager2 andInvalidCandidatesMapping:v24 profile:self->_deduperProfile];
 
   [(PNPersonDeduper *)v20 setPersonPromoter:self];
-  v21 = [(PNPersonPromoter *)self delegate];
-  [(PNPersonDeduper *)v20 setDelegate:v21];
+  delegate = [(PNPersonPromoter *)self delegate];
+  [(PNPersonDeduper *)v20 setDelegate:delegate];
 
   return v20;
 }
 
-- (id)interestingPersonsFromPersons:(id)a3 detectionType:(signed __int16)a4 updateBlock:(id)a5
+- (id)interestingPersonsFromPersons:(id)persons detectionType:(signed __int16)type updateBlock:(id)block
 {
-  v74 = a4;
+  typeCopy = type;
   v104 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v71 = a5;
-  v70 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-  v69 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-  v64 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-  v68 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-  v8 = [(PNPersonPromoter *)self photoLibrary];
-  v67 = [v8 pn_lastAssetDate];
+  personsCopy = persons;
+  blockCopy = block;
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable4 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  photoLibrary = [(PNPersonPromoter *)self photoLibrary];
+  pn_lastAssetDate = [photoLibrary pn_lastAssetDate];
 
   v63 = self->_promoterProfile;
   v94 = 0;
@@ -1734,7 +1734,7 @@ LABEL_48:
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v9 = v7;
+  v9 = personsCopy;
   v10 = [(PNPersonPromoterProfile *)v9 countByEnumeratingWithState:&v90 objects:v103 count:16];
   if (v10)
   {
@@ -1751,7 +1751,7 @@ LABEL_48:
         }
 
         v14 = *(*(&v90 + 1) + 8 * i);
-        v71[2](v71, &v94, 0.0);
+        blockCopy[2](blockCopy, &v94, 0.0);
         if (v94)
         {
           v37 = 0;
@@ -1763,27 +1763,27 @@ LABEL_48:
 
         v15 = objc_autoreleasePoolPush();
         v16 = MEMORY[0x1E696AD98];
-        v17 = [v14 backingMomentIdentifiers];
-        v18 = [v16 numberWithUnsignedInteger:{objc_msgSend(v17, "count")}];
-        [v70 setObject:v18 forKey:v14];
+        backingMomentIdentifiers = [v14 backingMomentIdentifiers];
+        v18 = [v16 numberWithUnsignedInteger:{objc_msgSend(backingMomentIdentifiers, "count")}];
+        [strongToStrongObjectsMapTable setObject:v18 forKey:v14];
 
         v19 = MEMORY[0x1E696AD98];
-        v20 = [v14 backingFaceIdentifiers];
-        v21 = [v19 numberWithUnsignedInteger:{objc_msgSend(v20, "count")}];
-        [v69 setObject:v21 forKey:v14];
+        backingFaceIdentifiers = [v14 backingFaceIdentifiers];
+        v21 = [v19 numberWithUnsignedInteger:{objc_msgSend(backingFaceIdentifiers, "count")}];
+        [strongToStrongObjectsMapTable2 setObject:v21 forKey:v14];
 
         [(PNPersonPromoter *)self _personTimespan:v14];
         if (v22 > 0.0)
         {
           v23 = [MEMORY[0x1E696AD98] numberWithDouble:v22 / 86400.0];
-          [v64 setObject:v23 forKey:v14];
+          [strongToStrongObjectsMapTable3 setObject:v23 forKey:v14];
         }
 
         v24 = MEMORY[0x1E696AD98];
-        v25 = [v14 lastSeenDate];
-        [v25 timeIntervalSinceDate:v67];
+        lastSeenDate = [v14 lastSeenDate];
+        [lastSeenDate timeIntervalSinceDate:pn_lastAssetDate];
         v27 = [v24 numberWithDouble:fabs(v26) / 86400.0];
-        [v68 setObject:v27 forKey:v14];
+        [strongToStrongObjectsMapTable4 setObject:v27 forKey:v14];
 
         objc_autoreleasePoolPop(v15);
       }
@@ -1806,19 +1806,19 @@ LABEL_48:
   v28 = v63;
   v29 = v63;
   v85 = v29;
-  v73 = v70;
+  v73 = strongToStrongObjectsMapTable;
   v86 = v73;
-  v72 = v69;
+  v72 = strongToStrongObjectsMapTable2;
   v87 = v72;
-  v30 = v64;
+  v30 = strongToStrongObjectsMapTable3;
   v88 = v30;
-  v31 = v68;
+  v31 = strongToStrongObjectsMapTable4;
   v89 = v31;
   v32 = _Block_copy(aBlock);
   v33 = [MEMORY[0x1E695DFA8] set];
   v34 = v33;
   v35 = v32[2];
-  if (v74 == 2)
+  if (typeCopy == 2)
   {
     v36 = v35(v32, 0);
     v37 = v9;
@@ -2299,21 +2299,21 @@ void __76__PNPersonPromoter_interestingPersonsFromPersons_detectionType_updateBl
   }
 }
 
-- (double)_personTimespan:(id)a3
+- (double)_personTimespan:(id)timespan
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PNPersonPromoter *)self photoLibrary];
-  v32 = v4;
-  v6 = [v4 backingMomentIdentifiers];
-  v7 = [v6 allObjects];
-  v8 = [v5 pn_fetchMomentsWithLocalIdentifiers:v7];
+  timespanCopy = timespan;
+  photoLibrary = [(PNPersonPromoter *)self photoLibrary];
+  v32 = timespanCopy;
+  backingMomentIdentifiers = [timespanCopy backingMomentIdentifiers];
+  allObjects = [backingMomentIdentifiers allObjects];
+  v8 = [photoLibrary pn_fetchMomentsWithLocalIdentifiers:allObjects];
 
   v31 = v8;
-  v9 = [v8 fetchedObjects];
-  v10 = [(PNPersonPromoter *)self delegate];
-  v30 = v9;
-  v11 = [v10 densityClusteringForObjects:v9 maximumDistance:2 minimumNumberOfObjects:&__block_literal_global_400 withDistanceBlock:3888000.0];
+  fetchedObjects = [v8 fetchedObjects];
+  delegate = [(PNPersonPromoter *)self delegate];
+  v30 = fetchedObjects;
+  v11 = [delegate densityClusteringForObjects:fetchedObjects maximumDistance:2 minimumNumberOfObjects:&__block_literal_global_400 withDistanceBlock:3888000.0];
 
   v43 = 0u;
   v44 = 0u;
@@ -2335,10 +2335,10 @@ void __76__PNPersonPromoter_interestingPersonsFromPersons_detectionType_updateBl
         }
 
         v14 = *(*(&v41 + 1) + 8 * i);
-        v15 = [v14 firstObject];
-        v16 = [v15 universalStartDate];
-        v36 = v15;
-        v17 = [v15 universalEndDate];
+        firstObject = [v14 firstObject];
+        universalStartDate = [firstObject universalStartDate];
+        v36 = firstObject;
+        universalEndDate = [firstObject universalEndDate];
         v37 = 0u;
         v38 = 0u;
         v39 = 0u;
@@ -2352,8 +2352,8 @@ void __76__PNPersonPromoter_interestingPersonsFromPersons_detectionType_updateBl
           do
           {
             v22 = 0;
-            v23 = v16;
-            v24 = v17;
+            v23 = universalStartDate;
+            v24 = universalEndDate;
             do
             {
               if (*v38 != v21)
@@ -2362,15 +2362,15 @@ void __76__PNPersonPromoter_interestingPersonsFromPersons_detectionType_updateBl
               }
 
               v25 = *(*(&v37 + 1) + 8 * v22);
-              v26 = [v25 universalStartDate];
-              v16 = [v23 earlierDate:v26];
+              universalStartDate2 = [v25 universalStartDate];
+              universalStartDate = [v23 earlierDate:universalStartDate2];
 
-              v27 = [v25 universalEndDate];
-              v17 = [v24 laterDate:v27];
+              universalEndDate2 = [v25 universalEndDate];
+              universalEndDate = [v24 laterDate:universalEndDate2];
 
               ++v22;
-              v23 = v16;
-              v24 = v17;
+              v23 = universalStartDate;
+              v24 = universalEndDate;
             }
 
             while (v20 != v22);
@@ -2380,7 +2380,7 @@ void __76__PNPersonPromoter_interestingPersonsFromPersons_detectionType_updateBl
           while (v20);
         }
 
-        [v17 timeIntervalSinceDate:v16];
+        [universalEndDate timeIntervalSinceDate:universalStartDate];
         v12 = v12 + v28;
       }
 
@@ -2428,21 +2428,21 @@ double __36__PNPersonPromoter__personTimespan___block_invoke(uint64_t a1, void *
   v38 = +[PNUserDefaults promoterStatusMergeCandidateLimit];
   v3 = +[PNUserDefaults promoterStatusVerifiedPersonLimit];
   v4 = objc_opt_new();
-  v5 = [(PNPersonPromoter *)self personClusterManager];
+  personClusterManager = [(PNPersonPromoter *)self personClusterManager];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __34__PNPersonPromoter_advancedStatus__block_invoke;
   aBlock[3] = &unk_1E82A1E28;
-  v40 = v5;
+  v40 = personClusterManager;
   v56 = v40;
   v6 = v4;
   v57 = v6;
   v7 = _Block_copy(aBlock);
-  v8 = [(PNPersonPromoter *)self _verifiedPersonsToProcess];
-  v9 = [(PNPersonPromoter *)self _sortedUnverifiedPersonsToDedupForVerifiedPersons:v8 type:3 updateBlock:&__block_literal_global_371];
+  _verifiedPersonsToProcess = [(PNPersonPromoter *)self _verifiedPersonsToProcess];
+  v9 = [(PNPersonPromoter *)self _sortedUnverifiedPersonsToDedupForVerifiedPersons:_verifiedPersonsToProcess type:3 updateBlock:&__block_literal_global_371];
   v10 = +[PNPersonClusterManager personProcessingSortDescriptors];
-  v36 = v8;
-  v11 = [v8 sortedArrayUsingDescriptors:v10];
+  v36 = _verifiedPersonsToProcess;
+  v11 = [_verifiedPersonsToProcess sortedArrayUsingDescriptors:v10];
 
   if ([v11 count] > v3)
   {
@@ -2490,9 +2490,9 @@ double __36__PNPersonPromoter__personTimespan___block_invoke(uint64_t a1, void *
         if ([v18 count])
         {
           [v6 appendFormat:@"\tComparing with %lu merge candicates:\n", objc_msgSend(v18, "count")];
-          v19 = [v18 fetchedObjects];
+          fetchedObjects = [v18 fetchedObjects];
           v20 = +[PNPersonClusterManager personProcessingSortDescriptors];
-          v21 = [v19 sortedArrayUsingDescriptors:v20];
+          v21 = [fetchedObjects sortedArrayUsingDescriptors:v20];
 
           if ([v21 count] > v38)
           {
@@ -2683,25 +2683,25 @@ void __34__PNPersonPromoter_advancedStatus__block_invoke(uint64_t a1, void *a2, 
   objc_autoreleasePoolPop(v9);
 }
 
-- (id)_promoteUnverifiedPersons:(id)a3 withVerifiedPersons:(id)a4 updateBlock:(id)a5
+- (id)_promoteUnverifiedPersons:(id)persons withVerifiedPersons:(id)verifiedPersons updateBlock:(id)block
 {
   v48 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v29 = a5;
+  personsCopy = persons;
+  verifiedPersonsCopy = verifiedPersons;
+  blockCopy = block;
   Current = CFAbsoluteTimeGetCurrent();
   v11 = objc_opt_new();
-  v28 = v9;
-  v12 = [v9 mutableCopy];
+  v28 = verifiedPersonsCopy;
+  v12 = [verifiedPersonsCopy mutableCopy];
   v34 = objc_opt_new();
-  v30 = v8;
-  v33 = [v8 count];
+  v30 = personsCopy;
+  v33 = [personsCopy count];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    *&buf[4] = [v9 count];
+    *&buf[4] = [verifiedPersonsCopy count];
     *&buf[12] = 2048;
-    *&buf[14] = [v8 count];
+    *&buf[14] = [personsCopy count];
     _os_log_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[PersonPromoter] Executing promoter with %lu verified person, %lu unverified persons", buf, 0x16u);
   }
 
@@ -2788,7 +2788,7 @@ void __34__PNPersonPromoter_advancedStatus__block_invoke(uint64_t a1, void *a2, 
     }
   }
 
-  v25 = [(PNPersonPromoter *)self _interestingPersonsFromVerifiedPersons:v12 unverifiedPersons:v34 updateBlock:v29];
+  v25 = [(PNPersonPromoter *)self _interestingPersonsFromVerifiedPersons:v12 unverifiedPersons:v34 updateBlock:blockCopy];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     v26 = CFAbsoluteTimeGetCurrent();
@@ -2812,22 +2812,22 @@ unint64_t __78__PNPersonPromoter__promoteUnverifiedPersons_withVerifiedPersons_u
   return result;
 }
 
-- (id)evaluatePersonPromoterWithUpdateBlock:(id)a3
+- (id)evaluatePersonPromoterWithUpdateBlock:(id)block
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  blockCopy = block;
   v6 = [v4 set];
-  v7 = [(PNPersonPromoter *)self _sortedUnverifiedPersonsToDedupForVerifiedPersons:v6 type:0 updateBlock:v5];
-  v8 = [(PNPersonPromoter *)self _promoteUnverifiedPersons:v7 withVerifiedPersons:v6 updateBlock:v5];
+  v7 = [(PNPersonPromoter *)self _sortedUnverifiedPersonsToDedupForVerifiedPersons:v6 type:0 updateBlock:blockCopy];
+  v8 = [(PNPersonPromoter *)self _promoteUnverifiedPersons:v7 withVerifiedPersons:v6 updateBlock:blockCopy];
 
   return v8;
 }
 
-- (BOOL)promoteUnverifiedPersonsWithUpdateBlock:(id)a3
+- (BOOL)promoteUnverifiedPersonsWithUpdateBlock:(id)block
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v6 = [v5 BOOLForKey:@"PNPersonPromoterDisabled"];
+  blockCopy = block;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v6 = [standardUserDefaults BOOLForKey:@"PNPersonPromoterDisabled"];
 
   if (v6)
   {
@@ -2842,12 +2842,12 @@ unint64_t __78__PNPersonPromoter__promoteUnverifiedPersons_withVerifiedPersons_u
 
   else
   {
-    v8 = [(PNPersonPromoter *)self _verifiedPersonsToProcess];
-    v9 = [(PNPersonPromoter *)self _sortedUnverifiedPersonsToDedupForVerifiedPersons:v8 type:3 updateBlock:v4];
-    v10 = [(PNPersonPromoter *)self _promoteUnverifiedPersons:v9 withVerifiedPersons:v8 updateBlock:v4];
+    _verifiedPersonsToProcess = [(PNPersonPromoter *)self _verifiedPersonsToProcess];
+    v9 = [(PNPersonPromoter *)self _sortedUnverifiedPersonsToDedupForVerifiedPersons:_verifiedPersonsToProcess type:3 updateBlock:blockCopy];
+    v10 = [(PNPersonPromoter *)self _promoteUnverifiedPersons:v9 withVerifiedPersons:_verifiedPersonsToProcess updateBlock:blockCopy];
     if ([v10 count])
     {
-      v7 = [(PNPersonPromoter *)self _promoteInterestingPersons:v10 updateBlock:v4];
+      v7 = [(PNPersonPromoter *)self _promoteInterestingPersons:v10 updateBlock:blockCopy];
     }
 
     else
@@ -2859,19 +2859,19 @@ unint64_t __78__PNPersonPromoter__promoteUnverifiedPersons_withVerifiedPersons_u
   return v7;
 }
 
-- (PNPersonPromoter)initWithPhotoLibrary:(id)a3 andDelegate:(id)a4
+- (PNPersonPromoter)initWithPhotoLibrary:(id)library andDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = PNPersonPromoter;
   v8 = [(PNPersonPromoter *)&v20 init];
   v9 = v8;
   if (v8)
   {
-    [(PNPersonPromoter *)v8 setPhotoLibrary:v6];
-    [(PNPersonPromoter *)v9 setDelegate:v7];
-    v10 = [[PNPersonClusterManager alloc] initWithPhotoLibrary:v6];
+    [(PNPersonPromoter *)v8 setPhotoLibrary:libraryCopy];
+    [(PNPersonPromoter *)v9 setDelegate:delegateCopy];
+    v10 = [[PNPersonClusterManager alloc] initWithPhotoLibrary:libraryCopy];
     personClusterManager = v9->_personClusterManager;
     v9->_personClusterManager = v10;
 
@@ -2886,9 +2886,9 @@ unint64_t __78__PNPersonPromoter__promoteUnverifiedPersons_withVerifiedPersons_u
     quiescentState = v9->_quiescentState;
     v9->_quiescentState = 0;
 
-    v17 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     metricsReport = v9->_metricsReport;
-    v9->_metricsReport = v17;
+    v9->_metricsReport = dictionary;
   }
 
   return v9;
@@ -2900,8 +2900,8 @@ unint64_t __78__PNPersonPromoter__promoteUnverifiedPersons_withVerifiedPersons_u
   quiescentState = self->_quiescentState;
   if (!quiescentState)
   {
-    v4 = [(PNPersonPromoter *)self photoLibrary];
-    [v4 pn_faceProcessingProgress];
+    photoLibrary = [(PNPersonPromoter *)self photoLibrary];
+    [photoLibrary pn_faceProcessingProgress];
     v6 = v5;
 
     v7 = [MEMORY[0x1E696AD98] numberWithInt:v6 >= 0.95];
@@ -2910,9 +2910,9 @@ unint64_t __78__PNPersonPromoter__promoteUnverifiedPersons_withVerifiedPersons_u
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(NSNumber *)self->_quiescentState BOOLValue];
+      bOOLValue = [(NSNumber *)self->_quiescentState BOOLValue];
       v10 = @"NO";
-      if (v9)
+      if (bOOLValue)
       {
         v10 = @"YES";
       }
@@ -2928,14 +2928,14 @@ unint64_t __78__PNPersonPromoter__promoteUnverifiedPersons_withVerifiedPersons_u
   return [(NSNumber *)quiescentState BOOLValue];
 }
 
-+ (void)cumulativeNormalDistributionWithData:(id)a3 sigmaFactor:(double)a4 usingBlock:(id)a5
++ (void)cumulativeNormalDistributionWithData:(id)data sigmaFactor:(double)factor usingBlock:(id)block
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  if ([(NSMapTable *)v7 count])
+  dataCopy = data;
+  blockCopy = block;
+  if ([(NSMapTable *)dataCopy count])
   {
-    v33 = NSAllMapTableValues(v7);
+    v33 = NSAllMapTableValues(dataCopy);
     v9 = [MEMORY[0x1E696ABC8] expressionForConstantValue:?];
     v10 = MEMORY[0x1E696ABC8];
     v40[0] = v9;
@@ -2957,12 +2957,12 @@ unint64_t __78__PNPersonPromoter__promoteUnverifiedPersons_withVerifiedPersons_u
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v22 = [(NSMapTable *)v7 keyEnumerator];
-    v23 = [v22 countByEnumeratingWithState:&v34 objects:v38 count:16];
+    keyEnumerator = [(NSMapTable *)dataCopy keyEnumerator];
+    v23 = [keyEnumerator countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v23)
     {
       v24 = v23;
-      v25 = v21 * a4;
+      v25 = v21 * factor;
       v26 = *v35;
       do
       {
@@ -2970,18 +2970,18 @@ unint64_t __78__PNPersonPromoter__promoteUnverifiedPersons_withVerifiedPersons_u
         {
           if (*v35 != v26)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v28 = *(*(&v34 + 1) + 8 * i);
-          v29 = [(NSMapTable *)v7 objectForKey:v28];
+          v29 = [(NSMapTable *)dataCopy objectForKey:v28];
           [v29 doubleValue];
           v31 = v30;
           v32 = erfc((v15 - v30) / v25 * 0.707106781);
-          v8[2](v8, v28, v31, v15, v25, fmin(v32 * 0.5, 1.0));
+          blockCopy[2](blockCopy, v28, v31, v15, v25, fmin(v32 * 0.5, 1.0));
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v34 objects:v38 count:16];
+        v24 = [keyEnumerator countByEnumeratingWithState:&v34 objects:v38 count:16];
       }
 
       while (v24);
@@ -2989,12 +2989,12 @@ unint64_t __78__PNPersonPromoter__promoteUnverifiedPersons_withVerifiedPersons_u
   }
 }
 
-+ (void)probabilityDensityNormalDistributionWithData:(id)a3 sigmaFactor:(double)a4 usingBlock:(id)a5
++ (void)probabilityDensityNormalDistributionWithData:(id)data sigmaFactor:(double)factor usingBlock:(id)block
 {
   v44[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v37 = NSAllMapTableValues(v7);
+  dataCopy = data;
+  blockCopy = block;
+  v37 = NSAllMapTableValues(dataCopy);
   v9 = [MEMORY[0x1E696ABC8] expressionForConstantValue:?];
   v10 = MEMORY[0x1E696ABC8];
   v44[0] = v9;
@@ -3012,15 +3012,15 @@ unint64_t __78__PNPersonPromoter__promoteUnverifiedPersons_withVerifiedPersons_u
   [v19 doubleValue];
   v21 = v20;
 
-  v22 = v21 * a4;
+  v22 = v21 * factor;
   v23 = v22 * (v22 + v22);
   v24 = exp(-((v15 - v15) * (v15 - v15)) / v23);
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v25 = [(NSMapTable *)v7 keyEnumerator];
-  v26 = [v25 countByEnumeratingWithState:&v38 objects:v42 count:16];
+  keyEnumerator = [(NSMapTable *)dataCopy keyEnumerator];
+  v26 = [keyEnumerator countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v26)
   {
     v27 = v26;
@@ -3033,58 +3033,58 @@ unint64_t __78__PNPersonPromoter__promoteUnverifiedPersons_withVerifiedPersons_u
       {
         if (*v39 != v30)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v32 = *(*(&v38 + 1) + 8 * i);
-        v33 = [(NSMapTable *)v7 objectForKey:v32];
+        v33 = [(NSMapTable *)dataCopy objectForKey:v32];
         [v33 doubleValue];
         v35 = v34;
         v36 = exp(-((v34 - v15) * (v34 - v15)) / v23);
-        v8[2](v8, v32, v35, v15, v22, v28 * v36, v29);
+        blockCopy[2](blockCopy, v32, v35, v15, v22, v28 * v36, v29);
       }
 
-      v27 = [v25 countByEnumeratingWithState:&v38 objects:v42 count:16];
+      v27 = [keyEnumerator countByEnumeratingWithState:&v38 objects:v42 count:16];
     }
 
     while (v27);
   }
 }
 
-+ (unint64_t)numberOfFacesProcessedOnLastRunAtURL:(id)a3
++ (unint64_t)numberOfFacesProcessedOnLastRunAtURL:(id)l
 {
-  v3 = [a1 _personPromoterInformationAtURL:a3];
+  v3 = [self _personPromoterInformationAtURL:l];
   v4 = [v3 objectForKeyedSubscript:@"NumberOfFacesProcessedOnLastRun"];
-  v5 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
-+ (id)requestSuggestedMePersonIdentifierAtURL:(id)a3 withError:(id *)a4
++ (id)requestSuggestedMePersonIdentifierAtURL:(id)l withError:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] pn_errorWithCode:1 localizedDescription:@"Me inference is handled by VU."];
+    *error = [MEMORY[0x1E696ABC0] pn_errorWithCode:1 localizedDescription:@"Me inference is handled by VU."];
   }
 
   return 0;
 }
 
-+ (void)setProcessed:(BOOL)a3 forLibrary:(id)a4
++ (void)setProcessed:(BOOL)processed forLibrary:(id)library
 {
-  v4 = a3;
+  processedCopy = processed;
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [v6 pn_persistentStorageDirectoryURL];
-  v8 = [a1 _personPromoterInformationAtURL:v7];
+  libraryCopy = library;
+  pn_persistentStorageDirectoryURL = [libraryCopy pn_persistentStorageDirectoryURL];
+  v8 = [self _personPromoterInformationAtURL:pn_persistentStorageDirectoryURL];
   v9 = [v8 mutableCopy];
   v10 = v9;
-  if (v4)
+  if (processedCopy)
   {
     [v9 setObject:&unk_1F46E5330 forKey:@"Version"];
     [v10 setObject:MEMORY[0x1E695E118] forKey:@"ProcessedInQuiescentState"];
-    v11 = [v6 pn_numberOfFacesWithFaceprints];
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v11];
+    pn_numberOfFacesWithFaceprints = [libraryCopy pn_numberOfFacesWithFaceprints];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:pn_numberOfFacesWithFaceprints];
     [v10 setObject:v12 forKey:@"NumberOfFacesProcessedOnLastRun"];
   }
 
@@ -3094,7 +3094,7 @@ unint64_t __78__PNPersonPromoter__promoteUnverifiedPersons_withVerifiedPersons_u
     [v10 removeObjectForKey:@"ProcessedInQuiescentState"];
   }
 
-  if (([a1 _writePersonPromoterInformation:v10 atURL:v7] & 1) == 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (([self _writePersonPromoterInformation:v10 atURL:pn_persistentStorageDirectoryURL] & 1) == 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v13 = 138412290;
     v14 = v10;
@@ -3102,71 +3102,71 @@ unint64_t __78__PNPersonPromoter__promoteUnverifiedPersons_withVerifiedPersons_u
   }
 }
 
-+ (BOOL)hasProcessedForLibrary:(id)a3
++ (BOOL)hasProcessedForLibrary:(id)library
 {
-  v4 = [a3 pn_persistentStorageDirectoryURL];
-  v5 = [a1 _personPromoterInformationAtURL:v4];
+  pn_persistentStorageDirectoryURL = [library pn_persistentStorageDirectoryURL];
+  v5 = [self _personPromoterInformationAtURL:pn_persistentStorageDirectoryURL];
   v6 = [v5 objectForKeyedSubscript:@"Version"];
   if ([v6 unsignedIntegerValue] == 15)
   {
     v7 = [v5 objectForKeyedSubscript:@"ProcessedInQuiescentState"];
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-+ (BOOL)_writePersonPromoterInformation:(id)a3 atURL:(id)a4
++ (BOOL)_writePersonPromoterInformation:(id)information atURL:(id)l
 {
-  v5 = a3;
-  v6 = [a4 URLByAppendingPathComponent:@"PersonPromoter"];
-  v7 = [v5 writeToURL:v6 atomically:0];
+  informationCopy = information;
+  v6 = [l URLByAppendingPathComponent:@"PersonPromoter"];
+  v7 = [informationCopy writeToURL:v6 atomically:0];
 
   return v7;
 }
 
-+ (id)_personPromoterInformationAtURL:(id)a3
++ (id)_personPromoterInformationAtURL:(id)l
 {
   v3 = MEMORY[0x1E696AC08];
-  v4 = a3;
+  lCopy = l;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 URLByAppendingPathComponent:@"PersonPromoter"];
+  v6 = [lCopy URLByAppendingPathComponent:@"PersonPromoter"];
 
-  v7 = [v6 path];
-  if (![v5 fileExistsAtPath:v7] || (v8 = objc_msgSend(objc_alloc(MEMORY[0x1E695DF20]), "initWithContentsOfFile:", v7)) == 0)
+  path = [v6 path];
+  if (![v5 fileExistsAtPath:path] || (dictionary = objc_msgSend(objc_alloc(MEMORY[0x1E695DF20]), "initWithContentsOfFile:", path)) == 0)
   {
-    v8 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
   }
 
-  return v8;
+  return dictionary;
 }
 
 - (void)reportMetrics
 {
-  v2 = [(PNPersonPromoter *)self metricsReport];
-  if ([v2 count])
+  metricsReport = [(PNPersonPromoter *)self metricsReport];
+  if ([metricsReport count])
   {
-    [MEMORY[0x1E6991F28] sendEvent:@"com.apple.Photos.People.personPromoter" withPayload:v2];
+    [MEMORY[0x1E6991F28] sendEvent:@"com.apple.Photos.People.personPromoter" withPayload:metricsReport];
   }
 }
 
-- (void)incrementMetricForKey:(id)a3 withValue:(unint64_t)a4
+- (void)incrementMetricForKey:(id)key withValue:(unint64_t)value
 {
-  if (a4)
+  if (value)
   {
-    v6 = a3;
-    v7 = [(PNPersonPromoter *)self metricsReport];
-    v8 = [v7 objectForKeyedSubscript:v6];
-    v9 = [v8 unsignedIntegerValue];
+    keyCopy = key;
+    metricsReport = [(PNPersonPromoter *)self metricsReport];
+    v8 = [metricsReport objectForKeyedSubscript:keyCopy];
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v9 + a4];
-    v10 = [(PNPersonPromoter *)self metricsReport];
-    [v10 setObject:v11 forKeyedSubscript:v6];
+    value = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue + value];
+    metricsReport2 = [(PNPersonPromoter *)self metricsReport];
+    [metricsReport2 setObject:value forKeyedSubscript:keyCopy];
   }
 }
 

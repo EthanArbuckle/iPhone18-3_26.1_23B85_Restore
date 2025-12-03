@@ -1,29 +1,29 @@
 @interface PhoneRootViewController
 - (BOOL)isIPad;
 - (UIView)contentView;
-- (double)_contentViewWidthForApplicationBoundsSize:(CGSize)a3;
+- (double)_contentViewWidthForApplicationBoundsSize:(CGSize)size;
 - (void)_ensureProperPositionForContentView;
-- (void)_getRotationContentSettings:(id *)a3;
-- (void)displayUIAnimated:(BOOL)a3;
+- (void)_getRotationContentSettings:(id *)settings;
+- (void)displayUIAnimated:(BOOL)animated;
 - (void)ensureBaseViewControllerIsShowing;
-- (void)handleApplicationWillEnterForegroundNotification:(id)a3;
-- (void)handleOrientationNotification:(id)a3;
-- (void)hideContentViewAnimated:(BOOL)a3 completionBlock:(id)a4;
+- (void)handleApplicationWillEnterForegroundNotification:(id)notification;
+- (void)handleOrientationNotification:(id)notification;
+- (void)hideContentViewAnimated:(BOOL)animated completionBlock:(id)block;
 - (void)hideDetailsViewController;
 - (void)loadView;
 - (void)setContentViewHiddenPosition;
 - (void)setContentViewNormalPosition;
 - (void)setupContentViewFullSize;
 - (void)setupContentViewSidebar;
-- (void)showContentViewAnimated:(BOOL)a3 completionBlock:(id)a4;
+- (void)showContentViewAnimated:(BOOL)animated completionBlock:(id)block;
 - (void)showDetailsViewController;
-- (void)updateVideoViewControllerWithOrientationMonitor:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updateVideoViewControllerWithOrientationMonitor:(id)monitor;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PhoneRootViewController
@@ -77,8 +77,8 @@
 
           [(_UIVisualEffectBackdropView *)self->_backdropView setAutoresizingMask:18];
           [(_UIVisualEffectBackdropView *)self->_backdropView setRenderMode:1];
-          v10 = [(_UIVisualEffectBackdropView *)self->_backdropView captureGroup];
-          [v10 setGroupName:@"RootControllerBackgroundBackdrop"];
+          captureGroup = [(_UIVisualEffectBackdropView *)self->_backdropView captureGroup];
+          [captureGroup setGroupName:@"RootControllerBackgroundBackdrop"];
         }
 
         if (!self->_backgroundBlurView)
@@ -92,9 +92,9 @@
           [(UIView *)self->_contentView bounds];
           [(UIVisualEffectView *)self->_backgroundBlurView setFrame:?];
           [(UIVisualEffectView *)self->_backgroundBlurView setAutoresizingMask:18];
-          v15 = [(_UIVisualEffectBackdropView *)self->_backdropView captureGroup];
-          v16 = [v15 groupName];
-          [(UIVisualEffectView *)self->_backgroundBlurView _setGroupName:v16];
+          captureGroup2 = [(_UIVisualEffectBackdropView *)self->_backdropView captureGroup];
+          groupName = [captureGroup2 groupName];
+          [(UIVisualEffectView *)self->_backgroundBlurView _setGroupName:groupName];
 
           [(UIVisualEffectView *)self->_backgroundBlurView _setCaptureView:self->_backdropView];
         }
@@ -105,51 +105,51 @@
 
       if ([UIApp usesUnifiedInterface])
       {
-        v17 = 0;
+        view = 0;
       }
 
       else
       {
-        v18 = [(PhoneRootViewController *)self baseViewController];
-        v17 = [v18 view];
+        baseViewController = [(PhoneRootViewController *)self baseViewController];
+        view = [baseViewController view];
       }
 
-      v19 = [UIApp tabBarFillsScreen];
+      tabBarFillsScreen = [UIApp tabBarFillsScreen];
       [(UIView *)self->_contentView bounds];
       v21 = v20;
-      if (v19)
+      if (tabBarFillsScreen)
       {
-        [v17 setFrame:?];
+        [view setFrame:?];
       }
 
       else
       {
         [(UIView *)self->_contentView bounds];
-        [v17 setBounds:{0.0, 0.0, v21}];
+        [view setBounds:{0.0, 0.0, v21}];
         [(UIView *)self->_contentView bounds];
         MaxX = CGRectGetMaxX(v31);
-        [v17 bounds];
+        [view bounds];
         v24 = MaxX - floor(v23 * 0.5);
         [(UIView *)self->_contentView bounds];
-        [v17 setCenter:{v24, floor(v25 * 0.5)}];
+        [view setCenter:{v24, floor(v25 * 0.5)}];
       }
 
-      [v17 setAutoresizingMask:18];
-      v26 = [(PhoneRootViewController *)self detailsViewController];
+      [view setAutoresizingMask:18];
+      detailsViewController = [(PhoneRootViewController *)self detailsViewController];
 
-      if (v26)
+      if (detailsViewController)
       {
-        v27 = [(PhoneRootViewController *)self detailsViewController];
-        [(PhoneRootViewController *)self addChildViewController:v27];
+        detailsViewController2 = [(PhoneRootViewController *)self detailsViewController];
+        [(PhoneRootViewController *)self addChildViewController:detailsViewController2];
 
-        [(UIView *)self->_contentView addSubview:v17];
-        v28 = [(PhoneRootViewController *)self detailsViewController];
-        [v28 didMoveToParentViewController:self];
+        [(UIView *)self->_contentView addSubview:view];
+        detailsViewController3 = [(PhoneRootViewController *)self detailsViewController];
+        [detailsViewController3 didMoveToParentViewController:self];
       }
 
       else
       {
-        [(UIView *)self->_contentView addSubview:v17];
+        [(UIView *)self->_contentView addSubview:view];
       }
 
       [UIView setAnimationsEnabled:1];
@@ -173,68 +173,68 @@
   [(PhoneRootViewController *)self setView:v4];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __78__PhoneRootViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v9[3] = &unk_100286028;
   v9[4] = self;
-  v7 = a4;
-  [v7 animateAlongsideTransition:v9 completion:0];
+  coordinatorCopy = coordinator;
+  [coordinatorCopy animateAlongsideTransition:v9 completion:0];
   v8.receiver = self;
   v8.super_class = PhoneRootViewController;
-  [(PhoneRootViewController *)&v8 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(PhoneRootViewController *)&v8 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (void)_getRotationContentSettings:(id *)a3
+- (void)_getRotationContentSettings:(id *)settings
 {
   v7.receiver = self;
   v7.super_class = PhoneRootViewController;
   [(PhoneRootViewController *)&v7 _getRotationContentSettings:?];
-  v5 = [(PhoneRootViewController *)self baseViewController];
-  v6 = [v5 shouldDisableEdgeClip];
+  baseViewController = [(PhoneRootViewController *)self baseViewController];
+  shouldDisableEdgeClip = [baseViewController shouldDisableEdgeClip];
 
-  if (v6)
+  if (shouldDisableEdgeClip)
   {
-    a3->var6 = 0;
+    settings->var6 = 0;
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = PhoneRootViewController;
-  [(PhoneRootViewController *)&v6 viewDidDisappear:v3];
+  [(PhoneRootViewController *)&v6 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = PhoneRootViewController;
-  [(PhoneRootViewController *)&v3 viewWillDisappear:a3];
+  [(PhoneRootViewController *)&v3 viewWillDisappear:disappear];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PhoneRootViewController;
-  [(PhoneRootViewController *)&v4 viewDidAppear:a3];
+  [(PhoneRootViewController *)&v4 viewDidAppear:appear];
   [(PhoneRootViewController *)self setNeedsStatusBarAppearanceUpdate];
   [(PhoneRootViewController *)self startPreviewIfNeeded];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v12.receiver = self;
   v12.super_class = PhoneRootViewController;
-  [(PhoneRootViewController *)&v12 viewWillAppear:a3];
+  [(PhoneRootViewController *)&v12 viewWillAppear:appear];
   v4 = PHDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -259,8 +259,8 @@
     [v7 addObserver:self selector:"handleOrientationNotification:" name:v8 object:0];
 
     v9 = objc_opt_new();
-    v10 = [v9 compose];
-    [v10 setOrientationEventsEnabled:1];
+    compose = [v9 compose];
+    [compose setOrientationEventsEnabled:1];
   }
 }
 
@@ -271,7 +271,7 @@
   [(PhoneRootViewController *)&v2 viewDidLoad];
 }
 
-- (void)handleApplicationWillEnterForegroundNotification:(id)a3
+- (void)handleApplicationWillEnterForegroundNotification:(id)notification
 {
   v4 = PHDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -283,15 +283,15 @@
   [(PhoneRootViewController *)self showFaceTimeFirstRunViewIfNeeded];
 }
 
-- (void)handleOrientationNotification:(id)a3
+- (void)handleOrientationNotification:(id)notification
 {
-  v4 = [(PhoneRootViewController *)self view];
-  v5 = [v4 _screen];
+  view = [(PhoneRootViewController *)self view];
+  _screen = [view _screen];
 
   v6 = +[UIScreen mainScreen];
   if ([UIApp alwaysShowLocalVideo])
   {
-    v7 = v5 == v6;
+    v7 = _screen == v6;
   }
 
   else
@@ -309,28 +309,28 @@
     }
 
     v9 = objc_opt_new();
-    v10 = [v9 compose];
+    compose = [v9 compose];
 
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = __57__PhoneRootViewController_handleOrientationNotification___block_invoke;
     v12[3] = &unk_1002852E0;
     v12[4] = self;
-    v13 = v10;
-    v11 = v10;
+    v13 = compose;
+    v11 = compose;
     [UIView animateWithDuration:v12 animations:0.300000012];
   }
 }
 
-- (void)updateVideoViewControllerWithOrientationMonitor:(id)a3
+- (void)updateVideoViewControllerWithOrientationMonitor:(id)monitor
 {
   if ([UIApp alwaysShowLocalVideo])
   {
-    v4 = [(PhoneRootViewController *)self view];
-    v5 = [v4 window];
-    v6 = [v5 windowScene];
+    view = [(PhoneRootViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
 
-    if (!v6)
+    if (!windowScene)
     {
       v7 = PHDefaultLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -344,18 +344,18 @@
 
 - (void)_ensureProperPositionForContentView
 {
-  v3 = [UIApp tabBarFillsScreen];
-  v4 = [(PhoneRootViewController *)self view];
-  [v4 bounds];
+  tabBarFillsScreen = [UIApp tabBarFillsScreen];
+  view = [(PhoneRootViewController *)self view];
+  [view bounds];
   v9 = v7;
   v10 = v8;
-  if (v3)
+  if (tabBarFillsScreen)
   {
     x = v5;
     y = v6;
 
-    v13 = [(PhoneRootViewController *)self view];
-    [v13 center];
+    view2 = [(PhoneRootViewController *)self view];
+    [view2 center];
     v15 = v14;
     v17 = v16;
   }
@@ -365,14 +365,14 @@
     [(PhoneRootViewController *)self _contentViewWidthForApplicationBoundsSize:v7, v8];
     v9 = v18;
 
-    v19 = [(PhoneRootViewController *)self view];
-    [v19 bounds];
+    view3 = [(PhoneRootViewController *)self view];
+    [view3 bounds];
     v10 = v20;
 
     if ([UIApp userInterfaceLayoutDirection])
     {
-      v21 = [(PhoneRootViewController *)self view];
-      [v21 bounds];
+      view4 = [(PhoneRootViewController *)self view];
+      [view4 bounds];
       v15 = floor(v22 + v9 * -0.5);
     }
 
@@ -389,8 +389,8 @@
       v10 = v10 + -20.0;
     }
 
-    v13 = [(PhoneRootViewController *)self view];
-    [v13 bounds];
+    view2 = [(PhoneRootViewController *)self view];
+    [view2 bounds];
     v17 = floor(v23 * 0.5);
   }
 
@@ -407,9 +407,9 @@
   }
 }
 
-- (double)_contentViewWidthForApplicationBoundsSize:(CGSize)a3
+- (double)_contentViewWidthForApplicationBoundsSize:(CGSize)size
 {
-  if ([(PhoneRootViewController *)self isFaceTimeLaunchPageEnabled:a3.width])
+  if ([(PhoneRootViewController *)self isFaceTimeLaunchPageEnabled:size.width])
   {
     return 400.0;
   }
@@ -434,11 +434,11 @@
     [(PhoneRootViewController *)self _ensureProperPositionForContentView];
     if ([(PhoneRootViewController *)self sideBarShouldBeFloating])
     {
-      v4 = [(UIView *)self->_contentView layer];
-      [v4 setCornerRadius:10.0];
+      layer = [(UIView *)self->_contentView layer];
+      [layer setCornerRadius:10.0];
 
-      v5 = [(UIView *)self->_contentView layer];
-      [v5 setMasksToBounds:1];
+      layer2 = [(UIView *)self->_contentView layer];
+      [layer2 setMasksToBounds:1];
     }
 
     if (([UIApp tabBarFillsScreen] & 1) == 0)
@@ -469,10 +469,10 @@
 {
   if ([(PhoneRootViewController *)self isContentViewLoaded])
   {
-    v3 = [(PhoneRootViewController *)self contentView];
+    contentView = [(PhoneRootViewController *)self contentView];
     if ([UIApp contentViewAnimationsFadeInsteadOfMove])
     {
-      [v3 setAlpha:1.0];
+      [contentView setAlpha:1.0];
     }
 
     else
@@ -481,30 +481,30 @@
       v5[0] = *&CGAffineTransformIdentity.a;
       v5[1] = v4;
       v5[2] = *&CGAffineTransformIdentity.tx;
-      [v3 setTransform:v5];
+      [contentView setTransform:v5];
     }
   }
 }
 
-- (void)showContentViewAnimated:(BOOL)a3 completionBlock:(id)a4
+- (void)showContentViewAnimated:(BOOL)animated completionBlock:(id)block
 {
-  v4 = a3;
-  v7 = a4;
+  animatedCopy = animated;
+  blockCopy = block;
   if (([UIApp tabBarCanSlide] & 1) == 0)
   {
     [PhoneRootViewController showContentViewAnimated:a2 completionBlock:self];
   }
 
-  v8 = [(PhoneRootViewController *)self contentView];
-  [v8 setHidden:0];
-  v9 = [(PhoneRootViewController *)self view];
-  v10 = [v8 superview];
+  contentView = [(PhoneRootViewController *)self contentView];
+  [contentView setHidden:0];
+  view = [(PhoneRootViewController *)self view];
+  superview = [contentView superview];
 
-  if (v10 != v9)
+  if (superview != view)
   {
     +[UIView disableAnimation];
     [(PhoneRootViewController *)self _ensureProperPositionForContentView];
-    [v9 addSubview:v8];
+    [view addSubview:contentView];
     +[UIView enableAnimation];
   }
 
@@ -512,10 +512,10 @@
   v17[1] = 3221225472;
   v17[2] = __67__PhoneRootViewController_showContentViewAnimated_completionBlock___block_invoke;
   v17[3] = &unk_100286050;
-  v18 = v8;
-  v19 = v7;
-  v11 = v7;
-  v12 = v8;
+  v18 = contentView;
+  v19 = blockCopy;
+  v11 = blockCopy;
+  v12 = contentView;
   v13 = objc_retainBlock(v17);
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
@@ -523,7 +523,7 @@
   v16[3] = &unk_100284FD0;
   v16[4] = self;
   v14 = objc_retainBlock(v16);
-  if (v4)
+  if (animatedCopy)
   {
     v15 = 0.300000012;
   }
@@ -568,18 +568,18 @@ uint64_t __67__PhoneRootViewController_showContentViewAnimated_completionBlock__
 {
   if ([(PhoneRootViewController *)self isContentViewLoaded])
   {
-    v3 = [(PhoneRootViewController *)self contentView];
+    contentView = [(PhoneRootViewController *)self contentView];
     if ([UIApp contentViewAnimationsFadeInsteadOfMove])
     {
-      [v3 setAlpha:0.0];
+      [contentView setAlpha:0.0];
     }
 
     else
     {
-      v4 = [UIApp userInterfaceLayoutDirection];
-      v5 = [UIApp contentViewOffscreenEdge];
-      [v3 bounds];
-      if (v5 == 1)
+      userInterfaceLayoutDirection = [UIApp userInterfaceLayoutDirection];
+      contentViewOffscreenEdge = [UIApp contentViewOffscreenEdge];
+      [contentView bounds];
+      if (contentViewOffscreenEdge == 1)
       {
         Height = CGRectGetHeight(*&v6);
         v11 = Height;
@@ -591,13 +591,13 @@ uint64_t __67__PhoneRootViewController_showContentViewAnimated_completionBlock__
         v11 = 0.0;
       }
 
-      if (v4 != 1)
+      if (userInterfaceLayoutDirection != 1)
       {
         Height = -Height;
       }
 
       memset(&v13.c, 0, 32);
-      if (v5 == 1)
+      if (contentViewOffscreenEdge == 1)
       {
         Height = 0.0;
       }
@@ -605,15 +605,15 @@ uint64_t __67__PhoneRootViewController_showContentViewAnimated_completionBlock__
       *&v13.a = 0uLL;
       CGAffineTransformMakeTranslation(&v13, Height, v11);
       v12 = v13;
-      [v3 setTransform:&v12];
+      [contentView setTransform:&v12];
     }
   }
 }
 
-- (void)hideContentViewAnimated:(BOOL)a3 completionBlock:(id)a4
+- (void)hideContentViewAnimated:(BOOL)animated completionBlock:(id)block
 {
-  v4 = a3;
-  v7 = a4;
+  animatedCopy = animated;
+  blockCopy = block;
   if (([UIApp tabBarCanSlide] & 1) == 0)
   {
     [PhoneRootViewController hideContentViewAnimated:a2 completionBlock:self];
@@ -627,7 +627,7 @@ uint64_t __67__PhoneRootViewController_showContentViewAnimated_completionBlock__
     v12[2] = __67__PhoneRootViewController_hideContentViewAnimated_completionBlock___block_invoke;
     v12[3] = &unk_100286050;
     v12[4] = self;
-    v13 = v7;
+    v13 = blockCopy;
     v8 = objc_retainBlock(v12);
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
@@ -636,7 +636,7 @@ uint64_t __67__PhoneRootViewController_showContentViewAnimated_completionBlock__
     v11[4] = self;
     v9 = objc_retainBlock(v11);
     v10 = 0.300000012;
-    if (!v4)
+    if (!animatedCopy)
     {
       v10 = 0.0;
     }
@@ -675,11 +675,11 @@ void __67__PhoneRootViewController_hideContentViewAnimated_completionBlock___blo
 {
   if ([UIApp userInterfaceStyle] == 1)
   {
-    v8 = [(PhoneRootViewController *)self detailsViewController];
-    v3 = [v8 presentedViewController];
-    if (v3)
+    detailsViewController = [(PhoneRootViewController *)self detailsViewController];
+    presentedViewController = [detailsViewController presentedViewController];
+    if (presentedViewController)
     {
-      v4 = v3;
+      view = presentedViewController;
     }
 
     else
@@ -691,17 +691,17 @@ void __67__PhoneRootViewController_hideContentViewAnimated_completionBlock___blo
         return;
       }
 
-      v6 = [(PhoneRootViewController *)self detailsViewController];
-      v7 = [v6 isViewLoaded];
+      detailsViewController2 = [(PhoneRootViewController *)self detailsViewController];
+      isViewLoaded = [detailsViewController2 isViewLoaded];
 
-      if (!v7)
+      if (!isViewLoaded)
       {
         return;
       }
 
-      v8 = [(PhoneRootViewController *)self detailsViewController];
-      v4 = [v8 view];
-      [v4 setAlpha:1.0];
+      detailsViewController = [(PhoneRootViewController *)self detailsViewController];
+      view = [detailsViewController view];
+      [view setAlpha:1.0];
     }
   }
 }
@@ -710,9 +710,9 @@ void __67__PhoneRootViewController_hideContentViewAnimated_completionBlock___blo
 {
   if ([UIApp userInterfaceStyle] == 1)
   {
-    v4 = [(PhoneRootViewController *)self detailsViewController];
-    v3 = [v4 view];
-    [v3 setAlpha:0.0];
+    detailsViewController = [(PhoneRootViewController *)self detailsViewController];
+    view = [detailsViewController view];
+    [view setAlpha:0.0];
   }
 }
 
@@ -720,22 +720,22 @@ void __67__PhoneRootViewController_hideContentViewAnimated_completionBlock___blo
 {
   if (!-[PhoneRootViewController needsSplitView](self, "needsSplitView") && ([UIApp alwaysShowLocalVideo] & 1) == 0)
   {
-    v6 = [(PhoneRootViewController *)self view];
-    v3 = [(PhoneRootViewController *)self contentView];
-    v4 = [(PhoneRootViewController *)self baseViewController];
-    [v4 resetViewController];
+    view = [(PhoneRootViewController *)self view];
+    contentView = [(PhoneRootViewController *)self contentView];
+    baseViewController = [(PhoneRootViewController *)self baseViewController];
+    [baseViewController resetViewController];
 
-    v5 = [v3 superview];
+    superview = [contentView superview];
 
-    if (v5 != v6)
+    if (superview != view)
     {
       [(PhoneRootViewController *)self _ensureProperPositionForContentView];
-      [v6 addSubview:v3];
+      [view addSubview:contentView];
     }
   }
 }
 
-- (void)displayUIAnimated:(BOOL)a3
+- (void)displayUIAnimated:(BOOL)animated
 {
   if ([UIApp tabBarCanSlide])
   {

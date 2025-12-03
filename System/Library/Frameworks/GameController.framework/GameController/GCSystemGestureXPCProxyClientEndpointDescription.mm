@@ -1,20 +1,20 @@
 @interface GCSystemGestureXPCProxyClientEndpointDescription
-- (GCSystemGestureXPCProxyClientEndpointDescription)initWithCoder:(id)a3;
-- (GCSystemGestureXPCProxyClientEndpointDescription)initWithIdentifier:(id)a3;
-- (id)materializeWithContext:(id)a3;
+- (GCSystemGestureXPCProxyClientEndpointDescription)initWithCoder:(id)coder;
+- (GCSystemGestureXPCProxyClientEndpointDescription)initWithIdentifier:(id)identifier;
+- (id)materializeWithContext:(id)context;
 @end
 
 @implementation GCSystemGestureXPCProxyClientEndpointDescription
 
-- (GCSystemGestureXPCProxyClientEndpointDescription)initWithIdentifier:(id)a3
+- (GCSystemGestureXPCProxyClientEndpointDescription)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = GCSystemGestureXPCProxyClientEndpointDescription;
   v5 = [(GCSystemGestureXPCProxyClientEndpointDescription *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copyWithZone:0];
+    v6 = [identifierCopy copyWithZone:0];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -22,16 +22,16 @@
   return v5;
 }
 
-- (GCSystemGestureXPCProxyClientEndpointDescription)initWithCoder:(id)a3
+- (GCSystemGestureXPCProxyClientEndpointDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = GCSystemGestureXPCProxyClientEndpointDescription;
   v5 = [(GCSystemGestureXPCProxyClientEndpointDescription *)&v10 init];
   if (v5)
   {
     v6 = GCIPCObjectIdentifier_Classes();
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"identifier"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v7;
   }
@@ -39,25 +39,25 @@
   return v5;
 }
 
-- (id)materializeWithContext:(id)a3
+- (id)materializeWithContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
+  contextCopy = context;
+  v5 = contextCopy;
   materializedObject = self->_materializedObject;
   if (materializedObject)
   {
     goto LABEL_4;
   }
 
-  v7 = [v4 IPCServiceRegistry];
-  v8 = [v7 serviceClientForIPCService:&unk_1F4EB39A8];
+  iPCServiceRegistry = [contextCopy IPCServiceRegistry];
+  v8 = [iPCServiceRegistry serviceClientForIPCService:&unk_1F4EB39A8];
 
   if (v8)
   {
-    v9 = [v8 systemGestureXPCProxyServiceRemoteServer];
+    systemGestureXPCProxyServiceRemoteServer = [v8 systemGestureXPCProxyServiceRemoteServer];
     v10 = [[GCSystemGestureXPCProxyClientEndpoint alloc] initWithIdentifier:self->_identifier];
-    v11 = [v5 IPCObjectRegistry];
-    [v11 registerIPCObject:v10];
+    iPCObjectRegistry = [v5 IPCObjectRegistry];
+    [iPCObjectRegistry registerIPCObject:v10];
 
     v12 = dispatch_semaphore_create(0);
     v21[0] = MEMORY[0x1E69E9820];
@@ -70,7 +70,7 @@
     v24 = v12;
     v14 = v12;
     v15 = v8;
-    [v9 systemGestureXPCProxyServiceClientEndpointConnect:v13 reply:v21];
+    [systemGestureXPCProxyServiceRemoteServer systemGestureXPCProxyServiceClientEndpointConnect:v13 reply:v21];
     v16 = dispatch_time(0, 1000000000);
     dispatch_semaphore_wait(v14, v16);
     v17 = self->_materializedObject;

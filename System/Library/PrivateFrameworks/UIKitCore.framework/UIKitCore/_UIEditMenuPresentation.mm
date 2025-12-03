@@ -1,36 +1,36 @@
 @interface _UIEditMenuPresentation
-- (CGRect)menuFrameInCoordinateSpace:(id)a3;
+- (CGRect)menuFrameInCoordinateSpace:(id)space;
 - (UIView)sourceView;
-- (_UIEditMenuPresentation)initWithDelegate:(id)a3 sourceView:(id)a4;
+- (_UIEditMenuPresentation)initWithDelegate:(id)delegate sourceView:(id)view;
 - (_UIEditMenuPresentationDelegate)delegate;
 - (int64_t)resolvedUserInterfaceStyle;
 - (void)completeHandoff;
-- (void)didTransitionFrom:(unint64_t)a3 to:(unint64_t)a4;
+- (void)didTransitionFrom:(unint64_t)from to:(unint64_t)to;
 - (void)forceEndDismissalIfNeeded;
 - (void)forceEndPresentIfNeeded;
 @end
 
 @implementation _UIEditMenuPresentation
 
-- (_UIEditMenuPresentation)initWithDelegate:(id)a3 sourceView:(id)a4
+- (_UIEditMenuPresentation)initWithDelegate:(id)delegate sourceView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = _UIEditMenuPresentation;
   v8 = [(_UIEditMenuPresentation *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeWeak(&v9->_sourceView, v7);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeWeak(&v9->_sourceView, viewCopy);
     v9->_currentState = 1;
   }
 
   return v9;
 }
 
-- (CGRect)menuFrameInCoordinateSpace:(id)a3
+- (CGRect)menuFrameInCoordinateSpace:(id)space
 {
   v3 = *MEMORY[0x1E695F050];
   v4 = *(MEMORY[0x1E695F050] + 8);
@@ -45,28 +45,28 @@
 
 - (int64_t)resolvedUserInterfaceStyle
 {
-  v3 = [(_UIEditMenuPresentation *)self sourceView];
-  v4 = [v3 traitCollection];
-  v5 = _UIEditMenuGetPlatformMetrics([v4 userInterfaceIdiom]);
+  sourceView = [(_UIEditMenuPresentation *)self sourceView];
+  traitCollection = [sourceView traitCollection];
+  v5 = _UIEditMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
   if ([v5 overrideUserInterfaceStyle])
   {
-    v6 = [v5 overrideUserInterfaceStyle];
+    overrideUserInterfaceStyle = [v5 overrideUserInterfaceStyle];
   }
 
   else if (dyld_program_sdk_at_least())
   {
-    v7 = [(_UIEditMenuPresentation *)self sourceView];
-    v8 = [v7 traitCollection];
-    v6 = [v8 userInterfaceStyle];
+    sourceView2 = [(_UIEditMenuPresentation *)self sourceView];
+    traitCollection2 = [sourceView2 traitCollection];
+    overrideUserInterfaceStyle = [traitCollection2 userInterfaceStyle];
   }
 
   else
   {
-    v6 = 0;
+    overrideUserInterfaceStyle = 0;
   }
 
-  return v6;
+  return overrideUserInterfaceStyle;
 }
 
 - (void)forceEndPresentIfNeeded
@@ -95,29 +95,29 @@
   }
 }
 
-- (void)didTransitionFrom:(unint64_t)a3 to:(unint64_t)a4
+- (void)didTransitionFrom:(unint64_t)from to:(unint64_t)to
 {
-  if (a4 <= 3)
+  if (to <= 3)
   {
-    if (a4 != 2)
+    if (to != 2)
     {
-      if (a4 != 3)
+      if (to != 3)
       {
         return;
       }
 
-      if (a3 != 6)
+      if (from != 6)
       {
-        v14 = [(_UIEditMenuPresentation *)self presentAnimator];
-        [v14 runCompletions];
+        presentAnimator = [(_UIEditMenuPresentation *)self presentAnimator];
+        [presentAnimator runCompletions];
 
         [(_UIEditMenuPresentation *)self setPresentAnimator:0];
         return;
       }
 
-      v15 = [(_UIEditMenuPresentation *)self delegate];
-      v6 = [(_UIEditMenuPresentation *)self activeConfiguration];
-      [v15 _editMenuPresentation:self didTransitionMenuForConfiguration:v6];
+      delegate = [(_UIEditMenuPresentation *)self delegate];
+      activeConfiguration = [(_UIEditMenuPresentation *)self activeConfiguration];
+      [delegate _editMenuPresentation:self didTransitionMenuForConfiguration:activeConfiguration];
 LABEL_23:
 
 LABEL_24:
@@ -128,54 +128,54 @@ LABEL_24:
     v12 = objc_opt_new();
     [(_UIEditMenuPresentation *)self setPresentAnimator:v12];
 
-    v15 = [(_UIEditMenuPresentation *)self delegate];
-    v6 = [(_UIEditMenuPresentation *)self activeConfiguration];
-    v13 = [(_UIEditMenuPresentation *)self presentAnimator];
-    [v15 _editMenuPresentation:self willPresentMenuForConfiguration:v6 animator:v13];
+    delegate = [(_UIEditMenuPresentation *)self delegate];
+    activeConfiguration = [(_UIEditMenuPresentation *)self activeConfiguration];
+    presentAnimator2 = [(_UIEditMenuPresentation *)self presentAnimator];
+    [delegate _editMenuPresentation:self willPresentMenuForConfiguration:activeConfiguration animator:presentAnimator2];
 LABEL_22:
 
     goto LABEL_23;
   }
 
-  if (a4 == 4)
+  if (to == 4)
   {
     v7 = objc_opt_new();
     [(_UIEditMenuPresentation *)self setDismissAnimator:v7];
 
-    v8 = [(_UIEditMenuPresentation *)self dismissingConfiguration];
-    v9 = v8;
-    if (v8)
+    dismissingConfiguration = [(_UIEditMenuPresentation *)self dismissingConfiguration];
+    v9 = dismissingConfiguration;
+    if (dismissingConfiguration)
     {
-      v10 = v8;
+      activeConfiguration2 = dismissingConfiguration;
     }
 
     else
     {
-      v10 = [(_UIEditMenuPresentation *)self activeConfiguration];
+      activeConfiguration2 = [(_UIEditMenuPresentation *)self activeConfiguration];
     }
 
-    v15 = v10;
+    delegate = activeConfiguration2;
 
-    v6 = [(_UIEditMenuPresentation *)self delegate];
-    v13 = [(_UIEditMenuPresentation *)self dismissAnimator];
-    [v6 _editMenuPresentation:self willDismissMenuForConfiguration:v15 animator:v13];
+    activeConfiguration = [(_UIEditMenuPresentation *)self delegate];
+    presentAnimator2 = [(_UIEditMenuPresentation *)self dismissAnimator];
+    [activeConfiguration _editMenuPresentation:self willDismissMenuForConfiguration:delegate animator:presentAnimator2];
     goto LABEL_22;
   }
 
-  if (a4 != 5)
+  if (to != 5)
   {
-    if (a4 != 8)
+    if (to != 8)
     {
       return;
     }
 
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"_UIEditMenuPresentation.m" lineNumber:324 description:@"We should never reach this state."];
+    delegate = [MEMORY[0x1E696AAA8] currentHandler];
+    [delegate handleFailureInMethod:a2 object:self file:@"_UIEditMenuPresentation.m" lineNumber:324 description:@"We should never reach this state."];
     goto LABEL_24;
   }
 
-  v11 = [(_UIEditMenuPresentation *)self dismissAnimator];
-  [v11 runCompletions];
+  dismissAnimator = [(_UIEditMenuPresentation *)self dismissAnimator];
+  [dismissAnimator runCompletions];
 
   [(_UIEditMenuPresentation *)self setDismissAnimator:0];
 }

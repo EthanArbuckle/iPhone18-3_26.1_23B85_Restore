@@ -5,7 +5,7 @@
 - (int64_t)longLongValue;
 - (unint64_t)unsignedLongLongValue;
 - (void)dealloc;
-- (void)getValue:(void *)a3;
+- (void)getValue:(void *)value;
 @end
 
 @implementation WKNSNumber
@@ -36,25 +36,25 @@
   }
 }
 
-- (void)getValue:(void *)a3
+- (void)getValue:(void *)value
 {
   type = self->_type;
   if (type > 32)
   {
     if (type == 33 || type == 34)
     {
-      *a3 = *&self->_number._int64.m_storage.data[20];
+      *value = *&self->_number._int64.m_storage.data[20];
     }
   }
 
   else if (type == 31)
   {
-    *a3 = self->_number._BOOLean.m_storage.data[20];
+    *value = self->_number._BOOLean.m_storage.data[20];
   }
 
   else if (type == 32)
   {
-    *a3 = *&self->_number._int64.m_storage.data[20];
+    *value = *&self->_number._int64.m_storage.data[20];
   }
 }
 

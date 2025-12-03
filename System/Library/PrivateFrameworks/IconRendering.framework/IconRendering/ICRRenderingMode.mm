@@ -1,12 +1,12 @@
 @interface ICRRenderingMode
-+ (id)tintWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
++ (id)tintWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
 @end
 
 @implementation ICRRenderingMode
 
-+ (id)tintWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
++ (id)tintWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
-  v6 = sub_1B15FE780(a3, a4, a5, a6);
+  v6 = sub_1B15FE780(red, green, blue, alpha);
 
   return v6;
 }

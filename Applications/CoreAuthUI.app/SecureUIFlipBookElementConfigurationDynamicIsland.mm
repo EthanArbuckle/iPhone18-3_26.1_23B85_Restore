@@ -1,21 +1,21 @@
 @interface SecureUIFlipBookElementConfigurationDynamicIsland
 - (NSString)description;
-- (SecureUIFlipBookElementConfigurationDynamicIsland)initWithConfiguration:(id)a3;
+- (SecureUIFlipBookElementConfigurationDynamicIsland)initWithConfiguration:(id)configuration;
 @end
 
 @implementation SecureUIFlipBookElementConfigurationDynamicIsland
 
-- (SecureUIFlipBookElementConfigurationDynamicIsland)initWithConfiguration:(id)a3
+- (SecureUIFlipBookElementConfigurationDynamicIsland)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = SecureUIFlipBookElementConfigurationDynamicIsland;
   v5 = [(SecureUIFlipBookElementConfigurationDynamicIsland *)&v12 init];
   if (v5)
   {
-    v6 = [v4 name];
+    name = [configurationCopy name];
     configurationName = v5->_configurationName;
-    v5->_configurationName = v6;
+    v5->_configurationName = name;
 
     v13[0] = &off_10009AD88;
     v13[1] = &off_10009ADA0;
@@ -28,8 +28,8 @@
     v14[4] = &__NSArray0__struct;
     v13[4] = &off_10009ADE8;
     v13[5] = &off_10009AE00;
-    v8 = [v4 secureViews];
-    v14[5] = v8;
+    secureViews = [configurationCopy secureViews];
+    v14[5] = secureViews;
     v9 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:6];
     layoutModesToComponentFlipBookDescriptions = v5->_layoutModesToComponentFlipBookDescriptions;
     v5->_layoutModesToComponentFlipBookDescriptions = v9;

@@ -1,29 +1,29 @@
 @interface TVRCSiriRemoteFindingManager
 - (TVRCRPCompanionLinkClientWrapper)wrapper;
-- (TVRCSiriRemoteFindingManager)initWithCompanionLinkClientWrapper:(id)a3;
-- (id)_cachedRemoteInfoForRPDevice:(id)a3;
+- (TVRCSiriRemoteFindingManager)initWithCompanionLinkClientWrapper:(id)wrapper;
+- (id)_cachedRemoteInfoForRPDevice:(id)device;
 - (void)_fetchPairedRemoteInfoAndStartMonitoring;
 - (void)_saveRemoteInfoToUserDefaultsIfNeeded;
 - (void)_startHeartbeatTimer;
 - (void)_startMonitoringPairedRemoteInfo;
 - (void)_stopHeartbeatTimer;
-- (void)_updatePairedRemoteInfo:(id)a3;
+- (void)_updatePairedRemoteInfo:(id)info;
 - (void)dealloc;
-- (void)setPairedRemoteInfo:(id)a3;
+- (void)setPairedRemoteInfo:(id)info;
 @end
 
 @implementation TVRCSiriRemoteFindingManager
 
-- (TVRCSiriRemoteFindingManager)initWithCompanionLinkClientWrapper:(id)a3
+- (TVRCSiriRemoteFindingManager)initWithCompanionLinkClientWrapper:(id)wrapper
 {
-  v4 = a3;
+  wrapperCopy = wrapper;
   v8.receiver = self;
   v8.super_class = TVRCSiriRemoteFindingManager;
   v5 = [(TVRCSiriRemoteFindingManager *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_wrapper, v4);
+    objc_storeWeak(&v5->_wrapper, wrapperCopy);
     [(TVRCSiriRemoteFindingManager *)v6 _fetchPairedRemoteInfoAndStartMonitoring];
   }
 
@@ -92,10 +92,10 @@ void __53__TVRCSiriRemoteFindingManager_enableFindingSession___block_invoke_18(u
   {
     if (v5)
     {
-      v6 = [(TVRCSiriRemoteFindingManager *)self pairedRemoteInfo];
-      v7 = [v6 name];
+      pairedRemoteInfo = [(TVRCSiriRemoteFindingManager *)self pairedRemoteInfo];
+      name = [pairedRemoteInfo name];
       *buf = 138543362;
-      v15 = v7;
+      v15 = name;
       _os_log_impl(&dword_26CF7F000, v4, OS_LOG_TYPE_DEFAULT, "Skipping. Timer already exists for remote: %{public}@", buf, 0xCu);
     }
   }
@@ -104,10 +104,10 @@ void __53__TVRCSiriRemoteFindingManager_enableFindingSession___block_invoke_18(u
   {
     if (v5)
     {
-      v8 = [(TVRCSiriRemoteFindingManager *)self pairedRemoteInfo];
-      v9 = [v8 name];
+      pairedRemoteInfo2 = [(TVRCSiriRemoteFindingManager *)self pairedRemoteInfo];
+      name2 = [pairedRemoteInfo2 name];
       *buf = 138543362;
-      v15 = v9;
+      v15 = name2;
       _os_log_impl(&dword_26CF7F000, v4, OS_LOG_TYPE_DEFAULT, "Starting heartbeat timer for remote: %{public}@", buf, 0xCu);
     }
 
@@ -148,14 +148,14 @@ uint64_t __52__TVRCSiriRemoteFindingManager__startHeartbeatTimer__block_invoke(u
   v3 = _TVRCRapportLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(TVRCSiriRemoteFindingManager *)self pairedRemoteInfo];
-    v5 = [v4 name];
-    v6 = [(TVRCSiriRemoteFindingManager *)self pairedRemoteInfo];
-    v7 = [v6 tvName];
+    pairedRemoteInfo = [(TVRCSiriRemoteFindingManager *)self pairedRemoteInfo];
+    name = [pairedRemoteInfo name];
+    pairedRemoteInfo2 = [(TVRCSiriRemoteFindingManager *)self pairedRemoteInfo];
+    tvName = [pairedRemoteInfo2 tvName];
     v10 = 138543618;
-    v11 = v5;
+    v11 = name;
     v12 = 2114;
-    v13 = v7;
+    v13 = tvName;
     _os_log_impl(&dword_26CF7F000, v3, OS_LOG_TYPE_DEFAULT, "Stopping heartbeat timer for remote: %{public}@ tv: %{public}@", &v10, 0x16u);
   }
 
@@ -175,14 +175,14 @@ uint64_t __52__TVRCSiriRemoteFindingManager__startHeartbeatTimer__block_invoke(u
     _os_log_impl(&dword_26CF7F000, v3, OS_LOG_TYPE_DEFAULT, "Stopped monitoring PairedRemoteInfo", buf, 2u);
   }
 
-  v4 = [(TVRCSiriRemoteFindingManager *)self connectionManager];
-  [v4 teardown];
+  connectionManager = [(TVRCSiriRemoteFindingManager *)self connectionManager];
+  [connectionManager teardown];
 
-  v5 = [(TVRCSiriRemoteFindingManager *)self wrapper];
-  [v5 deregisterEvent:@"PushSiriRemoteInfo"];
+  wrapper = [(TVRCSiriRemoteFindingManager *)self wrapper];
+  [wrapper deregisterEvent:@"PushSiriRemoteInfo"];
 
-  v6 = [(TVRCSiriRemoteFindingManager *)self heartbeatTimer];
-  [v6 invalidate];
+  heartbeatTimer = [(TVRCSiriRemoteFindingManager *)self heartbeatTimer];
+  [heartbeatTimer invalidate];
 
   heartbeatTimer = self->_heartbeatTimer;
   self->_heartbeatTimer = 0;
@@ -192,16 +192,16 @@ uint64_t __52__TVRCSiriRemoteFindingManager__startHeartbeatTimer__block_invoke(u
   [(TVRCSiriRemoteFindingManager *)&v8 dealloc];
 }
 
-- (void)setPairedRemoteInfo:(id)a3
+- (void)setPairedRemoteInfo:(id)info
 {
-  v5 = a3;
-  if (self->_pairedRemoteInfo != v5)
+  infoCopy = info;
+  if (self->_pairedRemoteInfo != infoCopy)
   {
-    v6 = v5;
+    v6 = infoCopy;
     [(TVRCSiriRemoteFindingManager *)self willChangeValueForKey:@"pairedRemoteInfo"];
-    objc_storeStrong(&self->_pairedRemoteInfo, a3);
+    objc_storeStrong(&self->_pairedRemoteInfo, info);
     [(TVRCSiriRemoteFindingManager *)self didChangeValueForKey:@"pairedRemoteInfo"];
-    v5 = v6;
+    infoCopy = v6;
   }
 }
 
@@ -217,13 +217,13 @@ uint64_t __52__TVRCSiriRemoteFindingManager__startHeartbeatTimer__block_invoke(u
   }
 
   objc_initWeak(buf, self);
-  v4 = [(TVRCSiriRemoteFindingManager *)self wrapper];
+  wrapper = [(TVRCSiriRemoteFindingManager *)self wrapper];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __72__TVRCSiriRemoteFindingManager__fetchPairedRemoteInfoAndStartMonitoring__block_invoke;
   v6[3] = &unk_279D82788;
   objc_copyWeak(&v7, buf);
-  [v4 sendEvent:@"FetchSiriRemoteInfo" options:MEMORY[0x277CBEC10] response:v6];
+  [wrapper sendEvent:@"FetchSiriRemoteInfo" options:MEMORY[0x277CBEC10] response:v6];
 
   [(TVRCSiriRemoteFindingManager *)self _startMonitoringPairedRemoteInfo];
   objc_destroyWeak(&v7);
@@ -256,13 +256,13 @@ void __72__TVRCSiriRemoteFindingManager__fetchPairedRemoteInfoAndStartMonitoring
   v11[0] = MEMORY[0x277CBEC38];
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   objc_initWeak(&buf, self);
-  v5 = [(TVRCSiriRemoteFindingManager *)self wrapper];
+  wrapper = [(TVRCSiriRemoteFindingManager *)self wrapper];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__TVRCSiriRemoteFindingManager__startMonitoringPairedRemoteInfo__block_invoke;
   v7[3] = &unk_279D827B0;
   objc_copyWeak(&v8, &buf);
-  [v5 registerEvent:@"PushSiriRemoteInfo" options:v4 handler:v7];
+  [wrapper registerEvent:@"PushSiriRemoteInfo" options:v4 handler:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&buf);
@@ -295,14 +295,14 @@ void __64__TVRCSiriRemoteFindingManager__startMonitoringPairedRemoteInfo__block_
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_cachedRemoteInfoForRPDevice:(id)a3
+- (id)_cachedRemoteInfoForRPDevice:(id)device
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v5 = [v3 identifier];
-  v6 = [v4 dataForKey:v5];
+  deviceCopy = device;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  identifier = [deviceCopy identifier];
+  v6 = [standardUserDefaults dataForKey:identifier];
 
-  if (v6 || ([v3 idsDeviceIdentifier], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "dataForKey:", v7), v6 = objc_claimAutoreleasedReturnValue(), v7, v6))
+  if (v6 || ([deviceCopy idsDeviceIdentifier], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(standardUserDefaults, "dataForKey:", v7), v6 = objc_claimAutoreleasedReturnValue(), v7, v6))
   {
     v8 = _TVRCRapportLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -326,19 +326,19 @@ void __64__TVRCSiriRemoteFindingManager__startMonitoringPairedRemoteInfo__block_
   return v6;
 }
 
-- (void)_updatePairedRemoteInfo:(id)a3
+- (void)_updatePairedRemoteInfo:(id)info
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v5 = _TVRCRapportLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v20 = v4;
+    v20 = infoCopy;
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "Remote info dict: %{public}@", buf, 0xCu);
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"SiriRemoteInfoKey"];
+  v6 = [infoCopy objectForKeyedSubscript:@"SiriRemoteInfoKey"];
   if (v6)
   {
     v7 = v6;
@@ -360,9 +360,9 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v13 = [(TVRCSiriRemoteFindingManager *)self wrapper];
-  v14 = [v13 device];
-  v7 = [(TVRCSiriRemoteFindingManager *)self _cachedRemoteInfoForRPDevice:v14];
+  wrapper = [(TVRCSiriRemoteFindingManager *)self wrapper];
+  device = [wrapper device];
+  v7 = [(TVRCSiriRemoteFindingManager *)self _cachedRemoteInfoForRPDevice:device];
 
   if (!v7)
   {
@@ -411,7 +411,7 @@ LABEL_20:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_26CF7F000, a2, OS_LOG_TYPE_ERROR, "Failed to archive remoteInfo %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

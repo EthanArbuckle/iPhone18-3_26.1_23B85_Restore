@@ -1,8 +1,8 @@
 @interface UISApplicationInitializationContextParameters
 - (CGSize)usableDisplaySizeHint;
 - (UISApplicationInitializationContextParameters)init;
-- (UISApplicationInitializationContextParameters)initWithXPCDictionary:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (UISApplicationInitializationContextParameters)initWithXPCDictionary:(id)dictionary;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation UISApplicationInitializationContextParameters
@@ -29,45 +29,45 @@
   return v3;
 }
 
-- (UISApplicationInitializationContextParameters)initWithXPCDictionary:(id)a3
+- (UISApplicationInitializationContextParameters)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = UISApplicationInitializationContextParameters;
   v5 = [(UISApplicationInitializationContextParameters *)&v14 init];
   if (v5)
   {
-    v5->_supportedInterfaceOrientations = xpc_dictionary_get_int64(v4, "supportedInterfaceOrientations");
-    v6 = xpc_dictionary_get_array(v4, "deviceFamilies");
+    v5->_supportedInterfaceOrientations = xpc_dictionary_get_int64(dictionaryCopy, "supportedInterfaceOrientations");
+    v6 = xpc_dictionary_get_array(dictionaryCopy, "deviceFamilies");
     if (v6)
     {
-      v7 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       applier[0] = MEMORY[0x1E69E9820];
       applier[1] = 3221225472;
       applier[2] = __71__UISApplicationInitializationContextParameters_initWithXPCDictionary___block_invoke;
       applier[3] = &unk_1E7459440;
-      applier[4] = v7;
+      applier[4] = array;
       xpc_array_apply(v6, applier);
-      v8 = [v7 copyWithZone:0];
+      v8 = [array copyWithZone:0];
       deviceFamilies = v5->_deviceFamilies;
       v5->_deviceFamilies = v8;
     }
 
     else
     {
-      v7 = v5->_deviceFamilies;
+      array = v5->_deviceFamilies;
       v5->_deviceFamilies = MEMORY[0x1E695E0F0];
     }
 
-    v5->_requiresFullScreen = xpc_dictionary_get_BOOL(v4, "requiresFullScreen");
-    v5->_supportsMultiwindow = xpc_dictionary_get_BOOL(v4, "supportsMultiwindow");
-    v5->_initialCGDirectDisplayID = xpc_dictionary_get_uint64(v4, "initialCGDirectDisplayID");
-    v10 = xpc_dictionary_get_double(v4, "usableDisplaySizeHint_w");
-    v11 = xpc_dictionary_get_double(v4, "usableDisplaySizeHint_h");
+    v5->_requiresFullScreen = xpc_dictionary_get_BOOL(dictionaryCopy, "requiresFullScreen");
+    v5->_supportsMultiwindow = xpc_dictionary_get_BOOL(dictionaryCopy, "supportsMultiwindow");
+    v5->_initialCGDirectDisplayID = xpc_dictionary_get_uint64(dictionaryCopy, "initialCGDirectDisplayID");
+    v10 = xpc_dictionary_get_double(dictionaryCopy, "usableDisplaySizeHint_w");
+    v11 = xpc_dictionary_get_double(dictionaryCopy, "usableDisplaySizeHint_h");
     v5->_usableDisplaySizeHint.width = v10;
     v5->_usableDisplaySizeHint.height = v11;
-    v5->_preferSmallerDisplaySize = xpc_dictionary_get_BOOL(v4, "preferSmallerDisplaySize");
-    v5->_useTrueDisplaySize = xpc_dictionary_get_BOOL(v4, "useTrueDisplaySize");
+    v5->_preferSmallerDisplaySize = xpc_dictionary_get_BOOL(dictionaryCopy, "preferSmallerDisplaySize");
+    v5->_useTrueDisplaySize = xpc_dictionary_get_BOOL(dictionaryCopy, "useTrueDisplaySize");
   }
 
   return v5;
@@ -86,11 +86,11 @@ uint64_t __71__UISApplicationInitializationContextParameters_initWithXPCDictiona
   return 1;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  xpc_dictionary_set_int64(v4, "supportedInterfaceOrientations", self->_supportedInterfaceOrientations);
+  dictionaryCopy = dictionary;
+  xpc_dictionary_set_int64(dictionaryCopy, "supportedInterfaceOrientations", self->_supportedInterfaceOrientations);
   if (self->_deviceFamilies)
   {
     v5 = xpc_array_create(0, 0);
@@ -124,16 +124,16 @@ uint64_t __71__UISApplicationInitializationContextParameters_initWithXPCDictiona
       while (v8);
     }
 
-    xpc_dictionary_set_value(v4, "deviceFamilies", v5);
+    xpc_dictionary_set_value(dictionaryCopy, "deviceFamilies", v5);
   }
 
-  xpc_dictionary_set_BOOL(v4, "requiresFullScreen", self->_requiresFullScreen);
-  xpc_dictionary_set_BOOL(v4, "supportsMultiwindow", self->_supportsMultiwindow);
-  xpc_dictionary_set_uint64(v4, "initialCGDirectDisplayID", self->_initialCGDirectDisplayID);
-  xpc_dictionary_set_double(v4, "usableDisplaySizeHint_w", self->_usableDisplaySizeHint.width);
-  xpc_dictionary_set_double(v4, "usableDisplaySizeHint_h", self->_usableDisplaySizeHint.height);
-  xpc_dictionary_set_BOOL(v4, "preferSmallerDisplaySize", self->_preferSmallerDisplaySize);
-  xpc_dictionary_set_BOOL(v4, "useTrueDisplaySize", self->_useTrueDisplaySize);
+  xpc_dictionary_set_BOOL(dictionaryCopy, "requiresFullScreen", self->_requiresFullScreen);
+  xpc_dictionary_set_BOOL(dictionaryCopy, "supportsMultiwindow", self->_supportsMultiwindow);
+  xpc_dictionary_set_uint64(dictionaryCopy, "initialCGDirectDisplayID", self->_initialCGDirectDisplayID);
+  xpc_dictionary_set_double(dictionaryCopy, "usableDisplaySizeHint_w", self->_usableDisplaySizeHint.width);
+  xpc_dictionary_set_double(dictionaryCopy, "usableDisplaySizeHint_h", self->_usableDisplaySizeHint.height);
+  xpc_dictionary_set_BOOL(dictionaryCopy, "preferSmallerDisplaySize", self->_preferSmallerDisplaySize);
+  xpc_dictionary_set_BOOL(dictionaryCopy, "useTrueDisplaySize", self->_useTrueDisplaySize);
 }
 
 - (CGSize)usableDisplaySizeHint

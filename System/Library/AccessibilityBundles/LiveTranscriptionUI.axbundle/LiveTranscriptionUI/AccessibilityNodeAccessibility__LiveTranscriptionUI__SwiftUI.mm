@@ -8,8 +8,8 @@
 
 - (int64_t)_accessibilityExpandedStatus
 {
-  v3 = [(AccessibilityNodeAccessibility__LiveTranscriptionUI__SwiftUI *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"AXLCNubbit"];
+  accessibilityIdentifier = [(AccessibilityNodeAccessibility__LiveTranscriptionUI__SwiftUI *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"AXLCNubbit"];
 
   if (!v4)
   {
@@ -26,7 +26,7 @@
   v10 = 3221225472;
   v11 = __92__AccessibilityNodeAccessibility__LiveTranscriptionUI__SwiftUI__accessibilityExpandedStatus__block_invoke;
   v12 = &unk_29F2C9EF0;
-  v13 = self;
+  selfCopy = self;
   v14 = &v15;
   AXPerformSafeBlock();
   v5 = v16[5];
@@ -61,14 +61,14 @@ LABEL_7:
   v15[1] = *MEMORY[0x29EDCA608];
   v13.receiver = self;
   v13.super_class = AccessibilityNodeAccessibility__LiveTranscriptionUI__SwiftUI;
-  v3 = [(AccessibilityNodeAccessibility__LiveTranscriptionUI__SwiftUI *)&v13 accessibilityAttributedLabel];
-  v4 = [(AccessibilityNodeAccessibility__LiveTranscriptionUI__SwiftUI *)self accessibilityIdentifier];
-  v5 = [v4 isEqualToString:@"AXLCCaptionText"];
+  accessibilityAttributedLabel = [(AccessibilityNodeAccessibility__LiveTranscriptionUI__SwiftUI *)&v13 accessibilityAttributedLabel];
+  accessibilityIdentifier = [(AccessibilityNodeAccessibility__LiveTranscriptionUI__SwiftUI *)self accessibilityIdentifier];
+  v5 = [accessibilityIdentifier isEqualToString:@"AXLCCaptionText"];
 
   if (v5)
   {
-    v6 = [v3 string];
-    v7 = [v6 stringByReplacingOccurrencesOfString:@"\n" withString:{@", "}];
+    string = [accessibilityAttributedLabel string];
+    v7 = [string stringByReplacingOccurrencesOfString:@"\n" withString:{@", "}];
 
     v8 = [objc_alloc(MEMORY[0x29EDBD7E8]) initWithStringOrAttributedString:v7];
     v14 = *MEMORY[0x29EDBD878];
@@ -76,20 +76,20 @@ LABEL_7:
     v9 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
     [v8 setAttributes:v9];
 
-    v10 = [v8 attributedString];
+    attributedString = [v8 attributedString];
 
-    v3 = v10;
+    accessibilityAttributedLabel = attributedString;
   }
 
   v11 = *MEMORY[0x29EDCA608];
 
-  return v3;
+  return accessibilityAttributedLabel;
 }
 
 - (BOOL)_accessibilityIsRealtimeElement
 {
-  v3 = [(AccessibilityNodeAccessibility__LiveTranscriptionUI__SwiftUI *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"AXLCCaptionText"];
+  accessibilityIdentifier = [(AccessibilityNodeAccessibility__LiveTranscriptionUI__SwiftUI *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"AXLCCaptionText"];
 
   if (v4)
   {

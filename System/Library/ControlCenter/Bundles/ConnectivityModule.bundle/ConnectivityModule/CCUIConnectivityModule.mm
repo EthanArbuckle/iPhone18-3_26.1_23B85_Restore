@@ -1,6 +1,6 @@
 @interface CCUIConnectivityModule
 - (CCUIConnectivityModule)init;
-- (id)contentViewControllerForContext:(id)a3;
+- (id)contentViewControllerForContext:(id)context;
 @end
 
 @implementation CCUIConnectivityModule
@@ -20,7 +20,7 @@
   return v4;
 }
 
-- (id)contentViewControllerForContext:(id)a3
+- (id)contentViewControllerForContext:(id)context
 {
   v4 = [CCUIConnectivityModuleViewController alloc];
   v6 = objc_msgSend_initWithContentModuleContext_(v4, v5, self->_contentModuleContext);

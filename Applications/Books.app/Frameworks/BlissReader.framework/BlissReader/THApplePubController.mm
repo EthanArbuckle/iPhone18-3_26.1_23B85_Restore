@@ -1,19 +1,19 @@
 @interface THApplePubController
-+ (BOOL)readAppPubFileToDocumentRoot:(id)a3 url:(id)a4 error:(id *)a5;
++ (BOOL)readAppPubFileToDocumentRoot:(id)root url:(id)url error:(id *)error;
 @end
 
 @implementation THApplePubController
 
-+ (BOOL)readAppPubFileToDocumentRoot:(id)a3 url:(id)a4 error:(id *)a5
++ (BOOL)readAppPubFileToDocumentRoot:(id)root url:(id)url error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  [a3 setZipPackage:a4];
+  [root setZipPackage:url];
 
-  return [a3 readStructureFromURL:a4 error:a5];
+  return [root readStructureFromURL:url error:error];
 }
 
 @end

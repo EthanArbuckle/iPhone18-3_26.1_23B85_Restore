@@ -1,37 +1,37 @@
 @interface PKPaymentSetupNavigationController
-+ (id)viewControllerForPresentingPaymentError:(id)a3;
-- (BOOL)viewController:(id)a3 requestsReturnToPresentationMarker:(unint64_t)a4 reset:(BOOL)a5;
++ (id)viewControllerForPresentingPaymentError:(id)error;
+- (BOOL)viewController:(id)controller requestsReturnToPresentationMarker:(unint64_t)marker reset:(BOOL)reset;
 - (PKGroupsController)groupsController;
 - (PKPaymentSetupDelegate)setupDelegate;
-- (PKPaymentSetupNavigationController)initWithProvisioningController:(id)a3 context:(int64_t)a4;
+- (PKPaymentSetupNavigationController)initWithProvisioningController:(id)controller context:(int64_t)context;
 - (UINavigationController)parentNavigationController;
 - (int64_t)_preferredModalPresentationStyle;
-- (void)_reconfigureRootViewControllerWithCompletion:(id)a3;
-- (void)cancelButtonPressed:(id)a3;
-- (void)preflightWithCompletion:(id)a3;
-- (void)setAllowsManualEntry:(BOOL)a3;
-- (void)setPaymentSetupMode:(int64_t)a3;
-- (void)viewController:(id)a3 didShowProvisioningError:(id)a4;
-- (void)viewController:(id)a3 requestPresentPassUniqueIdentifier:(id)a4 completion:(id)a5;
-- (void)viewControllerDidCancelSetupFlow:(id)a3;
-- (void)viewControllerDidShowEligibilityIssue:(id)a3;
-- (void)viewControllerDidTerminateSetupFlow:(id)a3;
+- (void)_reconfigureRootViewControllerWithCompletion:(id)completion;
+- (void)cancelButtonPressed:(id)pressed;
+- (void)preflightWithCompletion:(id)completion;
+- (void)setAllowsManualEntry:(BOOL)entry;
+- (void)setPaymentSetupMode:(int64_t)mode;
+- (void)viewController:(id)controller didShowProvisioningError:(id)error;
+- (void)viewController:(id)controller requestPresentPassUniqueIdentifier:(id)identifier completion:(id)completion;
+- (void)viewControllerDidCancelSetupFlow:(id)flow;
+- (void)viewControllerDidShowEligibilityIssue:(id)issue;
+- (void)viewControllerDidTerminateSetupFlow:(id)flow;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PKPaymentSetupNavigationController
 
-- (PKPaymentSetupNavigationController)initWithProvisioningController:(id)a3 context:(int64_t)a4
+- (PKPaymentSetupNavigationController)initWithProvisioningController:(id)controller context:(int64_t)context
 {
-  v7 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = PKPaymentSetupNavigationController;
-  v8 = [(PKPaymentSetupDismissibleNavigationController *)&v11 initWithContext:a4];
+  v8 = [(PKPaymentSetupDismissibleNavigationController *)&v11 initWithContext:context];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_provisioningController, a3);
+    objc_storeStrong(&v8->_provisioningController, controller);
     v9->_allowsManualEntry = 1;
     v9->_rootViewControllerNeedsConfiguration = 1;
   }
@@ -41,15 +41,15 @@
 
 - (int64_t)_preferredModalPresentationStyle
 {
-  v2 = [(PKPaymentSetupDismissibleNavigationController *)self context];
-  if (v2 > 0xA)
+  context = [(PKPaymentSetupDismissibleNavigationController *)self context];
+  if (context > 0xA)
   {
     return -2;
   }
 
   else
   {
-    return qword_1BE116D00[v2];
+    return qword_1BE116D00[context];
   }
 }
 
@@ -61,21 +61,21 @@
   PKPaymentSetupApplyContextAppearance([(PKPaymentSetupDismissibleNavigationController *)self context], self);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentSetupNavigationController;
-  [(PKPaymentSetupDismissibleNavigationController *)&v4 viewWillAppear:a3];
+  [(PKPaymentSetupDismissibleNavigationController *)&v4 viewWillAppear:appear];
   [(PKPaymentSetupNavigationController *)self _reconfigureRootViewControllerWithCompletion:0];
 }
 
-- (void)_reconfigureRootViewControllerWithCompletion:(id)a3
+- (void)_reconfigureRootViewControllerWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AF00] currentThread];
-  v6 = [v5 isMainThread];
+  completionCopy = completion;
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  isMainThread = [currentThread isMainThread];
 
-  if ((v6 & 1) == 0)
+  if ((isMainThread & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"PKPaymentSetupNavigationControllerException called off main queue"];
   }
@@ -88,15 +88,15 @@
     aBlock[1] = 3221225472;
     aBlock[2] = __83__PKPaymentSetupNavigationController__reconfigureRootViewControllerWithCompletion___block_invoke;
     aBlock[3] = &unk_1E8010B50;
-    v21 = v4;
+    v21 = completionCopy;
     v7 = _Block_copy(aBlock);
     v8 = objc_alloc(MEMORY[0x1E69B90E0]);
-    v9 = [(PKPaymentSetupDismissibleNavigationController *)self context];
+    context = [(PKPaymentSetupDismissibleNavigationController *)self context];
     provisioningController = self->_provisioningController;
     WeakRetained = objc_loadWeakRetained(&self->_groupsController);
-    v12 = [v8 initWithEnvironment:v9 provisioningController:provisioningController groupsController:WeakRetained];
+    v12 = [v8 initWithEnvironment:context provisioningController:provisioningController groupsController:WeakRetained];
 
-    v13 = [(PKPaymentSetupNavigationController *)self parentNavigationController];
+    parentNavigationController = [(PKPaymentSetupNavigationController *)self parentNavigationController];
     paymentSetupMode = self->_paymentSetupMode;
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
@@ -109,7 +109,7 @@
     v16[2] = __83__PKPaymentSetupNavigationController__reconfigureRootViewControllerWithCompletion___block_invoke_3;
     v16[3] = &unk_1E8010998;
     objc_copyWeak(&v17, &location);
-    [PKProvisioningFlowBridge startPaymentSetupFlowWithNavController:self parentNavController:v13 context:v12 mode:paymentSetupMode preflightCompletion:v18 completion:v16];
+    [PKProvisioningFlowBridge startPaymentSetupFlowWithNavController:self parentNavController:parentNavigationController context:v12 mode:paymentSetupMode preflightCompletion:v18 completion:v16];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -138,15 +138,15 @@ void __83__PKPaymentSetupNavigationController__reconfigureRootViewControllerWith
   }
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __62__PKPaymentSetupNavigationController_preflightWithCompletion___block_invoke;
   v6[3] = &unk_1E8010B50;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(PKPaymentSetupNavigationController *)self _reconfigureRootViewControllerWithCompletion:v6];
 }
 
@@ -161,19 +161,19 @@ uint64_t __62__PKPaymentSetupNavigationController_preflightWithCompletion___bloc
   return result;
 }
 
-- (void)setPaymentSetupMode:(int64_t)a3
+- (void)setPaymentSetupMode:(int64_t)mode
 {
-  if (self->_paymentSetupMode != a3)
+  if (self->_paymentSetupMode != mode)
   {
-    self->_paymentSetupMode = a3;
+    self->_paymentSetupMode = mode;
   }
 }
 
-- (void)setAllowsManualEntry:(BOOL)a3
+- (void)setAllowsManualEntry:(BOOL)entry
 {
-  if (self->_allowsManualEntry != a3)
+  if (self->_allowsManualEntry != entry)
   {
-    self->_allowsManualEntry = a3;
+    self->_allowsManualEntry = entry;
     if (!self->_rootViewControllerNeedsConfiguration)
     {
       v7 = v3;
@@ -188,9 +188,9 @@ uint64_t __62__PKPaymentSetupNavigationController_preflightWithCompletion___bloc
   }
 }
 
-- (void)cancelButtonPressed:(id)a3
+- (void)cancelButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   WeakRetained = objc_loadWeakRetained(&self->_setupDelegate);
 
   if (WeakRetained)
@@ -216,19 +216,19 @@ uint64_t __62__PKPaymentSetupNavigationController_preflightWithCompletion___bloc
   {
     v12.receiver = self;
     v12.super_class = PKPaymentSetupNavigationController;
-    [(PKPaymentSetupDismissibleNavigationController *)&v12 cancelButtonPressed:v4];
+    [(PKPaymentSetupDismissibleNavigationController *)&v12 cancelButtonPressed:pressedCopy];
   }
 
-  v10 = [(PKPaymentSetupDismissibleNavigationController *)self onDismiss];
-  v11 = v10;
-  if (v10)
+  onDismiss = [(PKPaymentSetupDismissibleNavigationController *)self onDismiss];
+  v11 = onDismiss;
+  if (onDismiss)
   {
-    (*(v10 + 16))(v10);
+    (*(onDismiss + 16))(onDismiss);
     [(PKPaymentSetupDismissibleNavigationController *)self setOnDismiss:0];
   }
 }
 
-- (void)viewControllerDidTerminateSetupFlow:(id)a3
+- (void)viewControllerDidTerminateSetupFlow:(id)flow
 {
   WeakRetained = objc_loadWeakRetained(&self->_setupDelegate);
 
@@ -242,15 +242,15 @@ uint64_t __62__PKPaymentSetupNavigationController_preflightWithCompletion___bloc
 
   else
   {
-    v6 = [(PKPaymentSetupNavigationController *)self presentingViewController];
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKPaymentSetupNavigationController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)viewController:(id)a3 requestPresentPassUniqueIdentifier:(id)a4 completion:(id)a5
+- (void)viewController:(id)controller requestPresentPassUniqueIdentifier:(id)identifier completion:(id)completion
 {
-  v13 = a4;
-  v7 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_setupDelegate);
   if (WeakRetained)
   {
@@ -261,22 +261,22 @@ uint64_t __62__PKPaymentSetupNavigationController_preflightWithCompletion___bloc
     if (v11)
     {
       v12 = objc_loadWeakRetained(&self->_setupDelegate);
-      [v12 paymentSetupRequestPresentPassUniqueIdentifier:v13 completion:v7];
+      [v12 paymentSetupRequestPresentPassUniqueIdentifier:identifierCopy completion:completionCopy];
     }
   }
 }
 
-- (BOOL)viewController:(id)a3 requestsReturnToPresentationMarker:(unint64_t)a4 reset:(BOOL)a5
+- (BOOL)viewController:(id)controller requestsReturnToPresentationMarker:(unint64_t)marker reset:(BOOL)reset
 {
-  if (a5)
+  if (reset)
   {
     [(PKPaymentProvisioningController *)self->_provisioningController reset];
   }
 
-  return [(UINavigationController *)self _pk_popToViewControllerPresentationMarker:a4 animated:1];
+  return [(UINavigationController *)self _pk_popToViewControllerPresentationMarker:marker animated:1];
 }
 
-- (void)viewControllerDidCancelSetupFlow:(id)a3
+- (void)viewControllerDidCancelSetupFlow:(id)flow
 {
   WeakRetained = objc_loadWeakRetained(&self->_setupDelegate);
 
@@ -287,43 +287,43 @@ uint64_t __62__PKPaymentSetupNavigationController_preflightWithCompletion___bloc
 
     if (v6)
     {
-      v8 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69B9E70] code:1 userInfo:0];
+      presentingViewController = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69B9E70] code:1 userInfo:0];
       v7 = objc_loadWeakRetained(&self->_setupDelegate);
-      [v7 paymentSetupDidFinish:self withError:v8];
+      [v7 paymentSetupDidFinish:self withError:presentingViewController];
     }
 
     else
     {
-      v8 = objc_loadWeakRetained(&self->_setupDelegate);
-      [v8 paymentSetupDidFinish:self];
+      presentingViewController = objc_loadWeakRetained(&self->_setupDelegate);
+      [presentingViewController paymentSetupDidFinish:self];
     }
   }
 
   else
   {
-    v8 = [(PKPaymentSetupNavigationController *)self presentingViewController];
-    [v8 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKPaymentSetupNavigationController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)viewController:(id)a3 didShowProvisioningError:(id)a4
+- (void)viewController:(id)controller didShowProvisioningError:(id)error
 {
-  v12 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_setupDelegate);
   if (WeakRetained && (v8 = WeakRetained, v9 = objc_loadWeakRetained(&self->_setupDelegate), v10 = objc_opt_respondsToSelector(), v9, v8, (v10 & 1) != 0) && ([(PKPaymentSetupDismissibleNavigationController *)self context], !PKPaymentSetupContextIsBridge()))
   {
     v11 = objc_loadWeakRetained(&self->_setupDelegate);
-    [v11 paymentSetupDidShowError:v6];
+    [v11 paymentSetupDidShowError:errorCopy];
   }
 
   else
   {
-    [(PKPaymentSetupNavigationController *)self viewControllerDidTerminateSetupFlow:v12];
+    [(PKPaymentSetupNavigationController *)self viewControllerDidTerminateSetupFlow:controllerCopy];
   }
 }
 
-- (void)viewControllerDidShowEligibilityIssue:(id)a3
+- (void)viewControllerDidShowEligibilityIssue:(id)issue
 {
   WeakRetained = objc_loadWeakRetained(&self->_setupDelegate);
   if (WeakRetained)
@@ -340,81 +340,81 @@ uint64_t __62__PKPaymentSetupNavigationController_preflightWithCompletion___bloc
   }
 }
 
-+ (id)viewControllerForPresentingPaymentError:(id)a3
++ (id)viewControllerForPresentingPaymentError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:*MEMORY[0x1E69BB840]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:*MEMORY[0x1E69BB840]];
 
   if (v5)
   {
-    v6 = v3;
+    v6 = errorCopy;
     goto LABEL_15;
   }
 
   v7 = PKLocalizedPaymentString(&cfstr_CouldNotSetUpT.isa);
   v8 = PKLocalizedPaymentString(&cfstr_CouldNotSetUpM.isa);
-  v9 = [v3 domain];
-  v10 = [v9 isEqualToString:*MEMORY[0x1E696A978]];
+  domain2 = [errorCopy domain];
+  v10 = [domain2 isEqualToString:*MEMORY[0x1E696A978]];
 
   if (v10)
   {
-    v11 = PKLocalizedPaymentString(&cfstr_CouldNotConnec.isa);
+    localizedFailureReason2 = PKLocalizedPaymentString(&cfstr_CouldNotConnec.isa);
 
-    v12 = PKLocalizedPaymentString(&cfstr_CouldNotConnec_0.isa);
+    localizedRecoverySuggestion = PKLocalizedPaymentString(&cfstr_CouldNotConnec_0.isa);
 LABEL_12:
-    v17 = v8;
-    v7 = v11;
-    v8 = v12;
+    domain4 = v8;
+    v7 = localizedFailureReason2;
+    v8 = localizedRecoverySuggestion;
     goto LABEL_13;
   }
 
-  v13 = [v3 domain];
-  v14 = [v13 isEqualToString:*MEMORY[0x1E69BC6F0]];
+  domain3 = [errorCopy domain];
+  v14 = [domain3 isEqualToString:*MEMORY[0x1E69BC6F0]];
 
   if (v14)
   {
-    v15 = [v3 code];
-    if ((v15 - 2) >= 4 && v15)
+    code = [errorCopy code];
+    if ((code - 2) >= 4 && code)
     {
-      if (v15 != 1)
+      if (code != 1)
       {
         goto LABEL_14;
       }
 
       v21 = PKLocalizedPaymentString(&cfstr_CouldNotSetUpT.isa);
 
-      v17 = v8;
+      domain4 = v8;
       v7 = v21;
       v8 = 0;
       goto LABEL_13;
     }
 
-    v16 = [v3 localizedFailureReason];
+    localizedFailureReason = [errorCopy localizedFailureReason];
 
-    if (!v16)
+    if (!localizedFailureReason)
     {
       goto LABEL_14;
     }
 
 LABEL_11:
-    v11 = [v3 localizedFailureReason];
+    localizedFailureReason2 = [errorCopy localizedFailureReason];
 
-    v12 = [v3 localizedRecoverySuggestion];
+    localizedRecoverySuggestion = [errorCopy localizedRecoverySuggestion];
     goto LABEL_12;
   }
 
-  v17 = [v3 domain];
-  if (![v17 isEqualToString:*MEMORY[0x1E69BC300]])
+  domain4 = [errorCopy domain];
+  if (![domain4 isEqualToString:*MEMORY[0x1E69BC300]])
   {
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v18 = [v3 localizedFailureReason];
+  localizedFailureReason3 = [errorCopy localizedFailureReason];
 
-  if (v18)
+  if (localizedFailureReason3)
   {
     goto LABEL_11;
   }

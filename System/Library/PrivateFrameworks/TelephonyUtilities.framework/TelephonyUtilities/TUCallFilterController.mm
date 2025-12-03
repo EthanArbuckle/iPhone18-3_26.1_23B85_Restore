@@ -1,20 +1,20 @@
 @interface TUCallFilterController
-- (BOOL)containsRestrictedHandle:(id)a3 forBundleIdentifier:(id)a4;
-- (BOOL)isRestrictedExclusivelyByScreenTimeForDialRequest:(id)a3;
-- (BOOL)isUnknownAddress:(id)a3 normalizedAddress:(id)a4 forBundleIdentifier:(id)a5;
-- (BOOL)isUnknownHandle:(id)a3;
-- (BOOL)shouldRestrictDialRequest:(id)a3;
-- (BOOL)shouldRestrictJoinConversationRequest:(id)a3 performSynchronously:(BOOL)a4;
+- (BOOL)containsRestrictedHandle:(id)handle forBundleIdentifier:(id)identifier;
+- (BOOL)isRestrictedExclusivelyByScreenTimeForDialRequest:(id)request;
+- (BOOL)isUnknownAddress:(id)address normalizedAddress:(id)normalizedAddress forBundleIdentifier:(id)identifier;
+- (BOOL)isUnknownHandle:(id)handle;
+- (BOOL)shouldRestrictDialRequest:(id)request;
+- (BOOL)shouldRestrictJoinConversationRequest:(id)request performSynchronously:(BOOL)synchronously;
 - (BOOL)silenceUnknownCallersEnabled;
 - (BOOL)silenceUnknownFaceTimeCallersEnabled;
-- (BOOL)willRestrictAddresses:(id)a3 forBundleIdentifier:(id)a4;
-- (TUCallFilterController)initWithActionsDelegate:(id)a3 serialQueue:(id)a4;
+- (BOOL)willRestrictAddresses:(id)addresses forBundleIdentifier:(id)identifier;
+- (TUCallFilterController)initWithActionsDelegate:(id)delegate serialQueue:(id)queue;
 - (TUCallFilterControllerActions)actionsDelegate;
-- (id)addressesToCheckForRestrictionsInConversation:(id)a3;
-- (id)bundleIdentifierForCallProvider:(id)a3;
-- (id)policyForAddresses:(id)a3 forBundleIdentifier:(id)a4;
-- (id)restrictedContacts:(id)a3 callProvider:(id)a4;
-- (unint64_t)callFilterStatusForDialRequest:(id)a3;
+- (id)addressesToCheckForRestrictionsInConversation:(id)conversation;
+- (id)bundleIdentifierForCallProvider:(id)provider;
+- (id)policyForAddresses:(id)addresses forBundleIdentifier:(id)identifier;
+- (id)restrictedContacts:(id)contacts callProvider:(id)provider;
+- (unint64_t)callFilterStatusForDialRequest:(id)request;
 @end
 
 @implementation TUCallFilterController
@@ -26,18 +26,18 @@
   return WeakRetained;
 }
 
-- (TUCallFilterController)initWithActionsDelegate:(id)a3 serialQueue:(id)a4
+- (TUCallFilterController)initWithActionsDelegate:(id)delegate serialQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = TUCallFilterController;
   v8 = [(TUCallFilterController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_queue, a4);
-    objc_storeWeak(&v9->_actionsDelegate, v6);
+    objc_storeStrong(&v8->_queue, queue);
+    objc_storeWeak(&v9->_actionsDelegate, delegateCopy);
   }
 
   return v9;
@@ -45,77 +45,77 @@
 
 - (BOOL)silenceUnknownCallersEnabled
 {
-  v2 = [MEMORY[0x1E695E000] tu_defaults];
-  v3 = [v2 BOOLForKey:@"allowContactsOnly"];
+  tu_defaults = [MEMORY[0x1E695E000] tu_defaults];
+  v3 = [tu_defaults BOOLForKey:@"allowContactsOnly"];
 
   return v3;
 }
 
 - (BOOL)silenceUnknownFaceTimeCallersEnabled
 {
-  v2 = [MEMORY[0x1E695E000] tu_defaults];
-  v3 = [v2 BOOLForKey:@"silenceUnknownFaceTimeCallers"];
+  tu_defaults = [MEMORY[0x1E695E000] tu_defaults];
+  v3 = [tu_defaults BOOLForKey:@"silenceUnknownFaceTimeCallers"];
 
   return v3;
 }
 
-- (BOOL)isUnknownHandle:(id)a3
+- (BOOL)isUnknownHandle:(id)handle
 {
-  if (!a3)
+  if (!handle)
   {
     return 0;
   }
 
-  v4 = [a3 value];
-  LOBYTE(self) = [(TUCallFilterController *)self isUnknownAddress:v4 normalizedAddress:v4 forBundleIdentifier:&stru_1F098C218];
+  value = [handle value];
+  LOBYTE(self) = [(TUCallFilterController *)self isUnknownAddress:value normalizedAddress:value forBundleIdentifier:&stru_1F098C218];
 
   return self;
 }
 
-- (BOOL)shouldRestrictDialRequest:(id)a3
+- (BOOL)shouldRestrictDialRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(TUCallFilterController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  requestCopy = request;
+  queue = [(TUCallFilterController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  LOBYTE(self) = [(TUCallFilterController *)self shouldRestrictDialRequest:v4 performSynchronously:0];
+  LOBYTE(self) = [(TUCallFilterController *)self shouldRestrictDialRequest:requestCopy performSynchronously:0];
   return self;
 }
 
-- (unint64_t)callFilterStatusForDialRequest:(id)a3
+- (unint64_t)callFilterStatusForDialRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(TUCallFilterController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  requestCopy = request;
+  queue = [(TUCallFilterController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([v4 dialType] == 1 || (objc_msgSend(v4, "isSOS") & 1) != 0)
+  if ([requestCopy dialType] == 1 || (objc_msgSend(requestCopy, "isSOS") & 1) != 0)
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [v4 handle];
-    v8 = [v7 value];
-    if ([v8 length])
+    handle = [requestCopy handle];
+    value = [handle value];
+    if ([value length])
     {
-      v9 = [v4 handle];
-      v10 = [v9 value];
+      handle2 = [requestCopy handle];
+      value2 = [handle2 value];
     }
 
     else
     {
-      v10 = &stru_1F098C218;
+      value2 = &stru_1F098C218;
     }
 
-    v11 = [v4 provider];
-    v12 = [(TUCallFilterController *)self bundleIdentifierForCallProvider:v11];
+    provider = [requestCopy provider];
+    v12 = [(TUCallFilterController *)self bundleIdentifierForCallProvider:provider];
 
     if ([v12 length])
     {
-      v13 = [(TUCallFilterController *)self actionsDelegate];
-      v14 = [MEMORY[0x1E695DFD8] setWithObject:v10];
-      v6 = [v13 filterStatusForAddresses:v14 forBundleIdentifier:v12];
+      actionsDelegate = [(TUCallFilterController *)self actionsDelegate];
+      v14 = [MEMORY[0x1E695DFD8] setWithObject:value2];
+      v6 = [actionsDelegate filterStatusForAddresses:v14 forBundleIdentifier:v12];
     }
 
     else
@@ -127,25 +127,25 @@
   return v6;
 }
 
-- (id)restrictedContacts:(id)a3 callProvider:(id)a4
+- (id)restrictedContacts:(id)contacts callProvider:(id)provider
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUCallFilterController *)self queue];
-  dispatch_assert_queue_V2(v8);
+  contactsCopy = contacts;
+  providerCopy = provider;
+  queue = [(TUCallFilterController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v29 = [MEMORY[0x1E695DF70] array];
-  v9 = [(TUCallFilterController *)self bundleIdentifierForCallProvider:v7];
+  array = [MEMORY[0x1E695DF70] array];
+  v9 = [(TUCallFilterController *)self bundleIdentifierForCallProvider:providerCopy];
   if ([v9 length])
   {
-    v26 = v7;
-    v27 = v6;
+    v26 = providerCopy;
+    v27 = contactsCopy;
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    obj = v6;
+    obj = contactsCopy;
     v10 = [obj countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (!v10)
     {
@@ -164,22 +164,22 @@
         }
 
         v14 = *(*(&v30 + 1) + 8 * i);
-        v15 = [v14 personHandle];
-        v16 = [v15 value];
-        if ([v16 length])
+        personHandle = [v14 personHandle];
+        value = [personHandle value];
+        if ([value length])
         {
-          v17 = [v14 personHandle];
-          v18 = [v17 value];
+          personHandle2 = [v14 personHandle];
+          value2 = [personHandle2 value];
         }
 
         else
         {
-          v18 = &stru_1F098C218;
+          value2 = &stru_1F098C218;
         }
 
-        v19 = [(TUCallFilterController *)self actionsDelegate];
-        v20 = [MEMORY[0x1E695DFD8] setWithObject:v18];
-        v21 = [v19 filterStatusForAddresses:v20 forBundleIdentifier:v9];
+        actionsDelegate = [(TUCallFilterController *)self actionsDelegate];
+        v20 = [MEMORY[0x1E695DFD8] setWithObject:value2];
+        v21 = [actionsDelegate filterStatusForAddresses:v20 forBundleIdentifier:v9];
 
         v22 = TUDefaultLog();
         v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG);
@@ -207,7 +207,7 @@
 
 LABEL_19:
 
-            [v29 addObject:v14];
+            [array addObject:v14];
             goto LABEL_23;
         }
 
@@ -224,8 +224,8 @@ LABEL_23:
       {
 LABEL_25:
 
-        v7 = v26;
-        v6 = v27;
+        providerCopy = v26;
+        contactsCopy = v27;
         break;
       }
     }
@@ -233,53 +233,53 @@ LABEL_25:
 
   v24 = *MEMORY[0x1E69E9840];
 
-  return v29;
+  return array;
 }
 
-- (id)policyForAddresses:(id)a3 forBundleIdentifier:(id)a4
+- (id)policyForAddresses:(id)addresses forBundleIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TUCallFilterController *)self queue];
-  dispatch_assert_queue_V2(v8);
+  identifierCopy = identifier;
+  addressesCopy = addresses;
+  queue = [(TUCallFilterController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(TUCallFilterController *)self actionsDelegate];
-  v10 = [v9 policyForAddresses:v7 forBundleIdentifier:v6];
+  actionsDelegate = [(TUCallFilterController *)self actionsDelegate];
+  v10 = [actionsDelegate policyForAddresses:addressesCopy forBundleIdentifier:identifierCopy];
 
   return v10;
 }
 
-- (BOOL)containsRestrictedHandle:(id)a3 forBundleIdentifier:(id)a4
+- (BOOL)containsRestrictedHandle:(id)handle forBundleIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TUCallFilterController *)self queue];
-  dispatch_assert_queue_V2(v8);
+  identifierCopy = identifier;
+  handleCopy = handle;
+  queue = [(TUCallFilterController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(TUCallFilterController *)self actionsDelegate];
-  LOBYTE(v8) = [v9 containsRestrictedHandle:v7 forBundleIdentifier:v6 performSynchronously:0];
+  actionsDelegate = [(TUCallFilterController *)self actionsDelegate];
+  LOBYTE(queue) = [actionsDelegate containsRestrictedHandle:handleCopy forBundleIdentifier:identifierCopy performSynchronously:0];
 
-  return v8;
+  return queue;
 }
 
-- (id)addressesToCheckForRestrictionsInConversation:(id)a3
+- (id)addressesToCheckForRestrictionsInConversation:(id)conversation
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUCallFilterController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  conversationCopy = conversation;
+  queue = [(TUCallFilterController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = MEMORY[0x1E695DFA8];
-  v7 = [v4 mergedActiveRemoteParticipants];
-  v8 = [v6 setWithCapacity:{objc_msgSend(v7, "count")}];
+  mergedActiveRemoteParticipants = [conversationCopy mergedActiveRemoteParticipants];
+  v8 = [v6 setWithCapacity:{objc_msgSend(mergedActiveRemoteParticipants, "count")}];
 
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v32 = v4;
-  v9 = [v4 mergedActiveRemoteParticipants];
-  v10 = [v9 countByEnumeratingWithState:&v37 objects:v42 count:16];
+  v32 = conversationCopy;
+  mergedActiveRemoteParticipants2 = [conversationCopy mergedActiveRemoteParticipants];
+  v10 = [mergedActiveRemoteParticipants2 countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v10)
   {
     v11 = v10;
@@ -290,27 +290,27 @@ LABEL_25:
       {
         if (*v38 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(mergedActiveRemoteParticipants2);
         }
 
         v14 = *(*(&v37 + 1) + 8 * i);
-        v15 = [v14 handle];
-        v16 = [v15 value];
-        if ([v16 length])
+        handle = [v14 handle];
+        value = [handle value];
+        if ([value length])
         {
-          v17 = [v14 handle];
-          v18 = [v17 value];
+          handle2 = [v14 handle];
+          value2 = [handle2 value];
         }
 
         else
         {
-          v18 = &stru_1F098C218;
+          value2 = &stru_1F098C218;
         }
 
-        [v8 addObject:v18];
+        [v8 addObject:value2];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      v11 = [mergedActiveRemoteParticipants2 countByEnumeratingWithState:&v37 objects:v42 count:16];
     }
 
     while (v11);
@@ -322,8 +322,8 @@ LABEL_25:
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v19 = [v32 mergedRemoteMembers];
-    v20 = [v19 countByEnumeratingWithState:&v33 objects:v41 count:16];
+    mergedRemoteMembers = [v32 mergedRemoteMembers];
+    v20 = [mergedRemoteMembers countByEnumeratingWithState:&v33 objects:v41 count:16];
     if (v20)
     {
       v21 = v20;
@@ -334,27 +334,27 @@ LABEL_25:
         {
           if (*v34 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(mergedRemoteMembers);
           }
 
           v24 = *(*(&v33 + 1) + 8 * j);
-          v25 = [v24 handle];
-          v26 = [v25 value];
-          if ([v26 length])
+          handle3 = [v24 handle];
+          value3 = [handle3 value];
+          if ([value3 length])
           {
-            v27 = [v24 handle];
-            v28 = [v27 value];
+            handle4 = [v24 handle];
+            value4 = [handle4 value];
           }
 
           else
           {
-            v28 = &stru_1F098C218;
+            value4 = &stru_1F098C218;
           }
 
-          [v8 addObject:v28];
+          [v8 addObject:value4];
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v33 objects:v41 count:16];
+        v21 = [mergedRemoteMembers countByEnumeratingWithState:&v33 objects:v41 count:16];
       }
 
       while (v21);
@@ -368,26 +368,26 @@ LABEL_25:
   return v29;
 }
 
-- (BOOL)shouldRestrictJoinConversationRequest:(id)a3 performSynchronously:(BOOL)a4
+- (BOOL)shouldRestrictJoinConversationRequest:(id)request performSynchronously:(BOOL)synchronously
 {
-  v25 = a4;
+  synchronouslyCopy = synchronously;
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v24 = self;
-  v6 = [(TUCallFilterController *)self queue];
-  dispatch_assert_queue_V2(v6);
+  requestCopy = request;
+  selfCopy = self;
+  queue = [(TUCallFilterController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = MEMORY[0x1E695DFA8];
-  v8 = [v5 remoteMembers];
-  v9 = [v7 setWithCapacity:{objc_msgSend(v8, "count")}];
+  remoteMembers = [requestCopy remoteMembers];
+  v9 = [v7 setWithCapacity:{objc_msgSend(remoteMembers, "count")}];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v26 = v5;
-  v10 = [v5 remoteMembers];
-  v11 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  v26 = requestCopy;
+  remoteMembers2 = [requestCopy remoteMembers];
+  v11 = [remoteMembers2 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v11)
   {
     v12 = v11;
@@ -398,102 +398,102 @@ LABEL_25:
       {
         if (*v28 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(remoteMembers2);
         }
 
         v15 = *(*(&v27 + 1) + 8 * i);
-        v16 = [v15 handle];
-        v17 = [v16 value];
-        if ([v17 length])
+        handle = [v15 handle];
+        value = [handle value];
+        if ([value length])
         {
-          v18 = [v15 handle];
-          v19 = [v18 value];
+          handle2 = [v15 handle];
+          value2 = [handle2 value];
         }
 
         else
         {
-          v19 = &stru_1F098C218;
+          value2 = &stru_1F098C218;
         }
 
-        [v9 addObject:v19];
+        [v9 addObject:value2];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v12 = [remoteMembers2 countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v12);
   }
 
-  v20 = [(TUCallFilterController *)v24 actionsDelegate];
-  v21 = [v20 shouldRestrictAddresses:v9 forBundleIdentifier:@"com.apple.facetime" performSynchronously:v25];
+  actionsDelegate = [(TUCallFilterController *)selfCopy actionsDelegate];
+  v21 = [actionsDelegate shouldRestrictAddresses:v9 forBundleIdentifier:@"com.apple.facetime" performSynchronously:synchronouslyCopy];
 
   v22 = *MEMORY[0x1E69E9840];
   return v21;
 }
 
-- (BOOL)willRestrictAddresses:(id)a3 forBundleIdentifier:(id)a4
+- (BOOL)willRestrictAddresses:(id)addresses forBundleIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TUCallFilterController *)self queue];
-  dispatch_assert_queue_V2(v8);
+  identifierCopy = identifier;
+  addressesCopy = addresses;
+  queue = [(TUCallFilterController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(TUCallFilterController *)self actionsDelegate];
-  LOBYTE(v8) = [v9 willRestrictAddresses:v7 forBundleIdentifier:v6];
+  actionsDelegate = [(TUCallFilterController *)self actionsDelegate];
+  LOBYTE(queue) = [actionsDelegate willRestrictAddresses:addressesCopy forBundleIdentifier:identifierCopy];
 
-  return v8;
+  return queue;
 }
 
-- (BOOL)isUnknownAddress:(id)a3 normalizedAddress:(id)a4 forBundleIdentifier:(id)a5
+- (BOOL)isUnknownAddress:(id)address normalizedAddress:(id)normalizedAddress forBundleIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(TUCallFilterController *)self queue];
-  dispatch_assert_queue_V2(v11);
+  identifierCopy = identifier;
+  normalizedAddressCopy = normalizedAddress;
+  addressCopy = address;
+  queue = [(TUCallFilterController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v12 = [(TUCallFilterController *)self actionsDelegate];
-  LOBYTE(v11) = [v12 isUnknownAddress:v10 normalizedAddress:v9 forBundleIdentifier:v8];
+  actionsDelegate = [(TUCallFilterController *)self actionsDelegate];
+  LOBYTE(queue) = [actionsDelegate isUnknownAddress:addressCopy normalizedAddress:normalizedAddressCopy forBundleIdentifier:identifierCopy];
 
-  return v11;
+  return queue;
 }
 
-- (BOOL)isRestrictedExclusivelyByScreenTimeForDialRequest:(id)a3
+- (BOOL)isRestrictedExclusivelyByScreenTimeForDialRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(TUCallFilterController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  requestCopy = request;
+  queue = [(TUCallFilterController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [v4 provider];
-  v7 = [(TUCallFilterController *)self bundleIdentifierForCallProvider:v6];
+  provider = [requestCopy provider];
+  v7 = [(TUCallFilterController *)self bundleIdentifierForCallProvider:provider];
 
-  v8 = [(TUCallFilterController *)self actionsDelegate];
-  v9 = [v4 handle];
+  actionsDelegate = [(TUCallFilterController *)self actionsDelegate];
+  handle = [requestCopy handle];
 
-  LOBYTE(v4) = [v8 isRestrictedExclusivelyByScreenTime:v9 forBundleIdentifier:v7 performSynchronously:0];
-  return v4;
+  LOBYTE(requestCopy) = [actionsDelegate isRestrictedExclusivelyByScreenTime:handle forBundleIdentifier:v7 performSynchronously:0];
+  return requestCopy;
 }
 
-- (id)bundleIdentifierForCallProvider:(id)a3
+- (id)bundleIdentifierForCallProvider:(id)provider
 {
-  v3 = a3;
-  if ([v3 isTelephonyProvider])
+  providerCopy = provider;
+  if ([providerCopy isTelephonyProvider])
   {
     v4 = TUBundleIdentifierMobilePhoneApplication;
 LABEL_5:
-    v5 = *v4;
+    bundleIdentifier = *v4;
     goto LABEL_7;
   }
 
-  if ([v3 isFaceTimeProvider])
+  if ([providerCopy isFaceTimeProvider])
   {
     v4 = TUBundleIdentifierFaceTimeApplication;
     goto LABEL_5;
   }
 
-  v5 = [v3 bundleIdentifier];
+  bundleIdentifier = [providerCopy bundleIdentifier];
 LABEL_7:
-  v6 = v5;
+  v6 = bundleIdentifier;
 
   return v6;
 }

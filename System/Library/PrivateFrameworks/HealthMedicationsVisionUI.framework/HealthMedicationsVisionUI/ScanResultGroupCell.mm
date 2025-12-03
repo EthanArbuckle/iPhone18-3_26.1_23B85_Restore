@@ -1,16 +1,16 @@
 @interface ScanResultGroupCell
-- (_TtC25HealthMedicationsVisionUI19ScanResultGroupCell)initWithCoder:(id)a3;
-- (_TtC25HealthMedicationsVisionUI19ScanResultGroupCell)initWithFrame:(CGRect)a3;
+- (_TtC25HealthMedicationsVisionUI19ScanResultGroupCell)initWithCoder:(id)coder;
+- (_TtC25HealthMedicationsVisionUI19ScanResultGroupCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ScanResultGroupCell
 
-- (_TtC25HealthMedicationsVisionUI19ScanResultGroupCell)initWithFrame:(CGRect)a3
+- (_TtC25HealthMedicationsVisionUI19ScanResultGroupCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_2518F0278();
   sub_2518F0268();
   sub_2518F0218();
@@ -26,14 +26,14 @@
   *(v8 + 4) = 0;
   v12.receiver = self;
   v12.super_class = v9;
-  v10 = [(ScanResultGroupCell *)&v12 initWithFrame:x, y, width, height];
+  height = [(ScanResultGroupCell *)&v12 initWithFrame:x, y, width, height];
   sub_2518EF6A8();
   sub_2518F0478();
 
-  return v10;
+  return height;
 }
 
-- (_TtC25HealthMedicationsVisionUI19ScanResultGroupCell)initWithCoder:(id)a3
+- (_TtC25HealthMedicationsVisionUI19ScanResultGroupCell)initWithCoder:(id)coder
 {
   sub_2518F0278();
   sub_2518F0268();

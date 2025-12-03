@@ -1,14 +1,14 @@
 @interface VCPANSTHandsBodyDetector
-- (VCPANSTHandsBodyDetector)initWithHandExtendRatio:(float)a3 inputRatio:(float)a4 maxNumPersonRegions:(int)a5;
-- (int)anstDetection:(__CVBuffer *)a3 rotationInDegrees:(id)a4 detectingFullbody:(BOOL)a5 detectingHands:(BOOL)a6 handsRegions:(id)a7 personRegions:(id)a8 cancel:(id)a9;
-- (int)getTopKLargestPersonBoxes:(int)a3 personRegions:(id)a4;
-- (int)updateHandBoxes:(id)a3 withPersonRegions:(id)a4;
+- (VCPANSTHandsBodyDetector)initWithHandExtendRatio:(float)ratio inputRatio:(float)inputRatio maxNumPersonRegions:(int)regions;
+- (int)anstDetection:(__CVBuffer *)detection rotationInDegrees:(id)degrees detectingFullbody:(BOOL)fullbody detectingHands:(BOOL)hands handsRegions:(id)regions personRegions:(id)personRegions cancel:(id)cancel;
+- (int)getTopKLargestPersonBoxes:(int)boxes personRegions:(id)regions;
+- (int)updateHandBoxes:(id)boxes withPersonRegions:(id)regions;
 - (void)dealloc;
 @end
 
 @implementation VCPANSTHandsBodyDetector
 
-- (VCPANSTHandsBodyDetector)initWithHandExtendRatio:(float)a3 inputRatio:(float)a4 maxNumPersonRegions:(int)a5
+- (VCPANSTHandsBodyDetector)initWithHandExtendRatio:(float)ratio inputRatio:(float)inputRatio maxNumPersonRegions:(int)regions
 {
   v27 = *MEMORY[0x1E69E9840];
   v24.receiver = self;
@@ -54,9 +54,9 @@
       v17 = v16;
       ma::Rotator::Rotator(v16, 90);
       v8->_rotator = v17;
-      v8->_extendRatio = a3;
-      v8->_inputRatio = a4;
-      v8->_maxNumPersonRegions = a5;
+      v8->_extendRatio = ratio;
+      v8->_inputRatio = inputRatio;
+      v8->_maxNumPersonRegions = regions;
       v12 = v8;
       v18 = v8->_anstAlgorithm;
       if (v18)
@@ -79,9 +79,9 @@
     {
       v12 = 0;
       v8->_rotator = 0;
-      v8->_extendRatio = a3;
-      v8->_inputRatio = a4;
-      v8->_maxNumPersonRegions = a5;
+      v8->_extendRatio = ratio;
+      v8->_inputRatio = inputRatio;
+      v8->_maxNumPersonRegions = regions;
     }
   }
 
@@ -109,13 +109,13 @@
   [(VCPANSTHandsBodyDetector *)&v4 dealloc];
 }
 
-- (int)getTopKLargestPersonBoxes:(int)a3 personRegions:(id)a4
+- (int)getTopKLargestPersonBoxes:(int)boxes personRegions:(id)regions
 {
-  v5 = a4;
-  [v5 sortUsingComparator:&__block_literal_global_32];
-  while ([v5 count] > a3)
+  regionsCopy = regions;
+  [regionsCopy sortUsingComparator:&__block_literal_global_32];
+  while ([regionsCopy count] > boxes)
   {
-    [v5 removeLastObject];
+    [regionsCopy removeLastObject];
   }
 
   return 0;
@@ -176,17 +176,17 @@ uint64_t __68__VCPANSTHandsBodyDetector_getTopKLargestPersonBoxes_personRegions_
   return v26;
 }
 
-- (int)updateHandBoxes:(id)a3 withPersonRegions:(id)a4
+- (int)updateHandBoxes:(id)boxes withPersonRegions:(id)regions
 {
   v29 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v16 = a4;
-  v5 = [MEMORY[0x1E695DF70] array];
+  boxesCopy = boxes;
+  regionsCopy = regions;
+  array = [MEMORY[0x1E695DF70] array];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v16;
+  obj = regionsCopy;
   v6 = [obj countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v6)
   {
@@ -200,12 +200,12 @@ uint64_t __68__VCPANSTHandsBodyDetector_getTopKLargestPersonBoxes_personRegions_
           objc_enumerationMutation(obj);
         }
 
-        v9 = [*(*(&v23 + 1) + 8 * i) groupID];
+        groupID = [*(*(&v23 + 1) + 8 * i) groupID];
         v21 = 0u;
         v22 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v10 = v18;
+        v10 = boxesCopy;
         v11 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v11)
         {
@@ -220,9 +220,9 @@ uint64_t __68__VCPANSTHandsBodyDetector_getTopKLargestPersonBoxes_personRegions_
               }
 
               v14 = *(*(&v19 + 1) + 8 * j);
-              if ([v14 groupID] == v9)
+              if ([v14 groupID] == groupID)
               {
-                [v5 addObject:v14];
+                [array addObject:v14];
               }
             }
 
@@ -242,19 +242,19 @@ uint64_t __68__VCPANSTHandsBodyDetector_getTopKLargestPersonBoxes_personRegions_
   return 0;
 }
 
-- (int)anstDetection:(__CVBuffer *)a3 rotationInDegrees:(id)a4 detectingFullbody:(BOOL)a5 detectingHands:(BOOL)a6 handsRegions:(id)a7 personRegions:(id)a8 cancel:(id)a9
+- (int)anstDetection:(__CVBuffer *)detection rotationInDegrees:(id)degrees detectingFullbody:(BOOL)fullbody detectingHands:(BOOL)hands handsRegions:(id)regions personRegions:(id)personRegions cancel:(id)cancel
 {
-  v128 = a6;
-  v11 = a5;
+  handsCopy = hands;
+  fullbodyCopy = fullbody;
   v162 = *MEMORY[0x1E69E9840];
-  v130 = a4;
-  v134 = a7;
-  v135 = a8;
-  v131 = a9;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  degreesCopy = degrees;
+  regionsCopy = regions;
+  personRegionsCopy = personRegions;
+  cancelCopy = cancel;
+  Width = CVPixelBufferGetWidth(detection);
+  Height = CVPixelBufferGetHeight(detection);
   cf = 0;
-  if (!v131 || (v131[2]() & 1) == 0)
+  if (!cancelCopy || (cancelCopy[2]() & 1) == 0)
   {
     if (Height < Width)
     {
@@ -263,7 +263,7 @@ uint64_t __68__VCPANSTHandsBodyDetector_getTopKLargestPersonBoxes_personRegions_
         visionCoreDetector = self->_visionCoreDetector;
         v146 = 0;
         v21 = &v146;
-        v22 = [(VCPCNNVisionCoreDetector *)visionCoreDetector resultForPixelBuffer:a3 orientation:1 Error:&v146];
+        v22 = [(VCPCNNVisionCoreDetector *)visionCoreDetector resultForPixelBuffer:detection orientation:1 Error:&v146];
 LABEL_21:
         v17 = v22;
         v27 = *v21;
@@ -286,10 +286,10 @@ LABEL_46:
 
         if (v17)
         {
-          if (v11)
+          if (fullbodyCopy)
           {
             LODWORD(v28) = 1036831949;
-            v18 = [(VCPCNNVisionCoreDetector *)self->_visionCoreDetector getBodyRegions:v135 fromVisionCorePostProcessingOutput:v17 imageWidth:Width imageHeight:Height extendRatio:Height >= Width portrait_mode:v28];
+            v18 = [(VCPCNNVisionCoreDetector *)self->_visionCoreDetector getBodyRegions:personRegionsCopy fromVisionCorePostProcessingOutput:v17 imageWidth:Width imageHeight:Height extendRatio:Height >= Width portrait_mode:v28];
             if (v18)
             {
 LABEL_39:
@@ -300,12 +300,12 @@ LABEL_39:
             }
           }
 
-          if (v135)
+          if (personRegionsCopy)
           {
-            [(VCPANSTHandsBodyDetector *)self getTopKLargestPersonBoxes:self->_maxNumPersonRegions personRegions:v135];
+            [(VCPANSTHandsBodyDetector *)self getTopKLargestPersonBoxes:self->_maxNumPersonRegions personRegions:personRegionsCopy];
           }
 
-          if (v128)
+          if (handsCopy)
           {
             if (Height >= Width)
             {
@@ -328,21 +328,21 @@ LABEL_39:
             }
 
             *&v28 = self->_extendRatio;
-            v18 = [(VCPCNNVisionCoreDetector *)self->_visionCoreDetector getHandsRegions:v134 fromVisionCorePostProcessingOutput:v17 imageWidth:v30 imageHeight:v29 extendRatio:Height >= Width portrait_mode:v28];
+            v18 = [(VCPCNNVisionCoreDetector *)self->_visionCoreDetector getHandsRegions:regionsCopy fromVisionCorePostProcessingOutput:v17 imageWidth:v30 imageHeight:v29 extendRatio:Height >= Width portrait_mode:v28];
             if (v18)
             {
               goto LABEL_39;
             }
 
             v15 = 0.0;
-            if (!v134 || !v135)
+            if (!regionsCopy || !personRegionsCopy)
             {
               v129 = 0.0;
               v16 = 0.0;
               goto LABEL_131;
             }
 
-            [(VCPANSTHandsBodyDetector *)self updateHandBoxes:v134 withPersonRegions:?];
+            [(VCPANSTHandsBodyDetector *)self updateHandBoxes:regionsCopy withPersonRegions:?];
           }
         }
 
@@ -354,15 +354,15 @@ LABEL_130:
         goto LABEL_131;
       }
 
-      if (v130 && [v130 intValue] != 90 && objc_msgSend(v130, "intValue") != 270 && objc_msgSend(v130, "intValue") != 180)
+      if (degreesCopy && [degreesCopy intValue] != 90 && objc_msgSend(degreesCopy, "intValue") != 270 && objc_msgSend(degreesCopy, "intValue") != 180)
       {
-        [v130 intValue];
+        [degreesCopy intValue];
       }
 
       anstAlgorithm = self->_anstAlgorithm;
       v145 = 0;
       v24 = &v145;
-      [(ANSTISPAlgorithm *)anstAlgorithm resultForPixelBuffer:a3 orientation:0 error:&v145];
+      [(ANSTISPAlgorithm *)anstAlgorithm resultForPixelBuffer:detection orientation:0 error:&v145];
       *&v25 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
     }
 
@@ -382,7 +382,7 @@ LABEL_8:
         operator new();
       }
 
-      v18 = ma::Rotator::Rotate(rotator, a3, &cf);
+      v18 = ma::Rotator::Rotate(rotator, detection, &cf);
       if (v18)
       {
         v15 = 0.0;
@@ -435,7 +435,7 @@ LABEL_8:
     else
     {
       v129 = v16;
-      if (v11)
+      if (fullbodyCopy)
       {
         [*&v16 detectedObjectsForCategory:*MEMORY[0x1E6985FC0]];
         v143 = 0u;
@@ -458,14 +458,14 @@ LABEL_8:
               }
 
               v38 = *(*(&v141 + 1) + 8 * i);
-              v39 = [v38 objectID];
-              v40 = [v38 groupID];
+              objectID = [v38 objectID];
+              groupID = [v38 groupID];
               [v38 boundingBox];
               v42 = v41;
               v44 = v43;
               v46 = v45;
               v48 = v47;
-              v49 = [v38 confidence];
+              confidence = [v38 confidence];
               v50 = v46;
               v51 = v48;
               if (Height >= Width)
@@ -548,10 +548,10 @@ LABEL_8:
               *&v61 = v64 / v35;
               *&v58 = (*&v62 - *&v58) / v34;
               *&v62 = (*&v59 - v64) / v35;
-              *&v59 = v49;
+              *&v59 = confidence;
               v68 = [(VCPBoundingBox *)v57 initWithXYAndSize:v61 y:v60 width:v62 height:v58 confidence:v59];
-              [(VCPBoundingBox *)v68 setTrackID:v39];
-              [(VCPBoundingBox *)v68 setGroupID:v40];
+              [(VCPBoundingBox *)v68 setTrackID:objectID];
+              [(VCPBoundingBox *)v68 setGroupID:groupID];
               if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
               {
                 [(VCPBoundingBox *)v68 minX];
@@ -570,13 +570,13 @@ LABEL_8:
                 v156 = 2048;
                 v157 = v75;
                 v158 = 2048;
-                *v159 = v39;
+                *v159 = objectID;
                 *&v159[8] = 2048;
-                *&v159[10] = v40;
+                *&v159[10] = groupID;
                 _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "VCPANSTHandsBodyDetector: person fullbody box (xyxy) = [%f, %f, %f, %f], trackingID = %lu, groupID = %lu", buf, 0x3Eu);
               }
 
-              [v135 addObject:v68];
+              [personRegionsCopy addObject:v68];
             }
 
             v33 = [obj countByEnumeratingWithState:&v141 objects:v161 count:16];
@@ -585,13 +585,13 @@ LABEL_8:
           while (v33);
         }
 
-        if (v135)
+        if (personRegionsCopy)
         {
           [(VCPANSTHandsBodyDetector *)self getTopKLargestPersonBoxes:self->_maxNumPersonRegions personRegions:?];
         }
       }
 
-      if (v128)
+      if (handsCopy)
       {
         v76 = [*&v16 detectedObjectsForCategory:*MEMORY[0x1E6985FC8]];
         if (Height >= Width)
@@ -635,25 +635,25 @@ LABEL_8:
               }
 
               v84 = *(*(&v137 + 1) + 8 * j);
-              v85 = [v84 objectID];
-              v86 = [v84 groupID];
+              objectID2 = [v84 objectID];
+              groupID2 = [v84 groupID];
               [v84 boundingBox];
               v88 = v87;
               v90 = v89;
               v92 = v91;
               v94 = v93;
-              v95 = [v84 chirality];
-              if (v95 == 1)
+              chirality = [v84 chirality];
+              if (chirality == 1)
               {
                 v96 = 0xFFFFFFFFLL;
               }
 
               else
               {
-                v96 = v95 == 2;
+                v96 = chirality == 2;
               }
 
-              v97 = [v84 confidence];
+              confidence2 = [v84 confidence];
               v98 = v92 * 0.5;
               v99 = v94 * 0.5;
               v100 = v88 + v98;
@@ -716,7 +716,7 @@ LABEL_8:
               }
 
               v113 = [VCPBoundingBox alloc];
-              *&v114 = v97;
+              *&v114 = confidence2;
               *&v115 = v107;
               *&v116 = v108;
               *&v117 = v112;
@@ -743,15 +743,15 @@ LABEL_8:
                 v158 = 1024;
                 *v159 = v96;
                 *&v159[4] = 2048;
-                *&v159[6] = v85;
+                *&v159[6] = objectID2;
                 *&v159[14] = 2048;
-                *&v159[16] = v86;
+                *&v159[16] = groupID2;
                 _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "VCPANSTHandsBodyDetector: hands box (xyxy, chirality) = [%f, %f, %f, %f, %d] trackingID = %lu, groupID = %lu", buf, 0x44u);
               }
 
-              [(VCPBoundingBox *)v119 setTrackID:v85];
-              [(VCPBoundingBox *)v119 setGroupID:v86];
-              [v134 addObject:v119];
+              [(VCPBoundingBox *)v119 setTrackID:objectID2];
+              [(VCPBoundingBox *)v119 setGroupID:groupID2];
+              [regionsCopy addObject:v119];
             }
 
             v79 = [obja countByEnumeratingWithState:&v137 objects:v160 count:16];
@@ -760,9 +760,9 @@ LABEL_8:
           while (v79);
         }
 
-        if (v134 && v135)
+        if (regionsCopy && personRegionsCopy)
         {
-          [(VCPANSTHandsBodyDetector *)self updateHandBoxes:v134 withPersonRegions:v135];
+          [(VCPANSTHandsBodyDetector *)self updateHandBoxes:regionsCopy withPersonRegions:personRegionsCopy];
         }
       }
 

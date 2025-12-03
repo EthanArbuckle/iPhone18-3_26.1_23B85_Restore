@@ -1,7 +1,7 @@
 @interface TSWPTopicNumberHints
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TSWPTopicNumberHints)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TSWPTopicNumberHints
@@ -22,10 +22,10 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     isEqual = 1;
   }
@@ -35,7 +35,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_entryForListStyle(self, v6, v7);
       v11 = objc_msgSend_entryForListStyle(v5, v9, v10);
       isEqual = objc_msgSend_isEqual_(v8, v12, v11);
@@ -50,7 +50,7 @@
   return isEqual;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v31 = *MEMORY[0x277D85DE8];
   v4 = objc_opt_new();

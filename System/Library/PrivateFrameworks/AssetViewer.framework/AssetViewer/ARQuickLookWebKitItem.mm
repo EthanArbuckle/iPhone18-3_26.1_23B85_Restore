@@ -1,24 +1,24 @@
 @interface ARQuickLookWebKitItem
-- (ARQuickLookWebKitItem)initWithDataProvider:(id)a3 contentType:(id)a4 previewTitle:(id)a5 previewItem:(id)a6;
-- (ARQuickLookWebKitItem)initWithPreviewItemProvider:(id)a3 contentType:(id)a4 previewTitle:(id)a5 fileSize:(id)a6 previewItem:(id)a7;
+- (ARQuickLookWebKitItem)initWithDataProvider:(id)provider contentType:(id)type previewTitle:(id)title previewItem:(id)item;
+- (ARQuickLookWebKitItem)initWithPreviewItemProvider:(id)provider contentType:(id)type previewTitle:(id)title fileSize:(id)size previewItem:(id)item;
 - (ARQuickLookWebKitItemDelegate)delegate;
 - (id)previewOptions;
-- (void)handleMessageFromCustomExtension:(id)a3 completionHandler:(id)a4;
+- (void)handleMessageFromCustomExtension:(id)extension completionHandler:(id)handler;
 - (void)previewOptions;
 @end
 
 @implementation ARQuickLookWebKitItem
 
-- (ARQuickLookWebKitItem)initWithDataProvider:(id)a3 contentType:(id)a4 previewTitle:(id)a5 previewItem:(id)a6
+- (ARQuickLookWebKitItem)initWithDataProvider:(id)provider contentType:(id)type previewTitle:(id)title previewItem:(id)item
 {
-  v11 = a6;
+  itemCopy = item;
   v16.receiver = self;
   v16.super_class = ARQuickLookWebKitItem;
-  v12 = [(ARQuickLookWebKitItem *)&v16 initWithDataProvider:a3 contentType:a4 previewTitle:a5];
+  v12 = [(ARQuickLookWebKitItem *)&v16 initWithDataProvider:provider contentType:type previewTitle:title];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_previewItem, a6);
+    objc_storeStrong(&v12->_previewItem, item);
     additionalParameters = v13->_additionalParameters;
     v13->_additionalParameters = MEMORY[0x277CBEC10];
   }
@@ -26,16 +26,16 @@
   return v13;
 }
 
-- (ARQuickLookWebKitItem)initWithPreviewItemProvider:(id)a3 contentType:(id)a4 previewTitle:(id)a5 fileSize:(id)a6 previewItem:(id)a7
+- (ARQuickLookWebKitItem)initWithPreviewItemProvider:(id)provider contentType:(id)type previewTitle:(id)title fileSize:(id)size previewItem:(id)item
 {
-  v13 = a7;
+  itemCopy = item;
   v18.receiver = self;
   v18.super_class = ARQuickLookWebKitItem;
-  v14 = [(ARQuickLookWebKitItem *)&v18 initWithPreviewItemProvider:a3 contentType:a4 previewTitle:a5 fileSize:a6];
+  v14 = [(ARQuickLookWebKitItem *)&v18 initWithPreviewItemProvider:provider contentType:type previewTitle:title fileSize:size];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_previewItem, a7);
+    objc_storeStrong(&v14->_previewItem, item);
     additionalParameters = v15->_additionalParameters;
     v15->_additionalParameters = MEMORY[0x277CBEC10];
   }
@@ -45,28 +45,28 @@
 
 - (id)previewOptions
 {
-  v4 = [(ARQuickLookWebKitItem *)self additionalParameters];
-  v5 = [v4 objectForKeyedSubscript:@"ARQLPrivateSourceAppKey"];
+  additionalParameters = [(ARQuickLookWebKitItem *)self additionalParameters];
+  v5 = [additionalParameters objectForKeyedSubscript:@"ARQLPrivateSourceAppKey"];
 
   if (v5)
   {
     [(ARQuickLookWebKitItem *)a2 previewOptions];
   }
 
-  v6 = [(ARQuickLookWebKitItem *)self additionalParameters];
-  v7 = [v6 mutableCopy];
+  additionalParameters2 = [(ARQuickLookWebKitItem *)self additionalParameters];
+  v7 = [additionalParameters2 mutableCopy];
 
   [v7 setObject:@"WebKit" forKeyedSubscript:@"ARQLPrivateSourceAppKey"];
-  v8 = [(ARQuickLookWebKitItem *)self urlFragment];
-  [v7 setObject:v8 forKeyedSubscript:@"ARQLPrivateURLFragment"];
+  urlFragment = [(ARQuickLookWebKitItem *)self urlFragment];
+  [v7 setObject:urlFragment forKeyedSubscript:@"ARQLPrivateURLFragment"];
 
-  v9 = [(ARQuickLookWebKitItem *)self previewItem];
+  previewItem = [(ARQuickLookWebKitItem *)self previewItem];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(ARQuickLookWebKitItem *)self previewItem];
-    v12 = [objc_msgSend(v11 performSelector:{sel_previewOptions), "mutableCopy"}];
+    previewItem2 = [(ARQuickLookWebKitItem *)self previewItem];
+    v12 = [objc_msgSend(previewItem2 performSelector:{sel_previewOptions), "mutableCopy"}];
 
     [v12 addEntriesFromDictionary:v7];
   }
@@ -79,14 +79,14 @@
   return v12;
 }
 
-- (void)handleMessageFromCustomExtension:(id)a3 completionHandler:(id)a4
+- (void)handleMessageFromCustomExtension:(id)extension completionHandler:(id)handler
 {
-  v6 = a3;
-  NSLog(&cfstr_Arqlwebkititem.isa, v6);
-  v5 = [(ARQuickLookWebKitItem *)self delegate];
-  if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+  extensionCopy = extension;
+  NSLog(&cfstr_Arqlwebkititem.isa, extensionCopy);
+  delegate = [(ARQuickLookWebKitItem *)self delegate];
+  if (extensionCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v5 previewItem:self didReceiveMessage:v6];
+    [delegate previewItem:self didReceiveMessage:extensionCopy];
   }
 }
 
@@ -99,7 +99,7 @@
 
 - (void)previewOptions
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
 }
 
 @end

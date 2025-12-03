@@ -1,23 +1,23 @@
 @interface JavaMathMultiplication
-+ (int64_t)unsignedMultAddAddWithInt:(int)a3 withInt:(int)a4 withInt:(int)a5 withInt:(int)a6;
++ (int64_t)unsignedMultAddAddWithInt:(int)int withInt:(int)withInt withInt:(int)a5 withInt:(int)a6;
 + (void)initialize;
 @end
 
 @implementation JavaMathMultiplication
 
-+ (int64_t)unsignedMultAddAddWithInt:(int)a3 withInt:(int)a4 withInt:(int)a5 withInt:(int)a6
++ (int64_t)unsignedMultAddAddWithInt:(int)int withInt:(int)withInt withInt:(int)a5 withInt:(int)a6
 {
   if ((atomic_load_explicit(JavaMathMultiplication__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001F4A04();
   }
 
-  return a5 + a4 * a3 + a6;
+  return a5 + withInt * int + a6;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v19[0] = xmmword_100315070;
     v19[1] = unk_100315080;

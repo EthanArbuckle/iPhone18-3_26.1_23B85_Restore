@@ -5,29 +5,29 @@
 + (void)removeDiagnosticLogs;
 + (void)removeDiagnosticLogsImmediately;
 + (void)scheduleDiagnosticLogsRemoval;
-- (BOOL)createFileAtPath:(id)a3 contents:(id)a4 attributes:(id)a5 purgeable:(BOOL)a6;
-- (id)eventPathWithName:(id)a3 date:(id)a4;
-- (id)initForInternalLogging:(BOOL)a3;
-- (id)logLogContextWithDate:(id)a3;
-- (id)logNameFromDate:(id)a3;
-- (id)sequencePathForId:(id *)a3;
-- (id)sequencePathForId:(id *)a3 andSubdirectory:(id)a4;
+- (BOOL)createFileAtPath:(id)path contents:(id)contents attributes:(id)attributes purgeable:(BOOL)purgeable;
+- (id)eventPathWithName:(id)name date:(id)date;
+- (id)initForInternalLogging:(BOOL)logging;
+- (id)logLogContextWithDate:(id)date;
+- (id)logNameFromDate:(id)date;
+- (id)sequencePathForId:(id *)id;
+- (id)sequencePathForId:(id *)id andSubdirectory:(id)subdirectory;
 - (void)applyRetentionPolicy;
-- (void)extractFrameDebug:(id *)a3 data:(id)a4;
-- (void)logAllVsAllWithDate:(id)a3;
-- (void)logCameraFrame:(id *)a3 sensorRawData:(id)a4 metaData:(id)a5;
-- (void)logCameraFrame:(id)a3 withBuffers:(id)a4;
-- (void)logData:(id)a3 withContext:(id *)a4;
-- (void)logFrameDebug:(id)a3 withBuffer:(id)a4;
-- (void)logInternalCameraFrame:(id *)a3 sensorRawData:(id)a4 metaData:(id)a5;
-- (void)logRemoveIdentity:(id)a3 withTemplateListData:(id)a4 templateSize:(unint64_t)a5 client:(id)a6 isPO:(BOOL)a7;
+- (void)extractFrameDebug:(id *)debug data:(id)data;
+- (void)logAllVsAllWithDate:(id)date;
+- (void)logCameraFrame:(id *)frame sensorRawData:(id)data metaData:(id)metaData;
+- (void)logCameraFrame:(id)frame withBuffers:(id)buffers;
+- (void)logData:(id)data withContext:(id *)context;
+- (void)logFrameDebug:(id)debug withBuffer:(id)buffer;
+- (void)logInternalCameraFrame:(id *)frame sensorRawData:(id)data metaData:(id)metaData;
+- (void)logRemoveIdentity:(id)identity withTemplateListData:(id)data templateSize:(unint64_t)size client:(id)client isPO:(BOOL)o;
 - (void)logSecureFaceDetectInfo;
-- (void)logSecureFaceDetectStart:(id *)a3;
+- (void)logSecureFaceDetectStart:(id *)start;
 - (void)logSecureFaceDetectStop;
-- (void)logSecureFrameMeta:(id)a3 timestamp:(id)a4;
-- (void)logSequenceDebug:(id)a3 withContext:(id *)a4;
-- (void)logSequenceInfo:(id)a3 withContext:(id *)a4 orientation:(id *)a5 identities:(id)a6;
-- (void)logTemplate:(id)a3 withContext:(id *)a4;
+- (void)logSecureFrameMeta:(id)meta timestamp:(id)timestamp;
+- (void)logSequenceDebug:(id)debug withContext:(id *)context;
+- (void)logSequenceInfo:(id)info withContext:(id *)context orientation:(id *)orientation identities:(id)identities;
+- (void)logTemplate:(id)template withContext:(id *)context;
 - (void)scheduleRetentionPolicy;
 @end
 
@@ -51,13 +51,13 @@
   }
 
   objc_storeStrong(&__osLogTrace_BioLog, v4);
-  v5 = [MEMORY[0x29EDBFD50] sharedInstance];
-  [v5 registerDefaults:&unk_2A1E039D0];
+  mEMORY[0x29EDBFD50] = [MEMORY[0x29EDBFD50] sharedInstance];
+  [mEMORY[0x29EDBFD50] registerDefaults:&unk_2A1E039D0];
 }
 
-- (id)initForInternalLogging:(BOOL)a3
+- (id)initForInternalLogging:(BOOL)logging
 {
-  v3 = a3;
+  loggingCopy = logging;
   v78[2] = *MEMORY[0x29EDCA608];
   v4 = [(BioLog *)self init];
   v5 = v4;
@@ -67,7 +67,7 @@
     goto LABEL_30;
   }
 
-  v4->_internal = v3;
+  v4->_internal = loggingCopy;
   v7 = objc_alloc_init(MEMORY[0x29EDB9F78]);
   fileNameFormatter = v5->_fileNameFormatter;
   v5->_fileNameFormatter = v7;
@@ -144,10 +144,10 @@
         if (v5->_retentionQueue)
         {
           v5->_retentionNewItemsSize = 0;
-          v33 = [MEMORY[0x29EDB8DB0] date];
-          v34 = [(BioLog *)v5 logNameFromDate:v33];
+          date = [MEMORY[0x29EDB8DB0] date];
+          v34 = [(BioLog *)v5 logNameFromDate:date];
           rootPath = v5->_rootPath;
-          if (v3)
+          if (loggingCopy)
           {
             v5->_rootPath = @"/Library/Logs/BioLog";
           }
@@ -179,27 +179,27 @@
           logPath = v5->_logPath;
           v5->_logPath = v39;
 
-          v41 = [MEMORY[0x29EDB9FB8] defaultManager];
-          v42 = [v41 fileExistsAtPath:v5->_logPath];
+          defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
+          v42 = [defaultManager fileExistsAtPath:v5->_logPath];
 
           if (v42)
           {
             goto LABEL_19;
           }
 
-          v43 = [MEMORY[0x29EDB9FB8] defaultManager];
-          v44 = [v43 createDirectoryAtPath:v5->_logPath withIntermediateDirectories:1 attributes:v5->_fileAttributes error:0];
+          defaultManager2 = [MEMORY[0x29EDB9FB8] defaultManager];
+          v44 = [defaultManager2 createDirectoryAtPath:v5->_logPath withIntermediateDirectories:1 attributes:v5->_fileAttributes error:0];
 
           if (v44)
           {
             [BLRetention setPurgeableAtPath:v5->_logPath directory:1];
 LABEL_19:
             v45 = [(NSString *)v5->_rootPath stringByAppendingPathComponent:@"Current"];
-            v46 = [MEMORY[0x29EDB9FB8] defaultManager];
-            [v46 removeItemAtPath:v45 error:0];
+            defaultManager3 = [MEMORY[0x29EDB9FB8] defaultManager];
+            [defaultManager3 removeItemAtPath:v45 error:0];
 
-            v47 = [MEMORY[0x29EDB9FB8] defaultManager];
-            v48 = [v47 createSymbolicLinkAtPath:v45 withDestinationPath:v34 error:0];
+            defaultManager4 = [MEMORY[0x29EDB9FB8] defaultManager];
+            v48 = [defaultManager4 createSymbolicLinkAtPath:v45 withDestinationPath:v34 error:0];
 
             if ((v48 & 1) == 0)
             {
@@ -213,7 +213,7 @@ LABEL_19:
 
             if (v5->_internal)
             {
-              v50 = [(BioLog *)v5 logLogContextWithDate:v33];
+              v50 = [(BioLog *)v5 logLogContextWithDate:date];
               logContextBasePath = v5->_logContextBasePath;
               v5->_logContextBasePath = v50;
 
@@ -223,8 +223,8 @@ LABEL_19:
 
               *v5->_computedSequenceNumberPair = 0;
               v5->_lastComputedSequenceNumber = 0;
-              v54 = [MEMORY[0x29EDBFD50] sharedInstance];
-              v55 = [v54 unsignedIntegerForKey:@"bioLogDiagnosticPipelineSubmitPeriod"];
+              mEMORY[0x29EDBFD50] = [MEMORY[0x29EDBFD50] sharedInstance];
+              v55 = [mEMORY[0x29EDBFD50] unsignedIntegerForKey:@"bioLogDiagnosticPipelineSubmitPeriod"];
 
               if (v55)
               {
@@ -233,21 +233,21 @@ LABEL_19:
                 v5->_diagnosticPipeline = v56;
 
                 [(BioLogDiagnosticPipeline *)v5->_diagnosticPipeline setSubmitPeriod:v55];
-                v58 = [MEMORY[0x29EDBFD50] sharedInstance];
-                v59 = [v58 stringForKey:@"bioLogDiagnosticPipelineEnvironment"];
+                mEMORY[0x29EDBFD50]2 = [MEMORY[0x29EDBFD50] sharedInstance];
+                v59 = [mEMORY[0x29EDBFD50]2 stringForKey:@"bioLogDiagnosticPipelineEnvironment"];
                 [(BioLogDiagnosticPipeline *)v5->_diagnosticPipeline setEnvironment:v59];
 
                 [(BioLogDiagnosticPipeline *)v5->_diagnosticPipeline setScheduleDelay:7];
               }
             }
 
-            v60 = [MEMORY[0x29EDC6C98] defaultManager];
+            defaultManager5 = [MEMORY[0x29EDC6C98] defaultManager];
             v61 = MEMORY[0x29EDC6C90];
             v62 = [MEMORY[0x29EDB8E70] fileURLWithPath:v5->_rootPath];
             v63 = [v61 pathInfoWithURL:v62];
             v72 = v63;
             v64 = [MEMORY[0x29EDB8D80] arrayWithObjects:&v72 count:1];
-            [v60 registerPaths:v64 forBundleID:@"com.apple.biometrickitd" completionHandler:&__block_literal_global_0];
+            [defaultManager5 registerPaths:v64 forBundleID:@"com.apple.biometrickitd" completionHandler:&__block_literal_global_0];
 
             goto LABEL_29;
           }
@@ -339,9 +339,9 @@ LABEL_30:
         }
 
         v7 = [@"/var/mobile/Library/BioLogC" stringByAppendingPathComponent:*(*(&v15 + 1) + 8 * i)];
-        v8 = [MEMORY[0x29EDB9FB8] defaultManager];
+        defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
         v14 = 0;
-        v9 = [v8 removeItemAtPath:v7 error:&v14];
+        v9 = [defaultManager removeItemAtPath:v7 error:&v14];
         v10 = v14;
 
         if ((v9 & 1) == 0)
@@ -382,7 +382,7 @@ LABEL_30:
   if (v3 < -2592000.0)
   {
 
-    [a1 removeDiagnosticLogsImmediately];
+    [self removeDiagnosticLogsImmediately];
   }
 }
 
@@ -390,9 +390,9 @@ LABEL_30:
 {
   v18 = *MEMORY[0x29EDCA608];
   v2 = [@"/Library/Logs/BioLog" stringByAppendingString:@"_DeleteMe"];
-  v3 = [MEMORY[0x29EDB9FB8] defaultManager];
+  defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
   v11 = 0;
-  v4 = [v3 moveItemAtPath:@"/Library/Logs/BioLog" toPath:v2 error:&v11];
+  v4 = [defaultManager moveItemAtPath:@"/Library/Logs/BioLog" toPath:v2 error:&v11];
   v5 = v11;
 
   if (v4)
@@ -472,13 +472,13 @@ void __27__BioLog_removeBioLogAsync__block_invoke(uint64_t a1)
   if (__removalRequestDate)
   {
 
-    [a1 removeDiagnosticLogs];
+    [self removeDiagnosticLogs];
   }
 
   else
   {
-    v3 = [MEMORY[0x29EDBFD50] sharedInstance];
-    v4 = [v3 objectOfClass:objc_opt_class() forKey:@"bioLogRemovalRequestDate"];
+    mEMORY[0x29EDBFD50] = [MEMORY[0x29EDBFD50] sharedInstance];
+    v4 = [mEMORY[0x29EDBFD50] objectOfClass:objc_opt_class() forKey:@"bioLogRemovalRequestDate"];
 
     v5 = MEMORY[0x29EDB8DB0];
     if (v4)
@@ -491,21 +491,21 @@ void __27__BioLog_removeBioLogAsync__block_invoke(uint64_t a1)
 
     else
     {
-      v8 = [MEMORY[0x29EDB8DB0] date];
+      date = [MEMORY[0x29EDB8DB0] date];
       v9 = __removalRequestDate;
-      __removalRequestDate = v8;
+      __removalRequestDate = date;
 
-      v10 = [MEMORY[0x29EDBFD50] sharedInstance];
+      mEMORY[0x29EDBFD50]2 = [MEMORY[0x29EDBFD50] sharedInstance];
       v11 = MEMORY[0x29EDBA070];
       [__removalRequestDate timeIntervalSince1970];
       v13 = [v11 numberWithUnsignedInteger:v12];
-      [v10 setObject:v13 forKey:@"bioLogRemovalRequestDate"];
+      [mEMORY[0x29EDBFD50]2 setObject:v13 forKey:@"bioLogRemovalRequestDate"];
 
       block[0] = MEMORY[0x29EDCA5F8];
       block[1] = 3221225472;
       block[2] = __39__BioLog_scheduleDiagnosticLogsRemoval__block_invoke;
       block[3] = &__block_descriptor_40_e5_v8__0l;
-      block[4] = a1;
+      block[4] = self;
       dispatch_async(MEMORY[0x29EDCA578], block);
     }
   }
@@ -513,64 +513,64 @@ void __27__BioLog_removeBioLogAsync__block_invoke(uint64_t a1)
 
 + (void)cancelDiagnosticLogsRemoval
 {
-  [objc_opt_class() cancelPreviousPerformRequestsWithTarget:a1 selector:sel_scheduleDiagnosticLogsRemoval object:0];
+  [objc_opt_class() cancelPreviousPerformRequestsWithTarget:self selector:sel_scheduleDiagnosticLogsRemoval object:0];
   v2 = __removalRequestDate;
   __removalRequestDate = 0;
 
-  v3 = [MEMORY[0x29EDBFD50] sharedInstance];
-  [v3 setObject:0 forKey:@"bioLogRemovalRequestDate"];
+  mEMORY[0x29EDBFD50] = [MEMORY[0x29EDBFD50] sharedInstance];
+  [mEMORY[0x29EDBFD50] setObject:0 forKey:@"bioLogRemovalRequestDate"];
 }
 
-- (id)logNameFromDate:(id)a3
+- (id)logNameFromDate:(id)date
 {
   v3 = MEMORY[0x29EDB9F78];
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_alloc_init(v3);
   [v5 setDateFormat:@"yyyy-MM-dd_HH_mm_ss"];
   v6 = MEMORY[0x29EDBA0F8];
-  [v4 timeIntervalSince1970];
+  [dateCopy timeIntervalSince1970];
   v8 = v7;
-  v9 = [v5 stringFromDate:v4];
+  v9 = [v5 stringFromDate:dateCopy];
 
   v10 = [v6 stringWithFormat:@"%s%ld_%@%s", "BL_", v8, v9, &unk_296D32C0B];
 
   return v10;
 }
 
-- (BOOL)createFileAtPath:(id)a3 contents:(id)a4 attributes:(id)a5 purgeable:(BOOL)a6
+- (BOOL)createFileAtPath:(id)path contents:(id)contents attributes:(id)attributes purgeable:(BOOL)purgeable
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
+  purgeableCopy = purgeable;
+  pathCopy = path;
+  contentsCopy = contents;
   v12 = MEMORY[0x29EDB9FB8];
-  v13 = a5;
-  v14 = [v12 defaultManager];
-  v15 = [v14 createFileAtPath:v10 contents:v11 attributes:v13];
+  attributesCopy = attributes;
+  defaultManager = [v12 defaultManager];
+  v15 = [defaultManager createFileAtPath:pathCopy contents:contentsCopy attributes:attributesCopy];
 
   if (v15)
   {
-    if (v6)
+    if (purgeableCopy)
     {
-      [BLRetention setPurgeableAtPath:v10 directory:0];
+      [BLRetention setPurgeableAtPath:pathCopy directory:0];
     }
 
-    self->_retentionNewItemsSize += [v11 length];
+    self->_retentionNewItemsSize += [contentsCopy length];
   }
 
   return v15;
 }
 
-- (id)logLogContextWithDate:(id)a3
+- (id)logLogContextWithDate:(id)date
 {
   v28[4] = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  dateCopy = date;
   v27[0] = @"biolog_file_type";
   v27[1] = @"version";
   v28[0] = @"log";
   v28[1] = &unk_2A1E037F8;
   v27[2] = @"epoch";
   v5 = MEMORY[0x29EDBA070];
-  [v4 timeIntervalSince1970];
+  [dateCopy timeIntervalSince1970];
   v6 = [v5 numberWithDouble:?];
   v28[2] = v6;
   v27[3] = @"log_data";
@@ -610,7 +610,7 @@ void __27__BioLog_removeBioLogAsync__block_invoke(uint64_t a1)
   }
 
   v15 = MEMORY[0x29EDBA0F8];
-  [v4 timeIntervalSince1970];
+  [dateCopy timeIntervalSince1970];
   v17 = [v15 stringWithFormat:@"%s%ld", "BL_", v16];
   v18 = [(NSString *)self->_logPath stringByAppendingPathComponent:v17];
   v19 = [v18 stringByAppendingString:@".json"];
@@ -626,10 +626,10 @@ void __27__BioLog_removeBioLogAsync__block_invoke(uint64_t a1)
   return v18;
 }
 
-- (void)logAllVsAllWithDate:(id)a3
+- (void)logAllVsAllWithDate:(id)date
 {
   v63[2] = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  dateCopy = date;
   if (!self->_allVsAllReachedLimit && self->_logContextBasePath)
   {
     if (!self->_allVsAllScoreDict)
@@ -697,7 +697,7 @@ void __27__BioLog_removeBioLogAsync__block_invoke(uint64_t a1)
         v54 = v14;
         v30 = MEMORY[0x29EDBA0F8];
         logContextBasePath = self->_logContextBasePath;
-        [v4 timeIntervalSince1970];
+        [dateCopy timeIntervalSince1970];
         v33 = [v30 stringWithFormat:@"%@_%ld_all_vs_all%@", logContextBasePath, (v32 * 1000.0), @".json"];
         fileAttributesAutoUpload = self->_fileAttributesAutoUpload;
         v45 = v33;
@@ -728,9 +728,9 @@ void __27__BioLog_removeBioLogAsync__block_invoke(uint64_t a1)
               }
 
               v41 = *(*(&v56 + 1) + 8 * i);
-              v42 = [MEMORY[0x29EDB9FB8] defaultManager];
+              defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
               v55 = 0;
-              [v42 removeItemAtPath:v41 error:&v55];
+              [defaultManager removeItemAtPath:v41 error:&v55];
               v43 = v55;
 
               if (!v43)
@@ -878,28 +878,28 @@ void __30__BioLog_applyRetentionPolicy__block_invoke(uint64_t a1)
 
 - (void)scheduleRetentionPolicy
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_retentionNewItemsSize >> 20;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_retentionNewItemsSize >> 20;
   if (v3 < 0x401)
   {
-    if (v3 > 0x200 || !v2->_retentionRunOnce)
+    if (v3 > 0x200 || !selfCopy->_retentionRunOnce)
     {
       block[0] = MEMORY[0x29EDCA5F8];
       block[1] = 3221225472;
       block[2] = __33__BioLog_scheduleRetentionPolicy__block_invoke;
       block[3] = &unk_29EE54570;
-      block[4] = v2;
+      block[4] = selfCopy;
       dispatch_async(MEMORY[0x29EDCA578], block);
     }
   }
 
   else
   {
-    [(BioLog *)v2 applyRetentionPolicy];
+    [(BioLog *)selfCopy applyRetentionPolicy];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __33__BioLog_scheduleRetentionPolicy__block_invoke(uint64_t a1)
@@ -911,15 +911,15 @@ uint64_t __33__BioLog_scheduleRetentionPolicy__block_invoke(uint64_t a1)
   return [v3 performSelector:sel_applyRetentionPolicy withObject:0 afterDelay:3.0];
 }
 
-- (id)sequencePathForId:(id *)a3
+- (id)sequencePathForId:(id *)id
 {
   v43 = *MEMORY[0x29EDCA608];
-  v4 = self;
-  objc_sync_enter(v4);
-  p_sequencePath = &v4->_sequencePath;
-  sequenceNumber = v4->_sequenceNumber;
-  var1 = a3->var1;
-  if (v4->_sequencePath)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  p_sequencePath = &selfCopy->_sequencePath;
+  sequenceNumber = selfCopy->_sequenceNumber;
+  var1 = id->var1;
+  if (selfCopy->_sequencePath)
   {
     v8 = sequenceNumber == var1;
   }
@@ -931,7 +931,7 @@ uint64_t __33__BioLog_scheduleRetentionPolicy__block_invoke(uint64_t a1)
 
   if (v8)
   {
-    if (v4->_sequenceType == a3->var2)
+    if (selfCopy->_sequenceType == id->var2)
     {
       goto LABEL_26;
     }
@@ -950,7 +950,7 @@ uint64_t __33__BioLog_scheduleRetentionPolicy__block_invoke(uint64_t a1)
     }
   }
 
-  if (v4->_sequenceType != a3->var2)
+  if (selfCopy->_sequenceType != id->var2)
   {
 LABEL_10:
     if (__osLog_BioLog)
@@ -965,10 +965,10 @@ LABEL_10:
 
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = v4->_sequenceNumber;
-      v11 = a3->var1;
-      sequenceType = v4->_sequenceType;
-      var2 = a3->var2;
+      v10 = selfCopy->_sequenceNumber;
+      v11 = id->var1;
+      sequenceType = selfCopy->_sequenceType;
+      var2 = id->var2;
       *buf = 67109888;
       *&buf[4] = v10;
       v37 = 1024;
@@ -982,39 +982,39 @@ LABEL_10:
   }
 
 LABEL_15:
-  v14 = [MEMORY[0x29EDBFD60] dateFromNanoTime:a3->var0 nanoseconds:0];
+  v14 = [MEMORY[0x29EDBFD60] dateFromNanoTime:id->var0 nanoseconds:0];
   v15 = MEMORY[0x29EDBA0F8];
-  v16 = a3->var1;
+  v16 = id->var1;
   [v14 timeIntervalSince1970];
   v18 = v17;
-  v19 = [(NSDateFormatter *)v4->_milisecondsFormatter stringFromDate:v14];
-  v20 = [BLHelper stringFromSequenceType:a3->var2];
+  v19 = [(NSDateFormatter *)selfCopy->_milisecondsFormatter stringFromDate:v14];
+  v20 = [BLHelper stringFromSequenceType:id->var2];
   v21 = [v15 stringWithFormat:@"%05d-%ld%@-%@.seq", v16, v18, v19, v20];
 
-  logPath = v4->_logPath;
-  v4->_sequenceType = a3->var2;
-  v4->_sequenceNumber = a3->var1;
+  logPath = selfCopy->_logPath;
+  selfCopy->_sequenceType = id->var2;
+  selfCopy->_sequenceNumber = id->var1;
   v23 = [(NSString *)logPath stringByAppendingPathComponent:v21];
   v24 = *p_sequencePath;
   *p_sequencePath = v23;
 
-  v25 = [MEMORY[0x29EDB9FB8] defaultManager];
-  LOBYTE(v16) = [v25 fileExistsAtPath:*p_sequencePath];
+  defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
+  LOBYTE(v16) = [defaultManager fileExistsAtPath:*p_sequencePath];
 
   if ((v16 & 1) == 0)
   {
-    v26 = [MEMORY[0x29EDB9FB8] defaultManager];
-    v27 = [v26 createDirectoryAtPath:v4->_sequencePath withIntermediateDirectories:1 attributes:v4->_fileAttributes error:0];
+    defaultManager2 = [MEMORY[0x29EDB9FB8] defaultManager];
+    v27 = [defaultManager2 createDirectoryAtPath:selfCopy->_sequencePath withIntermediateDirectories:1 attributes:selfCopy->_fileAttributes error:0];
 
     if (v27)
     {
       [BLRetention setPurgeableAtPath:*p_sequencePath directory:1];
-      v28 = [(NSString *)v4->_logPath stringByAppendingPathComponent:@"LastSequence"];
-      v29 = [MEMORY[0x29EDB9FB8] defaultManager];
-      [v29 removeItemAtPath:v28 error:0];
+      v28 = [(NSString *)selfCopy->_logPath stringByAppendingPathComponent:@"LastSequence"];
+      defaultManager3 = [MEMORY[0x29EDB9FB8] defaultManager];
+      [defaultManager3 removeItemAtPath:v28 error:0];
 
-      v30 = [MEMORY[0x29EDB9FB8] defaultManager];
-      v31 = [v30 createSymbolicLinkAtPath:v28 withDestinationPath:v21 error:0];
+      defaultManager4 = [MEMORY[0x29EDB9FB8] defaultManager];
+      v31 = [defaultManager4 createSymbolicLinkAtPath:v28 withDestinationPath:v21 error:0];
 
       if ((v31 & 1) == 0)
       {
@@ -1029,43 +1029,43 @@ LABEL_15:
 
     else
     {
-      [(BioLog *)&v4->_logPath sequencePathForId:buf];
+      [(BioLog *)&selfCopy->_logPath sequencePathForId:buf];
       v28 = *buf;
     }
 
-    if (a3->var2 == 1)
+    if (id->var2 == 1)
     {
       [BLRetention setRetentionType:@"rp_enroll" atPath:*p_sequencePath];
     }
   }
 
 LABEL_26:
-  if (![(BioLogDiagnosticPipeline *)v4->_diagnosticPipeline scheduleSubmit])
+  if (![(BioLogDiagnosticPipeline *)selfCopy->_diagnosticPipeline scheduleSubmit])
   {
-    [(BioLog *)v4 scheduleRetentionPolicy];
+    [(BioLog *)selfCopy scheduleRetentionPolicy];
   }
 
   v33 = [*p_sequencePath copy];
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v34 = *MEMORY[0x29EDCA608];
 
   return v33;
 }
 
-- (id)sequencePathForId:(id *)a3 andSubdirectory:(id)a4
+- (id)sequencePathForId:(id *)id andSubdirectory:(id)subdirectory
 {
-  v6 = a4;
-  v7 = [(BioLog *)self sequencePathForId:a3];
-  v8 = [v7 stringByAppendingPathComponent:v6];
+  subdirectoryCopy = subdirectory;
+  v7 = [(BioLog *)self sequencePathForId:id];
+  v8 = [v7 stringByAppendingPathComponent:subdirectoryCopy];
 
-  v9 = [MEMORY[0x29EDB9FB8] defaultManager];
-  LOBYTE(v7) = [v9 fileExistsAtPath:v8];
+  defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
+  LOBYTE(v7) = [defaultManager fileExistsAtPath:v8];
 
   if ((v7 & 1) == 0)
   {
-    v10 = [MEMORY[0x29EDB9FB8] defaultManager];
-    v11 = [v10 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:self->_fileAttributes error:0];
+    defaultManager2 = [MEMORY[0x29EDB9FB8] defaultManager];
+    v11 = [defaultManager2 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:self->_fileAttributes error:0];
 
     if (v11)
     {
@@ -1083,37 +1083,37 @@ LABEL_26:
   return v8;
 }
 
-- (void)logCameraFrame:(id)a3 withBuffers:(id)a4
+- (void)logCameraFrame:(id)frame withBuffers:(id)buffers
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 bytes];
-  if (v8)
+  frameCopy = frame;
+  buffersCopy = buffers;
+  bytes = [frameCopy bytes];
+  if (bytes)
   {
-    v9 = v8;
-    if ([v6 length] == 79)
+    v9 = bytes;
+    if ([frameCopy length] == 79)
     {
       if (*(v9 + 77))
       {
-        v10 = [v7 firstObject];
+        firstObject = [buffersCopy firstObject];
       }
 
       else
       {
-        v10 = 0;
+        firstObject = 0;
       }
 
       if (*(v9 + 78))
       {
-        v11 = [v7 lastObject];
+        lastObject = [buffersCopy lastObject];
       }
 
       else
       {
-        v11 = 0;
+        lastObject = 0;
       }
 
-      [(BioLog *)self logCameraFrame:v9 sensorRawData:v10 metaData:v11];
+      [(BioLog *)self logCameraFrame:v9 sensorRawData:firstObject metaData:lastObject];
     }
 
     else
@@ -1128,13 +1128,13 @@ LABEL_26:
   }
 }
 
-- (void)logCameraFrame:(id *)a3 sensorRawData:(id)a4 metaData:(id)a5
+- (void)logCameraFrame:(id *)frame sensorRawData:(id)data metaData:(id)metaData
 {
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  metaDataCopy = metaData;
   if (self->_internal)
   {
-    [(BioLog *)self logInternalCameraFrame:a3 sensorRawData:v8 metaData:v9];
+    [(BioLog *)self logInternalCameraFrame:frame sensorRawData:dataCopy metaData:metaDataCopy];
   }
 
   else
@@ -1144,7 +1144,7 @@ LABEL_26:
       goto LABEL_23;
     }
 
-    v10 = [objc_alloc(MEMORY[0x29EDB8DF8]) initWithLength:*(&a3->var7 + 1) * *(&a3->var7 + 3)];
+    v10 = [objc_alloc(MEMORY[0x29EDB8DF8]) initWithLength:*(&frame->var7 + 1) * *(&frame->var7 + 3)];
     cropFrameBuffer = self->_cropFrameBuffer;
     self->_cropFrameBuffer = v10;
 
@@ -1157,24 +1157,24 @@ LABEL_26:
 LABEL_23:
       if (self->_cropFrameBufferSemaphore)
       {
-        if (BYTE2(a3->var5.var8) || ![BioLog logCameraFrame:? sensorRawData:? metaData:?])
+        if (BYTE2(frame->var5.var8) || ![BioLog logCameraFrame:? sensorRawData:? metaData:?])
         {
-          if (*(&a3->var5.var7 + 2))
+          if (*(&frame->var5.var7 + 2))
           {
-            v14 = *&a3->var5.var6;
+            v14 = *&frame->var5.var6;
           }
 
           else
           {
-            [BioLog logCameraFrame:a3 sensorRawData:? metaData:?];
+            [BioLog logCameraFrame:frame sensorRawData:? metaData:?];
           }
 
-          v15 = *&a3->var4;
-          var0 = a3->var5.var0;
-          v17 = *&a3->var5.var1;
-          var3 = a3->var5.var3;
-          v19 = *(&a3->var6 + 3);
-          v20 = *(&a3->var7 + 1);
+          v15 = *&frame->var4;
+          var0 = frame->var5.var0;
+          v17 = *&frame->var5.var1;
+          var3 = frame->var5.var3;
+          v19 = *(&frame->var6 + 3);
+          v20 = *(&frame->var7 + 1);
           scale_rect_from_center_and_pin();
           v22 = v21;
           v24 = v23;
@@ -1192,21 +1192,21 @@ LABEL_23:
           v22 = 0.0;
         }
 
-        v30 = [MEMORY[0x29EDB8DF8] dataWithBytes:a3 length:79];
+        v30 = [MEMORY[0x29EDB8DF8] dataWithBytes:frame length:79];
         dispatch_semaphore_wait(self->_cropFrameBufferSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-        if (BYTE2(a3->var5.var8) && *&a3->var5.var1)
+        if (BYTE2(frame->var5.var8) && *&frame->var5.var1)
         {
-          v31 = [v30 bytes];
-          v32 = crop_packed_raw10([v8 bytes], *(&a3->var6 + 3), *(&a3->var7 + 1), *(&a3->var7 + 3), -[NSMutableData mutableBytes](self->_cropFrameBuffer, "mutableBytes"), v22, v24, v26, v28, v29);
+          bytes = [v30 bytes];
+          v32 = crop_packed_raw10([dataCopy bytes], *(&frame->var6 + 3), *(&frame->var7 + 1), *(&frame->var7 + 3), -[NSMutableData mutableBytes](self->_cropFrameBuffer, "mutableBytes"), v22, v24, v26, v28, v29);
           v34 = v33;
           v36 = v35;
           v38 = v37;
           v39 = [MEMORY[0x29EDB8DA0] dataWithBytesNoCopy:-[NSMutableData mutableBytes](self->_cropFrameBuffer length:"mutableBytes") freeWhenDone:{(v37 * v29), 0}];
-          *(v31 + 73) = v32;
-          *(v31 + 75) = v34;
-          *(v31 + 67) = v36;
-          *(v31 + 69) = v38;
-          *(v31 + 71) = v29;
+          *(bytes + 73) = v32;
+          *(bytes + 75) = v34;
+          *(bytes + 67) = v36;
+          *(bytes + 69) = v38;
+          *(bytes + 71) = v29;
         }
 
         else
@@ -1248,22 +1248,22 @@ intptr_t __48__BioLog_logCameraFrame_sensorRawData_metaData___block_invoke(uint6
   return dispatch_semaphore_signal(v2);
 }
 
-- (void)logInternalCameraFrame:(id *)a3 sensorRawData:(id)a4 metaData:(id)a5
+- (void)logInternalCameraFrame:(id *)frame sensorRawData:(id)data metaData:(id)metaData
 {
   v97 = *MEMORY[0x29EDCA608];
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x29EDBFD60] dateFromNanoTime:a3->var0.var0 nanoseconds:0];
+  dataCopy = data;
+  metaDataCopy = metaData;
+  v10 = [MEMORY[0x29EDBFD60] dateFromNanoTime:frame->var0.var0 nanoseconds:0];
   v11 = MEMORY[0x29EDBA0F8];
-  var2 = a3->var0.var2;
+  var2 = frame->var0.var2;
   [v10 timeIntervalSince1970];
   v14 = v13;
   v79 = v10;
   v15 = [(NSDateFormatter *)self->_milisecondsFormatter stringFromDate:v10];
-  v16 = [BLHelper stringFromFrameType:a3->var0.var5];
+  v16 = [BLHelper stringFromFrameType:frame->var0.var5];
   v17 = [v11 stringWithFormat:@"%05d-%ld%@-%@", var2, v14, v15, v16];
 
-  v18 = [(BioLog *)self sequencePathForId:&a3->var0.var6];
+  v18 = [(BioLog *)self sequencePathForId:&frame->var0.var6];
   v19 = v18;
   if (!v18)
   {
@@ -1288,20 +1288,20 @@ intptr_t __48__BioLog_logCameraFrame_sensorRawData_metaData___block_invoke(uint6
   v80 = v20;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    var0 = a3->var0.var0;
+    var0 = frame->var0.var0;
     v23 = v21;
     *buf = 134218754;
     *&buf[4] = var0;
     v91 = 2048;
-    v92 = [v8 length];
+    v92 = [dataCopy length];
     v93 = 2048;
-    v94 = [v9 length];
+    v94 = [metaDataCopy length];
     v95 = 2112;
     v96 = v20;
     _os_log_impl(&dword_296CA4000, v23, OS_LOG_TYPE_DEFAULT, "logCameraFrame %llu: %lu %lu > %@.prlf(c)/prlm +json\n", buf, 0x2Au);
   }
 
-  if (!v8)
+  if (!dataCopy)
   {
     goto LABEL_11;
   }
@@ -1312,16 +1312,16 @@ intptr_t __48__BioLog_logCameraFrame_sensorRawData_metaData___block_invoke(uint6
   }
 
   v24 = [v20 stringByAppendingString:logInternalCameraFrame_sensorRawData_metaData__sensorRawExtension];
-  v25 = [(BioLog *)self createFileAtPath:v24 contents:v8 attributes:self->_fileAttributesProtected purgeable:1];
+  v25 = [(BioLog *)self createFileAtPath:v24 contents:dataCopy attributes:self->_fileAttributesProtected purgeable:1];
 
   if (!v25)
   {
     [BioLog logInternalCameraFrame:sensorRawData:metaData:];
-    if (v9)
+    if (metaDataCopy)
     {
 LABEL_12:
       v26 = [v20 stringByAppendingString:@".prlm"];
-      v27 = [(BioLog *)self createFileAtPath:v26 contents:v9 attributes:self->_fileAttributesAutoUpload purgeable:1];
+      v27 = [(BioLog *)self createFileAtPath:v26 contents:metaDataCopy attributes:self->_fileAttributesAutoUpload purgeable:1];
 
       if (!v27)
       {
@@ -1333,34 +1333,34 @@ LABEL_12:
   else
   {
 LABEL_11:
-    if (v9)
+    if (metaDataCopy)
     {
       goto LABEL_12;
     }
   }
 
-  v76 = self;
+  selfCopy = self;
   v28 = objc_alloc_init(MEMORY[0x29EDBA050]);
   for (i = 62; i != 58; --i)
   {
-    [v28 appendFormat:@"%c", *(&a3->var0.var0 + i)];
+    [v28 appendFormat:@"%c", *(&frame->var0.var0 + i)];
   }
 
   v82 = MEMORY[0x29EDB8E00];
   v88[0] = @"seq_type";
-  v73 = [BLHelper stringFromSequenceType:a3->var0.var4];
+  v73 = [BLHelper stringFromSequenceType:frame->var0.var4];
   v89[0] = v73;
   v88[1] = @"frm_type";
-  v71 = [BLHelper stringFromFrameType:a3->var0.var5];
+  v71 = [BLHelper stringFromFrameType:frame->var0.var5];
   v89[1] = v71;
   v88[2] = @"seq_num";
-  v69 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:a3->var0.var1];
+  v69 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:frame->var0.var1];
   v89[2] = v69;
   v88[3] = @"frm_num";
-  v68 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:a3->var0.var2];
+  v68 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:frame->var0.var2];
   v89[3] = v68;
   v88[4] = @"frm_grp";
-  v67 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(&a3->var0.var6.var2 + 1)];
+  v67 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(&frame->var0.var6.var2 + 1)];
   v89[4] = v67;
   v88[5] = @"raw_compressed";
   v75 = v17;
@@ -1376,80 +1376,80 @@ LABEL_11:
   v66 = ;
   v89[5] = v66;
   v88[6] = @"raw_size";
-  v78 = v8;
-  v65 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:{objc_msgSend(v8, "length")}];
+  v78 = dataCopy;
+  v65 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:{objc_msgSend(dataCopy, "length")}];
   v89[6] = v65;
   v88[7] = @"meta_size";
-  v77 = v9;
-  v64 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:{objc_msgSend(v9, "length")}];
+  v77 = metaDataCopy;
+  v64 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:{objc_msgSend(metaDataCopy, "length")}];
   v89[7] = v64;
   v88[8] = @"frm_cox";
-  v63 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(&a3->var8 + 1)];
+  v63 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(&frame->var8 + 1)];
   v89[8] = v63;
   v88[9] = @"frm_coy";
-  v62 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(&a3->var8 + 3)];
+  v62 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(&frame->var8 + 3)];
   v89[9] = v62;
   v89[10] = v28;
   v88[10] = @"frm_pixel_format";
   v88[11] = @"frm_bytes_per_element";
-  v61 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:*(&a3->var5.var9 + 3)];
+  v61 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:*(&frame->var5.var9 + 3)];
   v89[11] = v61;
   v88[12] = @"frm_width";
-  v30 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(&a3->var6 + 3)];
+  v30 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(&frame->var6 + 3)];
   v89[12] = v30;
   v88[13] = @"frm_height";
-  v31 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(&a3->var7 + 1)];
+  v31 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(&frame->var7 + 1)];
   v89[13] = v31;
   v88[14] = @"frm_bpr";
-  v32 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(&a3->var7 + 3)];
+  v32 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(&frame->var7 + 3)];
   v89[14] = v32;
   v88[15] = @"user_feedback";
-  v33 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(&a3->var0.var6.var2 + 3)];
+  v33 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(&frame->var0.var6.var2 + 3)];
   v89[15] = v33;
   v88[16] = @"user_engagement_status";
-  v34 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(&a3->var0.var6.var2 + 5)];
+  v34 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(&frame->var0.var6.var2 + 5)];
   v89[16] = v34;
   v88[17] = @"proj_type";
-  v35 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:HIBYTE(a3->var1)];
+  v35 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:HIBYTE(frame->var1)];
   v89[17] = v35;
   v36 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v89 forKeys:v88 count:18];
   v83 = [v82 dictionaryWithDictionary:v36];
 
-  if (BYTE2(a3->var5.var8))
+  if (BYTE2(frame->var5.var8))
   {
-    if (!*(&a3->var5.var7 + 2))
+    if (!*(&frame->var5.var7 + 2))
     {
-      [BioLog logInternalCameraFrame:a3 sensorRawData:? metaData:?];
+      [BioLog logInternalCameraFrame:frame sensorRawData:? metaData:?];
     }
 
     v86[0] = @"exposure";
-    v74 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:*&a3->var5.var4];
+    v74 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:*&frame->var5.var4];
     v87[0] = v74;
     v86[1] = @"proj_sub_mode";
-    v72 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:LOBYTE(a3->var3)];
+    v72 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:LOBYTE(frame->var3)];
     v87[1] = v72;
     v86[2] = @"ntc_temp";
-    v70 = [MEMORY[0x29EDBA070] numberWithChar:SHIBYTE(a3->var3)];
+    v70 = [MEMORY[0x29EDBA070] numberWithChar:SHIBYTE(frame->var3)];
     v87[2] = v70;
     v86[3] = @"distance";
-    v37 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:a3->var2];
+    v37 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:frame->var2];
     v87[3] = v37;
     v86[4] = @"crop_factor";
-    LODWORD(v38) = *&a3->var5.var6;
-    LODWORD(v39) = *(&a3->var5.var7 + 2);
+    LODWORD(v38) = *&frame->var5.var6;
+    LODWORD(v39) = *(&frame->var5.var7 + 2);
     v40 = [MEMORY[0x29EDBA070] numberWithDouble:v38 / v39];
     v87[4] = v40;
     v86[5] = @"bb_x";
-    v41 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*&a3->var4];
+    v41 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*&frame->var4];
     v87[5] = v41;
     v86[6] = @"bb_y";
-    v42 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:a3->var5.var0];
+    v42 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:frame->var5.var0];
     v87[6] = v42;
     v86[7] = @"bb_w";
-    v43 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*&a3->var5.var1];
+    v43 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*&frame->var5.var1];
     v87[7] = v43;
     v86[8] = @"bb_h";
-    v44 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:a3->var5.var3];
+    v44 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:frame->var5.var3];
     v87[8] = v44;
     v45 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v87 forKeys:v86 count:9];
     [v83 addEntriesFromDictionary:v45];
@@ -1460,7 +1460,7 @@ LABEL_11:
   v85[0] = @"frame";
   v85[1] = &unk_2A1E037F8;
   v84[2] = @"nanoepoch";
-  v46 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:a3->var0.var0];
+  v46 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:frame->var0.var0];
   v85[2] = v46;
   v84[3] = @"epoch";
   v47 = MEMORY[0x29EDBA070];
@@ -1479,19 +1479,19 @@ LABEL_11:
   }
 
   v52 = MEMORY[0x29EDBA0F8];
-  v53 = a3->var0.var2;
+  v53 = frame->var0.var2;
   [v79 timeIntervalSince1970];
   v55 = v54;
-  v56 = [(NSDateFormatter *)v76->_milisecondsFormatter stringFromDate:v79];
+  v56 = [(NSDateFormatter *)selfCopy->_milisecondsFormatter stringFromDate:v79];
   v57 = [v52 stringWithFormat:@"%05d-%ld%@", v53, v55, v56];
 
   v58 = [v81 stringByAppendingPathComponent:v57];
 
   v59 = [v58 stringByAppendingString:@".json"];
-  LOBYTE(v55) = [(BioLog *)v76 createFileAtPath:v59 contents:v51 attributes:v76->_fileAttributesProtected purgeable:1];
+  LOBYTE(v55) = [(BioLog *)selfCopy createFileAtPath:v59 contents:v51 attributes:selfCopy->_fileAttributesProtected purgeable:1];
 
-  v9 = v77;
-  v8 = v78;
+  metaDataCopy = v77;
+  dataCopy = v78;
   if ((v55 & 1) == 0)
   {
     [BioLog logInternalCameraFrame:sensorRawData:metaData:];
@@ -1537,11 +1537,11 @@ void __33__BioLog_extractFrameDebug_data___block_invoke(uint64_t a1, unsigned in
   v5 = *MEMORY[0x29EDCA608];
 }
 
-- (void)logFrameDebug:(id)a3 withBuffer:(id)a4
+- (void)logFrameDebug:(id)debug withBuffer:(id)buffer
 {
   v52 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = a4;
+  debugCopy = debug;
+  bufferCopy = buffer;
   if (!self->_internal)
   {
     if (__osLog_BioLog)
@@ -1572,8 +1572,8 @@ void __33__BioLog_extractFrameDebug_data___block_invoke(uint64_t a1, unsigned in
     goto LABEL_35;
   }
 
-  v8 = [v6 bytes];
-  if (!v8)
+  bytes = [debugCopy bytes];
+  if (!bytes)
   {
     if (__osLog_BioLog)
     {
@@ -1603,8 +1603,8 @@ void __33__BioLog_extractFrameDebug_data___block_invoke(uint64_t a1, unsigned in
     goto LABEL_35;
   }
 
-  v9 = v8;
-  if ([v6 length] != 27)
+  v9 = bytes;
+  if ([debugCopy length] != 27)
   {
     if (__osLog_BioLog)
     {
@@ -1648,11 +1648,11 @@ LABEL_36:
   block[3] = &unk_29EE549C0;
   block[4] = self;
   v41 = v9;
-  v11 = v7;
+  v11 = bufferCopy;
   v40 = v11;
   dispatch_sync(frameDebugExtraQueue, block);
 
-  v38 = v7;
+  v38 = bufferCopy;
   if (*(v9 + 14) == 2 && !self->_allVsAllReachedLimit && (v12 = [[BLScoreData alloc] initFromDebugData:v11]) != 0)
   {
     v13 = v12;
@@ -1699,13 +1699,13 @@ LABEL_36:
   {
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = v6;
+      v27 = debugCopy;
       v28 = *v9;
       v29 = v26;
       v30 = [v11 length];
       *buf = 134218754;
       v43 = v28;
-      v6 = v27;
+      debugCopy = v27;
       v25 = MEMORY[0x29EDCA988];
       v44 = 2048;
       v45 = v30;
@@ -1731,7 +1731,7 @@ LABEL_36:
         v36 = v25;
       }
 
-      v7 = v38;
+      bufferCopy = v38;
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
         *buf = 136316162;
@@ -1771,7 +1771,7 @@ LABEL_36:
     v24 = 0;
   }
 
-  v7 = v38;
+  bufferCopy = v38;
 LABEL_18:
   v33 = v37;
 LABEL_19:
@@ -1779,22 +1779,22 @@ LABEL_19:
   v34 = *MEMORY[0x29EDCA608];
 }
 
-- (void)logData:(id)a3 withContext:(id *)a4
+- (void)logData:(id)data withContext:(id *)context
 {
   v35 = *MEMORY[0x29EDCA608];
-  v6 = a3;
+  dataCopy = data;
   if (self->_internal)
   {
-    v7 = [MEMORY[0x29EDBFD60] dateFromNanoTime:a4->var0 nanoseconds:0];
+    v7 = [MEMORY[0x29EDBFD60] dateFromNanoTime:context->var0 nanoseconds:0];
     v8 = MEMORY[0x29EDBA0F8];
     [v7 timeIntervalSince1970];
     v10 = v9;
     v11 = [(NSDateFormatter *)self->_milisecondsFormatter stringFromDate:v7];
     v12 = [v8 stringWithFormat:@"Data_%ld%@.dmp", v10, v11];
 
-    if (a4->var2.var0)
+    if (context->var2.var0)
     {
-      v13 = [(BioLog *)self sequencePathForId:&a4->var2];
+      v13 = [(BioLog *)self sequencePathForId:&context->var2];
     }
 
     else
@@ -1820,9 +1820,9 @@ LABEL_19:
       v18 = v15;
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        var0 = a4->var0;
+        var0 = context->var0;
         v20 = v17;
-        v21 = [v6 length];
+        v21 = [dataCopy length];
         *buf = 134218498;
         v26 = var0;
         v16 = MEMORY[0x29EDCA988];
@@ -1833,7 +1833,7 @@ LABEL_19:
         _os_log_impl(&dword_296CA4000, v20, OS_LOG_TYPE_DEFAULT, "logData %llu: %lu > %@\n", buf, 0x20u);
       }
 
-      if (![(BioLog *)self createFileAtPath:v18 contents:v6 attributes:self->_fileAttributesProtected purgeable:1])
+      if (![(BioLog *)self createFileAtPath:v18 contents:dataCopy attributes:self->_fileAttributesProtected purgeable:1])
       {
         if (__osLog_BioLog)
         {
@@ -1919,25 +1919,25 @@ LABEL_19:
   v22 = *MEMORY[0x29EDCA608];
 }
 
-- (void)logTemplate:(id)a3 withContext:(id *)a4
+- (void)logTemplate:(id)template withContext:(id *)context
 {
   v33 = *MEMORY[0x29EDCA608];
-  v6 = a3;
+  templateCopy = template;
   if (!self->_internal)
   {
     [BioLog logTemplate:withContext:];
     goto LABEL_15;
   }
 
-  v7 = [MEMORY[0x29EDBFD60] dateFromNanoTime:a4->var0 nanoseconds:0];
+  v7 = [MEMORY[0x29EDBFD60] dateFromNanoTime:context->var0 nanoseconds:0];
   v8 = MEMORY[0x29EDBA0F8];
-  var1 = a4->var2.var1;
+  var1 = context->var2.var1;
   [v7 timeIntervalSince1970];
   v11 = v10;
   v12 = [(NSDateFormatter *)self->_milisecondsFormatter stringFromDate:v7];
   v13 = [v8 stringWithFormat:@"templ-%05d-%ld%@", var1, v11, v12];
 
-  v14 = [(BioLog *)self sequencePathForId:&a4->var2];
+  v14 = [(BioLog *)self sequencePathForId:&context->var2];
   v15 = [v14 stringByAppendingPathComponent:v13];
 
   if (__osLog_BioLog)
@@ -1954,12 +1954,12 @@ LABEL_19:
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      var0 = a4->var0;
+      var0 = context->var0;
       v18 = v16;
       *buf = 134218754;
       *&buf[4] = var0;
       v25 = 2048;
-      v26 = [v6 length];
+      v26 = [templateCopy length];
       v27 = 2112;
       v28 = v15;
       v29 = 2080;
@@ -1968,7 +1968,7 @@ LABEL_19:
     }
 
     v19 = [v15 stringByAppendingString:@".tpl"];
-    v20 = [(BioLog *)self createFileAtPath:v19 contents:v6 attributes:self->_fileAttributesProtected purgeable:1];
+    v20 = [(BioLog *)self createFileAtPath:v19 contents:templateCopy attributes:self->_fileAttributesProtected purgeable:1];
 
     if (v20)
     {
@@ -2004,21 +2004,21 @@ LABEL_9:
   v21 = *MEMORY[0x29EDCA608];
 }
 
-- (void)logSequenceInfo:(id)a3 withContext:(id *)a4 orientation:(id *)a5 identities:(id)a6
+- (void)logSequenceInfo:(id)info withContext:(id *)context orientation:(id *)orientation identities:(id)identities
 {
   v361[20] = *MEMORY[0x29EDCA608];
-  v293 = a3;
-  v299 = a6;
+  infoCopy = info;
+  identitiesCopy = identities;
   if (!logSequenceInfo_withContext_orientation_identities__lastSequenceName)
   {
-    v8 = [MEMORY[0x29EDB8E28] null];
+    null = [MEMORY[0x29EDB8E28] null];
     v9 = logSequenceInfo_withContext_orientation_identities__lastSequenceName;
-    logSequenceInfo_withContext_orientation_identities__lastSequenceName = v8;
+    logSequenceInfo_withContext_orientation_identities__lastSequenceName = null;
   }
 
-  v300 = [MEMORY[0x29EDB8E28] null];
-  v10 = [v293 bytes];
-  if (!v10)
+  null2 = [MEMORY[0x29EDB8E28] null];
+  bytes = [infoCopy bytes];
+  if (!bytes)
   {
     [BioLog logSequenceInfo:withContext:orientation:identities:];
 LABEL_148:
@@ -2026,22 +2026,22 @@ LABEL_148:
     goto LABEL_144;
   }
 
-  if (!a4)
+  if (!context)
   {
     [BioLog logSequenceInfo:withContext:orientation:identities:];
     goto LABEL_148;
   }
 
-  if (!a5)
+  if (!orientation)
   {
     [BioLog logSequenceInfo:withContext:orientation:identities:];
     goto LABEL_148;
   }
 
-  v303 = v10;
-  v291 = (v10 + 4);
-  v301 = [MEMORY[0x29EDBFD60] dateFromNanoTime:*(v10 + 4) nanoseconds:0];
-  v292 = [MEMORY[0x29EDBFD60] dateFromNanoTime:a4->var0 nanoseconds:0];
+  v303 = bytes;
+  v291 = (bytes + 4);
+  v301 = [MEMORY[0x29EDBFD60] dateFromNanoTime:*(bytes + 4) nanoseconds:0];
+  v292 = [MEMORY[0x29EDBFD60] dateFromNanoTime:context->var0 nanoseconds:0];
   if (!*v303)
   {
     v283 = 0;
@@ -2055,18 +2055,18 @@ LABEL_148:
     [BioLog logSequenceInfo:? withContext:? orientation:? identities:?];
   }
 
-  v264 = [BLHelper numberFromDouble:a5->var1];
-  v265 = [BLHelper numberFromDouble:a5->var2];
-  v263 = [BLHelper numberFromDouble:a5->var3];
-  v262 = [BLHelper numberFromDouble:a5->var4.var0];
-  v261 = [BLHelper numberFromDouble:a5->var4.var1];
-  v260 = [BLHelper numberFromDouble:a5->var4.var2];
-  v258 = [BLHelper numberFromDouble:a5->var5.var0];
-  v259 = [BLHelper numberFromDouble:a5->var5.var1];
-  v257 = [BLHelper numberFromDouble:a5->var5.var2];
-  v256 = [BLHelper numberFromDouble:a5->var6.var0];
-  v255 = [BLHelper numberFromDouble:a5->var6.var1];
-  v254 = [BLHelper numberFromDouble:a5->var6.var2];
+  v264 = [BLHelper numberFromDouble:orientation->var1];
+  v265 = [BLHelper numberFromDouble:orientation->var2];
+  v263 = [BLHelper numberFromDouble:orientation->var3];
+  v262 = [BLHelper numberFromDouble:orientation->var4.var0];
+  v261 = [BLHelper numberFromDouble:orientation->var4.var1];
+  v260 = [BLHelper numberFromDouble:orientation->var4.var2];
+  v258 = [BLHelper numberFromDouble:orientation->var5.var0];
+  v259 = [BLHelper numberFromDouble:orientation->var5.var1];
+  v257 = [BLHelper numberFromDouble:orientation->var5.var2];
+  v256 = [BLHelper numberFromDouble:orientation->var6.var0];
+  v255 = [BLHelper numberFromDouble:orientation->var6.var1];
+  v254 = [BLHelper numberFromDouble:orientation->var6.var2];
   v287 = MEMORY[0x29EDB8E00];
   v360[0] = @"system_build_version";
   v304 = +[BLHelper buildVersionString];
@@ -2105,34 +2105,34 @@ LABEL_148:
   v266 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:*(v303 + 43)];
   v361[11] = v266;
   v360[12] = @"initial_orientation";
-  v11 = self;
+  selfCopy2 = self;
   initialDeviceOrientation = self->_initialDeviceOrientation;
   v13 = initialDeviceOrientation;
   if (!initialDeviceOrientation)
   {
     initialDeviceOrientation = [MEMORY[0x29EDB8E28] null];
-    v11 = self;
+    selfCopy2 = self;
   }
 
   v248 = initialDeviceOrientation;
   v361[12] = initialDeviceOrientation;
   v360[13] = @"initial_stationary";
-  initialDeviceStationary = v11->_initialDeviceStationary;
+  initialDeviceStationary = selfCopy2->_initialDeviceStationary;
   if (initialDeviceStationary)
   {
-    v15 = v11->_initialDeviceStationary;
+    null3 = selfCopy2->_initialDeviceStationary;
   }
 
   else
   {
-    v15 = [MEMORY[0x29EDB8E28] null];
+    null3 = [MEMORY[0x29EDB8E28] null];
   }
 
   v251 = initialDeviceStationary == 0;
-  v246 = v15;
-  v361[13] = v15;
+  v246 = null3;
+  v361[13] = null3;
   v360[14] = @"final_orientation";
-  v18 = [MEMORY[0x29EDBA070] numberWithUnsignedLong:a5->var0];
+  v18 = [MEMORY[0x29EDBA070] numberWithUnsignedLong:orientation->var0];
   v361[14] = v18;
   v360[15] = @"final_attitude";
   v358[0] = @"device_roll";
@@ -2172,9 +2172,9 @@ LABEL_148:
   v361[18] = v22;
   v360[19] = @"timezone_offset";
   v23 = MEMORY[0x29EDBA070];
-  v24 = [MEMORY[0x29EDB8D98] currentCalendar];
-  v25 = [v24 timeZone];
-  v26 = [v23 numberWithInteger:{objc_msgSend(v25, "secondsFromGMT")}];
+  currentCalendar = [MEMORY[0x29EDB8D98] currentCalendar];
+  timeZone = [currentCalendar timeZone];
+  v26 = [v23 numberWithInteger:{objc_msgSend(timeZone, "secondsFromGMT")}];
   v361[19] = v26;
   v27 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v361 forKeys:v360 count:20];
   v288 = [v287 dictionaryWithDictionary:v27];
@@ -2191,12 +2191,12 @@ LABEL_148:
   if (*(v303 + 44))
   {
     v28 = [objc_alloc(MEMORY[0x29EDBA140]) initWithUUIDBytes:v303 + 45];
-    v279 = [v28 UUIDString];
+    uUIDString = [v28 UUIDString];
   }
 
   else
   {
-    v279 = [MEMORY[0x29EDB8E28] null];
+    uUIDString = [MEMORY[0x29EDB8E28] null];
   }
 
   v29 = *(v303 + 14);
@@ -2207,7 +2207,7 @@ LABEL_148:
     v331[1] = @"enroll_result";
     v31 = [MEMORY[0x29EDBA070] numberWithBool:*(v303 + 65) != 0];
     v332[1] = v31;
-    v332[2] = v279;
+    v332[2] = uUIDString;
     v331[2] = @"enroll_identity_uuid";
     v331[3] = @"enroll_user_id";
     v32 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:*(v303 + 61)];
@@ -2257,15 +2257,15 @@ LABEL_37:
     v39 = v30 != 0;
 LABEL_38:
     v242 = v39;
-    v245 = [MEMORY[0x29EDB8E28] null];
-    v244 = [MEMORY[0x29EDB8E28] null];
-    v243 = [MEMORY[0x29EDB8E28] null];
+    null4 = [MEMORY[0x29EDB8E28] null];
+    null5 = [MEMORY[0x29EDB8E28] null];
+    null6 = [MEMORY[0x29EDB8E28] null];
     v40 = v303;
     if (*(v303 + 65))
     {
       v41 = [MEMORY[0x29EDBA070] numberWithBool:*(v303 + 66) != 0];
 
-      v245 = v41;
+      null4 = v41;
       v40 = v303;
     }
 
@@ -2273,7 +2273,7 @@ LABEL_38:
     {
       v42 = [MEMORY[0x29EDBA070] numberWithBool:v40[68] != 0];
 
-      v244 = v42;
+      null5 = v42;
       v40 = v303;
     }
 
@@ -2281,7 +2281,7 @@ LABEL_38:
     {
       v43 = [MEMORY[0x29EDBA070] numberWithBool:v40[70] != 0];
 
-      v243 = v43;
+      null6 = v43;
       v40 = v303;
     }
 
@@ -2341,8 +2341,8 @@ LABEL_38:
       {
         v60 = v303 + 185 + 36 * v59;
         v61 = [objc_alloc(MEMORY[0x29EDBA140]) initWithUUIDBytes:v60 + 16];
-        v62 = [v61 UUIDString];
-        [v305 addObject:v62];
+        uUIDString2 = [v61 UUIDString];
+        [v305 addObject:uUIDString2];
 
         v63 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:*(v60 + 32)];
         [v290 addObject:v63];
@@ -2351,7 +2351,7 @@ LABEL_38:
         v319 = 0u;
         v316 = 0u;
         v317 = 0u;
-        v64 = v299;
+        v64 = identitiesCopy;
         v65 = [v64 countByEnumeratingWithState:&v316 objects:v349 count:16];
         if (v65)
         {
@@ -2366,15 +2366,15 @@ LABEL_38:
               }
 
               v68 = *(*(&v316 + 1) + 8 * i);
-              v69 = [v68 uuid];
-              v70 = [v69 UUIDString];
-              v71 = [v305 lastObject];
-              v72 = [v70 isEqualToString:v71];
+              uuid = [v68 uuid];
+              uUIDString3 = [uuid UUIDString];
+              lastObject = [v305 lastObject];
+              v72 = [uUIDString3 isEqualToString:lastObject];
 
               if (v72)
               {
-                v73 = [v68 creationTime];
-                [v73 timeIntervalSince1970];
+                creationTime = [v68 creationTime];
+                [creationTime timeIntervalSince1970];
                 v74 = [BLHelper numberFromDouble:?];
                 [v281 addObject:v74];
 
@@ -2423,14 +2423,14 @@ LABEL_72:
     v348[6] = v267;
     v347[7] = @"face_detect_result";
     v347[8] = @"bio_check_result";
-    v348[7] = v245;
-    v348[8] = v244;
-    v348[9] = v243;
+    v348[7] = null4;
+    v348[8] = null5;
+    v348[9] = null6;
     v347[9] = @"probing_pattern_result";
     v347[10] = @"face_detect_result_code";
     v252 = [MEMORY[0x29EDBA070] numberWithInt:*(v303 + 106)];
     v348[10] = v252;
-    v348[11] = v279;
+    v348[11] = uUIDString;
     v347[11] = @"match_identity_uuid";
     v347[12] = @"match_identity_user_id";
     v249 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:*(v303 + 61)];
@@ -2580,13 +2580,13 @@ LABEL_72:
     v88 = v303;
     if (*(v303 + 1))
     {
-      v89 = [MEMORY[0x29EDB8E28] null];
+      null7 = [MEMORY[0x29EDB8E28] null];
       v90 = v303;
       if (*(v303 + 164))
       {
         v91 = [MEMORY[0x29EDBA070] numberWithBool:*(v303 + 165) != 0];
 
-        v89 = v91;
+        null7 = v91;
         v90 = v303;
       }
 
@@ -2607,7 +2607,7 @@ LABEL_72:
       v339[3] = @"flood_pattern_detection_result";
       v95 = [MEMORY[0x29EDBA070] numberWithBool:*(v303 + 23) != 5];
       v340[3] = v95;
-      v340[4] = v89;
+      v340[4] = null7;
       v339[4] = @"probing_pattern_detection_result";
       v339[5] = @"probing_pattern_score";
       LODWORD(v96) = *(v303 + 166);
@@ -2856,8 +2856,8 @@ LABEL_72:
       if (v242)
       {
 LABEL_110:
-        v169 = [MEMORY[0x29EDB8DB0] date];
-        [(BioLog *)self logAllVsAllWithDate:v169];
+        date = [MEMORY[0x29EDB8DB0] date];
+        [(BioLog *)self logAllVsAllWithDate:date];
 
         goto LABEL_111;
       }
@@ -2886,8 +2886,8 @@ LABEL_110:
   if (v29 != 3)
   {
     v329 = @"seq_type";
-    v37 = [MEMORY[0x29EDB8E28] null];
-    v330 = v37;
+    null8 = [MEMORY[0x29EDB8E28] null];
+    v330 = null8;
     v38 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:&v330 forKeys:&v329 count:1];
     [v288 addEntriesFromDictionary:v38];
 
@@ -2939,7 +2939,7 @@ LABEL_111:
   v17 = v247 != 0;
   v170 = v288;
 
-  v300 = v170;
+  null2 = v170;
 LABEL_112:
   v310 = 0;
   v311 = &v310;
@@ -2947,8 +2947,8 @@ LABEL_112:
   v313 = __Block_byref_object_copy__0;
   v314 = __Block_byref_object_dispose__0;
   v315 = 0;
-  v171 = [MEMORY[0x29EDBFD50] sharedInstance];
-  v172 = [v171 BOOLForKey:@"framesDebugLoggingEnabled"];
+  mEMORY[0x29EDBFD50] = [MEMORY[0x29EDBFD50] sharedInstance];
+  v172 = [mEMORY[0x29EDBFD50] BOOLForKey:@"framesDebugLoggingEnabled"];
 
   if (v172)
   {
@@ -3000,7 +3000,7 @@ LABEL_112:
   [v292 timeIntervalSince1970];
   v179 = [BLHelper numberFromDouble:?];
   v328[4] = v179;
-  v328[5] = v300;
+  v328[5] = null2;
   v327[5] = @"seq_data";
   v327[6] = @"battery_level";
   v180 = +[BLHelper deviceBatteryLevel];
@@ -3015,19 +3015,19 @@ LABEL_112:
   [v301 timeIntervalSince1970];
   v186 = v185;
   v187 = [(NSDateFormatter *)self->_milisecondsFormatter stringFromDate:v301];
-  v188 = [v183 stringWithFormat:@"seq-%05d-%ld%@", v184, v186, v187];
+  v187 = [v183 stringWithFormat:@"seq-%05d-%ld%@", v184, v186, v187];
 
-  if (v188)
+  if (v187)
   {
     v189 = [(BioLog *)self sequencePathForId:v291];
     v190 = v189;
     if (v189)
     {
-      v191 = [v189 lastPathComponent];
+      lastPathComponent = [v189 lastPathComponent];
       v192 = logSequenceInfo_withContext_orientation_identities__lastSequenceName;
-      logSequenceInfo_withContext_orientation_identities__lastSequenceName = v191;
+      logSequenceInfo_withContext_orientation_identities__lastSequenceName = lastPathComponent;
 
-      v193 = [v190 stringByAppendingPathComponent:v188];
+      v193 = [v190 stringByAppendingPathComponent:v187];
       if (v193)
       {
         v194 = [MEMORY[0x29EDB9FF0] dataWithJSONObject:v182 options:3 error:0];
@@ -3066,7 +3066,7 @@ LABEL_112:
         v197 = v196;
         if (os_log_type_enabled(v197, OS_LOG_TYPE_DEFAULT))
         {
-          var0 = a4->var0;
+          var0 = context->var0;
           v199 = [v195 length];
           *buf = 134219010;
           *&buf[4] = var0;
@@ -3099,11 +3099,11 @@ LABEL_112:
 LABEL_137:
               if (v16 && self->_internal)
               {
-                v206 = [MEMORY[0x29EDB9400] defaultWorkspace];
-                if ([v206 applicationIsInstalled:@"com.apple.vetap.thegobbler"])
+                defaultWorkspace = [MEMORY[0x29EDB9400] defaultWorkspace];
+                if ([defaultWorkspace applicationIsInstalled:@"com.apple.vetap.thegobbler"])
                 {
-                  v207 = [MEMORY[0x29EDBFD50] sharedInstance];
-                  v208 = [v207 BOOLForKey:@"bioLogMatchFailureSettingsPrompt"];
+                  mEMORY[0x29EDBFD50]2 = [MEMORY[0x29EDBFD50] sharedInstance];
+                  v208 = [mEMORY[0x29EDBFD50]2 BOOLForKey:@"bioLogMatchFailureSettingsPrompt"];
 
                   if (v208)
                   {
@@ -3128,8 +3128,8 @@ LABEL_137:
 LABEL_134:
             if (*(v303 + 14) == 2)
             {
-              v203 = [MEMORY[0x29EDBFD50] sharedInstance];
-              v204 = [v203 BOOLForKey:@"bioLogMatchTailspin"];
+              mEMORY[0x29EDBFD50]3 = [MEMORY[0x29EDBFD50] sharedInstance];
+              v204 = [mEMORY[0x29EDBFD50]3 BOOLForKey:@"bioLogMatchTailspin"];
 
               if (v204)
               {
@@ -3339,25 +3339,25 @@ void __61__BioLog_logSequenceInfo_withContext_orientation_identities___block_inv
   v9 = *MEMORY[0x29EDCA608];
 }
 
-- (void)logSequenceDebug:(id)a3 withContext:(id *)a4
+- (void)logSequenceDebug:(id)debug withContext:(id *)context
 {
   v33 = *MEMORY[0x29EDCA608];
-  v6 = a3;
+  debugCopy = debug;
   if (!self->_internal)
   {
     [BioLog logSequenceDebug:withContext:];
     goto LABEL_15;
   }
 
-  v7 = [MEMORY[0x29EDBFD60] dateFromNanoTime:a4->var2.var0 nanoseconds:0];
+  v7 = [MEMORY[0x29EDBFD60] dateFromNanoTime:context->var2.var0 nanoseconds:0];
   v8 = MEMORY[0x29EDBA0F8];
-  var1 = a4->var2.var1;
+  var1 = context->var2.var1;
   [v7 timeIntervalSince1970];
   v11 = v10;
   v12 = [(NSDateFormatter *)self->_milisecondsFormatter stringFromDate:v7];
   v13 = [v8 stringWithFormat:@"seq-%05d-%ld%@", var1, v11, v12];
 
-  v14 = [(BioLog *)self sequencePathForId:&a4->var2];
+  v14 = [(BioLog *)self sequencePathForId:&context->var2];
   v15 = [v14 stringByAppendingPathComponent:v13];
 
   if (__osLog_BioLog)
@@ -3374,12 +3374,12 @@ void __61__BioLog_logSequenceInfo_withContext_orientation_identities___block_inv
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      var0 = a4->var0;
+      var0 = context->var0;
       v18 = v16;
       *buf = 134218754;
       *&buf[4] = var0;
       v25 = 2048;
-      v26 = [v6 length];
+      v26 = [debugCopy length];
       v27 = 2112;
       v28 = v15;
       v29 = 2080;
@@ -3388,7 +3388,7 @@ void __61__BioLog_logSequenceInfo_withContext_orientation_identities___block_inv
     }
 
     v19 = [v15 stringByAppendingString:@".prlt"];
-    v20 = [(BioLog *)self createFileAtPath:v19 contents:v6 attributes:self->_fileAttributesProtected purgeable:1];
+    v20 = [(BioLog *)self createFileAtPath:v19 contents:debugCopy attributes:self->_fileAttributesProtected purgeable:1];
 
     if (v20)
     {
@@ -3424,26 +3424,26 @@ LABEL_9:
   v21 = *MEMORY[0x29EDCA608];
 }
 
-- (id)eventPathWithName:(id)a3 date:(id)a4
+- (id)eventPathWithName:(id)name date:(id)date
 {
   v6 = MEMORY[0x29EDBA0F8];
   sequenceNumber = self->_sequenceNumber;
-  v8 = a4;
-  v9 = a3;
-  [v8 timeIntervalSince1970];
+  dateCopy = date;
+  nameCopy = name;
+  [dateCopy timeIntervalSince1970];
   v11 = v10;
-  v12 = [(NSDateFormatter *)self->_milisecondsFormatter stringFromDate:v8];
+  v12 = [(NSDateFormatter *)self->_milisecondsFormatter stringFromDate:dateCopy];
 
-  v13 = [v6 stringWithFormat:@"%05d-%ld%@-%@.evt", sequenceNumber, v11, v12, v9];
+  nameCopy = [v6 stringWithFormat:@"%05d-%ld%@-%@.evt", sequenceNumber, v11, v12, nameCopy];
 
-  v14 = [(NSString *)self->_logPath stringByAppendingPathComponent:v13];
-  v15 = [MEMORY[0x29EDB9FB8] defaultManager];
-  LOBYTE(v9) = [v15 fileExistsAtPath:v14];
+  v14 = [(NSString *)self->_logPath stringByAppendingPathComponent:nameCopy];
+  defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
+  LOBYTE(nameCopy) = [defaultManager fileExistsAtPath:v14];
 
-  if ((v9 & 1) == 0)
+  if ((nameCopy & 1) == 0)
   {
-    v16 = [MEMORY[0x29EDB9FB8] defaultManager];
-    v17 = [v16 createDirectoryAtPath:v14 withIntermediateDirectories:1 attributes:self->_fileAttributes error:0];
+    defaultManager2 = [MEMORY[0x29EDB9FB8] defaultManager];
+    v17 = [defaultManager2 createDirectoryAtPath:v14 withIntermediateDirectories:1 attributes:self->_fileAttributes error:0];
 
     if (v17)
     {
@@ -3460,35 +3460,35 @@ LABEL_9:
   return v14;
 }
 
-- (void)logRemoveIdentity:(id)a3 withTemplateListData:(id)a4 templateSize:(unint64_t)a5 client:(id)a6 isPO:(BOOL)a7
+- (void)logRemoveIdentity:(id)identity withTemplateListData:(id)data templateSize:(unint64_t)size client:(id)client isPO:(BOOL)o
 {
-  v7 = a7;
+  oCopy = o;
   v75[4] = *MEMORY[0x29EDCA608];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = [MEMORY[0x29EDB8DB0] date];
-  v16 = v15;
+  identityCopy = identity;
+  dataCopy = data;
+  clientCopy = client;
+  date = [MEMORY[0x29EDB8DB0] date];
+  v16 = date;
   if (self->_internal)
   {
-    v62 = self;
-    v48 = a5;
-    v64 = v13;
+    selfCopy = self;
+    sizeCopy = size;
+    v64 = dataCopy;
     v74[0] = @"biolog_file_type";
     v74[1] = @"version";
     v75[0] = @"event";
     v75[1] = &unk_2A1E037F8;
     v74[2] = @"epoch";
     v17 = MEMORY[0x29EDBA070];
-    [v15 timeIntervalSince1970];
+    [date timeIntervalSince1970];
     v60 = [v17 numberWithDouble:?];
     v74[3] = @"log_data";
     v72[0] = @"event_name";
     v72[1] = @"identity_part";
     v18 = @"fullface";
     v75[2] = v60;
-    v49 = v7;
-    if (v7)
+    v49 = oCopy;
+    if (oCopy)
     {
       v18 = @"periocular";
     }
@@ -3497,40 +3497,40 @@ LABEL_9:
     v73[1] = v18;
     v72[2] = @"identity_uuid";
     v61 = v16;
-    v59 = [v12 uuid];
-    v58 = [v59 UUIDString];
-    v57 = [BLHelper objectOrNSNull:v58];
+    uuid = [identityCopy uuid];
+    uUIDString = [uuid UUIDString];
+    v57 = [BLHelper objectOrNSNull:uUIDString];
     v73[2] = v57;
     v72[3] = @"identity_name";
-    v56 = [v12 name];
-    v55 = [BLHelper objectOrNSNull:v56];
+    name = [identityCopy name];
+    v55 = [BLHelper objectOrNSNull:name];
     v73[3] = v55;
     v72[4] = @"identity_cretion_time";
     v19 = MEMORY[0x29EDBA070];
-    v54 = [v12 creationTime];
-    [v54 timeIntervalSince1970];
+    creationTime = [identityCopy creationTime];
+    [creationTime timeIntervalSince1970];
     v53 = [v19 numberWithDouble:?];
     v52 = [BLHelper objectOrNSNull:v53];
     v73[4] = v52;
     v72[5] = @"client_bundle_id";
-    v51 = [v14 clientInfo];
-    v50 = [v51 valueForKey:@"BKClientBundleIdentifier"];
+    clientInfo = [clientCopy clientInfo];
+    v50 = [clientInfo valueForKey:@"BKClientBundleIdentifier"];
     v20 = [BLHelper objectOrNSNull:v50];
     v73[5] = v20;
     v72[6] = @"client_process_name";
-    v21 = [v14 clientInfo];
-    v22 = [v21 valueForKey:@"BKClientProcessName"];
+    clientInfo2 = [clientCopy clientInfo];
+    v22 = [clientInfo2 valueForKey:@"BKClientProcessName"];
     v23 = [BLHelper objectOrNSNull:v22];
     v73[6] = v23;
     v72[7] = @"client_connection_id";
-    v63 = v14;
-    v24 = [v14 clientInfo];
-    v25 = [v24 valueForKey:@"BKClientConnectionId"];
+    v63 = clientCopy;
+    clientInfo3 = [clientCopy clientInfo];
+    v25 = [clientInfo3 valueForKey:@"BKClientConnectionId"];
     v26 = [BLHelper objectOrNSNull:v25];
     v73[7] = v26;
     v72[8] = @"user_id";
-    v65 = v12;
-    v27 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:{objc_msgSend(v12, "userID")}];
+    v65 = identityCopy;
+    v27 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:{objc_msgSend(identityCopy, "userID")}];
     v73[8] = v27;
     v28 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v73 forKeys:v72 count:9];
     v75[3] = v28;
@@ -3545,18 +3545,18 @@ LABEL_9:
 
     v32 = MEMORY[0x29EDBA0F8];
     v16 = v61;
-    sequenceNumber = v62->_sequenceNumber;
+    sequenceNumber = selfCopy->_sequenceNumber;
     [v61 timeIntervalSince1970];
     v35 = v34;
-    v36 = [(NSDateFormatter *)v62->_milisecondsFormatter stringFromDate:v61];
+    v36 = [(NSDateFormatter *)selfCopy->_milisecondsFormatter stringFromDate:v61];
     v37 = [v32 stringWithFormat:@"evt-%05d-%ld%@", sequenceNumber, v35, v36];
 
-    v38 = [(BioLog *)v62 eventPathWithName:@"remove" date:v61];
+    v38 = [(BioLog *)selfCopy eventPathWithName:@"remove" date:v61];
     if (v38)
     {
       v39 = v38;
       v40 = [v38 stringByAppendingPathComponent:v37];
-      if (v62->_internal)
+      if (selfCopy->_internal)
       {
         v41 = @"rp_enroll";
       }
@@ -3580,9 +3580,9 @@ LABEL_9:
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
       {
         v43 = v42;
-        v44 = [v65 uuid];
+        uuid2 = [v65 uuid];
         *buf = 138412802;
-        v67 = v44;
+        v67 = uuid2;
         v68 = 2112;
         v69 = v40;
         v70 = 2080;
@@ -3591,26 +3591,26 @@ LABEL_9:
       }
 
       v45 = [v40 stringByAppendingString:@".json"];
-      v46 = [(BioLog *)v62 createFileAtPath:v45 contents:v31 attributes:v62->_fileAttributesProtected purgeable:1];
+      v46 = [(BioLog *)selfCopy createFileAtPath:v45 contents:v31 attributes:selfCopy->_fileAttributesProtected purgeable:1];
 
-      v14 = v63;
+      clientCopy = v63;
       if (!v46)
       {
         [BioLog logRemoveIdentity:withTemplateListData:templateSize:client:isPO:];
       }
 
-      v13 = v64;
-      [(BioLog *)v62 logTemplateList:v64 withTemplateSize:v48 sequenceNumber:v62->_sequenceNumber date:v61 toPath:v39 isPO:v49];
+      dataCopy = v64;
+      [(BioLog *)selfCopy logTemplateList:v64 withTemplateSize:sizeCopy sequenceNumber:selfCopy->_sequenceNumber date:v61 toPath:v39 isPO:v49];
 
-      v12 = v65;
+      identityCopy = v65;
     }
 
     else
     {
       [BioLog logRemoveIdentity:v31 withTemplateListData:v29 templateSize:v37 client:? isPO:?];
-      v13 = v64;
-      v12 = v65;
-      v14 = v63;
+      dataCopy = v64;
+      identityCopy = v65;
+      clientCopy = v63;
     }
   }
 
@@ -3622,7 +3622,7 @@ LABEL_9:
   v47 = *MEMORY[0x29EDCA608];
 }
 
-- (void)logSecureFaceDetectStart:(id *)a3
+- (void)logSecureFaceDetectStart:(id *)start
 {
   v39 = *MEMORY[0x29EDCA608];
   secureFaceDetectDict = self->_secureFaceDetectDict;
@@ -3651,8 +3651,8 @@ LABEL_9:
 
   self->_secureFaceDetectDict = 0;
 
-  v8 = *(&a3->var2 + 1);
-  *(&self->_secureSequenceId.nanotime + 7) = *(&a3->var3.var0 + 3);
+  v8 = *(&start->var2 + 1);
+  *(&self->_secureSequenceId.nanotime + 7) = *(&start->var3.var0 + 3);
   self->_secureSequenceId.nanotime = v8;
   if (self->_secureSequenceId.type != 3 || ([MEMORY[0x29EDBFD50] sharedInstance], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "BOOLForKey:", @"faceDetectSequencesLoggingEnabled"), v9, v10))
   {
@@ -3668,7 +3668,7 @@ LABEL_9:
 
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = WORD2(a3->var3.var0);
+      v12 = WORD2(start->var3.var0);
       *buf = 67109120;
       v38 = v12;
       _os_log_impl(&dword_296CA4000, v11, OS_LOG_TYPE_DEFAULT, "logSecureFaceDetectStart <- [%u:*]\n", buf, 8u);
@@ -3699,13 +3699,13 @@ LABEL_9:
     v35[3] = @"seq_data";
     v19 = MEMORY[0x29EDB8E00];
     v33[0] = @"request";
-    v20 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:a3->var0];
+    v20 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:start->var0];
     v34[0] = v20;
     v33[1] = @"flags";
-    v21 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:a3->var1];
+    v21 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:start->var1];
     v34[1] = v21;
     v33[2] = @"sessionID";
-    v22 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:a3->var2];
+    v22 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:start->var2];
     v34[2] = v22;
     v34[3] = MEMORY[0x29EDB8EA8];
     v33[3] = @"stopped";
@@ -3715,8 +3715,8 @@ LABEL_9:
     v24 = [v19 dictionaryWithDictionary:v23];
     v36[3] = v24;
     v35[4] = @"frame_array";
-    v25 = [MEMORY[0x29EDB8DE8] array];
-    v36[4] = v25;
+    array = [MEMORY[0x29EDB8DE8] array];
+    v36[4] = array;
     v26 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v36 forKeys:v35 count:5];
     v27 = [v30 initWithDictionary:v26];
     v28 = self->_secureFaceDetectDict;
@@ -3740,18 +3740,18 @@ LABEL_9:
   v7 = *MEMORY[0x29EDCA608];
 }
 
-- (void)logSecureFrameMeta:(id)a3 timestamp:(id)a4
+- (void)logSecureFrameMeta:(id)meta timestamp:(id)timestamp
 {
   v105 = *MEMORY[0x29EDCA608];
-  v60 = a3;
-  v61 = a4;
-  if (!v60)
+  metaCopy = meta;
+  timestampCopy = timestamp;
+  if (!metaCopy)
   {
     [BioLog logSecureFrameMeta:timestamp:];
     goto LABEL_76;
   }
 
-  v59 = self;
+  selfCopy = self;
   if (self->_secureSequenceId.type != 3 || ([MEMORY[0x29EDBFD50] sharedInstance], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "BOOLForKey:", @"faceDetectSequencesLoggingEnabled"), v6, v7))
   {
     if (!self->_secureFaceDetectDict)
@@ -3760,23 +3760,23 @@ LABEL_9:
       goto LABEL_76;
     }
 
-    v76 = [MEMORY[0x29EDB8E00] dictionary];
-    if (!v76)
+    dictionary = [MEMORY[0x29EDB8E00] dictionary];
+    if (!dictionary)
     {
       [BioLog logSecureFrameMeta:timestamp:];
       goto LABEL_76;
     }
 
     v8 = MEMORY[0x29EDBA070];
-    [v61 timeIntervalSince1970];
+    [timestampCopy timeIntervalSince1970];
     v9 = [v8 numberWithDouble:?];
-    [v76 setObject:v9 forKeyedSubscript:@"timestamp"];
+    [dictionary setObject:v9 forKeyedSubscript:@"timestamp"];
 
     v82 = 0u;
     v83 = 0u;
     v80 = 0u;
     v81 = 0u;
-    obj = v60;
+    obj = metaCopy;
     v75 = [obj countByEnumeratingWithState:&v80 objects:v104 count:16];
     if (!v75)
     {
@@ -3810,7 +3810,7 @@ LABEL_9:
             [v12 time];
             [v12 time];
             *&v14 = v78 / v77;
-            v15 = [v13 numberWithFloat:v14];
+            null = [v13 numberWithFloat:v14];
             goto LABEL_16;
           }
         }
@@ -3820,18 +3820,18 @@ LABEL_9:
           v79 = 0;
         }
 
-        v15 = [MEMORY[0x29EDB8E28] null];
+        null = [MEMORY[0x29EDB8E28] null];
 LABEL_16:
-        v16 = v15;
-        [v76 setObject:v15 forKeyedSubscript:{@"timestamp_av", v58}];
+        v16 = null;
+        [dictionary setObject:null forKeyedSubscript:{@"timestamp_av", v58}];
 
-        v17 = [v12 type];
-        LODWORD(v16) = v17 == v73;
+        type = [v12 type];
+        LODWORD(v16) = type == v73;
 
         if (v16)
         {
           v29 = v12;
-          v30 = [v76 objectForKeyedSubscript:@"face_id_readiness"];
+          v30 = [dictionary objectForKeyedSubscript:@"face_id_readiness"];
           v31 = v30 == 0;
 
           if (!v31)
@@ -3863,27 +3863,27 @@ LABEL_16:
           v32 = [MEMORY[0x29EDBA070] numberWithInteger:{objc_msgSend(v29, "userEngagementStatus")}];
           v93[2] = v32;
           v33 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v93 forKeys:v92 count:3];
-          [v76 setObject:v33 forKeyedSubscript:@"face_id_readiness"];
+          [dictionary setObject:v33 forKeyedSubscript:@"face_id_readiness"];
         }
 
         else
         {
-          v18 = [v12 type];
-          v19 = v18 == v65;
+          type2 = [v12 type];
+          v19 = type2 == v65;
 
           if (v19)
           {
             v34 = v12;
-            v35 = [v76 objectForKeyedSubscript:@"face"];
+            v35 = [dictionary objectForKeyedSubscript:@"face"];
             v36 = v35 == 0;
 
             if (v36)
             {
-              v37 = [MEMORY[0x29EDB8DE8] array];
-              [v76 setObject:v37 forKeyedSubscript:@"face"];
+              array = [MEMORY[0x29EDB8DE8] array];
+              [dictionary setObject:array forKeyedSubscript:@"face"];
             }
 
-            v27 = [v76 objectForKeyedSubscript:@"face"];
+            v27 = [dictionary objectForKeyedSubscript:@"face"];
             v90[0] = @"occluded_features";
             if ([v34 hasOccludedFeatures])
             {
@@ -4010,13 +4010,13 @@ LABEL_16:
 
           else
           {
-            v20 = [v12 type];
-            v21 = v20 == v63;
+            type3 = [v12 type];
+            v21 = type3 == v63;
 
             if (v21)
             {
               v38 = v12;
-              v39 = [v76 objectForKeyedSubscript:@"eye_relief_status"];
+              v39 = [dictionary objectForKeyedSubscript:@"eye_relief_status"];
               v40 = v39 == 0;
 
               if (!v40)
@@ -4055,13 +4055,13 @@ LABEL_16:
               v28 = ;
               v87[1] = v28;
               v50 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v87 forKeys:v86 count:2];
-              [v76 setObject:v50 forKeyedSubscript:@"eye_relief_status"];
+              [dictionary setObject:v50 forKeyedSubscript:@"eye_relief_status"];
             }
 
             else
             {
-              v22 = [v12 type];
-              v23 = v22 == v62;
+              type4 = [v12 type];
+              v23 = type4 == v62;
 
               if (!v23)
               {
@@ -4069,7 +4069,7 @@ LABEL_16:
               }
 
               v24 = v12;
-              v25 = [v76 objectForKeyedSubscript:@"motion_to_wake"];
+              v25 = [dictionary objectForKeyedSubscript:@"motion_to_wake"];
               v26 = v25 == 0;
 
               if (!v26)
@@ -4104,7 +4104,7 @@ LABEL_16:
               v27 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:{objc_msgSend(v24, "detectedMotion")}];
               v85 = v27;
               v28 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:&v85 forKeys:&v84 count:1];
-              [v76 setObject:v28 forKeyedSubscript:@"motion_to_wake"];
+              [dictionary setObject:v28 forKeyedSubscript:@"motion_to_wake"];
             }
           }
         }
@@ -4120,10 +4120,10 @@ LABEL_57:
       {
 LABEL_75:
 
-        v55 = v59->_secureFaceDetectDict;
+        v55 = selfCopy->_secureFaceDetectDict;
         objc_sync_enter(v55);
-        v56 = [(NSDictionary *)v59->_secureFaceDetectDict objectForKeyedSubscript:@"frame_array"];
-        [v56 addObject:v76];
+        v56 = [(NSDictionary *)selfCopy->_secureFaceDetectDict objectForKeyedSubscript:@"frame_array"];
+        [v56 addObject:dictionary];
 
         objc_sync_exit(v55);
         break;
@@ -4211,12 +4211,12 @@ void __33__BioLog_logSecureFaceDetectInfo__block_invoke(uint64_t a1)
   v14 = *MEMORY[0x29EDCA608];
 }
 
-- (void)extractFrameDebug:(id *)a3 data:(id)a4
+- (void)extractFrameDebug:(id *)debug data:(id)data
 {
   v54 = *MEMORY[0x29EDCA608];
-  v7 = a4;
-  v8 = v7;
-  if (!a3)
+  dataCopy = data;
+  v8 = dataCopy;
+  if (!debug)
   {
     if (!OUTLINED_FUNCTION_12(__osLog_BioLog))
     {
@@ -4232,7 +4232,7 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  if (!v7)
+  if (!dataCopy)
   {
     if (!OUTLINED_FUNCTION_12(__osLog_BioLog))
     {
@@ -4246,7 +4246,7 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  var1 = a3->var1;
+  var1 = debug->var1;
   frameDebugExtraSequenceNumber = self->_frameDebugExtraSequenceNumber;
   if (frameDebugExtraSequenceNumber > var1)
   {
@@ -4258,7 +4258,7 @@ LABEL_33:
     frameDebugExtraArray = self->_frameDebugExtraArray;
     self->_frameDebugExtraArray = 0;
 
-    self->_frameDebugExtraSequenceNumber = a3->var1;
+    self->_frameDebugExtraSequenceNumber = debug->var1;
     self->_frameDebugExtraFrameCount = 0;
     v12 = dispatch_semaphore_create(0);
     frameDebugExtraSemaphore = self->_frameDebugExtraSemaphore;
@@ -4273,9 +4273,9 @@ LABEL_33:
 
   if (!self->_frameDebugExtraArray)
   {
-    v14 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v15 = self->_frameDebugExtraArray;
-    self->_frameDebugExtraArray = v14;
+    self->_frameDebugExtraArray = array;
 
     if (!self->_frameDebugExtraArray)
     {
@@ -4296,13 +4296,13 @@ LABEL_34:
 
   v16 = MEMORY[0x29EDB8E00];
   v49 = @"frameNumber";
-  v17 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:a3->var2];
+  v17 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:debug->var2];
   v50 = v17;
   v18 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
   v19 = [v16 dictionaryWithDictionary:v18];
 
   [(NSMutableArray *)self->_frameDebugExtraArray addObject:v19];
-  v20 = [v8 bytes];
+  bytes = [v8 bytes];
   if ([v8 length] <= 0x1F)
   {
     if (!OUTLINED_FUNCTION_14(__osLog_BioLog))
@@ -4317,12 +4317,12 @@ LABEL_34:
     goto LABEL_40;
   }
 
-  var4 = a3->var4;
+  var4 = debug->var4;
   v22 = &off_296D29000;
   if (var4 != 1)
   {
 LABEL_18:
-    if (var4 != 2 || (v32 = *(v20 + 40), !v32))
+    if (var4 != 2 || (v32 = *(bytes + 40), !v32))
     {
 LABEL_22:
       if (self->_frameDebugExtraFrameCount == self->_frameDebugExtraFrameCountExpected)
@@ -4350,7 +4350,7 @@ LABEL_22:
       v46 = v19;
       v35 = v34;
       v22 = v33;
-      [BLHelper median:v20 + v32 + 168 count:0x4000 queue:v35 completionBlock:v45];
+      [BLHelper median:bytes + v32 + 168 count:0x4000 queue:v35 completionBlock:v45];
 
       goto LABEL_22;
     }
@@ -4369,7 +4369,7 @@ LABEL_40:
     goto LABEL_24;
   }
 
-  v23 = *(v20 + 36);
+  v23 = *(bytes + 36);
   if (!v23)
   {
     goto LABEL_22;
@@ -4378,9 +4378,9 @@ LABEL_40:
   v43 = v19;
   if (v23 + 674432 <= [v8 length])
   {
-    v41 = v20;
+    v41 = bytes;
     v42 = v8;
-    v24 = v20 + v23;
+    v24 = bytes + v23;
     v25 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:3];
     v26 = 0;
     v27 = v24 + 96072;
@@ -4406,8 +4406,8 @@ LABEL_40:
     v19 = v43;
     [v43 addEntriesFromDictionary:v31];
 
-    var4 = a3->var4;
-    v20 = v41;
+    var4 = debug->var4;
+    bytes = v41;
     v8 = v42;
     v22 = &off_296D29000;
     goto LABEL_18;

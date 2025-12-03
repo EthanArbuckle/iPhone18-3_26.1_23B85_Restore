@@ -1,44 +1,44 @@
 @interface SQLiteComparisonPredicate
-+ (id)predicateWithProperty:(id)a3 equalToLongLong:(int64_t)a4;
-+ (id)predicateWithProperty:(id)a3 value:(id)a4 comparisonType:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (id)SQLForEntityClass:(Class)a3;
++ (id)predicateWithProperty:(id)property equalToLongLong:(int64_t)long;
++ (id)predicateWithProperty:(id)property value:(id)value comparisonType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (id)SQLForEntityClass:(Class)class;
 - (id)_comparisonTypeString;
 - (id)description;
 - (unint64_t)hash;
-- (void)applyBinding:(id)a3 atIndex:(int *)a4;
+- (void)applyBinding:(id)binding atIndex:(int *)index;
 @end
 
 @implementation SQLiteComparisonPredicate
 
-+ (id)predicateWithProperty:(id)a3 equalToLongLong:(int64_t)a4
++ (id)predicateWithProperty:(id)property equalToLongLong:(int64_t)long
 {
-  v6 = a3;
-  v7 = [[NSNumber alloc] initWithLongLong:a4];
-  v8 = [a1 predicateWithProperty:v6 equalToValue:v7];
+  propertyCopy = property;
+  v7 = [[NSNumber alloc] initWithLongLong:long];
+  v8 = [self predicateWithProperty:propertyCopy equalToValue:v7];
 
   return v8;
 }
 
-+ (id)predicateWithProperty:(id)a3 value:(id)a4 comparisonType:(int64_t)a5
++ (id)predicateWithProperty:(id)property value:(id)value comparisonType:(int64_t)type
 {
-  v7 = a4;
-  v8 = a3;
+  valueCopy = value;
+  propertyCopy = property;
   v9 = objc_alloc_init(objc_opt_class());
-  v9[3] = a5;
-  v10 = [v8 copy];
+  v9[3] = type;
+  v10 = [propertyCopy copy];
 
   v11 = v9[1];
   v9[1] = v10;
 
-  if ([v7 conformsToProtocol:&OBJC_PROTOCOL___NSCopying])
+  if ([valueCopy conformsToProtocol:&OBJC_PROTOCOL___NSCopying])
   {
-    v12 = [v7 copy];
+    v12 = [valueCopy copy];
   }
 
   else
   {
-    v12 = v7;
+    v12 = valueCopy;
   }
 
   v13 = v9[4];
@@ -47,16 +47,16 @@
   return v9;
 }
 
-- (void)applyBinding:(id)a3 atIndex:(int *)a4
+- (void)applyBinding:(id)binding atIndex:(int *)index
 {
-  v6 = a3;
+  bindingCopy = binding;
   v7.receiver = self;
   v7.super_class = SQLiteComparisonPredicate;
-  [(SQLitePropertyPredicate *)&v7 applyBinding:v6 atIndex:a4];
+  [(SQLitePropertyPredicate *)&v7 applyBinding:bindingCopy atIndex:index];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 bindString:self->_value atPosition:*a4];
+    [bindingCopy bindString:self->_value atPosition:*index];
   }
 
   else
@@ -64,7 +64,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v6 bindNumber:self->_value atPosition:*a4];
+      [bindingCopy bindNumber:self->_value atPosition:*index];
     }
 
     else
@@ -72,12 +72,12 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v6 bindUUID:self->_value atPosition:*a4];
+        [bindingCopy bindUUID:self->_value atPosition:*index];
       }
     }
   }
 
-  ++*a4;
+  ++*index;
 }
 
 - (id)description
@@ -85,41 +85,41 @@
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
   property = self->super._property;
-  v6 = [(SQLiteComparisonPredicate *)self _comparisonTypeString];
-  v7 = [NSString stringWithFormat:@"<%@: %p> %@ %@ '%@'", v4, self, property, v6, self->_value];
+  _comparisonTypeString = [(SQLiteComparisonPredicate *)self _comparisonTypeString];
+  v7 = [NSString stringWithFormat:@"<%@: %p> %@ %@ '%@'", v4, self, property, _comparisonTypeString, self->_value];
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(SQLitePropertyPredicate *)self property];
-  v4 = [v3 hash];
-  v5 = [(SQLiteComparisonPredicate *)self value];
-  v6 = [v5 hash];
+  property = [(SQLitePropertyPredicate *)self property];
+  v4 = [property hash];
+  value = [(SQLiteComparisonPredicate *)self value];
+  v6 = [value hash];
 
   return v4 + v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = SQLiteComparisonPredicate;
-  if (-[SQLitePropertyPredicate isEqual:](&v12, "isEqual:", v4) && (v5 = -[SQLiteComparisonPredicate comparisonType](self, "comparisonType"), v5 == [v4 comparisonType]))
+  if (-[SQLitePropertyPredicate isEqual:](&v12, "isEqual:", equalCopy) && (v5 = -[SQLiteComparisonPredicate comparisonType](self, "comparisonType"), v5 == [equalCopy comparisonType]))
   {
-    v6 = [(SQLiteComparisonPredicate *)self value];
-    v7 = [v4 value];
-    if (v6 == v7)
+    value = [(SQLiteComparisonPredicate *)self value];
+    value2 = [equalCopy value];
+    if (value == value2)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [(SQLiteComparisonPredicate *)self value];
-      v9 = [v4 value];
-      v10 = [v8 isEqual:v9];
+      value3 = [(SQLiteComparisonPredicate *)self value];
+      value4 = [equalCopy value];
+      v10 = [value3 isEqual:value4];
     }
   }
 
@@ -131,26 +131,26 @@
   return v10;
 }
 
-- (id)SQLForEntityClass:(Class)a3
+- (id)SQLForEntityClass:(Class)class
 {
-  v4 = [(SQLitePropertyPredicate *)self _transformedSQLForEntityClass:a3];
-  v5 = [(SQLiteComparisonPredicate *)self _comparisonTypeString];
-  v6 = [NSString stringWithFormat:@"%@ %@ ?", v4, v5];
+  v4 = [(SQLitePropertyPredicate *)self _transformedSQLForEntityClass:class];
+  _comparisonTypeString = [(SQLiteComparisonPredicate *)self _comparisonTypeString];
+  v6 = [NSString stringWithFormat:@"%@ %@ ?", v4, _comparisonTypeString];
 
   return v6;
 }
 
 - (id)_comparisonTypeString
 {
-  v2 = [(SQLiteComparisonPredicate *)self comparisonType];
-  if ((v2 - 1) > 6)
+  comparisonType = [(SQLiteComparisonPredicate *)self comparisonType];
+  if ((comparisonType - 1) > 6)
   {
     return 0;
   }
 
   else
   {
-    return off_100382528[v2 - 1];
+    return off_100382528[comparisonType - 1];
   }
 }
 

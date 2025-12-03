@@ -1,13 +1,13 @@
 @interface SUBDocumentationFetcher
-+ (id)_downloadOptionsWithServerParams:(id)a3;
-+ (int64_t)_requestDocCatalogDownload:(id)a3;
++ (id)_downloadOptionsWithServerParams:(id)params;
++ (int64_t)_requestDocCatalogDownload:(id)download;
 - (SUBDocumentationFetcher)init;
 - (id)_documentationQuery;
-- (id)queryForDocAsset:(id)a3 localOnly:(BOOL)a4 error:(id *)a5;
-- (void)_invokeFetchCompletionsForDocumentationID:(id)a3 localOnly:(BOOL)a4 documentation:(id)a5 error:(id)a6;
-- (void)_purgeAssetsNotMatchingDescriptor:(id)a3 completion:(id)a4;
-- (void)fetchDocumentationForDescriptor:(id)a3 localOnly:(BOOL)a4 shouldOverrideURL:(BOOL)a5 overrideURL:(id)a6 completion:(id)a7;
-- (void)purgeAssetsNotMatchingDescriptor:(id)a3 completion:(id)a4;
+- (id)queryForDocAsset:(id)asset localOnly:(BOOL)only error:(id *)error;
+- (void)_invokeFetchCompletionsForDocumentationID:(id)d localOnly:(BOOL)only documentation:(id)documentation error:(id)error;
+- (void)_purgeAssetsNotMatchingDescriptor:(id)descriptor completion:(id)completion;
+- (void)fetchDocumentationForDescriptor:(id)descriptor localOnly:(BOOL)only shouldOverrideURL:(BOOL)l overrideURL:(id)rL completion:(id)completion;
+- (void)purgeAssetsNotMatchingDescriptor:(id)descriptor completion:(id)completion;
 @end
 
 @implementation SUBDocumentationFetcher
@@ -48,33 +48,33 @@
   return v2;
 }
 
-- (void)_invokeFetchCompletionsForDocumentationID:(id)a3 localOnly:(BOOL)a4 documentation:(id)a5 error:(id)a6
+- (void)_invokeFetchCompletionsForDocumentationID:(id)d localOnly:(BOOL)only documentation:(id)documentation error:(id)error
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  onlyCopy = only;
+  dCopy = d;
+  documentationCopy = documentation;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
-  if (!v10)
+  if (!dCopy)
   {
     sub_100019AF8();
   }
 
-  if (v11)
+  if (documentationCopy)
   {
-    [(SUBDocumentationFetcher *)self setCachedDocumentationID:v10];
-    [(SUBDocumentationFetcher *)self setCachedDocumentation:v11];
+    [(SUBDocumentationFetcher *)self setCachedDocumentationID:dCopy];
+    [(SUBDocumentationFetcher *)self setCachedDocumentation:documentationCopy];
   }
 
   v13 = 40;
-  if (v8)
+  if (onlyCopy)
   {
     v13 = 32;
   }
 
   v14 = *(&self->super.isa + v13);
-  v15 = [v14 objectForKeyedSubscript:v10];
-  [v14 setObject:0 forKeyedSubscript:v10];
+  v15 = [v14 objectForKeyedSubscript:dCopy];
+  [v14 setObject:0 forKeyedSubscript:dCopy];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
@@ -103,75 +103,75 @@
     while (v18);
   }
 
-  if (!v8)
+  if (!onlyCopy)
   {
-    [(SUBDocumentationFetcher *)self _invokeFetchCompletionsForDocumentationID:v10 localOnly:1 documentation:v11 error:v12, v21];
+    [(SUBDocumentationFetcher *)self _invokeFetchCompletionsForDocumentationID:dCopy localOnly:1 documentation:documentationCopy error:errorCopy, v21];
   }
 }
 
-- (void)fetchDocumentationForDescriptor:(id)a3 localOnly:(BOOL)a4 shouldOverrideURL:(BOOL)a5 overrideURL:(id)a6 completion:(id)a7
+- (void)fetchDocumentationForDescriptor:(id)descriptor localOnly:(BOOL)only shouldOverrideURL:(BOOL)l overrideURL:(id)rL completion:(id)completion
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  descriptorCopy = descriptor;
+  rLCopy = rL;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_queue);
-  v15 = [v12 documentationID];
-  if (!v15)
+  documentationID = [descriptorCopy documentationID];
+  if (!documentationID)
   {
     sub_100019B24();
   }
 
-  v16 = v15;
+  v16 = documentationID;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000C10C;
   block[3] = &unk_10002D358;
   block[4] = self;
-  v22 = v15;
-  v25 = a4;
-  v26 = a5;
-  v23 = v13;
-  v24 = v14;
-  v18 = v13;
-  v19 = v14;
+  v22 = documentationID;
+  onlyCopy = only;
+  lCopy = l;
+  v23 = rLCopy;
+  v24 = completionCopy;
+  v18 = rLCopy;
+  v19 = completionCopy;
   v20 = v16;
   dispatch_async(queue, block);
 }
 
-+ (id)_downloadOptionsWithServerParams:(id)a3
++ (id)_downloadOptionsWithServerParams:(id)params
 {
-  v3 = a3;
+  paramsCopy = params;
   v4 = objc_opt_new();
   [v4 setTimeoutIntervalForResource:60];
   [v4 setAllowsCellularAccess:1];
   [v4 setDiscretionary:0];
-  v5 = [v4 additionalServerParams];
+  additionalServerParams = [v4 additionalServerParams];
 
-  if (!v5)
+  if (!additionalServerParams)
   {
     v6 = +[NSMutableDictionary dictionary];
     [v4 setAdditionalServerParams:v6];
   }
 
-  if (v3)
+  if (paramsCopy)
   {
-    v7 = [v4 additionalServerParams];
-    [v7 addEntriesFromDictionary:v3];
+    additionalServerParams2 = [v4 additionalServerParams];
+    [additionalServerParams2 addEntriesFromDictionary:paramsCopy];
   }
 
   return v4;
 }
 
-+ (int64_t)_requestDocCatalogDownload:(id)a3
++ (int64_t)_requestDocCatalogDownload:(id)download
 {
-  v3 = a3;
+  downloadCopy = download;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 3;
   v4 = dispatch_semaphore_create(0);
-  v5 = [SUBDocumentationFetcher _downloadOptionsWithServerParams:v3];
+  v5 = [SUBDocumentationFetcher _downloadOptionsWithServerParams:downloadCopy];
   v6 = softwareupdatebridge_log;
   if (os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT))
   {
@@ -196,11 +196,11 @@
   return v9;
 }
 
-- (id)queryForDocAsset:(id)a3 localOnly:(BOOL)a4 error:(id *)a5
+- (id)queryForDocAsset:(id)asset localOnly:(BOOL)only error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [(SUBDocumentationFetcher *)self _documentationQuery];
+  onlyCopy = only;
+  assetCopy = asset;
+  _documentationQuery = [(SUBDocumentationFetcher *)self _documentationQuery];
   v10 = SUBActiveNRDevice();
   v11 = v10;
   if (!v10)
@@ -213,23 +213,23 @@
     }
 
     v26 = SUBError(@"SUBError", 5, 0, @"Failed to query device property Device Class", v22, v23, v24, v25, v38);
-    v27 = 0;
+    results = 0;
     v12 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_20;
     }
 
 LABEL_19:
     v34 = v26;
-    *a5 = v26;
+    *error = v26;
     goto LABEL_20;
   }
 
-  v39 = v6;
+  v39 = onlyCopy;
   v12 = [v10 valueForProperty:NRDevicePropertyDeviceNameString];
   v13 = [NSMutableArray arrayWithObject:v12];
-  v14 = [v9 addKeyValueArray:@"Device" with:v13];
+  v14 = [_documentationQuery addKeyValueArray:@"Device" with:v13];
 
   if (v14)
   {
@@ -245,8 +245,8 @@ LABEL_19:
     goto LABEL_18;
   }
 
-  v28 = [NSMutableArray arrayWithObject:v8];
-  v29 = [v9 addKeyValueArray:@"SUDocumentationID" with:v28];
+  v28 = [NSMutableArray arrayWithObject:assetCopy];
+  v29 = [_documentationQuery addKeyValueArray:@"SUDocumentationID" with:v28];
 
   if (v29)
   {
@@ -262,10 +262,10 @@ LABEL_19:
     goto LABEL_18;
   }
 
-  v31 = [v9 queryMetaDataSync];
-  if (v31)
+  queryMetaDataSync = [_documentationQuery queryMetaDataSync];
+  if (queryMetaDataSync)
   {
-    v32 = v31;
+    v32 = queryMetaDataSync;
     v33 = softwareupdatebridge_log;
     if (os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT))
     {
@@ -277,9 +277,9 @@ LABEL_19:
     v20 = @"asset query failed";
 LABEL_18:
     v26 = SUBError(@"SUBError", 5, 0, v20, v16, v17, v18, v19, v38);
-    [(SUBDocumentationFetcher *)self _invokeFetchCompletionsForDocumentationID:v8 localOnly:v39 documentation:0 error:v26];
-    v27 = 0;
-    if (!a5)
+    [(SUBDocumentationFetcher *)self _invokeFetchCompletionsForDocumentationID:assetCopy localOnly:v39 documentation:0 error:v26];
+    results = 0;
+    if (!error)
     {
       goto LABEL_20;
     }
@@ -287,31 +287,31 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v27 = [v9 results];
+  results = [_documentationQuery results];
   v36 = softwareupdatebridge_log;
   if (os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT))
   {
     v37 = v36;
     *buf = 134349056;
-    v41 = [v27 count];
+    v41 = [results count];
     _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "[SUBDocumentationFetcher] : MobileAsset returned %{public}lu matching assets", buf, 0xCu);
   }
 
   v26 = 0;
-  if (a5)
+  if (error)
   {
     goto LABEL_19;
   }
 
 LABEL_20:
 
-  return v27;
+  return results;
 }
 
-- (void)purgeAssetsNotMatchingDescriptor:(id)a3 completion:(id)a4
+- (void)purgeAssetsNotMatchingDescriptor:(id)descriptor completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_queue);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -319,23 +319,23 @@ LABEL_20:
   block[2] = sub_10000DBA8;
   block[3] = &unk_10002D460;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = descriptorCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = descriptorCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_purgeAssetsNotMatchingDescriptor:(id)a3 completion:(id)a4
+- (void)_purgeAssetsNotMatchingDescriptor:(id)descriptor completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   cachedDocumentationID = self->_cachedDocumentationID;
   if (cachedDocumentationID)
   {
-    v9 = [v6 documentationID];
-    v10 = [(NSString *)cachedDocumentationID isEqualToString:v9];
+    documentationID = [descriptorCopy documentationID];
+    v10 = [(NSString *)cachedDocumentationID isEqualToString:documentationID];
 
     if ((v10 & 1) == 0)
     {
@@ -344,12 +344,12 @@ LABEL_20:
     }
   }
 
-  v11 = [(SUBDocumentationFetcher *)self _documentationQuery];
-  [v11 returnTypes:2];
-  v12 = [v11 queryMetaDataSync];
-  if (v12)
+  _documentationQuery = [(SUBDocumentationFetcher *)self _documentationQuery];
+  [_documentationQuery returnTypes:2];
+  queryMetaDataSync = [_documentationQuery queryMetaDataSync];
+  if (queryMetaDataSync)
   {
-    v13 = v12;
+    v13 = queryMetaDataSync;
     v14 = softwareupdatebridge_log;
     if (os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT))
     {
@@ -358,18 +358,18 @@ LABEL_20:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[SUBDocumentationFetcher] : Failed to query for documenation assets when purging: %{public}ld", buf, 0xCu);
     }
 
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   else
   {
-    v28 = v11;
-    v15 = [v11 results];
+    v28 = _documentationQuery;
+    results = [_documentationQuery results];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v16 = [v15 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    v16 = [results countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v16)
     {
       v17 = v16;
@@ -380,19 +380,19 @@ LABEL_20:
         {
           if (*v30 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(results);
           }
 
           v20 = *(*(&v29 + 1) + 8 * i);
-          v21 = [v20 attributes];
-          v22 = [v21 objectForKey:@"SUDocumentationID"];
+          attributes = [v20 attributes];
+          v22 = [attributes objectForKey:@"SUDocumentationID"];
 
-          if (!v6 || ([v6 documentationID], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "isEqualToString:", v22), v23, (v24 & 1) == 0))
+          if (!descriptorCopy || ([descriptorCopy documentationID], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "isEqualToString:", v22), v23, (v24 & 1) == 0))
           {
-            v25 = [v20 state];
-            if ((v25 - 2) >= 2)
+            state = [v20 state];
+            if ((state - 2) >= 2)
             {
-              if (v25 == 4)
+              if (state == 4)
               {
                 v27 = softwareupdatebridge_log;
                 if (os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT))
@@ -421,15 +421,15 @@ LABEL_20:
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v17 = [results countByEnumeratingWithState:&v29 objects:v33 count:16];
       }
 
       while (v17);
     }
 
-    v7[2](v7);
+    completionCopy[2](completionCopy);
 
-    v11 = v28;
+    _documentationQuery = v28;
   }
 }
 

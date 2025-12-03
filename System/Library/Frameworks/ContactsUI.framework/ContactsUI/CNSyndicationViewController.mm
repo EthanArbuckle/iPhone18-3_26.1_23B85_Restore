@@ -1,9 +1,9 @@
 @interface CNSyndicationViewController
 + (id)descriptorForRequiredKeys;
-- (CNSyndicationViewController)initWithGroup:(id)a3 senderContact:(id)a4 actionsViewConfiguration:(id)a5;
-- (id)subtitleTextForSenderContact:(id)a3;
-- (void)didSelectAction:(id)a3 withSourceView:(id)a4 longPress:(BOOL)a5;
-- (void)setSubtitleText:(id)a3;
+- (CNSyndicationViewController)initWithGroup:(id)group senderContact:(id)contact actionsViewConfiguration:(id)configuration;
+- (id)subtitleTextForSenderContact:(id)contact;
+- (void)didSelectAction:(id)action withSourceView:(id)view longPress:(BOOL)press;
+- (void)setSubtitleText:(id)text;
 - (void)setupActionViews;
 - (void)setupContainerViews;
 - (void)setupNameViews;
@@ -12,24 +12,24 @@
 
 @implementation CNSyndicationViewController
 
-- (void)didSelectAction:(id)a3 withSourceView:(id)a4 longPress:(BOOL)a5
+- (void)didSelectAction:(id)action withSourceView:(id)view longPress:(BOOL)press
 {
-  v6 = a3;
-  v7 = [(CNSyndicationViewController *)self actionsViewConfiguration];
-  v8 = [v7 actionsPerType];
-  v9 = [v6 type];
+  actionCopy = action;
+  actionsViewConfiguration = [(CNSyndicationViewController *)self actionsViewConfiguration];
+  actionsPerType = [actionsViewConfiguration actionsPerType];
+  type = [actionCopy type];
 
-  v13 = [v8 objectForKeyedSubscript:v9];
+  v13 = [actionsPerType objectForKeyedSubscript:type];
 
   if (v13)
   {
-    v10 = [v13 actionBlock];
+    actionBlock = [v13 actionBlock];
 
-    if (v10)
+    if (actionBlock)
     {
-      v11 = [v13 actionBlock];
-      v12 = [v13 actionType];
-      (v11)[2](v11, v12);
+      actionBlock2 = [v13 actionBlock];
+      actionType = [v13 actionType];
+      (actionBlock2)[2](actionBlock2, actionType);
     }
   }
 }
@@ -37,7 +37,7 @@
 - (void)setupActionViews
 {
   v44 = *MEMORY[0x1E69E9840];
-  v35 = [(CNSyndicationViewController *)self actionsContainerView];
+  actionsContainerView = [(CNSyndicationViewController *)self actionsContainerView];
   v3 = objc_alloc_init(CNActionsView);
   [(CNActionsView *)v3 setActionsDelegate:self];
   v4 = v3;
@@ -46,11 +46,11 @@
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v5 = [(CNSyndicationViewController *)self actionsViewConfiguration];
-  v6 = [v5 supportedActionTypes];
+  actionsViewConfiguration = [(CNSyndicationViewController *)self actionsViewConfiguration];
+  supportedActionTypes = [actionsViewConfiguration supportedActionTypes];
 
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v38 objects:v43 count:16];
+  obj = supportedActionTypes;
+  v7 = [supportedActionTypes countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v7)
   {
     v8 = v7;
@@ -65,15 +65,15 @@
         }
 
         v11 = *(*(&v38 + 1) + 8 * i);
-        v12 = [(CNSyndicationViewController *)self actionsViewConfiguration];
-        v13 = [v12 actionsPerType];
-        v14 = [v13 objectForKeyedSubscript:v11];
+        actionsViewConfiguration2 = [(CNSyndicationViewController *)self actionsViewConfiguration];
+        actionsPerType = [actionsViewConfiguration2 actionsPerType];
+        v14 = [actionsPerType objectForKeyedSubscript:v11];
 
-        v15 = [v14 image];
-        v16 = v15;
-        if (v15)
+        image = [v14 image];
+        v16 = image;
+        if (image)
         {
-          v17 = v15;
+          v17 = image;
         }
 
         else
@@ -93,28 +93,28 @@
     while (v8);
   }
 
-  v20 = [MEMORY[0x1E69DC888] labelColor];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
   v21 = v4;
-  [(CNActionsView *)v4 setTintColor:v20];
+  [(CNActionsView *)v4 setTintColor:labelColor];
 
   [(CNActionsView *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v35 addSubview:v4];
+  [actionsContainerView addSubview:v4];
   v30 = MEMORY[0x1E696ACD8];
   obja = [(CNActionsView *)v4 leadingAnchor];
-  v34 = [v35 leadingAnchor];
-  v33 = [obja constraintEqualToAnchor:v34];
+  leadingAnchor = [actionsContainerView leadingAnchor];
+  v33 = [obja constraintEqualToAnchor:leadingAnchor];
   v42[0] = v33;
-  v32 = [(CNActionsView *)v4 topAnchor];
-  v31 = [v35 topAnchor];
-  v22 = [v32 constraintEqualToAnchor:v31];
+  topAnchor = [(CNActionsView *)v4 topAnchor];
+  topAnchor2 = [actionsContainerView topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v42[1] = v22;
-  v23 = [(CNActionsView *)v4 bottomAnchor];
-  v24 = [v35 bottomAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  bottomAnchor = [(CNActionsView *)v4 bottomAnchor];
+  bottomAnchor2 = [actionsContainerView bottomAnchor];
+  v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v42[2] = v25;
-  v26 = [(CNActionsView *)v4 trailingAnchor];
-  v27 = [v35 trailingAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  trailingAnchor = [(CNActionsView *)v4 trailingAnchor];
+  trailingAnchor2 = [actionsContainerView trailingAnchor];
+  v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v42[3] = v28;
   v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:4];
   [v30 activateConstraints:v29];
@@ -123,116 +123,116 @@
 - (void)setupNameViews
 {
   v74[16] = *MEMORY[0x1E69E9840];
-  v3 = [(CNSyndicationViewController *)self nameContainerView];
-  v4 = [(CNSyndicationViewController *)self groupAvatarViewController];
-  v5 = [v4 view];
+  nameContainerView = [(CNSyndicationViewController *)self nameContainerView];
+  groupAvatarViewController = [(CNSyndicationViewController *)self groupAvatarViewController];
+  view = [groupAvatarViewController view];
 
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(CNSyndicationViewController *)self groupAvatarViewController];
-  [(CNSyndicationViewController *)self addChildViewController:v6];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  groupAvatarViewController2 = [(CNSyndicationViewController *)self groupAvatarViewController];
+  [(CNSyndicationViewController *)self addChildViewController:groupAvatarViewController2];
 
-  [v3 addSubview:v5];
+  [nameContainerView addSubview:view];
   v7 = objc_alloc_init(MEMORY[0x1E69DD250]);
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 addSubview:v7];
+  [nameContainerView addSubview:v7];
   v8 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-  v9 = [(CNSyndicationViewController *)self contactFormatter];
-  v10 = [(CNSyndicationViewController *)self group];
-  v11 = [v9 stringFromGroupIdentity:v10];
+  contactFormatter = [(CNSyndicationViewController *)self contactFormatter];
+  group = [(CNSyndicationViewController *)self group];
+  v11 = [contactFormatter stringFromGroupIdentity:group];
   [v8 setText:v11];
 
   v12 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD40]];
   v13 = v8;
   [v8 setFont:v12];
 
-  v14 = [MEMORY[0x1E69DC888] labelColor];
-  [v8 setTextColor:v14];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [v8 setTextColor:labelColor];
 
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v7 addSubview:v8];
   [(CNSyndicationViewController *)self setTitleLabel:v8];
   v15 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-  v16 = [(CNSyndicationViewController *)self subtitleText];
-  [v15 setText:v16];
+  subtitleText = [(CNSyndicationViewController *)self subtitleText];
+  [v15 setText:subtitleText];
 
   v17 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
   [v15 setFont:v17];
 
-  v18 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v15 setTextColor:v18];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [v15 setTextColor:secondaryLabelColor];
 
   [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v7 addSubview:v15];
   [(CNSyndicationViewController *)self setSubtitleLabel:v15];
   v52 = MEMORY[0x1E696ACD8];
-  v73 = [v5 leadingAnchor];
-  v72 = [v3 leadingAnchor];
-  v71 = [v73 constraintEqualToAnchor:v72];
+  leadingAnchor = [view leadingAnchor];
+  leadingAnchor2 = [nameContainerView leadingAnchor];
+  v71 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v74[0] = v71;
-  v70 = [v5 centerYAnchor];
-  v69 = [v3 centerYAnchor];
-  v68 = [v70 constraintEqualToAnchor:v69];
+  centerYAnchor = [view centerYAnchor];
+  centerYAnchor2 = [nameContainerView centerYAnchor];
+  v68 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v74[1] = v68;
-  v66 = [v5 heightAnchor];
-  v65 = [v66 constraintEqualToConstant:40.0];
+  heightAnchor = [view heightAnchor];
+  v65 = [heightAnchor constraintEqualToConstant:40.0];
   v74[2] = v65;
-  v64 = [v5 widthAnchor];
-  v67 = v5;
-  v63 = [v5 heightAnchor];
-  v62 = [v64 constraintEqualToAnchor:v63];
+  widthAnchor = [view widthAnchor];
+  v67 = view;
+  heightAnchor2 = [view heightAnchor];
+  v62 = [widthAnchor constraintEqualToAnchor:heightAnchor2];
   v74[3] = v62;
   v19 = v7;
-  v60 = [v7 leadingAnchor];
-  v59 = [v5 trailingAnchor];
-  v58 = [v60 constraintEqualToAnchor:v59 constant:10.0];
+  leadingAnchor3 = [v7 leadingAnchor];
+  trailingAnchor = [view trailingAnchor];
+  v58 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:10.0];
   v74[4] = v58;
-  v57 = [v7 trailingAnchor];
-  v56 = [v3 trailingAnchor];
-  v55 = [v57 constraintEqualToAnchor:v56];
+  trailingAnchor2 = [v7 trailingAnchor];
+  trailingAnchor3 = [nameContainerView trailingAnchor];
+  v55 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   v74[5] = v55;
-  v54 = [v7 centerYAnchor];
-  v53 = [v3 centerYAnchor];
-  v51 = [v54 constraintEqualToAnchor:v53];
+  centerYAnchor3 = [v7 centerYAnchor];
+  centerYAnchor4 = [nameContainerView centerYAnchor];
+  v51 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v74[6] = v51;
-  v50 = [v7 topAnchor];
-  v61 = v3;
-  v49 = [v3 topAnchor];
-  v48 = [v50 constraintGreaterThanOrEqualToAnchor:v49];
+  topAnchor = [v7 topAnchor];
+  v61 = nameContainerView;
+  topAnchor2 = [nameContainerView topAnchor];
+  v48 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v74[7] = v48;
-  v46 = [v7 bottomAnchor];
-  v45 = [v3 bottomAnchor];
-  v42 = [v46 constraintLessThanOrEqualToAnchor:v45];
+  bottomAnchor = [v7 bottomAnchor];
+  bottomAnchor2 = [nameContainerView bottomAnchor];
+  v42 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v74[8] = v42;
-  v41 = [v13 leadingAnchor];
-  v40 = [v7 leadingAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  leadingAnchor4 = [v13 leadingAnchor];
+  leadingAnchor5 = [v7 leadingAnchor];
+  v39 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
   v74[9] = v39;
-  v38 = [v13 trailingAnchor];
-  v37 = [v7 trailingAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37];
+  trailingAnchor4 = [v13 trailingAnchor];
+  trailingAnchor5 = [v7 trailingAnchor];
+  v36 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
   v74[10] = v36;
-  v35 = [v13 topAnchor];
+  topAnchor3 = [v13 topAnchor];
   v44 = v7;
-  v34 = [v7 topAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  topAnchor4 = [v7 topAnchor];
+  v33 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v74[11] = v33;
-  v32 = [v15 topAnchor];
-  v31 = [v13 bottomAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  topAnchor5 = [v15 topAnchor];
+  bottomAnchor3 = [v13 bottomAnchor];
+  v30 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3];
   v74[12] = v30;
-  v20 = [v15 leadingAnchor];
+  leadingAnchor6 = [v15 leadingAnchor];
   v47 = v13;
-  v21 = [v13 leadingAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  leadingAnchor7 = [v13 leadingAnchor];
+  v22 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
   v74[13] = v22;
   v43 = v15;
-  v23 = [v15 trailingAnchor];
-  v24 = [v13 trailingAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  trailingAnchor6 = [v15 trailingAnchor];
+  trailingAnchor7 = [v13 trailingAnchor];
+  v25 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
   v74[14] = v25;
-  v26 = [v15 bottomAnchor];
-  v27 = [v19 bottomAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  bottomAnchor4 = [v15 bottomAnchor];
+  bottomAnchor5 = [v19 bottomAnchor];
+  v28 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v74[15] = v28;
   v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v74 count:16];
   [v52 activateConstraints:v29];
@@ -242,57 +242,57 @@
 {
   v37[7] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69DD250]);
-  v4 = [(CNSyndicationViewController *)self view];
-  [v4 bounds];
+  view = [(CNSyndicationViewController *)self view];
+  [view bounds];
   v5 = [v3 initWithFrame:?];
 
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(CNSyndicationViewController *)self view];
-  [v6 addSubview:v5];
+  view2 = [(CNSyndicationViewController *)self view];
+  [view2 addSubview:v5];
 
   [(CNSyndicationViewController *)self setNameContainerView:v5];
   v7 = objc_alloc(MEMORY[0x1E69DD250]);
-  v8 = [(CNSyndicationViewController *)self view];
-  [v8 bounds];
+  view3 = [(CNSyndicationViewController *)self view];
+  [view3 bounds];
   v9 = [v7 initWithFrame:?];
 
   [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v10 = [(CNSyndicationViewController *)self view];
-  [v10 addSubview:v9];
+  view4 = [(CNSyndicationViewController *)self view];
+  [view4 addSubview:v9];
 
   [(CNSyndicationViewController *)self setActionsContainerView:v9];
-  v11 = [(CNSyndicationViewController *)self view];
-  v12 = [v11 layoutMarginsGuide];
+  view5 = [(CNSyndicationViewController *)self view];
+  layoutMarginsGuide = [view5 layoutMarginsGuide];
 
   v26 = MEMORY[0x1E696ACD8];
-  v36 = [v5 leadingAnchor];
-  v35 = [v12 leadingAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  leadingAnchor = [v5 leadingAnchor];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v37[0] = v34;
-  v33 = [v5 topAnchor];
-  v31 = [v12 topAnchor];
-  v30 = [v33 constraintEqualToAnchor:v31];
+  topAnchor = [v5 topAnchor];
+  topAnchor2 = [layoutMarginsGuide topAnchor];
+  v30 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v37[1] = v30;
   v32 = v5;
-  v29 = [v5 bottomAnchor];
-  v28 = [v12 bottomAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  bottomAnchor = [v5 bottomAnchor];
+  bottomAnchor2 = [layoutMarginsGuide bottomAnchor];
+  v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v37[2] = v27;
-  v25 = [v9 leadingAnchor];
-  v24 = [v5 trailingAnchor];
-  v23 = [v25 constraintGreaterThanOrEqualToAnchor:v24];
+  leadingAnchor3 = [v9 leadingAnchor];
+  trailingAnchor = [v5 trailingAnchor];
+  v23 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor];
   v37[3] = v23;
-  v22 = [v9 topAnchor];
-  v21 = [v12 topAnchor];
-  v13 = [v22 constraintEqualToAnchor:v21];
+  topAnchor3 = [v9 topAnchor];
+  topAnchor4 = [layoutMarginsGuide topAnchor];
+  v13 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v37[4] = v13;
-  v14 = [v9 bottomAnchor];
-  v15 = [v12 bottomAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  bottomAnchor3 = [v9 bottomAnchor];
+  bottomAnchor4 = [layoutMarginsGuide bottomAnchor];
+  v16 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v37[5] = v16;
-  v17 = [v9 trailingAnchor];
-  v18 = [v12 trailingAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  trailingAnchor2 = [v9 trailingAnchor];
+  trailingAnchor3 = [layoutMarginsGuide trailingAnchor];
+  v19 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   v37[6] = v19;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:7];
   [v26 activateConstraints:v20];
@@ -308,49 +308,49 @@
   [(CNSyndicationViewController *)self setupActionViews];
 }
 
-- (void)setSubtitleText:(id)a3
+- (void)setSubtitleText:(id)text
 {
-  v5 = a3;
-  if (self->_subtitleText != v5)
+  textCopy = text;
+  if (self->_subtitleText != textCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_subtitleText, a3);
-    v6 = [(CNSyndicationViewController *)self subtitleLabel];
-    [v6 setText:v7];
+    v7 = textCopy;
+    objc_storeStrong(&self->_subtitleText, text);
+    subtitleLabel = [(CNSyndicationViewController *)self subtitleLabel];
+    [subtitleLabel setText:v7];
 
-    v5 = v7;
+    textCopy = v7;
   }
 }
 
-- (id)subtitleTextForSenderContact:(id)a3
+- (id)subtitleTextForSenderContact:(id)contact
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
+  contactCopy = contact;
   v6 = CNContactsUIBundle();
   v7 = [v6 localizedStringForKey:@"SYNDICATION_SHARED_BY_CONTACT" value:&stru_1F0CE7398 table:@"Localized"];
-  v8 = [(CNSyndicationViewController *)self contactFormatter];
-  v9 = [v8 stringFromContact:v5];
+  contactFormatter = [(CNSyndicationViewController *)self contactFormatter];
+  v9 = [contactFormatter stringFromContact:contactCopy];
 
   v10 = [v4 stringWithFormat:v7, v9];
 
   return v10;
 }
 
-- (CNSyndicationViewController)initWithGroup:(id)a3 senderContact:(id)a4 actionsViewConfiguration:(id)a5
+- (CNSyndicationViewController)initWithGroup:(id)group senderContact:(id)contact actionsViewConfiguration:(id)configuration
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  groupCopy = group;
+  contactCopy = contact;
+  configurationCopy = configuration;
   v22.receiver = self;
   v22.super_class = CNSyndicationViewController;
   v12 = [(CNSyndicationViewController *)&v22 initWithNibName:0 bundle:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_group, a3);
-    objc_storeStrong(&v13->_senderContact, a4);
-    objc_storeStrong(&v13->_actionsViewConfiguration, a5);
-    v14 = [[CNGroupAvatarViewController alloc] initWithGroup:v9];
+    objc_storeStrong(&v12->_group, group);
+    objc_storeStrong(&v13->_senderContact, contact);
+    objc_storeStrong(&v13->_actionsViewConfiguration, configuration);
+    v14 = [[CNGroupAvatarViewController alloc] initWithGroup:groupCopy];
     groupAvatarViewController = v13->_groupAvatarViewController;
     v13->_groupAvatarViewController = v14;
 
@@ -361,9 +361,9 @@
 
     [(CNContactFormatter *)v13->_contactFormatter setStyle:1000];
     [(CNContactFormatter *)v13->_contactFormatter setFallbackStyle:-1];
-    if (v10)
+    if (contactCopy)
     {
-      [(CNSyndicationViewController *)v13 subtitleTextForSenderContact:v10];
+      [(CNSyndicationViewController *)v13 subtitleTextForSenderContact:contactCopy];
     }
 
     else
@@ -373,7 +373,7 @@
     }
     v19 = ;
     objc_storeStrong(&v13->_subtitleText, v19);
-    if (!v10)
+    if (!contactCopy)
     {
 
       v19 = v17;

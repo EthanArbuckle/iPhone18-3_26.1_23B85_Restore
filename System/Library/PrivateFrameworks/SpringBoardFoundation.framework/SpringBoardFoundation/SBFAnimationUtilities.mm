@@ -1,15 +1,15 @@
 @interface SBFAnimationUtilities
-+ (id)matchMoveAnimationForPinningToView:(id)a3;
++ (id)matchMoveAnimationForPinningToView:(id)view;
 @end
 
 @implementation SBFAnimationUtilities
 
-+ (id)matchMoveAnimationForPinningToView:(id)a3
++ (id)matchMoveAnimationForPinningToView:(id)view
 {
   v11[4] = *MEMORY[0x1E69E9840];
-  v3 = [a3 layer];
+  layer = [view layer];
   v4 = objc_alloc_init(MEMORY[0x1E69793B8]);
-  [v4 setSourceLayer:v3];
+  [v4 setSourceLayer:layer];
   v5 = [MEMORY[0x1E696B098] valueWithCGPoint:{0.0, 0.0}];
   v11[0] = v5;
   v6 = [MEMORY[0x1E696B098] valueWithCGPoint:{1.0, 0.0}];

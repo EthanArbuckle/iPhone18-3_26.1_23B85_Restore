@@ -1,22 +1,22 @@
 @interface IDSUTunTimingEventIncoming
-- (IDSUTunTimingEventIncoming)initWithTimestamp:(double)a3 duration:(double)a4 processTime:(double)a5 compressionTime:(double)a6 kernelTime:(double)a7 bytes:(int64_t)a8;
+- (IDSUTunTimingEventIncoming)initWithTimestamp:(double)timestamp duration:(double)duration processTime:(double)time compressionTime:(double)compressionTime kernelTime:(double)kernelTime bytes:(int64_t)bytes;
 @end
 
 @implementation IDSUTunTimingEventIncoming
 
-- (IDSUTunTimingEventIncoming)initWithTimestamp:(double)a3 duration:(double)a4 processTime:(double)a5 compressionTime:(double)a6 kernelTime:(double)a7 bytes:(int64_t)a8
+- (IDSUTunTimingEventIncoming)initWithTimestamp:(double)timestamp duration:(double)duration processTime:(double)time compressionTime:(double)compressionTime kernelTime:(double)kernelTime bytes:(int64_t)bytes
 {
   v15.receiver = self;
   v15.super_class = IDSUTunTimingEventIncoming;
   result = [(IDSUTunTimingEventIncoming *)&v15 init];
   if (result)
   {
-    result->_timestamp = a3;
-    result->_duration = a4;
-    result->_processTime = a5;
-    result->_compressionTime = a6;
-    result->_kernelTime = a7;
-    result->_bytes = a8;
+    result->_timestamp = timestamp;
+    result->_duration = duration;
+    result->_processTime = time;
+    result->_compressionTime = compressionTime;
+    result->_kernelTime = kernelTime;
+    result->_bytes = bytes;
   }
 
   return result;

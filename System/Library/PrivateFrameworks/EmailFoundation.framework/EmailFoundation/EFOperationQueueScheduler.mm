@@ -1,17 +1,17 @@
 @interface EFOperationQueueScheduler
-- (EFOperationQueueScheduler)initWithMaxConcurrentOperationCount:(int64_t)a3;
-- (id)afterDelay:(double)a3 performBlock:(id)a4;
-- (id)performCancelableBlock:(id)a3;
-- (id)performWithObject:(id)a3;
-- (void)performBlock:(id)a3;
-- (void)performSyncBarrierBlock:(id)a3;
-- (void)performSyncBlock:(id)a3;
-- (void)performVoucherPreservingBlock:(id)a3;
+- (EFOperationQueueScheduler)initWithMaxConcurrentOperationCount:(int64_t)count;
+- (id)afterDelay:(double)delay performBlock:(id)block;
+- (id)performCancelableBlock:(id)block;
+- (id)performWithObject:(id)object;
+- (void)performBlock:(id)block;
+- (void)performSyncBarrierBlock:(id)block;
+- (void)performSyncBlock:(id)block;
+- (void)performVoucherPreservingBlock:(id)block;
 @end
 
 @implementation EFOperationQueueScheduler
 
-- (EFOperationQueueScheduler)initWithMaxConcurrentOperationCount:(int64_t)a3
+- (EFOperationQueueScheduler)initWithMaxConcurrentOperationCount:(int64_t)count
 {
   v8.receiver = self;
   v8.super_class = EFOperationQueueScheduler;
@@ -22,22 +22,22 @@
     queue = v4->_queue;
     v4->_queue = v5;
 
-    [(NSOperationQueue *)v4->_queue setMaxConcurrentOperationCount:a3];
+    [(NSOperationQueue *)v4->_queue setMaxConcurrentOperationCount:count];
   }
 
   return v4;
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__EFOperationQueueScheduler_performBlock___block_invoke;
   v7[3] = &unk_1E8248840;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSOperationQueue *)queue addOperationWithBlock:v7];
 }
 
@@ -48,17 +48,17 @@ uint64_t __42__EFOperationQueueScheduler_performBlock___block_invoke(uint64_t a1
   return +[EFPriorityDesignator destroyCurrentDesignator];
 }
 
-- (void)performSyncBlock:(id)a3
+- (void)performSyncBlock:(id)block
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = +[EFPriorityDesignator currentDesignatorIfExists];
   v6 = MEMORY[0x1E696AAE0];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __46__EFOperationQueueScheduler_performSyncBlock___block_invoke;
   v16 = &unk_1E8248960;
-  v7 = v4;
+  v7 = blockCopy;
   v18 = v7;
   v8 = v5;
   v17 = v8;
@@ -84,16 +84,16 @@ void __46__EFOperationQueueScheduler_performSyncBlock___block_invoke(uint64_t a1
   }
 }
 
-- (void)performSyncBarrierBlock:(id)a3
+- (void)performSyncBarrierBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[EFPriorityDesignator currentDesignatorIfExists];
   queue = self->_queue;
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __53__EFOperationQueueScheduler_performSyncBarrierBlock___block_invoke;
   v12 = &unk_1E8248960;
-  v7 = v4;
+  v7 = blockCopy;
   v14 = v7;
   v8 = v5;
   v13 = v8;
@@ -114,15 +114,15 @@ void __53__EFOperationQueueScheduler_performSyncBarrierBlock___block_invoke(uint
   }
 }
 
-- (void)performVoucherPreservingBlock:(id)a3
+- (void)performVoucherPreservingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__EFOperationQueueScheduler_performVoucherPreservingBlock___block_invoke;
   block[3] = &unk_1E8248840;
-  v6 = v4;
+  v6 = blockCopy;
   v9 = v6;
   v7 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   [(NSOperationQueue *)queue addOperationWithBlock:v7];
@@ -135,16 +135,16 @@ uint64_t __59__EFOperationQueueScheduler_performVoucherPreservingBlock___block_i
   return +[EFPriorityDesignator destroyCurrentDesignator];
 }
 
-- (id)performCancelableBlock:(id)a3
+- (id)performCancelableBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc_init(EFManualCancelationToken);
   v6 = MEMORY[0x1E696AAE0];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __52__EFOperationQueueScheduler_performCancelableBlock___block_invoke;
   v18[3] = &unk_1E8248960;
-  v7 = v4;
+  v7 = blockCopy;
   v20 = v7;
   v8 = v5;
   v19 = v8;
@@ -177,9 +177,9 @@ void __52__EFOperationQueueScheduler_performCancelableBlock___block_invoke_2(uin
   [WeakRetained cancel];
 }
 
-- (id)afterDelay:(double)a3 performBlock:(id)a4
+- (id)afterDelay:(double)delay performBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_alloc_init(EFManualCancelationToken);
   v8 = +[EFScheduler globalAsyncScheduler];
   v15[0] = MEMORY[0x1E69E9820];
@@ -188,10 +188,10 @@ void __52__EFOperationQueueScheduler_performCancelableBlock___block_invoke_2(uin
   v15[3] = &unk_1E8248738;
   v9 = v7;
   v16 = v9;
-  v17 = self;
-  v10 = v6;
+  selfCopy = self;
+  v10 = blockCopy;
   v18 = v10;
-  v11 = [v8 afterDelay:v15 performBlock:a3];
+  v11 = [v8 afterDelay:v15 performBlock:delay];
 
   v12 = v18;
   v13 = v9;
@@ -225,10 +225,10 @@ uint64_t __53__EFOperationQueueScheduler_afterDelay_performBlock___block_invoke_
   return +[EFPriorityDesignator destroyCurrentDesignator];
 }
 
-- (id)performWithObject:(id)a3
+- (id)performWithObject:(id)object
 {
-  v4 = a3;
-  v5 = [objc_opt_class() onScheduler:self performWithObject:v4];
+  objectCopy = object;
+  v5 = [objc_opt_class() onScheduler:self performWithObject:objectCopy];
 
   return v5;
 }

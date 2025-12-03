@@ -6,11 +6,11 @@
 - (void)_destroyXPCConnection;
 - (void)connectionInterrupted;
 - (void)connectionInvalidated;
-- (void)logAnalyticsEvent:(id)a3;
-- (void)logAnalyticsEventFromTipsd:(id)a3;
-- (void)logAnalyticsEvents:(id)a3;
-- (void)logAnalyticsEventsFromTipsd:(id)a3;
-- (void)sendToCoreAnalytics:(id)a3 eventName:(id)a4;
+- (void)logAnalyticsEvent:(id)event;
+- (void)logAnalyticsEventFromTipsd:(id)tipsd;
+- (void)logAnalyticsEvents:(id)events;
+- (void)logAnalyticsEventsFromTipsd:(id)tipsd;
+- (void)sendToCoreAnalytics:(id)analytics eventName:(id)name;
 @end
 
 @implementation TPSAnalyticsEventController
@@ -56,30 +56,30 @@ void __45__TPSAnalyticsEventController_analyticsQueue__block_invoke()
   analyticsQueue_gAnalyticsQueue = v0;
 }
 
-- (void)logAnalyticsEventFromTipsd:(id)a3
+- (void)logAnalyticsEventFromTipsd:(id)tipsd
 {
   v9 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  tipsdCopy = tipsd;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v8 count:1];
+  tipsdCopy2 = tipsd;
+  v6 = [v4 arrayWithObjects:&tipsdCopy count:1];
 
-  [(TPSAnalyticsEventController *)self logAnalyticsEventsFromTipsd:v6, v8, v9];
+  [(TPSAnalyticsEventController *)self logAnalyticsEventsFromTipsd:v6, tipsdCopy, v9];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logAnalyticsEventsFromTipsd:(id)a3
+- (void)logAnalyticsEventsFromTipsd:(id)tipsd
 {
-  v4 = a3;
-  v5 = [(TPSAnalyticsEventController *)self analyticsQueue];
+  tipsdCopy = tipsd;
+  analyticsQueue = [(TPSAnalyticsEventController *)self analyticsQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__TPSAnalyticsEventController_logAnalyticsEventsFromTipsd___block_invoke;
   v7[3] = &unk_1E8101390;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = tipsdCopy;
+  selfCopy = self;
+  v6 = tipsdCopy;
+  dispatch_sync(analyticsQueue, v7);
 }
 
 void __59__TPSAnalyticsEventController_logAnalyticsEventsFromTipsd___block_invoke(uint64_t a1)
@@ -160,30 +160,30 @@ void __59__TPSAnalyticsEventController_logAnalyticsEventsFromTipsd___block_invok
   }
 }
 
-- (void)logAnalyticsEvent:(id)a3
+- (void)logAnalyticsEvent:(id)event
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  eventCopy = event;
+  if (eventCopy)
   {
     if ([TPSCommonDefines callerIsTipsdWithSource:@"Analytics"])
     {
-      [(TPSAnalyticsEventController *)self logAnalyticsEventFromTipsd:v4];
+      [(TPSAnalyticsEventController *)self logAnalyticsEventFromTipsd:eventCopy];
     }
 
     else
     {
-      v5 = self;
-      objc_sync_enter(v5);
-      v6 = [(TPSAnalyticsEventController *)v5 xpcConnection];
-      v7 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_10];
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      xpcConnection = [(TPSAnalyticsEventController *)selfCopy xpcConnection];
+      v7 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_10];
 
       if (v7)
       {
-        [v7 logAnalyticsEvent:v4];
+        [v7 logAnalyticsEvent:eventCopy];
       }
 
-      objc_sync_exit(v5);
+      objc_sync_exit(selfCopy);
     }
   }
 
@@ -200,13 +200,13 @@ void __49__TPSAnalyticsEventController_logAnalyticsEvent___block_invoke(uint64_t
   }
 }
 
-- (void)logAnalyticsEvents:(id)a3
+- (void)logAnalyticsEvents:(id)events
 {
-  v4 = a3;
-  if (!v4)
+  eventsCopy = events;
+  if (!eventsCopy)
   {
-    v5 = +[TPSLogger analytics];
-    if (os_log_type_enabled(&v5->super, OS_LOG_TYPE_DEBUG))
+    selfCopy = +[TPSLogger analytics];
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_DEBUG))
     {
       [TPSAnalyticsEventController logAnalyticsEvents:];
     }
@@ -216,23 +216,23 @@ void __49__TPSAnalyticsEventController_logAnalyticsEvent___block_invoke(uint64_t
 
   if (![TPSCommonDefines callerIsTipsdWithSource:@"Analytics"])
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(TPSAnalyticsEventController *)v5 xpcConnection];
-    v7 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_12];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    xpcConnection = [(TPSAnalyticsEventController *)selfCopy xpcConnection];
+    v7 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_12];
 
     if (v7)
     {
-      [v7 logAnalyticsEvents:v4];
+      [v7 logAnalyticsEvents:eventsCopy];
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  [(TPSAnalyticsEventController *)self logAnalyticsEventsFromTipsd:v4];
+  [(TPSAnalyticsEventController *)self logAnalyticsEventsFromTipsd:eventsCopy];
 LABEL_10:
 }
 
@@ -246,30 +246,30 @@ void __50__TPSAnalyticsEventController_logAnalyticsEvents___block_invoke(uint64_
   }
 }
 
-- (void)sendToCoreAnalytics:(id)a3 eventName:(id)a4
+- (void)sendToCoreAnalytics:(id)analytics eventName:(id)name
 {
-  v5 = a3;
-  v4 = v5;
+  analyticsCopy = analytics;
+  v4 = analyticsCopy;
   AnalyticsSendEventLazy();
 }
 
 - (_TPSXPCConnection)xpcConnection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_xpcConnection)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_xpcConnection)
   {
     v3 = [[_TPSXPCConnection alloc] initWithMachServiceName:@"com.apple.tipsd" options:4096];
-    xpcConnection = v2->_xpcConnection;
-    v2->_xpcConnection = v3;
+    xpcConnection = selfCopy->_xpcConnection;
+    selfCopy->_xpcConnection = v3;
 
-    [(_TPSXPCConnection *)v2->_xpcConnection setExportedObject:v2];
-    [(_TPSXPCConnection *)v2->_xpcConnection resume];
+    [(_TPSXPCConnection *)selfCopy->_xpcConnection setExportedObject:selfCopy];
+    [(_TPSXPCConnection *)selfCopy->_xpcConnection resume];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v5 = v2->_xpcConnection;
+  v5 = selfCopy->_xpcConnection;
 
   return v5;
 }

@@ -45,15 +45,15 @@ LABEL_8:
   {
     v4 = objc_alloc(MEMORY[0x277D01430]);
     v5 = [v3 mac];
-    v6 = [v3 rssi];
-    v7 = [v6 integerValue];
-    v8 = [v3 channel];
-    v9 = [v8 integerValue];
+    rssi = [v3 rssi];
+    integerValue = [rssi integerValue];
+    channel = [v3 channel];
+    integerValue2 = [channel integerValue];
     v10 = [v3 age];
     [v10 doubleValue];
     v12 = v11;
-    v13 = [v3 date];
-    v14 = [v4 initWithMac:v5 rssi:v7 channel:v9 age:v13 date:v12];
+    date = [v3 date];
+    v14 = [v4 initWithMac:v5 rssi:integerValue channel:integerValue2 age:date date:v12];
   }
 
   else
@@ -75,7 +75,7 @@ LABEL_8:
 {
   if (a3)
   {
-    v3 = [RTWiFiAccessPointMO managedObjectWithAccessPoint:a1 inManagedObjectContext:a3];
+    v3 = [RTWiFiAccessPointMO managedObjectWithAccessPoint:self inManagedObjectContext:a3];
   }
 
   else

@@ -1,47 +1,47 @@
 @interface FRDynamicTypeValueScaler
-+ (id)valueSpecifierWithXS:(double)a3 L:(double)a4 XXXL:(double)a5 AXXXL:(double)a6;
-- (FRDynamicTypeValueScaler)initWithWithXS:(double)a3 S:(double)a4 M:(double)a5 L:(double)a6 XL:(double)a7 XXL:(double)a8 XXXL:(double)a9 AM:(double)a10 AL:(double)a11 AXL:(double)a12 AXXL:(double)a13 AXXXL:(double)a14;
++ (id)valueSpecifierWithXS:(double)s L:(double)l XXXL:(double)xL AXXXL:(double)xXL;
+- (FRDynamicTypeValueScaler)initWithWithXS:(double)s S:(double)a4 M:(double)m L:(double)l XL:(double)xL XXL:(double)xXL XXXL:(double)xXXL AM:(double)self0 AL:(double)self1 AXL:(double)self2 AXXL:(double)self3 AXXXL:(double)self4;
 - (NSArray)orderedSizeCategories;
 - (double)scaledValueForCurrentPreferredSizeCategory;
-- (double)scaledValueForSizeCategory:(id)a3;
-- (double)specifiedValueForContentSizeCategory:(id)a3;
-- (void)_nextSpecifiedCategoryStartingAtCategory:(id)a3 outValue:(double *)a4 outIndex:(unint64_t *)a5;
-- (void)_previousSpecifiedCategoryStartingAtCategory:(id)a3 outValue:(double *)a4 outIndex:(unint64_t *)a5;
+- (double)scaledValueForSizeCategory:(id)category;
+- (double)specifiedValueForContentSizeCategory:(id)category;
+- (void)_nextSpecifiedCategoryStartingAtCategory:(id)category outValue:(double *)value outIndex:(unint64_t *)index;
+- (void)_previousSpecifiedCategoryStartingAtCategory:(id)category outValue:(double *)value outIndex:(unint64_t *)index;
 @end
 
 @implementation FRDynamicTypeValueScaler
 
-- (FRDynamicTypeValueScaler)initWithWithXS:(double)a3 S:(double)a4 M:(double)a5 L:(double)a6 XL:(double)a7 XXL:(double)a8 XXXL:(double)a9 AM:(double)a10 AL:(double)a11 AXL:(double)a12 AXXL:(double)a13 AXXXL:(double)a14
+- (FRDynamicTypeValueScaler)initWithWithXS:(double)s S:(double)a4 M:(double)m L:(double)l XL:(double)xL XXL:(double)xXL XXXL:(double)xXXL AM:(double)self0 AL:(double)self1 AXL:(double)self2 AXXL:(double)self3 AXXXL:(double)self4
 {
   v23.receiver = self;
   v23.super_class = FRDynamicTypeValueScaler;
   result = [(FRDynamicTypeValueScaler *)&v23 init];
   if (result)
   {
-    result->_XS = a3;
+    result->_XS = s;
     result->_S = a4;
-    result->_M = a5;
-    result->_L = a6;
-    result->_XL = a7;
-    result->_XXL = a8;
-    result->_XXXL = a9;
-    result->_AM = a10;
-    result->_AL = a11;
-    result->_AXL = a12;
-    result->_AXXL = a13;
-    result->_AXXXL = a14;
+    result->_M = m;
+    result->_L = l;
+    result->_XL = xL;
+    result->_XXL = xXL;
+    result->_XXXL = xXXL;
+    result->_AM = aM;
+    result->_AL = aL;
+    result->_AXL = aXL;
+    result->_AXXL = aXXL;
+    result->_AXXXL = aXXXL;
   }
 
   return result;
 }
 
-+ (id)valueSpecifierWithXS:(double)a3 L:(double)a4 XXXL:(double)a5 AXXXL:(double)a6
++ (id)valueSpecifierWithXS:(double)s L:(double)l XXXL:(double)xL AXXXL:(double)xXL
 {
   v10 = objc_alloc_init(FRDynamicTypeValueScaler);
-  [(FRDynamicTypeValueScaler *)v10 setXS:a3];
-  [(FRDynamicTypeValueScaler *)v10 setL:a4];
-  [(FRDynamicTypeValueScaler *)v10 setXXXL:a5];
-  [(FRDynamicTypeValueScaler *)v10 setAXXXL:a6];
+  [(FRDynamicTypeValueScaler *)v10 setXS:s];
+  [(FRDynamicTypeValueScaler *)v10 setL:l];
+  [(FRDynamicTypeValueScaler *)v10 setXXXL:xL];
+  [(FRDynamicTypeValueScaler *)v10 setAXXXL:xXL];
 
   return v10;
 }
@@ -49,31 +49,31 @@
 - (double)scaledValueForCurrentPreferredSizeCategory
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v3 preferredContentSizeCategory];
 
-  [(FRDynamicTypeValueScaler *)self scaledValueForSizeCategory:v4];
+  [(FRDynamicTypeValueScaler *)self scaledValueForSizeCategory:preferredContentSizeCategory];
   v6 = v5;
 
   return v6;
 }
 
-- (double)scaledValueForSizeCategory:(id)a3
+- (double)scaledValueForSizeCategory:(id)category
 {
-  v4 = a3;
-  if (![v4 length] && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  categoryCopy = category;
+  if (![categoryCopy length] && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006BE4C();
   }
 
-  [(FRDynamicTypeValueScaler *)self specifiedValueForContentSizeCategory:v4];
+  [(FRDynamicTypeValueScaler *)self specifiedValueForContentSizeCategory:categoryCopy];
   v6 = v5;
   if (v5 == 1.79769313e308)
   {
     v16 = 0x7FFFFFFFFFFFFFFFLL;
     v17 = 1.79769313e308;
-    [(FRDynamicTypeValueScaler *)self _previousSpecifiedCategoryStartingAtCategory:v4 outValue:&v17 outIndex:&v16];
+    [(FRDynamicTypeValueScaler *)self _previousSpecifiedCategoryStartingAtCategory:categoryCopy outValue:&v17 outIndex:&v16];
     v15 = 1.79769313e308;
-    [(FRDynamicTypeValueScaler *)self _nextSpecifiedCategoryStartingAtCategory:v4 outValue:&v15 outIndex:&v14];
+    [(FRDynamicTypeValueScaler *)self _nextSpecifiedCategoryStartingAtCategory:categoryCopy outValue:&v15 outIndex:&v14];
     if (v17 == 1.79769313e308 || v16 == 0x7FFFFFFFFFFFFFFFLL || v15 == 1.79769313e308 || v14 == 0x7FFFFFFFFFFFFFFFLL)
     {
       [(FRDynamicTypeValueScaler *)self L:1.79769313e308];
@@ -87,7 +87,7 @@
     else
     {
       v11 = [(FRDynamicTypeValueScaler *)self orderedSizeCategories:1.79769313e308];
-      v12 = [v11 indexOfObject:v4];
+      v12 = [v11 indexOfObject:categoryCopy];
 
       v6 = v17 + (v15 - v17) / (v14 - v16) * (v12 - v16);
     }
@@ -96,12 +96,12 @@
   return v6;
 }
 
-- (double)specifiedValueForContentSizeCategory:(id)a3
+- (double)specifiedValueForContentSizeCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   [(FRDynamicTypeValueScaler *)self L];
   v6 = v5;
-  if ([v4 isEqualToString:UIContentSizeCategoryExtraSmall])
+  if ([categoryCopy isEqualToString:UIContentSizeCategoryExtraSmall])
   {
     [(FRDynamicTypeValueScaler *)self XS];
 LABEL_25:
@@ -109,67 +109,67 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if ([v4 isEqualToString:UIContentSizeCategorySmall])
+  if ([categoryCopy isEqualToString:UIContentSizeCategorySmall])
   {
     [(FRDynamicTypeValueScaler *)self S];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:UIContentSizeCategoryMedium])
+  if ([categoryCopy isEqualToString:UIContentSizeCategoryMedium])
   {
     [(FRDynamicTypeValueScaler *)self M];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:UIContentSizeCategoryLarge])
+  if ([categoryCopy isEqualToString:UIContentSizeCategoryLarge])
   {
     [(FRDynamicTypeValueScaler *)self L];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:UIContentSizeCategoryExtraLarge])
+  if ([categoryCopy isEqualToString:UIContentSizeCategoryExtraLarge])
   {
     [(FRDynamicTypeValueScaler *)self XL];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:UIContentSizeCategoryExtraExtraLarge])
+  if ([categoryCopy isEqualToString:UIContentSizeCategoryExtraExtraLarge])
   {
     [(FRDynamicTypeValueScaler *)self XXL];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:UIContentSizeCategoryExtraExtraExtraLarge])
+  if ([categoryCopy isEqualToString:UIContentSizeCategoryExtraExtraExtraLarge])
   {
     [(FRDynamicTypeValueScaler *)self XXXL];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:UIContentSizeCategoryAccessibilityMedium])
+  if ([categoryCopy isEqualToString:UIContentSizeCategoryAccessibilityMedium])
   {
     [(FRDynamicTypeValueScaler *)self AM];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:UIContentSizeCategoryAccessibilityLarge])
+  if ([categoryCopy isEqualToString:UIContentSizeCategoryAccessibilityLarge])
   {
     [(FRDynamicTypeValueScaler *)self AL];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:UIContentSizeCategoryAccessibilityExtraLarge])
+  if ([categoryCopy isEqualToString:UIContentSizeCategoryAccessibilityExtraLarge])
   {
     [(FRDynamicTypeValueScaler *)self AXL];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:UIContentSizeCategoryAccessibilityExtraExtraLarge])
+  if ([categoryCopy isEqualToString:UIContentSizeCategoryAccessibilityExtraExtraLarge])
   {
     [(FRDynamicTypeValueScaler *)self AXXL];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:UIContentSizeCategoryAccessibilityExtraExtraExtraLarge])
+  if ([categoryCopy isEqualToString:UIContentSizeCategoryAccessibilityExtraExtraExtraLarge])
   {
     [(FRDynamicTypeValueScaler *)self AXXXL];
     goto LABEL_25;
@@ -207,57 +207,57 @@ LABEL_26:
   return v2;
 }
 
-- (void)_previousSpecifiedCategoryStartingAtCategory:(id)a3 outValue:(double *)a4 outIndex:(unint64_t *)a5
+- (void)_previousSpecifiedCategoryStartingAtCategory:(id)category outValue:(double *)value outIndex:(unint64_t *)index
 {
-  v14 = a3;
-  *a4 = 1.79769313e308;
-  *a5 = 0x7FFFFFFFFFFFFFFFLL;
-  v8 = [(FRDynamicTypeValueScaler *)self orderedSizeCategories];
-  v9 = [v8 indexOfObject:v14];
+  categoryCopy = category;
+  *value = 1.79769313e308;
+  *index = 0x7FFFFFFFFFFFFFFFLL;
+  orderedSizeCategories = [(FRDynamicTypeValueScaler *)self orderedSizeCategories];
+  v9 = [orderedSizeCategories indexOfObject:categoryCopy];
 
   if ((v9 & 0x8000000000000000) == 0)
   {
     do
     {
-      if (*a4 != 1.79769313e308)
+      if (*value != 1.79769313e308)
       {
         break;
       }
 
-      v10 = [(FRDynamicTypeValueScaler *)self orderedSizeCategories];
-      v11 = [v10 objectAtIndexedSubscript:v9];
+      orderedSizeCategories2 = [(FRDynamicTypeValueScaler *)self orderedSizeCategories];
+      v11 = [orderedSizeCategories2 objectAtIndexedSubscript:v9];
       [(FRDynamicTypeValueScaler *)self specifiedValueForContentSizeCategory:v11];
-      *a4 = v12;
+      *value = v12;
 
-      *a5 = v9;
+      *index = v9;
     }
 
     while (v9-- > 0);
   }
 }
 
-- (void)_nextSpecifiedCategoryStartingAtCategory:(id)a3 outValue:(double *)a4 outIndex:(unint64_t *)a5
+- (void)_nextSpecifiedCategoryStartingAtCategory:(id)category outValue:(double *)value outIndex:(unint64_t *)index
 {
-  v15 = a3;
-  *a4 = 1.79769313e308;
-  *a5 = 0x7FFFFFFFFFFFFFFFLL;
-  v8 = [(FRDynamicTypeValueScaler *)self orderedSizeCategories];
-  v9 = [v8 indexOfObject:v15];
+  categoryCopy = category;
+  *value = 1.79769313e308;
+  *index = 0x7FFFFFFFFFFFFFFFLL;
+  orderedSizeCategories = [(FRDynamicTypeValueScaler *)self orderedSizeCategories];
+  v9 = [orderedSizeCategories indexOfObject:categoryCopy];
 
-  v10 = [(FRDynamicTypeValueScaler *)self orderedSizeCategories];
-  v11 = [v10 count] - 1;
+  orderedSizeCategories2 = [(FRDynamicTypeValueScaler *)self orderedSizeCategories];
+  v11 = [orderedSizeCategories2 count] - 1;
 
-  for (; v9 <= v11; *a5 = v9++)
+  for (; v9 <= v11; *index = v9++)
   {
-    if (*a4 != 1.79769313e308)
+    if (*value != 1.79769313e308)
     {
       break;
     }
 
-    v12 = [(FRDynamicTypeValueScaler *)self orderedSizeCategories];
-    v13 = [v12 objectAtIndexedSubscript:v9];
+    orderedSizeCategories3 = [(FRDynamicTypeValueScaler *)self orderedSizeCategories];
+    v13 = [orderedSizeCategories3 objectAtIndexedSubscript:v9];
     [(FRDynamicTypeValueScaler *)self specifiedValueForContentSizeCategory:v13];
-    *a4 = v14;
+    *value = v14;
   }
 }
 

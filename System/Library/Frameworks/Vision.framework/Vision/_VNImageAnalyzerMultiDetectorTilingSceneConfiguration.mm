@@ -1,13 +1,13 @@
 @interface _VNImageAnalyzerMultiDetectorTilingSceneConfiguration
-- (_VNImageAnalyzerMultiDetectorTilingSceneConfiguration)initWithObservationsRecipient:(id)a3;
+- (_VNImageAnalyzerMultiDetectorTilingSceneConfiguration)initWithObservationsRecipient:(id)recipient;
 @end
 
 @implementation _VNImageAnalyzerMultiDetectorTilingSceneConfiguration
 
-- (_VNImageAnalyzerMultiDetectorTilingSceneConfiguration)initWithObservationsRecipient:(id)a3
+- (_VNImageAnalyzerMultiDetectorTilingSceneConfiguration)initWithObservationsRecipient:(id)recipient
 {
-  v4 = a3;
-  v5 = [[_VNImageAnalyzerMultiDetectorTilingObservationsRecipient alloc] initWithObservationsRecipient:v4];
+  recipientCopy = recipient;
+  v5 = [[_VNImageAnalyzerMultiDetectorTilingObservationsRecipient alloc] initWithObservationsRecipient:recipientCopy];
   v9.receiver = self;
   v9.super_class = _VNImageAnalyzerMultiDetectorTilingSceneConfiguration;
   v6 = [(VNImageAnalyzerMultiDetectorSceneClassificationConfiguration *)&v9 initWithObservationsRecipient:v5];

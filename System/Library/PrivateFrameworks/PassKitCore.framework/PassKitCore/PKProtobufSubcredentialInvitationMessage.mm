@@ -1,15 +1,15 @@
 @interface PKProtobufSubcredentialInvitationMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)statusAsString:(int)a3;
-- (int)StringAsStatus:(id)a3;
+- (id)statusAsString:(int)string;
+- (int)StringAsStatus:(id)status;
 - (int)status;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PKProtobufSubcredentialInvitationMessage
@@ -27,50 +27,50 @@
   }
 }
 
-- (id)statusAsString:(int)a3
+- (id)statusAsString:(int)string
 {
-  if (a3 >= 6)
+  if (string >= 6)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E79D10D8[a3];
+    v4 = off_1E79D10D8[string];
   }
 
   return v4;
 }
 
-- (int)StringAsStatus:(id)a3
+- (int)StringAsStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PENDING"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"PENDING"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ACCEPTED"])
+  else if ([statusCopy isEqualToString:@"ACCEPTED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"EXPIRED"])
+  else if ([statusCopy isEqualToString:@"EXPIRED"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"REVOKED"])
+  else if ([statusCopy isEqualToString:@"REVOKED"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CANCELLED"])
+  else if ([statusCopy isEqualToString:@"CANCELLED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"UNKNOWN"])
+  else if ([statusCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 5;
   }
@@ -89,22 +89,22 @@
   v8.receiver = self;
   v8.super_class = PKProtobufSubcredentialInvitationMessage;
   v4 = [(PKProtobufSubcredentialInvitationMessage *)&v8 description];
-  v5 = [(PKProtobufSubcredentialInvitationMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PKProtobufSubcredentialInvitationMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_version];
-  [v3 setObject:v4 forKey:@"version"];
+  [dictionary setObject:v4 forKey:@"version"];
 
   phoneInvitation = self->_phoneInvitation;
   if (phoneInvitation)
   {
-    [v3 setObject:phoneInvitation forKey:@"phoneInvitation"];
+    [dictionary setObject:phoneInvitation forKey:@"phoneInvitation"];
   }
 
   if (*&self->_has)
@@ -120,39 +120,39 @@
       v7 = off_1E79D10D8[status];
     }
 
-    [v3 setObject:v7 forKey:@"status"];
+    [dictionary setObject:v7 forKey:@"status"];
   }
 
   dataString = self->_dataString;
   if (dataString)
   {
-    [v3 setObject:dataString forKey:@"dataString"];
+    [dictionary setObject:dataString forKey:@"dataString"];
   }
 
   watchInvitation = self->_watchInvitation;
   if (watchInvitation)
   {
-    [v3 setObject:watchInvitation forKey:@"watchInvitation"];
+    [dictionary setObject:watchInvitation forKey:@"watchInvitation"];
   }
 
   uniqueIdentifier = self->_uniqueIdentifier;
   if (uniqueIdentifier)
   {
-    [v3 setObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
+    [dictionary setObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
   }
 
   passThumbnailImage = self->_passThumbnailImage;
   if (passThumbnailImage)
   {
-    [v3 setObject:passThumbnailImage forKey:@"passThumbnailImage"];
+    [dictionary setObject:passThumbnailImage forKey:@"passThumbnailImage"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   PBDataWriterWriteUint32Field();
   if (self->_phoneInvitation)
   {
@@ -164,79 +164,79 @@
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = v5;
+  v4 = toCopy;
   if (self->_dataString)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    v4 = toCopy;
   }
 
   if (self->_watchInvitation)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    v4 = toCopy;
   }
 
   if (self->_uniqueIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    v4 = toCopy;
   }
 
   if (self->_passThumbnailImage)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    v4 = toCopy;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[12] = self->_version;
-  v5 = v4;
+  toCopy = to;
+  toCopy[12] = self->_version;
+  v5 = toCopy;
   if (self->_phoneInvitation)
   {
-    [v4 setPhoneInvitation:?];
-    v4 = v5;
+    [toCopy setPhoneInvitation:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[8] = self->_status;
-    *(v4 + 64) |= 1u;
+    toCopy[8] = self->_status;
+    *(toCopy + 64) |= 1u;
   }
 
   if (self->_dataString)
   {
     [v5 setDataString:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_watchInvitation)
   {
     [v5 setWatchInvitation:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_uniqueIdentifier)
   {
     [v5 setUniqueIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_passThumbnailImage)
   {
     [v5 setPassThumbnailImage:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 48) = self->_version;
-  v6 = [(NSString *)self->_phoneInvitation copyWithZone:a3];
+  v6 = [(NSString *)self->_phoneInvitation copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -246,40 +246,40 @@
     *(v5 + 64) |= 1u;
   }
 
-  v8 = [(NSString *)self->_dataString copyWithZone:a3];
+  v8 = [(NSString *)self->_dataString copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
-  v10 = [(NSString *)self->_watchInvitation copyWithZone:a3];
+  v10 = [(NSString *)self->_watchInvitation copyWithZone:zone];
   v11 = *(v5 + 56);
   *(v5 + 56) = v10;
 
-  v12 = [(NSString *)self->_uniqueIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_uniqueIdentifier copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 
-  v14 = [(NSData *)self->_passThumbnailImage copyWithZone:a3];
+  v14 = [(NSData *)self->_passThumbnailImage copyWithZone:zone];
   v15 = *(v5 + 16);
   *(v5 + 16) = v14;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  if (self->_version != *(v4 + 12))
+  if (self->_version != *(equalCopy + 12))
   {
     goto LABEL_18;
   }
 
   phoneInvitation = self->_phoneInvitation;
-  if (phoneInvitation | *(v4 + 3))
+  if (phoneInvitation | *(equalCopy + 3))
   {
     if (![(NSString *)phoneInvitation isEqual:?])
     {
@@ -289,13 +289,13 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_status != *(v4 + 8))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_status != *(equalCopy + 8))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
 LABEL_18:
     v10 = 0;
@@ -303,13 +303,13 @@ LABEL_18:
   }
 
   dataString = self->_dataString;
-  if (dataString | *(v4 + 1) && ![(NSString *)dataString isEqual:?])
+  if (dataString | *(equalCopy + 1) && ![(NSString *)dataString isEqual:?])
   {
     goto LABEL_18;
   }
 
   watchInvitation = self->_watchInvitation;
-  if (watchInvitation | *(v4 + 7))
+  if (watchInvitation | *(equalCopy + 7))
   {
     if (![(NSString *)watchInvitation isEqual:?])
     {
@@ -318,7 +318,7 @@ LABEL_18:
   }
 
   uniqueIdentifier = self->_uniqueIdentifier;
-  if (uniqueIdentifier | *(v4 + 5))
+  if (uniqueIdentifier | *(equalCopy + 5))
   {
     if (![(NSString *)uniqueIdentifier isEqual:?])
     {
@@ -327,7 +327,7 @@ LABEL_18:
   }
 
   passThumbnailImage = self->_passThumbnailImage;
-  if (passThumbnailImage | *(v4 + 2))
+  if (passThumbnailImage | *(equalCopy + 2))
   {
     v10 = [(NSData *)passThumbnailImage isEqual:?];
   }
@@ -363,45 +363,45 @@ LABEL_19:
   return v8 ^ v9 ^ [(NSData *)self->_passThumbnailImage hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_version = v4[12];
-  v5 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  self->_version = fromCopy[12];
+  v5 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(PKProtobufSubcredentialInvitationMessage *)self setPhoneInvitation:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[16])
+  if (fromCopy[16])
   {
-    self->_status = v4[8];
+    self->_status = fromCopy[8];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(PKProtobufSubcredentialInvitationMessage *)self setDataString:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(PKProtobufSubcredentialInvitationMessage *)self setWatchInvitation:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(PKProtobufSubcredentialInvitationMessage *)self setUniqueIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(PKProtobufSubcredentialInvitationMessage *)self setPassThumbnailImage:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

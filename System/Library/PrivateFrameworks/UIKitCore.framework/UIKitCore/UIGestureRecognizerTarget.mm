@@ -2,7 +2,7 @@
 - (SEL)action;
 - (id)description;
 - (id)target;
-- (void)_sendActionWithGestureRecognizer:(uint64_t)a1;
+- (void)_sendActionWithGestureRecognizer:(uint64_t)recognizer;
 @end
 
 @implementation UIGestureRecognizerTarget
@@ -37,14 +37,14 @@
   return v10;
 }
 
-- (void)_sendActionWithGestureRecognizer:(uint64_t)a1
+- (void)_sendActionWithGestureRecognizer:(uint64_t)recognizer
 {
-  if (a1)
+  if (recognizer)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    if (*(a1 + 16))
+    WeakRetained = objc_loadWeakRetained((recognizer + 8));
+    if (*(recognizer + 16))
     {
-      v4 = *(a1 + 16);
+      v4 = *(recognizer + 16);
     }
 
     else

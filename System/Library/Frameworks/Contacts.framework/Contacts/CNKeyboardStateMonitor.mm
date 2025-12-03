@@ -19,7 +19,7 @@ uint64_t __39__CNKeyboardStateMonitor_sharedMonitor__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __39__CNKeyboardStateMonitor_sharedMonitor__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedMonitor_cn_once_token_0 != -1)
   {
     dispatch_once(&sharedMonitor_cn_once_token_0, block);
@@ -39,25 +39,25 @@ uint64_t __39__CNKeyboardStateMonitor_sharedMonitor__block_invoke(uint64_t a1)
   {
     if (NSClassFromString(&cfstr_Uiapplication.isa))
     {
-      v3 = [MEMORY[0x1E696ADC8] mainQueue];
+      mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
       objc_initWeak(&location, v2);
-      v4 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __30__CNKeyboardStateMonitor_init__block_invoke;
       v15[3] = &unk_1E7412DF8;
       objc_copyWeak(&v16, &location);
-      v5 = [v4 addObserverForName:@"UIKeyboardDidHideNotification" object:0 queue:v3 usingBlock:v15];
+      v5 = [defaultCenter addObserverForName:@"UIKeyboardDidHideNotification" object:0 queue:mainQueue usingBlock:v15];
       didHideObserver = v2->_didHideObserver;
       v2->_didHideObserver = v5;
 
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __30__CNKeyboardStateMonitor_init__block_invoke_2;
       v13[3] = &unk_1E7412DF8;
       objc_copyWeak(&v14, &location);
-      v8 = [v7 addObserverForName:@"UIKeyboardDidShowNotification" object:0 queue:v3 usingBlock:v13];
+      v8 = [defaultCenter2 addObserverForName:@"UIKeyboardDidShowNotification" object:0 queue:mainQueue usingBlock:v13];
       didShowObserver = v2->_didShowObserver;
       v2->_didShowObserver = v8;
 
@@ -93,8 +93,8 @@ void __30__CNKeyboardStateMonitor_init__block_invoke(uint64_t a1)
 {
   if (self->_didHideObserver)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self->_didHideObserver];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self->_didHideObserver];
 
     didHideObserver = self->_didHideObserver;
     self->_didHideObserver = 0;
@@ -102,8 +102,8 @@ void __30__CNKeyboardStateMonitor_init__block_invoke(uint64_t a1)
 
   if (self->_didShowObserver)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 removeObserver:self->_didShowObserver];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 removeObserver:self->_didShowObserver];
 
     didShowObserver = self->_didShowObserver;
     self->_didShowObserver = 0;

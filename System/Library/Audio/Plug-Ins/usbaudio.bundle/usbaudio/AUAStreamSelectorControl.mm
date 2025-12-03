@@ -1,22 +1,22 @@
 @interface AUAStreamSelectorControl
-- (BOOL)changeValues:(const unsigned int *)a3 withCount:(int64_t)a4;
-- (_TtC9AUASDCore24AUAStreamSelectorControl)initWithIsSettable:(BOOL)a3 forElement:(unsigned int)a4 inScope:(unsigned int)a5 withPlugin:(id)a6 andObjectClassID:(unsigned int)a7;
-- (void)selectionDidChange:(id)a3;
+- (BOOL)changeValues:(const unsigned int *)values withCount:(int64_t)count;
+- (_TtC9AUASDCore24AUAStreamSelectorControl)initWithIsSettable:(BOOL)settable forElement:(unsigned int)element inScope:(unsigned int)scope withPlugin:(id)plugin andObjectClassID:(unsigned int)d;
+- (void)selectionDidChange:(id)change;
 @end
 
 @implementation AUAStreamSelectorControl
 
-- (BOOL)changeValues:(const unsigned int *)a3 withCount:(int64_t)a4
+- (BOOL)changeValues:(const unsigned int *)values withCount:(int64_t)count
 {
-  v6 = self;
-  LOBYTE(a4) = AUAStreamSelectorControl.changeValues(_:withCount:)(a3, a4);
+  selfCopy = self;
+  LOBYTE(count) = AUAStreamSelectorControl.changeValues(_:withCount:)(values, count);
 
-  return a4 & 1;
+  return count & 1;
 }
 
-- (void)selectionDidChange:(id)a3
+- (void)selectionDidChange:(id)change
 {
-  if (a3)
+  if (change)
   {
     sub_10002BD38();
     v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -27,12 +27,12 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   v7.value._rawValue = v4;
   AUAStreamSelectorControl.selectionDidChange(_:)(v7);
 }
 
-- (_TtC9AUASDCore24AUAStreamSelectorControl)initWithIsSettable:(BOOL)a3 forElement:(unsigned int)a4 inScope:(unsigned int)a5 withPlugin:(id)a6 andObjectClassID:(unsigned int)a7
+- (_TtC9AUASDCore24AUAStreamSelectorControl)initWithIsSettable:(BOOL)settable forElement:(unsigned int)element inScope:(unsigned int)scope withPlugin:(id)plugin andObjectClassID:(unsigned int)d
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

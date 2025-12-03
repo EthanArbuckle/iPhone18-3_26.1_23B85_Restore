@@ -9,47 +9,47 @@
 - (id)_recoveryKeySpecifierRegen;
 - (id)_walrusSpecifiers;
 - (id)_webAccessSpecifiers;
-- (id)getUserDefaultEnabled:(id)a3;
+- (id)getUserDefaultEnabled:(id)enabled;
 - (id)specifiers;
 - (id)walrusEnabled;
 - (id)webAccessEnabled;
 - (void)_loadSpecifiers;
-- (void)_recoverAndSyncrhonizeStingrayData:(id)a3;
-- (void)_recoverStingrayData:(id)a3;
-- (void)_showStatusChangeUIFor:(id)a3;
-- (void)_showWalrusChangeUI:(unint64_t)a3;
-- (void)_showWebAccessChangeUI:(unint64_t)a3;
-- (void)beginEnablementFlow:(id)a3;
-- (void)beginFMIPRecovery:(id)a3;
-- (void)beginIDMSRecovery:(id)a3;
-- (void)beginIDMSRecoveryPrimary:(id)a3;
-- (void)beginIDMSRecoveryRK:(id)a3;
-- (void)beginIDMSRecoveryWithFailure:(id)a3;
-- (void)beginIDMSRecoveryWithRKSkip:(id)a3;
-- (void)cdpContext:(id)a3 verifyMasterKey:(id)a4 completion:(id)a5;
-- (void)deviceToDeviceAccountUpgradeCardUI:(id)a3;
-- (void)enableCDP:(id)a3;
-- (void)generateNewRecoveryKey:(id)a3;
+- (void)_recoverAndSyncrhonizeStingrayData:(id)data;
+- (void)_recoverStingrayData:(id)data;
+- (void)_showStatusChangeUIFor:(id)for;
+- (void)_showWalrusChangeUI:(unint64_t)i;
+- (void)_showWebAccessChangeUI:(unint64_t)i;
+- (void)beginEnablementFlow:(id)flow;
+- (void)beginFMIPRecovery:(id)recovery;
+- (void)beginIDMSRecovery:(id)recovery;
+- (void)beginIDMSRecoveryPrimary:(id)primary;
+- (void)beginIDMSRecoveryRK:(id)k;
+- (void)beginIDMSRecoveryWithFailure:(id)failure;
+- (void)beginIDMSRecoveryWithRKSkip:(id)skip;
+- (void)cdpContext:(id)context verifyMasterKey:(id)key completion:(id)completion;
+- (void)deviceToDeviceAccountUpgradeCardUI:(id)i;
+- (void)enableCDP:(id)p;
+- (void)generateNewRecoveryKey:(id)key;
 - (void)presentAccountRecoveryFlow;
-- (void)promptFor4DigitICSC:(id)a3;
-- (void)promptFor4DigitRemoteSecret:(id)a3;
-- (void)promptFor6DigitICSC:(id)a3;
-- (void)promptFor6DigitRemoteSecret:(id)a3;
-- (void)promptForComplexICSC:(id)a3;
-- (void)promptForCustomAlphanumericRemoteSecret:(id)a3;
-- (void)promptForCustomNumericRemoteSecret:(id)a3;
-- (void)promptForLocalSecret:(id)a3;
-- (void)promptForRandomICSC:(id)a3;
-- (void)removeSpinnerFromSpecifier:(id)a3;
-- (void)setUserDefaultEnabled:(id)a3 specifier:(id)a4;
-- (void)setWalrusStatus:(BOOL)a3;
-- (void)setWebAccessStatus:(BOOL)a3;
-- (void)showADPLandingPage:(id)a3;
-- (void)simulateADPUpsell:(id)a3;
-- (void)startBeneficiaryFlow:(id)a3;
-- (void)startSpinnerForSpecifier:(id)a3;
-- (void)upsellViewModelDidRequestBeginEnablementFlowWithContext:(id)a3;
-- (void)upsellViewModelDidRequestCFUDismissalWithContext:(id)a3;
+- (void)promptFor4DigitICSC:(id)c;
+- (void)promptFor4DigitRemoteSecret:(id)secret;
+- (void)promptFor6DigitICSC:(id)c;
+- (void)promptFor6DigitRemoteSecret:(id)secret;
+- (void)promptForComplexICSC:(id)c;
+- (void)promptForCustomAlphanumericRemoteSecret:(id)secret;
+- (void)promptForCustomNumericRemoteSecret:(id)secret;
+- (void)promptForLocalSecret:(id)secret;
+- (void)promptForRandomICSC:(id)c;
+- (void)removeSpinnerFromSpecifier:(id)specifier;
+- (void)setUserDefaultEnabled:(id)enabled specifier:(id)specifier;
+- (void)setWalrusStatus:(BOOL)status;
+- (void)setWebAccessStatus:(BOOL)status;
+- (void)showADPLandingPage:(id)page;
+- (void)simulateADPUpsell:(id)upsell;
+- (void)startBeneficiaryFlow:(id)flow;
+- (void)startSpinnerForSpecifier:(id)specifier;
+- (void)upsellViewModelDidRequestBeginEnablementFlowWithContext:(id)context;
+- (void)upsellViewModelDidRequestCFUDismissalWithContext:(id)context;
 - (void)viewDidLoad;
 @end
 
@@ -61,8 +61,8 @@
   v2 = CFPreferencesGetAppBooleanValue(@"UseCDP", @"com.apple.corecdp", &keyExistsAndHasValidFormat) != 0;
   if (!keyExistsAndHasValidFormat)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
-    v2 = [v3 fileExistsAtPath:@"/var/db/.AppleiCDPEnroll"];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v2 = [defaultManager fileExistsAtPath:@"/var/db/.AppleiCDPEnroll"];
   }
 
   return v2;
@@ -257,35 +257,35 @@ uint64_t __37__SettingsController__loadSpecifiers__block_invoke_2(uint64_t a1)
   return v2;
 }
 
-- (id)getUserDefaultEnabled:(id)a3
+- (id)getUserDefaultEnabled:(id)enabled
 {
-  v3 = a3;
-  v4 = [v3 propertyForKey:*MEMORY[0x277D3FEF8]];
-  v5 = [v3 propertyForKey:*MEMORY[0x277D3FFF0]];
+  enabledCopy = enabled;
+  v4 = [enabledCopy propertyForKey:*MEMORY[0x277D3FEF8]];
+  v5 = [enabledCopy propertyForKey:*MEMORY[0x277D3FFF0]];
   keyExistsAndHasValidFormat = 0;
-  v6 = CFPreferencesGetAppBooleanValue(v5, v4, &keyExistsAndHasValidFormat) != 0;
+  bOOLValue = CFPreferencesGetAppBooleanValue(v5, v4, &keyExistsAndHasValidFormat) != 0;
   if (!keyExistsAndHasValidFormat)
   {
-    v7 = [v3 propertyForKey:*MEMORY[0x277D3FEF0]];
-    v6 = [v7 BOOLValue];
+    v7 = [enabledCopy propertyForKey:*MEMORY[0x277D3FEF0]];
+    bOOLValue = [v7 BOOLValue];
   }
 
-  v8 = [MEMORY[0x277CCABB0] numberWithBool:v6];
+  v8 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
 
   return v8;
 }
 
-- (void)setUserDefaultEnabled:(id)a3 specifier:(id)a4
+- (void)setUserDefaultEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 propertyForKey:*MEMORY[0x277D3FEF8]];
-  v8 = [v6 propertyForKey:*MEMORY[0x277D3FFF0]];
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  v7 = [specifierCopy propertyForKey:*MEMORY[0x277D3FEF8]];
+  v8 = [specifierCopy propertyForKey:*MEMORY[0x277D3FFF0]];
   if (v8)
   {
-    if ([v5 BOOLValue])
+    if ([enabledCopy BOOLValue])
     {
-      v9 = v5;
+      v9 = enabledCopy;
     }
 
     else
@@ -307,12 +307,12 @@ uint64_t __37__SettingsController__loadSpecifiers__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)startSpinnerForSpecifier:(id)a3
+- (void)startSpinnerForSpecifier:(id)specifier
 {
   v3 = *MEMORY[0x277D3FF38];
-  v4 = a3;
-  [v4 setProperty:MEMORY[0x277CBEC28] forKey:v3];
-  v6 = [v4 propertyForKey:*MEMORY[0x277D40148]];
+  specifierCopy = specifier;
+  [specifierCopy setProperty:MEMORY[0x277CBEC28] forKey:v3];
+  v6 = [specifierCopy propertyForKey:*MEMORY[0x277D40148]];
 
   if (v6)
   {
@@ -322,12 +322,12 @@ uint64_t __37__SettingsController__loadSpecifiers__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)removeSpinnerFromSpecifier:(id)a3
+- (void)removeSpinnerFromSpecifier:(id)specifier
 {
   v3 = *MEMORY[0x277D3FF38];
-  v4 = a3;
-  [v4 setProperty:MEMORY[0x277CBEC38] forKey:v3];
-  v6 = [v4 propertyForKey:*MEMORY[0x277D40148]];
+  specifierCopy = specifier;
+  [specifierCopy setProperty:MEMORY[0x277CBEC38] forKey:v3];
+  v6 = [specifierCopy propertyForKey:*MEMORY[0x277D40148]];
 
   v5 = v6;
   if (v6)
@@ -405,20 +405,20 @@ uint64_t __37__SettingsController__loadSpecifiers__block_invoke_2(uint64_t a1)
   return v7;
 }
 
-- (void)generateNewRecoveryKey:(id)a3
+- (void)generateNewRecoveryKey:(id)key
 {
   v4 = MEMORY[0x277CFD548];
-  v5 = a3;
+  keyCopy = key;
   v6 = [v4 alloc];
-  v7 = [(SettingsController *)self _contextForPrimaryAccount];
-  v8 = [v6 initWithContext:v7];
+  _contextForPrimaryAccount = [(SettingsController *)self _contextForPrimaryAccount];
+  v8 = [v6 initWithContext:_contextForPrimaryAccount];
 
-  v9 = [v5 name];
+  name = [keyCopy name];
 
-  LODWORD(v5) = [v9 hasSuffix:@"Regen"];
-  v10 = [v8 context];
-  v11 = v10;
-  if (v5)
+  LODWORD(keyCopy) = [name hasSuffix:@"Regen"];
+  context = [v8 context];
+  v11 = context;
+  if (keyCopy)
   {
     v12 = 4;
   }
@@ -428,11 +428,11 @@ uint64_t __37__SettingsController__loadSpecifiers__block_invoke_2(uint64_t a1)
     v12 = 5;
   }
 
-  [v10 setType:v12];
+  [context setType:v12];
 
   v13 = objc_alloc(MEMORY[0x277CFDAE0]);
-  v14 = [(SettingsController *)self navigationController];
-  v15 = [v13 initWithPresentingViewController:v14];
+  navigationController = [(SettingsController *)self navigationController];
+  v15 = [v13 initWithPresentingViewController:navigationController];
 
   [v15 setForceInlinePresentation:{-[SettingsController _forceInlineUI](self, "_forceInlineUI")}];
   [v8 setUiProvider:v15];
@@ -471,21 +471,21 @@ void __45__SettingsController_generateNewRecoveryKey___block_invoke(uint64_t a1,
   return v5;
 }
 
-- (void)_recoverStingrayData:(id)a3
+- (void)_recoverStingrayData:(id)data
 {
-  v4 = a3;
-  [(SettingsController *)self startSpinnerForSpecifier:v4];
+  dataCopy = data;
+  [(SettingsController *)self startSpinnerForSpecifier:dataCopy];
   v5 = objc_alloc(MEMORY[0x277CFD548]);
-  v6 = [(SettingsController *)self _contextForPrimaryAccount];
-  v7 = [v5 initWithContext:v6];
+  _contextForPrimaryAccount = [(SettingsController *)self _contextForPrimaryAccount];
+  v7 = [v5 initWithContext:_contextForPrimaryAccount];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __43__SettingsController__recoverStingrayData___block_invoke;
   v9[3] = &unk_278E2FAA0;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = dataCopy;
+  v8 = dataCopy;
   [v7 recoverWithSquirrel:v9];
 }
 
@@ -522,21 +522,21 @@ void __43__SettingsController__recoverStingrayData___block_invoke(uint64_t a1, i
   return v5;
 }
 
-- (void)_recoverAndSyncrhonizeStingrayData:(id)a3
+- (void)_recoverAndSyncrhonizeStingrayData:(id)data
 {
-  v4 = a3;
-  [(SettingsController *)self startSpinnerForSpecifier:v4];
+  dataCopy = data;
+  [(SettingsController *)self startSpinnerForSpecifier:dataCopy];
   v5 = objc_alloc(MEMORY[0x277CFD548]);
-  v6 = [(SettingsController *)self _contextForPrimaryAccount];
-  v7 = [v5 initWithContext:v6];
+  _contextForPrimaryAccount = [(SettingsController *)self _contextForPrimaryAccount];
+  v7 = [v5 initWithContext:_contextForPrimaryAccount];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__SettingsController__recoverAndSyncrhonizeStingrayData___block_invoke;
   v9[3] = &unk_278E2FAA0;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = dataCopy;
+  v8 = dataCopy;
   [v7 recoverAndSynchronizeWithSquirrel:v9];
 }
 
@@ -562,36 +562,36 @@ void __57__SettingsController__recoverAndSyncrhonizeStingrayData___block_invoke(
   [*(a1 + 32) presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)enableCDP:(id)a3
+- (void)enableCDP:(id)p
 {
-  v4 = a3;
+  pCopy = p;
   v5 = objc_alloc_init(MEMORY[0x277CB8F48]);
-  v6 = [v5 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v5 aa_primaryAppleAccount];
   v7 = _CDPLogSystem();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
-  if (v6)
+  if (aa_primaryAppleAccount)
   {
     if (v8)
     {
-      [SettingsController enableCDP:v6];
+      [SettingsController enableCDP:aa_primaryAppleAccount];
     }
 
     CFPreferencesSetAppValue(@"USeCDP", *MEMORY[0x277CBED28], @"com.apple.corecdp");
     CFPreferencesSynchronize(@"com.apple.corecdp", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
     v9 = objc_alloc_init(MEMORY[0x277CF0380]);
-    v10 = [v6 accountProperties];
-    v7 = [v10 objectForKeyedSubscript:@"personID"];
+    accountProperties = [aa_primaryAppleAccount accountProperties];
+    v7 = [accountProperties objectForKeyedSubscript:@"personID"];
 
     [v9 setDSID:v7];
-    v11 = [v6 username];
-    [v9 setUsername:v11];
+    username = [aa_primaryAppleAccount username];
+    [v9 setUsername:username];
 
     [v9 setIsUsernameEditable:0];
     [v9 setPresentingViewController:self];
     [v9 setShouldForceInteractiveAuth:1];
-    [v4 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
-    [v4 setProperty:@"Enabling iCDP..." forKey:*MEMORY[0x277D40170]];
-    [(SettingsController *)self reloadSpecifier:v4];
+    [pCopy setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
+    [pCopy setProperty:@"Enabling iCDP..." forKey:*MEMORY[0x277D40170]];
+    [(SettingsController *)self reloadSpecifier:pCopy];
     v12 = [objc_alloc(MEMORY[0x277CF0178]) initWithIdentifier:@"com.apple.corecdp.internal_prefs"];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -732,15 +732,15 @@ LABEL_12:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)promptForLocalSecret:(id)a3
+- (void)promptForLocalSecret:(id)secret
 {
-  v7 = [MEMORY[0x277CFD4A8] contextForPrimaryAccount];
+  contextForPrimaryAccount = [MEMORY[0x277CFD4A8] contextForPrimaryAccount];
   v4 = objc_alloc(MEMORY[0x277CFDAE0]);
-  v5 = [(SettingsController *)self navigationController];
-  v6 = [v4 initWithPresentingViewController:v5];
+  navigationController = [(SettingsController *)self navigationController];
+  v6 = [v4 initWithPresentingViewController:navigationController];
 
   [v6 setForceInlinePresentation:{-[SettingsController _forceInlineUI](self, "_forceInlineUI")}];
-  [v6 cdpContext:v7 promptForLocalSecretWithCompletion:&__block_literal_global_0];
+  [v6 cdpContext:contextForPrimaryAccount promptForLocalSecretWithCompletion:&__block_literal_global_0];
 }
 
 void __43__SettingsController_promptForLocalSecret___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -763,29 +763,29 @@ void __43__SettingsController_promptForLocalSecret___block_invoke(uint64_t a1, v
   }
 }
 
-- (void)promptFor4DigitRemoteSecret:(id)a3
+- (void)promptFor4DigitRemoteSecret:(id)secret
 {
   v12 = objc_alloc_init(MEMORY[0x277CFD4A8]);
   [v12 setDidUseSMSVerification:{-[SettingsController _didUseSMSVerification](self, "_didUseSMSVerification")}];
   v4 = [(SettingsController *)self _fakeDevicesWithExpectedSecret:@"1234" isNumber:1 numericLength:&unk_28583A468];
   v5 = [[DummyRemoteDeviceSecretValidator alloc] initWithExpectedSecret:@"1234"];
   v6 = objc_alloc(MEMORY[0x277CFDAE0]);
-  v7 = [(SettingsController *)self navigationController];
-  v8 = [v6 initWithPresentingViewController:v7];
+  navigationController = [(SettingsController *)self navigationController];
+  v8 = [v6 initWithPresentingViewController:navigationController];
   uiController = self->_uiController;
   self->_uiController = v8;
 
   [(CDPUIController *)self->_uiController setForceInlinePresentation:[(SettingsController *)self _forceInlineUI]];
-  v10 = [(SettingsController *)self _offerRemoteApproval];
+  _offerRemoteApproval = [(SettingsController *)self _offerRemoteApproval];
   v11 = objc_alloc_init(MEMORY[0x277CFD530]);
   [v11 setContext:v12];
   [v11 setIsWalrusEnabled:{-[SettingsController _enableWalrus](self, "_enableWalrus")}];
   [v11 setRpdProbationDuration:0.0];
-  [v11 setHasPeersForRemoteApproval:v10];
+  [v11 setHasPeersForRemoteApproval:_offerRemoteApproval];
   [(CDPUIController *)self->_uiController cdpRecoveryFlowContext:v11 promptForRemoteSecretWithDevices:v4 validator:v5];
 }
 
-- (void)promptFor6DigitRemoteSecret:(id)a3
+- (void)promptFor6DigitRemoteSecret:(id)secret
 {
   v4 = objc_alloc_init(MEMORY[0x277CFD4A8]);
   if (!v4)
@@ -798,8 +798,8 @@ void __43__SettingsController_promptForLocalSecret___block_invoke(uint64_t a1, v
   v5 = [(SettingsController *)self _fakeDevicesWithExpectedSecret:@"123456" isNumber:1 numericLength:&unk_28583A480];
   v6 = [[DummyRemoteDeviceSecretValidator alloc] initWithExpectedSecret:@"123456"];
   v7 = objc_alloc(MEMORY[0x277CFDAE0]);
-  v8 = [(SettingsController *)self navigationController];
-  v9 = [v7 initWithPresentingViewController:v8];
+  navigationController = [(SettingsController *)self navigationController];
+  v9 = [v7 initWithPresentingViewController:navigationController];
   uiController = self->_uiController;
   self->_uiController = v9;
 
@@ -815,38 +815,38 @@ void __43__SettingsController_promptForLocalSecret___block_invoke(uint64_t a1, v
     [v13 set_supportsCustodianRecovery:1];
   }
 
-  v11 = [(SettingsController *)self _offerRemoteApproval];
+  _offerRemoteApproval = [(SettingsController *)self _offerRemoteApproval];
   v12 = objc_alloc_init(MEMORY[0x277CFD530]);
   [v12 setContext:v13];
   [v12 setIsWalrusEnabled:{-[SettingsController _enableWalrus](self, "_enableWalrus")}];
   [v12 setRpdProbationDuration:0.0];
-  [v12 setHasPeersForRemoteApproval:v11];
+  [v12 setHasPeersForRemoteApproval:_offerRemoteApproval];
   [(CDPUIController *)self->_uiController cdpRecoveryFlowContext:v12 promptForRemoteSecretWithDevices:v5 validator:v6];
 }
 
-- (void)promptForCustomNumericRemoteSecret:(id)a3
+- (void)promptForCustomNumericRemoteSecret:(id)secret
 {
   v12 = objc_alloc_init(MEMORY[0x277CFD4A8]);
   [v12 setDidUseSMSVerification:{-[SettingsController _didUseSMSVerification](self, "_didUseSMSVerification")}];
   v4 = [(SettingsController *)self _fakeDevicesWithExpectedSecret:@"1234567" isNumber:1 numericLength:&unk_28583A498];
   v5 = [[DummyRemoteDeviceSecretValidator alloc] initWithExpectedSecret:@"1234567"];
   v6 = objc_alloc(MEMORY[0x277CFDAE0]);
-  v7 = [(SettingsController *)self navigationController];
-  v8 = [v6 initWithPresentingViewController:v7];
+  navigationController = [(SettingsController *)self navigationController];
+  v8 = [v6 initWithPresentingViewController:navigationController];
   uiController = self->_uiController;
   self->_uiController = v8;
 
   [(CDPUIController *)self->_uiController setForceInlinePresentation:[(SettingsController *)self _forceInlineUI]];
-  v10 = [(SettingsController *)self _offerRemoteApproval];
+  _offerRemoteApproval = [(SettingsController *)self _offerRemoteApproval];
   v11 = objc_alloc_init(MEMORY[0x277CFD530]);
   [v11 setContext:v12];
   [v11 setIsWalrusEnabled:{-[SettingsController _enableWalrus](self, "_enableWalrus")}];
   [v11 setRpdProbationDuration:0.0];
-  [v11 setHasPeersForRemoteApproval:v10];
+  [v11 setHasPeersForRemoteApproval:_offerRemoteApproval];
   [(CDPUIController *)self->_uiController cdpRecoveryFlowContext:v11 promptForRemoteSecretWithDevices:v4 validator:v5];
 }
 
-- (void)promptForCustomAlphanumericRemoteSecret:(id)a3
+- (void)promptForCustomAlphanumericRemoteSecret:(id)secret
 {
   v12 = objc_alloc_init(MEMORY[0x277CFD4A8]);
   [v12 setDidUseSMSVerification:{-[SettingsController _didUseSMSVerification](self, "_didUseSMSVerification")}];
@@ -859,29 +859,29 @@ void __43__SettingsController_promptForLocalSecret___block_invoke(uint64_t a1, v
   }
 
   v6 = objc_alloc(MEMORY[0x277CFDAE0]);
-  v7 = [(SettingsController *)self navigationController];
-  v8 = [v6 initWithPresentingViewController:v7];
+  navigationController = [(SettingsController *)self navigationController];
+  v8 = [v6 initWithPresentingViewController:navigationController];
   uiController = self->_uiController;
   self->_uiController = v8;
 
   [(CDPUIController *)self->_uiController setForceInlinePresentation:[(SettingsController *)self _forceInlineUI]];
-  v10 = [(SettingsController *)self _offerRemoteApproval];
+  _offerRemoteApproval = [(SettingsController *)self _offerRemoteApproval];
   v11 = objc_alloc_init(MEMORY[0x277CFD530]);
   [v11 setContext:v12];
   [v11 setIsWalrusEnabled:{-[SettingsController _enableWalrus](self, "_enableWalrus")}];
   [v11 setRpdProbationDuration:0.0];
-  [v11 setHasPeersForRemoteApproval:v10];
+  [v11 setHasPeersForRemoteApproval:_offerRemoteApproval];
   [(CDPUIController *)self->_uiController cdpRecoveryFlowContext:v11 promptForRemoteSecretWithDevices:v4 validator:v5];
 }
 
-- (void)promptFor4DigitICSC:(id)a3
+- (void)promptFor4DigitICSC:(id)c
 {
   v9 = objc_alloc_init(MEMORY[0x277CFD4A8]);
   [v9 setDidUseSMSVerification:{-[SettingsController _didUseSMSVerification](self, "_didUseSMSVerification")}];
   v4 = [[DummyRemoteDeviceSecretValidator alloc] initWithExpectedSecret:@"1234"];
   v5 = objc_alloc(MEMORY[0x277CFDAE0]);
-  v6 = [(SettingsController *)self navigationController];
-  v7 = [v5 initWithPresentingViewController:v6];
+  navigationController = [(SettingsController *)self navigationController];
+  v7 = [v5 initWithPresentingViewController:navigationController];
   uiController = self->_uiController;
   self->_uiController = v7;
 
@@ -889,14 +889,14 @@ void __43__SettingsController_promptForLocalSecret___block_invoke(uint64_t a1, v
   [(CDPUIController *)self->_uiController cdpContext:v9 promptForICSCWithIsNumeric:1 numericLength:&unk_28583A468 isRandom:0 validator:v4];
 }
 
-- (void)promptFor6DigitICSC:(id)a3
+- (void)promptFor6DigitICSC:(id)c
 {
   v9 = objc_alloc_init(MEMORY[0x277CFD4A8]);
   [v9 setDidUseSMSVerification:{-[SettingsController _didUseSMSVerification](self, "_didUseSMSVerification")}];
   v4 = [[DummyRemoteDeviceSecretValidator alloc] initWithExpectedSecret:@"123456"];
   v5 = objc_alloc(MEMORY[0x277CFDAE0]);
-  v6 = [(SettingsController *)self navigationController];
-  v7 = [v5 initWithPresentingViewController:v6];
+  navigationController = [(SettingsController *)self navigationController];
+  v7 = [v5 initWithPresentingViewController:navigationController];
   uiController = self->_uiController;
   self->_uiController = v7;
 
@@ -904,14 +904,14 @@ void __43__SettingsController_promptForLocalSecret___block_invoke(uint64_t a1, v
   [(CDPUIController *)self->_uiController cdpContext:v9 promptForICSCWithIsNumeric:1 numericLength:&unk_28583A480 isRandom:0 validator:v4];
 }
 
-- (void)promptForComplexICSC:(id)a3
+- (void)promptForComplexICSC:(id)c
 {
   v9 = objc_alloc_init(MEMORY[0x277CFD4A8]);
   [v9 setDidUseSMSVerification:{-[SettingsController _didUseSMSVerification](self, "_didUseSMSVerification")}];
   v4 = [[DummyRemoteDeviceSecretValidator alloc] initWithExpectedSecret:@"Chuck"];
   v5 = objc_alloc(MEMORY[0x277CFDAE0]);
-  v6 = [(SettingsController *)self navigationController];
-  v7 = [v5 initWithPresentingViewController:v6];
+  navigationController = [(SettingsController *)self navigationController];
+  v7 = [v5 initWithPresentingViewController:navigationController];
   uiController = self->_uiController;
   self->_uiController = v7;
 
@@ -919,14 +919,14 @@ void __43__SettingsController_promptForLocalSecret___block_invoke(uint64_t a1, v
   [(CDPUIController *)self->_uiController cdpContext:v9 promptForICSCWithIsNumeric:0 numericLength:0 isRandom:0 validator:v4];
 }
 
-- (void)promptForRandomICSC:(id)a3
+- (void)promptForRandomICSC:(id)c
 {
   v9 = objc_alloc_init(MEMORY[0x277CFD4A8]);
   [v9 setDidUseSMSVerification:{-[SettingsController _didUseSMSVerification](self, "_didUseSMSVerification")}];
   v4 = [[DummyRemoteDeviceSecretValidator alloc] initWithExpectedSecret:@"Chuck"];
   v5 = objc_alloc(MEMORY[0x277CFDAE0]);
-  v6 = [(SettingsController *)self navigationController];
-  v7 = [v5 initWithPresentingViewController:v6];
+  navigationController = [(SettingsController *)self navigationController];
+  v7 = [v5 initWithPresentingViewController:navigationController];
   uiController = self->_uiController;
   self->_uiController = v7;
 
@@ -934,19 +934,19 @@ void __43__SettingsController_promptForLocalSecret___block_invoke(uint64_t a1, v
   [(CDPUIController *)self->_uiController cdpContext:v9 promptForICSCWithIsNumeric:0 numericLength:0 isRandom:1 validator:v4];
 }
 
-- (void)beginIDMSRecoveryRK:(id)a3
+- (void)beginIDMSRecoveryRK:(id)k
 {
   v4 = objc_alloc(MEMORY[0x277CFDAE0]);
-  v5 = [(SettingsController *)self navigationController];
-  v6 = [v4 initWithPresentingViewController:v5];
+  navigationController = [(SettingsController *)self navigationController];
+  v6 = [v4 initWithPresentingViewController:navigationController];
   uiController = self->_uiController;
   self->_uiController = v6;
 
   [(CDPUIController *)self->_uiController setForceInlinePresentation:[(SettingsController *)self _forceInlineUI]];
-  v8 = [(SettingsController *)self _contextForPrimaryAccount];
-  [v8 setIdmsMasterKeyRecovery:1];
-  [v8 setMandatesRecoveryKey:{-[SettingsController _rkMandate](self, "_rkMandate")}];
-  v9 = [objc_alloc(MEMORY[0x277CFD528]) initWithContext:v8];
+  _contextForPrimaryAccount = [(SettingsController *)self _contextForPrimaryAccount];
+  [_contextForPrimaryAccount setIdmsMasterKeyRecovery:1];
+  [_contextForPrimaryAccount setMandatesRecoveryKey:{-[SettingsController _rkMandate](self, "_rkMandate")}];
+  v9 = [objc_alloc(MEMORY[0x277CFD528]) initWithContext:_contextForPrimaryAccount];
   [v9 setUiProvider:self->_uiController];
   [v9 setAuthProvider:self];
   v10[0] = MEMORY[0x277D85DD0];
@@ -972,31 +972,31 @@ void __42__SettingsController_beginIDMSRecoveryRK___block_invoke(uint64_t a1, vo
   [*(a1 + 32) presentViewController:v10 animated:1 completion:0];
 }
 
-- (void)beginIDMSRecoveryWithRKSkip:(id)a3
+- (void)beginIDMSRecoveryWithRKSkip:(id)skip
 {
   v4 = objc_alloc(MEMORY[0x277CFDAE0]);
-  v5 = [(SettingsController *)self navigationController];
-  v6 = [v4 initWithPresentingViewController:v5];
+  navigationController = [(SettingsController *)self navigationController];
+  v6 = [v4 initWithPresentingViewController:navigationController];
   uiController = self->_uiController;
   self->_uiController = v6;
 
   [(CDPUIController *)self->_uiController setForceInlinePresentation:[(SettingsController *)self _forceInlineUI]];
-  v8 = [(SettingsController *)self _contextForPrimaryAccount];
-  [v8 setIdmsMasterKeyRecovery:1];
-  [v8 setMandatesRecoveryKey:{-[SettingsController _rkMandate](self, "_rkMandate")}];
-  v9 = [objc_alloc(MEMORY[0x277CFD528]) initWithContext:v8];
+  _contextForPrimaryAccount = [(SettingsController *)self _contextForPrimaryAccount];
+  [_contextForPrimaryAccount setIdmsMasterKeyRecovery:1];
+  [_contextForPrimaryAccount setMandatesRecoveryKey:{-[SettingsController _rkMandate](self, "_rkMandate")}];
+  v9 = [objc_alloc(MEMORY[0x277CFD528]) initWithContext:_contextForPrimaryAccount];
   [v9 setUiProvider:self->_uiController];
   [v9 setAuthProvider:self];
   v10 = [objc_alloc(MEMORY[0x277CFDA98]) initWithConnection:0 entitlements:8 clientType:0];
   v11 = objc_alloc(MEMORY[0x277CFD550]);
-  v12 = [v9 uiProvider];
-  v13 = [v11 initWithUIProvider:v12];
+  uiProvider = [v9 uiProvider];
+  v13 = [v11 initWithUIProvider:uiProvider];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __50__SettingsController_beginIDMSRecoveryWithRKSkip___block_invoke;
   v14[3] = &unk_278E2FB38;
   v14[4] = self;
-  [v10 performRecoveryWithContext:v8 uiProvider:v13 authProvider:0 completion:v14];
+  [v10 performRecoveryWithContext:_contextForPrimaryAccount uiProvider:v13 authProvider:0 completion:v14];
 }
 
 void __50__SettingsController_beginIDMSRecoveryWithRKSkip___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1014,25 +1014,25 @@ void __50__SettingsController_beginIDMSRecoveryWithRKSkip___block_invoke(uint64_
   [*(a1 + 32) presentViewController:v10 animated:1 completion:0];
 }
 
-- (void)cdpContext:(id)a3 verifyMasterKey:(id)a4 completion:(id)a5
+- (void)cdpContext:(id)context verifyMasterKey:(id)key completion:(id)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   v6 = dispatch_time(0, 2000000000);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__SettingsController_cdpContext_verifyMasterKey_completion___block_invoke;
   block[3] = &unk_278E2F9E0;
-  v9 = v5;
-  v7 = v5;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_after(v6, MEMORY[0x277D85CD0], block);
 }
 
-- (void)beginIDMSRecovery:(id)a3
+- (void)beginIDMSRecovery:(id)recovery
 {
   v4 = [CDPRecoveryTestController alloc];
   v5 = [(SettingsController *)self _fakeDevicesWithExpectedSecret:@"1234567" isNumber:1 numericLength:&unk_28583A498];
-  v6 = [(SettingsController *)self navigationController];
-  v7 = [(CDPRecoveryTestController *)v4 initWithDevices:v5 andNavigationController:v6];
+  navigationController = [(SettingsController *)self navigationController];
+  v7 = [(CDPRecoveryTestController *)v4 initWithDevices:v5 andNavigationController:navigationController];
   recoveryTestController = self->_recoveryTestController;
   self->_recoveryTestController = v7;
 
@@ -1041,22 +1041,22 @@ void __50__SettingsController_beginIDMSRecoveryWithRKSkip___block_invoke(uint64_
   [(CDPRecoveryTestController *)v9 beginIDMSRecoveryFlow];
 }
 
-- (void)beginFMIPRecovery:(id)a3
+- (void)beginFMIPRecovery:(id)recovery
 {
-  v4 = a3;
+  recoveryCopy = recovery;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy_;
   v15 = __Block_byref_object_dispose_;
-  v16 = [(SettingsController *)self _contextForPrimaryAccount];
+  _contextForPrimaryAccount = [(SettingsController *)self _contextForPrimaryAccount];
   v5 = objc_alloc_init(MEMORY[0x277CF0380]);
-  v6 = [v12[5] dsid];
-  v7 = [v6 stringValue];
-  [v5 setDSID:v7];
+  dsid = [v12[5] dsid];
+  stringValue = [dsid stringValue];
+  [v5 setDSID:stringValue];
 
-  v8 = [v12[5] appleID];
-  [v5 setUsername:v8];
+  appleID = [v12[5] appleID];
+  [v5 setUsername:appleID];
 
   [v5 setIsUsernameEditable:0];
   [v5 setPresentingViewController:self];
@@ -1130,22 +1130,22 @@ void __40__SettingsController_beginFMIPRecovery___block_invoke_2(uint64_t a1, vo
   [*(a1 + 40) presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)beginIDMSRecoveryPrimary:(id)a3
+- (void)beginIDMSRecoveryPrimary:(id)primary
 {
-  v4 = a3;
+  primaryCopy = primary;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy_;
   v15 = __Block_byref_object_dispose_;
-  v16 = [(SettingsController *)self _contextForPrimaryAccount];
+  _contextForPrimaryAccount = [(SettingsController *)self _contextForPrimaryAccount];
   v5 = objc_alloc_init(MEMORY[0x277CF0380]);
-  v6 = [v12[5] dsid];
-  v7 = [v6 stringValue];
-  [v5 setDSID:v7];
+  dsid = [v12[5] dsid];
+  stringValue = [dsid stringValue];
+  [v5 setDSID:stringValue];
 
-  v8 = [v12[5] appleID];
-  [v5 setUsername:v8];
+  appleID = [v12[5] appleID];
+  [v5 setUsername:appleID];
 
   [v5 setIsUsernameEditable:0];
   [v5 setPresentingViewController:self];
@@ -1219,12 +1219,12 @@ void __47__SettingsController_beginIDMSRecoveryPrimary___block_invoke_2(uint64_t
   [*(a1 + 40) presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)beginIDMSRecoveryWithFailure:(id)a3
+- (void)beginIDMSRecoveryWithFailure:(id)failure
 {
   v4 = [CDPRecoveryTestController alloc];
   v5 = [(SettingsController *)self _fakeDevicesWithExpectedSecret:@"1234567" isNumber:1 numericLength:&unk_28583A498];
-  v6 = [(SettingsController *)self navigationController];
-  v7 = [(CDPRecoveryTestController *)v4 initWithDevices:v5 andNavigationController:v6];
+  navigationController = [(SettingsController *)self navigationController];
+  v7 = [(CDPRecoveryTestController *)v4 initWithDevices:v5 andNavigationController:navigationController];
   recoveryTestController = self->_recoveryTestController;
   self->_recoveryTestController = v7;
 
@@ -1233,12 +1233,12 @@ void __47__SettingsController_beginIDMSRecoveryPrimary___block_invoke_2(uint64_t
   [(CDPRecoveryTestController *)v9 beginIDMSRecoveryFlowWithSecretFailure];
 }
 
-- (void)deviceToDeviceAccountUpgradeCardUI:(id)a3
+- (void)deviceToDeviceAccountUpgradeCardUI:(id)i
 {
   v4 = objc_alloc(MEMORY[0x277CFDAE8]);
-  v5 = [MEMORY[0x277CFD480] sharedInstance];
-  v6 = [v5 primaryAccountAltDSID];
-  v8 = [v4 initWithAltDSID:v6];
+  mEMORY[0x277CFD480] = [MEMORY[0x277CFD480] sharedInstance];
+  primaryAccountAltDSID = [mEMORY[0x277CFD480] primaryAccountAltDSID];
+  v8 = [v4 initWithAltDSID:primaryAccountAltDSID];
 
   v7 = [objc_alloc(MEMORY[0x277CFDAF0]) initWithContext:v8];
   [v8 setDeviceToDeviceEncryptionUpgradeUIStyle:1];
@@ -1248,18 +1248,18 @@ void __47__SettingsController_beginIDMSRecoveryPrimary___block_invoke_2(uint64_t
   [v7 performDeviceToDeviceEncryptionStateRepairWithCompletion:0];
 }
 
-- (void)startBeneficiaryFlow:(id)a3
+- (void)startBeneficiaryFlow:(id)flow
 {
   v10 = objc_alloc_init(MEMORY[0x277CFD4A8]);
   v4 = objc_alloc_init(MEMORY[0x277CCAD78]);
   [v10 setBeneficiaryIdentifier:v4];
 
-  v5 = [@"ABCD" aaf_toBase64DecodedData];
-  [v10 setBeneficiaryWrappedKeyData:v5];
+  aaf_toBase64DecodedData = [@"ABCD" aaf_toBase64DecodedData];
+  [v10 setBeneficiaryWrappedKeyData:aaf_toBase64DecodedData];
 
   v6 = objc_alloc(MEMORY[0x277CFDAE0]);
-  v7 = [(SettingsController *)self navigationController];
-  v8 = [v6 initWithPresentingViewController:v7];
+  navigationController = [(SettingsController *)self navigationController];
+  v8 = [v6 initWithPresentingViewController:navigationController];
   uiController = self->_uiController;
   self->_uiController = v8;
 
@@ -1267,11 +1267,11 @@ void __47__SettingsController_beginIDMSRecoveryPrimary___block_invoke_2(uint64_t
   [(CDPUIController *)self->_uiController cdpContext:v10 promptForBeneficiaryAccessKeyWithCompletion:&__block_literal_global_351];
 }
 
-- (void)_showStatusChangeUIFor:(id)a3
+- (void)_showStatusChangeUIFor:(id)for
 {
   v4 = MEMORY[0x277CFDAF8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithModel:v5];
+  forCopy = for;
+  v6 = [[v4 alloc] initWithModel:forCopy];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -1307,15 +1307,15 @@ void __45__SettingsController__showStatusChangeUIFor___block_invoke(uint64_t a1,
   [*(a1 + 32) presentViewController:v5 animated:1 completion:0];
 }
 
-- (void)_showWalrusChangeUI:(unint64_t)a3
+- (void)_showWalrusChangeUI:(unint64_t)i
 {
-  v4 = [objc_alloc(MEMORY[0x277CFDB00]) initWithTargetStatus:a3 statusProvider:self->_walrusStateController statusUpdater:self->_walrusStateController];
+  v4 = [objc_alloc(MEMORY[0x277CFDB00]) initWithTargetStatus:i statusProvider:self->_walrusStateController statusUpdater:self->_walrusStateController];
   [(SettingsController *)self _showStatusChangeUIFor:v4];
 }
 
-- (void)_showWebAccessChangeUI:(unint64_t)a3
+- (void)_showWebAccessChangeUI:(unint64_t)i
 {
-  v4 = [objc_alloc(MEMORY[0x277CFDB10]) initWithTargetStatus:a3 statusProvider:self->_webAccessStatusController statusUpdater:self->_webAccessStatusController walrusStatusProvider:self->_walrusStateController];
+  v4 = [objc_alloc(MEMORY[0x277CFDB10]) initWithTargetStatus:i statusProvider:self->_webAccessStatusController statusUpdater:self->_webAccessStatusController walrusStatusProvider:self->_walrusStateController];
   [(SettingsController *)self _showStatusChangeUIFor:v4];
 }
 
@@ -1327,10 +1327,10 @@ void __45__SettingsController__showStatusChangeUIFor___block_invoke(uint64_t a1,
   return [v2 numberWithInt:v3];
 }
 
-- (void)setWebAccessStatus:(BOOL)a3
+- (void)setWebAccessStatus:(BOOL)status
 {
   webAccessStatusController = self->_webAccessStatusController;
-  if (a3)
+  if (status)
   {
     v4 = 1;
   }
@@ -1351,9 +1351,9 @@ void __45__SettingsController__showStatusChangeUIFor___block_invoke(uint64_t a1,
   return [v2 numberWithInt:v3];
 }
 
-- (void)setWalrusStatus:(BOOL)a3
+- (void)setWalrusStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v4 = 1;
   }
@@ -1363,34 +1363,34 @@ void __45__SettingsController__showStatusChangeUIFor___block_invoke(uint64_t a1,
     v4 = 2;
   }
 
-  v5 = [(SettingsController *)self _contextForPrimaryAccount];
-  [(DummyWalrusStateController *)self->_walrusStateController updateWalrusStatus:v4 authenticatedContext:v5 completion:&__block_literal_global_370];
+  _contextForPrimaryAccount = [(SettingsController *)self _contextForPrimaryAccount];
+  [(DummyWalrusStateController *)self->_walrusStateController updateWalrusStatus:v4 authenticatedContext:_contextForPrimaryAccount completion:&__block_literal_global_370];
 }
 
-- (void)showADPLandingPage:(id)a3
+- (void)showADPLandingPage:(id)page
 {
-  v7 = [(SettingsController *)self _contextForPrimaryAccount];
+  _contextForPrimaryAccount = [(SettingsController *)self _contextForPrimaryAccount];
   v4 = objc_alloc_init(MEMORY[0x277CFDB08]);
-  v5 = [v4 makeSwiftUIViewWithCdpContext:v7 advancedDataProtectionViewModelDelegate:self presentingViewController:self];
-  v6 = [(SettingsController *)self navigationController];
-  [v6 pushViewController:v5 animated:1];
+  v5 = [v4 makeSwiftUIViewWithCdpContext:_contextForPrimaryAccount advancedDataProtectionViewModelDelegate:self presentingViewController:self];
+  navigationController = [(SettingsController *)self navigationController];
+  [navigationController pushViewController:v5 animated:1];
 }
 
-- (void)simulateADPUpsell:(id)a3
+- (void)simulateADPUpsell:(id)upsell
 {
-  v4 = [(SettingsController *)self _contextForPrimaryAccount];
+  _contextForPrimaryAccount = [(SettingsController *)self _contextForPrimaryAccount];
   v5 = objc_alloc_init(MEMORY[0x277CFDB08]);
-  v6 = [MEMORY[0x277CF02F0] sharedBag];
-  v7 = [MEMORY[0x277CF0278] sharedNetworkObserver];
+  mEMORY[0x277CF02F0] = [MEMORY[0x277CF02F0] sharedBag];
+  mEMORY[0x277CF0278] = [MEMORY[0x277CF0278] sharedNetworkObserver];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __40__SettingsController_simulateADPUpsell___block_invoke;
   v8[3] = &unk_278E2FC18;
   v8[4] = self;
-  [v5 makeSwiftUIUpsellViewWithCDPContext:v4 urlBag:v6 networkObserver:v7 viewModelDelegate:self completion:v8];
+  [v5 makeSwiftUIUpsellViewWithCDPContext:_contextForPrimaryAccount urlBag:mEMORY[0x277CF02F0] networkObserver:mEMORY[0x277CF0278] viewModelDelegate:self completion:v8];
 }
 
-- (void)beginEnablementFlow:(id)a3
+- (void)beginEnablementFlow:(id)flow
 {
   v5 = [MEMORY[0x277D75110] alertControllerWithTitle:@"Began Enablement Flow" message:0 preferredStyle:1];
   v4 = [MEMORY[0x277D750F8] actionWithTitle:@"OK" style:0 handler:0];
@@ -1408,24 +1408,24 @@ void __45__SettingsController__showStatusChangeUIFor___block_invoke(uint64_t a1,
   [(SettingsController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)upsellViewModelDidRequestBeginEnablementFlowWithContext:(id)a3
+- (void)upsellViewModelDidRequestBeginEnablementFlowWithContext:(id)context
 {
   v6 = [MEMORY[0x277D75110] alertControllerWithTitle:@"Began Enablement Flow" message:0 preferredStyle:1];
   v4 = [MEMORY[0x277D750F8] actionWithTitle:@"OK" style:0 handler:0];
   [v6 addAction:v4];
 
-  v5 = [(SettingsController *)self presentedViewController];
-  [v5 presentViewController:v6 animated:1 completion:0];
+  presentedViewController = [(SettingsController *)self presentedViewController];
+  [presentedViewController presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)upsellViewModelDidRequestCFUDismissalWithContext:(id)a3
+- (void)upsellViewModelDidRequestCFUDismissalWithContext:(id)context
 {
   v6 = [MEMORY[0x277D75110] alertControllerWithTitle:@"Requested CFU dismissal" message:0 preferredStyle:1];
   v4 = [MEMORY[0x277D750F8] actionWithTitle:@"OK" style:0 handler:0];
   [v6 addAction:v4];
 
-  v5 = [(SettingsController *)self presentedViewController];
-  [v5 presentViewController:v6 animated:1 completion:0];
+  presentedViewController = [(SettingsController *)self presentedViewController];
+  [presentedViewController presentViewController:v6 animated:1 completion:0];
 }
 
 - (void)setUserDefaultEnabled:specifier:.cold.1()

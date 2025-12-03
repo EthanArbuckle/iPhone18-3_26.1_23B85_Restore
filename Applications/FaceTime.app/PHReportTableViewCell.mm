@@ -1,7 +1,7 @@
 @interface PHReportTableViewCell
 + (NSString)reuseIdentifier;
-- (PHReportTableViewCell)initWithCoder:(id)a3;
-- (PHReportTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PHReportTableViewCell)initWithCoder:(id)coder;
+- (PHReportTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation PHReportTableViewCell
@@ -21,7 +21,7 @@
   return v2;
 }
 
-- (PHReportTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PHReportTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -31,7 +31,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -41,7 +41,7 @@
   return v5;
 }
 
-- (PHReportTableViewCell)initWithCoder:(id)a3
+- (PHReportTableViewCell)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

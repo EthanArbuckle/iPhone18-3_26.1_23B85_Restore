@@ -1,7 +1,7 @@
 @interface NSCoreDataXPCMessage
-- (NSCoreDataXPCMessage)initWithCoder:(id)a3;
+- (NSCoreDataXPCMessage)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSCoreDataXPCMessage
@@ -20,34 +20,34 @@
   [(NSCoreDataXPCMessage *)&v3 dealloc];
 }
 
-- (NSCoreDataXPCMessage)initWithCoder:(id)a3
+- (NSCoreDataXPCMessage)initWithCoder:(id)coder
 {
   v4 = [(NSCoreDataXPCMessage *)self init];
   if (v4)
   {
-    v4->_messageCode = [a3 decodeIntegerForKey:@"NSCoreDataXPCMessageCode"];
-    v4->_messageBody = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSCoreDataXPCMessageBody"];
-    v4->_token = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSCoreDataXPCMessageToken"];
-    v4->_contextName = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSCoreDataXPCMessageContextName"];
-    v4->_contextTransactionAuthor = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSCoreDataXPCMessageContextTransactionAuthor"];
-    v4->_processName = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSCoreDataXPCMessageProcessName"];
-    v4->_allowAncillary = [a3 decodeBoolForKey:@"NSCoreDataXPCMessageContextAllowAncillary"];
+    v4->_messageCode = [coder decodeIntegerForKey:@"NSCoreDataXPCMessageCode"];
+    v4->_messageBody = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSCoreDataXPCMessageBody"];
+    v4->_token = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSCoreDataXPCMessageToken"];
+    v4->_contextName = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSCoreDataXPCMessageContextName"];
+    v4->_contextTransactionAuthor = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSCoreDataXPCMessageContextTransactionAuthor"];
+    v4->_processName = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSCoreDataXPCMessageProcessName"];
+    v4->_allowAncillary = [coder decodeBoolForKey:@"NSCoreDataXPCMessageContextAllowAncillary"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInteger:self->_messageCode forKey:@"NSCoreDataXPCMessageCode"];
-  [a3 encodeObject:self->_messageBody forKey:@"NSCoreDataXPCMessageBody"];
-  [a3 encodeObject:self->_token forKey:@"NSCoreDataXPCMessageToken"];
-  [a3 encodeObject:self->_contextName forKey:@"NSCoreDataXPCMessageContextName"];
-  [a3 encodeObject:self->_contextTransactionAuthor forKey:@"NSCoreDataXPCMessageContextTransactionAuthor"];
-  [a3 encodeObject:self->_processName forKey:@"NSCoreDataXPCMessageProcessName"];
+  [coder encodeInteger:self->_messageCode forKey:@"NSCoreDataXPCMessageCode"];
+  [coder encodeObject:self->_messageBody forKey:@"NSCoreDataXPCMessageBody"];
+  [coder encodeObject:self->_token forKey:@"NSCoreDataXPCMessageToken"];
+  [coder encodeObject:self->_contextName forKey:@"NSCoreDataXPCMessageContextName"];
+  [coder encodeObject:self->_contextTransactionAuthor forKey:@"NSCoreDataXPCMessageContextTransactionAuthor"];
+  [coder encodeObject:self->_processName forKey:@"NSCoreDataXPCMessageProcessName"];
   allowAncillary = self->_allowAncillary;
 
-  [a3 encodeBool:allowAncillary forKey:@"NSCoreDataXPCMessageContextAllowAncillary"];
+  [coder encodeBool:allowAncillary forKey:@"NSCoreDataXPCMessageContextAllowAncillary"];
 }
 
 @end

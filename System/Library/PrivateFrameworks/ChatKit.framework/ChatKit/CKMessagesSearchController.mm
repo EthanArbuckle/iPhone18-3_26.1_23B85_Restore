@@ -1,15 +1,15 @@
 @interface CKMessagesSearchController
-+ (Class)cellClassForMode:(unint64_t)a3;
-+ (id)reuseIdentifierForMode:(unint64_t)a3;
++ (Class)cellClassForMode:(unint64_t)mode;
++ (id)reuseIdentifierForMode:(unint64_t)mode;
 + (id)sectionTitle;
-- (BOOL)_shouldGroupResult:(id)a3 withOtherResult:(id)a4;
+- (BOOL)_shouldGroupResult:(id)result withOtherResult:(id)otherResult;
 - (CKMessagesSearchController)init;
 - (NSDirectionalEdgeInsets)additionalGroupInsets;
 - (double)interGroupSpacing;
 - (double)widthForDeterminingAvatarVisibility;
-- (id)_cellForItemInCollectionView:(id)a3 atIndexPath:(id)a4 withIdentifier:(id)a5;
-- (id)cellForItemInCollectionView:(id)a3 atIndexPath:(id)a4 withIdentifier:(id)a5;
-- (id)customLayoutSectionForEnvironment:(id)a3;
+- (id)_cellForItemInCollectionView:(id)view atIndexPath:(id)path withIdentifier:(id)identifier;
+- (id)cellForItemInCollectionView:(id)view atIndexPath:(id)path withIdentifier:(id)identifier;
+- (id)customLayoutSectionForEnvironment:(id)environment;
 @end
 
 @implementation CKMessagesSearchController
@@ -30,40 +30,40 @@
   return v3;
 }
 
-+ (id)reuseIdentifierForMode:(unint64_t)a3
++ (id)reuseIdentifierForMode:(unint64_t)mode
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isSearchImprovementsEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isSearchImprovementsEnabled = [mEMORY[0x1E69A8070] isSearchImprovementsEnabled];
 
   v5 = off_1E72E5220;
-  if (!v4)
+  if (!isSearchImprovementsEnabled)
   {
     v5 = off_1E72E4C10;
   }
 
-  v6 = [(__objc2_class *)*v5 reuseIdentifier];
+  reuseIdentifier = [(__objc2_class *)*v5 reuseIdentifier];
 
-  return v6;
+  return reuseIdentifier;
 }
 
-+ (Class)cellClassForMode:(unint64_t)a3
++ (Class)cellClassForMode:(unint64_t)mode
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  [v3 isSearchImprovementsEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  [mEMORY[0x1E69A8070] isSearchImprovementsEnabled];
 
   v4 = objc_opt_class();
 
   return v4;
 }
 
-- (id)customLayoutSectionForEnvironment:(id)a3
+- (id)customLayoutSectionForEnvironment:(id)environment
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v6 = [v5 isSearchImprovementsEnabled];
+  environmentCopy = environment;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isSearchImprovementsEnabled = [mEMORY[0x1E69A8070] isSearchImprovementsEnabled];
 
-  if (v6)
+  if (isSearchImprovementsEnabled)
   {
     v7 = [MEMORY[0x1E6995558] fractionalWidthDimension:1.0];
     v8 = [MEMORY[0x1E6995558] estimatedDimension:100.0];
@@ -83,8 +83,8 @@
   {
     if (CKIsRunningInMacCatalyst())
     {
-      v16 = [v4 container];
-      [v16 contentSize];
+      container = [environmentCopy container];
+      [container contentSize];
       v18 = v17;
       v19 = +[CKUIBehavior sharedBehaviors];
       [v19 minConversationListWidth];
@@ -96,8 +96,8 @@
       v21 = 1;
     }
 
-    v22 = [(CKSearchController *)self delegate];
-    v23 = [v22 shouldInsetResultsForSearchController:self];
+    delegate = [(CKSearchController *)self delegate];
+    v23 = [delegate shouldInsetResultsForSearchController:self];
 
     if (v23)
     {
@@ -109,9 +109,9 @@
       v24 = 4;
     }
 
-    v7 = [objc_alloc(MEMORY[0x1E69DD3F8]) initWithAppearanceStyle:v24 layoutEnvironment:v4];
+    v7 = [objc_alloc(MEMORY[0x1E69DD3F8]) initWithAppearanceStyle:v24 layoutEnvironment:environmentCopy];
     [v7 setSeparatorStyle:v21];
-    v15 = [objc_alloc(MEMORY[0x1E69DD3F0]) initWithConfiguration:v7 layoutEnvironment:v4];
+    v15 = [objc_alloc(MEMORY[0x1E69DD3F0]) initWithConfiguration:v7 layoutEnvironment:environmentCopy];
   }
 
   return v15;
@@ -128,10 +128,10 @@
 
 - (NSDirectionalEdgeInsets)additionalGroupInsets
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isSearchImprovementsEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isSearchImprovementsEnabled = [mEMORY[0x1E69A8070] isSearchImprovementsEnabled];
 
-  if (v4)
+  if (isSearchImprovementsEnabled)
   {
     v5 = +[CKUIBehavior sharedBehaviors];
     [v5 searchMessagesSectionInsets];
@@ -143,8 +143,8 @@
 
   else
   {
-    v14 = [(CKSearchController *)self delegate];
-    [v14 parentMarginInsetsForSearchController:self];
+    delegate = [(CKSearchController *)self delegate];
+    [delegate parentMarginInsetsForSearchController:self];
     v7 = v15;
     v11 = v16;
 
@@ -154,8 +154,8 @@
 
   if ([(CKSearchController *)self mode]!= 1)
   {
-    v17 = [(CKSearchController *)self results];
-    v18 = [v17 count];
+    results = [(CKSearchController *)self results];
+    v18 = [results count];
 
     if (!v18)
     {
@@ -177,34 +177,34 @@
   return result;
 }
 
-- (id)cellForItemInCollectionView:(id)a3 atIndexPath:(id)a4 withIdentifier:(id)a5
+- (id)cellForItemInCollectionView:(id)view atIndexPath:(id)path withIdentifier:(id)identifier
 {
   v8 = MEMORY[0x1E69A8070];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 sharedFeatureFlags];
-  LODWORD(v8) = [v12 isSearchImprovementsEnabled];
+  identifierCopy = identifier;
+  pathCopy = path;
+  viewCopy = view;
+  sharedFeatureFlags = [v8 sharedFeatureFlags];
+  LODWORD(v8) = [sharedFeatureFlags isSearchImprovementsEnabled];
 
   if (v8)
   {
-    v13 = [(CKMessagesSearchController *)self _cellForItemInCollectionView:v11 atIndexPath:v10 withIdentifier:v9];
+    v13 = [(CKMessagesSearchController *)self _cellForItemInCollectionView:viewCopy atIndexPath:pathCopy withIdentifier:identifierCopy];
   }
 
   else
   {
     v18.receiver = self;
     v18.super_class = CKMessagesSearchController;
-    v13 = [(CKSearchController *)&v18 cellForItemInCollectionView:v11 atIndexPath:v10 withIdentifier:v9];
+    v13 = [(CKSearchController *)&v18 cellForItemInCollectionView:viewCopy atIndexPath:pathCopy withIdentifier:identifierCopy];
 
-    v14 = [(CKSearchController *)self delegate];
-    [v13 setShouldInsetResults:{objc_msgSend(v14, "shouldInsetResultsForSearchController:", self)}];
+    delegate = [(CKSearchController *)self delegate];
+    [v13 setShouldInsetResults:{objc_msgSend(delegate, "shouldInsetResultsForSearchController:", self)}];
 
-    v15 = [v13 topHairline];
-    [v15 setHidden:0];
+    topHairline = [v13 topHairline];
+    [topHairline setHidden:0];
 
-    v16 = [v13 bottomHairline];
-    [v16 setHidden:1];
+    bottomHairline = [v13 bottomHairline];
+    [bottomHairline setHidden:1];
 
     [v13 setDelegate:self];
   }
@@ -212,23 +212,23 @@
   return v13;
 }
 
-- (id)_cellForItemInCollectionView:(id)a3 atIndexPath:(id)a4 withIdentifier:(id)a5
+- (id)_cellForItemInCollectionView:(id)view atIndexPath:(id)path withIdentifier:(id)identifier
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 row];
+  pathCopy = path;
+  viewCopy = view;
+  v9 = [pathCopy row];
   v10 = [objc_opt_class() reuseIdentifierForMode:{-[CKSearchController mode](self, "mode")}];
-  v11 = [(CKSearchController *)self results];
-  v12 = [v8 dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:v7];
+  results = [(CKSearchController *)self results];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:pathCopy];
 
-  if (v9 >= [v11 count])
+  if (v9 >= [results count])
   {
     v13 = 0;
   }
 
   else
   {
-    v13 = [v11 objectAtIndex:v9];
+    v13 = [results objectAtIndex:v9];
   }
 
   objc_opt_class();
@@ -236,82 +236,82 @@
   {
     v60 = v12;
     v59 = v12;
-    v65 = [(CKSearchController *)self mode];
-    v14 = [v7 row];
-    v57 = [v7 row];
-    v15 = [v11 count];
-    v62 = [v13 isFromMe];
-    if (v9 < 1 || v9 - 1 >= [v11 count])
+    mode = [(CKSearchController *)self mode];
+    v14 = [pathCopy row];
+    v57 = [pathCopy row];
+    v15 = [results count];
+    isFromMe = [v13 isFromMe];
+    if (v9 < 1 || v9 - 1 >= [results count])
     {
       v17 = 0;
     }
 
     else
     {
-      v16 = [v11 objectAtIndex:v9 - 1];
+      v16 = [results objectAtIndex:v9 - 1];
       v17 = [(CKMessagesSearchController *)self _shouldGroupResult:v13 withOtherResult:v16];
     }
 
     v19 = v9 + 1;
     v64 = v13;
-    if (v19 >= [v11 count])
+    if (v19 >= [results count])
     {
       v21 = 1;
     }
 
     else
     {
-      v20 = [v11 objectAtIndex:v19];
+      v20 = [results objectAtIndex:v19];
       v21 = ![(CKMessagesSearchController *)self _shouldGroupResult:v13 withOtherResult:v20];
     }
 
     v63 = !v17;
     v61 = v10;
-    v58 = v7;
+    v58 = pathCopy;
     v55 = v21;
     v56 = v17;
-    if (v62)
+    if (isFromMe)
     {
-      v22 = 0;
+      isGroupConversation = 0;
       v23 = v64;
     }
 
     else
     {
       v23 = v64;
-      v24 = [v64 conversation];
-      v22 = [v24 isGroupConversation];
+      conversation = [v64 conversation];
+      isGroupConversation = [conversation isGroupConversation];
     }
 
     v53 = v15 - 1;
-    v54 = v11;
+    v54 = results;
     v25 = v14 != 0;
-    v26 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v27 = [v23 item];
-    v28 = [v27 attributeSet];
-    v29 = [v28 contentCreationDate];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    item = [v23 item];
+    attributeSet = [item attributeSet];
+    contentCreationDate = [attributeSet contentCreationDate];
     v30 = v14;
-    v31 = [v26 isDateInToday:v29];
+    v31 = [currentCalendar isDateInToday:contentCreationDate];
 
     v32 = CKIsRunningInMacCatalyst();
-    v33 = v65 == 2;
+    v33 = mode == 2;
     if (v32)
     {
       v33 = 0;
     }
 
     v34 = v33 & v25 & v63;
-    v52 = v22;
-    if (v65 == 2)
+    v52 = isGroupConversation;
+    if (mode == 2)
     {
       v35 = 10.0;
       v36 = 4.0;
-      if (!v62)
+      if (!isFromMe)
       {
         v36 = 10.0;
       }
 
-      if (v22)
+      if (isGroupConversation)
       {
         v35 = 8.0;
       }
@@ -399,10 +399,10 @@
     }
 
     v47 = v42 == v43;
-    v48 = [(CKSearchController *)self delegate];
-    v49 = [v48 containerGradientReferenceViewForSearchController:self];
+    delegate = [(CKSearchController *)self delegate];
+    v49 = [delegate containerGradientReferenceViewForSearchController:self];
 
-    v50 = [(CKSearchController *)self currentSearchText];
+    currentSearchText = [(CKSearchController *)self currentSearchText];
     v66[0] = v38;
     v66[1] = v30 == 0;
     v66[2] = v47;
@@ -414,47 +414,47 @@
     v67 = v40;
     v68 = v41;
     v13 = v64;
-    [v59 configureWithQueryResult:v64 searchText:v50 mode:v65 visibilityContext:v66 gradientReferenceView:v49];
+    [v59 configureWithQueryResult:v64 searchText:currentSearchText mode:mode visibilityContext:v66 gradientReferenceView:v49];
 
     v12 = v60;
     v10 = v61;
-    v7 = v58;
-    v11 = v54;
+    pathCopy = v58;
+    results = v54;
   }
 
   else
   {
-    v18 = [(CKSearchController *)self currentSearchText];
-    [v12 configureWithQueryResult:v13 searchText:v18 mode:{-[CKSearchController mode](self, "mode")}];
+    currentSearchText2 = [(CKSearchController *)self currentSearchText];
+    [v12 configureWithQueryResult:v13 searchText:currentSearchText2 mode:{-[CKSearchController mode](self, "mode")}];
   }
 
   return v12;
 }
 
-- (BOOL)_shouldGroupResult:(id)a3 withOtherResult:(id)a4
+- (BOOL)_shouldGroupResult:(id)result withOtherResult:(id)otherResult
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 conversation];
-  v8 = [v7 chat];
-  v9 = [v8 guid];
+  resultCopy = result;
+  otherResultCopy = otherResult;
+  conversation = [resultCopy conversation];
+  chat = [conversation chat];
+  guid = [chat guid];
 
-  v10 = [v6 conversation];
-  v11 = [v10 chat];
-  v12 = [v11 guid];
+  conversation2 = [otherResultCopy conversation];
+  chat2 = [conversation2 chat];
+  guid2 = [chat2 guid];
 
-  if ([v9 isEqualToString:v12])
+  if ([guid isEqualToString:guid2])
   {
-    v13 = [v5 item];
-    v14 = [v13 attributeSet];
-    v15 = [v14 contentCreationDate];
+    item = [resultCopy item];
+    attributeSet = [item attributeSet];
+    contentCreationDate = [attributeSet contentCreationDate];
 
-    v16 = [v6 item];
-    v17 = [v16 attributeSet];
-    v18 = [v17 contentCreationDate];
+    item2 = [otherResultCopy item];
+    attributeSet2 = [item2 attributeSet];
+    contentCreationDate2 = [attributeSet2 contentCreationDate];
 
-    v19 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v20 = [v19 isDate:v15 inSameDayAsDate:v18];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v20 = [currentCalendar isDate:contentCreationDate inSameDayAsDate:contentCreationDate2];
   }
 
   else
@@ -467,8 +467,8 @@
 
 - (double)widthForDeterminingAvatarVisibility
 {
-  v2 = [(CKSearchController *)self delegate];
-  [v2 widthForDeterminingAvatarVisibility];
+  delegate = [(CKSearchController *)self delegate];
+  [delegate widthForDeterminingAvatarVisibility];
   v4 = v3;
 
   return v4;

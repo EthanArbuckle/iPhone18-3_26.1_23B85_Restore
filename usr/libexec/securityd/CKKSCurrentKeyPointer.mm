@@ -1,21 +1,21 @@
 @interface CKKSCurrentKeyPointer
-+ (BOOL)deleteAll:(id)a3 error:(id *)a4;
-+ (BOOL)intransactionRecordChanged:(id)a3 contextID:(id)a4 resync:(BOOL)a5 flagHandler:(id)a6 error:(id *)a7;
-+ (BOOL)intransactionRecordDeleted:(id)a3 contextID:(id)a4 error:(id *)a5;
-+ (id)all:(id)a3 error:(id *)a4;
-+ (id)forKeyClass:(id)a3 contextID:(id)a4 withKeyUUID:(id)a5 zoneID:(id)a6 error:(id *)a7;
-+ (id)fromDatabase:(id)a3 contextID:(id)a4 zoneID:(id)a5 error:(id *)a6;
-+ (id)fromDatabaseRow:(id)a3;
-+ (id)tryFromDatabase:(id)a3 contextID:(id)a4 zoneID:(id)a5 error:(id *)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesCKRecord:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (BOOL)deleteAll:(id)all error:(id *)error;
++ (BOOL)intransactionRecordChanged:(id)changed contextID:(id)d resync:(BOOL)resync flagHandler:(id)handler error:(id *)error;
++ (BOOL)intransactionRecordDeleted:(id)deleted contextID:(id)d error:(id *)error;
++ (id)all:(id)all error:(id *)error;
++ (id)forKeyClass:(id)class contextID:(id)d withKeyUUID:(id)iD zoneID:(id)zoneID error:(id *)error;
++ (id)fromDatabase:(id)database contextID:(id)d zoneID:(id)iD error:(id *)error;
++ (id)fromDatabaseRow:(id)row;
++ (id)tryFromDatabase:(id)database contextID:(id)d zoneID:(id)iD error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesCKRecord:(id)record;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initForClass:(id)a3 contextID:(id)a4 currentKeyUUID:(id)a5 zoneID:(id)a6 encodedCKRecord:(id)a7;
+- (id)initForClass:(id)class contextID:(id)d currentKeyUUID:(id)iD zoneID:(id)zoneID encodedCKRecord:(id)record;
 - (id)sqlValues;
-- (id)updateCKRecord:(id)a3 zoneID:(id)a4;
+- (id)updateCKRecord:(id)record zoneID:(id)d;
 - (id)whereClauseToFindSelf;
-- (void)setFromCKRecord:(id)a3;
+- (void)setFromCKRecord:(id)record;
 @end
 
 @implementation CKKSCurrentKeyPointer
@@ -23,17 +23,17 @@
 - (id)sqlValues
 {
   v19[0] = @"keyclass";
-  v3 = [(CKKSCurrentKeyPointer *)self keyclass];
-  v20[0] = v3;
+  keyclass = [(CKKSCurrentKeyPointer *)self keyclass];
+  v20[0] = keyclass;
   v19[1] = @"contextID";
-  v4 = [(CKKSCKRecordHolder *)self contextID];
-  v20[1] = v4;
+  contextID = [(CKKSCKRecordHolder *)self contextID];
+  v20[1] = contextID;
   v19[2] = @"currentKeyUUID";
-  v5 = [(CKKSCurrentKeyPointer *)self currentKeyUUID];
-  v6 = v5;
-  if (v5)
+  currentKeyUUID = [(CKKSCurrentKeyPointer *)self currentKeyUUID];
+  v6 = currentKeyUUID;
+  if (currentKeyUUID)
   {
-    v7 = v5;
+    v7 = currentKeyUUID;
   }
 
   else
@@ -45,12 +45,12 @@
 
   v20[2] = v8;
   v19[3] = @"ckzone";
-  v9 = [(CKKSCKRecordHolder *)self zoneID];
-  v10 = [v9 zoneName];
+  zoneID = [(CKKSCKRecordHolder *)self zoneID];
+  zoneName = [zoneID zoneName];
 
-  if (v10)
+  if (zoneName)
   {
-    v11 = v10;
+    v11 = zoneName;
   }
 
   else
@@ -62,8 +62,8 @@
 
   v20[3] = v12;
   v19[4] = @"ckrecord";
-  v13 = [(CKKSCKRecordHolder *)self encodedCKRecord];
-  v14 = [v13 base64EncodedStringWithOptions:0];
+  encodedCKRecord = [(CKKSCKRecordHolder *)self encodedCKRecord];
+  v14 = [encodedCKRecord base64EncodedStringWithOptions:0];
 
   if (v14)
   {
@@ -86,83 +86,83 @@
 - (id)whereClauseToFindSelf
 {
   v9[0] = @"contextID";
-  v3 = [(CKKSCKRecordHolder *)self contextID];
-  v10[0] = v3;
+  contextID = [(CKKSCKRecordHolder *)self contextID];
+  v10[0] = contextID;
   v9[1] = @"keyclass";
-  v4 = [(CKKSCurrentKeyPointer *)self keyclass];
-  v10[1] = v4;
+  keyclass = [(CKKSCurrentKeyPointer *)self keyclass];
+  v10[1] = keyclass;
   v9[2] = @"ckzone";
-  v5 = [(CKKSCKRecordHolder *)self zoneID];
-  v6 = [v5 zoneName];
-  v10[2] = v6;
+  zoneID = [(CKKSCKRecordHolder *)self zoneID];
+  zoneName = [zoneID zoneName];
+  v10[2] = zoneName;
   v7 = [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:3];
 
   return v7;
 }
 
-- (void)setFromCKRecord:(id)a3
+- (void)setFromCKRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 recordType];
-  v6 = [v5 isEqualToString:@"currentkey"];
+  recordCopy = record;
+  recordType = [recordCopy recordType];
+  v6 = [recordType isEqualToString:@"currentkey"];
 
   if ((v6 & 1) == 0)
   {
-    v14 = [v4 recordType];
-    v15 = [NSString stringWithFormat:@"CKRecordType (%@) was not %@", v14, @"currentkey"];
+    recordType2 = [recordCopy recordType];
+    v15 = [NSString stringWithFormat:@"CKRecordType (%@) was not %@", recordType2, @"currentkey"];
     v16 = [NSException exceptionWithName:@"WrongCKRecordTypeException" reason:v15 userInfo:0];
     v17 = v16;
 
     objc_exception_throw(v16);
   }
 
-  [(CKKSCKRecordHolder *)self setStoredCKRecord:v4];
-  v7 = [v4 recordID];
-  v8 = [v7 recordName];
-  [(CKKSCurrentKeyPointer *)self setKeyclass:v8];
+  [(CKKSCKRecordHolder *)self setStoredCKRecord:recordCopy];
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
+  [(CKKSCurrentKeyPointer *)self setKeyclass:recordName];
 
-  v9 = [v4 objectForKeyedSubscript:@"parentkeyref"];
-  v10 = [v9 recordID];
-  v11 = [v10 recordName];
-  [(CKKSCurrentKeyPointer *)self setCurrentKeyUUID:v11];
+  v9 = [recordCopy objectForKeyedSubscript:@"parentkeyref"];
+  recordID2 = [v9 recordID];
+  recordName2 = [recordID2 recordName];
+  [(CKKSCurrentKeyPointer *)self setCurrentKeyUUID:recordName2];
 
-  v12 = [(CKKSCurrentKeyPointer *)self currentKeyUUID];
+  currentKeyUUID = [(CKKSCurrentKeyPointer *)self currentKeyUUID];
 
-  if (!v12)
+  if (!currentKeyUUID)
   {
     v13 = sub_100019104(@"currentkey", 0);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v19 = v4;
+      v19 = recordCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "No current key UUID in record! How/why? %@", buf, 0xCu);
     }
   }
 }
 
-- (BOOL)matchesCKRecord:(id)a3
+- (BOOL)matchesCKRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 recordType];
-  v6 = [v5 isEqualToString:@"currentkey"];
+  recordCopy = record;
+  recordType = [recordCopy recordType];
+  v6 = [recordType isEqualToString:@"currentkey"];
 
   if (!v6)
   {
     goto LABEL_4;
   }
 
-  v7 = [v4 recordID];
-  v8 = [v7 recordName];
-  v9 = [(CKKSCurrentKeyPointer *)self keyclass];
-  v10 = [v8 isEqualToString:v9];
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
+  keyclass = [(CKKSCurrentKeyPointer *)self keyclass];
+  v10 = [recordName isEqualToString:keyclass];
 
   if (v10)
   {
-    v11 = [v4 objectForKeyedSubscript:@"parentkeyref"];
-    v12 = [v11 recordID];
-    v13 = [v12 recordName];
-    v14 = [(CKKSCurrentKeyPointer *)self currentKeyUUID];
-    v15 = [v13 isEqualToString:v14];
+    v11 = [recordCopy objectForKeyedSubscript:@"parentkeyref"];
+    recordID2 = [v11 recordID];
+    recordName2 = [recordID2 recordName];
+    currentKeyUUID = [(CKKSCurrentKeyPointer *)self currentKeyUUID];
+    v15 = [recordName2 isEqualToString:currentKeyUUID];
   }
 
   else
@@ -174,34 +174,34 @@ LABEL_4:
   return v15;
 }
 
-- (id)updateCKRecord:(id)a3 zoneID:(id)a4
+- (id)updateCKRecord:(id)record zoneID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 recordType];
-  v9 = [v8 isEqualToString:@"currentkey"];
+  recordCopy = record;
+  dCopy = d;
+  recordType = [recordCopy recordType];
+  v9 = [recordType isEqualToString:@"currentkey"];
 
   if ((v9 & 1) == 0)
   {
-    v20 = [v6 recordType];
-    v21 = [NSString stringWithFormat:@"CKRecordType (%@) was not %@", v20, @"currentkey"];
+    recordType2 = [recordCopy recordType];
+    v21 = [NSString stringWithFormat:@"CKRecordType (%@) was not %@", recordType2, @"currentkey"];
     v22 = [NSException exceptionWithName:@"WrongCKRecordTypeException" reason:v21 userInfo:0];
     v23 = v22;
 
     goto LABEL_8;
   }
 
-  v10 = [v6 recordID];
-  v11 = [v10 recordName];
-  v12 = [(CKKSCurrentKeyPointer *)self keyclass];
-  v13 = [v11 isEqualToString:v12];
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
+  keyclass = [(CKKSCurrentKeyPointer *)self keyclass];
+  v13 = [recordName isEqualToString:keyclass];
 
   if ((v13 & 1) == 0)
   {
-    v20 = [v6 recordID];
-    v24 = [v20 recordName];
-    v25 = [(CKKSCurrentKeyPointer *)self keyclass];
-    v26 = [NSString stringWithFormat:@"CKRecord name (%@) was not %@", v24, v25];
+    recordType2 = [recordCopy recordID];
+    recordName2 = [recordType2 recordName];
+    keyclass2 = [(CKKSCurrentKeyPointer *)self keyclass];
+    v26 = [NSString stringWithFormat:@"CKRecord name (%@) was not %@", recordName2, keyclass2];
     v22 = [NSException exceptionWithName:@"WrongCKRecordNameException" reason:v26 userInfo:0];
     v27 = v22;
 
@@ -211,24 +211,24 @@ LABEL_8:
 
   v14 = [CKReference alloc];
   v15 = [CKRecordID alloc];
-  v16 = [(CKKSCurrentKeyPointer *)self currentKeyUUID];
-  v17 = [v15 initWithRecordName:v16 zoneID:v7];
+  currentKeyUUID = [(CKKSCurrentKeyPointer *)self currentKeyUUID];
+  v17 = [v15 initWithRecordName:currentKeyUUID zoneID:dCopy];
   v18 = [v14 initWithRecordID:v17 action:0];
-  [v6 setObject:v18 forKeyedSubscript:@"parentkeyref"];
+  [recordCopy setObject:v18 forKeyedSubscript:@"parentkeyref"];
 
-  return v6;
+  return recordCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [(CKKSCKRecordHolder *)self zoneID];
-    v8 = [v6 zoneID];
-    if (![v7 isEqual:v8])
+    v6 = equalCopy;
+    zoneID = [(CKKSCKRecordHolder *)self zoneID];
+    zoneID2 = [v6 zoneID];
+    if (![zoneID isEqual:zoneID2])
     {
       v12 = 0;
 LABEL_23:
@@ -236,12 +236,12 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v9 = [(CKKSCurrentKeyPointer *)self currentKeyUUID];
-    if (v9 || ([v6 currentKeyUUID], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
+    currentKeyUUID = [(CKKSCurrentKeyPointer *)self currentKeyUUID];
+    if (currentKeyUUID || ([v6 currentKeyUUID], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v10 = [(CKKSCurrentKeyPointer *)self currentKeyUUID];
-      v3 = [v6 currentKeyUUID];
-      if (![v10 isEqual:v3])
+      currentKeyUUID2 = [(CKKSCurrentKeyPointer *)self currentKeyUUID];
+      currentKeyUUID3 = [v6 currentKeyUUID];
+      if (![currentKeyUUID2 isEqual:currentKeyUUID3])
       {
         v12 = 0;
 LABEL_19:
@@ -249,7 +249,7 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v20 = v10;
+      v20 = currentKeyUUID2;
       v11 = 1;
     }
 
@@ -259,25 +259,25 @@ LABEL_19:
       v11 = 0;
     }
 
-    v13 = [(CKKSCurrentKeyPointer *)self keyclass];
-    if (v13 || ([v6 keyclass], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
+    keyclass = [(CKKSCurrentKeyPointer *)self keyclass];
+    if (keyclass || ([v6 keyclass], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v22 = v11;
-      v14 = [(CKKSCurrentKeyPointer *)self keyclass];
-      v15 = [v6 keyclass];
-      v12 = [v14 isEqual:v15];
+      keyclass2 = [(CKKSCurrentKeyPointer *)self keyclass];
+      keyclass3 = [v6 keyclass];
+      v12 = [keyclass2 isEqual:keyclass3];
 
-      if (v13)
+      if (keyclass)
       {
 
         if (v22)
         {
-          v10 = v20;
+          currentKeyUUID2 = v20;
           goto LABEL_19;
         }
 
 LABEL_20:
-        if (!v9)
+        if (!currentKeyUUID)
         {
         }
 
@@ -294,7 +294,7 @@ LABEL_20:
       v12 = 1;
     }
 
-    v10 = v20;
+    currentKeyUUID2 = v20;
     if (v11)
     {
       goto LABEL_19;
@@ -309,17 +309,17 @@ LABEL_24:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = CKKSCurrentKeyPointer;
   v5 = [(CKKSCKRecordHolder *)&v11 copyWithZone:?];
-  v6 = [(CKKSCurrentKeyPointer *)self keyclass];
-  v7 = [v6 copyWithZone:a3];
+  keyclass = [(CKKSCurrentKeyPointer *)self keyclass];
+  v7 = [keyclass copyWithZone:zone];
   [v5 setKeyclass:v7];
 
-  v8 = [(CKKSCurrentKeyPointer *)self currentKeyUUID];
-  v9 = [v8 copyWithZone:a3];
+  currentKeyUUID = [(CKKSCurrentKeyPointer *)self currentKeyUUID];
+  v9 = [currentKeyUUID copyWithZone:zone];
   [v5 setCurrentKeyUUID:v9];
 
   return v5;
@@ -327,31 +327,31 @@ LABEL_24:
 
 - (id)description
 {
-  v3 = [(CKKSCKRecordHolder *)self zoneID];
-  v4 = [v3 zoneName];
-  v5 = [(CKKSCKRecordHolder *)self contextID];
-  v6 = [(CKKSCurrentKeyPointer *)self keyclass];
-  v7 = [(CKKSCurrentKeyPointer *)self currentKeyUUID];
-  v8 = [NSString stringWithFormat:@"<CKKSCurrentKeyPointer(%@, %@) %@: %@>", v4, v5, v6, v7];
+  zoneID = [(CKKSCKRecordHolder *)self zoneID];
+  zoneName = [zoneID zoneName];
+  contextID = [(CKKSCKRecordHolder *)self contextID];
+  keyclass = [(CKKSCurrentKeyPointer *)self keyclass];
+  currentKeyUUID = [(CKKSCurrentKeyPointer *)self currentKeyUUID];
+  v8 = [NSString stringWithFormat:@"<CKKSCurrentKeyPointer(%@, %@) %@: %@>", zoneName, contextID, keyclass, currentKeyUUID];
 
   return v8;
 }
 
-- (id)initForClass:(id)a3 contextID:(id)a4 currentKeyUUID:(id)a5 zoneID:(id)a6 encodedCKRecord:(id)a7
+- (id)initForClass:(id)class contextID:(id)d currentKeyUUID:(id)iD zoneID:(id)zoneID encodedCKRecord:(id)record
 {
-  v13 = a3;
-  v14 = a5;
+  classCopy = class;
+  iDCopy = iD;
   v21.receiver = self;
   v21.super_class = CKKSCurrentKeyPointer;
-  v15 = [(CKKSCKRecordHolder *)&v21 initWithCKRecordType:@"currentkey" encodedCKRecord:a7 contextID:a4 zoneID:a6];
+  v15 = [(CKKSCKRecordHolder *)&v21 initWithCKRecordType:@"currentkey" encodedCKRecord:record contextID:d zoneID:zoneID];
   p_isa = &v15->super.super.super.isa;
   if (v15)
   {
-    objc_storeStrong(&v15->_keyclass, a3);
-    objc_storeStrong(p_isa + 8, a5);
-    v17 = [p_isa currentKeyUUID];
+    objc_storeStrong(&v15->_keyclass, class);
+    objc_storeStrong(p_isa + 8, iD);
+    currentKeyUUID = [p_isa currentKeyUUID];
 
-    if (!v17)
+    if (!currentKeyUUID)
     {
       v18 = sub_100019104(@"currentkey", 0);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -365,21 +365,21 @@ LABEL_24:
   return p_isa;
 }
 
-+ (BOOL)intransactionRecordDeleted:(id)a3 contextID:(id)a4 error:(id *)a5
++ (BOOL)intransactionRecordDeleted:(id)deleted contextID:(id)d error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 recordName];
-  v10 = [v7 zoneID];
+  deletedCopy = deleted;
+  dCopy = d;
+  recordName = [deletedCopy recordName];
+  zoneID = [deletedCopy zoneID];
   v25 = 0;
-  v11 = [CKKSCurrentKeyPointer tryFromDatabase:v9 contextID:v8 zoneID:v10 error:&v25];
+  v11 = [CKKSCurrentKeyPointer tryFromDatabase:recordName contextID:dCopy zoneID:zoneID error:&v25];
 
   v12 = v25;
   if (v12)
   {
-    v13 = [v7 zoneID];
-    v14 = [v13 zoneName];
-    v15 = sub_100019104(@"ckkskey", v14);
+    zoneID2 = [deletedCopy zoneID];
+    zoneName = [zoneID2 zoneName];
+    v15 = sub_100019104(@"ckkskey", zoneName);
 
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -388,11 +388,11 @@ LABEL_24:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "error loading ckp: %@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v16 = v12;
       v17 = 0;
-      *a5 = v12;
+      *error = v12;
     }
 
     else
@@ -409,9 +409,9 @@ LABEL_24:
     v17 = v18 == 0;
     if (v18)
     {
-      v19 = [v7 zoneID];
-      v20 = [v19 zoneName];
-      v21 = sub_100019104(@"ckkskey", v20);
+      zoneID3 = [deletedCopy zoneID];
+      zoneName2 = [zoneID3 zoneName];
+      v21 = sub_100019104(@"ckkskey", zoneName2);
 
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
@@ -420,10 +420,10 @@ LABEL_24:
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "error deleting ckp: %@", buf, 0xCu);
       }
 
-      if (a5)
+      if (error)
       {
         v22 = v18;
-        *a5 = v18;
+        *error = v18;
       }
     }
   }
@@ -436,27 +436,27 @@ LABEL_24:
   return v17;
 }
 
-+ (BOOL)intransactionRecordChanged:(id)a3 contextID:(id)a4 resync:(BOOL)a5 flagHandler:(id)a6 error:(id *)a7
++ (BOOL)intransactionRecordChanged:(id)changed contextID:(id)d resync:(BOOL)resync flagHandler:(id)handler error:(id *)error
 {
-  v8 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(CKKSCurrentKeyPointer *)v10 recordID];
-  v14 = [v13 recordName];
-  v15 = [(CKKSCurrentKeyPointer *)v10 recordID];
-  v16 = [v15 zoneID];
+  resyncCopy = resync;
+  changedCopy = changed;
+  dCopy = d;
+  handlerCopy = handler;
+  recordID = [(CKKSCurrentKeyPointer *)changedCopy recordID];
+  recordName = [recordID recordName];
+  recordID2 = [(CKKSCurrentKeyPointer *)changedCopy recordID];
+  zoneID = [recordID2 zoneID];
   v60 = 0;
-  v17 = [CKKSCurrentKeyPointer tryFromDatabase:v14 contextID:v11 zoneID:v16 error:&v60];
+  v17 = [CKKSCurrentKeyPointer tryFromDatabase:recordName contextID:dCopy zoneID:zoneID error:&v60];
   v18 = v60;
 
   v58 = v18;
   if (v18)
   {
-    v19 = [(CKKSCurrentKeyPointer *)v10 recordID];
-    v20 = [v19 zoneID];
-    v21 = [v20 zoneName];
-    v22 = sub_100019104(@"ckkskey", v21);
+    recordID3 = [(CKKSCurrentKeyPointer *)changedCopy recordID];
+    zoneID2 = [recordID3 zoneID];
+    zoneName = [zoneID2 zoneName];
+    v22 = sub_100019104(@"ckkskey", zoneName);
 
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -466,22 +466,22 @@ LABEL_24:
     }
   }
 
-  if (v8)
+  if (resyncCopy)
   {
     if (v17)
     {
-      v23 = [(CKKSCurrentKeyPointer *)v17 matchesCKRecord:v10];
-      v24 = [(CKKSCurrentKeyPointer *)v10 recordID];
-      v25 = [v24 zoneID];
-      v26 = [v25 zoneName];
-      v27 = sub_100019104(@"ckksresync", v26);
+      v23 = [(CKKSCurrentKeyPointer *)v17 matchesCKRecord:changedCopy];
+      recordID4 = [(CKKSCurrentKeyPointer *)changedCopy recordID];
+      zoneID3 = [recordID4 zoneID];
+      zoneName2 = [zoneID3 zoneName];
+      v27 = sub_100019104(@"ckksresync", zoneName2);
 
       if (v23)
       {
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v62 = v10;
+          v62 = changedCopy;
           v28 = "Current key pointer has 'changed', but it matches our local copy: %@";
           v29 = v27;
           v30 = OS_LOG_TYPE_DEFAULT;
@@ -497,7 +497,7 @@ LABEL_15:
         *buf = 138412546;
         v62 = v17;
         v63 = 2112;
-        v64 = v10;
+        v64 = changedCopy;
         v28 = "BUG: Local current key pointer doesn't match resynced CloudKit record: %@ %@";
         v29 = v27;
         v30 = OS_LOG_TYPE_ERROR;
@@ -508,15 +508,15 @@ LABEL_15:
 
     else
     {
-      v31 = [(CKKSCurrentKeyPointer *)v10 recordID];
-      v32 = [v31 zoneID];
-      v33 = [v32 zoneName];
-      v27 = sub_100019104(@"ckksresync", v33);
+      recordID5 = [(CKKSCurrentKeyPointer *)changedCopy recordID];
+      zoneID4 = [recordID5 zoneID];
+      zoneName3 = [zoneID4 zoneName];
+      v27 = sub_100019104(@"ckksresync", zoneName3);
 
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v62 = v10;
+        v62 = changedCopy;
         v28 = "BUG: No current key pointer matching resynced CloudKit record: %@";
         v29 = v27;
         v30 = OS_LOG_TYPE_ERROR;
@@ -525,7 +525,7 @@ LABEL_15:
     }
   }
 
-  v35 = [(CKKSCKRecordHolder *)[CKKSCurrentKeyPointer alloc] initWithCKRecord:v10 contextID:v11];
+  v35 = [(CKKSCKRecordHolder *)[CKKSCurrentKeyPointer alloc] initWithCKRecord:changedCopy contextID:dCopy];
   v59 = 0;
   v36 = [(CKKSSQLDatabaseObject *)v35 saveToDatabase:&v59];
   v37 = v59;
@@ -541,40 +541,40 @@ LABEL_15:
 
   if (v38)
   {
-    if ([(CKKSCurrentKeyPointer *)v17 matchesCKRecord:v10])
+    if ([(CKKSCurrentKeyPointer *)v17 matchesCKRecord:changedCopy])
     {
       v56 = v17;
-      v39 = v12;
-      v40 = [(CKKSCurrentKeyPointer *)v10 recordID];
-      v41 = [v40 zoneID];
-      v42 = [v41 zoneName];
-      v43 = sub_100019104(@"ckkskey", v42);
+      v39 = handlerCopy;
+      recordID6 = [(CKKSCurrentKeyPointer *)changedCopy recordID];
+      zoneID5 = [recordID6 zoneID];
+      zoneName4 = [zoneID5 zoneName];
+      v43 = sub_100019104(@"ckkskey", zoneName4);
 
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v62 = v10;
+        v62 = changedCopy;
         _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "Current key pointer modification doesn't change anything interesting; skipping reprocess: %@", buf, 0xCu);
       }
 
-      v12 = v39;
+      handlerCopy = v39;
       v17 = v56;
     }
 
     else
     {
-      [v12 _onqueueHandleFlag:@"key_process_requested"];
+      [handlerCopy _onqueueHandleFlag:@"key_process_requested"];
     }
   }
 
   else
   {
     v57 = v17;
-    v44 = v12;
-    v45 = [(CKKSCurrentKeyPointer *)v10 recordID];
-    v46 = [v45 zoneID];
-    v47 = [v46 zoneName];
-    v48 = sub_100019104(@"ckkskey", v47);
+    v44 = handlerCopy;
+    recordID7 = [(CKKSCurrentKeyPointer *)changedCopy recordID];
+    zoneID6 = [recordID7 zoneID];
+    zoneName5 = [zoneID6 zoneName];
+    v48 = sub_100019104(@"ckkskey", zoneName5);
 
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
     {
@@ -585,96 +585,96 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_ERROR, "Couldn't save current key pointer to database: %@: %@", buf, 0x16u);
     }
 
-    v49 = [(CKKSCurrentKeyPointer *)v10 recordID];
-    v50 = [v49 zoneID];
-    v51 = [v50 zoneName];
-    v52 = sub_100019104(@"ckkskey", v51);
+    recordID8 = [(CKKSCurrentKeyPointer *)changedCopy recordID];
+    zoneID7 = [recordID8 zoneID];
+    zoneName6 = [zoneID7 zoneName];
+    v52 = sub_100019104(@"ckkskey", zoneName6);
 
     if (os_log_type_enabled(v52, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v62 = v10;
+      v62 = changedCopy;
       _os_log_debug_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEBUG, "CKRecord was %@", buf, 0xCu);
     }
 
-    v12 = v44;
+    handlerCopy = v44;
     v17 = v57;
-    if (a7)
+    if (error)
     {
       v53 = v37;
-      *a7 = v37;
+      *error = v37;
     }
   }
 
   return v38;
 }
 
-+ (id)fromDatabaseRow:(id)a3
++ (id)fromDatabaseRow:(id)row
 {
-  v3 = a3;
+  rowCopy = row;
   v4 = [CKKSCurrentKeyPointer alloc];
-  v20 = [v3 objectForKeyedSubscript:@"keyclass"];
-  v5 = [v20 asString];
-  v19 = [v3 objectForKeyedSubscript:@"contextID"];
-  v6 = [v19 asString];
-  v7 = [v3 objectForKeyedSubscript:@"currentKeyUUID"];
-  v8 = [v7 asString];
+  v20 = [rowCopy objectForKeyedSubscript:@"keyclass"];
+  asString = [v20 asString];
+  v19 = [rowCopy objectForKeyedSubscript:@"contextID"];
+  asString2 = [v19 asString];
+  v7 = [rowCopy objectForKeyedSubscript:@"currentKeyUUID"];
+  asString3 = [v7 asString];
   v9 = [CKRecordZoneID alloc];
-  v10 = [v3 objectForKeyedSubscript:@"ckzone"];
-  v11 = [v10 asString];
-  v12 = [v9 initWithZoneName:v11 ownerName:CKCurrentUserDefaultName];
-  v13 = [v3 objectForKeyedSubscript:@"ckrecord"];
+  v10 = [rowCopy objectForKeyedSubscript:@"ckzone"];
+  asString4 = [v10 asString];
+  v12 = [v9 initWithZoneName:asString4 ownerName:CKCurrentUserDefaultName];
+  v13 = [rowCopy objectForKeyedSubscript:@"ckrecord"];
 
-  v14 = [v13 asBase64DecodedData];
+  asBase64DecodedData = [v13 asBase64DecodedData];
   v15 = v4;
-  v16 = v5;
-  v17 = [(CKKSCurrentKeyPointer *)v15 initForClass:v5 contextID:v6 currentKeyUUID:v8 zoneID:v12 encodedCKRecord:v14];
+  v16 = asString;
+  v17 = [(CKKSCurrentKeyPointer *)v15 initForClass:asString contextID:asString2 currentKeyUUID:asString3 zoneID:v12 encodedCKRecord:asBase64DecodedData];
 
   return v17;
 }
 
-+ (BOOL)deleteAll:(id)a3 error:(id *)a4
++ (BOOL)deleteAll:(id)all error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 sqlTable];
+  allCopy = all;
+  sqlTable = [self sqlTable];
   v11 = @"ckzone";
-  v8 = [v6 zoneName];
+  zoneName = [allCopy zoneName];
 
-  v12 = v8;
+  v12 = zoneName;
   v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-  LOBYTE(a4) = [CKKSSQLDatabaseObject deleteFromTable:v7 where:v9 connection:0 error:a4];
+  LOBYTE(error) = [CKKSSQLDatabaseObject deleteFromTable:sqlTable where:v9 connection:0 error:error];
 
-  return a4;
+  return error;
 }
 
-+ (id)all:(id)a3 error:(id *)a4
++ (id)all:(id)all error:(id *)error
 {
   v10 = @"ckzone";
-  v6 = [a3 zoneName];
-  v11 = v6;
+  zoneName = [all zoneName];
+  v11 = zoneName;
   v7 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-  v8 = [a1 allWhere:v7 error:a4];
+  v8 = [self allWhere:v7 error:error];
 
   return v8;
 }
 
-+ (id)forKeyClass:(id)a3 contextID:(id)a4 withKeyUUID:(id)a5 zoneID:(id)a6 error:(id *)a7
++ (id)forKeyClass:(id)class contextID:(id)d withKeyUUID:(id)iD zoneID:(id)zoneID error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  classCopy = class;
+  dCopy = d;
+  iDCopy = iD;
+  zoneIDCopy = zoneID;
   v23 = 0;
-  v16 = [a1 tryFromDatabase:v12 contextID:v13 zoneID:v15 error:&v23];
+  v16 = [self tryFromDatabase:classCopy contextID:dCopy zoneID:zoneIDCopy error:&v23];
   v17 = v23;
   v18 = v17;
   if (v17)
   {
-    if (a7)
+    if (error)
     {
       v19 = v17;
       v20 = 0;
-      *a7 = v18;
+      *error = v18;
     }
 
     else
@@ -687,13 +687,13 @@ LABEL_15:
   {
     if (v16)
     {
-      [v16 setCurrentKeyUUID:v14];
+      [v16 setCurrentKeyUUID:iDCopy];
       v21 = v16;
     }
 
     else
     {
-      v21 = [[CKKSCurrentKeyPointer alloc] initForClass:v12 contextID:v13 currentKeyUUID:v14 zoneID:v15 encodedCKRecord:0];
+      v21 = [[CKKSCurrentKeyPointer alloc] initForClass:classCopy contextID:dCopy currentKeyUUID:iDCopy zoneID:zoneIDCopy encodedCKRecord:0];
     }
 
     v20 = v21;
@@ -702,38 +702,38 @@ LABEL_15:
   return v20;
 }
 
-+ (id)tryFromDatabase:(id)a3 contextID:(id)a4 zoneID:(id)a5 error:(id *)a6
++ (id)tryFromDatabase:(id)database contextID:(id)d zoneID:(id)iD error:(id *)error
 {
   v16[0] = @"keyclass";
   v16[1] = @"contextID";
-  v17[0] = a3;
-  v17[1] = a4;
+  v17[0] = database;
+  v17[1] = d;
   v16[2] = @"ckzone";
-  v10 = a4;
-  v11 = a3;
-  v12 = [a5 zoneName];
-  v17[2] = v12;
+  dCopy = d;
+  databaseCopy = database;
+  zoneName = [iD zoneName];
+  v17[2] = zoneName;
   v13 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:3];
 
-  v14 = [a1 tryFromDatabaseWhere:v13 error:a6];
+  v14 = [self tryFromDatabaseWhere:v13 error:error];
 
   return v14;
 }
 
-+ (id)fromDatabase:(id)a3 contextID:(id)a4 zoneID:(id)a5 error:(id *)a6
++ (id)fromDatabase:(id)database contextID:(id)d zoneID:(id)iD error:(id *)error
 {
   v16[0] = @"keyclass";
   v16[1] = @"contextID";
-  v17[0] = a3;
-  v17[1] = a4;
+  v17[0] = database;
+  v17[1] = d;
   v16[2] = @"ckzone";
-  v10 = a4;
-  v11 = a3;
-  v12 = [a5 zoneName];
-  v17[2] = v12;
+  dCopy = d;
+  databaseCopy = database;
+  zoneName = [iD zoneName];
+  v17[2] = zoneName;
   v13 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:3];
 
-  v14 = [a1 fromDatabaseWhere:v13 error:a6];
+  v14 = [self fromDatabaseWhere:v13 error:error];
 
   return v14;
 }

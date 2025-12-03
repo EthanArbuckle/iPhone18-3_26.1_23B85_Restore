@@ -1,60 +1,60 @@
 @interface CAMSemanticStyle
 + (CAMSemanticStyle)standardStyle;
-+ (CAMSemanticStyle)styleWithDictionary:(id)a3 error:(id *)a4;
++ (CAMSemanticStyle)styleWithDictionary:(id)dictionary error:(id *)error;
 + (id)defaultStyles;
-+ (id)persistenceStringForPresetType:(int64_t)a3;
-+ (unint64_t)_indexForPresetString:(id)a3;
-+ (void)getSceneBias:(double *)a3 warmthBias:(double *)a4 forPresetType:(int64_t)a5;
++ (id)persistenceStringForPresetType:(int64_t)type;
++ (unint64_t)_indexForPresetString:(id)string;
++ (void)getSceneBias:(double *)bias warmthBias:(double *)warmthBias forPresetType:(int64_t)type;
 - (AVSemanticStyle)avSemanticStyle;
 - (BOOL)isCustomizable;
 - (BOOL)isCustomized;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSemanticStyle:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSemanticStyle:(id)style;
 - (BOOL)isNeutral;
-- (CAMSemanticStyle)initWithPresetType:(int64_t)a3;
-- (CAMSemanticStyle)initWithPresetType:(int64_t)a3 sceneBias:(double)a4 warmthBias:(double)a5;
+- (CAMSemanticStyle)initWithPresetType:(int64_t)type;
+- (CAMSemanticStyle)initWithPresetType:(int64_t)type sceneBias:(double)bias warmthBias:(double)warmthBias;
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)description;
 - (NSString)displayName;
 - (NSString)presetDisplayName;
-- (id)_analyticsDictionaryForCapture:(BOOL)a3;
-- (int64_t)_makerPresetWithSceneBias:(double)a3 warmthBias:(double)a4;
+- (id)_analyticsDictionaryForCapture:(BOOL)capture;
+- (int64_t)_makerPresetWithSceneBias:(double)bias warmthBias:(double)warmthBias;
 - (int64_t)makerPreset;
 @end
 
 @implementation CAMSemanticStyle
 
-- (CAMSemanticStyle)initWithPresetType:(int64_t)a3 sceneBias:(double)a4 warmthBias:(double)a5
+- (CAMSemanticStyle)initWithPresetType:(int64_t)type sceneBias:(double)bias warmthBias:(double)warmthBias
 {
-  v12 = a5;
-  v13 = a4;
+  warmthBiasCopy = warmthBias;
+  biasCopy = bias;
   v11.receiver = self;
   v11.super_class = CAMSemanticStyle;
   v6 = [(CAMSemanticStyle *)&v11 init];
   if (v6)
   {
-    if (([objc_opt_class() isCustomizablePresetType:a3] & 1) == 0)
+    if (([objc_opt_class() isCustomizablePresetType:type] & 1) == 0)
     {
-      [objc_opt_class() getSceneBias:&v13 warmthBias:&v12 forPresetType:a3];
+      [objc_opt_class() getSceneBias:&biasCopy warmthBias:&warmthBiasCopy forPresetType:type];
     }
 
     CEKClamp();
     v6->_sceneBias = v7;
     CEKClamp();
     v6->_warmthBias = v8;
-    v6->_presetType = a3;
+    v6->_presetType = type;
     v9 = v6;
   }
 
   return v6;
 }
 
-- (CAMSemanticStyle)initWithPresetType:(int64_t)a3
+- (CAMSemanticStyle)initWithPresetType:(int64_t)type
 {
   v6 = 0.0;
   v7 = 0.0;
-  [objc_opt_class() getSceneBias:&v7 warmthBias:&v6 forPresetType:a3];
-  return [(CAMSemanticStyle *)self initWithPresetType:a3 sceneBias:v7 warmthBias:v6];
+  [objc_opt_class() getSceneBias:&v7 warmthBias:&v6 forPresetType:type];
+  return [(CAMSemanticStyle *)self initWithPresetType:type sceneBias:v7 warmthBias:v6];
 }
 
 + (CAMSemanticStyle)standardStyle
@@ -78,36 +78,36 @@ uint64_t __33__CAMSemanticStyle_standardStyle__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (void)getSceneBias:(double *)a3 warmthBias:(double *)a4 forPresetType:(int64_t)a5
++ (void)getSceneBias:(double *)bias warmthBias:(double *)warmthBias forPresetType:(int64_t)type
 {
-  if (a5 <= 4)
+  if (type <= 4)
   {
-    v5 = qword_1A3A68990[a5];
-    *a3 = dbl_1A3A68968[a5];
-    *a4 = v5;
+    v5 = qword_1A3A68990[type];
+    *bias = dbl_1A3A68968[type];
+    *warmthBias = v5;
   }
 }
 
-+ (id)persistenceStringForPresetType:(int64_t)a3
++ (id)persistenceStringForPresetType:(int64_t)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_1E76FAC50[a3];
+    return off_1E76FAC50[type];
   }
 }
 
-+ (CAMSemanticStyle)styleWithDictionary:(id)a3 error:(id *)a4
++ (CAMSemanticStyle)styleWithDictionary:(id)dictionary error:(id *)error
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"CAMSemanticStylePresetTypeKey"];
-  v8 = [v6 objectForKeyedSubscript:@"CAMSemanticStyleSceneBiasKey"];
-  v9 = [v6 objectForKeyedSubscript:@"CAMSemanticStyleWarmthBiasKey"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"CAMSemanticStylePresetTypeKey"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"CAMSemanticStyleSceneBiasKey"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"CAMSemanticStyleWarmthBiasKey"];
 
   if (!v7 || !v8 || !v9)
   {
@@ -161,17 +161,17 @@ uint64_t __33__CAMSemanticStyle_standardStyle__block_invoke()
   v17 = v16;
   if (isKindOfClass & 1) != 0 && (v13 & 1) != 0 && (v15)
   {
-    v18 = [a1 _indexForPresetString:v12];
+    v18 = [self _indexForPresetString:v12];
     if (v18 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v28 = [&unk_1F16C9668 objectAtIndexedSubscript:v18];
-      v29 = [v28 integerValue];
+      integerValue = [v28 integerValue];
 
       v27 = v35;
       [v35 floatValue];
       v31 = v30;
       [v17 floatValue];
-      v25 = [[CAMSemanticStyle alloc] initWithPresetType:v29 sceneBias:v31 warmthBias:v32];
+      v25 = [[CAMSemanticStyle alloc] initWithPresetType:integerValue sceneBias:v31 warmthBias:v32];
       v24 = 0;
       goto LABEL_22;
     }
@@ -202,41 +202,41 @@ uint64_t __33__CAMSemanticStyle_standardStyle__block_invoke()
 LABEL_22:
 
 LABEL_23:
-  if (a4)
+  if (error)
   {
     v33 = v24;
-    *a4 = v24;
+    *error = v24;
   }
 
   return v25;
 }
 
-+ (unint64_t)_indexForPresetString:(id)a3
++ (unint64_t)_indexForPresetString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __42__CAMSemanticStyle__indexForPresetString___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_indexForPresetString__onceToken != -1)
   {
     dispatch_once(&_indexForPresetString__onceToken, block);
   }
 
-  v5 = [_indexForPresetString__indexesByPresetString objectForKeyedSubscript:v4];
+  v5 = [_indexForPresetString__indexesByPresetString objectForKeyedSubscript:stringCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 unsignedIntegerValue];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 void __42__CAMSemanticStyle__indexForPresetString___block_invoke(uint64_t a1)
@@ -294,18 +294,18 @@ void __42__CAMSemanticStyle__indexForPresetString___block_invoke_2(uint64_t a1, 
 - (BOOL)isCustomizable
 {
   v3 = objc_opt_class();
-  v4 = [(CAMSemanticStyle *)self presetType];
+  presetType = [(CAMSemanticStyle *)self presetType];
 
-  return [v3 isCustomizablePresetType:v4];
+  return [v3 isCustomizablePresetType:presetType];
 }
 
 - (BOOL)isCustomized
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [[CAMSemanticStyle alloc] initWithPresetType:[(CAMSemanticStyle *)self presetType]];
-  LOBYTE(v2) = [(CAMSemanticStyle *)v2 isEqualToSemanticStyle:v3];
+  LOBYTE(selfCopy) = [(CAMSemanticStyle *)selfCopy isEqualToSemanticStyle:v3];
 
-  return v2 ^ 1;
+  return selfCopy ^ 1;
 }
 
 - (NSDictionary)dictionaryRepresentation
@@ -354,16 +354,16 @@ void __42__CAMSemanticStyle__indexForPresetString___block_invoke_2(uint64_t a1, 
   return [(CAMSemanticStyle *)self _makerPresetWithSceneBias:v4 warmthBias:v5];
 }
 
-- (int64_t)_makerPresetWithSceneBias:(double)a3 warmthBias:(double)a4
+- (int64_t)_makerPresetWithSceneBias:(double)bias warmthBias:(double)warmthBias
 {
-  if (a3 < -0.005)
+  if (bias < -0.005)
   {
-    if (a4 < -0.005)
+    if (warmthBias < -0.005)
     {
       return 9;
     }
 
-    v5 = a4 <= 0.005;
+    v5 = warmthBias <= 0.005;
     v6 = 3;
     v7 = 8;
 LABEL_11:
@@ -378,22 +378,22 @@ LABEL_11:
     }
   }
 
-  if (a3 > 0.005)
+  if (bias > 0.005)
   {
-    if (a4 < -0.005)
+    if (warmthBias < -0.005)
     {
       return 7;
     }
 
-    v5 = a4 <= 0.005;
+    v5 = warmthBias <= 0.005;
     v6 = 2;
     v7 = 6;
     goto LABEL_11;
   }
 
-  if (a4 >= -0.005)
+  if (warmthBias >= -0.005)
   {
-    return 4 * (a4 > 0.005);
+    return 4 * (warmthBias > 0.005);
   }
 
   else
@@ -405,15 +405,15 @@ LABEL_11:
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CAMSemanticStyle *)self presetType];
-  if (v4 > 4)
+  presetType = [(CAMSemanticStyle *)self presetType];
+  if (presetType > 4)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = off_1E76FAC50[v4];
+    v5 = off_1E76FAC50[presetType];
   }
 
   [(CAMSemanticStyle *)self sceneBias];
@@ -422,12 +422,12 @@ LABEL_11:
   return [v3 stringWithFormat:@"SemanticStyle(Preset: %@, Scn: %.01f, Wrm: %.01f)", v5, v7, v8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(CAMSemanticStyle *)self isEqualToSemanticStyle:v4];
+    v5 = [(CAMSemanticStyle *)self isEqualToSemanticStyle:equalCopy];
   }
 
   else
@@ -438,23 +438,23 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)isEqualToSemanticStyle:(id)a3
+- (BOOL)isEqualToSemanticStyle:(id)style
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  styleCopy = style;
+  v5 = styleCopy;
+  if (!styleCopy)
   {
     goto LABEL_6;
   }
 
-  if (v4 == self)
+  if (styleCopy == self)
   {
     v13 = 1;
     goto LABEL_8;
   }
 
-  v6 = [(CAMSemanticStyle *)self presetType];
-  if (v6 == [(CAMSemanticStyle *)v5 presetType]&& ([(CAMSemanticStyle *)self sceneBias], v8 = v7, [(CAMSemanticStyle *)v5 sceneBias], vabdd_f64(v8, v9) < 0.005))
+  presetType = [(CAMSemanticStyle *)self presetType];
+  if (presetType == [(CAMSemanticStyle *)v5 presetType]&& ([(CAMSemanticStyle *)self sceneBias], v8 = v7, [(CAMSemanticStyle *)v5 sceneBias], vabdd_f64(v8, v9) < 0.005))
   {
     [(CAMSemanticStyle *)self warmthBias];
     v11 = v10;
@@ -485,11 +485,11 @@ LABEL_8:
   return [v3 semanticStyleWithToneBias:v7 warmthBias:v6];
 }
 
-- (id)_analyticsDictionaryForCapture:(BOOL)a3
+- (id)_analyticsDictionaryForCapture:(BOOL)capture
 {
-  v3 = a3;
+  captureCopy = capture;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (v3)
+  if (captureCopy)
   {
     v6 = @"semanticStylePreset";
   }
@@ -499,7 +499,7 @@ LABEL_8:
     v6 = @"SemanticStylePreset";
   }
 
-  if (v3)
+  if (captureCopy)
   {
     v7 = @"semanticStyleToneBias";
   }
@@ -509,7 +509,7 @@ LABEL_8:
     v7 = @"SemanticStyleToneBias";
   }
 
-  if (v3)
+  if (captureCopy)
   {
     v8 = @"semanticStyleWarmthBias";
   }
@@ -520,7 +520,7 @@ LABEL_8:
   }
 
   v9 = @"SemanticStyleCustomized";
-  if (v3)
+  if (captureCopy)
   {
     v9 = @"semanticStyleCustomized";
   }
@@ -529,15 +529,15 @@ LABEL_8:
   v11 = v8;
   v12 = v7;
   v13 = v6;
-  v14 = [(CAMSemanticStyle *)self presetType];
-  if (v14 > 4)
+  presetType = [(CAMSemanticStyle *)self presetType];
+  if (presetType > 4)
   {
     v15 = 0;
   }
 
   else
   {
-    v15 = off_1E76FAC78[v14];
+    v15 = off_1E76FAC78[presetType];
   }
 
   [v5 setObject:v15 forKeyedSubscript:v13];

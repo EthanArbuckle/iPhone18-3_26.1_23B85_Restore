@@ -1,16 +1,16 @@
 @interface JTCollectionViewFlowLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
 @end
 
 @implementation JTCollectionViewFlowLayout
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
   if ([(UICollectionViewFlowLayout *)self sectionHeadersPinToVisibleBounds]|| [(UICollectionViewFlowLayout *)self sectionFootersPinToVisibleBounds])
   {
     v13.receiver = self;
@@ -21,18 +21,18 @@
     }
   }
 
-  v9 = [(JTCollectionViewFlowLayout *)self collectionView];
-  [v9 bounds];
+  collectionView = [(JTCollectionViewFlowLayout *)self collectionView];
+  [collectionView bounds];
   v8 = height != v11 || width != v10;
 
   return v8;
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
   v5.receiver = self;
   v5.super_class = JTCollectionViewFlowLayout;
-  v3 = [(UICollectionViewFlowLayout *)&v5 invalidationContextForBoundsChange:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UICollectionViewFlowLayout *)&v5 invalidationContextForBoundsChange:change.origin.x, change.origin.y, change.size.width, change.size.height];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

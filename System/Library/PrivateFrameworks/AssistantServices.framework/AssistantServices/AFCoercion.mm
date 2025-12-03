@@ -1,8 +1,8 @@
 @interface AFCoercion
-+ (id)coercionWithBlock:(id)a3;
++ (id)coercionWithBlock:(id)block;
 + (id)stringToUUIDCoercion;
-+ (id)typeAssertionWithClass:(Class)a3;
-- (AFCoercion)initWithBlock:(id)a3;
++ (id)typeAssertionWithClass:(Class)class;
+- (AFCoercion)initWithBlock:(id)block;
 @end
 
 @implementation AFCoercion
@@ -63,21 +63,21 @@ LABEL_7:
   v4[1] = 3221225472;
   v4[2] = __34__AFCoercion_stringToUUIDCoercion__block_invoke;
   v4[3] = &__block_descriptor_40_e12__24__0_8__16l;
-  v4[4] = a1;
-  v2 = [a1 coercionWithBlock:v4];
+  v4[4] = self;
+  v2 = [self coercionWithBlock:v4];
 
   return v2;
 }
 
-- (AFCoercion)initWithBlock:(id)a3
+- (AFCoercion)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = AFCoercion;
   v5 = [(AFCoercion *)&v9 init];
   if (v5)
   {
-    v6 = MEMORY[0x193AFB7B0](v4);
+    v6 = MEMORY[0x193AFB7B0](blockCopy);
     block = v5->_block;
     v5->_block = v6;
   }
@@ -85,14 +85,14 @@ LABEL_7:
   return v5;
 }
 
-+ (id)typeAssertionWithClass:(Class)a3
++ (id)typeAssertionWithClass:(Class)class
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __37__AFCoercion_typeAssertionWithClass___block_invoke;
   v5[3] = &__block_descriptor_40_e12__24__0_8__16lu32l8;
-  v5[4] = a3;
-  v3 = [a1 coercionWithBlock:v5];
+  v5[4] = class;
+  v3 = [self coercionWithBlock:v5];
 
   return v3;
 }
@@ -129,10 +129,10 @@ LABEL_6:
   return v7;
 }
 
-+ (id)coercionWithBlock:(id)a3
++ (id)coercionWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithBlock:v4];
+  blockCopy = block;
+  v5 = [[self alloc] initWithBlock:blockCopy];
 
   return v5;
 }

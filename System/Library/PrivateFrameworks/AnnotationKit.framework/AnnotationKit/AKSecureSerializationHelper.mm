@@ -1,70 +1,70 @@
 @interface AKSecureSerializationHelper
-+ (id)_decodeAttributedStringFromRTFData:(id)a3;
-+ (id)_decodeTextAttributesFromRTFData:(id)a3;
-+ (id)_encodeAttributedStringAsRTFData:(id)a3;
-+ (id)_encodeTextAttributesAsRTFData:(id)a3;
-+ (id)dataForSecureCodingCompliantObject:(id)a3 withOptionalKey:(id)a4;
-+ (id)decodeColor:(id)a3;
-+ (id)decodeFont:(id)a3;
-+ (id)decodeTextAttributes:(id)a3;
-+ (id)encodeColor:(id)a3;
-+ (id)encodeFont:(id)a3;
-+ (id)encodeTextAttributes:(id)a3;
-+ (id)secureCodingCompliantObjectForData:(id)a3 ofClasses:(id)a4 withOptionalKey:(id)a5;
-+ (void)_decodeRTFTextPropertiesWithSecureCoder:(id)a3 annotationTextRTF:(id *)a4 typingAttributesRTF:(id *)a5;
-+ (void)_decodeTextPropertiesForAnnotation:(id)a3 withSecureCoder:(id)a4;
-+ (void)decodeTextPropertiesOfAnnotation:(id)a3 withSecureCoder:(id)a4;
-+ (void)encodeTextPropertiesOfAnnotation:(id)a3 withCoder:(id)a4;
++ (id)_decodeAttributedStringFromRTFData:(id)data;
++ (id)_decodeTextAttributesFromRTFData:(id)data;
++ (id)_encodeAttributedStringAsRTFData:(id)data;
++ (id)_encodeTextAttributesAsRTFData:(id)data;
++ (id)dataForSecureCodingCompliantObject:(id)object withOptionalKey:(id)key;
++ (id)decodeColor:(id)color;
++ (id)decodeFont:(id)font;
++ (id)decodeTextAttributes:(id)attributes;
++ (id)encodeColor:(id)color;
++ (id)encodeFont:(id)font;
++ (id)encodeTextAttributes:(id)attributes;
++ (id)secureCodingCompliantObjectForData:(id)data ofClasses:(id)classes withOptionalKey:(id)key;
++ (void)_decodeRTFTextPropertiesWithSecureCoder:(id)coder annotationTextRTF:(id *)f typingAttributesRTF:(id *)tF;
++ (void)_decodeTextPropertiesForAnnotation:(id)annotation withSecureCoder:(id)coder;
++ (void)decodeTextPropertiesOfAnnotation:(id)annotation withSecureCoder:(id)coder;
++ (void)encodeTextPropertiesOfAnnotation:(id)annotation withCoder:(id)coder;
 @end
 
 @implementation AKSecureSerializationHelper
 
-+ (id)dataForSecureCodingCompliantObject:(id)a3 withOptionalKey:(id)a4
++ (id)dataForSecureCodingCompliantObject:(id)object withOptionalKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  objectCopy = object;
+  keyCopy = key;
+  if (objectCopy)
   {
     v7 = objc_autoreleasePoolPush();
     v8 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
     v9 = *MEMORY[0x277CCA308];
-    if (v6)
+    if (keyCopy)
     {
-      v9 = v6;
+      v9 = keyCopy;
     }
 
     v10 = v9;
-    [v8 encodeObject:v5 forKey:v10];
-    v11 = [v8 encodedData];
+    [v8 encodeObject:objectCopy forKey:v10];
+    encodedData = [v8 encodedData];
 
     objc_autoreleasePoolPop(v7);
   }
 
   else
   {
-    v11 = 0;
+    encodedData = 0;
   }
 
-  return v11;
+  return encodedData;
 }
 
-+ (id)secureCodingCompliantObjectForData:(id)a3 ofClasses:(id)a4 withOptionalKey:(id)a5
++ (id)secureCodingCompliantObjectForData:(id)data ofClasses:(id)classes withOptionalKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  dataCopy = data;
+  classesCopy = classes;
+  keyCopy = key;
+  if (dataCopy)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v7 error:0];
+    v11 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:dataCopy error:0];
     v12 = *MEMORY[0x277CCA308];
-    if (v9)
+    if (keyCopy)
     {
-      v12 = v9;
+      v12 = keyCopy;
     }
 
     v13 = v12;
-    v14 = [MEMORY[0x277CBEB98] setWithArray:v8];
+    v14 = [MEMORY[0x277CBEB98] setWithArray:classesCopy];
     v15 = [v11 decodeObjectOfClasses:v14 forKey:v13];
 
     [v11 finishDecoding];
@@ -73,7 +73,7 @@
       v16 = os_log_create("com.apple.annotationkit", "Serialization");
       if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
       {
-        sub_23F4BCD94(v8, v16, v17, v18, v19, v20, v21, v22);
+        sub_23F4BCD94(classesCopy, v16, v17, v18, v19, v20, v21, v22);
       }
     }
 
@@ -88,64 +88,64 @@
   return v15;
 }
 
-+ (void)encodeTextPropertiesOfAnnotation:(id)a3 withCoder:(id)a4
++ (void)encodeTextPropertiesOfAnnotation:(id)annotation withCoder:(id)coder
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [v16 annotationText];
-  v8 = v7;
-  if (v7 && [v7 length])
+  annotationCopy = annotation;
+  coderCopy = coder;
+  annotationText = [annotationCopy annotationText];
+  v8 = annotationText;
+  if (annotationText && [annotationText length])
   {
     v9 = [objc_alloc(MEMORY[0x277CCA898]) initWithAttributedString:v8];
-    v10 = [a1 _encodeAttributedStringAsRTFData:v9];
-    [v6 encodeObject:v10 forKey:@"annotationTextRTF"];
-    [v6 encodeObject:v9 forKey:@"attributedString"];
+    v10 = [self _encodeAttributedStringAsRTFData:v9];
+    [coderCopy encodeObject:v10 forKey:@"annotationTextRTF"];
+    [coderCopy encodeObject:v9 forKey:@"attributedString"];
   }
 
-  v11 = [v16 foregroundColorSDR];
-  [v6 akEncodeColor:v11 forKey:@"foregroundColorSDR"];
+  foregroundColorSDR = [annotationCopy foregroundColorSDR];
+  [coderCopy akEncodeColor:foregroundColorSDR forKey:@"foregroundColorSDR"];
 
-  v12 = [v16 foregroundColorHDR];
+  foregroundColorHDR = [annotationCopy foregroundColorHDR];
 
-  if (v12)
+  if (foregroundColorHDR)
   {
-    v13 = [v16 foregroundColorHDR];
-    [v6 akEncodeColor:v13 forKey:@"foregroundColorHDR"];
+    foregroundColorHDR2 = [annotationCopy foregroundColorHDR];
+    [coderCopy akEncodeColor:foregroundColorHDR2 forKey:@"foregroundColorHDR"];
   }
 
-  v14 = [v16 typingAttributes];
-  v15 = [a1 _encodeTextAttributesAsRTFData:v14];
-  [v6 encodeObject:v15 forKey:@"typingAttributesRTF"];
-  [v6 encodeObject:v14 forKey:@"typingAttributes"];
+  typingAttributes = [annotationCopy typingAttributes];
+  v15 = [self _encodeTextAttributesAsRTFData:typingAttributes];
+  [coderCopy encodeObject:v15 forKey:@"typingAttributesRTF"];
+  [coderCopy encodeObject:typingAttributes forKey:@"typingAttributes"];
 }
 
-+ (void)decodeTextPropertiesOfAnnotation:(id)a3 withSecureCoder:(id)a4
++ (void)decodeTextPropertiesOfAnnotation:(id)annotation withSecureCoder:(id)coder
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 requiresSecureCoding])
+  annotationCopy = annotation;
+  coderCopy = coder;
+  if ([coderCopy requiresSecureCoding])
   {
-    v8 = [v7 akDecodeColorForKey:@"foregroundColorSDR"];
-    [v6 setForegroundColorSDR:v8];
+    v8 = [coderCopy akDecodeColorForKey:@"foregroundColorSDR"];
+    [annotationCopy setForegroundColorSDR:v8];
 
-    if ([v7 containsValueForKey:@"foregroundColorHDR"])
+    if ([coderCopy containsValueForKey:@"foregroundColorHDR"])
     {
-      v9 = [v7 akDecodeColorForKey:@"foregroundColorHDR"];
-      [v6 setForegroundColorHDR:v9];
+      v9 = [coderCopy akDecodeColorForKey:@"foregroundColorHDR"];
+      [annotationCopy setForegroundColorHDR:v9];
     }
 
-    [a1 _decodeTextPropertiesForAnnotation:v6 withSecureCoder:v7];
-    v10 = [v6 foregroundColorHDR];
+    [self _decodeTextPropertiesForAnnotation:annotationCopy withSecureCoder:coderCopy];
+    foregroundColorHDR = [annotationCopy foregroundColorHDR];
 
-    if (v10)
+    if (foregroundColorHDR)
     {
-      v11 = [v6 typingAttributes];
-      v12 = [v11 mutableCopy];
+      typingAttributes = [annotationCopy typingAttributes];
+      v12 = [typingAttributes mutableCopy];
 
-      v13 = [v6 foregroundColorHDR];
-      [v12 setObject:v13 forKeyedSubscript:@"NSColor"];
+      foregroundColorHDR2 = [annotationCopy foregroundColorHDR];
+      [v12 setObject:foregroundColorHDR2 forKeyedSubscript:@"NSColor"];
 
-      [v6 setTypingAttributes:v12];
+      [annotationCopy setTypingAttributes:v12];
     }
   }
 
@@ -157,27 +157,27 @@
       sub_23F4BCE00();
     }
 
-    [v6 setEditingDisabled:1];
+    [annotationCopy setEditingDisabled:1];
   }
 }
 
-+ (id)encodeColor:(id)a3
++ (id)encodeColor:(id)color
 {
-  v4 = [a3 colorUsingSRGBColorSpace];
-  v5 = [v4 CGColor];
-  v6 = [MEMORY[0x277CBF730] colorWithCGColor:v5];
-  v7 = [a1 dataForSecureCodingCompliantObject:v6 withOptionalKey:0];
+  colorUsingSRGBColorSpace = [color colorUsingSRGBColorSpace];
+  cGColor = [colorUsingSRGBColorSpace CGColor];
+  v6 = [MEMORY[0x277CBF730] colorWithCGColor:cGColor];
+  v7 = [self dataForSecureCodingCompliantObject:v6 withOptionalKey:0];
 
   return v7;
 }
 
-+ (id)decodeColor:(id)a3
++ (id)decodeColor:(id)color
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  colorCopy = color;
   v9[0] = objc_opt_class();
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-  v6 = [a1 secureCodingCompliantObjectForData:v4 ofClasses:v5 withOptionalKey:0];
+  v6 = [self secureCodingCompliantObjectForData:colorCopy ofClasses:v5 withOptionalKey:0];
 
   if (v6 && [v6 isMemberOfClass:objc_opt_class()])
   {
@@ -192,21 +192,21 @@
   return v7;
 }
 
-+ (id)encodeFont:(id)a3
++ (id)encodeFont:(id)font
 {
-  v4 = [a3 fontDescriptor];
-  v5 = [a1 dataForSecureCodingCompliantObject:v4 withOptionalKey:0];
+  fontDescriptor = [font fontDescriptor];
+  v5 = [self dataForSecureCodingCompliantObject:fontDescriptor withOptionalKey:0];
 
   return v5;
 }
 
-+ (id)decodeFont:(id)a3
++ (id)decodeFont:(id)font
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fontCopy = font;
   v9[0] = objc_opt_class();
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-  v6 = [a1 secureCodingCompliantObjectForData:v4 ofClasses:v5 withOptionalKey:0];
+  v6 = [self secureCodingCompliantObjectForData:fontCopy ofClasses:v5 withOptionalKey:0];
 
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -221,11 +221,11 @@
   return v7;
 }
 
-+ (id)encodeTextAttributes:(id)a3
++ (id)encodeTextAttributes:(id)attributes
 {
-  if (a3)
+  if (attributes)
   {
-    v4 = [a1 _encodeTextAttributesAsRTFData:?];
+    v4 = [self _encodeTextAttributesAsRTFData:?];
   }
 
   else
@@ -236,11 +236,11 @@
   return v4;
 }
 
-+ (id)decodeTextAttributes:(id)a3
++ (id)decodeTextAttributes:(id)attributes
 {
-  if (a3)
+  if (attributes)
   {
-    v4 = [a1 _decodeTextAttributesFromRTFData:?];
+    v4 = [self _decodeTextAttributesFromRTFData:?];
   }
 
   else
@@ -251,11 +251,11 @@
   return v4;
 }
 
-+ (void)_decodeTextPropertiesForAnnotation:(id)a3 withSecureCoder:(id)a4
++ (void)_decodeTextPropertiesForAnnotation:(id)annotation withSecureCoder:(id)coder
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 akSerializationVersion] < 1)
+  annotationCopy = annotation;
+  coderCopy = coder;
+  if ([annotationCopy akSerializationVersion] < 1)
   {
     v14 = os_log_create("com.apple.annotationkit", "Serialization");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -268,7 +268,7 @@
 
   v23 = 0;
   v24 = 0;
-  [a1 _decodeRTFTextPropertiesWithSecureCoder:v7 annotationTextRTF:&v24 typingAttributesRTF:&v23];
+  [self _decodeRTFTextPropertiesWithSecureCoder:coderCopy annotationTextRTF:&v24 typingAttributesRTF:&v23];
   v8 = v24;
   v9 = v23;
   if (!v9)
@@ -287,54 +287,54 @@
 
 LABEL_16:
 
-    [v6 setEditingDisabled:1];
+    [annotationCopy setEditingDisabled:1];
     goto LABEL_17;
   }
 
   v10 = v9;
   if (v8)
   {
-    v11 = [a1 _decodeAttributedStringFromRTFData:v8];
+    v11 = [self _decodeAttributedStringFromRTFData:v8];
     if (v11)
     {
       v12 = [AKTextAnnotationAttributeHelper newTextStorageOriginalFontSavvyWithAttributedString:v11];
-      [v6 setAnnotationText:v12];
+      [annotationCopy setAnnotationText:v12];
     }
   }
 
-  v13 = [a1 _decodeTextAttributesFromRTFData:v10];
+  v13 = [self _decodeTextAttributesFromRTFData:v10];
   if (v13)
   {
-    [v6 setTypingAttributes:v13];
+    [annotationCopy setTypingAttributes:v13];
   }
 
 LABEL_17:
-  v16 = [v6 typingAttributes];
-  if (!v16 || (v17 = v16, [v6 typingAttributes], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "count"), v18, v17, !v19))
+  typingAttributes = [annotationCopy typingAttributes];
+  if (!typingAttributes || (v17 = typingAttributes, [annotationCopy typingAttributes], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "count"), v18, v17, !v19))
   {
-    v20 = [v6 annotationText];
+    annotationText = [annotationCopy annotationText];
 
-    if (v20)
+    if (annotationText)
     {
-      v21 = [v6 annotationText];
-      v22 = [v21 attributesAtIndex:0 effectiveRange:0];
-      [v6 setTypingAttributes:v22];
+      annotationText2 = [annotationCopy annotationText];
+      v22 = [annotationText2 attributesAtIndex:0 effectiveRange:0];
+      [annotationCopy setTypingAttributes:v22];
     }
 
     else
     {
-      v21 = +[AKAttributeController defaultTextAttributes];
-      [v6 setTypingAttributes:v21];
+      annotationText2 = +[AKAttributeController defaultTextAttributes];
+      [annotationCopy setTypingAttributes:annotationText2];
     }
   }
 }
 
-+ (void)_decodeRTFTextPropertiesWithSecureCoder:(id)a3 annotationTextRTF:(id *)a4 typingAttributesRTF:(id *)a5
++ (void)_decodeRTFTextPropertiesWithSecureCoder:(id)coder annotationTextRTF:(id *)f typingAttributesRTF:(id *)tF
 {
-  v11 = a3;
-  if ([v11 containsValueForKey:@"annotationTextRTF"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"annotationTextRTF"])
   {
-    v7 = [v11 decodeObjectOfClass:objc_opt_class() forKey:@"annotationTextRTF"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"annotationTextRTF"];
   }
 
   else
@@ -342,10 +342,10 @@ LABEL_17:
     v7 = 0;
   }
 
-  if (![v11 containsValueForKey:@"typingAttributesRTF"])
+  if (![coderCopy containsValueForKey:@"typingAttributesRTF"])
   {
     v8 = 0;
-    if (!a4)
+    if (!f)
     {
       goto LABEL_9;
     }
@@ -353,38 +353,38 @@ LABEL_17:
     goto LABEL_8;
   }
 
-  v8 = [v11 decodeObjectOfClass:objc_opt_class() forKey:@"typingAttributesRTF"];
-  if (a4)
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"typingAttributesRTF"];
+  if (f)
   {
 LABEL_8:
     v9 = v7;
-    *a4 = v7;
+    *f = v7;
   }
 
 LABEL_9:
-  if (a5)
+  if (tF)
   {
     v10 = v8;
-    *a5 = v8;
+    *tF = v8;
   }
 }
 
-+ (id)_encodeAttributedStringAsRTFData:(id)a3
++ (id)_encodeAttributedStringAsRTFData:(id)data
 {
   v28[3] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (data)
   {
     v3 = MEMORY[0x277CCAB48];
-    v4 = a3;
-    v5 = [[v3 alloc] initWithAttributedString:v4];
-    v6 = [v4 length];
+    dataCopy = data;
+    v5 = [[v3 alloc] initWithAttributedString:dataCopy];
+    v6 = [dataCopy length];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = sub_23F417708;
     v25[3] = &unk_278C7B680;
     v7 = v5;
     v26 = v7;
-    [v4 enumerateAttributesInRange:0 options:v6 usingBlock:{0x100000, v25}];
+    [dataCopy enumerateAttributesInRange:0 options:v6 usingBlock:{0x100000, v25}];
 
     v8 = [v7 length];
     v9 = *MEMORY[0x277D74090];
@@ -422,17 +422,17 @@ LABEL_9:
   return v14;
 }
 
-+ (id)_decodeAttributedStringFromRTFData:(id)a3
++ (id)_decodeAttributedStringFromRTFData:(id)data
 {
   v31[3] = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!data)
   {
     v20 = 0;
     goto LABEL_13;
   }
 
   v3 = MEMORY[0x277CCA898];
-  v4 = a3;
+  dataCopy = data;
   v5 = [v3 alloc];
   v6 = *MEMORY[0x277D74090];
   v31[0] = *MEMORY[0x277D74130];
@@ -446,7 +446,7 @@ LABEL_9:
   v31[2] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:3];
   v29 = 0;
-  v11 = [v5 initWithData:v4 options:v10 documentAttributes:0 error:&v29];
+  v11 = [v5 initWithData:dataCopy options:v10 documentAttributes:0 error:&v29];
 
   v12 = v29;
   if (v12)
@@ -498,15 +498,15 @@ LABEL_13:
   return v20;
 }
 
-+ (id)_encodeTextAttributesAsRTFData:(id)a3
++ (id)_encodeTextAttributesAsRTFData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v4 = MEMORY[0x277CCA898];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithString:@"a" attributes:v5];
+    dataCopy = data;
+    v6 = [[v4 alloc] initWithString:@"a" attributes:dataCopy];
 
-    v7 = [a1 _encodeAttributedStringAsRTFData:v6];
+    v7 = [self _encodeAttributedStringAsRTFData:v6];
   }
 
   else
@@ -517,9 +517,9 @@ LABEL_13:
   return v7;
 }
 
-+ (id)_decodeTextAttributesFromRTFData:(id)a3
++ (id)_decodeTextAttributesFromRTFData:(id)data
 {
-  v3 = [a1 _decodeAttributedStringFromRTFData:a3];
+  v3 = [self _decodeAttributedStringFromRTFData:data];
   v4 = v3;
   if (v3)
   {

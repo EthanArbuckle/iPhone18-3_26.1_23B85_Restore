@@ -2,13 +2,13 @@
 + (id)logCategory;
 - (BOOL)__invalidate;
 - (HMFKeyValueBlockObserver)init;
-- (HMFKeyValueBlockObserver)initWithKeyPath:(id)a3 object:(id)a4 options:(unint64_t)a5;
+- (HMFKeyValueBlockObserver)initWithKeyPath:(id)path object:(id)object options:(unint64_t)options;
 - (id)handler;
 - (id)observedObject;
 - (void)dealloc;
 - (void)invalidate;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setHandler:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setHandler:(id)handler;
 @end
 
 @implementation HMFKeyValueBlockObserver
@@ -26,21 +26,21 @@
   objc_exception_throw(v7);
 }
 
-- (HMFKeyValueBlockObserver)initWithKeyPath:(id)a3 object:(id)a4 options:(unint64_t)a5
+- (HMFKeyValueBlockObserver)initWithKeyPath:(id)path object:(id)object options:(unint64_t)options
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  pathCopy = path;
+  objectCopy = object;
+  if (!pathCopy)
   {
     _HMFPreconditionFailure(@"keyPath");
   }
 
-  if (!v9)
+  if (!objectCopy)
   {
     _HMFPreconditionFailure(@"object");
   }
 
-  v10 = v9;
+  v10 = objectCopy;
   objc_opt_class();
   v11 = objc_opt_isKindOfClass() & 1;
   if (v11)
@@ -66,12 +66,12 @@
   v14 = [(HMFKeyValueBlockObserver *)&v19 init];
   if (v14)
   {
-    v15 = [v8 copy];
+    v15 = [pathCopy copy];
     keyPath = v14->_keyPath;
     v14->_keyPath = v15;
 
     objc_storeWeak(&v14->_observedObject, v10);
-    v14->_options = a5;
+    v14->_options = options;
     v14->_valid = 1;
   }
 
@@ -82,19 +82,19 @@
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = HMFGetLogIdentifier(v4);
+    v6 = HMFGetLogIdentifier(selfCopy);
     *buf = 138543362;
     v10 = v6;
     _os_log_impl(&dword_22ADEC000, v5, OS_LOG_TYPE_DEBUG, "%{public}@Deallocating", buf, 0xCu);
   }
 
   objc_autoreleasePoolPop(v3);
-  [(HMFKeyValueBlockObserver *)v4 __invalidate];
-  v8.receiver = v4;
+  [(HMFKeyValueBlockObserver *)selfCopy __invalidate];
+  v8.receiver = selfCopy;
   v8.super_class = HMFKeyValueBlockObserver;
   [(HMFKeyValueBlockObserver *)&v8 dealloc];
   v7 = *MEMORY[0x277D85DE8];
@@ -104,11 +104,11 @@
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = HMFGetLogIdentifier(v4);
+    v6 = HMFGetLogIdentifier(selfCopy);
     v13 = 138543362;
     v14 = v6;
     _os_log_impl(&dword_22ADEC000, v5, OS_LOG_TYPE_INFO, "%{public}@Invalidating", &v13, 0xCu);
@@ -116,12 +116,12 @@
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  v7 = [(HMFKeyValueBlockObserver *)v4 __invalidate];
-  os_unfair_lock_unlock(&v4->_lock);
-  if (v7)
+  __invalidate = [(HMFKeyValueBlockObserver *)selfCopy __invalidate];
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  if (__invalidate)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = v4;
+    v9 = selfCopy;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -167,33 +167,33 @@
   return v3;
 }
 
-- (void)setHandler:(id)a3
+- (void)setHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock_with_options();
-  v5 = v4 == 0;
-  if (v4 && !self->_valid)
+  v5 = handlerCopy == 0;
+  if (handlerCopy && !self->_valid)
   {
     os_unfair_lock_unlock(&self->_lock);
     v23 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"Cannot set a handler on an invalidated observer." userInfo:0];
     objc_exception_throw(v23);
   }
 
-  if (self->_handler != v4)
+  if (self->_handler != handlerCopy)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(handlerCopy);
     handler = self->_handler;
     self->_handler = v6;
 
     observing = self->_observing;
-    if (v4)
+    if (handlerCopy)
     {
       if (!self->_observing)
       {
         v9 = 1;
 LABEL_8:
-        v10 = v4 != 0;
+        v10 = handlerCopy != 0;
         self->_observing = v9;
         goto LABEL_10;
       }
@@ -213,26 +213,26 @@ LABEL_8:
   v10 = 0;
 LABEL_10:
   os_unfair_lock_unlock(&self->_lock);
-  v11 = [(HMFKeyValueBlockObserver *)self observedObject];
-  if (v11)
+  observedObject = [(HMFKeyValueBlockObserver *)self observedObject];
+  if (observedObject)
   {
     if (v10)
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = self;
+      selfCopy = self;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        v15 = HMFGetLogIdentifier(v13);
+        v15 = HMFGetLogIdentifier(selfCopy);
         v24 = 138543362;
         v25 = v15;
         _os_log_impl(&dword_22ADEC000, v14, OS_LOG_TYPE_INFO, "%{public}@Registering", &v24, 0xCu);
       }
 
       objc_autoreleasePoolPop(v12);
-      v16 = [(HMFKeyValueBlockObserver *)v13 keyPath];
-      v17 = [(HMFKeyValueBlockObserver *)v13 options];
-      [v11 addObserver:v13 forKeyPath:v16 options:v17 context:HMFKeyValueBlockObserverContext];
+      keyPath = [(HMFKeyValueBlockObserver *)selfCopy keyPath];
+      options = [(HMFKeyValueBlockObserver *)selfCopy options];
+      [observedObject addObserver:selfCopy forKeyPath:keyPath options:options context:HMFKeyValueBlockObserverContext];
 LABEL_19:
 
       goto LABEL_20;
@@ -241,19 +241,19 @@ LABEL_19:
     if (v5)
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = self;
+      selfCopy2 = self;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
-        v21 = HMFGetLogIdentifier(v19);
+        v21 = HMFGetLogIdentifier(selfCopy2);
         v24 = 138543362;
         v25 = v21;
         _os_log_impl(&dword_22ADEC000, v20, OS_LOG_TYPE_INFO, "%{public}@Unregistering", &v24, 0xCu);
       }
 
       objc_autoreleasePoolPop(v18);
-      v16 = [(HMFKeyValueBlockObserver *)v19 keyPath];
-      [v11 removeObserver:v19 forKeyPath:v16 context:HMFKeyValueBlockObserverContext];
+      keyPath = [(HMFKeyValueBlockObserver *)selfCopy2 keyPath];
+      [observedObject removeObserver:selfCopy2 forKeyPath:keyPath context:HMFKeyValueBlockObserverContext];
       goto LABEL_19;
     }
   }
@@ -263,35 +263,35 @@ LABEL_20:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v25 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (HMFKeyValueBlockObserverContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (HMFKeyValueBlockObserverContext == context)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      v16 = HMFGetLogIdentifier(v14);
+      v16 = HMFGetLogIdentifier(selfCopy);
       *buf = 138543618;
       v22 = v16;
       v23 = 2112;
-      v24 = v12;
+      v24 = changeCopy;
       _os_log_impl(&dword_22ADEC000, v15, OS_LOG_TYPE_DEBUG, "%{public}@Received change: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v13);
-    if ([v10 isEqualToString:v14->_keyPath])
+    if ([pathCopy isEqualToString:selfCopy->_keyPath])
     {
-      v17 = [(HMFKeyValueBlockObserver *)v14 handler];
-      v18 = v17;
-      if (v17)
+      handler = [(HMFKeyValueBlockObserver *)selfCopy handler];
+      v18 = handler;
+      if (handler)
       {
-        (*(v17 + 16))(v17, v11, v12);
+        (*(handler + 16))(handler, objectCopy, changeCopy);
       }
     }
   }
@@ -300,7 +300,7 @@ LABEL_20:
   {
     v20.receiver = self;
     v20.super_class = HMFKeyValueBlockObserver;
-    [(HMFKeyValueBlockObserver *)&v20 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(HMFKeyValueBlockObserver *)&v20 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
   v19 = *MEMORY[0x277D85DE8];

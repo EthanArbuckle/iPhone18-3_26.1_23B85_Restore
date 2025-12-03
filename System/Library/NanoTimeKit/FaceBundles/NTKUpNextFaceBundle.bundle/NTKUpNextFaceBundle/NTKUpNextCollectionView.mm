@@ -1,17 +1,17 @@
 @interface NTKUpNextCollectionView
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation NTKUpNextCollectionView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v39.receiver = self;
   v39.super_class = NTKUpNextCollectionView;
-  v8 = [(NTKUpNextCollectionView *)&v39 hitTest:v7 withEvent:x, y];
+  v8 = [(NTKUpNextCollectionView *)&v39 hitTest:eventCopy withEvent:x, y];
   v9 = v8;
   v10 = v8 == self || v8 == 0;
   if (v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -21,13 +21,13 @@
 
   else
   {
-    v32 = v7;
+    v32 = eventCopy;
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v12 = [(NTKUpNextCollectionView *)self collectionViewLayout];
-    v13 = [v12 layoutAttributesForElementsInRect:{x, y, 1.0, 1.0}];
+    collectionViewLayout = [(NTKUpNextCollectionView *)self collectionViewLayout];
+    v13 = [collectionViewLayout layoutAttributesForElementsInRect:{x, y, 1.0, 1.0}];
 
     v14 = [v13 countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v14)
@@ -84,22 +84,22 @@
       v16 = 0;
     }
 
-    v27 = [v16 indexPath];
-    v28 = [(NTKUpNextCollectionView *)self cellForItemAtIndexPath:v27];
+    indexPath = [v16 indexPath];
+    v28 = [(NTKUpNextCollectionView *)self cellForItemAtIndexPath:indexPath];
     v29 = v28;
     if (v28)
     {
-      v30 = v28;
+      selfCopy = v28;
     }
 
     else
     {
-      v30 = self;
+      selfCopy = self;
     }
 
-    v11 = v30;
+    v11 = selfCopy;
 
-    v7 = v32;
+    eventCopy = v32;
   }
 
   return v11;

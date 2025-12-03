@@ -5,29 +5,29 @@
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setAttribute:(int64_t)a3;
-- (void)setIdentifiers:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setAttribute:(int64_t)attribute;
+- (void)setIdentifiers:(id)identifiers;
 @end
 
 @implementation INSetMessageAttributeIntent
 
 - (id)_metadata
 {
-  v2 = [(INSetMessageAttributeIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INSetMessageAttributeIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else
@@ -44,31 +44,31 @@
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v11[0] = @"identifiers";
-  v3 = [(INSetMessageAttributeIntent *)self identifiers];
-  v4 = v3;
-  if (!v3)
+  identifiers = [(INSetMessageAttributeIntent *)self identifiers];
+  null = identifiers;
+  if (!identifiers)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v11[1] = @"attribute";
-  v12[0] = v4;
-  v5 = [(INSetMessageAttributeIntent *)self attribute];
-  if ((v5 - 1) > 4)
+  v12[0] = null;
+  attribute = [(INSetMessageAttributeIntent *)self attribute];
+  if ((attribute - 1) > 4)
   {
     v6 = @"unknown";
   }
 
   else
   {
-    v6 = off_1E72806E0[v5 - 1];
+    v6 = off_1E72806E0[attribute - 1];
   }
 
   v7 = v6;
   v12[1] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
 
-  if (!v3)
+  if (!identifiers)
   {
   }
 
@@ -79,12 +79,12 @@
 
 - (NSArray)identifiers
 {
-  v2 = [(INSetMessageAttributeIntent *)self _typedBackingStore];
-  v3 = [v2 identifiers];
+  _typedBackingStore = [(INSetMessageAttributeIntent *)self _typedBackingStore];
+  identifiers = [_typedBackingStore identifiers];
 
-  if (v3)
+  if (identifiers)
   {
-    v4 = [v3 copy];
+    v4 = [identifiers copy];
   }
 
   else
@@ -97,13 +97,13 @@
 
 - (INMessageAttribute)attribute
 {
-  v3 = [(INSetMessageAttributeIntent *)self _typedBackingStore];
-  v4 = [v3 hasAttribute];
-  v5 = [(INSetMessageAttributeIntent *)self _typedBackingStore];
-  v6 = [v5 attribute];
-  if (((v6 - 1 < 5) & v4) != 0)
+  _typedBackingStore = [(INSetMessageAttributeIntent *)self _typedBackingStore];
+  hasAttribute = [_typedBackingStore hasAttribute];
+  _typedBackingStore2 = [(INSetMessageAttributeIntent *)self _typedBackingStore];
+  attribute = [_typedBackingStore2 attribute];
+  if (((attribute - 1 < 5) & hasAttribute) != 0)
   {
-    v7 = v6;
+    v7 = attribute;
   }
 
   else
@@ -114,41 +114,41 @@
   return v7;
 }
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INSetMessageAttributeIntent *)self _typedBackingStore:a3];
+  v6 = [(INSetMessageAttributeIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
 
-- (void)setAttribute:(int64_t)a3
+- (void)setAttribute:(int64_t)attribute
 {
-  v3 = a3 - 1;
-  v4 = [(INSetMessageAttributeIntent *)self _typedBackingStore];
-  v5 = v4;
+  v3 = attribute - 1;
+  _typedBackingStore = [(INSetMessageAttributeIntent *)self _typedBackingStore];
+  v5 = _typedBackingStore;
   if (v3 > 4)
   {
-    [v4 setHasAttribute:0];
+    [_typedBackingStore setHasAttribute:0];
   }
 
   else
   {
-    [v4 setAttribute:?];
+    [_typedBackingStore setAttribute:?];
   }
 }
 
-- (void)setIdentifiers:(id)a3
+- (void)setIdentifiers:(id)identifiers
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(INSetMessageAttributeIntent *)self _typedBackingStore];
-  [v5 clearIdentifiers];
+  identifiersCopy = identifiers;
+  _typedBackingStore = [(INSetMessageAttributeIntent *)self _typedBackingStore];
+  [_typedBackingStore clearIdentifiers];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -165,8 +165,8 @@
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
-        v12 = [(INSetMessageAttributeIntent *)self _typedBackingStore];
-        [v12 addIdentifier:v11];
+        _typedBackingStore2 = [(INSetMessageAttributeIntent *)self _typedBackingStore];
+        [_typedBackingStore2 addIdentifier:v11];
 
         ++v10;
       }
@@ -197,11 +197,11 @@
   return v8;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INSetMessageAttributeIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INSetMessageAttributeIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 @end

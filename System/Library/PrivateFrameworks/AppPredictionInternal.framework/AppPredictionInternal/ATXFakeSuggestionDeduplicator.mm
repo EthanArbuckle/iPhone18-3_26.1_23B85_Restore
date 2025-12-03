@@ -1,11 +1,11 @@
 @interface ATXFakeSuggestionDeduplicator
 - (ATXFakeSuggestionDeduplicator)init;
-- (BOOL)suggestionIsDuplicate:(id)a3 appsOnHomeScreenPageAtIndex:(unint64_t)a4;
-- (BOOL)suggestionIsDuplicate:(id)a3 existingSuggestions:(id)a4;
-- (BOOL)suggestionIsDuplicate:(id)a3 otherApps:(id)a4;
-- (BOOL)suggestionIsDuplicateAppOrWidget:(id)a3 homeScreenPageConfig:(id)a4 excludingStackConfigId:(id)a5;
-- (BOOL)widgetSuggestionIsPinned:(id)a3 homeScreenPage:(id)a4 excludingStackConfigId:(id)a5;
-- (id)duplicateWidgetForWidgetSuggestion:(id)a3 otherWidgets:(id)a4;
+- (BOOL)suggestionIsDuplicate:(id)duplicate appsOnHomeScreenPageAtIndex:(unint64_t)index;
+- (BOOL)suggestionIsDuplicate:(id)duplicate existingSuggestions:(id)suggestions;
+- (BOOL)suggestionIsDuplicate:(id)duplicate otherApps:(id)apps;
+- (BOOL)suggestionIsDuplicateAppOrWidget:(id)widget homeScreenPageConfig:(id)config excludingStackConfigId:(id)id;
+- (BOOL)widgetSuggestionIsPinned:(id)pinned homeScreenPage:(id)page excludingStackConfigId:(id)id;
+- (id)duplicateWidgetForWidgetSuggestion:(id)suggestion otherWidgets:(id)widgets;
 @end
 
 @implementation ATXFakeSuggestionDeduplicator
@@ -25,7 +25,7 @@
   return v3;
 }
 
-- (BOOL)suggestionIsDuplicate:(id)a3 existingSuggestions:(id)a4
+- (BOOL)suggestionIsDuplicate:(id)duplicate existingSuggestions:(id)suggestions
 {
   if (self->_existingSuggestionsReturnValueIsSet)
   {
@@ -47,9 +47,9 @@
   return v5 & 1;
 }
 
-- (BOOL)suggestionIsDuplicateAppOrWidget:(id)a3 homeScreenPageConfig:(id)a4 excludingStackConfigId:(id)a5
+- (BOOL)suggestionIsDuplicateAppOrWidget:(id)widget homeScreenPageConfig:(id)config excludingStackConfigId:(id)id
 {
-  v6 = a3;
+  widgetCopy = widget;
   if (self->_homeScreenPageReturnValueIsSet)
   {
     homeScreenPageReturnValue = self->_homeScreenPageReturnValue;
@@ -57,7 +57,7 @@
 
   else if (self->_appsOnPage)
   {
-    homeScreenPageReturnValue = [(ATXFakeSuggestionDeduplicator *)self suggestionIsDuplicate:v6 otherApps:?];
+    homeScreenPageReturnValue = [(ATXFakeSuggestionDeduplicator *)self suggestionIsDuplicate:widgetCopy otherApps:?];
   }
 
   else
@@ -68,10 +68,10 @@
   return homeScreenPageReturnValue;
 }
 
-- (BOOL)widgetSuggestionIsPinned:(id)a3 homeScreenPage:(id)a4 excludingStackConfigId:(id)a5
+- (BOOL)widgetSuggestionIsPinned:(id)pinned homeScreenPage:(id)page excludingStackConfigId:(id)id
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  pinnedCopy = pinned;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -90,7 +90,7 @@
           objc_enumerationMutation(v7);
         }
 
-        if ([v6 isEqual:{*(*(&v13 + 1) + 8 * i), v13}])
+        if ([pinnedCopy isEqual:{*(*(&v13 + 1) + 8 * i), v13}])
         {
           LOBYTE(v8) = 1;
           goto LABEL_11;
@@ -113,7 +113,7 @@ LABEL_11:
   return v8;
 }
 
-- (id)duplicateWidgetForWidgetSuggestion:(id)a3 otherWidgets:(id)a4
+- (id)duplicateWidgetForWidgetSuggestion:(id)suggestion otherWidgets:(id)widgets
 {
   if (self->_duplicateWidgetReturnValueIsSet)
   {
@@ -128,29 +128,29 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)suggestionIsDuplicate:(id)a3 appsOnHomeScreenPageAtIndex:(unint64_t)a4
+- (BOOL)suggestionIsDuplicate:(id)duplicate appsOnHomeScreenPageAtIndex:(unint64_t)index
 {
   appsOnPage = self->_appsOnPage;
   if (appsOnPage)
   {
-    v6 = a3;
-    v7 = [(ATXFakeSuggestionDeduplicator *)self suggestionIsDuplicate:v6 otherApps:appsOnPage];
+    duplicateCopy = duplicate;
+    v7 = [(ATXFakeSuggestionDeduplicator *)self suggestionIsDuplicate:duplicateCopy otherApps:appsOnPage];
   }
 
   else
   {
-    v8 = a3;
-    v6 = objc_opt_new();
-    v7 = [(ATXFakeSuggestionDeduplicator *)self suggestionIsDuplicate:v8 otherApps:v6];
+    duplicateCopy2 = duplicate;
+    duplicateCopy = objc_opt_new();
+    v7 = [(ATXFakeSuggestionDeduplicator *)self suggestionIsDuplicate:duplicateCopy2 otherApps:duplicateCopy];
   }
 
   return v7;
 }
 
-- (BOOL)suggestionIsDuplicate:(id)a3 otherApps:(id)a4
+- (BOOL)suggestionIsDuplicate:(id)duplicate otherApps:(id)apps
 {
-  v6 = a3;
-  v7 = a4;
+  duplicateCopy = duplicate;
+  appsCopy = apps;
   if (!self->_appsOnPage)
   {
     if (self->_blanketValueIsSet)
@@ -164,18 +164,18 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v8 = [v6 executableSpecification];
-  v9 = [v8 executableType];
+  executableSpecification = [duplicateCopy executableSpecification];
+  executableType = [executableSpecification executableType];
 
-  if (v9 != 1)
+  if (executableType != 1)
   {
     goto LABEL_6;
   }
 
   v10 = objc_alloc(MEMORY[0x277CCACA8]);
-  v11 = [v6 executableSpecification];
-  v12 = [v11 executable];
-  v13 = [v10 initWithData:v12 encoding:4];
+  executableSpecification2 = [duplicateCopy executableSpecification];
+  executable = [executableSpecification2 executable];
+  v13 = [v10 initWithData:executable encoding:4];
 
   blanketReturnValue = [(NSSet *)self->_appsOnPage containsObject:v13];
 LABEL_7:

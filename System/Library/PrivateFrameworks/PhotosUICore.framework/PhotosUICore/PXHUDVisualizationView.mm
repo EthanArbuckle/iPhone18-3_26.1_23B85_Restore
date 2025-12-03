@@ -1,5 +1,5 @@
 @interface PXHUDVisualizationView
-- (PXHUDVisualizationView)initWithFrame:(CGRect)a3;
+- (PXHUDVisualizationView)initWithFrame:(CGRect)frame;
 - (void)_updateTitleLabel;
 @end
 
@@ -7,20 +7,20 @@
 
 - (void)_updateTitleLabel
 {
-  v3 = [(PXHUDAbstractVisualizationView *)self visualization];
-  v4 = [v3 title];
-  [(UILabel *)self->_titleLabel setText:v4];
+  visualization = [(PXHUDAbstractVisualizationView *)self visualization];
+  title = [visualization title];
+  [(UILabel *)self->_titleLabel setText:title];
 
-  v6 = [(PXHUDAbstractVisualizationView *)self visualization];
-  v5 = [v6 color];
-  [(UILabel *)self->_titleLabel setTextColor:v5];
+  visualization2 = [(PXHUDAbstractVisualizationView *)self visualization];
+  color = [visualization2 color];
+  [(UILabel *)self->_titleLabel setTextColor:color];
 }
 
-- (PXHUDVisualizationView)initWithFrame:(CGRect)a3
+- (PXHUDVisualizationView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = PXHUDVisualizationView;
-  v3 = [(PXHUDVisualizationView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXHUDVisualizationView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);

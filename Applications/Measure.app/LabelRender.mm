@@ -2,22 +2,22 @@
 - (CGRect)accessibilityFrameForLabelContainer;
 - (NSString)speakableString;
 - (_TtC7Measure11LabelRender)init;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)setLabelNode:(id)a3;
-- (void)setSpeakableString:(id)a3;
-- (void)setState:(int64_t)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)setLabelNode:(id)node;
+- (void)setSpeakableString:(id)string;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation LabelRender
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v4 = *(self + OBJC_IVAR____TtC7Measure11LabelRender_state);
-  *(self + OBJC_IVAR____TtC7Measure11LabelRender_state) = a3;
-  if (v4 != a3)
+  *(self + OBJC_IVAR____TtC7Measure11LabelRender_state) = state;
+  if (v4 != state)
   {
-    v6 = self;
-    sub_1000AB428(a3);
+    selfCopy = self;
+    sub_1000AB428(state);
   }
 }
 
@@ -29,7 +29,7 @@
   return v2;
 }
 
-- (void)setSpeakableString:(id)a3
+- (void)setSpeakableString:(id)string
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = (self + OBJC_IVAR____TtC7Measure11LabelRender_speakableString);
@@ -37,11 +37,11 @@
   v5[1] = v6;
 }
 
-- (void)setLabelNode:(id)a3
+- (void)setLabelNode:(id)node
 {
   v4 = *(self + OBJC_IVAR____TtC7Measure11LabelRender_labelNode);
-  *(self + OBJC_IVAR____TtC7Measure11LabelRender_labelNode) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC7Measure11LabelRender_labelNode) = node;
+  nodeCopy = node;
 }
 
 - (_TtC7Measure11LabelRender)init
@@ -51,9 +51,9 @@
   return result;
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v3 = self;
+  selfCopy = self;
   sub_1000B2C60();
 }
 

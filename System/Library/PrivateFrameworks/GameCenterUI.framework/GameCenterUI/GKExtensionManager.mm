@@ -1,16 +1,16 @@
 @interface GKExtensionManager
-- (GKExtensionManager)initWithExtensionBundleIdentifer:(id)a3 host:(id)a4;
+- (GKExtensionManager)initWithExtensionBundleIdentifer:(id)identifer host:(id)host;
 - (int64_t)extensionLoadState;
-- (void)extensionDidTerminateWithError:(id)a3;
-- (void)instantiateViewControllerWithHost:(id)a3 handler:(id)a4;
-- (void)setExtensionLoadState:(int64_t)a3;
+- (void)extensionDidTerminateWithError:(id)error;
+- (void)instantiateViewControllerWithHost:(id)host handler:(id)handler;
+- (void)setExtensionLoadState:(int64_t)state;
 @end
 
 @implementation GKExtensionManager
 
-- (GKExtensionManager)initWithExtensionBundleIdentifer:(id)a3 host:(id)a4
+- (GKExtensionManager)initWithExtensionBundleIdentifer:(id)identifer host:(id)host
 {
-  v5 = a3;
+  identiferCopy = identifer;
   v9.receiver = self;
   v9.super_class = GKExtensionManager;
   v6 = [(GKExtensionManager *)&v9 init];
@@ -19,16 +19,16 @@
     v7 = dispatch_queue_create("com.apple.gamecenter.extension_state_queue", MEMORY[0x277D85CD8]);
     [(GKExtensionManager *)v6 setStateQueue:v7];
 
-    [(GKExtensionManager *)v6 setExtensionIdentifier:v5];
+    [(GKExtensionManager *)v6 setExtensionIdentifier:identiferCopy];
   }
 
   return v6;
 }
 
-- (void)instantiateViewControllerWithHost:(id)a3 handler:(id)a4
+- (void)instantiateViewControllerWithHost:(id)host handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  hostCopy = host;
+  handlerCopy = handler;
   [(GKExtensionManager *)self setExtensionLoadState:1];
   v8 = MEMORY[0x277D0C020];
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKExtensionManager.m", 57, "-[GKExtensionManager instantiateViewControllerWithHost:handler:]"];
@@ -47,11 +47,11 @@
   v15[2] = __64__GKExtensionManager_instantiateViewControllerWithHost_handler___block_invoke_3;
   v15[3] = &unk_27966AB18;
   v16 = v11;
-  v17 = self;
-  v18 = v6;
-  v19 = v7;
-  v12 = v7;
-  v13 = v6;
+  selfCopy = self;
+  v18 = hostCopy;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = hostCopy;
   v14 = v11;
   [v14 notifyOnMainQueueWithBlock:v15];
 }
@@ -158,33 +158,33 @@ LABEL_10:
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(GKExtensionManager *)self stateQueue];
+  stateQueue = [(GKExtensionManager *)self stateQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__GKExtensionManager_extensionLoadState__block_invoke;
   v6[3] = &unk_27966B9A0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(stateQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
   return v4;
 }
 
-- (void)setExtensionLoadState:(int64_t)a3
+- (void)setExtensionLoadState:(int64_t)state
 {
-  v5 = [(GKExtensionManager *)self stateQueue];
+  stateQueue = [(GKExtensionManager *)self stateQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__GKExtensionManager_setExtensionLoadState___block_invoke;
   v6[3] = &unk_27966B9C8;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_barrier_async(v5, v6);
+  v6[5] = state;
+  dispatch_barrier_async(stateQueue, v6);
 }
 
-- (void)extensionDidTerminateWithError:(id)a3
+- (void)extensionDidTerminateWithError:(id)error
 {
   [(GKExtensionManager *)self setExtensionLoadState:0];
 

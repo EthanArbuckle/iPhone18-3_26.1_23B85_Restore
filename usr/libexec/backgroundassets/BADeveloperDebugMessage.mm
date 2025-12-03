@@ -1,21 +1,21 @@
 @interface BADeveloperDebugMessage
 - (BADeveloperDebugMessage)init;
-- (BADeveloperDebugMessage)initWithCoder:(id)a3;
-- (id)archivedRepresentationWithError:(id *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BADeveloperDebugMessage)initWithCoder:(id)coder;
+- (id)archivedRepresentationWithError:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BADeveloperDebugMessage
 
-- (BADeveloperDebugMessage)initWithCoder:(id)a3
+- (BADeveloperDebugMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = BADeveloperDebugMessage;
   v5 = [(BADeveloperDebugMessage *)&v8 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BAMessageVersion"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BAMessageVersion"];
     v5->_messageVersion = [v6 unsignedIntegerValue];
   }
 
@@ -35,14 +35,14 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [NSNumber numberWithUnsignedInteger:[(BADeveloperDebugMessage *)self messageVersion]];
-  [v4 encodeObject:v5 forKey:@"BAMessageVersion"];
+  [coderCopy encodeObject:v5 forKey:@"BAMessageVersion"];
 }
 
-- (id)archivedRepresentationWithError:(id *)a3
+- (id)archivedRepresentationWithError:(id *)error
 {
   v10 = 0;
   v4 = [NSKeyedArchiver archivedDataWithRootObject:self requiringSecureCoding:1 error:&v10];
@@ -53,10 +53,10 @@
     v7 = v4;
   }
 
-  else if (a3)
+  else if (error)
   {
     v8 = v5;
-    *a3 = v6;
+    *error = v6;
   }
 
   return v4;

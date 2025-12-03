@@ -1,70 +1,70 @@
 @interface AMDSQLite
 + (id)allocSharedInstance;
-+ (id)clearUserData:(id)a3;
++ (id)clearUserData:(id)data;
 + (id)createSharedInstance;
-+ (id)deleteEventsOlderThan:(unsigned int)a3;
-+ (id)deleteEventsWithPredicate:(id)a3 forStreams:(id)a4;
-+ (id)deleteRowsHandler:(id)a3 error:(id *)a4;
-+ (id)deleteVectorDBEntryForDBName:(id)a3 error:(id *)a4;
-+ (id)fetchVectorDBConfigForDBName:(id)a3 error:(id *)a4;
++ (id)deleteEventsOlderThan:(unsigned int)than;
++ (id)deleteEventsWithPredicate:(id)predicate forStreams:(id)streams;
++ (id)deleteRowsHandler:(id)handler error:(id *)error;
++ (id)deleteVectorDBEntryForDBName:(id)name error:(id *)error;
++ (id)fetchVectorDBConfigForDBName:(id)name error:(id *)error;
 + (id)getBootstrapSchemaDict;
-+ (id)getDomainsFrom:(id)a3;
-+ (id)getFeatureValueWithName:(id)a3 inDomain:(id)a4 withColumnName:(id)a5 skipRowset:(BOOL)a6 error:(id *)a7;
-+ (id)getSharedInstanceWithOption:(BOOL)a3;
-+ (id)initSharedInstance:(id)a3;
-+ (id)insertRowsHandler:(id)a3 error:(id *)a4;
-+ (id)insertRowsInternal:(id)a3 usingSchema:(id)a4 error:(id *)a5;
-+ (id)loadNewData:(id)a3;
-+ (id)persistVectorDBPath:(id)a3 forDBName:(id)a4 withVectorDimension:(int)a5 andDataType:(id)a6 withDistanceMetric:(id)a7 error:(id *)a8;
-+ (id)refreshEntityTableForDomain:(id)a3 error:(id *)a4;
-+ (id)refreshODTPForDomain:(id)a3 error:(id *)a4;
-+ (id)saveEvents:(id)a3 error:(id *)a4;
-+ (id)trimEventsForStreams:(id)a3 error:(id *)a4;
-+ (id)truncateEvents:(id *)a3;
-+ (id)updateData:(id)a3;
-+ (id)updateLastVectorDBRefreshTimestamp:(id)a3 error:(id *)a4;
-+ (id)updateTablesHandler:(id)a3 error:(id *)a4;
-+ (id)updateTablesInternal:(id)a3 usingSchema:(id)a4 error:(id *)a5;
-+ (sqlite3_stmt)prepare:(id)a3 usingDb:(sqlite3 *)a4 error:(id *)a5;
++ (id)getDomainsFrom:(id)from;
++ (id)getFeatureValueWithName:(id)name inDomain:(id)domain withColumnName:(id)columnName skipRowset:(BOOL)rowset error:(id *)error;
++ (id)getSharedInstanceWithOption:(BOOL)option;
++ (id)initSharedInstance:(id)instance;
++ (id)insertRowsHandler:(id)handler error:(id *)error;
++ (id)insertRowsInternal:(id)internal usingSchema:(id)schema error:(id *)error;
++ (id)loadNewData:(id)data;
++ (id)persistVectorDBPath:(id)path forDBName:(id)name withVectorDimension:(int)dimension andDataType:(id)type withDistanceMetric:(id)metric error:(id *)error;
++ (id)refreshEntityTableForDomain:(id)domain error:(id *)error;
++ (id)refreshODTPForDomain:(id)domain error:(id *)error;
++ (id)saveEvents:(id)events error:(id *)error;
++ (id)trimEventsForStreams:(id)streams error:(id *)error;
++ (id)truncateEvents:(id *)events;
++ (id)updateData:(id)data;
++ (id)updateLastVectorDBRefreshTimestamp:(id)timestamp error:(id *)error;
++ (id)updateTablesHandler:(id)handler error:(id *)error;
++ (id)updateTablesInternal:(id)internal usingSchema:(id)schema error:(id *)error;
++ (sqlite3_stmt)prepare:(id)prepare usingDb:(sqlite3 *)db error:(id *)error;
 - (BOOL)isUsable;
 - (BOOL)isUsableInternal;
-- (id)applySchema:(id)a3 error:(id *)a4;
+- (id)applySchema:(id)schema error:(id *)error;
 - (id)bootstrapDb;
 - (id)connectionState;
-- (id)createIndices:(id)a3 error:(id *)a4;
-- (id)createTable:(id)a3 usingSchema:(id)a4 error:(id *)a5;
-- (id)deleteRows:(id)a3 error:(id *)a4;
-- (id)deleteRowsInternal:(id)a3 error:(id *)a4;
-- (id)fetchRows:(id)a3 andPersist:(BOOL)a4 error:(id *)a5;
-- (id)fetchRowsFrom:(sqlite3 *)a3 usingDescriptor:(id)a4 andSchema:(id)a5 columnMajorOutput:(BOOL)a6 rowMajorOutput:(BOOL)a7 andPersist:(BOOL)a8 error:(id *)a9;
-- (id)fetchRowsUsingSchema:(id)a3 andDescriptor:(id)a4 andPersist:(BOOL)a5 error:(id *)a6;
+- (id)createIndices:(id)indices error:(id *)error;
+- (id)createTable:(id)table usingSchema:(id)schema error:(id *)error;
+- (id)deleteRows:(id)rows error:(id *)error;
+- (id)deleteRowsInternal:(id)internal error:(id *)error;
+- (id)fetchRows:(id)rows andPersist:(BOOL)persist error:(id *)error;
+- (id)fetchRowsFrom:(sqlite3 *)from usingDescriptor:(id)descriptor andSchema:(id)schema columnMajorOutput:(BOOL)output rowMajorOutput:(BOOL)majorOutput andPersist:(BOOL)persist error:(id *)error;
+- (id)fetchRowsUsingSchema:(id)schema andDescriptor:(id)descriptor andPersist:(BOOL)persist error:(id *)error;
 - (id)generateDBLoadError;
-- (id)getPredicateExtensionForTable:(id)a3 forUser:(id)a4 andDomain:(id)a5 error:(id *)a6;
-- (id)insertRows:(id)a3 usingSchema:(id)a4 error:(id *)a5;
-- (id)insertRows:(id)a3 usingSchema:(id)a4 skipValidation:(BOOL)a5 error:(id *)a6;
+- (id)getPredicateExtensionForTable:(id)table forUser:(id)user andDomain:(id)domain error:(id *)error;
+- (id)insertRows:(id)rows usingSchema:(id)schema error:(id *)error;
+- (id)insertRows:(id)rows usingSchema:(id)schema skipValidation:(BOOL)validation error:(id *)error;
 - (id)loadBiomeSchema;
 - (id)loadDataSchema;
 - (id)loadDb;
 - (id)loadMegadomeSchema;
 - (id)prepareBootstrapSchema;
-- (id)refreshAppsTable:(id *)a3;
-- (id)saveSchema:(id)a3 error:(id *)a4;
-- (id)updateSchema:(id)a3 error:(id *)a4;
-- (id)updateTableUsingDescriptor:(id)a3 andSchema:(id)a4 error:(id *)a5;
-- (id)validateRowsData:(id)a3 tableSchema:(id)a4 error:(id *)a5;
-- (sqlite3_stmt)prepare:(id)a3 error:(id *)a4;
-- (void)setEnable:(BOOL)a3;
+- (id)refreshAppsTable:(id *)table;
+- (id)saveSchema:(id)schema error:(id *)error;
+- (id)updateSchema:(id)schema error:(id *)error;
+- (id)updateTableUsingDescriptor:(id)descriptor andSchema:(id)schema error:(id *)error;
+- (id)validateRowsData:(id)data tableSchema:(id)schema error:(id *)error;
+- (sqlite3_stmt)prepare:(id)prepare error:(id *)error;
+- (void)setEnable:(BOOL)enable;
 @end
 
 @implementation AMDSQLite
 
-+ (id)clearUserData:(id)a3
++ (id)clearUserData:(id)data
 {
   v39 = *MEMORY[0x277D85DE8];
-  v35 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v33 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   v32 = 2;
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -79,15 +79,15 @@
   v30 = 0;
   v29 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:2];
   v27 = v30;
-  v15 = [v35 truncateEvents:&v27];
+  v15 = [selfCopy truncateEvents:&v27];
   objc_storeStrong(&v30, v27);
   v28 = v15;
   if (v30)
   {
     v13 = v29;
-    v14 = [v30 localizedDescription];
+    localizedDescription = [v30 localizedDescription];
     [v13 setObject:? forKey:?];
-    MEMORY[0x277D82BD8](v14);
+    MEMORY[0x277D82BD8](localizedDescription);
   }
 
   else if (v28)
@@ -95,7 +95,7 @@
     [v29 setObject:v28 forKey:@"sqliteDeletionSummary"];
   }
 
-  v26 = [v35 getDomainsFrom:location[0]];
+  v26 = [selfCopy getDomainsFrom:location[0]];
   if (v26)
   {
     v21 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v26, "count")}];
@@ -118,7 +118,7 @@
         v20 = *(__b[1] + 8 * v9);
         v5 = v21;
         v18 = v30;
-        v6 = [v35 refreshODTPForDomain:v20 error:&v18];
+        v6 = [selfCopy refreshODTPForDomain:v20 error:&v18];
         objc_storeStrong(&v30, v18);
         [v5 setObject:v6 forKey:v20];
         MEMORY[0x277D82BD8](v6);
@@ -171,14 +171,14 @@
   return v3;
 }
 
-+ (id)deleteRowsHandler:(id)a3 error:(id *)a4
++ (id)deleteRowsHandler:(id)handler error:(id *)error
 {
   v60 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v52 = a4;
+  objc_storeStrong(location, handler);
+  errorCopy = error;
   v51 = [location[0] objectForKey:@"allDeletes"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v51 count])
@@ -215,7 +215,7 @@
       {
         v31 = [AMDError allocError:15 withMessage:@"Deletion info not an array, or empty"];
         v7 = v31;
-        *v52 = v31;
+        *errorCopy = v31;
         v54 = 0;
         v50 = 1;
       }
@@ -264,12 +264,12 @@
                 v37 = [v21 getPredicateExtensionForTable:v20 forUser:v23 andDomain:? error:?];
                 MEMORY[0x277D82BD8](v22);
                 MEMORY[0x277D82BD8](v23);
-                if (*v52)
+                if (*errorCopy)
                 {
                   v18 = v42;
-                  v19 = [*v52 localizedDescription];
+                  localizedDescription = [*errorCopy localizedDescription];
                   [v18 addObject:?];
-                  MEMORY[0x277D82BD8](v19);
+                  MEMORY[0x277D82BD8](localizedDescription);
                   v50 = 5;
                 }
 
@@ -292,12 +292,12 @@
                   if (v36)
                   {
                     v16 = v36;
-                    v17 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+                    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
                     v10 = [v16 stringByTrimmingCharactersInSet:?];
                     v11 = v36;
                     v36 = v10;
                     MEMORY[0x277D82BD8](v11);
-                    MEMORY[0x277D82BD8](v17);
+                    MEMORY[0x277D82BD8](whitespaceCharacterSet);
                     if ([v36 isEqualToString:&stru_2852A6E28])
                     {
                       [v39 setValue:0 forKey:0x2852AF5E8];
@@ -309,13 +309,13 @@
                     }
                   }
 
-                  v35 = [v43 deleteRows:v39 error:v52];
-                  if (*v52)
+                  v35 = [v43 deleteRows:v39 error:errorCopy];
+                  if (*errorCopy)
                   {
                     v14 = v42;
-                    v15 = [*v52 localizedDescription];
+                    localizedDescription2 = [*errorCopy localizedDescription];
                     [v14 addObject:?];
-                    MEMORY[0x277D82BD8](v15);
+                    MEMORY[0x277D82BD8](localizedDescription2);
                   }
 
                   else
@@ -369,9 +369,9 @@
 
       else
       {
-        v30 = [v43 generateDBLoadError];
-        v8 = v30;
-        *v52 = v30;
+        generateDBLoadError = [v43 generateDBLoadError];
+        v8 = generateDBLoadError;
+        *errorCopy = generateDBLoadError;
         v54 = 0;
         v50 = 1;
       }
@@ -387,7 +387,7 @@
   {
     v33 = [AMDError allocError:15 withMessage:@"Missing deletion info for all DBs"];
     v4 = v33;
-    *v52 = v33;
+    *errorCopy = v33;
     v54 = 0;
     v50 = 1;
   }
@@ -400,20 +400,20 @@
   return v12;
 }
 
-+ (id)deleteEventsWithPredicate:(id)a3 forStreams:(id)a4
++ (id)deleteEventsWithPredicate:(id)predicate forStreams:(id)streams
 {
   v52[1] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, predicate);
   v44 = 0;
-  objc_storeStrong(&v44, a4);
+  objc_storeStrong(&v44, streams);
   v43 = +[AMDSQLite getSharedInstance];
   if ([v43 isUsable])
   {
-    v39 = [v43 getDataSchema];
-    v38 = [v39 getStreamToTableMap];
+    getDataSchema = [v43 getDataSchema];
+    getStreamToTableMap = [getDataSchema getStreamToTableMap];
     v37 = objc_alloc_init(MEMORY[0x277CBEB18]);
     if (v44)
     {
@@ -434,7 +434,7 @@
           }
 
           v36 = *(__b[1] + 8 * v21);
-          v34 = [v38 objectForKey:v36];
+          v34 = [getStreamToTableMap objectForKey:v36];
           if (v34)
           {
             [v37 addObject:v34];
@@ -465,12 +465,12 @@
 
     else
     {
-      v25 = [v38 allValues];
-      v4 = [v25 mutableCopy];
+      allValues = [getStreamToTableMap allValues];
+      v4 = [allValues mutableCopy];
       v5 = v37;
       v37 = v4;
       MEMORY[0x277D82BD8](v5);
-      MEMORY[0x277D82BD8](v25);
+      MEMORY[0x277D82BD8](allValues);
     }
 
     v16 = objc_alloc(MEMORY[0x277CBEB38]);
@@ -507,13 +507,13 @@
         if (v29)
         {
           v47 = @"Error";
-          v10 = [v29 localizedDescription];
-          v48 = v10;
+          localizedDescription = [v29 localizedDescription];
+          v48 = localizedDescription;
           v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
           v7 = v28;
           v28 = v6;
           MEMORY[0x277D82BD8](v7);
-          MEMORY[0x277D82BD8](v10);
+          MEMORY[0x277D82BD8](localizedDescription);
         }
 
         if (v28)
@@ -547,20 +547,20 @@
     v40 = 1;
     objc_storeStrong(&v33, 0);
     objc_storeStrong(&v37, 0);
-    objc_storeStrong(&v38, 0);
-    objc_storeStrong(&v39, 0);
+    objc_storeStrong(&getStreamToTableMap, 0);
+    objc_storeStrong(&getDataSchema, 0);
   }
 
   else
   {
-    v42 = [v43 connectionState];
-    v41 = [MEMORY[0x277CCACA8] stringWithFormat:@"DB not usable: %@", v42];
+    connectionState = [v43 connectionState];
+    v41 = [MEMORY[0x277CCACA8] stringWithFormat:@"DB not usable: %@", connectionState];
     v51 = @"eventDeletionError";
     v52[0] = v41;
     v46 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:&v51 count:1];
     v40 = 1;
     objc_storeStrong(&v41, 0);
-    objc_storeStrong(&v42, 0);
+    objc_storeStrong(&connectionState, 0);
   }
 
   objc_storeStrong(&v43, 0);
@@ -572,17 +572,17 @@
   return v8;
 }
 
-+ (id)deleteEventsOlderThan:(unsigned int)a3
++ (id)deleteEventsOlderThan:(unsigned int)than
 {
   v42 = *MEMORY[0x277D85DE8];
-  v35 = a1;
+  selfCopy = self;
   v34 = a2;
-  v33 = a3;
+  thanCopy = than;
   location = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   v31 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(location, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_0_1_4_0(v41, v33);
+    __os_log_helper_16_0_1_4_0(v41, thanCopy);
     _os_log_debug_impl(&dword_240CB9000, location, v31, "SQLITE Deleting events older than %u days", v41, 8u);
   }
 
@@ -590,11 +590,11 @@
   v30 = +[AMDSQLite getSharedInstance];
   if ([v30 isUsable])
   {
-    v26 = [v30 getDataSchema];
+    getDataSchema = [v30 getDataSchema];
     v25 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v24 = [v26 getStreamToTableMap];
+    getStreamToTableMap = [getDataSchema getStreamToTableMap];
     memset(__b, 0, sizeof(__b));
-    v12 = MEMORY[0x277D82BE0](v24);
+    v12 = MEMORY[0x277D82BE0](getStreamToTableMap);
     v13 = [v12 countByEnumeratingWithState:__b objects:v38 count:16];
     if (v13)
     {
@@ -610,12 +610,12 @@
         }
 
         v23 = *(__b[1] + 8 * v10);
-        v21 = [v24 objectForKey:v23];
-        v20 = [v26 getSchemaForTable:v21];
+        v21 = [getStreamToTableMap objectForKey:v23];
+        v20 = [getDataSchema getSchemaForTable:v21];
         if (v20)
         {
-          v19 = [v20 getColumns];
-          v7 = [v19 objectForKey:@"creationTime"];
+          getColumns = [v20 getColumns];
+          v7 = [getColumns objectForKey:@"creationTime"];
           MEMORY[0x277D82BD8](v7);
           if (v7)
           {
@@ -636,7 +636,7 @@
             objc_storeStrong(&oslog, 0);
           }
 
-          objc_storeStrong(&v19, 0);
+          objc_storeStrong(&getColumns, 0);
           v27 = 0;
         }
 
@@ -662,28 +662,28 @@
 
     MEMORY[0x277D82BD8](v12);
     v16 = +[AMDMiscHelpers getCurrentEpochSeconds];
-    v3 = [v16 unsignedLongValue];
-    v15 = v3 - 86400 * v33;
+    unsignedLongValue = [v16 unsignedLongValue];
+    v15 = unsignedLongValue - 86400 * thanCopy;
     v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ < %llu", @"creationTime", v15];
-    v36 = [v35 deleteEventsWithPredicate:v14 forStreams:v25];
+    v36 = [selfCopy deleteEventsWithPredicate:v14 forStreams:v25];
     v27 = 1;
     objc_storeStrong(&v14, 0);
     objc_storeStrong(&v16, 0);
-    objc_storeStrong(&v24, 0);
+    objc_storeStrong(&getStreamToTableMap, 0);
     objc_storeStrong(&v25, 0);
-    objc_storeStrong(&v26, 0);
+    objc_storeStrong(&getDataSchema, 0);
   }
 
   else
   {
-    v29 = [v30 connectionState];
-    v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"DB not usable: %@", v29];
+    connectionState = [v30 connectionState];
+    v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"DB not usable: %@", connectionState];
     v39 = @"eventDeletionError";
     v40 = v28;
     v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
     v27 = 1;
     objc_storeStrong(&v28, 0);
-    objc_storeStrong(&v29, 0);
+    objc_storeStrong(&connectionState, 0);
   }
 
   objc_storeStrong(&v30, 0);
@@ -693,12 +693,12 @@
   return v4;
 }
 
-+ (id)getDomainsFrom:(id)a3
++ (id)getDomainsFrom:(id)from
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, from);
   v8 = [location[0] objectForKey:0x2852B1B28];
   if (!v8)
   {
@@ -746,19 +746,19 @@
   return v3;
 }
 
-+ (id)getFeatureValueWithName:(id)a3 inDomain:(id)a4 withColumnName:(id)a5 skipRowset:(BOOL)a6 error:(id *)a7
++ (id)getFeatureValueWithName:(id)name inDomain:(id)domain withColumnName:(id)columnName skipRowset:(BOOL)rowset error:(id *)error
 {
   v88 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v73 = 0;
-  objc_storeStrong(&v73, a4);
+  objc_storeStrong(&v73, domain);
   v72 = 0;
-  objc_storeStrong(&v72, a5);
-  v71 = a6;
-  v70 = a7;
+  objc_storeStrong(&v72, columnName);
+  rowsetCopy = rowset;
+  errorCopy = error;
   v69 = [AMDDomains getCodeForDomain:v73];
   v68 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   type = OS_LOG_TYPE_DEBUG;
@@ -770,7 +770,7 @@
 
   objc_storeStrong(&v68, 0);
   v66 = 0;
-  if (v71)
+  if (rowsetCopy)
   {
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"featureName = '%@' AND domain = %ld AND valueType <> %d", location[0], v69, 3];
   }
@@ -807,10 +807,10 @@
   if ([v64 isUsable])
   {
     v27 = [AMDFetchDescriptor alloc];
-    v28 = [v64 getBootSchema];
+    getBootSchema = [v64 getBootSchema];
     v62 = [AMDFetchDescriptor initWithDict:v27 usingSchema:"initWithDict:usingSchema:error:" error:v65];
-    MEMORY[0x277D82BD8](v28);
-    if (*v70)
+    MEMORY[0x277D82BD8](getBootSchema);
+    if (*errorCopy)
     {
       v75 = 0;
       v63 = 1;
@@ -818,7 +818,7 @@
 
     else
     {
-      v61 = [v64 fetchRows:v62 andPersist:0 error:v70];
+      v61 = [v64 fetchRows:v62 andPersist:0 error:errorCopy];
       v26 = [v61 objectForKey:@"resultSet"];
       v25 = [v26 objectForKey:@"fetchResultColumnsData"];
       v60 = [v25 objectAtIndexedSubscript:0];
@@ -827,8 +827,8 @@
       if (v60 && [v60 count])
       {
         v56 = [v60 objectAtIndexedSubscript:0];
-        v55 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v56 options:4 error:v70];
-        if (*v70)
+        v55 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v56 options:4 error:errorCopy];
+        if (*errorCopy)
         {
           v75 = 0;
           v63 = 1;
@@ -898,7 +898,7 @@
                   objc_storeStrong(&v37, 0);
                   v18 = [AMDError allocError:16 withMessage:v38];
                   v15 = v18;
-                  *v70 = v18;
+                  *errorCopy = v18;
                   v75 = 0;
                   v63 = 1;
                   objc_storeStrong(&v38, 0);
@@ -919,7 +919,7 @@
                 objc_storeStrong(&v43, 0);
                 v20 = [AMDError allocError:16 withMessage:v44];
                 v12 = v20;
-                *v70 = v20;
+                *errorCopy = v20;
                 v75 = 0;
                 v63 = 1;
                 objc_storeStrong(&v44, 0);
@@ -944,7 +944,7 @@
               objc_storeStrong(&v49, 0);
               v21 = [AMDError allocError:16 withMessage:v50];
               v11 = v21;
-              *v70 = v21;
+              *errorCopy = v21;
               v75 = 0;
               v63 = 1;
               objc_storeStrong(&v50, 0);
@@ -965,7 +965,7 @@
             objc_storeStrong(&oslog, 0);
             v22 = [AMDError allocError:16 withMessage:v53];
             v10 = v22;
-            *v70 = v22;
+            *errorCopy = v22;
             v75 = 0;
             v63 = 1;
             objc_storeStrong(&v53, 0);
@@ -1010,9 +1010,9 @@
 
   else
   {
-    v29 = [v64 generateDBLoadError];
-    v9 = v29;
-    *v70 = v29;
+    generateDBLoadError = [v64 generateDBLoadError];
+    v9 = generateDBLoadError;
+    *errorCopy = generateDBLoadError;
     v75 = 0;
     v63 = 1;
   }
@@ -1031,63 +1031,63 @@
 
 + (id)allocSharedInstance
 {
-  v2 = [a1 getSharedInstanceWithOption:{1, a2, a1}];
+  v2 = [self getSharedInstanceWithOption:{1, a2, self}];
 
   return v2;
 }
 
 + (id)createSharedInstance
 {
-  v12 = a1;
+  selfCopy = self;
   v11[1] = a2;
   v11[0] = objc_alloc_init(AMDSQLite);
-  v6 = [MEMORY[0x277CCA8D8] mainBundle];
-  v10 = [v6 bundleIdentifier];
-  MEMORY[0x277D82BD8](v6);
-  v7 = v10;
-  v2 = v10;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  MEMORY[0x277D82BD8](mainBundle);
+  v7 = bundleIdentifier;
+  v2 = bundleIdentifier;
   v8 = dispatch_queue_create([v7 UTF8String], 0);
   [v11[0] set_executorQueue:?];
   MEMORY[0x277D82BD8](v8);
   [v11[0] set_isEnabled:0];
-  v3 = [v12 initSharedInstance:v11[0]];
+  v3 = [selfCopy initSharedInstance:v11[0]];
   v4 = v11[0];
   v11[0] = v3;
   MEMORY[0x277D82BD8](v4);
   v9 = MEMORY[0x277D82BE0](v11[0]);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&bundleIdentifier, 0);
   objc_storeStrong(v11, 0);
 
   return v9;
 }
 
-+ (id)initSharedInstance:(id)a3
++ (id)initSharedInstance:(id)instance
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, instance);
   v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v4 = v15;
-  v5 = [location[0] prepareBootstrapSchema];
+  prepareBootstrapSchema = [location[0] prepareBootstrapSchema];
   [v4 addEntriesFromDictionary:?];
-  MEMORY[0x277D82BD8](v5);
+  MEMORY[0x277D82BD8](prepareBootstrapSchema);
   v6 = v15;
-  v7 = [location[0] loadDb];
+  loadDb = [location[0] loadDb];
   [v6 addEntriesFromDictionary:?];
-  MEMORY[0x277D82BD8](v7);
+  MEMORY[0x277D82BD8](loadDb);
   v8 = v15;
-  v9 = [location[0] loadDataSchema];
+  loadDataSchema = [location[0] loadDataSchema];
   [v8 addEntriesFromDictionary:?];
-  MEMORY[0x277D82BD8](v9);
+  MEMORY[0x277D82BD8](loadDataSchema);
   v10 = v15;
-  v11 = [location[0] loadBiomeSchema];
+  loadBiomeSchema = [location[0] loadBiomeSchema];
   [v10 addEntriesFromDictionary:?];
-  MEMORY[0x277D82BD8](v11);
+  MEMORY[0x277D82BD8](loadBiomeSchema);
   v12 = v15;
-  v13 = [location[0] loadMegadomeSchema];
+  loadMegadomeSchema = [location[0] loadMegadomeSchema];
   [v12 addEntriesFromDictionary:?];
-  MEMORY[0x277D82BD8](v13);
+  MEMORY[0x277D82BD8](loadMegadomeSchema);
   [AMDFrameworkMetrics log:v15 withKey:@"SQLLoadSummary" atVerbosity:0];
   v14 = MEMORY[0x277D82BE0](location[0]);
   objc_storeStrong(&v15, 0);
@@ -1096,19 +1096,19 @@
   return v14;
 }
 
-+ (id)getSharedInstanceWithOption:(BOOL)a3
++ (id)getSharedInstanceWithOption:(BOOL)option
 {
-  v13 = a1;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
-  if (a3)
+  optionCopy = option;
+  if (option)
   {
     obj = MEMORY[0x277D85DD0];
     v6 = -1073741824;
     v7 = 0;
     v8 = __41__AMDSQLite_getSharedInstanceWithOption___block_invoke;
     v9 = &__block_descriptor_40_e5_v8__0l;
-    v10 = v13;
+    v10 = selfCopy;
     v16 = &getSharedInstanceWithOption__onceToken;
     location = 0;
     objc_storeStrong(&location, &obj);
@@ -1155,7 +1155,7 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
 + (id)getBootstrapSchemaDict
 {
   v76[3] = *MEMORY[0x277D85DE8];
-  v28[2] = a1;
+  v28[2] = self;
   v28[1] = a2;
   v75[0] = AMD_SQLITE_SCHEMA_NAME;
   v76[0] = @"bootstrap";
@@ -1334,28 +1334,28 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
   return v27;
 }
 
-+ (id)insertRowsHandler:(id)a3 error:(id *)a4
++ (id)insertRowsHandler:(id)handler error:(id *)error
 {
-  v8 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [v8 insertRowsInternal:location[0] usingSchema:0 error:a4];
+  objc_storeStrong(location, handler);
+  v6 = [selfCopy insertRowsInternal:location[0] usingSchema:0 error:error];
   objc_storeStrong(location, 0);
 
   return v6;
 }
 
-+ (id)insertRowsInternal:(id)a3 usingSchema:(id)a4 error:(id *)a5
++ (id)insertRowsInternal:(id)internal usingSchema:(id)schema error:(id *)error
 {
   v67 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, internal);
   v56 = 0;
-  objc_storeStrong(&v56, a4);
-  v55 = a5;
+  objc_storeStrong(&v56, schema);
+  errorCopy = error;
   v54 = [location[0] objectForKey:@"allInserts"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v54 count])
@@ -1398,9 +1398,9 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
       {
         if (!v56)
         {
-          v10 = [v46 _schema];
+          _schema = [v46 _schema];
           v11 = v56;
-          v56 = v10;
+          v56 = _schema;
           MEMORY[0x277D82BD8](v11);
         }
 
@@ -1472,13 +1472,13 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
                 v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v62 forKeys:v61 count:2];
                 MEMORY[0x277D82BD8](v20);
                 MEMORY[0x277D82BD8](v21);
-                v36 = [v46 insertRows:v37 usingSchema:v56 skipValidation:v44 error:v55];
-                if (*v55)
+                v36 = [v46 insertRows:v37 usingSchema:v56 skipValidation:v44 error:errorCopy];
+                if (*errorCopy)
                 {
                   v18 = v41;
-                  v19 = [*v55 localizedDescription];
+                  localizedDescription = [*errorCopy localizedDescription];
                   [v18 addObject:?];
-                  MEMORY[0x277D82BD8](v19);
+                  MEMORY[0x277D82BD8](localizedDescription);
                 }
 
                 else
@@ -1521,7 +1521,7 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
         {
           v28 = [AMDError allocError:15 withMessage:@"Missing or invalid rowsets"];
           v15 = v28;
-          *v55 = v28;
+          *errorCopy = v28;
           v58 = 0;
           v53 = 1;
         }
@@ -1531,9 +1531,9 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
 
       else
       {
-        v30 = [v46 generateDBLoadError];
-        v9 = v30;
-        *v55 = v30;
+        generateDBLoadError = [v46 generateDBLoadError];
+        v9 = generateDBLoadError;
+        *errorCopy = generateDBLoadError;
         v58 = 0;
         v53 = 1;
       }
@@ -1545,7 +1545,7 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
     {
       v31 = [AMDError allocError:15 withMessage:@"No insert info"];
       v8 = v31;
-      *v55 = v31;
+      *errorCopy = v31;
       v58 = 0;
       v53 = 1;
     }
@@ -1558,7 +1558,7 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
   {
     v33 = [AMDError allocError:15 withMessage:@"Missing insertion info for all DBs"];
     v5 = v33;
-    *v55 = v33;
+    *errorCopy = v33;
     v58 = 0;
     v53 = 1;
   }
@@ -1572,13 +1572,13 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
   return v16;
 }
 
-+ (id)loadNewData:(id)a3
++ (id)loadNewData:(id)data
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v11 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   v10 = 2;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -1603,15 +1603,15 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
   return v4;
 }
 
-+ (sqlite3_stmt)prepare:(id)a3 usingDb:(sqlite3 *)a4 error:(id *)a5
++ (sqlite3_stmt)prepare:(id)prepare usingDb:(sqlite3 *)db error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v25 = a4;
-  v24 = a5;
+  objc_storeStrong(location, prepare);
+  dbCopy = db;
+  errorCopy = error;
   v23 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   v22 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -1622,9 +1622,9 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
 
   objc_storeStrong(&v23, 0);
   ppStmt = 0;
-  if (v25)
+  if (dbCopy)
   {
-    db = v25;
+    db = dbCopy;
     v10 = location[0];
     v6 = location[0];
     v16 = sqlite3_prepare_v2(db, [v10 UTF8String], -1, &ppStmt, 0);
@@ -1639,7 +1639,7 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
       v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"SQLITE PREPARE failed: %d", v16];
       v9 = [AMDMiscHelpers logAndCreateError:22 errorMessage:v15];
       v7 = v9;
-      *v24 = v9;
+      *errorCopy = v9;
       v27 = 0;
       v17 = 1;
       objc_storeStrong(&v15, 0);
@@ -1651,7 +1651,7 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
     v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"SQLITE PREPARE failed: No db!!!"];
     v12 = [AMDMiscHelpers logAndCreateError:22 errorMessage:v20];
     v5 = v12;
-    *v24 = v12;
+    *errorCopy = v12;
     v19 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
     v18 = OS_LOG_TYPE_INFO;
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
@@ -1671,25 +1671,25 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
   return v27;
 }
 
-- (sqlite3_stmt)prepare:(id)a3 error:(id *)a4
+- (sqlite3_stmt)prepare:(id)prepare error:(id *)error
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [AMDSQLite prepare:location[0] usingDb:[(AMDSQLite *)v8 _db] error:a4];
+  objc_storeStrong(location, prepare);
+  v6 = [AMDSQLite prepare:location[0] usingDb:[(AMDSQLite *)selfCopy _db] error:error];
   objc_storeStrong(location, 0);
   return v6;
 }
 
-+ (id)refreshEntityTableForDomain:(id)a3 error:(id *)a4
++ (id)refreshEntityTableForDomain:(id)domain error:(id *)error
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v24 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v22 = a4;
+  objc_storeStrong(location, domain);
+  errorCopy = error;
   v21 = MEMORY[0x277D82BE0](@"RefreshEntityTableForDomain");
   if (location[0])
   {
@@ -1702,12 +1702,12 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
     }
 
     objc_storeStrong(&oslog, 0);
-    v16 = [v24 getSharedInstance];
-    if ([v16 isUsable])
+    getSharedInstance = [selfCopy getSharedInstance];
+    if ([getSharedInstance isUsable])
     {
       if ([location[0] isEqualToString:@"apps"])
       {
-        v25 = [v16 refreshAppsTable:v22];
+        v25 = [getSharedInstance refreshAppsTable:errorCopy];
         v19 = 1;
       }
 
@@ -1716,7 +1716,7 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown domain: %@", location[0]];
         v9 = [AMDError allocError:22 withMessage:v13];
         v6 = v9;
-        *v22 = v9;
+        *errorCopy = v9;
         v26 = v21;
         v27 = v13;
         v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
@@ -1727,20 +1727,20 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
 
     else
     {
-      v15 = [v16 connectionState];
-      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Entity table refresh failed. DB not usable: %@", v15];
+      connectionState = [getSharedInstance connectionState];
+      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Entity table refresh failed. DB not usable: %@", connectionState];
       v10 = [AMDError allocError:22 withMessage:v14];
       v5 = v10;
-      *v22 = v10;
+      *errorCopy = v10;
       v28 = v21;
       v29 = v14;
       v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
       v19 = 1;
       objc_storeStrong(&v14, 0);
-      objc_storeStrong(&v15, 0);
+      objc_storeStrong(&connectionState, 0);
     }
 
-    objc_storeStrong(&v16, 0);
+    objc_storeStrong(&getSharedInstance, 0);
   }
 
   else
@@ -1748,7 +1748,7 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
     v20 = MEMORY[0x277D82BE0](@"No domain");
     v11 = [AMDError allocError:22 withMessage:v20];
     v4 = v11;
-    *v22 = v11;
+    *errorCopy = v11;
     v31 = v21;
     v32[0] = v20;
     v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
@@ -1764,14 +1764,14 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
   return v7;
 }
 
-+ (id)refreshODTPForDomain:(id)a3 error:(id *)a4
++ (id)refreshODTPForDomain:(id)domain error:(id *)error
 {
   v113[1] = *MEMORY[0x277D85DE8];
-  v91 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v89 = a4;
+  objc_storeStrong(location, domain);
+  errorCopy = error;
   v88 = MEMORY[0x277D82BE0](@"RefreshODTPSQLite");
   if (location[0])
   {
@@ -1809,23 +1809,23 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
       v102[3] = 0x2852AF5E8;
       v103[3] = v79;
       v78 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v103 forKeys:v102 count:4];
-      v77 = [v91 getSharedInstance];
-      if ([v77 isUsable])
+      getSharedInstance = [selfCopy getSharedInstance];
+      if ([getSharedInstance isUsable])
       {
         v37 = [AMDFetchDescriptor alloc];
-        v38 = [v77 _bootstrapSchema];
+        _bootstrapSchema = [getSharedInstance _bootstrapSchema];
         v74 = [AMDFetchDescriptor initWithDict:v37 usingSchema:"initWithDict:usingSchema:error:" error:v78];
-        MEMORY[0x277D82BD8](v38);
-        v39 = [v77 _bootstrapSchema];
-        v73 = [v77 fetchRowsUsingSchema:? andDescriptor:? andPersist:? error:?];
-        MEMORY[0x277D82BD8](v39);
-        if (*v89)
+        MEMORY[0x277D82BD8](_bootstrapSchema);
+        _bootstrapSchema2 = [getSharedInstance _bootstrapSchema];
+        v73 = [getSharedInstance fetchRowsUsingSchema:? andDescriptor:? andPersist:? error:?];
+        MEMORY[0x277D82BD8](_bootstrapSchema2);
+        if (*errorCopy)
         {
           v98 = v88;
-          v36 = [*v89 localizedDescription];
-          v99 = v36;
+          localizedDescription = [*errorCopy localizedDescription];
+          v99 = localizedDescription;
           v92 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v99 forKeys:&v98 count:1];
-          MEMORY[0x277D82BD8](v36);
+          MEMORY[0x277D82BD8](localizedDescription);
           v86 = 1;
         }
 
@@ -1893,12 +1893,12 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
                 {
                   v21 = [AMDFetchDescriptor alloc];
                   v20 = v60;
-                  v23 = [v77 _schema];
+                  _schema = [getSharedInstance _schema];
                   v54 = v63;
                   v22 = [AMDFetchDescriptor initWithDict:v21 usingSchema:"initWithDict:usingSchema:error:" error:v20];
                   objc_storeStrong(&v63, v54);
                   v55 = v22;
-                  MEMORY[0x277D82BD8](v23);
+                  MEMORY[0x277D82BD8](_schema);
                   if (v63)
                   {
                     v53 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
@@ -1918,12 +1918,12 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
 
                   else
                   {
-                    v16 = v77;
-                    v17 = [v77 _schema];
+                    v16 = getSharedInstance;
+                    _schema2 = [getSharedInstance _schema];
                     v50 = v63;
                     v8 = [v16 fetchRowsUsingSchema:? andDescriptor:? andPersist:? error:?];
                     objc_storeStrong(&v63, v50);
-                    MEMORY[0x277D82BD8](v17);
+                    MEMORY[0x277D82BD8](_schema2);
                     if (v63)
                     {
                       ++v65;
@@ -1937,11 +1937,11 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
                       {
                         v13 = v49;
                         v14 = v48;
-                        v15 = [v55 getId];
-                        v47 = MEMORY[0x277D82BE0](v15);
+                        getId = [v55 getId];
+                        v47 = MEMORY[0x277D82BE0](getId);
                         __os_log_helper_16_2_1_8_64(v93, v47);
                         _os_log_debug_impl(&dword_240CB9000, v13, v14, "SQLITE Saving result for FD '%@'", v93, 0xCu);
-                        MEMORY[0x277D82BD8](v15);
+                        MEMORY[0x277D82BD8](getId);
                         objc_storeStrong(&v47, 0);
                       }
 
@@ -2010,20 +2010,20 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
 
       else
       {
-        v76 = [v77 connectionState];
-        v75 = [MEMORY[0x277CCACA8] stringWithFormat:@"SQLITE Cannot refresh OD Features: %@", v76];
+        connectionState = [getSharedInstance connectionState];
+        v75 = [MEMORY[0x277CCACA8] stringWithFormat:@"SQLITE Cannot refresh OD Features: %@", connectionState];
         v40 = [AMDError allocError:22 withMessage:v75];
         v6 = v40;
-        *v89 = v40;
+        *errorCopy = v40;
         v100 = v88;
         v101 = v75;
         v92 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v101 forKeys:&v100 count:1];
         v86 = 1;
         objc_storeStrong(&v75, 0);
-        objc_storeStrong(&v76, 0);
+        objc_storeStrong(&connectionState, 0);
       }
 
-      objc_storeStrong(&v77, 0);
+      objc_storeStrong(&getSharedInstance, 0);
       objc_storeStrong(&v78, 0);
       objc_storeStrong(&v79, 0);
       objc_storeStrong(&v80, 0);
@@ -2034,7 +2034,7 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
       v83 = MEMORY[0x277D82BE0](@"Unknown domain");
       v43 = [AMDError allocError:22 withMessage:v83];
       v5 = v43;
-      *v89 = v43;
+      *errorCopy = v43;
       v110 = v88;
       v111 = v83;
       v92 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v111 forKeys:&v110 count:1];
@@ -2050,7 +2050,7 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
     v87 = MEMORY[0x277D82BE0](@"No domain");
     v44 = [AMDError allocError:22 withMessage:v87];
     v4 = v44;
-    *v89 = v44;
+    *errorCopy = v44;
     v112 = v88;
     v113[0] = v87;
     v92 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v113 forKeys:&v112 count:1];
@@ -2066,14 +2066,14 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
   return v10;
 }
 
-+ (id)saveEvents:(id)a3 error:(id *)a4
++ (id)saveEvents:(id)events error:(id *)error
 {
   v63[2] = *MEMORY[0x277D85DE8];
-  v60 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v58 = a4;
+  objc_storeStrong(location, events);
+  errorCopy = error;
   v57 = MEMORY[0x277D82BE0](@"saveEvents");
   v56 = +[AMDSQLite getSharedInstance];
   if ([v56 isUsable])
@@ -2081,9 +2081,9 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
     v54 = [location[0] objectForKey:@"streamName"];
     if (v54)
     {
-      v27 = [v56 _schema];
-      v52 = [v27 getTableForStream:v54];
-      MEMORY[0x277D82BD8](v27);
+      _schema = [v56 _schema];
+      v52 = [_schema getTableForStream:v54];
+      MEMORY[0x277D82BD8](_schema);
       if (v52)
       {
         v50 = [location[0] objectForKey:@"rowsData"];
@@ -2094,10 +2094,10 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
           v62[1] = @"rowsData";
           v63[1] = v50;
           v48 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v63 forKeys:v62 count:2];
-          v24 = [v56 _schema];
+          _schema2 = [v56 _schema];
           v47 = [v56 insertRows:v48 usingSchema:? error:?];
-          MEMORY[0x277D82BD8](v24);
-          if (*v58)
+          MEMORY[0x277D82BD8](_schema2);
+          if (*errorCopy)
           {
             v61 = 0;
             v55 = 1;
@@ -2124,18 +2124,18 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
               if (v45)
               {
                 v41 = v44;
-                v23 = [v60 refreshEntityTableForDomain:v45 error:&v41];
+                v23 = [selfCopy refreshEntityTableForDomain:v45 error:&v41];
                 objc_storeStrong(&v44, v41);
                 v42 = v23;
                 if (v44)
                 {
                   v21 = MEMORY[0x277CCACA8];
-                  v22 = [v44 localizedDescription];
-                  v8 = [v21 stringWithFormat:@"Error refreshing entity table: %@", v22];
+                  localizedDescription = [v44 localizedDescription];
+                  v8 = [v21 stringWithFormat:@"Error refreshing entity table: %@", localizedDescription];
                   v9 = v42;
                   v42 = v8;
                   MEMORY[0x277D82BD8](v9);
-                  MEMORY[0x277D82BD8](v22);
+                  MEMORY[0x277D82BD8](localizedDescription);
                 }
 
                 [v46 setObject:v42 forKey:@"refreshEntity"];
@@ -2165,18 +2165,18 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
               if (v45)
               {
                 obj = v37;
-                v18 = [v60 refreshODTPForDomain:v45 error:&obj];
+                v18 = [selfCopy refreshODTPForDomain:v45 error:&obj];
                 objc_storeStrong(&v37, obj);
                 v35 = v18;
                 if (v37)
                 {
                   v16 = MEMORY[0x277CCACA8];
-                  v17 = [v37 localizedDescription];
-                  v10 = [v16 stringWithFormat:@"Error refreshing ODTP: %@", v17];
+                  localizedDescription2 = [v37 localizedDescription];
+                  v10 = [v16 stringWithFormat:@"Error refreshing ODTP: %@", localizedDescription2];
                   v11 = v35;
                   v35 = v10;
                   MEMORY[0x277D82BD8](v11);
-                  MEMORY[0x277D82BD8](v17);
+                  MEMORY[0x277D82BD8](localizedDescription2);
                 }
 
                 [v46 setObject:v35 forKey:@"refreshODTP"];
@@ -2219,7 +2219,7 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
           v49 = MEMORY[0x277D82BE0](@"No rows data");
           v25 = [AMDMiscHelpers logAndCreateError:22 errorMessage:v49];
           v7 = v25;
-          *v58 = v25;
+          *errorCopy = v25;
           v61 = 0;
           v55 = 1;
           objc_storeStrong(&v49, 0);
@@ -2233,7 +2233,7 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
         v51 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown stream: %@", v54];
         v26 = [AMDMiscHelpers logAndCreateError:22 errorMessage:v51];
         v6 = v26;
-        *v58 = v26;
+        *errorCopy = v26;
         v61 = 0;
         v55 = 1;
         objc_storeStrong(&v51, 0);
@@ -2247,7 +2247,7 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
       v53 = MEMORY[0x277D82BE0](@"No stream name");
       v28 = [AMDMiscHelpers logAndCreateError:22 errorMessage:v53];
       v5 = v28;
-      *v58 = v28;
+      *errorCopy = v28;
       v61 = 0;
       v55 = 1;
       objc_storeStrong(&v53, 0);
@@ -2258,9 +2258,9 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
 
   else
   {
-    v29 = [v56 generateDBLoadError];
-    v4 = v29;
-    *v58 = v29;
+    generateDBLoadError = [v56 generateDBLoadError];
+    v4 = generateDBLoadError;
+    *errorCopy = generateDBLoadError;
     v61 = 0;
     v55 = 1;
   }
@@ -2274,23 +2274,23 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
   return v12;
 }
 
-+ (id)trimEventsForStreams:(id)a3 error:(id *)a4
++ (id)trimEventsForStreams:(id)streams error:(id *)error
 {
   v95 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v77 = a4;
+  objc_storeStrong(location, streams);
+  errorCopy = error;
   if (location[0])
   {
     v74 = +[AMDSQLite getSharedInstance];
     if ([v74 isUsable])
     {
-      v73 = [v74 getDataSchema];
-      if (v73)
+      getDataSchema = [v74 getDataSchema];
+      if (getDataSchema)
       {
-        v71 = [v73 getStreamToTableMap];
+        getStreamToTableMap = [getDataSchema getStreamToTableMap];
         v70 = objc_alloc_init(MEMORY[0x277CBEB38]);
         memset(__b, 0, sizeof(__b));
         obj = MEMORY[0x277D82BE0](location[0]);
@@ -2326,7 +2326,7 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
             if (objc_opt_isKindOfClass())
             {
               v63 = MEMORY[0x277D82BE0](v64);
-              v62 = [v71 objectForKey:v69];
+              v62 = [getStreamToTableMap objectForKey:v69];
               v90 = @"creationTime";
               v88 = AMD_SQLITE_TYPE;
               v89 = AMD_SQLITE_DATA_TYPE_INT64;
@@ -2348,30 +2348,30 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
               v60 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v87 forKeys:v86 count:4];
               v7 = [AMDFetchDescriptor alloc];
               v58 = v67;
-              v29 = [(AMDFetchDescriptor *)v7 initWithDict:v60 usingSchema:v73 error:&v58];
+              v29 = [(AMDFetchDescriptor *)v7 initWithDict:v60 usingSchema:getDataSchema error:&v58];
               objc_storeStrong(&v67, v58);
               v59 = v29;
               if (v67)
               {
                 v25 = v70;
-                v26 = [v67 localizedDescription];
+                localizedDescription = [v67 localizedDescription];
                 [v25 setObject:? forKey:?];
-                MEMORY[0x277D82BD8](v26);
+                MEMORY[0x277D82BD8](localizedDescription);
                 v75 = 3;
               }
 
               else
               {
                 v56 = 0;
-                v24 = [v74 fetchRowsUsingSchema:v73 andDescriptor:v59 andPersist:0 error:&v56];
+                v24 = [v74 fetchRowsUsingSchema:getDataSchema andDescriptor:v59 andPersist:0 error:&v56];
                 objc_storeStrong(&v67, v56);
                 v57 = v24;
                 if (v67)
                 {
                   v22 = v70;
-                  v23 = [v67 localizedDescription];
+                  localizedDescription2 = [v67 localizedDescription];
                   [v22 setObject:? forKey:?];
-                  MEMORY[0x277D82BD8](v23);
+                  MEMORY[0x277D82BD8](localizedDescription2);
                   v75 = 3;
                 }
 
@@ -2497,7 +2497,7 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
         v79 = MEMORY[0x277D82BE0](v70);
         v75 = 1;
         objc_storeStrong(&v70, 0);
-        objc_storeStrong(&v71, 0);
+        objc_storeStrong(&getStreamToTableMap, 0);
       }
 
       else
@@ -2505,20 +2505,20 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
         v72 = MEMORY[0x277D82BE0](@"SQL database does not have a schema available");
         v38 = [AMDMiscHelpers logAndCreateError:22 errorMessage:v72];
         v6 = v38;
-        *v77 = v38;
+        *errorCopy = v38;
         v79 = 0;
         v75 = 1;
         objc_storeStrong(&v72, 0);
       }
 
-      objc_storeStrong(&v73, 0);
+      objc_storeStrong(&getDataSchema, 0);
     }
 
     else
     {
-      v39 = [v74 generateDBLoadError];
-      v5 = v39;
-      *v77 = v39;
+      generateDBLoadError = [v74 generateDBLoadError];
+      v5 = generateDBLoadError;
+      *errorCopy = generateDBLoadError;
       v79 = 0;
       v75 = 1;
     }
@@ -2531,7 +2531,7 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
     v76 = MEMORY[0x277D82BE0](@"recordLimits dict is nil");
     v40 = [AMDMiscHelpers logAndCreateError:22 errorMessage:v76];
     v4 = v40;
-    *v77 = v40;
+    *errorCopy = v40;
     v79 = 0;
     v75 = 1;
     objc_storeStrong(&v76, 0);
@@ -2544,11 +2544,11 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
   return v8;
 }
 
-+ (id)truncateEvents:(id *)a3
++ (id)truncateEvents:(id *)events
 {
-  v9 = a1;
+  selfCopy = self;
   location[2] = a2;
-  location[1] = a3;
+  location[1] = events;
   location[0] = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   v7 = 2;
   if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEBUG))
@@ -2560,16 +2560,16 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
   }
 
   objc_storeStrong(location, 0);
-  return [v9 deleteEventsWithPredicate:0 forStreams:?];
+  return [selfCopy deleteEventsWithPredicate:0 forStreams:?];
 }
 
-+ (id)updateData:(id)a3
++ (id)updateData:(id)data
 {
   v53 = *MEMORY[0x277D85DE8];
-  v48 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   type = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
@@ -2583,23 +2583,23 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
   objc_storeStrong(&oslog, 0);
   v43 = 0;
   v42 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:4];
-  v41 = 365;
+  unsignedIntValue = 365;
   v23 = [location[0] objectForKey:0x2852B1B08];
   MEMORY[0x277D82BD8](v23);
   if (v23)
   {
     v22 = [location[0] objectForKey:0x2852B1B08];
-    v41 = [v22 unsignedIntValue];
+    unsignedIntValue = [v22 unsignedIntValue];
     MEMORY[0x277D82BD8](v22);
   }
 
-  v20 = [v48 deleteEventsOlderThan:v41];
+  v20 = [selfCopy deleteEventsOlderThan:unsignedIntValue];
   [v42 setObject:? forKey:?];
   MEMORY[0x277D82BD8](v20);
-  v21 = [v48 loadNewData:location[0]];
+  v21 = [selfCopy loadNewData:location[0]];
   [v42 setObject:? forKey:?];
   MEMORY[0x277D82BD8](v21);
-  v40 = [v48 getDomainsFrom:location[0]];
+  v40 = [selfCopy getDomainsFrom:location[0]];
   if (v40)
   {
     v35 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v40, "count")}];
@@ -2621,7 +2621,7 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
 
         v34 = *(__b[1] + 8 * v16);
         v31 = v43;
-        v13 = [v48 refreshEntityTableForDomain:v34 error:&v31];
+        v13 = [selfCopy refreshEntityTableForDomain:v34 error:&v31];
         objc_storeStrong(&v43, v31);
         v32 = v13;
         if (v13)
@@ -2670,7 +2670,7 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
 
         v29 = *(v28[1] + 8 * v8);
         v26 = v43;
-        v5 = [v48 refreshODTPForDomain:v29 error:&v26];
+        v5 = [selfCopy refreshODTPForDomain:v29 error:&v26];
         objc_storeStrong(&v43, v26);
         v27 = v5;
         if (v5)
@@ -2733,28 +2733,28 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
   return v3;
 }
 
-+ (id)updateTablesHandler:(id)a3 error:(id *)a4
++ (id)updateTablesHandler:(id)handler error:(id *)error
 {
-  v8 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [v8 updateTablesInternal:location[0] usingSchema:0 error:a4];
+  objc_storeStrong(location, handler);
+  v6 = [selfCopy updateTablesInternal:location[0] usingSchema:0 error:error];
   objc_storeStrong(location, 0);
 
   return v6;
 }
 
-+ (id)updateTablesInternal:(id)a3 usingSchema:(id)a4 error:(id *)a5
++ (id)updateTablesInternal:(id)internal usingSchema:(id)schema error:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, internal);
   v41 = 0;
-  objc_storeStrong(&v41, a4);
-  v40 = a5;
+  objc_storeStrong(&v41, schema);
+  errorCopy = error;
   v39 = [location[0] objectForKey:@"allUpdates"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v39 count])
@@ -2789,7 +2789,7 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
       {
         v23 = [AMDError allocError:15 withMessage:@"No updates info"];
         v8 = v23;
-        *v40 = v23;
+        *errorCopy = v23;
         v43 = 0;
         v38 = 1;
       }
@@ -2808,9 +2808,9 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
       {
         if (!v41)
         {
-          v10 = [v32 _schema];
+          _schema = [v32 _schema];
           v11 = v41;
-          v41 = v10;
+          v41 = _schema;
           MEMORY[0x277D82BD8](v11);
         }
 
@@ -2835,13 +2835,13 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v28 = [v32 updateTableUsingDescriptor:v30 andSchema:v41 error:v40];
-              if (*v40)
+              v28 = [v32 updateTableUsingDescriptor:v30 andSchema:v41 error:errorCopy];
+              if (*errorCopy)
               {
                 v14 = v31;
-                v15 = [*v40 localizedDescription];
+                localizedDescription = [*errorCopy localizedDescription];
                 [v14 addObject:?];
-                MEMORY[0x277D82BD8](v15);
+                MEMORY[0x277D82BD8](localizedDescription);
               }
 
               else
@@ -2880,9 +2880,9 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
 
       else
       {
-        v22 = [v32 generateDBLoadError];
-        v9 = v22;
-        *v40 = v22;
+        generateDBLoadError = [v32 generateDBLoadError];
+        v9 = generateDBLoadError;
+        *errorCopy = generateDBLoadError;
         v43 = 0;
         v38 = 1;
       }
@@ -2897,7 +2897,7 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
   {
     v25 = [AMDError allocError:15 withMessage:@"Missing updates info for all DBs"];
     v5 = v25;
-    *v40 = v25;
+    *errorCopy = v25;
     v43 = 0;
     v38 = 1;
   }
@@ -2911,32 +2911,32 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
   return v12;
 }
 
-- (id)getPredicateExtensionForTable:(id)a3 forUser:(id)a4 andDomain:(id)a5 error:(id *)a6
+- (id)getPredicateExtensionForTable:(id)table forUser:(id)user andDomain:(id)domain error:(id *)error
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, table);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, user);
   v27 = 0;
-  objc_storeStrong(&v27, a5);
-  v26 = a6;
-  v25 = [(AMDSQLite *)v30 getDataSchema];
-  if (!v25)
+  objc_storeStrong(&v27, domain);
+  errorCopy = error;
+  getDataSchema = [(AMDSQLite *)selfCopy getDataSchema];
+  if (!getDataSchema)
   {
     v31 = 0;
     v24 = 1;
     goto LABEL_23;
   }
 
-  v23 = [v25 getSchemaForTable:location[0]];
+  v23 = [getDataSchema getSchemaForTable:location[0]];
   if (v23)
   {
     v22 = MEMORY[0x277D82BE0](&stru_2852A6E28);
-    v21 = [v23 getColumns];
+    getColumns = [v23 getColumns];
     v20 = 0;
-    v16 = [v21 objectForKey:@"userId"];
+    v16 = [getColumns objectForKey:@"userId"];
     MEMORY[0x277D82BD8](v16);
     if (v16)
     {
@@ -2945,7 +2945,7 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
 
     else
     {
-      v15 = [v21 objectForKey:@"dsId"];
+      v15 = [getColumns objectForKey:@"dsId"];
       MEMORY[0x277D82BD8](v15);
       if (v15)
       {
@@ -2959,12 +2959,12 @@ uint64_t __41__AMDSQLite_getSharedInstanceWithOption___block_invoke(id *a1)
       {
         v14 = [AMDError allocError:15 withMessage:@"User identifier required"];
         v6 = v14;
-        *v26 = v14;
+        *errorCopy = v14;
         v31 = 0;
         v24 = 1;
 LABEL_21:
         objc_storeStrong(&v20, 0);
-        objc_storeStrong(&v21, 0);
+        objc_storeStrong(&getColumns, 0);
         objc_storeStrong(&v22, 0);
         goto LABEL_22;
       }
@@ -2972,7 +2972,7 @@ LABEL_21:
       v7 = [v22 stringByAppendingFormat:@"AND %@ == '%@'", v20, v28];
     }
 
-    v13 = [v21 objectForKey:@"domain"];
+    v13 = [getColumns objectForKey:@"domain"];
     MEMORY[0x277D82BD8](v13);
     if (v13)
     {
@@ -2980,7 +2980,7 @@ LABEL_21:
       {
         v12 = [AMDError allocError:15 withMessage:@"Domain identifier required"];
         v8 = v12;
-        *v26 = v12;
+        *errorCopy = v12;
         v31 = 0;
         v24 = 1;
         goto LABEL_21;
@@ -3008,7 +3008,7 @@ LABEL_21:
 LABEL_22:
   objc_storeStrong(&v23, 0);
 LABEL_23:
-  objc_storeStrong(&v25, 0);
+  objc_storeStrong(&getDataSchema, 0);
   objc_storeStrong(&v27, 0);
   objc_storeStrong(&v28, 0);
   objc_storeStrong(location, 0);
@@ -3020,7 +3020,7 @@ LABEL_23:
 - (id)prepareBootstrapSchema
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v13 = self;
+  selfCopy = self;
   v12[1] = a2;
   v12[0] = 0;
   v11 = +[AMDSQLite getBootstrapSchemaDict];
@@ -3028,22 +3028,22 @@ LABEL_23:
   v10 = v12[0];
   v7 = [(AMDSQLiteSchema *)v2 initWithDict:v11 error:&v10];
   objc_storeStrong(v12, v10);
-  [(AMDSQLite *)v13 set_bootstrapSchema:v7];
+  [(AMDSQLite *)selfCopy set_bootstrapSchema:v7];
   MEMORY[0x277D82BD8](v7);
-  v8 = [(AMDSQLite *)v13 _bootstrapSchema];
-  MEMORY[0x277D82BD8](v8);
-  if (v8)
+  _bootstrapSchema = [(AMDSQLite *)selfCopy _bootstrapSchema];
+  MEMORY[0x277D82BD8](_bootstrapSchema);
+  if (_bootstrapSchema)
   {
     v14 = MEMORY[0x277D82BE0](&unk_2852BB470);
   }
 
   else
   {
-    [(AMDSQLite *)v13 set_error:v12[0]];
+    [(AMDSQLite *)selfCopy set_error:v12[0]];
     v5 = MEMORY[0x277CCACA8];
-    v6 = [v12[0] localizedDescription];
-    v9 = [v5 stringWithFormat:@"SQLITE Boot schema prep failure: %@", v6];
-    MEMORY[0x277D82BD8](v6);
+    localizedDescription = [v12[0] localizedDescription];
+    v9 = [v5 stringWithFormat:@"SQLITE Boot schema prep failure: %@", localizedDescription];
+    MEMORY[0x277D82BD8](localizedDescription);
     v15 = @"bootSchemaLoadSummary";
     v16[0] = v9;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
@@ -3060,18 +3060,18 @@ LABEL_23:
 
 - (id)bootstrapDb
 {
-  v10 = self;
+  selfCopy = self;
   v9[1] = a2;
   v9[0] = 0;
-  v6 = [(AMDSQLite *)self _bootstrapSchema];
+  _bootstrapSchema = [(AMDSQLite *)self _bootstrapSchema];
   v7 = v9[0];
   v5 = [AMDSQLite applySchema:"applySchema:error:" error:?];
   objc_storeStrong(v9, v7);
   v8 = v5;
-  MEMORY[0x277D82BD8](v6);
+  MEMORY[0x277D82BD8](_bootstrapSchema);
   if (v9[0])
   {
-    [(AMDSQLite *)v10 set_error:v9[0]];
+    [(AMDSQLite *)selfCopy set_error:v9[0]];
   }
 
   v3 = MEMORY[0x277D82BE0](v8);
@@ -3083,33 +3083,33 @@ LABEL_23:
 
 - (id)connectionState
 {
-  v15 = self;
+  selfCopy = self;
   v14[1] = a2;
   v14[0] = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if ([(AMDSQLite *)v15 _isEnabled])
+  if ([(AMDSQLite *)selfCopy _isEnabled])
   {
-    if ([(AMDSQLite *)v15 _db])
+    if ([(AMDSQLite *)selfCopy _db])
     {
-      v12 = [(AMDSQLite *)v15 _bootstrapSchema];
-      MEMORY[0x277D82BD8](v12);
-      if (v12)
+      _bootstrapSchema = [(AMDSQLite *)selfCopy _bootstrapSchema];
+      MEMORY[0x277D82BD8](_bootstrapSchema);
+      if (_bootstrapSchema)
       {
-        v11 = [(AMDSQLite *)v15 _schema];
-        MEMORY[0x277D82BD8](v11);
-        if (v11)
+        _schema = [(AMDSQLite *)selfCopy _schema];
+        MEMORY[0x277D82BD8](_schema);
+        if (_schema)
         {
-          v10 = [(AMDSQLite *)v15 _error];
-          MEMORY[0x277D82BD8](v10);
-          if (v10)
+          _error = [(AMDSQLite *)selfCopy _error];
+          MEMORY[0x277D82BD8](_error);
+          if (_error)
           {
             v6 = MEMORY[0x277CCACA8];
-            v9 = [(AMDSQLite *)v15 _error];
-            v8 = [(NSError *)v9 localizedDescription];
-            v7 = [v6 stringWithFormat:@"SQLITE internal error: %@", v8];
+            _error2 = [(AMDSQLite *)selfCopy _error];
+            localizedDescription = [(NSError *)_error2 localizedDescription];
+            v7 = [v6 stringWithFormat:@"SQLITE internal error: %@", localizedDescription];
             [v14[0] addObject:?];
             MEMORY[0x277D82BD8](v7);
-            MEMORY[0x277D82BD8](v8);
-            MEMORY[0x277D82BD8](v9);
+            MEMORY[0x277D82BD8](localizedDescription);
+            MEMORY[0x277D82BD8](_error2);
           }
         }
 
@@ -3141,16 +3141,16 @@ LABEL_23:
     [v14[0] addObject:@"SQLite ready"];
   }
 
-  v5 = [(AMDSQLite *)v15 _megadomeSchema];
-  MEMORY[0x277D82BD8](v5);
-  if (!v5)
+  _megadomeSchema = [(AMDSQLite *)selfCopy _megadomeSchema];
+  MEMORY[0x277D82BD8](_megadomeSchema);
+  if (!_megadomeSchema)
   {
     [v14[0] addObject:@"no Megadome schema"];
   }
 
-  v4 = [(AMDSQLite *)v15 _biomeSchema];
-  MEMORY[0x277D82BD8](v4);
-  if (!v4)
+  _biomeSchema = [(AMDSQLite *)selfCopy _biomeSchema];
+  MEMORY[0x277D82BD8](_biomeSchema);
+  if (!_biomeSchema)
   {
     [v14[0] addObject:@"no Biome schema"];
   }
@@ -3181,7 +3181,7 @@ LABEL_23:
 - (BOOL)isUsable
 {
   v18 = *MEMORY[0x277D85DE8];
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
   v13 = 0;
   v11 = 0;
@@ -3190,16 +3190,16 @@ LABEL_23:
   if ([(AMDSQLite *)self _isEnabled])
   {
     v4 = 0;
-    if ([(AMDSQLite *)v15 _db])
+    if ([(AMDSQLite *)selfCopy _db])
     {
-      v12 = [(AMDSQLite *)v15 _bootstrapSchema];
+      _bootstrapSchema = [(AMDSQLite *)selfCopy _bootstrapSchema];
       v11 = 1;
       v4 = 0;
-      if (v12)
+      if (_bootstrapSchema)
       {
-        v10 = [(AMDSQLite *)v15 _schema];
+        _schema = [(AMDSQLite *)selfCopy _schema];
         v9 = 1;
-        v4 = v10 != 0;
+        v4 = _schema != 0;
       }
     }
   }
@@ -3207,12 +3207,12 @@ LABEL_23:
   v16 = v4;
   if (v9)
   {
-    MEMORY[0x277D82BD8](v10);
+    MEMORY[0x277D82BD8](_schema);
   }
 
   if (v11)
   {
-    MEMORY[0x277D82BD8](v12);
+    MEMORY[0x277D82BD8](_bootstrapSchema);
   }
 
   v8 = 1;
@@ -3220,11 +3220,11 @@ LABEL_23:
   v6 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v3 = [(AMDSQLite *)v15 connectionState];
-    location = MEMORY[0x277D82BE0](v3);
+    connectionState = [(AMDSQLite *)selfCopy connectionState];
+    location = MEMORY[0x277D82BE0](connectionState);
     __os_log_helper_16_2_1_8_64(v17, location);
     _os_log_debug_impl(&dword_240CB9000, v7, v6, "%@", v17, 0xCu);
-    MEMORY[0x277D82BD8](v3);
+    MEMORY[0x277D82BD8](connectionState);
     objc_storeStrong(&location, 0);
   }
 
@@ -3242,7 +3242,7 @@ LABEL_23:
 - (BOOL)isUsableInternal
 {
   v16 = *MEMORY[0x277D85DE8];
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   v11 = 0;
   v9 = 0;
@@ -3250,18 +3250,18 @@ LABEL_23:
   if ([(AMDSQLite *)self _isEnabled])
   {
     v4 = 0;
-    if ([(AMDSQLite *)v13 _db])
+    if ([(AMDSQLite *)selfCopy _db])
     {
-      v10 = [(AMDSQLite *)v13 _bootstrapSchema];
+      _bootstrapSchema = [(AMDSQLite *)selfCopy _bootstrapSchema];
       v9 = 1;
-      v4 = v10 != 0;
+      v4 = _bootstrapSchema != 0;
     }
   }
 
   v14 = v4;
   if (v9)
   {
-    MEMORY[0x277D82BD8](v10);
+    MEMORY[0x277D82BD8](_bootstrapSchema);
   }
 
   v8 = 1;
@@ -3269,11 +3269,11 @@ LABEL_23:
   v6 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v3 = [(AMDSQLite *)v13 connectionState];
-    location = MEMORY[0x277D82BE0](v3);
+    connectionState = [(AMDSQLite *)selfCopy connectionState];
+    location = MEMORY[0x277D82BE0](connectionState);
     __os_log_helper_16_2_1_8_64(v15, location);
     _os_log_debug_impl(&dword_240CB9000, v7, v6, "%@", v15, 0xCu);
-    MEMORY[0x277D82BD8](v3);
+    MEMORY[0x277D82BD8](connectionState);
     objc_storeStrong(&location, 0);
   }
 
@@ -3288,17 +3288,17 @@ LABEL_23:
   return v14;
 }
 
-- (void)setEnable:(BOOL)a3
+- (void)setEnable:(BOOL)enable
 {
   v9 = *MEMORY[0x277D85DE8];
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
-  [(AMDSQLite *)self set_isEnabled:a3];
+  enableCopy = enable;
+  [(AMDSQLite *)self set_isEnabled:enable];
   oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
-    if (v5)
+    if (enableCopy)
     {
       v3 = @"enabled";
     }
@@ -3319,7 +3319,7 @@ LABEL_23:
 - (id)loadDb
 {
   v74 = *MEMORY[0x277D85DE8];
-  v68 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   v66 = OS_LOG_TYPE_INFO;
@@ -3345,14 +3345,14 @@ LABEL_23:
   objc_storeStrong(&v61, 0);
   v59 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v59 setObject:@"0" forKey:@"version"];
-  [(AMDSQLite *)v68 set_error:0];
+  [(AMDSQLite *)selfCopy set_error:0];
   v58 = 0;
   ppDb = 0;
   v56 = 0;
   v55 = MEMORY[0x277D82BE0](@"loadDBSummary");
-  v29 = [MEMORY[0x277CCAA00] defaultManager];
-  v30 = [v29 fileExistsAtPath:v62];
-  MEMORY[0x277D82BD8](v29);
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v30 = [defaultManager fileExistsAtPath:v62];
+  MEMORY[0x277D82BD8](defaultManager);
   if (v30)
   {
     v54 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
@@ -3379,7 +3379,7 @@ LABEL_23:
 
     else
     {
-      [(AMDSQLite *)v68 set_db:ppDb];
+      [(AMDSQLite *)selfCopy set_db:ppDb];
       oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v50 = OS_LOG_TYPE_DEBUG;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
@@ -3434,9 +3434,9 @@ LABEL_23:
 
       objc_storeStrong(&v43, 0);
       v18 = v59;
-      v19 = [(AMDSQLite *)v68 bootstrapDb];
+      bootstrapDb = [(AMDSQLite *)selfCopy bootstrapDb];
       [v18 addEntriesFromDictionary:?];
-      MEMORY[0x277D82BD8](v19);
+      MEMORY[0x277D82BD8](bootstrapDb);
     }
   }
 
@@ -3465,11 +3465,11 @@ LABEL_23:
 
     else
     {
-      [(AMDSQLite *)v68 set_db:ppDb];
+      [(AMDSQLite *)selfCopy set_db:ppDb];
       v15 = v59;
-      v16 = [(AMDSQLite *)v68 bootstrapDb];
+      bootstrapDb2 = [(AMDSQLite *)selfCopy bootstrapDb];
       [v15 addEntriesFromDictionary:?];
-      MEMORY[0x277D82BD8](v16);
+      MEMORY[0x277D82BD8](bootstrapDb2);
       v37 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v36 = OS_LOG_TYPE_DEBUG;
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
@@ -3517,9 +3517,9 @@ LABEL_23:
   if (v58)
   {
     v10 = [AMDMiscHelpers logAndCreateError:22 errorMessage:v58];
-    [(AMDSQLite *)v68 set_error:?];
+    [(AMDSQLite *)selfCopy set_error:?];
     MEMORY[0x277D82BD8](v10);
-    [(AMDSQLite *)v68 set_db:0];
+    [(AMDSQLite *)selfCopy set_db:0];
     sqlite3_close(ppDb);
     [v59 setObject:v58 forKey:v55];
   }
@@ -3537,38 +3537,38 @@ LABEL_23:
   return v9;
 }
 
-- (id)applySchema:(id)a3 error:(id *)a4
+- (id)applySchema:(id)schema error:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v44 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v42 = a4;
+  objc_storeStrong(location, schema);
+  errorCopy = error;
   oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   type = OS_LOG_TYPE_INFO;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
   {
     log = oslog;
     v21 = type;
-    v22 = [location[0] getName];
-    v39 = MEMORY[0x277D82BE0](v22);
+    getName = [location[0] getName];
+    v39 = MEMORY[0x277D82BE0](getName);
     __os_log_helper_16_2_1_8_64(v50, v39);
     _os_log_impl(&dword_240CB9000, log, v21, "SQLITE applying schema '%@'", v50, 0xCu);
-    MEMORY[0x277D82BD8](v22);
+    MEMORY[0x277D82BD8](getName);
     objc_storeStrong(&v39, 0);
   }
 
   objc_storeStrong(&oslog, 0);
   v38 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v19 = [location[0] getTables];
-  v37 = [v19 allKeys];
-  MEMORY[0x277D82BD8](v19);
+  getTables = [location[0] getTables];
+  allKeys = [getTables allKeys];
+  MEMORY[0x277D82BD8](getTables);
   v36 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   v35 = OS_LOG_TYPE_INFO;
   if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
   {
-    __os_log_helper_16_0_1_8_0(v49, [v37 count]);
+    __os_log_helper_16_0_1_8_0(v49, [allKeys count]);
     _os_log_impl(&dword_240CB9000, v36, v35, "SQLITE Creating %lu tables", v49, 0xCu);
   }
 
@@ -3576,7 +3576,7 @@ LABEL_23:
   v34 = 0;
   v33 = 0;
   memset(__b, 0, sizeof(__b));
-  obj = MEMORY[0x277D82BE0](v37);
+  obj = MEMORY[0x277D82BE0](allKeys);
   v18 = [obj countByEnumeratingWithState:__b objects:v48 count:16];
   if (v18)
   {
@@ -3594,7 +3594,7 @@ LABEL_23:
       v32 = *(__b[1] + 8 * v15);
       v30 = 0;
       v28 = 0;
-      v12 = [(AMDSQLite *)v44 createTable:v32 usingSchema:location[0] error:&v28];
+      v12 = [(AMDSQLite *)selfCopy createTable:v32 usingSchema:location[0] error:&v28];
       objc_storeStrong(&v30, v28);
       v29 = v12;
       if (v30)
@@ -3654,16 +3654,16 @@ LABEL_23:
     v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%u Errors while applying schema", v34];
     v7 = [AMDError allocError:22 withMessage:v25];
     v4 = v7;
-    *v42 = v7;
+    *errorCopy = v7;
     [v38 setObject:v25 forKey:@"createTableError"];
     objc_storeStrong(&v25, 0);
   }
 
-  v24 = [(AMDSQLite *)v44 createIndices:location[0] error:v42];
+  v24 = [(AMDSQLite *)selfCopy createIndices:location[0] error:errorCopy];
   [v38 setObject:v24 forKey:@"createIndicesSummary"];
   v6 = MEMORY[0x277D82BE0](v38);
   objc_storeStrong(&v24, 0);
-  objc_storeStrong(&v37, 0);
+  objc_storeStrong(&allKeys, 0);
   objc_storeStrong(&v38, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
@@ -3671,14 +3671,14 @@ LABEL_23:
   return v6;
 }
 
-- (id)createIndices:(id)a3 error:(id *)a4
+- (id)createIndices:(id)indices error:(id *)error
 {
   v55 = *MEMORY[0x277D85DE8];
-  v49 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v47[1] = a4;
+  objc_storeStrong(location, indices);
+  v47[1] = error;
   v47[0] = [location[0] getIndices];
   v21 = objc_alloc(MEMORY[0x277CBEB18]);
   v46 = [v21 initWithCapacity:{objc_msgSend(v47[0], "count")}];
@@ -3726,14 +3726,14 @@ LABEL_23:
       v34 = 0x20000000;
       v35 = 32;
       v36 = 1;
-      queue = [(AMDSQLite *)v49 _executorQueue];
+      queue = [(AMDSQLite *)selfCopy _executorQueue];
       v24 = MEMORY[0x277D85DD0];
       v25 = -1073741824;
       v26 = 0;
       v27 = __33__AMDSQLite_createIndices_error___block_invoke;
       v28 = &unk_278CB5B98;
       v31[1] = &v32;
-      v29 = MEMORY[0x277D82BE0](v49);
+      v29 = MEMORY[0x277D82BE0](selfCopy);
       v30 = MEMORY[0x277D82BE0](v39);
       v31[0] = MEMORY[0x277D82BE0](v44);
       dispatch_sync(queue, &v24);
@@ -3821,50 +3821,50 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
   *MEMORY[0x277D85DE8];
 }
 
-- (id)updateSchema:(id)a3 error:(id *)a4
+- (id)updateSchema:(id)schema error:(id *)error
 {
   v67 = *MEMORY[0x277D85DE8];
-  v55 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v53 = a4;
+  objc_storeStrong(location, schema);
+  errorCopy = error;
   v52 = MEMORY[0x277D82BE0](@"UpdateSchema");
   v51 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:2];
-  if ([(AMDSQLite *)v55 _isEnabled])
+  if ([(AMDSQLite *)selfCopy _isEnabled])
   {
-    v46 = [[AMDSQLiteSchema alloc] initWithDict:location[0] error:v53];
+    v46 = [[AMDSQLiteSchema alloc] initWithDict:location[0] error:errorCopy];
     if (v46)
     {
-      v42 = [v46 getVersionNumber];
+      getVersionNumber = [v46 getVersionNumber];
       oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v40 = OS_LOG_TYPE_INFO;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
       {
-        __os_log_helper_16_2_1_8_64(v61, v42);
+        __os_log_helper_16_2_1_8_64(v61, getVersionNumber);
         _os_log_impl(&dword_240CB9000, oslog, v40, "SQLITE Attempting schema update to version %@", v61, 0xCu);
       }
 
       objc_storeStrong(&oslog, 0);
       v39 = 1;
       v38 = 0;
-      v19 = [(AMDSQLite *)v55 _schema];
-      MEMORY[0x277D82BD8](v19);
-      if (v19)
+      _schema = [(AMDSQLite *)selfCopy _schema];
+      MEMORY[0x277D82BD8](_schema);
+      if (_schema)
       {
-        v17 = [(AMDSQLite *)v55 _schema];
-        v5 = [(AMDSQLiteSchema *)v17 getVersionNumber];
+        _schema2 = [(AMDSQLite *)selfCopy _schema];
+        getVersionNumber2 = [(AMDSQLiteSchema *)_schema2 getVersionNumber];
         v6 = v38;
-        v38 = v5;
+        v38 = getVersionNumber2;
         MEMORY[0x277D82BD8](v6);
-        MEMORY[0x277D82BD8](v17);
-        v18 = [v38 integerValue];
-        v39 = v18 < [v42 integerValue];
+        MEMORY[0x277D82BD8](_schema2);
+        integerValue = [v38 integerValue];
+        v39 = integerValue < [getVersionNumber integerValue];
       }
 
       if (v39)
       {
-        v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"SQLITE Update schema from version %@ to %@", v38, v42];
+        v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"SQLITE Update schema from version %@ to %@", v38, getVersionNumber];
         v33 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
         v32 = OS_LOG_TYPE_INFO;
         if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
@@ -3877,7 +3877,7 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
         v31 = 0;
         v15 = v51;
         v30 = 0;
-        v16 = [(AMDSQLite *)v55 applySchema:v46 error:&v30];
+        v16 = [(AMDSQLite *)selfCopy applySchema:v46 error:&v30];
         objc_storeStrong(&v31, v30);
         [v15 setObject:v16 forKey:@"applySchema"];
         MEMORY[0x277D82BD8](v16);
@@ -3901,43 +3901,43 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
         else
         {
           v11 = v51;
-          v12 = [(AMDSQLite *)v55 saveSchema:location[0] error:v53];
+          v12 = [(AMDSQLite *)selfCopy saveSchema:location[0] error:errorCopy];
           [v11 setObject:? forKey:?];
           MEMORY[0x277D82BD8](v12);
-          if (!*v53)
+          if (!*errorCopy)
           {
-            [(AMDSQLite *)v55 set_schema:v46];
+            [(AMDSQLite *)selfCopy set_schema:v46];
           }
 
           [AMDFrameworkMetrics log:v34 withKey:@"SQLiteSchemaUpdate" atVerbosity:2];
-          [v51 setObject:v42 forKey:@"newVersion"];
-          v9 = [(AMDSQLite *)v55 _error];
+          [v51 setObject:getVersionNumber forKey:@"newVersion"];
+          _error = [(AMDSQLite *)selfCopy _error];
           v25 = 0;
           v23 = 0;
           v10 = 0;
-          if (v9)
+          if (_error)
           {
-            v26 = [(AMDSQLite *)v55 _error];
+            _error2 = [(AMDSQLite *)selfCopy _error];
             v25 = 1;
-            v24 = [(NSError *)v26 localizedDescription];
+            localizedDescription = [(NSError *)_error2 localizedDescription];
             v23 = 1;
-            v10 = [(NSString *)v24 isEqualToString:@"No Schema Data"];
+            v10 = [(NSString *)localizedDescription isEqualToString:@"No Schema Data"];
           }
 
           if (v23)
           {
-            MEMORY[0x277D82BD8](v24);
+            MEMORY[0x277D82BD8](localizedDescription);
           }
 
           if (v25)
           {
-            MEMORY[0x277D82BD8](v26);
+            MEMORY[0x277D82BD8](_error2);
           }
 
-          MEMORY[0x277D82BD8](v9);
+          MEMORY[0x277D82BD8](_error);
           if (v10)
           {
-            [(AMDSQLite *)v55 set_error:0];
+            [(AMDSQLite *)selfCopy set_error:0];
           }
 
           v56 = MEMORY[0x277D82BE0](v51);
@@ -3968,19 +3968,19 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
       }
 
       objc_storeStrong(&v38, 0);
-      objc_storeStrong(&v42, 0);
+      objc_storeStrong(&getVersionNumber, 0);
     }
 
     else
     {
       v21 = MEMORY[0x277CCACA8];
-      v4 = *v53;
+      v4 = *errorCopy;
       v43 = 0;
       if (v4)
       {
-        v44 = [*v53 localizedDescription];
+        localizedDescription2 = [*errorCopy localizedDescription];
         v43 = 1;
-        v20 = v44;
+        v20 = localizedDescription2;
       }
 
       else
@@ -3991,7 +3991,7 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
       v45 = [v21 stringWithFormat:@"SQLITE new schema parse failure: %@", v20];
       if (v43)
       {
-        MEMORY[0x277D82BD8](v44);
+        MEMORY[0x277D82BD8](localizedDescription2);
       }
 
       v62 = v52;
@@ -4032,26 +4032,26 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)saveSchema:(id)a3 error:(id *)a4
+- (id)saveSchema:(id)schema error:(id *)error
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v28 = a4;
+  objc_storeStrong(location, schema);
+  errorCopy = error;
   v27 = MEMORY[0x277D82BE0](@"SaveSchema");
-  v26 = [MEMORY[0x277CCAAA0] dataWithJSONObject:location[0] options:6 error:a4];
-  if (*a4)
+  v26 = [MEMORY[0x277CCAAA0] dataWithJSONObject:location[0] options:6 error:error];
+  if (*error)
   {
     v16 = MEMORY[0x277CCACA8];
-    v4 = *v28;
+    v4 = *errorCopy;
     v23 = 0;
     if (v4)
     {
-      v24 = [*v28 localizedDescription];
+      localizedDescription = [*errorCopy localizedDescription];
       v23 = 1;
-      v15 = v24;
+      v15 = localizedDescription;
     }
 
     else
@@ -4062,7 +4062,7 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
     v25 = [v16 stringWithFormat:@"SQLITE new schema serialization failure: %@", v15];
     if (v23)
     {
-      MEMORY[0x277D82BD8](v24);
+      MEMORY[0x277D82BD8](localizedDescription);
     }
 
     v39 = v27;
@@ -4090,15 +4090,15 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
     v35[1] = v21;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:2];
     v19 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:2];
-    v14 = [(AMDSQLite *)v30 deleteRowsInternal:v20 error:v28];
+    v14 = [(AMDSQLite *)selfCopy deleteRowsInternal:v20 error:errorCopy];
     [v19 addEntriesFromDictionary:?];
     MEMORY[0x277D82BD8](v14);
-    if (*v28)
+    if (*errorCopy)
     {
       v10 = MEMORY[0x277CCACA8];
-      v11 = [*v28 localizedDescription];
-      v18 = [v10 stringWithFormat:@"SQLITE could not truncate schema table: %@", v11];
-      MEMORY[0x277D82BD8](v11);
+      localizedDescription2 = [*errorCopy localizedDescription];
+      v18 = [v10 stringWithFormat:@"SQLITE could not truncate schema table: %@", localizedDescription2];
+      MEMORY[0x277D82BD8](localizedDescription2);
       v32 = v27;
       v33 = v18;
       v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
@@ -4108,12 +4108,12 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
 
     else
     {
-      v7 = v30;
-      v9 = [(AMDSQLite *)v30 _bootstrapSchema];
+      v7 = selfCopy;
+      _bootstrapSchema = [(AMDSQLite *)selfCopy _bootstrapSchema];
       v8 = [AMDSQLite insertRows:v7 usingSchema:"insertRows:usingSchema:error:" error:v20];
       [v19 addEntriesFromDictionary:?];
       MEMORY[0x277D82BD8](v8);
-      MEMORY[0x277D82BD8](v9);
+      MEMORY[0x277D82BD8](_bootstrapSchema);
       v31 = MEMORY[0x277D82BE0](v19);
       v22 = 1;
     }
@@ -4135,7 +4135,7 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
 - (id)loadDataSchema
 {
   v118[1] = *MEMORY[0x277D85DE8];
-  v86 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   type = OS_LOG_TYPE_INFO;
@@ -4149,12 +4149,12 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
 
   objc_storeStrong(location, 0);
   v82 = MEMORY[0x277D82BE0](@"loadSchemaSummary");
-  [(AMDSQLite *)v86 set_schema:0];
-  if ([(AMDSQLite *)v86 _db])
+  [(AMDSQLite *)selfCopy set_schema:0];
+  if ([(AMDSQLite *)selfCopy _db])
   {
-    v36 = [(AMDSQLite *)v86 _bootstrapSchema];
-    MEMORY[0x277D82BD8](v36);
-    if (v36)
+    _bootstrapSchema = [(AMDSQLite *)selfCopy _bootstrapSchema];
+    MEMORY[0x277D82BD8](_bootstrapSchema);
+    if (_bootstrapSchema)
     {
       v112 = @"schema";
       v110[0] = AMD_SQLITE_TYPE;
@@ -4180,26 +4180,26 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
       v72 = 0;
       v28 = [AMDFetchDescriptor alloc];
       v27 = v73;
-      v30 = [(AMDSQLite *)v86 _bootstrapSchema];
+      _bootstrapSchema2 = [(AMDSQLite *)selfCopy _bootstrapSchema];
       v70 = v72;
       v29 = [AMDFetchDescriptor initWithDict:v28 usingSchema:"initWithDict:usingSchema:error:" error:v27];
       objc_storeStrong(&v72, v70);
       v71 = v29;
-      MEMORY[0x277D82BD8](v30);
-      v31 = v86;
-      v33 = [(AMDSQLite *)v86 _bootstrapSchema];
+      MEMORY[0x277D82BD8](_bootstrapSchema2);
+      v31 = selfCopy;
+      _bootstrapSchema3 = [(AMDSQLite *)selfCopy _bootstrapSchema];
       v68 = v72;
       v32 = [AMDSQLite fetchRowsUsingSchema:v31 andDescriptor:"fetchRowsUsingSchema:andDescriptor:andPersist:error:" andPersist:? error:?];
       objc_storeStrong(&v72, v68);
       v69 = v32;
-      MEMORY[0x277D82BD8](v33);
+      MEMORY[0x277D82BD8](_bootstrapSchema3);
       if (v72)
       {
-        [(AMDSQLite *)v86 set_error:v72];
+        [(AMDSQLite *)selfCopy set_error:v72];
         v23 = MEMORY[0x277CCACA8];
-        v24 = [v72 localizedDescription];
-        v67 = [v23 stringWithFormat:@"SQLITE schema fetch failure: '%@'", v24];
-        MEMORY[0x277D82BD8](v24);
+        localizedDescription = [v72 localizedDescription];
+        v67 = [v23 stringWithFormat:@"SQLITE schema fetch failure: '%@'", localizedDescription];
+        MEMORY[0x277D82BD8](localizedDescription);
         v66 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
         v65 = OS_LOG_TYPE_ERROR;
         if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
@@ -4250,7 +4250,7 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
 
           objc_storeStrong(&v60, 0);
           v21 = [AMDError allocError:22 withMessage:?];
-          [(AMDSQLite *)v86 set_error:?];
+          [(AMDSQLite *)selfCopy set_error:?];
           MEMORY[0x277D82BD8](v21);
           v102 = v82;
           v103 = @"No Schema Data";
@@ -4275,31 +4275,31 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
               v49 = v72;
               v11 = [(AMDSQLiteSchema *)v2 initWithDict:v54 error:&v49];
               objc_storeStrong(&v72, v49);
-              [(AMDSQLite *)v86 set_schema:v11];
+              [(AMDSQLite *)selfCopy set_schema:v11];
               MEMORY[0x277D82BD8](v11);
-              v12 = [(AMDSQLite *)v86 _schema];
-              MEMORY[0x277D82BD8](v12);
-              if (v12)
+              _schema = [(AMDSQLite *)selfCopy _schema];
+              MEMORY[0x277D82BD8](_schema);
+              if (_schema)
               {
-                v7 = [(AMDSQLite *)v86 _schema];
-                v43 = [(AMDSQLiteSchema *)v7 getVersion];
-                MEMORY[0x277D82BD8](v7);
-                v8 = [(AMDSQLite *)v86 _schema];
-                v42 = [(AMDSQLiteSchema *)v8 getTables];
-                MEMORY[0x277D82BD8](v8);
+                _schema2 = [(AMDSQLite *)selfCopy _schema];
+                getVersion = [(AMDSQLiteSchema *)_schema2 getVersion];
+                MEMORY[0x277D82BD8](_schema2);
+                _schema3 = [(AMDSQLite *)selfCopy _schema];
+                getTables = [(AMDSQLiteSchema *)_schema3 getTables];
+                MEMORY[0x277D82BD8](_schema3);
                 v41 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
                 if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
                 {
-                  __os_log_helper_16_2_1_8_64(v92, v43);
+                  __os_log_helper_16_2_1_8_64(v92, getVersion);
                   _os_log_impl(&dword_240CB9000, v41, OS_LOG_TYPE_INFO, "SQLITE Loaded schema version %@", v92, 0xCu);
                 }
 
                 objc_storeStrong(&v41, 0);
                 v90 = v82;
                 v88[0] = @"version";
-                v89[0] = v43;
+                v89[0] = getVersion;
                 v88[1] = @"tableCount";
-                v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v42, "count")}];
+                v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(getTables, "count")}];
                 v89[1] = v6;
                 v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v89 forKeys:v88 count:2];
                 v91 = v5;
@@ -4307,20 +4307,20 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
                 MEMORY[0x277D82BD8](v5);
                 MEMORY[0x277D82BD8](v6);
                 v78 = 1;
-                objc_storeStrong(&v42, 0);
-                objc_storeStrong(&v43, 0);
+                objc_storeStrong(&getTables, 0);
+                objc_storeStrong(&getVersion, 0);
               }
 
               else
               {
-                [(AMDSQLite *)v86 set_error:v72];
+                [(AMDSQLite *)selfCopy set_error:v72];
                 v10 = MEMORY[0x277CCACA8];
                 v46 = 0;
                 if (v72)
                 {
-                  v47 = [v72 localizedDescription];
+                  localizedDescription2 = [v72 localizedDescription];
                   v46 = 1;
-                  v9 = v47;
+                  v9 = localizedDescription2;
                 }
 
                 else
@@ -4331,7 +4331,7 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
                 v48 = [v10 stringWithFormat:@"Fail: '%@'", v9];
                 if (v46)
                 {
-                  MEMORY[0x277D82BD8](v47);
+                  MEMORY[0x277D82BD8](localizedDescription2);
                 }
 
                 v45 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
@@ -4355,9 +4355,9 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
             {
               objc_storeStrong(&v72, 0);
               v14 = MEMORY[0x277CCACA8];
-              v15 = [v72 localizedDescription];
-              v52 = [v14 stringWithFormat:@"Error deserializing schema: %@", v15];
-              MEMORY[0x277D82BD8](v15);
+              localizedDescription3 = [v72 localizedDescription];
+              v52 = [v14 stringWithFormat:@"Error deserializing schema: %@", localizedDescription3];
+              MEMORY[0x277D82BD8](localizedDescription3);
               v51 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
               v50 = OS_LOG_TYPE_ERROR;
               if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
@@ -4368,7 +4368,7 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
 
               objc_storeStrong(&v51, 0);
               v13 = [AMDError allocError:22 withMessage:v52];
-              [(AMDSQLite *)v86 set_error:?];
+              [(AMDSQLite *)selfCopy set_error:?];
               MEMORY[0x277D82BD8](v13);
               v96 = v82;
               v97 = v52;
@@ -4404,7 +4404,7 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
 
             objc_storeStrong(&oslog, 0);
             v17 = [AMDError allocError:22 withMessage:v57];
-            [(AMDSQLite *)v86 set_error:?];
+            [(AMDSQLite *)selfCopy set_error:?];
             MEMORY[0x277D82BD8](v17);
             v99 = v82;
             v100 = v57;
@@ -4475,9 +4475,9 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
 
 - (id)loadBiomeSchema
 {
-  v4 = [(AMDSQLite *)self _schema];
+  _schema = [(AMDSQLite *)self _schema];
   [(AMDSQLite *)self set_biomeSchema:?];
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](_schema);
   v2 = MEMORY[0x277CBEC10];
 
   return v2;
@@ -4485,24 +4485,24 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
 
 - (id)loadMegadomeSchema
 {
-  v4 = [(AMDSQLite *)self _schema];
+  _schema = [(AMDSQLite *)self _schema];
   [(AMDSQLite *)self set_megadomeSchema:?];
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](_schema);
   v2 = MEMORY[0x277CBEC10];
 
   return v2;
 }
 
-- (id)createTable:(id)a3 usingSchema:(id)a4 error:(id *)a5
+- (id)createTable:(id)table usingSchema:(id)schema error:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v41 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, table);
   v39 = 0;
-  objc_storeStrong(&v39, a4);
-  v38 = a5;
+  objc_storeStrong(&v39, schema);
+  errorCopy = error;
   v37 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   v36 = OS_LOG_TYPE_INFO;
   if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
@@ -4513,7 +4513,7 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
 
   objc_storeStrong(&v37, 0);
   v35 = MEMORY[0x277D82BE0](@"createTableStatus");
-  if ([(AMDSQLite *)v41 _db])
+  if ([(AMDSQLite *)selfCopy _db])
   {
     v32 = [v39 getCreateTableStatementFor:location[0]];
     if (v32)
@@ -4523,14 +4523,14 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
       v28 = 0x20000000;
       v29 = 32;
       v30 = 1;
-      queue = [(AMDSQLite *)v41 _executorQueue];
+      queue = [(AMDSQLite *)selfCopy _executorQueue];
       v18 = MEMORY[0x277D85DD0];
       v19 = -1073741824;
       v20 = 0;
       v21 = __43__AMDSQLite_createTable_usingSchema_error___block_invoke;
       v22 = &unk_278CB5B98;
       v25[1] = &v26;
-      v23 = MEMORY[0x277D82BE0](v41);
+      v23 = MEMORY[0x277D82BE0](selfCopy);
       v24 = MEMORY[0x277D82BE0](v32);
       v25[0] = MEMORY[0x277D82BE0](location[0]);
       dispatch_sync(queue, &v18);
@@ -4540,7 +4540,7 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
         v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to create %@", location[0]];
         v10 = [AMDError allocError:22 withMessage:v17];
         v7 = v10;
-        *v38 = v10;
+        *errorCopy = v10;
         v42 = 0;
         v33 = 1;
         objc_storeStrong(&v17, 0);
@@ -4573,7 +4573,7 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
       v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"SQLITE CREATE: No table '%@' in schema", location[0]];
       v12 = [AMDMiscHelpers logAndCreateError:29 errorMessage:v31];
       v6 = v12;
-      *v38 = v12;
+      *errorCopy = v12;
       v46 = v35;
       v47 = v31;
       v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
@@ -4589,7 +4589,7 @@ void __33__AMDSQLite_createIndices_error___block_invoke(uint64_t a1)
     v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"SQLITE CREATE: No db!!"];
     v13 = [AMDMiscHelpers logAndCreateError:29 errorMessage:v34];
     v5 = v13;
-    *v38 = v13;
+    *errorCopy = v13;
     v48 = v35;
     v49 = v34;
     v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
@@ -4634,18 +4634,18 @@ void __43__AMDSQLite_createTable_usingSchema_error___block_invoke(uint64_t a1)
   *MEMORY[0x277D85DE8];
 }
 
-- (id)validateRowsData:(id)a3 tableSchema:(id)a4 error:(id *)a5
+- (id)validateRowsData:(id)data tableSchema:(id)schema error:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v43 = 0;
-  objc_storeStrong(&v43, a4);
-  v42 = a5;
-  v41 = [v43 getColumns];
-  v40 = [v43 getRequiredColumns];
+  objc_storeStrong(&v43, schema);
+  errorCopy = error;
+  getColumns = [v43 getColumns];
+  getRequiredColumns = [v43 getRequiredColumns];
   v22 = objc_alloc(MEMORY[0x277CBEB18]);
   v39 = [v22 initWithCapacity:{objc_msgSend(location[0], "count")}];
   for (i = 0; ; ++i)
@@ -4662,7 +4662,7 @@ void __43__AMDSQLite_createTable_usingSchema_error___block_invoke(uint64_t a1)
     {
       v34 = MEMORY[0x277D82BE0](v37);
       v33 = 1;
-      v32 = [v40 mutableCopy];
+      v32 = [getRequiredColumns mutableCopy];
       memset(__b, 0, sizeof(__b));
       v16 = MEMORY[0x277D82BE0](v34);
       v17 = [v16 countByEnumeratingWithState:__b objects:v48 count:16];
@@ -4687,13 +4687,13 @@ void __43__AMDSQLite_createTable_usingSchema_error___block_invoke(uint64_t a1)
           }
 
           v28 = MEMORY[0x277D82BE0](v31);
-          v27 = [v41 objectForKey:v28];
+          v27 = [getColumns objectForKey:v28];
           if (v27)
           {
             [v32 removeObject:v28];
             v26 = [v34 objectForKey:v31];
-            v10 = [v27 getType];
-            if (v10 && (v10 == 1 || (v10 - 2) <= 2 || v10 == 5))
+            getType = [v27 getType];
+            if (getType && (getType == 1 || (getType - 2) <= 2 || getType == 5))
             {
               objc_opt_class();
               v33 = objc_opt_isKindOfClass() & 1;
@@ -4744,7 +4744,7 @@ void __43__AMDSQLite_createTable_usingSchema_error___block_invoke(uint64_t a1)
         v29 = MEMORY[0x277D82BE0](@"SQLITE INSERT: invalid row data: bad column name");
         v11 = [AMDMiscHelpers logAndCreateError:15 errorMessage:v29];
         v6 = v11;
-        *v42 = v11;
+        *errorCopy = v11;
         v45 = 0;
         v35 = 1;
         objc_storeStrong(&v29, 0);
@@ -4791,7 +4791,7 @@ LABEL_28:
       v36 = MEMORY[0x277D82BE0](@"SQLITE INSERT: invalid row data");
       v18 = [AMDMiscHelpers logAndCreateError:15 errorMessage:v36];
       v5 = v18;
-      *v42 = v18;
+      *errorCopy = v18;
       v45 = 0;
       v35 = 1;
       objc_storeStrong(&v36, 0);
@@ -4816,8 +4816,8 @@ LABEL_28:
   v35 = 1;
 LABEL_43:
   objc_storeStrong(&v39, 0);
-  objc_storeStrong(&v40, 0);
-  objc_storeStrong(&v41, 0);
+  objc_storeStrong(&getRequiredColumns, 0);
+  objc_storeStrong(&getColumns, 0);
   objc_storeStrong(&v43, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
@@ -4826,32 +4826,32 @@ LABEL_43:
   return v7;
 }
 
-- (id)insertRows:(id)a3 usingSchema:(id)a4 error:(id *)a5
+- (id)insertRows:(id)rows usingSchema:(id)schema error:(id *)error
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, rows);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  v8 = [(AMDSQLite *)v11 insertRows:location[0] usingSchema:v9 skipValidation:0 error:a5];
+  objc_storeStrong(&v9, schema);
+  v8 = [(AMDSQLite *)selfCopy insertRows:location[0] usingSchema:v9 skipValidation:0 error:error];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 
   return v8;
 }
 
-- (id)insertRows:(id)a3 usingSchema:(id)a4 skipValidation:(BOOL)a5 error:(id *)a6
+- (id)insertRows:(id)rows usingSchema:(id)schema skipValidation:(BOOL)validation error:(id *)error
 {
   v75[2] = *MEMORY[0x277D85DE8];
-  v66 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, rows);
   v64 = 0;
-  objc_storeStrong(&v64, a4);
-  v63 = a5;
-  v62 = a6;
+  objc_storeStrong(&v64, schema);
+  validationCopy = validation;
+  errorCopy = error;
   v61 = MEMORY[0x277D82BE0](@"insertedRowsCount");
   v60 = MEMORY[0x277D82BE0](@"totalRowsCount");
   v59 = [location[0] objectForKey:0x2852AF668];
@@ -4862,7 +4862,7 @@ LABEL_43:
     if (v53)
     {
       v51 = MEMORY[0x277D82BE0](v58);
-      if (v63)
+      if (validationCopy)
       {
         v50 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
         v49 = OS_LOG_TYPE_INFO;
@@ -4877,7 +4877,7 @@ LABEL_43:
 
       else
       {
-        v7 = [(AMDSQLite *)v66 validateRowsData:v58 tableSchema:v53 error:v62];
+        v7 = [(AMDSQLite *)selfCopy validateRowsData:v58 tableSchema:v53 error:errorCopy];
         v8 = v51;
         v51 = v7;
         MEMORY[0x277D82BD8](v8);
@@ -4900,7 +4900,7 @@ LABEL_43:
         }
 
         objc_storeStrong(&v44, 0);
-        v42 = [(AMDSQLite *)v66 prepare:v46 error:v62];
+        v42 = [(AMDSQLite *)selfCopy prepare:v46 error:errorCopy];
         if (v42)
         {
           v37 = 0;
@@ -4921,7 +4921,7 @@ LABEL_43:
           }
 
           objc_storeStrong(&oslog, 0);
-          queue = [(AMDSQLite *)v66 _executorQueue];
+          queue = [(AMDSQLite *)selfCopy _executorQueue];
           v23 = MEMORY[0x277D85DD0];
           v24 = -1073741824;
           v25 = 0;
@@ -4963,9 +4963,9 @@ LABEL_43:
 
         else
         {
-          v14 = [*v62 localizedDescription];
+          localizedDescription = [*errorCopy localizedDescription];
           [AMDFrameworkMetrics log:"log:withKey:atVerbosity:" withKey:? atVerbosity:?];
-          MEMORY[0x277D82BD8](v14);
+          MEMORY[0x277D82BD8](localizedDescription);
           v67 = 0;
           v54 = 1;
         }
@@ -4989,7 +4989,7 @@ LABEL_43:
       v52 = [MEMORY[0x277CCACA8] stringWithFormat:@"SQLITE INSERT: table '%@' does not exist'", v59];
       v16 = [AMDMiscHelpers logAndCreateError:15 errorMessage:v52];
       v6 = v16;
-      *v62 = v16;
+      *errorCopy = v16;
       v67 = 0;
       v54 = 1;
       objc_storeStrong(&v52, 0);
@@ -5197,25 +5197,25 @@ void __57__AMDSQLite_insertRows_usingSchema_skipValidation_error___block_invoke(
   *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchRows:(id)a3 andPersist:(BOOL)a4 error:(id *)a5
+- (id)fetchRows:(id)rows andPersist:(BOOL)persist error:(id *)error
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(AMDSQLite *)v13 isUsable])
+  objc_storeStrong(location, rows);
+  if ([(AMDSQLite *)selfCopy isUsable])
   {
-    v8 = v13;
-    v9 = [(AMDSQLite *)v13 _schema];
+    v8 = selfCopy;
+    _schema = [(AMDSQLite *)selfCopy _schema];
     v14 = [AMDSQLite fetchRowsUsingSchema:v8 andDescriptor:"fetchRowsUsingSchema:andDescriptor:andPersist:error:" andPersist:? error:?];
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](_schema);
   }
 
   else
   {
-    v10 = [(AMDSQLite *)v13 generateDBLoadError];
-    v5 = v10;
-    *a5 = v10;
+    generateDBLoadError = [(AMDSQLite *)selfCopy generateDBLoadError];
+    v5 = generateDBLoadError;
+    *error = generateDBLoadError;
     v14 = 0;
   }
 
@@ -5225,63 +5225,63 @@ void __57__AMDSQLite_insertRows_usingSchema_skipValidation_error___block_invoke(
   return v6;
 }
 
-- (id)fetchRowsUsingSchema:(id)a3 andDescriptor:(id)a4 andPersist:(BOOL)a5 error:(id *)a6
+- (id)fetchRowsUsingSchema:(id)schema andDescriptor:(id)descriptor andPersist:(BOOL)persist error:(id *)error
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, schema);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v11 = v15;
-  v6 = [(AMDSQLite *)v15 _db];
-  v12 = [(AMDSQLite *)v11 fetchRowsFrom:v6 usingDescriptor:v13 andSchema:location[0] columnMajorOutput:1 rowMajorOutput:0 andPersist:a5 error:a6];
+  objc_storeStrong(&v13, descriptor);
+  v11 = selfCopy;
+  v6 = [(AMDSQLite *)selfCopy _db];
+  v12 = [(AMDSQLite *)v11 fetchRowsFrom:v6 usingDescriptor:v13 andSchema:location[0] columnMajorOutput:1 rowMajorOutput:0 andPersist:persist error:error];
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
 
   return v12;
 }
 
-- (id)fetchRowsFrom:(sqlite3 *)a3 usingDescriptor:(id)a4 andSchema:(id)a5 columnMajorOutput:(BOOL)a6 rowMajorOutput:(BOOL)a7 andPersist:(BOOL)a8 error:(id *)a9
+- (id)fetchRowsFrom:(sqlite3 *)from usingDescriptor:(id)descriptor andSchema:(id)schema columnMajorOutput:(BOOL)output rowMajorOutput:(BOOL)majorOutput andPersist:(BOOL)persist error:(id *)error
 {
   v95 = *MEMORY[0x277D85DE8];
-  v85 = self;
+  selfCopy = self;
   v84 = a2;
-  v83 = a3;
+  fromCopy = from;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, descriptor);
   v81 = 0;
-  objc_storeStrong(&v81, a5);
-  v80 = a6;
-  v79 = a7;
-  v78 = a8;
-  v77 = a9;
-  v76 = [location getStatement];
-  if (!v76)
+  objc_storeStrong(&v81, schema);
+  outputCopy = output;
+  majorOutputCopy = majorOutput;
+  persistCopy = persist;
+  errorCopy = error;
+  getStatement = [location getStatement];
+  if (!getStatement)
   {
     v34 = [AMDError allocError:22 withMessage:@"Fetch descriptor unusable!"];
     v9 = v34;
-    *v77 = v34;
+    *errorCopy = v34;
     v86 = 0;
     v75 = 1;
     goto LABEL_28;
   }
 
-  pStmt = [AMDSQLite prepare:v76 usingDb:v83 error:v77];
+  pStmt = [AMDSQLite prepare:getStatement usingDb:fromCopy error:errorCopy];
   if (!pStmt)
   {
-    v33 = [*v77 localizedDescription];
+    localizedDescription = [*errorCopy localizedDescription];
     [AMDFrameworkMetrics log:"log:withKey:atVerbosity:" withKey:? atVerbosity:?];
-    MEMORY[0x277D82BD8](v33);
+    MEMORY[0x277D82BD8](localizedDescription);
     v86 = 0;
     v75 = 1;
     goto LABEL_28;
   }
 
   v73 = 0;
-  v72 = [location getColumnSpecs];
-  v71 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v72, "count")}];
-  for (i = 0; i < [v72 count]; ++i)
+  getColumnSpecs = [location getColumnSpecs];
+  v71 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(getColumnSpecs, "count")}];
+  for (i = 0; i < [getColumnSpecs count]; ++i)
   {
     v32 = objc_alloc_init(MEMORY[0x277CBEB18]);
     [v71 addObject:v32];
@@ -5301,19 +5301,19 @@ void __57__AMDSQLite_insertRows_usingSchema_skipValidation_error___block_invoke(
   v61 = __Block_byref_object_copy__0;
   v62 = __Block_byref_object_dispose__0;
   v63 = 0;
-  queue = [(AMDSQLite *)v85 _executorQueue];
+  queue = [(AMDSQLite *)selfCopy _executorQueue];
   v47 = MEMORY[0x277D85DD0];
   v48 = -1073741824;
   v49 = 0;
   v50 = __103__AMDSQLite_fetchRowsFrom_usingDescriptor_andSchema_columnMajorOutput_rowMajorOutput_andPersist_error___block_invoke;
   v51 = &unk_278CB5BE8;
   v54[3] = pStmt;
-  v52 = MEMORY[0x277D82BE0](v72);
+  v52 = MEMORY[0x277D82BE0](getColumnSpecs);
   v54[1] = &v57;
   v54[2] = &v64;
-  v55 = v80;
+  v55 = outputCopy;
   v53 = MEMORY[0x277D82BE0](v71);
-  v56 = v79;
+  v56 = majorOutputCopy;
   v54[0] = MEMORY[0x277D82BE0](v69);
   dispatch_sync(queue, &v47);
   MEMORY[0x277D82BD8](queue);
@@ -5325,20 +5325,20 @@ void __57__AMDSQLite_insertRows_usingSchema_skipValidation_error___block_invoke(
     {
       v28 = [v71 objectAtIndexedSubscript:0];
       v29 = [v28 count];
-      v27 = [location getId];
-      v44 = MEMORY[0x277D82BE0](v27);
+      getId = [location getId];
+      v44 = MEMORY[0x277D82BE0](getId);
       __os_log_helper_16_2_2_8_0_8_64(v94, v29, v44);
       _os_log_debug_impl(&dword_240CB9000, oslog, type, "SQLITE Fetched %lu rows from descriptor '%@'", v94, 0x16u);
-      MEMORY[0x277D82BD8](v27);
+      MEMORY[0x277D82BD8](getId);
       MEMORY[0x277D82BD8](v28);
       objc_storeStrong(&v44, 0);
     }
 
     objc_storeStrong(&oslog, 0);
     v26 = objc_alloc(MEMORY[0x277CBEB18]);
-    v43 = [v26 initWithCapacity:{objc_msgSend(v72, "count")}];
+    v43 = [v26 initWithCapacity:{objc_msgSend(getColumnSpecs, "count")}];
     memset(__b, 0, sizeof(__b));
-    v24 = MEMORY[0x277D82BE0](v72);
+    v24 = MEMORY[0x277D82BE0](getColumnSpecs);
     v25 = [v24 countByEnumeratingWithState:__b objects:v93 count:16];
     if (v25)
     {
@@ -5356,16 +5356,16 @@ void __57__AMDSQLite_insertRows_usingSchema_skipValidation_error___block_invoke(
         v42 = *(__b[1] + 8 * v22);
         v19 = v43;
         v91[0] = @"name";
-        v18 = [v42 getSelectColumnName];
-        v92[0] = v18;
+        getSelectColumnName = [v42 getSelectColumnName];
+        v92[0] = getSelectColumnName;
         v91[1] = AMD_SQLITE_TYPE;
-        v17 = [v42 getTypeString];
-        v92[1] = v17;
+        getTypeString = [v42 getTypeString];
+        v92[1] = getTypeString;
         v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v92 forKeys:v91 count:2];
         [v19 addObject:?];
         MEMORY[0x277D82BD8](v16);
-        MEMORY[0x277D82BD8](v17);
-        MEMORY[0x277D82BD8](v18);
+        MEMORY[0x277D82BD8](getTypeString);
+        MEMORY[0x277D82BD8](getSelectColumnName);
         ++v22;
         if (v20 + 1 >= v23)
         {
@@ -5388,13 +5388,13 @@ void __57__AMDSQLite_insertRows_usingSchema_skipValidation_error___block_invoke(
     v90[2] = v69;
     v40 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v90 forKeys:v89 count:3];
     v39 = 0;
-    if (v78)
+    if (persistCopy)
     {
-      v11 = [location persist:v40 error:v77];
+      v11 = [location persist:v40 error:errorCopy];
       v12 = v39;
       v39 = v11;
       MEMORY[0x277D82BD8](v12);
-      if (*v77)
+      if (*errorCopy)
       {
         v86 = 0;
         v75 = 1;
@@ -5422,7 +5422,7 @@ LABEL_24:
 
   v30 = v58[5];
   v10 = v30;
-  *v77 = v30;
+  *errorCopy = v30;
   v86 = 0;
   v75 = 1;
 LABEL_25:
@@ -5434,7 +5434,7 @@ LABEL_25:
   _Block_object_dispose(&v64, 8);
   objc_storeStrong(&v69, 0);
   objc_storeStrong(&v71, 0);
-  objc_storeStrong(&v72, 0);
+  objc_storeStrong(&getColumnSpecs, 0);
   v15 = v75;
   sqlite3_finalize(pStmt);
   if (v73)
@@ -5450,7 +5450,7 @@ LABEL_25:
   }
 
 LABEL_28:
-  objc_storeStrong(&v76, 0);
+  objc_storeStrong(&getStatement, 0);
   objc_storeStrong(&v81, 0);
   objc_storeStrong(&location, 0);
   *MEMORY[0x277D85DE8];
@@ -5688,22 +5688,22 @@ LABEL_35:
   while (!v42);
 }
 
-- (id)deleteRows:(id)a3 error:(id *)a4
+- (id)deleteRows:(id)rows error:(id *)error
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(AMDSQLite *)v10 isUsable])
+  objc_storeStrong(location, rows);
+  if ([(AMDSQLite *)selfCopy isUsable])
   {
-    v11 = [(AMDSQLite *)v10 deleteRowsInternal:location[0] error:a4];
+    v11 = [(AMDSQLite *)selfCopy deleteRowsInternal:location[0] error:error];
   }
 
   else
   {
-    v7 = [(AMDSQLite *)v10 generateDBLoadError];
-    v4 = v7;
-    *a4 = v7;
+    generateDBLoadError = [(AMDSQLite *)selfCopy generateDBLoadError];
+    v4 = generateDBLoadError;
+    *error = generateDBLoadError;
     v11 = 0;
   }
 
@@ -5713,15 +5713,15 @@ LABEL_35:
   return v5;
 }
 
-- (id)deleteRowsInternal:(id)a3 error:(id *)a4
+- (id)deleteRowsInternal:(id)internal error:(id *)error
 {
   v60 = *MEMORY[0x277D85DE8];
-  v55 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v53 = a4;
-  if ([(AMDSQLite *)v55 _db])
+  objc_storeStrong(location, internal);
+  errorCopy = error;
+  if ([(AMDSQLite *)selfCopy _db])
   {
     v50 = [location[0] objectForKey:0x2852AF668];
     v49 = [location[0] objectForKey:0x2852AF5E8];
@@ -5802,7 +5802,7 @@ LABEL_35:
       MEMORY[0x277D82BD8](v44);
     }
 
-    v36 = [(AMDSQLite *)v55 prepare:v45 error:v53];
+    v36 = [(AMDSQLite *)selfCopy prepare:v45 error:errorCopy];
     if (v36)
     {
       v35 = 0;
@@ -5811,7 +5811,7 @@ LABEL_35:
       v32 = 0x20000000;
       v33 = 32;
       v34 = 1;
-      v11 = [(AMDSQLite *)v55 _executorQueue];
+      _executorQueue = [(AMDSQLite *)selfCopy _executorQueue];
       block = MEMORY[0x277D85DD0];
       v24 = -1073741824;
       v25 = 0;
@@ -5819,11 +5819,11 @@ LABEL_35:
       v27 = &unk_278CB5C10;
       v28 = &v30;
       v29 = v36;
-      dispatch_sync(v11, &block);
-      MEMORY[0x277D82BD8](v11);
+      dispatch_sync(_executorQueue, &block);
+      MEMORY[0x277D82BD8](_executorQueue);
       if (*(v31 + 6) == 101)
       {
-        v21 = sqlite3_changes([(AMDSQLite *)v55 _db]);
+        v21 = sqlite3_changes([(AMDSQLite *)selfCopy _db]);
         oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
         if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
         {
@@ -5845,7 +5845,7 @@ LABEL_35:
         v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"SQLITE Delete: %d", *(v31 + 6)];
         v10 = [AMDMiscHelpers logAndCreateError:29 errorMessage:v22];
         v5 = v10;
-        *v53 = v10;
+        *errorCopy = v10;
         v56 = 0;
         v51 = 1;
         objc_storeStrong(&v22, 0);
@@ -5869,9 +5869,9 @@ LABEL_35:
 
     else
     {
-      v12 = [*v53 localizedDescription];
+      localizedDescription = [*errorCopy localizedDescription];
       [AMDFrameworkMetrics log:"log:withKey:atVerbosity:" withKey:? atVerbosity:?];
-      MEMORY[0x277D82BD8](v12);
+      MEMORY[0x277D82BD8](localizedDescription);
       v56 = 0;
       v51 = 1;
     }
@@ -5889,7 +5889,7 @@ LABEL_35:
     v52 = [MEMORY[0x277CCACA8] stringWithFormat:@"SQLITE DELETE: No db!!"];
     v18 = [AMDMiscHelpers logAndCreateError:29 errorMessage:v52];
     v4 = v18;
-    *v53 = v18;
+    *errorCopy = v18;
     v56 = 0;
     v51 = 1;
     objc_storeStrong(&v52, 0);
@@ -5909,16 +5909,16 @@ uint64_t __38__AMDSQLite_deleteRowsInternal_error___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)updateTableUsingDescriptor:(id)a3 andSchema:(id)a4 error:(id *)a5
+- (id)updateTableUsingDescriptor:(id)descriptor andSchema:(id)schema error:(id *)error
 {
   v79 = *MEMORY[0x277D85DE8];
-  v72 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, descriptor);
   v70 = 0;
-  objc_storeStrong(&v70, a4);
-  v69 = a5;
+  objc_storeStrong(&v70, schema);
+  errorCopy = error;
   v68 = [location[0] objectForKey:0x2852AF668];
   v67 = [v70 getSchemaForTable:v68];
   if (v67)
@@ -6016,7 +6016,7 @@ uint64_t __38__AMDSQLite_deleteRowsInternal_error___block_invoke(uint64_t a1)
       }
 
       objc_storeStrong(&v52, 0);
-      v50 = [(AMDSQLite *)v72 prepare:v55 error:v69];
+      v50 = [(AMDSQLite *)selfCopy prepare:v55 error:errorCopy];
       if (v50)
       {
         v49 = 0;
@@ -6025,7 +6025,7 @@ uint64_t __38__AMDSQLite_deleteRowsInternal_error___block_invoke(uint64_t a1)
         v46 = 0x20000000;
         v47 = 32;
         v48 = 1;
-        v14 = [(AMDSQLite *)v72 _executorQueue];
+        _executorQueue = [(AMDSQLite *)selfCopy _executorQueue];
         block = MEMORY[0x277D85DD0];
         v38 = -1073741824;
         v39 = 0;
@@ -6033,11 +6033,11 @@ uint64_t __38__AMDSQLite_deleteRowsInternal_error___block_invoke(uint64_t a1)
         v41 = &unk_278CB5C10;
         v42 = &v44;
         v43 = v50;
-        dispatch_sync(v14, &block);
-        MEMORY[0x277D82BD8](v14);
+        dispatch_sync(_executorQueue, &block);
+        MEMORY[0x277D82BD8](_executorQueue);
         if (*(v45 + 6) == 101)
         {
-          v35 = sqlite3_changes([(AMDSQLite *)v72 _db]);
+          v35 = sqlite3_changes([(AMDSQLite *)selfCopy _db]);
           oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
           if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
           {
@@ -6059,7 +6059,7 @@ uint64_t __38__AMDSQLite_deleteRowsInternal_error___block_invoke(uint64_t a1)
           v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"SQLITE update: %d", *(v45 + 6)];
           v13 = [AMDMiscHelpers logAndCreateError:29 errorMessage:v36];
           v8 = v13;
-          *v69 = v13;
+          *errorCopy = v13;
           v73 = 0;
           v65 = 1;
           objc_storeStrong(&v36, 0);
@@ -6083,9 +6083,9 @@ uint64_t __38__AMDSQLite_deleteRowsInternal_error___block_invoke(uint64_t a1)
 
       else
       {
-        v15 = [*v69 localizedDescription];
+        localizedDescription = [*errorCopy localizedDescription];
         [AMDFrameworkMetrics log:"log:withKey:atVerbosity:" withKey:? atVerbosity:?];
-        MEMORY[0x277D82BD8](v15);
+        MEMORY[0x277D82BD8](localizedDescription);
         v73 = 0;
         v65 = 1;
       }
@@ -6100,7 +6100,7 @@ uint64_t __38__AMDSQLite_deleteRowsInternal_error___block_invoke(uint64_t a1)
       v61 = MEMORY[0x277D82BE0](@"SQLITE UPDATE: no SET clause info");
       v29 = [AMDMiscHelpers logAndCreateError:15 errorMessage:v61];
       v6 = v29;
-      *v69 = v29;
+      *errorCopy = v29;
       v73 = 0;
       v65 = 1;
       objc_storeStrong(&v61, 0);
@@ -6115,7 +6115,7 @@ uint64_t __38__AMDSQLite_deleteRowsInternal_error___block_invoke(uint64_t a1)
     v66 = [MEMORY[0x277CCACA8] stringWithFormat:@"SQLITE UPDATE: table '%@' does not exist'", v68];
     v31 = [AMDMiscHelpers logAndCreateError:15 errorMessage:v66];
     v5 = v31;
-    *v69 = v31;
+    *errorCopy = v31;
     v73 = 0;
     v65 = 1;
     objc_storeStrong(&v66, 0);
@@ -6138,12 +6138,12 @@ uint64_t __56__AMDSQLite_updateTableUsingDescriptor_andSchema_error___block_invo
   return result;
 }
 
-- (id)refreshAppsTable:(id *)a3
+- (id)refreshAppsTable:(id *)table
 {
   v60 = *MEMORY[0x277D85DE8];
-  v45 = self;
+  selfCopy = self;
   v44 = a2;
-  v43 = a3;
+  tableCopy = table;
   v42 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:2];
   v41 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v40 = +[AMDMiscHelpers getCurrentEpochSeconds];
@@ -6166,22 +6166,22 @@ uint64_t __56__AMDSQLite_updateTableUsingDescriptor_andSchema_error___block_invo
       }
 
       v38 = *(__b[1] + 8 * v21);
-      v36 = [v38 iTunesMetadata];
+      iTunesMetadata = [v38 iTunesMetadata];
       v12 = v41;
       v57[0] = @"adamId";
-      v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v36, "storeItemIdentifier")}];
+      v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(iTunesMetadata, "storeItemIdentifier")}];
       v58[0] = v18;
       v57[1] = @"genreId";
-      v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v36, "genreIdentifier")}];
+      v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(iTunesMetadata, "genreIdentifier")}];
       v58[1] = v17;
       v57[2] = @"isArcade";
       v16 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v38, "isArcadeApp")}];
       v58[2] = v16;
       v57[3] = @"purchasedRedownload";
-      v15 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v36, "isPurchasedRedownload")}];
+      v15 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(iTunesMetadata, "isPurchasedRedownload")}];
       v58[3] = v15;
       v57[4] = @"ratingRank";
-      v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v36, "ratingRank")}];
+      v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(iTunesMetadata, "ratingRank")}];
       v58[4] = v14;
       v57[5] = @"creationTime";
       v58[5] = v40;
@@ -6193,7 +6193,7 @@ uint64_t __56__AMDSQLite_updateTableUsingDescriptor_andSchema_error___block_invo
       MEMORY[0x277D82BD8](v16);
       MEMORY[0x277D82BD8](v17);
       MEMORY[0x277D82BD8](v18);
-      objc_storeStrong(&v36, 0);
+      objc_storeStrong(&iTunesMetadata, 0);
       ++v21;
       if (v19 + 1 >= v22)
       {
@@ -6224,14 +6224,14 @@ uint64_t __56__AMDSQLite_updateTableUsingDescriptor_andSchema_error___block_invo
     v51[1] = @"rowsData";
     v52[1] = v41;
     v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:v51 count:2];
-    v3 = [(AMDSQLite *)v45 deleteRows:v29 error:v43];
+    v3 = [(AMDSQLite *)selfCopy deleteRows:v29 error:tableCopy];
     v28 = v3;
-    if (*v43)
+    if (*tableCopy)
     {
       v10 = MEMORY[0x277CCACA8];
-      v11 = [*v43 localizedDescription];
-      v27 = [v10 stringWithFormat:@"SQLITE could not truncate '%@': %@", @"apps", v11];
-      MEMORY[0x277D82BD8](v11);
+      localizedDescription = [*tableCopy localizedDescription];
+      v27 = [v10 stringWithFormat:@"SQLITE could not truncate '%@': %@", @"apps", localizedDescription];
+      MEMORY[0x277D82BD8](localizedDescription);
       v49 = @"error";
       v50 = v27;
       v46 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
@@ -6251,16 +6251,16 @@ uint64_t __56__AMDSQLite_updateTableUsingDescriptor_andSchema_error___block_invo
         [AMDFrameworkMetrics log:@"Delete Rows Failed" withKey:@"AppsTableRefreshError" atVerbosity:0];
       }
 
-      v8 = v45;
-      v9 = [(AMDSQLite *)v45 _schema];
+      v8 = selfCopy;
+      _schema = [(AMDSQLite *)selfCopy _schema];
       v26 = [AMDSQLite insertRows:v8 usingSchema:"insertRows:usingSchema:error:" error:v29];
-      MEMORY[0x277D82BD8](v9);
-      if (*v43)
+      MEMORY[0x277D82BD8](_schema);
+      if (*tableCopy)
       {
         v6 = MEMORY[0x277CCACA8];
-        v7 = [*v43 localizedDescription];
-        v25 = [v6 stringWithFormat:@"SQLITE could not insert into '%@': %@", @"apps", v7];
-        MEMORY[0x277D82BD8](v7);
+        localizedDescription2 = [*tableCopy localizedDescription];
+        v25 = [v6 stringWithFormat:@"SQLITE could not insert into '%@': %@", @"apps", localizedDescription2];
+        MEMORY[0x277D82BD8](localizedDescription2);
         v47 = @"error";
         v48 = v25;
         v46 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
@@ -6332,14 +6332,14 @@ BOOL __30__AMDSQLite_refreshAppsTable___block_invoke(void *a1, void *a2)
   return v4;
 }
 
-+ (id)fetchVectorDBConfigForDBName:(id)a3 error:(id *)a4
++ (id)fetchVectorDBConfigForDBName:(id)name error:(id *)error
 {
   v55[4] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v34 = a4;
+  objc_storeStrong(location, name);
+  errorCopy = error;
   v33 = +[AMDSQLite getSharedInstance];
   if ([v33 isUsableInternal])
   {
@@ -6403,14 +6403,14 @@ BOOL __30__AMDSQLite_refreshAppsTable___block_invoke(void *a1, void *a2)
     v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:5];
     MEMORY[0x277D82BD8](v18);
     v19 = [AMDFetchDescriptor alloc];
-    v20 = [v33 _bootstrapSchema];
+    _bootstrapSchema = [v33 _bootstrapSchema];
     v29 = [AMDFetchDescriptor initWithDict:v19 usingSchema:"initWithDict:usingSchema:error:" error:v30];
-    MEMORY[0x277D82BD8](v20);
+    MEMORY[0x277D82BD8](_bootstrapSchema);
     v21 = [v33 _db];
-    v22 = [v33 _bootstrapSchema];
-    v28 = [v33 fetchRowsFrom:v21 usingDescriptor:v29 andSchema:v34 columnMajorOutput:? rowMajorOutput:? andPersist:? error:?];
-    MEMORY[0x277D82BD8](v22);
-    if (*v34)
+    _bootstrapSchema2 = [v33 _bootstrapSchema];
+    v28 = [v33 fetchRowsFrom:v21 usingDescriptor:v29 andSchema:errorCopy columnMajorOutput:? rowMajorOutput:? andPersist:? error:?];
+    MEMORY[0x277D82BD8](_bootstrapSchema2);
+    if (*errorCopy)
     {
       v36 = 0;
       v32 = 1;
@@ -6441,7 +6441,7 @@ BOOL __30__AMDSQLite_refreshAppsTable___block_invoke(void *a1, void *a2)
       {
         v8 = [AMDError allocError:22 withMessage:@"Internal SQL failure"];
         v5 = v8;
-        *v34 = v8;
+        *errorCopy = v8;
         v36 = 0;
         v32 = 1;
       }
@@ -6458,9 +6458,9 @@ BOOL __30__AMDSQLite_refreshAppsTable___block_invoke(void *a1, void *a2)
 
   else
   {
-    v23 = [v33 generateDBLoadError];
-    v4 = v23;
-    *v34 = v23;
+    generateDBLoadError = [v33 generateDBLoadError];
+    v4 = generateDBLoadError;
+    *errorCopy = generateDBLoadError;
     v36 = 0;
     v32 = 1;
   }
@@ -6473,21 +6473,21 @@ BOOL __30__AMDSQLite_refreshAppsTable___block_invoke(void *a1, void *a2)
   return v6;
 }
 
-+ (id)persistVectorDBPath:(id)a3 forDBName:(id)a4 withVectorDimension:(int)a5 andDataType:(id)a6 withDistanceMetric:(id)a7 error:(id *)a8
++ (id)persistVectorDBPath:(id)path forDBName:(id)name withVectorDimension:(int)dimension andDataType:(id)type withDistanceMetric:(id)metric error:(id *)error
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, path);
   v32 = 0;
-  objc_storeStrong(&v32, a4);
-  v31 = a5;
+  objc_storeStrong(&v32, name);
+  dimensionCopy = dimension;
   v30 = 0;
-  objc_storeStrong(&v30, a6);
+  objc_storeStrong(&v30, type);
   v29 = 0;
-  objc_storeStrong(&v29, a7);
-  v28 = a8;
+  objc_storeStrong(&v29, metric);
+  errorCopy = error;
   v27 = +[AMDSQLite getSharedInstance];
   if ([v27 isUsableInternal])
   {
@@ -6497,12 +6497,12 @@ BOOL __30__AMDSQLite_refreshAppsTable___block_invoke(void *a1, void *a2)
     v38[1] = location[0];
     v37[2] = @"lastUpdateTime";
     v11 = MEMORY[0x277CCABB0];
-    v15 = [MEMORY[0x277CBEAA8] date];
-    [v15 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v14 = [v11 numberWithDouble:?];
     v38[2] = v14;
     v37[3] = @"vectorDimension";
-    v13 = [MEMORY[0x277CCABB0] numberWithInt:v31];
+    v13 = [MEMORY[0x277CCABB0] numberWithInt:dimensionCopy];
     v38[3] = v13;
     v37[4] = @"dataType";
     v38[4] = v30;
@@ -6514,16 +6514,16 @@ BOOL __30__AMDSQLite_refreshAppsTable___block_invoke(void *a1, void *a2)
     MEMORY[0x277D82BD8](v12);
     MEMORY[0x277D82BD8](v13);
     MEMORY[0x277D82BD8](v14);
-    MEMORY[0x277D82BD8](v15);
+    MEMORY[0x277D82BD8](date);
     v35[0] = 0x2852AF668;
     v36[0] = @"__AMDVectorDatabases";
     v35[1] = @"rowsData";
     v36[1] = v25;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:v35 count:2];
-    v16 = [v27 _bootstrapSchema];
+    _bootstrapSchema = [v27 _bootstrapSchema];
     v23 = [v27 insertRows:v24 usingSchema:? error:?];
-    MEMORY[0x277D82BD8](v16);
-    if (*v28)
+    MEMORY[0x277D82BD8](_bootstrapSchema);
+    if (*errorCopy)
     {
       v34 = 0;
     }
@@ -6541,9 +6541,9 @@ BOOL __30__AMDSQLite_refreshAppsTable___block_invoke(void *a1, void *a2)
 
   else
   {
-    v17 = [v27 generateDBLoadError];
-    v8 = v17;
-    *v28 = v17;
+    generateDBLoadError = [v27 generateDBLoadError];
+    v8 = generateDBLoadError;
+    *errorCopy = generateDBLoadError;
     v34 = 0;
     v26 = 1;
   }
@@ -6559,14 +6559,14 @@ BOOL __30__AMDSQLite_refreshAppsTable___block_invoke(void *a1, void *a2)
   return v9;
 }
 
-+ (id)deleteVectorDBEntryForDBName:(id)a3 error:(id *)a4
++ (id)deleteVectorDBEntryForDBName:(id)name error:(id *)error
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14 = a4;
+  objc_storeStrong(location, name);
+  errorCopy = error;
   v13 = +[AMDSQLite getSharedInstance];
   if ([v13 isUsableInternal])
   {
@@ -6579,8 +6579,8 @@ BOOL __30__AMDSQLite_refreshAppsTable___block_invoke(void *a1, void *a2)
     v18[2] = v7;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:3];
     MEMORY[0x277D82BD8](v7);
-    v10 = [v13 deleteRowsInternal:v11 error:v14];
-    if (*v14)
+    v10 = [v13 deleteRowsInternal:v11 error:errorCopy];
+    if (*errorCopy)
     {
       v16 = 0;
     }
@@ -6597,9 +6597,9 @@ BOOL __30__AMDSQLite_refreshAppsTable___block_invoke(void *a1, void *a2)
 
   else
   {
-    v8 = [v13 generateDBLoadError];
-    v4 = v8;
-    *v14 = v8;
+    generateDBLoadError = [v13 generateDBLoadError];
+    v4 = generateDBLoadError;
+    *errorCopy = generateDBLoadError;
     v16 = 0;
     v12 = 1;
   }
@@ -6612,14 +6612,14 @@ BOOL __30__AMDSQLite_refreshAppsTable___block_invoke(void *a1, void *a2)
   return v5;
 }
 
-+ (id)updateLastVectorDBRefreshTimestamp:(id)a3 error:(id *)a4
++ (id)updateLastVectorDBRefreshTimestamp:(id)timestamp error:(id *)error
 {
   v26[4] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v20 = a4;
+  objc_storeStrong(location, timestamp);
+  errorCopy = error;
   v19 = +[AMDSQLite getSharedInstance];
   if ([v19 isUsableInternal])
   {
@@ -6633,8 +6633,8 @@ BOOL __30__AMDSQLite_refreshAppsTable___block_invoke(void *a1, void *a2)
     v25[3] = 0x2852AF628;
     v23 = @"lastUpdateTime";
     v8 = MEMORY[0x277CCABB0];
-    v11 = [MEMORY[0x277CBEAA8] date];
-    [v11 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v10 = [v8 numberWithLongLong:v5];
     v24 = v10;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
@@ -6642,12 +6642,12 @@ BOOL __30__AMDSQLite_refreshAppsTable___block_invoke(void *a1, void *a2)
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:4];
     MEMORY[0x277D82BD8](v9);
     MEMORY[0x277D82BD8](v10);
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](date);
     MEMORY[0x277D82BD8](v12);
-    v13 = [v19 _bootstrapSchema];
+    _bootstrapSchema = [v19 _bootstrapSchema];
     v16 = [v19 updateTableUsingDescriptor:v17 andSchema:? error:?];
-    MEMORY[0x277D82BD8](v13);
-    if (*v20)
+    MEMORY[0x277D82BD8](_bootstrapSchema);
+    if (*errorCopy)
     {
       v22 = 0;
     }
@@ -6664,9 +6664,9 @@ BOOL __30__AMDSQLite_refreshAppsTable___block_invoke(void *a1, void *a2)
 
   else
   {
-    v14 = [v19 generateDBLoadError];
-    v4 = v14;
-    *v20 = v14;
+    generateDBLoadError = [v19 generateDBLoadError];
+    v4 = generateDBLoadError;
+    *errorCopy = generateDBLoadError;
     v22 = 0;
     v18 = 1;
   }

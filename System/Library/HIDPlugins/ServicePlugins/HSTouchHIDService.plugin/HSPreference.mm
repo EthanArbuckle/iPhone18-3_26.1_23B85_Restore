@@ -1,19 +1,19 @@
 @interface HSPreference
-- (BOOL)hsDecode:(void *)a3;
-- (BOOL)hsEncode:(void *)a3;
-- (HSPreference)initWithKey:(id)a3 name:(id)a4 description:(id)a5;
+- (BOOL)hsDecode:(void *)decode;
+- (BOOL)hsEncode:(void *)encode;
+- (HSPreference)initWithKey:(id)key name:(id)name description:(id)description;
 @end
 
 @implementation HSPreference
 
-- (HSPreference)initWithKey:(id)a3 name:(id)a4 description:(id)a5
+- (HSPreference)initWithKey:(id)key name:(id)name description:(id)description
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  keyCopy = key;
+  nameCopy = name;
+  descriptionCopy = description;
+  if (keyCopy)
   {
-    if (v11)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -24,7 +24,7 @@
     v17 = +[NSAssertionHandler currentHandler];
     [v17 handleFailureInMethod:a2 object:self file:@"HSPreferenceStage.mm" lineNumber:141 description:{@"Invalid parameter not satisfying: %@", @"k"}];
 
-    if (v11)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -40,56 +40,56 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->key, a3);
-    objc_storeStrong(&v14->name, a4);
-    objc_storeStrong(&v14->description, a5);
+    objc_storeStrong(&v13->key, key);
+    objc_storeStrong(&v14->name, name);
+    objc_storeStrong(&v14->description, description);
     v15 = v14;
   }
 
   return v14;
 }
 
-- (BOOL)hsEncode:(void *)a3
+- (BOOL)hsEncode:(void *)encode
 {
-  if (!*a3)
+  if (!*encode)
   {
-    *&v7 = *(a3 + 17);
+    *&v7 = *(encode + 17);
     DWORD2(v7) = 4;
-    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](a3 + 56, &v7);
-    HSUtil::Encoder::_writeTokenValue32(a3, 0xE8u, 0);
+    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](encode + 56, &v7);
+    HSUtil::Encoder::_writeTokenValue32(encode, 0xE8u, 0);
   }
 
-  HSUtil::Encoder::encodeNSString(a3, self->key);
-  HSUtil::Encoder::encodeNSString(a3, self->name);
+  HSUtil::Encoder::encodeNSString(encode, self->key);
+  HSUtil::Encoder::encodeNSString(encode, self->name);
   description = self->description;
   if (description)
   {
-    HSUtil::Encoder::encodeNSString(a3, description);
+    HSUtil::Encoder::encodeNSString(encode, description);
   }
 
   else
   {
-    if (*a3)
+    if (*encode)
     {
       return 1;
     }
 
     LOBYTE(v7) = -116;
-    HSUtil::Encoder::_write(a3, a3 + 17, &v7, 1uLL);
+    HSUtil::Encoder::_write(encode, encode + 17, &v7, 1uLL);
   }
 
-  if (!*a3)
+  if (!*encode)
   {
-    HSUtil::Encoder::_encodeContainerStop(a3);
+    HSUtil::Encoder::_encodeContainerStop(encode);
   }
 
   return 1;
 }
 
-- (BOOL)hsDecode:(void *)a3
+- (BOOL)hsDecode:(void *)decode
 {
-  HSUtil::Decoder::decodeArray(a3, v14);
-  if (*a3)
+  HSUtil::Decoder::decodeArray(decode, v14);
+  if (*decode)
   {
     basename_r("/Library/Caches/com.apple.xbs/Sources/HIDSensingPipeline/HIDSensingPipeline/HSPreferenceStage.mm", v17);
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))

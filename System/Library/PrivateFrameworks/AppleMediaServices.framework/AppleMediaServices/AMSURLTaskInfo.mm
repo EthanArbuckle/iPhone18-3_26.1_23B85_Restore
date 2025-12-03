@@ -1,46 +1,46 @@
 @interface AMSURLTaskInfo
 + (NSMutableDictionary)sharedTaskStore;
 + (OS_dispatch_queue)sharedTaskQueue;
-+ (id)createTaskInfoForTask:(id)a3;
-+ (id)taskInfoForTask:(id)a3;
-+ (void)removeTaskInfoForTask:(id)a3;
++ (id)createTaskInfoForTask:(id)task;
++ (id)taskInfoForTask:(id)task;
++ (void)removeTaskInfoForTask:(id)task;
 - (AMSURLAction)receivedAction;
 - (AMSURLRequestProperties)properties;
 - (AMSURLSession)session;
-- (AMSURLTaskInfo)initWithTask:(id)a3;
+- (AMSURLTaskInfo)initWithTask:(id)task;
 - (NSData)data;
 - (NSError)error;
 - (NSSet)retryIdentifiers;
 - (NSURLResponse)response;
 - (NSURLSessionTaskMetrics)metrics;
 - (id)completionBlock;
-- (id)createMetricsContextForDecodedObject:(id)a3;
+- (id)createMetricsContextForDecodedObject:(id)object;
 - (int64_t)retryCount;
 - (unint64_t)previousAuthorizationCredentialSource;
-- (unint64_t)startContiguousAsyncActionWithInitialBlock:(id)a3;
-- (unint64_t)startContiguousAsyncActionWithInitialDataBlock:(id)a3;
-- (void)_performDataAccessUsingBlock:(id)a3;
-- (void)addRetryIdentifier:(id)a3;
-- (void)appendData:(id)a3;
+- (unint64_t)startContiguousAsyncActionWithInitialBlock:(id)block;
+- (unint64_t)startContiguousAsyncActionWithInitialDataBlock:(id)block;
+- (void)_performDataAccessUsingBlock:(id)block;
+- (void)addRetryIdentifier:(id)identifier;
+- (void)appendData:(id)data;
 - (void)assertHasExclusiveAccess;
 - (void)assertIsOnPrivateQueue;
-- (void)continueContiguousAsyncActionWithIdentifier:(unint64_t)a3 block:(id)a4;
-- (void)finishContiguousAsyncActionWithIdentifier:(unint64_t)a3;
-- (void)migrateFromTaskInfo:(id)a3;
-- (void)performAsyncBlock:(id)a3;
-- (void)performAsyncBlockWithData:(id)a3;
-- (void)performSyncBlock:(id)a3;
-- (void)performSyncBlockWithExclusiveAccess:(id)a3;
-- (void)setAccount:(id)a3;
-- (void)setCompletionBlock:(id)a3;
-- (void)setError:(id)a3;
-- (void)setMetrics:(id)a3;
-- (void)setPreviousAuthorizationCredentialSource:(unint64_t)a3;
-- (void)setProperties:(id)a3;
-- (void)setReceivedAction:(id)a3;
-- (void)setResponse:(id)a3;
-- (void)setRetryCount:(int64_t)a3;
-- (void)setSession:(id)a3;
+- (void)continueContiguousAsyncActionWithIdentifier:(unint64_t)identifier block:(id)block;
+- (void)finishContiguousAsyncActionWithIdentifier:(unint64_t)identifier;
+- (void)migrateFromTaskInfo:(id)info;
+- (void)performAsyncBlock:(id)block;
+- (void)performAsyncBlockWithData:(id)data;
+- (void)performSyncBlock:(id)block;
+- (void)performSyncBlockWithExclusiveAccess:(id)access;
+- (void)setAccount:(id)account;
+- (void)setCompletionBlock:(id)block;
+- (void)setError:(id)error;
+- (void)setMetrics:(id)metrics;
+- (void)setPreviousAuthorizationCredentialSource:(unint64_t)source;
+- (void)setProperties:(id)properties;
+- (void)setReceivedAction:(id)action;
+- (void)setResponse:(id)response;
+- (void)setRetryCount:(int64_t)count;
+- (void)setSession:(id)session;
 @end
 
 @implementation AMSURLTaskInfo
@@ -122,8 +122,8 @@ uint64_t __33__AMSURLTaskInfo_sharedTaskStore__block_invoke()
 
 - (void)assertIsOnPrivateQueue
 {
-  v2 = [(AMSURLTaskInfo *)self taskQueue];
-  dispatch_assert_queue_V2(v2);
+  taskQueue = [(AMSURLTaskInfo *)self taskQueue];
+  dispatch_assert_queue_V2(taskQueue);
 }
 
 - (NSURLSessionTaskMetrics)metrics
@@ -163,9 +163,9 @@ uint64_t __33__AMSURLTaskInfo_sharedTaskStore__block_invoke()
   return v4;
 }
 
-- (AMSURLTaskInfo)initWithTask:(id)a3
+- (AMSURLTaskInfo)initWithTask:(id)task
 {
-  v5 = a3;
+  taskCopy = task;
   v19.receiver = self;
   v19.super_class = AMSURLTaskInfo;
   v6 = [(AMSURLTaskInfo *)&v19 init];
@@ -185,7 +185,7 @@ uint64_t __33__AMSURLTaskInfo_sharedTaskStore__block_invoke()
     v6->_retryIdentifiers = v11;
 
     v6->_signpostID = 0;
-    objc_storeStrong(&v6->_task, a3);
+    objc_storeStrong(&v6->_task, task);
     v6->_taskLock = 0;
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v14 = dispatch_queue_create("com.apple.AppleMediaServices.TaskQueue", v13);
@@ -200,10 +200,10 @@ uint64_t __33__AMSURLTaskInfo_sharedTaskStore__block_invoke()
   return v6;
 }
 
-+ (id)taskInfoForTask:(id)a3
++ (id)taskInfoForTask:(id)task
 {
-  v4 = a3;
-  if (v4)
+  taskCopy = task;
+  if (taskCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -211,15 +211,15 @@ uint64_t __33__AMSURLTaskInfo_sharedTaskStore__block_invoke()
     v15 = __Block_byref_object_copy__76;
     v16 = __Block_byref_object_dispose__76;
     v17 = 0;
-    v5 = [a1 sharedTaskQueue];
+    sharedTaskQueue = [self sharedTaskQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __34__AMSURLTaskInfo_taskInfoForTask___block_invoke;
     block[3] = &unk_1E73B73A0;
     v10 = &v12;
-    v11 = a1;
-    v9 = v4;
-    dispatch_sync(v5, block);
+    selfCopy = self;
+    v9 = taskCopy;
+    dispatch_sync(sharedTaskQueue, block);
 
     v6 = v13[5];
     _Block_object_dispose(&v12, 8);
@@ -242,25 +242,25 @@ void __34__AMSURLTaskInfo_taskInfoForTask___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-+ (id)createTaskInfoForTask:(id)a3
++ (id)createTaskInfoForTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__76;
   v17 = __Block_byref_object_dispose__76;
   v18 = 0;
-  v5 = [a1 sharedTaskQueue];
+  sharedTaskQueue = [self sharedTaskQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__AMSURLTaskInfo_createTaskInfoForTask___block_invoke;
   block[3] = &unk_1E73B73A0;
   v11 = &v13;
-  v12 = a1;
-  v10 = v4;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  selfCopy = self;
+  v10 = taskCopy;
+  v6 = taskCopy;
+  dispatch_sync(sharedTaskQueue, block);
 
   v7 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -288,19 +288,19 @@ void __40__AMSURLTaskInfo_createTaskInfoForTask___block_invoke(uint64_t a1)
   }
 }
 
-+ (void)removeTaskInfoForTask:(id)a3
++ (void)removeTaskInfoForTask:(id)task
 {
-  v4 = a3;
-  if (v4)
+  taskCopy = task;
+  if (taskCopy)
   {
-    v5 = [a1 sharedTaskQueue];
+    sharedTaskQueue = [self sharedTaskQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __40__AMSURLTaskInfo_removeTaskInfoForTask___block_invoke;
     v6[3] = &unk_1E73B40A8;
-    v8 = a1;
-    v7 = v4;
-    dispatch_sync(v5, v6);
+    selfCopy = self;
+    v7 = taskCopy;
+    dispatch_sync(sharedTaskQueue, v6);
   }
 }
 
@@ -335,11 +335,11 @@ void __40__AMSURLTaskInfo_removeTaskInfoForTask___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setCompletionBlock:(id)a3
+- (void)setCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_recursive_lock_lock_with_options();
-  v5 = _Block_copy(v4);
+  v5 = _Block_copy(blockCopy);
 
   completionBlock = self->_completionBlock;
   self->_completionBlock = v5;
@@ -347,119 +347,119 @@ void __40__AMSURLTaskInfo_removeTaskInfoForTask___block_invoke(uint64_t a1)
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   os_unfair_recursive_lock_lock_with_options();
   error = self->_error;
-  self->_error = v4;
+  self->_error = errorCopy;
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)setMetrics:(id)a3
+- (void)setMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   os_unfair_recursive_lock_lock_with_options();
   metrics = self->_metrics;
-  self->_metrics = v4;
+  self->_metrics = metricsCopy;
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)setPreviousAuthorizationCredentialSource:(unint64_t)a3
+- (void)setPreviousAuthorizationCredentialSource:(unint64_t)source
 {
   os_unfair_recursive_lock_lock_with_options();
-  self->_previousAuthorizationCredentialSource = a3;
+  self->_previousAuthorizationCredentialSource = source;
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)setProperties:(id)a3
+- (void)setProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   os_unfair_recursive_lock_lock_with_options();
   properties = self->_properties;
-  self->_properties = v4;
+  self->_properties = propertiesCopy;
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)setReceivedAction:(id)a3
+- (void)setReceivedAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   os_unfair_recursive_lock_lock_with_options();
   receivedAction = self->_receivedAction;
-  self->_receivedAction = v4;
+  self->_receivedAction = actionCopy;
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)setResponse:(id)a3
+- (void)setResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   os_unfair_recursive_lock_lock_with_options();
   response = self->_response;
-  self->_response = v4;
+  self->_response = responseCopy;
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)setRetryCount:(int64_t)a3
+- (void)setRetryCount:(int64_t)count
 {
   os_unfair_recursive_lock_lock_with_options();
-  self->_retryCount = a3;
+  self->_retryCount = count;
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   os_unfair_recursive_lock_lock_with_options();
   session = self->_session;
-  self->_session = v4;
+  self->_session = sessionCopy;
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)addRetryIdentifier:(id)a3
+- (void)addRetryIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_recursive_lock_lock_with_options();
-  [(NSMutableSet *)self->_retryIdentifiers addObject:v4];
+  [(NSMutableSet *)self->_retryIdentifiers addObject:identifierCopy];
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)appendData:(id)a3
+- (void)appendData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   os_unfair_recursive_lock_lock_with_options();
   if (self->_performingBlockWithDataAccess)
   {
     [MEMORY[0x1E695DF30] raise:@"AMSURLTaskInfoDisallowedDataMutation" format:@"Attempted to append data while running a data access block."];
   }
 
-  [(NSMutableData *)self->_data appendData:v4];
+  [(NSMutableData *)self->_data appendData:dataCopy];
   os_unfair_recursive_lock_unlock();
 }
 
 - (void)assertHasExclusiveAccess
 {
-  v3 = [(AMSURLTaskInfo *)self taskQueue];
-  dispatch_assert_queue_V2(v3);
+  taskQueue = [(AMSURLTaskInfo *)self taskQueue];
+  dispatch_assert_queue_V2(taskQueue);
 
   os_unfair_lock_assert_owner(&self->_taskLock);
 }
 
-- (id)createMetricsContextForDecodedObject:(id)a3
+- (id)createMetricsContextForDecodedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -472,82 +472,82 @@ void __40__AMSURLTaskInfo_removeTaskInfoForTask___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)migrateFromTaskInfo:(id)a3
+- (void)migrateFromTaskInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   os_unfair_recursive_lock_lock_with_options();
-  v5 = [v4 metrics];
+  metrics = [infoCopy metrics];
   metrics = self->_metrics;
-  self->_metrics = v5;
+  self->_metrics = metrics;
 
-  self->_previousAuthorizationCredentialSource = [v4 previousAuthorizationCredentialSource];
-  v7 = [v4 properties];
-  v8 = [v7 copy];
+  self->_previousAuthorizationCredentialSource = [infoCopy previousAuthorizationCredentialSource];
+  properties = [infoCopy properties];
+  v8 = [properties copy];
   properties = self->_properties;
   self->_properties = v8;
 
-  self->_retryCount = [v4 retryCount];
-  v10 = [v4 retryIdentifiers];
-  v11 = [v10 mutableCopy];
+  self->_retryCount = [infoCopy retryCount];
+  retryIdentifiers = [infoCopy retryIdentifiers];
+  v11 = [retryIdentifiers mutableCopy];
   retryIdentifiers = self->_retryIdentifiers;
   self->_retryIdentifiers = v11;
 
-  v13 = [v4 session];
+  session = [infoCopy session];
   session = self->_session;
-  self->_session = v13;
+  self->_session = session;
 
-  v15 = [v4 signpostID];
-  self->_signpostID = v15;
+  signpostID = [infoCopy signpostID];
+  self->_signpostID = signpostID;
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)performAsyncBlock:(id)a3
+- (void)performAsyncBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AMSURLTaskInfo *)self contiguousActionPerformer];
-  [v5 async:v4];
+  blockCopy = block;
+  contiguousActionPerformer = [(AMSURLTaskInfo *)self contiguousActionPerformer];
+  [contiguousActionPerformer async:blockCopy];
 }
 
-- (void)performAsyncBlockWithData:(id)a3
+- (void)performAsyncBlockWithData:(id)data
 {
-  v4 = a3;
-  v5 = [(AMSURLTaskInfo *)self contiguousActionPerformer];
+  dataCopy = data;
+  contiguousActionPerformer = [(AMSURLTaskInfo *)self contiguousActionPerformer];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__AMSURLTaskInfo_performAsyncBlockWithData___block_invoke;
   v7[3] = &unk_1E73B36D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 async:v7];
+  v8 = dataCopy;
+  v6 = dataCopy;
+  [contiguousActionPerformer async:v7];
 }
 
-- (void)performSyncBlock:(id)a3
+- (void)performSyncBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AMSURLTaskInfo *)self taskQueue];
-  dispatch_assert_queue_not_V2(v5);
+  blockCopy = block;
+  taskQueue = [(AMSURLTaskInfo *)self taskQueue];
+  dispatch_assert_queue_not_V2(taskQueue);
 
-  v6 = [(AMSURLTaskInfo *)self contiguousActionPerformer];
-  [v6 sync:v4];
+  contiguousActionPerformer = [(AMSURLTaskInfo *)self contiguousActionPerformer];
+  [contiguousActionPerformer sync:blockCopy];
 }
 
-- (void)performSyncBlockWithExclusiveAccess:(id)a3
+- (void)performSyncBlockWithExclusiveAccess:(id)access
 {
-  v4 = a3;
-  v5 = [(AMSURLTaskInfo *)self taskQueue];
-  dispatch_assert_queue_not_V2(v5);
+  accessCopy = access;
+  taskQueue = [(AMSURLTaskInfo *)self taskQueue];
+  dispatch_assert_queue_not_V2(taskQueue);
 
-  v6 = [(AMSURLTaskInfo *)self contiguousActionPerformer];
+  contiguousActionPerformer = [(AMSURLTaskInfo *)self contiguousActionPerformer];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__AMSURLTaskInfo_performSyncBlockWithExclusiveAccess___block_invoke;
   v8[3] = &unk_1E73B36D0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 sync:v8];
+  v9 = accessCopy;
+  v7 = accessCopy;
+  [contiguousActionPerformer sync:v8];
 }
 
 uint64_t __54__AMSURLTaskInfo_performSyncBlockWithExclusiveAccess___block_invoke(uint64_t a1)
@@ -558,27 +558,27 @@ uint64_t __54__AMSURLTaskInfo_performSyncBlockWithExclusiveAccess___block_invoke
   return os_unfair_recursive_lock_unlock();
 }
 
-- (unint64_t)startContiguousAsyncActionWithInitialBlock:(id)a3
+- (unint64_t)startContiguousAsyncActionWithInitialBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AMSURLTaskInfo *)self contiguousActionPerformer];
-  v6 = [v5 performInitialContiguousActionWithBlock:v4];
+  blockCopy = block;
+  contiguousActionPerformer = [(AMSURLTaskInfo *)self contiguousActionPerformer];
+  v6 = [contiguousActionPerformer performInitialContiguousActionWithBlock:blockCopy];
 
   return v6;
 }
 
-- (unint64_t)startContiguousAsyncActionWithInitialDataBlock:(id)a3
+- (unint64_t)startContiguousAsyncActionWithInitialDataBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AMSURLTaskInfo *)self contiguousActionPerformer];
+  blockCopy = block;
+  contiguousActionPerformer = [(AMSURLTaskInfo *)self contiguousActionPerformer];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__AMSURLTaskInfo_startContiguousAsyncActionWithInitialDataBlock___block_invoke;
   v9[3] = &unk_1E73BDAA0;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 performInitialContiguousActionWithBlock:v9];
+  v10 = blockCopy;
+  v6 = blockCopy;
+  v7 = [contiguousActionPerformer performInitialContiguousActionWithBlock:v9];
 
   return v7;
 }
@@ -595,26 +595,26 @@ void __65__AMSURLTaskInfo_startContiguousAsyncActionWithInitialDataBlock___block
   [v3 _performDataAccessUsingBlock:v4];
 }
 
-- (void)continueContiguousAsyncActionWithIdentifier:(unint64_t)a3 block:(id)a4
+- (void)continueContiguousAsyncActionWithIdentifier:(unint64_t)identifier block:(id)block
 {
-  v6 = a4;
-  v7 = [(AMSURLTaskInfo *)self contiguousActionPerformer];
-  [v7 continueContiguousActionWithIdentifier:a3 withBlock:v6];
+  blockCopy = block;
+  contiguousActionPerformer = [(AMSURLTaskInfo *)self contiguousActionPerformer];
+  [contiguousActionPerformer continueContiguousActionWithIdentifier:identifier withBlock:blockCopy];
 }
 
-- (void)finishContiguousAsyncActionWithIdentifier:(unint64_t)a3
+- (void)finishContiguousAsyncActionWithIdentifier:(unint64_t)identifier
 {
-  v4 = [(AMSURLTaskInfo *)self contiguousActionPerformer];
-  [v4 finishContiguousActionWithIdentifier:a3];
+  contiguousActionPerformer = [(AMSURLTaskInfo *)self contiguousActionPerformer];
+  [contiguousActionPerformer finishContiguousActionWithIdentifier:identifier];
 }
 
-- (void)_performDataAccessUsingBlock:(id)a3
+- (void)_performDataAccessUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_recursive_lock_lock_with_options();
   self->_performingBlockWithDataAccess = 1;
   v5 = [(NSMutableData *)self->_data length];
-  v4[2](v4, self->_data);
+  blockCopy[2](blockCopy, self->_data);
 
   if ([(NSMutableData *)self->_data length]!= v5)
   {
@@ -626,16 +626,16 @@ void __65__AMSURLTaskInfo_startContiguousAsyncActionWithInitialDataBlock___block
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __29__AMSURLTaskInfo_setAccount___block_invoke;
   v6[3] = &unk_1E73B3DE0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = accountCopy;
+  v5 = accountCopy;
   [(AMSURLTaskInfo *)self performSyncBlockWithExclusiveAccess:v6];
 }
 

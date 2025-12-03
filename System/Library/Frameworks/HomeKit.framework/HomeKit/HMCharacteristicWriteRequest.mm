@@ -1,7 +1,7 @@
 @interface HMCharacteristicWriteRequest
-+ (id)writeRequestWithCharacteristic:(id)a3 value:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (HMCharacteristicWriteRequest)initWithCharacteristic:(id)a3 value:(id)a4;
++ (id)writeRequestWithCharacteristic:(id)characteristic value:(id)value;
+- (BOOL)isEqual:(id)equal;
+- (HMCharacteristicWriteRequest)initWithCharacteristic:(id)characteristic value:(id)value;
 - (unint64_t)hash;
 @end
 
@@ -9,16 +9,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMCharacteristicRequest *)self characteristic];
-  v3 = [v2 hash];
+  characteristic = [(HMCharacteristicRequest *)self characteristic];
+  v3 = [characteristic hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -28,7 +28,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -39,9 +39,9 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMCharacteristicRequest *)self characteristic];
-      v8 = [(HMCharacteristicRequest *)v6 characteristic];
-      v9 = [v7 isEqual:v8];
+      characteristic = [(HMCharacteristicRequest *)self characteristic];
+      characteristic2 = [(HMCharacteristicRequest *)v6 characteristic];
+      v9 = [characteristic isEqual:characteristic2];
     }
 
     else
@@ -53,26 +53,26 @@
   return v9;
 }
 
-- (HMCharacteristicWriteRequest)initWithCharacteristic:(id)a3 value:(id)a4
+- (HMCharacteristicWriteRequest)initWithCharacteristic:(id)characteristic value:(id)value
 {
-  v7 = a4;
+  valueCopy = value;
   v11.receiver = self;
   v11.super_class = HMCharacteristicWriteRequest;
-  v8 = [(HMCharacteristicRequest *)&v11 initWithCharacteristic:a3];
+  v8 = [(HMCharacteristicRequest *)&v11 initWithCharacteristic:characteristic];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_value, a4);
+    objc_storeStrong(&v8->_value, value);
   }
 
   return v9;
 }
 
-+ (id)writeRequestWithCharacteristic:(id)a3 value:(id)a4
++ (id)writeRequestWithCharacteristic:(id)characteristic value:(id)value
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[HMCharacteristicWriteRequest alloc] initWithCharacteristic:v6 value:v5];
+  valueCopy = value;
+  characteristicCopy = characteristic;
+  v7 = [[HMCharacteristicWriteRequest alloc] initWithCharacteristic:characteristicCopy value:valueCopy];
 
   return v7;
 }

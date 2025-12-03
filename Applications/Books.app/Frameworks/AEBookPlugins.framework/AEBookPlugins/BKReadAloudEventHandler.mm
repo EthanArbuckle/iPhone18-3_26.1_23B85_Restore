@@ -1,77 +1,77 @@
 @interface BKReadAloudEventHandler
-+ (BKReadAloudEventHandler)readAloudEventHandlerWithMediaClass:(id)a3 delegate:(id)a4;
++ (BKReadAloudEventHandler)readAloudEventHandlerWithMediaClass:(id)class delegate:(id)delegate;
 - (BKReadAloudEventHandlerDelegate)delegate;
 - (void)addMarkupForReadAloudToDocument;
-- (void)addhighlightForElementID:(id)a3;
-- (void)installTapHandlersOnElementIDs:(id)a3 withHref:(id)a4;
-- (void)removeHighlightForElementID:(id)a3;
+- (void)addhighlightForElementID:(id)d;
+- (void)installTapHandlersOnElementIDs:(id)ds withHref:(id)href;
+- (void)removeHighlightForElementID:(id)d;
 - (void)removeMarkupForReadAloudToDocument;
-- (void)removeTapHandlersOnElementIDs:(id)a3;
-- (void)setMediaActiveClass:(id)a3;
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4;
+- (void)removeTapHandlersOnElementIDs:(id)ds;
+- (void)setMediaActiveClass:(id)class;
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message;
 @end
 
 @implementation BKReadAloudEventHandler
 
-+ (BKReadAloudEventHandler)readAloudEventHandlerWithMediaClass:(id)a3 delegate:(id)a4
++ (BKReadAloudEventHandler)readAloudEventHandlerWithMediaClass:(id)class delegate:(id)delegate
 {
-  v5 = a4;
-  v6 = a3;
+  delegateCopy = delegate;
+  classCopy = class;
   v7 = objc_alloc_init(BKReadAloudEventHandler);
-  [(BKReadAloudEventHandler *)v7 setMediaActiveClass:v6];
+  [(BKReadAloudEventHandler *)v7 setMediaActiveClass:classCopy];
 
-  [(BKReadAloudEventHandler *)v7 setDelegate:v5];
+  [(BKReadAloudEventHandler *)v7 setDelegate:delegateCopy];
 
   return v7;
 }
 
-- (void)setMediaActiveClass:(id)a3
+- (void)setMediaActiveClass:(id)class
 {
-  if (a3)
+  if (class)
   {
-    v3 = a3;
+    classCopy = class;
   }
 
   else
   {
-    v3 = @"media-overlay-active";
+    classCopy = @"media-overlay-active";
   }
 
-  objc_storeStrong(&self->_mediaActiveClass, v3);
+  objc_storeStrong(&self->_mediaActiveClass, classCopy);
 }
 
-- (void)addhighlightForElementID:(id)a3
+- (void)addhighlightForElementID:(id)d
 {
-  v4 = a3;
-  v5 = [(BKReadAloudEventHandler *)self mediaActiveClass];
-  v8 = [NSString stringWithFormat:@"__ibooks_read_aloud.highlightElement('%@', '%@')", v4, v5];
+  dCopy = d;
+  mediaActiveClass = [(BKReadAloudEventHandler *)self mediaActiveClass];
+  v8 = [NSString stringWithFormat:@"__ibooks_read_aloud.highlightElement('%@', '%@')", dCopy, mediaActiveClass];
 
-  v6 = [(BKReadAloudEventHandler *)self delegate];
-  v7 = [v6 wkWebView];
-  [v7 evaluateJavaScript:v8 completionHandler:0];
+  delegate = [(BKReadAloudEventHandler *)self delegate];
+  wkWebView = [delegate wkWebView];
+  [wkWebView evaluateJavaScript:v8 completionHandler:0];
 }
 
-- (void)removeHighlightForElementID:(id)a3
+- (void)removeHighlightForElementID:(id)d
 {
-  v4 = a3;
-  v5 = [(BKReadAloudEventHandler *)self mediaActiveClass];
-  v8 = [NSString stringWithFormat:@"__ibooks_read_aloud.removeHighlightElement('%@', '%@')", v4, v5];
+  dCopy = d;
+  mediaActiveClass = [(BKReadAloudEventHandler *)self mediaActiveClass];
+  v8 = [NSString stringWithFormat:@"__ibooks_read_aloud.removeHighlightElement('%@', '%@')", dCopy, mediaActiveClass];
 
-  v6 = [(BKReadAloudEventHandler *)self delegate];
-  v7 = [v6 wkWebView];
-  [v7 evaluateJavaScript:v8 completionHandler:0];
+  delegate = [(BKReadAloudEventHandler *)self delegate];
+  wkWebView = [delegate wkWebView];
+  [wkWebView evaluateJavaScript:v8 completionHandler:0];
 }
 
-- (void)installTapHandlersOnElementIDs:(id)a3 withHref:(id)a4
+- (void)installTapHandlersOnElementIDs:(id)ds withHref:(id)href
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  hrefCopy = href;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = v6;
-  v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  obj = dsCopy;
+  v8 = [dsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -86,10 +86,10 @@
           objc_enumerationMutation(obj);
         }
 
-        v12 = [NSString stringWithFormat:@"__ibooks_read_aloud.installTapHandlerElementIDAndHREF('%@', '%@')", *(*(&v16 + 1) + 8 * v11), v7];
-        v13 = [(BKReadAloudEventHandler *)self delegate];
-        v14 = [v13 wkWebView];
-        [v14 evaluateJavaScript:v12 completionHandler:0];
+        hrefCopy = [NSString stringWithFormat:@"__ibooks_read_aloud.installTapHandlerElementIDAndHREF('%@', '%@')", *(*(&v16 + 1) + 8 * v11), hrefCopy];
+        delegate = [(BKReadAloudEventHandler *)self delegate];
+        wkWebView = [delegate wkWebView];
+        [wkWebView evaluateJavaScript:hrefCopy completionHandler:0];
 
         v11 = v11 + 1;
       }
@@ -102,14 +102,14 @@
   }
 }
 
-- (void)removeTapHandlersOnElementIDs:(id)a3
+- (void)removeTapHandlersOnElementIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [dsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -121,19 +121,19 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dsCopy);
         }
 
         v9 = [NSString stringWithFormat:@"__ibooks_read_aloud.removeTapHandlerElementID('%@')", *(*(&v12 + 1) + 8 * v8)];
-        v10 = [(BKReadAloudEventHandler *)self delegate];
-        v11 = [v10 wkWebView];
-        [v11 evaluateJavaScript:v9 completionHandler:0];
+        delegate = [(BKReadAloudEventHandler *)self delegate];
+        wkWebView = [delegate wkWebView];
+        [wkWebView evaluateJavaScript:v9 completionHandler:0];
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [dsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -142,29 +142,29 @@
 
 - (void)addMarkupForReadAloudToDocument
 {
-  v3 = [(BKReadAloudEventHandler *)self delegate];
-  v2 = [v3 wkWebView];
-  [v2 evaluateJavaScript:@"__ibooks_read_aloud.addMediaOverlayClassToDocument()" completionHandler:0];
+  delegate = [(BKReadAloudEventHandler *)self delegate];
+  wkWebView = [delegate wkWebView];
+  [wkWebView evaluateJavaScript:@"__ibooks_read_aloud.addMediaOverlayClassToDocument()" completionHandler:0];
 }
 
 - (void)removeMarkupForReadAloudToDocument
 {
-  v3 = [(BKReadAloudEventHandler *)self delegate];
-  v2 = [v3 wkWebView];
-  [v2 evaluateJavaScript:@"__ibooks_read_aloud.removeMediaOverlayClassFromDocument()" completionHandler:0];
+  delegate = [(BKReadAloudEventHandler *)self delegate];
+  wkWebView = [delegate wkWebView];
+  [wkWebView evaluateJavaScript:@"__ibooks_read_aloud.removeMediaOverlayClassFromDocument()" completionHandler:0];
 }
 
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message
 {
-  v21 = a4;
+  messageCopy = message;
   objc_opt_class();
-  v5 = [v21 name];
+  name = [messageCopy name];
   v6 = BUDynamicCast();
 
   if ([v6 isEqualToString:@"readAloudHandler"])
   {
     objc_opt_class();
-    v7 = [v21 body];
+    body = [messageCopy body];
     v8 = BUDynamicCast();
 
     v9 = [v8 objectForKeyedSubscript:@"event"];
@@ -178,8 +178,8 @@
       v12 = [v11 objectForKeyedSubscript:@"media_source"];
       v13 = BUDynamicCast();
 
-      v14 = [(BKReadAloudEventHandler *)self delegate];
-      [v14 readAloudEventHandler:self foundMediaSource:v13];
+      delegate = [(BKReadAloudEventHandler *)self delegate];
+      [delegate readAloudEventHandler:self foundMediaSource:v13];
       goto LABEL_10;
     }
 
@@ -191,15 +191,15 @@
 
       objc_opt_class();
       v16 = [v11 objectForKeyedSubscript:@"href"];
-      v14 = BUDynamicCast();
+      delegate = BUDynamicCast();
 
       if (![v13 length])
       {
         goto LABEL_10;
       }
 
-      v17 = [(BKReadAloudEventHandler *)self delegate];
-      [v17 readAloudEventHandler:self tappedElementID:v13 inHref:v14];
+      delegate2 = [(BKReadAloudEventHandler *)self delegate];
+      [delegate2 readAloudEventHandler:self tappedElementID:v13 inHref:delegate];
     }
 
     else
@@ -215,8 +215,8 @@
         v20 = [v11 objectForKeyedSubscript:@"media_source"];
         v13 = BUDynamicCast();
 
-        v14 = [(BKReadAloudEventHandler *)self delegate];
-        [v14 readAloudEventHandler:self audioElementEnded:v13];
+        delegate = [(BKReadAloudEventHandler *)self delegate];
+        [delegate readAloudEventHandler:self audioElementEnded:v13];
 LABEL_10:
 
 LABEL_11:
@@ -229,10 +229,10 @@ LABEL_11:
 
       objc_opt_class();
       v19 = [v11 objectForKeyedSubscript:@"auto_turn"];
-      v14 = BUDynamicCast();
+      delegate = BUDynamicCast();
 
-      v17 = [(BKReadAloudEventHandler *)self delegate];
-      [v17 readAloudEventHandler:self performedAction:v13 turnStyle:v14];
+      delegate2 = [(BKReadAloudEventHandler *)self delegate];
+      [delegate2 readAloudEventHandler:self performedAction:v13 turnStyle:delegate];
     }
 
     goto LABEL_10;

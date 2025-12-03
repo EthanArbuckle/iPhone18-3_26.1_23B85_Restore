@@ -1,50 +1,50 @@
 @interface EMFEmojiSearchEngine
-- (EMFEmojiSearchEngine)initWithLocale:(id)a3;
-- (EMFEmojiSearchEngine)initWithLocale:(id)a3 andAssetBundle:(id)a4;
-- (EMFEmojiSearchEngine)initWithLocale:(id)a3 andIndexManager:(id)a4 andStringStemmer:(id)a5 andAutocompleteProvider:(id)a6;
-- (id)_performAutocompletedQueryForQuery:(id)a3 usingIndex:(id)a4;
-- (id)_performStringQuery:(id)a3 usingIndex:(id)a4 shouldAutocomplete:(BOOL)a5 shouldStem:(BOOL)a6;
-- (id)_performStringQueryOverride:(id)a3 usingIndex:(id)a4;
-- (id)_performStringQueryUntokenized:(id)a3 usingIndex:(id)a4;
-- (id)performQuery:(id)a3 usingIndex:(id)a4;
-- (id)performStringQuery:(id)a3;
+- (EMFEmojiSearchEngine)initWithLocale:(id)locale;
+- (EMFEmojiSearchEngine)initWithLocale:(id)locale andAssetBundle:(id)bundle;
+- (EMFEmojiSearchEngine)initWithLocale:(id)locale andIndexManager:(id)manager andStringStemmer:(id)stemmer andAutocompleteProvider:(id)provider;
+- (id)_performAutocompletedQueryForQuery:(id)query usingIndex:(id)index;
+- (id)_performStringQuery:(id)query usingIndex:(id)index shouldAutocomplete:(BOOL)autocomplete shouldStem:(BOOL)stem;
+- (id)_performStringQueryOverride:(id)override usingIndex:(id)index;
+- (id)_performStringQueryUntokenized:(id)untokenized usingIndex:(id)index;
+- (id)performQuery:(id)query usingIndex:(id)index;
+- (id)performStringQuery:(id)query;
 - (void)dealloc;
 - (void)preheat;
 @end
 
 @implementation EMFEmojiSearchEngine
 
-- (EMFEmojiSearchEngine)initWithLocale:(id)a3
+- (EMFEmojiSearchEngine)initWithLocale:(id)locale
 {
-  v4 = a3;
-  v5 = [EMFSearchEngineBundleLoader assetBundleForLocale:v4];
+  localeCopy = locale;
+  v5 = [EMFSearchEngineBundleLoader assetBundleForLocale:localeCopy];
   if (v5)
   {
-    self = [(EMFEmojiSearchEngine *)self initWithLocale:v4 andAssetBundle:v5];
-    v6 = self;
+    self = [(EMFEmojiSearchEngine *)self initWithLocale:localeCopy andAssetBundle:v5];
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (EMFEmojiSearchEngine)initWithLocale:(id)a3 andAssetBundle:(id)a4
+- (EMFEmojiSearchEngine)initWithLocale:(id)locale andAssetBundle:(id)bundle
 {
-  v6 = a3;
-  v7 = 0;
-  if (v6 && a4)
+  localeCopy = locale;
+  selfCopy = 0;
+  if (localeCopy && bundle)
   {
-    v8 = a4;
-    v9 = [[EMFIndexManager alloc] initWithBundle:v8];
-    v10 = [[EMFDefaultAutocompleteCandidateProvider alloc] initWithBundle:v8];
+    bundleCopy = bundle;
+    v9 = [[EMFIndexManager alloc] initWithBundle:bundleCopy];
+    v10 = [[EMFDefaultAutocompleteCandidateProvider alloc] initWithBundle:bundleCopy];
 
-    if ([EMFStringStemmer supportsLocale:v6])
+    if ([EMFStringStemmer supportsLocale:localeCopy])
     {
-      v11 = [[EMFStringStemmer alloc] initWithLocale:v6];
+      v11 = [[EMFStringStemmer alloc] initWithLocale:localeCopy];
     }
 
     else
@@ -52,37 +52,37 @@
       v11 = 0;
     }
 
-    self = [(EMFEmojiSearchEngine *)self initWithLocale:v6 andIndexManager:v9 andStringStemmer:v11 andAutocompleteProvider:v10];
+    self = [(EMFEmojiSearchEngine *)self initWithLocale:localeCopy andIndexManager:v9 andStringStemmer:v11 andAutocompleteProvider:v10];
 
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (EMFEmojiSearchEngine)initWithLocale:(id)a3 andIndexManager:(id)a4 andStringStemmer:(id)a5 andAutocompleteProvider:(id)a6
+- (EMFEmojiSearchEngine)initWithLocale:(id)locale andIndexManager:(id)manager andStringStemmer:(id)stemmer andAutocompleteProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  localeCopy = locale;
+  managerCopy = manager;
+  stemmerCopy = stemmer;
+  providerCopy = provider;
   v22.receiver = self;
   v22.super_class = EMFEmojiSearchEngine;
   v15 = [(EMFEmojiSearchEngine *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_indexManager, a4);
-    objc_storeStrong(&v16->_locale, a3);
-    objc_storeStrong(&v16->_stringStemmer, a5);
-    objc_storeStrong(&v16->_autocompleteProvider, a6);
-    [v11 localeIdentifier];
+    objc_storeStrong(&v15->_indexManager, manager);
+    objc_storeStrong(&v16->_locale, locale);
+    objc_storeStrong(&v16->_stringStemmer, stemmer);
+    objc_storeStrong(&v16->_autocompleteProvider, provider);
+    [localeCopy localeIdentifier];
     v16->_localeData = CEMCreateEmojiLocaleData();
     v17 = [[EMFQueryLogger alloc] initWithEmojiLocaleData:v16->_localeData];
     queryLogger = v16->_queryLogger;
     v16->_queryLogger = v17;
 
-    v19 = [EMFQueryResultOverrideListLoader overrideListForLocale:v11];
+    v19 = [EMFQueryResultOverrideListLoader overrideListForLocale:localeCopy];
     overrideList = v16->_overrideList;
     v16->_overrideList = v19;
 
@@ -107,13 +107,13 @@
 
 - (void)preheat
 {
-  v2 = [(EMFEmojiSearchEngine *)self indexManager];
-  [v2 preheatIndexes];
+  indexManager = [(EMFEmojiSearchEngine *)self indexManager];
+  [indexManager preheatIndexes];
 }
 
-- (id)performStringQuery:(id)a3
+- (id)performStringQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v5 = emf_signpost_get_log();
   v6 = os_signpost_id_generate(v5);
 
@@ -125,14 +125,14 @@
     _os_signpost_emit_with_name_impl(&dword_1AF04E000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "PerformSearchEngineQuery", &unk_1AF0BC4C3, buf, 2u);
   }
 
-  v9 = [(EMFEmojiSearchEngine *)self indexManager];
-  v10 = [v9 stemmedIndex];
+  indexManager = [(EMFEmojiSearchEngine *)self indexManager];
+  stemmedIndex = [indexManager stemmedIndex];
 
-  v11 = [(EMFEmojiSearchEngine *)self indexManager];
-  v12 = [v11 defaultIndex];
-  if (v10)
+  indexManager2 = [(EMFEmojiSearchEngine *)self indexManager];
+  defaultIndex = [indexManager2 defaultIndex];
+  if (stemmedIndex)
   {
-    v13 = [(EMFEmojiSearchEngine *)self _performStringQueryUntokenized:v4 usingIndex:v12];
+    v13 = [(EMFEmojiSearchEngine *)self _performStringQueryUntokenized:queryCopy usingIndex:defaultIndex];
 
     if ([v13 count])
     {
@@ -143,9 +143,9 @@
 
     else
     {
-      v16 = [(EMFEmojiSearchEngine *)self indexManager];
-      v17 = [v16 defaultIndex];
-      v18 = [(EMFEmojiSearchEngine *)self _performStringQueryOverride:v4 usingIndex:v17];
+      indexManager3 = [(EMFEmojiSearchEngine *)self indexManager];
+      defaultIndex2 = [indexManager3 defaultIndex];
+      v18 = [(EMFEmojiSearchEngine *)self _performStringQueryOverride:queryCopy usingIndex:defaultIndex2];
 
       v14 = v18 != 0;
       if (v18)
@@ -155,19 +155,19 @@
 
       else
       {
-        v19 = [(EMFEmojiSearchEngine *)self indexManager];
-        v20 = [v19 defaultIndex];
-        v15 = [(EMFEmojiSearchEngine *)self _performStringQuery:v4 usingIndex:v20 shouldAutocomplete:1 shouldStem:0];
+        indexManager4 = [(EMFEmojiSearchEngine *)self indexManager];
+        defaultIndex3 = [indexManager4 defaultIndex];
+        v15 = [(EMFEmojiSearchEngine *)self _performStringQuery:queryCopy usingIndex:defaultIndex3 shouldAutocomplete:1 shouldStem:0];
       }
     }
   }
 
   else
   {
-    v15 = [(EMFEmojiSearchEngine *)self _performStringQuery:v4 usingIndex:v12 shouldAutocomplete:1 shouldStem:1];
+    v15 = [(EMFEmojiSearchEngine *)self _performStringQuery:queryCopy usingIndex:defaultIndex shouldAutocomplete:1 shouldStem:1];
 
     v14 = 0;
-    v13 = v11;
+    v13 = indexManager2;
   }
 
   v21 = v15;
@@ -178,9 +178,9 @@
     v23 = v21;
     if (!v22)
     {
-      v24 = [(EMFEmojiSearchEngine *)self indexManager];
-      v25 = [v24 stemmedIndex];
-      v23 = [(EMFEmojiSearchEngine *)self _performStringQuery:v4 usingIndex:v25 shouldAutocomplete:0 shouldStem:1];
+      indexManager5 = [(EMFEmojiSearchEngine *)self indexManager];
+      stemmedIndex2 = [indexManager5 stemmedIndex];
+      v23 = [(EMFEmojiSearchEngine *)self _performStringQuery:queryCopy usingIndex:stemmedIndex2 shouldAutocomplete:0 shouldStem:1];
     }
   }
 
@@ -193,35 +193,35 @@
   }
 
   v28 = [objc_alloc(MEMORY[0x1E695DFB8]) initWithArray:v23];
-  v29 = [v28 array];
+  array = [v28 array];
 
-  return v29;
+  return array;
 }
 
-- (id)performQuery:(id)a3 usingIndex:(id)a4
+- (id)performQuery:(id)query usingIndex:(id)index
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[EMFQueryEvaluator alloc] initWithIndex:v6 andOverrideList:self->_overrideList];
+  indexCopy = index;
+  queryCopy = query;
+  v8 = [[EMFQueryEvaluator alloc] initWithIndex:indexCopy andOverrideList:self->_overrideList];
 
-  v9 = [(EMFQueryEvaluator *)v8 performQuery:v7];
+  v9 = [(EMFQueryEvaluator *)v8 performQuery:queryCopy];
 
   [(EMFQueryLogger *)self->_queryLogger logQueryResult:v9];
 
   return v9;
 }
 
-- (id)_performStringQueryOverride:(id)a3 usingIndex:(id)a4
+- (id)_performStringQueryOverride:(id)override usingIndex:(id)index
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[EMFQueryEvaluator alloc] initWithIndex:v6 andOverrideList:self->_overrideList];
+  indexCopy = index;
+  overrideCopy = override;
+  v8 = [[EMFQueryEvaluator alloc] initWithIndex:indexCopy andOverrideList:self->_overrideList];
 
-  v9 = [[EMFQuery alloc] initWithQueryString:v7 andLocale:self->_locale];
+  v9 = [[EMFQuery alloc] initWithQueryString:overrideCopy andLocale:self->_locale];
   v10 = [(EMFQueryEvaluator *)v8 performQuery:v9];
   [(EMFQueryLogger *)self->_queryLogger logQueryResult:v10];
-  v11 = [v10 resultOverride];
-  if (v11)
+  resultOverride = [v10 resultOverride];
+  if (resultOverride)
   {
     v12 = [v10 emojiStringMatchesUsingEmojiLocaleData:self->_localeData];
   }
@@ -234,15 +234,15 @@
   return v12;
 }
 
-- (id)_performStringQueryUntokenized:(id)a3 usingIndex:(id)a4
+- (id)_performStringQueryUntokenized:(id)untokenized usingIndex:(id)index
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[EMFQueryUntokenized alloc] initWithQueryString:v7 andLocale:self->_locale];
+  indexCopy = index;
+  untokenizedCopy = untokenized;
+  v8 = [[EMFQueryUntokenized alloc] initWithQueryString:untokenizedCopy andLocale:self->_locale];
 
   if ([(EMFQueryUntokenized *)v8 hasMultipleConstituentTokens])
   {
-    v9 = [(EMFEmojiSearchEngine *)self performQuery:v8 usingIndex:v6];
+    v9 = [(EMFEmojiSearchEngine *)self performQuery:v8 usingIndex:indexCopy];
     v10 = [v9 emojiStringMatchesUsingEmojiLocaleData:self->_localeData];
   }
 
@@ -254,25 +254,25 @@
   return v10;
 }
 
-- (id)_performStringQuery:(id)a3 usingIndex:(id)a4 shouldAutocomplete:(BOOL)a5 shouldStem:(BOOL)a6
+- (id)_performStringQuery:(id)query usingIndex:(id)index shouldAutocomplete:(BOOL)autocomplete shouldStem:(BOOL)stem
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[EMFQuery alloc] initWithQueryString:v11 andLocale:self->_locale];
+  stemCopy = stem;
+  autocompleteCopy = autocomplete;
+  indexCopy = index;
+  queryCopy = query;
+  v12 = [[EMFQuery alloc] initWithQueryString:queryCopy andLocale:self->_locale];
 
-  if (v6 && self->_stringStemmer)
+  if (stemCopy && self->_stringStemmer)
   {
     [(EMFQuery *)v12 setStringStemmer:?];
   }
 
-  v13 = [(EMFEmojiSearchEngine *)self performQuery:v12 usingIndex:v10];
+  v13 = [(EMFEmojiSearchEngine *)self performQuery:v12 usingIndex:indexCopy];
   v14 = [v13 emojiStringMatchesUsingEmojiLocaleData:self->_localeData];
   v15 = v14;
-  if (v7 && self->_enableAutocomplete)
+  if (autocompleteCopy && self->_enableAutocomplete)
   {
-    v16 = [(EMFEmojiSearchEngine *)self _performAutocompletedQueryForQuery:v12 usingIndex:v10];
+    v16 = [(EMFEmojiSearchEngine *)self _performAutocompletedQueryForQuery:v12 usingIndex:indexCopy];
     v17 = [v15 count];
     v18 = [v16 count];
     if (v18 + v17)
@@ -305,25 +305,25 @@
   return v21;
 }
 
-- (id)_performAutocompletedQueryForQuery:(id)a3 usingIndex:(id)a4
+- (id)_performAutocompletedQueryForQuery:(id)query usingIndex:(id)index
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  indexCopy = index;
   v40 = 0;
   v41 = &v40;
   v42 = 0x3032000000;
   v43 = __Block_byref_object_copy_;
   v44 = __Block_byref_object_dispose_;
-  v8 = [v6 tokens];
-  v45 = [v8 mutableCopy];
+  tokens = [queryCopy tokens];
+  v45 = [tokens mutableCopy];
 
   if (v41[5])
   {
-    v9 = [v6 finalTokenUnanalyzed];
-    if (v9)
+    finalTokenUnanalyzed = [queryCopy finalTokenUnanalyzed];
+    if (finalTokenUnanalyzed)
     {
-      v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v11 = [v10 integerForKey:@"com.apple.EmojiFoundation.maxResults"];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v11 = [standardUserDefaults integerForKey:@"com.apple.EmojiFoundation.maxResults"];
 
       if (v11)
       {
@@ -340,7 +340,7 @@
       v36 = 0x3032000000;
       v37 = __Block_byref_object_copy_;
       v38 = __Block_byref_object_dispose_;
-      v39 = [v6 copy];
+      v39 = [queryCopy copy];
       [v35[5] reset];
       v32[0] = 0;
       v32[1] = v32;
@@ -366,17 +366,17 @@
       v22[3] = __Block_byref_object_copy_;
       v22[4] = __Block_byref_object_dispose_;
       v13 = objc_alloc(MEMORY[0x1E695DFA8]);
-      v14 = [v6 tokens];
-      v15 = [v14 firstObject];
-      v23 = [v13 initWithObjects:{v15, 0}];
+      tokens2 = [queryCopy tokens];
+      firstObject = [tokens2 firstObject];
+      v23 = [v13 initWithObjects:{firstObject, 0}];
 
       v20[0] = 0;
       v20[1] = v20;
       v20[2] = 0x3032000000;
       v20[3] = __Block_byref_object_copy_;
       v20[4] = __Block_byref_object_dispose_;
-      v21 = v7;
-      v16 = [(EMFEmojiSearchEngine *)self autocompleteProvider];
+      v21 = indexCopy;
+      autocompleteProvider = [(EMFEmojiSearchEngine *)self autocompleteProvider];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __70__EMFEmojiSearchEngine__performAutocompletedQueryForQuery_usingIndex___block_invoke;
@@ -390,9 +390,9 @@
       v19[10] = v20;
       v19[11] = &v26;
       v19[12] = v12;
-      [v16 enumerateCandidatesMatchingPrefix:v9 withEnumerationType:0 maxCandidates:20 usingBlock:v19];
+      [autocompleteProvider enumerateCandidatesMatchingPrefix:finalTokenUnanalyzed withEnumerationType:0 maxCandidates:20 usingBlock:v19];
 
-      v17 = [v27[5] array];
+      array = [v27[5] array];
       _Block_object_dispose(v20, 8);
 
       _Block_object_dispose(v22, 8);
@@ -406,18 +406,18 @@
 
     else
     {
-      v17 = MEMORY[0x1E695E0F0];
+      array = MEMORY[0x1E695E0F0];
     }
   }
 
   else
   {
-    v17 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
   _Block_object_dispose(&v40, 8);
 
-  return v17;
+  return array;
 }
 
 void __70__EMFEmojiSearchEngine__performAutocompletedQueryForQuery_usingIndex___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, _BYTE *a4)

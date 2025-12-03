@@ -1,18 +1,18 @@
 @interface CAMCaptureControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (CAMCaptureControllerAccessibility)initWithCaptureConfiguration:(id)a3 zoomFactor:(double)a4 outputToExternalStorage:(BOOL)a5 engineOptions:(int64_t)a6 locationController:(id)a7 motionController:(id)a8 burstController:(id)a9 protectionController:(id)a10 powerController:(id)a11 irisVideoController:(id)a12 remoteShutterController:(id)a13;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (CAMCaptureControllerAccessibility)initWithCaptureConfiguration:(id)configuration zoomFactor:(double)factor outputToExternalStorage:(BOOL)storage engineOptions:(int64_t)options locationController:(id)controller motionController:(id)motionController burstController:(id)burstController protectionController:(id)self0 powerController:(id)self1 irisVideoController:(id)self2 remoteShutterController:(id)self3;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation CAMCaptureControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CUCaptureController" hasInstanceMethod:@"_captureEngine" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMCaptureEngine" hasInstanceVariable:@"__captureSession" withType:"AVCaptureSession"];
-  [v3 validateClass:@"AVCaptureSession" hasInstanceMethod:@"isRunning" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CUCaptureController" hasInstanceMethod:@"initWithCaptureConfiguration: zoomFactor: outputToExternalStorage: engineOptions: locationController: motionController: burstController: protectionController: powerController: irisVideoController: remoteShutterController:" withFullSignature:{"@", "@", "d", "B", "q", "@", "@", "@", "@", "@", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CUCaptureController" hasInstanceMethod:@"_captureEngine" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMCaptureEngine" hasInstanceVariable:@"__captureSession" withType:"AVCaptureSession"];
+  [validationsCopy validateClass:@"AVCaptureSession" hasInstanceMethod:@"isRunning" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CUCaptureController" hasInstanceMethod:@"initWithCaptureConfiguration: zoomFactor: outputToExternalStorage: engineOptions: locationController: motionController: burstController: protectionController: powerController: irisVideoController: remoteShutterController:" withFullSignature:{"@", "@", "d", "B", "q", "@", "@", "@", "@", "@", "@", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -30,11 +30,11 @@
   [v4 _accessibilityLoadAccessibilityInformation];
 }
 
-- (CAMCaptureControllerAccessibility)initWithCaptureConfiguration:(id)a3 zoomFactor:(double)a4 outputToExternalStorage:(BOOL)a5 engineOptions:(int64_t)a6 locationController:(id)a7 motionController:(id)a8 burstController:(id)a9 protectionController:(id)a10 powerController:(id)a11 irisVideoController:(id)a12 remoteShutterController:(id)a13
+- (CAMCaptureControllerAccessibility)initWithCaptureConfiguration:(id)configuration zoomFactor:(double)factor outputToExternalStorage:(BOOL)storage engineOptions:(int64_t)options locationController:(id)controller motionController:(id)motionController burstController:(id)burstController protectionController:(id)self0 powerController:(id)self1 irisVideoController:(id)self2 remoteShutterController:(id)self3
 {
   v15.receiver = self;
   v15.super_class = CAMCaptureControllerAccessibility;
-  v13 = [(CAMCaptureControllerAccessibility *)&v15 initWithCaptureConfiguration:a3 zoomFactor:a5 outputToExternalStorage:a6 engineOptions:a7 locationController:a8 motionController:a9 burstController:a4 protectionController:a10 powerController:a11 irisVideoController:a12 remoteShutterController:a13];
+  v13 = [(CAMCaptureControllerAccessibility *)&v15 initWithCaptureConfiguration:configuration zoomFactor:storage outputToExternalStorage:options engineOptions:controller locationController:motionController motionController:burstController burstController:factor protectionController:protectionController powerController:powerController irisVideoController:videoController remoteShutterController:shutterController];
   [(CAMCaptureControllerAccessibility *)v13 _accessibilityLoadAccessibilityInformation];
 
   return v13;

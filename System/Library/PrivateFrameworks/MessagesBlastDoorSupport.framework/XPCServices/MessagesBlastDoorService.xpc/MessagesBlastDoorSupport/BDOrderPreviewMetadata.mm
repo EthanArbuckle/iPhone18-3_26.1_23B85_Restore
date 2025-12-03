@@ -1,14 +1,14 @@
 @interface BDOrderPreviewMetadata
-- (BDOrderPreviewMetadata)initWithOrderData:(id)a3 workingDirectory:(id)a4 error:(id *)a5;
+- (BDOrderPreviewMetadata)initWithOrderData:(id)data workingDirectory:(id)directory error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation BDOrderPreviewMetadata
 
-- (BDOrderPreviewMetadata)initWithOrderData:(id)a3 workingDirectory:(id)a4 error:(id *)a5
+- (BDOrderPreviewMetadata)initWithOrderData:(id)data workingDirectory:(id)directory error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  directoryCopy = directory;
   v35.receiver = self;
   v35.super_class = BDOrderPreviewMetadata;
   v10 = [(BDOrderPreviewMetadata *)&v35 init];
@@ -37,46 +37,46 @@ LABEL_12:
 
   v12 = v11;
   _Block_object_dispose(&v37, 8);
-  v13 = [[v11 alloc] initWithOrderData:v8 workingDirectory:v9 error:a5];
+  v13 = [[v11 alloc] initWithOrderData:dataCopy workingDirectory:directoryCopy error:error];
   v14 = v13;
   if (v13)
   {
-    v15 = [(BDOrderPreviewMetadata *)v13 headerImage];
+    headerImage = [(BDOrderPreviewMetadata *)v13 headerImage];
 
-    if (v15)
+    if (headerImage)
     {
       v16 = [BDOrderPreviewMetadataImage alloc];
-      v17 = [(BDOrderPreviewMetadata *)v14 headerImage];
-      v18 = [(BDOrderPreviewMetadataImage *)v16 _initWithImage:v17];
+      headerImage2 = [(BDOrderPreviewMetadata *)v14 headerImage];
+      v18 = [(BDOrderPreviewMetadataImage *)v16 _initWithImage:headerImage2];
       headerImage = v10->_headerImage;
       v10->_headerImage = v18;
     }
 
     v10->_backgroundColor = CGColorRetain([(BDOrderPreviewMetadata *)v14 backgroundColor]);
     v20 = [BDOrderPreviewMetadataText alloc];
-    v21 = [(BDOrderPreviewMetadata *)v14 primaryText];
-    v22 = [(BDOrderPreviewMetadataText *)v20 _initWithText:v21];
+    primaryText = [(BDOrderPreviewMetadata *)v14 primaryText];
+    v22 = [(BDOrderPreviewMetadataText *)v20 _initWithText:primaryText];
     primaryText = v10->_primaryText;
     v10->_primaryText = v22;
 
-    v24 = [(BDOrderPreviewMetadata *)v14 secondaryText];
+    secondaryText = [(BDOrderPreviewMetadata *)v14 secondaryText];
 
-    if (v24)
+    if (secondaryText)
     {
       v25 = [BDOrderPreviewMetadataText alloc];
-      v26 = [(BDOrderPreviewMetadata *)v14 secondaryText];
-      v27 = [(BDOrderPreviewMetadataText *)v25 _initWithText:v26];
+      secondaryText2 = [(BDOrderPreviewMetadata *)v14 secondaryText];
+      v27 = [(BDOrderPreviewMetadataText *)v25 _initWithText:secondaryText2];
       secondaryText = v10->_secondaryText;
       v10->_secondaryText = v27;
     }
 
-    v29 = [(BDOrderPreviewMetadata *)v14 tertiaryText];
+    tertiaryText = [(BDOrderPreviewMetadata *)v14 tertiaryText];
 
-    if (v29)
+    if (tertiaryText)
     {
       v30 = [BDOrderPreviewMetadataText alloc];
-      v31 = [(BDOrderPreviewMetadata *)v14 tertiaryText];
-      v32 = [(BDOrderPreviewMetadataText *)v30 _initWithText:v31];
+      tertiaryText2 = [(BDOrderPreviewMetadata *)v14 tertiaryText];
+      v32 = [(BDOrderPreviewMetadataText *)v30 _initWithText:tertiaryText2];
       tertiaryText = v10->_tertiaryText;
       v10->_tertiaryText = v32;
     }

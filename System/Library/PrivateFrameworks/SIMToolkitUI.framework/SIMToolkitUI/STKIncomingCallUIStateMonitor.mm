@@ -3,8 +3,8 @@
 - (BOOL)isShowingIncomingCallUI;
 - (STKIncomingCallUIStateMonitor)init;
 - (void)_refreshState;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation STKIncomingCallUIStateMonitor
@@ -69,36 +69,36 @@ void __37__STKIncomingCallUIStateMonitor_init__block_invoke(uint64_t a1)
   return lock_showingIncomingCallUI;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v8 = v4;
+    v8 = observerCopy;
     os_unfair_lock_lock(&self->_observersLock);
     observersLock_observers = self->_observersLock_observers;
     if (!observersLock_observers)
     {
-      v6 = [MEMORY[0x277CCAA50] hashTableWithWeakObjects];
+      hashTableWithWeakObjects = [MEMORY[0x277CCAA50] hashTableWithWeakObjects];
       v7 = self->_observersLock_observers;
-      self->_observersLock_observers = v6;
+      self->_observersLock_observers = hashTableWithWeakObjects;
 
       observersLock_observers = self->_observersLock_observers;
     }
 
     [(NSHashTable *)observersLock_observers addObject:v8];
     os_unfair_lock_unlock(&self->_observersLock);
-    v4 = v8;
+    observerCopy = v8;
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
+    observerCopy = observer;
     os_unfair_lock_lock(&self->_observersLock);
-    [(NSHashTable *)self->_observersLock_observers removeObject:v4];
+    [(NSHashTable *)self->_observersLock_observers removeObject:observerCopy];
 
     if (![(NSHashTable *)self->_observersLock_observers count])
     {

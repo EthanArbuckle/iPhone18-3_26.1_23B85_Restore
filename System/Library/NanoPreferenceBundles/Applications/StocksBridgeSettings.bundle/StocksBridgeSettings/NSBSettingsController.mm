@@ -1,8 +1,8 @@
 @interface NSBSettingsController
 - (id)specifiers;
-- (void)_setSelectedMetric:(unint64_t)a3;
-- (void)preferencesObservedUpdate:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)_setSelectedMetric:(unint64_t)metric;
+- (void)preferencesObservedUpdate:(id)update;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -53,17 +53,17 @@
     v16 = [NSArray arrayWithObjects:v33 count:4];
 
     v17 = +[StocksSyncComplicationPreferences sharedPreferences];
-    v18 = [v17 complicationDisplayMode];
+    complicationDisplayMode = [v17 complicationDisplayMode];
 
     v19 = stocks_bridge_log();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v32 = v18;
+      v32 = complicationDisplayMode;
       _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "Selected complication metric: %lu.", buf, 0xCu);
     }
 
-    v20 = [v16 objectAtIndexedSubscript:v18];
+    v20 = [v16 objectAtIndexedSubscript:complicationDisplayMode];
     v21 = [NSBundle bundleForClass:objc_opt_class()];
     v22 = [v21 localizedStringForKey:@"COMPLICATION_SHOWS" value:&stru_C5A0 table:@"StocksBridgeSettings"];
 
@@ -83,23 +83,23 @@
   return v3;
 }
 
-- (void)_setSelectedMetric:(unint64_t)a3
+- (void)_setSelectedMetric:(unint64_t)metric
 {
   v4 = stocks_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = a3;
+    metricCopy = metric;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "Selecting complication metric: %lu.", &v6, 0xCu);
   }
 
   v5 = +[StocksSyncComplicationPreferences sharedPreferences];
-  [v5 setComplicationDisplayMode:a3];
+  [v5 setComplicationDisplayMode:metric];
 
   +[StocksSyncAppLauncher launchPhoneApp];
 }
 
-- (void)preferencesObservedUpdate:(id)a3
+- (void)preferencesObservedUpdate:(id)update
 {
   v4 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] = 0;
@@ -107,15 +107,15 @@
   [(NSBSettingsController *)self reloadSpecifiers];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = NSBSettingsController;
-  [(NSBSettingsController *)&v11 tableView:a3 didSelectRowAtIndexPath:v6];
-  if (![v6 section])
+  [(NSBSettingsController *)&v11 tableView:view didSelectRowAtIndexPath:pathCopy];
+  if (![pathCopy section])
   {
-    v7 = [(NSBSettingsController *)self indexForIndexPath:v6];
+    v7 = [(NSBSettingsController *)self indexForIndexPath:pathCopy];
     v8 = [NSBundle bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"CURRENT_PRICE" value:&stru_C5A0 table:@"StocksBridgeSettings"];
 

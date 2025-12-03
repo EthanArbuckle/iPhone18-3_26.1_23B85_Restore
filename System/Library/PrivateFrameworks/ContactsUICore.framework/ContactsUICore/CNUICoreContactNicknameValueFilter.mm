@@ -1,14 +1,14 @@
 @interface CNUICoreContactNicknameValueFilter
 - (NSString)description;
-- (id)contactByFilteringOutPropertyValueOfContact:(id)a3;
+- (id)contactByFilteringOutPropertyValueOfContact:(id)contact;
 @end
 
 @implementation CNUICoreContactNicknameValueFilter
 
-- (id)contactByFilteringOutPropertyValueOfContact:(id)a3
+- (id)contactByFilteringOutPropertyValueOfContact:(id)contact
 {
-  v4 = a3;
-  if (!v4)
+  contactCopy = contact;
+  if (!contactCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_18 != -1)
     {
@@ -22,7 +22,7 @@
     }
   }
 
-  v6 = [v4 mutableCopy];
+  v6 = [contactCopy mutableCopy];
   [(CNUICoreContactNicknameValueFilter *)self filterPropertyValuesFromContact:v6];
 
   return v6;

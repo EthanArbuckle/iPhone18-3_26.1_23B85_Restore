@@ -1,20 +1,20 @@
 @interface _UICollectionSectionContainerView
-- (_UICollectionSectionContainerView)initWithFrame:(CGRect)a3;
-- (void)_addSubview:(id)a3 positioned:(int64_t)a4 relativeTo:(id)a5;
-- (void)_willRemoveSubview:(id)a3;
-- (void)bringSubviewToFront:(id)a3;
+- (_UICollectionSectionContainerView)initWithFrame:(CGRect)frame;
+- (void)_addSubview:(id)subview positioned:(int64_t)positioned relativeTo:(id)to;
+- (void)_willRemoveSubview:(id)subview;
+- (void)bringSubviewToFront:(id)front;
 - (void)dealloc;
-- (void)exchangeSubviewAtIndex:(int64_t)a3 withSubviewAtIndex:(int64_t)a4;
-- (void)sendSubviewToBack:(id)a3;
+- (void)exchangeSubviewAtIndex:(int64_t)index withSubviewAtIndex:(int64_t)atIndex;
+- (void)sendSubviewToBack:(id)back;
 @end
 
 @implementation _UICollectionSectionContainerView
 
-- (_UICollectionSectionContainerView)initWithFrame:(CGRect)a3
+- (_UICollectionSectionContainerView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = _UICollectionSectionContainerView;
-  v3 = [(UIView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[_UICollectionViewSubviewRouter alloc] initWithContainer:v3];
@@ -22,8 +22,8 @@
     v3->_subviewRouter = v4;
 
     v6 = *MEMORY[0x1E69796E8];
-    v7 = [(UIView *)v3 layer];
-    [v7 setCornerCurve:v6];
+    layer = [(UIView *)v3 layer];
+    [layer setCornerCurve:v6];
 
     [(UIView *)v3 setClipsToBounds:1];
   }
@@ -31,29 +31,29 @@
   return v3;
 }
 
-- (void)_addSubview:(id)a3 positioned:(int64_t)a4 relativeTo:(id)a5
+- (void)_addSubview:(id)subview positioned:(int64_t)positioned relativeTo:(id)to
 {
-  v8 = a3;
-  v12 = a4;
-  v9 = a5;
+  subviewCopy = subview;
+  positionedCopy = positioned;
+  toCopy = to;
   if (self)
   {
     subviewRouter = self->_subviewRouter;
     if (subviewRouter)
     {
-      if ([(_UICollectionViewSubviewRouter *)subviewRouter shouldAddSubview:v8 atPosition:&v12 relativeTo:v9 creatingBookmarkIfNecessary:1])
+      if ([(_UICollectionViewSubviewRouter *)subviewRouter shouldAddSubview:subviewCopy atPosition:&positionedCopy relativeTo:toCopy creatingBookmarkIfNecessary:1])
       {
         v11.receiver = self;
         v11.super_class = _UICollectionSectionContainerView;
-        [(UIView *)&v11 _addSubview:v8 positioned:v12 relativeTo:v9];
+        [(UIView *)&v11 _addSubview:subviewCopy positioned:positionedCopy relativeTo:toCopy];
       }
     }
   }
 }
 
-- (void)bringSubviewToFront:(id)a3
+- (void)bringSubviewToFront:(id)front
 {
-  v4 = a3;
+  frontCopy = front;
   if (self)
   {
     subviewRouter = self->_subviewRouter;
@@ -64,55 +64,55 @@
     subviewRouter = 0;
   }
 
-  if ([(_UICollectionViewSubviewRouter *)subviewRouter shouldBringSubviewToFront:v4])
+  if ([(_UICollectionViewSubviewRouter *)subviewRouter shouldBringSubviewToFront:frontCopy])
   {
     v6.receiver = self;
     v6.super_class = _UICollectionSectionContainerView;
-    [(UIView *)&v6 bringSubviewToFront:v4];
+    [(UIView *)&v6 bringSubviewToFront:frontCopy];
   }
 }
 
-- (void)sendSubviewToBack:(id)a3
+- (void)sendSubviewToBack:(id)back
 {
-  v4 = a3;
+  backCopy = back;
   if (self)
   {
     subviewRouter = self->_subviewRouter;
     if (subviewRouter)
     {
       v7 = 0;
-      if ([(_UICollectionViewSubviewRouter *)subviewRouter shouldAddSubview:v4 atPosition:&v7 relativeTo:0 creatingBookmarkIfNecessary:0])
+      if ([(_UICollectionViewSubviewRouter *)subviewRouter shouldAddSubview:backCopy atPosition:&v7 relativeTo:0 creatingBookmarkIfNecessary:0])
       {
         v6.receiver = self;
         v6.super_class = _UICollectionSectionContainerView;
-        [(UIView *)&v6 sendSubviewToBack:v4];
+        [(UIView *)&v6 sendSubviewToBack:backCopy];
       }
     }
   }
 }
 
-- (void)exchangeSubviewAtIndex:(int64_t)a3 withSubviewAtIndex:(int64_t)a4
+- (void)exchangeSubviewAtIndex:(int64_t)index withSubviewAtIndex:(int64_t)atIndex
 {
-  v6 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_subviewRouter;
   }
 
-  if ([(_UICollectionViewSubviewRouter *)self shouldExchangeSubviewAtIndex:a3 withSubviewAtIndex:a4])
+  if ([(_UICollectionViewSubviewRouter *)self shouldExchangeSubviewAtIndex:index withSubviewAtIndex:atIndex])
   {
-    v7.receiver = v6;
+    v7.receiver = selfCopy;
     v7.super_class = _UICollectionSectionContainerView;
-    [(UIView *)&v7 exchangeSubviewAtIndex:a3 withSubviewAtIndex:a4];
+    [(UIView *)&v7 exchangeSubviewAtIndex:index withSubviewAtIndex:atIndex];
   }
 }
 
-- (void)_willRemoveSubview:(id)a3
+- (void)_willRemoveSubview:(id)subview
 {
   v6.receiver = self;
   v6.super_class = _UICollectionSectionContainerView;
-  v4 = a3;
-  [(UIView *)&v6 _willRemoveSubview:v4];
+  subviewCopy = subview;
+  [(UIView *)&v6 _willRemoveSubview:subviewCopy];
   if (self)
   {
     subviewRouter = self->_subviewRouter;
@@ -123,7 +123,7 @@
     subviewRouter = 0;
   }
 
-  [(_UICollectionViewSubviewRouter *)subviewRouter willRemoveSubview:v4];
+  [(_UICollectionViewSubviewRouter *)subviewRouter willRemoveSubview:subviewCopy];
 }
 
 - (void)dealloc

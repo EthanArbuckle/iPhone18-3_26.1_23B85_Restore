@@ -22,9 +22,9 @@
     dragSession = 0;
   }
 
-  v9 = [v3 stringWithFormat:@"<%@:%p isActive = %d dragSession = %@>", v5, self, v8, dragSession];;
+  dragSession = [v3 stringWithFormat:@"<%@:%p isActive = %d dragSession = %@>", v5, self, v8, dragSession];;
 
-  return v9;
+  return dragSession;
 }
 
 @end

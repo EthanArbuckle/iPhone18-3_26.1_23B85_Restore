@@ -1,5 +1,5 @@
 @interface CATDispatchTimer
-- (CATDispatchTimer)initWithIdentifier:(id)a3 workQueue:(id)a4 delegateQueue:(id)a5 timeInterval:(double)a6 totalFires:(unint64_t)a7 firesForever:(BOOL)a8 fireHandler:(id)a9;
+- (CATDispatchTimer)initWithIdentifier:(id)identifier workQueue:(id)queue delegateQueue:(id)delegateQueue timeInterval:(double)interval totalFires:(unint64_t)fires firesForever:(BOOL)forever fireHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
 - (void)reset;
@@ -17,27 +17,27 @@
   [(CATDispatchTimer *)&v3 dealloc];
 }
 
-- (CATDispatchTimer)initWithIdentifier:(id)a3 workQueue:(id)a4 delegateQueue:(id)a5 timeInterval:(double)a6 totalFires:(unint64_t)a7 firesForever:(BOOL)a8 fireHandler:(id)a9
+- (CATDispatchTimer)initWithIdentifier:(id)identifier workQueue:(id)queue delegateQueue:(id)delegateQueue timeInterval:(double)interval totalFires:(unint64_t)fires firesForever:(BOOL)forever fireHandler:(id)handler
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a9;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  delegateQueueCopy = delegateQueue;
+  handlerCopy = handler;
   v26.receiver = self;
   v26.super_class = CATDispatchTimer;
   v20 = [(CATDispatchTimer *)&v26 init];
   if (v20)
   {
-    v21 = [v16 copy];
+    v21 = [identifierCopy copy];
     mIdentifier = v20->mIdentifier;
     v20->mIdentifier = v21;
 
-    objc_storeStrong(&v20->mWorkQueue, a4);
-    objc_storeStrong(&v20->mDelegateQueue, a5);
-    v20->mTimeInterval = a6;
-    v20->mTotalFires = a7;
-    v20->mFiresForever = a8;
-    v23 = MEMORY[0x245D2F510](v19);
+    objc_storeStrong(&v20->mWorkQueue, queue);
+    objc_storeStrong(&v20->mDelegateQueue, delegateQueue);
+    v20->mTimeInterval = interval;
+    v20->mTotalFires = fires;
+    v20->mFiresForever = forever;
+    v23 = MEMORY[0x245D2F510](handlerCopy);
     mFireHandler = v20->mFireHandler;
     v20->mFireHandler = v23;
   }

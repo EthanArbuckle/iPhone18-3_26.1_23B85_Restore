@@ -1,42 +1,42 @@
 @interface TKRemoteSEPKey
-- (BOOL)deleteWithError:(id *)a3;
-- (BOOL)lifetimeControlWithType:(int64_t)a3 error:(id *)a4;
-- (BOOL)processServerAtributes:(id)a3 error:(id *)a4;
-- (id)_initWithKeyType:(id)a3 keySize:(int64_t)a4 accessControl:(__SecAccessControl *)a5 options:(id)a6 authContext:(id)a7 forceSystemSession:(BOOL)a8 error:(id *)a9;
-- (id)_initWithObjectID:(id)a3 authContext:(id)a4 forceSystemSession:(BOOL)a5 error:(id *)a6;
-- (id)attestKey:(id)a3 nonce:(id)a4 error:(id *)a5;
-- (id)computeSharedSecret:(id)a3 error:(id *)a4;
-- (id)decapsulateKey:(id)a3 error:(id *)a4;
-- (id)recryptData:(id)a3 attributes:(id)a4 error:(id *)a5;
-- (id)signDigest:(id)a3 error:(id *)a4;
-- (id)withError:(id *)a3 invoke:(id)a4;
+- (BOOL)deleteWithError:(id *)error;
+- (BOOL)lifetimeControlWithType:(int64_t)type error:(id *)error;
+- (BOOL)processServerAtributes:(id)atributes error:(id *)error;
+- (id)_initWithKeyType:(id)type keySize:(int64_t)size accessControl:(__SecAccessControl *)control options:(id)options authContext:(id)context forceSystemSession:(BOOL)session error:(id *)error;
+- (id)_initWithObjectID:(id)d authContext:(id)context forceSystemSession:(BOOL)session error:(id *)error;
+- (id)attestKey:(id)key nonce:(id)nonce error:(id *)error;
+- (id)computeSharedSecret:(id)secret error:(id *)error;
+- (id)decapsulateKey:(id)key error:(id *)error;
+- (id)recryptData:(id)data attributes:(id)attributes error:(id *)error;
+- (id)signDigest:(id)digest error:(id *)error;
+- (id)withError:(id *)error invoke:(id)invoke;
 @end
 
 @implementation TKRemoteSEPKey
 
-- (BOOL)processServerAtributes:(id)a3 error:(id *)a4
+- (BOOL)processServerAtributes:(id)atributes error:(id *)error
 {
-  v6 = a3;
-  v26 = a4;
-  v7 = [v6 objectForKeyedSubscript:@"keyType"];
+  atributesCopy = atributes;
+  errorCopy = error;
+  v7 = [atributesCopy objectForKeyedSubscript:@"keyType"];
   keyType = self->_keyType;
   self->_keyType = v7;
 
-  v9 = [v6 objectForKeyedSubscript:@"keySize"];
+  v9 = [atributesCopy objectForKeyedSubscript:@"keySize"];
   keySize = self->_keySize;
   self->_keySize = v9;
 
-  v11 = [v6 objectForKeyedSubscript:@"systemKey"];
+  v11 = [atributesCopy objectForKeyedSubscript:@"systemKey"];
   self->_systemKey = [v11 BOOLValue];
 
-  v12 = [v6 objectForKeyedSubscript:@"publicKey"];
+  v12 = [atributesCopy objectForKeyedSubscript:@"publicKey"];
   publicKey = self->_publicKey;
   self->_publicKey = v12;
 
-  v14 = [v6 objectForKeyedSubscript:@"systemSessionKey"];
+  v14 = [atributesCopy objectForKeyedSubscript:@"systemSessionKey"];
   self->_forceSystemSession = [v14 BOOLValue];
 
-  if (!self->_keyType || !self->_keySize || ([v6 objectForKeyedSubscript:@"systemKey"], (v15 = objc_claimAutoreleasedReturnValue()) == 0) || (v16 = v15, objc_msgSend(v6, "objectForKeyedSubscript:", @"systemSessionKey"), v17 = objc_claimAutoreleasedReturnValue(), v17, v16, !v17))
+  if (!self->_keyType || !self->_keySize || ([atributesCopy objectForKeyedSubscript:@"systemKey"], (v15 = objc_claimAutoreleasedReturnValue()) == 0) || (v16 = v15, objc_msgSend(atributesCopy, "objectForKeyedSubscript:", @"systemSessionKey"), v17 = objc_claimAutoreleasedReturnValue(), v17, v16, !v17))
   {
     v23 = TK_LOG_rsepkey();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
@@ -44,10 +44,10 @@
       [TKRemoteSEPKey processServerAtributes:v23 error:?];
     }
 
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-2 userInfo:0];
-      *a4 = v22 = 0;
+      *error = v22 = 0;
       goto LABEL_15;
     }
 
@@ -57,7 +57,7 @@ LABEL_14:
   }
 
   v18 = *MEMORY[0x1E695E480];
-  v19 = [v6 objectForKeyedSubscript:@"accessControl"];
+  v19 = [atributesCopy objectForKeyedSubscript:@"accessControl"];
   v20 = SecAccessControlCreateFromData();
   accessControl = self->_accessControl;
   self->_accessControl = v20;
@@ -79,9 +79,9 @@ LABEL_15:
   return v22;
 }
 
-- (id)withError:(id *)a3 invoke:(id)a4
+- (id)withError:(id *)error invoke:(id)invoke
 {
-  v6 = a4;
+  invokeCopy = invoke;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __35__TKRemoteSEPKey_withError_invoke___block_invoke;
@@ -92,17 +92,17 @@ LABEL_15:
     dispatch_once(&withError_invoke__onceToken, block);
   }
 
-  v7 = [withError_invoke__clientResourceSlot resourceWithError:a3];
+  v7 = [withError_invoke__clientResourceSlot resourceWithError:error];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 object];
+    object = [v7 object];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __35__TKRemoteSEPKey_withError_invoke___block_invoke_25;
     v12[3] = &unk_1E86B7E68;
-    v13 = v6;
-    v10 = [v9 withError:a3 invoke:v12];
+    v13 = invokeCopy;
+    v10 = [object withError:error invoke:v12];
   }
 
   else
@@ -160,23 +160,23 @@ void __35__TKRemoteSEPKey_withError_invoke___block_invoke_3(uint64_t a1, void *a
   [v2 invalidate];
 }
 
-- (id)_initWithObjectID:(id)a3 authContext:(id)a4 forceSystemSession:(BOOL)a5 error:(id *)a6
+- (id)_initWithObjectID:(id)d authContext:(id)context forceSystemSession:(BOOL)session error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
+  dCopy = d;
+  contextCopy = context;
   v28.receiver = self;
   v28.super_class = TKRemoteSEPKey;
-  v13 = [(TKSEPKey *)&v28 _initWithAuthContext:v12];
+  v13 = [(TKSEPKey *)&v28 _initWithAuthContext:contextCopy];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(v13 + 9, a3);
+    objc_storeStrong(v13 + 9, d);
     v15 = [TKBERTLVRecord alloc];
-    v16 = [v14 keyID];
-    v17 = [(TKBERTLVRecord *)v15 initWithPropertyList:v16];
-    v18 = [(TKTLVRecord *)v17 data];
+    keyID = [v14 keyID];
+    v17 = [(TKBERTLVRecord *)v15 initWithPropertyList:keyID];
+    data = [(TKTLVRecord *)v17 data];
     v19 = v14[10];
-    v14[10] = v18;
+    v14[10] = data;
 
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
@@ -184,10 +184,10 @@ void __35__TKRemoteSEPKey_withError_invoke___block_invoke_3(uint64_t a1, void *a
     v24[3] = &unk_1E86B7E90;
     v20 = v14;
     v25 = v20;
-    v26 = v12;
-    v27 = a5;
-    v21 = [v20 withError:a6 invoke:v24];
-    if (!v21 || ![v20 processServerAtributes:v21 error:a6])
+    v26 = contextCopy;
+    sessionCopy = session;
+    v21 = [v20 withError:error invoke:v24];
+    if (!v21 || ![v20 processServerAtributes:v21 error:error])
     {
 
       v22 = 0;
@@ -255,14 +255,14 @@ void __73__TKRemoteSEPKey__initWithObjectID_authContext_forceSystemSession_error
   *(v9 + 40) = v6;
 }
 
-- (id)_initWithKeyType:(id)a3 keySize:(int64_t)a4 accessControl:(__SecAccessControl *)a5 options:(id)a6 authContext:(id)a7 forceSystemSession:(BOOL)a8 error:(id *)a9
+- (id)_initWithKeyType:(id)type keySize:(int64_t)size accessControl:(__SecAccessControl *)control options:(id)options authContext:(id)context forceSystemSession:(BOOL)session error:(id *)error
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
+  typeCopy = type;
+  optionsCopy = options;
+  contextCopy = context;
   v44.receiver = self;
   v44.super_class = TKRemoteSEPKey;
-  v17 = [(TKSEPKey *)&v44 _initWithAuthContext:v16];
+  v17 = [(TKSEPKey *)&v44 _initWithAuthContext:contextCopy];
   if (!v17)
   {
     goto LABEL_6;
@@ -279,21 +279,21 @@ void __73__TKRemoteSEPKey__initWithObjectID_authContext_forceSystemSession_error
   v27 = 3221225472;
   v28 = __102__TKRemoteSEPKey__initWithKeyType_keySize_accessControl_options_authContext_forceSystemSession_error___block_invoke;
   v29 = &unk_1E86B7EE0;
-  v30 = v14;
-  v36 = a4;
+  v30 = typeCopy;
+  sizeCopy = size;
   v19 = v18;
   v31 = v19;
-  v32 = v15;
-  v33 = v16;
-  v37 = a8;
+  v32 = optionsCopy;
+  v33 = contextCopy;
+  sessionCopy = session;
   v20 = v17;
   v34 = v20;
   v35 = &v38;
-  v21 = [v20 withError:a9 invoke:&v26];
+  v21 = [v20 withError:error invoke:&v26];
   v22 = v20[9];
   v20[9] = v21;
 
-  v23 = v20[9] ? [v20 processServerAtributes:v39[5] error:{a9, v26, v27, v28, v29, v30, v31, v32, v33}] : 0;
+  v23 = v20[9] ? [v20 processServerAtributes:v39[5] error:{error, v26, v27, v28, v29, v30, v31, v32, v33}] : 0;
   _Block_object_dispose(&v38, 8);
 
   if (!v23)
@@ -377,17 +377,17 @@ void __102__TKRemoteSEPKey__initWithKeyType_keySize_accessControl_options_authCo
   }
 }
 
-- (BOOL)deleteWithError:(id *)a3
+- (BOOL)deleteWithError:(id *)error
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34__TKRemoteSEPKey_deleteWithError___block_invoke;
   v6[3] = &unk_1E86B7F08;
   v6[4] = self;
-  v3 = [(TKRemoteSEPKey *)self withError:a3 invoke:v6];
-  v4 = [v3 BOOLValue];
+  v3 = [(TKRemoteSEPKey *)self withError:error invoke:v6];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 id __34__TKRemoteSEPKey_deleteWithError___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -450,17 +450,17 @@ void __34__TKRemoteSEPKey_deleteWithError___block_invoke_2(uint64_t a1, int a2, 
   *(v7 + 40) = v5;
 }
 
-- (id)signDigest:(id)a3 error:(id *)a4
+- (id)signDigest:(id)digest error:(id *)error
 {
-  v6 = a3;
+  digestCopy = digest;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __35__TKRemoteSEPKey_signDigest_error___block_invoke;
   v10[3] = &unk_1E86B7F30;
   v10[4] = self;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(TKRemoteSEPKey *)self withError:a4 invoke:v10];
+  v11 = digestCopy;
+  v7 = digestCopy;
+  v8 = [(TKRemoteSEPKey *)self withError:error invoke:v10];
 
   return v8;
 }
@@ -521,17 +521,17 @@ void __35__TKRemoteSEPKey_signDigest_error___block_invoke_2(uint64_t a1, void *a
   *(v9 + 40) = v6;
 }
 
-- (id)computeSharedSecret:(id)a3 error:(id *)a4
+- (id)computeSharedSecret:(id)secret error:(id *)error
 {
-  v6 = a3;
+  secretCopy = secret;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __44__TKRemoteSEPKey_computeSharedSecret_error___block_invoke;
   v10[3] = &unk_1E86B7F30;
   v10[4] = self;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(TKRemoteSEPKey *)self withError:a4 invoke:v10];
+  v11 = secretCopy;
+  v7 = secretCopy;
+  v8 = [(TKRemoteSEPKey *)self withError:error invoke:v10];
 
   return v8;
 }
@@ -592,20 +592,20 @@ void __44__TKRemoteSEPKey_computeSharedSecret_error___block_invoke_2(uint64_t a1
   *(v9 + 40) = v6;
 }
 
-- (id)recryptData:(id)a3 attributes:(id)a4 error:(id *)a5
+- (id)recryptData:(id)data attributes:(id)attributes error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  attributesCopy = attributes;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __47__TKRemoteSEPKey_recryptData_attributes_error___block_invoke;
   v14[3] = &unk_1E86B7F58;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v10 = v9;
-  v11 = v8;
-  v12 = [(TKRemoteSEPKey *)self withError:a5 invoke:v14];
+  v15 = dataCopy;
+  v16 = attributesCopy;
+  v10 = attributesCopy;
+  v11 = dataCopy;
+  v12 = [(TKRemoteSEPKey *)self withError:error invoke:v14];
 
   return v12;
 }
@@ -667,17 +667,17 @@ void __47__TKRemoteSEPKey_recryptData_attributes_error___block_invoke_2(uint64_t
   *(v9 + 40) = v6;
 }
 
-- (id)decapsulateKey:(id)a3 error:(id *)a4
+- (id)decapsulateKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __39__TKRemoteSEPKey_decapsulateKey_error___block_invoke;
   v10[3] = &unk_1E86B7F30;
   v10[4] = self;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(TKRemoteSEPKey *)self withError:a4 invoke:v10];
+  v11 = keyCopy;
+  v7 = keyCopy;
+  v8 = [(TKRemoteSEPKey *)self withError:error invoke:v10];
 
   return v8;
 }
@@ -738,11 +738,11 @@ void __39__TKRemoteSEPKey_decapsulateKey_error___block_invoke_2(uint64_t a1, voi
   *(v9 + 40) = v6;
 }
 
-- (id)attestKey:(id)a3 nonce:(id)a4 error:(id *)a5
+- (id)attestKey:(id)key nonce:(id)nonce error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v9;
+  keyCopy = key;
+  nonceCopy = nonce;
+  v11 = keyCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -755,10 +755,10 @@ void __39__TKRemoteSEPKey_decapsulateKey_error___block_invoke_2(uint64_t a1, voi
   v16[3] = &unk_1E86B7F58;
   v16[4] = self;
   v17 = v11;
-  v18 = v10;
-  v12 = v10;
+  v18 = nonceCopy;
+  v12 = nonceCopy;
   v13 = v11;
-  v14 = [(TKRemoteSEPKey *)self withError:a5 invoke:v16];
+  v14 = [(TKRemoteSEPKey *)self withError:error invoke:v16];
 
   return v14;
 }
@@ -821,18 +821,18 @@ void __40__TKRemoteSEPKey_attestKey_nonce_error___block_invoke_2(uint64_t a1, vo
   *(v9 + 40) = v6;
 }
 
-- (BOOL)lifetimeControlWithType:(int64_t)a3 error:(id *)a4
+- (BOOL)lifetimeControlWithType:(int64_t)type error:(id *)error
 {
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__TKRemoteSEPKey_lifetimeControlWithType_error___block_invoke;
   v7[3] = &unk_1E86B7F80;
   v7[4] = self;
-  v7[5] = a3;
-  v4 = [(TKRemoteSEPKey *)self withError:a4 invoke:v7];
-  v5 = [v4 BOOLValue];
+  v7[5] = type;
+  v4 = [(TKRemoteSEPKey *)self withError:error invoke:v7];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 id __48__TKRemoteSEPKey_lifetimeControlWithType_error___block_invoke(uint64_t a1, void *a2, void *a3)

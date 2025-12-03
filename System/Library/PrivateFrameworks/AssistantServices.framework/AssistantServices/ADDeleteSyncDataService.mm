@@ -1,17 +1,17 @@
 @interface ADDeleteSyncDataService
 - (ADDeleteSyncDataService)init;
-- (void)beginSyncForInfo:(id)a3 chunkHandler:(id)a4;
+- (void)beginSyncForInfo:(id)info chunkHandler:(id)handler;
 @end
 
 @implementation ADDeleteSyncDataService
 
-- (void)beginSyncForInfo:(id)a3 chunkHandler:(id)a4
+- (void)beginSyncForInfo:(id)info chunkHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  infoCopy = info;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if ([v5 count] < 1)
+    if ([infoCopy count] < 1)
     {
       v10 = 0;
       v11 = 0;
@@ -23,7 +23,7 @@
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
       {
         v8 = v7;
-        v9 = [v5 key];
+        v9 = [infoCopy key];
         *buf = 136315394;
         v15 = "[ADDeleteSyncDataService beginSyncForInfo:chunkHandler:]";
         v16 = 2112;
@@ -39,11 +39,11 @@
       v12[1] = 3221225472;
       v12[2] = sub_100269D24;
       v12[3] = &unk_10051E100;
-      v13 = v6;
+      v13 = handlerCopy;
       v11 = objc_retainBlock(v12);
     }
 
-    (*(v6 + 2))(v6, v10, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, v10, 0, v11);
   }
 }
 

@@ -19,31 +19,31 @@
   if (objc_opt_isKindOfClass())
   {
 LABEL_5:
-    v4 = [v3 isEditing];
+    isEditing = [v3 isEditing];
     goto LABEL_6;
   }
 
-  v4 = 0;
+  isEditing = 0;
 LABEL_6:
 
-  return v4;
+  return isEditing;
 }
 
 - (id)_privateAccessibilityCustomActions
 {
   if ([(TTRITableViewCellWithConditionalAccessibilityActions *)self ttriAccessibilityHidesPrivateActions])
   {
-    v3 = 0;
+    _privateAccessibilityCustomActions = 0;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = TTRITableViewCellWithConditionalAccessibilityActions;
-    v3 = [(TTRITableViewCellWithConditionalAccessibilityActions *)&v5 _privateAccessibilityCustomActions];
+    _privateAccessibilityCustomActions = [(TTRITableViewCellWithConditionalAccessibilityActions *)&v5 _privateAccessibilityCustomActions];
   }
 
-  return v3;
+  return _privateAccessibilityCustomActions;
 }
 
 @end

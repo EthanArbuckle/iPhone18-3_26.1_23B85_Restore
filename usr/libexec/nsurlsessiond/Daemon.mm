@@ -1,14 +1,14 @@
 @interface Daemon
 + (id)sharedDaemon;
-- (BOOL)applicationIsInstalled:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)applicationIsInstalled:(id)installed;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (Daemon)init;
-- (id)bundleIDsForAppProxies:(id)a3;
-- (id)getSessionWithIdentifier:(id)a3 forBundleID:(id)a4;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
+- (id)bundleIDsForAppProxies:(id)proxies;
+- (id)getSessionWithIdentifier:(id)identifier forBundleID:(id)d;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)createDaemonDirectory;
-- (void)managerBecameEmpty:(id)a3 bundleID:(id)a4 withCompletionHandler:(id)a5;
+- (void)managerBecameEmpty:(id)empty bundleID:(id)d withCompletionHandler:(id)handler;
 - (void)restoreState;
 - (void)setupArchiveTimer;
 - (void)setupNewClassMappingsForUnarchiver;
@@ -148,43 +148,43 @@
   }
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000700E0;
   v7[3] = &unk_1000D6420;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = uninstallCopy;
+  v6 = uninstallCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
-  v4 = a3;
+  installCopy = install;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100070354;
   v7[3] = &unk_1000D6420;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = installCopy;
+  v6 = installCopy;
   dispatch_async(queue, v7);
 }
 
-- (id)bundleIDsForAppProxies:(id)a3
+- (id)bundleIDsForAppProxies:(id)proxies
 {
-  v3 = a3;
+  proxiesCopy = proxies;
   v4 = +[NSMutableSet set];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v3;
+  obj = proxiesCopy;
   v5 = [obj countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v5)
   {
@@ -199,14 +199,14 @@
         }
 
         v8 = *(*(&v22 + 1) + 8 * i);
-        v9 = [v8 bundleIdentifier];
-        [v4 addObject:v9];
-        v10 = [v8 plugInKitPlugins];
+        bundleIdentifier = [v8 bundleIdentifier];
+        [v4 addObject:bundleIdentifier];
+        plugInKitPlugins = [v8 plugInKitPlugins];
         v20 = 0u;
         v21 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v11 = v10;
+        v11 = plugInKitPlugins;
         v12 = [v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v12)
         {
@@ -220,8 +220,8 @@
                 objc_enumerationMutation(v11);
               }
 
-              v15 = [*(*(&v18 + 1) + 8 * j) pluginIdentifier];
-              [v4 addObject:v15];
+              pluginIdentifier = [*(*(&v18 + 1) + 8 * j) pluginIdentifier];
+              [v4 addObject:pluginIdentifier];
             }
 
             v12 = [v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
@@ -240,27 +240,27 @@
   return v4;
 }
 
-- (void)managerBecameEmpty:(id)a3 bundleID:(id)a4 withCompletionHandler:(id)a5
+- (void)managerBecameEmpty:(id)empty bundleID:(id)d withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  dCopy = d;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100070888;
   block[3] = &unk_1000D5F80;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = dCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = dCopy;
   dispatch_async(queue, block);
 }
 
-- (id)getSessionWithIdentifier:(id)a3 forBundleID:(id)a4
+- (id)getSessionWithIdentifier:(id)identifier forBundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -273,11 +273,11 @@
   v13[2] = sub_100070A34;
   v13[3] = &unk_1000D5F58;
   v13[4] = self;
-  v14 = v7;
-  v15 = v6;
+  v14 = dCopy;
+  v15 = identifierCopy;
   v16 = &v17;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = dCopy;
   dispatch_sync(queue, v13);
   v11 = v18[5];
 
@@ -286,16 +286,16 @@
   return v11;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v13 = a3;
-  v5 = a4;
-  v6 = v5;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v6 = connectionCopy;
   v15 = 0u;
   v16 = 0u;
-  if (v5)
+  if (connectionCopy)
   {
-    [v5 auditToken];
+    [connectionCopy auditToken];
   }
 
   v14 = 0;
@@ -321,14 +321,14 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Evaluating new XPC connection %@ with client bundle identifier %@", buf, 0x16u);
   }
 
-  v9 = [v6 processIdentifier];
-  v10 = [v6 _xpcConnection];
+  processIdentifier = [v6 processIdentifier];
+  _xpcConnection = [v6 _xpcConnection];
   xpc_connection_is_extension();
   v11 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
   {
     *buf = 67109120;
-    *&buf[4] = v9;
+    *&buf[4] = processIdentifier;
     _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Process with pid %d does not have a bundle ID, rejecting connection", buf, 8u);
   }
 
@@ -481,8 +481,8 @@
             continue;
           }
 
-          v19 = [v18 originalRequest];
-          [v19 _timeWindowDelay];
+          originalRequest = [v18 originalRequest];
+          [originalRequest _timeWindowDelay];
           v21 = v20 == 0.0;
 
           if (!v21)
@@ -492,12 +492,12 @@
         }
 
         v22 = +[NDUserSyncStakeholder sharedStakeholder];
-        v23 = [v18 uniqueIdentifier];
-        [v22 restoredTaskEnqueued:v23];
+        uniqueIdentifier = [v18 uniqueIdentifier];
+        [v22 restoredTaskEnqueued:uniqueIdentifier];
 
-        v24 = [v18 sessionID];
-        v25 = [v18 bundleID];
-        v26 = [(Daemon *)self getSessionWithIdentifier:v24 forBundleID:v25];
+        sessionID = [v18 sessionID];
+        bundleID = [v18 bundleID];
+        v26 = [(Daemon *)self getSessionWithIdentifier:sessionID forBundleID:bundleID];
 
         [v26 requeueTask:{objc_msgSend(v18, "identifier")}];
       }
@@ -519,9 +519,9 @@
   [NSKeyedUnarchiver setClass:v2 forClassName:@"NDTaskInfo"];
 }
 
-- (BOOL)applicationIsInstalled:(id)a3
+- (BOOL)applicationIsInstalled:(id)installed
 {
-  v3 = [LSBundleRecord bundleRecordWithBundleIdentifier:a3 allowPlaceholder:0 error:0];
+  v3 = [LSBundleRecord bundleRecordWithBundleIdentifier:installed allowPlaceholder:0 error:0];
   v4 = v3 != 0;
 
   return v4;
@@ -586,13 +586,13 @@
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
           v19 = +[NDFileUtilities nsurlsessiondPath];
-          v20 = [v9 code];
+          code = [v9 code];
           *buf = 138412802;
           v24 = v19;
           v25 = 2112;
           v26 = v9;
           v27 = 2048;
-          v28 = v20;
+          v28 = code;
           _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Could not set attributes of directory at %@, error: %@ [%ld]", buf, 0x20u);
         }
       }

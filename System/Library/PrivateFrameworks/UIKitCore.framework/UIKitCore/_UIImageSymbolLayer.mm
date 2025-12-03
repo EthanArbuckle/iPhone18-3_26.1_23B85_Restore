@@ -1,9 +1,9 @@
 @interface _UIImageSymbolLayer
-+ (id)_symbolLayerWithImage:(id)a3 color:(id)a4 offset:(CGPoint)a5 scaleFactor:(double)a6;
-+ (id)_symbolLayerWithName:(id)a3 color:(id)a4;
-+ (id)_symbolLayerWithName:(id)a3 color:(id)a4 offset:(CGPoint)a5 scaleFactor:(double)a6;
-+ (id)_symbolLayerWithSystemName:(id)a3 color:(id)a4;
-+ (id)_symbolLayerWithSystemName:(id)a3 color:(id)a4 offset:(CGPoint)a5 scaleFactor:(double)a6;
++ (id)_symbolLayerWithImage:(id)image color:(id)color offset:(CGPoint)offset scaleFactor:(double)factor;
++ (id)_symbolLayerWithName:(id)name color:(id)color;
++ (id)_symbolLayerWithName:(id)name color:(id)color offset:(CGPoint)offset scaleFactor:(double)factor;
++ (id)_symbolLayerWithSystemName:(id)name color:(id)color;
++ (id)_symbolLayerWithSystemName:(id)name color:(id)color offset:(CGPoint)offset scaleFactor:(double)factor;
 - (BOOL)isSystemImage;
 - (CGPoint)offset;
 - (NSString)name;
@@ -11,24 +11,24 @@
 
 @implementation _UIImageSymbolLayer
 
-+ (id)_symbolLayerWithImage:(id)a3 color:(id)a4 offset:(CGPoint)a5 scaleFactor:(double)a6
++ (id)_symbolLayerWithImage:(id)image color:(id)color offset:(CGPoint)offset scaleFactor:(double)factor
 {
-  y = a5.y;
-  x = a5.x;
-  v10 = a3;
-  v11 = a4;
+  y = offset.y;
+  x = offset.x;
+  imageCopy = image;
+  colorCopy = color;
   v12 = objc_opt_new();
-  if ([v10 _isSymbolImage])
+  if ([imageCopy _isSymbolImage])
   {
-    v13 = [v10 imageAsset];
-    [v12 setAsset:v13];
+    imageAsset = [imageCopy imageAsset];
+    [v12 setAsset:imageAsset];
 
-    v14 = [v10 content];
-    [v12 setContent:v14];
+    content = [imageCopy content];
+    [v12 setContent:content];
 
-    [v12 setColor:v11];
+    [v12 setColor:colorCopy];
     [v12 setOffset:{x, y}];
-    [v12 setScaleFactor:a6];
+    [v12 setScaleFactor:factor];
     v15 = v12;
   }
 
@@ -42,57 +42,57 @@
 
 - (NSString)name
 {
-  v2 = [(_UIImageSymbolLayer *)self asset];
-  v3 = [v2 assetName];
+  asset = [(_UIImageSymbolLayer *)self asset];
+  assetName = [asset assetName];
 
-  return v3;
+  return assetName;
 }
 
 - (BOOL)isSystemImage
 {
-  v2 = [(_UIImageSymbolLayer *)self asset];
-  v3 = [v2 _assetManager];
-  v4 = [v3 _managingCoreGlyphs];
+  asset = [(_UIImageSymbolLayer *)self asset];
+  _assetManager = [asset _assetManager];
+  _managingCoreGlyphs = [_assetManager _managingCoreGlyphs];
 
-  return v4;
+  return _managingCoreGlyphs;
 }
 
-+ (id)_symbolLayerWithSystemName:(id)a3 color:(id)a4
++ (id)_symbolLayerWithSystemName:(id)name color:(id)color
 {
-  v6 = a4;
-  v7 = [UIImage systemImageNamed:a3];
-  v8 = [a1 _symbolLayerWithImage:v7 color:v6 offset:*MEMORY[0x1E695EFF8] scaleFactor:{*(MEMORY[0x1E695EFF8] + 8), 1.0}];
+  colorCopy = color;
+  v7 = [UIImage systemImageNamed:name];
+  v8 = [self _symbolLayerWithImage:v7 color:colorCopy offset:*MEMORY[0x1E695EFF8] scaleFactor:{*(MEMORY[0x1E695EFF8] + 8), 1.0}];
 
   return v8;
 }
 
-+ (id)_symbolLayerWithSystemName:(id)a3 color:(id)a4 offset:(CGPoint)a5 scaleFactor:(double)a6
++ (id)_symbolLayerWithSystemName:(id)name color:(id)color offset:(CGPoint)offset scaleFactor:(double)factor
 {
-  y = a5.y;
-  x = a5.x;
-  v11 = a4;
-  v12 = [UIImage systemImageNamed:a3];
-  v13 = [a1 _symbolLayerWithImage:v12 color:v11 offset:x scaleFactor:{y, a6}];
+  y = offset.y;
+  x = offset.x;
+  colorCopy = color;
+  v12 = [UIImage systemImageNamed:name];
+  v13 = [self _symbolLayerWithImage:v12 color:colorCopy offset:x scaleFactor:{y, factor}];
 
   return v13;
 }
 
-+ (id)_symbolLayerWithName:(id)a3 color:(id)a4
++ (id)_symbolLayerWithName:(id)name color:(id)color
 {
-  v6 = a4;
-  v7 = [UIImage imageNamed:a3];
-  v8 = [a1 _symbolLayerWithImage:v7 color:v6 offset:*MEMORY[0x1E695EFF8] scaleFactor:{*(MEMORY[0x1E695EFF8] + 8), 1.0}];
+  colorCopy = color;
+  v7 = [UIImage imageNamed:name];
+  v8 = [self _symbolLayerWithImage:v7 color:colorCopy offset:*MEMORY[0x1E695EFF8] scaleFactor:{*(MEMORY[0x1E695EFF8] + 8), 1.0}];
 
   return v8;
 }
 
-+ (id)_symbolLayerWithName:(id)a3 color:(id)a4 offset:(CGPoint)a5 scaleFactor:(double)a6
++ (id)_symbolLayerWithName:(id)name color:(id)color offset:(CGPoint)offset scaleFactor:(double)factor
 {
-  y = a5.y;
-  x = a5.x;
-  v11 = a4;
-  v12 = [UIImage imageNamed:a3];
-  v13 = [a1 _symbolLayerWithImage:v12 color:v11 offset:x scaleFactor:{y, a6}];
+  y = offset.y;
+  x = offset.x;
+  colorCopy = color;
+  v12 = [UIImage imageNamed:name];
+  v13 = [self _symbolLayerWithImage:v12 color:colorCopy offset:x scaleFactor:{y, factor}];
 
   return v13;
 }

@@ -1,26 +1,26 @@
 @interface ATXAnchorModelPBAnchorMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAnchorEventType:(id)a3;
-- (int)StringAsAnchorType:(id)a3;
-- (int)StringAsDayOfWeek:(id)a3;
-- (int)StringAsLocationType:(id)a3;
+- (int)StringAsAnchorEventType:(id)type;
+- (int)StringAsAnchorType:(id)type;
+- (int)StringAsDayOfWeek:(id)week;
+- (int)StringAsLocationType:(id)type;
 - (int)anchorEventType;
 - (int)anchorType;
 - (int)dayOfWeek;
 - (int)locationType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAnchorType:(BOOL)a3;
-- (void)setHasDayOfMonth:(BOOL)a3;
-- (void)setHasDayOfWeek:(BOOL)a3;
-- (void)setHasHourOfDay:(BOOL)a3;
-- (void)setHasLocationType:(BOOL)a3;
-- (void)setHasMonth:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAnchorType:(BOOL)type;
+- (void)setHasDayOfMonth:(BOOL)month;
+- (void)setHasDayOfWeek:(BOOL)week;
+- (void)setHasHourOfDay:(BOOL)day;
+- (void)setHasLocationType:(BOOL)type;
+- (void)setHasMonth:(BOOL)month;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXAnchorModelPBAnchorMetadata
@@ -38,9 +38,9 @@
   }
 }
 
-- (void)setHasAnchorType:(BOOL)a3
+- (void)setHasAnchorType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -53,95 +53,95 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsAnchorType:(id)a3
+- (int)StringAsAnchorType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ANCHOR_TYPE_UNKNOWN"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"ANCHOR_TYPE_UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_TYPE_BLUETOOTH_CONNECTED"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_TYPE_BLUETOOTH_CONNECTED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_TYPE_BLUETOOTH_DISCONNECTED"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_TYPE_BLUETOOTH_DISCONNECTED"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_TYPE_IDLE_TIME_BEGIN"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_TYPE_IDLE_TIME_BEGIN"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_TYPE_IDLE_TIME_END"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_TYPE_IDLE_TIME_END"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_TYPE_CARPLAY_CONNECTED"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_TYPE_CARPLAY_CONNECTED"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_TYPE_CARPLAY_DISCONNECTED"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_TYPE_CARPLAY_DISCONNECTED"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_TYPE_LOI_ENTRANCE"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_TYPE_LOI_ENTRANCE"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_TYPE_LOI_EXIT"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_TYPE_LOI_EXIT"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_TYPE_WORKOUT_START"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_TYPE_WORKOUT_START"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_TYPE_WORKOUT_END"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_TYPE_WORKOUT_END"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_TYPE_HEADING_HOME"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_TYPE_HEADING_HOME"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_TYPE_HEADING_TO_WORK"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_TYPE_HEADING_TO_WORK"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_TYPE_FIRST_CALENDAR_EVENT_OF_DAY"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_TYPE_FIRST_CALENDAR_EVENT_OF_DAY"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_TYPE_LAST_CALENDAR_EVENT_OF_DAY"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_TYPE_LAST_CALENDAR_EVENT_OF_DAY"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_TYPE_UPCOMING_SEMANTIC_EVENT"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_TYPE_UPCOMING_SEMANTIC_EVENT"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_TYPE_WIRED_AUDIO_DEVICE_CONNECTED"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_TYPE_WIRED_AUDIO_DEVICE_CONNECTED"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_TYPE_WIRED_AUDIO_DEVICE_DISCONNECTED"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_TYPE_WIRED_AUDIO_DEVICE_DISCONNECTED"])
   {
     v4 = 17;
   }
@@ -167,170 +167,170 @@
   }
 }
 
-- (int)StringAsAnchorEventType:(id)a3
+- (int)StringAsAnchorEventType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_UNKNOWN"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_BLUETOOTH_DEVICE_OTHER"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_BLUETOOTH_DEVICE_OTHER"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_BLUETOOTH_DEVICE_IMAGING"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_BLUETOOTH_DEVICE_IMAGING"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_BLUETOOTH_DEVICE_AUDIO"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_BLUETOOTH_DEVICE_AUDIO"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_BLUETOOTH_DEVICE_VEHICLE"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_BLUETOOTH_DEVICE_VEHICLE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_LOI_UNKNOWN"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_LOI_UNKNOWN"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_LOI_HOME"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_LOI_HOME"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_LOI_WORK"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_LOI_WORK"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_LOI_GYM"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_LOI_GYM"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_CALENDAR_EVENT_IS_ORGANIZER"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_CALENDAR_EVENT_IS_ORGANIZER"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_CALENDAR_EVENT_IS_NOT_ORGANIZER"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_CALENDAR_EVENT_IS_NOT_ORGANIZER"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_UPCOMING_SEMANTIC_EVENT_FLIGHT"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_UPCOMING_SEMANTIC_EVENT_FLIGHT"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_UPCOMING_SEMANTIC_EVENT_BUS"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_UPCOMING_SEMANTIC_EVENT_BUS"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_UPCOMING_SEMANTIC_EVENT_TRAIN"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_UPCOMING_SEMANTIC_EVENT_TRAIN"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_UPCOMING_SEMANTIC_EVENT_HOTEL"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_UPCOMING_SEMANTIC_EVENT_HOTEL"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_UPCOMING_SEMANTIC_EVENT_CAR"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_UPCOMING_SEMANTIC_EVENT_CAR"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_UPCOMING_SEMANTIC_EVENT_TICKET"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_UPCOMING_SEMANTIC_EVENT_TICKET"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_UPCOMING_SEMANTIC_EVENT_MOVIE"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_UPCOMING_SEMANTIC_EVENT_MOVIE"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_UPCOMING_SEMANTIC_EVENT_FOOD"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_UPCOMING_SEMANTIC_EVENT_FOOD"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_UPCOMING_SEMANTIC_EVENT_SOCIAL"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_UPCOMING_SEMANTIC_EVENT_SOCIAL"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_UPCOMING_SEMANTIC_EVENT_OTHER"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_UPCOMING_SEMANTIC_EVENT_OTHER"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_WORKOUT_WALKING"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_WORKOUT_WALKING"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_WORKOUT_RUNNING"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_WORKOUT_RUNNING"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_WORKOUT_CYCLING"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_WORKOUT_CYCLING"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_WORKOUT_ELLIPTICAL"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_WORKOUT_ELLIPTICAL"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_WORKOUT_STEPPER"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_WORKOUT_STEPPER"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_WORKOUT_ROWING"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_WORKOUT_ROWING"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_WORKOUT_WHEELCHAIR_WALK_PACE"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_WORKOUT_WHEELCHAIR_WALK_PACE"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_WORKOUT_WHEELCHAIR_RUN_PACE"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_WORKOUT_WHEELCHAIR_RUN_PACE"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_WORKOUT_HIIT"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_WORKOUT_HIIT"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_WORKOUT_HIKING"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_WORKOUT_HIKING"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_WORKOUT_YOGA"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_WORKOUT_YOGA"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_EVENT_TYPE_WORKOUT_OTHER"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_EVENT_TYPE_WORKOUT_OTHER"])
   {
     v4 = 32;
   }
@@ -343,9 +343,9 @@
   return v4;
 }
 
-- (void)setHasMonth:(BOOL)a3
+- (void)setHasMonth:(BOOL)month
 {
-  if (a3)
+  if (month)
   {
     v3 = 64;
   }
@@ -358,9 +358,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasDayOfMonth:(BOOL)a3
+- (void)setHasDayOfMonth:(BOOL)month
 {
-  if (a3)
+  if (month)
   {
     v3 = 4;
   }
@@ -373,9 +373,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasHourOfDay:(BOOL)a3
+- (void)setHasHourOfDay:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 16;
   }
@@ -401,9 +401,9 @@
   }
 }
 
-- (void)setHasDayOfWeek:(BOOL)a3
+- (void)setHasDayOfWeek:(BOOL)week
 {
-  if (a3)
+  if (week)
   {
     v3 = 8;
   }
@@ -416,45 +416,45 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsDayOfWeek:(id)a3
+- (int)StringAsDayOfWeek:(id)week
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ANCHOR_DAY_OF_WEEK_UNKNOWN"])
+  weekCopy = week;
+  if ([weekCopy isEqualToString:@"ANCHOR_DAY_OF_WEEK_UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_DAY_OF_WEEK_SUNDAY"])
+  else if ([weekCopy isEqualToString:@"ANCHOR_DAY_OF_WEEK_SUNDAY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_DAY_OF_WEEK_MONDAY"])
+  else if ([weekCopy isEqualToString:@"ANCHOR_DAY_OF_WEEK_MONDAY"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_DAY_OF_WEEK_TUESDAY"])
+  else if ([weekCopy isEqualToString:@"ANCHOR_DAY_OF_WEEK_TUESDAY"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_DAY_OF_WEEK_WEDNESDAY"])
+  else if ([weekCopy isEqualToString:@"ANCHOR_DAY_OF_WEEK_WEDNESDAY"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_DAY_OF_WEEK_THURSDAY"])
+  else if ([weekCopy isEqualToString:@"ANCHOR_DAY_OF_WEEK_THURSDAY"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_DAY_OF_WEEK_FRIDAY"])
+  else if ([weekCopy isEqualToString:@"ANCHOR_DAY_OF_WEEK_FRIDAY"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_DAY_OF_WEEK_SATURDAY"])
+  else if ([weekCopy isEqualToString:@"ANCHOR_DAY_OF_WEEK_SATURDAY"])
   {
     v4 = 7;
   }
@@ -480,9 +480,9 @@
   }
 }
 
-- (void)setHasLocationType:(BOOL)a3
+- (void)setHasLocationType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 32;
   }
@@ -495,25 +495,25 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (int)StringAsLocationType:(id)a3
+- (int)StringAsLocationType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ANCHOR_LOCATION_TYPE_OTHER"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"ANCHOR_LOCATION_TYPE_OTHER"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_LOCATION_TYPE_HOME"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_LOCATION_TYPE_HOME"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_LOCATION_TYPE_WORK"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_LOCATION_TYPE_WORK"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_LOCATION_TYPE_GYM"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_LOCATION_TYPE_GYM"])
   {
     v4 = 3;
   }
@@ -532,15 +532,15 @@
   v8.receiver = self;
   v8.super_class = ATXAnchorModelPBAnchorMetadata;
   v4 = [(ATXAnchorModelPBAnchorMetadata *)&v8 description];
-  v5 = [(ATXAnchorModelPBAnchorMetadata *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXAnchorModelPBAnchorMetadata *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     anchorType = self->_anchorType;
@@ -554,13 +554,13 @@
       v5 = off_27859EC08[anchorType];
     }
 
-    [v3 setObject:v5 forKey:@"anchorType"];
+    [dictionary setObject:v5 forKey:@"anchorType"];
   }
 
   anchorEventIdentifier = self->_anchorEventIdentifier;
   if (anchorEventIdentifier)
   {
-    [v3 setObject:anchorEventIdentifier forKey:@"anchorEventIdentifier"];
+    [dictionary setObject:anchorEventIdentifier forKey:@"anchorEventIdentifier"];
   }
 
   has = self->_has;
@@ -577,7 +577,7 @@
       v9 = off_27859EC98[anchorEventType];
     }
 
-    [v3 setObject:v9 forKey:@"anchorEventType"];
+    [dictionary setObject:v9 forKey:@"anchorEventType"];
 
     has = self->_has;
   }
@@ -585,7 +585,7 @@
   if ((has & 0x40) != 0)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_month];
-    [v3 setObject:v10 forKey:@"month"];
+    [dictionary setObject:v10 forKey:@"month"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -606,7 +606,7 @@ LABEL_15:
   }
 
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_dayOfMonth];
-  [v3 setObject:v11 forKey:@"dayOfMonth"];
+  [dictionary setObject:v11 forKey:@"dayOfMonth"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -622,7 +622,7 @@ LABEL_16:
 
 LABEL_20:
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_hourOfDay];
-  [v3 setObject:v12 forKey:@"hourOfDay"];
+  [dictionary setObject:v12 forKey:@"hourOfDay"];
 
   if ((*&self->_has & 8) == 0)
   {
@@ -641,13 +641,13 @@ LABEL_21:
     v14 = off_27859EDA0[dayOfWeek];
   }
 
-  [v3 setObject:v14 forKey:@"dayOfWeek"];
+  [dictionary setObject:v14 forKey:@"dayOfWeek"];
 
 LABEL_25:
   locationIdentifier = self->_locationIdentifier;
   if (locationIdentifier)
   {
-    [v3 setObject:locationIdentifier forKey:@"locationIdentifier"];
+    [dictionary setObject:locationIdentifier forKey:@"locationIdentifier"];
   }
 
   if ((*&self->_has & 0x20) != 0)
@@ -663,15 +663,15 @@ LABEL_25:
       v17 = off_27859EDE0[locationType];
     }
 
-    [v3 setObject:v17 forKey:@"locationType"];
+    [dictionary setObject:v17 forKey:@"locationType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
     anchorType = self->_anchorType;
@@ -758,27 +758,27 @@ LABEL_11:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[5] = self->_anchorType;
-    *(v4 + 56) |= 2u;
+    toCopy[5] = self->_anchorType;
+    *(toCopy + 56) |= 2u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_anchorEventIdentifier)
   {
-    [v4 setAnchorEventIdentifier:?];
-    v4 = v6;
+    [toCopy setAnchorEventIdentifier:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    v4[4] = self->_anchorEventType;
-    *(v4 + 56) |= 1u;
+    toCopy[4] = self->_anchorEventType;
+    *(toCopy + 56) |= 1u;
     has = self->_has;
     if ((has & 0x40) == 0)
     {
@@ -797,8 +797,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v4[13] = self->_month;
-  *(v4 + 56) |= 0x40u;
+  toCopy[13] = self->_month;
+  *(toCopy + 56) |= 0x40u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -812,8 +812,8 @@ LABEL_8:
   }
 
 LABEL_20:
-  v4[6] = self->_dayOfMonth;
-  *(v4 + 56) |= 4u;
+  toCopy[6] = self->_dayOfMonth;
+  *(toCopy + 56) |= 4u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -827,32 +827,32 @@ LABEL_9:
   }
 
 LABEL_21:
-  v4[8] = self->_hourOfDay;
-  *(v4 + 56) |= 0x10u;
+  toCopy[8] = self->_hourOfDay;
+  *(toCopy + 56) |= 0x10u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_10:
-    v4[7] = self->_dayOfWeek;
-    *(v4 + 56) |= 8u;
+    toCopy[7] = self->_dayOfWeek;
+    *(toCopy + 56) |= 8u;
   }
 
 LABEL_11:
   if (self->_locationIdentifier)
   {
     [v6 setLocationIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    v4[12] = self->_locationType;
-    *(v4 + 56) |= 0x20u;
+    toCopy[12] = self->_locationType;
+    *(toCopy + 56) |= 0x20u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -860,7 +860,7 @@ LABEL_11:
     *(v5 + 56) |= 2u;
   }
 
-  v7 = [(NSString *)self->_anchorEventIdentifier copyWithZone:a3];
+  v7 = [(NSString *)self->_anchorEventIdentifier copyWithZone:zone];
   v8 = *(v6 + 8);
   *(v6 + 8) = v7;
 
@@ -927,7 +927,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  v10 = [(NSString *)self->_locationIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_locationIdentifier copyWithZone:zone];
   v11 = *(v6 + 40);
   *(v6 + 40) = v10;
 
@@ -940,31 +940,31 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_42;
   }
 
   has = self->_has;
-  v6 = *(v4 + 56);
+  v6 = *(equalCopy + 56);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_anchorType != *(v4 + 5))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_anchorType != *(equalCopy + 5))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 56) & 2) != 0)
+  else if ((*(equalCopy + 56) & 2) != 0)
   {
     goto LABEL_42;
   }
 
   anchorEventIdentifier = self->_anchorEventIdentifier;
-  if (anchorEventIdentifier | *(v4 + 1))
+  if (anchorEventIdentifier | *(equalCopy + 1))
   {
     if (![(NSString *)anchorEventIdentifier isEqual:?])
     {
@@ -974,74 +974,74 @@ LABEL_9:
     has = self->_has;
   }
 
-  v8 = *(v4 + 56);
+  v8 = *(equalCopy + 56);
   if (has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_anchorEventType != *(v4 + 4))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_anchorEventType != *(equalCopy + 4))
     {
       goto LABEL_42;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
     goto LABEL_42;
   }
 
   if ((has & 0x40) != 0)
   {
-    if ((*(v4 + 56) & 0x40) == 0 || self->_month != *(v4 + 13))
+    if ((*(equalCopy + 56) & 0x40) == 0 || self->_month != *(equalCopy + 13))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 56) & 0x40) != 0)
+  else if ((*(equalCopy + 56) & 0x40) != 0)
   {
     goto LABEL_42;
   }
 
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 56) & 4) == 0 || self->_dayOfMonth != *(v4 + 6))
+    if ((*(equalCopy + 56) & 4) == 0 || self->_dayOfMonth != *(equalCopy + 6))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 56) & 4) != 0)
+  else if ((*(equalCopy + 56) & 4) != 0)
   {
     goto LABEL_42;
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 56) & 0x10) == 0 || self->_hourOfDay != *(v4 + 8))
+    if ((*(equalCopy + 56) & 0x10) == 0 || self->_hourOfDay != *(equalCopy + 8))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 56) & 0x10) != 0)
+  else if ((*(equalCopy + 56) & 0x10) != 0)
   {
     goto LABEL_42;
   }
 
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 56) & 8) == 0 || self->_dayOfWeek != *(v4 + 7))
+    if ((*(equalCopy + 56) & 8) == 0 || self->_dayOfWeek != *(equalCopy + 7))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 56) & 8) != 0)
+  else if ((*(equalCopy + 56) & 8) != 0)
   {
     goto LABEL_42;
   }
 
   locationIdentifier = self->_locationIdentifier;
-  if (locationIdentifier | *(v4 + 5))
+  if (locationIdentifier | *(equalCopy + 5))
   {
     if ([(NSString *)locationIdentifier isEqual:?])
     {
@@ -1055,10 +1055,10 @@ LABEL_42:
   }
 
 LABEL_38:
-  v10 = (*(v4 + 56) & 0x20) == 0;
+  v10 = (*(equalCopy + 56) & 0x20) == 0;
   if ((has & 0x20) != 0)
   {
-    if ((*(v4 + 56) & 0x20) == 0 || self->_locationType != *(v4 + 12))
+    if ((*(equalCopy + 56) & 0x20) == 0 || self->_locationType != *(equalCopy + 12))
     {
       goto LABEL_42;
     }
@@ -1162,28 +1162,28 @@ LABEL_15:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((v4[14] & 2) != 0)
+  fromCopy = from;
+  if ((fromCopy[14] & 2) != 0)
   {
-    self->_anchorType = v4[5];
+    self->_anchorType = fromCopy[5];
     *&self->_has |= 2u;
   }
 
-  v6 = v4;
-  if (*(v4 + 1))
+  v6 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(ATXAnchorModelPBAnchorMetadata *)self setAnchorEventIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if (v5)
   {
-    self->_anchorEventType = v4[4];
+    self->_anchorEventType = fromCopy[4];
     *&self->_has |= 1u;
-    v5 = *(v4 + 56);
+    v5 = *(fromCopy + 56);
     if ((v5 & 0x40) == 0)
     {
 LABEL_7:
@@ -1196,14 +1196,14 @@ LABEL_7:
     }
   }
 
-  else if ((v4[14] & 0x40) == 0)
+  else if ((fromCopy[14] & 0x40) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_month = v4[13];
+  self->_month = fromCopy[13];
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 4) == 0)
   {
 LABEL_8:
@@ -1216,9 +1216,9 @@ LABEL_8:
   }
 
 LABEL_20:
-  self->_dayOfMonth = v4[6];
+  self->_dayOfMonth = fromCopy[6];
   *&self->_has |= 4u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 0x10) == 0)
   {
 LABEL_9:
@@ -1231,25 +1231,25 @@ LABEL_9:
   }
 
 LABEL_21:
-  self->_hourOfDay = v4[8];
+  self->_hourOfDay = fromCopy[8];
   *&self->_has |= 0x10u;
-  if ((v4[14] & 8) != 0)
+  if ((fromCopy[14] & 8) != 0)
   {
 LABEL_10:
-    self->_dayOfWeek = v4[7];
+    self->_dayOfWeek = fromCopy[7];
     *&self->_has |= 8u;
   }
 
 LABEL_11:
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(ATXAnchorModelPBAnchorMetadata *)self setLocationIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((v4[14] & 0x20) != 0)
+  if ((fromCopy[14] & 0x20) != 0)
   {
-    self->_locationType = v4[12];
+    self->_locationType = fromCopy[12];
     *&self->_has |= 0x20u;
   }
 }

@@ -8,22 +8,22 @@
 {
   v11.receiver = self;
   v11.super_class = EscrowUpdateMetadataRequest;
-  v3 = [(EscrowGenericRequest *)&v11 bodyDictionary];
-  v4 = [(EscrowGenericRequest *)self encodedMetadata];
+  bodyDictionary = [(EscrowGenericRequest *)&v11 bodyDictionary];
+  encodedMetadata = [(EscrowGenericRequest *)self encodedMetadata];
 
-  if (v4)
+  if (encodedMetadata)
   {
-    v5 = [(EscrowGenericRequest *)self encodedMetadata];
-    [v3 setObject:v5 forKeyedSubscript:@"oldMetadata"];
+    encodedMetadata2 = [(EscrowGenericRequest *)self encodedMetadata];
+    [bodyDictionary setObject:encodedMetadata2 forKeyedSubscript:@"oldMetadata"];
   }
 
-  v6 = [(EscrowGenericRequest *)self metadata];
+  metadata = [(EscrowGenericRequest *)self metadata];
 
-  if (v6)
+  if (metadata)
   {
-    v7 = [(EscrowGenericRequest *)self metadata];
-    v8 = [v7 base64EncodedStringFromDict];
-    [v3 setObject:v8 forKeyedSubscript:@"newMetadata"];
+    metadata2 = [(EscrowGenericRequest *)self metadata];
+    base64EncodedStringFromDict = [metadata2 base64EncodedStringFromDict];
+    [bodyDictionary setObject:base64EncodedStringFromDict forKeyedSubscript:@"newMetadata"];
   }
 
   if ([(EscrowGenericRequest *)self duplicate])
@@ -35,7 +35,7 @@
     }
   }
 
-  return v3;
+  return bodyDictionary;
 }
 
 @end

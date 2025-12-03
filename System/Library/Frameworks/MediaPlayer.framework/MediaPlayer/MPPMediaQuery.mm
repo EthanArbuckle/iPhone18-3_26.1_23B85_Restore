@@ -1,41 +1,41 @@
 @interface MPPMediaQuery
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)entityOrderAsString:(int)a3;
-- (id)groupingTypeAsString:(int)a3;
-- (id)staticEntityTypeAsString:(int)a3;
-- (int)StringAsEntityOrder:(id)a3;
-- (int)StringAsGroupingType:(id)a3;
-- (int)StringAsStaticEntityType:(id)a3;
+- (id)entityOrderAsString:(int)string;
+- (id)groupingTypeAsString:(int)string;
+- (id)staticEntityTypeAsString:(int)string;
+- (int)StringAsEntityOrder:(id)order;
+- (int)StringAsGroupingType:(id)type;
+- (int)StringAsStaticEntityType:(id)type;
 - (int)entityOrder;
 - (int)groupingType;
 - (int)staticEntityType;
 - (unint64_t)hash;
-- (void)addFilterPredicates:(id)a3;
-- (void)addStaticEntityIdentifiers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFilteringDisabled:(BOOL)a3;
-- (void)setHasGroupingType:(BOOL)a3;
-- (void)setHasIncludeNonLibraryEntities:(BOOL)a3;
-- (void)setHasStaticEntityType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addFilterPredicates:(id)predicates;
+- (void)addStaticEntityIdentifiers:(id)identifiers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFilteringDisabled:(BOOL)disabled;
+- (void)setHasGroupingType:(BOOL)type;
+- (void)setHasIncludeNonLibraryEntities:(BOOL)entities;
+- (void)setHasStaticEntityType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MPPMediaQuery
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v6)
   {
@@ -59,12 +59,12 @@
     while (v7);
   }
 
-  v10 = *(v4 + 48);
+  v10 = *(fromCopy + 48);
   if ((v10 & 2) != 0)
   {
-    self->_groupingType = *(v4 + 6);
+    self->_groupingType = *(fromCopy + 6);
     *&self->_has |= 2u;
-    v10 = *(v4 + 48);
+    v10 = *(fromCopy + 48);
     if ((v10 & 8) == 0)
     {
 LABEL_10:
@@ -77,17 +77,17 @@ LABEL_10:
     }
   }
 
-  else if ((*(v4 + 48) & 8) == 0)
+  else if ((*(fromCopy + 48) & 8) == 0)
   {
     goto LABEL_10;
   }
 
-  self->_filteringDisabled = *(v4 + 44);
+  self->_filteringDisabled = *(fromCopy + 44);
   *&self->_has |= 8u;
-  if (*(v4 + 48))
+  if (*(fromCopy + 48))
   {
 LABEL_11:
-    self->_entityOrder = *(v4 + 2);
+    self->_entityOrder = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
@@ -96,7 +96,7 @@ LABEL_12:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = *(v4 + 4);
+  v11 = *(fromCopy + 4);
   v12 = [v11 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v12)
   {
@@ -120,17 +120,17 @@ LABEL_12:
     while (v13);
   }
 
-  v16 = *(v4 + 48);
+  v16 = *(fromCopy + 48);
   if ((v16 & 4) != 0)
   {
-    self->_staticEntityType = *(v4 + 10);
+    self->_staticEntityType = *(fromCopy + 10);
     *&self->_has |= 4u;
-    v16 = *(v4 + 48);
+    v16 = *(fromCopy + 48);
   }
 
   if ((v16 & 0x10) != 0)
   {
-    self->_includeNonLibraryEntities = *(v4 + 45);
+    self->_includeNonLibraryEntities = *(fromCopy + 45);
     *&self->_has |= 0x10u;
   }
 }
@@ -199,16 +199,16 @@ LABEL_10:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
   filterPredicates = self->_filterPredicates;
-  if (filterPredicates | *(v4 + 2))
+  if (filterPredicates | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)filterPredicates isEqual:?])
     {
@@ -217,61 +217,61 @@ LABEL_10:
   }
 
   has = self->_has;
-  v7 = *(v4 + 48);
+  v7 = *(equalCopy + 48);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_groupingType != *(v4 + 6))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_groupingType != *(equalCopy + 6))
     {
       goto LABEL_32;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_32;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 48) & 8) == 0)
+    if ((*(equalCopy + 48) & 8) == 0)
     {
       goto LABEL_32;
     }
 
     if (self->_filteringDisabled)
     {
-      if ((*(v4 + 44) & 1) == 0)
+      if ((*(equalCopy + 44) & 1) == 0)
       {
         goto LABEL_32;
       }
     }
 
-    else if (*(v4 + 44))
+    else if (*(equalCopy + 44))
     {
       goto LABEL_32;
     }
   }
 
-  else if ((*(v4 + 48) & 8) != 0)
+  else if ((*(equalCopy + 48) & 8) != 0)
   {
     goto LABEL_32;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_entityOrder != *(v4 + 2))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_entityOrder != *(equalCopy + 2))
     {
       goto LABEL_32;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_32;
   }
 
   staticEntityIdentifiers = self->_staticEntityIdentifiers;
-  if (staticEntityIdentifiers | *(v4 + 4))
+  if (staticEntityIdentifiers | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)staticEntityIdentifiers isEqual:?])
     {
@@ -279,12 +279,12 @@ LABEL_10:
     }
 
     has = self->_has;
-    v7 = *(v4 + 48);
+    v7 = *(equalCopy + 48);
   }
 
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_staticEntityType != *(v4 + 10))
+    if ((v7 & 4) == 0 || self->_staticEntityType != *(equalCopy + 10))
     {
       goto LABEL_32;
     }
@@ -302,13 +302,13 @@ LABEL_10:
     {
       if (self->_includeNonLibraryEntities)
       {
-        if ((*(v4 + 45) & 1) == 0)
+        if ((*(equalCopy + 45) & 1) == 0)
         {
           goto LABEL_32;
         }
       }
 
-      else if (*(v4 + 45))
+      else if (*(equalCopy + 45))
       {
         goto LABEL_32;
       }
@@ -326,10 +326,10 @@ LABEL_33:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -349,7 +349,7 @@ LABEL_33:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v25 + 1) + 8 * i) copyWithZone:a3];
+        v11 = [*(*(&v25 + 1) + 8 * i) copyWithZone:zone];
         [v5 addFilterPredicates:v11];
       }
 
@@ -411,7 +411,7 @@ LABEL_12:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v21 + 1) + 8 * j) copyWithZone:{a3, v21}];
+        v18 = [*(*(&v21 + 1) + 8 * j) copyWithZone:{zone, v21}];
         [v5 addStaticEntityIdentifiers:v18];
       }
 
@@ -438,20 +438,20 @@ LABEL_12:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v14 = a3;
+  toCopy = to;
   if ([(MPPMediaQuery *)self filterPredicatesCount])
   {
-    [v14 clearFilterPredicates];
-    v4 = [(MPPMediaQuery *)self filterPredicatesCount];
-    if (v4)
+    [toCopy clearFilterPredicates];
+    filterPredicatesCount = [(MPPMediaQuery *)self filterPredicatesCount];
+    if (filterPredicatesCount)
     {
-      v5 = v4;
+      v5 = filterPredicatesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(MPPMediaQuery *)self filterPredicatesAtIndex:i];
-        [v14 addFilterPredicates:v7];
+        [toCopy addFilterPredicates:v7];
       }
     }
   }
@@ -465,8 +465,8 @@ LABEL_12:
     }
 
 LABEL_21:
-    *(v14 + 44) = self->_filteringDisabled;
-    *(v14 + 48) |= 8u;
+    *(toCopy + 44) = self->_filteringDisabled;
+    *(toCopy + 48) |= 8u;
     if ((*&self->_has & 1) == 0)
     {
       goto LABEL_9;
@@ -475,8 +475,8 @@ LABEL_21:
     goto LABEL_8;
   }
 
-  *(v14 + 6) = self->_groupingType;
-  *(v14 + 48) |= 2u;
+  *(toCopy + 6) = self->_groupingType;
+  *(toCopy + 48) |= 2u;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -487,22 +487,22 @@ LABEL_7:
   if (has)
   {
 LABEL_8:
-    *(v14 + 2) = self->_entityOrder;
-    *(v14 + 48) |= 1u;
+    *(toCopy + 2) = self->_entityOrder;
+    *(toCopy + 48) |= 1u;
   }
 
 LABEL_9:
   if ([(MPPMediaQuery *)self staticEntityIdentifiersCount])
   {
-    [v14 clearStaticEntityIdentifiers];
-    v9 = [(MPPMediaQuery *)self staticEntityIdentifiersCount];
-    if (v9)
+    [toCopy clearStaticEntityIdentifiers];
+    staticEntityIdentifiersCount = [(MPPMediaQuery *)self staticEntityIdentifiersCount];
+    if (staticEntityIdentifiersCount)
     {
-      v10 = v9;
+      v10 = staticEntityIdentifiersCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(MPPMediaQuery *)self staticEntityIdentifiersAtIndex:j];
-        [v14 addStaticEntityIdentifiers:v12];
+        [toCopy addStaticEntityIdentifiers:v12];
       }
     }
   }
@@ -510,22 +510,22 @@ LABEL_9:
   v13 = self->_has;
   if ((v13 & 4) != 0)
   {
-    *(v14 + 10) = self->_staticEntityType;
-    *(v14 + 48) |= 4u;
+    *(toCopy + 10) = self->_staticEntityType;
+    *(toCopy + 48) |= 4u;
     v13 = self->_has;
   }
 
   if ((v13 & 0x10) != 0)
   {
-    *(v14 + 45) = self->_includeNonLibraryEntities;
-    *(v14 + 48) |= 0x10u;
+    *(toCopy + 45) = self->_includeNonLibraryEntities;
+    *(toCopy + 48) |= 0x10u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -625,16 +625,16 @@ LABEL_12:
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -643,18 +643,18 @@ LABEL_12:
       while (1)
       {
         LOBYTE(v52) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v52 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v52 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v52 & 0x7F) << v6;
@@ -672,11 +672,11 @@ LABEL_12:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -689,7 +689,7 @@ LABEL_15:
             [(MPPMediaQuery *)self addFilterPredicates:v15];
             v52 = 0;
             v53 = 0;
-            if (!PBReaderPlaceMark() || !MPPMediaPredicateReadFrom(v15, a3))
+            if (!PBReaderPlaceMark() || !MPPMediaPredicateReadFrom(v15, from))
             {
 LABEL_99:
 
@@ -705,18 +705,18 @@ LABEL_99:
             while (1)
             {
               LOBYTE(v52) = 0;
-              v45 = [a3 position] + 1;
-              if (v45 >= [a3 position] && (v46 = objc_msgSend(a3, "position") + 1, v46 <= objc_msgSend(a3, "length")))
+              v45 = [from position] + 1;
+              if (v45 >= [from position] && (v46 = objc_msgSend(from, "position") + 1, v46 <= objc_msgSend(from, "length")))
               {
-                v47 = [a3 data];
-                [v47 getBytes:&v52 range:{objc_msgSend(a3, "position"), 1}];
+                data2 = [from data];
+                [data2 getBytes:&v52 range:{objc_msgSend(from, "position"), 1}];
 
-                [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+                [from setPosition:{objc_msgSend(from, "position") + 1}];
               }
 
               else
               {
-                [a3 _setError];
+                [from _setError];
               }
 
               v44 |= (v52 & 0x7F) << v42;
@@ -734,7 +734,7 @@ LABEL_99:
               }
             }
 
-            if ([a3 hasError])
+            if ([from hasError])
             {
               v35 = 0;
             }
@@ -755,18 +755,18 @@ LABEL_95:
             while (1)
             {
               LOBYTE(v52) = 0;
-              v19 = [a3 position] + 1;
-              if (v19 >= [a3 position] && (v20 = objc_msgSend(a3, "position") + 1, v20 <= objc_msgSend(a3, "length")))
+              v19 = [from position] + 1;
+              if (v19 >= [from position] && (v20 = objc_msgSend(from, "position") + 1, v20 <= objc_msgSend(from, "length")))
               {
-                v21 = [a3 data];
-                [v21 getBytes:&v52 range:{objc_msgSend(a3, "position"), 1}];
+                data3 = [from data];
+                [data3 getBytes:&v52 range:{objc_msgSend(from, "position"), 1}];
 
-                [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+                [from setPosition:{objc_msgSend(from, "position") + 1}];
               }
 
               else
               {
-                [a3 _setError];
+                [from _setError];
               }
 
               v18 |= (v52 & 0x7F) << v16;
@@ -784,7 +784,7 @@ LABEL_95:
               }
             }
 
-            v22 = (v18 != 0) & ~[a3 hasError];
+            v22 = (v18 != 0) & ~[from hasError];
 LABEL_90:
             v49 = 44;
             goto LABEL_91;
@@ -802,18 +802,18 @@ LABEL_90:
           while (1)
           {
             LOBYTE(v52) = 0;
-            v39 = [a3 position] + 1;
-            if (v39 >= [a3 position] && (v40 = objc_msgSend(a3, "position") + 1, v40 <= objc_msgSend(a3, "length")))
+            v39 = [from position] + 1;
+            if (v39 >= [from position] && (v40 = objc_msgSend(from, "position") + 1, v40 <= objc_msgSend(from, "length")))
             {
-              v41 = [a3 data];
-              [v41 getBytes:&v52 range:{objc_msgSend(a3, "position"), 1}];
+              data4 = [from data];
+              [data4 getBytes:&v52 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v38 |= (v52 & 0x7F) << v36;
@@ -831,7 +831,7 @@ LABEL_90:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v35 = 0;
           }
@@ -855,18 +855,18 @@ LABEL_86:
           while (1)
           {
             LOBYTE(v52) = 0;
-            v26 = [a3 position] + 1;
-            if (v26 >= [a3 position] && (v27 = objc_msgSend(a3, "position") + 1, v27 <= objc_msgSend(a3, "length")))
+            v26 = [from position] + 1;
+            if (v26 >= [from position] && (v27 = objc_msgSend(from, "position") + 1, v27 <= objc_msgSend(from, "length")))
             {
-              v28 = [a3 data];
-              [v28 getBytes:&v52 range:{objc_msgSend(a3, "position"), 1}];
+              data5 = [from data];
+              [data5 getBytes:&v52 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v25 |= (v52 & 0x7F) << v23;
@@ -884,7 +884,7 @@ LABEL_86:
             }
           }
 
-          v22 = (v25 != 0) & ~[a3 hasError];
+          v22 = (v25 != 0) & ~[from hasError];
 LABEL_88:
           v49 = 45;
 LABEL_91:
@@ -904,18 +904,18 @@ LABEL_91:
           while (1)
           {
             LOBYTE(v52) = 0;
-            v32 = [a3 position] + 1;
-            if (v32 >= [a3 position] && (v33 = objc_msgSend(a3, "position") + 1, v33 <= objc_msgSend(a3, "length")))
+            v32 = [from position] + 1;
+            if (v32 >= [from position] && (v33 = objc_msgSend(from, "position") + 1, v33 <= objc_msgSend(from, "length")))
             {
-              v34 = [a3 data];
-              [v34 getBytes:&v52 range:{objc_msgSend(a3, "position"), 1}];
+              data6 = [from data];
+              [data6 getBytes:&v52 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v31 |= (v52 & 0x7F) << v29;
@@ -933,7 +933,7 @@ LABEL_91:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v35 = 0;
           }
@@ -974,19 +974,19 @@ LABEL_49:
       }
 
 LABEL_97:
-      v50 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v50 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_filterPredicates count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_filterPredicates, "count")}];
@@ -1009,8 +1009,8 @@ LABEL_97:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v33 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v33 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v33 objects:v38 count:16];
@@ -1019,7 +1019,7 @@ LABEL_97:
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"filterPredicates"];
+    [dictionary setObject:v4 forKey:@"filterPredicates"];
   }
 
   has = self->_has;
@@ -1125,7 +1125,7 @@ LABEL_39:
     }
 
 LABEL_40:
-    [v3 setObject:v13 forKey:@"groupingType"];
+    [dictionary setObject:v13 forKey:@"groupingType"];
 
     has = self->_has;
   }
@@ -1133,7 +1133,7 @@ LABEL_40:
   if ((has & 8) != 0)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithBool:self->_filteringDisabled];
-    [v3 setObject:v14 forKey:@"filteringDisabled"];
+    [dictionary setObject:v14 forKey:@"filteringDisabled"];
 
     has = self->_has;
   }
@@ -1151,7 +1151,7 @@ LABEL_40:
       v16 = off_1E7678548[v15];
     }
 
-    [v3 setObject:v16 forKey:@"entityOrder"];
+    [dictionary setObject:v16 forKey:@"entityOrder"];
   }
 
   if ([(NSMutableArray *)self->_staticEntityIdentifiers count])
@@ -1176,8 +1176,8 @@ LABEL_40:
             objc_enumerationMutation(v18);
           }
 
-          v23 = [*(*(&v29 + 1) + 8 * j) dictionaryRepresentation];
-          [v17 addObject:v23];
+          dictionaryRepresentation2 = [*(*(&v29 + 1) + 8 * j) dictionaryRepresentation];
+          [v17 addObject:dictionaryRepresentation2];
         }
 
         v20 = [(NSMutableArray *)v18 countByEnumeratingWithState:&v29 objects:v37 count:16];
@@ -1186,7 +1186,7 @@ LABEL_40:
       while (v20);
     }
 
-    [v3 setObject:v17 forKey:@"staticEntityIdentifiers"];
+    [dictionary setObject:v17 forKey:@"staticEntityIdentifiers"];
   }
 
   v24 = self->_has;
@@ -1208,7 +1208,7 @@ LABEL_40:
       v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", self->_staticEntityType];
     }
 
-    [v3 setObject:v26 forKey:@"staticEntityType"];
+    [dictionary setObject:v26 forKey:@"staticEntityType"];
 
     v24 = self->_has;
   }
@@ -1216,10 +1216,10 @@ LABEL_40:
   if ((v24 & 0x10) != 0)
   {
     v27 = [MEMORY[0x1E696AD98] numberWithBool:self->_includeNonLibraryEntities];
-    [v3 setObject:v27 forKey:@"includeNonLibraryEntities"];
+    [dictionary setObject:v27 forKey:@"includeNonLibraryEntities"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -1228,15 +1228,15 @@ LABEL_40:
   v8.receiver = self;
   v8.super_class = MPPMediaQuery;
   v4 = [(MPPMediaQuery *)&v8 description];
-  v5 = [(MPPMediaQuery *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MPPMediaQuery *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasIncludeNonLibraryEntities:(BOOL)a3
+- (void)setHasIncludeNonLibraryEntities:(BOOL)entities
 {
-  if (a3)
+  if (entities)
   {
     v3 = 16;
   }
@@ -1249,13 +1249,13 @@ LABEL_40:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsStaticEntityType:(id)a3
+- (int)StringAsStaticEntityType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = 1;
-  if (([v3 isEqualToString:@"Item"] & 1) == 0)
+  if (([typeCopy isEqualToString:@"Item"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"Collection"])
+    if ([typeCopy isEqualToString:@"Collection"])
     {
       v4 = 2;
     }
@@ -1269,29 +1269,29 @@ LABEL_40:
   return v4;
 }
 
-- (id)staticEntityTypeAsString:(int)a3
+- (id)staticEntityTypeAsString:(int)string
 {
-  if (a3 == 1)
+  if (string == 1)
   {
     v4 = @"Item";
   }
 
-  else if (a3 == 2)
+  else if (string == 2)
   {
     v4 = @"Collection";
   }
 
   else
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   return v4;
 }
 
-- (void)setHasStaticEntityType:(BOOL)a3
+- (void)setHasStaticEntityType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -1317,38 +1317,38 @@ LABEL_40:
   }
 }
 
-- (void)addStaticEntityIdentifiers:(id)a3
+- (void)addStaticEntityIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   staticEntityIdentifiers = self->_staticEntityIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!staticEntityIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_staticEntityIdentifiers;
     self->_staticEntityIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     staticEntityIdentifiers = self->_staticEntityIdentifiers;
   }
 
-  [(NSMutableArray *)staticEntityIdentifiers addObject:v4];
+  [(NSMutableArray *)staticEntityIdentifiers addObject:identifiersCopy];
 }
 
-- (int)StringAsEntityOrder:(id)a3
+- (int)StringAsEntityOrder:(id)order
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  orderCopy = order;
+  if ([orderCopy isEqualToString:@"Unknown"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Physical"])
+  else if ([orderCopy isEqualToString:@"Physical"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Sorted"])
+  else if ([orderCopy isEqualToString:@"Sorted"])
   {
     v4 = 3;
   }
@@ -1361,16 +1361,16 @@ LABEL_40:
   return v4;
 }
 
-- (id)entityOrderAsString:(int)a3
+- (id)entityOrderAsString:(int)string
 {
-  if ((a3 - 1) >= 3)
+  if ((string - 1) >= 3)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E7678548[a3 - 1];
+    v4 = off_1E7678548[string - 1];
   }
 
   return v4;
@@ -1389,9 +1389,9 @@ LABEL_40:
   }
 }
 
-- (void)setHasFilteringDisabled:(BOOL)a3
+- (void)setHasFilteringDisabled:(BOOL)disabled
 {
-  if (a3)
+  if (disabled)
   {
     v3 = 8;
   }
@@ -1404,70 +1404,70 @@ LABEL_40:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsGroupingType:(id)a3
+- (int)StringAsGroupingType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Title"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Title"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Album"])
+  else if ([typeCopy isEqualToString:@"Album"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Artist"])
+  else if ([typeCopy isEqualToString:@"Artist"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"AlbumArtist"])
+  else if ([typeCopy isEqualToString:@"AlbumArtist"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Composer"])
+  else if ([typeCopy isEqualToString:@"Composer"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Genre"])
+  else if ([typeCopy isEqualToString:@"Genre"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Playlist"])
+  else if ([typeCopy isEqualToString:@"Playlist"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"PodcastTitle"])
+  else if ([typeCopy isEqualToString:@"PodcastTitle"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SeriesName"])
+  else if ([typeCopy isEqualToString:@"SeriesName"])
   {
     v4 = 100;
   }
 
-  else if ([v3 isEqualToString:@"SeasonName"])
+  else if ([typeCopy isEqualToString:@"SeasonName"])
   {
     v4 = 101;
   }
 
-  else if ([v3 isEqualToString:@"AudioBookTitle"])
+  else if ([typeCopy isEqualToString:@"AudioBookTitle"])
   {
     v4 = 102;
   }
 
-  else if ([v3 isEqualToString:@"AlbumPersistentID"])
+  else if ([typeCopy isEqualToString:@"AlbumPersistentID"])
   {
     v4 = 103;
   }
 
-  else if ([v3 isEqualToString:@"AlbumByArtist"])
+  else if ([typeCopy isEqualToString:@"AlbumByArtist"])
   {
     v4 = 104;
   }
@@ -1480,18 +1480,18 @@ LABEL_40:
   return v4;
 }
 
-- (id)groupingTypeAsString:(int)a3
+- (id)groupingTypeAsString:(int)string
 {
-  if (a3 <= 6)
+  if (string <= 6)
   {
-    if (a3 > 3)
+    if (string > 3)
     {
-      if (a3 == 4)
+      if (string == 4)
       {
         v4 = @"AlbumArtist";
       }
 
-      else if (a3 == 5)
+      else if (string == 5)
       {
         v4 = @"Composer";
       }
@@ -1504,7 +1504,7 @@ LABEL_40:
       return v4;
     }
 
-    switch(a3)
+    switch(string)
     {
       case 1:
         v4 = @"Title";
@@ -1521,14 +1521,14 @@ LABEL_40:
     }
 
 LABEL_55:
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
 
     return v4;
   }
 
-  if (a3 <= 100)
+  if (string <= 100)
   {
-    switch(a3)
+    switch(string)
     {
       case 7:
         v4 = @"Playlist";
@@ -1547,9 +1547,9 @@ LABEL_55:
     goto LABEL_55;
   }
 
-  if (a3 <= 102)
+  if (string <= 102)
   {
-    if (a3 == 101)
+    if (string == 101)
     {
       v4 = @"SeasonName";
     }
@@ -1562,9 +1562,9 @@ LABEL_55:
     return v4;
   }
 
-  if (a3 != 103)
+  if (string != 103)
   {
-    if (a3 == 104)
+    if (string == 104)
     {
       v4 = @"AlbumByArtist";
 
@@ -1579,9 +1579,9 @@ LABEL_55:
   return v4;
 }
 
-- (void)setHasGroupingType:(BOOL)a3
+- (void)setHasGroupingType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -1607,22 +1607,22 @@ LABEL_55:
   }
 }
 
-- (void)addFilterPredicates:(id)a3
+- (void)addFilterPredicates:(id)predicates
 {
-  v4 = a3;
+  predicatesCopy = predicates;
   filterPredicates = self->_filterPredicates;
-  v8 = v4;
+  v8 = predicatesCopy;
   if (!filterPredicates)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_filterPredicates;
     self->_filterPredicates = v6;
 
-    v4 = v8;
+    predicatesCopy = v8;
     filterPredicates = self->_filterPredicates;
   }
 
-  [(NSMutableArray *)filterPredicates addObject:v4];
+  [(NSMutableArray *)filterPredicates addObject:predicatesCopy];
 }
 
 @end

@@ -5,16 +5,16 @@
 - (BOOL)eligibleToAdvertise;
 - (BOOL)eligibleToAlwaysAdvertise;
 - (BOOL)isDirty;
-- (BOOL)update:(id)a3;
-- (BOOL)wasResumedOnAnotherDeviceWithCompletionHandler:(id)a3;
+- (BOOL)update:(id)update;
+- (BOOL)wasResumedOnAnotherDeviceWithCompletionHandler:(id)handler;
 - (NSString)proxiedBundleIdentifier;
-- (UAUserActivityAdvertisableItem)initWithUUID:(id)a3 type:(unint64_t)a4 options:(id)a5 client:(id)a6;
-- (UAUserActivityAdvertisableItem)initWithUserActivityInfo:(id)a3 client:(id)a4;
+- (UAUserActivityAdvertisableItem)initWithUUID:(id)d type:(unint64_t)type options:(id)options client:(id)client;
+- (UAUserActivityAdvertisableItem)initWithUserActivityInfo:(id)info client:(id)client;
 - (UAUserActivityClientProcess)client;
 - (id)provenance;
 - (id)webpageURL;
 - (int64_t)alwaysPickValue;
-- (void)setWebpageURL:(id)a3;
+- (void)setWebpageURL:(id)l;
 @end
 
 @implementation UAUserActivityAdvertisableItem
@@ -23,20 +23,20 @@
 {
   v4.receiver = self;
   v4.super_class = UAUserActivityAdvertisableItem;
-  v2 = [(UAUserActivityAdvertisableItem *)&v4 webpageURL];
+  webpageURL = [(UAUserActivityAdvertisableItem *)&v4 webpageURL];
 
-  return v2;
+  return webpageURL;
 }
 
 - (NSString)proxiedBundleIdentifier
 {
-  v3 = [(UAUserActivityAdvertisableItem *)self options];
-  v4 = [v3 objectForKeyedSubscript:@"UAProxiedBundleIdentifier"];
+  options = [(UAUserActivityAdvertisableItem *)self options];
+  v4 = [options objectForKeyedSubscript:@"UAProxiedBundleIdentifier"];
 
   if (v4)
   {
-    v5 = [(UAUserActivityAdvertisableItem *)self options];
-    v6 = [v5 objectForKeyedSubscript:@"UAProxiedBundleIdentifier"];
+    options2 = [(UAUserActivityAdvertisableItem *)self options];
+    v6 = [options2 objectForKeyedSubscript:@"UAProxiedBundleIdentifier"];
   }
 
   else
@@ -49,16 +49,16 @@
 
 - (BOOL)alwaysPick
 {
-  v3 = [(UAUserActivityAdvertisableItem *)self client];
-  v4 = [v3 allowedToUseLSAlwaysPick];
+  client = [(UAUserActivityAdvertisableItem *)self client];
+  allowedToUseLSAlwaysPick = [client allowedToUseLSAlwaysPick];
 
-  if (!v4)
+  if (!allowedToUseLSAlwaysPick)
   {
     return 0;
   }
 
-  v5 = [(UAUserActivityAdvertisableItem *)self options];
-  v6 = [v5 objectForKey:UAUserActivityAlwaysPickKey];
+  options = [(UAUserActivityAdvertisableItem *)self options];
+  v6 = [options objectForKey:UAUserActivityAlwaysPickKey];
 
   if (v6)
   {
@@ -82,60 +82,60 @@
 
 - (BOOL)alwaysEligible
 {
-  v3 = [(UAUserActivityAdvertisableItem *)self options];
-  v4 = [v3 objectForKey:UAAlwaysAdvertise];
+  options = [(UAUserActivityAdvertisableItem *)self options];
+  v4 = [options objectForKey:UAAlwaysAdvertise];
 
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v4 integerValue])
   {
-    v5 = [(UAUserActivityAdvertisableItem *)self client];
-    v6 = [v5 allowedToUseUAAlwaysAdvertise];
+    client = [(UAUserActivityAdvertisableItem *)self client];
+    allowedToUseUAAlwaysAdvertise = [client allowedToUseUAAlwaysAdvertise];
   }
 
   else
   {
-    v6 = 0;
+    allowedToUseUAAlwaysAdvertise = 0;
   }
 
-  return v6;
+  return allowedToUseUAAlwaysAdvertise;
 }
 
 - (BOOL)eligibleToAdvertise
 {
-  v3 = [(UAUserActivityAdvertisableItem *)self client];
-  v4 = [(UAUserActivityAdvertisableItem *)self uuid];
-  v5 = [v3 isEligibleToAdvertiseWithUUID:v4];
+  client = [(UAUserActivityAdvertisableItem *)self client];
+  uuid = [(UAUserActivityAdvertisableItem *)self uuid];
+  v5 = [client isEligibleToAdvertiseWithUUID:uuid];
 
   if (!v5)
   {
     goto LABEL_4;
   }
 
-  v6 = [(UAUserActivityAdvertisableItem *)self expirationDate];
-  if (!v6)
+  expirationDate = [(UAUserActivityAdvertisableItem *)self expirationDate];
+  if (!expirationDate)
   {
     goto LABEL_4;
   }
 
-  v7 = v6;
-  v8 = [(UAUserActivityAdvertisableItem *)self expirationDate];
+  v7 = expirationDate;
+  expirationDate2 = [(UAUserActivityAdvertisableItem *)self expirationDate];
   v9 = +[NSDate date];
-  v10 = [v8 compare:v9];
+  v10 = [expirationDate2 compare:v9];
 
   if ((v10 & 0x8000000000000000) != 0)
   {
     v13 = sub_100001A30(0);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [(UAUserActivityAdvertisableItem *)self uuid];
-      v15 = [v14 UUIDString];
-      v16 = [(UAAdvertisableItem *)self statusString];
-      v17 = [(UAUserActivityAdvertisableItem *)self expirationDate];
+      uuid2 = [(UAUserActivityAdvertisableItem *)self uuid];
+      uUIDString = [uuid2 UUIDString];
+      statusString = [(UAAdvertisableItem *)self statusString];
+      expirationDate3 = [(UAUserActivityAdvertisableItem *)self expirationDate];
       v18 = 138543875;
-      v19 = v15;
+      v19 = uUIDString;
       v20 = 2113;
-      v21 = v16;
+      v21 = statusString;
       v22 = 2114;
-      v23 = v17;
+      v23 = expirationDate3;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "-- item %{public}@/%{private}@ not eligible, because it has expired (on %{public}@)", &v18, 0x20u);
     }
 
@@ -153,201 +153,201 @@ LABEL_4:
 
 - (BOOL)eligibleToAlwaysAdvertise
 {
-  v3 = [(UAUserActivityAdvertisableItem *)self client];
-  v4 = [(UAUserActivityAdvertisableItem *)self uuid];
-  v5 = [v3 isEligibleToAlwaysAdvertiseWithUUID:v4];
+  client = [(UAUserActivityAdvertisableItem *)self client];
+  uuid = [(UAUserActivityAdvertisableItem *)self uuid];
+  v5 = [client isEligibleToAlwaysAdvertiseWithUUID:uuid];
 
   return v5;
 }
 
 - (BOOL)eligibleInBackground
 {
-  v3 = [(UAUserActivityAdvertisableItem *)self options];
-  v4 = [v3 objectForKey:UAUserActivityEligibleEvenWhenInBackgroundKey];
+  options = [(UAUserActivityAdvertisableItem *)self options];
+  v4 = [options objectForKey:UAUserActivityEligibleEvenWhenInBackgroundKey];
 
   if ([v4 integerValue] >= 1 && (-[UAUserActivityAdvertisableItem client](self, "client"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "allowedToUseEligibleEvenWhenInBackground"), v5, v6))
   {
-    v7 = [(UAUserActivityAdvertisableItem *)self client];
-    v8 = [v7 allowedToUseEligibleEvenWhenInBackground];
+    client = [(UAUserActivityAdvertisableItem *)self client];
+    allowedToUseEligibleEvenWhenInBackground = [client allowedToUseEligibleEvenWhenInBackground];
   }
 
   else
   {
-    v8 = 0;
+    allowedToUseEligibleEvenWhenInBackground = 0;
   }
 
-  return v8;
+  return allowedToUseEligibleEvenWhenInBackground;
 }
 
-- (UAUserActivityAdvertisableItem)initWithUserActivityInfo:(id)a3 client:(id)a4
+- (UAUserActivityAdvertisableItem)initWithUserActivityInfo:(id)info client:(id)client
 {
-  v6 = a4;
+  clientCopy = client;
   v10.receiver = self;
   v10.super_class = UAUserActivityAdvertisableItem;
-  v7 = [(UAUserActivityAdvertisableItem *)&v10 initWithUserActivityInfo:a3];
+  v7 = [(UAUserActivityAdvertisableItem *)&v10 initWithUserActivityInfo:info];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_client, v6);
+    objc_storeWeak(&v7->_client, clientCopy);
   }
 
   return v8;
 }
 
-- (UAUserActivityAdvertisableItem)initWithUUID:(id)a3 type:(unint64_t)a4 options:(id)a5 client:(id)a6
+- (UAUserActivityAdvertisableItem)initWithUUID:(id)d type:(unint64_t)type options:(id)options client:(id)client
 {
-  v10 = a6;
+  clientCopy = client;
   v15.receiver = self;
   v15.super_class = UAUserActivityAdvertisableItem;
-  v11 = [(UAUserActivityAdvertisableItem *)&v15 initWithUUID:a3 type:a4 options:a5];
+  v11 = [(UAUserActivityAdvertisableItem *)&v15 initWithUUID:d type:type options:options];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_client, v10);
-    v13 = [v10 teamID];
-    [(UAUserActivityAdvertisableItem *)v12 setTeamIdentifier:v13];
+    objc_storeWeak(&v11->_client, clientCopy);
+    teamID = [clientCopy teamID];
+    [(UAUserActivityAdvertisableItem *)v12 setTeamIdentifier:teamID];
   }
 
   return v12;
 }
 
-- (void)setWebpageURL:(id)a3
+- (void)setWebpageURL:(id)l
 {
-  v4 = a3;
-  if (!v4 || (-[UAUserActivityAdvertisableItem webpageURL](self, "webpageURL"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v4 isEqual:v5], v5, (v6 & 1) == 0))
+  lCopy = l;
+  if (!lCopy || (-[UAUserActivityAdvertisableItem webpageURL](self, "webpageURL"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [lCopy isEqual:v5], v5, (v6 & 1) == 0))
   {
     v7.receiver = self;
     v7.super_class = UAUserActivityAdvertisableItem;
-    [(UAUserActivityAdvertisableItem *)&v7 setWebpageURL:v4];
+    [(UAUserActivityAdvertisableItem *)&v7 setWebpageURL:lCopy];
   }
 }
 
 - (int64_t)alwaysPickValue
 {
-  v3 = [(UAUserActivityAdvertisableItem *)self options];
-  v4 = [v3 objectForKey:UAUserActivityAlwaysPickKey];
+  options = [(UAUserActivityAdvertisableItem *)self options];
+  v4 = [options objectForKey:UAUserActivityAlwaysPickKey];
 
   if (v4 && (-[UAUserActivityAdvertisableItem client](self, "client"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 allowedToUseLSAlwaysPick], v5, v6))
   {
-    v7 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
-    v7 = 0;
+    integerValue = 0;
   }
 
-  return v7;
+  return integerValue;
 }
 
 - (id)provenance
 {
-  v3 = [(UAUserActivityAdvertisableItem *)self client];
-  v4 = [(UAUserActivityAdvertisableItem *)self uuid];
-  if (v3)
+  client = [(UAUserActivityAdvertisableItem *)self client];
+  uuid = [(UAUserActivityAdvertisableItem *)self uuid];
+  if (client)
   {
-    v5 = [(UAUserActivityAdvertisableItem *)self client];
-    v6 = [v5 auditToken];
-    v7 = [v6 pid];
-    v8 = [(UAUserActivityAdvertisableItem *)self activityType];
-    v9 = [(UAUserActivityAdvertisableItem *)self dynamicActivityType];
-    v10 = v9;
+    client2 = [(UAUserActivityAdvertisableItem *)self client];
+    auditToken = [client2 auditToken];
+    v7 = [auditToken pid];
+    activityType = [(UAUserActivityAdvertisableItem *)self activityType];
+    dynamicActivityType = [(UAUserActivityAdvertisableItem *)self dynamicActivityType];
+    v10 = dynamicActivityType;
     v11 = &stru_1000C67D0;
-    if (v9)
+    if (dynamicActivityType)
     {
-      v11 = v9;
+      v11 = dynamicActivityType;
     }
 
-    v12 = [NSString stringWithFormat:@"UA:%@-%d/%@-%@", v4, v7, v8, v11];
+    v12 = [NSString stringWithFormat:@"UA:%@-%d/%@-%@", uuid, v7, activityType, v11];
   }
 
   else
   {
-    v5 = [(UAUserActivityAdvertisableItem *)self activityType];
-    v13 = [(UAUserActivityAdvertisableItem *)self dynamicActivityType];
-    v6 = v13;
+    client2 = [(UAUserActivityAdvertisableItem *)self activityType];
+    dynamicActivityType2 = [(UAUserActivityAdvertisableItem *)self dynamicActivityType];
+    auditToken = dynamicActivityType2;
     v14 = &stru_1000C67D0;
-    if (v13)
+    if (dynamicActivityType2)
     {
-      v14 = v13;
+      v14 = dynamicActivityType2;
     }
 
-    v12 = [NSString stringWithFormat:@"UA:%@/%@-%@", v4, v5, v14];
+    v12 = [NSString stringWithFormat:@"UA:%@/%@-%@", uuid, client2, v14];
   }
 
   return v12;
 }
 
-- (BOOL)update:(id)a3
+- (BOOL)update:(id)update
 {
-  v4 = a3;
-  v5 = [v4 title];
-  [(UAUserActivityAdvertisableItem *)self setTitle:v5];
+  updateCopy = update;
+  title = [updateCopy title];
+  [(UAUserActivityAdvertisableItem *)self setTitle:title];
 
-  v6 = [v4 payloads];
-  [(UAUserActivityAdvertisableItem *)self setPayloads:v6];
+  payloads = [updateCopy payloads];
+  [(UAUserActivityAdvertisableItem *)self setPayloads:payloads];
 
-  v7 = [v4 expirationDate];
-  [(UAUserActivityAdvertisableItem *)self setExpirationDate:v7];
+  expirationDate = [updateCopy expirationDate];
+  [(UAUserActivityAdvertisableItem *)self setExpirationDate:expirationDate];
 
-  v8 = [v4 webpageURL];
-  [(UAUserActivityAdvertisableItem *)self setWebpageURL:v8];
+  webpageURL = [updateCopy webpageURL];
+  [(UAUserActivityAdvertisableItem *)self setWebpageURL:webpageURL];
 
-  v9 = [v4 referrerURL];
-  [(UAUserActivityAdvertisableItem *)self setReferrerURL:v9];
+  referrerURL = [updateCopy referrerURL];
+  [(UAUserActivityAdvertisableItem *)self setReferrerURL:referrerURL];
 
-  v10 = [v4 targetContentIdentifier];
-  [(UAUserActivityAdvertisableItem *)self setTargetContentIdentifier:v10];
+  targetContentIdentifier = [updateCopy targetContentIdentifier];
+  [(UAUserActivityAdvertisableItem *)self setTargetContentIdentifier:targetContentIdentifier];
 
-  v11 = [v4 persistentIdentifier];
-  [(UAUserActivityAdvertisableItem *)self setPersistentIdentifier:v11];
+  persistentIdentifier = [updateCopy persistentIdentifier];
+  [(UAUserActivityAdvertisableItem *)self setPersistentIdentifier:persistentIdentifier];
 
-  v12 = [v4 options];
-  [(UAUserActivityAdvertisableItem *)self setOptions:v12];
+  options = [updateCopy options];
+  [(UAUserActivityAdvertisableItem *)self setOptions:options];
 
-  v13 = [v4 when];
-  [(UAUserActivityAdvertisableItem *)self setWhen:v13];
+  when = [updateCopy when];
+  [(UAUserActivityAdvertisableItem *)self setWhen:when];
 
-  -[UAUserActivityAdvertisableItem setEligibleForHandoff:](self, "setEligibleForHandoff:", [v4 eligibleForHandoff]);
-  -[UAUserActivityAdvertisableItem setEligibleForSearch:](self, "setEligibleForSearch:", [v4 eligibleForSearch]);
-  v14 = [v4 eligibleForPublicIndexing];
+  -[UAUserActivityAdvertisableItem setEligibleForHandoff:](self, "setEligibleForHandoff:", [updateCopy eligibleForHandoff]);
+  -[UAUserActivityAdvertisableItem setEligibleForSearch:](self, "setEligibleForSearch:", [updateCopy eligibleForSearch]);
+  eligibleForPublicIndexing = [updateCopy eligibleForPublicIndexing];
 
-  [(UAUserActivityAdvertisableItem *)self setEligibleForPublicIndexing:v14];
+  [(UAUserActivityAdvertisableItem *)self setEligibleForPublicIndexing:eligibleForPublicIndexing];
   return 1;
 }
 
 - (BOOL)isDirty
 {
-  v3 = [(UAUserActivityAdvertisableItem *)self client];
-  v4 = [(UAUserActivityAdvertisableItem *)self uuid];
-  v5 = [v3 isDirtyActivityWithUUID:v4];
+  client = [(UAUserActivityAdvertisableItem *)self client];
+  uuid = [(UAUserActivityAdvertisableItem *)self uuid];
+  v5 = [client isDirtyActivityWithUUID:uuid];
 
   return v5;
 }
 
-- (BOOL)wasResumedOnAnotherDeviceWithCompletionHandler:(id)a3
+- (BOOL)wasResumedOnAnotherDeviceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = sub_100001A30(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(UAUserActivityAdvertisableItem *)self uuid];
-    v7 = [v6 UUIDString];
-    v8 = [(UAUserActivityAdvertisableItem *)self client];
-    v9 = [v8 auditToken];
+    uuid = [(UAUserActivityAdvertisableItem *)self uuid];
+    uUIDString = [uuid UUIDString];
+    client = [(UAUserActivityAdvertisableItem *)self client];
+    auditToken = [client auditToken];
     v15 = 138543618;
-    v16 = v7;
+    v16 = uUIDString;
     v17 = 2048;
-    v18 = [v9 pid];
+    v18 = [auditToken pid];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "wasResumedOnAnotherDevice, %{public}@ to client pid=%ld", &v15, 0x16u);
   }
 
-  v10 = [(UAUserActivityAdvertisableItem *)self client];
-  if (v10)
+  client2 = [(UAUserActivityAdvertisableItem *)self client];
+  if (client2)
   {
-    v11 = [(UAUserActivityAdvertisableItem *)self client];
-    v12 = [(UAUserActivityAdvertisableItem *)self uuid];
-    v13 = [v11 didResumeUserActivityWithUUID:v12 completionHandler:v4];
+    client3 = [(UAUserActivityAdvertisableItem *)self client];
+    uuid2 = [(UAUserActivityAdvertisableItem *)self uuid];
+    v13 = [client3 didResumeUserActivityWithUUID:uuid2 completionHandler:handlerCopy];
   }
 
   else

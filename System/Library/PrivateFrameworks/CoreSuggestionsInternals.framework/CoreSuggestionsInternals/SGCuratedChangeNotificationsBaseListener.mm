@@ -1,6 +1,6 @@
 @interface SGCuratedChangeNotificationsBaseListener
 - (SGCuratedChangeNotificationsBaseListener)init;
-- (void)addObserver:(id)a3 forObjectLifetime:(id)a4;
+- (void)addObserver:(id)observer forObjectLifetime:(id)lifetime;
 - (void)dealloc;
 - (void)fire;
 @end
@@ -13,8 +13,8 @@
   v3 = self->_liveObserversMap;
   objc_sync_enter(v3);
   v4 = objc_autoreleasePoolPush();
-  v5 = [(NSMapTable *)self->_liveObserversMap objectEnumerator];
-  v6 = [v5 allObjects];
+  objectEnumerator = [(NSMapTable *)self->_liveObserversMap objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
 
   objc_autoreleasePoolPop(v4);
   objc_sync_exit(v3);
@@ -23,7 +23,7 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v6;
+  v7 = allObjects;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -55,16 +55,16 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addObserver:(id)a3 forObjectLifetime:(id)a4
+- (void)addObserver:(id)observer forObjectLifetime:(id)lifetime
 {
-  v11 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  lifetimeCopy = lifetime;
   v7 = self->_liveObserversMap;
   objc_sync_enter(v7);
   liveObserversMap = self->_liveObserversMap;
-  v9 = [v11 copy];
+  v9 = [observerCopy copy];
   v10 = MEMORY[0x2383809F0]();
-  [(NSMapTable *)liveObserversMap setObject:v10 forKey:v6];
+  [(NSMapTable *)liveObserversMap setObject:v10 forKey:lifetimeCopy];
 
   objc_sync_exit(v7);
 }
@@ -84,9 +84,9 @@
   v2 = [(SGCuratedChangeNotificationsBaseListener *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     liveObserversMap = v2->_liveObserversMap;
-    v2->_liveObserversMap = v3;
+    v2->_liveObserversMap = weakToStrongObjectsMapTable;
 
     [(SGCuratedChangeNotificationsBaseListener *)v2 startListening];
   }

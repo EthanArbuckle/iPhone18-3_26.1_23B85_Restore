@@ -2,29 +2,29 @@
 - ($54B668FA3CFF7C50914A1C899F2834C0)viewport;
 - (SCNMatrix4)projectionMatrix;
 - (SCNMatrix4)viewMatrix;
-- (__n128)setSimdProjectionMatrix:(__n128)a3;
-- (__n128)setSimdViewMatrix:(__n128)a3;
+- (__n128)setSimdProjectionMatrix:(__n128)matrix;
+- (__n128)setSimdViewMatrix:(__n128)matrix;
 - (void)dealloc;
-- (void)setProjectionMatrix:(SCNMatrix4 *)a3;
-- (void)setViewMatrix:(SCNMatrix4 *)a3;
-- (void)setViewport:(id *)a3;
+- (void)setProjectionMatrix:(SCNMatrix4 *)matrix;
+- (void)setViewMatrix:(SCNMatrix4 *)matrix;
+- (void)setViewport:(id *)viewport;
 @end
 
 @implementation SCNRendererViewPoint
 
-- (__n128)setSimdViewMatrix:(__n128)a3
+- (__n128)setSimdViewMatrix:(__n128)matrix
 {
   result[4] = a2;
-  result[5] = a3;
+  result[5] = matrix;
   result[6] = a4;
   result[7] = a5;
   return result;
 }
 
-- (__n128)setSimdProjectionMatrix:(__n128)a3
+- (__n128)setSimdProjectionMatrix:(__n128)matrix
 {
   result[8] = a2;
-  result[9] = a3;
+  result[9] = matrix;
   result[10] = a4;
   result[11] = a5;
   return result;
@@ -39,11 +39,11 @@
   return self;
 }
 
-- (void)setViewport:(id *)a3
+- (void)setViewport:(id *)viewport
 {
-  v3 = *&a3->var0;
-  v4 = *&a3->var4;
-  *&self->_viewport.width = *&a3->var2;
+  v3 = *&viewport->var0;
+  v4 = *&viewport->var4;
+  *&self->_viewport.width = *&viewport->var2;
   *&self->_viewport.znear = v4;
   *&self->_viewport.originX = v3;
 }
@@ -66,12 +66,12 @@
   return self;
 }
 
-- (void)setViewMatrix:(SCNMatrix4 *)a3
+- (void)setViewMatrix:(SCNMatrix4 *)matrix
 {
-  v3 = *&a3->m11;
-  v4 = *&a3->m21;
-  v5 = *&a3->m41;
-  *&self->_viewMatrix.m31 = *&a3->m31;
+  v3 = *&matrix->m11;
+  v4 = *&matrix->m21;
+  v5 = *&matrix->m41;
+  *&self->_viewMatrix.m31 = *&matrix->m31;
   *&self->_viewMatrix.m41 = v5;
   *&self->_viewMatrix.m11 = v3;
   *&self->_viewMatrix.m21 = v4;
@@ -88,12 +88,12 @@
   return self;
 }
 
-- (void)setProjectionMatrix:(SCNMatrix4 *)a3
+- (void)setProjectionMatrix:(SCNMatrix4 *)matrix
 {
-  v3 = *&a3->m11;
-  v4 = *&a3->m21;
-  v5 = *&a3->m41;
-  *&self->_projectionMatrix.m31 = *&a3->m31;
+  v3 = *&matrix->m11;
+  v4 = *&matrix->m21;
+  v5 = *&matrix->m41;
+  *&self->_projectionMatrix.m31 = *&matrix->m31;
   *&self->_projectionMatrix.m41 = v5;
   *&self->_projectionMatrix.m11 = v3;
   *&self->_projectionMatrix.m21 = v4;

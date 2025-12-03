@@ -1,14 +1,14 @@
 @interface RMMigrationSystemContainer
-- (BOOL)_directoryExistsAtURL:(id)a3;
-- (BOOL)_migrateFromURL:(id)a3 toURL:(id)a4 error:(id *)a5;
-- (BOOL)_moveDirectory:(id)a3 fromURL:(id)a4 toURL:(id)a5 error:(id *)a6;
-- (BOOL)_okToMigrateFromURL:(id)a3 toURL:(id)a4;
-- (BOOL)executeReturningError:(id *)a3;
+- (BOOL)_directoryExistsAtURL:(id)l;
+- (BOOL)_migrateFromURL:(id)l toURL:(id)rL error:(id *)error;
+- (BOOL)_moveDirectory:(id)directory fromURL:(id)l toURL:(id)rL error:(id *)error;
+- (BOOL)_okToMigrateFromURL:(id)l toURL:(id)rL;
+- (BOOL)executeReturningError:(id *)error;
 @end
 
 @implementation RMMigrationSystemContainer
 
-- (BOOL)executeReturningError:(id *)a3
+- (BOOL)executeReturningError:(id *)error
 {
   if (+[RMBundle managementScope]== 1)
   {
@@ -16,7 +16,7 @@
     v6 = [RMLocations baseDirectoryURLCreateIfNeeded:1];
     if ([(RMMigrationSystemContainer *)self _okToMigrateFromURL:v5 toURL:v6])
     {
-      v7 = [(RMMigrationSystemContainer *)self _migrateFromURL:v5 toURL:v6 error:a3];
+      v7 = [(RMMigrationSystemContainer *)self _migrateFromURL:v5 toURL:v6 error:error];
 
       return v7;
     }
@@ -31,12 +31,12 @@
   return 1;
 }
 
-- (BOOL)_okToMigrateFromURL:(id)a3 toURL:(id)a4
+- (BOOL)_okToMigrateFromURL:(id)l toURL:(id)rL
 {
   v6 = DatabaseDirectoryName;
-  v7 = a4;
-  v8 = [a3 URLByAppendingPathComponent:v6];
-  v9 = [v7 URLByAppendingPathComponent:v6];
+  rLCopy = rL;
+  v8 = [l URLByAppendingPathComponent:v6];
+  v9 = [rLCopy URLByAppendingPathComponent:v6];
 
   v10 = [(RMMigrationSystemContainer *)self _directoryExistsAtURL:v8];
   v11 = [(RMMigrationSystemContainer *)self _directoryExistsAtURL:v9];
@@ -61,21 +61,21 @@
   return (v11 ^ 1) & v10;
 }
 
-- (BOOL)_directoryExistsAtURL:(id)a3
+- (BOOL)_directoryExistsAtURL:(id)l
 {
   v7 = 0;
-  v3 = a3;
+  lCopy = l;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v3 path];
+  path = [lCopy path];
 
-  LOBYTE(v3) = [v4 fileExistsAtPath:v5 isDirectory:&v7];
-  return v3 & v7;
+  LOBYTE(lCopy) = [v4 fileExistsAtPath:path isDirectory:&v7];
+  return lCopy & v7;
 }
 
-- (BOOL)_migrateFromURL:(id)a3 toURL:(id)a4 error:(id *)a5
+- (BOOL)_migrateFromURL:(id)l toURL:(id)rL error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v10 = +[RMLog migrationSystemContainer];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -105,7 +105,7 @@
           objc_enumerationMutation(v11);
         }
 
-        if (![(RMMigrationSystemContainer *)self _moveDirectory:*(*(&v18 + 1) + 8 * i) fromURL:v8 toURL:v9 error:a5])
+        if (![(RMMigrationSystemContainer *)self _moveDirectory:*(*(&v18 + 1) + 8 * i) fromURL:lCopy toURL:rLCopy error:error])
         {
           v16 = 0;
           goto LABEL_13;
@@ -128,17 +128,17 @@ LABEL_13:
   return v16;
 }
 
-- (BOOL)_moveDirectory:(id)a3 fromURL:(id)a4 toURL:(id)a5 error:(id *)a6
+- (BOOL)_moveDirectory:(id)directory fromURL:(id)l toURL:(id)rL error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [a4 URLByAppendingPathComponent:v9];
-  v12 = [v10 URLByAppendingPathComponent:v9];
+  directoryCopy = directory;
+  rLCopy = rL;
+  v11 = [l URLByAppendingPathComponent:directoryCopy];
+  v12 = [rLCopy URLByAppendingPathComponent:directoryCopy];
 
   v31 = 0;
   v13 = +[NSFileManager defaultManager];
-  v14 = [v11 path];
-  v15 = [v13 fileExistsAtPath:v14 isDirectory:&v31];
+  path = [v11 path];
+  v15 = [v13 fileExistsAtPath:path isDirectory:&v31];
 
   if ((v15 & 1) == 0)
   {
@@ -152,8 +152,8 @@ LABEL_13:
     goto LABEL_12;
   }
 
-  v16 = [v11 path];
-  v17 = [v12 path];
+  path2 = [v11 path];
+  path3 = [v12 path];
   v30[1] = 0;
   v18 = DMCSafelyCopyItemAtPathToDestinationPath();
   v19 = 0;
@@ -192,11 +192,11 @@ LABEL_12:
   }
 
   v27 = 0;
-  if (a6 && v19)
+  if (error && v19)
   {
     v28 = v19;
     v27 = 0;
-    *a6 = v19;
+    *error = v19;
   }
 
   v24 = v19;

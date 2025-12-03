@@ -1,53 +1,53 @@
 @interface MKGradientPolylineRenderer
 - (BOOL)_canProvideVectorGeometry;
-- (MKGradientPolylineRenderer)initWithCoder:(id)a3;
+- (MKGradientPolylineRenderer)initWithCoder:(id)coder;
 - (NSArray)colors;
 - (NSArray)locations;
 - (void)_updateColorStops;
-- (void)_updateVectorGeometry:(id)a3;
-- (void)drawMapRect:(id)a3 zoomScale:(double)a4 inContext:(CGContext *)a5;
-- (void)encodeWithCoder:(id)a3;
+- (void)_updateVectorGeometry:(id)geometry;
+- (void)drawMapRect:(id)rect zoomScale:(double)scale inContext:(CGContext *)context;
+- (void)encodeWithCoder:(id)coder;
 - (void)setColors:(NSArray *)colors atLocations:(NSArray *)locations;
 @end
 
 @implementation MKGradientPolylineRenderer
 
-- (void)drawMapRect:(id)a3 zoomScale:(double)a4 inContext:(CGContext *)a5
+- (void)drawMapRect:(id)rect zoomScale:(double)scale inContext:(CGContext *)context
 {
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v9 = a3.var0.var1;
-  v10 = a3.var0.var0;
-  v11 = self;
-  objc_sync_enter(v11);
-  v12 = v11->_locations;
-  v13 = v11->_colors;
-  objc_sync_exit(v11);
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v9 = rect.var0.var1;
+  v10 = rect.var0.var0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v12 = selfCopy->_locations;
+  v13 = selfCopy->_colors;
+  objc_sync_exit(selfCopy);
 
   if (![(NSArray *)v12 count])
   {
-    v195.receiver = v11;
+    v195.receiver = selfCopy;
     v195.super_class = MKGradientPolylineRenderer;
-    [(MKPolylineRenderer *)&v195 drawMapRect:a5 zoomScale:v10 inContext:v9, var0, var1, a4];
+    [(MKPolylineRenderer *)&v195 drawMapRect:context zoomScale:v10 inContext:v9, var0, var1, scale];
     goto LABEL_136;
   }
 
-  v14 = [(MKOverlayRenderer *)v11 overlay];
-  v176 = [v14 points];
+  overlay = [(MKOverlayRenderer *)selfCopy overlay];
+  points = [overlay points];
 
-  v15 = [(MKOverlayRenderer *)v11 overlay];
-  v16 = [v15 pointCount];
+  overlay2 = [(MKOverlayRenderer *)selfCopy overlay];
+  pointCount = [overlay2 pointCount];
 
-  if (v16 >= 2)
+  if (pointCount >= 2)
   {
-    CGContextSaveGState(a5);
-    [(MKOverlayRenderer *)v11 contentScaleFactor];
+    CGContextSaveGState(context);
+    [(MKOverlayRenderer *)selfCopy contentScaleFactor];
     v18 = v17;
-    [(MKOverlayPathRenderer *)v11 lineWidth];
+    [(MKOverlayPathRenderer *)selfCopy lineWidth];
     v20 = v19;
-    join = [(MKOverlayPathRenderer *)v11 lineJoin];
-    v21 = [(MKOverlayPathRenderer *)v11 lineCap];
-    [(MKOverlayPathRenderer *)v11 miterLimit];
+    join = [(MKOverlayPathRenderer *)selfCopy lineJoin];
+    lineCap = [(MKOverlayPathRenderer *)selfCopy lineCap];
+    [(MKOverlayPathRenderer *)selfCopy miterLimit];
     if (v22 <= 0.0)
     {
       v23 = 10.0;
@@ -60,7 +60,7 @@
 
     if (v20 <= 0.0)
     {
-      v24 = vcvtmd_s64_f64(log2(a4) + 0.5);
+      v24 = vcvtmd_s64_f64(log2(scale) + 0.5);
       if (v24 >= -21)
       {
         v25 = (v24 & (v24 >> 63)) + 21;
@@ -74,71 +74,71 @@
       v20 = dbl_1A30F7B28[v25];
     }
 
-    v26 = [(MKOverlayPathRenderer *)v11 lineDashPattern];
-    [(MKOverlayPathRenderer *)v11 lineDashPhase];
+    lineDashPattern = [(MKOverlayPathRenderer *)selfCopy lineDashPattern];
+    [(MKOverlayPathRenderer *)selfCopy lineDashPhase];
     v28 = v27;
-    [(MKOverlayRenderer *)v11 _originMapPoint];
+    [(MKOverlayRenderer *)selfCopy _originMapPoint];
     v177 = v30;
     v178 = v29;
-    [(MKPolylineRenderer *)v11 strokeStart];
+    [(MKPolylineRenderer *)selfCopy strokeStart];
     v32 = v31;
-    [(MKPolylineRenderer *)v11 strokeEnd];
+    [(MKPolylineRenderer *)selfCopy strokeEnd];
     v185 = v33;
-    v162 = v18 * (v20 / a4);
-    CGContextSetLineWidth(a5, v162);
-    CGContextSetLineJoin(a5, join);
-    v159 = v18 * (v23 / a4);
-    CGContextSetMiterLimit(a5, v159);
-    CGContextSetBlendMode(a5, kCGBlendModeCopy);
+    v162 = v18 * (v20 / scale);
+    CGContextSetLineWidth(context, v162);
+    CGContextSetLineJoin(context, join);
+    v159 = v18 * (v23 / scale);
+    CGContextSetMiterLimit(context, v159);
+    CGContextSetBlendMode(context, kCGBlendModeCopy);
     if (v32 > 0.0 || v185 < 1.0)
     {
-      v34 = [(MKOverlayRenderer *)v11 overlay];
-      [v34 _mapPointsLength];
+      overlay3 = [(MKOverlayRenderer *)selfCopy overlay];
+      [overlay3 _mapPointsLength];
       v197.y = v177;
       v197.x = v178;
-      path = _createClipPath(v176, v16, v162, v21, join, v159, v197, a4, v32, v185, v35);
+      path = _createClipPath(points, pointCount, v162, lineCap, join, v159, v197, scale, v32, v185, v35);
 
-      if ([v26 count])
+      if ([lineDashPattern count])
       {
-        DashedClipPath = _createDashedClipPath(&v176->x, v16, v21, join, v26, v162, v159, v178, v177, a4, v28, v18);
-        CGContextAddPath(a5, DashedClipPath);
-        CGContextClip(a5);
+        DashedClipPath = _createDashedClipPath(&points->x, pointCount, lineCap, join, lineDashPattern, v162, v159, v178, v177, scale, v28, v18);
+        CGContextAddPath(context, DashedClipPath);
+        CGContextClip(context);
         CGPathRelease(DashedClipPath);
       }
     }
 
     else
     {
-      if ([v26 count])
+      if ([lineDashPattern count])
       {
-        path = _createDashedClipPath(&v176->x, v16, v21, join, v26, v162, v159, v178, v177, a4, v28, v18);
-        CGContextAddPath(a5, path);
+        path = _createDashedClipPath(&points->x, pointCount, lineCap, join, lineDashPattern, v162, v159, v178, v177, scale, v28, v18);
+        CGContextAddPath(context, path);
         goto LABEL_20;
       }
 
-      v37 = [(MKOverlayRenderer *)v11 overlay];
-      [v37 _mapPointsLength];
+      overlay4 = [(MKOverlayRenderer *)selfCopy overlay];
+      [overlay4 _mapPointsLength];
       v198.y = v177;
       v198.x = v178;
-      path = _createClipPath(v176, v16, v162, v21, join, v159, v198, a4, v32, v185, v38);
+      path = _createClipPath(points, pointCount, v162, lineCap, join, v159, v198, scale, v32, v185, v38);
     }
 
-    CGContextAddPath(a5, path);
+    CGContextAddPath(context, path);
 LABEL_20:
-    CGContextClip(a5);
-    CGContextSaveGState(a5);
+    CGContextClip(context);
+    CGContextSaveGState(context);
     space = CGColorSpaceCreateDeviceRGB();
     v170 = v32;
-    v161 = v21;
-    v148 = v11;
-    v184 = a5;
-    v149 = v26;
-    v39 = v16 - 1;
-    x = v176->x;
-    y = v176->y;
-    p_y = &v176[1].y;
-    v180 = v16;
-    v181 = v16 - 1;
+    v161 = lineCap;
+    v148 = selfCopy;
+    contextCopy = context;
+    v149 = lineDashPattern;
+    v39 = pointCount - 1;
+    x = points->x;
+    y = points->y;
+    p_y = &points[1].y;
+    v180 = pointCount;
+    v181 = pointCount - 1;
     v43 = 0.0;
     do
     {
@@ -161,11 +161,11 @@ LABEL_20:
     v182 = *MEMORY[0x1E695EFF8];
     v183 = *(MEMORY[0x1E695EFF8] + 8);
     v158 = v162 * 0.5;
-    v47 = 5.0 / a4 * (5.0 / a4);
+    v47 = 5.0 / scale * (5.0 / scale);
     v48.f64[0] = v178;
     v48.f64[1] = v177;
     v194 = v48;
-    v193 = v176 + 1;
+    v193 = points + 1;
     v49 = 0x7FFFFFFFFFFFFFFFLL;
     v188 = 0.0;
     v153 = v13;
@@ -178,19 +178,19 @@ LABEL_20:
       if (v188 / v175 >= v185)
       {
 LABEL_133:
-        CGContextRestoreGState(v184);
-        v147 = [(MKOverlayPathRenderer *)v148 strokeColor];
-        if ((v189 & (v147 != 0)) == 1)
+        CGContextRestoreGState(contextCopy);
+        strokeColor = [(MKOverlayPathRenderer *)v148 strokeColor];
+        if ((v189 & (strokeColor != 0)) == 1)
         {
-          CGContextSaveGState(v184);
-          CGContextSetBlendMode(v184, kCGBlendModeDestinationOver);
-          CGContextSetFillColorWithColor(v184, [v147 CGColor]);
-          CGContextAddPath(v184, path);
-          CGContextFillPath(v184);
-          CGContextRestoreGState(v184);
+          CGContextSaveGState(contextCopy);
+          CGContextSetBlendMode(contextCopy, kCGBlendModeDestinationOver);
+          CGContextSetFillColorWithColor(contextCopy, [strokeColor CGColor]);
+          CGContextAddPath(contextCopy, path);
+          CGContextFillPath(contextCopy);
+          CGContextRestoreGState(contextCopy);
         }
 
-        CGContextRestoreGState(v184);
+        CGContextRestoreGState(contextCopy);
         CGGradientRelease(gradient);
         CGPathRelease(path);
         CGColorSpaceRelease(space);
@@ -199,7 +199,7 @@ LABEL_133:
       }
 
       v53 = v46;
-      v54 = &v176[v46];
+      v54 = &points[v46];
       v55 = v54->f64[0];
       v56 = v54->f64[1];
       v182 = v54->f64[0] - v178;
@@ -261,7 +261,7 @@ LABEL_132:
       v68 = (v185 - v52) / (v192 - v52);
     }
 
-    v69 = &v176[v46];
+    v69 = &points[v46];
     v70 = v69->f64[1];
     v165 = v70;
     v166 = v69->f64[0];
@@ -351,13 +351,13 @@ LABEL_132:
       CopyByStrokingPath = _MKCGPathCreateCopyByStrokingPath(Mutable, v80, v81, join, v162, v159);
       CGPathRelease(Mutable);
 LABEL_105:
-      CGContextSaveGState(v184);
+      CGContextSaveGState(contextCopy);
       if (join != kCGLineJoinRound)
       {
-        CGContextSetShouldAntialias(v184, 0);
+        CGContextSetShouldAntialias(contextCopy, 0);
       }
 
-      CGContextAddPath(v184, CopyByStrokingPath);
+      CGContextAddPath(contextCopy, CopyByStrokingPath);
       v100 = v12;
       v101 = [(NSArray *)v100 count];
       v102 = 0;
@@ -388,13 +388,13 @@ LABEL_105:
       if (v101 == 1)
       {
         v108 = [(NSArray *)v13 objectAtIndexedSubscript:v104];
-        CGContextSetFillColorWithColor(v184, [v108 CGColor]);
-        CGContextFillPath(v184);
+        CGContextSetFillColorWithColor(contextCopy, [v108 CGColor]);
+        CGContextFillPath(contextCopy);
       }
 
       else
       {
-        CGContextClip(v184);
+        CGContextClip(contextCopy);
         if (!gradient || v104 != v49 || v101 != v157)
         {
           CGGradientRelease(gradient);
@@ -425,12 +425,12 @@ LABEL_105:
               v110[[v109 count]] = (v123 - v125) / v119;
 
               v126 = [(NSArray *)v187 objectAtIndexedSubscript:v120];
-              v127 = [v126 CGColor];
+              cGColor = [v126 CGColor];
 
-              [v109 addObject:v127];
+              [v109 addObject:cGColor];
               if (((v189 | v118) & 1) == 0)
               {
-                v118 = CGColorGetAlpha(v127) < 1.0;
+                v118 = CGColorGetAlpha(cGColor) < 1.0;
               }
 
               ++v120;
@@ -494,11 +494,11 @@ LABEL_105:
         v196.y = v143;
         v199.x = v144;
         v199.y = v145;
-        CGContextDrawLinearGradient(v184, gradient, v196, v199, v146);
+        CGContextDrawLinearGradient(contextCopy, gradient, v196, v199, v146);
         v160 = 1;
       }
 
-      CGContextRestoreGState(v184);
+      CGContextRestoreGState(contextCopy);
       CGPathRelease(CopyByStrokingPath);
       goto LABEL_132;
     }
@@ -526,7 +526,7 @@ LABEL_105:
 
       v88 = v181;
 LABEL_89:
-      p_x = &v176[v88].x;
+      p_x = &points[v88].x;
       v151 = *p_x - v178;
       v90 = p_x[1] - v177;
     }
@@ -626,71 +626,71 @@ LABEL_136:
     }
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  [(MKGradientPolylineRenderer *)v8 willChangeValueForKey:@"colors"];
-  [(MKGradientPolylineRenderer *)v8 willChangeValueForKey:@"locations"];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MKGradientPolylineRenderer *)selfCopy willChangeValueForKey:@"colors"];
+  [(MKGradientPolylineRenderer *)selfCopy willChangeValueForKey:@"locations"];
   v9 = [(NSArray *)v17 copy];
-  externallySetColors = v8->_externallySetColors;
-  v8->_externallySetColors = v9;
+  externallySetColors = selfCopy->_externallySetColors;
+  selfCopy->_externallySetColors = v9;
 
   v11 = [(NSArray *)v6 copy];
-  externallySetLocations = v8->_externallySetLocations;
-  v8->_externallySetLocations = v11;
+  externallySetLocations = selfCopy->_externallySetLocations;
+  selfCopy->_externallySetLocations = v11;
 
-  [(MKGradientPolylineRenderer *)v8 _updateColorStops];
-  [(MKGradientPolylineRenderer *)v8 didChangeValueForKey:@"colors"];
-  [(MKGradientPolylineRenderer *)v8 didChangeValueForKey:@"locations"];
-  objc_sync_exit(v8);
+  [(MKGradientPolylineRenderer *)selfCopy _updateColorStops];
+  [(MKGradientPolylineRenderer *)selfCopy didChangeValueForKey:@"colors"];
+  [(MKGradientPolylineRenderer *)selfCopy didChangeValueForKey:@"locations"];
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)colors
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_externallySetColors;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_externallySetColors;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSArray)locations
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_externallySetLocations;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_externallySetLocations;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_externallySetColors forKey:@"MKGradientPolylineRendererColors"];
-  [v4 encodeObject:self->_externallySetLocations forKey:@"MKGradientPolylineRendererLocations"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_externallySetColors forKey:@"MKGradientPolylineRendererColors"];
+  [coderCopy encodeObject:self->_externallySetLocations forKey:@"MKGradientPolylineRendererLocations"];
   v5.receiver = self;
   v5.super_class = MKGradientPolylineRenderer;
-  [(MKPolylineRenderer *)&v5 encodeWithCoder:v4];
+  [(MKPolylineRenderer *)&v5 encodeWithCoder:coderCopy];
 }
 
-- (MKGradientPolylineRenderer)initWithCoder:(id)a3
+- (MKGradientPolylineRenderer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MKGradientPolylineRenderer;
-  v5 = [(MKPolylineRenderer *)&v15 initWithCoder:v4];
+  v5 = [(MKPolylineRenderer *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"MKGradientPolylineRendererColors"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"MKGradientPolylineRendererColors"];
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
 
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"MKGradientPolylineRendererLocations"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"MKGradientPolylineRendererLocations"];
     [(MKGradientPolylineRenderer *)v5 setColors:v9 atLocations:v13];
   }
 
@@ -699,7 +699,7 @@ LABEL_136:
 
 - (void)_updateColorStops
 {
-  v2 = self;
+  selfCopy = self;
   v54 = *MEMORY[0x1E69E9840];
   if ([(NSArray *)self->_colors count])
   {
@@ -708,38 +708,38 @@ LABEL_136:
 
   else
   {
-    v40 = [(NSArray *)v2->_externallySetColors count]!= 0;
+    v40 = [(NSArray *)selfCopy->_externallySetColors count]!= 0;
   }
 
-  p_externallySetColors = &v2->_externallySetColors;
-  v41 = v2;
-  if (![(NSArray *)v2->_externallySetColors count])
+  p_externallySetColors = &selfCopy->_externallySetColors;
+  v41 = selfCopy;
+  if (![(NSArray *)selfCopy->_externallySetColors count])
   {
-    colors = v2->_colors;
+    colors = selfCopy->_colors;
     v16 = MEMORY[0x1E695E0F0];
-    v2->_colors = MEMORY[0x1E695E0F0];
+    selfCopy->_colors = MEMORY[0x1E695E0F0];
 
-    locations = v2->_locations;
-    v2->_locations = v16;
+    locations = selfCopy->_locations;
+    selfCopy->_locations = v16;
 LABEL_36:
 
     goto LABEL_39;
   }
 
-  p_externallySetLocations = &v2->_externallySetLocations;
-  if (![(NSArray *)v2->_externallySetLocations count])
+  p_externallySetLocations = &selfCopy->_externallySetLocations;
+  if (![(NSArray *)selfCopy->_externallySetLocations count])
   {
-    objc_storeStrong(&v2->_colors, *p_externallySetColors);
-    v35 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](v2->_colors, "count")}];
+    objc_storeStrong(&selfCopy->_colors, *p_externallySetColors);
+    v35 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](selfCopy->_colors, "count")}];
     [(NSArray *)v35 addObject:&unk_1F1610F78];
-    for (i = 1; i < [(NSArray *)v2->_colors count]; ++i)
+    for (i = 1; i < [(NSArray *)selfCopy->_colors count]; ++i)
     {
-      v37 = [MEMORY[0x1E696AD98] numberWithDouble:{i / (-[NSArray count](v2->_colors, "count") - 1)}];
+      v37 = [MEMORY[0x1E696AD98] numberWithDouble:{i / (-[NSArray count](selfCopy->_colors, "count") - 1)}];
       [(NSArray *)v35 addObject:v37];
     }
 
-    locations = v2->_locations;
-    v2->_locations = v35;
+    locations = selfCopy->_locations;
+    selfCopy->_locations = v35;
     goto LABEL_36;
   }
 
@@ -772,12 +772,12 @@ LABEL_36:
           v18 = [*p_externallySetColors count];
           if (v18 >= [*p_externallySetLocations count])
           {
-            v19 = &v2->_externallySetLocations;
+            v19 = &selfCopy->_externallySetLocations;
           }
 
           else
           {
-            v19 = &v2->_externallySetColors;
+            v19 = &selfCopy->_externallySetColors;
           }
 
           v20 = [*v19 count];
@@ -817,11 +817,11 @@ LABEL_36:
                   objc_enumerationMutation(v25);
                 }
 
-                v29 = [*(*(&v43 + 1) + 8 * k) unsignedIntegerValue];
-                v30 = [*p_externallySetLocations objectAtIndexedSubscript:v29];
+                unsignedIntegerValue = [*(*(&v43 + 1) + 8 * k) unsignedIntegerValue];
+                v30 = [*p_externallySetLocations objectAtIndexedSubscript:unsignedIntegerValue];
                 [(NSArray *)v23 addObject:v30];
 
-                v31 = [*p_externallySetColors objectAtIndexedSubscript:v29];
+                v31 = [*p_externallySetColors objectAtIndexedSubscript:unsignedIntegerValue];
                 [(NSArray *)v24 addObject:v31];
               }
 
@@ -859,31 +859,31 @@ LABEL_36:
   v12 = [*p_externallySetColors count];
   if (v12 >= [*p_externallySetLocations count])
   {
-    objc_storeStrong(&v2->_locations, *p_externallySetLocations);
+    objc_storeStrong(&selfCopy->_locations, *p_externallySetLocations);
   }
 
   else
   {
     v13 = [*p_externallySetLocations subarrayWithRange:{0, objc_msgSend(*p_externallySetColors, "count")}];
-    v14 = v2->_locations;
-    v2->_locations = v13;
+    v14 = selfCopy->_locations;
+    selfCopy->_locations = v13;
   }
 
-  objc_storeStrong(&v2->_colors, *p_externallySetColors);
+  objc_storeStrong(&selfCopy->_colors, *p_externallySetColors);
 LABEL_38:
-  v2 = v41;
+  selfCopy = v41;
 LABEL_39:
-  [(MKPolylineRenderer *)v2 _setNeedsVectorGeometryUpdate];
-  v38 = [(MKOverlayRenderer *)v41 _renderer];
-  v39 = v38;
+  [(MKPolylineRenderer *)selfCopy _setNeedsVectorGeometryUpdate];
+  _renderer = [(MKOverlayRenderer *)v41 _renderer];
+  v39 = _renderer;
   if (v40)
   {
-    [v38 setNeedsDisplayForReason:1];
+    [_renderer setNeedsDisplayForReason:1];
   }
 
   else
   {
-    [v38 setNeedsDisplayForReason:2];
+    [_renderer setNeedsDisplayForReason:2];
   }
 }
 
@@ -899,13 +899,13 @@ uint64_t __47__MKGradientPolylineRenderer__updateColorStops__block_invoke(uint64
   return v10;
 }
 
-- (void)_updateVectorGeometry:(id)a3
+- (void)_updateVectorGeometry:(id)geometry
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  geometryCopy = geometry;
   v15.receiver = self;
   v15.super_class = MKGradientPolylineRenderer;
-  [(MKPolylineRenderer *)&v15 _updateVectorGeometry:v4];
+  [(MKPolylineRenderer *)&v15 _updateVectorGeometry:geometryCopy];
   if ([(NSArray *)self->_locations count]<= 0x10)
   {
     v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](self->_locations, "count")}];
@@ -940,7 +940,7 @@ uint64_t __47__MKGradientPolylineRenderer__updateColorStops__block_invoke(uint64
       while (v7);
     }
 
-    [v4 setColorStopColors:v5 locations:self->_locations];
+    [geometryCopy setColorStopColors:v5 locations:self->_locations];
   }
 }
 
@@ -948,27 +948,27 @@ uint64_t __47__MKGradientPolylineRenderer__updateColorStops__block_invoke(uint64
 {
   v9.receiver = self;
   v9.super_class = MKGradientPolylineRenderer;
-  v3 = [(MKPolylineRenderer *)&v9 _canProvideVectorGeometry];
-  if (v3)
+  _canProvideVectorGeometry = [(MKPolylineRenderer *)&v9 _canProvideVectorGeometry];
+  if (_canProvideVectorGeometry)
   {
-    v4 = [(MKGradientPolylineRenderer *)self colors];
-    v5 = [v4 count];
+    colors = [(MKGradientPolylineRenderer *)self colors];
+    v5 = [colors count];
 
     if (v5 <= 0x10)
     {
-      v6 = [(MKOverlayRenderer *)self overlay];
-      v7 = [v6 _isSelfIntersecting];
+      overlay = [(MKOverlayRenderer *)self overlay];
+      _isSelfIntersecting = [overlay _isSelfIntersecting];
 
-      LOBYTE(v3) = v7 ^ 1;
+      LOBYTE(_canProvideVectorGeometry) = _isSelfIntersecting ^ 1;
     }
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(_canProvideVectorGeometry) = 0;
     }
   }
 
-  return v3;
+  return _canProvideVectorGeometry;
 }
 
 @end

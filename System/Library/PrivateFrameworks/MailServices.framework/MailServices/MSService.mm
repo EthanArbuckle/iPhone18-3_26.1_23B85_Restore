@@ -1,14 +1,14 @@
 @interface MSService
 - (MSService)init;
-- (id)_createMessageForService:(id)a3 arguments:(id)a4 index:(int64_t *)a5;
-- (id)_handleMessageSendFailure:(id)a3 message:(id)a4 messageIndex:(int64_t)a5 context:(id *)a6;
-- (void)_callServicesMethod:(id)a3 arguments:(id)a4 callback:(id)a5;
-- (void)_callServicesMethod:(id)a3 arguments:(id)a4 replyHandler:(id)a5;
-- (void)_registerConnection:(id)a3 onQueue:(id)a4;
-- (void)_simulateServicesMethod:(id)a3 arguments:(id)a4 callback:(id)a5;
+- (id)_createMessageForService:(id)service arguments:(id)arguments index:(int64_t *)index;
+- (id)_handleMessageSendFailure:(id)failure message:(id)message messageIndex:(int64_t)index context:(id *)context;
+- (void)_callServicesMethod:(id)method arguments:(id)arguments callback:(id)callback;
+- (void)_callServicesMethod:(id)method arguments:(id)arguments replyHandler:(id)handler;
+- (void)_registerConnection:(id)connection onQueue:(id)queue;
+- (void)_simulateServicesMethod:(id)method arguments:(id)arguments callback:(id)callback;
 - (void)cancel;
 - (void)dealloc;
-- (void)setupResponseConnectionOnQueue:(id)a3;
+- (void)setupResponseConnectionOnQueue:(id)queue;
 - (void)start;
 - (void)stop;
 @end
@@ -23,8 +23,8 @@
   if (v2)
   {
     v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.mailservices.%@.%p", objc_opt_class(), v2];
-    v4 = [v3 UTF8String];
-    v5 = dispatch_queue_create(v4, MEMORY[0x1E69E96A8]);
+    uTF8String = [v3 UTF8String];
+    v5 = dispatch_queue_create(uTF8String, MEMORY[0x1E69E96A8]);
     replyQueue = v2->_replyQueue;
     v2->_replyQueue = v5;
 
@@ -79,7 +79,7 @@
     }
 
     *buf = 138412546;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = v8;
     _os_log_impl(&dword_1D876A000, v6, OS_LOG_TYPE_INFO, "#MailServices %@ resuming %@", buf, 0x16u);
@@ -190,7 +190,7 @@ LABEL_10:
     {
       connection = self->_connection;
       v8 = 138412546;
-      v9 = self;
+      selfCopy = self;
       v10 = 2048;
       v11 = connection;
       _os_log_impl(&dword_1D876A000, v3, OS_LOG_TYPE_INFO, "#MailServices %@ stopping <connection: %p>", &v8, 0x16u);
@@ -221,7 +221,7 @@ LABEL_10:
       {
         connection = self->_connection;
         *buf = 138412546;
-        v17 = self;
+        selfCopy3 = self;
         v18 = 2048;
         v19 = connection;
         _os_log_impl(&dword_1D876A000, v4, OS_LOG_TYPE_INFO, "#MailServices %@ cancelling <connection: %p>", buf, 0x16u);
@@ -239,7 +239,7 @@ LABEL_10:
       {
         responseListener = self->_responseListener;
         *buf = 138412546;
-        v17 = self;
+        selfCopy3 = self;
         v18 = 2048;
         v19 = responseListener;
         _os_log_impl(&dword_1D876A000, v7, OS_LOG_TYPE_INFO, "#MailServices %@ stopping response listener <connection: %p>", buf, 0x16u);
@@ -257,7 +257,7 @@ LABEL_10:
       {
         responseHandler = self->_responseHandler;
         *buf = 138412546;
-        v17 = self;
+        selfCopy3 = self;
         v18 = 2048;
         v19 = responseHandler;
         _os_log_impl(&dword_1D876A000, v10, OS_LOG_TYPE_INFO, "#MailServices %@ stopping response handler <connection: %p>", buf, 0x16u);
@@ -302,10 +302,10 @@ uint64_t __19__MSService_cancel__block_invoke(uint64_t a1)
   return [v2 stop];
 }
 
-- (void)setupResponseConnectionOnQueue:(id)a3
+- (void)setupResponseConnectionOnQueue:(id)queue
 {
-  v5 = a3;
-  v6 = xpc_connection_create(0, v5);
+  queueCopy = queue;
+  v6 = xpc_connection_create(0, queueCopy);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44__MSService_setupResponseConnectionOnQueue___block_invoke;
@@ -313,7 +313,7 @@ uint64_t __19__MSService_cancel__block_invoke(uint64_t a1)
   v9[4] = self;
   v7 = v6;
   v10 = v7;
-  v8 = v5;
+  v8 = queueCopy;
   v11 = v8;
   v12 = a2;
   xpc_connection_set_event_handler(v7, v9);
@@ -353,28 +353,28 @@ void __44__MSService_setupResponseConnectionOnQueue___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)_registerConnection:(id)a3 onQueue:(id)a4
+- (void)_registerConnection:(id)connection onQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
+  connectionCopy = connection;
+  queueCopy = queue;
   p_responseHandler = &self->_responseHandler;
   if (self->_responseHandler)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"MSService.m" lineNumber:194 description:@"attempted to register multiple connections on anonymous listener"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSService.m" lineNumber:194 description:@"attempted to register multiple connections on anonymous listener"];
   }
 
-  xpc_connection_set_target_queue(v8, v9);
+  xpc_connection_set_target_queue(connectionCopy, queueCopy);
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __41__MSService__registerConnection_onQueue___block_invoke;
   handler[3] = &unk_1E855F068;
   handler[4] = self;
-  v11 = v8;
+  v11 = connectionCopy;
   v14 = v11;
   v15 = a2;
   xpc_connection_set_event_handler(v11, handler);
-  objc_storeStrong(p_responseHandler, a3);
+  objc_storeStrong(p_responseHandler, connection);
   xpc_connection_resume(*p_responseHandler);
 }
 
@@ -410,16 +410,16 @@ void __41__MSService__registerConnection_onQueue___block_invoke(uint64_t a1, voi
   }
 }
 
-- (id)_createMessageForService:(id)a3 arguments:(id)a4 index:(int64_t *)a5
+- (id)_createMessageForService:(id)service arguments:(id)arguments index:(int64_t *)index
 {
-  v8 = a3;
-  v9 = a4;
+  serviceCopy = service;
+  argumentsCopy = arguments;
   add_explicit = atomic_fetch_add_explicit(&_createMessageForService_arguments_index____messageCount, 1uLL, memory_order_relaxed);
   v11 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_string(v11, [@"service" UTF8String], objc_msgSend(v8, "UTF8String"));
+  xpc_dictionary_set_string(v11, [@"service" UTF8String], objc_msgSend(serviceCopy, "UTF8String"));
   v12 = add_explicit + 1;
   xpc_dictionary_set_int64(v11, [@"_index" UTF8String], add_explicit + 1);
-  if (v9)
+  if (argumentsCopy)
   {
     v13 = _CFXPCCreateXPCObjectFromCFObject();
     xpc_dictionary_set_value(v11, [@"arguments" UTF8String], v13);
@@ -430,31 +430,31 @@ void __41__MSService__registerConnection_onQueue___block_invoke(uint64_t a1, voi
     xpc_dictionary_set_connection(v11, [@"_anonymousConnection" UTF8String], self->_responseListener);
   }
 
-  if (a5)
+  if (index)
   {
-    *a5 = v12;
+    *index = v12;
   }
 
   return v11;
 }
 
-- (id)_handleMessageSendFailure:(id)a3 message:(id)a4 messageIndex:(int64_t)a5 context:(id *)a6
+- (id)_handleMessageSendFailure:(id)failure message:(id)message messageIndex:(int64_t)index context:(id *)context
 {
-  v6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MailServices" code:2 userInfo:{0, a6}];
+  v6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MailServices" code:2 userInfo:{0, context}];
 
   return v6;
 }
 
-- (void)_callServicesMethod:(id)a3 arguments:(id)a4 callback:(id)a5
+- (void)_callServicesMethod:(id)method arguments:(id)arguments callback:(id)callback
 {
-  v8 = a5;
+  callbackCopy = callback;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __52__MSService__callServicesMethod_arguments_callback___block_invoke;
   v10[3] = &unk_1E855F090;
-  v11 = v8;
-  v9 = v8;
-  [(MSService *)self _callServicesMethod:a3 arguments:a4 replyHandler:v10];
+  v11 = callbackCopy;
+  v9 = callbackCopy;
+  [(MSService *)self _callServicesMethod:method arguments:arguments replyHandler:v10];
 }
 
 void __52__MSService__callServicesMethod_arguments_callback___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -474,24 +474,24 @@ void __52__MSService__callServicesMethod_arguments_callback___block_invoke(uint6
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_callServicesMethod:(id)a3 arguments:(id)a4 replyHandler:(id)a5
+- (void)_callServicesMethod:(id)method arguments:(id)arguments replyHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  methodCopy = method;
+  argumentsCopy = arguments;
+  handlerCopy = handler;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__MSService__callServicesMethod_arguments_replyHandler___block_invoke;
   block[3] = &unk_1E855F0E0;
   block[4] = self;
-  v17 = v9;
-  v19 = v11;
+  v17 = methodCopy;
+  v19 = handlerCopy;
   v20 = a2;
-  v18 = v10;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
+  v18 = argumentsCopy;
+  v13 = handlerCopy;
+  v14 = argumentsCopy;
+  v15 = methodCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -715,18 +715,18 @@ LABEL_31:
   v44 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_simulateServicesMethod:(id)a3 arguments:(id)a4 callback:(id)a5
+- (void)_simulateServicesMethod:(id)method arguments:(id)arguments callback:(id)callback
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a5;
+  methodCopy = method;
+  callbackCopy = callback;
   v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MailServices" code:3 userInfo:0];
-  v7[2](v7, 0, v8);
+  callbackCopy[2](callbackCopy, 0, v8);
   v9 = MFLogGeneral();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = methodCopy;
     _os_log_impl(&dword_1D876A000, v9, OS_LOG_TYPE_INFO, "#MailServices MailServices method %@ could not be simulated", &v11, 0xCu);
   }
 

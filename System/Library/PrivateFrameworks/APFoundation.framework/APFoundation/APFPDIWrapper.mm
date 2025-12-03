@@ -1,21 +1,21 @@
 @interface APFPDIWrapper
-+ (int)FPDICreateContext:(void *)a3 withAttribute:(void *)a4 initRequest:(void *)a5 initRequestLength:(unsigned int *)a6;
++ (int)FPDICreateContext:(void *)context withAttribute:(void *)attribute initRequest:(void *)request initRequestLength:(unsigned int *)length;
 + (int)FPDIDestroyAllContext;
 + (int)FPDIDestroyAllNonStashedContexts;
-+ (int)FPDIDestroyAttribute:(void *)a3;
-+ (int)FPDIDestroyContext:(void *)a3;
-+ (int)FPDIDestroyData:(void *)a3;
-+ (int)FPDIInitAttribute:(void *)a3;
-+ (int)FPDIInitContext:(void *)a3 withInitResponse:(void *)a4 initResponseLength:(unsigned int)a5 setupRequest:(void *)a6 setupRequestLength:(unsigned int *)a7;
-+ (int)FPDISetHighPrivacyLevelForAttribute:(void *)a3;
-+ (int)FPDISetStashingIsEnabled:(BOOL)a3 forAttribute:(void *)a4;
-+ (int)FPDISetupContext:(void *)a3 withSetupResponse:(void *)a4 setupResponseLength:(unsigned int)a5;
-+ (int)FPDISignWithContext:(void *)a3 message:(char *)a4 messageLength:(unsigned int)a5 rawSignature:(void *)a6 rawSignatureLength:(unsigned int *)a7;
++ (int)FPDIDestroyAttribute:(void *)attribute;
++ (int)FPDIDestroyContext:(void *)context;
++ (int)FPDIDestroyData:(void *)data;
++ (int)FPDIInitAttribute:(void *)attribute;
++ (int)FPDIInitContext:(void *)context withInitResponse:(void *)response initResponseLength:(unsigned int)length setupRequest:(void *)request setupRequestLength:(unsigned int *)requestLength;
++ (int)FPDISetHighPrivacyLevelForAttribute:(void *)attribute;
++ (int)FPDISetStashingIsEnabled:(BOOL)enabled forAttribute:(void *)attribute;
++ (int)FPDISetupContext:(void *)context withSetupResponse:(void *)response setupResponseLength:(unsigned int)length;
++ (int)FPDISignWithContext:(void *)context message:(char *)message messageLength:(unsigned int)length rawSignature:(void *)signature rawSignatureLength:(unsigned int *)signatureLength;
 @end
 
 @implementation APFPDIWrapper
 
-+ (int)FPDIInitAttribute:(void *)a3
++ (int)FPDIInitAttribute:(void *)attribute
 {
   v30 = *MEMORY[0x1E69E9840];
   Current = CFAbsoluteTimeGetCurrent();
@@ -26,7 +26,7 @@
 
   else
   {
-    v20 = sub_1BAF8DB88(a3);
+    v20 = sub_1BAF8DB88(attribute);
   }
 
   v21 = CFAbsoluteTimeGetCurrent();
@@ -43,7 +43,7 @@
   return v20;
 }
 
-+ (int)FPDISetHighPrivacyLevelForAttribute:(void *)a3
++ (int)FPDISetHighPrivacyLevelForAttribute:(void *)attribute
 {
   v30 = *MEMORY[0x1E69E9840];
   Current = CFAbsoluteTimeGetCurrent();
@@ -54,7 +54,7 @@
 
   else
   {
-    v20 = sub_1BAF8D67C(a3, 1011340354);
+    v20 = sub_1BAF8D67C(attribute, 1011340354);
   }
 
   v21 = CFAbsoluteTimeGetCurrent();
@@ -71,11 +71,11 @@
   return v20;
 }
 
-+ (int)FPDISetStashingIsEnabled:(BOOL)a3 forAttribute:(void *)a4
++ (int)FPDISetStashingIsEnabled:(BOOL)enabled forAttribute:(void *)attribute
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v33 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (enabled)
   {
     v6 = 1903055587;
   }
@@ -86,14 +86,14 @@
   }
 
   Current = CFAbsoluteTimeGetCurrent();
-  if (v5 && objc_msgSend_isAppleInternalInstall(APSystemInternal, v7, v8, v9) && (objc_msgSend_settings(APFPDIWrapper, v11, v12, v13), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend_failSetStashingIsEnabled(v14, v15, v16, v17), v18 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend_BOOLValue(v18, v19, v20, v21), v18, v14, (v22 & 1) != 0))
+  if (enabledCopy && objc_msgSend_isAppleInternalInstall(APSystemInternal, v7, v8, v9) && (objc_msgSend_settings(APFPDIWrapper, v11, v12, v13), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend_failSetStashingIsEnabled(v14, v15, v16, v17), v18 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend_BOOLValue(v18, v19, v20, v21), v18, v14, (v22 & 1) != 0))
   {
     v23 = -44802;
   }
 
   else
   {
-    v23 = sub_1BAF720D4(a4, v6);
+    v23 = sub_1BAF720D4(attribute, v6);
   }
 
   v24 = CFAbsoluteTimeGetCurrent();
@@ -110,7 +110,7 @@
   return v23;
 }
 
-+ (int)FPDICreateContext:(void *)a3 withAttribute:(void *)a4 initRequest:(void *)a5 initRequestLength:(unsigned int *)a6
++ (int)FPDICreateContext:(void *)context withAttribute:(void *)attribute initRequest:(void *)request initRequestLength:(unsigned int *)length
 {
   v37 = *MEMORY[0x1E69E9840];
   Current = CFAbsoluteTimeGetCurrent();
@@ -121,7 +121,7 @@
 
   else
   {
-    sub_1BAF7EAC4(a3, a4, a5, a6);
+    sub_1BAF7EAC4(context, attribute, request, length);
     v26 = v27;
   }
 
@@ -139,7 +139,7 @@
   return v26;
 }
 
-+ (int)FPDIInitContext:(void *)a3 withInitResponse:(void *)a4 initResponseLength:(unsigned int)a5 setupRequest:(void *)a6 setupRequestLength:(unsigned int *)a7
++ (int)FPDIInitContext:(void *)context withInitResponse:(void *)response initResponseLength:(unsigned int)length setupRequest:(void *)request setupRequestLength:(unsigned int *)requestLength
 {
   v38 = *MEMORY[0x1E69E9840];
   Current = CFAbsoluteTimeGetCurrent();
@@ -150,7 +150,7 @@
 
   else
   {
-    v28 = sub_1BAF722D4(a3, a4, a5, a6, a7);
+    v28 = sub_1BAF722D4(context, response, length, request, requestLength);
   }
 
   v29 = CFAbsoluteTimeGetCurrent();
@@ -167,7 +167,7 @@
   return v28;
 }
 
-+ (int)FPDISetupContext:(void *)a3 withSetupResponse:(void *)a4 setupResponseLength:(unsigned int)a5
++ (int)FPDISetupContext:(void *)context withSetupResponse:(void *)response setupResponseLength:(unsigned int)length
 {
   v33 = *MEMORY[0x1E69E9840];
   Current = CFAbsoluteTimeGetCurrent();
@@ -178,7 +178,7 @@
 
   else
   {
-    sub_1BAF87C54(a3);
+    sub_1BAF87C54(context);
     v22 = v23;
   }
 
@@ -196,20 +196,20 @@
   return v22;
 }
 
-+ (int)FPDISignWithContext:(void *)a3 message:(char *)a4 messageLength:(unsigned int)a5 rawSignature:(void *)a6 rawSignatureLength:(unsigned int *)a7
++ (int)FPDISignWithContext:(void *)context message:(char *)message messageLength:(unsigned int)length rawSignature:(void *)signature rawSignatureLength:(unsigned int *)signatureLength
 {
   v38 = *MEMORY[0x1E69E9840];
   Current = CFAbsoluteTimeGetCurrent();
   if (objc_msgSend_isAppleInternalInstall(APSystemInternal, v13, v14, v15) && (objc_msgSend_settings(APFPDIWrapper, v16, v17, v18), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend_failSigning(v19, v20, v21, v22), v23 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend_BOOLValue(v23, v24, v25, v26), v23, v19, v27))
   {
-    *a6 = 0;
-    *a7 = 0;
+    *signature = 0;
+    *signatureLength = 0;
     v28 = -44665;
   }
 
   else
   {
-    v28 = sub_1BAF72510(a3, a4, a5, a6, a7);
+    v28 = sub_1BAF72510(context, message, length, signature, signatureLength);
   }
 
   v29 = CFAbsoluteTimeGetCurrent();
@@ -226,11 +226,11 @@
   return v28;
 }
 
-+ (int)FPDIDestroyAttribute:(void *)a3
++ (int)FPDIDestroyAttribute:(void *)attribute
 {
   v15 = *MEMORY[0x1E69E9840];
   Current = CFAbsoluteTimeGetCurrent();
-  v5 = sub_1BAF7270C(a3);
+  v5 = sub_1BAF7270C(attribute);
   v6 = CFAbsoluteTimeGetCurrent();
   v9 = objc_msgSend_stringByAppendingFormat_(@"FPDIAttrDestroy", v7, @": %.3f", v8, v6 - Current);
   v10 = APLogForCategory(0x30uLL);
@@ -245,11 +245,11 @@
   return v5;
 }
 
-+ (int)FPDIDestroyData:(void *)a3
++ (int)FPDIDestroyData:(void *)data
 {
   v15 = *MEMORY[0x1E69E9840];
   Current = CFAbsoluteTimeGetCurrent();
-  v5 = sub_1BAF8D990(a3);
+  v5 = sub_1BAF8D990(data);
   v6 = CFAbsoluteTimeGetCurrent();
   v9 = objc_msgSend_stringByAppendingFormat_(@"FPDIDataDestroy", v7, @": %.3f", v8, v6 - Current);
   v10 = APLogForCategory(0x30uLL);
@@ -264,11 +264,11 @@
   return v5;
 }
 
-+ (int)FPDIDestroyContext:(void *)a3
++ (int)FPDIDestroyContext:(void *)context
 {
   v15 = *MEMORY[0x1E69E9840];
   Current = CFAbsoluteTimeGetCurrent();
-  v5 = sub_1BAF71EB4(a3);
+  v5 = sub_1BAF71EB4(context);
   v6 = CFAbsoluteTimeGetCurrent();
   v9 = objc_msgSend_stringByAppendingFormat_(@"FPDIDestroy", v7, @": %.3f", v8, v6 - Current);
   v10 = APLogForCategory(0x30uLL);

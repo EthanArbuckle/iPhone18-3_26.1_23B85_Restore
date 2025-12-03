@@ -1,13 +1,13 @@
 @interface HOSCloudDownloadControl
-+ (id)controlTitleFontForControlStatusType:(int64_t)a3;
++ (id)controlTitleFontForControlStatusType:(int64_t)type;
 - (CGSize)intrinsicContentSize;
 @end
 
 @implementation HOSCloudDownloadControl
 
-+ (id)controlTitleFontForControlStatusType:(int64_t)a3
++ (id)controlTitleFontForControlStatusType:(int64_t)type
 {
-  if (a3 == 5)
+  if (type == 5)
   {
     v3 = [UIFontMetrics metricsForTextStyle:UIFontTextStyleBody];
     [v3 scaledValueForValue:11.0];

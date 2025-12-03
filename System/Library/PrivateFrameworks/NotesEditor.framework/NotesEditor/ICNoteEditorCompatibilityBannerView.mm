@@ -1,8 +1,8 @@
 @interface ICNoteEditorCompatibilityBannerView
 + (id)compatibilityAttributedString;
-+ (void)checkShouldShowCompatibilityBannerViewForNote:(id)a3 parentViewController:(id)a4 completion:(id)a5;
++ (void)checkShouldShowCompatibilityBannerViewForNote:(id)note parentViewController:(id)controller completion:(id)completion;
 - (BOOL)accessibilityActivate;
-- (ICNoteEditorCompatibilityBannerView)initWithFrame:(CGRect)a3 parentViewController:(id)a4;
+- (ICNoteEditorCompatibilityBannerView)initWithFrame:(CGRect)frame parentViewController:(id)controller;
 - (double)preferredHeight;
 - (id)accessibilityContainer;
 - (id)accessibilityHint;
@@ -15,67 +15,67 @@
 
 @implementation ICNoteEditorCompatibilityBannerView
 
-- (ICNoteEditorCompatibilityBannerView)initWithFrame:(CGRect)a3 parentViewController:(id)a4
+- (ICNoteEditorCompatibilityBannerView)initWithFrame:(CGRect)frame parentViewController:(id)controller
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  controllerCopy = controller;
   v27.receiver = self;
   v27.super_class = ICNoteEditorCompatibilityBannerView;
-  v10 = [(ICNoteEditorCompatibilityBannerView *)&v27 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(ICNoteEditorCompatibilityBannerView *)&v27 initWithFrame:x, y, width, height];
+  if (height)
   {
     v11 = [objc_alloc(MEMORY[0x277D367F8]) initWithFrame:{x, y, width, height}];
-    [(ICNoteEditorCompatibilityBannerView *)v10 setLearnMoreTextView:v11];
+    [(ICNoteEditorCompatibilityBannerView *)height setLearnMoreTextView:v11];
 
-    v12 = [(ICNoteEditorCompatibilityBannerView *)v10 learnMoreTextView];
-    [v12 setParentViewController:v9];
+    learnMoreTextView = [(ICNoteEditorCompatibilityBannerView *)height learnMoreTextView];
+    [learnMoreTextView setParentViewController:controllerCopy];
 
-    v13 = [(ICNoteEditorCompatibilityBannerView *)v10 learnMoreTextView];
-    [v13 setContentInsetAdjustmentBehavior:2];
+    learnMoreTextView2 = [(ICNoteEditorCompatibilityBannerView *)height learnMoreTextView];
+    [learnMoreTextView2 setContentInsetAdjustmentBehavior:2];
 
     v14 = *MEMORY[0x277D768C8];
     v15 = *(MEMORY[0x277D768C8] + 8);
     v16 = *(MEMORY[0x277D768C8] + 16);
     v17 = *(MEMORY[0x277D768C8] + 24);
-    v18 = [(ICNoteEditorCompatibilityBannerView *)v10 learnMoreTextView];
-    [v18 setTextContainerInset:{v14, v15, v16, v17}];
+    learnMoreTextView3 = [(ICNoteEditorCompatibilityBannerView *)height learnMoreTextView];
+    [learnMoreTextView3 setTextContainerInset:{v14, v15, v16, v17}];
 
-    v19 = [(ICNoteEditorCompatibilityBannerView *)v10 learnMoreTextView];
-    v20 = [v19 textContainer];
-    [v20 setLineFragmentPadding:0.0];
+    learnMoreTextView4 = [(ICNoteEditorCompatibilityBannerView *)height learnMoreTextView];
+    textContainer = [learnMoreTextView4 textContainer];
+    [textContainer setLineFragmentPadding:0.0];
 
-    v21 = [(ICNoteEditorCompatibilityBannerView *)v10 learnMoreTextView];
-    [(ICNoteEditorCompatibilityBannerView *)v10 addSubview:v21];
+    learnMoreTextView5 = [(ICNoteEditorCompatibilityBannerView *)height learnMoreTextView];
+    [(ICNoteEditorCompatibilityBannerView *)height addSubview:learnMoreTextView5];
 
     v22 = *MEMORY[0x277D36510];
-    v23 = [(ICNoteEditorCompatibilityBannerView *)v10 learnMoreTextView];
-    [v23 setHelpTopic:v22];
+    learnMoreTextView6 = [(ICNoteEditorCompatibilityBannerView *)height learnMoreTextView];
+    [learnMoreTextView6 setHelpTopic:v22];
 
-    v24 = [(ICNoteEditorCompatibilityBannerView *)v10 learnMoreTextView];
-    v25 = [objc_opt_class() compatibilityAttributedString];
-    [v24 setAttributedText:v25 addLearnMore:1];
+    learnMoreTextView7 = [(ICNoteEditorCompatibilityBannerView *)height learnMoreTextView];
+    compatibilityAttributedString = [objc_opt_class() compatibilityAttributedString];
+    [learnMoreTextView7 setAttributedText:compatibilityAttributedString addLearnMore:1];
   }
 
-  return v10;
+  return height;
 }
 
 + (id)compatibilityAttributedString
 {
   v12[2] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D74300] ic_preferredFontForCompatibilityBannerText];
+  ic_preferredFontForCompatibilityBannerText = [MEMORY[0x277D74300] ic_preferredFontForCompatibilityBannerText];
   v3 = *MEMORY[0x277D740C0];
   v11[0] = *MEMORY[0x277D740A8];
   v11[1] = v3;
-  v12[0] = v2;
-  v4 = [MEMORY[0x277D75348] ic_noteEditorSecondaryLabelColor];
-  v12[1] = v4;
+  v12[0] = ic_preferredFontForCompatibilityBannerText;
+  ic_noteEditorSecondaryLabelColor = [MEMORY[0x277D75348] ic_noteEditorSecondaryLabelColor];
+  v12[1] = ic_noteEditorSecondaryLabelColor;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
 
-  v6 = [MEMORY[0x277CCA8D8] mainBundle];
-  v7 = [v6 localizedStringForKey:@"This note is not supported on some of your devices." value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v7 = [mainBundle localizedStringForKey:@"This note is not supported on some of your devices." value:&stru_282757698 table:0];
 
   v8 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v7 attributes:v5];
   v9 = objc_alloc_init(MEMORY[0x277D74240]);
@@ -90,8 +90,8 @@
   v4.receiver = self;
   v4.super_class = ICNoteEditorCompatibilityBannerView;
   [(ICNoteEditorCompatibilityBannerView *)&v4 updateConstraints];
-  v3 = [(ICNoteEditorCompatibilityBannerView *)self learnMoreTextView];
-  [v3 ic_addAnchorsToFillSuperview];
+  learnMoreTextView = [(ICNoteEditorCompatibilityBannerView *)self learnMoreTextView];
+  [learnMoreTextView ic_addAnchorsToFillSuperview];
 }
 
 - (double)preferredHeight
@@ -102,10 +102,10 @@
     [(ICNoteEditorCompatibilityBannerView *)self availableWidth];
     if (v4 != 0.0)
     {
-      v5 = [(ICNoteEditorCompatibilityBannerView *)self learnMoreTextView];
-      v6 = [v5 attributedText];
+      learnMoreTextView = [(ICNoteEditorCompatibilityBannerView *)self learnMoreTextView];
+      attributedText = [learnMoreTextView attributedText];
 
-      v7 = [objc_alloc(MEMORY[0x277D742D8]) initWithAttributedString:v6];
+      v7 = [objc_alloc(MEMORY[0x277D742D8]) initWithAttributedString:attributedText];
       v8 = objc_alloc(MEMORY[0x277D74278]);
       [(ICNoteEditorCompatibilityBannerView *)self availableWidth];
       v9 = [v8 initWithSize:?];
@@ -123,34 +123,34 @@
   return v3;
 }
 
-+ (void)checkShouldShowCompatibilityBannerViewForNote:(id)a3 parentViewController:(id)a4 completion:(id)a5
++ (void)checkShouldShowCompatibilityBannerViewForNote:(id)note parentViewController:(id)controller completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 hasVisibleInlineAttachments];
-  v11 = [v7 folder];
-  v12 = [v11 account];
+  noteCopy = note;
+  controllerCopy = controller;
+  completionCopy = completion;
+  hasVisibleInlineAttachments = [noteCopy hasVisibleInlineAttachments];
+  folder = [noteCopy folder];
+  account = [folder account];
 
-  if (v10 && v12)
+  if (hasVisibleInlineAttachments && account)
   {
-    objc_initWeak(&location, v8);
+    objc_initWeak(&location, controllerCopy);
     v13 = MEMORY[0x277D36780];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __117__ICNoteEditorCompatibilityBannerView_checkShouldShowCompatibilityBannerViewForNote_parentViewController_completion___block_invoke;
     v14[3] = &unk_2781AF6A0;
     objc_copyWeak(&v16, &location);
-    v15 = v9;
-    [v13 showCompatibilityAlertForInlineAttachmentsInAccountIfNeeded:v12 parentViewController:v8 completion:v14];
+    v15 = completionCopy;
+    [v13 showCompatibilityAlertForInlineAttachmentsInAccountIfNeeded:account parentViewController:controllerCopy completion:v14];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    (*(v9 + 2))(v9, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -178,40 +178,40 @@ uint64_t __117__ICNoteEditorCompatibilityBannerView_checkShouldShowCompatibility
 
 - (void)contentSizeCategoryDidChange
 {
-  v4 = [MEMORY[0x277D74300] ic_preferredFontForCompatibilityBannerText];
-  v3 = [(ICNoteEditorCompatibilityBannerView *)self learnMoreTextView];
-  [v3 setFont:v4];
+  ic_preferredFontForCompatibilityBannerText = [MEMORY[0x277D74300] ic_preferredFontForCompatibilityBannerText];
+  learnMoreTextView = [(ICNoteEditorCompatibilityBannerView *)self learnMoreTextView];
+  [learnMoreTextView setFont:ic_preferredFontForCompatibilityBannerText];
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(ICNoteEditorCompatibilityBannerView *)self learnMoreTextView];
-  v3 = [v2 text];
+  learnMoreTextView = [(ICNoteEditorCompatibilityBannerView *)self learnMoreTextView];
+  text = [learnMoreTextView text];
 
-  return v3;
+  return text;
 }
 
 - (id)accessibilityHint
 {
-  v2 = [(ICNoteEditorCompatibilityBannerView *)self learnMoreTextView];
-  v3 = [v2 accessibilityHint];
+  learnMoreTextView = [(ICNoteEditorCompatibilityBannerView *)self learnMoreTextView];
+  accessibilityHint = [learnMoreTextView accessibilityHint];
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (id)accessibilityUserInputLabels
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 localizedStringForKey:@"Learn More" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v5 = [mainBundle localizedStringForKey:@"Learn More" value:&stru_282757698 table:0];
   [v3 addObject:v5];
 
   v9.receiver = self;
   v9.super_class = ICNoteEditorCompatibilityBannerView;
-  v6 = [(ICNoteEditorCompatibilityBannerView *)&v9 accessibilityUserInputLabels];
-  if (v6)
+  accessibilityUserInputLabels = [(ICNoteEditorCompatibilityBannerView *)&v9 accessibilityUserInputLabels];
+  if (accessibilityUserInputLabels)
   {
-    [v3 addObjectsFromArray:v6];
+    [v3 addObjectsFromArray:accessibilityUserInputLabels];
   }
 
   v7 = [v3 copy];
@@ -221,8 +221,8 @@ uint64_t __117__ICNoteEditorCompatibilityBannerView_checkShouldShowCompatibility
 
 - (BOOL)accessibilityActivate
 {
-  v2 = [(ICNoteEditorCompatibilityBannerView *)self learnMoreTextView];
-  [v2 didTapLearnMore];
+  learnMoreTextView = [(ICNoteEditorCompatibilityBannerView *)self learnMoreTextView];
+  [learnMoreTextView didTapLearnMore];
 
   return 1;
 }
@@ -231,17 +231,17 @@ uint64_t __117__ICNoteEditorCompatibilityBannerView_checkShouldShowCompatibility
 {
   v7.receiver = self;
   v7.super_class = ICNoteEditorCompatibilityBannerView;
-  v2 = [(ICNoteEditorCompatibilityBannerView *)&v7 accessibilityContainer];
-  v3 = v2;
-  if (v2)
+  accessibilityContainer = [(ICNoteEditorCompatibilityBannerView *)&v7 accessibilityContainer];
+  v3 = accessibilityContainer;
+  if (accessibilityContainer)
   {
-    v4 = v2;
+    v4 = accessibilityContainer;
     while (![v4 conformsToProtocol:&unk_28282EDC0])
     {
-      v5 = [v4 accessibilityContainer];
+      accessibilityContainer2 = [v4 accessibilityContainer];
 
-      v4 = v5;
-      if (!v5)
+      v4 = accessibilityContainer2;
+      if (!accessibilityContainer2)
       {
         goto LABEL_8;
       }
@@ -269,8 +269,8 @@ LABEL_8:
   [(ICNoteEditorCompatibilityBannerView *)&v5 accessibilityElementDidBecomeFocused];
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v3 = [(ICNoteEditorCompatibilityBannerView *)self nextResponder];
-    if (v3)
+    nextResponder = [(ICNoteEditorCompatibilityBannerView *)self nextResponder];
+    if (nextResponder)
     {
       while (1)
       {
@@ -280,20 +280,20 @@ LABEL_8:
           break;
         }
 
-        v4 = [v3 nextResponder];
+        v3NextResponder = [nextResponder nextResponder];
 
-        v3 = v4;
-        if (!v4)
+        nextResponder = v3NextResponder;
+        if (!v3NextResponder)
         {
           goto LABEL_7;
         }
       }
 
-      v3 = v3;
+      nextResponder = nextResponder;
     }
 
 LABEL_7:
-    [v3 showOverscrollContentAndScrollToTop];
+    [nextResponder showOverscrollContentAndScrollToTop];
   }
 }
 

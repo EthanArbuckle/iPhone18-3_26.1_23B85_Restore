@@ -1,27 +1,27 @@
 @interface SiriUISuggestionsHeaderText
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSAttributedString)attributedStringForMainScreenTraitCollection;
-- (SiriUISuggestionsHeaderText)initWithRegularString:(id)a3 compactString:(id)a4;
-- (id)_attributedStringWithString:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SiriUISuggestionsHeaderText)initWithRegularString:(id)string compactString:(id)compactString;
+- (id)_attributedStringWithString:(id)string;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SiriUISuggestionsHeaderText
 
-- (SiriUISuggestionsHeaderText)initWithRegularString:(id)a3 compactString:(id)a4
+- (SiriUISuggestionsHeaderText)initWithRegularString:(id)string compactString:(id)compactString
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  compactStringCopy = compactString;
   v16.receiver = self;
   v16.super_class = SiriUISuggestionsHeaderText;
   v8 = [(SiriUISuggestionsHeaderText *)&v16 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [stringCopy copy];
     regularString = v8->_regularString;
     v8->_regularString = v9;
 
-    v11 = [v7 copy];
+    v11 = [compactStringCopy copy];
     compactString = v8->_compactString;
     v8->_compactString = v11;
 
@@ -38,7 +38,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setRegularString:self->_regularString];
@@ -56,19 +56,19 @@
   return [(SiriUISuggestionsHeaderText *)self _attributedStringWithString:regularString];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     regularString = self->_regularString;
-    v6 = [v4 regularString];
-    if ([(NSString *)regularString isEqualToString:v6])
+    regularString = [equalCopy regularString];
+    if ([(NSString *)regularString isEqualToString:regularString])
     {
       compactString = self->_compactString;
-      v8 = [v4 compactString];
-      v9 = [(NSString *)compactString isEqualToString:v8];
+      compactString = [equalCopy compactString];
+      v9 = [(NSString *)compactString isEqualToString:compactString];
     }
 
     else
@@ -85,18 +85,18 @@
   return v9;
 }
 
-- (id)_attributedStringWithString:(id)a3
+- (id)_attributedStringWithString:(id)string
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D74240];
-  v5 = a3;
+  stringCopy = string;
   v6 = objc_alloc_init(v4);
   [v6 setLineSpacing:0.0];
   [v6 setAlignment:self->_textAlignment];
   v7 = objc_alloc(MEMORY[0x277CCA898]);
-  if (v5)
+  if (stringCopy)
   {
-    v8 = v5;
+    v8 = stringCopy;
   }
 
   else

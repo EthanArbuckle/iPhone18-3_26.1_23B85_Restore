@@ -1,52 +1,52 @@
 @interface SHSheetRouter
-- (BOOL)activityPerformer:(id)a3 presentPopoverContentViewController:(id)a4;
-- (BOOL)activityPerformerCanPresent:(id)a3;
+- (BOOL)activityPerformer:(id)performer presentPopoverContentViewController:(id)controller;
+- (BOOL)activityPerformerCanPresent:(id)present;
 - (BOOL)isPresentedWithinPopover;
 - (BOOL)presentationBlockingViewShouldPresentCloseButton;
 - (SHSheetContentView)mainViewController;
 - (SHSheetContentView)secondaryViewController;
-- (SHSheetRouter)initWithRootViewController:(id)a3 mainNavigationController:(id)a4 supportsModalPresentations:(BOOL)a5;
-- (SHSheetRouter)initWithRootViewController:(id)a3 supportsModalPresentations:(BOOL)a4;
+- (SHSheetRouter)initWithRootViewController:(id)controller mainNavigationController:(id)navigationController supportsModalPresentations:(BOOL)presentations;
+- (SHSheetRouter)initWithRootViewController:(id)controller supportsModalPresentations:(BOOL)presentations;
 - (UINavigationController)secondaryNavigationController;
 - (UINavigationController)userDefaultsNavigationController;
 - (UIViewController)collaborationParticipantsViewController;
 - (UIViewController)optionsViewController;
 - (UIViewController)presentationBlockingViewController;
 - (UIViewController)rootViewController;
-- (id)_createUserDefaultsNavigationControllerWithRootViewController:(id)a3;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
-- (void)_configureAirdropViewController:(id)a3;
-- (void)_configureMainViewController:(id)a3;
+- (id)_createUserDefaultsNavigationControllerWithRootViewController:(id)controller;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
+- (void)_configureAirdropViewController:(id)controller;
+- (void)_configureMainViewController:(id)controller;
 - (void)_didDismissCollaborationParticipantsViewController;
 - (void)_didDismissOptionsViewController;
 - (void)_dismissOptionsViewController;
-- (void)_installChildViewController:(id)a3 forParentViewController:(id)a4;
-- (void)_presentViewController:(id)a3;
-- (void)_presentationControllerDismissalTransitionDidEndNotification:(id)a3;
-- (void)activityPerformCleanUpPresentation:(id)a3;
-- (void)activityPerformer:(id)a3 preparePresentationWithContext:(id)a4 completion:(id)a5;
-- (void)activityPerformer:(id)a3 presentViewController:(id)a4 completion:(id)a5;
-- (void)activityPerformer:(id)a3 startListeningForDismissalTransitionWithCompletion:(id)a4;
-- (void)activityPerformerStopListeningForDismissalTransition:(id)a3;
+- (void)_installChildViewController:(id)controller forParentViewController:(id)viewController;
+- (void)_presentViewController:(id)controller;
+- (void)_presentationControllerDismissalTransitionDidEndNotification:(id)notification;
+- (void)activityPerformCleanUpPresentation:(id)presentation;
+- (void)activityPerformer:(id)performer preparePresentationWithContext:(id)context completion:(id)completion;
+- (void)activityPerformer:(id)performer presentViewController:(id)controller completion:(id)completion;
+- (void)activityPerformer:(id)performer startListeningForDismissalTransitionWithCompletion:(id)completion;
+- (void)activityPerformerStopListeningForDismissalTransition:(id)transition;
 - (void)dismissCollaborationParticipantsViewController;
-- (void)dismissForActivityPerformerResult:(id)a3 didPresentFromShareSheet:(BOOL)a4 completionHandler:(id)a5;
+- (void)dismissForActivityPerformerResult:(id)result didPresentFromShareSheet:(BOOL)sheet completionHandler:(id)handler;
 - (void)dismissPresentationBlockingViewControllerIfNeeded;
 - (void)dismissRemoteCustomViewControllerIfNeeded;
-- (void)dismissSecondaryViewControllerAnimated:(BOOL)a3;
-- (void)dismissUserDefaultsViewControllerAnimated:(BOOL)a3;
+- (void)dismissSecondaryViewControllerAnimated:(BOOL)animated;
+- (void)dismissUserDefaultsViewControllerAnimated:(BOOL)animated;
 - (void)handlePresentationBlockingViewControllerClose;
-- (void)installAirdropViewController:(id)a3;
+- (void)installAirdropViewController:(id)controller;
 - (void)layoutPresentationBlockingViewController;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)presentAirdropViewController:(id)a3;
-- (void)presentAlertController:(id)a3;
-- (void)presentCollaborationParticipantsViewController:(id)a3 dismissalHandler:(id)a4;
-- (void)presentMainViewController:(id)a3 withNavigationControllerSupport:(BOOL)a4;
-- (void)presentOptionsViewController:(id)a3 dismissalHandler:(id)a4;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)presentAirdropViewController:(id)controller;
+- (void)presentAlertController:(id)controller;
+- (void)presentCollaborationParticipantsViewController:(id)controller dismissalHandler:(id)handler;
+- (void)presentMainViewController:(id)controller withNavigationControllerSupport:(BOOL)support;
+- (void)presentOptionsViewController:(id)controller dismissalHandler:(id)handler;
 - (void)presentPresentationBlockingViewController;
-- (void)presentRemoteCustomViewController:(id)a3;
-- (void)presentSecondaryViewController:(id)a3;
-- (void)presentUserDefaultsViewController:(id)a3;
+- (void)presentRemoteCustomViewController:(id)controller;
+- (void)presentSecondaryViewController:(id)controller;
+- (void)presentUserDefaultsViewController:(id)controller;
 @end
 
 @implementation SHSheetRouter
@@ -60,16 +60,16 @@
 
 - (BOOL)isPresentedWithinPopover
 {
-  v2 = [(SHSheetRouter *)self rootViewController];
-  IsPresentedInPopover = SHSheetIsPresentedInPopover(v2);
+  rootViewController = [(SHSheetRouter *)self rootViewController];
+  IsPresentedInPopover = SHSheetIsPresentedInPopover(rootViewController);
 
   return IsPresentedInPopover;
 }
 
-- (SHSheetRouter)initWithRootViewController:(id)a3 mainNavigationController:(id)a4 supportsModalPresentations:(BOOL)a5
+- (SHSheetRouter)initWithRootViewController:(id)controller mainNavigationController:(id)navigationController supportsModalPresentations:(BOOL)presentations
 {
-  v8 = a3;
-  v9 = a4;
+  controllerCopy = controller;
+  navigationControllerCopy = navigationController;
   v13.receiver = self;
   v13.super_class = SHSheetRouter;
   v10 = [(SHSheetRouter *)&v13 init];
@@ -78,171 +78,171 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [(SHSheetRouter *)v10 _createUserDefaultsNavigationControllerWithRootViewController:v8];
+      v11 = [(SHSheetRouter *)v10 _createUserDefaultsNavigationControllerWithRootViewController:controllerCopy];
 
-      v9 = v11;
+      navigationControllerCopy = v11;
     }
 
-    objc_storeWeak(&v10->_rootViewController, v8);
-    v10->_supportsModalPresentations = a5;
-    [v9 setDelegate:v10];
-    objc_storeStrong(&v10->_mainNavigationController, v9);
+    objc_storeWeak(&v10->_rootViewController, controllerCopy);
+    v10->_supportsModalPresentations = presentations;
+    [navigationControllerCopy setDelegate:v10];
+    objc_storeStrong(&v10->_mainNavigationController, navigationControllerCopy);
   }
 
   return v10;
 }
 
-- (SHSheetRouter)initWithRootViewController:(id)a3 supportsModalPresentations:(BOOL)a4
+- (SHSheetRouter)initWithRootViewController:(id)controller supportsModalPresentations:(BOOL)presentations
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [MEMORY[0x1E69DC938] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  presentationsCopy = presentations;
+  controllerCopy = controller;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v9 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithNavigationBarClass:objc_opt_class() toolbarClass:0];
-  if ((dyld_program_sdk_at_least() & 1) == 0 && v8 != 1)
+  if ((dyld_program_sdk_at_least() & 1) == 0 && userInterfaceIdiom != 1)
   {
     [v9 _setPreferredNavigationBarPosition:2];
   }
 
-  v10 = [(SHSheetRouter *)self initWithRootViewController:v6 mainNavigationController:v9 supportsModalPresentations:v4];
+  v10 = [(SHSheetRouter *)self initWithRootViewController:controllerCopy mainNavigationController:v9 supportsModalPresentations:presentationsCopy];
 
   return v10;
 }
 
-- (void)presentMainViewController:(id)a3 withNavigationControllerSupport:(BOOL)a4
+- (void)presentMainViewController:(id)controller withNavigationControllerSupport:(BOOL)support
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [(SHSheetRouter *)self setMainViewController:v6];
+  controllerCopy = controller;
+  [(SHSheetRouter *)self setMainViewController:controllerCopy];
   v7 = share_sheet_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(SHSheetRouter *)self rootViewController];
+    rootViewController = [(SHSheetRouter *)self rootViewController];
     v13 = 138412546;
-    v14 = v6;
+    v14 = controllerCopy;
     v15 = 2112;
-    v16 = v8;
+    v16 = rootViewController;
     _os_log_impl(&dword_18B359000, v7, OS_LOG_TYPE_DEFAULT, "Install main view:%@ parentViewController:%@", &v13, 0x16u);
   }
 
-  v9 = [(SHSheetRouter *)self mainNavigationController];
-  [v9 pushViewController:v6 animated:0];
+  mainNavigationController = [(SHSheetRouter *)self mainNavigationController];
+  [mainNavigationController pushViewController:controllerCopy animated:0];
 
-  if (a4)
+  if (support)
   {
-    v10 = [(SHSheetRouter *)self mainNavigationController];
+    mainNavigationController2 = [(SHSheetRouter *)self mainNavigationController];
   }
 
   else
   {
-    v10 = v6;
+    mainNavigationController2 = controllerCopy;
   }
 
-  v11 = v10;
-  v12 = [(SHSheetRouter *)self rootViewController];
-  [(SHSheetRouter *)self _installChildViewController:v11 forParentViewController:v12];
+  v11 = mainNavigationController2;
+  rootViewController2 = [(SHSheetRouter *)self rootViewController];
+  [(SHSheetRouter *)self _installChildViewController:v11 forParentViewController:rootViewController2];
 
   [(SHSheetRouter *)self _configureMainViewController:v11];
 }
 
-- (void)presentSecondaryViewController:(id)a3
+- (void)presentSecondaryViewController:(id)controller
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(SHSheetRouter *)self setSecondaryViewController:v4];
+  controllerCopy = controller;
+  [(SHSheetRouter *)self setSecondaryViewController:controllerCopy];
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(SHSheetRouter *)self rootViewController];
+    rootViewController = [(SHSheetRouter *)self rootViewController];
     v10 = 138412546;
-    v11 = v4;
+    v11 = controllerCopy;
     v12 = 2112;
-    v13 = v6;
+    v13 = rootViewController;
     _os_log_impl(&dword_18B359000, v5, OS_LOG_TYPE_DEFAULT, "Present secondary view:%@ parentViewController:%@", &v10, 0x16u);
   }
 
-  v7 = [[_UIActivityNavigationController alloc] initWithRootViewController:v4];
+  v7 = [[_UIActivityNavigationController alloc] initWithRootViewController:controllerCopy];
   [(_UIActivityNavigationController *)v7 setDelegate:self];
   [(_UIActivityNavigationController *)v7 setTransitioningDelegate:self];
   [(_UIActivityNavigationController *)v7 setModalPresentationStyle:4];
   [(_UIActivityNavigationController *)v7 setPreferredContentSize:_ShareSheetDefaultSheetSize()];
-  v8 = [(_UIActivityNavigationController *)v7 navigationBar];
-  [v8 setRequestedContentSize:3];
+  navigationBar = [(_UIActivityNavigationController *)v7 navigationBar];
+  [navigationBar setRequestedContentSize:3];
 
   [(SHSheetRouter *)self setSecondaryNavigationController:v7];
-  v9 = [(SHSheetRouter *)self rootViewController];
-  [v9 presentViewController:v7 animated:1 completion:0];
+  rootViewController2 = [(SHSheetRouter *)self rootViewController];
+  [rootViewController2 presentViewController:v7 animated:1 completion:0];
 }
 
-- (id)_createUserDefaultsNavigationControllerWithRootViewController:(id)a3
+- (id)_createUserDefaultsNavigationControllerWithRootViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 view];
-  v6 = [v5 accessibilityIdentifier];
-  v7 = [@"ShareSheet.Edit" stringByAppendingString:v6];
+  controllerCopy = controller;
+  view = [controllerCopy view];
+  accessibilityIdentifier = [view accessibilityIdentifier];
+  v7 = [@"ShareSheet.Edit" stringByAppendingString:accessibilityIdentifier];
 
-  v8 = [SHSheetFactory createNavigationControllerWithRootViewController:v4 delegate:self accessibilityIdentifier:v7];
+  v8 = [SHSheetFactory createNavigationControllerWithRootViewController:controllerCopy delegate:self accessibilityIdentifier:v7];
 
   return v8;
 }
 
-- (void)presentUserDefaultsViewController:(id)a3
+- (void)presentUserDefaultsViewController:(id)controller
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = controllerCopy;
     _os_log_impl(&dword_18B359000, v5, OS_LOG_TYPE_DEFAULT, "Present user defaults view controller:%@", &v10, 0xCu);
   }
 
   if ([(SHSheetRouter *)self supportsModalPresentations])
   {
-    v6 = [(SHSheetRouter *)self _createUserDefaultsNavigationControllerWithRootViewController:v4];
+    v6 = [(SHSheetRouter *)self _createUserDefaultsNavigationControllerWithRootViewController:controllerCopy];
     [(SHSheetRouter *)self _presentViewController:v6];
   }
 
   else
   {
-    v7 = [(SHSheetRouter *)self secondaryNavigationController];
-    v8 = v7;
-    if (v7)
+    secondaryNavigationController = [(SHSheetRouter *)self secondaryNavigationController];
+    v8 = secondaryNavigationController;
+    if (secondaryNavigationController)
     {
-      v9 = v7;
+      mainNavigationController = secondaryNavigationController;
     }
 
     else
     {
-      v9 = [(SHSheetRouter *)self mainNavigationController];
+      mainNavigationController = [(SHSheetRouter *)self mainNavigationController];
     }
 
-    v6 = v9;
+    v6 = mainNavigationController;
 
-    [v6 pushViewController:v4 animated:1];
+    [v6 pushViewController:controllerCopy animated:1];
   }
 
   [(SHSheetRouter *)self setUserDefaultsNavigationController:v6];
 }
 
-- (void)presentRemoteCustomViewController:(id)a3
+- (void)presentRemoteCustomViewController:(id)controller
 {
-  v4 = a3;
-  [(SHSheetRouter *)self setRemoteCustomViewController:v4];
-  [v4 setModalPresentationStyle:2];
-  [(SHSheetRouter *)self _presentViewController:v4];
+  controllerCopy = controller;
+  [(SHSheetRouter *)self setRemoteCustomViewController:controllerCopy];
+  [controllerCopy setModalPresentationStyle:2];
+  [(SHSheetRouter *)self _presentViewController:controllerCopy];
 }
 
 - (void)dismissRemoteCustomViewControllerIfNeeded
 {
-  v3 = [(SHSheetRouter *)self remoteCustomViewController];
+  remoteCustomViewController = [(SHSheetRouter *)self remoteCustomViewController];
 
-  if (v3)
+  if (remoteCustomViewController)
   {
-    v4 = [(SHSheetRouter *)self remoteCustomViewController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    remoteCustomViewController2 = [(SHSheetRouter *)self remoteCustomViewController];
+    [remoteCustomViewController2 dismissViewControllerAnimated:1 completion:0];
 
     [(SHSheetRouter *)self setRemoteCustomViewController:0];
   }
@@ -250,29 +250,29 @@
 
 - (void)presentPresentationBlockingViewController
 {
-  v3 = [(SHSheetRouter *)self presentationBlockingViewController];
+  presentationBlockingViewController = [(SHSheetRouter *)self presentationBlockingViewController];
 
-  if (!v3)
+  if (!presentationBlockingViewController)
   {
     v9 = objc_alloc_init(SHSheetPresentationBlockingViewController);
     [(SHSheetPresentationBlockingViewController *)v9 setDelegate:self];
     [(SHSheetRouter *)self setPresentationBlockingViewController:v9];
-    v4 = [(SHSheetPresentationBlockingViewController *)v9 navigationItem];
-    [v4 setHidesBackButton:1];
+    navigationItem = [(SHSheetPresentationBlockingViewController *)v9 navigationItem];
+    [navigationItem setHidesBackButton:1];
 
-    v5 = [(SHSheetRouter *)self secondaryNavigationController];
-    v6 = v5;
-    if (v5)
+    secondaryNavigationController = [(SHSheetRouter *)self secondaryNavigationController];
+    v6 = secondaryNavigationController;
+    if (secondaryNavigationController)
     {
-      v7 = v5;
+      mainNavigationController = secondaryNavigationController;
     }
 
     else
     {
-      v7 = [(SHSheetRouter *)self mainNavigationController];
+      mainNavigationController = [(SHSheetRouter *)self mainNavigationController];
     }
 
-    v8 = v7;
+    v8 = mainNavigationController;
 
     [v8 pushViewController:v9 animated:0];
   }
@@ -280,49 +280,49 @@
 
 - (void)dismissPresentationBlockingViewControllerIfNeeded
 {
-  v3 = [(SHSheetRouter *)self presentationBlockingViewController];
+  presentationBlockingViewController = [(SHSheetRouter *)self presentationBlockingViewController];
 
-  if (v3)
+  if (presentationBlockingViewController)
   {
-    v4 = [(SHSheetRouter *)self presentationBlockingViewController];
-    v5 = [v4 navigationController];
-    v6 = [v5 popViewControllerAnimated:0];
+    presentationBlockingViewController2 = [(SHSheetRouter *)self presentationBlockingViewController];
+    navigationController = [presentationBlockingViewController2 navigationController];
+    v6 = [navigationController popViewControllerAnimated:0];
 
     [(SHSheetRouter *)self setPresentationBlockingViewController:0];
   }
 }
 
-- (void)_presentViewController:(id)a3
+- (void)_presentViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SHSheetRouter *)self secondaryNavigationController];
-  v6 = [(SHSheetRouter *)self mainViewController];
-  v7 = v6;
-  if (v6)
+  controllerCopy = controller;
+  secondaryNavigationController = [(SHSheetRouter *)self secondaryNavigationController];
+  mainViewController = [(SHSheetRouter *)self mainViewController];
+  v7 = mainViewController;
+  if (mainViewController)
   {
-    v8 = v6;
+    rootViewController = mainViewController;
   }
 
   else
   {
-    v8 = [(SHSheetRouter *)self rootViewController];
+    rootViewController = [(SHSheetRouter *)self rootViewController];
   }
 
-  v9 = v8;
+  v9 = rootViewController;
 
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __40__SHSheetRouter__presentViewController___block_invoke;
   v17 = &unk_1E71F91A0;
   v18 = v9;
-  v19 = v4;
-  v10 = v4;
+  v19 = controllerCopy;
+  v10 = controllerCopy;
   v11 = v9;
   v12 = MEMORY[0x18CFF58E0](&v14);
   v13 = v12;
-  if (v5)
+  if (secondaryNavigationController)
   {
-    [v5 dismissViewControllerAnimated:1 completion:{v12, v14, v15, v16, v17, v18, v19}];
+    [secondaryNavigationController dismissViewControllerAnimated:1 completion:{v12, v14, v15, v16, v17, v18, v19}];
   }
 
   else
@@ -331,42 +331,42 @@
   }
 }
 
-- (void)presentAirdropViewController:(id)a3
+- (void)presentAirdropViewController:(id)controller
 {
-  v4 = a3;
-  [(SHSheetRouter *)self _configureAirdropViewController:v4];
-  [(SHSheetRouter *)self _presentViewController:v4];
+  controllerCopy = controller;
+  [(SHSheetRouter *)self _configureAirdropViewController:controllerCopy];
+  [(SHSheetRouter *)self _presentViewController:controllerCopy];
 }
 
-- (void)installAirdropViewController:(id)a3
+- (void)installAirdropViewController:(id)controller
 {
-  v5 = a3;
-  [(SHSheetRouter *)self _configureAirdropViewController:v5];
-  v4 = [(SHSheetRouter *)self rootViewController];
-  [(SHSheetRouter *)self _installChildViewController:v5 forParentViewController:v4];
+  controllerCopy = controller;
+  [(SHSheetRouter *)self _configureAirdropViewController:controllerCopy];
+  rootViewController = [(SHSheetRouter *)self rootViewController];
+  [(SHSheetRouter *)self _installChildViewController:controllerCopy forParentViewController:rootViewController];
 
-  [(SHSheetRouter *)self _configureMainViewController:v5];
+  [(SHSheetRouter *)self _configureMainViewController:controllerCopy];
 }
 
-- (void)presentAlertController:(id)a3
+- (void)presentAlertController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SHSheetRouter *)self userDefaultsNavigationController];
-  v6 = [v5 topViewController];
-  v7 = v6;
-  if (v6)
+  controllerCopy = controller;
+  userDefaultsNavigationController = [(SHSheetRouter *)self userDefaultsNavigationController];
+  topViewController = [userDefaultsNavigationController topViewController];
+  v7 = topViewController;
+  if (topViewController)
   {
-    v8 = v6;
+    rootViewController = topViewController;
   }
 
   else
   {
-    v8 = [(SHSheetRouter *)self rootViewController];
+    rootViewController = [(SHSheetRouter *)self rootViewController];
   }
 
-  v9 = v8;
+  v9 = rootViewController;
 
-  v10 = [v9 presentedViewController];
+  presentedViewController = [v9 presentedViewController];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2050000000;
@@ -389,36 +389,36 @@
 
   if (isKindOfClass)
   {
-    v14 = [v9 presentedViewController];
+    presentedViewController2 = [v9 presentedViewController];
 
-    v9 = v14;
+    v9 = presentedViewController2;
   }
 
-  [v9 presentViewController:v4 animated:1 completion:0];
+  [v9 presentViewController:controllerCopy animated:1 completion:0];
 }
 
-- (void)presentOptionsViewController:(id)a3 dismissalHandler:(id)a4
+- (void)presentOptionsViewController:(id)controller dismissalHandler:(id)handler
 {
-  v24 = a3;
-  v6 = a4;
-  [(SHSheetRouter *)self setOptionsViewController:v24];
-  [(SHSheetRouter *)self setOptionsViewControllerDismissalHandler:v6];
+  controllerCopy = controller;
+  handlerCopy = handler;
+  [(SHSheetRouter *)self setOptionsViewController:controllerCopy];
+  [(SHSheetRouter *)self setOptionsViewControllerDismissalHandler:handlerCopy];
 
   if ([(SHSheetRouter *)self isVisionIdiom])
   {
-    v7 = [(SHSheetRouter *)self mainNavigationController];
-    v8 = [v7 _window];
+    mainNavigationController = [(SHSheetRouter *)self mainNavigationController];
+    _window = [mainNavigationController _window];
 
-    if (!v8)
+    if (!_window)
     {
       goto LABEL_9;
     }
 
 LABEL_7:
-    v11 = [(SHSheetRouter *)self mainNavigationController];
+    mainNavigationController2 = [(SHSheetRouter *)self mainNavigationController];
 LABEL_11:
-    v13 = v11;
-    [(_UIActivityNavigationController *)v11 pushViewController:v24 animated:1];
+    v13 = mainNavigationController2;
+    [(_UIActivityNavigationController *)mainNavigationController2 pushViewController:controllerCopy animated:1];
     goto LABEL_20;
   }
 
@@ -428,38 +428,38 @@ LABEL_11:
     goto LABEL_9;
   }
 
-  v9 = [(SHSheetRouter *)self mainNavigationController];
-  v10 = [v9 _window];
+  mainNavigationController3 = [(SHSheetRouter *)self mainNavigationController];
+  _window2 = [mainNavigationController3 _window];
 
-  if ((_ShareSheetSolariumEnabled() & 1) == 0 && v10)
+  if ((_ShareSheetSolariumEnabled() & 1) == 0 && _window2)
   {
     goto LABEL_7;
   }
 
 LABEL_9:
-  v12 = [(SHSheetRouter *)self secondaryNavigationController];
+  secondaryNavigationController = [(SHSheetRouter *)self secondaryNavigationController];
 
-  if (v12)
+  if (secondaryNavigationController)
   {
-    v11 = [(SHSheetRouter *)self secondaryNavigationController];
+    mainNavigationController2 = [(SHSheetRouter *)self secondaryNavigationController];
     goto LABEL_11;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = v24;
+    v13 = controllerCopy;
   }
 
   else
   {
-    v13 = [[_UIActivityNavigationController alloc] initWithRootViewController:v24];
+    v13 = [[_UIActivityNavigationController alloc] initWithRootViewController:controllerCopy];
     [(_UIActivityNavigationController *)v13 setDelegate:self];
     [(_UIActivityNavigationController *)v13 setModalPresentationStyle:2];
-    v14 = [MEMORY[0x1E69DC938] currentDevice];
-    v15 = [v14 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v15 == 1)
+    if (userInterfaceIdiom == 1)
     {
       [(_UIActivityNavigationController *)v13 setPreferredContentSize:_ShareSheetFormSheetSize()];
     }
@@ -480,11 +480,11 @@ LABEL_9:
     v19 = [v18 initWithTitle:v21 style:2 target:self action:sel__dismissOptionsViewController];
   }
 
-  v22 = [v24 navigationItem];
-  [v22 setRightBarButtonItem:v19];
+  navigationItem = [controllerCopy navigationItem];
+  [navigationItem setRightBarButtonItem:v19];
 
-  v23 = [(SHSheetRouter *)self mainViewController];
-  [v23 presentViewController:v13 animated:1 completion:0];
+  mainViewController = [(SHSheetRouter *)self mainViewController];
+  [mainViewController presentViewController:v13 animated:1 completion:0];
 
 LABEL_20:
 }
@@ -492,13 +492,13 @@ LABEL_20:
 - (void)_dismissOptionsViewController
 {
   objc_initWeak(&location, self);
-  v3 = [(SHSheetRouter *)self mainViewController];
+  mainViewController = [(SHSheetRouter *)self mainViewController];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __46__SHSheetRouter__dismissOptionsViewController__block_invoke;
   v4[3] = &unk_1E71F95A8;
   objc_copyWeak(&v5, &location);
-  [v3 dismissViewControllerAnimated:1 completion:v4];
+  [mainViewController dismissViewControllerAnimated:1 completion:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -513,63 +513,63 @@ void __46__SHSheetRouter__dismissOptionsViewController__block_invoke(uint64_t a1
 - (void)_didDismissOptionsViewController
 {
   [(SHSheetRouter *)self setOptionsViewController:0];
-  v3 = [(SHSheetRouter *)self optionsViewControllerDismissalHandler];
-  if (v3)
+  optionsViewControllerDismissalHandler = [(SHSheetRouter *)self optionsViewControllerDismissalHandler];
+  if (optionsViewControllerDismissalHandler)
   {
-    v4 = v3;
+    v4 = optionsViewControllerDismissalHandler;
     [(SHSheetRouter *)self setOptionsViewControllerDismissalHandler:0];
     v4[2](v4);
-    v3 = v4;
+    optionsViewControllerDismissalHandler = v4;
   }
 }
 
-- (void)presentCollaborationParticipantsViewController:(id)a3 dismissalHandler:(id)a4
+- (void)presentCollaborationParticipantsViewController:(id)controller dismissalHandler:(id)handler
 {
-  v17 = a3;
-  v6 = a4;
-  [(SHSheetRouter *)self setCollaborationParticipantsViewController:v17];
-  [(SHSheetRouter *)self setCollaborationParticipantsDismissalHandler:v6];
+  controllerCopy = controller;
+  handlerCopy = handler;
+  [(SHSheetRouter *)self setCollaborationParticipantsViewController:controllerCopy];
+  [(SHSheetRouter *)self setCollaborationParticipantsDismissalHandler:handlerCopy];
 
   if ([(SHSheetRouter *)self isVisionIdiom]|| [(SHSheetRouter *)self isPresentedWithinPopover])
   {
-    v7 = [(SHSheetRouter *)self mainNavigationController];
-    v8 = [v7 _window];
+    mainNavigationController = [(SHSheetRouter *)self mainNavigationController];
+    _window = [mainNavigationController _window];
 
-    if (v8)
+    if (_window)
     {
-      v9 = [(SHSheetRouter *)self mainNavigationController];
+      mainNavigationController2 = [(SHSheetRouter *)self mainNavigationController];
 LABEL_7:
-      v11 = v9;
-      [(_UIActivityNavigationController *)v9 pushViewController:v17 animated:1];
+      v11 = mainNavigationController2;
+      [(_UIActivityNavigationController *)mainNavigationController2 pushViewController:controllerCopy animated:1];
       goto LABEL_8;
     }
   }
 
-  v10 = [(SHSheetRouter *)self secondaryNavigationController];
+  secondaryNavigationController = [(SHSheetRouter *)self secondaryNavigationController];
 
-  if (v10)
+  if (secondaryNavigationController)
   {
-    v9 = [(SHSheetRouter *)self secondaryNavigationController];
+    mainNavigationController2 = [(SHSheetRouter *)self secondaryNavigationController];
     goto LABEL_7;
   }
 
-  v11 = [[_UIActivityNavigationController alloc] initWithRootViewController:v17];
+  v11 = [[_UIActivityNavigationController alloc] initWithRootViewController:controllerCopy];
   [(_UIActivityNavigationController *)v11 setDelegate:self];
   [(_UIActivityNavigationController *)v11 setModalPresentationStyle:2];
-  v12 = [MEMORY[0x1E69DC938] currentDevice];
-  v13 = [v12 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v13 == 1)
+  if (userInterfaceIdiom == 1)
   {
     [(_UIActivityNavigationController *)v11 setPreferredContentSize:_ShareSheetFormSheetSize()];
   }
 
   v14 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_dismissCollaborationParticipantsViewController];
-  v15 = [v17 navigationItem];
-  [v15 setRightBarButtonItem:v14];
+  navigationItem = [controllerCopy navigationItem];
+  [navigationItem setRightBarButtonItem:v14];
 
-  v16 = [(SHSheetRouter *)self mainViewController];
-  [v16 presentViewController:v11 animated:1 completion:0];
+  mainViewController = [(SHSheetRouter *)self mainViewController];
+  [mainViewController presentViewController:v11 animated:1 completion:0];
 
 LABEL_8:
 }
@@ -577,13 +577,13 @@ LABEL_8:
 - (void)dismissCollaborationParticipantsViewController
 {
   objc_initWeak(&location, self);
-  v3 = [(SHSheetRouter *)self mainViewController];
+  mainViewController = [(SHSheetRouter *)self mainViewController];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __63__SHSheetRouter_dismissCollaborationParticipantsViewController__block_invoke;
   v4[3] = &unk_1E71F95A8;
   objc_copyWeak(&v5, &location);
-  [v3 dismissViewControllerAnimated:1 completion:v4];
+  [mainViewController dismissViewControllerAnimated:1 completion:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -598,150 +598,150 @@ void __63__SHSheetRouter_dismissCollaborationParticipantsViewController__block_i
 - (void)_didDismissCollaborationParticipantsViewController
 {
   [(SHSheetRouter *)self setCollaborationParticipantsViewController:0];
-  v3 = [(SHSheetRouter *)self collaborationParticipantsDismissalHandler];
-  if (v3)
+  collaborationParticipantsDismissalHandler = [(SHSheetRouter *)self collaborationParticipantsDismissalHandler];
+  if (collaborationParticipantsDismissalHandler)
   {
-    v4 = v3;
+    v4 = collaborationParticipantsDismissalHandler;
     [(SHSheetRouter *)self setCollaborationParticipantsDismissalHandler:0];
     v4[2](v4);
-    v3 = v4;
+    collaborationParticipantsDismissalHandler = v4;
   }
 }
 
-- (void)dismissSecondaryViewControllerAnimated:(BOOL)a3
+- (void)dismissSecondaryViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v11 = *MEMORY[0x1E69E9840];
-  v5 = [(SHSheetRouter *)self secondaryNavigationController];
+  secondaryNavigationController = [(SHSheetRouter *)self secondaryNavigationController];
 
-  if (v5)
+  if (secondaryNavigationController)
   {
     v6 = share_sheet_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(SHSheetRouter *)self secondaryNavigationController];
+      secondaryNavigationController2 = [(SHSheetRouter *)self secondaryNavigationController];
       v9 = 138412290;
-      v10 = v7;
+      v10 = secondaryNavigationController2;
       _os_log_impl(&dword_18B359000, v6, OS_LOG_TYPE_DEFAULT, "Dismiss secondary navigation controller:%@", &v9, 0xCu);
     }
 
-    v8 = [(SHSheetRouter *)self secondaryNavigationController];
-    [v8 dismissViewControllerAnimated:v3 completion:0];
+    secondaryNavigationController3 = [(SHSheetRouter *)self secondaryNavigationController];
+    [secondaryNavigationController3 dismissViewControllerAnimated:animatedCopy completion:0];
   }
 }
 
-- (void)dismissUserDefaultsViewControllerAnimated:(BOOL)a3
+- (void)dismissUserDefaultsViewControllerAnimated:(BOOL)animated
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [(SHSheetRouter *)self userDefaultsNavigationController];
+  userDefaultsNavigationController = [(SHSheetRouter *)self userDefaultsNavigationController];
 
-  if (v4)
+  if (userDefaultsNavigationController)
   {
     v5 = share_sheet_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(SHSheetRouter *)self userDefaultsNavigationController];
+      userDefaultsNavigationController2 = [(SHSheetRouter *)self userDefaultsNavigationController];
       v8 = 138412290;
-      v9 = v6;
+      v9 = userDefaultsNavigationController2;
       _os_log_impl(&dword_18B359000, v5, OS_LOG_TYPE_DEFAULT, "Dismiss user defaults navigation controller:%@", &v8, 0xCu);
     }
 
-    v7 = [(SHSheetRouter *)self userDefaultsNavigationController];
-    [v7 dismissViewControllerAnimated:1 completion:0];
+    userDefaultsNavigationController3 = [(SHSheetRouter *)self userDefaultsNavigationController];
+    [userDefaultsNavigationController3 dismissViewControllerAnimated:1 completion:0];
 
     [(SHSheetRouter *)self setUserDefaultsNavigationController:0];
   }
 }
 
-- (void)dismissForActivityPerformerResult:(id)a3 didPresentFromShareSheet:(BOOL)a4 completionHandler:(id)a5
+- (void)dismissForActivityPerformerResult:(id)result didPresentFromShareSheet:(BOOL)sheet completionHandler:(id)handler
 {
-  v5 = a4;
+  sheetCopy = sheet;
   v63 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 activity];
-  v11 = [v10 activityViewController];
-  v12 = [v9 completedState];
+  handlerCopy = handler;
+  resultCopy = result;
+  activity = [resultCopy activity];
+  activityViewController = [activity activityViewController];
+  completedState = [resultCopy completedState];
 
-  if (v12 != 5)
+  if (completedState != 5)
   {
-    v26 = [v10 _embeddedActivityViewController];
-    v20 = v26;
-    if (v26)
+    _embeddedActivityViewController = [activity _embeddedActivityViewController];
+    rootViewController4 = _embeddedActivityViewController;
+    if (_embeddedActivityViewController)
     {
-      v27 = [v26 _window];
-      if (v27)
+      _window = [_embeddedActivityViewController _window];
+      if (_window)
       {
-        v28 = [v20 isBeingDismissed];
+        isBeingDismissed = [rootViewController4 isBeingDismissed];
       }
 
       else
       {
-        v28 = 1;
+        isBeingDismissed = 1;
       }
 
-      if (v10 && (v28 & 1) != 0)
+      if (activity && (isBeingDismissed & 1) != 0)
       {
         goto LABEL_25;
       }
     }
 
-    else if (v10)
+    else if (activity)
     {
 LABEL_25:
-      if (![v10 _managesOwnPresentation])
+      if (![activity _managesOwnPresentation])
       {
         goto LABEL_29;
       }
 
-      v29 = 0;
+      rootViewController = 0;
 LABEL_28:
 
-      v11 = v29;
+      activityViewController = rootViewController;
       goto LABEL_29;
     }
 
-    v29 = [(SHSheetRouter *)self rootViewController];
+    rootViewController = [(SHSheetRouter *)self rootViewController];
     goto LABEL_28;
   }
 
-  if (v5)
+  if (sheetCopy)
   {
-    v13 = [v11 presentingViewController];
+    presentingViewController = [activityViewController presentingViewController];
 
-    if (!v13)
+    if (!presentingViewController)
     {
-      v14 = [(SHSheetRouter *)self rootViewController];
+      rootViewController2 = [(SHSheetRouter *)self rootViewController];
 
-      v11 = v14;
+      activityViewController = rootViewController2;
     }
 
-    if (([v11 isBeingDismissed] & 1) != 0 || (objc_msgSend(v11, "presentingViewController"), v15 = objc_claimAutoreleasedReturnValue(), v15, !v15))
+    if (([activityViewController isBeingDismissed] & 1) != 0 || (objc_msgSend(activityViewController, "presentingViewController"), v15 = objc_claimAutoreleasedReturnValue(), v15, !v15))
     {
 
-      v11 = 0;
+      activityViewController = 0;
     }
 
-    v16 = [v11 presentingViewController];
+    presentingViewController2 = [activityViewController presentingViewController];
 
-    if (v16)
+    if (presentingViewController2)
     {
-      v17 = [v11 presentingViewController];
+      presentingViewController3 = [activityViewController presentingViewController];
 
-      v11 = v17;
+      activityViewController = presentingViewController3;
     }
 
-    v18 = [(SHSheetRouter *)self rootViewController];
-    v19 = v18;
-    if (v11 == v18)
+    rootViewController3 = [(SHSheetRouter *)self rootViewController];
+    v19 = rootViewController3;
+    if (activityViewController == rootViewController3)
     {
-      v48 = [v11 presentingViewController];
+      presentingViewController4 = [activityViewController presentingViewController];
 
-      if (v48)
+      if (presentingViewController4)
       {
 LABEL_59:
-        [v11 presentingViewController];
-        v11 = v20 = v11;
+        [activityViewController presentingViewController];
+        activityViewController = rootViewController4 = activityViewController;
         goto LABEL_29;
       }
     }
@@ -750,24 +750,24 @@ LABEL_59:
     {
     }
 
-    v20 = [(SHSheetRouter *)self rootViewController];
-    if (v11 == v20)
+    rootViewController4 = [(SHSheetRouter *)self rootViewController];
+    if (activityViewController == rootViewController4)
     {
       goto LABEL_29;
     }
 
-    v21 = [v11 presentingViewController];
-    if (!v21)
+    presentingViewController5 = [activityViewController presentingViewController];
+    if (!presentingViewController5)
     {
       goto LABEL_29;
     }
 
-    v22 = v21;
-    v23 = [v11 presentingViewController];
-    v24 = [(SHSheetRouter *)self rootViewController];
-    v25 = [v24 presentingViewController];
+    v22 = presentingViewController5;
+    presentingViewController6 = [activityViewController presentingViewController];
+    rootViewController5 = [(SHSheetRouter *)self rootViewController];
+    presentingViewController7 = [rootViewController5 presentingViewController];
 
-    if (v23 != v25)
+    if (presentingViewController6 != presentingViewController7)
     {
       goto LABEL_30;
     }
@@ -775,8 +775,8 @@ LABEL_59:
     goto LABEL_59;
   }
 
-  v20 = v11;
-  v11 = 0;
+  rootViewController4 = activityViewController;
+  activityViewController = 0;
 LABEL_29:
 
 LABEL_30:
@@ -784,20 +784,20 @@ LABEL_30:
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v60 = v11;
+    v60 = activityViewController;
     _os_log_impl(&dword_18B359000, v30, OS_LOG_TYPE_DEFAULT, "View controller to dismiss from:%@", buf, 0xCu);
   }
 
-  v31 = [v11 presentedViewController];
-  v32 = v31;
-  if (v31)
+  presentedViewController = [activityViewController presentedViewController];
+  v32 = presentedViewController;
+  if (presentedViewController)
   {
-    v33 = v31;
+    v33 = presentedViewController;
   }
 
   else
   {
-    v33 = v11;
+    v33 = activityViewController;
   }
 
   v34 = v33;
@@ -812,8 +812,8 @@ LABEL_30:
 
   if (v34)
   {
-    v36 = [v34 _window];
-    if (v36)
+    _window2 = [v34 _window];
+    if (_window2)
     {
       v37 = [v34 isBeingDismissed] ^ 1;
     }
@@ -833,11 +833,11 @@ LABEL_30:
   v56[1] = 3221225472;
   v56[2] = __94__SHSheetRouter_dismissForActivityPerformerResult_didPresentFromShareSheet_completionHandler___block_invoke;
   v56[3] = &unk_1E71FB4E0;
-  v58 = v5;
+  v58 = sheetCopy;
   v56[4] = self;
-  v38 = v8;
+  v38 = handlerCopy;
   v57 = v38;
-  v39 = [v10 _dismissActivityFromViewController:v11 animated:v37 completion:v56];
+  v39 = [activity _dismissActivityFromViewController:activityViewController animated:v37 completion:v56];
   v40 = share_sheet_log();
   if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
   {
@@ -849,7 +849,7 @@ LABEL_30:
 
   if ((v39 & 1) == 0)
   {
-    if (v11)
+    if (activityViewController)
     {
       v42 = v37;
     }
@@ -875,28 +875,28 @@ LABEL_30:
       v54[3] = &unk_1E71FA0F0;
       v54[4] = self;
       v55 = v38;
-      [v11 dismissViewControllerAnimated:1 completion:v54];
+      [activityViewController dismissViewControllerAnimated:1 completion:v54];
     }
 
     else
     {
-      if (v5)
+      if (sheetCopy)
       {
-        v44 = [(SHSheetRouter *)self rootViewController];
-        v45 = [v44 _window];
-        if (v45)
+        rootViewController6 = [(SHSheetRouter *)self rootViewController];
+        _window3 = [rootViewController6 _window];
+        if (_window3)
         {
-          v46 = [(SHSheetRouter *)self rootViewController];
-          if ([v46 isBeingDismissed])
+          rootViewController7 = [(SHSheetRouter *)self rootViewController];
+          if ([rootViewController7 isBeingDismissed])
           {
             v47 = 1;
           }
 
           else
           {
-            v49 = [(SHSheetRouter *)self rootViewController];
-            v50 = [v49 presentingViewController];
-            v47 = v50 == 0;
+            rootViewController8 = [(SHSheetRouter *)self rootViewController];
+            presentingViewController8 = [rootViewController8 presentingViewController];
+            v47 = presentingViewController8 == 0;
           }
         }
 
@@ -914,10 +914,10 @@ LABEL_30:
       v51 = share_sheet_log();
       if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
       {
-        v52 = [(SHSheetRouter *)self rootViewController];
+        rootViewController9 = [(SHSheetRouter *)self rootViewController];
         v53 = NSStringFromBOOL();
         *buf = 138412546;
-        v60 = v52;
+        v60 = rootViewController9;
         v61 = 2112;
         v62 = v53;
         _os_log_impl(&dword_18B359000, v51, OS_LOG_TYPE_DEFAULT, "didDismissRootViewController:%@ = %@", buf, 0x16u);
@@ -961,147 +961,147 @@ uint64_t __94__SHSheetRouter_dismissForActivityPerformerResult_didPresentFromSha
   return v5();
 }
 
-- (void)_configureMainViewController:(id)a3
+- (void)_configureMainViewController:(id)controller
 {
   v26[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 view];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  controllerCopy = controller;
+  view = [controllerCopy view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(SHSheetRouter *)self rootViewController];
-  v7 = [v6 view];
+  rootViewController = [(SHSheetRouter *)self rootViewController];
+  view2 = [rootViewController view];
 
   v18 = MEMORY[0x1E696ACD8];
-  v25 = [v4 view];
-  v24 = [v25 leadingAnchor];
-  v23 = [v7 leadingAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23];
+  view3 = [controllerCopy view];
+  leadingAnchor = [view3 leadingAnchor];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v26[0] = v22;
-  v21 = [v4 view];
-  v20 = [v21 trailingAnchor];
-  v19 = [v7 trailingAnchor];
-  v17 = [v20 constraintEqualToAnchor:v19];
+  view4 = [controllerCopy view];
+  trailingAnchor = [view4 trailingAnchor];
+  trailingAnchor2 = [view2 trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v26[1] = v17;
-  v8 = [v4 view];
-  v9 = [v8 topAnchor];
-  v10 = [v7 topAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  view5 = [controllerCopy view];
+  topAnchor = [view5 topAnchor];
+  topAnchor2 = [view2 topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v26[2] = v11;
-  v12 = [v4 view];
+  view6 = [controllerCopy view];
 
-  v13 = [v12 bottomAnchor];
-  v14 = [v7 bottomAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  bottomAnchor = [view6 bottomAnchor];
+  bottomAnchor2 = [view2 bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v26[3] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:4];
   [v18 activateConstraints:v16];
 }
 
-- (void)_configureAirdropViewController:(id)a3
+- (void)_configureAirdropViewController:(id)controller
 {
-  v3 = a3;
-  [v3 setModalPresentationStyle:2];
+  controllerCopy = controller;
+  [controllerCopy setModalPresentationStyle:2];
   if (_ShareSheetPlatformPrefersPopover())
   {
-    [v3 setPreferredContentSize:_ShareSheetFormSheetSize()];
+    [controllerCopy setPreferredContentSize:_ShareSheetFormSheetSize()];
   }
 }
 
-- (void)_installChildViewController:(id)a3 forParentViewController:(id)a4
+- (void)_installChildViewController:(id)controller forParentViewController:(id)viewController
 {
-  v5 = a4;
-  v8 = a3;
-  [v8 willMoveToParentViewController:v5];
-  [v5 addChildViewController:v8];
-  v6 = [v5 view];
-  v7 = [v8 view];
-  [v6 addSubview:v7];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  [controllerCopy willMoveToParentViewController:viewControllerCopy];
+  [viewControllerCopy addChildViewController:controllerCopy];
+  view = [viewControllerCopy view];
+  view2 = [controllerCopy view];
+  [view addSubview:view2];
 
-  [v8 didMoveToParentViewController:v5];
+  [controllerCopy didMoveToParentViewController:viewControllerCopy];
 }
 
-- (BOOL)activityPerformerCanPresent:(id)a3
+- (BOOL)activityPerformerCanPresent:(id)present
 {
-  v4 = [(SHSheetRouter *)self rootViewController];
-  v5 = [v4 parentModalViewController];
-  if (v5)
+  rootViewController = [(SHSheetRouter *)self rootViewController];
+  parentModalViewController = [rootViewController parentModalViewController];
+  if (parentModalViewController)
   {
-    v6 = 1;
+    isPresentedWithinPopover = 1;
   }
 
   else
   {
-    v7 = [(SHSheetRouter *)self rootViewController];
-    v8 = [v7 parentViewController];
-    if (v8)
+    rootViewController2 = [(SHSheetRouter *)self rootViewController];
+    parentViewController = [rootViewController2 parentViewController];
+    if (parentViewController)
     {
-      v6 = 1;
+      isPresentedWithinPopover = 1;
     }
 
     else
     {
-      v6 = [(SHSheetRouter *)self isPresentedWithinPopover];
+      isPresentedWithinPopover = [(SHSheetRouter *)self isPresentedWithinPopover];
     }
   }
 
-  return v6;
+  return isPresentedWithinPopover;
 }
 
-- (BOOL)activityPerformer:(id)a3 presentPopoverContentViewController:(id)a4
+- (BOOL)activityPerformer:(id)performer presentPopoverContentViewController:(id)controller
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SHSheetRouter *)self rootViewController];
-  v9 = [v8 _popoverController];
+  performerCopy = performer;
+  controllerCopy = controller;
+  rootViewController = [(SHSheetRouter *)self rootViewController];
+  _popoverController = [rootViewController _popoverController];
 
-  if (!v9 || ([v9 contentViewController], v10 = objc_claimAutoreleasedReturnValue(), -[SHSheetRouter rootViewController](self, "rootViewController"), v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v10 == v11))
+  if (!_popoverController || ([_popoverController contentViewController], v10 = objc_claimAutoreleasedReturnValue(), -[SHSheetRouter rootViewController](self, "rootViewController"), v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v10 == v11))
   {
     v13 = share_sheet_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v22 = 138412290;
-      v23 = v7;
+      v23 = controllerCopy;
       _os_log_impl(&dword_18B359000, v13, OS_LOG_TYPE_DEFAULT, "Present popover content view controller:%@", &v22, 0xCu);
     }
 
     v14 = _ShareSheetSolariumEnabled();
-    if (v9)
+    if (_popoverController)
     {
       v12 = 1;
-      [v9 setContentViewController:v7 animated:1];
+      [_popoverController setContentViewController:controllerCopy animated:1];
     }
 
     else
     {
       if (v14 & 1 | ![(SHSheetRouter *)self isPresentedWithinPopover])
       {
-        [v7 setModalPresentationStyle:2];
-        v15 = [v7 view];
+        [controllerCopy setModalPresentationStyle:2];
+        view = [controllerCopy view];
         v12 = 1;
-        [v15 setTintAdjustmentMode:1];
+        [view setTintAdjustmentMode:1];
 
-        v16 = [v6 activity];
-        [v16 _willPresentAsFormSheet];
+        activity = [performerCopy activity];
+        [activity _willPresentAsFormSheet];
 
-        v17 = [(SHSheetRouter *)self rootViewController];
-        v18 = v17;
+        rootViewController2 = [(SHSheetRouter *)self rootViewController];
+        v18 = rootViewController2;
       }
 
       else
       {
-        v19 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-        v20 = [v7 view];
-        [v20 setBackgroundColor:v19];
+        systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+        view2 = [controllerCopy view];
+        [view2 setBackgroundColor:systemGroupedBackgroundColor];
 
-        [v7 setModalPresentationStyle:6];
-        [v7 setModalTransitionStyle:2];
-        v17 = [(SHSheetRouter *)self rootViewController];
-        v18 = v17;
+        [controllerCopy setModalPresentationStyle:6];
+        [controllerCopy setModalTransitionStyle:2];
+        rootViewController2 = [(SHSheetRouter *)self rootViewController];
+        v18 = rootViewController2;
         v12 = 1;
       }
 
-      [v17 presentViewController:v7 animated:1 completion:0];
+      [rootViewController2 presentViewController:controllerCopy animated:1 completion:0];
     }
   }
 
@@ -1113,68 +1113,68 @@ uint64_t __94__SHSheetRouter_dismissForActivityPerformerResult_didPresentFromSha
   return v12;
 }
 
-- (void)activityPerformer:(id)a3 preparePresentationWithContext:(id)a4 completion:(id)a5
+- (void)activityPerformer:(id)performer preparePresentationWithContext:(id)context completion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(SHSheetRouter *)self rootViewController];
-  v10 = [v9 presentingViewController];
-  v11 = v10;
-  if (v10)
+  contextCopy = context;
+  completionCopy = completion;
+  rootViewController = [(SHSheetRouter *)self rootViewController];
+  presentingViewController = [rootViewController presentingViewController];
+  v11 = presentingViewController;
+  if (presentingViewController)
   {
-    v12 = v10;
+    rootViewController2 = presentingViewController;
   }
 
   else
   {
-    v13 = [MEMORY[0x1E69DD2E8] keyWindow];
-    v12 = [v13 rootViewController];
+    keyWindow = [MEMORY[0x1E69DD2E8] keyWindow];
+    rootViewController2 = [keyWindow rootViewController];
   }
 
-  if ([v7 shouldPresentOverCurrentContext] && !objc_msgSend(v7, "isCloudSharing"))
+  if ([contextCopy shouldPresentOverCurrentContext] && !objc_msgSend(contextCopy, "isCloudSharing"))
   {
-    v14 = [(SHSheetRouter *)self mainViewController];
+    mainViewController = [(SHSheetRouter *)self mainViewController];
   }
 
   else
   {
-    v14 = v12;
+    mainViewController = rootViewController2;
   }
 
-  v15 = v14;
+  v15 = mainViewController;
   v16 = share_sheet_log();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v35 = v7;
+    v35 = contextCopy;
     v36 = 2112;
     v37 = v15;
     _os_log_impl(&dword_18B359000, v16, OS_LOG_TYPE_DEFAULT, "Prepare presentation with context:%@ presentationViewController:%@", buf, 0x16u);
   }
 
-  if ([v7 shouldDismissBeforePresentation])
+  if ([contextCopy shouldDismissBeforePresentation])
   {
-    v17 = [(SHSheetRouter *)self rootViewController];
-    if ([v7 shouldPresentOverCurrentContext])
+    rootViewController3 = [(SHSheetRouter *)self rootViewController];
+    if ([contextCopy shouldPresentOverCurrentContext])
     {
 
-      v18 = [(SHSheetRouter *)self rootViewController];
+      rootViewController4 = [(SHSheetRouter *)self rootViewController];
 
-      v17 = 0;
-      v12 = v18;
+      rootViewController3 = 0;
+      rootViewController2 = rootViewController4;
     }
 
-    v19 = [(SHSheetRouter *)self secondaryNavigationController];
-    v20 = v19;
-    if (v19)
+    secondaryNavigationController = [(SHSheetRouter *)self secondaryNavigationController];
+    v20 = secondaryNavigationController;
+    if (secondaryNavigationController)
     {
-      v21 = v19;
+      v21 = secondaryNavigationController;
     }
 
     else
     {
-      v21 = v17;
+      v21 = rootViewController3;
     }
 
     v22 = v21;
@@ -1192,7 +1192,7 @@ uint64_t __94__SHSheetRouter_dismissForActivityPerformerResult_didPresentFromSha
   v31[4] = self;
   v23 = v15;
   v32 = v23;
-  v24 = v8;
+  v24 = completionCopy;
   v33 = v24;
   v25 = MEMORY[0x18CFF58E0](v31);
   v26 = v25;
@@ -1211,7 +1211,7 @@ uint64_t __94__SHSheetRouter_dismissForActivityPerformerResult_didPresentFromSha
     v28[2] = __77__SHSheetRouter_activityPerformer_preparePresentationWithContext_completion___block_invoke_148;
     v28[3] = &unk_1E71F9958;
     v28[4] = self;
-    v29 = v12;
+    v29 = rootViewController2;
     v30 = v26;
     [v22 dismissViewControllerAnimated:1 completion:v28];
   }
@@ -1268,65 +1268,65 @@ LABEL_7:
   [v7 dismissViewControllerAnimated:0 completion:v9];
 }
 
-- (void)activityPerformer:(id)a3 presentViewController:(id)a4 completion:(id)a5
+- (void)activityPerformer:(id)performer presentViewController:(id)controller completion:(id)completion
 {
   v40 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(SHSheetRouter *)self rootViewController];
+  controllerCopy = controller;
+  completionCopy = completion;
+  rootViewController = [(SHSheetRouter *)self rootViewController];
   v10 = share_sheet_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v38 = 138412290;
-    v39 = v7;
+    v39 = controllerCopy;
     _os_log_impl(&dword_18B359000, v10, OS_LOG_TYPE_DEFAULT, "Present view controller for activity:%@", &v38, 0xCu);
   }
 
-  v11 = [v9 popoverPresentationController];
-  if (v11)
+  popoverPresentationController = [rootViewController popoverPresentationController];
+  if (popoverPresentationController)
   {
-    v12 = v11;
-    v13 = [v7 popoverPresentationController];
+    v12 = popoverPresentationController;
+    popoverPresentationController2 = [controllerCopy popoverPresentationController];
 
-    if (v13)
+    if (popoverPresentationController2)
     {
-      v14 = [v9 popoverPresentationController];
-      v15 = [v14 barButtonItem];
-      v16 = [v7 popoverPresentationController];
-      [v16 setBarButtonItem:v15];
+      popoverPresentationController3 = [rootViewController popoverPresentationController];
+      barButtonItem = [popoverPresentationController3 barButtonItem];
+      popoverPresentationController4 = [controllerCopy popoverPresentationController];
+      [popoverPresentationController4 setBarButtonItem:barButtonItem];
 
-      v17 = [v9 popoverPresentationController];
-      [v17 sourceRect];
+      popoverPresentationController5 = [rootViewController popoverPresentationController];
+      [popoverPresentationController5 sourceRect];
       v19 = v18;
       v21 = v20;
       v23 = v22;
       v25 = v24;
-      v26 = [v7 popoverPresentationController];
-      [v26 setSourceRect:{v19, v21, v23, v25}];
+      popoverPresentationController6 = [controllerCopy popoverPresentationController];
+      [popoverPresentationController6 setSourceRect:{v19, v21, v23, v25}];
 
-      v27 = [v9 popoverPresentationController];
-      v28 = [v27 sourceView];
-      v29 = [v7 popoverPresentationController];
-      [v29 setSourceView:v28];
+      popoverPresentationController7 = [rootViewController popoverPresentationController];
+      sourceView = [popoverPresentationController7 sourceView];
+      popoverPresentationController8 = [controllerCopy popoverPresentationController];
+      [popoverPresentationController8 setSourceView:sourceView];
     }
   }
 
-  v30 = [v7 view];
-  [v30 setTintAdjustmentMode:1];
+  view = [controllerCopy view];
+  [view setTintAdjustmentMode:1];
 
-  v31 = [MEMORY[0x1E696AAE8] mainBundle];
-  v32 = [v31 bundleIdentifier];
-  v33 = [v32 isEqualToString:@"com.apple.mobilesafari"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v33 = [bundleIdentifier isEqualToString:@"com.apple.mobilesafari"];
 
-  v34 = [(SHSheetRouter *)self rootViewController];
-  v35 = [v34 traitCollection];
-  if ([v35 horizontalSizeClass] == 1 && v33)
+  rootViewController2 = [(SHSheetRouter *)self rootViewController];
+  traitCollection = [rootViewController2 traitCollection];
+  if ([traitCollection horizontalSizeClass] == 1 && v33)
   {
-    v36 = [v7 modalPresentationStyle];
+    modalPresentationStyle = [controllerCopy modalPresentationStyle];
 
-    if (v36 == 7)
+    if (modalPresentationStyle == 7)
     {
-      [v7 setModalPresentationStyle:2];
+      [controllerCopy setModalPresentationStyle:2];
     }
   }
 
@@ -1334,11 +1334,11 @@ LABEL_7:
   {
   }
 
-  v37 = [(SHSheetRouter *)self presentationViewController];
-  [v37 presentViewController:v7 animated:1 completion:v8];
+  presentationViewController = [(SHSheetRouter *)self presentationViewController];
+  [presentationViewController presentViewController:controllerCopy animated:1 completion:completionCopy];
 }
 
-- (void)activityPerformCleanUpPresentation:(id)a3
+- (void)activityPerformCleanUpPresentation:(id)presentation
 {
   v4 = share_sheet_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -1349,12 +1349,12 @@ LABEL_7:
   [(SHSheetRouter *)self setPresentationViewController:0];
 }
 
-- (void)activityPerformer:(id)a3 startListeningForDismissalTransitionWithCompletion:(id)a4
+- (void)activityPerformer:(id)performer startListeningForDismissalTransitionWithCompletion:(id)completion
 {
   if (!self->_listenForDismissalTransition)
   {
-    v6 = a4;
-    v7 = a3;
+    completionCopy = completion;
+    performerCopy = performer;
     v8 = share_sheet_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
@@ -1362,19 +1362,19 @@ LABEL_7:
     }
 
     self->_listenForDismissalTransition = 1;
-    [(SHSheetRouter *)self setListenerCompletionHandler:v6];
+    [(SHSheetRouter *)self setListenerCompletionHandler:completionCopy];
 
-    v16 = [v7 activity];
+    activity = [performerCopy activity];
 
-    v17 = [v16 activityViewController];
-    [(SHSheetRouter *)self setCurrentViewControllerForActivityBeingListened:v17];
+    activityViewController = [activity activityViewController];
+    [(SHSheetRouter *)self setCurrentViewControllerForActivityBeingListened:activityViewController];
 
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:self selector:sel__presentationControllerDismissalTransitionDidEndNotification_ name:*MEMORY[0x1E69DE2C8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__presentationControllerDismissalTransitionDidEndNotification_ name:*MEMORY[0x1E69DE2C8] object:0];
   }
 }
 
-- (void)activityPerformerStopListeningForDismissalTransition:(id)a3
+- (void)activityPerformerStopListeningForDismissalTransition:(id)transition
 {
   if (self->_listenForDismissalTransition)
   {
@@ -1387,68 +1387,68 @@ LABEL_7:
     self->_listenForDismissalTransition = 0;
     [(SHSheetRouter *)self setListenerCompletionHandler:0];
     [(SHSheetRouter *)self setCurrentViewControllerForActivityBeingListened:0];
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 removeObserver:self name:*MEMORY[0x1E69DE2C8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE2C8] object:0];
   }
 }
 
-- (void)_presentationControllerDismissalTransitionDidEndNotification:(id)a3
+- (void)_presentationControllerDismissalTransitionDidEndNotification:(id)notification
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69DE2C0]];
-  v7 = [v6 BOOLValue];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69DE2C0]];
+  bOOLValue = [v6 BOOLValue];
 
-  if (self->_listenForDismissalTransition && v7 != 0)
+  if (self->_listenForDismissalTransition && bOOLValue != 0)
   {
-    v9 = [(SHSheetRouter *)self currentViewControllerForActivityBeingListened];
-    v10 = [(SHSheetRouter *)self presentationViewController];
-    v11 = [MEMORY[0x1E69DC938] currentDevice];
-    v12 = [v11 userInterfaceIdiom];
+    currentViewControllerForActivityBeingListened = [(SHSheetRouter *)self currentViewControllerForActivityBeingListened];
+    presentationViewController = [(SHSheetRouter *)self presentationViewController];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (!v9 && v10)
+    if (!currentViewControllerForActivityBeingListened && presentationViewController)
     {
-      if (v12 == 1)
+      if (userInterfaceIdiom == 1)
       {
-        v9 = [v10 presentedViewController];
+        currentViewControllerForActivityBeingListened = [presentationViewController presentedViewController];
       }
 
       else
       {
-        v9 = 0;
+        currentViewControllerForActivityBeingListened = 0;
       }
     }
 
-    v13 = [v4 object];
+    object = [notificationCopy object];
 
-    if (v13 == v9)
+    if (object == currentViewControllerForActivityBeingListened)
     {
       v14 = share_sheet_log();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138412290;
-        v17 = v9;
+        v17 = currentViewControllerForActivityBeingListened;
         _os_log_impl(&dword_18B359000, v14, OS_LOG_TYPE_DEFAULT, "Presentation controller dismissal detected for %@", &v16, 0xCu);
       }
 
-      v15 = [(SHSheetRouter *)self listenerCompletionHandler];
-      v15[2]();
+      listenerCompletionHandler = [(SHSheetRouter *)self listenerCompletionHandler];
+      listenerCompletionHandler[2]();
     }
   }
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(SHSheetRouter *)self secondaryNavigationController];
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  secondaryNavigationController = [(SHSheetRouter *)self secondaryNavigationController];
 
-  if (v9 == v7)
+  if (secondaryNavigationController == controllerCopy)
   {
-    v10 = [objc_alloc(MEMORY[0x1E69DD4F0]) initWithPresentedViewController:v7 presentingViewController:v8];
-    v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v11 _referenceBounds];
+    v10 = [objc_alloc(MEMORY[0x1E69DD4F0]) initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
     v13 = v12;
     v15 = v14;
 
@@ -1465,26 +1465,26 @@ LABEL_7:
   return v10;
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v16 = a3;
-  v6 = [v16 disappearingViewController];
+  controllerCopy = controller;
+  disappearingViewController = [controllerCopy disappearingViewController];
 
-  v7 = v16;
-  if (v6)
+  v7 = controllerCopy;
+  if (disappearingViewController)
   {
-    v8 = [v16 disappearingViewController];
-    v9 = [(SHSheetRouter *)self collaborationParticipantsViewController];
-    v10 = v9;
-    if (v8 == v9)
+    disappearingViewController2 = [controllerCopy disappearingViewController];
+    collaborationParticipantsViewController = [(SHSheetRouter *)self collaborationParticipantsViewController];
+    v10 = collaborationParticipantsViewController;
+    if (disappearingViewController2 == collaborationParticipantsViewController)
     {
-      v14 = [(SHSheetRouter *)self collaborationParticipantsDismissalHandler];
+      collaborationParticipantsDismissalHandler = [(SHSheetRouter *)self collaborationParticipantsDismissalHandler];
 
-      if (v14)
+      if (collaborationParticipantsDismissalHandler)
       {
         [(SHSheetRouter *)self _didDismissCollaborationParticipantsViewController];
 LABEL_10:
-        v7 = v16;
+        v7 = controllerCopy;
         goto LABEL_11;
       }
     }
@@ -1493,15 +1493,15 @@ LABEL_10:
     {
     }
 
-    v11 = [v16 disappearingViewController];
-    v12 = [(SHSheetRouter *)self optionsViewController];
-    v13 = v12;
-    if (v11 == v12)
+    disappearingViewController3 = [controllerCopy disappearingViewController];
+    optionsViewController = [(SHSheetRouter *)self optionsViewController];
+    v13 = optionsViewController;
+    if (disappearingViewController3 == optionsViewController)
     {
-      v15 = [(SHSheetRouter *)self optionsViewControllerDismissalHandler];
+      optionsViewControllerDismissalHandler = [(SHSheetRouter *)self optionsViewControllerDismissalHandler];
 
-      v7 = v16;
-      if (!v15)
+      v7 = controllerCopy;
+      if (!optionsViewControllerDismissalHandler)
       {
         goto LABEL_11;
       }
@@ -1521,24 +1521,24 @@ LABEL_11:
 
 - (void)handlePresentationBlockingViewControllerClose
 {
-  v3 = [(SHSheetRouter *)self mainViewController];
-  v2 = [v3 presenter];
-  [v2 handleClose];
+  mainViewController = [(SHSheetRouter *)self mainViewController];
+  presenter = [mainViewController presenter];
+  [presenter handleClose];
 }
 
 - (BOOL)presentationBlockingViewShouldPresentCloseButton
 {
-  v2 = [(SHSheetRouter *)self mainViewController];
-  v3 = [v2 effectivePresentationStyle] != 7;
+  mainViewController = [(SHSheetRouter *)self mainViewController];
+  v3 = [mainViewController effectivePresentationStyle] != 7;
 
   return v3;
 }
 
 - (void)layoutPresentationBlockingViewController
 {
-  v3 = [(SHSheetRouter *)self presentationBlockingViewController];
-  v2 = [v3 view];
-  [v2 setNeedsLayout];
+  presentationBlockingViewController = [(SHSheetRouter *)self presentationBlockingViewController];
+  view = [presentationBlockingViewController view];
+  [view setNeedsLayout];
 }
 
 - (SHSheetContentView)mainViewController

@@ -1,13 +1,13 @@
 @interface ValidationMetrics
-+ (void)dispatchMetrics:(id)a3;
-+ (void)sendSHA1CodeDirectoryMetricWithFilename:(id)a3 withSigningID:(id)a4 withCDHash:(id)a5 withTeamID:(id)a6 withBundleID:(id)a7 withVersion:(id)a8 withIsApple:(BOOL)a9 withSigningYear:(id)a10 withExecutableFormat:(id)a11 withHasRestrictedEntitlements:(BOOL)a12;
++ (void)dispatchMetrics:(id)metrics;
++ (void)sendSHA1CodeDirectoryMetricWithFilename:(id)filename withSigningID:(id)d withCDHash:(id)hash withTeamID:(id)iD withBundleID:(id)bundleID withVersion:(id)version withIsApple:(BOOL)apple withSigningYear:(id)self0 withExecutableFormat:(id)self1 withHasRestrictedEntitlements:(BOOL)self2;
 @end
 
 @implementation ValidationMetrics
 
-+ (void)dispatchMetrics:(id)a3
++ (void)dispatchMetrics:(id)metrics
 {
-  v3 = a3;
+  metricsCopy = metrics;
   if (dispatchMetrics__onceToken != -1)
   {
     +[ValidationMetrics dispatchMetrics:];
@@ -29,7 +29,7 @@
     block[1] = 3221225472;
     block[2] = __37__ValidationMetrics_dispatchMetrics___block_invoke_2;
     block[3] = &unk_278CBBAE0;
-    v7 = v3;
+    v7 = metricsCopy;
     dispatch_async(v5, block);
     v4 = v7;
   }
@@ -57,24 +57,24 @@ intptr_t __37__ValidationMetrics_dispatchMetrics___block_invoke_2(uint64_t a1)
   return dispatch_semaphore_signal(v1);
 }
 
-+ (void)sendSHA1CodeDirectoryMetricWithFilename:(id)a3 withSigningID:(id)a4 withCDHash:(id)a5 withTeamID:(id)a6 withBundleID:(id)a7 withVersion:(id)a8 withIsApple:(BOOL)a9 withSigningYear:(id)a10 withExecutableFormat:(id)a11 withHasRestrictedEntitlements:(BOOL)a12
++ (void)sendSHA1CodeDirectoryMetricWithFilename:(id)filename withSigningID:(id)d withCDHash:(id)hash withTeamID:(id)iD withBundleID:(id)bundleID withVersion:(id)version withIsApple:(BOOL)apple withSigningYear:(id)self0 withExecutableFormat:(id)self1 withHasRestrictedEntitlements:(BOOL)self2
 {
-  v25 = a3;
-  v26 = a4;
-  v27 = a5;
-  v28 = a6;
-  v29 = a7;
-  v30 = a8;
-  v31 = a10;
-  v32 = a11;
-  v17 = v32;
-  v18 = v31;
-  v19 = v30;
-  v20 = v29;
-  v21 = v28;
-  v22 = v27;
-  v23 = v26;
-  v24 = v25;
+  filenameCopy = filename;
+  dCopy = d;
+  hashCopy = hash;
+  iDCopy = iD;
+  bundleIDCopy = bundleID;
+  versionCopy = version;
+  yearCopy = year;
+  formatCopy = format;
+  v17 = formatCopy;
+  v18 = yearCopy;
+  v19 = versionCopy;
+  v20 = bundleIDCopy;
+  v21 = iDCopy;
+  v22 = hashCopy;
+  v23 = dCopy;
+  v24 = filenameCopy;
   AnalyticsSendEventLazy();
 }
 

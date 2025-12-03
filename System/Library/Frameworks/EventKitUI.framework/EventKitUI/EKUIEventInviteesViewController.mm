@@ -1,66 +1,66 @@
 @interface EKUIEventInviteesViewController
-+ (id)_participantsInArray:(id)a3 thatAreNotInArray:(id)a4;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
++ (id)_participantsInArray:(id)array thatAreNotInArray:(id)inArray;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (BOOL)useCustomBackButton;
 - (CGSize)preferredContentSize;
 - (EKUIEventInviteesEditViewController)parentController;
-- (EKUIEventInviteesViewController)initWithEvent:(id)a3 fromDetail:(BOOL)a4 model:(id)a5;
+- (EKUIEventInviteesViewController)initWithEvent:(id)event fromDetail:(BOOL)detail model:(id)model;
 - (EKUIViewControllerNavigationDelegate)navigationDelegate;
 - (EKViewControllerRemoteUIDelegate)remoteUIDelegate;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_sectionForIndex:(unint64_t)a3;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_sectionForIndex:(unint64_t)index;
 - (id)availabilityTapped;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)_indexForSection:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)_indexForSection:(id)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_dismiss:(id)a3;
-- (void)_dismissPresentedViewControllerAnimated:(BOOL)a3;
-- (void)_eventModified:(id)a3;
-- (void)_fontSizeDefinitionsChanged:(id)a3;
-- (void)_popViewControllerAnimated:(BOOL)a3;
-- (void)_presentViewController:(id)a3;
-- (void)_pushViewController:(id)a3;
+- (void)_dismiss:(id)_dismiss;
+- (void)_dismissPresentedViewControllerAnimated:(BOOL)animated;
+- (void)_eventModified:(id)modified;
+- (void)_fontSizeDefinitionsChanged:(id)changed;
+- (void)_popViewControllerAnimated:(BOOL)animated;
+- (void)_presentViewController:(id)controller;
+- (void)_pushViewController:(id)controller;
 - (void)_refreshIfNeeded;
 - (void)_requestDismissal;
-- (void)_searcherStateChanged:(int64_t)a3;
-- (void)_sendMessageToParticipants:(id)a3;
-- (void)_smoothRefreshIfNeededForSections:(id)a3;
+- (void)_searcherStateChanged:(int64_t)changed;
+- (void)_sendMessageToParticipants:(id)participants;
+- (void)_smoothRefreshIfNeededForSections:(id)sections;
 - (void)addInviteesTapped;
 - (void)dealloc;
-- (void)dismissViewControllerAnimated:(BOOL)a3;
-- (void)editItemViewController:(id)a3 didCompleteWithAction:(int)a4;
+- (void)dismissViewControllerAnimated:(BOOL)animated;
+- (void)editItemViewController:(id)controller didCompleteWithAction:(int)action;
 - (void)loadView;
 - (void)prepareToReloadAttendeesSections;
 - (void)resetBackgroundColor;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section;
 - (void)updateCustomNavigationItemButtons;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation EKUIEventInviteesViewController
 
-- (EKUIEventInviteesViewController)initWithEvent:(id)a3 fromDetail:(BOOL)a4 model:(id)a5
+- (EKUIEventInviteesViewController)initWithEvent:(id)event fromDetail:(BOOL)detail model:(id)model
 {
-  v6 = a4;
+  detailCopy = detail;
   v29[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  eventCopy = event;
+  modelCopy = model;
   v28.receiver = self;
   v28.super_class = EKUIEventInviteesViewController;
   v10 = [(EKUIEventInviteesViewController *)&v28 initWithNibName:0 bundle:0];
@@ -70,22 +70,22 @@
     v12 = [v11 localizedStringForKey:@"Invitees" value:&stru_1F4EF6790 table:0];
     [(EKUIEventInviteesViewController *)v10 setTitle:v12];
 
-    v13 = [v8 startDate];
-    [(EKUIEventInviteesViewController *)v10 setSelectedStartDate:v13];
+    startDate = [eventCopy startDate];
+    [(EKUIEventInviteesViewController *)v10 setSelectedStartDate:startDate];
 
-    v14 = [v8 endDateUnadjustedForLegacyClients];
-    [(EKUIEventInviteesViewController *)v10 setSelectedEndDate:v14];
+    endDateUnadjustedForLegacyClients = [eventCopy endDateUnadjustedForLegacyClients];
+    [(EKUIEventInviteesViewController *)v10 setSelectedEndDate:endDateUnadjustedForLegacyClients];
 
-    [(EKUIEventInviteesViewController *)v10 setEvent:v8];
+    [(EKUIEventInviteesViewController *)v10 setEvent:eventCopy];
     [(EKUIEventInviteesViewController *)v10 setResetAttendeesSections:1];
     [(EKUIEventInviteesViewController *)v10 setResetConflictResolutionSections:1];
-    [(EKUIEventInviteesViewController *)v10 setFromDetail:v6];
+    [(EKUIEventInviteesViewController *)v10 setFromDetail:detailCopy];
     [(EKUIEventInviteesViewController *)v10 setProhibitCallingSearcherStateChanged:0];
-    objc_storeStrong(&v10->_model, a5);
-    v15 = [(EKUIEventInviteesViewController *)v10 event];
-    v16 = [v15 isSelfOrganized];
+    objc_storeStrong(&v10->_model, model);
+    event = [(EKUIEventInviteesViewController *)v10 event];
+    isSelfOrganized = [event isSelfOrganized];
 
-    if (v16)
+    if (isSelfOrganized)
     {
       v17 = kEKUILogInviteesHandle;
       if (os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_DEBUG))
@@ -151,11 +151,11 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
 
 - (void)dealloc
 {
-  v3 = [(EKUIEventInviteesViewController *)self inviteesView];
-  [v3 setDelegate:0];
+  inviteesView = [(EKUIEventInviteesViewController *)self inviteesView];
+  [inviteesView setDelegate:0];
 
-  v4 = [(EKUIEventInviteesViewController *)self inviteesView];
-  [v4 setDataSource:0];
+  inviteesView2 = [(EKUIEventInviteesViewController *)self inviteesView];
+  [inviteesView2 setDataSource:0];
 
   v5.receiver = self;
   v5.super_class = EKUIEventInviteesViewController;
@@ -166,9 +166,9 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
 {
   v3 = objc_alloc(MEMORY[0x1E69DD250]);
   v7 = [v3 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__eventModified_ name:*MEMORY[0x1E6966918] object:self->_event];
-  [v4 addObserver:self selector:sel__fontSizeDefinitionsChanged_ name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__eventModified_ name:*MEMORY[0x1E6966918] object:self->_event];
+  [defaultCenter addObserver:self selector:sel__fontSizeDefinitionsChanged_ name:*MEMORY[0x1E69DDC48] object:0];
   v5 = [EKUIEventInviteesView alloc];
   [v7 bounds];
   v6 = [(EKUIEventInviteesView *)v5 initWithFrame:2 style:?];
@@ -189,9 +189,9 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
 
 - (void)resetBackgroundColor
 {
-  v3 = [(UIViewController *)self isPresentedInsidePopover];
-  v5 = [(EKUIEventInviteesViewController *)self tableView];
-  if (v3)
+  isPresentedInsidePopover = [(UIViewController *)self isPresentedInsidePopover];
+  tableView = [(EKUIEventInviteesViewController *)self tableView];
+  if (isPresentedInsidePopover)
   {
     [MEMORY[0x1E69DC888] clearColor];
   }
@@ -201,7 +201,7 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
     [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
   }
   v4 = ;
-  [v5 setBackgroundColor:v4];
+  [tableView setBackgroundColor:v4];
 }
 
 - (void)viewDidLoad
@@ -228,9 +228,9 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
     v6 = 0;
     do
     {
-      v7 = [(EKUIEventInviteesViewController *)self respondedSection];
+      respondedSection = [(EKUIEventInviteesViewController *)self respondedSection];
       v8 = [[EKUIInviteesViewRespondedInviteesSection alloc] initWithResponseType:v6];
-      [v7 addObject:v8];
+      [respondedSection addObject:v8];
 
       v6 = (v6 + 1);
     }
@@ -252,26 +252,26 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
   v12 = objc_alloc_init(EKUIInviteesViewOriginalConflictSection);
   [(EKUIEventInviteesViewController *)self setOriginalConflictSection:v12];
 
-  v13 = [(EKUIEventInviteesViewController *)self event];
-  v14 = [v13 startTimeZone];
-  v15 = [(EKUIEventInviteesViewController *)self originalConflictSection];
-  [v15 setTimeZone:v14];
+  event = [(EKUIEventInviteesViewController *)self event];
+  startTimeZone = [event startTimeZone];
+  originalConflictSection = [(EKUIEventInviteesViewController *)self originalConflictSection];
+  [originalConflictSection setTimeZone:startTimeZone];
 
   v16 = objc_alloc_init(EKUIInviteesViewAllInviteesCanAttendSection);
   [(EKUIEventInviteesViewController *)self setAllInviteesCanAttendSection:v16];
 
-  v17 = [(EKUIEventInviteesViewController *)self event];
-  v18 = [v17 startTimeZone];
-  v19 = [(EKUIEventInviteesViewController *)self allInviteesCanAttendSection];
-  [v19 setTimeZone:v18];
+  event2 = [(EKUIEventInviteesViewController *)self event];
+  startTimeZone2 = [event2 startTimeZone];
+  allInviteesCanAttendSection = [(EKUIEventInviteesViewController *)self allInviteesCanAttendSection];
+  [allInviteesCanAttendSection setTimeZone:startTimeZone2];
 
   v20 = objc_alloc_init(EKUIInviteesViewSomeInviteesCanAttendSection);
   [(EKUIEventInviteesViewController *)self setSomeInviteesCanAttendSection:v20];
 
-  v21 = [(EKUIEventInviteesViewController *)self event];
-  v22 = [v21 startTimeZone];
-  v23 = [(EKUIEventInviteesViewController *)self someInviteesCanAttendSection];
-  [v23 setTimeZone:v22];
+  event3 = [(EKUIEventInviteesViewController *)self event];
+  startTimeZone3 = [event3 startTimeZone];
+  someInviteesCanAttendSection = [(EKUIEventInviteesViewController *)self someInviteesCanAttendSection];
+  [someInviteesCanAttendSection setTimeZone:startTimeZone3];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -317,11 +317,11 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
   v129 = _Block_copy(v209);
   if (CalSolariumEnabled())
   {
-    v24 = [(EKUIEventInviteesViewController *)self allInviteesAndAddSection];
-    [v24 setParticipantSetRole:v129];
+    allInviteesAndAddSection = [(EKUIEventInviteesViewController *)self allInviteesAndAddSection];
+    [allInviteesAndAddSection setParticipantSetRole:v129];
 
-    v25 = [(EKUIEventInviteesViewController *)self allInviteesAndAddSection];
-    [v25 setParticipantTapped:v130];
+    allInviteesAndAddSection2 = [(EKUIEventInviteesViewController *)self allInviteesAndAddSection];
+    [allInviteesAndAddSection2 setParticipantTapped:v130];
 
     v206[0] = MEMORY[0x1E69E9820];
     v206[1] = 3221225472;
@@ -330,8 +330,8 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
     v207 = v123;
     v119 = &v208;
     objc_copyWeak(&v208, &location);
-    v26 = [(EKUIEventInviteesViewController *)self allInviteesAndAddSection];
-    [v26 setParticipantRemoved:v206];
+    allInviteesAndAddSection3 = [(EKUIEventInviteesViewController *)self allInviteesAndAddSection];
+    [allInviteesAndAddSection3 setParticipantRemoved:v206];
 
     v203[0] = MEMORY[0x1E69E9820];
     v203[1] = 3221225472;
@@ -340,18 +340,18 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
     v204 = v124;
     v121 = &v205;
     objc_copyWeak(&v205, &location);
-    v27 = [(EKUIEventInviteesViewController *)self allInviteesAndAddSection];
-    [v27 setTableViewCellHook:v203];
+    allInviteesAndAddSection4 = [(EKUIEventInviteesViewController *)self allInviteesAndAddSection];
+    [allInviteesAndAddSection4 setTableViewCellHook:v203];
 
     v201[0] = MEMORY[0x1E69E9820];
     v201[1] = 3221225472;
     v201[2] = __46__EKUIEventInviteesViewController_viewDidLoad__block_invoke_4;
     v201[3] = &unk_1E843F080;
     objc_copyWeak(&v202, &location);
-    v28 = [(EKUIEventInviteesViewController *)self allInviteesAndAddSection];
-    [v28 setAddInviteesTapped:v201];
-    v29 = [(EKUIEventInviteesViewController *)self allInviteesAndAddSection];
-    [v29 setAddInviteesTapped:v201];
+    allInviteesAndAddSection5 = [(EKUIEventInviteesViewController *)self allInviteesAndAddSection];
+    [allInviteesAndAddSection5 setAddInviteesTapped:v201];
+    allInviteesAndAddSection6 = [(EKUIEventInviteesViewController *)self allInviteesAndAddSection];
+    [allInviteesAndAddSection6 setAddInviteesTapped:v201];
 
     objc_destroyWeak(&v202);
     v111 = &v207;
@@ -360,8 +360,8 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
 
   else
   {
-    v30 = [(EKUIEventInviteesViewController *)self addInviteesSection];
-    [v30 setParticipantTapped:v130];
+    addInviteesSection = [(EKUIEventInviteesViewController *)self addInviteesSection];
+    [addInviteesSection setParticipantTapped:v130];
 
     v198[0] = MEMORY[0x1E69E9820];
     v198[1] = 3221225472;
@@ -371,8 +371,8 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
     v199 = v31;
     v119 = &v200;
     objc_copyWeak(&v200, &location);
-    v32 = [(EKUIEventInviteesViewController *)self addInviteesSection];
-    [v32 setParticipantRemoved:v198];
+    addInviteesSection2 = [(EKUIEventInviteesViewController *)self addInviteesSection];
+    [addInviteesSection2 setParticipantRemoved:v198];
 
     v195[0] = MEMORY[0x1E69E9820];
     v195[1] = 3221225472;
@@ -382,14 +382,14 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
     v196 = v33;
     v121 = &v197;
     objc_copyWeak(&v197, &location);
-    v34 = [(EKUIEventInviteesViewController *)self addInviteesSection];
-    [v34 setTableViewCellHook:v195];
+    addInviteesSection3 = [(EKUIEventInviteesViewController *)self addInviteesSection];
+    [addInviteesSection3 setTableViewCellHook:v195];
 
-    v35 = [(EKUIEventInviteesViewController *)self addInviteesSection];
-    [v35 setParticipantSetRole:v129];
+    addInviteesSection4 = [(EKUIEventInviteesViewController *)self addInviteesSection];
+    [addInviteesSection4 setParticipantSetRole:v129];
 
-    v36 = [(EKUIEventInviteesViewController *)self invisibleInviteeStatusSection];
-    [v36 setParticipantTapped:v130];
+    invisibleInviteeStatusSection = [(EKUIEventInviteesViewController *)self invisibleInviteeStatusSection];
+    [invisibleInviteeStatusSection setParticipantTapped:v130];
 
     v192[0] = MEMORY[0x1E69E9820];
     v192[1] = 3221225472;
@@ -398,11 +398,11 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
     v127 = v31;
     v193 = v127;
     objc_copyWeak(&v194, &location);
-    v37 = [(EKUIEventInviteesViewController *)self invisibleInviteeStatusSection];
-    [v37 setParticipantRemoved:v192];
+    invisibleInviteeStatusSection2 = [(EKUIEventInviteesViewController *)self invisibleInviteeStatusSection];
+    [invisibleInviteeStatusSection2 setParticipantRemoved:v192];
 
-    v38 = [(EKUIEventInviteesViewController *)self invisibleInviteeStatusSection];
-    [v38 setParticipantSetRole:v129];
+    invisibleInviteeStatusSection3 = [(EKUIEventInviteesViewController *)self invisibleInviteeStatusSection];
+    [invisibleInviteeStatusSection3 setParticipantSetRole:v129];
 
     v189[0] = MEMORY[0x1E69E9820];
     v189[1] = 3221225472;
@@ -411,8 +411,8 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
     v39 = v33;
     v190 = v39;
     objc_copyWeak(&v191, &location);
-    v40 = [(EKUIEventInviteesViewController *)self respondedSection];
-    v41 = [v40 objectAtIndexedSubscript:2];
+    respondedSection2 = [(EKUIEventInviteesViewController *)self respondedSection];
+    v41 = [respondedSection2 objectAtIndexedSubscript:2];
     [v41 setTableViewCellHook:v189];
 
     v42 = 0;
@@ -421,8 +421,8 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
     v43 = MEMORY[0x1E69E9820];
     do
     {
-      v44 = [(EKUIEventInviteesViewController *)self respondedSection];
-      v45 = [v44 objectAtIndexedSubscript:v42];
+      respondedSection3 = [(EKUIEventInviteesViewController *)self respondedSection];
+      v45 = [respondedSection3 objectAtIndexedSubscript:v42];
       [v45 setParticipantTapped:v130];
 
       v185[0] = v43;
@@ -433,8 +433,8 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
       v186 = v46;
       objc_copyWeak(&v187, &location);
       v188 = v42;
-      v47 = [(EKUIEventInviteesViewController *)self respondedSection];
-      v48 = [v47 objectAtIndexedSubscript:v42];
+      respondedSection4 = [(EKUIEventInviteesViewController *)self respondedSection];
+      v48 = [respondedSection4 objectAtIndexedSubscript:v42];
       [v48 setParticipantRemoved:v185];
 
       v181[0] = v43;
@@ -445,12 +445,12 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
       v182 = v49;
       objc_copyWeak(&v183, &location);
       v184 = v42;
-      v50 = [(EKUIEventInviteesViewController *)self respondedSection];
-      v51 = [v50 objectAtIndexedSubscript:v42];
+      respondedSection5 = [(EKUIEventInviteesViewController *)self respondedSection];
+      v51 = [respondedSection5 objectAtIndexedSubscript:v42];
       [v51 setTableViewCellHook:v181];
 
-      v52 = [(EKUIEventInviteesViewController *)self respondedSection];
-      v53 = [v52 objectAtIndexedSubscript:v42];
+      respondedSection6 = [(EKUIEventInviteesViewController *)self respondedSection];
+      v53 = [respondedSection6 objectAtIndexedSubscript:v42];
       [v53 setParticipantSetRole:v129];
 
       objc_destroyWeak(&v183);
@@ -460,11 +460,11 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
     }
 
     while (v42 != 3);
-    v54 = [(EKUIEventInviteesViewController *)self notRespondedSection];
-    [v54 setParticipantSetRole:v129];
+    notRespondedSection = [(EKUIEventInviteesViewController *)self notRespondedSection];
+    [notRespondedSection setParticipantSetRole:v129];
 
-    v55 = [(EKUIEventInviteesViewController *)self notRespondedSection];
-    [v55 setParticipantTapped:v130];
+    notRespondedSection2 = [(EKUIEventInviteesViewController *)self notRespondedSection];
+    [notRespondedSection2 setParticipantTapped:v130];
 
     v178[0] = MEMORY[0x1E69E9820];
     v178[1] = 3221225472;
@@ -472,8 +472,8 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
     v178[3] = &unk_1E843F8B0;
     v179 = v46;
     objc_copyWeak(&v180, &location);
-    v56 = [(EKUIEventInviteesViewController *)self notRespondedSection];
-    [v56 setParticipantRemoved:v178];
+    notRespondedSection3 = [(EKUIEventInviteesViewController *)self notRespondedSection];
+    [notRespondedSection3 setParticipantRemoved:v178];
 
     v175[0] = MEMORY[0x1E69E9820];
     v175[1] = 3221225472;
@@ -481,18 +481,18 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
     v175[3] = &unk_1E843F170;
     v176 = v49;
     objc_copyWeak(&v177, &location);
-    v57 = [(EKUIEventInviteesViewController *)self notRespondedSection];
-    [v57 setTableViewCellHook:v175];
+    notRespondedSection4 = [(EKUIEventInviteesViewController *)self notRespondedSection];
+    [notRespondedSection4 setTableViewCellHook:v175];
 
     v173[0] = MEMORY[0x1E69E9820];
     v173[1] = 3221225472;
     v173[2] = __46__EKUIEventInviteesViewController_viewDidLoad__block_invoke_13;
     v173[3] = &unk_1E843F080;
     objc_copyWeak(&v174, &location);
-    v58 = [(EKUIEventInviteesViewController *)self notRespondedSection];
-    [v58 setAddInviteesTapped:v173];
-    v59 = [(EKUIEventInviteesViewController *)self addInviteesSection];
-    [v59 setAddInviteesTapped:v173];
+    notRespondedSection5 = [(EKUIEventInviteesViewController *)self notRespondedSection];
+    [notRespondedSection5 setAddInviteesTapped:v173];
+    addInviteesSection5 = [(EKUIEventInviteesViewController *)self addInviteesSection];
+    [addInviteesSection5 setAddInviteesTapped:v173];
 
     objc_destroyWeak(&v174);
     objc_destroyWeak(&v177);
@@ -511,8 +511,8 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
   v171[2] = __46__EKUIEventInviteesViewController_viewDidLoad__block_invoke_14;
   v171[3] = &unk_1E843F080;
   objc_copyWeak(&v172, &location);
-  v60 = [(EKUIEventInviteesViewController *)self availabilitySection];
-  [v60 setViewAvailabilityTapped:v171];
+  availabilitySection = [(EKUIEventInviteesViewController *)self availabilitySection];
+  [availabilitySection setViewAvailabilityTapped:v171];
 
   v168[0] = MEMORY[0x1E69E9820];
   v168[1] = 3221225472;
@@ -521,12 +521,12 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
   v61 = v124;
   v169 = v61;
   objc_copyWeak(&v170, &location);
-  v62 = [(EKUIEventInviteesViewController *)self availabilitySection];
-  [v62 setTableViewCellHook:v168];
+  availabilitySection2 = [(EKUIEventInviteesViewController *)self availabilitySection];
+  [availabilitySection2 setTableViewCellHook:v168];
 
-  v63 = [(EKUIEventInviteesViewController *)self proposedTimeSection];
-  v64 = [(EKUIEventInviteesViewController *)self availabilitySearcher];
-  [v63 setAvailabilitySearcher:v64];
+  proposedTimeSection = [(EKUIEventInviteesViewController *)self proposedTimeSection];
+  availabilitySearcher = [(EKUIEventInviteesViewController *)self availabilitySearcher];
+  [proposedTimeSection setAvailabilitySearcher:availabilitySearcher];
 
   v166[0] = MEMORY[0x1E69E9820];
   v166[1] = 3221225472;
@@ -534,8 +534,8 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
   v166[3] = &unk_1E843F1C0;
   v65 = v117;
   v167 = v65;
-  v66 = [(EKUIEventInviteesViewController *)self proposedTimeSection];
-  [v66 setShowPreviewOfEventAtTime:v166];
+  proposedTimeSection2 = [(EKUIEventInviteesViewController *)self proposedTimeSection];
+  [proposedTimeSection2 setShowPreviewOfEventAtTime:v166];
 
   v163[0] = MEMORY[0x1E69E9820];
   v163[1] = 3221225472;
@@ -544,8 +544,8 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
   v67 = v61;
   v164 = v67;
   objc_copyWeak(&v165, &location);
-  v68 = [(EKUIEventInviteesViewController *)self proposedTimeSection];
-  [v68 setTableViewCellHook:v163];
+  proposedTimeSection3 = [(EKUIEventInviteesViewController *)self proposedTimeSection];
+  [proposedTimeSection3 setTableViewCellHook:v163];
 
   v160[0] = MEMORY[0x1E69E9820];
   v160[1] = 3221225472;
@@ -554,12 +554,12 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
   v69 = v115;
   v161 = v69;
   objc_copyWeak(&v162, &location);
-  v70 = [(EKUIEventInviteesViewController *)self proposedTimeSection];
-  [v70 setNewTimeChosen:v160];
+  proposedTimeSection4 = [(EKUIEventInviteesViewController *)self proposedTimeSection];
+  [proposedTimeSection4 setNewTimeChosen:v160];
 
-  v71 = [(EKUIEventInviteesViewController *)self originalConflictSection];
-  v72 = [(EKUIEventInviteesViewController *)self availabilitySearcher];
-  [v71 setAvailabilitySearcher:v72];
+  originalConflictSection2 = [(EKUIEventInviteesViewController *)self originalConflictSection];
+  availabilitySearcher2 = [(EKUIEventInviteesViewController *)self availabilitySearcher];
+  [originalConflictSection2 setAvailabilitySearcher:availabilitySearcher2];
 
   v157[0] = MEMORY[0x1E69E9820];
   v157[1] = 3221225472;
@@ -568,8 +568,8 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
   objc_copyWeak(&v159, &location);
   v73 = v65;
   v158 = v73;
-  v74 = [(EKUIEventInviteesViewController *)self originalConflictSection];
-  [v74 setShowPreviewOfEventAtTime:v157];
+  originalConflictSection3 = [(EKUIEventInviteesViewController *)self originalConflictSection];
+  [originalConflictSection3 setShowPreviewOfEventAtTime:v157];
 
   v154[0] = MEMORY[0x1E69E9820];
   v154[1] = 3221225472;
@@ -578,8 +578,8 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
   v75 = v67;
   v155 = v75;
   objc_copyWeak(&v156, &location);
-  v76 = [(EKUIEventInviteesViewController *)self originalConflictSection];
-  [v76 setTableViewCellHook:v154];
+  originalConflictSection4 = [(EKUIEventInviteesViewController *)self originalConflictSection];
+  [originalConflictSection4 setTableViewCellHook:v154];
 
   v151[0] = MEMORY[0x1E69E9820];
   v151[1] = 3221225472;
@@ -588,12 +588,12 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
   v77 = v69;
   v152 = v77;
   objc_copyWeak(&v153, &location);
-  v78 = [(EKUIEventInviteesViewController *)self originalConflictSection];
-  [v78 setNewTimeChosen:v151];
+  originalConflictSection5 = [(EKUIEventInviteesViewController *)self originalConflictSection];
+  [originalConflictSection5 setNewTimeChosen:v151];
 
-  v79 = [(EKUIEventInviteesViewController *)self allInviteesCanAttendSection];
-  v80 = [(EKUIEventInviteesViewController *)self availabilitySearcher];
-  [v79 setAvailabilitySearcher:v80];
+  allInviteesCanAttendSection2 = [(EKUIEventInviteesViewController *)self allInviteesCanAttendSection];
+  availabilitySearcher3 = [(EKUIEventInviteesViewController *)self availabilitySearcher];
+  [allInviteesCanAttendSection2 setAvailabilitySearcher:availabilitySearcher3];
 
   v149[0] = MEMORY[0x1E69E9820];
   v149[1] = 3221225472;
@@ -601,8 +601,8 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
   v149[3] = &unk_1E843F1C0;
   v81 = v73;
   v150 = v81;
-  v82 = [(EKUIEventInviteesViewController *)self allInviteesCanAttendSection];
-  [v82 setShowPreviewOfEventAtTime:v149];
+  allInviteesCanAttendSection3 = [(EKUIEventInviteesViewController *)self allInviteesCanAttendSection];
+  [allInviteesCanAttendSection3 setShowPreviewOfEventAtTime:v149];
 
   v146[0] = MEMORY[0x1E69E9820];
   v146[1] = 3221225472;
@@ -611,8 +611,8 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
   v83 = v75;
   v147 = v83;
   objc_copyWeak(&v148, &location);
-  v84 = [(EKUIEventInviteesViewController *)self allInviteesCanAttendSection];
-  [v84 setTableViewCellHook:v146];
+  allInviteesCanAttendSection4 = [(EKUIEventInviteesViewController *)self allInviteesCanAttendSection];
+  [allInviteesCanAttendSection4 setTableViewCellHook:v146];
 
   v143[0] = MEMORY[0x1E69E9820];
   v143[1] = 3221225472;
@@ -621,15 +621,15 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
   v85 = v77;
   v144 = v85;
   objc_copyWeak(&v145, &location);
-  v86 = [(EKUIEventInviteesViewController *)self allInviteesCanAttendSection];
-  [v86 setNewTimeChosen:v143];
+  allInviteesCanAttendSection5 = [(EKUIEventInviteesViewController *)self allInviteesCanAttendSection];
+  [allInviteesCanAttendSection5 setNewTimeChosen:v143];
 
-  v87 = [(EKUIEventInviteesViewController *)self allInviteesCanAttendSection];
-  [v87 setShowMoreAlternativeTimesTapped:v126];
+  allInviteesCanAttendSection6 = [(EKUIEventInviteesViewController *)self allInviteesCanAttendSection];
+  [allInviteesCanAttendSection6 setShowMoreAlternativeTimesTapped:v126];
 
-  v88 = [(EKUIEventInviteesViewController *)self someInviteesCanAttendSection];
-  v89 = [(EKUIEventInviteesViewController *)self availabilitySearcher];
-  [v88 setAvailabilitySearcher:v89];
+  someInviteesCanAttendSection2 = [(EKUIEventInviteesViewController *)self someInviteesCanAttendSection];
+  availabilitySearcher4 = [(EKUIEventInviteesViewController *)self availabilitySearcher];
+  [someInviteesCanAttendSection2 setAvailabilitySearcher:availabilitySearcher4];
 
   v141[0] = MEMORY[0x1E69E9820];
   v141[1] = 3221225472;
@@ -637,8 +637,8 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
   v141[3] = &unk_1E843F1C0;
   v118 = v81;
   v142 = v118;
-  v90 = [(EKUIEventInviteesViewController *)self someInviteesCanAttendSection];
-  [v90 setShowPreviewOfEventAtTime:v141];
+  someInviteesCanAttendSection3 = [(EKUIEventInviteesViewController *)self someInviteesCanAttendSection];
+  [someInviteesCanAttendSection3 setShowPreviewOfEventAtTime:v141];
 
   v138[0] = MEMORY[0x1E69E9820];
   v138[1] = 3221225472;
@@ -647,8 +647,8 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
   v114 = v83;
   v139 = v114;
   objc_copyWeak(&v140, &location);
-  v91 = [(EKUIEventInviteesViewController *)self someInviteesCanAttendSection];
-  [v91 setTableViewCellHook:v138];
+  someInviteesCanAttendSection4 = [(EKUIEventInviteesViewController *)self someInviteesCanAttendSection];
+  [someInviteesCanAttendSection4 setTableViewCellHook:v138];
 
   v135[0] = MEMORY[0x1E69E9820];
   v135[1] = 3221225472;
@@ -657,57 +657,57 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
   v116 = v85;
   v136 = v116;
   objc_copyWeak(&v137, &location);
-  v92 = [(EKUIEventInviteesViewController *)self someInviteesCanAttendSection];
-  [v92 setNewTimeChosen:v135];
+  someInviteesCanAttendSection5 = [(EKUIEventInviteesViewController *)self someInviteesCanAttendSection];
+  [someInviteesCanAttendSection5 setNewTimeChosen:v135];
 
-  v93 = [(EKUIEventInviteesViewController *)self someInviteesCanAttendSection];
-  [v93 setShowMoreAlternativeTimesTapped:v126];
+  someInviteesCanAttendSection6 = [(EKUIEventInviteesViewController *)self someInviteesCanAttendSection];
+  [someInviteesCanAttendSection6 setShowMoreAlternativeTimesTapped:v126];
 
   if (CalSolariumEnabled())
   {
-    v128 = [(EKUIEventInviteesViewController *)self allInviteesAndAddSection];
-    v229[0] = v128;
-    v125 = [(EKUIEventInviteesViewController *)self availabilitySection];
-    v229[1] = v125;
-    v122 = [(EKUIEventInviteesViewController *)self originalConflictSection];
-    v229[2] = v122;
-    v120 = [(EKUIEventInviteesViewController *)self proposedTimeSection];
-    v229[3] = v120;
-    v94 = [(EKUIEventInviteesViewController *)self allInviteesCanAttendSection];
-    v229[4] = v94;
-    v95 = [(EKUIEventInviteesViewController *)self someInviteesCanAttendSection];
-    v229[5] = v95;
-    v96 = [MEMORY[0x1E695DEC8] arrayWithObjects:v229 count:6];
-    [(EKUIEventInviteesViewController *)self setSections:v96];
+    allInviteesAndAddSection7 = [(EKUIEventInviteesViewController *)self allInviteesAndAddSection];
+    v229[0] = allInviteesAndAddSection7;
+    availabilitySection3 = [(EKUIEventInviteesViewController *)self availabilitySection];
+    v229[1] = availabilitySection3;
+    originalConflictSection6 = [(EKUIEventInviteesViewController *)self originalConflictSection];
+    v229[2] = originalConflictSection6;
+    proposedTimeSection5 = [(EKUIEventInviteesViewController *)self proposedTimeSection];
+    v229[3] = proposedTimeSection5;
+    allInviteesCanAttendSection7 = [(EKUIEventInviteesViewController *)self allInviteesCanAttendSection];
+    v229[4] = allInviteesCanAttendSection7;
+    someInviteesCanAttendSection7 = [(EKUIEventInviteesViewController *)self someInviteesCanAttendSection];
+    v229[5] = someInviteesCanAttendSection7;
+    respondedSection7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v229 count:6];
+    [(EKUIEventInviteesViewController *)self setSections:respondedSection7];
   }
 
   else
   {
-    v128 = [(EKUIEventInviteesViewController *)self addInviteesSection];
-    v228[0] = v128;
-    v125 = [(EKUIEventInviteesViewController *)self invisibleInviteeStatusSection];
-    v228[1] = v125;
-    v122 = [(EKUIEventInviteesViewController *)self respondedSection];
-    v120 = [v122 objectAtIndexedSubscript:0];
-    v228[2] = v120;
-    v94 = [(EKUIEventInviteesViewController *)self respondedSection];
-    v95 = [v94 objectAtIndexedSubscript:1];
-    v228[3] = v95;
-    v96 = [(EKUIEventInviteesViewController *)self respondedSection];
-    v112 = [v96 objectAtIndexedSubscript:2];
+    allInviteesAndAddSection7 = [(EKUIEventInviteesViewController *)self addInviteesSection];
+    v228[0] = allInviteesAndAddSection7;
+    availabilitySection3 = [(EKUIEventInviteesViewController *)self invisibleInviteeStatusSection];
+    v228[1] = availabilitySection3;
+    originalConflictSection6 = [(EKUIEventInviteesViewController *)self respondedSection];
+    proposedTimeSection5 = [originalConflictSection6 objectAtIndexedSubscript:0];
+    v228[2] = proposedTimeSection5;
+    allInviteesCanAttendSection7 = [(EKUIEventInviteesViewController *)self respondedSection];
+    someInviteesCanAttendSection7 = [allInviteesCanAttendSection7 objectAtIndexedSubscript:1];
+    v228[3] = someInviteesCanAttendSection7;
+    respondedSection7 = [(EKUIEventInviteesViewController *)self respondedSection];
+    v112 = [respondedSection7 objectAtIndexedSubscript:2];
     v228[4] = v112;
-    v110 = [(EKUIEventInviteesViewController *)self notRespondedSection];
-    v228[5] = v110;
-    v97 = [(EKUIEventInviteesViewController *)self availabilitySection];
-    v228[6] = v97;
-    v98 = [(EKUIEventInviteesViewController *)self originalConflictSection];
-    v228[7] = v98;
-    v99 = [(EKUIEventInviteesViewController *)self proposedTimeSection];
-    v228[8] = v99;
-    v100 = [(EKUIEventInviteesViewController *)self allInviteesCanAttendSection];
-    v228[9] = v100;
-    v101 = [(EKUIEventInviteesViewController *)self someInviteesCanAttendSection];
-    v228[10] = v101;
+    notRespondedSection6 = [(EKUIEventInviteesViewController *)self notRespondedSection];
+    v228[5] = notRespondedSection6;
+    availabilitySection4 = [(EKUIEventInviteesViewController *)self availabilitySection];
+    v228[6] = availabilitySection4;
+    originalConflictSection7 = [(EKUIEventInviteesViewController *)self originalConflictSection];
+    v228[7] = originalConflictSection7;
+    proposedTimeSection6 = [(EKUIEventInviteesViewController *)self proposedTimeSection];
+    v228[8] = proposedTimeSection6;
+    allInviteesCanAttendSection8 = [(EKUIEventInviteesViewController *)self allInviteesCanAttendSection];
+    v228[9] = allInviteesCanAttendSection8;
+    someInviteesCanAttendSection8 = [(EKUIEventInviteesViewController *)self someInviteesCanAttendSection];
+    v228[10] = someInviteesCanAttendSection8;
     v102 = [MEMORY[0x1E695DEC8] arrayWithObjects:v228 count:11];
     [(EKUIEventInviteesViewController *)self setSections:v102];
   }
@@ -715,19 +715,19 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
   v103 = kEKUILogInviteesHandle;
   if (os_log_type_enabled(v103, OS_LOG_TYPE_DEBUG))
   {
-    v104 = [(EKUIEventInviteesViewController *)self sections];
+    sections = [(EKUIEventInviteesViewController *)self sections];
     *buf = 138412290;
-    v227 = v104;
+    v227 = sections;
     _os_log_impl(&dword_1D3400000, v103, OS_LOG_TYPE_DEBUG, "Set up sections: [%@].", buf, 0xCu);
   }
 
-  v105 = [(EKUIEventInviteesViewController *)self inviteesView];
+  inviteesView = [(EKUIEventInviteesViewController *)self inviteesView];
   v133 = 0u;
   v134 = 0u;
   v131 = 0u;
   v132 = 0u;
-  v106 = [(EKUIEventInviteesViewController *)self sections];
-  v107 = [v106 countByEnumeratingWithState:&v131 objects:v225 count:16];
+  sections2 = [(EKUIEventInviteesViewController *)self sections];
+  v107 = [sections2 countByEnumeratingWithState:&v131 objects:v225 count:16];
   if (v107)
   {
     v108 = *v132;
@@ -738,14 +738,14 @@ void __66__EKUIEventInviteesViewController_initWithEvent_fromDetail_model___bloc
       {
         if (*v132 != v108)
         {
-          objc_enumerationMutation(v106);
+          objc_enumerationMutation(sections2);
         }
 
-        [*(*(&v131 + 1) + 8 * v109++) reloadAndRegisterReusableCellsWithTableView:v105];
+        [*(*(&v131 + 1) + 8 * v109++) reloadAndRegisterReusableCellsWithTableView:inviteesView];
       }
 
       while (v107 != v109);
-      v107 = [v106 countByEnumeratingWithState:&v131 objects:v225 count:16];
+      v107 = [sections2 countByEnumeratingWithState:&v131 objects:v225 count:16];
     }
 
     while (v107);
@@ -1492,9 +1492,9 @@ void __46__EKUIEventInviteesViewController_viewDidLoad__block_invoke_29(uint64_t
   (*(v5 + 16))(v5, v7, v6, v14);
 }
 
-- (void)_sendMessageToParticipants:(id)a3
+- (void)_sendMessageToParticipants:(id)participants
 {
-  v4 = a3;
+  participantsCopy = participants;
   CalAnalyticsSendEvent();
   v5 = [[EKUIEmailCompositionManager alloc] initWithEvent:self->_event];
   messageSendingManager = self->_messageSendingManager;
@@ -1508,12 +1508,12 @@ void __46__EKUIEventInviteesViewController_viewDidLoad__block_invoke_29(uint64_t
   objc_copyWeak(&v11, &location);
   v10[4] = self;
   [(EKUIEmailCompositionManager *)self->_messageSendingManager setMessageSendingComplete:v10];
-  v7 = [(EKUIEmailCompositionManager *)self->_messageSendingManager viewController];
-  [v7 setModalPresentationStyle:2];
+  viewController = [(EKUIEmailCompositionManager *)self->_messageSendingManager viewController];
+  [viewController setModalPresentationStyle:2];
 
   v8 = [EKEditItemViewController preferredViewControllerForPresentationsFromViewController:self];
-  v9 = [(EKUIEmailCompositionManager *)self->_messageSendingManager viewController];
-  [v8 presentViewController:v9 animated:1 completion:0];
+  viewController2 = [(EKUIEmailCompositionManager *)self->_messageSendingManager viewController];
+  [v8 presentViewController:viewController2 animated:1 completion:0];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -1543,21 +1543,21 @@ void __62__EKUIEventInviteesViewController__sendMessageToParticipants___block_in
 {
   if ([(EKUIEventInviteesViewController *)self fromDetail])
   {
-    v3 = [(EKUIEventInviteesViewController *)self event];
-    if ([v3 allowsAttendeesModifications])
+    event = [(EKUIEventInviteesViewController *)self event];
+    if ([event allowsAttendeesModifications])
     {
-      v4 = [(EKUIEventInviteesViewController *)self event];
-      if ([v4 hasChanges])
+      event2 = [(EKUIEventInviteesViewController *)self event];
+      if ([event2 hasChanges])
       {
         LOBYTE(v5) = 1;
       }
 
       else
       {
-        v6 = [(EKUIEventInviteesViewController *)self selectedStartDate];
-        v7 = [(EKUIEventInviteesViewController *)self event];
-        v8 = [v7 startDate];
-        v5 = [v6 isEqualToDate:v8] ^ 1;
+        selectedStartDate = [(EKUIEventInviteesViewController *)self selectedStartDate];
+        event3 = [(EKUIEventInviteesViewController *)self event];
+        startDate = [event3 startDate];
+        v5 = [selectedStartDate isEqualToDate:startDate] ^ 1;
       }
     }
 
@@ -1586,8 +1586,8 @@ void __62__EKUIEventInviteesViewController__sendMessageToParticipants___block_in
       v5 = [v4 localizedStringForKey:@"Done" value:&stru_1F4EF6790 table:0];
       v6 = [v3 initWithTitle:v5 style:0 target:self action:sel__dismiss_];
 
-      v7 = [(EKUIEventInviteesViewController *)self navigationItem];
-      [v7 setLeftBarButtonItem:v6];
+      navigationItem = [(EKUIEventInviteesViewController *)self navigationItem];
+      [navigationItem setLeftBarButtonItem:v6];
 
       v8 = MEMORY[0x1E695DEC8];
       v9 = +[_TtC10EventKitUI22EKRemoteUIButtonAction Done];
@@ -1603,10 +1603,10 @@ void __62__EKUIEventInviteesViewController__sendMessageToParticipants___block_in
     {
       v10 = objc_alloc(MEMORY[0x1E69DC708]);
       v11 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"envelope"];
-      v12 = [v10 initWithImage:v11 style:0 target:self action:sel__sendMessageToParticipants_];
+      navigationItem3 = [v10 initWithImage:v11 style:0 target:self action:sel__sendMessageToParticipants_];
 
-      v13 = [(EKUIEventInviteesViewController *)self navigationItem];
-      [v13 setRightBarButtonItem:v12];
+      navigationItem2 = [(EKUIEventInviteesViewController *)self navigationItem];
+      [navigationItem2 setRightBarButtonItem:navigationItem3];
 
       v14 = MEMORY[0x1E695DEC8];
       v15 = +[_TtC10EventKitUI22EKRemoteUIButtonAction PresentEmailCompose];
@@ -1615,50 +1615,50 @@ void __62__EKUIEventInviteesViewController__sendMessageToParticipants___block_in
 
     else
     {
-      v12 = [(EKUIEventInviteesViewController *)self navigationItem];
-      [v12 setRightBarButtonItem:0];
+      navigationItem3 = [(EKUIEventInviteesViewController *)self navigationItem];
+      [navigationItem3 setRightBarButtonItem:0];
       v16 = 0;
     }
 
-    v17 = [(EKUIEventInviteesViewController *)self remoteUIDelegate];
-    [v17 viewController:self didChangeLeftBarButtons:v18 rightBarButtons:v16];
+    remoteUIDelegate = [(EKUIEventInviteesViewController *)self remoteUIDelegate];
+    [remoteUIDelegate viewController:self didChangeLeftBarButtons:v18 rightBarButtons:v16];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = EKUIEventInviteesViewController;
-  [(EKUIEventInviteesViewController *)&v4 viewWillAppear:a3];
+  [(EKUIEventInviteesViewController *)&v4 viewWillAppear:appear];
   [(EKUIEventInviteesViewController *)self updateCustomNavigationItemButtons];
   [(EKUIEventInviteesViewController *)self _refreshIfNeeded];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(EKUIEventInviteesViewController *)self setViewIsVisible:1];
   v6.receiver = self;
   v6.super_class = EKUIEventInviteesViewController;
-  [(EKUIEventInviteesViewController *)&v6 viewDidAppear:v3];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel_willEnterForeground name:*MEMORY[0x1E69DDBC0] object:0];
+  [(EKUIEventInviteesViewController *)&v6 viewDidAppear:appearCopy];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_willEnterForeground name:*MEMORY[0x1E69DDBC0] object:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = EKUIEventInviteesViewController;
-  [(EKUIEventInviteesViewController *)&v5 viewWillDisappear:a3];
+  [(EKUIEventInviteesViewController *)&v5 viewWillDisappear:disappear];
   [(EKUIEventInviteesViewController *)self setViewIsVisible:0];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(EKUIEventInviteesViewController *)self view];
-  if (EKUICurrentWidthSizeClassIsCompactInViewHierarchy(v2))
+  view = [(EKUIEventInviteesViewController *)self view];
+  if (EKUICurrentWidthSizeClassIsCompactInViewHierarchy(view))
   {
     v3 = 26;
   }
@@ -1671,7 +1671,7 @@ void __62__EKUIEventInviteesViewController__sendMessageToParticipants___block_in
   return v3;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   v21 = *MEMORY[0x1E69E9840];
   v14 = 0u;
@@ -1722,114 +1722,114 @@ void __62__EKUIEventInviteesViewController__sendMessageToParticipants___block_in
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [(EKUIEventInviteesViewController *)self _sectionForIndex:a4];
-  v5 = [v4 numberOfRows];
+  v4 = [(EKUIEventInviteesViewController *)self _sectionForIndex:section];
+  numberOfRows = [v4 numberOfRows];
   v6 = kEKUILogInviteesHandle;
   if (os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_DEBUG))
   {
     v7 = v6;
-    v8 = [v4 debugTitle];
+    debugTitle = [v4 debugTitle];
     v10 = 138412546;
-    v11 = v8;
+    v11 = debugTitle;
     v12 = 2048;
-    v13 = v5;
+    v13 = numberOfRows;
     _os_log_impl(&dword_1D3400000, v7, OS_LOG_TYPE_DEBUG, "Section [%@] has [%ld] rows.", &v10, 0x16u);
   }
 
-  return v5;
+  return numberOfRows;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [(EKUIEventInviteesViewController *)self _sectionForIndex:a4];
-  v5 = [v4 headerTitle];
+  v4 = [(EKUIEventInviteesViewController *)self _sectionForIndex:section];
+  headerTitle = [v4 headerTitle];
   v6 = kEKUILogInviteesHandle;
   if (os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_DEBUG))
   {
     v7 = v6;
-    v8 = [v4 debugTitle];
+    debugTitle = [v4 debugTitle];
     v10 = 138412546;
-    v11 = v8;
+    v11 = debugTitle;
     v12 = 2112;
-    v13 = v5;
+    v13 = headerTitle;
     _os_log_impl(&dword_1D3400000, v7, OS_LOG_TYPE_DEBUG, "Section [%@] has a header title of [%@].", &v10, 0x16u);
   }
 
-  return v5;
+  return headerTitle;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v4 = [(EKUIEventInviteesViewController *)self _sectionForIndex:a4];
+  v4 = [(EKUIEventInviteesViewController *)self _sectionForIndex:section];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 customHeaderView];
+    customHeaderView = [v4 customHeaderView];
   }
 
   else
   {
-    v5 = 0;
+    customHeaderView = 0;
   }
 
-  return v5;
+  return customHeaderView;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v4 = [(EKUIEventInviteesViewController *)self _sectionForIndex:a4];
+  v4 = [(EKUIEventInviteesViewController *)self _sectionForIndex:section];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 customFooterView];
+    customFooterView = [v4 customFooterView];
   }
 
   else
   {
-    v5 = 0;
+    customFooterView = 0;
   }
 
-  return v5;
+  return customFooterView;
 }
 
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section
 {
-  v10 = a3;
-  v6 = a4;
+  viewCopy = view;
+  headerViewCopy = headerView;
   if (EKUICatalyst())
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [v10 backgroundColor];
-      v9 = [v7 contentView];
+      v7 = headerViewCopy;
+      backgroundColor = [viewCopy backgroundColor];
+      contentView = [v7 contentView];
 
-      [v9 setBackgroundColor:v8];
+      [contentView setBackgroundColor:backgroundColor];
     }
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = -[EKUIEventInviteesViewController _sectionForIndex:](self, "_sectionForIndex:", [v7 section]);
-  v9 = [v8 cellForIndexPath:v7 inTableView:v6];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[EKUIEventInviteesViewController _sectionForIndex:](self, "_sectionForIndex:", [pathCopy section]);
+  v9 = [v8 cellForIndexPath:pathCopy inTableView:viewCopy];
   if (EKUICatalyst())
   {
-    v10 = [v6 backgroundColor];
-    [v9 setBackgroundColor:v10];
+    backgroundColor = [viewCopy backgroundColor];
+    [v9 setBackgroundColor:backgroundColor];
   }
 
   v11 = kEKUILogInviteesHandle;
   if (os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_DEBUG))
   {
     v13 = 138412546;
-    v14 = v7;
+    v14 = pathCopy;
     v15 = 2112;
     v16 = v9;
     _os_log_impl(&dword_1D3400000, v11, OS_LOG_TYPE_DEBUG, "Cell acquired for index path: [%@].  Cell: [%@]", &v13, 0x16u);
@@ -1838,15 +1838,15 @@ void __62__EKUIEventInviteesViewController__sendMessageToParticipants___block_in
   return v9;
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = -[EKUIEventInviteesViewController _sectionForIndex:](self, "_sectionForIndex:", [v8 section]);
-  if ([v9 supportsContextMenuForIndexPath:v8])
+  viewCopy = view;
+  pathCopy = path;
+  v9 = -[EKUIEventInviteesViewController _sectionForIndex:](self, "_sectionForIndex:", [pathCopy section]);
+  if ([v9 supportsContextMenuForIndexPath:pathCopy])
   {
-    v10 = [v7 contextMenuInteraction];
-    v11 = [v9 contextMenuDataForIndexPath:v8 interaction:v10];
+    contextMenuInteraction = [viewCopy contextMenuInteraction];
+    v11 = [v9 contextMenuDataForIndexPath:pathCopy interaction:contextMenuInteraction];
 
     v12 = MEMORY[0x1E69DC8D8];
     v16[0] = MEMORY[0x1E69E9820];
@@ -1866,55 +1866,55 @@ void __62__EKUIEventInviteesViewController__sendMessageToParticipants___block_in
   return v14;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = -[EKUIEventInviteesViewController _sectionForIndex:](self, "_sectionForIndex:", [v5 section]);
-  v7 = [v6 canEditRow:v5];
+  pathCopy = path;
+  v6 = -[EKUIEventInviteesViewController _sectionForIndex:](self, "_sectionForIndex:", [pathCopy section]);
+  v7 = [v6 canEditRow:pathCopy];
   v8 = kEKUILogInviteesHandle;
   if (os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_DEBUG))
   {
     v9 = v8;
     v10 = CalBooleanAsString();
-    v11 = [v6 debugTitle];
+    debugTitle = [v6 debugTitle];
     v13 = 138412802;
     v14 = v10;
     v15 = 2112;
-    v16 = v11;
+    v16 = debugTitle;
     v17 = 2112;
-    v18 = v5;
+    v18 = pathCopy;
     _os_log_impl(&dword_1D3400000, v9, OS_LOG_TYPE_DEBUG, "Can edit row: [%@].  Section: [%@].  Index path: [%@].", &v13, 0x20u);
   }
 
   return v7;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = -[EKUIEventInviteesViewController _sectionForIndex:](self, "_sectionForIndex:", [v7 section]);
-  [v8 commitEditingStyle:a4 forRow:v7];
+  pathCopy = path;
+  v8 = -[EKUIEventInviteesViewController _sectionForIndex:](self, "_sectionForIndex:", [pathCopy section]);
+  [v8 commitEditingStyle:style forRow:pathCopy];
   v9 = kEKUILogInviteesHandle;
   if (os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_DEBUG))
   {
     v10 = v9;
-    v11 = [v8 debugTitle];
+    debugTitle = [v8 debugTitle];
     v12 = 138412546;
-    v13 = v7;
+    v13 = pathCopy;
     v14 = 2112;
-    v15 = v11;
+    v15 = debugTitle;
     _os_log_impl(&dword_1D3400000, v10, OS_LOG_TYPE_DEBUG, "Committed editing style for row at index path: [%@].  Section: [%@].", &v12, 0x16u);
   }
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = -[EKUIEventInviteesViewController _sectionForIndex:](self, "_sectionForIndex:", [v5 section]);
-  [v6 estimatedHeightForRow:v5];
+  pathCopy = path;
+  v6 = -[EKUIEventInviteesViewController _sectionForIndex:](self, "_sectionForIndex:", [pathCopy section]);
+  [v6 estimatedHeightForRow:pathCopy];
   v8 = v7;
   v9 = kEKUILogInviteesHandle;
   if (os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_DEBUG))
@@ -1922,26 +1922,26 @@ void __62__EKUIEventInviteesViewController__sendMessageToParticipants___block_in
     v10 = MEMORY[0x1E696AD98];
     v11 = v9;
     v12 = [v10 numberWithDouble:v8];
-    v13 = [v6 debugTitle];
+    debugTitle = [v6 debugTitle];
     v15 = 138412802;
     v16 = v12;
     v17 = 2112;
-    v18 = v13;
+    v18 = debugTitle;
     v19 = 2112;
-    v20 = v5;
+    v20 = pathCopy;
     _os_log_impl(&dword_1D3400000, v11, OS_LOG_TYPE_DEBUG, "Estimated row height: [%@].  Section: [%@].  Index path: [%@].", &v15, 0x20u);
   }
 
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if (MEMORY[0x1D38B98D0]())
   {
-    v6 = -[EKUIEventInviteesViewController _sectionForIndex:](self, "_sectionForIndex:", [v5 section]);
-    [v6 heightForRow:v5];
+    v6 = -[EKUIEventInviteesViewController _sectionForIndex:](self, "_sectionForIndex:", [pathCopy section]);
+    [v6 heightForRow:pathCopy];
     v8 = v7;
   }
 
@@ -1953,37 +1953,37 @@ void __62__EKUIEventInviteesViewController__sendMessageToParticipants___block_in
   return v8;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = -[EKUIEventInviteesViewController _sectionForIndex:](self, "_sectionForIndex:", [v5 section]);
-  v7 = [v6 canSelectRow:v5];
+  pathCopy = path;
+  v6 = -[EKUIEventInviteesViewController _sectionForIndex:](self, "_sectionForIndex:", [pathCopy section]);
+  v7 = [v6 canSelectRow:pathCopy];
   v8 = kEKUILogInviteesHandle;
   if (os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_DEBUG))
   {
     v9 = v8;
     v10 = CalBooleanAsString();
-    v11 = [v6 debugTitle];
+    debugTitle = [v6 debugTitle];
     v13 = 138412802;
     v14 = v10;
     v15 = 2112;
-    v16 = v11;
+    v16 = debugTitle;
     v17 = 2112;
-    v18 = v5;
+    v18 = pathCopy;
     _os_log_impl(&dword_1D3400000, v9, OS_LOG_TYPE_DEBUG, "Highlighting allowed: [%@].  Section: [%@].  Index path: [%@]", &v13, 0x20u);
   }
 
   return v7;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = -[EKUIEventInviteesViewController _sectionForIndex:](self, "_sectionForIndex:", [v5 section]);
-  v7 = v5;
-  if (([v6 canSelectRow:v5] & 1) == 0)
+  pathCopy = path;
+  v6 = -[EKUIEventInviteesViewController _sectionForIndex:](self, "_sectionForIndex:", [pathCopy section]);
+  v7 = pathCopy;
+  if (([v6 canSelectRow:pathCopy] & 1) == 0)
   {
 
     v7 = 0;
@@ -1993,82 +1993,82 @@ void __62__EKUIEventInviteesViewController__sendMessageToParticipants___block_in
   if (os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_DEBUG))
   {
     v9 = v8;
-    v10 = [v6 debugTitle];
+    debugTitle = [v6 debugTitle];
     v12 = 138412802;
     v13 = v7;
     v14 = 2112;
-    v15 = v10;
+    v15 = debugTitle;
     v16 = 2112;
-    v17 = v5;
+    v17 = pathCopy;
     _os_log_impl(&dword_1D3400000, v9, OS_LOG_TYPE_DEBUG, "Overridden index path for row selection: [%@].  Section: [%@].  Original index path: [%@]", &v12, 0x20u);
   }
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = -[EKUIEventInviteesViewController _sectionForIndex:](self, "_sectionForIndex:", [v6 section]);
-  [v8 selectRow:v6];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[EKUIEventInviteesViewController _sectionForIndex:](self, "_sectionForIndex:", [pathCopy section]);
+  [v8 selectRow:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 
   v9 = kEKUILogInviteesHandle;
   if (os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_DEBUG))
   {
     v10 = v9;
-    v11 = [v8 debugTitle];
+    debugTitle = [v8 debugTitle];
     v12 = 138412546;
-    v13 = v6;
+    v13 = pathCopy;
     v14 = 2112;
-    v15 = v11;
+    v15 = debugTitle;
     _os_log_impl(&dword_1D3400000, v10, OS_LOG_TYPE_DEBUG, "Selected row at index path: [%@].  Section: [%@]", &v12, 0x16u);
   }
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[EKUIEventInviteesViewController _sectionForIndex:](self, "_sectionForIndex:", [v5 section]);
-  v7 = [v6 actionsForRow:v5];
+  pathCopy = path;
+  v6 = -[EKUIEventInviteesViewController _sectionForIndex:](self, "_sectionForIndex:", [pathCopy section]);
+  v7 = [v6 actionsForRow:pathCopy];
 
   v8 = [MEMORY[0x1E69DCFC0] configurationWithActions:v7];
 
   return v8;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = -[EKUIEventInviteesViewController _sectionForIndex:](self, "_sectionForIndex:", [v5 section]);
-  v7 = [v6 editingStyleForRow:v5];
+  pathCopy = path;
+  v6 = -[EKUIEventInviteesViewController _sectionForIndex:](self, "_sectionForIndex:", [pathCopy section]);
+  v7 = [v6 editingStyleForRow:pathCopy];
   v8 = kEKUILogInviteesHandle;
   if (os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_DEBUG))
   {
     v9 = MEMORY[0x1E696AD98];
     v10 = v8;
     v11 = [v9 numberWithInteger:v7];
-    v12 = [v6 debugTitle];
+    debugTitle = [v6 debugTitle];
     v14 = 138412802;
     v15 = v11;
     v16 = 2112;
-    v17 = v5;
+    v17 = pathCopy;
     v18 = 2112;
-    v19 = v12;
+    v19 = debugTitle;
     _os_log_impl(&dword_1D3400000, v10, OS_LOG_TYPE_DEBUG, "Editing style [%@] chosen for row at index path: [%@].  Section: [%@]", &v14, 0x20u);
   }
 
   return v7;
 }
 
-- (void)editItemViewController:(id)a3 didCompleteWithAction:(int)a4
+- (void)editItemViewController:(id)controller didCompleteWithAction:(int)action
 {
-  v4 = *&a4;
+  v4 = *&action;
   v72 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  controllerCopy = controller;
   if (!v4)
   {
     v37 = kEKUILogInviteesHandle;
@@ -2080,7 +2080,7 @@ LABEL_44:
     }
 
     *buf = 138412290;
-    v69 = v6;
+    selfCopy = controllerCopy;
     v38 = "The user cancelled out from this controller: [%@]";
     v39 = v37;
     v40 = OS_LOG_TYPE_DEBUG;
@@ -2093,28 +2093,28 @@ LABEL_44:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v6;
+      v11 = controllerCopy;
       if (![(EKUIEventInviteesViewController *)self fromDetail])
       {
-        v41 = [(EKUIEventInviteesViewController *)self selectedStartDate];
-        v42 = [(EKUIEventInviteesViewController *)v11 modifiedStartDate];
-        v43 = [v41 isEqualToDate:v42];
+        selectedStartDate = [(EKUIEventInviteesViewController *)self selectedStartDate];
+        modifiedStartDate = [(EKUIEventInviteesViewController *)v11 modifiedStartDate];
+        v43 = [selectedStartDate isEqualToDate:modifiedStartDate];
 
         if ((v43 & 1) == 0)
         {
-          v44 = [(EKUIEventInviteesViewController *)v11 modifiedStartDate];
-          v45 = [(EKUIEventInviteesViewController *)self event];
-          [v45 setStartDate:v44];
+          modifiedStartDate2 = [(EKUIEventInviteesViewController *)v11 modifiedStartDate];
+          event = [(EKUIEventInviteesViewController *)self event];
+          [event setStartDate:modifiedStartDate2];
 
-          v46 = [(EKUIEventInviteesViewController *)v11 modifiedEndDate];
-          v47 = [(EKUIEventInviteesViewController *)self event];
-          [v47 setEndDateUnadjustedForLegacyClients:v46];
+          modifiedEndDate = [(EKUIEventInviteesViewController *)v11 modifiedEndDate];
+          event2 = [(EKUIEventInviteesViewController *)self event];
+          [event2 setEndDateUnadjustedForLegacyClients:modifiedEndDate];
 
-          v48 = [(EKUIEventInviteesViewController *)v11 modifiedStartDate];
-          [(EKUIEventInviteesViewController *)self setSelectedStartDate:v48];
+          modifiedStartDate3 = [(EKUIEventInviteesViewController *)v11 modifiedStartDate];
+          [(EKUIEventInviteesViewController *)self setSelectedStartDate:modifiedStartDate3];
 
-          v49 = [(EKUIEventInviteesViewController *)v11 modifiedEndDate];
-          [(EKUIEventInviteesViewController *)self setSelectedEndDate:v49];
+          modifiedEndDate2 = [(EKUIEventInviteesViewController *)v11 modifiedEndDate];
+          [(EKUIEventInviteesViewController *)self setSelectedEndDate:modifiedEndDate2];
 
           [(EKUIEventInviteesViewController *)self setResetAttendeesSections:1];
           [(EKUIEventInviteesViewController *)self setResetConflictResolutionSections:1];
@@ -2132,7 +2132,7 @@ LABEL_44:
     }
 
     *buf = 138412290;
-    v69 = v6;
+    selfCopy = controllerCopy;
     v38 = "Unrecognized controller completed: [%@]";
     v39 = v50;
     v40 = OS_LOG_TYPE_ERROR;
@@ -2148,22 +2148,22 @@ LABEL_43:
     v9 = v7;
     v10 = [v8 numberWithUnsignedInt:v4];
     *buf = 138412546;
-    v69 = v10;
+    selfCopy = v10;
     v70 = 2112;
-    v71 = v6;
+    v71 = controllerCopy;
     _os_log_impl(&dword_1D3400000, v9, OS_LOG_TYPE_DEBUG, "Controller completed with action: [%@].  Controller: [%@]", buf, 0x16u);
   }
 
-  v55 = v6;
-  v11 = v6;
-  v12 = [(EKUIEventInviteesViewController *)v11 attendees];
-  v13 = [(EKUIEventInviteesViewController *)self event];
-  v14 = [v13 attendeesNotIncludingOrganizerOrLocationsOrResources];
+  v55 = controllerCopy;
+  v11 = controllerCopy;
+  attendees = [(EKUIEventInviteesViewController *)v11 attendees];
+  event3 = [(EKUIEventInviteesViewController *)self event];
+  attendeesNotIncludingOrganizerOrLocationsOrResources = [event3 attendeesNotIncludingOrganizerOrLocationsOrResources];
 
-  v56 = [objc_opt_class() _participantsInArray:v14 thatAreNotInArray:v12];
-  v53 = v14;
-  v54 = v12;
-  v15 = [objc_opt_class() _participantsInArray:v12 thatAreNotInArray:v14];
+  v56 = [objc_opt_class() _participantsInArray:attendeesNotIncludingOrganizerOrLocationsOrResources thatAreNotInArray:attendees];
+  v53 = attendeesNotIncludingOrganizerOrLocationsOrResources;
+  v54 = attendees;
+  v15 = [objc_opt_class() _participantsInArray:attendees thatAreNotInArray:attendeesNotIncludingOrganizerOrLocationsOrResources];
   if (([(EKUIEventInviteesViewController *)v11 appendOnly]& 1) == 0)
   {
     v52 = v15;
@@ -2191,12 +2191,12 @@ LABEL_43:
           if (os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v69 = v16;
+            selfCopy = v16;
             _os_log_impl(&dword_1D3400000, v22, OS_LOG_TYPE_DEBUG, "Removing attendee: [%@]", buf, 0xCu);
           }
 
-          v23 = [(EKUIEventInviteesViewController *)self event];
-          [v23 removeAttendee:v21];
+          event4 = [(EKUIEventInviteesViewController *)self event];
+          [event4 removeAttendee:v21];
         }
 
         v18 = [(EKUIEventInviteesViewController *)v16 countByEnumeratingWithState:&v62 objects:v67 count:16];
@@ -2232,12 +2232,12 @@ LABEL_43:
         if (os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v69 = v56;
+          selfCopy = v56;
           _os_log_impl(&dword_1D3400000, v30, OS_LOG_TYPE_DEBUG, "Adding attendee: [%@]", buf, 0xCu);
         }
 
-        v31 = [(EKUIEventInviteesViewController *)self event];
-        [v31 addAttendee:v29];
+        event5 = [(EKUIEventInviteesViewController *)self event];
+        [event5 addAttendee:v29];
 
         if ([(EKUIEventInviteesViewController *)v11 appendOnly])
         {
@@ -2251,15 +2251,15 @@ LABEL_43:
     while (v26);
   }
 
-  v6 = v55;
+  controllerCopy = v55;
   if (!-[EKUIEventInviteesViewController count](v56, "count") && ![v24 count])
   {
     goto LABEL_33;
   }
 
-  v32 = [(EKUIEventInviteesViewController *)self event];
-  v33 = [v32 attendeesNotIncludingOrganizerOrLocationsOrResources];
-  v34 = [v33 count];
+  event6 = [(EKUIEventInviteesViewController *)self event];
+  attendeesNotIncludingOrganizerOrLocationsOrResources2 = [event6 attendeesNotIncludingOrganizerOrLocationsOrResources];
+  v34 = [attendeesNotIncludingOrganizerOrLocationsOrResources2 count];
 
   v35 = kEKUILogInviteesHandle;
   v36 = os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_DEBUG);
@@ -2283,7 +2283,7 @@ LABEL_40:
   if (v36)
   {
     *buf = 138412290;
-    v69 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D3400000, v35, OS_LOG_TYPE_DEBUG, "There are no more participants left.  Will request dismissal of [%@]", buf, 0xCu);
   }
 
@@ -2299,20 +2299,20 @@ LABEL_45:
   [(EKUIEventInviteesViewController *)self updateCustomNavigationItemButtons];
 }
 
-- (void)_dismiss:(id)a3
+- (void)_dismiss:(id)_dismiss
 {
-  v4 = a3;
-  v5 = [(EKUIEventInviteesViewController *)self selectedStartDate];
-  v6 = [(EKUIEventInviteesViewController *)self event];
-  v7 = [v6 startDate];
-  v8 = [v5 isEqualToDate:v7];
+  _dismissCopy = _dismiss;
+  selectedStartDate = [(EKUIEventInviteesViewController *)self selectedStartDate];
+  event = [(EKUIEventInviteesViewController *)self event];
+  startDate = [event startDate];
+  v8 = [selectedStartDate isEqualToDate:startDate];
 
   if (CalSolariumEnabled() && (-[EKUIEventInviteesViewController event](self, "event"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isNew], v9, (v10 & 1) != 0) || (-[EKUIEventInviteesViewController event](self, "event"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "hasChanges") | v8 ^ 1, v11, (v12 & 1) == 0))
   {
     if (CalSolariumEnabled())
     {
-      v30 = [(EKUIEventInviteesViewController *)self parentController];
-      [v30 goBackToEditor];
+      parentController = [(EKUIEventInviteesViewController *)self parentController];
+      [parentController goBackToEditor];
     }
 
     else
@@ -2343,9 +2343,9 @@ LABEL_45:
       v14 = v13;
     }
 
-    v15 = [(EKUIEventInviteesViewController *)self addInviteesSection];
-    v16 = [v15 pendingParticipants];
-    v17 = [v16 count];
+    addInviteesSection = [(EKUIEventInviteesViewController *)self addInviteesSection];
+    pendingParticipants = [addInviteesSection pendingParticipants];
+    v17 = [pendingParticipants count];
 
     if (v17 <= 1)
     {
@@ -2357,29 +2357,29 @@ LABEL_45:
       v18 = v14 + 1;
     }
 
-    v19 = [(UIResponder *)self EKUI_editor];
+    eKUI_editor = [(UIResponder *)self EKUI_editor];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __44__EKUIEventInviteesViewController__dismiss___block_invoke;
     aBlock[3] = &unk_1E843F9C0;
-    v37 = v19;
-    v20 = v19;
+    v37 = eKUI_editor;
+    v20 = eKUI_editor;
     v21 = _Block_copy(aBlock);
-    v22 = [(EKUIEventInviteesViewController *)self event];
+    event2 = [(EKUIEventInviteesViewController *)self event];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __44__EKUIEventInviteesViewController__dismiss___block_invoke_2;
     v31[3] = &unk_1E843FA10;
-    v32 = v22;
-    v33 = self;
-    v34 = v4;
+    v32 = event2;
+    selfCopy = self;
+    v34 = _dismissCopy;
     v35 = v21;
     v23 = *MEMORY[0x1E695F050];
     v24 = *(MEMORY[0x1E695F050] + 8);
     v25 = *(MEMORY[0x1E695F050] + 16);
     v26 = *(MEMORY[0x1E695F050] + 24);
     v27 = v21;
-    v28 = v22;
+    v28 = event2;
     v29 = [EKUISendInviteAlertController presentInviteAlertWithOptions:v18 sourceView:0 sourceRect:v34 sourceItem:self viewController:v31 withCompletionHandler:v23, v24, v25, v26];
   }
 }
@@ -2453,15 +2453,15 @@ void __44__EKUIEventInviteesViewController__dismiss___block_invoke_110(uint64_t 
   }
 }
 
-- (void)_eventModified:(id)a3
+- (void)_eventModified:(id)modified
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  modifiedCopy = modified;
   v5 = kEKUILogInviteesHandle;
   if (os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_DEBUG))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = modifiedCopy;
     _os_log_impl(&dword_1D3400000, v5, OS_LOG_TYPE_DEBUG, "Received a notification: [%@].", &v6, 0xCu);
   }
 
@@ -2472,15 +2472,15 @@ void __44__EKUIEventInviteesViewController__dismiss___block_invoke_110(uint64_t 
   }
 }
 
-- (void)_fontSizeDefinitionsChanged:(id)a3
+- (void)_fontSizeDefinitionsChanged:(id)changed
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changedCopy = changed;
   v5 = kEKUILogInviteesHandle;
   if (os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = changedCopy;
     _os_log_impl(&dword_1D3400000, v5, OS_LOG_TYPE_DEBUG, "Received a notification: [%@].", buf, 0xCu);
   }
 
@@ -2540,17 +2540,17 @@ void __63__EKUIEventInviteesViewController__fontSizeDefinitionsChanged___block_i
 - (void)addInviteesTapped
 {
   v3 = [EKEventAttendeesEditViewController alloc];
-  v4 = [(EKUIEventInviteesViewController *)self event];
-  v5 = [(EKUIEventInviteesViewController *)self selectedStartDate];
-  v6 = [(EKUIEventInviteesViewController *)self selectedEndDate];
-  v20 = [(EKEventAttendeesEditViewController *)v3 initWithFrame:v4 event:v5 overriddenEventStartDate:v6 overriddenEventEndDate:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  event = [(EKUIEventInviteesViewController *)self event];
+  selectedStartDate = [(EKUIEventInviteesViewController *)self selectedStartDate];
+  selectedEndDate = [(EKUIEventInviteesViewController *)self selectedEndDate];
+  v20 = [(EKEventAttendeesEditViewController *)v3 initWithFrame:event event:selectedStartDate overriddenEventStartDate:selectedEndDate overriddenEventEndDate:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 
   [(EKEditItemViewController *)v20 setEditDelegate:self];
   [(EKEventAttendeesEditViewController *)v20 setDisableShowingButtons:1];
-  v7 = [(EKUIEventInviteesViewController *)self event];
-  LODWORD(v4) = [v7 isExternallyOrganizedInvitation];
+  event2 = [(EKUIEventInviteesViewController *)self event];
+  LODWORD(event) = [event2 isExternallyOrganizedInvitation];
 
-  if (v4)
+  if (event)
   {
     if (CalSolariumEnabled())
     {
@@ -2562,31 +2562,31 @@ void __63__EKUIEventInviteesViewController__fontSizeDefinitionsChanged___block_i
       [(EKUIEventInviteesViewController *)self addInviteesSection];
     }
     v10 = ;
-    v11 = [v10 pendingParticipants];
-    [(EKEventAttendeesEditViewController *)v20 setAttendees:v11];
+    pendingParticipants = [v10 pendingParticipants];
+    [(EKEventAttendeesEditViewController *)v20 setAttendees:pendingParticipants];
 
     [(EKEventAttendeesEditViewController *)v20 setAppendOnly:1];
   }
 
   else
   {
-    v8 = [(EKUIEventInviteesViewController *)self event];
-    v9 = [v8 attendeesNotIncludingOrganizerOrLocationsOrResources];
-    [(EKEventAttendeesEditViewController *)v20 setAttendees:v9];
+    event3 = [(EKUIEventInviteesViewController *)self event];
+    attendeesNotIncludingOrganizerOrLocationsOrResources = [event3 attendeesNotIncludingOrganizerOrLocationsOrResources];
+    [(EKEventAttendeesEditViewController *)v20 setAttendees:attendeesNotIncludingOrganizerOrLocationsOrResources];
   }
 
-  v12 = [(EKUIEventInviteesViewController *)self event];
-  v13 = [v12 calendar];
-  v14 = [v13 source];
-  v15 = [v14 externalID];
+  event4 = [(EKUIEventInviteesViewController *)self event];
+  calendar = [event4 calendar];
+  source = [calendar source];
+  externalID = [source externalID];
 
-  [(EKEventAttendeesEditViewController *)v20 setSearchAccountID:v15];
+  [(EKEventAttendeesEditViewController *)v20 setSearchAccountID:externalID];
   v16 = [[EKUIManagedNavigationController alloc] initWithRootViewController:v20];
-  v17 = [(EKUIEventInviteesViewController *)self view];
-  if (EKUICurrentWidthSizeClassIsRegularInViewHierarchy(v17))
+  view = [(EKUIEventInviteesViewController *)self view];
+  if (EKUICurrentWidthSizeClassIsRegularInViewHierarchy(view))
   {
-    v18 = [(EKUIEventInviteesViewController *)self view];
-    IsRegular = EKUICurrentHeightSizeClassIsRegular(v18);
+    view2 = [(EKUIEventInviteesViewController *)self view];
+    IsRegular = EKUICurrentHeightSizeClassIsRegular(view2);
 
     if (IsRegular)
     {
@@ -2604,8 +2604,8 @@ void __63__EKUIEventInviteesViewController__fontSizeDefinitionsChanged___block_i
 - (id)availabilityTapped
 {
   v3 = [EKUIAvailabilityViewController alloc];
-  v4 = [(EKUIEventInviteesViewController *)self event];
-  v5 = [(EKUIAvailabilityViewController *)v3 initWithEvent:v4];
+  event = [(EKUIEventInviteesViewController *)self event];
+  v5 = [(EKUIAvailabilityViewController *)v3 initWithEvent:event];
 
   [(EKEditItemViewController *)v5 setEditDelegate:self];
   [(EKUIAvailabilityViewController *)v5 setFromDetail:[(EKUIEventInviteesViewController *)self fromDetail]];
@@ -2614,15 +2614,15 @@ void __63__EKUIEventInviteesViewController__fontSizeDefinitionsChanged___block_i
   [(EKUIAvailabilityNavigationController *)v6 setPreferredContentSize:?];
   if (+[SwappableViewControllerImplementationFactory shouldUseOutOfProcessUI])
   {
-    v7 = [(EKUIEventInviteesViewController *)self view];
-    if (EKUICurrentWidthSizeClassIsCompactInViewHierarchy(v7))
+    view = [(EKUIEventInviteesViewController *)self view];
+    if (EKUICurrentWidthSizeClassIsCompactInViewHierarchy(view))
     {
     }
 
     else
     {
-      v8 = [(EKUIEventInviteesViewController *)self view];
-      IsCompact = EKUICurrentHeightSizeClassIsCompact(v8);
+      view2 = [(EKUIEventInviteesViewController *)self view];
+      IsCompact = EKUICurrentHeightSizeClassIsCompact(view2);
 
       if (!IsCompact)
       {
@@ -2642,44 +2642,44 @@ void __63__EKUIEventInviteesViewController__fontSizeDefinitionsChanged___block_i
 
   if (WeakRetained)
   {
-    v4 = objc_loadWeakRetained(&self->_navigationDelegate);
+    navigationController = objc_loadWeakRetained(&self->_navigationDelegate);
   }
 
   else
   {
-    v4 = [(EKUIEventInviteesViewController *)self navigationController];
+    navigationController = [(EKUIEventInviteesViewController *)self navigationController];
   }
 
-  return v4;
+  return navigationController;
 }
 
-- (void)_pushViewController:(id)a3
+- (void)_pushViewController:(id)controller
 {
-  v8 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_navigationDelegate);
   v5 = WeakRetained;
   if (WeakRetained)
   {
-    v6 = WeakRetained;
+    navigationController = WeakRetained;
   }
 
   else
   {
-    v6 = [(EKUIEventInviteesViewController *)self navigationController];
+    navigationController = [(EKUIEventInviteesViewController *)self navigationController];
   }
 
-  v7 = v6;
+  v7 = navigationController;
 
   if (objc_opt_respondsToSelector())
   {
-    [v7 pushViewController:v8 animated:1];
+    [v7 pushViewController:controllerCopy animated:1];
   }
 }
 
-- (void)_presentViewController:(id)a3
+- (void)_presentViewController:(id)controller
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_navigationDelegate);
   if (WeakRetained || ([EKEditItemViewController preferredViewControllerForPresentationsFromViewController:self], (WeakRetained = objc_claimAutoreleasedReturnValue()) != 0))
   {
@@ -2688,14 +2688,14 @@ void __63__EKUIEventInviteesViewController__fontSizeDefinitionsChanged___block_i
     if (os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_DEBUG))
     {
       v9 = 138412546;
-      v10 = v4;
+      v10 = controllerCopy;
       v11 = 2112;
       v12 = v6;
       _os_log_impl(&dword_1D3400000, v7, OS_LOG_TYPE_DEBUG, "Presenting view controller [%@] from view controller [%@].", &v9, 0x16u);
     }
 
-    [v6 presentViewController:v4 animated:1 completion:0];
-    [(EKUIEventInviteesViewController *)self setPresentedController:v4];
+    [v6 presentViewController:controllerCopy animated:1 completion:0];
+    [(EKUIEventInviteesViewController *)self setPresentedController:controllerCopy];
   }
 
   else
@@ -2704,63 +2704,63 @@ void __63__EKUIEventInviteesViewController__fontSizeDefinitionsChanged___block_i
     if (os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = controllerCopy;
       _os_log_impl(&dword_1D3400000, v8, OS_LOG_TYPE_ERROR, "Could not find a view controller that should perform the presentation of this view controller: [%@].", &v9, 0xCu);
     }
   }
 }
 
-- (void)_dismissPresentedViewControllerAnimated:(BOOL)a3
+- (void)_dismissPresentedViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   WeakRetained = objc_loadWeakRetained(&self->_navigationDelegate);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    v7 = WeakRetained;
+    presentedController = WeakRetained;
   }
 
   else
   {
-    v7 = [(EKUIEventInviteesViewController *)self presentedController];
+    presentedController = [(EKUIEventInviteesViewController *)self presentedController];
   }
 
-  v8 = v7;
+  v8 = presentedController;
 
   if (objc_opt_respondsToSelector())
   {
-    [v8 dismissViewControllerAnimated:v3 completion:0];
+    [v8 dismissViewControllerAnimated:animatedCopy completion:0];
   }
 
   [(EKUIEventInviteesViewController *)self setPresentedController:0];
 }
 
-- (void)_popViewControllerAnimated:(BOOL)a3
+- (void)_popViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   WeakRetained = objc_loadWeakRetained(&self->_navigationDelegate);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    v7 = WeakRetained;
+    navigationController = WeakRetained;
   }
 
   else
   {
-    v7 = [(EKUIEventInviteesViewController *)self navigationController];
+    navigationController = [(EKUIEventInviteesViewController *)self navigationController];
   }
 
-  v8 = v7;
+  v8 = navigationController;
 
   if (objc_opt_respondsToSelector())
   {
-    [v8 popViewControllerAnimated:v3];
+    [v8 popViewControllerAnimated:animatedCopy];
   }
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3
+- (void)dismissViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (CalSolariumEnabled() && _os_feature_enabled_impl() && _os_feature_enabled_impl())
   {
     v5[0] = MEMORY[0x1E69E9820];
@@ -2768,36 +2768,36 @@ void __63__EKUIEventInviteesViewController__fontSizeDefinitionsChanged___block_i
     v5[2] = __65__EKUIEventInviteesViewController_dismissViewControllerAnimated___block_invoke;
     v5[3] = &unk_1E843EC60;
     v5[4] = self;
-    [(EKUIEventInviteesViewController *)self dismissViewControllerAnimated:v3 completion:v5];
+    [(EKUIEventInviteesViewController *)self dismissViewControllerAnimated:animatedCopy completion:v5];
   }
 
   else
   {
 
-    [(EKUIEventInviteesViewController *)self _popViewControllerAnimated:v3];
+    [(EKUIEventInviteesViewController *)self _popViewControllerAnimated:animatedCopy];
   }
 }
 
 - (CGSize)preferredContentSize
 {
-  v3 = [(EKUIEventInviteesViewController *)self tableView];
-  [v3 sizeThatFits:{2147483650.0, 2147483650.0}];
+  tableView = [(EKUIEventInviteesViewController *)self tableView];
+  [tableView sizeThatFits:{2147483650.0, 2147483650.0}];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(EKUIEventInviteesViewController *)self navigationController];
-  v9 = [v8 isToolbarHidden];
+  navigationController = [(EKUIEventInviteesViewController *)self navigationController];
+  isToolbarHidden = [navigationController isToolbarHidden];
 
-  if ((v9 & 1) == 0)
+  if ((isToolbarHidden & 1) == 0)
   {
-    v10 = [(EKUIEventInviteesViewController *)self navigationController];
-    v11 = [v10 toolbar];
-    [v11 bounds];
+    navigationController2 = [(EKUIEventInviteesViewController *)self navigationController];
+    toolbar = [navigationController2 toolbar];
+    [toolbar bounds];
     v7 = v7 + CGRectGetHeight(v17);
   }
 
-  v12 = [(EKUIEventInviteesViewController *)self view];
-  IsRegularInViewHierarchy = EKUICurrentWidthSizeClassIsRegularInViewHierarchy(v12);
+  view = [(EKUIEventInviteesViewController *)self view];
+  IsRegularInViewHierarchy = EKUICurrentWidthSizeClassIsRegularInViewHierarchy(view);
 
   if (IsRegularInViewHierarchy)
   {
@@ -2816,20 +2816,20 @@ void __63__EKUIEventInviteesViewController__fontSizeDefinitionsChanged___block_i
   return result;
 }
 
-+ (id)_participantsInArray:(id)a3 thatAreNotInArray:(id)a4
++ (id)_participantsInArray:(id)array thatAreNotInArray:(id)inArray
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  arrayCopy = array;
+  inArrayCopy = inArray;
   v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v5 != v6)
+  if (arrayCopy != inArrayCopy)
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v19 = v5;
-    v7 = v5;
+    v19 = arrayCopy;
+    v7 = arrayCopy;
     v8 = [v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v8)
     {
@@ -2849,7 +2849,7 @@ void __63__EKUIEventInviteesViewController__fontSizeDefinitionsChanged___block_i
           v22 = 0u;
           v23 = 0u;
           v24 = 0u;
-          v13 = v6;
+          v13 = inArrayCopy;
           v14 = [v13 countByEnumeratingWithState:&v21 objects:v29 count:16];
           if (v14)
           {
@@ -2892,24 +2892,24 @@ LABEL_17:
       while (v9);
     }
 
-    v5 = v19;
+    arrayCopy = v19;
   }
 
   return v20;
 }
 
-- (int64_t)_indexForSection:(id)a3
+- (int64_t)_indexForSection:(id)section
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  sectionCopy = section;
+  if (sectionCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(EKUIEventInviteesViewController *)self sections];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    sections = [(EKUIEventInviteesViewController *)self sections];
+    v6 = [sections countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v6)
     {
       v7 = v6;
@@ -2921,13 +2921,13 @@ LABEL_17:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(sections);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
           if ([v11 sectionShouldBeShown])
           {
-            if (v11 == v4)
+            if (v11 == sectionCopy)
             {
               goto LABEL_13;
             }
@@ -2936,7 +2936,7 @@ LABEL_17:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+        v7 = [sections countByEnumeratingWithState:&v14 objects:v19 count:16];
       }
 
       while (v7);
@@ -2961,7 +2961,7 @@ LABEL_13:
   return v8;
 }
 
-- (id)_sectionForIndex:(unint64_t)a3
+- (id)_sectionForIndex:(unint64_t)index
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
@@ -2987,7 +2987,7 @@ LABEL_13:
         v10 = *(*(&v13 + 1) + 8 * i);
         if ([v10 sectionShouldBeShown])
         {
-          if (v7 == a3)
+          if (v7 == index)
           {
             v11 = v10;
             goto LABEL_13;
@@ -3013,9 +3013,9 @@ LABEL_13:
   return v11;
 }
 
-- (void)_smoothRefreshIfNeededForSections:(id)a3
+- (void)_smoothRefreshIfNeededForSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   v5 = kEKUILogInviteesHandle;
   if (os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -3026,8 +3026,8 @@ LABEL_13:
   if ([(EKUIEventInviteesViewController *)self resetAttendeesSections])
   {
     [(EKUIEventInviteesViewController *)self prepareToReloadAttendeesSections];
-    v6 = [(EKUIEventInviteesViewController *)self inviteesView];
-    [v6 reloadSections:v4 withRowAnimation:100];
+    inviteesView = [(EKUIEventInviteesViewController *)self inviteesView];
+    [inviteesView reloadSections:sectionsCopy withRowAnimation:100];
   }
 }
 
@@ -3043,45 +3043,45 @@ LABEL_13:
 
   if (CalSolariumEnabled())
   {
-    v4 = [(EKUIEventInviteesViewController *)self allInviteesAndAddSection];
-    v5 = [(EKUIEventInviteesViewController *)self event];
-    v6 = [(EKUIEventInviteesViewController *)self event];
-    [v4 updateWithEvent:v5 editable:{objc_msgSend(v6, "isSelfOrganized")}];
+    allInviteesAndAddSection = [(EKUIEventInviteesViewController *)self allInviteesAndAddSection];
+    event = [(EKUIEventInviteesViewController *)self event];
+    event2 = [(EKUIEventInviteesViewController *)self event];
+    [allInviteesAndAddSection updateWithEvent:event editable:{objc_msgSend(event2, "isSelfOrganized")}];
   }
 
   else
   {
-    v7 = [(EKUIEventInviteesViewController *)self addInviteesSection];
-    v8 = [(EKUIEventInviteesViewController *)self event];
-    [v7 updateWithEvent:v8 showPending:{-[EKUIEventInviteesViewController fromDetail](self, "fromDetail")}];
+    addInviteesSection = [(EKUIEventInviteesViewController *)self addInviteesSection];
+    event3 = [(EKUIEventInviteesViewController *)self event];
+    [addInviteesSection updateWithEvent:event3 showPending:{-[EKUIEventInviteesViewController fromDetail](self, "fromDetail")}];
 
     for (i = 0; i != 3; ++i)
     {
-      v10 = [(EKUIEventInviteesViewController *)self respondedSection];
-      v11 = [v10 objectAtIndexedSubscript:i];
-      v12 = [(EKUIEventInviteesViewController *)self event];
-      v13 = [(EKUIEventInviteesViewController *)self event];
-      [v11 updateWithEvent:v12 editable:{objc_msgSend(v13, "isSelfOrganized")}];
+      respondedSection = [(EKUIEventInviteesViewController *)self respondedSection];
+      v11 = [respondedSection objectAtIndexedSubscript:i];
+      event4 = [(EKUIEventInviteesViewController *)self event];
+      event5 = [(EKUIEventInviteesViewController *)self event];
+      [v11 updateWithEvent:event4 editable:{objc_msgSend(event5, "isSelfOrganized")}];
     }
 
-    v14 = [(EKUIEventInviteesViewController *)self notRespondedSection];
-    v15 = [(EKUIEventInviteesViewController *)self event];
-    v16 = [(EKUIEventInviteesViewController *)self event];
-    [v14 updateWithEvent:v15 editable:objc_msgSend(v16 fromDetail:{"isSelfOrganized"), -[EKUIEventInviteesViewController fromDetail](self, "fromDetail")}];
+    notRespondedSection = [(EKUIEventInviteesViewController *)self notRespondedSection];
+    event6 = [(EKUIEventInviteesViewController *)self event];
+    event7 = [(EKUIEventInviteesViewController *)self event];
+    [notRespondedSection updateWithEvent:event6 editable:objc_msgSend(event7 fromDetail:{"isSelfOrganized"), -[EKUIEventInviteesViewController fromDetail](self, "fromDetail")}];
 
-    v4 = [(EKUIEventInviteesViewController *)self invisibleInviteeStatusSection];
-    v5 = [(EKUIEventInviteesViewController *)self event];
-    v6 = [(EKUIEventInviteesViewController *)self event];
-    [v4 updateWithEvent:v5 editable:objc_msgSend(v6 fromDetail:{"isSelfOrganized"), -[EKUIEventInviteesViewController fromDetail](self, "fromDetail")}];
+    allInviteesAndAddSection = [(EKUIEventInviteesViewController *)self invisibleInviteeStatusSection];
+    event = [(EKUIEventInviteesViewController *)self event];
+    event2 = [(EKUIEventInviteesViewController *)self event];
+    [allInviteesAndAddSection updateWithEvent:event editable:objc_msgSend(event2 fromDetail:{"isSelfOrganized"), -[EKUIEventInviteesViewController fromDetail](self, "fromDetail")}];
   }
 
-  v17 = [(EKUIEventInviteesViewController *)self availabilitySection];
-  v18 = [(EKUIEventInviteesViewController *)self event];
-  [v17 updateWithEvent:v18];
+  availabilitySection = [(EKUIEventInviteesViewController *)self availabilitySection];
+  event8 = [(EKUIEventInviteesViewController *)self event];
+  [availabilitySection updateWithEvent:event8];
 
-  v19 = [(EKUIEventInviteesViewController *)self proposedTimeSection];
-  v20 = [(EKUIEventInviteesViewController *)self event];
-  [v19 updateWithEvent:v20];
+  proposedTimeSection = [(EKUIEventInviteesViewController *)self proposedTimeSection];
+  event9 = [(EKUIEventInviteesViewController *)self event];
+  [proposedTimeSection updateWithEvent:event9];
 }
 
 - (void)_refreshIfNeeded
@@ -3097,8 +3097,8 @@ LABEL_13:
   if ([(EKUIEventInviteesViewController *)self resetAttendeesSections])
   {
     [(EKUIEventInviteesViewController *)self prepareToReloadAttendeesSections];
-    v4 = [(EKUIEventInviteesViewController *)self inviteesView];
-    [v4 reloadData];
+    inviteesView = [(EKUIEventInviteesViewController *)self inviteesView];
+    [inviteesView reloadData];
   }
 
   if ([(EKUIEventInviteesViewController *)self resetConflictResolutionSections])
@@ -3111,10 +3111,10 @@ LABEL_13:
       _os_log_impl(&dword_1D3400000, v5, OS_LOG_TYPE_DEBUG, "Resetting the conflict resolution sections.", &v25, 2u);
     }
 
-    v6 = [(EKUIEventInviteesViewController *)self event];
-    v7 = [v6 isSelfOrganized];
+    event = [(EKUIEventInviteesViewController *)self event];
+    isSelfOrganized = [event isSelfOrganized];
 
-    if ((v7 & 1) == 0)
+    if ((isSelfOrganized & 1) == 0)
     {
       v15 = kEKUILogInviteesHandle;
       if (!os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_DEBUG))
@@ -3123,19 +3123,19 @@ LABEL_13:
       }
 
       v25 = 138412290;
-      v26 = self;
+      selfCopy = self;
       v12 = "[%@] is not editable.  Will not continue to reset the conflict resolution sections.";
       v13 = v15;
       v14 = 12;
       goto LABEL_14;
     }
 
-    v8 = [(EKUIEventInviteesViewController *)self event];
-    v9 = [v8 isAllDay];
+    event2 = [(EKUIEventInviteesViewController *)self event];
+    isAllDay = [event2 isAllDay];
 
     v10 = kEKUILogInviteesHandle;
     v11 = os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_DEBUG);
-    if (v9)
+    if (isAllDay)
     {
       if (!v11)
       {
@@ -3154,21 +3154,21 @@ LABEL_14:
     if (v11)
     {
       v16 = v10;
-      v17 = [(EKUIEventInviteesViewController *)self event];
+      event3 = [(EKUIEventInviteesViewController *)self event];
       v25 = 138412290;
-      v26 = v17;
+      selfCopy = event3;
       _os_log_impl(&dword_1D3400000, v16, OS_LOG_TYPE_DEBUG, "Telling the availability searcher to reset with event: [%@]", &v25, 0xCu);
     }
 
-    v18 = [(EKUIEventInviteesViewController *)self event];
-    v19 = [v18 calendar];
-    v20 = [v19 source];
-    v21 = [v20 ownerAddresses];
-    v22 = [v21 anyObject];
+    event4 = [(EKUIEventInviteesViewController *)self event];
+    calendar = [event4 calendar];
+    source = [calendar source];
+    ownerAddresses = [source ownerAddresses];
+    anyObject = [ownerAddresses anyObject];
 
-    v23 = [(EKUIEventInviteesViewController *)self availabilitySearcher];
-    v24 = [(EKUIEventInviteesViewController *)self event];
-    [v23 resetWithEvent:v24 organizerAddressForNewlyScheduledEvent:v22];
+    availabilitySearcher = [(EKUIEventInviteesViewController *)self availabilitySearcher];
+    event5 = [(EKUIEventInviteesViewController *)self event];
+    [availabilitySearcher resetWithEvent:event5 organizerAddressForNewlyScheduledEvent:anyObject];
   }
 }
 
@@ -3179,7 +3179,7 @@ LABEL_14:
   if (os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D3400000, v3, OS_LOG_TYPE_DEBUG, "Requesting dismissal of [%@]", buf, 0xCu);
   }
 
@@ -3187,8 +3187,8 @@ LABEL_14:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(EKUIEventInviteesViewController *)self sections];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  sections = [(EKUIEventInviteesViewController *)self sections];
+  v5 = [sections countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3200,24 +3200,24 @@ LABEL_14:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sections);
         }
 
         [*(*(&v10 + 1) + 8 * v8++) cancelOutstandingOperations];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [sections countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(EKUIEventInviteesViewController *)self parentController];
-  [v9 saveAndDismiss];
+  parentController = [(EKUIEventInviteesViewController *)self parentController];
+  [parentController saveAndDismiss];
 }
 
-- (void)_searcherStateChanged:(int64_t)a3
+- (void)_searcherStateChanged:(int64_t)changed
 {
   if (![(EKUIEventInviteesViewController *)self prohibitCallingSearcherStateChanged])
   {
@@ -3227,28 +3227,28 @@ LABEL_14:
     aBlock[3] = &unk_1E843F238;
     aBlock[4] = self;
     v5 = _Block_copy(aBlock);
-    v6 = [(EKUIEventInviteesViewController *)self inviteesView];
+    inviteesView = [(EKUIEventInviteesViewController *)self inviteesView];
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __57__EKUIEventInviteesViewController__searcherStateChanged___block_invoke_126;
     v15 = &unk_1E843FA38;
     v17 = v5;
-    v18 = a3;
-    v16 = self;
+    changedCopy = changed;
+    selfCopy = self;
     v7 = v5;
-    [v6 performBatchUpdates:&v12 completion:0];
+    [inviteesView performBatchUpdates:&v12 completion:0];
 
     v8 = [(EKUIEventInviteesViewController *)self proposedTimeSection:v12];
     [v8 refreshCellsAfterStateChange];
 
-    v9 = [(EKUIEventInviteesViewController *)self originalConflictSection];
-    [v9 refreshCellsAfterStateChange];
+    originalConflictSection = [(EKUIEventInviteesViewController *)self originalConflictSection];
+    [originalConflictSection refreshCellsAfterStateChange];
 
-    v10 = [(EKUIEventInviteesViewController *)self allInviteesCanAttendSection];
-    [v10 refreshCellsAfterStateChange];
+    allInviteesCanAttendSection = [(EKUIEventInviteesViewController *)self allInviteesCanAttendSection];
+    [allInviteesCanAttendSection refreshCellsAfterStateChange];
 
-    v11 = [(EKUIEventInviteesViewController *)self someInviteesCanAttendSection];
-    [v11 refreshCellsAfterStateChange];
+    someInviteesCanAttendSection = [(EKUIEventInviteesViewController *)self someInviteesCanAttendSection];
+    [someInviteesCanAttendSection refreshCellsAfterStateChange];
   }
 }
 

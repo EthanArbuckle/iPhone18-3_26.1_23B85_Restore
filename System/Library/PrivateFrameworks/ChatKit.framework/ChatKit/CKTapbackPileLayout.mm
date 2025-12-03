@@ -1,24 +1,24 @@
 @interface CKTapbackPileLayout
 - (CGSize)pilePositioningSize;
 - (CKTapbackPileLayout)init;
-- (CKTapbackPileLayout)initWithSourcePoint:(CGPoint)a3 viewModel:(id)a4;
+- (CKTapbackPileLayout)initWithSourcePoint:(CGPoint)point viewModel:(id)model;
 @end
 
 @implementation CKTapbackPileLayout
 
-- (CKTapbackPileLayout)initWithSourcePoint:(CGPoint)a3 viewModel:(id)a4
+- (CKTapbackPileLayout)initWithSourcePoint:(CGPoint)point viewModel:(id)model
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = a4;
-  v7 = sub_190CB74C0(v6, x, y);
+  y = point.y;
+  x = point.x;
+  modelCopy = model;
+  v7 = sub_190CB74C0(modelCopy, x, y);
 
   return v7;
 }
 
 - (CGSize)pilePositioningSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_190CB6EE8();
   v4 = v3;
   v6 = v5;

@@ -1,28 +1,28 @@
 @interface SettingsServiceScene.SettingsServiceProtocolDispatch
 - (_TtP8Settings27SettingsHostServiceProvider_)serviceHost;
-- (void)filterSearchAnchorsForSidebarItem:(id)a3 suggestedAnchors:(id)a4 reply:(id)a5;
-- (void)openURL:(id)a3;
+- (void)filterSearchAnchorsForSidebarItem:(id)item suggestedAnchors:(id)anchors reply:(id)reply;
+- (void)openURL:(id)l;
 @end
 
 @implementation SettingsServiceScene.SettingsServiceProtocolDispatch
 
 - (_TtP8Settings27SettingsHostServiceProvider_)serviceHost
 {
-  v2 = [*self->target serviceHost];
+  serviceHost = [*self->target serviceHost];
 
-  return v2;
+  return serviceHost;
 }
 
-- (void)openURL:(id)a3
+- (void)openURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
 
-  sub_21CE27DF8(v3);
+  sub_21CE27DF8(lCopy);
 }
 
-- (void)filterSearchAnchorsForSidebarItem:(id)a3 suggestedAnchors:(id)a4 reply:(id)a5
+- (void)filterSearchAnchorsForSidebarItem:(id)item suggestedAnchors:(id)anchors reply:(id)reply
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(reply);
   v7 = sub_21CE6CC50();
   v9 = v8;
   v10 = sub_21CE6CD40();

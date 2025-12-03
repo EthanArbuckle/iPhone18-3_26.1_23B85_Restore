@@ -2,7 +2,7 @@
 + (id)defaultValues;
 + (id)loadDeviceHeaderInfo;
 + (id)policySettingsURL;
-+ (id)storageWithDefaultValues:(id)a3;
++ (id)storageWithDefaultValues:(id)values;
 @end
 
 @implementation APPCPolicySettings
@@ -13,15 +13,15 @@
   v3 = +[NSISO8601DateFormatter apDefaultSharedFormatter];
   v4 = +[APDeviceInfo current];
   v5 = +[APIDAccountProvider privateUserAccount];
-  v6 = [v5 storefront];
-  v7 = [v4 userAgentStringForBundleID:@"com.apple.ap.promotedcontentd" storefront:v6];
+  storefront = [v5 storefront];
+  v7 = [v4 userAgentStringForBundleID:@"com.apple.ap.promotedcontentd" storefront:storefront];
 
   v17 = v5;
-  v8 = [v5 storefront];
-  v9 = [v4 systemVersion];
-  v10 = [v4 systemName];
-  v16 = [v4 deviceModel];
-  v11 = [v4 buildVersion];
+  storefront2 = [v5 storefront];
+  systemVersion = [v4 systemVersion];
+  systemName = [v4 systemName];
+  deviceModel = [v4 deviceModel];
+  buildVersion = [v4 buildVersion];
   v12 = +[NSDate date];
   v13 = [v3 stringFromDate:v12];
 
@@ -30,24 +30,24 @@
     [v2 setObject:v7 forKey:@"User-Agent"];
   }
 
-  if ([v8 length])
+  if ([storefront2 length])
   {
-    [v2 setObject:v8 forKey:@"storefront"];
+    [v2 setObject:storefront2 forKey:@"storefront"];
   }
 
-  if ([v9 length])
+  if ([systemVersion length])
   {
-    [v2 setObject:v9 forKey:@"osVersion"];
+    [v2 setObject:systemVersion forKey:@"osVersion"];
   }
 
-  if ([v10 length])
+  if ([systemName length])
   {
-    [v2 setObject:v10 forKey:@"osPlatform"];
+    [v2 setObject:systemName forKey:@"osPlatform"];
   }
 
-  if ([v16 length])
+  if ([deviceModel length])
   {
-    [v2 setObject:v16 forKey:@"device"];
+    [v2 setObject:deviceModel forKey:@"device"];
   }
 
   if ([@"com.apple.ap.promotedcontentd" length])
@@ -55,9 +55,9 @@
     [v2 setObject:@"com.apple.ap.promotedcontentd" forKey:@"bundleId"];
   }
 
-  if ([v11 length])
+  if ([buildVersion length])
   {
-    [v2 setObject:v11 forKey:@"osBuild"];
+    [v2 setObject:buildVersion forKey:@"osBuild"];
   }
 
   if ([v13 length])
@@ -124,12 +124,12 @@ LABEL_14:
   return v10;
 }
 
-+ (id)storageWithDefaultValues:(id)a3
++ (id)storageWithDefaultValues:(id)values
 {
-  v4 = a3;
-  v5 = [a1 policySettingsURL];
-  v6 = [a1 loadDeviceHeaderInfo];
-  v7 = [[APSettingsStorageServer alloc] initWithURL:v5 headers:v6 defaultValues:v4];
+  valuesCopy = values;
+  policySettingsURL = [self policySettingsURL];
+  loadDeviceHeaderInfo = [self loadDeviceHeaderInfo];
+  v7 = [[APSettingsStorageServer alloc] initWithURL:policySettingsURL headers:loadDeviceHeaderInfo defaultValues:valuesCopy];
 
   byte_1004DF670 = [v7 didFetchFromServer];
 

@@ -30,11 +30,11 @@ uint64_t __45__AXBAssistiveTouchManager_initializeMonitor__block_invoke()
   if (v2)
   {
     [(AXBAssistiveTouchManager *)v2 _kickstartAssistiveTouchIfNeeded];
-    v4 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v4 addObserver:v3 selector:sel__kickstartAssistiveTouchIfNeeded name:*MEMORY[0x29EDC83E0] object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__kickstartAssistiveTouchIfNeeded name:*MEMORY[0x29EDC83E0] object:0];
 
-    v5 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v5 addObserver:v3 selector:sel__kickstartAssistiveTouchIfNeeded name:*MEMORY[0x29EDC83E8] object:0];
+    defaultCenter2 = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter2 addObserver:v3 selector:sel__kickstartAssistiveTouchIfNeeded name:*MEMORY[0x29EDC83E8] object:0];
   }
 
   return v3;

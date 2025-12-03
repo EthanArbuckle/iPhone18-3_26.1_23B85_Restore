@@ -1,12 +1,12 @@
 @interface HUIconPickerViewController
 + (id)sceneIconDescriptors;
-- (HUIconPickerViewController)initWithIconDescriptors:(id)a3 selectedIconDescriptor:(id)a4 delegate:(id)a5;
+- (HUIconPickerViewController)initWithIconDescriptors:(id)descriptors selectedIconDescriptor:(id)descriptor delegate:(id)delegate;
 - (HUIconPickerViewControllerDelegate)delegate;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)_cancel:(id)a3;
-- (void)_done:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)_cancel:(id)_cancel;
+- (void)_done:(id)_done;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -61,14 +61,14 @@ id __50__HUIconPickerViewController_sceneIconDescriptors__block_invoke_2(uint64_
   return v4;
 }
 
-- (HUIconPickerViewController)initWithIconDescriptors:(id)a3 selectedIconDescriptor:(id)a4 delegate:(id)a5
+- (HUIconPickerViewController)initWithIconDescriptors:(id)descriptors selectedIconDescriptor:(id)descriptor delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v10 && ([v9 containsObject:v10] & 1) == 0)
+  descriptorsCopy = descriptors;
+  descriptorCopy = descriptor;
+  delegateCopy = delegate;
+  if (descriptorCopy && ([descriptorsCopy containsObject:descriptorCopy] & 1) == 0)
   {
-    NSLog(&cfstr_SelectedIconDe.isa, v10, v9);
+    NSLog(&cfstr_SelectedIconDe.isa, descriptorCopy, descriptorsCopy);
   }
 
   v12 = objc_alloc_init(MEMORY[0x277D752F0]);
@@ -82,9 +82,9 @@ id __50__HUIconPickerViewController_sceneIconDescriptors__block_invoke_2(uint64_
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_iconDescriptors, a3);
-    objc_storeStrong(&v14->_selectedIconDescriptor, a4);
-    objc_storeWeak(&v14->_delegate, v11);
+    objc_storeStrong(&v13->_iconDescriptors, descriptors);
+    objc_storeStrong(&v14->_selectedIconDescriptor, descriptor);
+    objc_storeWeak(&v14->_delegate, delegateCopy);
     v15 = _HULocalizedStringWithDefaultValue(@"HUIconPickerTitle", @"HUIconPickerTitle", 1);
     [(HUIconPickerViewController *)v14 setTitle:v15];
   }
@@ -97,28 +97,28 @@ id __50__HUIconPickerViewController_sceneIconDescriptors__block_invoke_2(uint64_
   v16.receiver = self;
   v16.super_class = HUIconPickerViewController;
   [(HUIconPickerViewController *)&v16 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v4 = [(HUIconPickerViewController *)self collectionView];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  collectionView = [(HUIconPickerViewController *)self collectionView];
+  [collectionView setBackgroundColor:systemBackgroundColor];
 
-  v5 = [(HUIconPickerViewController *)self collectionView];
+  collectionView2 = [(HUIconPickerViewController *)self collectionView];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v5 registerClass:v6 forCellWithReuseIdentifier:v8];
+  [collectionView2 registerClass:v6 forCellWithReuseIdentifier:v8];
 
   v9 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__cancel_];
-  v10 = [(HUIconPickerViewController *)self navigationItem];
-  [v10 setLeftBarButtonItem:v9];
+  navigationItem = [(HUIconPickerViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v9];
 
   v11 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel__done_];
-  v12 = [(HUIconPickerViewController *)self navigationItem];
-  [v12 setRightBarButtonItem:v11];
+  navigationItem2 = [(HUIconPickerViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v11];
 
-  v13 = [(HUIconPickerViewController *)self selectedIconDescriptor];
-  v14 = [(HUIconPickerViewController *)self navigationItem];
-  v15 = [v14 rightBarButtonItem];
-  [v15 setEnabled:v13 != 0];
+  selectedIconDescriptor = [(HUIconPickerViewController *)self selectedIconDescriptor];
+  navigationItem3 = [(HUIconPickerViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem3 rightBarButtonItem];
+  [rightBarButtonItem setEnabled:selectedIconDescriptor != 0];
 }
 
 - (void)viewDidLayoutSubviews
@@ -126,80 +126,80 @@ id __50__HUIconPickerViewController_sceneIconDescriptors__block_invoke_2(uint64_
   v13.receiver = self;
   v13.super_class = HUIconPickerViewController;
   [(HUIconPickerViewController *)&v13 viewDidLayoutSubviews];
-  v3 = [(HUIconPickerViewController *)self selectedIconDescriptor];
-  if (v3)
+  selectedIconDescriptor = [(HUIconPickerViewController *)self selectedIconDescriptor];
+  if (selectedIconDescriptor)
   {
-    v4 = v3;
-    v5 = [(HUIconPickerViewController *)self collectionView];
-    v6 = [v5 indexPathsForSelectedItems];
-    v7 = [v6 count];
+    v4 = selectedIconDescriptor;
+    collectionView = [(HUIconPickerViewController *)self collectionView];
+    indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+    v7 = [indexPathsForSelectedItems count];
 
     if (!v7)
     {
-      v8 = [(HUIconPickerViewController *)self iconDescriptors];
-      v9 = [(HUIconPickerViewController *)self selectedIconDescriptor];
-      v10 = [v8 indexOfObject:v9];
+      iconDescriptors = [(HUIconPickerViewController *)self iconDescriptors];
+      selectedIconDescriptor2 = [(HUIconPickerViewController *)self selectedIconDescriptor];
+      v10 = [iconDescriptors indexOfObject:selectedIconDescriptor2];
 
       if (v10 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v11 = [(HUIconPickerViewController *)self collectionView];
+        collectionView2 = [(HUIconPickerViewController *)self collectionView];
         v12 = [MEMORY[0x277CCAA70] indexPathForItem:v10 inSection:0];
-        [v11 selectItemAtIndexPath:v12 animated:0 scrollPosition:2];
+        [collectionView2 selectItemAtIndexPath:v12 animated:0 scrollPosition:2];
       }
     }
   }
 }
 
-- (void)_cancel:(id)a3
+- (void)_cancel:(id)_cancel
 {
-  v4 = [(HUIconPickerViewController *)self delegate];
-  [v4 iconPickerDidCancel:self];
+  delegate = [(HUIconPickerViewController *)self delegate];
+  [delegate iconPickerDidCancel:self];
 }
 
-- (void)_done:(id)a3
+- (void)_done:(id)_done
 {
-  v5 = [(HUIconPickerViewController *)self delegate];
-  v4 = [(HUIconPickerViewController *)self selectedIconDescriptor];
-  [v5 iconPicker:self didPickIconDescriptor:v4];
+  delegate = [(HUIconPickerViewController *)self delegate];
+  selectedIconDescriptor = [(HUIconPickerViewController *)self selectedIconDescriptor];
+  [delegate iconPicker:self didPickIconDescriptor:selectedIconDescriptor];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(HUIconPickerViewController *)self iconDescriptors:a3];
+  v4 = [(HUIconPickerViewController *)self iconDescriptors:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v7 dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:pathCopy];
 
-  v11 = [(HUIconPickerViewController *)self iconDescriptors];
-  v12 = [v6 item];
+  iconDescriptors = [(HUIconPickerViewController *)self iconDescriptors];
+  item = [pathCopy item];
 
-  v13 = [v11 objectAtIndexedSubscript:v12];
+  v13 = [iconDescriptors objectAtIndexedSubscript:item];
   [v10 setIconDescriptor:v13];
 
   return v10;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(HUIconPickerViewController *)self iconDescriptors];
-  v7 = [v5 item];
+  pathCopy = path;
+  iconDescriptors = [(HUIconPickerViewController *)self iconDescriptors];
+  item = [pathCopy item];
 
-  v8 = [v6 objectAtIndexedSubscript:v7];
+  v8 = [iconDescriptors objectAtIndexedSubscript:item];
   [(HUIconPickerViewController *)self setSelectedIconDescriptor:v8];
 
-  v10 = [(HUIconPickerViewController *)self navigationItem];
-  v9 = [v10 rightBarButtonItem];
-  [v9 setEnabled:1];
+  navigationItem = [(HUIconPickerViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:1];
 }
 
 - (HUIconPickerViewControllerDelegate)delegate

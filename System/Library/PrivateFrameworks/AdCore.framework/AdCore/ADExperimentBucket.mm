@@ -1,20 +1,20 @@
 @interface ADExperimentBucket
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasGeneration:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasGeneration:(BOOL)generation;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ADExperimentBucket
 
-- (void)setHasGeneration:(BOOL)a3
+- (void)setHasGeneration:(BOOL)generation
 {
-  if (a3)
+  if (generation)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = ADExperimentBucket;
   v4 = [(ADExperimentBucket *)&v8 description];
-  v5 = [(ADExperimentBucket *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ADExperimentBucket *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   bucketNamespace = self->_bucketNamespace;
   if (bucketNamespace)
   {
-    [v3 setObject:bucketNamespace forKey:@"bucketNamespace"];
+    [dictionary setObject:bucketNamespace forKey:@"bucketNamespace"];
   }
 
   has = self->_has;
@@ -67,14 +67,14 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_bucketNamespace)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -82,7 +82,7 @@
   {
     bucketId = self->_bucketId;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -90,39 +90,39 @@
   {
     generation = self->_generation;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_bucketNamespace)
   {
-    v6 = v4;
-    [v4 setBucketNamespace:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setBucketNamespace:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 2) = self->_bucketId;
-    *(v4 + 28) |= 1u;
+    *(toCopy + 2) = self->_bucketId;
+    *(toCopy + 28) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 6) = self->_generation;
-    *(v4 + 28) |= 2u;
+    *(toCopy + 6) = self->_generation;
+    *(toCopy + 28) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_bucketNamespace copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_bucketNamespace copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -143,16 +143,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   bucketNamespace = self->_bucketNamespace;
-  if (bucketNamespace | *(v4 + 2))
+  if (bucketNamespace | *(equalCopy + 2))
   {
     if (![(NSString *)bucketNamespace isEqual:?])
     {
@@ -162,23 +162,23 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_bucketId != *(v4 + 2))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_bucketId != *(equalCopy + 2))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
 LABEL_13:
     v6 = 0;
     goto LABEL_14;
   }
 
-  v6 = (*(v4 + 28) & 2) == 0;
+  v6 = (*(equalCopy + 28) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_generation != *(v4 + 6))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_generation != *(equalCopy + 6))
     {
       goto LABEL_13;
     }
@@ -218,27 +218,27 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(ADExperimentBucket *)self setBucketNamespace:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if (v5)
   {
-    self->_bucketId = v4[2];
+    self->_bucketId = fromCopy[2];
     *&self->_has |= 1u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_generation = v4[6];
+    self->_generation = fromCopy[6];
     *&self->_has |= 2u;
   }
 }

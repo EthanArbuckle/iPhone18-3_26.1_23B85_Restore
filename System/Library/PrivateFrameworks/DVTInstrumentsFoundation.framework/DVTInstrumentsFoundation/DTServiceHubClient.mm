@@ -1,11 +1,11 @@
 @interface DTServiceHubClient
-+ (id)localDeviceConnectionWithError:(id *)a3;
-+ (id)localDeviceConnectionWithXPCConnection:(id)a3;
++ (id)localDeviceConnectionWithError:(id *)error;
++ (id)localDeviceConnectionWithXPCConnection:(id)connection;
 @end
 
 @implementation DTServiceHubClient
 
-+ (id)localDeviceConnectionWithError:(id *)a3
++ (id)localDeviceConnectionWithError:(id *)error
 {
   v4 = [objc_alloc(MEMORY[0x277D03678]) initWithLocalName:0 size:0x400000];
   v22 = 0;
@@ -34,9 +34,9 @@
   xpc_connection_resume(mach_service);
   v11(v6, mach_service);
 
-  if (a3)
+  if (error)
   {
-    *a3 = v17[5];
+    *error = v17[5];
   }
 
   v8 = v23[5];
@@ -47,19 +47,19 @@
   return v8;
 }
 
-+ (id)localDeviceConnectionWithXPCConnection:(id)a3
++ (id)localDeviceConnectionWithXPCConnection:(id)connection
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (connection)
   {
     v3 = MEMORY[0x277D03678];
-    v4 = a3;
+    connectionCopy = connection;
     v5 = [[v3 alloc] initWithLocalName:0 size:0x400000];
     v6 = [objc_alloc(MEMORY[0x277D03650]) initWithTransport:v5];
     v7 = xpc_dictionary_create(0, 0, 0);
     v8 = xpc_shmem_create([v5 sharedMemory], objc_msgSend(v5, "totalSharedMemorySize"));
     xpc_dictionary_set_value(v7, "dtx_shared_memory", v8);
-    v9 = xpc_connection_send_message_with_reply_sync(v4, v7);
+    v9 = xpc_connection_send_message_with_reply_sync(connectionCopy, v7);
 
     if (MEMORY[0x24C1C4CD0](v9) == MEMORY[0x277D86480])
     {

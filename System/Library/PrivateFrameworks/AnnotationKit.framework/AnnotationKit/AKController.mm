@@ -1,43 +1,43 @@
 @interface AKController
-+ (AKController)controllerWithDelegate:(id)a3;
++ (AKController)controllerWithDelegate:(id)delegate;
 + (BOOL)_isInLowMemoryEnvironment;
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 + (BOOL)canConnectToStylus;
 + (BOOL)hasPressureCapableHardware;
 + (id)akBundle;
-+ (void)performBlockOnMainThread:(id)a3;
-+ (void)renderAnnotation:(id)a3 inContext:(CGContext *)a4;
-- (AKController)initWithDelegate:(id)a3;
++ (void)performBlockOnMainThread:(id)thread;
++ (void)renderAnnotation:(id)annotation inContext:(CGContext *)context;
+- (AKController)initWithDelegate:(id)delegate;
 - (AKControllerDelegateProtocol)delegate;
 - (AKControllerOverlayInteractionProtocol)overlayInteractionDelegate;
 - (AKPageController)lastCreationCascadingPageController;
 - (AKToolbarView)modernToolbarView;
 - (BOOL)_validateCutCopyDelete;
-- (BOOL)canBeginEditingTextAnnotation:(id)a3;
-- (BOOL)canPerformKeyCommandAction:(SEL)a3 withSender:(id)a4 handled:(BOOL *)a5;
-- (BOOL)handleEvent:(id)a3;
+- (BOOL)canBeginEditingTextAnnotation:(id)annotation;
+- (BOOL)canPerformKeyCommandAction:(SEL)action withSender:(id)sender handled:(BOOL *)handled;
+- (BOOL)handleEvent:(id)event;
 - (BOOL)hasSelectionWithEditableFillColor;
 - (BOOL)hasSelectionWithEditableStrokeColor;
 - (BOOL)hasSelectionWithEditableTextColor;
-- (BOOL)isOverlayViewLoadedAtIndex:(unint64_t)a3;
+- (BOOL)isOverlayViewLoadedAtIndex:(unint64_t)index;
 - (BOOL)isPresentingPopover;
 - (BOOL)shouldDrawVariableStrokeDoodles;
 - (BOOL)supportForPencilAlwaysDrawsSatisfied;
 - (BOOL)supportsFormFill;
 - (BOOL)supportsImageDescriptionEditing;
-- (BOOL)validateDelete:(id)a3;
-- (BOOL)validateDuplicate:(id)a3;
-- (BOOL)validateEditTextAnnotation:(id)a3;
-- (BOOL)validatePaste:(id)a3;
-- (BOOL)validateRedo:(id)a3;
-- (BOOL)validateSelectAll:(id)a3;
-- (BOOL)validateSender:(id)a3;
-- (BOOL)validateUndo:(id)a3;
-- (CGRect)_popoverAnchorFrameInModelForAnnotations:(id)a3;
-- (CGRect)contentAlignedRectForRect:(CGRect)a3 onPageAtIndex:(unint64_t)a4;
+- (BOOL)validateDelete:(id)delete;
+- (BOOL)validateDuplicate:(id)duplicate;
+- (BOOL)validateEditTextAnnotation:(id)annotation;
+- (BOOL)validatePaste:(id)paste;
+- (BOOL)validateRedo:(id)redo;
+- (BOOL)validateSelectAll:(id)all;
+- (BOOL)validateSender:(id)sender;
+- (BOOL)validateUndo:(id)undo;
+- (CGRect)_popoverAnchorFrameInModelForAnnotations:(id)annotations;
+- (CGRect)contentAlignedRectForRect:(CGRect)rect onPageAtIndex:(unint64_t)index;
 - (PKRulerHostingDelegate)rulerHostingDelegate;
 - (PKToolPicker)toolPicker;
-- (double)currentModelBaseScaleFactorForPageAtIndex:(unint64_t)a3;
+- (double)currentModelBaseScaleFactorForPageAtIndex:(unint64_t)index;
 - (double)maxHDRGain;
 - (id)_toolpicker_color;
 - (id)_toolpicker_inkIdentifier;
@@ -46,87 +46,87 @@
 - (id)initForTesting;
 - (id)keyCommandsForAnnotations;
 - (id)originalOrModifiedImageDescription;
-- (id)overlayViewAtIndex:(unint64_t)a3;
-- (id)pageControllerForAnnotation:(id)a3;
-- (id)pageControllerForPageModelController:(id)a3;
+- (id)overlayViewAtIndex:(unint64_t)index;
+- (id)pageControllerForAnnotation:(id)annotation;
+- (id)pageControllerForPageModelController:(id)controller;
 - (id)panGestureRecognizer;
 - (id)pressGestureRecognizer;
 - (id)rotationGestureRecognizer;
 - (id)singleSelectedAnnotation;
 - (id)tapGestureRecognizer;
-- (id)toolbarButtonItemOfType:(unint64_t)a3;
-- (int64_t)currentExifOrientationForPageAtIndex:(unint64_t)a3;
+- (id)toolbarButtonItemOfType:(unint64_t)type;
+- (int64_t)currentExifOrientationForPageAtIndex:(unint64_t)index;
 - (unint64_t)toolMode;
-- (void)_didScrollPDFPage:(id)a3;
-- (void)_pageModelControllerSelectedAnnotationsChangedNotification:(id)a3;
-- (void)_setupPageModelController:(id)a3;
-- (void)_toolpicker_setColor:(id)a3;
-- (void)_toolpicker_setInkIdentifier:(id)a3;
+- (void)_didScrollPDFPage:(id)page;
+- (void)_pageModelControllerSelectedAnnotationsChangedNotification:(id)notification;
+- (void)_setupPageModelController:(id)controller;
+- (void)_toolpicker_setColor:(id)color;
+- (void)_toolpicker_setInkIdentifier:(id)identifier;
 - (void)_updateGestureDependencyPriority;
-- (void)addPopupToAnnotation:(id)a3 openPopup:(BOOL)a4;
+- (void)addPopupToAnnotation:(id)annotation openPopup:(BOOL)popup;
 - (void)applyCurrentCrop;
-- (void)beginLogging:(id)a3 documentType:(id)a4;
+- (void)beginLogging:(id)logging documentType:(id)type;
 - (void)clearUndoStack;
 - (void)commitEditing;
-- (void)copy:(id)a3;
-- (void)cut:(id)a3;
+- (void)copy:(id)copy;
+- (void)cut:(id)cut;
 - (void)dealloc;
 - (void)delayedUndoControllerSetup;
-- (void)delete:(id)a3;
-- (void)didBeginEditingAnnotation:(id)a3;
-- (void)duplicate:(id)a3;
-- (void)editTextAnnotation:(id)a3;
-- (void)editTextAnnotation:(id)a3 selectAllText:(BOOL)a4;
-- (void)enclosingScrollViewDidScroll:(id)a3;
+- (void)delete:(id)delete;
+- (void)didBeginEditingAnnotation:(id)annotation;
+- (void)duplicate:(id)duplicate;
+- (void)editTextAnnotation:(id)annotation;
+- (void)editTextAnnotation:(id)annotation selectAllText:(BOOL)text;
+- (void)enclosingScrollViewDidScroll:(id)scroll;
 - (void)endEditingTextAnnotation;
 - (void)endLogging;
-- (void)hideSelectionMenu:(id)a3;
+- (void)hideSelectionMenu:(id)menu;
 - (void)highlightableSelectionChanged;
 - (void)highlightableSelectionDidEndChanging;
 - (void)highlightableSelectionWillBeginChanging;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)paste:(id)a3;
-- (void)performActionForSender:(id)a3;
-- (void)prepareOverlayAtIndex:(unint64_t)a3;
-- (void)redo:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)paste:(id)paste;
+- (void)performActionForSender:(id)sender;
+- (void)prepareOverlayAtIndex:(unint64_t)index;
+- (void)redo:(id)redo;
 - (void)redraw;
-- (void)relinquishOverlayAtIndex:(unint64_t)a3;
-- (void)removeNoteFromAnnotation:(id)a3;
-- (void)renderAnnotation:(id)a3 inContext:(CGContext *)a4;
+- (void)relinquishOverlayAtIndex:(unint64_t)index;
+- (void)removeNoteFromAnnotation:(id)annotation;
+- (void)renderAnnotation:(id)annotation inContext:(CGContext *)context;
 - (void)resetToDefaultToolMode;
-- (void)selectAll:(id)a3;
-- (void)setAnnotationEditingEnabled:(BOOL)a3;
-- (void)setAvailableHeadroom:(double)a3;
-- (void)setFormFillingEnabled:(BOOL)a3;
-- (void)setHideAllAdornments:(BOOL)a3;
-- (void)setMaxHDRGain:(double)a3;
-- (void)setModifiedImageDescription:(id)a3;
-- (void)setOverlayShouldPixelate:(BOOL)a3;
-- (void)setRulerHostingDelegate:(id)a3;
-- (void)setSelectNewlyCreatedAnnotations:(BOOL)a3;
-- (void)setToolMode:(unint64_t)a3;
-- (void)showSelectionMenu:(id)a3;
-- (void)strokeAddedNotification:(id)a3;
+- (void)selectAll:(id)all;
+- (void)setAnnotationEditingEnabled:(BOOL)enabled;
+- (void)setAvailableHeadroom:(double)headroom;
+- (void)setFormFillingEnabled:(BOOL)enabled;
+- (void)setHideAllAdornments:(BOOL)adornments;
+- (void)setMaxHDRGain:(double)gain;
+- (void)setModifiedImageDescription:(id)description;
+- (void)setOverlayShouldPixelate:(BOOL)pixelate;
+- (void)setRulerHostingDelegate:(id)delegate;
+- (void)setSelectNewlyCreatedAnnotations:(BOOL)annotations;
+- (void)setToolMode:(unint64_t)mode;
+- (void)showSelectionMenu:(id)menu;
+- (void)strokeAddedNotification:(id)notification;
 - (void)teardown;
-- (void)toolPickerVisibilityDidChange:(id)a3;
-- (void)undo:(id)a3;
-- (void)updateOverlayViewAtIndex:(unint64_t)a3;
+- (void)toolPickerVisibilityDidChange:(id)change;
+- (void)undo:(id)undo;
+- (void)updateOverlayViewAtIndex:(unint64_t)index;
 @end
 
 @implementation AKController
 
-+ (AKController)controllerWithDelegate:(id)a3
++ (AKController)controllerWithDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = [[AKController alloc] initWithDelegate:v3];
+  delegateCopy = delegate;
+  v4 = [[AKController alloc] initWithDelegate:delegateCopy];
 
   return v4;
 }
 
 + (id)akBundle
 {
-  v2 = [a1 akBundleIdentifier];
-  v3 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:v2];
+  akBundleIdentifier = [self akBundleIdentifier];
+  v3 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:akBundleIdentifier];
 
   return v3;
 }
@@ -161,9 +161,9 @@
   return byte_27E39B648;
 }
 
-- (AKController)initWithDelegate:(id)a3
+- (AKController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v34.receiver = self;
   v34.super_class = AKController;
   v5 = [(AKController *)&v34 init];
@@ -171,7 +171,7 @@
   if (v5)
   {
     [(AKController *)v5 setIsTestingInstance:0];
-    [(AKController *)v6 setDelegate:v4];
+    [(AKController *)v6 setDelegate:delegateCopy];
     v7 = objc_opt_new();
     [(AKController *)v6 setStatisticsLogger:v7];
 
@@ -199,8 +199,8 @@
     v13 = [[AKLegacyDoodleController alloc] initWithController:v6];
     [(AKController *)v6 setLegacyDoodleController:v13];
 
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v6 selector:sel_enclosingScrollViewDidScroll_ name:@"AKOverlayView.AKContentScrollViewVisibleRectChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_enclosingScrollViewDidScroll_ name:@"AKOverlayView.AKContentScrollViewVisibleRectChangeNotification" object:0];
 
     v15 = [[AKToolController alloc] initWithController:v6];
     [(AKController *)v6 setToolController:v15];
@@ -214,9 +214,9 @@
     v18 = [objc_alloc(objc_opt_class()) initWithController:v6];
     [(AKController *)v6 setToolbarViewController:v18];
 
-    v19 = [(AKController *)v6 toolbarViewController];
-    v20 = [v19 view];
-    [(AKController *)v6 setToolbarView:v20];
+    toolbarViewController = [(AKController *)v6 toolbarViewController];
+    view = [toolbarViewController view];
+    [(AKController *)v6 setToolbarView:view];
 
     v21 = [AKMainEventHandler newMainEventHandlerForCurrentPlatformWithController:v6];
     [(AKController *)v6 setMainEventHandler:v21];
@@ -238,25 +238,25 @@
       v26 = objc_alloc_init(AKPeripheralAvailabilityManager_iOS);
       [(AKController *)v6 setPeripheralAvailabilityManager:v26];
 
-      v27 = [(AKController *)v6 peripheralAvailabilityManager];
-      [v27 startMonitoringForPeripheralConnection];
+      peripheralAvailabilityManager = [(AKController *)v6 peripheralAvailabilityManager];
+      [peripheralAvailabilityManager startMonitoringForPeripheralConnection];
     }
 
     v28 = [[AKSignaturesController alloc] initWithController:v6];
     [(AKController *)v6 setSignaturesController:v28];
 
-    v29 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v29 addObserver:v6 selector:sel__didReceiveMemoryWarning_ name:*MEMORY[0x277D76670] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel__didReceiveMemoryWarning_ name:*MEMORY[0x277D76670] object:0];
 
-    v30 = [(AKController *)v6 modelController];
-    [v30 addObserver:v6 forKeyPath:@"pageModelControllers" options:3 context:@"AKController.modelObservationContext"];
+    modelController = [(AKController *)v6 modelController];
+    [modelController addObserver:v6 forKeyPath:@"pageModelControllers" options:3 context:@"AKController.modelObservationContext"];
 
     [(AKController *)v6 addObserver:v6 forKeyPath:@"currentPageIndex" options:3 context:@"AKController.pageIndexObservationContext"];
-    v31 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v31 addObserver:v6 selector:sel__pageModelControllerSelectedAnnotationsChangedNotification_ name:off_27E39A380[0] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v6 selector:sel__pageModelControllerSelectedAnnotationsChangedNotification_ name:off_27E39A380[0] object:0];
 
-    v32 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v32 addObserver:v6 selector:sel__didScrollPDFPage_ name:@"PDFScrollViewPageMayHaveChangedNotification" object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:v6 selector:sel__didScrollPDFPage_ name:@"PDFScrollViewPageMayHaveChangedNotification" object:0];
   }
 
   return v6;
@@ -278,54 +278,54 @@
 
 - (void)teardown
 {
-  v2 = self;
+  selfCopy = self;
   v44 = *MEMORY[0x277D85DE8];
   [(AKController *)self setIsTornDown:1];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"AKControllerWillTeardownNotification" object:v2];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"AKControllerWillTeardownNotification" object:selfCopy];
 
-  if (![(AKController *)v2 isTestingInstance])
+  if (![(AKController *)selfCopy isTestingInstance])
   {
-    v4 = [(AKController *)v2 undoController];
-    v5 = [v4 undoManager];
+    undoController = [(AKController *)selfCopy undoController];
+    undoManager = [undoController undoManager];
 
-    v30 = [v5 isUndoRegistrationEnabled];
-    if (v30)
+    isUndoRegistrationEnabled = [undoManager isUndoRegistrationEnabled];
+    if (isUndoRegistrationEnabled)
     {
-      [v5 disableUndoRegistration];
+      [undoManager disableUndoRegistration];
     }
 
-    v31 = v5;
-    [(AKController *)v2 resetToDefaultToolMode];
-    v6 = [(AKController *)v2 mainEventHandler];
-    [v6 teardown];
+    v31 = undoManager;
+    [(AKController *)selfCopy resetToDefaultToolMode];
+    mainEventHandler = [(AKController *)selfCopy mainEventHandler];
+    [mainEventHandler teardown];
 
-    v7 = [(AKController *)v2 toolbarViewController];
-    [v7 teardown];
+    toolbarViewController = [(AKController *)selfCopy toolbarViewController];
+    [toolbarViewController teardown];
 
-    v8 = [(AKController *)v2 peripheralAvailabilityManager];
-    [v8 teardown];
+    peripheralAvailabilityManager = [(AKController *)selfCopy peripheralAvailabilityManager];
+    [peripheralAvailabilityManager teardown];
 
-    v9 = [(AKController *)v2 attributeController];
-    [v9 setModelControllerToObserveForSelections:0];
+    attributeController = [(AKController *)selfCopy attributeController];
+    [attributeController setModelControllerToObserveForSelections:0];
 
-    v10 = [(AKController *)v2 legacyDoodleController];
-    v11 = [v10 shapeDetectionController];
-    [v11 setModelControllerToObserveForAnnotationsAndSelections:0];
+    legacyDoodleController = [(AKController *)selfCopy legacyDoodleController];
+    shapeDetectionController = [legacyDoodleController shapeDetectionController];
+    [shapeDetectionController setModelControllerToObserveForAnnotationsAndSelections:0];
 
-    v12 = [(AKController *)v2 modelController];
-    [v12 removeObserver:v2 forKeyPath:@"pageModelControllers" context:@"AKController.modelObservationContext"];
+    modelController = [(AKController *)selfCopy modelController];
+    [modelController removeObserver:selfCopy forKeyPath:@"pageModelControllers" context:@"AKController.modelObservationContext"];
 
-    [(AKController *)v2 removeObserver:v2 forKeyPath:@"currentPageIndex" context:@"AKController.pageIndexObservationContext"];
+    [(AKController *)selfCopy removeObserver:selfCopy forKeyPath:@"currentPageIndex" context:@"AKController.pageIndexObservationContext"];
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v13 = [(AKController *)v2 modelController];
-    v14 = [v13 pageModelControllers];
+    modelController2 = [(AKController *)selfCopy modelController];
+    pageModelControllers = [modelController2 pageModelControllers];
 
-    obj = v14;
-    v15 = [v14 countByEnumeratingWithState:&v38 objects:v43 count:16];
+    obj = pageModelControllers;
+    v15 = [pageModelControllers countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v15)
     {
       v16 = v15;
@@ -334,7 +334,7 @@
       {
         for (i = 0; i != v16; ++i)
         {
-          v18 = v2;
+          v18 = selfCopy;
           if (*v39 != v33)
           {
             objc_enumerationMutation(obj);
@@ -345,8 +345,8 @@
           v35 = 0u;
           v36 = 0u;
           v37 = 0u;
-          v20 = [v19 annotations];
-          v21 = [v20 countByEnumeratingWithState:&v34 objects:v42 count:16];
+          annotations = [v19 annotations];
+          v21 = [annotations countByEnumeratingWithState:&v34 objects:v42 count:16];
           if (v21)
           {
             v22 = v21;
@@ -357,7 +357,7 @@
               {
                 if (*v35 != v23)
                 {
-                  objc_enumerationMutation(v20);
+                  objc_enumerationMutation(annotations);
                 }
 
                 v25 = *(*(&v34 + 1) + 8 * j);
@@ -371,26 +371,26 @@
                   [v25 setShouldUseAppearanceOverride:0];
                 }
 
-                v26 = [v25 appearanceOverride];
+                appearanceOverride = [v25 appearanceOverride];
 
-                if (v26)
+                if (appearanceOverride)
                 {
                   [v25 setAppearanceOverride:0];
                 }
               }
 
-              v22 = [v20 countByEnumeratingWithState:&v34 objects:v42 count:16];
+              v22 = [annotations countByEnumeratingWithState:&v34 objects:v42 count:16];
             }
 
             while (v22);
           }
 
-          v2 = v18;
-          v27 = [(AKController *)v18 sidecarController];
-          [v27 stopObservingPageModelController:v19];
+          selfCopy = v18;
+          sidecarController = [(AKController *)v18 sidecarController];
+          [sidecarController stopObservingPageModelController:v19];
 
-          v28 = [(AKController *)v18 undoController];
-          [v28 stopObservingPageModelController:v19];
+          undoController2 = [(AKController *)v18 undoController];
+          [undoController2 stopObservingPageModelController:v19];
         }
 
         v16 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
@@ -399,23 +399,23 @@
       while (v16);
     }
 
-    [(AKController *)v2 setDelegate:0];
-    [(AKController *)v2 setSignatureModelController:0];
-    v29 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v29 removeObserver:v2];
+    [(AKController *)selfCopy setDelegate:0];
+    [(AKController *)selfCopy setSignatureModelController:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 removeObserver:selfCopy];
 
-    [(AKController *)v2 setLegacyDoodleController:0];
-    [(AKController *)v2 setTextEditorController:0];
-    [(AKController *)v2 setMainEventHandler:0];
-    [(AKController *)v2 setToolbarView:0];
-    [(AKController *)v2 setToolbarViewController:0];
-    [(AKController *)v2 setActionController:0];
-    [(AKController *)v2 setAttributeController:0];
-    [(AKController *)v2 setToolController:0];
-    [(AKController *)v2 setUndoController:0];
-    [(AKController *)v2 setModelController:0];
-    [(AKController *)v2 setPeripheralAvailabilityManager:0];
-    if (v30)
+    [(AKController *)selfCopy setLegacyDoodleController:0];
+    [(AKController *)selfCopy setTextEditorController:0];
+    [(AKController *)selfCopy setMainEventHandler:0];
+    [(AKController *)selfCopy setToolbarView:0];
+    [(AKController *)selfCopy setToolbarViewController:0];
+    [(AKController *)selfCopy setActionController:0];
+    [(AKController *)selfCopy setAttributeController:0];
+    [(AKController *)selfCopy setToolController:0];
+    [(AKController *)selfCopy setUndoController:0];
+    [(AKController *)selfCopy setModelController:0];
+    [(AKController *)selfCopy setPeripheralAvailabilityManager:0];
+    if (isUndoRegistrationEnabled)
     {
       if (([v31 isUndoRegistrationEnabled] & 1) == 0)
       {
@@ -433,65 +433,65 @@
   [(AKController *)&v3 dealloc];
 }
 
-- (void)_didScrollPDFPage:(id)a3
+- (void)_didScrollPDFPage:(id)page
 {
-  v4 = [(AKController *)self modernToolbarView];
-  [v4 updateCurrentOverlaysToolPickerVisibility:self->_toolPickerVisibleBeforeTextEditing];
+  modernToolbarView = [(AKController *)self modernToolbarView];
+  [modernToolbarView updateCurrentOverlaysToolPickerVisibility:self->_toolPickerVisibleBeforeTextEditing];
 }
 
-- (void)toolPickerVisibilityDidChange:(id)a3
+- (void)toolPickerVisibilityDidChange:(id)change
 {
   if (!self->_isEditingAnnotation)
   {
-    self->_toolPickerVisibleBeforeTextEditing = [a3 isVisible];
+    self->_toolPickerVisibleBeforeTextEditing = [change isVisible];
   }
 }
 
-- (void)setMaxHDRGain:(double)a3
+- (void)setMaxHDRGain:(double)gain
 {
-  v4 = [(AKController *)self toolbarViewController];
-  [v4 setMaxHDRGain:a3];
+  toolbarViewController = [(AKController *)self toolbarViewController];
+  [toolbarViewController setMaxHDRGain:gain];
 }
 
 - (double)maxHDRGain
 {
-  v2 = [(AKController *)self toolbarViewController];
-  [v2 maxHDRGain];
+  toolbarViewController = [(AKController *)self toolbarViewController];
+  [toolbarViewController maxHDRGain];
   v4 = v3;
 
   return v4;
 }
 
-- (void)didBeginEditingAnnotation:(id)a3
+- (void)didBeginEditingAnnotation:(id)annotation
 {
   self->_isEditingAnnotation = 1;
-  v4 = [(AKController *)self modernToolbarView];
-  self->_toolPickerVisibleBeforeTextEditing = [v4 isToolPickerVisible];
+  modernToolbarView = [(AKController *)self modernToolbarView];
+  self->_toolPickerVisibleBeforeTextEditing = [modernToolbarView isToolPickerVisible];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v120 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (a6 != @"AKController.pageIndexObservationContext")
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v13 = changeCopy;
+  if (context != @"AKController.pageIndexObservationContext")
   {
-    if (a6 != @"AKController.modelObservationContext")
+    if (context != @"AKController.modelObservationContext")
     {
       v104.receiver = self;
       v104.super_class = AKController;
-      [(AKController *)&v104 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+      [(AKController *)&v104 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
       goto LABEL_76;
     }
 
-    v17 = [v12 objectForKey:*MEMORY[0x277CCA2E8]];
+    v17 = [changeCopy objectForKey:*MEMORY[0x277CCA2E8]];
     v99 = [v13 objectForKey:*MEMORY[0x277CCA2E0]];
     v18 = [v13 objectForKey:*MEMORY[0x277CCA300]];
     v96 = v13;
     v19 = [v13 objectForKey:*MEMORY[0x277CCA2F0]];
-    v97 = v10;
+    v97 = pathCopy;
     v98 = v17;
     v102 = v19;
     v103 = v18;
@@ -517,22 +517,22 @@
             }
 
             v25 = *(*(&v113 + 1) + 8 * i);
-            v26 = [(AKController *)self undoController];
-            [v26 stopObservingPageModelController:v25];
+            undoController = [(AKController *)self undoController];
+            [undoController stopObservingPageModelController:v25];
 
-            v27 = [(AKController *)self sidecarController];
-            [v27 stopObservingPageModelController:v25];
+            sidecarController = [(AKController *)self sidecarController];
+            [sidecarController stopObservingPageModelController:v25];
 
-            v28 = [(AKController *)self pageModelControllersToPageControllers];
-            v29 = [v28 objectForKey:v25];
+            pageModelControllersToPageControllers = [(AKController *)self pageModelControllersToPageControllers];
+            v29 = [pageModelControllersToPageControllers objectForKey:v25];
 
-            v30 = [(AKController *)self undoController];
-            v31 = [v30 undoManager];
-            [v29 unregisterFromUndoManager:v31];
+            undoController2 = [(AKController *)self undoController];
+            undoManager = [undoController2 undoManager];
+            [v29 unregisterFromUndoManager:undoManager];
 
             [v29 teardown];
-            v32 = [(AKController *)self pageModelControllersToPageControllers];
-            [v32 removeObjectForKey:v25];
+            pageModelControllersToPageControllers2 = [(AKController *)self pageModelControllersToPageControllers];
+            [pageModelControllersToPageControllers2 removeObjectForKey:v25];
           }
 
           v22 = [v20 countByEnumeratingWithState:&v113 objects:v119 count:16];
@@ -586,24 +586,24 @@
         {
           v39 = [v18 objectAtIndexedSubscript:v38];
           v40 = [v19 objectAtIndexedSubscript:v38];
-          v41 = [(AKController *)self attributeController];
-          v42 = [v41 modelControllerToObserveForSelections];
+          attributeController = [(AKController *)self attributeController];
+          modelControllerToObserveForSelections = [attributeController modelControllerToObserveForSelections];
 
-          if (v39 == v42)
+          if (v39 == modelControllerToObserveForSelections)
           {
-            v43 = [(AKController *)self attributeController];
-            [v43 setModelControllerToObserveForSelections:v40];
+            attributeController2 = [(AKController *)self attributeController];
+            [attributeController2 setModelControllerToObserveForSelections:v40];
           }
 
-          v44 = [(AKController *)self legacyDoodleController];
-          v45 = [v44 shapeDetectionController];
-          v46 = [v45 modelControllerToObserveForAnnotationsAndSelections];
+          legacyDoodleController = [(AKController *)self legacyDoodleController];
+          shapeDetectionController = [legacyDoodleController shapeDetectionController];
+          modelControllerToObserveForAnnotationsAndSelections = [shapeDetectionController modelControllerToObserveForAnnotationsAndSelections];
 
-          if (v39 == v46)
+          if (v39 == modelControllerToObserveForAnnotationsAndSelections)
           {
-            v47 = [(AKController *)self legacyDoodleController];
-            v48 = [v47 shapeDetectionController];
-            [v48 setModelControllerToObserveForAnnotationsAndSelections:v40];
+            legacyDoodleController2 = [(AKController *)self legacyDoodleController];
+            shapeDetectionController2 = [legacyDoodleController2 shapeDetectionController];
+            [shapeDetectionController2 setModelControllerToObserveForAnnotationsAndSelections:v40];
           }
 
           v19 = v102;
@@ -616,27 +616,27 @@
       while (v38 < [v99 count]);
     }
 
-    v49 = [(AKController *)self pageControllers];
-    [v49 removeAllObjects];
+    pageControllers = [(AKController *)self pageControllers];
+    [pageControllers removeAllObjects];
 
     v107 = 0u;
     v108 = 0u;
     v105 = 0u;
     v106 = 0u;
-    v50 = [(AKController *)self modelController];
-    v51 = [v50 pageModelControllers];
+    modelController = [(AKController *)self modelController];
+    pageModelControllers = [modelController pageModelControllers];
 
-    v52 = [v51 countByEnumeratingWithState:&v105 objects:v117 count:16];
+    v52 = [pageModelControllers countByEnumeratingWithState:&v105 objects:v117 count:16];
     if (v52)
     {
       v53 = v52;
-      v100 = v11;
+      v100 = objectCopy;
       v54 = 0;
       v55 = *v106;
       v56 = 0x7FFFFFFFFFFFFFFFLL;
       do
       {
-        v57 = v51;
+        v57 = pageModelControllers;
         for (k = 0; k != v53; ++k)
         {
           if (*v106 != v55)
@@ -645,18 +645,18 @@
           }
 
           v59 = *(*(&v105 + 1) + 8 * k);
-          v60 = [MEMORY[0x277CBEB68] null];
-          v61 = [v59 isEqual:v60];
+          null = [MEMORY[0x277CBEB68] null];
+          v61 = [v59 isEqual:null];
 
           if ((v61 & 1) == 0)
           {
-            v62 = [(AKController *)self pageModelControllersToPageControllers];
-            v63 = [v62 objectForKey:v59];
+            pageModelControllersToPageControllers3 = [(AKController *)self pageModelControllersToPageControllers];
+            v63 = [pageModelControllersToPageControllers3 objectForKey:v59];
 
             if (v63)
             {
-              v64 = [(AKController *)self pageControllers];
-              [v64 replaceObjectAtIndex:v54 withObject:v63];
+              pageControllers2 = [(AKController *)self pageControllers];
+              [pageControllers2 replaceObjectAtIndex:v54 withObject:v63];
 
               [v63 setPageIndex:v54];
               if (v54 <= v56)
@@ -684,14 +684,14 @@
           ++v54;
         }
 
-        v51 = v57;
+        pageModelControllers = v57;
         v53 = [v57 countByEnumeratingWithState:&v105 objects:v117 count:16];
       }
 
       while (v53);
 
       v66 = 0x7FFFFFFFFFFFFFFFLL;
-      v11 = v100;
+      objectCopy = v100;
       v19 = v102;
       v13 = v96;
       v17 = v98;
@@ -725,56 +725,56 @@
 LABEL_65:
     if ([(AKController *)self currentPageIndex]!= 0x7FFFFFFFFFFFFFFFLL)
     {
-      v73 = [(AKController *)self modelController];
-      v74 = [v73 pageModelControllers];
-      v75 = [v74 objectAtIndex:{-[AKController currentPageIndex](self, "currentPageIndex")}];
+      modelController2 = [(AKController *)self modelController];
+      pageModelControllers2 = [modelController2 pageModelControllers];
+      v75 = [pageModelControllers2 objectAtIndex:{-[AKController currentPageIndex](self, "currentPageIndex")}];
 
-      v76 = [(AKController *)self attributeController];
-      [v76 setModelControllerToObserveForSelections:v75];
+      attributeController3 = [(AKController *)self attributeController];
+      [attributeController3 setModelControllerToObserveForSelections:v75];
 
-      v77 = [(AKController *)self legacyDoodleController];
-      v78 = [v77 shapeDetectionController];
-      [v78 setModelControllerToObserveForAnnotationsAndSelections:v75];
+      legacyDoodleController3 = [(AKController *)self legacyDoodleController];
+      shapeDetectionController3 = [legacyDoodleController3 shapeDetectionController];
+      [shapeDetectionController3 setModelControllerToObserveForAnnotationsAndSelections:v75];
     }
 
-    v10 = v97;
+    pathCopy = v97;
     goto LABEL_76;
   }
 
-  v14 = [v12 objectForKey:*MEMORY[0x277CCA300]];
+  v14 = [changeCopy objectForKey:*MEMORY[0x277CCA300]];
   v15 = [v13 objectForKey:*MEMORY[0x277CCA2F0]];
   if (v14)
   {
-    v16 = [v14 unsignedIntegerValue];
+    unsignedIntegerValue = [v14 unsignedIntegerValue];
   }
 
   else
   {
-    v16 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v101 = v11;
+  v101 = objectCopy;
   if (v15)
   {
-    v67 = [v15 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v15 unsignedIntegerValue];
   }
 
   else
   {
-    v67 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue2 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (v16 != v67)
+  if (unsignedIntegerValue != unsignedIntegerValue2)
   {
     if ([(AKController *)self toolMode]== 6)
     {
       v68 = v13;
-      v69 = [(AKController *)self modelController];
-      v70 = [v69 pageModelControllerForPage:v16];
+      modelController3 = [(AKController *)self modelController];
+      v70 = [modelController3 pageModelControllerForPage:unsignedIntegerValue];
 
-      v71 = [v70 cropAnnotation];
-      v72 = v71;
-      if (v71 && [v71 cropApplied])
+      cropAnnotation = [v70 cropAnnotation];
+      v72 = cropAnnotation;
+      if (cropAnnotation && [cropAnnotation cropApplied])
       {
         [v72 setShowHandles:0];
       }
@@ -790,21 +790,21 @@ LABEL_65:
     }
 
     [(AKController *)self setPasteCascadingMultiplier:0];
-    if (v16 != 0x7FFFFFFFFFFFFFFFLL)
+    if (unsignedIntegerValue != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v79 = [(AKController *)self pageControllers];
+      pageControllers3 = [(AKController *)self pageControllers];
       v80 = v13;
-      v81 = [v79 count];
+      v81 = [pageControllers3 count];
 
-      v82 = v16 >= v81;
+      v82 = unsignedIntegerValue >= v81;
       v13 = v80;
       if (!v82)
       {
-        v83 = [(AKController *)self pageControllers];
-        v84 = [v83 objectAtIndex:v16];
+        pageControllers4 = [(AKController *)self pageControllers];
+        v84 = [pageControllers4 objectAtIndex:unsignedIntegerValue];
 
-        v85 = [v84 pageModelController];
-        v86 = [v85 mutableSetValueForKey:@"selectedAnnotations"];
+        pageModelController = [v84 pageModelController];
+        v86 = [pageModelController mutableSetValueForKey:@"selectedAnnotations"];
         v87 = [MEMORY[0x277CBEB98] set];
         [v86 setSet:v87];
 
@@ -812,66 +812,66 @@ LABEL_65:
       }
     }
 
-    if (v67 != 0x7FFFFFFFFFFFFFFFLL)
+    if (unsignedIntegerValue2 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v88 = [(AKController *)self pageControllers];
-      v89 = [v88 objectAtIndex:v67];
+      pageControllers5 = [(AKController *)self pageControllers];
+      v89 = [pageControllers5 objectAtIndex:unsignedIntegerValue2];
 
-      v90 = [v89 pageModelController];
-      v91 = [(AKController *)self attributeController];
-      [v91 setModelControllerToObserveForSelections:v90];
+      pageModelController2 = [v89 pageModelController];
+      attributeController4 = [(AKController *)self attributeController];
+      [attributeController4 setModelControllerToObserveForSelections:pageModelController2];
 
-      v92 = [(AKController *)self legacyDoodleController];
-      [v92 shapeDetectionController];
+      legacyDoodleController4 = [(AKController *)self legacyDoodleController];
+      [legacyDoodleController4 shapeDetectionController];
       v94 = v93 = v13;
-      [v94 setModelControllerToObserveForAnnotationsAndSelections:v90];
+      [v94 setModelControllerToObserveForAnnotationsAndSelections:pageModelController2];
 
       v13 = v93;
-      v95 = [(AKController *)self modernToolbarView];
-      [v95 updateCurrentOverlaysToolPickerVisibility];
+      modernToolbarView = [(AKController *)self modernToolbarView];
+      [modernToolbarView updateCurrentOverlaysToolPickerVisibility];
     }
   }
 
-  v11 = v101;
+  objectCopy = v101;
 LABEL_76:
 }
 
-- (void)_setupPageModelController:(id)a3
+- (void)_setupPageModelController:(id)controller
 {
-  v9 = a3;
-  v4 = [v9 representedObject];
-  if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  controllerCopy = controller;
+  representedObject = [controllerCopy representedObject];
+  if (!representedObject || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = [AKPageController pageControllerWithController:self andPageModelController:v9];
+    v5 = [AKPageController pageControllerWithController:self andPageModelController:controllerCopy];
     [v5 setShouldPixelate:{-[AKController overlayShouldPixelate](self, "overlayShouldPixelate")}];
-    v6 = [(AKController *)self pageModelControllersToPageControllers];
-    [v6 setObject:v5 forKey:v9];
+    pageModelControllersToPageControllers = [(AKController *)self pageModelControllersToPageControllers];
+    [pageModelControllersToPageControllers setObject:v5 forKey:controllerCopy];
 
-    v7 = [(AKController *)self undoController];
-    [v7 startObservingPageModelController:v9];
+    undoController = [(AKController *)self undoController];
+    [undoController startObservingPageModelController:controllerCopy];
 
-    v8 = [(AKController *)self sidecarController];
-    [v8 startObservingPageModelController:v9];
+    sidecarController = [(AKController *)self sidecarController];
+    [sidecarController startObservingPageModelController:controllerCopy];
   }
 }
 
-- (void)enclosingScrollViewDidScroll:(id)a3
+- (void)enclosingScrollViewDidScroll:(id)scroll
 {
-  v4 = [(AKController *)self legacyDoodleController];
-  v5 = [v4 shapeDetectionController];
-  v6 = [v5 isShowingCandidatePicker];
+  legacyDoodleController = [(AKController *)self legacyDoodleController];
+  shapeDetectionController = [legacyDoodleController shapeDetectionController];
+  isShowingCandidatePicker = [shapeDetectionController isShowingCandidatePicker];
 
-  if (v6)
+  if (isShowingCandidatePicker)
   {
-    v8 = [(AKController *)self legacyDoodleController];
-    v7 = [v8 shapeDetectionController];
-    [v7 dismissCandidatePicker];
+    legacyDoodleController2 = [(AKController *)self legacyDoodleController];
+    shapeDetectionController2 = [legacyDoodleController2 shapeDetectionController];
+    [shapeDetectionController2 dismissCandidatePicker];
   }
 }
 
-- (BOOL)validateSender:(id)a3
+- (BOOL)validateSender:(id)sender
 {
-  v4 = a3;
+  senderCopy = sender;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_23;
@@ -880,17 +880,17 @@ LABEL_76:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 action];
+    action = [senderCopy action];
     goto LABEL_14;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
+    v6 = senderCopy;
     v7 = [v6 actionsForTarget:0 forControlEvent:251658240];
-    v8 = [v7 firstObject];
-    v5 = NSSelectorFromString(v8);
+    firstObject = [v7 firstObject];
+    action = NSSelectorFromString(firstObject);
     if ([v7 count] >= 2)
     {
       NSLog(&cfstr_WarningMultipl.isa, v6);
@@ -901,95 +901,95 @@ LABEL_76:
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v4 methodSignatureForSelector:sel_action];
+    v6 = [senderCopy methodSignatureForSelector:sel_action];
     if (!v6)
     {
-      v5 = 0;
+      action = 0;
       goto LABEL_12;
     }
 
     v7 = [MEMORY[0x277CBEAE8] invocationWithMethodSignature:v6];
     [v7 setSelector:sel_action];
-    [v7 setTarget:v4];
+    [v7 setTarget:senderCopy];
     v13 = 0;
     [v7 invoke];
     [v7 getReturnValue:&v13];
-    v5 = v13;
+    action = v13;
 LABEL_11:
 
 LABEL_12:
     goto LABEL_14;
   }
 
-  v5 = 0;
+  action = 0;
 LABEL_14:
-  if (v5 == sel_undo_)
+  if (action == sel_undo_)
   {
-    v11 = [(AKController *)self validateUndo:v4];
+    v11 = [(AKController *)self validateUndo:senderCopy];
 LABEL_34:
     v10 = v11;
     goto LABEL_35;
   }
 
-  if (v5 == sel_redo_)
+  if (action == sel_redo_)
   {
-    v11 = [(AKController *)self validateRedo:v4];
+    v11 = [(AKController *)self validateRedo:senderCopy];
     goto LABEL_34;
   }
 
-  if (v5 == sel_cut_)
+  if (action == sel_cut_)
   {
-    v11 = [(AKController *)self validateCut:v4];
+    v11 = [(AKController *)self validateCut:senderCopy];
     goto LABEL_34;
   }
 
-  if (v5 == sel_copy_)
+  if (action == sel_copy_)
   {
-    v11 = [(AKController *)self validateCopy:v4];
+    v11 = [(AKController *)self validateCopy:senderCopy];
     goto LABEL_34;
   }
 
-  if (v5 == sel_paste_)
+  if (action == sel_paste_)
   {
-    v11 = [(AKController *)self validatePaste:v4];
+    v11 = [(AKController *)self validatePaste:senderCopy];
     goto LABEL_34;
   }
 
-  if (v5 == sel_delete_)
+  if (action == sel_delete_)
   {
-    v11 = [(AKController *)self validateDelete:v4];
+    v11 = [(AKController *)self validateDelete:senderCopy];
     goto LABEL_34;
   }
 
-  if (v5 == sel_duplicate_)
+  if (action == sel_duplicate_)
   {
-    v11 = [(AKController *)self validateDuplicate:v4];
+    v11 = [(AKController *)self validateDuplicate:senderCopy];
     goto LABEL_34;
   }
 
-  if (v5 == sel_selectAll_)
+  if (action == sel_selectAll_)
   {
-    v11 = [(AKController *)self validateSelectAll:v4];
+    v11 = [(AKController *)self validateSelectAll:senderCopy];
     goto LABEL_34;
   }
 
-  if (v5 == sel_showAttributeInspector_)
+  if (action == sel_showAttributeInspector_)
   {
-    v11 = [(AKController *)self validateShowAttributeInspector:v4];
+    v11 = [(AKController *)self validateShowAttributeInspector:senderCopy];
     goto LABEL_34;
   }
 
 LABEL_23:
-  v9 = [(AKController *)self actionController];
-  v10 = [v9 validateSender:v4];
+  actionController = [(AKController *)self actionController];
+  v10 = [actionController validateSender:senderCopy];
 
 LABEL_35:
   return v10;
 }
 
-- (void)performActionForSender:(id)a3
+- (void)performActionForSender:(id)sender
 {
-  v9 = a3;
+  senderCopy = sender;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_18;
@@ -998,7 +998,7 @@ LABEL_35:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v9 action];
+    action = [senderCopy action];
   }
 
   else
@@ -1006,10 +1006,10 @@ LABEL_35:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v9;
+      v5 = senderCopy;
       v6 = [v5 actionsForTarget:0 forControlEvent:251658240];
-      v7 = [v6 firstObject];
-      v4 = NSSelectorFromString(v7);
+      firstObject = [v6 firstObject];
+      action = NSSelectorFromString(firstObject);
       if ([v6 count] >= 2)
       {
         NSLog(&cfstr_WarningMultipl.isa, v5);
@@ -1018,106 +1018,106 @@ LABEL_35:
 
     else
     {
-      v4 = 0;
+      action = 0;
     }
   }
 
-  if (v4 == sel_undo_)
+  if (action == sel_undo_)
   {
-    [(AKController *)self undo:v9];
+    [(AKController *)self undo:senderCopy];
   }
 
-  else if (v4 == sel_redo_)
+  else if (action == sel_redo_)
   {
-    [(AKController *)self redo:v9];
+    [(AKController *)self redo:senderCopy];
   }
 
-  else if (v4 == sel_cut_)
+  else if (action == sel_cut_)
   {
-    [(AKController *)self cut:v9];
+    [(AKController *)self cut:senderCopy];
   }
 
-  else if (v4 == sel_copy_)
+  else if (action == sel_copy_)
   {
-    [(AKController *)self copy:v9];
+    [(AKController *)self copy:senderCopy];
   }
 
-  else if (v4 == sel_paste_)
+  else if (action == sel_paste_)
   {
-    [(AKController *)self paste:v9];
+    [(AKController *)self paste:senderCopy];
   }
 
-  else if (v4 == sel_delete_)
+  else if (action == sel_delete_)
   {
-    [(AKController *)self delete:v9];
+    [(AKController *)self delete:senderCopy];
   }
 
-  else if (v4 == sel_duplicate_)
+  else if (action == sel_duplicate_)
   {
-    [(AKController *)self duplicate:v9];
+    [(AKController *)self duplicate:senderCopy];
   }
 
-  else if (v4 == sel_selectAll_)
+  else if (action == sel_selectAll_)
   {
-    [(AKController *)self selectAll:v9];
+    [(AKController *)self selectAll:senderCopy];
   }
 
   else
   {
-    if (v4 != sel_showAttributeInspector_)
+    if (action != sel_showAttributeInspector_)
     {
 LABEL_18:
-      v8 = [(AKController *)self actionController];
-      [v8 performActionForSender:v9];
+      actionController = [(AKController *)self actionController];
+      [actionController performActionForSender:senderCopy];
 
       goto LABEL_28;
     }
 
-    [(AKController *)self showAttributeInspector:v9];
+    [(AKController *)self showAttributeInspector:senderCopy];
   }
 
 LABEL_28:
 }
 
-- (id)overlayViewAtIndex:(unint64_t)a3
+- (id)overlayViewAtIndex:(unint64_t)index
 {
-  v4 = [(AKController *)self pageControllers];
-  v5 = [v4 objectAtIndex:a3];
+  pageControllers = [(AKController *)self pageControllers];
+  v5 = [pageControllers objectAtIndex:index];
 
-  v6 = [v5 overlayView];
+  overlayView = [v5 overlayView];
 
-  return v6;
+  return overlayView;
 }
 
-- (BOOL)isOverlayViewLoadedAtIndex:(unint64_t)a3
+- (BOOL)isOverlayViewLoadedAtIndex:(unint64_t)index
 {
-  v4 = [(AKController *)self pageControllers];
-  v5 = [v4 objectAtIndex:a3];
+  pageControllers = [(AKController *)self pageControllers];
+  v5 = [pageControllers objectAtIndex:index];
 
   if (v5)
   {
-    v6 = [v5 relinquishablesAreLoaded];
+    relinquishablesAreLoaded = [v5 relinquishablesAreLoaded];
   }
 
   else
   {
-    v6 = 0;
+    relinquishablesAreLoaded = 0;
   }
 
-  return v6;
+  return relinquishablesAreLoaded;
 }
 
-- (void)setRulerHostingDelegate:(id)a3
+- (void)setRulerHostingDelegate:(id)delegate
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  objc_storeWeak(&self->_rulerHostingDelegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_rulerHostingDelegate, delegateCopy);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(AKController *)self pageControllers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  pageControllers = [(AKController *)self pageControllers];
+  v6 = [pageControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1129,69 +1129,69 @@ LABEL_28:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(pageControllers);
         }
 
-        v10 = [*(*(&v11 + 1) + 8 * v9) inkPageOverlayController];
-        [v10 setRulerHostingDelegate:v4];
+        inkPageOverlayController = [*(*(&v11 + 1) + 8 * v9) inkPageOverlayController];
+        [inkPageOverlayController setRulerHostingDelegate:delegateCopy];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [pageControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)prepareOverlayAtIndex:(unint64_t)a3
+- (void)prepareOverlayAtIndex:(unint64_t)index
 {
-  v5 = [(AKController *)self pageControllers];
-  v8 = [v5 objectAtIndex:a3];
+  pageControllers = [(AKController *)self pageControllers];
+  v8 = [pageControllers objectAtIndex:index];
 
   [v8 setupRelinquishables];
-  v6 = [(AKController *)self rulerHostingDelegate];
-  if (v6)
+  rulerHostingDelegate = [(AKController *)self rulerHostingDelegate];
+  if (rulerHostingDelegate)
   {
-    v7 = [v8 inkPageOverlayController];
-    [v7 setRulerHostingDelegate:v6];
+    inkPageOverlayController = [v8 inkPageOverlayController];
+    [inkPageOverlayController setRulerHostingDelegate:rulerHostingDelegate];
   }
 }
 
-- (void)relinquishOverlayAtIndex:(unint64_t)a3
+- (void)relinquishOverlayAtIndex:(unint64_t)index
 {
-  v4 = [(AKController *)self pageControllers];
-  v5 = [v4 objectAtIndex:a3];
+  pageControllers = [(AKController *)self pageControllers];
+  v5 = [pageControllers objectAtIndex:index];
 
   [v5 releaseRelinquishables];
 }
 
-- (void)updateOverlayViewAtIndex:(unint64_t)a3
+- (void)updateOverlayViewAtIndex:(unint64_t)index
 {
-  v4 = [(AKController *)self pageControllers];
-  v6 = [v4 objectAtIndex:a3];
+  pageControllers = [(AKController *)self pageControllers];
+  v6 = [pageControllers objectAtIndex:index];
 
   if ([v6 relinquishablesAreLoaded])
   {
-    v5 = [v6 overlayView];
-    [v5 updateLayers];
+    overlayView = [v6 overlayView];
+    [overlayView updateLayers];
   }
 }
 
-- (void)renderAnnotation:(id)a3 inContext:(CGContext *)a4
+- (void)renderAnnotation:(id)annotation inContext:(CGContext *)context
 {
-  v5 = a3;
-  v6 = [AKAnnotationRenderer _optionsForContext:a4 forDisplay:0];
-  [AKAnnotationRenderer renderAnnotation:v5 intoContext:a4 options:v6 pageControllerOrNil:0];
+  annotationCopy = annotation;
+  v6 = [AKAnnotationRenderer _optionsForContext:context forDisplay:0];
+  [AKAnnotationRenderer renderAnnotation:annotationCopy intoContext:context options:v6 pageControllerOrNil:0];
 }
 
-+ (void)renderAnnotation:(id)a3 inContext:(CGContext *)a4
++ (void)renderAnnotation:(id)annotation inContext:(CGContext *)context
 {
-  v5 = a3;
-  v6 = [AKAnnotationRenderer _optionsForContext:a4 forDisplay:0];
-  [AKAnnotationRenderer renderAnnotation:v5 intoContext:a4 options:v6 pageControllerOrNil:0];
+  annotationCopy = annotation;
+  v6 = [AKAnnotationRenderer _optionsForContext:context forDisplay:0];
+  [AKAnnotationRenderer renderAnnotation:annotationCopy intoContext:context options:v6 pageControllerOrNil:0];
 }
 
 - (void)redraw
@@ -1201,8 +1201,8 @@ LABEL_28:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v2 = [(AKController *)self pageControllers];
-  v3 = [v2 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  pageControllers = [(AKController *)self pageControllers];
+  v3 = [pageControllers countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1214,7 +1214,7 @@ LABEL_28:
       {
         if (*v20 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(pageControllers);
         }
 
         v7 = *(*(&v19 + 1) + 8 * v6);
@@ -1222,11 +1222,11 @@ LABEL_28:
         v16 = 0u;
         v17 = 0u;
         v18 = 0u;
-        v8 = [v7 layerPresentationManager];
-        v9 = [v8 rootLayer];
-        v10 = [v9 sublayers];
+        layerPresentationManager = [v7 layerPresentationManager];
+        rootLayer = [layerPresentationManager rootLayer];
+        sublayers = [rootLayer sublayers];
 
-        v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+        v11 = [sublayers countByEnumeratingWithState:&v15 objects:v23 count:16];
         if (v11)
         {
           v12 = v11;
@@ -1238,14 +1238,14 @@ LABEL_28:
             {
               if (*v16 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(sublayers);
               }
 
               [*(*(&v15 + 1) + 8 * v14++) setNeedsDisplay];
             }
 
             while (v12 != v14);
-            v12 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+            v12 = [sublayers countByEnumeratingWithState:&v15 objects:v23 count:16];
           }
 
           while (v12);
@@ -1255,26 +1255,26 @@ LABEL_28:
       }
 
       while (v6 != v4);
-      v4 = [v2 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v4 = [pageControllers countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)setOverlayShouldPixelate:(BOOL)a3
+- (void)setOverlayShouldPixelate:(BOOL)pixelate
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (self->overlayShouldPixelate != a3)
+  if (self->overlayShouldPixelate != pixelate)
   {
-    v3 = a3;
-    self->overlayShouldPixelate = a3;
+    pixelateCopy = pixelate;
+    self->overlayShouldPixelate = pixelate;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [(AKController *)self pageControllers];
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    pageControllers = [(AKController *)self pageControllers];
+    v5 = [pageControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1285,19 +1285,19 @@ LABEL_28:
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(pageControllers);
           }
 
           v9 = *(*(&v11 + 1) + 8 * i);
-          [v9 setShouldPixelate:v3];
+          [v9 setShouldPixelate:pixelateCopy];
           if ([v9 relinquishablesAreLoaded])
           {
-            v10 = [v9 layerPresentationManager];
-            [v10 setShouldPixelate:v3];
+            layerPresentationManager = [v9 layerPresentationManager];
+            [layerPresentationManager setShouldPixelate:pixelateCopy];
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [pageControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v6);
@@ -1305,49 +1305,49 @@ LABEL_28:
   }
 }
 
-- (void)editTextAnnotation:(id)a3 selectAllText:(BOOL)a4
+- (void)editTextAnnotation:(id)annotation selectAllText:(BOOL)text
 {
-  v4 = a4;
-  v6 = a3;
-  v8 = [(AKController *)self pageControllerForAnnotation:v6];
-  v7 = [(AKController *)self textEditorController];
-  [v7 beginEditingAnnotation:v6 withPageController:v8 selectAllText:v4];
+  textCopy = text;
+  annotationCopy = annotation;
+  v8 = [(AKController *)self pageControllerForAnnotation:annotationCopy];
+  textEditorController = [(AKController *)self textEditorController];
+  [textEditorController beginEditingAnnotation:annotationCopy withPageController:v8 selectAllText:textCopy];
 }
 
 - (void)endEditingTextAnnotation
 {
-  v3 = [(AKController *)self textEditorController];
-  v4 = [v3 isEditing];
+  textEditorController = [(AKController *)self textEditorController];
+  isEditing = [textEditorController isEditing];
 
-  if (v4)
+  if (isEditing)
   {
-    v5 = [(AKController *)self textEditorController];
-    [v5 endEditing];
+    textEditorController2 = [(AKController *)self textEditorController];
+    [textEditorController2 endEditing];
   }
 }
 
 - (void)commitEditing
 {
-  v3 = [(AKController *)self textEditorController];
-  [v3 commitToModelWithoutEndingEditing];
+  textEditorController = [(AKController *)self textEditorController];
+  [textEditorController commitToModelWithoutEndingEditing];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:AKControllerWillSaveNotification object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:AKControllerWillSaveNotification object:self];
 }
 
-- (int64_t)currentExifOrientationForPageAtIndex:(unint64_t)a3
+- (int64_t)currentExifOrientationForPageAtIndex:(unint64_t)index
 {
-  v4 = [(AKController *)self pageControllers];
-  v5 = [v4 objectAtIndex:a3];
+  pageControllers = [(AKController *)self pageControllers];
+  v5 = [pageControllers objectAtIndex:index];
 
-  v6 = [v5 currentModelToScreenExifOrientation];
-  return v6;
+  currentModelToScreenExifOrientation = [v5 currentModelToScreenExifOrientation];
+  return currentModelToScreenExifOrientation;
 }
 
-- (double)currentModelBaseScaleFactorForPageAtIndex:(unint64_t)a3
+- (double)currentModelBaseScaleFactorForPageAtIndex:(unint64_t)index
 {
-  v4 = [(AKController *)self pageControllers];
-  v5 = [v4 objectAtIndex:a3];
+  pageControllers = [(AKController *)self pageControllers];
+  v5 = [pageControllers objectAtIndex:index];
 
   [v5 modelBaseScaleFactor];
   v7 = v6;
@@ -1355,17 +1355,17 @@ LABEL_28:
   return v7;
 }
 
-- (CGRect)contentAlignedRectForRect:(CGRect)a3 onPageAtIndex:(unint64_t)a4
+- (CGRect)contentAlignedRectForRect:(CGRect)rect onPageAtIndex:(unint64_t)index
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(AKController *)self pageControllers];
-  v10 = [v9 objectAtIndex:a4];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  pageControllers = [(AKController *)self pageControllers];
+  v10 = [pageControllers objectAtIndex:index];
 
-  v11 = [v10 geometryHelper];
-  [v11 contentAlignedRectForRect:{x, y, width, height}];
+  geometryHelper = [v10 geometryHelper];
+  [geometryHelper contentAlignedRectForRect:{x, y, width, height}];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -1382,53 +1382,53 @@ LABEL_28:
   return result;
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(AKController *)self mainEventHandler];
-  v6 = [v5 mainHandleEvent:v4 orRecognizer:0];
+  eventCopy = event;
+  mainEventHandler = [(AKController *)self mainEventHandler];
+  v6 = [mainEventHandler mainHandleEvent:eventCopy orRecognizer:0];
 
   return v6;
 }
 
 - (id)tapGestureRecognizer
 {
-  v2 = [(AKController *)self mainEventHandler];
-  v3 = [v2 tapRecognizer];
+  mainEventHandler = [(AKController *)self mainEventHandler];
+  tapRecognizer = [mainEventHandler tapRecognizer];
 
-  return v3;
+  return tapRecognizer;
 }
 
 - (id)doubleTapGestureRecognizer
 {
-  v2 = [(AKController *)self mainEventHandler];
-  v3 = [v2 doubleTapRecognizer];
+  mainEventHandler = [(AKController *)self mainEventHandler];
+  doubleTapRecognizer = [mainEventHandler doubleTapRecognizer];
 
-  return v3;
+  return doubleTapRecognizer;
 }
 
 - (id)pressGestureRecognizer
 {
-  v2 = [(AKController *)self mainEventHandler];
-  v3 = [v2 pressRecognizer];
+  mainEventHandler = [(AKController *)self mainEventHandler];
+  pressRecognizer = [mainEventHandler pressRecognizer];
 
-  return v3;
+  return pressRecognizer;
 }
 
 - (id)panGestureRecognizer
 {
-  v2 = [(AKController *)self mainEventHandler];
-  v3 = [v2 panRecognizer];
+  mainEventHandler = [(AKController *)self mainEventHandler];
+  panRecognizer = [mainEventHandler panRecognizer];
 
-  return v3;
+  return panRecognizer;
 }
 
 - (id)rotationGestureRecognizer
 {
-  v2 = [(AKController *)self mainEventHandler];
-  v3 = [v2 rotationRecognizer];
+  mainEventHandler = [(AKController *)self mainEventHandler];
+  rotationRecognizer = [mainEventHandler rotationRecognizer];
 
-  return v3;
+  return rotationRecognizer;
 }
 
 - (void)_updateGestureDependencyPriority
@@ -1438,8 +1438,8 @@ LABEL_28:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(AKController *)self pageControllers];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  pageControllers = [(AKController *)self pageControllers];
+  v3 = [pageControllers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1451,65 +1451,65 @@ LABEL_28:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(pageControllers);
         }
 
-        v7 = [*(*(&v8 + 1) + 8 * v6) inkPageOverlayController];
-        [v7 _updateGestureDependencyPriority];
+        inkPageOverlayController = [*(*(&v8 + 1) + 8 * v6) inkPageOverlayController];
+        [inkPageOverlayController _updateGestureDependencyPriority];
 
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [pageControllers countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
   }
 }
 
-- (id)toolbarButtonItemOfType:(unint64_t)a3
+- (id)toolbarButtonItemOfType:(unint64_t)type
 {
-  v4 = [(AKController *)self toolbarViewController];
-  v5 = [v4 _toolbarButtonItemOfType:a3];
+  toolbarViewController = [(AKController *)self toolbarViewController];
+  v5 = [toolbarViewController _toolbarButtonItemOfType:type];
 
   return v5;
 }
 
-- (void)setAnnotationEditingEnabled:(BOOL)a3
+- (void)setAnnotationEditingEnabled:(BOOL)enabled
 {
-  self->_annotationEditingEnabled = a3;
-  if (!a3)
+  self->_annotationEditingEnabled = enabled;
+  if (!enabled)
   {
-    v4 = [(AKController *)self textEditorController];
-    v5 = [v4 isEditing];
+    textEditorController = [(AKController *)self textEditorController];
+    isEditing = [textEditorController isEditing];
 
-    if (v5)
+    if (isEditing)
     {
-      v6 = [(AKController *)self textEditorController];
-      [v6 endEditing];
+      textEditorController2 = [(AKController *)self textEditorController];
+      [textEditorController2 endEditing];
     }
 
     if ([(AKController *)self supportForPencilAlwaysDrawsSatisfied])
     {
-      v7 = [(AKController *)self attributeController];
-      [v7 resetToLastDrawingInk];
+      attributeController = [(AKController *)self attributeController];
+      [attributeController resetToLastDrawingInk];
     }
   }
 }
 
-- (void)setFormFillingEnabled:(BOOL)a3
+- (void)setFormFillingEnabled:(BOOL)enabled
 {
-  self->_formFillingEnabled = a3;
-  if (!a3)
+  self->_formFillingEnabled = enabled;
+  if (!enabled)
   {
-    v4 = [(AKController *)self textEditorController];
-    v5 = [v4 isEditing];
+    textEditorController = [(AKController *)self textEditorController];
+    isEditing = [textEditorController isEditing];
 
-    if (v5)
+    if (isEditing)
     {
-      v6 = [(AKController *)self textEditorController];
-      [v6 endEditing];
+      textEditorController2 = [(AKController *)self textEditorController];
+      [textEditorController2 endEditing];
     }
   }
 }
@@ -1555,46 +1555,46 @@ LABEL_28:
   return cachedKeyCommands;
 }
 
-- (BOOL)canPerformKeyCommandAction:(SEL)a3 withSender:(id)a4 handled:(BOOL *)a5
+- (BOOL)canPerformKeyCommandAction:(SEL)action withSender:(id)sender handled:(BOOL *)handled
 {
-  v8 = a4;
-  if (v8 && [(NSArray *)self->_cachedKeyCommands containsObject:v8])
+  senderCopy = sender;
+  if (senderCopy && [(NSArray *)self->_cachedKeyCommands containsObject:senderCopy])
   {
-    if (sel_duplicate_ == a3)
+    if (sel_duplicate_ == action)
     {
-      v12 = [(AKController *)self validateDuplicate:v8];
+      v12 = [(AKController *)self validateDuplicate:senderCopy];
     }
 
-    else if (sel_delete_ == a3)
+    else if (sel_delete_ == action)
     {
-      v12 = [(AKController *)self validateDelete:v8];
+      v12 = [(AKController *)self validateDelete:senderCopy];
     }
 
-    else if (sel_cut_ == a3)
+    else if (sel_cut_ == action)
     {
-      v12 = [(AKController *)self validateCut:v8];
+      v12 = [(AKController *)self validateCut:senderCopy];
     }
 
-    else if (sel_copy_ == a3)
+    else if (sel_copy_ == action)
     {
-      v12 = [(AKController *)self validateCopy:v8];
+      v12 = [(AKController *)self validateCopy:senderCopy];
     }
 
     else
     {
-      if (sel_paste_ != a3)
+      if (sel_paste_ != action)
       {
         v9 = 0;
         goto LABEL_18;
       }
 
-      v12 = [(AKController *)self validatePaste:v8];
+      v12 = [(AKController *)self validatePaste:senderCopy];
     }
 
     v9 = v12;
 LABEL_18:
     v10 = 1;
-    if (!a5)
+    if (!handled)
     {
       goto LABEL_11;
     }
@@ -1604,10 +1604,10 @@ LABEL_18:
 
   v9 = 0;
   v10 = 0;
-  if (a5)
+  if (handled)
   {
 LABEL_10:
-    *a5 = v10;
+    *handled = v10;
   }
 
 LABEL_11:
@@ -1617,100 +1617,100 @@ LABEL_11:
 
 - (unint64_t)toolMode
 {
-  v2 = [(AKController *)self toolController];
-  v3 = [v2 toolMode];
+  toolController = [(AKController *)self toolController];
+  toolMode = [toolController toolMode];
 
-  return v3;
+  return toolMode;
 }
 
-- (void)setToolMode:(unint64_t)a3
+- (void)setToolMode:(unint64_t)mode
 {
-  v4 = [(AKController *)self toolController];
-  [v4 setToolMode:a3];
+  toolController = [(AKController *)self toolController];
+  [toolController setToolMode:mode];
 }
 
 - (void)resetToDefaultToolMode
 {
-  v2 = [(AKController *)self toolController];
-  [v2 resetToDefaultMode];
+  toolController = [(AKController *)self toolController];
+  [toolController resetToDefaultMode];
 }
 
 - (void)applyCurrentCrop
 {
   if ([(AKController *)self toolMode]== 6)
   {
-    v3 = [(AKController *)self modelController];
-    v5 = [v3 pageModelControllerForPage:{-[AKController currentPageIndex](self, "currentPageIndex")}];
+    modelController = [(AKController *)self modelController];
+    v5 = [modelController pageModelControllerForPage:{-[AKController currentPageIndex](self, "currentPageIndex")}];
 
-    v4 = [v5 cropAnnotation];
-    [v4 setCropApplied:1];
+    cropAnnotation = [v5 cropAnnotation];
+    [cropAnnotation setCropApplied:1];
     [(AKController *)self resetToDefaultToolMode];
   }
 }
 
 - (void)clearUndoStack
 {
-  v3 = [(AKController *)self undoController];
-  v2 = [v3 undoManager];
-  [v2 removeAllActions];
+  undoController = [(AKController *)self undoController];
+  undoManager = [undoController undoManager];
+  [undoManager removeAllActions];
 }
 
 - (BOOL)supportsImageDescriptionEditing
 {
-  v2 = [(AKController *)self delegate];
-  if (v2 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(AKController *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v3 = [v2 supportsImageDescriptionEditing];
+    supportsImageDescriptionEditing = [delegate supportsImageDescriptionEditing];
   }
 
   else
   {
-    v3 = 0;
+    supportsImageDescriptionEditing = 0;
   }
 
-  return v3;
+  return supportsImageDescriptionEditing;
 }
 
 - (BOOL)supportsFormFill
 {
-  v2 = [(AKController *)self delegate];
-  if (v2 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(AKController *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v3 = [v2 supportsFormFill];
+    supportsFormFill = [delegate supportsFormFill];
   }
 
   else
   {
-    v3 = 0;
+    supportsFormFill = 0;
   }
 
-  return v3;
+  return supportsFormFill;
 }
 
 - (id)singleSelectedAnnotation
 {
-  v2 = [(AKController *)self modelController];
-  v3 = [v2 allSelectedAnnotations];
+  modelController = [(AKController *)self modelController];
+  allSelectedAnnotations = [modelController allSelectedAnnotations];
 
-  if ([v3 count] == 1)
+  if ([allSelectedAnnotations count] == 1)
   {
-    v4 = [v3 firstObject];
+    firstObject = [allSelectedAnnotations firstObject];
   }
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
-  return v4;
+  return firstObject;
 }
 
 - (BOOL)hasSelectionWithEditableFillColor
 {
-  v2 = [(AKController *)self singleSelectedAnnotation];
-  if ([v2 conformsToProtocol:&unk_2851D6420])
+  singleSelectedAnnotation = [(AKController *)self singleSelectedAnnotation];
+  if ([singleSelectedAnnotation conformsToProtocol:&unk_2851D6420])
   {
-    v3 = [v2 fillColorForOptions:0];
+    v3 = [singleSelectedAnnotation fillColorForOptions:0];
     v4 = v3 != 0;
   }
 
@@ -1724,10 +1724,10 @@ LABEL_11:
 
 - (BOOL)hasSelectionWithEditableStrokeColor
 {
-  v2 = [(AKController *)self singleSelectedAnnotation];
-  if ([v2 conformsToProtocol:&unk_2851D6300])
+  singleSelectedAnnotation = [(AKController *)self singleSelectedAnnotation];
+  if ([singleSelectedAnnotation conformsToProtocol:&unk_2851D6300])
   {
-    v3 = [v2 strokeColorForOptions:0];
+    v3 = [singleSelectedAnnotation strokeColorForOptions:0];
     v4 = v3 != 0;
   }
 
@@ -1741,10 +1741,10 @@ LABEL_11:
 
 - (BOOL)hasSelectionWithEditableTextColor
 {
-  v2 = [(AKController *)self singleSelectedAnnotation];
-  if ([v2 conformsToProtocol:&unk_2851D6B08])
+  singleSelectedAnnotation = [(AKController *)self singleSelectedAnnotation];
+  if ([singleSelectedAnnotation conformsToProtocol:&unk_2851D6B08])
   {
-    v3 = [v2 foregroundColorForOptions:0];
+    v3 = [singleSelectedAnnotation foregroundColorForOptions:0];
     v4 = v3 != 0;
   }
 
@@ -1758,56 +1758,56 @@ LABEL_11:
 
 - (id)originalOrModifiedImageDescription
 {
-  v3 = [(AKController *)self modifiedImageDescription];
-  if (!v3)
+  modifiedImageDescription = [(AKController *)self modifiedImageDescription];
+  if (!modifiedImageDescription)
   {
-    v4 = [(AKController *)self delegate];
+    delegate = [(AKController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v3 = [v4 originalImageDescription];
+      modifiedImageDescription = [delegate originalImageDescription];
     }
 
     else
     {
-      v3 = 0;
+      modifiedImageDescription = 0;
     }
   }
 
-  return v3;
+  return modifiedImageDescription;
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"modifiedImageDescription"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"modifiedImageDescription"])
   {
     v5 = 0;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___AKController;
-    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, keyCopy);
   }
 
   return v5;
 }
 
-- (void)setModifiedImageDescription:(id)a3
+- (void)setModifiedImageDescription:(id)description
 {
-  v8 = a3;
-  if (self->_modifiedImageDescription != v8)
+  descriptionCopy = description;
+  if (self->_modifiedImageDescription != descriptionCopy)
   {
-    v5 = [(AKController *)self originalOrModifiedImageDescription];
-    if ((v5 || -[NSString length](v8, "length")) && ([v5 isEqualToString:v8] & 1) == 0)
+    originalOrModifiedImageDescription = [(AKController *)self originalOrModifiedImageDescription];
+    if ((originalOrModifiedImageDescription || -[NSString length](descriptionCopy, "length")) && ([originalOrModifiedImageDescription isEqualToString:descriptionCopy] & 1) == 0)
     {
-      v6 = [(AKController *)self undoController];
-      v7 = [v6 undoManager];
-      [v7 registerUndoWithTarget:self selector:sel_setModifiedImageDescription_ object:self->_modifiedImageDescription];
+      undoController = [(AKController *)self undoController];
+      undoManager = [undoController undoManager];
+      [undoManager registerUndoWithTarget:self selector:sel_setModifiedImageDescription_ object:self->_modifiedImageDescription];
 
       [(AKController *)self willChangeValueForKey:@"modifiedImageDescription"];
-      objc_storeStrong(&self->_modifiedImageDescription, a3);
+      objc_storeStrong(&self->_modifiedImageDescription, description);
       [(AKController *)self didChangeValueForKey:@"modifiedImageDescription"];
     }
   }
@@ -1823,8 +1823,8 @@ LABEL_11:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(AKController *)self pageControllers];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  pageControllers = [(AKController *)self pageControllers];
+  v5 = [pageControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1836,162 +1836,162 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(pageControllers);
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
-        v10 = [(AKController *)self undoController];
-        v11 = [v9 pageModelController];
-        [v10 startObservingPageModelController:v11];
+        undoController = [(AKController *)self undoController];
+        pageModelController = [v9 pageModelController];
+        [undoController startObservingPageModelController:pageModelController];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [pageControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)undo:(id)a3
+- (void)undo:(id)undo
 {
   if ([(AKController *)self validateUndo:0])
   {
-    v4 = [(AKController *)self textEditorController];
-    [v4 endEditing];
+    textEditorController = [(AKController *)self textEditorController];
+    [textEditorController endEditing];
 
-    v6 = [(AKController *)self undoController];
-    v5 = [v6 undoManager];
-    [v5 undo];
+    undoController = [(AKController *)self undoController];
+    undoManager = [undoController undoManager];
+    [undoManager undo];
   }
 }
 
-- (BOOL)validateUndo:(id)a3
+- (BOOL)validateUndo:(id)undo
 {
-  v3 = [(AKController *)self undoController];
-  v4 = [v3 undoManager];
+  undoController = [(AKController *)self undoController];
+  undoManager = [undoController undoManager];
 
-  LOBYTE(v3) = [v4 canUndo];
-  return v3;
+  LOBYTE(undoController) = [undoManager canUndo];
+  return undoController;
 }
 
-- (void)redo:(id)a3
+- (void)redo:(id)redo
 {
   if ([(AKController *)self validateRedo:0])
   {
-    v5 = [(AKController *)self undoController];
-    v4 = [v5 undoManager];
-    [v4 redo];
+    undoController = [(AKController *)self undoController];
+    undoManager = [undoController undoManager];
+    [undoManager redo];
   }
 }
 
-- (BOOL)validateRedo:(id)a3
+- (BOOL)validateRedo:(id)redo
 {
-  v3 = [(AKController *)self undoController];
-  v4 = [v3 undoManager];
+  undoController = [(AKController *)self undoController];
+  undoManager = [undoController undoManager];
 
-  LOBYTE(v3) = [v4 canRedo];
-  return v3;
+  LOBYTE(undoController) = [undoManager canRedo];
+  return undoController;
 }
 
-- (void)cut:(id)a3
+- (void)cut:(id)cut
 {
-  v8 = a3;
+  cutCopy = cut;
   if ([(AKController *)self validateCut:0])
   {
-    [(AKController *)self copy:v8];
+    [(AKController *)self copy:cutCopy];
     [(AKController *)self setPasteCascadingMultiplier:0];
-    [(AKController *)self delete:v8];
-    v4 = [(AKController *)self undoController];
-    v5 = [v4 undoManager];
+    [(AKController *)self delete:cutCopy];
+    undoController = [(AKController *)self undoController];
+    undoManager = [undoController undoManager];
     v6 = +[AKController akBundle];
     v7 = [v6 localizedStringForKey:@"Cut" value:&stru_28519E870 table:@"AKController"];
-    [v5 setActionName:v7];
+    [undoManager setActionName:v7];
   }
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
   if ([(AKController *)self validateCopy:0])
   {
-    v4 = [(AKController *)self modelController];
-    v6 = [v4 allSelectedAnnotations];
+    modelController = [(AKController *)self modelController];
+    allSelectedAnnotations = [modelController allSelectedAnnotations];
 
-    if ([v6 count])
+    if ([allSelectedAnnotations count])
     {
-      v5 = [MEMORY[0x277D75810] generalPasteboard];
-      [v5 akClearContents];
-      [v5 akPasteboardSetAnnotations:v6];
-      -[AKController setLastPasteboardChangeCount:](self, "setLastPasteboardChangeCount:", [v5 changeCount]);
+      generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+      [generalPasteboard akClearContents];
+      [generalPasteboard akPasteboardSetAnnotations:allSelectedAnnotations];
+      -[AKController setLastPasteboardChangeCount:](self, "setLastPasteboardChangeCount:", [generalPasteboard changeCount]);
       [(AKController *)self setPasteCascadingMultiplier:1];
     }
   }
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
   if ([(AKController *)self validatePaste:0])
   {
-    v20 = [MEMORY[0x277D75810] generalPasteboard];
-    v4 = [v20 akPasteboardAnnotations];
-    if ([v4 count])
+    generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+    akPasteboardAnnotations = [generalPasteboard akPasteboardAnnotations];
+    if ([akPasteboardAnnotations count])
     {
-      v5 = [v20 changeCount];
-      if ([(AKController *)self lastPasteboardChangeCount]!= v5)
+      changeCount = [generalPasteboard changeCount];
+      if ([(AKController *)self lastPasteboardChangeCount]!= changeCount)
       {
-        [(AKController *)self setLastPasteboardChangeCount:v5];
+        [(AKController *)self setLastPasteboardChangeCount:changeCount];
         [(AKController *)self setPasteCascadingMultiplier:0];
       }
 
-      v6 = [(AKController *)self currentPageController];
-      v7 = [v6 pageModelController];
-      v8 = [v7 hasMaskBorderAnnotation];
+      currentPageController = [(AKController *)self currentPageController];
+      pageModelController = [currentPageController pageModelController];
+      hasMaskBorderAnnotation = [pageModelController hasMaskBorderAnnotation];
 
-      if (v8)
+      if (hasMaskBorderAnnotation)
       {
-        v9 = [v4 indexesOfObjectsPassingTest:&unk_28519E670];
-        v10 = [v4 objectsAtIndexes:v9];
+        v9 = [akPasteboardAnnotations indexesOfObjectsPassingTest:&unk_28519E670];
+        v10 = [akPasteboardAnnotations objectsAtIndexes:v9];
 
-        v4 = v10;
+        akPasteboardAnnotations = v10;
       }
 
-      if ([v4 count])
+      if ([akPasteboardAnnotations count])
       {
-        [AKToolController cascadeAnnotations:v4 onPageController:v6 forPaste:1];
-        v11 = [v6 pageModelController];
-        v12 = [v11 mutableArrayValueForKey:@"annotations"];
-        [v12 addObjectsFromArray:v4];
+        [AKToolController cascadeAnnotations:akPasteboardAnnotations onPageController:currentPageController forPaste:1];
+        pageModelController2 = [currentPageController pageModelController];
+        v12 = [pageModelController2 mutableArrayValueForKey:@"annotations"];
+        [v12 addObjectsFromArray:akPasteboardAnnotations];
 
-        v13 = [v6 pageModelController];
-        v14 = [v13 mutableSetValueForKey:@"selectedAnnotations"];
-        v15 = [MEMORY[0x277CBEB98] setWithArray:v4];
+        pageModelController3 = [currentPageController pageModelController];
+        v14 = [pageModelController3 mutableSetValueForKey:@"selectedAnnotations"];
+        v15 = [MEMORY[0x277CBEB98] setWithArray:akPasteboardAnnotations];
         [v14 setSet:v15];
 
-        v16 = [(AKController *)self undoController];
-        v17 = [v16 undoManager];
+        undoController = [(AKController *)self undoController];
+        undoManager = [undoController undoManager];
         v18 = +[AKController akBundle];
         v19 = [v18 localizedStringForKey:@"Paste" value:&stru_28519E870 table:@"AKController"];
-        [v17 setActionName:v19];
+        [undoManager setActionName:v19];
       }
     }
   }
 }
 
-- (BOOL)validatePaste:(id)a3
+- (BOOL)validatePaste:(id)paste
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D75810] generalPasteboard];
-  if ([v5 akPasteboardContainsAnnotations])
+  pasteCopy = paste;
+  generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+  if ([generalPasteboard akPasteboardContainsAnnotations])
   {
-    v6 = [(AKController *)self currentPageController];
-    v7 = [v6 pageModelController];
-    v8 = [v7 hasMaskBorderAnnotation];
+    currentPageController = [(AKController *)self currentPageController];
+    pageModelController = [currentPageController pageModelController];
+    hasMaskBorderAnnotation = [pageModelController hasMaskBorderAnnotation];
 
-    if (v8)
+    if (hasMaskBorderAnnotation)
     {
-      v9 = [v5 akPasteboardAnnotations];
+      akPasteboardAnnotations = [generalPasteboard akPasteboardAnnotations];
       v13 = 0;
       v14 = &v13;
       v15 = 0x2020000000;
@@ -2001,7 +2001,7 @@ LABEL_11:
       v12[2] = sub_23F44A76C;
       v12[3] = &unk_278C7BCC0;
       v12[4] = &v13;
-      [v9 enumerateObjectsUsingBlock:v12];
+      [akPasteboardAnnotations enumerateObjectsUsingBlock:v12];
       v10 = *(v14 + 24);
       _Block_object_dispose(&v13, 8);
     }
@@ -2020,22 +2020,22 @@ LABEL_11:
   return v10 & 1;
 }
 
-- (void)delete:(id)a3
+- (void)delete:(id)delete
 {
   if ([(AKController *)self validateDelete:0])
   {
-    v4 = [(AKController *)self modelController];
-    [v4 deleteAllSelectedAnnotations];
+    modelController = [(AKController *)self modelController];
+    [modelController deleteAllSelectedAnnotations];
 
-    v8 = [(AKController *)self undoController];
-    v5 = [v8 undoManager];
+    undoController = [(AKController *)self undoController];
+    undoManager = [undoController undoManager];
     v6 = +[AKController akBundle];
     v7 = [v6 localizedStringForKey:@"Delete" value:&stru_28519E870 table:@"AKController"];
-    [v5 setActionName:v7];
+    [undoManager setActionName:v7];
   }
 }
 
-- (BOOL)validateDelete:(id)a3
+- (BOOL)validateDelete:(id)delete
 {
   v17 = *MEMORY[0x277D85DE8];
   if (![(AKController *)self _validateCutCopyDelete])
@@ -2043,29 +2043,29 @@ LABEL_11:
     return 0;
   }
 
-  v4 = [(AKController *)self textEditorController];
-  v5 = [v4 isEditing];
+  textEditorController = [(AKController *)self textEditorController];
+  isEditing = [textEditorController isEditing];
 
-  if (!v5)
+  if (!isEditing)
   {
     return 1;
   }
 
-  v6 = [(AKController *)self modelController];
-  v7 = [v6 allSelectedAnnotations];
+  modelController = [(AKController *)self modelController];
+  allSelectedAnnotations = [modelController allSelectedAnnotations];
 
-  v8 = [v7 indexesOfObjectsPassingTest:&unk_28519E690];
-  v9 = [v7 objectsAtIndexes:v8];
+  v8 = [allSelectedAnnotations indexesOfObjectsPassingTest:&unk_28519E690];
+  v9 = [allSelectedAnnotations objectsAtIndexes:v8];
 
   memset(v15, 0, sizeof(v15));
   if ([v9 countByEnumeratingWithState:v15 objects:v16 count:16])
   {
     v10 = **(&v15[0] + 1);
-    v11 = [(AKController *)self textEditorController];
-    v12 = [v11 annotation];
+    textEditorController2 = [(AKController *)self textEditorController];
+    annotation = [textEditorController2 annotation];
 
-    LOBYTE(v11) = [v12 isEqual:v10];
-    v13 = v11 ^ 1;
+    LOBYTE(textEditorController2) = [annotation isEqual:v10];
+    v13 = textEditorController2 ^ 1;
   }
 
   else
@@ -2076,16 +2076,16 @@ LABEL_11:
   return v13;
 }
 
-- (void)duplicate:(id)a3
+- (void)duplicate:(id)duplicate
 {
   v33 = *MEMORY[0x277D85DE8];
-  if ([(AKController *)self validateDuplicate:a3])
+  if ([(AKController *)self validateDuplicate:duplicate])
   {
-    v4 = [(AKController *)self modelController];
-    v5 = [v4 allSelectedAnnotations];
+    modelController = [(AKController *)self modelController];
+    allSelectedAnnotations = [modelController allSelectedAnnotations];
 
-    v6 = [v5 indexesOfObjectsPassingTest:&unk_28519E6B0];
-    v7 = [v5 objectsAtIndexes:v6];
+    v6 = [allSelectedAnnotations indexesOfObjectsPassingTest:&unk_28519E6B0];
+    v7 = [allSelectedAnnotations objectsAtIndexes:v6];
 
     if ([v7 count])
     {
@@ -2125,48 +2125,48 @@ LABEL_11:
         while (v11);
       }
 
-      v16 = [(AKController *)self currentPageController];
-      v17 = [(AKController *)self lastCreationCascadingPageController];
-      v18 = [(AKController *)self creationCascadingMultiplier];
-      [(AKController *)self setLastCreationCascadingPageController:v16];
+      currentPageController = [(AKController *)self currentPageController];
+      lastCreationCascadingPageController = [(AKController *)self lastCreationCascadingPageController];
+      creationCascadingMultiplier = [(AKController *)self creationCascadingMultiplier];
+      [(AKController *)self setLastCreationCascadingPageController:currentPageController];
       [(AKController *)self setCreationCascadingMultiplier:1];
-      [AKToolController cascadeAnnotations:v8 onPageController:v16 forPaste:0];
-      [(AKController *)self setLastCreationCascadingPageController:v17];
-      [(AKController *)self setCreationCascadingMultiplier:v18];
-      v19 = [v16 pageModelController];
-      v20 = [v19 mutableArrayValueForKey:@"annotations"];
+      [AKToolController cascadeAnnotations:v8 onPageController:currentPageController forPaste:0];
+      [(AKController *)self setLastCreationCascadingPageController:lastCreationCascadingPageController];
+      [(AKController *)self setCreationCascadingMultiplier:creationCascadingMultiplier];
+      pageModelController = [currentPageController pageModelController];
+      v20 = [pageModelController mutableArrayValueForKey:@"annotations"];
       [v20 addObjectsFromArray:v8];
 
-      v21 = [v16 pageModelController];
-      v22 = [v21 mutableSetValueForKey:@"selectedAnnotations"];
+      pageModelController2 = [currentPageController pageModelController];
+      v22 = [pageModelController2 mutableSetValueForKey:@"selectedAnnotations"];
       v23 = [MEMORY[0x277CBEB98] setWithArray:v8];
       [v22 setSet:v23];
 
-      v24 = [(AKController *)self undoController];
-      v25 = [v24 undoManager];
+      undoController = [(AKController *)self undoController];
+      undoManager = [undoController undoManager];
       v26 = +[AKController akBundle];
       v27 = [v26 localizedStringForKey:@"Duplicate" value:&stru_28519E870 table:@"AKController"];
-      [v25 setActionName:v27];
+      [undoManager setActionName:v27];
     }
   }
 }
 
-- (BOOL)validateDuplicate:(id)a3
+- (BOOL)validateDuplicate:(id)duplicate
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = [(AKController *)self modelController];
-  v5 = [v4 allSelectedAnnotations];
+  modelController = [(AKController *)self modelController];
+  allSelectedAnnotations = [modelController allSelectedAnnotations];
 
-  v6 = [v5 indexesOfObjectsPassingTest:&unk_28519E6D0];
-  v7 = [v5 objectsAtIndexes:v6];
+  v6 = [allSelectedAnnotations indexesOfObjectsPassingTest:&unk_28519E6D0];
+  v7 = [allSelectedAnnotations objectsAtIndexes:v6];
 
-  v8 = [(AKController *)self textEditorController];
-  LODWORD(v6) = [v8 isEditing];
+  textEditorController = [(AKController *)self textEditorController];
+  LODWORD(v6) = [textEditorController isEditing];
 
   if (v6)
   {
-    v9 = [(AKController *)self textEditorController];
-    v10 = [v9 annotation];
+    textEditorController2 = [(AKController *)self textEditorController];
+    annotation = [textEditorController2 annotation];
 
     v21 = 0u;
     v22 = 0u;
@@ -2187,7 +2187,7 @@ LABEL_11:
             objc_enumerationMutation(v11);
           }
 
-          if ([v10 isEqual:{*(*(&v19 + 1) + 8 * i), v19}])
+          if ([annotation isEqual:{*(*(&v19 + 1) + 8 * i), v19}])
           {
             v16 = 0;
             goto LABEL_13;
@@ -2226,37 +2226,37 @@ LABEL_13:
   return v17;
 }
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
-  v4 = [(AKController *)self currentPageController];
-  v3 = [v4 pageModelController];
-  [v3 selectAllAnnotations];
+  currentPageController = [(AKController *)self currentPageController];
+  pageModelController = [currentPageController pageModelController];
+  [pageModelController selectAllAnnotations];
 }
 
-- (BOOL)validateSelectAll:(id)a3
+- (BOOL)validateSelectAll:(id)all
 {
-  v3 = [(AKController *)self currentPageController];
-  v4 = [v3 pageModelController];
+  currentPageController = [(AKController *)self currentPageController];
+  pageModelController = [currentPageController pageModelController];
 
-  v5 = [v4 annotations];
-  v6 = [v5 count];
+  annotations = [pageModelController annotations];
+  v6 = [annotations count];
 
-  v7 = [v4 cropAnnotation];
+  cropAnnotation = [pageModelController cropAnnotation];
 
-  return v6 - (v7 != 0) > 0;
+  return v6 - (cropAnnotation != 0) > 0;
 }
 
-- (void)editTextAnnotation:(id)a3
+- (void)editTextAnnotation:(id)annotation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [(AKController *)self modelController];
-  v5 = [v4 allSelectedAnnotations];
+  modelController = [(AKController *)self modelController];
+  allSelectedAnnotations = [modelController allSelectedAnnotations];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v5;
+  v6 = allSelectedAnnotations;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   v8 = v6;
   if (v7)
@@ -2299,8 +2299,8 @@ LABEL_3:
     }
 
     v13 = [(AKController *)self pageControllerForAnnotation:v8];
-    v14 = [(AKController *)self textEditorController];
-    [v14 beginEditingAnnotation:v8 withPageController:v13 selectAllText:0];
+    textEditorController = [(AKController *)self textEditorController];
+    [textEditorController beginEditingAnnotation:v8 withPageController:v13 selectAllText:0];
   }
 
 LABEL_12:
@@ -2308,15 +2308,15 @@ LABEL_12:
 LABEL_13:
 }
 
-- (BOOL)validateEditTextAnnotation:(id)a3
+- (BOOL)validateEditTextAnnotation:(id)annotation
 {
-  v4 = [(AKController *)self modelController];
-  v5 = [v4 allSelectedAnnotations];
+  modelController = [(AKController *)self modelController];
+  allSelectedAnnotations = [modelController allSelectedAnnotations];
 
-  if ([v5 count] == 1)
+  if ([allSelectedAnnotations count] == 1)
   {
-    v6 = [v5 firstObject];
-    v7 = [(AKController *)self canBeginEditingTextAnnotation:v6];
+    firstObject = [allSelectedAnnotations firstObject];
+    v7 = [(AKController *)self canBeginEditingTextAnnotation:firstObject];
   }
 
   else
@@ -2327,16 +2327,16 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)canBeginEditingTextAnnotation:(id)a3
+- (BOOL)canBeginEditingTextAnnotation:(id)annotation
 {
-  v4 = a3;
-  if ((-[AKController annotationEditingEnabled](self, "annotationEditingEnabled") || -[AKController formFillingEnabled](self, "formFillingEnabled")) && [v4 conformsToAKTextAnnotationProtocol])
+  annotationCopy = annotation;
+  if ((-[AKController annotationEditingEnabled](self, "annotationEditingEnabled") || -[AKController formFillingEnabled](self, "formFillingEnabled")) && [annotationCopy conformsToAKTextAnnotationProtocol])
   {
-    v5 = v4;
-    v6 = [(AKController *)self textEditorController];
-    v7 = [v6 isEditing];
+    v5 = annotationCopy;
+    textEditorController = [(AKController *)self textEditorController];
+    isEditing = [textEditorController isEditing];
 
-    if (v7)
+    if (isEditing)
     {
       v8 = 0;
     }
@@ -2345,8 +2345,8 @@ LABEL_13:
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      v10 = [v5 annotationText];
-      v11 = [v10 length] != 0;
+      annotationText = [v5 annotationText];
+      v11 = [annotationText length] != 0;
 
       v8 = isKindOfClass | v11;
     }
@@ -2360,40 +2360,40 @@ LABEL_13:
   return v8 & 1;
 }
 
-- (void)setAvailableHeadroom:(double)a3
+- (void)setAvailableHeadroom:(double)headroom
 {
-  if (self->_availableHeadroom != a3)
+  if (self->_availableHeadroom != headroom)
   {
-    v5 = [(AKController *)self toolbarViewController];
-    [v5 revalidateHDRandPropagateChanges:0];
+    toolbarViewController = [(AKController *)self toolbarViewController];
+    [toolbarViewController revalidateHDRandPropagateChanges:0];
 
-    self->_availableHeadroom = a3;
+    self->_availableHeadroom = headroom;
     [(AKController *)self redraw];
-    v6 = [(AKController *)self attributeController];
-    [v6 _syncAttributesFromSelectedAnnotationsToUI];
+    attributeController = [(AKController *)self attributeController];
+    [attributeController _syncAttributesFromSelectedAnnotationsToUI];
   }
 }
 
-- (void)showSelectionMenu:(id)a3
+- (void)showSelectionMenu:(id)menu
 {
   v44[2] = *MEMORY[0x277D85DE8];
-  v4 = [(AKController *)self currentPageController];
-  v5 = [v4 overlayView];
-  [v5 becomeFirstResponder];
+  currentPageController = [(AKController *)self currentPageController];
+  overlayView = [currentPageController overlayView];
+  [overlayView becomeFirstResponder];
 
-  v6 = [v4 pageModelController];
-  v7 = [v6 selectedAnnotations];
+  pageModelController = [currentPageController pageModelController];
+  selectedAnnotations = [pageModelController selectedAnnotations];
 
-  if ([v7 count])
+  if ([selectedAnnotations count])
   {
-    [(AKController *)self _popoverAnchorFrameInModelForAnnotations:v7];
-    [v4 convertRectFromModelToOverlay:?];
+    [(AKController *)self _popoverAnchorFrameInModelForAnnotations:selectedAnnotations];
+    [currentPageController convertRectFromModelToOverlay:?];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    [v4 visibleRectOfOverlay];
-    [v4 convertRectFromModelToOverlay:?];
+    [currentPageController visibleRectOfOverlay];
+    [currentPageController convertRectFromModelToOverlay:?];
     x = v45.origin.x;
     y = v45.origin.y;
     width = v45.size.width;
@@ -2441,8 +2441,8 @@ LABEL_13:
       v24 = v15;
     }
 
-    v28 = [v4 overlayView];
-    v29 = [MEMORY[0x277D75718] sharedMenuController];
+    overlayView2 = [currentPageController overlayView];
+    mEMORY[0x277D75718] = [MEMORY[0x277D75718] sharedMenuController];
     v30 = objc_alloc(MEMORY[0x277D75728]);
     v31 = +[AKController akBundle];
     v32 = [v31 localizedStringForKey:@"STRING_EDIT_BUTTON" value:@"Edit" table:@"AKController"];
@@ -2471,118 +2471,118 @@ LABEL_13:
     }
 
     v42 = [v38 arrayWithObjects:v39 count:v40];
-    [v29 setMenuItems:v42];
+    [mEMORY[0x277D75718] setMenuItems:v42];
 
-    if ([v29 isMenuVisible])
+    if ([mEMORY[0x277D75718] isMenuVisible])
     {
-      [v29 update];
+      [mEMORY[0x277D75718] update];
     }
 
-    else if (([v28 isFirstResponder] & 1) == 0)
+    else if (([overlayView2 isFirstResponder] & 1) == 0)
     {
-      [v28 becomeFirstResponder];
-      [v29 showMenuFromView:v28 rect:{v9, v26, v27, v24}];
-      [v28 resignFirstResponder];
+      [overlayView2 becomeFirstResponder];
+      [mEMORY[0x277D75718] showMenuFromView:overlayView2 rect:{v9, v26, v27, v24}];
+      [overlayView2 resignFirstResponder];
       goto LABEL_19;
     }
 
-    [v29 showMenuFromView:v28 rect:{v9, v26, v27, v24}];
+    [mEMORY[0x277D75718] showMenuFromView:overlayView2 rect:{v9, v26, v27, v24}];
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  v41 = [MEMORY[0x277D75718] sharedMenuController];
-  [v41 hideMenu];
+  mEMORY[0x277D75718]2 = [MEMORY[0x277D75718] sharedMenuController];
+  [mEMORY[0x277D75718]2 hideMenu];
 
 LABEL_20:
 }
 
-- (void)hideSelectionMenu:(id)a3
+- (void)hideSelectionMenu:(id)menu
 {
-  v3 = [MEMORY[0x277D75718] sharedMenuController];
-  [v3 hideMenu];
+  mEMORY[0x277D75718] = [MEMORY[0x277D75718] sharedMenuController];
+  [mEMORY[0x277D75718] hideMenu];
 }
 
 - (void)highlightableSelectionChanged
 {
-  v3 = [(AKController *)self toolController];
-  v4 = [v3 toolMode];
+  toolController = [(AKController *)self toolController];
+  toolMode = [toolController toolMode];
 
-  if (v4 == 3)
+  if (toolMode == 3)
   {
-    v5 = [(AKController *)self highlightAnnotationController];
-    [v5 continueHighlighting];
+    highlightAnnotationController = [(AKController *)self highlightAnnotationController];
+    [highlightAnnotationController continueHighlighting];
   }
 }
 
 - (void)highlightableSelectionWillBeginChanging
 {
-  v3 = [(AKController *)self toolController];
-  v4 = [v3 toolMode];
+  toolController = [(AKController *)self toolController];
+  toolMode = [toolController toolMode];
 
-  if (v4 == 3)
+  if (toolMode == 3)
   {
-    v5 = [(AKController *)self highlightAnnotationController];
-    [v5 beginContinuousHighlighting];
+    highlightAnnotationController = [(AKController *)self highlightAnnotationController];
+    [highlightAnnotationController beginContinuousHighlighting];
   }
 }
 
 - (void)highlightableSelectionDidEndChanging
 {
-  v3 = [(AKController *)self toolController];
-  v4 = [v3 toolMode];
+  toolController = [(AKController *)self toolController];
+  toolMode = [toolController toolMode];
 
-  if (v4 == 3)
+  if (toolMode == 3)
   {
-    v5 = [(AKController *)self highlightAnnotationController];
-    [v5 endContinuousHighlighting];
+    highlightAnnotationController = [(AKController *)self highlightAnnotationController];
+    [highlightAnnotationController endContinuousHighlighting];
   }
 }
 
-- (void)setSelectNewlyCreatedAnnotations:(BOOL)a3
+- (void)setSelectNewlyCreatedAnnotations:(BOOL)annotations
 {
-  v3 = a3;
-  self->_selectNewlyCreatedAnnotations = a3;
-  v4 = [(AKController *)self legacyDoodleController];
-  [v4 setSelectNewlyCreatedAnnotations:v3];
+  annotationsCopy = annotations;
+  self->_selectNewlyCreatedAnnotations = annotations;
+  legacyDoodleController = [(AKController *)self legacyDoodleController];
+  [legacyDoodleController setSelectNewlyCreatedAnnotations:annotationsCopy];
 }
 
-- (void)addPopupToAnnotation:(id)a3 openPopup:(BOOL)a4
+- (void)addPopupToAnnotation:(id)annotation openPopup:(BOOL)popup
 {
-  v4 = a4;
-  v8 = a3;
+  popupCopy = popup;
+  annotationCopy = annotation;
   v6 = [(AKController *)self pageControllerForAnnotation:?];
   v7 = v6;
   if (v6)
   {
-    [v6 addPopupToAnnotation:v8 openPopup:v4];
+    [v6 addPopupToAnnotation:annotationCopy openPopup:popupCopy];
   }
 }
 
-- (void)removeNoteFromAnnotation:(id)a3
+- (void)removeNoteFromAnnotation:(id)annotation
 {
-  v6 = a3;
+  annotationCopy = annotation;
   v4 = [(AKController *)self pageControllerForAnnotation:?];
   v5 = v4;
   if (v4)
   {
-    [v4 removeNoteFromAnnotation:v6];
+    [v4 removeNoteFromAnnotation:annotationCopy];
   }
 }
 
 - (PKToolPicker)toolPicker
 {
-  v2 = [(AKController *)self modernToolbarView];
-  v3 = [v2 toolPicker];
+  modernToolbarView = [(AKController *)self modernToolbarView];
+  toolPicker = [modernToolbarView toolPicker];
 
-  return v3;
+  return toolPicker;
 }
 
-+ (void)performBlockOnMainThread:(id)a3
++ (void)performBlockOnMainThread:(id)thread
 {
   v3 = MEMORY[0x277CCACC8];
-  block = a3;
+  block = thread;
   if ([v3 isMainThread])
   {
     block[2]();
@@ -2596,9 +2596,9 @@ LABEL_20:
 
 - (BOOL)_validateCutCopyDelete
 {
-  v2 = [(AKController *)self modelController];
-  v3 = [v2 allSelectedAnnotations];
-  v4 = [v3 count] != 0;
+  modelController = [(AKController *)self modelController];
+  allSelectedAnnotations = [modelController allSelectedAnnotations];
+  v4 = [allSelectedAnnotations count] != 0;
 
   return v4;
 }
@@ -2607,10 +2607,10 @@ LABEL_20:
 {
   if ([objc_opt_class() canConnectToStylus])
   {
-    v3 = [(AKController *)self peripheralAvailabilityManager];
-    v4 = [v3 currentAvailability];
+    peripheralAvailabilityManager = [(AKController *)self peripheralAvailabilityManager];
+    currentAvailability = [peripheralAvailabilityManager currentAvailability];
 
-    if (v4 == 1)
+    if (currentAvailability == 1)
     {
       return 1;
     }
@@ -2633,36 +2633,36 @@ LABEL_20:
   return v3;
 }
 
-- (void)_toolpicker_setColor:(id)a3
+- (void)_toolpicker_setColor:(id)color
 {
-  v4 = a3;
-  v5 = self;
-  v19 = v4;
-  v6 = [(AKController *)v5 currentPageController];
-  v7 = [v6 pageModelController];
+  colorCopy = color;
+  selfCopy = self;
+  v19 = colorCopy;
+  currentPageController = [(AKController *)selfCopy currentPageController];
+  pageModelController = [currentPageController pageModelController];
 
-  v8 = [v7 selectedAnnotations];
-  v9 = [v8 count];
+  selectedAnnotations = [pageModelController selectedAnnotations];
+  v9 = [selectedAnnotations count];
 
   if (!v9)
   {
-    v13 = [(AKController *)v5 attributeController];
-    v14 = [v13 ink];
+    attributeController = [(AKController *)selfCopy attributeController];
+    v14 = [attributeController ink];
 
     v15 = MEMORY[0x277CD9638];
-    v16 = [(AKMinimalTextColorUserInterfaceItem *)v14 identifier];
+    identifier = [(AKMinimalTextColorUserInterfaceItem *)v14 identifier];
     [(AKMinimalTextColorUserInterfaceItem *)v14 weight];
-    v17 = [v15 inkWithIdentifier:v16 color:v19 weight:?];
+    v17 = [v15 inkWithIdentifier:identifier color:v19 weight:?];
 
     v18 = [(AKMinimalUserInterfaceItem *)[AKMinimalInkChooserUserInterfaceItem alloc] initWithTag:765300];
     [(AKMinimalInkChooserUserInterfaceItem *)v18 setInk:v17];
-    [(AKController *)v5 performActionForSender:v18];
+    [(AKController *)selfCopy performActionForSender:v18];
 
 LABEL_8:
     goto LABEL_10;
   }
 
-  v10 = [AKToolbarUtilities attributeTagForCurrentSelectionState:v5];
+  v10 = [AKToolbarUtilities attributeTagForCurrentSelectionState:selfCopy];
   if (v10 == 765106)
   {
     v11 = [AKMinimalTextColorUserInterfaceItem alloc];
@@ -2677,7 +2677,7 @@ LABEL_8:
 LABEL_7:
     v14 = [(AKMinimalUserInterfaceItem *)v11 initWithTag:v12];
     [(AKMinimalColorChooserUserInterfaceItem *)v14 setColor:v19];
-    [(AKController *)v5 performActionForSender:v14];
+    [(AKController *)selfCopy performActionForSender:v14];
     goto LABEL_8;
   }
 
@@ -2687,55 +2687,55 @@ LABEL_10:
 
 - (id)_toolpicker_color
 {
-  v2 = [(AKController *)self attributeController];
-  v3 = [v2 strokeColor];
+  attributeController = [(AKController *)self attributeController];
+  strokeColor = [attributeController strokeColor];
 
-  return v3;
+  return strokeColor;
 }
 
-- (void)_toolpicker_setInkIdentifier:(id)a3
+- (void)_toolpicker_setInkIdentifier:(id)identifier
 {
-  v14 = self;
-  v4 = a3;
-  v5 = [(AKController *)v14 attributeController];
-  v6 = [v5 ink];
+  selfCopy = self;
+  identifierCopy = identifier;
+  attributeController = [(AKController *)selfCopy attributeController];
+  v6 = [attributeController ink];
 
   v7 = MEMORY[0x277CD9638];
-  v8 = [v6 color];
+  color = [v6 color];
   [v6 weight];
-  v9 = [v7 inkWithIdentifier:v4 color:v8 weight:?];
+  v9 = [v7 inkWithIdentifier:identifierCopy color:color weight:?];
 
   v10 = [(AKMinimalUserInterfaceItem *)[AKMinimalInkChooserUserInterfaceItem alloc] initWithTag:765300];
   [(AKMinimalInkChooserUserInterfaceItem *)v10 setInk:v9];
-  [(AKController *)v14 performActionForSender:v10];
-  v11 = [(AKController *)v14 toolController];
-  v12 = [v11 toolMode];
+  [(AKController *)selfCopy performActionForSender:v10];
+  toolController = [(AKController *)selfCopy toolController];
+  toolMode = [toolController toolMode];
 
-  if (v12 != 4 && [(AKController *)v14 annotationEditingEnabled])
+  if (toolMode != 4 && [(AKController *)selfCopy annotationEditingEnabled])
   {
     v13 = [[AKMinimalUserInterfaceItem alloc] initWithTag:764017];
-    [(AKController *)v14 performActionForSender:v13];
+    [(AKController *)selfCopy performActionForSender:v13];
   }
 }
 
 - (id)_toolpicker_inkIdentifier
 {
-  v2 = [(AKController *)self attributeController];
-  v3 = [v2 ink];
-  v4 = [v3 identifier];
+  attributeController = [(AKController *)self attributeController];
+  v3 = [attributeController ink];
+  identifier = [v3 identifier];
 
-  return v4;
+  return identifier;
 }
 
 - (id)currentPageController
 {
-  v3 = [(AKController *)self pageControllers];
-  v4 = [v3 count];
+  pageControllers = [(AKController *)self pageControllers];
+  v4 = [pageControllers count];
 
   if (v4)
   {
-    v5 = [(AKController *)self pageControllers];
-    v6 = [v5 objectAtIndex:{-[AKController currentPageIndex](self, "currentPageIndex")}];
+    pageControllers2 = [(AKController *)self pageControllers];
+    v6 = [pageControllers2 objectAtIndex:{-[AKController currentPageIndex](self, "currentPageIndex")}];
   }
 
   else
@@ -2746,16 +2746,16 @@ LABEL_10:
   return v6;
 }
 
-- (id)pageControllerForPageModelController:(id)a3
+- (id)pageControllerForPageModelController:(id)controller
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(AKController *)self pageControllers];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  pageControllers = [(AKController *)self pageControllers];
+  v6 = [pageControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -2765,20 +2765,20 @@ LABEL_10:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(pageControllers);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 pageModelController];
+        pageModelController = [v9 pageModelController];
 
-        if (v10 == v4)
+        if (pageModelController == controllerCopy)
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [pageControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -2793,18 +2793,18 @@ LABEL_11:
   return v6;
 }
 
-- (id)pageControllerForAnnotation:(id)a3
+- (id)pageControllerForAnnotation:(id)annotation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  annotationCopy = annotation;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(AKController *)self modelController];
-  v6 = [v5 pageModelControllers];
+  modelController = [(AKController *)self modelController];
+  pageModelControllers = [modelController pageModelControllers];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [pageModelControllers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2815,20 +2815,20 @@ LABEL_11:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(pageModelControllers);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if ([v11 containsAnnotation:v4])
+        if ([v11 containsAnnotation:annotationCopy])
         {
-          v13 = [(AKController *)self pageModelControllersToPageControllers];
-          v12 = [v13 objectForKey:v11];
+          pageModelControllersToPageControllers = [(AKController *)self pageModelControllersToPageControllers];
+          v12 = [pageModelControllersToPageControllers objectForKey:v11];
 
           goto LABEL_11;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [pageModelControllers countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v8)
       {
         continue;
@@ -2844,16 +2844,16 @@ LABEL_11:
   return v12;
 }
 
-- (CGRect)_popoverAnchorFrameInModelForAnnotations:(id)a3
+- (CGRect)_popoverAnchorFrameInModelForAnnotations:(id)annotations
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count] == 1)
+  annotationsCopy = annotations;
+  if ([annotationsCopy count] == 1)
   {
-    v4 = [v3 anyObject];
+    anyObject = [annotationsCopy anyObject];
     if ((objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      [v4 midPoint];
+      [anyObject midPoint];
       v6 = v26 + -5.0;
       MidY = v27 + -5.0;
       v12 = 10.0;
@@ -2862,7 +2862,7 @@ LABEL_11:
 
     else
     {
-      [v4 drawingBounds];
+      [anyObject drawingBounds];
       v6 = v5;
       MidY = v7;
       v10 = v9;
@@ -2880,7 +2880,7 @@ LABEL_11:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v17 = v3;
+    v17 = annotationsCopy;
     v18 = [v17 countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v18)
     {
@@ -2970,35 +2970,35 @@ LABEL_11:
 
 - (BOOL)isPresentingPopover
 {
-  v3 = [(AKController *)self toolbarViewController];
-  v4 = [v3 isPresentingPopover];
+  toolbarViewController = [(AKController *)self toolbarViewController];
+  isPresentingPopover = [toolbarViewController isPresentingPopover];
 
-  if (v4)
+  if (isPresentingPopover)
   {
     return 1;
   }
 
-  v6 = [(AKController *)self modernToolbarView];
-  v7 = [v6 isPresentingPopover];
+  modernToolbarView = [(AKController *)self modernToolbarView];
+  isPresentingPopover2 = [modernToolbarView isPresentingPopover];
 
-  return v7;
+  return isPresentingPopover2;
 }
 
-- (void)setHideAllAdornments:(BOOL)a3
+- (void)setHideAllAdornments:(BOOL)adornments
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (self->_hideAllAdornments != a3)
+  if (self->_hideAllAdornments != adornments)
   {
-    v3 = a3;
-    self->_hideAllAdornments = a3;
+    adornmentsCopy = adornments;
+    self->_hideAllAdornments = adornments;
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:1];
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(AKController *)self pageControllers];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    pageControllers = [(AKController *)self pageControllers];
+    v6 = [pageControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -3009,18 +3009,18 @@ LABEL_11:
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(pageControllers);
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
           if ([v10 relinquishablesAreLoaded])
           {
-            v11 = [v10 layerPresentationManager];
-            [v11 setAdornmentsHidden:v3];
+            layerPresentationManager = [v10 layerPresentationManager];
+            [layerPresentationManager setAdornmentsHidden:adornmentsCopy];
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [pageControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v7);
@@ -3030,41 +3030,41 @@ LABEL_11:
   }
 }
 
-- (void)_pageModelControllerSelectedAnnotationsChangedNotification:(id)a3
+- (void)_pageModelControllerSelectedAnnotationsChangedNotification:(id)notification
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = [a3 object];
-  v5 = [(AKController *)self modelController];
-  v6 = [v5 pageModelControllers];
-  v7 = [v6 containsObject:v4];
+  object = [notification object];
+  modelController = [(AKController *)self modelController];
+  pageModelControllers = [modelController pageModelControllers];
+  v7 = [pageModelControllers containsObject:object];
 
   if (v7)
   {
     v16 = AKSelectionChangedPageModelControllerKey;
-    v17[0] = v4;
+    v17[0] = object;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 postNotificationName:AKSelectionChangedNotification object:self userInfo:v8];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:AKSelectionChangedNotification object:self userInfo:v8];
 
     [(AKController *)self _updateGestureDependencyPriority];
-    v10 = [(AKController *)self modelController];
-    v11 = [v10 allSelectedAnnotations];
+    modelController2 = [(AKController *)self modelController];
+    allSelectedAnnotations = [modelController2 allSelectedAnnotations];
 
-    if ([v11 count])
+    if ([allSelectedAnnotations count])
     {
-      v12 = [(AKController *)self currentPageController];
-      v13 = [v12 overlayView];
+      currentPageController = [(AKController *)self currentPageController];
+      overlayView = [currentPageController overlayView];
 
-      if (v13 && ([v13 isFirstResponder] & 1) == 0)
+      if (overlayView && ([overlayView isFirstResponder] & 1) == 0)
       {
-        v14 = [v13 firstResponder];
+        firstResponder = [overlayView firstResponder];
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) == 0 || ([v14 isDescendantOfView:v13] & 1) == 0)
+        if ((objc_opt_isKindOfClass() & 1) == 0 || ([firstResponder isDescendantOfView:overlayView] & 1) == 0)
         {
-          v15 = [(AKController *)self modernToolbarView];
-          [v15 updateCurrentOverlaysToolPickerVisibility];
+          modernToolbarView = [(AKController *)self modernToolbarView];
+          [modernToolbarView updateCurrentOverlaysToolPickerVisibility];
 
-          [v13 becomeFirstResponder];
+          [overlayView becomeFirstResponder];
         }
       }
     }
@@ -3076,53 +3076,53 @@ LABEL_11:
   }
 }
 
-- (void)strokeAddedNotification:(id)a3
+- (void)strokeAddedNotification:(id)notification
 {
-  v4 = [a3 object];
-  if (v4 == self)
+  object = [notification object];
+  if (object == self)
   {
-    v8 = v4;
+    v8 = object;
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    v7 = [(AKController *)self statisticsLogger];
-    [v7 logInkAnnotationStrokeAdded:v6];
+    statisticsLogger = [(AKController *)self statisticsLogger];
+    [statisticsLogger logInkAnnotationStrokeAdded:v6];
 
-    v4 = v8;
+    object = v8;
   }
 }
 
-- (void)beginLogging:(id)a3 documentType:(id)a4
+- (void)beginLogging:(id)logging documentType:(id)type
 {
-  v11 = a3;
-  v6 = a4;
-  if (!v11 || !v6)
+  loggingCopy = logging;
+  typeCopy = type;
+  if (!loggingCopy || !typeCopy)
   {
     NSLog(&cfstr_WarningMissing.isa);
   }
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel_strokeAddedNotification_ name:off_27E399B30 object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_strokeAddedNotification_ name:off_27E399B30 object:0];
 
-  v8 = [(AKController *)self statisticsLogger];
-  [v8 setClientPrefix:v11];
+  statisticsLogger = [(AKController *)self statisticsLogger];
+  [statisticsLogger setClientPrefix:loggingCopy];
 
-  v9 = [(AKController *)self statisticsLogger];
-  [v9 setDocumentType:v6];
+  statisticsLogger2 = [(AKController *)self statisticsLogger];
+  [statisticsLogger2 setDocumentType:typeCopy];
 
-  v10 = [(AKController *)self statisticsLogger];
-  [v10 resetLogging];
+  statisticsLogger3 = [(AKController *)self statisticsLogger];
+  [statisticsLogger3 resetLogging];
 }
 
 - (void)endLogging
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:off_27E399B30 object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:off_27E399B30 object:0];
 
-  v4 = [(AKController *)self statisticsLogger];
-  [v4 logDocumentSaved];
+  statisticsLogger = [(AKController *)self statisticsLogger];
+  [statisticsLogger logDocumentSaved];
 
-  v5 = [(AKController *)self statisticsLogger];
-  [v5 resetLogging];
+  statisticsLogger2 = [(AKController *)self statisticsLogger];
+  [statisticsLogger2 resetLogging];
 }
 
 - (AKControllerDelegateProtocol)delegate

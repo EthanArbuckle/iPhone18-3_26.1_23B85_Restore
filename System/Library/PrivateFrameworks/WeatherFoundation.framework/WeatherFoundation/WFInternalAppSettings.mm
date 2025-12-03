@@ -14,9 +14,9 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(WFInternalAppSettings *)self apiVersion];
-  v5 = [(WFInternalAppSettings *)self apiVersionFallback];
-  v6 = [v3 stringWithFormat:@"API version = %@, API Fallback version = %@, Network Failed Attempts Limit = %lu, Network Switch Expiration Time In Seconds = %lu, location precision = %ld", v4, v5, -[WFInternalAppSettings networkFailedAttemptsLimit](self, "networkFailedAttemptsLimit"), -[WFInternalAppSettings networkFailedAttemptsLimit](self, "networkFailedAttemptsLimit"), -[WFInternalAppSettings locationNumDecimalsOfPrecision](self, "locationNumDecimalsOfPrecision")];
+  apiVersion = [(WFInternalAppSettings *)self apiVersion];
+  apiVersionFallback = [(WFInternalAppSettings *)self apiVersionFallback];
+  v6 = [v3 stringWithFormat:@"API version = %@, API Fallback version = %@, Network Failed Attempts Limit = %lu, Network Switch Expiration Time In Seconds = %lu, location precision = %ld", apiVersion, apiVersionFallback, -[WFInternalAppSettings networkFailedAttemptsLimit](self, "networkFailedAttemptsLimit"), -[WFInternalAppSettings networkFailedAttemptsLimit](self, "networkFailedAttemptsLimit"), -[WFInternalAppSettings locationNumDecimalsOfPrecision](self, "locationNumDecimalsOfPrecision")];
 
   return v6;
 }
@@ -98,15 +98,15 @@
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 2;
+    integerValue = 2;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (unint64_t)networkSwitchExpirationTimeInSeconds
@@ -116,15 +116,15 @@
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 60;
+    integerValue = 60;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (unint64_t)locationNumDecimalsOfPrecision
@@ -134,15 +134,15 @@
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 3;
+    integerValue = 3;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (WFWeatherEventsConfig)weatherEventsConfig

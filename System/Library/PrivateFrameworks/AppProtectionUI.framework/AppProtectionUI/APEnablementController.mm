@@ -1,38 +1,38 @@
 @interface APEnablementController
-+ (void)oneshotBeginFlowToSetEnablement:(unint64_t)a3 ofFeature:(unint64_t)a4 forSubject:(id)a5 completion:(id)a6;
-- (APEnablementController)initWithSubject:(id)a3 forEnablement:(unint64_t)a4 ofFeature:(unint64_t)a5;
++ (void)oneshotBeginFlowToSetEnablement:(unint64_t)enablement ofFeature:(unint64_t)feature forSubject:(id)subject completion:(id)completion;
+- (APEnablementController)initWithSubject:(id)subject forEnablement:(unint64_t)enablement ofFeature:(unint64_t)feature;
 - (BOOL)_setNoLongerWaitingForService;
 - (NSString)description;
-- (void)_didCompleteWithError:(id)a3;
-- (void)_handleServiceConnectionEvent:(id)a3;
+- (void)_didCompleteWithError:(id)error;
+- (void)_handleServiceConnectionEvent:(id)event;
 - (void)beginFlow;
 - (void)dealloc;
-- (void)registerObserver:(id)a3;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation APEnablementController
 
-- (APEnablementController)initWithSubject:(id)a3 forEnablement:(unint64_t)a4 ofFeature:(unint64_t)a5
+- (APEnablementController)initWithSubject:(id)subject forEnablement:(unint64_t)enablement ofFeature:(unint64_t)feature
 {
-  v9 = a3;
+  subjectCopy = subject;
   v16.receiver = self;
   v16.super_class = APEnablementController;
   v10 = [(APEnablementController *)&v16 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_subject, a3);
-    v12 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    objc_storeStrong(&v10->_subject, subject);
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v11->_observers;
-    v11->_observers = v12;
+    v11->_observers = weakObjectsHashTable;
 
     v11->_lock._os_unfair_lock_opaque = 0;
-    v11->_feature = a5;
-    v11->_action = a4;
+    v11->_feature = feature;
+    v11->_action = enablement;
     alertHandle = v11->_alertHandle;
     v11->_alertHandle = 0;
   }
@@ -47,7 +47,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1AEA18000, v3, OS_LOG_TYPE_DEFAULT, "destroying controller %@", buf, 0xCu);
   }
 
@@ -78,28 +78,28 @@
   return v8;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_didCompleteWithError:(id)a3
+- (void)_didCompleteWithError:(id)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = APUIDefaultFrameworkLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -113,18 +113,18 @@
     v25 = 2048;
     v26 = action;
     v27 = 2112;
-    v28 = v4;
+    v28 = errorCopy;
     _os_log_impl(&dword_1AEA18000, v5, OS_LOG_TYPE_DEFAULT, "enablement controller for %@ feature %lld enablement %lld complete with error %@", buf, 0x2Au);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v9 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   os_unfair_lock_unlock(&self->_lock);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = v9;
+  v10 = allObjects;
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
@@ -140,7 +140,7 @@
           objc_enumerationMutation(v10);
         }
 
-        [*(*(&v16 + 1) + 8 * v14++) enablementController:self didCompleteWithError:{v4, v16}];
+        [*(*(&v16 + 1) + 8 * v14++) enablementController:self didCompleteWithError:{errorCopy, v16}];
       }
 
       while (v12 != v14);
@@ -162,55 +162,55 @@
   return waitingForService;
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  activateCopy = activate;
   v5 = APUIDefaultFrameworkLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
-    v8 = v4;
+    v8 = activateCopy;
     v9 = 2112;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1AEA18000, v5, OS_LOG_TYPE_DEFAULT, "handle %@ activated for %@", &v7, 0x16u);
   }
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deactivateCopy = deactivate;
   v5 = APUIDefaultFrameworkLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
-    v8 = v4;
+    v8 = deactivateCopy;
     v9 = 2112;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1AEA18000, v5, OS_LOG_TYPE_DEFAULT, "handle %@ deactivated for %@", &v7, 0x16u);
   }
 
-  [v4 invalidate];
+  [deactivateCopy invalidate];
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  errorCopy = error;
   v8 = APUIDefaultFrameworkLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v18 = v6;
+    v18 = handleCopy;
     v19 = 2112;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
-    v22 = v7;
+    v22 = errorCopy;
     _os_log_impl(&dword_1AEA18000, v8, OS_LOG_TYPE_DEFAULT, "handle %@ invalidated for %@: %@", buf, 0x20u);
   }
 
@@ -240,22 +240,22 @@
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleServiceConnectionEvent:(id)a3
+- (void)_handleServiceConnectionEvent:(id)event
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v5 = APUIDefaultFrameworkLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = eventCopy;
     _os_log_impl(&dword_1AEA18000, v5, OS_LOG_TYPE_DEFAULT, "handle service connection event: %@", &v10, 0xCu);
   }
 
   if ([(APEnablementController *)self _setNoLongerWaitingForService])
   {
     serviceConnection = self->_serviceConnection;
-    reply = xpc_dictionary_create_reply(v4);
+    reply = xpc_dictionary_create_reply(eventCopy);
     xpc_connection_send_message(serviceConnection, reply);
 
     [(APEnablementController *)self _didCompleteWithError:0];
@@ -274,7 +274,7 @@
 
 - (void)beginFlow
 {
-  OUTLINED_FUNCTION_5(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_5(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_3(&dword_1AEA18000, v1, v2, "bogus enablement action %lld", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x1E69E9840];
@@ -465,13 +465,13 @@ void __35__APEnablementController_beginFlow__block_invoke_2(uint64_t a1, char a2
   v5();
 }
 
-+ (void)oneshotBeginFlowToSetEnablement:(unint64_t)a3 ofFeature:(unint64_t)a4 forSubject:(id)a5 completion:(id)a6
++ (void)oneshotBeginFlowToSetEnablement:(unint64_t)enablement ofFeature:(unint64_t)feature forSubject:(id)subject completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v12 = [[APEnablementController alloc] initWithSubject:v10 forEnablement:a3 ofFeature:a4];
+  completionCopy = completion;
+  subjectCopy = subject;
+  v12 = [[APEnablementController alloc] initWithSubject:subjectCopy forEnablement:enablement ofFeature:feature];
 
-  v11 = [[APOneshotObserverAdapter alloc] initWithController:v12 completionHandler:v9];
+  v11 = [[APOneshotObserverAdapter alloc] initWithController:v12 completionHandler:completionCopy];
   [(APOneshotObserverAdapter *)v11 kickoff];
 }
 

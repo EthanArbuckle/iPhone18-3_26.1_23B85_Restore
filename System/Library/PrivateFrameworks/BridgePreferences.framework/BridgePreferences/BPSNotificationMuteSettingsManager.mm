@@ -1,14 +1,14 @@
 @interface BPSNotificationMuteSettingsManager
 + (id)sharedNotificationMuteSettingsManager;
-- (BOOL)isMutedForTodaySectionIdentifier:(id)a3;
+- (BOOL)isMutedForTodaySectionIdentifier:(id)identifier;
 - (BPSNotificationMuteSettingsManager)init;
 - (id)mutedForTodaySectionIdentifiers;
 - (void)_loadMutedSectionIdentifiers;
 - (void)_queue_sync;
 - (void)_updateObservers;
-- (void)addSectionIdentifiers:(id)a3;
+- (void)addSectionIdentifiers:(id)identifiers;
 - (void)dealloc;
-- (void)removeSectionIdentifiers:(id)a3;
+- (void)removeSectionIdentifiers:(id)identifiers;
 @end
 
 @implementation BPSNotificationMuteSettingsManager
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __75__BPSNotificationMuteSettingsManager_sharedNotificationMuteSettingsManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedNotificationMuteSettingsManager_onceToken != -1)
   {
     dispatch_once(&sharedNotificationMuteSettingsManager_onceToken, block);
@@ -71,8 +71,8 @@ uint64_t __75__BPSNotificationMuteSettingsManager_sharedNotificationMuteSettings
 
 - (void)_updateObservers
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"BPSNotificationMuteSettingsMutedForTodayChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"BPSNotificationMuteSettingsMutedForTodayChangedNotification" object:0];
 }
 
 - (void)_loadMutedSectionIdentifiers
@@ -145,8 +145,8 @@ void __66__BPSNotificationMuteSettingsManager__loadMutedSectionIdentifiers__bloc
   v23 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
   v16 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:@"com.apple.nano"];
-  v3 = [v16 synchronize];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  synchronize = [v16 synchronize];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -169,9 +169,9 @@ void __66__BPSNotificationMuteSettingsManager__loadMutedSectionIdentifiers__bloc
         v9 = *(*(&v18 + 1) + 8 * i);
         v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld-%ld-%ld", objc_msgSend(v9, "day"), objc_msgSend(v9, "month"), objc_msgSend(v9, "year")];
         v11 = [(NSMutableDictionary *)self->_mutedSectionIdentifiersForDay objectForKeyedSubscript:v9];
-        v12 = [v11 allObjects];
+        allObjects = [v11 allObjects];
 
-        [v4 setObject:v12 forKeyedSubscript:v10];
+        [dictionary setObject:allObjects forKeyedSubscript:v10];
       }
 
       v6 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -180,14 +180,14 @@ void __66__BPSNotificationMuteSettingsManager__loadMutedSectionIdentifiers__bloc
     while (v6);
   }
 
-  if (![v4 count])
+  if (![dictionary count])
   {
 
-    v4 = 0;
+    dictionary = 0;
   }
 
-  [v16 setObject:v4 forKey:@"MuteForTodaySectionIdentifiers"];
-  v13 = [v16 synchronize];
+  [v16 setObject:dictionary forKey:@"MuteForTodaySectionIdentifiers"];
+  synchronize2 = [v16 synchronize];
   npsManager = self->_npsManager;
   v15 = [MEMORY[0x277CBEB98] setWithObjects:{@"MuteForTodaySectionIdentifiers", 0}];
   [(NPSManager *)npsManager synchronizeNanoDomain:@"com.apple.nano" keys:v15];
@@ -201,9 +201,9 @@ void __66__BPSNotificationMuteSettingsManager__loadMutedSectionIdentifiers__bloc
   return v4;
 }
 
-- (BOOL)isMutedForTodaySectionIdentifier:(id)a3
+- (BOOL)isMutedForTodaySectionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_not_V2(self->_queue);
   v11 = 0;
   v12 = &v11;
@@ -214,15 +214,15 @@ void __66__BPSNotificationMuteSettingsManager__loadMutedSectionIdentifiers__bloc
   block[1] = 3221225472;
   block[2] = __71__BPSNotificationMuteSettingsManager_isMutedForTodaySectionIdentifier___block_invoke;
   block[3] = &unk_278D23620;
-  v9 = v4;
+  v9 = identifierCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(identifierCopy) = *(v12 + 24);
 
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return identifierCopy;
 }
 
 void __71__BPSNotificationMuteSettingsManager_isMutedForTodaySectionIdentifier___block_invoke(uint64_t a1)
@@ -231,10 +231,10 @@ void __71__BPSNotificationMuteSettingsManager_isMutedForTodaySectionIdentifier__
   *(*(*(a1 + 48) + 8) + 24) = [v2 containsObject:*(a1 + 40)];
 }
 
-- (void)addSectionIdentifiers:(id)a3
+- (void)addSectionIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  if ([v4 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
     v9 = 0;
     v10 = &v9;
@@ -247,7 +247,7 @@ void __71__BPSNotificationMuteSettingsManager_isMutedForTodaySectionIdentifier__
     block[2] = __60__BPSNotificationMuteSettingsManager_addSectionIdentifiers___block_invoke;
     block[3] = &unk_278D23648;
     block[4] = self;
-    v7 = v4;
+    v7 = identifiersCopy;
     v8 = &v9;
     dispatch_sync(queue, block);
     if (*(v10 + 24) == 1)
@@ -286,9 +286,9 @@ void __60__BPSNotificationMuteSettingsManager_addSectionIdentifiers___block_invo
   }
 }
 
-- (void)removeSectionIdentifiers:(id)a3
+- (void)removeSectionIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   dispatch_assert_queue_not_V2(self->_queue);
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -296,8 +296,8 @@ void __60__BPSNotificationMuteSettingsManager_addSectionIdentifiers___block_invo
   v7[2] = __63__BPSNotificationMuteSettingsManager_removeSectionIdentifiers___block_invoke;
   v7[3] = &unk_278D23670;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
   dispatch_sync(queue, v7);
 }
 

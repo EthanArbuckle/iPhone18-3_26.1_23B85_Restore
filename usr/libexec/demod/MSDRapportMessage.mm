@@ -1,25 +1,25 @@
 @interface MSDRapportMessage
-- (MSDRapportMessage)initWithIdentifier:(id)a3 andPayload:(id)a4 usingOptions:(id)a5;
+- (MSDRapportMessage)initWithIdentifier:(id)identifier andPayload:(id)payload usingOptions:(id)options;
 - (id)description;
 - (unint64_t)extractProtocolVersion;
 @end
 
 @implementation MSDRapportMessage
 
-- (MSDRapportMessage)initWithIdentifier:(id)a3 andPayload:(id)a4 usingOptions:(id)a5
+- (MSDRapportMessage)initWithIdentifier:(id)identifier andPayload:(id)payload usingOptions:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  payloadCopy = payload;
+  optionsCopy = options;
   v14.receiver = self;
   v14.super_class = MSDRapportMessage;
   v11 = [(MSDRapportMessage *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(MSDRapportMessage *)v11 setIdentifier:v8];
-    [(MSDRapportMessage *)v12 setPayload:v9];
-    [(MSDRapportMessage *)v12 setOptions:v10];
+    [(MSDRapportMessage *)v11 setIdentifier:identifierCopy];
+    [(MSDRapportMessage *)v12 setPayload:payloadCopy];
+    [(MSDRapportMessage *)v12 setOptions:optionsCopy];
   }
 
   return v12;
@@ -27,33 +27,33 @@
 
 - (unint64_t)extractProtocolVersion
 {
-  v3 = [(MSDRapportMessage *)self payload];
+  payload = [(MSDRapportMessage *)self payload];
 
-  if (v3)
+  if (payload)
   {
-    v4 = [(MSDRapportMessage *)self payload];
-    v5 = [v4 objectForKey:@"ProtocolVersion"];
+    payload2 = [(MSDRapportMessage *)self payload];
+    v5 = [payload2 objectForKey:@"ProtocolVersion"];
 
     if (v5)
     {
-      v3 = [v5 unsignedIntegerValue];
+      payload = [v5 unsignedIntegerValue];
     }
 
     else
     {
-      v3 = 1;
+      payload = 1;
     }
   }
 
-  return v3;
+  return payload;
 }
 
 - (id)description
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(MSDRapportMessage *)self identifier];
-  v6 = [NSString stringWithFormat:@"<%@[%p]: Identifier=%@>", v4, self, v5];
+  identifier = [(MSDRapportMessage *)self identifier];
+  v6 = [NSString stringWithFormat:@"<%@[%p]: Identifier=%@>", v4, self, identifier];
 
   return v6;
 }

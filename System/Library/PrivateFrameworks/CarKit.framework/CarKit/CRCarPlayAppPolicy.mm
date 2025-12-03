@@ -1,6 +1,6 @@
 @interface CRCarPlayAppPolicy
 - (CRCarPlayAppPolicy)init;
-- (unint64_t)bannerLaunchTypeForNotificationContentType:(id)a3;
+- (unint64_t)bannerLaunchTypeForNotificationContentType:(id)type;
 @end
 
 @implementation CRCarPlayAppPolicy
@@ -31,17 +31,17 @@
   return v3;
 }
 
-- (unint64_t)bannerLaunchTypeForNotificationContentType:(id)a3
+- (unint64_t)bannerLaunchTypeForNotificationContentType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E6983460]])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:*MEMORY[0x1E6983460]])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:*MEMORY[0x1E6983470]];
+    v4 = [typeCopy isEqualToString:*MEMORY[0x1E6983470]];
   }
 
   return v4;

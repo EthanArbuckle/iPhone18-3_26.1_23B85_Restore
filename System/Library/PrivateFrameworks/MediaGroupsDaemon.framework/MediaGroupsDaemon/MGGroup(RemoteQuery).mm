@@ -10,31 +10,31 @@
 - (void)rq_setSourcedRemotely:()RemoteQuery
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:?];
-  objc_setAssociatedObject(a1, sel_rq_sourcedRemotely, v2, 1);
+  objc_setAssociatedObject(self, sel_rq_sourcedRemotely, v2, 1);
 }
 
 - (uint64_t)rq_sourcedRemotely
 {
-  v1 = objc_getAssociatedObject(a1, sel_rq_sourcedRemotely);
-  v2 = [v1 BOOLValue];
+  v1 = objc_getAssociatedObject(self, sel_rq_sourcedRemotely);
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 + (id)rq_predicateForRestrictedTypes
 {
   v10[5] = *MEMORY[0x277D85DE8];
   v0 = MEMORY[0x277CCAC30];
-  v1 = [MEMORY[0x277D274A8] type];
-  v10[0] = v1;
-  v2 = [MEMORY[0x277D27498] type];
-  v10[1] = v2;
-  v3 = [MEMORY[0x277D27480] type];
-  v10[2] = v3;
-  v4 = [MEMORY[0x277D27438] type];
-  v10[3] = v4;
-  v5 = [MEMORY[0x277D274B8] type];
-  v10[4] = v5;
+  type = [MEMORY[0x277D274A8] type];
+  v10[0] = type;
+  type2 = [MEMORY[0x277D27498] type];
+  v10[1] = type2;
+  type3 = [MEMORY[0x277D27480] type];
+  v10[2] = type3;
+  type4 = [MEMORY[0x277D27438] type];
+  v10[3] = type4;
+  type5 = [MEMORY[0x277D274B8] type];
+  v10[4] = type5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:5];
   v7 = [v0 predicateWithFormat:@"SELF.type IN %@", v6];
 

@@ -1,24 +1,24 @@
 @interface QuickLookContentEditorBannerConfiguration
-+ (id)configurationWithImage:(id)a3 title:(id)a4 subtitle:(id)a5 primaryAction:(id)a6 dismissAction:(id)a7;
++ (id)configurationWithImage:(id)image title:(id)title subtitle:(id)subtitle primaryAction:(id)action dismissAction:(id)dismissAction;
 @end
 
 @implementation QuickLookContentEditorBannerConfiguration
 
-+ (id)configurationWithImage:(id)a3 title:(id)a4 subtitle:(id)a5 primaryAction:(id)a6 dismissAction:(id)a7
++ (id)configurationWithImage:(id)image title:(id)title subtitle:(id)subtitle primaryAction:(id)action dismissAction:(id)dismissAction
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  dismissActionCopy = dismissAction;
+  actionCopy = action;
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  imageCopy = image;
   v16 = objc_opt_new();
-  [v16 setImage:v15];
+  [v16 setImage:imageCopy];
 
-  [v16 setTitle:v14];
-  [v16 setSubtitle:v13];
+  [v16 setTitle:titleCopy];
+  [v16 setSubtitle:subtitleCopy];
 
-  [v16 setPrimaryAction:v12];
-  [v16 setDismissAction:v11];
+  [v16 setPrimaryAction:actionCopy];
+  [v16 setDismissAction:dismissActionCopy];
 
   return v16;
 }

@@ -7,7 +7,7 @@
 - (void)_setAccessibilityAttributedLocalizedString:()AXAttributedStringAdditions
 {
   v4 = a3;
-  if (v4 == a1)
+  if (v4 == self)
   {
     v5 = AXRuntimeLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -19,7 +19,7 @@
   }
 
   v6 = v4;
-  objc_setAssociatedObject(a1, &AXAttributedLocalizedString, v4, 0x301);
+  objc_setAssociatedObject(self, &AXAttributedLocalizedString, v4, 0x301);
 }
 
 @end

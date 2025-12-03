@@ -1,18 +1,18 @@
 @interface ATXAppSessionModeLoggingHelper
-- (BOOL)shouldCoalesceLaunch:(id)a3 nextLaunch:(id)a4;
-- (id)appLaunchesSinceDate:(id)a3;
-- (id)coalesceAppLaunches:(id)a3;
-- (id)stripStoreEvent:(id)a3;
+- (BOOL)shouldCoalesceLaunch:(id)launch nextLaunch:(id)nextLaunch;
+- (id)appLaunchesSinceDate:(id)date;
+- (id)coalesceAppLaunches:(id)launches;
+- (id)stripStoreEvent:(id)event;
 @end
 
 @implementation ATXAppSessionModeLoggingHelper
 
-- (id)appLaunchesSinceDate:(id)a3
+- (id)appLaunchesSinceDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_opt_new();
   v6 = [MEMORY[0x277CBEAA8] now];
-  if (v4 && [v4 compare:v6] == -1)
+  if (dateCopy && [dateCopy compare:v6] == -1)
   {
     v7 = objc_alloc_init(MEMORY[0x277CEBBE0]);
     v14[0] = MEMORY[0x277D85DD0];
@@ -20,7 +20,7 @@
     v14[2] = __55__ATXAppSessionModeLoggingHelper_appLaunchesSinceDate___block_invoke;
     v14[3] = &unk_278596DC8;
     v15 = v5;
-    [v7 enumerateAppLaunchSessionsBetweenStartDate:v4 endDate:v6 shouldReverse:0 bundleIDFilter:0 block:v14];
+    [v7 enumerateAppLaunchSessionsBetweenStartDate:dateCopy endDate:v6 shouldReverse:0 bundleIDFilter:0 block:v14];
   }
 
   v8 = [(ATXAppSessionModeLoggingHelper *)self coalesceAppLaunches:v5];
@@ -33,21 +33,21 @@
 
   v11 = v10;
 
-  v12 = [v11 bpsPublisher];
+  bpsPublisher = [v11 bpsPublisher];
 
-  return v12;
+  return bpsPublisher;
 }
 
-- (id)coalesceAppLaunches:(id)a3
+- (id)coalesceAppLaunches:(id)launches
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  launchesCopy = launches;
   v23 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = v4;
+  v5 = launchesCopy;
   v6 = [v5 countByEnumeratingWithState:&v28 objects:v32 count:16];
   obj = v5;
   if (!v6)
@@ -77,14 +77,14 @@
         if ([(ATXAppSessionModeLoggingHelper *)self shouldCoalesceLaunch:v5 nextLaunch:v10])
         {
           v26 = objc_alloc(MEMORY[0x277CEBBD8]);
-          v12 = [v5 bundleID];
-          v13 = [v5 parentBundleID];
-          v14 = [v5 extensionHostID];
-          v15 = [v5 appSessionStartTime];
-          v16 = [v10 appSessionEndTime];
+          bundleID = [v5 bundleID];
+          parentBundleID = [v5 parentBundleID];
+          extensionHostID = [v5 extensionHostID];
+          appSessionStartTime = [v5 appSessionStartTime];
+          appSessionEndTime = [v10 appSessionEndTime];
           [v5 launchReason];
           v18 = v17 = self;
-          v27 = [v26 initWithBundleId:v12 type:1 parentBundleID:v13 extensionHostID:v14 appSessionStartTime:v15 appSessionEndTime:v16 launchReason:v18];
+          v27 = [v26 initWithBundleId:bundleID type:1 parentBundleID:parentBundleID extensionHostID:extensionHostID appSessionStartTime:appSessionStartTime appSessionEndTime:appSessionEndTime launchReason:v18];
 
           self = v17;
           v7 = v24;
@@ -128,19 +128,19 @@ LABEL_15:
   return v23;
 }
 
-- (BOOL)shouldCoalesceLaunch:(id)a3 nextLaunch:(id)a4
+- (BOOL)shouldCoalesceLaunch:(id)launch nextLaunch:(id)nextLaunch
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 bundleID];
-  v8 = [v5 bundleID];
-  v9 = [v7 isEqualToString:v8];
+  nextLaunchCopy = nextLaunch;
+  launchCopy = launch;
+  bundleID = [launchCopy bundleID];
+  bundleID2 = [nextLaunchCopy bundleID];
+  v9 = [bundleID isEqualToString:bundleID2];
 
-  v10 = [v5 appSessionStartTime];
+  appSessionStartTime = [nextLaunchCopy appSessionStartTime];
 
-  v11 = [v6 appSessionEndTime];
+  appSessionEndTime = [launchCopy appSessionEndTime];
 
-  [v10 timeIntervalSinceDate:v11];
+  [appSessionStartTime timeIntervalSinceDate:appSessionEndTime];
   if (v12 < 10.0)
   {
     v13 = v9;
@@ -154,9 +154,9 @@ LABEL_15:
   return v13;
 }
 
-- (id)stripStoreEvent:(id)a3
+- (id)stripStoreEvent:(id)event
 {
-  v3 = [a3 filterWithIsIncluded:&__block_literal_global_247];
+  v3 = [event filterWithIsIncluded:&__block_literal_global_247];
   v4 = [v3 mapWithTransform:&__block_literal_global_23_9];
 
   return v4;

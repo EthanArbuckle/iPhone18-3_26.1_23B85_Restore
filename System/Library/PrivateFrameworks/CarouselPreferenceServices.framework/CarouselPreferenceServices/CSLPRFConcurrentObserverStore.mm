@@ -1,19 +1,19 @@
 @interface CSLPRFConcurrentObserverStore
-- (CSLPRFConcurrentObserverStore)initWithServiceName:(id)a3;
+- (CSLPRFConcurrentObserverStore)initWithServiceName:(id)name;
 - (unint64_t)count;
-- (void)_withLock:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)enumerateObserversWithBlock:(id)a3;
-- (void)performSelectorOnMainThreadWithRespondingObservers:(SEL)a3 object:(id)a4 waitUntilDone:(BOOL)a5;
-- (void)removeObserver:(id)a3;
+- (void)_withLock:(id)lock;
+- (void)addObserver:(id)observer;
+- (void)enumerateObserversWithBlock:(id)block;
+- (void)performSelectorOnMainThreadWithRespondingObservers:(SEL)observers object:(id)object waitUntilDone:(BOOL)done;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation CSLPRFConcurrentObserverStore
 
-- (void)enumerateObserversWithBlock:(id)a3
+- (void)enumerateObserversWithBlock:(id)block
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -48,7 +48,7 @@
 
         if (*(*(&v10 + 1) + 8 * v8))
         {
-          v4[2](v4);
+          blockCopy[2](blockCopy);
         }
 
         ++v8;
@@ -76,17 +76,17 @@ uint64_t __61__CSLPRFConcurrentObserverStore_enumerateObserversWithBlock___block
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)performSelectorOnMainThreadWithRespondingObservers:(SEL)a3 object:(id)a4 waitUntilDone:(BOOL)a5
+- (void)performSelectorOnMainThreadWithRespondingObservers:(SEL)observers object:(id)object waitUntilDone:(BOOL)done
 {
-  v8 = a4;
+  objectCopy = object;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __105__CSLPRFConcurrentObserverStore_performSelectorOnMainThreadWithRespondingObservers_object_waitUntilDone___block_invoke;
   v10[3] = &unk_2787447E0;
-  v11 = v8;
-  v12 = a3;
-  v13 = a5;
-  v9 = v8;
+  v11 = objectCopy;
+  observersCopy = observers;
+  doneCopy = done;
+  v9 = objectCopy;
   [(CSLPRFConcurrentObserverStore *)self enumerateObserversWithBlock:v10];
 }
 
@@ -101,16 +101,16 @@ void __105__CSLPRFConcurrentObserverStore_performSelectorOnMainThreadWithRespond
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__CSLPRFConcurrentObserverStore_removeObserver___block_invoke;
   v6[3] = &unk_2787455E0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   [(CSLPRFConcurrentObserverStore *)self _withLock:v6];
 }
 
@@ -143,24 +143,24 @@ LABEL_7:
   return [v5 compact];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__CSLPRFConcurrentObserverStore_addObserver___block_invoke;
   v6[3] = &unk_2787455E0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   [(CSLPRFConcurrentObserverStore *)self _withLock:v6];
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_observersLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_observersLock);
 }
@@ -191,16 +191,16 @@ uint64_t __38__CSLPRFConcurrentObserverStore_count__block_invoke(uint64_t a1)
   return result;
 }
 
-- (CSLPRFConcurrentObserverStore)initWithServiceName:(id)a3
+- (CSLPRFConcurrentObserverStore)initWithServiceName:(id)name
 {
   v7.receiver = self;
   v7.super_class = CSLPRFConcurrentObserverStore;
   v3 = [(CSLPRFConcurrentObserverStore *)&v7 init];
   if (v3)
   {
-    v4 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
     observers = v3->_observers;
-    v3->_observers = v4;
+    v3->_observers = weakObjectsPointerArray;
 
     v3->_observersLock._os_unfair_lock_opaque = 0;
   }

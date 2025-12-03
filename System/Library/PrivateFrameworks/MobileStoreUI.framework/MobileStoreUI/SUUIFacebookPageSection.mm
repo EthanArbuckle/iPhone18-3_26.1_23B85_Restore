@@ -1,33 +1,33 @@
 @interface SUUIFacebookPageSection
-- (CGSize)cellSizeForIndexPath:(id)a3;
-- (SUUIFacebookPageSection)initWithPageComponent:(id)a3;
+- (CGSize)cellSizeForIndexPath:(id)path;
+- (SUUIFacebookPageSection)initWithPageComponent:(id)component;
 - (id)_accountStore;
 - (id)_facebookView;
-- (id)cellForIndexPath:(id)a3;
+- (id)cellForIndexPath:(id)path;
 - (int64_t)_facebookAccountsExist;
-- (int64_t)applyUpdateType:(int64_t)a3;
-- (void)_accountStoreDidChangeNotification:(id)a3;
-- (void)_applyColorSchemeToFacebookView:(id)a3;
-- (void)_changeStatusToUserLiked:(BOOL)a3;
-- (void)_finishLookupWithStatus:(id)a3 error:(id)a4;
+- (int64_t)applyUpdateType:(int64_t)type;
+- (void)_accountStoreDidChangeNotification:(id)notification;
+- (void)_applyColorSchemeToFacebookView:(id)view;
+- (void)_changeStatusToUserLiked:(BOOL)liked;
+- (void)_finishLookupWithStatus:(id)status error:(id)error;
 - (void)_reloadCollectionViewSection;
 - (void)_reloadLikeStatus;
 - (void)_resetState;
-- (void)_toggleLikeAction:(id)a3;
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4;
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3;
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3;
+- (void)_toggleLikeAction:(id)action;
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session;
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path;
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)willAppearInContext:(id)a3;
+- (void)willAppearInContext:(id)context;
 @end
 
 @implementation SUUIFacebookPageSection
 
-- (SUUIFacebookPageSection)initWithPageComponent:(id)a3
+- (SUUIFacebookPageSection)initWithPageComponent:(id)component
 {
   v4.receiver = self;
   v4.super_class = SUUIFacebookPageSection;
-  result = [(SUUIStorePageSection *)&v4 initWithPageComponent:a3];
+  result = [(SUUIStorePageSection *)&v4 initWithPageComponent:component];
   if (result)
   {
     result->_facebookAccountsExist = -1;
@@ -38,62 +38,62 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = SUUIAccountsFramework();
-  [v3 removeObserver:self name:*SUUIWeakLinkedSymbolForString("ACAccountStoreDidChangeNotification" object:{v4), 0}];
+  [defaultCenter removeObserver:self name:*SUUIWeakLinkedSymbolForString("ACAccountStoreDidChangeNotification" object:{v4), 0}];
 
-  v5 = [(SUUIReviewsFacebookView *)self->_facebookView likeToggleButton];
-  [v5 removeTarget:self action:0 forControlEvents:64];
+  likeToggleButton = [(SUUIReviewsFacebookView *)self->_facebookView likeToggleButton];
+  [likeToggleButton removeTarget:self action:0 forControlEvents:64];
 
   v6.receiver = self;
   v6.super_class = SUUIFacebookPageSection;
   [(SUUIStorePageSection *)&v6 dealloc];
 }
 
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session
 {
-  v5 = a4;
-  v7 = [(SUUIStorePageSection *)self pageComponent];
-  v6 = [v7 viewElement];
-  [v5 addItemViewElement:v6];
+  sessionCopy = session;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  [sessionCopy addItemViewElement:viewElement];
 }
 
-- (int64_t)applyUpdateType:(int64_t)a3
+- (int64_t)applyUpdateType:(int64_t)type
 {
-  if (a3 != 2)
+  if (type != 2)
   {
     [(SUUIFacebookPageSection *)self _applyColorSchemeToFacebookView:self->_facebookView];
   }
 
-  return a3;
+  return type;
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
-  v7 = [v6 dequeueReusableCellWithReuseIdentifier:@"SUUIFacebookPageSectionReuseIdentifier" forIndexPath:v4];
+  pathCopy = path;
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  v7 = [collectionView dequeueReusableCellWithReuseIdentifier:@"SUUIFacebookPageSectionReuseIdentifier" forIndexPath:pathCopy];
 
-  v8 = [(SUUIFacebookPageSection *)self _facebookView];
-  [v7 setContentChildView:v8];
+  _facebookView = [(SUUIFacebookPageSection *)self _facebookView];
+  [v7 setContentChildView:_facebookView];
 
   [v7 setContentInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
 
   return v7;
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
-  v4 = [(SUUIStorePageSection *)self context];
-  [v4 activePageWidth];
+  context = [(SUUIStorePageSection *)self context];
+  [context activePageWidth];
   v6 = v5;
 
-  v7 = [(SUUIFacebookPageSection *)self _facebookView];
-  v8 = v7;
-  if (v7)
+  _facebookView = [(SUUIFacebookPageSection *)self _facebookView];
+  v8 = _facebookView;
+  if (_facebookView)
   {
-    [v7 sizeThatFits:{v6, *(MEMORY[0x277CBF3A8] + 8)}];
+    [_facebookView sizeThatFits:{v6, *(MEMORY[0x277CBF3A8] + 8)}];
     v10 = v9;
   }
 
@@ -109,43 +109,43 @@
   return result;
 }
 
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
+  pathCopy = path;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v7 = [(SUUIStorePageSection *)self context];
-  v8 = [v7 activeMetricsImpressionSession];
-  [v8 beginActiveImpressionForViewElement:v6];
+  context = [(SUUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
+  [activeMetricsImpressionSession beginActiveImpressionForViewElement:viewElement];
 
   v9.receiver = self;
   v9.super_class = SUUIFacebookPageSection;
-  [(SUUIStorePageSection *)&v9 collectionViewWillDisplayCellForItemAtIndexPath:v4];
+  [(SUUIStorePageSection *)&v9 collectionViewWillDisplayCellForItemAtIndexPath:pathCopy];
 }
 
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
+  pathCopy = path;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v7 = [(SUUIStorePageSection *)self context];
-  v8 = [v7 activeMetricsImpressionSession];
-  [v8 endActiveImpressionForViewElement:v6];
+  context = [(SUUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
+  [activeMetricsImpressionSession endActiveImpressionForViewElement:viewElement];
 
   v9.receiver = self;
   v9.super_class = SUUIFacebookPageSection;
-  [(SUUIStorePageSection *)&v9 collectionViewDidEndDisplayingCellForItemAtIndexPath:v4];
+  [(SUUIStorePageSection *)&v9 collectionViewDidEndDisplayingCellForItemAtIndexPath:pathCopy];
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 collectionView];
-  [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SUUIFacebookPageSectionReuseIdentifier"];
+  contextCopy = context;
+  collectionView = [contextCopy collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SUUIFacebookPageSectionReuseIdentifier"];
   v6 = self->_layoutContext;
-  v7 = [[SUUIViewElementLayoutContext alloc] initWithStorePageSectionContext:v4 previousLayoutContext:v6];
+  v7 = [[SUUIViewElementLayoutContext alloc] initWithStorePageSectionContext:contextCopy previousLayoutContext:v6];
   layoutContext = self->_layoutContext;
   self->_layoutContext = v7;
 
@@ -153,15 +153,15 @@
   [(SUUIFacebookPageSection *)self _reloadLikeStatus];
   v9.receiver = self;
   v9.super_class = SUUIFacebookPageSection;
-  [(SUUIStorePageSection *)&v9 willAppearInContext:v4];
+  [(SUUIStorePageSection *)&v9 willAppearInContext:contextCopy];
 }
 
-- (void)_toggleLikeAction:(id)a3
+- (void)_toggleLikeAction:(id)action
 {
-  v4 = a3;
-  v5 = [(SUUIFacebookLikeStatus *)self->_likeStatus isUserLiked];
-  v6 = v5;
-  [(SUUIFacebookPageSection *)self _changeStatusToUserLiked:!v5];
+  actionCopy = action;
+  isUserLiked = [(SUUIFacebookLikeStatus *)self->_likeStatus isUserLiked];
+  v6 = isUserLiked;
+  [(SUUIFacebookPageSection *)self _changeStatusToUserLiked:!isUserLiked];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -172,9 +172,9 @@
   v7 = _Block_copy(aBlock);
   v8 = SUUISocialFramework();
   v9 = [SUUIWeakLinkedClassForString(&cfstr_Slfacebooksess.isa v8)];
-  v10 = [(SUUIFacebookLikeStatus *)self->_likeStatus isUserLiked];
+  isUserLiked2 = [(SUUIFacebookLikeStatus *)self->_likeStatus isUserLiked];
   likeStatus = self->_likeStatus;
-  if (v10)
+  if (isUserLiked2)
   {
     v12 = [(SUUIFacebookLikeStatus *)likeStatus URL];
     [v9 likeURL:v12 completion:v7];
@@ -211,7 +211,7 @@ void __45__SUUIFacebookPageSection__toggleLikeAction___block_invoke_2(uint64_t a
   [WeakRetained _changeStatusToUserLiked:(*(a1 + 40) & 1) == 0];
 }
 
-- (void)_accountStoreDidChangeNotification:(id)a3
+- (void)_accountStoreDidChangeNotification:(id)notification
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -264,9 +264,9 @@ uint64_t __62__SUUIFacebookPageSection__accountStoreDidChangeNotification___bloc
     v6 = self->_accountStore;
     self->_accountStore = v5;
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v8 = SUUIAccountsFramework();
-    [v7 addObserver:self selector:sel__accountStoreDidChangeNotification_ name:*SUUIWeakLinkedSymbolForString("ACAccountStoreDidChangeNotification" object:{v8), 0}];
+    [defaultCenter addObserver:self selector:sel__accountStoreDidChangeNotification_ name:*SUUIWeakLinkedSymbolForString("ACAccountStoreDidChangeNotification" object:{v8), 0}];
 
     accountStore = self->_accountStore;
   }
@@ -274,49 +274,49 @@ uint64_t __62__SUUIFacebookPageSection__accountStoreDidChangeNotification___bloc
   return accountStore;
 }
 
-- (void)_applyColorSchemeToFacebookView:(id)a3
+- (void)_applyColorSchemeToFacebookView:(id)view
 {
-  if (a3)
+  if (view)
   {
-    v4 = [(SUUIStorePageSection *)self pageComponent];
-    v5 = [v4 viewElement];
-    v12 = [v5 style];
+    pageComponent = [(SUUIStorePageSection *)self pageComponent];
+    viewElement = [pageComponent viewElement];
+    style = [viewElement style];
 
-    if (v12)
+    if (style)
     {
-      v6 = objc_alloc_init(SUUIColorScheme);
-      v7 = [(SUUIViewElementLayoutContext *)self->_layoutContext tintColor];
-      v8 = SUUIViewElementPlainColorWithStyle(v12, v7);
+      context = objc_alloc_init(SUUIColorScheme);
+      tintColor = [(SUUIViewElementLayoutContext *)self->_layoutContext tintColor];
+      colorScheme = SUUIViewElementPlainColorWithStyle(style, tintColor);
 
-      [(SUUIColorScheme *)v6 setPrimaryTextColor:v8];
-      [(SUUIColorScheme *)v6 setSecondaryTextColor:v8];
+      [(SUUIColorScheme *)context setPrimaryTextColor:colorScheme];
+      [(SUUIColorScheme *)context setSecondaryTextColor:colorScheme];
       facebookView = self->_facebookView;
-      v10 = v6;
+      v10 = context;
     }
 
     else
     {
-      v6 = [(SUUIStorePageSection *)self context];
+      context = [(SUUIStorePageSection *)self context];
       v11 = self->_facebookView;
-      v8 = [(SUUIColorScheme *)v6 colorScheme];
+      colorScheme = [(SUUIColorScheme *)context colorScheme];
       facebookView = v11;
-      v10 = v8;
+      v10 = colorScheme;
     }
 
     [(SUUIReviewsFacebookView *)facebookView setColorScheme:v10];
   }
 }
 
-- (void)_changeStatusToUserLiked:(BOOL)a3
+- (void)_changeStatusToUserLiked:(BOOL)liked
 {
-  v3 = a3;
+  likedCopy = liked;
   v5 = [(SUUIFacebookLikeStatus *)self->_likeStatus copy];
-  [(SUUIFacebookLikeStatus *)v5 setUserLiked:v3];
+  [(SUUIFacebookLikeStatus *)v5 setUserLiked:likedCopy];
   likeStatus = self->_likeStatus;
   self->_likeStatus = v5;
   v7 = v5;
 
-  [(SUUIReviewsFacebookView *)self->_facebookView setUserLiked:v3];
+  [(SUUIReviewsFacebookView *)self->_facebookView setUserLiked:likedCopy];
 
   [(SUUIFacebookPageSection *)self _reloadCollectionViewSection];
 }
@@ -326,7 +326,7 @@ uint64_t __62__SUUIFacebookPageSection__accountStoreDidChangeNotification___bloc
   facebookAccountsExist = self->_facebookAccountsExist;
   if (facebookAccountsExist == 255)
   {
-    v4 = [(SUUIFacebookPageSection *)self _accountStore];
+    _accountStore = [(SUUIFacebookPageSection *)self _accountStore];
     v5 = objc_opt_class();
     v6 = SUUIAccountsFramework();
     self->_facebookAccountsExist = [v5 accountsWithAccountTypeIdentifierExist:{*SUUIWeakLinkedSymbolForString("ACAccountTypeIdentifierFacebook", v6)}] != 0;
@@ -344,19 +344,19 @@ uint64_t __62__SUUIFacebookPageSection__accountStoreDidChangeNotification___bloc
   {
     if (self->_likeStatus)
     {
-      v4 = [(SUUIStorePageSection *)self context];
+      context = [(SUUIStorePageSection *)self context];
       v5 = [SUUIReviewsFacebookView alloc];
-      v6 = [v4 clientContext];
-      v7 = [(SUUIReviewsFacebookView *)v5 initWithClientContext:v6];
+      clientContext = [context clientContext];
+      v7 = [(SUUIReviewsFacebookView *)v5 initWithClientContext:clientContext];
       v8 = self->_facebookView;
       self->_facebookView = v7;
 
-      v9 = [(SUUIReviewsFacebookView *)self->_facebookView likeToggleButton];
-      [v9 addTarget:self action:sel__toggleLikeAction_ forControlEvents:64];
+      likeToggleButton = [(SUUIReviewsFacebookView *)self->_facebookView likeToggleButton];
+      [likeToggleButton addTarget:self action:sel__toggleLikeAction_ forControlEvents:64];
 
       v10 = self->_facebookView;
-      v11 = [(SUUIFacebookLikeStatus *)self->_likeStatus friendNames];
-      [(SUUIReviewsFacebookView *)v10 setFriendNames:v11];
+      friendNames = [(SUUIFacebookLikeStatus *)self->_likeStatus friendNames];
+      [(SUUIReviewsFacebookView *)v10 setFriendNames:friendNames];
 
       [(SUUIReviewsFacebookView *)self->_facebookView setUserLiked:[(SUUIFacebookLikeStatus *)self->_likeStatus isUserLiked]];
       [(SUUIFacebookPageSection *)self _applyColorSchemeToFacebookView:self->_facebookView];
@@ -373,31 +373,31 @@ uint64_t __62__SUUIFacebookPageSection__accountStoreDidChangeNotification___bloc
   return facebookView;
 }
 
-- (void)_finishLookupWithStatus:(id)a3 error:(id)a4
+- (void)_finishLookupWithStatus:(id)status error:(id)error
 {
-  v13 = a3;
+  statusCopy = status;
   self->_isLoadingLikeStatus = 0;
-  objc_storeStrong(&self->_likeStatus, a3);
+  objc_storeStrong(&self->_likeStatus, status);
   if (self->_likeStatus)
   {
-    v6 = [(SUUIStorePageSection *)self context];
-    v7 = [v6 collectionView];
+    context = [(SUUIStorePageSection *)self context];
+    collectionView = [context collectionView];
     v8 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:{-[SUUIStorePageSection sectionIndex](self, "sectionIndex")}];
-    v9 = [v7 cellForItemAtIndexPath:v8];
+    v9 = [collectionView cellForItemAtIndexPath:v8];
 
     facebookView = self->_facebookView;
     if (facebookView)
     {
-      v11 = [(SUUIFacebookLikeStatus *)self->_likeStatus friendNames];
-      [(SUUIReviewsFacebookView *)facebookView setFriendNames:v11];
+      friendNames = [(SUUIFacebookLikeStatus *)self->_likeStatus friendNames];
+      [(SUUIReviewsFacebookView *)facebookView setFriendNames:friendNames];
 
       [(SUUIReviewsFacebookView *)self->_facebookView setUserLiked:[(SUUIFacebookLikeStatus *)self->_likeStatus isUserLiked]];
     }
 
     else if (v9)
     {
-      v12 = [(SUUIFacebookPageSection *)self _facebookView];
-      [v9 setContentChildView:v12];
+      _facebookView = [(SUUIFacebookPageSection *)self _facebookView];
+      [v9 setContentChildView:_facebookView];
     }
 
     else
@@ -415,27 +415,27 @@ uint64_t __62__SUUIFacebookPageSection__accountStoreDidChangeNotification___bloc
 
 - (void)_reloadCollectionViewSection
 {
-  v3 = [MEMORY[0x277D75D18] areAnimationsEnabled];
+  areAnimationsEnabled = [MEMORY[0x277D75D18] areAnimationsEnabled];
   [MEMORY[0x277D75D18] setAnimationsEnabled:0];
-  v4 = [(SUUIStorePageSection *)self context];
-  v5 = [v4 collectionView];
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
   v6 = [MEMORY[0x277CCAA78] indexSetWithIndex:{-[SUUIStorePageSection sectionIndex](self, "sectionIndex")}];
-  [v5 reloadSections:v6];
+  [collectionView reloadSections:v6];
 
   v7 = MEMORY[0x277D75D18];
 
-  [v7 setAnimationsEnabled:v3];
+  [v7 setAnimationsEnabled:areAnimationsEnabled];
 }
 
 - (void)_reloadLikeStatus
 {
-  v3 = [(SUUIStorePageSection *)self pageComponent];
-  v4 = [v3 viewElement];
-  v5 = [v4 URLString];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  uRLString = [viewElement URLString];
 
-  if (v5)
+  if (uRLString)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v5];
+    v6 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:uRLString];
     objc_initWeak(&location, self);
     v7 = SUUISocialFramework();
     v8 = [SUUIWeakLinkedClassForString(&cfstr_Slfacebooksess.isa v7)];
@@ -491,14 +491,14 @@ void __44__SUUIFacebookPageSection__reloadLikeStatus__block_invoke_2(uint64_t a1
 
 - (void)_resetState
 {
-  v3 = [(SUUIStorePageSection *)self context];
-  v4 = [v3 collectionView];
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
   v5 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:{-[SUUIStorePageSection sectionIndex](self, "sectionIndex")}];
-  v9 = [v4 cellForItemAtIndexPath:v5];
+  v9 = [collectionView cellForItemAtIndexPath:v5];
 
   [v9 setContentChildView:0];
-  v6 = [(SUUIReviewsFacebookView *)self->_facebookView likeToggleButton];
-  [v6 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  likeToggleButton = [(SUUIReviewsFacebookView *)self->_facebookView likeToggleButton];
+  [likeToggleButton removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
   facebookView = self->_facebookView;
   self->_facebookView = 0;

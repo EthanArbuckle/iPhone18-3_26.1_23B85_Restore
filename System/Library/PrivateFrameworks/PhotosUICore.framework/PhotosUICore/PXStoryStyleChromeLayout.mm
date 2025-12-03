@@ -1,23 +1,23 @@
 @interface PXStoryStyleChromeLayout
-+ (void)startCachingResourcesForStyleInfo:(id)a3 viewLayoutSpec:(id)a4 displayScale:(double)a5;
-+ (void)stopCachingResourcesForStyleInfo:(id)a3 viewLayoutSpec:(id)a4 displayScale:(double)a5;
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
++ (void)startCachingResourcesForStyleInfo:(id)info viewLayoutSpec:(id)spec displayScale:(double)scale;
++ (void)stopCachingResourcesForStyleInfo:(id)info viewLayoutSpec:(id)spec displayScale:(double)scale;
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (NSAttributedString)colorGradeNameAttributedString;
 - (NSAttributedString)subtitleAttributedString;
 - (NSAttributedString)titleAccessoryAttributedString;
 - (NSAttributedString)titleAttributedString;
 - (PXStoryStyleChromeLayout)init;
-- (PXStoryStyleChromeLayout)initWithViewModel:(id)a3;
+- (PXStoryStyleChromeLayout)initWithViewModel:(id)model;
 - (id)_actionPerformer;
 - (id)_styleSongAsset;
-- (id)attributedStringForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (id)attributedStringForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (id)axSpriteIndexes;
 - (id)axVisibleSpriteIndexes;
 - (id)musicFeedbackContextMenuDelegate;
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (unint64_t)axFocusabilityForSpriteAtIndex:(unsigned int)a3;
-- (void)_handleFilterButton:(id)a3;
-- (void)_handleMusicButton:(id)a3;
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
+- (unint64_t)axFocusabilityForSpriteAtIndex:(unsigned int)index;
+- (void)_handleFilterButton:(id)button;
+- (void)_handleMusicButton:(id)button;
 - (void)_invalidateContent;
 - (void)_invalidateStrings;
 - (void)_updateContent;
@@ -26,10 +26,10 @@
 - (void)displayScaleDidChange;
 - (void)referenceDepthDidChange;
 - (void)referenceSizeDidChange;
-- (void)setColorGradingRepository:(id)a3;
-- (void)setMediaVersion:(unsigned __int16)a3;
-- (void)setStyleInfo:(id)a3;
-- (void)setViewLayoutSpec:(id)a3;
+- (void)setColorGradingRepository:(id)repository;
+- (void)setMediaVersion:(unsigned __int16)version;
+- (void)setStyleInfo:(id)info;
+- (void)setViewLayoutSpec:(id)spec;
 - (void)update;
 - (void)willUpdate;
 @end
@@ -42,14 +42,14 @@
   if (!musicFeedbackContextMenuDelegate)
   {
     objc_initWeak(&location, self);
-    v4 = [(PXStoryStyleChromeLayout *)self viewModel];
-    v5 = [v4 actionPerformer];
+    viewModel = [(PXStoryStyleChromeLayout *)self viewModel];
+    actionPerformer = [viewModel actionPerformer];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __60__PXStoryStyleChromeLayout_musicFeedbackContextMenuDelegate__block_invoke;
     v9[3] = &unk_1E7745CF0;
     objc_copyWeak(&v10, &location);
-    v6 = [v5 musicFeedbackContextMenuDelegateWithAudioAssetProvidingBlock:v9];
+    v6 = [actionPerformer musicFeedbackContextMenuDelegateWithAudioAssetProvidingBlock:v9];
     v7 = self->_musicFeedbackContextMenuDelegate;
     self->_musicFeedbackContextMenuDelegate = v6;
 
@@ -69,25 +69,25 @@ id __60__PXStoryStyleChromeLayout_musicFeedbackContextMenuDelegate__block_invoke
   return v2;
 }
 
-- (void)_handleFilterButton:(id)a3
+- (void)_handleFilterButton:(id)button
 {
-  v3 = [(PXStoryStyleChromeLayout *)self _actionPerformer];
-  [v3 presentColorGradeEditor];
+  _actionPerformer = [(PXStoryStyleChromeLayout *)self _actionPerformer];
+  [_actionPerformer presentColorGradeEditor];
 }
 
-- (void)_handleMusicButton:(id)a3
+- (void)_handleMusicButton:(id)button
 {
-  v3 = [(PXStoryStyleChromeLayout *)self _actionPerformer];
-  [v3 presentMusicEditor];
+  _actionPerformer = [(PXStoryStyleChromeLayout *)self _actionPerformer];
+  [_actionPerformer presentMusicEditor];
 }
 
 - (id)_styleSongAsset
 {
-  v2 = [(PXStoryStyleChromeLayout *)self styleInfo];
-  v3 = [v2 songResource];
-  v4 = [v3 px_storyResourceSongAsset];
+  styleInfo = [(PXStoryStyleChromeLayout *)self styleInfo];
+  songResource = [styleInfo songResource];
+  px_storyResourceSongAsset = [songResource px_storyResourceSongAsset];
 
-  return v4;
+  return px_storyResourceSongAsset;
 }
 
 - (NSAttributedString)subtitleAttributedString
@@ -95,23 +95,23 @@ id __60__PXStoryStyleChromeLayout_musicFeedbackContextMenuDelegate__block_invoke
   subtitleAttributedString = self->_subtitleAttributedString;
   if (!subtitleAttributedString)
   {
-    v4 = [(PXStoryStyleChromeLayout *)self viewLayoutSpec];
-    v5 = [(PXStoryStyleChromeLayout *)self styleInfo];
-    v6 = [v5 songResource];
-    v7 = [v6 px_storyResourceSongAsset];
-    v8 = [v7 subtitle];
-    v9 = v8;
+    viewLayoutSpec = [(PXStoryStyleChromeLayout *)self viewLayoutSpec];
+    styleInfo = [(PXStoryStyleChromeLayout *)self styleInfo];
+    songResource = [styleInfo songResource];
+    px_storyResourceSongAsset = [songResource px_storyResourceSongAsset];
+    subtitle = [px_storyResourceSongAsset subtitle];
+    v9 = subtitle;
     v10 = &stru_1F1741150;
-    if (v8)
+    if (subtitle)
     {
-      v10 = v8;
+      v10 = subtitle;
     }
 
     v11 = v10;
 
     v12 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v13 = [v4 styleSwitcherDetailsLabelAttributesB];
-    v14 = [v12 initWithString:v11 attributes:v13];
+    styleSwitcherDetailsLabelAttributesB = [viewLayoutSpec styleSwitcherDetailsLabelAttributesB];
+    v14 = [v12 initWithString:v11 attributes:styleSwitcherDetailsLabelAttributesB];
 
     v15 = self->_subtitleAttributedString;
     self->_subtitleAttributedString = v14;
@@ -124,17 +124,17 @@ id __60__PXStoryStyleChromeLayout_musicFeedbackContextMenuDelegate__block_invoke
 
 - (NSAttributedString)titleAccessoryAttributedString
 {
-  v3 = [(PXStoryStyleChromeLayout *)self styleInfo];
-  v4 = [v3 songResource];
-  v5 = [v4 px_storyResourceSongAsset];
+  styleInfo = [(PXStoryStyleChromeLayout *)self styleInfo];
+  songResource = [styleInfo songResource];
+  px_storyResourceSongAsset = [songResource px_storyResourceSongAsset];
 
-  if (!self->_titleAccessoryAttributedString && ([v5 flags] & 1) != 0)
+  if (!self->_titleAccessoryAttributedString && ([px_storyResourceSongAsset flags] & 1) != 0)
   {
-    v6 = [(PXStoryStyleChromeLayout *)self viewLayoutSpec];
+    viewLayoutSpec = [(PXStoryStyleChromeLayout *)self viewLayoutSpec];
     v7 = PXLocalizedStringFromTable(@"InteractiveMemoryExplicitLyricsIcon", @"PhotosUICore");
     v8 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v9 = [v6 styleSwitcherDetailsLabelAttributesAAccessory];
-    v10 = [v8 initWithString:v7 attributes:v9];
+    styleSwitcherDetailsLabelAttributesAAccessory = [viewLayoutSpec styleSwitcherDetailsLabelAttributesAAccessory];
+    v10 = [v8 initWithString:v7 attributes:styleSwitcherDetailsLabelAttributesAAccessory];
     titleAccessoryAttributedString = self->_titleAccessoryAttributedString;
     self->_titleAccessoryAttributedString = v10;
   }
@@ -150,23 +150,23 @@ id __60__PXStoryStyleChromeLayout_musicFeedbackContextMenuDelegate__block_invoke
   titleAttributedString = self->_titleAttributedString;
   if (!titleAttributedString)
   {
-    v4 = [(PXStoryStyleChromeLayout *)self viewLayoutSpec];
-    v5 = [(PXStoryStyleChromeLayout *)self styleInfo];
-    v6 = [v5 songResource];
-    v7 = [v6 px_storyResourceSongAsset];
-    v8 = [v7 title];
-    v9 = v8;
+    viewLayoutSpec = [(PXStoryStyleChromeLayout *)self viewLayoutSpec];
+    styleInfo = [(PXStoryStyleChromeLayout *)self styleInfo];
+    songResource = [styleInfo songResource];
+    px_storyResourceSongAsset = [songResource px_storyResourceSongAsset];
+    title = [px_storyResourceSongAsset title];
+    v9 = title;
     v10 = &stru_1F1741150;
-    if (v8)
+    if (title)
     {
-      v10 = v8;
+      v10 = title;
     }
 
     v11 = v10;
 
     v12 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v13 = [v4 styleSwitcherDetailsLabelAttributesA];
-    v14 = [v12 initWithString:v11 attributes:v13];
+    styleSwitcherDetailsLabelAttributesA = [viewLayoutSpec styleSwitcherDetailsLabelAttributesA];
+    v14 = [v12 initWithString:v11 attributes:styleSwitcherDetailsLabelAttributesA];
 
     v15 = self->_titleAttributedString;
     self->_titleAttributedString = v14;
@@ -182,25 +182,25 @@ id __60__PXStoryStyleChromeLayout_musicFeedbackContextMenuDelegate__block_invoke
   colorGradeNameAttributedString = self->_colorGradeNameAttributedString;
   if (!colorGradeNameAttributedString)
   {
-    v4 = [(PXStoryStyleChromeLayout *)self viewLayoutSpec];
-    v5 = [(PXStoryStyleChromeLayout *)self colorGradingRepository];
-    v6 = [(PXStoryStyleChromeLayout *)self styleInfo];
-    v7 = [v5 localizedTitleForColorGradeKind:{objc_msgSend(v6, "customColorGradeKind")}];
+    viewLayoutSpec = [(PXStoryStyleChromeLayout *)self viewLayoutSpec];
+    colorGradingRepository = [(PXStoryStyleChromeLayout *)self colorGradingRepository];
+    styleInfo = [(PXStoryStyleChromeLayout *)self styleInfo];
+    v7 = [colorGradingRepository localizedTitleForColorGradeKind:{objc_msgSend(styleInfo, "customColorGradeKind")}];
 
-    v8 = [v4 styleSwitcherDetailsLabelAttributesC];
+    styleSwitcherDetailsLabelAttributesC = [viewLayoutSpec styleSwitcherDetailsLabelAttributesC];
     if (v7)
     {
       v9 = [objc_alloc(MEMORY[0x1E69DB7F0]) initWithData:0 ofType:0];
-      v10 = [v4 styleSwitcherColorGradeNameGlyphImage];
-      [(NSAttributedString *)v9 setImage:v10];
+      styleSwitcherColorGradeNameGlyphImage = [viewLayoutSpec styleSwitcherColorGradeNameGlyphImage];
+      [(NSAttributedString *)v9 setImage:styleSwitcherColorGradeNameGlyphImage];
 
       v11 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v9];
       v12 = objc_alloc_init(MEMORY[0x1E696AD40]);
       [v12 appendAttributedString:v11];
-      v13 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@" " attributes:v8];
+      v13 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@" " attributes:styleSwitcherDetailsLabelAttributesC];
       [v12 appendAttributedString:v13];
 
-      v14 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v7 attributes:v8];
+      v14 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v7 attributes:styleSwitcherDetailsLabelAttributesC];
       [v12 appendAttributedString:v14];
 
       v15 = [v12 copy];
@@ -210,7 +210,7 @@ id __60__PXStoryStyleChromeLayout_musicFeedbackContextMenuDelegate__block_invoke
 
     else
     {
-      v17 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:&stru_1F1741150 attributes:v8];
+      v17 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:&stru_1F1741150 attributes:styleSwitcherDetailsLabelAttributesC];
       v9 = self->_colorGradeNameAttributedString;
       self->_colorGradeNameAttributedString = v17;
     }
@@ -235,36 +235,36 @@ id __60__PXStoryStyleChromeLayout_musicFeedbackContextMenuDelegate__block_invoke
 
 - (id)_actionPerformer
 {
-  v2 = [(PXStoryStyleChromeLayout *)self viewModel];
-  v3 = [v2 actionPerformer];
+  viewModel = [(PXStoryStyleChromeLayout *)self viewModel];
+  actionPerformer = [viewModel actionPerformer];
 
-  return v3;
+  return actionPerformer;
 }
 
-- (unint64_t)axFocusabilityForSpriteAtIndex:(unsigned int)a3
+- (unint64_t)axFocusabilityForSpriteAtIndex:(unsigned int)index
 {
-  v3 = [(PXStoryStyleChromeLayout *)self viewModel];
-  v4 = [v3 viewMode] == 4;
+  viewModel = [(PXStoryStyleChromeLayout *)self viewModel];
+  v4 = [viewModel viewMode] == 4;
 
   return 2 * v4;
 }
 
 - (id)axVisibleSpriteIndexes
 {
-  v3 = [(PXStoryStyleChromeLayout *)self viewModel];
-  v4 = [v3 viewMode];
+  viewModel = [(PXStoryStyleChromeLayout *)self viewModel];
+  viewMode = [viewModel viewMode];
 
-  if (v4 == 4)
+  if (viewMode == 4)
   {
-    v5 = [(PXStoryStyleChromeLayout *)self axSpriteIndexes];
+    axSpriteIndexes = [(PXStoryStyleChromeLayout *)self axSpriteIndexes];
   }
 
   else
   {
-    v5 = objc_alloc_init(MEMORY[0x1E696AC90]);
+    axSpriteIndexes = objc_alloc_init(MEMORY[0x1E696AC90]);
   }
 
-  return v5;
+  return axSpriteIndexes;
 }
 
 - (id)axSpriteIndexes
@@ -282,48 +282,48 @@ id __60__PXStoryStyleChromeLayout_musicFeedbackContextMenuDelegate__block_invoke
   return axSpriteIndexes;
 }
 
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (self->_songArtworkSpriteIndex == a3)
+  layoutCopy = layout;
+  if (self->_songArtworkSpriteIndex == index)
   {
     v8 = objc_alloc_init(PXStoryChromeButtonConfiguration);
     [(PXStoryChromeButtonConfiguration *)v8 setBackgroundStyle:2];
     [(PXStoryChromeButtonConfiguration *)v8 setTarget:self];
-    v9 = [(PXStoryStyleChromeLayout *)self viewLayoutSpec];
-    v10 = [v9 chromeButtonSpec];
+    viewLayoutSpec = [(PXStoryStyleChromeLayout *)self viewLayoutSpec];
+    chromeButtonSpec = [viewLayoutSpec chromeButtonSpec];
 
-    [(PXStoryChromeButtonConfiguration *)v8 setSpec:v10];
-    v11 = [(PXStoryStyleChromeLayout *)self _styleSongAsset];
-    v12 = [v11 artworkDisplayAsset];
-    [(PXStoryChromeButtonConfiguration *)v8 setDisplayAsset:v12];
+    [(PXStoryChromeButtonConfiguration *)v8 setSpec:chromeButtonSpec];
+    _styleSongAsset = [(PXStoryStyleChromeLayout *)self _styleSongAsset];
+    artworkDisplayAsset = [_styleSongAsset artworkDisplayAsset];
+    [(PXStoryChromeButtonConfiguration *)v8 setDisplayAsset:artworkDisplayAsset];
 
-    v13 = [(PXStoryStyleChromeLayout *)self musicFeedbackContextMenuDelegate];
-    [(PXStoryChromeButtonConfiguration *)v8 setCustomContextMenuInteractionDelegate:v13];
+    musicFeedbackContextMenuDelegate = [(PXStoryStyleChromeLayout *)self musicFeedbackContextMenuDelegate];
+    [(PXStoryChromeButtonConfiguration *)v8 setCustomContextMenuInteractionDelegate:musicFeedbackContextMenuDelegate];
   }
 
-  else if (self->_musicButtonSpriteIndex == a3)
+  else if (self->_musicButtonSpriteIndex == index)
   {
     v8 = objc_alloc_init(PXStoryChromeButtonConfiguration);
     [(PXStoryChromeButtonConfiguration *)v8 setBackgroundStyle:[(PXStoryStyleChromeLayout *)self _backgroundCircleStyle]];
     [(PXStoryChromeButtonConfiguration *)v8 setTarget:self];
     [(PXStoryChromeButtonConfiguration *)v8 setAction:sel__handleMusicButton_];
-    v14 = [(PXStoryStyleChromeLayout *)self viewLayoutSpec];
-    v15 = [v14 chromeButtonSpec];
-    [(PXStoryChromeButtonConfiguration *)v8 setSpec:v15];
+    viewLayoutSpec2 = [(PXStoryStyleChromeLayout *)self viewLayoutSpec];
+    chromeButtonSpec2 = [viewLayoutSpec2 chromeButtonSpec];
+    [(PXStoryChromeButtonConfiguration *)v8 setSpec:chromeButtonSpec2];
 
     [(PXStoryChromeButtonConfiguration *)v8 setApplyTintColorAsHierarchicalColor:MEMORY[0x1A590D320]([(PXStoryChromeButtonConfiguration *)v8 setSystemImageName:@"music.badge.plus"]) ^ 1];
   }
 
-  else if (self->_filterButtonSpriteIndex == a3)
+  else if (self->_filterButtonSpriteIndex == index)
   {
     v8 = objc_alloc_init(PXStoryChromeButtonConfiguration);
     [(PXStoryChromeButtonConfiguration *)v8 setBackgroundStyle:[(PXStoryStyleChromeLayout *)self _backgroundCircleStyle]];
     [(PXStoryChromeButtonConfiguration *)v8 setTarget:self];
     [(PXStoryChromeButtonConfiguration *)v8 setAction:sel__handleFilterButton_];
-    v16 = [(PXStoryStyleChromeLayout *)self viewLayoutSpec];
-    v17 = [v16 chromeButtonSpec];
-    [(PXStoryChromeButtonConfiguration *)v8 setSpec:v17];
+    viewLayoutSpec3 = [(PXStoryStyleChromeLayout *)self viewLayoutSpec];
+    chromeButtonSpec3 = [viewLayoutSpec3 chromeButtonSpec];
+    [(PXStoryChromeButtonConfiguration *)v8 setSpec:chromeButtonSpec3];
 
     [(PXStoryChromeButtonConfiguration *)v8 setApplyTintColorAsHierarchicalColor:MEMORY[0x1A590D320]() ^ 1];
     [(PXStoryChromeButtonConfiguration *)v8 setSystemImageName:@"camera.filters"];
@@ -331,19 +331,19 @@ id __60__PXStoryStyleChromeLayout_musicFeedbackContextMenuDelegate__block_invoke
 
   else
   {
-    if (self->_customLabelSpriteIndex != a3)
+    if (self->_customLabelSpriteIndex != index)
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v22 handleFailureInMethod:a2 object:self file:@"PXStoryStyleChromeLayout.m" lineNumber:453 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryStyleChromeLayout.m" lineNumber:453 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
     v8 = objc_alloc_init(PXStoryChromeButtonConfiguration);
     [(PXStoryChromeButtonConfiguration *)v8 setBackgroundStyle:2];
-    v18 = [(PXStoryStyleChromeLayout *)self viewLayoutSpec];
-    v19 = [v18 chromeButtonSpec];
-    [(PXStoryChromeButtonConfiguration *)v8 setSpec:v19];
+    viewLayoutSpec4 = [(PXStoryStyleChromeLayout *)self viewLayoutSpec];
+    chromeButtonSpec4 = [viewLayoutSpec4 chromeButtonSpec];
+    [(PXStoryChromeButtonConfiguration *)v8 setSpec:chromeButtonSpec4];
 
     v20 = PXLocalizedStringFromTable(@"InteractiveMemoryCustomStyleLabel", @"PhotosUICore");
     [(PXStoryChromeButtonConfiguration *)v8 setLabel:v20];
@@ -352,53 +352,53 @@ id __60__PXStoryStyleChromeLayout_musicFeedbackContextMenuDelegate__block_invoke
   return v8;
 }
 
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (self->_songArtworkSpriteIndex != a3 && self->_musicButtonSpriteIndex != a3 && self->_filterButtonSpriteIndex != a3 && self->_customLabelSpriteIndex != a3)
+  layoutCopy = layout;
+  if (self->_songArtworkSpriteIndex != index && self->_musicButtonSpriteIndex != index && self->_filterButtonSpriteIndex != index && self->_customLabelSpriteIndex != index)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXStoryStyleChromeLayout.m" lineNumber:413 description:{@"Invalid parameter not satisfying: %@", @"index == _songArtworkSpriteIndex || index == _musicButtonSpriteIndex || index == _filterButtonSpriteIndex || index == _customLabelSpriteIndex"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryStyleChromeLayout.m" lineNumber:413 description:{@"Invalid parameter not satisfying: %@", @"index == _songArtworkSpriteIndex || index == _musicButtonSpriteIndex || index == _filterButtonSpriteIndex || index == _customLabelSpriteIndex"}];
   }
 
-  v8 = self->_musicButtonSpriteIndex == a3 || self->_filterButtonSpriteIndex == a3;
+  v8 = self->_musicButtonSpriteIndex == index || self->_filterButtonSpriteIndex == index;
   v9 = [_TtC12PhotosUICore26PXStoryChromeButtonFactory buttonClassWithGlassEffect:v8];
 
   return v9;
 }
 
-- (id)attributedStringForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)attributedStringForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (self->_songTitleSpriteIndex == a3)
+  layoutCopy = layout;
+  if (self->_songTitleSpriteIndex == index)
   {
-    v8 = [(PXStoryStyleChromeLayout *)self titleAttributedString];
+    titleAttributedString = [(PXStoryStyleChromeLayout *)self titleAttributedString];
   }
 
-  else if (self->_songSubtitleSpriteIndex == a3)
+  else if (self->_songSubtitleSpriteIndex == index)
   {
-    v8 = [(PXStoryStyleChromeLayout *)self subtitleAttributedString];
+    titleAttributedString = [(PXStoryStyleChromeLayout *)self subtitleAttributedString];
   }
 
-  else if (self->_colorGradeNameSpriteIndex == a3)
+  else if (self->_colorGradeNameSpriteIndex == index)
   {
-    v8 = [(PXStoryStyleChromeLayout *)self colorGradeNameAttributedString];
+    titleAttributedString = [(PXStoryStyleChromeLayout *)self colorGradeNameAttributedString];
   }
 
   else
   {
-    if (self->_songTitleAccessorySpriteIndex != a3)
+    if (self->_songTitleAccessorySpriteIndex != index)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"PXStoryStyleChromeLayout.m" lineNumber:403 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryStyleChromeLayout.m" lineNumber:403 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    v8 = [(PXStoryStyleChromeLayout *)self titleAccessoryAttributedString];
+    titleAttributedString = [(PXStoryStyleChromeLayout *)self titleAccessoryAttributedString];
   }
 
-  v9 = v8;
+  v9 = titleAttributedString;
 
   return v9;
 }
@@ -408,20 +408,20 @@ id __60__PXStoryStyleChromeLayout_musicFeedbackContextMenuDelegate__block_invoke
   [(PXStoryStyleChromeLayout *)self referenceSize];
   v5 = v4;
   v7 = v6;
-  v8 = [(PXStoryStyleChromeLayout *)self viewLayoutSpec];
-  [v8 chromeButtonSize];
+  viewLayoutSpec = [(PXStoryStyleChromeLayout *)self viewLayoutSpec];
+  [viewLayoutSpec chromeButtonSize];
   v10 = v9;
   v12 = v11;
   [(PXStoryStyleChromeLayout *)self referenceDepth];
   v14 = -v13;
-  v15 = [(PXStoryStyleChromeLayout *)self mediaVersion];
+  mediaVersion = [(PXStoryStyleChromeLayout *)self mediaVersion];
   [(PXStoryStyleChromeLayout *)self alpha];
   v17 = v16;
   [(PXStoryStyleChromeLayout *)self displayScale];
   v19 = v18;
-  [v8 styleSwitcherDistanceBetweenAlbumArtAndLabels];
+  [viewLayoutSpec styleSwitcherDistanceBetweenAlbumArtAndLabels];
   v21 = v20;
-  v22 = [v8 styleSwitcherCanShowEditButtons];
+  styleSwitcherCanShowEditButtons = [viewLayoutSpec styleSwitcherCanShowEditButtons];
   spriteCount = self->_spriteCount;
   v26 = MEMORY[0x1E69E9820];
   v24 = spriteCount << 32;
@@ -432,20 +432,20 @@ id __60__PXStoryStyleChromeLayout_musicFeedbackContextMenuDelegate__block_invoke
   v33 = v5;
   v34 = v7;
   v35 = a2;
-  v30 = v8;
-  v31 = self;
+  v30 = viewLayoutSpec;
+  selfCopy = self;
   v36 = v10;
   v37 = v12;
-  v46 = v22;
+  v46 = styleSwitcherCanShowEditButtons;
   v38 = v21;
   v39 = v14;
-  v45 = v15;
+  v45 = mediaVersion;
   v40 = v17;
   v41 = v19;
   v42 = v32;
   v43 = v5;
   v44 = v7;
-  v25 = v8;
+  v25 = viewLayoutSpec;
   [(PXStoryStyleChromeLayout *)self modifySpritesInRange:v24 state:&v26];
   [(PXStoryStyleChromeLayout *)self setContentSize:v5, v7, v26, v27, v28, v29];
 }
@@ -944,9 +944,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleChromeLayout _invalidateContent]"];
-      [v10 handleFailureInFunction:v11 file:@"PXStoryStyleChromeLayout.m" lineNumber:199 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v11 file:@"PXStoryStyleChromeLayout.m" lineNumber:199 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -975,9 +975,9 @@ LABEL_5:
   [(PXStoryStyleChromeLayout *)&v5 didUpdate];
   if (self->_updateFlags.willPerformUpdate)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleChromeLayout didUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXStoryStyleChromeLayout.m" lineNumber:191 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXStoryStyleChromeLayout.m" lineNumber:191 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
   }
 }
 
@@ -990,9 +990,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleChromeLayout update]"];
-      [v5 handleFailureInFunction:v6 file:@"PXStoryStyleChromeLayout.m" lineNumber:181 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v6 file:@"PXStoryStyleChromeLayout.m" lineNumber:181 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -1009,9 +1009,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (needsUpdate)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleChromeLayout update]"];
-      [v7 handleFailureInFunction:v8 file:@"PXStoryStyleChromeLayout.m" lineNumber:185 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler2 handleFailureInFunction:v8 file:@"PXStoryStyleChromeLayout.m" lineNumber:185 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -1028,9 +1028,9 @@ LABEL_5:
   self->_updateFlags.willPerformUpdate = 1;
   if (self->_updateFlags.isPerformingUpdate)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleChromeLayout willUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXStoryStyleChromeLayout.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXStoryStyleChromeLayout.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
   }
 }
 
@@ -1068,51 +1068,51 @@ LABEL_5:
 
 - (PXStoryStyleChromeLayout)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryStyleChromeLayout.m" lineNumber:146 description:{@"%s is not available as initializer", "-[PXStoryStyleChromeLayout init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryStyleChromeLayout.m" lineNumber:146 description:{@"%s is not available as initializer", "-[PXStoryStyleChromeLayout init]"}];
 
   abort();
 }
 
-- (void)setMediaVersion:(unsigned __int16)a3
+- (void)setMediaVersion:(unsigned __int16)version
 {
-  if (self->_mediaVersion != a3)
+  if (self->_mediaVersion != version)
   {
-    self->_mediaVersion = a3;
+    self->_mediaVersion = version;
     [(PXStoryStyleChromeLayout *)self _invalidateContent];
   }
 }
 
-- (void)setColorGradingRepository:(id)a3
+- (void)setColorGradingRepository:(id)repository
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_colorGradingRepository != v5)
+  repositoryCopy = repository;
+  v6 = repositoryCopy;
+  if (self->_colorGradingRepository != repositoryCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryColorGradingRepository *)v5 isEqual:?];
+    v8 = repositoryCopy;
+    v7 = [(PXStoryColorGradingRepository *)repositoryCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_colorGradingRepository, a3);
+      objc_storeStrong(&self->_colorGradingRepository, repository);
       [(PXStoryStyleChromeLayout *)self _invalidateContent];
       v6 = v8;
     }
   }
 }
 
-- (void)setViewLayoutSpec:(id)a3
+- (void)setViewLayoutSpec:(id)spec
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_viewLayoutSpec != v5)
+  specCopy = spec;
+  v6 = specCopy;
+  if (self->_viewLayoutSpec != specCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryViewLayoutSpec *)v5 isEqual:?];
+    v8 = specCopy;
+    v7 = [(PXStoryViewLayoutSpec *)specCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_viewLayoutSpec, a3);
+      objc_storeStrong(&self->_viewLayoutSpec, spec);
       [(PXStoryStyleChromeLayout *)self setMediaVersion:([(PXStoryStyleChromeLayout *)self mediaVersion]+ 1)];
       [(PXStoryStyleChromeLayout *)self _invalidateContent];
       [(PXStoryStyleChromeLayout *)self _invalidateStrings];
@@ -1121,18 +1121,18 @@ LABEL_5:
   }
 }
 
-- (void)setStyleInfo:(id)a3
+- (void)setStyleInfo:(id)info
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_styleInfo != v5)
+  infoCopy = info;
+  v6 = infoCopy;
+  if (self->_styleInfo != infoCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryStyleDescriptor *)v5 isEqual:?];
+    v8 = infoCopy;
+    v7 = [(PXStoryStyleDescriptor *)infoCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_styleInfo, a3);
+      objc_storeStrong(&self->_styleInfo, info);
       [(PXStoryStyleChromeLayout *)self setMediaVersion:([(PXStoryStyleChromeLayout *)self mediaVersion]+ 1)];
       [(PXStoryStyleChromeLayout *)self _invalidateContent];
       v6 = v8;
@@ -1140,16 +1140,16 @@ LABEL_5:
   }
 }
 
-- (PXStoryStyleChromeLayout)initWithViewModel:(id)a3
+- (PXStoryStyleChromeLayout)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = PXStoryStyleChromeLayout;
   v6 = [(PXStoryStyleChromeLayout *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewModel, a3);
+    objc_storeStrong(&v6->_viewModel, model);
     [(PXStoryStyleChromeLayout *)v7 setContentSource:v7];
     v7->_songTitleSpriteIndex = 0;
     v7->_songTitleAccessorySpriteIndex = 1;
@@ -1166,46 +1166,46 @@ LABEL_5:
   return v7;
 }
 
-+ (void)stopCachingResourcesForStyleInfo:(id)a3 viewLayoutSpec:(id)a4 displayScale:(double)a5
++ (void)stopCachingResourcesForStyleInfo:(id)info viewLayoutSpec:(id)spec displayScale:(double)scale
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 songResource];
-  v8 = [v7 px_storyResourceSongAsset];
-  v9 = [v8 artworkDisplayAsset];
+  specCopy = spec;
+  songResource = [info songResource];
+  px_storyResourceSongAsset = [songResource px_storyResourceSongAsset];
+  artworkDisplayAsset = [px_storyResourceSongAsset artworkDisplayAsset];
 
-  if (v9)
+  if (artworkDisplayAsset)
   {
-    v10 = [off_1E77217B0 defaultManager];
-    [v10 imageProviderForAsset:v9];
+    defaultManager = [off_1E77217B0 defaultManager];
+    [defaultManager imageProviderForAsset:artworkDisplayAsset];
     objc_claimAutoreleasedReturnValue();
 
-    v11[0] = v9;
+    v11[0] = artworkDisplayAsset;
     [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
     objc_claimAutoreleasedReturnValue();
-    [v6 chromeButtonSize];
+    [specCopy chromeButtonSize];
     PXSizeScale();
   }
 }
 
-+ (void)startCachingResourcesForStyleInfo:(id)a3 viewLayoutSpec:(id)a4 displayScale:(double)a5
++ (void)startCachingResourcesForStyleInfo:(id)info viewLayoutSpec:(id)spec displayScale:(double)scale
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 songResource];
-  v8 = [v7 px_storyResourceSongAsset];
-  v9 = [v8 artworkDisplayAsset];
+  specCopy = spec;
+  songResource = [info songResource];
+  px_storyResourceSongAsset = [songResource px_storyResourceSongAsset];
+  artworkDisplayAsset = [px_storyResourceSongAsset artworkDisplayAsset];
 
-  if (v9)
+  if (artworkDisplayAsset)
   {
-    v10 = [off_1E77217B0 defaultManager];
-    [v10 imageProviderForAsset:v9];
+    defaultManager = [off_1E77217B0 defaultManager];
+    [defaultManager imageProviderForAsset:artworkDisplayAsset];
     objc_claimAutoreleasedReturnValue();
 
-    v11[0] = v9;
+    v11[0] = artworkDisplayAsset;
     [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
     objc_claimAutoreleasedReturnValue();
-    [v6 chromeButtonSize];
+    [specCopy chromeButtonSize];
     PXSizeScale();
   }
 }

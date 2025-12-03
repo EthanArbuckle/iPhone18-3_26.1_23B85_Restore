@@ -1,39 +1,39 @@
 @interface HKCodableSummaryCorrelatedTrendResults
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addTrendValues:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMinimumSupportedVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addTrendValues:(id)values;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMinimumSupportedVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableSummaryCorrelatedTrendResults
 
-- (void)addTrendValues:(id)a3
+- (void)addTrendValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   trendValues = self->_trendValues;
-  v8 = v4;
+  v8 = valuesCopy;
   if (!trendValues)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_trendValues;
     self->_trendValues = v6;
 
-    v4 = v8;
+    valuesCopy = v8;
     trendValues = self->_trendValues;
   }
 
-  [(NSMutableArray *)trendValues addObject:v4];
+  [(NSMutableArray *)trendValues addObject:valuesCopy];
 }
 
-- (void)setHasMinimumSupportedVersion:(BOOL)a3
+- (void)setHasMinimumSupportedVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -52,8 +52,8 @@
   v8.receiver = self;
   v8.super_class = HKCodableSummaryCorrelatedTrendResults;
   v4 = [(HKCodableSummaryCorrelatedTrendResults *)&v8 description];
-  v5 = [(HKCodableSummaryCorrelatedTrendResults *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableSummaryCorrelatedTrendResults *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -61,7 +61,7 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_trendValues count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_trendValues, "count")}];
@@ -84,8 +84,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -94,14 +94,14 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"trendValues"];
+    [dictionary setObject:v4 forKey:@"trendValues"];
   }
 
   has = self->_has;
   if (has)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_latestSupportedVersion];
-    [v3 setObject:v12 forKey:@"latestSupportedVersion"];
+    [dictionary setObject:v12 forKey:@"latestSupportedVersion"];
 
     has = self->_has;
   }
@@ -109,16 +109,16 @@
   if ((has & 2) != 0)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_minimumSupportedVersion];
-    [v3 setObject:v13 forKey:@"minimumSupportedVersion"];
+    [dictionary setObject:v13 forKey:@"minimumSupportedVersion"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -160,20 +160,20 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(HKCodableSummaryCorrelatedTrendResults *)self trendValuesCount])
   {
-    [v9 clearTrendValues];
-    v4 = [(HKCodableSummaryCorrelatedTrendResults *)self trendValuesCount];
-    if (v4)
+    [toCopy clearTrendValues];
+    trendValuesCount = [(HKCodableSummaryCorrelatedTrendResults *)self trendValuesCount];
+    if (trendValuesCount)
     {
-      v5 = v4;
+      v5 = trendValuesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HKCodableSummaryCorrelatedTrendResults *)self trendValuesAtIndex:i];
-        [v9 addTrendValues:v7];
+        [toCopy addTrendValues:v7];
       }
     }
   }
@@ -181,22 +181,22 @@
   has = self->_has;
   if (has)
   {
-    *(v9 + 1) = self->_latestSupportedVersion;
-    *(v9 + 32) |= 1u;
+    *(toCopy + 1) = self->_latestSupportedVersion;
+    *(toCopy + 32) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v9 + 2) = self->_minimumSupportedVersion;
-    *(v9 + 32) |= 2u;
+    *(toCopy + 2) = self->_minimumSupportedVersion;
+    *(toCopy + 32) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -216,7 +216,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * i) copyWithZone:{zone, v14}];
         [v5 addTrendValues:v11];
       }
 
@@ -243,16 +243,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   trendValues = self->_trendValues;
-  if (trendValues | *(v4 + 3))
+  if (trendValues | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)trendValues isEqual:?])
     {
@@ -262,23 +262,23 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_latestSupportedVersion != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_latestSupportedVersion != *(equalCopy + 1))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_13:
     v6 = 0;
     goto LABEL_14;
   }
 
-  v6 = (*(v4 + 32) & 2) == 0;
+  v6 = (*(equalCopy + 32) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_minimumSupportedVersion != *(v4 + 2))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_minimumSupportedVersion != *(equalCopy + 2))
     {
       goto LABEL_13;
     }
@@ -318,15 +318,15 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = *(v4 + 3);
+  v5 = *(fromCopy + 3);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -350,17 +350,17 @@ LABEL_3:
     while (v7);
   }
 
-  v10 = *(v4 + 32);
+  v10 = *(fromCopy + 32);
   if (v10)
   {
-    self->_latestSupportedVersion = *(v4 + 1);
+    self->_latestSupportedVersion = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v10 = *(v4 + 32);
+    v10 = *(fromCopy + 32);
   }
 
   if ((v10 & 2) != 0)
   {
-    self->_minimumSupportedVersion = *(v4 + 2);
+    self->_minimumSupportedVersion = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 }

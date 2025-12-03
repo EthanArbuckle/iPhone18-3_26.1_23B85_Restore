@@ -3,34 +3,34 @@
 + (id)_darkSRGB;
 + (id)_lightP3;
 + (id)_lightSRGB;
-+ (id)instanceForEncodingKey:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (_CHSDynamicColorKey)initWithCoder:(id)a3;
-- (_CHSDynamicColorKey)initWithColorScheme:(unint64_t)a3 displayGamut:(unint64_t)a4;
++ (id)instanceForEncodingKey:(id)key;
+- (BOOL)isEqual:(id)equal;
+- (_CHSDynamicColorKey)initWithCoder:(id)coder;
+- (_CHSDynamicColorKey)initWithColorScheme:(unint64_t)scheme displayGamut:(unint64_t)gamut;
 - (id)_encodingKey;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _CHSDynamicColorKey
 
-- (_CHSDynamicColorKey)initWithColorScheme:(unint64_t)a3 displayGamut:(unint64_t)a4
+- (_CHSDynamicColorKey)initWithColorScheme:(unint64_t)scheme displayGamut:(unint64_t)gamut
 {
   v7.receiver = self;
   v7.super_class = _CHSDynamicColorKey;
   result = [(_CHSDynamicColorKey *)&v7 init];
   if (result)
   {
-    result->_colorScheme = a3;
-    result->_displayGamut = a4;
+    result->_colorScheme = scheme;
+    result->_displayGamut = gamut;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -38,7 +38,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_colorScheme == v4->_colorScheme && self->_displayGamut == v4->_displayGamut;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_colorScheme == equalCopy->_colorScheme && self->_displayGamut == equalCopy->_displayGamut;
   }
 
   return v5;
@@ -75,20 +75,20 @@
   }
 }
 
-+ (id)instanceForEncodingKey:(id)a3
++ (id)instanceForEncodingKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46___CHSDynamicColorKey_instanceForEncodingKey___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (instanceForEncodingKey__onceToken != -1)
   {
     dispatch_once(&instanceForEncodingKey__onceToken, block);
   }
 
-  v5 = [instanceForEncodingKey__keys objectForKeyedSubscript:v4];
+  v5 = [instanceForEncodingKey__keys objectForKeyedSubscript:keyCopy];
 
   return v5;
 }
@@ -141,17 +141,17 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:self->_colorScheme forKey:@"colorScheme"];
-  [v4 encodeInt64:self->_displayGamut forKey:@"displayGamut"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:self->_colorScheme forKey:@"colorScheme"];
+  [coderCopy encodeInt64:self->_displayGamut forKey:@"displayGamut"];
 }
 
-- (_CHSDynamicColorKey)initWithCoder:(id)a3
+- (_CHSDynamicColorKey)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = -[_CHSDynamicColorKey initWithColorScheme:displayGamut:](self, "initWithColorScheme:displayGamut:", [v4 decodeInt64ForKey:@"colorScheme"], objc_msgSend(v4, "decodeInt64ForKey:", @"displayGamut"));
+  coderCopy = coder;
+  v5 = -[_CHSDynamicColorKey initWithColorScheme:displayGamut:](self, "initWithColorScheme:displayGamut:", [coderCopy decodeInt64ForKey:@"colorScheme"], objc_msgSend(coderCopy, "decodeInt64ForKey:", @"displayGamut"));
 
   return v5;
 }

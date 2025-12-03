@@ -1,41 +1,41 @@
 @interface _INPBPaymentAmountValue
-- (BOOL)isEqual:(id)a3;
-- (_INPBPaymentAmountValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBPaymentAmountValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsAmountType:(id)a3;
+- (int)StringAsAmountType:(id)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAmountType:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAmountType:(int)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBPaymentAmountValue
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBPaymentAmountValue *)self hasAmountType])
   {
-    v4 = [(_INPBPaymentAmountValue *)self amountType];
-    if ((v4 - 1) >= 6)
+    amountType = [(_INPBPaymentAmountValue *)self amountType];
+    if ((amountType - 1) >= 6)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", amountType];
     }
 
     else
     {
-      v5 = off_1E7281E28[(v4 - 1)];
+      v5 = off_1E7281E28[(amountType - 1)];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"amountType"];
+    [dictionary setObject:v5 forKeyedSubscript:@"amountType"];
   }
 
-  v6 = [(_INPBPaymentAmountValue *)self value];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"value"];
+  value = [(_INPBPaymentAmountValue *)self value];
+  dictionaryRepresentation = [value dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"value"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -53,23 +53,23 @@
   return [(_INPBCurrencyAmountValue *)self->_value hash]^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBPaymentAmountValue *)self hasAmountType];
-    if (v5 == [v4 hasAmountType])
+    hasAmountType = [(_INPBPaymentAmountValue *)self hasAmountType];
+    if (hasAmountType == [equalCopy hasAmountType])
     {
-      if (!-[_INPBPaymentAmountValue hasAmountType](self, "hasAmountType") || ![v4 hasAmountType] || (amountType = self->_amountType, amountType == objc_msgSend(v4, "amountType")))
+      if (!-[_INPBPaymentAmountValue hasAmountType](self, "hasAmountType") || ![equalCopy hasAmountType] || (amountType = self->_amountType, amountType == objc_msgSend(equalCopy, "amountType")))
       {
-        v7 = [(_INPBPaymentAmountValue *)self value];
-        v8 = [v4 value];
-        v9 = v8;
-        if ((v7 != 0) != (v8 == 0))
+        value = [(_INPBPaymentAmountValue *)self value];
+        value2 = [equalCopy value];
+        v9 = value2;
+        if ((value != 0) != (value2 == 0))
         {
-          v10 = [(_INPBPaymentAmountValue *)self value];
-          if (!v10)
+          value3 = [(_INPBPaymentAmountValue *)self value];
+          if (!value3)
           {
 
 LABEL_14:
@@ -77,10 +77,10 @@ LABEL_14:
             goto LABEL_12;
           }
 
-          v11 = v10;
-          v12 = [(_INPBPaymentAmountValue *)self value];
-          v13 = [v4 value];
-          v14 = [v12 isEqual:v13];
+          v11 = value3;
+          value4 = [(_INPBPaymentAmountValue *)self value];
+          value5 = [equalCopy value];
+          v14 = [value4 isEqual:value5];
 
           if (v14)
           {
@@ -101,7 +101,7 @@ LABEL_12:
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBPaymentAmountValue allocWithZone:](_INPBPaymentAmountValue init];
   if ([(_INPBPaymentAmountValue *)self hasAmountType])
@@ -109,86 +109,86 @@ LABEL_12:
     [(_INPBPaymentAmountValue *)v5 setAmountType:[(_INPBPaymentAmountValue *)self amountType]];
   }
 
-  v6 = [(_INPBCurrencyAmountValue *)self->_value copyWithZone:a3];
+  v6 = [(_INPBCurrencyAmountValue *)self->_value copyWithZone:zone];
   [(_INPBPaymentAmountValue *)v5 setValue:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBPaymentAmountValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBPaymentAmountValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBPaymentAmountValue)initWithCoder:(id)a3
+- (_INPBPaymentAmountValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBPaymentAmountValue *)self initWithData:v6];
+    self = [(_INPBPaymentAmountValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(_INPBPaymentAmountValue *)self hasAmountType])
   {
     amountType = self->_amountType;
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(_INPBPaymentAmountValue *)self value];
+  value = [(_INPBPaymentAmountValue *)self value];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (value)
   {
-    v7 = [(_INPBPaymentAmountValue *)self value];
+    value2 = [(_INPBPaymentAmountValue *)self value];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (int)StringAsAmountType:(id)a3
+- (int)StringAsAmountType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"MINIMUM_DUE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"MINIMUM_DUE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AMOUNT_DUE"])
+  else if ([typeCopy isEqualToString:@"AMOUNT_DUE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CURRENT_BALANCE"])
+  else if ([typeCopy isEqualToString:@"CURRENT_BALANCE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"MAXIMUM_TRANSFER_AMOUNT"])
+  else if ([typeCopy isEqualToString:@"MAXIMUM_TRANSFER_AMOUNT"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"MINIMUM_TRANSFER_AMOUNT"])
+  else if ([typeCopy isEqualToString:@"MINIMUM_TRANSFER_AMOUNT"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"STATEMENT_BALANCE"])
+  else if ([typeCopy isEqualToString:@"STATEMENT_BALANCE"])
   {
     v4 = 6;
   }
@@ -201,10 +201,10 @@ LABEL_12:
   return v4;
 }
 
-- (void)setAmountType:(int)a3
+- (void)setAmountType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -212,7 +212,7 @@ LABEL_12:
   else
   {
     *&self->_has = has | 1;
-    self->_amountType = a3;
+    self->_amountType = type;
   }
 }
 

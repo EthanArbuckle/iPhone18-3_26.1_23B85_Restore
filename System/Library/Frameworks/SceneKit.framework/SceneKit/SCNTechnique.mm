@@ -1,50 +1,50 @@
 @interface SCNTechnique
 + (SCNTechnique)techniqueBySequencingTechniques:(NSArray *)techniques;
 + (SCNTechnique)techniqueWithDictionary:(NSDictionary *)dictionary;
-+ (SCNTechnique)techniqueWithTechniqueRef:(__C3DFXTechnique *)a3;
-- (BOOL)__removeAnimation:(id)a3 forKey:(id)a4;
-- (BOOL)isAnimationForKeyPaused:(id)a3;
++ (SCNTechnique)techniqueWithTechniqueRef:(__C3DFXTechnique *)ref;
+- (BOOL)__removeAnimation:(id)animation forKey:(id)key;
+- (BOOL)isAnimationForKeyPaused:(id)paused;
 - (NSArray)animationKeys;
-- (SCNTechnique)initWithCoder:(id)a3;
-- (SCNTechnique)initWithTechniqueRef:(__C3DFXTechnique *)a3;
+- (SCNTechnique)initWithCoder:(id)coder;
+- (SCNTechnique)initWithTechniqueRef:(__C3DFXTechnique *)ref;
 - (__C3DAnimationManager)animationManager;
 - (__C3DScene)sceneRef;
-- (id)_scnAnimationForKey:(id)a3;
-- (id)animationForKey:(id)a3;
-- (id)animationPlayerForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initPresentationTechniqueWithTechniqueRef:(__C3DFXTechnique *)a3;
-- (id)passAtIndex:(unint64_t)a3;
+- (id)_scnAnimationForKey:(id)key;
+- (id)animationForKey:(id)key;
+- (id)animationPlayerForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initPresentationTechniqueWithTechniqueRef:(__C3DFXTechnique *)ref;
+- (id)passAtIndex:(unint64_t)index;
 - (id)presentationInstance;
 - (id)scene;
-- (id)valueForUndefinedKey:(id)a3;
-- (void)_copyAnimationsFrom:(id)a3;
-- (void)_customDecodingOfSCNTechnique:(id)a3;
-- (void)_customEncodingOfSCNTechnique:(id)a3;
-- (void)_pauseAnimation:(BOOL)a3 forKey:(id)a4 pausedByNode:(BOOL)a5;
+- (id)valueForUndefinedKey:(id)key;
+- (void)_copyAnimationsFrom:(id)from;
+- (void)_customDecodingOfSCNTechnique:(id)technique;
+- (void)_customEncodingOfSCNTechnique:(id)technique;
+- (void)_pauseAnimation:(BOOL)animation forKey:(id)key pausedByNode:(BOOL)node;
 - (void)_setupPasses;
 - (void)_syncObjCAnimations;
-- (void)addAnimation:(id)a3 forKey:(id)a4;
-- (void)addAnimationPlayer:(id)a3 forKey:(id)a4;
-- (void)bindAnimatablePath:(id)a3 toObject:(id)a4 withKeyPath:(id)a5 options:(id)a6;
+- (void)addAnimation:(id)animation forKey:(id)key;
+- (void)addAnimationPlayer:(id)player forKey:(id)key;
+- (void)bindAnimatablePath:(id)path toObject:(id)object withKeyPath:(id)keyPath options:(id)options;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)pauseAnimationForKey:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)pauseAnimationForKey:(id)key;
 - (void)removeAllAnimations;
-- (void)removeAllAnimationsWithBlendOutDuration:(double)a3;
+- (void)removeAllAnimationsWithBlendOutDuration:(double)duration;
 - (void)removeAllBindings;
-- (void)removeAnimationForKey:(id)a3;
-- (void)removeAnimationForKey:(id)a3 blendOutDuration:(double)a4;
-- (void)resumeAnimationForKey:(id)a3;
+- (void)removeAnimationForKey:(id)key;
+- (void)removeAnimationForKey:(id)key blendOutDuration:(double)duration;
+- (void)resumeAnimationForKey:(id)key;
 - (void)setLibrary:(id)library;
-- (void)setSpeed:(double)a3 forAnimationKey:(id)a4;
-- (void)setValue:(id)a3 forSymbolNamed:(id)a4;
-- (void)unbindAnimatablePath:(id)a3;
+- (void)setSpeed:(double)speed forAnimationKey:(id)key;
+- (void)setValue:(id)value forSymbolNamed:(id)named;
+- (void)unbindAnimatablePath:(id)path;
 @end
 
 @implementation SCNTechnique
 
-- (id)initPresentationTechniqueWithTechniqueRef:(__C3DFXTechnique *)a3
+- (id)initPresentationTechniqueWithTechniqueRef:(__C3DFXTechnique *)ref
 {
   v7.receiver = self;
   v7.super_class = SCNTechnique;
@@ -53,21 +53,21 @@
   if (v4)
   {
     *(v4 + 8) |= 1u;
-    v4->_technique = CFRetain(a3);
+    v4->_technique = CFRetain(ref);
     *&v5->_valueForSymbolLock._os_unfair_lock_opaque = 0;
   }
 
   return v5;
 }
 
-- (SCNTechnique)initWithTechniqueRef:(__C3DFXTechnique *)a3
+- (SCNTechnique)initWithTechniqueRef:(__C3DFXTechnique *)ref
 {
   v7.receiver = self;
   v7.super_class = SCNTechnique;
   v4 = [(SCNTechnique *)&v7 init];
   if (v4)
   {
-    v5 = CFRetain(a3);
+    v5 = CFRetain(ref);
     v4->_technique = v5;
     if (v5)
     {
@@ -233,14 +233,14 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = [SCNTechnique techniqueWithDictionary:[(SCNTechnique *)self dictionaryRepresentation]];
 
   return v3;
 }
 
-- (void)setValue:(id)a3 forSymbolNamed:(id)a4
+- (void)setValue:(id)value forSymbolNamed:(id)named
 {
   if ((*(self + 8) & 1) == 0)
   {
@@ -248,21 +248,21 @@
     valueForSymbol = self->_valueForSymbol;
     if (valueForSymbol)
     {
-      if (a3)
+      if (value)
       {
 LABEL_4:
-        [(NSMutableDictionary *)valueForSymbol setObject:a3 forKey:a4];
+        [(NSMutableDictionary *)valueForSymbol setObject:value forKey:named];
 LABEL_9:
         os_unfair_lock_unlock(&self->_valueForSymbolLock);
-        v9 = [(SCNTechnique *)self sceneRef];
+        sceneRef = [(SCNTechnique *)self sceneRef];
         v10[0] = MEMORY[0x277D85DD0];
         v10[1] = 3221225472;
         v10[2] = __40__SCNTechnique_setValue_forSymbolNamed___block_invoke;
         v10[3] = &unk_2782FC928;
         v10[4] = self;
-        v10[5] = a4;
-        v10[6] = a3;
-        [SCNTransaction postCommandWithContext:v9 object:self keyPath:a4 applyBlock:v10];
+        v10[5] = named;
+        v10[6] = value;
+        [SCNTransaction postCommandWithContext:sceneRef object:self keyPath:named applyBlock:v10];
         return;
       }
     }
@@ -271,13 +271,13 @@ LABEL_9:
     {
       valueForSymbol = objc_alloc_init(MEMORY[0x277CBEB38]);
       self->_valueForSymbol = valueForSymbol;
-      if (a3)
+      if (value)
       {
         goto LABEL_4;
       }
     }
 
-    [(NSMutableDictionary *)valueForSymbol removeObjectForKey:a4];
+    [(NSMutableDictionary *)valueForSymbol removeObjectForKey:named];
     goto LABEL_9;
   }
 
@@ -351,13 +351,13 @@ LABEL_14:
   C3DNotificationCenterPostNotification(SharedInstance, @"kC3DNotificationEngineContextInvalidatePasses", [a1[4] sceneRef], 0, 1u);
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   if (*(self + 8))
   {
     +[SCNTransaction lock];
     v13 = 0;
-    ValueForSymbol = C3DFXTechniqueGetValueForSymbol(self->_technique, a3, &v13);
+    ValueForSymbol = C3DFXTechniqueGetValueForSymbol(self->_technique, key, &v13);
     v12 = SCNNSValueFromTypedBytes(ValueForSymbol, v13, v8, v9, v10, v11);
     +[SCNTransaction unlock];
     return v12;
@@ -366,7 +366,7 @@ LABEL_14:
   else
   {
     os_unfair_lock_lock(&self->_valueForSymbolLock);
-    v5 = [(NSMutableDictionary *)self->_valueForSymbol valueForKey:a3];
+    v5 = [(NSMutableDictionary *)self->_valueForSymbol valueForKey:key];
     os_unfair_lock_unlock(&self->_valueForSymbolLock);
 
     return v5;
@@ -382,22 +382,22 @@ LABEL_14:
     v9[11] = v4;
 
     self->_library = library;
-    v8 = [(SCNTechnique *)self sceneRef];
+    sceneRef = [(SCNTechnique *)self sceneRef];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __27__SCNTechnique_setLibrary___block_invoke;
     v9[3] = &unk_2782FC950;
     v9[4] = self;
     v9[5] = library;
-    [SCNTransaction postCommandWithContext:v8 object:self applyBlock:v9];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v9];
   }
 }
 
 - (__C3DScene)sceneRef
 {
-  v2 = [(SCNTechnique *)self __CFObject];
+  __CFObject = [(SCNTechnique *)self __CFObject];
 
-  return C3DGetScene(v2);
+  return C3DGetScene(__CFObject);
 }
 
 - (id)scene
@@ -424,20 +424,20 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)__removeAnimation:(id)a3 forKey:(id)a4
+- (BOOL)__removeAnimation:(id)animation forKey:(id)key
 {
-  if (!a4)
+  if (!key)
   {
     return 0;
   }
 
   os_unfair_lock_lock(&self->_animationsLock);
-  v7 = [-[SCNOrderedDictionary objectForKey:](self->_animations objectForKey:{a4), "animation"}] == a3;
+  v7 = [-[SCNOrderedDictionary objectForKey:](self->_animations objectForKey:{key), "animation"}] == animation;
   if (v7)
   {
-    [(SCNOrderedDictionary *)self->_animations removeObjectForKey:a4];
-    v8 = [(SCNTechnique *)self __CFObject];
-    if ((CFTypeIsC3DEntity(v8) & 1) == 0)
+    [(SCNOrderedDictionary *)self->_animations removeObjectForKey:key];
+    __CFObject = [(SCNTechnique *)self __CFObject];
+    if ((CFTypeIsC3DEntity(__CFObject) & 1) == 0)
     {
       v9 = scn_default_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -446,21 +446,21 @@ LABEL_14:
       }
     }
 
-    C3DEntityRemoveAnimationForKey(v8, a4, 1);
+    C3DEntityRemoveAnimationForKey(__CFObject, key, 1);
   }
 
   os_unfair_lock_unlock(&self->_animationsLock);
   return v7;
 }
 
-- (void)addAnimationPlayer:(id)a3 forKey:(id)a4
+- (void)addAnimationPlayer:(id)player forKey:(id)key
 {
-  if (a3)
+  if (player)
   {
-    v5 = a4;
-    if (!a4)
+    keyCopy = key;
+    if (!key)
     {
-      v5 = [objc_msgSend(MEMORY[0x277CCAD78] "UUID")];
+      keyCopy = [objc_msgSend(MEMORY[0x277CCAD78] "UUID")];
     }
 
     os_unfair_lock_lock(&self->_animationsLock);
@@ -471,17 +471,17 @@ LABEL_14:
       self->_animations = animations;
     }
 
-    [(SCNOrderedDictionary *)animations setObject:a3 forKey:v5];
+    [(SCNOrderedDictionary *)animations setObject:player forKey:keyCopy];
     os_unfair_lock_unlock(&self->_animationsLock);
-    v8 = [(SCNTechnique *)self sceneRef];
+    sceneRef = [(SCNTechnique *)self sceneRef];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __42__SCNTechnique_addAnimationPlayer_forKey___block_invoke;
     v10[3] = &unk_2782FC928;
-    v10[4] = a3;
+    v10[4] = player;
     v10[5] = self;
-    v10[6] = v5;
-    [SCNTransaction postCommandWithContext:v8 object:self applyBlock:v10];
+    v10[6] = keyCopy;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v10];
   }
 
   else
@@ -507,25 +507,25 @@ void __42__SCNTechnique_addAnimationPlayer_forKey___block_invoke(uint64_t a1)
   }
 }
 
-- (void)addAnimation:(id)a3 forKey:(id)a4
+- (void)addAnimation:(id)animation forKey:(id)key
 {
-  if (a3)
+  if (animation)
   {
-    v5 = a4;
-    v6 = a3;
-    if (!a4)
+    keyCopy = key;
+    animationCopy = animation;
+    if (!key)
     {
-      v5 = [objc_msgSend(MEMORY[0x277CCAD78] "UUID")];
+      keyCopy = [objc_msgSend(MEMORY[0x277CCAD78] "UUID")];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [SCNAnimation animationWithCAAnimation:v6];
+      animationCopy = [SCNAnimation animationWithCAAnimation:animationCopy];
     }
 
-    v7 = [SCNAnimationPlayer animationPlayerWithSCNAnimation:v6];
-    [(SCNTechnique *)self addAnimationPlayer:v7 forKey:v5];
+    v7 = [SCNAnimationPlayer animationPlayerWithSCNAnimation:animationCopy];
+    [(SCNTechnique *)self addAnimationPlayer:v7 forKey:keyCopy];
 
     [(SCNAnimationPlayer *)v7 play];
   }
@@ -545,75 +545,75 @@ void __42__SCNTechnique_addAnimationPlayer_forKey___block_invoke(uint64_t a1)
   os_unfair_lock_lock(&self->_animationsLock);
   [(SCNOrderedDictionary *)self->_animations removeAllObjects];
   os_unfair_lock_unlock(&self->_animationsLock);
-  v3 = [(SCNTechnique *)self sceneRef];
+  sceneRef = [(SCNTechnique *)self sceneRef];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __35__SCNTechnique_removeAllAnimations__block_invoke;
   v4[3] = &unk_2782FB820;
   v4[4] = self;
-  [SCNTransaction postCommandWithContext:v3 object:self applyBlock:v4];
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v4];
 }
 
-- (void)removeAllAnimationsWithBlendOutDuration:(double)a3
+- (void)removeAllAnimationsWithBlendOutDuration:(double)duration
 {
   os_unfair_lock_lock(&self->_animationsLock);
   [(SCNOrderedDictionary *)self->_animations removeAllObjects];
   os_unfair_lock_unlock(&self->_animationsLock);
-  v5 = [(SCNTechnique *)self sceneRef];
+  sceneRef = [(SCNTechnique *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__SCNTechnique_removeAllAnimationsWithBlendOutDuration___block_invoke;
   v6[3] = &unk_2782FB7D0;
   v6[4] = self;
-  *&v6[5] = a3;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  *&v6[5] = duration;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
-- (void)removeAnimationForKey:(id)a3
+- (void)removeAnimationForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     os_unfair_lock_lock(&self->_animationsLock);
-    [(SCNOrderedDictionary *)self->_animations removeObjectForKey:a3];
+    [(SCNOrderedDictionary *)self->_animations removeObjectForKey:key];
     os_unfair_lock_unlock(&self->_animationsLock);
-    v5 = [(SCNTechnique *)self sceneRef];
+    sceneRef = [(SCNTechnique *)self sceneRef];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __38__SCNTechnique_removeAnimationForKey___block_invoke;
     v6[3] = &unk_2782FC950;
     v6[4] = self;
-    v6[5] = a3;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+    v6[5] = key;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
   }
 }
 
-- (void)removeAnimationForKey:(id)a3 blendOutDuration:(double)a4
+- (void)removeAnimationForKey:(id)key blendOutDuration:(double)duration
 {
-  if (a3)
+  if (key)
   {
     os_unfair_lock_lock(&self->_animationsLock);
-    [(SCNOrderedDictionary *)self->_animations removeObjectForKey:a3];
+    [(SCNOrderedDictionary *)self->_animations removeObjectForKey:key];
     os_unfair_lock_unlock(&self->_animationsLock);
-    v7 = [(SCNTechnique *)self sceneRef];
+    sceneRef = [(SCNTechnique *)self sceneRef];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __55__SCNTechnique_removeAnimationForKey_blendOutDuration___block_invoke;
     v8[3] = &unk_2782FB630;
     v8[4] = self;
-    v8[5] = a3;
-    *&v8[6] = a4;
-    [SCNTransaction postCommandWithContext:v7 object:self applyBlock:v8];
+    v8[5] = key;
+    *&v8[6] = duration;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v8];
   }
 }
 
 - (NSArray)animationKeys
 {
   os_unfair_lock_lock(&self->_animationsLock);
-  v3 = [(SCNOrderedDictionary *)self->_animations allKeys];
+  allKeys = [(SCNOrderedDictionary *)self->_animations allKeys];
   os_unfair_lock_unlock(&self->_animationsLock);
-  if ([(NSArray *)v3 count])
+  if ([(NSArray *)allKeys count])
   {
-    return v3;
+    return allKeys;
   }
 
   else
@@ -630,46 +630,46 @@ void __42__SCNTechnique_addAnimationPlayer_forKey___block_invoke(uint64_t a1)
   _os_log_fault_impl(&dword_21BEF7000, log, OS_LOG_TYPE_FAULT, "Assertion '%s' failed. sync animations: cftype is not an entity", &v1, 0xCu);
 }
 
-- (id)animationForKey:(id)a3
+- (id)animationForKey:(id)key
 {
-  v3 = [(SCNTechnique *)self _scnAnimationForKey:a3];
+  v3 = [(SCNTechnique *)self _scnAnimationForKey:key];
   v4 = MEMORY[0x277CD9DF8];
 
   return [v4 animationWithSCNAnimation:v3];
 }
 
-- (id)_scnAnimationForKey:(id)a3
+- (id)_scnAnimationForKey:(id)key
 {
-  v3 = a3;
-  if (a3)
+  keyCopy = key;
+  if (key)
   {
     os_unfair_lock_lock(&self->_animationsLock);
     animations = self->_animations;
     if (animations)
     {
-      v3 = [-[SCNOrderedDictionary objectForKey:](animations objectForKey:{v3), "animation"}];
+      keyCopy = [-[SCNOrderedDictionary objectForKey:](animations objectForKey:{keyCopy), "animation"}];
     }
 
     else
     {
-      v3 = 0;
+      keyCopy = 0;
     }
 
     os_unfair_lock_unlock(&self->_animationsLock);
   }
 
-  return v3;
+  return keyCopy;
 }
 
-- (void)_copyAnimationsFrom:(id)a3
+- (void)_copyAnimationsFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a3 animationKeys];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  animationKeys = [from animationKeys];
+  v6 = [animationKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -680,99 +680,99 @@ void __42__SCNTechnique_addAnimationPlayer_forKey___block_invoke(uint64_t a1)
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(animationKeys);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        v11 = [objc_msgSend(a3 animationPlayerForKey:{v10), "copy"}];
+        v11 = [objc_msgSend(from animationPlayerForKey:{v10), "copy"}];
         [(SCNTechnique *)self addAnimationPlayer:v11 forKey:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [animationKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (id)animationPlayerForKey:(id)a3
+- (id)animationPlayerForKey:(id)key
 {
-  v3 = a3;
-  if (a3)
+  keyCopy = key;
+  if (key)
   {
     os_unfair_lock_lock(&self->_animationsLock);
     animations = self->_animations;
     if (animations)
     {
-      v3 = [(SCNOrderedDictionary *)animations objectForKey:v3];
+      keyCopy = [(SCNOrderedDictionary *)animations objectForKey:keyCopy];
     }
 
     else
     {
-      v3 = 0;
+      keyCopy = 0;
     }
 
     os_unfair_lock_unlock(&self->_animationsLock);
   }
 
-  return v3;
+  return keyCopy;
 }
 
-- (void)_pauseAnimation:(BOOL)a3 forKey:(id)a4 pausedByNode:(BOOL)a5
+- (void)_pauseAnimation:(BOOL)animation forKey:(id)key pausedByNode:(BOOL)node
 {
-  v5 = a5;
-  v7 = a3;
-  v9 = [(SCNTechnique *)self __CFObject];
-  if (v9)
+  nodeCopy = node;
+  animationCopy = animation;
+  __CFObject = [(SCNTechnique *)self __CFObject];
+  if (__CFObject)
   {
-    v10 = v9;
-    v11 = [(SCNTechnique *)self animationManager];
-    if (v11)
+    v10 = __CFObject;
+    animationManager = [(SCNTechnique *)self animationManager];
+    if (animationManager)
     {
-      v12 = v11;
+      v12 = animationManager;
       v13 = CACurrentMediaTime();
 
-      C3DAnimationManagerPauseAnimationForKey(v12, v10, a4, v7, v5, v13);
+      C3DAnimationManagerPauseAnimationForKey(v12, v10, key, animationCopy, nodeCopy, v13);
     }
   }
 }
 
-- (void)pauseAnimationForKey:(id)a3
+- (void)pauseAnimationForKey:(id)key
 {
-  v5 = [(SCNTechnique *)self sceneRef];
+  sceneRef = [(SCNTechnique *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__SCNTechnique_pauseAnimationForKey___block_invoke;
   v6[3] = &unk_2782FC950;
   v6[4] = self;
-  v6[5] = a3;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  v6[5] = key;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
-- (void)resumeAnimationForKey:(id)a3
+- (void)resumeAnimationForKey:(id)key
 {
-  v5 = [(SCNTechnique *)self sceneRef];
+  sceneRef = [(SCNTechnique *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__SCNTechnique_resumeAnimationForKey___block_invoke;
   v6[3] = &unk_2782FC950;
   v6[4] = self;
-  v6[5] = a3;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  v6[5] = key;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
-- (void)setSpeed:(double)a3 forAnimationKey:(id)a4
+- (void)setSpeed:(double)speed forAnimationKey:(id)key
 {
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"animations.%@.speed", a4];
-  v8 = [(SCNTechnique *)self sceneRef];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"animations.%@.speed", key];
+  sceneRef = [(SCNTechnique *)self sceneRef];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __41__SCNTechnique_setSpeed_forAnimationKey___block_invoke;
   v9[3] = &unk_2782FB630;
   v9[4] = self;
-  v9[5] = a4;
-  *&v9[6] = a3;
-  [SCNTransaction postCommandWithContext:v8 object:self keyPath:v7 applyBlock:v9];
+  v9[5] = key;
+  *&v9[6] = speed;
+  [SCNTransaction postCommandWithContext:sceneRef object:self keyPath:v7 applyBlock:v9];
 }
 
 void __41__SCNTechnique_setSpeed_forAnimationKey___block_invoke(uint64_t a1)
@@ -792,23 +792,23 @@ void __41__SCNTechnique_setSpeed_forAnimationKey___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)isAnimationForKeyPaused:(id)a3
+- (BOOL)isAnimationForKeyPaused:(id)paused
 {
-  v5 = [(SCNTechnique *)self sceneRef];
-  v6 = v5;
-  if (v5)
+  sceneRef = [(SCNTechnique *)self sceneRef];
+  v6 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v5);
+    C3DSceneLock(sceneRef);
   }
 
-  v7 = [(SCNTechnique *)self __CFObject];
-  if (v7)
+  __CFObject = [(SCNTechnique *)self __CFObject];
+  if (__CFObject)
   {
-    v8 = v7;
-    v9 = [(SCNTechnique *)self animationManager];
-    if (v9)
+    v8 = __CFObject;
+    animationManager = [(SCNTechnique *)self animationManager];
+    if (animationManager)
     {
-      IsPaused = C3DAnimationManagerGetAnimationForKeyIsPaused(v9, v8, a3);
+      IsPaused = C3DAnimationManagerGetAnimationForKeyIsPaused(animationManager, v8, paused);
       if (!v6)
       {
         return IsPaused;
@@ -828,17 +828,17 @@ LABEL_8:
   return IsPaused;
 }
 
-- (void)bindAnimatablePath:(id)a3 toObject:(id)a4 withKeyPath:(id)a5 options:(id)a6
+- (void)bindAnimatablePath:(id)path toObject:(id)object withKeyPath:(id)keyPath options:(id)options
 {
-  if (self != a4)
+  if (self != object)
   {
     v16[15] = v6;
     v16[16] = v7;
     v13 = objc_alloc_init(C3DBinding);
-    [(C3DBinding *)v13 setSourceObject:a4];
-    [(C3DBinding *)v13 setKeyPathDst:a3];
-    [(C3DBinding *)v13 setKeyPathSrc:a5];
-    [(C3DBinding *)v13 setOptions:a6];
+    [(C3DBinding *)v13 setSourceObject:object];
+    [(C3DBinding *)v13 setKeyPathDst:path];
+    [(C3DBinding *)v13 setKeyPathSrc:keyPath];
+    [(C3DBinding *)v13 setOptions:options];
     bindings = self->_bindings;
     if (!bindings)
     {
@@ -846,19 +846,19 @@ LABEL_8:
       self->_bindings = bindings;
     }
 
-    [(NSMutableDictionary *)bindings setValue:v13 forKey:a3];
+    [(NSMutableDictionary *)bindings setValue:v13 forKey:path];
 
-    v15 = [(SCNTechnique *)self sceneRef];
+    sceneRef = [(SCNTechnique *)self sceneRef];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __64__SCNTechnique_bindAnimatablePath_toObject_withKeyPath_options___block_invoke;
     v16[3] = &unk_2782FC978;
     v16[4] = self;
-    v16[5] = a4;
-    v16[6] = a3;
-    v16[7] = a5;
-    v16[8] = a6;
-    [SCNTransaction postCommandWithContext:v15 object:self applyBlock:v16];
+    v16[5] = object;
+    v16[6] = path;
+    v16[7] = keyPath;
+    v16[8] = options;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v16];
   }
 }
 
@@ -873,7 +873,7 @@ void __64__SCNTechnique_bindAnimatablePath_toObject_withKeyPath_options___block_
   C3DEntityAddBinding(v2, v3);
 }
 
-- (void)unbindAnimatablePath:(id)a3
+- (void)unbindAnimatablePath:(id)path
 {
   [(NSMutableDictionary *)self->_bindings removeObjectForKey:?];
   if (![(NSMutableDictionary *)self->_bindings count])
@@ -882,14 +882,14 @@ void __64__SCNTechnique_bindAnimatablePath_toObject_withKeyPath_options___block_
     self->_bindings = 0;
   }
 
-  v5 = [(SCNTechnique *)self sceneRef];
+  sceneRef = [(SCNTechnique *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__SCNTechnique_unbindAnimatablePath___block_invoke;
   v6[3] = &unk_2782FC950;
   v6[4] = self;
-  v6[5] = a3;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  v6[5] = path;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
 void __37__SCNTechnique_unbindAnimatablePath___block_invoke(uint64_t a1)
@@ -903,13 +903,13 @@ void __37__SCNTechnique_unbindAnimatablePath___block_invoke(uint64_t a1)
 - (void)removeAllBindings
 {
   self->_bindings = 0;
-  v3 = [(SCNTechnique *)self sceneRef];
+  sceneRef = [(SCNTechnique *)self sceneRef];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __33__SCNTechnique_removeAllBindings__block_invoke;
   v4[3] = &unk_2782FB820;
   v4[4] = self;
-  [SCNTransaction postCommandWithContext:v3 object:self applyBlock:v4];
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v4];
 }
 
 void __33__SCNTechnique_removeAllBindings__block_invoke(uint64_t a1)
@@ -931,12 +931,12 @@ void __33__SCNTechnique_removeAllBindings__block_invoke(uint64_t a1)
   return self;
 }
 
-+ (SCNTechnique)techniqueWithTechniqueRef:(__C3DFXTechnique *)a3
++ (SCNTechnique)techniqueWithTechniqueRef:(__C3DFXTechnique *)ref
 {
-  result = C3DEntityGetObjCWrapper(a3);
+  result = C3DEntityGetObjCWrapper(ref);
   if (!result)
   {
-    v6 = [[a1 alloc] initWithTechniqueRef:a3];
+    v6 = [[self alloc] initWithTechniqueRef:ref];
 
     return v6;
   }
@@ -959,7 +959,7 @@ void __33__SCNTechnique_removeAllBindings__block_invoke(uint64_t a1)
   }
 }
 
-- (id)passAtIndex:(unint64_t)a3
+- (id)passAtIndex:(unint64_t)index
 {
   passes = self->_passes;
   if (!passes)
@@ -968,29 +968,29 @@ void __33__SCNTechnique_removeAllBindings__block_invoke(uint64_t a1)
     passes = self->_passes;
   }
 
-  if ([(NSArray *)passes count]<= a3)
+  if ([(NSArray *)passes count]<= index)
   {
     return 0;
   }
 
   v6 = self->_passes;
 
-  return [(NSArray *)v6 objectAtIndexedSubscript:a3];
+  return [(NSArray *)v6 objectAtIndexedSubscript:index];
 }
 
-- (void)_customEncodingOfSCNTechnique:(id)a3
+- (void)_customEncodingOfSCNTechnique:(id)technique
 {
-  [a3 encodeObject:-[SCNTechnique dictionaryRepresentation](self forKey:{"dictionaryRepresentation"), @"description"}];
+  [technique encodeObject:-[SCNTechnique dictionaryRepresentation](self forKey:{"dictionaryRepresentation"), @"description"}];
   os_unfair_lock_lock(&self->_valueForSymbolLock);
-  [a3 encodeObject:self->_valueForSymbol forKey:@"valueForSymbol"];
+  [technique encodeObject:self->_valueForSymbol forKey:@"valueForSymbol"];
 
   os_unfair_lock_unlock(&self->_valueForSymbolLock);
 }
 
-- (void)_customDecodingOfSCNTechnique:(id)a3
+- (void)_customDecodingOfSCNTechnique:(id)technique
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [a3 decodeObjectOfClasses:SCNPlistClasses() forKey:@"description"];
+  v5 = [technique decodeObjectOfClasses:SCNPlistClasses() forKey:@"description"];
   if (v5)
   {
     v6 = C3DFXTechniqueCreateWithDescription(v5, 0);
@@ -1001,7 +1001,7 @@ void __33__SCNTechnique_removeAllBindings__block_invoke(uint64_t a1)
     }
   }
 
-  v7 = [a3 decodeObjectOfClasses:SCNPlistClasses() forKey:@"valueForSymbol"];
+  v7 = [technique decodeObjectOfClasses:SCNPlistClasses() forKey:@"valueForSymbol"];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -1033,14 +1033,14 @@ void __33__SCNTechnique_removeAllBindings__block_invoke(uint64_t a1)
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   [(SCNTechnique *)self _customEncodingOfSCNTechnique:?];
 
-  SCNEncodeAnimations(a3, self);
+  SCNEncodeAnimations(coder, self);
 }
 
-- (SCNTechnique)initWithCoder:(id)a3
+- (SCNTechnique)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = SCNTechnique;
@@ -1050,9 +1050,9 @@ void __33__SCNTechnique_removeAllBindings__block_invoke(uint64_t a1)
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
     v4->_valueForSymbolLock._os_unfair_lock_opaque = 0;
-    [(SCNTechnique *)v4 _customDecodingOfSCNTechnique:a3];
+    [(SCNTechnique *)v4 _customDecodingOfSCNTechnique:coder];
     v4->_animationsLock._os_unfair_lock_opaque = 0;
-    SCNDecodeAnimations(a3, v4);
+    SCNDecodeAnimations(coder, v4);
     [SCNTransaction setImmediateMode:v5];
   }
 

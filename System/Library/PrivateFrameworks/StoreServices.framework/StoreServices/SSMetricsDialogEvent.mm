@@ -8,7 +8,7 @@
 - (NSString)result;
 - (NSString)targetId;
 - (SSMetricsDialogEvent)init;
-- (SSMetricsDialogEvent)initWithXPCEncoding:(id)a3;
+- (SSMetricsDialogEvent)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
 @end
 
@@ -96,50 +96,50 @@
 - (id)copyXPCEncoding
 {
   v3 = xpc_dictionary_create(0, 0, 0);
-  v4 = [(SSMetricsDialogEvent *)self actionType];
-  SSXPCDictionarySetObject(v3, "300", v4);
+  actionType = [(SSMetricsDialogEvent *)self actionType];
+  SSXPCDictionarySetObject(v3, "300", actionType);
 
-  v5 = [(SSMetricsDialogEvent *)self actionURL];
-  SSXPCDictionarySetObject(v3, "301", v5);
+  actionURL = [(SSMetricsDialogEvent *)self actionURL];
+  SSXPCDictionarySetObject(v3, "301", actionURL);
 
-  v6 = [(SSMetricsDialogEvent *)self details];
-  SSXPCDictionarySetObject(v3, "302", v6);
+  details = [(SSMetricsDialogEvent *)self details];
+  SSXPCDictionarySetObject(v3, "302", details);
 
-  v7 = [(SSMetricsDialogEvent *)self dialogId];
-  SSXPCDictionarySetObject(v3, "303", v7);
+  dialogId = [(SSMetricsDialogEvent *)self dialogId];
+  SSXPCDictionarySetObject(v3, "303", dialogId);
 
-  v8 = [(SSMetricsDialogEvent *)self dialogType];
-  SSXPCDictionarySetObject(v3, "304", v8);
+  dialogType = [(SSMetricsDialogEvent *)self dialogType];
+  SSXPCDictionarySetObject(v3, "304", dialogType);
 
-  v9 = [(SSMetricsDialogEvent *)self dualAction];
-  SSXPCDictionarySetObject(v3, "311", v9);
+  dualAction = [(SSMetricsDialogEvent *)self dualAction];
+  SSXPCDictionarySetObject(v3, "311", dualAction);
 
-  v10 = [(SSMetricsMutableEvent *)self eventType];
-  SSXPCDictionarySetObject(v3, "305", v10);
+  eventType = [(SSMetricsMutableEvent *)self eventType];
+  SSXPCDictionarySetObject(v3, "305", eventType);
 
-  v11 = [(SSMetricsDialogEvent *)self message];
-  SSXPCDictionarySetObject(v3, "306", v11);
+  message = [(SSMetricsDialogEvent *)self message];
+  SSXPCDictionarySetObject(v3, "306", message);
 
-  v12 = [(SSMetricsDialogEvent *)self result];
-  SSXPCDictionarySetObject(v3, "307", v12);
+  result = [(SSMetricsDialogEvent *)self result];
+  SSXPCDictionarySetObject(v3, "307", result);
 
-  v13 = [(SSMetricsDialogEvent *)self targetId];
-  SSXPCDictionarySetObject(v3, "308", v13);
+  targetId = [(SSMetricsDialogEvent *)self targetId];
+  SSXPCDictionarySetObject(v3, "308", targetId);
 
-  v14 = [(SSMetricsDialogEvent *)self userActions];
-  SSXPCDictionarySetObject(v3, "309", v14);
+  userActions = [(SSMetricsDialogEvent *)self userActions];
+  SSXPCDictionarySetObject(v3, "309", userActions);
 
-  v15 = [(SSMetricsMutableEvent *)self userAgent];
-  SSXPCDictionarySetObject(v3, "310", v15);
+  userAgent = [(SSMetricsMutableEvent *)self userAgent];
+  SSXPCDictionarySetObject(v3, "310", userAgent);
 
   return v3;
 }
 
-- (SSMetricsDialogEvent)initWithXPCEncoding:(id)a3
+- (SSMetricsDialogEvent)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v32.receiver = self;
     v32.super_class = SSMetricsDialogEvent;

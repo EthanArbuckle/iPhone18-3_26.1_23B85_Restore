@@ -1,67 +1,67 @@
 @interface VSPluginTTSDurationEstimation
-- (VSPluginTTSDurationEstimation)initWithDictionary:(id)a3;
-- (void)performWithCompletion:(id)a3;
+- (VSPluginTTSDurationEstimation)initWithDictionary:(id)dictionary;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation VSPluginTTSDurationEstimation
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = VSGetLogDefault();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(VSPluginTTSDurationEstimation *)self request];
-    v7 = [(VSPluginTTSDurationEstimation *)self request];
-    v8 = [v7 texts];
+    request = [(VSPluginTTSDurationEstimation *)self request];
+    request2 = [(VSPluginTTSDurationEstimation *)self request];
+    texts = [request2 texts];
     *buf = 138412546;
-    v48 = v6;
+    v48 = request;
     v49 = 2112;
-    v50 = v8;
+    v50 = texts;
     _os_log_impl(&dword_2334AC000, v5, OS_LOG_TYPE_DEFAULT, "VSPluginTTSDurationEstimation, %@, texts: %@", buf, 0x16u);
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v9 = [(VSPluginTTSDurationEstimation *)self request];
+    request3 = [(VSPluginTTSDurationEstimation *)self request];
 
-    if (!v9)
+    if (!request3)
     {
-      v4[2](v4, MEMORY[0x277CBEC10]);
+      completionCopy[2](completionCopy, MEMORY[0x277CBEC10]);
     }
 
-    v38 = v4;
+    v38 = completionCopy;
     v10 = MEMORY[0x277CBEAF8];
-    v11 = [(VSPluginTTSDurationEstimation *)self request];
-    v12 = [v11 locale];
-    v13 = [v10 localeWithLocaleIdentifier:v12];
+    request4 = [(VSPluginTTSDurationEstimation *)self request];
+    locale = [request4 locale];
+    v13 = [v10 localeWithLocaleIdentifier:locale];
 
     v37 = v13;
     v40 = [objc_alloc(MEMORY[0x277CEF430]) initWithLocale:v13];
     [v40 setHandleTTSCodes:1];
     v36 = objc_alloc_init(MEMORY[0x277D47988]);
-    v14 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v15 = objc_alloc_init(MEMORY[0x277D799A8]);
     v16 = objc_alloc_init(MEMORY[0x277D799A0]);
     v17 = MEMORY[0x277D799C8];
-    v18 = [(VSPluginTTSDurationEstimation *)self request];
-    v19 = [v18 gender];
-    [v16 setGender:{objc_msgSend(v17, "genderFromString:", v19)}];
+    request5 = [(VSPluginTTSDurationEstimation *)self request];
+    gender = [request5 gender];
+    [v16 setGender:{objc_msgSend(v17, "genderFromString:", gender)}];
 
-    v20 = [(VSPluginTTSDurationEstimation *)self request];
-    v21 = [v20 locale];
-    [v16 setLanguageCode:v21];
+    request6 = [(VSPluginTTSDurationEstimation *)self request];
+    locale2 = [request6 locale];
+    [v16 setLanguageCode:locale2];
 
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v22 = [(VSPluginTTSDurationEstimation *)self request];
-    v23 = [v22 texts];
+    request7 = [(VSPluginTTSDurationEstimation *)self request];
+    texts2 = [request7 texts];
 
-    obj = v23;
-    v24 = [v23 countByEnumeratingWithState:&v42 objects:v46 count:16];
+    obj = texts2;
+    v24 = [texts2 countByEnumeratingWithState:&v42 objects:v46 count:16];
     if (v24)
     {
       v25 = v24;
@@ -99,7 +99,7 @@
           [v16 setText:v29];
           [v15 estimateDurationOfRequest:v16];
           v33 = [MEMORY[0x277CCABB0] numberWithDouble:?];
-          [v14 addObject:v33];
+          [array addObject:v33];
 
           ++v27;
         }
@@ -111,24 +111,24 @@
       while (v25);
     }
 
-    [v36 setDurations:v14];
-    v34 = [v36 dictionary];
-    v4 = v38;
-    (v38)[2](v38, v34);
+    [v36 setDurations:array];
+    dictionary = [v36 dictionary];
+    completionCopy = v38;
+    (v38)[2](v38, dictionary);
   }
 
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (VSPluginTTSDurationEstimation)initWithDictionary:(id)a3
+- (VSPluginTTSDurationEstimation)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = VSPluginTTSDurationEstimation;
   v5 = [(VSPluginTTSDurationEstimation *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277D47980]) initWithDictionary:v4];
+    v6 = [objc_alloc(MEMORY[0x277D47980]) initWithDictionary:dictionaryCopy];
     request = v5->_request;
     v5->_request = v6;
   }

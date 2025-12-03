@@ -3,8 +3,8 @@
 - (void)alarmDismissed;
 - (void)bedtimeReached;
 - (void)didExit;
-- (void)significantScheduleChangeOccurred:(unint64_t)a3;
-- (void)wakeUpConfirmed:(BOOL)a3;
+- (void)significantScheduleChangeOccurred:(unint64_t)occurred;
+- (void)wakeUpConfirmed:(BOOL)confirmed;
 - (void)windDownReached;
 @end
 
@@ -15,20 +15,20 @@
   v7.receiver = self;
   v7.super_class = HDSPSleepScheduleStateCoordinatorDelayedWakeUpState;
   [(HKSPStateMachineState *)&v7 didExit];
-  v3 = [(HKSPStateMachineState *)self stateMachine];
-  v4 = [v3 currentContext];
-  v5 = [v4 hasStateTransitionOrInitializing];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  currentContext = [stateMachine currentContext];
+  hasStateTransitionOrInitializing = [currentContext hasStateTransitionOrInitializing];
 
-  if (v5)
+  if (hasStateTransitionOrInitializing)
   {
-    v6 = [(HKSPStateMachineState *)self stateMachine];
-    [v6 snoozeFireDateShouldBeReset];
+    stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+    [stateMachine2 snoozeFireDateShouldBeReset];
   }
 }
 
-- (void)wakeUpConfirmed:(BOOL)a3
+- (void)wakeUpConfirmed:(BOOL)confirmed
 {
-  v3 = a3;
+  confirmedCopy = confirmed;
   v18 = *MEMORY[0x277D85DE8];
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -36,13 +36,13 @@
     *buf = 138543618;
     v15 = objc_opt_class();
     v16 = 1024;
-    v17 = v3;
+    v17 = confirmedCopy;
     v6 = v15;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] wake up was confirmed (wasExplicitConfirmation: %d)", buf, 0x12u);
   }
 
-  v7 = [(HKSPStateMachineState *)self stateMachine];
-  if (v3)
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  if (confirmedCopy)
   {
     v8 = 3;
   }
@@ -56,8 +56,8 @@
   v12[1] = 3221225472;
   v12[2] = __71__HDSPSleepScheduleStateCoordinatorDelayedWakeUpState_wakeUpConfirmed___block_invoke;
   v12[3] = &unk_279C7B108;
-  v13 = v7;
-  v9 = v7;
+  v13 = stateMachine;
+  v9 = stateMachine;
   v10 = [HDSPSleepScheduleStateCoordinatorStateMachineContext contextWithReason:v8];
   [v9 perform:v12 withContext:v10];
 
@@ -83,13 +83,13 @@ void __71__HDSPSleepScheduleStateCoordinatorDelayedWakeUpState_wakeUpConfirmed__
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] wake up alarm was dismissed", buf, 0xCu);
   }
 
-  v5 = [(HKSPStateMachineState *)self stateMachine];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__HDSPSleepScheduleStateCoordinatorDelayedWakeUpState_alarmDismissed__block_invoke;
   v9[3] = &unk_279C7B108;
-  v10 = v5;
-  v6 = v5;
+  v10 = stateMachine;
+  v6 = stateMachine;
   v7 = [HDSPSleepScheduleStateCoordinatorStateMachineContext contextWithReason:7];
   [v6 perform:v9 withContext:v7];
 
@@ -103,14 +103,14 @@ void __69__HDSPSleepScheduleStateCoordinatorDelayedWakeUpState_alarmDismissed__b
   [v1 enterState:v2];
 }
 
-- (void)significantScheduleChangeOccurred:(unint64_t)a3
+- (void)significantScheduleChangeOccurred:(unint64_t)occurred
 {
-  v5 = [(HKSPStateMachineState *)self stateMachine];
-  [v5 snoozeFireDateShouldBeReset];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  [stateMachine snoozeFireDateShouldBeReset];
 
   v6.receiver = self;
   v6.super_class = HDSPSleepScheduleStateCoordinatorDelayedWakeUpState;
-  [(HDSPSleepScheduleStateCoordinatorStateMachineState *)&v6 significantScheduleChangeOccurred:a3];
+  [(HDSPSleepScheduleStateCoordinatorStateMachineState *)&v6 significantScheduleChangeOccurred:occurred];
 }
 
 void __75__HDSPSleepScheduleStateCoordinatorDelayedWakeUpState_updateStateForcibly___block_invoke(uint64_t a1)
@@ -123,14 +123,14 @@ void __75__HDSPSleepScheduleStateCoordinatorDelayedWakeUpState_updateStateForcib
 - (id)expirationDate
 {
   v25 = *MEMORY[0x277D85DE8];
-  v2 = [(HKSPStateMachineState *)self stateMachine];
-  v3 = [v2 infoProvider];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
 
-  v4 = [v3 sleepScheduleModel];
-  v5 = [v4 sleepEventRecord];
-  v6 = [v3 currentDate];
-  v7 = [v5 wakeUpAlarmSnoozedUntilDate];
-  v8 = [v7 hksp_isAfterDate:v6];
+  sleepScheduleModel = [infoProvider sleepScheduleModel];
+  sleepEventRecord = [sleepScheduleModel sleepEventRecord];
+  currentDate = [infoProvider currentDate];
+  wakeUpAlarmSnoozedUntilDate = [sleepEventRecord wakeUpAlarmSnoozedUntilDate];
+  v8 = [wakeUpAlarmSnoozedUntilDate hksp_isAfterDate:currentDate];
 
   if (v8)
   {
@@ -139,11 +139,11 @@ void __75__HDSPSleepScheduleStateCoordinatorDelayedWakeUpState_updateStateForcib
     {
       v10 = objc_opt_class();
       v11 = v10;
-      v12 = [v5 wakeUpAlarmSnoozedUntilDate];
+      wakeUpAlarmSnoozedUntilDate2 = [sleepEventRecord wakeUpAlarmSnoozedUntilDate];
       v21 = 138543618;
       v22 = v10;
       v23 = 2114;
-      v24 = v12;
+      v24 = wakeUpAlarmSnoozedUntilDate2;
       _os_log_impl(&dword_269B11000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] still waiting for snoozed alarm %{public}@", &v21, 0x16u);
     }
 
@@ -152,8 +152,8 @@ void __75__HDSPSleepScheduleStateCoordinatorDelayedWakeUpState_updateStateForcib
 
   else
   {
-    v14 = [v4 sleepSchedule];
-    [v14 windDownTime];
+    sleepSchedule = [sleepScheduleModel sleepSchedule];
+    [sleepSchedule windDownTime];
     v15 = MEMORY[0x277D621F0];
     if (v16 <= 0.0)
     {
@@ -162,7 +162,7 @@ void __75__HDSPSleepScheduleStateCoordinatorDelayedWakeUpState_updateStateForcib
 
     v9 = *v15;
 
-    v13 = [v4 nextEventWithIdentifier:v9 dueAfterDate:v6];
+    v13 = [sleepScheduleModel nextEventWithIdentifier:v9 dueAfterDate:currentDate];
     v17 = HKSPLogForCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
@@ -192,13 +192,13 @@ void __75__HDSPSleepScheduleStateCoordinatorDelayedWakeUpState_updateStateForcib
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] it's time for wind down", buf, 0xCu);
   }
 
-  v5 = [(HKSPStateMachineState *)self stateMachine];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__HDSPSleepScheduleStateCoordinatorDelayedWakeUpState_windDownReached__block_invoke;
   v9[3] = &unk_279C7B108;
-  v10 = v5;
-  v6 = v5;
+  v10 = stateMachine;
+  v6 = stateMachine;
   v7 = [HDSPSleepScheduleStateCoordinatorStateMachineContext contextWithReason:1];
   [v6 perform:v9 withContext:v7];
 
@@ -224,13 +224,13 @@ void __70__HDSPSleepScheduleStateCoordinatorDelayedWakeUpState_windDownReached__
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] it's time for bed", buf, 0xCu);
   }
 
-  v5 = [(HKSPStateMachineState *)self stateMachine];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__HDSPSleepScheduleStateCoordinatorDelayedWakeUpState_bedtimeReached__block_invoke;
   v9[3] = &unk_279C7B108;
-  v10 = v5;
-  v6 = v5;
+  v10 = stateMachine;
+  v6 = stateMachine;
   v7 = [HDSPSleepScheduleStateCoordinatorStateMachineContext contextWithReason:1];
   [v6 perform:v9 withContext:v7];
 

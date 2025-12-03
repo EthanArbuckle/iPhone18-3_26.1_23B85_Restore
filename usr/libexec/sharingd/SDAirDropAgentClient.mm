@@ -2,7 +2,7 @@
 - (NSString)bundleID;
 - (OS_nw_agent_client)client;
 - (_TtC16DaemoniOSLibrary20SDAirDropAgentClient)init;
-- (_TtC16DaemoniOSLibrary20SDAirDropAgentClient)initWithClient:(id)a3 browseDescriptor:(id)a4 browseResponse:(id)a5;
+- (_TtC16DaemoniOSLibrary20SDAirDropAgentClient)initWithClient:(id)client browseDescriptor:(id)descriptor browseResponse:(id)response;
 - (id)browseResponse;
 @end
 
@@ -47,14 +47,14 @@
   return result;
 }
 
-- (_TtC16DaemoniOSLibrary20SDAirDropAgentClient)initWithClient:(id)a3 browseDescriptor:(id)a4 browseResponse:(id)a5
+- (_TtC16DaemoniOSLibrary20SDAirDropAgentClient)initWithClient:(id)client browseDescriptor:(id)descriptor browseResponse:(id)response
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(response);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  return sub_10068479C(a3, a4, sub_1003CCB40, v8);
+  return sub_10068479C(client, descriptor, sub_1003CCB40, v8);
 }
 
 @end

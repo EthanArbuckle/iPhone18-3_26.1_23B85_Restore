@@ -1,12 +1,12 @@
 @interface NSUserDefaults.MailCleanupUserDefaults
-- (_TtCE19iCloudMailAssistantCSo14NSUserDefaults23MailCleanupUserDefaults)initWithSuiteName:(id)a3;
+- (_TtCE19iCloudMailAssistantCSo14NSUserDefaults23MailCleanupUserDefaults)initWithSuiteName:(id)name;
 @end
 
 @implementation NSUserDefaults.MailCleanupUserDefaults
 
-- (_TtCE19iCloudMailAssistantCSo14NSUserDefaults23MailCleanupUserDefaults)initWithSuiteName:(id)a3
+- (_TtCE19iCloudMailAssistantCSo14NSUserDefaults23MailCleanupUserDefaults)initWithSuiteName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_21498F870();
   }

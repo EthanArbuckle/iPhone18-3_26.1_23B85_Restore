@@ -1,14 +1,14 @@
 @interface CSPostBuildInstallService
 + (id)sharedService;
-- (void)_performPostBuildInstallWithCompletion:(id)a3;
+- (void)_performPostBuildInstallWithCompletion:(id)completion;
 - (void)registerPostBuildInstallService;
 @end
 
 @implementation CSPostBuildInstallService
 
-- (void)_performPostBuildInstallWithCompletion:(id)a3
+- (void)_performPostBuildInstallWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x3032000000;
@@ -21,7 +21,7 @@
   v6[2] = sub_100034D38;
   v6[3] = &unk_10024EC40;
   v8 = v9;
-  v5 = v3;
+  v5 = completionCopy;
   v7 = v5;
   [v4 triggerVoiceProfileCleanupWithCompletion:v6];
 

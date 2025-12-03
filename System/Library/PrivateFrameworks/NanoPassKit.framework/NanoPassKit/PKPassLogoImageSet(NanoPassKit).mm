@@ -32,110 +32,110 @@
   v12 = 30.0;
 LABEL_5:
   v13 = [v9 constraintsWithMaxSize:{v10, v12}];
-  v14 = [a1 logoImage];
-  v15 = [v13 resizedImage:v14];
-  [a1 setLogoImage:v15];
+  logoImage = [self logoImage];
+  v15 = [v13 resizedImage:logoImage];
+  [self setLogoImage:v15];
 
   objc_autoreleasePoolPop(v8);
-  v16 = [a1 logoImage];
-  v17 = [v16 resizedImageToFit:{a2, a3}];
-  [a1 setLogoImage:v17];
+  logoImage2 = [self logoImage];
+  v17 = [logoImage2 resizedImageToFit:{a2, a3}];
+  [self setLogoImage:v17];
 
-  v18 = [a1 backgroundImage];
-  v19 = [v18 resizedImageToCover:{a2, a3}];
-  [a1 setBackgroundImage:v19];
+  backgroundImage = [self backgroundImage];
+  v19 = [backgroundImage resizedImageToCover:{a2, a3}];
+  [self setBackgroundImage:v19];
 
-  v20 = [a1 thumbnailImage];
-  v21 = [v20 resizedImageToFit:{a2, a3}];
-  [a1 setThumbnailImage:v21];
+  thumbnailImage = [self thumbnailImage];
+  v21 = [thumbnailImage resizedImageToFit:{a2, a3}];
+  [self setThumbnailImage:v21];
 
-  v22 = [a1 stripImage];
-  v23 = [v22 resizedImageToFit:{a2, a3}];
-  [a1 setStripImage:v23];
+  stripImage = [self stripImage];
+  v23 = [stripImage resizedImageToFit:{a2, a3}];
+  [self setStripImage:v23];
 
-  v24 = [a1 footerImage];
-  v25 = [v24 resizedImageToFit:{a2, a3}];
-  [a1 setFooterImage:v25];
+  footerImage = [self footerImage];
+  v25 = [footerImage resizedImageToFit:{a2, a3}];
+  [self setFooterImage:v25];
 
-  v26 = [a1 bankLogoImage];
-  v27 = [v26 resizedImageToFit:{a2, a3}];
-  [a1 setBankLogoImage:v27];
+  bankLogoImage = [self bankLogoImage];
+  v27 = [bankLogoImage resizedImageToFit:{a2, a3}];
+  [self setBankLogoImage:v27];
 
-  v28 = [a1 networkLogoImage];
-  v29 = [v28 resizedImageToFit:{a2, a3}];
-  [a1 setNetworkLogoImage:v29];
+  networkLogoImage = [self networkLogoImage];
+  v29 = [networkLogoImage resizedImageToFit:{a2, a3}];
+  [self setNetworkLogoImage:v29];
 
-  v30 = [a1 cobrandLogoImage];
-  v31 = [v30 resizedImageToFit:{a2, a3}];
-  [a1 setCobrandLogoImage:v31];
+  cobrandLogoImage = [self cobrandLogoImage];
+  v31 = [cobrandLogoImage resizedImageToFit:{a2, a3}];
+  [self setCobrandLogoImage:v31];
 
-  v32 = [a1 cardBackgroundImage];
-  v33 = [v32 resizedImageToFit:{a2, a3}];
-  [a1 setCardBackgroundImage:v33];
+  cardBackgroundImage = [self cardBackgroundImage];
+  v33 = [cardBackgroundImage resizedImageToFit:{a2, a3}];
+  [self setCardBackgroundImage:v33];
 
-  v34 = [a1 cardBackgroundCombinedImage];
-  v35 = [v34 resizedImageToFit:{a2, a3}];
-  [a1 setCardBackgroundCombinedImage:v35];
+  cardBackgroundCombinedImage = [self cardBackgroundCombinedImage];
+  v35 = [cardBackgroundCombinedImage resizedImageToFit:{a2, a3}];
+  [self setCardBackgroundCombinedImage:v35];
 }
 
 - (void)memoryMapImageData
 {
   v2 = objc_autoreleasePoolPush();
-  v3 = [a1 logoImage];
-  v4 = [v3 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
-  [a1 setLogoImage:v4];
+  logoImage = [self logoImage];
+  v4 = [logoImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
+  [self setLogoImage:v4];
 
-  v5 = [a1 backgroundImage];
-  v6 = [v5 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
-  [a1 setBackgroundImage:v6];
+  backgroundImage = [self backgroundImage];
+  v6 = [backgroundImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
+  [self setBackgroundImage:v6];
 
-  v7 = [a1 thumbnailImage];
-  v8 = [v7 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
-  [a1 setThumbnailImage:v8];
+  thumbnailImage = [self thumbnailImage];
+  v8 = [thumbnailImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
+  [self setThumbnailImage:v8];
 
-  v9 = [a1 stripImage];
-  v10 = [v9 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
-  [a1 setStripImage:v10];
+  stripImage = [self stripImage];
+  v10 = [stripImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
+  [self setStripImage:v10];
 
-  v11 = [a1 footerImage];
-  v12 = [v11 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
-  [a1 setFooterImage:v12];
+  footerImage = [self footerImage];
+  v12 = [footerImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
+  [self setFooterImage:v12];
 
-  v13 = [a1 altImage];
-  v14 = [v13 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
-  [a1 setAltImage:v14];
+  altImage = [self altImage];
+  v14 = [altImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
+  [self setAltImage:v14];
 
-  v15 = [a1 bankLogoImage];
-  v16 = [v15 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
-  [a1 setBankLogoImage:v16];
+  bankLogoImage = [self bankLogoImage];
+  v16 = [bankLogoImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
+  [self setBankLogoImage:v16];
 
-  v17 = [a1 networkLogoImage];
-  v18 = [v17 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
-  [a1 setNetworkLogoImage:v18];
+  networkLogoImage = [self networkLogoImage];
+  v18 = [networkLogoImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
+  [self setNetworkLogoImage:v18];
 
-  v19 = [a1 cobrandLogoImage];
-  v20 = [v19 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
-  [a1 setCobrandLogoImage:v20];
+  cobrandLogoImage = [self cobrandLogoImage];
+  v20 = [cobrandLogoImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
+  [self setCobrandLogoImage:v20];
 
-  v21 = [a1 cardBackgroundImage];
-  v22 = [v21 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
-  [a1 setCardBackgroundImage:v22];
+  cardBackgroundImage = [self cardBackgroundImage];
+  v22 = [cardBackgroundImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
+  [self setCardBackgroundImage:v22];
 
-  v23 = [a1 cardBackgroundCombinedImage];
-  v24 = [v23 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
-  [a1 setCardBackgroundCombinedImage:v24];
+  cardBackgroundCombinedImage = [self cardBackgroundCombinedImage];
+  v24 = [cardBackgroundCombinedImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
+  [self setCardBackgroundCombinedImage:v24];
 
-  v25 = [a1 compactBankLogoDarkImage];
-  v26 = [v25 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
-  [a1 setCompactBankLogoDarkImage:v26];
+  compactBankLogoDarkImage = [self compactBankLogoDarkImage];
+  v26 = [compactBankLogoDarkImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
+  [self setCompactBankLogoDarkImage:v26];
 
-  v27 = [a1 compactBankLogoLightImage];
-  v28 = [v27 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
-  [a1 setCompactBankLogoLightImage:v28];
+  compactBankLogoLightImage = [self compactBankLogoLightImage];
+  v28 = [compactBankLogoLightImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
+  [self setCompactBankLogoLightImage:v28];
 
-  v29 = [a1 secondaryLogoImage];
-  v30 = [v29 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
-  [a1 setSecondaryLogoImage:v30];
+  secondaryLogoImage = [self secondaryLogoImage];
+  v30 = [secondaryLogoImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkLogoImage"];
+  [self setSecondaryLogoImage:v30];
 
   objc_autoreleasePoolPop(v2);
 }
@@ -163,31 +163,31 @@ LABEL_5:
   v16 = NPKGetPDFImageFromBundle(v10, *MEMORY[0x277D38668], *MEMORY[0x277CBF3A8], v15, a4);
   if (v16)
   {
-    [a1 setBankLogoImage:v16];
+    [self setBankLogoImage:v16];
   }
 
   v17 = NPKGetPDFImageFromBundle(v10, *MEMORY[0x277D38690], v14, v15, a4);
   if (v17)
   {
-    [a1 setNetworkLogoImage:v17];
+    [self setNetworkLogoImage:v17];
   }
 
   v18 = NPKGetPDFImageFromBundle(v10, *MEMORY[0x277D38680], v14, v15, a4);
   if (v18)
   {
-    [a1 setCobrandLogoImage:v18];
+    [self setCobrandLogoImage:v18];
   }
 
   v19 = NPKGetPDFImageFromBundle(v10, *MEMORY[0x277D38678], a2, a3, a4);
   if (v19)
   {
-    [a1 setCardBackgroundImage:v19];
+    [self setCardBackgroundImage:v19];
   }
 
   v20 = NPKGetPDFImageFromBundle(v10, *MEMORY[0x277D38670], a2, a3, a4);
   if (v20)
   {
-    [a1 setCardBackgroundCombinedImage:v20];
+    [self setCardBackgroundCombinedImage:v20];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -195,56 +195,56 @@ LABEL_5:
 
 - (BOOL)npkHasValidPaymentCardAssets
 {
-  v2 = [a1 cardBackgroundCombinedImage];
-  if (v2)
+  cardBackgroundCombinedImage = [self cardBackgroundCombinedImage];
+  if (cardBackgroundCombinedImage)
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [a1 cardBackgroundImage];
-    if (v4)
+    cardBackgroundImage = [self cardBackgroundImage];
+    if (cardBackgroundImage)
     {
       v3 = 1;
     }
 
     else
     {
-      v5 = [a1 backgroundImage];
-      if (v5)
+      backgroundImage = [self backgroundImage];
+      if (backgroundImage)
       {
         v3 = 1;
       }
 
       else
       {
-        v6 = [a1 cobrandLogoImage];
-        if (v6)
+        cobrandLogoImage = [self cobrandLogoImage];
+        if (cobrandLogoImage)
         {
           v3 = 1;
         }
 
         else
         {
-          v7 = [a1 bankLogoImage];
-          if (v7)
+          bankLogoImage = [self bankLogoImage];
+          if (bankLogoImage)
           {
             v3 = 1;
           }
 
           else
           {
-            v8 = [a1 logoImage];
-            if (v8)
+            logoImage = [self logoImage];
+            if (logoImage)
             {
               v3 = 1;
             }
 
             else
             {
-              v9 = [a1 networkLogoImage];
-              v3 = v9 != 0;
+              networkLogoImage = [self networkLogoImage];
+              v3 = networkLogoImage != 0;
             }
           }
         }

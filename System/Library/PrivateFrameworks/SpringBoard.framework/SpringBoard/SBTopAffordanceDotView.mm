@@ -2,12 +2,12 @@
 + (CAColorMatrix)darkDefaultColorMatrix;
 + (CAColorMatrix)darkHighlightedColorMatrix;
 + (CAColorMatrix)lightHighlightedColorMatrix;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (CAColorMatrix)_effectiveColorMatrix;
-- (SBTopAffordanceDotView)initWithFrame:(CGRect)a3;
+- (SBTopAffordanceDotView)initWithFrame:(CGRect)frame;
 - (id)_makeBackdropLayerFilters;
 - (void)_updateBackdropLayerFilters;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation SBTopAffordanceDotView
@@ -43,29 +43,29 @@
   return result;
 }
 
-- (SBTopAffordanceDotView)initWithFrame:(CGRect)a3
+- (SBTopAffordanceDotView)initWithFrame:(CGRect)frame
 {
   v15[2] = *MEMORY[0x277D85DE8];
   v14.receiver = self;
   v14.super_class = SBTopAffordanceDotView;
-  v3 = [(SBTopAffordanceDotView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBTopAffordanceDotView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(SBTopAffordanceDotView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v5 = [(SBTopAffordanceDotView *)v4 _backdropLayer];
-    [v5 setAllowsInPlaceFiltering:1];
-    [v5 setCornerCurve:*MEMORY[0x277CDA130]];
-    [v5 setCornerRadius:2.5];
-    v6 = [(SBTopAffordanceDotView *)v4 _makeBackdropLayerFilters];
-    [v5 setFilters:v6];
+    _backdropLayer = [(SBTopAffordanceDotView *)v4 _backdropLayer];
+    [_backdropLayer setAllowsInPlaceFiltering:1];
+    [_backdropLayer setCornerCurve:*MEMORY[0x277CDA130]];
+    [_backdropLayer setCornerRadius:2.5];
+    _makeBackdropLayerFilters = [(SBTopAffordanceDotView *)v4 _makeBackdropLayerFilters];
+    [_backdropLayer setFilters:_makeBackdropLayerFilters];
 
-    v7 = [(SBTopAffordanceDotView *)v4 widthAnchor];
-    v8 = [v7 constraintEqualToConstant:5.0];
+    widthAnchor = [(SBTopAffordanceDotView *)v4 widthAnchor];
+    v8 = [widthAnchor constraintEqualToConstant:5.0];
     v15[0] = v8;
-    v9 = [(SBTopAffordanceDotView *)v4 heightAnchor];
-    v10 = [(SBTopAffordanceDotView *)v4 widthAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    heightAnchor = [(SBTopAffordanceDotView *)v4 heightAnchor];
+    widthAnchor2 = [(SBTopAffordanceDotView *)v4 widthAnchor];
+    v11 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
     v15[1] = v11;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
     [(SBTopAffordanceDotView *)v4 addConstraints:v12];
@@ -74,19 +74,19 @@
   return v4;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     [(SBTopAffordanceDotView *)self _updateBackdropLayerFilters];
   }
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"filters.colorMatrix.inputColorMatrix"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"filters.colorMatrix.inputColorMatrix"])
   {
     v5 = 1;
   }
@@ -95,7 +95,7 @@
   {
     v7.receiver = self;
     v7.super_class = SBTopAffordanceDotView;
-    v5 = [(SBTopAffordanceDotView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(SBTopAffordanceDotView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
@@ -103,10 +103,10 @@
 
 - (CAColorMatrix)_effectiveColorMatrix
 {
-  v5 = [(SBTopAffordanceDotView *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  traitCollection = [(SBTopAffordanceDotView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v6 != 2)
+  if (userInterfaceStyle != 2)
   {
     if (self->_highlighted)
     {
@@ -183,11 +183,11 @@ LABEL_13:
 
 - (void)_updateBackdropLayerFilters
 {
-  v3 = [(SBTopAffordanceDotView *)self _backdropLayer];
+  _backdropLayer = [(SBTopAffordanceDotView *)self _backdropLayer];
   v4 = MEMORY[0x277CCAE60];
   [(SBTopAffordanceDotView *)self _effectiveColorMatrix];
   v5 = [v4 valueWithCAColorMatrix:&v6];
-  [v3 setValue:v5 forKeyPath:@"filters.colorMatrix.inputColorMatrix"];
+  [_backdropLayer setValue:v5 forKeyPath:@"filters.colorMatrix.inputColorMatrix"];
 }
 
 @end

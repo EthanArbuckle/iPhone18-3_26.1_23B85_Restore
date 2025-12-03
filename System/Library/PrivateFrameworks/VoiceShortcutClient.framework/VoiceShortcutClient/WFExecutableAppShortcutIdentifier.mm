@@ -1,43 +1,43 @@
 @interface WFExecutableAppShortcutIdentifier
-- (BOOL)isEqual:(id)a3;
-- (WFExecutableAppShortcutIdentifier)initWithBundleIdentifier:(id)a3 basePhraseTemplate:(id)a4 actionIdentifier:(id)a5 parameterIdentifier:(id)a6;
-- (WFExecutableAppShortcutIdentifier)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WFExecutableAppShortcutIdentifier)initWithBundleIdentifier:(id)identifier basePhraseTemplate:(id)template actionIdentifier:(id)actionIdentifier parameterIdentifier:(id)parameterIdentifier;
+- (WFExecutableAppShortcutIdentifier)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFExecutableAppShortcutIdentifier
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFExecutableAppShortcutIdentifier *)self bundleIdentifier];
-  [v4 encodeObject:v5 forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  bundleIdentifier = [(WFExecutableAppShortcutIdentifier *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 
-  v6 = [(WFExecutableAppShortcutIdentifier *)self basePhraseTemplate];
-  [v4 encodeObject:v6 forKey:@"basePhraseTemplate"];
+  basePhraseTemplate = [(WFExecutableAppShortcutIdentifier *)self basePhraseTemplate];
+  [coderCopy encodeObject:basePhraseTemplate forKey:@"basePhraseTemplate"];
 
-  v7 = [(WFExecutableAppShortcutIdentifier *)self actionIdentifier];
-  [v4 encodeObject:v7 forKey:@"actionIdentifier"];
+  actionIdentifier = [(WFExecutableAppShortcutIdentifier *)self actionIdentifier];
+  [coderCopy encodeObject:actionIdentifier forKey:@"actionIdentifier"];
 
-  v8 = [(WFExecutableAppShortcutIdentifier *)self parameterIdentifier];
-  [v4 encodeObject:v8 forKey:@"parameterIdentifier"];
+  parameterIdentifier = [(WFExecutableAppShortcutIdentifier *)self parameterIdentifier];
+  [coderCopy encodeObject:parameterIdentifier forKey:@"parameterIdentifier"];
 }
 
-- (WFExecutableAppShortcutIdentifier)initWithCoder:(id)a3
+- (WFExecutableAppShortcutIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"bundleIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"bundleIdentifier"];
 
   v7 = objc_opt_self();
-  v8 = [v4 decodeObjectOfClass:v7 forKey:@"basePhraseTemplate"];
+  v8 = [coderCopy decodeObjectOfClass:v7 forKey:@"basePhraseTemplate"];
 
   v9 = objc_opt_self();
-  v10 = [v4 decodeObjectOfClass:v9 forKey:@"actionIdentifier"];
+  v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"actionIdentifier"];
 
   v11 = objc_opt_self();
-  v12 = [v4 decodeObjectOfClass:v11 forKey:@"parameterIdentifier"];
+  v12 = [coderCopy decodeObjectOfClass:v11 forKey:@"parameterIdentifier"];
 
   v13 = [(WFExecutableAppShortcutIdentifier *)self initWithBundleIdentifier:v6 basePhraseTemplate:v8 actionIdentifier:v10 parameterIdentifier:v12];
   return v13;
@@ -45,25 +45,25 @@
 
 - (unint64_t)hash
 {
-  v3 = [(WFExecutableAppShortcutIdentifier *)self bundleIdentifier];
-  v4 = [v3 hash];
-  v5 = [(WFExecutableAppShortcutIdentifier *)self basePhraseTemplate];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(WFExecutableAppShortcutIdentifier *)self actionIdentifier];
-  v8 = [v7 hash];
-  v9 = [(WFExecutableAppShortcutIdentifier *)self parameterIdentifier];
-  v10 = v8 ^ [v9 hash];
+  bundleIdentifier = [(WFExecutableAppShortcutIdentifier *)self bundleIdentifier];
+  v4 = [bundleIdentifier hash];
+  basePhraseTemplate = [(WFExecutableAppShortcutIdentifier *)self basePhraseTemplate];
+  v6 = [basePhraseTemplate hash] ^ v4;
+  actionIdentifier = [(WFExecutableAppShortcutIdentifier *)self actionIdentifier];
+  v8 = [actionIdentifier hash];
+  parameterIdentifier = [(WFExecutableAppShortcutIdentifier *)self parameterIdentifier];
+  v10 = v8 ^ [parameterIdentifier hash];
 
   return v6 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy != self)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -72,10 +72,10 @@ LABEL_36:
       goto LABEL_37;
     }
 
-    v7 = [(WFExecutableAppShortcutIdentifier *)self bundleIdentifier];
-    v8 = [(WFExecutableAppShortcutIdentifier *)v6 bundleIdentifier];
-    v9 = v7;
-    v10 = v8;
+    bundleIdentifier = [(WFExecutableAppShortcutIdentifier *)self bundleIdentifier];
+    bundleIdentifier2 = [(WFExecutableAppShortcutIdentifier *)v6 bundleIdentifier];
+    v9 = bundleIdentifier;
+    v10 = bundleIdentifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -102,10 +102,10 @@ LABEL_35:
       }
     }
 
-    v16 = [(WFExecutableAppShortcutIdentifier *)self basePhraseTemplate];
-    v17 = [(WFExecutableAppShortcutIdentifier *)v6 basePhraseTemplate];
-    v14 = v16;
-    v18 = v17;
+    basePhraseTemplate = [(WFExecutableAppShortcutIdentifier *)self basePhraseTemplate];
+    basePhraseTemplate2 = [(WFExecutableAppShortcutIdentifier *)v6 basePhraseTemplate];
+    v14 = basePhraseTemplate;
+    v18 = basePhraseTemplate2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -132,10 +132,10 @@ LABEL_34:
       }
     }
 
-    v22 = [(WFExecutableAppShortcutIdentifier *)self actionIdentifier];
-    v23 = [(WFExecutableAppShortcutIdentifier *)v6 actionIdentifier];
-    v24 = v22;
-    v25 = v23;
+    actionIdentifier = [(WFExecutableAppShortcutIdentifier *)self actionIdentifier];
+    actionIdentifier2 = [(WFExecutableAppShortcutIdentifier *)v6 actionIdentifier];
+    v24 = actionIdentifier;
+    v25 = actionIdentifier2;
     v32 = v24;
     v33 = v25;
     if (v24 != v25)
@@ -175,10 +175,10 @@ LABEL_33:
     }
 
 LABEL_24:
-    v28 = [(WFExecutableAppShortcutIdentifier *)self parameterIdentifier];
-    v29 = [(WFExecutableAppShortcutIdentifier *)v6 parameterIdentifier];
-    v26 = v28;
-    v30 = v29;
+    parameterIdentifier = [(WFExecutableAppShortcutIdentifier *)self parameterIdentifier];
+    parameterIdentifier2 = [(WFExecutableAppShortcutIdentifier *)v6 parameterIdentifier];
+    v26 = parameterIdentifier;
+    v30 = parameterIdentifier2;
     v27 = v30;
     if (v26 == v30)
     {
@@ -203,22 +203,22 @@ LABEL_37:
   return v12;
 }
 
-- (WFExecutableAppShortcutIdentifier)initWithBundleIdentifier:(id)a3 basePhraseTemplate:(id)a4 actionIdentifier:(id)a5 parameterIdentifier:(id)a6
+- (WFExecutableAppShortcutIdentifier)initWithBundleIdentifier:(id)identifier basePhraseTemplate:(id)template actionIdentifier:(id)actionIdentifier parameterIdentifier:(id)parameterIdentifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  templateCopy = template;
+  actionIdentifierCopy = actionIdentifier;
+  parameterIdentifierCopy = parameterIdentifier;
   v19.receiver = self;
   v19.super_class = WFExecutableAppShortcutIdentifier;
   v15 = [(WFExecutableAppShortcutIdentifier *)&v19 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_bundleIdentifier, a3);
-    objc_storeStrong(&v16->_basePhraseTemplate, a4);
-    objc_storeStrong(&v16->_actionIdentifier, a5);
-    objc_storeStrong(&v16->_parameterIdentifier, a6);
+    objc_storeStrong(&v15->_bundleIdentifier, identifier);
+    objc_storeStrong(&v16->_basePhraseTemplate, template);
+    objc_storeStrong(&v16->_actionIdentifier, actionIdentifier);
+    objc_storeStrong(&v16->_parameterIdentifier, parameterIdentifier);
     v17 = v16;
   }
 

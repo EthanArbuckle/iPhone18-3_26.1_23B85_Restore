@@ -1,16 +1,16 @@
 @interface PKTextInputRecognitionManager
 - (NSArray)textInputTargets;
 - (id)strokeProviderSnapshot;
-- (id)textInputTargetForItemStableIdentifier:(id)a3 strokeIdentifiers:(id)a4 simultaneousItemStableIdentifiers:(id)a5;
+- (id)textInputTargetForItemStableIdentifier:(id)identifier strokeIdentifiers:(id)identifiers simultaneousItemStableIdentifiers:(id)stableIdentifiers;
 - (uint64_t)_updateRecognitionSession;
 - (uint64_t)setPreferOutOfProcessRecognition:(uint64_t)result;
-- (void)_processQueryDidUpdateResult:(uint64_t)a1;
-- (void)beginRecognitionRequestWithDataSource:(void *)a1;
+- (void)_processQueryDidUpdateResult:(uint64_t)result;
+- (void)beginRecognitionRequestWithDataSource:(void *)source;
 - (void)dealloc;
-- (void)fetchContentInfoForTextInputTarget:(id)a3 strokeIdentifiers:(id)a4 completion:(id)a5;
-- (void)queryDidUpdateResult:(id)a3;
-- (void)reportDebugStateDescription:(id)a3;
-- (void)setRecognitionLocales:(uint64_t)a1;
+- (void)fetchContentInfoForTextInputTarget:(id)target strokeIdentifiers:(id)identifiers completion:(id)completion;
+- (void)queryDidUpdateResult:(id)result;
+- (void)reportDebugStateDescription:(id)description;
+- (void)setRecognitionLocales:(uint64_t)locales;
 @end
 
 @implementation PKTextInputRecognitionManager
@@ -37,32 +37,32 @@
   [(PKTextInputRecognitionManager *)&v4 dealloc];
 }
 
-- (void)beginRecognitionRequestWithDataSource:(void *)a1
+- (void)beginRecognitionRequestWithDataSource:(void *)source
 {
   v3 = a2;
-  if (a1)
+  if (source)
   {
-    v4 = a1[4];
+    v4 = source[4];
     v9 = v3;
     v5 = v3;
-    v6 = a1[3];
-    a1[3] = v5;
+    v6 = source[3];
+    source[3] = v5;
     v7 = v4;
 
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-    a1[6] = v8;
+    source[6] = v8;
     [v7 setNeedsRecognitionUpdate];
 
     v3 = v9;
   }
 }
 
-- (void)setRecognitionLocales:(uint64_t)a1
+- (void)setRecognitionLocales:(uint64_t)locales
 {
   v3 = a2;
-  if (a1)
+  if (locales)
   {
-    v4 = *(a1 + 16);
+    v4 = *(locales + 16);
     v10 = v3;
     v5 = v3;
     v6 = v4;
@@ -85,10 +85,10 @@
       }
 
       v8 = [v5 copy];
-      v9 = *(a1 + 16);
-      *(a1 + 16) = v8;
+      v9 = *(locales + 16);
+      *(locales + 16) = v8;
 
-      [(PKTextInputRecognitionManager *)a1 _updateRecognitionSession];
+      [(PKTextInputRecognitionManager *)locales _updateRecognitionSession];
       +[PKTextInputDebugStateIntrospector debugStateDidChange];
       v3 = v10;
     }
@@ -100,8 +100,8 @@ LABEL_9:
 - (uint64_t)_updateRecognitionSession
 {
   v31 = *MEMORY[0x1E69E9840];
-  v2 = [*(a1 + 16) count];
-  v3 = *(a1 + 32);
+  v2 = [*(self + 16) count];
+  v3 = *(self + 32);
   if (v2)
   {
     v4 = v3 == 0;
@@ -115,11 +115,11 @@ LABEL_9:
   if (v4)
   {
     v7 = [objc_alloc(MEMORY[0x1E6997B78]) initWithMode:1];
-    v8 = *(a1 + 32);
-    *(a1 + 32) = v7;
+    v8 = *(self + 32);
+    *(self + 32) = v7;
 
-    [*(a1 + 32) setDataSource:a1];
-    [*(a1 + 32) setPriority:1];
+    [*(self + 32) setDataSource:self];
+    [*(self + 32) setPriority:1];
   }
 
   else
@@ -137,18 +137,18 @@ LABEL_9:
     if (!v5)
     {
       [v3 setDataSource:0];
-      v6 = *(a1 + 32);
-      *(a1 + 32) = 0;
+      v6 = *(self + 32);
+      *(self + 32) = 0;
     }
   }
 
-  if (*(a1 + 32))
+  if (*(self + 32))
   {
     v9 = MEMORY[0x1E695DF70];
-    v10 = *(a1 + 16);
+    v10 = *(self + 16);
     v11 = [v9 arrayWithCapacity:{objc_msgSend(v10, "count")}];
 
-    v12 = *(a1 + 16);
+    v12 = *(self + 16);
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __58__PKTextInputRecognitionManager__updateRecognitionSession__block_invoke;
@@ -161,17 +161,17 @@ LABEL_9:
     {
       v15 = [v13 componentsJoinedByString:{@", "}];
       *buf = 134218242;
-      v28 = a1;
+      selfCopy = self;
       v29 = 2112;
       v30 = v15;
       _os_log_impl(&dword_1C7CCA000, v14, OS_LOG_TYPE_DEFAULT, "Recognition Manager %p: Set recognition locales: %@", buf, 0x16u);
     }
 
-    v16 = *(a1 + 32);
-    v17 = *(a1 + 16);
+    v16 = *(self + 32);
+    v17 = *(self + 16);
     [v16 setPreferredLocales:v17];
 
-    if (*(a1 + 8))
+    if (*(self + 8))
     {
       v18 = 2;
     }
@@ -181,26 +181,26 @@ LABEL_9:
       v18 = 1;
     }
 
-    [*(a1 + 32) setRecognitionEnvironment:v18];
+    [*(self + 32) setRecognitionEnvironment:v18];
   }
 
-  v19 = *(a1 + 40);
+  v19 = *(self + 40);
   if (v19)
   {
   }
 
-  else if (*(a1 + 32))
+  else if (*(self + 32))
   {
     v20 = objc_alloc(MEMORY[0x1E6997BC8]);
-    v21 = *(a1 + 32);
+    v21 = *(self + 32);
     v22 = [v20 initWithRecognitionSession:v21];
-    v23 = *(a1 + 40);
-    *(a1 + 40) = v22;
+    v23 = *(self + 40);
+    *(self + 40) = v22;
 
-    [*(a1 + 40) setDelegate:a1];
-    [*(a1 + 40) setTextInputTargetsDataSource:a1];
-    [*(a1 + 40) setPreferredUpdatesInterval:0.0];
-    [*(a1 + 40) start];
+    [*(self + 40) setDelegate:self];
+    [*(self + 40) setTextInputTargetsDataSource:self];
+    [*(self + 40) setPreferredUpdatesInterval:0.0];
+    [*(self + 40) start];
   }
 
   +[PKTextInputDebugStateIntrospector debugStateDidChange];
@@ -235,11 +235,11 @@ void __58__PKTextInputRecognitionManager__updateRecognitionSession__block_invoke
   [*(a1 + 32) addObject:v6];
 }
 
-- (void)queryDidUpdateResult:(id)a3
+- (void)queryDidUpdateResult:(id)result
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  resultCopy = result;
+  v5 = resultCopy;
   if (self)
   {
     textInputQuery = self->__textInputQuery;
@@ -250,7 +250,7 @@ void __58__PKTextInputRecognitionManager__updateRecognitionSession__block_invoke
     textInputQuery = 0;
   }
 
-  if (textInputQuery == v4)
+  if (textInputQuery == resultCopy)
   {
     v7 = +[PKTextInputSettings sharedSettings];
     [v7 debugRecognitionRequestArtificialDelay];
@@ -267,7 +267,7 @@ void __58__PKTextInputRecognitionManager__updateRecognitionSession__block_invoke
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218240;
-        v15 = self;
+        selfCopy = self;
         v16 = 2048;
         v17 = v9;
         _os_log_impl(&dword_1C7CCA000, v10, OS_LOG_TYPE_DEFAULT, "Recognition Manager %p: debug artificial delay for queryDidUpdateResult: %0.2f", buf, 0x16u);
@@ -285,40 +285,40 @@ void __58__PKTextInputRecognitionManager__updateRecognitionSession__block_invoke
   }
 }
 
-- (void)_processQueryDidUpdateResult:(uint64_t)a1
+- (void)_processQueryDidUpdateResult:(uint64_t)result
 {
   v14 = a2;
-  if (a1)
+  if (result)
   {
-    v3 = *(a1 + 24);
-    v4 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    v3 = *(result + 24);
+    v4 = *(result + 24);
+    *(result + 24) = 0;
 
     if (v3)
     {
-      v5 = [v14 lastProcessedStrokeProviderVersion];
-      v6 = [v5 integerValue];
+      lastProcessedStrokeProviderVersion = [v14 lastProcessedStrokeProviderVersion];
+      integerValue = [lastProcessedStrokeProviderVersion integerValue];
 
-      v7 = [v3 recognitionManagerStrokeProvider:a1];
-      v8 = [v7 strokeProviderVersion];
-      v9 = [v8 integerValue];
+      v7 = [v3 recognitionManagerStrokeProvider:result];
+      strokeProviderVersion = [v7 strokeProviderVersion];
+      integerValue2 = [strokeProviderVersion integerValue];
 
       [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-      v11 = v10 - *(a1 + 48);
-      *(a1 + 56) = v11;
-      if (v6 >= v9)
+      v11 = v10 - *(result + 48);
+      *(result + 56) = v11;
+      if (integerValue >= integerValue2)
       {
-        v13 = [v14 availableItems];
-        [v3 recognitionManager:a1 recognitionDidFinishWithQueryItems:v13 duration:v11];
+        availableItems = [v14 availableItems];
+        [v3 recognitionManager:result recognitionDidFinishWithQueryItems:availableItems duration:v11];
       }
 
       else
       {
-        v12 = [v14 lastProcessedStrokeProviderVersion];
+        lastProcessedStrokeProviderVersion2 = [v14 lastProcessedStrokeProviderVersion];
 
-        if (!v12)
+        if (!lastProcessedStrokeProviderVersion2)
         {
-          [v3 recognitionManager:a1 recognitionDidFinishWithQueryItems:MEMORY[0x1E695E0F0] duration:v11];
+          [v3 recognitionManager:result recognitionDidFinishWithQueryItems:MEMORY[0x1E695E0F0] duration:v11];
         }
       }
     }
@@ -346,13 +346,13 @@ void __58__PKTextInputRecognitionManager__updateRecognitionSession__block_invoke
 
 - (NSArray)textInputTargets
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_currentDataSource;
   }
 
-  v3 = [(PKTextInputRecognitionManager *)self recognitionManagerTextInputTargets:v2];
+  v3 = [(PKTextInputRecognitionManager *)self recognitionManagerTextInputTargets:selfCopy];
   if (!v3)
   {
     v3 = MEMORY[0x1E695E0F0];
@@ -361,37 +361,37 @@ void __58__PKTextInputRecognitionManager__updateRecognitionSession__block_invoke
   return v3;
 }
 
-- (id)textInputTargetForItemStableIdentifier:(id)a3 strokeIdentifiers:(id)a4 simultaneousItemStableIdentifiers:(id)a5
+- (id)textInputTargetForItemStableIdentifier:(id)identifier strokeIdentifiers:(id)identifiers simultaneousItemStableIdentifiers:(id)stableIdentifiers
 {
-  v8 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_currentDataSource;
   }
 
-  return [(PKTextInputRecognitionManager *)self recognitionManager:v8 textInputTargetForItemStableIdentifier:a3 strokeIdentifiers:a4 simultaneousItemStableIdentifiers:a5];
+  return [(PKTextInputRecognitionManager *)self recognitionManager:selfCopy textInputTargetForItemStableIdentifier:identifier strokeIdentifiers:identifiers simultaneousItemStableIdentifiers:stableIdentifiers];
 }
 
-- (void)fetchContentInfoForTextInputTarget:(id)a3 strokeIdentifiers:(id)a4 completion:(id)a5
+- (void)fetchContentInfoForTextInputTarget:(id)target strokeIdentifiers:(id)identifiers completion:(id)completion
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  targetCopy = target;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   if (self && (currentDataSource = self->_currentDataSource) != 0)
   {
-    [(PKTextInputRecognitionManagerDataSource *)currentDataSource recognitionManager:self fetchContentInfoForTextInputTarget:v11 strokeIdentifiers:v8 completion:v9];
+    [(PKTextInputRecognitionManagerDataSource *)currentDataSource recognitionManager:self fetchContentInfoForTextInputTarget:targetCopy strokeIdentifiers:identifiersCopy completion:completionCopy];
   }
 
   else
   {
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)reportDebugStateDescription:(id)a3
+- (void)reportDebugStateDescription:(id)description
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptionCopy = description;
   if (self)
   {
     recognitionLocales = self->_recognitionLocales;
@@ -432,10 +432,10 @@ void __58__PKTextInputRecognitionManager__updateRecognitionSession__block_invoke
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v21 + 1) + 8 * i) localeIdentifier];
-        if (v13)
+        localeIdentifier = [*(*(&v21 + 1) + 8 * i) localeIdentifier];
+        if (localeIdentifier)
         {
-          [v6 addObject:v13];
+          [v6 addObject:localeIdentifier];
         }
       }
 
@@ -446,11 +446,11 @@ void __58__PKTextInputRecognitionManager__updateRecognitionSession__block_invoke
   }
 
   v14 = [v6 componentsJoinedByString:{@", "}];
-  v4[2](v4, @"Locales", v14);
+  descriptionCopy[2](descriptionCopy, @"Locales", v14);
   if (self)
   {
     v15 = [(CHRecognitionSession *)self->__recognitionSession description];
-    v4[2](v4, @"Recognition session", v15);
+    descriptionCopy[2](descriptionCopy, @"Recognition session", v15);
 
     textInputQuery = self->__textInputQuery;
   }
@@ -458,13 +458,13 @@ void __58__PKTextInputRecognitionManager__updateRecognitionSession__block_invoke
   else
   {
     v20 = [0 description];
-    v4[2](v4, @"Recognition session", v20);
+    descriptionCopy[2](descriptionCopy, @"Recognition session", v20);
 
     textInputQuery = 0;
   }
 
   v17 = [(CHTextInputQuery *)textInputQuery description];
-  v4[2](v4, @"Text input query", v17);
+  descriptionCopy[2](descriptionCopy, @"Text input query", v17);
 
   if (self)
   {
@@ -477,7 +477,7 @@ void __58__PKTextInputRecognitionManager__updateRecognitionSession__block_invoke
   }
 
   v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%0.3f s", *&lastRecognitionDuration];
-  v4[2](v4, @"Last request duration", v19);
+  descriptionCopy[2](descriptionCopy, @"Last request duration", v19);
 }
 
 @end

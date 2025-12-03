@@ -1,42 +1,42 @@
 @interface CSProminentDisplayView
 + (NSHashTable)overrideObservingDisplayViews;
 + (id)_startObservingSystemStatusOverridesIfNeededAndFetchInitialOverride;
-- (CSProminentDisplayView)initWithFrame:(CGRect)a3;
-- (double)_contentAlphaForElement:(unint64_t)a3;
+- (CSProminentDisplayView)initWithFrame:(CGRect)frame;
+- (double)_contentAlphaForElement:(unint64_t)element;
 - (id)_complicationsSuperview;
 - (id)_effectiveDisplayDate;
-- (int64_t)_keyForElement:(unint64_t)a3;
-- (void)_addComplicationSubview:(id)a3;
-- (void)_applyAlphaToNonTransientSubtitleViews:(double)a3;
-- (void)_applyContainerOrientationToVibrancyShadowView:(int64_t)a3;
-- (void)_handleNewContentAlpha:(double)a3 forElement:(unint64_t)a4;
-- (void)_setContentAlpha:(double)a3 forElement:(unint64_t)a4;
-- (void)_setOverrideDate:(id)a3;
+- (int64_t)_keyForElement:(unint64_t)element;
+- (void)_addComplicationSubview:(id)subview;
+- (void)_applyAlphaToNonTransientSubtitleViews:(double)views;
+- (void)_applyContainerOrientationToVibrancyShadowView:(int64_t)view;
+- (void)_handleNewContentAlpha:(double)alpha forElement:(unint64_t)element;
+- (void)_setContentAlpha:(double)alpha forElement:(unint64_t)element;
+- (void)_setOverrideDate:(id)date;
 - (void)_setUpTimeStringOverriding;
-- (void)_showTransientSubtitleView:(id)a3 withDelay:(double)a4;
-- (void)_transitionToNextPendedSubtitleIfNecessaryWithDelay:(double)a3;
+- (void)_showTransientSubtitleView:(id)view withDelay:(double)delay;
+- (void)_transitionToNextPendedSubtitleIfNecessaryWithDelay:(double)delay;
 - (void)_updateAlphaForNonTransientSubtitleViews;
 - (void)_updateEffectiveDisplayDate;
 - (void)_updateVisibilityForNonTransientSubtitleViews;
 - (void)layoutSubviews;
-- (void)setComplicationBottomRowView:(id)a3;
-- (void)setComplicationRowView:(id)a3;
-- (void)setComplicationSidebarView:(id)a3;
-- (void)setContentAlpha:(double)a3 forElements:(unint64_t)a4;
-- (void)setCustomSubtitleView:(id)a3;
-- (void)setDisplayDate:(id)a3;
-- (void)setHidesTimeViewForTransientSubtitle:(BOOL)a3;
-- (void)setNumberingSystem:(int64_t)a3;
-- (void)setShouldApplyVibrancyToComplications:(BOOL)a3;
-- (void)setSubtitleAlpha:(double)a3;
-- (void)setSubtitleComplicationView:(id)a3;
-- (void)setSubtitleDimmingView:(id)a3;
-- (void)setSubtitleView:(id)a3;
-- (void)setTimeView:(id)a3;
-- (void)setTransientSubtitleView:(id)a3;
-- (void)setUsesEditingLayout:(BOOL)a3;
-- (void)setVibrancyShadowView:(id)a3;
-- (void)updateContainerOrientationForBackgroundViews:(int64_t)a3;
+- (void)setComplicationBottomRowView:(id)view;
+- (void)setComplicationRowView:(id)view;
+- (void)setComplicationSidebarView:(id)view;
+- (void)setContentAlpha:(double)alpha forElements:(unint64_t)elements;
+- (void)setCustomSubtitleView:(id)view;
+- (void)setDisplayDate:(id)date;
+- (void)setHidesTimeViewForTransientSubtitle:(BOOL)subtitle;
+- (void)setNumberingSystem:(int64_t)system;
+- (void)setShouldApplyVibrancyToComplications:(BOOL)complications;
+- (void)setSubtitleAlpha:(double)alpha;
+- (void)setSubtitleComplicationView:(id)view;
+- (void)setSubtitleDimmingView:(id)view;
+- (void)setSubtitleView:(id)view;
+- (void)setTimeView:(id)view;
+- (void)setTransientSubtitleView:(id)view;
+- (void)setUsesEditingLayout:(BOOL)layout;
+- (void)setVibrancyShadowView:(id)view;
+- (void)updateContainerOrientationForBackgroundViews:(int64_t)views;
 @end
 
 @implementation CSProminentDisplayView
@@ -44,17 +44,17 @@
 - (void)_updateEffectiveDisplayDate
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [(CSProminentDisplayView *)self _effectiveDisplayDate];
+  _effectiveDisplayDate = [(CSProminentDisplayView *)self _effectiveDisplayDate];
   v4 = CSLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = v3;
+    v6 = _effectiveDisplayDate;
     _os_log_impl(&dword_1A2D63000, v4, OS_LOG_TYPE_DEFAULT, "CSProminentDisplayView updating effective display date with date: %@", &v5, 0xCu);
   }
 
-  [(CSProminentTimeView *)self->_timeView setDate:v3];
-  [(CSProminentTextElementView *)self->_subtitleView setDate:v3];
+  [(CSProminentTimeView *)self->_timeView setDate:_effectiveDisplayDate];
+  [(CSProminentTextElementView *)self->_subtitleView setDate:_effectiveDisplayDate];
   [(CSProminentLayoutController *)self->_layoutController setFourDigitTime:[(CSProminentTimeView *)self->_timeView fourDigitTime]];
 }
 
@@ -69,11 +69,11 @@
   return overrideDate;
 }
 
-- (CSProminentDisplayView)initWithFrame:(CGRect)a3
+- (CSProminentDisplayView)initWithFrame:(CGRect)frame
 {
   v27.receiver = self;
   v27.super_class = CSProminentDisplayView;
-  v3 = [(CSProminentDisplayView *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CSProminentDisplayView *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[CSProminentLayoutController alloc] initWithTraitEnvironment:v3];
@@ -114,9 +114,9 @@
     v3->_subtitleVibrancyEffectView = v22;
 
     [(CSProminentDisplayView *)v3 addSubview:v3->_subtitleVibrancyEffectView];
-    v24 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     pendedTransientSubtitleViews = v3->_pendedTransientSubtitleViews;
-    v3->_pendedTransientSubtitleViews = v24;
+    v3->_pendedTransientSubtitleViews = array;
 
     [(CSProminentDisplayView *)v3 _setUpTimeStringOverriding];
   }
@@ -136,15 +136,15 @@
   v10 = v9;
   [(BSUIOrientationTransformWrapperView *)self->_backgroundTransformView setFrame:?];
   [(UIView *)self->_dimmableLayersContainer setFrame:v4, v6, v8, v10];
-  v11 = [(CSProminentDisplayView *)self layoutController];
+  layoutController = [(CSProminentDisplayView *)self layoutController];
   if ([(CSProminentDisplayView *)self shouldApplyVibrancyToComplications])
   {
-    v12 = [MEMORY[0x1E698E730] sharedInstance];
-    v13 = [v12 deviceClass] == 2;
+    mEMORY[0x1E698E730] = [MEMORY[0x1E698E730] sharedInstance];
+    v13 = [mEMORY[0x1E698E730] deviceClass] == 2;
 
-    v14 = [(CSProminentDisplayView *)self complicationRowView];
+    complicationRowView = [(CSProminentDisplayView *)self complicationRowView];
 
-    if (v14)
+    if (complicationRowView)
     {
       v15 = (16 * v13) | 8;
     }
@@ -154,9 +154,9 @@
       v15 = 16 * v13;
     }
 
-    v16 = [(CSProminentDisplayView *)self complicationBottomRowView];
+    complicationBottomRowView = [(CSProminentDisplayView *)self complicationBottomRowView];
 
-    if (v16)
+    if (complicationBottomRowView)
     {
       v17 = v15 | 0x20;
     }
@@ -174,72 +174,72 @@
 
   if (self->_usesEditingLayout)
   {
-    [v11 frameForElements:v17 variant:2 withBoundingRect:{v4, v6, v8, v10}];
+    [layoutController frameForElements:v17 variant:2 withBoundingRect:{v4, v6, v8, v10}];
     v19 = v18;
     v21 = v20;
     v121 = v23;
     v122 = v22;
-    [v11 frameForElements:2 variant:2 withBoundingRect:{v4, v6, v8, v10}];
+    [layoutController frameForElements:2 variant:2 withBoundingRect:{v4, v6, v8, v10}];
     v136 = v24;
     v133 = v26;
     v134 = v25;
     v132 = v27;
-    [v11 frameForElements:4 variant:2 withBoundingRect:{v4, v6, v8, v10}];
+    [layoutController frameForElements:4 variant:2 withBoundingRect:{v4, v6, v8, v10}];
     v119 = v29;
     v120 = v28;
     rect_16 = v31;
     rect_24 = v30;
-    [v11 frameForElements:1 variant:2 withBoundingRect:{v4, v6, v8, v10}];
+    [layoutController frameForElements:1 variant:2 withBoundingRect:{v4, v6, v8, v10}];
     v33 = v32;
     v139 = v34;
     Width = v35;
     v141 = v36;
-    [v11 frameForElements:8 variant:2 withBoundingRect:{v4, v6, v8, v10}];
+    [layoutController frameForElements:8 variant:2 withBoundingRect:{v4, v6, v8, v10}];
     v137 = v38;
     v138 = v37;
     v127 = v39;
     v135 = v40;
-    [v11 frameForElements:16 variant:2 withBoundingRect:{v4, v6, v8, v10}];
+    [layoutController frameForElements:16 variant:2 withBoundingRect:{v4, v6, v8, v10}];
     v130 = v42;
     v131 = v41;
     v128 = v44;
     v129 = v43;
-    [v11 frameForElements:32 variant:2 withBoundingRect:{v4, v6, v8, v10}];
+    [layoutController frameForElements:32 variant:2 withBoundingRect:{v4, v6, v8, v10}];
   }
 
   else
   {
-    [v11 frameForElements:v17 withBoundingRect:{v4, v6, v8, v10}];
+    [layoutController frameForElements:v17 withBoundingRect:{v4, v6, v8, v10}];
     v19 = v49;
     v21 = v50;
     v121 = v52;
     v122 = v51;
-    [v11 frameForElements:2 withBoundingRect:{v4, v6, v8, v10}];
+    [layoutController frameForElements:2 withBoundingRect:{v4, v6, v8, v10}];
     v136 = v53;
     v133 = v55;
     v134 = v54;
     v132 = v56;
-    [v11 frameForElements:4 withBoundingRect:{v4, v6, v8, v10}];
+    [layoutController frameForElements:4 withBoundingRect:{v4, v6, v8, v10}];
     v119 = v58;
     v120 = v57;
     rect_16 = v60;
     rect_24 = v59;
-    [v11 frameForElements:1 withBoundingRect:{v4, v6, v8, v10}];
+    [layoutController frameForElements:1 withBoundingRect:{v4, v6, v8, v10}];
     v33 = v61;
     v139 = v62;
     Width = v63;
     v141 = v64;
-    [v11 frameForElements:8 withBoundingRect:{v4, v6, v8, v10}];
+    [layoutController frameForElements:8 withBoundingRect:{v4, v6, v8, v10}];
     v137 = v66;
     v138 = v65;
     v127 = v67;
     v135 = v68;
-    [v11 frameForElements:16 withBoundingRect:{v4, v6, v8, v10}];
+    [layoutController frameForElements:16 withBoundingRect:{v4, v6, v8, v10}];
     v130 = v70;
     v131 = v69;
     v128 = v72;
     v129 = v71;
-    [v11 frameForElements:32 withBoundingRect:{v4, v6, v8, v10}];
+    [layoutController frameForElements:32 withBoundingRect:{v4, v6, v8, v10}];
   }
 
   v125 = v46;
@@ -301,16 +301,16 @@
   [(BSUIVibrancyEffectView *)self->_vibrancyEffectView setFrame:v19, v21, v122, v121];
   [(BSUIVibrancyEffectView *)self->_timeVibrancyEffectView setFrame:v33, v139, Width, v141];
   [(BSUIVibrancyEffectView *)self->_subtitleVibrancyEffectView setFrame:v120, v119, rect_24, rect_16];
-  v86 = [(BSUIVibrancyEffectView *)self->_subtitleVibrancyEffectView contentView];
-  [v86 convertRect:self fromView:{v120, v119, rect_24, rect_16}];
+  contentView = [(BSUIVibrancyEffectView *)self->_subtitleVibrancyEffectView contentView];
+  [contentView convertRect:self fromView:{v120, v119, rect_24, rect_16}];
   v88 = v87;
   v90 = v89;
   v92 = v91;
   v94 = v93;
 
   [(CSProminentEmptyElementView *)self->_subtitleComplicationView setFrame:v88, v90, v92, v94];
-  v95 = [(BSUIVibrancyEffectView *)self->_subtitleVibrancyEffectView contentView];
-  [v95 convertRect:self fromView:{v136, v134, v133, v132}];
+  contentView2 = [(BSUIVibrancyEffectView *)self->_subtitleVibrancyEffectView contentView];
+  [contentView2 convertRect:self fromView:{v136, v134, v133, v132}];
   v97 = v96;
   v99 = v98;
   v101 = v100;
@@ -319,8 +319,8 @@
   [(CSProminentTextElementView *)self->_subtitleView setFrame:v97, v99, v101, v103];
   [(CSProminentTextElementView *)self->_customSubtitleView setFrame:v97, v99, v101, v103];
   [(CSProminentTextElementView *)self->_transientSubtitleView setFrame:v97, v99, v101, v103];
-  v104 = [(BSUIVibrancyEffectView *)self->_timeVibrancyEffectView contentView];
-  [v104 convertRect:self fromView:{v33, v139, Width, v141}];
+  contentView3 = [(BSUIVibrancyEffectView *)self->_timeVibrancyEffectView contentView];
+  [contentView3 convertRect:self fromView:{v33, v139, Width, v141}];
   v106 = v105;
   v108 = v107;
   v110 = v109;
@@ -342,102 +342,102 @@
     [(CSProminentTimeView *)self->_timeView setFrame:v106, v108, v110, v112];
   }
 
-  v114 = [(CSProminentDisplayView *)self _complicationsSuperview];
-  [v114 convertRect:self fromView:{v138, v137, v127, v135}];
+  _complicationsSuperview = [(CSProminentDisplayView *)self _complicationsSuperview];
+  [_complicationsSuperview convertRect:self fromView:{v138, v137, v127, v135}];
   [(CSProminentEmptyElementView *)self->_complicationRowView setFrame:?];
-  [v114 convertRect:self fromView:{v131, v130, v129, v128}];
+  [_complicationsSuperview convertRect:self fromView:{v131, v130, v129, v128}];
   [(CSProminentEmptyElementView *)self->_complicationSidebarView setFrame:?];
-  [v114 convertRect:self fromView:{v126, v125, v124, v123}];
+  [_complicationsSuperview convertRect:self fromView:{v126, v125, v124, v123}];
   [(CSProminentEmptyElementView *)self->_complicationBottomRowView setFrame:?];
 }
 
-- (void)setVibrancyShadowView:(id)a3
+- (void)setVibrancyShadowView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   vibrancyShadowView = self->_vibrancyShadowView;
-  if (vibrancyShadowView != v5)
+  if (vibrancyShadowView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(BSUIVibrancyShadowView *)vibrancyShadowView removeFromSuperview];
-    objc_storeStrong(&self->_vibrancyShadowView, a3);
+    objc_storeStrong(&self->_vibrancyShadowView, view);
     v7 = self->_vibrancyShadowView;
     [(CSProminentDisplayView *)self _contentAlphaForElement:64];
     [(BSUIVibrancyShadowView *)v7 setAlpha:?];
     vibrancyShadowView = [(_CSProminentDisplayBackgroundWrapperView *)self->_backgroundWrapperView setWrappedView:v8];
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](vibrancyShadowView, v5);
+  MEMORY[0x1EEE66BB8](vibrancyShadowView, viewCopy);
 }
 
-- (void)setTimeView:(id)a3
+- (void)setTimeView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   timeView = self->_timeView;
-  if (timeView != v5)
+  if (timeView != viewCopy)
   {
-    v9 = v5;
+    v9 = viewCopy;
     [(CSProminentTimeView *)timeView removeFromSuperview];
-    objc_storeStrong(&self->_timeView, a3);
+    objc_storeStrong(&self->_timeView, view);
     [(CSProminentDisplayView *)self _contentAlphaForElement:1];
     [(CSProminentTimeView *)self->_timeView setAlpha:?];
-    v7 = [(CSProminentDisplayView *)self timeVibrancyEffectView];
-    v8 = [v7 contentView];
-    [v8 addSubview:self->_timeView];
+    timeVibrancyEffectView = [(CSProminentDisplayView *)self timeVibrancyEffectView];
+    contentView = [timeVibrancyEffectView contentView];
+    [contentView addSubview:self->_timeView];
 
-    v5 = v9;
+    viewCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](timeView, v5);
+  MEMORY[0x1EEE66BB8](timeView, viewCopy);
 }
 
-- (void)setHidesTimeViewForTransientSubtitle:(BOOL)a3
+- (void)setHidesTimeViewForTransientSubtitle:(BOOL)subtitle
 {
-  if (self->_hidesTimeViewForTransientSubtitle != a3)
+  if (self->_hidesTimeViewForTransientSubtitle != subtitle)
   {
-    self->_hidesTimeViewForTransientSubtitle = a3;
-    if (a3)
+    self->_hidesTimeViewForTransientSubtitle = subtitle;
+    if (subtitle)
     {
       [(CSProminentDisplayView *)self _showTransientSubtitleView:0 withDelay:0.0];
     }
   }
 }
 
-- (void)setSubtitleView:(id)a3
+- (void)setSubtitleView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   subtitleView = self->_subtitleView;
-  if (subtitleView != v5)
+  if (subtitleView != viewCopy)
   {
-    v9 = v5;
+    v9 = viewCopy;
     [(CSProminentTextElementView *)subtitleView removeFromSuperview];
-    objc_storeStrong(&self->_subtitleView, a3);
+    objc_storeStrong(&self->_subtitleView, view);
     [(CSProminentDisplayView *)self _updateAlphaForNonTransientSubtitleViews];
     [(CSProminentDisplayView *)self _updateVisibilityForNonTransientSubtitleViews];
-    v7 = [(CSProminentDisplayView *)self subtitleVibrancyEffectView];
-    v8 = [v7 contentView];
-    [v8 addSubview:self->_subtitleView];
+    subtitleVibrancyEffectView = [(CSProminentDisplayView *)self subtitleVibrancyEffectView];
+    contentView = [subtitleVibrancyEffectView contentView];
+    [contentView addSubview:self->_subtitleView];
 
-    v5 = v9;
+    viewCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](subtitleView, v5);
+  MEMORY[0x1EEE66BB8](subtitleView, viewCopy);
 }
 
-- (void)setTransientSubtitleView:(id)a3
+- (void)setTransientSubtitleView:(id)view
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  viewCopy = view;
+  v9 = viewCopy;
+  if (viewCopy)
   {
-    [v4 setAlpha:self->_subtitleAlpha];
-    v5 = [(CSProminentTextElementView *)self->_transientSubtitleView textLabel];
-    v6 = [v5 text];
+    [viewCopy setAlpha:self->_subtitleAlpha];
+    textLabel = [(CSProminentTextElementView *)self->_transientSubtitleView textLabel];
+    text = [textLabel text];
 
-    v7 = [v9 textLabel];
-    v8 = [v7 text];
+    textLabel2 = [v9 textLabel];
+    text2 = [textLabel2 text];
 
-    if (![v6 isEqualToString:v8] || -[NSMutableArray count](self->_pendedTransientSubtitleViews, "count"))
+    if (![text isEqualToString:text2] || -[NSMutableArray count](self->_pendedTransientSubtitleViews, "count"))
     {
       self->_hasClearedSinceLastAddedTransient = 0;
       [(NSMutableArray *)self->_pendedTransientSubtitleViews addObject:v9];
@@ -460,60 +460,60 @@
   }
 }
 
-- (void)setCustomSubtitleView:(id)a3
+- (void)setCustomSubtitleView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   customSubtitleView = self->_customSubtitleView;
-  if (customSubtitleView != v5)
+  if (customSubtitleView != viewCopy)
   {
-    v9 = v5;
+    v9 = viewCopy;
     [(CSProminentTextElementView *)customSubtitleView removeFromSuperview];
-    objc_storeStrong(&self->_customSubtitleView, a3);
+    objc_storeStrong(&self->_customSubtitleView, view);
     [(CSProminentDisplayView *)self _updateAlphaForNonTransientSubtitleViews];
     [(CSProminentDisplayView *)self _updateVisibilityForNonTransientSubtitleViews];
-    v7 = [(CSProminentDisplayView *)self subtitleVibrancyEffectView];
-    v8 = [v7 contentView];
-    [v8 addSubview:self->_customSubtitleView];
+    subtitleVibrancyEffectView = [(CSProminentDisplayView *)self subtitleVibrancyEffectView];
+    contentView = [subtitleVibrancyEffectView contentView];
+    [contentView addSubview:self->_customSubtitleView];
 
-    v5 = v9;
+    viewCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](customSubtitleView, v5);
+  MEMORY[0x1EEE66BB8](customSubtitleView, viewCopy);
 }
 
-- (void)setSubtitleAlpha:(double)a3
+- (void)setSubtitleAlpha:(double)alpha
 {
   subtitleAlpha = self->_subtitleAlpha;
-  self->_subtitleAlpha = a3;
+  self->_subtitleAlpha = alpha;
   [(CSProminentTextElementView *)self->_transientSubtitleView setAlpha:?];
-  [(CSProminentDisplayView *)self _applyAlphaToNonTransientSubtitleViews:a3];
-  if (BSFloatIsZero() && subtitleAlpha != a3 && ([MEMORY[0x1E69DD250] _isInAnimationBlockWithAnimationsEnabled] & 1) == 0)
+  [(CSProminentDisplayView *)self _applyAlphaToNonTransientSubtitleViews:alpha];
+  if (BSFloatIsZero() && subtitleAlpha != alpha && ([MEMORY[0x1E69DD250] _isInAnimationBlockWithAnimationsEnabled] & 1) == 0)
   {
-    v6 = [(CSProminentTextElementView *)self->_subtitleView layer];
-    [v6 removeAnimationForKey:@"opacity"];
+    layer = [(CSProminentTextElementView *)self->_subtitleView layer];
+    [layer removeAnimationForKey:@"opacity"];
 
-    v7 = [(CSProminentEmptyElementView *)self->_subtitleComplicationView layer];
-    [v7 removeAnimationForKey:@"opacity"];
+    layer2 = [(CSProminentEmptyElementView *)self->_subtitleComplicationView layer];
+    [layer2 removeAnimationForKey:@"opacity"];
 
-    v8 = [(CSProminentTextElementView *)self->_transientSubtitleView layer];
-    [v8 removeAnimationForKey:@"opacity"];
+    layer3 = [(CSProminentTextElementView *)self->_transientSubtitleView layer];
+    [layer3 removeAnimationForKey:@"opacity"];
 
-    v9 = [(CSProminentTextElementView *)self->_customSubtitleView layer];
-    [v9 removeAnimationForKey:@"opacity"];
+    layer4 = [(CSProminentTextElementView *)self->_customSubtitleView layer];
+    [layer4 removeAnimationForKey:@"opacity"];
   }
 }
 
-- (void)updateContainerOrientationForBackgroundViews:(int64_t)a3
+- (void)updateContainerOrientationForBackgroundViews:(int64_t)views
 {
   [(BSUIOrientationTransformWrapperView *)self->_backgroundTransformView setContainerOrientation:?];
   [(_CSProminentDisplayBackgroundWrapperView *)self->_backgroundWrapperView layoutIfNeeded];
 
-  [(CSProminentDisplayView *)self _applyContainerOrientationToVibrancyShadowView:a3];
+  [(CSProminentDisplayView *)self _applyContainerOrientationToVibrancyShadowView:views];
 }
 
-- (double)_contentAlphaForElement:(unint64_t)a3
+- (double)_contentAlphaForElement:(unint64_t)element
 {
-  v4 = [(CSProminentDisplayView *)self _keyForElement:a3];
+  v4 = [(CSProminentDisplayView *)self _keyForElement:element];
   if (v4 == -1)
   {
     return 0.1337;
@@ -537,32 +537,32 @@
   return v9;
 }
 
-- (void)setContentAlpha:(double)a3 forElements:(unint64_t)a4
+- (void)setContentAlpha:(double)alpha forElements:(unint64_t)elements
 {
   if (!self->_contentAlphas)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     contentAlphas = self->_contentAlphas;
-    self->_contentAlphas = v7;
+    self->_contentAlphas = dictionary;
   }
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v14 = __54__CSProminentDisplayView_setContentAlpha_forElements___block_invoke;
   v15 = &unk_1E76BA310;
-  v16 = self;
-  v17 = a3;
+  selfCopy = self;
+  alphaCopy = alpha;
   v9 = v13;
-  if (a4)
+  if (elements)
   {
     v10 = 0;
     v18 = 0;
-    v11 = vcnt_s8(a4);
+    v11 = vcnt_s8(elements);
     v11.i16[0] = vaddlv_u8(v11);
     v12 = v11.i32[0];
     do
     {
-      if (((1 << v10) & a4) != 0)
+      if (((1 << v10) & elements) != 0)
       {
         (v14)(v9);
         if (v18)
@@ -585,7 +585,7 @@
   }
 }
 
-- (void)_setContentAlpha:(double)a3 forElement:(unint64_t)a4
+- (void)_setContentAlpha:(double)alpha forElement:(unint64_t)element
 {
   v7 = [(CSProminentDisplayView *)self _keyForElement:?];
   if (v7 != -1)
@@ -595,7 +595,7 @@
     [v8 doubleValue];
     if (v8)
     {
-      v10 = v9 == a3;
+      v10 = v9 == alpha;
     }
 
     else
@@ -606,28 +606,28 @@
     if (!v10)
     {
       contentAlphas = self->_contentAlphas;
-      v12 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+      v12 = [MEMORY[0x1E696AD98] numberWithDouble:alpha];
       [(NSMutableDictionary *)contentAlphas setObject:v12 forKey:v13];
 
-      [(CSProminentDisplayView *)self _handleNewContentAlpha:a4 forElement:a3];
+      [(CSProminentDisplayView *)self _handleNewContentAlpha:element forElement:alpha];
     }
   }
 }
 
-- (void)_handleNewContentAlpha:(double)a3 forElement:(unint64_t)a4
+- (void)_handleNewContentAlpha:(double)alpha forElement:(unint64_t)element
 {
-  if (a4 > 15)
+  if (element > 15)
   {
-    switch(a4)
+    switch(element)
     {
       case 0x10uLL:
-        v5 = [(CSProminentDisplayView *)self complicationSidebarView];
+        complicationSidebarView = [(CSProminentDisplayView *)self complicationSidebarView];
         break;
       case 0x20uLL:
-        v5 = [(CSProminentDisplayView *)self complicationBottomRowView];
+        complicationSidebarView = [(CSProminentDisplayView *)self complicationBottomRowView];
         break;
       case 0x40uLL:
-        v5 = [(CSProminentDisplayView *)self vibrancyShadowView];
+        complicationSidebarView = [(CSProminentDisplayView *)self vibrancyShadowView];
         break;
       default:
         return;
@@ -636,67 +636,67 @@
     goto LABEL_17;
   }
 
-  if (a4 == 1)
+  if (element == 1)
   {
-    v5 = [(CSProminentDisplayView *)self timeView];
+    complicationSidebarView = [(CSProminentDisplayView *)self timeView];
 LABEL_17:
-    v6 = v5;
-    [v5 setAlpha:a3];
+    v6 = complicationSidebarView;
+    [complicationSidebarView setAlpha:alpha];
 
     return;
   }
 
-  if (a4 != 2)
+  if (element != 2)
   {
-    if (a4 != 8)
+    if (element != 8)
     {
       return;
     }
 
-    v5 = [(CSProminentDisplayView *)self complicationRowView];
+    complicationSidebarView = [(CSProminentDisplayView *)self complicationRowView];
     goto LABEL_17;
   }
 
   [(CSProminentDisplayView *)self setSubtitleAlpha:?];
 }
 
-- (int64_t)_keyForElement:(unint64_t)a3
+- (int64_t)_keyForElement:(unint64_t)element
 {
-  if ((a3 ^ (a3 - 1)) <= a3 - 1)
+  if ((element ^ (element - 1)) <= element - 1)
   {
     return -1;
   }
 
   else
   {
-    return a3;
+    return element;
   }
 }
 
-- (void)_transitionToNextPendedSubtitleIfNecessaryWithDelay:(double)a3
+- (void)_transitionToNextPendedSubtitleIfNecessaryWithDelay:(double)delay
 {
   if (self->_animatingTransientSubtitleTransition)
   {
     return;
   }
 
-  v6 = [(NSMutableArray *)self->_pendedTransientSubtitleViews firstObject];
-  v7 = v6;
-  if (v6)
+  firstObject = [(NSMutableArray *)self->_pendedTransientSubtitleViews firstObject];
+  v7 = firstObject;
+  if (firstObject)
   {
-    v10 = v6;
-    [(NSMutableArray *)self->_pendedTransientSubtitleViews removeObject:v6];
-    v8 = self;
+    v10 = firstObject;
+    [(NSMutableArray *)self->_pendedTransientSubtitleViews removeObject:firstObject];
+    selfCopy2 = self;
     v9 = v10;
 LABEL_4:
-    v6 = [(CSProminentDisplayView *)v8 _showTransientSubtitleView:v9 withDelay:a3];
+    firstObject = [(CSProminentDisplayView *)selfCopy2 _showTransientSubtitleView:v9 withDelay:delay];
     v7 = v10;
     goto LABEL_8;
   }
 
   if (self->_hasClearedSinceLastAddedTransient && self->_transientSubtitleView)
   {
-    v8 = self;
+    selfCopy2 = self;
     v10 = 0;
     v9 = 0;
     goto LABEL_4;
@@ -704,26 +704,26 @@ LABEL_4:
 
 LABEL_8:
 
-  MEMORY[0x1EEE66BB8](v6, v7);
+  MEMORY[0x1EEE66BB8](firstObject, v7);
 }
 
-- (void)_showTransientSubtitleView:(id)a3 withDelay:(double)a4
+- (void)_showTransientSubtitleView:(id)view withDelay:(double)delay
 {
-  v7 = a3;
-  v8 = v7;
-  if (self->_transientSubtitleView != v7)
+  viewCopy = view;
+  v8 = viewCopy;
+  if (self->_transientSubtitleView != viewCopy)
   {
-    v9 = v7 != 0;
+    v9 = viewCopy != 0;
     [(CSProminentDisplayView *)self _contentAlphaForElement:1];
     v11 = v10;
     if (v8)
     {
       [(CSProminentTextElementView *)self->_transientSubtitleView removeFromSuperview];
-      objc_storeStrong(&self->_transientSubtitleView, a3);
+      objc_storeStrong(&self->_transientSubtitleView, view);
       [(CSProminentTextElementView *)self->_transientSubtitleView setAlpha:0.0];
-      v12 = [(CSProminentDisplayView *)self subtitleVibrancyEffectView];
-      v13 = [v12 contentView];
-      [v13 addSubview:self->_transientSubtitleView];
+      subtitleVibrancyEffectView = [(CSProminentDisplayView *)self subtitleVibrancyEffectView];
+      contentView = [subtitleVibrancyEffectView contentView];
+      [contentView addSubview:self->_transientSubtitleView];
 
       [(CSProminentDisplayView *)self setNeedsLayout];
     }
@@ -747,8 +747,8 @@ LABEL_8:
     v16[2] = __63__CSProminentDisplayView__showTransientSubtitleView_withDelay___block_invoke_2;
     v16[3] = &unk_1E76BA2C0;
     v16[4] = self;
-    v15 = self;
-    [v14 animateWithDuration:0 delay:v17 options:v16 animations:0.25 completion:a4];
+    selfCopy = self;
+    [v14 animateWithDuration:0 delay:v17 options:v16 animations:0.25 completion:delay];
   }
 }
 
@@ -846,18 +846,18 @@ void __63__CSProminentDisplayView__showTransientSubtitleView_withDelay___block_i
   [v4 _transitionToNextPendedSubtitleIfNecessaryWithDelay:1.25];
 }
 
-- (void)_applyAlphaToNonTransientSubtitleViews:(double)a3
+- (void)_applyAlphaToNonTransientSubtitleViews:(double)views
 {
   if (self->_transientSubtitleView)
   {
-    a3 = 0.0;
+    views = 0.0;
   }
 
-  [(CSProminentTextElementView *)self->_customSubtitleView setAlpha:a3];
-  [(CSProminentEmptyElementView *)self->_subtitleComplicationView setAlpha:a3];
+  [(CSProminentTextElementView *)self->_customSubtitleView setAlpha:views];
+  [(CSProminentEmptyElementView *)self->_subtitleComplicationView setAlpha:views];
   subtitleView = self->_subtitleView;
 
-  [(CSProminentTextElementView *)subtitleView setAlpha:a3];
+  [(CSProminentTextElementView *)subtitleView setAlpha:views];
 }
 
 - (void)_updateAlphaForNonTransientSubtitleViews
@@ -879,116 +879,116 @@ void __63__CSProminentDisplayView__showTransientSubtitleView_withDelay___block_i
   [(CSProminentTextElementView *)subtitleView setHidden:v4 != 0];
 }
 
-- (void)setUsesEditingLayout:(BOOL)a3
+- (void)setUsesEditingLayout:(BOOL)layout
 {
-  if (self->_usesEditingLayout != a3)
+  if (self->_usesEditingLayout != layout)
   {
-    self->_usesEditingLayout = a3;
+    self->_usesEditingLayout = layout;
     [(CSProminentDisplayView *)self setNeedsLayout];
 
     [(CSProminentDisplayView *)self layoutIfNeeded];
   }
 }
 
-- (void)setSubtitleComplicationView:(id)a3
+- (void)setSubtitleComplicationView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   subtitleComplicationView = self->_subtitleComplicationView;
-  if (subtitleComplicationView != v5)
+  if (subtitleComplicationView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(CSProminentEmptyElementView *)subtitleComplicationView removeFromSuperview];
-    objc_storeStrong(&self->_subtitleComplicationView, a3);
+    objc_storeStrong(&self->_subtitleComplicationView, view);
     [(CSProminentDisplayView *)self _updateAlphaForNonTransientSubtitleViews];
     [(CSProminentDisplayView *)self _updateVisibilityForNonTransientSubtitleViews];
-    v7 = [(BSUIVibrancyEffectView *)self->_subtitleVibrancyEffectView contentView];
-    [v7 addSubview:self->_subtitleComplicationView];
+    contentView = [(BSUIVibrancyEffectView *)self->_subtitleVibrancyEffectView contentView];
+    [contentView addSubview:self->_subtitleComplicationView];
 
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](subtitleComplicationView, v5);
+  MEMORY[0x1EEE66BB8](subtitleComplicationView, viewCopy);
 }
 
-- (void)setSubtitleDimmingView:(id)a3
+- (void)setSubtitleDimmingView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   subtitleDimmingView = self->_subtitleDimmingView;
-  if (subtitleDimmingView != v5)
+  if (subtitleDimmingView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)subtitleDimmingView removeFromSuperview];
-    objc_storeStrong(&self->_subtitleDimmingView, a3);
+    objc_storeStrong(&self->_subtitleDimmingView, view);
     subtitleDimmingView = [(UIView *)self->_dimmableLayersContainer addSubview:self->_subtitleDimmingView];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](subtitleDimmingView, v5);
+  MEMORY[0x1EEE66BB8](subtitleDimmingView, viewCopy);
 }
 
-- (void)setComplicationRowView:(id)a3
+- (void)setComplicationRowView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   complicationRowView = self->_complicationRowView;
-  if (complicationRowView != v5)
+  if (complicationRowView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(CSProminentEmptyElementView *)complicationRowView removeFromSuperview];
-    objc_storeStrong(&self->_complicationRowView, a3);
+    objc_storeStrong(&self->_complicationRowView, view);
     v7 = self->_complicationRowView;
     [(CSProminentDisplayView *)self _contentAlphaForElement:8];
     [(CSProminentEmptyElementView *)v7 setAlpha:?];
     complicationRowView = [(CSProminentDisplayView *)self _addComplicationSubview:v8];
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](complicationRowView, v5);
+  MEMORY[0x1EEE66BB8](complicationRowView, viewCopy);
 }
 
-- (void)setComplicationSidebarView:(id)a3
+- (void)setComplicationSidebarView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   complicationSidebarView = self->_complicationSidebarView;
-  if (complicationSidebarView != v5)
+  if (complicationSidebarView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(CSProminentEmptyElementView *)complicationSidebarView removeFromSuperview];
-    objc_storeStrong(&self->_complicationSidebarView, a3);
+    objc_storeStrong(&self->_complicationSidebarView, view);
     v7 = self->_complicationSidebarView;
     [(CSProminentDisplayView *)self _contentAlphaForElement:16];
     [(CSProminentEmptyElementView *)v7 setAlpha:?];
     complicationSidebarView = [(CSProminentDisplayView *)self _addComplicationSubview:v8];
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](complicationSidebarView, v5);
+  MEMORY[0x1EEE66BB8](complicationSidebarView, viewCopy);
 }
 
-- (void)setComplicationBottomRowView:(id)a3
+- (void)setComplicationBottomRowView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   complicationBottomRowView = self->_complicationBottomRowView;
-  if (complicationBottomRowView != v5)
+  if (complicationBottomRowView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(CSProminentEmptyElementView *)complicationBottomRowView removeFromSuperview];
-    objc_storeStrong(&self->_complicationBottomRowView, a3);
+    objc_storeStrong(&self->_complicationBottomRowView, view);
     v7 = self->_complicationBottomRowView;
     [(CSProminentDisplayView *)self _contentAlphaForElement:32];
     [(CSProminentEmptyElementView *)v7 setAlpha:?];
     complicationBottomRowView = [(CSProminentDisplayView *)self _addComplicationSubview:v8];
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](complicationBottomRowView, v5);
+  MEMORY[0x1EEE66BB8](complicationBottomRowView, viewCopy);
 }
 
-- (void)setShouldApplyVibrancyToComplications:(BOOL)a3
+- (void)setShouldApplyVibrancyToComplications:(BOOL)complications
 {
-  if (self->_shouldApplyVibrancyToComplications != a3)
+  if (self->_shouldApplyVibrancyToComplications != complications)
   {
-    self->_shouldApplyVibrancyToComplications = a3;
-    if (a3 && !self->_vibrancyEffectView)
+    self->_shouldApplyVibrancyToComplications = complications;
+    if (complications && !self->_vibrancyEffectView)
     {
       v4 = objc_alloc(MEMORY[0x1E698E818]);
       [(CSProminentDisplayView *)self bounds];
@@ -1015,41 +1015,41 @@ void __63__CSProminentDisplayView__showTransientSubtitleView_withDelay___block_i
 {
   if ([(CSProminentDisplayView *)self shouldApplyVibrancyToComplications])
   {
-    v3 = [(CSProminentDisplayView *)self vibrancyEffectView];
-    v4 = [v3 contentView];
+    vibrancyEffectView = [(CSProminentDisplayView *)self vibrancyEffectView];
+    selfCopy = [vibrancyEffectView contentView];
   }
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)_addComplicationSubview:(id)a3
+- (void)_addComplicationSubview:(id)subview
 {
-  v6 = a3;
-  v4 = [(CSProminentDisplayView *)self _complicationsSuperview];
-  if (v6)
+  subviewCopy = subview;
+  _complicationsSuperview = [(CSProminentDisplayView *)self _complicationsSuperview];
+  if (subviewCopy)
   {
-    v5 = [v6 superview];
+    superview = [subviewCopy superview];
 
-    if (v5 != v4)
+    if (superview != _complicationsSuperview)
     {
-      [v6 removeFromSuperview];
-      [v4 addSubview:v6];
+      [subviewCopy removeFromSuperview];
+      [_complicationsSuperview addSubview:subviewCopy];
       [(CSProminentDisplayView *)self setNeedsLayout];
     }
   }
 }
 
-- (void)setDisplayDate:(id)a3
+- (void)setDisplayDate:(id)date
 {
-  v6 = a3;
+  dateCopy = date;
   if (![(NSDate *)self->_displayDate isEqualToDate:?])
   {
-    v4 = [v6 copy];
+    v4 = [dateCopy copy];
     displayDate = self->_displayDate;
     self->_displayDate = v4;
 
@@ -1057,7 +1057,7 @@ void __63__CSProminentDisplayView__showTransientSubtitleView_withDelay___block_i
   }
 }
 
-- (void)_applyContainerOrientationToVibrancyShadowView:(int64_t)a3
+- (void)_applyContainerOrientationToVibrancyShadowView:(int64_t)view
 {
   if (self->_vibrancyShadowView)
   {
@@ -1076,10 +1076,10 @@ void __63__CSProminentDisplayView__showTransientSubtitleView_withDelay___block_i
   }
 }
 
-- (void)setNumberingSystem:(int64_t)a3
+- (void)setNumberingSystem:(int64_t)system
 {
   [(CSProminentTimeView *)self->_timeView setNumberingSystem:?];
-  [(CSProminentLayoutController *)self->_layoutController setNumberingSystem:a3];
+  [(CSProminentLayoutController *)self->_layoutController setNumberingSystem:system];
 
   [(CSProminentDisplayView *)self setNeedsLayout];
 }
@@ -1090,16 +1090,16 @@ void __63__CSProminentDisplayView__showTransientSubtitleView_withDelay___block_i
   block[1] = 3221225472;
   block[2] = __93__CSProminentDisplayView__startObservingSystemStatusOverridesIfNeededAndFetchInitialOverride__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_startObservingSystemStatusOverridesIfNeededAndFetchInitialOverride_onceToken[0] != -1)
   {
     dispatch_once(_startObservingSystemStatusOverridesIfNeededAndFetchInitialOverride_onceToken, block);
   }
 
-  v2 = [_startObservingSystemStatusOverridesIfNeededAndFetchInitialOverride_sOverrideDomain data];
-  v3 = [v2 customOverrides];
+  data = [_startObservingSystemStatusOverridesIfNeededAndFetchInitialOverride_sOverrideDomain data];
+  customOverrides = [data customOverrides];
 
-  return v3;
+  return customOverrides;
 }
 
 void __93__CSProminentDisplayView__startObservingSystemStatusOverridesIfNeededAndFetchInitialOverride__block_invoke(uint64_t a1)
@@ -1213,29 +1213,29 @@ uint64_t __55__CSProminentDisplayView_overrideObservingDisplayViews__block_invok
 - (void)_setUpTimeStringOverriding
 {
   v3 = objc_opt_class();
-  v4 = [v3 overrideObservingDisplayViews];
-  [v4 addObject:self];
+  overrideObservingDisplayViews = [v3 overrideObservingDisplayViews];
+  [overrideObservingDisplayViews addObject:self];
 
-  v6 = [v3 _startObservingSystemStatusOverridesIfNeededAndFetchInitialOverride];
-  if ([v6 dateFromEntriesIncludesTime])
+  _startObservingSystemStatusOverridesIfNeededAndFetchInitialOverride = [v3 _startObservingSystemStatusOverridesIfNeededAndFetchInitialOverride];
+  if ([_startObservingSystemStatusOverridesIfNeededAndFetchInitialOverride dateFromEntriesIncludesTime])
   {
-    v5 = [v6 dateFromEntries];
+    dateFromEntries = [_startObservingSystemStatusOverridesIfNeededAndFetchInitialOverride dateFromEntries];
   }
 
   else
   {
-    v5 = 0;
+    dateFromEntries = 0;
   }
 
-  [(CSProminentDisplayView *)self _setOverrideDate:v5];
+  [(CSProminentDisplayView *)self _setOverrideDate:dateFromEntries];
 }
 
-- (void)_setOverrideDate:(id)a3
+- (void)_setOverrideDate:(id)date
 {
-  v6 = a3;
+  dateCopy = date;
   if (![(NSDate *)self->_overrideDate isEqualToDate:?])
   {
-    v4 = [v6 copy];
+    v4 = [dateCopy copy];
     overrideDate = self->_overrideDate;
     self->_overrideDate = v4;
 

@@ -1,6 +1,6 @@
 @interface SYContentItemPreviewManager
-+ (void)_loadPreviewForAppContentItem:(id)a3 completion:(id)a4;
-+ (void)_loadPreviewUsingLPForItem:(id)a3 fullDetail:(BOOL)a4 completion:(id)a5;
++ (void)_loadPreviewForAppContentItem:(id)item completion:(id)completion;
++ (void)_loadPreviewUsingLPForItem:(id)item fullDetail:(BOOL)detail completion:(id)completion;
 @end
 
 @implementation SYContentItemPreviewManager
@@ -62,15 +62,15 @@ void __81__SYContentItemPreviewManager__loadPreviewMetadataForItem_fullDetail_co
   }
 }
 
-+ (void)_loadPreviewUsingLPForItem:(id)a3 fullDetail:(BOOL)a4 completion:(id)a5
++ (void)_loadPreviewUsingLPForItem:(id)item fullDetail:(BOOL)detail completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = [v9 itemURL];
-  if (!v11)
+  itemCopy = item;
+  completionCopy = completion;
+  itemURL = [itemCopy itemURL];
+  if (!itemURL)
   {
-    [SYContentItemPreviewManager _loadPreviewUsingLPForItem:a2 fullDetail:a1 completion:?];
+    [SYContentItemPreviewManager _loadPreviewUsingLPForItem:a2 fullDetail:self completion:?];
   }
 
   if (SYIsDeviceLocked())
@@ -79,11 +79,11 @@ void __81__SYContentItemPreviewManager__loadPreviewMetadataForItem_fullDetail_co
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v9;
+      v20 = itemCopy;
       _os_log_impl(&dword_225901000, v12, OS_LOG_TYPE_DEFAULT, "Device is locked, skipping LP preview for item: %@", buf, 0xCu);
     }
 
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -92,10 +92,10 @@ void __81__SYContentItemPreviewManager__loadPreviewMetadataForItem_fullDetail_co
     v14[1] = 3221225472;
     v14[2] = __80__SYContentItemPreviewManager__loadPreviewUsingLPForItem_fullDetail_completion___block_invoke;
     v14[3] = &unk_27856B300;
-    v18 = a4;
-    v15 = v11;
-    v16 = v9;
-    v17 = v10;
+    detailCopy = detail;
+    v15 = itemURL;
+    v16 = itemCopy;
+    v17 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], v14);
   }
 
@@ -166,29 +166,29 @@ void __80__SYContentItemPreviewManager__loadPreviewUsingLPForItem_fullDetail_com
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)_loadPreviewForAppContentItem:(id)a3 completion:(id)a4
++ (void)_loadPreviewForAppContentItem:(id)item completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   if (SYIsDeviceLocked())
   {
     v7 = os_log_create("com.apple.synapse", "ContentItemManager");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v5;
+      v20 = itemCopy;
       _os_log_impl(&dword_225901000, v7, OS_LOG_TYPE_DEFAULT, "Device is locked, skipping icon preview for item: %@", buf, 0xCu);
     }
 
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
-    v8 = [v5 sourceIdentifier];
-    v9 = v8;
-    if (v8 && ([v8 isEqualToString:@"com.apple.synapse.itemSourceID.web"] & 1) == 0)
+    sourceIdentifier = [itemCopy sourceIdentifier];
+    v9 = sourceIdentifier;
+    if (sourceIdentifier && ([sourceIdentifier isEqualToString:@"com.apple.synapse.itemSourceID.web"] & 1) == 0)
     {
       v11 = [objc_alloc(MEMORY[0x277D1B1A8]) initWithBundleIdentifier:v9];
       if (v11)
@@ -198,9 +198,9 @@ void __80__SYContentItemPreviewManager__loadPreviewUsingLPForItem_fullDetail_com
         v15[1] = 3221225472;
         v15[2] = __72__SYContentItemPreviewManager__loadPreviewForAppContentItem_completion___block_invoke;
         v15[3] = &unk_27856B3A0;
-        v16 = v5;
+        v16 = itemCopy;
         v17 = v9;
-        v18 = v6;
+        v18 = completionCopy;
         [v11 getImageForImageDescriptor:v12 completion:v15];
       }
 
@@ -209,10 +209,10 @@ void __80__SYContentItemPreviewManager__loadPreviewUsingLPForItem_fullDetail_com
         v13 = os_log_create("com.apple.synapse", "ContentItemManager");
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
-          [SYContentItemPreviewManager _loadPreviewForAppContentItem:v5 completion:?];
+          [SYContentItemPreviewManager _loadPreviewForAppContentItem:itemCopy completion:?];
         }
 
-        v6[2](v6, 0);
+        completionCopy[2](completionCopy, 0);
       }
     }
 
@@ -221,10 +221,10 @@ void __80__SYContentItemPreviewManager__loadPreviewUsingLPForItem_fullDetail_com
       v10 = os_log_create("com.apple.synapse", "ContentItemManager");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [SYContentItemPreviewManager _loadPreviewForAppContentItem:v5 completion:?];
+        [SYContentItemPreviewManager _loadPreviewForAppContentItem:itemCopy completion:?];
       }
 
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 

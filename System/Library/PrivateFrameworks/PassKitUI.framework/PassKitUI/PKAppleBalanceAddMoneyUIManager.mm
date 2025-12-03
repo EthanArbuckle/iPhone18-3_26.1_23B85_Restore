@@ -1,18 +1,18 @@
 @interface PKAppleBalanceAddMoneyUIManager
-- (PKAppleBalanceAddMoneyUIManager)initWithAccount:(id)a3;
+- (PKAppleBalanceAddMoneyUIManager)initWithAccount:(id)account;
 @end
 
 @implementation PKAppleBalanceAddMoneyUIManager
 
-- (PKAppleBalanceAddMoneyUIManager)initWithAccount:(id)a3
+- (PKAppleBalanceAddMoneyUIManager)initWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = PKAppleBalanceAddMoneyUIManager;
   v5 = [(PKAppleBalanceAddMoneyUIManager *)&v9 init];
   if (v5)
   {
-    v6 = [[_PKAppleBalanceAddMoneyUIManager alloc] initWithAccount:v4];
+    v6 = [[_PKAppleBalanceAddMoneyUIManager alloc] initWithAccount:accountCopy];
     manager = v5->_manager;
     v5->_manager = v6;
   }

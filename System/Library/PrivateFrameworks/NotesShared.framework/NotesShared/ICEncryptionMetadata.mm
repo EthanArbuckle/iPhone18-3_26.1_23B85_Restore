@@ -1,15 +1,15 @@
 @interface ICEncryptionMetadata
-+ (id)makeForV1CipherWithObjectIdentifier:(id)a3 salt:(id)a4 iterationCount:(unint64_t)a5 hint:(id)a6;
-+ (id)makeForV1NeoCipherWithObjectIdentifier:(id)a3 salt:(id)a4 iterationCount:(unint64_t)a5 hint:(id)a6;
-+ (id)makeForV1NeoSidecarCipherWithObjectIdentifier:(id)a3;
-+ (id)makeForV2CipherWithObjectIdentifier:(id)a3 accountKeyIdentifier:(id)a4;
-+ (id)makeFromMetadata:(id)a3 forObjectIdentifier:(id)a4;
-- (BOOL)deserializeWithData:(id)a3 authenticatedData:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)makeForV1CipherWithObjectIdentifier:(id)identifier salt:(id)salt iterationCount:(unint64_t)count hint:(id)hint;
++ (id)makeForV1NeoCipherWithObjectIdentifier:(id)identifier salt:(id)salt iterationCount:(unint64_t)count hint:(id)hint;
++ (id)makeForV1NeoSidecarCipherWithObjectIdentifier:(id)identifier;
++ (id)makeForV2CipherWithObjectIdentifier:(id)identifier accountKeyIdentifier:(id)keyIdentifier;
++ (id)makeFromMetadata:(id)metadata forObjectIdentifier:(id)identifier;
+- (BOOL)deserializeWithData:(id)data authenticatedData:(id)authenticatedData;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)serialize;
 - (BOOL)validate;
-- (ICEncryptionMetadata)initWithCipherVersion:(int64_t)a3 objectIdentifier:(id)a4 passphraseSalt:(id)a5 passphraseIterationCount:(unint64_t)a6 passphraseHint:(id)a7 accountKeyIdentifier:(id)a8;
-- (ICEncryptionMetadata)initWithSerializedData:(id)a3 authenticatedData:(id)a4;
+- (ICEncryptionMetadata)initWithCipherVersion:(int64_t)version objectIdentifier:(id)identifier passphraseSalt:(id)salt passphraseIterationCount:(unint64_t)count passphraseHint:(id)hint accountKeyIdentifier:(id)keyIdentifier;
+- (ICEncryptionMetadata)initWithSerializedData:(id)data authenticatedData:(id)authenticatedData;
 - (id)description;
 - (unint64_t)hash;
 - (void)serialize;
@@ -18,70 +18,70 @@
 
 @implementation ICEncryptionMetadata
 
-+ (id)makeForV1CipherWithObjectIdentifier:(id)a3 salt:(id)a4 iterationCount:(unint64_t)a5 hint:(id)a6
++ (id)makeForV1CipherWithObjectIdentifier:(id)identifier salt:(id)salt iterationCount:(unint64_t)count hint:(id)hint
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[ICEncryptionMetadata alloc] initWithCipherVersion:0 objectIdentifier:v11 passphraseSalt:v10 passphraseIterationCount:a5 passphraseHint:v9 accountKeyIdentifier:0];
+  hintCopy = hint;
+  saltCopy = salt;
+  identifierCopy = identifier;
+  v12 = [[ICEncryptionMetadata alloc] initWithCipherVersion:0 objectIdentifier:identifierCopy passphraseSalt:saltCopy passphraseIterationCount:count passphraseHint:hintCopy accountKeyIdentifier:0];
 
   return v12;
 }
 
-+ (id)makeForV1NeoCipherWithObjectIdentifier:(id)a3 salt:(id)a4 iterationCount:(unint64_t)a5 hint:(id)a6
++ (id)makeForV1NeoCipherWithObjectIdentifier:(id)identifier salt:(id)salt iterationCount:(unint64_t)count hint:(id)hint
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[ICEncryptionMetadata alloc] initWithCipherVersion:2 objectIdentifier:v11 passphraseSalt:v10 passphraseIterationCount:a5 passphraseHint:v9 accountKeyIdentifier:0];
+  hintCopy = hint;
+  saltCopy = salt;
+  identifierCopy = identifier;
+  v12 = [[ICEncryptionMetadata alloc] initWithCipherVersion:2 objectIdentifier:identifierCopy passphraseSalt:saltCopy passphraseIterationCount:count passphraseHint:hintCopy accountKeyIdentifier:0];
 
   return v12;
 }
 
-+ (id)makeForV1NeoSidecarCipherWithObjectIdentifier:(id)a3
++ (id)makeForV1NeoSidecarCipherWithObjectIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[ICEncryptionMetadata alloc] initWithCipherVersion:3 objectIdentifier:v3 passphraseSalt:0 passphraseIterationCount:0 passphraseHint:0 accountKeyIdentifier:0];
+  identifierCopy = identifier;
+  v4 = [[ICEncryptionMetadata alloc] initWithCipherVersion:3 objectIdentifier:identifierCopy passphraseSalt:0 passphraseIterationCount:0 passphraseHint:0 accountKeyIdentifier:0];
 
   return v4;
 }
 
-+ (id)makeForV2CipherWithObjectIdentifier:(id)a3 accountKeyIdentifier:(id)a4
++ (id)makeForV2CipherWithObjectIdentifier:(id)identifier accountKeyIdentifier:(id)keyIdentifier
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[ICEncryptionMetadata alloc] initWithCipherVersion:1 objectIdentifier:v6 passphraseSalt:0 passphraseIterationCount:0 passphraseHint:0 accountKeyIdentifier:v5];
+  keyIdentifierCopy = keyIdentifier;
+  identifierCopy = identifier;
+  v7 = [[ICEncryptionMetadata alloc] initWithCipherVersion:1 objectIdentifier:identifierCopy passphraseSalt:0 passphraseIterationCount:0 passphraseHint:0 accountKeyIdentifier:keyIdentifierCopy];
 
   return v7;
 }
 
-+ (id)makeFromMetadata:(id)a3 forObjectIdentifier:(id)a4
++ (id)makeFromMetadata:(id)metadata forObjectIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  metadataCopy = metadata;
   v7 = [ICEncryptionMetadata alloc];
-  v8 = [v6 cipherVersion];
-  v9 = [v6 passphraseSalt];
-  v10 = [v6 passphraseIterationCount];
-  v11 = [v6 passphraseHint];
-  v12 = [v6 accountKeyIdentifier];
+  cipherVersion = [metadataCopy cipherVersion];
+  passphraseSalt = [metadataCopy passphraseSalt];
+  passphraseIterationCount = [metadataCopy passphraseIterationCount];
+  passphraseHint = [metadataCopy passphraseHint];
+  accountKeyIdentifier = [metadataCopy accountKeyIdentifier];
 
-  v13 = [(ICEncryptionMetadata *)v7 initWithCipherVersion:v8 objectIdentifier:v5 passphraseSalt:v9 passphraseIterationCount:v10 passphraseHint:v11 accountKeyIdentifier:v12];
+  v13 = [(ICEncryptionMetadata *)v7 initWithCipherVersion:cipherVersion objectIdentifier:identifierCopy passphraseSalt:passphraseSalt passphraseIterationCount:passphraseIterationCount passphraseHint:passphraseHint accountKeyIdentifier:accountKeyIdentifier];
 
   return v13;
 }
 
-- (ICEncryptionMetadata)initWithCipherVersion:(int64_t)a3 objectIdentifier:(id)a4 passphraseSalt:(id)a5 passphraseIterationCount:(unint64_t)a6 passphraseHint:(id)a7 accountKeyIdentifier:(id)a8
+- (ICEncryptionMetadata)initWithCipherVersion:(int64_t)version objectIdentifier:(id)identifier passphraseSalt:(id)salt passphraseIterationCount:(unint64_t)count passphraseHint:(id)hint accountKeyIdentifier:(id)keyIdentifier
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
+  identifierCopy = identifier;
+  saltCopy = salt;
+  hintCopy = hint;
+  keyIdentifierCopy = keyIdentifier;
   v30.receiver = self;
   v30.super_class = ICEncryptionMetadata;
   v18 = [(ICEncryptionMetadata *)&v30 init];
   v19 = v18;
-  if (!v18 || (v18->_cipherVersion = a3, v20 = [v14 copy], objectIdentifier = v19->_objectIdentifier, v19->_objectIdentifier = v20, objectIdentifier, v22 = objc_msgSend(v15, "copy"), passphraseSalt = v19->_passphraseSalt, v19->_passphraseSalt = v22, passphraseSalt, v19->_passphraseIterationCount = a6, v24 = objc_msgSend(v16, "copy"), passphraseHint = v19->_passphraseHint, v19->_passphraseHint = v24, passphraseHint, v26 = objc_msgSend(v17, "copy"), accountKeyIdentifier = v19->_accountKeyIdentifier, v19->_accountKeyIdentifier = v26, accountKeyIdentifier, -[ICEncryptionMetadata validate](v19, "validate")) && -[ICEncryptionMetadata serialize](v19, "serialize"))
+  if (!v18 || (v18->_cipherVersion = version, v20 = [identifierCopy copy], objectIdentifier = v19->_objectIdentifier, v19->_objectIdentifier = v20, objectIdentifier, v22 = objc_msgSend(saltCopy, "copy"), passphraseSalt = v19->_passphraseSalt, v19->_passphraseSalt = v22, passphraseSalt, v19->_passphraseIterationCount = count, v24 = objc_msgSend(hintCopy, "copy"), passphraseHint = v19->_passphraseHint, v19->_passphraseHint = v24, passphraseHint, v26 = objc_msgSend(keyIdentifierCopy, "copy"), accountKeyIdentifier = v19->_accountKeyIdentifier, v19->_accountKeyIdentifier = v26, accountKeyIdentifier, -[ICEncryptionMetadata validate](v19, "validate")) && -[ICEncryptionMetadata serialize](v19, "serialize"))
   {
     v28 = v19;
   }
@@ -100,27 +100,27 @@
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = ICCipherNameForCipherVersion([(ICEncryptionMetadata *)self cipherVersion]);
-  v7 = [(ICEncryptionMetadata *)self objectIdentifier];
-  v8 = [(ICEncryptionMetadata *)self passphraseSalt];
-  v9 = [v8 ic_sha256];
+  objectIdentifier = [(ICEncryptionMetadata *)self objectIdentifier];
+  passphraseSalt = [(ICEncryptionMetadata *)self passphraseSalt];
+  ic_sha256 = [passphraseSalt ic_sha256];
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ICEncryptionMetadata passphraseIterationCount](self, "passphraseIterationCount")}];
-  v11 = [(ICEncryptionMetadata *)self passphraseHint];
-  v12 = [(ICEncryptionMetadata *)self accountKeyIdentifier];
-  v13 = [v3 stringWithFormat:@"<%@: %p, cipherVersion: %@, objectIdentifier: %@, passphraseSalt.sha256: %@, passphraseIterationCount: %@, passphraseHint: %@, accountKeyIdentifier: %@>", v5, self, v6, v7, v9, v10, v11, v12];
+  passphraseHint = [(ICEncryptionMetadata *)self passphraseHint];
+  accountKeyIdentifier = [(ICEncryptionMetadata *)self accountKeyIdentifier];
+  v13 = [v3 stringWithFormat:@"<%@: %p, cipherVersion: %@, objectIdentifier: %@, passphraseSalt.sha256: %@, passphraseIterationCount: %@, passphraseHint: %@, accountKeyIdentifier: %@>", v5, self, v6, objectIdentifier, ic_sha256, v10, passphraseHint, accountKeyIdentifier];
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 != self)
+  if (equal != self)
   {
-    v4 = a3;
+    equalCopy = equal;
     objc_opt_class();
     v5 = ICDynamicCast();
 
-    v6 = [v5 cipherVersion];
-    if (v6 != [(ICEncryptionMetadata *)self cipherVersion])
+    cipherVersion = [v5 cipherVersion];
+    if (cipherVersion != [(ICEncryptionMetadata *)self cipherVersion])
     {
       LOBYTE(v22) = 0;
 LABEL_56:
@@ -128,35 +128,35 @@ LABEL_56:
       return v22;
     }
 
-    v7 = [v5 objectIdentifier];
-    v8 = [(ICEncryptionMetadata *)self objectIdentifier];
+    objectIdentifier = [v5 objectIdentifier];
+    objectIdentifier2 = [(ICEncryptionMetadata *)self objectIdentifier];
     v9 = *MEMORY[0x277CBEEE8];
-    if (*MEMORY[0x277CBEEE8] == v7)
+    if (*MEMORY[0x277CBEEE8] == objectIdentifier)
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = v7;
+      v10 = objectIdentifier;
     }
 
-    v11 = v10;
-    if (v9 == v8)
+    passphraseSalt = v10;
+    if (v9 == objectIdentifier2)
     {
       v12 = 0;
     }
 
     else
     {
-      v12 = v8;
+      v12 = objectIdentifier2;
     }
 
     v13 = v12;
-    if (v11 | v13)
+    if (passphraseSalt | v13)
     {
-      v14 = v13;
-      if (v11)
+      passphraseSalt2 = v13;
+      if (passphraseSalt)
       {
         v15 = v13 == 0;
       }
@@ -171,7 +171,7 @@ LABEL_56:
         goto LABEL_48;
       }
 
-      v16 = [v11 isEqual:v13];
+      v16 = [passphraseSalt isEqual:v13];
 
       if (!v16)
       {
@@ -182,40 +182,40 @@ LABEL_55:
       }
     }
 
-    v11 = [v5 passphraseSalt];
-    v14 = [(ICEncryptionMetadata *)self passphraseSalt];
-    if (v9 == v11)
+    passphraseSalt = [v5 passphraseSalt];
+    passphraseSalt2 = [(ICEncryptionMetadata *)self passphraseSalt];
+    if (v9 == passphraseSalt)
     {
       v17 = 0;
     }
 
     else
     {
-      v17 = v11;
+      v17 = passphraseSalt;
     }
 
-    v18 = v17;
-    if (v9 == v14)
+    passphraseHint = v17;
+    if (v9 == passphraseSalt2)
     {
       v19 = 0;
     }
 
     else
     {
-      v19 = v14;
+      v19 = passphraseSalt2;
     }
 
     v20 = v19;
-    if (v18 | v20)
+    if (passphraseHint | v20)
     {
-      v21 = v20;
+      passphraseHint2 = v20;
       LOBYTE(v22) = 0;
-      if (!v18 || !v20)
+      if (!passphraseHint || !v20)
       {
         goto LABEL_53;
       }
 
-      LODWORD(v22) = [v18 isEqual:v20];
+      LODWORD(v22) = [passphraseHint isEqual:v20];
 
       if (!v22)
       {
@@ -225,30 +225,30 @@ LABEL_54:
       }
     }
 
-    v23 = [v5 passphraseIterationCount];
-    if (v23 == [(ICEncryptionMetadata *)self passphraseIterationCount])
+    passphraseIterationCount = [v5 passphraseIterationCount];
+    if (passphraseIterationCount == [(ICEncryptionMetadata *)self passphraseIterationCount])
     {
-      v18 = [v5 passphraseHint];
-      v21 = [(ICEncryptionMetadata *)self passphraseHint];
-      if (v9 == v18)
+      passphraseHint = [v5 passphraseHint];
+      passphraseHint2 = [(ICEncryptionMetadata *)self passphraseHint];
+      if (v9 == passphraseHint)
       {
         v24 = 0;
       }
 
       else
       {
-        v24 = v18;
+        v24 = passphraseHint;
       }
 
       v22 = v24;
-      if (v9 == v21)
+      if (v9 == passphraseHint2)
       {
         v25 = 0;
       }
 
       else
       {
-        v25 = v21;
+        v25 = passphraseHint2;
       }
 
       v26 = v25;
@@ -276,29 +276,29 @@ LABEL_53:
         }
       }
 
-      v30 = [v5 accountKeyIdentifier];
-      v31 = [(ICEncryptionMetadata *)self accountKeyIdentifier];
-      v41 = v30;
-      if (v9 == v30)
+      accountKeyIdentifier = [v5 accountKeyIdentifier];
+      accountKeyIdentifier2 = [(ICEncryptionMetadata *)self accountKeyIdentifier];
+      v41 = accountKeyIdentifier;
+      if (v9 == accountKeyIdentifier)
       {
         v32 = 0;
       }
 
       else
       {
-        v32 = v30;
+        v32 = accountKeyIdentifier;
       }
 
       v33 = v32;
-      v40 = v31;
-      if (v9 == v31)
+      v40 = accountKeyIdentifier2;
+      if (v9 == accountKeyIdentifier2)
       {
         v34 = 0;
       }
 
       else
       {
-        v34 = v31;
+        v34 = accountKeyIdentifier2;
       }
 
       v35 = v34;
@@ -336,50 +336,50 @@ LABEL_48:
   result = self->_hash;
   if (!result)
   {
-    v4 = [(ICEncryptionMetadata *)self cipherVersion];
-    v5 = [(ICEncryptionMetadata *)self objectIdentifier];
-    v6 = [v5 hash];
+    cipherVersion = [(ICEncryptionMetadata *)self cipherVersion];
+    objectIdentifier = [(ICEncryptionMetadata *)self objectIdentifier];
+    v6 = [objectIdentifier hash];
     if (!v6)
     {
       [MEMORY[0x277CBEB68] null];
-      v8 = v7 = v4;
+      v8 = v7 = cipherVersion;
       v6 = [v8 hash];
 
-      v4 = v7;
+      cipherVersion = v7;
     }
 
-    v9 = [(ICEncryptionMetadata *)self passphraseSalt];
-    if (![v9 hash])
+    passphraseSalt = [(ICEncryptionMetadata *)self passphraseSalt];
+    if (![passphraseSalt hash])
     {
-      v10 = [MEMORY[0x277CBEB68] null];
-      [v10 hash];
+      null = [MEMORY[0x277CBEB68] null];
+      [null hash];
     }
 
     [(ICEncryptionMetadata *)self passphraseIterationCount];
-    v11 = [(ICEncryptionMetadata *)self passphraseHint];
-    if (![v11 hash])
+    passphraseHint = [(ICEncryptionMetadata *)self passphraseHint];
+    if (![passphraseHint hash])
     {
-      v12 = [MEMORY[0x277CBEB68] null];
-      [v12 hash];
+      null2 = [MEMORY[0x277CBEB68] null];
+      [null2 hash];
     }
 
-    v13 = [(ICEncryptionMetadata *)self accountKeyIdentifier];
-    if (![v13 hash])
+    accountKeyIdentifier = [(ICEncryptionMetadata *)self accountKeyIdentifier];
+    if (![accountKeyIdentifier hash])
     {
       [MEMORY[0x277CBEB68] null];
       v24 = v6;
-      v6 = v9;
-      v21 = v4;
-      v23 = v22 = v5;
+      v6 = passphraseSalt;
+      v21 = cipherVersion;
+      v23 = v22 = objectIdentifier;
       [v23 hash];
 
-      v5 = v22;
-      v4 = v21;
-      v9 = v6;
+      objectIdentifier = v22;
+      cipherVersion = v21;
+      passphraseSalt = v6;
       LOBYTE(v6) = v24;
     }
 
-    self->_hash = ICHashWithHashKeys(v4 + 1, v14, v15, v16, v17, v18, v19, v20, v6);
+    self->_hash = ICHashWithHashKeys(cipherVersion + 1, v14, v15, v16, v17, v18, v19, v20, v6);
 
     return self->_hash;
   }
@@ -387,15 +387,15 @@ LABEL_48:
   return result;
 }
 
-- (ICEncryptionMetadata)initWithSerializedData:(id)a3 authenticatedData:(id)a4
+- (ICEncryptionMetadata)initWithSerializedData:(id)data authenticatedData:(id)authenticatedData
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  authenticatedDataCopy = authenticatedData;
   v12.receiver = self;
   v12.super_class = ICEncryptionMetadata;
   v8 = [(ICEncryptionMetadata *)&v12 init];
   v9 = v8;
-  if (!v8 || [(ICEncryptionMetadata *)v8 deserializeWithData:v6 authenticatedData:v7]&& [(ICEncryptionMetadata *)v9 validate])
+  if (!v8 || [(ICEncryptionMetadata *)v8 deserializeWithData:dataCopy authenticatedData:authenticatedDataCopy]&& [(ICEncryptionMetadata *)v9 validate])
   {
     v10 = v9;
   }
@@ -410,22 +410,22 @@ LABEL_48:
 
 - (BOOL)serialize
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [v3 ic_setNonNilObject:self->_passphraseSalt forKey:@"passphraseSalt"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary ic_setNonNilObject:self->_passphraseSalt forKey:@"passphraseSalt"];
   if (self->_passphraseIterationCount)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
-    [v3 ic_setNonNilObject:v4 forKey:@"passphraseIterationCount"];
+    [dictionary ic_setNonNilObject:v4 forKey:@"passphraseIterationCount"];
   }
 
   else
   {
-    [v3 ic_setNonNilObject:0 forKey:@"passphraseIterationCount"];
+    [dictionary ic_setNonNilObject:0 forKey:@"passphraseIterationCount"];
   }
 
-  [v3 ic_setNonNilObject:self->_passphraseHint forKey:@"passphraseHint"];
+  [dictionary ic_setNonNilObject:self->_passphraseHint forKey:@"passphraseHint"];
   v5 = MEMORY[0x277CCAC58];
-  v6 = [v3 copy];
+  v6 = [dictionary copy];
   v22 = 0;
   v7 = [v5 dataWithPropertyList:v6 format:200 options:0 error:&v22];
   v8 = v22;
@@ -434,14 +434,14 @@ LABEL_48:
 
   if (self->_serializedData)
   {
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     v11 = [MEMORY[0x277CCABB0] numberWithInteger:self->_cipherVersion];
-    [v10 ic_setNonNilObject:v11 forKey:@"cipherVersion"];
+    [dictionary2 ic_setNonNilObject:v11 forKey:@"cipherVersion"];
 
-    [v10 ic_setNonNilObject:self->_objectIdentifier forKey:@"objectIdentifier"];
-    [v10 ic_setNonNilObject:self->_accountKeyIdentifier forKey:@"accountKeyIdentifier"];
+    [dictionary2 ic_setNonNilObject:self->_objectIdentifier forKey:@"objectIdentifier"];
+    [dictionary2 ic_setNonNilObject:self->_accountKeyIdentifier forKey:@"accountKeyIdentifier"];
     v12 = MEMORY[0x277CCAC58];
-    v13 = [v10 copy];
+    v13 = [dictionary2 copy];
     v21 = 0;
     v14 = [v12 dataWithPropertyList:v13 format:200 options:0 error:&v21];
     v15 = v21;
@@ -465,8 +465,8 @@ LABEL_48:
 
   else
   {
-    v10 = os_log_create("com.apple.notes", "Crypto");
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    dictionary2 = os_log_create("com.apple.notes", "Crypto");
+    if (os_log_type_enabled(dictionary2, OS_LOG_TYPE_ERROR))
     {
       [ICEncryptionMetadata serialize];
     }
@@ -478,11 +478,11 @@ LABEL_48:
   return v18;
 }
 
-- (BOOL)deserializeWithData:(id)a3 authenticatedData:(id)a4
+- (BOOL)deserializeWithData:(id)data authenticatedData:(id)authenticatedData
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  dataCopy = data;
+  authenticatedDataCopy = authenticatedData;
+  if ([dataCopy length])
   {
     v8 = 0;
   }
@@ -501,14 +501,14 @@ LABEL_48:
         [ICEncryptionMetadata deserializeWithData:authenticatedData:];
       }
 
-      v6 = 0;
+      dataCopy = 0;
       goto LABEL_17;
     }
 
-    v6 = v9;
+    dataCopy = v9;
   }
 
-  if (![v7 length])
+  if (![authenticatedDataCopy length])
   {
     v12 = os_log_create("com.apple.notes", "Crypto");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -523,7 +523,7 @@ LABEL_17:
 
   objc_opt_class();
   v34 = 0;
-  v10 = [MEMORY[0x277CCAC58] propertyListWithData:v6 options:0 format:0 error:&v34];
+  v10 = [MEMORY[0x277CCAC58] propertyListWithData:dataCopy options:0 format:0 error:&v34];
   v11 = v34;
 
   v12 = ICCheckedDynamicCast();
@@ -532,7 +532,7 @@ LABEL_17:
   {
     objc_opt_class();
     v33 = 0;
-    v13 = [MEMORY[0x277CCAC58] propertyListWithData:v7 options:0 format:0 error:&v33];
+    v13 = [MEMORY[0x277CCAC58] propertyListWithData:authenticatedDataCopy options:0 format:0 error:&v33];
     v8 = v33;
 
     v14 = ICCheckedDynamicCast();
@@ -540,7 +540,7 @@ LABEL_17:
     v15 = v14 != 0;
     if (v14)
     {
-      objc_storeStrong(&self->_serializedData, v6);
+      objc_storeStrong(&self->_serializedData, dataCopy);
       objc_opt_class();
       v16 = [v12 objectForKeyedSubscript:@"passphraseSalt"];
       v17 = ICDynamicCast();
@@ -558,7 +558,7 @@ LABEL_17:
       passphraseHint = self->_passphraseHint;
       self->_passphraseHint = v22;
 
-      objc_storeStrong(&self->_authenticatedData, a4);
+      objc_storeStrong(&self->_authenticatedData, authenticatedData);
       objc_opt_class();
       v24 = [v14 objectForKeyedSubscript:@"cipherVersion"];
       v25 = ICCheckedDynamicCast();
@@ -605,13 +605,13 @@ LABEL_22:
 
 - (BOOL)validate
 {
-  v3 = [(ICEncryptionMetadata *)self cipherVersion];
-  if (v3 > 1)
+  cipherVersion = [(ICEncryptionMetadata *)self cipherVersion];
+  if (cipherVersion > 1)
   {
-    if (v3 == 2)
+    if (cipherVersion == 2)
     {
-      v12 = [(ICEncryptionMetadata *)self objectIdentifier];
-      v13 = [v12 length];
+      objectIdentifier = [(ICEncryptionMetadata *)self objectIdentifier];
+      v13 = [objectIdentifier length];
 
       if (!v13)
       {
@@ -624,8 +624,8 @@ LABEL_22:
         goto LABEL_28;
       }
 
-      v14 = [(ICEncryptionMetadata *)self passphraseSalt];
-      v15 = [v14 length];
+      passphraseSalt = [(ICEncryptionMetadata *)self passphraseSalt];
+      v15 = [passphraseSalt length];
 
       if (!v15)
       {
@@ -652,10 +652,10 @@ LABEL_22:
       return 1;
     }
 
-    if (v3 == 3)
+    if (cipherVersion == 3)
     {
-      v7 = [(ICEncryptionMetadata *)self objectIdentifier];
-      v8 = [v7 length];
+      objectIdentifier2 = [(ICEncryptionMetadata *)self objectIdentifier];
+      v8 = [objectIdentifier2 length];
 
       if (!v8)
       {
@@ -674,12 +674,12 @@ LABEL_22:
     goto LABEL_12;
   }
 
-  if (v3)
+  if (cipherVersion)
   {
-    if (v3 == 1)
+    if (cipherVersion == 1)
     {
-      v4 = [(ICEncryptionMetadata *)self accountKeyIdentifier];
-      v5 = [v4 length];
+      accountKeyIdentifier = [(ICEncryptionMetadata *)self accountKeyIdentifier];
+      v5 = [accountKeyIdentifier length];
 
       if (!v5)
       {
@@ -710,8 +710,8 @@ LABEL_12:
     goto LABEL_29;
   }
 
-  v10 = [(ICEncryptionMetadata *)self passphraseSalt];
-  v11 = [v10 length];
+  passphraseSalt2 = [(ICEncryptionMetadata *)self passphraseSalt];
+  v11 = [passphraseSalt2 length];
 
   if (!v11)
   {

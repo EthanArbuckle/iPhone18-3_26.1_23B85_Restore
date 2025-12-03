@@ -1,13 +1,13 @@
 @interface PGMeaningSummarizedFeature
-- (PGMeaningSummarizedFeature)initWithIntervalsPresent:(id)a3 isMandatoryForKeyAsset:(BOOL)a4 meaningLabel:(id)a5;
+- (PGMeaningSummarizedFeature)initWithIntervalsPresent:(id)present isMandatoryForKeyAsset:(BOOL)asset meaningLabel:(id)label;
 @end
 
 @implementation PGMeaningSummarizedFeature
 
-- (PGMeaningSummarizedFeature)initWithIntervalsPresent:(id)a3 isMandatoryForKeyAsset:(BOOL)a4 meaningLabel:(id)a5
+- (PGMeaningSummarizedFeature)initWithIntervalsPresent:(id)present isMandatoryForKeyAsset:(BOOL)asset meaningLabel:(id)label
 {
-  v8 = a3;
-  v9 = a5;
+  presentCopy = present;
+  labelCopy = label;
   v15.receiver = self;
   v15.super_class = PGMeaningSummarizedFeature;
   v10 = [(PGMeaningSummarizedFeature *)&v15 init];
@@ -15,12 +15,12 @@
   if (v10)
   {
     v10->_type = 3;
-    v12 = PGSummarizedFeatureConsolidatedDateIntervals(v8);
+    v12 = PGSummarizedFeatureConsolidatedDateIntervals(presentCopy);
     intervalsPresent = v11->_intervalsPresent;
     v11->_intervalsPresent = v12;
 
-    v11->_isMandatoryForKeyAsset = a4;
-    objc_storeStrong(&v11->_meaningLabel, a5);
+    v11->_isMandatoryForKeyAsset = asset;
+    objc_storeStrong(&v11->_meaningLabel, label);
   }
 
   return v11;

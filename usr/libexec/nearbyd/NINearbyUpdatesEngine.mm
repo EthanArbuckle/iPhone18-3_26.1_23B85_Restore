@@ -1,28 +1,28 @@
 @interface NINearbyUpdatesEngine
-- (AoARad)_convertFromPointingCoordinatesToSpatial:(const void *)a3;
-- (BOOL)_shouldConsumeRoseSolution:(const void *)a3;
+- (AoARad)_convertFromPointingCoordinatesToSpatial:(const void *)spatial;
+- (BOOL)_shouldConsumeRoseSolution:(const void *)solution;
 - (FindeeAlgorithmConfig)_getFindeeAlgorithmConfig;
 - (ItemFinderAlgorithmConfig)_getItemFinderAlgorithmConfig;
-- (NINearbyUpdatesEngine)initWithConfiguration:(id)a3 queue:(id)a4 delegate:(id)a5 dataSource:(id)a6 analyticsManager:(id)a7 protobufLogger:(shared_ptr<rose:(id *)a9 :protobuf::Logger>)a8 error:;
+- (NINearbyUpdatesEngine)initWithConfiguration:(id)configuration queue:(id)queue delegate:(id)delegate dataSource:(id)source analyticsManager:(id)manager protobufLogger:(shared_ptr<rose:(id *)logger :protobuf::Logger>)a8 error:;
 - (NINearbyUpdatesEngineDataSource)dataSource;
 - (NINearbyUpdatesEngineDelegate)delegate;
 - (PeopleFinderAlgorithmConfig)_getPeopleFinderAlgorithmConfig;
 - (PeopleFinderAlgorithmConfig)_getPeopleFinderAlgorithmConfigForPeerSessions;
 - (id).cxx_construct;
-- (id)_configureForLocalization:(id)a3;
-- (id)_configureForRegionMonitoring:(id)a3;
-- (id)_consolidateInputToMLModel:(const void *)a3;
-- (id)_convertPEAnchorMessages:(const void *)a3;
-- (id)_convertPEResponderAnchorMessage:(const void *)a3;
-- (id)_handleRangeAndAoASolution:(const void *)a3;
-- (id)_handleRangeOnlySolution:(const void *)a3;
-- (id)configure:(id)a3;
-- (id)nearbyObjectFromDeviceIdentifier:(unint64_t)a3;
-- (id)nearbyObjectFromRangeResult:(const void *)a3;
-- (id)nearbyObjectFromSolution:(const void *)a3;
-- (id)nearbyObjectFromSolution:(const void *)a3 forPeer:(id)a4;
-- (id)nearbyObjectFromToken:(id)a3;
-- (id)niConvergenceStateFromSolution:(const void *)a3;
+- (id)_configureForLocalization:(id)localization;
+- (id)_configureForRegionMonitoring:(id)monitoring;
+- (id)_consolidateInputToMLModel:(const void *)model;
+- (id)_convertPEAnchorMessages:(const void *)messages;
+- (id)_convertPEResponderAnchorMessage:(const void *)message;
+- (id)_handleRangeAndAoASolution:(const void *)solution;
+- (id)_handleRangeOnlySolution:(const void *)solution;
+- (id)configure:(id)configure;
+- (id)nearbyObjectFromDeviceIdentifier:(unint64_t)identifier;
+- (id)nearbyObjectFromRangeResult:(const void *)result;
+- (id)nearbyObjectFromSolution:(const void *)solution;
+- (id)nearbyObjectFromSolution:(const void *)solution forPeer:(id)peer;
+- (id)nearbyObjectFromToken:(id)token;
+- (id)niConvergenceStateFromSolution:(const void *)solution;
 - (int)_setReadValidateDefaultsWriteForTypeOfPredictor;
 - (set<NIRegionSizeCategory,)_getRegionSizeCategoriesFromRegions:(std:(NINearbyUpdatesEngine *)self :(SEL)a3 allocator<NIRegionSizeCategory>> *__return_ptr)retstr;
 - (void)_configureRangeBiasEstimator;
@@ -31,63 +31,63 @@
 - (void)_createItemFinderAlgoContainer;
 - (void)_createPeerFindingAlgoContainer;
 - (void)_createPeopleFinderAlgoContainer;
-- (void)_createSyntheticApertureAlgoContainer:(BOOL)a3;
+- (void)_createSyntheticApertureAlgoContainer:(BOOL)container;
 - (void)_createWatchItemFinderAlgoContainer;
-- (void)_handleBoundedRegionRange:(double)a3 forDevice:(unint64_t)a4 rangeResult:(optional<nearby::algorithms::common::RangeResult> *)a5;
-- (void)_handleDeviceMonitorActivation:(BOOL)a3 forDevice:(unint64_t)a4 timestamp:(double)a5 regionSizeCategory:(int)a6 regions:(optional<std:(int)a8 :vector<nearby::algorithms::region_monitoring::Region>> *)a7 predictorType:;
-- (void)_handleRegionChangeForDevice:(unint64_t)a3 currentRegion:(optional<nearby::algorithms::region_monitoring::Region> *)a4 prevRegion:timestamp:rangeResult:intentPrediction:regionTransitionSuppressed:;
-- (void)_handleWiFiRangeResults:(const void *)a3;
+- (void)_handleBoundedRegionRange:(double)range forDevice:(unint64_t)device rangeResult:(optional<nearby::algorithms::common::RangeResult> *)result;
+- (void)_handleDeviceMonitorActivation:(BOOL)activation forDevice:(unint64_t)device timestamp:(double)timestamp regionSizeCategory:(int)category regions:(optional<std:(int)regions :vector<nearby::algorithms::region_monitoring::Region>> *)a7 predictorType:;
+- (void)_handleRegionChangeForDevice:(unint64_t)device currentRegion:(optional<nearby::algorithms::region_monitoring::Region> *)region prevRegion:timestamp:rangeResult:intentPrediction:regionTransitionSuppressed:;
+- (void)_handleWiFiRangeResults:(const void *)results;
 - (void)_sendTimeTupleToAlgorithms;
-- (void)acceptAltimeterData:(const AltimeterInput *)a3;
-- (void)acceptBluetoothSample:(const void *)a3 coarseEstimation:(BOOL)a4 regionCategory:(int64_t)a5;
-- (void)acceptDTTagMeasurements:(const void *)a3;
-- (void)acceptDeviceMotion:(const void *)a3;
-- (void)acceptDeviceMotionInput:(const void *)a3;
-- (void)acceptDeviceMovingState:(BOOL)a3;
-- (void)acceptDevicePDRInput:(const void *)a3;
-- (void)acceptDiscoveryEventForPeer:(id)a3;
-- (void)acceptGnssSatelliteData:(const void *)a3;
-- (void)acceptHeadingData:(const HeadingInput *)a3;
-- (void)acceptMagneticFieldStrength:(double)a3;
-- (void)acceptMotionActivity:(const MotionActivityInput *)a3;
-- (void)acceptPedometerData:(const PedometerDataInput *)a3;
-- (void)acceptPedometerEvent:(const PedometerEventInput *)a3;
-- (void)acceptPeerData:(const void *)a3 fromPeer:(id)a4;
-- (void)acceptPeerLocationData:(const LocationInput *)a3 forPeer:(id)a4;
-- (void)acceptPositionDisplacement:(const void *)a3;
-- (void)acceptRoseSolution:(const void *)a3;
-- (void)acceptRoseSolution:(const void *)a3 withProcessingOptions:(const AlgorithmProcessingOptions *)a4;
-- (void)acceptSelfLocationData:(const LocationInput *)a3;
-- (void)acceptUnsuccessfulRoseSolution:(const void *)a3;
-- (void)acceptVisionInput:(id)a3;
-- (void)acceptWatchOrientation:(const WatchOrientationInput *)a3;
-- (void)clearStateForToken:(id)a3;
-- (void)fillNearbyObject:(id)a3 fromRangeResult:(const void *)a4;
-- (void)fillNearbyObject:(id)a3 fromSolution:(const void *)a4;
-- (void)getPeerDataFromFindingContainerWithToken:(id)a3;
+- (void)acceptAltimeterData:(const AltimeterInput *)data;
+- (void)acceptBluetoothSample:(const void *)sample coarseEstimation:(BOOL)estimation regionCategory:(int64_t)category;
+- (void)acceptDTTagMeasurements:(const void *)measurements;
+- (void)acceptDeviceMotion:(const void *)motion;
+- (void)acceptDeviceMotionInput:(const void *)input;
+- (void)acceptDeviceMovingState:(BOOL)state;
+- (void)acceptDevicePDRInput:(const void *)input;
+- (void)acceptDiscoveryEventForPeer:(id)peer;
+- (void)acceptGnssSatelliteData:(const void *)data;
+- (void)acceptHeadingData:(const HeadingInput *)data;
+- (void)acceptMagneticFieldStrength:(double)strength;
+- (void)acceptMotionActivity:(const MotionActivityInput *)activity;
+- (void)acceptPedometerData:(const PedometerDataInput *)data;
+- (void)acceptPedometerEvent:(const PedometerEventInput *)event;
+- (void)acceptPeerData:(const void *)data fromPeer:(id)peer;
+- (void)acceptPeerLocationData:(const LocationInput *)data forPeer:(id)peer;
+- (void)acceptPositionDisplacement:(const void *)displacement;
+- (void)acceptRoseSolution:(const void *)solution;
+- (void)acceptRoseSolution:(const void *)solution withProcessingOptions:(const AlgorithmProcessingOptions *)options;
+- (void)acceptSelfLocationData:(const LocationInput *)data;
+- (void)acceptUnsuccessfulRoseSolution:(const void *)solution;
+- (void)acceptVisionInput:(id)input;
+- (void)acceptWatchOrientation:(const WatchOrientationInput *)orientation;
+- (void)clearStateForToken:(id)token;
+- (void)fillNearbyObject:(id)object fromRangeResult:(const void *)result;
+- (void)fillNearbyObject:(id)object fromSolution:(const void *)solution;
+- (void)getPeerDataFromFindingContainerWithToken:(id)token;
 - (void)invalidate;
-- (void)logSolution:(const void *)a3;
+- (void)logSolution:(const void *)solution;
 - (void)probeRegions;
-- (void)processUWBResultForRegionMonitoring:(id)a3 roseSolution:(const void *)a4 processingOptions:(const AlgorithmProcessingOptions *)a5;
-- (void)processUWBResultForSyntheticAperture:(id)a3 roseSolution:(const void *)a4;
-- (void)provideFindingSolution:(id)a3;
-- (void)reportAndLogNearbyObject:(id)a3;
-- (void)setFindingPeerToken:(id)a3;
+- (void)processUWBResultForRegionMonitoring:(id)monitoring roseSolution:(const void *)solution processingOptions:(const AlgorithmProcessingOptions *)options;
+- (void)processUWBResultForSyntheticAperture:(id)aperture roseSolution:(const void *)solution;
+- (void)provideFindingSolution:(id)solution;
+- (void)reportAndLogNearbyObject:(id)object;
+- (void)setFindingPeerToken:(id)token;
 @end
 
 @implementation NINearbyUpdatesEngine
 
-- (NINearbyUpdatesEngine)initWithConfiguration:(id)a3 queue:(id)a4 delegate:(id)a5 dataSource:(id)a6 analyticsManager:(id)a7 protobufLogger:(shared_ptr<rose:(id *)a9 :protobuf::Logger>)a8 error:
+- (NINearbyUpdatesEngine)initWithConfiguration:(id)configuration queue:(id)queue delegate:(id)delegate dataSource:(id)source analyticsManager:(id)manager protobufLogger:(shared_ptr<rose:(id *)logger :protobuf::Logger>)a8 error:
 {
   v10 = v9;
-  v17 = a3;
-  v40 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  if (v17)
+  configurationCopy = configuration;
+  queueCopy = queue;
+  delegateCopy = delegate;
+  sourceCopy = source;
+  managerCopy = manager;
+  if (configurationCopy)
   {
-    if (v18)
+    if (delegateCopy)
     {
       goto LABEL_3;
     }
@@ -96,7 +96,7 @@ LABEL_23:
     v37 = +[NSAssertionHandler currentHandler];
     [v37 handleFailureInMethod:a2 object:self file:@"NIServerNearbyUpdatesEngine.mm" lineNumber:204 description:{@"Invalid parameter not satisfying: %@", @"delegate"}];
 
-    if (v19)
+    if (sourceCopy)
     {
       goto LABEL_4;
     }
@@ -107,13 +107,13 @@ LABEL_23:
   v36 = +[NSAssertionHandler currentHandler];
   [v36 handleFailureInMethod:a2 object:self file:@"NIServerNearbyUpdatesEngine.mm" lineNumber:203 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
 
-  if (!v18)
+  if (!delegateCopy)
   {
     goto LABEL_23;
   }
 
 LABEL_3:
-  if (v19)
+  if (sourceCopy)
   {
     goto LABEL_4;
   }
@@ -136,9 +136,9 @@ LABEL_4:
   v23 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_queue, a4);
-    objc_storeWeak(&v22->_delegate, v18);
-    objc_storeWeak(&v22->_dataSource, v19);
+    objc_storeStrong(&v21->_queue, queue);
+    objc_storeWeak(&v22->_delegate, delegateCopy);
+    objc_storeWeak(&v22->_dataSource, sourceCopy);
     v25 = *v10;
     v24 = v10[1];
     if (v24)
@@ -154,10 +154,10 @@ LABEL_4:
       sub_10000AD84(cntrl);
     }
 
-    objc_storeStrong(&v22->_analyticsManager, a7);
-    if (v19)
+    objc_storeStrong(&v22->_analyticsManager, manager);
+    if (sourceCopy)
     {
-      [v19 uniqueIdentifierForEngine:v23];
+      [sourceCopy uniqueIdentifierForEngine:v23];
     }
 
     else
@@ -187,7 +187,7 @@ LABEL_4:
     previousNIObjectUpdate = v23->_previousNIObjectUpdate;
     v23->_previousNIObjectUpdate = 0;
 
-    v32 = [(NINearbyUpdatesEngine *)v23 configure:v17];
+    v32 = [(NINearbyUpdatesEngine *)v23 configure:configurationCopy];
     v33 = v32;
     if (v32)
     {
@@ -326,9 +326,9 @@ LABEL_27:
   }
 }
 
-- (id)configure:(id)a3
+- (id)configure:(id)configure
 {
-  v5 = a3;
+  configureCopy = configure;
   v6 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
@@ -336,15 +336,15 @@ LABEL_27:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#nrby-eng,configure", &v59, 2u);
   }
 
-  objc_storeStrong(&self->_configuration, a3);
+  objc_storeStrong(&self->_configuration, configure);
   configuration = self->_configuration;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(NINearbyUpdatesEngine *)self _configureRangeBiasEstimator];
     v8 = self->_configuration;
-    v9 = [(NIConfiguration *)v8 monitoredRegions];
-    v10 = [(NINearbyUpdatesEngine *)self _configureForRegionMonitoring:v9];
+    monitoredRegions = [(NIConfiguration *)v8 monitoredRegions];
+    v10 = [(NINearbyUpdatesEngine *)self _configureForRegionMonitoring:monitoredRegions];
 
     self->_rangeMeasSourcePref = 1;
     goto LABEL_9;
@@ -373,11 +373,11 @@ LABEL_8:
   if (objc_opt_isKindOfClass())
   {
     v27 = self->_configuration;
-    v28 = [(NIConfiguration *)v27 debugParameters];
-    if (v28)
+    debugParameters = [(NIConfiguration *)v27 debugParameters];
+    if (debugParameters)
     {
-      v29 = [(NIConfiguration *)v27 debugParameters];
-      v30 = [v29 objectForKey:@"enableAdditionalUWBSignalFeatures"];
+      debugParameters2 = [(NIConfiguration *)v27 debugParameters];
+      v30 = [debugParameters2 objectForKey:@"enableAdditionalUWBSignalFeatures"];
       v31 = v30 == 0;
 
       if (!v31)
@@ -407,23 +407,23 @@ LABEL_72:
   }
 
   v41 = self->_configuration;
-  v42 = [(NIConfiguration *)v41 monitoredRegions];
-  v43 = v42 == 0;
+  monitoredRegions2 = [(NIConfiguration *)v41 monitoredRegions];
+  v43 = monitoredRegions2 == 0;
 
   if (v43)
   {
-    v44 = [(NIConfiguration *)v41 innerBoundary];
-    v61[0] = v44;
-    v57 = [(NIConfiguration *)v41 outerBoundary];
-    v61[1] = v57;
+    innerBoundary = [(NIConfiguration *)v41 innerBoundary];
+    v61[0] = innerBoundary;
+    outerBoundary = [(NIConfiguration *)v41 outerBoundary];
+    v61[1] = outerBoundary;
     v58 = [NSArray arrayWithObjects:v61 count:2];
     v10 = [(NINearbyUpdatesEngine *)self _configureForRegionMonitoring:v58];
   }
 
   else
   {
-    v44 = [(NIConfiguration *)v41 monitoredRegions];
-    v10 = [(NINearbyUpdatesEngine *)self _configureForRegionMonitoring:v44];
+    innerBoundary = [(NIConfiguration *)v41 monitoredRegions];
+    v10 = [(NINearbyUpdatesEngine *)self _configureForRegionMonitoring:innerBoundary];
   }
 
 LABEL_9:
@@ -459,27 +459,27 @@ LABEL_9:
     }
 
     v19 = self->_configuration;
-    v20 = [(NIConfiguration *)v19 discoveryTokenVariant];
-    if (v20 > 1)
+    discoveryTokenVariant = [(NIConfiguration *)v19 discoveryTokenVariant];
+    if (discoveryTokenVariant > 1)
     {
-      if (v20 == 2)
+      if (discoveryTokenVariant == 2)
       {
-        v37 = [(NIConfiguration *)v19 requestedMeasurementQuality];
-        if (v37 == 3)
+        requestedMeasurementQuality = [(NIConfiguration *)v19 requestedMeasurementQuality];
+        if (requestedMeasurementQuality == 3)
         {
-          v49 = [(NIConfiguration *)v19 monitoredRegions];
-          v50 = v49 == 0;
+          monitoredRegions3 = [(NIConfiguration *)v19 monitoredRegions];
+          v50 = monitoredRegions3 == 0;
 
           if (!v50)
           {
-            v51 = [(NIConfiguration *)v19 monitoredRegions];
-            v52 = [(NINearbyUpdatesEngine *)self _configureForRegionMonitoring:v51];
+            monitoredRegions4 = [(NIConfiguration *)v19 monitoredRegions];
+            v52 = [(NINearbyUpdatesEngine *)self _configureForRegionMonitoring:monitoredRegions4];
 
             v10 = v52;
           }
         }
 
-        else if (v37 == 1)
+        else if (requestedMeasurementQuality == 1)
         {
           v38 = +[NSUserDefaults standardUserDefaults];
           v39 = [v38 BOOLForKey:@"EnableWatchItemFindingOnPhone"];
@@ -513,7 +513,7 @@ LABEL_9:
         goto LABEL_81;
       }
 
-      if (v20 != 3)
+      if (discoveryTokenVariant != 3)
       {
 LABEL_81:
 
@@ -521,9 +521,9 @@ LABEL_81:
       }
     }
 
-    else if (v20)
+    else if (discoveryTokenVariant)
     {
-      if (v20 == 1)
+      if (discoveryTokenVariant == 1)
       {
         if (([(NIConfiguration *)v19 isFinder]& 1) != 0)
         {
@@ -576,9 +576,9 @@ LABEL_26:
     goto LABEL_82;
   }
 
-  v24 = [(NIConfiguration *)self->_configuration _internalIsExtendedDistanceMeasurementEnabled];
+  _internalIsExtendedDistanceMeasurementEnabled = [(NIConfiguration *)self->_configuration _internalIsExtendedDistanceMeasurementEnabled];
   v25 = self->_configuration;
-  if (v24)
+  if (_internalIsExtendedDistanceMeasurementEnabled)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -670,15 +670,15 @@ LABEL_82:
   return v10;
 }
 
-- (id)_configureForRegionMonitoring:(id)a3
+- (id)_configureForRegionMonitoring:(id)monitoring
 {
-  v113 = a3;
-  if ([v113 count])
+  monitoringCopy = monitoring;
+  if ([monitoringCopy count])
   {
-    v116 = self;
+    selfCopy = self;
     v4 = objc_opt_new();
-    regionDict = v116->_regionDict;
-    v116->_regionDict = v4;
+    regionDict = selfCopy->_regionDict;
+    selfCopy->_regionDict = v4;
 
     v154 = 0;
     v153 = 0;
@@ -687,7 +687,7 @@ LABEL_82:
     v150 = 0u;
     v151 = 0u;
     v152 = 0u;
-    obj = v113;
+    obj = monitoringCopy;
     v6 = [obj countByEnumeratingWithState:&v149 objects:v237 count:16];
     if (v6)
     {
@@ -703,39 +703,39 @@ LABEL_82:
 
           v9 = *(*(&v149 + 1) + 8 * i);
           v10 = [NIRegionKey alloc];
-          v11 = [v9 name];
-          v12 = -[NIRegionKey initWithName:regionSizeCategory:](v10, "initWithName:regionSizeCategory:", v11, [v9 regionSizeCategory]);
+          name = [v9 name];
+          v12 = -[NIRegionKey initWithName:regionSizeCategory:](v10, "initWithName:regionSizeCategory:", name, [v9 regionSizeCategory]);
 
-          [(NSMutableDictionary *)v116->_regionDict setObject:v9 forKey:v12];
-          v13 = [v9 name];
-          v14 = v13;
-          sub_100004A08(v121, [v13 UTF8String]);
+          [(NSMutableDictionary *)selfCopy->_regionDict setObject:v9 forKey:v12];
+          name2 = [v9 name];
+          v14 = name2;
+          sub_100004A08(v121, [name2 UTF8String]);
           [v9 radius];
           v16 = v15;
-          v17 = [v9 regionSizeCategory];
-          v18 = [v9 preferredUpdateRate];
-          if ((v18 - 1) >= 3)
+          regionSizeCategory = [v9 regionSizeCategory];
+          preferredUpdateRate = [v9 preferredUpdateRate];
+          if ((preferredUpdateRate - 1) >= 3)
           {
             v19 = 1;
           }
 
           else
           {
-            v19 = v18 + 1;
+            v19 = preferredUpdateRate + 1;
           }
 
-          v20 = [v9 devicePresencePreset];
-          if ((v20 - 1) >= 8)
+          devicePresencePreset = [v9 devicePresencePreset];
+          if ((devicePresencePreset - 1) >= 8)
           {
             v21 = 1;
           }
 
           else
           {
-            v21 = v20 + 1;
+            v21 = devicePresencePreset + 1;
           }
 
-          v22 = [v9 requiresUserIntent];
+          requiresUserIntent = [v9 requiresUserIntent];
           if (SHIBYTE(v122[0]) < 0)
           {
             sub_1000056BC(__p, v121[0], v121[1]);
@@ -748,10 +748,10 @@ LABEL_82:
           }
 
           *&__p[24] = v16;
-          *&__p[28] = v17;
+          *&__p[28] = regionSizeCategory;
           *&__p[32] = v19;
           *&__p[36] = v21;
-          LOWORD(v172) = v22;
+          LOWORD(v172) = requiresUserIntent;
           v23 = v154;
           if (v154 >= v155)
           {
@@ -789,14 +789,14 @@ LABEL_82:
     v26 = qword_1009F9820;
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
-      sub_1004C5B48(v236, [(NSMutableDictionary *)v116->_regionDict count], v26);
+      sub_1004C5B48(v236, [(NSMutableDictionary *)selfCopy->_regionDict count], v26);
     }
 
     v147 = 0u;
     v148 = 0u;
     v145 = 0u;
     v146 = 0u;
-    v27 = v116->_regionDict;
+    v27 = selfCopy->_regionDict;
     v28 = [(NSMutableDictionary *)v27 countByEnumeratingWithState:&v145 objects:v235 count:16];
     if (v28)
     {
@@ -817,7 +817,7 @@ LABEL_82:
           if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
           {
             v34 = [v32 description];
-            v35 = [(NSMutableDictionary *)v116->_regionDict objectForKey:v32];
+            v35 = [(NSMutableDictionary *)selfCopy->_regionDict objectForKey:v32];
             v36 = [v35 description];
             *__p = 67109634;
             *&__p[4] = v29;
@@ -842,13 +842,13 @@ LABEL_82:
     v37 = qword_1009F9820;
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
-      p_uniqueIdentifier = &v116->_uniqueIdentifier;
-      if (*(&v116->_uniqueIdentifier.__rep_.__l + 23) < 0)
+      p_uniqueIdentifier = &selfCopy->_uniqueIdentifier;
+      if (*(&selfCopy->_uniqueIdentifier.__rep_.__l + 23) < 0)
       {
         p_uniqueIdentifier = p_uniqueIdentifier->__data_;
       }
 
-      v39 = v116->_regionDict;
+      v39 = selfCopy->_regionDict;
       *__p = 136315394;
       *&__p[4] = p_uniqueIdentifier;
       *&__p[12] = 2112;
@@ -1035,13 +1035,13 @@ LABEL_82:
       LODWORD(v121[0]) = v71;
     }
 
-    configuration = v116->_configuration;
+    configuration = selfCopy->_configuration;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v73 = v116->_configuration;
-      v74 = [v73 token];
-      v75 = v74 == 0;
+      v73 = selfCopy->_configuration;
+      token = [v73 token];
+      v75 = token == 0;
 
       if (!v75)
       {
@@ -1078,11 +1078,11 @@ LABEL_77:
 
     else
     {
-      v82 = v116->_configuration;
+      v82 = selfCopy->_configuration;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v73 = v116->_configuration;
+        v73 = selfCopy->_configuration;
         if ([v73 requestedMeasurementQuality]== 3)
         {
           sub_10029E5A4(v121);
@@ -1191,10 +1191,10 @@ LABEL_99:
     v209 = v132;
     v204 = v127;
     v205 = v128;
-    v84 = v116;
-    v116->_localIntentPredictorPreference = [(NINearbyUpdatesEngine *)v116 _setReadValidateDefaultsWriteForTypeOfPredictor];
+    v84 = selfCopy;
+    selfCopy->_localIntentPredictorPreference = [(NINearbyUpdatesEngine *)selfCopy _setReadValidateDefaultsWriteForTypeOfPredictor];
     sub_10030302C(v120);
-    localIntentPredictorPreference = v116->_localIntentPredictorPreference;
+    localIntentPredictorPreference = selfCopy->_localIntentPredictorPreference;
     if (localIntentPredictorPreference <= 1)
     {
       if (localIntentPredictorPreference)
@@ -1216,7 +1216,7 @@ LABEL_133:
           }
 
           sub_10002074C(&v118, v119);
-          ptr = v116->_protobufLogger.__ptr_;
+          ptr = selfCopy->_protobufLogger.__ptr_;
           if (ptr)
           {
             v104 = sub_100015080();
@@ -1224,7 +1224,7 @@ LABEL_133:
             sub_100004A08(&buf, [v104 UTF8String]);
             v156 = 0;
             v157 = 1;
-            sub_1002E2058(ptr, &v116->_uniqueIdentifier, &v153, __p, &buf, &v156);
+            sub_1002E2058(ptr, &selfCopy->_uniqueIdentifier, &v153, __p, &buf, &v156);
             if (SHIBYTE(buf.__r_.__value_.__r.__words[2]) < 0)
             {
               operator delete(buf.__r_.__value_.__l.__data_);
@@ -1317,8 +1317,8 @@ LABEL_106:
             sub_1004C5B90();
           }
 
-          v84 = v116;
-          v116->_localIntentPredictorPreference = 0;
+          v84 = selfCopy;
+          selfCopy->_localIntentPredictorPreference = 0;
           goto LABEL_133;
         }
 
@@ -1374,7 +1374,7 @@ LABEL_106:
     }
 
 LABEL_132:
-    v84 = v116;
+    v84 = selfCopy;
     goto LABEL_133;
   }
 
@@ -1390,7 +1390,7 @@ LABEL_151:
   return 0;
 }
 
-- (id)_configureForLocalization:(id)a3
+- (id)_configureForLocalization:(id)localization
 {
   v8 = 1;
   v4 = +[NSUserDefaults standardUserDefaults];
@@ -2020,7 +2020,7 @@ LABEL_33:
   }
 }
 
-- (void)_createSyntheticApertureAlgoContainer:(BOOL)a3
+- (void)_createSyntheticApertureAlgoContainer:(BOOL)container
 {
   v3 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -2113,9 +2113,9 @@ LABEL_33:
   operator new();
 }
 
-- (void)provideFindingSolution:(id)a3
+- (void)provideFindingSolution:(id)solution
 {
-  v5 = a3;
+  solutionCopy = solution;
   if (self->_findingAlgorithmContainer.__ptr_)
   {
     sub_100224EF8();
@@ -2155,22 +2155,22 @@ LABEL_33:
         [(NIServerAnalyticsManager *)analyticsManager updateWithSolution:v44];
       }
 
-      if (v5)
+      if (solutionCopy)
       {
-        [v7 setNbRxStatus:{objc_msgSend(v5, "nbRxStatus")}];
-        [v7 setMmsRxStatus:{objc_msgSend(v5, "mmsRxStatus")}];
-        [v5 nbRssi];
+        [v7 setNbRxStatus:{objc_msgSend(solutionCopy, "nbRxStatus")}];
+        [v7 setMmsRxStatus:{objc_msgSend(solutionCopy, "mmsRxStatus")}];
+        [solutionCopy nbRssi];
         [v7 setNbRssi:?];
-        [v5 signalStrength];
+        [solutionCopy signalStrength];
         [v7 setSignalStrength:?];
       }
 
       sub_100004A08(&v40, "");
       sub_100004A08(&v39, "RawDist = ");
-      if (v5)
+      if (solutionCopy)
       {
-        objc_storeStrong(&self->_previousNIObjectUpdate, a3);
-        [v5 distance];
+        objc_storeStrong(&self->_previousNIObjectUpdate, solution);
+        [solutionCopy distance];
       }
 
       else
@@ -2411,18 +2411,18 @@ LABEL_33:
   }
 }
 
-- (void)acceptRoseSolution:(const void *)a3
+- (void)acceptRoseSolution:(const void *)solution
 {
   v3 = xmmword_10056DCB0;
   v4 = 1;
-  [(NINearbyUpdatesEngine *)self acceptRoseSolution:a3 withProcessingOptions:&v3];
+  [(NINearbyUpdatesEngine *)self acceptRoseSolution:solution withProcessingOptions:&v3];
 }
 
-- (void)acceptRoseSolution:(const void *)a3 withProcessingOptions:(const AlgorithmProcessingOptions *)a4
+- (void)acceptRoseSolution:(const void *)solution withProcessingOptions:(const AlgorithmProcessingOptions *)options
 {
-  if (*(a3 + 24))
+  if (*(solution + 24))
   {
-    v7 = *(a3 + 8);
+    v7 = *(solution + 8);
     if (v7 > 3)
     {
       if ((v7 - 5) >= 2)
@@ -2443,7 +2443,7 @@ LABEL_33:
     {
       if ((v7 - 2) < 2)
       {
-        v8 = [(NINearbyUpdatesEngine *)self _handleRangeAndAoASolution:a3];
+        v8 = [(NINearbyUpdatesEngine *)self _handleRangeAndAoASolution:solution];
 LABEL_13:
         v9 = v8;
         if (!v8)
@@ -2451,13 +2451,13 @@ LABEL_13:
           return;
         }
 
-        if ((*(a3 + 24) & 1) == 0)
+        if ((*(solution + 24) & 1) == 0)
         {
           sub_1000195BC();
         }
 
-        [v8 setTimestamp:*(a3 + 2)];
-        [v9 setRequiresBiasCorrection:a4->requiresBiasCorrection];
+        [v8 setTimestamp:*(solution + 2)];
+        [v9 setRequiresBiasCorrection:options->requiresBiasCorrection];
         obj = [v9 discoveryToken];
         v121 = [obj hash];
         buf[0] = &v121;
@@ -2479,10 +2479,10 @@ LABEL_13:
 
         else
         {
-          v13 = [v9 requiresBiasCorrection];
+          requiresBiasCorrection = [v9 requiresBiasCorrection];
           v11 = qword_1009F9820;
           v14 = os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT);
-          if (v13)
+          if (requiresBiasCorrection)
           {
             if (v14)
             {
@@ -2490,22 +2490,22 @@ LABEL_13:
               _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "#nrby-eng,#bias-est This device type requires bias estimation.", buf, 2u);
             }
 
-            if (*(a3 + 600))
+            if (*(solution + 600))
             {
-              if ((*(a3 + 215) & 0x100) != 0)
+              if ((*(solution + 215) & 0x100) != 0)
               {
                 v11 = qword_1009F9820;
-                if (*(a3 + 1312) == 1)
+                if (*(solution + 1312) == 1)
                 {
                   v22 = qword_1009F9820;
                   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
                   {
-                    if ((*(a3 + 600) & 1) == 0)
+                    if ((*(solution + 600) & 1) == 0)
                     {
                       sub_1000195BC();
                     }
 
-                    v23 = *(a3 + 14);
+                    v23 = *(solution + 14);
                     buf[0].i32[0] = 67109120;
                     buf[0].i32[1] = v23;
                     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "#nrby-eng,#bias-est Calculating bias for device mac addr : %d", buf, 8u);
@@ -2518,7 +2518,7 @@ LABEL_13:
                       sub_1004C5CF4();
                     }
 
-                    sub_1002E4938(self->_protobufLogger.__ptr_, a3);
+                    sub_1002E4938(self->_protobufLogger.__ptr_, solution);
                   }
 
                   v106 = objc_alloc_init(UWBSignalFeatures);
@@ -2527,11 +2527,11 @@ LABEL_13:
                   if (objc_opt_isKindOfClass())
                   {
                     v25 = self->_configuration;
-                    v26 = [(NIConfiguration *)v25 debugParameters];
-                    if (v26)
+                    debugParameters = [(NIConfiguration *)v25 debugParameters];
+                    if (debugParameters)
                     {
-                      v27 = [(NIConfiguration *)v25 debugParameters];
-                      v28 = [v27 objectForKey:@"enableAdditionalUWBSignalFeatures"];
+                      debugParameters2 = [(NIConfiguration *)v25 debugParameters];
+                      v28 = [debugParameters2 objectForKey:@"enableAdditionalUWBSignalFeatures"];
                       v105 = v28 != 0;
                     }
 
@@ -2546,12 +2546,12 @@ LABEL_13:
                     v105 = 0;
                   }
 
-                  v111 = [(NINearbyUpdatesEngine *)self _consolidateInputToMLModel:a3];
+                  v111 = [(NINearbyUpdatesEngine *)self _consolidateInputToMLModel:solution];
                   v107 = [(RangeBiasEstimatorSingleAntennaModel *)self->_rangeBiasEstimatorSingleAntennaModel consumeInputFeatures:?];
                   v109 = [(RangeBiasEstimatorSingleAntennaModel *)self->_rangeBiasEstimatorSingleAntennaModel preprocessInputFeatures:?];
                   v52 = [(RangeBiasEstimatorSingleAntennaModel *)self->_rangeBiasEstimatorSingleAntennaModel predictOutput:v109];
-                  v113 = [(RangeBiasEstimatorSingleAntennaModel *)self->_rangeBiasEstimatorSingleAntennaModel biasCorrectionEstimate];
-                  if (v113 && v52)
+                  biasCorrectionEstimate = [(RangeBiasEstimatorSingleAntennaModel *)self->_rangeBiasEstimatorSingleAntennaModel biasCorrectionEstimate];
+                  if (biasCorrectionEstimate && v52)
                   {
                     memset(buf, 0, sizeof(buf));
                     v115 = [[NSMutableString alloc] initWithFormat:&stru_1009B1428];
@@ -2622,7 +2622,7 @@ LABEL_13:
                     v71 = qword_1009F9820;
                     if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
                     {
-                      if (*(a3 + 600) != 1 || (v72 = *(a3 + 215), (v72 & 0x100) == 0))
+                      if (*(solution + 600) != 1 || (v72 = *(solution + 215), (v72 & 0x100) == 0))
                       {
                         sub_1000195BC();
                       }
@@ -2641,7 +2641,7 @@ LABEL_13:
                       v75 = v74;
                       [v9 distance];
                       v77 = v76;
-                      [v113 doubleValue];
+                      [biasCorrectionEstimate doubleValue];
                       *v142 = 134218240;
                       *&v142[4] = v75;
                       *&v142[12] = 2048;
@@ -2649,7 +2649,7 @@ LABEL_13:
                       _os_log_impl(&_mh_execute_header, v73, OS_LOG_TYPE_DEFAULT, "#nrby-eng,#bias-est Range result (raw) = %f, Corrected Range = %f", v142, 0x16u);
                     }
 
-                    [v113 doubleValue];
+                    [biasCorrectionEstimate doubleValue];
                     [v9 setRangeBiasEstimate:?];
                     v79 = v105;
                     if (!v111)
@@ -2664,7 +2664,7 @@ LABEL_13:
                       [(BiasEstimatorOutputs *)v80 setRawRange:v81];
                       [v9 distance];
                       v83 = v82;
-                      [v113 doubleValue];
+                      [biasCorrectionEstimate doubleValue];
                       [(BiasEstimatorOutputs *)v80 setCorrectedRange:v84 + v83];
                       [(BiasEstimatorOutputs *)v80 setOutProbabilities:v68];
                       [(UWBSignalFeatures *)v106 setInputFeatures:v111];
@@ -2676,33 +2676,33 @@ LABEL_13:
                     {
                       memset(v142, 0, sizeof(v142));
                       v85 = [v107 featureValueForName:@"input"];
-                      v86 = [v85 multiArrayValue];
+                      multiArrayValue = [v85 multiArrayValue];
 
                       __p = 0;
                       v119 = 0;
                       v120 = 0;
                       v87 = [v109 featureValueForName:@"input"];
-                      v88 = [v87 multiArrayValue];
+                      multiArrayValue2 = [v87 multiArrayValue];
 
-                      for (j = 0; [v86 count] > j; ++j)
+                      for (j = 0; [multiArrayValue count] > j; ++j)
                       {
-                        v90 = [v86 objectAtIndexedSubscript:j];
+                        v90 = [multiArrayValue objectAtIndexedSubscript:j];
                         [v90 doubleValue];
                         v117 = v91;
                         sub_100009734(v142, &v117);
 
-                        v92 = [v88 objectAtIndexedSubscript:j];
+                        v92 = [multiArrayValue2 objectAtIndexedSubscript:j];
                         [v92 doubleValue];
                         v117 = v93;
                         sub_100009734(&__p, &v117);
                       }
 
-                      if ((*(a3 + 600) & 1) == 0 || (v94 = *(a3 + 215), (v94 & 0x100) == 0) || (ptr = self->_protobufLogger.__ptr_, [v9 distance], v97 = v96, objc_msgSend(v113, "doubleValue"), (*(a3 + 24) & 1) == 0))
+                      if ((*(solution + 600) & 1) == 0 || (v94 = *(solution + 215), (v94 & 0x100) == 0) || (ptr = self->_protobufLogger.__ptr_, [v9 distance], v97 = v96, objc_msgSend(biasCorrectionEstimate, "doubleValue"), (*(solution + 24) & 1) == 0))
                       {
                         sub_1000195BC();
                       }
 
-                      sub_1002E5170(ptr, v94, v97, v98, *(a3 + 2), v142, &__p, buf, *(a3 + 18), *(a3 + 5));
+                      sub_1002E5170(ptr, v94, v97, v98, *(solution + 2), v142, &__p, buf, *(solution + 18), *(solution + 5));
 
                       if (__p)
                       {
@@ -2745,13 +2745,13 @@ LABEL_13:
                 if (!os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
                 {
 LABEL_33:
-                  v15 = [(NINearbyUpdatesEngine *)self _shouldConsumeRoseSolution:a3];
-                  if (!sub_100009BCC(&self->_regionMonitorMap.__table_.__bucket_list_.__ptr_, &a4->regionSizeCategory))
+                  v15 = [(NINearbyUpdatesEngine *)self _shouldConsumeRoseSolution:solution];
+                  if (!sub_100009BCC(&self->_regionMonitorMap.__table_.__bucket_list_.__ptr_, &options->regionSizeCategory))
                   {
                     goto LABEL_153;
                   }
 
-                  v16 = sub_100009978(&self->_regionMonitorMap.__table_.__bucket_list_.__ptr_, &a4->regionSizeCategory);
+                  v16 = sub_100009978(&self->_regionMonitorMap.__table_.__bucket_list_.__ptr_, &options->regionSizeCategory);
                   if (!v16)
                   {
                     sub_10017C290("unordered_map::at: key not found");
@@ -2761,7 +2761,7 @@ LABEL_33:
                   {
                     if (v15)
                     {
-                      [(NINearbyUpdatesEngine *)self processUWBResultForRegionMonitoring:v9 roseSolution:a3 processingOptions:a4];
+                      [(NINearbyUpdatesEngine *)self processUWBResultForRegionMonitoring:v9 roseSolution:solution processingOptions:options];
                     }
                   }
 
@@ -2770,29 +2770,29 @@ LABEL_33:
 LABEL_153:
                     if (self->_syntheticApertureFilter.__ptr_)
                     {
-                      [(NINearbyUpdatesEngine *)self processUWBResultForSyntheticAperture:v9 roseSolution:a3];
+                      [(NINearbyUpdatesEngine *)self processUWBResultForSyntheticAperture:v9 roseSolution:solution];
                     }
 
                     else if (self->_findingAlgorithmContainer.__ptr_)
                     {
-                      v17 = [v9 discoveryToken];
-                      [(NINearbyUpdatesEngine *)self setFindingPeerToken:v17];
+                      discoveryToken = [v9 discoveryToken];
+                      [(NINearbyUpdatesEngine *)self setFindingPeerToken:discoveryToken];
 
-                      if (*(a3 + 600))
+                      if (*(solution + 600))
                       {
-                        if (*(a3 + 752) == 1)
+                        if (*(solution + 752) == 1)
                         {
                           sub_100498E54(buf);
                           v18 = qword_1009F9820;
                           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
                           {
-                            if (*(a3 + 600) != 1 || (*(a3 + 24) & 1) == 0)
+                            if (*(solution + 600) != 1 || (*(solution + 24) & 1) == 0)
                             {
                               sub_1000195BC();
                             }
 
-                            v102 = *(a3 + 44);
-                            v103 = *(a3 + 2);
+                            v102 = *(solution + 44);
+                            v103 = *(solution + 2);
                             p_uniqueIdentifier = &self->_uniqueIdentifier;
                             if (*(&self->_uniqueIdentifier.__rep_.__l + 23) < 0)
                             {
@@ -2826,13 +2826,13 @@ LABEL_153:
                           v29 = qword_1009F9820;
                           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
                           {
-                            if (*(a3 + 600) != 1 || (*(a3 + 24) & 1) == 0)
+                            if (*(solution + 600) != 1 || (*(solution + 24) & 1) == 0)
                             {
                               sub_1000195BC();
                             }
 
-                            v99 = *(a3 + 352);
-                            v100 = *(a3 + 16);
+                            v99 = *(solution + 352);
+                            v100 = *(solution + 16);
                             data = &self->_uniqueIdentifier;
                             if (*(&self->_uniqueIdentifier.__rep_.__l + 23) < 0)
                             {
@@ -2853,14 +2853,14 @@ LABEL_153:
                           v108 = 0;
                         }
 
-                        if (*(a3 + 928) == 1)
+                        if (*(solution + 928) == 1)
                         {
-                          v30 = *(a3 + 114) & 0xFFFFFFFFFFFFFF00;
-                          v110 = *(a3 + 920);
-                          v31 = *(a3 + 112) & 0xFFFFFFFFFFFFFF00;
-                          v112 = *(a3 + 904);
-                          v32 = *(a3 + 114);
-                          v33 = *(a3 + 112);
+                          v30 = *(solution + 114) & 0xFFFFFFFFFFFFFF00;
+                          v110 = *(solution + 920);
+                          v31 = *(solution + 112) & 0xFFFFFFFFFFFFFF00;
+                          v112 = *(solution + 904);
+                          v32 = *(solution + 114);
+                          v33 = *(solution + 112);
                         }
 
                         else
@@ -2873,19 +2873,19 @@ LABEL_153:
                           v30 = 0;
                         }
 
-                        v34 = [v9 discoveryToken];
-                        v35 = [v34 hash];
-                        if ((*(a3 + 24) & 1) == 0 || *(a3 + 600) != 1)
+                        discoveryToken2 = [v9 discoveryToken];
+                        v35 = [discoveryToken2 hash];
+                        if ((*(solution + 24) & 1) == 0 || *(solution + 600) != 1)
                         {
                           sub_1000195BC();
                         }
 
-                        v36 = *(a3 + 16);
-                        *&v37 = *(a3 + 44);
-                        v38 = *(a3 + 27);
-                        v39 = *(a3 + 80) | 0x10000;
-                        v40 = *(a3 + 257);
-                        v41 = *(a3 + 280);
+                        v36 = *(solution + 16);
+                        *&v37 = *(solution + 44);
+                        v38 = *(solution + 27);
+                        v39 = *(solution + 80) | 0x10000;
+                        v40 = *(solution + 257);
+                        v41 = *(solution + 280);
                         buf[0] = v35;
                         buf[1] = v36;
                         buf[2] = (v37 | 0x100000000);
@@ -2908,7 +2908,7 @@ LABEL_153:
                         v136 = v41;
                         v137 = v30 | v32;
                         v138 = v110;
-                        v139 = *(a3 + 72);
+                        v139 = *(solution + 72);
                         v140 = v31 | v33;
                         v141 = v112;
 
@@ -2922,12 +2922,12 @@ LABEL_153:
                         analyticsManager = self->_analyticsManager;
                         if (analyticsManager)
                         {
-                          if ((*(a3 + 600) & 1) == 0)
+                          if ((*(solution + 600) & 1) == 0)
                           {
                             sub_1000195BC();
                           }
 
-                          [(NIServerAnalyticsManager *)analyticsManager updateWithSuccessfulRange:*(a3 + 28) uwbRSSI:*(a3 + 232) nbRSSI:*(a3 + 44), *(a3 + 27)];
+                          [(NIServerAnalyticsManager *)analyticsManager updateWithSuccessfulRange:*(solution + 28) uwbRSSI:*(solution + 232) nbRSSI:*(solution + 44), *(solution + 27)];
                         }
 
                         v44 = *&buf[1];
@@ -3042,7 +3042,7 @@ LABEL_153:
         }
 
 LABEL_6:
-        v8 = [(NINearbyUpdatesEngine *)self _handleRangeOnlySolution:a3];
+        v8 = [(NINearbyUpdatesEngine *)self _handleRangeOnlySolution:solution];
         goto LABEL_13;
       }
     }
@@ -3059,7 +3059,7 @@ LABEL_6:
   }
 }
 
-- (void)acceptDTTagMeasurements:(const void *)a3
+- (void)acceptDTTagMeasurements:(const void *)measurements
 {
   if (self->_positionEngineManager.__ptr_)
   {
@@ -3067,8 +3067,8 @@ LABEL_6:
     v67 = 0;
     v68 = 0;
     v5 = objc_opt_new();
-    v6 = *a3;
-    v7 = *(a3 + 1);
+    v6 = *measurements;
+    v7 = *(measurements + 1);
     while (v6 != v7)
     {
       if (*(v6 + 32) != 6 || (*(v6 + 1680) & 1) == 0)
@@ -3347,18 +3347,18 @@ LABEL_45:
   }
 }
 
-- (void)acceptPositionDisplacement:(const void *)a3
+- (void)acceptPositionDisplacement:(const void *)displacement
 {
   ptr = self->_positionEngineManager.__ptr_;
   if (ptr)
   {
     if (self->_protobufLogger.__ptr_)
     {
-      sub_1002EA0F8(self->_protobufLogger.__ptr_, a3);
+      sub_1002EA0F8(self->_protobufLogger.__ptr_, displacement);
       ptr = self->_positionEngineManager.__ptr_;
     }
 
-    nullsub_171(ptr, a3);
+    nullsub_171(ptr, displacement);
   }
 
   else if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -3367,7 +3367,7 @@ LABEL_45:
   }
 }
 
-- (void)acceptUnsuccessfulRoseSolution:(const void *)a3
+- (void)acceptUnsuccessfulRoseSolution:(const void *)solution
 {
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
   {
@@ -3379,7 +3379,7 @@ LABEL_45:
 
   if (v6)
   {
-    v7 = *(a3 + 8);
+    v7 = *(solution + 8);
     if (v7 <= 6)
     {
       v8 = 1 << v7;
@@ -3387,12 +3387,12 @@ LABEL_45:
       {
         if ((v8 & 0xC) != 0)
         {
-          [(NINearbyUpdatesEngine *)self _handleRangeAndAoASolution:a3];
+          [(NINearbyUpdatesEngine *)self _handleRangeAndAoASolution:solution];
         }
 
         else
         {
-          [(NINearbyUpdatesEngine *)self _handleRangeOnlySolution:a3];
+          [(NINearbyUpdatesEngine *)self _handleRangeOnlySolution:solution];
         }
         v9 = ;
         if (v9)
@@ -3416,16 +3416,16 @@ LABEL_14:
   if (self->_findingAlgorithmContainer.__ptr_)
   {
     [(NINearbyUpdatesEngine *)self _sendTimeTupleToAlgorithms];
-    if (*(a3 + 24) == 1 && *(a3 + 600) == 1)
+    if (*(solution + 24) == 1 && *(solution + 600) == 1)
     {
-      v10 = *(a3 + 280);
+      v10 = *(solution + 280);
       if ((v10 & 0x100) == 0)
       {
         sub_1004C5EE0();
       }
 
-      v11 = *(a3 + 80);
-      v19 = *(a3 + 2);
+      v11 = *(solution + 80);
+      v19 = *(solution + 2);
       LOWORD(v20) = v11;
       BYTE2(v20) = v10;
       ptr = self->_protobufLogger.__ptr_;
@@ -3453,7 +3453,7 @@ LABEL_14:
         if ((*(*self->_findingAlgorithmContainer.__ptr_ + 312))())
         {
           WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-          v15 = [WeakRetained objectFromIdentifier:*(a3 + 5)];
+          v15 = [WeakRetained objectFromIdentifier:*(solution + 5)];
 
           if (v15)
           {
@@ -3462,8 +3462,8 @@ LABEL_14:
               sub_1004C5E44();
             }
 
-            v16 = [v15 discoveryToken];
-            [(NINearbyUpdatesEngine *)self getPeerDataFromFindingContainerWithToken:v16];
+            discoveryToken = [v15 discoveryToken];
+            [(NINearbyUpdatesEngine *)self getPeerDataFromFindingContainerWithToken:discoveryToken];
           }
 
           else
@@ -3491,13 +3491,13 @@ LABEL_14:
   }
 }
 
-- (void)reportAndLogNearbyObject:(id)a3
+- (void)reportAndLogNearbyObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v14 = v4;
+    v14 = objectCopy;
     v6 = [NSArray arrayWithObjects:&v14 count:1];
     [WeakRetained updatesEngine:self didUpdateNearbyObjects:v6];
   }
@@ -3505,15 +3505,15 @@ LABEL_14:
   analyticsManager = self->_analyticsManager;
   if (analyticsManager)
   {
-    [(NIServerAnalyticsManager *)analyticsManager nearbyObjectUpdated:v4];
+    [(NIServerAnalyticsManager *)analyticsManager nearbyObjectUpdated:objectCopy];
   }
 
   ptr = self->_protobufLogger.__ptr_;
   if (ptr)
   {
-    [v4 timestamp];
+    [objectCopy timestamp];
     v10 = v9;
-    sub_1002D63A8(v4, __p);
+    sub_1002D63A8(objectCopy, __p);
     memset(v11, 0, sizeof(v11));
     sub_10038E568(v11, __p, &v14, 1uLL);
     sub_1002E16FC(ptr, &self->_uniqueIdentifier, v11, v10);
@@ -3527,22 +3527,22 @@ LABEL_14:
   }
 }
 
-- (void)acceptDeviceMotion:(const void *)a3
+- (void)acceptDeviceMotion:(const void *)motion
 {
-  if (*(a3 + 16) == 1)
+  if (*(motion + 16) == 1)
   {
-    v12 = *(a3 + 1);
-    v13 = *(a3 + 24);
-    v14 = *(a3 + 5);
-    v15 = *(a3 + 3);
-    v16 = *(a3 + 8);
-    v4 = *(a3 + 88);
-    v17 = *(a3 + 72);
+    v12 = *(motion + 1);
+    v13 = *(motion + 24);
+    v14 = *(motion + 5);
+    v15 = *(motion + 3);
+    v16 = *(motion + 8);
+    v4 = *(motion + 88);
+    v17 = *(motion + 72);
     v18 = v4;
-    v20 = *(a3 + 15);
-    v19 = *(a3 + 104);
-    v5 = *(a3 + 152);
-    v22 = *(a3 + 21);
+    v20 = *(motion + 15);
+    v19 = *(motion + 104);
+    v5 = *(motion + 152);
+    v22 = *(motion + 21);
     v21 = v5;
     v11 = 0;
     if (sub_100009BCC(&self->_regionMonitorMap.__table_.__bucket_list_.__ptr_, &v11))
@@ -3596,9 +3596,9 @@ LABEL_13:
   }
 }
 
-- (void)acceptDeviceMovingState:(BOOL)a3
+- (void)acceptDeviceMovingState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   configuration = self->_configuration;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -3626,27 +3626,27 @@ LABEL_8:
         sub_10017C290("unordered_map::at: key not found");
       }
 
-      sub_1004100E8(v7[3], v3);
+      sub_1004100E8(v7[3], stateCopy);
     }
   }
 }
 
-- (void)acceptMagneticFieldStrength:(double)a3
+- (void)acceptMagneticFieldStrength:(double)strength
 {
   v5 = sub_100005288();
   engaged = self->_cachedMagneticFieldStrength.__engaged_;
   self->_cachedMagneticFieldStrength.var0.__val_.time = v5;
-  self->_cachedMagneticFieldStrength.var0.__val_.value = a3;
+  self->_cachedMagneticFieldStrength.var0.__val_.value = strength;
   if (!engaged)
   {
     self->_cachedMagneticFieldStrength.__engaged_ = 1;
   }
 }
 
-- (void)acceptBluetoothSample:(const void *)a3 coarseEstimation:(BOOL)a4 regionCategory:(int64_t)a5
+- (void)acceptBluetoothSample:(const void *)sample coarseEstimation:(BOOL)estimation regionCategory:(int64_t)category
 {
-  v5 = a4;
-  v46[0] = a5;
+  estimationCopy = estimation;
+  v46[0] = category;
   if (sub_100009BCC(&self->_regionMonitorMap.__table_.__bucket_list_.__ptr_, v46))
   {
     v8 = sub_100009978(&self->_regionMonitorMap.__table_.__bucket_list_.__ptr_, v46);
@@ -3658,14 +3658,14 @@ LABEL_8:
     if (v8[3])
     {
       WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-      v10 = [WeakRetained objectFromIdentifier:*(a3 + 9)];
+      v10 = [WeakRetained objectFromIdentifier:*(sample + 9)];
 
       if (v10)
       {
         ptr = self->_protobufLogger.__ptr_;
         if (ptr)
         {
-          sub_100009C80(ptr, &self->_uniqueIdentifier, a3);
+          sub_100009C80(ptr, &self->_uniqueIdentifier, sample);
         }
 
         obj = [v10 discoveryToken];
@@ -3680,7 +3680,7 @@ LABEL_8:
           sub_10017C290("unordered_map::at: key not found");
         }
 
-        sub_1000112BC(v14[3], v5, v13, &v43);
+        sub_1000112BC(v14[3], estimationCopy, v13, &v43);
         v42[0] = 0;
         v42[1] = 0;
         v41 = v42;
@@ -3690,7 +3690,7 @@ LABEL_8:
           goto LABEL_41;
         }
 
-        if (sub_100011440(v15[3], *(a3 + 9), *(a3 + 10)))
+        if (sub_100011440(v15[3], *(sample + 9), *(sample + 10)))
         {
           v16 = v43;
           for (i = *v43; ; i = v27)
@@ -3730,15 +3730,15 @@ LABEL_8:
             v24 = *(i + 17);
             v25 = sub_100015080();
             sub_100004A08(v35, [v25 UTF8String]);
-            if (*(a3 + 47) < 0)
+            if (*(sample + 47) < 0)
             {
-              sub_1000056BC(__p, *(a3 + 3), *(a3 + 4));
+              sub_1000056BC(__p, *(sample + 3), *(sample + 4));
             }
 
             else
             {
-              *__p = *(a3 + 24);
-              v34 = *(a3 + 5);
+              *__p = *(sample + 24);
+              v34 = *(sample + 5);
             }
 
             sub_10029E5C4(v23, v24, v35, __p, v37);
@@ -3797,7 +3797,7 @@ LABEL_41:
         v29 = v28[3];
         sub_1000114B4(v32, &v41);
         v30 = sub_100005288();
-        sub_100011594(v29, a3, v32, v30, 0, v5, v13);
+        sub_100011594(v29, sample, v32, v30, 0, estimationCopy, v13);
         sub_100013328(v32, v32[1]);
         sub_100013328(&v41, v42[0]);
         if (v44)
@@ -3808,20 +3808,20 @@ LABEL_41:
 
       else if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
       {
-        sub_1004C5F0C(a3 + 9);
+        sub_1004C5F0C(sample + 9);
       }
     }
   }
 }
 
-- (void)clearStateForToken:(id)a3
+- (void)clearStateForToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    v7 = [WeakRetained identifierFromDiscoveryToken:v4];
+    v7 = [WeakRetained identifierFromDiscoveryToken:tokenCopy];
     if (v8)
     {
       v9 = v7;
@@ -3909,7 +3909,7 @@ LABEL_41:
   }
 }
 
-- (id)_consolidateInputToMLModel:(const void *)a3
+- (id)_consolidateInputToMLModel:(const void *)model
 {
   v4 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -3918,22 +3918,22 @@ LABEL_41:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "#nrby-eng,#bias-est Consolidating input to bias estimator", buf, 2u);
   }
 
-  if ((*(a3 + 600) & 1) == 0)
+  if ((*(model + 600) & 1) == 0)
   {
     sub_1000195BC();
   }
 
-  if ((*(a3 + 1312) & 1) == 0)
+  if ((*(model + 1312) & 1) == 0)
   {
     sub_1004C5FEC();
   }
 
-  if ((*(a3 + 215) & 0x100) == 0)
+  if ((*(model + 215) & 0x100) == 0)
   {
     sub_1004C6054();
   }
 
-  v5 = sub_100193B78(a3 + 1208, 0);
+  v5 = sub_100193B78(model + 1208, 0);
   v6 = [Complex alloc];
   v80 = [NSNumber numberWithDouble:*v5];
   v65 = [NSNumber numberWithDouble:v5[1]];
@@ -3976,7 +3976,7 @@ LABEL_41:
   v84[7] = v21;
   v67 = [NSArray arrayWithObjects:v84 count:8];
 
-  v22 = sub_100193B78(a3 + 1208, 1);
+  v22 = sub_100193B78(model + 1208, 1);
   v23 = [Complex alloc];
   v81 = [NSNumber numberWithDouble:*v22];
   v66 = [NSNumber numberWithDouble:v22[1]];
@@ -4025,56 +4025,56 @@ LABEL_41:
   v42 = v41;
 
   [(BiasEstimatorFeatures *)v39 setTimestamp:v42];
-  if ((*(a3 + 24) & 1) == 0)
+  if ((*(model + 24) & 1) == 0)
   {
     __assert_rtn("[NINearbyUpdatesEngine _consolidateInputToMLModel:]", "NIServerNearbyUpdatesEngine.mm", 2233, "solution.mach_continuous_time_sec.has_value()");
   }
 
-  [(BiasEstimatorFeatures *)v39 setUwbTime:*(a3 + 2)];
-  if ((*(a3 + 215) & 0x100) == 0)
+  [(BiasEstimatorFeatures *)v39 setUwbTime:*(model + 2)];
+  if ((*(model + 215) & 0x100) == 0)
   {
     sub_1000195BC();
   }
 
-  [(BiasEstimatorFeatures *)v39 setAntennaMask:*(a3 + 215)];
-  [(BiasEstimatorFeatures *)v39 setSoiRssiDbm:*(a3 + 27)];
-  [(BiasEstimatorFeatures *)v39 setRssiDbm:*(a3 + 26)];
-  [(BiasEstimatorFeatures *)v39 setTofPicSecond:*(a3 + 22)];
-  LOWORD(v43) = *(a3 + 212);
+  [(BiasEstimatorFeatures *)v39 setAntennaMask:*(model + 215)];
+  [(BiasEstimatorFeatures *)v39 setSoiRssiDbm:*(model + 27)];
+  [(BiasEstimatorFeatures *)v39 setRssiDbm:*(model + 26)];
+  [(BiasEstimatorFeatures *)v39 setTofPicSecond:*(model + 22)];
+  LOWORD(v43) = *(model + 212);
   [(BiasEstimatorFeatures *)v39 setToaNoiseRms:v43];
-  LOWORD(v44) = *(a3 + 213);
+  LOWORD(v44) = *(model + 213);
   [(BiasEstimatorFeatures *)v39 setToaPpwinRms:v44];
-  LOWORD(v45) = *(a3 + 214);
+  LOWORD(v45) = *(model + 214);
   [(BiasEstimatorFeatures *)v39 setToaPpwinPeak:v45];
-  if (*(a3 + 110) & 1) != 0 && (*(a3 + 114) & 1) != 0 && (*(a3 + 118) & 1) != 0 && (*(a3 + 122))
+  if (*(model + 110) & 1) != 0 && (*(model + 114) & 1) != 0 && (*(model + 118) & 1) != 0 && (*(model + 122))
   {
-    [(BiasEstimatorFeatures *)v39 setRttInitiator:*(a3 + 54)];
-    if ((*(a3 + 114) & 1) == 0)
+    [(BiasEstimatorFeatures *)v39 setRttInitiator:*(model + 54)];
+    if ((*(model + 114) & 1) == 0)
     {
       sub_1000195BC();
     }
 
-    [(BiasEstimatorFeatures *)v39 setTatInitiator:*(a3 + 56)];
-    if ((*(a3 + 118) & 1) == 0)
+    [(BiasEstimatorFeatures *)v39 setTatInitiator:*(model + 56)];
+    if ((*(model + 118) & 1) == 0)
     {
       sub_1000195BC();
     }
 
-    [(BiasEstimatorFeatures *)v39 setRttResponder:*(a3 + 58)];
-    if ((*(a3 + 122) & 1) == 0)
+    [(BiasEstimatorFeatures *)v39 setRttResponder:*(model + 58)];
+    if ((*(model + 122) & 1) == 0)
     {
       sub_1000195BC();
     }
 
-    [(BiasEstimatorFeatures *)v39 setTatResponder:*(a3 + 60)];
+    [(BiasEstimatorFeatures *)v39 setTatResponder:*(model + 60)];
     [(BiasEstimatorFeatures *)v39 setCirPacket1:v67];
-    [(BiasEstimatorFeatures *)v39 setLeadingEdgePacket1:sub_100193B28(a3 + 1208, 0)];
-    [(BiasEstimatorFeatures *)v39 setFirstPathIndexPacket1:sub_100193B00(a3 + 1208, 0)];
-    [(BiasEstimatorFeatures *)v39 setRxAntennaPacket1:sub_100193AD8(a3 + 1208, 0)];
+    [(BiasEstimatorFeatures *)v39 setLeadingEdgePacket1:sub_100193B28(model + 1208, 0)];
+    [(BiasEstimatorFeatures *)v39 setFirstPathIndexPacket1:sub_100193B00(model + 1208, 0)];
+    [(BiasEstimatorFeatures *)v39 setRxAntennaPacket1:sub_100193AD8(model + 1208, 0)];
     [(BiasEstimatorFeatures *)v39 setCirPacket2:v69];
-    [(BiasEstimatorFeatures *)v39 setLeadingEdgePacket2:sub_100193B28(a3 + 1208, 1)];
-    [(BiasEstimatorFeatures *)v39 setFirstPathIndexPacket2:sub_100193B00(a3 + 1208, 1)];
-    [(BiasEstimatorFeatures *)v39 setRxAntennaPacket2:sub_100193AD8(a3 + 1208, 1)];
+    [(BiasEstimatorFeatures *)v39 setLeadingEdgePacket2:sub_100193B28(model + 1208, 1)];
+    [(BiasEstimatorFeatures *)v39 setFirstPathIndexPacket2:sub_100193B00(model + 1208, 1)];
+    [(BiasEstimatorFeatures *)v39 setRxAntennaPacket2:sub_100193AD8(model + 1208, 1)];
     v46 = v39;
   }
 
@@ -4091,19 +4091,19 @@ LABEL_41:
   return v46;
 }
 
-- (id)_handleRangeAndAoASolution:(const void *)a3
+- (id)_handleRangeAndAoASolution:(const void *)solution
 {
-  if ((*(a3 + 752) & 1) == 0)
+  if ((*(solution + 752) & 1) == 0)
   {
     sub_1004C6080();
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v6 = [WeakRetained objectFromIdentifier:*(a3 + 5)];
+  v6 = [WeakRetained objectFromIdentifier:*(solution + 5)];
 
   if (v6)
   {
-    [(NINearbyUpdatesEngine *)self _convertFromPointingCoordinatesToSpatial:a3 + 608];
+    [(NINearbyUpdatesEngine *)self _convertFromPointingCoordinatesToSpatial:solution + 608];
     v15 = *&v7;
     v16 = v8;
     rangeMeasSourcePref = self->_rangeMeasSourcePref;
@@ -4114,18 +4114,18 @@ LABEL_41:
         goto LABEL_13;
       }
 
-      if (*(a3 + 600) != 1)
+      if (*(solution + 600) != 1)
       {
         *&v7 = NINearbyObjectDistanceNotAvailable;
         goto LABEL_12;
       }
 
-      v7 = *(a3 + 44);
+      v7 = *(solution + 44);
     }
 
     else
     {
-      v7 = *(a3 + 81);
+      v7 = *(solution + 81);
     }
 
     *&v7 = v7;
@@ -4139,12 +4139,12 @@ LABEL_13:
     [v6 setAzimuth:v11];
     *&v12 = v16;
     [v6 setElevation:v12];
-    if (*(a3 + 600) == 1)
+    if (*(solution + 600) == 1)
     {
-      [v6 setSignalStrength:*(a3 + 27)];
-      if ((*(a3 + 215) & 0x100) != 0)
+      [v6 setSignalStrength:*(solution + 27)];
+      if ((*(solution + 215) & 0x100) != 0)
       {
-        [v6 setRemoteTxAntennaMask:*(a3 + 215)];
+        [v6 setRemoteTxAntennaMask:*(solution + 215)];
       }
     }
 
@@ -4164,52 +4164,52 @@ LABEL_17:
   return v6;
 }
 
-- (id)_handleRangeOnlySolution:(const void *)a3
+- (id)_handleRangeOnlySolution:(const void *)solution
 {
-  if ((*(a3 + 600) & 1) == 0)
+  if ((*(solution + 600) & 1) == 0)
   {
     sub_1004C60AC();
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v6 = [WeakRetained objectFromIdentifier:*(a3 + 5)];
+  v6 = [WeakRetained objectFromIdentifier:*(solution + 5)];
 
   if (v6)
   {
-    if ((*(a3 + 600) & 1) == 0)
+    if ((*(solution + 600) & 1) == 0)
     {
       sub_1000195BC();
     }
 
     if (self->_rangeMeasSourcePref < 2u)
     {
-      v7 = *(a3 + 44);
+      v7 = *(solution + 44);
       *&v7 = v7;
       [v6 setDistance:v7];
     }
 
     [v6 setDirection:*NINearbyObjectDirectionNotAvailable.i64];
     [v6 setDistanceMeasurementQuality:1];
-    [v6 setSignalStrength:*(a3 + 27)];
-    if ((*(a3 + 215) & 0x100) != 0)
+    [v6 setSignalStrength:*(solution + 27)];
+    if ((*(solution + 215) & 0x100) != 0)
     {
-      [v6 setRemoteTxAntennaMask:*(a3 + 215)];
+      [v6 setRemoteTxAntennaMask:*(solution + 215)];
     }
 
-    if ((*(a3 + 248) & 0x100) != 0 && (*(a3 + 249) & 0x100) != 0)
+    if ((*(solution + 248) & 0x100) != 0 && (*(solution + 249) & 0x100) != 0)
     {
-      [v6 setNbRxStatus:*(a3 + 248)];
-      if ((*(a3 + 249) & 0x100) == 0)
+      [v6 setNbRxStatus:*(solution + 248)];
+      if ((*(solution + 249) & 0x100) == 0)
       {
         sub_1000195BC();
       }
 
-      [v6 setMmsRxStatus:*(a3 + 249)];
+      [v6 setMmsRxStatus:*(solution + 249)];
     }
 
-    if (*(a3 + 58))
+    if (*(solution + 58))
     {
-      [v6 setNbRssi:*(a3 + 28)];
+      [v6 setNbRssi:*(solution + 28)];
     }
 
     v8 = v6;
@@ -4223,33 +4223,33 @@ LABEL_17:
   return v6;
 }
 
-- (BOOL)_shouldConsumeRoseSolution:(const void *)a3
+- (BOOL)_shouldConsumeRoseSolution:(const void *)solution
 {
-  if (*(a3 + 600))
+  if (*(solution + 600))
   {
-    v4 = *(a3 + 6);
-    v16 = *(a3 + 5);
+    v4 = *(solution + 6);
+    v16 = *(solution + 5);
     v17 = v4;
-    v5 = *(a3 + 4);
-    v14 = *(a3 + 3);
+    v5 = *(solution + 4);
+    v14 = *(solution + 3);
     v15 = v5;
-    v6 = *(a3 + 15);
-    v18 = *(a3 + 14);
+    v6 = *(solution + 15);
+    v18 = *(solution + 14);
     v19 = 0;
-    v7 = *(a3 + 16);
+    v7 = *(solution + 16);
     v20 = 0;
     v21 = 0;
     sub_100012F38(&v19, v6, v7, (v7 - v6) >> 3);
-    v8 = *(a3 + 10);
-    v22 = *(a3 + 9);
+    v8 = *(solution + 10);
+    v22 = *(solution + 9);
     v23 = v8;
-    v9 = *(a3 + 23);
-    v24 = *(a3 + 22);
+    v9 = *(solution + 23);
+    v24 = *(solution + 22);
     __p = 0;
     v26 = 0;
     v27 = 0;
-    sub_100020574(&__p, v9, *(a3 + 24), 0x6DB6DB6DB6DB6DB7 * ((*(a3 + 24) - v9) >> 3));
-    memcpy(v28, a3 + 208, 0x181uLL);
+    sub_100020574(&__p, v9, *(solution + 24), 0x6DB6DB6DB6DB6DB7 * ((*(solution + 24) - v9) >> 3));
+    memcpy(v28, solution + 208, 0x181uLL);
     if ((v28[153] & 0x100) != 0)
     {
       if (LOBYTE(v28[153]) <= 2u)
@@ -4302,7 +4302,7 @@ LABEL_14:
   return 0;
 }
 
-- (void)_handleRegionChangeForDevice:(unint64_t)a3 currentRegion:(optional<nearby::algorithms::region_monitoring::Region> *)a4 prevRegion:timestamp:rangeResult:intentPrediction:regionTransitionSuppressed:
+- (void)_handleRegionChangeForDevice:(unint64_t)device currentRegion:(optional<nearby::algorithms::region_monitoring::Region> *)region prevRegion:timestamp:rangeResult:intentPrediction:regionTransitionSuppressed:
 {
   v43 = v7;
   v9 = v6;
@@ -4313,21 +4313,21 @@ LABEL_14:
   if (WeakRetained)
   {
     v41 = v9;
-    if (a4[1].var0.var0 == 1)
+    if (region[1].var0.var0 == 1)
     {
-      data = a4;
-      if (*(&a4->var0.var1.var0.__rep_.__l + 23) < 0)
+      data = region;
+      if (*(&region->var0.var1.var0.__rep_.__l + 23) < 0)
       {
-        data = a4->var0.var1.var0.__rep_.__l.__data_;
+        data = region->var0.var1.var0.__rep_.__l.__data_;
       }
 
       v17 = [NSString stringWithUTF8String:data];
-      if ((a4[1].var0.var0 & 1) == 0)
+      if ((region[1].var0.var0 & 1) == 0)
       {
         sub_1000195BC();
       }
 
-      v18 = [[NIRegionKey alloc] initWithName:v17 regionSizeCategory:a4->var2];
+      v18 = [[NIRegionKey alloc] initWithName:v17 regionSizeCategory:region->var2];
       v19 = [(NSMutableDictionary *)self->_regionDict objectForKey:v18];
       if (!v19 && os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
       {
@@ -4431,9 +4431,9 @@ LABEL_14:
           }
         }
 
-        if (a4[1].var0.var0 == 1)
+        if (region[1].var0.var0 == 1)
         {
-          sub_1003C7F08(a4);
+          sub_1003C7F08(region);
           v31 = &v46;
           if (v47 < 0)
           {
@@ -4461,7 +4461,7 @@ LABEL_14:
           *buf.__rep_.__s.__data_ = 136316674;
           *(&buf.__rep_.__l.__data_ + 4) = p_uniqueIdentifier;
           WORD2(buf.__rep_.__l.__size_) = 2048;
-          *(&buf.__rep_.__l.__size_ + 6) = a3;
+          *(&buf.__rep_.__l.__size_ + 6) = device;
           *(&buf.__rep_.__l + 11) = 2080;
           v53 = v30;
           v54 = 2080;
@@ -4502,7 +4502,7 @@ LABEL_14:
           *buf.__rep_.__s.__data_ = 136316674;
           *(&buf.__rep_.__l.__data_ + 4) = p_uniqueIdentifier;
           WORD2(buf.__rep_.__l.__size_) = 2048;
-          *(&buf.__rep_.__l.__size_ + 6) = a3;
+          *(&buf.__rep_.__l.__size_ + 6) = device;
           *(&buf.__rep_.__l + 11) = 2080;
           v53 = v30;
           v54 = 2080;
@@ -4541,7 +4541,7 @@ LABEL_14:
 
     else
     {
-      [(NINearbyUpdatesEngine *)self nearbyObjectFromDeviceIdentifier:a3];
+      [(NINearbyUpdatesEngine *)self nearbyObjectFromDeviceIdentifier:device];
     }
     v38 = ;
     if (v19)
@@ -4576,7 +4576,7 @@ LABEL_14:
         }
 
         v45 = 1;
-        sub_1002E3A24(ptr, &__p, &buf, a4, v12, v41, v43, v11);
+        sub_1002E3A24(ptr, &__p, &buf, region, v12, v41, v43, v11);
         if (v45 == 1 && *(&__p.__rep_.__l + 23) < 0)
         {
           operator delete(__p.__rep_.__l.__data_);
@@ -4612,21 +4612,21 @@ LABEL_14:
   }
 }
 
-- (void)_handleBoundedRegionRange:(double)a3 forDevice:(unint64_t)a4 rangeResult:(optional<nearby::algorithms::common::RangeResult> *)a5
+- (void)_handleBoundedRegionRange:(double)range forDevice:(unint64_t)device rangeResult:(optional<nearby::algorithms::common::RangeResult> *)result
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (!a5->var1)
+  if (!result->var1)
   {
     sub_1000195BC();
   }
 
-  v9 = [(NINearbyUpdatesEngine *)self nearbyObjectFromRangeResult:a5];
+  v9 = [(NINearbyUpdatesEngine *)self nearbyObjectFromRangeResult:result];
   v10 = v9;
   if (v9)
   {
-    if (a5->var0.var1.var15.__engaged_)
+    if (result->var0.var1.var15.__engaged_)
     {
-      val = a5->var0.var1.var15.var0.__val_;
+      val = result->var0.var1.var15.var0.__val_;
       *&val = val;
       [v9 setBoundedRegionRange:val];
     }
@@ -4640,10 +4640,10 @@ LABEL_14:
 
     if (self->_protobufLogger.__ptr_)
     {
-      if (a5->var0.var1.var15.__engaged_)
+      if (result->var0.var1.var15.__engaged_)
       {
         sub_1002D63A8(v10, __p);
-        sub_1002E3750(self->_protobufLogger.__ptr_, &self->_uniqueIdentifier, __p, a3);
+        sub_1002E3750(self->_protobufLogger.__ptr_, &self->_uniqueIdentifier, __p, range);
         if (__p[0])
         {
           __p[1] = __p[0];
@@ -4659,46 +4659,46 @@ LABEL_14:
   }
 }
 
-- (void)_handleDeviceMonitorActivation:(BOOL)a3 forDevice:(unint64_t)a4 timestamp:(double)a5 regionSizeCategory:(int)a6 regions:(optional<std:(int)a8 :vector<nearby::algorithms::region_monitoring::Region>> *)a7 predictorType:
+- (void)_handleDeviceMonitorActivation:(BOOL)activation forDevice:(unint64_t)device timestamp:(double)timestamp regionSizeCategory:(int)category regions:(optional<std:(int)regions :vector<nearby::algorithms::region_monitoring::Region>> *)a7 predictorType:
 {
-  v13 = a3;
+  activationCopy = activation;
   v15 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
   {
-    sub_1004C6264(v13, a4, v15);
+    sub_1004C6264(activationCopy, device, v15);
   }
 
   ptr = self->_protobufLogger.__ptr_;
   if (ptr)
   {
-    if (v13)
+    if (activationCopy)
     {
       if (!a7->var1)
       {
         sub_1004C6304();
       }
 
-      sub_1002E2CD4(ptr, a4, a6, a7, a8, a5);
+      sub_1002E2CD4(ptr, device, category, a7, regions, timestamp);
     }
 
     else
     {
-      sub_1002E3000(ptr, a4);
+      sub_1002E3000(ptr, device);
     }
   }
 }
 
-- (void)processUWBResultForRegionMonitoring:(id)a3 roseSolution:(const void *)a4 processingOptions:(const AlgorithmProcessingOptions *)a5
+- (void)processUWBResultForRegionMonitoring:(id)monitoring roseSolution:(const void *)solution processingOptions:(const AlgorithmProcessingOptions *)options
 {
-  v9 = a3;
-  v10 = v9;
-  if ((*(a4 + 24) & 1) == 0)
+  monitoringCopy = monitoring;
+  v10 = monitoringCopy;
+  if ((*(solution + 24) & 1) == 0)
   {
     __assert_rtn("[NINearbyUpdatesEngine processUWBResultForRegionMonitoring:roseSolution:processingOptions:]", "NIServerNearbyUpdatesEngine.mm", 2599, "solution.mach_continuous_time_sec.has_value()");
   }
 
-  v11 = *(a4 + 2);
-  [v9 distance];
+  v11 = *(solution + 2);
+  [monitoringCopy distance];
   if (v12 != NINearbyObjectDistanceNotAvailable)
   {
     [v10 azimuth];
@@ -4717,12 +4717,12 @@ LABEL_14:
       v18 = 0x100000001;
     }
 
-    v57 = [v10 discoveryToken];
-    v56 = [v57 hash];
+    discoveryToken = [v10 discoveryToken];
+    v56 = [discoveryToken hash];
     if (self->_protobufLogger.__ptr_)
     {
       sub_1002D63A8(v10, __p);
-      sub_1002E320C(self->_protobufLogger.__ptr_, *(a4 + 18), *(a4 + 5), __p, [v10 requiresBiasCorrection], v11);
+      sub_1002E320C(self->_protobufLogger.__ptr_, *(solution + 18), *(solution + 5), __p, [v10 requiresBiasCorrection], v11);
       if (__p[0])
       {
         __p[1] = __p[0];
@@ -4730,15 +4730,15 @@ LABEL_14:
       }
     }
 
-    v19 = [v10 remoteTxAntennaMask];
-    if (v19 == NINearbyObjectRemoteTxAntennaMaskNotAvailable)
+    remoteTxAntennaMask = [v10 remoteTxAntennaMask];
+    if (remoteTxAntennaMask == NINearbyObjectRemoteTxAntennaMaskNotAvailable)
     {
-      v20 = 1;
+      remoteTxAntennaMask2 = 1;
     }
 
     else
     {
-      v20 = [v10 remoteTxAntennaMask];
+      remoteTxAntennaMask2 = [v10 remoteTxAntennaMask];
     }
 
     v21 = 0;
@@ -4747,7 +4747,7 @@ LABEL_14:
     {
       if (localIntentPredictorPreference == 3)
       {
-        intentPredictorConfiguration = a5->intentPredictorConfiguration;
+        intentPredictorConfiguration = options->intentPredictorConfiguration;
         if (intentPredictorConfiguration == 2)
         {
           v24 = 3;
@@ -4780,7 +4780,7 @@ LABEL_14:
       v21 = self->_localIntentPredictorPreference;
     }
 
-    magneticFieldStrengthCheckOption = a5->magneticFieldStrengthCheckOption;
+    magneticFieldStrengthCheckOption = options->magneticFieldStrengthCheckOption;
     value = 0.0;
     if (magneticFieldStrengthCheckOption == 1)
     {
@@ -4797,9 +4797,9 @@ LABEL_14:
           v27 = magneticFieldStrengthCheckOption >> 8;
           value = self->_cachedMagneticFieldStrength.var0.__val_.value;
 LABEL_32:
-          if (sub_100009BCC(&self->_regionMonitorMap.__table_.__bucket_list_.__ptr_, &a5->regionSizeCategory))
+          if (sub_100009BCC(&self->_regionMonitorMap.__table_.__bucket_list_.__ptr_, &options->regionSizeCategory))
           {
-            v29 = sub_100009978(&self->_regionMonitorMap.__table_.__bucket_list_.__ptr_, &a5->regionSizeCategory);
+            v29 = sub_100009978(&self->_regionMonitorMap.__table_.__bucket_list_.__ptr_, &options->regionSizeCategory);
             if (!v29)
             {
               sub_10017C290("unordered_map::at: key not found");
@@ -4807,7 +4807,7 @@ LABEL_32:
 
             if (v29[3])
             {
-              v30 = sub_100009978(&self->_regionMonitorMap.__table_.__bucket_list_.__ptr_, &a5->regionSizeCategory);
+              v30 = sub_100009978(&self->_regionMonitorMap.__table_.__bucket_list_.__ptr_, &options->regionSizeCategory);
               if (!v30)
               {
                 sub_10017C290("unordered_map::at: key not found");
@@ -4847,7 +4847,7 @@ LABEL_32:
                 v41 = 1;
               }
 
-              regionSizeCategory = a5->regionSizeCategory;
+              regionSizeCategory = options->regionSizeCategory;
               *buf = v56;
               v44 = magneticFieldStrengthCheckOption | (v27 << 8);
               *v63 = v11;
@@ -4873,7 +4873,7 @@ LABEL_32:
               v68 = 0;
               v69 = v34;
               v70 = 1;
-              v71 = v20 | 0x100;
+              v71 = remoteTxAntennaMask2 | 0x100;
               v72 = v37;
               v73 = v36;
               v74 = v42;
@@ -4907,11 +4907,11 @@ LABEL_32:
                     sub_1000195BC();
                   }
 
-                  v50 = *(a4 + 18);
+                  v50 = *(solution + 18);
                   v51 = 0xBFF0000000000000;
-                  if (*(a4 + 24))
+                  if (*(solution + 24))
                   {
-                    v51 = *(a4 + 2);
+                    v51 = *(solution + 2);
                   }
 
                   *buf = 67109888;
@@ -4928,7 +4928,7 @@ LABEL_32:
                 if (self->_protobufLogger.__ptr_)
                 {
                   sub_1002D63A8(v10, buf);
-                  sub_1002E34B4(self->_protobufLogger.__ptr_, *(a4 + 18), *(a4 + 5), buf, v11);
+                  sub_1002E34B4(self->_protobufLogger.__ptr_, *(solution + 18), *(solution + 5), buf, v11);
                   if (*buf)
                   {
                     *v63 = *buf;
@@ -4971,11 +4971,11 @@ LABEL_32:
 LABEL_61:
 }
 
-- (void)_handleWiFiRangeResults:(const void *)a3
+- (void)_handleWiFiRangeResults:(const void *)results
 {
-  v3 = *a3;
-  v32 = *(a3 + 1);
-  if (*a3 != v32)
+  v3 = *results;
+  v32 = *(results + 1);
+  if (*results != v32)
   {
     while (1)
     {
@@ -5058,12 +5058,12 @@ LABEL_38:
 
       if (v17[3])
       {
-        v18 = [v12 discoveryToken];
-        v69 = [v18 hash];
+        discoveryToken = [v12 discoveryToken];
+        v69 = [discoveryToken hash];
         *buf = &v69;
         v19 = sub_100011060(&self->_hashToTokenMap.__table_.__bucket_list_.__ptr_, &v69);
-        objc_storeStrong(v19 + 3, v18);
-        v45[0] = [v18 hash];
+        objc_storeStrong(v19 + 3, discoveryToken);
+        v45[0] = [discoveryToken hash];
         *&v45[1] = v10;
         v20.i64[0] = -256;
         v20.i64[1] = -256;
@@ -5173,12 +5173,12 @@ LABEL_38:
         [v12 setMotionState:0];
       }
 
-      v18 = objc_loadWeakRetained(&self->_delegate);
+      discoveryToken = objc_loadWeakRetained(&self->_delegate);
       if (objc_opt_respondsToSelector())
       {
         v70 = v12;
         v27 = [NSArray arrayWithObjects:&v70 count:1];
-        [v18 updatesEngine:self didUpdateNearbyObjects:v27];
+        [discoveryToken updatesEngine:self didUpdateNearbyObjects:v27];
       }
 
       analyticsManager = self->_analyticsManager;
@@ -5201,25 +5201,25 @@ LABEL_35:
   }
 }
 
-- (void)acceptVisionInput:(id)a3
+- (void)acceptVisionInput:(id)input
 {
-  v4 = a3;
-  [v4 timestamp];
+  inputCopy = input;
+  [inputCopy timestamp];
   v6 = v5;
-  [v4 devicePose];
+  [inputCopy devicePose];
   v36 = v8;
   v37 = v7;
   v34 = v10;
   v35 = v9;
-  v11 = [v4 trackingState];
-  if (v11 == 2)
+  trackingState = [inputCopy trackingState];
+  if (trackingState == 2)
   {
     v12 = 2;
   }
 
   else
   {
-    v12 = v11 == 1;
+    v12 = trackingState == 1;
   }
 
   *&v43 = v6;
@@ -5228,18 +5228,18 @@ LABEL_35:
   v46 = v35;
   v47 = v34;
   LODWORD(v48) = v12;
-  BYTE4(v48) = [v4 majorRelocalization];
-  BYTE5(v48) = [v4 minorRelocalization];
+  BYTE4(v48) = [inputCopy majorRelocalization];
+  BYTE5(v48) = [inputCopy minorRelocalization];
   BYTE8(v48) = 0;
   LOBYTE(v49) = 0;
   BYTE8(v49) = 0;
   BYTE12(v49) = 0;
   LOBYTE(v50) = 0;
   BYTE4(v50) = 0;
-  [v4 lightEstimate];
+  [inputCopy lightEstimate];
   if (v13 != *&NIARLightEstimateNotAvailable)
   {
-    [v4 lightEstimate];
+    [inputCopy lightEstimate];
     *(&v48 + 1) = v14;
     LOBYTE(v49) = 1;
   }
@@ -5373,35 +5373,35 @@ LABEL_27:
 LABEL_39:
 }
 
-- (void)processUWBResultForSyntheticAperture:(id)a3 roseSolution:(const void *)a4
+- (void)processUWBResultForSyntheticAperture:(id)aperture roseSolution:(const void *)solution
 {
-  v6 = a3;
+  apertureCopy = aperture;
   if (!self->_syntheticApertureFilter.__ptr_)
   {
     __assert_rtn("[NINearbyUpdatesEngine processUWBResultForSyntheticAperture:roseSolution:]", "NIServerNearbyUpdatesEngine.mm", 3063, "_syntheticApertureFilter != nullptr");
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (*(a4 + 24))
+  if (*(solution + 24))
   {
-    v8 = *(a4 + 8);
+    v8 = *(solution + 8);
     v9 = v8 > 6;
     v10 = (1 << v8) & 0x65;
     if (v9 || v10 == 0)
     {
-      if (*(a4 + 752) == 1)
+      if (*(solution + 752) == 1)
       {
         sub_100498E54(__src);
         v13 = qword_1009F9820;
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
         {
-          if (*(a4 + 600) != 1 || (*(a4 + 24) & 1) == 0)
+          if (*(solution + 600) != 1 || (*(solution + 24) & 1) == 0)
           {
             sub_1000195BC();
           }
 
-          v49 = *(a4 + 44);
-          v50 = *(a4 + 2);
+          v49 = *(solution + 44);
+          v50 = *(solution + 2);
           p_uniqueIdentifier = &self->_uniqueIdentifier;
           if (*(&self->_uniqueIdentifier.__rep_.__l + 23) < 0)
           {
@@ -5435,13 +5435,13 @@ LABEL_39:
         v19 = qword_1009F9820;
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
-          if (*(a4 + 600) != 1 || (*(a4 + 24) & 1) == 0)
+          if (*(solution + 600) != 1 || (*(solution + 24) & 1) == 0)
           {
             sub_1000195BC();
           }
 
-          v46 = *(a4 + 44);
-          v47 = *(a4 + 2);
+          v46 = *(solution + 44);
+          v47 = *(solution + 2);
           data = &self->_uniqueIdentifier;
           if (*(&self->_uniqueIdentifier.__rep_.__l + 23) < 0)
           {
@@ -5462,17 +5462,17 @@ LABEL_39:
         v16 = 0;
       }
 
-      v20 = [v6 discoveryToken];
-      v21 = [v20 hash];
-      if (*(a4 + 24) != 1 || (*(a4 + 600) & 1) == 0)
+      discoveryToken = [apertureCopy discoveryToken];
+      v21 = [discoveryToken hash];
+      if (*(solution + 24) != 1 || (*(solution + 600) & 1) == 0)
       {
         sub_1000195BC();
       }
 
-      v22 = *(a4 + 2);
-      *&v23 = *(a4 + 44);
-      v24 = *(a4 + 257);
-      v25 = *(a4 + 280);
+      v22 = *(solution + 2);
+      *&v23 = *(solution + 44);
+      v24 = *(solution + 257);
+      v25 = *(solution + 280);
       *&v53 = v21;
       *(&v53 + 1) = v22;
       *&v54 = v23 | 0x100000000;
@@ -5530,18 +5530,18 @@ LABEL_39:
 
       v29 = [(NINearbyUpdatesEngine *)self niConvergenceStateFromSolution:__src];
       convStateForObject = self->_convStateForObject;
-      v31 = [v6 discoveryToken];
-      v32 = [(NSMutableDictionary *)convStateForObject objectForKeyedSubscript:v31];
+      discoveryToken2 = [apertureCopy discoveryToken];
+      v32 = [(NSMutableDictionary *)convStateForObject objectForKeyedSubscript:discoveryToken2];
 
       if (([v32 isEqual:v29] & 1) == 0)
       {
         v33 = self->_convStateForObject;
-        v34 = [v6 discoveryToken];
-        [(NSMutableDictionary *)v33 setObject:v29 forKeyedSubscript:v34];
+        discoveryToken3 = [apertureCopy discoveryToken];
+        [(NSMutableDictionary *)v33 setObject:v29 forKeyedSubscript:discoveryToken3];
 
         v35 = [NINearbyObject alloc];
-        v36 = [v6 discoveryToken];
-        v37 = [(NINearbyObject *)v35 initWithToken:v36];
+        discoveryToken4 = [apertureCopy discoveryToken];
+        v37 = [(NINearbyObject *)v35 initWithToken:discoveryToken4];
 
         if (objc_opt_respondsToSelector())
         {
@@ -5619,12 +5619,12 @@ LABEL_39:
       v12 = qword_1009F9820;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
-        if ((*(a4 + 24) & 1) == 0)
+        if ((*(solution + 24) & 1) == 0)
         {
           sub_1000195BC();
         }
 
-        sub_1004C6400(a4 + 2, self, __src, v12);
+        sub_1004C6400(solution + 2, self, __src, v12);
       }
     }
   }
@@ -5635,7 +5635,7 @@ LABEL_39:
   }
 }
 
-- (void)acceptDeviceMotionInput:(const void *)a3
+- (void)acceptDeviceMotionInput:(const void *)input
 {
   if (self->_findingAlgorithmContainer.__ptr_)
   {
@@ -5645,7 +5645,7 @@ LABEL_39:
   ptr = self->_protobufLogger.__ptr_;
   if (ptr)
   {
-    sub_1002E5B8C(ptr, &self->_uniqueIdentifier, a3);
+    sub_1002E5B8C(ptr, &self->_uniqueIdentifier, input);
   }
 
   v6 = self->_findingAlgorithmContainer.__ptr_;
@@ -5654,7 +5654,7 @@ LABEL_39:
     if ((*(*v6 + 80))(v6, a2))
     {
       sub_100224EF8();
-      (*(*self->_findingAlgorithmContainer.__ptr_ + 72))(self->_findingAlgorithmContainer.__ptr_, a3);
+      (*(*self->_findingAlgorithmContainer.__ptr_ + 72))(self->_findingAlgorithmContainer.__ptr_, input);
       sub_100224EF8();
       if ((*(*self->_findingAlgorithmContainer.__ptr_ + 88))(self->_findingAlgorithmContainer.__ptr_))
       {
@@ -5665,7 +5665,7 @@ LABEL_39:
   }
 }
 
-- (void)acceptAltimeterData:(const AltimeterInput *)a3
+- (void)acceptAltimeterData:(const AltimeterInput *)data
 {
   if (self->_findingAlgorithmContainer.__ptr_)
   {
@@ -5675,20 +5675,20 @@ LABEL_39:
   ptr = self->_protobufLogger.__ptr_;
   if (ptr)
   {
-    sub_1002E6058(ptr, &self->_uniqueIdentifier, a3);
+    sub_1002E6058(ptr, &self->_uniqueIdentifier, data);
   }
 
   v6 = self->_findingAlgorithmContainer.__ptr_;
   if (v6 && (*(*v6 + 104))(v6, a2))
   {
     sub_100224EF8();
-    (*(*self->_findingAlgorithmContainer.__ptr_ + 96))(self->_findingAlgorithmContainer.__ptr_, a3);
+    (*(*self->_findingAlgorithmContainer.__ptr_ + 96))(self->_findingAlgorithmContainer.__ptr_, data);
 
     sub_100224EF8();
   }
 }
 
-- (void)acceptGnssSatelliteData:(const void *)a3
+- (void)acceptGnssSatelliteData:(const void *)data
 {
   if (self->_findingAlgorithmContainer.__ptr_)
   {
@@ -5703,13 +5703,13 @@ LABEL_39:
   ptr = self->_protobufLogger.__ptr_;
   if (ptr)
   {
-    sub_1002E6274(ptr, &self->_uniqueIdentifier, a3);
+    sub_1002E6274(ptr, &self->_uniqueIdentifier, data);
   }
 
   v6 = self->_findingAlgorithmContainer.__ptr_;
   if (v6 && (*(*v6 + 192))(v6))
   {
-    (*(*self->_findingAlgorithmContainer.__ptr_ + 184))(self->_findingAlgorithmContainer.__ptr_, a3);
+    (*(*self->_findingAlgorithmContainer.__ptr_ + 184))(self->_findingAlgorithmContainer.__ptr_, data);
     if ((*(*self->_findingAlgorithmContainer.__ptr_ + 200))(self->_findingAlgorithmContainer.__ptr_))
     {
       [(NINearbyUpdatesEngine *)self provideFindingSolution:0];
@@ -5717,7 +5717,7 @@ LABEL_39:
   }
 }
 
-- (void)acceptSelfLocationData:(const LocationInput *)a3
+- (void)acceptSelfLocationData:(const LocationInput *)data
 {
   if (self->_findingAlgorithmContainer.__ptr_)
   {
@@ -5731,14 +5731,14 @@ LABEL_39:
 
     if (v6)
     {
-      sub_1002E6A90(self->_protobufLogger.__ptr_, &self->_uniqueIdentifier, a3, 0);
+      sub_1002E6A90(self->_protobufLogger.__ptr_, &self->_uniqueIdentifier, data, 0);
     }
   }
 
   ptr = self->_findingAlgorithmContainer.__ptr_;
   if (ptr && (*(*ptr + 144))(ptr, a2))
   {
-    (*(*self->_findingAlgorithmContainer.__ptr_ + 136))(self->_findingAlgorithmContainer.__ptr_, a3, 0);
+    (*(*self->_findingAlgorithmContainer.__ptr_ + 136))(self->_findingAlgorithmContainer.__ptr_, data, 0);
     if ((*(*self->_findingAlgorithmContainer.__ptr_ + 152))(self->_findingAlgorithmContainer.__ptr_))
     {
       [(NINearbyUpdatesEngine *)self provideFindingSolution:0];
@@ -5748,12 +5748,12 @@ LABEL_39:
     if (analyticsManager)
     {
 
-      [(NIServerAnalyticsManager *)analyticsManager updateWithSelfLocation:a3];
+      [(NIServerAnalyticsManager *)analyticsManager updateWithSelfLocation:data];
     }
   }
 }
 
-- (void)acceptHeadingData:(const HeadingInput *)a3
+- (void)acceptHeadingData:(const HeadingInput *)data
 {
   if (self->_findingAlgorithmContainer.__ptr_)
   {
@@ -5763,7 +5763,7 @@ LABEL_39:
   ptr = self->_protobufLogger.__ptr_;
   if (ptr)
   {
-    sub_1002E70C0(ptr, &self->_uniqueIdentifier, a3);
+    sub_1002E70C0(ptr, &self->_uniqueIdentifier, data);
   }
 
   v6 = self->_findingAlgorithmContainer.__ptr_;
@@ -5771,7 +5771,7 @@ LABEL_39:
   {
     if ((*(*v6 + 168))(v6, a2))
     {
-      (*(*self->_findingAlgorithmContainer.__ptr_ + 160))(self->_findingAlgorithmContainer.__ptr_, a3);
+      (*(*self->_findingAlgorithmContainer.__ptr_ + 160))(self->_findingAlgorithmContainer.__ptr_, data);
       if ((*(*self->_findingAlgorithmContainer.__ptr_ + 176))(self->_findingAlgorithmContainer.__ptr_))
       {
 
@@ -5781,13 +5781,13 @@ LABEL_39:
   }
 }
 
-- (void)acceptDiscoveryEventForPeer:(id)a3
+- (void)acceptDiscoveryEventForPeer:(id)peer
 {
-  v8 = a3;
+  peerCopy = peer;
   if (self->_findingAlgorithmContainer.__ptr_)
   {
     [(NINearbyUpdatesEngine *)self _sendTimeTupleToAlgorithms];
-    [(NINearbyUpdatesEngine *)self setFindingPeerToken:v8];
+    [(NINearbyUpdatesEngine *)self setFindingPeerToken:peerCopy];
   }
 
   v4 = sub_100005288();
@@ -5812,9 +5812,9 @@ LABEL_39:
   }
 }
 
-- (void)acceptPeerLocationData:(const LocationInput *)a3 forPeer:(id)a4
+- (void)acceptPeerLocationData:(const LocationInput *)data forPeer:(id)peer
 {
-  v10 = a4;
+  peerCopy = peer;
   if (self->_findingAlgorithmContainer.__ptr_)
   {
     [(NINearbyUpdatesEngine *)self _sendTimeTupleToAlgorithms];
@@ -5827,14 +5827,14 @@ LABEL_39:
 
     if (v7)
     {
-      sub_1002E6A90(self->_protobufLogger.__ptr_, &self->_uniqueIdentifier, a3, 1);
+      sub_1002E6A90(self->_protobufLogger.__ptr_, &self->_uniqueIdentifier, data, 1);
     }
   }
 
   ptr = self->_findingAlgorithmContainer.__ptr_;
   if (ptr && (*(*ptr + 144))(ptr))
   {
-    (*(*self->_findingAlgorithmContainer.__ptr_ + 136))(self->_findingAlgorithmContainer.__ptr_, a3, 1);
+    (*(*self->_findingAlgorithmContainer.__ptr_ + 136))(self->_findingAlgorithmContainer.__ptr_, data, 1);
     if ((*(*self->_findingAlgorithmContainer.__ptr_ + 152))(self->_findingAlgorithmContainer.__ptr_))
     {
       [(NINearbyUpdatesEngine *)self provideFindingSolution:0];
@@ -5848,7 +5848,7 @@ LABEL_39:
   }
 }
 
-- (void)acceptPedometerData:(const PedometerDataInput *)a3
+- (void)acceptPedometerData:(const PedometerDataInput *)data
 {
   if (self->_findingAlgorithmContainer.__ptr_)
   {
@@ -5858,7 +5858,7 @@ LABEL_39:
   ptr = self->_protobufLogger.__ptr_;
   if (ptr)
   {
-    sub_1002E6624(ptr, &self->_uniqueIdentifier, a3);
+    sub_1002E6624(ptr, &self->_uniqueIdentifier, data);
   }
 
   v6 = self->_findingAlgorithmContainer.__ptr_;
@@ -5869,11 +5869,11 @@ LABEL_39:
       sub_1004C64A0();
     }
 
-    (*(*self->_findingAlgorithmContainer.__ptr_ + 224))(self->_findingAlgorithmContainer.__ptr_, a3);
+    (*(*self->_findingAlgorithmContainer.__ptr_ + 224))(self->_findingAlgorithmContainer.__ptr_, data);
   }
 }
 
-- (void)acceptPedometerEvent:(const PedometerEventInput *)a3
+- (void)acceptPedometerEvent:(const PedometerEventInput *)event
 {
   if (self->_findingAlgorithmContainer.__ptr_)
   {
@@ -5883,7 +5883,7 @@ LABEL_39:
   ptr = self->_protobufLogger.__ptr_;
   if (ptr)
   {
-    sub_1002E6874(ptr, &self->_uniqueIdentifier, a3);
+    sub_1002E6874(ptr, &self->_uniqueIdentifier, event);
   }
 
   v6 = self->_findingAlgorithmContainer.__ptr_;
@@ -5894,11 +5894,11 @@ LABEL_39:
       sub_1004C64D4();
     }
 
-    (*(*self->_findingAlgorithmContainer.__ptr_ + 240))(self->_findingAlgorithmContainer.__ptr_, a3);
+    (*(*self->_findingAlgorithmContainer.__ptr_ + 240))(self->_findingAlgorithmContainer.__ptr_, event);
   }
 }
 
-- (void)acceptMotionActivity:(const MotionActivityInput *)a3
+- (void)acceptMotionActivity:(const MotionActivityInput *)activity
 {
   if (self->_findingAlgorithmContainer.__ptr_)
   {
@@ -5908,7 +5908,7 @@ LABEL_39:
   ptr = self->_protobufLogger.__ptr_;
   if (ptr)
   {
-    sub_1002E72DC(ptr, &self->_uniqueIdentifier, a3);
+    sub_1002E72DC(ptr, &self->_uniqueIdentifier, activity);
   }
 
   v6 = self->_findingAlgorithmContainer.__ptr_;
@@ -5919,13 +5919,13 @@ LABEL_39:
       sub_1004C6508();
     }
 
-    (*(*self->_findingAlgorithmContainer.__ptr_ + 208))(self->_findingAlgorithmContainer.__ptr_, a3);
+    (*(*self->_findingAlgorithmContainer.__ptr_ + 208))(self->_findingAlgorithmContainer.__ptr_, activity);
   }
 }
 
-- (void)acceptPeerData:(const void *)a3 fromPeer:(id)a4
+- (void)acceptPeerData:(const void *)data fromPeer:(id)peer
 {
-  v6 = a4;
+  peerCopy = peer;
   v7 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
@@ -5938,7 +5938,7 @@ LABEL_39:
     [(NINearbyUpdatesEngine *)self _sendTimeTupleToAlgorithms];
   }
 
-  sub_1002CEC6C(a3, v11);
+  sub_1002CEC6C(data, v11);
   ptr = self->_protobufLogger.__ptr_;
   if (ptr)
   {
@@ -5956,7 +5956,7 @@ LABEL_39:
   {
     if ((*(*v10 + 280))(v10))
     {
-      [(NINearbyUpdatesEngine *)self setFindingPeerToken:v6];
+      [(NINearbyUpdatesEngine *)self setFindingPeerToken:peerCopy];
       sub_100224EF8();
       (*(*self->_findingAlgorithmContainer.__ptr_ + 272))(self->_findingAlgorithmContainer.__ptr_, v11);
       sub_100224EF8();
@@ -5968,7 +5968,7 @@ LABEL_39:
   }
 }
 
-- (void)acceptDevicePDRInput:(const void *)a3
+- (void)acceptDevicePDRInput:(const void *)input
 {
   if (self->_findingAlgorithmContainer.__ptr_)
   {
@@ -5978,20 +5978,20 @@ LABEL_39:
   ptr = self->_protobufLogger.__ptr_;
   if (ptr)
   {
-    v6 = *(a3 + 7);
-    v25 = *(a3 + 6);
+    v6 = *(input + 7);
+    v25 = *(input + 6);
     v26 = v6;
-    v7 = *(a3 + 9);
-    v27 = *(a3 + 8);
+    v7 = *(input + 9);
+    v27 = *(input + 8);
     v28 = v7;
-    v8 = *(a3 + 3);
-    v21 = *(a3 + 2);
+    v8 = *(input + 3);
+    v21 = *(input + 2);
     v22 = v8;
-    v9 = *(a3 + 5);
-    v23 = *(a3 + 4);
+    v9 = *(input + 5);
+    v23 = *(input + 4);
     v24 = v9;
-    v10 = *(a3 + 1);
-    v19 = *a3;
+    v10 = *(input + 1);
+    v19 = *input;
     v20 = v10;
     sub_1002E7D18(ptr, &self->_uniqueIdentifier, &v19);
   }
@@ -5999,7 +5999,7 @@ LABEL_39:
   analyticsManager = self->_analyticsManager;
   if (analyticsManager)
   {
-    [(NIServerAnalyticsManager *)analyticsManager updateWithPDR:a3];
+    [(NIServerAnalyticsManager *)analyticsManager updateWithPDR:input];
   }
 
   v12 = self->_findingAlgorithmContainer.__ptr_;
@@ -6012,20 +6012,20 @@ LABEL_39:
 
     if (self->_onlySendKinematicFindeeData)
     {
-      v13 = *(a3 + 7);
-      v25 = *(a3 + 6);
+      v13 = *(input + 7);
+      v25 = *(input + 6);
       v26 = v13;
-      v14 = *(a3 + 9);
-      v27 = *(a3 + 8);
+      v14 = *(input + 9);
+      v27 = *(input + 8);
       v28 = v14;
-      v15 = *(a3 + 3);
-      v21 = *(a3 + 2);
+      v15 = *(input + 3);
+      v21 = *(input + 2);
       v22 = v15;
-      v16 = *(a3 + 5);
-      v23 = *(a3 + 4);
+      v16 = *(input + 5);
+      v23 = *(input + 4);
       v24 = v16;
-      v17 = *(a3 + 1);
-      v19 = *a3;
+      v17 = *(input + 1);
+      v19 = *input;
       v20 = v17;
       if (v21 == 1)
       {
@@ -6054,41 +6054,41 @@ LABEL_39:
   }
 }
 
-- (void)acceptWatchOrientation:(const WatchOrientationInput *)a3
+- (void)acceptWatchOrientation:(const WatchOrientationInput *)orientation
 {
   ptr = self->_findingAlgorithmContainer.__ptr_;
   if (ptr)
   {
-    (*(*ptr + 320))(ptr, a3);
+    (*(*ptr + 320))(ptr, orientation);
   }
 }
 
-- (void)setFindingPeerToken:(id)a3
+- (void)setFindingPeerToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   findingPeerToken = self->_findingPeerToken;
   p_findingPeerToken = &self->_findingPeerToken;
   v5 = findingPeerToken;
   if (findingPeerToken)
   {
-    if (![(NIDiscoveryToken *)v5 isEqual:v4])
+    if (![(NIDiscoveryToken *)v5 isEqual:tokenCopy])
     {
       v8 = qword_1009F9820;
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
       {
-        sub_1004C65A4(p_findingPeerToken, v4, v8);
+        sub_1004C65A4(p_findingPeerToken, tokenCopy, v8);
       }
     }
   }
 
   v9 = *p_findingPeerToken;
-  *p_findingPeerToken = v4;
+  *p_findingPeerToken = tokenCopy;
 }
 
-- (AoARad)_convertFromPointingCoordinatesToSpatial:(const void *)a3
+- (AoARad)_convertFromPointingCoordinatesToSpatial:(const void *)spatial
 {
-  v4 = sub_1000422B8(*(a3 + 7));
-  v5 = sub_1000422B8(*(a3 + 6));
+  v4 = sub_1000422B8(*(spatial + 7));
+  v5 = sub_1000422B8(*(spatial + 6));
   v6 = cosf(v4);
   v7 = __sincosf_stret(v5);
   v8 = atan2f(v6 * v7.__cosval, -(v6 * v7.__sinval));
@@ -6098,17 +6098,17 @@ LABEL_39:
   return result;
 }
 
-- (id)nearbyObjectFromSolution:(const void *)a3 forPeer:(id)a4
+- (id)nearbyObjectFromSolution:(const void *)solution forPeer:(id)peer
 {
-  v6 = [(NINearbyUpdatesEngine *)self nearbyObjectFromToken:a4];
+  v6 = [(NINearbyUpdatesEngine *)self nearbyObjectFromToken:peer];
   if (v6)
   {
-    if (*(a3 + 240) == 1)
+    if (*(solution + 240) == 1)
     {
-      [(NINearbyUpdatesEngine *)self fillNearbyObject:v6 fromRangeResult:a3 + 8];
+      [(NINearbyUpdatesEngine *)self fillNearbyObject:v6 fromRangeResult:solution + 8];
     }
 
-    [(NINearbyUpdatesEngine *)self fillNearbyObject:v6 fromSolution:a3];
+    [(NINearbyUpdatesEngine *)self fillNearbyObject:v6 fromSolution:solution];
     v7 = v6;
   }
 
@@ -6120,9 +6120,9 @@ LABEL_39:
   return v6;
 }
 
-- (id)nearbyObjectFromToken:(id)a3
+- (id)nearbyObjectFromToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v6 = WeakRetained;
   if (!WeakRetained)
@@ -6135,7 +6135,7 @@ LABEL_39:
     goto LABEL_9;
   }
 
-  v7 = [WeakRetained identifierFromDiscoveryToken:v4];
+  v7 = [WeakRetained identifierFromDiscoveryToken:tokenCopy];
   if ((v8 & 1) == 0)
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -6165,10 +6165,10 @@ LABEL_13:
   return v10;
 }
 
-- (id)nearbyObjectFromDeviceIdentifier:(unint64_t)a3
+- (id)nearbyObjectFromDeviceIdentifier:(unint64_t)identifier
 {
-  v11 = a3;
-  v4 = sub_100009978(&self->_hashToTokenMap.__table_.__bucket_list_.__ptr_, &v11);
+  identifierCopy = identifier;
+  v4 = sub_100009978(&self->_hashToTokenMap.__table_.__bucket_list_.__ptr_, &identifierCopy);
   if (v4)
   {
     v5 = v4[3];
@@ -6191,7 +6191,7 @@ LABEL_13:
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v13 = v11;
+      v13 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "#nrby-eng,nearbyObjectFromDeviceIdentifier - failed to find token mapped to hash: %llu", buf, 0xCu);
     }
 
@@ -6201,136 +6201,136 @@ LABEL_13:
   return v7;
 }
 
-- (id)nearbyObjectFromRangeResult:(const void *)a3
+- (id)nearbyObjectFromRangeResult:(const void *)result
 {
-  v5 = [(NINearbyUpdatesEngine *)self nearbyObjectFromDeviceIdentifier:*a3];
-  if (v5 || (WeakRetained = objc_loadWeakRetained(&self->_dataSource), [WeakRetained objectFromIdentifier:*a3], v7 = objc_claimAutoreleasedReturnValue(), WeakRetained, (v5 = v7) != 0))
+  v5 = [(NINearbyUpdatesEngine *)self nearbyObjectFromDeviceIdentifier:*result];
+  if (v5 || (WeakRetained = objc_loadWeakRetained(&self->_dataSource), [WeakRetained objectFromIdentifier:*result], v7 = objc_claimAutoreleasedReturnValue(), WeakRetained, (v5 = v7) != 0))
   {
-    [(NINearbyUpdatesEngine *)self fillNearbyObject:v5 fromRangeResult:a3];
+    [(NINearbyUpdatesEngine *)self fillNearbyObject:v5 fromRangeResult:result];
   }
 
   return v5;
 }
 
-- (id)niConvergenceStateFromSolution:(const void *)a3
+- (id)niConvergenceStateFromSolution:(const void *)solution
 {
-  if (*a3 == 1)
+  if (*solution == 1)
   {
     v4 = 2;
   }
 
   else
   {
-    v4 = *a3 == 0;
+    v4 = *solution == 0;
   }
 
   v5 = [[NIAlgorithmConvergenceState alloc] initWithConvergenceStatus:v4];
-  [(NIAlgorithmConvergenceState *)v5 setInsufficientMovement:*(a3 + 4)];
-  [(NIAlgorithmConvergenceState *)v5 setInsufficientHorizontalSweep:*(a3 + 5)];
-  [(NIAlgorithmConvergenceState *)v5 setInsufficientVerticalSweep:*(a3 + 6)];
-  [(NIAlgorithmConvergenceState *)v5 setInsufficientLighting:*(a3 + 7)];
+  [(NIAlgorithmConvergenceState *)v5 setInsufficientMovement:*(solution + 4)];
+  [(NIAlgorithmConvergenceState *)v5 setInsufficientHorizontalSweep:*(solution + 5)];
+  [(NIAlgorithmConvergenceState *)v5 setInsufficientVerticalSweep:*(solution + 6)];
+  [(NIAlgorithmConvergenceState *)v5 setInsufficientLighting:*(solution + 7)];
 
   return v5;
 }
 
-- (void)fillNearbyObject:(id)a3 fromRangeResult:(const void *)a4
+- (void)fillNearbyObject:(id)object fromRangeResult:(const void *)result
 {
-  v5 = a3;
-  LODWORD(v6) = *(a4 + 4);
-  [v5 setDistance:v6];
-  v7 = *(a4 + 5) - 1;
+  objectCopy = object;
+  LODWORD(v6) = *(result + 4);
+  [objectCopy setDistance:v6];
+  v7 = *(result + 5) - 1;
   if (v7 < 5)
   {
-    [v5 setDistanceMeasurementQuality:qword_10056E188[v7]];
+    [objectCopy setDistanceMeasurementQuality:qword_10056E188[v7]];
   }
 
-  if (*(a4 + 36) == 1)
+  if (*(result + 36) == 1)
   {
-    v8 = *(a4 + 3);
-    [v5 setDirection:sub_1000537D8(&v8)];
+    v8 = *(result + 3);
+    [objectCopy setDirection:sub_1000537D8(&v8)];
   }
 }
 
-- (void)fillNearbyObject:(id)a3 fromSolution:(const void *)a4
+- (void)fillNearbyObject:(id)object fromSolution:(const void *)solution
 {
-  v10 = a3;
-  if (*(a4 + 256) == 1)
+  objectCopy = object;
+  if (*(solution + 256) == 1)
   {
-    v5 = *(a4 + 31) * 0.0174532925;
+    v5 = *(solution + 31) * 0.0174532925;
     *&v5 = v5;
-    [v10 setHorizontalAngle:v5];
+    [objectCopy setHorizontalAngle:v5];
   }
 
-  if (*(a4 + 376) == 1)
+  if (*(solution + 376) == 1)
   {
-    v6 = *(a4 + 46) * 0.0174532925;
+    v6 = *(solution + 46) * 0.0174532925;
     *&v6 = v6;
-    [v10 setHorizontalAngleAccuracy:v6];
+    [objectCopy setHorizontalAngleAccuracy:v6];
   }
 
-  if (*(a4 + 272) == 1)
+  if (*(solution + 272) == 1)
   {
-    v7 = *(a4 + 33);
+    v7 = *(solution + 33);
     *&v7 = v7;
-    [v10 setHorizontalDistance:v7];
+    [objectCopy setHorizontalDistance:v7];
   }
 
-  if (*(a4 + 70) <= 4u)
+  if (*(solution + 70) <= 4u)
   {
-    [v10 setVerticalDirectionEstimate:?];
+    [objectCopy setVerticalDirectionEstimate:?];
   }
 
-  if (*(a4 + 320) == 1)
+  if (*(solution + 320) == 1)
   {
-    [v10 setDirection:*(a4 + 38)];
+    [objectCopy setDirection:*(solution + 38)];
   }
 
-  if (*(a4 + 352) == 1)
+  if (*(solution + 352) == 1)
   {
-    [v10 setWorldPosition:*(a4 + 42)];
+    [objectCopy setWorldPosition:*(solution + 42)];
   }
 
-  if (*(a4 + 416) == 1)
+  if (*(solution + 416) == 1)
   {
-    v8 = *(a4 + 103);
+    v8 = *(solution + 103);
     if (v8 <= 7)
     {
-      [v10 setAlgorithmSource:v8 + 1];
+      [objectCopy setAlgorithmSource:v8 + 1];
     }
   }
 
-  if (*(a4 + 424) != 1)
+  if (*(solution + 424) != 1)
   {
     v9 = 0;
     goto LABEL_20;
   }
 
-  v9 = *(a4 + 105);
+  v9 = *(solution + 105);
   if (v9 <= 2)
   {
 LABEL_20:
-    [v10 setMotionState:v9];
+    [objectCopy setMotionState:v9];
   }
 
-  if (*(a4 + 428) == 1)
+  if (*(solution + 428) == 1)
   {
-    [v10 setResetARSession:1];
+    [objectCopy setResetARSession:1];
   }
 
-  if (*(a4 + 429) == 1)
+  if (*(solution + 429) == 1)
   {
-    [v10 setRevokeFindingExperience:1];
+    [objectCopy setRevokeFindingExperience:1];
   }
 }
 
-- (id)nearbyObjectFromSolution:(const void *)a3
+- (id)nearbyObjectFromSolution:(const void *)solution
 {
-  if (*(a3 + 240) == 1)
+  if (*(solution + 240) == 1)
   {
-    v5 = [(NINearbyUpdatesEngine *)self nearbyObjectFromRangeResult:a3 + 8];
+    v5 = [(NINearbyUpdatesEngine *)self nearbyObjectFromRangeResult:solution + 8];
     if (v5)
     {
-      [(NINearbyUpdatesEngine *)self fillNearbyObject:v5 fromSolution:a3];
+      [(NINearbyUpdatesEngine *)self fillNearbyObject:v5 fromSolution:solution];
       v6 = v5;
     }
 
@@ -6339,12 +6339,12 @@ LABEL_20:
       v7 = qword_1009F9820;
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        if ((*(a3 + 240) & 1) == 0)
+        if ((*(solution + 240) & 1) == 0)
         {
           sub_1000195BC();
         }
 
-        v8 = *(a3 + 1);
+        v8 = *(solution + 1);
         v10 = 134217984;
         v11 = v8;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "#nrby-eng,no object for identifier 0x%llx", &v10, 0xCu);
@@ -6360,12 +6360,12 @@ LABEL_20:
   return v5;
 }
 
-- (void)logSolution:(const void *)a3
+- (void)logSolution:(const void *)solution
 {
   sub_10026B0D4(&v16);
   sub_10000EA44(&v16, "#solutionDebug: ", 16);
   sub_10000EA44(&v16, "Range ", 6);
-  if (*(a3 + 240) != 1 || *(a3 + 6) == 1.1755e-38)
+  if (*(solution + 240) != 1 || *(solution + 6) == 1.1755e-38)
   {
     sub_10000EA44(&v16, "-, ", 3);
   }
@@ -6380,12 +6380,12 @@ LABEL_20:
   }
 
   sub_10000EA44(&v16, "Horizontal angle ", 17);
-  if (*(a3 + 256) == 1)
+  if (*(solution + 256) == 1)
   {
     v6 = v16;
     *(&v16 + *(v16 - 3) + 8) = *(&v16 + *(v16 - 3) + 8) & 0xFFFFFEFB | 4;
     *(&v18[0].__locale_ + *(v6 - 3)) = 2;
-    v7 = *(a3 + 31);
+    v7 = *(solution + 31);
     v8 = std::ostream::operator<<();
     sub_10000EA44(v8, " deg, ", 6);
   }
@@ -6396,12 +6396,12 @@ LABEL_20:
   }
 
   sub_10000EA44(&v16, "Horizontal angle unc ", 21);
-  if (*(a3 + 376) == 1)
+  if (*(solution + 376) == 1)
   {
     v9 = v16;
     *(&v16 + *(v16 - 3) + 8) = *(&v16 + *(v16 - 3) + 8) & 0xFFFFFEFB | 4;
     *(&v18[0].__locale_ + *(v9 - 3)) = 2;
-    v10 = *(a3 + 46);
+    v10 = *(solution + 46);
     v11 = std::ostream::operator<<();
     sub_10000EA44(v11, " deg, ", 6);
   }
@@ -6412,16 +6412,16 @@ LABEL_20:
   }
 
   sub_10000EA44(&v16, "Vertical state ", 15);
-  v12 = *(a3 + 70);
+  v12 = *(solution + 70);
   if (v12 <= 4)
   {
     sub_10000EA44(&v16, (&off_1009A88C8)[v12], qword_10056E1B0[v12]);
   }
 
   sub_10000EA44(&v16, ", Algorithm source ", 19);
-  if (*(a3 + 416) == 1)
+  if (*(solution + 416) == 1)
   {
-    v13 = *(a3 + 103);
+    v13 = *(solution + 103);
     if (v13 <= 7)
     {
       sub_10000EA44(&v16, (&off_1009A88F0)[v13], qword_10056E1D8[v13]);
@@ -6445,13 +6445,13 @@ LABEL_20:
   std::ios::~ios();
 }
 
-- (id)_convertPEAnchorMessages:(const void *)a3
+- (id)_convertPEAnchorMessages:(const void *)messages
 {
   v5 = objc_opt_new();
-  if (*(a3 + 20) == 1)
+  if (*(messages + 20) == 1)
   {
-    v7 = *(a3 + 28);
-    if (*(a3 + 29) != v7)
+    v7 = *(messages + 28);
+    if (*(messages + 29) != v7)
     {
       v8 = 0;
       v9 = 0;
@@ -6464,25 +6464,25 @@ LABEL_20:
         }
 
         ++v9;
-        v7 = *(a3 + 28);
+        v7 = *(messages + 28);
         v8 += 112;
       }
 
-      while (v9 < 0x6DB6DB6DB6DB6DB7 * ((*(a3 + 29) - v7) >> 4));
+      while (v9 < 0x6DB6DB6DB6DB6DB7 * ((*(messages + 29) - v7) >> 4));
     }
 
-    v11 = *(a3 + 38);
+    v11 = *(messages + 38);
     if (v11)
     {
       if (v11 == 1)
       {
-        if (*(a3 + 184) != 1)
+        if (*(messages + 184) != 1)
         {
           goto LABEL_27;
         }
 
-        v13 = *(a3 + 10);
-        *&v6 = *(a3 + 22);
+        v13 = *(messages + 10);
+        *&v6 = *(messages + 22);
         v12 = 1;
       }
 
@@ -6501,31 +6501,31 @@ LABEL_20:
 
     else
     {
-      if (*(a3 + 216) != 1)
+      if (*(messages + 216) != 1)
       {
         goto LABEL_27;
       }
 
       v12 = 0;
-      v13 = *(a3 + 12);
-      *&v6 = *(a3 + 26);
+      v13 = *(messages + 12);
+      *&v6 = *(messages + 26);
     }
 
-    if (*(a3 + 32) == 1 && *(a3 + 48) == 1 && *(a3 + 64) == 1 && *(a3 + 80) == 1)
+    if (*(messages + 32) == 1 && *(messages + 48) == 1 && *(messages + 64) == 1 && *(messages + 80) == 1)
     {
       v29 = v6;
       v31 = v13;
-      v14 = *(a3 + 3);
-      v15 = *(a3 + 5);
-      v16 = *(a3 + 7);
-      v17 = *(a3 + 9);
+      v14 = *(messages + 3);
+      v15 = *(messages + 5);
+      v16 = *(messages + 7);
+      v17 = *(messages + 9);
       v18 = [NIDLTDOAMeasurement alloc];
-      if ((*(a3 + 20) & 1) == 0)
+      if ((*(messages + 20) & 1) == 0)
       {
         sub_1000195BC();
       }
 
-      v19 = *(a3 + 9);
+      v19 = *(messages + 9);
       v33 = v31;
       v34 = v29;
       v20 = [(NIDLTDOAMeasurement *)v18 initWithAnchorAddress:v19 measurementType:0 coordinatesType:v12 transmitTime:&v33 receiveTime:v14 signalStrength:v15 carrierFrequencyOffset:v16 coordinates:v17 * 1.0e-12];
@@ -6535,21 +6535,21 @@ LABEL_20:
       v13 = v31;
     }
 
-    if (*(a3 + 96) == 1 && *(a3 + 112) == 1 && *(a3 + 128) == 1 && *(a3 + 144) == 1)
+    if (*(messages + 96) == 1 && *(messages + 112) == 1 && *(messages + 128) == 1 && *(messages + 144) == 1)
     {
       v30 = v6;
       v32 = v13;
-      v21 = *(a3 + 11);
-      v22 = *(a3 + 13);
-      v23 = *(a3 + 15);
-      v24 = *(a3 + 17);
+      v21 = *(messages + 11);
+      v22 = *(messages + 13);
+      v23 = *(messages + 15);
+      v24 = *(messages + 17);
       v25 = [NIDLTDOAMeasurement alloc];
-      if ((*(a3 + 20) & 1) == 0)
+      if ((*(messages + 20) & 1) == 0)
       {
         sub_1000195BC();
       }
 
-      v26 = *(a3 + 9);
+      v26 = *(messages + 9);
       v33 = v32;
       v34 = v30;
       v27 = [(NIDLTDOAMeasurement *)v25 initWithAnchorAddress:v26 measurementType:2 coordinatesType:v12 transmitTime:&v33 receiveTime:v21 signalStrength:v22 carrierFrequencyOffset:v23 coordinates:v24 * 1.0e-12];
@@ -6562,19 +6562,19 @@ LABEL_27:
   return v5;
 }
 
-- (id)_convertPEResponderAnchorMessage:(const void *)a3
+- (id)_convertPEResponderAnchorMessage:(const void *)message
 {
-  if (*(a3 + 104) == 1)
+  if (*(message + 104) == 1)
   {
-    *&v3 = *(a3 + 12);
-    v14 = *(a3 + 5);
+    *&v3 = *(message + 12);
+    v14 = *(message + 5);
     v15 = v3;
     v5 = [NIDLTDOAMeasurement alloc];
-    v6 = *a3;
-    v7 = *(a3 + 1);
-    v8 = *(a3 + 2);
-    v9 = *(a3 + 5);
-    v10 = *(a3 + 4) * 1.0e-12;
+    v6 = *message;
+    v7 = *(message + 1);
+    v8 = *(message + 2);
+    v9 = *(message + 5);
+    v10 = *(message + 4) * 1.0e-12;
     v16 = v14;
     v17 = v15;
     v11 = 0;
@@ -6583,17 +6583,17 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if (*(a3 + 72) == 1)
+  if (*(message + 72) == 1)
   {
-    *&v3 = *(a3 + 8);
-    v14 = *(a3 + 3);
+    *&v3 = *(message + 8);
+    v14 = *(message + 3);
     v15 = v3;
     v5 = [NIDLTDOAMeasurement alloc];
-    v6 = *a3;
-    v7 = *(a3 + 1);
-    v8 = *(a3 + 2);
-    v9 = *(a3 + 5);
-    v10 = *(a3 + 4) * 1.0e-12;
+    v6 = *message;
+    v7 = *(message + 1);
+    v8 = *(message + 2);
+    v9 = *(message + 5);
+    v10 = *(message + 4) * 1.0e-12;
     v16 = v14;
     v17 = v15;
     v11 = 1;
@@ -6606,13 +6606,13 @@ LABEL_7:
   return v12;
 }
 
-- (void)getPeerDataFromFindingContainerWithToken:(id)a3
+- (void)getPeerDataFromFindingContainerWithToken:(id)token
 {
-  v4 = a3;
-  v5 = v4;
+  tokenCopy = token;
+  v5 = tokenCopy;
   if (self->_findingAlgorithmContainer.__ptr_)
   {
-    [v4 hash];
+    [tokenCopy hash];
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
     {
       sub_1004C686C();
@@ -6675,8 +6675,8 @@ LABEL_7:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v12 + 1) + 8 * v9) regionSizeCategory];
-        sub_10038F550(retstr, &v11);
+        regionSizeCategory = [*(*(&v12 + 1) + 8 * v9) regionSizeCategory];
+        sub_10038F550(retstr, &regionSizeCategory);
         v9 = v9 + 1;
       }
 

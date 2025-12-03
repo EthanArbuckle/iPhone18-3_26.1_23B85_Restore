@@ -1,19 +1,19 @@
 @interface WBSPasswordWordList
-- (WBSPasswordWordList)initWithIdentifier:(id)a3;
-- (id)entriesForString:(id)a3;
+- (WBSPasswordWordList)initWithIdentifier:(id)identifier;
+- (id)entriesForString:(id)string;
 @end
 
 @implementation WBSPasswordWordList
 
-- (WBSPasswordWordList)initWithIdentifier:(id)a3
+- (WBSPasswordWordList)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = WBSPasswordWordList;
   v5 = [(WBSPasswordWordList *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
@@ -23,10 +23,10 @@
   return v5;
 }
 
-- (id)entriesForString:(id)a3
+- (id)entriesForString:(id)string
 {
   v4 = MEMORY[0x1E695DFA8];
-  v5 = a3;
+  stringCopy = string;
   v6 = objc_alloc_init(v4);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -34,7 +34,7 @@
   v9[3] = &unk_1E7CF3BB8;
   v7 = v6;
   v10 = v7;
-  [(WBSPasswordWordList *)self enumerateEntriesForString:v5 withBlock:v9];
+  [(WBSPasswordWordList *)self enumerateEntriesForString:stringCopy withBlock:v9];
 
   return v7;
 }

@@ -1,12 +1,12 @@
 @interface MFModernLabelledAtomList
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGPoint)baselinePointForRow:(unint64_t)a3;
-- (CGRect)_frameForAtomAtIndex:(unint64_t)a3 withStartingPoint:(CGPoint)a4 row:(unint64_t *)a5;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGPoint)baselinePointForRow:(unint64_t)row;
+- (CGRect)_frameForAtomAtIndex:(unint64_t)index withStartingPoint:(CGPoint)point row:(unint64_t *)row;
 - (CGRect)labelFrame;
 - (CGSize)intrinsicContentSize;
-- (MFModernLabelledAtomList)initWithLabel:(id)a3 title:(id)a4 atomType:(unint64_t)a5 addressBook:(void *)a6;
+- (MFModernLabelledAtomList)initWithLabel:(id)label title:(id)title atomType:(unint64_t)type addressBook:(void *)book;
 - (MFModernLabelledAtomListDelegate)delegate;
-- (double)_remainingSpaceForRowAtPoint:(CGPoint)a3;
+- (double)_remainingSpaceForRowAtPoint:(CGPoint)point;
 - (id)addressAtoms;
 - (id)atomDisplayStrings;
 - (id)passthroughViews;
@@ -14,26 +14,26 @@
 - (void)_reflowIfNeeded;
 - (void)_setNeedsReflow;
 - (void)_updateLastAddressAtomIfNecessary;
-- (void)addressAtom:(id)a3 searchForDisplayName:(id)a4 emailAddresses:(id)a5;
-- (void)addressBookDidChange:(id)a3;
-- (void)crossFadeLabelVisibility:(BOOL)a3 atomSeparatorStyle:(int)a4 withAnimationCoordinator:(id)a5;
+- (void)addressAtom:(id)atom searchForDisplayName:(id)name emailAddresses:(id)addresses;
+- (void)addressBookDidChange:(id)change;
+- (void)crossFadeLabelVisibility:(BOOL)visibility atomSeparatorStyle:(int)style withAnimationCoordinator:(id)coordinator;
 - (void)dealloc;
-- (void)displayContactCardForAddressAtom:(id)a3;
-- (void)enumerateAddressAtomsUsingBlock:(id)a3;
+- (void)displayContactCardForAddressAtom:(id)atom;
+- (void)enumerateAddressAtomsUsingBlock:(id)block;
 - (void)layoutSubviews;
-- (void)setAddressAtomScale:(double)a3;
-- (void)setAddressAtomSeparatorStyle:(int)a3;
-- (void)setAddressAtomTarget:(id)a3 action:(SEL)a4;
-- (void)setAddressAtomsArePrimary:(BOOL)a3;
-- (void)setAddresses:(id)a3 withCompletion:(id)a4;
-- (void)setAtomAlpha:(double)a3;
-- (void)setLabelTextColor:(id)a3;
-- (void)setLabelVisible:(BOOL)a3;
-- (void)setLineSpacing:(double)a3;
-- (void)setOpaque:(BOOL)a3;
-- (void)setOverrideFont:(id)a3;
-- (void)setPrimary:(BOOL)a3;
-- (void)setViewsToDodge:(id)a3;
+- (void)setAddressAtomScale:(double)scale;
+- (void)setAddressAtomSeparatorStyle:(int)style;
+- (void)setAddressAtomTarget:(id)target action:(SEL)action;
+- (void)setAddressAtomsArePrimary:(BOOL)primary;
+- (void)setAddresses:(id)addresses withCompletion:(id)completion;
+- (void)setAtomAlpha:(double)alpha;
+- (void)setLabelTextColor:(id)color;
+- (void)setLabelVisible:(BOOL)visible;
+- (void)setLineSpacing:(double)spacing;
+- (void)setOpaque:(BOOL)opaque;
+- (void)setOverrideFont:(id)font;
+- (void)setPrimary:(BOOL)primary;
+- (void)setViewsToDodge:(id)dodge;
 @end
 
 @implementation MFModernLabelledAtomList
@@ -42,8 +42,8 @@
 {
   [(MFModernLabelledAtomList *)self setAddressAtomTarget:0 action:0];
   [(NSMutableArray *)self->_addressAtoms makeObjectsPerformSelector:sel_setDelegate_ withObject:0];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   addressBook = self->_addressBook;
   if (addressBook)
@@ -56,14 +56,14 @@
   [(MFModernLabelledAtomList *)&v5 dealloc];
 }
 
-- (MFModernLabelledAtomList)initWithLabel:(id)a3 title:(id)a4 atomType:(unint64_t)a5 addressBook:(void *)a6
+- (MFModernLabelledAtomList)initWithLabel:(id)label title:(id)title atomType:(unint64_t)type addressBook:(void *)book
 {
-  v11 = a3;
-  v12 = a4;
+  labelCopy = label;
+  titleCopy = title;
   if (pthread_main_np() != 1)
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"MFModernLabelledAtomList.m" lineNumber:75 description:@"Current thread must be main"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFModernLabelledAtomList.m" lineNumber:75 description:@"Current thread must be main"];
   }
 
   v35.receiver = self;
@@ -75,23 +75,23 @@
   v17 = [(MFModernLabelledAtomList *)&v35 initWithFrame:*MEMORY[0x1E695F058], v14, v15, v16];
   if (v17)
   {
-    if (a6)
+    if (book)
     {
-      v17->_addressBook = CFRetain(a6);
+      v17->_addressBook = CFRetain(book);
     }
 
     [(MFModernLabelledAtomList *)v17 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(MFModernLabelledAtomList *)v17 setOpaque:1];
     [(MFModernLabelledAtomList *)v17 setAutoresizesSubviews:0];
-    v18 = [MEMORY[0x1E69DC888] mailModernLabelledAtomDefaultTextColor];
+    mailModernLabelledAtomDefaultTextColor = [MEMORY[0x1E69DC888] mailModernLabelledAtomDefaultTextColor];
     labelTextColor = v17->_labelTextColor;
-    v17->_labelTextColor = v18;
+    v17->_labelTextColor = mailModernLabelledAtomDefaultTextColor;
 
     v20 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v13, v14, v15, v16}];
     label = v17->_label;
     v17->_label = v20;
 
-    [(UILabel *)v17->_label setText:v11];
+    [(UILabel *)v17->_label setText:labelCopy];
     [(UILabel *)v17->_label setTextColor:v17->_labelTextColor];
     [(MFModernLabelledAtomList *)v17 addSubview:v17->_label];
     v17->_labelVisible = 1;
@@ -101,11 +101,11 @@
 
     [(UILabel *)v17->_label setAdjustsFontForContentSizeCategory:1];
     [(UILabel *)v17->_label sizeToFit];
-    v24 = [v12 copy];
+    v24 = [titleCopy copy];
     title = v17->_title;
     v17->_title = v24;
 
-    v17->_atomType = a5;
+    v17->_atomType = type;
     v26 = objc_alloc_init(MEMORY[0x1E695DF70]);
     addressAtoms = v17->_addressAtoms;
     v17->_addressAtoms = v26;
@@ -122,8 +122,8 @@
     [(MFModernLabelledAtomList *)v17 setContentHuggingPriority:1 forAxis:v30];
     LODWORD(v31) = 1148846080;
     [(MFModernLabelledAtomList *)v17 setContentCompressionResistancePriority:1 forAxis:v31];
-    v32 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v32 addObserver:v17 selector:sel_contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v17 selector:sel_contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   [(MFModernLabelledAtomList *)v17 setAccessibilityIdentifier:*MEMORY[0x1E69ADB68]];
@@ -133,35 +133,35 @@
 
 - (void)_updateLastAddressAtomIfNecessary
 {
-  v4 = [(NSMutableArray *)self->_addressAtoms lastObject];
-  v3 = [v4 separatorStyle];
+  lastObject = [(NSMutableArray *)self->_addressAtoms lastObject];
+  separatorStyle = [lastObject separatorStyle];
 
-  if (!v3)
+  if (!separatorStyle)
   {
-    v5 = [(NSMutableArray *)self->_addressAtoms lastObject];
-    [v5 setSeparatorStyle:2];
+    lastObject2 = [(NSMutableArray *)self->_addressAtoms lastObject];
+    [lastObject2 setSeparatorStyle:2];
   }
 }
 
-- (void)setAddresses:(id)a3 withCompletion:(id)a4
+- (void)setAddresses:(id)addresses withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  addressesCopy = addresses;
+  completionCopy = completion;
   if ((EFArraysAreEqual() & 1) == 0)
   {
-    [(MFModernLabelledAtomList *)self setAddresses:v6];
-    v8 = [v6 count];
-    v9 = [(MFModernLabelledAtomList *)self addressAtoms];
-    v10 = [v9 count];
+    [(MFModernLabelledAtomList *)self setAddresses:addressesCopy];
+    v8 = [addressesCopy count];
+    addressAtoms = [(MFModernLabelledAtomList *)self addressAtoms];
+    v10 = [addressAtoms count];
 
     if (v10 > v8)
     {
       v11 = v10;
       do
       {
-        v12 = [(NSMutableArray *)self->_addressAtoms lastObject];
-        [v12 removeFromSuperview];
-        [(NSMutableArray *)self->_addressAtoms removeObject:v12];
+        lastObject = [(NSMutableArray *)self->_addressAtoms lastObject];
+        [lastObject removeFromSuperview];
+        [(NSMutableArray *)self->_addressAtoms removeObject:lastObject];
 
         --v11;
       }
@@ -174,12 +174,12 @@
     v22 = 3221225472;
     v23 = __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke;
     v24 = &unk_1E80704B8;
-    v14 = v6;
+    v14 = addressesCopy;
     v25 = v14;
     [(NSMutableArray *)addressAtoms enumerateObjectsUsingBlock:&v21];
     if (v10 < v8)
     {
-      v20 = v7;
+      v20 = completionCopy;
       if (v8 > 0x63)
       {
         addressBook = 0;
@@ -198,15 +198,15 @@
 
         if ([(MFModernLabelledAtomList *)self isPrimary])
         {
-          v19 = [(MFModernLabelledAtomList *)self isLabelVisible];
+          isLabelVisible = [(MFModernLabelledAtomList *)self isLabelVisible];
         }
 
         else
         {
-          v19 = 1;
+          isLabelVisible = 1;
         }
 
-        [(MFModernAddressAtom *)v18 setEnabled:v19, v20, v21, v22, v23, v24];
+        [(MFModernAddressAtom *)v18 setEnabled:isLabelVisible, v20, v21, v22, v23, v24];
         [(MFModernAddressAtom *)v18 setDelegate:self];
         [(NSMutableArray *)self->_addressAtoms addObject:v18];
         [(MFModernLabelledAtomList *)self addSubview:v18];
@@ -215,13 +215,13 @@
       }
 
       while (v8 != v10);
-      v7 = v20;
+      completionCopy = v20;
       [(MFModernLabelledAtomList *)self _updateLastAddressAtomIfNecessary];
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, self);
+      completionCopy[2](completionCopy, self);
     }
 
     [(MFModernLabelledAtomList *)self _reflow];
@@ -245,10 +245,10 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
   return result;
 }
 
-- (void)addressBookDidChange:(id)a3
+- (void)addressBookDidChange:(id)change
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -268,7 +268,7 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) addressBookDidChange:{v4, v9}];
+        [*(*(&v9 + 1) + 8 * v8++) addressBookDidChange:{changeCopy, v9}];
       }
 
       while (v6 != v8);
@@ -309,13 +309,13 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
   }
 }
 
-- (void)setPrimary:(BOOL)a3
+- (void)setPrimary:(BOOL)primary
 {
-  if (self->_primary != a3)
+  if (self->_primary != primary)
   {
-    self->_primary = a3;
+    self->_primary = primary;
     v5 = objc_opt_class();
-    if (a3)
+    if (primary)
     {
       [v5 primaryLabelFont];
     }
@@ -330,51 +330,51 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
   }
 }
 
-- (void)setLabelTextColor:(id)a3
+- (void)setLabelTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_labelTextColor != v5)
+  colorCopy = color;
+  if (self->_labelTextColor != colorCopy)
   {
-    objc_storeStrong(&self->_labelTextColor, a3);
-    [(UILabel *)self->_label setTextColor:v5];
+    objc_storeStrong(&self->_labelTextColor, color);
+    [(UILabel *)self->_label setTextColor:colorCopy];
   }
 }
 
-- (void)setLineSpacing:(double)a3
+- (void)setLineSpacing:(double)spacing
 {
-  if (self->_lineSpacing != a3)
+  if (self->_lineSpacing != spacing)
   {
-    self->_lineSpacing = a3;
+    self->_lineSpacing = spacing;
     [(MFModernLabelledAtomList *)self _setNeedsReflow];
   }
 }
 
-- (void)addressAtom:(id)a3 searchForDisplayName:(id)a4 emailAddresses:(id)a5
+- (void)addressAtom:(id)atom searchForDisplayName:(id)name emailAddresses:(id)addresses
 {
-  v9 = a4;
-  v7 = a5;
-  v8 = [(MFModernLabelledAtomList *)self delegate];
-  [v8 labelledAtomList:self searchForDisplayName:v9 emailAddresses:v7];
+  nameCopy = name;
+  addressesCopy = addresses;
+  delegate = [(MFModernLabelledAtomList *)self delegate];
+  [delegate labelledAtomList:self searchForDisplayName:nameCopy emailAddresses:addressesCopy];
 }
 
-- (void)displayContactCardForAddressAtom:(id)a3
+- (void)displayContactCardForAddressAtom:(id)atom
 {
-  v5 = a3;
-  v4 = [(MFModernLabelledAtomList *)self delegate];
-  [v4 labelledAtomList:self displayContactCardForAddressAtom:v5];
+  atomCopy = atom;
+  delegate = [(MFModernLabelledAtomList *)self delegate];
+  [delegate labelledAtomList:self displayContactCardForAddressAtom:atomCopy];
 }
 
-- (void)enumerateAddressAtomsUsingBlock:(id)a3
+- (void)enumerateAddressAtomsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MFModernLabelledAtomList *)self addressAtoms];
+  blockCopy = block;
+  addressAtoms = [(MFModernLabelledAtomList *)self addressAtoms];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__MFModernLabelledAtomList_enumerateAddressAtomsUsingBlock___block_invoke;
   v7[3] = &unk_1E80704E0;
-  v6 = v4;
+  v6 = blockCopy;
   v8 = v6;
-  [v5 enumerateObjectsUsingBlock:v7];
+  [addressAtoms enumerateObjectsUsingBlock:v7];
 }
 
 - (void)_setNeedsReflow
@@ -392,24 +392,24 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
   *(self + 433) &= ~1u;
   if ([(NSMutableArray *)self->_addressAtoms count])
   {
-    v3 = [(MFModernLabelledAtomList *)self effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [(MFModernLabelledAtomList *)self effectiveUserInterfaceLayoutDirection];
     v4 = 0.0;
     v50 = 0.0;
     if ([(MFModernLabelledAtomList *)self isLabelVisible])
     {
-      v5 = [(UILabel *)self->_label text];
+      text = [(UILabel *)self->_label text];
       v54 = *MEMORY[0x1E69DB648];
-      v6 = [(UILabel *)self->_label font];
-      v55[0] = v6;
+      font = [(UILabel *)self->_label font];
+      v55[0] = font;
       v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:&v54 count:1];
-      [v5 boundingRectWithSize:1 options:v7 attributes:0 context:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+      [text boundingRectWithSize:1 options:v7 attributes:0 context:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
       v9 = v8;
 
       [objc_opt_class() spaceBetweenColonAndFirstAtomNaturalEdge];
       v50 = v9 + v10;
     }
 
-    if (v3 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       [(MFModernLabelledAtomList *)self bounds];
       v4 = CGRectGetWidth(v56) - v50;
@@ -434,8 +434,8 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
         v20 = [(NSMutableArray *)self->_addressAtoms objectAtIndex:v13];
         if (!v13)
         {
-          v21 = [*v16 preferredContentSizeCategory];
-          IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v21);
+          preferredContentSizeCategory = [*v16 preferredContentSizeCategory];
+          IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
           v23 = 0.0;
           if (IsAccessibilityCategory)
@@ -470,7 +470,7 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
         v58.size.width = v18;
         v58.size.height = v17;
         MaxY = CGRectGetMaxY(v58);
-        if (v3 == 1)
+        if (effectiveUserInterfaceLayoutDirection == 1)
         {
           v59.origin.x = v4;
           v59.origin.y = v19;
@@ -510,7 +510,7 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
       [(MFModernLabelledAtomList *)self invalidateIntrinsicContentSize];
     }
 
-    if (v3 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       [(UILabel *)self->_label frame];
       v36 = v35;
@@ -535,17 +535,17 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
   }
 }
 
-- (CGRect)_frameForAtomAtIndex:(unint64_t)a3 withStartingPoint:(CGPoint)a4 row:(unint64_t *)a5
+- (CGRect)_frameForAtomAtIndex:(unint64_t)index withStartingPoint:(CGPoint)point row:(unint64_t *)row
 {
-  x = a4.x;
-  v9 = [(NSMutableArray *)self->_addressAtoms objectAtIndex:a4.x, a4.y];
-  v10 = [(MFModernLabelledAtomList *)self effectiveUserInterfaceLayoutDirection];
-  [(MFModernLabelledAtomList *)self baselinePointForRow:*a5];
+  x = point.x;
+  v9 = [(NSMutableArray *)self->_addressAtoms objectAtIndex:point.x, point.y];
+  effectiveUserInterfaceLayoutDirection = [(MFModernLabelledAtomList *)self effectiveUserInterfaceLayoutDirection];
+  [(MFModernLabelledAtomList *)self baselinePointForRow:*row];
   v12 = v11;
-  if (!a3)
+  if (!index)
   {
-    v13 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v13);
+    preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (IsAccessibilityCategory && self->_labelVisible)
     {
@@ -561,7 +561,7 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
       else
       {
         [v9 setFirstLineIndent:0.0];
-        ++*a5;
+        ++*row;
         [(MFModernLabelledAtomList *)self baselinePointForRow:?];
         v12 = v16;
         x = 0.0;
@@ -573,7 +573,7 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
   v20 = v19;
   [(MFModernLabelledAtomList *)self bounds];
   Width = CGRectGetWidth(v44);
-  if (!a3)
+  if (!index)
   {
     Width = v20;
   }
@@ -583,7 +583,7 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
   [v9 frame];
   v26 = v24;
   v27 = v25;
-  if (v10 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     CGRectGetWidth(*&v22);
   }
@@ -594,12 +594,12 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
   [v9 baselinePoint];
   UIRoundToViewScale();
   v31 = v30;
-  v32 = [v9 numberOfLines];
-  if (a3 && ([(MFModernLabelledAtomList *)self lineSpacing], v33 > 0.0) && (v45.origin.x = v29, v45.origin.y = v31, v45.size.width = v26, v45.size.height = v27, CGRectGetWidth(v45) > v20))
+  numberOfLines = [v9 numberOfLines];
+  if (index && ([(MFModernLabelledAtomList *)self lineSpacing], v33 > 0.0) && (v45.origin.x = v29, v45.origin.y = v31, v45.size.width = v26, v45.size.height = v27, CGRectGetWidth(v45) > v20))
   {
-    ++*a5;
+    ++*row;
     v34 = MEMORY[0x1E695EFF8];
-    if (v10 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       [(MFModernLabelledAtomList *)self bounds];
       v35 = CGRectGetWidth(v46);
@@ -610,16 +610,16 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
       v35 = *MEMORY[0x1E695EFF8];
     }
 
-    [(MFModernLabelledAtomList *)self _frameForAtomAtIndex:a3 withStartingPoint:a5 row:v35, *(v34 + 8)];
+    [(MFModernLabelledAtomList *)self _frameForAtomAtIndex:index withStartingPoint:row row:v35, *(v34 + 8)];
     v29 = v36;
     v31 = v37;
     v26 = v38;
     v27 = v39;
   }
 
-  else if (v32 >= 2)
+  else if (numberOfLines >= 2)
   {
-    *a5 = [v9 numberOfLines] + *a5 - 1;
+    *row = [v9 numberOfLines] + *row - 1;
   }
 
   v40 = v29;
@@ -633,17 +633,17 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
   return result;
 }
 
-- (double)_remainingSpaceForRowAtPoint:(CGPoint)a3
+- (double)_remainingSpaceForRowAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v52 = *MEMORY[0x1E69E9840];
-  v6 = [(MFModernLabelledAtomList *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(MFModernLabelledAtomList *)self effectiveUserInterfaceLayoutDirection];
   [(MFModernLabelledAtomList *)self bounds];
   v7 = CGRectGetWidth(v53) - x;
   [(MFModernLabelledAtomList *)self baselinePointForRow:0];
   v9 = v8;
-  if (v6 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v10 = x;
   }
@@ -654,7 +654,7 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
   }
 
   v46 = v10;
-  if (v6 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v11 = 0.0;
     v7 = x;
@@ -670,8 +670,8 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v12 = [(MFModernLabelledAtomList *)self viewsToDodge];
-  v13 = [v12 countByEnumeratingWithState:&v47 objects:v51 count:16];
+  viewsToDodge = [(MFModernLabelledAtomList *)self viewsToDodge];
+  v13 = [viewsToDodge countByEnumeratingWithState:&v47 objects:v51 count:16];
   if (v13)
   {
     v14 = y - v9;
@@ -682,7 +682,7 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
       {
         if (*v48 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(viewsToDodge);
         }
 
         v17 = *(*(&v47 + 1) + 8 * i);
@@ -691,8 +691,8 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
         v21 = v20;
         v23 = v22;
         v25 = v24;
-        v26 = [v17 superview];
-        [(MFModernLabelledAtomList *)self convertRect:v26 fromView:v19, v21, v23, v25];
+        superview = [v17 superview];
+        [(MFModernLabelledAtomList *)self convertRect:superview fromView:v19, v21, v23, v25];
         v28 = v27;
         v30 = v29;
         v32 = v31;
@@ -717,7 +717,7 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
           v40 = v36;
           v41 = width;
           v42 = height;
-          if (v6 == 1)
+          if (effectiveUserInterfaceLayoutDirection == 1)
           {
             v43 = v45 - CGRectGetMaxX(*&v39);
           }
@@ -731,7 +731,7 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
         }
       }
 
-      v13 = [v12 countByEnumeratingWithState:&v47 objects:v51 count:16];
+      v13 = [viewsToDodge countByEnumeratingWithState:&v47 objects:v51 count:16];
     }
 
     while (v13);
@@ -740,10 +740,10 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
   return v46;
 }
 
-- (void)setAddressAtomTarget:(id)a3 action:(SEL)a4
+- (void)setAddressAtomTarget:(id)target action:(SEL)action
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  targetCopy = target;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -764,9 +764,9 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
 
         v11 = *(*(&v12 + 1) + 8 * i);
         [v11 removeTarget:0 action:0 forControlEvents:{0xFFFFFFFFLL, v12}];
-        if (v6)
+        if (targetCopy)
         {
-          [v11 addTarget:v6 action:a4 forControlEvents:64];
+          [v11 addTarget:targetCopy action:action forControlEvents:64];
         }
       }
 
@@ -777,7 +777,7 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
   }
 }
 
-- (void)setAddressAtomScale:(double)a3
+- (void)setAddressAtomScale:(double)scale
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
@@ -799,7 +799,7 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v8 + 1) + 8 * v7++) setScale:{a3, v8}];
+        [*(*(&v8 + 1) + 8 * v7++) setScale:{scale, v8}];
       }
 
       while (v5 != v7);
@@ -810,9 +810,9 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
   }
 }
 
-- (void)setAddressAtomSeparatorStyle:(int)a3
+- (void)setAddressAtomSeparatorStyle:(int)style
 {
-  v3 = *&a3;
+  v3 = *&style;
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
@@ -847,9 +847,9 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
   [(MFModernLabelledAtomList *)self _setNeedsReflow];
 }
 
-- (void)setAddressAtomsArePrimary:(BOOL)a3
+- (void)setAddressAtomsArePrimary:(BOOL)primary
 {
-  v3 = a3;
+  primaryCopy = primary;
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
@@ -870,7 +870,7 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) setIsPrimaryAddressAtom:{v3, v9}];
+        [*(*(&v9 + 1) + 8 * v8++) setIsPrimaryAddressAtom:{primaryCopy, v9}];
       }
 
       while (v6 != v8);
@@ -905,21 +905,21 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
   return result;
 }
 
-- (void)setLabelVisible:(BOOL)a3
+- (void)setLabelVisible:(BOOL)visible
 {
-  if (self->_labelVisible != a3)
+  if (self->_labelVisible != visible)
   {
-    v3 = a3;
-    self->_labelVisible = a3;
+    visibleCopy = visible;
+    self->_labelVisible = visible;
     v5 = 0.0;
-    if (a3)
+    if (visible)
     {
       v5 = 1.0;
     }
 
     [(UILabel *)self->_label setAlpha:v5];
-    v6 = [(NSMutableArray *)self->_addressAtoms firstObject];
-    [v6 setEnabled:v3];
+    firstObject = [(NSMutableArray *)self->_addressAtoms firstObject];
+    [firstObject setEnabled:visibleCopy];
     [(MFModernLabelledAtomList *)self _setNeedsReflow];
   }
 }
@@ -946,8 +946,8 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) displayString];
-        [v3 addObject:v8];
+        displayString = [*(*(&v10 + 1) + 8 * i) displayString];
+        [v3 addObject:displayString];
       }
 
       v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -966,7 +966,7 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
   return v2;
 }
 
-- (void)setAtomAlpha:(double)a3
+- (void)setAtomAlpha:(double)alpha
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
@@ -988,7 +988,7 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v8 + 1) + 8 * v7++) setAlpha:{a3, v8}];
+        [*(*(&v8 + 1) + 8 * v7++) setAlpha:{alpha, v8}];
       }
 
       while (v5 != v7);
@@ -999,14 +999,14 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
   }
 }
 
-- (void)setOpaque:(BOOL)a3
+- (void)setOpaque:(BOOL)opaque
 {
-  v3 = a3;
+  opaqueCopy = opaque;
   v7.receiver = self;
   v7.super_class = MFModernLabelledAtomList;
   [(MFModernLabelledAtomList *)&v7 setOpaque:?];
   label = self->_label;
-  if (v3)
+  if (opaqueCopy)
   {
     [MEMORY[0x1E69DC888] whiteColor];
   }
@@ -1026,9 +1026,9 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
   return v2;
 }
 
-- (void)crossFadeLabelVisibility:(BOOL)a3 atomSeparatorStyle:(int)a4 withAnimationCoordinator:(id)a5
+- (void)crossFadeLabelVisibility:(BOOL)visibility atomSeparatorStyle:(int)style withAnimationCoordinator:(id)coordinator
 {
-  v8 = a5;
+  coordinatorCopy = coordinator;
   if ([(NSMutableArray *)self->_addressAtoms count])
   {
     v9 = [(NSMutableArray *)self->_addressAtoms objectAtIndex:0];
@@ -1066,9 +1066,9 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
     v23 = v33;
     v12 = v9;
     v21 = v12;
-    v22 = self;
-    v28 = a3;
-    v27 = a4;
+    selfCopy = self;
+    visibilityCopy = visibility;
+    styleCopy = style;
     v24 = v31;
     v25 = v36;
     v26 = v29;
@@ -1077,7 +1077,7 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
     v18[1] = 3221225472;
     v18[2] = __97__MFModernLabelledAtomList_crossFadeLabelVisibility_atomSeparatorStyle_withAnimationCoordinator___block_invoke_2;
     v18[3] = &unk_1E8070530;
-    v19 = a3;
+    visibilityCopy2 = visibility;
     v18[4] = self;
     v18[5] = v29;
     v18[6] = v31;
@@ -1090,7 +1090,7 @@ void __56__MFModernLabelledAtomList_setAddresses_withCompletion___block_invoke(u
     v15 = v13;
     v16 = v31;
     v17 = v29;
-    [v8 animateAlongsideAnimations:v18 completion:v14];
+    [coordinatorCopy animateAlongsideAnimations:v18 completion:v14];
 
     _Block_object_dispose(v29, 8);
     _Block_object_dispose(v31, 8);
@@ -1173,11 +1173,11 @@ uint64_t __97__MFModernLabelledAtomList_crossFadeLabelVisibility_atomSeparatorSt
   return [v2 removeFromSuperview];
 }
 
-- (void)setOverrideFont:(id)a3
+- (void)setOverrideFont:(id)font
 {
-  v4 = a3;
+  fontCopy = font;
   v5 = MEMORY[0x1E69DB878];
-  [v4 pointSize];
+  [fontCopy pointSize];
   v6 = [v5 systemFontOfSize:?];
   [(UILabel *)self->_label setFont:v6];
   [(UILabel *)self->_label sizeToFit];
@@ -1185,23 +1185,23 @@ uint64_t __97__MFModernLabelledAtomList_crossFadeLabelVisibility_atomSeparatorSt
   v8[1] = 3221225472;
   v8[2] = __44__MFModernLabelledAtomList_setOverrideFont___block_invoke;
   v8[3] = &unk_1E8070558;
-  v7 = v4;
+  v7 = fontCopy;
   v9 = v7;
   [(MFModernLabelledAtomList *)self enumerateAddressAtomsUsingBlock:v8];
   [(MFModernLabelledAtomList *)self _setNeedsReflow];
 }
 
-- (void)setViewsToDodge:(id)a3
+- (void)setViewsToDodge:(id)dodge
 {
-  v5 = a3;
+  dodgeCopy = dodge;
   if (([(NSArray *)self->_viewsToDodge isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_viewsToDodge, a3);
+    objc_storeStrong(&self->_viewsToDodge, dodge);
     [(MFModernLabelledAtomList *)self _setNeedsReflow];
   }
 }
 
-- (CGPoint)baselinePointForRow:(unint64_t)a3
+- (CGPoint)baselinePointForRow:(unint64_t)row
 {
   [(UILabel *)self->_label frame];
   MaxY = CGRectGetMaxY(v12);
@@ -1217,17 +1217,17 @@ uint64_t __97__MFModernLabelledAtomList_crossFadeLabelVisibility_atomSeparatorSt
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(MFModernLabelledAtomList *)self frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(MFModernLabelledAtomList *)self superview];
-  [v15 convertPoint:self fromView:{x, y}];
+  superview = [(MFModernLabelledAtomList *)self superview];
+  [superview convertPoint:self fromView:{x, y}];
   v17 = v16;
   v19 = v18;
 

@@ -1,64 +1,64 @@
 @interface PLPrimaryResourceDataStoreUniformFileKey
-+ (id)_fileURLFromKeyStruct:(PLPrimaryDataStore_UniformFileStrategy_KeyStruct_V1 *)a3 assetID:(id)a4;
-+ (id)fileURLForPayloadKeyData:(unint64_t)a3 assetID:(id)a4;
-- (PLPrimaryResourceDataStoreUniformFileKey)initWithFilePath:(id)a3 resourceVersion:(unsigned int)a4 resourceType:(unsigned int)a5 recipeID:(unsigned int)a6 bundleScope:(unsigned __int16)a7 pathManager:(id)a8;
-- (PLPrimaryResourceDataStoreUniformFileKey)initWithKeyStruct:(const void *)a3;
-- (id)fileURLForAssetID:(id)a3;
-- (id)initFromExistingLocationOfExternalResource:(id)a3 asset:(id)a4;
++ (id)_fileURLFromKeyStruct:(PLPrimaryDataStore_UniformFileStrategy_KeyStruct_V1 *)struct assetID:(id)d;
++ (id)fileURLForPayloadKeyData:(unint64_t)data assetID:(id)d;
+- (PLPrimaryResourceDataStoreUniformFileKey)initWithFilePath:(id)path resourceVersion:(unsigned int)version resourceType:(unsigned int)type recipeID:(unsigned int)d bundleScope:(unsigned __int16)scope pathManager:(id)manager;
+- (PLPrimaryResourceDataStoreUniformFileKey)initWithKeyStruct:(const void *)struct;
+- (id)fileURLForAssetID:(id)d;
+- (id)initFromExistingLocationOfExternalResource:(id)resource asset:(id)asset;
 - (id)uniformTypeIdentifier;
-- (id)validateForAssetID:(id)a3 resourceIdentity:(id)a4;
+- (id)validateForAssetID:(id)d resourceIdentity:(id)identity;
 @end
 
 @implementation PLPrimaryResourceDataStoreUniformFileKey
 
-- (id)fileURLForAssetID:(id)a3
+- (id)fileURLForAssetID:(id)d
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _fileURLFromKeyStruct:&self->_keyStruct assetID:v4];
+  dCopy = d;
+  v5 = [objc_opt_class() _fileURLFromKeyStruct:&self->_keyStruct assetID:dCopy];
 
   return v5;
 }
 
-- (PLPrimaryResourceDataStoreUniformFileKey)initWithFilePath:(id)a3 resourceVersion:(unsigned int)a4 resourceType:(unsigned int)a5 recipeID:(unsigned int)a6 bundleScope:(unsigned __int16)a7 pathManager:(id)a8
+- (PLPrimaryResourceDataStoreUniformFileKey)initWithFilePath:(id)path resourceVersion:(unsigned int)version resourceType:(unsigned int)type recipeID:(unsigned int)d bundleScope:(unsigned __int16)scope pathManager:(id)manager
 {
-  v9 = a7;
-  v12 = a4;
+  scopeCopy = scope;
+  versionCopy = version;
   v39 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a8;
+  pathCopy = path;
+  managerCopy = manager;
   v36.receiver = self;
   v36.super_class = PLPrimaryResourceDataStoreUniformFileKey;
-  v16 = [(PLPrimaryResourceDataStoreKey *)&v36 _init];
-  v17 = v16;
-  if (v16)
+  _init = [(PLPrimaryResourceDataStoreKey *)&v36 _init];
+  v17 = _init;
+  if (_init)
   {
-    if (a5 == 31)
+    if (type == 31)
     {
       goto LABEL_22;
     }
 
-    v18 = v16 + 8;
-    v19 = *(v16 + 9);
-    v16[8] = 3;
-    *(v16 + 9) = v19 & 0xFFFFFE00 | (4 * (v12 & 3)) & 0xF | (16 * (a5 & 0x1F));
-    v20 = [v14 pathExtension];
-    v21 = v20;
+    v18 = _init + 8;
+    v19 = *(_init + 9);
+    _init[8] = 3;
+    *(_init + 9) = v19 & 0xFFFFFE00 | (4 * (versionCopy & 3)) & 0xF | (16 * (type & 0x1F));
+    pathExtension = [pathCopy pathExtension];
+    v21 = pathExtension;
     if (onceToken == -1)
     {
-      if (v20)
+      if (pathExtension)
       {
 LABEL_5:
         v22 = [kFileIdentifierKeyExtensionsToFileTypes objectForKeyedSubscript:v21];
-        v23 = [v22 unsignedShortValue];
+        unsignedShortValue = [v22 unsignedShortValue];
 
-        v24 = v23;
+        v24 = unsignedShortValue;
 LABEL_10:
 
         v26 = (*(v17 + 9) | (v17[13] << 32)) & 0xFFFFFF807FFFFFFFLL | (v24 << 31);
         *(v17 + 9) = *(v17 + 9) & 0x7FFFFFFF | (v24 << 31);
         v17[13] = BYTE4(v26);
 
-        if (([v15 isUBF] & 1) != 0 || objc_msgSend(v15, "shouldUseFileIdentifierForBundleScope:", v9))
+        if (([managerCopy isUBF] & 1) != 0 || objc_msgSend(managerCopy, "shouldUseFileIdentifierForBundleScope:", scopeCopy))
         {
           v27 = *(v17 + 9) & 0x9FFFFFFF | (v17[13] << 32);
           *(v17 + 9) &= 0x9FFFFFFF;
@@ -66,9 +66,9 @@ LABEL_10:
 
         else
         {
-          v28 = [v14 pathExtension];
-          v29 = [v28 lowercaseString];
-          v30 = [v28 isEqualToString:v29];
+          pathExtension2 = [pathCopy pathExtension];
+          lowercaseString = [pathExtension2 lowercaseString];
+          v30 = [pathExtension2 isEqualToString:lowercaseString];
 
           if (v30)
           {
@@ -77,8 +77,8 @@ LABEL_10:
 
           else
           {
-            v32 = [v28 uppercaseString];
-            v33 = [v28 isEqualToString:v32];
+            uppercaseString = [pathExtension2 uppercaseString];
+            v33 = [pathExtension2 isEqualToString:uppercaseString];
 
             if (!v33)
             {
@@ -97,10 +97,10 @@ LABEL_10:
           v27 = *(v17 + 9) | (v18[5] << 32);
         }
 
-        if ((v27 & 0x7F80000000) != 0 && !(a6 >> 20))
+        if ((v27 & 0x7F80000000) != 0 && !(d >> 20))
         {
           v17[13] = BYTE4(v27);
-          *(v17 + 9) = v27 & 0xE00001FF | (a6 >> 7) & 0x1E00 | (a6 >> 1 << 13) & 0xEFFFFFFF | ((a6 & 1) << 28);
+          *(v17 + 9) = v27 & 0xE00001FF | (d >> 7) & 0x1E00 | (d >> 1 << 13) & 0xEFFFFFFF | ((d & 1) << 28);
           goto LABEL_23;
         }
 
@@ -137,22 +137,22 @@ LABEL_23:
   return v17;
 }
 
-- (id)initFromExistingLocationOfExternalResource:(id)a3 asset:(id)a4
+- (id)initFromExistingLocationOfExternalResource:(id)resource asset:(id)asset
 {
-  v6 = a3;
-  v7 = a4;
+  resourceCopy = resource;
+  assetCopy = asset;
   v21.receiver = self;
   v21.super_class = PLPrimaryResourceDataStoreUniformFileKey;
-  v8 = [(PLPrimaryResourceDataStoreKey *)&v21 _initFromExistingLocationOfExternalResource:v6 asset:v7];
+  v8 = [(PLPrimaryResourceDataStoreKey *)&v21 _initFromExistingLocationOfExternalResource:resourceCopy asset:assetCopy];
   if (!v8)
   {
     goto LABEL_6;
   }
 
   v9 = v8;
-  v10 = [v6 fileURL];
+  fileURL = [resourceCopy fileURL];
 
-  if (!v10)
+  if (!fileURL)
   {
 
 LABEL_6:
@@ -161,18 +161,18 @@ LABEL_6:
   }
 
   v11 = [PLPrimaryResourceDataStoreUniformFileKey alloc];
-  v20 = [v6 fileURL];
-  v12 = [v20 path];
-  v13 = [v6 version];
-  v14 = [v6 resourceType];
-  v15 = [v6 recipeID];
-  v16 = [v7 bundleScope];
-  v17 = [v7 pathManager];
-  v18 = [(PLPrimaryResourceDataStoreUniformFileKey *)v11 initWithFilePath:v12 resourceVersion:v13 resourceType:v14 recipeID:v15 bundleScope:v16 pathManager:v17];
+  fileURL2 = [resourceCopy fileURL];
+  path = [fileURL2 path];
+  version = [resourceCopy version];
+  resourceType = [resourceCopy resourceType];
+  recipeID = [resourceCopy recipeID];
+  bundleScope = [assetCopy bundleScope];
+  pathManager = [assetCopy pathManager];
+  v18 = [(PLPrimaryResourceDataStoreUniformFileKey *)v11 initWithFilePath:path resourceVersion:version resourceType:resourceType recipeID:recipeID bundleScope:bundleScope pathManager:pathManager];
 
   if (!v18)
   {
-    v18 = [[PLPrimaryResourceDataStoreFilePathKey alloc] initFromExistingLocationOfExternalResource:v6 asset:v7];
+    v18 = [[PLPrimaryResourceDataStoreFilePathKey alloc] initFromExistingLocationOfExternalResource:resourceCopy asset:assetCopy];
   }
 
 LABEL_7:
@@ -183,42 +183,42 @@ LABEL_7:
 - (id)uniformTypeIdentifier
 {
   v2 = PLUTTypeFromUniformFileType(((*(&self->_keyStruct + 1) | (*(&self->_keyStruct + 5) << 32)) >> 31));
-  v3 = [v2 identifier];
+  identifier = [v2 identifier];
 
-  return v3;
+  return identifier;
 }
 
-- (PLPrimaryResourceDataStoreUniformFileKey)initWithKeyStruct:(const void *)a3
+- (PLPrimaryResourceDataStoreUniformFileKey)initWithKeyStruct:(const void *)struct
 {
   v6.receiver = self;
   v6.super_class = PLPrimaryResourceDataStoreUniformFileKey;
   result = [(PLPrimaryResourceDataStoreKey *)&v6 _initWithKeyStruct:?];
   if (result)
   {
-    v5 = *(a3 + 2);
-    *&result->_keyStruct = *a3;
+    v5 = *(struct + 2);
+    *&result->_keyStruct = *struct;
     *(&result->_keyStruct + 2) = v5;
   }
 
   return result;
 }
 
-- (id)validateForAssetID:(id)a3 resourceIdentity:(id)a4
+- (id)validateForAssetID:(id)d resourceIdentity:(id)identity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 libraryID];
-  v9 = PLDataStoreForClassIDAndLibraryID(0, v8);
+  dCopy = d;
+  identityCopy = identity;
+  libraryID = [dCopy libraryID];
+  v9 = PLDataStoreForClassIDAndLibraryID(0, libraryID);
 
-  v10 = [v9 pathManager];
-  v11 = [v10 isUBF];
+  pathManager = [v9 pathManager];
+  isUBF = [pathManager isUBF];
   if (((*(&self->_keyStruct + 1) | (*(&self->_keyStruct + 5) << 32)) & 0x7F80000000) == 0 || (*(&self->_keyStruct + 1) & 0x1F0) == 0x1F0)
   {
 
     goto LABEL_7;
   }
 
-  if (v11)
+  if (isUBF)
   {
     v12 = *(&self->_keyStruct + 1) & 0x60000000;
 
@@ -228,8 +228,8 @@ LABEL_7:
     }
 
 LABEL_7:
-    v13 = v7;
-    v14 = [PLResourceModelValidationError malformedKeyErrorForKey:self resource:v7];
+    v13 = identityCopy;
+    v14 = [PLResourceModelValidationError malformedKeyErrorForKey:self resource:identityCopy];
     v15 = [MEMORY[0x1E695E0F0] arrayByAddingObject:v14];
 
     goto LABEL_10;
@@ -243,19 +243,19 @@ LABEL_7:
   }
 
 LABEL_9:
-  v13 = v7;
+  v13 = identityCopy;
   v15 = MEMORY[0x1E695E0F0];
 LABEL_10:
-  v17 = [(PLPrimaryResourceDataStoreUniformFileKey *)self fileURLForAssetID:v6];
-  v18 = [MEMORY[0x1E696AC08] defaultManager];
-  v19 = [v17 path];
-  v20 = [v18 fileExistsAtPath:v19];
+  v17 = [(PLPrimaryResourceDataStoreUniformFileKey *)self fileURLForAssetID:dCopy];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v17 path];
+  v20 = [defaultManager fileExistsAtPath:path];
 
   if ((v20 & 1) == 0)
   {
     if ([(PLPrimaryResourceDataStoreUniformFileKey *)self isDerivative]&& (*(&self->_keyStruct + 1) & 0x1E00) == 0x800)
     {
-      v21 = [PLResourceModelValidationError unreachableFileThumbnailErrorForKey:self assetID:v6];
+      v21 = [PLResourceModelValidationError unreachableFileThumbnailErrorForKey:self assetID:dCopy];
     }
 
     else
@@ -272,31 +272,31 @@ LABEL_10:
   return v15;
 }
 
-+ (id)fileURLForPayloadKeyData:(unint64_t)a3 assetID:(id)a4
++ (id)fileURLForPayloadKeyData:(unint64_t)data assetID:(id)d
 {
-  v6 = a3;
-  v4 = [a1 _fileURLFromKeyStruct:&v6 assetID:a4];
+  dataCopy = data;
+  v4 = [self _fileURLFromKeyStruct:&dataCopy assetID:d];
 
   return v4;
 }
 
-+ (id)_fileURLFromKeyStruct:(PLPrimaryDataStore_UniformFileStrategy_KeyStruct_V1 *)a3 assetID:(id)a4
++ (id)_fileURLFromKeyStruct:(PLPrimaryDataStore_UniformFileStrategy_KeyStruct_V1 *)struct assetID:(id)d
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [v6 libraryID];
-  v8 = PLDataStoreForClassIDAndLibraryID(0, v7);
+  dCopy = d;
+  libraryID = [dCopy libraryID];
+  v8 = PLDataStoreForClassIDAndLibraryID(0, libraryID);
 
-  v9 = [v8 keyHelperForBundleScope:{objc_msgSend(v6, "bundleScope")}];
-  v10 = [v8 pathManager];
-  v11 = [v10 shouldUseFileIdentifierForBundleScope:{objc_msgSend(v6, "bundleScope")}];
+  v9 = [v8 keyHelperForBundleScope:{objc_msgSend(dCopy, "bundleScope")}];
+  pathManager = [v8 pathManager];
+  v11 = [pathManager shouldUseFileIdentifierForBundleScope:{objc_msgSend(dCopy, "bundleScope")}];
 
   if (v11)
   {
-    v12 = [v6 uuid];
-    [v12 UTF8String];
-    v13 = _fileExtensionFromFileType(((*(a3 + 1) | (*(a3 + 5) << 32)) >> 31), (*(a3 + 1) >> 29) & 3);
-    [v13 UTF8String];
+    uuid = [dCopy uuid];
+    [uuid UTF8String];
+    filename = _fileExtensionFromFileType(((*(struct + 1) | (*(struct + 5) << 32)) >> 31), (*(struct + 1) >> 29) & 3);
+    [filename UTF8String];
     v24 = 0;
     v23 = *(v9 + 40);
     v22 = *(v9 + 24);
@@ -305,25 +305,25 @@ LABEL_10:
 
   else
   {
-    v12 = _fileExtensionFromFileType(((*(a3 + 1) | (*(a3 + 5) << 32)) >> 31), (*(a3 + 1) >> 29) & 3);
-    [v12 UTF8String];
-    v13 = [v6 filename];
-    [v6 directory];
+    uuid = _fileExtensionFromFileType(((*(struct + 1) | (*(struct + 5) << 32)) >> 31), (*(struct + 1) >> 29) & 3);
+    [uuid UTF8String];
+    filename = [dCopy filename];
+    [dCopy directory];
     v15 = v8;
-    v17 = v16 = a1;
+    v17 = v16 = self;
     v24 = *(v9 + 48);
     v22 = *(v9 + 16);
     v23 = *(v9 + 32);
     v14 = PLDCIMURLForResourceProperties();
 
-    a1 = v16;
+    self = v16;
     v8 = v15;
   }
 
   if (v14)
   {
     v25 = 0;
-    v18 = [a1 refreshSandboxExtensionForURL:v14 assetID:v6 error:{&v25, v22, v23, v24}];
+    v18 = [self refreshSandboxExtensionForURL:v14 assetID:dCopy error:{&v25, v22, v23, v24}];
     v19 = v25;
     if ((v18 & 1) == 0)
     {

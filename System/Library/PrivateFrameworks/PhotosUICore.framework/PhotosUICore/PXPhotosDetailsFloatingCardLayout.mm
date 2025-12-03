@@ -1,13 +1,13 @@
 @interface PXPhotosDetailsFloatingCardLayout
 - (BOOL)canDrag;
 - (CGRect)_containerBounds;
-- (PXPhotosDetailsFloatingCardLayout)initWithPhotosDetailsUIViewController:(id)a3 widgetComposition:(id)a4;
+- (PXPhotosDetailsFloatingCardLayout)initWithPhotosDetailsUIViewController:(id)controller widgetComposition:(id)composition;
 - (UIEdgeInsets)insets;
 - (double)initialHeight;
 - (unint64_t)initialPosition;
-- (void)_configureForPhotosDetailsViewController:(id)a3 composition:(id)a4;
-- (void)didUpdateCardHeight:(double)a3;
-- (void)didUpdateCardPosition:(unint64_t)a3;
+- (void)_configureForPhotosDetailsViewController:(id)controller composition:(id)composition;
+- (void)didUpdateCardHeight:(double)height;
+- (void)didUpdateCardPosition:(unint64_t)position;
 @end
 
 @implementation PXPhotosDetailsFloatingCardLayout
@@ -25,37 +25,37 @@
   return result;
 }
 
-- (void)didUpdateCardPosition:(unint64_t)a3
+- (void)didUpdateCardPosition:(unint64_t)position
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v3 = [off_1E7721948 standardUserDefaults];
-  [v3 setInfoPanelLastSnappedPosition:v4];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:position];
+  standardUserDefaults = [off_1E7721948 standardUserDefaults];
+  [standardUserDefaults setInfoPanelLastSnappedPosition:v4];
 }
 
-- (void)didUpdateCardHeight:(double)a3
+- (void)didUpdateCardHeight:(double)height
 {
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v4 = [(PXPhotosDetailsFloatingCardLayout *)self identifiersForHeight];
-  v5 = [v4 objectForKeyedSubscript:v7];
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:height];
+  identifiersForHeight = [(PXPhotosDetailsFloatingCardLayout *)self identifiersForHeight];
+  v5 = [identifiersForHeight objectForKeyedSubscript:v7];
 
   if (v5)
   {
-    v6 = [off_1E7721948 standardUserDefaults];
-    [v6 setInfoPanelLastSnappedWidgetIdentifier:v5];
+    standardUserDefaults = [off_1E7721948 standardUserDefaults];
+    [standardUserDefaults setInfoPanelLastSnappedWidgetIdentifier:v5];
   }
 }
 
-- (void)_configureForPhotosDetailsViewController:(id)a3 composition:(id)a4
+- (void)_configureForPhotosDetailsViewController:(id)controller composition:(id)composition
 {
-  v5 = a3;
-  v6 = a4;
-  [v5 contentEdgeInsets];
-  v7 = [v6 spec];
-  [v7 widgetSpec];
+  controllerCopy = controller;
+  compositionCopy = composition;
+  [controllerCopy contentEdgeInsets];
+  spec = [compositionCopy spec];
+  [spec widgetSpec];
   objc_claimAutoreleasedReturnValue();
 
-  v8 = [v5 view];
-  [v8 bounds];
+  view = [controllerCopy view];
+  [view bounds];
 
   v9[0] = 0;
   v9[1] = v9;
@@ -142,28 +142,28 @@ void __90__PXPhotosDetailsFloatingCardLayout__configureForPhotosDetailsViewContr
 
 - (unint64_t)initialPosition
 {
-  v2 = [off_1E7721948 standardUserDefaults];
-  v3 = [v2 infoPanelLastSnappedPosition];
+  standardUserDefaults = [off_1E7721948 standardUserDefaults];
+  infoPanelLastSnappedPosition = [standardUserDefaults infoPanelLastSnappedPosition];
 
-  if (v3)
+  if (infoPanelLastSnappedPosition)
   {
-    v4 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [infoPanelLastSnappedPosition unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 2;
+    unsignedIntegerValue = 2;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)canDrag
 {
   v2 = +[PXPhotosDetailsSettings sharedInstance];
-  v3 = [v2 draggableInfoPanelEnabled];
+  draggableInfoPanelEnabled = [v2 draggableInfoPanelEnabled];
 
-  return v3;
+  return draggableInfoPanelEnabled;
 }
 
 - (UIEdgeInsets)insets
@@ -181,28 +181,28 @@ void __90__PXPhotosDetailsFloatingCardLayout__configureForPhotosDetailsViewContr
 
 - (double)initialHeight
 {
-  v3 = [(PXPhotosDetailsFloatingCardLayout *)self snappableHeights];
-  v4 = [v3 count];
+  snappableHeights = [(PXPhotosDetailsFloatingCardLayout *)self snappableHeights];
+  v4 = [snappableHeights count];
 
   if (!v4)
   {
     return 0.0;
   }
 
-  v5 = [off_1E7721948 standardUserDefaults];
-  v6 = [v5 infoPanelLastSnappedWidgetIdentifier];
+  standardUserDefaults = [off_1E7721948 standardUserDefaults];
+  infoPanelLastSnappedWidgetIdentifier = [standardUserDefaults infoPanelLastSnappedWidgetIdentifier];
 
-  if (v6 && (-[PXPhotosDetailsFloatingCardLayout heightsForIdentifier](self, "heightsForIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), [v7 objectForKeyedSubscript:v6], v8 = objc_claimAutoreleasedReturnValue(), v7, v8))
+  if (infoPanelLastSnappedWidgetIdentifier && (-[PXPhotosDetailsFloatingCardLayout heightsForIdentifier](self, "heightsForIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), [v7 objectForKeyedSubscript:infoPanelLastSnappedWidgetIdentifier], snappableHeights2 = objc_claimAutoreleasedReturnValue(), v7, snappableHeights2))
   {
-    [v8 floatValue];
+    [snappableHeights2 floatValue];
     v10 = v9;
   }
 
   else
   {
-    v8 = [(PXPhotosDetailsFloatingCardLayout *)self snappableHeights];
-    v11 = [v8 lastObject];
-    [v11 floatValue];
+    snappableHeights2 = [(PXPhotosDetailsFloatingCardLayout *)self snappableHeights];
+    lastObject = [snappableHeights2 lastObject];
+    [lastObject floatValue];
     v10 = v12;
   }
 
@@ -210,25 +210,25 @@ void __90__PXPhotosDetailsFloatingCardLayout__configureForPhotosDetailsViewContr
   return v13;
 }
 
-- (PXPhotosDetailsFloatingCardLayout)initWithPhotosDetailsUIViewController:(id)a3 widgetComposition:(id)a4
+- (PXPhotosDetailsFloatingCardLayout)initWithPhotosDetailsUIViewController:(id)controller widgetComposition:(id)composition
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  compositionCopy = composition;
   v17.receiver = self;
   v17.super_class = PXPhotosDetailsFloatingCardLayout;
   v8 = [(PXPhotosDetailsFloatingCardLayout *)&v17 init];
   if (v8)
   {
-    v9 = [v6 view];
-    v10 = [v9 superview];
-    v11 = [v10 safeAreaLayoutGuide];
-    [v11 layoutFrame];
+    view = [controllerCopy view];
+    superview = [view superview];
+    safeAreaLayoutGuide = [superview safeAreaLayoutGuide];
+    [safeAreaLayoutGuide layoutFrame];
     v8->__containerBounds.origin.x = v12;
     v8->__containerBounds.origin.y = v13;
     v8->__containerBounds.size.width = v14;
     v8->__containerBounds.size.height = v15;
 
-    [(PXPhotosDetailsFloatingCardLayout *)v8 _configureForPhotosDetailsViewController:v6 composition:v7];
+    [(PXPhotosDetailsFloatingCardLayout *)v8 _configureForPhotosDetailsViewController:controllerCopy composition:compositionCopy];
   }
 
   return v8;

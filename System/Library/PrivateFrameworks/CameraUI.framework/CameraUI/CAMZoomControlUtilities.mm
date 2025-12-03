@@ -1,78 +1,78 @@
 @interface CAMZoomControlUtilities
-+ (BOOL)shouldApplyContinuousZoomForMode:(int64_t)a3 device:(int64_t)a4 videoConfiguration:(int64_t)a5 videoStabilizationStrength:(int64_t)a6 frontRearSimultaneousVideoEnabled:(BOOL)a7 zoomFactors:(id *)a8 displayZoomFactors:(id *)a9;
-+ (BOOL)shouldEmulateTripleCameraZoomForMode:(int64_t)a3 device:(int64_t)a4 videoConfiguration:(int64_t)a5 videoStabilizationStrength:(int64_t)a6 frontRearSimultaneousVideoEnabled:(BOOL)a7;
-+ (BOOL)shouldEmulateWideDualCameraZoomForMode:(int64_t)a3 device:(int64_t)a4 videoConfiguration:(int64_t)a5 videoStabilizationStrength:(int64_t)a6 frontRearSimultaneousVideoEnabled:(BOOL)a7;
-+ (double)_baseSingleCameraDeviceForDevice:(int64_t)a3;
-+ (double)_zoomControlRadiusForZoomControl:(id)a3 layoutSide:(int64_t)a4 layoutStyle:(int64_t)a5 width:(double)a6 centerOfZoomControlInContainerBounds:(CGPoint)a7 marginForZoomDiaFromEdge:(double)a8;
-+ (double)appropriateSignificantZoomFactorForDevice:(int64_t)a3 fromDevice:(int64_t)a4 currentZoomFactor:(double)a5 targetZoomFactor:(double)a6 mode:(int64_t)a7;
-+ (double)equivalentZoomFactor:(double)a3 forDevice:(int64_t)a4 fromDevice:(int64_t)a5;
-+ (double)linearMappingForX:(double)a3 x1:(double)a4 y1:(double)a5 x2:(double)a6 y2:(double)a7 clamp:(BOOL)a8;
-+ (double)piecewiseLinearMappingForX:(double)a3 fromXValues:(id)a4 toYValues:(id)a5;
-+ (double)referenceYForControlsAboveShutterButtonFrame:(CGRect)a3 viewportFrame:(CGRect)a4 aspectRatio:(int64_t)a5 shutterTopPadding:(double)a6;
-+ (double)zoomControlDisplayValueForZoomFactor:(double)a3 mode:(int64_t)a4 device:(int64_t)a5 videoConfiguration:(int64_t)a6 videoStabilizationStrength:(int64_t)a7 frontRearSimultaneousVideoEnabled:(BOOL)a8;
-+ (double)zoomScaleFromDevice:(int64_t)a3 toDevice:(int64_t)a4;
-+ (id)exifFocalLengthsByZoomFactorForMode:(int64_t)a3 device:(int64_t)a4 videoConfiguration:(int64_t)a5 videoStabilizationStrength:(int64_t)a6 customLensGroup:(id)a7 isTrueVideo:(BOOL)a8 frontRearSimultaneousVideoEnabled:(BOOL)a9;
-+ (int64_t)deviceForEmulatingZoomFactor:(double)a3 fromDevice:(int64_t)a4 mode:(int64_t)a5 continuousZoomSupported:(BOOL)a6;
-+ (void)layoutForExternalChromeZoomControl:(id)a3 bounds:(CGRect)a4 viewportFrame:(CGRect)a5 referenceYForControlsAboveShutterButton:(double)a6 xOffset:(double)a7;
-+ (void)layoutZoomControl:(CGFloat)a3 forLayoutStyle:(CGFloat)a4 bottomBarAlignmentRect:(CGFloat)a5 bottomBarTransparent:(CGFloat)a6 shutterButtonAlignmentRect:(CGFloat)a7 previewViewAlignmentRect:(CGFloat)a8;
-+ (void)layoutZoomControl:(id)a3 alignmentRect:(CGRect)a4 zoomDialExpansionRegionHeight:(double)a5 zoomButtonMarginFromBottomOfExpansionRegion:(double)a6;
-+ (void)layoutZoomControl:(id)a3 forLayoutStyle:(int64_t)a4 bottomBar:(id)a5 previewView:(id)a6;
-+ (void)layoutZoomControl:(id)a3 layoutSide:(int64_t)a4 forLayoutStyle:(int64_t)a5 width:(double)a6 marginForZoomButtonFromEdge:(double)a7 marginForZoomDialFromEdge:(double)a8 zoomDialContentMaskingHeight:(double)a9 centerOfZoomControlInContainerView:(CGPoint)a10;
++ (BOOL)shouldApplyContinuousZoomForMode:(int64_t)mode device:(int64_t)device videoConfiguration:(int64_t)configuration videoStabilizationStrength:(int64_t)strength frontRearSimultaneousVideoEnabled:(BOOL)enabled zoomFactors:(id *)factors displayZoomFactors:(id *)zoomFactors;
++ (BOOL)shouldEmulateTripleCameraZoomForMode:(int64_t)mode device:(int64_t)device videoConfiguration:(int64_t)configuration videoStabilizationStrength:(int64_t)strength frontRearSimultaneousVideoEnabled:(BOOL)enabled;
++ (BOOL)shouldEmulateWideDualCameraZoomForMode:(int64_t)mode device:(int64_t)device videoConfiguration:(int64_t)configuration videoStabilizationStrength:(int64_t)strength frontRearSimultaneousVideoEnabled:(BOOL)enabled;
++ (double)_baseSingleCameraDeviceForDevice:(int64_t)device;
++ (double)_zoomControlRadiusForZoomControl:(id)control layoutSide:(int64_t)side layoutStyle:(int64_t)style width:(double)width centerOfZoomControlInContainerBounds:(CGPoint)bounds marginForZoomDiaFromEdge:(double)edge;
++ (double)appropriateSignificantZoomFactorForDevice:(int64_t)device fromDevice:(int64_t)fromDevice currentZoomFactor:(double)factor targetZoomFactor:(double)zoomFactor mode:(int64_t)mode;
++ (double)equivalentZoomFactor:(double)factor forDevice:(int64_t)device fromDevice:(int64_t)fromDevice;
++ (double)linearMappingForX:(double)x x1:(double)x1 y1:(double)y1 x2:(double)x2 y2:(double)y2 clamp:(BOOL)clamp;
++ (double)piecewiseLinearMappingForX:(double)x fromXValues:(id)values toYValues:(id)yValues;
++ (double)referenceYForControlsAboveShutterButtonFrame:(CGRect)frame viewportFrame:(CGRect)viewportFrame aspectRatio:(int64_t)ratio shutterTopPadding:(double)padding;
++ (double)zoomControlDisplayValueForZoomFactor:(double)factor mode:(int64_t)mode device:(int64_t)device videoConfiguration:(int64_t)configuration videoStabilizationStrength:(int64_t)strength frontRearSimultaneousVideoEnabled:(BOOL)enabled;
++ (double)zoomScaleFromDevice:(int64_t)device toDevice:(int64_t)toDevice;
++ (id)exifFocalLengthsByZoomFactorForMode:(int64_t)mode device:(int64_t)device videoConfiguration:(int64_t)configuration videoStabilizationStrength:(int64_t)strength customLensGroup:(id)group isTrueVideo:(BOOL)video frontRearSimultaneousVideoEnabled:(BOOL)enabled;
++ (int64_t)deviceForEmulatingZoomFactor:(double)factor fromDevice:(int64_t)device mode:(int64_t)mode continuousZoomSupported:(BOOL)supported;
++ (void)layoutForExternalChromeZoomControl:(id)control bounds:(CGRect)bounds viewportFrame:(CGRect)frame referenceYForControlsAboveShutterButton:(double)button xOffset:(double)offset;
++ (void)layoutZoomControl:(CGFloat)control forLayoutStyle:(CGFloat)style bottomBarAlignmentRect:(CGFloat)rect bottomBarTransparent:(CGFloat)transparent shutterButtonAlignmentRect:(CGFloat)alignmentRect previewViewAlignmentRect:(CGFloat)viewAlignmentRect;
++ (void)layoutZoomControl:(id)control alignmentRect:(CGRect)rect zoomDialExpansionRegionHeight:(double)height zoomButtonMarginFromBottomOfExpansionRegion:(double)region;
++ (void)layoutZoomControl:(id)control forLayoutStyle:(int64_t)style bottomBar:(id)bar previewView:(id)view;
++ (void)layoutZoomControl:(id)control layoutSide:(int64_t)side forLayoutStyle:(int64_t)style width:(double)width marginForZoomButtonFromEdge:(double)edge marginForZoomDialFromEdge:(double)fromEdge zoomDialContentMaskingHeight:(double)height centerOfZoomControlInContainerView:(CGPoint)self0;
 @end
 
 @implementation CAMZoomControlUtilities
 
-+ (void)layoutZoomControl:(id)a3 forLayoutStyle:(int64_t)a4 bottomBar:(id)a5 previewView:(id)a6
++ (void)layoutZoomControl:(id)control forLayoutStyle:(int64_t)style bottomBar:(id)bar previewView:(id)view
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v48 = [v12 superview];
-  v13 = [v11 backgroundStyle] == 1;
-  [v11 layoutIfNeeded];
-  v14 = [v11 shutterButton];
-  [v14 frame];
-  [v14 alignmentRectForFrame:?];
+  viewCopy = view;
+  barCopy = bar;
+  controlCopy = control;
+  superview = [controlCopy superview];
+  v13 = [barCopy backgroundStyle] == 1;
+  [barCopy layoutIfNeeded];
+  shutterButton = [barCopy shutterButton];
+  [shutterButton frame];
+  [shutterButton alignmentRectForFrame:?];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [v14 superview];
-  [v23 convertRect:v48 toView:{v16, v18, v20, v22}];
+  superview2 = [shutterButton superview];
+  [superview2 convertRect:superview toView:{v16, v18, v20, v22}];
   v46 = v25;
   v47 = v24;
   v44 = v27;
   v45 = v26;
 
-  [v11 bounds];
-  [v11 convertRect:v48 toView:?];
+  [barCopy bounds];
+  [barCopy convertRect:superview toView:?];
   v29 = v28;
   v31 = v30;
   v33 = v32;
   v35 = v34;
 
-  [v10 bounds];
-  [v10 convertRect:v48 toView:?];
+  [viewCopy bounds];
+  [viewCopy convertRect:superview toView:?];
   v37 = v36;
   v39 = v38;
   v41 = v40;
   v43 = v42;
 
-  [a1 layoutZoomControl:v12 forLayoutStyle:a4 bottomBarAlignmentRect:v13 bottomBarTransparent:v29 shutterButtonAlignmentRect:v31 previewViewAlignmentRect:{v33, v35, v47, v46, v45, v44, v37, v39, v41, v43}];
+  [self layoutZoomControl:controlCopy forLayoutStyle:style bottomBarAlignmentRect:v13 bottomBarTransparent:v29 shutterButtonAlignmentRect:v31 previewViewAlignmentRect:{v33, v35, v47, v46, v45, v44, v37, v39, v41, v43}];
 }
 
-+ (void)layoutZoomControl:(id)a3 layoutSide:(int64_t)a4 forLayoutStyle:(int64_t)a5 width:(double)a6 marginForZoomButtonFromEdge:(double)a7 marginForZoomDialFromEdge:(double)a8 zoomDialContentMaskingHeight:(double)a9 centerOfZoomControlInContainerView:(CGPoint)a10
++ (void)layoutZoomControl:(id)control layoutSide:(int64_t)side forLayoutStyle:(int64_t)style width:(double)width marginForZoomButtonFromEdge:(double)edge marginForZoomDialFromEdge:(double)fromEdge zoomDialContentMaskingHeight:(double)height centerOfZoomControlInContainerView:(CGPoint)self0
 {
-  y = a10.y;
-  x = a10.x;
-  v19 = a3;
+  y = view.y;
+  x = view.x;
+  controlCopy = control;
   v20 = MEMORY[0x1E695F058];
   v52 = *(MEMORY[0x1E69DDCE0] + 8);
   v53 = *MEMORY[0x1E69DDCE0];
   v50 = *(MEMORY[0x1E69DDCE0] + 24);
   v51 = *(MEMORY[0x1E69DDCE0] + 16);
-  v21 = [v19 superview];
-  [v21 bounds];
+  superview = [controlCopy superview];
+  [superview bounds];
   v45 = v23;
   v47 = v22;
   rect = v24;
@@ -83,46 +83,46 @@
   *&v58.c = v27;
   *&v58.tx = *(MEMORY[0x1E695EFD0] + 32);
   v28 = 0.0;
-  if (a9 != 0.0 && a8 == 0.0 && a4 == 0)
+  if (height != 0.0 && fromEdge == 0.0 && side == 0)
   {
-    v31 = a9;
+    fromEdgeCopy = height;
   }
 
   else
   {
-    v31 = a8;
+    fromEdgeCopy = fromEdge;
   }
 
-  [a1 _zoomControlRadiusForZoomControl:v19 layoutSide:a4 layoutStyle:a5 width:a6 centerOfZoomControlInContainerBounds:x marginForZoomDiaFromEdge:{y, v31, rect, v45, v47}];
+  [self _zoomControlRadiusForZoomControl:controlCopy layoutSide:side layoutStyle:style width:width centerOfZoomControlInContainerBounds:x marginForZoomDiaFromEdge:{y, fromEdgeCopy, rect, v45, v47}];
   v49 = v32;
-  if (a4 == 1)
+  if (side == 1)
   {
     v36 = vabdd_f64(v32, fabs(x));
-    v40 = (a6 - v36) * 0.5;
-    v38 = a8 - v40;
-    v41 = a7;
-    v34 = v26 * 0.5 - a6 * 0.5 + v40;
-    v28 = v36 - (v41 + a8);
+    v40 = (width - v36) * 0.5;
+    v38 = fromEdge - v40;
+    edgeCopy = edge;
+    v34 = v26 * 0.5 - width * 0.5 + v40;
+    v28 = v36 - (edgeCopy + fromEdge);
     CGAffineTransformMakeRotation(&v58, 1.57079633);
-    [v19 setOrientation:4];
+    [controlCopy setOrientation:4];
   }
 
-  else if (a4)
+  else if (side)
   {
     v38 = *v20;
     v34 = v20[1];
-    a6 = v20[2];
+    width = v20[2];
     v36 = v20[3];
   }
 
   else
   {
-    v33 = a7;
+    edgeCopy2 = edge;
     v34 = y - v32;
     v35 = v26 - (y - v32);
-    v36 = v35 - a8;
+    v36 = v35 - fromEdge;
     v37 = v35;
-    v38 = x + a6 * -0.5;
+    v38 = x + width * -0.5;
     v59.origin.y = v46;
     v59.origin.x = v48;
     v59.size.width = recta;
@@ -130,96 +130,96 @@
     MaxY = CGRectGetMaxY(v59);
     v60.origin.x = v38;
     v60.origin.y = v34;
-    v60.size.width = a6;
+    v60.size.width = width;
     v60.size.height = v36;
-    v28 = v36 - (v33 - (MaxY - CGRectGetMaxY(v60)));
-    if (a9 != 0.0)
+    v28 = v36 - (edgeCopy2 - (MaxY - CGRectGetMaxY(v60)));
+    if (height != 0.0)
     {
-      a9 = v37 - a9;
+      height = v37 - height;
     }
   }
 
-  [v19 setContentInsets:{v53, v52, v51, v50}];
-  [v19 frameForAlignmentRect:{v38, v34, a6, v36}];
+  [controlCopy setContentInsets:{v53, v52, v51, v50}];
+  [controlCopy frameForAlignmentRect:{v38, v34, width, v36}];
   v42 = *(v20 + 1);
   v56 = *v20;
   v57 = v42;
   v55 = *MEMORY[0x1E695EFF8];
-  [CAMView convertRect:&v56 toCeiledBounds:&v55 andRoundedCenter:v19 toViewScale:?];
-  [v19 setZoomButtonMaxYWhenContracted:v28];
-  [v19 setZoomDialContentMaskingHeight:a9];
-  [v19 setZoomDialRadius:v49];
-  [v19 setBounds:{v56, v57}];
-  [v19 setCenter:v55];
+  [CAMView convertRect:&v56 toCeiledBounds:&v55 andRoundedCenter:controlCopy toViewScale:?];
+  [controlCopy setZoomButtonMaxYWhenContracted:v28];
+  [controlCopy setZoomDialContentMaskingHeight:height];
+  [controlCopy setZoomDialRadius:v49];
+  [controlCopy setBounds:{v56, v57}];
+  [controlCopy setCenter:v55];
   v54 = v58;
-  [v19 setTransform:&v54];
+  [controlCopy setTransform:&v54];
 }
 
-+ (void)layoutZoomControl:(CGFloat)a3 forLayoutStyle:(CGFloat)a4 bottomBarAlignmentRect:(CGFloat)a5 bottomBarTransparent:(CGFloat)a6 shutterButtonAlignmentRect:(CGFloat)a7 previewViewAlignmentRect:(CGFloat)a8
++ (void)layoutZoomControl:(CGFloat)control forLayoutStyle:(CGFloat)style bottomBarAlignmentRect:(CGFloat)rect bottomBarTransparent:(CGFloat)transparent shutterButtonAlignmentRect:(CGFloat)alignmentRect previewViewAlignmentRect:(CGFloat)viewAlignmentRect
 {
   v38 = a11;
   UIRectGetCenter();
   v36 = v23;
   v37 = v22;
-  v24 = [v38 superview];
-  [v24 bounds];
+  superview = [v38 superview];
+  [superview bounds];
   v26 = v25;
 
-  v27 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v27 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v35 = v28;
 
   if (a13)
   {
-    v40.origin.x = a5;
-    v40.origin.y = a6;
-    v40.size.width = a7;
-    v40.size.height = a8;
+    v40.origin.x = rect;
+    v40.origin.y = transparent;
+    v40.size.width = alignmentRect;
+    v40.size.height = viewAlignmentRect;
     v29 = v26 - CGRectGetMinY(v40) + 31.0;
     v30 = 0.0;
   }
 
   else
   {
-    v41.origin.x = a1;
+    v41.origin.x = self;
     v41.origin.y = a2;
-    v41.size.width = a3;
-    v41.size.height = a4;
+    v41.size.width = control;
+    v41.size.height = style;
     v29 = v26 - CGRectGetMinY(v41) + 21.0;
-    v42.origin.x = a1;
+    v42.origin.x = self;
     v42.origin.y = a2;
-    v42.size.width = a3;
-    v42.size.height = a4;
+    v42.size.width = control;
+    v42.size.height = style;
     v30 = v26 - CGRectGetMinY(v42);
   }
 
   v31 = +[CAMCaptureCapabilities capabilities];
-  v32 = [v31 isSplitScreenSupported];
+  isSplitScreenSupported = [v31 isSplitScreenSupported];
 
-  v33 = fmin(a3, 414.0);
-  if (!v32)
+  controlCopy = fmin(control, 414.0);
+  if (!isSplitScreenSupported)
   {
-    v33 = a3;
+    controlCopy = control;
   }
 
-  [CAMZoomControlUtilities layoutZoomControl:v38 layoutSide:0 forLayoutStyle:a12 width:v33 marginForZoomButtonFromEdge:v29 + -1.0 / v35 marginForZoomDialFromEdge:v30 zoomDialContentMaskingHeight:a4 centerOfZoomControlInContainerView:v37, v36];
+  [CAMZoomControlUtilities layoutZoomControl:v38 layoutSide:0 forLayoutStyle:a12 width:controlCopy marginForZoomButtonFromEdge:v29 + -1.0 / v35 marginForZoomDialFromEdge:v30 zoomDialContentMaskingHeight:style centerOfZoomControlInContainerView:v37, v36];
 }
 
-+ (double)_zoomControlRadiusForZoomControl:(id)a3 layoutSide:(int64_t)a4 layoutStyle:(int64_t)a5 width:(double)a6 centerOfZoomControlInContainerBounds:(CGPoint)a7 marginForZoomDiaFromEdge:(double)a8
++ (double)_zoomControlRadiusForZoomControl:(id)control layoutSide:(int64_t)side layoutStyle:(int64_t)style width:(double)width centerOfZoomControlInContainerBounds:(CGPoint)bounds marginForZoomDiaFromEdge:(double)edge
 {
-  v10 = a3;
-  [v10 zoomDialBorderWidth];
+  controlCopy = control;
+  [controlCopy zoomDialBorderWidth];
   v12 = v11;
-  if (!a4)
+  if (!side)
   {
-    v13 = [v10 superview];
-    [v13 bounds];
+    superview = [controlCopy superview];
+    [superview bounds];
   }
 
-  if (a5 == 3 && v12 > 0.0)
+  if (style == 3 && v12 > 0.0)
   {
-    v14 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v14 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
   }
 
   UIFloorToViewScale();
@@ -228,21 +228,21 @@
   return v16;
 }
 
-+ (void)layoutZoomControl:(id)a3 alignmentRect:(CGRect)a4 zoomDialExpansionRegionHeight:(double)a5 zoomButtonMarginFromBottomOfExpansionRegion:(double)a6
++ (void)layoutZoomControl:(id)control alignmentRect:(CGRect)rect zoomDialExpansionRegionHeight:(double)height zoomButtonMarginFromBottomOfExpansionRegion:(double)region
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
-  [v12 setContentInsets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
-  [v12 frameForAlignmentRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controlCopy = control;
+  [controlCopy setContentInsets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+  [controlCopy frameForAlignmentRect:{x, y, width, height}];
   v13 = *(MEMORY[0x1E695F058] + 16);
   v19 = *MEMORY[0x1E695F058];
   v20 = v13;
   v18 = *MEMORY[0x1E695EFF8];
-  [CAMView convertRect:&v19 toCeiledBounds:&v18 andRoundedCenter:v12 toViewScale:?];
-  if (a5 == 0.0)
+  [CAMView convertRect:&v19 toCeiledBounds:&v18 andRoundedCenter:controlCopy toViewScale:?];
+  if (height == 0.0)
   {
     v15 = 1.0;
   }
@@ -253,31 +253,31 @@
     v15 = v14;
   }
 
-  [v12 setZoomButtonMaxYWhenContracted:a5 - a6];
-  [v12 setZoomDialContentMaskingHeight:a5];
-  [v12 setZoomDialRadius:v15];
-  [v12 setBounds:{v19, v20}];
-  [v12 setCenter:v18];
+  [controlCopy setZoomButtonMaxYWhenContracted:height - region];
+  [controlCopy setZoomDialContentMaskingHeight:height];
+  [controlCopy setZoomDialRadius:v15];
+  [controlCopy setBounds:{v19, v20}];
+  [controlCopy setCenter:v18];
   v16 = *(MEMORY[0x1E695EFD0] + 16);
   v17[0] = *MEMORY[0x1E695EFD0];
   v17[1] = v16;
   v17[2] = *(MEMORY[0x1E695EFD0] + 32);
-  [v12 setTransform:v17];
+  [controlCopy setTransform:v17];
 }
 
-+ (int64_t)deviceForEmulatingZoomFactor:(double)a3 fromDevice:(int64_t)a4 mode:(int64_t)a5 continuousZoomSupported:(BOOL)a6
++ (int64_t)deviceForEmulatingZoomFactor:(double)factor fromDevice:(int64_t)device mode:(int64_t)mode continuousZoomSupported:(BOOL)supported
 {
-  v6 = a6;
+  supportedCopy = supported;
   v10 = +[CAMCaptureCapabilities capabilities];
   v11 = v10;
-  if ((a4 - 1) > 0xA)
+  if ((device - 1) > 0xA)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = qword_1A3A64CD8[a4 - 1];
+    v12 = qword_1A3A64CD8[device - 1];
   }
 
   [v10 superWideToWideZoomFactorForDevicePosition:v12];
@@ -285,53 +285,53 @@
   [v11 wideToTelephotoZoomFactorForDevicePosition:v12];
   v16 = v15;
   v17 = 1.0;
-  if (!v6)
+  if (!supportedCopy)
   {
-    v18 = [v11 significantZoomFactorsForMode:a5 device:6];
-    v19 = [v18 lastObject];
-    [v19 floatValue];
+    v18 = [v11 significantZoomFactorsForMode:mode device:6];
+    lastObject = [v18 lastObject];
+    [lastObject floatValue];
     v17 = v20 / v14;
   }
 
   v21 = v14 * v16;
-  if (a4 == 6 && v21 <= a3)
+  if (device == 6 && v21 <= factor)
   {
-    v22 = 4;
+    deviceCopy = 4;
     v23 = v11;
-    v24 = a5;
+    modeCopy2 = mode;
     v25 = 4;
   }
 
   else
   {
-    if (a4 != 4 || v17 <= a3)
+    if (device != 4 || v17 <= factor)
     {
-      if (a4 == 5 && v21 <= a3 && ([v11 isBackTelephotoSupported] & 1) != 0)
+      if (device == 5 && v21 <= factor && ([v11 isBackTelephotoSupported] & 1) != 0)
       {
         goto LABEL_22;
       }
 
-      if (a4 == 5 && v14 <= a3)
+      if (device == 5 && v14 <= factor)
       {
-        v22 = 2;
+        deviceCopy = 2;
         goto LABEL_36;
       }
 
-      if (a4 == 10 && v14 <= a3)
+      if (device == 10 && v14 <= factor)
       {
-        v22 = 8;
+        deviceCopy = 8;
         goto LABEL_36;
       }
 
-      if (a4 == 2 && v16 <= a3 && ([v11 isBackTelephotoSupported] & 1) != 0)
+      if (device == 2 && v16 <= factor && ([v11 isBackTelephotoSupported] & 1) != 0)
       {
 LABEL_22:
-        v22 = 3;
+        deviceCopy = 3;
         goto LABEL_36;
       }
 
-      v26 = a3 < 1.0;
-      if (a3 < 1.0 && a4 == 2 && v6)
+      v26 = factor < 1.0;
+      if (factor < 1.0 && device == 2 && supportedCopy)
       {
         if ([v11 isBackSuperWideSupported])
         {
@@ -341,7 +341,7 @@ LABEL_22:
 
       else
       {
-        if (a3 >= 1.0 || a4 != 8 || !v6)
+        if (factor >= 1.0 || device != 8 || !supportedCopy)
         {
           goto LABEL_14;
         }
@@ -356,36 +356,36 @@ LABEL_22:
       goto LABEL_14;
     }
 
-    v22 = 6;
+    deviceCopy = 6;
     v23 = v11;
-    v24 = a5;
+    modeCopy2 = mode;
     v25 = 6;
   }
 
-  if ([v23 isSupportedMode:v24 withDevice:v25])
+  if ([v23 isSupportedMode:modeCopy2 withDevice:v25])
   {
     goto LABEL_36;
   }
 
-  v26 = a3 < 1.0;
+  v26 = factor < 1.0;
 LABEL_14:
   v27 = 1.0 / v14;
-  if (a4 == 2 && v27 >= a3 && !v6)
+  if (device == 2 && v27 >= factor && !supportedCopy)
   {
 LABEL_17:
     if ([v11 isBackSuperWideSupported])
     {
 LABEL_18:
-      v22 = 5;
+      deviceCopy = 5;
       goto LABEL_36;
     }
 
     goto LABEL_33;
   }
 
-  if (a4 != 8 || v27 < a3 || v6)
+  if (device != 8 || v27 < factor || supportedCopy)
   {
-    if (a4 == 3 && 1.0 / v16 > a3)
+    if (device == 3 && 1.0 / v16 > factor)
     {
       goto LABEL_17;
     }
@@ -394,37 +394,37 @@ LABEL_18:
   else if ([v11 isFrontSuperWideSupported])
   {
 LABEL_27:
-    v22 = 10;
+    deviceCopy = 10;
     goto LABEL_36;
   }
 
 LABEL_33:
-  if (v26 && a4 == 3)
+  if (v26 && device == 3)
   {
-    v22 = 2;
+    deviceCopy = 2;
   }
 
   else
   {
-    v22 = a4;
+    deviceCopy = device;
   }
 
 LABEL_36:
 
-  return v22;
+  return deviceCopy;
 }
 
-+ (double)_baseSingleCameraDeviceForDevice:(int64_t)a3
++ (double)_baseSingleCameraDeviceForDevice:(int64_t)device
 {
-  v3 = 2;
-  if (a3 != 4)
+  deviceCopy = 2;
+  if (device != 4)
   {
-    v3 = a3;
+    deviceCopy = device;
   }
 
-  if ((a3 - 6) >= 2)
+  if ((device - 6) >= 2)
   {
-    return v3;
+    return deviceCopy;
   }
 
   else
@@ -433,40 +433,40 @@ LABEL_36:
   }
 }
 
-+ (double)equivalentZoomFactor:(double)a3 forDevice:(int64_t)a4 fromDevice:(int64_t)a5
++ (double)equivalentZoomFactor:(double)factor forDevice:(int64_t)device fromDevice:(int64_t)fromDevice
 {
-  if (a5 != a4)
+  if (fromDevice != device)
   {
-    [a1 zoomScaleFromDevice:a5 toDevice:a4];
-    return v6 * a3;
+    [self zoomScaleFromDevice:fromDevice toDevice:device];
+    return v6 * factor;
   }
 
-  return a3;
+  return factor;
 }
 
-+ (double)zoomScaleFromDevice:(int64_t)a3 toDevice:(int64_t)a4
++ (double)zoomScaleFromDevice:(int64_t)device toDevice:(int64_t)toDevice
 {
   v28 = *MEMORY[0x1E69E9840];
   v7 = +[CAMCaptureCapabilities capabilities];
   v8 = v7;
-  if ((a3 - 1) > 0xA)
+  if ((device - 1) > 0xA)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = qword_1A3A64CD8[a3 - 1];
+    v9 = qword_1A3A64CD8[device - 1];
   }
 
-  if ((a4 - 1) > 0xA)
+  if ((toDevice - 1) > 0xA)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = qword_1A3A64CD8[a4 - 1];
+    v10 = qword_1A3A64CD8[toDevice - 1];
   }
 
   if (v9 != v10)
@@ -474,24 +474,24 @@ LABEL_36:
     v20 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3 > 0xB)
+      if (device > 0xB)
       {
         v21 = 0;
       }
 
       else
       {
-        v21 = off_1E76F7D58[a3];
+        v21 = off_1E76F7D58[device];
       }
 
-      if (a4 > 0xB)
+      if (toDevice > 0xB)
       {
         v22 = 0;
       }
 
       else
       {
-        v22 = off_1E76F7D58[a4];
+        v22 = off_1E76F7D58[toDevice];
       }
 
       v24 = 138543618;
@@ -509,9 +509,9 @@ LABEL_36:
   [v8 wideToTelephotoZoomFactorForDevicePosition:v9];
   v14 = v13;
   v15 = v12 * v13;
-  [a1 _baseSingleCameraDeviceForDevice:a3];
+  [self _baseSingleCameraDeviceForDevice:device];
   v17 = v16;
-  [a1 _baseSingleCameraDeviceForDevice:a4];
+  [self _baseSingleCameraDeviceForDevice:toDevice];
   v19 = v18;
   if (v17 > 4)
   {
@@ -602,30 +602,30 @@ LABEL_32:
   return v12;
 }
 
-+ (BOOL)shouldEmulateTripleCameraZoomForMode:(int64_t)a3 device:(int64_t)a4 videoConfiguration:(int64_t)a5 videoStabilizationStrength:(int64_t)a6 frontRearSimultaneousVideoEnabled:(BOOL)a7
++ (BOOL)shouldEmulateTripleCameraZoomForMode:(int64_t)mode device:(int64_t)device videoConfiguration:(int64_t)configuration videoStabilizationStrength:(int64_t)strength frontRearSimultaneousVideoEnabled:(BOOL)enabled
 {
-  v7 = a7;
-  if ((a4 - 1) > 0xA)
+  enabledCopy = enabled;
+  if ((device - 1) > 0xA)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = qword_1A3A64CD8[a4 - 1];
+    v12 = qword_1A3A64CD8[device - 1];
   }
 
   v13 = +[CAMCaptureCapabilities capabilities];
-  if (([v13 isTripleCameraSupportedForMode:a3 devicePosition:v12 videoConfiguration:a5 videoStabilizationStrength:a6 frontRearSimultaneousVideoEnabled:v7] & 1) != 0 || !objc_msgSend(v13, "isZoomAllowedForMode:device:videoConfiguration:videoStabilizationStrength:", a3, objc_msgSend(v13, "resolvedDeviceForDesiredDevice:mode:videoConfiguration:videoStabilizationStrength:frontRearSimultaneousVideoEnabled:", a4, a3, a5, a6, v7), a5, a6))
+  if (([v13 isTripleCameraSupportedForMode:mode devicePosition:v12 videoConfiguration:configuration videoStabilizationStrength:strength frontRearSimultaneousVideoEnabled:enabledCopy] & 1) != 0 || !objc_msgSend(v13, "isZoomAllowedForMode:device:videoConfiguration:videoStabilizationStrength:", mode, objc_msgSend(v13, "resolvedDeviceForDesiredDevice:mode:videoConfiguration:videoStabilizationStrength:frontRearSimultaneousVideoEnabled:", device, mode, configuration, strength, enabledCopy), configuration, strength))
   {
     LOBYTE(v17) = 0;
   }
 
   else
   {
-    v14 = [v13 isSuperWideSupportedForMode:a3 devicePosition:v12 videoConfiguration:a5];
-    v15 = [v13 isWideSupportedForMode:a3 devicePosition:v12 videoConfiguration:a5];
-    v16 = [v13 isTelephotoSupportedForMode:a3 devicePosition:v12 videoConfiguration:a5];
+    v14 = [v13 isSuperWideSupportedForMode:mode devicePosition:v12 videoConfiguration:configuration];
+    v15 = [v13 isWideSupportedForMode:mode devicePosition:v12 videoConfiguration:configuration];
+    v16 = [v13 isTelephotoSupportedForMode:mode devicePosition:v12 videoConfiguration:configuration];
     if (v14 && v15 && (v16 & 1) != 0)
     {
       LOBYTE(v17) = 1;
@@ -633,18 +633,18 @@ LABEL_32:
 
     else
     {
-      v19 = [v13 isDualSupportedForMode:a3 devicePosition:v12 videoConfiguration:a5 videoStabilizationStrength:a6];
-      v17 = v19 & [v13 isWideDualSupportedForMode:a3 devicePosition:v12 videoConfiguration:a5 videoStabilizationStrength:a6];
+      v19 = [v13 isDualSupportedForMode:mode devicePosition:v12 videoConfiguration:configuration videoStabilizationStrength:strength];
+      v17 = v19 & [v13 isWideDualSupportedForMode:mode devicePosition:v12 videoConfiguration:configuration videoStabilizationStrength:strength];
     }
   }
 
   return v17;
 }
 
-+ (BOOL)shouldEmulateWideDualCameraZoomForMode:(int64_t)a3 device:(int64_t)a4 videoConfiguration:(int64_t)a5 videoStabilizationStrength:(int64_t)a6 frontRearSimultaneousVideoEnabled:(BOOL)a7
++ (BOOL)shouldEmulateWideDualCameraZoomForMode:(int64_t)mode device:(int64_t)device videoConfiguration:(int64_t)configuration videoStabilizationStrength:(int64_t)strength frontRearSimultaneousVideoEnabled:(BOOL)enabled
 {
-  v7 = a7;
-  if ((a4 - 8) < 3 || a4 == 11 || a4 == 1)
+  enabledCopy = enabled;
+  if ((device - 8) < 3 || device == 11 || device == 1)
   {
     v13 = 0;
     v14 = 1;
@@ -657,19 +657,19 @@ LABEL_32:
   }
 
   v15 = +[CAMCaptureCapabilities capabilities];
-  v16 = [v15 resolvedDeviceForDesiredDevice:a4 mode:a3 videoConfiguration:a5 videoStabilizationStrength:a6 frontRearSimultaneousVideoEnabled:v7];
-  if (([a1 shouldEmulateTripleCameraZoomForMode:a3 device:v16 videoConfiguration:a5 videoStabilizationStrength:a6 frontRearSimultaneousVideoEnabled:v7] & 1) != 0 || (objc_msgSend(v15, "isTripleCameraSupportedForMode:devicePosition:videoConfiguration:videoStabilizationStrength:frontRearSimultaneousVideoEnabled:", a3, v14, a5, a6, v7) & 1) != 0 || (objc_msgSend(v15, "isWideDualSupportedForMode:devicePosition:videoConfiguration:videoStabilizationStrength:", a3, v14, a5, a6) & 1) != 0 || !objc_msgSend(v15, "isZoomAllowedForMode:device:videoConfiguration:videoStabilizationStrength:", a3, v16, a5, a6))
+  v16 = [v15 resolvedDeviceForDesiredDevice:device mode:mode videoConfiguration:configuration videoStabilizationStrength:strength frontRearSimultaneousVideoEnabled:enabledCopy];
+  if (([self shouldEmulateTripleCameraZoomForMode:mode device:v16 videoConfiguration:configuration videoStabilizationStrength:strength frontRearSimultaneousVideoEnabled:enabledCopy] & 1) != 0 || (objc_msgSend(v15, "isTripleCameraSupportedForMode:devicePosition:videoConfiguration:videoStabilizationStrength:frontRearSimultaneousVideoEnabled:", mode, v14, configuration, strength, enabledCopy) & 1) != 0 || (objc_msgSend(v15, "isWideDualSupportedForMode:devicePosition:videoConfiguration:videoStabilizationStrength:", mode, v14, configuration, strength) & 1) != 0 || !objc_msgSend(v15, "isZoomAllowedForMode:device:videoConfiguration:videoStabilizationStrength:", mode, v16, configuration, strength))
   {
     goto LABEL_11;
   }
 
-  v17 = [v15 isSuperWideSupportedForMode:a3 devicePosition:v14 videoConfiguration:a5];
-  v18 = [v15 isWideSupportedForMode:a3 devicePosition:v14 videoConfiguration:a5];
+  v17 = [v15 isSuperWideSupportedForMode:mode devicePosition:v14 videoConfiguration:configuration];
+  v18 = [v15 isWideSupportedForMode:mode devicePosition:v14 videoConfiguration:configuration];
   v19 = v18;
   if ((v13 & 1) == 0)
   {
     v22 = +[CAMCaptureCapabilities capabilities];
-    v23 = [v22 frontZoomBehaviorForCaptureMode:a3 videoConfiguration:a5];
+    v23 = [v22 frontZoomBehaviorForCaptureMode:mode videoConfiguration:configuration];
 
     if ((((v23 - 3) < 0xFFFFFFFFFFFFFFFELL) & v17 & v19) == 0)
     {
@@ -693,14 +693,14 @@ LABEL_12:
   return v20;
 }
 
-+ (BOOL)shouldApplyContinuousZoomForMode:(int64_t)a3 device:(int64_t)a4 videoConfiguration:(int64_t)a5 videoStabilizationStrength:(int64_t)a6 frontRearSimultaneousVideoEnabled:(BOOL)a7 zoomFactors:(id *)a8 displayZoomFactors:(id *)a9
++ (BOOL)shouldApplyContinuousZoomForMode:(int64_t)mode device:(int64_t)device videoConfiguration:(int64_t)configuration videoStabilizationStrength:(int64_t)strength frontRearSimultaneousVideoEnabled:(BOOL)enabled zoomFactors:(id *)factors displayZoomFactors:(id *)zoomFactors
 {
-  v10 = a7;
+  enabledCopy = enabled;
   v186[4] = *MEMORY[0x1E69E9840];
   v15 = +[CAMCaptureCapabilities capabilities];
   v16 = v15;
-  v160 = a8;
-  if ((a4 - 8) < 3 || a4 == 11 || a4 == 1)
+  factorsCopy = factors;
+  if ((device - 8) < 3 || device == 11 || device == 1)
   {
     v17 = 0;
     v18 = 1;
@@ -712,8 +712,8 @@ LABEL_12:
     v17 = 1;
   }
 
-  v19 = [v15 resolvedDeviceForDesiredDevice:a4 mode:a3 videoConfiguration:a5 videoStabilizationStrength:a6 frontRearSimultaneousVideoEnabled:v10];
-  v20 = [v16 isZoomAllowedForMode:a3 device:v19 videoConfiguration:a5 videoStabilizationStrength:a6];
+  v19 = [v15 resolvedDeviceForDesiredDevice:device mode:mode videoConfiguration:configuration videoStabilizationStrength:strength frontRearSimultaneousVideoEnabled:enabledCopy];
+  v20 = [v16 isZoomAllowedForMode:mode device:v19 videoConfiguration:configuration videoStabilizationStrength:strength];
   v21 = 8u >> v19;
   if (v19 > 0xA)
   {
@@ -775,12 +775,12 @@ LABEL_12:
 
   v157 = v23;
   v158 = v26;
-  v161 = [v16 isQuadraWideZoomButtonSupportedForMode:a3 devicePosition:v18 videoConfiguration:a5];
+  v161 = [v16 isQuadraWideZoomButtonSupportedForMode:mode devicePosition:v18 videoConfiguration:configuration];
   [v16 quadraWideDisplayZoomFactor];
   v28 = v27;
   [v16 quadraWideRelativeZoomFactor];
   v30 = v29;
-  v162 = [v16 isQuadraTeleZoomButtonSupportedForMode:a3 devicePosition:v18 videoConfiguration:a5];
+  v162 = [v16 isQuadraTeleZoomButtonSupportedForMode:mode devicePosition:v18 videoConfiguration:configuration];
   [v16 quadraTeleDisplayZoomFactor];
   v32 = v31;
   [v16 quadraTeleRelativeZoomFactor];
@@ -796,10 +796,10 @@ LABEL_12:
   }
 
   v40 = v39;
-  [v16 maximumZoomFactorForMode:a3 device:v19 videoConfiguration:a5 videoStabilizationStrength:a6];
+  [v16 maximumZoomFactorForMode:mode device:v19 videoConfiguration:configuration videoStabilizationStrength:strength];
   v42 = v41;
-  v43 = [CAMZoomControlUtilities shouldEmulateTripleCameraZoomForMode:a3 device:v19 videoConfiguration:a5 videoStabilizationStrength:a6 frontRearSimultaneousVideoEnabled:v10];
-  v44 = [CAMZoomControlUtilities shouldEmulateWideDualCameraZoomForMode:a3 device:v19 videoConfiguration:a5 videoStabilizationStrength:a6 frontRearSimultaneousVideoEnabled:v10];
+  v43 = [CAMZoomControlUtilities shouldEmulateTripleCameraZoomForMode:mode device:v19 videoConfiguration:configuration videoStabilizationStrength:strength frontRearSimultaneousVideoEnabled:enabledCopy];
+  v44 = [CAMZoomControlUtilities shouldEmulateWideDualCameraZoomForMode:mode device:v19 videoConfiguration:configuration videoStabilizationStrength:strength frontRearSimultaneousVideoEnabled:enabledCopy];
   if (v25)
   {
     v150 = v30;
@@ -810,7 +810,7 @@ LABEL_12:
     v48 = v47;
     v49 = v42;
     v50 = v42 / v45;
-    if ([v16 isDualDeviceDisparitySupportedForMode:a3 devicePosition:v18])
+    if ([v16 isDualDeviceDisparitySupportedForMode:mode devicePosition:v18])
     {
       v51 = [MEMORY[0x1E696AD98] numberWithDouble:v38];
       v184[0] = v51;
@@ -819,7 +819,7 @@ LABEL_12:
       v53 = [MEMORY[0x1E696AD98] numberWithDouble:v50];
       v184[2] = v53;
       v54 = 3;
-      v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:v184 count:3];
+      v140 = [MEMORY[0x1E695DEC8] arrayWithObjects:v184 count:3];
 
       v56 = [MEMORY[0x1E696AD98] numberWithDouble:v46];
       v183[0] = v56;
@@ -852,7 +852,7 @@ LABEL_62:
         v28 = v152;
         v32 = v155;
 LABEL_63:
-        v89 = [v55 mutableCopy];
+        v89 = [v140 mutableCopy];
         v90 = [v59 mutableCopy];
         v91 = [MEMORY[0x1E696AD98] numberWithDouble:v28];
         [v89 insertObject:v91 atIndex:v60];
@@ -861,7 +861,7 @@ LABEL_63:
         [v90 insertObject:v92 atIndex:v60];
 
         v59 = v90;
-        v55 = v89;
+        v140 = v89;
         goto LABEL_65;
       }
 
@@ -885,7 +885,7 @@ LABEL_65:
     v85 = [MEMORY[0x1E696AD98] numberWithDouble:v50];
     v186[3] = v85;
     v54 = 4;
-    v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:v186 count:4];
+    v140 = [MEMORY[0x1E695DEC8] arrayWithObjects:v186 count:4];
 
     v185[0] = &unk_1F16C89A8;
     v86 = [MEMORY[0x1E696AD98] numberWithDouble:v46];
@@ -930,9 +930,9 @@ LABEL_61:
     v62 = v61;
     [v16 wideToTelephotoZoomFactorForDevicePosition:v18];
     v64 = v63;
-    [v16 maximumZoomFactorForMode:a3 device:7 videoConfiguration:0 videoStabilizationStrength:a6 shouldResolveDevice:0];
+    [v16 maximumZoomFactorForMode:mode device:7 videoConfiguration:0 videoStabilizationStrength:strength shouldResolveDevice:0];
     v66 = v65;
-    if (a3 == 1)
+    if (mode == 1)
     {
       v67 = 1;
     }
@@ -944,7 +944,7 @@ LABEL_61:
 
     if ((v67 & 1) == 0)
     {
-      [v16 maximumZoomFactorForMode:1 device:7 videoConfiguration:0 videoStabilizationStrength:a6 shouldResolveDevice:0];
+      [v16 maximumZoomFactorForMode:1 device:7 videoConfiguration:0 videoStabilizationStrength:strength shouldResolveDevice:0];
       if (v68 == v66)
       {
         if ([v16 isQuadraTeleZoomButtonSupportedForMode:1 devicePosition:v18 videoConfiguration:0])
@@ -981,7 +981,7 @@ LABEL_61:
     v182[2] = v75;
     v76 = [MEMORY[0x1E696AD98] numberWithDouble:v66 / v62];
     v182[3] = v76;
-    v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:v182 count:4];
+    v140 = [MEMORY[0x1E695DEC8] arrayWithObjects:v182 count:4];
 
     v77 = [MEMORY[0x1E696AD98] numberWithDouble:v72];
     v181[0] = v77;
@@ -1030,7 +1030,7 @@ LABEL_61:
     v101 = v32;
     [v16 superWideToWideZoomFactorForDevicePosition:v18];
     v103 = v102;
-    [v16 maximumZoomFactorForMode:a3 device:6 videoConfiguration:0 videoStabilizationStrength:a6 shouldResolveDevice:0];
+    [v16 maximumZoomFactorForMode:mode device:6 videoConfiguration:0 videoStabilizationStrength:strength shouldResolveDevice:0];
     v105 = v104;
     v106 = v104 / v103;
     if (v158)
@@ -1049,15 +1049,15 @@ LABEL_61:
     v180[1] = v109;
     v110 = [MEMORY[0x1E696AD98] numberWithDouble:v106];
     v180[2] = v110;
-    v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:v180 count:3];
+    v140 = [MEMORY[0x1E695DEC8] arrayWithObjects:v180 count:3];
 
     v111 = [MEMORY[0x1E696AD98] numberWithDouble:v107];
     v179[0] = v111;
     v112 = v103 * v107;
     v113 = [MEMORY[0x1E696AD98] numberWithDouble:v112];
     v179[1] = v113;
-    v114 = [MEMORY[0x1E696AD98] numberWithDouble:v105 * v107];
-    v179[2] = v114;
+    v107 = [MEMORY[0x1E696AD98] numberWithDouble:v105 * v107];
+    v179[2] = v107;
     v59 = [MEMORY[0x1E695DEC8] arrayWithObjects:v179 count:3];
 
     if ((v161 & 1) == 0)
@@ -1086,8 +1086,8 @@ LABEL_61:
 
     v59 = [MEMORY[0x1E696AD98] numberWithDouble:v38];
     v177[0] = v59;
-    v55 = [MEMORY[0x1E696AD98] numberWithDouble:v40];
-    v177[1] = v55;
+    v140 = [MEMORY[0x1E696AD98] numberWithDouble:v40];
+    v177[1] = v140;
     v99 = [MEMORY[0x1E696AD98] numberWithDouble:v42];
     v177[2] = v99;
     v117 = MEMORY[0x1E695DEC8];
@@ -1104,13 +1104,13 @@ LABEL_76:
     v124 = v123;
     v125 = v42;
     v126 = v42 / v123;
-    if ([v16 isDualDeviceDisparitySupportedForMode:a3 devicePosition:v18])
+    if ([v16 isDualDeviceDisparitySupportedForMode:mode devicePosition:v18])
     {
       v127 = [MEMORY[0x1E696AD98] numberWithDouble:v38];
       v174[0] = v127;
       v128 = [MEMORY[0x1E696AD98] numberWithDouble:v126];
       v174[1] = v128;
-      v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:v174 count:2];
+      v140 = [MEMORY[0x1E695DEC8] arrayWithObjects:v174 count:2];
 
       v129 = [MEMORY[0x1E696AD98] numberWithDouble:v124];
       v173[0] = v129;
@@ -1128,7 +1128,7 @@ LABEL_76:
       v176[1] = v137;
       v138 = [MEMORY[0x1E696AD98] numberWithDouble:v126];
       v176[2] = v138;
-      v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:v176 count:3];
+      v140 = [MEMORY[0x1E695DEC8] arrayWithObjects:v176 count:3];
 
       v175[0] = &unk_1F16C89A8;
       v129 = [MEMORY[0x1E696AD98] numberWithDouble:v124];
@@ -1163,13 +1163,13 @@ LABEL_76:
 
       v59 = [MEMORY[0x1E696AD98] numberWithDouble:v36];
       v169[0] = v59;
-      v55 = [MEMORY[0x1E696AD98] numberWithDouble:v42 / v140];
-      v169[1] = v55;
+      v140 = [MEMORY[0x1E696AD98] numberWithDouble:v42 / v140];
+      v169[1] = v140;
       v96 = [MEMORY[0x1E695DEC8] arrayWithObjects:v169 count:2];
       goto LABEL_78;
     }
 
-    if (a3 != 6 && (v158 & 1) != 0)
+    if (mode != 6 && (v158 & 1) != 0)
     {
       if ((v161 & 1) == 0 && [v16 frontSuperWideZoomControlSupported] && (objc_msgSend(v16, "isBackDualSupported") & 1) == 0 && (objc_msgSend(v16, "isBackWideDualSupported") & 1) == 0 && (objc_msgSend(v16, "isBackTripleCameraSupported") & 1) == 0)
       {
@@ -1181,8 +1181,8 @@ LABEL_76:
 
         v59 = [MEMORY[0x1E696AD98] numberWithDouble:v38];
         v167[0] = v59;
-        v55 = [MEMORY[0x1E696AD98] numberWithDouble:v38 + v38];
-        v167[1] = v55;
+        v140 = [MEMORY[0x1E696AD98] numberWithDouble:v38 + v38];
+        v167[1] = v140;
         v99 = [MEMORY[0x1E696AD98] numberWithDouble:v42];
         v167[2] = v99;
         v117 = MEMORY[0x1E695DEC8];
@@ -1199,7 +1199,7 @@ LABEL_76:
       v165[0] = v143;
       v144 = [MEMORY[0x1E696AD98] numberWithDouble:v42];
       v165[1] = v144;
-      v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:v165 count:2];
+      v140 = [MEMORY[0x1E695DEC8] arrayWithObjects:v165 count:2];
 
       if ((v161 & 1) == 0)
       {
@@ -1213,7 +1213,7 @@ LABEL_108:
       goto LABEL_63;
     }
 
-    if (a3 == 6 && (v158 & 1) != 0 && [v16 continuousZoomSupportedForPortraitMode])
+    if (mode == 6 && (v158 & 1) != 0 && [v16 continuousZoomSupportedForPortraitMode])
     {
       v164[0] = &unk_1F16C89A8;
       v145 = [MEMORY[0x1E696AD98] numberWithDouble:v42];
@@ -1224,7 +1224,7 @@ LABEL_108:
       v163[0] = v146;
       v147 = [MEMORY[0x1E696AD98] numberWithDouble:v42];
       v163[1] = v147;
-      v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:v163 count:2];
+      v140 = [MEMORY[0x1E695DEC8] arrayWithObjects:v163 count:2];
 
       if (!v161)
       {
@@ -1236,7 +1236,7 @@ LABEL_108:
 
 LABEL_109:
     v119 = 0;
-    v55 = 0;
+    v140 = 0;
     v59 = 0;
     goto LABEL_110;
   }
@@ -1250,9 +1250,9 @@ LABEL_109:
 
   v134 = [MEMORY[0x1E696AD98] numberWithDouble:v40];
   v171[0] = v134;
-  v135 = [MEMORY[0x1E696AD98] numberWithDouble:v42 * v132];
-  v171[1] = v135;
-  v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:v171 count:2];
+  v132 = [MEMORY[0x1E696AD98] numberWithDouble:v42 * v132];
+  v171[1] = v132;
+  v140 = [MEMORY[0x1E695DEC8] arrayWithObjects:v171 count:2];
 
   if ((v162 & 1) == 0)
   {
@@ -1261,13 +1261,13 @@ LABEL_109:
 
   v54 = 1;
 LABEL_66:
-  v93 = [v59 lastObject];
-  [v93 doubleValue];
+  lastObject = [v59 lastObject];
+  [lastObject doubleValue];
   v95 = v94;
 
   if (v34 < v95)
   {
-    v96 = [v55 mutableCopy];
+    v96 = [v140 mutableCopy];
     v97 = [v59 mutableCopy];
     v98 = [MEMORY[0x1E696AD98] numberWithDouble:v32];
     [v96 insertObject:v98 atIndex:v54];
@@ -1278,23 +1278,23 @@ LABEL_77:
 
 LABEL_78:
     v59 = v97;
-    v55 = v96;
+    v140 = v96;
   }
 
 LABEL_79:
   v119 = 0;
-  if (v59 && v55)
+  if (v59 && v140)
   {
-    if (v160)
+    if (factorsCopy)
     {
       v120 = v59;
-      *v160 = v59;
+      *factorsCopy = v59;
     }
 
-    if (a9)
+    if (zoomFactors)
     {
-      v121 = v55;
-      *a9 = v55;
+      v121 = v140;
+      *zoomFactors = v140;
     }
 
     v119 = 1;
@@ -1305,24 +1305,24 @@ LABEL_110:
   return v119;
 }
 
-+ (double)zoomControlDisplayValueForZoomFactor:(double)a3 mode:(int64_t)a4 device:(int64_t)a5 videoConfiguration:(int64_t)a6 videoStabilizationStrength:(int64_t)a7 frontRearSimultaneousVideoEnabled:(BOOL)a8
++ (double)zoomControlDisplayValueForZoomFactor:(double)factor mode:(int64_t)mode device:(int64_t)device videoConfiguration:(int64_t)configuration videoStabilizationStrength:(int64_t)strength frontRearSimultaneousVideoEnabled:(BOOL)enabled
 {
-  v8 = a8;
+  enabledCopy = enabled;
   v15 = +[CAMCaptureCapabilities capabilities];
   v16 = v15;
-  if ((a5 - 1) > 0xA)
+  if ((device - 1) > 0xA)
   {
     v17 = 0;
   }
 
   else
   {
-    v17 = qword_1A3A64CD8[a5 - 1];
+    v17 = qword_1A3A64CD8[device - 1];
   }
 
-  v18 = [v15 isZoomAllowedForMode:a4 device:a5 videoConfiguration:a6 videoStabilizationStrength:a7];
-  v19 = [v16 shouldAllowCameraToggleForMode:a4 devicePosition:v17 videoConfiguration:a6 videoStabilizationStrength:a7 frontRearSimultaneousVideoEnabled:v8];
-  v20 = [v16 resolvedDeviceForDesiredDevice:a5 mode:a4 videoConfiguration:a6 videoStabilizationStrength:a7 frontRearSimultaneousVideoEnabled:v8];
+  v18 = [v15 isZoomAllowedForMode:mode device:device videoConfiguration:configuration videoStabilizationStrength:strength];
+  v19 = [v16 shouldAllowCameraToggleForMode:mode devicePosition:v17 videoConfiguration:configuration videoStabilizationStrength:strength frontRearSimultaneousVideoEnabled:enabledCopy];
+  v20 = [v16 resolvedDeviceForDesiredDevice:device mode:mode videoConfiguration:configuration videoStabilizationStrength:strength frontRearSimultaneousVideoEnabled:enabledCopy];
   [v16 superWideDisplayZoomFactor];
   v22 = v21;
   [v16 wideDisplayZoomFactor];
@@ -1332,13 +1332,13 @@ LABEL_110:
   {
     v47 = 0;
     v48 = 0;
-    v26 = [a1 shouldApplyContinuousZoomForMode:a4 device:v20 videoConfiguration:a6 videoStabilizationStrength:a7 frontRearSimultaneousVideoEnabled:v8 zoomFactors:&v48 displayZoomFactors:&v47];
+    v26 = [self shouldApplyContinuousZoomForMode:mode device:v20 videoConfiguration:configuration videoStabilizationStrength:strength frontRearSimultaneousVideoEnabled:enabledCopy zoomFactors:&v48 displayZoomFactors:&v47];
     v27 = v48;
     v28 = v47;
     if (v26)
     {
-      [a1 piecewiseLinearMappingForX:v27 fromXValues:v28 toYValues:a3];
-      a3 = v29;
+      [self piecewiseLinearMappingForX:v27 fromXValues:v28 toYValues:factor];
+      factor = v29;
     }
 
     goto LABEL_14;
@@ -1347,18 +1347,18 @@ LABEL_110:
   if (!v19)
   {
 LABEL_14:
-    v30 = a3;
+    factorCopy = factor;
     goto LABEL_15;
   }
 
-  v30 = v25;
-  v31 = [v16 isDualDeviceDisparitySupportedForMode:a4 devicePosition:v17];
-  v32 = [v16 isQuadraWideZoomButtonSupportedForMode:a4 devicePosition:v17 videoConfiguration:a6];
+  factorCopy = v25;
+  v31 = [v16 isDualDeviceDisparitySupportedForMode:mode devicePosition:v17];
+  v32 = [v16 isQuadraWideZoomButtonSupportedForMode:mode devicePosition:v17 videoConfiguration:configuration];
   [v16 quadraWideDisplayZoomFactor];
   v34 = v33;
   [v16 quadraWideRelativeZoomFactor];
   v36 = v35;
-  v37 = [v16 isQuadraTeleZoomButtonSupportedForMode:a4 devicePosition:v17 videoConfiguration:a6];
+  v37 = [v16 isQuadraTeleZoomButtonSupportedForMode:mode devicePosition:v17 videoConfiguration:configuration];
   [v16 quadraTeleDisplayZoomFactor];
   v39 = v38;
   [v16 quadraTeleRelativeZoomFactor];
@@ -1368,13 +1368,13 @@ LABEL_14:
     {
       if (v20 != 9)
       {
-        v30 = v22;
+        factorCopy = v22;
         if (v20 == 10)
         {
           goto LABEL_15;
         }
 
-        v30 = 0.0;
+        factorCopy = 0.0;
         if (v20 != 11)
         {
           goto LABEL_15;
@@ -1388,31 +1388,31 @@ LABEL_14:
     {
       if (v20 == 6)
       {
-        v30 = v22;
+        factorCopy = v22;
         if (!v31)
         {
           goto LABEL_15;
         }
 
         [v16 superWideToWideZoomFactorForDevicePosition:0];
-        v42 = v36 * v45 == a3;
+        v42 = v36 * v45 == factor;
         goto LABEL_27;
       }
 
       if (v20 != 7)
       {
 LABEL_26:
-        v42 = v36 == a3;
+        v42 = v36 == factor;
 LABEL_27:
         v43 = v42;
         if ((v32 & v43) != 0)
         {
-          v30 = v34;
+          factorCopy = v34;
         }
 
         else
         {
-          v30 = v24;
+          factorCopy = v24;
         }
 
         goto LABEL_15;
@@ -1426,7 +1426,7 @@ LABEL_27:
   {
     if (v20 >= 2)
     {
-      v30 = 0.0;
+      factorCopy = 0.0;
       if (v20 != 2)
       {
         goto LABEL_15;
@@ -1442,15 +1442,15 @@ LABEL_33:
       [CAMZoomControlUtilities zoomControlDisplayValueForZoomFactor:a2 mode:v20 device:v44 videoConfiguration:? videoStabilizationStrength:? frontRearSimultaneousVideoEnabled:?];
     }
 
-    v30 = v24;
+    factorCopy = v24;
     goto LABEL_15;
   }
 
   if (v20 == 3)
   {
-    if ((v37 & (v40 == a3)) != 0)
+    if ((v37 & (v40 == factor)) != 0)
     {
-      v30 = v39;
+      factorCopy = v39;
     }
   }
 
@@ -1458,29 +1458,29 @@ LABEL_33:
   {
     if (!v31)
     {
-      v30 = v24;
+      factorCopy = v24;
     }
   }
 
   else
   {
-    v30 = v22;
+    factorCopy = v22;
   }
 
 LABEL_15:
 
-  return v30;
+  return factorCopy;
 }
 
-+ (double)piecewiseLinearMappingForX:(double)a3 fromXValues:(id)a4 toYValues:(id)a5
++ (double)piecewiseLinearMappingForX:(double)x fromXValues:(id)values toYValues:(id)yValues
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 count];
+  valuesCopy = values;
+  yValuesCopy = yValues;
+  v9 = [valuesCopy count];
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
-  v21 = a3;
+  xCopy = x;
   if (v9)
   {
     v10 = v9;
@@ -1488,19 +1488,19 @@ LABEL_15:
     v12[1] = 3221225472;
     v12[2] = __76__CAMZoomControlUtilities_piecewiseLinearMappingForX_fromXValues_toYValues___block_invoke;
     v12[3] = &unk_1E76F7D10;
-    v16 = a3;
-    v13 = v8;
+    xCopy2 = x;
+    v13 = yValuesCopy;
     v15 = &v18;
-    v14 = v7;
+    v14 = valuesCopy;
     v17 = v10;
     [v14 enumerateObjectsUsingBlock:v12];
 
-    a3 = v19[3];
+    x = v19[3];
   }
 
   _Block_object_dispose(&v18, 8);
 
-  return a3;
+  return x;
 }
 
 void __76__CAMZoomControlUtilities_piecewiseLinearMappingForX_fromXValues_toYValues___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -1539,71 +1539,71 @@ LABEL_6:
   }
 }
 
-+ (double)linearMappingForX:(double)a3 x1:(double)a4 y1:(double)a5 x2:(double)a6 y2:(double)a7 clamp:(BOOL)a8
++ (double)linearMappingForX:(double)x x1:(double)x1 y1:(double)y1 x2:(double)x2 y2:(double)y2 clamp:(BOOL)clamp
 {
-  if (a3 == a4)
+  if (x == x1)
   {
-    return a5;
+    return y1;
   }
 
-  if (a3 == a6)
+  if (x == x2)
   {
-    return a7;
+    return y2;
   }
 
-  if (a6 == a4)
+  if (x2 == x1)
   {
-    return a5;
+    return y1;
   }
 
-  if (!a8)
+  if (!clamp)
   {
-    return a5 + (a3 - a4) / (a6 - a4) * (a7 - a5);
+    return y1 + (x - x1) / (x2 - x1) * (y2 - y1);
   }
 
-  if (a4 <= a6)
+  if (x1 <= x2)
   {
-    v9 = a7;
-    v10 = a6;
-    a7 = a5;
-    a6 = a4;
+    y1Copy = y2;
+    x1Copy = x2;
+    y2 = y1;
+    x2 = x1;
   }
 
   else
   {
-    v9 = a5;
-    v10 = a4;
+    y1Copy = y1;
+    x1Copy = x1;
   }
 
-  if (a6 >= a3)
+  if (x2 >= x)
   {
-    return a7;
+    return y2;
   }
 
-  if (v10 <= a3)
+  if (x1Copy <= x)
   {
-    return v9;
+    return y1Copy;
   }
 
-  return a7 + (a3 - a6) / (v10 - a6) * (v9 - a7);
+  return y2 + (x - x2) / (x1Copy - x2) * (y1Copy - y2);
 }
 
-+ (double)appropriateSignificantZoomFactorForDevice:(int64_t)a3 fromDevice:(int64_t)a4 currentZoomFactor:(double)a5 targetZoomFactor:(double)a6 mode:(int64_t)a7
++ (double)appropriateSignificantZoomFactorForDevice:(int64_t)device fromDevice:(int64_t)fromDevice currentZoomFactor:(double)factor targetZoomFactor:(double)zoomFactor mode:(int64_t)mode
 {
   v13 = +[CAMCaptureCapabilities capabilities];
-  v14 = [v13 significantZoomFactorsForMode:a7 device:a3];
+  v14 = [v13 significantZoomFactorsForMode:mode device:device];
 
   if ([v14 count] == 2)
   {
-    [a1 zoomScaleFromDevice:a4 toDevice:a3];
-    v16 = v15 * a5;
-    v17 = v15 * a6;
-    v18 = [v14 firstObject];
-    [v18 doubleValue];
+    [self zoomScaleFromDevice:fromDevice toDevice:device];
+    v16 = v15 * factor;
+    v17 = v15 * zoomFactor;
+    firstObject = [v14 firstObject];
+    [firstObject doubleValue];
     v20 = v19;
 
-    v21 = [v14 lastObject];
-    [v21 doubleValue];
+    lastObject = [v14 lastObject];
+    [lastObject doubleValue];
     v23 = v22;
 
     v24 = v16 < v23 || v17 > v20;
@@ -1615,7 +1615,7 @@ LABEL_6:
       if (v26)
       {
         v27 = (v20 + v23) * 0.5;
-        if (v17 <= v27 && v16 >= v23 && v20 == 1.0 && a3 == a4)
+        if (v17 <= v27 && v16 >= v23 && v20 == 1.0 && device == fromDevice)
         {
           v25 = v20;
         }
@@ -1625,7 +1625,7 @@ LABEL_6:
           v25 = v16;
         }
 
-        if (a3 != a4)
+        if (device != fromDevice)
         {
           if (v16 < v27)
           {
@@ -1652,32 +1652,32 @@ LABEL_6:
       }
     }
 
-    v32 = [v14 firstObject];
-    [v32 doubleValue];
+    firstObject2 = [v14 firstObject];
+    [firstObject2 doubleValue];
     v25 = v33;
   }
 
   return v25;
 }
 
-+ (id)exifFocalLengthsByZoomFactorForMode:(int64_t)a3 device:(int64_t)a4 videoConfiguration:(int64_t)a5 videoStabilizationStrength:(int64_t)a6 customLensGroup:(id)a7 isTrueVideo:(BOOL)a8 frontRearSimultaneousVideoEnabled:(BOOL)a9
++ (id)exifFocalLengthsByZoomFactorForMode:(int64_t)mode device:(int64_t)device videoConfiguration:(int64_t)configuration videoStabilizationStrength:(int64_t)strength customLensGroup:(id)group isTrueVideo:(BOOL)video frontRearSimultaneousVideoEnabled:(BOOL)enabled
 {
-  v9 = a8;
+  videoCopy = video;
   v48 = *MEMORY[0x1E69E9840];
-  v14 = a7;
+  groupCopy = group;
   v15 = +[CAMCaptureCapabilities capabilities];
-  if ([v15 isCustomLensSupportedForMode:a3 device:a4 isTrueVideo:v9])
+  if ([v15 isCustomLensSupportedForMode:mode device:device isTrueVideo:videoCopy])
   {
     v44 = 0;
     v45 = 0;
-    v16 = [CAMZoomControlUtilities shouldApplyContinuousZoomForMode:a3 device:a4 videoConfiguration:a5 videoStabilizationStrength:a6 frontRearSimultaneousVideoEnabled:a9 zoomFactors:&v45 displayZoomFactors:&v44];
+    v16 = [CAMZoomControlUtilities shouldApplyContinuousZoomForMode:mode device:device videoConfiguration:configuration videoStabilizationStrength:strength frontRearSimultaneousVideoEnabled:enabled zoomFactors:&v45 displayZoomFactors:&v44];
     v17 = v45;
     v18 = v44;
     v34 = v17;
     if (v16)
     {
       v33 = v18;
-      v19 = [CAMZoomPoint zoomPointsWithFactors:v17 displayZoomFactors:v18 customLensGroup:v14];
+      v19 = [CAMZoomPoint zoomPointsWithFactors:v17 displayZoomFactors:v18 customLensGroup:groupCopy];
       v40 = 0;
       v41 = &v40;
       v42 = 0x2020000000;
@@ -1695,12 +1695,12 @@ LABEL_6:
       [v19 enumerateObjectsUsingBlock:v35];
       if (v41[3] == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v20 = 0;
+        dictionary = 0;
       }
 
       else
       {
-        v20 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v21 = v41[3];
         v22 = v37[3];
         v23 = [v19 count];
@@ -1745,7 +1745,7 @@ LABEL_6:
           {
             v31 = [MEMORY[0x1E696AD98] numberWithDouble:?];
             v32 = [MEMORY[0x1E696AD98] numberWithDouble:v29];
-            [v20 setObject:v31 forKeyedSubscript:v32];
+            [dictionary setObject:v31 forKeyedSubscript:v32];
           }
         }
       }
@@ -1758,16 +1758,16 @@ LABEL_6:
 
     else
     {
-      v20 = 0;
+      dictionary = 0;
     }
   }
 
   else
   {
-    v20 = 0;
+    dictionary = 0;
   }
 
-  return v20;
+  return dictionary;
 }
 
 uint64_t __178__CAMZoomControlUtilities_exifFocalLengthsByZoomFactorForMode_device_videoConfiguration_videoStabilizationStrength_customLensGroup_isTrueVideo_frontRearSimultaneousVideoEnabled___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -1792,51 +1792,51 @@ uint64_t __178__CAMZoomControlUtilities_exifFocalLengthsByZoomFactorForMode_devi
   return result;
 }
 
-+ (void)layoutForExternalChromeZoomControl:(id)a3 bounds:(CGRect)a4 viewportFrame:(CGRect)a5 referenceYForControlsAboveShutterButton:(double)a6 xOffset:(double)a7
++ (void)layoutForExternalChromeZoomControl:(id)control bounds:(CGRect)bounds viewportFrame:(CGRect)frame referenceYForControlsAboveShutterButton:(double)button xOffset:(double)offset
 {
-  if (a3)
+  if (control)
   {
-    height = a5.size.height;
-    width = a5.size.width;
-    y = a5.origin.y;
-    x = a5.origin.x;
-    v11 = a4.size.width;
-    v21 = a3;
+    height = frame.size.height;
+    width = frame.size.width;
+    y = frame.origin.y;
+    x = frame.origin.x;
+    v11 = bounds.size.width;
+    controlCopy = control;
     v23.origin.x = x;
     v23.origin.y = y;
     v23.size.width = width;
     v23.size.height = height;
-    v12 = fmax(CGRectGetMaxY(v23) - a6, 0.0);
+    v12 = fmax(CGRectGetMaxY(v23) - button, 0.0);
     UIRoundToViewScale();
     v14 = v13;
     v24.size.height = v13 + v12;
-    v24.origin.y = a6 - v13;
+    v24.origin.y = button - v13;
     v24.origin.x = 0.0;
     v24.size.width = v11;
-    v25 = CGRectOffset(v24, a7, 0.0);
+    v25 = CGRectOffset(v24, offset, 0.0);
     v15 = v25.origin.x;
     v16 = v25.origin.y;
     v17 = v25.size.width;
     v18 = v25.size.height;
     v19 = *&CAMZoomButtonPlatterMargin + 16.0;
-    [v21 buttonPlatterVerticalOffset];
-    [CAMZoomControlUtilities layoutZoomControl:v21 alignmentRect:v15 zoomDialExpansionRegionHeight:v16 zoomButtonMarginFromBottomOfExpansionRegion:v17, v18, v14, v19 + v20];
+    [controlCopy buttonPlatterVerticalOffset];
+    [CAMZoomControlUtilities layoutZoomControl:controlCopy alignmentRect:v15 zoomDialExpansionRegionHeight:v16 zoomButtonMarginFromBottomOfExpansionRegion:v17, v18, v14, v19 + v20];
   }
 }
 
-+ (double)referenceYForControlsAboveShutterButtonFrame:(CGRect)a3 viewportFrame:(CGRect)a4 aspectRatio:(int64_t)a5 shutterTopPadding:(double)a6
++ (double)referenceYForControlsAboveShutterButtonFrame:(CGRect)frame viewportFrame:(CGRect)viewportFrame aspectRatio:(int64_t)ratio shutterTopPadding:(double)padding
 {
-  if (a5 > 6)
+  if (ratio > 6)
   {
     return 0.0;
   }
 
-  if (((1 << a5) & 0x17) != 0)
+  if (((1 << ratio) & 0x17) != 0)
   {
-    return a3.origin.y - a6;
+    return frame.origin.y - padding;
   }
 
-  return a4.origin.y + a4.size.height;
+  return viewportFrame.origin.y + viewportFrame.size.height;
 }
 
 + (void)zoomControlDisplayValueForZoomFactor:(NSObject *)a3 mode:device:videoConfiguration:videoStabilizationStrength:frontRearSimultaneousVideoEnabled:.cold.1(const char *a1, unint64_t a2, NSObject *a3)

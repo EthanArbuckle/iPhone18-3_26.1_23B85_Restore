@@ -1,15 +1,15 @@
 @interface FixedSizeBadgeView
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 @end
 
 @implementation FixedSizeBadgeView
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = self;
-  v8 = sub_1E40C2018(a4, width, height);
+  height = subviews.height;
+  width = subviews.width;
+  selfCopy = self;
+  v8 = sub_1E40C2018(only, width, height);
   v10 = v9;
 
   v11 = v8;

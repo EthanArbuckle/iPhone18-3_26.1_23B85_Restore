@@ -1,18 +1,18 @@
 @interface CallReportingViewModel
-- (BOOL)allUnknownContactInRecentCall:(id)a3;
-- (BOOL)atLeastOneUnknownCallerInRecentCall:(id)a3;
-- (BOOL)isBlockedWithContacts:(id)a3;
-- (BOOL)isInitiatorUnknownForCall:(id)a3;
-- (BOOL)shouldShowContactBlockReportButtonForCall:(id)a3;
-- (BOOL)shouldShowReportActionForCall:(id)a3;
+- (BOOL)allUnknownContactInRecentCall:(id)call;
+- (BOOL)atLeastOneUnknownCallerInRecentCall:(id)call;
+- (BOOL)isBlockedWithContacts:(id)contacts;
+- (BOOL)isInitiatorUnknownForCall:(id)call;
+- (BOOL)shouldShowContactBlockReportButtonForCall:(id)call;
+- (BOOL)shouldShowReportActionForCall:(id)call;
 - (UIImage)reportActionImage;
 - (_TtC11MobilePhone22CallReportingViewModel)init;
-- (id)getCarrierNameOfCallForCall:(id)a3;
-- (id)reportActionTitleOfFlow:(int64_t)a3;
-- (int64_t)reportingFaceTimeFlowFor:(id)a3;
-- (int64_t)reportingFlowForCall:(id)a3;
-- (void)blockInitiatorWithSpamCall:(id)a3;
-- (void)reportWithCall:(id)a3;
+- (id)getCarrierNameOfCallForCall:(id)call;
+- (id)reportActionTitleOfFlow:(int64_t)flow;
+- (int64_t)reportingFaceTimeFlowFor:(id)for;
+- (int64_t)reportingFlowForCall:(id)call;
+- (void)blockInitiatorWithSpamCall:(id)call;
+- (void)reportWithCall:(id)call;
 @end
 
 @implementation CallReportingViewModel
@@ -35,55 +35,55 @@
   return v8;
 }
 
-- (void)blockInitiatorWithSpamCall:(id)a3
+- (void)blockInitiatorWithSpamCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
-  specialized CallReportingViewModel.blockInitiator(spamCall:)(v4);
+  callCopy = call;
+  selfCopy = self;
+  specialized CallReportingViewModel.blockInitiator(spamCall:)(callCopy);
 }
 
-- (BOOL)isBlockedWithContacts:(id)a3
+- (BOOL)isBlockedWithContacts:(id)contacts
 {
   type metadata accessor for NSMutableArray(0, &lazy cache variable for type metadata for CNContact);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   v6 = specialized CallReportingViewModel.isBlocked(contacts:)(v4);
 
   return v6;
 }
 
-- (void)reportWithCall:(id)a3
+- (void)reportWithCall:(id)call
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC11MobilePhone22CallReportingViewModel_spamReportManager);
-  v5 = a3;
-  v7 = self;
+  callCopy = call;
+  selfCopy = self;
   v6 = v4;
-  FaceTimeSpamReportManager.reportSpam(call:)(v5);
+  FaceTimeSpamReportManager.reportSpam(call:)(callCopy);
 }
 
-- (int64_t)reportingFlowForCall:(id)a3
+- (int64_t)reportingFlowForCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
-  v6 = CallReportingViewModel.reportingFlow(for:)(v4);
+  callCopy = call;
+  selfCopy = self;
+  v6 = CallReportingViewModel.reportingFlow(for:)(callCopy);
 
   return v6;
 }
 
-- (int64_t)reportingFaceTimeFlowFor:(id)a3
+- (int64_t)reportingFaceTimeFlowFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = CallReportingViewModel.reportingFaceTimeFlow(for:)(v4);
+  forCopy = for;
+  selfCopy = self;
+  v6 = CallReportingViewModel.reportingFaceTimeFlow(for:)(forCopy);
 
   return v6;
 }
 
-- (id)reportActionTitleOfFlow:(int64_t)a3
+- (id)reportActionTitleOfFlow:(int64_t)flow
 {
-  if (a3 >= 7)
+  if (flow >= 7)
   {
-    v5 = self;
+    selfCopy = self;
     result = _diagnoseUnexpectedEnumCaseValue<A, B>(type:rawValue:)();
     __break(1u);
   }
@@ -107,42 +107,42 @@
   return v3;
 }
 
-- (BOOL)allUnknownContactInRecentCall:(id)a3
+- (BOOL)allUnknownContactInRecentCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
-  v6 = CallReportingViewModel.contactByHandles(in:)(v4);
+  callCopy = call;
+  selfCopy = self;
+  v6 = CallReportingViewModel.contactByHandles(in:)(callCopy);
 
   v7 = v6[2];
 
   return v7 == 0;
 }
 
-- (BOOL)atLeastOneUnknownCallerInRecentCall:(id)a3
+- (BOOL)atLeastOneUnknownCallerInRecentCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = CallReportingViewModel.atLeastOneUnknownCaller(in:)(v4);
+  callCopy = call;
+  selfCopy = self;
+  LOBYTE(self) = CallReportingViewModel.atLeastOneUnknownCaller(in:)(callCopy);
 
   return self & 1;
 }
 
-- (BOOL)isInitiatorUnknownForCall:(id)a3
+- (BOOL)isInitiatorUnknownForCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = CallReportingViewModel.isInitiatorUnknown(in:)(v4);
+  callCopy = call;
+  selfCopy = self;
+  LOBYTE(self) = CallReportingViewModel.isInitiatorUnknown(in:)(callCopy);
 
   return self & 1;
 }
 
-- (id)getCarrierNameOfCallForCall:(id)a3
+- (id)getCarrierNameOfCallForCall:(id)call
 {
   v9[3] = type metadata accessor for NSMutableArray(0, &lazy cache variable for type metadata for CHRecentCall);
   v9[4] = &protocol witness table for CHRecentCall;
-  v9[0] = a3;
-  v5 = a3;
-  v6 = self;
+  v9[0] = call;
+  callCopy = call;
+  selfCopy = self;
 
   dispatch thunk of CarrierVoiceSpamReportHelper.reportSpamAlertControllerCarrierName(for:)();
 
@@ -152,22 +152,22 @@
   return v7;
 }
 
-- (BOOL)shouldShowReportActionForCall:(id)a3
+- (BOOL)shouldShowReportActionForCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = CallReportingViewModel.shouldShowReportAction(for:)(v4);
+  callCopy = call;
+  selfCopy = self;
+  LOBYTE(self) = CallReportingViewModel.shouldShowReportAction(for:)(callCopy);
 
   return self & 1;
 }
 
-- (BOOL)shouldShowContactBlockReportButtonForCall:(id)a3
+- (BOOL)shouldShowContactBlockReportButtonForCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
-  if ([v4 isComingFaceTimeCall])
+  callCopy = call;
+  selfCopy = self;
+  if ([callCopy isComingFaceTimeCall])
   {
-    v6 = CallReportingViewModel.atLeastOneUnknownCaller(in:)(v4);
+    v6 = CallReportingViewModel.atLeastOneUnknownCaller(in:)(callCopy);
   }
 
   else

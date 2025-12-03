@@ -1,18 +1,18 @@
 @interface CAMDailySettingsUseCaseEvent
 + (PPSTelemetryIdentifier)getCameraCaptureStreamID;
-+ (void)registerForBackgroundTaskWithQueue:(id)a3;
++ (void)registerForBackgroundTaskWithQueue:(id)queue;
 - (BOOL)isMetricSubmissionsCompleted;
-- (CAMDailySettingsUseCaseEvent)initWithQueue:(id)a3 andMetricsSubmittedBlock:(id)a4;
+- (CAMDailySettingsUseCaseEvent)initWithQueue:(id)queue andMetricsSubmittedBlock:(id)block;
 - (void)dealloc;
-- (void)submitCameraCapturePreferencesWithCompletion:(id)a3;
+- (void)submitCameraCapturePreferencesWithCompletion:(id)completion;
 - (void)submitMetrics;
 @end
 
 @implementation CAMDailySettingsUseCaseEvent
 
-+ (void)registerForBackgroundTaskWithQueue:(id)a3
++ (void)registerForBackgroundTaskWithQueue:(id)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   v4 = os_log_create("com.apple.camera", "Nebula");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -26,23 +26,23 @@
   v8[1] = 3221225472;
   v8[2] = sub_10000101C;
   v8[3] = &unk_100008288;
-  v9 = v3;
-  v7 = v3;
+  v9 = queueCopy;
+  v7 = queueCopy;
   [v5 registerForTaskWithIdentifier:v6 usingQueue:v7 launchHandler:v8];
 }
 
-- (CAMDailySettingsUseCaseEvent)initWithQueue:(id)a3 andMetricsSubmittedBlock:(id)a4
+- (CAMDailySettingsUseCaseEvent)initWithQueue:(id)queue andMetricsSubmittedBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  blockCopy = block;
   v16.receiver = self;
   v16.super_class = CAMDailySettingsUseCaseEvent;
   v9 = [(CAMDailySettingsUseCaseEvent *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->__metricQueue, a3);
-    v11 = objc_retainBlock(v8);
+    objc_storeStrong(&v9->__metricQueue, queue);
+    v11 = objc_retainBlock(blockCopy);
     completion = v10->__completion;
     v10->__completion = v11;
 
@@ -68,14 +68,14 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134349312;
-    v7 = [(CAMDailySettingsUseCaseEvent *)self _numberOfMetricsSubmitted];
+    _numberOfMetricsSubmitted = [(CAMDailySettingsUseCaseEvent *)self _numberOfMetricsSubmitted];
     v8 = 2050;
-    v9 = [(CAMDailySettingsUseCaseEvent *)self _numberMetricSubmisions];
+    _numberMetricSubmisions = [(CAMDailySettingsUseCaseEvent *)self _numberMetricSubmisions];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "DailySettingsUseCaseEvent isMetricSubmissionsCompleted _numberOfMetricsSubmitted %{public}lu _numberMetricSubmisions %{public}lu", &v6, 0x16u);
   }
 
-  v4 = [(CAMDailySettingsUseCaseEvent *)self _numberOfMetricsSubmitted];
-  return v4 == [(CAMDailySettingsUseCaseEvent *)self _numberMetricSubmisions];
+  _numberOfMetricsSubmitted2 = [(CAMDailySettingsUseCaseEvent *)self _numberOfMetricsSubmitted];
+  return _numberOfMetricsSubmitted2 == [(CAMDailySettingsUseCaseEvent *)self _numberMetricSubmisions];
 }
 
 - (void)submitMetrics
@@ -93,9 +93,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)submitCameraCapturePreferencesWithCompletion:(id)a3
+- (void)submitCameraCapturePreferencesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MGGetBoolAnswer();
   v6 = os_log_create("com.apple.camera", "Nebula");
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -113,15 +113,15 @@
     v16 = buf;
     v17 = 0x2020000000;
     v18 = 0;
-    v8 = [(CAMDailySettingsUseCaseEvent *)self _appConfigurationController];
+    _appConfigurationController = [(CAMDailySettingsUseCaseEvent *)self _appConfigurationController];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100001994;
     v11[3] = &unk_100008300;
     objc_copyWeak(&v14, &location);
     v13 = buf;
-    v12 = v4;
-    v9 = [v8 addObserverForAssociatedAppUpdatesUsingBlock:v11];
+    v12 = completionCopy;
+    v9 = [_appConfigurationController addObserverForAssociatedAppUpdatesUsingBlock:v11];
     associatedAppObserver = self->__associatedAppObserver;
     self->__associatedAppObserver = v9;
 
@@ -138,7 +138,7 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "DailySettingsUseCaseEvent submitCameraCapturePreferencesWithCompletion not supported", buf, 2u);
     }
 
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 

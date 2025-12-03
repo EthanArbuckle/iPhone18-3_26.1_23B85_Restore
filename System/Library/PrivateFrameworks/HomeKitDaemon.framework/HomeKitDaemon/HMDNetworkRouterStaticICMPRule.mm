@@ -1,58 +1,58 @@
 @interface HMDNetworkRouterStaticICMPRule
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-+ (id)ruleFromFirewallRuleLAN:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
++ (id)ruleFromFirewallRuleLAN:(id)n;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDNetworkRouterStaticICMPRule)init;
-- (HMDNetworkRouterStaticICMPRule)initWithDirection:(id)a3 lanIdentifierList:(id)a4 destinationIPAddress:(id)a5 icmpTypeList:(id)a6;
+- (HMDNetworkRouterStaticICMPRule)initWithDirection:(id)direction lanIdentifierList:(id)list destinationIPAddress:(id)address icmpTypeList:(id)typeList;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
-- (void)addTo:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
+- (void)addTo:(id)to;
 @end
 
 @implementation HMDNetworkRouterStaticICMPRule
 
-- (void)addTo:(id)a3
+- (void)addTo:(id)to
 {
-  v7 = a3;
-  v4 = [v7 staticICMPRules];
-  v5 = v4;
-  if (v4)
+  toCopy = to;
+  staticICMPRules = [toCopy staticICMPRules];
+  v5 = staticICMPRules;
+  if (staticICMPRules)
   {
-    [v4 addObject:self];
+    [staticICMPRules addObject:self];
   }
 
   else
   {
     v6 = [MEMORY[0x277CBEB18] arrayWithObject:self];
-    [v7 setStaticICMPRules:v6];
+    [toCopy setStaticICMPRules:v6];
   }
 }
 
-+ (id)ruleFromFirewallRuleLAN:(id)a3
++ (id)ruleFromFirewallRuleLAN:(id)n
 {
-  v3 = a3;
-  if ([v3 transportProtocol] == 2)
+  nCopy = n;
+  if ([nCopy transportProtocol] == 2)
   {
-    v4 = +[HMDNetworkRouterRuleDirection directionFromLANDirection:](HMDNetworkRouterRuleDirection, "directionFromLANDirection:", [v3 direction]);
-    v5 = createIdentifierListFromLANRule(v3);
-    v6 = [v3 ipAddress];
+    v4 = +[HMDNetworkRouterRuleDirection directionFromLANDirection:](HMDNetworkRouterRuleDirection, "directionFromLANDirection:", [nCopy direction]);
+    v5 = createIdentifierListFromLANRule(nCopy);
+    ipAddress = [nCopy ipAddress];
 
-    if (v6 && ([v3 ipAddress], v7 = objc_claimAutoreleasedReturnValue(), +[HMDNetworkRouterIPAddress ipAddressFromRuleAddress:allowWildcard:](HMDNetworkRouterIPAddress, "ipAddressFromRuleAddress:allowWildcard:", v7, 0), v6 = objc_claimAutoreleasedReturnValue(), v7, !v6))
+    if (ipAddress && ([nCopy ipAddress], v7 = objc_claimAutoreleasedReturnValue(), +[HMDNetworkRouterIPAddress ipAddressFromRuleAddress:allowWildcard:](HMDNetworkRouterIPAddress, "ipAddressFromRuleAddress:allowWildcard:", v7, 0), ipAddress = objc_claimAutoreleasedReturnValue(), v7, !ipAddress))
     {
       v10 = 0;
     }
 
     else
     {
-      v8 = [v3 icmpTypes];
-      v9 = [HMDNetworkRouterICMPTypeList typeListFromICMPTypes:v8];
+      icmpTypes = [nCopy icmpTypes];
+      v9 = [HMDNetworkRouterICMPTypeList typeListFromICMPTypes:icmpTypes];
 
       v10 = 0;
       if (v4 && v5 && v9)
       {
-        v10 = [[HMDNetworkRouterStaticICMPRule alloc] initWithDirection:v4 lanIdentifierList:v5 destinationIPAddress:v6 icmpTypeList:v9];
+        v10 = [[HMDNetworkRouterStaticICMPRule alloc] initWithDirection:v4 lanIdentifierList:v5 destinationIPAddress:ipAddress icmpTypeList:v9];
       }
     }
   }
@@ -68,19 +68,19 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDNetworkRouterStaticICMPRule *)self direction];
-  v5 = [(HMDNetworkRouterStaticICMPRule *)self lanIdentifierList];
-  v6 = [(HMDNetworkRouterStaticICMPRule *)self destinationIPAddress];
-  v7 = [(HMDNetworkRouterStaticICMPRule *)self icmpTypeList];
-  v8 = [v3 stringWithFormat:@"<HMDNetworkRouterStaticICMPRule direction=%@, lanIdentifierList=%@, destinationIPAddress=%@, icmpTypeList=%@>", v4, v5, v6, v7];
+  direction = [(HMDNetworkRouterStaticICMPRule *)self direction];
+  lanIdentifierList = [(HMDNetworkRouterStaticICMPRule *)self lanIdentifierList];
+  destinationIPAddress = [(HMDNetworkRouterStaticICMPRule *)self destinationIPAddress];
+  icmpTypeList = [(HMDNetworkRouterStaticICMPRule *)self icmpTypeList];
+  v8 = [v3 stringWithFormat:@"<HMDNetworkRouterStaticICMPRule direction=%@, lanIdentifierList=%@, destinationIPAddress=%@, icmpTypeList=%@>", direction, lanIdentifierList, destinationIPAddress, icmpTypeList];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -90,34 +90,34 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HMDNetworkRouterStaticICMPRule *)self direction];
-      v8 = [(HMDNetworkRouterStaticICMPRule *)v6 direction];
-      if (v7 != v8)
+      v6 = equalCopy;
+      direction = [(HMDNetworkRouterStaticICMPRule *)self direction];
+      direction2 = [(HMDNetworkRouterStaticICMPRule *)v6 direction];
+      if (direction != direction2)
       {
-        v9 = [(HMDNetworkRouterStaticICMPRule *)self direction];
+        direction3 = [(HMDNetworkRouterStaticICMPRule *)self direction];
         [(HMDNetworkRouterStaticICMPRule *)v6 direction];
-        v33 = v32 = v9;
-        if (![v9 isEqual:?])
+        v33 = v32 = direction3;
+        if (![direction3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_24;
         }
       }
 
-      v11 = [(HMDNetworkRouterStaticICMPRule *)self lanIdentifierList];
-      v12 = [(HMDNetworkRouterStaticICMPRule *)v6 lanIdentifierList];
-      if (v11 != v12)
+      lanIdentifierList = [(HMDNetworkRouterStaticICMPRule *)self lanIdentifierList];
+      lanIdentifierList2 = [(HMDNetworkRouterStaticICMPRule *)v6 lanIdentifierList];
+      if (lanIdentifierList != lanIdentifierList2)
       {
-        v3 = [(HMDNetworkRouterStaticICMPRule *)self lanIdentifierList];
-        v30 = [(HMDNetworkRouterStaticICMPRule *)v6 lanIdentifierList];
-        if (![v3 isEqual:?])
+        lanIdentifierList3 = [(HMDNetworkRouterStaticICMPRule *)self lanIdentifierList];
+        lanIdentifierList4 = [(HMDNetworkRouterStaticICMPRule *)v6 lanIdentifierList];
+        if (![lanIdentifierList3 isEqual:?])
         {
           v10 = 0;
 LABEL_22:
 
 LABEL_23:
-          if (v7 == v8)
+          if (direction == direction2)
           {
 LABEL_25:
 
@@ -130,38 +130,38 @@ LABEL_24:
         }
       }
 
-      v13 = [(HMDNetworkRouterStaticICMPRule *)self destinationIPAddress];
-      v14 = [(HMDNetworkRouterStaticICMPRule *)v6 destinationIPAddress];
-      v31 = v13;
-      v15 = v13 == v14;
-      v16 = v14;
+      destinationIPAddress = [(HMDNetworkRouterStaticICMPRule *)self destinationIPAddress];
+      destinationIPAddress2 = [(HMDNetworkRouterStaticICMPRule *)v6 destinationIPAddress];
+      v31 = destinationIPAddress;
+      v15 = destinationIPAddress == destinationIPAddress2;
+      v16 = destinationIPAddress2;
       if (v15)
       {
-        v28 = v3;
-        v29 = v12;
+        v28 = lanIdentifierList3;
+        v29 = lanIdentifierList2;
       }
 
       else
       {
-        v17 = [(HMDNetworkRouterStaticICMPRule *)self destinationIPAddress];
-        v25 = [(HMDNetworkRouterStaticICMPRule *)v6 destinationIPAddress];
-        v26 = v17;
-        if (![v17 isEqual:?])
+        destinationIPAddress3 = [(HMDNetworkRouterStaticICMPRule *)self destinationIPAddress];
+        destinationIPAddress4 = [(HMDNetworkRouterStaticICMPRule *)v6 destinationIPAddress];
+        v26 = destinationIPAddress3;
+        if (![destinationIPAddress3 isEqual:?])
         {
           v10 = 0;
           v23 = v31;
           goto LABEL_20;
         }
 
-        v28 = v3;
-        v29 = v12;
+        v28 = lanIdentifierList3;
+        v29 = lanIdentifierList2;
       }
 
       v27 = v16;
-      v18 = [(HMDNetworkRouterStaticICMPRule *)self icmpTypeList];
-      v19 = [(HMDNetworkRouterStaticICMPRule *)v6 icmpTypeList];
-      v20 = v19;
-      if (v18 == v19)
+      icmpTypeList = [(HMDNetworkRouterStaticICMPRule *)self icmpTypeList];
+      icmpTypeList2 = [(HMDNetworkRouterStaticICMPRule *)v6 icmpTypeList];
+      v20 = icmpTypeList2;
+      if (icmpTypeList == icmpTypeList2)
       {
 
         v10 = 1;
@@ -169,20 +169,20 @@ LABEL_24:
 
       else
       {
-        v21 = [(HMDNetworkRouterStaticICMPRule *)self icmpTypeList];
-        v22 = [(HMDNetworkRouterStaticICMPRule *)v6 icmpTypeList];
-        v10 = [v21 isEqual:v22];
+        icmpTypeList3 = [(HMDNetworkRouterStaticICMPRule *)self icmpTypeList];
+        icmpTypeList4 = [(HMDNetworkRouterStaticICMPRule *)v6 icmpTypeList];
+        v10 = [icmpTypeList3 isEqual:icmpTypeList4];
       }
 
       v23 = v31;
       v16 = v27;
-      v3 = v28;
-      v12 = v29;
+      lanIdentifierList3 = v28;
+      lanIdentifierList2 = v29;
       if (v31 == v27)
       {
 LABEL_21:
 
-        if (v11 == v12)
+        if (lanIdentifierList == lanIdentifierList2)
         {
           goto LABEL_23;
         }
@@ -203,19 +203,19 @@ LABEL_26:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDNetworkRouterStaticICMPRule allocWithZone:a3];
-  v5 = [(HMDNetworkRouterStaticICMPRule *)self direction];
-  v6 = [(HMDNetworkRouterStaticICMPRule *)self lanIdentifierList];
-  v7 = [(HMDNetworkRouterStaticICMPRule *)self destinationIPAddress];
-  v8 = [(HMDNetworkRouterStaticICMPRule *)self icmpTypeList];
-  v9 = [(HMDNetworkRouterStaticICMPRule *)v4 initWithDirection:v5 lanIdentifierList:v6 destinationIPAddress:v7 icmpTypeList:v8];
+  v4 = [HMDNetworkRouterStaticICMPRule allocWithZone:zone];
+  direction = [(HMDNetworkRouterStaticICMPRule *)self direction];
+  lanIdentifierList = [(HMDNetworkRouterStaticICMPRule *)self lanIdentifierList];
+  destinationIPAddress = [(HMDNetworkRouterStaticICMPRule *)self destinationIPAddress];
+  icmpTypeList = [(HMDNetworkRouterStaticICMPRule *)self icmpTypeList];
+  v9 = [(HMDNetworkRouterStaticICMPRule *)v4 initWithDirection:direction lanIdentifierList:lanIdentifierList destinationIPAddress:destinationIPAddress icmpTypeList:icmpTypeList];
 
   return v9;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
   v43 = 0u;
@@ -240,13 +240,13 @@ LABEL_26:
   v26 = 0u;
   v24 = 0u;
   TLV8BufferInit();
-  v5 = [(HMDNetworkRouterStaticICMPRule *)self direction];
+  direction = [(HMDNetworkRouterStaticICMPRule *)self direction];
 
-  if (v5)
+  if (direction)
   {
-    v6 = [(HMDNetworkRouterStaticICMPRule *)self direction];
+    direction2 = [(HMDNetworkRouterStaticICMPRule *)self direction];
     v23 = 0;
-    v7 = [v6 serializeWithError:&v23];
+    v7 = [direction2 serializeWithError:&v23];
     v8 = v23;
 
     if (v8)
@@ -262,16 +262,16 @@ LABEL_26:
     }
   }
 
-  v9 = [(HMDNetworkRouterStaticICMPRule *)self lanIdentifierList];
+  lanIdentifierList = [(HMDNetworkRouterStaticICMPRule *)self lanIdentifierList];
 
-  if (!v9)
+  if (!lanIdentifierList)
   {
     goto LABEL_9;
   }
 
-  v10 = [(HMDNetworkRouterStaticICMPRule *)self lanIdentifierList];
+  lanIdentifierList2 = [(HMDNetworkRouterStaticICMPRule *)self lanIdentifierList];
   v22 = 0;
-  v7 = [v10 serializeWithError:&v22];
+  v7 = [lanIdentifierList2 serializeWithError:&v22];
   v8 = v22;
 
   if (v8)
@@ -286,11 +286,11 @@ LABEL_26:
 LABEL_12:
 
 LABEL_13:
-    if (a3)
+    if (error)
     {
       HMErrorFromOSStatus();
       v8 = 0;
-      *a3 = v13 = 0;
+      *error = v13 = 0;
       goto LABEL_22;
     }
 
@@ -301,13 +301,13 @@ LABEL_21:
   }
 
 LABEL_9:
-  v11 = [(HMDNetworkRouterStaticICMPRule *)self destinationIPAddress];
+  destinationIPAddress = [(HMDNetworkRouterStaticICMPRule *)self destinationIPAddress];
 
-  if (v11)
+  if (destinationIPAddress)
   {
-    v12 = [(HMDNetworkRouterStaticICMPRule *)self destinationIPAddress];
+    destinationIPAddress2 = [(HMDNetworkRouterStaticICMPRule *)self destinationIPAddress];
     v21 = 0;
-    v7 = [v12 serializeWithError:&v21];
+    v7 = [destinationIPAddress2 serializeWithError:&v21];
     v8 = v21;
 
     if (v8)
@@ -323,24 +323,24 @@ LABEL_9:
     }
   }
 
-  v14 = [(HMDNetworkRouterStaticICMPRule *)self icmpTypeList];
+  icmpTypeList = [(HMDNetworkRouterStaticICMPRule *)self icmpTypeList];
 
-  if (v14)
+  if (icmpTypeList)
   {
-    v15 = [(HMDNetworkRouterStaticICMPRule *)self icmpTypeList];
+    icmpTypeList2 = [(HMDNetworkRouterStaticICMPRule *)self icmpTypeList];
     v20 = 0;
-    v7 = [v15 serializeWithError:&v20];
+    v7 = [icmpTypeList2 serializeWithError:&v20];
     v8 = v20;
 
     if (v8)
     {
 LABEL_19:
 
-      if (a3)
+      if (error)
       {
         v16 = v8;
         v13 = 0;
-        *a3 = v8;
+        *error = v8;
         goto LABEL_22;
       }
 
@@ -367,16 +367,16 @@ LABEL_22:
   return v13;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v8 = [v6 bytes];
+  bytes = [dataCopy bytes];
   v9 = [v7 length];
   if (!v9)
   {
@@ -387,14 +387,14 @@ LABEL_22:
     goto LABEL_31;
   }
 
-  v25 = self;
-  v26 = a4;
+  selfCopy = self;
+  errorCopy = error;
   v10 = 0;
   v11 = 0;
   v12 = 0;
   v13 = 0;
   v14 = 0;
-  v15 = v8 + v9;
+  v15 = bytes + v9;
   while (1)
   {
     v35 = 0;
@@ -405,10 +405,10 @@ LABEL_22:
     if (TLV8GetNext() || TLV8GetOrCopyCoalesced())
     {
       v20 = v14;
-      if (v26)
+      if (errorCopy)
       {
         HMErrorFromOSStatus();
-        *v26 = v21 = 0;
+        *errorCopy = v21 = 0;
         goto LABEL_32;
       }
 
@@ -489,18 +489,18 @@ LABEL_26:
   v20 = v14;
   if (v10)
   {
-    if (v26)
+    if (errorCopy)
     {
       v23 = v10;
       v21 = 0;
-      *v26 = v10;
+      *errorCopy = v10;
       goto LABEL_32;
     }
 
     goto LABEL_29;
   }
 
-  self = v25;
+  self = selfCopy;
 LABEL_31:
   [(HMDNetworkRouterStaticICMPRule *)self setDirection:v20];
   [(HMDNetworkRouterStaticICMPRule *)self setLanIdentifierList:v13];
@@ -513,22 +513,22 @@ LABEL_32:
   return v21;
 }
 
-- (HMDNetworkRouterStaticICMPRule)initWithDirection:(id)a3 lanIdentifierList:(id)a4 destinationIPAddress:(id)a5 icmpTypeList:(id)a6
+- (HMDNetworkRouterStaticICMPRule)initWithDirection:(id)direction lanIdentifierList:(id)list destinationIPAddress:(id)address icmpTypeList:(id)typeList
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  directionCopy = direction;
+  listCopy = list;
+  addressCopy = address;
+  typeListCopy = typeList;
   v18.receiver = self;
   v18.super_class = HMDNetworkRouterStaticICMPRule;
   v15 = [(HMDNetworkRouterStaticICMPRule *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_direction, a3);
-    objc_storeStrong(&v16->_lanIdentifierList, a4);
-    objc_storeStrong(&v16->_destinationIPAddress, a5);
-    objc_storeStrong(&v16->_icmpTypeList, a6);
+    objc_storeStrong(&v15->_direction, direction);
+    objc_storeStrong(&v16->_lanIdentifierList, list);
+    objc_storeStrong(&v16->_destinationIPAddress, address);
+    objc_storeStrong(&v16->_icmpTypeList, typeList);
   }
 
   return v16;
@@ -541,24 +541,24 @@ LABEL_32:
   return [(HMDNetworkRouterStaticICMPRule *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDNetworkRouterStaticICMPRule);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDNetworkRouterStaticICMPRule *)v6 parseFromData:v5 error:&v11];
+    [(HMDNetworkRouterStaticICMPRule *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

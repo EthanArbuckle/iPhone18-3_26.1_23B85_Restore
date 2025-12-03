@@ -1,39 +1,39 @@
 @interface PKTextInputReserveSpaceController
-- (BOOL)tapPointIsInPlaceholder:(CGPoint)a3;
+- (BOOL)tapPointIsInPlaceholder:(CGPoint)placeholder;
 - (CGPoint)_targetPointInElement;
-- (CGRect)placeholderFrameInCoordinateSpace:(id)a3;
-- (PKTextInputReserveSpaceController)initWithFeedbackController:(id)a3;
+- (CGRect)placeholderFrameInCoordinateSpace:(id)space;
+- (PKTextInputReserveSpaceController)initWithFeedbackController:(id)controller;
 - (PKTextInputReserveSpaceControllerDelegate)delegate;
 - (int64_t)_preferredInsertionLocation;
-- (void)_finishAndResetStateInsertingWhitespace:(BOOL)a3;
-- (void)_insertWhitespaceWithElement:(id)a3 atReferencePoint:(CGPoint)a4 completion:(id)a5;
+- (void)_finishAndResetStateInsertingWhitespace:(BOOL)whitespace;
+- (void)_insertWhitespaceWithElement:(id)element atReferencePoint:(CGPoint)point completion:(id)completion;
 - (void)_moveToContentLoadedIfReady;
 - (void)_moveToInsertingPlaceholderIfReady;
 - (void)_moveToShowingIntroIfReady;
 - (void)_moveToShowingPlaceholderIfReady;
-- (void)_setReserveSpaceState:(int64_t)a3;
-- (void)_startDismissTimerWithDelay:(double)a3;
+- (void)_setReserveSpaceState:(int64_t)state;
+- (void)_startDismissTimerWithDelay:(double)delay;
 - (void)_updateReserveSpaceState;
-- (void)beginIfPossibleWithElement:(id)a3 atLocation:(CGPoint)a4 coordinateSpace:(id)a5;
+- (void)beginIfPossibleWithElement:(id)element atLocation:(CGPoint)location coordinateSpace:(id)space;
 - (void)cancelReserveSpaceIntro;
-- (void)finishReserveSpaceAndInsertWhitespace:(BOOL)a3;
-- (void)reportDebugStateDescription:(id)a3;
+- (void)finishReserveSpaceAndInsertWhitespace:(BOOL)whitespace;
+- (void)reportDebugStateDescription:(id)description;
 - (void)reserveSpaceWhenReady;
-- (void)setCanvasControllerIsDrawing:(BOOL)a3;
+- (void)setCanvasControllerIsDrawing:(BOOL)drawing;
 @end
 
 @implementation PKTextInputReserveSpaceController
 
-- (PKTextInputReserveSpaceController)initWithFeedbackController:(id)a3
+- (PKTextInputReserveSpaceController)initWithFeedbackController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = PKTextInputReserveSpaceController;
   v6 = [(PKTextInputReserveSpaceController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_feedbackController, a3);
+    objc_storeStrong(&v6->_feedbackController, controller);
     v7->__wasAskedToReserveSpace = 0;
     v7->__insertionCharacterLocation = 0x7FFFFFFFFFFFFFFFLL;
     v7->__reserveSpaceState = 0;
@@ -42,48 +42,48 @@
   return v7;
 }
 
-- (void)beginIfPossibleWithElement:(id)a3 atLocation:(CGPoint)a4 coordinateSpace:(id)a5
+- (void)beginIfPossibleWithElement:(id)element atLocation:(CGPoint)location coordinateSpace:(id)space
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v24 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = [(PKTextInputReserveSpaceController *)self isReserveSpaceActive];
-  if (v9)
+  elementCopy = element;
+  spaceCopy = space;
+  isReserveSpaceActive = [(PKTextInputReserveSpaceController *)self isReserveSpaceActive];
+  if (elementCopy)
   {
-    if (!v11)
+    if (!isReserveSpaceActive)
     {
-      v12 = [(PKTextInputElement *)v9 coordinateSpace];
-      if (v12)
+      coordinateSpace = [(PKTextInputElement *)elementCopy coordinateSpace];
+      if (coordinateSpace)
       {
-        v13 = v12;
-        v14 = [(PKTextInputElement *)v9 isEditableElement];
+        v13 = coordinateSpace;
+        isEditableElement = [(PKTextInputElement *)elementCopy isEditableElement];
 
-        if (v14)
+        if (isEditableElement)
         {
-          if (([(PKTextInputElement *)v9 isFocused]& 1) != 0 || ([(PKTextInputElement *)v9 shouldPostponeFocusing]& 1) == 0)
+          if (([(PKTextInputElement *)elementCopy isFocused]& 1) != 0 || ([(PKTextInputElement *)elementCopy shouldPostponeFocusing]& 1) == 0)
           {
             v15 = os_log_create("com.apple.pencilkit", "PencilTextInput");
             if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v23 = v9;
+              v23 = elementCopy;
               _os_log_impl(&dword_1C7CCA000, v15, OS_LOG_TYPE_DEFAULT, "ReserveSpace: beginIfPossibleWithElement, element: %@", buf, 0xCu);
             }
 
-            v16 = [(PKTextInputElement *)v9 coordinateSpace];
-            v17 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v10, v16, x, y, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
+            coordinateSpace2 = [(PKTextInputElement *)elementCopy coordinateSpace];
+            v17 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(spaceCopy, coordinateSpace2, x, y, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
             v19 = v18;
 
-            v26.origin.x = [(PKTextInputElement *)v9 frame];
+            v26.origin.x = [(PKTextInputElement *)elementCopy frame];
             v25.x = v17;
             v25.y = v19;
             if (CGRectContainsPoint(v26, v25))
             {
               [(PKTextInputReserveSpaceController *)self _setReserveSpaceState:1];
-              v20 = [(PKTextInputReserveSpaceController *)self delegate];
-              [v20 reserveSpaceController:self willFocusElement:v9];
+              delegate = [(PKTextInputReserveSpaceController *)self delegate];
+              [delegate reserveSpaceController:self willFocusElement:elementCopy];
 
               v21[0] = MEMORY[0x1E69E9820];
               v21[1] = 3221225472;
@@ -92,7 +92,7 @@
               v21[4] = self;
               *&v21[5] = v17;
               *&v21[6] = v19;
-              [(PKTextInputElement *)v9 loadContentFocusingIfNeededWithReferencePoint:v21 alwaysSetSelectionFromReferencePoint:v17 rectOfInterest:v19 completion:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
+              [(PKTextInputElement *)elementCopy loadContentFocusingIfNeededWithReferencePoint:v21 alwaysSetSelectionFromReferencePoint:v17 rectOfInterest:v19 completion:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
             }
           }
         }
@@ -178,11 +178,11 @@ LABEL_10:
       v5 = @"Y";
     }
 
-    v6 = [(PKTextInputReserveSpaceController *)self _targetElementContent];
-    v7 = v6;
-    if (v6)
+    _targetElementContent = [(PKTextInputReserveSpaceController *)self _targetElementContent];
+    v7 = _targetElementContent;
+    if (_targetElementContent)
     {
-      v8 = *(v6 + 8);
+      v8 = *(_targetElementContent + 8);
     }
 
     else
@@ -204,15 +204,15 @@ LABEL_10:
   }
 }
 
-- (void)finishReserveSpaceAndInsertWhitespace:(BOOL)a3
+- (void)finishReserveSpaceAndInsertWhitespace:(BOOL)whitespace
 {
-  v3 = a3;
+  whitespaceCopy = whitespace;
   v16 = *MEMORY[0x1E69E9840];
-  v5 = [(PKTextInputReserveSpaceController *)self _reserveSpaceState];
+  _reserveSpaceState = [(PKTextInputReserveSpaceController *)self _reserveSpaceState];
   v6 = os_log_create("com.apple.pencilkit", "PencilTextInput");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    if (v5)
+    if (_reserveSpaceState)
     {
       v7 = @"Y";
     }
@@ -222,11 +222,11 @@ LABEL_10:
       v7 = @"N";
     }
 
-    v8 = [(PKTextInputReserveSpaceController *)self _targetElementContent];
-    v9 = v8;
-    if (v8)
+    _targetElementContent = [(PKTextInputReserveSpaceController *)self _targetElementContent];
+    v9 = _targetElementContent;
+    if (_targetElementContent)
     {
-      v10 = *(v8 + 8);
+      v10 = *(_targetElementContent + 8);
     }
 
     else
@@ -242,37 +242,37 @@ LABEL_10:
     _os_log_impl(&dword_1C7CCA000, v6, OS_LOG_TYPE_DEFAULT, "ReserveSpace: finish. Can finish and remove placeholder: %@, element: %p", &v12, 0x16u);
   }
 
-  if (v5)
+  if (_reserveSpaceState)
   {
-    [(PKTextInputReserveSpaceController *)self _finishAndResetStateInsertingWhitespace:v3];
+    [(PKTextInputReserveSpaceController *)self _finishAndResetStateInsertingWhitespace:whitespaceCopy];
   }
 }
 
 - (void)_updateReserveSpaceState
 {
-  v3 = [(PKTextInputReserveSpaceController *)self _reserveSpaceState];
-  if (v3 > 2)
+  _reserveSpaceState = [(PKTextInputReserveSpaceController *)self _reserveSpaceState];
+  if (_reserveSpaceState > 2)
   {
-    if (v3 == 3)
+    if (_reserveSpaceState == 3)
     {
 
       [(PKTextInputReserveSpaceController *)self _moveToInsertingPlaceholderIfReady];
     }
 
-    else if (v3 == 4)
+    else if (_reserveSpaceState == 4)
     {
 
       [(PKTextInputReserveSpaceController *)self _moveToShowingPlaceholderIfReady];
     }
   }
 
-  else if (v3 == 1)
+  else if (_reserveSpaceState == 1)
   {
 
     [(PKTextInputReserveSpaceController *)self _moveToContentLoadedIfReady];
   }
 
-  else if (v3 == 2)
+  else if (_reserveSpaceState == 2)
   {
 
     [(PKTextInputReserveSpaceController *)self _moveToShowingIntroIfReady];
@@ -281,9 +281,9 @@ LABEL_10:
 
 - (void)_moveToContentLoadedIfReady
 {
-  v3 = [(PKTextInputReserveSpaceController *)self _targetElementContent];
+  _targetElementContent = [(PKTextInputReserveSpaceController *)self _targetElementContent];
 
-  if (v3)
+  if (_targetElementContent)
   {
 
     [(PKTextInputReserveSpaceController *)self _setReserveSpaceState:2];
@@ -292,20 +292,20 @@ LABEL_10:
 
 - (void)_moveToShowingIntroIfReady
 {
-  v6 = [(PKTextInputReserveSpaceController *)self _targetElementContent];
-  v3 = [(PKTextInputReserveSpaceController *)self _preferredInsertionLocation];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  _targetElementContent = [(PKTextInputReserveSpaceController *)self _targetElementContent];
+  _preferredInsertionLocation = [(PKTextInputReserveSpaceController *)self _preferredInsertionLocation];
+  if (_preferredInsertionLocation == 0x7FFFFFFFFFFFFFFFLL)
   {
     [(PKTextInputReserveSpaceController *)self _finishAndResetStateInsertingWhitespace:0];
   }
 
   else
   {
-    v4 = v3;
-    [(PKTextInputReserveSpaceController *)self set_insertionCharacterLocation:v3];
+    v4 = _preferredInsertionLocation;
+    [(PKTextInputReserveSpaceController *)self set_insertionCharacterLocation:_preferredInsertionLocation];
     [(PKTextInputReserveSpaceController *)self _setReserveSpaceState:3];
-    v5 = [(PKTextInputReserveSpaceController *)self feedbackController];
-    [v5 setReferenceElementContent:v6 referenceRange:v4 feedbackType:{0, 3}];
+    feedbackController = [(PKTextInputReserveSpaceController *)self feedbackController];
+    [feedbackController setReferenceElementContent:_targetElementContent referenceRange:v4 feedbackType:{0, 3}];
   }
 }
 
@@ -314,9 +314,9 @@ LABEL_10:
   v26 = *MEMORY[0x1E69E9840];
   if ([(PKTextInputReserveSpaceController *)self _wasAskedToReserveSpace]&& [(PKTextInputReserveSpaceController *)self _reserveSpaceState]== 3)
   {
-    v3 = [(PKTextInputReserveSpaceController *)self _targetElementContent];
-    v4 = [(PKTextInputElementContent *)v3 isSingleLineDocumentContent];
-    if (v4)
+    _targetElementContent = [(PKTextInputReserveSpaceController *)self _targetElementContent];
+    isSingleLineDocumentContent = [(PKTextInputElementContent *)_targetElementContent isSingleLineDocumentContent];
+    if (isSingleLineDocumentContent)
     {
       v5 = 100.0;
     }
@@ -326,7 +326,7 @@ LABEL_10:
       v5 = 0.0;
     }
 
-    if (v4)
+    if (isSingleLineDocumentContent)
     {
       v6 = 0.0;
     }
@@ -343,12 +343,12 @@ LABEL_10:
       v27.width = v5;
       v27.height = v6;
       v8 = NSStringFromCGSize(v27);
-      v9 = [(PKTextInputReserveSpaceController *)self _insertionCharacterLocation];
-      v10 = [(PKTextInputReserveSpaceController *)self _targetElementContent];
-      v11 = v10;
-      if (v10)
+      _insertionCharacterLocation = [(PKTextInputReserveSpaceController *)self _insertionCharacterLocation];
+      _targetElementContent2 = [(PKTextInputReserveSpaceController *)self _targetElementContent];
+      v11 = _targetElementContent2;
+      if (_targetElementContent2)
       {
-        v12 = *(v10 + 8);
+        v12 = *(_targetElementContent2 + 8);
       }
 
       else
@@ -360,23 +360,23 @@ LABEL_10:
       *buf = 138412802;
       v21 = v8;
       v22 = 2048;
-      v23 = v9;
+      v23 = _insertionCharacterLocation;
       v24 = 2048;
       v25 = v13;
       _os_log_impl(&dword_1C7CCA000, v7, OS_LOG_TYPE_DEFAULT, "ReserveSpace: ready, insert placeholder of size: %@, location: %ld, element: %p", buf, 0x20u);
     }
 
-    v14 = [(PKTextInputReserveSpaceController *)self _insertionCharacterLocation];
+    _insertionCharacterLocation2 = [(PKTextInputReserveSpaceController *)self _insertionCharacterLocation];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __71__PKTextInputReserveSpaceController__moveToInsertingPlaceholderIfReady__block_invoke;
     v16[3] = &unk_1E82DB428;
     v16[4] = self;
-    v17 = v3;
+    v17 = _targetElementContent;
     v18 = v5;
     v19 = v6;
-    v15 = v3;
-    [(PKTextInputElementContent *)v15 selectTextInRange:v14 completion:0, v16];
+    v15 = _targetElementContent;
+    [(PKTextInputElementContent *)v15 selectTextInRange:_insertionCharacterLocation2 completion:0, v16];
   }
 }
 
@@ -435,13 +435,13 @@ void __71__PKTextInputReserveSpaceController__moveToInsertingPlaceholderIfReady_
 
 - (void)_moveToShowingPlaceholderIfReady
 {
-  v3 = [(PKTextInputReserveSpaceController *)self _textPlaceholder];
-  if (v3)
+  _textPlaceholder = [(PKTextInputReserveSpaceController *)self _textPlaceholder];
+  if (_textPlaceholder)
   {
-    v4 = v3;
-    v5 = [(PKTextInputReserveSpaceController *)self _reserveSpaceState];
+    v4 = _textPlaceholder;
+    _reserveSpaceState = [(PKTextInputReserveSpaceController *)self _reserveSpaceState];
 
-    if (v5 == 4)
+    if (_reserveSpaceState == 4)
     {
       [(PKTextInputReserveSpaceController *)self _startDismissTimerWithDelay:5.0];
 
@@ -450,38 +450,38 @@ void __71__PKTextInputReserveSpaceController__moveToInsertingPlaceholderIfReady_
   }
 }
 
-- (void)_finishAndResetStateInsertingWhitespace:(BOOL)a3
+- (void)_finishAndResetStateInsertingWhitespace:(BOOL)whitespace
 {
-  v5 = [(PKTextInputReserveSpaceController *)self feedbackController];
-  [v5 cancelShowingReserveSpaceIntro];
+  feedbackController = [(PKTextInputReserveSpaceController *)self feedbackController];
+  [feedbackController cancelShowingReserveSpaceIntro];
 
-  v6 = [(PKTextInputReserveSpaceController *)self _targetElementContent];
-  v7 = [(PKTextInputReserveSpaceController *)self _textPlaceholder];
+  _targetElementContent = [(PKTextInputReserveSpaceController *)self _targetElementContent];
+  _textPlaceholder = [(PKTextInputReserveSpaceController *)self _textPlaceholder];
 
-  if (v7 && v6)
+  if (_textPlaceholder && _targetElementContent)
   {
-    v8 = [(PKTextInputReserveSpaceController *)self feedbackController];
-    v9 = [(PKTextInputReserveSpaceController *)self _textPlaceholder];
-    [v8 endDisplayForReserveSpacePlaceholder:v9];
+    feedbackController2 = [(PKTextInputReserveSpaceController *)self feedbackController];
+    _textPlaceholder2 = [(PKTextInputReserveSpaceController *)self _textPlaceholder];
+    [feedbackController2 endDisplayForReserveSpacePlaceholder:_textPlaceholder2];
 
-    v10 = [(PKTextInputReserveSpaceController *)self _textPlaceholder];
-    v11 = [v10 rects];
-    v12 = [v11 firstObject];
-    [v12 rect];
+    _textPlaceholder3 = [(PKTextInputReserveSpaceController *)self _textPlaceholder];
+    rects = [_textPlaceholder3 rects];
+    firstObject = [rects firstObject];
+    [firstObject rect];
     v14 = v13;
     v16 = v15;
 
-    v17 = [(PKTextInputReserveSpaceController *)self _textPlaceholder];
+    _textPlaceholder4 = [(PKTextInputReserveSpaceController *)self _textPlaceholder];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __77__PKTextInputReserveSpaceController__finishAndResetStateInsertingWhitespace___block_invoke;
     v19[3] = &unk_1E82DB450;
-    v23 = a3;
+    whitespaceCopy = whitespace;
     v19[4] = self;
-    v20 = v6;
+    v20 = _targetElementContent;
     v21 = v14;
     v22 = v16;
-    [(PKTextInputElementContent *)v20 _removeTextPlaceholder:v17 willInsertText:0 completionHandler:v19];
+    [(PKTextInputElementContent *)v20 _removeTextPlaceholder:_textPlaceholder4 willInsertText:0 completionHandler:v19];
   }
 
   [(PKTextInputReserveSpaceController *)self _setTargetElementContent:0];
@@ -489,8 +489,8 @@ void __71__PKTextInputReserveSpaceController__moveToInsertingPlaceholderIfReady_
   [(PKTextInputReserveSpaceController *)self set_textPlaceholder:0];
   [(PKTextInputReserveSpaceController *)self set_insertionCharacterLocation:0x7FFFFFFFFFFFFFFFLL];
   [(PKTextInputReserveSpaceController *)self set_wasAskedToReserveSpace:0];
-  v18 = [(PKTextInputReserveSpaceController *)self _dismissTimer];
-  [v18 invalidate];
+  _dismissTimer = [(PKTextInputReserveSpaceController *)self _dismissTimer];
+  [_dismissTimer invalidate];
 
   [(PKTextInputReserveSpaceController *)self set_dismissTimer:0];
   [(PKTextInputReserveSpaceController *)self _setReserveSpaceState:0];
@@ -512,14 +512,14 @@ void __77__PKTextInputReserveSpaceController__finishAndResetStateInsertingWhites
   }
 }
 
-- (void)_setReserveSpaceState:(int64_t)a3
+- (void)_setReserveSpaceState:(int64_t)state
 {
   v16 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.pencilkit", "PencilTextInput");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = PKTextInputDescriptionForReserveSpaceState(self->__reserveSpaceState);
-    v7 = PKTextInputDescriptionForReserveSpaceState(a3);
+    v7 = PKTextInputDescriptionForReserveSpaceState(state);
     v12 = 138412546;
     v13 = v6;
     v14 = 2112;
@@ -527,35 +527,35 @@ void __77__PKTextInputReserveSpaceController__finishAndResetStateInsertingWhites
     _os_log_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_DEFAULT, "ReserveSpace: state changed %@ -> %@", &v12, 0x16u);
   }
 
-  v8 = [(PKTextInputReserveSpaceController *)self isReserveSpaceActive];
-  v9 = [(PKTextInputReserveSpaceController *)self isReserveSpacePlaceholderVisible];
-  self->__reserveSpaceState = a3;
-  if (v8 != [(PKTextInputReserveSpaceController *)self isReserveSpaceActive])
+  isReserveSpaceActive = [(PKTextInputReserveSpaceController *)self isReserveSpaceActive];
+  isReserveSpacePlaceholderVisible = [(PKTextInputReserveSpaceController *)self isReserveSpacePlaceholderVisible];
+  self->__reserveSpaceState = state;
+  if (isReserveSpaceActive != [(PKTextInputReserveSpaceController *)self isReserveSpaceActive])
   {
-    v10 = [(PKTextInputReserveSpaceController *)self delegate];
-    [v10 reserveSpaceControllerIsActiveChanged:self];
+    delegate = [(PKTextInputReserveSpaceController *)self delegate];
+    [delegate reserveSpaceControllerIsActiveChanged:self];
   }
 
-  if (v9 != [(PKTextInputReserveSpaceController *)self isReserveSpacePlaceholderVisible])
+  if (isReserveSpacePlaceholderVisible != [(PKTextInputReserveSpaceController *)self isReserveSpacePlaceholderVisible])
   {
-    v11 = [(PKTextInputReserveSpaceController *)self delegate];
-    [v11 reserveSpaceControllerIsPlaceholderVisibleChanged:self];
+    delegate2 = [(PKTextInputReserveSpaceController *)self delegate];
+    [delegate2 reserveSpaceControllerIsPlaceholderVisibleChanged:self];
   }
 
   +[PKTextInputDebugStateIntrospector debugStateDidChange];
   [(PKTextInputReserveSpaceController *)self _updateReserveSpaceState];
 }
 
-- (void)setCanvasControllerIsDrawing:(BOOL)a3
+- (void)setCanvasControllerIsDrawing:(BOOL)drawing
 {
-  v3 = a3;
-  if ([(PKTextInputReserveSpaceController *)self _canvasControllerIsDrawing]!= a3)
+  drawingCopy = drawing;
+  if ([(PKTextInputReserveSpaceController *)self _canvasControllerIsDrawing]!= drawing)
   {
-    [(PKTextInputReserveSpaceController *)self set_canvasControllerIsDrawing:v3];
-    if (v3)
+    [(PKTextInputReserveSpaceController *)self set_canvasControllerIsDrawing:drawingCopy];
+    if (drawingCopy)
     {
-      v5 = [(PKTextInputReserveSpaceController *)self _dismissTimer];
-      [v5 invalidate];
+      _dismissTimer = [(PKTextInputReserveSpaceController *)self _dismissTimer];
+      [_dismissTimer invalidate];
 
       [(PKTextInputReserveSpaceController *)self set_dismissTimer:0];
     }
@@ -568,22 +568,22 @@ void __77__PKTextInputReserveSpaceController__finishAndResetStateInsertingWhites
   }
 }
 
-- (void)_startDismissTimerWithDelay:(double)a3
+- (void)_startDismissTimerWithDelay:(double)delay
 {
-  v5 = [(PKTextInputReserveSpaceController *)self _dismissTimer];
-  [v5 invalidate];
+  _dismissTimer = [(PKTextInputReserveSpaceController *)self _dismissTimer];
+  [_dismissTimer invalidate];
 
-  v6 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__handleAutodismissTimer selector:0 userInfo:0 repeats:a3];
+  v6 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__handleAutodismissTimer selector:0 userInfo:0 repeats:delay];
   [(PKTextInputReserveSpaceController *)self set_dismissTimer:v6];
 }
 
 - (int64_t)_preferredInsertionLocation
 {
-  v3 = [(PKTextInputReserveSpaceController *)self _targetElementContent];
-  v4 = v3;
-  if (v3)
+  _targetElementContent = [(PKTextInputReserveSpaceController *)self _targetElementContent];
+  v4 = _targetElementContent;
+  if (_targetElementContent)
   {
-    v5 = *(v3 + 8);
+    v5 = *(_targetElementContent + 8);
   }
 
   else
@@ -592,19 +592,19 @@ void __77__PKTextInputReserveSpaceController__finishAndResetStateInsertingWhites
   }
 
   v6 = v5;
-  v7 = [(PKTextInputElement *)v6 coordinateSpace];
+  coordinateSpace = [(PKTextInputElement *)v6 coordinateSpace];
 
-  if (!v7)
+  if (!coordinateSpace)
   {
     v12 = 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_19;
   }
 
-  v8 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
   [(PKTextInputReserveSpaceController *)self _targetPointInElement];
   if (v4)
   {
-    v11 = [(PKTextInputElementContent *)v4 characterIndexClosestToPoint:v7 inCoordinateSpace:0 forInsertingText:1 adjustForLastCharacter:v9, v10];
+    v11 = [(PKTextInputElementContent *)v4 characterIndexClosestToPoint:coordinateSpace inCoordinateSpace:0 forInsertingText:1 adjustForLastCharacter:v9, v10];
     v12 = 0x7FFFFFFFFFFFFFFFLL;
     if (v11 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -626,8 +626,8 @@ void __77__PKTextInputReserveSpaceController__finishAndResetStateInsertingWhites
     }
 
     v14 = v13 - 15;
-    v15 = [(PKTextInputElementContent *)v4 contentLength];
-    v16 = v11 + 15 >= v15 ? v15 : v11 + 15;
+    contentLength = [(PKTextInputElementContent *)v4 contentLength];
+    v16 = v11 + 15 >= contentLength ? contentLength : v11 + 15;
     [(PKTextInputReserveSpaceController *)self _targetPointInElement];
     if (v14 < v16)
     {
@@ -637,7 +637,7 @@ void __77__PKTextInputReserveSpaceController__finishAndResetStateInsertingWhites
       v22 = v14;
       while (1)
       {
-        [(PKTextInputElementContent *)v4 firstRectForRange:v22 inCoordinateSpace:1uLL, v7];
+        [(PKTextInputElementContent *)v4 firstRectForRange:v22 inCoordinateSpace:1uLL, coordinateSpace];
         x = v43.origin.x;
         y = v43.origin.y;
         width = v43.size.width;
@@ -684,7 +684,7 @@ void __77__PKTextInputReserveSpaceController__finishAndResetStateInsertingWhites
         v33 = [(PKTextInputElementContent *)v4 stringInRange:1];
         if ([v33 length] == 1)
         {
-          v34 = [v8 characterIsMember:{objc_msgSend(v33, "characterAtIndex:", 0)}];
+          v34 = [whitespaceCharacterSet characterIsMember:{objc_msgSend(v33, "characterAtIndex:", 0)}];
           v41 &= v34 ^ 1;
           if (v34)
           {
@@ -759,26 +759,26 @@ LABEL_19:
   return v12;
 }
 
-- (void)_insertWhitespaceWithElement:(id)a3 atReferencePoint:(CGPoint)a4 completion:(id)a5
+- (void)_insertWhitespaceWithElement:(id)element atReferencePoint:(CGPoint)point completion:(id)completion
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(PKTextInputReserveSpaceController *)self delegate];
-  [v11 reserveSpaceController:self willFocusElement:v10];
+  y = point.y;
+  x = point.x;
+  completionCopy = completion;
+  elementCopy = element;
+  delegate = [(PKTextInputReserveSpaceController *)self delegate];
+  [delegate reserveSpaceController:self willFocusElement:elementCopy];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __94__PKTextInputReserveSpaceController__insertWhitespaceWithElement_atReferencePoint_completion___block_invoke;
   v17[3] = &unk_1E82DB4A0;
-  v18 = v9;
+  v18 = completionCopy;
   v12 = *MEMORY[0x1E695F050];
   v13 = *(MEMORY[0x1E695F050] + 8);
   v14 = *(MEMORY[0x1E695F050] + 16);
   v15 = *(MEMORY[0x1E695F050] + 24);
-  v16 = v9;
-  [(PKTextInputElement *)v10 loadContentFocusingIfNeededWithReferencePoint:v17 alwaysSetSelectionFromReferencePoint:x rectOfInterest:y completion:v12, v13, v14, v15];
+  v16 = completionCopy;
+  [(PKTextInputElement *)elementCopy loadContentFocusingIfNeededWithReferencePoint:v17 alwaysSetSelectionFromReferencePoint:x rectOfInterest:y completion:v12, v13, v14, v15];
 }
 
 void __94__PKTextInputReserveSpaceController__insertWhitespaceWithElement_atReferencePoint_completion___block_invoke(uint64_t a1, void *a2)
@@ -839,26 +839,26 @@ void __94__PKTextInputReserveSpaceController__insertWhitespaceWithElement_atRefe
   }
 }
 
-- (CGRect)placeholderFrameInCoordinateSpace:(id)a3
+- (CGRect)placeholderFrameInCoordinateSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   v5 = *MEMORY[0x1E695F050];
   v6 = *(MEMORY[0x1E695F050] + 8);
   v7 = *(MEMORY[0x1E695F050] + 16);
   v8 = *(MEMORY[0x1E695F050] + 24);
   if ([(PKTextInputReserveSpaceController *)self isReserveSpacePlaceholderVisible])
   {
-    v9 = [(PKTextInputReserveSpaceController *)self _textPlaceholder];
-    if (v9)
+    _textPlaceholder = [(PKTextInputReserveSpaceController *)self _textPlaceholder];
+    if (_textPlaceholder)
     {
-      v10 = v9;
-      v11 = [(PKTextInputReserveSpaceController *)self _targetElementContent];
+      v10 = _textPlaceholder;
+      _targetElementContent = [(PKTextInputReserveSpaceController *)self _targetElementContent];
 
-      if (v11)
+      if (_targetElementContent)
       {
-        v12 = [(PKTextInputReserveSpaceController *)self _targetElementContent];
-        v13 = [(PKTextInputReserveSpaceController *)self _textPlaceholder];
-        v5 = [(PKTextInputElementContent *)v12 frameForTextPlaceholder:v13 inCoordinateSpace:v4];
+        _targetElementContent2 = [(PKTextInputReserveSpaceController *)self _targetElementContent];
+        _textPlaceholder2 = [(PKTextInputReserveSpaceController *)self _textPlaceholder];
+        v5 = [(PKTextInputElementContent *)_targetElementContent2 frameForTextPlaceholder:_textPlaceholder2 inCoordinateSpace:spaceCopy];
         v6 = v14;
         v7 = v15;
         v8 = v16;
@@ -877,18 +877,18 @@ void __94__PKTextInputReserveSpaceController__insertWhitespaceWithElement_atRefe
   return result;
 }
 
-- (BOOL)tapPointIsInPlaceholder:(CGPoint)a3
+- (BOOL)tapPointIsInPlaceholder:(CGPoint)placeholder
 {
-  y = a3.y;
-  x = a3.x;
+  y = placeholder.y;
+  x = placeholder.x;
   if ([(PKTextInputReserveSpaceController *)self isReserveSpacePlaceholderVisible])
   {
     v11 = 0;
     v12 = &v11;
     v13 = 0x2020000000;
     v14 = 0;
-    v6 = [(PKTextInputReserveSpaceController *)self _textPlaceholder];
-    v7 = [v6 rects];
+    _textPlaceholder = [(PKTextInputReserveSpaceController *)self _textPlaceholder];
+    rects = [_textPlaceholder rects];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __61__PKTextInputReserveSpaceController_tapPointIsInPlaceholder___block_invoke;
@@ -896,7 +896,7 @@ void __94__PKTextInputReserveSpaceController__insertWhitespaceWithElement_atRefe
     v10[4] = &v11;
     *&v10[5] = x;
     *&v10[6] = y;
-    [v7 enumerateObjectsUsingBlock:v10];
+    [rects enumerateObjectsUsingBlock:v10];
 
     v8 = *(v12 + 24);
     _Block_object_dispose(&v11, 8);
@@ -930,9 +930,9 @@ BOOL __61__PKTextInputReserveSpaceController_tapPointIsInPlaceholder___block_inv
   return result;
 }
 
-- (void)reportDebugStateDescription:(id)a3
+- (void)reportDebugStateDescription:(id)description
 {
-  v5 = a3;
+  descriptionCopy = description;
   if ([(PKTextInputReserveSpaceController *)self isReserveSpaceActive])
   {
     v6 = @"Yes";
@@ -943,9 +943,9 @@ BOOL __61__PKTextInputReserveSpaceController_tapPointIsInPlaceholder___block_inv
     v6 = @"No";
   }
 
-  v8 = *(a3 + 2);
-  v7 = (a3 + 16);
-  v8(v5, @"Reserve space active", v6);
+  v8 = *(description + 2);
+  v7 = (description + 16);
+  v8(descriptionCopy, @"Reserve space active", v6);
   if ([(PKTextInputReserveSpaceController *)self isReserveSpacePlaceholderVisible])
   {
     v9 = @"Yes";
@@ -956,9 +956,9 @@ BOOL __61__PKTextInputReserveSpaceController_tapPointIsInPlaceholder___block_inv
     v9 = @"No";
   }
 
-  (*v7)(v5, @"Placeholder visible", v9);
+  (*v7)(descriptionCopy, @"Placeholder visible", v9);
   v10 = PKTextInputDescriptionForReserveSpaceState([(PKTextInputReserveSpaceController *)self _reserveSpaceState]);
-  (*v7)(v5, @"State", v10);
+  (*v7)(descriptionCopy, @"State", v10);
 }
 
 - (PKTextInputReserveSpaceControllerDelegate)delegate

@@ -1,23 +1,23 @@
 @interface AMBNRStage
-- (AMBNRStage)initWithContext:(id)a3 denoisingOptions:(const DenoiseRemixStageOptions *)a4;
+- (AMBNRStage)initWithContext:(id)context denoisingOptions:(const DenoiseRemixStageOptions *)options;
 - (SidecarWriter)sidecarWriter;
-- (id)createAliasedPyramidFromLumaPyramid:(id)a3 chromaPyramid:(id)a4;
-- (int)computeConfiguration:(const exposureParameters *)a3 staticScene:(BOOL)a4 dasPlist:(id)a5 nmPlist:(id)a6 isLowLight:(BOOL)a7;
-- (int)greenGhostMitigationWithExposure:(const exposureParameters *)a3 faceLandMarks:(id)a4 ev0FrameMetadata:(const frameMetadata *)a5 evmFrameMetadata:(const frameMetadata *)a6 greenGhostBrightLightTuning:(id)a7 greenGhostIsRunning:(BOOL *)a8 gainMap:(id)a9;
-- (int)runWithExposure:(const exposureParameters *)a3 staticScene:(BOOL)a4 dasPlist:(id)a5 nmPlist:(id)a6 defringingTuning:(id)a7 greenGhostBrightLightTuning:(id)a8 greenGhostEnabled:(BOOL)a9 skinMask:(id)a10 skyMask:(id)a11 maskExtent:(CGRect)a12 faceLandMarks:(id)a13 ev0FrameMetadata:(const frameMetadata *)a14 evmFrameMetadata:(const frameMetadata *)a15 defringeEnabled:(BOOL)a16 isLowLight:(BOOL)a17 gainMap:(id)a18;
-- (int)setResourcesWithOutput:(id)a3 inputPyramid:(id)a4 noiseMapPyramid:(id)a5 sharpeningPyramid:(id)a6 localGainMapTex:(id)a7;
-- (void)selectBlurKernelSize:(AmbnrConfiguration *)a3;
-- (void)setSidecarWriter:(id)a3;
+- (id)createAliasedPyramidFromLumaPyramid:(id)pyramid chromaPyramid:(id)chromaPyramid;
+- (int)computeConfiguration:(const exposureParameters *)configuration staticScene:(BOOL)scene dasPlist:(id)plist nmPlist:(id)nmPlist isLowLight:(BOOL)light;
+- (int)greenGhostMitigationWithExposure:(const exposureParameters *)exposure faceLandMarks:(id)marks ev0FrameMetadata:(const frameMetadata *)metadata evmFrameMetadata:(const frameMetadata *)frameMetadata greenGhostBrightLightTuning:(id)tuning greenGhostIsRunning:(BOOL *)running gainMap:(id)map;
+- (int)runWithExposure:(const exposureParameters *)exposure staticScene:(BOOL)scene dasPlist:(id)plist nmPlist:(id)nmPlist defringingTuning:(id)tuning greenGhostBrightLightTuning:(id)lightTuning greenGhostEnabled:(BOOL)enabled skinMask:(id)self0 skyMask:(id)self1 maskExtent:(CGRect)self2 faceLandMarks:(id)self3 ev0FrameMetadata:(const frameMetadata *)self4 evmFrameMetadata:(const frameMetadata *)self5 defringeEnabled:(BOOL)self6 isLowLight:(BOOL)self7 gainMap:(id)self8;
+- (int)setResourcesWithOutput:(id)output inputPyramid:(id)pyramid noiseMapPyramid:(id)mapPyramid sharpeningPyramid:(id)sharpeningPyramid localGainMapTex:(id)tex;
+- (void)selectBlurKernelSize:(AmbnrConfiguration *)size;
+- (void)setSidecarWriter:(id)writer;
 @end
 
 @implementation AMBNRStage
 
-- (id)createAliasedPyramidFromLumaPyramid:(id)a3 chromaPyramid:(id)a4
+- (id)createAliasedPyramidFromLumaPyramid:(id)pyramid chromaPyramid:(id)chromaPyramid
 {
-  v5 = a3;
-  v6 = a4;
-  v9 = v6;
-  if (!v5)
+  pyramidCopy = pyramid;
+  chromaPyramidCopy = chromaPyramid;
+  v9 = chromaPyramidCopy;
+  if (!pyramidCopy)
   {
     sub_2958C140C();
 LABEL_14:
@@ -25,19 +25,19 @@ LABEL_14:
     goto LABEL_8;
   }
 
-  if (!v6)
+  if (!chromaPyramidCopy)
   {
     sub_2958C13A8();
     goto LABEL_14;
   }
 
-  if (v5[2] != *(v6 + 2))
+  if (pyramidCopy[2] != *(chromaPyramidCopy + 2))
   {
     sub_2958C12E0();
     goto LABEL_14;
   }
 
-  v10 = objc_msgSend_createTextureAlias_(PyramidStorage_NRF, v7, v5, v8);
+  v10 = objc_msgSend_createTextureAlias_(PyramidStorage_NRF, v7, pyramidCopy, v8);
   v11 = v10;
   if (v10)
   {
@@ -68,9 +68,9 @@ LABEL_8:
   return v11;
 }
 
-- (AMBNRStage)initWithContext:(id)a3 denoisingOptions:(const DenoiseRemixStageOptions *)a4
+- (AMBNRStage)initWithContext:(id)context denoisingOptions:(const DenoiseRemixStageOptions *)options
 {
-  v7 = a3;
+  contextCopy = context;
   v44.receiver = self;
   v44.super_class = AMBNRStage;
   v8 = [(AMBNRStage *)&v44 init];
@@ -80,7 +80,7 @@ LABEL_8:
     goto LABEL_17;
   }
 
-  objc_storeStrong(&v8->_metalContext, a3);
+  objc_storeStrong(&v8->_metalContext, context);
   v10 = [TextureUtils alloc];
   v13 = objc_msgSend_initWithMetalContext_(v10, v11, v9->_metalContext, v12);
   textureUtils = v9->_textureUtils;
@@ -102,7 +102,7 @@ LABEL_17:
   v42[2] = @"PyrGen.SupportFP16";
   v43[2] = &unk_2A1CC4120;
   v17 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x29EDB8DC0], v16, v43, v42, 3);
-  v19 = objc_msgSend_initWithOptions_context_(v15, v18, v17, v7);
+  v19 = objc_msgSend_initWithOptions_context_(v15, v18, v17, contextCopy);
   pyramidStage = v9->_pyramidStage;
   v9->_pyramidStage = v19;
 
@@ -114,7 +114,7 @@ LABEL_17:
 
   *&v9->_inputPyramidGenerationEnabled = 257;
   v21 = [DenoiseRemixStage alloc];
-  v23 = objc_msgSend_initWithContext_options_numPyrLevels_(v21, v22, v7, a4, 4);
+  v23 = objc_msgSend_initWithContext_options_numPyrLevels_(v21, v22, contextCopy, options, 4);
   denoiseRemixStage = v9->_denoiseRemixStage;
   v9->_denoiseRemixStage = v23;
 
@@ -124,12 +124,12 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  enableDefringingStage = a4->enableDefringingStage;
+  enableDefringingStage = options->enableDefringingStage;
   v9->_enableDefringingStage = enableDefringingStage;
   if (enableDefringingStage)
   {
     v26 = [DefringeStage alloc];
-    v29 = objc_msgSend_initWithMetalContext_(v26, v27, v7, v28);
+    v29 = objc_msgSend_initWithMetalContext_(v26, v27, contextCopy, v28);
     defringeStage = v9->_defringeStage;
     v9->_defringeStage = v29;
 
@@ -152,12 +152,12 @@ LABEL_17:
   }
 
   v33->levels = 4;
-  enableGreenGhostBrightLightStage = a4->enableGreenGhostBrightLightStage;
+  enableGreenGhostBrightLightStage = options->enableGreenGhostBrightLightStage;
   v9->_enableGreenGhostStage = enableGreenGhostBrightLightStage;
   if (enableGreenGhostBrightLightStage)
   {
     v35 = [GreenGhostBrightLightStage alloc];
-    v38 = objc_msgSend_initWithMetalContext_(v35, v36, v7, v37);
+    v38 = objc_msgSend_initWithMetalContext_(v35, v36, contextCopy, v37);
     greenGhostStage = v9->_greenGhostStage;
     v9->_greenGhostStage = v38;
 
@@ -174,32 +174,32 @@ LABEL_18:
   return v40;
 }
 
-- (void)setSidecarWriter:(id)a3
+- (void)setSidecarWriter:(id)writer
 {
   greenGhostStage = self->_greenGhostStage;
-  obj = a3;
+  obj = writer;
   objc_msgSend_setSidecarWriter_(greenGhostStage, v5, obj, v6);
   objc_storeWeak(&self->_sidecarWriter, obj);
 }
 
-- (int)setResourcesWithOutput:(id)a3 inputPyramid:(id)a4 noiseMapPyramid:(id)a5 sharpeningPyramid:(id)a6 localGainMapTex:(id)a7
+- (int)setResourcesWithOutput:(id)output inputPyramid:(id)pyramid noiseMapPyramid:(id)mapPyramid sharpeningPyramid:(id)sharpeningPyramid localGainMapTex:(id)tex
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  objc_storeStrong(&self->_outputImg, a3);
-  objc_storeStrong(&self->_pyramid, a4);
-  objc_storeStrong(&self->_noiseMapPyramid, a5);
-  objc_storeStrong(&self->_sharpeningPyramid, a6);
+  outputCopy = output;
+  pyramidCopy = pyramid;
+  mapPyramidCopy = mapPyramid;
+  sharpeningPyramidCopy = sharpeningPyramid;
+  texCopy = tex;
+  objc_storeStrong(&self->_outputImg, output);
+  objc_storeStrong(&self->_pyramid, pyramid);
+  objc_storeStrong(&self->_noiseMapPyramid, mapPyramid);
+  objc_storeStrong(&self->_sharpeningPyramid, sharpeningPyramid);
   lumaTex = self->_outputImg->lumaTex;
   if (lumaTex)
   {
     objc_storeStrong(self->_outputPyr->textureY, lumaTex);
     objc_storeStrong(self->_outputPyr->textureUV, self->_outputImg->chromaTex);
     self->_outputPyr->isFP16[0] = objc_msgSend_pixelFormat(self->_outputImg->lumaTex, v19, v20, v21) == 25;
-    v23 = objc_msgSend_setResourcesWithOutputPyramid_noiseMapPyramid_sharpeningPyramid_localGainMapTex_(self->_denoiseRemixStage, v22, self->_outputPyr, self->_noiseMapPyramid, self->_sharpeningPyramid, v17);
+    v23 = objc_msgSend_setResourcesWithOutputPyramid_noiseMapPyramid_sharpeningPyramid_localGainMapTex_(self->_denoiseRemixStage, v22, self->_outputPyr, self->_noiseMapPyramid, self->_sharpeningPyramid, texCopy);
     if (v23)
     {
       sub_2958C16C8(v23, &v29);
@@ -227,21 +227,21 @@ LABEL_18:
   return v27;
 }
 
-- (void)selectBlurKernelSize:(AmbnrConfiguration *)a3
+- (void)selectBlurKernelSize:(AmbnrConfiguration *)size
 {
   __asm { FMOV            V0.2S, #5.0 }
 
-  *&a3[1].nm.lumaSigmaSlope = _D0;
+  *&size[1].nm.lumaSigmaSlope = _D0;
 }
 
-- (int)computeConfiguration:(const exposureParameters *)a3 staticScene:(BOOL)a4 dasPlist:(id)a5 nmPlist:(id)a6 isLowLight:(BOOL)a7
+- (int)computeConfiguration:(const exposureParameters *)configuration staticScene:(BOOL)scene dasPlist:(id)plist nmPlist:(id)nmPlist isLowLight:(BOOL)light
 {
-  v7 = a7;
-  v86 = a4;
-  v11 = a5;
-  v87 = a6;
+  lightCopy = light;
+  sceneCopy = scene;
+  plistCopy = plist;
+  nmPlistCopy = nmPlist;
   v12 = 96;
-  if (!v7)
+  if (!lightCopy)
   {
     v12 = 0;
   }
@@ -261,28 +261,28 @@ LABEL_18:
 
   v14 = 0;
   v15 = 0;
-  v16 = *(&a3->gain + v12);
+  v16 = *(&configuration->gain + v12);
   do
   {
     v17 = self + v14;
-    sub_2958133B0((self->_ambnrConf + v14), v87, a3, v15);
-    v19 = *&a3->blue_combo_gain;
-    v18 = *&a3->ispGainRangeExpansionFactor;
-    *(v17 + 228) = *&a3->gain;
+    sub_2958133B0((self->_ambnrConf + v14), nmPlistCopy, configuration, v15);
+    v19 = *&configuration->blue_combo_gain;
+    v18 = *&configuration->ispGainRangeExpansionFactor;
+    *(v17 + 228) = *&configuration->gain;
     *(v17 + 244) = v19;
     *(v17 + 260) = v18;
-    v21 = *&a3->read_noise_1x;
-    v20 = *&a3->lsModulationWeight;
-    v22 = *&a3->exposure_time;
-    *(v17 + 20) = *&a3->ltm_locked;
+    v21 = *&configuration->read_noise_1x;
+    v20 = *&configuration->lsModulationWeight;
+    v22 = *&configuration->exposure_time;
+    *(v17 + 20) = *&configuration->ltm_locked;
     *(v17 + 292) = v21;
     *(v17 + 308) = v20;
     *(v17 + 276) = v22;
-    v25 = objc_msgSend_objectAtIndexedSubscript_(*(*(v11 + 1) + 8), v23, v15, v24);
+    v25 = objc_msgSend_objectAtIndexedSubscript_(*(*(plistCopy + 1) + 8), v23, v15, v24);
     *(v17 + 8) = sub_29584472C(v25[1], v16);
     *(v17 + 9) = sub_29584472C(v25[2], v16);
     *(v17 + 10) = sub_29584472C(v25[3], v16);
-    if (v86)
+    if (sceneCopy)
     {
       v26 = v25[13];
       if (!v26)
@@ -479,35 +479,35 @@ LABEL_62:
     }
 
     v60[15] = v58;
-    v60[51] = v11[12];
-    v60[52] = v11[13];
-    v60[53] = v11[14];
-    v60[54] = v11[15];
-    v60[55] = v11[16];
-    v60[56] = v11[17];
-    v60[32] = sub_29584472C(*(*(v11 + 1) + 16), v16);
-    v60[33] = sub_29584472C(*(*(v11 + 1) + 24), v16);
-    v60[34] = sub_29584472C(*(*(v11 + 1) + 48), v16);
-    v60[35] = sub_29584472C(*(*(v11 + 1) + 56), v16);
-    v60[36] = sub_29584472C(*(*(v11 + 1) + 64), v16);
-    *(v60 + 148) = *(v11 + 16);
-    *(v60 + 149) = *(v11 + 17);
-    *(v60 + 150) = *(v11 + 18);
-    *(v60 + 151) = *(v11 + 19);
-    *(v60 + 152) = *(v11 + 20);
-    v60[39] = v11[6];
-    v60[40] = v11[7];
-    v60[41] = v11[8];
-    v60[42] = v11[9];
-    *(v60 + 172) = *(v11 + 40);
-    *(v60 + 173) = *(v11 + 41);
-    v60[44] = v11[11];
-    v60[45] = *(*(v11 + 1) + 72);
-    v60[46] = *(*(v11 + 1) + 76);
-    v60[47] = *(*(v11 + 1) + 80);
-    v60[48] = *(*(v11 + 1) + 84);
-    v60[49] = *(*(v11 + 1) + 88);
-    v60[50] = *(*(v11 + 1) + 92);
+    v60[51] = plistCopy[12];
+    v60[52] = plistCopy[13];
+    v60[53] = plistCopy[14];
+    v60[54] = plistCopy[15];
+    v60[55] = plistCopy[16];
+    v60[56] = plistCopy[17];
+    v60[32] = sub_29584472C(*(*(plistCopy + 1) + 16), v16);
+    v60[33] = sub_29584472C(*(*(plistCopy + 1) + 24), v16);
+    v60[34] = sub_29584472C(*(*(plistCopy + 1) + 48), v16);
+    v60[35] = sub_29584472C(*(*(plistCopy + 1) + 56), v16);
+    v60[36] = sub_29584472C(*(*(plistCopy + 1) + 64), v16);
+    *(v60 + 148) = *(plistCopy + 16);
+    *(v60 + 149) = *(plistCopy + 17);
+    *(v60 + 150) = *(plistCopy + 18);
+    *(v60 + 151) = *(plistCopy + 19);
+    *(v60 + 152) = *(plistCopy + 20);
+    v60[39] = plistCopy[6];
+    v60[40] = plistCopy[7];
+    v60[41] = plistCopy[8];
+    v60[42] = plistCopy[9];
+    *(v60 + 172) = *(plistCopy + 40);
+    *(v60 + 173) = *(plistCopy + 41);
+    v60[44] = plistCopy[11];
+    v60[45] = *(*(plistCopy + 1) + 72);
+    v60[46] = *(*(plistCopy + 1) + 76);
+    v60[47] = *(*(plistCopy + 1) + 80);
+    v60[48] = *(*(plistCopy + 1) + 84);
+    v60[49] = *(*(plistCopy + 1) + 88);
+    v60[50] = *(*(plistCopy + 1) + 92);
 
     ++v15;
     v64 = self->_pyramid->levels;
@@ -558,15 +558,15 @@ LABEL_55:
   return v84;
 }
 
-- (int)greenGhostMitigationWithExposure:(const exposureParameters *)a3 faceLandMarks:(id)a4 ev0FrameMetadata:(const frameMetadata *)a5 evmFrameMetadata:(const frameMetadata *)a6 greenGhostBrightLightTuning:(id)a7 greenGhostIsRunning:(BOOL *)a8 gainMap:(id)a9
+- (int)greenGhostMitigationWithExposure:(const exposureParameters *)exposure faceLandMarks:(id)marks ev0FrameMetadata:(const frameMetadata *)metadata evmFrameMetadata:(const frameMetadata *)frameMetadata greenGhostBrightLightTuning:(id)tuning greenGhostIsRunning:(BOOL *)running gainMap:(id)map
 {
-  v15 = a4;
-  v16 = a7;
-  v174 = a9;
-  v20 = a3->gain * a3->exposure_time;
-  if (v16)
+  marksCopy = marks;
+  tuningCopy = tuning;
+  mapCopy = map;
+  v20 = exposure->gain * exposure->exposure_time;
+  if (tuningCopy)
   {
-    objc_msgSend_tuningParams(v16, v17, v18, v19);
+    objc_msgSend_tuningParams(tuningCopy, v17, v18, v19);
     v21 = *(&v198 + 1);
   }
 
@@ -605,7 +605,7 @@ LABEL_55:
 
   else
   {
-    if (!v16)
+    if (!tuningCopy)
     {
       v42 = 0;
       v196 = 0;
@@ -622,17 +622,17 @@ LABEL_55:
       goto LABEL_17;
     }
 
-    objc_msgSend_tuningParams(v16, v27, v28, v29);
+    objc_msgSend_tuningParams(tuningCopy, v27, v28, v29);
     if ((BYTE1(v186) & 1) == 0)
     {
       v42 = 0;
       goto LABEL_17;
     }
 
-    if (a6 && (LOBYTE(a6[1].exposureParams.blue_combo_gain) & 1) != 0 || a5 && (a6 = a5, (LOBYTE(a5[1].exposureParams.blue_combo_gain) & 1) != 0))
+    if (frameMetadata && (LOBYTE(frameMetadata[1].exposureParams.blue_combo_gain) & 1) != 0 || metadata && (frameMetadata = metadata, (LOBYTE(metadata[1].exposureParams.blue_combo_gain) & 1) != 0))
     {
-      v182[0] = *&a6[1].exposureParams.isp_digital_gain;
-      objc_msgSend_tuningParams(v16, v31, v32, v33);
+      v182[0] = *&frameMetadata[1].exposureParams.isp_digital_gain;
+      objc_msgSend_tuningParams(tuningCopy, v31, v32, v33);
       *v175 = v185;
       v37 = objc_msgSend_width(self->_outputImg->lumaTex, v34, v35, v36);
       v41 = objc_msgSend_height(self->_outputImg->lumaTex, v38, v39, v40);
@@ -650,8 +650,8 @@ LABEL_17:
       if (dword_2A18C2398)
       {
         v44 = v42;
-        v45 = a5;
-        v46 = v15;
+        metadataCopy = metadata;
+        v46 = marksCopy;
         v184 = 0;
         type = OS_LOG_TYPE_DEFAULT;
         v47 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -683,12 +683,12 @@ LABEL_17:
 
         fig_log_call_emit_and_clean_up_after_send_and_compose();
 
-        v15 = v46;
-        a5 = v45;
+        marksCopy = v46;
+        metadata = metadataCopy;
         v42 = v44;
       }
 
-      *a8 = 1;
+      *running = 1;
       v55 = objc_opt_new();
       if (v55)
       {
@@ -697,7 +697,7 @@ LABEL_17:
 
         if (v60)
         {
-          v173 = v15;
+          v173 = marksCopy;
           v64 = objc_msgSend_desc(v60, v61, v62, v63);
           objc_msgSend_setUsage_(v64, v65, 7, v66);
 
@@ -745,8 +745,8 @@ LABEL_17:
 
             if (v55[3])
             {
-              v15 = v173;
-              v152 = objc_msgSend_GhostMitigationWithPyr_outputImage_tuning_faceLandMarks_ev0FrameMetadata_roi_gainMap_(self->_greenGhostStage, v151, self->_outputPyr, v55, v16, v173, a5, v174, *&v197);
+              marksCopy = v173;
+              v152 = objc_msgSend_GhostMitigationWithPyr_outputImage_tuning_faceLandMarks_ev0FrameMetadata_roi_gainMap_(self->_greenGhostStage, v151, self->_outputPyr, v55, tuningCopy, v173, metadata, mapCopy, *&v197);
               if (v152)
               {
                 v51 = v152;
@@ -791,7 +791,7 @@ LABEL_17:
           }
 
           v51 = v182[0];
-          v15 = v173;
+          marksCopy = v173;
 LABEL_33:
 
           v50 = v42;
@@ -833,21 +833,21 @@ LABEL_34:
   return v51;
 }
 
-- (int)runWithExposure:(const exposureParameters *)a3 staticScene:(BOOL)a4 dasPlist:(id)a5 nmPlist:(id)a6 defringingTuning:(id)a7 greenGhostBrightLightTuning:(id)a8 greenGhostEnabled:(BOOL)a9 skinMask:(id)a10 skyMask:(id)a11 maskExtent:(CGRect)a12 faceLandMarks:(id)a13 ev0FrameMetadata:(const frameMetadata *)a14 evmFrameMetadata:(const frameMetadata *)a15 defringeEnabled:(BOOL)a16 isLowLight:(BOOL)a17 gainMap:(id)a18
+- (int)runWithExposure:(const exposureParameters *)exposure staticScene:(BOOL)scene dasPlist:(id)plist nmPlist:(id)nmPlist defringingTuning:(id)tuning greenGhostBrightLightTuning:(id)lightTuning greenGhostEnabled:(BOOL)enabled skinMask:(id)self0 skyMask:(id)self1 maskExtent:(CGRect)self2 faceLandMarks:(id)self3 ev0FrameMetadata:(const frameMetadata *)self4 evmFrameMetadata:(const frameMetadata *)self5 defringeEnabled:(BOOL)self6 isLowLight:(BOOL)self7 gainMap:(id)self8
 {
-  v189 = a4;
-  height = a12.size.height;
-  width = a12.size.width;
-  y = a12.origin.y;
-  x = a12.origin.x;
-  v27 = a5;
-  v28 = a6;
-  v194 = a7;
-  v193 = a8;
-  v196 = a10;
-  v195 = a11;
-  v192 = a13;
-  v191 = a18;
+  sceneCopy = scene;
+  height = extent.size.height;
+  width = extent.size.width;
+  y = extent.origin.y;
+  x = extent.origin.x;
+  plistCopy = plist;
+  nmPlistCopy = nmPlist;
+  tuningCopy = tuning;
+  lightTuningCopy = lightTuning;
+  maskCopy = mask;
+  skyMaskCopy = skyMask;
+  marksCopy = marks;
+  mapCopy = map;
   v217 = 0;
   v32 = objc_msgSend_allocator(self->_metalContext, v29, v30, v31);
   v36 = objc_msgSend_newTextureDescriptor(v32, v33, v34, v35);
@@ -857,17 +857,17 @@ LABEL_34:
     sub_2958C2804(v199);
     v73 = 0;
     v146 = v199[0];
-    v51 = v27;
+    v51 = plistCopy;
 LABEL_41:
-    v52 = v194;
+    v52 = tuningCopy;
     goto LABEL_35;
   }
 
   v40 = objc_msgSend_desc(v36, v37, v38, v39);
   objc_msgSend_setUsage_(v40, v41, 7, v42);
 
-  v51 = v27;
-  if (objc_msgSend_computeConfiguration_staticScene_dasPlist_nmPlist_isLowLight_(self, v43, a3, v189, v27, v28, a17))
+  v51 = plistCopy;
+  if (objc_msgSend_computeConfiguration_staticScene_dasPlist_nmPlist_isLowLight_(self, v43, exposure, sceneCopy, plistCopy, nmPlistCopy, light))
   {
     sub_2958C2190(v199);
     v73 = 0;
@@ -875,7 +875,7 @@ LABEL_41:
     goto LABEL_41;
   }
 
-  v52 = v194;
+  v52 = tuningCopy;
   if (!self->_inputPyramidGenerationEnabled)
   {
     goto LABEL_6;
@@ -897,9 +897,9 @@ LABEL_48:
   }
 
 LABEL_6:
-  v190 = v28;
-  v188 = a3;
-  if (!a16)
+  v190 = nmPlistCopy;
+  exposureCopy = exposure;
+  if (!defringeEnabled)
   {
 LABEL_16:
     sharpeningPyramid = self->_sharpeningPyramid;
@@ -914,12 +914,12 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  *&v48 = a3->exposure_time;
-  *&v47 = a3->gain;
-  *&v49 = a3->red_gain;
-  *&v50 = a3->blue_gain;
-  objc_msgSend_setMetadataGain_exposureTime_AWBRGain_AWBBGain_(v194, v44, v45, v46, v47, v48, v49, v50);
-  if (!v194)
+  *&v48 = exposure->exposure_time;
+  *&v47 = exposure->gain;
+  *&v49 = exposure->red_gain;
+  *&v50 = exposure->blue_gain;
+  objc_msgSend_setMetadataGain_exposureTime_AWBRGain_AWBBGain_(tuningCopy, v44, v45, v46, v47, v48, v49, v50);
+  if (!tuningCopy)
   {
     v214 = 0u;
     v215 = 0u;
@@ -949,13 +949,13 @@ LABEL_14:
     goto LABEL_16;
   }
 
-  objc_msgSend_correctionParams(v194, v55, v56, v57);
+  objc_msgSend_correctionParams(tuningCopy, v55, v56, v57);
   if (*(&v214 + 1) <= 0.1)
   {
     goto LABEL_14;
   }
 
-  if (!self->_defringeStage || (objc_msgSend_defringingEnabled(v194, v58, v59, v60) & 1) == 0)
+  if (!self->_defringeStage || (objc_msgSend_defringingEnabled(tuningCopy, v58, v59, v60) & 1) == 0)
   {
     sub_2958C2460(v199);
     v73 = 0;
@@ -995,7 +995,7 @@ LABEL_14:
     goto LABEL_35;
   }
 
-  v181 = objc_msgSend_defringePyramid_outputPyramid_chromaScratch_tuningParameters_(self->_defringeStage, v180, self->_pyramid, self->_defringePyramid, v179, v194);
+  v181 = objc_msgSend_defringePyramid_outputPyramid_chromaScratch_tuningParameters_(self->_defringeStage, v180, self->_pyramid, self->_defringePyramid, v179, tuningCopy);
   if (v181)
   {
     v146 = v181;
@@ -1064,7 +1064,7 @@ LABEL_53:
     goto LABEL_35;
   }
 
-  v97 = objc_msgSend_run_skinMask_skyMask_maskExtent_(self->_denoiseRemixStage, v96, v73, v196, v195, x, y, width, height);
+  v97 = objc_msgSend_run_skinMask_skyMask_maskExtent_(self->_denoiseRemixStage, v96, v73, maskCopy, skyMaskCopy, x, y, width, height);
   if (v97)
   {
     v146 = v97;
@@ -1075,7 +1075,7 @@ LABEL_53:
   objc_storeStrong(&self->_outputImg->lumaTex, self->_outputPyr->textureY[0]);
   objc_storeStrong(&self->_outputImg->chromaTex, self->_outputPyr->textureUV[0]);
   v198 = 0;
-  if (!a9)
+  if (!enabled)
   {
     goto LABEL_31;
   }
@@ -1087,13 +1087,13 @@ LABEL_53:
     v103 = objc_msgSend_commandQueue(self->_metalContext, v98, v99, v100);
     v107 = objc_msgSend_commandBuffer(v103, v104, v105, v106);
 
-    v28 = v190;
+    nmPlistCopy = v190;
     objc_msgSend_setLabel_(v107, v108, @"KTRACE_START_MTL", v109);
     objc_msgSend_addCompletedHandler_(v107, v110, &unk_2A1CA9860, v111);
     objc_msgSend_commit(v107, v112, v113, v114);
   }
 
-  IsRunning_gainMap = objc_msgSend_greenGhostMitigationWithExposure_faceLandMarks_ev0FrameMetadata_evmFrameMetadata_greenGhostBrightLightTuning_greenGhostIsRunning_gainMap_(self, v98, v188, v192, a14, a15, v193, &v198, v191);
+  IsRunning_gainMap = objc_msgSend_greenGhostMitigationWithExposure_faceLandMarks_ev0FrameMetadata_evmFrameMetadata_greenGhostBrightLightTuning_greenGhostIsRunning_gainMap_(self, v98, exposureCopy, marksCopy, metadata, frameMetadata, lightTuningCopy, &v198, mapCopy);
   if (!IsRunning_gainMap)
   {
     v119 = *v102;
@@ -1115,7 +1115,7 @@ LABEL_53:
 
 LABEL_31:
     v132 = objc_opt_new();
-    v135 = objc_msgSend_numberWithBool_(MEMORY[0x29EDBA070], v133, a9, v134);
+    v135 = objc_msgSend_numberWithBool_(MEMORY[0x29EDBA070], v133, enabled, v134);
     objc_msgSend_setObject_forKeyedSubscript_(v132, v136, v135, @"isEnabled");
 
     v139 = objc_msgSend_numberWithBool_(MEMORY[0x29EDBA070], v137, v198, v138);
@@ -1139,7 +1139,7 @@ LABEL_31:
   sub_2958C27A4();
   v51 = v101;
 LABEL_34:
-  v52 = v194;
+  v52 = tuningCopy;
 LABEL_35:
 
   return v146;

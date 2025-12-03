@@ -1,5 +1,5 @@
 @interface TPSAnalyticsSessionController
-+ (void)_incrementSessionViewNumberForKey:(id)a3;
++ (void)_incrementSessionViewNumberForKey:(id)key;
 + (void)_logSessionData;
 + (void)_resetSession;
 + (void)endSession;
@@ -48,7 +48,7 @@
         _os_log_impl(&dword_1C00A7000, v10, OS_LOG_TYPE_INFO, "Previous session will be reset now because it started more than %lu seconds ago.", &v14, 0xCu);
       }
 
-      [a1 endSession];
+      [self endSession];
     }
 
     else
@@ -71,7 +71,7 @@
       _os_log_impl(&dword_1C00A7000, v12, OS_LOG_TYPE_INFO, "Starting a new session and resetting content view counts.", &v14, 2u);
     }
 
-    [a1 _resetSession];
+    [self _resetSession];
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -79,20 +79,20 @@
 
 + (void)endSession
 {
-  [a1 _logSessionData];
+  [self _logSessionData];
 
-  [a1 _resetSession];
+  [self _resetSession];
 }
 
 + (void)_logSessionData
 {
   v2 = [TPSAnalyticsPersistenceController persistedObjectForKey:@"collections_viewed"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
   v4 = [TPSAnalyticsPersistenceController persistedObjectForKey:@"tips_viewed"];
-  v5 = [v4 integerValue];
+  integerValue2 = [v4 integerValue];
 
-  v6 = [TPSAnalyticsEventSession eventWithCollectionsViewed:v3 tipsViewed:v5];
+  v6 = [TPSAnalyticsEventSession eventWithCollectionsViewed:integerValue tipsViewed:integerValue2];
   [v6 log];
 }
 
@@ -106,14 +106,14 @@
   [TPSAnalyticsPersistenceController persistObject:&unk_1F3F41DD0 forKey:@"tips_viewed"];
 }
 
-+ (void)_incrementSessionViewNumberForKey:(id)a3
++ (void)_incrementSessionViewNumberForKey:(id)key
 {
-  v3 = a3;
-  v4 = [TPSAnalyticsPersistenceController persistedObjectForKey:v3];
-  v5 = [v4 integerValue];
+  keyCopy = key;
+  v4 = [TPSAnalyticsPersistenceController persistedObjectForKey:keyCopy];
+  integerValue = [v4 integerValue];
 
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:v5 + 1];
-  [TPSAnalyticsPersistenceController persistObject:v6 forKey:v3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue + 1];
+  [TPSAnalyticsPersistenceController persistObject:v6 forKey:keyCopy];
 }
 
 @end

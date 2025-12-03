@@ -6,8 +6,8 @@
 - (void)_willDeallocOrFinalize;
 - (void)cancelAllPendingVideoCompositionRequests;
 - (void)dealloc;
-- (void)renderContextChanged:(id)a3;
-- (void)startVideoCompositionRequest:(id)a3;
+- (void)renderContextChanged:(id)changed;
+- (void)startVideoCompositionRequest:(id)request;
 @end
 
 @implementation AVCoreImageFilterCustomVideoCompositor
@@ -78,7 +78,7 @@
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:v4 count:3];
 }
 
-- (void)renderContextChanged:(id)a3
+- (void)renderContextChanged:(id)changed
 {
   defaultCIContextThreadSafety = self->_defaultCIContextThreadSafety;
   block[0] = MEMORY[0x1E69E9820];
@@ -124,17 +124,17 @@ id __58__AVCoreImageFilterCustomVideoCompositor_defaultCIContext__block_invoke(u
   return result;
 }
 
-- (void)startVideoCompositionRequest:(id)a3
+- (void)startVideoCompositionRequest:(id)request
 {
   if ([(AVCoreImageFilterCustomVideoCompositor *)self shouldCancelAllRequests])
   {
 
-    [a3 finishCancelledRequest];
+    [request finishCancelledRequest];
   }
 
   else
   {
-    v6 = [a3 videoCompositionInstruction];
+    videoCompositionInstruction = [request videoCompositionInstruction];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -142,10 +142,10 @@ id __58__AVCoreImageFilterCustomVideoCompositor_defaultCIContext__block_invoke(u
       objc_exception_throw(v17);
     }
 
-    v12 = [objc_msgSend(a3 "sourceTrackIDs")];
+    v12 = [objc_msgSend(request "sourceTrackIDs")];
     if (v12)
     {
-      v13 = [a3 sourceFrameByTrackID:{objc_msgSend(v12, "intValue")}];
+      v13 = [request sourceFrameByTrackID:{objc_msgSend(v12, "intValue")}];
     }
 
     else
@@ -170,9 +170,9 @@ id __58__AVCoreImageFilterCustomVideoCompositor_defaultCIContext__block_invoke(u
     v19[1] = 3221225472;
     v19[2] = __71__AVCoreImageFilterCustomVideoCompositor_startVideoCompositionRequest___block_invoke_3;
     v19[3] = &unk_1E7460C00;
-    v15 = [(AVAsynchronousCIImageFilteringRequest *)v14 initUsingCompositingRequest:a3 sourceFrame:v13 cancellationTest:v21 defaultCIContextProvider:v20 completionHandler:v19];
-    v16 = [v6 handler];
-    (*(v16 + 16))(v16, v15);
+    v15 = [(AVAsynchronousCIImageFilteringRequest *)v14 initUsingCompositingRequest:request sourceFrame:v13 cancellationTest:v21 defaultCIContextProvider:v20 completionHandler:v19];
+    handler = [videoCompositionInstruction handler];
+    (*(handler + 16))(handler, v15);
   }
 }
 

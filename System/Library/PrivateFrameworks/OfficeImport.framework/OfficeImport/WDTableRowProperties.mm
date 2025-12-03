@@ -7,8 +7,8 @@
 - (BOOL)isWidthAfterTypeOverridden;
 - (BOOL)isWidthBeforeOverridden;
 - (BOOL)isWidthBeforeTypeOverridden;
-- (WDTableRowProperties)initWithDocument:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WDTableRowProperties)initWithDocument:(id)document;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int)heightType;
 - (int)resolveMode;
@@ -17,16 +17,16 @@
 - (int64_t)height;
 - (signed)widthAfter;
 - (signed)widthBefore;
-- (void)addProperties:(id)a3;
-- (void)addPropertiesValues:(id *)a3 to:(id *)a4;
-- (void)setHeader:(BOOL)a3;
-- (void)setHeight:(int64_t)a3;
-- (void)setHeightType:(int)a3;
-- (void)setResolveMode:(int)a3;
-- (void)setWidthAfter:(signed __int16)a3;
-- (void)setWidthAfterType:(int)a3;
-- (void)setWidthBefore:(signed __int16)a3;
-- (void)setWidthBeforeType:(int)a3;
+- (void)addProperties:(id)properties;
+- (void)addPropertiesValues:(id *)values to:(id *)to;
+- (void)setHeader:(BOOL)header;
+- (void)setHeight:(int64_t)height;
+- (void)setHeightType:(int)type;
+- (void)setResolveMode:(int)mode;
+- (void)setWidthAfter:(signed __int16)after;
+- (void)setWidthAfterType:(int)type;
+- (void)setWidthBefore:(signed __int16)before;
+- (void)setWidthBeforeType:(int)type;
 @end
 
 @implementation WDTableRowProperties
@@ -87,19 +87,19 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (WDTableRowProperties)initWithDocument:(id)a3
+- (WDTableRowProperties)initWithDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v11.receiver = self;
   v11.super_class = WDTableRowProperties;
   v5 = [(WDTableRowProperties *)&v11 init];
   if (v5)
   {
-    v6 = [[WDTableProperties alloc] initWithDocument:v4];
+    v6 = [[WDTableProperties alloc] initWithDocument:documentCopy];
     mTableProperties = v5->mTableProperties;
     v5->mTableProperties = v6;
 
-    v8 = [[WDCharacterProperties alloc] initWithDocument:v4];
+    v8 = [[WDCharacterProperties alloc] initWithDocument:documentCopy];
     mCharacterProperties = v5->mCharacterProperties;
     v5->mCharacterProperties = v8;
 
@@ -133,10 +133,10 @@ LABEL_4:
   }
 }
 
-- (void)setResolveMode:(int)a3
+- (void)setResolveMode:(int)mode
 {
-  v3 = (2 * (a3 == 1)) | (4 * (a3 == 2));
-  if (!a3)
+  v3 = (2 * (mode == 1)) | (4 * (mode == 2));
+  if (!mode)
   {
     ++v3;
   }
@@ -144,11 +144,11 @@ LABEL_4:
   *(self + 24) = v3 | *(self + 24) & 0xF8;
 }
 
-- (void)addProperties:(id)a3
+- (void)addProperties:(id)properties
 {
-  v4 = a3;
-  [(WDTableRowProperties *)self addPropertiesValues:v4 + 32 to:&self->mOriginalProperties];
-  [(WDTableRowProperties *)self addPropertiesValues:v4 + 64 to:&self->mTrackedProperties];
+  propertiesCopy = properties;
+  [(WDTableRowProperties *)self addPropertiesValues:propertiesCopy + 32 to:&self->mOriginalProperties];
+  [(WDTableRowProperties *)self addPropertiesValues:propertiesCopy + 64 to:&self->mTrackedProperties];
 }
 
 - (signed)widthBefore
@@ -171,7 +171,7 @@ LABEL_4:
   return *(&self->super.isa + v2);
 }
 
-- (void)setWidthBefore:(signed __int16)a3
+- (void)setWidthBefore:(signed __int16)before
 {
   if ((*(self + 24) & 2) != 0)
   {
@@ -190,7 +190,7 @@ LABEL_4:
     v4 = 32;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = before;
   *(&self->super.isa + v3) |= 1u;
 }
 
@@ -252,7 +252,7 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (void)setWidthBeforeType:(int)a3
+- (void)setWidthBeforeType:(int)type
 {
   if ((*(self + 24) & 2) != 0)
   {
@@ -271,7 +271,7 @@ LABEL_4:
     v4 = 36;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = type;
   *(&self->super.isa + v3) |= 2u;
 }
 
@@ -328,7 +328,7 @@ LABEL_4:
   return 0;
 }
 
-- (void)setWidthAfter:(signed __int16)a3
+- (void)setWidthAfter:(signed __int16)after
 {
   if ((*(self + 24) & 2) != 0)
   {
@@ -347,7 +347,7 @@ LABEL_4:
     v4 = 40;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = after;
   *(&self->super.isa + v3) |= 4u;
 }
 
@@ -407,7 +407,7 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (void)setWidthAfterType:(int)a3
+- (void)setWidthAfterType:(int)type
 {
   if ((*(self + 24) & 2) != 0)
   {
@@ -426,7 +426,7 @@ LABEL_4:
     v4 = 44;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = type;
   *(&self->super.isa + v3) |= 8u;
 }
 
@@ -466,7 +466,7 @@ LABEL_4:
   return v2;
 }
 
-- (void)setHeight:(int64_t)a3
+- (void)setHeight:(int64_t)height
 {
   if ((*(self + 24) & 2) != 0)
   {
@@ -485,7 +485,7 @@ LABEL_4:
     v4 = 48;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = height;
   *(&self->super.isa + v3) |= 0x10u;
 }
 
@@ -509,7 +509,7 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (void)setHeightType:(int)a3
+- (void)setHeightType:(int)type
 {
   if ((*(self + 24) & 2) != 0)
   {
@@ -528,7 +528,7 @@ LABEL_4:
     v4 = 56;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = type;
   *(&self->super.isa + v3) |= 0x20u;
 }
 
@@ -583,7 +583,7 @@ LABEL_4:
   return self;
 }
 
-- (void)setHeader:(BOOL)a3
+- (void)setHeader:(BOOL)header
 {
   if ((*(self + 24) & 2) != 0)
   {
@@ -600,7 +600,7 @@ LABEL_4:
     v3 = 60;
   }
 
-  if (a3)
+  if (header)
   {
     v4 = -64;
   }
@@ -646,7 +646,7 @@ LABEL_10:
   return 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[WDTableRowProperties allocWithZone:?]];
   if (v4)
@@ -681,56 +681,56 @@ LABEL_10:
   return v2;
 }
 
-- (void)addPropertiesValues:(id *)a3 to:(id *)a4
+- (void)addPropertiesValues:(id *)values to:(id *)to
 {
-  v4 = *(a4 + 28);
-  if (v4 & 1) == 0 && (*(a3 + 28))
+  v4 = *(to + 28);
+  if (v4 & 1) == 0 && (*(values + 28))
   {
     v4 |= 1u;
-    *(a4 + 28) = v4;
-    a4->var0 = a3->var0;
+    *(to + 28) = v4;
+    to->var0 = values->var0;
   }
 
-  if ((v4 & 2) == 0 && (*(a3 + 28) & 2) != 0)
+  if ((v4 & 2) == 0 && (*(values + 28) & 2) != 0)
   {
     v4 |= 2u;
-    *(a4 + 28) = v4;
-    a4->var1 = a3->var1;
+    *(to + 28) = v4;
+    to->var1 = values->var1;
   }
 
-  if ((v4 & 4) == 0 && (*(a3 + 28) & 4) != 0)
+  if ((v4 & 4) == 0 && (*(values + 28) & 4) != 0)
   {
     v4 |= 4u;
-    *(a4 + 28) = v4;
-    a4->var2 = a3->var2;
+    *(to + 28) = v4;
+    to->var2 = values->var2;
   }
 
-  if ((v4 & 8) == 0 && (*(a3 + 28) & 8) != 0)
+  if ((v4 & 8) == 0 && (*(values + 28) & 8) != 0)
   {
     v4 |= 8u;
-    *(a4 + 28) = v4;
-    a4->var3 = a3->var3;
+    *(to + 28) = v4;
+    to->var3 = values->var3;
   }
 
-  if ((v4 & 0x10) == 0 && (*(a3 + 28) & 0x10) != 0)
+  if ((v4 & 0x10) == 0 && (*(values + 28) & 0x10) != 0)
   {
     v4 |= 0x10u;
-    *(a4 + 28) = v4;
-    a4->var4 = a3->var4;
+    *(to + 28) = v4;
+    to->var4 = values->var4;
   }
 
-  if ((v4 & 0x20) == 0 && (*(a3 + 28) & 0x20) != 0)
+  if ((v4 & 0x20) == 0 && (*(values + 28) & 0x20) != 0)
   {
     v4 |= 0x20u;
-    *(a4 + 28) = v4;
-    a4->var5 = a3->var5;
+    *(to + 28) = v4;
+    to->var5 = values->var5;
   }
 
-  if ((v4 & 0x80) == 0 && *(a3 + 28) < 0)
+  if ((v4 & 0x80) == 0 && *(values + 28) < 0)
   {
     v5 = v4 | 0x80;
-    *(a4 + 28) = v5;
-    *(a4 + 28) = *(a3 + 28) & 0x40 | v5 & 0xBF;
+    *(to + 28) = v5;
+    *(to + 28) = *(values + 28) & 0x40 | v5 & 0xBF;
   }
 }
 

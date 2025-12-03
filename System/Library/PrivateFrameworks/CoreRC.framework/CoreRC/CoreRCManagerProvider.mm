@@ -1,16 +1,16 @@
 @interface CoreRCManagerProvider
-- (BOOL)setExtendedProperty:(id)a3 forKey:(id)a4 ofDevice:(id)a5 error:(id *)a6;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 ofBus:(id)a5 error:(id *)a6;
-- (CoreRCManagerProvider)initWithSerialQueue:(id)a3 withoutPlugins:(BOOL)a4;
-- (id)addDeviceWithBus:(id)a3 transportProperties:(id)a4 error:(id *)a5;
-- (id)createRCOverrideFromPaths:(id)a3;
-- (id)extendedPropertyForKey:(id)a3 ofDevice:(id)a4 error:(id *)a5;
-- (id)propertyForKey:(id)a3 ofBus:(id)a4 error:(id *)a5;
+- (BOOL)setExtendedProperty:(id)property forKey:(id)key ofDevice:(id)device error:(id *)error;
+- (BOOL)setProperty:(id)property forKey:(id)key ofBus:(id)bus error:(id *)error;
+- (CoreRCManagerProvider)initWithSerialQueue:(id)queue withoutPlugins:(BOOL)plugins;
+- (id)addDeviceWithBus:(id)bus transportProperties:(id)properties error:(id *)error;
+- (id)createRCOverrideFromPaths:(id)paths;
+- (id)extendedPropertyForKey:(id)key ofDevice:(id)device error:(id *)error;
+- (id)propertyForKey:(id)key ofBus:(id)bus error:(id *)error;
 - (void)dealloc;
 - (void)initCECOverrides;
 - (void)initOverrides;
-- (void)interfaceController:(id)a3 didAddInterface:(id)a4;
-- (void)interfaceController:(id)a3 didRemoveInterface:(id)a4;
+- (void)interfaceController:(id)controller didAddInterface:(id)interface;
+- (void)interfaceController:(id)controller didRemoveInterface:(id)interface;
 @end
 
 @implementation CoreRCManagerProvider
@@ -22,15 +22,15 @@
   [(CoreRCManagerProvider *)self setStandardOverride:v3];
 }
 
-- (CoreRCManagerProvider)initWithSerialQueue:(id)a3 withoutPlugins:(BOOL)a4
+- (CoreRCManagerProvider)initWithSerialQueue:(id)queue withoutPlugins:(BOOL)plugins
 {
   v9.receiver = self;
   v9.super_class = CoreRCManagerProvider;
-  v5 = [(CoreRCManager *)&v9 initWithSerialQueue:a3];
+  v5 = [(CoreRCManager *)&v9 initWithSerialQueue:queue];
   v6 = v5;
   if (v5)
   {
-    if (!a4)
+    if (!plugins)
     {
       [(CoreRCManagerProvider *)v5 initOverrides];
     }
@@ -52,14 +52,14 @@
   [(CoreRCManager *)&v3 dealloc];
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 ofBus:(id)a5 error:(id *)a6
+- (BOOL)setProperty:(id)property forKey:(id)key ofBus:(id)bus error:(id *)error
 {
   v12 = 0;
-  v9 = [(CoreRCManager *)self managedBusEquivalentTo:a5];
+  v9 = [(CoreRCManager *)self managedBusEquivalentTo:bus];
   if (v9)
   {
-    result = [v9 setProperty:a3 forKey:a4 error:&v12];
-    if (!a6)
+    result = [v9 setProperty:property forKey:key error:&v12];
+    if (!error)
     {
       return result;
     }
@@ -69,7 +69,7 @@
   {
     [CoreRCManagerProvider setProperty:v10 forKey:? ofBus:? error:?];
     result = 0;
-    if (!a6)
+    if (!error)
     {
       return result;
     }
@@ -77,20 +77,20 @@
 
   if (!result)
   {
-    *a6 = v12;
+    *error = v12;
   }
 
   return result;
 }
 
-- (id)propertyForKey:(id)a3 ofBus:(id)a4 error:(id *)a5
+- (id)propertyForKey:(id)key ofBus:(id)bus error:(id *)error
 {
   v10 = 0;
-  v7 = [(CoreRCManager *)self managedBusEquivalentTo:a4];
+  v7 = [(CoreRCManager *)self managedBusEquivalentTo:bus];
   if (v7)
   {
-    result = [v7 propertyForKey:a3 error:&v10];
-    if (!a5)
+    result = [v7 propertyForKey:key error:&v10];
+    if (!error)
     {
       return result;
     }
@@ -100,7 +100,7 @@
   {
     [CoreRCManagerProvider setProperty:v8 forKey:? ofBus:? error:?];
     result = 0;
-    if (!a5)
+    if (!error)
     {
       return result;
     }
@@ -108,20 +108,20 @@
 
   if (!result)
   {
-    *a5 = v10;
+    *error = v10;
   }
 
   return result;
 }
 
-- (BOOL)setExtendedProperty:(id)a3 forKey:(id)a4 ofDevice:(id)a5 error:(id *)a6
+- (BOOL)setExtendedProperty:(id)property forKey:(id)key ofDevice:(id)device error:(id *)error
 {
   v12 = 0;
-  v9 = [(CoreRCManager *)self managedDeviceEquivalentTo:a5];
+  v9 = [(CoreRCManager *)self managedDeviceEquivalentTo:device];
   if (v9)
   {
-    result = [v9 setExtendedProperty:a3 forKey:a4 error:&v12];
-    if (!a6)
+    result = [v9 setExtendedProperty:property forKey:key error:&v12];
+    if (!error)
     {
       return result;
     }
@@ -131,7 +131,7 @@
   {
     [CoreRCManagerProvider setProperty:v10 forKey:? ofBus:? error:?];
     result = 0;
-    if (!a6)
+    if (!error)
     {
       return result;
     }
@@ -139,20 +139,20 @@
 
   if (!result)
   {
-    *a6 = v12;
+    *error = v12;
   }
 
   return result;
 }
 
-- (id)extendedPropertyForKey:(id)a3 ofDevice:(id)a4 error:(id *)a5
+- (id)extendedPropertyForKey:(id)key ofDevice:(id)device error:(id *)error
 {
   v10 = 0;
-  v7 = [(CoreRCManager *)self managedDeviceEquivalentTo:a4];
+  v7 = [(CoreRCManager *)self managedDeviceEquivalentTo:device];
   if (v7)
   {
-    result = [v7 extendedPropertyForKey:a3 error:&v10];
-    if (!a5)
+    result = [v7 extendedPropertyForKey:key error:&v10];
+    if (!error)
     {
       return result;
     }
@@ -162,7 +162,7 @@
   {
     [CoreRCManagerProvider setProperty:v8 forKey:? ofBus:? error:?];
     result = 0;
-    if (!a5)
+    if (!error)
     {
       return result;
     }
@@ -170,13 +170,13 @@
 
   if (!result)
   {
-    *a5 = v10;
+    *error = v10;
   }
 
   return result;
 }
 
-- (void)interfaceController:(id)a3 didAddInterface:(id)a4
+- (void)interfaceController:(id)controller didAddInterface:(id)interface
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -190,7 +190,7 @@
   {
     v6 = off_278EA26B8;
 LABEL_5:
-    v7 = [objc_alloc(*v6) initWithInterface:a4];
+    v7 = [objc_alloc(*v6) initWithInterface:interface];
     if (v7)
     {
       v8 = v7;
@@ -206,16 +206,16 @@ LABEL_5:
   }
 }
 
-- (void)interfaceController:(id)a3 didRemoveInterface:(id)a4
+- (void)interfaceController:(id)controller didRemoveInterface:(id)interface
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v6 = [a4 delegate];
-    if (v6)
+    delegate = [interface delegate];
+    if (delegate)
     {
 
-      [(CoreRCManager *)self removeBus:v6];
+      [(CoreRCManager *)self removeBus:delegate];
     }
   }
 
@@ -225,7 +225,7 @@ LABEL_5:
   }
 }
 
-- (id)createRCOverrideFromPaths:(id)a3
+- (id)createRCOverrideFromPaths:(id)paths
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -233,8 +233,8 @@ LABEL_5:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = a3;
-  v5 = [a3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  obj = paths;
+  v5 = [paths countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -250,8 +250,8 @@ LABEL_5:
 
         v9 = *(*(&v20 + 1) + 8 * i);
         v10 = [MEMORY[0x277CCA8D8] bundleWithPath:{v9, v15, v16, v17, v18}];
-        v11 = [v10 principalClass];
-        v12 = objc_alloc_init(v11);
+        principalClass = [v10 principalClass];
+        v12 = objc_alloc_init(principalClass);
         if (v12)
         {
           [v4 addObject:v12];
@@ -259,7 +259,7 @@ LABEL_5:
 
         if (gLogCategory_CoreRCManager <= 10 && (gLogCategory_CoreRCManager != -1 || _LogCategory_Initialize()))
         {
-          v17 = v11;
+          v17 = principalClass;
           v18 = v12;
           v15 = v9;
           v16 = v10;
@@ -351,15 +351,15 @@ LABEL_5:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)addDeviceWithBus:(id)a3 transportProperties:(id)a4 error:(id *)a5
+- (id)addDeviceWithBus:(id)bus transportProperties:(id)properties error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [(CoreRCManagerProvider *)self pluginOverrides];
-  v9 = [(NSArray *)v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  pluginOverrides = [(CoreRCManagerProvider *)self pluginOverrides];
+  v9 = [(NSArray *)pluginOverrides countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -370,12 +370,12 @@ LABEL_3:
     {
       if (*v20 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(pluginOverrides);
       }
 
       v13 = *(*(&v19 + 1) + 8 * v12);
       v18 = 0;
-      result = [v13 addDeviceWithBus:a3 transportProperties:a4 error:&v18];
+      result = [v13 addDeviceWithBus:bus transportProperties:properties error:&v18];
       if (result)
       {
         break;
@@ -388,7 +388,7 @@ LABEL_3:
 
       if (v10 == ++v12)
       {
-        v15 = [(NSArray *)v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v15 = [(NSArray *)pluginOverrides countByEnumeratingWithState:&v19 objects:v23 count:16];
         v10 = v15;
         if (v15)
         {
@@ -403,11 +403,11 @@ LABEL_3:
   else
   {
 LABEL_14:
-    if (a5)
+    if (error)
     {
       v16 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-6727 userInfo:0];
       result = 0;
-      *a5 = v16;
+      *error = v16;
     }
 
     else

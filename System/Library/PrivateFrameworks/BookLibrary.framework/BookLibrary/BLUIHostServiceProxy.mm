@@ -2,30 +2,30 @@
 - (BLDownloadQueue)downloadQueue;
 - (BLDownloadQueueUIManagerProtocol)uiManagerDelegate;
 - (BLRequest)request;
-- (BLUIHostServiceProxy)initWithUIManager:(id)a3 forRequest:(id)a4 inDownloadQueue:(id)a5;
+- (BLUIHostServiceProxy)initWithUIManager:(id)manager forRequest:(id)request inDownloadQueue:(id)queue;
 - (id)_topMostViewController;
 - (id)_window;
-- (void)handleAuthenticateRequest:(id)a3 withReply:(id)a4;
-- (void)handleDialogRequest:(id)a3 withReply:(id)a4;
-- (void)handleEngagementRequest:(id)a3 withReply:(id)a4;
+- (void)handleAuthenticateRequest:(id)request withReply:(id)reply;
+- (void)handleDialogRequest:(id)request withReply:(id)reply;
+- (void)handleEngagementRequest:(id)request withReply:(id)reply;
 @end
 
 @implementation BLUIHostServiceProxy
 
-- (BLUIHostServiceProxy)initWithUIManager:(id)a3 forRequest:(id)a4 inDownloadQueue:(id)a5
+- (BLUIHostServiceProxy)initWithUIManager:(id)manager forRequest:(id)request inDownloadQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  requestCopy = request;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = BLUIHostServiceProxy;
   v11 = [(BLUIHostServiceProxy *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_request, v9);
-    objc_storeWeak(&v12->_downloadQueue, v10);
-    objc_storeWeak(&v12->_uiManagerDelegate, v8);
+    objc_storeWeak(&v11->_request, requestCopy);
+    objc_storeWeak(&v12->_downloadQueue, queueCopy);
+    objc_storeWeak(&v12->_uiManagerDelegate, managerCopy);
     v13 = objc_alloc_init(BLUIHostServiceNonUI);
     fallback = v12->_fallback;
     v12->_fallback = v13;
@@ -34,18 +34,18 @@
   return v12;
 }
 
-- (void)handleAuthenticateRequest:(id)a3 withReply:(id)a4
+- (void)handleAuthenticateRequest:(id)request withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = sub_241D0E88C;
   v16[3] = &unk_278D15718;
   v16[4] = self;
-  v8 = v7;
+  v8 = replyCopy;
   v18 = v8;
-  v9 = v6;
+  v9 = requestCopy;
   v17 = v9;
   v13 = MEMORY[0x245CFEDE0](v16);
   if (v13)
@@ -67,18 +67,18 @@
   }
 }
 
-- (void)handleDialogRequest:(id)a3 withReply:(id)a4
+- (void)handleDialogRequest:(id)request withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = sub_241D0ED94;
   v16[3] = &unk_278D15718;
   v16[4] = self;
-  v8 = v7;
+  v8 = replyCopy;
   v18 = v8;
-  v9 = v6;
+  v9 = requestCopy;
   v17 = v9;
   v13 = MEMORY[0x245CFEDE0](v16);
   if (v13)
@@ -100,18 +100,18 @@
   }
 }
 
-- (void)handleEngagementRequest:(id)a3 withReply:(id)a4
+- (void)handleEngagementRequest:(id)request withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = sub_241D0F33C;
   v16[3] = &unk_278D15718;
   v16[4] = self;
-  v8 = v7;
+  v8 = replyCopy;
   v18 = v8;
-  v9 = v6;
+  v9 = requestCopy;
   v17 = v9;
   v13 = MEMORY[0x245CFEDE0](v16);
   if (v13)

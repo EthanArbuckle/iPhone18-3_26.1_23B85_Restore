@@ -1,5 +1,5 @@
 @interface CKKSFixupFetchAllTLKShares
-- (CKKSFixupFetchAllTLKShares)initWithOperationDependencies:(id)a3 ckoperationGroup:(id)a4;
+- (CKKSFixupFetchAllTLKShares)initWithOperationDependencies:(id)dependencies ckoperationGroup:(id)group;
 - (id)description;
 - (void)groupStart;
 @end
@@ -8,17 +8,17 @@
 
 - (void)groupStart
 {
-  v3 = [(CKKSFixupFetchAllTLKShares *)self deps];
-  v4 = [v3 databaseProvider];
+  deps = [(CKKSFixupFetchAllTLKShares *)self deps];
+  databaseProvider = [deps databaseProvider];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(CKKSFixupFetchAllTLKShares *)self deps];
-  v6 = [v5 activeManagedViews];
+  deps2 = [(CKKSFixupFetchAllTLKShares *)self deps];
+  activeManagedViews = [deps2 activeManagedViews];
 
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [activeManagedViews countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -30,7 +30,7 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(activeManagedViews);
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
@@ -40,12 +40,12 @@
         v12[3] = &unk_100343B50;
         v12[4] = self;
         v12[5] = v11;
-        [v4 dispatchSyncWithSQLTransaction:v12];
+        [databaseProvider dispatchSyncWithSQLTransaction:v12];
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [activeManagedViews countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -54,25 +54,25 @@
 
 - (id)description
 {
-  v2 = [(CKKSFixupFetchAllTLKShares *)self deps];
-  v3 = [v2 views];
-  v4 = [NSString stringWithFormat:@"<CKKSFixup:FetchAllTLKShares (%@)>", v3];
+  deps = [(CKKSFixupFetchAllTLKShares *)self deps];
+  views = [deps views];
+  v4 = [NSString stringWithFormat:@"<CKKSFixup:FetchAllTLKShares (%@)>", views];
 
   return v4;
 }
 
-- (CKKSFixupFetchAllTLKShares)initWithOperationDependencies:(id)a3 ckoperationGroup:(id)a4
+- (CKKSFixupFetchAllTLKShares)initWithOperationDependencies:(id)dependencies ckoperationGroup:(id)group
 {
-  v7 = a3;
-  v8 = a4;
+  dependenciesCopy = dependencies;
+  groupCopy = group;
   v12.receiver = self;
   v12.super_class = CKKSFixupFetchAllTLKShares;
   v9 = [(CKKSGroupOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_deps, a3);
-    objc_storeStrong(&v10->_group, a4);
+    objc_storeStrong(&v9->_deps, dependencies);
+    objc_storeStrong(&v10->_group, group);
     objc_storeStrong(&v10->_intendedState, @"fixup_local_reload");
     objc_storeStrong(&v10->_nextState, @"error");
   }

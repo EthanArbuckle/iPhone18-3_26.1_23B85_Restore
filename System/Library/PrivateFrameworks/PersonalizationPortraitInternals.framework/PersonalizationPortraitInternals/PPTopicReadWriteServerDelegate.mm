@@ -1,14 +1,14 @@
 @interface PPTopicReadWriteServerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PPTopicReadWriteServerDelegate)init;
 @end
 
 @implementation PPTopicReadWriteServerDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v7 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284790228];
   v8 = objc_autoreleasePoolPush();
   v9 = objc_alloc(MEMORY[0x277CBEB98]);
@@ -32,7 +32,7 @@
   [v7 setClasses:v19 forSelector:sel_deleteAllTopicsFromSourcesWithBundleId_documentIds_completion_ argumentIndex:1 ofReply:0];
 
   v20 = objc_opt_new();
-  LOBYTE(v16) = [PPXPCServerHelper shouldAcceptConnection:v6 serviceName:@"com.apple.proactive.PersonalizationPortrait.Topic.readWrite" allowedServerInterface:v7 allowedClientInterface:0 requestHandler:v20 validateConnection:&__block_literal_global_4684 setupClientProxy:0 interruptionHandler:&__block_literal_global_95 invalidationHandler:&__block_literal_global_97];
+  LOBYTE(v16) = [PPXPCServerHelper shouldAcceptConnection:connectionCopy serviceName:@"com.apple.proactive.PersonalizationPortrait.Topic.readWrite" allowedServerInterface:v7 allowedClientInterface:0 requestHandler:v20 validateConnection:&__block_literal_global_4684 setupClientProxy:0 interruptionHandler:&__block_literal_global_95 invalidationHandler:&__block_literal_global_97];
 
   return v16;
 }

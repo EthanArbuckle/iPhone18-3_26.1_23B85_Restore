@@ -1,41 +1,41 @@
 @interface MFBlockedSenderBannerView
-- (MFBlockedSenderBannerView)initWithFrame:(CGRect)a3;
+- (MFBlockedSenderBannerView)initWithFrame:(CGRect)frame;
 - (MFBlockedSenderBannerViewDelegate)delegate;
-- (void)_bannerDismissed:(id)a3;
-- (void)_titleControlTapped:(id)a3;
+- (void)_bannerDismissed:(id)dismissed;
+- (void)_titleControlTapped:(id)tapped;
 - (void)dismissAction;
 - (void)primaryAction;
 @end
 
 @implementation MFBlockedSenderBannerView
 
-- (MFBlockedSenderBannerView)initWithFrame:(CGRect)a3
+- (MFBlockedSenderBannerView)initWithFrame:(CGRect)frame
 {
   v30[1] = *MEMORY[0x277D85DE8];
   v27.receiver = self;
   v27.super_class = MFBlockedSenderBannerView;
-  v3 = [(MFSuggestionBannerView *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFSuggestionBannerView *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
     v5 = objc_alloc(MEMORY[0x277CCA898]);
-    v6 = [MEMORY[0x277CCA8D8] mainBundle];
-    v7 = [v6 localizedStringForKey:@"MESSAGE_FROM_BLOCKED_SENDER" value:&stru_2826D1AD8 table:@"Main"];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v7 = [mainBundle localizedStringForKey:@"MESSAGE_FROM_BLOCKED_SENDER" value:&stru_2826D1AD8 table:@"Main"];
     v29 = *MEMORY[0x277D740C0];
-    v8 = [MEMORY[0x277D75348] secondaryLabelColor];
-    v30[0] = v8;
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    v30[0] = secondaryLabelColor;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:&v29 count:1];
     v10 = [v5 initWithString:v7 attributes:v9];
     [v4 setAttributedTitle:v10];
 
-    v11 = [MEMORY[0x277CCA8D8] mainBundle];
-    v12 = [v11 localizedStringForKey:@"BLOCKED_SENDER_SETTINGS" value:&stru_2826D1AD8 table:@"Main"];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v12 = [mainBundle2 localizedStringForKey:@"BLOCKED_SENDER_SETTINGS" value:&stru_2826D1AD8 table:@"Main"];
     [v4 setActionTitle:v12];
 
     [v4 setAccessoryType:1];
     [v4 setActionButtonType:0];
-    v13 = [MEMORY[0x277D75348] systemRedColor];
-    v14 = [MFSuggestionBannerView bannerIconViewForSymbol:*MEMORY[0x277CD6838] tintColor:v13];
+    systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+    v14 = [MFSuggestionBannerView bannerIconViewForSymbol:*MEMORY[0x277CD6838] tintColor:systemRedColor];
     v28 = v14;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
     [v4 setImageSGViews:v15];
@@ -84,26 +84,26 @@ void __43__MFBlockedSenderBannerView_initWithFrame___block_invoke_2(uint64_t a1)
 
 - (void)primaryAction
 {
-  v3 = [(MFBlockedSenderBannerView *)self delegate];
-  [v3 didTapBlockedSenderBannerView:self];
+  delegate = [(MFBlockedSenderBannerView *)self delegate];
+  [delegate didTapBlockedSenderBannerView:self];
 }
 
 - (void)dismissAction
 {
-  v3 = [(MFBlockedSenderBannerView *)self delegate];
-  [v3 didDismissBlockedSenderBannerView:self];
+  delegate = [(MFBlockedSenderBannerView *)self delegate];
+  [delegate didDismissBlockedSenderBannerView:self];
 }
 
-- (void)_titleControlTapped:(id)a3
+- (void)_titleControlTapped:(id)tapped
 {
-  v4 = [(MFBlockedSenderBannerView *)self delegate];
-  [v4 didTapBlockedSenderBannerView:self];
+  delegate = [(MFBlockedSenderBannerView *)self delegate];
+  [delegate didTapBlockedSenderBannerView:self];
 }
 
-- (void)_bannerDismissed:(id)a3
+- (void)_bannerDismissed:(id)dismissed
 {
-  v4 = [(MFBlockedSenderBannerView *)self delegate];
-  [v4 didDismissBlockedSenderBannerView:self];
+  delegate = [(MFBlockedSenderBannerView *)self delegate];
+  [delegate didDismissBlockedSenderBannerView:self];
 }
 
 - (MFBlockedSenderBannerViewDelegate)delegate

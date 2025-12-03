@@ -1,6 +1,6 @@
 @interface CAMMetalView
-- (CAMMetalView)initWithCoder:(id)a3;
-- (CAMMetalView)initWithFrame:(CGRect)a3;
+- (CAMMetalView)initWithCoder:(id)coder;
+- (CAMMetalView)initWithFrame:(CGRect)frame;
 - (CAMMetalViewDelegate)metalViewDelegate;
 - (void)_registerForTraitCollectionChanges;
 - (void)layoutSubviews;
@@ -8,11 +8,11 @@
 
 @implementation CAMMetalView
 
-- (CAMMetalView)initWithFrame:(CGRect)a3
+- (CAMMetalView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CAMMetalView;
-  v3 = [(CAMMetalView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMMetalView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -22,11 +22,11 @@
   return v4;
 }
 
-- (CAMMetalView)initWithCoder:(id)a3
+- (CAMMetalView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CAMMetalView;
-  v3 = [(CAMMetalView *)&v6 initWithCoder:a3];
+  v3 = [(CAMMetalView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -41,23 +41,23 @@
   v17.receiver = self;
   v17.super_class = CAMMetalView;
   [(CAMMetalView *)&v17 layoutSubviews];
-  v3 = [(CAMMetalView *)self metalLayer];
-  [v3 bounds];
+  metalLayer = [(CAMMetalView *)self metalLayer];
+  [metalLayer bounds];
   v5 = v4;
   v7 = v6;
-  v8 = [(CAMMetalView *)self traitCollection];
-  [v8 displayScale];
+  traitCollection = [(CAMMetalView *)self traitCollection];
+  [traitCollection displayScale];
   v10 = v9;
 
-  [v3 setContentsScale:v10];
+  [metalLayer setContentsScale:v10];
   v11 = round(v5 * v10);
   v12 = round(v7 * v10);
-  [v3 drawableSize];
+  [metalLayer drawableSize];
   if (v11 != v14 || v12 != v13)
   {
-    [v3 setDrawableSize:{v11, v12}];
-    v16 = [(CAMMetalView *)self metalViewDelegate];
-    [v16 metalViewDidChangeDrawableSize:self];
+    [metalLayer setDrawableSize:{v11, v12}];
+    metalViewDelegate = [(CAMMetalView *)self metalViewDelegate];
+    [metalViewDelegate metalViewDidChangeDrawableSize:self];
   }
 }
 

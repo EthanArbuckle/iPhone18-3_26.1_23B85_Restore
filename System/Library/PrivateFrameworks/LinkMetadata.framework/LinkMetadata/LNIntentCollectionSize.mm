@@ -1,40 +1,40 @@
 @interface LNIntentCollectionSize
-- (BOOL)isEqual:(id)a3;
-- (LNIntentCollectionSize)initWithCoder:(id)a3;
-- (LNIntentCollectionSize)initWithMin:(id)a3 max:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (LNIntentCollectionSize)initWithCoder:(id)coder;
+- (LNIntentCollectionSize)initWithMin:(id)min max:(id)max;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNIntentCollectionSize
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(LNIntentCollectionSize *)self min];
-  [v4 encodeObject:v5 forKey:@"min"];
+  [coderCopy encodeObject:v5 forKey:@"min"];
 
   v6 = [(LNIntentCollectionSize *)self max];
-  [v4 encodeObject:v6 forKey:@"max"];
+  [coderCopy encodeObject:v6 forKey:@"max"];
 }
 
-- (LNIntentCollectionSize)initWithCoder:(id)a3
+- (LNIntentCollectionSize)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"min"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"max"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"min"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"max"];
 
   v7 = [(LNIntentCollectionSize *)self initWithMin:v5 max:v6];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -107,25 +107,25 @@ LABEL_21:
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = [(LNIntentCollectionSize *)self min];
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
   v8 = [(LNIntentCollectionSize *)self max];
-  v9 = [v3 stringWithFormat:@"<%@: %p, min: %ld max: %ld>", v5, self, v7, objc_msgSend(v8, "integerValue")];
+  v9 = [v3 stringWithFormat:@"<%@: %p, min: %ld max: %ld>", v5, self, integerValue, objc_msgSend(v8, "integerValue")];
 
   return v9;
 }
 
-- (LNIntentCollectionSize)initWithMin:(id)a3 max:(id)a4
+- (LNIntentCollectionSize)initWithMin:(id)min max:(id)max
 {
-  v7 = a3;
-  v8 = a4;
+  minCopy = min;
+  maxCopy = max;
   v13.receiver = self;
   v13.super_class = LNIntentCollectionSize;
   v9 = [(LNIntentCollectionSize *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_min, a3);
-    objc_storeStrong(&v10->_max, a4);
+    objc_storeStrong(&v9->_min, min);
+    objc_storeStrong(&v10->_max, max);
     v11 = v10;
   }
 

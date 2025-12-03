@@ -6,7 +6,7 @@
 - (BOOL)includedPath;
 - (BOOL)includedUserManagedAssetsPath;
 - (BOOL)preflightClientAllowed;
-- (MCMCommandDiskUsageForContainer)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5;
+- (MCMCommandDiskUsageForContainer)initWithMessage:(id)message context:(id)context reply:(id)reply;
 - (MCMConcreteContainerIdentity)concreteContainerIdentity;
 - (void)execute;
 @end
@@ -59,24 +59,24 @@
   v3 = objc_autoreleasePoolPush();
   v47 = 1;
   v4 = _os_feature_enabled_impl();
-  v5 = [(MCMCommandDiskUsageForContainer *)self concreteContainerIdentity];
-  v6 = [(MCMCommand *)self context];
-  v7 = [v6 containerCache];
+  concreteContainerIdentity = [(MCMCommandDiskUsageForContainer *)self concreteContainerIdentity];
+  context = [(MCMCommand *)self context];
+  containerCache = [context containerCache];
   v46 = 0;
-  v8 = [v7 entryForContainerIdentity:v5 error:&v46];
+  v8 = [containerCache entryForContainerIdentity:concreteContainerIdentity error:&v46];
   v9 = v46;
 
-  v10 = [v8 metadataMinimal];
-  if (v10)
+  metadataMinimal = [v8 metadataMinimal];
+  if (metadataMinimal)
   {
     v37 = v9;
-    v11 = [v5 containerClass];
+    containerClass = [concreteContainerIdentity containerClass];
     v12 = 0;
-    if (v11 <= 0xE && ((1 << v11) & 0x412A) != 0)
+    if (containerClass <= 0xE && ((1 << containerClass) & 0x412A) != 0)
     {
       v13 = [MCMCommandInfoValueForKey alloc];
-      v14 = [(MCMCommand *)self context];
-      v15 = [(MCMCommandInfoValueForKey *)v13 initWithKey:@"StaticDiskUsage" concreteContainerIdentity:v5 context:v14 resultPromise:0];
+      context2 = [(MCMCommand *)self context];
+      v15 = [(MCMCommandInfoValueForKey *)v13 initWithKey:@"StaticDiskUsage" concreteContainerIdentity:concreteContainerIdentity context:context2 resultPromise:0];
 
       v12 = [(MCMCommandInfoValueForKey *)v15 infoValueForKeyWithError:&v47];
       if (!v12 && v47 != 24)
@@ -85,7 +85,7 @@
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v49 = v5;
+          v49 = concreteContainerIdentity;
           v50 = 2048;
           v51 = v47;
           _os_log_error_impl(&dword_1DF2C3000, v16, OS_LOG_TYPE_ERROR, "Error looking up info value for identity: %@: %llu", buf, 0x16u);
@@ -112,26 +112,26 @@
       v30 = container_log_handle_for_category();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
       {
-        v35 = [(MCMCommand *)self context];
-        v36 = [v35 clientIdentity];
+        context3 = [(MCMCommand *)self context];
+        clientIdentity = [context3 clientIdentity];
         *buf = 138412290;
-        v49 = v36;
+        v49 = clientIdentity;
         _os_log_debug_impl(&dword_1DF2C3000, v30, OS_LOG_TYPE_DEBUG, "Reply to disk usage handed off to the slow workloop for client [%@]", buf, 0xCu);
       }
 
-      v31 = [(MCMCommand *)self reply];
-      v32 = [(MCMCommand *)self context];
-      v33 = [v32 clientIdentity];
+      reply = [(MCMCommand *)self reply];
+      context4 = [(MCMCommand *)self context];
+      clientIdentity2 = [context4 clientIdentity];
       v40[0] = MEMORY[0x1E69E9820];
       v40[1] = 3221225472;
       v40[2] = __42__MCMCommandDiskUsageForContainer_execute__block_invoke;
       v40[3] = &unk_1E86B04C0;
-      v41 = v10;
+      v41 = metadataMinimal;
       v45 = v4;
-      v42 = v5;
-      v43 = self;
+      v42 = concreteContainerIdentity;
+      selfCopy = self;
       v44 = v8;
-      [v31 handoffToSlowWorkloopforClientIdentity:v33 withBlock:v40];
+      [reply handoffToSlowWorkloopforClientIdentity:clientIdentity2 withBlock:v40];
 
       v21 = v41;
       v9 = v37;
@@ -139,28 +139,28 @@
       goto LABEL_23;
     }
 
-    v39 = v5;
-    v22 = [v17 unsignedLongLongValue];
+    v39 = concreteContainerIdentity;
+    unsignedLongLongValue = [v17 unsignedLongLongValue];
     v23 = [MCMResultDiskUsageForContainer alloc];
-    v24 = [v8 containerIdentity];
-    v25 = [v24 containerClass];
+    containerIdentity = [v8 containerIdentity];
+    containerClass2 = [containerIdentity containerClass];
     v19 = v8;
-    v26 = [v8 containerIdentity];
-    [v26 userIdentity];
-    v28 = v27 = v10;
-    v21 = -[MCMResultDiskUsageForContainer initWithDiskUsageBytes:descendants:containerClass:personaType:](v23, "initWithDiskUsageBytes:descendants:containerClass:personaType:", v22, 0, v25, [v28 personaType]);
+    containerIdentity2 = [v8 containerIdentity];
+    [containerIdentity2 userIdentity];
+    v28 = v27 = metadataMinimal;
+    v21 = -[MCMResultDiskUsageForContainer initWithDiskUsageBytes:descendants:containerClass:personaType:](v23, "initWithDiskUsageBytes:descendants:containerClass:personaType:", unsignedLongLongValue, 0, containerClass2, [v28 personaType]);
 
-    v10 = v27;
+    metadataMinimal = v27;
     v9 = v37;
     v3 = v38;
     if (v21)
     {
 LABEL_19:
-      v29 = [(MCMCommand *)self resultPromise];
-      [v29 completeWithResult:v21];
+      resultPromise = [(MCMCommand *)self resultPromise];
+      [resultPromise completeWithResult:v21];
 
       v8 = v19;
-      v5 = v39;
+      concreteContainerIdentity = v39;
 LABEL_23:
 
       goto LABEL_24;
@@ -169,7 +169,7 @@ LABEL_23:
 
   else
   {
-    v39 = v5;
+    v39 = concreteContainerIdentity;
     v19 = v8;
     v20 = container_log_handle_for_category();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -190,7 +190,7 @@ LABEL_23:
   }
 
   v8 = v19;
-  v5 = v39;
+  concreteContainerIdentity = v39;
 LABEL_24:
 
   objc_autoreleasePoolPop(v3);
@@ -288,28 +288,28 @@ void __42__MCMCommandDiskUsageForContainer_execute__block_invoke_8(uint64_t a1)
 - (BOOL)preflightClientAllowed
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [(MCMCommand *)self context];
-  v4 = [v3 clientIdentity];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
 
-  v5 = [(MCMCommandDiskUsageForContainer *)self concreteContainerIdentity];
-  v6 = [v4 isAllowedToPerformOperationType:0 containerIdentity:v5 part:0 partDomain:0 access:0];
+  concreteContainerIdentity = [(MCMCommandDiskUsageForContainer *)self concreteContainerIdentity];
+  v6 = [clientIdentity isAllowedToPerformOperationType:0 containerIdentity:concreteContainerIdentity part:0 partDomain:0 access:0];
 
   v7 = *MEMORY[0x1E69E9840];
   return v6 != 0;
 }
 
-- (MCMCommandDiskUsageForContainer)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5
+- (MCMCommandDiskUsageForContainer)initWithMessage:(id)message context:(id)context reply:(id)reply
 {
   v15 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  messageCopy = message;
   v14.receiver = self;
   v14.super_class = MCMCommandDiskUsageForContainer;
-  v9 = [(MCMCommand *)&v14 initWithMessage:v8 context:a4 reply:a5];
+  v9 = [(MCMCommand *)&v14 initWithMessage:messageCopy context:context reply:reply];
   if (v9)
   {
-    v10 = [v8 concreteContainerIdentity];
+    concreteContainerIdentity = [messageCopy concreteContainerIdentity];
     concreteContainerIdentity = v9->_concreteContainerIdentity;
-    v9->_concreteContainerIdentity = v10;
+    v9->_concreteContainerIdentity = concreteContainerIdentity;
   }
 
   v12 = *MEMORY[0x1E69E9840];

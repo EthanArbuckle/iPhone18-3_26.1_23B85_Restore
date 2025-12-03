@@ -1,14 +1,14 @@
 @interface CAMResumeVideoRecordingCommand
-- (void)executeWithContext:(id)a3;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMResumeVideoRecordingCommand
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [a3 currentMovieFileOutput];
-  if ([v3 isRecordingPaused])
+  currentMovieFileOutput = [context currentMovieFileOutput];
+  if ([currentMovieFileOutput isRecordingPaused])
   {
     v4 = dispatch_semaphore_create(0);
     Current = CFAbsoluteTimeGetCurrent();
@@ -36,14 +36,14 @@
     v10 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      [v3 outputFileURL];
+      [currentMovieFileOutput outputFileURL];
       v11 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
       *buf = 138543362;
       v19 = v11;
       _os_log_impl(&dword_1A3640000, v10, OS_LOG_TYPE_DEFAULT, "resumeRecording: url=%{public}@", buf, 0xCu);
     }
 
-    [v3 resumeRecording];
+    [currentMovieFileOutput resumeRecording];
   }
 
   else

@@ -1,27 +1,27 @@
 @interface MZUppSyncProcessor
-- (MZUppSyncProcessor)initWithStorageProviderDelegate:(id)a3;
+- (MZUppSyncProcessor)initWithStorageProviderDelegate:(id)delegate;
 - (MZUppSyncProcessorStorageProviding)storageProvider;
-- (id)dataForSetTransaction:(id)a3 key:(id)a4 version:(id *)a5;
-- (int)mergeMetadataItemFromSetResponse:(id)a3;
-- (void)conflictForSetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7;
+- (id)dataForSetTransaction:(id)transaction key:(id)key version:(id *)version;
+- (int)mergeMetadataItemFromSetResponse:(id)response;
+- (void)conflictForSetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block;
 - (void)mergeMetadataItemsFromGetResponse;
-- (void)successfulGetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7;
-- (void)successfulSetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7;
-- (void)transaction:(id)a3 willProcessResponseWithDomainVersion:(id)a4;
+- (void)successfulGetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block;
+- (void)successfulSetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block;
+- (void)transaction:(id)transaction willProcessResponseWithDomainVersion:(id)version;
 @end
 
 @implementation MZUppSyncProcessor
 
-- (MZUppSyncProcessor)initWithStorageProviderDelegate:(id)a3
+- (MZUppSyncProcessor)initWithStorageProviderDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = MZUppSyncProcessor;
   v5 = [(MZUppSyncProcessor *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    [(MZUppSyncProcessor *)v5 setStorageProvider:v4];
+    [(MZUppSyncProcessor *)v5 setStorageProvider:delegateCopy];
     v7 = +[NSMutableDictionary dictionary];
     [(MZUppSyncProcessor *)v6 setMetadataItemsFromDataSource:v7];
 
@@ -41,27 +41,27 @@
   return v6;
 }
 
-- (int)mergeMetadataItemFromSetResponse:(id)a3
+- (int)mergeMetadataItemFromSetResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(MZUppSyncProcessor *)self metadataItemsFromKVSStorage];
-  v6 = [v4 itemIdentifier];
-  [v5 setObject:v4 forKey:v6];
+  responseCopy = response;
+  metadataItemsFromKVSStorage = [(MZUppSyncProcessor *)self metadataItemsFromKVSStorage];
+  itemIdentifier = [responseCopy itemIdentifier];
+  [metadataItemsFromKVSStorage setObject:responseCopy forKey:itemIdentifier];
 
-  v7 = [(MZUppSyncProcessor *)self storageProvider];
-  v8 = [(MZUppSyncProcessor *)self metadataItemsFromKVSStorage];
-  [v7 setNumMetadataItemsFromKVSStorage:{objc_msgSend(v8, "count")}];
+  storageProvider = [(MZUppSyncProcessor *)self storageProvider];
+  metadataItemsFromKVSStorage2 = [(MZUppSyncProcessor *)self metadataItemsFromKVSStorage];
+  [storageProvider setNumMetadataItemsFromKVSStorage:{objc_msgSend(metadataItemsFromKVSStorage2, "count")}];
 
-  v9 = [(MZUppSyncProcessor *)self metadataItemsFromDataSource];
-  v10 = [v4 itemIdentifier];
-  v11 = [v9 objectForKey:v10];
+  metadataItemsFromDataSource = [(MZUppSyncProcessor *)self metadataItemsFromDataSource];
+  itemIdentifier2 = [responseCopy itemIdentifier];
+  v11 = [metadataItemsFromDataSource objectForKey:itemIdentifier2];
 
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_1000B7FA4;
   v27[3] = &unk_1004DB340;
   v27[4] = self;
-  v12 = v4;
+  v12 = responseCopy;
   v28 = v12;
   v13 = v11;
   v29 = v13;
@@ -111,18 +111,18 @@ LABEL_8:
 
 - (void)mergeMetadataItemsFromGetResponse
 {
-  v3 = [(MZUppSyncProcessor *)self metadataItemsFromDataSource];
-  v4 = [(MZUppSyncProcessor *)self metadataItemsFromKVSStorage];
+  metadataItemsFromDataSource = [(MZUppSyncProcessor *)self metadataItemsFromDataSource];
+  metadataItemsFromKVSStorage = [(MZUppSyncProcessor *)self metadataItemsFromKVSStorage];
   [(MZUppSyncProcessor *)self metadataItemsToCommitToDataSource];
   v44 = v43 = self;
-  v5 = [(MZUppSyncProcessor *)self metadataItemsToCommitToKVSStorage];
+  metadataItemsToCommitToKVSStorage = [(MZUppSyncProcessor *)self metadataItemsToCommitToKVSStorage];
   v6 = _MTLogCategoryUPPSync();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v56 = v3;
+    v56 = metadataItemsFromDataSource;
     v57 = 2114;
-    v58 = v4;
+    v58 = metadataItemsFromKVSStorage;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Merging local and remote items\nlocal items = %{public}@\nremote items = %{public}@", buf, 0x16u);
   }
 
@@ -130,8 +130,8 @@ LABEL_8:
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v7 = [v3 allValues];
-  v8 = [v7 countByEnumeratingWithState:&v49 objects:v54 count:16];
+  allValues = [metadataItemsFromDataSource allValues];
+  v8 = [allValues countByEnumeratingWithState:&v49 objects:v54 count:16];
   if (v8)
   {
     v9 = v8;
@@ -142,21 +142,21 @@ LABEL_8:
       {
         if (*v50 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         v12 = *(*(&v49 + 1) + 8 * i);
-        v13 = [v12 itemIdentifier];
-        v14 = [v4 objectForKey:v13];
+        itemIdentifier = [v12 itemIdentifier];
+        v14 = [metadataItemsFromKVSStorage objectForKey:itemIdentifier];
 
         if (!v14 || ([v12 timestamp], v16 = v15, objc_msgSend(v14, "timestamp"), v16 > v17) || (objc_msgSend(v12, "timestamp"), v19 = v18, objc_msgSend(v14, "timestamp"), v19 == v20) && (objc_msgSend(v12, "isEqual:", v14) & 1) == 0)
         {
-          v21 = [v12 itemIdentifier];
-          [v5 setObject:v12 forKey:v21];
+          itemIdentifier2 = [v12 itemIdentifier];
+          [metadataItemsToCommitToKVSStorage setObject:v12 forKey:itemIdentifier2];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v49 objects:v54 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v49 objects:v54 count:16];
     }
 
     while (v9);
@@ -166,8 +166,8 @@ LABEL_8:
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v22 = [v4 allValues];
-  v23 = [v22 countByEnumeratingWithState:&v45 objects:v53 count:16];
+  allValues2 = [metadataItemsFromKVSStorage allValues];
+  v23 = [allValues2 countByEnumeratingWithState:&v45 objects:v53 count:16];
   if (v23)
   {
     v24 = v23;
@@ -178,27 +178,27 @@ LABEL_8:
       {
         if (*v46 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(allValues2);
         }
 
         v27 = *(*(&v45 + 1) + 8 * j);
-        v28 = [v27 itemIdentifier];
-        v29 = [v5 objectForKey:v28];
+        itemIdentifier3 = [v27 itemIdentifier];
+        v29 = [metadataItemsToCommitToKVSStorage objectForKey:itemIdentifier3];
 
         if (!v29)
         {
-          v30 = [v27 itemIdentifier];
-          v31 = [v3 objectForKey:v30];
+          itemIdentifier4 = [v27 itemIdentifier];
+          v31 = [metadataItemsFromDataSource objectForKey:itemIdentifier4];
 
           if (!v31 || ([v27 timestamp], v33 = v32, objc_msgSend(v31, "timestamp"), v33 > v34))
           {
-            v35 = [v27 itemIdentifier];
-            [v44 setObject:v27 forKey:v35];
+            itemIdentifier5 = [v27 itemIdentifier];
+            [v44 setObject:v27 forKey:itemIdentifier5];
           }
         }
       }
 
-      v24 = [v22 countByEnumeratingWithState:&v45 objects:v53 count:16];
+      v24 = [allValues2 countByEnumeratingWithState:&v45 objects:v53 count:16];
     }
 
     while (v24);
@@ -207,120 +207,120 @@ LABEL_8:
   v36 = _MTLogCategoryUPPSync();
   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
   {
-    v37 = [(MZUppSyncProcessor *)v43 metadataItemsToCommitToDataSource];
-    v38 = [(MZUppSyncProcessor *)v43 metadataItemsToCommitToKVSStorage];
+    metadataItemsToCommitToDataSource = [(MZUppSyncProcessor *)v43 metadataItemsToCommitToDataSource];
+    metadataItemsToCommitToKVSStorage2 = [(MZUppSyncProcessor *)v43 metadataItemsToCommitToKVSStorage];
     *buf = 138543618;
-    v56 = v37;
+    v56 = metadataItemsToCommitToDataSource;
     v57 = 2114;
-    v58 = v38;
+    v58 = metadataItemsToCommitToKVSStorage2;
     _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Merge result:\nmetadataItemsToCommitToDataSource = %{public}@\nmetadataItemsToCommitToKVSStorage = %{public}@", buf, 0x16u);
   }
 
-  v39 = [(MZUppSyncProcessor *)v43 storageProvider];
-  v40 = [(MZUppSyncProcessor *)v43 metadataItemsToCommitToDataSource];
-  [v39 setNumMetadataItemsToCommitToDataSource:{objc_msgSend(v40, "count")}];
+  storageProvider = [(MZUppSyncProcessor *)v43 storageProvider];
+  metadataItemsToCommitToDataSource2 = [(MZUppSyncProcessor *)v43 metadataItemsToCommitToDataSource];
+  [storageProvider setNumMetadataItemsToCommitToDataSource:{objc_msgSend(metadataItemsToCommitToDataSource2, "count")}];
 
-  v41 = [(MZUppSyncProcessor *)v43 storageProvider];
-  v42 = [(MZUppSyncProcessor *)v43 metadataItemsToCommitToKVSStorage];
-  [v41 setNumMetadataItemsToCommitToKVSStorage:{objc_msgSend(v42, "count")}];
+  storageProvider2 = [(MZUppSyncProcessor *)v43 storageProvider];
+  metadataItemsToCommitToKVSStorage3 = [(MZUppSyncProcessor *)v43 metadataItemsToCommitToKVSStorage];
+  [storageProvider2 setNumMetadataItemsToCommitToKVSStorage:{objc_msgSend(metadataItemsToCommitToKVSStorage3, "count")}];
 }
 
-- (id)dataForSetTransaction:(id)a3 key:(id)a4 version:(id *)a5
+- (id)dataForSetTransaction:(id)transaction key:(id)key version:(id *)version
 {
-  v7 = a4;
-  v8 = [(MZUppSyncProcessor *)self reportedItemVersionForIdentifier];
-  *a5 = [v8 objectForKey:v7];
+  keyCopy = key;
+  reportedItemVersionForIdentifier = [(MZUppSyncProcessor *)self reportedItemVersionForIdentifier];
+  *version = [reportedItemVersionForIdentifier objectForKey:keyCopy];
 
-  v9 = [(MZUppSyncProcessor *)self metadataItemsToCommitToKVSStorage];
-  v10 = [v9 objectForKey:v7];
+  metadataItemsToCommitToKVSStorage = [(MZUppSyncProcessor *)self metadataItemsToCommitToKVSStorage];
+  v10 = [metadataItemsToCommitToKVSStorage objectForKey:keyCopy];
 
-  v11 = [v10 keyValueStorePayload];
+  keyValueStorePayload = [v10 keyValueStorePayload];
 
-  return v11;
+  return keyValueStorePayload;
 }
 
-- (void)transaction:(id)a3 willProcessResponseWithDomainVersion:(id)a4
+- (void)transaction:(id)transaction willProcessResponseWithDomainVersion:(id)version
 {
-  if (a4)
+  if (version)
   {
 
-    [(MZUppSyncProcessor *)self setResponseDomainVersion:a4];
+    [(MZUppSyncProcessor *)self setResponseDomainVersion:version];
   }
 
   else
   {
-    v5 = [(MZUppSyncProcessor *)self responseDomainVersion];
-    [(MZUppSyncProcessor *)self setResponseDomainVersion:v5];
+    responseDomainVersion = [(MZUppSyncProcessor *)self responseDomainVersion];
+    [(MZUppSyncProcessor *)self setResponseDomainVersion:responseDomainVersion];
   }
 }
 
-- (void)successfulGetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7
+- (void)successfulGetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block
 {
-  v23 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = [(MZUppSyncProcessor *)self storageProvider];
-  v15 = [v14 wasCanceled];
+  dataCopy = data;
+  keyCopy = key;
+  versionCopy = version;
+  blockCopy = block;
+  storageProvider = [(MZUppSyncProcessor *)self storageProvider];
+  wasCanceled = [storageProvider wasCanceled];
 
-  if (v15)
+  if (wasCanceled)
   {
-    v13[2](v13, 0);
+    blockCopy[2](blockCopy, 0);
   }
 
   else
   {
-    v16 = [MZUniversalPlaybackPositionMetadata metadataWithValuesItemIdentifier:v11 keyValueStorePayload:v23];
+    v16 = [MZUniversalPlaybackPositionMetadata metadataWithValuesItemIdentifier:keyCopy keyValueStorePayload:dataCopy];
     if (v16)
     {
-      v17 = [(MZUppSyncProcessor *)self metadataItemsFromKVSStorage];
-      v18 = [v16 itemIdentifier];
-      [v17 setObject:v16 forKey:v18];
+      metadataItemsFromKVSStorage = [(MZUppSyncProcessor *)self metadataItemsFromKVSStorage];
+      itemIdentifier = [v16 itemIdentifier];
+      [metadataItemsFromKVSStorage setObject:v16 forKey:itemIdentifier];
 
-      v19 = [(MZUppSyncProcessor *)self reportedItemVersionForIdentifier];
-      v20 = [v16 itemIdentifier];
-      [v19 setObject:v12 forKey:v20];
+      reportedItemVersionForIdentifier = [(MZUppSyncProcessor *)self reportedItemVersionForIdentifier];
+      itemIdentifier2 = [v16 itemIdentifier];
+      [reportedItemVersionForIdentifier setObject:versionCopy forKey:itemIdentifier2];
 
-      v21 = [(MZUppSyncProcessor *)self storageProvider];
-      v22 = [(MZUppSyncProcessor *)self metadataItemsFromKVSStorage];
-      [v21 setNumMetadataItemsFromKVSStorage:{objc_msgSend(v22, "count")}];
+      storageProvider2 = [(MZUppSyncProcessor *)self storageProvider];
+      metadataItemsFromKVSStorage2 = [(MZUppSyncProcessor *)self metadataItemsFromKVSStorage];
+      [storageProvider2 setNumMetadataItemsFromKVSStorage:{objc_msgSend(metadataItemsFromKVSStorage2, "count")}];
     }
 
-    v13[2](v13, 0);
+    blockCopy[2](blockCopy, 0);
   }
 }
 
-- (void)successfulSetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7
+- (void)successfulSetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block
 {
-  v9 = a7;
-  v8 = [(MZUppSyncProcessor *)self storageProvider];
-  [v8 wasCanceled];
+  blockCopy = block;
+  storageProvider = [(MZUppSyncProcessor *)self storageProvider];
+  [storageProvider wasCanceled];
 
-  v9[2](v9, 0);
+  blockCopy[2](blockCopy, 0);
 }
 
-- (void)conflictForSetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7
+- (void)conflictForSetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block
 {
-  v20 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = [(MZUppSyncProcessor *)self storageProvider];
-  v15 = [v14 wasCanceled];
+  dataCopy = data;
+  keyCopy = key;
+  versionCopy = version;
+  blockCopy = block;
+  storageProvider = [(MZUppSyncProcessor *)self storageProvider];
+  wasCanceled = [storageProvider wasCanceled];
 
-  if (v15)
+  if (wasCanceled)
   {
-    v13[2](v13, 0);
+    blockCopy[2](blockCopy, 0);
   }
 
   else
   {
-    v16 = [MZUniversalPlaybackPositionMetadata metadataWithValuesItemIdentifier:v11 keyValueStorePayload:v20];
+    v16 = [MZUniversalPlaybackPositionMetadata metadataWithValuesItemIdentifier:keyCopy keyValueStorePayload:dataCopy];
     if (v16)
     {
-      v17 = [(MZUppSyncProcessor *)self reportedItemVersionForIdentifier];
-      v18 = [v16 itemIdentifier];
-      [v17 setObject:v12 forKey:v18];
+      reportedItemVersionForIdentifier = [(MZUppSyncProcessor *)self reportedItemVersionForIdentifier];
+      itemIdentifier = [v16 itemIdentifier];
+      [reportedItemVersionForIdentifier setObject:versionCopy forKey:itemIdentifier];
 
       v19 = [(MZUppSyncProcessor *)self mergeMetadataItemFromSetResponse:v16]== 1;
     }
@@ -330,7 +330,7 @@ LABEL_8:
       v19 = 0;
     }
 
-    v13[2](v13, v19);
+    blockCopy[2](blockCopy, v19);
   }
 }
 

@@ -1,9 +1,9 @@
 @interface AXScribbleManager
 - (AXScribbleManager)init;
-- (BOOL)isUniqueElement:(id)a3;
-- (id)searchPointToNSString:(int64_t)a3;
-- (int64_t)nextSearchPoint:(BOOL)a3;
-- (int64_t)nsStringToSearchPoint:(id)a3;
+- (BOOL)isUniqueElement:(id)element;
+- (id)searchPointToNSString:(int64_t)string;
+- (int64_t)nextSearchPoint:(BOOL)point;
+- (int64_t)nsStringToSearchPoint:(id)point;
 - (void)hideSelectedElement;
 @end
 
@@ -33,18 +33,18 @@
   self->_lastSearchPoint = 0;
 }
 
-- (BOOL)isUniqueElement:(id)a3
+- (BOOL)isUniqueElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   lastFetchedElement = self->_lastFetchedElement;
   if (!lastFetchedElement)
   {
     goto LABEL_6;
   }
 
-  v6 = [(AXScribbleElement *)lastFetchedElement renderedText];
-  v7 = [v4 renderedText];
-  if (![v6 isEqualToString:v7])
+  renderedText = [(AXScribbleElement *)lastFetchedElement renderedText];
+  renderedText2 = [elementCopy renderedText];
+  if (![renderedText isEqualToString:renderedText2])
   {
 
     goto LABEL_6;
@@ -55,7 +55,7 @@
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  [v4 geometry];
+  [elementCopy geometry];
   v24.origin.x = v16;
   v24.origin.y = v17;
   v24.size.width = v18;
@@ -79,38 +79,38 @@ LABEL_7:
   return v21;
 }
 
-- (id)searchPointToNSString:(int64_t)a3
+- (id)searchPointToNSString:(int64_t)string
 {
-  if ((a3 - 1) > 3)
+  if ((string - 1) > 3)
   {
     return @"AXScribbleSearchPointCenter";
   }
 
   else
   {
-    return off_1E80D4008[a3 - 1];
+    return off_1E80D4008[string - 1];
   }
 }
 
-- (int64_t)nsStringToSearchPoint:(id)a3
+- (int64_t)nsStringToSearchPoint:(id)point
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AXScribbleSearchPointTopLeft"])
+  pointCopy = point;
+  if ([pointCopy isEqualToString:@"AXScribbleSearchPointTopLeft"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AXScribbleSearchPointTopRight"])
+  else if ([pointCopy isEqualToString:@"AXScribbleSearchPointTopRight"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"AXScribbleSearchPointBottomLeft"])
+  else if ([pointCopy isEqualToString:@"AXScribbleSearchPointBottomLeft"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"AXScribbleSerachPointBottomRight"])
+  else if ([pointCopy isEqualToString:@"AXScribbleSerachPointBottomRight"])
   {
     v4 = 4;
   }
@@ -123,7 +123,7 @@ LABEL_7:
   return v4;
 }
 
-- (int64_t)nextSearchPoint:(BOOL)a3
+- (int64_t)nextSearchPoint:(BOOL)point
 {
   lastSearchPoint = self->_lastSearchPoint;
   v4 = lastSearchPoint - 1;
@@ -142,7 +142,7 @@ LABEL_7:
     v5 = 0;
   }
 
-  if (a3)
+  if (point)
   {
     v5 = v4;
   }

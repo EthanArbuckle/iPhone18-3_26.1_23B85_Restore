@@ -1,22 +1,22 @@
 @interface ATXActionPredictionTypes
-+ (id)actionExperienceToString:(unint64_t)a3;
-+ (id)actionFeedbackStageToString:(unint64_t)a3;
-+ (id)actionFeedbackTypeToString:(unint64_t)a3;
-+ (id)actionTypeToPETString:(unint64_t)a3;
-+ (id)actionTypeToString:(unint64_t)a3;
-+ (id)engagementTypeToString:(unint64_t)a3;
++ (id)actionExperienceToString:(unint64_t)string;
++ (id)actionFeedbackStageToString:(unint64_t)string;
++ (id)actionFeedbackTypeToString:(unint64_t)string;
++ (id)actionTypeToPETString:(unint64_t)string;
++ (id)actionTypeToString:(unint64_t)string;
++ (id)engagementTypeToString:(unint64_t)string;
 + (id)inverseActionFeedbackTypeMapping;
-+ (unint64_t)stringToActionExperience:(id)a3 found:(BOOL *)a4;
-+ (unint64_t)stringToActionFeedbackStage:(id)a3 found:(BOOL *)a4;
++ (unint64_t)stringToActionExperience:(id)experience found:(BOOL *)found;
++ (unint64_t)stringToActionFeedbackStage:(id)stage found:(BOOL *)found;
 @end
 
 @implementation ATXActionPredictionTypes
 
-+ (id)engagementTypeToString:(unint64_t)a3
++ (id)engagementTypeToString:(unint64_t)string
 {
-  if (a3 < 0xB)
+  if (string < 0xB)
   {
-    return off_1E80C1280[a3];
+    return off_1E80C1280[string];
   }
 
   v5 = __atxlog_handle_default();
@@ -25,15 +25,15 @@
     +[ATXActionPredictionTypes engagementTypeToString:];
   }
 
-  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Invalid value of %lu passed to engagementTypeToString", a3}];
+  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Invalid value of %lu passed to engagementTypeToString", string}];
   return @"Error";
 }
 
-+ (id)actionExperienceToString:(unint64_t)a3
++ (id)actionExperienceToString:(unint64_t)string
 {
-  if (a3 < 5)
+  if (string < 5)
   {
-    return off_1E80C12D8[a3];
+    return off_1E80C12D8[string];
   }
 
   v5 = __atxlog_handle_default();
@@ -42,15 +42,15 @@
     +[ATXActionPredictionTypes actionExperienceToString:];
   }
 
-  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Invalid value of %lu passed to actionExperienceToString", a3}];
+  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Invalid value of %lu passed to actionExperienceToString", string}];
   return @"Error";
 }
 
-+ (id)actionTypeToString:(unint64_t)a3
++ (id)actionTypeToString:(unint64_t)string
 {
-  if (a3 < 9)
+  if (string < 9)
   {
-    return off_1E80C1300[a3];
+    return off_1E80C1300[string];
   }
 
   v5 = __atxlog_handle_default();
@@ -59,15 +59,15 @@
     +[ATXActionPredictionTypes actionTypeToString:];
   }
 
-  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Invalid value of %lu passed to actionTypeToString", a3}];
+  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Invalid value of %lu passed to actionTypeToString", string}];
   return @"Error";
 }
 
-+ (id)actionFeedbackStageToString:(unint64_t)a3
++ (id)actionFeedbackStageToString:(unint64_t)string
 {
-  if (a3 < 9)
+  if (string < 9)
   {
-    return off_1E80C1348[a3];
+    return off_1E80C1348[string];
   }
 
   v5 = __atxlog_handle_default();
@@ -76,15 +76,15 @@
     +[ATXActionPredictionTypes actionFeedbackStageToString:];
   }
 
-  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Invalid value of %lu passed to actionFeedbackStageString", a3}];
+  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Invalid value of %lu passed to actionFeedbackStageString", string}];
   return @"Error";
 }
 
-+ (id)actionFeedbackTypeToString:(unint64_t)a3
++ (id)actionFeedbackTypeToString:(unint64_t)string
 {
-  if (a3 < 4)
+  if (string < 4)
   {
-    return off_1E80C1390[a3];
+    return off_1E80C1390[string];
   }
 
   v5 = __atxlog_handle_default();
@@ -93,18 +93,18 @@
     +[ATXActionPredictionTypes actionFeedbackTypeToString:];
   }
 
-  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Invalid value of %lu passed to actionFeedbackTypeToString", a3}];
+  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Invalid value of %lu passed to actionFeedbackTypeToString", string}];
   return @"Error";
 }
 
-+ (unint64_t)stringToActionExperience:(id)a3 found:(BOOL *)a4
++ (unint64_t)stringToActionExperience:(id)experience found:(BOOL *)found
 {
-  v5 = a3;
+  experienceCopy = experience;
   v6 = 0;
   while (1)
   {
     v7 = [objc_opt_class() actionExperienceToString:v6];
-    v8 = [v7 isEqualToString:v5];
+    v8 = [v7 isEqualToString:experienceCopy];
 
     if (v8)
     {
@@ -114,7 +114,7 @@
     if (++v6 == 4)
     {
       v6 = 0;
-      if (!a4)
+      if (!found)
       {
         goto LABEL_9;
       }
@@ -124,27 +124,27 @@
     }
   }
 
-  if (!a4)
+  if (!found)
   {
     goto LABEL_9;
   }
 
   v9 = 1;
 LABEL_8:
-  *a4 = v9;
+  *found = v9;
 LABEL_9:
 
   return v6;
 }
 
-+ (unint64_t)stringToActionFeedbackStage:(id)a3 found:(BOOL *)a4
++ (unint64_t)stringToActionFeedbackStage:(id)stage found:(BOOL *)found
 {
-  v6 = a3;
+  stageCopy = stage;
   v7 = 0;
   while (1)
   {
-    v8 = [a1 actionFeedbackStageToString:v7];
-    v9 = [v8 isEqualToString:v6];
+    v8 = [self actionFeedbackStageToString:v7];
+    v9 = [v8 isEqualToString:stageCopy];
 
     if (v9)
     {
@@ -154,7 +154,7 @@ LABEL_9:
     if (++v7 == 8)
     {
       v7 = 0;
-      if (!a4)
+      if (!found)
       {
         goto LABEL_9;
       }
@@ -164,14 +164,14 @@ LABEL_9:
     }
   }
 
-  if (!a4)
+  if (!found)
   {
     goto LABEL_9;
   }
 
   v10 = 1;
 LABEL_8:
-  *a4 = v10;
+  *found = v10;
 LABEL_9:
 
   return v7;
@@ -183,23 +183,23 @@ LABEL_9:
   for (i = 0; i != 3; ++i)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:i];
-    v6 = [a1 actionFeedbackTypeToString:i];
+    v6 = [self actionFeedbackTypeToString:i];
     [v3 setObject:v5 forKeyedSubscript:v6];
   }
 
   return v3;
 }
 
-+ (id)actionTypeToPETString:(unint64_t)a3
++ (id)actionTypeToPETString:(unint64_t)string
 {
-  if (a3 > 7)
+  if (string > 7)
   {
     return @"other";
   }
 
   else
   {
-    return off_1E80C13B0[a3];
+    return off_1E80C13B0[string];
   }
 }
 

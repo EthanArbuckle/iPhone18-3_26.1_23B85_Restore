@@ -1,16 +1,16 @@
 @interface PLQuickActionManager
 + (BOOL)shouldShowInternalQuickActions;
-+ (void)setShouldShowInternalQuickActions:(BOOL)a3;
++ (void)setShouldShowInternalQuickActions:(BOOL)actions;
 - (BOOL)_userHasPhotos;
 - (BOOL)_userHasPhotosFromLastYear;
-- (PLQuickActionManager)initWithDatabaseContext:(id)a3;
+- (PLQuickActionManager)initWithDatabaseContext:(id)context;
 - (id)_buildFavoritesQuickAction;
 - (id)_buildMostRecentPhotoQuickAction;
 - (id)_buildOneYearAgoQuickAction;
 - (id)_buildSearchQuickAction;
-- (id)_shortcutItemWithType:(id)a3 localizedTitle:(id)a4 iconName:(id)a5;
-- (id)_shortcutSystemImageNamed:(id)a3;
-- (void)buildQuickActionItemsInvalidateMostRecentPhoto:(BOOL)a3;
+- (id)_shortcutItemWithType:(id)type localizedTitle:(id)title iconName:(id)name;
+- (id)_shortcutSystemImageNamed:(id)named;
+- (void)buildQuickActionItemsInvalidateMostRecentPhoto:(BOOL)photo;
 - (void)dealloc;
 @end
 
@@ -19,16 +19,16 @@
 - (BOOL)_userHasPhotosFromLastYear
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v19 = [MEMORY[0x1E695DF00] date];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  date = [MEMORY[0x1E695DF00] date];
   v4 = objc_alloc_init(MEMORY[0x1E695DF10]);
   [v4 setYear:-1];
-  v5 = [v3 dateByAddingComponents:v4 toDate:v19 options:0];
+  v5 = [currentCalendar dateByAddingComponents:v4 toDate:date options:0];
   [v4 setYear:0];
   [v4 setDay:-3];
-  v18 = [v3 dateByAddingComponents:v4 toDate:v5 options:0];
+  v18 = [currentCalendar dateByAddingComponents:v4 toDate:v5 options:0];
   [v4 setDay:3];
-  v6 = [v3 dateByAddingComponents:v4 toDate:v5 options:0];
+  v6 = [currentCalendar dateByAddingComponents:v4 toDate:v5 options:0];
   v7 = MEMORY[0x1E696AB28];
   v8 = [PLManagedAsset isEligibleForSearchIndexingPredicateForLibraryIdentifier:[(PLDatabaseContext *)self->_databaseContext wellKnownPhotoLibraryIdentifier]];
   v27[0] = v8;
@@ -142,25 +142,25 @@ void __38__PLQuickActionManager__userHasPhotos__block_invoke(uint64_t a1, void *
   *(*(*(a1 + 40) + 8) + 24) = v9;
 }
 
-- (id)_shortcutSystemImageNamed:(id)a3
+- (id)_shortcutSystemImageNamed:(id)named
 {
   v3 = MEMORY[0x1E69D41C8];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithSystemImageName:v4];
+  namedCopy = named;
+  v5 = [[v3 alloc] initWithSystemImageName:namedCopy];
 
   return v5;
 }
 
-- (id)_shortcutItemWithType:(id)a3 localizedTitle:(id)a4 iconName:(id)a5
+- (id)_shortcutItemWithType:(id)type localizedTitle:(id)title iconName:(id)name
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  nameCopy = name;
+  titleCopy = title;
+  typeCopy = type;
   v11 = objc_alloc_init([(PLQuickActionManager *)self _SBSApplicationShortcutItemClass]);
-  [v11 setType:v10];
+  [v11 setType:typeCopy];
 
-  [v11 setLocalizedTitle:v9];
-  v12 = [(PLQuickActionManager *)self _shortcutSystemImageNamed:v8];
+  [v11 setLocalizedTitle:titleCopy];
+  v12 = [(PLQuickActionManager *)self _shortcutSystemImageNamed:nameCopy];
 
   [v11 setIcon:v12];
 
@@ -198,9 +198,9 @@ void __38__PLQuickActionManager__userHasPhotos__block_invoke(uint64_t a1, void *
     goto LABEL_5;
   }
 
-  v4 = [(PLQuickActionManager *)self _userHasPhotosFromLastYear];
+  _userHasPhotosFromLastYear = [(PLQuickActionManager *)self _userHasPhotosFromLastYear];
 
-  if (v4)
+  if (_userHasPhotosFromLastYear)
   {
     v5 = objc_alloc_init([(PLQuickActionManager *)self _SBSApplicationShortcutItemClass]);
     [v5 setType:@"com.apple.photos.shortcuts.oneyearago"];
@@ -230,41 +230,41 @@ LABEL_7:
   return v3;
 }
 
-- (void)buildQuickActionItemsInvalidateMostRecentPhoto:(BOOL)a3
+- (void)buildQuickActionItemsInvalidateMostRecentPhoto:(BOOL)photo
 {
   v10 = MEMORY[0x1E69E9820];
-  LOBYTE(v12) = a3;
+  LOBYTE(v12) = photo;
   PLRunWithUnfairLock();
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if ([(PLQuickActionManager *)self _userHasPhotos:v10])
   {
-    v5 = [(PLQuickActionManager *)self _buildMostRecentPhotoQuickAction];
-    if (v5)
+    _buildMostRecentPhotoQuickAction = [(PLQuickActionManager *)self _buildMostRecentPhotoQuickAction];
+    if (_buildMostRecentPhotoQuickAction)
     {
-      [v4 addObject:v5];
+      [v4 addObject:_buildMostRecentPhotoQuickAction];
     }
 
-    v6 = [(PLQuickActionManager *)self _buildFavoritesQuickAction];
-    if (v6)
+    _buildFavoritesQuickAction = [(PLQuickActionManager *)self _buildFavoritesQuickAction];
+    if (_buildFavoritesQuickAction)
     {
-      [v4 addObject:v6];
+      [v4 addObject:_buildFavoritesQuickAction];
     }
 
-    v7 = [(PLQuickActionManager *)self _buildOneYearAgoQuickAction];
-    if (v7)
+    _buildOneYearAgoQuickAction = [(PLQuickActionManager *)self _buildOneYearAgoQuickAction];
+    if (_buildOneYearAgoQuickAction)
     {
-      [v4 addObject:v7];
+      [v4 addObject:_buildOneYearAgoQuickAction];
     }
 
-    v8 = [(PLQuickActionManager *)self _buildSearchQuickAction];
-    if (v8)
+    _buildSearchQuickAction = [(PLQuickActionManager *)self _buildSearchQuickAction];
+    if (_buildSearchQuickAction)
     {
-      [v4 addObject:v8];
+      [v4 addObject:_buildSearchQuickAction];
     }
   }
 
-  v9 = [(PLQuickActionManager *)self _appShortcutService];
-  [v9 updateDynamicApplicationShortcutItems:v4 forBundleIdentifier:@"com.apple.mobileslideshow"];
+  _appShortcutService = [(PLQuickActionManager *)self _appShortcutService];
+  [_appShortcutService updateDynamicApplicationShortcutItems:v4 forBundleIdentifier:@"com.apple.mobileslideshow"];
 }
 
 void __71__PLQuickActionManager_buildQuickActionItemsInvalidateMostRecentPhoto___block_invoke(uint64_t a1)
@@ -299,9 +299,9 @@ void __71__PLQuickActionManager_buildQuickActionItemsInvalidateMostRecentPhoto__
   [(PLQuickActionManager *)&v4 dealloc];
 }
 
-- (PLQuickActionManager)initWithDatabaseContext:(id)a3
+- (PLQuickActionManager)initWithDatabaseContext:(id)context
 {
-  v6 = a3;
+  contextCopy = context;
   v16.receiver = self;
   v16.super_class = PLQuickActionManager;
   v7 = [(PLQuickActionManager *)&v16 init];
@@ -309,32 +309,32 @@ void __71__PLQuickActionManager_buildQuickActionItemsInvalidateMostRecentPhoto__
   if (v7)
   {
     v7->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v7->_databaseContext, a3);
+    objc_storeStrong(&v7->_databaseContext, context);
     if (!dlopen([@"/System/Library/PrivateFrameworks/SpringBoardServices.framework/SpringBoardServices" fileSystemRepresentation], 4))
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:v8 file:@"PLQuickActionManager.m" lineNumber:66 description:@"No SpringBoardServices!"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v8 file:@"PLQuickActionManager.m" lineNumber:66 description:@"No SpringBoardServices!"];
     }
 
     [(PLQuickActionManager *)v8 _setSBSApplicationShortcutItemClass:NSClassFromString(&cfstr_Sbsapplication.isa)];
     if (![(PLQuickActionManager *)v8 _SBSApplicationShortcutItemClass])
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:v8 file:@"PLQuickActionManager.m" lineNumber:69 description:@"No SBSApplicationShortcutItem"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v8 file:@"PLQuickActionManager.m" lineNumber:69 description:@"No SBSApplicationShortcutItem"];
     }
 
     [(PLQuickActionManager *)v8 _setSBSApplicationShortcutServiceClass:NSClassFromString(&cfstr_Sbsapplication_0.isa)];
     if (![(PLQuickActionManager *)v8 _SBSApplicationShortcutServiceClass])
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:v8 file:@"PLQuickActionManager.m" lineNumber:72 description:@"No _setSBSApplicationShortcutService"];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:v8 file:@"PLQuickActionManager.m" lineNumber:72 description:@"No _setSBSApplicationShortcutService"];
     }
 
     [(PLQuickActionManager *)v8 _setSBSApplicationShortcutCustomImageIconClass:NSClassFromString(&cfstr_Sbsapplication_1.isa)];
     if (![(PLQuickActionManager *)v8 _SBSApplicationShortcutCustomImageIconClass])
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:v8 file:@"PLQuickActionManager.m" lineNumber:75 description:@"No SBSApplicationShortcutCustomImageIcon"];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler4 handleFailureInMethod:a2 object:v8 file:@"PLQuickActionManager.m" lineNumber:75 description:@"No SBSApplicationShortcutCustomImageIcon"];
     }
 
     v9 = objc_alloc_init([(PLQuickActionManager *)v8 _SBSApplicationShortcutServiceClass]);
@@ -346,9 +346,9 @@ void __71__PLQuickActionManager_buildQuickActionItemsInvalidateMostRecentPhoto__
   return v8;
 }
 
-+ (void)setShouldShowInternalQuickActions:(BOOL)a3
++ (void)setShouldShowInternalQuickActions:(BOOL)actions
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithBool:actions];
   CFPreferencesSetAppValue(@"showInternalQuickActions", v3, @"com.apple.mobileslideshow");
 
   notify_post("cameraPreviewImageWellChanged");
@@ -356,7 +356,7 @@ void __71__PLQuickActionManager_buildQuickActionItemsInvalidateMostRecentPhoto__
 
 + (BOOL)shouldShowInternalQuickActions
 {
-  v2 = MEMORY[0x19EAEE240](a1, a2);
+  v2 = MEMORY[0x19EAEE240](self, a2);
   if (v2)
   {
     keyExistsAndHasValidFormat = 0;

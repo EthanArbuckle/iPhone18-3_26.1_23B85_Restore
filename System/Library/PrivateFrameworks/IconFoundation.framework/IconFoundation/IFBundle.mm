@@ -1,29 +1,29 @@
 @interface IFBundle
 + (id)appIconOverrideBundle;
-+ (id)bundleWithURL:(id)a3;
++ (id)bundleWithURL:(id)l;
 + (id)coreGlyphsBundle;
 + (id)coreGlyphsPrivateBundle;
 + (id)coreTypesBundle;
 + (id)frameworkBundle;
-+ (id)frameworkLocalizedString:(id)a3;
++ (id)frameworkLocalizedString:(id)string;
 + (id)iconFoundationFrameworkBundle;
 + (id)iconsetResourceAssetsCatalogURL;
 + (id)iconsetResourceBundle;
 + (id)mainBundle;
 + (id)mobileIconsFrameworkBundle;
-+ (unint64_t)platformFromDyldPlatform:(unsigned int)a3;
-- (IFBundle)initWithCFBundle:(__CFBundle *)a3;
-- (IFBundle)initWithURL:(id)a3;
++ (unint64_t)platformFromDyldPlatform:(unsigned int)platform;
+- (IFBundle)initWithCFBundle:(__CFBundle *)bundle;
+- (IFBundle)initWithURL:(id)l;
 - (IFPlistParser)plistParser;
 - (NSDictionary)iconDictionary;
 - (NSDictionary)infoDictionary;
 - (NSString)bundleID;
 - (NSURL)bundleURL;
-- (id)URLForResource:(id)a3;
-- (id)URLForResource:(id)a3 withExtension:(id)a4 subdirectory:(id)a5;
-- (id)URLsForResources:(id)a3;
-- (id)URLsForResourcesWithExtension:(id)a3 subdirectory:(id)a4;
-- (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5;
+- (id)URLForResource:(id)resource;
+- (id)URLForResource:(id)resource withExtension:(id)extension subdirectory:(id)subdirectory;
+- (id)URLsForResources:(id)resources;
+- (id)URLsForResourcesWithExtension:(id)extension subdirectory:(id)subdirectory;
+- (id)localizedStringForKey:(id)key value:(id)value table:(id)table;
 - (unint64_t)icc_platformWithIOButNoLS;
 - (unint64_t)platform;
 - (void)dealloc;
@@ -39,40 +39,40 @@
   }
 
   v3 = objc_alloc(MEMORY[0x1E69635F8]);
-  v4 = [(IFBundle *)self bundleURL];
-  v5 = [v3 initWithURL:v4 allowPlaceholder:1 error:0];
+  bundleURL = [(IFBundle *)self bundleURL];
+  v5 = [v3 initWithURL:bundleURL allowPlaceholder:1 error:0];
 
   if (!v5)
   {
     v6 = objc_alloc(MEMORY[0x1E69635D0]);
-    v7 = [(IFBundle *)self bundleURL];
-    v5 = [v6 initWithURL:v7 error:0];
+    bundleURL2 = [(IFBundle *)self bundleURL];
+    v5 = [v6 initWithURL:bundleURL2 error:0];
   }
 
   if ([v5 platform])
   {
-    v8 = [objc_opt_class() platformFromDyldPlatform:{objc_msgSend(v5, "platform")}];
+    iconPlatform = [objc_opt_class() platformFromDyldPlatform:{objc_msgSend(v5, "platform")}];
   }
 
   else
   {
-    v9 = [(IFBundle *)self plistParser];
-    v8 = [v9 iconPlatform];
+    plistParser = [(IFBundle *)self plistParser];
+    iconPlatform = [plistParser iconPlatform];
 
-    if (!v8)
+    if (!iconPlatform)
     {
-      v10 = [(IFBundle *)self plistParser];
-      v8 = [v10 supportedPlatform];
+      plistParser2 = [(IFBundle *)self plistParser];
+      iconPlatform = [plistParser2 supportedPlatform];
 
-      if (!v8)
+      if (!iconPlatform)
       {
-        v11 = [(IFBundle *)self plistParser];
-        v8 = [v11 uiDeviceFamily];
+        plistParser3 = [(IFBundle *)self plistParser];
+        iconPlatform = [plistParser3 uiDeviceFamily];
       }
     }
   }
 
-  return v8;
+  return iconPlatform;
 }
 
 - (NSURL)bundleURL
@@ -297,16 +297,16 @@ void __33__IFBundle_appIconOverrideBundle__block_invoke()
   return v3;
 }
 
-+ (id)frameworkLocalizedString:(id)a3
++ (id)frameworkLocalizedString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = +[IFBundle frameworkBundle];
-  v5 = [v4 localizedStringForKey:v3 value:&stru_1F37DEE28 table:0];
+  v5 = [v4 localizedStringForKey:stringCopy value:&stru_1F37DEE28 table:0];
 
   return v5;
 }
 
-+ (id)bundleWithURL:(id)a3
++ (id)bundleWithURL:(id)l
 {
   Unique = _CFBundleCreateUnique();
   if (Unique)
@@ -324,76 +324,76 @@ void __33__IFBundle_appIconOverrideBundle__block_invoke()
   return v5;
 }
 
-- (IFBundle)initWithURL:(id)a3
+- (IFBundle)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = IFBundle;
   v5 = [(IFBundle *)&v10 init];
   v6 = v5;
-  if (v4 && v5)
+  if (lCopy && v5)
   {
     v5->_bundle = _CFBundleCreateUnique();
-    v7 = [v4 absoluteURL];
-    v8 = [v7 path];
-    v6->_coreTypes = [v8 isEqual:@"/System/Library/CoreServices/MobileCoreTypes.bundle"];
+    absoluteURL = [lCopy absoluteURL];
+    path = [absoluteURL path];
+    v6->_coreTypes = [path isEqual:@"/System/Library/CoreServices/MobileCoreTypes.bundle"];
   }
 
   return v6;
 }
 
-- (IFBundle)initWithCFBundle:(__CFBundle *)a3
+- (IFBundle)initWithCFBundle:(__CFBundle *)bundle
 {
   v10.receiver = self;
   v10.super_class = IFBundle;
   v4 = [(IFBundle *)&v10 init];
   v5 = v4;
-  if (a3 && v4)
+  if (bundle && v4)
   {
-    CFRetain(a3);
-    v5->_bundle = a3;
-    v6 = CFBundleCopyBundleURL(a3);
-    v7 = [(__CFURL *)v6 absoluteURL];
-    v8 = [v7 path];
-    v5->_coreTypes = [v8 isEqual:@"/System/Library/CoreServices/MobileCoreTypes.bundle"];
+    CFRetain(bundle);
+    v5->_bundle = bundle;
+    v6 = CFBundleCopyBundleURL(bundle);
+    absoluteURL = [(__CFURL *)v6 absoluteURL];
+    path = [absoluteURL path];
+    v5->_coreTypes = [path isEqual:@"/System/Library/CoreServices/MobileCoreTypes.bundle"];
   }
 
   return v5;
 }
 
-- (id)URLForResource:(id)a3
+- (id)URLForResource:(id)resource
 {
-  v4 = a3;
-  v5 = [v4 stringByDeletingPathExtension];
-  v6 = [v4 pathExtension];
+  resourceCopy = resource;
+  stringByDeletingPathExtension = [resourceCopy stringByDeletingPathExtension];
+  pathExtension = [resourceCopy pathExtension];
 
-  v7 = [(IFBundle *)self URLForResource:v5 withExtension:v6 subdirectory:0];
+  v7 = [(IFBundle *)self URLForResource:stringByDeletingPathExtension withExtension:pathExtension subdirectory:0];
 
   return v7;
 }
 
-- (id)URLForResource:(id)a3 withExtension:(id)a4 subdirectory:(id)a5
+- (id)URLForResource:(id)resource withExtension:(id)extension subdirectory:(id)subdirectory
 {
   bundle = self->_bundle;
   if (bundle)
   {
-    bundle = CFBundleCopyResourceURL(bundle, a3, a4, a5);
+    bundle = CFBundleCopyResourceURL(bundle, resource, extension, subdirectory);
     v5 = vars8;
   }
 
   return bundle;
 }
 
-- (id)URLsForResources:(id)a3
+- (id)URLsForResources:(id)resources
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resourcesCopy = resources;
   v5 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = resourcesCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -424,24 +424,24 @@ void __33__IFBundle_appIconOverrideBundle__block_invoke()
   return v5;
 }
 
-- (id)URLsForResourcesWithExtension:(id)a3 subdirectory:(id)a4
+- (id)URLsForResourcesWithExtension:(id)extension subdirectory:(id)subdirectory
 {
   bundle = self->_bundle;
   if (bundle)
   {
-    bundle = CFBundleCopyResourceURLsOfType(bundle, a3, a4);
+    bundle = CFBundleCopyResourceURLsOfType(bundle, extension, subdirectory);
     v4 = vars8;
   }
 
   return bundle;
 }
 
-- (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5
+- (id)localizedStringForKey:(id)key value:(id)value table:(id)table
 {
   bundle = self->_bundle;
   if (bundle)
   {
-    bundle = CFBundleCopyLocalizedString(bundle, a3, a4, a5);
+    bundle = CFBundleCopyLocalizedString(bundle, key, value, table);
     v5 = vars8;
   }
 
@@ -490,8 +490,8 @@ void __33__IFBundle_appIconOverrideBundle__block_invoke()
     if (self->_bundle)
     {
       v4 = [IFPlistParser alloc];
-      v5 = [(IFBundle *)self infoDictionary];
-      v6 = [(IFPlistParser *)v4 initWithInfoDictionary:v5];
+      infoDictionary = [(IFBundle *)self infoDictionary];
+      v6 = [(IFPlistParser *)v4 initWithInfoDictionary:infoDictionary];
       v7 = self->_plistParser;
       self->_plistParser = v6;
 
@@ -509,22 +509,22 @@ void __33__IFBundle_appIconOverrideBundle__block_invoke()
 
 - (NSDictionary)iconDictionary
 {
-  v2 = [(IFBundle *)self plistParser];
-  v3 = [v2 iconDictionary];
+  plistParser = [(IFBundle *)self plistParser];
+  iconDictionary = [plistParser iconDictionary];
 
-  return v3;
+  return iconDictionary;
 }
 
-+ (unint64_t)platformFromDyldPlatform:(unsigned int)a3
++ (unint64_t)platformFromDyldPlatform:(unsigned int)platform
 {
-  if (a3 - 1 > 0xB)
+  if (platform - 1 > 0xB)
   {
     return 0;
   }
 
   else
   {
-    return qword_1B9E3B540[a3 - 1];
+    return qword_1B9E3B540[platform - 1];
   }
 }
 
@@ -535,15 +535,15 @@ void __33__IFBundle_appIconOverrideBundle__block_invoke()
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v3 = [(IFBundle *)self bundleURL];
-  v4 = v3 == 0;
+  bundleURL = [(IFBundle *)self bundleURL];
+  v4 = bundleURL == 0;
 
   if (!v4)
   {
-    v5 = [(IFBundle *)self bundle];
-    if (v5)
+    bundle = [(IFBundle *)self bundle];
+    if (bundle)
     {
-      v6 = CFBundleCopyExecutableURL(v5);
+      v6 = CFBundleCopyExecutableURL(bundle);
       v7 = v6;
       if (v6)
       {

@@ -1,8 +1,8 @@
 @interface CTMessageManager
-+ (id)configureClass:(id)a3;
++ (id)configureClass:(id)class;
 + (id)sharedInstance;
-- (BOOL)noteSymptom:(id)a3;
-- (int)read:(id)a3 returnedValues:(id)a4;
+- (BOOL)noteSymptom:(id)symptom;
+- (int)read:(id)read returnedValues:(id)values;
 @end
 
 @implementation CTMessageManager
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __34__CTMessageManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_36 != -1)
   {
     dispatch_once(&sharedInstance_pred_36, block);
@@ -36,31 +36,31 @@ void __34__CTMessageManager_sharedInstance__block_invoke(uint64_t a1)
   [ConfigurationHandler setConfigurationObject:v3 forName:v5];
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[CTMessageManager sharedInstance];
-  [v4 configureInstance:v3];
+  [v4 configureInstance:classCopy];
 
   return v4;
 }
 
-- (BOOL)noteSymptom:(id)a3
+- (BOOL)noteSymptom:(id)symptom
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  symptomCopy = symptom;
   v5 = flowLogHandle;
   if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v4;
+    v17 = symptomCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "CTMessageManager receive symptom %@", buf, 0xCu);
   }
 
-  v6 = [v4 eventData];
-  if (v6 && (*(v6 + 4) & 1) != 0)
+  eventData = [symptomCopy eventData];
+  if (eventData && (*(eventData + 4) & 1) != 0)
   {
-    v8 = *(v6 + 24);
+    v8 = *(eventData + 24);
     v9 = flowLogHandle;
     if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_DEFAULT))
     {
@@ -76,7 +76,7 @@ void __34__CTMessageManager_sharedInstance__block_invoke(uint64_t a1)
     block[3] = &unk_27898A7A8;
     v15 = v8;
     block[4] = self;
-    v14 = v4;
+    v14 = symptomCopy;
     dispatch_async(v10, block);
   }
 
@@ -86,7 +86,7 @@ void __34__CTMessageManager_sharedInstance__block_invoke(uint64_t a1)
     if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v17 = v4;
+      v17 = symptomCopy;
       _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_ERROR, "CTMessageManager missing qualifier in %@", buf, 0xCu);
     }
   }
@@ -236,12 +236,12 @@ LABEL_30:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (int)read:(id)a3 returnedValues:(id)a4
+- (int)read:(id)read returnedValues:(id)values
 {
-  v4 = a4;
+  valuesCopy = values;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
+  [valuesCopy setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
 
   return 0;
 }

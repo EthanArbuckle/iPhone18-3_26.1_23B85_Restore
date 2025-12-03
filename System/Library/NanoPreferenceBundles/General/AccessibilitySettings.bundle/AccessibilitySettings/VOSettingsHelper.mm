@@ -1,6 +1,6 @@
 @interface VOSettingsHelper
 + (float)speakingRate;
-+ (void)setSpeakingRate:(float)a3;
++ (void)setSpeakingRate:(float)rate;
 - (_TtC21AccessibilitySettings16VOSettingsHelper)init;
 @end
 
@@ -17,12 +17,12 @@
   return v5;
 }
 
-+ (void)setSpeakingRate:(float)a3
++ (void)setSpeakingRate:(float)rate
 {
   ObjCClassMetadata = swift_getObjCClassMetadata();
   v5 = swift_allocObject();
   *(v5 + 16) = ObjCClassMetadata;
-  *(v5 + 24) = a3;
+  *(v5 + 24) = rate;
   sub_23BD02F9C(&unk_23BD09AE0, v5);
 }
 

@@ -2,7 +2,7 @@
 - (NSString)boardTitle;
 - (NSString)previousBoardTitle;
 - (_TtC8Freeform23CRLSetBoardTitleCommand)init;
-- (void)setPreviousBoardTitle:(id)a3;
+- (void)setPreviousBoardTitle:(id)title;
 @end
 
 @implementation CRLSetBoardTitleCommand
@@ -31,9 +31,9 @@
   return v2;
 }
 
-- (void)setPreviousBoardTitle:(id)a3
+- (void)setPreviousBoardTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }

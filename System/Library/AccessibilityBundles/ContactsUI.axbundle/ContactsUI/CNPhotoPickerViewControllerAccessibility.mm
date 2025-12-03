@@ -1,29 +1,29 @@
 @interface CNPhotoPickerViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 @end
 
 @implementation CNPhotoPickerViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNVisualIdentityPickerViewController"];
-  [v3 validateClass:@"CNPhotoPickerViewController" isKindOfClass:@"CNVisualIdentityPickerViewController"];
-  [v3 validateClass:@"CNVisualIdentityPickerViewController" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNPhotoPickerDataSource"];
-  [v3 validateClass:@"CNPhotoPickerDataSource" hasInstanceMethod:@"isItemAtIndexPathAddItem:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"CNPhotoPickerDataSource" hasInstanceMethod:@"providerItemAtIndexPath:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"CNPhotoPickerDataSource" hasInstanceMethod:@"providerGroupAtIndexPath:" withFullSignature:{"@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNVisualIdentityPickerViewController"];
+  [validationsCopy validateClass:@"CNPhotoPickerViewController" isKindOfClass:@"CNVisualIdentityPickerViewController"];
+  [validationsCopy validateClass:@"CNVisualIdentityPickerViewController" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNPhotoPickerDataSource"];
+  [validationsCopy validateClass:@"CNPhotoPickerDataSource" hasInstanceMethod:@"isItemAtIndexPathAddItem:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"CNPhotoPickerDataSource" hasInstanceMethod:@"providerItemAtIndexPath:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"CNPhotoPickerDataSource" hasInstanceMethod:@"providerGroupAtIndexPath:" withFullSignature:{"@", "@", 0}];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v35.receiver = self;
   v35.super_class = CNPhotoPickerViewControllerAccessibility;
-  v8 = [(CNPhotoPickerViewControllerAccessibility *)&v35 collectionView:v6 cellForItemAtIndexPath:v7];
+  v8 = [(CNPhotoPickerViewControllerAccessibility *)&v35 collectionView:viewCopy cellForItemAtIndexPath:pathCopy];
   LOBYTE(v22) = 0;
   objc_opt_class();
   v9 = __UIAccessibilityCastAsSafeCategory();
@@ -41,7 +41,7 @@
     v34 = &v22;
     v11 = v10;
     v32 = v11;
-    v12 = v7;
+    v12 = pathCopy;
     v33 = v12;
     AXPerformSafeBlock();
     v13 = *(v23 + 24);

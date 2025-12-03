@@ -1,21 +1,21 @@
 @interface FCThreadSafeMutableDictionary
 - (FCThreadSafeMutableDictionary)init;
-- (FCThreadSafeMutableDictionary)initWithDictionary:(id)a3;
+- (FCThreadSafeMutableDictionary)initWithDictionary:(id)dictionary;
 - (NSArray)allKeys;
 - (NSArray)allValues;
 - (NSDictionary)readOnlyDictionary;
-- (id)objectForKey:(id)a3;
-- (id)subdictionaryForKeys:(id)a3;
-- (id)subdictionaryForKeys:(id)a3 passingTest:(id)a4;
+- (id)objectForKey:(id)key;
+- (id)subdictionaryForKeys:(id)keys;
+- (id)subdictionaryForKeys:(id)keys passingTest:(id)test;
 - (unint64_t)count;
-- (void)addEntriesFromDictionary:(id)a3;
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3;
-- (void)readWithAccessor:(id)a3;
-- (void)readWriteWithAccessor:(id)a3;
+- (void)addEntriesFromDictionary:(id)dictionary;
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block;
+- (void)readWithAccessor:(id)accessor;
+- (void)readWriteWithAccessor:(id)accessor;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)removeObjectsForKeys:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)removeObjectsForKeys:(id)keys;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation FCThreadSafeMutableDictionary
@@ -161,61 +161,61 @@ uint64_t __51__FCThreadSafeMutableDictionary_readOnlyDictionary__block_invoke(ui
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (FCThreadSafeMutableDictionary)initWithDictionary:(id)a3
+- (FCThreadSafeMutableDictionary)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(FCThreadSafeMutableDictionary *)self init];
   v6 = v5;
   if (v5)
   {
-    [(NSMutableDictionary *)v5->_dictionary addEntriesFromDictionary:v4];
+    [(NSMutableDictionary *)v5->_dictionary addEntriesFromDictionary:dictionaryCopy];
   }
 
   return v6;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   lock = self->_lock;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __50__FCThreadSafeMutableDictionary_setObject_forKey___block_invoke;
   v11[3] = &unk_1E7C376A0;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = objectCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = objectCopy;
   [(NFUnfairLock *)lock performWithLockSync:v11];
 }
 
-- (void)addEntriesFromDictionary:(id)a3
+- (void)addEntriesFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__FCThreadSafeMutableDictionary_addEntriesFromDictionary___block_invoke;
   v7[3] = &unk_1E7C36C58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dictionaryCopy;
+  v6 = dictionaryCopy;
   [(NFUnfairLock *)lock performWithLockSync:v7];
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__FCThreadSafeMutableDictionary_removeObjectForKey___block_invoke;
   v7[3] = &unk_1E7C36C58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   [(NFUnfairLock *)lock performWithLockSync:v7];
 }
 
@@ -230,23 +230,23 @@ uint64_t __51__FCThreadSafeMutableDictionary_readOnlyDictionary__block_invoke(ui
   [(NFUnfairLock *)lock performWithLockSync:v3];
 }
 
-- (void)removeObjectsForKeys:(id)a3
+- (void)removeObjectsForKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__FCThreadSafeMutableDictionary_removeObjectsForKeys___block_invoke;
   v7[3] = &unk_1E7C36C58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = keysCopy;
+  v6 = keysCopy;
   [(NFUnfairLock *)lock performWithLockSync:v7];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -260,7 +260,7 @@ uint64_t __51__FCThreadSafeMutableDictionary_readOnlyDictionary__block_invoke(ui
   v9[3] = &unk_1E7C37138;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   v10 = v6;
   [(NFUnfairLock *)lock performWithLockSync:v9];
   v7 = v13[5];
@@ -280,9 +280,9 @@ uint64_t __46__FCThreadSafeMutableDictionary_objectForKey___block_invoke(void *a
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (id)subdictionaryForKeys:(id)a3
+- (id)subdictionaryForKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -296,7 +296,7 @@ uint64_t __46__FCThreadSafeMutableDictionary_objectForKey___block_invoke(void *a
   v9[3] = &unk_1E7C37138;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = keysCopy;
   v10 = v6;
   [(NFUnfairLock *)lock performWithLockSync:v9];
   v7 = v13[5];
@@ -316,23 +316,23 @@ uint64_t __54__FCThreadSafeMutableDictionary_subdictionaryForKeys___block_invoke
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (id)subdictionaryForKeys:(id)a3 passingTest:(id)a4
+- (id)subdictionaryForKeys:(id)keys passingTest:(id)test
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+  keysCopy = keys;
+  testCopy = test;
+  v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(keysCopy, "count")}];
   lock = self->_lock;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __66__FCThreadSafeMutableDictionary_subdictionaryForKeys_passingTest___block_invoke;
   v16[3] = &unk_1E7C42998;
-  v17 = v6;
-  v18 = self;
-  v20 = v7;
+  v17 = keysCopy;
+  selfCopy = self;
+  v20 = testCopy;
   v10 = v8;
   v19 = v10;
-  v11 = v7;
-  v12 = v6;
+  v11 = testCopy;
+  v12 = keysCopy;
   [(NFUnfairLock *)lock performWithLockSync:v16];
   v13 = v19;
   v14 = v10;
@@ -379,31 +379,31 @@ void __66__FCThreadSafeMutableDictionary_subdictionaryForKeys_passingTest___bloc
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__FCThreadSafeMutableDictionary_enumerateKeysAndObjectsUsingBlock___block_invoke;
   v7[3] = &unk_1E7C37BC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NFUnfairLock *)lock performWithLockSync:v7];
 }
 
-- (void)readWithAccessor:(id)a3
+- (void)readWithAccessor:(id)accessor
 {
-  v4 = a3;
+  accessorCopy = accessor;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__FCThreadSafeMutableDictionary_readWithAccessor___block_invoke;
   v7[3] = &unk_1E7C37778;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accessorCopy;
+  v6 = accessorCopy;
   [(NFUnfairLock *)lock performWithLockSync:v7];
 }
 
@@ -418,17 +418,17 @@ uint64_t __50__FCThreadSafeMutableDictionary_readWithAccessor___block_invoke(uin
   return result;
 }
 
-- (void)readWriteWithAccessor:(id)a3
+- (void)readWriteWithAccessor:(id)accessor
 {
-  v4 = a3;
+  accessorCopy = accessor;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__FCThreadSafeMutableDictionary_readWriteWithAccessor___block_invoke;
   v7[3] = &unk_1E7C37778;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accessorCopy;
+  v6 = accessorCopy;
   [(NFUnfairLock *)lock performWithLockSync:v7];
 }
 

@@ -1,78 +1,78 @@
 @interface GKNicknameController
-- (BOOL)textFieldShouldBeginEditing:(id)a3;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (GKNicknameController)initWithMinNicknameLength:(unint64_t)a3 maxNicknameLength:(unint64_t)a4;
+- (BOOL)textFieldShouldBeginEditing:(id)editing;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (GKNicknameController)initWithMinNicknameLength:(unint64_t)length maxNicknameLength:(unint64_t)nicknameLength;
 - (GKNicknameControllerDelegate)delegate;
-- (void)commitNicknameChangesWithCompletion:(id)a3;
-- (void)didSelectSuggestion:(id)a3;
+- (void)commitNicknameChangesWithCompletion:(id)completion;
+- (void)didSelectSuggestion:(id)suggestion;
 - (void)displayNicknameSuggestions;
-- (void)keyboardWillHide:(id)a3;
-- (void)keyboardWillShow:(id)a3;
-- (void)loadSuggestedNicknames:(id)a3;
-- (void)nicknameTextChanged:(id)a3;
+- (void)keyboardWillHide:(id)hide;
+- (void)keyboardWillShow:(id)show;
+- (void)loadSuggestedNicknames:(id)nicknames;
+- (void)nicknameTextChanged:(id)changed;
 - (void)reset;
-- (void)setNickname:(id)a3;
-- (void)setShouldUseSuggestedNicknameOnDefaultNickname:(BOOL)a3;
-- (void)shakeNicknameTextFieldWithCompletionBlock:(id)a3;
+- (void)setNickname:(id)nickname;
+- (void)setShouldUseSuggestedNicknameOnDefaultNickname:(BOOL)nickname;
+- (void)shakeNicknameTextFieldWithCompletionBlock:(id)block;
 - (void)startObservingKeyboardEvents;
 - (void)stopObservingKeyboardEvents;
-- (void)textFieldDidBecomeFirstResponder:(id)a3;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidResignFirstResponder:(id)a3;
+- (void)textFieldDidBecomeFirstResponder:(id)responder;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidResignFirstResponder:(id)responder;
 - (void)updateReturnKeyEnabledState;
 @end
 
 @implementation GKNicknameController
 
-- (GKNicknameController)initWithMinNicknameLength:(unint64_t)a3 maxNicknameLength:(unint64_t)a4
+- (GKNicknameController)initWithMinNicknameLength:(unint64_t)length maxNicknameLength:(unint64_t)nicknameLength
 {
   v13.receiver = self;
   v13.super_class = GKNicknameController;
   v6 = [(GKNicknameController *)&v13 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277D0C1F0] _gkReachabilityForInternetConnection];
-    [(GKNicknameController *)v6 setReachability:v7];
+    _gkReachabilityForInternetConnection = [MEMORY[0x277D0C1F0] _gkReachabilityForInternetConnection];
+    [(GKNicknameController *)v6 setReachability:_gkReachabilityForInternetConnection];
 
     [(GKNicknameController *)v6 setShouldUseSuggestedNicknameOnDefaultNickname:0];
-    if (a3)
+    if (length)
     {
-      v8 = a3;
+      lengthCopy = length;
     }
 
     else
     {
-      v8 = 3;
+      lengthCopy = 3;
     }
 
-    if (a4)
+    if (nicknameLength)
     {
-      v9 = a4;
+      nicknameLengthCopy = nicknameLength;
     }
 
     else
     {
-      v9 = 18;
+      nicknameLengthCopy = 18;
     }
 
-    if (v8 >= v9)
+    if (lengthCopy >= nicknameLengthCopy)
     {
       v10 = 3;
     }
 
     else
     {
-      v10 = v8;
+      v10 = lengthCopy;
     }
 
-    if (v8 >= v9)
+    if (lengthCopy >= nicknameLengthCopy)
     {
       v11 = 18;
     }
 
     else
     {
-      v11 = v9;
+      v11 = nicknameLengthCopy;
     }
 
     [(GKNicknameController *)v6 setMinNicknameLength:v10];
@@ -82,10 +82,10 @@
   return v6;
 }
 
-- (void)setNickname:(id)a3
+- (void)setNickname:(id)nickname
 {
-  objc_storeStrong(&self->_nickname, a3);
-  v7 = a3;
+  objc_storeStrong(&self->_nickname, nickname);
+  nicknameCopy = nickname;
   v5 = GKGameCenterUIFrameworkBundle();
   v6 = GKGetLocalizedStringFromTableInBundle();
   [(UITextField *)self->_nickname setPlaceholder:v6];
@@ -95,14 +95,14 @@
 
 - (void)updateReturnKeyEnabledState
 {
-  v3 = [(GKNicknameController *)self nickname];
-  v4 = [v3 text];
-  v5 = [v4 length];
+  nickname = [(GKNicknameController *)self nickname];
+  text = [nickname text];
+  v5 = [text length];
   if (v5 >= [(GKNicknameController *)self minNicknameLength])
   {
-    v7 = [(GKNicknameController *)self nickname];
-    v8 = [v7 text];
-    v9 = [v8 length];
+    nickname2 = [(GKNicknameController *)self nickname];
+    text2 = [nickname2 text];
+    v9 = [text2 length];
     v6 = v9 <= [(GKNicknameController *)self maxNicknameLength];
   }
 
@@ -111,63 +111,63 @@
     v6 = 0;
   }
 
-  v10 = [MEMORY[0x277D75658] activeKeyboard];
-  [v10 setReturnKeyEnabled:v6];
+  activeKeyboard = [MEMORY[0x277D75658] activeKeyboard];
+  [activeKeyboard setReturnKeyEnabled:v6];
 }
 
 - (void)stopObservingKeyboardEvents
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C60] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C60] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D76C50] object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x277D770B0] object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 removeObserver:self name:*MEMORY[0x277D770B0] object:0];
 }
 
 - (void)startObservingKeyboardEvents
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel_keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel_nicknameTextChanged_ name:*MEMORY[0x277D770B0] object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_nicknameTextChanged_ name:*MEMORY[0x277D770B0] object:0];
 }
 
-- (void)commitNicknameChangesWithCompletion:(id)a3
+- (void)commitNicknameChangesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(GKNicknameController *)self delegate];
+  completionCopy = completion;
+  delegate = [(GKNicknameController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(GKNicknameController *)self delegate];
-    [v7 nicknameWillbeginUpdating];
+    delegate2 = [(GKNicknameController *)self delegate];
+    [delegate2 nicknameWillbeginUpdating];
   }
 
-  v8 = [(GKNicknameController *)self activityIndicator];
-  [v8 startAnimating];
+  activityIndicator = [(GKNicknameController *)self activityIndicator];
+  [activityIndicator startAnimating];
 
-  v9 = [MEMORY[0x277D0C010] proxyForLocalPlayer];
-  v10 = [v9 profileServicePrivate];
-  v11 = [(GKNicknameController *)self nickname];
-  v12 = [v11 text];
-  v13 = [(GKNicknameController *)self minNicknameLength];
-  v14 = [(GKNicknameController *)self maxNicknameLength];
+  proxyForLocalPlayer = [MEMORY[0x277D0C010] proxyForLocalPlayer];
+  profileServicePrivate = [proxyForLocalPlayer profileServicePrivate];
+  nickname = [(GKNicknameController *)self nickname];
+  text = [nickname text];
+  minNicknameLength = [(GKNicknameController *)self minNicknameLength];
+  maxNicknameLength = [(GKNicknameController *)self maxNicknameLength];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __60__GKNicknameController_commitNicknameChangesWithCompletion___block_invoke;
   v16[3] = &unk_27966A818;
   v16[4] = self;
-  v17 = v4;
-  v15 = v4;
-  [v10 setPlayerNickname:v12 suggestionsCount:3 minSuggestionLength:v13 maxSuggestionLength:v14 handler:v16];
+  v17 = completionCopy;
+  v15 = completionCopy;
+  [profileServicePrivate setPlayerNickname:text suggestionsCount:3 minSuggestionLength:minNicknameLength maxSuggestionLength:maxNicknameLength handler:v16];
 }
 
 void __60__GKNicknameController_commitNicknameChangesWithCompletion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -304,43 +304,43 @@ LABEL_25:
   }
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = [(GKNicknameController *)self nickname];
-  v6 = [v5 text];
-  v7 = [(GKNicknameController *)self defaultNickname];
-  v8 = [v6 isEqualToString:v7];
+  returnCopy = return;
+  nickname = [(GKNicknameController *)self nickname];
+  text = [nickname text];
+  defaultNickname = [(GKNicknameController *)self defaultNickname];
+  v8 = [text isEqualToString:defaultNickname];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [MEMORY[0x277D0C1F8] reporter];
-    [v9 reportEvent:*MEMORY[0x277D0BEB0] type:*MEMORY[0x277D0BEF0]];
+    reporter = [MEMORY[0x277D0C1F8] reporter];
+    [reporter reportEvent:*MEMORY[0x277D0BEB0] type:*MEMORY[0x277D0BEF0]];
   }
 
-  v10 = [(GKNicknameController *)self reachability];
-  v11 = [v10 _gkCurrentReachabilityStatus];
+  reachability = [(GKNicknameController *)self reachability];
+  _gkCurrentReachabilityStatus = [reachability _gkCurrentReachabilityStatus];
 
-  if (!v11)
+  if (!_gkCurrentReachabilityStatus)
   {
-    v18 = [MEMORY[0x277D0C138] local];
-    v19 = [v18 alias];
-    v20 = [(GKNicknameController *)self nickname];
-    [v20 setText:v19];
+    local = [MEMORY[0x277D0C138] local];
+    alias = [local alias];
+    nickname2 = [(GKNicknameController *)self nickname];
+    [nickname2 setText:alias];
 
     goto LABEL_7;
   }
 
-  v12 = [(GKNicknameController *)self nickname];
-  v13 = [v12 text];
-  v14 = [MEMORY[0x277D0C138] local];
-  v15 = [v14 alias];
-  v16 = [v13 isEqualToString:v15];
+  nickname3 = [(GKNicknameController *)self nickname];
+  text2 = [nickname3 text];
+  local2 = [MEMORY[0x277D0C138] local];
+  alias2 = [local2 alias];
+  v16 = [text2 isEqualToString:alias2];
 
   if (v16)
   {
 LABEL_7:
-    [v4 resignFirstResponder];
+    [returnCopy resignFirstResponder];
     v17 = 1;
     goto LABEL_8;
   }
@@ -407,15 +407,15 @@ void __46__GKNicknameController_textFieldShouldReturn___block_invoke(uint64_t a1
 
 - (void)displayNicknameSuggestions
 {
-  v3 = [(GKNicknameController *)self suggestedNicknames];
-  v4 = [v3 count];
+  suggestedNicknames = [(GKNicknameController *)self suggestedNicknames];
+  v4 = [suggestedNicknames count];
 
   if (v4)
   {
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v6 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v7 = 3;
     }
@@ -425,20 +425,20 @@ void __46__GKNicknameController_textFieldShouldReturn___block_invoke(uint64_t a1
       v7 = 2;
     }
 
-    v8 = [MEMORY[0x277CBEB18] array];
-    v9 = [(GKNicknameController *)self suggestedNicknames];
+    array = [MEMORY[0x277CBEB18] array];
+    suggestedNicknames2 = [(GKNicknameController *)self suggestedNicknames];
     v13 = MEMORY[0x277D85DD0];
     v14 = 3221225472;
     v15 = __50__GKNicknameController_displayNicknameSuggestions__block_invoke;
     v16 = &unk_27966A840;
-    v17 = v8;
+    v17 = array;
     v18 = v7;
-    v10 = v8;
-    [v9 enumerateObjectsUsingBlock:&v13];
+    v10 = array;
+    [suggestedNicknames2 enumerateObjectsUsingBlock:&v13];
 
     v11 = [(GKNicknameController *)self nickname:v13];
-    v12 = [v11 textInputSuggestionDelegate];
-    [v12 setSuggestions:v10];
+    textInputSuggestionDelegate = [v11 textInputSuggestionDelegate];
+    [textInputSuggestionDelegate setSuggestions:v10];
   }
 }
 
@@ -452,11 +452,11 @@ void __50__GKNicknameController_displayNicknameSuggestions__block_invoke(uint64_
   }
 }
 
-- (void)didSelectSuggestion:(id)a3
+- (void)didSelectSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [(GKNicknameController *)self nickname];
-  [v5 setText:v4];
+  suggestionCopy = suggestion;
+  nickname = [(GKNicknameController *)self nickname];
+  [nickname setText:suggestionCopy];
 }
 
 - (void)reset
@@ -466,9 +466,9 @@ void __50__GKNicknameController_displayNicknameSuggestions__block_invoke(uint64_
   [(GKNicknameController *)self updateReturnKeyEnabledState];
 }
 
-- (BOOL)textFieldShouldBeginEditing:(id)a3
+- (BOOL)textFieldShouldBeginEditing:(id)editing
 {
-  v4 = [(GKNicknameController *)self delegate];
+  delegate = [(GKNicknameController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) == 0)
@@ -476,26 +476,26 @@ void __50__GKNicknameController_displayNicknameSuggestions__block_invoke(uint64_
     return 1;
   }
 
-  v6 = [(GKNicknameController *)self delegate];
-  v7 = [v6 nicknameShouldBeginEditing];
+  delegate2 = [(GKNicknameController *)self delegate];
+  nicknameShouldBeginEditing = [delegate2 nicknameShouldBeginEditing];
 
-  return v7;
+  return nicknameShouldBeginEditing;
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = [(GKNicknameController *)self nickname];
-  v5 = [v4 text];
-  [(GKNicknameController *)self setDefaultNickname:v5];
+  nickname = [(GKNicknameController *)self nickname];
+  text = [nickname text];
+  [(GKNicknameController *)self setDefaultNickname:text];
 
   [(GKNicknameController *)self reset];
-  v6 = [(GKNicknameController *)self nickname];
-  v7 = [v6 textInputSuggestionDelegate];
+  nickname2 = [(GKNicknameController *)self nickname];
+  textInputSuggestionDelegate = [nickname2 textInputSuggestionDelegate];
   v8 = [MEMORY[0x277D75C38] textSuggestionWithInputText:&stru_28612D290];
   v11[0] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-  [v7 setSuggestions:v9];
+  [textInputSuggestionDelegate setSuggestions:v9];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -505,11 +505,11 @@ void __50__GKNicknameController_displayNicknameSuggestions__block_invoke(uint64_
   [(GKNicknameController *)self loadSuggestedNicknames:v10];
 }
 
-- (void)nicknameTextChanged:(id)a3
+- (void)nicknameTextChanged:(id)changed
 {
-  v4 = [(GKNicknameController *)self nickname];
-  v5 = [v4 text];
-  v6 = [v5 length];
+  nickname = [(GKNicknameController *)self nickname];
+  text = [nickname text];
+  v6 = [text length];
   if (v6 < [(GKNicknameController *)self minNicknameLength])
   {
 
@@ -524,72 +524,72 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  v7 = [(GKNicknameController *)self nickname];
-  v8 = [v7 text];
-  v9 = [v8 length];
-  v10 = [(GKNicknameController *)self maxNicknameLength];
+  nickname2 = [(GKNicknameController *)self nickname];
+  text2 = [nickname2 text];
+  v9 = [text2 length];
+  maxNicknameLength = [(GKNicknameController *)self maxNicknameLength];
 
-  if (v9 > v10)
+  if (v9 > maxNicknameLength)
   {
     goto LABEL_4;
   }
 
   v27 = 0;
 LABEL_6:
-  v16 = [(GKNicknameController *)self nickname];
-  v17 = [v16 text];
-  v18 = [v17 length];
-  v19 = [(GKNicknameController *)self maxNicknameLength];
+  nickname3 = [(GKNicknameController *)self nickname];
+  text3 = [nickname3 text];
+  v18 = [text3 length];
+  maxNicknameLength2 = [(GKNicknameController *)self maxNicknameLength];
 
-  if (v18 > v19)
+  if (v18 > maxNicknameLength2)
   {
-    v20 = [(GKNicknameController *)self nickname];
-    v21 = [v20 text];
-    v22 = [v21 substringToIndex:{-[GKNicknameController maxNicknameLength](self, "maxNicknameLength")}];
-    v23 = [(GKNicknameController *)self nickname];
-    [v23 setText:v22];
+    nickname4 = [(GKNicknameController *)self nickname];
+    text4 = [nickname4 text];
+    v22 = [text4 substringToIndex:{-[GKNicknameController maxNicknameLength](self, "maxNicknameLength")}];
+    nickname5 = [(GKNicknameController *)self nickname];
+    [nickname5 setText:v22];
   }
 
   [(GKNicknameController *)self updateReturnKeyEnabledState];
-  v24 = [(GKNicknameController *)self delegate];
+  delegate = [(GKNicknameController *)self delegate];
   v25 = objc_opt_respondsToSelector();
 
   if (v25)
   {
-    v26 = [(GKNicknameController *)self delegate];
-    [v26 nicknameTextDidChangeWithMessage:v27];
+    delegate2 = [(GKNicknameController *)self delegate];
+    [delegate2 nicknameTextDidChangeWithMessage:v27];
   }
 
   [(GKNicknameController *)self displayNicknameSuggestions];
 }
 
-- (void)shakeNicknameTextFieldWithCompletionBlock:(id)a3
+- (void)shakeNicknameTextFieldWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [MEMORY[0x277CD9FF0] begin];
   v5 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"position"];
   [v5 setRemovedOnCompletion:1];
   v6 = MEMORY[0x277CCAE60];
-  v7 = [(GKNicknameController *)self nickname];
-  v8 = [v7 layer];
-  [v8 position];
+  nickname = [(GKNicknameController *)self nickname];
+  layer = [nickname layer];
+  [layer position];
   v10 = v9 + -5.0;
-  v11 = [(GKNicknameController *)self nickname];
-  v12 = [v11 layer];
-  [v12 position];
+  nickname2 = [(GKNicknameController *)self nickname];
+  layer2 = [nickname2 layer];
+  [layer2 position];
   *v32 = v10;
   v32[1] = v13;
   v14 = [v6 valueWithBytes:v32 objCType:"{CGPoint=dd}"];
   [v5 setFromValue:v14];
 
   v15 = MEMORY[0x277CCAE60];
-  v16 = [(GKNicknameController *)self nickname];
-  v17 = [v16 layer];
-  [v17 position];
+  nickname3 = [(GKNicknameController *)self nickname];
+  layer3 = [nickname3 layer];
+  [layer3 position];
   v19 = v18 + 5.0;
-  v20 = [(GKNicknameController *)self nickname];
-  v21 = [v20 layer];
-  [v21 position];
+  nickname4 = [(GKNicknameController *)self nickname];
+  layer4 = [nickname4 layer];
+  [layer4 position];
   *v31 = v19;
   v31[1] = v22;
   v23 = [v15 valueWithBytes:v31 objCType:"{CGPoint=dd}"];
@@ -604,12 +604,12 @@ LABEL_6:
   v29[1] = 3221225472;
   v29[2] = __66__GKNicknameController_shakeNicknameTextFieldWithCompletionBlock___block_invoke;
   v29[3] = &unk_27966A4A8;
-  v30 = v4;
-  v26 = v4;
+  v30 = blockCopy;
+  v26 = blockCopy;
   [v25 setCompletionBlock:v29];
-  v27 = [(GKNicknameController *)self nickname];
-  v28 = [v27 layer];
-  [v28 addAnimation:v5 forKey:@"shake"];
+  nickname5 = [(GKNicknameController *)self nickname];
+  layer5 = [nickname5 layer];
+  [layer5 addAnimation:v5 forKey:@"shake"];
 
   [MEMORY[0x277CD9FF0] commit];
 }
@@ -628,93 +628,93 @@ void __66__GKNicknameController_shakeNicknameTextFieldWithCompletionBlock___bloc
   }
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(GKNicknameController *)self nickname];
-  v6 = [v5 isFirstResponder];
+  showCopy = show;
+  nickname = [(GKNicknameController *)self nickname];
+  isFirstResponder = [nickname isFirstResponder];
 
-  if (v6)
+  if (isFirstResponder)
   {
-    v7 = [(GKNicknameController *)self nickname];
-    v8 = [v7 textInputSuggestionDelegate];
+    nickname2 = [(GKNicknameController *)self nickname];
+    textInputSuggestionDelegate = [nickname2 textInputSuggestionDelegate];
     v9 = [MEMORY[0x277D75C38] textSuggestionWithInputText:&stru_28612D290];
     v13[0] = v9;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-    [v8 setSuggestions:v10];
+    [textInputSuggestionDelegate setSuggestions:v10];
 
-    v11 = [(GKNicknameController *)self delegate];
-    LOBYTE(v8) = objc_opt_respondsToSelector();
+    delegate = [(GKNicknameController *)self delegate];
+    LOBYTE(textInputSuggestionDelegate) = objc_opt_respondsToSelector();
 
-    if (v8)
+    if (textInputSuggestionDelegate)
     {
-      v12 = [(GKNicknameController *)self delegate];
-      [v12 keyboardWillShow:v4];
+      delegate2 = [(GKNicknameController *)self delegate];
+      [delegate2 keyboardWillShow:showCopy];
     }
   }
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
-  v10 = a3;
+  hideCopy = hide;
   if (![(GKNicknameController *)self nicknameWasEdited])
   {
-    v4 = [MEMORY[0x277D0C138] local];
-    v5 = [v4 alias];
-    v6 = [(GKNicknameController *)self nickname];
-    [v6 setText:v5];
+    local = [MEMORY[0x277D0C138] local];
+    alias = [local alias];
+    nickname = [(GKNicknameController *)self nickname];
+    [nickname setText:alias];
   }
 
-  v7 = [(GKNicknameController *)self delegate];
+  delegate = [(GKNicknameController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(GKNicknameController *)self delegate];
-    [v9 keyboardWillHide:v10];
+    delegate2 = [(GKNicknameController *)self delegate];
+    [delegate2 keyboardWillHide:hideCopy];
   }
 }
 
-- (void)textFieldDidBecomeFirstResponder:(id)a3
+- (void)textFieldDidBecomeFirstResponder:(id)responder
 {
-  v4 = [(GKNicknameController *)self delegate];
+  delegate = [(GKNicknameController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(GKNicknameController *)self delegate];
-    [v6 nicknameDidBecomeFirstResponder];
+    delegate2 = [(GKNicknameController *)self delegate];
+    [delegate2 nicknameDidBecomeFirstResponder];
   }
 }
 
-- (void)textFieldDidResignFirstResponder:(id)a3
+- (void)textFieldDidResignFirstResponder:(id)responder
 {
-  v4 = [(GKNicknameController *)self delegate];
+  delegate = [(GKNicknameController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(GKNicknameController *)self delegate];
-    [v6 nicknameDidResignFirstResponder];
+    delegate2 = [(GKNicknameController *)self delegate];
+    [delegate2 nicknameDidResignFirstResponder];
   }
 }
 
-- (void)loadSuggestedNicknames:(id)a3
+- (void)loadSuggestedNicknames:(id)nicknames
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D0C010] proxyForLocalPlayer];
-  v6 = [v5 profileServicePrivate];
-  v7 = [(GKNicknameController *)self minNicknameLength];
-  v8 = [(GKNicknameController *)self maxNicknameLength];
+  nicknamesCopy = nicknames;
+  proxyForLocalPlayer = [MEMORY[0x277D0C010] proxyForLocalPlayer];
+  profileServicePrivate = [proxyForLocalPlayer profileServicePrivate];
+  minNicknameLength = [(GKNicknameController *)self minNicknameLength];
+  maxNicknameLength = [(GKNicknameController *)self maxNicknameLength];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __47__GKNicknameController_loadSuggestedNicknames___block_invoke;
   v10[3] = &unk_27966A868;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  [v6 getNicknameSuggestions:3 minSuggestionLength:v7 maxSuggestionLength:v8 handler:v10];
+  v11 = nicknamesCopy;
+  v9 = nicknamesCopy;
+  [profileServicePrivate getNicknameSuggestions:3 minSuggestionLength:minNicknameLength maxSuggestionLength:maxNicknameLength handler:v10];
 }
 
 void __47__GKNicknameController_loadSuggestedNicknames___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -764,9 +764,9 @@ void __47__GKNicknameController_loadSuggestedNicknames___block_invoke(uint64_t a
   }
 }
 
-- (void)setShouldUseSuggestedNicknameOnDefaultNickname:(BOOL)a3
+- (void)setShouldUseSuggestedNicknameOnDefaultNickname:(BOOL)nickname
 {
-  v3 = a3;
+  nicknameCopy = nickname;
   v24 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D0C2A0];
   v6 = *MEMORY[0x277D0C2A0];
@@ -780,27 +780,27 @@ void __47__GKNicknameController_loadSuggestedNicknames___block_invoke(uint64_t a
   {
     v8 = MEMORY[0x277D0C138];
     v9 = v6;
-    v10 = [v8 local];
-    v11 = [v10 internal];
-    v12 = [v11 isDefaultNickname];
-    v13 = [(GKNicknameController *)self nickname];
+    local = [v8 local];
+    internal = [local internal];
+    isDefaultNickname = [internal isDefaultNickname];
+    nickname = [(GKNicknameController *)self nickname];
     *buf = 67109632;
-    v19 = v3;
+    v19 = nicknameCopy;
     v20 = 1024;
-    v21 = v12;
+    v21 = isDefaultNickname;
     v22 = 1024;
-    v23 = v13 != 0;
+    v23 = nickname != 0;
     _os_log_impl(&dword_24DE53000, v9, OS_LOG_TYPE_INFO, "GKNicknameController.setShouldUseSuggestedNicknameOnDefaultNickname: %d, is player using default nickname? %d, is nickname text field set? %d", buf, 0x14u);
   }
 
-  self->_shouldUseSuggestedNicknameOnDefaultNickname = v3;
-  if (v3)
+  self->_shouldUseSuggestedNicknameOnDefaultNickname = nicknameCopy;
+  if (nicknameCopy)
   {
-    v14 = [MEMORY[0x277D0C138] local];
-    v15 = [v14 internal];
-    v16 = [v15 isDefaultNickname];
+    local2 = [MEMORY[0x277D0C138] local];
+    internal2 = [local2 internal];
+    isDefaultNickname2 = [internal2 isDefaultNickname];
 
-    if (v16)
+    if (isDefaultNickname2)
     {
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;

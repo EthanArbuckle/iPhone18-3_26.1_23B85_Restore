@@ -1,18 +1,18 @@
 @interface PNSafeAssetAnalyzer
-- (PNSafeAssetAnalyzer)initWithPhotoLibrary:(id)a3;
+- (PNSafeAssetAnalyzer)initWithPhotoLibrary:(id)library;
 @end
 
 @implementation PNSafeAssetAnalyzer
 
-- (PNSafeAssetAnalyzer)initWithPhotoLibrary:(id)a3
+- (PNSafeAssetAnalyzer)initWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v9.receiver = self;
   v9.super_class = PNSafeAssetAnalyzer;
   v5 = [(PNSafeAssetAnalyzer *)&v9 init];
   if (v5)
   {
-    v6 = [[_PNSafeAssetAnalyzer alloc] initWithPhotoLibrary:v4 computeIsUtilityForMemories:1];
+    v6 = [[_PNSafeAssetAnalyzer alloc] initWithPhotoLibrary:libraryCopy computeIsUtilityForMemories:1];
     safeAssetAnalyzer = v5->_safeAssetAnalyzer;
     v5->_safeAssetAnalyzer = v6;
   }

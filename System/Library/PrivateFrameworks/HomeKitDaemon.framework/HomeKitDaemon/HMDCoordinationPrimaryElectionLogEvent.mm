@@ -1,5 +1,5 @@
 @interface HMDCoordinationPrimaryElectionLogEvent
-- (HMDCoordinationPrimaryElectionLogEvent)initWithIsPrimary:(BOOL)a3 didChangePrimary:(BOOL)a4;
+- (HMDCoordinationPrimaryElectionLogEvent)initWithIsPrimary:(BOOL)primary didChangePrimary:(BOOL)changePrimary;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -7,7 +7,7 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(HMDCoordinationPrimaryElectionLogEvent *)self isPrimary])
   {
     v4 = &unk_283E715D0;
@@ -18,7 +18,7 @@
     v4 = &unk_283E715E8;
   }
 
-  [v3 setObject:v4 forKeyedSubscript:@"isPrimary"];
+  [dictionary setObject:v4 forKeyedSubscript:@"isPrimary"];
   if ([(HMDCoordinationPrimaryElectionLogEvent *)self didChangePrimary])
   {
     v5 = &unk_283E715D0;
@@ -29,21 +29,21 @@
     v5 = &unk_283E715E8;
   }
 
-  [v3 setObject:v5 forKeyedSubscript:@"didChangePrimary"];
-  v6 = [v3 copy];
+  [dictionary setObject:v5 forKeyedSubscript:@"didChangePrimary"];
+  v6 = [dictionary copy];
 
   return v6;
 }
 
-- (HMDCoordinationPrimaryElectionLogEvent)initWithIsPrimary:(BOOL)a3 didChangePrimary:(BOOL)a4
+- (HMDCoordinationPrimaryElectionLogEvent)initWithIsPrimary:(BOOL)primary didChangePrimary:(BOOL)changePrimary
 {
   v7.receiver = self;
   v7.super_class = HMDCoordinationPrimaryElectionLogEvent;
   result = [(HMMLogEvent *)&v7 init];
   if (result)
   {
-    result->_isPrimary = a3;
-    result->_didChangePrimary = a4;
+    result->_isPrimary = primary;
+    result->_didChangePrimary = changePrimary;
   }
 
   return result;

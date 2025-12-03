@@ -1,31 +1,31 @@
 @interface HDSPSleepLockScreenAssertionManager
 - (BOOL)hasLockScreenConnection;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (HDSPEnvironment)environment;
-- (HDSPSleepLockScreenAssertionManager)initWithEnvironment:(id)a3;
+- (HDSPSleepLockScreenAssertionManager)initWithEnvironment:(id)environment;
 - (HDSPSleepLockScreenAssertionManagerDelegate)delegate;
 - (NSXPCConnection)connection;
-- (void)_withLock:(id)a3;
+- (void)_withLock:(id)lock;
 - (void)connect;
-- (void)didDismissWithReason:(int64_t)a3;
+- (void)didDismissWithReason:(int64_t)reason;
 - (void)invalidateAssertion;
-- (void)sendLockScreenState:(int64_t)a3 userInfo:(id)a4;
-- (void)setConnection:(id)a3;
+- (void)sendLockScreenState:(int64_t)state userInfo:(id)info;
+- (void)setConnection:(id)connection;
 - (void)takeAssertionIfNeeded;
 @end
 
 @implementation HDSPSleepLockScreenAssertionManager
 
-- (HDSPSleepLockScreenAssertionManager)initWithEnvironment:(id)a3
+- (HDSPSleepLockScreenAssertionManager)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v9.receiver = self;
   v9.super_class = HDSPSleepLockScreenAssertionManager;
   v5 = [(HDSPSleepLockScreenAssertionManager *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_environment, v4);
+    objc_storeWeak(&v5->_environment, environmentCopy);
     v6->_connectionLock._os_unfair_lock_opaque = 0;
     v7 = v6;
   }
@@ -33,11 +33,11 @@
   return v6;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_connectionLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_connectionLock);
 }
@@ -70,22 +70,22 @@
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_environment);
-    v9 = [WeakRetained assertionManager];
+    assertionManager = [WeakRetained assertionManager];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    [v9 takeIndefiniteAssertionWithIdentifier:v11 type:1];
+    [assertionManager takeIndefiniteAssertionWithIdentifier:v11 type:1];
 
-    v12 = [MEMORY[0x277CCAE98] anonymousListener];
-    [(NSXPCListener *)v12 setDelegate:self];
-    [(NSXPCListener *)v12 resume];
+    anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
+    [(NSXPCListener *)anonymousListener setDelegate:self];
+    [(NSXPCListener *)anonymousListener resume];
     listener = self->_listener;
-    self->_listener = v12;
-    v14 = v12;
+    self->_listener = anonymousListener;
+    v14 = anonymousListener;
 
     v4 = [objc_alloc(MEMORY[0x277D66C18]) initWithServiceName:@"com.apple.SleepLockScreen" viewControllerClassName:@"SleepLockScreen.LockScreenViewController"];
-    v15 = [(NSXPCListener *)v14 endpoint];
-    v16 = [v15 _endpoint];
-    [v4 setXpcEndpoint:v16];
+    endpoint = [(NSXPCListener *)v14 endpoint];
+    _endpoint = [endpoint _endpoint];
+    [v4 setXpcEndpoint:_endpoint];
 
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
@@ -150,12 +150,12 @@ LABEL_7:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendLockScreenState:(int64_t)a3 userInfo:(id)a4
+- (void)sendLockScreenState:(int64_t)state userInfo:(id)info
 {
   v18 = *MEMORY[0x277D85DE8];
   if (self->_lockScreenAssertion)
   {
-    v6 = a4;
+    infoCopy = info;
     v7 = HKSPLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -169,9 +169,9 @@ LABEL_7:
       _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] sending state: %@", &v14, 0x16u);
     }
 
-    v11 = [(HDSPSleepLockScreenAssertionManager *)self connection];
-    v12 = [v11 remoteObjectProxy];
-    [v12 setLockScreenState:a3 userInfo:v6];
+    connection = [(HDSPSleepLockScreenAssertionManager *)self connection];
+    remoteObjectProxy = [connection remoteObjectProxy];
+    [remoteObjectProxy setLockScreenState:state userInfo:infoCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -202,10 +202,10 @@ LABEL_7:
     self->_listener = 0;
 
     WeakRetained = objc_loadWeakRetained(&self->_environment);
-    v9 = [WeakRetained assertionManager];
+    assertionManager = [WeakRetained assertionManager];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    [v9 releaseAssertionWithIdentifier:v11];
+    [assertionManager releaseAssertionWithIdentifier:v11];
   }
 
   else if (v5)
@@ -231,20 +231,20 @@ LABEL_7:
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] lock screen service did connect", &v7, 0xCu);
   }
 
-  v5 = [(HDSPSleepLockScreenAssertionManager *)self delegate];
-  [v5 lockScreenDidConnect];
+  delegate = [(HDSPSleepLockScreenAssertionManager *)self delegate];
+  [delegate lockScreenDidConnect];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didDismissWithReason:(int64_t)a3
+- (void)didDismissWithReason:(int64_t)reason
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (a3 > 4)
+  if (reason > 4)
   {
-    if (a3 > 6)
+    if (reason > 6)
     {
-      if (a3 == 7)
+      if (reason == 7)
       {
         v3 = HKSPLogForCategory();
         if (!os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -259,7 +259,7 @@ LABEL_7:
         goto LABEL_26;
       }
 
-      if (a3 != 8)
+      if (reason != 8)
       {
         goto LABEL_29;
       }
@@ -276,7 +276,7 @@ LABEL_7:
       v5 = "[%{public}@] lock screen service did dismiss due to tap";
     }
 
-    else if (a3 == 5)
+    else if (reason == 5)
     {
       v3 = HKSPLogForCategory();
       if (!os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -309,9 +309,9 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (a3 > 2)
+  if (reason > 2)
   {
-    if (a3 == 3)
+    if (reason == 3)
     {
       v3 = HKSPLogForCategory();
       if (!os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -342,7 +342,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (a3 < 2)
+  if (reason < 2)
   {
     v3 = HKSPLogForCategory();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -359,7 +359,7 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (a3 == 2)
+  if (reason == 2)
   {
     v3 = HKSPLogForCategory();
     if (!os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -378,31 +378,31 @@ LABEL_29:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_287AB1470];
-  [v7 setRemoteObjectInterface:v8];
+  [connectionCopy setRemoteObjectInterface:v8];
   v9 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_287A9EC50];
-  [v7 setExportedInterface:v9];
-  [v7 setExportedObject:self];
+  [connectionCopy setExportedInterface:v9];
+  [connectionCopy setExportedObject:self];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __74__HDSPSleepLockScreenAssertionManager_listener_shouldAcceptNewConnection___block_invoke;
   v18[3] = &unk_279C7B108;
   v18[4] = self;
-  [v7 setInterruptionHandler:v18];
+  [connectionCopy setInterruptionHandler:v18];
   objc_initWeak(&location, self);
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __74__HDSPSleepLockScreenAssertionManager_listener_shouldAcceptNewConnection___block_invoke_310;
   v14 = &unk_279C7BFD8;
-  v15 = self;
+  selfCopy = self;
   objc_copyWeak(&v16, &location);
-  [v7 setInvalidationHandler:&v11];
-  [v7 resume];
-  [(HDSPSleepLockScreenAssertionManager *)self setConnection:v7];
+  [connectionCopy setInvalidationHandler:&v11];
+  [connectionCopy resume];
+  [(HDSPSleepLockScreenAssertionManager *)self setConnection:connectionCopy];
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 
@@ -444,16 +444,16 @@ void __74__HDSPSleepLockScreenAssertionManager_listener_shouldAcceptNewConnectio
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setConnection:(id)a3
+- (void)setConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__HDSPSleepLockScreenAssertionManager_setConnection___block_invoke;
   v6[3] = &unk_279C7B2D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = connectionCopy;
+  v5 = connectionCopy;
   [(HDSPSleepLockScreenAssertionManager *)self _withLock:v6];
 }
 
@@ -480,8 +480,8 @@ void __74__HDSPSleepLockScreenAssertionManager_listener_shouldAcceptNewConnectio
 
 - (BOOL)hasLockScreenConnection
 {
-  v2 = [(HDSPSleepLockScreenAssertionManager *)self connection];
-  v3 = v2 != 0;
+  connection = [(HDSPSleepLockScreenAssertionManager *)self connection];
+  v3 = connection != 0;
 
   return v3;
 }

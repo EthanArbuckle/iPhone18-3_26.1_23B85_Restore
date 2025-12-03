@@ -1,14 +1,14 @@
 @interface AXSSRemoteDesktopServer
 - (AXSSRemoteDesktopServer)init;
-- (AXSSRemoteDesktopServer)initWithDelegate:(id)a3;
-- (int)handleEnableAccessibilityFeature:(unint64_t)a3 enabled:(BOOL)a4 settings:(id)a5;
-- (int)handleViewerAccessibilityMessageWithFeature:(unint64_t)a3 message:(unint64_t)a4 messageID:(unsigned int)a5 timeout:(double)a6 userInfo:(id)a7;
+- (AXSSRemoteDesktopServer)initWithDelegate:(id)delegate;
+- (int)handleEnableAccessibilityFeature:(unint64_t)feature enabled:(BOOL)enabled settings:(id)settings;
+- (int)handleViewerAccessibilityMessageWithFeature:(unint64_t)feature message:(unint64_t)message messageID:(unsigned int)d timeout:(double)timeout userInfo:(id)info;
 - (void)dealloc;
 @end
 
 @implementation AXSSRemoteDesktopServer
 
-- (AXSSRemoteDesktopServer)initWithDelegate:(id)a3
+- (AXSSRemoteDesktopServer)initWithDelegate:(id)delegate
 {
   v4.receiver = self;
   v4.super_class = AXSSRemoteDesktopServer;
@@ -17,25 +17,25 @@
 
 - (void)dealloc
 {
-  v2 = self;
-  [(AXSSRemoteDesktopServer *)v2 stop];
-  v3.receiver = v2;
+  selfCopy = self;
+  [(AXSSRemoteDesktopServer *)selfCopy stop];
+  v3.receiver = selfCopy;
   v3.super_class = AXSSRemoteDesktopServer;
   [(AXSSRemoteDesktopServer *)&v3 dealloc];
 }
 
-- (int)handleEnableAccessibilityFeature:(unint64_t)a3 enabled:(BOOL)a4 settings:(id)a5
+- (int)handleEnableAccessibilityFeature:(unint64_t)feature enabled:(BOOL)enabled settings:(id)settings
 {
-  v5 = a5;
+  settingsCopy = settings;
   v6 = sub_1C0F4F7B0();
   sub_1C0EFED6C(v6, v7);
 
   return -1;
 }
 
-- (int)handleViewerAccessibilityMessageWithFeature:(unint64_t)a3 message:(unint64_t)a4 messageID:(unsigned int)a5 timeout:(double)a6 userInfo:(id)a7
+- (int)handleViewerAccessibilityMessageWithFeature:(unint64_t)feature message:(unint64_t)message messageID:(unsigned int)d timeout:(double)timeout userInfo:(id)info
 {
-  v7 = a7;
+  infoCopy = info;
   v8 = sub_1C0F4F7B0();
   sub_1C0EFED6C(v8, v9);
 

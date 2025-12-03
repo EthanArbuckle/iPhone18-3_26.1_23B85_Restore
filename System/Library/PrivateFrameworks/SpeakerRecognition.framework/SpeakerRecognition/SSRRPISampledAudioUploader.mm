@@ -1,28 +1,28 @@
 @interface SSRRPISampledAudioUploader
-+ (BOOL)audioFileExist:(id)a3 date:(id)a4;
-+ (id)_convertToMetadataWithRequestId:(id)a3 audioUUId:(id)a4 audioMetadata:(id)a5;
-+ (id)_getAudioFileMetadata:(id)a3;
-+ (void)_uploadAudioFilePath:(id)a3 requestId:(id)a4 audioId:(id)a5 metadataDict:(id)a6 completion:(id)a7;
-+ (void)cleanUpAudioOnAndBeforeDate:(id)a3 error:(id *)a4;
++ (BOOL)audioFileExist:(id)exist date:(id)date;
++ (id)_convertToMetadataWithRequestId:(id)id audioUUId:(id)uId audioMetadata:(id)metadata;
++ (id)_getAudioFileMetadata:(id)metadata;
++ (void)_uploadAudioFilePath:(id)path requestId:(id)id audioId:(id)audioId metadataDict:(id)dict completion:(id)completion;
++ (void)cleanUpAudioOnAndBeforeDate:(id)date error:(id *)error;
 + (void)purgeOldAudioData;
-+ (void)removeAllAudioDataWithError:(id *)a3;
-+ (void)uploadAudioFilePath:(id)a3 requestId:(id)a4 audioId:(id)a5 completion:(id)a6;
-+ (void)uploadAudioFileWithRequestId:(id)a3 audioId:(id)a4 date:(id)a5 completion:(id)a6;
++ (void)removeAllAudioDataWithError:(id *)error;
++ (void)uploadAudioFilePath:(id)path requestId:(id)id audioId:(id)audioId completion:(id)completion;
++ (void)uploadAudioFileWithRequestId:(id)id audioId:(id)audioId date:(id)date completion:(id)completion;
 @end
 
 @implementation SSRRPISampledAudioUploader
 
-+ (id)_convertToMetadataWithRequestId:(id)a3 audioUUId:(id)a4 audioMetadata:(id)a5
++ (id)_convertToMetadataWithRequestId:(id)id audioUUId:(id)uId audioMetadata:(id)metadata
 {
-  v6 = a5;
+  metadataCopy = metadata;
   v7 = MEMORY[0x277D571E8];
-  v8 = a4;
+  uIdCopy = uId;
   v9 = objc_alloc_init(v7);
-  v10 = [v6 objectForKeyedSubscript:*MEMORY[0x277D01AF8]];
-  v11 = [v10 longLongValue];
+  v10 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x277D01AF8]];
+  longLongValue = [v10 longLongValue];
 
   v12 = MEMORY[0x277CCABB0];
-  v13 = [v6 objectForKeyedSubscript:*MEMORY[0x277D01AF0]];
+  v13 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x277D01AF0]];
   v14 = [v12 numberWithInteger:{objc_msgSend(v13, "integerValue")}];
 
   v15 = @"MHASRAUDIOCODEC_ALAC_MONO_16000HZ_VALUE";
@@ -32,73 +32,73 @@
   }
 
   [v9 setCodec:v15];
-  v16 = [objc_alloc(MEMORY[0x277D5AC70]) initWithNSUUID:v8];
+  v16 = [objc_alloc(MEMORY[0x277D5AC70]) initWithNSUUID:uIdCopy];
 
   [v9 setInteractionId:v16];
-  v17 = [v6 objectForKeyedSubscript:*MEMORY[0x277D01AD0]];
+  v17 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x277D01AD0]];
   [v9 setLanguage:v17];
 
-  [v9 setAudioCreatedTimestampMs:1000 * v11];
+  [v9 setAudioCreatedTimestampMs:1000 * longLongValue];
 
   return v9;
 }
 
-+ (void)_uploadAudioFilePath:(id)a3 requestId:(id)a4 audioId:(id)a5 metadataDict:(id)a6 completion:(id)a7
++ (void)_uploadAudioFilePath:(id)path requestId:(id)id audioId:(id)audioId metadataDict:(id)dict completion:(id)completion
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v15)
+  pathCopy = path;
+  idCopy = id;
+  audioIdCopy = audioId;
+  dictCopy = dict;
+  completionCopy = completion;
+  if (!dictCopy)
   {
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot get metadata for requestId: %@", v13];
+    idCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot get metadata for requestId: %@", idCopy];
     v26 = MEMORY[0x277CCA9B8];
     v41 = @"reason";
-    v42[0] = v17;
+    v42[0] = idCopy;
     v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:&v41 count:1];
     v18 = [v26 errorWithDomain:@"com.apple.speakerrecognition" code:1262 userInfo:v27];
 
-    if (v16)
+    if (completionCopy)
     {
-      v16[2](v16, 0, v12, v18);
+      completionCopy[2](completionCopy, 0, pathCopy, v18);
       goto LABEL_7;
     }
   }
 
-  v17 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v14];
-  v18 = [a1 _convertToMetadataWithRequestId:v13 audioUUId:v17 audioMetadata:v15];
-  v19 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v13];
+  idCopy = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:audioIdCopy];
+  v18 = [self _convertToMetadataWithRequestId:idCopy audioUUId:idCopy audioMetadata:dictCopy];
+  v19 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:idCopy];
   v20 = *MEMORY[0x277D01970];
   if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
   {
     v21 = v20;
     [v19 UUIDString];
-    v22 = v29 = v14;
-    v23 = [v17 UUIDString];
+    v22 = v29 = audioIdCopy;
+    uUIDString = [idCopy UUIDString];
     *buf = 136315906;
     v34 = "+[SSRRPISampledAudioUploader _uploadAudioFilePath:requestId:audioId:metadataDict:completion:]";
     v35 = 2112;
-    v36 = v12;
+    v36 = pathCopy;
     v37 = 2112;
     v38 = v22;
     v39 = 2112;
-    v40 = v23;
+    v40 = uUIDString;
     _os_log_impl(&dword_225E12000, v21, OS_LOG_TYPE_DEFAULT, "%s Uploading audioFilePath: %@ with requestId: %@ <-> audioId: %@", buf, 0x2Au);
 
-    v14 = v29;
+    audioIdCopy = v29;
   }
 
-  v24 = [MEMORY[0x277D552B8] sharedAnalytics];
-  v25 = [v24 defaultMessageStream];
+  mEMORY[0x277D552B8] = [MEMORY[0x277D552B8] sharedAnalytics];
+  defaultMessageStream = [mEMORY[0x277D552B8] defaultMessageStream];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __93__SSRRPISampledAudioUploader__uploadAudioFilePath_requestId_audioId_metadataDict_completion___block_invoke;
   v30[3] = &unk_278579050;
-  v32 = v16;
-  v31 = v12;
-  [v25 enqueueLargeMessageObjectFromPath:v31 assetIdentifier:v17 requestIdentifier:v19 messageMetadata:v18 completion:v30];
+  v32 = completionCopy;
+  v31 = pathCopy;
+  [defaultMessageStream enqueueLargeMessageObjectFromPath:v31 assetIdentifier:idCopy requestIdentifier:v19 messageMetadata:v18 completion:v30];
 
 LABEL_7:
   v28 = *MEMORY[0x277D85DE8];
@@ -115,13 +115,13 @@ uint64_t __93__SSRRPISampledAudioUploader__uploadAudioFilePath_requestId_audioId
   return result;
 }
 
-+ (id)_getAudioFileMetadata:(id)a3
++ (id)_getAudioFileMetadata:(id)metadata
 {
-  v3 = [a3 stringByDeletingPathExtension];
-  v4 = [v3 stringByAppendingPathExtension:@"plist"];
+  stringByDeletingPathExtension = [metadata stringByDeletingPathExtension];
+  v4 = [stringByDeletingPathExtension stringByAppendingPathExtension:@"plist"];
 
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v5 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v6 = [defaultManager fileExistsAtPath:v4];
 
   if (v6)
   {
@@ -139,11 +139,11 @@ uint64_t __93__SSRRPISampledAudioUploader__uploadAudioFilePath_requestId_audioId
 + (void)purgeOldAudioData
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
-  v5 = [v4 dateByAddingUnit:16 value:-7 toDate:v3 options:0];
+  date = [MEMORY[0x277CBEAA8] date];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v5 = [currentCalendar dateByAddingUnit:16 value:-7 toDate:date options:0];
   v9 = 0;
-  [a1 cleanUpAudioOnAndBeforeDate:v5 error:&v9];
+  [self cleanUpAudioOnAndBeforeDate:v5 error:&v9];
   v6 = v9;
   [SSRRequestIdToAudioIdMappingHelper removeMappingOnAndBefore:v5 completion:&__block_literal_global_5057];
   v7 = *MEMORY[0x277D01970];
@@ -176,14 +176,14 @@ void __47__SSRRPISampledAudioUploader_purgeOldAudioData__block_invoke(uint64_t a
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)removeAllAudioDataWithError:(id *)a3
++ (void)removeAllAudioDataWithError:(id *)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D01788] sharedPreferences];
-  v5 = [v4 getRPIAssistantAudioSamplingDirectory];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  getRPIAssistantAudioSamplingDirectory = [mEMORY[0x277D01788] getRPIAssistantAudioSamplingDirectory];
 
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  [v6 removeItemAtPath:v5 error:a3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager removeItemAtPath:getRPIAssistantAudioSamplingDirectory error:error];
 
   v7 = *MEMORY[0x277D01970];
   if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
@@ -191,27 +191,27 @@ void __47__SSRRPISampledAudioUploader_purgeOldAudioData__block_invoke(uint64_t a
     v9 = 136315394;
     v10 = "+[SSRRPISampledAudioUploader removeAllAudioDataWithError:]";
     v11 = 2114;
-    v12 = v5;
+    v12 = getRPIAssistantAudioSamplingDirectory;
     _os_log_impl(&dword_225E12000, v7, OS_LOG_TYPE_DEFAULT, "%s Deleting all items in path: %{public}@", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)cleanUpAudioOnAndBeforeDate:(id)a3 error:(id *)a4
++ (void)cleanUpAudioOnAndBeforeDate:(id)date error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277D01788] sharedPreferences];
-  v7 = [v6 getRPIAssistantAudioSamplingDirectory];
+  dateCopy = date;
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  getRPIAssistantAudioSamplingDirectory = [mEMORY[0x277D01788] getRPIAssistantAudioSamplingDirectory];
 
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v24 = a4;
-  v9 = [v8 contentsOfDirectoryAtPath:v7 error:a4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  errorCopy = error;
+  v9 = [defaultManager contentsOfDirectoryAtPath:getRPIAssistantAudioSamplingDirectory error:error];
 
   if (v9)
   {
-    v23 = v7;
+    v23 = getRPIAssistantAudioSamplingDirectory;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
@@ -232,17 +232,17 @@ void __47__SSRRPISampledAudioUploader_purgeOldAudioData__block_invoke(uint64_t a
           }
 
           v15 = *(*(&v25 + 1) + 8 * i);
-          v16 = [MEMORY[0x277D018F8] defaultDateFormatter];
-          v17 = [v16 dateFromString:v15];
+          defaultDateFormatter = [MEMORY[0x277D018F8] defaultDateFormatter];
+          v17 = [defaultDateFormatter dateFromString:v15];
 
-          v18 = [MEMORY[0x277D01788] sharedPreferences];
-          v19 = [v18 getRPIAssistantAudioSamplingDirectory];
-          v20 = [v19 stringByAppendingPathComponent:v15];
+          mEMORY[0x277D01788]2 = [MEMORY[0x277D01788] sharedPreferences];
+          getRPIAssistantAudioSamplingDirectory2 = [mEMORY[0x277D01788]2 getRPIAssistantAudioSamplingDirectory];
+          v20 = [getRPIAssistantAudioSamplingDirectory2 stringByAppendingPathComponent:v15];
 
-          if (([v17 compare:v5] + 1) <= 1)
+          if (([v17 compare:dateCopy] + 1) <= 1)
           {
-            v21 = [MEMORY[0x277CCAA00] defaultManager];
-            [v21 removeItemAtPath:v20 error:v24];
+            defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+            [defaultManager2 removeItemAtPath:v20 error:errorCopy];
           }
         }
 
@@ -252,22 +252,22 @@ void __47__SSRRPISampledAudioUploader_purgeOldAudioData__block_invoke(uint64_t a
       while (v12);
     }
 
-    v7 = v23;
+    getRPIAssistantAudioSamplingDirectory = v23;
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)audioFileExist:(id)a3 date:(id)a4
++ (BOOL)audioFileExist:(id)exist date:(id)date
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277D01788] sharedPreferences];
-  v8 = [v7 getRPIAssistantAudioSamplingDateSubDirectory:v6];
+  existCopy = exist;
+  dateCopy = date;
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  v8 = [mEMORY[0x277D01788] getRPIAssistantAudioSamplingDateSubDirectory:dateCopy];
 
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
-  v10 = [v9 contentsOfDirectoryAtPath:v8 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v10 = [defaultManager contentsOfDirectoryAtPath:v8 error:0];
 
   v26 = 0u;
   v27 = 0u;
@@ -279,7 +279,7 @@ void __47__SSRRPISampledAudioUploader_purgeOldAudioData__block_invoke(uint64_t a
   {
     v13 = v12;
     v22 = v8;
-    v23 = v6;
+    v23 = dateCopy;
     v14 = 0;
     v15 = 0;
     v16 = *v25;
@@ -293,12 +293,12 @@ void __47__SSRRPISampledAudioUploader_purgeOldAudioData__block_invoke(uint64_t a
         }
 
         v18 = *(*(&v24 + 1) + 8 * i);
-        if ([v18 containsString:{v5, v22, v23, v24}])
+        if ([v18 containsString:{existCopy, v22, v23, v24}])
         {
           v15 |= [v18 hasSuffix:@"pcm"];
         }
 
-        if ([v18 containsString:v5])
+        if ([v18 containsString:existCopy])
         {
           v14 |= [v18 hasSuffix:@"plist"];
         }
@@ -310,7 +310,7 @@ void __47__SSRRPISampledAudioUploader_purgeOldAudioData__block_invoke(uint64_t a
     while (v13);
     v19 = v15 & v14;
     v8 = v22;
-    v6 = v23;
+    dateCopy = v23;
   }
 
   else
@@ -322,25 +322,25 @@ void __47__SSRRPISampledAudioUploader_purgeOldAudioData__block_invoke(uint64_t a
   return v19 & 1;
 }
 
-+ (void)uploadAudioFileWithRequestId:(id)a3 audioId:(id)a4 date:(id)a5 completion:(id)a6
++ (void)uploadAudioFileWithRequestId:(id)id audioId:(id)audioId date:(id)date completion:(id)completion
 {
   v72 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x277D01788] sharedPreferences];
-  v15 = [v14 getRPIAssistantAudioSamplingDateSubDirectory:v12];
+  idCopy = id;
+  audioIdCopy = audioId;
+  dateCopy = date;
+  completionCopy = completion;
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  v15 = [mEMORY[0x277D01788] getRPIAssistantAudioSamplingDateSubDirectory:dateCopy];
 
-  v16 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v60 = 0;
   v54 = v15;
-  v17 = [v16 contentsOfDirectoryAtPath:v15 error:&v60];
+  v17 = [defaultManager contentsOfDirectoryAtPath:v15 error:&v60];
   v18 = v60;
 
   if (v17)
   {
-    v47 = a1;
+    selfCopy = self;
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
@@ -351,12 +351,12 @@ void __47__SSRRPISampledAudioUploader_purgeOldAudioData__block_invoke(uint64_t a
     if (v20)
     {
       v48 = v18;
-      v49 = v13;
-      v50 = v11;
+      v49 = completionCopy;
+      v50 = audioIdCopy;
       v55 = 0;
       v21 = 0;
       v22 = *v57;
-      v52 = v10;
+      v52 = idCopy;
       v53 = v19;
       while (2)
       {
@@ -368,15 +368,15 @@ void __47__SSRRPISampledAudioUploader_purgeOldAudioData__block_invoke(uint64_t a
           }
 
           v24 = *(*(&v56 + 1) + 8 * i);
-          if ([v24 hasSuffix:@"pcm"] && objc_msgSend(v24, "rangeOfString:", v10) != 0x7FFFFFFFFFFFFFFFLL)
+          if ([v24 hasSuffix:@"pcm"] && objc_msgSend(v24, "rangeOfString:", idCopy) != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v25 = [v24 stringByDeletingPathExtension];
-            v26 = [v25 stringByAppendingPathExtension:@"plist"];
+            stringByDeletingPathExtension = [v24 stringByDeletingPathExtension];
+            v26 = [stringByDeletingPathExtension stringByAppendingPathExtension:@"plist"];
             v27 = [v54 stringByAppendingPathComponent:v26];
 
             v28 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v27];
 
-            v29 = [v25 stringByAppendingPathExtension:@"pcm"];
+            v29 = [stringByDeletingPathExtension stringByAppendingPathExtension:@"pcm"];
             v21 = [v54 stringByAppendingPathComponent:v29];
 
             if (!v28)
@@ -388,22 +388,22 @@ void __47__SSRRPISampledAudioUploader_purgeOldAudioData__block_invoke(uint64_t a
               v39 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v66 forKeys:&v65 count:1];
               v33 = [v38 errorWithDomain:@"com.apple.speakerrecognition" code:1261 userInfo:v39];
 
-              v13 = v49;
+              completionCopy = v49;
               if (v49)
               {
                 (*(v49 + 2))(v49, 0, 0, v33);
               }
 
               v17 = v51;
-              v10 = v52;
-              v11 = v50;
+              idCopy = v52;
+              audioIdCopy = v50;
               v32 = v53;
               goto LABEL_27;
             }
 
             v55 = v21;
             v21 = v28;
-            v10 = v52;
+            idCopy = v52;
             v19 = v53;
           }
         }
@@ -420,21 +420,21 @@ void __47__SSRRPISampledAudioUploader_purgeOldAudioData__block_invoke(uint64_t a
       if (!v55)
       {
         v20 = v21;
-        v11 = v50;
+        audioIdCopy = v50;
         v18 = v48;
-        v13 = v49;
+        completionCopy = v49;
         goto LABEL_24;
       }
 
-      v30 = [MEMORY[0x277CCAA00] defaultManager];
-      v31 = [v30 fileExistsAtPath:v55];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      v31 = [defaultManager2 fileExistsAtPath:v55];
 
       v17 = v51;
       if (v31)
       {
-        v11 = v50;
-        v13 = v49;
-        [v47 _uploadAudioFilePath:v55 requestId:v10 audioId:v50 metadataDict:v21 completion:v49];
+        audioIdCopy = v50;
+        completionCopy = v49;
+        [selfCopy _uploadAudioFilePath:v55 requestId:idCopy audioId:v50 metadataDict:v21 completion:v49];
         v32 = v55;
         v33 = v48;
       }
@@ -448,14 +448,14 @@ void __47__SSRRPISampledAudioUploader_purgeOldAudioData__block_invoke(uint64_t a
         v46 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v62 forKeys:&v61 count:1];
         v33 = [v45 errorWithDomain:@"com.apple.speakerrecognition" code:1262 userInfo:v46];
 
-        v13 = v49;
+        completionCopy = v49;
         if (v49)
         {
           (*(v49 + 2))(v49, 0, 0, v33);
         }
 
         v32 = v55;
-        v11 = v50;
+        audioIdCopy = v50;
       }
     }
 
@@ -464,17 +464,17 @@ void __47__SSRRPISampledAudioUploader_purgeOldAudioData__block_invoke(uint64_t a
 
 LABEL_24:
       v17 = v51;
-      v40 = [MEMORY[0x277CCACA8] stringWithFormat:@"no audio file is found for requestId: %@", v10];
+      idCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"no audio file is found for requestId: %@", idCopy];
       v41 = MEMORY[0x277CCA9B8];
       v63 = @"reason";
-      v64 = v40;
-      v32 = v40;
+      v64 = idCopy;
+      v32 = idCopy;
       v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v64 forKeys:&v63 count:1];
       v33 = [v41 errorWithDomain:@"com.apple.speakerrecognition" code:1262 userInfo:v42];
 
-      if (v13)
+      if (completionCopy)
       {
-        (*(v13 + 2))(v13, 0, 0, v33);
+        (*(completionCopy + 2))(completionCopy, 0, 0, v33);
       }
 
       v21 = v20;
@@ -485,34 +485,34 @@ LABEL_27:
     v18 = v33;
   }
 
-  else if (v13)
+  else if (completionCopy)
   {
     v34 = *MEMORY[0x277D01970];
     if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
     {
       v35 = v34;
-      v36 = [v18 localizedDescription];
+      localizedDescription = [v18 localizedDescription];
       *buf = 136315394;
       v69 = "+[SSRRPISampledAudioUploader uploadAudioFileWithRequestId:audioId:date:completion:]";
       v70 = 2112;
-      v71 = v36;
+      v71 = localizedDescription;
       _os_log_impl(&dword_225E12000, v35, OS_LOG_TYPE_DEFAULT, "%s Failed with error: %@", buf, 0x16u);
     }
 
-    (*(v13 + 2))(v13, 0, 0, v18);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v18);
   }
 
   v43 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)uploadAudioFilePath:(id)a3 requestId:(id)a4 audioId:(id)a5 completion:(id)a6
++ (void)uploadAudioFilePath:(id)path requestId:(id)id audioId:(id)audioId completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [SSRRPISampledAudioUploader _getAudioFileMetadata:v13];
-  [a1 _uploadAudioFilePath:v13 requestId:v12 audioId:v11 metadataDict:v14 completion:v10];
+  completionCopy = completion;
+  audioIdCopy = audioId;
+  idCopy = id;
+  pathCopy = path;
+  v14 = [SSRRPISampledAudioUploader _getAudioFileMetadata:pathCopy];
+  [self _uploadAudioFilePath:pathCopy requestId:idCopy audioId:audioIdCopy metadataDict:v14 completion:completionCopy];
 }
 
 @end

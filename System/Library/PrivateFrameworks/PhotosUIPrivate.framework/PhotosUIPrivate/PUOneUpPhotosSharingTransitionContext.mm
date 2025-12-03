@@ -6,10 +6,10 @@
 
 - (id)keyAssetIndexPath
 {
-  v2 = [(PUOneUpPhotosSharingTransitionContext *)self currentAssetReference];
-  v3 = [v2 indexPath];
+  currentAssetReference = [(PUOneUpPhotosSharingTransitionContext *)self currentAssetReference];
+  indexPath = [currentAssetReference indexPath];
 
-  return v3;
+  return indexPath;
 }
 
 @end

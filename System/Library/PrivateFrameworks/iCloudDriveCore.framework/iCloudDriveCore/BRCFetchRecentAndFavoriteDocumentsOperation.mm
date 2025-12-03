@@ -1,33 +1,33 @@
 @interface BRCFetchRecentAndFavoriteDocumentsOperation
-- (BRCFetchRecentAndFavoriteDocumentsOperation)initWithServerZone:(id)a3 sessionContext:(id)a4;
+- (BRCFetchRecentAndFavoriteDocumentsOperation)initWithServerZone:(id)zone sessionContext:(id)context;
 - (id)createActivity;
-- (unsigned)_errorRetryType:(id)a3;
-- (void)_performQueryOperationForBit:(unsigned int)a3 index:(id)a4 completion:(id)a5;
+- (unsigned)_errorRetryType:(id)type;
+- (void)_performQueryOperationForBit:(unsigned int)bit index:(id)index completion:(id)completion;
 - (void)main;
 @end
 
 @implementation BRCFetchRecentAndFavoriteDocumentsOperation
 
-- (BRCFetchRecentAndFavoriteDocumentsOperation)initWithServerZone:(id)a3 sessionContext:(id)a4
+- (BRCFetchRecentAndFavoriteDocumentsOperation)initWithServerZone:(id)zone sessionContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 mangledID];
-  v10 = [v9 description];
+  zoneCopy = zone;
+  contextCopy = context;
+  mangledID = [zoneCopy mangledID];
+  v10 = [mangledID description];
   v11 = [@"fetch-recent-documents" stringByAppendingPathComponent:v10];
 
-  v12 = [v7 metadataSyncContext];
+  metadataSyncContext = [zoneCopy metadataSyncContext];
   v16.receiver = self;
   v16.super_class = BRCFetchRecentAndFavoriteDocumentsOperation;
-  v13 = [(_BRCOperation *)&v16 initWithName:v11 syncContext:v12 sessionContext:v8];
+  v13 = [(_BRCOperation *)&v16 initWithName:v11 syncContext:metadataSyncContext sessionContext:contextCopy];
 
   if (v13)
   {
     [(_BRCOperation *)v13 setNonDiscretionary:1];
-    v14 = [MEMORY[0x277CBC4F8] br_fetchRecents];
-    [(_BRCOperation *)v13 setGroup:v14];
+    br_fetchRecents = [MEMORY[0x277CBC4F8] br_fetchRecents];
+    [(_BRCOperation *)v13 setGroup:br_fetchRecents];
 
-    objc_storeStrong(&v13->_serverZone, a3);
+    objc_storeStrong(&v13->_serverZone, zone);
   }
 
   return v13;
@@ -40,63 +40,63 @@
   return v2;
 }
 
-- (unsigned)_errorRetryType:(id)a3
+- (unsigned)_errorRetryType:(id)type
 {
-  v3 = a3;
-  if ([v3 br_isCKErrorCode:15])
+  typeCopy = type;
+  if ([typeCopy br_isCKErrorCode:15])
   {
-    v4 = 2;
+    brc_isRetriable = 2;
   }
 
-  else if ([v3 br_isCKErrorCode:4])
+  else if ([typeCopy br_isCKErrorCode:4])
   {
-    v5 = [v3 userInfo];
-    v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+    userInfo = [typeCopy userInfo];
+    v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
-    v7 = [v6 domain];
-    if ([v7 isEqualToString:*MEMORY[0x277CCA738]])
+    domain = [v6 domain];
+    if ([domain isEqualToString:*MEMORY[0x277CCA738]])
     {
       v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "code")}];
       if ([&unk_2837B0C10 indexOfObject:v8] == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v4 = 2;
+        brc_isRetriable = 2;
       }
 
       else
       {
-        v4 = 1;
+        brc_isRetriable = 1;
       }
     }
 
     else
     {
-      v4 = 2;
+      brc_isRetriable = 2;
     }
   }
 
   else
   {
-    v4 = [v3 brc_isRetriable];
+    brc_isRetriable = [typeCopy brc_isRetriable];
   }
 
-  return v4;
+  return brc_isRetriable;
 }
 
-- (void)_performQueryOperationForBit:(unsigned int)a3 index:(id)a4 completion:(id)a5
+- (void)_performQueryOperationForBit:(unsigned int)bit index:(id)index completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  if (([(BRCServerZone *)self->_serverZone state]& a3) != 0)
+  indexCopy = index;
+  completionCopy = completion;
+  if (([(BRCServerZone *)self->_serverZone state]& bit) != 0)
   {
-    v9[2](v9, self, 0);
+    completionCopy[2](completionCopy, self, 0);
   }
 
   else
   {
-    v29 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"indexName", v8];
-    v10 = [objc_alloc(MEMORY[0x277CBC578]) initWithRecordType:@"SearchIndexes" predicate:v29];
-    v11 = [(BRCServerZone *)self->_serverZone clientZone];
-    v12 = [v11 fetchRecordSubResourcesWithParentOperation:self pendingChangesStream:0 contentRecordsFetchedInline:0 sessionContext:self->super._sessionContext];
+    indexCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"indexName", indexCopy];
+    v10 = [objc_alloc(MEMORY[0x277CBC578]) initWithRecordType:@"SearchIndexes" predicate:indexCopy];
+    clientZone = [(BRCServerZone *)self->_serverZone clientZone];
+    v12 = [clientZone fetchRecordSubResourcesWithParentOperation:self pendingChangesStream:0 contentRecordsFetchedInline:0 sessionContext:self->super._sessionContext];
 
     v13 = self->_serverZone;
     v43[0] = MEMORY[0x277D85DD0];
@@ -105,38 +105,38 @@
     v43[3] = &unk_2784FFBA0;
     v14 = v13;
     v44 = v14;
-    v45 = a3;
+    bitCopy = bit;
     [v12 setQueryFinishedServerTruthCallback:v43];
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
     v37[2] = __93__BRCFetchRecentAndFavoriteDocumentsOperation__performQueryOperationForBit_index_completion___block_invoke_2;
     v37[3] = &unk_2784FFC40;
-    v41 = v9;
+    v41 = completionCopy;
     v37[4] = self;
     v38 = v14;
-    v15 = v8;
+    v15 = indexCopy;
     v39 = v15;
-    v42 = a3;
+    bitCopy2 = bit;
     v16 = v12;
     v40 = v16;
     v28 = v14;
     v17 = MEMORY[0x22AA4A310](v37);
     v18 = [objc_alloc(MEMORY[0x277CBC590]) initWithQuery:v10];
-    v19 = [(BRCServerZone *)self->_serverZone zoneID];
-    [v18 setZoneID:v19];
+    zoneID = [(BRCServerZone *)self->_serverZone zoneID];
+    [v18 setZoneID:zoneID];
 
-    v20 = [(BRCServerZone *)self->_serverZone mangledID];
-    v21 = [BRCUserDefaults defaultsForMangledID:v20];
-    v22 = [v21 numberOfGreedyRecentlyUsedItems];
+    mangledID = [(BRCServerZone *)self->_serverZone mangledID];
+    v21 = [BRCUserDefaults defaultsForMangledID:mangledID];
+    numberOfGreedyRecentlyUsedItems = [v21 numberOfGreedyRecentlyUsedItems];
 
-    if (v22 >= 0x96)
+    if (numberOfGreedyRecentlyUsedItems >= 0x96)
     {
       v23 = 150;
     }
 
     else
     {
-      v23 = v22;
+      v23 = numberOfGreedyRecentlyUsedItems;
     }
 
     [v18 setResultsLimit:v23];
@@ -145,8 +145,8 @@
     v24 = [MEMORY[0x277CBC5A0] desiredKeysWithMask:185];
     [v18 setDesiredKeys:v24];
 
-    v25 = [v16 callbackQueue];
-    [v18 setCallbackQueue:v25];
+    callbackQueue = [v16 callbackQueue];
+    [v18 setCallbackQueue:callbackQueue];
 
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
@@ -160,9 +160,9 @@
     v30[2] = __93__BRCFetchRecentAndFavoriteDocumentsOperation__performQueryOperationForBit_index_completion___block_invoke_3_32;
     v30[3] = &unk_2784FFCB8;
     v31 = v26;
-    v9 = v17;
-    v34 = v9;
-    v32 = self;
+    completionCopy = v17;
+    v34 = completionCopy;
+    selfCopy = self;
     v33 = v15;
     v27 = v26;
     [v18 setQueryCompletionBlock:v30];

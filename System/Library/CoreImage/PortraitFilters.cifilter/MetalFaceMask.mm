@@ -1,17 +1,17 @@
 @interface MetalFaceMask
-- (id)initForDevice:(id)a3;
-- (int)clearOutputTexture:(id)a3 CommandBuffer:(id)a4;
-- (int)drawEyeMaskUsingQuads:(MetalFaceMaskEyeQuads_t *)a3 OutputMaskTexture:(id)a4 OutputRegion:(CGRect)a5 FaceBounds:(CGRect)a6 CommandBuffer:(id)a7;
-- (int)trainSkinMaskUsingInputTexture:(id)a3 InputRegion:(CGRect)a4 QuadRegion:(CGPoint)a5[4] CommandBuffer:(id)a6;
-- (uint64_t)findSkinMaskUsingInputTexture:(float64_t)a3 InputRegion:(float64x2_t)a4 OutputMaskTexture:(float64_t)a5 OutputRegion:(float64x2_t)a6 FaceBounds:(float64_t)a7 SeedPoints:(float64x2_t)a8 NumberOfSeedPoints:(float64_t)a9 FillValue:(uint64_t)a10 CommandBuffer:(uint64_t)a11;
-- (uint64_t)findToothMaskUsingInputTexture:(float64_t)a3 InputRegion:(float64x2_t)a4 OutputMaskTexture:(float64_t)a5 OutputRegion:(float64x2_t)a6 TeethBounds:(float64_t)a7 SeedPoints:(float64x2_t)a8 NumberOfSeedPoints:(float64_t)a9 FillValue:(uint64_t)a10 CommandBuffer:(uint64_t)a11;
+- (id)initForDevice:(id)device;
+- (int)clearOutputTexture:(id)texture CommandBuffer:(id)buffer;
+- (int)drawEyeMaskUsingQuads:(MetalFaceMaskEyeQuads_t *)quads OutputMaskTexture:(id)texture OutputRegion:(CGRect)region FaceBounds:(CGRect)bounds CommandBuffer:(id)buffer;
+- (int)trainSkinMaskUsingInputTexture:(id)texture InputRegion:(CGRect)region QuadRegion:(CGPoint)quadRegion[4] CommandBuffer:(id)buffer;
+- (uint64_t)findSkinMaskUsingInputTexture:(float64_t)texture InputRegion:(float64x2_t)region OutputMaskTexture:(float64_t)maskTexture OutputRegion:(float64x2_t)outputRegion FaceBounds:(float64_t)bounds SeedPoints:(float64x2_t)points NumberOfSeedPoints:(float64_t)seedPoints FillValue:(uint64_t)self0 CommandBuffer:(uint64_t)self1;
+- (uint64_t)findToothMaskUsingInputTexture:(float64_t)texture InputRegion:(float64x2_t)region OutputMaskTexture:(float64_t)maskTexture OutputRegion:(float64x2_t)outputRegion TeethBounds:(float64_t)bounds SeedPoints:(float64x2_t)points NumberOfSeedPoints:(float64_t)seedPoints FillValue:(uint64_t)self0 CommandBuffer:(uint64_t)self1;
 @end
 
 @implementation MetalFaceMask
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  if (!a3)
+  if (!device)
   {
     sub_49C98();
   }
@@ -23,7 +23,7 @@
   if (v4)
   {
     *&v4->_lumaDilateRadius = xmmword_54B20;
-    v4->_mtlDevice = a3;
+    v4->_mtlDevice = device;
     v56 = 0;
     v6 = [(MTLDevice *)v4->_mtlDevice newDefaultLibraryWithBundle:[NSBundle error:"bundleForClass:" bundleForClass:?], &v56];
     v5->_mtlLibrary = v6;
@@ -385,26 +385,26 @@
   return v5;
 }
 
-- (int)clearOutputTexture:(id)a3 CommandBuffer:(id)a4
+- (int)clearOutputTexture:(id)texture CommandBuffer:(id)buffer
 {
-  v7 = [a3 width];
-  v8 = [a3 height];
+  width = [texture width];
+  height = [texture height];
   v9 = [(MTLComputePipelineState *)self->_mtlKernel_Clear maxTotalThreadsPerThreadgroup]>> 5;
-  v10 = [a4 computeCommandEncoder];
-  [v10 setComputePipelineState:self->_mtlKernel_Clear];
-  [v10 setTexture:a3 atIndex:0];
-  v13[0] = (v7 + 31) >> 5;
-  v13[1] = (v9 + v8 - 1) / v9;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_mtlKernel_Clear];
+  [computeCommandEncoder setTexture:texture atIndex:0];
+  v13[0] = (width + 31) >> 5;
+  v13[1] = (v9 + height - 1) / v9;
   v13[2] = 1;
   v12[0] = 32;
   v12[1] = v9;
   v12[2] = 1;
-  [v10 dispatchThreadgroups:v13 threadsPerThreadgroup:v12];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v13 threadsPerThreadgroup:v12];
+  [computeCommandEncoder endEncoding];
   return 0;
 }
 
-- (int)trainSkinMaskUsingInputTexture:(id)a3 InputRegion:(CGRect)a4 QuadRegion:(CGPoint)a5[4] CommandBuffer:(id)a6
+- (int)trainSkinMaskUsingInputTexture:(id)texture InputRegion:(CGRect)region QuadRegion:(CGPoint)quadRegion[4] CommandBuffer:(id)buffer
 {
   v8 = vaddvq_s32(*&self->_lumaDilateRadius);
   v9 = 192;
@@ -425,20 +425,20 @@
 
   v11 = *(&self->super.isa + v9);
   v12 = *(&self->super.isa + v10);
-  v13 = vmovn_s64(vcvtq_s64_f64(a5[1]));
-  v71[0] = vmovn_s64(vcvtq_s64_f64(*a5));
+  v13 = vmovn_s64(vcvtq_s64_f64(quadRegion[1]));
+  v71[0] = vmovn_s64(vcvtq_s64_f64(*quadRegion));
   v71[1] = v13;
-  v14 = vmovn_s64(vcvtq_s64_f64(a5[3]));
-  v72 = vmovn_s64(vcvtq_s64_f64(a5[2]));
+  v14 = vmovn_s64(vcvtq_s64_f64(quadRegion[3]));
+  v72 = vmovn_s64(vcvtq_s64_f64(quadRegion[2]));
   v73 = v14;
   *&v15 = vmin_s32(vmin_s32(v71[0], v13), vmin_s32(v72, v14));
   v16 = vmax_s32(vmax_s32(v71[0], v13), vmax_s32(v72, v14));
   v17 = vsub_s32(v16, *&v15);
   *(&v15 + 1) = v16;
-  y = a4.origin.y;
-  height = a4.size.height;
-  *v20.f32 = vrndm_f32(vcvt_f32_f64(a4.origin));
-  v21 = vaddq_f64(a4.origin, a4.size);
+  y = region.origin.y;
+  height = region.size.height;
+  *v20.f32 = vrndm_f32(vcvt_f32_f64(region.origin));
+  v21 = vaddq_f64(region.origin, region.size);
   __asm { FMOV            V2.2D, #-1.0 }
 
   *&v20.u32[2] = vrndp_f32(vcvt_f32_f64(vaddq_f64(v21, _Q2)));
@@ -450,50 +450,50 @@
   v30 = (v17.i32[1] + 3) >> 2;
   v31 = [(MTLComputePipelineState *)self->_mtlKernel_MinMax maxTotalThreadsPerThreadgroup]>> 5;
   v54 = [(MTLComputePipelineState *)self->_mtlKernel_PopulateCube maxTotalThreadsPerThreadgroup]>> 5;
-  v32 = [a6 computeCommandEncoder];
-  [v32 setComputePipelineState:self->_mtlKernel_InitMinMax];
-  [v32 setBuffer:self->_minMaxAtomicBuf offset:0 atIndex:0];
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_mtlKernel_InitMinMax];
+  [computeCommandEncoder setBuffer:self->_minMaxAtomicBuf offset:0 atIndex:0];
   v53 = vdupq_n_s64(1uLL);
   v67 = v53;
   v68 = 1;
   v65 = v53;
   v66 = 1;
-  [v32 dispatchThreadgroups:&v67 threadsPerThreadgroup:&v65];
-  [v32 setComputePipelineState:self->_mtlKernel_MinMax];
-  [v32 setBytes:&v70 length:16 atIndex:0];
-  [v32 setBytes:&v69 length:16 atIndex:1];
-  [v32 setBuffer:self->_minMaxAtomicBuf offset:0 atIndex:2];
-  [v32 setBytes:v71 length:32 atIndex:3];
-  [v32 setTexture:a3 atIndex:0];
+  [computeCommandEncoder dispatchThreadgroups:&v67 threadsPerThreadgroup:&v65];
+  [computeCommandEncoder setComputePipelineState:self->_mtlKernel_MinMax];
+  [computeCommandEncoder setBytes:&v70 length:16 atIndex:0];
+  [computeCommandEncoder setBytes:&v69 length:16 atIndex:1];
+  [computeCommandEncoder setBuffer:self->_minMaxAtomicBuf offset:0 atIndex:2];
+  [computeCommandEncoder setBytes:v71 length:32 atIndex:3];
+  [computeCommandEncoder setTexture:texture atIndex:0];
   v67.i64[0] = (v29 + 31) >> 5;
   v67.i64[1] = (v30 + v31 - 1) / v31;
   v68 = 1;
   v65.i64[0] = 32;
   v65.i64[1] = v31;
   v66 = 1;
-  [v32 dispatchThreadgroups:&v67 threadsPerThreadgroup:&v65];
-  [v32 setComputePipelineState:self->_mtlKernel_CalcCubeInputScaling];
-  [v32 setBuffer:self->_minMaxAtomicBuf offset:0 atIndex:0];
-  [v32 setBuffer:self->_inputScalingBuf offset:0 atIndex:1];
+  [computeCommandEncoder dispatchThreadgroups:&v67 threadsPerThreadgroup:&v65];
+  [computeCommandEncoder setComputePipelineState:self->_mtlKernel_CalcCubeInputScaling];
+  [computeCommandEncoder setBuffer:self->_minMaxAtomicBuf offset:0 atIndex:0];
+  [computeCommandEncoder setBuffer:self->_inputScalingBuf offset:0 atIndex:1];
   v67 = v53;
   v68 = 1;
   v65 = v53;
   v66 = 1;
-  [v32 dispatchThreadgroups:&v67 threadsPerThreadgroup:&v65];
-  [v32 setComputePipelineState:self->_mtlKernel_PopulateCube];
-  [v32 setBytes:&v70 length:16 atIndex:0];
-  [v32 setBytes:&v69 length:16 atIndex:1];
-  [v32 setBuffer:self->_inputScalingBuf offset:0 atIndex:2];
-  [v32 setBytes:v71 length:32 atIndex:3];
-  [v32 setTexture:a3 atIndex:0];
-  [v32 setTexture:v11 atIndex:1];
+  [computeCommandEncoder dispatchThreadgroups:&v67 threadsPerThreadgroup:&v65];
+  [computeCommandEncoder setComputePipelineState:self->_mtlKernel_PopulateCube];
+  [computeCommandEncoder setBytes:&v70 length:16 atIndex:0];
+  [computeCommandEncoder setBytes:&v69 length:16 atIndex:1];
+  [computeCommandEncoder setBuffer:self->_inputScalingBuf offset:0 atIndex:2];
+  [computeCommandEncoder setBytes:v71 length:32 atIndex:3];
+  [computeCommandEncoder setTexture:texture atIndex:0];
+  [computeCommandEncoder setTexture:v11 atIndex:1];
   v67.i64[0] = (v28 + 31) >> 5;
   v67.i64[1] = (v27 + v54 - 1) / v54;
   v68 = 1;
   v65.i64[0] = 32;
   v65.i64[1] = v54;
   v66 = 1;
-  [v32 dispatchThreadgroups:&v67 threadsPerThreadgroup:&v65];
+  [computeCommandEncoder dispatchThreadgroups:&v67 threadsPerThreadgroup:&v65];
   if (self->_lumaDilateRadius < 1)
   {
     v34 = v12;
@@ -507,14 +507,14 @@
     do
     {
       v34 = v11;
-      [v32 setComputePipelineState:self->_mtlKernel_DilateCubeLuma];
-      [v32 setTexture:v11 atIndex:0];
-      [v32 setTexture:v12 atIndex:1];
+      [computeCommandEncoder setComputePipelineState:self->_mtlKernel_DilateCubeLuma];
+      [computeCommandEncoder setTexture:v11 atIndex:0];
+      [computeCommandEncoder setTexture:v12 atIndex:1];
       v67 = v60;
       v68 = 4;
       v65 = v55;
       v66 = 8;
-      [v32 dispatchThreadgroups:&v67 threadsPerThreadgroup:&v65];
+      [computeCommandEncoder dispatchThreadgroups:&v67 threadsPerThreadgroup:&v65];
       ++v33;
       v11 = v12;
       v12 = v34;
@@ -572,16 +572,16 @@
         v46 = 72;
       }
 
-      [v32 setComputePipelineState:*(&self->super.isa + v46)];
-      [v32 setBuffer:self->_inputScalingBuf offset:0 atIndex:0];
-      [v32 setBytes:&v64 length:4 atIndex:1];
-      [v32 setTexture:v11 atIndex:0];
-      [v32 setTexture:v34 atIndex:1];
+      [computeCommandEncoder setComputePipelineState:*(&self->super.isa + v46)];
+      [computeCommandEncoder setBuffer:self->_inputScalingBuf offset:0 atIndex:0];
+      [computeCommandEncoder setBytes:&v64 length:4 atIndex:1];
+      [computeCommandEncoder setTexture:v11 atIndex:0];
+      [computeCommandEncoder setTexture:v34 atIndex:1];
       v67 = v61;
       v68 = 4;
       v65 = v56;
       v66 = 8;
-      [v32 dispatchThreadgroups:&v67 threadsPerThreadgroup:&v65];
+      [computeCommandEncoder dispatchThreadgroups:&v67 threadsPerThreadgroup:&v65];
       ++v41;
       v11 = v34;
       v34 = v42;
@@ -603,14 +603,14 @@
     do
     {
       v48 = v11;
-      [v32 setComputePipelineState:self->_mtlKernel_ErodeCubeLuma];
-      [v32 setTexture:v11 atIndex:0];
-      [v32 setTexture:v42 atIndex:1];
+      [computeCommandEncoder setComputePipelineState:self->_mtlKernel_ErodeCubeLuma];
+      [computeCommandEncoder setTexture:v11 atIndex:0];
+      [computeCommandEncoder setTexture:v42 atIndex:1];
       v67 = v62;
       v68 = 4;
       v65 = v57;
       v66 = 8;
-      [v32 dispatchThreadgroups:&v67 threadsPerThreadgroup:&v65];
+      [computeCommandEncoder dispatchThreadgroups:&v67 threadsPerThreadgroup:&v65];
       ++v47;
       v11 = v42;
       v42 = v48;
@@ -637,14 +637,14 @@
         v51 = 96;
       }
 
-      [v32 setComputePipelineState:*(&self->super.isa + v51)];
-      [v32 setTexture:v11 atIndex:0];
-      [v32 setTexture:v48 atIndex:1];
+      [computeCommandEncoder setComputePipelineState:*(&self->super.isa + v51)];
+      [computeCommandEncoder setTexture:v11 atIndex:0];
+      [computeCommandEncoder setTexture:v48 atIndex:1];
       v67 = v63;
       v68 = 4;
       v65 = v58;
       v66 = 8;
-      [v32 dispatchThreadgroups:&v67 threadsPerThreadgroup:&v65];
+      [computeCommandEncoder dispatchThreadgroups:&v67 threadsPerThreadgroup:&v65];
       ++v49;
       v11 = v48;
       v48 = v50;
@@ -653,26 +653,26 @@
     while (v49 < self->_chromaErodeRadius);
   }
 
-  [v32 endEncoding];
+  [computeCommandEncoder endEncoding];
   return 0;
 }
 
-- (uint64_t)findSkinMaskUsingInputTexture:(float64_t)a3 InputRegion:(float64x2_t)a4 OutputMaskTexture:(float64_t)a5 OutputRegion:(float64x2_t)a6 FaceBounds:(float64_t)a7 SeedPoints:(float64x2_t)a8 NumberOfSeedPoints:(float64_t)a9 FillValue:(uint64_t)a10 CommandBuffer:(uint64_t)a11
+- (uint64_t)findSkinMaskUsingInputTexture:(float64_t)texture InputRegion:(float64x2_t)region OutputMaskTexture:(float64_t)maskTexture OutputRegion:(float64x2_t)outputRegion FaceBounds:(float64_t)bounds SeedPoints:(float64x2_t)points NumberOfSeedPoints:(float64_t)seedPoints FillValue:(uint64_t)self0 CommandBuffer:(uint64_t)self1
 {
-  a2.f64[1] = a3;
+  a2.f64[1] = texture;
   *v23.f32 = vrndm_f32(vcvt_f32_f64(a2));
-  a4.f64[1] = a5;
-  v24 = vaddq_f64(a2, a4);
+  region.f64[1] = maskTexture;
+  v24 = vaddq_f64(a2, region);
   __asm { FMOV            V2.2D, #-1.0 }
 
   *v24.f32 = vrndp_f32(vcvt_f32_f64(vaddq_f64(v24, _Q2)));
   v30 = vcvt_s32_f32(*v24.f32);
   v23.i64[1] = v24.i64[0];
   v57 = vcvtq_s32_f32(v23);
-  a6.f64[1] = a7;
-  *v24.f32 = vrndm_f32(vcvt_f32_f64(a6));
-  a8.f64[1] = a9;
-  *&v24.u32[2] = vrndp_f32(vcvt_f32_f64(vaddq_f64(vaddq_f64(a6, a8), _Q2)));
+  outputRegion.f64[1] = bounds;
+  *v24.f32 = vrndm_f32(vcvt_f32_f64(outputRegion));
+  points.f64[1] = seedPoints;
+  *&v24.u32[2] = vrndp_f32(vcvt_f32_f64(vaddq_f64(vaddq_f64(outputRegion, points), _Q2)));
   v56 = vcvtq_s32_f32(v24);
   *v24.f32 = vmax_s32(vcvt_s32_f32(vrndm_f32(vcvt_f32_f64(a17))), vcvt_s32_f32(*v23.f32));
   *&v24.u32[2] = vmin_s32(vcvt_s32_f32(vrndp_f32(vcvt_f32_f64(vaddq_f64(vaddq_f64(a17, a18), _Q2)))), v30);
@@ -680,59 +680,59 @@
   v31 = vsub_s32(*(&v24 + 8), *&v24).i32[1];
   v32 = v31 + 1;
   v33 = log2f((v31 + 1));
-  v34 = [*(a1 + 120) threadExecutionWidth];
-  v35 = [*(a1 + 120) threadExecutionWidth] + v31;
-  v36 = v35 / [*(a1 + 120) threadExecutionWidth];
-  v37 = [*(a1 + 144) threadExecutionWidth];
-  v42 = [*(a1 + 144) threadExecutionWidth];
-  v43 = [*(a1 + 144) threadExecutionWidth];
-  v38 = [a16 computeCommandEncoder];
-  [v38 setComputePipelineState:*(a1 + 112)];
-  [v38 setBuffer:*(a1 + 224) offset:0 atIndex:0];
+  threadExecutionWidth = [*(self + 120) threadExecutionWidth];
+  v35 = [*(self + 120) threadExecutionWidth] + v31;
+  v36 = v35 / [*(self + 120) threadExecutionWidth];
+  threadExecutionWidth2 = [*(self + 144) threadExecutionWidth];
+  threadExecutionWidth3 = [*(self + 144) threadExecutionWidth];
+  threadExecutionWidth4 = [*(self + 144) threadExecutionWidth];
+  computeCommandEncoder = [a16 computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:*(self + 112)];
+  [computeCommandEncoder setBuffer:*(self + 224) offset:0 atIndex:0];
   v46 = vdupq_n_s64(1uLL);
   *v55 = v46;
   *&v55[16] = 1;
   *v54 = v46;
   *&v54[16] = 1;
-  [v38 dispatchThreadgroups:v55 threadsPerThreadgroup:v54];
-  [v38 setComputePipelineState:*(a1 + 120)];
-  [v38 setBytes:v58 length:16 atIndex:0];
-  [v38 setBytes:&v57 length:16 atIndex:1];
-  [v38 setBuffer:*(a1 + 216) offset:0 atIndex:2];
-  [v38 setBuffer:*(a1 + 224) offset:0 atIndex:3];
-  [v38 setBuffer:*(a1 + 232) offset:0 atIndex:4];
-  [v38 setTexture:*(a1 + 192) atIndex:0];
-  [v38 setTexture:a11 atIndex:1];
+  [computeCommandEncoder dispatchThreadgroups:v55 threadsPerThreadgroup:v54];
+  [computeCommandEncoder setComputePipelineState:*(self + 120)];
+  [computeCommandEncoder setBytes:v58 length:16 atIndex:0];
+  [computeCommandEncoder setBytes:&v57 length:16 atIndex:1];
+  [computeCommandEncoder setBuffer:*(self + 216) offset:0 atIndex:2];
+  [computeCommandEncoder setBuffer:*(self + 224) offset:0 atIndex:3];
+  [computeCommandEncoder setBuffer:*(self + 232) offset:0 atIndex:4];
+  [computeCommandEncoder setTexture:*(self + 192) atIndex:0];
+  [computeCommandEncoder setTexture:buffer atIndex:1];
   *v55 = v36;
   *&v55[8] = v46;
-  *v54 = v34;
+  *v54 = threadExecutionWidth;
   *&v54[8] = v46;
-  [v38 dispatchThreadgroups:v55 threadsPerThreadgroup:v54];
-  [v38 setComputePipelineState:*(a1 + 136)];
-  [v38 setBuffer:*(a1 + 224) offset:0 atIndex:0];
-  [v38 setBuffer:*(a1 + 232) offset:0 atIndex:1];
+  [computeCommandEncoder dispatchThreadgroups:v55 threadsPerThreadgroup:v54];
+  [computeCommandEncoder setComputePipelineState:*(self + 136)];
+  [computeCommandEncoder setBuffer:*(self + 224) offset:0 atIndex:0];
+  [computeCommandEncoder setBuffer:*(self + 232) offset:0 atIndex:1];
   *v55 = v36;
   *&v55[8] = v46;
-  *v54 = v34;
+  *v54 = threadExecutionWidth;
   *&v54[8] = v46;
-  [v38 dispatchThreadgroups:v55 threadsPerThreadgroup:v54];
+  [computeCommandEncoder dispatchThreadgroups:v55 threadsPerThreadgroup:v54];
   v53 = 2;
   v52 = 0x100000001;
   if (v32 >= 2)
   {
     v47 = vdupq_n_s64(1uLL);
-    v39 = (v42 + (1 << vcvtms_s32_f32(v33)) - 1) / v43;
+    v39 = (threadExecutionWidth3 + (1 << vcvtms_s32_f32(v33)) - 1) / threadExecutionWidth4;
     do
     {
-      [v38 setComputePipelineState:*(a1 + 144)];
-      [v38 setBytes:&v52 length:12 atIndex:0];
-      [v38 setBuffer:*(a1 + 224) offset:0 atIndex:1];
-      [v38 setBuffer:*(a1 + 232) offset:0 atIndex:2];
+      [computeCommandEncoder setComputePipelineState:*(self + 144)];
+      [computeCommandEncoder setBytes:&v52 length:12 atIndex:0];
+      [computeCommandEncoder setBuffer:*(self + 224) offset:0 atIndex:1];
+      [computeCommandEncoder setBuffer:*(self + 232) offset:0 atIndex:2];
       *v55 = v39;
       *&v55[8] = v47;
-      *v54 = v37;
+      *v54 = threadExecutionWidth2;
       *&v54[8] = v47;
-      [v38 dispatchThreadgroups:v55 threadsPerThreadgroup:v54];
+      [computeCommandEncoder dispatchThreadgroups:v55 threadsPerThreadgroup:v54];
       v52 = vadd_s32(v52, v52);
       v53 *= 2;
     }
@@ -740,33 +740,33 @@
     while (v52.i32[0] < v32);
   }
 
-  [v38 setComputePipelineState:*(a1 + 152)];
-  [v38 setBuffer:*(a1 + 224) offset:0 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:*(self + 152)];
+  [computeCommandEncoder setBuffer:*(self + 224) offset:0 atIndex:0];
   v48 = vdupq_n_s64(1uLL);
   *v55 = v48;
   *&v55[16] = 1;
-  *v54 = [*(a1 + 152) maxTotalThreadsPerThreadgroup];
+  *v54 = [*(self + 152) maxTotalThreadsPerThreadgroup];
   *&v54[8] = v48;
-  [v38 dispatchThreadgroups:v55 threadsPerThreadgroup:v54];
-  [v38 setComputePipelineState:*(a1 + 160)];
-  [v38 setBuffer:*(a1 + 224) offset:0 atIndex:0];
+  [computeCommandEncoder dispatchThreadgroups:v55 threadsPerThreadgroup:v54];
+  [computeCommandEncoder setComputePipelineState:*(self + 160)];
+  [computeCommandEncoder setBuffer:*(self + 224) offset:0 atIndex:0];
   *v55 = v48;
   *&v55[16] = 1;
   *v54 = v48;
   *&v54[16] = 1;
-  [v38 dispatchThreadgroups:v55 threadsPerThreadgroup:v54];
+  [computeCommandEncoder dispatchThreadgroups:v55 threadsPerThreadgroup:v54];
   v52.i32[0] = 0;
   v52.i32[1] = v32;
   v53 = v32;
-  [v38 setComputePipelineState:*(a1 + 144)];
-  [v38 setBytes:&v52 length:12 atIndex:0];
-  [v38 setBuffer:*(a1 + 224) offset:0 atIndex:1];
-  [v38 setBuffer:*(a1 + 232) offset:0 atIndex:2];
+  [computeCommandEncoder setComputePipelineState:*(self + 144)];
+  [computeCommandEncoder setBytes:&v52 length:12 atIndex:0];
+  [computeCommandEncoder setBuffer:*(self + 224) offset:0 atIndex:1];
+  [computeCommandEncoder setBuffer:*(self + 232) offset:0 atIndex:2];
   *v55 = v36;
   *&v55[8] = v48;
-  *v54 = v34;
+  *v54 = threadExecutionWidth;
   *&v54[8] = v48;
-  [v38 dispatchThreadgroups:v55 threadsPerThreadgroup:v54];
+  [computeCommandEncoder dispatchThreadgroups:v55 threadsPerThreadgroup:v54];
   if (a14)
   {
     v49 = vdupq_n_s64(1uLL);
@@ -775,53 +775,53 @@
       v40 = *a13++;
       v50 = vmovn_s64(vcvtq_s64_f64(v40));
       v51 = a15;
-      [v38 setComputePipelineState:*(a1 + 168)];
-      [v38 setBytes:v58 length:16 atIndex:0];
-      [v38 setBytes:&v57 length:16 atIndex:1];
-      [v38 setBytes:&v50 length:12 atIndex:2];
-      [v38 setBuffer:*(a1 + 224) offset:0 atIndex:3];
-      [v38 setBuffer:*(a1 + 232) offset:0 atIndex:4];
+      [computeCommandEncoder setComputePipelineState:*(self + 168)];
+      [computeCommandEncoder setBytes:v58 length:16 atIndex:0];
+      [computeCommandEncoder setBytes:&v57 length:16 atIndex:1];
+      [computeCommandEncoder setBytes:&v50 length:12 atIndex:2];
+      [computeCommandEncoder setBuffer:*(self + 224) offset:0 atIndex:3];
+      [computeCommandEncoder setBuffer:*(self + 232) offset:0 atIndex:4];
       *v55 = v49;
       *&v55[16] = 1;
       *v54 = v49;
       *&v54[16] = 1;
-      [v38 dispatchThreadgroups:v55 threadsPerThreadgroup:v54];
+      [computeCommandEncoder dispatchThreadgroups:v55 threadsPerThreadgroup:v54];
       --a14;
     }
 
     while (a14);
   }
 
-  [v38 setComputePipelineState:*(a1 + 176)];
-  [v38 setBytes:&v56 length:16 atIndex:0];
-  [v38 setBuffer:*(a1 + 224) offset:0 atIndex:1];
-  [v38 setBuffer:*(a1 + 232) offset:0 atIndex:2];
-  [v38 setTexture:a12 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:*(self + 176)];
+  [computeCommandEncoder setBytes:&v56 length:16 atIndex:0];
+  [computeCommandEncoder setBuffer:*(self + 224) offset:0 atIndex:1];
+  [computeCommandEncoder setBuffer:*(self + 232) offset:0 atIndex:2];
+  [computeCommandEncoder setTexture:a12 atIndex:0];
   *v55 = v36;
   *&v55[8] = vdupq_n_s64(1uLL);
-  *v54 = v34;
+  *v54 = threadExecutionWidth;
   *&v54[8] = *&v55[8];
-  [v38 dispatchThreadgroups:v55 threadsPerThreadgroup:v54];
-  [v38 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v55 threadsPerThreadgroup:v54];
+  [computeCommandEncoder endEncoding];
   return 0;
 }
 
-- (uint64_t)findToothMaskUsingInputTexture:(float64_t)a3 InputRegion:(float64x2_t)a4 OutputMaskTexture:(float64_t)a5 OutputRegion:(float64x2_t)a6 TeethBounds:(float64_t)a7 SeedPoints:(float64x2_t)a8 NumberOfSeedPoints:(float64_t)a9 FillValue:(uint64_t)a10 CommandBuffer:(uint64_t)a11
+- (uint64_t)findToothMaskUsingInputTexture:(float64_t)texture InputRegion:(float64x2_t)region OutputMaskTexture:(float64_t)maskTexture OutputRegion:(float64x2_t)outputRegion TeethBounds:(float64_t)bounds SeedPoints:(float64x2_t)points NumberOfSeedPoints:(float64_t)seedPoints FillValue:(uint64_t)self0 CommandBuffer:(uint64_t)self1
 {
-  a2.f64[1] = a3;
+  a2.f64[1] = texture;
   *v18.f32 = vrndm_f32(vcvt_f32_f64(a2));
   v19 = vcvt_s32_f32(*v18.f32);
-  a4.f64[1] = a5;
-  v20 = vaddq_f64(a2, a4);
+  region.f64[1] = maskTexture;
+  v20 = vaddq_f64(a2, region);
   __asm { FMOV            V2.2D, #-1.0 }
 
   *&v18.u32[2] = vrndp_f32(vcvt_f32_f64(vaddq_f64(v20, _Q2)));
   *&v20.f64[0] = vcvt_s32_f32(*&v18.u32[2]);
   v62 = vcvtq_s32_f32(v18);
-  a6.f64[1] = a7;
-  *v18.f32 = vrndm_f32(vcvt_f32_f64(a6));
-  a8.f64[1] = a9;
-  *&v18.u32[2] = vrndp_f32(vcvt_f32_f64(vaddq_f64(vaddq_f64(a6, a8), _Q2)));
+  outputRegion.f64[1] = bounds;
+  *v18.f32 = vrndm_f32(vcvt_f32_f64(outputRegion));
+  points.f64[1] = seedPoints;
+  *&v18.u32[2] = vrndp_f32(vcvt_f32_f64(vaddq_f64(vaddq_f64(outputRegion, points), _Q2)));
   *&v26 = vmax_s32(vcvt_s32_f32(vrndm_f32(vcvt_f32_f64(a17))), v19);
   *&_Q2.f64[0] = vmin_s32(vcvt_s32_f32(vrndp_f32(vcvt_f32_f64(vaddq_f64(vaddq_f64(a17, a18), _Q2)))), *&v20.f64[0]);
   v27 = vsub_s32(*&_Q2.f64[0], *&v26);
@@ -837,64 +837,64 @@
   v33 = v27.i32[1];
   v34 = v27.i32[1] + 1;
   v35 = log2f((v27.i32[1] + 1));
-  v36 = [*(a1 + 128) threadExecutionWidth];
-  v37 = [*(a1 + 128) threadExecutionWidth] + v33;
-  v38 = v37 / [*(a1 + 128) threadExecutionWidth];
-  v39 = [*(a1 + 144) threadExecutionWidth];
-  v46 = [*(a1 + 144) threadExecutionWidth];
-  v47 = [*(a1 + 144) threadExecutionWidth];
-  v40 = [a16 blitCommandEncoder];
-  [v40 fillBuffer:*(a1 + 224) range:0 value:{1179628, 0}];
-  [v40 fillBuffer:*(a1 + 232) range:0 value:{0x2000, 0}];
-  [v40 endEncoding];
-  v41 = [a16 computeCommandEncoder];
-  [v41 setComputePipelineState:*(a1 + 112)];
-  [v41 setBuffer:*(a1 + 224) offset:0 atIndex:0];
+  threadExecutionWidth = [*(self + 128) threadExecutionWidth];
+  v37 = [*(self + 128) threadExecutionWidth] + v33;
+  v38 = v37 / [*(self + 128) threadExecutionWidth];
+  threadExecutionWidth2 = [*(self + 144) threadExecutionWidth];
+  threadExecutionWidth3 = [*(self + 144) threadExecutionWidth];
+  threadExecutionWidth4 = [*(self + 144) threadExecutionWidth];
+  blitCommandEncoder = [a16 blitCommandEncoder];
+  [blitCommandEncoder fillBuffer:*(self + 224) range:0 value:{1179628, 0}];
+  [blitCommandEncoder fillBuffer:*(self + 232) range:0 value:{0x2000, 0}];
+  [blitCommandEncoder endEncoding];
+  computeCommandEncoder = [a16 computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:*(self + 112)];
+  [computeCommandEncoder setBuffer:*(self + 224) offset:0 atIndex:0];
   v51 = vdupq_n_s64(1uLL);
   *v60 = v51;
   *&v60[16] = 1;
   *v59 = v51;
   *&v59[16] = 1;
-  [v41 dispatchThreadgroups:v60 threadsPerThreadgroup:v59];
-  [v41 setComputePipelineState:*(a1 + 128)];
-  [v41 setBytes:v63 length:16 atIndex:0];
-  [v41 setBytes:&v62 length:16 atIndex:1];
-  [v41 setBuffer:*(a1 + 216) offset:0 atIndex:2];
-  [v41 setBuffer:*(a1 + 224) offset:0 atIndex:3];
-  [v41 setBuffer:*(a1 + 232) offset:0 atIndex:4];
-  [v41 setTexture:a11 atIndex:0];
+  [computeCommandEncoder dispatchThreadgroups:v60 threadsPerThreadgroup:v59];
+  [computeCommandEncoder setComputePipelineState:*(self + 128)];
+  [computeCommandEncoder setBytes:v63 length:16 atIndex:0];
+  [computeCommandEncoder setBytes:&v62 length:16 atIndex:1];
+  [computeCommandEncoder setBuffer:*(self + 216) offset:0 atIndex:2];
+  [computeCommandEncoder setBuffer:*(self + 224) offset:0 atIndex:3];
+  [computeCommandEncoder setBuffer:*(self + 232) offset:0 atIndex:4];
+  [computeCommandEncoder setTexture:buffer atIndex:0];
   *v60 = v38;
   *&v60[8] = v51;
-  *v59 = v36;
+  *v59 = threadExecutionWidth;
   *&v59[8] = v51;
-  [v41 dispatchThreadgroups:v60 threadsPerThreadgroup:v59];
-  [v41 setComputePipelineState:*(a1 + 136)];
-  [v41 setBuffer:*(a1 + 224) offset:0 atIndex:0];
-  [v41 setBuffer:*(a1 + 232) offset:0 atIndex:1];
+  [computeCommandEncoder dispatchThreadgroups:v60 threadsPerThreadgroup:v59];
+  [computeCommandEncoder setComputePipelineState:*(self + 136)];
+  [computeCommandEncoder setBuffer:*(self + 224) offset:0 atIndex:0];
+  [computeCommandEncoder setBuffer:*(self + 232) offset:0 atIndex:1];
   v49 = v38;
   *v60 = v38;
   *&v60[8] = v51;
-  v42 = v36;
-  *v59 = v36;
+  v42 = threadExecutionWidth;
+  *v59 = threadExecutionWidth;
   *&v59[8] = v51;
-  [v41 dispatchThreadgroups:v60 threadsPerThreadgroup:v59];
+  [computeCommandEncoder dispatchThreadgroups:v60 threadsPerThreadgroup:v59];
   v58 = 2;
   v57 = 0x100000001;
   if (v34 >= 2)
   {
     v52 = vdupq_n_s64(1uLL);
-    v43 = (v46 + (1 << vcvtms_s32_f32(v35)) - 1) / v47;
+    v43 = (threadExecutionWidth3 + (1 << vcvtms_s32_f32(v35)) - 1) / threadExecutionWidth4;
     do
     {
-      [v41 setComputePipelineState:*(a1 + 144)];
-      [v41 setBytes:&v57 length:12 atIndex:0];
-      [v41 setBuffer:*(a1 + 224) offset:0 atIndex:1];
-      [v41 setBuffer:*(a1 + 232) offset:0 atIndex:2];
+      [computeCommandEncoder setComputePipelineState:*(self + 144)];
+      [computeCommandEncoder setBytes:&v57 length:12 atIndex:0];
+      [computeCommandEncoder setBuffer:*(self + 224) offset:0 atIndex:1];
+      [computeCommandEncoder setBuffer:*(self + 232) offset:0 atIndex:2];
       *v60 = v43;
       *&v60[8] = v52;
-      *v59 = v39;
+      *v59 = threadExecutionWidth2;
       *&v59[8] = v52;
-      [v41 dispatchThreadgroups:v60 threadsPerThreadgroup:v59];
+      [computeCommandEncoder dispatchThreadgroups:v60 threadsPerThreadgroup:v59];
       v57 = vadd_s32(v57, v57);
       v58 *= 2;
     }
@@ -902,33 +902,33 @@
     while (v57.i32[0] < v34);
   }
 
-  [v41 setComputePipelineState:*(a1 + 152)];
-  [v41 setBuffer:*(a1 + 224) offset:0 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:*(self + 152)];
+  [computeCommandEncoder setBuffer:*(self + 224) offset:0 atIndex:0];
   v53 = vdupq_n_s64(1uLL);
   *v60 = v53;
   *&v60[16] = 1;
-  *v59 = [*(a1 + 152) maxTotalThreadsPerThreadgroup];
+  *v59 = [*(self + 152) maxTotalThreadsPerThreadgroup];
   *&v59[8] = v53;
-  [v41 dispatchThreadgroups:v60 threadsPerThreadgroup:v59];
-  [v41 setComputePipelineState:*(a1 + 160)];
-  [v41 setBuffer:*(a1 + 224) offset:0 atIndex:0];
+  [computeCommandEncoder dispatchThreadgroups:v60 threadsPerThreadgroup:v59];
+  [computeCommandEncoder setComputePipelineState:*(self + 160)];
+  [computeCommandEncoder setBuffer:*(self + 224) offset:0 atIndex:0];
   *v60 = v53;
   *&v60[16] = 1;
   *v59 = v53;
   *&v59[16] = 1;
-  [v41 dispatchThreadgroups:v60 threadsPerThreadgroup:v59];
+  [computeCommandEncoder dispatchThreadgroups:v60 threadsPerThreadgroup:v59];
   v57.i32[0] = 0;
   v57.i32[1] = v34;
   v58 = v34;
-  [v41 setComputePipelineState:*(a1 + 144)];
-  [v41 setBytes:&v57 length:12 atIndex:0];
-  [v41 setBuffer:*(a1 + 224) offset:0 atIndex:1];
-  [v41 setBuffer:*(a1 + 232) offset:0 atIndex:2];
+  [computeCommandEncoder setComputePipelineState:*(self + 144)];
+  [computeCommandEncoder setBytes:&v57 length:12 atIndex:0];
+  [computeCommandEncoder setBuffer:*(self + 224) offset:0 atIndex:1];
+  [computeCommandEncoder setBuffer:*(self + 232) offset:0 atIndex:2];
   *v60 = v49;
   *&v60[8] = v53;
   *v59 = v42;
   *&v59[8] = v53;
-  [v41 dispatchThreadgroups:v60 threadsPerThreadgroup:v59];
+  [computeCommandEncoder dispatchThreadgroups:v60 threadsPerThreadgroup:v59];
   if (a14)
   {
     v54 = vdupq_n_s64(1uLL);
@@ -937,45 +937,45 @@
       v44 = *a13++;
       v55 = vmovn_s64(vcvtq_s64_f64(v44));
       v56 = a15;
-      [v41 setComputePipelineState:*(a1 + 168)];
-      [v41 setBytes:v63 length:16 atIndex:0];
-      [v41 setBytes:&v62 length:16 atIndex:1];
-      [v41 setBytes:&v55 length:12 atIndex:2];
-      [v41 setBuffer:*(a1 + 224) offset:0 atIndex:3];
-      [v41 setBuffer:*(a1 + 232) offset:0 atIndex:4];
+      [computeCommandEncoder setComputePipelineState:*(self + 168)];
+      [computeCommandEncoder setBytes:v63 length:16 atIndex:0];
+      [computeCommandEncoder setBytes:&v62 length:16 atIndex:1];
+      [computeCommandEncoder setBytes:&v55 length:12 atIndex:2];
+      [computeCommandEncoder setBuffer:*(self + 224) offset:0 atIndex:3];
+      [computeCommandEncoder setBuffer:*(self + 232) offset:0 atIndex:4];
       *v60 = v54;
       *&v60[16] = 1;
       *v59 = v54;
       *&v59[16] = 1;
-      [v41 dispatchThreadgroups:v60 threadsPerThreadgroup:v59];
+      [computeCommandEncoder dispatchThreadgroups:v60 threadsPerThreadgroup:v59];
       --a14;
     }
 
     while (a14);
   }
 
-  [v41 setComputePipelineState:*(a1 + 176)];
-  [v41 setBytes:&v61 length:16 atIndex:0];
-  [v41 setBuffer:*(a1 + 224) offset:0 atIndex:1];
-  [v41 setBuffer:*(a1 + 232) offset:0 atIndex:2];
-  [v41 setTexture:a12 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:*(self + 176)];
+  [computeCommandEncoder setBytes:&v61 length:16 atIndex:0];
+  [computeCommandEncoder setBuffer:*(self + 224) offset:0 atIndex:1];
+  [computeCommandEncoder setBuffer:*(self + 232) offset:0 atIndex:2];
+  [computeCommandEncoder setTexture:a12 atIndex:0];
   *v60 = v49;
   *&v60[8] = vdupq_n_s64(1uLL);
   *v59 = v42;
   *&v59[8] = *&v60[8];
-  [v41 dispatchThreadgroups:v60 threadsPerThreadgroup:v59];
-  [v41 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v60 threadsPerThreadgroup:v59];
+  [computeCommandEncoder endEncoding];
   return 0;
 }
 
-- (int)drawEyeMaskUsingQuads:(MetalFaceMaskEyeQuads_t *)a3 OutputMaskTexture:(id)a4 OutputRegion:(CGRect)a5 FaceBounds:(CGRect)a6 CommandBuffer:(id)a7
+- (int)drawEyeMaskUsingQuads:(MetalFaceMaskEyeQuads_t *)quads OutputMaskTexture:(id)texture OutputRegion:(CGRect)region FaceBounds:(CGRect)bounds CommandBuffer:(id)buffer
 {
-  if (!a3)
+  if (!quads)
   {
     sub_49D1C();
   }
 
-  var0 = a3->var0;
+  var0 = quads->var0;
   if (var0 > 0x10)
   {
     sub_49CF0();
@@ -984,7 +984,7 @@
   v12 = xmmword_54B30;
   if (var0)
   {
-    p_var1 = &a3[3].var1;
+    p_var1 = &quads[3].var1;
     do
     {
       v14 = *(p_var1 - 3);
@@ -1036,41 +1036,41 @@
     while (var0);
   }
 
-  y = a5.origin.y;
-  *v30.f32 = vrndm_f32(vcvt_f32_f64(a5.origin));
+  y = region.origin.y;
+  *v30.f32 = vrndm_f32(vcvt_f32_f64(region.origin));
   v31 = vcvt_s32_f32(*v30.f32);
-  height = a5.size.height;
-  v33 = vaddq_f64(a5.origin, a5.size);
+  height = region.size.height;
+  v33 = vaddq_f64(region.origin, region.size);
   __asm { FMOV            V2.2D, #-1.0 }
 
   *&v33.f64[0] = vrndp_f32(vcvt_f32_f64(vaddq_f64(v33, _Q2)));
   *&_Q2.f64[0] = vcvt_s32_f32(*&v33.f64[0]);
   v30.i64[1] = *&v33.f64[0];
   v39 = vcvtq_s32_f32(v30);
-  v40 = &a3->var1;
+  v40 = &quads->var1;
   *v30.f32 = vld1_dup_f32(v40);
   *&v41 = vmax_s32(vsub_s32(*v12.i8, *v30.f32), v31);
   *(&v41 + 1) = vmax_s32(*&v41, vmin_s32(vadd_s32(*&vextq_s8(v12, v12, 8uLL), *v30.f32), *&_Q2.f64[0]));
   v52 = v39;
   v53 = v41;
   v42 = vsub_s32(*(&v41 + 8), *&v41).i32[1] + 1;
-  v43 = [(MTLComputePipelineState *)self->_mtlKernel_DrawEye threadExecutionWidth];
+  threadExecutionWidth = [(MTLComputePipelineState *)self->_mtlKernel_DrawEye threadExecutionWidth];
   v44 = [(MTLComputePipelineState *)self->_mtlKernel_GenerateToothMask threadExecutionWidth]+ v42 - 1;
   v45 = v44 / [(MTLComputePipelineState *)self->_mtlKernel_GenerateToothMask threadExecutionWidth];
-  v46 = [a7 computeCommandEncoder];
-  [v46 setComputePipelineState:self->_mtlKernel_DrawEye];
-  [v46 setBytes:&v53 length:16 atIndex:0];
-  [v46 setBytes:&v52 length:16 atIndex:1];
-  [v46 setBytes:a3 length:528 atIndex:2];
-  [v46 setBuffer:self->_labellingSpanTableBuf offset:0 atIndex:3];
-  [v46 setBuffer:self->_labellingRowStartIdxBuf offset:0 atIndex:4];
-  [v46 setTexture:a4 atIndex:0];
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_mtlKernel_DrawEye];
+  [computeCommandEncoder setBytes:&v53 length:16 atIndex:0];
+  [computeCommandEncoder setBytes:&v52 length:16 atIndex:1];
+  [computeCommandEncoder setBytes:quads length:528 atIndex:2];
+  [computeCommandEncoder setBuffer:self->_labellingSpanTableBuf offset:0 atIndex:3];
+  [computeCommandEncoder setBuffer:self->_labellingRowStartIdxBuf offset:0 atIndex:4];
+  [computeCommandEncoder setTexture:texture atIndex:0];
   v50 = v45;
   v51 = vdupq_n_s64(1uLL);
-  v48 = v43;
+  v48 = threadExecutionWidth;
   v49 = v51;
-  [v46 dispatchThreadgroups:&v50 threadsPerThreadgroup:&v48];
-  [v46 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:&v50 threadsPerThreadgroup:&v48];
+  [computeCommandEncoder endEncoding];
   return 0;
 }
 

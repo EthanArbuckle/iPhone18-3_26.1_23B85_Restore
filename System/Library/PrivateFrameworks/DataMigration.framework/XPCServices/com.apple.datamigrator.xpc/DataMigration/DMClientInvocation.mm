@@ -7,13 +7,13 @@
 
 - (BOOL)isProgressHost
 {
-  v3 = [(DMClientInvocation *)self connection];
+  connection = [(DMClientInvocation *)self connection];
 
-  if (v3)
+  if (connection)
   {
     v14 = 0u;
     v15 = 0u;
-    v4 = [(DMClientInvocation *)self connection];
+    connection2 = [(DMClientInvocation *)self connection];
     xpc_connection_get_audit_token();
 
     memset(&token, 0, sizeof(token));
@@ -53,15 +53,15 @@ LABEL_9:
 
 - (int)pid
 {
-  v3 = [(DMClientInvocation *)self connection];
+  connection = [(DMClientInvocation *)self connection];
 
-  if (!v3)
+  if (!connection)
   {
     return 0;
   }
 
-  v4 = [(DMClientInvocation *)self connection];
-  pid = xpc_connection_get_pid(v4);
+  connection2 = [(DMClientInvocation *)self connection];
+  pid = xpc_connection_get_pid(connection2);
 
   return pid;
 }

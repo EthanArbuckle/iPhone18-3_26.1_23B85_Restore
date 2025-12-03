@@ -1,9 +1,9 @@
 @interface TUIRenderUpdateLayerController
 - (TUIRenderUpdateLayerController)init;
 - (TUIRenderUpdateLayerControllerDelegate)delegate;
-- (id)registerDelegate:(id)a3;
-- (void)unregisterDelegate:(id)a3;
-- (void)updateWithRenderModel:(id)a3 transactionGroup:(id)a4 hasInvalidLayouts:(BOOL)a5;
+- (id)registerDelegate:(id)delegate;
+- (void)unregisterDelegate:(id)delegate;
+- (void)updateWithRenderModel:(id)model transactionGroup:(id)group hasInvalidLayouts:(BOOL)layouts;
 @end
 
 @implementation TUIRenderUpdateLayerController
@@ -27,9 +27,9 @@
   return v3;
 }
 
-- (id)registerDelegate:(id)a3
+- (id)registerDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -42,9 +42,9 @@
   block[2] = sub_16766C;
   block[3] = &unk_25DC78;
   block[4] = self;
-  v10 = v4;
+  v10 = delegateCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = delegateCopy;
   dispatch_sync(accessQueue, block);
   v7 = v13[5];
 
@@ -53,30 +53,30 @@
   return v7;
 }
 
-- (void)unregisterDelegate:(id)a3
+- (void)unregisterDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   accessQueue = self->_accessQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_167754;
   v7[3] = &unk_25DCA0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = delegateCopy;
+  selfCopy = self;
+  v6 = delegateCopy;
   dispatch_sync(accessQueue, v7);
 }
 
-- (void)updateWithRenderModel:(id)a3 transactionGroup:(id)a4 hasInvalidLayouts:(BOOL)a5
+- (void)updateWithRenderModel:(id)model transactionGroup:(id)group hasInvalidLayouts:(BOOL)layouts
 {
-  v5 = a5;
-  v11 = a3;
-  v9 = a4;
-  if (self->_currentModel != v11 || ![(TUIRenderModelLayer *)v11 isEqualToRenderModel:?])
+  layoutsCopy = layouts;
+  modelCopy = model;
+  groupCopy = group;
+  if (self->_currentModel != modelCopy || ![(TUIRenderModelLayer *)modelCopy isEqualToRenderModel:?])
   {
-    objc_storeStrong(&self->_currentModel, a3);
-    v10 = [(TUIRenderUpdateLayerController *)self delegate];
-    [v10 applyLayerModelUpdate:v11 hasInvalidLayouts:v5];
+    objc_storeStrong(&self->_currentModel, model);
+    delegate = [(TUIRenderUpdateLayerController *)self delegate];
+    [delegate applyLayerModelUpdate:modelCopy hasInvalidLayouts:layoutsCopy];
   }
 }
 

@@ -1,20 +1,20 @@
 @interface FedStatsPluginMLHostClient
-- (BOOL)fetchAssets:(id)a3 error:(id *)a4;
+- (BOOL)fetchAssets:(id)assets error:(id *)error;
 - (_TtC20FedStatsMLHostPlugin26FedStatsPluginMLHostClient)init;
-- (id)assetURLForRecipe:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (id)recipeDictionaryForRecipe:(id)a3 error:(id *)a4;
+- (id)assetURLForRecipe:(id)recipe forKey:(id)key error:(id *)error;
+- (id)recipeDictionaryForRecipe:(id)recipe error:(id *)error;
 - (id)recipeIdentifiers;
-- (id)treatmentIdentifierForRecipe:(id)a3;
+- (id)treatmentIdentifierForRecipe:(id)recipe;
 - (void)removeAssets;
 @end
 
 @implementation FedStatsPluginMLHostClient
 
-- (id)recipeDictionaryForRecipe:(id)a3 error:(id *)a4
+- (id)recipeDictionaryForRecipe:(id)recipe error:(id *)error
 {
   v5 = sub_1000137E0();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   FedStatsPluginMLHostClient.recipeDictionary(forRecipe:)(v5, v7);
 
   v9.super.isa = sub_100013780().super.isa;
@@ -22,7 +22,7 @@
   return v9.super.isa;
 }
 
-- (id)treatmentIdentifierForRecipe:(id)a3
+- (id)treatmentIdentifierForRecipe:(id)recipe
 {
   sub_1000137E0();
   v3 = sub_1000137D0();
@@ -40,21 +40,21 @@
   return v4.super.isa;
 }
 
-- (BOOL)fetchAssets:(id)a3 error:(id *)a4
+- (BOOL)fetchAssets:(id)assets error:(id *)error
 {
   sub_1000054F8(&unk_10001C670, &unk_1000142F0);
   v6 = sub_100013790();
-  v7 = self;
+  selfCopy = self;
   FedStatsPluginMLHostClient.fetchAssets(_:)(v6);
 
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v9 = sub_100013550();
 
       v10 = v9;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -65,7 +65,7 @@
   return v8 == 0;
 }
 
-- (id)assetURLForRecipe:(id)a3 forKey:(id)a4 error:(id *)a5
+- (id)assetURLForRecipe:(id)recipe forKey:(id)key error:(id *)error
 {
   v6 = sub_1000135D0();
   v7 = *(v6 - 8);
@@ -76,7 +76,7 @@
   v13 = v12;
   v14 = sub_1000137E0();
   v16 = v15;
-  v17 = self;
+  selfCopy = self;
   FedStatsPluginMLHostClient.assetURL(forRecipe:forKey:)(v11, v13, v14, v16, v10);
 
   sub_1000135A0(v18);
@@ -88,7 +88,7 @@
 
 - (void)removeAssets
 {
-  v2 = self;
+  selfCopy = self;
   FedStatsPluginMLHostClient.removeAssets()();
 }
 

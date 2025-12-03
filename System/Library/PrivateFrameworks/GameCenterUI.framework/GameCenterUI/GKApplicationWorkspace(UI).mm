@@ -11,8 +11,8 @@
 {
   v3 = MEMORY[0x277CC1E80];
   v4 = a3;
-  v5 = [v3 defaultWorkspace];
-  v6 = [v5 applicationIsInstalled:v4];
+  defaultWorkspace = [v3 defaultWorkspace];
+  v6 = [defaultWorkspace applicationIsInstalled:v4];
 
   return v6;
 }
@@ -21,14 +21,14 @@
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_24DE53000, a2, OS_LOG_TYPE_ERROR, "cannot openGameCenterSettings because of error: %@", &v2, 0xCu);
 }
 
 - (void)openGameCenterSettingsInviteFriends
 {
   v2 = [MEMORY[0x277CBEBC0] URLWithString:@"settings-navigation://com.apple.Settings.GameCenter/INVITE_FRIENDS"];
-  [a1 openURL:v2];
+  [self openURL:v2];
 }
 
 - (void)openURL:()UI
@@ -38,9 +38,9 @@
   v10 = *MEMORY[0x277D0AC58];
   v11[0] = MEMORY[0x277CBEC38];
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  v5 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v9 = 0;
-  [v5 openSensitiveURL:v3 withOptions:v4 error:&v9];
+  [defaultWorkspace openSensitiveURL:v3 withOptions:v4 error:&v9];
   v6 = v9;
 
   if (v6)

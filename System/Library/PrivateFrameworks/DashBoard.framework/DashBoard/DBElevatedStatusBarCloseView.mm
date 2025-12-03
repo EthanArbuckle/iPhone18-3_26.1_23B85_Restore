@@ -1,8 +1,8 @@
 @interface DBElevatedStatusBarCloseView
 - (BOOL)isPressed;
 - (BOOL)showFocusedState;
-- (_TtC9DashBoard28DBElevatedStatusBarCloseView)initWithCoder:(id)a3;
-- (_TtC9DashBoard28DBElevatedStatusBarCloseView)initWithFrame:(CGRect)a3;
+- (_TtC9DashBoard28DBElevatedStatusBarCloseView)initWithCoder:(id)coder;
+- (_TtC9DashBoard28DBElevatedStatusBarCloseView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)updateAppearance;
 @end
@@ -23,7 +23,7 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (_TtC9DashBoard28DBElevatedStatusBarCloseView)initWithCoder:(id)a3
+- (_TtC9DashBoard28DBElevatedStatusBarCloseView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9DashBoard28DBElevatedStatusBarCloseView_isPressed) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9DashBoard28DBElevatedStatusBarCloseView_showFocusedState) = 0;
@@ -38,18 +38,18 @@
   v4.super_class = type metadata accessor for DBElevatedStatusBarCloseView();
   v2 = v4.receiver;
   [(DBElevatedStatusBarCloseView *)&v4 layoutSubviews];
-  v3 = [*&v2[OBJC_IVAR____TtC9DashBoard28DBElevatedStatusBarCloseView_backgroundView] layer];
+  layer = [*&v2[OBJC_IVAR____TtC9DashBoard28DBElevatedStatusBarCloseView_backgroundView] layer];
   [v2 bounds];
-  [v3 setCornerRadius_];
+  [layer setCornerRadius_];
 }
 
 - (void)updateAppearance
 {
-  v2 = self;
+  selfCopy = self;
   sub_2482AF458();
 }
 
-- (_TtC9DashBoard28DBElevatedStatusBarCloseView)initWithFrame:(CGRect)a3
+- (_TtC9DashBoard28DBElevatedStatusBarCloseView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,53 +1,53 @@
 @interface TAInterVisitMetricsSnapshot
-- (BOOL)isEqual:(id)a3;
-- (TAInterVisitMetricsSnapshot)initWithCoder:(id)a3;
-- (TAInterVisitMetricsSnapshot)initWithTime:(id)a3 maxUniqueAddresses:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateInterVisitMetric:(id)a3 store:(id)a4 withUpdatedTime:(id)a5 andCloseSnapshot:(BOOL)a6;
-- (void)updateWithInterVisitMetricsSnapshot:(id)a3 store:(id)a4;
-- (void)visitEntryDelayCorrection:(id)a3 store:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (TAInterVisitMetricsSnapshot)initWithCoder:(id)coder;
+- (TAInterVisitMetricsSnapshot)initWithTime:(id)time maxUniqueAddresses:(unint64_t)addresses;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateInterVisitMetric:(id)metric store:(id)store withUpdatedTime:(id)time andCloseSnapshot:(BOOL)snapshot;
+- (void)updateWithInterVisitMetricsSnapshot:(id)snapshot store:(id)store;
+- (void)visitEntryDelayCorrection:(id)correction store:(id)store;
 @end
 
 @implementation TAInterVisitMetricsSnapshot
 
-- (TAInterVisitMetricsSnapshot)initWithTime:(id)a3 maxUniqueAddresses:(unint64_t)a4
+- (TAInterVisitMetricsSnapshot)initWithTime:(id)time maxUniqueAddresses:(unint64_t)addresses
 {
-  v6 = a3;
+  timeCopy = time;
   v22.receiver = self;
   v22.super_class = TAInterVisitMetricsSnapshot;
   v7 = [(TAInterVisitMetricsSnapshot *)&v22 init];
   if (v7)
   {
-    if (!v6)
+    if (!timeCopy)
     {
       v20 = 0;
       goto LABEL_6;
     }
 
-    v8 = [v6 copy];
+    v8 = [timeCopy copy];
     initialTime = v7->_initialTime;
     v7->_initialTime = v8;
 
-    v10 = [v6 copy];
+    v10 = [timeCopy copy];
     lastUpdateTime = v7->_lastUpdateTime;
     v7->_lastUpdateTime = v10;
 
-    v7->_maxUniqueAddresses = a4;
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    v7->_maxUniqueAddresses = addresses;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     accumulatedDeviceMetrics = v7->_accumulatedDeviceMetrics;
-    v7->_accumulatedDeviceMetrics = v12;
+    v7->_accumulatedDeviceMetrics = dictionary;
 
-    v14 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     firstAssociatedLocationPerDevice = v7->_firstAssociatedLocationPerDevice;
-    v7->_firstAssociatedLocationPerDevice = v14;
+    v7->_firstAssociatedLocationPerDevice = dictionary2;
 
-    v16 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     lastAssociatedLocationPerDevice = v7->_lastAssociatedLocationPerDevice;
-    v7->_lastAssociatedLocationPerDevice = v16;
+    v7->_lastAssociatedLocationPerDevice = dictionary3;
 
-    v18 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary4 = [MEMORY[0x277CBEB38] dictionary];
     lastAdvPerDevice = v7->_lastAdvPerDevice;
-    v7->_lastAdvPerDevice = v18;
+    v7->_lastAdvPerDevice = dictionary4;
 
     v7->_isClosed = 0;
   }
@@ -58,13 +58,13 @@ LABEL_6:
   return v20;
 }
 
-- (void)updateInterVisitMetric:(id)a3 store:(id)a4 withUpdatedTime:(id)a5 andCloseSnapshot:(BOOL)a6
+- (void)updateInterVisitMetric:(id)metric store:(id)store withUpdatedTime:(id)time andCloseSnapshot:(BOOL)snapshot
 {
-  v6 = a6;
+  snapshotCopy = snapshot;
   v82 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v62 = a4;
-  v11 = a5;
+  metricCopy = metric;
+  storeCopy = store;
+  timeCopy = time;
   if (self->_isClosed)
   {
     v12 = TAStatusLog;
@@ -76,18 +76,18 @@ LABEL_6:
     goto LABEL_41;
   }
 
-  if ([(NSDate *)self->_lastUpdateTime compare:v11]!= NSOrderedDescending)
+  if ([(NSDate *)self->_lastUpdateTime compare:timeCopy]!= NSOrderedDescending)
   {
     p_lastUpdateTime = &self->_lastUpdateTime;
-    v57 = a5;
-    v58 = v6;
-    v59 = v11;
-    v60 = v10;
+    timeCopy2 = time;
+    v58 = snapshotCopy;
+    v59 = timeCopy;
+    v60 = metricCopy;
     v73 = 0u;
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    obj = v10;
+    obj = metricCopy;
     v65 = [obj countByEnumeratingWithState:&v71 objects:v81 count:16];
     if (!v65)
     {
@@ -95,7 +95,7 @@ LABEL_6:
     }
 
     v63 = *v72;
-    v61 = self;
+    selfCopy = self;
     while (1)
     {
       v15 = 0;
@@ -114,17 +114,17 @@ LABEL_6:
           goto LABEL_17;
         }
 
-        v19 = [(TAInterVisitMetricsSnapshot *)self accumulatedDeviceMetrics];
-        v20 = [v19 count];
-        v21 = [(TAInterVisitMetricsSnapshot *)self maxUniqueAddresses];
+        accumulatedDeviceMetrics = [(TAInterVisitMetricsSnapshot *)self accumulatedDeviceMetrics];
+        v20 = [accumulatedDeviceMetrics count];
+        maxUniqueAddresses = [(TAInterVisitMetricsSnapshot *)self maxUniqueAddresses];
 
-        if (v20 < v21)
+        if (v20 < maxUniqueAddresses)
         {
           v18 = objc_alloc_init(TAInterVisitMetricPerDevice);
           [(NSMutableDictionary *)self->_accumulatedDeviceMetrics setObject:v18 forKey:v16];
 LABEL_17:
-          v22 = [v17 deviceLocationHistory];
-          v23 = [v22 mutableCopy];
+          deviceLocationHistory = [v17 deviceLocationHistory];
+          v23 = [deviceLocationHistory mutableCopy];
 
           v24 = [(NSMutableDictionary *)self->_lastAssociatedLocationPerDevice objectForKey:v16];
           if (v24)
@@ -133,17 +133,17 @@ LABEL_17:
           }
 
           v67 = v24;
-          v25 = [v17 deviceObservationInterval];
+          deviceObservationInterval = [v17 deviceObservationInterval];
           v26 = [(NSMutableDictionary *)self->_lastAdvPerDevice objectForKey:v16];
           v66 = v26;
           if (v26)
           {
-            v64 = v25;
+            v64 = deviceObservationInterval;
             v27 = v26;
-            v28 = [v26 getDate];
-            v29 = [v17 latestObservation];
-            v30 = [v29 getDate];
-            v31 = [v28 compare:v30];
+            getDate = [v26 getDate];
+            latestObservation = [v17 latestObservation];
+            getDate2 = [latestObservation getDate];
+            v31 = [getDate compare:getDate2];
 
             if (v31 == 1)
             {
@@ -152,16 +152,16 @@ LABEL_17:
                 [TAInterVisitMetricsSnapshot updateInterVisitMetric:v70 store:? withUpdatedTime:? andCloseSnapshot:?];
               }
 
-              v25 = v64;
+              deviceObservationInterval = v64;
             }
 
             else
             {
               v32 = MEMORY[0x277CCA970];
-              v33 = [v27 getDate];
-              v34 = [v17 latestObservation];
-              v35 = [v34 getDate];
-              v25 = [v32 createIntervalSafelyWithStartDate:v33 endDate:v35];
+              getDate3 = [v27 getDate];
+              latestObservation2 = [v17 latestObservation];
+              getDate4 = [latestObservation2 getDate];
+              deviceObservationInterval = [v32 createIntervalSafelyWithStartDate:getDate3 endDate:getDate4];
             }
           }
 
@@ -183,43 +183,43 @@ LABEL_17:
             }
           }
 
-          v39 = [v17 deviceLocationHistory];
-          -[TAInterVisitMetricPerDevice accumulateNumOfAssociatedLocs:](v18, "accumulateNumOfAssociatedLocs:", [v39 count]);
+          deviceLocationHistory2 = [v17 deviceLocationHistory];
+          -[TAInterVisitMetricPerDevice accumulateNumOfAssociatedLocs:](v18, "accumulateNumOfAssociatedLocs:", [deviceLocationHistory2 count]);
 
-          [v25 duration];
+          [deviceObservationInterval duration];
           [(TAInterVisitMetricPerDevice *)v18 accumulateDuration:?];
           [TAFilterGeneral distOfTravelAlong:v23];
           [(TAInterVisitMetricPerDevice *)v18 accumulateDistance:?];
           [(TAInterVisitMetricPerDevice *)v18 accumulateSampledObservedLocations:v23];
           v40 = [obj objectForKeyedSubscript:v16];
-          v41 = [v40 latestObservation];
-          [(TAInterVisitMetricPerDevice *)v18 accumulateLatestAdvertisement:v41];
+          latestObservation3 = [v40 latestObservation];
+          [(TAInterVisitMetricPerDevice *)v18 accumulateLatestAdvertisement:latestObservation3];
 
-          v42 = [TADominantUserActivity getCumulativeUserActivityTimeInDateInterval:v25 store:v62];
+          v42 = [TADominantUserActivity getCumulativeUserActivityTimeInDateInterval:deviceObservationInterval store:storeCopy];
           [(TAInterVisitMetricPerDevice *)v18 accumulateDurationPerMotionState:v42];
 
-          self = v61;
+          self = selfCopy;
           if ([v23 count])
           {
-            v43 = [(NSMutableDictionary *)v61->_firstAssociatedLocationPerDevice objectForKeyedSubscript:v16];
+            v43 = [(NSMutableDictionary *)selfCopy->_firstAssociatedLocationPerDevice objectForKeyedSubscript:v16];
 
             if (!v43)
             {
-              firstAssociatedLocationPerDevice = v61->_firstAssociatedLocationPerDevice;
-              v45 = [v23 firstObject];
-              v46 = [v45 copy];
+              firstAssociatedLocationPerDevice = selfCopy->_firstAssociatedLocationPerDevice;
+              firstObject = [v23 firstObject];
+              v46 = [firstObject copy];
               [(NSMutableDictionary *)firstAssociatedLocationPerDevice setObject:v46 forKey:v16];
             }
 
-            lastAssociatedLocationPerDevice = v61->_lastAssociatedLocationPerDevice;
-            v48 = [v23 lastObject];
-            v49 = [v48 copy];
+            lastAssociatedLocationPerDevice = selfCopy->_lastAssociatedLocationPerDevice;
+            lastObject = [v23 lastObject];
+            v49 = [lastObject copy];
             [(NSMutableDictionary *)lastAssociatedLocationPerDevice setObject:v49 forKey:v16];
           }
 
-          lastAdvPerDevice = v61->_lastAdvPerDevice;
-          v51 = [v17 latestObservation];
-          v52 = [v51 copy];
+          lastAdvPerDevice = selfCopy->_lastAdvPerDevice;
+          latestObservation4 = [v17 latestObservation];
+          v52 = [latestObservation4 copy];
           [(NSMutableDictionary *)lastAdvPerDevice setObject:v52 forKey:v16];
 
           goto LABEL_33;
@@ -249,10 +249,10 @@ LABEL_33:
       {
 LABEL_38:
 
-        objc_storeStrong(p_lastUpdateTime, v57);
+        objc_storeStrong(p_lastUpdateTime, timeCopy2);
         self->_isClosed = v58;
-        v11 = v59;
-        v10 = v60;
+        timeCopy = v59;
+        metricCopy = v60;
         goto LABEL_41;
       }
     }
@@ -260,14 +260,14 @@ LABEL_38:
 
   v13 = TAStatusLog;
   v14 = os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEBUG);
-  if (v6)
+  if (snapshotCopy)
   {
     if (v14)
     {
       [TAInterVisitMetricsSnapshot updateInterVisitMetric:v13 store:? withUpdatedTime:? andCloseSnapshot:?];
     }
 
-    self->_isClosed = v6;
+    self->_isClosed = snapshotCopy;
   }
 
   else if (v14)
@@ -280,13 +280,13 @@ LABEL_41:
   v55 = *MEMORY[0x277D85DE8];
 }
 
-- (void)visitEntryDelayCorrection:(id)a3 store:(id)a4
+- (void)visitEntryDelayCorrection:(id)correction store:(id)store
 {
   v83 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v52 = v6;
-  if ([v6 hasArrivalDate] && !objc_msgSend(v6, "hasDepartureDate"))
+  correctionCopy = correction;
+  storeCopy = store;
+  v52 = correctionCopy;
+  if ([correctionCopy hasArrivalDate] && !objc_msgSend(correctionCopy, "hasDepartureDate"))
   {
     v65 = 0u;
     v66 = 0u;
@@ -300,8 +300,8 @@ LABEL_41:
       v11 = &TAStatusLog;
       *&v9 = 68289026;
       v45 = v9;
-      v46 = self;
-      v47 = v7;
+      selfCopy = self;
+      v47 = storeCopy;
       v54 = *v64;
       do
       {
@@ -319,34 +319,34 @@ LABEL_41:
             v56 = v13;
             lastUpdateTime = self->_lastUpdateTime;
             [v52 arrivalDate];
-            v16 = self;
+            selfCopy2 = self;
             v17 = v11;
-            v19 = v18 = v7;
+            v19 = v18 = storeCopy;
             v20 = [(NSDate *)lastUpdateTime compare:v19];
 
-            v21 = [v14 getDate];
-            v22 = [v52 arrivalDate];
-            v58 = [v21 compare:v22];
+            getDate = [v14 getDate];
+            arrivalDate = [v52 arrivalDate];
+            v58 = [getDate compare:arrivalDate];
 
             v23 = MEMORY[0x277CCA970];
-            v24 = [v52 arrivalDate];
+            arrivalDate2 = [v52 arrivalDate];
             v57 = v14;
-            v25 = [v14 getDate];
-            v26 = [v23 createIntervalSafelyWithStartDate:v24 endDate:v25];
+            getDate2 = [v14 getDate];
+            v26 = [v23 createIntervalSafelyWithStartDate:arrivalDate2 endDate:getDate2];
 
-            v7 = v18;
+            storeCopy = v18;
             v11 = v17;
-            self = v16;
+            self = selfCopy2;
             [v26 duration];
             v28 = v27;
-            v29 = [TADominantUserActivity getCumulativeUserActivityTimeInDateInterval:v26 store:v7];
+            v29 = [TADominantUserActivity getCumulativeUserActivityTimeInDateInterval:v26 store:storeCopy];
             v53 = v20;
             v30 = v20 == -1;
             v10 = v54;
             if (!v30 && v58 != -1)
             {
               v51 = v26;
-              v49 = [(NSMutableDictionary *)v16->_accumulatedDeviceMetrics objectForKeyedSubscript:v56];
+              v49 = [(NSMutableDictionary *)selfCopy2->_accumulatedDeviceMetrics objectForKeyedSubscript:v56];
               [v49 accumulateDuration:-v28];
               v31 = objc_alloc_init(MEMORY[0x277CBEB38]);
               v59 = 0u;
@@ -384,8 +384,8 @@ LABEL_41:
               }
 
               [v49 accumulateDurationPerMotionState:v31];
-              self = v46;
-              v7 = v47;
+              self = selfCopy;
+              storeCopy = v47;
               v10 = v54;
               v11 = &TAStatusLog;
               v29 = v50;
@@ -452,29 +452,29 @@ LABEL_41:
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWithInterVisitMetricsSnapshot:(id)a3 store:(id)a4
+- (void)updateWithInterVisitMetricsSnapshot:(id)snapshot store:(id)store
 {
   v86 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v62 = a4;
-  v7 = [v6 lastUpdateTime];
+  snapshotCopy = snapshot;
+  storeCopy = store;
+  lastUpdateTime = [snapshotCopy lastUpdateTime];
   lastUpdateTime = self->_lastUpdateTime;
-  self->_lastUpdateTime = v7;
+  self->_lastUpdateTime = lastUpdateTime;
 
-  self->_isClosed = [v6 isClosed];
+  self->_isClosed = [snapshotCopy isClosed];
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
-  obj = [v6 accumulatedDeviceMetrics];
+  obj = [snapshotCopy accumulatedDeviceMetrics];
   v68 = [obj countByEnumeratingWithState:&v74 objects:v85 count:16];
   if (v68)
   {
     v67 = *v75;
     *&v9 = 68289283;
     v61 = v9;
-    v63 = self;
-    v64 = v6;
+    selfCopy = self;
+    v64 = snapshotCopy;
     do
     {
       v10 = 0;
@@ -486,8 +486,8 @@ LABEL_41:
         }
 
         v11 = *(*(&v74 + 1) + 8 * v10);
-        v12 = [v6 accumulatedDeviceMetrics];
-        v13 = [v12 objectForKey:v11];
+        accumulatedDeviceMetrics = [snapshotCopy accumulatedDeviceMetrics];
+        v13 = [accumulatedDeviceMetrics objectForKey:v11];
 
         v14 = [(NSMutableDictionary *)self->_accumulatedDeviceMetrics objectForKey:v11];
         v15 = [(NSMutableDictionary *)self->_accumulatedDeviceMetrics objectForKey:v11];
@@ -496,22 +496,22 @@ LABEL_41:
         {
           [v14 accumulateNumOfAssociatedLocs:{objc_msgSend(v13, "numOfAssociatedLocs")}];
           v16 = [(NSMutableDictionary *)self->_lastAdvPerDevice objectForKeyedSubscript:v11];
-          v17 = [v6 lastAdvPerDevice];
-          v18 = [v17 objectForKeyedSubscript:v11];
+          lastAdvPerDevice = [snapshotCopy lastAdvPerDevice];
+          v18 = [lastAdvPerDevice objectForKeyedSubscript:v11];
 
           v69 = v16;
           if (v16 && v18)
           {
-            v19 = [v16 getDate];
+            getDate = [v16 getDate];
             [v18 getDate];
             v20 = v18;
             v22 = v21 = v16;
-            v23 = [v19 compare:v22];
+            v23 = [getDate compare:v22];
 
             if (v23 == 1)
             {
               v18 = v20;
-              self = v63;
+              self = selfCopy;
               if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_FAULT))
               {
                 [TAInterVisitMetricsSnapshot updateWithInterVisitMetricsSnapshot:v73 store:?];
@@ -521,17 +521,17 @@ LABEL_41:
             else
             {
               v29 = MEMORY[0x277CCA970];
-              v30 = [v21 getDate];
-              v31 = [v20 getDate];
-              v32 = [v29 createIntervalSafelyWithStartDate:v30 endDate:v31];
+              getDate2 = [v21 getDate];
+              getDate3 = [v20 getDate];
+              v32 = [v29 createIntervalSafelyWithStartDate:getDate2 endDate:getDate3];
 
               [v32 duration];
               [v14 accumulateDuration:?];
-              v33 = [TADominantUserActivity getCumulativeUserActivityTimeInDateInterval:v32 store:v62];
+              v33 = [TADominantUserActivity getCumulativeUserActivityTimeInDateInterval:v32 store:storeCopy];
               [v14 accumulateDurationPerMotionState:v33];
 
               v18 = v20;
-              self = v63;
+              self = selfCopy;
             }
           }
 
@@ -539,22 +539,22 @@ LABEL_41:
           {
             [v13 duration];
             [v14 accumulateDuration:?];
-            v27 = [v13 durationPerMotionState];
-            [v14 accumulateDurationPerMotionState:v27];
+            durationPerMotionState = [v13 durationPerMotionState];
+            [v14 accumulateDurationPerMotionState:durationPerMotionState];
           }
 
           [v13 distance];
           [v14 accumulateDistance:?];
           v34 = [(NSMutableDictionary *)self->_lastAssociatedLocationPerDevice objectForKeyedSubscript:v11];
-          v35 = [v6 firstAssociatedLocationPerDevice];
-          v36 = [v35 objectForKeyedSubscript:v11];
+          firstAssociatedLocationPerDevice = [snapshotCopy firstAssociatedLocationPerDevice];
+          v36 = [firstAssociatedLocationPerDevice objectForKeyedSubscript:v11];
 
           if (v34 && v36)
           {
             v66 = v18;
-            v37 = [v34 getDate];
-            v38 = [v36 getDate];
-            v39 = [v37 compare:v38];
+            getDate4 = [v34 getDate];
+            getDate5 = [v36 getDate];
+            v39 = [getDate4 compare:getDate5];
 
             if (v39 == -1)
             {
@@ -565,13 +565,13 @@ LABEL_41:
               v42 = v41;
 
               [v14 accumulateDistance:v42];
-              v6 = v64;
+              snapshotCopy = v64;
               v18 = v66;
             }
 
             else
             {
-              v6 = v64;
+              snapshotCopy = v64;
               v18 = v66;
               if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_ERROR))
               {
@@ -580,65 +580,65 @@ LABEL_41:
             }
           }
 
-          v43 = [v13 sampledObservedLocations];
-          [v14 accumulateSampledObservedLocations:v43];
+          sampledObservedLocations = [v13 sampledObservedLocations];
+          [v14 accumulateSampledObservedLocations:sampledObservedLocations];
 
-          v44 = [v13 latestAdvertisement];
-          [v14 accumulateLatestAdvertisement:v44];
+          latestAdvertisement = [v13 latestAdvertisement];
+          [v14 accumulateLatestAdvertisement:latestAdvertisement];
 
 LABEL_25:
-          v45 = [(NSMutableDictionary *)self->_firstAssociatedLocationPerDevice objectForKeyedSubscript:v11];
-          if (v45)
+          firstAssociatedLocationPerDevice3 = [(NSMutableDictionary *)self->_firstAssociatedLocationPerDevice objectForKeyedSubscript:v11];
+          if (firstAssociatedLocationPerDevice3)
           {
 LABEL_28:
           }
 
           else
           {
-            v46 = [v6 firstAssociatedLocationPerDevice];
-            v47 = [v46 objectForKeyedSubscript:v11];
+            firstAssociatedLocationPerDevice2 = [snapshotCopy firstAssociatedLocationPerDevice];
+            v47 = [firstAssociatedLocationPerDevice2 objectForKeyedSubscript:v11];
 
             if (v47)
             {
               firstAssociatedLocationPerDevice = self->_firstAssociatedLocationPerDevice;
-              v45 = [v6 firstAssociatedLocationPerDevice];
-              v49 = [v45 objectForKeyedSubscript:v11];
+              firstAssociatedLocationPerDevice3 = [snapshotCopy firstAssociatedLocationPerDevice];
+              v49 = [firstAssociatedLocationPerDevice3 objectForKeyedSubscript:v11];
               [(NSMutableDictionary *)firstAssociatedLocationPerDevice setObject:v49 forKey:v11];
 
               goto LABEL_28;
             }
           }
 
-          v50 = [v6 lastAssociatedLocationPerDevice];
-          v51 = [v50 objectForKeyedSubscript:v11];
+          lastAssociatedLocationPerDevice = [snapshotCopy lastAssociatedLocationPerDevice];
+          v51 = [lastAssociatedLocationPerDevice objectForKeyedSubscript:v11];
 
           if (v51)
           {
             lastAssociatedLocationPerDevice = self->_lastAssociatedLocationPerDevice;
-            v53 = [v6 lastAssociatedLocationPerDevice];
-            v54 = [v53 objectForKeyedSubscript:v11];
+            lastAssociatedLocationPerDevice2 = [snapshotCopy lastAssociatedLocationPerDevice];
+            v54 = [lastAssociatedLocationPerDevice2 objectForKeyedSubscript:v11];
             [(NSMutableDictionary *)lastAssociatedLocationPerDevice setObject:v54 forKey:v11];
           }
 
-          v55 = [v6 lastAdvPerDevice];
-          v56 = [v55 objectForKeyedSubscript:v11];
+          lastAdvPerDevice2 = [snapshotCopy lastAdvPerDevice];
+          v56 = [lastAdvPerDevice2 objectForKeyedSubscript:v11];
 
           if (v56)
           {
             lastAdvPerDevice = self->_lastAdvPerDevice;
-            v58 = [v6 lastAdvPerDevice];
-            v59 = [v58 objectForKeyedSubscript:v11];
+            lastAdvPerDevice3 = [snapshotCopy lastAdvPerDevice];
+            v59 = [lastAdvPerDevice3 objectForKeyedSubscript:v11];
             [(NSMutableDictionary *)lastAdvPerDevice setObject:v59 forKey:v11];
           }
 
           goto LABEL_33;
         }
 
-        v24 = [(TAInterVisitMetricsSnapshot *)self accumulatedDeviceMetrics];
-        v25 = [v24 count];
-        v26 = [(TAInterVisitMetricsSnapshot *)self maxUniqueAddresses];
+        accumulatedDeviceMetrics2 = [(TAInterVisitMetricsSnapshot *)self accumulatedDeviceMetrics];
+        v25 = [accumulatedDeviceMetrics2 count];
+        maxUniqueAddresses = [(TAInterVisitMetricsSnapshot *)self maxUniqueAddresses];
 
-        if (v25 < v26)
+        if (v25 < maxUniqueAddresses)
         {
           [(NSMutableDictionary *)self->_accumulatedDeviceMetrics setObject:v13 forKey:v11];
           goto LABEL_25;
@@ -671,10 +671,10 @@ LABEL_33:
   v60 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -684,9 +684,9 @@ LABEL_33:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(TAInterVisitMetricsSnapshot *)self isClosed];
-      if (v7 != [(TAInterVisitMetricsSnapshot *)v6 isClosed])
+      v6 = equalCopy;
+      isClosed = [(TAInterVisitMetricsSnapshot *)self isClosed];
+      if (isClosed != [(TAInterVisitMetricsSnapshot *)v6 isClosed])
       {
         v8 = 0;
 LABEL_41:
@@ -694,33 +694,33 @@ LABEL_41:
         goto LABEL_42;
       }
 
-      v9 = [(TAInterVisitMetricsSnapshot *)self initialTime];
-      v10 = [(TAInterVisitMetricsSnapshot *)v6 initialTime];
-      if (v9 != v10)
+      initialTime = [(TAInterVisitMetricsSnapshot *)self initialTime];
+      initialTime2 = [(TAInterVisitMetricsSnapshot *)v6 initialTime];
+      if (initialTime != initialTime2)
       {
-        v11 = [(TAInterVisitMetricsSnapshot *)self initialTime];
-        v56 = [(TAInterVisitMetricsSnapshot *)v6 initialTime];
-        v57 = v11;
-        if (![v11 isEqual:?])
+        initialTime3 = [(TAInterVisitMetricsSnapshot *)self initialTime];
+        initialTime4 = [(TAInterVisitMetricsSnapshot *)v6 initialTime];
+        v57 = initialTime3;
+        if (![initialTime3 isEqual:?])
         {
           v8 = 0;
           goto LABEL_39;
         }
       }
 
-      v12 = [(TAInterVisitMetricsSnapshot *)self lastUpdateTime];
-      v13 = [(TAInterVisitMetricsSnapshot *)v6 lastUpdateTime];
-      if (v12 != v13)
+      lastUpdateTime = [(TAInterVisitMetricsSnapshot *)self lastUpdateTime];
+      lastUpdateTime2 = [(TAInterVisitMetricsSnapshot *)v6 lastUpdateTime];
+      if (lastUpdateTime != lastUpdateTime2)
       {
-        v3 = [(TAInterVisitMetricsSnapshot *)self lastUpdateTime];
-        v54 = [(TAInterVisitMetricsSnapshot *)v6 lastUpdateTime];
-        if (![v3 isEqual:?])
+        lastUpdateTime3 = [(TAInterVisitMetricsSnapshot *)self lastUpdateTime];
+        lastUpdateTime4 = [(TAInterVisitMetricsSnapshot *)v6 lastUpdateTime];
+        if (![lastUpdateTime3 isEqual:?])
         {
           v8 = 0;
 LABEL_37:
 
 LABEL_38:
-          if (v9 == v10)
+          if (initialTime == initialTime2)
           {
 LABEL_40:
 
@@ -733,22 +733,22 @@ LABEL_39:
         }
       }
 
-      v14 = [(TAInterVisitMetricsSnapshot *)self accumulatedDeviceMetrics];
-      v15 = [(TAInterVisitMetricsSnapshot *)v6 accumulatedDeviceMetrics];
-      v55 = v14;
-      v16 = v14 == v15;
-      v17 = v15;
+      accumulatedDeviceMetrics = [(TAInterVisitMetricsSnapshot *)self accumulatedDeviceMetrics];
+      accumulatedDeviceMetrics2 = [(TAInterVisitMetricsSnapshot *)v6 accumulatedDeviceMetrics];
+      v55 = accumulatedDeviceMetrics;
+      v16 = accumulatedDeviceMetrics == accumulatedDeviceMetrics2;
+      v17 = accumulatedDeviceMetrics2;
       if (v16)
       {
-        v52 = v15;
+        v52 = accumulatedDeviceMetrics2;
       }
 
       else
       {
-        v18 = [(TAInterVisitMetricsSnapshot *)self accumulatedDeviceMetrics];
-        v48 = [(TAInterVisitMetricsSnapshot *)v6 accumulatedDeviceMetrics];
-        v49 = v18;
-        if (![v18 isEqual:?])
+        accumulatedDeviceMetrics3 = [(TAInterVisitMetricsSnapshot *)self accumulatedDeviceMetrics];
+        accumulatedDeviceMetrics4 = [(TAInterVisitMetricsSnapshot *)v6 accumulatedDeviceMetrics];
+        v49 = accumulatedDeviceMetrics3;
+        if (![accumulatedDeviceMetrics3 isEqual:?])
         {
           v8 = 0;
           v25 = v17;
@@ -756,7 +756,7 @@ LABEL_39:
 LABEL_35:
 
 LABEL_36:
-          if (v12 == v13)
+          if (lastUpdateTime == lastUpdateTime2)
           {
             goto LABEL_38;
           }
@@ -767,18 +767,18 @@ LABEL_36:
         v52 = v17;
       }
 
-      v19 = [(TAInterVisitMetricsSnapshot *)self firstAssociatedLocationPerDevice];
-      v20 = [(TAInterVisitMetricsSnapshot *)v6 firstAssociatedLocationPerDevice];
-      v50 = v19;
-      v51 = v3;
-      v16 = v19 == v20;
-      v21 = v20;
+      firstAssociatedLocationPerDevice = [(TAInterVisitMetricsSnapshot *)self firstAssociatedLocationPerDevice];
+      firstAssociatedLocationPerDevice2 = [(TAInterVisitMetricsSnapshot *)v6 firstAssociatedLocationPerDevice];
+      v50 = firstAssociatedLocationPerDevice;
+      v51 = lastUpdateTime3;
+      v16 = firstAssociatedLocationPerDevice == firstAssociatedLocationPerDevice2;
+      v21 = firstAssociatedLocationPerDevice2;
       if (!v16)
       {
-        v22 = [(TAInterVisitMetricsSnapshot *)self firstAssociatedLocationPerDevice];
-        v42 = [(TAInterVisitMetricsSnapshot *)v6 firstAssociatedLocationPerDevice];
-        v43 = v22;
-        if (![v22 isEqual:?])
+        firstAssociatedLocationPerDevice3 = [(TAInterVisitMetricsSnapshot *)self firstAssociatedLocationPerDevice];
+        firstAssociatedLocationPerDevice4 = [(TAInterVisitMetricsSnapshot *)v6 firstAssociatedLocationPerDevice];
+        v43 = firstAssociatedLocationPerDevice3;
+        if (![firstAssociatedLocationPerDevice3 isEqual:?])
         {
           v23 = v52;
           v8 = 0;
@@ -789,7 +789,7 @@ LABEL_34:
           v26 = v55;
           v25 = v23;
           v16 = v55 == v23;
-          v3 = v51;
+          lastUpdateTime3 = v51;
           if (v16)
           {
             goto LABEL_36;
@@ -799,39 +799,39 @@ LABEL_34:
         }
       }
 
-      v27 = [(TAInterVisitMetricsSnapshot *)self lastAssociatedLocationPerDevice];
-      v45 = [(TAInterVisitMetricsSnapshot *)v6 lastAssociatedLocationPerDevice];
-      v46 = v27;
+      lastAssociatedLocationPerDevice = [(TAInterVisitMetricsSnapshot *)self lastAssociatedLocationPerDevice];
+      lastAssociatedLocationPerDevice2 = [(TAInterVisitMetricsSnapshot *)v6 lastAssociatedLocationPerDevice];
+      v46 = lastAssociatedLocationPerDevice;
       v47 = v21;
-      v44 = v13;
-      if (v27 == v45)
+      v44 = lastUpdateTime2;
+      if (lastAssociatedLocationPerDevice == lastAssociatedLocationPerDevice2)
       {
-        v41 = v12;
+        v41 = lastUpdateTime;
         v30 = v52;
       }
 
       else
       {
-        v28 = [(TAInterVisitMetricsSnapshot *)self lastAssociatedLocationPerDevice];
-        v39 = [(TAInterVisitMetricsSnapshot *)v6 lastAssociatedLocationPerDevice];
-        v40 = v28;
-        v29 = [v28 isEqual:?];
+        lastAssociatedLocationPerDevice3 = [(TAInterVisitMetricsSnapshot *)self lastAssociatedLocationPerDevice];
+        lastAssociatedLocationPerDevice4 = [(TAInterVisitMetricsSnapshot *)v6 lastAssociatedLocationPerDevice];
+        v40 = lastAssociatedLocationPerDevice3;
+        v29 = [lastAssociatedLocationPerDevice3 isEqual:?];
         v30 = v52;
         if (!v29)
         {
           v8 = 0;
-          v37 = v45;
+          v37 = lastAssociatedLocationPerDevice2;
           v36 = v46;
           goto LABEL_30;
         }
 
-        v41 = v12;
+        v41 = lastUpdateTime;
       }
 
-      v31 = [(TAInterVisitMetricsSnapshot *)self lastAdvPerDevice];
-      v32 = [(TAInterVisitMetricsSnapshot *)v6 lastAdvPerDevice];
-      v33 = v32;
-      if (v31 == v32)
+      lastAdvPerDevice = [(TAInterVisitMetricsSnapshot *)self lastAdvPerDevice];
+      lastAdvPerDevice2 = [(TAInterVisitMetricsSnapshot *)v6 lastAdvPerDevice];
+      v33 = lastAdvPerDevice2;
+      if (lastAdvPerDevice == lastAdvPerDevice2)
       {
 
         v8 = 1;
@@ -841,23 +841,23 @@ LABEL_34:
       {
         [(TAInterVisitMetricsSnapshot *)self lastAdvPerDevice];
         v34 = v53 = v30;
-        v35 = [(TAInterVisitMetricsSnapshot *)v6 lastAdvPerDevice];
-        v8 = [v34 isEqual:v35];
+        lastAdvPerDevice3 = [(TAInterVisitMetricsSnapshot *)v6 lastAdvPerDevice];
+        v8 = [v34 isEqual:lastAdvPerDevice3];
 
         v30 = v53;
       }
 
-      v37 = v45;
+      v37 = lastAssociatedLocationPerDevice2;
       v36 = v46;
-      v12 = v41;
-      if (v46 == v45)
+      lastUpdateTime = v41;
+      if (v46 == lastAssociatedLocationPerDevice2)
       {
         v23 = v30;
 LABEL_32:
 
         v24 = v50;
         v21 = v47;
-        v13 = v44;
+        lastUpdateTime2 = v44;
         if (v50 == v47)
         {
           goto LABEL_34;
@@ -880,20 +880,20 @@ LABEL_42:
   return v8;
 }
 
-- (TAInterVisitMetricsSnapshot)initWithCoder:(id)a3
+- (TAInterVisitMetricsSnapshot)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v35.receiver = self;
   v35.super_class = TAInterVisitMetricsSnapshot;
   v5 = [(TAInterVisitMetricsSnapshot *)&v35 init];
   if (v5)
   {
-    v5->_isClosed = [v4 decodeBoolForKey:@"IsClosed"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"InitTime"];
+    v5->_isClosed = [coderCopy decodeBoolForKey:@"IsClosed"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"InitTime"];
     initialTime = v5->_initialTime;
     v5->_initialTime = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LastUpdateTime"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LastUpdateTime"];
     lastUpdateTime = v5->_lastUpdateTime;
     v5->_lastUpdateTime = v8;
 
@@ -901,7 +901,7 @@ LABEL_42:
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = [v10 setWithObjects:{v11, v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"accumMetrics"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"accumMetrics"];
     accumulatedDeviceMetrics = v5->_accumulatedDeviceMetrics;
     v5->_accumulatedDeviceMetrics = v14;
 
@@ -909,7 +909,7 @@ LABEL_42:
     v17 = objc_opt_class();
     v18 = objc_opt_class();
     v19 = [v16 setWithObjects:{v17, v18, objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"firstLoc"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"firstLoc"];
     firstAssociatedLocationPerDevice = v5->_firstAssociatedLocationPerDevice;
     v5->_firstAssociatedLocationPerDevice = v20;
 
@@ -917,7 +917,7 @@ LABEL_42:
     v23 = objc_opt_class();
     v24 = objc_opt_class();
     v25 = [v22 setWithObjects:{v23, v24, objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"lastLoc"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"lastLoc"];
     lastAssociatedLocationPerDevice = v5->_lastAssociatedLocationPerDevice;
     v5->_lastAssociatedLocationPerDevice = v26;
 
@@ -925,7 +925,7 @@ LABEL_42:
     v29 = objc_opt_class();
     v30 = objc_opt_class();
     v31 = [v28 setWithObjects:{v29, v30, objc_opt_class(), 0}];
-    v32 = [v4 decodeObjectOfClasses:v31 forKey:@"LastAdv"];
+    v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"LastAdv"];
     lastAdvPerDevice = v5->_lastAdvPerDevice;
     v5->_lastAdvPerDevice = v32;
   }
@@ -933,17 +933,17 @@ LABEL_42:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   isClosed = self->_isClosed;
-  v5 = a3;
-  [v5 encodeBool:isClosed forKey:@"IsClosed"];
-  [v5 encodeObject:self->_initialTime forKey:@"InitTime"];
-  [v5 encodeObject:self->_lastUpdateTime forKey:@"LastUpdateTime"];
-  [v5 encodeObject:self->_accumulatedDeviceMetrics forKey:@"accumMetrics"];
-  [v5 encodeObject:self->_firstAssociatedLocationPerDevice forKey:@"firstLoc"];
-  [v5 encodeObject:self->_lastAssociatedLocationPerDevice forKey:@"lastLoc"];
-  [v5 encodeObject:self->_lastAdvPerDevice forKey:@"LastAdv"];
+  coderCopy = coder;
+  [coderCopy encodeBool:isClosed forKey:@"IsClosed"];
+  [coderCopy encodeObject:self->_initialTime forKey:@"InitTime"];
+  [coderCopy encodeObject:self->_lastUpdateTime forKey:@"LastUpdateTime"];
+  [coderCopy encodeObject:self->_accumulatedDeviceMetrics forKey:@"accumMetrics"];
+  [coderCopy encodeObject:self->_firstAssociatedLocationPerDevice forKey:@"firstLoc"];
+  [coderCopy encodeObject:self->_lastAssociatedLocationPerDevice forKey:@"lastLoc"];
+  [coderCopy encodeObject:self->_lastAdvPerDevice forKey:@"LastAdv"];
 }
 
 @end

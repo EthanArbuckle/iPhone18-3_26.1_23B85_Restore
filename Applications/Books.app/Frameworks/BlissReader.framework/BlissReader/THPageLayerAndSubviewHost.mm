@@ -1,36 +1,36 @@
 @interface THPageLayerAndSubviewHost
 - (CGRect)canvasBoundsFrame;
 - (NSString)description;
-- (THPageLayerAndSubviewHost)initWithPageInfo:(id)a3 scrimEnabled:(BOOL)a4 delegate:(id)a5;
+- (THPageLayerAndSubviewHost)initWithPageInfo:(id)info scrimEnabled:(BOOL)enabled delegate:(id)delegate;
 - (UIViewController)containerViewController;
 - (id)p_largeThumbnail;
 - (id)topLevelReps;
 - (void)dealloc;
-- (void)loadPreviewOnQueue:(id)a3;
-- (void)p_layoutLayersWithFrame:(CGRect)a3;
+- (void)loadPreviewOnQueue:(id)queue;
+- (void)p_layoutLayersWithFrame:(CGRect)frame;
 - (void)recycle;
 - (void)setFrame;
-- (void)setHidden:(BOOL)a3;
-- (void)setRep:(id)a3;
-- (void)setUnscaledFrame:(CGRect)a3 unscaledLayerOffset:(CGPoint)a4 viewScale:(double)a5;
+- (void)setHidden:(BOOL)hidden;
+- (void)setRep:(id)rep;
+- (void)setUnscaledFrame:(CGRect)frame unscaledLayerOffset:(CGPoint)offset viewScale:(double)scale;
 - (void)teardown;
-- (void)unloadPreviewAnimated:(BOOL)a3;
+- (void)unloadPreviewAnimated:(BOOL)animated;
 - (void)updateTopLevelLayers;
 @end
 
 @implementation THPageLayerAndSubviewHost
 
-- (THPageLayerAndSubviewHost)initWithPageInfo:(id)a3 scrimEnabled:(BOOL)a4 delegate:(id)a5
+- (THPageLayerAndSubviewHost)initWithPageInfo:(id)info scrimEnabled:(BOOL)enabled delegate:(id)delegate
 {
-  v6 = a4;
+  enabledCopy = enabled;
   v15.receiver = self;
   v15.super_class = THPageLayerAndSubviewHost;
   v8 = [(THPageLayerAndSubviewHost *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    v8->_delegate = a5;
-    v8->_pageInfo = a3;
+    v8->_delegate = delegate;
+    v8->_pageInfo = info;
     v9->_view = objc_alloc_init(THPageLayerAndSubviewHostView);
     v9->_borderView = objc_alloc_init(THPageLayerAndSubviewNoHitView);
     v9->_containerView = objc_alloc_init(THPageLayerAndSubviewNoHitView);
@@ -51,7 +51,7 @@
     v12 = objc_alloc_init(TSDNoDefaultImplicitActionLayer);
     v9->_previewLayer = v12;
     [(CALayer *)v12 setAnchorPoint:CGPointZero.x, y];
-    if (v6)
+    if (enabledCopy)
     {
       v13 = objc_alloc_init(TSDNoDefaultImplicitActionLayer);
       v9->_scrimLayer = v13;
@@ -126,17 +126,17 @@
   [(UIView *)borderView removeFromSuperview];
 }
 
-- (void)setRep:(id)a3
+- (void)setRep:(id)rep
 {
-  if (self->_rep != a3)
+  if (self->_rep != rep)
   {
-    self->_rep = a3;
-    -[TSDTilingHostingLayer setController:](self->_pageHostLayer, "setController:", [a3 interactiveCanvasController]);
+    self->_rep = rep;
+    -[TSDTilingHostingLayer setController:](self->_pageHostLayer, "setController:", [rep interactiveCanvasController]);
     [(TSDTilingHostingLayer *)self->_pageHostLayer setDelegate:[(TSDRep *)self->_rep interactiveCanvasController]];
-    v5 = [(TSDRep *)self->_rep interactiveCanvasController];
+    interactiveCanvasController = [(TSDRep *)self->_rep interactiveCanvasController];
     pageContainerLayer = self->_pageContainerLayer;
 
-    [(CALayer *)pageContainerLayer setDelegate:v5];
+    [(CALayer *)pageContainerLayer setDelegate:interactiveCanvasController];
   }
 }
 
@@ -152,16 +152,16 @@
   [(THPageLayerAndSubviewHostDelegate *)delegate pageLayerAndSubviewHostRecycle:self];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  [(UIView *)[(THPageLayerAndSubviewHost *)self view] setHidden:a3];
-  v5 = [(THPageLayerAndSubviewHost *)self borderView];
+  hiddenCopy = hidden;
+  [(UIView *)[(THPageLayerAndSubviewHost *)self view] setHidden:hidden];
+  borderView = [(THPageLayerAndSubviewHost *)self borderView];
 
-  [(UIView *)v5 setHidden:v3];
+  [(UIView *)borderView setHidden:hiddenCopy];
 }
 
-- (void)p_layoutLayersWithFrame:(CGRect)a3
+- (void)p_layoutLayersWithFrame:(CGRect)frame
 {
   TSDRectWithSize();
   x = v10.origin.x;
@@ -200,7 +200,7 @@
   }
 }
 
-- (void)setUnscaledFrame:(CGRect)a3 unscaledLayerOffset:(CGPoint)a4 viewScale:(double)a5
+- (void)setUnscaledFrame:(CGRect)frame unscaledLayerOffset:(CGPoint)offset viewScale:(double)scale
 {
   TSDMultiplyRectScalar();
   x = v16.origin.x;
@@ -234,24 +234,24 @@
   [-[THModelPageInfo context](self->_pageInfo "context")];
   v3 = TSUDynamicCast();
   v4 = [objc_msgSend(v3 "tocModel")];
-  v5 = [v3 navigationModel];
-  v6 = [(THModelPageInfo *)self->_pageInfo parent];
-  v7 = [v5 navigationUnitContainingContentNode:v6];
-  v8 = [objc_msgSend(v5 "navigationUnits")];
-  v9 = [(THModelNode *)v6 absolutePageIndexForRelativePageIndex:[(THModelPageInfo *)self->_pageInfo relativePageIndexInParent] forPresentationType:[(THModelNode *)v6 paginatedPresentationType]];
+  navigationModel = [v3 navigationModel];
+  parent = [(THModelPageInfo *)self->_pageInfo parent];
+  v7 = [navigationModel navigationUnitContainingContentNode:parent];
+  v8 = [objc_msgSend(navigationModel "navigationUnits")];
+  v9 = [(THModelNode *)parent absolutePageIndexForRelativePageIndex:[(THModelPageInfo *)self->_pageInfo relativePageIndexInParent] forPresentationType:[(THModelNode *)parent paginatedPresentationType]];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  v10 = [v7 relativePageIndexForAbsolutePageIndex:v9 forPresentationType:{-[THModelNode paginatedPresentationType](v6, "paginatedPresentationType")}];
+  v10 = [v7 relativePageIndexForAbsolutePageIndex:v9 forPresentationType:{-[THModelNode paginatedPresentationType](parent, "paginatedPresentationType")}];
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
   v11 = v10;
-  if (v8 >= [objc_msgSend(v5 "navigationUnits")])
+  if (v8 >= [objc_msgSend(navigationModel "navigationUnits")])
   {
     return 0;
   }
@@ -267,7 +267,7 @@
   return [TSUImage imageWithCGImage:v13];
 }
 
-- (void)loadPreviewOnQueue:(id)a3
+- (void)loadPreviewOnQueue:(id)queue
 {
   if (!+[NSThread isMainThread])
   {
@@ -292,18 +292,18 @@
     block[2] = sub_15F358;
     block[3] = &unk_45AE00;
     block[4] = self;
-    dispatch_async(a3, block);
+    dispatch_async(queue, block);
   }
 }
 
-- (void)unloadPreviewAnimated:(BOOL)a3
+- (void)unloadPreviewAnimated:(BOOL)animated
 {
   previewState = self->_previewState;
   if (previewState >= 2)
   {
     if (previewState == 2)
     {
-      if (a3)
+      if (animated)
       {
         self->_previewState = 3;
         +[CATransaction begin];

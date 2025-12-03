@@ -1,18 +1,18 @@
 @interface THSearchTableViewController
 - (CGSize)overridePreferredContentSize;
 - (CGSize)preferredContentSize;
-- (THSearchTableViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (THSearchTableViewController)initWithStyle:(int64_t)a3;
-- (void)setOverridePreferredContentSize:(CGSize)a3;
+- (THSearchTableViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (THSearchTableViewController)initWithStyle:(int64_t)style;
+- (void)setOverridePreferredContentSize:(CGSize)size;
 @end
 
 @implementation THSearchTableViewController
 
-- (THSearchTableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (THSearchTableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = THSearchTableViewController;
-  result = [(THSearchTableViewController *)&v5 initWithNibName:a3 bundle:a4];
+  result = [(THSearchTableViewController *)&v5 initWithNibName:name bundle:bundle];
   if (result)
   {
     result->_overridePreferredContentSize = CGSizeZero;
@@ -21,11 +21,11 @@
   return result;
 }
 
-- (THSearchTableViewController)initWithStyle:(int64_t)a3
+- (THSearchTableViewController)initWithStyle:(int64_t)style
 {
   v4.receiver = self;
   v4.super_class = THSearchTableViewController;
-  result = [(THSearchTableViewController *)&v4 initWithStyle:a3];
+  result = [(THSearchTableViewController *)&v4 initWithStyle:style];
   if (result)
   {
     result->_overridePreferredContentSize = CGSizeZero;
@@ -52,17 +52,17 @@
   return result;
 }
 
-- (void)setOverridePreferredContentSize:(CGSize)a3
+- (void)setOverridePreferredContentSize:(CGSize)size
 {
   height = self->_overridePreferredContentSize.height;
-  if ((height != a3.height || self->_overridePreferredContentSize.width != a3.width) && a3.height > height)
+  if ((height != size.height || self->_overridePreferredContentSize.width != size.width) && size.height > height)
   {
-    self->_overridePreferredContentSize = a3;
+    self->_overridePreferredContentSize = size;
     if ([(THSearchTableViewController *)self parentViewController])
     {
-      v7 = [(THSearchTableViewController *)self parentViewController];
+      parentViewController = [(THSearchTableViewController *)self parentViewController];
 
-      [v7 preferredContentSizeDidChangeForChildContentContainer:self];
+      [parentViewController preferredContentSizeDidChangeForChildContentContainer:self];
     }
   }
 }

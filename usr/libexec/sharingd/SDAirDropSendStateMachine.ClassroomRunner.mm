@@ -1,13 +1,13 @@
 @interface SDAirDropSendStateMachine.ClassroomRunner
-- (void)operationStartedWithOperation:(id)a3;
+- (void)operationStartedWithOperation:(id)operation;
 @end
 
 @implementation SDAirDropSendStateMachine.ClassroomRunner
 
-- (void)operationStartedWithOperation:(id)a3
+- (void)operationStartedWithOperation:(id)operation
 {
-  v4 = a3;
-  v5 = self;
+  operationCopy = operation;
+  selfCopy = self;
   sub_10062CD8C();
 }
 

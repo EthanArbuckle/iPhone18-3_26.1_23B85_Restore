@@ -1,7 +1,7 @@
 @interface SBSystemActionCompoundPreviewAssertion
-- (id)acquireForReason:(uint64_t)a1;
-- (id)descriptionBuilderWithMultilinePrefix:(void *)a1;
-- (id)descriptionWithMultilinePrefix:(uint64_t)a1;
+- (id)acquireForReason:(uint64_t)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(void *)prefix;
+- (id)descriptionWithMultilinePrefix:(uint64_t)prefix;
 - (id)succinctDescriptionBuilder;
 - (uint64_t)_removeExpansionReason:(uint64_t)result;
 - (uint64_t)_removePreviewingReason:(uint64_t)result;
@@ -9,9 +9,9 @@
 - (uint64_t)_sendEvent:(uint64_t)result;
 - (uint64_t)_updateState;
 - (uint64_t)state;
-- (void)_addAssertionReason:(id *)a1;
+- (void)_addAssertionReason:(id *)reason;
 - (void)dealloc;
-- (void)initWithIdentifier:(void *)a3 stateDidChangeBlock:(void *)a4 eventHandlingBlock:;
+- (void)initWithIdentifier:(void *)identifier stateDidChangeBlock:(void *)block eventHandlingBlock:;
 @end
 
 @implementation SBSystemActionCompoundPreviewAssertion
@@ -26,53 +26,53 @@
   return result;
 }
 
-- (void)initWithIdentifier:(void *)a3 stateDidChangeBlock:(void *)a4 eventHandlingBlock:
+- (void)initWithIdentifier:(void *)identifier stateDidChangeBlock:(void *)block eventHandlingBlock:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  identifierCopy = identifier;
+  blockCopy = block;
+  if (self)
   {
     if (!v7)
     {
       [SBSystemActionCompoundPreviewAssertion initWithIdentifier:? stateDidChangeBlock:? eventHandlingBlock:?];
     }
 
-    if (!v8)
+    if (!identifierCopy)
     {
       [SBSystemActionCompoundPreviewAssertion initWithIdentifier:? stateDidChangeBlock:? eventHandlingBlock:?];
     }
 
-    if (!v9)
+    if (!blockCopy)
     {
       [SBSystemActionCompoundPreviewAssertion initWithIdentifier:? stateDidChangeBlock:? eventHandlingBlock:?];
     }
 
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = SBSystemActionCompoundPreviewAssertion;
-    a1 = objc_msgSendSuper2(&v17, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v17, sel_init);
+    if (self)
     {
       v10 = [v7 copy];
-      v11 = a1[8];
-      a1[8] = v10;
+      v11 = self[8];
+      self[8] = v10;
 
-      v12 = [v8 copy];
-      v13 = a1[1];
-      a1[1] = v12;
+      v12 = [identifierCopy copy];
+      v13 = self[1];
+      self[1] = v12;
 
-      v14 = [v9 copy];
-      v15 = a1[2];
-      a1[2] = v14;
+      v14 = [blockCopy copy];
+      v15 = self[2];
+      self[2] = v14;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Acquired previewing assertions for <%@:%p> (%@) must be invalidated before dealloc", objc_opt_class(), a1, *(a1 + 64)];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Acquired previewing assertions for <%@:%p> (%@) must be invalidated before dealloc", objc_opt_class(), self, *(self + 64)];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v5 = NSStringFromSelector(a2);
@@ -83,7 +83,7 @@
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = a1;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"SBSystemActionCompoundPreviewAssertion.m";
     v16 = 1024;
@@ -98,11 +98,11 @@
   __break(0);
 }
 
-- (id)acquireForReason:(uint64_t)a1
+- (id)acquireForReason:(uint64_t)reason
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (reason)
   {
     if (!v3)
     {
@@ -110,24 +110,24 @@
     }
 
     v5 = [SBSystemActionPreviewAssertion alloc];
-    v6 = *(a1 + 64);
+    v6 = *(reason + 64);
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __59__SBSystemActionCompoundPreviewAssertion_acquireForReason___block_invoke;
     v15[3] = &unk_2783BFBB8;
-    v15[4] = a1;
+    v15[4] = reason;
     v16 = v4;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __59__SBSystemActionCompoundPreviewAssertion_acquireForReason___block_invoke_2;
     v13[3] = &unk_2783BFBE0;
-    v13[4] = a1;
+    v13[4] = reason;
     v14 = v16;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __59__SBSystemActionCompoundPreviewAssertion_acquireForReason___block_invoke_3;
     v11[3] = &unk_2783BFBB8;
-    v11[4] = a1;
+    v11[4] = reason;
     v7 = v14;
     v12 = v7;
     v8 = [(SBSystemActionPreviewAssertion *)v5 initWithIdentifier:v6 forReason:v7 expansionInvalidationBlock:v15 urgencyInvalidationBlock:v13 finalInvalidationBlock:v11];
@@ -135,10 +135,10 @@
     v10[1] = 3221225472;
     v10[2] = __59__SBSystemActionCompoundPreviewAssertion_acquireForReason___block_invoke_4;
     v10[3] = &unk_2783BFC08;
-    v10[4] = a1;
+    v10[4] = reason;
     [v8 addExpansionInvalidationBlock:v10];
-    objc_storeWeak((a1 + 24), v8);
-    [(SBSystemActionCompoundPreviewAssertion *)a1 _addAssertionReason:v7];
+    objc_storeWeak((reason + 24), v8);
+    [(SBSystemActionCompoundPreviewAssertion *)reason _addAssertionReason:v7];
   }
 
   else
@@ -266,37 +266,37 @@ LABEL_7:
   return result;
 }
 
-- (void)_addAssertionReason:(id *)a1
+- (void)_addAssertionReason:(id *)reason
 {
   v3 = a2;
-  if (a1)
+  if (reason)
   {
     v10 = v3;
-    if (!a1[4])
+    if (!reason[4])
     {
       v4 = [MEMORY[0x277CCA940] set];
-      v5 = a1[4];
-      a1[4] = v4;
+      v5 = reason[4];
+      reason[4] = v4;
     }
 
-    if (!a1[5])
+    if (!reason[5])
     {
       v6 = [MEMORY[0x277CCA940] set];
-      v7 = a1[5];
-      a1[5] = v6;
+      v7 = reason[5];
+      reason[5] = v6;
     }
 
-    if (!a1[6])
+    if (!reason[6])
     {
       v8 = [MEMORY[0x277CCA940] set];
-      v9 = a1[6];
-      a1[6] = v8;
+      v9 = reason[6];
+      reason[6] = v8;
     }
 
-    [a1[4] addObject:v10];
-    [a1[5] addObject:v10];
-    [a1[6] addObject:v10];
-    [(SBSystemActionCompoundPreviewAssertion *)a1 _updateState];
+    [reason[4] addObject:v10];
+    [reason[5] addObject:v10];
+    [reason[6] addObject:v10];
+    [(SBSystemActionCompoundPreviewAssertion *)reason _updateState];
     v3 = v10;
   }
 }
@@ -309,14 +309,14 @@ LABEL_7:
     v2 = [*(result + 32) count];
     v3 = [*(v1 + 40) count];
     WeakRetained = objc_loadWeakRetained((v1 + 24));
-    v5 = [WeakRetained isProminent];
+    isProminent = [WeakRetained isProminent];
     v6 = [*(v1 + 48) count];
 
     if (!BSEqualBools() || !BSEqualBools() || !BSEqualBools() || (result = BSEqualBools(), (result & 1) == 0))
     {
       *(v1 + 56) = v2 != 0;
       *(v1 + 57) = v3 != 0;
-      *(v1 + 58) = v5;
+      *(v1 + 58) = isProminent;
       *(v1 + 59) = v6 != 0;
       v7 = *(*(v1 + 8) + 16);
 
@@ -327,32 +327,32 @@ LABEL_7:
   return result;
 }
 
-- (id)descriptionWithMultilinePrefix:(uint64_t)a1
+- (id)descriptionWithMultilinePrefix:(uint64_t)prefix
 {
-  if (a1)
+  if (prefix)
   {
-    v1 = [(SBSystemActionCompoundPreviewAssertion *)a1 succinctDescriptionBuilder];
-    v2 = [v1 build];
+    succinctDescriptionBuilder = [(SBSystemActionCompoundPreviewAssertion *)prefix succinctDescriptionBuilder];
+    build = [succinctDescriptionBuilder build];
   }
 
   else
   {
-    v2 = 0;
+    build = 0;
   }
 
-  return v2;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x277CF0C00] builderWithObject:a1];
-    [v2 appendString:*(a1 + 64) withName:@"identifier"];
-    v3 = [v2 appendObject:*(a1 + 32) withName:@"previewingReasons"];
-    v4 = [v2 appendObject:*(a1 + 40) withName:@"expansionReasons"];
-    v5 = [v2 appendObject:*(a1 + 48) withName:@"urgencyReasons"];
-    v6 = [v2 appendBool:*(a1 + 58) withName:@"isProminent"];
+    v2 = [MEMORY[0x277CF0C00] builderWithObject:self];
+    [v2 appendString:*(self + 64) withName:@"identifier"];
+    v3 = [v2 appendObject:*(self + 32) withName:@"previewingReasons"];
+    v4 = [v2 appendObject:*(self + 40) withName:@"expansionReasons"];
+    v5 = [v2 appendObject:*(self + 48) withName:@"urgencyReasons"];
+    v6 = [v2 appendBool:*(self + 58) withName:@"isProminent"];
   }
 
   else
@@ -363,15 +363,15 @@ LABEL_7:
   return v2;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(void *)a1
+- (id)descriptionBuilderWithMultilinePrefix:(void *)prefix
 {
-  if (a1)
+  if (prefix)
   {
-    a1 = [(SBSystemActionCompoundPreviewAssertion *)a1 succinctDescriptionBuilder];
+    prefix = [(SBSystemActionCompoundPreviewAssertion *)prefix succinctDescriptionBuilder];
     v1 = vars8;
   }
 
-  return a1;
+  return prefix;
 }
 
 - (void)initWithIdentifier:(char *)a1 stateDidChangeBlock:eventHandlingBlock:.cold.1(char *a1)

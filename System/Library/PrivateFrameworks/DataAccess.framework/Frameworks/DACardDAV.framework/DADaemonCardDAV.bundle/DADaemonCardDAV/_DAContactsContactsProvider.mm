@@ -1,43 +1,43 @@
 @interface _DAContactsContactsProvider
-- (_DAContactsContactsProvider)initWithContactStore:(id)a3;
-- (id)contactFromItem:(id)a3;
-- (id)contactsInContainer:(id)a3;
-- (id)meContactInContainer:(id)a3;
+- (_DAContactsContactsProvider)initWithContactStore:(id)store;
+- (id)contactFromItem:(id)item;
+- (id)contactsInContainer:(id)container;
+- (id)meContactInContainer:(id)container;
 - (unint64_t)countOfContacts;
 - (unint64_t)countOfGroups;
 @end
 
 @implementation _DAContactsContactsProvider
 
-- (_DAContactsContactsProvider)initWithContactStore:(id)a3
+- (_DAContactsContactsProvider)initWithContactStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = _DAContactsContactsProvider;
   v6 = [(_DAContactsContactsProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contactStore, a3);
+    objc_storeStrong(&v6->_contactStore, store);
   }
 
   return v7;
 }
 
-- (id)contactsInContainer:(id)a3
+- (id)contactsInContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v5 = +[CardDAVVCardItemCNImplementation keysToFetch];
   v6 = [[CNContactFetchRequest alloc] initWithKeysToFetch:v5];
   [v6 setUnifyResults:0];
-  v7 = [v4 asContainer];
+  asContainer = [containerCopy asContainer];
 
-  v8 = [v7 identifier];
-  v9 = [CNContact predicateForContactsInContainerWithIdentifier:v8];
+  identifier = [asContainer identifier];
+  v9 = [CNContact predicateForContactsInContainerWithIdentifier:identifier];
   [v6 setPredicate:v9];
 
   v10 = +[NSMutableArray array];
-  v11 = [(_DAContactsContactsProvider *)self contactStore];
+  contactStore = [(_DAContactsContactsProvider *)self contactStore];
   v20 = v10;
   v21 = 0;
   v16 = _NSConcreteStackBlock;
@@ -45,7 +45,7 @@
   v18 = sub_24344;
   v19 = &unk_3CC08;
   v12 = v10;
-  [v11 enumerateContactsWithFetchRequest:v6 error:&v21 usingBlock:&v16];
+  [contactStore enumerateContactsWithFetchRequest:v6 error:&v21 usingBlock:&v16];
   v13 = v21;
 
   v14 = [v12 copy];
@@ -53,15 +53,15 @@
   return v14;
 }
 
-- (id)meContactInContainer:(id)a3
+- (id)meContactInContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v5 = +[CardDAVVCardItemCNImplementation keysToFetch];
   v6 = [[CNContactFetchRequest alloc] initWithKeysToFetch:v5];
   [v6 setUnifyResults:0];
-  v7 = [v4 asContainer];
-  v8 = [v7 meIdentifier];
-  v24 = v8;
+  asContainer = [containerCopy asContainer];
+  meIdentifier = [asContainer meIdentifier];
+  v24 = meIdentifier;
   v9 = [NSArray arrayWithObjects:&v24 count:1];
   v10 = [CNContact predicateForContactsWithIdentifiers:v9];
   [v6 setPredicate:v10];
@@ -72,14 +72,14 @@
   v21 = sub_24614;
   v22 = sub_24624;
   v23 = 0;
-  v11 = [(_DAContactsContactsProvider *)self contactStore];
+  contactStore = [(_DAContactsContactsProvider *)self contactStore];
   v16[4] = &v18;
   v17 = 0;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_2462C;
   v16[3] = &unk_3CCE0;
-  [v11 enumerateContactsWithFetchRequest:v6 error:&v17 usingBlock:v16];
+  [contactStore enumerateContactsWithFetchRequest:v6 error:&v17 usingBlock:v16];
   v12 = v17;
 
   if (v19[5])
@@ -98,23 +98,23 @@
   return v14;
 }
 
-- (id)contactFromItem:(id)a3
+- (id)contactFromItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 cardDAVRecordItem];
-  v5 = [v4 isContact];
+  itemCopy = item;
+  cardDAVRecordItem = [itemCopy cardDAVRecordItem];
+  isContact = [cardDAVRecordItem isContact];
 
-  if (v5)
+  if (isContact)
   {
-    v6 = [v3 cardDAVRecordItem];
+    cardDAVRecordItem2 = [itemCopy cardDAVRecordItem];
   }
 
   else
   {
-    v6 = 0;
+    cardDAVRecordItem2 = 0;
   }
 
-  return v6;
+  return cardDAVRecordItem2;
 }
 
 - (unint64_t)countOfContacts
@@ -126,7 +126,7 @@
 
   [v5 setUnifyResults:0];
   v6 = +[NSMutableArray array];
-  v7 = [(_DAContactsContactsProvider *)self contactStore];
+  contactStore = [(_DAContactsContactsProvider *)self contactStore];
   v16 = v6;
   v17 = 0;
   v12 = _NSConcreteStackBlock;
@@ -134,7 +134,7 @@
   v14 = sub_24850;
   v15 = &unk_3CC08;
   v8 = v6;
-  [v7 enumerateContactsWithFetchRequest:v5 error:&v17 usingBlock:&v12];
+  [contactStore enumerateContactsWithFetchRequest:v5 error:&v17 usingBlock:&v12];
   v9 = v17;
 
   v10 = [v8 count];
@@ -143,8 +143,8 @@
 
 - (unint64_t)countOfGroups
 {
-  v2 = [(_DAContactsContactsProvider *)self contactStore];
-  v3 = [v2 groupsMatchingPredicate:0 error:0];
+  contactStore = [(_DAContactsContactsProvider *)self contactStore];
+  v3 = [contactStore groupsMatchingPredicate:0 error:0];
 
   v4 = [v3 count];
   return v4;

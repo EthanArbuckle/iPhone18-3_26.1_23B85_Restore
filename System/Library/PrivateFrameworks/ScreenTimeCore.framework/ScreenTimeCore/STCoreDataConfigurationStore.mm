@@ -1,126 +1,126 @@
 @interface STCoreDataConfigurationStore
 - (STConfigurationStoreChangeObserverDelegate)delegate;
-- (STCoreDataConfigurationStore)initWithObserver:(id)a3 transformer:(id)a4 reverseTransformer:(id)a5;
-- (id)communicationConfigurationOfChildrenByUserIDForTargetableFamilyMembers:(id)a3;
-- (id)downtimeConfigurationOfChildrenByUserIDForTargetableFamilyMembers:(id)a3;
+- (STCoreDataConfigurationStore)initWithObserver:(id)observer transformer:(id)transformer reverseTransformer:(id)reverseTransformer;
+- (id)communicationConfigurationOfChildrenByUserIDForTargetableFamilyMembers:(id)members;
+- (id)downtimeConfigurationOfChildrenByUserIDForTargetableFamilyMembers:(id)members;
 - (id)readCommunicationConfigurationForLocalUser;
-- (id)readCommunicationConfigurationForUserID:(id)a3;
-- (id)readConfigurationChangesOfType:(int64_t)a3 userID:(id)a4;
-- (id)readConfigurationRelatedToConfiguration:(id)a3;
-- (id)readDowntimeConfigurationForUserID:(id)a3;
-- (id)readSetupConfigurationForUserID:(id)a3 familyProvider:(id)a4;
-- (id)toggleOnDemandDowntimeConfigurationForUserID:(id)a3;
-- (id)writeConfigurationChange:(id)a3;
-- (id)writeSetupConfiguration:(id)a3;
-- (void)observer:(id)a3 didObserveCoreDataChanges:(id)a4;
+- (id)readCommunicationConfigurationForUserID:(id)d;
+- (id)readConfigurationChangesOfType:(int64_t)type userID:(id)d;
+- (id)readConfigurationRelatedToConfiguration:(id)configuration;
+- (id)readDowntimeConfigurationForUserID:(id)d;
+- (id)readSetupConfigurationForUserID:(id)d familyProvider:(id)provider;
+- (id)toggleOnDemandDowntimeConfigurationForUserID:(id)d;
+- (id)writeConfigurationChange:(id)change;
+- (id)writeSetupConfiguration:(id)configuration;
+- (void)observer:(id)observer didObserveCoreDataChanges:(id)changes;
 @end
 
 @implementation STCoreDataConfigurationStore
 
 - (id)readCommunicationConfigurationForLocalUser
 {
-  v2 = [(STCoreDataConfigurationStore *)self transformer];
-  v3 = [v2 communicationConfigurationForLocalUser];
+  transformer = [(STCoreDataConfigurationStore *)self transformer];
+  communicationConfigurationForLocalUser = [transformer communicationConfigurationForLocalUser];
 
-  return v3;
+  return communicationConfigurationForLocalUser;
 }
 
-- (STCoreDataConfigurationStore)initWithObserver:(id)a3 transformer:(id)a4 reverseTransformer:(id)a5
+- (STCoreDataConfigurationStore)initWithObserver:(id)observer transformer:(id)transformer reverseTransformer:(id)reverseTransformer
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  observerCopy = observer;
+  transformerCopy = transformer;
+  reverseTransformerCopy = reverseTransformer;
   v21.receiver = self;
   v21.super_class = STCoreDataConfigurationStore;
   v11 = [(STCoreDataConfigurationStore *)&v21 init];
   observer = v11->_observer;
-  v11->_observer = v8;
-  v13 = v8;
+  v11->_observer = observerCopy;
+  v13 = observerCopy;
 
   transformer = v11->_transformer;
-  v11->_transformer = v9;
-  v15 = v9;
+  v11->_transformer = transformerCopy;
+  v15 = transformerCopy;
 
   reverseTransformer = v11->_reverseTransformer;
-  v11->_reverseTransformer = v10;
-  v17 = v10;
+  v11->_reverseTransformer = reverseTransformerCopy;
+  v17 = reverseTransformerCopy;
 
   v18 = v11->_observer;
-  v19 = [(STCoreDataConfigurationTransformer *)v15 configurationObservationFiltersByTriggerPredicate];
-  [(STCoreDataObserver *)v18 addObservationFiltersByTriggerPredicate:v19 forDelegate:v11];
+  configurationObservationFiltersByTriggerPredicate = [(STCoreDataConfigurationTransformer *)v15 configurationObservationFiltersByTriggerPredicate];
+  [(STCoreDataObserver *)v18 addObservationFiltersByTriggerPredicate:configurationObservationFiltersByTriggerPredicate forDelegate:v11];
 
   return v11;
 }
 
-- (id)readConfigurationRelatedToConfiguration:(id)a3
+- (id)readConfigurationRelatedToConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(STCoreDataConfigurationStore *)self transformer];
-  v6 = [v5 configurationChangeForRelatedConfigurationChange:v4];
+  configurationCopy = configuration;
+  transformer = [(STCoreDataConfigurationStore *)self transformer];
+  v6 = [transformer configurationChangeForRelatedConfigurationChange:configurationCopy];
 
   return v6;
 }
 
-- (id)readConfigurationChangesOfType:(int64_t)a3 userID:(id)a4
+- (id)readConfigurationChangesOfType:(int64_t)type userID:(id)d
 {
-  v6 = a4;
-  v7 = [(STCoreDataConfigurationStore *)self transformer];
-  v8 = [v7 configurationChangesOfType:a3 userID:v6];
+  dCopy = d;
+  transformer = [(STCoreDataConfigurationStore *)self transformer];
+  v8 = [transformer configurationChangesOfType:type userID:dCopy];
 
   return v8;
 }
 
-- (id)readSetupConfigurationForUserID:(id)a3 familyProvider:(id)a4
+- (id)readSetupConfigurationForUserID:(id)d familyProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STCoreDataConfigurationStore *)self readConfigurationChangesOfType:1 userID:v6];
+  dCopy = d;
+  providerCopy = provider;
+  v8 = [(STCoreDataConfigurationStore *)self readConfigurationChangesOfType:1 userID:dCopy];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100025AF0;
   v16[3] = &unk_1001A3810;
   v16[4] = self;
-  v17 = v7;
-  v9 = v7;
+  v17 = providerCopy;
+  v9 = providerCopy;
   v10 = [v8 flatMap:v16];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100025B68;
   v14[3] = &unk_1001A3838;
-  v15 = v6;
-  v11 = v6;
+  v15 = dCopy;
+  v11 = dCopy;
   v12 = [v10 mapError:v14];
 
   return v12;
 }
 
-- (id)readCommunicationConfigurationForUserID:(id)a3
+- (id)readCommunicationConfigurationForUserID:(id)d
 {
-  v4 = a3;
-  v5 = [(STCoreDataConfigurationStore *)self transformer];
-  v6 = [v5 communicationConfigurationForUserID:v4];
+  dCopy = d;
+  transformer = [(STCoreDataConfigurationStore *)self transformer];
+  v6 = [transformer communicationConfigurationForUserID:dCopy];
 
   return v6;
 }
 
-- (id)readDowntimeConfigurationForUserID:(id)a3
+- (id)readDowntimeConfigurationForUserID:(id)d
 {
-  v4 = a3;
-  v5 = [(STCoreDataConfigurationStore *)self transformer];
-  v6 = [v5 downtimeConfigurationForUserID:v4];
+  dCopy = d;
+  transformer = [(STCoreDataConfigurationStore *)self transformer];
+  v6 = [transformer downtimeConfigurationForUserID:dCopy];
 
   return v6;
 }
 
-- (id)communicationConfigurationOfChildrenByUserIDForTargetableFamilyMembers:(id)a3
+- (id)communicationConfigurationOfChildrenByUserIDForTargetableFamilyMembers:(id)members
 {
-  v4 = a3;
-  v5 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  membersCopy = members;
+  v5 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(membersCopy, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v4;
+  v6 = membersCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -138,8 +138,8 @@
         v11 = *(*(&v21 + 1) + 8 * i);
         if (([v11 isParent] & 1) == 0)
         {
-          v12 = [v11 dsid];
-          v13 = [[STUserID alloc] initWithDSID:v12];
+          dsid = [v11 dsid];
+          v13 = [[STUserID alloc] initWithDSID:dsid];
           v14 = [(STCoreDataConfigurationStore *)self readCommunicationConfigurationForUserID:v13];
           v18[0] = _NSConcreteStackBlock;
           v18[1] = 3221225472;
@@ -163,15 +163,15 @@
   return v16;
 }
 
-- (id)downtimeConfigurationOfChildrenByUserIDForTargetableFamilyMembers:(id)a3
+- (id)downtimeConfigurationOfChildrenByUserIDForTargetableFamilyMembers:(id)members
 {
-  v4 = a3;
-  v5 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  membersCopy = members;
+  v5 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(membersCopy, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v4;
+  v6 = membersCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -190,8 +190,8 @@
         if (([v11 isParent] & 1) == 0)
         {
           v12 = [STUserID alloc];
-          v13 = [v11 dsid];
-          v14 = [v12 initWithDSID:v13];
+          dsid = [v11 dsid];
+          v14 = [v12 initWithDSID:dsid];
 
           v15 = [(STCoreDataConfigurationStore *)self readDowntimeConfigurationForUserID:v14];
           v18[0] = _NSConcreteStackBlock;
@@ -214,42 +214,42 @@
   return v5;
 }
 
-- (id)writeConfigurationChange:(id)a3
+- (id)writeConfigurationChange:(id)change
 {
-  v4 = a3;
-  v5 = [(STCoreDataConfigurationStore *)self reverseTransformer];
-  v6 = [v5 handleConfigurationChange:v4];
+  changeCopy = change;
+  reverseTransformer = [(STCoreDataConfigurationStore *)self reverseTransformer];
+  v6 = [reverseTransformer handleConfigurationChange:changeCopy];
 
   return v6;
 }
 
-- (id)writeSetupConfiguration:(id)a3
+- (id)writeSetupConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(STCoreDataConfigurationStore *)self reverseTransformer];
-  v6 = [v5 handleSetupConfiguration:v4];
+  configurationCopy = configuration;
+  reverseTransformer = [(STCoreDataConfigurationStore *)self reverseTransformer];
+  v6 = [reverseTransformer handleSetupConfiguration:configurationCopy];
 
   return v6;
 }
 
-- (id)toggleOnDemandDowntimeConfigurationForUserID:(id)a3
+- (id)toggleOnDemandDowntimeConfigurationForUserID:(id)d
 {
-  v4 = a3;
-  v5 = [(STCoreDataConfigurationStore *)self reverseTransformer];
-  v6 = [v5 handleOnDemandDowntimeToggleForUserID:v4];
+  dCopy = d;
+  reverseTransformer = [(STCoreDataConfigurationStore *)self reverseTransformer];
+  v6 = [reverseTransformer handleOnDemandDowntimeToggleForUserID:dCopy];
 
   return v6;
 }
 
-- (void)observer:(id)a3 didObserveCoreDataChanges:(id)a4
+- (void)observer:(id)observer didObserveCoreDataChanges:(id)changes
 {
-  v18 = a3;
+  observerCopy = observer;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  changesCopy = changes;
+  v7 = [changesCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -260,14 +260,14 @@
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(changesCopy);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
-        v13 = [(STCoreDataConfigurationStore *)self transformer];
+        transformer = [(STCoreDataConfigurationStore *)self transformer];
         v19 = 0;
-        v14 = [v13 configurationChangeForCoreDataChange:v11 error:&v19];
+        v14 = [transformer configurationChangeForCoreDataChange:v11 error:&v19];
         v15 = v19;
 
         if (!v14)
@@ -282,13 +282,13 @@
           goto LABEL_13;
         }
 
-        v16 = [(STCoreDataConfigurationStore *)self delegate];
-        [v16 changeObserver:self didObserveConfigurationChange:v14];
+        delegate = [(STCoreDataConfigurationStore *)self delegate];
+        [delegate changeObserver:self didObserveConfigurationChange:v14];
 
         objc_autoreleasePoolPop(v12);
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v8 = [changesCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v8)
       {
         continue;

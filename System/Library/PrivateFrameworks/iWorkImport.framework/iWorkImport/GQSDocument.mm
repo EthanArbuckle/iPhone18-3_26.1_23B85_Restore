@@ -1,24 +1,24 @@
 @interface GQSDocument
-- (GQSDocument)initWithRoot:(id)a3 processor:(id)a4 archive:(id)a5 outputBundle:(id)a6 fileURL:(__CFURL *)a7;
-- (GQSDocument)initWithRoot:(id)a3 processor:(id)a4 bundleUrl:(__CFURL *)a5 archive:(id)a6 outputBundle:(id)a7;
-- (GQSDocument)initWithRoot:(id)a3 processor:(id)a4 outputBundle:(id)a5 fileURL:(__CFURL *)a6;
-- (__CFString)uriForBundleResource:(__CFString *)a3 ofType:(__CFString *)a4;
-- (__CFURL)createUriToDocumentBundleResource:(__CFString *)a3;
-- (__CFURL)createUrlToAppBundleResource:(__CFString *)a3 processorBundle:(__CFBundle *)a4 skipCachingPDFAndNoExtentionResources:(BOOL *)a5;
+- (GQSDocument)initWithRoot:(id)root processor:(id)processor archive:(id)archive outputBundle:(id)bundle fileURL:(__CFURL *)l;
+- (GQSDocument)initWithRoot:(id)root processor:(id)processor bundleUrl:(__CFURL *)url archive:(id)archive outputBundle:(id)bundle;
+- (GQSDocument)initWithRoot:(id)root processor:(id)processor outputBundle:(id)bundle fileURL:(__CFURL *)l;
+- (__CFString)uriForBundleResource:(__CFString *)resource ofType:(__CFString *)type;
+- (__CFURL)createUriToDocumentBundleResource:(__CFString *)resource;
+- (__CFURL)createUrlToAppBundleResource:(__CFString *)resource processorBundle:(__CFBundle *)bundle skipCachingPDFAndNoExtentionResources:(BOOL *)resources;
 - (id)peekObject;
 - (id)popRetainedObject;
-- (id)topObjectOfClass:(Class)a3;
-- (void)addWrapPoint:(id)a3;
+- (id)topObjectOfClass:(Class)class;
+- (void)addWrapPoint:(id)point;
 - (void)clearWrapPoints;
 - (void)dealloc;
-- (void)setGeneratorState:(id)a3;
-- (void)setStylesheet:(id)a3;
-- (void)setTableState:(id)a3;
+- (void)setGeneratorState:(id)state;
+- (void)setStylesheet:(id)stylesheet;
+- (void)setTableState:(id)state;
 @end
 
 @implementation GQSDocument
 
-- (GQSDocument)initWithRoot:(id)a3 processor:(id)a4 outputBundle:(id)a5 fileURL:(__CFURL *)a6
+- (GQSDocument)initWithRoot:(id)root processor:(id)processor outputBundle:(id)bundle fileURL:(__CFURL *)l
 {
   v12.receiver = self;
   v12.super_class = GQSDocument;
@@ -26,9 +26,9 @@
   v10 = v9;
   if (v9)
   {
-    v9->mProcessor = a4;
-    v9->mRoot = a3;
-    v10->mOutputBundle = a5;
+    v9->mProcessor = processor;
+    v9->mRoot = root;
+    v10->mOutputBundle = bundle;
     v10->mObjectStack = CFArrayCreateMutable(0, 0, &kCFTypeArrayCallBacks);
     operator new();
   }
@@ -36,33 +36,33 @@
   return 0;
 }
 
-- (GQSDocument)initWithRoot:(id)a3 processor:(id)a4 bundleUrl:(__CFURL *)a5 archive:(id)a6 outputBundle:(id)a7
+- (GQSDocument)initWithRoot:(id)root processor:(id)processor bundleUrl:(__CFURL *)url archive:(id)archive outputBundle:(id)bundle
 {
-  v9 = [(GQSDocument *)self initWithRoot:a3 processor:a4 outputBundle:a7 fileURL:a5];
+  v9 = [(GQSDocument *)self initWithRoot:root processor:processor outputBundle:bundle fileURL:url];
   v10 = v9;
   if (v9)
   {
-    if (a5)
+    if (url)
     {
-      v9->mBundleUrl = a5;
-      CFRetain(a5);
+      v9->mBundleUrl = url;
+      CFRetain(url);
     }
 
-    if (a6)
+    if (archive)
     {
-      v10->mArchive = a6;
+      v10->mArchive = archive;
     }
   }
 
   return v10;
 }
 
-- (GQSDocument)initWithRoot:(id)a3 processor:(id)a4 archive:(id)a5 outputBundle:(id)a6 fileURL:(__CFURL *)a7
+- (GQSDocument)initWithRoot:(id)root processor:(id)processor archive:(id)archive outputBundle:(id)bundle fileURL:(__CFURL *)l
 {
-  v8 = [(GQSDocument *)self initWithRoot:a3 processor:a4 outputBundle:a6 fileURL:a7];
+  v8 = [(GQSDocument *)self initWithRoot:root processor:processor outputBundle:bundle fileURL:l];
   if (v8)
   {
-    v8->mArchive = a5;
+    v8->mArchive = archive;
   }
 
   return v8;
@@ -107,22 +107,22 @@
   [(GQSDocument *)&v8 dealloc];
 }
 
-- (__CFURL)createUrlToAppBundleResource:(__CFString *)a3 processorBundle:(__CFBundle *)a4 skipCachingPDFAndNoExtentionResources:(BOOL *)a5
+- (__CFURL)createUrlToAppBundleResource:(__CFString *)resource processorBundle:(__CFBundle *)bundle skipCachingPDFAndNoExtentionResources:(BOOL *)resources
 {
   v16 = 0;
-  v7 = [(GQDRoot *)self->mRoot createUrlToAppBundleResource:a3 processorBundle:a4 fileExists:&v16 fileUrl:self->mDocumentUrl];
+  v7 = [(GQDRoot *)self->mRoot createUrlToAppBundleResource:resource processorBundle:bundle fileExists:&v16 fileUrl:self->mDocumentUrl];
   v8 = v7;
   if (v16 == 1)
   {
-    if (a5)
+    if (resources)
     {
       v9 = CFURLCopyPathExtension(v7);
       if (v9)
       {
         v10 = v9;
-        *a5 = CFStringCompare(v9, @"pdf", 1uLL) == kCFCompareEqualTo;
+        *resources = CFStringCompare(v9, @"pdf", 1uLL) == kCFCompareEqualTo;
         CFRelease(v10);
-        if (*a5)
+        if (*resources)
         {
           return v8;
         }
@@ -130,7 +130,7 @@
 
       else
       {
-        *a5 = 0;
+        *resources = 0;
       }
     }
 
@@ -163,7 +163,7 @@
   return v8;
 }
 
-- (__CFURL)createUriToDocumentBundleResource:(__CFString *)a3
+- (__CFURL)createUriToDocumentBundleResource:(__CFString *)resource
 {
   mBundleUrl = self->mBundleUrl;
   mArchive = self->mArchive;
@@ -175,24 +175,24 @@
     }
 
 LABEL_9:
-    v15 = [(GQUOutputBundle *)self->mOutputBundle createUriForResource:a3];
+    v15 = [(GQUOutputBundle *)self->mOutputBundle createUriForResource:resource];
     v16 = CFURLCreateWithString(0, v15, 0);
     CFRelease(v15);
-    v17 = [(SFUZipArchive *)self->mArchive entryWithName:a3];
+    v17 = [(SFUZipArchive *)self->mArchive entryWithName:resource];
     if (v17)
     {
       if ([(GQPProcessor *)self->mProcessor cryptoKey])
       {
-        v18 = [(SFUZipArchive *)self->mArchive entryWithName:a3];
+        v18 = [(SFUZipArchive *)self->mArchive entryWithName:resource];
         v19 = [[SFUFileDataRepresentation alloc] initWithInputStream:objc_msgSend(v18 cryptoKey:"inputStream") dataLength:{-[GQPProcessor cryptoKey](self->mProcessor, "cryptoKey"), objc_msgSend(v18, "dataLength")}];
         v20 = objc_alloc_init(NSMutableData);
         [v19 readIntoData:v20];
-        [(GQUOutputBundle *)self->mOutputBundle setData:v20 mimeType:0 forNamedResource:a3];
+        [(GQUOutputBundle *)self->mOutputBundle setData:v20 mimeType:0 forNamedResource:resource];
       }
 
       else
       {
-        -[GQUOutputBundle setData:mimeType:forNamedResource:](self->mOutputBundle, "setData:mimeType:forNamedResource:", [v17 data], 0, a3);
+        -[GQUOutputBundle setData:mimeType:forNamedResource:](self->mOutputBundle, "setData:mimeType:forNamedResource:", [v17 data], 0, resource);
       }
     }
 
@@ -204,7 +204,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v7 = CFURLCreateCopyAppendingPathComponent(0, mBundleUrl, a3, 0);
+  v7 = CFURLCreateCopyAppendingPathComponent(0, mBundleUrl, resource, 0);
   v8 = CFURLCopyFileSystemPath(v7, kCFURLPOSIXPathStyle);
   CFRelease(v7);
   v9 = [[NSMutableData alloc] initWithContentsOfFile:v8];
@@ -220,10 +220,10 @@ LABEL_9:
   CFRelease(v8);
   if (v9)
   {
-    [(GQUOutputBundle *)self->mOutputBundle setData:v9 mimeType:0 forNamedResource:a3];
+    [(GQUOutputBundle *)self->mOutputBundle setData:v9 mimeType:0 forNamedResource:resource];
   }
 
-  v12 = [(GQUOutputBundle *)self->mOutputBundle createUriForResource:a3];
+  v12 = [(GQUOutputBundle *)self->mOutputBundle createUriForResource:resource];
   v13 = CFURLCreateWithString(0, v12, 0);
   CFRelease(v12);
   return v13;
@@ -243,7 +243,7 @@ LABEL_9:
   return CFArrayGetValueAtIndex(mObjectStack, v4);
 }
 
-- (id)topObjectOfClass:(Class)a3
+- (id)topObjectOfClass:(Class)class
 {
   v4 = CFArrayGetCount(self->mObjectStack) - 1;
   while (v4 != -1)
@@ -273,26 +273,26 @@ LABEL_9:
   return ValueAtIndex;
 }
 
-- (void)setTableState:(id)a3
+- (void)setTableState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
 
-  self->mTableState = a3;
+  self->mTableState = state;
 }
 
-- (void)setGeneratorState:(id)a3
+- (void)setGeneratorState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
 
-  self->mGeneratorState = a3;
+  self->mGeneratorState = state;
 }
 
-- (void)addWrapPoint:(id)a3
+- (void)addWrapPoint:(id)point
 {
   mWrapPoints = self->mWrapPoints;
-  v5 = a3;
-  v4 = a3;
-  sub_9828(mWrapPoints, &v5);
+  pointCopy = point;
+  pointCopy2 = point;
+  sub_9828(mWrapPoints, &pointCopy);
 }
 
 - (void)clearWrapPoints
@@ -304,16 +304,16 @@ LABEL_9:
   *(mWrapPoints + 1) = 0;
 }
 
-- (__CFString)uriForBundleResource:(__CFString *)a3 ofType:(__CFString *)a4
+- (__CFString)uriForBundleResource:(__CFString *)resource ofType:(__CFString *)type
 {
   value = 0;
-  v7 = CFStringCreateWithFormat(0, 0, @"%@.%@", a3, a4);
+  v7 = CFStringCreateWithFormat(0, 0, @"%@.%@", resource, type);
   if (!CFDictionaryGetValueIfPresent(self->mBundleResourceUriMap, v7, &value))
   {
-    v8 = [[NSBundle bundleForClass:?]ofType:"pathForResource:ofType:", a3, a4];
-    if (v8)
+    type = [[NSBundle bundleForClass:?]ofType:"pathForResource:ofType:", resource, type];
+    if (type)
     {
-      v9 = v8;
+      v9 = type;
       v10 = CFUUIDCreate(0);
       v11 = CFUUIDCreateString(0, v10);
       CFRelease(v10);
@@ -333,11 +333,11 @@ LABEL_9:
   return value;
 }
 
-- (void)setStylesheet:(id)a3
+- (void)setStylesheet:(id)stylesheet
 {
-  v5 = a3;
+  stylesheetCopy = stylesheet;
 
-  self->mStylesheet = a3;
+  self->mStylesheet = stylesheet;
 }
 
 @end

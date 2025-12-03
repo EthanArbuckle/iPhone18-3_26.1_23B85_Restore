@@ -1,21 +1,21 @@
 @interface VUIOfferView
-- (CGSize)computeSizeThatFits:(CGSize)a3;
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)computeSizeThatFits:(CGSize)fits;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 - (UIEdgeInsets)padding;
-- (double)_chinHeightForSize:(CGSize)a3;
-- (void)layoutOfferSubviewsWithSize:(CGSize)a3;
+- (double)_chinHeightForSize:(CGSize)size;
+- (void)layoutOfferSubviewsWithSize:(CGSize)size;
 - (void)prepareForCellReuse;
-- (void)setAppIconView:(id)a3;
-- (void)setChannelImageBackgroundView:(id)a3;
-- (void)setChannelNameLabel:(id)a3;
-- (void)setImageView:(id)a3;
-- (void)setLogoView:(id)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4 withAnimationCoordinator:(id)a5;
-- (void)setSemanticContentAttribute:(int64_t)a3;
-- (void)setSubtitleLabel:(id)a3;
-- (void)setTextLabel:(id)a3;
-- (void)setTitleLabel:(id)a3;
-- (void)setVersionsButton:(id)a3;
+- (void)setAppIconView:(id)view;
+- (void)setChannelImageBackgroundView:(id)view;
+- (void)setChannelNameLabel:(id)label;
+- (void)setImageView:(id)view;
+- (void)setLogoView:(id)view;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated withAnimationCoordinator:(id)coordinator;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
+- (void)setSubtitleLabel:(id)label;
+- (void)setTextLabel:(id)label;
+- (void)setTitleLabel:(id)label;
+- (void)setVersionsButton:(id)button;
 @end
 
 @implementation VUIOfferView
@@ -43,137 +43,137 @@ void __35__VUIOfferView_prepareForCellReuse__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setChannelImageBackgroundView:(id)a3
+- (void)setChannelImageBackgroundView:(id)view
 {
-  v5 = a3;
-  [(VUIOfferView *)self vui_addSubview:v5 oldView:self->_channelImageBackgroundView];
-  if (self->_channelImageBackgroundView != v5)
+  viewCopy = view;
+  [(VUIOfferView *)self vui_addSubview:viewCopy oldView:self->_channelImageBackgroundView];
+  if (self->_channelImageBackgroundView != viewCopy)
   {
-    objc_storeStrong(&self->_channelImageBackgroundView, a3);
+    objc_storeStrong(&self->_channelImageBackgroundView, view);
   }
 
   [(VUIOfferView *)self vui_setNeedsLayout];
 }
 
-- (void)setChannelNameLabel:(id)a3
+- (void)setChannelNameLabel:(id)label
 {
-  v5 = a3;
-  [(VUIOfferView *)self vui_addSubview:v5 oldView:self->_channelNameLabel];
-  if (self->_channelNameLabel != v5)
+  labelCopy = label;
+  [(VUIOfferView *)self vui_addSubview:labelCopy oldView:self->_channelNameLabel];
+  if (self->_channelNameLabel != labelCopy)
   {
-    objc_storeStrong(&self->_channelNameLabel, a3);
+    objc_storeStrong(&self->_channelNameLabel, label);
   }
 
   [(VUIOfferView *)self vui_setNeedsLayout];
 }
 
-- (void)setTitleLabel:(id)a3
+- (void)setTitleLabel:(id)label
 {
-  v5 = a3;
-  [(VUIOfferView *)self vui_addSubview:v5 oldView:self->_titleLabel];
-  if (self->_titleLabel != v5)
+  labelCopy = label;
+  [(VUIOfferView *)self vui_addSubview:labelCopy oldView:self->_titleLabel];
+  if (self->_titleLabel != labelCopy)
   {
-    objc_storeStrong(&self->_titleLabel, a3);
+    objc_storeStrong(&self->_titleLabel, label);
   }
 
   [(VUIOfferView *)self vui_setNeedsLayout];
 }
 
-- (void)setSubtitleLabel:(id)a3
+- (void)setSubtitleLabel:(id)label
 {
-  v5 = a3;
-  [(VUIOfferView *)self vui_addSubview:v5 oldView:self->_subtitleLabel];
-  if (self->_subtitleLabel != v5)
+  labelCopy = label;
+  [(VUIOfferView *)self vui_addSubview:labelCopy oldView:self->_subtitleLabel];
+  if (self->_subtitleLabel != labelCopy)
   {
-    objc_storeStrong(&self->_subtitleLabel, a3);
+    objc_storeStrong(&self->_subtitleLabel, label);
   }
 
   [(VUIOfferView *)self vui_setNeedsLayout];
 }
 
-- (void)setTextLabel:(id)a3
+- (void)setTextLabel:(id)label
 {
-  v5 = a3;
-  [(VUIOfferView *)self vui_addSubview:v5 oldView:self->_textLabel];
-  if (self->_textLabel != v5)
+  labelCopy = label;
+  [(VUIOfferView *)self vui_addSubview:labelCopy oldView:self->_textLabel];
+  if (self->_textLabel != labelCopy)
   {
-    objc_storeStrong(&self->_textLabel, a3);
+    objc_storeStrong(&self->_textLabel, label);
   }
 
   [(VUIOfferView *)self vui_setNeedsLayout];
 }
 
-- (void)setImageView:(id)a3
+- (void)setImageView:(id)view
 {
-  v5 = a3;
-  [(VUIOfferView *)self vui_addSubview:v5 oldView:self->_imageView];
-  if (self->_imageView != v5)
+  viewCopy = view;
+  [(VUIOfferView *)self vui_addSubview:viewCopy oldView:self->_imageView];
+  if (self->_imageView != viewCopy)
   {
-    objc_storeStrong(&self->_imageView, a3);
+    objc_storeStrong(&self->_imageView, view);
   }
 
   [(VUIOfferView *)self vui_setNeedsLayout];
 }
 
-- (void)setLogoView:(id)a3
+- (void)setLogoView:(id)view
 {
-  v5 = a3;
-  [(VUIOfferView *)self vui_addSubview:v5 oldView:self->_logoView];
-  if (self->_logoView != v5)
+  viewCopy = view;
+  [(VUIOfferView *)self vui_addSubview:viewCopy oldView:self->_logoView];
+  if (self->_logoView != viewCopy)
   {
-    objc_storeStrong(&self->_logoView, a3);
+    objc_storeStrong(&self->_logoView, view);
   }
 
   [(VUIOfferView *)self vui_setNeedsLayout];
 }
 
-- (void)setAppIconView:(id)a3
+- (void)setAppIconView:(id)view
 {
-  v5 = a3;
-  [(VUIOfferView *)self vui_addSubview:v5 oldView:self->_appIconView];
-  if (self->_appIconView != v5)
+  viewCopy = view;
+  [(VUIOfferView *)self vui_addSubview:viewCopy oldView:self->_appIconView];
+  if (self->_appIconView != viewCopy)
   {
-    objc_storeStrong(&self->_appIconView, a3);
+    objc_storeStrong(&self->_appIconView, view);
   }
 
   [(VUIOfferView *)self vui_setNeedsLayout];
 }
 
-- (void)setVersionsButton:(id)a3
+- (void)setVersionsButton:(id)button
 {
-  v5 = a3;
-  [(VUIOfferView *)self vui_addSubview:v5 oldView:self->_versionsButton];
-  if (self->_versionsButton != v5)
+  buttonCopy = button;
+  [(VUIOfferView *)self vui_addSubview:buttonCopy oldView:self->_versionsButton];
+  if (self->_versionsButton != buttonCopy)
   {
-    objc_storeStrong(&self->_versionsButton, a3);
+    objc_storeStrong(&self->_versionsButton, button);
   }
 
   [(VUIOfferView *)self vui_setNeedsLayout];
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v5.receiver = self;
   v5.super_class = VUIOfferView;
   [(VUIOfferView *)&v5 setSemanticContentAttribute:?];
-  [(VUILabel *)self->_textLabel setSemanticContentAttribute:a3];
-  [(VUILabel *)self->_subtitleLabel setSemanticContentAttribute:a3];
-  [(VUILabel *)self->_titleLabel setSemanticContentAttribute:a3];
-  [(VUILabel *)self->_channelNameLabel setSemanticContentAttribute:a3];
-  [(UIView *)self->_versionsButton setSemanticContentAttribute:a3];
+  [(VUILabel *)self->_textLabel setSemanticContentAttribute:attribute];
+  [(VUILabel *)self->_subtitleLabel setSemanticContentAttribute:attribute];
+  [(VUILabel *)self->_titleLabel setSemanticContentAttribute:attribute];
+  [(VUILabel *)self->_channelNameLabel setSemanticContentAttribute:attribute];
+  [(UIView *)self->_versionsButton setSemanticContentAttribute:attribute];
 }
 
-- (double)_chinHeightForSize:(CGSize)a3
+- (double)_chinHeightForSize:(CGSize)size
 {
-  width = a3.width;
-  [(VUIOfferView *)self padding:a3.width];
+  width = size.width;
+  [(VUIOfferView *)self padding:size.width];
   v7 = width - v5 - v6;
   titleLabel = self->_titleLabel;
   if (titleLabel)
   {
     [(UIView *)titleLabel vui_sizeThatFits:v7, 0.0];
-    v9 = [(VUILabel *)self->_titleLabel textLayout];
-    [v9 margin];
+    textLayout = [(VUILabel *)self->_titleLabel textLayout];
+    [textLayout margin];
     v11 = v10;
 
     [(VUILabel *)self->_titleLabel topMarginWithBaselineMargin:v11];
@@ -192,8 +192,8 @@ void __35__VUIOfferView_prepareForCellReuse__block_invoke(uint64_t a1, void *a2)
   textLabel = self->_textLabel;
   if (textLabel)
   {
-    v18 = [(VUILabel *)textLabel textLayout];
-    [v18 margin];
+    textLayout2 = [(VUILabel *)textLabel textLayout];
+    [textLayout2 margin];
     v20 = v19;
 
     [(UIView *)self->_textLabel vui_sizeThatFits:v7, 0.0];
@@ -217,14 +217,14 @@ void __35__VUIOfferView_prepareForCellReuse__block_invoke(uint64_t a1, void *a2)
   subtitleLabel = self->_subtitleLabel;
   if (subtitleLabel)
   {
-    v30 = [(VUILabel *)subtitleLabel vuiText];
-    v31 = [v30 length];
+    vuiText = [(VUILabel *)subtitleLabel vuiText];
+    v31 = [vuiText length];
 
     if (v31)
     {
       [(UIView *)self->_subtitleLabel vui_sizeThatFits:v7, 0.0];
-      v32 = [(VUILabel *)self->_subtitleLabel textLayout];
-      [v32 margin];
+      textLayout3 = [(VUILabel *)self->_subtitleLabel textLayout];
+      [textLayout3 margin];
       if (!self->_textLabel)
       {
         secondLineBaselineMargin = self->_secondLineBaselineMargin;
@@ -248,12 +248,12 @@ void __35__VUIOfferView_prepareForCellReuse__block_invoke(uint64_t a1, void *a2)
     v39 = 0.0;
     if (objc_opt_isKindOfClass())
     {
-      v40 = [(UIView *)self->_versionsButton textContentView];
-      if (v40)
+      textContentView = [(UIView *)self->_versionsButton textContentView];
+      if (textContentView)
       {
-        v41 = v40;
-        v42 = [v40 textLayout];
-        [v42 margin];
+        v41 = textContentView;
+        textLayout4 = [textContentView textLayout];
+        [textLayout4 margin];
         v39 = v43;
       }
     }
@@ -294,16 +294,16 @@ void __35__VUIOfferView_prepareForCellReuse__block_invoke(uint64_t a1, void *a2)
   return v50;
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  if (a4)
+  if (only)
   {
-    [(VUIOfferView *)self computeSizeThatFits:a3.width, a3.height];
+    [(VUIOfferView *)self computeSizeThatFits:subviews.width, subviews.height];
   }
 
   else
   {
-    [(VUIOfferView *)self layoutOfferSubviewsWithSize:a3.width, a3.height];
+    [(VUIOfferView *)self layoutOfferSubviewsWithSize:subviews.width, subviews.height];
     v4 = *MEMORY[0x1E695F060];
     v5 = *(MEMORY[0x1E695F060] + 8);
   }
@@ -313,10 +313,10 @@ void __35__VUIOfferView_prepareForCellReuse__block_invoke(uint64_t a1, void *a2)
   return result;
 }
 
-- (void)layoutOfferSubviewsWithSize:(CGSize)a3
+- (void)layoutOfferSubviewsWithSize:(CGSize)size
 {
-  width = a3.width;
-  v5 = [(VUIOfferView *)self vuiIsRTL:a3.width];
+  width = size.width;
+  v5 = [(VUIOfferView *)self vuiIsRTL:size.width];
   [(VUIOfferView *)self padding];
   v7 = v6;
   v9 = v8;
@@ -331,8 +331,8 @@ void __35__VUIOfferView_prepareForCellReuse__block_invoke(uint64_t a1, void *a2)
     {
       [(UIView *)channelImageBackgroundView setFrame:0.0, 0.0, width, v11];
       v14 = self->_channelImageBackgroundView;
-      v15 = [MEMORY[0x1E69DC888] whiteColor];
-      [(UIView *)v14 setVuiBackgroundColor:v15];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [(UIView *)v14 setVuiBackgroundColor:whiteColor];
     }
   }
 
@@ -343,8 +343,8 @@ void __35__VUIOfferView_prepareForCellReuse__block_invoke(uint64_t a1, void *a2)
   {
     [(UIView *)channelNameLabel vui_sizeThatFits:v16, 0.0];
     v19 = v18;
-    v20 = [(VUILabel *)self->_channelNameLabel textLayout];
-    [v20 margin];
+    textLayout = [(VUILabel *)self->_channelNameLabel textLayout];
+    [textLayout margin];
     v22 = v21;
 
     [(VUILabel *)self->_channelNameLabel topMarginWithBaselineMargin:v22];
@@ -371,8 +371,8 @@ void __35__VUIOfferView_prepareForCellReuse__block_invoke(uint64_t a1, void *a2)
     if (v26)
     {
       [(UIView *)v26 setFrame:0.0, 0.0, width, v12];
-      v27 = [MEMORY[0x1E69DC888] lightGrayColor];
-      [(UIView *)self->_channelImageBackgroundView setVuiBackgroundColor:v27];
+      lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+      [(UIView *)self->_channelImageBackgroundView setVuiBackgroundColor:lightGrayColor];
     }
 
     v28 = self->_appIconView;
@@ -424,8 +424,8 @@ LABEL_15:
     goto LABEL_25;
   }
 
-  v37 = [(VUILabel *)titleLabel vuiText];
-  v38 = [v37 length];
+  vuiText = [(VUILabel *)titleLabel vuiText];
+  v38 = [vuiText length];
 
   if (!v38)
   {
@@ -435,8 +435,8 @@ LABEL_25:
   }
 
   [(UIView *)self->_titleLabel vui_sizeThatFits:v16, 0.0];
-  v39 = [(VUILabel *)self->_titleLabel textLayout];
-  [v39 margin];
+  textLayout2 = [(VUILabel *)self->_titleLabel textLayout];
+  [textLayout2 margin];
   v41 = v40;
 
   [(VUILabel *)self->_titleLabel topMarginWithBaselineMargin:v41];
@@ -451,13 +451,13 @@ LABEL_26:
   if (textLabel)
   {
     v86 = v46;
-    v48 = [(VUILabel *)textLabel vuiText];
-    v49 = [v48 length];
+    vuiText2 = [(VUILabel *)textLabel vuiText];
+    v49 = [vuiText2 length];
 
     if (v49)
     {
-      v50 = [(VUILabel *)self->_textLabel textLayout];
-      [v50 margin];
+      textLayout3 = [(VUILabel *)self->_textLabel textLayout];
+      [textLayout3 margin];
       v52 = v51;
 
       [(VUILabel *)self->_textLabel topMarginToLabel:v86 withBaselineMargin:v52];
@@ -482,14 +482,14 @@ LABEL_26:
   if (subtitleLabel)
   {
     v87 = v46;
-    v59 = [(VUILabel *)subtitleLabel vuiText];
-    v60 = [v59 length];
+    vuiText3 = [(VUILabel *)subtitleLabel vuiText];
+    v60 = [vuiText3 length];
 
     if (v60)
     {
       [(UIView *)self->_subtitleLabel vui_sizeThatFits:v16, 0.0];
-      v61 = [(VUILabel *)self->_subtitleLabel textLayout];
-      [v61 margin];
+      textLayout4 = [(VUILabel *)self->_subtitleLabel textLayout];
+      [textLayout4 margin];
       secondLineBaselineMargin = v62;
 
       if (!self->_textLabel)
@@ -534,12 +534,12 @@ LABEL_26:
     {
       [(UIView *)self->_versionsButton vui_sizeThatFits:v16, 0.0];
       v73 = v72;
-      v74 = [(UIView *)self->_versionsButton textContentView];
+      textContentView = [(UIView *)self->_versionsButton textContentView];
     }
 
     else
     {
-      v74 = 0;
+      textContentView = 0;
       v73 = *MEMORY[0x1E695F060];
     }
 
@@ -553,8 +553,8 @@ LABEL_26:
       v75 = v7;
     }
 
-    v76 = [v74 textLayout];
-    [v76 margin];
+    textLayout5 = [textContentView textLayout];
+    [textLayout5 margin];
     v78 = v77;
 
     if (v88)
@@ -582,10 +582,10 @@ LABEL_26:
   }
 }
 
-- (CGSize)computeSizeThatFits:(CGSize)a3
+- (CGSize)computeSizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   VUIRoundValue();
   v7 = v6;
   if ([(VUIOfferView *)self _shouldDisplaySeparator])
@@ -606,19 +606,19 @@ LABEL_26:
   return result;
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4 withAnimationCoordinator:(id)a5
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated withAnimationCoordinator:(id)coordinator
 {
-  v8 = a5;
-  v9 = [(VUIOfferView *)self subviews];
+  coordinatorCopy = coordinator;
+  subviews = [(VUIOfferView *)self subviews];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __62__VUIOfferView_setSelected_animated_withAnimationCoordinator___block_invoke;
   v11[3] = &unk_1E872F530;
-  v13 = a3;
-  v14 = a4;
-  v12 = v8;
-  v10 = v8;
-  [v9 enumerateObjectsUsingBlock:v11];
+  selectedCopy = selected;
+  animatedCopy = animated;
+  v12 = coordinatorCopy;
+  v10 = coordinatorCopy;
+  [subviews enumerateObjectsUsingBlock:v11];
 }
 
 - (UIEdgeInsets)padding

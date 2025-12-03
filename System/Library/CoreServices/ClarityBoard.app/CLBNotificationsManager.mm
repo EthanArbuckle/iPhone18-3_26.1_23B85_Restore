@@ -2,8 +2,8 @@
 + (CLBNotificationsManager)shared;
 - (CLBNotificationsManager)init;
 - (CLBNotificationsManagerDelegate)bulletinDelegate;
-- (void)addBulletinNotificationItem:(id)a3 dndBehavior:(unint64_t)a4 window:(id)a5;
-- (void)removeBulletinNotificationItem:(id)a3;
+- (void)addBulletinNotificationItem:(id)item dndBehavior:(unint64_t)behavior window:(id)window;
+- (void)removeBulletinNotificationItem:(id)item;
 @end
 
 @implementation CLBNotificationsManager
@@ -47,19 +47,19 @@
   return [(CLBNotificationsManager *)&v11 init];
 }
 
-- (void)addBulletinNotificationItem:(id)a3 dndBehavior:(unint64_t)a4 window:(id)a5
+- (void)addBulletinNotificationItem:(id)item dndBehavior:(unint64_t)behavior window:(id)window
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = self;
-  sub_100031808(v8, a4, v9);
+  itemCopy = item;
+  windowCopy = window;
+  selfCopy = self;
+  sub_100031808(itemCopy, behavior, windowCopy);
 }
 
-- (void)removeBulletinNotificationItem:(id)a3
+- (void)removeBulletinNotificationItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  sub_100032008(v4);
+  itemCopy = item;
+  selfCopy = self;
+  sub_100032008(itemCopy);
 }
 
 @end

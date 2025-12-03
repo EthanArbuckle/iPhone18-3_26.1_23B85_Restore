@@ -1,29 +1,29 @@
 @interface EpisodeView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (_TtC23ShelfKitCollectionViews11EpisodeView)initWithFrame:(CGRect)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (_TtC23ShelfKitCollectionViews11EpisodeView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)titleTapped;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation EpisodeView
 
 - (void)titleTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_8C290();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_8D9C8();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = self;
-  v3 = [(EpisodeView *)v5 traitCollection];
+  selfCopy = self;
+  traitCollection = [(EpisodeView *)selfCopy traitCollection];
   v4 = sub_30C968();
 
   if (v4)
@@ -54,22 +54,22 @@
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v4 = [a4 view];
-  if (!v4)
+  view = [touch view];
+  if (!view)
   {
     return 1;
   }
 
-  v5 = v4;
+  v5 = view;
   objc_opt_self();
   v6 = swift_dynamicCastObjCClass() == 0;
 
   return v6;
 }
 
-- (_TtC23ShelfKitCollectionViews11EpisodeView)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews11EpisodeView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

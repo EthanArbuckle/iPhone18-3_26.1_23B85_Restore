@@ -1,6 +1,6 @@
 @interface QSSStreamingTranslationStreamingResponse
-- (Offset<siri::speech::qss_fb::StreamingTranslationStreamingResponse>)addObjectToBuffer:(void *)a3;
-- (QSSStreamingTranslationStreamingResponse)initWithFlatbuffData:(id)a3 root:(const StreamingTranslationStreamingResponse *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::qss_fb::StreamingTranslationStreamingResponse>)addObjectToBuffer:(void *)buffer;
+- (QSSStreamingTranslationStreamingResponse)initWithFlatbuffData:(id)data root:(const StreamingTranslationStreamingResponse *)root verify:(BOOL)verify;
 - (QSSTranslationResponse)contentAsQSSTranslationResponse;
 - (id)flatbuffData;
 - (int64_t)content_type;
@@ -37,13 +37,13 @@ flatbuffers::DetachedBuffer *__56__QSSStreamingTranslationStreamingResponse_flat
   return result;
 }
 
-- (Offset<siri::speech::qss_fb::StreamingTranslationStreamingResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::qss_fb::StreamingTranslationStreamingResponse>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(QSSStreamingTranslationStreamingResponse *)self content_type];
+  content_type = [(QSSStreamingTranslationStreamingResponse *)self content_type];
   if ([(QSSStreamingTranslationStreamingResponse *)self content_type]== 1)
   {
-    v6 = [(QSSStreamingTranslationStreamingResponse *)self contentAsQSSTranslationResponse];
-    v7 = [v6 addObjectToBuffer:a3];
+    contentAsQSSTranslationResponse = [(QSSStreamingTranslationStreamingResponse *)self contentAsQSSTranslationResponse];
+    v7 = [contentAsQSSTranslationResponse addObjectToBuffer:buffer];
 
     v8 = v7;
   }
@@ -53,18 +53,18 @@ flatbuffers::DetachedBuffer *__56__QSSStreamingTranslationStreamingResponse_flat
     v8 = 0;
   }
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v10 = *(a3 + 5);
-  v9 = *(a3 + 6);
-  v11 = *(a3 + 4);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 4, v5);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v10 = *(buffer + 5);
+  v9 = *(buffer + 6);
+  v11 = *(buffer + 4);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 4, content_type);
   if ([(QSSStreamingTranslationStreamingResponse *)self content_type]== 1)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v8);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v8);
   }
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v11 - v9 + v10);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v11 - v9 + v10);
 }
 
 - (QSSTranslationResponse)contentAsQSSTranslationResponse
@@ -115,10 +115,10 @@ flatbuffers::DetachedBuffer *__56__QSSStreamingTranslationStreamingResponse_flat
   }
 }
 
-- (QSSStreamingTranslationStreamingResponse)initWithFlatbuffData:(id)a3 root:(const StreamingTranslationStreamingResponse *)a4 verify:(BOOL)a5
+- (QSSStreamingTranslationStreamingResponse)initWithFlatbuffData:(id)data root:(const StreamingTranslationStreamingResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v32.receiver = self;
   v32.super_class = QSSStreamingTranslationStreamingResponse;
   v10 = [(QSSStreamingTranslationStreamingResponse *)&v32 init];
@@ -128,35 +128,35 @@ flatbuffers::DetachedBuffer *__56__QSSStreamingTranslationStreamingResponse_flat
     goto LABEL_30;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_31;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v12 = [(NSData *)v10->_data bytes];
-    a4 = v12 + *v12;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_29;
   }
 
-  v13 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v14 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v13 || root > v13 + v14)
+  if (root < bytes2 || root > bytes2 + v14)
   {
     goto LABEL_31;
   }
 
-  v17 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v18 = [(NSData *)v10->_data length];
-  v27 = v17;
+  v27 = bytes3;
   v28 = v18;
   v29 = xmmword_26914CD70;
   v30 = 0;
@@ -216,9 +216,9 @@ LABEL_23:
   }
 
 LABEL_29:
-  v23 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   storage = v11->_storage;
-  v11->_storage = v23;
+  v11->_storage = dictionary;
 
 LABEL_30:
   v25 = v11;

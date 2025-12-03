@@ -1,19 +1,19 @@
 @interface HMIPoint
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)point;
-- (HMIPoint)initWithCoder:(id)a3;
-- (HMIPoint)initWithPoint:(CGPoint)a3;
+- (HMIPoint)initWithCoder:(id)coder;
+- (HMIPoint)initWithPoint:(CGPoint)point;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMIPoint
 
-- (HMIPoint)initWithPoint:(CGPoint)a3
+- (HMIPoint)initWithPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6.receiver = self;
   v6.super_class = HMIPoint;
   result = [(HMIPoint *)&v6 init];
@@ -45,30 +45,30 @@
   return result;
 }
 
-- (HMIPoint)initWithCoder:(id)a3
+- (HMIPoint)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"HMIP.x"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"HMIP.x"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"HMIP.y"];
+  [coderCopy decodeDoubleForKey:@"HMIP.y"];
   v8 = v7;
 
   return [(HMIPoint *)self initWithPoint:v6, v8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(HMIPoint *)self x];
-  [v4 encodeDouble:@"HMIP.x" forKey:?];
+  [coderCopy encodeDouble:@"HMIP.x" forKey:?];
   [(HMIPoint *)self y];
-  [v4 encodeDouble:@"HMIP.y" forKey:?];
+  [coderCopy encodeDouble:@"HMIP.y" forKey:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -78,7 +78,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(HMIPoint *)v4 point];
+      [(HMIPoint *)equalCopy point];
       v6 = v5;
       v8 = v7;
       [(HMIPoint *)self point];

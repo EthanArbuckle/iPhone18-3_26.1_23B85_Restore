@@ -1,9 +1,9 @@
 @interface AVMediaContentRating
 + (id)contentRestrictionsCountryCode;
 - (AVMediaContentRating)init;
-- (AVMediaContentRating)initWithRating:(id)a3 rank:(int64_t)a4 countryCode:(id)a5 domain:(int64_t)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMediaContentRating:(id)a3;
+- (AVMediaContentRating)initWithRating:(id)rating rank:(int64_t)rank countryCode:(id)code domain:(int64_t)domain;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMediaContentRating:(id)rating;
 - (BOOL)isImageMask;
 - (UIImage)image;
 - (id)description;
@@ -14,55 +14,55 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  v4 = [(AVMediaContentRating *)self countryCode];
-  v5 = [v3 localizedStringForCountryCode:v4];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  countryCode = [(AVMediaContentRating *)self countryCode];
+  v5 = [currentLocale localizedStringForCountryCode:countryCode];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    countryCode2 = v5;
   }
 
   else
   {
-    v7 = [(AVMediaContentRating *)self countryCode];
+    countryCode2 = [(AVMediaContentRating *)self countryCode];
   }
 
-  v8 = v7;
+  v8 = countryCode2;
 
   v9 = MEMORY[0x1E696AEC0];
-  v10 = [(AVMediaContentRating *)self displayName];
-  v11 = [(AVMediaContentRating *)self rank];
-  v12 = [(AVMediaContentRating *)self countryCode];
-  v13 = [(AVMediaContentRating *)self domain];
+  displayName = [(AVMediaContentRating *)self displayName];
+  rank = [(AVMediaContentRating *)self rank];
+  countryCode3 = [(AVMediaContentRating *)self countryCode];
+  domain = [(AVMediaContentRating *)self domain];
   v14 = @"Unknown";
-  if (v13 == 1)
+  if (domain == 1)
   {
     v14 = @"Movies";
   }
 
-  if (v13 == 2)
+  if (domain == 2)
   {
     v14 = @"TVShows";
   }
 
   v15 = v14;
-  v16 = [(AVMediaContentRating *)self isRestricted];
+  isRestricted = [(AVMediaContentRating *)self isRestricted];
   v17 = @"not restricted";
-  if (v16)
+  if (isRestricted)
   {
     v17 = @"restricted";
   }
 
-  v18 = [v9 stringWithFormat:@"<AVMediaContentRating: %@ %d %@ %@ (%@) - %@>", v10, v11, v12, v8, v15, v17];
+  v18 = [v9 stringWithFormat:@"<AVMediaContentRating: %@ %d %@ %@ (%@) - %@>", displayName, rank, countryCode3, v8, v15, v17];
 
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -70,30 +70,30 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AVMediaContentRating *)self isEqualToMediaContentRating:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AVMediaContentRating *)self isEqualToMediaContentRating:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToMediaContentRating:(id)a3
+- (BOOL)isEqualToMediaContentRating:(id)rating
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  ratingCopy = rating;
+  v5 = ratingCopy;
+  if (ratingCopy == self)
   {
     v11 = 1;
   }
 
-  else if (v4 && (v6 = [(AVMediaContentRating *)v4 domain], v6 == [(AVMediaContentRating *)self domain]))
+  else if (ratingCopy && (v6 = [(AVMediaContentRating *)ratingCopy domain], v6 == [(AVMediaContentRating *)self domain]))
   {
-    v7 = [(AVMediaContentRating *)v5 countryCode];
-    v8 = [(AVMediaContentRating *)self countryCode];
-    if ([v7 isEqualToString:v8])
+    countryCode = [(AVMediaContentRating *)v5 countryCode];
+    countryCode2 = [(AVMediaContentRating *)self countryCode];
+    if ([countryCode isEqualToString:countryCode2])
     {
-      v9 = [(AVMediaContentRating *)v5 displayName];
-      v10 = [(AVMediaContentRating *)self displayName];
-      v11 = [v9 isEqualToString:v10];
+      displayName = [(AVMediaContentRating *)v5 displayName];
+      displayName2 = [(AVMediaContentRating *)self displayName];
+      v11 = [displayName isEqualToString:displayName2];
     }
 
     else
@@ -112,25 +112,25 @@
 
 - (unint64_t)hash
 {
-  v3 = [(AVMediaContentRating *)self displayName];
-  v4 = [v3 hash];
-  v5 = [(AVMediaContentRating *)self rank];
+  displayName = [(AVMediaContentRating *)self displayName];
+  v4 = [displayName hash];
+  rank = [(AVMediaContentRating *)self rank];
 
-  return v5 ^ v4;
+  return rank ^ v4;
 }
 
 - (BOOL)isImageMask
 {
-  v2 = [(AVMediaContentRating *)self displayName];
-  v3 = [AVMediaContentRatings isRatingImageMask:v2];
+  displayName = [(AVMediaContentRating *)self displayName];
+  v3 = [AVMediaContentRatings isRatingImageMask:displayName];
 
   return v3;
 }
 
 - (UIImage)image
 {
-  v2 = [(AVMediaContentRating *)self displayName];
-  v3 = [AVMediaContentRatings imageForRating:v2];
+  displayName = [(AVMediaContentRating *)self displayName];
+  v3 = [AVMediaContentRatings imageForRating:displayName];
 
   return v3;
 }
@@ -142,25 +142,25 @@
   return 0;
 }
 
-- (AVMediaContentRating)initWithRating:(id)a3 rank:(int64_t)a4 countryCode:(id)a5 domain:(int64_t)a6
+- (AVMediaContentRating)initWithRating:(id)rating rank:(int64_t)rank countryCode:(id)code domain:(int64_t)domain
 {
-  v10 = a3;
-  v11 = a5;
+  ratingCopy = rating;
+  codeCopy = code;
   v18.receiver = self;
   v18.super_class = AVMediaContentRating;
   v12 = [(AVMediaContentRating *)&v18 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [ratingCopy copy];
     displayName = v12->_displayName;
     v12->_displayName = v13;
 
-    v12->_rank = a4;
-    v15 = [v11 copy];
+    v12->_rank = rank;
+    v15 = [codeCopy copy];
     countryCode = v12->_countryCode;
     v12->_countryCode = v15;
 
-    v12->_domain = a6;
+    v12->_domain = domain;
     [(AVMediaContentRating *)v12 _setRestricted:[(AVMediaContentRating *)v12 _isCurrentlyRestricted]];
   }
 
@@ -169,10 +169,10 @@
 
 + (id)contentRestrictionsCountryCode
 {
-  v2 = [MEMORY[0x1E695DF58] currentLocale];
-  v3 = [v2 countryCode];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  countryCode = [currentLocale countryCode];
 
-  return v3;
+  return countryCode;
 }
 
 @end

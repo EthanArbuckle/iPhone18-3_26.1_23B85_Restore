@@ -1,12 +1,12 @@
 @interface ARMLImageMattingMetadataTechnique
 - (ARMLImageMattingMetadataTechnique)init;
-- (id)_generateMattingMetadata:(id)a3;
-- (id)processData:(id)a3;
+- (id)_generateMattingMetadata:(id)metadata;
+- (id)processData:(id)data;
 - (id)resultDataClasses;
-- (void)_processDataInBackgound:(id)a3;
+- (void)_processDataInBackgound:(id)backgound;
 - (void)dealloc;
-- (void)prepare:(BOOL)a3;
-- (void)pushEmptyResultOnAsynchronousQueueForTimestamp:(double)a3;
+- (void)prepare:(BOOL)prepare;
+- (void)pushEmptyResultOnAsynchronousQueueForTimestamp:(double)timestamp;
 @end
 
 @implementation ARMLImageMattingMetadataTechnique
@@ -53,12 +53,12 @@
   [(ARMLImageMattingMetadataTechnique *)&v5 dealloc];
 }
 
-- (void)prepare:(BOOL)a3
+- (void)prepare:(BOOL)prepare
 {
   v5.receiver = self;
   v5.super_class = ARMLImageMattingMetadataTechnique;
   [(ARTechnique *)&v5 prepare:?];
-  self->_deterministic = a3;
+  self->_deterministic = prepare;
 }
 
 - (id)resultDataClasses
@@ -69,27 +69,27 @@
   return [v2 setWithObject:v3];
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v6 = v4;
+  v6 = dataCopy;
   v7 = v6;
   if (isKindOfClass)
   {
-    v8 = [v6 originalImageData];
-    if ([v8 cameraPosition] != 2)
+    originalImageData = [v6 originalImageData];
+    if ([originalImageData cameraPosition] != 2)
     {
-      v9 = [v8 cameraType];
-      if (ARIsSupportedAVCaptureDeviceTypeForRearCameraBackdrop(v9))
+      cameraType = [originalImageData cameraType];
+      if (ARIsSupportedAVCaptureDeviceTypeForRearCameraBackdrop(cameraType))
       {
       }
 
       else
       {
-        v10 = [v8 cameraType];
-        v11 = [v10 isEqualToString:*MEMORY[0x1E6986940]];
+        cameraType2 = [originalImageData cameraType];
+        v11 = [cameraType2 isEqualToString:*MEMORY[0x1E6986940]];
 
         if ((v11 & 1) == 0)
         {
@@ -135,13 +135,13 @@ void __49__ARMLImageMattingMetadataTechnique_processData___block_invoke(uint64_t
   [WeakRetained _processDataInBackgound:*(a1 + 32)];
 }
 
-- (void)_processDataInBackgound:(id)a3
+- (void)_processDataInBackgound:(id)backgound
 {
-  v7 = a3;
+  backgoundCopy = backgound;
   dispatch_assert_queue_V2(self->_processingQueue);
-  [v7 timestamp];
+  [backgoundCopy timestamp];
   kdebug_trace();
-  v4 = [(ARMLImageMattingMetadataTechnique *)self _generateMattingMetadata:v7];
+  v4 = [(ARMLImageMattingMetadataTechnique *)self _generateMattingMetadata:backgoundCopy];
   v5 = objc_opt_new();
   v6 = v5;
   if (v4)
@@ -149,22 +149,22 @@ void __49__ARMLImageMattingMetadataTechnique_processData___block_invoke(uint64_t
     [v5 addObject:v4];
   }
 
-  [v7 timestamp];
+  [backgoundCopy timestamp];
   [(ARImageBasedTechnique *)self pushResultData:v6 forTimestamp:?];
-  [v7 timestamp];
+  [backgoundCopy timestamp];
   kdebug_trace();
 }
 
-- (id)_generateMattingMetadata:(id)a3
+- (id)_generateMattingMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [v4 originalImageData];
-  v6 = [[ARModifiedImageData alloc] initWithImageData:v5];
-  -[ARImageData setPixelBuffer:](v6, "setPixelBuffer:", [v4 pixelBuffer]);
+  metadataCopy = metadata;
+  originalImageData = [metadataCopy originalImageData];
+  v6 = [[ARModifiedImageData alloc] initWithImageData:originalImageData];
+  -[ARImageData setPixelBuffer:](v6, "setPixelBuffer:", [metadataCopy pixelBuffer]);
   [(ARImageData *)v6 imageResolution];
   v8 = v7;
   v10 = v9;
-  [v5 imageResolution];
+  [originalImageData imageResolution];
   v12 = v11;
   *&v13 = v13;
   v14 = v8 / v12;
@@ -234,23 +234,23 @@ void __49__ARMLImageMattingMetadataTechnique_processData___block_invoke(uint64_t
 
   else
   {
-    [v4 timestamp];
-    [v5 imageResolution];
-    [v5 imageResolution];
+    [metadataCopy timestamp];
+    [originalImageData imageResolution];
+    [originalImageData imageResolution];
     kdebug_trace();
-    v29 = [(ARImageScalingTechnique *)self->_mattingImageScalingTechnique processData:v5];
-    [v5 timestamp];
+    v29 = [(ARImageScalingTechnique *)self->_mattingImageScalingTechnique processData:originalImageData];
+    [originalImageData timestamp];
     kdebug_trace();
   }
 
   v30 = [ARMattingImageMetaData alloc];
-  [v4 timestamp];
-  v32 = -[ARMattingImageMetaData initWithTimestamp:downSampledImageBuffer:mattingScaleImageBuffer:](v30, "initWithTimestamp:downSampledImageBuffer:mattingScaleImageBuffer:", [v4 pixelBuffer], -[ARImageData pixelBuffer](v29, "pixelBuffer"), v31);
+  [metadataCopy timestamp];
+  v32 = -[ARMattingImageMetaData initWithTimestamp:downSampledImageBuffer:mattingScaleImageBuffer:](v30, "initWithTimestamp:downSampledImageBuffer:mattingScaleImageBuffer:", [metadataCopy pixelBuffer], -[ARImageData pixelBuffer](v29, "pixelBuffer"), v31);
 
   return v32;
 }
 
-- (void)pushEmptyResultOnAsynchronousQueueForTimestamp:(double)a3
+- (void)pushEmptyResultOnAsynchronousQueueForTimestamp:(double)timestamp
 {
   objc_initWeak(&location, self);
   processingQueue = self->_processingQueue;
@@ -259,7 +259,7 @@ void __49__ARMLImageMattingMetadataTechnique_processData___block_invoke(uint64_t
   block[2] = __84__ARMLImageMattingMetadataTechnique_pushEmptyResultOnAsynchronousQueueForTimestamp___block_invoke;
   block[3] = &unk_1E817C4E8;
   objc_copyWeak(v7, &location);
-  v7[1] = *&a3;
+  v7[1] = *&timestamp;
   dispatch_async(processingQueue, block);
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);

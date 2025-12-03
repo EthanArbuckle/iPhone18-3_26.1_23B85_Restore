@@ -1,15 +1,15 @@
 @interface ATXPBResponseForRequestForSuggestions
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsResponseCode:(id)a3;
+- (int)StringAsResponseCode:(id)code;
 - (int)responseCode;
 - (unint64_t)hash;
-- (void)addSuggestions:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSuggestions:(id)suggestions;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBResponseForRequestForSuggestions
@@ -27,53 +27,53 @@
   }
 }
 
-- (void)addSuggestions:(id)a3
+- (void)addSuggestions:(id)suggestions
 {
-  v4 = a3;
+  suggestionsCopy = suggestions;
   suggestions = self->_suggestions;
-  v8 = v4;
+  v8 = suggestionsCopy;
   if (!suggestions)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_suggestions;
     self->_suggestions = v6;
 
-    v4 = v8;
+    suggestionsCopy = v8;
     suggestions = self->_suggestions;
   }
 
-  [(NSMutableArray *)suggestions addObject:v4];
+  [(NSMutableArray *)suggestions addObject:suggestionsCopy];
 }
 
-- (int)StringAsResponseCode:(id)a3
+- (int)StringAsResponseCode:(id)code
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  codeCopy = code;
+  if ([codeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"FallbackToCache"])
+  else if ([codeCopy isEqualToString:@"FallbackToCache"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Success"])
+  else if ([codeCopy isEqualToString:@"Success"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Error"])
+  else if ([codeCopy isEqualToString:@"Error"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SuccessAndReplaceCache"])
+  else if ([codeCopy isEqualToString:@"SuccessAndReplaceCache"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Max"])
+  else if ([codeCopy isEqualToString:@"Max"])
   {
     v4 = 5;
   }
@@ -92,8 +92,8 @@
   v8.receiver = self;
   v8.super_class = ATXPBResponseForRequestForSuggestions;
   v4 = [(ATXPBResponseForRequestForSuggestions *)&v8 description];
-  v5 = [(ATXPBResponseForRequestForSuggestions *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBResponseForRequestForSuggestions *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -101,12 +101,12 @@
 - (id)dictionaryRepresentation
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   uuidString = self->_uuidString;
   if (uuidString)
   {
-    [v3 setObject:uuidString forKey:@"uuidString"];
+    [dictionary setObject:uuidString forKey:@"uuidString"];
   }
 
   if ([(NSMutableArray *)self->_suggestions count])
@@ -131,8 +131,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -175,22 +175,22 @@
   interactionSuggestionRequest = self->_interactionSuggestionRequest;
   if (interactionSuggestionRequest)
   {
-    v18 = [(ATXPBRequestForInteractionSuggestions *)interactionSuggestionRequest dictionaryRepresentation];
-    [v4 setObject:v18 forKey:@"interactionSuggestionRequest"];
+    dictionaryRepresentation2 = [(ATXPBRequestForInteractionSuggestions *)interactionSuggestionRequest dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"interactionSuggestionRequest"];
   }
 
   contextualActionSuggestionRequest = self->_contextualActionSuggestionRequest;
   if (contextualActionSuggestionRequest)
   {
-    v20 = [(ATXPBRequestForContextualActionSuggestions *)contextualActionSuggestionRequest dictionaryRepresentation];
-    [v4 setObject:v20 forKey:@"contextualActionSuggestionRequest"];
+    dictionaryRepresentation3 = [(ATXPBRequestForContextualActionSuggestions *)contextualActionSuggestionRequest dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"contextualActionSuggestionRequest"];
   }
 
   intentSuggestionRequest = self->_intentSuggestionRequest;
   if (intentSuggestionRequest)
   {
-    v22 = [(ATXPBRequestForIntentSuggestions *)intentSuggestionRequest dictionaryRepresentation];
-    [v4 setObject:v22 forKey:@"intentSuggestionRequest"];
+    dictionaryRepresentation4 = [(ATXPBRequestForIntentSuggestions *)intentSuggestionRequest dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"intentSuggestionRequest"];
   }
 
   v23 = *MEMORY[0x1E69E9840];
@@ -198,10 +198,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_uuidString)
   {
     PBDataWriterWriteStringField();
@@ -273,71 +273,71 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_uuidString)
   {
-    [v9 setUuidString:?];
+    [toCopy setUuidString:?];
   }
 
   if ([(ATXPBResponseForRequestForSuggestions *)self suggestionsCount])
   {
-    [v9 clearSuggestions];
-    v4 = [(ATXPBResponseForRequestForSuggestions *)self suggestionsCount];
-    if (v4)
+    [toCopy clearSuggestions];
+    suggestionsCount = [(ATXPBResponseForRequestForSuggestions *)self suggestionsCount];
+    if (suggestionsCount)
     {
-      v5 = v4;
+      v5 = suggestionsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ATXPBResponseForRequestForSuggestions *)self suggestionsAtIndex:i];
-        [v9 addSuggestions:v7];
+        [toCopy addSuggestions:v7];
       }
     }
   }
 
   if (self->_feedbackMetadata)
   {
-    [v9 setFeedbackMetadata:?];
+    [toCopy setFeedbackMetadata:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (*&self->_has)
   {
-    *(v9 + 12) = self->_responseCode;
-    *(v9 + 72) |= 1u;
+    *(toCopy + 12) = self->_responseCode;
+    *(toCopy + 72) |= 1u;
   }
 
   if (self->_errorData)
   {
-    [v9 setErrorData:?];
-    v8 = v9;
+    [toCopy setErrorData:?];
+    v8 = toCopy;
   }
 
   if (self->_interactionSuggestionRequest)
   {
-    [v9 setInteractionSuggestionRequest:?];
-    v8 = v9;
+    [toCopy setInteractionSuggestionRequest:?];
+    v8 = toCopy;
   }
 
   if (self->_contextualActionSuggestionRequest)
   {
-    [v9 setContextualActionSuggestionRequest:?];
-    v8 = v9;
+    [toCopy setContextualActionSuggestionRequest:?];
+    v8 = toCopy;
   }
 
   if (self->_intentSuggestionRequest)
   {
-    [v9 setIntentSuggestionRequest:?];
-    v8 = v9;
+    [toCopy setIntentSuggestionRequest:?];
+    v8 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uuidString copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uuidString copyWithZone:zone];
   v7 = *(v5 + 64);
   *(v5 + 64) = v6;
 
@@ -361,7 +361,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v26 + 1) + 8 * v12) copyWithZone:{a3, v26}];
+        v13 = [*(*(&v26 + 1) + 8 * v12) copyWithZone:{zone, v26}];
         [v5 addSuggestions:v13];
 
         ++v12;
@@ -374,7 +374,7 @@
     while (v10);
   }
 
-  v14 = [(NSData *)self->_feedbackMetadata copyWithZone:a3];
+  v14 = [(NSData *)self->_feedbackMetadata copyWithZone:zone];
   v15 = *(v5 + 24);
   *(v5 + 24) = v14;
 
@@ -384,19 +384,19 @@
     *(v5 + 72) |= 1u;
   }
 
-  v16 = [(NSData *)self->_errorData copyWithZone:a3, v26];
+  v16 = [(NSData *)self->_errorData copyWithZone:zone, v26];
   v17 = *(v5 + 16);
   *(v5 + 16) = v16;
 
-  v18 = [(ATXPBRequestForInteractionSuggestions *)self->_interactionSuggestionRequest copyWithZone:a3];
+  v18 = [(ATXPBRequestForInteractionSuggestions *)self->_interactionSuggestionRequest copyWithZone:zone];
   v19 = *(v5 + 40);
   *(v5 + 40) = v18;
 
-  v20 = [(ATXPBRequestForContextualActionSuggestions *)self->_contextualActionSuggestionRequest copyWithZone:a3];
+  v20 = [(ATXPBRequestForContextualActionSuggestions *)self->_contextualActionSuggestionRequest copyWithZone:zone];
   v21 = *(v5 + 8);
   *(v5 + 8) = v20;
 
-  v22 = [(ATXPBRequestForIntentSuggestions *)self->_intentSuggestionRequest copyWithZone:a3];
+  v22 = [(ATXPBRequestForIntentSuggestions *)self->_intentSuggestionRequest copyWithZone:zone];
   v23 = *(v5 + 32);
   *(v5 + 32) = v22;
 
@@ -404,16 +404,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   uuidString = self->_uuidString;
-  if (uuidString | *(v4 + 8))
+  if (uuidString | *(equalCopy + 8))
   {
     if (![(NSString *)uuidString isEqual:?])
     {
@@ -422,7 +422,7 @@
   }
 
   suggestions = self->_suggestions;
-  if (suggestions | *(v4 + 7))
+  if (suggestions | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)suggestions isEqual:?])
     {
@@ -431,7 +431,7 @@
   }
 
   feedbackMetadata = self->_feedbackMetadata;
-  if (feedbackMetadata | *(v4 + 3))
+  if (feedbackMetadata | *(equalCopy + 3))
   {
     if (![(NSData *)feedbackMetadata isEqual:?])
     {
@@ -439,16 +439,16 @@
     }
   }
 
-  v8 = *(v4 + 72);
+  v8 = *(equalCopy + 72);
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_responseCode != *(v4 + 12))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_responseCode != *(equalCopy + 12))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
 LABEL_21:
     v13 = 0;
@@ -456,13 +456,13 @@ LABEL_21:
   }
 
   errorData = self->_errorData;
-  if (errorData | *(v4 + 2) && ![(NSData *)errorData isEqual:?])
+  if (errorData | *(equalCopy + 2) && ![(NSData *)errorData isEqual:?])
   {
     goto LABEL_21;
   }
 
   interactionSuggestionRequest = self->_interactionSuggestionRequest;
-  if (interactionSuggestionRequest | *(v4 + 5))
+  if (interactionSuggestionRequest | *(equalCopy + 5))
   {
     if (![(ATXPBRequestForInteractionSuggestions *)interactionSuggestionRequest isEqual:?])
     {
@@ -471,7 +471,7 @@ LABEL_21:
   }
 
   contextualActionSuggestionRequest = self->_contextualActionSuggestionRequest;
-  if (contextualActionSuggestionRequest | *(v4 + 1))
+  if (contextualActionSuggestionRequest | *(equalCopy + 1))
   {
     if (![(ATXPBRequestForContextualActionSuggestions *)contextualActionSuggestionRequest isEqual:?])
     {
@@ -480,7 +480,7 @@ LABEL_21:
   }
 
   intentSuggestionRequest = self->_intentSuggestionRequest;
-  if (intentSuggestionRequest | *(v4 + 4))
+  if (intentSuggestionRequest | *(equalCopy + 4))
   {
     v13 = [(ATXPBRequestForIntentSuggestions *)intentSuggestionRequest isEqual:?];
   }
@@ -517,11 +517,11 @@ LABEL_22:
   return v10 ^ [(ATXPBRequestForIntentSuggestions *)self->_intentSuggestionRequest hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 8))
+  fromCopy = from;
+  if (*(fromCopy + 8))
   {
     [(ATXPBResponseForRequestForSuggestions *)self setUuidString:?];
   }
@@ -530,7 +530,7 @@ LABEL_22:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = *(v4 + 7);
+  v5 = *(fromCopy + 7);
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -554,24 +554,24 @@ LABEL_22:
     while (v7);
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(ATXPBResponseForRequestForSuggestions *)self setFeedbackMetadata:?];
   }
 
-  if (*(v4 + 72))
+  if (*(fromCopy + 72))
   {
-    self->_responseCode = *(v4 + 12);
+    self->_responseCode = *(fromCopy + 12);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(ATXPBResponseForRequestForSuggestions *)self setErrorData:?];
   }
 
   interactionSuggestionRequest = self->_interactionSuggestionRequest;
-  v11 = *(v4 + 5);
+  v11 = *(fromCopy + 5);
   if (interactionSuggestionRequest)
   {
     if (v11)
@@ -586,7 +586,7 @@ LABEL_22:
   }
 
   contextualActionSuggestionRequest = self->_contextualActionSuggestionRequest;
-  v13 = *(v4 + 1);
+  v13 = *(fromCopy + 1);
   if (contextualActionSuggestionRequest)
   {
     if (v13)
@@ -601,7 +601,7 @@ LABEL_22:
   }
 
   intentSuggestionRequest = self->_intentSuggestionRequest;
-  v15 = *(v4 + 4);
+  v15 = *(fromCopy + 4);
   if (intentSuggestionRequest)
   {
     if (v15)

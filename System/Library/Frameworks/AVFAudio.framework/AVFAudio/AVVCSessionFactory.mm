@@ -1,17 +1,17 @@
 @interface AVVCSessionFactory
 + (id)sharedInstance;
 - (AVVCSessionFactory)init;
-- (id)_wqCreatePrimarySessionManagerIfNeeded:(id)a3 clientType:(int64_t)a4 error:(id *)a5;
+- (id)_wqCreatePrimarySessionManagerIfNeeded:(id)needed clientType:(int64_t)type error:(id *)error;
 - (id)auxSessionManagers;
-- (id)sessionForContext:(id)a3 clientType:(int64_t)a4 error:(id *)a5;
-- (id)sessionForContext:(id)a3 error:(id *)a4;
-- (id)sessionManagerForContext:(id)a3 clientType:(int64_t)a4 error:(id *)a5;
-- (void)_wqCreateAuxSessionAndManagerForDeviceUID:(id)a3 clientType:(int64_t)a4 session:(id *)a5 manager:(id *)a6 error:(id *)a7;
-- (void)_wqSessionAndManagerForContext:(id)a3 clientType:(int64_t)a4 session:(id *)a5 manager:(id *)a6 error:(id *)a7;
-- (void)cleanupContext:(id)a3;
+- (id)sessionForContext:(id)context clientType:(int64_t)type error:(id *)error;
+- (id)sessionForContext:(id)context error:(id *)error;
+- (id)sessionManagerForContext:(id)context clientType:(int64_t)type error:(id *)error;
+- (void)_wqCreateAuxSessionAndManagerForDeviceUID:(id)d clientType:(int64_t)type session:(id *)session manager:(id *)manager error:(id *)error;
+- (void)_wqSessionAndManagerForContext:(id)context clientType:(int64_t)type session:(id *)session manager:(id *)manager error:(id *)error;
+- (void)cleanupContext:(id)context;
 - (void)releasePrimarySessionManager;
-- (void)sessionForContext:(id)a3 clientType:(int64_t)a4 completion:(id)a5;
-- (void)sessionManagerForContext:(id)a3 clientType:(int64_t)a4 completion:(id)a5;
+- (void)sessionForContext:(id)context clientType:(int64_t)type completion:(id)completion;
+- (void)sessionManagerForContext:(id)context clientType:(int64_t)type completion:(id)completion;
 @end
 
 @implementation AVVCSessionFactory
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __36__AVVCSessionFactory_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[AVVCSessionFactory sharedInstance]::onceToken != -1)
   {
     dispatch_once(&+[AVVCSessionFactory sharedInstance]::onceToken, block);
@@ -112,17 +112,17 @@ void __40__AVVCSessionFactory_auxSessionManagers__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)cleanupContext:(id)a3
+- (void)cleanupContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__AVVCSessionFactory_cleanupContext___block_invoke;
   v7[3] = &unk_1E7EF53D8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = contextCopy;
+  selfCopy = self;
+  v6 = contextCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -336,9 +336,9 @@ LABEL_43:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (id)sessionManagerForContext:(id)a3 clientType:(int64_t)a4 error:(id *)a5
+- (id)sessionManagerForContext:(id)context clientType:(int64_t)type error:(id *)error
 {
-  v8 = a3;
+  contextCopy = context;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -357,15 +357,15 @@ LABEL_43:
   block[2] = __64__AVVCSessionFactory_sessionManagerForContext_clientType_error___block_invoke;
   block[3] = &unk_1E7EF5428;
   block[4] = self;
-  v10 = v8;
+  v10 = contextCopy;
   v14 = v10;
   v15 = &v24;
   v16 = &v18;
-  v17 = a4;
+  typeCopy = type;
   dispatch_sync(workQueue, block);
-  if (a5)
+  if (error)
   {
-    *a5 = v19[5];
+    *error = v19[5];
   }
 
   v11 = v25[5];
@@ -391,21 +391,21 @@ void __64__AVVCSessionFactory_sessionManagerForContext_clientType_error___block_
   objc_storeStrong((v6 + 40), v7);
 }
 
-- (void)sessionManagerForContext:(id)a3 clientType:(int64_t)a4 completion:(id)a5
+- (void)sessionManagerForContext:(id)context clientType:(int64_t)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  contextCopy = context;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __69__AVVCSessionFactory_sessionManagerForContext_clientType_completion___block_invoke;
   v13[3] = &unk_1E7EF5400;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = contextCopy;
+  v15 = completionCopy;
+  typeCopy = type;
+  v11 = completionCopy;
+  v12 = contextCopy;
   dispatch_async(workQueue, v13);
 }
 
@@ -426,9 +426,9 @@ void __69__AVVCSessionFactory_sessionManagerForContext_clientType_completion___b
   }
 }
 
-- (id)sessionForContext:(id)a3 clientType:(int64_t)a4 error:(id *)a5
+- (id)sessionForContext:(id)context clientType:(int64_t)type error:(id *)error
 {
-  v8 = a3;
+  contextCopy = context;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -447,15 +447,15 @@ void __69__AVVCSessionFactory_sessionManagerForContext_clientType_completion___b
   block[2] = __57__AVVCSessionFactory_sessionForContext_clientType_error___block_invoke;
   block[3] = &unk_1E7EF5428;
   block[4] = self;
-  v10 = v8;
+  v10 = contextCopy;
   v14 = v10;
   v15 = &v24;
   v16 = &v18;
-  v17 = a4;
+  typeCopy = type;
   dispatch_sync(workQueue, block);
-  if (a5)
+  if (error)
   {
-    *a5 = v19[5];
+    *error = v19[5];
   }
 
   v11 = v25[5];
@@ -481,21 +481,21 @@ void __57__AVVCSessionFactory_sessionForContext_clientType_error___block_invoke(
   objc_storeStrong((v6 + 40), v7);
 }
 
-- (void)sessionForContext:(id)a3 clientType:(int64_t)a4 completion:(id)a5
+- (void)sessionForContext:(id)context clientType:(int64_t)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  contextCopy = context;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __62__AVVCSessionFactory_sessionForContext_clientType_completion___block_invoke;
   v13[3] = &unk_1E7EF5400;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = contextCopy;
+  v15 = completionCopy;
+  typeCopy = type;
+  v11 = completionCopy;
+  v12 = contextCopy;
   dispatch_async(workQueue, v13);
 }
 
@@ -516,39 +516,39 @@ void __62__AVVCSessionFactory_sessionForContext_clientType_completion___block_in
   }
 }
 
-- (id)sessionForContext:(id)a3 error:(id *)a4
+- (id)sessionForContext:(id)context error:(id *)error
 {
-  v4 = [(AVVCSessionFactory *)self sessionForContext:a3 clientType:1 error:a4];
+  v4 = [(AVVCSessionFactory *)self sessionForContext:context clientType:1 error:error];
 
   return v4;
 }
 
-- (void)_wqSessionAndManagerForContext:(id)a3 clientType:(int64_t)a4 session:(id *)a5 manager:(id *)a6 error:(id *)a7
+- (void)_wqSessionAndManagerForContext:(id)context clientType:(int64_t)type session:(id *)session manager:(id *)manager error:(id *)error
 {
   v55 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  contextCopy = context;
   dispatch_assert_queue_V2(self->_workQueue);
-  if (contextIsRemora(v12))
+  if (contextIsRemora(contextCopy))
   {
-    v13 = [(AVVCContextSettings *)v12 activationDeviceUID];
-    if (v13)
+    activationDeviceUID = [(AVVCContextSettings *)contextCopy activationDeviceUID];
+    if (activationDeviceUID)
     {
-      v14 = [(AVVCContextSettings *)v12 activationDeviceUID];
-      v15 = [v14 length];
+      activationDeviceUID2 = [(AVVCContextSettings *)contextCopy activationDeviceUID];
+      v15 = [activationDeviceUID2 length];
 
       if (v15)
       {
         sessionManagerMap = self->_sessionManagerMap;
-        v17 = [(AVVCContextSettings *)v12 activationDeviceUID];
-        v18 = [(NSMutableDictionary *)sessionManagerMap objectForKeyedSubscript:v17];
+        activationDeviceUID3 = [(AVVCContextSettings *)contextCopy activationDeviceUID];
+        v18 = [(NSMutableDictionary *)sessionManagerMap objectForKeyedSubscript:activationDeviceUID3];
 
-        v19 = [v18 audioSession];
-        v20 = v19;
-        if (!v19 || !v18)
+        audioSession = [v18 audioSession];
+        v20 = audioSession;
+        if (!audioSession || !v18)
         {
           v40 = v18;
-          v41 = v19;
-          [(AVVCSessionFactory *)self _wqCreateAuxSessionAndManagerForDeviceUID:v12 clientType:a4 session:&v41 manager:&v40 error:a7];
+          v41 = audioSession;
+          [(AVVCSessionFactory *)self _wqCreateAuxSessionAndManagerForDeviceUID:contextCopy clientType:type session:&v41 manager:&v40 error:error];
           v21 = v41;
 
           v22 = v40;
@@ -568,7 +568,7 @@ void __62__AVVCSessionFactory_sessionForContext_clientType_completion___block_in
 LABEL_17:
         [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:0];
         v18 = 0;
-        *a7 = v20 = 0;
+        *error = v20 = 0;
         goto LABEL_18;
       }
     }
@@ -591,21 +591,21 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v23 = [MEMORY[0x1E698D708] sharedInstance];
+  mEMORY[0x1E698D708] = [MEMORY[0x1E698D708] sharedInstance];
   v34 = MEMORY[0x1E69E9820];
   v35 = 3221225472;
   v36 = __86__AVVCSessionFactory__wqSessionAndManagerForContext_clientType_session_manager_error___block_invoke;
   v37 = &unk_1E7EF53D8;
-  v20 = v23;
+  v20 = mEMORY[0x1E698D708];
   v38 = v20;
-  v24 = v12;
+  v24 = contextCopy;
   v39 = v24;
   if ([AVVCSessionFactory _wqSessionAndManagerForContext:clientType:session:manager:error:]::onceToken != -1)
   {
     dispatch_once(&[AVVCSessionFactory _wqSessionAndManagerForContext:clientType:session:manager:error:]::onceToken, &v34);
   }
 
-  v18 = [(AVVCSessionFactory *)self _wqCreatePrimarySessionManagerIfNeeded:v24 clientType:a4 error:a7, v34, v35, v36, v37];
+  v18 = [(AVVCSessionFactory *)self _wqCreatePrimarySessionManagerIfNeeded:v24 clientType:type error:error, v34, v35, v36, v37];
 
 LABEL_18:
   if (kAVVCScope)
@@ -626,8 +626,8 @@ LABEL_18:
   v29 = v27;
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
   {
-    CAX4CCString::CAX4CCString(v42, [(AVVCContextSettings *)v12 activationMode]);
-    v30 = [(AVVCContextSettings *)v12 activationDeviceUID];
+    CAX4CCString::CAX4CCString(v42, [(AVVCContextSettings *)contextCopy activationMode]);
+    activationDeviceUID4 = [(AVVCContextSettings *)contextCopy activationDeviceUID];
     *buf = 136316418;
     v44 = "AVVCSessionFactory.mm";
     v45 = 1024;
@@ -639,21 +639,21 @@ LABEL_18:
     v51 = 2080;
     v52 = v42;
     v53 = 2112;
-    v54 = v30;
+    v54 = activationDeviceUID4;
     _os_log_impl(&dword_1BA5AC000, v29, OS_LOG_TYPE_DEBUG, "%25s:%-5d retrieved session (%p) and sessionManager (%p) for context(%s, %@)", buf, 0x3Au);
   }
 
 LABEL_25:
-  if (a5)
+  if (session)
   {
     v31 = v20;
-    *a5 = v20;
+    *session = v20;
   }
 
-  if (a6)
+  if (manager)
   {
     v32 = v18;
-    *a6 = v18;
+    *manager = v18;
   }
 
   v33 = *MEMORY[0x1E69E9840];
@@ -700,24 +700,24 @@ LABEL_8:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_wqCreatePrimarySessionManagerIfNeeded:(id)a3 clientType:(int64_t)a4 error:(id *)a5
+- (id)_wqCreatePrimarySessionManagerIfNeeded:(id)needed clientType:(int64_t)type error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  neededCopy = needed;
   dispatch_assert_queue_V2(self->_workQueue);
   primarySessionManager = self->_primarySessionManager;
   if (!primarySessionManager)
   {
     v10 = [AVVCSessionManager alloc];
-    v11 = [MEMORY[0x1E698D708] sharedInstance];
-    v12 = [(AVVCSessionManager *)v10 initWithSession:v11];
+    mEMORY[0x1E698D708] = [MEMORY[0x1E698D708] sharedInstance];
+    v12 = [(AVVCSessionManager *)v10 initWithSession:mEMORY[0x1E698D708]];
     v13 = self->_primarySessionManager;
     self->_primarySessionManager = v12;
 
-    v14 = [(AVVCSessionManager *)self->_primarySessionManager setupOneTimeSessionSettingsForClient:a4];
-    if (a5 && v14)
+    v14 = [(AVVCSessionManager *)self->_primarySessionManager setupOneTimeSessionSettingsForClient:type];
+    if (error && v14)
     {
-      *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v14 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v14 userInfo:0];
     }
 
     if (kAVVCScope)
@@ -741,8 +741,8 @@ LABEL_12:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v18 = self->_primarySessionManager;
-      CAX4CCString::CAX4CCString(v23, [v8 activationMode]);
-      v19 = [v8 activationDeviceUID];
+      CAX4CCString::CAX4CCString(v23, [neededCopy activationMode]);
+      activationDeviceUID = [neededCopy activationDeviceUID];
       *buf = 136316162;
       v25 = "AVVCSessionFactory.mm";
       v26 = 1024;
@@ -752,7 +752,7 @@ LABEL_12:
       v30 = 2080;
       v31 = v23;
       v32 = 2112;
-      v33 = v19;
+      v33 = activationDeviceUID;
       _os_log_impl(&dword_1BA5AC000, v17, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Created primary session manager (%p) and setup onetime settings for context(%s, %@)", buf, 0x30u);
     }
 
@@ -766,24 +766,24 @@ LABEL_13:
   return primarySessionManager;
 }
 
-- (void)_wqCreateAuxSessionAndManagerForDeviceUID:(id)a3 clientType:(int64_t)a4 session:(id *)a5 manager:(id *)a6 error:(id *)a7
+- (void)_wqCreateAuxSessionAndManagerForDeviceUID:(id)d clientType:(int64_t)type session:(id *)session manager:(id *)manager error:(id *)error
 {
   v73 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_workQueue);
   if ((caulk::product::get_device_class(v10) == 4 || ((v11 = MGGetSInt32Answer(), v12 = MGGetBoolAnswer(), v11 == 7) ? (v13 = 1) : (v13 = v12), v13 == 1)) && (MGGetBoolAnswer() & 1) == 0)
   {
-    v14 = 0;
+    auxiliarySession = 0;
   }
 
   else
   {
-    v14 = [MEMORY[0x1E698D708] auxiliarySession];
+    auxiliarySession = [MEMORY[0x1E698D708] auxiliarySession];
   }
 
   sessionManagerMap = self->_sessionManagerMap;
-  v16 = [v9 activationDeviceUID];
-  v17 = [(NSMutableDictionary *)sessionManagerMap objectForKeyedSubscript:v16];
+  activationDeviceUID = [dCopy activationDeviceUID];
+  v17 = [(NSMutableDictionary *)sessionManagerMap objectForKeyedSubscript:activationDeviceUID];
 
   if (v17)
   {
@@ -806,14 +806,14 @@ LABEL_13:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v21 = self->_sessionManagerMap;
-      v56 = [v9 activationDeviceUID];
-      v22 = [(NSMutableDictionary *)v21 objectForKeyedSubscript:v56];
+      activationDeviceUID2 = [dCopy activationDeviceUID];
+      v22 = [(NSMutableDictionary *)v21 objectForKeyedSubscript:activationDeviceUID2];
       v23 = self->_sessionManagerMap;
-      v24 = [v9 activationDeviceUID];
-      v25 = [(NSMutableDictionary *)v23 objectForKeyedSubscript:v24];
-      v26 = [v25 audioSession];
-      CAX4CCString::CAX4CCString(v60, [v9 activationMode]);
-      v27 = [v9 activationDeviceUID];
+      activationDeviceUID3 = [dCopy activationDeviceUID];
+      v25 = [(NSMutableDictionary *)v23 objectForKeyedSubscript:activationDeviceUID3];
+      audioSession = [v25 audioSession];
+      CAX4CCString::CAX4CCString(v60, [dCopy activationMode]);
+      activationDeviceUID4 = [dCopy activationDeviceUID];
       *buf = 136316418;
       v62 = "AVVCSessionFactory.mm";
       v63 = 1024;
@@ -821,23 +821,23 @@ LABEL_13:
       v65 = 2048;
       v66 = v22;
       v67 = 2048;
-      v68 = v26;
+      v68 = audioSession;
       v69 = 2080;
       v70 = v60;
       v71 = 2112;
-      v72 = v27;
+      v72 = activationDeviceUID4;
       _os_log_impl(&dword_1BA5AC000, v20, OS_LOG_TYPE_ERROR, "%25s:%-5d _wqCreateAuxSessionAndManagerForDeviceUID: unexpected existing session manager(%p) audioSession(%p) for context(%s, %@)", buf, 0x3Au);
     }
   }
 
 LABEL_17:
   v28 = objc_alloc(MEMORY[0x1E695DF20]);
-  v29 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v9, "activationMode")}];
-  v30 = [v9 activationDeviceUID];
-  v31 = [v28 initWithObjectsAndKeys:{v29, @"activation trigger", v30, @"activation device uid", 0}];
+  v29 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(dCopy, "activationMode")}];
+  activationDeviceUID5 = [dCopy activationDeviceUID];
+  v31 = [v28 initWithObjectsAndKeys:{v29, @"activation trigger", activationDeviceUID5, @"activation device uid", 0}];
 
-  [v14 setActivationContext:v31 error:a7];
-  if (*a7 && [*a7 code])
+  [auxiliarySession setActivationContext:v31 error:error];
+  if (*error && [*error code])
   {
     if (kAVVCScope)
     {
@@ -857,23 +857,23 @@ LABEL_17:
     v34 = v32;
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
-      v35 = [*a7 code];
+      code = [*error code];
       *buf = 136315650;
       v62 = "AVVCSessionFactory.mm";
       v63 = 1024;
       v64 = 140;
       v65 = 1024;
-      LODWORD(v66) = v35;
+      LODWORD(v66) = code;
       _os_log_impl(&dword_1BA5AC000, v34, OS_LOG_TYPE_ERROR, "%25s:%-5d _wqCreateAuxSessionAndManagerForDeviceUID: setActivationContext returned error(%d)", buf, 0x18u);
     }
   }
 
 LABEL_26:
-  v36 = [[AVVCSessionManager alloc] initWithSession:v14];
-  [(AVVCSessionManager *)v36 setupOneTimeSessionSettingsForClient:a4];
+  v36 = [[AVVCSessionManager alloc] initWithSession:auxiliarySession];
+  [(AVVCSessionManager *)v36 setupOneTimeSessionSettingsForClient:type];
   v37 = self->_sessionManagerMap;
-  v38 = [v9 activationDeviceUID];
-  v39 = [(NSMutableDictionary *)v37 objectForKeyedSubscript:v38];
+  activationDeviceUID6 = [dCopy activationDeviceUID];
+  v39 = [(NSMutableDictionary *)v37 objectForKeyedSubscript:activationDeviceUID6];
   LOBYTE(v37) = v39 == 0;
 
   if (v37)
@@ -900,8 +900,8 @@ LABEL_26:
   if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
   {
     v43 = self->_sessionManagerMap;
-    v44 = [v9 activationDeviceUID];
-    v45 = [(NSMutableDictionary *)v43 objectForKeyedSubscript:v44];
+    activationDeviceUID7 = [dCopy activationDeviceUID];
+    v45 = [(NSMutableDictionary *)v43 objectForKeyedSubscript:activationDeviceUID7];
     *buf = 136315650;
     v62 = "AVVCSessionFactory.mm";
     v63 = 1024;
@@ -913,8 +913,8 @@ LABEL_26:
 
 LABEL_34:
   v46 = self->_sessionManagerMap;
-  v47 = [v9 activationDeviceUID];
-  [(NSMutableDictionary *)v46 setObject:v36 forKeyedSubscript:v47];
+  activationDeviceUID8 = [dCopy activationDeviceUID];
+  [(NSMutableDictionary *)v46 setObject:v36 forKeyedSubscript:activationDeviceUID8];
 
   if (kAVVCScope)
   {
@@ -934,20 +934,20 @@ LABEL_34:
   v50 = v48;
   if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
   {
-    CAX4CCString::CAX4CCString(v60, [v9 activationMode]);
-    v51 = [v9 activationDeviceUID];
+    CAX4CCString::CAX4CCString(v60, [dCopy activationMode]);
+    activationDeviceUID9 = [dCopy activationDeviceUID];
     *buf = 136316418;
     v62 = "AVVCSessionFactory.mm";
     v63 = 1024;
     v64 = 150;
     v65 = 2048;
-    v66 = v14;
+    v66 = auxiliarySession;
     v67 = 2048;
     v68 = v36;
     v69 = 2080;
     v70 = v60;
     v71 = 2112;
-    v72 = v51;
+    v72 = activationDeviceUID9;
     _os_log_impl(&dword_1BA5AC000, v50, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Created aux session (%p) and session manager (%p) and setup onetime settings for context(%s, %@)", buf, 0x3Au);
   }
 
@@ -955,19 +955,19 @@ LABEL_41:
   sessionWasCreatedBlock = self->_sessionWasCreatedBlock;
   if (sessionWasCreatedBlock)
   {
-    sessionWasCreatedBlock[2](sessionWasCreatedBlock, v36, a7);
+    sessionWasCreatedBlock[2](sessionWasCreatedBlock, v36, error);
   }
 
-  if (a5)
+  if (session)
   {
-    v53 = v14;
-    *a5 = v14;
+    v53 = auxiliarySession;
+    *session = auxiliarySession;
   }
 
-  if (a6)
+  if (manager)
   {
     v54 = v36;
-    *a6 = v36;
+    *manager = v36;
   }
 
   v55 = *MEMORY[0x1E69E9840];

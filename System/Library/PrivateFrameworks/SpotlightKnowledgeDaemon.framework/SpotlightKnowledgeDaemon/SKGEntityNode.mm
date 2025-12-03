@@ -1,14 +1,14 @@
 @interface SKGEntityNode
-+ (id)entityWithElementIdentifier:(unint64_t)a3 inGraph:(id)a4;
-- (SKGEntityNode)initWithIdentifier:(id)a3;
++ (id)entityWithElementIdentifier:(unint64_t)identifier inGraph:(id)graph;
+- (SKGEntityNode)initWithIdentifier:(id)identifier;
 @end
 
 @implementation SKGEntityNode
 
-+ (id)entityWithElementIdentifier:(unint64_t)a3 inGraph:(id)a4
++ (id)entityWithElementIdentifier:(unint64_t)identifier inGraph:(id)graph
 {
-  v5 = [a4 graph];
-  v6 = [v5 nodeForIdentifier:a3];
+  graph = [graph graph];
+  v6 = [graph nodeForIdentifier:identifier];
 
   v7 = [SKGEntityNode alloc];
   v8 = [v6 propertyForKey:@"value"];
@@ -17,11 +17,11 @@
   return v9;
 }
 
-- (SKGEntityNode)initWithIdentifier:(id)a3
+- (SKGEntityNode)initWithIdentifier:(id)identifier
 {
   v4.receiver = self;
   v4.super_class = SKGEntityNode;
-  return [(SKGNode *)&v4 initWithValue:a3];
+  return [(SKGNode *)&v4 initWithValue:identifier];
 }
 
 @end

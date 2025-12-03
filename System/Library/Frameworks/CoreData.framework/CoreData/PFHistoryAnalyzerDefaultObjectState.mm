@@ -1,27 +1,27 @@
 @interface PFHistoryAnalyzerDefaultObjectState
-- (PFHistoryAnalyzerDefaultObjectState)initWithOriginalChange:(id)a3;
+- (PFHistoryAnalyzerDefaultObjectState)initWithOriginalChange:(id)change;
 - (id)description;
 - (void)dealloc;
-- (void)updateWithChange:(id)a3;
+- (void)updateWithChange:(id)change;
 @end
 
 @implementation PFHistoryAnalyzerDefaultObjectState
 
-- (PFHistoryAnalyzerDefaultObjectState)initWithOriginalChange:(id)a3
+- (PFHistoryAnalyzerDefaultObjectState)initWithOriginalChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = PFHistoryAnalyzerDefaultObjectState;
   v4 = [(PFHistoryAnalyzerDefaultObjectState *)&v7 init];
   if (v4)
   {
-    v4->_analyzedObjectID = [a3 changedObjectID];
-    v4->_originalTransactionNumber = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(objc_msgSend(a3, "transaction"), "transactionNumber")}];
-    v5 = [a3 changeType];
-    v4->_originalChangeType = v5;
-    v4->_finalChangeType = v5;
+    v4->_analyzedObjectID = [change changedObjectID];
+    v4->_originalTransactionNumber = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(objc_msgSend(change, "transaction"), "transactionNumber")}];
+    changeType = [change changeType];
+    v4->_originalChangeType = changeType;
+    v4->_finalChangeType = changeType;
     v4->_finalTransactionNumber = v4->_originalTransactionNumber;
-    v4->_tombstone = [a3 tombstone];
-    v4->_finalChangeAuthor = [objc_msgSend(a3 "transaction")];
+    v4->_tombstone = [change tombstone];
+    v4->_finalChangeAuthor = [objc_msgSend(change "transaction")];
     v4->_estimatedSizeInBytes = malloc_size(v4);
     if ([(NSString *)v4->_finalChangeAuthor length])
     {
@@ -43,18 +43,18 @@
   [(PFHistoryAnalyzerDefaultObjectState *)&v3 dealloc];
 }
 
-- (void)updateWithChange:(id)a3
+- (void)updateWithChange:(id)change
 {
-  self->_finalTransactionNumber = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(objc_msgSend(a3, "transaction"), "transactionNumber")}];
-  self->_finalChangeType = [a3 changeType];
+  self->_finalTransactionNumber = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(objc_msgSend(change, "transaction"), "transactionNumber")}];
+  self->_finalChangeType = [change changeType];
 
-  self->_tombstone = [a3 tombstone];
+  self->_tombstone = [change tombstone];
   if ([(NSString *)self->_finalChangeAuthor length])
   {
     self->_estimatedSizeInBytes -= malloc_size(self->_finalChangeAuthor);
   }
 
-  v5 = [objc_msgSend(a3 "transaction")];
+  v5 = [objc_msgSend(change "transaction")];
   self->_finalChangeAuthor = v5;
   if ([(NSString *)v5 length])
   {

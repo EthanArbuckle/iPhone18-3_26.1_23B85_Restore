@@ -1,30 +1,30 @@
 @interface TTRIBoardReminderCell
 - (BOOL)accessibilityActivate;
 - (BOOL)accessibilityPerformEscape;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (NSArray)accessibilityCustomActions;
 - (NSArray)accessibilityElements;
 - (NSString)accessibilityIdentifier;
 - (id)_accessibilityInternalTextLinks;
 - (unint64_t)_maskedCornersForSystemBackgroundView;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)invalidateIntrinsicContentSize;
 - (void)prepareForReuse;
-- (void)setAccessibilityIdentifier:(id)a3;
+- (void)setAccessibilityIdentifier:(id)identifier;
 @end
 
 @implementation TTRIBoardReminderCell
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_1002B6978(v7);
 
   (*(v5 + 8))(v7, v4);
@@ -53,7 +53,7 @@
   }
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   ObjectType = swift_getObjectType();
   v6 = type metadata accessor for TTRRectCorners();
@@ -62,18 +62,18 @@
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   v15.receiver = self;
   v15.super_class = ObjectType;
-  v10 = a3;
-  v11 = self;
-  [(TTRIBoardReminderCell *)&v15 applyLayoutAttributes:v10];
+  attributesCopy = attributes;
+  selfCopy = self;
+  [(TTRIBoardReminderCell *)&v15 applyLayoutAttributes:attributesCopy];
   type metadata accessor for TTRBoardColumnItemLayoutAttributes();
   if (swift_dynamicCastClass())
   {
-    v12 = v10;
+    v12 = attributesCopy;
     TTRBoardColumnItemLayoutAttributes.backgroundRoundedCorners.getter();
 
     v13 = OBJC_IVAR____TtC9Reminders21TTRIBoardReminderCell_roundedCorners;
     swift_beginAccess();
-    (*(v7 + 40))(v11 + v13, v9, v6);
+    (*(v7 + 40))(selfCopy + v13, v9, v6);
     swift_endAccess();
   }
 
@@ -91,19 +91,19 @@
   v7 = OBJC_IVAR____TtC9Reminders21TTRIBoardReminderCell_roundedCorners;
   swift_beginAccess();
   (*(v4 + 16))(v6, self + v7, v3);
-  v8 = self;
-  v9 = TTRRectCorners.cornerMask(layoutDirection:isFlipped:)([(TTRIBoardReminderCell *)v8 effectiveUserInterfaceLayoutDirection], 1);
+  selfCopy = self;
+  v9 = TTRRectCorners.cornerMask(layoutDirection:isFlipped:)([(TTRIBoardReminderCell *)selfCopy effectiveUserInterfaceLayoutDirection], 1);
 
   (*(v4 + 8))(v6, v3);
   return v9;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = self;
-  v10 = sub_1002B7578(width, height, a4, a5);
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  v10 = sub_1002B7578(width, height, priority, fittingPriority);
   v12 = v11;
 
   v13 = v10;
@@ -113,13 +113,13 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
-  v6 = [(TTRIBoardReminderCell *)v5 contentView];
-  [v6 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
+  contentView = [(TTRIBoardReminderCell *)selfCopy contentView];
+  [contentView sizeThatFits:{width, height}];
   v8 = v7;
   v10 = v9;
 
@@ -145,7 +145,7 @@
   v8[2] = sub_100026440;
   v8[3] = &unk_10071E5E0;
   v6 = _Block_copy(v8);
-  v7 = self;
+  selfCopy = self;
 
   [v3 performWithoutAnimation:v6];
   _Block_release(v6);
@@ -159,7 +159,7 @@
 
 - (NSString)accessibilityIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002BCB18();
   v4 = v3;
 
@@ -176,29 +176,29 @@
   return v5;
 }
 
-- (void)setAccessibilityIdentifier:(id)a3
+- (void)setAccessibilityIdentifier:(id)identifier
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v6 = self;
-    a3 = String._bridgeToObjectiveC()();
+    selfCopy = self;
+    identifier = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;
   v8.super_class = ObjectType;
-  [(TTRIBoardReminderCell *)&v8 setAccessibilityIdentifier:a3];
+  [(TTRIBoardReminderCell *)&v8 setAccessibilityIdentifier:identifier];
 }
 
 - (NSArray)accessibilityElements
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1002BCEBC();
 
   if (v3)
@@ -216,7 +216,7 @@
 
 - (BOOL)accessibilityActivate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1002BD2E8();
 
   return v3 & 1;
@@ -224,8 +224,8 @@
 
 - (BOOL)accessibilityPerformEscape
 {
-  v2 = self;
-  v3 = [(TTRIBoardReminderCell *)v2 contentView];
+  selfCopy = self;
+  contentView = [(TTRIBoardReminderCell *)selfCopy contentView];
   type metadata accessor for TTRIBoardReminderCellContentView();
   if (swift_dynamicCastClass())
   {
@@ -233,27 +233,27 @@
 
     if (!v4)
     {
-      v5 = 0;
+      resignFirstResponder = 0;
       goto LABEL_7;
     }
 
-    v5 = [v4 resignFirstResponder];
+    resignFirstResponder = [v4 resignFirstResponder];
   }
 
   else
   {
-    v5 = 0;
-    v4 = v2;
-    v2 = v3;
+    resignFirstResponder = 0;
+    v4 = selfCopy;
+    selfCopy = contentView;
   }
 
 LABEL_7:
-  return v5;
+  return resignFirstResponder;
 }
 
 - (NSArray)accessibilityCustomActions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1002BDC74();
 
   if (v3)
@@ -272,8 +272,8 @@ LABEL_7:
 
 - (id)_accessibilityInternalTextLinks
 {
-  v2 = self;
-  v3 = [(TTRIBoardReminderCell *)v2 contentView];
+  selfCopy = self;
+  contentView = [(TTRIBoardReminderCell *)selfCopy contentView];
   type metadata accessor for TTRIBoardReminderCellContentView();
   if (swift_dynamicCastClass())
   {

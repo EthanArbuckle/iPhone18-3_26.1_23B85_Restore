@@ -1,10 +1,10 @@
 @interface CNPosterOnboardingWelcomeViewController
-- (CNPosterOnboardingWelcomeViewController)initWithContact:(id)a3;
+- (CNPosterOnboardingWelcomeViewController)initWithContact:(id)contact;
 - (CNPosterOnboardingWelcomeViewControllerDelegate)delegate;
 - (void)onboardingWelcomeViewDidTapCancel;
 - (void)onboardingWelcomeViewDidTapContinue;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation CNPosterOnboardingWelcomeViewController
@@ -18,12 +18,12 @@
 
 - (void)onboardingWelcomeViewDidTapCancel
 {
-  v3 = [(CNPosterOnboardingWelcomeViewController *)self delegate];
+  delegate = [(CNPosterOnboardingWelcomeViewController *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v5 = [(CNPosterOnboardingWelcomeViewController *)self delegate];
-    [v5 posterOnboardingViewControllerDidDidTapCancel:self];
+    delegate2 = [(CNPosterOnboardingWelcomeViewController *)self delegate];
+    [delegate2 posterOnboardingViewControllerDidDidTapCancel:self];
   }
 
   else
@@ -41,12 +41,12 @@
 
 - (void)onboardingWelcomeViewDidTapContinue
 {
-  v3 = [(CNPosterOnboardingWelcomeViewController *)self delegate];
+  delegate = [(CNPosterOnboardingWelcomeViewController *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v5 = [(CNPosterOnboardingWelcomeViewController *)self delegate];
-    [v5 posterOnboardingViewControllerDidTapContinue:self];
+    delegate2 = [(CNPosterOnboardingWelcomeViewController *)self delegate];
+    [delegate2 posterOnboardingViewControllerDidTapContinue:self];
   }
 
   else
@@ -62,52 +62,52 @@
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v38[4] = *MEMORY[0x1E69E9840];
   v37.receiver = self;
   v37.super_class = CNPosterOnboardingWelcomeViewController;
-  [(CNPosterOnboardingWelcomeViewController *)&v37 viewIsAppearing:a3];
-  v4 = [(CNPosterOnboardingWelcomeViewController *)self navigationItem];
-  v5 = [v4 navigationBar];
-  [v5 frame];
+  [(CNPosterOnboardingWelcomeViewController *)&v37 viewIsAppearing:appearing];
+  navigationItem = [(CNPosterOnboardingWelcomeViewController *)self navigationItem];
+  navigationBar = [navigationItem navigationBar];
+  [navigationBar frame];
   v7 = v6;
 
   v8 = [_TtC10ContactsUI36CNPosterOnboardingWelcomeViewWrapper alloc];
-  v9 = [(CNPosterOnboardingWelcomeViewController *)self contact];
-  v10 = [(CNPosterOnboardingWelcomeViewController *)self hasOptionToSkip];
-  v11 = [(CNPosterOnboardingWelcomeViewController *)self hasExistingNickname];
-  v12 = [(CNPosterOnboardingWelcomeViewController *)self view];
-  v13 = [v12 window];
-  v14 = [v13 windowScene];
-  v15 = [(CNPosterOnboardingWelcomeViewWrapper *)v8 initWithContact:v9 hasOptionToSkip:v10 hasExistingNickname:v11 navigationBarHeight:self delegate:v14 windowScene:v7];
-  v16 = [(CNPosterOnboardingWelcomeViewWrapper *)v15 hostingController];
-  v17 = [v16 view];
+  contact = [(CNPosterOnboardingWelcomeViewController *)self contact];
+  hasOptionToSkip = [(CNPosterOnboardingWelcomeViewController *)self hasOptionToSkip];
+  hasExistingNickname = [(CNPosterOnboardingWelcomeViewController *)self hasExistingNickname];
+  view = [(CNPosterOnboardingWelcomeViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  v15 = [(CNPosterOnboardingWelcomeViewWrapper *)v8 initWithContact:contact hasOptionToSkip:hasOptionToSkip hasExistingNickname:hasExistingNickname navigationBarHeight:self delegate:windowScene windowScene:v7];
+  hostingController = [(CNPosterOnboardingWelcomeViewWrapper *)v15 hostingController];
+  view2 = [hostingController view];
 
-  [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v18 = [(CNPosterOnboardingWelcomeViewController *)self view];
-  [v18 addSubview:v17];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [(CNPosterOnboardingWelcomeViewController *)self view];
+  [view3 addSubview:view2];
 
   v29 = MEMORY[0x1E696ACD8];
-  v35 = [v17 leadingAnchor];
-  v36 = [(CNPosterOnboardingWelcomeViewController *)self view];
-  v34 = [v36 leadingAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  leadingAnchor = [view2 leadingAnchor];
+  view4 = [(CNPosterOnboardingWelcomeViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v33 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v38[0] = v33;
-  v31 = [v17 trailingAnchor];
-  v32 = [(CNPosterOnboardingWelcomeViewController *)self view];
-  v30 = [v32 trailingAnchor];
-  v28 = [v31 constraintEqualToAnchor:v30];
+  trailingAnchor = [view2 trailingAnchor];
+  view5 = [(CNPosterOnboardingWelcomeViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v38[1] = v28;
-  v19 = [v17 topAnchor];
-  v20 = [(CNPosterOnboardingWelcomeViewController *)self view];
-  v21 = [v20 topAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  topAnchor = [view2 topAnchor];
+  view6 = [(CNPosterOnboardingWelcomeViewController *)self view];
+  topAnchor2 = [view6 topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v38[2] = v22;
-  v23 = [v17 bottomAnchor];
-  v24 = [(CNPosterOnboardingWelcomeViewController *)self view];
-  v25 = [v24 bottomAnchor];
-  v26 = [v23 constraintEqualToAnchor:v25];
+  bottomAnchor = [view2 bottomAnchor];
+  view7 = [(CNPosterOnboardingWelcomeViewController *)self view];
+  bottomAnchor2 = [view7 bottomAnchor];
+  v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v38[3] = v26;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:4];
   [v29 activateConstraints:v27];
@@ -118,20 +118,20 @@
   v4.receiver = self;
   v4.super_class = CNPosterOnboardingWelcomeViewController;
   [(CNPosterOnboardingWelcomeViewController *)&v4 viewDidLoad];
-  v3 = [(CNPosterOnboardingWelcomeViewController *)self navigationItem];
-  [v3 _setBackgroundHidden:1];
+  navigationItem = [(CNPosterOnboardingWelcomeViewController *)self navigationItem];
+  [navigationItem _setBackgroundHidden:1];
 }
 
-- (CNPosterOnboardingWelcomeViewController)initWithContact:(id)a3
+- (CNPosterOnboardingWelcomeViewController)initWithContact:(id)contact
 {
-  v5 = a3;
+  contactCopy = contact;
   v10.receiver = self;
   v10.super_class = CNPosterOnboardingWelcomeViewController;
   v6 = [(CNPosterOnboardingWelcomeViewController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contact, a3);
+    objc_storeStrong(&v6->_contact, contact);
     v8 = v7;
   }
 

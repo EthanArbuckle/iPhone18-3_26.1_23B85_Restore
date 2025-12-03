@@ -26,12 +26,12 @@
 
 - (uint64_t)fc_hasErrorCode:()FCErrorAdditions
 {
-  v5 = [a1 domain];
-  if ([v5 isEqualToString:@"FCErrorDomain"])
+  domain = [self domain];
+  if ([domain isEqualToString:@"FCErrorDomain"])
   {
-    v6 = [a1 code];
+    code = [self code];
 
-    if (v6 == a3)
+    if (code == a3)
     {
       return 1;
     }
@@ -41,8 +41,8 @@
   {
   }
 
-  v8 = [a1 userInfo];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+  userInfo = [self userInfo];
+  v9 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
   if (v9)
   {
@@ -88,8 +88,8 @@
   if (a3)
   {
     v9 = @"FCErrorMissingObjectsDescriptionsKey";
-    v4 = [a3 allObjects];
-    v10[0] = v4;
+    allObjects = [a3 allObjects];
+    v10[0] = allObjects;
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   }
 
@@ -98,7 +98,7 @@
     v5 = MEMORY[0x1E695E0F8];
   }
 
-  v6 = [a1 fc_errorWithCode:5 description:@"The operation could not be completed with just the contents of the cache." additionalUserInfo:v5];
+  v6 = [self fc_errorWithCode:5 description:@"The operation could not be completed with just the contents of the cache." additionalUserInfo:v5];
 
   v7 = *MEMORY[0x1E69E9840];
 
@@ -112,7 +112,7 @@
   v10 = @"FCErrorRetryAfter";
   v11[0] = &unk_1F2E71B98;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  v7 = [a1 fc_errorWithCode:2 description:v5 additionalUserInfo:v6];
+  v7 = [self fc_errorWithCode:2 description:v5 additionalUserInfo:v6];
 
   v8 = *MEMORY[0x1E69E9840];
 
@@ -126,7 +126,7 @@
   v2 = [MEMORY[0x1E696AD98] numberWithInteger:?];
   v8[0] = v2;
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  v4 = [a1 fc_errorWithCode:10 description:0 additionalUserInfo:v3];
+  v4 = [self fc_errorWithCode:10 description:0 additionalUserInfo:v3];
 
   v5 = *MEMORY[0x1E69E9840];
 
@@ -138,10 +138,10 @@
   v3 = a3;
   if (v3 && ([MEMORY[0x1E695DFB0] null], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v3, "isEqual:", v4), v4, (v5 & 1) == 0))
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
-    [v7 setObject:@"Failed to load the configuration." forKeyedSubscript:*MEMORY[0x1E696A578]];
-    [v7 setObject:v3 forKeyedSubscript:*MEMORY[0x1E696AA08]];
-    v6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"FCErrorDomain" code:14 userInfo:v7];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:@"Failed to load the configuration." forKeyedSubscript:*MEMORY[0x1E696A578]];
+    [dictionary setObject:v3 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+    v6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"FCErrorDomain" code:14 userInfo:dictionary];
   }
 
   else
@@ -177,7 +177,7 @@
   v5 = a3;
   v6 = [v4 dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
-  v7 = [a1 fc_errorWithCode:20 description:@"The requested content is not allowed in the current storefront" additionalUserInfo:v6];
+  v7 = [self fc_errorWithCode:20 description:@"The requested content is not allowed in the current storefront" additionalUserInfo:v6];
 
   v8 = *MEMORY[0x1E69E9840];
 
@@ -197,7 +197,7 @@
   v13[0] = v5;
   v13[1] = v6;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
-  v9 = [a1 fc_errorWithCode:25 description:@"The requested asset could not be retrieved." additionalUserInfo:v8];
+  v9 = [self fc_errorWithCode:25 description:@"The requested asset could not be retrieved." additionalUserInfo:v8];
 
   v10 = *MEMORY[0x1E69E9840];
 
@@ -211,7 +211,7 @@
   v2 = [MEMORY[0x1E696AD98] numberWithInt:?];
   v8[0] = v2;
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  v4 = [a1 fc_errorWithCode:26 description:@"Failed to unzip a zip archive." additionalUserInfo:v3];
+  v4 = [self fc_errorWithCode:26 description:@"Failed to unzip a zip archive." additionalUserInfo:v3];
 
   v5 = *MEMORY[0x1E69E9840];
 
@@ -222,10 +222,10 @@
 {
   v4 = MEMORY[0x1E695DF90];
   v5 = a3;
-  v6 = [v4 dictionary];
-  [v6 fc_safelySetObjectAllowingNil:v5 forKey:@"FCErrorAssetWrappingKeyIDKey"];
+  dictionary = [v4 dictionary];
+  [dictionary fc_safelySetObjectAllowingNil:v5 forKey:@"FCErrorAssetWrappingKeyIDKey"];
 
-  v7 = [a1 fc_errorWithCode:27 description:@"The requested asset wrapping key could not be retrieved because the user isn't authorized." additionalUserInfo:v6];
+  v7 = [self fc_errorWithCode:27 description:@"The requested asset wrapping key could not be retrieved because the user isn't authorized." additionalUserInfo:dictionary];
 
   return v7;
 }
@@ -234,10 +234,10 @@
 {
   v4 = MEMORY[0x1E695DF90];
   v5 = a3;
-  v6 = [v4 dictionary];
-  [v6 fc_safelySetObjectAllowingNil:v5 forKey:@"FCErrorAssetKeyURI"];
+  dictionary = [v4 dictionary];
+  [dictionary fc_safelySetObjectAllowingNil:v5 forKey:@"FCErrorAssetKeyURI"];
 
-  v7 = [a1 fc_errorWithCode:35 description:@"The requested AV asset key could not be retrieved because the user isn't authorized." additionalUserInfo:v6];
+  v7 = [self fc_errorWithCode:35 description:@"The requested AV asset key could not be retrieved because the user isn't authorized." additionalUserInfo:dictionary];
 
   return v7;
 }
@@ -246,10 +246,10 @@
 {
   v4 = MEMORY[0x1E695DF90];
   v5 = a3;
-  v6 = [v4 dictionary];
-  [v6 fc_safelySetObjectAllowingNil:v5 forKey:@"FCErrorArticleIDKey"];
+  dictionary = [v4 dictionary];
+  [dictionary fc_safelySetObjectAllowingNil:v5 forKey:@"FCErrorArticleIDKey"];
 
-  v7 = [a1 fc_errorWithCode:29 description:@"An ANF article is missing its main document asset handle." additionalUserInfo:v6];
+  v7 = [self fc_errorWithCode:29 description:@"An ANF article is missing its main document asset handle." additionalUserInfo:dictionary];
 
   return v7;
 }
@@ -258,10 +258,10 @@
 {
   v4 = MEMORY[0x1E695DF90];
   v5 = a3;
-  v6 = [v4 dictionary];
-  [v6 fc_safelySetObjectAllowingNil:v5 forKey:@"FCErrorTagIDKey"];
+  dictionary = [v4 dictionary];
+  [dictionary fc_safelySetObjectAllowingNil:v5 forKey:@"FCErrorTagIDKey"];
 
-  v7 = [a1 fc_errorWithCode:30 description:@"The operation could not be completed because the expected channel was invalid." additionalUserInfo:v6];
+  v7 = [self fc_errorWithCode:30 description:@"The operation could not be completed because the expected channel was invalid." additionalUserInfo:dictionary];
 
   return v7;
 }
@@ -270,10 +270,10 @@
 {
   v4 = MEMORY[0x1E695DF90];
   v5 = a3;
-  v6 = [v4 dictionary];
-  [v6 fc_safelySetObjectAllowingNil:v5 forKey:@"FCErrorTagIDKey"];
+  dictionary = [v4 dictionary];
+  [dictionary fc_safelySetObjectAllowingNil:v5 forKey:@"FCErrorTagIDKey"];
 
-  v7 = [a1 fc_errorWithCode:31 description:@"The operation could not be completed because the expected section was invalid." additionalUserInfo:v6];
+  v7 = [self fc_errorWithCode:31 description:@"The operation could not be completed because the expected section was invalid." additionalUserInfo:dictionary];
 
   return v7;
 }
@@ -303,21 +303,21 @@
   v10 = MEMORY[0x1E695DF90];
   v11 = a5;
   v12 = a3;
-  v13 = [v10 dictionary];
-  [v13 fc_safelySetObjectAllowingNil:v12 forKey:*MEMORY[0x1E696A998]];
+  dictionary = [v10 dictionary];
+  [dictionary fc_safelySetObjectAllowingNil:v12 forKey:*MEMORY[0x1E696A998]];
 
-  [v13 fc_safelySetObjectAllowingNil:v11 forKey:@"FCErrorHTTPRequestUUID"];
+  [dictionary fc_safelySetObjectAllowingNil:v11 forKey:@"FCErrorHTTPRequestUUID"];
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  [v13 fc_safelySetObjectAllowingNil:v14 forKey:@"FCErrorHTTPStatusCode"];
+  [dictionary fc_safelySetObjectAllowingNil:v14 forKey:@"FCErrorHTTPStatusCode"];
 
   if (v9)
   {
-    [v13 addEntriesFromDictionary:v9];
+    [dictionary addEntriesFromDictionary:v9];
   }
 
   v15 = MEMORY[0x1E696ABC0];
   v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"URL download failed with status code %lu", a4];
-  v17 = [v15 fc_errorWithCode:4 description:v16 additionalUserInfo:v13];
+  v17 = [v15 fc_errorWithCode:4 description:v16 additionalUserInfo:dictionary];
 
   return v17;
 }
@@ -325,7 +325,7 @@
 + (id)fc_unknownRecordZoneErrorWithZoneName:()FCErrorAdditions
 {
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown record zone %@", a3];
-  v5 = [a1 fc_errorWithCode:16 description:v4 additionalUserInfo:0];
+  v5 = [self fc_errorWithCode:16 description:v4 additionalUserInfo:0];
 
   return v5;
 }
@@ -334,14 +334,14 @@
 {
   v6 = MEMORY[0x1E695DF90];
   v7 = a3;
-  v8 = [v6 dictionary];
-  [v8 fc_safelySetObjectAllowingNil:v7 forKey:*MEMORY[0x1E696A998]];
+  dictionary = [v6 dictionary];
+  [dictionary fc_safelySetObjectAllowingNil:v7 forKey:*MEMORY[0x1E696A998]];
 
   v9 = [MEMORY[0x1E696AD98] numberWithInt:a4];
-  [v8 fc_safelySetObjectAllowingNil:v9 forKey:@"FCErrorErrnoKey"];
+  [dictionary fc_safelySetObjectAllowingNil:v9 forKey:@"FCErrorErrnoKey"];
 
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to traverse directory"];
-  v11 = [a1 fc_errorWithCode:16 description:v10 additionalUserInfo:v8];
+  v11 = [self fc_errorWithCode:16 description:v10 additionalUserInfo:dictionary];
 
   return v11;
 }
@@ -350,14 +350,14 @@
 {
   v6 = MEMORY[0x1E695DF90];
   v7 = a3;
-  v8 = [v6 dictionary];
-  [v8 fc_safelySetObjectAllowingNil:v7 forKey:*MEMORY[0x1E696A998]];
+  dictionary = [v6 dictionary];
+  [dictionary fc_safelySetObjectAllowingNil:v7 forKey:*MEMORY[0x1E696A998]];
 
   v9 = [MEMORY[0x1E696AD98] numberWithInt:a4];
-  [v8 fc_safelySetObjectAllowingNil:v9 forKey:@"FCErrorErrnoKey"];
+  [dictionary fc_safelySetObjectAllowingNil:v9 forKey:@"FCErrorErrnoKey"];
 
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to remove directory"];
-  v11 = [a1 fc_errorWithCode:16 description:v10 additionalUserInfo:v8];
+  v11 = [self fc_errorWithCode:16 description:v10 additionalUserInfo:dictionary];
 
   return v11;
 }
@@ -366,14 +366,14 @@
 {
   v6 = MEMORY[0x1E695DF90];
   v7 = a3;
-  v8 = [v6 dictionary];
-  [v8 fc_safelySetObjectAllowingNil:v7 forKey:*MEMORY[0x1E696A998]];
+  dictionary = [v6 dictionary];
+  [dictionary fc_safelySetObjectAllowingNil:v7 forKey:*MEMORY[0x1E696A998]];
 
   v9 = [MEMORY[0x1E696AD98] numberWithInt:a4];
-  [v8 fc_safelySetObjectAllowingNil:v9 forKey:@"FCErrorErrnoKey"];
+  [dictionary fc_safelySetObjectAllowingNil:v9 forKey:@"FCErrorErrnoKey"];
 
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to remove file"];
-  v11 = [a1 fc_errorWithCode:16 description:v10 additionalUserInfo:v8];
+  v11 = [self fc_errorWithCode:16 description:v10 additionalUserInfo:dictionary];
 
   return v11;
 }

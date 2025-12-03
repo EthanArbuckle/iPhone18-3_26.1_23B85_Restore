@@ -1,8 +1,8 @@
 @interface HMDUserActivityStateDetectorLogEventAnalyzer
-- (HMDUserActivityStateDetectorLogEventAnalyzer)initWithDataSource:(id)a3;
+- (HMDUserActivityStateDetectorLogEventAnalyzer)initWithDataSource:(id)source;
 - (void)configure;
-- (void)handleType6TransitionLogEvent:(id)a3;
-- (void)observeEvent:(id)a3;
+- (void)handleType6TransitionLogEvent:(id)event;
+- (void)observeEvent:(id)event;
 - (void)resetType6DetectorTransitionCounterGroup;
 - (void)runDailyTask;
 - (void)submitType6DetectorTransitionCounterGroups;
@@ -12,39 +12,39 @@
 
 - (void)resetType6DetectorTransitionCounterGroup
 {
-  v3 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self durationsBetweenInitialETAAndActualArrivalTime];
-  [v3 removeAllObjects];
+  durationsBetweenInitialETAAndActualArrivalTime = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self durationsBetweenInitialETAAndActualArrivalTime];
+  [durationsBetweenInitialETAAndActualArrivalTime removeAllObjects];
 
-  v4 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self durationsBetweenStartingComingHomeAndActualArrivalTime];
-  [v4 removeAllObjects];
+  durationsBetweenStartingComingHomeAndActualArrivalTime = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self durationsBetweenStartingComingHomeAndActualArrivalTime];
+  [durationsBetweenStartingComingHomeAndActualArrivalTime removeAllObjects];
 
-  v5 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self durationsBetweenStartingComingHomeAndCancellingComingHome];
-  [v5 removeAllObjects];
+  durationsBetweenStartingComingHomeAndCancellingComingHome = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self durationsBetweenStartingComingHomeAndCancellingComingHome];
+  [durationsBetweenStartingComingHomeAndCancellingComingHome removeAllObjects];
 
-  v6 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self durationsBetweenCancellingComingHomeAndEstimatedArrivalTime];
-  [v6 removeAllObjects];
+  durationsBetweenCancellingComingHomeAndEstimatedArrivalTime = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self durationsBetweenCancellingComingHomeAndEstimatedArrivalTime];
+  [durationsBetweenCancellingComingHomeAndEstimatedArrivalTime removeAllObjects];
 
-  v7 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self durationsBetweenStartingComingHomeAndPausingComingHome];
-  [v7 removeAllObjects];
+  durationsBetweenStartingComingHomeAndPausingComingHome = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self durationsBetweenStartingComingHomeAndPausingComingHome];
+  [durationsBetweenStartingComingHomeAndPausingComingHome removeAllObjects];
 
-  v8 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self durationsBetweenPausingComingHomeAndEstimatedArrivalTime];
-  [v8 removeAllObjects];
+  durationsBetweenPausingComingHomeAndEstimatedArrivalTime = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self durationsBetweenPausingComingHomeAndEstimatedArrivalTime];
+  [durationsBetweenPausingComingHomeAndEstimatedArrivalTime removeAllObjects];
 
-  v9 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self type6DetectorTransitionCounterGroup];
-  [v9 resetEventCounters];
+  type6DetectorTransitionCounterGroup = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self type6DetectorTransitionCounterGroup];
+  [type6DetectorTransitionCounterGroup resetEventCounters];
 }
 
 - (void)submitType6DetectorTransitionCounterGroups
 {
-  v53 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self type6DetectorTransitionCounterGroup];
+  type6DetectorTransitionCounterGroup = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self type6DetectorTransitionCounterGroup];
   v3 = HMDUserActivityType6StateEventAsString(1, 1);
-  v4 = [v53 fetchEventCounterForEventName:v3];
+  v4 = [type6DetectorTransitionCounterGroup fetchEventCounterForEventName:v3];
   v5 = HMDUserActivityType6StateEventAsString(2, 1);
 
-  v6 = [v53 fetchEventCounterForEventName:v5];
+  v6 = [type6DetectorTransitionCounterGroup fetchEventCounterForEventName:v5];
   v7 = HMDUserActivityType6StateEventAsString(3, 1);
 
-  v8 = [v53 fetchEventCounterForEventName:v7];
+  v8 = [type6DetectorTransitionCounterGroup fetchEventCounterForEventName:v7];
   if (v8)
   {
     v9 = v8;
@@ -57,10 +57,10 @@
 
   v10 = HMDUserActivityType6StateEventAsString(2, 2);
 
-  v11 = [v53 fetchEventCounterForEventName:v10];
+  v11 = [type6DetectorTransitionCounterGroup fetchEventCounterForEventName:v10];
   v12 = HMDUserActivityType6StateEventAsString(3, 2);
 
-  v13 = [v53 fetchEventCounterForEventName:v12];
+  v13 = [type6DetectorTransitionCounterGroup fetchEventCounterForEventName:v12];
   if (v13)
   {
     v14 = v13;
@@ -73,33 +73,33 @@
 
   v15 = HMDUserActivityType6StateEventAsString(2, 5);
 
-  v48 = [v53 fetchEventCounterForEventName:v15];
+  v48 = [type6DetectorTransitionCounterGroup fetchEventCounterForEventName:v15];
   v16 = HMDUserActivityType6StateEventAsString(3, 5);
 
-  v45 = [v53 fetchEventCounterForEventName:v16];
+  v45 = [type6DetectorTransitionCounterGroup fetchEventCounterForEventName:v16];
   v17 = HMDUserActivityType6StateEventAsString(2, 3);
 
-  v18 = [v53 fetchEventCounterForEventName:v17];
+  v18 = [type6DetectorTransitionCounterGroup fetchEventCounterForEventName:v17];
   v19 = HMDUserActivityType6StateEventAsString(2, 4);
 
-  v47 = [v53 fetchEventCounterForEventName:v19];
-  v20 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self durationsBetweenInitialETAAndActualArrivalTime];
-  v21 = mediaForArray(v20);
+  v47 = [type6DetectorTransitionCounterGroup fetchEventCounterForEventName:v19];
+  durationsBetweenInitialETAAndActualArrivalTime = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self durationsBetweenInitialETAAndActualArrivalTime];
+  v21 = mediaForArray(durationsBetweenInitialETAAndActualArrivalTime);
 
-  v22 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self durationsBetweenStartingComingHomeAndActualArrivalTime];
-  v52 = mediaForArray(v22);
+  durationsBetweenStartingComingHomeAndActualArrivalTime = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self durationsBetweenStartingComingHomeAndActualArrivalTime];
+  v52 = mediaForArray(durationsBetweenStartingComingHomeAndActualArrivalTime);
 
-  v23 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self durationsBetweenStartingComingHomeAndCancellingComingHome];
-  v51 = mediaForArray(v23);
+  durationsBetweenStartingComingHomeAndCancellingComingHome = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self durationsBetweenStartingComingHomeAndCancellingComingHome];
+  v51 = mediaForArray(durationsBetweenStartingComingHomeAndCancellingComingHome);
 
-  v24 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self durationsBetweenCancellingComingHomeAndEstimatedArrivalTime];
-  v50 = mediaForArray(v24);
+  durationsBetweenCancellingComingHomeAndEstimatedArrivalTime = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self durationsBetweenCancellingComingHomeAndEstimatedArrivalTime];
+  v50 = mediaForArray(durationsBetweenCancellingComingHomeAndEstimatedArrivalTime);
 
-  v25 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self durationsBetweenStartingComingHomeAndPausingComingHome];
-  v26 = mediaForArray(v25);
+  durationsBetweenStartingComingHomeAndPausingComingHome = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self durationsBetweenStartingComingHomeAndPausingComingHome];
+  v26 = mediaForArray(durationsBetweenStartingComingHomeAndPausingComingHome);
 
-  v27 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self durationsBetweenPausingComingHomeAndEstimatedArrivalTime];
-  v28 = mediaForArray(v27);
+  durationsBetweenPausingComingHomeAndEstimatedArrivalTime = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self durationsBetweenPausingComingHomeAndEstimatedArrivalTime];
+  v28 = mediaForArray(durationsBetweenPausingComingHomeAndEstimatedArrivalTime);
 
   v29 = v4;
   if (v9 + v4 + v14 + v18)
@@ -133,9 +133,9 @@
     v26 = v33;
 
     v28 = v49;
-    v42 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self dataSource];
-    v43 = [v42 logEventSubmitter];
-    [v43 submitLogEvent:v41];
+    dataSource = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self dataSource];
+    logEventSubmitter = [dataSource logEventSubmitter];
+    [logEventSubmitter submitLogEvent:v41];
 
     v19 = v44;
   }
@@ -144,10 +144,10 @@
 - (void)runDailyTask
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self dataSource];
-  v4 = [v3 isThisDeviceDesignatedFMFDevice];
+  dataSource = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self dataSource];
+  isThisDeviceDesignatedFMFDevice = [dataSource isThisDeviceDesignatedFMFDevice];
 
-  if (v4)
+  if (isThisDeviceDesignatedFMFDevice)
   {
     [(HMDUserActivityStateDetectorLogEventAnalyzer *)self submitCounterGroups];
   }
@@ -155,7 +155,7 @@
   else
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
@@ -172,13 +172,13 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleType6TransitionLogEvent:(id)a3
+- (void)handleType6TransitionLogEvent:(id)event
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 eventString];
+  eventCopy = event;
+  eventString = [eventCopy eventString];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -186,46 +186,46 @@
     v21 = 138543618;
     v22 = v9;
     v23 = 2112;
-    v24 = v5;
+    v24 = eventString;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_DEBUG, "%{public}@Incrementing daily total counters for %@", &v21, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)v7 type6DetectorTransitionCounterGroup];
-  [v10 incrementEventCounterForEventName:v5];
+  type6DetectorTransitionCounterGroup = [(HMDUserActivityStateDetectorLogEventAnalyzer *)selfCopy type6DetectorTransitionCounterGroup];
+  [type6DetectorTransitionCounterGroup incrementEventCounterForEventName:eventString];
 
-  if (([v4 trackerType] == 2 || objc_msgSend(v4, "trackerType") == 3) && objc_msgSend(v4, "reason") == 1)
+  if (([eventCopy trackerType] == 2 || objc_msgSend(eventCopy, "trackerType") == 3) && objc_msgSend(eventCopy, "reason") == 1)
   {
-    v11 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)v7 durationsBetweenStartingComingHomeAndActualArrivalTime];
-    v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "timeInEvent")}];
-    [v11 addObject:v12];
+    durationsBetweenStartingComingHomeAndActualArrivalTime = [(HMDUserActivityStateDetectorLogEventAnalyzer *)selfCopy durationsBetweenStartingComingHomeAndActualArrivalTime];
+    v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(eventCopy, "timeInEvent")}];
+    [durationsBetweenStartingComingHomeAndActualArrivalTime addObject:v12];
 
-    v13 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)v7 durationsBetweenInitialETAAndActualArrivalTime];
+    durationsBetweenInitialETAAndActualArrivalTime = [(HMDUserActivityStateDetectorLogEventAnalyzer *)selfCopy durationsBetweenInitialETAAndActualArrivalTime];
 LABEL_14:
-    v18 = v13;
-    v19 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "secondaryOffset")}];
+    v18 = durationsBetweenInitialETAAndActualArrivalTime;
+    v19 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(eventCopy, "secondaryOffset")}];
     [v18 addObject:v19];
 
     goto LABEL_15;
   }
 
-  if (([v4 trackerType] == 2 || objc_msgSend(v4, "trackerType") == 3) && objc_msgSend(v4, "reason") == 2)
+  if (([eventCopy trackerType] == 2 || objc_msgSend(eventCopy, "trackerType") == 3) && objc_msgSend(eventCopy, "reason") == 2)
   {
-    v14 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)v7 durationsBetweenStartingComingHomeAndCancellingComingHome];
-    v15 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "timeInEvent")}];
-    [v14 addObject:v15];
+    durationsBetweenStartingComingHomeAndCancellingComingHome = [(HMDUserActivityStateDetectorLogEventAnalyzer *)selfCopy durationsBetweenStartingComingHomeAndCancellingComingHome];
+    v15 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(eventCopy, "timeInEvent")}];
+    [durationsBetweenStartingComingHomeAndCancellingComingHome addObject:v15];
 
-    v13 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)v7 durationsBetweenCancellingComingHomeAndEstimatedArrivalTime];
+    durationsBetweenInitialETAAndActualArrivalTime = [(HMDUserActivityStateDetectorLogEventAnalyzer *)selfCopy durationsBetweenCancellingComingHomeAndEstimatedArrivalTime];
     goto LABEL_14;
   }
 
-  if ([v4 trackerType] == 2 && objc_msgSend(v4, "reason") == 3)
+  if ([eventCopy trackerType] == 2 && objc_msgSend(eventCopy, "reason") == 3)
   {
-    v16 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)v7 durationsBetweenStartingComingHomeAndPausingComingHome];
-    v17 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "timeInEvent")}];
-    [v16 addObject:v17];
+    durationsBetweenStartingComingHomeAndPausingComingHome = [(HMDUserActivityStateDetectorLogEventAnalyzer *)selfCopy durationsBetweenStartingComingHomeAndPausingComingHome];
+    v17 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(eventCopy, "timeInEvent")}];
+    [durationsBetweenStartingComingHomeAndPausingComingHome addObject:v17];
 
-    v13 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)v7 durationsBetweenPausingComingHomeAndEstimatedArrivalTime];
+    durationsBetweenInitialETAAndActualArrivalTime = [(HMDUserActivityStateDetectorLogEventAnalyzer *)selfCopy durationsBetweenPausingComingHomeAndEstimatedArrivalTime];
     goto LABEL_14;
   }
 
@@ -234,13 +234,13 @@ LABEL_15:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeEvent:(id)a3
+- (void)observeEvent:(id)event
 {
-  v6 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v6;
+    v4 = eventCopy;
   }
 
   else
@@ -258,58 +258,58 @@ LABEL_15:
 - (void)configure
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self dataSource];
-  v4 = [v3 dailyScheduler];
-  [v4 registerDailyTaskRunner:self];
+  dataSource = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self dataSource];
+  dailyScheduler = [dataSource dailyScheduler];
+  [dailyScheduler registerDailyTaskRunner:self];
 
-  v5 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self dataSource];
-  v6 = [v5 logEventDispatcher];
+  dataSource2 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)self dataSource];
+  logEventDispatcher = [dataSource2 logEventDispatcher];
   v9[0] = objc_opt_class();
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-  [v6 addObserver:self forEventClasses:v7];
+  [logEventDispatcher addObserver:self forEventClasses:v7];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDUserActivityStateDetectorLogEventAnalyzer)initWithDataSource:(id)a3
+- (HMDUserActivityStateDetectorLogEventAnalyzer)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v25.receiver = self;
   v25.super_class = HMDUserActivityStateDetectorLogEventAnalyzer;
   v6 = [(HMDUserActivityStateDetectorLogEventAnalyzer *)&v25 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
-    v8 = [v5 legacyCountersManager];
+    objc_storeStrong(&v6->_dataSource, source);
+    legacyCountersManager = [sourceCopy legacyCountersManager];
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"HMDUserActivityStateType6Transitions"];
-    v10 = [v8 counterGroupForName:v9];
+    v10 = [legacyCountersManager counterGroupForName:v9];
     type6DetectorTransitionCounterGroup = v7->_type6DetectorTransitionCounterGroup;
     v7->_type6DetectorTransitionCounterGroup = v10;
 
-    v12 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     durationsBetweenInitialETAAndActualArrivalTime = v7->_durationsBetweenInitialETAAndActualArrivalTime;
-    v7->_durationsBetweenInitialETAAndActualArrivalTime = v12;
+    v7->_durationsBetweenInitialETAAndActualArrivalTime = array;
 
-    v14 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     durationsBetweenStartingComingHomeAndActualArrivalTime = v7->_durationsBetweenStartingComingHomeAndActualArrivalTime;
-    v7->_durationsBetweenStartingComingHomeAndActualArrivalTime = v14;
+    v7->_durationsBetweenStartingComingHomeAndActualArrivalTime = array2;
 
-    v16 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     durationsBetweenStartingComingHomeAndCancellingComingHome = v7->_durationsBetweenStartingComingHomeAndCancellingComingHome;
-    v7->_durationsBetweenStartingComingHomeAndCancellingComingHome = v16;
+    v7->_durationsBetweenStartingComingHomeAndCancellingComingHome = array3;
 
-    v18 = [MEMORY[0x277CBEB18] array];
+    array4 = [MEMORY[0x277CBEB18] array];
     durationsBetweenCancellingComingHomeAndEstimatedArrivalTime = v7->_durationsBetweenCancellingComingHomeAndEstimatedArrivalTime;
-    v7->_durationsBetweenCancellingComingHomeAndEstimatedArrivalTime = v18;
+    v7->_durationsBetweenCancellingComingHomeAndEstimatedArrivalTime = array4;
 
-    v20 = [MEMORY[0x277CBEB18] array];
+    array5 = [MEMORY[0x277CBEB18] array];
     durationsBetweenStartingComingHomeAndPausingComingHome = v7->_durationsBetweenStartingComingHomeAndPausingComingHome;
-    v7->_durationsBetweenStartingComingHomeAndPausingComingHome = v20;
+    v7->_durationsBetweenStartingComingHomeAndPausingComingHome = array5;
 
-    v22 = [MEMORY[0x277CBEB18] array];
+    array6 = [MEMORY[0x277CBEB18] array];
     durationsBetweenPausingComingHomeAndEstimatedArrivalTime = v7->_durationsBetweenPausingComingHomeAndEstimatedArrivalTime;
-    v7->_durationsBetweenPausingComingHomeAndEstimatedArrivalTime = v22;
+    v7->_durationsBetweenPausingComingHomeAndEstimatedArrivalTime = array6;
   }
 
   [(HMDUserActivityStateDetectorLogEventAnalyzer *)v7 configure];

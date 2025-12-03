@@ -1,44 +1,44 @@
 @interface SKUIOverlayContainerViewController
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGRect)_centeredFrameForViewController:(id)a3 inBounds:(CGRect)a4;
-- (CGSize)_overlaySizeForController:(id)a3 atBoundsSize:(CGSize)a4;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGRect)_centeredFrameForViewController:(id)controller inBounds:(CGRect)bounds;
+- (CGSize)_overlaySizeForController:(id)controller atBoundsSize:(CGSize)size;
 - (NSArray)viewControllers;
 - (SKUIOverlayContainerDelegate)delegate;
-- (SKUIOverlayContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SKUIOverlayContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIColor)dimmingViewColor;
 - (UIControl)backstopControl;
-- (double)_overlaySpacingForSize:(CGSize)a3;
+- (double)_overlaySpacingForSize:(CGSize)size;
 - (id)_selectedViewController;
-- (id)_viewControllerForPoint:(CGPoint)a3;
-- (int64_t)_indexOfViewControllerForPoint:(CGPoint)a3;
-- (void)_fadeInViewController:(id)a3 withCompletionBlock:(id)a4;
-- (void)_frameAction:(id)a3;
+- (id)_viewControllerForPoint:(CGPoint)point;
+- (int64_t)_indexOfViewControllerForPoint:(CGPoint)point;
+- (void)_fadeInViewController:(id)controller withCompletionBlock:(id)block;
+- (void)_frameAction:(id)action;
 - (void)_popViewControllers;
-- (void)_positionViewControllersForSize:(CGSize)a3 traitCollection:(id)a4;
-- (void)_pushViewController:(id)a3;
+- (void)_positionViewControllersForSize:(CGSize)size traitCollection:(id)collection;
+- (void)_pushViewController:(id)controller;
 - (void)_removeChildren;
-- (void)_slideInViewController:(id)a3 withCompletionBlock:(id)a4;
-- (void)_tapAction:(id)a3;
+- (void)_slideInViewController:(id)controller withCompletionBlock:(id)block;
+- (void)_tapAction:(id)action;
 - (void)dealloc;
-- (void)dismissWithFadeTransitionCompletionBlock:(id)a3;
-- (void)dismissWithFlipTransition:(id)a3 completionBlock:(id)a4;
+- (void)dismissWithFadeTransitionCompletionBlock:(id)block;
+- (void)dismissWithFlipTransition:(id)transition completionBlock:(id)block;
 - (void)loadView;
-- (void)popViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)replaceViewController:(id)a3 withViewController:(id)a4;
-- (void)showViewController:(id)a3 withCompletionBlock:(id)a4;
-- (void)showViewController:(id)a3 withFlipTransition:(id)a4 completionBlock:(id)a5;
-- (void)showViewControllers:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)popViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)replaceViewController:(id)controller withViewController:(id)viewController;
+- (void)showViewController:(id)controller withCompletionBlock:(id)block;
+- (void)showViewController:(id)controller withFlipTransition:(id)transition completionBlock:(id)block;
+- (void)showViewControllers:(id)controllers;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SKUIOverlayContainerViewController
 
-- (SKUIOverlayContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SKUIOverlayContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIOverlayContainerViewController initWithNibName:bundle:];
@@ -46,7 +46,7 @@
 
   v13.receiver = self;
   v13.super_class = SKUIOverlayContainerViewController;
-  v8 = [(SKUIOverlayContainerViewController *)&v13 initWithNibName:v6 bundle:v7];
+  v8 = [(SKUIOverlayContainerViewController *)&v13 initWithNibName:nameCopy bundle:bundleCopy];
   v9 = v8;
   if (v8)
   {
@@ -79,8 +79,8 @@
     self->_backstopView = &v4->super;
 
     v6 = self->_backstopView;
-    v7 = [MEMORY[0x277D75348] clearColor];
-    [(UIControl *)v6 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIControl *)v6 setBackgroundColor:clearColor];
 
     [(UIControl *)self->_backstopView addTarget:self action:sel__frameAction_ forControlEvents:4096];
     v8 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__tapAction_];
@@ -95,18 +95,18 @@
   return backstopView;
 }
 
-- (void)dismissWithFlipTransition:(id)a3 completionBlock:(id)a4
+- (void)dismissWithFlipTransition:(id)transition completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [a3 flipSourceView];
+  blockCopy = block;
+  flipSourceView = [transition flipSourceView];
   backstopView = self->_backstopView;
-  [v7 frame];
+  [flipSourceView frame];
   [(UIControl *)backstopView convertRect:0 fromView:?];
-  [v7 setFrame:?];
+  [flipSourceView setFrame:?];
   v9 = [(NSMutableArray *)self->_viewControllers objectAtIndex:self->_selectedViewControllerIndex];
-  v10 = [v9 view];
+  view = [v9 view];
   self->_isAdjustingViewsForDismiss = 1;
-  v11 = [[SKUIScalingFlipView alloc] initWithFrontView:v10 backView:v7];
+  v11 = [[SKUIScalingFlipView alloc] initWithFrontView:view backView:flipSourceView];
   [(UIControl *)self->_backstopView addSubview:v11];
   [(SKUIScalingFlipView *)v11 setDirection:1];
   [(SKUIScalingFlipView *)v11 setDuration:0.449999988];
@@ -121,8 +121,8 @@
   v13[2] = __80__SKUIOverlayContainerViewController_dismissWithFlipTransition_completionBlock___block_invoke_2;
   v13[3] = &unk_2781FE728;
   v13[4] = self;
-  v14 = v6;
-  v12 = v6;
+  v14 = blockCopy;
+  v12 = blockCopy;
   [(SKUIScalingFlipView *)v11 performFlipWithCompletionBlock:v13];
   self->_isAdjustingViewsForDismiss = 0;
 }
@@ -149,9 +149,9 @@ uint64_t __80__SKUIOverlayContainerViewController_dismissWithFlipTransition_comp
   return result;
 }
 
-- (void)dismissWithFadeTransitionCompletionBlock:(id)a3
+- (void)dismissWithFadeTransitionCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = MEMORY[0x277D75D18];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -162,8 +162,8 @@ uint64_t __80__SKUIOverlayContainerViewController_dismissWithFlipTransition_comp
   v7[1] = 3221225472;
   v7[2] = __79__SKUIOverlayContainerViewController_dismissWithFadeTransitionCompletionBlock___block_invoke_2;
   v7[3] = &unk_2781F85B8;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [v5 animateWithDuration:v9 animations:v7 completion:0.449999988];
 }
 
@@ -219,17 +219,17 @@ uint64_t __79__SKUIOverlayContainerViewController_dismissWithFadeTransitionCompl
   return result;
 }
 
-- (void)popViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)popViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
+  completionCopy = completion;
+  v7 = completionCopy;
   selectedViewControllerIndex = self->_selectedViewControllerIndex;
   v9 = selectedViewControllerIndex < 1;
   v10 = selectedViewControllerIndex - 1;
   if (!v9)
   {
     self->_selectedViewControllerIndex = v10;
-    if (a3)
+    if (animated)
     {
       ++self->_popViewControllerCount;
       v11 = MEMORY[0x277D75D18];
@@ -243,18 +243,18 @@ uint64_t __79__SKUIOverlayContainerViewController_dismissWithFadeTransitionCompl
       v18[2] = __75__SKUIOverlayContainerViewController_popViewControllerAnimated_completion___block_invoke_2;
       v18[3] = &unk_2781F85E0;
       v18[4] = self;
-      v19 = v6;
+      v19 = completionCopy;
       [v11 animateWithDuration:v20 animations:v18 completion:0.349999994];
     }
 
     else
     {
-      v12 = [(SKUIOverlayContainerViewController *)self view];
-      [v12 bounds];
+      view = [(SKUIOverlayContainerViewController *)self view];
+      [view bounds];
       v14 = v13;
       v16 = v15;
-      v17 = [(SKUIOverlayContainerViewController *)self traitCollection];
-      [(SKUIOverlayContainerViewController *)self _positionViewControllersForSize:v17 traitCollection:v14, v16];
+      traitCollection = [(SKUIOverlayContainerViewController *)self traitCollection];
+      [(SKUIOverlayContainerViewController *)self _positionViewControllersForSize:traitCollection traitCollection:v14, v16];
 
       [(SKUIOverlayContainerViewController *)self _popViewControllers];
     }
@@ -287,57 +287,57 @@ uint64_t __75__SKUIOverlayContainerViewController_popViewControllerAnimated_comp
   return result;
 }
 
-- (void)replaceViewController:(id)a3 withViewController:(id)a4
+- (void)replaceViewController:(id)controller withViewController:(id)viewController
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(NSMutableArray *)self->_viewControllers indexOfObjectIdenticalTo:v12];
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  v7 = [(NSMutableArray *)self->_viewControllers indexOfObjectIdenticalTo:controllerCopy];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = v7;
-    v9 = [v12 view];
-    v10 = [v6 view];
-    [v9 frame];
-    [v10 setFrame:?];
-    [(SKUIOverlayContainerViewController *)self addChildViewController:v6];
-    v11 = [v9 superview];
-    [v11 addSubview:v10];
+    view = [controllerCopy view];
+    view2 = [viewControllerCopy view];
+    [view frame];
+    [view2 setFrame:?];
+    [(SKUIOverlayContainerViewController *)self addChildViewController:viewControllerCopy];
+    superview = [view superview];
+    [superview addSubview:view2];
 
-    [v9 removeFromSuperview];
-    [v12 removeFromParentViewController];
-    [(NSMutableArray *)self->_viewControllers replaceObjectAtIndex:v8 withObject:v6];
+    [view removeFromSuperview];
+    [controllerCopy removeFromParentViewController];
+    [(NSMutableArray *)self->_viewControllers replaceObjectAtIndex:v8 withObject:viewControllerCopy];
   }
 }
 
-- (void)showViewController:(id)a3 withCompletionBlock:(id)a4
+- (void)showViewController:(id)controller withCompletionBlock:(id)block
 {
   viewControllers = self->_viewControllers;
-  v7 = a4;
-  v8 = a3;
+  blockCopy = block;
+  controllerCopy = controller;
   if ([(NSMutableArray *)viewControllers count])
   {
-    [(SKUIOverlayContainerViewController *)self _slideInViewController:v8 withCompletionBlock:v7];
+    [(SKUIOverlayContainerViewController *)self _slideInViewController:controllerCopy withCompletionBlock:blockCopy];
   }
 
   else
   {
-    [(SKUIOverlayContainerViewController *)self _fadeInViewController:v8 withCompletionBlock:v7];
+    [(SKUIOverlayContainerViewController *)self _fadeInViewController:controllerCopy withCompletionBlock:blockCopy];
   }
 }
 
-- (void)showViewControllers:(id)a3
+- (void)showViewControllers:(id)controllers
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllersCopy = controllers;
   backstopView = self->_backstopView;
-  v6 = [(SKUIOverlayContainerViewController *)self dimmingViewColor];
-  [(UIControl *)backstopView setBackgroundColor:v6];
+  dimmingViewColor = [(SKUIOverlayContainerViewController *)self dimmingViewColor];
+  [(UIControl *)backstopView setBackgroundColor:dimmingViewColor];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v4;
+  v7 = controllersCopy;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -363,37 +363,37 @@ uint64_t __75__SKUIOverlayContainerViewController_popViewControllerAnimated_comp
     while (v9);
   }
 
-  v12 = [(SKUIOverlayContainerViewController *)self view];
-  [v12 bounds];
+  view = [(SKUIOverlayContainerViewController *)self view];
+  [view bounds];
   v14 = v13;
   v16 = v15;
-  v17 = [(SKUIOverlayContainerViewController *)self traitCollection];
-  [(SKUIOverlayContainerViewController *)self _positionViewControllersForSize:v17 traitCollection:v14, v16];
+  traitCollection = [(SKUIOverlayContainerViewController *)self traitCollection];
+  [(SKUIOverlayContainerViewController *)self _positionViewControllersForSize:traitCollection traitCollection:v14, v16];
 }
 
-- (void)showViewController:(id)a3 withFlipTransition:(id)a4 completionBlock:(id)a5
+- (void)showViewController:(id)controller withFlipTransition:(id)transition completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 view];
-  [v11 setAutoresizingMask:45];
-  v12 = [(SKUIOverlayContainerViewController *)self view];
-  [v12 bounds];
-  [(SKUIOverlayContainerViewController *)self _centeredFrameForViewController:v10 inBounds:?];
-  [v11 setFrame:?];
+  blockCopy = block;
+  transitionCopy = transition;
+  controllerCopy = controller;
+  view = [controllerCopy view];
+  [view setAutoresizingMask:45];
+  view2 = [(SKUIOverlayContainerViewController *)self view];
+  [view2 bounds];
+  [(SKUIOverlayContainerViewController *)self _centeredFrameForViewController:controllerCopy inBounds:?];
+  [view setFrame:?];
 
-  v13 = [v9 flipSourceView];
+  flipSourceView = [transitionCopy flipSourceView];
 
   backstopView = self->_backstopView;
-  [v13 frame];
+  [flipSourceView frame];
   [(UIControl *)backstopView convertRect:0 fromView:?];
-  [v13 setFrame:?];
-  v15 = [[SKUIScalingFlipView alloc] initWithFrontView:v13 backView:v11];
+  [flipSourceView setFrame:?];
+  v15 = [[SKUIScalingFlipView alloc] initWithFrontView:flipSourceView backView:view];
   [(SKUIScalingFlipView *)v15 setDuration:0.449999988];
   [(UIControl *)self->_backstopView addSubview:v15];
-  [(SKUIOverlayContainerViewController *)self addChildViewController:v10];
-  [(NSMutableArray *)self->_viewControllers addObject:v10];
+  [(SKUIOverlayContainerViewController *)self addChildViewController:controllerCopy];
+  [(NSMutableArray *)self->_viewControllers addObject:controllerCopy];
 
   self->_selectedViewControllerIndex = [(NSMutableArray *)self->_viewControllers count]- 1;
   v21[0] = MEMORY[0x277D85DD0];
@@ -407,10 +407,10 @@ uint64_t __75__SKUIOverlayContainerViewController_popViewControllerAnimated_comp
   v18[2] = __92__SKUIOverlayContainerViewController_showViewController_withFlipTransition_completionBlock___block_invoke_2;
   v18[3] = &unk_2781FE750;
   v18[4] = self;
-  v19 = v11;
-  v20 = v8;
-  v16 = v8;
-  v17 = v11;
+  v19 = view;
+  v20 = blockCopy;
+  v16 = blockCopy;
+  v17 = view;
   [(SKUIScalingFlipView *)v15 performFlipWithCompletionBlock:v18];
 }
 
@@ -476,19 +476,19 @@ uint64_t __92__SKUIOverlayContainerViewController_showViewController_withFlipTra
 
 - (void)loadView
 {
-  v3 = [(SKUIOverlayContainerViewController *)self backstopControl];
-  [(SKUIOverlayContainerViewController *)self setView:v3];
+  backstopControl = [(SKUIOverlayContainerViewController *)self backstopControl];
+  [(SKUIOverlayContainerViewController *)self setView:backstopControl];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __89__SKUIOverlayContainerViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v4[3] = &unk_2781FE778;
   v4[4] = self;
-  v5 = a3;
-  [a4 animateAlongsideTransition:v4 completion:&__block_literal_global_39];
+  sizeCopy = size;
+  [coordinator animateAlongsideTransition:v4 completion:&__block_literal_global_39];
 }
 
 void __89__SKUIOverlayContainerViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -498,40 +498,40 @@ void __89__SKUIOverlayContainerViewController_viewWillTransitionToSize_withTrans
   [v2 _positionViewControllersForSize:v3 traitCollection:{*(a1 + 40), *(a1 + 48)}];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v9 = [(SKUIOverlayContainerViewController *)self view];
-  [v9 bounds];
+  view = [(SKUIOverlayContainerViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
-  v8 = [(SKUIOverlayContainerViewController *)self traitCollection];
-  [(SKUIOverlayContainerViewController *)self _positionViewControllersForSize:v8 traitCollection:v5, v7];
+  traitCollection = [(SKUIOverlayContainerViewController *)self traitCollection];
+  [(SKUIOverlayContainerViewController *)self _positionViewControllersForSize:traitCollection traitCollection:v5, v7];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = SKUIOverlayContainerViewController;
-  [(SKUIOverlayContainerViewController *)&v10 viewWillAppear:a3];
-  v4 = [(SKUIOverlayContainerViewController *)self view];
-  [v4 bounds];
+  [(SKUIOverlayContainerViewController *)&v10 viewWillAppear:appear];
+  view = [(SKUIOverlayContainerViewController *)self view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
-  v9 = [(SKUIOverlayContainerViewController *)self traitCollection];
-  [(SKUIOverlayContainerViewController *)self _positionViewControllersForSize:v9 traitCollection:v6, v8];
+  traitCollection = [(SKUIOverlayContainerViewController *)self traitCollection];
+  [(SKUIOverlayContainerViewController *)self _positionViewControllersForSize:traitCollection traitCollection:v6, v8];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(SKUIOverlayContainerViewController *)self _selectedViewController];
-  if (v5)
+  beginCopy = begin;
+  _selectedViewController = [(SKUIOverlayContainerViewController *)self _selectedViewController];
+  if (_selectedViewController)
   {
-    [v4 locationInView:self->_backstopView];
+    [beginCopy locationInView:self->_backstopView];
     v6 = [(SKUIOverlayContainerViewController *)self _viewControllerForPoint:?];
     if (v6)
     {
-      v7 = v5 == v6;
+      v7 = _selectedViewController == v6;
     }
 
     else
@@ -550,9 +550,9 @@ void __89__SKUIOverlayContainerViewController_viewWillTransitionToSize_withTrans
   return v8;
 }
 
-- (void)_tapAction:(id)a3
+- (void)_tapAction:(id)action
 {
-  [a3 locationInView:self->_backstopView];
+  [action locationInView:self->_backstopView];
   v4 = [(SKUIOverlayContainerViewController *)self _indexOfViewControllerForPoint:?];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL && v4 != self->_selectedViewControllerIndex)
   {
@@ -582,20 +582,20 @@ void __49__SKUIOverlayContainerViewController__tapAction___block_invoke(uint64_t
   [v2 _positionViewControllersForSize:v7 traitCollection:{v4, v6}];
 }
 
-- (void)_frameAction:(id)a3
+- (void)_frameAction:(id)action
 {
-  v9 = [(SKUIOverlayContainerViewController *)self view];
-  [v9 bounds];
+  view = [(SKUIOverlayContainerViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
-  v8 = [(SKUIOverlayContainerViewController *)self traitCollection];
-  [(SKUIOverlayContainerViewController *)self _positionViewControllersForSize:v8 traitCollection:v5, v7];
+  traitCollection = [(SKUIOverlayContainerViewController *)self traitCollection];
+  [(SKUIOverlayContainerViewController *)self _positionViewControllersForSize:traitCollection traitCollection:v5, v7];
 }
 
 - (UIColor)dimmingViewColor
 {
-  v2 = [(SKUIOverlayContainerViewController *)self view];
-  [v2 bounds];
+  view = [(SKUIOverlayContainerViewController *)self view];
+  [view bounds];
   v4 = v3;
 
   if (v4 <= 1024.0)
@@ -612,16 +612,16 @@ void __49__SKUIOverlayContainerViewController__tapAction___block_invoke(uint64_t
   return v5;
 }
 
-- (void)_fadeInViewController:(id)a3 withCompletionBlock:(id)a4
+- (void)_fadeInViewController:(id)controller withCompletionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 view];
+  blockCopy = block;
+  controllerCopy = controller;
+  view = [controllerCopy view];
   [(UIControl *)self->_backstopView bounds];
-  [(SKUIOverlayContainerViewController *)self _centeredFrameForViewController:v7 inBounds:?];
-  [v8 setFrame:?];
-  [v8 setAlpha:0.0];
-  [(SKUIOverlayContainerViewController *)self _pushViewController:v7];
+  [(SKUIOverlayContainerViewController *)self _centeredFrameForViewController:controllerCopy inBounds:?];
+  [view setFrame:?];
+  [view setAlpha:0.0];
+  [(SKUIOverlayContainerViewController *)self _pushViewController:controllerCopy];
 
   v9 = MEMORY[0x277D75D18];
   v14[0] = MEMORY[0x277D85DD0];
@@ -629,14 +629,14 @@ void __49__SKUIOverlayContainerViewController__tapAction___block_invoke(uint64_t
   v14[2] = __80__SKUIOverlayContainerViewController__fadeInViewController_withCompletionBlock___block_invoke;
   v14[3] = &unk_2781F80C8;
   v14[4] = self;
-  v15 = v8;
+  v15 = view;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __80__SKUIOverlayContainerViewController__fadeInViewController_withCompletionBlock___block_invoke_2;
   v12[3] = &unk_2781F85B8;
-  v13 = v6;
-  v10 = v6;
-  v11 = v8;
+  v13 = blockCopy;
+  v10 = blockCopy;
+  v11 = view;
   [v9 animateWithDuration:v14 animations:v12 completion:0.349999994];
 }
 
@@ -663,15 +663,15 @@ uint64_t __80__SKUIOverlayContainerViewController__fadeInViewController_withComp
   return result;
 }
 
-- (CGRect)_centeredFrameForViewController:(id)a3 inBounds:(CGRect)a4
+- (CGRect)_centeredFrameForViewController:(id)controller inBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  v7 = a3;
-  v8 = [v7 view];
-  [v8 frame];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  controllerCopy = controller;
+  view = [controllerCopy view];
+  [view frame];
 
-  [(SKUIOverlayContainerViewController *)self _overlaySizeForController:v7 atBoundsSize:width, height];
+  [(SKUIOverlayContainerViewController *)self _overlaySizeForController:controllerCopy atBoundsSize:width, height];
   v10 = v9;
   v12 = v11;
 
@@ -688,7 +688,7 @@ uint64_t __80__SKUIOverlayContainerViewController__fadeInViewController_withComp
   return result;
 }
 
-- (int64_t)_indexOfViewControllerForPoint:(CGPoint)a3
+- (int64_t)_indexOfViewControllerForPoint:(CGPoint)point
 {
   v8 = 0;
   v9 = &v8;
@@ -699,7 +699,7 @@ uint64_t __80__SKUIOverlayContainerViewController__fadeInViewController_withComp
   v6[1] = 3221225472;
   v6[2] = __69__SKUIOverlayContainerViewController__indexOfViewControllerForPoint___block_invoke;
   v6[3] = &unk_2781FE7C0;
-  v7 = a3;
+  pointCopy = point;
   v6[4] = &v8;
   [(NSMutableArray *)viewControllers enumerateObjectsUsingBlock:v6];
   v4 = v9[3];
@@ -724,16 +724,16 @@ void __69__SKUIOverlayContainerViewController__indexOfViewControllerForPoint___b
   }
 }
 
-- (CGSize)_overlaySizeForController:(id)a3 atBoundsSize:(CGSize)a4
+- (CGSize)_overlaySizeForController:(id)controller atBoundsSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = [a3 navigationController];
-  v7 = [v6 navigationBar];
+  height = size.height;
+  width = size.width;
+  navigationController = [controller navigationController];
+  navigationBar = [navigationController navigationBar];
 
-  if (v7)
+  if (navigationBar)
   {
-    [v7 frame];
+    [navigationBar frame];
     v8 = CGRectGetHeight(v15);
   }
 
@@ -772,9 +772,9 @@ void __69__SKUIOverlayContainerViewController__indexOfViewControllerForPoint___b
   return result;
 }
 
-- (double)_overlaySpacingForSize:(CGSize)a3
+- (double)_overlaySpacingForSize:(CGSize)size
 {
-  v3 = a3.width <= a3.height;
+  v3 = size.width <= size.height;
   result = 35.0;
   if (!v3)
   {
@@ -798,14 +798,14 @@ void __69__SKUIOverlayContainerViewController__indexOfViewControllerForPoint___b
         [v5 removeFromParentViewController];
         if ([v5 isViewLoaded])
         {
-          v6 = [v5 view];
-          [v6 removeFromSuperview];
+          view = [v5 view];
+          [view removeFromSuperview];
         }
 
-        v7 = [(SKUIOverlayContainerViewController *)self delegate];
+        delegate = [(SKUIOverlayContainerViewController *)self delegate];
         if (objc_opt_respondsToSelector())
         {
-          [v7 overlayContainerViewController:self willPopViewController:v5];
+          [delegate overlayContainerViewController:self willPopViewController:v5];
         }
 
         [(NSMutableArray *)self->_viewControllers removeObjectAtIndex:v4];
@@ -816,22 +816,22 @@ void __69__SKUIOverlayContainerViewController__indexOfViewControllerForPoint___b
   }
 }
 
-- (void)_positionViewControllersForSize:(CGSize)a3 traitCollection:(id)a4
+- (void)_positionViewControllersForSize:(CGSize)size traitCollection:(id)collection
 {
-  height = a3.height;
-  width = a3.width;
-  v46 = [(SKUIOverlayContainerViewController *)self _selectedViewController];
-  if (v46)
+  height = size.height;
+  width = size.width;
+  _selectedViewController = [(SKUIOverlayContainerViewController *)self _selectedViewController];
+  if (_selectedViewController)
   {
     [(SKUIOverlayContainerViewController *)self _overlaySpacingForSize:width, height];
     v47 = v7;
-    [(SKUIOverlayContainerViewController *)self _centeredFrameForViewController:v46 inBounds:0.0, 0.0, width, height];
+    [(SKUIOverlayContainerViewController *)self _centeredFrameForViewController:_selectedViewController inBounds:0.0, 0.0, width, height];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [v46 view];
-    [v16 setFrame:{v9, v11, v13, v15}];
+    view = [_selectedViewController view];
+    [view setFrame:{v9, v11, v13, v15}];
 
     selectedViewControllerIndex = self->_selectedViewControllerIndex;
     v48 = height;
@@ -850,8 +850,8 @@ void __69__SKUIOverlayContainerViewController__indexOfViewControllerForPoint___b
         v50.size.width = v13;
         v50.size.height = v15;
         v9 = CGRectGetMinX(v50) - v23 - v47;
-        v26 = [v19 view];
-        [v26 setFrame:{v9, v21, v23, v25}];
+        view2 = [v19 view];
+        [view2 setFrame:{v9, v21, v23, v25}];
 
         --v18;
         v15 = v25;
@@ -864,8 +864,8 @@ void __69__SKUIOverlayContainerViewController__indexOfViewControllerForPoint___b
     }
 
     v27 = [(NSMutableArray *)self->_viewControllers count];
-    v28 = [(SKUIOverlayContainerViewController *)self view];
-    [v28 bounds];
+    view3 = [(SKUIOverlayContainerViewController *)self view];
+    [view3 bounds];
     v30 = v29;
     v32 = v31;
     v34 = v33;
@@ -886,8 +886,8 @@ void __69__SKUIOverlayContainerViewController__indexOfViewControllerForPoint___b
         v51.size.width = v34;
         v51.size.height = v36;
         v30 = v47 + CGRectGetMaxX(v51);
-        v45 = [v38 view];
-        [v45 setFrame:{v30, v40, v42, v44}];
+        view4 = [v38 view];
+        [view4 setFrame:{v30, v40, v42, v44}];
 
         ++v37;
         v36 = v44;
@@ -901,22 +901,22 @@ void __69__SKUIOverlayContainerViewController__indexOfViewControllerForPoint___b
   }
 }
 
-- (void)_pushViewController:(id)a3
+- (void)_pushViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 view];
-  [v5 _setContinuousCornerRadius:8.0];
+  controllerCopy = controller;
+  view = [controllerCopy view];
+  [view _setContinuousCornerRadius:8.0];
 
-  v6 = [v4 view];
-  [v6 setClipsToBounds:1];
+  view2 = [controllerCopy view];
+  [view2 setClipsToBounds:1];
 
-  [(SKUIOverlayContainerViewController *)self addChildViewController:v4];
+  [(SKUIOverlayContainerViewController *)self addChildViewController:controllerCopy];
   backstopView = self->_backstopView;
-  v8 = [v4 view];
-  [(UIControl *)backstopView addSubview:v8];
+  view3 = [controllerCopy view];
+  [(UIControl *)backstopView addSubview:view3];
 
-  [v4 didMoveToParentViewController:self];
-  [(NSMutableArray *)self->_viewControllers addObject:v4];
+  [controllerCopy didMoveToParentViewController:self];
+  [(NSMutableArray *)self->_viewControllers addObject:controllerCopy];
 
   self->_selectedViewControllerIndex = [(NSMutableArray *)self->_viewControllers count]- 1;
 }
@@ -946,8 +946,8 @@ void __69__SKUIOverlayContainerViewController__indexOfViewControllerForPoint___b
         v7 = *(*(&v9 + 1) + 8 * i);
         if ([v7 isViewLoaded])
         {
-          v8 = [v7 view];
-          [v8 removeFromSuperview];
+          view = [v7 view];
+          [view removeFromSuperview];
         }
 
         [v7 removeFromParentViewController];
@@ -975,31 +975,31 @@ void __69__SKUIOverlayContainerViewController__indexOfViewControllerForPoint___b
   return v4;
 }
 
-- (void)_slideInViewController:(id)a3 withCompletionBlock:(id)a4
+- (void)_slideInViewController:(id)controller withCompletionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   viewControllers = self->_viewControllers;
-  v8 = a3;
-  v9 = [(NSMutableArray *)viewControllers lastObject];
-  v10 = [v8 view];
-  v11 = [(SKUIOverlayContainerViewController *)self view];
-  [v11 bounds];
-  [(SKUIOverlayContainerViewController *)self _centeredFrameForViewController:v8 inBounds:?];
+  controllerCopy = controller;
+  lastObject = [(NSMutableArray *)viewControllers lastObject];
+  view = [controllerCopy view];
+  view2 = [(SKUIOverlayContainerViewController *)self view];
+  [view2 bounds];
+  [(SKUIOverlayContainerViewController *)self _centeredFrameForViewController:controllerCopy inBounds:?];
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  v18 = [(SKUIOverlayContainerViewController *)self view];
-  [v18 bounds];
+  view3 = [(SKUIOverlayContainerViewController *)self view];
+  [view3 bounds];
   [(SKUIOverlayContainerViewController *)self _overlaySpacingForSize:v19, v20];
   v22 = v21;
 
-  v23 = [v9 view];
-  [v23 frame];
+  view4 = [lastObject view];
+  [view4 frame];
   v24 = v22 + CGRectGetMaxX(v30);
 
-  [v10 setFrame:{v24, v13, v15, v17}];
-  [(SKUIOverlayContainerViewController *)self _pushViewController:v8];
+  [view setFrame:{v24, v13, v15, v17}];
+  [(SKUIOverlayContainerViewController *)self _pushViewController:controllerCopy];
 
   v25 = MEMORY[0x277D75D18];
   v29[0] = MEMORY[0x277D85DD0];
@@ -1011,8 +1011,8 @@ void __69__SKUIOverlayContainerViewController__indexOfViewControllerForPoint___b
   v27[1] = 3221225472;
   v27[2] = __81__SKUIOverlayContainerViewController__slideInViewController_withCompletionBlock___block_invoke_2;
   v27[3] = &unk_2781F85B8;
-  v28 = v6;
-  v26 = v6;
+  v28 = blockCopy;
+  v26 = blockCopy;
   [v25 animateWithDuration:v29 animations:v27 completion:0.349999994];
 }
 
@@ -1038,9 +1038,9 @@ uint64_t __81__SKUIOverlayContainerViewController__slideInViewController_withCom
   return result;
 }
 
-- (id)_viewControllerForPoint:(CGPoint)a3
+- (id)_viewControllerForPoint:(CGPoint)point
 {
-  v4 = [(SKUIOverlayContainerViewController *)self _indexOfViewControllerForPoint:a3.x, a3.y];
+  v4 = [(SKUIOverlayContainerViewController *)self _indexOfViewControllerForPoint:point.x, point.y];
   if (v4 >= [(NSMutableArray *)self->_viewControllers count])
   {
     v5 = 0;

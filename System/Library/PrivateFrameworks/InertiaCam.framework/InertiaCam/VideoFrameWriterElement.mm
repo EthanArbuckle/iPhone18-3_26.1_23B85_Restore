@@ -1,7 +1,7 @@
 @interface VideoFrameWriterElement
 - (void)DeallocPixBuffer;
 - (void)dealloc;
-- (void)setFrameTime:(id *)a3;
+- (void)setFrameTime:(id *)time;
 @end
 
 @implementation VideoFrameWriterElement
@@ -24,10 +24,10 @@
   [(VideoFrameWriterElement *)&v3 dealloc];
 }
 
-- (void)setFrameTime:(id *)a3
+- (void)setFrameTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_frameTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_frameTime.epoch = time->var3;
   *&self->_frameTime.value = v3;
 }
 

@@ -1,13 +1,13 @@
 @interface PUAlbumPickerSessionInfo
-- (PUAlbumPickerSessionInfo)initWithSourceAlbum:(id)a3 transferredAssets:(id)a4;
+- (PUAlbumPickerSessionInfo)initWithSourceAlbum:(id)album transferredAssets:(id)assets;
 @end
 
 @implementation PUAlbumPickerSessionInfo
 
-- (PUAlbumPickerSessionInfo)initWithSourceAlbum:(id)a3 transferredAssets:(id)a4
+- (PUAlbumPickerSessionInfo)initWithSourceAlbum:(id)album transferredAssets:(id)assets
 {
-  v6 = a3;
-  v7 = a4;
+  albumCopy = album;
+  assetsCopy = assets;
   v11.receiver = self;
   v11.super_class = PUAlbumPickerSessionInfo;
   v8 = [(PUSessionInfo *)&v11 init];
@@ -15,8 +15,8 @@
   {
     PLAssetCountsByType();
     v9 = PLLocalizedCountDescription();
-    [(PUSessionInfo *)v8 setSourceAlbum:v6, 0, 0, 0, 0];
-    [(PUSessionInfo *)v8 setTransferredAssets:v7];
+    [(PUSessionInfo *)v8 setSourceAlbum:albumCopy, 0, 0, 0, 0];
+    [(PUSessionInfo *)v8 setTransferredAssets:assetsCopy];
     [(PUSessionInfo *)v8 setLocalizedPrompt:v9];
   }
 

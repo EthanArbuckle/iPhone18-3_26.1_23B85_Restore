@@ -1,11 +1,11 @@
 @interface CAMPanoramaLabel
-- (CAMPanoramaLabel)initWithFrame:(CGRect)a3;
+- (CAMPanoramaLabel)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)_textInsets;
 @end
 
 @implementation CAMPanoramaLabel
 
-- (CAMPanoramaLabel)initWithFrame:(CGRect)a3
+- (CAMPanoramaLabel)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CAMPanoramaLabel;

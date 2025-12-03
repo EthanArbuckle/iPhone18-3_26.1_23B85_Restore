@@ -1,37 +1,37 @@
 @interface SSConfirmationCodeViewController
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (SSConfirmationCodeViewController)initWithCardData:(id)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (SSConfirmationCodeViewController)initWithCardData:(id)data;
 - (TSSIMSetupFlowDelegate)delegate;
-- (id)initAsMidOperationWithCarrierName:(id)a3;
-- (id)initAsMidOperationWithCarrierName:(id)a3 requireGeneralConsent:(BOOL)a4;
+- (id)initAsMidOperationWithCarrierName:(id)name;
+- (id)initAsMidOperationWithCarrierName:(id)name requireGeneralConsent:(BOOL)consent;
 - (void)_hideKeyboard;
 - (void)_setupLayoutConstraint;
 - (void)_textFieldDidEnd;
-- (void)confirm:(id)a3;
+- (void)confirm:(id)confirm;
 - (void)userDidTapCancel;
 - (void)viewDidLoad;
 @end
 
 @implementation SSConfirmationCodeViewController
 
-- (id)initAsMidOperationWithCarrierName:(id)a3 requireGeneralConsent:(BOOL)a4
+- (id)initAsMidOperationWithCarrierName:(id)name requireGeneralConsent:(BOOL)consent
 {
-  v7 = a3;
+  nameCopy = name;
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"CONFIRMATION_CODE_TITLE" value:&stru_28753DF48 table:@"Localizable"];
 
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"CTCELLULARPLAN_CONFIRMATION_CODE_MESSAGE_NO_CARRIER" value:&stru_28753DF48 table:@"Localizable"];
 
-  if ([v7 length])
+  if ([nameCopy length])
   {
     v12 = MEMORY[0x277CCACA8];
     v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v14 = [v13 localizedStringForKey:@"CTCELLULARPLAN_CONFIRMATION_CODE_MESSAGE_%@" value:&stru_28753DF48 table:@"Localizable"];
-    v15 = [v12 stringWithFormat:v14, v7];
+    nameCopy = [v12 stringWithFormat:v14, nameCopy];
 
-    v11 = v15;
+    v11 = nameCopy;
   }
 
   v19.receiver = self;
@@ -41,31 +41,31 @@
   if (v16)
   {
     [(SSConfirmationCodeViewController *)v16 setModalInPresentation:1];
-    objc_storeStrong(&v17->_carrierName, a3);
+    objc_storeStrong(&v17->_carrierName, name);
     v17->_isMidOperation = 1;
-    v17->_requireGeneralConsent = a4;
+    v17->_requireGeneralConsent = consent;
   }
 
   return v17;
 }
 
-- (id)initAsMidOperationWithCarrierName:(id)a3
+- (id)initAsMidOperationWithCarrierName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"CONFIRMATION_CODE_TITLE" value:&stru_28753DF48 table:@"Localizable"];
 
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"CTCELLULARPLAN_CONFIRMATION_CODE_MESSAGE_NO_CARRIER" value:&stru_28753DF48 table:@"Localizable"];
 
-  if ([v5 length])
+  if ([nameCopy length])
   {
     v10 = MEMORY[0x277CCACA8];
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v12 = [v11 localizedStringForKey:@"CTCELLULARPLAN_CONFIRMATION_CODE_MESSAGE_%@" value:&stru_28753DF48 table:@"Localizable"];
-    v13 = [v10 stringWithFormat:v12, v5];
+    nameCopy = [v10 stringWithFormat:v12, nameCopy];
 
-    v9 = v13;
+    v9 = nameCopy;
   }
 
   v17.receiver = self;
@@ -75,16 +75,16 @@
   if (v14)
   {
     [(SSConfirmationCodeViewController *)v14 setModalInPresentation:1];
-    objc_storeStrong(&v15->_carrierName, a3);
+    objc_storeStrong(&v15->_carrierName, name);
     v15->_isMidOperation = 1;
   }
 
   return v15;
 }
 
-- (SSConfirmationCodeViewController)initWithCardData:(id)a3
+- (SSConfirmationCodeViewController)initWithCardData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"CONFIRMATION_CODE_TITLE" value:&stru_28753DF48 table:@"Localizable"];
 
@@ -98,7 +98,7 @@
   if (v10)
   {
     [(SSConfirmationCodeViewController *)v10 setModalInPresentation:1];
-    objc_storeStrong(&v11->_fauxCardData, a3);
+    objc_storeStrong(&v11->_fauxCardData, data);
     v11->_isMidOperation = 0;
     v11->_requireGeneralConsent = 1;
   }
@@ -125,8 +125,8 @@
   [(UITextField *)self->_codeTextField addTarget:self action:sel__textFieldDidEnd forControlEvents:0x40000];
   [(UITextField *)self->_codeTextField setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UITextField *)self->_codeTextField setDelegate:self];
-  v6 = [(SSConfirmationCodeViewController *)self view];
-  [v6 addSubview:self->_codeTextField];
+  view = [(SSConfirmationCodeViewController *)self view];
+  [view addSubview:self->_codeTextField];
 
   v7 = +[SSOBBoldTrayButton boldButton];
   continueButton = self->_continueButton;
@@ -139,8 +139,8 @@
 
   [(SSOBBoldTrayButton *)self->_continueButton addTarget:self action:sel_confirm_ forControlEvents:64];
   [(OBBoldTrayButton *)self->_continueButton setEnabled:0];
-  v12 = [(SSConfirmationCodeViewController *)self buttonTray];
-  [v12 addButton:self->_continueButton];
+  buttonTray = [(SSConfirmationCodeViewController *)self buttonTray];
+  [buttonTray addButton:self->_continueButton];
 
   [(SSConfirmationCodeViewController *)self setShouldAdjustButtonTrayForKeyboard:1];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -156,8 +156,8 @@
     nextButton = self->_nextButton;
     self->_nextButton = v17;
 
-    v19 = [(OBBaseWelcomeController *)self navigationItem];
-    [v19 setRightBarButtonItem:self->_nextButton];
+    navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:self->_nextButton];
 
     [(UIBarButtonItem *)self->_nextButton setEnabled:0];
   }
@@ -166,13 +166,13 @@
   cancelButton = self->_cancelButton;
   self->_cancelButton = v20;
 
-  v22 = [(OBBaseWelcomeController *)self navigationItem];
-  [v22 setLeftBarButtonItem:self->_cancelButton];
+  navigationItem2 = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:self->_cancelButton];
 
   [(SSConfirmationCodeViewController *)self _setupLayoutConstraint];
   v23 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__hideKeyboard];
-  v24 = [(SSConfirmationCodeViewController *)self view];
-  [v24 addGestureRecognizer:v23];
+  view2 = [(SSConfirmationCodeViewController *)self view];
+  [view2 addGestureRecognizer:v23];
 }
 
 - (void)userDidTapCancel
@@ -235,16 +235,16 @@ void __52__SSConfirmationCodeViewController_userDidTapCancel__block_invoke(uint6
   [v3 userDidTapCancel];
 }
 
-- (void)confirm:(id)a3
+- (void)confirm:(id)confirm
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [(UITextField *)self->_codeTextField text];
+  text = [(UITextField *)self->_codeTextField text];
   confirmationCode = self->_confirmationCode;
-  self->_confirmationCode = v4;
+  self->_confirmationCode = text;
 
   v6 = [(NSString *)self->_confirmationCode length];
-  v7 = _TSLogDomain();
-  v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
+  delegate = _TSLogDomain();
+  v8 = os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT);
   if (v6)
   {
     if (v8)
@@ -254,7 +254,7 @@ void __52__SSConfirmationCodeViewController_userDidTapCancel__block_invoke(uint6
       v17 = v9;
       v18 = 2080;
       v19 = "[SSConfirmationCodeViewController confirm:]";
-      _os_log_impl(&dword_262AA8000, v7, OS_LOG_TYPE_DEFAULT, "confirmation code:%@ @%s", &v16, 0x16u);
+      _os_log_impl(&dword_262AA8000, delegate, OS_LOG_TYPE_DEFAULT, "confirmation code:%@ @%s", &v16, 0x16u);
     }
 
     [(UITextField *)self->_codeTextField resignFirstResponder];
@@ -266,8 +266,8 @@ void __52__SSConfirmationCodeViewController_userDidTapCancel__block_invoke(uint6
 
     if (self->_isMidOperation)
     {
-      v7 = [(SSConfirmationCodeViewController *)self delegate];
-      [v7 viewControllerDidComplete:self];
+      delegate = [(SSConfirmationCodeViewController *)self delegate];
+      [delegate viewControllerDidComplete:self];
     }
 
     else
@@ -275,11 +275,11 @@ void __52__SSConfirmationCodeViewController_userDidTapCancel__block_invoke(uint6
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained waitForResponse:self];
 
-      v7 = +[TSCellularPlanManagerCache sharedInstance];
+      delegate = +[TSCellularPlanManagerCache sharedInstance];
       fauxCardData = self->_fauxCardData;
       v13 = self->_confirmationCode;
       v14 = objc_loadWeakRetained(&self->_delegate);
-      -[NSObject addNewPlanWithCardData:confirmationCode:userConsentResponse:completion:](v7, "addNewPlanWithCardData:confirmationCode:userConsentResponse:completion:", fauxCardData, v13, [v14 signupUserConsentResponse], &__block_literal_global_83);
+      -[NSObject addNewPlanWithCardData:confirmationCode:userConsentResponse:completion:](delegate, "addNewPlanWithCardData:confirmationCode:userConsentResponse:completion:", fauxCardData, v13, [v14 signupUserConsentResponse], &__block_literal_global_83);
     }
   }
 
@@ -287,19 +287,19 @@ void __52__SSConfirmationCodeViewController_userDidTapCancel__block_invoke(uint6
   {
     v16 = 136315138;
     v17 = "[SSConfirmationCodeViewController confirm:]";
-    _os_log_impl(&dword_262AA8000, v7, OS_LOG_TYPE_DEFAULT, "No Confirmation Code @%s", &v16, 0xCu);
+    _os_log_impl(&dword_262AA8000, delegate, OS_LOG_TYPE_DEFAULT, "No Confirmation Code @%s", &v16, 0xCu);
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a5;
-  v10 = [a3 text];
-  v11 = [v10 stringByReplacingCharactersInRange:location withString:{length, v9}];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  text = [field text];
+  v11 = [text stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
 
   if (self->_requireGeneralConsent)
   {
@@ -309,61 +309,61 @@ void __52__SSConfirmationCodeViewController_userDidTapCancel__block_invoke(uint6
   return 1;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
   codeTextField = self->_codeTextField;
-  if (codeTextField == a3)
+  if (codeTextField == return)
   {
     [(SSConfirmationCodeViewController *)self confirm:0];
     [(SSConfirmationCodeViewController *)self _hideKeyboard];
   }
 
-  return codeTextField != a3;
+  return codeTextField != return;
 }
 
 - (void)_hideKeyboard
 {
   if ([(UITextField *)self->_codeTextField isFirstResponder])
   {
-    v3 = [(SSConfirmationCodeViewController *)self view];
-    [v3 endEditing:1];
+    view = [(SSConfirmationCodeViewController *)self view];
+    [view endEditing:1];
   }
 }
 
 - (void)_setupLayoutConstraint
 {
-  v3 = [(UITextField *)self->_codeTextField topAnchor];
-  v4 = [(SSConfirmationCodeViewController *)self headerView];
-  v5 = [v4 bottomAnchor];
-  v6 = [v3 constraintGreaterThanOrEqualToAnchor:v5 constant:20.0];
+  topAnchor = [(UITextField *)self->_codeTextField topAnchor];
+  headerView = [(SSConfirmationCodeViewController *)self headerView];
+  bottomAnchor = [headerView bottomAnchor];
+  v6 = [topAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor constant:20.0];
   [v6 setActive:1];
 
-  v7 = [(UITextField *)self->_codeTextField leadingAnchor];
-  v8 = [(SSConfirmationCodeViewController *)self contentView];
-  v9 = [v8 layoutMarginsGuide];
-  v10 = [v9 leadingAnchor];
-  v11 = [v7 constraintGreaterThanOrEqualToAnchor:v10];
+  leadingAnchor = [(UITextField *)self->_codeTextField leadingAnchor];
+  contentView = [(SSConfirmationCodeViewController *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v11 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
   [v11 setActive:1];
 
-  v12 = [(UITextField *)self->_codeTextField trailingAnchor];
-  v13 = [(SSConfirmationCodeViewController *)self contentView];
-  v14 = [v13 layoutMarginsGuide];
-  v15 = [v14 trailingAnchor];
-  v16 = [v12 constraintGreaterThanOrEqualToAnchor:v15];
+  trailingAnchor = [(UITextField *)self->_codeTextField trailingAnchor];
+  contentView2 = [(SSConfirmationCodeViewController *)self contentView];
+  layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v16 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2];
   [v16 setActive:1];
 
-  v20 = [(UITextField *)self->_codeTextField centerXAnchor];
-  v17 = [(SSConfirmationCodeViewController *)self view];
-  v18 = [v17 centerXAnchor];
-  v19 = [v20 constraintEqualToAnchor:v18];
+  centerXAnchor = [(UITextField *)self->_codeTextField centerXAnchor];
+  view = [(SSConfirmationCodeViewController *)self view];
+  centerXAnchor2 = [view centerXAnchor];
+  v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v19 setActive:1];
 }
 
 - (void)_textFieldDidEnd
 {
   [(SSOBBoldTrayButton *)self->_continueButton setHidden:0];
-  v3 = [(UITextField *)self->_codeTextField text];
-  -[OBBoldTrayButton setEnabled:](self->_continueButton, "setEnabled:", [v3 length] != 0);
+  text = [(UITextField *)self->_codeTextField text];
+  -[OBBoldTrayButton setEnabled:](self->_continueButton, "setEnabled:", [text length] != 0);
 }
 
 - (TSSIMSetupFlowDelegate)delegate

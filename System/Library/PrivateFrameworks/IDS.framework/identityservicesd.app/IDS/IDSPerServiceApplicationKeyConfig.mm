@@ -1,7 +1,7 @@
 @interface IDSPerServiceApplicationKeyConfig
 - (IDSPerServiceApplicationKeyConfig)init;
 - (void)dealloc;
-- (void)setIdentity:(__SecKey *)a3;
+- (void)setIdentity:(__SecKey *)identity;
 @end
 
 @implementation IDSPerServiceApplicationKeyConfig
@@ -20,10 +20,10 @@
   return result;
 }
 
-- (void)setIdentity:(__SecKey *)a3
+- (void)setIdentity:(__SecKey *)identity
 {
   identity = self->_identity;
-  if (a3)
+  if (identity)
   {
     if (identity)
     {
@@ -31,7 +31,7 @@
       self->_identity = 0;
     }
 
-    v6 = CFRetain(a3);
+    v6 = CFRetain(identity);
   }
 
   else

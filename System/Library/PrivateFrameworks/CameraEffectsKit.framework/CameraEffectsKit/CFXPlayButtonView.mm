@@ -1,23 +1,23 @@
 @interface CFXPlayButtonView
-- (CFXPlayButtonView)initWithCoder:(id)a3;
-- (CFXPlayButtonView)initWithFrame:(CGRect)a3;
+- (CFXPlayButtonView)initWithCoder:(id)coder;
+- (CFXPlayButtonView)initWithFrame:(CGRect)frame;
 - (CFXPlayButtonViewDelegate)delegate;
 - (UIButton)playButton;
 - (void)layoutSubviews;
 - (void)notifyPlaybackDidStart;
 - (void)notifyPlaybackDidStop;
 - (void)notifyWasTapped;
-- (void)playButtonTapped:(id)a3;
+- (void)playButtonTapped:(id)tapped;
 - (void)sharedInit;
 @end
 
 @implementation CFXPlayButtonView
 
-- (CFXPlayButtonView)initWithCoder:(id)a3
+- (CFXPlayButtonView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CFXPlayButtonView;
-  v3 = [(CFXPlayButtonView *)&v6 initWithCoder:a3];
+  v3 = [(CFXPlayButtonView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -27,11 +27,11 @@
   return v4;
 }
 
-- (CFXPlayButtonView)initWithFrame:(CGRect)a3
+- (CFXPlayButtonView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CFXPlayButtonView;
-  v3 = [(CFXPlayButtonView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CFXPlayButtonView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -45,35 +45,35 @@
 {
   v42[4] = *MEMORY[0x277D85DE8];
   [(CFXPlayButtonView *)self setClipsToBounds:1];
-  v3 = [MEMORY[0x277CCA8D8] jfxBundle];
-  v4 = [v3 loadNibNamed:@"CFXPlayButtonView" owner:self options:0];
+  jfxBundle = [MEMORY[0x277CCA8D8] jfxBundle];
+  v4 = [jfxBundle loadNibNamed:@"CFXPlayButtonView" owner:self options:0];
 
-  v5 = [(CFXPlayButtonView *)self contentView];
-  [(CFXPlayButtonView *)self addSubview:v5];
+  contentView = [(CFXPlayButtonView *)self contentView];
+  [(CFXPlayButtonView *)self addSubview:contentView];
 
-  v6 = [(CFXPlayButtonView *)self contentView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  contentView2 = [(CFXPlayButtonView *)self contentView];
+  [contentView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v34 = MEMORY[0x277CCAAD0];
-  v41 = [(CFXPlayButtonView *)self contentView];
-  v40 = [v41 leadingAnchor];
-  v39 = [(CFXPlayButtonView *)self leadingAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39];
+  contentView3 = [(CFXPlayButtonView *)self contentView];
+  leadingAnchor = [contentView3 leadingAnchor];
+  leadingAnchor2 = [(CFXPlayButtonView *)self leadingAnchor];
+  v38 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v42[0] = v38;
-  v37 = [(CFXPlayButtonView *)self contentView];
-  v36 = [v37 trailingAnchor];
-  v35 = [(CFXPlayButtonView *)self trailingAnchor];
-  v33 = [v36 constraintEqualToAnchor:v35];
+  contentView4 = [(CFXPlayButtonView *)self contentView];
+  trailingAnchor = [contentView4 trailingAnchor];
+  trailingAnchor2 = [(CFXPlayButtonView *)self trailingAnchor];
+  v33 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v42[1] = v33;
-  v7 = [(CFXPlayButtonView *)self contentView];
-  v8 = [v7 topAnchor];
-  v9 = [(CFXPlayButtonView *)self topAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  contentView5 = [(CFXPlayButtonView *)self contentView];
+  topAnchor = [contentView5 topAnchor];
+  topAnchor2 = [(CFXPlayButtonView *)self topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v42[2] = v10;
-  v11 = [(CFXPlayButtonView *)self contentView];
-  v12 = [v11 bottomAnchor];
-  v13 = [(CFXPlayButtonView *)self bottomAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  contentView6 = [(CFXPlayButtonView *)self contentView];
+  bottomAnchor = [contentView6 bottomAnchor];
+  bottomAnchor2 = [(CFXPlayButtonView *)self bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v42[3] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:4];
   [v34 activateConstraints:v15];
@@ -81,29 +81,29 @@
   v16 = MEMORY[0x277D75208];
   [(CFXPlayButtonView *)self bounds];
   v17 = [v16 bezierPathWithOvalInRect:?];
-  v18 = [MEMORY[0x277D75348] clearColor];
-  [(CFXPlayButtonView *)self setBackgroundColor:v18];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(CFXPlayButtonView *)self setBackgroundColor:clearColor];
 
-  v19 = [MEMORY[0x277CD9F90] layer];
-  [(CFXPlayButtonView *)self setPlayControlMaskLayer:v19];
+  layer = [MEMORY[0x277CD9F90] layer];
+  [(CFXPlayButtonView *)self setPlayControlMaskLayer:layer];
 
-  v20 = [v17 CGPath];
-  v21 = [(CFXPlayButtonView *)self playControlMaskLayer];
-  [v21 setPath:v20];
+  cGPath = [v17 CGPath];
+  playControlMaskLayer = [(CFXPlayButtonView *)self playControlMaskLayer];
+  [playControlMaskLayer setPath:cGPath];
 
   v22 = *MEMORY[0x277CDA248];
-  v23 = [(CFXPlayButtonView *)self playControlMaskLayer];
-  [v23 setFillRule:v22];
+  playControlMaskLayer2 = [(CFXPlayButtonView *)self playControlMaskLayer];
+  [playControlMaskLayer2 setFillRule:v22];
 
   v24 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:1.0];
-  v25 = [v24 CGColor];
-  v26 = [(CFXPlayButtonView *)self playControlMaskLayer];
-  [v26 setFillColor:v25];
+  cGColor = [v24 CGColor];
+  playControlMaskLayer3 = [(CFXPlayButtonView *)self playControlMaskLayer];
+  [playControlMaskLayer3 setFillColor:cGColor];
 
-  v27 = [(CFXPlayButtonView *)self playControlMaskLayer];
-  v28 = [(CFXPlayButtonView *)self contentView];
-  v29 = [v28 layer];
-  [v29 setMask:v27];
+  playControlMaskLayer4 = [(CFXPlayButtonView *)self playControlMaskLayer];
+  contentView7 = [(CFXPlayButtonView *)self contentView];
+  layer2 = [contentView7 layer];
+  [layer2 setMask:playControlMaskLayer4];
 
   v30 = [MEMORY[0x277D755D0] configurationWithPointSize:80.0];
   v31 = [MEMORY[0x277D755B8] systemImageNamed:@"play.circle.fill" withConfiguration:v30];
@@ -121,54 +121,54 @@
   v3 = MEMORY[0x277D75208];
   [(CFXPlayButtonView *)self bounds];
   v4 = [v3 bezierPathWithOvalInRect:?];
-  v5 = [v4 CGPath];
-  v6 = [(CFXPlayButtonView *)self playControlMaskLayer];
-  [v6 setPath:v5];
+  cGPath = [v4 CGPath];
+  playControlMaskLayer = [(CFXPlayButtonView *)self playControlMaskLayer];
+  [playControlMaskLayer setPath:cGPath];
 }
 
-- (void)playButtonTapped:(id)a3
+- (void)playButtonTapped:(id)tapped
 {
-  v4 = a3;
-  [v4 setSelected:{objc_msgSend(v4, "isSelected") ^ 1}];
-  v5 = [v4 isSelected];
+  tappedCopy = tapped;
+  [tappedCopy setSelected:{objc_msgSend(tappedCopy, "isSelected") ^ 1}];
+  isSelected = [tappedCopy isSelected];
 
-  v6 = [(CFXPlayButtonView *)self delegate];
-  v7 = v6;
-  if (v5)
+  delegate = [(CFXPlayButtonView *)self delegate];
+  v7 = delegate;
+  if (isSelected)
   {
-    [v6 playButtonViewDidTapPlay:self];
+    [delegate playButtonViewDidTapPlay:self];
   }
 
   else
   {
-    [v6 playButtonViewDidTapPause:self];
+    [delegate playButtonViewDidTapPause:self];
   }
 }
 
 - (void)notifyWasTapped
 {
-  v3 = [(CFXPlayButtonView *)self playButton];
-  [(CFXPlayButtonView *)self playButtonTapped:v3];
+  playButton = [(CFXPlayButtonView *)self playButton];
+  [(CFXPlayButtonView *)self playButtonTapped:playButton];
 }
 
 - (void)notifyPlaybackDidStart
 {
-  v3 = [(CFXPlayButtonView *)self playButton];
-  v4 = [(CFXPlayButtonView *)self pauseImage];
-  [v3 setImage:v4 forState:0];
+  playButton = [(CFXPlayButtonView *)self playButton];
+  pauseImage = [(CFXPlayButtonView *)self pauseImage];
+  [playButton setImage:pauseImage forState:0];
 
-  v5 = [(CFXPlayButtonView *)self playButton];
-  [v5 setSelected:1];
+  playButton2 = [(CFXPlayButtonView *)self playButton];
+  [playButton2 setSelected:1];
 }
 
 - (void)notifyPlaybackDidStop
 {
-  v3 = [(CFXPlayButtonView *)self playButton];
-  v4 = [(CFXPlayButtonView *)self playImage];
-  [v3 setImage:v4 forState:0];
+  playButton = [(CFXPlayButtonView *)self playButton];
+  playImage = [(CFXPlayButtonView *)self playImage];
+  [playButton setImage:playImage forState:0];
 
-  v5 = [(CFXPlayButtonView *)self playButton];
-  [v5 setSelected:0];
+  playButton2 = [(CFXPlayButtonView *)self playButton];
+  [playButton2 setSelected:0];
 }
 
 - (CFXPlayButtonViewDelegate)delegate

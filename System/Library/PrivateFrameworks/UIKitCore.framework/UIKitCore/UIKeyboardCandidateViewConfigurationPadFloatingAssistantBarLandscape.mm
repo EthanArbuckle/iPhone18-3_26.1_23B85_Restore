@@ -8,38 +8,38 @@
 {
   v17.receiver = self;
   v17.super_class = UIKeyboardCandidateViewConfigurationPadFloatingAssistantBarLandscape;
-  v2 = [(UIKeyboardCandidateViewConfigurationPadBarLandscape *)&v17 initialState];
-  [v2 setHasBackdrop:0];
+  initialState = [(UIKeyboardCandidateViewConfigurationPadBarLandscape *)&v17 initialState];
+  [initialState setHasBackdrop:0];
   v3 = +[UIColor tertiarySystemFillColor];
-  v4 = [v2 style];
-  [v4 setBackgroundColor:v3];
+  style = [initialState style];
+  [style setBackgroundColor:v3];
 
-  v5 = [v2 style];
-  [v5 setCornerRadius:10.0];
+  style2 = [initialState style];
+  [style2 setCornerRadius:10.0];
 
-  v6 = [v2 style];
-  [v6 setExtraCellPadding:{0.0, 0.0, 0.0, 0.0}];
+  style3 = [initialState style];
+  [style3 setExtraCellPadding:{0.0, 0.0, 0.0, 0.0}];
 
   v7 = +[UIKeyboardCandidateViewImageRenderer sharedImageRenderer];
   v8 = [v7 edgeMaskImageForRightSide:0];
-  v9 = [v2 style];
-  [v9 setLeftEdgeMaskImage:v8];
+  style4 = [initialState style];
+  [style4 setLeftEdgeMaskImage:v8];
 
   v10 = +[UIKeyboardCandidateViewImageRenderer sharedImageRenderer];
   v11 = [v10 edgeMaskImageForRightSide:1];
-  v12 = [v2 style];
-  [v12 setRightEdgeMaskImage:v11];
+  style5 = [initialState style];
+  [style5 setRightEdgeMaskImage:v11];
 
-  v13 = [v2 style];
-  [v13 setLeftEdgeSeparatorImage:0];
+  style6 = [initialState style];
+  [style6 setLeftEdgeSeparatorImage:0];
 
-  v14 = [v2 style];
-  [v14 setRightEdgeSeparatorImage:0];
+  style7 = [initialState style];
+  [style7 setRightEdgeSeparatorImage:0];
 
-  v15 = [v2 style];
-  [v15 setArrowButtonSeparatorImage:0];
+  style8 = [initialState style];
+  [style8 setArrowButtonSeparatorImage:0];
 
-  return v2;
+  return initialState;
 }
 
 @end

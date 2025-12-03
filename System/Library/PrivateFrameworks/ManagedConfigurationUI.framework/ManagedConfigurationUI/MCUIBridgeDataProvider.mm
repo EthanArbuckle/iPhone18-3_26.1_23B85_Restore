@@ -1,47 +1,47 @@
 @interface MCUIBridgeDataProvider
 - (BOOL)isPasscodeSet;
 - (id)installedMDMProfileIdentifier;
-- (id)installedProfileWithIdentifier:(id)a3;
+- (id)installedProfileWithIdentifier:(id)identifier;
 - (id)managedAppsUninstalledOnMDMRemoval;
-- (id)payloadsSummaryForProfile:(id)a3 showManagedPayloads:(BOOL)a4;
+- (id)payloadsSummaryForProfile:(id)profile showManagedPayloads:(BOOL)payloads;
 - (id)rmAccount;
-- (id)rmSpecifierProviderForProfileIdentifier:(id)a3 scope:(int64_t)a4;
+- (id)rmSpecifierProviderForProfileIdentifier:(id)identifier scope:(int64_t)scope;
 @end
 
 @implementation MCUIBridgeDataProvider
 
 - (BOOL)isPasscodeSet
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isPasscodeSet];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isPasscodeSet = [mEMORY[0x277D262A0] isPasscodeSet];
 
-  return v3;
+  return isPasscodeSet;
 }
 
 - (id)installedMDMProfileIdentifier
 {
   v2 = +[MCUIWatchManager shared];
-  v3 = [v2 cachedMDMProfileIdentifier];
+  cachedMDMProfileIdentifier = [v2 cachedMDMProfileIdentifier];
 
-  return v3;
+  return cachedMDMProfileIdentifier;
 }
 
-- (id)installedProfileWithIdentifier:(id)a3
+- (id)installedProfileWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[MCUIWatchManager shared];
-  v5 = [v4 cachedProfileForIdentifier:v3];
+  v5 = [v4 cachedProfileForIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (id)payloadsSummaryForProfile:(id)a3 showManagedPayloads:(BOOL)a4
+- (id)payloadsSummaryForProfile:(id)profile showManagedPayloads:(BOOL)payloads
 {
-  v4 = a3;
+  profileCopy = profile;
   v5 = +[MCUIWatchManager shared];
-  v6 = [v4 identifier];
+  identifier = [profileCopy identifier];
 
-  v7 = [v5 cachedProfileSummaryForIdentifier:v6];
+  v7 = [v5 cachedProfileSummaryForIdentifier:identifier];
 
   return v7;
 }
@@ -49,23 +49,23 @@
 - (id)managedAppsUninstalledOnMDMRemoval
 {
   v2 = +[MCUIWatchManager shared];
-  v3 = [v2 managedAppsUninstalledOnMDMRemoval];
+  managedAppsUninstalledOnMDMRemoval = [v2 managedAppsUninstalledOnMDMRemoval];
 
-  return v3;
+  return managedAppsUninstalledOnMDMRemoval;
 }
 
 - (id)rmAccount
 {
   v2 = +[MCUIWatchManager shared];
-  v3 = [v2 rmAccount];
+  rmAccount = [v2 rmAccount];
 
-  return v3;
+  return rmAccount;
 }
 
-- (id)rmSpecifierProviderForProfileIdentifier:(id)a3 scope:(int64_t)a4
+- (id)rmSpecifierProviderForProfileIdentifier:(id)identifier scope:(int64_t)scope
 {
-  v4 = a3;
-  v5 = [[MCUIBridgeRMConfigurationsDataProvider alloc] initWithProfileIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[MCUIBridgeRMConfigurationsDataProvider alloc] initWithProfileIdentifier:identifierCopy];
 
   v6 = [objc_alloc(MEMORY[0x277D032B0]) initWithAccount:0 rmDataProvider:v5];
 

@@ -1,21 +1,21 @@
 @interface SCKPGradientView
 - (CGPoint)gradientOrigin;
-- (SCKPGradientView)initWithGradientType:(id)a3;
+- (SCKPGradientView)initWithGradientType:(id)type;
 - (id)_fadeInAnimation;
 - (id)_fadeOutAnimation;
 - (void)_updateGradientOpacity;
 - (void)layoutSubviews;
-- (void)setGradientEndOpacity:(double)a3;
-- (void)setGradientStartOpacity:(double)a3;
-- (void)setGradientType:(id)a3;
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4;
+- (void)setGradientEndOpacity:(double)opacity;
+- (void)setGradientStartOpacity:(double)opacity;
+- (void)setGradientType:(id)type;
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated;
 @end
 
 @implementation SCKPGradientView
 
-- (SCKPGradientView)initWithGradientType:(id)a3
+- (SCKPGradientView)initWithGradientType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v11.receiver = self;
   v11.super_class = SCKPGradientView;
   v5 = [(SCKPGradientView *)&v11 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -25,53 +25,53 @@
     v5->_gradientHeight = 240.0;
     v5->_gradientOrigin.x = 0.0;
     v5->_gradientOrigin.y = 0.0;
-    [(SCKPGradientView *)v5 setGradientType:v4];
-    *&v6->_gradientStartOpacity = qword_269516E50[*MEMORY[0x277CDA6A0] == v4];
+    [(SCKPGradientView *)v5 setGradientType:typeCopy];
+    *&v6->_gradientStartOpacity = qword_269516E50[*MEMORY[0x277CDA6A0] == typeCopy];
     v6->_gradientEndOpacity = 0.09021;
     [(SCKPGradientView *)v6 _updateGradientOpacity];
     [(SCKPGradientView *)v6 setOpaque:0];
-    v7 = [MEMORY[0x277D75348] clearColor];
-    [(SCKPGradientView *)v6 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SCKPGradientView *)v6 setBackgroundColor:clearColor];
 
     [(SCKPGradientView *)v6 setUserInteractionEnabled:0];
-    v8 = [(SCKPGradientView *)v6 layer];
-    [v8 setOpacity:0.0];
+    layer = [(SCKPGradientView *)v6 layer];
+    [layer setOpacity:0.0];
 
-    v9 = [(SCKPGradientView *)v6 layer];
-    [v9 setAllowsHitTesting:0];
+    layer2 = [(SCKPGradientView *)v6 layer];
+    [layer2 setAllowsHitTesting:0];
   }
 
   return v6;
 }
 
-- (void)setGradientType:(id)a3
+- (void)setGradientType:(id)type
 {
-  v5 = a3;
-  if (self->_gradientType != v5)
+  typeCopy = type;
+  if (self->_gradientType != typeCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_gradientType, a3);
-    v6 = [(SCKPGradientView *)self layer];
-    [v6 setType:self->_gradientType];
+    v7 = typeCopy;
+    objc_storeStrong(&self->_gradientType, type);
+    layer = [(SCKPGradientView *)self layer];
+    [layer setType:self->_gradientType];
 
-    v5 = v7;
+    typeCopy = v7;
   }
 }
 
-- (void)setGradientStartOpacity:(double)a3
+- (void)setGradientStartOpacity:(double)opacity
 {
-  if (vabdd_f64(a3, self->_gradientStartOpacity) >= 2.22044605e-16)
+  if (vabdd_f64(opacity, self->_gradientStartOpacity) >= 2.22044605e-16)
   {
-    self->_gradientStartOpacity = a3;
+    self->_gradientStartOpacity = opacity;
     [(SCKPGradientView *)self _updateGradientOpacity];
   }
 }
 
-- (void)setGradientEndOpacity:(double)a3
+- (void)setGradientEndOpacity:(double)opacity
 {
-  if (vabdd_f64(a3, self->_gradientEndOpacity) >= 2.22044605e-16)
+  if (vabdd_f64(opacity, self->_gradientEndOpacity) >= 2.22044605e-16)
   {
-    self->_gradientEndOpacity = a3;
+    self->_gradientEndOpacity = opacity;
     [(SCKPGradientView *)self _updateGradientOpacity];
   }
 }
@@ -82,9 +82,9 @@
   v20.receiver = self;
   v20.super_class = SCKPGradientView;
   [(SCKPGradientView *)&v20 layoutSubviews];
-  v3 = [(SCKPGradientView *)self layer];
+  layer = [(SCKPGradientView *)self layer];
   [(SCKPGradientView *)self bounds];
-  [v3 setFrame:?];
+  [layer setFrame:?];
 
   [(SCKPGradientView *)self frame];
   Width = CGRectGetWidth(v22);
@@ -98,56 +98,56 @@
     v14 = self->_gradientHeight * 0.5;
     v15 = v12 - v14 / Width;
     v16 = v13 - v14 / v6;
-    v17 = [(SCKPGradientView *)self layer];
-    [v17 setStartPoint:{v12, v13}];
+    layer2 = [(SCKPGradientView *)self layer];
+    [layer2 setStartPoint:{v12, v13}];
 
-    v18 = [(SCKPGradientView *)self layer];
-    [v18 setEndPoint:{v15, v16}];
+    layer3 = [(SCKPGradientView *)self layer];
+    [layer3 setEndPoint:{v15, v16}];
 
-    v9 = [(SCKPGradientView *)self layer];
-    [v9 setLocations:&unk_287A0F668];
+    layer4 = [(SCKPGradientView *)self layer];
+    [layer4 setLocations:&unk_287A0F668];
   }
 
   else
   {
-    v7 = [(SCKPGradientView *)self layer];
-    [v7 setStartPoint:{0.5, 1.0}];
+    layer5 = [(SCKPGradientView *)self layer];
+    [layer5 setStartPoint:{0.5, 1.0}];
 
-    v8 = [(SCKPGradientView *)self layer];
-    [v8 setEndPoint:{0.5, 0.0}];
+    layer6 = [(SCKPGradientView *)self layer];
+    [layer6 setEndPoint:{0.5, 0.0}];
 
-    v9 = [(SCKPGradientView *)self layer];
+    layer4 = [(SCKPGradientView *)self layer];
     v21[0] = &unk_287A0F648;
     v10 = [MEMORY[0x277CCABB0] numberWithDouble:self->_gradientHeight / v6];
     v21[1] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
-    [v9 setLocations:v11];
+    [layer4 setLocations:v11];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_isVisible != a3)
+  if (self->_isVisible != visible)
   {
-    v4 = a4;
-    v5 = a3;
-    self->_isVisible = a3;
-    v7 = [(SCKPGradientView *)self layer];
-    v8 = v7;
+    animatedCopy = animated;
+    visibleCopy = visible;
+    self->_isVisible = visible;
+    layer = [(SCKPGradientView *)self layer];
+    v8 = layer;
     v9 = 0.0;
-    if (v5)
+    if (visibleCopy)
     {
       *&v9 = 1.0;
     }
 
-    [v7 setOpacity:v9];
+    [layer setOpacity:v9];
 
-    if (v4)
+    if (animatedCopy)
     {
-      v11 = [(SCKPGradientView *)self layer];
-      if (v5)
+      layer2 = [(SCKPGradientView *)self layer];
+      if (visibleCopy)
       {
         [(SCKPGradientView *)self _fadeInAnimation];
       }
@@ -157,7 +157,7 @@
         [(SCKPGradientView *)self _fadeOutAnimation];
       }
       v10 = ;
-      [v11 addAnimation:v10 forKey:0];
+      [layer2 addAnimation:v10 forKey:0];
     }
   }
 }
@@ -167,11 +167,11 @@
   v8[2] = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:self->_gradientStartOpacity];
   v4 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:self->_gradientEndOpacity];
-  v5 = [(SCKPGradientView *)self layer];
+  layer = [(SCKPGradientView *)self layer];
   v8[0] = [v3 CGColor];
   v8[1] = [v4 CGColor];
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
-  [v5 setColors:v6];
+  [layer setColors:v6];
 
   v7 = *MEMORY[0x277D85DE8];
 }

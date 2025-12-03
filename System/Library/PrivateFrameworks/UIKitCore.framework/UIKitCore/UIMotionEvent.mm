@@ -1,21 +1,21 @@
 @interface UIMotionEvent
 - (BOOL)_detectWhenNotActive;
-- (float)_determineShakeLevelX:(float)a3 y:(float)a4 z:(float)a5 currentState:(int64_t)a6;
-- (float)_highPass:(float)a3;
-- (float)_lowPass:(float)a3;
+- (float)_determineShakeLevelX:(float)x y:(float)y z:(float)z currentState:(int64_t)state;
+- (float)_highPass:(float)pass;
+- (float)_lowPass:(float)pass;
 - (id)_allWindows;
 - (id)_init;
 - (id)description;
-- (int64_t)_feedStateMachine:(float)a3 currentState:(int64_t)a4 timestamp:(double)a5;
-- (void)_accelerometerDidDetectMovementWithTimestamp:(double)a3;
-- (void)_enablePeakDetectionForScreenBlanked:(id)a3;
+- (int64_t)_feedStateMachine:(float)machine currentState:(int64_t)state timestamp:(double)timestamp;
+- (void)_accelerometerDidDetectMovementWithTimestamp:(double)timestamp;
+- (void)_enablePeakDetectionForScreenBlanked:(id)blanked;
 - (void)_enablePeakDetectionIfNecessary;
 - (void)_idleTimerFired;
 - (void)_resetLowPassState;
-- (void)_sendEventToResponder:(id)a3;
+- (void)_sendEventToResponder:(id)responder;
 - (void)_updateAccelerometerEnabled;
 - (void)_willSuspend;
-- (void)accelerometer:(id)a3 didAccelerateWithTimeStamp:(double)a4 x:(float)a5 y:(float)a6 z:(float)a7 eventType:(int)a8;
+- (void)accelerometer:(id)accelerometer didAccelerateWithTimeStamp:(double)stamp x:(float)x y:(float)y z:(float)z eventType:(int)type;
 - (void)dealloc;
 @end
 
@@ -25,11 +25,11 @@
 {
   if (([UIApp _isActivated] & 1) == 0)
   {
-    v3 = [(BKSAccelerometer *)self->_motionAccelerometer accelerometerEventsEnabled];
-    v4 = [(UIMotionEvent *)self _detectWhenNotActive];
-    if (!v3 || v4)
+    accelerometerEventsEnabled = [(BKSAccelerometer *)self->_motionAccelerometer accelerometerEventsEnabled];
+    _detectWhenNotActive = [(UIMotionEvent *)self _detectWhenNotActive];
+    if (!accelerometerEventsEnabled || _detectWhenNotActive)
     {
-      if (!(v3 & 1 | !v4))
+      if (!(accelerometerEventsEnabled & 1 | !_detectWhenNotActive))
       {
 
         [(UIMotionEvent *)self _willResume];
@@ -48,32 +48,32 @@
 {
   v10.receiver = self;
   v10.super_class = UIMotionEvent;
-  v2 = [(UIEvent *)&v10 _init];
-  if (v2)
+  _init = [(UIEvent *)&v10 _init];
+  if (_init)
   {
     v3 = objc_alloc_init(MEMORY[0x1E698E380]);
-    v4 = *(v2 + 16);
-    *(v2 + 16) = v3;
+    v4 = *(_init + 16);
+    *(_init + 16) = v3;
 
-    [*(v2 + 16) setDelegate:v2];
+    [*(_init + 16) setDelegate:_init];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-    CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, __screenBlanked, @"com.apple.springboard.hasBlankedScreen", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-    notify_register_check("com.apple.springboard.hasBlankedScreen", v2 + 68);
+    CFNotificationCenterAddObserver(DarwinNotifyCenter, _init, __screenBlanked, @"com.apple.springboard.hasBlankedScreen", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+    notify_register_check("com.apple.springboard.hasBlankedScreen", _init + 68);
     state64 = 0;
-    if (!notify_get_state(*(v2 + 68), &state64))
+    if (!notify_get_state(*(_init + 68), &state64))
     {
       v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:state64];
-      [v2 _enablePeakDetectionForScreenBlanked:v6];
+      [_init _enablePeakDetectionForScreenBlanked:v6];
     }
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v2 selector:sel__willResume name:@"UIApplicationDidBecomeActiveNotification" object:UIApp];
-    [v7 addObserver:v2 selector:sel__willSuspend name:@"UIApplicationSuspendedNotification" object:UIApp];
-    [v7 addObserver:v2 selector:sel__updateAccelerometerEnabled name:@"UIWindowDidBecomeVisibleNotification" object:0];
-    [v7 addObserver:v2 selector:sel__updateAccelerometerEnabled name:@"UIWindowDidBecomeHiddenNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:_init selector:sel__willResume name:@"UIApplicationDidBecomeActiveNotification" object:UIApp];
+    [defaultCenter addObserver:_init selector:sel__willSuspend name:@"UIApplicationSuspendedNotification" object:UIApp];
+    [defaultCenter addObserver:_init selector:sel__updateAccelerometerEnabled name:@"UIWindowDidBecomeVisibleNotification" object:0];
+    [defaultCenter addObserver:_init selector:sel__updateAccelerometerEnabled name:@"UIWindowDidBecomeHiddenNotification" object:0];
   }
 
-  return v2;
+  return _init;
 }
 
 - (BOOL)_detectWhenNotActive
@@ -90,9 +90,9 @@
 
 - (void)_willSuspend
 {
-  v3 = [(UIMotionEvent *)self _detectWhenNotActive];
-  [(BKSAccelerometer *)self->_motionAccelerometer setAccelerometerEventsEnabled:v3];
-  if (!v3)
+  _detectWhenNotActive = [(UIMotionEvent *)self _detectWhenNotActive];
+  [(BKSAccelerometer *)self->_motionAccelerometer setAccelerometerEventsEnabled:_detectWhenNotActive];
+  if (!_detectWhenNotActive)
   {
 
     [(UIMotionEvent *)self _idleTimerFired];
@@ -146,13 +146,13 @@
   notify_cancel(self->notifyToken);
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"com.apple.springboard.hasBlankedScreen", 0);
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v7[0] = @"UIApplicationDidBecomeActiveNotification";
   v7[1] = @"UIApplicationSuspendedNotification";
   v7[2] = @"UIWindowDidBecomeVisibleNotification";
   v7[3] = @"UIWindowDidBecomeHiddenNotification";
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:4];
-  [(NSNotificationCenter *)v4 _uiRemoveObserver:v5 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v5 names:?];
 
   v6.receiver = self;
   v6.super_class = UIMotionEvent;
@@ -173,10 +173,10 @@
 
 - (id)_allWindows
 {
-  v2 = [UIApp _motionKeyWindow];
-  if (v2)
+  _motionKeyWindow = [UIApp _motionKeyWindow];
+  if (_motionKeyWindow)
   {
-    v3 = [MEMORY[0x1E695DFD8] setWithObject:v2];
+    v3 = [MEMORY[0x1E695DFD8] setWithObject:_motionKeyWindow];
   }
 
   else
@@ -187,38 +187,38 @@
   return v3;
 }
 
-- (void)_sendEventToResponder:(id)a3
+- (void)_sendEventToResponder:(id)responder
 {
-  v6 = a3;
-  v4 = [(UIMotionEvent *)self shakeState];
-  if (v4 == 2)
+  responderCopy = responder;
+  shakeState = [(UIMotionEvent *)self shakeState];
+  if (shakeState == 2)
   {
-    [v6 motionCancelled:-[UIMotionEvent subtype](self withEvent:{"subtype"), self}];
+    [responderCopy motionCancelled:-[UIMotionEvent subtype](self withEvent:{"subtype"), self}];
   }
 
-  else if (v4 == 1)
+  else if (shakeState == 1)
   {
-    [v6 motionEnded:-[UIMotionEvent subtype](self withEvent:{"subtype"), self}];
+    [responderCopy motionEnded:-[UIMotionEvent subtype](self withEvent:{"subtype"), self}];
   }
 
   else
   {
-    v5 = v6;
-    if (v4)
+    v5 = responderCopy;
+    if (shakeState)
     {
       goto LABEL_8;
     }
 
-    [v6 motionBegan:-[UIMotionEvent subtype](self withEvent:{"subtype"), self}];
+    [responderCopy motionBegan:-[UIMotionEvent subtype](self withEvent:{"subtype"), self}];
   }
 
-  v5 = v6;
+  v5 = responderCopy;
 LABEL_8:
 }
 
-- (void)_accelerometerDidDetectMovementWithTimestamp:(double)a3
+- (void)_accelerometerDidDetectMovementWithTimestamp:(double)timestamp
 {
-  self->_lastMovementTime = a3;
+  self->_lastMovementTime = timestamp;
   if (!self->_idleTimer)
   {
     v4 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__idleTimerFired selector:0 userInfo:1 repeats:3.0];
@@ -238,25 +238,25 @@ LABEL_8:
   }
 }
 
-- (void)accelerometer:(id)a3 didAccelerateWithTimeStamp:(double)a4 x:(float)a5 y:(float)a6 z:(float)a7 eventType:(int)a8
+- (void)accelerometer:(id)accelerometer didAccelerateWithTimeStamp:(double)stamp x:(float)x y:(float)y z:(float)z eventType:(int)type
 {
-  v14 = a3;
-  if (a8)
+  accelerometerCopy = accelerometer;
+  if (type)
   {
-    if (a8 != 1)
+    if (type != 1)
     {
       goto LABEL_5;
     }
 
-    v23 = v14;
-    [(UIMotionEvent *)self _accelerometerDidDetectMovementWithTimestamp:a4];
+    v23 = accelerometerCopy;
+    [(UIMotionEvent *)self _accelerometerDidDetectMovementWithTimestamp:stamp];
     goto LABEL_4;
   }
 
-  v23 = v14;
-  *&v15 = a5;
-  *&v16 = a6;
-  *&v17 = a7;
+  v23 = accelerometerCopy;
+  *&v15 = x;
+  *&v16 = y;
+  *&v17 = z;
   [(UIMotionEvent *)self _determineShakeLevelX:self->_stateMachineState y:v15 z:v16 currentState:v17];
   v18 = [UIMotionEvent _feedStateMachine:"_feedStateMachine:currentState:timestamp:" currentState:self->_stateMachineState timestamp:?];
   self->_stateMachineState = v18;
@@ -265,17 +265,17 @@ LABEL_8:
     if (v18 != 5)
     {
       v19 = v18 == 6;
-      v14 = v23;
+      accelerometerCopy = v23;
       if (v19)
       {
         [(UIMotionEvent *)self _resetLowPassState];
-        v14 = v23;
+        accelerometerCopy = v23;
         if (self->_sentMotionBegan)
         {
           WeakRetained = objc_loadWeakRetained(&self->super._eventEnvironment);
           [(UIEventEnvironment *)WeakRetained _sendMotionEnded:?];
 
-          v14 = v23;
+          accelerometerCopy = v23;
           self->_stateMachineState = 0;
           self->_sentMotionBegan = 0;
         }
@@ -285,13 +285,13 @@ LABEL_8:
     }
 
 LABEL_19:
-    v14 = v23;
+    accelerometerCopy = v23;
     if (self->_sentMotionBegan)
     {
       v22 = objc_loadWeakRetained(&self->super._eventEnvironment);
       [(UIEventEnvironment *)v22 _sendMotionCancelled:?];
 
-      v14 = v23;
+      accelerometerCopy = v23;
       self->_sentMotionBegan = 0;
     }
 
@@ -304,7 +304,7 @@ LABEL_19:
   }
 
   v19 = v18 == 2;
-  v14 = v23;
+  accelerometerCopy = v23;
   if (v19 && !self->_sentMotionBegan)
   {
     self->_sentMotionBegan = 1;
@@ -312,38 +312,38 @@ LABEL_19:
     [(UIEventEnvironment *)v20 _sendMotionBegan:?];
 
 LABEL_4:
-    v14 = v23;
+    accelerometerCopy = v23;
   }
 
 LABEL_5:
 }
 
-- (int64_t)_feedStateMachine:(float)a3 currentState:(int64_t)a4 timestamp:(double)a5
+- (int64_t)_feedStateMachine:(float)machine currentState:(int64_t)state timestamp:(double)timestamp
 {
-  if (a4 > 1)
+  if (state > 1)
   {
-    switch(a4)
+    switch(state)
     {
       case 2:
-        v5 = a3;
-        if (v5 < 0.071243)
+        machineCopy = machine;
+        if (machineCopy < 0.071243)
         {
           return 1;
         }
 
-        if (v5 > 0.237488)
+        if (machineCopy > 0.237488)
         {
-          self->_highLevelTime = a5;
+          self->_highLevelTime = timestamp;
           return 3;
         }
 
         break;
       case 3:
-        if (a3 < 0.237488)
+        if (machine < 0.237488)
         {
-          if (self->_highLevelTime < a5)
+          if (self->_highLevelTime < timestamp)
           {
-            self->_lowEndTimeout = a5;
+            self->_lowEndTimeout = timestamp;
             return 4;
           }
 
@@ -352,52 +352,52 @@ LABEL_5:
 
         break;
       case 4:
-        if (self->_lowEndTimeout + 0.5 < a5)
+        if (self->_lowEndTimeout + 0.5 < timestamp)
         {
           return 5;
         }
 
-        if (a3 < 0.071243)
+        if (machine < 0.071243)
         {
           return 6;
         }
 
         break;
       default:
-        return a4;
+        return state;
     }
 
-    if (self->_shakeStartTime + 2.0 < a5)
+    if (self->_shakeStartTime + 2.0 < timestamp)
     {
       return 0;
     }
 
-    return a4;
+    return state;
   }
 
-  if (!a4)
+  if (!state)
   {
-    if (a3 >= 0.071243)
+    if (machine >= 0.071243)
     {
-      return a4;
+      return state;
     }
 
     return 1;
   }
 
-  if (a4 == 1 && a3 > 0.071243)
+  if (state == 1 && machine > 0.071243)
   {
-    self->_shakeStartTime = a5;
+    self->_shakeStartTime = timestamp;
     return 2;
   }
 
-  return a4;
+  return state;
 }
 
-- (float)_highPass:(float)a3
+- (float)_highPass:(float)pass
 {
   highPassStateIndex = self->_highPassStateIndex;
-  self->_highPassState[highPassStateIndex] = a3;
+  self->_highPassState[highPassStateIndex] = pass;
   v4 = highPassStateIndex & 1;
   v5 = self->_highPassState[v4] + 0.0;
   v4 ^= 1uLL;
@@ -406,11 +406,11 @@ LABEL_5:
   return v6 * 0.5;
 }
 
-- (float)_lowPass:(float)a3
+- (float)_lowPass:(float)pass
 {
   v3 = 0;
   lowPassStateIndex = self->_lowPassStateIndex;
-  self->_lowPassState[lowPassStateIndex] = a3;
+  self->_lowPassState[lowPassStateIndex] = pass;
   self->_lowPassStateIndex = (lowPassStateIndex + 1) % 0xA;
   v5 = 0.0;
   do
@@ -422,23 +422,23 @@ LABEL_5:
   return v5 / 10.0;
 }
 
-- (float)_determineShakeLevelX:(float)a3 y:(float)a4 z:(float)a5 currentState:(int64_t)a6
+- (float)_determineShakeLevelX:(float)x y:(float)y z:(float)z currentState:(int64_t)state
 {
   v11 = +[UIDevice currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  userInterfaceIdiom = [v11 userInterfaceIdiom];
 
-  v15 = a5 * 0.65;
+  v15 = z * 0.65;
   *&v15 = v15;
-  if ((v12 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     *&v15 = 0.0;
   }
 
-  v13 = a3 * 0.65;
-  v14 = a4 * 0.65;
+  v13 = x * 0.65;
+  v14 = y * 0.65;
   v16 = ((v13 * v13) + (v14 * v14)) + (*&v15 * *&v15);
   *&v15 = (v16 * v16) * 0.5;
-  if (a6 == 5)
+  if (state == 5)
   {
     [(UIMotionEvent *)self _highPass:v15];
     if (v17 >= 0.0)
@@ -465,7 +465,7 @@ LABEL_5:
 
   else
   {
-    v21 = a6 - 3;
+    v21 = state - 3;
     [(UIMotionEvent *)self _highPass:v15];
     if (*&v22 >= 0.0)
     {
@@ -488,9 +488,9 @@ LABEL_5:
   return result;
 }
 
-- (void)_enablePeakDetectionForScreenBlanked:(id)a3
+- (void)_enablePeakDetectionForScreenBlanked:(id)blanked
 {
-  if ([a3 BOOLValue])
+  if ([blanked BOOLValue])
   {
     v5 = 0.0;
   }

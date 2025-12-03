@@ -1,15 +1,15 @@
 @interface BMDiagnosticsPanic
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMDiagnosticsPanic)initWithCaptureTime:(id)a3 incidentID:(id)a4 patternUUID:(id)a5 patternType:(id)a6;
-- (BMDiagnosticsPanic)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMDiagnosticsPanic)initWithCaptureTime:(id)time incidentID:(id)d patternUUID:(id)iD patternType:(id)type;
+- (BMDiagnosticsPanic)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMDiagnosticsPanic
@@ -32,13 +32,13 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMDiagnosticsPanic hasCaptureTime](self, "hasCaptureTime") || [v5 hasCaptureTime])
     {
       if (![(BMDiagnosticsPanic *)self hasCaptureTime])
@@ -60,18 +60,18 @@
       }
     }
 
-    v9 = [(BMDiagnosticsPanic *)self incidentID];
-    v10 = [v5 incidentID];
-    v11 = v10;
-    if (v9 == v10)
+    incidentID = [(BMDiagnosticsPanic *)self incidentID];
+    incidentID2 = [v5 incidentID];
+    v11 = incidentID2;
+    if (incidentID == incidentID2)
     {
     }
 
     else
     {
-      v12 = [(BMDiagnosticsPanic *)self incidentID];
-      v13 = [v5 incidentID];
-      v14 = [v12 isEqual:v13];
+      incidentID3 = [(BMDiagnosticsPanic *)self incidentID];
+      incidentID4 = [v5 incidentID];
+      v14 = [incidentID3 isEqual:incidentID4];
 
       if (!v14)
       {
@@ -79,18 +79,18 @@
       }
     }
 
-    v16 = [(BMDiagnosticsPanic *)self patternUUID];
-    v17 = [v5 patternUUID];
-    v18 = v17;
-    if (v16 == v17)
+    patternUUID = [(BMDiagnosticsPanic *)self patternUUID];
+    patternUUID2 = [v5 patternUUID];
+    v18 = patternUUID2;
+    if (patternUUID == patternUUID2)
     {
     }
 
     else
     {
-      v19 = [(BMDiagnosticsPanic *)self patternUUID];
-      v20 = [v5 patternUUID];
-      v21 = [v19 isEqual:v20];
+      patternUUID3 = [(BMDiagnosticsPanic *)self patternUUID];
+      patternUUID4 = [v5 patternUUID];
+      v21 = [patternUUID3 isEqual:patternUUID4];
 
       if (!v21)
       {
@@ -106,8 +106,8 @@
 
     if (-[BMDiagnosticsPanic hasPatternType](self, "hasPatternType") && [v5 hasPatternType])
     {
-      v22 = [(BMDiagnosticsPanic *)self patternType];
-      v15 = v22 == [v5 patternType];
+      patternType = [(BMDiagnosticsPanic *)self patternType];
+      v15 = patternType == [v5 patternType];
 LABEL_22:
 
       goto LABEL_23;
@@ -140,8 +140,8 @@ LABEL_23:
     v5 = [v4 numberWithDouble:?];
   }
 
-  v6 = [(BMDiagnosticsPanic *)self incidentID];
-  v7 = [(BMDiagnosticsPanic *)self patternUUID];
+  incidentID = [(BMDiagnosticsPanic *)self incidentID];
+  patternUUID = [(BMDiagnosticsPanic *)self patternUUID];
   if ([(BMDiagnosticsPanic *)self hasPatternType])
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDiagnosticsPanic patternType](self, "patternType")}];
@@ -153,41 +153,41 @@ LABEL_23:
   }
 
   v16[0] = @"captureTime";
-  v9 = v5;
+  null = v5;
   if (!v5)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[0] = v9;
+  v17[0] = null;
   v16[1] = @"incidentID";
-  v10 = v6;
-  if (!v6)
+  null2 = incidentID;
+  if (!incidentID)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[1] = v10;
+  v17[1] = null2;
   v16[2] = @"patternUUID";
-  v11 = v7;
-  if (!v7)
+  null3 = patternUUID;
+  if (!patternUUID)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[2] = v11;
+  v17[2] = null3;
   v16[3] = @"patternType";
-  v12 = v8;
+  null4 = v8;
   if (!v8)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[3] = v12;
+  v17[3] = null4;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:4];
   if (v8)
   {
-    if (v7)
+    if (patternUUID)
     {
       goto LABEL_18;
     }
@@ -196,10 +196,10 @@ LABEL_23:
   else
   {
 
-    if (v7)
+    if (patternUUID)
     {
 LABEL_18:
-      if (v6)
+      if (incidentID)
       {
         goto LABEL_19;
       }
@@ -215,7 +215,7 @@ LABEL_25:
     }
   }
 
-  if (!v6)
+  if (!incidentID)
   {
     goto LABEL_25;
   }
@@ -234,23 +234,23 @@ LABEL_20:
   return v13;
 }
 
-- (BMDiagnosticsPanic)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMDiagnosticsPanic)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"captureTime"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"captureTime"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"incidentID"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"incidentID"];
     v32 = v7;
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v15 = 0;
           goto LABEL_16;
@@ -263,8 +263,8 @@ LABEL_4:
         v38 = v12;
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
         v15 = 0;
-        *a4 = [v21 initWithDomain:v22 code:2 userInfo:v10];
-        a4 = 0;
+        *error = [v21 initWithDomain:v22 code:2 userInfo:v10];
+        error = 0;
         goto LABEL_15;
       }
 
@@ -276,23 +276,23 @@ LABEL_4:
       v31 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"patternUUID"];
-    v11 = self;
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"patternUUID"];
+    selfCopy = self;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v12 = 0;
           v15 = 0;
-          a4 = v31;
+          error = v31;
           goto LABEL_15;
         }
 
         v23 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v29 = a4;
+        errorCopy = error;
         v24 = *MEMORY[0x1E698F240];
         v35 = *MEMORY[0x1E696A578];
         v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"patternUUID"];
@@ -301,8 +301,8 @@ LABEL_4:
         v25 = [v23 initWithDomain:v24 code:2 userInfo:v13];
         v12 = 0;
         v15 = 0;
-        a4 = v31;
-        *v29 = v25;
+        error = v31;
+        *errorCopy = v25;
         goto LABEL_14;
       }
 
@@ -314,13 +314,13 @@ LABEL_4:
       v12 = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"patternType"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"patternType"];
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v30 = objc_alloc(MEMORY[0x1E696ABC0]);
           v28 = *MEMORY[0x1E698F240];
@@ -328,12 +328,12 @@ LABEL_4:
           v26 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"patternType"];
           v34 = v26;
           v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
-          *a4 = [v30 initWithDomain:v28 code:2 userInfo:v27];
+          *error = [v30 initWithDomain:v28 code:2 userInfo:v27];
         }
 
         v14 = 0;
         v15 = 0;
-        a4 = v31;
+        error = v31;
         goto LABEL_14;
       }
 
@@ -345,12 +345,12 @@ LABEL_4:
       v14 = 0;
     }
 
-    a4 = v31;
-    v15 = [(BMDiagnosticsPanic *)v11 initWithCaptureTime:v8 incidentID:v31 patternUUID:v12 patternType:v14];
-    v11 = v15;
+    error = v31;
+    v15 = [(BMDiagnosticsPanic *)selfCopy initWithCaptureTime:v8 incidentID:v31 patternUUID:v12 patternType:v14];
+    selfCopy = v15;
 LABEL_14:
 
-    self = v11;
+    self = selfCopy;
 LABEL_15:
 
     v7 = v32;
@@ -364,7 +364,7 @@ LABEL_15:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v15 = 0;
@@ -379,8 +379,8 @@ LABEL_15:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:&v39 count:1];
   v8 = 0;
   v15 = 0;
-  *a4 = [v18 initWithDomain:v19 code:2 userInfo:v9];
-  a4 = v20;
+  *error = [v18 initWithDomain:v19 code:2 userInfo:v9];
+  error = v20;
 LABEL_16:
 
 LABEL_17:
@@ -392,14 +392,14 @@ LABEL_17:
 {
   v3 = objc_opt_new();
   [(BMDiagnosticsPanic *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (self->_hasCaptureTime)
   {
     captureTime = self->_captureTime;
@@ -423,9 +423,9 @@ LABEL_17:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v32.receiver = self;
   v32.super_class = BMDiagnosticsPanic;
   v5 = [(BMEventBase *)&v32 init];
@@ -434,12 +434,12 @@ LABEL_17:
     goto LABEL_49;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_47;
       }
@@ -450,18 +450,18 @@ LABEL_17:
       while (1)
       {
         LOBYTE(v33) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v33 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v33) & 0x7F) << v7;
@@ -479,9 +479,9 @@ LABEL_17:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_47;
       }
@@ -521,18 +521,18 @@ LABEL_33:
       while (1)
       {
         LOBYTE(v33) = 0;
-        v21 = [v4 position] + 1;
-        if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+        v21 = [fromCopy position] + 1;
+        if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
         {
-          v23 = [v4 data];
-          [v23 getBytes:&v33 range:{objc_msgSend(v4, "position"), 1}];
+          data2 = [fromCopy data];
+          [data2 getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v20 |= (LOBYTE(v33) & 0x7F) << v18;
@@ -550,7 +550,7 @@ LABEL_33:
         }
       }
 
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         v24 = 0;
       }
@@ -563,8 +563,8 @@ LABEL_33:
 LABEL_43:
       v5->_patternType = v24;
 LABEL_46:
-      v29 = [v4 position];
-      if (v29 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_47;
       }
@@ -574,18 +574,18 @@ LABEL_46:
     {
       v5->_hasCaptureTime = 1;
       v33 = 0.0;
-      v25 = [v4 position] + 8;
-      if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 8, v26 <= objc_msgSend(v4, "length")))
+      v25 = [fromCopy position] + 8;
+      if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 8, v26 <= objc_msgSend(fromCopy, "length")))
       {
-        v28 = [v4 data];
-        [v28 getBytes:&v33 range:{objc_msgSend(v4, "position"), 8}];
+        data3 = [fromCopy data];
+        [data3 getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v5->_captureTime = v33;
@@ -603,7 +603,7 @@ LABEL_46:
   }
 
 LABEL_47:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_48:
     v30 = 0;
@@ -624,30 +624,30 @@ LABEL_49:
   v4 = MEMORY[0x1E696AD98];
   [(BMDiagnosticsPanic *)self captureTime];
   v5 = [v4 numberWithDouble:?];
-  v6 = [(BMDiagnosticsPanic *)self incidentID];
-  v7 = [(BMDiagnosticsPanic *)self patternUUID];
+  incidentID = [(BMDiagnosticsPanic *)self incidentID];
+  patternUUID = [(BMDiagnosticsPanic *)self patternUUID];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDiagnosticsPanic patternType](self, "patternType")}];
-  v9 = [v3 initWithFormat:@"BMDiagnosticsPanic with captureTime: %@, incidentID: %@, patternUUID: %@, patternType: %@", v5, v6, v7, v8];
+  v9 = [v3 initWithFormat:@"BMDiagnosticsPanic with captureTime: %@, incidentID: %@, patternUUID: %@, patternType: %@", v5, incidentID, patternUUID, v8];
 
   return v9;
 }
 
-- (BMDiagnosticsPanic)initWithCaptureTime:(id)a3 incidentID:(id)a4 patternUUID:(id)a5 patternType:(id)a6
+- (BMDiagnosticsPanic)initWithCaptureTime:(id)time incidentID:(id)d patternUUID:(id)iD patternType:(id)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  timeCopy = time;
+  dCopy = d;
+  iDCopy = iD;
+  typeCopy = type;
   v18.receiver = self;
   v18.super_class = BMDiagnosticsPanic;
   v14 = [(BMEventBase *)&v18 init];
   if (v14)
   {
     v14->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v10)
+    if (timeCopy)
     {
       v14->_hasCaptureTime = 1;
-      [v10 doubleValue];
+      [timeCopy doubleValue];
     }
 
     else
@@ -657,21 +657,21 @@ LABEL_49:
     }
 
     v14->_captureTime = v15;
-    objc_storeStrong(&v14->_incidentID, a4);
-    objc_storeStrong(&v14->_patternUUID, a5);
-    if (v13)
+    objc_storeStrong(&v14->_incidentID, d);
+    objc_storeStrong(&v14->_patternUUID, iD);
+    if (typeCopy)
     {
       v14->_hasPatternType = 1;
-      v16 = [v13 unsignedIntValue];
+      unsignedIntValue = [typeCopy unsignedIntValue];
     }
 
     else
     {
-      v16 = 0;
+      unsignedIntValue = 0;
       v14->_hasPatternType = 0;
     }
 
-    v14->_patternType = v16;
+    v14->_patternType = unsignedIntValue;
   }
 
   return v14;
@@ -695,9 +695,9 @@ LABEL_49:
   return v6;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -705,8 +705,8 @@ LABEL_49:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMDiagnosticsPanic alloc] initByReadFrom:v7];
     v4 = v8;

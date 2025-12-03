@@ -17,10 +17,10 @@
 
 - (id)_linearFocusMovementSequences
 {
-  v2 = [(CarLinearFocusSequenceViewController *)self _maps_focusItemsForLinearMovementSequence];
-  if ([v2 count])
+  _maps_focusItemsForLinearMovementSequence = [(CarLinearFocusSequenceViewController *)self _maps_focusItemsForLinearMovementSequence];
+  if ([_maps_focusItemsForLinearMovementSequence count])
   {
-    v3 = [_UIFocusLinearMovementSequence sequenceWithItems:v2 loops:0];
+    v3 = [_UIFocusLinearMovementSequence sequenceWithItems:_maps_focusItemsForLinearMovementSequence loops:0];
     v6 = v3;
     v4 = [NSArray arrayWithObjects:&v6 count:1];
   }

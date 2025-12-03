@@ -26,10 +26,10 @@
   v2 = objc_opt_class();
   if ([v2 isEqual:objc_opt_class()])
   {
-    v3 = [a1 _path];
-    if ([v3 isServerPosterPath])
+    _path = [self _path];
+    if ([_path isServerPosterPath])
     {
-      v4 = [PRPosterPathModelObjectCache modelObjectCacheForPath:v3];
+      v4 = [PRPosterPathModelObjectCache modelObjectCacheForPath:_path];
     }
 
     else
@@ -48,18 +48,18 @@
 
 - (id)pr_loadConfiguredPropertiesWithError:()PBFAdditions
 {
-  v5 = [a1 pui_modelObjectCache];
-  v6 = [v5 configuredProperties];
-  v7 = v6;
-  if (v6)
+  pui_modelObjectCache = [self pui_modelObjectCache];
+  configuredProperties = [pui_modelObjectCache configuredProperties];
+  v7 = configuredProperties;
+  if (configuredProperties)
   {
-    v8 = v6;
+    v8 = configuredProperties;
   }
 
   else
   {
-    v9 = [a1 _path];
-    v8 = [PRPosterPathUtilities loadConfiguredPropertiesForPath:v9 error:a3];
+    _path = [self _path];
+    v8 = [PRPosterPathUtilities loadConfiguredPropertiesForPath:_path error:a3];
   }
 
   return v8;
@@ -67,18 +67,18 @@
 
 - (id)pr_loadFocusConfigurationWithError:()PBFAdditions
 {
-  v5 = [a1 pui_modelObjectCache];
-  v6 = [v5 focusConfiguration];
-  v7 = v6;
-  if (v6)
+  pui_modelObjectCache = [self pui_modelObjectCache];
+  focusConfiguration = [pui_modelObjectCache focusConfiguration];
+  v7 = focusConfiguration;
+  if (focusConfiguration)
   {
-    v8 = v6;
+    v8 = focusConfiguration;
   }
 
   else
   {
-    v9 = [a1 _path];
-    v8 = [PRPosterPathUtilities loadFocusConfigurationForPath:v9 error:a3];
+    _path = [self _path];
+    v8 = [PRPosterPathUtilities loadFocusConfigurationForPath:_path error:a3];
   }
 
   return v8;
@@ -86,26 +86,26 @@
 
 - (id)pr_loadHomeScreenConfigurationWithError:()PBFAdditions
 {
-  v4 = [a1 pui_modelObjectCache];
-  v5 = [v4 homeScreenConfigurationOrError:a3];
+  pui_modelObjectCache = [self pui_modelObjectCache];
+  v5 = [pui_modelObjectCache homeScreenConfigurationOrError:a3];
 
   return v5;
 }
 
 - (id)pr_loadTitleStyleConfigurationWithError:()PBFAdditions
 {
-  v5 = [a1 pui_modelObjectCache];
-  v6 = [v5 titleStyleConfiguration];
-  v7 = v6;
-  if (v6)
+  pui_modelObjectCache = [self pui_modelObjectCache];
+  titleStyleConfiguration = [pui_modelObjectCache titleStyleConfiguration];
+  v7 = titleStyleConfiguration;
+  if (titleStyleConfiguration)
   {
-    v8 = v6;
+    v8 = titleStyleConfiguration;
   }
 
   else
   {
-    v9 = [a1 _path];
-    v8 = [PRPosterPathUtilities loadTitleStyleConfigurationForPath:v9 error:a3];
+    _path = [self _path];
+    v8 = [PRPosterPathUtilities loadTitleStyleConfigurationForPath:_path error:a3];
   }
 
   return v8;
@@ -113,18 +113,18 @@
 
 - (id)pr_loadComplicationLayoutWithError:()PBFAdditions
 {
-  v5 = [a1 pui_modelObjectCache];
-  v6 = [v5 complicationLayout];
-  v7 = v6;
-  if (v6)
+  pui_modelObjectCache = [self pui_modelObjectCache];
+  complicationLayout = [pui_modelObjectCache complicationLayout];
+  v7 = complicationLayout;
+  if (complicationLayout)
   {
-    v8 = v6;
+    v8 = complicationLayout;
   }
 
   else
   {
-    v9 = [a1 _path];
-    v8 = [PRPosterPathUtilities loadComplicationLayoutForPath:v9 error:a3];
+    _path = [self _path];
+    v8 = [PRPosterPathUtilities loadComplicationLayoutForPath:_path error:a3];
   }
 
   return v8;
@@ -132,18 +132,18 @@
 
 - (id)pr_loadColorVariationsWithError:()PBFAdditions
 {
-  v5 = [a1 pui_modelObjectCache];
-  v6 = [v5 colorVariationsConfiguration];
-  v7 = v6;
-  if (v6)
+  pui_modelObjectCache = [self pui_modelObjectCache];
+  colorVariationsConfiguration = [pui_modelObjectCache colorVariationsConfiguration];
+  v7 = colorVariationsConfiguration;
+  if (colorVariationsConfiguration)
   {
-    v8 = v6;
+    v8 = colorVariationsConfiguration;
   }
 
   else
   {
-    v9 = [a1 _path];
-    v8 = [PRPosterPathUtilities loadColorVariationsConfigurationForPath:v9 error:a3];
+    _path = [self _path];
+    v8 = [PRPosterPathUtilities loadColorVariationsConfigurationForPath:_path error:a3];
   }
 
   return v8;
@@ -151,18 +151,18 @@
 
 - (id)pr_loadQuickActionsConfigurationWithError:()PBFAdditions
 {
-  v5 = [a1 pui_modelObjectCache];
-  v6 = [v5 quickActionsConfiguration];
-  v7 = v6;
-  if (v6)
+  pui_modelObjectCache = [self pui_modelObjectCache];
+  quickActionsConfiguration = [pui_modelObjectCache quickActionsConfiguration];
+  v7 = quickActionsConfiguration;
+  if (quickActionsConfiguration)
   {
-    v8 = v6;
+    v8 = quickActionsConfiguration;
   }
 
   else
   {
-    v9 = [a1 _path];
-    v8 = [PRPosterPathUtilities loadQuickActionsConfigurationForPath:v9 error:a3];
+    _path = [self _path];
+    v8 = [PRPosterPathUtilities loadQuickActionsConfigurationForPath:_path error:a3];
   }
 
   return v8;
@@ -170,18 +170,18 @@
 
 - (id)pr_loadAmbientConfigurationWithError:()PBFAdditions
 {
-  v5 = [a1 pui_modelObjectCache];
-  v6 = [v5 ambientConfiguration];
-  v7 = v6;
-  if (v6)
+  pui_modelObjectCache = [self pui_modelObjectCache];
+  ambientConfiguration = [pui_modelObjectCache ambientConfiguration];
+  v7 = ambientConfiguration;
+  if (ambientConfiguration)
   {
-    v8 = v6;
+    v8 = ambientConfiguration;
   }
 
   else
   {
-    v9 = [a1 _path];
-    v8 = [PRPosterPathUtilities loadAmbientConfigurationForPath:v9 error:a3];
+    _path = [self _path];
+    v8 = [PRPosterPathUtilities loadAmbientConfigurationForPath:_path error:a3];
   }
 
   return v8;
@@ -189,26 +189,26 @@
 
 - (id)pr_loadAmbientWidgetLayoutWithError:()PBFAdditions
 {
-  v4 = [a1 _path];
-  v5 = [PRPosterPathUtilities loadAmbientWidgetLayoutForPath:v4 error:a3];
+  _path = [self _path];
+  v5 = [PRPosterPathUtilities loadAmbientWidgetLayoutForPath:_path error:a3];
 
   return v5;
 }
 
 - (id)pr_loadSuggestionMetadataWithError:()PBFAdditions
 {
-  v5 = [a1 pui_modelObjectCache];
-  v6 = [v5 suggestionMetadata];
-  v7 = v6;
-  if (v6)
+  pui_modelObjectCache = [self pui_modelObjectCache];
+  suggestionMetadata = [pui_modelObjectCache suggestionMetadata];
+  v7 = suggestionMetadata;
+  if (suggestionMetadata)
   {
-    v8 = v6;
+    v8 = suggestionMetadata;
   }
 
   else
   {
-    v9 = [a1 _path];
-    v8 = [PRPosterPathUtilities loadSuggestionMetadataForPath:v9 error:a3];
+    _path = [self _path];
+    v8 = [PRPosterPathUtilities loadSuggestionMetadataForPath:_path error:a3];
   }
 
   return v8;
@@ -216,18 +216,18 @@
 
 - (id)pr_loadOtherMetadataWithError:()PBFAdditions
 {
-  v5 = [a1 pui_modelObjectCache];
-  v6 = [v5 otherMetadata];
-  v7 = v6;
-  if (v6)
+  pui_modelObjectCache = [self pui_modelObjectCache];
+  otherMetadata = [pui_modelObjectCache otherMetadata];
+  v7 = otherMetadata;
+  if (otherMetadata)
   {
-    v8 = v6;
+    v8 = otherMetadata;
   }
 
   else
   {
-    v9 = [a1 _path];
-    v8 = [PRPosterPathUtilities loadOtherMetadataForPath:v9 error:a3];
+    _path = [self _path];
+    v8 = [PRPosterPathUtilities loadOtherMetadataForPath:_path error:a3];
   }
 
   return v8;
@@ -239,14 +239,14 @@
   v7 = v6;
   if (v6 && ([v6 widgetLayoutIconState], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v9))
   {
-    v10 = [a1 _path];
-    v11 = [PRPosterPathUtilities storeAmbientWidgetLayoutToPath:v10 posterAmbientWidgetLayout:v7 error:a4];
+    _path = [self _path];
+    v11 = [PRPosterPathUtilities storeAmbientWidgetLayoutToPath:_path posterAmbientWidgetLayout:v7 error:a4];
   }
 
   else
   {
-    v10 = [a1 _path];
-    v11 = [PRPosterPathUtilities removeAmbientWidgetLayout:v10 error:a4];
+    _path = [self _path];
+    v11 = [PRPosterPathUtilities removeAmbientWidgetLayout:_path error:a4];
   }
 
   v12 = v11;
@@ -256,26 +256,26 @@
 
 - (id)pr_posterProvider
 {
-  v1 = [a1 _path];
-  v2 = [v1 serverIdentity];
-  v3 = [v2 provider];
+  _path = [self _path];
+  serverIdentity = [_path serverIdentity];
+  provider = [serverIdentity provider];
 
-  return v3;
+  return provider;
 }
 
 - (id)pr_posterUUID
 {
-  v1 = [a1 _path];
-  v2 = [v1 serverIdentity];
-  v3 = [v2 posterUUID];
+  _path = [self _path];
+  serverIdentity = [_path serverIdentity];
+  posterUUID = [serverIdentity posterUUID];
 
-  return v3;
+  return posterUUID;
 }
 
 - (id)pr_suggestedTintColor
 {
   v9 = 0;
-  v3 = [a1 pr_loadHomeScreenConfigurationWithError:&v9];
+  v3 = [self pr_loadHomeScreenConfigurationWithError:&v9];
   v4 = v9;
   if (v4)
   {
@@ -286,16 +286,16 @@
     }
   }
 
-  v6 = [v3 customizationConfiguration];
-  v7 = [v6 suggestedTintColor];
+  customizationConfiguration = [v3 customizationConfiguration];
+  suggestedTintColor = [customizationConfiguration suggestedTintColor];
 
-  return v7;
+  return suggestedTintColor;
 }
 
 - (uint64_t)pr_isHomeScreenDimmed
 {
   v9 = 0;
-  v3 = [a1 pr_loadHomeScreenConfigurationWithError:&v9];
+  v3 = [self pr_loadHomeScreenConfigurationWithError:&v9];
   v4 = v9;
   if (v4)
   {
@@ -306,15 +306,15 @@
     }
   }
 
-  v6 = [v3 customizationConfiguration];
-  v7 = [v6 isDimmed];
+  customizationConfiguration = [v3 customizationConfiguration];
+  isDimmed = [customizationConfiguration isDimmed];
 
-  return v7;
+  return isDimmed;
 }
 
 - (void)pr_suggestedTintColor
 {
-  v1 = NSStringFromSelector(a1);
+  v1 = NSStringFromSelector(self);
   OUTLINED_FUNCTION_0_5();
   OUTLINED_FUNCTION_0_3(&dword_1A8AA7000, v2, v3, "%{public}@ error fetching home screen configuration: %{public}@", v4, v5, v6, v7, v8);
 }

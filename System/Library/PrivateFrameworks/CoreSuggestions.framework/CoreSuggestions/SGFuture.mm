@@ -1,23 +1,23 @@
 @interface SGFuture
-+ (id)createAfter:(id)a3 onCreate:(id)a4;
-+ (id)createWithImmediateResult:(id)a3 error:(id)a4;
-+ (id)futureForObject:(id)a3 withKey:(void *)a4 onCreate:(id)a5;
-+ (void)waitForFuturesToComplete:(id)a3 withCallback:(id)a4;
-- (BOOL)_finishWithResult:(id)a3 orError:(id)a4;
-- (BOOL)completeWithResult:(id)a3 error:(id)a4;
++ (id)createAfter:(id)after onCreate:(id)create;
++ (id)createWithImmediateResult:(id)result error:(id)error;
++ (id)futureForObject:(id)object withKey:(void *)key onCreate:(id)create;
++ (void)waitForFuturesToComplete:(id)complete withCallback:(id)callback;
+- (BOOL)_finishWithResult:(id)result orError:(id)error;
+- (BOOL)completeWithResult:(id)result error:(id)error;
 - (SGFuture)init;
 - (id)completer;
 - (id)error;
 - (id)result;
 - (id)wait;
-- (id)waitWithTimeout:(double)a3;
+- (id)waitWithTimeout:(double)timeout;
 - (void)_clearTimeoutNonThreadSafe;
-- (void)_wait:(id)a3 forSyncAPI:(BOOL)a4;
+- (void)_wait:(id)_wait forSyncAPI:(BOOL)i;
 - (void)clearTimeout;
 - (void)dealloc;
 - (void)disassociateFromParentObject;
-- (void)setTargetQueue:(id)a3 useAfterCompletion:(BOOL)a4;
-- (void)setTimeout:(double)a3;
+- (void)setTargetQueue:(id)queue useAfterCompletion:(BOOL)completion;
+- (void)setTimeout:(double)timeout;
 @end
 
 @implementation SGFuture
@@ -61,8 +61,8 @@
 {
   if (!self->_isComplete)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"SGFuture.m" lineNumber:143 description:{@"Invalid parameter not satisfying: %@", @"_isComplete"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGFuture.m" lineNumber:143 description:{@"Invalid parameter not satisfying: %@", @"_isComplete"}];
   }
 
   v3 = self->_result;
@@ -74,8 +74,8 @@
 {
   if (!self->_isComplete)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"SGFuture.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"_isComplete"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGFuture.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"_isComplete"}];
   }
 
   error = self->_error;
@@ -88,8 +88,8 @@
   pthread_mutex_lock(&self->_lock);
   if (self->_yoDontLeaveMeHangingBro)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"SGFuture.m" lineNumber:49 description:@"Tried to dealloc an SGFuture (with >0 listeners) before calling succeed: or :fail."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGFuture.m" lineNumber:49 description:@"Tried to dealloc an SGFuture (with >0 listeners) before calling succeed: or :fail."];
   }
 
   if (!self->_isComplete)
@@ -164,29 +164,29 @@ intptr_t __16__SGFuture_wait__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3
   }
 }
 
-- (id)waitWithTimeout:(double)a3
+- (id)waitWithTimeout:(double)timeout
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v12[0] = self;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   v6 = [SGFuture createAfter:v5 onCreate:&__block_literal_global_45];
 
-  [v6 setTimeout:a3];
-  v7 = [v6 completer];
-  [(SGFuture *)self wait:v7];
+  [v6 setTimeout:timeout];
+  completer = [v6 completer];
+  [(SGFuture *)self wait:completer];
 
   if (([v6 isComplete] & 1) == 0)
   {
     v8 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, &__block_literal_global_47);
     dispatch_async(self->_workQueue, v8);
-    dispatch_block_wait(v8, [MEMORY[0x1E69C5D10] dispatchTimeWithSecondsFromNow:a3]);
+    dispatch_block_wait(v8, [MEMORY[0x1E69C5D10] dispatchTimeWithSecondsFromNow:timeout]);
   }
 
-  v9 = [v6 wait];
+  wait = [v6 wait];
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return wait;
 }
 
 - (void)clearTimeout
@@ -197,7 +197,7 @@ intptr_t __16__SGFuture_wait__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (void)setTimeout:(double)a3
+- (void)setTimeout:(double)timeout
 {
   pthread_mutex_lock(&self->_lock);
   if (self->_isComplete)
@@ -208,7 +208,7 @@ intptr_t __16__SGFuture_wait__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3
 
   else
   {
-    if ((*&a3 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
+    if ((*&timeout & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
     {
       timeoutTimer = self->_timeoutTimer;
       if (timeoutTimer)
@@ -236,14 +236,14 @@ intptr_t __16__SGFuture_wait__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3
       }
 
       v10 = self->_timeoutTimer;
-      if (a3 <= 0.0)
+      if (timeout <= 0.0)
       {
         v11 = 0;
       }
 
-      else if (a3 <= 9223372040.0)
+      else if (timeout <= 9223372040.0)
       {
-        v11 = dispatch_time(0, (a3 * 1000000000.0));
+        v11 = dispatch_time(0, (timeout * 1000000000.0));
       }
 
       else
@@ -271,22 +271,22 @@ void __23__SGFuture_setTimeout___block_invoke(uint64_t a1)
   [WeakRetained fail:v1];
 }
 
-- (BOOL)_finishWithResult:(id)a3 orError:(id)a4
+- (BOOL)_finishWithResult:(id)result orError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!(v8 | v9))
+  resultCopy = result;
+  errorCopy = error;
+  v10 = errorCopy;
+  if (!(resultCopy | errorCopy))
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"SGFuture.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"result || error"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGFuture.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"result || error"}];
     goto LABEL_10;
   }
 
-  if (v8 && v9)
+  if (resultCopy && errorCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"SGFuture.m" lineNumber:179 description:{@"Invalid parameter not satisfying: %@", @"!(result && error)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGFuture.m" lineNumber:179 description:{@"Invalid parameter not satisfying: %@", @"!(result && error)"}];
 LABEL_10:
   }
 
@@ -294,8 +294,8 @@ LABEL_10:
   isComplete = self->_isComplete;
   if (!isComplete)
   {
-    objc_storeStrong(&self->_result, a3);
-    objc_storeStrong(&self->_error, a4);
+    objc_storeStrong(&self->_result, result);
+    objc_storeStrong(&self->_error, error);
     self->_isComplete = 1;
     [(SGFuture *)self _clearTimeoutNonThreadSafe];
     dispatch_activate(self->_callbacks);
@@ -329,26 +329,26 @@ LABEL_10:
   return v2;
 }
 
-- (BOOL)completeWithResult:(id)a3 error:(id)a4
+- (BOOL)completeWithResult:(id)result error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7 && v8)
+  resultCopy = result;
+  errorCopy = error;
+  v9 = errorCopy;
+  if (resultCopy && errorCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"SGFuture.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"result == nil || error == nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGFuture.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"result == nil || error == nil"}];
   }
 
-  v10 = [(SGFuture *)self _finishWithResult:v7 orError:v9];
+  v10 = [(SGFuture *)self _finishWithResult:resultCopy orError:v9];
 
   return v10;
 }
 
-- (void)_wait:(id)a3 forSyncAPI:(BOOL)a4
+- (void)_wait:(id)_wait forSyncAPI:(BOOL)i
 {
-  v4 = a4;
-  v6 = a3;
+  iCopy = i;
+  _waitCopy = _wait;
   pthread_mutex_lock(&self->_lock);
   if (self->_isComplete)
   {
@@ -356,9 +356,9 @@ LABEL_10:
     v8 = self->_result;
     v9 = self->_error;
     pthread_mutex_unlock(&self->_lock);
-    if (!self->_alwaysUseCallbacksQueue || v4)
+    if (!self->_alwaysUseCallbacksQueue || iCopy)
     {
-      v6[2](v6, v8, v9);
+      _waitCopy[2](_waitCopy, v8, v9);
     }
 
     else
@@ -368,7 +368,7 @@ LABEL_10:
       block[1] = 3221225472;
       block[2] = __29__SGFuture__wait_forSyncAPI___block_invoke;
       block[3] = &unk_1E7EFAF60;
-      v22 = v6;
+      v22 = _waitCopy;
       v20 = v8;
       v21 = v9;
       dispatch_async(callbacks, block);
@@ -387,7 +387,7 @@ LABEL_10:
     v15[2] = __29__SGFuture__wait_forSyncAPI___block_invoke_2;
     v15[3] = &unk_1E7EFADB8;
     objc_copyWeak(&v17, &location);
-    v16 = v6;
+    v16 = _waitCopy;
     dispatch_async(v11, v15);
     pthread_mutex_unlock(&self->_lock);
     workQueue = self->_workQueue;
@@ -411,45 +411,45 @@ void __29__SGFuture__wait_forSyncAPI___block_invoke_2(uint64_t a1)
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setTargetQueue:(id)a3 useAfterCompletion:(BOOL)a4
+- (void)setTargetQueue:(id)queue useAfterCompletion:(BOOL)completion
 {
-  queue = a3;
+  queue = queue;
   pthread_mutex_lock(&self->_lock);
   if (self->_isComplete)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"SGFuture.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"!_isComplete"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGFuture.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"!_isComplete"}];
   }
 
   if (self->_timeoutTimer)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"SGFuture.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"!_timeoutTimer"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGFuture.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"!_timeoutTimer"}];
   }
 
   dispatch_set_target_queue(self->_callbacks, queue);
-  self->_alwaysUseCallbacksQueue = a4;
+  self->_alwaysUseCallbacksQueue = completion;
   pthread_mutex_unlock(&self->_lock);
 }
 
-+ (void)waitForFuturesToComplete:(id)a3 withCallback:(id)a4
++ (void)waitForFuturesToComplete:(id)complete withCallback:(id)callback
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  completeCopy = complete;
+  callbackCopy = callback;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  v14 = v5;
-  v25 = [v5 count];
+  v14 = completeCopy;
+  v25 = [completeCopy count];
   if (atomic_load(v23 + 3))
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = v5;
+    v8 = completeCopy;
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v26 count:16];
     if (v9)
     {
@@ -469,7 +469,7 @@ void __29__SGFuture__wait_forSyncAPI___block_invoke_2(uint64_t a1)
           v15[2] = __50__SGFuture_waitForFuturesToComplete_withCallback___block_invoke;
           v15[3] = &unk_1E7EFAE50;
           v17 = &v22;
-          v16 = v6;
+          v16 = callbackCopy;
           [v12 wait:v15];
         }
 
@@ -482,7 +482,7 @@ void __29__SGFuture__wait_forSyncAPI___block_invoke_2(uint64_t a1)
 
   else
   {
-    v6[2](v6);
+    callbackCopy[2](callbackCopy);
   }
 
   _Block_object_dispose(&v22, 8);
@@ -500,33 +500,33 @@ uint64_t __50__SGFuture_waitForFuturesToComplete_withCallback___block_invoke(uin
   return result;
 }
 
-+ (id)createWithImmediateResult:(id)a3 error:(id)a4
++ (id)createWithImmediateResult:(id)result error:(id)error
 {
-  v5 = a4;
-  v6 = a3;
+  errorCopy = error;
+  resultCopy = result;
   v7 = objc_opt_new();
-  [v7 completeWithResult:v6 error:v5];
+  [v7 completeWithResult:resultCopy error:errorCopy];
 
   return v7;
 }
 
-+ (id)createAfter:(id)a3 onCreate:(id)a4
++ (id)createAfter:(id)after onCreate:(id)create
 {
-  v5 = a3;
-  v6 = a4;
+  afterCopy = after;
+  createCopy = create;
   v7 = objc_opt_new();
-  v8 = [v7 workQueue];
+  workQueue = [v7 workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __33__SGFuture_createAfter_onCreate___block_invoke;
   block[3] = &unk_1E7EFAF60;
-  v16 = v5;
-  v18 = v6;
+  v16 = afterCopy;
+  v18 = createCopy;
   v9 = v7;
   v17 = v9;
-  v10 = v6;
-  v11 = v5;
-  dispatch_sync(v8, block);
+  v10 = createCopy;
+  v11 = afterCopy;
+  dispatch_sync(workQueue, block);
 
   v12 = v17;
   v13 = v9;
@@ -546,13 +546,13 @@ void __33__SGFuture_createAfter_onCreate___block_invoke(uint64_t a1)
   [SGFuture waitForFuturesToComplete:v2 withCallback:v3];
 }
 
-+ (id)futureForObject:(id)a3 withKey:(void *)a4 onCreate:(id)a5
++ (id)futureForObject:(id)object withKey:(void *)key onCreate:(id)create
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = v7;
+  objectCopy = object;
+  createCopy = create;
+  v9 = objectCopy;
   objc_sync_enter(v9);
-  v10 = objc_getAssociatedObject(v9, a4);
+  v10 = objc_getAssociatedObject(v9, key);
   if (v10)
   {
     objc_sync_exit(v9);
@@ -562,8 +562,8 @@ void __33__SGFuture_createAfter_onCreate___block_invoke(uint64_t a1)
   {
     v11 = objc_opt_new();
     objc_storeWeak((v11 + 112), v9);
-    *(v11 + 120) = a4;
-    objc_setAssociatedObject(v9, a4, v11, 1);
+    *(v11 + 120) = key;
+    objc_setAssociatedObject(v9, key, v11, 1);
     objc_initWeak(&location, v9);
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
@@ -575,15 +575,15 @@ void __33__SGFuture_createAfter_onCreate___block_invoke(uint64_t a1)
     objc_destroyWeak(&location);
     objc_sync_exit(v9);
 
-    v12 = [v11 workQueue];
+    workQueue = [v11 workQueue];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __45__SGFuture_futureForObject_withKey_onCreate___block_invoke_49;
     v14[3] = &unk_1E7EFAF10;
-    v16 = v8;
+    v16 = createCopy;
     v10 = v11;
     v15 = v10;
-    dispatch_sync(v12, v14);
+    dispatch_sync(workQueue, v14);
   }
 
   return v10;

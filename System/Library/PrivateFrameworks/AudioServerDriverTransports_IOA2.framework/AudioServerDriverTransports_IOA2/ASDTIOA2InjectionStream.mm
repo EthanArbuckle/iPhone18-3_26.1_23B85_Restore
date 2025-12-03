@@ -1,27 +1,27 @@
 @interface ASDTIOA2InjectionStream
-- (ASDTIOA2InjectionStream)initWithIOA2Device:(id)a3 inputStream:(id)a4 registryDict:(id)a5;
+- (ASDTIOA2InjectionStream)initWithIOA2Device:(id)device inputStream:(id)stream registryDict:(id)dict;
 - (ASDTIOA2Stream)inputStream;
-- (BOOL)changePhysicalFormat:(id)a3;
-- (BOOL)deviceChangedToSamplingRate:(double)a3;
-- (BOOL)synchronizeWithRegistryDictionary:(id)a3;
+- (BOOL)changePhysicalFormat:(id)format;
+- (BOOL)deviceChangedToSamplingRate:(double)rate;
+- (BOOL)synchronizeWithRegistryDictionary:(id)dictionary;
 - (id)physicalFormat;
-- (int)pmPrewarmStream:(int)a3;
-- (void)asyncDeviceChangedToSamplingRate:(double)a3;
-- (void)setPhysicalFormat:(id)a3 alwaysNotify:(BOOL)a4;
-- (void)setPhysicalFormats:(id)a3;
+- (int)pmPrewarmStream:(int)stream;
+- (void)asyncDeviceChangedToSamplingRate:(double)rate;
+- (void)setPhysicalFormat:(id)format alwaysNotify:(BOOL)notify;
+- (void)setPhysicalFormats:(id)formats;
 @end
 
 @implementation ASDTIOA2InjectionStream
 
-- (ASDTIOA2InjectionStream)initWithIOA2Device:(id)a3 inputStream:(id)a4 registryDict:(id)a5
+- (ASDTIOA2InjectionStream)initWithIOA2Device:(id)device inputStream:(id)stream registryDict:(id)dict
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  streamCopy = stream;
+  dictCopy = dict;
   v23.receiver = self;
   v23.super_class = ASDTIOA2InjectionStream;
-  v11 = [(ASDTExclavesStream *)&v23 initWithDirection:1869968496 withDevice:v8];
+  v11 = [(ASDTExclavesStream *)&v23 initWithDirection:1869968496 withDevice:deviceCopy];
   v12 = v11;
   if (!v11)
   {
@@ -29,31 +29,31 @@
   }
 
   [(ASDTIOA2InjectionStream *)v11 setUserClientID:0xFFFFFFFFLL];
-  [(ASDTIOA2InjectionStream *)v12 setInputStream:v9];
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%u-Injection", objc_msgSend(v9, "userClientID")];
+  [(ASDTIOA2InjectionStream *)v12 setInputStream:streamCopy];
+  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%u-Injection", objc_msgSend(streamCopy, "userClientID")];
   [(ASDStream *)v12 setStreamName:v13];
 
   [(ASDStream *)v12 setTerminalType:1768843885];
-  v14 = [v8 exclavesInjectionBufferName];
-  [(ASDTExclavesStream *)v12 setExclavesBufferName:v14];
+  exclavesInjectionBufferName = [deviceCopy exclavesInjectionBufferName];
+  [(ASDTExclavesStream *)v12 setExclavesBufferName:exclavesInjectionBufferName];
 
-  v15 = [(ASDTExclavesStream *)v12 exclavesBufferName];
-  v16 = v15 == 0;
+  exclavesBufferName = [(ASDTExclavesStream *)v12 exclavesBufferName];
+  v16 = exclavesBufferName == 0;
 
   if (v16)
   {
     v18 = ASDTIOA2LogType();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = [v8 deviceUID];
-      v20 = [(ASDStream *)v12 streamName];
-      [(ASDTIOA2InjectionStream *)v19 initWithIOA2Device:v20 inputStream:buf registryDict:v18];
+      deviceUID = [deviceCopy deviceUID];
+      streamName = [(ASDStream *)v12 streamName];
+      [(ASDTIOA2InjectionStream *)deviceUID initWithIOA2Device:streamName inputStream:buf registryDict:v18];
     }
 
     goto LABEL_8;
   }
 
-  if (![(ASDTIOA2InjectionStream *)v12 synchronizeWithRegistryDictionary:v10])
+  if (![(ASDTIOA2InjectionStream *)v12 synchronizeWithRegistryDictionary:dictCopy])
   {
 LABEL_8:
     v17 = 0;
@@ -68,16 +68,16 @@ LABEL_9:
   return v17;
 }
 
-- (BOOL)synchronizeWithRegistryDictionary:(id)a3
+- (BOOL)synchronizeWithRegistryDictionary:(id)dictionary
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  applesauce::CF::DictionaryRef::from_ns_noexcept(v4, &v26);
+  dictionaryCopy = dictionary;
+  applesauce::CF::DictionaryRef::from_ns_noexcept(dictionaryCopy, &v26);
   v6 = v26;
   if (v26)
   {
     [(ASDStream *)self setStartingChannel:ASDT::IOA2UserClient::GetStreamInfo_StartingChannel(&v26, v5)];
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     ASDT::IOA2UserClient::CopyStreamInfo_AvailableFormats(&v26, buf);
     v8 = *buf;
     v9 = v8;
@@ -108,7 +108,7 @@ LABEL_9:
           if (ASDT::IOA2UserClient::ConstructASRDFromDictionary(&cf, buf, v14))
           {
             v15 = [objc_alloc(MEMORY[0x277CEFB78]) initWithAudioStreamRangedDescription:buf];
-            [v7 addObject:v15];
+            [array addObject:v15];
           }
 
           if (cf)
@@ -123,22 +123,22 @@ LABEL_9:
       while (v11);
     }
 
-    [(ASDTIOA2InjectionStream *)self setPhysicalFormats:v7];
+    [(ASDTIOA2InjectionStream *)self setPhysicalFormats:array];
   }
 
   else
   {
-    v7 = ASDTIOA2LogType();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    array = ASDTIOA2LogType();
+    if (os_log_type_enabled(array, OS_LOG_TYPE_ERROR))
     {
-      v18 = [(ASDTStream *)self device];
-      v19 = [v18 deviceUID];
-      v20 = [(ASDStream *)self streamName];
+      device = [(ASDTStream *)self device];
+      deviceUID = [device deviceUID];
+      streamName = [(ASDStream *)self streamName];
       *buf = 138412546;
-      *&buf[4] = v19;
+      *&buf[4] = deviceUID;
       v28 = 2112;
-      v29 = v20;
-      _os_log_error_impl(&dword_2416BA000, v7, OS_LOG_TYPE_ERROR, "%@:%@: Bad registry dictionary.", buf, 0x16u);
+      v29 = streamName;
+      _os_log_error_impl(&dword_2416BA000, array, OS_LOG_TYPE_ERROR, "%@:%@: Bad registry dictionary.", buf, 0x16u);
     }
   }
 
@@ -151,25 +151,25 @@ LABEL_9:
   return v6 != 0;
 }
 
-- (void)setPhysicalFormats:(id)a3
+- (void)setPhysicalFormats:(id)formats
 {
-  v4 = a3;
-  v5 = [(ASDStream *)self physicalFormats];
-  v6 = [v5 isEqual:v4];
+  formatsCopy = formats;
+  physicalFormats = [(ASDStream *)self physicalFormats];
+  v6 = [physicalFormats isEqual:formatsCopy];
 
   if ((v6 & 1) == 0)
   {
     v7.receiver = self;
     v7.super_class = ASDTIOA2InjectionStream;
-    [(ASDStream *)&v7 setPhysicalFormats:v4];
+    [(ASDStream *)&v7 setPhysicalFormats:formatsCopy];
   }
 }
 
 - (id)physicalFormat
 {
-  v3 = [(ASDTIOA2InjectionStream *)self ioa2Device];
-  v4 = [(ASDTIOA2InjectionStream *)self inputStream];
-  v5 = [v3 _streamInfoForStream:{objc_msgSend(v4, "userClientID")}];
+  ioa2Device = [(ASDTIOA2InjectionStream *)self ioa2Device];
+  inputStream = [(ASDTIOA2InjectionStream *)self inputStream];
+  v5 = [ioa2Device _streamInfoForStream:{objc_msgSend(inputStream, "userClientID")}];
 
   applesauce::CF::DictionaryRef::from_ns_noexcept(v5, &cf);
   v10 = 0;
@@ -192,12 +192,12 @@ LABEL_9:
   return v7;
 }
 
-- (void)setPhysicalFormat:(id)a3 alwaysNotify:(BOOL)a4
+- (void)setPhysicalFormat:(id)format alwaysNotify:(BOOL)notify
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ASDTIOA2InjectionStream *)self physicalFormat];
-  if ([v6 isEqual:v7])
+  formatCopy = format;
+  physicalFormat = [(ASDTIOA2InjectionStream *)self physicalFormat];
+  if ([formatCopy isEqual:physicalFormat])
   {
     v8 = 0;
   }
@@ -207,28 +207,28 @@ LABEL_9:
     v9 = ASDTIOA2LogType();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v18 = [(ASDTStream *)self device];
-      v19 = [v18 deviceUID];
-      v20 = [(ASDStream *)self streamName];
+      device = [(ASDTStream *)self device];
+      deviceUID = [device deviceUID];
+      streamName = [(ASDStream *)self streamName];
       *buf = 138412802;
-      v23 = v19;
+      v23 = deviceUID;
       v24 = 2112;
-      v25 = v20;
+      v25 = streamName;
       v26 = 2112;
-      v27 = v7;
+      v27 = physicalFormat;
       _os_log_debug_impl(&dword_2416BA000, v9, OS_LOG_TYPE_DEBUG, "%@:%@: setPhysicalFormat: Old: %@", buf, 0x20u);
     }
 
-    v10 = [(ASDTIOA2InjectionStream *)self ioa2Device];
-    v11 = [(ASDTIOA2InjectionStream *)self inputStream];
-    v8 = [v10 _setCurrentFormat:v6 forStream:objc_msgSend(v11, "userClientID")];
+    ioa2Device = [(ASDTIOA2InjectionStream *)self ioa2Device];
+    inputStream = [(ASDTIOA2InjectionStream *)self inputStream];
+    v8 = [ioa2Device _setCurrentFormat:formatCopy forStream:objc_msgSend(inputStream, "userClientID")];
   }
 
-  if (a4 || v8)
+  if (notify || v8)
   {
     v21.receiver = self;
     v21.super_class = ASDTIOA2InjectionStream;
-    [(ASDTStream *)&v21 setPhysicalFormat:v6];
+    [(ASDTStream *)&v21 setPhysicalFormat:formatCopy];
   }
 
   if (v8)
@@ -236,16 +236,16 @@ LABEL_9:
     v12 = ASDTIOA2LogType();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(ASDTStream *)self device];
-      v14 = [v13 deviceUID];
-      v15 = [(ASDStream *)self streamName];
-      v16 = [(ASDTIOA2InjectionStream *)self physicalFormat];
+      device2 = [(ASDTStream *)self device];
+      deviceUID2 = [device2 deviceUID];
+      streamName2 = [(ASDStream *)self streamName];
+      physicalFormat2 = [(ASDTIOA2InjectionStream *)self physicalFormat];
       *buf = 138412802;
-      v23 = v14;
+      v23 = deviceUID2;
       v24 = 2112;
-      v25 = v15;
+      v25 = streamName2;
       v26 = 2112;
-      v27 = v16;
+      v27 = physicalFormat2;
       _os_log_impl(&dword_2416BA000, v12, OS_LOG_TYPE_DEFAULT, "%@:%@: setPhysicalFormat: New: %@", buf, 0x20u);
     }
   }
@@ -253,23 +253,23 @@ LABEL_9:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)changePhysicalFormat:(id)a3
+- (BOOL)changePhysicalFormat:(id)format
 {
-  v4 = a3;
-  v5 = [(ASDTIOA2InjectionStream *)self physicalFormat];
-  v6 = [v5 isEqual:v4];
+  formatCopy = format;
+  physicalFormat = [(ASDTIOA2InjectionStream *)self physicalFormat];
+  v6 = [physicalFormat isEqual:formatCopy];
 
   if ((v6 & 1) == 0)
   {
     objc_initWeak(&location, self);
-    v7 = [(ASDTStream *)self device];
+    device = [(ASDTStream *)self device];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __48__ASDTIOA2InjectionStream_changePhysicalFormat___block_invoke;
     v9[3] = &unk_278CE8B40;
     objc_copyWeak(&v11, &location);
-    v10 = v4;
-    [v7 requestConfigurationChange:v9];
+    v10 = formatCopy;
+    [device requestConfigurationChange:v9];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -300,25 +300,25 @@ void __48__ASDTIOA2InjectionStream_changePhysicalFormat___block_invoke(uint64_t 
   }
 }
 
-- (void)asyncDeviceChangedToSamplingRate:(double)a3
+- (void)asyncDeviceChangedToSamplingRate:(double)rate
 {
   v3.receiver = self;
   v3.super_class = ASDTIOA2InjectionStream;
-  [(ASDStream *)&v3 deviceChangedToSamplingRate:a3];
+  [(ASDStream *)&v3 deviceChangedToSamplingRate:rate];
 }
 
-- (BOOL)deviceChangedToSamplingRate:(double)a3
+- (BOOL)deviceChangedToSamplingRate:(double)rate
 {
   objc_initWeak(&location, self);
-  v5 = [(ASDTStream *)self device];
-  v6 = [v5 concurrentQueue];
+  device = [(ASDTStream *)self device];
+  concurrentQueue = [device concurrentQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__ASDTIOA2InjectionStream_deviceChangedToSamplingRate___block_invoke;
   block[3] = &unk_278CE8B68;
   objc_copyWeak(v9, &location);
-  v9[1] = *&a3;
-  dispatch_async(v6, block);
+  v9[1] = *&rate;
+  dispatch_async(concurrentQueue, block);
 
   objc_destroyWeak(v9);
   objc_destroyWeak(&location);
@@ -331,39 +331,39 @@ void __55__ASDTIOA2InjectionStream_deviceChangedToSamplingRate___block_invoke(ui
   [WeakRetained asyncDeviceChangedToSamplingRate:*(a1 + 40)];
 }
 
-- (int)pmPrewarmStream:(int)a3
+- (int)pmPrewarmStream:(int)stream
 {
   v29 = *MEMORY[0x277D85DE8];
   v22.receiver = self;
   v22.super_class = ASDTIOA2InjectionStream;
   v5 = [(ASDTStream *)&v22 pmPrewarmStream:?];
   v6 = v5;
-  if (a3 == 1970304877 && !v5)
+  if (stream == 1970304877 && !v5)
   {
-    v7 = [(ASDTIOA2InjectionStream *)self ioa2Device];
-    v8 = [v7 _getIOBufferFrameSize];
+    ioa2Device = [(ASDTIOA2InjectionStream *)self ioa2Device];
+    _getIOBufferFrameSize = [ioa2Device _getIOBufferFrameSize];
 
-    v9 = [(ASDTIOA2InjectionStream *)self physicalFormat];
-    v10 = [v9 bytesPerFrame];
+    physicalFormat = [(ASDTIOA2InjectionStream *)self physicalFormat];
+    bytesPerFrame = [physicalFormat bytesPerFrame];
 
-    LOBYTE(v8) = [(ASDTExclavesStream *)self allocExclavesAudioBuffer:(v10 * v8)];
+    LOBYTE(_getIOBufferFrameSize) = [(ASDTExclavesStream *)self allocExclavesAudioBuffer:(bytesPerFrame * _getIOBufferFrameSize)];
     v11 = ASDTIOA2LogType();
     v12 = v11;
-    if (v8)
+    if (_getIOBufferFrameSize)
     {
       v6 = 0;
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(ASDTStream *)self device];
-        v14 = [v13 deviceUID];
-        v15 = [(ASDStream *)self streamName];
-        v16 = [(ASDTExclavesStream *)self exclavesBufferSize];
+        device = [(ASDTStream *)self device];
+        deviceUID = [device deviceUID];
+        streamName = [(ASDStream *)self streamName];
+        exclavesBufferSize = [(ASDTExclavesStream *)self exclavesBufferSize];
         *buf = 138412802;
-        v24 = v14;
+        v24 = deviceUID;
         v25 = 2112;
-        v26 = v15;
+        v26 = streamName;
         v27 = 1024;
-        v28 = v16;
+        v28 = exclavesBufferSize;
         _os_log_impl(&dword_2416BA000, v12, OS_LOG_TYPE_DEFAULT, "%@:%@: Exclaves inbound buffer size: %u", buf, 0x1Cu);
 
         v6 = 0;
@@ -375,13 +375,13 @@ void __55__ASDTIOA2InjectionStream_deviceChangedToSamplingRate___block_invoke(ui
       v6 = 1852990585;
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v19 = [(ASDTStream *)self device];
-        v20 = [v19 deviceUID];
-        v21 = [(ASDStream *)self streamName];
+        device2 = [(ASDTStream *)self device];
+        deviceUID2 = [device2 deviceUID];
+        streamName2 = [(ASDStream *)self streamName];
         *buf = 138412546;
-        v24 = v20;
+        v24 = deviceUID2;
         v25 = 2112;
-        v26 = v21;
+        v26 = streamName2;
         _os_log_error_impl(&dword_2416BA000, v12, OS_LOG_TYPE_ERROR, "%@:%@: Failed to allocate exclaves inbound buffer.", buf, 0x16u);
       }
     }

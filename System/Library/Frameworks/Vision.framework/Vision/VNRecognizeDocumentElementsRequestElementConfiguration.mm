@@ -1,12 +1,12 @@
 @interface VNRecognizeDocumentElementsRequestElementConfiguration
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation VNRecognizeDocumentElementsRequestElementConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   if (v4)
@@ -18,10 +18,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v7) = 1;
   }
@@ -31,12 +31,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VNRecognizeDocumentElementsRequestElementConfiguration *)self recognize];
-      if (v6 == [(VNRecognizeDocumentElementsRequestElementConfiguration *)v5 recognize])
+      v5 = equalCopy;
+      recognize = [(VNRecognizeDocumentElementsRequestElementConfiguration *)self recognize];
+      if (recognize == [(VNRecognizeDocumentElementsRequestElementConfiguration *)v5 recognize])
       {
-        v8 = [(VNRecognizeDocumentElementsRequestElementConfiguration *)self generateSegmentationMask];
-        v7 = v8 ^ [(VNRecognizeDocumentElementsRequestElementConfiguration *)v5 generateSegmentationMask]^ 1;
+        generateSegmentationMask = [(VNRecognizeDocumentElementsRequestElementConfiguration *)self generateSegmentationMask];
+        v7 = generateSegmentationMask ^ [(VNRecognizeDocumentElementsRequestElementConfiguration *)v5 generateSegmentationMask]^ 1;
       }
 
       else
@@ -66,9 +66,9 @@
     v3 = 178954240;
   }
 
-  v4 = [(VNRecognizeDocumentElementsRequestElementConfiguration *)self generateSegmentationMask];
+  generateSegmentationMask = [(VNRecognizeDocumentElementsRequestElementConfiguration *)self generateSegmentationMask];
   v5 = 21845;
-  if (v4)
+  if (generateSegmentationMask)
   {
     v5 = 43690;
   }

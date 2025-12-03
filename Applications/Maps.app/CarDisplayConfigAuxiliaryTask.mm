@@ -1,13 +1,13 @@
 @interface CarDisplayConfigAuxiliaryTask
-+ (unint64_t)_countScenesForInstrumentCluster:(BOOL)a3;
++ (unint64_t)_countScenesForInstrumentCluster:(BOOL)cluster;
 - (CarDisplayConfigAuxiliaryTask)init;
-- (void)_processChromeVCNotification:(id)a3;
-- (void)_processSceneChange:(id)a3;
+- (void)_processChromeVCNotification:(id)notification;
+- (void)_processSceneChange:(id)change;
 - (void)_updateCarDisplayConfig;
 - (void)dealloc;
-- (void)sceneDidActivateNotification:(id)a3;
-- (void)sceneDidDisconnectNotification:(id)a3;
-- (void)sceneDidEnterBackgroundNotification:(id)a3;
+- (void)sceneDidActivateNotification:(id)notification;
+- (void)sceneDidDisconnectNotification:(id)notification;
+- (void)sceneDidEnterBackgroundNotification:(id)notification;
 @end
 
 @implementation CarDisplayConfigAuxiliaryTask
@@ -54,7 +54,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v51 = self;
+    selfCopy7 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Updating car display config", buf, 0xCu);
   }
 
@@ -82,41 +82,41 @@
         v9 = *(*(&v45 + 1) + 8 * i);
         if ([v9 activationState] < 2)
         {
-          v10 = [v9 delegate];
-          v11 = [v10 carChromeViewController];
-          v12 = [v11 mapView];
-          if (v12 && (v13 = v12, v14 = [v11 isInactive], v13, (v14 & 1) == 0))
+          delegate = [v9 delegate];
+          carChromeViewController = [delegate carChromeViewController];
+          mapView = [carChromeViewController mapView];
+          if (mapView && (v13 = mapView, v14 = [carChromeViewController isInactive], v13, (v14 & 1) == 0))
           {
             v20 = sub_10002325C();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
             {
               *buf = 134349314;
-              v51 = self;
+              selfCopy7 = self;
               v52 = 2112;
               v53 = v9;
               _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "[%{public}p] Processing scene: %@", buf, 0x16u);
             }
 
-            v16 = [v11 mapView];
-            v21 = [v16 _mapLayer];
-            [v39 addObject:v21];
+            mapView2 = [carChromeViewController mapView];
+            _mapLayer = [mapView2 _mapLayer];
+            [v39 addObject:_mapLayer];
           }
 
           else
           {
-            v15 = [v11 mapView];
+            mapView3 = [carChromeViewController mapView];
 
-            v16 = sub_10002325C();
-            v17 = os_log_type_enabled(v16, OS_LOG_TYPE_INFO);
-            if (v15)
+            mapView2 = sub_10002325C();
+            v17 = os_log_type_enabled(mapView2, OS_LOG_TYPE_INFO);
+            if (mapView3)
             {
               if (v17)
               {
                 *buf = 134349314;
-                v51 = self;
+                selfCopy7 = self;
                 v52 = 2112;
                 v53 = v9;
-                v18 = v16;
+                v18 = mapView2;
                 v19 = "[%{public}p] Skipping inactive scene: %@";
                 goto LABEL_21;
               }
@@ -125,10 +125,10 @@
             else if (v17)
             {
               *buf = 134349314;
-              v51 = self;
+              selfCopy7 = self;
               v52 = 2112;
               v53 = v9;
-              v18 = v16;
+              v18 = mapView2;
               v19 = "[%{public}p] Skipping scene with no map view: %@";
 LABEL_21:
               _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, v19, buf, 0x16u);
@@ -138,14 +138,14 @@ LABEL_21:
           goto LABEL_23;
         }
 
-        v10 = sub_10002325C();
-        if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+        delegate = sub_10002325C();
+        if (os_log_type_enabled(delegate, OS_LOG_TYPE_INFO))
         {
           *buf = 134349314;
-          v51 = self;
+          selfCopy7 = self;
           v52 = 2112;
           v53 = v9;
-          _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[%{public}p] Skipping inactive scene: %@", buf, 0x16u);
+          _os_log_impl(&_mh_execute_header, delegate, OS_LOG_TYPE_INFO, "[%{public}p] Skipping inactive scene: %@", buf, 0x16u);
         }
 
 LABEL_23:
@@ -182,7 +182,7 @@ LABEL_23:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v51 = self;
+      selfCopy7 = self;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "[%{public}p] Forcing dual display config from user default", buf, 0xCu);
     }
 
@@ -202,7 +202,7 @@ LABEL_23:
     v31 = v30;
     v32 = *(&off_101622F98 + v24);
     *buf = 134350082;
-    v51 = self;
+    selfCopy7 = self;
     v52 = 2048;
     v53 = v23;
     v54 = 2112;
@@ -246,10 +246,10 @@ LABEL_23:
   [v38 postNotificationName:@"CarDisplayConfigDidChangeNotification" object:0];
 }
 
-- (void)_processSceneChange:(id)a3
+- (void)_processSceneChange:(id)change
 {
-  v4 = a3;
-  if (!v4)
+  changeCopy = change;
+  if (!changeCopy)
   {
     v5 = sub_10006D178();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -278,16 +278,16 @@ LABEL_23:
     }
   }
 
-  if ([v4 isCarScene])
+  if ([changeCopy isCarScene])
   {
     [(CarDisplayConfigAuxiliaryTask *)self _updateCarDisplayConfig];
   }
 }
 
-- (void)_processChromeVCNotification:(id)a3
+- (void)_processChromeVCNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -320,11 +320,11 @@ LABEL_23:
     }
   }
 
-  v7 = [v4 object];
+  object2 = [notificationCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = object2;
   }
 
   else
@@ -334,21 +334,21 @@ LABEL_23:
 
   v9 = v8;
 
-  v10 = [v9 viewIfLoaded];
+  viewIfLoaded = [v9 viewIfLoaded];
 
-  v11 = [v10 window];
-  v12 = [v11 windowScene];
+  window = [viewIfLoaded window];
+  windowScene = [window windowScene];
 
-  if (v12)
+  if (windowScene)
   {
-    [(CarDisplayConfigAuxiliaryTask *)self _processSceneChange:v12];
+    [(CarDisplayConfigAuxiliaryTask *)self _processSceneChange:windowScene];
   }
 }
 
-- (void)sceneDidDisconnectNotification:(id)a3
+- (void)sceneDidDisconnectNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -381,11 +381,11 @@ LABEL_23:
     }
   }
 
-  v7 = [v4 object];
+  object2 = [notificationCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = object2;
   }
 
   else
@@ -398,10 +398,10 @@ LABEL_23:
   [(CarDisplayConfigAuxiliaryTask *)self _processSceneChange:v9];
 }
 
-- (void)sceneDidEnterBackgroundNotification:(id)a3
+- (void)sceneDidEnterBackgroundNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -434,11 +434,11 @@ LABEL_23:
     }
   }
 
-  v7 = [v4 object];
+  object2 = [notificationCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = object2;
   }
 
   else
@@ -451,10 +451,10 @@ LABEL_23:
   [(CarDisplayConfigAuxiliaryTask *)self _processSceneChange:v9];
 }
 
-- (void)sceneDidActivateNotification:(id)a3
+- (void)sceneDidActivateNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -487,11 +487,11 @@ LABEL_23:
     }
   }
 
-  v7 = [v4 object];
+  object2 = [notificationCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = object2;
   }
 
   else
@@ -510,7 +510,7 @@ LABEL_23:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -519,9 +519,9 @@ LABEL_23:
   [(CarDisplayConfigAuxiliaryTask *)&v4 dealloc];
 }
 
-+ (unint64_t)_countScenesForInstrumentCluster:(BOOL)a3
++ (unint64_t)_countScenesForInstrumentCluster:(BOOL)cluster
 {
-  v3 = a3;
+  clusterCopy = cluster;
   v4 = +[UIApplication _maps_carPlayScenes];
   v34 = 0u;
   v35 = 0u;
@@ -545,16 +545,16 @@ LABEL_23:
         }
 
         v10 = *(*(&v34 + 1) + 8 * v9);
-        v11 = [v10 activationState];
-        if (!v11 || v11 == 1 && ([v10 _FBSScene], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "uiSettings"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "deactivationReasons"), v13, v12, (v14 & 0x80) != 0))
+        activationState = [v10 activationState];
+        if (!activationState || activationState == 1 && ([v10 _FBSScene], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "uiSettings"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "deactivationReasons"), v13, v12, (v14 & 0x80) != 0))
         {
-          v15 = [v10 _FBSScene];
-          v16 = [v15 settings];
+          _FBSScene = [v10 _FBSScene];
+          settings = [_FBSScene settings];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v17 = v16;
+            v17 = settings;
           }
 
           else
@@ -566,30 +566,30 @@ LABEL_23:
 
           if (v18 && ((v19 = [v18 displayLocation]) != 0 ? (v20 = v19 == 3) : (v20 = 1), v20))
           {
-            if (v3)
+            if (clusterCopy)
             {
               goto LABEL_21;
             }
           }
 
-          else if (!v3)
+          else if (!clusterCopy)
           {
 LABEL_21:
-            v21 = [v10 delegate];
-            v22 = [v21 carChromeViewController];
-            v23 = [v22 mapView];
-            if (v23)
+            delegate = [v10 delegate];
+            carChromeViewController = [delegate carChromeViewController];
+            mapView = [carChromeViewController mapView];
+            if (mapView)
             {
-              v24 = v23;
+              v24 = mapView;
               v25 = v8;
               v26 = v4;
-              v27 = v3;
+              v27 = clusterCopy;
               v28 = v7;
-              v29 = [v22 isInactive];
+              isInactive = [carChromeViewController isInactive];
 
-              v30 = v29 ^ 1;
+              v30 = isInactive ^ 1;
               v31 = v28;
-              v3 = v27;
+              clusterCopy = v27;
               v4 = v26;
               v8 = v25;
               v6 = v33;

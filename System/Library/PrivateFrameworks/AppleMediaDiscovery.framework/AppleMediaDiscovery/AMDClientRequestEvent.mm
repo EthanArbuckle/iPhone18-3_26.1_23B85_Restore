@@ -1,62 +1,62 @@
 @interface AMDClientRequestEvent
-+ (void)setObserver:(id)a3;
-- (AMDClientRequestEvent)initWithFeatureName:(id)a3 withAccountDSID:(id)a4 andAccountStoreFrontId:(id)a5 inDomain:(id)a6 withCustomDescriptor:(id)a7 andSchemaVersion:(id)a8;
++ (void)setObserver:(id)observer;
+- (AMDClientRequestEvent)initWithFeatureName:(id)name withAccountDSID:(id)d andAccountStoreFrontId:(id)id inDomain:(id)domain withCustomDescriptor:(id)descriptor andSchemaVersion:(id)version;
 - (id)getAMSRequest;
 - (id)getAMSRequestForCipherML;
-- (id)initAppSegmentQueryForAccountDSID:(id)a3;
-- (id)initClearUserDataFor:(id)a3 inDomain:(id)a4;
-- (id)initModelPathRequestForUsecaseId:(id)a3 andModelId:(id)a4 withTreatmentId:(id)a5 inDomain:(id)a6;
-- (id)initPECResponseForSimilarityScores:(id)a3 requestError:(id)a4 andCallHandle:(id)a5;
-- (id)initPIRResponseForKeywordArray:(id)a3 withDataArray:(id)a4 withMissingKeywords:(id)a5 requestError:(id)a6 andCallHandle:(id)a7;
-- (void)internalInitializer:(id)a3 WithFeatureName:(id)a4 withAccountDSID:(id)a5 andAccountStoreFrontId:(id)a6 inDomain:(id)a7 withCustomDescriptor:(id)a8 withModelId:(id)a9 withTreatmentId:(id)a10 withUseCaseId:(id)a11 andSchemaVersion:(id)a12;
+- (id)initAppSegmentQueryForAccountDSID:(id)d;
+- (id)initClearUserDataFor:(id)for inDomain:(id)domain;
+- (id)initModelPathRequestForUsecaseId:(id)id andModelId:(id)modelId withTreatmentId:(id)treatmentId inDomain:(id)domain;
+- (id)initPECResponseForSimilarityScores:(id)scores requestError:(id)error andCallHandle:(id)handle;
+- (id)initPIRResponseForKeywordArray:(id)array withDataArray:(id)dataArray withMissingKeywords:(id)keywords requestError:(id)error andCallHandle:(id)handle;
+- (void)internalInitializer:(id)initializer WithFeatureName:(id)name withAccountDSID:(id)d andAccountStoreFrontId:(id)id inDomain:(id)domain withCustomDescriptor:(id)descriptor withModelId:(id)modelId withTreatmentId:(id)self0 withUseCaseId:(id)self1 andSchemaVersion:(id)self2;
 @end
 
 @implementation AMDClientRequestEvent
 
-+ (void)setObserver:(id)a3
++ (void)setObserver:(id)observer
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, observer);
   objc_storeStrong(&_notificationObserver, location[0]);
   objc_storeStrong(location, 0);
 }
 
-- (void)internalInitializer:(id)a3 WithFeatureName:(id)a4 withAccountDSID:(id)a5 andAccountStoreFrontId:(id)a6 inDomain:(id)a7 withCustomDescriptor:(id)a8 withModelId:(id)a9 withTreatmentId:(id)a10 withUseCaseId:(id)a11 andSchemaVersion:(id)a12
+- (void)internalInitializer:(id)initializer WithFeatureName:(id)name withAccountDSID:(id)d andAccountStoreFrontId:(id)id inDomain:(id)domain withCustomDescriptor:(id)descriptor withModelId:(id)modelId withTreatmentId:(id)self0 withUseCaseId:(id)self1 andSchemaVersion:(id)self2
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, initializer);
   v25 = 0;
-  objc_storeStrong(&v25, a4);
+  objc_storeStrong(&v25, name);
   v24 = 0;
-  objc_storeStrong(&v24, a5);
+  objc_storeStrong(&v24, d);
   v23 = 0;
-  objc_storeStrong(&v23, a6);
+  objc_storeStrong(&v23, id);
   v22 = 0;
-  objc_storeStrong(&v22, a7);
+  objc_storeStrong(&v22, domain);
   v21 = 0;
-  objc_storeStrong(&v21, a8);
+  objc_storeStrong(&v21, descriptor);
   v20 = 0;
-  objc_storeStrong(&v20, a9);
+  objc_storeStrong(&v20, modelId);
   v19 = 0;
-  objc_storeStrong(&v19, a10);
+  objc_storeStrong(&v19, treatmentId);
   v18 = 0;
-  objc_storeStrong(&v18, a11);
+  objc_storeStrong(&v18, caseId);
   v17 = 0;
-  objc_storeStrong(&v17, a12);
-  [(AMDClientRequestEvent *)v27 setRequest:location[0]];
-  [(AMDClientRequestEvent *)v27 setDomain:v22];
-  [(AMDClientRequestEvent *)v27 setAccountDSID:v24];
-  [(AMDClientRequestEvent *)v27 setStorefrontId:v23];
-  [(AMDClientRequestEvent *)v27 setFeatureName:v25];
-  [(AMDClientRequestEvent *)v27 setCustomDescriptor:v21];
-  [(AMDClientRequestEvent *)v27 setSchemaVersion:v17];
-  [(AMDClientRequestEvent *)v27 setModelId:v20];
-  [(AMDClientRequestEvent *)v27 setTreatmentId:v19];
-  [(AMDClientRequestEvent *)v27 setUseCaseId:v18];
+  objc_storeStrong(&v17, version);
+  [(AMDClientRequestEvent *)selfCopy setRequest:location[0]];
+  [(AMDClientRequestEvent *)selfCopy setDomain:v22];
+  [(AMDClientRequestEvent *)selfCopy setAccountDSID:v24];
+  [(AMDClientRequestEvent *)selfCopy setStorefrontId:v23];
+  [(AMDClientRequestEvent *)selfCopy setFeatureName:v25];
+  [(AMDClientRequestEvent *)selfCopy setCustomDescriptor:v21];
+  [(AMDClientRequestEvent *)selfCopy setSchemaVersion:v17];
+  [(AMDClientRequestEvent *)selfCopy setModelId:v20];
+  [(AMDClientRequestEvent *)selfCopy setTreatmentId:v19];
+  [(AMDClientRequestEvent *)selfCopy setUseCaseId:v18];
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v19, 0);
@@ -69,49 +69,49 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)initClearUserDataFor:(id)a3 inDomain:(id)a4
+- (id)initClearUserDataFor:(id)for inDomain:(id)domain
 {
-  obj = a4;
-  v9 = &v15;
-  v15 = self;
+  obj = domain;
+  v9 = &selfCopy;
+  selfCopy = self;
   location[1] = a2;
   v8 = location;
   v10 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, for);
   v7 = &v13;
   v13 = 0;
   objc_storeStrong(&v13, obj);
-  v4 = v15;
-  v15 = 0;
+  v4 = selfCopy;
+  selfCopy = 0;
   v12.receiver = v4;
   v12.super_class = AMDClientRequestEvent;
-  v15 = [(AMDClientRequestEvent *)&v12 init];
-  objc_storeStrong(&v15, v15);
-  [(AMDClientRequestEvent *)v15 internalInitializer:@"clearUserData" WithFeatureName:0 withAccountDSID:location[0] andAccountStoreFrontId:0 inDomain:v13 withCustomDescriptor:0 withModelId:0 withTreatmentId:0 withUseCaseId:0 andSchemaVersion:?];
-  v11 = MEMORY[0x277D82BE0](v15);
+  selfCopy = [(AMDClientRequestEvent *)&v12 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  [(AMDClientRequestEvent *)selfCopy internalInitializer:@"clearUserData" WithFeatureName:0 withAccountDSID:location[0] andAccountStoreFrontId:0 inDomain:v13 withCustomDescriptor:0 withModelId:0 withTreatmentId:0 withUseCaseId:0 andSchemaVersion:?];
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(v7, v10);
   objc_storeStrong(v8, v10);
   objc_storeStrong(v9, v10);
   return v11;
 }
 
-- (AMDClientRequestEvent)initWithFeatureName:(id)a3 withAccountDSID:(id)a4 andAccountStoreFrontId:(id)a5 inDomain:(id)a6 withCustomDescriptor:(id)a7 andSchemaVersion:(id)a8
+- (AMDClientRequestEvent)initWithFeatureName:(id)name withAccountDSID:(id)d andAccountStoreFrontId:(id)id inDomain:(id)domain withCustomDescriptor:(id)descriptor andSchemaVersion:(id)version
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
+  objc_storeStrong(&v26, d);
   v25 = 0;
-  objc_storeStrong(&v25, a5);
+  objc_storeStrong(&v25, id);
   v24 = 0;
-  objc_storeStrong(&v24, a6);
+  objc_storeStrong(&v24, domain);
   v23 = 0;
-  objc_storeStrong(&v23, a7);
+  objc_storeStrong(&v23, descriptor);
   v22 = 0;
-  objc_storeStrong(&v22, a8);
+  objc_storeStrong(&v22, version);
   if (v24 && location[0])
   {
     v20 = [v23 objectForKey:AMD_CUSTOM_AGG_VERSION];
@@ -150,14 +150,14 @@
     if (!v21)
     {
 LABEL_14:
-      v10 = v28;
-      v28 = 0;
+      v10 = selfCopy;
+      selfCopy = 0;
       v17.receiver = v10;
       v17.super_class = AMDClientRequestEvent;
-      v28 = [(AMDClientRequestEvent *)&v17 init];
-      objc_storeStrong(&v28, v28);
-      [v28 internalInitializer:@"customAgg" WithFeatureName:location[0] withAccountDSID:v26 andAccountStoreFrontId:v25 inDomain:v24 withCustomDescriptor:v23 withModelId:0 withTreatmentId:0 withUseCaseId:0 andSchemaVersion:v22];
-      v29 = MEMORY[0x277D82BE0](v28);
+      selfCopy = [(AMDClientRequestEvent *)&v17 init];
+      objc_storeStrong(&selfCopy, selfCopy);
+      [selfCopy internalInitializer:@"customAgg" WithFeatureName:location[0] withAccountDSID:v26 andAccountStoreFrontId:v25 inDomain:v24 withCustomDescriptor:v23 withModelId:0 withTreatmentId:0 withUseCaseId:0 andSchemaVersion:v22];
+      v29 = MEMORY[0x277D82BE0](selfCopy);
       v21 = 1;
     }
 
@@ -176,61 +176,61 @@ LABEL_14:
   objc_storeStrong(&v25, 0);
   objc_storeStrong(&v26, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v28, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v29;
 }
 
-- (id)initAppSegmentQueryForAccountDSID:(id)a3
+- (id)initAppSegmentQueryForAccountDSID:(id)d
 {
-  v6 = &v11;
-  v11 = self;
+  v6 = &selfCopy;
+  selfCopy = self;
   location[1] = a2;
   v5 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v11;
-  v11 = 0;
+  objc_storeStrong(location, d);
+  v3 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v3;
   v9.super_class = AMDClientRequestEvent;
-  v11 = [(AMDClientRequestEvent *)&v9 init];
-  objc_storeStrong(&v11, v11);
-  [(AMDClientRequestEvent *)v11 internalInitializer:@"fetchInapp" WithFeatureName:@"inAppSegments" withAccountDSID:location[0] andAccountStoreFrontId:0 inDomain:@"apps" withCustomDescriptor:0 withModelId:0 withTreatmentId:0 withUseCaseId:0 andSchemaVersion:?];
-  v8 = MEMORY[0x277D82BE0](v11);
+  selfCopy = [(AMDClientRequestEvent *)&v9 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  [(AMDClientRequestEvent *)selfCopy internalInitializer:@"fetchInapp" WithFeatureName:@"inAppSegments" withAccountDSID:location[0] andAccountStoreFrontId:0 inDomain:@"apps" withCustomDescriptor:0 withModelId:0 withTreatmentId:0 withUseCaseId:0 andSchemaVersion:?];
+  v8 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(v5, obj);
   objc_storeStrong(v6, obj);
   return v8;
 }
 
-- (id)initModelPathRequestForUsecaseId:(id)a3 andModelId:(id)a4 withTreatmentId:(id)a5 inDomain:(id)a6
+- (id)initModelPathRequestForUsecaseId:(id)id andModelId:(id)modelId withTreatmentId:(id)treatmentId inDomain:(id)domain
 {
-  obj = a4;
-  v9 = a5;
-  v10 = a6;
-  v15 = &v23;
-  v23 = self;
+  obj = modelId;
+  treatmentIdCopy = treatmentId;
+  domainCopy = domain;
+  v15 = &selfCopy;
+  selfCopy = self;
   location[1] = a2;
   v14 = location;
   v16 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, id);
   v13 = &v21;
   v21 = 0;
   objc_storeStrong(&v21, obj);
   v12 = &v20;
   v20 = 0;
-  objc_storeStrong(&v20, v9);
+  objc_storeStrong(&v20, treatmentIdCopy);
   v11 = &v19;
   v19 = 0;
-  objc_storeStrong(&v19, v10);
-  v6 = v23;
-  v23 = 0;
+  objc_storeStrong(&v19, domainCopy);
+  v6 = selfCopy;
+  selfCopy = 0;
   v18.receiver = v6;
   v18.super_class = AMDClientRequestEvent;
-  v23 = [(AMDClientRequestEvent *)&v18 init];
-  objc_storeStrong(&v23, v23);
-  [(AMDClientRequestEvent *)v23 internalInitializer:@"fetchModelPath" WithFeatureName:0 withAccountDSID:0 andAccountStoreFrontId:0 inDomain:v19 withCustomDescriptor:v21 withModelId:v20 withTreatmentId:location[0] withUseCaseId:0 andSchemaVersion:?];
-  v17 = MEMORY[0x277D82BE0](v23);
+  selfCopy = [(AMDClientRequestEvent *)&v18 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  [(AMDClientRequestEvent *)selfCopy internalInitializer:@"fetchModelPath" WithFeatureName:0 withAccountDSID:0 andAccountStoreFrontId:0 inDomain:v19 withCustomDescriptor:v21 withModelId:v20 withTreatmentId:location[0] withUseCaseId:0 andSchemaVersion:?];
+  v17 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(v11, v16);
   objc_storeStrong(v12, v16);
   objc_storeStrong(v13, v16);
@@ -241,88 +241,88 @@ LABEL_14:
 
 - (id)getAMSRequest
 {
-  v32 = self;
+  selfCopy = self;
   v31[1] = a2;
   v31[0] = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v27 = [(AMDClientRequestEvent *)v32 domain];
+  domain = [(AMDClientRequestEvent *)selfCopy domain];
   [v31[0] setValue:? forKey:?];
-  MEMORY[0x277D82BD8](v27);
-  v28 = [(AMDClientRequestEvent *)v32 accountDSID];
-  MEMORY[0x277D82BD8](v28);
-  if (v28)
+  MEMORY[0x277D82BD8](domain);
+  accountDSID = [(AMDClientRequestEvent *)selfCopy accountDSID];
+  MEMORY[0x277D82BD8](accountDSID);
+  if (accountDSID)
   {
-    v26 = [(AMDClientRequestEvent *)v32 accountDSID];
+    accountDSID2 = [(AMDClientRequestEvent *)selfCopy accountDSID];
     [v31[0] setValue:? forKey:?];
-    MEMORY[0x277D82BD8](v26);
+    MEMORY[0x277D82BD8](accountDSID2);
   }
 
-  v25 = [(AMDClientRequestEvent *)v32 customDescriptor];
-  MEMORY[0x277D82BD8](v25);
-  if (v25)
+  customDescriptor = [(AMDClientRequestEvent *)selfCopy customDescriptor];
+  MEMORY[0x277D82BD8](customDescriptor);
+  if (customDescriptor)
   {
-    v24 = [(AMDClientRequestEvent *)v32 customDescriptor];
+    customDescriptor2 = [(AMDClientRequestEvent *)selfCopy customDescriptor];
     [v31[0] setValue:? forKey:?];
-    MEMORY[0x277D82BD8](v24);
+    MEMORY[0x277D82BD8](customDescriptor2);
   }
 
-  v23 = [(AMDClientRequestEvent *)v32 featureName];
-  MEMORY[0x277D82BD8](v23);
-  if (v23)
+  featureName = [(AMDClientRequestEvent *)selfCopy featureName];
+  MEMORY[0x277D82BD8](featureName);
+  if (featureName)
   {
-    v22 = [(AMDClientRequestEvent *)v32 featureName];
+    featureName2 = [(AMDClientRequestEvent *)selfCopy featureName];
     [v31[0] setValue:? forKey:?];
-    MEMORY[0x277D82BD8](v22);
+    MEMORY[0x277D82BD8](featureName2);
   }
 
-  v21 = [(AMDClientRequestEvent *)v32 schemaVersion];
-  MEMORY[0x277D82BD8](v21);
-  if (v21)
+  schemaVersion = [(AMDClientRequestEvent *)selfCopy schemaVersion];
+  MEMORY[0x277D82BD8](schemaVersion);
+  if (schemaVersion)
   {
-    v20 = [(AMDClientRequestEvent *)v32 schemaVersion];
+    schemaVersion2 = [(AMDClientRequestEvent *)selfCopy schemaVersion];
     [v31[0] setValue:? forKey:?];
-    MEMORY[0x277D82BD8](v20);
+    MEMORY[0x277D82BD8](schemaVersion2);
   }
 
-  v19 = [(AMDClientRequestEvent *)v32 storefrontId];
-  MEMORY[0x277D82BD8](v19);
-  if (v19)
+  storefrontId = [(AMDClientRequestEvent *)selfCopy storefrontId];
+  MEMORY[0x277D82BD8](storefrontId);
+  if (storefrontId)
   {
-    v18 = [(AMDClientRequestEvent *)v32 storefrontId];
+    storefrontId2 = [(AMDClientRequestEvent *)selfCopy storefrontId];
     [v31[0] setValue:? forKey:?];
-    MEMORY[0x277D82BD8](v18);
+    MEMORY[0x277D82BD8](storefrontId2);
   }
 
-  v17 = [(AMDClientRequestEvent *)v32 useCaseId];
-  MEMORY[0x277D82BD8](v17);
-  if (v17)
+  useCaseId = [(AMDClientRequestEvent *)selfCopy useCaseId];
+  MEMORY[0x277D82BD8](useCaseId);
+  if (useCaseId)
   {
-    v16 = [(AMDClientRequestEvent *)v32 useCaseId];
+    useCaseId2 = [(AMDClientRequestEvent *)selfCopy useCaseId];
     [v31[0] setValue:? forKey:?];
-    MEMORY[0x277D82BD8](v16);
+    MEMORY[0x277D82BD8](useCaseId2);
   }
 
-  v15 = [(AMDClientRequestEvent *)v32 modelId];
-  MEMORY[0x277D82BD8](v15);
-  if (v15)
+  modelId = [(AMDClientRequestEvent *)selfCopy modelId];
+  MEMORY[0x277D82BD8](modelId);
+  if (modelId)
   {
-    v14 = [(AMDClientRequestEvent *)v32 modelId];
+    modelId2 = [(AMDClientRequestEvent *)selfCopy modelId];
     [v31[0] setValue:? forKey:?];
-    MEMORY[0x277D82BD8](v14);
+    MEMORY[0x277D82BD8](modelId2);
   }
 
-  v13 = [(AMDClientRequestEvent *)v32 treatmentId];
-  MEMORY[0x277D82BD8](v13);
-  if (v13)
+  treatmentId = [(AMDClientRequestEvent *)selfCopy treatmentId];
+  MEMORY[0x277D82BD8](treatmentId);
+  if (treatmentId)
   {
-    v12 = [(AMDClientRequestEvent *)v32 treatmentId];
+    treatmentId2 = [(AMDClientRequestEvent *)selfCopy treatmentId];
     [v31[0] setValue:? forKey:?];
-    MEMORY[0x277D82BD8](v12);
+    MEMORY[0x277D82BD8](treatmentId2);
   }
 
   location = 0;
-  v10 = [(AMDClientRequestEvent *)v32 request];
-  v11 = [(NSString *)v10 isEqualToString:@"clearUserData"];
-  MEMORY[0x277D82BD8](v10);
+  request = [(AMDClientRequestEvent *)selfCopy request];
+  v11 = [(NSString *)request isEqualToString:@"clearUserData"];
+  MEMORY[0x277D82BD8](request);
   if (v11)
   {
     objc_storeStrong(&location, @"amd.clearUserData");
@@ -330,9 +330,9 @@ LABEL_14:
 
   else
   {
-    v8 = [(AMDClientRequestEvent *)v32 request];
-    v9 = [(NSString *)v8 isEqualToString:@"customAgg"];
-    MEMORY[0x277D82BD8](v8);
+    request2 = [(AMDClientRequestEvent *)selfCopy request];
+    v9 = [(NSString *)request2 isEqualToString:@"customAgg"];
+    MEMORY[0x277D82BD8](request2);
     if (v9)
     {
       objc_storeStrong(&location, @"amd.fetchAggregatedData");
@@ -340,9 +340,9 @@ LABEL_14:
 
     else
     {
-      v6 = [(AMDClientRequestEvent *)v32 request];
-      v7 = [(NSString *)v6 isEqualToString:@"fetchInapp"];
-      MEMORY[0x277D82BD8](v6);
+      request3 = [(AMDClientRequestEvent *)selfCopy request];
+      v7 = [(NSString *)request3 isEqualToString:@"fetchInapp"];
+      MEMORY[0x277D82BD8](request3);
       if (v7)
       {
         objc_storeStrong(&location, @"amd.getSegment");
@@ -350,9 +350,9 @@ LABEL_14:
 
       else
       {
-        v4 = [(AMDClientRequestEvent *)v32 request];
-        v5 = [(NSString *)v4 isEqualToString:@"fetchModelPath"];
-        MEMORY[0x277D82BD8](v4);
+        request4 = [(AMDClientRequestEvent *)selfCopy request];
+        v5 = [(NSString *)request4 isEqualToString:@"fetchModelPath"];
+        MEMORY[0x277D82BD8](request4);
         if (v5)
         {
           objc_storeStrong(&location, @"amd.getModelPath");
@@ -372,159 +372,159 @@ LABEL_14:
   return v3;
 }
 
-- (id)initPIRResponseForKeywordArray:(id)a3 withDataArray:(id)a4 withMissingKeywords:(id)a5 requestError:(id)a6 andCallHandle:(id)a7
+- (id)initPIRResponseForKeywordArray:(id)array withDataArray:(id)dataArray withMissingKeywords:(id)keywords requestError:(id)error andCallHandle:(id)handle
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, array);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, dataArray);
   v21 = 0;
-  objc_storeStrong(&v21, a5);
+  objc_storeStrong(&v21, keywords);
   v20 = 0;
-  objc_storeStrong(&v20, a6);
+  objc_storeStrong(&v20, error);
   v19 = 0;
-  objc_storeStrong(&v19, a7);
-  v7 = v24;
-  v24 = 0;
+  objc_storeStrong(&v19, handle);
+  v7 = selfCopy;
+  selfCopy = 0;
   v18.receiver = v7;
   v18.super_class = AMDClientRequestEvent;
-  v24 = [(AMDClientRequestEvent *)&v18 init];
-  objc_storeStrong(&v24, v24);
-  [(AMDClientRequestEvent *)v24 setRequest:0x2852A79C8];
+  selfCopy = [(AMDClientRequestEvent *)&v18 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  [(AMDClientRequestEvent *)selfCopy setRequest:0x2852A79C8];
   v15 = [AMDMiscHelpers convertDataArrayToBase64StringArray:location[0]];
-  [(AMDClientRequestEvent *)v24 setPIRKeywordArray:?];
+  [(AMDClientRequestEvent *)selfCopy setPIRKeywordArray:?];
   MEMORY[0x277D82BD8](v15);
   v16 = [AMDMiscHelpers convertDataArrayToBase64StringArray:v21];
-  [(AMDClientRequestEvent *)v24 setPIRMissingKeywordArray:?];
+  [(AMDClientRequestEvent *)selfCopy setPIRMissingKeywordArray:?];
   MEMORY[0x277D82BD8](v16);
   v17 = [AMDMiscHelpers convertDataArrayToBase64StringArray:v22];
-  [(AMDClientRequestEvent *)v24 setPIRDataArray:?];
+  [(AMDClientRequestEvent *)selfCopy setPIRDataArray:?];
   MEMORY[0x277D82BD8](v17);
-  [(AMDClientRequestEvent *)v24 setCipherMLCallHandle:v19];
+  [(AMDClientRequestEvent *)selfCopy setCipherMLCallHandle:v19];
   if (v20)
   {
-    v10 = [v20 localizedDescription];
-    [(AMDClientRequestEvent *)v24 setCipherMLRequestError:?];
-    MEMORY[0x277D82BD8](v10);
+    localizedDescription = [v20 localizedDescription];
+    [(AMDClientRequestEvent *)selfCopy setCipherMLRequestError:?];
+    MEMORY[0x277D82BD8](localizedDescription);
   }
 
-  v9 = MEMORY[0x277D82BE0](v24);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(&v21, 0);
   objc_storeStrong(&v22, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v24, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
-- (id)initPECResponseForSimilarityScores:(id)a3 requestError:(id)a4 andCallHandle:(id)a5
+- (id)initPECResponseForSimilarityScores:(id)scores requestError:(id)error andCallHandle:(id)handle
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, scores);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, error);
   v12 = 0;
-  objc_storeStrong(&v12, a5);
-  v5 = v15;
-  v15 = 0;
+  objc_storeStrong(&v12, handle);
+  v5 = selfCopy;
+  selfCopy = 0;
   v11.receiver = v5;
   v11.super_class = AMDClientRequestEvent;
-  v15 = [(AMDClientRequestEvent *)&v11 init];
-  objc_storeStrong(&v15, v15);
-  [(AMDClientRequestEvent *)v15 setRequest:0x2852A79A8];
-  [(AMDClientRequestEvent *)v15 setPECSimilarityScoresArray:location[0]];
-  [(AMDClientRequestEvent *)v15 setCipherMLCallHandle:v12];
+  selfCopy = [(AMDClientRequestEvent *)&v11 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  [(AMDClientRequestEvent *)selfCopy setRequest:0x2852A79A8];
+  [(AMDClientRequestEvent *)selfCopy setPECSimilarityScoresArray:location[0]];
+  [(AMDClientRequestEvent *)selfCopy setCipherMLCallHandle:v12];
   if (v13)
   {
-    v8 = [v13 localizedDescription];
-    [(AMDClientRequestEvent *)v15 setCipherMLRequestError:?];
-    MEMORY[0x277D82BD8](v8);
+    localizedDescription = [v13 localizedDescription];
+    [(AMDClientRequestEvent *)selfCopy setCipherMLRequestError:?];
+    MEMORY[0x277D82BD8](localizedDescription);
   }
 
-  v7 = MEMORY[0x277D82BE0](v15);
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
 - (id)getAMSRequestForCipherML
 {
-  v22 = self;
+  selfCopy = self;
   v21[1] = a2;
   v21[0] = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v19 = [(AMDClientRequestEvent *)v22 accountDSID];
-  MEMORY[0x277D82BD8](v19);
-  if (v19)
+  accountDSID = [(AMDClientRequestEvent *)selfCopy accountDSID];
+  MEMORY[0x277D82BD8](accountDSID);
+  if (accountDSID)
   {
-    v18 = [(AMDClientRequestEvent *)v22 accountDSID];
+    accountDSID2 = [(AMDClientRequestEvent *)selfCopy accountDSID];
     [v21[0] setValue:? forKey:?];
-    MEMORY[0x277D82BD8](v18);
+    MEMORY[0x277D82BD8](accountDSID2);
   }
 
-  v17 = [(AMDClientRequestEvent *)v22 PIRDataArray];
-  MEMORY[0x277D82BD8](v17);
-  if (v17)
+  pIRDataArray = [(AMDClientRequestEvent *)selfCopy PIRDataArray];
+  MEMORY[0x277D82BD8](pIRDataArray);
+  if (pIRDataArray)
   {
-    v16 = [(AMDClientRequestEvent *)v22 PIRDataArray];
+    pIRDataArray2 = [(AMDClientRequestEvent *)selfCopy PIRDataArray];
     [v21[0] setValue:? forKey:?];
-    MEMORY[0x277D82BD8](v16);
+    MEMORY[0x277D82BD8](pIRDataArray2);
   }
 
-  v15 = [(AMDClientRequestEvent *)v22 PIRKeywordArray];
-  MEMORY[0x277D82BD8](v15);
-  if (v15)
+  pIRKeywordArray = [(AMDClientRequestEvent *)selfCopy PIRKeywordArray];
+  MEMORY[0x277D82BD8](pIRKeywordArray);
+  if (pIRKeywordArray)
   {
-    v14 = [(AMDClientRequestEvent *)v22 PIRKeywordArray];
+    pIRKeywordArray2 = [(AMDClientRequestEvent *)selfCopy PIRKeywordArray];
     [v21[0] setValue:? forKey:?];
-    MEMORY[0x277D82BD8](v14);
+    MEMORY[0x277D82BD8](pIRKeywordArray2);
   }
 
-  v13 = [(AMDClientRequestEvent *)v22 PIRMissingKeywordArray];
-  MEMORY[0x277D82BD8](v13);
-  if (v13)
+  pIRMissingKeywordArray = [(AMDClientRequestEvent *)selfCopy PIRMissingKeywordArray];
+  MEMORY[0x277D82BD8](pIRMissingKeywordArray);
+  if (pIRMissingKeywordArray)
   {
-    v12 = [(AMDClientRequestEvent *)v22 PIRMissingKeywordArray];
+    pIRMissingKeywordArray2 = [(AMDClientRequestEvent *)selfCopy PIRMissingKeywordArray];
     [v21[0] setValue:? forKey:?];
-    MEMORY[0x277D82BD8](v12);
+    MEMORY[0x277D82BD8](pIRMissingKeywordArray2);
   }
 
-  v11 = [(AMDClientRequestEvent *)v22 PECSimilarityScoresArray];
-  MEMORY[0x277D82BD8](v11);
-  if (v11)
+  pECSimilarityScoresArray = [(AMDClientRequestEvent *)selfCopy PECSimilarityScoresArray];
+  MEMORY[0x277D82BD8](pECSimilarityScoresArray);
+  if (pECSimilarityScoresArray)
   {
-    v10 = [(AMDClientRequestEvent *)v22 PECSimilarityScoresArray];
+    pECSimilarityScoresArray2 = [(AMDClientRequestEvent *)selfCopy PECSimilarityScoresArray];
     [v21[0] setValue:? forKey:?];
-    MEMORY[0x277D82BD8](v10);
+    MEMORY[0x277D82BD8](pECSimilarityScoresArray2);
   }
 
-  v9 = [(AMDClientRequestEvent *)v22 CipherMLCallHandle];
-  MEMORY[0x277D82BD8](v9);
-  if (v9)
+  cipherMLCallHandle = [(AMDClientRequestEvent *)selfCopy CipherMLCallHandle];
+  MEMORY[0x277D82BD8](cipherMLCallHandle);
+  if (cipherMLCallHandle)
   {
-    v8 = [(AMDClientRequestEvent *)v22 CipherMLCallHandle];
+    cipherMLCallHandle2 = [(AMDClientRequestEvent *)selfCopy CipherMLCallHandle];
     [v21[0] setValue:? forKey:?];
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](cipherMLCallHandle2);
   }
 
-  v7 = [(AMDClientRequestEvent *)v22 CipherMLRequestError];
-  MEMORY[0x277D82BD8](v7);
-  if (v7)
+  cipherMLRequestError = [(AMDClientRequestEvent *)selfCopy CipherMLRequestError];
+  MEMORY[0x277D82BD8](cipherMLRequestError);
+  if (cipherMLRequestError)
   {
-    v6 = [(AMDClientRequestEvent *)v22 CipherMLCallHandle];
+    cipherMLCallHandle3 = [(AMDClientRequestEvent *)selfCopy CipherMLCallHandle];
     [v21[0] setValue:? forKey:?];
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](cipherMLCallHandle3);
   }
 
-  v4 = [(AMDClientRequestEvent *)v22 request];
+  request = [(AMDClientRequestEvent *)selfCopy request];
   [v3 setValue:? forKey:?];
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](request);
   [v21[0] setValue:@"amd.enqueueCipherMLEvent" forKey:@"action"];
   v20 = objc_alloc_init(AMDAMSEngagementEvent);
   [(AMDAMSEngagementEvent *)v20 setEngagementData:v21[0]];

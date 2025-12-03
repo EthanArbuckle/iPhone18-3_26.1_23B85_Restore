@@ -1,24 +1,24 @@
 @interface JEDeresVersionTreatmentAction
-- (JEDeresVersionTreatmentAction)initWithField:(id)a3 configuration:(id)a4;
-- (id)performAction:(id)a3 context:(id)a4;
+- (JEDeresVersionTreatmentAction)initWithField:(id)field configuration:(id)configuration;
+- (id)performAction:(id)action context:(id)context;
 @end
 
 @implementation JEDeresVersionTreatmentAction
 
-- (JEDeresVersionTreatmentAction)initWithField:(id)a3 configuration:(id)a4
+- (JEDeresVersionTreatmentAction)initWithField:(id)field configuration:(id)configuration
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = JEDeresVersionTreatmentAction;
-  v7 = [(JETreatmentAction *)&v14 initWithField:a3 configuration:v6];
+  v7 = [(JETreatmentAction *)&v14 initWithField:field configuration:configurationCopy];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"precision"];
+    v8 = [configurationCopy objectForKeyedSubscript:@"precision"];
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && [v8 length])
     {
-      v9 = [v8 integerValue];
+      integerValue = [v8 integerValue];
     }
 
     else
@@ -33,20 +33,20 @@
         _os_log_impl(&dword_1AB012000, v10, OS_LOG_TYPE_ERROR, "JetEngine: Deres version precision is unsupported %@", buf, 0xCu);
       }
 
-      v9 = -1;
+      integerValue = -1;
     }
 
-    v7->_precision = v9;
+    v7->_precision = integerValue;
   }
 
   return v7;
 }
 
-- (id)performAction:(id)a3 context:(id)a4
+- (id)performAction:(id)action context:(id)context
 {
   v12.receiver = self;
   v12.super_class = JEDeresVersionTreatmentAction;
-  v5 = [(JETreatmentAction *)&v12 performAction:a3 context:a4];
+  v5 = [(JETreatmentAction *)&v12 performAction:action context:context];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

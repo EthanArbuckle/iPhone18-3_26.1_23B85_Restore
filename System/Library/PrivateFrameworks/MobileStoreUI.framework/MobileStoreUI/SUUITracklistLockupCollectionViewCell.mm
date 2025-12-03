@@ -1,39 +1,39 @@
 @interface SUUITracklistLockupCollectionViewCell
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringForOrdinal:(id)a3 context:(id)a4;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5;
-- (SUUITracklistLockupCollectionViewCell)initWithFrame:(CGRect)a3;
-- (id)_addFlipContainerViewWithFrontView:(id)a3 backView:(id)a4;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringForOrdinal:(id)ordinal context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated;
+- (SUUITracklistLockupCollectionViewCell)initWithFrame:(CGRect)frame;
+- (id)_addFlipContainerViewWithFrontView:(id)view backView:(id)backView;
 - (id)_previewColumnView;
 - (id)_previewMediaURL;
-- (id)viewForElementIdentifier:(id)a3;
-- (void)_audioPlayerStatusChangeNotification:(id)a3;
-- (void)_buttonAction:(id)a3;
-- (void)_enumerateViewElementViewsUsingBlock:(id)a3;
-- (void)_layoutConfirmationGradientRelativeToView:(id)a3 alpha:(double)a4;
-- (void)_resolvePreviewStateAfterTransitionForFlipView:(id)a3;
-- (void)_showConfirmationAction:(id)a3;
+- (id)viewForElementIdentifier:(id)identifier;
+- (void)_audioPlayerStatusChangeNotification:(id)notification;
+- (void)_buttonAction:(id)action;
+- (void)_enumerateViewElementViewsUsingBlock:(id)block;
+- (void)_layoutConfirmationGradientRelativeToView:(id)view alpha:(double)alpha;
+- (void)_resolvePreviewStateAfterTransitionForFlipView:(id)view;
+- (void)_showConfirmationAction:(id)action;
 - (void)dealloc;
-- (void)hidePreviewProgressAnimated:(BOOL)a3;
-- (void)itemOfferButtonDidAnimateTransition:(id)a3;
-- (void)itemOfferButtonWillAnimateTransition:(id)a3;
+- (void)hidePreviewProgressAnimated:(BOOL)animated;
+- (void)itemOfferButtonDidAnimateTransition:(id)transition;
+- (void)itemOfferButtonWillAnimateTransition:(id)transition;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)showPreviewProgressWithStatus:(id)a3 animated:(BOOL)a4;
-- (void)togglePreviewPlaybackAnimated:(BOOL)a3;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)showPreviewProgressWithStatus:(id)status animated:(BOOL)animated;
+- (void)togglePreviewPlaybackAnimated:(BOOL)animated;
 @end
 
 @implementation SUUITracklistLockupCollectionViewCell
 
-- (SUUITracklistLockupCollectionViewCell)initWithFrame:(CGRect)a3
+- (SUUITracklistLockupCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = SUUITracklistLockupCollectionViewCell;
-  v3 = [(SUUIViewReuseCollectionViewCell *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIViewReuseCollectionViewCell *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -48,8 +48,8 @@
     v9 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.2];
     [(UIView *)v8 setBackgroundColor:v9];
 
-    v10 = [(SUUITracklistLockupCollectionViewCell *)v3 contentView];
-    [v10 addSubview:v3->_separatorView];
+    contentView = [(SUUITracklistLockupCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_separatorView];
   }
 
   return v3;
@@ -57,15 +57,15 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D7FF18] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D7FF18] object:0];
 
   v4.receiver = self;
   v4.super_class = SUUITracklistLockupCollectionViewCell;
   [(SUUIViewReuseCollectionViewCell *)&v4 dealloc];
 }
 
-- (void)hidePreviewProgressAnimated:(BOOL)a3
+- (void)hidePreviewProgressAnimated:(BOOL)animated
 {
   previewState = self->_previewState;
   if (previewState)
@@ -80,13 +80,13 @@
 
     if (previewState == 2)
     {
-      v9 = [(SUUITracklistLockupCollectionViewCell *)self _previewColumnView];
-      if (a3)
+      _previewColumnView = [(SUUITracklistLockupCollectionViewCell *)self _previewColumnView];
+      if (animated)
       {
-        v10 = [(SUUITracklistLockupCollectionViewCell *)self _addFlipContainerViewWithFrontView:v6 backView:v9];
-        [v9 setHidden:0];
+        v10 = [(SUUITracklistLockupCollectionViewCell *)self _addFlipContainerViewWithFrontView:v6 backView:_previewColumnView];
+        [_previewColumnView setHidden:0];
         objc_initWeak(&location, self);
-        v11 = [MEMORY[0x277D75128] sharedApplication];
+        mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
         v14[0] = MEMORY[0x277D85DD0];
         v14[1] = 3221225472;
         v14[2] = __69__SUUITracklistLockupCollectionViewCell_hidePreviewProgressAnimated___block_invoke;
@@ -94,7 +94,7 @@
         v12 = v10;
         v15 = v12;
         objc_copyWeak(&v16, &location);
-        [v11 _performBlockAfterCATransactionCommits:v14];
+        [mEMORY[0x277D75128] _performBlockAfterCATransactionCommits:v14];
 
         objc_destroyWeak(&v16);
         objc_destroyWeak(&location);
@@ -104,8 +104,8 @@
       {
         self->_previewState = 0;
         [(SUUIPreviewProgressIndicator *)v6 removeFromSuperview];
-        v13 = [(SUUITracklistLockupCollectionViewCell *)self contentView];
-        [v13 addSubview:v9];
+        contentView = [(SUUITracklistLockupCollectionViewCell *)self contentView];
+        [contentView addSubview:_previewColumnView];
 
         [(SUUITracklistLockupCollectionViewCell *)self setNeedsLayout];
       }
@@ -133,46 +133,46 @@ void __69__SUUITracklistLockupCollectionViewCell_hidePreviewProgressAnimated___b
   [WeakRetained _resolvePreviewStateAfterTransitionForFlipView:*(a1 + 32)];
 }
 
-- (void)showPreviewProgressWithStatus:(id)a3 animated:(BOOL)a4
+- (void)showPreviewProgressWithStatus:(id)status animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  objc_storeStrong(&self->_lastPlayerStatus, a3);
+  animatedCopy = animated;
+  statusCopy = status;
+  objc_storeStrong(&self->_lastPlayerStatus, status);
   previewState = self->_previewState;
   if (previewState)
   {
     if (previewState == 2)
     {
-      [(SUUIPreviewProgressIndicator *)self->_previewProgressIndicator reloadWithPlayerStatus:v7 animated:v4];
+      [(SUUIPreviewProgressIndicator *)self->_previewProgressIndicator reloadWithPlayerStatus:statusCopy animated:animatedCopy];
     }
   }
 
   else
   {
-    v9 = [(SUUITracklistLockupCollectionViewCell *)self _previewColumnView];
-    if (v9)
+    _previewColumnView = [(SUUITracklistLockupCollectionViewCell *)self _previewColumnView];
+    if (_previewColumnView)
     {
       v10 = [[SUUIPreviewProgressIndicator alloc] initWithFrame:0.0, 0.0, 29.0, 29.0];
       previewProgressIndicator = self->_previewProgressIndicator;
       self->_previewProgressIndicator = v10;
 
       v12 = self->_previewProgressIndicator;
-      v13 = [MEMORY[0x277D75348] clearColor];
-      [(SUUIPreviewProgressIndicator *)v12 setBackgroundColor:v13];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(SUUIPreviewProgressIndicator *)v12 setBackgroundColor:clearColor];
 
       [(SUUIPreviewProgressIndicator *)self->_previewProgressIndicator setEnabled:0];
-      v14 = [(SUUITracklistLockupCollectionViewCell *)self _previewControlViewElement];
-      v15 = [v14 style];
-      v16 = SUUIViewElementPlainColorWithStyle(v15, 0);
+      _previewControlViewElement = [(SUUITracklistLockupCollectionViewCell *)self _previewControlViewElement];
+      style = [_previewControlViewElement style];
+      v16 = SUUIViewElementPlainColorWithStyle(style, 0);
 
       [(SUUIPreviewProgressIndicator *)self->_previewProgressIndicator setTintColor:v16];
-      if (v4)
+      if (animatedCopy)
       {
-        v17 = [(SUUITracklistLockupCollectionViewCell *)self _addFlipContainerViewWithFrontView:v9 backView:self->_previewProgressIndicator];
+        v17 = [(SUUITracklistLockupCollectionViewCell *)self _addFlipContainerViewWithFrontView:_previewColumnView backView:self->_previewProgressIndicator];
         self->_previewState = 1;
-        [(SUUIPreviewProgressIndicator *)self->_previewProgressIndicator reloadWithPlayerStatus:v7 animated:1];
+        [(SUUIPreviewProgressIndicator *)self->_previewProgressIndicator reloadWithPlayerStatus:statusCopy animated:1];
         objc_initWeak(&location, self);
-        v18 = [MEMORY[0x277D75128] sharedApplication];
+        mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
         v22[0] = MEMORY[0x277D85DD0];
         v22[1] = 3221225472;
         v22[2] = __80__SUUITracklistLockupCollectionViewCell_showPreviewProgressWithStatus_animated___block_invoke_2;
@@ -180,7 +180,7 @@ void __69__SUUITracklistLockupCollectionViewCell_hidePreviewProgressAnimated___b
         v19 = v17;
         v23 = v19;
         objc_copyWeak(&v24, &location);
-        [v18 _performBlockAfterCATransactionCommits:v22];
+        [mEMORY[0x277D75128] _performBlockAfterCATransactionCommits:v22];
 
         objc_destroyWeak(&v24);
         objc_destroyWeak(&location);
@@ -189,18 +189,18 @@ void __69__SUUITracklistLockupCollectionViewCell_hidePreviewProgressAnimated___b
       else
       {
         self->_previewState = 2;
-        v20 = [(SUUITracklistLockupCollectionViewCell *)self contentView];
-        [v20 addSubview:self->_previewProgressIndicator];
+        contentView = [(SUUITracklistLockupCollectionViewCell *)self contentView];
+        [contentView addSubview:self->_previewProgressIndicator];
 
         [(SUUITracklistLockupCollectionViewCell *)self setNeedsLayout];
-        v21 = [MEMORY[0x277D75128] sharedApplication];
+        mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
         v26[0] = MEMORY[0x277D85DD0];
         v26[1] = 3221225472;
         v26[2] = __80__SUUITracklistLockupCollectionViewCell_showPreviewProgressWithStatus_animated___block_invoke;
         v26[3] = &unk_2798F93A0;
         v26[4] = self;
-        v27 = v4;
-        [v21 _performBlockAfterCATransactionCommits:v26];
+        v27 = animatedCopy;
+        [mEMORY[0x277D75128]2 _performBlockAfterCATransactionCommits:v26];
       }
     }
   }
@@ -226,43 +226,43 @@ void __80__SUUITracklistLockupCollectionViewCell_showPreviewProgressWithStatus_a
   [WeakRetained _resolvePreviewStateAfterTransitionForFlipView:*(a1 + 32)];
 }
 
-- (void)togglePreviewPlaybackAnimated:(BOOL)a3
+- (void)togglePreviewPlaybackAnimated:(BOOL)animated
 {
-  v4 = [(SUUITracklistLockupCollectionViewCell *)self _previewMediaURL];
-  if (v4)
+  _previewMediaURL = [(SUUITracklistLockupCollectionViewCell *)self _previewMediaURL];
+  if (_previewMediaURL)
   {
-    v12 = v4;
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    v6 = [MEMORY[0x277D7FDA8] sessionManager];
-    v7 = [v6 endSessionForURL:v12];
+    v12 = _previewMediaURL;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    sessionManager = [MEMORY[0x277D7FDA8] sessionManager];
+    v7 = [sessionManager endSessionForURL:v12];
     if (v7)
     {
-      [v5 removeObserver:self name:*MEMORY[0x277D7FF18] object:v7];
+      [defaultCenter removeObserver:self name:*MEMORY[0x277D7FF18] object:v7];
       [v7 stop];
       [(SUUITracklistLockupCollectionViewCell *)self hidePreviewProgressAnimated:1];
     }
 
     else
     {
-      v8 = [v6 stopAllAudioPlayerSessions];
-      v9 = [v6 startSessionWithURL:v12];
-      [v5 addObserver:self selector:sel__audioPlayerStatusChangeNotification_ name:*MEMORY[0x277D7FF18] object:v9];
-      v10 = [(SUUITracklistLockupCollectionViewCell *)self _previewControlViewElement];
-      [v9 setStoreItemIdentifier:{objc_msgSend(v10, "itemIdentifier")}];
-      v11 = [v9 playerStatus];
-      [(SUUITracklistLockupCollectionViewCell *)self showPreviewProgressWithStatus:v11 animated:1];
+      stopAllAudioPlayerSessions = [sessionManager stopAllAudioPlayerSessions];
+      v9 = [sessionManager startSessionWithURL:v12];
+      [defaultCenter addObserver:self selector:sel__audioPlayerStatusChangeNotification_ name:*MEMORY[0x277D7FF18] object:v9];
+      _previewControlViewElement = [(SUUITracklistLockupCollectionViewCell *)self _previewControlViewElement];
+      [v9 setStoreItemIdentifier:{objc_msgSend(_previewControlViewElement, "itemIdentifier")}];
+      playerStatus = [v9 playerStatus];
+      [(SUUITracklistLockupCollectionViewCell *)self showPreviewProgressWithStatus:playerStatus animated:1];
 
       [v9 play];
     }
 
-    v4 = v12;
+    _previewMediaURL = v12;
   }
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -271,15 +271,15 @@ void __80__SUUITracklistLockupCollectionViewCell_showPreviewProgressWithStatus_a
   v11[1] = 3221225472;
   v11[2] = __88__SUUITracklistLockupCollectionViewCell_prefetchResourcesForViewElement_reason_context___block_invoke;
   v11[3] = &unk_2798F5E50;
-  v9 = v8;
+  v9 = contextCopy;
   v13 = &v15;
-  v14 = a4;
+  reasonCopy = reason;
   v12 = v9;
-  [v7 enumerateChildrenUsingBlock:v11];
-  LOBYTE(a4) = *(v16 + 24);
+  [elementCopy enumerateChildrenUsingBlock:v11];
+  LOBYTE(reason) = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
-  return a4;
+  return reason;
 }
 
 void __88__SUUITracklistLockupCollectionViewCell_prefetchResourcesForViewElement_reason_context___block_invoke(uint64_t a1, void *a2)
@@ -291,7 +291,7 @@ void __88__SUUITracklistLockupCollectionViewCell_prefetchResourcesForViewElement
   }
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
   v4 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);
@@ -300,24 +300,24 @@ void __88__SUUITracklistLockupCollectionViewCell_prefetchResourcesForViewElement
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v9 aggregateValueForKey:0x286AF1940];
-  v11 = [v9 labelLayoutCache];
+  elementCopy = element;
+  contextCopy = context;
+  v10 = [contextCopy aggregateValueForKey:0x286AF1940];
+  labelLayoutCache = [contextCopy labelLayoutCache];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __83__SUUITracklistLockupCollectionViewCell_requestLayoutForViewElement_width_context___block_invoke;
   v15[3] = &unk_2798FC708;
-  v19 = a4;
-  v16 = v11;
-  v17 = v8;
-  v18 = v9;
-  v20 = a1;
-  v12 = v9;
-  v13 = v8;
-  v14 = v11;
+  widthCopy = width;
+  v16 = labelLayoutCache;
+  v17 = elementCopy;
+  v18 = contextCopy;
+  selfCopy = self;
+  v12 = contextCopy;
+  v13 = elementCopy;
+  v14 = labelLayoutCache;
   [v10 enumerateColumnsForTrack:v13 usingBlock:v15];
 }
 
@@ -399,26 +399,26 @@ LABEL_17:
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v20 = 0;
   v21 = &v20;
   v23 = "";
   v22 = 0x3010000000;
   v25 = *(MEMORY[0x277CBF3A8] + 8);
-  v24 = a3;
-  v9 = [v8 aggregateValueForKey:0x286AF1940];
-  v10 = [v8 labelLayoutCache];
+  widthCopy = width;
+  v9 = [contextCopy aggregateValueForKey:0x286AF1940];
+  labelLayoutCache = [contextCopy labelLayoutCache];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __79__SUUITracklistLockupCollectionViewCell_sizeThatFitsWidth_viewElement_context___block_invoke;
   v17[3] = &unk_2798FC730;
-  v11 = v10;
+  v11 = labelLayoutCache;
   v18 = v11;
   v19 = &v20;
-  [v9 enumerateColumnsForTrack:v7 usingBlock:v17];
+  [v9 enumerateColumnsForTrack:elementCopy usingBlock:v17];
   v13 = v21[4];
   v12 = v21[5];
   if (v12 <= 32.0)
@@ -487,35 +487,35 @@ void __79__SUUITracklistLockupCollectionViewCell_sizeThatFitsWidth_viewElement_c
   }
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   [(NSMapTable *)self->_buyButtonDescriptorToButton removeAllObjects];
-  v10 = [v9 aggregateValueForKey:0x286AF1940];
+  v10 = [contextCopy aggregateValueForKey:0x286AF1940];
   columnData = self->_columnData;
   self->_columnData = v10;
 
-  objc_storeStrong(&self->_track, a3);
+  objc_storeStrong(&self->_track, element);
   [(NSMutableDictionary *)self->_columnViewsByIndex removeAllObjects];
   [(NSMapTable *)self->_imageViewToImageResourceCacheKey removeAllObjects];
   [(SUUIGradientView *)self->_offerConfirmationGradientView removeFromSuperview];
   offerConfirmationGradientView = self->_offerConfirmationGradientView;
   self->_offerConfirmationGradientView = 0;
 
-  v13 = [v8 style];
-  v14 = [v13 ikBorderColor];
-  v15 = [v14 color];
+  style = [elementCopy style];
+  ikBorderColor = [style ikBorderColor];
+  color = [ikBorderColor color];
 
-  v16 = [v13 dividerType];
-  v17 = [v16 isEqualToString:@"none"];
+  dividerType = [style dividerType];
+  v17 = [dividerType isEqualToString:@"none"];
 
   if (!v17)
   {
     separatorView = self->_separatorView;
-    if (v15)
+    if (color)
     {
-      [(UIView *)self->_separatorView setBackgroundColor:v15];
+      [(UIView *)self->_separatorView setBackgroundColor:color];
     }
 
     else
@@ -531,20 +531,20 @@ void __79__SUUITracklistLockupCollectionViewCell_sizeThatFitsWidth_viewElement_c
   v28[2] = __77__SUUITracklistLockupCollectionViewCell_reloadWithViewElement_width_context___block_invoke;
   v28[3] = &unk_2798F7950;
   v28[4] = self;
-  v20 = v8;
+  v20 = elementCopy;
   v29 = v20;
-  v21 = v9;
+  v21 = contextCopy;
   v30 = v21;
   [(SUUIViewReuseCollectionViewCell *)self modifyUsingBlock:v28];
-  v22 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v23 = *MEMORY[0x277D7FF18];
-  [v22 removeObserver:self name:*MEMORY[0x277D7FF18] object:0];
-  v24 = [(SUUITracklistLockupCollectionViewCell *)self _previewMediaURL];
-  if (v24 && ([MEMORY[0x277D7FDA8] sessionManager], v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "audioPlayerForURL:", v24), v26 = objc_claimAutoreleasedReturnValue(), v25, v26))
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D7FF18] object:0];
+  _previewMediaURL = [(SUUITracklistLockupCollectionViewCell *)self _previewMediaURL];
+  if (_previewMediaURL && ([MEMORY[0x277D7FDA8] sessionManager], v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "audioPlayerForURL:", _previewMediaURL), v26 = objc_claimAutoreleasedReturnValue(), v25, v26))
   {
-    [v22 addObserver:self selector:sel__audioPlayerStatusChangeNotification_ name:v23 object:v26];
-    v27 = [v26 playerStatus];
-    [(SUUITracklistLockupCollectionViewCell *)self showPreviewProgressWithStatus:v27 animated:0];
+    [defaultCenter addObserver:self selector:sel__audioPlayerStatusChangeNotification_ name:v23 object:v26];
+    playerStatus = [v26 playerStatus];
+    [(SUUITracklistLockupCollectionViewCell *)self showPreviewProgressWithStatus:playerStatus animated:0];
   }
 
   else
@@ -762,12 +762,12 @@ LABEL_43:
   [*(*(a1 + 48) + 840) setObject:v8 forKey:v35];
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 requestIdentifier];
+  imageCopy = image;
+  contextCopy = context;
+  requestIdentifier = [request requestIdentifier];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -777,7 +777,7 @@ LABEL_43:
   if (v11)
   {
     v12 = v11;
-    v22 = v8;
+    v22 = imageCopy;
     v13 = *v25;
     while (2)
     {
@@ -790,21 +790,21 @@ LABEL_43:
 
         v15 = *(*(&v24 + 1) + 8 * i);
         v16 = [(NSMapTable *)self->_imageViewToImageResourceCacheKey objectForKey:v15, v22];
-        v17 = [v9 requestIdentifierForResourceCacheKey:v16];
+        v17 = [contextCopy requestIdentifierForResourceCacheKey:v16];
         v18 = v17;
-        if (v17 && [v17 unsignedIntegerValue] == v10)
+        if (v17 && [v17 unsignedIntegerValue] == requestIdentifier)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v20 = [v15 imageView];
-            v8 = v22;
-            [v20 setImage:v22];
+            imageView = [v15 imageView];
+            imageCopy = v22;
+            [imageView setImage:v22];
           }
 
           else
           {
-            v8 = v22;
+            imageCopy = v22;
             [v15 setImage:v22];
           }
 
@@ -823,7 +823,7 @@ LABEL_43:
     }
 
     v19 = 0;
-    v8 = v22;
+    imageCopy = v22;
   }
 
   else
@@ -836,12 +836,12 @@ LABEL_16:
   return v19;
 }
 
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  stateCopy = state;
+  contextCopy = context;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -862,11 +862,11 @@ LABEL_16:
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        if (SUUIIKViewElementTypeIsButton([v15 elementType]) && (objc_msgSend(v15, "canPersonalizeUsingItemState:", v8) & 1) != 0)
+        if (SUUIIKViewElementTypeIsButton([v15 elementType]) && (objc_msgSend(v15, "canPersonalizeUsingItemState:", stateCopy) & 1) != 0)
         {
           v17 = [(NSMapTable *)self->_buyButtonDescriptorToButton objectForKey:v15];
-          v18 = [v9 clientContext];
-          [v17 setValuesUsingBuyButtonDescriptor:v15 itemState:v8 clientContext:v18 animated:v5];
+          clientContext = [contextCopy clientContext];
+          [v17 setValuesUsingBuyButtonDescriptor:v15 itemState:stateCopy clientContext:clientContext animated:animatedCopy];
 
           [(SUUITracklistLockupCollectionViewCell *)self setNeedsLayout];
           v16 = 1;
@@ -890,9 +890,9 @@ LABEL_12:
   return v16;
 }
 
-- (id)viewForElementIdentifier:(id)a3
+- (id)viewForElementIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -903,7 +903,7 @@ LABEL_12:
   v8[1] = 3221225472;
   v8[2] = __66__SUUITracklistLockupCollectionViewCell_viewForElementIdentifier___block_invoke;
   v8[3] = &unk_2798FC780;
-  v5 = v4;
+  v5 = identifierCopy;
   v9 = v5;
   v10 = &v11;
   [(SUUITracklistLockupCollectionViewCell *)self _enumerateViewElementViewsUsingBlock:v8];
@@ -933,8 +933,8 @@ void __66__SUUITracklistLockupCollectionViewCell_viewForElementIdentifier___bloc
   v22.super_class = SUUITracklistLockupCollectionViewCell;
   [(SUUICollectionViewCell *)&v22 layoutSubviews];
   v3 = [MEMORY[0x277D75D18] userInterfaceLayoutDirectionForSemanticContentAttribute:{-[SUUITracklistLockupCollectionViewCell semanticContentAttribute](self, "semanticContentAttribute")}];
-  v4 = [(SUUITracklistLockupCollectionViewCell *)self contentView];
-  [v4 bounds];
+  contentView = [(SUUITracklistLockupCollectionViewCell *)self contentView];
+  [contentView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -945,7 +945,7 @@ void __66__SUUITracklistLockupCollectionViewCell_viewForElementIdentifier___bloc
   v21[2] = 0x2020000000;
   [(SUUITracklistColumnData *)self->_columnData leftEdgeInset];
   v21[3] = v13;
-  v14 = [(SUUITracklistColumnData *)self->_columnData columns];
+  columns = [(SUUITracklistColumnData *)self->_columnData columns];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __55__SUUITracklistLockupCollectionViewCell_layoutSubviews__block_invoke;
@@ -957,9 +957,9 @@ void __66__SUUITracklistLockupCollectionViewCell_viewForElementIdentifier___bloc
   v19[4] = self;
   v19[5] = v21;
   v20 = v3 == 0;
-  [v14 enumerateObjectsUsingBlock:v19];
-  v15 = [MEMORY[0x277D759A0] mainScreen];
-  [v15 scale];
+  [columns enumerateObjectsUsingBlock:v19];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v17 = v16;
 
   [(SUUITracklistColumnData *)self->_columnData leftEdgeInset];
@@ -1147,9 +1147,9 @@ LABEL_11:
   *(*(*(a1 + 40) + 8) + 24) = CGRectGetMaxY(*(*(a1 + 56) + 32 * a3));
 }
 
-- (void)itemOfferButtonDidAnimateTransition:(id)a3
+- (void)itemOfferButtonDidAnimateTransition:(id)transition
 {
-  if (([a3 isShowingConfirmation] & 1) == 0)
+  if (([transition isShowingConfirmation] & 1) == 0)
   {
     [(SUUIGradientView *)self->_offerConfirmationGradientView removeFromSuperview];
     offerConfirmationGradientView = self->_offerConfirmationGradientView;
@@ -1157,10 +1157,10 @@ LABEL_11:
   }
 }
 
-- (void)itemOfferButtonWillAnimateTransition:(id)a3
+- (void)itemOfferButtonWillAnimateTransition:(id)transition
 {
-  v4 = a3;
-  [v4 frame];
+  transitionCopy = transition;
+  [transitionCopy frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -1171,29 +1171,29 @@ LABEL_11:
   v24 = 0;
   v25 = 0;
   v23 = "";
-  [v4 sizeThatFits:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
+  [transitionCopy sizeThatFits:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
   v24 = v13;
   v25 = v14;
-  v15 = [v4 isShowingConfirmation];
-  if ((v15 & 1) == 0)
+  isShowingConfirmation = [transitionCopy isShowingConfirmation];
+  if ((isShowingConfirmation & 1) == 0)
   {
-    v16 = [(SUUITracklistColumnData *)self->_columnData columns];
+    columns = [(SUUITracklistColumnData *)self->_columnData columns];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __78__SUUITracklistLockupCollectionViewCell_itemOfferButtonWillAnimateTransition___block_invoke;
     v17[3] = &unk_2798FC820;
     v17[4] = self;
-    v18 = v4;
+    v18 = transitionCopy;
     v19 = &v20;
-    [v16 enumerateObjectsUsingBlock:v17];
+    [columns enumerateObjectsUsingBlock:v17];
   }
 
   v26.origin.x = v6;
   v26.origin.y = v8;
   v26.size.width = v10;
   v26.size.height = v12;
-  [v4 setFrame:{CGRectGetMaxX(v26) - v21[4], v8, v21[4], v21[5]}];
-  [(SUUITracklistLockupCollectionViewCell *)self _layoutConfirmationGradientRelativeToView:v4 alpha:v15];
+  [transitionCopy setFrame:{CGRectGetMaxX(v26) - v21[4], v8, v21[4], v21[5]}];
+  [(SUUITracklistLockupCollectionViewCell *)self _layoutConfirmationGradientRelativeToView:transitionCopy alpha:isShowingConfirmation];
   _Block_object_dispose(&v20, 8);
 }
 
@@ -1218,17 +1218,17 @@ void __78__SUUITracklistLockupCollectionViewCell_itemOfferButtonWillAnimateTrans
   }
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   columnViewsByIndex = self->_columnViewsByIndex;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__SUUITracklistLockupCollectionViewCell__buttonAction___block_invoke;
   v7[3] = &unk_2798FC848;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = actionCopy;
+  selfCopy = self;
+  v6 = actionCopy;
   [(NSMutableDictionary *)columnViewsByIndex enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -1260,12 +1260,12 @@ void __55__SUUITracklistLockupCollectionViewCell__buttonAction___block_invoke(ui
   }
 }
 
-- (void)_showConfirmationAction:(id)a3
+- (void)_showConfirmationAction:(id)action
 {
   v14[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 superview];
-  [v5 bringSubviewToFront:v4];
+  actionCopy = action;
+  superview = [actionCopy superview];
+  [superview bringSubviewToFront:actionCopy];
   offerConfirmationGradientView = self->_offerConfirmationGradientView;
   if (!offerConfirmationGradientView)
   {
@@ -1274,109 +1274,109 @@ void __55__SUUITracklistLockupCollectionViewCell__buttonAction___block_invoke(ui
     v9 = self->_offerConfirmationGradientView;
     self->_offerConfirmationGradientView = v8;
 
-    v10 = [(SUUITracklistLockupCollectionViewCell *)self backgroundColor];
-    v11 = [(SUUIGradientView *)self->_offerConfirmationGradientView layer];
-    v12 = [v10 colorWithAlphaComponent:0.0];
+    backgroundColor = [(SUUITracklistLockupCollectionViewCell *)self backgroundColor];
+    layer = [(SUUIGradientView *)self->_offerConfirmationGradientView layer];
+    v12 = [backgroundColor colorWithAlphaComponent:0.0];
     v14[0] = [v12 CGColor];
-    v14[1] = [v10 CGColor];
-    v14[2] = [v10 CGColor];
+    v14[1] = [backgroundColor CGColor];
+    v14[2] = [backgroundColor CGColor];
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:3];
-    [v11 setColors:v13];
+    [layer setColors:v13];
 
-    [v11 setEndPoint:{1.0, 0.5}];
-    [v11 setStartPoint:{0.0, 0.5}];
+    [layer setEndPoint:{1.0, 0.5}];
+    [layer setStartPoint:{0.0, 0.5}];
 
     offerConfirmationGradientView = self->_offerConfirmationGradientView;
   }
 
-  [v5 insertSubview:offerConfirmationGradientView belowSubview:v4];
-  [(SUUITracklistLockupCollectionViewCell *)self _layoutConfirmationGradientRelativeToView:v4 alpha:0.0];
-  [v4 setShowingConfirmation:1 animated:1];
+  [superview insertSubview:offerConfirmationGradientView belowSubview:actionCopy];
+  [(SUUITracklistLockupCollectionViewCell *)self _layoutConfirmationGradientRelativeToView:actionCopy alpha:0.0];
+  [actionCopy setShowingConfirmation:1 animated:1];
 }
 
-- (void)_audioPlayerStatusChangeNotification:(id)a3
+- (void)_audioPlayerStatusChangeNotification:(id)notification
 {
-  v13 = a3;
-  v4 = [(SUUITracklistLockupCollectionViewCell *)self _previewMediaURL];
-  v5 = [v13 object];
-  v6 = [v5 URL];
-  v7 = [v4 isEqual:v6];
+  notificationCopy = notification;
+  _previewMediaURL = [(SUUITracklistLockupCollectionViewCell *)self _previewMediaURL];
+  object = [notificationCopy object];
+  v6 = [object URL];
+  v7 = [_previewMediaURL isEqual:v6];
 
   if (v7)
   {
-    v8 = [v5 playerStatus];
-    v9 = [v8 playerState];
+    playerStatus = [object playerStatus];
+    playerState = [playerStatus playerState];
 
-    if ((v9 - 6) > 0xFFFFFFFFFFFFFFFDLL)
+    if ((playerState - 6) > 0xFFFFFFFFFFFFFFFDLL)
     {
-      v10 = [MEMORY[0x277CCAB98] defaultCenter];
-      v11 = [v13 name];
-      v12 = [v13 object];
-      [v10 removeObserver:self name:v11 object:v12];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      name = [notificationCopy name];
+      object2 = [notificationCopy object];
+      [defaultCenter removeObserver:self name:name object:object2];
 
       [(SUUITracklistLockupCollectionViewCell *)self hidePreviewProgressAnimated:1];
     }
 
     else
     {
-      v10 = [v5 playerStatus];
-      [(SUUITracklistLockupCollectionViewCell *)self showPreviewProgressWithStatus:v10 animated:1];
+      defaultCenter = [object playerStatus];
+      [(SUUITracklistLockupCollectionViewCell *)self showPreviewProgressWithStatus:defaultCenter animated:1];
     }
   }
 }
 
-+ (id)_attributedStringForOrdinal:(id)a3 context:(id)a4
++ (id)_attributedStringForOrdinal:(id)ordinal context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
-  v8 = SUUIViewElementFontWithStyle(v7);
+  ordinalCopy = ordinal;
+  contextCopy = context;
+  style = [ordinalCopy style];
+  v8 = SUUIViewElementFontWithStyle(style);
   if (!v8)
   {
     v8 = SUUIFontLimitedPreferredFontForTextStyle(20, 5);
   }
 
-  v9 = [v6 tintColor];
-  v10 = SUUIViewElementPlainColorWithStyle(v7, v9);
+  tintColor = [contextCopy tintColor];
+  v10 = SUUIViewElementPlainColorWithStyle(style, tintColor);
 
   if (!v10)
   {
     v10 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.5];
   }
 
-  v11 = [v5 text];
-  v12 = [v11 attributedStringWithDefaultFont:v8 foregroundColor:v10];
+  text = [ordinalCopy text];
+  v12 = [text attributedStringWithDefaultFont:v8 foregroundColor:v10];
 
   return v12;
 }
 
-- (id)_addFlipContainerViewWithFrontView:(id)a3 backView:(id)a4
+- (id)_addFlipContainerViewWithFrontView:(id)view backView:(id)backView
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 frame];
+  backViewCopy = backView;
+  viewCopy = view;
+  [viewCopy frame];
   v9 = v8;
   v11 = v10;
-  v12 = [[SUUIInlineFlipContainerView alloc] initWithFrontView:v7 backView:v6];
+  v12 = [[SUUIInlineFlipContainerView alloc] initWithFrontView:viewCopy backView:backViewCopy];
 
-  v13 = [MEMORY[0x277D75348] clearColor];
-  [(SUUIInlineFlipContainerView *)v12 setBackgroundColor:v13];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(SUUIInlineFlipContainerView *)v12 setBackgroundColor:clearColor];
 
-  [v7 frame];
+  [viewCopy frame];
   v15 = v14;
   v17 = v16;
 
   [(SUUIInlineFlipContainerView *)v12 frame];
   [(SUUIInlineFlipContainerView *)v12 setFrame:v9 - v15, v11 - v17];
-  v18 = [(SUUITracklistLockupCollectionViewCell *)self contentView];
-  [v18 addSubview:v12];
+  contentView = [(SUUITracklistLockupCollectionViewCell *)self contentView];
+  [contentView addSubview:v12];
 
   return v12;
 }
 
-- (void)_enumerateViewElementViewsUsingBlock:(id)a3
+- (void)_enumerateViewElementViewsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   columnData = self->_columnData;
   track = self->_track;
   v8[0] = MEMORY[0x277D85DD0];
@@ -1384,8 +1384,8 @@ void __55__SUUITracklistLockupCollectionViewCell__buttonAction___block_invoke(ui
   v8[2] = __78__SUUITracklistLockupCollectionViewCell__enumerateViewElementViewsUsingBlock___block_invoke;
   v8[3] = &unk_2798FC898;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = blockCopy;
+  v7 = blockCopy;
   [(SUUITracklistColumnData *)columnData enumerateColumnsForTrack:track usingBlock:v8];
 }
 
@@ -1421,12 +1421,12 @@ void __78__SUUITracklistLockupCollectionViewCell__enumerateViewElementViewsUsing
   *a4 = v11;
 }
 
-- (void)_layoutConfirmationGradientRelativeToView:(id)a3 alpha:(double)a4
+- (void)_layoutConfirmationGradientRelativeToView:(id)view alpha:(double)alpha
 {
   v22[3] = *MEMORY[0x277D85DE8];
   if (self->_offerConfirmationGradientView)
   {
-    [a3 frame];
+    [view frame];
     v7 = v6;
     v9 = v8;
     [(SUUIGradientView *)self->_offerConfirmationGradientView frame];
@@ -1442,19 +1442,19 @@ void __78__SUUITracklistLockupCollectionViewCell__enumerateViewElementViewsUsing
 
     else
     {
-      v17 = [(SUUIGradientView *)self->_offerConfirmationGradientView superview];
-      [v17 bounds];
+      superview = [(SUUIGradientView *)self->_offerConfirmationGradientView superview];
+      [superview bounds];
       v16 = v18;
     }
 
-    [(SUUIGradientView *)self->_offerConfirmationGradientView setAlpha:a4];
+    [(SUUIGradientView *)self->_offerConfirmationGradientView setAlpha:alpha];
     [(SUUIGradientView *)self->_offerConfirmationGradientView setFrame:v12, v11, v13, v16];
-    v19 = [(SUUIGradientView *)self->_offerConfirmationGradientView layer];
+    layer = [(SUUIGradientView *)self->_offerConfirmationGradientView layer];
     v20 = [MEMORY[0x277CCABB0] numberWithDouble:{30.0 / v13, &unk_286BBE3D0}];
     v22[1] = v20;
     v22[2] = &unk_286BBE3E8;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:3];
-    [v19 setLocations:v21];
+    [layer setLocations:v21];
   }
 }
 
@@ -1466,14 +1466,14 @@ void __78__SUUITracklistLockupCollectionViewCell__enumerateViewElementViewsUsing
   v10 = __Block_byref_object_copy__77;
   v11 = __Block_byref_object_dispose__77;
   v12 = 0;
-  v3 = [(SUUITracklistColumnData *)self->_columnData columns];
+  columns = [(SUUITracklistColumnData *)self->_columnData columns];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__SUUITracklistLockupCollectionViewCell__previewColumnView__block_invoke;
   v6[3] = &unk_2798FC8C0;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [columns enumerateObjectsUsingBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1498,12 +1498,12 @@ void __59__SUUITracklistLockupCollectionViewCell__previewColumnView__block_invok
 
 - (id)_previewMediaURL
 {
-  v2 = [(SUUITracklistLockupCollectionViewCell *)self _previewControlViewElement];
-  v3 = [v2 mediaURLString];
+  _previewControlViewElement = [(SUUITracklistLockupCollectionViewCell *)self _previewControlViewElement];
+  mediaURLString = [_previewControlViewElement mediaURLString];
 
-  if (v3)
+  if (mediaURLString)
   {
-    v4 = [MEMORY[0x277CBEBC0] URLWithString:v3];
+    v4 = [MEMORY[0x277CBEBC0] URLWithString:mediaURLString];
   }
 
   else
@@ -1514,17 +1514,17 @@ void __59__SUUITracklistLockupCollectionViewCell__previewColumnView__block_invok
   return v4;
 }
 
-- (void)_resolvePreviewStateAfterTransitionForFlipView:(id)a3
+- (void)_resolvePreviewStateAfterTransitionForFlipView:(id)view
 {
-  v25 = a3;
-  v4 = [(SUUITracklistLockupCollectionViewCell *)self contentView];
+  viewCopy = view;
+  contentView = [(SUUITracklistLockupCollectionViewCell *)self contentView];
   previewState = self->_previewState;
   if (previewState == 3)
   {
-    [v25 removeFromSuperview];
-    v23 = [(SUUITracklistLockupCollectionViewCell *)self _previewColumnView];
-    v24 = [(SUUITracklistLockupCollectionViewCell *)self contentView];
-    [v24 addSubview:v23];
+    [viewCopy removeFromSuperview];
+    _previewColumnView = [(SUUITracklistLockupCollectionViewCell *)self _previewColumnView];
+    contentView2 = [(SUUITracklistLockupCollectionViewCell *)self contentView];
+    [contentView2 addSubview:_previewColumnView];
 
     [(SUUITracklistLockupCollectionViewCell *)self setNeedsLayout];
     self->_previewState = 0;
@@ -1537,16 +1537,16 @@ void __59__SUUITracklistLockupCollectionViewCell__previewColumnView__block_invok
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(SUUIPreviewProgressIndicator *)self->_previewProgressIndicator superview];
-    [v4 convertRect:v14 fromView:{v7, v9, v11, v13}];
+    superview = [(SUUIPreviewProgressIndicator *)self->_previewProgressIndicator superview];
+    [contentView convertRect:superview fromView:{v7, v9, v11, v13}];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
 
     [(SUUIPreviewProgressIndicator *)self->_previewProgressIndicator setFrame:v16, v18, v20, v22];
-    [v4 addSubview:self->_previewProgressIndicator];
-    [v25 removeFromSuperview];
+    [contentView addSubview:self->_previewProgressIndicator];
+    [viewCopy removeFromSuperview];
     [(SUUIPreviewProgressIndicator *)self->_previewProgressIndicator reloadWithPlayerStatus:self->_lastPlayerStatus animated:0];
     self->_previewState = 2;
   }

@@ -1,20 +1,20 @@
 @interface VCIDNAEncoder
-+ (BOOL)encodingRequiredForDomainName:(id)a3;
-+ (id)stringByEncodingDomainName:(id)a3;
++ (BOOL)encodingRequiredForDomainName:(id)name;
++ (id)stringByEncodingDomainName:(id)name;
 @end
 
 @implementation VCIDNAEncoder
 
-+ (BOOL)encodingRequiredForDomainName:(id)a3
++ (BOOL)encodingRequiredForDomainName:(id)name
 {
   v3 = encodingRequiredForDomainName__onceToken;
-  v4 = a3;
+  nameCopy = name;
   if (v3 != -1)
   {
     +[VCIDNAEncoder encodingRequiredForDomainName:];
   }
 
-  v5 = [v4 rangeOfCharacterFromSet:encodingRequiredForDomainName__unsafeDomainNameCharacterSet options:0 range:{0, objc_msgSend(v4, "length")}];
+  v5 = [nameCopy rangeOfCharacterFromSet:encodingRequiredForDomainName__unsafeDomainNameCharacterSet options:0 range:{0, objc_msgSend(nameCopy, "length")}];
 
   return v5 != 0x7FFFFFFFFFFFFFFFLL;
 }
@@ -31,17 +31,17 @@ void __47__VCIDNAEncoder_encodingRequiredForDomainName___block_invoke()
   encodingRequiredForDomainName__unsafeDomainNameCharacterSet = v0;
 }
 
-+ (id)stringByEncodingDomainName:(id)a3
++ (id)stringByEncodingDomainName:(id)name
 {
-  v4 = a3;
-  if ([v4 length] && (objc_msgSend(a1, "encodingRequiredForDomainName:", v4) & 1) != 0)
+  nameCopy = name;
+  if ([nameCopy length] && (objc_msgSend(self, "encodingRequiredForDomainName:", nameCopy) & 1) != 0)
   {
-    v5 = _stringByApplyingIDNATranslationWithRange(v4, MEMORY[0x277D82990]);
+    v5 = _stringByApplyingIDNATranslationWithRange(nameCopy, MEMORY[0x277D82990]);
   }
 
   else
   {
-    v5 = [v4 copy];
+    v5 = [nameCopy copy];
   }
 
   v6 = v5;

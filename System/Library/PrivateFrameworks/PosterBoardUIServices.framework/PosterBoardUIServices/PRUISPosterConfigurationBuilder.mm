@@ -1,17 +1,17 @@
 @interface PRUISPosterConfigurationBuilder
 - (PRUISPosterConfigurationBuilder)init;
-- (PRUISPosterConfigurationBuilder)initWithProvider:(id)a3 role:(id)a4;
-- (id)buildPosterConfigurationWithCompletion:(id)a3;
+- (PRUISPosterConfigurationBuilder)initWithProvider:(id)provider role:(id)role;
+- (id)buildPosterConfigurationWithCompletion:(id)completion;
 - (void)dealloc;
 @end
 
 @implementation PRUISPosterConfigurationBuilder
 
-- (PRUISPosterConfigurationBuilder)initWithProvider:(id)a3 role:(id)a4
+- (PRUISPosterConfigurationBuilder)initWithProvider:(id)provider role:(id)role
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  providerCopy = provider;
+  roleCopy = role;
+  if (!providerCopy)
   {
     [PRUISPosterConfigurationBuilder initWithProvider:a2 role:self];
   }
@@ -26,11 +26,11 @@
   v9 = [(PRUISPosterConfigurationBuilder *)&v15 init];
   if (v9)
   {
-    v10 = [v7 copy];
+    v10 = [providerCopy copy];
     provider = v9->_provider;
     v9->_provider = v10;
 
-    objc_storeStrong(&v9->_role, a4);
+    objc_storeStrong(&v9->_role, role);
     v12 = objc_opt_new();
     extensionProvider = v9->_extensionProvider;
     v9->_extensionProvider = v12;
@@ -56,35 +56,35 @@
   [(PRUISPosterConfigurationBuilder *)&v3 dealloc];
 }
 
-- (id)buildPosterConfigurationWithCompletion:(id)a3
+- (id)buildPosterConfigurationWithCompletion:(id)completion
 {
   v101 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(PRUISPosterConfigurationBuilder *)a2 buildPosterConfigurationWithCompletion:?];
   }
 
-  v6 = [(PRUISPosterConfigurationBuilder *)self provider];
-  v7 = [(PFPosterExtensionProvider *)self->_extensionProvider extensionForIdentifier];
-  v8 = [v7 objectForKey:v6];
+  provider = [(PRUISPosterConfigurationBuilder *)self provider];
+  extensionForIdentifier = [(PFPosterExtensionProvider *)self->_extensionProvider extensionForIdentifier];
+  v8 = [extensionForIdentifier objectForKey:provider];
 
   if (!v8)
   {
     v12 = PFFunctionNameForAddress();
     v13 = PFGeneralErrorFromObjectWithLocalizedFailureReason();
-    v5[2](v5, 0, v13);
+    completionCopy[2](completionCopy, 0, v13);
 
     v14 = 0;
     goto LABEL_39;
   }
 
-  v9 = [(PRUISPosterConfigurationBuilder *)self role];
-  v10 = [(PRUISPosterConfigurationBuilder *)self sessionInfo];
-  v11 = [(PRUISPosterConfigurationBuilder *)self existingPoster];
-  if (v11)
+  role = [(PRUISPosterConfigurationBuilder *)self role];
+  sessionInfo = [(PRUISPosterConfigurationBuilder *)self sessionInfo];
+  existingPoster = [(PRUISPosterConfigurationBuilder *)self existingPoster];
+  if (existingPoster)
   {
-    if (v10)
+    if (sessionInfo)
     {
       goto LABEL_10;
     }
@@ -92,8 +92,8 @@
 
   else
   {
-    v11 = [MEMORY[0x1E69C4FE8] mutableConfigurationWithProvider:v6 descriptorIdentifier:0 role:v9];
-    if (v10)
+    existingPoster = [MEMORY[0x1E69C4FE8] mutableConfigurationWithProvider:provider descriptorIdentifier:0 role:role];
+    if (sessionInfo)
     {
       goto LABEL_10;
     }
@@ -102,33 +102,33 @@
   if (self->_existingPoster)
   {
 LABEL_10:
-    v73 = v9;
+    v73 = role;
     v15 = MEMORY[0x1E696AEC0];
-    v16 = [MEMORY[0x1E696AFB0] UUID];
-    v17 = [v15 stringWithFormat:@"PRUISPosterConfigurationBuilder-%@-%@", v6, v16];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v17 = [v15 stringWithFormat:@"PRUISPosterConfigurationBuilder-%@-%@", provider, uUID];
 
-    v18 = [(PFPosterExtensionProvider *)self->_extensionProvider instanceProvider];
+    instanceProvider = [(PFPosterExtensionProvider *)self->_extensionProvider instanceProvider];
     v98 = 0;
-    v19 = [v18 acquireInstanceForExtension:v8 reason:v17 error:&v98];
+    v19 = [instanceProvider acquireInstanceForExtension:v8 reason:v17 error:&v98];
     v20 = v98;
     v72 = v20;
     if (!v19 || v20)
     {
       if (v20)
       {
-        v5[2](v5, 0, v20);
+        completionCopy[2](completionCopy, 0, v20);
       }
 
       else
       {
         PFFunctionNameForAddress();
-        v70 = v18;
+        v70 = instanceProvider;
         v51 = v50 = v17;
         v52 = PFGeneralErrorFromObjectWithLocalizedFailureReason();
-        v5[2](v5, 0, v52);
+        completionCopy[2](completionCopy, 0, v52);
 
         v17 = v50;
-        v18 = v70;
+        instanceProvider = v70;
       }
 
       v14 = 0;
@@ -146,19 +146,19 @@ LABEL_10:
       {
         if (v22)
         {
-          v5[2](v5, 0, v22);
+          completionCopy[2](completionCopy, 0, v22);
         }
 
         else
         {
           PFFunctionNameForAddress();
-          v71 = v18;
+          v71 = instanceProvider;
           v56 = v55 = v17;
           v57 = PFGeneralErrorFromObjectWithLocalizedFailureReason();
-          v5[2](v5, 0, v57);
+          completionCopy[2](completionCopy, 0, v57);
 
           v17 = v55;
-          v18 = v71;
+          instanceProvider = v71;
         }
 
         v14 = 0;
@@ -167,27 +167,27 @@ LABEL_10:
 
       else
       {
-        v69 = v18;
+        v69 = instanceProvider;
         v65 = v8;
         v23 = v17;
         v24 = objc_opt_new();
-        v63 = v11;
-        v25 = [v11 _path];
+        v63 = existingPoster;
+        _path = [existingPoster _path];
         v95[0] = MEMORY[0x1E69E9820];
         v95[1] = 3221225472;
         v95[2] = __74__PRUISPosterConfigurationBuilder_buildPosterConfigurationWithCompletion___block_invoke;
         v95[3] = &unk_1E83A89D8;
         v61 = v24;
         v96 = v61;
-        v64 = v10;
-        [v21 updateConfiguration:v25 sessionInfo:v10 completion:v95];
+        v64 = sessionInfo;
+        [v21 updateConfiguration:_path sessionInfo:sessionInfo completion:v95];
 
         v26 = [MEMORY[0x1E69C7548] pf_finishTaskInterruptableWithExplanation:@"updateConfiguration" invalidationHandler:0];
         v27 = MEMORY[0x1E69C7548];
         v62 = v21;
-        v28 = [v21 target];
+        target = [v21 target];
         v66 = v23;
-        v29 = [v27 pf_posterUpdateRuntimeAssertionForTarget:v28 explanation:v23];
+        v29 = [v27 pf_posterUpdateRuntimeAssertionForTarget:target explanation:v23];
 
         v93 = 0u;
         v94 = 0u;
@@ -226,7 +226,7 @@ LABEL_10:
                   v38 = PFGeneralErrorFromObjectWithLocalizedFailureReason();
                 }
 
-                v5[2](v5, 0, v38);
+                completionCopy[2](completionCopy, 0, v38);
                 v14 = 0;
                 v40 = v68;
                 v42 = v61;
@@ -262,22 +262,22 @@ LABEL_10:
         v30 = v39;
         v41 = _Block_copy(aBlock);
         v42 = v61;
-        v43 = [v61 future];
+        future = [v61 future];
         v79[0] = MEMORY[0x1E69E9820];
         v79[1] = 3221225472;
         v79[2] = __74__PRUISPosterConfigurationBuilder_buildPosterConfigurationWithCompletion___block_invoke_3;
         v79[3] = &unk_1E83A8A28;
-        v80 = v6;
+        v80 = provider;
         v81 = v73;
         v44 = v41;
         v82 = v44;
-        v14 = [v43 flatMap:v79];
+        v14 = [future flatMap:v79];
 
         v77[0] = MEMORY[0x1E69E9820];
         v77[1] = 3221225472;
         v77[2] = __74__PRUISPosterConfigurationBuilder_buildPosterConfigurationWithCompletion___block_invoke_4;
         v77[3] = &unk_1E83A8A50;
-        v78 = v5;
+        v78 = completionCopy;
         v74[0] = MEMORY[0x1E69E9820];
         v74[1] = 3221225472;
         v74[2] = __74__PRUISPosterConfigurationBuilder_buildPosterConfigurationWithCompletion___block_invoke_5;
@@ -286,8 +286,8 @@ LABEL_10:
         v76 = v44;
         v45 = MEMORY[0x1E69C5268];
         v46 = v44;
-        v47 = [v45 mainThreadScheduler];
-        [v14 addSuccessBlock:v77 andFailureBlock:v74 scheduler:v47];
+        mainThreadScheduler = [v45 mainThreadScheduler];
+        [v14 addSuccessBlock:v77 andFailureBlock:v74 scheduler:mainThreadScheduler];
 
         v48 = v59;
         v49 = v60;
@@ -296,19 +296,19 @@ LABEL_10:
         v21 = v62;
 LABEL_33:
 
-        v10 = v64;
+        sessionInfo = v64;
         v8 = v65;
-        v11 = v63;
+        existingPoster = v63;
         v17 = v66;
-        v18 = v69;
+        instanceProvider = v69;
       }
     }
 
-    v9 = v73;
+    role = v73;
     goto LABEL_38;
   }
 
-  (v5)[2](v5, v11, 0);
+  (completionCopy)[2](completionCopy, existingPoster, 0);
   v14 = 0;
 LABEL_38:
 

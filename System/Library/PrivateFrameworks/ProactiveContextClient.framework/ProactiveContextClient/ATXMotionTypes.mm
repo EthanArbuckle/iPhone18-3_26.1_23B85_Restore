@@ -1,36 +1,36 @@
 @interface ATXMotionTypes
-+ (id)stringForMotionType:(int64_t)a3;
-+ (int64_t)motionTypeForString:(id)a3 found:(BOOL *)a4;
++ (id)stringForMotionType:(int64_t)type;
++ (int64_t)motionTypeForString:(id)string found:(BOOL *)found;
 @end
 
 @implementation ATXMotionTypes
 
-+ (id)stringForMotionType:(int64_t)a3
++ (id)stringForMotionType:(int64_t)type
 {
-  if (a3 < 5)
+  if (type < 5)
   {
-    return off_279AB7F50[a3];
+    return off_279AB7F50[type];
   }
 
   v5 = __atxlog_handle_default();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(ATXMotionTypes *)a3 stringForMotionType:v5];
+    [(ATXMotionTypes *)type stringForMotionType:v5];
   }
 
-  [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"stringForMotionType called with invalid ATXMotionType of %tu", a3}];
+  [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"stringForMotionType called with invalid ATXMotionType of %tu", type}];
   return @"Error";
 }
 
-+ (int64_t)motionTypeForString:(id)a3 found:(BOOL *)a4
++ (int64_t)motionTypeForString:(id)string found:(BOOL *)found
 {
-  v6 = a3;
+  stringCopy = string;
   v7 = 0;
   while (1)
   {
     v8 = v7;
-    v9 = [a1 stringForMotionType:v7];
-    v10 = [v9 isEqualToString:v6];
+    v9 = [self stringForMotionType:v7];
+    v10 = [v9 isEqualToString:stringCopy];
 
     if (v10)
     {
@@ -40,7 +40,7 @@
     v7 = v8 + 1;
     if (v8 == 4)
     {
-      if (!a4)
+      if (!found)
       {
         goto LABEL_9;
       }
@@ -50,14 +50,14 @@
     }
   }
 
-  if (!a4)
+  if (!found)
   {
     goto LABEL_9;
   }
 
   v11 = 1;
 LABEL_8:
-  *a4 = v11;
+  *found = v11;
 LABEL_9:
 
   return v8;

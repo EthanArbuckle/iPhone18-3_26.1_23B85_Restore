@@ -1,21 +1,21 @@
 @interface IMDINInteractionMessageDonationJob
-- (IMDINInteractionMessageDonationJob)initWithContext:(id)a3;
-- (void)finishWithCompletion:(id)a3;
-- (void)processMessageDictionary:(id)a3 chatDictionary:(id)a4;
+- (IMDINInteractionMessageDonationJob)initWithContext:(id)context;
+- (void)finishWithCompletion:(id)completion;
+- (void)processMessageDictionary:(id)dictionary chatDictionary:(id)chatDictionary;
 @end
 
 @implementation IMDINInteractionMessageDonationJob
 
-- (IMDINInteractionMessageDonationJob)initWithContext:(id)a3
+- (IMDINInteractionMessageDonationJob)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = IMDINInteractionMessageDonationJob;
   v6 = [(IMDINInteractionMessageDonationJob *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     interactions = v7->_interactions;
     v7->_interactions = v8;
@@ -24,20 +24,20 @@
   return v7;
 }
 
-- (void)processMessageDictionary:(id)a3 chatDictionary:(id)a4
+- (void)processMessageDictionary:(id)dictionary chatDictionary:(id)chatDictionary
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  chatDictionaryCopy = chatDictionary;
   v10 = objc_msgSend_context(self, v8, v9);
   isReindexing = objc_msgSend_isReindexing(v10, v11, v12);
 
-  if ((isReindexing & 1) == 0 && objc_msgSend_canDonateItemDictionary_(IMDIndexingUtilities, v14, v6))
+  if ((isReindexing & 1) == 0 && objc_msgSend_canDonateItemDictionary_(IMDIndexingUtilities, v14, dictionaryCopy))
   {
-    v16 = objc_msgSend_objectForKey_(v6, v15, @"flags");
+    v16 = objc_msgSend_objectForKey_(dictionaryCopy, v15, @"flags");
     v19 = objc_msgSend_unsignedLongLongValue(v16, v17, v18);
 
-    v21 = objc_msgSend_objectForKey_(v6, v20, @"time");
-    v23 = objc_msgSend_objectForKey_(v6, v22, @"plainBody");
+    v21 = objc_msgSend_objectForKey_(dictionaryCopy, v20, @"time");
+    v23 = objc_msgSend_objectForKey_(dictionaryCopy, v22, @"plainBody");
     v26 = v23;
     if (v21)
     {
@@ -52,7 +52,7 @@
           if (IsIncomingMessage)
           {
             v33 = [IMDINInteractionDonationContext alloc];
-            v35 = objc_msgSend_initWithIndexableChatDictionary_messageDictionary_(v33, v34, v7, v6);
+            v35 = objc_msgSend_initWithIndexableChatDictionary_messageDictionary_(v33, v34, chatDictionaryCopy, dictionaryCopy);
             v38 = objc_msgSend_sharedController(IMDINInteractionDonationController, v36, v37);
             v40 = objc_msgSend_createInteractionWithContext_updateHandler_(v38, v39, v35, 0);
 
@@ -126,10 +126,10 @@ LABEL_18:
 LABEL_21:
 }
 
-- (void)finishWithCompletion:(id)a3
+- (void)finishWithCompletion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -160,7 +160,7 @@ LABEL_21:
     while (v11);
   }
 
-  v4[2](v4, 0);
+  completionCopy[2](completionCopy, 0);
   v14 = *MEMORY[0x1E69E9840];
 }
 

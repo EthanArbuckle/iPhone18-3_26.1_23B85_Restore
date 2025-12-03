@@ -1,25 +1,25 @@
 @interface ICRemoteCameraDeviceProxy
-- (ICRemoteCameraDeviceProxy)initWithPrimaryIdentifierString:(id)a3 uuidString:(id)a4 localizedName:(id)a5;
+- (ICRemoteCameraDeviceProxy)initWithPrimaryIdentifierString:(id)string uuidString:(id)uuidString localizedName:(id)name;
 - (NSDictionary)deviceContext;
 - (void)dealloc;
 @end
 
 @implementation ICRemoteCameraDeviceProxy
 
-- (ICRemoteCameraDeviceProxy)initWithPrimaryIdentifierString:(id)a3 uuidString:(id)a4 localizedName:(id)a5
+- (ICRemoteCameraDeviceProxy)initWithPrimaryIdentifierString:(id)string uuidString:(id)uuidString localizedName:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  stringCopy = string;
+  uuidStringCopy = uuidString;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = ICRemoteCameraDeviceProxy;
   v12 = [(ICRemoteCameraDeviceProxy *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_primaryIdentifierString, a3);
-    objc_storeStrong(&v13->_uuidString, a4);
-    objc_storeStrong(&v13->_localizedName, a5);
+    objc_storeStrong(&v12->_primaryIdentifierString, string);
+    objc_storeStrong(&v13->_uuidString, uuidString);
+    objc_storeStrong(&v13->_localizedName, name);
   }
 
   return v13;
@@ -29,14 +29,14 @@
 {
   v10[3] = *MEMORY[0x29EDCA608];
   v9[0] = @"ICDevicePrimaryIdentifier";
-  v3 = [(ICRemoteCameraDeviceProxy *)self primaryIdentifierString];
-  v10[0] = v3;
+  primaryIdentifierString = [(ICRemoteCameraDeviceProxy *)self primaryIdentifierString];
+  v10[0] = primaryIdentifierString;
   v9[1] = @"ICDeviceHandle";
-  v4 = [(ICRemoteCameraDeviceProxy *)self uuidString];
-  v10[1] = v4;
+  uuidString = [(ICRemoteCameraDeviceProxy *)self uuidString];
+  v10[1] = uuidString;
   v9[2] = @"ICDeviceName";
-  v5 = [(ICRemoteCameraDeviceProxy *)self localizedName];
-  v10[2] = v5;
+  localizedName = [(ICRemoteCameraDeviceProxy *)self localizedName];
+  v10[2] = localizedName;
   v6 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v10 forKeys:v9 count:3];
 
   v7 = *MEMORY[0x29EDCA608];
@@ -46,8 +46,8 @@
 
 - (void)dealloc
 {
-  v3 = [(ICRemoteCameraDeviceProxy *)self camera];
-  [v3 setDelegate:0];
+  camera = [(ICRemoteCameraDeviceProxy *)self camera];
+  [camera setDelegate:0];
 
   [(ICRemoteCameraDeviceProxy *)self setCamera:0];
   [(ICRemoteCameraDeviceProxy *)self setUuidString:0];

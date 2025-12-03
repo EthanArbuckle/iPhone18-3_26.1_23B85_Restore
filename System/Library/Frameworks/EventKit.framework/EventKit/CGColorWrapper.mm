@@ -1,18 +1,18 @@
 @interface CGColorWrapper
-- (CGColorWrapper)initWithCGColor:(CGColor *)a3;
+- (CGColorWrapper)initWithCGColor:(CGColor *)color;
 - (void)dealloc;
 @end
 
 @implementation CGColorWrapper
 
-- (CGColorWrapper)initWithCGColor:(CGColor *)a3
+- (CGColorWrapper)initWithCGColor:(CGColor *)color
 {
   v6.receiver = self;
   v6.super_class = CGColorWrapper;
   v4 = [(CGColorWrapper *)&v6 init];
   if (v4)
   {
-    v4->_color = CGColorRetain(a3);
+    v4->_color = CGColorRetain(color);
   }
 
   return v4;

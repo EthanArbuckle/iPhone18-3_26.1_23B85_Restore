@@ -1,61 +1,61 @@
 @interface HACCPSESettings
 - (HACCContentModuleDelegate)delegate;
-- (HACCPSESettings)initWithFrame:(CGRect)a3;
+- (HACCPSESettings)initWithFrame:(CGRect)frame;
 - (double)currentAmplification;
 - (double)currentBalance;
 - (double)currentNoiseSupressor;
 - (double)currentTone;
 - (double)currentVoiceAmplification;
 - (void)addOwnVoiceAmplificationSlider;
-- (void)amplificationSliderDidChange:(id)a3;
-- (void)balanceSliderDidChange:(id)a3;
+- (void)amplificationSliderDidChange:(id)change;
+- (void)balanceSliderDidChange:(id)change;
 - (void)buildSubviews;
 - (void)layoutSubviews;
-- (void)noiseSliderDidChange:(id)a3;
+- (void)noiseSliderDidChange:(id)change;
 - (void)removeOwnVoiceAmplificationSlider;
-- (void)setCurrentAmplification:(double)a3;
-- (void)setCurrentBalance:(double)a3;
-- (void)setCurrentNoiseSupressor:(double)a3;
-- (void)setCurrentTone:(double)a3;
-- (void)setCurrentVoiceAmplification:(double)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
-- (void)toneSliderDidChange:(id)a3;
+- (void)setCurrentAmplification:(double)amplification;
+- (void)setCurrentBalance:(double)balance;
+- (void)setCurrentNoiseSupressor:(double)supressor;
+- (void)setCurrentTone:(double)tone;
+- (void)setCurrentVoiceAmplification:(double)amplification;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
+- (void)toneSliderDidChange:(id)change;
 - (void)updateAccessibilityBalanceValue;
 - (void)updateAccessibilityToneValue;
 - (void)updateAccessibilityVoiceAmplificationValue;
 - (void)updateValue;
 - (void)updateVoiceAmplificationSliderAvailability;
-- (void)voiceAmplificationSliderDidChange:(id)a3;
+- (void)voiceAmplificationSliderDidChange:(id)change;
 @end
 
 @implementation HACCPSESettings
 
-- (HACCPSESettings)initWithFrame:(CGRect)a3
+- (HACCPSESettings)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = HACCPSESettings;
-  v3 = [(HACCPSESettings *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HACCPSESettings *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     objc_initWeak(&location, v3);
-    v4 = [MEMORY[0x277D3A1D0] sharedInstance];
+    mEMORY[0x277D3A1D0] = [MEMORY[0x277D3A1D0] sharedInstance];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __33__HACCPSESettings_initWithFrame___block_invoke;
     v10[3] = &unk_2796F6D18;
     objc_copyWeak(&v11, &location);
-    [v4 registerUpdateBlock:v10 forRetrieveSelector:sel_personalMediaEnabled withListener:v3];
+    [mEMORY[0x277D3A1D0] registerUpdateBlock:v10 forRetrieveSelector:sel_personalMediaEnabled withListener:v3];
 
-    v5 = [MEMORY[0x277D3A1D0] sharedInstance];
+    mEMORY[0x277D3A1D0]2 = [MEMORY[0x277D3A1D0] sharedInstance];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __33__HACCPSESettings_initWithFrame___block_invoke_2;
     v8[3] = &unk_2796F6D18;
     objc_copyWeak(&v9, &location);
-    [v5 registerUpdateBlock:v8 forRetrieveSelector:sel_transparencyCustomized withListener:v3];
+    [mEMORY[0x277D3A1D0]2 registerUpdateBlock:v8 forRetrieveSelector:sel_transparencyCustomized withListener:v3];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v3 selector:sel_updateVoiceAmplificationSliderAvailability name:*MEMORY[0x277D3A1F0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_updateVoiceAmplificationSliderAvailability name:*MEMORY[0x277D3A1F0] object:0];
 
     [(HACCPSESettings *)v3 buildSubviews];
     objc_destroyWeak(&v9);
@@ -80,26 +80,26 @@ void __33__HACCPSESettings_initWithFrame___block_invoke_2(uint64_t a1)
 
 - (void)removeOwnVoiceAmplificationSlider
 {
-  v3 = [(HACCPSESettings *)self voiceAmplificationSlider];
-  [v3 removeFromSuperview];
+  voiceAmplificationSlider = [(HACCPSESettings *)self voiceAmplificationSlider];
+  [voiceAmplificationSlider removeFromSuperview];
 
-  v5 = [(HACCPSESettings *)self stackView];
-  v4 = [(HACCPSESettings *)self voiceAmplificationSlider];
-  [v5 removeArrangedSubview:v4];
+  stackView = [(HACCPSESettings *)self stackView];
+  voiceAmplificationSlider2 = [(HACCPSESettings *)self voiceAmplificationSlider];
+  [stackView removeArrangedSubview:voiceAmplificationSlider2];
 }
 
 - (void)addOwnVoiceAmplificationSlider
 {
   v3 = HUICCLargeTextEnabled();
-  v19 = [MEMORY[0x277D75348] whiteColor];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
   v4 = objc_alloc_init(HUISliderConfig);
   [(HUISliderConfig *)v4 setStyle:1];
   v5 = [MEMORY[0x277D755B8] _systemImageNamed:@"speaker.fill"];
-  v6 = [v5 imageWithTintColor:v19 renderingMode:1];
+  v6 = [v5 imageWithTintColor:whiteColor renderingMode:1];
   [(HUISliderConfig *)v4 setMinImage:v6];
 
   v7 = [MEMORY[0x277D755B8] _systemImageNamed:@"speaker.wave.3.fill"];
-  v8 = [v7 imageWithTintColor:v19 renderingMode:1];
+  v8 = [v7 imageWithTintColor:whiteColor renderingMode:1];
   [(HUISliderConfig *)v4 setMaxImage:v8];
 
   [(HUISliderConfig *)v4 setIsLargeText:v3];
@@ -108,38 +108,38 @@ void __33__HACCPSESettings_initWithFrame___block_invoke_2(uint64_t a1)
   self->_voiceAmplificationSlider = v9;
 
   [(HUITitleDarkStepSliderView *)self->_voiceAmplificationSlider setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [(HUITitleDarkStepSliderView *)self->_voiceAmplificationSlider slider];
-  [v11 addTarget:self action:sel_voiceAmplificationSliderDidChange_ forControlEvents:4096];
+  slider = [(HUITitleDarkStepSliderView *)self->_voiceAmplificationSlider slider];
+  [slider addTarget:self action:sel_voiceAmplificationSliderDidChange_ forControlEvents:4096];
 
   v12 = self->_voiceAmplificationSlider;
   v13 = paLocString();
   [(HUITitleDarkStepSliderView *)v12 setAccessibilityLabel:v13];
 
-  v14 = [(HUITitleDarkStepSliderView *)self->_voiceAmplificationSlider titleLabel];
+  titleLabel = [(HUITitleDarkStepSliderView *)self->_voiceAmplificationSlider titleLabel];
   v15 = paLocString();
-  [v14 setText:v15];
+  [titleLabel setText:v15];
 
-  v16 = [(HUITitleDarkStepSliderView *)self->_voiceAmplificationSlider slider];
-  [v16 setDrawsEndTicks:0];
+  slider2 = [(HUITitleDarkStepSliderView *)self->_voiceAmplificationSlider slider];
+  [slider2 setDrawsEndTicks:0];
 
-  v17 = [(HUITitleDarkStepSliderView *)self->_voiceAmplificationSlider slider];
-  [v17 setSegmentCount:2];
+  slider3 = [(HUITitleDarkStepSliderView *)self->_voiceAmplificationSlider slider];
+  [slider3 setSegmentCount:2];
 
-  v18 = [(HUITitleDarkStepSliderView *)self->_voiceAmplificationSlider slider];
-  [v18 setRestrictsValuesToTicks:0];
+  slider4 = [(HUITitleDarkStepSliderView *)self->_voiceAmplificationSlider slider];
+  [slider4 setRestrictsValuesToTicks:0];
 
   [(HACCStackView *)self->_stackView addArrangedSubview:self->_voiceAmplificationSlider withSeparator:1];
 }
 
 - (void)updateVoiceAmplificationSliderAvailability
 {
-  v3 = [MEMORY[0x277D12E00] sharedInstance];
+  mEMORY[0x277D12E00] = [MEMORY[0x277D12E00] sharedInstance];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __61__HACCPSESettings_updateVoiceAmplificationSliderAvailability__block_invoke;
   v4[3] = &unk_2796F6DB8;
   v4[4] = self;
-  [v3 getCurrentRouteSupportingHeadphoneAccommodationsWithCompletion:v4];
+  [mEMORY[0x277D12E00] getCurrentRouteSupportingHeadphoneAccommodationsWithCompletion:v4];
 }
 
 uint64_t __61__HACCPSESettings_updateVoiceAmplificationSliderAvailability__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -196,13 +196,13 @@ LABEL_4:
 
 - (void)buildSubviews
 {
-  v3 = [MEMORY[0x277D12E00] sharedInstance];
+  mEMORY[0x277D12E00] = [MEMORY[0x277D12E00] sharedInstance];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __32__HACCPSESettings_buildSubviews__block_invoke;
   v4[3] = &unk_2796F6DB8;
   v4[4] = self;
-  [v3 getCurrentRouteSupportingHeadphoneAccommodationsWithCompletion:v4];
+  [mEMORY[0x277D12E00] getCurrentRouteSupportingHeadphoneAccommodationsWithCompletion:v4];
 }
 
 void __32__HACCPSESettings_buildSubviews__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -474,216 +474,216 @@ void __32__HACCPSESettings_buildSubviews__block_invoke_2(uint64_t a1)
 
 - (double)currentBalance
 {
-  v2 = [(HACCPSESettings *)self delegate];
-  v3 = [v2 currentDeviceAddress];
+  delegate = [(HACCPSESettings *)self delegate];
+  currentDeviceAddress = [delegate currentDeviceAddress];
 
-  v4 = [MEMORY[0x277D3A1D0] sharedInstance];
-  [v4 transparencyBalanceForAddress:v3];
+  mEMORY[0x277D3A1D0] = [MEMORY[0x277D3A1D0] sharedInstance];
+  [mEMORY[0x277D3A1D0] transparencyBalanceForAddress:currentDeviceAddress];
   v6 = v5;
 
-  v7 = [MEMORY[0x277D3A1C8] sharedInstance];
-  v8 = [v7 yodelEnabledForAddress:v3];
+  mEMORY[0x277D3A1C8] = [MEMORY[0x277D3A1C8] sharedInstance];
+  v8 = [mEMORY[0x277D3A1C8] yodelEnabledForAddress:currentDeviceAddress];
 
   if (v8)
   {
-    v9 = [MEMORY[0x277D3A1C8] sharedInstance];
-    [v9 balanceForAddress:v3];
+    mEMORY[0x277D3A1C8]2 = [MEMORY[0x277D3A1C8] sharedInstance];
+    [mEMORY[0x277D3A1C8]2 balanceForAddress:currentDeviceAddress];
     v6 = v10;
   }
 
   return v6;
 }
 
-- (void)setCurrentBalance:(double)a3
+- (void)setCurrentBalance:(double)balance
 {
-  v4 = [(HACCPSESettings *)self delegate];
-  v8 = [v4 currentDeviceAddress];
+  delegate = [(HACCPSESettings *)self delegate];
+  currentDeviceAddress = [delegate currentDeviceAddress];
 
-  v5 = [MEMORY[0x277D3A1C8] sharedInstance];
-  v6 = [v5 yodelEnabledForAddress:v8];
+  mEMORY[0x277D3A1C8] = [MEMORY[0x277D3A1C8] sharedInstance];
+  v6 = [mEMORY[0x277D3A1C8] yodelEnabledForAddress:currentDeviceAddress];
 
   if (v6)
   {
-    v7 = [MEMORY[0x277D3A1C8] sharedInstance];
-    [v7 setBalance:v8 forAddress:a3];
+    mEMORY[0x277D3A1C8]2 = [MEMORY[0x277D3A1C8] sharedInstance];
+    [mEMORY[0x277D3A1C8]2 setBalance:currentDeviceAddress forAddress:balance];
   }
 
   else
   {
-    v7 = [MEMORY[0x277D3A1D0] sharedInstance];
-    [v7 setTransparencyBalance:v8 forAddress:a3];
+    mEMORY[0x277D3A1C8]2 = [MEMORY[0x277D3A1D0] sharedInstance];
+    [mEMORY[0x277D3A1C8]2 setTransparencyBalance:currentDeviceAddress forAddress:balance];
   }
 }
 
 - (double)currentTone
 {
-  v2 = [(HACCPSESettings *)self delegate];
-  v3 = [v2 currentDeviceAddress];
+  delegate = [(HACCPSESettings *)self delegate];
+  currentDeviceAddress = [delegate currentDeviceAddress];
 
-  v4 = [MEMORY[0x277D3A1D0] sharedInstance];
-  [v4 transparencyToneForAddress:v3];
+  mEMORY[0x277D3A1D0] = [MEMORY[0x277D3A1D0] sharedInstance];
+  [mEMORY[0x277D3A1D0] transparencyToneForAddress:currentDeviceAddress];
   v6 = v5;
 
-  v7 = [MEMORY[0x277D3A1C8] sharedInstance];
-  v8 = [v7 yodelEnabledForAddress:v3];
+  mEMORY[0x277D3A1C8] = [MEMORY[0x277D3A1C8] sharedInstance];
+  v8 = [mEMORY[0x277D3A1C8] yodelEnabledForAddress:currentDeviceAddress];
 
   if (v8)
   {
-    v9 = [MEMORY[0x277D3A1C8] sharedInstance];
-    [v9 toneForAddress:v3];
+    mEMORY[0x277D3A1C8]2 = [MEMORY[0x277D3A1C8] sharedInstance];
+    [mEMORY[0x277D3A1C8]2 toneForAddress:currentDeviceAddress];
     v6 = v10;
   }
 
   return v6;
 }
 
-- (void)setCurrentTone:(double)a3
+- (void)setCurrentTone:(double)tone
 {
-  v4 = [(HACCPSESettings *)self delegate];
-  v8 = [v4 currentDeviceAddress];
+  delegate = [(HACCPSESettings *)self delegate];
+  currentDeviceAddress = [delegate currentDeviceAddress];
 
-  v5 = [MEMORY[0x277D3A1C8] sharedInstance];
-  v6 = [v5 yodelEnabledForAddress:v8];
+  mEMORY[0x277D3A1C8] = [MEMORY[0x277D3A1C8] sharedInstance];
+  v6 = [mEMORY[0x277D3A1C8] yodelEnabledForAddress:currentDeviceAddress];
 
   if (v6)
   {
-    v7 = [MEMORY[0x277D3A1C8] sharedInstance];
-    [v7 setTone:v8 forAddress:a3];
+    mEMORY[0x277D3A1C8]2 = [MEMORY[0x277D3A1C8] sharedInstance];
+    [mEMORY[0x277D3A1C8]2 setTone:currentDeviceAddress forAddress:tone];
   }
 
   else
   {
-    v7 = [MEMORY[0x277D3A1D0] sharedInstance];
-    [v7 setTransparencyTone:v8 forAddress:a3];
+    mEMORY[0x277D3A1C8]2 = [MEMORY[0x277D3A1D0] sharedInstance];
+    [mEMORY[0x277D3A1C8]2 setTransparencyTone:currentDeviceAddress forAddress:tone];
   }
 }
 
 - (double)currentAmplification
 {
-  v2 = [(HACCPSESettings *)self delegate];
-  v3 = [v2 currentDeviceAddress];
+  delegate = [(HACCPSESettings *)self delegate];
+  currentDeviceAddress = [delegate currentDeviceAddress];
 
-  v4 = [MEMORY[0x277D3A1D0] sharedInstance];
-  [v4 transparencyAmplificationForAddress:v3];
+  mEMORY[0x277D3A1D0] = [MEMORY[0x277D3A1D0] sharedInstance];
+  [mEMORY[0x277D3A1D0] transparencyAmplificationForAddress:currentDeviceAddress];
   v6 = v5;
 
-  v7 = [MEMORY[0x277D3A1C8] sharedInstance];
-  v8 = [v7 yodelEnabledForAddress:v3];
+  mEMORY[0x277D3A1C8] = [MEMORY[0x277D3A1C8] sharedInstance];
+  v8 = [mEMORY[0x277D3A1C8] yodelEnabledForAddress:currentDeviceAddress];
 
   if (v8)
   {
-    v9 = [MEMORY[0x277D3A1C8] sharedInstance];
-    [v9 amplificationForAddress:v3];
+    mEMORY[0x277D3A1C8]2 = [MEMORY[0x277D3A1C8] sharedInstance];
+    [mEMORY[0x277D3A1C8]2 amplificationForAddress:currentDeviceAddress];
     v6 = v10;
   }
 
   return v6;
 }
 
-- (void)setCurrentAmplification:(double)a3
+- (void)setCurrentAmplification:(double)amplification
 {
-  v4 = [(HACCPSESettings *)self delegate];
-  v8 = [v4 currentDeviceAddress];
+  delegate = [(HACCPSESettings *)self delegate];
+  currentDeviceAddress = [delegate currentDeviceAddress];
 
-  v5 = [MEMORY[0x277D3A1C8] sharedInstance];
-  v6 = [v5 yodelEnabledForAddress:v8];
+  mEMORY[0x277D3A1C8] = [MEMORY[0x277D3A1C8] sharedInstance];
+  v6 = [mEMORY[0x277D3A1C8] yodelEnabledForAddress:currentDeviceAddress];
 
   if (v6)
   {
-    v7 = [MEMORY[0x277D3A1C8] sharedInstance];
-    [v7 setAmplification:v8 forAddress:a3];
+    mEMORY[0x277D3A1C8]2 = [MEMORY[0x277D3A1C8] sharedInstance];
+    [mEMORY[0x277D3A1C8]2 setAmplification:currentDeviceAddress forAddress:amplification];
   }
 
   else
   {
-    v7 = [MEMORY[0x277D3A1D0] sharedInstance];
-    [v7 setTransparencyAmplification:v8 forAddress:a3];
+    mEMORY[0x277D3A1C8]2 = [MEMORY[0x277D3A1D0] sharedInstance];
+    [mEMORY[0x277D3A1C8]2 setTransparencyAmplification:currentDeviceAddress forAddress:amplification];
   }
 }
 
 - (double)currentNoiseSupressor
 {
-  v2 = [(HACCPSESettings *)self delegate];
-  v3 = [v2 currentDeviceAddress];
+  delegate = [(HACCPSESettings *)self delegate];
+  currentDeviceAddress = [delegate currentDeviceAddress];
 
-  v4 = [MEMORY[0x277D3A1D0] sharedInstance];
-  [v4 transparencyNoiseSupressorForAddress:v3];
+  mEMORY[0x277D3A1D0] = [MEMORY[0x277D3A1D0] sharedInstance];
+  [mEMORY[0x277D3A1D0] transparencyNoiseSupressorForAddress:currentDeviceAddress];
   v6 = v5;
 
-  v7 = [MEMORY[0x277D3A1C8] sharedInstance];
-  v8 = [v7 yodelEnabledForAddress:v3];
+  mEMORY[0x277D3A1C8] = [MEMORY[0x277D3A1C8] sharedInstance];
+  v8 = [mEMORY[0x277D3A1C8] yodelEnabledForAddress:currentDeviceAddress];
 
   if (v8)
   {
-    v9 = [MEMORY[0x277D3A1C8] sharedInstance];
-    [v9 noiseSupressorForAddress:v3];
+    mEMORY[0x277D3A1C8]2 = [MEMORY[0x277D3A1C8] sharedInstance];
+    [mEMORY[0x277D3A1C8]2 noiseSupressorForAddress:currentDeviceAddress];
     v6 = v10;
   }
 
   return v6;
 }
 
-- (void)setCurrentNoiseSupressor:(double)a3
+- (void)setCurrentNoiseSupressor:(double)supressor
 {
-  v4 = [(HACCPSESettings *)self delegate];
-  v8 = [v4 currentDeviceAddress];
+  delegate = [(HACCPSESettings *)self delegate];
+  currentDeviceAddress = [delegate currentDeviceAddress];
 
-  v5 = [MEMORY[0x277D3A1C8] sharedInstance];
-  v6 = [v5 yodelEnabledForAddress:v8];
+  mEMORY[0x277D3A1C8] = [MEMORY[0x277D3A1C8] sharedInstance];
+  v6 = [mEMORY[0x277D3A1C8] yodelEnabledForAddress:currentDeviceAddress];
 
   if (v6)
   {
-    v7 = [MEMORY[0x277D3A1C8] sharedInstance];
-    [v7 setNoiseSupressor:v8 forAddress:a3];
+    mEMORY[0x277D3A1C8]2 = [MEMORY[0x277D3A1C8] sharedInstance];
+    [mEMORY[0x277D3A1C8]2 setNoiseSupressor:currentDeviceAddress forAddress:supressor];
   }
 
   else
   {
-    v7 = [MEMORY[0x277D3A1D0] sharedInstance];
-    [v7 setTransparencyNoiseSupressor:v8 forAddress:a3];
+    mEMORY[0x277D3A1C8]2 = [MEMORY[0x277D3A1D0] sharedInstance];
+    [mEMORY[0x277D3A1C8]2 setTransparencyNoiseSupressor:currentDeviceAddress forAddress:supressor];
   }
 }
 
 - (double)currentVoiceAmplification
 {
-  v2 = [(HACCPSESettings *)self delegate];
-  v3 = [v2 currentDeviceAddress];
+  delegate = [(HACCPSESettings *)self delegate];
+  currentDeviceAddress = [delegate currentDeviceAddress];
 
-  v4 = [MEMORY[0x277D3A1D0] sharedInstance];
-  [v4 transparencyOwnVoiceForAddress:v3];
+  mEMORY[0x277D3A1D0] = [MEMORY[0x277D3A1D0] sharedInstance];
+  [mEMORY[0x277D3A1D0] transparencyOwnVoiceForAddress:currentDeviceAddress];
   v6 = v5;
 
-  v7 = [MEMORY[0x277D3A1C8] sharedInstance];
-  v8 = [v7 yodelEnabledForAddress:v3];
+  mEMORY[0x277D3A1C8] = [MEMORY[0x277D3A1C8] sharedInstance];
+  v8 = [mEMORY[0x277D3A1C8] yodelEnabledForAddress:currentDeviceAddress];
 
   if (v8)
   {
-    v9 = [MEMORY[0x277D3A1C8] sharedInstance];
-    [v9 ownVoiceForAddress:v3];
+    mEMORY[0x277D3A1C8]2 = [MEMORY[0x277D3A1C8] sharedInstance];
+    [mEMORY[0x277D3A1C8]2 ownVoiceForAddress:currentDeviceAddress];
     v6 = v10;
   }
 
   return v6;
 }
 
-- (void)setCurrentVoiceAmplification:(double)a3
+- (void)setCurrentVoiceAmplification:(double)amplification
 {
-  v4 = [(HACCPSESettings *)self delegate];
-  v8 = [v4 currentDeviceAddress];
+  delegate = [(HACCPSESettings *)self delegate];
+  currentDeviceAddress = [delegate currentDeviceAddress];
 
-  v5 = [MEMORY[0x277D3A1C8] sharedInstance];
-  v6 = [v5 yodelEnabledForAddress:v8];
+  mEMORY[0x277D3A1C8] = [MEMORY[0x277D3A1C8] sharedInstance];
+  v6 = [mEMORY[0x277D3A1C8] yodelEnabledForAddress:currentDeviceAddress];
 
   if (v6)
   {
-    v7 = [MEMORY[0x277D3A1C8] sharedInstance];
-    [v7 setOwnVoice:v8 forAddress:a3];
+    mEMORY[0x277D3A1C8]2 = [MEMORY[0x277D3A1C8] sharedInstance];
+    [mEMORY[0x277D3A1C8]2 setOwnVoice:currentDeviceAddress forAddress:amplification];
   }
 
   else
   {
-    v7 = [MEMORY[0x277D3A1D0] sharedInstance];
-    [v7 setTransparencyOwnVoice:v8 forAddress:a3];
+    mEMORY[0x277D3A1C8]2 = [MEMORY[0x277D3A1D0] sharedInstance];
+    [mEMORY[0x277D3A1C8]2 setTransparencyOwnVoice:currentDeviceAddress forAddress:amplification];
   }
 }
 
@@ -774,62 +774,62 @@ void __32__HACCPSESettings_buildSubviews__block_invoke_2(uint64_t a1)
   [(HUITitleDarkStepSliderView *)self->_voiceAmplificationSlider setAccessibilityValue:v7];
 }
 
-- (void)amplificationSliderDidChange:(id)a3
+- (void)amplificationSliderDidChange:(id)change
 {
-  [a3 value];
+  [change value];
   v5 = v4;
   numberFormatter = self->_numberFormatter;
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:v4];
   v9 = [(NSNumberFormatter *)numberFormatter stringFromNumber:v7];
 
-  v8 = [(HUITitleDarkStepSliderView *)self->_amplificationSlider valueLabel];
-  [v8 setText:v9];
+  valueLabel = [(HUITitleDarkStepSliderView *)self->_amplificationSlider valueLabel];
+  [valueLabel setText:v9];
 
   [(HUITitleDarkStepSliderView *)self->_amplificationSlider setAccessibilityValue:v9];
   [(HACCPSESettings *)self setCurrentAmplification:v5];
 }
 
-- (void)balanceSliderDidChange:(id)a3
+- (void)balanceSliderDidChange:(id)change
 {
-  [a3 value];
+  [change value];
   [(HACCPSESettings *)self setCurrentBalance:v4];
 
   [(HACCPSESettings *)self updateAccessibilityBalanceValue];
 }
 
-- (void)toneSliderDidChange:(id)a3
+- (void)toneSliderDidChange:(id)change
 {
-  [a3 value];
+  [change value];
   [(HACCPSESettings *)self setCurrentTone:v4];
 
   [(HACCPSESettings *)self updateAccessibilityToneValue];
 }
 
-- (void)noiseSliderDidChange:(id)a3
+- (void)noiseSliderDidChange:(id)change
 {
-  [a3 value];
+  [change value];
   v5 = v4;
   numberFormatter = self->_numberFormatter;
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:v4];
   v9 = [(NSNumberFormatter *)numberFormatter stringFromNumber:v7];
 
-  v8 = [(HUITitleDarkStepSliderView *)self->_noiseSupressorSlider valueLabel];
-  [v8 setText:v9];
+  valueLabel = [(HUITitleDarkStepSliderView *)self->_noiseSupressorSlider valueLabel];
+  [valueLabel setText:v9];
 
   [(HUITitleDarkStepSliderView *)self->_noiseSupressorSlider setAccessibilityValue:v9];
   [(HACCPSESettings *)self setCurrentNoiseSupressor:v5];
 }
 
-- (void)voiceAmplificationSliderDidChange:(id)a3
+- (void)voiceAmplificationSliderDidChange:(id)change
 {
-  [a3 value];
+  [change value];
   v5 = v4;
   numberFormatter = self->_numberFormatter;
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:v4];
   v9 = [(NSNumberFormatter *)numberFormatter stringFromNumber:v7];
 
-  v8 = [(HUITitleDarkStepSliderView *)self->_voiceAmplificationSlider valueLabel];
-  [v8 setText:v9];
+  valueLabel = [(HUITitleDarkStepSliderView *)self->_voiceAmplificationSlider valueLabel];
+  [valueLabel setText:v9];
 
   [(HUITitleDarkStepSliderView *)self->_voiceAmplificationSlider setAccessibilityValue:v9];
   [(HACCPSESettings *)self setCurrentVoiceAmplification:v5];
@@ -839,66 +839,66 @@ void __32__HACCPSESettings_buildSubviews__block_invoke_2(uint64_t a1)
 {
   [(HACCPSESettings *)self currentAmplification];
   v4 = v3;
-  v5 = [(HUITitleDarkStepSliderView *)self->_amplificationSlider valueLabel];
+  valueLabel = [(HUITitleDarkStepSliderView *)self->_amplificationSlider valueLabel];
   numberFormatter = self->_numberFormatter;
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:v4];
   v8 = [(NSNumberFormatter *)numberFormatter stringFromNumber:v7];
-  [v5 setText:v8];
+  [valueLabel setText:v8];
 
-  v9 = [(HUITitleDarkStepSliderView *)self->_amplificationSlider slider];
+  slider = [(HUITitleDarkStepSliderView *)self->_amplificationSlider slider];
   *&v10 = v4;
-  [v9 setValue:v10];
+  [slider setValue:v10];
 
-  v11 = [(HUITitleDarkStepSliderView *)self->_balanceSlider slider];
+  slider2 = [(HUITitleDarkStepSliderView *)self->_balanceSlider slider];
   [(HACCPSESettings *)self currentBalance];
   *&v12 = v12;
-  [v11 setValue:v12];
+  [slider2 setValue:v12];
 
-  v13 = [(HUITitleDarkStepSliderView *)self->_toneSlider slider];
+  slider3 = [(HUITitleDarkStepSliderView *)self->_toneSlider slider];
   [(HACCPSESettings *)self currentTone];
   *&v14 = v14;
-  [v13 setValue:v14];
+  [slider3 setValue:v14];
 
   [(HACCPSESettings *)self currentNoiseSupressor];
   v16 = v15;
-  v17 = [(HUITitleDarkStepSliderView *)self->_noiseSupressorSlider valueLabel];
+  valueLabel2 = [(HUITitleDarkStepSliderView *)self->_noiseSupressorSlider valueLabel];
   v18 = self->_numberFormatter;
   v19 = [MEMORY[0x277CCABB0] numberWithDouble:v16];
   v20 = [(NSNumberFormatter *)v18 stringFromNumber:v19];
-  [v17 setText:v20];
+  [valueLabel2 setText:v20];
 
-  v21 = [(HUITitleDarkStepSliderView *)self->_noiseSupressorSlider slider];
+  slider4 = [(HUITitleDarkStepSliderView *)self->_noiseSupressorSlider slider];
   *&v22 = v16;
-  [v21 setValue:v22];
+  [slider4 setValue:v22];
 
-  v23 = [(HUITitleDarkStepSliderView *)self->_voiceAmplificationSlider slider];
+  slider5 = [(HUITitleDarkStepSliderView *)self->_voiceAmplificationSlider slider];
   [(HACCPSESettings *)self currentVoiceAmplification];
   *&v24 = v24;
-  [v23 setValue:v24];
+  [slider5 setValue:v24];
 
   [(HACCPSESettings *)self updateAccessibilityBalanceValue];
   [(HACCPSESettings *)self updateAccessibilityToneValue];
   [(HACCPSESettings *)self updateAccessibilityVoiceAmplificationValue];
-  v25 = [(HUITitleDarkStepSliderView *)self->_amplificationSlider valueLabel];
+  valueLabel3 = [(HUITitleDarkStepSliderView *)self->_amplificationSlider valueLabel];
   v26 = self->_numberFormatter;
   v27 = [MEMORY[0x277CCABB0] numberWithDouble:v4];
   v28 = [(NSNumberFormatter *)v26 stringFromNumber:v27];
-  [v25 setText:v28];
+  [valueLabel3 setText:v28];
 
   amplificationSlider = self->_amplificationSlider;
-  v30 = [(HUITitleDarkStepSliderView *)amplificationSlider valueLabel];
-  v31 = [v30 text];
-  [(HUITitleDarkStepSliderView *)amplificationSlider setAccessibilityValue:v31];
+  valueLabel4 = [(HUITitleDarkStepSliderView *)amplificationSlider valueLabel];
+  text = [valueLabel4 text];
+  [(HUITitleDarkStepSliderView *)amplificationSlider setAccessibilityValue:text];
 
   noiseSupressorSlider = self->_noiseSupressorSlider;
-  v33 = [(HUITitleDarkStepSliderView *)noiseSupressorSlider valueLabel];
-  v34 = [v33 text];
-  [(HUITitleDarkStepSliderView *)noiseSupressorSlider setAccessibilityValue:v34];
+  valueLabel5 = [(HUITitleDarkStepSliderView *)noiseSupressorSlider valueLabel];
+  text2 = [valueLabel5 text];
+  [(HUITitleDarkStepSliderView *)noiseSupressorSlider setAccessibilityValue:text2];
 
   voiceAmplificationSlider = self->_voiceAmplificationSlider;
-  v36 = [(HUITitleDarkStepSliderView *)voiceAmplificationSlider valueLabel];
-  v37 = [v36 text];
-  [(HUITitleDarkStepSliderView *)voiceAmplificationSlider setAccessibilityValue:v37];
+  valueLabel6 = [(HUITitleDarkStepSliderView *)voiceAmplificationSlider valueLabel];
+  text3 = [valueLabel6 text];
+  [(HUITitleDarkStepSliderView *)voiceAmplificationSlider setAccessibilityValue:text3];
 
   v38 = HUICCLargeTextEnabled();
   [(HUITitleDarkStepSliderView *)self->_amplificationSlider setIsLargeText:v38];
@@ -915,20 +915,20 @@ void __32__HACCPSESettings_buildSubviews__block_invoke_2(uint64_t a1)
   v5.receiver = self;
   v5.super_class = HACCPSESettings;
   [(HACCPSESettings *)&v5 layoutSubviews];
-  v3 = [MEMORY[0x277CFC968] controlCenterModuleBackgroundMaterial];
+  controlCenterModuleBackgroundMaterial = [MEMORY[0x277CFC968] controlCenterModuleBackgroundMaterial];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 visualStylingProviderForCategory:2];
+    v4 = [controlCenterModuleBackgroundMaterial visualStylingProviderForCategory:2];
     [(HACCPSESettings *)self setVisualStylingProvider:v4 forCategory:2];
   }
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v6 = a3;
-  v7 = [(HACCPSESettings *)self requiredVisualStyleCategories];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  v9 = [v7 containsObject:v8];
+  providerCopy = provider;
+  requiredVisualStyleCategories = [(HACCPSESettings *)self requiredVisualStyleCategories];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:category];
+  v9 = [requiredVisualStyleCategories containsObject:v8];
 
   if (v9)
   {
@@ -936,8 +936,8 @@ void __32__HACCPSESettings_buildSubviews__block_invoke_2(uint64_t a1)
     v10[1] = 3221225472;
     v10[2] = __56__HACCPSESettings_setVisualStylingProvider_forCategory___block_invoke;
     v10[3] = &unk_2796F6CA8;
-    v11 = v6;
-    v12 = self;
+    v11 = providerCopy;
+    selfCopy = self;
     dispatch_async(MEMORY[0x277D85CD0], v10);
   }
 }

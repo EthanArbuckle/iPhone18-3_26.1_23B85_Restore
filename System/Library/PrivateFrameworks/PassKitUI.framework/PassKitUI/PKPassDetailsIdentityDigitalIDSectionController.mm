@@ -1,46 +1,46 @@
 @interface PKPassDetailsIdentityDigitalIDSectionController
-+ (BOOL)validForPaymentPass:(id)a3;
-- (PKPassDetailsIdentityDigitalIDSectionController)initWithPass:(id)a3 detailViewStyle:(int64_t)a4 delegate:(id)a5;
++ (BOOL)validForPaymentPass:(id)pass;
+- (PKPassDetailsIdentityDigitalIDSectionController)initWithPass:(id)pass detailViewStyle:(int64_t)style delegate:(id)delegate;
 - (PKPassDetailsIdentityDigitalIDSectionControllerDelegate)delegate;
 - (id)allSectionIdentifiers;
 - (id)sectionIdentifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
-- (void)preflight:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
+- (void)preflight:(id)preflight;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
 @end
 
 @implementation PKPassDetailsIdentityDigitalIDSectionController
 
-- (PKPassDetailsIdentityDigitalIDSectionController)initWithPass:(id)a3 detailViewStyle:(int64_t)a4 delegate:(id)a5
+- (PKPassDetailsIdentityDigitalIDSectionController)initWithPass:(id)pass detailViewStyle:(int64_t)style delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a5;
+  passCopy = pass;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = PKPassDetailsIdentityDigitalIDSectionController;
   v11 = [(PKPaymentPassDetailSectionController *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_pass, a3);
-    v12->_detailViewStyle = a4;
-    objc_storeWeak(&v12->_delegate, v10);
+    objc_storeStrong(&v11->_pass, pass);
+    v12->_detailViewStyle = style;
+    objc_storeWeak(&v12->_delegate, delegateCopy);
   }
 
   return v12;
 }
 
-+ (BOOL)validForPaymentPass:(id)a3
++ (BOOL)validForPaymentPass:(id)pass
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 identityType] == 5)
+  passCopy = pass;
+  if ([passCopy identityType] == 5)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [v3 deviceContactlessPaymentApplications];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    deviceContactlessPaymentApplications = [passCopy deviceContactlessPaymentApplications];
+    v5 = [deviceContactlessPaymentApplications countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = *v13;
@@ -50,15 +50,15 @@
         {
           if (*v13 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(deviceContactlessPaymentApplications);
           }
 
           v8 = *(*(&v12 + 1) + 8 * i);
           [v8 paymentType];
           if (PKPaymentMethodTypeIsIdentityDocument())
           {
-            v9 = [v8 subcredentials];
-            v10 = [v9 count];
+            subcredentials = [v8 subcredentials];
+            v10 = [subcredentials count];
 
             if (v10)
             {
@@ -68,7 +68,7 @@
           }
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v5 = [deviceContactlessPaymentApplications countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v5)
         {
           continue;
@@ -89,11 +89,11 @@ LABEL_14:
   return v5;
 }
 
-- (void)preflight:(id)a3
+- (void)preflight:(id)preflight
 {
-  if (a3)
+  if (preflight)
   {
-    (*(a3 + 2))(a3);
+    (*(preflight + 2))(preflight);
   }
 }
 
@@ -110,24 +110,24 @@ LABEL_14:
 {
   if ([(PKPaymentPassDetailSectionController *)self currentSegment])
   {
-    v3 = MEMORY[0x1E695E0F0];
+    allSectionIdentifiers = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v3 = [(PKPassDetailsIdentityDigitalIDSectionController *)self allSectionIdentifiers];
+    allSectionIdentifiers = [(PKPassDetailsIdentityDigitalIDSectionController *)self allSectionIdentifiers];
   }
 
-  return v3;
+  return allSectionIdentifiers;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v6 = a3;
+  viewCopy = view;
   if (PKEqualObjects())
   {
     v7 = PKLocalizedIdentityString(&cfstr_DigitalidIdent.isa);
-    v8 = [(PKPaymentPassDetailSectionController *)self infoCellWithPrimaryText:v7 detailText:0 cellStyle:0 forTableView:v6];
+    v8 = [(PKPaymentPassDetailSectionController *)self infoCellWithPrimaryText:v7 detailText:0 cellStyle:0 forTableView:viewCopy];
 
     [v8 setAccessoryType:1];
   }
@@ -140,17 +140,17 @@ LABEL_14:
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v13 deselectRowAtIndexPath:v8 animated:1];
+  viewCopy = view;
+  pathCopy = path;
+  identifierCopy = identifier;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   v10 = PKEqualObjects();
 
   if (v10)
   {
-    v11 = [v13 cellForRowAtIndexPath:v8];
+    v11 = [viewCopy cellForRowAtIndexPath:pathCopy];
     [(PKPaymentPassDetailSectionController *)self showSpinner:1 inCell:v11 overrideTextColor:0];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained didSelectDigitalIDForSectionController:self tableViewCell:v11 completion:&__block_literal_global_139];

@@ -10,11 +10,11 @@
   v5.receiver = self;
   v5.super_class = _UIFluidSliderElasticPanDriverSettings;
   [(_UIFluidSliderDriverSettings *)&v5 setDefaultValues];
-  v3 = [(_UIFluidSliderDriverSettings *)self update];
-  [v3 setDampingRatio:1.0];
+  update = [(_UIFluidSliderDriverSettings *)self update];
+  [update setDampingRatio:1.0];
 
-  v4 = [(_UIFluidSliderDriverSettings *)self update];
-  [v4 setResponse:0.4];
+  update2 = [(_UIFluidSliderDriverSettings *)self update];
+  [update2 setResponse:0.4];
 
   [(_UIFluidSliderElasticPanDriverSettings *)self setProjectionThreshold:10.0];
 }
@@ -23,7 +23,7 @@
 {
   v22[3] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E69C6638];
-  v19.receiver = a1;
+  v19.receiver = self;
   v19.super_class = &OBJC_METACLASS____UIFluidSliderElasticPanDriverSettings;
   v18 = objc_msgSendSuper2(&v19, sel_settingsControllerModule);
   v22[0] = v18;
@@ -37,8 +37,8 @@
   v22[1] = v7;
   v8 = MEMORY[0x1E69C6638];
   v9 = MEMORY[0x1E69C65E8];
-  v10 = [MEMORY[0x1E69C6640] action];
-  v11 = [v9 rowWithTitle:@"Restore Defaults" action:v10];
+  action = [MEMORY[0x1E69C6640] action];
+  v11 = [v9 rowWithTitle:@"Restore Defaults" action:action];
   v20 = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
   v13 = [v8 sectionWithRows:v12];

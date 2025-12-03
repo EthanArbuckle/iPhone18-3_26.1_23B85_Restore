@@ -1,12 +1,12 @@
 @interface NCSetZoomResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NCSetZoomResponse
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = NCSetZoomResponse;
   v3 = [(NCSetZoomResponse *)&v7 description];
-  v4 = [(NCSetZoomResponse *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NCSetZoomResponse *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -35,7 +35,7 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -44,18 +44,18 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 2) = LODWORD(self->_zoomAmount);
-    *(a3 + 12) |= 1u;
+    *(to + 2) = LODWORD(self->_zoomAmount);
+    *(to + 12) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (*&self->_has)
   {
     *(result + 2) = LODWORD(self->_zoomAmount);
@@ -65,18 +65,18 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_6;
   }
 
-  v5 = (*(v4 + 12) & 1) == 0;
+  v5 = (*(equalCopy + 12) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 12) & 1) != 0 && self->_zoomAmount == *(v4 + 2))
+    if ((*(equalCopy + 12) & 1) != 0 && self->_zoomAmount == *(equalCopy + 2))
     {
       v5 = 1;
       goto LABEL_7;
@@ -126,11 +126,11 @@ LABEL_7:
   return result;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 12))
+  if (*(from + 12))
   {
-    self->_zoomAmount = *(a3 + 2);
+    self->_zoomAmount = *(from + 2);
     *&self->_has |= 1u;
   }
 }

@@ -4,10 +4,10 @@
 - (BOOL)_shouldRunSafeguards;
 - (id)_init;
 - (void)_start;
-- (void)handleDisplayStateChanged:(unint64_t)a3;
+- (void)handleDisplayStateChanged:(unint64_t)changed;
 - (void)handlePowerStateChanged;
-- (void)updateContextForIdentifier:(id)a3 withState:(id)a4;
-- (void)updateContextForIdentifier:(id)a3 withState:(id)a4 withRestrictions:(id)a5;
+- (void)updateContextForIdentifier:(id)identifier withState:(id)state;
+- (void)updateContextForIdentifier:(id)identifier withState:(id)state withRestrictions:(id)restrictions;
 @end
 
 @implementation CSDaemon
@@ -155,20 +155,20 @@ void __15__CSDaemon_run__block_invoke()
   [v0 _start];
 }
 
-- (void)updateContextForIdentifier:(id)a3 withState:(id)a4
+- (void)updateContextForIdentifier:(id)identifier withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  stateCopy = state;
   mainQueue = self->_mainQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__CSDaemon_updateContextForIdentifier_withState___block_invoke;
   block[3] = &unk_278DF5398;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = stateCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = stateCopy;
   dispatch_async(mainQueue, block);
 }
 
@@ -178,23 +178,23 @@ void __49__CSDaemon_updateContextForIdentifier_withState___block_invoke(uint64_t
   [v2 updateState:*(a1 + 40) forIdentifier:*(a1 + 48)];
 }
 
-- (void)updateContextForIdentifier:(id)a3 withState:(id)a4 withRestrictions:(id)a5
+- (void)updateContextForIdentifier:(id)identifier withState:(id)state withRestrictions:(id)restrictions
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  stateCopy = state;
+  restrictionsCopy = restrictions;
   mainQueue = self->_mainQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __66__CSDaemon_updateContextForIdentifier_withState_withRestrictions___block_invoke;
   v15[3] = &unk_278DF53E8;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = stateCopy;
+  v17 = identifierCopy;
+  v18 = restrictionsCopy;
+  v12 = restrictionsCopy;
+  v13 = identifierCopy;
+  v14 = stateCopy;
   dispatch_async(mainQueue, v15);
 }
 
@@ -232,11 +232,11 @@ void __66__CSDaemon_updateContextForIdentifier_withState_withRestrictions___bloc
   [(CSDaemon *)self updateContextForIdentifier:@"PluggedIn" withState:v6];
 }
 
-- (void)handleDisplayStateChanged:(unint64_t)a3
+- (void)handleDisplayStateChanged:(unint64_t)changed
 {
   v5 = +[CSLogger defaultCategory];
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
-  if (a3)
+  if (changed)
   {
     if (v6)
     {

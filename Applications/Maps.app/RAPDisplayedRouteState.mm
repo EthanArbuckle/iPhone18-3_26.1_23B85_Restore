@@ -1,29 +1,29 @@
 @interface RAPDisplayedRouteState
-- (RAPDisplayedRouteState)initWithStartWaypointTitle:(id)a3 endWaypointTitle:(id)a4 transportType:(int)a5 composedRoute:(id)a6;
+- (RAPDisplayedRouteState)initWithStartWaypointTitle:(id)title endWaypointTitle:(id)waypointTitle transportType:(int)type composedRoute:(id)route;
 @end
 
 @implementation RAPDisplayedRouteState
 
-- (RAPDisplayedRouteState)initWithStartWaypointTitle:(id)a3 endWaypointTitle:(id)a4 transportType:(int)a5 composedRoute:(id)a6
+- (RAPDisplayedRouteState)initWithStartWaypointTitle:(id)title endWaypointTitle:(id)waypointTitle transportType:(int)type composedRoute:(id)route
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  titleCopy = title;
+  waypointTitleCopy = waypointTitle;
+  routeCopy = route;
   v19.receiver = self;
   v19.super_class = RAPDisplayedRouteState;
   v13 = [(RAPDisplayedRouteState *)&v19 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [titleCopy copy];
     startWaypointTitle = v13->_startWaypointTitle;
     v13->_startWaypointTitle = v14;
 
-    v16 = [v11 copy];
+    v16 = [waypointTitleCopy copy];
     endWaypointTitle = v13->_endWaypointTitle;
     v13->_endWaypointTitle = v16;
 
-    v13->_transportType = a5;
-    objc_storeStrong(&v13->_composedRoute, a6);
+    v13->_transportType = type;
+    objc_storeStrong(&v13->_composedRoute, route);
   }
 
   return v13;

@@ -1,25 +1,25 @@
 @interface STStorageSpace
-- (STStorageSpace)initWithTotal:(int64_t)a3 free:(int64_t)a4 purgeable:(int64_t)a5;
+- (STStorageSpace)initWithTotal:(int64_t)total free:(int64_t)free purgeable:(int64_t)purgeable;
 @end
 
 @implementation STStorageSpace
 
-- (STStorageSpace)initWithTotal:(int64_t)a3 free:(int64_t)a4 purgeable:(int64_t)a5
+- (STStorageSpace)initWithTotal:(int64_t)total free:(int64_t)free purgeable:(int64_t)purgeable
 {
   v12.receiver = self;
   v12.super_class = STStorageSpace;
   result = [(STStorageSpace *)&v12 init];
   if (result)
   {
-    result->_totalBytes = a3;
-    result->_freeBytes = a4;
-    v9 = a5 + a4;
-    result->_purgeableBytes = a5;
-    result->_usedBytes = a3 - (a5 + a4);
-    result->_availableBytes = a5 + a4;
-    if (a3 >= 0x3B9ACA001)
+    result->_totalBytes = total;
+    result->_freeBytes = free;
+    v9 = purgeable + free;
+    result->_purgeableBytes = purgeable;
+    result->_usedBytes = total - (purgeable + free);
+    result->_availableBytes = purgeable + free;
+    if (total >= 0x3B9ACA001)
     {
-      if (a3 > 0x773594000)
+      if (total > 0x773594000)
       {
         v11 = 3000000000;
       }

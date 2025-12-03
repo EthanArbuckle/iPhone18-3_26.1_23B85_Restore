@@ -1,31 +1,31 @@
 @interface NSCoreTypesetter
 + (BOOL)_allowsFontOverridingTextAttachmentVerticalMetricsForStringDrawing;
 + (BOOL)resolvesIndentationWritingDirectionWithBaseWritingDirection;
-+ (void)_lineMetricsForAttributes:(id)a3 typesetterBehavior:(int64_t)a4 usesFontLeading:(BOOL)a5 applySpacings:(BOOL)a6 usesSystemFontLeading:(BOOL)a7 usesNegativeFontLeading:(BOOL)a8 layoutOrientation:(int64_t)a9 lineHeight:(double *)a10 baselineOffset:(double *)a11 spacing:(double *)a12;
-+ (void)_maximumAscentAndDescentForRuns:(__CFArray *)a3 ascender:(double *)a4 descender:(double *)a5;
-+ (void)_minMaxPositionsForLineFragmentWithParagraphStyle:(id)a3 baseWidth:(double)a4 writingDirection:(int64_t)a5 isBeginningOfParagraph:(BOOL)a6 minPosition:(double *)a7 maxPosition:(double *)a8;
-- ($1AB5FA073B851C12C2339EC22442E995)_getLineMetricsForRange:(_NSRange)a3 attributes:(id)a4 attributedString:(id)a5 applySpacing:(BOOL)a6 usesSystemFontLeading:(BOOL)a7 usesNegativeFontLeading:(BOOL)a8;
-- ($F08F7EC4C389A89376F473094BC6C9F8)_forcedLineBreakAfterIndex:(SEL)a3;
++ (void)_lineMetricsForAttributes:(id)attributes typesetterBehavior:(int64_t)behavior usesFontLeading:(BOOL)leading applySpacings:(BOOL)spacings usesSystemFontLeading:(BOOL)fontLeading usesNegativeFontLeading:(BOOL)negativeFontLeading layoutOrientation:(int64_t)orientation lineHeight:(double *)self0 baselineOffset:(double *)self1 spacing:(double *)self2;
++ (void)_maximumAscentAndDescentForRuns:(__CFArray *)runs ascender:(double *)ascender descender:(double *)descender;
++ (void)_minMaxPositionsForLineFragmentWithParagraphStyle:(id)style baseWidth:(double)width writingDirection:(int64_t)direction isBeginningOfParagraph:(BOOL)paragraph minPosition:(double *)position maxPosition:(double *)maxPosition;
+- ($1AB5FA073B851C12C2339EC22442E995)_getLineMetricsForRange:(_NSRange)range attributes:(id)attributes attributedString:(id)string applySpacing:(BOOL)spacing usesSystemFontLeading:(BOOL)leading usesNegativeFontLeading:(BOOL)fontLeading;
+- ($F08F7EC4C389A89376F473094BC6C9F8)_forcedLineBreakAfterIndex:(SEL)index;
 - (BOOL)_shouldShowLineBadges;
-- (BOOL)isSimpleRectangularTextContainerForStartingCharacterAtIndex:(int64_t)a3;
-- (CGRect)_stringDrawingCoreTextEngineWithOriginalString:(id)a3 rect:(CGRect)a4 padding:(double)a5 graphicsContext:(id)a6 forceClipping:(BOOL)a7 attributes:(id)a8 stringDrawingOptions:(int64_t)a9 drawingContext:(id)a10 stringDrawingInterface:(id *)a11;
-- (CGRect)lineFragmentRectForProposedRect:(CGRect)a3 atIndex:(int64_t)a4 writingDirection:(int64_t)a5 remainingRect:(CGRect *)a6;
+- (BOOL)isSimpleRectangularTextContainerForStartingCharacterAtIndex:(int64_t)index;
+- (CGRect)_stringDrawingCoreTextEngineWithOriginalString:(id)string rect:(CGRect)rect padding:(double)padding graphicsContext:(id)context forceClipping:(BOOL)clipping attributes:(id)attributes stringDrawingOptions:(int64_t)options drawingContext:(id)self0 stringDrawingInterface:(id *)self1;
+- (CGRect)lineFragmentRectForProposedRect:(CGRect)rect atIndex:(int64_t)index writingDirection:(int64_t)direction remainingRect:(CGRect *)remainingRect;
 - (CGSize)textContainerSize;
 - (NSCoreTypesetter)init;
 - (NSCoreTypesetterDelegate)delegate;
 - (_NSRange)characterRange;
-- (__CTLine)_createLayoutLineFragmentStartingWithCharacterIndex:(int64_t *)a3 proposedLineFragmentRect:(CGRect *)a4 baseLineRef:(const __CTLine *)a5 range:(_NSRange)a6 paragraphStyle:(id)a7 paragraphArbitrator:(id)a8 lineBreakMode:(int64_t)a9 hasAttachments:(BOOL)a10 lineFragmentRect:(CGRect *)a11 glyphOrigin:(CGPoint *)a12 hyphenated:(BOOL *)a13 forcedClusterBreak:(BOOL *)a14;
-- (__CTLine)_createLineRefForParentLineRef:(const __CTLine *)a3 range:(_NSRange)a4 availableWidth:(double)a5 offset:(double)a6 paragraphArbitrator:(id)a7 lineBreakMode:(int64_t)a8 hyphenated:(BOOL *)a9 forcedClusterBreak:(BOOL *)a10;
-- (__CTRun)_truncationTokenRunRefWithContext:(id *)a3 token:(id)a4 attributes:(id)a5;
-- (id)_paragraphStyleFromAttributes:(id)a3;
-- (id)_truncationTokenForRange:(_NSRange *)a3 attributes:(id)a4 originalLineRef:(__CTLine *)a5;
-- (int)_NSFastDrawString:(id)a3 length:(unint64_t)a4 attributes:(id)a5 paragraphStyle:(id)a6 typesetterBehavior:(int64_t)a7 lineBreakMode:(int64_t)a8 rect:(CGRect)a9 padding:(double)a10 graphicsContext:(id)a11 baselineRendering:(BOOL)a12 usesFontLeading:(BOOL)a13 usesScreenFont:(BOOL)a14 scrollable:(BOOL)a15 syncAlignment:(BOOL)a16 mirrored:(BOOL)a17 boundingRectPointer:(CGRect *)a18 baselineOffsetPointer:(double *)a19 drawingContext:(id)a20;
+- (__CTLine)_createLayoutLineFragmentStartingWithCharacterIndex:(int64_t *)index proposedLineFragmentRect:(CGRect *)rect baseLineRef:(const __CTLine *)ref range:(_NSRange)range paragraphStyle:(id)style paragraphArbitrator:(id)arbitrator lineBreakMode:(int64_t)mode hasAttachments:(BOOL)self0 lineFragmentRect:(CGRect *)self1 glyphOrigin:(CGPoint *)self2 hyphenated:(BOOL *)self3 forcedClusterBreak:(BOOL *)self4;
+- (__CTLine)_createLineRefForParentLineRef:(const __CTLine *)ref range:(_NSRange)range availableWidth:(double)width offset:(double)offset paragraphArbitrator:(id)arbitrator lineBreakMode:(int64_t)mode hyphenated:(BOOL *)hyphenated forcedClusterBreak:(BOOL *)self0;
+- (__CTRun)_truncationTokenRunRefWithContext:(id *)context token:(id)token attributes:(id)attributes;
+- (id)_paragraphStyleFromAttributes:(id)attributes;
+- (id)_truncationTokenForRange:(_NSRange *)range attributes:(id)attributes originalLineRef:(__CTLine *)ref;
+- (int)_NSFastDrawString:(id)string length:(unint64_t)length attributes:(id)attributes paragraphStyle:(id)style typesetterBehavior:(int64_t)behavior lineBreakMode:(int64_t)mode rect:(CGRect)rect padding:(double)self0 graphicsContext:(id)self1 baselineRendering:(BOOL)self2 usesFontLeading:(BOOL)self3 usesScreenFont:(BOOL)self4 scrollable:(BOOL)self5 syncAlignment:(BOOL)self6 mirrored:(BOOL)self7 boundingRectPointer:(CGRect *)self8 baselineOffsetPointer:(double *)self9 drawingContext:(id)drawingContext;
 - (int64_t)_fallbackWritingDirection;
-- (int64_t)_getFirstOverflowTabStopIndexInLineRef:(__CTLine *)a3 range:(_NSRange)a4 string:(id)a5 paragraphStyle:(id)a6 availableWidth:(double)a7 offset:(double)a8;
-- (void)_updateBidiLevelsAndBaseWritingDirectionForAttributedString:(id)a3 paragraphRange:(_NSRange)a4;
+- (int64_t)_getFirstOverflowTabStopIndexInLineRef:(__CTLine *)ref range:(_NSRange)range string:(id)string paragraphStyle:(id)style availableWidth:(double)width offset:(double)offset;
+- (void)_updateBidiLevelsAndBaseWritingDirectionForAttributedString:(id)string paragraphRange:(_NSRange)range;
 - (void)dealloc;
-- (void)layoutWithYOrigin:(double)a3;
-- (void)setDelegate:(id)a3;
+- (void)layoutWithYOrigin:(double)origin;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation NSCoreTypesetter
@@ -95,9 +95,9 @@ uint64_t __86__NSCoreTypesetter__allowsFontOverridingTextAttachmentVerticalMetri
     return self->_fallbackBaseWritingDirection;
   }
 
-  v4 = [(NSTypesetter *)self applicationFrameworkContext];
+  applicationFrameworkContext = [(NSTypesetter *)self applicationFrameworkContext];
 
-  return [NSTextLayoutManager _fallbackBaseWritingDirectionForApplicationFrameworkContext:v4];
+  return [NSTextLayoutManager _fallbackBaseWritingDirectionForApplicationFrameworkContext:applicationFrameworkContext];
 }
 
 - (BOOL)_shouldShowLineBadges
@@ -137,23 +137,23 @@ uint64_t __41__NSCoreTypesetter__shouldShowLineBadges__block_invoke()
   return result;
 }
 
-+ (void)_minMaxPositionsForLineFragmentWithParagraphStyle:(id)a3 baseWidth:(double)a4 writingDirection:(int64_t)a5 isBeginningOfParagraph:(BOOL)a6 minPosition:(double *)a7 maxPosition:(double *)a8
++ (void)_minMaxPositionsForLineFragmentWithParagraphStyle:(id)style baseWidth:(double)width writingDirection:(int64_t)direction isBeginningOfParagraph:(BOOL)paragraph minPosition:(double *)position maxPosition:(double *)maxPosition
 {
-  v10 = a5;
-  if (a3)
+  directionCopy = direction;
+  if (style)
   {
-    if (a6)
+    if (paragraph)
     {
-      [a3 firstLineHeadIndent];
+      [style firstLineHeadIndent];
     }
 
     else
     {
-      [a3 headIndent];
+      [style headIndent];
     }
 
     v15 = v13;
-    [a3 tailIndent];
+    [style tailIndent];
     v14 = v16;
   }
 
@@ -163,23 +163,23 @@ uint64_t __41__NSCoreTypesetter__shouldShowLineBadges__block_invoke()
     v15 = 0.0;
   }
 
-  if (v10 == NSWritingDirectionNatural)
+  if (directionCopy == NSWritingDirectionNatural)
   {
-    v10 = [NSParagraphStyle defaultWritingDirectionForLanguage:0, a5, a6];
+    directionCopy = [NSParagraphStyle defaultWritingDirectionForLanguage:0, direction, paragraph];
   }
 
   v17 = 0.0;
-  if (a4 >= 0.0)
+  if (width >= 0.0)
   {
-    v18 = a4;
+    widthCopy = width;
   }
 
   else
   {
-    v18 = 0.0;
+    widthCopy = 0.0;
   }
 
-  v19 = v18 + v14;
+  v19 = widthCopy + v14;
   if (v14 > 0.0)
   {
     v19 = v14;
@@ -187,13 +187,13 @@ uint64_t __41__NSCoreTypesetter__shouldShowLineBadges__block_invoke()
 
   if (v19 <= v15)
   {
-    v19 = v18;
+    v19 = widthCopy;
   }
 
-  v20 = v18 - v19;
-  if (v10 == NSWritingDirectionRightToLeft)
+  v20 = widthCopy - v19;
+  if (directionCopy == NSWritingDirectionRightToLeft)
   {
-    v19 = v18 - v15;
+    v19 = widthCopy - v15;
   }
 
   else
@@ -206,9 +206,9 @@ uint64_t __41__NSCoreTypesetter__shouldShowLineBadges__block_invoke()
     v19 = 0.0;
   }
 
-  if (v19 < v18)
+  if (v19 < widthCopy)
   {
-    v18 = v19;
+    widthCopy = v19;
   }
 
   if (v20 >= 0.0)
@@ -216,20 +216,20 @@ uint64_t __41__NSCoreTypesetter__shouldShowLineBadges__block_invoke()
     v17 = v20;
   }
 
-  if (v17 >= v18)
+  if (v17 >= widthCopy)
   {
-    v17 = v18;
+    v17 = widthCopy;
   }
 
-  *a7 = v17;
-  *a8 = v18;
+  *position = v17;
+  *maxPosition = widthCopy;
 }
 
-- (id)_truncationTokenForRange:(_NSRange *)a3 attributes:(id)a4 originalLineRef:(__CTLine *)a5
+- (id)_truncationTokenForRange:(_NSRange *)range attributes:(id)attributes originalLineRef:(__CTLine *)ref
 {
   if (self->_delegateSupportsTextContainer)
   {
-    return [(NSCoreTypesetterDelegateInternal *)self->_delegate coreTypesetter:self attributedStringForTruncatedCharacterRange:a3 attributes:a4 originalLineRef:a5];
+    return [(NSCoreTypesetterDelegateInternal *)self->_delegate coreTypesetter:self attributedStringForTruncatedCharacterRange:range attributes:attributes originalLineRef:ref];
   }
 
   else
@@ -238,30 +238,30 @@ uint64_t __41__NSCoreTypesetter__shouldShowLineBadges__block_invoke()
   }
 }
 
-- (__CTRun)_truncationTokenRunRefWithContext:(id *)a3 token:(id)a4 attributes:(id)a5
+- (__CTRun)_truncationTokenRunRefWithContext:(id *)context token:(id)token attributes:(id)attributes
 {
-  var2 = a3->var2;
+  var2 = context->var2;
   if (var2)
   {
-    if (a3->var0 == a4)
+    if (context->var0 == token)
     {
       return var2;
     }
 
-    if ([a3->var0 isEqualToAttributedString:a4])
+    if ([context->var0 isEqualToAttributedString:token])
     {
-      return a3->var2;
+      return context->var2;
     }
   }
 
-  if (a4)
+  if (token)
   {
-    BaseLineFromAttributedString = __NSCoreTypesetterCreateBaseLineFromAttributedString(a4, 0, [a4 length], -[NSCoreTypesetter layoutOrientation](self, "layoutOrientation"), -[NSCoreTypesetter limitsLayoutForSuspiciousContents](self, "limitsLayoutForSuspiciousContents"), 0, 0, -1);
+    BaseLineFromAttributedString = __NSCoreTypesetterCreateBaseLineFromAttributedString(token, 0, [token length], -[NSCoreTypesetter layoutOrientation](self, "layoutOrientation"), -[NSCoreTypesetter limitsLayoutForSuspiciousContents](self, "limitsLayoutForSuspiciousContents"), 0, 0, -1);
   }
 
   else
   {
-    if ([a5 objectForKeyedSubscript:@"NSFont"])
+    if ([attributes objectForKeyedSubscript:@"NSFont"])
     {
       CTFontIsVertical();
     }
@@ -277,19 +277,19 @@ uint64_t __41__NSCoreTypesetter__shouldShowLineBadges__block_invoke()
     if (Count)
     {
       v14 = Count;
-      v15 = [a4 attributesAtIndex:0 effectiveRange:0];
+      v15 = [token attributesAtIndex:0 effectiveRange:0];
       ValueAtIndex = CFArrayGetValueAtIndex(GlyphRuns, 0);
       var2 = CFRetain(ValueAtIndex);
-      if (a4 && (v14 != 1 || [v15 objectForKeyedSubscript:@"NSAttachment"]))
+      if (token && (v14 != 1 || [v15 objectForKeyedSubscript:@"NSAttachment"]))
       {
         v17 = [v15 mutableCopy];
-        v18 = [[_NSTruncationTokenAttachment alloc] initWithAttributedString:a4 lineRef:0];
+        v18 = [[_NSTruncationTokenAttachment alloc] initWithAttributedString:token lineRef:0];
         v19 = *MEMORY[0x1E6965A50];
-        v20 = [(_NSTruncationTokenAttachment *)v18 runDelegate];
-        CFDictionarySetValue(v17, v19, v20);
+        runDelegate = [(_NSTruncationTokenAttachment *)v18 runDelegate];
+        CFDictionarySetValue(v17, v19, runDelegate);
         v21 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithAttachment:v18 attributes:v17];
         CFRelease(v11);
-        v11 = __NSCoreTypesetterCreateBaseLineFromAttributedString(v21, 0, [a4 length], -[NSCoreTypesetter layoutOrientation](self, "layoutOrientation"), -[NSCoreTypesetter limitsLayoutForSuspiciousContents](self, "limitsLayoutForSuspiciousContents"), 0, 0, -1);
+        v11 = __NSCoreTypesetterCreateBaseLineFromAttributedString(v21, 0, [token length], -[NSCoreTypesetter layoutOrientation](self, "layoutOrientation"), -[NSCoreTypesetter limitsLayoutForSuspiciousContents](self, "limitsLayoutForSuspiciousContents"), 0, 0, -1);
         v22 = CTLineGetGlyphRuns(v11);
         CFRelease(var2);
         v23 = CFArrayGetValueAtIndex(v22, 0);
@@ -313,20 +313,20 @@ LABEL_19:
   var2 = 0;
   v18 = 0;
 LABEL_20:
-  if (a3->var0 != a4)
+  if (context->var0 != token)
   {
 
-    a3->var0 = a4;
+    context->var0 = token;
   }
 
-  a3->var1 = v18;
-  v24 = a3->var2;
+  context->var1 = v18;
+  v24 = context->var2;
   if (v24)
   {
     CFRelease(v24);
   }
 
-  a3->var2 = var2;
+  context->var2 = var2;
   return var2;
 }
 
@@ -357,12 +357,12 @@ uint64_t __79__NSCoreTypesetter_resolvesIndentationWritingDirectionWithBaseWriti
   return result;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   objc_sync_enter(self);
-  if (self->_delegate != a3)
+  if (self->_delegate != delegate)
   {
-    self->_delegate = a3;
+    self->_delegate = delegate;
     if (objc_opt_respondsToSelector())
     {
       v5 = objc_opt_respondsToSelector();
@@ -381,7 +381,7 @@ uint64_t __79__NSCoreTypesetter_resolvesIndentationWritingDirectionWithBaseWriti
   objc_sync_exit(self);
 }
 
-- (void)layoutWithYOrigin:(double)a3
+- (void)layoutWithYOrigin:(double)origin
 {
   [(NSTypesetter *)self lineFragmentPadding];
   v7 = v6;
@@ -391,12 +391,12 @@ uint64_t __79__NSCoreTypesetter_resolvesIndentationWritingDirectionWithBaseWriti
   v11 = v10;
   [(NSMutableArray *)self->_truncatedRanges removeAllObjects];
   v12 = 0.0;
-  if (a3 <= 0.0 || v11 <= 0.0 || (v11 = v11 - a3, v12 = a3, v11 > 0.0))
+  if (origin <= 0.0 || v11 <= 0.0 || (v11 = v11 - origin, v12 = origin, v11 > 0.0))
   {
-    v13 = [(NSCoreTypesetter *)self characterRange];
+    characterRange = [(NSCoreTypesetter *)self characterRange];
     v15 = v14;
-    v16 = [(NSTypesetter *)self attributedString];
-    v17 = [(NSAttributedString *)v16 attributedSubstringFromRange:v13, v15];
+    attributedString = [(NSTypesetter *)self attributedString];
+    v17 = [(NSAttributedString *)attributedString attributedSubstringFromRange:characterRange, v15];
     if ([(NSTypesetter *)self usesFontLeading])
     {
       v18 = 3;
@@ -411,11 +411,11 @@ uint64_t __79__NSCoreTypesetter_resolvesIndentationWritingDirectionWithBaseWriti
     [(NSStringDrawingContext *)v19 setActiveRenderers:3];
     [(NSStringDrawingContext *)v19 setMaximumNumberOfLines:[(NSCoreTypesetter *)self maximumNumberOfLines]];
     v55[0] = 0;
-    v20 = [(NSAttributedString *)v17 string];
-    v21 = v20;
-    if (v20)
+    string = [(NSAttributedString *)v17 string];
+    v21 = string;
+    if (string)
     {
-      Length = CFStringGetLength(v20);
+      Length = CFStringGetLength(string);
     }
 
     else
@@ -427,7 +427,7 @@ uint64_t __79__NSCoreTypesetter_resolvesIndentationWritingDirectionWithBaseWriti
     v24 = __NSUltraFastLineBreakFinder(v21, Length, v55 + 1, v55);
     CTSwapLineBreakEpsilon();
     lineFragmentOriginYOffset = self->_lineFragmentOriginYOffset;
-    self->_lineFragmentOriginYOffset = a3;
+    self->_lineFragmentOriginYOffset = origin;
     if (Length > 1 || v24 >= 1)
     {
       [(NSCoreTypesetter *)self _stringDrawingCoreTextEngineWithOriginalString:v17 rect:0 padding:0 graphicsContext:0 forceClipping:v18 attributes:v19 stringDrawingOptions:0.0 drawingContext:v12 stringDrawingInterface:v23, v11, 0.0, 0];
@@ -445,7 +445,7 @@ uint64_t __79__NSCoreTypesetter_resolvesIndentationWritingDirectionWithBaseWriti
       v39[1] = 3221225472;
       v40 = __38__NSCoreTypesetter_layoutWithYOrigin___block_invoke;
       v41 = &unk_1E7267A80;
-      v42 = self;
+      selfCopy = self;
       v43 = v17;
       v44 = 0;
       v45 = v12;
@@ -456,7 +456,7 @@ uint64_t __79__NSCoreTypesetter_resolvesIndentationWritingDirectionWithBaseWriti
       v27 = v26;
       if (__38__NSCoreTypesetter_layoutWithYOrigin___block_invoke(v39, self, v26, &v51, &v53, &v50))
       {
-        v28 = [(NSTypesetter *)self applicationFrameworkContext];
+        applicationFrameworkContext = [(NSTypesetter *)self applicationFrameworkContext];
         v29 = v50;
         v56.origin.x = 0.0;
         v56.origin.y = v12;
@@ -470,7 +470,7 @@ uint64_t __79__NSCoreTypesetter_resolvesIndentationWritingDirectionWithBaseWriti
         v38[4] = self;
         v31 = *(&v51 + 1);
         v32 = *(&v52 + 1);
-        __NSCoreTypesetterProcessTextLineFragment(v16, &stru_1F01AD578, v27, v13, Length, v28, v38, v53, v54, *&v51, *(&v51 + 1), *&v52, *(&v52 + 1), v29, MaxX);
+        __NSCoreTypesetterProcessTextLineFragment(attributedString, &stru_1F01AD578, v27, characterRange, Length, applicationFrameworkContext, v38, v53, v54, *&v51, *(&v51 + 1), *&v52, *(&v52 + 1), v29, MaxX);
         if (self->_wantsExtraLineFragment && v24 < Length)
         {
           extraLineFragmentAttributes = self->__extraLineFragmentAttributes;
@@ -482,7 +482,7 @@ uint64_t __79__NSCoreTypesetter_resolvesIndentationWritingDirectionWithBaseWriti
           }
 
           *(&v51 + 1) = v31 + v32;
-          v34 = [(NSTypesetter *)self applicationFrameworkContext];
+          applicationFrameworkContext2 = [(NSTypesetter *)self applicationFrameworkContext];
           v35 = v50;
           v57.origin.x = 0.0;
           v57.origin.y = v12;
@@ -494,7 +494,7 @@ uint64_t __79__NSCoreTypesetter_resolvesIndentationWritingDirectionWithBaseWriti
           v37[2] = __38__NSCoreTypesetter_layoutWithYOrigin___block_invoke_3;
           v37[3] = &unk_1E7267AA8;
           v37[4] = self;
-          __NSCoreTypesetterProcessTextLineFragment(v16, &stru_1F01AD578, v27, Length + v13, 0, v34, v37, v53, v54, *&v51, *(&v51 + 1), *&v52, *(&v52 + 1), v35, v36);
+          __NSCoreTypesetterProcessTextLineFragment(attributedString, &stru_1F01AD578, v27, Length + characterRange, 0, applicationFrameworkContext2, v37, v53, v54, *&v51, *(&v51 + 1), *&v52, *(&v52 + 1), v35, v36);
         }
       }
     }
@@ -640,37 +640,37 @@ uint64_t __38__NSCoreTypesetter_layoutWithYOrigin___block_invoke_3(uint64_t a1, 
   return v3();
 }
 
-+ (void)_lineMetricsForAttributes:(id)a3 typesetterBehavior:(int64_t)a4 usesFontLeading:(BOOL)a5 applySpacings:(BOOL)a6 usesSystemFontLeading:(BOOL)a7 usesNegativeFontLeading:(BOOL)a8 layoutOrientation:(int64_t)a9 lineHeight:(double *)a10 baselineOffset:(double *)a11 spacing:(double *)a12
++ (void)_lineMetricsForAttributes:(id)attributes typesetterBehavior:(int64_t)behavior usesFontLeading:(BOOL)leading applySpacings:(BOOL)spacings usesSystemFontLeading:(BOOL)fontLeading usesNegativeFontLeading:(BOOL)negativeFontLeading layoutOrientation:(int64_t)orientation lineHeight:(double *)self0 baselineOffset:(double *)self1 spacing:(double *)self2
 {
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
+  fontLeadingCopy = fontLeading;
+  spacingsCopy = spacings;
+  leadingCopy = leading;
   v22 = objc_alloc_init(NSCoreTypesetter);
-  [(NSTypesetter *)v22 setTypesetterBehavior:a4];
-  [(NSTypesetter *)v22 setUsesFontLeading:v15];
-  [(NSCoreTypesetter *)v22 setLayoutOrientation:a9];
+  [(NSTypesetter *)v22 setTypesetterBehavior:behavior];
+  [(NSTypesetter *)v22 setUsesFontLeading:leadingCopy];
+  [(NSCoreTypesetter *)v22 setLayoutOrientation:orientation];
   [(NSCoreTypesetter *)v22 setAllowsFontSubstitutionAffectingVerticalMetrics:0];
-  LOBYTE(v21) = a8;
-  [(NSCoreTypesetter *)v22 _getLineMetricsForRange:0 attributes:0 attributedString:a3 applySpacing:0 usesSystemFontLeading:v14 usesNegativeFontLeading:v13, v21];
-  if (a10)
+  LOBYTE(v21) = negativeFontLeading;
+  [(NSCoreTypesetter *)v22 _getLineMetricsForRange:0 attributes:0 attributedString:attributes applySpacing:0 usesSystemFontLeading:spacingsCopy usesNegativeFontLeading:fontLeadingCopy, v21];
+  if (height)
   {
-    *a10 = v18;
+    *height = v18;
   }
 
-  if (a11)
+  if (offset)
   {
-    *a11 = v19;
+    *offset = v19;
   }
 
-  if (a12)
+  if (spacing)
   {
-    *a12 = v20;
+    *spacing = v20;
   }
 }
 
-+ (void)_maximumAscentAndDescentForRuns:(__CFArray *)a3 ascender:(double *)a4 descender:(double *)a5
++ (void)_maximumAscentAndDescentForRuns:(__CFArray *)runs ascender:(double *)ascender descender:(double *)descender
 {
-  Count = CFArrayGetCount(a3);
+  Count = CFArrayGetCount(runs);
   if (Count)
   {
     v9 = Count;
@@ -679,7 +679,7 @@ uint64_t __38__NSCoreTypesetter_layoutWithYOrigin___block_invoke_3(uint64_t a1, 
     v12 = 0.0;
     do
     {
-      if (!CFArrayGetValueAtIndex(a3, v10) || (Font = CTRunGetFont()) == 0)
+      if (!CFArrayGetValueAtIndex(runs, v10) || (Font = CTRunGetFont()) == 0)
       {
         Font = NSDefaultFont();
       }
@@ -707,21 +707,21 @@ uint64_t __38__NSCoreTypesetter_layoutWithYOrigin___block_invoke_3(uint64_t a1, 
     v11 = 0.0;
   }
 
-  *a4 = ceil(v12);
-  *a5 = floor(v11);
+  *ascender = ceil(v12);
+  *descender = floor(v11);
 }
 
-- ($1AB5FA073B851C12C2339EC22442E995)_getLineMetricsForRange:(_NSRange)a3 attributes:(id)a4 attributedString:(id)a5 applySpacing:(BOOL)a6 usesSystemFontLeading:(BOOL)a7 usesNegativeFontLeading:(BOOL)a8
+- ($1AB5FA073B851C12C2339EC22442E995)_getLineMetricsForRange:(_NSRange)range attributes:(id)attributes attributedString:(id)string applySpacing:(BOOL)spacing usesSystemFontLeading:(BOOL)leading usesNegativeFontLeading:(BOOL)fontLeading
 {
-  v38 = a6;
-  length = a3.length;
-  v43 = a3.location;
-  v9 = [(NSTypesetter *)self usesFontLeading];
-  v10 = [(NSCoreTypesetter *)self layoutOrientation];
-  v11 = [(NSCoreTypesetter *)self allowsFontSubstitutionAffectingVerticalMetrics];
-  v12 = [(NSCoreTypesetter *)self allowsFontOverridingTextAttachmentVerticalMetrics];
-  v40 = [(NSTypesetter *)self typesetterBehavior];
-  v13 = v10 == 1;
+  spacingCopy = spacing;
+  length = range.length;
+  v43 = range.location;
+  usesFontLeading = [(NSTypesetter *)self usesFontLeading];
+  layoutOrientation = [(NSCoreTypesetter *)self layoutOrientation];
+  allowsFontSubstitutionAffectingVerticalMetrics = [(NSCoreTypesetter *)self allowsFontSubstitutionAffectingVerticalMetrics];
+  allowsFontOverridingTextAttachmentVerticalMetrics = [(NSCoreTypesetter *)self allowsFontOverridingTextAttachmentVerticalMetrics];
+  typesetterBehavior = [(NSTypesetter *)self typesetterBehavior];
+  v13 = layoutOrientation == 1;
   v74 = 0;
   v75 = &v74;
   v76 = 0x3052000000;
@@ -755,29 +755,29 @@ uint64_t __38__NSCoreTypesetter_layoutWithYOrigin___block_invoke_3(uint64_t a1, 
   v46[1] = 3221225472;
   v47 = __131__NSCoreTypesetter__getLineMetricsForRange_attributes_attributedString_applySpacing_usesSystemFontLeading_usesNegativeFontLeading___block_invoke;
   v48 = &unk_1E7267AD0;
-  v54 = v12;
-  v55 = v11;
+  v54 = allowsFontOverridingTextAttachmentVerticalMetrics;
+  v55 = allowsFontSubstitutionAffectingVerticalMetrics;
   v53[1] = v14;
   v49 = &v74;
   objc_copyWeak(v53, &location);
-  v56 = !v9;
-  v57 = a7;
+  v56 = !usesFontLeading;
+  leadingCopy = leading;
   v58 = v13;
-  v59 = a8;
-  v60 = v9;
+  fontLeadingCopy = fontLeading;
+  v60 = usesFontLeading;
   v50 = &v66;
   v51 = &v70;
-  v53[2] = v40;
+  v53[2] = typesetterBehavior;
   v52 = &v62;
-  if (!a4 && length && v43 + length <= [a5 length])
+  if (!attributes && length && v43 + length <= [string length])
   {
-    [a5 enumerateAttributesInRange:v43 options:length usingBlock:{0x100000, v46}];
+    [string enumerateAttributesInRange:v43 options:length usingBlock:{0x100000, v46}];
   }
 
   else
   {
     v45 = 0;
-    (v47)(v46, a4, v43, length, &v45);
+    (v47)(v46, attributes, v43, length, &v45);
   }
 
   v15 = v71[3];
@@ -794,7 +794,7 @@ uint64_t __38__NSCoreTypesetter_layoutWithYOrigin___block_invoke_3(uint64_t a1, 
     [v75[5] maximumLineHeight];
     v25 = v24;
     v17 = v75;
-    if (v38)
+    if (spacingCopy)
     {
       [v75[5] lineSpacing];
       v19 = v26;
@@ -814,8 +814,8 @@ uint64_t __38__NSCoreTypesetter_layoutWithYOrigin___block_invoke_3(uint64_t a1, 
   {
     [v75[5] baselineInterval];
     v29 = v28;
-    v30 = [v75[5] baselineIntervalType];
-    switch(v30)
+    baselineIntervalType = [v75[5] baselineIntervalType];
+    switch(baselineIntervalType)
     {
       case 1:
         v27 = v27 * v29;
@@ -829,7 +829,7 @@ uint64_t __38__NSCoreTypesetter_layoutWithYOrigin___block_invoke_3(uint64_t a1, 
     }
 
     v32 = 0.0;
-    if (v9)
+    if (usesFontLeading)
     {
       v32 = v63[3];
     }
@@ -879,7 +879,7 @@ uint64_t __38__NSCoreTypesetter_layoutWithYOrigin___block_invoke_3(uint64_t a1, 
       }
     }
 
-    if (!v9)
+    if (!usesFontLeading)
     {
       if (v32 >= v19)
       {
@@ -1053,9 +1053,9 @@ LABEL_10:
   return result;
 }
 
-- (id)_paragraphStyleFromAttributes:(id)a3
+- (id)_paragraphStyleFromAttributes:(id)attributes
 {
-  result = [a3 objectForKeyedSubscript:@"NSParagraphStyle"];
+  result = [attributes objectForKeyedSubscript:@"NSParagraphStyle"];
   if (!result)
   {
 
@@ -1065,23 +1065,23 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)lineFragmentRectForProposedRect:(CGRect)a3 atIndex:(int64_t)a4 writingDirection:(int64_t)a5 remainingRect:(CGRect *)a6
+- (CGRect)lineFragmentRectForProposedRect:(CGRect)rect atIndex:(int64_t)index writingDirection:(int64_t)direction remainingRect:(CGRect *)remainingRect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  x = a3.origin.x;
-  v11 = a3.origin.y + self->_lineFragmentOriginYOffset;
+  height = rect.size.height;
+  width = rect.size.width;
+  x = rect.origin.x;
+  v11 = rect.origin.y + self->_lineFragmentOriginYOffset;
   if (self->_delegateSupportsTextContainer)
   {
     v12 = *(MEMORY[0x1E695F058] + 16);
     v29 = *MEMORY[0x1E695F058];
     v30 = v12;
-    [(NSCoreTypesetterDelegateInternal *)self->_delegate coreTypesetter:self lineFragmentRectForProposedRect:a4 atIndex:a5 writingDirection:&v29 remainingRect:a3.origin.x, v11, a3.size.width, a3.size.height];
+    [(NSCoreTypesetterDelegateInternal *)self->_delegate coreTypesetter:self lineFragmentRectForProposedRect:index atIndex:direction writingDirection:&v29 remainingRect:rect.origin.x, v11, rect.size.width, rect.size.height];
     x = v13;
     v11 = v14;
     width = v15;
     height = v16;
-    if (!a6)
+    if (!remainingRect)
     {
       goto LABEL_16;
     }
@@ -1097,7 +1097,7 @@ LABEL_10:
     goto LABEL_15;
   }
 
-  [(NSCoreTypesetter *)self textContainerSize:a4];
+  [(NSCoreTypesetter *)self textContainerSize:index];
   v22 = v21;
   if (v20 > 0.0)
   {
@@ -1132,13 +1132,13 @@ LABEL_10:
     }
   }
 
-  if (a6)
+  if (remainingRect)
   {
     v18 = *MEMORY[0x1E695F058];
     v19 = *(MEMORY[0x1E695F058] + 16);
 LABEL_15:
-    a6->origin = v18;
-    a6->size = v19;
+    remainingRect->origin = v18;
+    remainingRect->size = v19;
   }
 
 LABEL_16:
@@ -1159,7 +1159,7 @@ LABEL_16:
   return result;
 }
 
-- (BOOL)isSimpleRectangularTextContainerForStartingCharacterAtIndex:(int64_t)a3
+- (BOOL)isSimpleRectangularTextContainerForStartingCharacterAtIndex:(int64_t)index
 {
   if (isSimpleRectangularTextContainerForStartingCharacterAtIndex__onceToken != -1)
   {
@@ -1173,7 +1173,7 @@ LABEL_16:
 
   delegate = self->_delegate;
 
-  return [(NSCoreTypesetterDelegateInternal *)delegate coreTypesetter:self isSimpleRectangularTextContainerForStartingCharacterAtIndex:a3];
+  return [(NSCoreTypesetterDelegateInternal *)delegate coreTypesetter:self isSimpleRectangularTextContainerForStartingCharacterAtIndex:index];
 }
 
 uint64_t __80__NSCoreTypesetter_isSimpleRectangularTextContainerForStartingCharacterAtIndex___block_invoke()
@@ -1207,11 +1207,11 @@ uint64_t __273__NSCoreTypesetter__NSFastDrawString_length_attributes_paragraphSt
   return v3();
 }
 
-- (int64_t)_getFirstOverflowTabStopIndexInLineRef:(__CTLine *)a3 range:(_NSRange)a4 string:(id)a5 paragraphStyle:(id)a6 availableWidth:(double)a7 offset:(double)a8
+- (int64_t)_getFirstOverflowTabStopIndexInLineRef:(__CTLine *)ref range:(_NSRange)range string:(id)string paragraphStyle:(id)style availableWidth:(double)width offset:(double)offset
 {
-  if (a3)
+  if (ref)
   {
-    length = CTLineGetStringRange(a3).length;
+    length = CTLineGetStringRange(ref).length;
   }
 
   else
@@ -1219,19 +1219,19 @@ uint64_t __273__NSCoreTypesetter__NSFastDrawString_length_attributes_paragraphSt
     length = 0;
   }
 
-  if (a7 <= 0.0 || length < 1)
+  if (width <= 0.0 || length < 1)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (!a6)
+  if (!style)
   {
-    a6 = [(NSTypesetter *)self defaultParagraphStyle];
+    style = [(NSTypesetter *)self defaultParagraphStyle];
   }
 
-  [a6 defaultTabInterval];
-  v15 = v14 == 0.0 ? 0 : [a6 tabStops];
-  TypographicBounds = CTLineGetTypographicBounds(a3, 0, 0, 0);
+  [style defaultTabInterval];
+  v15 = v14 == 0.0 ? 0 : [style tabStops];
+  TypographicBounds = CTLineGetTypographicBounds(ref, 0, 0, 0);
   [objc_msgSend(v15 "lastObject")];
   if (TypographicBounds < v17)
   {
@@ -1247,7 +1247,7 @@ uint64_t __273__NSCoreTypesetter__NSFastDrawString_length_attributes_paragraphSt
   return result;
 }
 
-- ($F08F7EC4C389A89376F473094BC6C9F8)_forcedLineBreakAfterIndex:(SEL)a3
+- ($F08F7EC4C389A89376F473094BC6C9F8)_forcedLineBreakAfterIndex:(SEL)index
 {
   v18 = *MEMORY[0x1E69E9840];
   if (![(NSCoreTypesetter *)self forcedLineBreaks])
@@ -1259,8 +1259,8 @@ uint64_t __273__NSCoreTypesetter__NSFastDrawString_length_attributes_paragraphSt
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [(NSCoreTypesetter *)self forcedLineBreaks];
-  result = [(NSArray *)v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  forcedLineBreaks = [(NSCoreTypesetter *)self forcedLineBreaks];
+  result = [(NSArray *)forcedLineBreaks countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (result)
   {
     v9 = result;
@@ -1271,7 +1271,7 @@ LABEL_4:
     {
       if (*v14 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(forcedLineBreaks);
       }
 
       v12 = *(*(&v13 + 1) + 8 * v11);
@@ -1289,7 +1289,7 @@ LABEL_4:
 
       if (v9 == ++v11)
       {
-        result = [(NSArray *)v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        result = [(NSArray *)forcedLineBreaks countByEnumeratingWithState:&v13 objects:v17 count:16];
         v9 = result;
         if (result)
         {
@@ -1311,11 +1311,11 @@ LABEL_11:
   return result;
 }
 
-- (__CTLine)_createLineRefForParentLineRef:(const __CTLine *)a3 range:(_NSRange)a4 availableWidth:(double)a5 offset:(double)a6 paragraphArbitrator:(id)a7 lineBreakMode:(int64_t)a8 hyphenated:(BOOL *)a9 forcedClusterBreak:(BOOL *)a10
+- (__CTLine)_createLineRefForParentLineRef:(const __CTLine *)ref range:(_NSRange)range availableWidth:(double)width offset:(double)offset paragraphArbitrator:(id)arbitrator lineBreakMode:(int64_t)mode hyphenated:(BOOL *)hyphenated forcedClusterBreak:(BOOL *)self0
 {
-  length = a4.length;
-  location = a4.location;
-  v27 = a4.length;
+  length = range.length;
+  location = range.location;
+  v27 = range.length;
   if ([(NSCoreTypesetter *)self forcedLineBreaks])
   {
     if (self)
@@ -1337,11 +1337,11 @@ LABEL_11:
     v20 = 0;
   }
 
-  else if (a7)
+  else if (arbitrator)
   {
     v16 = CTLineSuggestClusterBreakWithTabOverflow();
     v17 = v16;
-    if (a8 == 1 || !v16 || (v18 = v27, v16 + location >= location + v27))
+    if (mode == 1 || !v16 || (v18 = v27, v16 + location >= location + v27))
     {
       v20 = v16;
       v18 = v16;
@@ -1349,11 +1349,11 @@ LABEL_11:
 
     else
     {
-      v19 = [a7 adjustedLineBreakIndexForProposedIndex:?];
+      v19 = [arbitrator adjustedLineBreakIndexForProposedIndex:?];
       if (v19 <= location + v27)
       {
         v20 = v19;
-        [a7 lineBreakContextBeforeIndex:v19 lineFragmentWidth:location range:{v27, a5}];
+        [arbitrator lineBreakContextBeforeIndex:v19 lineFragmentWidth:location range:{v27, width}];
         v18 = -location;
         v17 = 0;
       }
@@ -1372,10 +1372,10 @@ LABEL_11:
     v17 = 0;
   }
 
-  v21 = [(NSCoreTypesetter *)self delegate];
-  if (v21)
+  delegate = [(NSCoreTypesetter *)self delegate];
+  if (delegate)
   {
-    v22 = v21;
+    v22 = delegate;
     if (objc_opt_respondsToSelector())
     {
       v23 = [(NSCoreTypesetterDelegate *)v22 coreTypesetter:self indexToBreakLineByWordBeforeCharacterAtIndex:v20 proposedIndex:v17];
@@ -1397,16 +1397,16 @@ LABEL_11:
   }
 }
 
-- (__CTLine)_createLayoutLineFragmentStartingWithCharacterIndex:(int64_t *)a3 proposedLineFragmentRect:(CGRect *)a4 baseLineRef:(const __CTLine *)a5 range:(_NSRange)a6 paragraphStyle:(id)a7 paragraphArbitrator:(id)a8 lineBreakMode:(int64_t)a9 hasAttachments:(BOOL)a10 lineFragmentRect:(CGRect *)a11 glyphOrigin:(CGPoint *)a12 hyphenated:(BOOL *)a13 forcedClusterBreak:(BOOL *)a14
+- (__CTLine)_createLayoutLineFragmentStartingWithCharacterIndex:(int64_t *)index proposedLineFragmentRect:(CGRect *)rect baseLineRef:(const __CTLine *)ref range:(_NSRange)range paragraphStyle:(id)style paragraphArbitrator:(id)arbitrator lineBreakMode:(int64_t)mode hasAttachments:(BOOL)self0 lineFragmentRect:(CGRect *)self1 glyphOrigin:(CGPoint *)self2 hyphenated:(BOOL *)self3 forcedClusterBreak:(BOOL *)self4
 {
-  length = a6.length;
-  location = a6.location;
-  v20 = [(NSTypesetter *)self attributedString];
-  v103 = [(NSAttributedString *)v20 string];
+  length = range.length;
+  location = range.location;
+  attributedString = [(NSTypesetter *)self attributedString];
+  string = [(NSAttributedString *)attributedString string];
   v97 = length;
   if (length)
   {
-    extraLineFragmentAttributes = [(NSAttributedString *)v20 attributesAtIndex:*a3 effectiveRange:0];
+    extraLineFragmentAttributes = [(NSAttributedString *)attributedString attributesAtIndex:*index effectiveRange:0];
   }
 
   else
@@ -1414,25 +1414,25 @@ LABEL_11:
     extraLineFragmentAttributes = self->__extraLineFragmentAttributes;
   }
 
-  v100 = v20;
-  if (a7)
+  v100 = attributedString;
+  if (style)
   {
-    v21 = *a5;
-    v22 = [(NSCoreTypesetter *)self _fallbackWritingDirection];
+    v21 = *ref;
+    _fallbackWritingDirection = [(NSCoreTypesetter *)self _fallbackWritingDirection];
   }
 
   else
   {
-    a7 = [(NSTypesetter *)self defaultParagraphStyle];
-    v21 = *a5;
-    v22 = [(NSCoreTypesetter *)self _fallbackWritingDirection];
-    if (!a7)
+    style = [(NSTypesetter *)self defaultParagraphStyle];
+    v21 = *ref;
+    _fallbackWritingDirection = [(NSCoreTypesetter *)self _fallbackWritingDirection];
+    if (!style)
     {
       goto LABEL_8;
     }
   }
 
-  IsRightToLeft = [a7 baseWritingDirection];
+  IsRightToLeft = [style baseWritingDirection];
   if (IsRightToLeft == -1)
   {
 LABEL_8:
@@ -1443,7 +1443,7 @@ LABEL_8:
 
     else
     {
-      IsRightToLeft = v22;
+      IsRightToLeft = _fallbackWritingDirection;
     }
   }
 
@@ -1451,8 +1451,8 @@ LABEL_8:
   v25 = *(MEMORY[0x1E696AA80] + 16);
   v112.origin = *MEMORY[0x1E696AA80];
   v112.size = v25;
-  v26 = *a3;
-  v27 = [(NSTypesetter *)self typesetterBehavior];
+  v26 = *index;
+  typesetterBehavior = [(NSTypesetter *)self typesetterBehavior];
   v110 = 0.0;
   v111 = 0.0;
   [(NSTypesetter *)self lineFragmentPadding];
@@ -1460,16 +1460,16 @@ LABEL_8:
   v107 = 0.0;
   v108 = 0.0;
   v109 = 0.0;
-  x = a4->origin.x;
-  y = a4->origin.y;
-  width = a4->size.width;
-  height = a4->size.height;
-  v115.origin.x = a4->origin.x;
+  x = rect->origin.x;
+  y = rect->origin.y;
+  width = rect->size.width;
+  height = rect->size.height;
+  v115.origin.x = rect->origin.x;
   v115.origin.y = y;
   v115.size.width = width;
   v115.size.height = height;
-  v92 = a4;
-  v95 = a3;
+  rectCopy = rect;
+  indexCopy = index;
   if (CGRectGetWidth(v115) == 0.0 || (v116.origin.x = x, v116.origin.y = y, v116.size.width = width, v116.size.height = height, CGRectGetHeight(v116) == 0.0))
   {
     x = 0.0;
@@ -1490,7 +1490,7 @@ LABEL_8:
 
     y = y + v34;
     LOBYTE(v91) = v35;
-    [(NSCoreTypesetter *)self _getLineMetricsForRange:v26 attributes:0 attributedString:extraLineFragmentAttributes applySpacing:v20 usesSystemFontLeading:1 usesNegativeFontLeading:0, v91];
+    [(NSCoreTypesetter *)self _getLineMetricsForRange:v26 attributes:0 attributedString:extraLineFragmentAttributes applySpacing:attributedString usesSystemFontLeading:1 usesNegativeFontLeading:0, v91];
     height = v36;
     v107 = v36;
     v108 = v37;
@@ -1513,11 +1513,11 @@ LABEL_8:
 
   else
   {
-    v40 = [(NSString *)v103 characterAtIndex:v26 - 1];
+    v40 = [(NSString *)string characterAtIndex:v26 - 1];
     v39 = v26 - 1;
     if (v40 == 10)
     {
-      if ([(NSString *)v103 characterAtIndex:v26 - 2]== 13)
+      if ([(NSString *)string characterAtIndex:v26 - 2]== 13)
       {
         v39 = v26 - 2;
       }
@@ -1530,7 +1530,7 @@ LABEL_8:
   }
 
   v41 = [(NSTypesetter *)self actionForControlCharacterAtIndex:v39];
-  if ((v41 & 0x10) != 0 || v27 <= NSTypesetterBehavior_10_3 && (v41 & 0x20) != 0)
+  if ((v41 & 0x10) != 0 || typesetterBehavior <= NSTypesetterBehavior_10_3 && (v41 & 0x20) != 0)
   {
 LABEL_28:
     v42 = 1;
@@ -1538,20 +1538,20 @@ LABEL_28:
 
   else
   {
-    v89 = [(NSTypesetter *)self attributedString];
+    attributedString2 = [(NSTypesetter *)self attributedString];
     v113 = 0;
     v114 = 0;
-    v90 = [(NSAttributedString *)v89 attribute:@"NSAttachment" atIndex:v26 - 1 effectiveRange:&v113];
+    v90 = [(NSAttributedString *)attributedString2 attribute:@"NSAttachment" atIndex:v26 - 1 effectiveRange:&v113];
     if (v114 + v113 > v26 || !v90)
     {
-      if ([(NSString *)v103 length]<= v26)
+      if ([(NSString *)string length]<= v26)
       {
         v90 = 0;
       }
 
       else
       {
-        v90 = [(NSAttributedString *)v89 attribute:@"NSAttachment" atIndex:v26 effectiveRange:&v113];
+        v90 = [(NSAttributedString *)attributedString2 attribute:@"NSAttachment" atIndex:v26 effectiveRange:&v113];
         if (v114 + v113 > v26)
         {
           v90 = 0;
@@ -1590,7 +1590,7 @@ LABEL_77:
     v51 = v47;
     v52 = v48;
     v53 = v48 + v98 * 2.0;
-    [NSCoreTypesetter _minMaxPositionsForLineFragmentWithParagraphStyle:a7 baseWidth:IsRightToLeft writingDirection:v42 isBeginningOfParagraph:&v111 minPosition:&v110 maxPosition:v53];
+    [NSCoreTypesetter _minMaxPositionsForLineFragmentWithParagraphStyle:style baseWidth:IsRightToLeft writingDirection:v42 isBeginningOfParagraph:&v111 minPosition:&v110 maxPosition:v53];
     v54 = v110;
     if (v110 <= v53)
     {
@@ -1633,13 +1633,13 @@ LABEL_77:
       CFRelease(v43);
     }
 
-    if (*a5)
+    if (*ref)
     {
-      v56 = [(NSCoreTypesetter *)self _createLineRefForParentLineRef:a5 range:*v95 availableWidth:v94 - *v95 offset:a8 paragraphArbitrator:a9 lineBreakMode:a13 hyphenated:v53 forcedClusterBreak:v111, a14];
-      v43 = v56;
-      if (v56)
+      break = [(NSCoreTypesetter *)self _createLineRefForParentLineRef:ref range:*indexCopy availableWidth:v94 - *indexCopy offset:arbitrator paragraphArbitrator:mode lineBreakMode:hyphenated hyphenated:v53 forcedClusterBreak:v111, break];
+      v43 = break;
+      if (break)
       {
-        StringRange = CTLineGetStringRange(v56);
+        StringRange = CTLineGetStringRange(break);
         v26 = StringRange.location;
         v58 = StringRange.length;
         v59 = 1;
@@ -1678,7 +1678,7 @@ LABEL_52:
     v107 = v61;
     v108 = v63;
     v109 = v64;
-    if ((v59 & a10) == 1)
+    if ((v59 & attachments) == 1)
     {
       __NSCoreTypesetterAdjustLineHeightAndBaselineForTextAttachments(v43, &v107, &v108);
       v62 = v107;
@@ -1788,14 +1788,14 @@ LABEL_71:
 
   while (NSEqualRects(v118, *&v70));
   [(NSCoreTypesetter *)self endLine];
-  *v95 = v26 + v58;
+  *indexCopy = v26 + v58;
   [(NSTypesetter *)self lineFragmentPadding];
   v86 = v52 + v85 * -2.0;
   v119.origin.y = v102;
   v119.origin.x = v104;
   v119.size.width = v45;
   v119.size.height = v44;
-  if (NSEqualRects(v112, v119) || v94 <= *v95)
+  if (NSEqualRects(v112, v119) || v94 <= *indexCopy)
   {
     v112.origin.x = 0.0;
     v112.origin.y = v62 + v51 + v109;
@@ -1803,28 +1803,28 @@ LABEL_71:
   }
 
   size = v112.size;
-  v92->origin = v112.origin;
-  v92->size = size;
-  a11->origin.x = v50;
-  a11->origin.y = v51;
-  a11->size.width = v86;
-  a11->size.height = v62;
+  rectCopy->origin = v112.origin;
+  rectCopy->size = size;
+  fragmentRect->origin.x = v50;
+  fragmentRect->origin.y = v51;
+  fragmentRect->size.width = v86;
+  fragmentRect->size.height = v62;
   size.width = v108;
-  a12->x = v111;
-  a12->y = size.width;
+  origin->x = v111;
+  origin->y = size.width;
   return v43;
 }
 
-- (void)_updateBidiLevelsAndBaseWritingDirectionForAttributedString:(id)a3 paragraphRange:(_NSRange)a4
+- (void)_updateBidiLevelsAndBaseWritingDirectionForAttributedString:(id)string paragraphRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if (self->_delegateSupportsBidi)
   {
-    self->_resolvedBaseWritingDirection = [(NSCoreTypesetterDelegateInternal *)self->_delegate coreTypesetter:self baseWritingDirectionForRange:a4.location bidiLevelsPointer:a4.length, &self->_bidiLevels];
+    self->_resolvedBaseWritingDirection = [(NSCoreTypesetterDelegateInternal *)self->_delegate coreTypesetter:self baseWritingDirectionForRange:range.location bidiLevelsPointer:range.length, &self->_bidiLevels];
   }
 
-  else if (self->_fallbackBaseWritingDirection != 1 || a4.length == 0)
+  else if (self->_fallbackBaseWritingDirection != 1 || range.length == 0)
   {
     self->_resolvedBaseWritingDirection = -1;
     self->_bidiLevels = 0;
@@ -1832,7 +1832,7 @@ LABEL_71:
 
   else
   {
-    v9 = [a3 attribute:@"NSParagraphStyle" atIndex:a4.location effectiveRange:0];
+    v9 = [string attribute:@"NSParagraphStyle" atIndex:range.location effectiveRange:0];
     if (!v9)
     {
       v9 = +[NSParagraphStyle defaultParagraphStyle];
@@ -1841,7 +1841,7 @@ LABEL_71:
     if ([(NSParagraphStyle *)v9 baseWritingDirection]== NSWritingDirectionNatural)
     {
       v10 = malloc_type_calloc(length, 1uLL, 0x100004077774924uLL);
-      self->_resolvedBaseWritingDirection = [_NSParagraphBidiLevelsProducer resolvedBaseWritingDirectionForTextContentManager:a3 AttributedString:location paragraphRange:length baseWritingDirection:-1 fallbackBaseWritingDirection:self->_fallbackBaseWritingDirection bidiLevels:?];
+      self->_resolvedBaseWritingDirection = [_NSParagraphBidiLevelsProducer resolvedBaseWritingDirectionForTextContentManager:string AttributedString:location paragraphRange:length baseWritingDirection:-1 fallbackBaseWritingDirection:self->_fallbackBaseWritingDirection bidiLevels:?];
     }
 
     else
@@ -1854,35 +1854,35 @@ LABEL_71:
   }
 }
 
-- (CGRect)_stringDrawingCoreTextEngineWithOriginalString:(id)a3 rect:(CGRect)a4 padding:(double)a5 graphicsContext:(id)a6 forceClipping:(BOOL)a7 attributes:(id)a8 stringDrawingOptions:(int64_t)a9 drawingContext:(id)a10 stringDrawingInterface:(id *)a11
+- (CGRect)_stringDrawingCoreTextEngineWithOriginalString:(id)string rect:(CGRect)rect padding:(double)padding graphicsContext:(id)context forceClipping:(BOOL)clipping attributes:(id)attributes stringDrawingOptions:(int64_t)options drawingContext:(id)self0 stringDrawingInterface:(id *)self1
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  rect_8 = a4.origin.y;
-  rect = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  rect_8 = rect.origin.y;
+  rect = rect.origin.x;
   v522 = *MEMORY[0x1E69E9840];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = a3;
+    stringCopy = string;
   }
 
   else
   {
-    v18 = 0;
+    stringCopy = 0;
   }
 
-  v383 = a3;
-  v19 = a3;
-  if (v18)
+  stringCopy2 = string;
+  stringCopy3 = string;
+  if (stringCopy)
   {
-    v19 = [v18 string];
+    stringCopy3 = [stringCopy string];
   }
 
-  theString = v19;
-  if (v19)
+  theString = stringCopy3;
+  if (stringCopy3)
   {
-    Length = CFStringGetLength(v19);
+    Length = CFStringGetLength(stringCopy3);
   }
 
   else
@@ -1906,31 +1906,31 @@ LABEL_71:
   v503 = &v502;
   v504 = 0x2020000000;
   v505 = 0x7FEFFFFFFFFFFFFFLL;
-  v387 = [(NSCoreTypesetter *)self containerBreakMode];
-  v395 = [a10 wantsMultilineDeviceMetrics];
-  v21 = (a9 & 1) == 0;
-  v429 = [(NSCoreTypesetter *)self laidOutLineFragment];
-  v22 = (a9 & 0x200) != 0 || self->_resolvesNaturalAlignmentWithBaseWritingDirection;
+  containerBreakMode = [(NSCoreTypesetter *)self containerBreakMode];
+  wantsMultilineDeviceMetrics = [drawingContext wantsMultilineDeviceMetrics];
+  v21 = (options & 1) == 0;
+  laidOutLineFragment = [(NSCoreTypesetter *)self laidOutLineFragment];
+  v22 = (options & 0x200) != 0 || self->_resolvesNaturalAlignmentWithBaseWritingDirection;
   v396 = v22;
-  if (v429)
+  if (laidOutLineFragment)
   {
-    v398 = +[NSTypesetter defaultTypesetterBehavior];
+    typesetterBehavior = +[NSTypesetter defaultTypesetterBehavior];
   }
 
   else
   {
-    v398 = [MEMORY[0x1E696AEC0] typesetterBehavior];
+    typesetterBehavior = [MEMORY[0x1E696AEC0] typesetterBehavior];
   }
 
-  v23 = [objc_opt_class() resolvesIndentationWritingDirectionWithBaseWritingDirection];
-  if (v429)
+  resolvesIndentationWritingDirectionWithBaseWritingDirection = [objc_opt_class() resolvesIndentationWritingDirectionWithBaseWritingDirection];
+  if (laidOutLineFragment)
   {
     v24 = 0;
   }
 
   else
   {
-    v24 = v23;
+    v24 = resolvesIndentationWritingDirectionWithBaseWritingDirection;
   }
 
   v394 = v24;
@@ -1938,7 +1938,7 @@ LABEL_71:
   if (truncatedRanges)
   {
     [(NSMutableArray *)truncatedRanges removeAllObjects];
-    if (a10)
+    if (drawingContext)
     {
       goto LABEL_20;
     }
@@ -1948,16 +1948,16 @@ LABEL_31:
   }
 
   self->_truncatedRanges = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (!a10)
+  if (!drawingContext)
   {
     goto LABEL_31;
   }
 
 LABEL_20:
-  v26 = [a10 activeRenderers];
-  if (v26)
+  activeRenderers = [drawingContext activeRenderers];
+  if (activeRenderers)
   {
-    v27 = v26;
+    v27 = activeRenderers;
   }
 
   else
@@ -1965,18 +1965,18 @@ LABEL_20:
     v27 = 3;
   }
 
-  v384 = [(NSTypesetter *)self applicationFrameworkContext];
-  v418 = a10;
+  applicationFrameworkContext = [(NSTypesetter *)self applicationFrameworkContext];
+  drawingContextCopy = drawingContext;
   v392 = 0;
   v501 = 0;
   v500 = 0;
   v499 = 0;
   v498 = 0.0;
-  v381 = v387 - 3;
+  v381 = containerBreakMode - 3;
   TrailingWhitespaceWidth = 0.0;
-  if (a9)
+  if (options)
   {
-    v28 = (a9 >> 5) & 1;
+    v28 = (options >> 5) & 1;
     if (v381 < 3)
     {
       LODWORD(v28) = 1;
@@ -1985,18 +1985,18 @@ LABEL_20:
     v392 = v28;
   }
 
-  [(NSTypesetter *)self setAttributedString:v18];
-  [(NSTypesetter *)self setTypesetterBehavior:v398];
-  [(NSTypesetter *)self setUsesFontLeading:(a9 >> 1) & 1];
+  [(NSTypesetter *)self setAttributedString:stringCopy];
+  [(NSTypesetter *)self setTypesetterBehavior:typesetterBehavior];
+  [(NSTypesetter *)self setUsesFontLeading:(options >> 1) & 1];
   -[NSCoreTypesetter setAllowsFontOverridingTextAttachmentVerticalMetrics:](self, "setAllowsFontOverridingTextAttachmentVerticalMetrics:", [objc_opt_class() _allowsFontOverridingTextAttachmentVerticalMetricsForStringDrawing]);
   if (Length < 1)
   {
     goto LABEL_660;
   }
 
-  if (v18)
+  if (stringCopy)
   {
-    a8 = [v18 attributesAtIndex:0 effectiveRange:&v499];
+    attributes = [stringCopy attributesAtIndex:0 effectiveRange:&v499];
   }
 
   else
@@ -2005,33 +2005,33 @@ LABEL_20:
     v500 = Length;
   }
 
-  v433 = [(NSCoreTypesetter *)self _paragraphStyleFromAttributes:a8];
-  if (a7)
+  v433 = [(NSCoreTypesetter *)self _paragraphStyleFromAttributes:attributes];
+  if (clipping)
   {
-    v430 = 2;
+    lineBreakMode = 2;
   }
 
   else
   {
-    v430 = [(NSParagraphStyle *)v433 lineBreakMode];
+    lineBreakMode = [(NSParagraphStyle *)v433 lineBreakMode];
   }
 
   v29 = __NSUltraFastLineBreakFinder(theString, Length, &v501, 0);
-  if (v384 != 2 && !v429)
+  if (applicationFrameworkContext != 2 && !laidOutLineFragment)
   {
-    v30 = [a10 maximumNumberOfLines] == 1 && v430 <= 1;
+    v30 = [drawingContext maximumNumberOfLines] == 1 && lineBreakMode <= 1;
     v31 = !v30;
-    v21 = v31 & a9 ^ 1;
-    if ((a9 & 0x100000) != 0 && !v31)
+    v21 = v31 & options ^ 1;
+    if ((options & 0x100000) != 0 && !v31)
     {
-      v32 = v430;
-      if (!v430)
+      v32 = lineBreakMode;
+      if (!lineBreakMode)
       {
         v32 = 2;
       }
 
-      v430 = v32;
-      if (a9)
+      lineBreakMode = v32;
+      if (options)
       {
         goto LABEL_49;
       }
@@ -2048,10 +2048,10 @@ LABEL_57:
   }
 
 LABEL_49:
-  v33 = [a10 wrapsForTruncationMode];
-  if (v430 > 1)
+  wrapsForTruncationMode = [drawingContext wrapsForTruncationMode];
+  if (lineBreakMode > 1)
   {
-    v34 = v33;
+    v34 = wrapsForTruncationMode;
   }
 
   else
@@ -2061,15 +2061,15 @@ LABEL_49:
 
   if (v34 == 1)
   {
-    v35 = [a10 maximumNumberOfLines];
+    maximumNumberOfLines = [drawingContext maximumNumberOfLines];
     v426 = 0;
-    v36 = v430;
-    if (v35 != 1)
+    v36 = lineBreakMode;
+    if (maximumNumberOfLines != 1)
     {
       v36 = 0;
     }
 
-    v430 = v36;
+    lineBreakMode = v36;
     v392 = 1;
   }
 
@@ -2090,7 +2090,7 @@ LABEL_59:
     v37 = 1;
   }
 
-  if ((v37 & 1) == 0 && (!v429 || (Length - v29) > 1 || [(NSDictionary *)self->__extraLineFragmentAttributes count]))
+  if ((v37 & 1) == 0 && (!laidOutLineFragment || (Length - v29) > 1 || [(NSDictionary *)self->__extraLineFragmentAttributes count]))
   {
     v501 = 0;
   }
@@ -2100,7 +2100,7 @@ LABEL_59:
     v501 = 0;
   }
 
-  if (v395)
+  if (wantsMultilineDeviceMetrics)
   {
     v501 = 0;
   }
@@ -2113,25 +2113,25 @@ LABEL_59:
   v38 = [(NSCoreTypesetter *)self isSimpleRectangularTextContainerForStartingCharacterAtIndex:0];
   if (v501 & v38)
   {
-    BYTE5(v365) = (a9 & 0x400) != 0;
+    BYTE5(v365) = (options & 0x400) != 0;
     BYTE4(v365) = v396;
-    BYTE3(v365) = a7;
+    BYTE3(v365) = clipping;
     BYTE2(v365) = 0;
-    BYTE1(v365) = (a9 & 2) != 0;
+    BYTE1(v365) = (options & 2) != 0;
     LOBYTE(v365) = v426;
-    if ([NSCoreTypesetter _NSFastDrawString:"_NSFastDrawString:length:attributes:paragraphStyle:typesetterBehavior:lineBreakMode:rect:padding:graphicsContext:baselineRendering:usesFontLeading:usesScreenFont:scrollable:syncAlignment:mirrored:boundingRectPointer:baselineOffsetPointer:drawingContext:" length:theString attributes:v29 paragraphStyle:a8 typesetterBehavior:v433 lineBreakMode:v398 rect:v430 padding:rect graphicsContext:rect_8 baselineRendering:width usesFontLeading:height usesScreenFont:a5 scrollable:a6 syncAlignment:v365 mirrored:&v513 boundingRectPointer:&v512 baselineOffsetPointer:a10 drawingContext:?]== 2)
+    if ([NSCoreTypesetter _NSFastDrawString:"_NSFastDrawString:length:attributes:paragraphStyle:typesetterBehavior:lineBreakMode:rect:padding:graphicsContext:baselineRendering:usesFontLeading:usesScreenFont:scrollable:syncAlignment:mirrored:boundingRectPointer:baselineOffsetPointer:drawingContext:" length:theString attributes:v29 paragraphStyle:attributes typesetterBehavior:v433 lineBreakMode:typesetterBehavior rect:lineBreakMode padding:rect graphicsContext:rect_8 baselineRendering:width usesFontLeading:height usesScreenFont:padding scrollable:context syncAlignment:v365 mirrored:&v513 boundingRectPointer:&v512 baselineOffsetPointer:drawingContext drawingContext:?]== 2)
     {
-      [a10 setNumberOfLineFragments:1];
-      [a10 setTotalBounds:{v513, v514}];
-      if ([a10 wantsBaselineOffset])
+      [drawingContext setNumberOfLineFragments:1];
+      [drawingContext setTotalBounds:{v513, v514}];
+      if ([drawingContext wantsBaselineOffset])
       {
-        [a10 setBaselineOffset:v512];
-        [a10 setFirstBaselineOffset:v512];
+        [drawingContext setBaselineOffset:v512];
+        [drawingContext setFirstBaselineOffset:v512];
       }
 
-      if (a11)
+      if (interface)
       {
-        a11->var0 = 1;
+        interface->var0 = 1;
       }
 
       goto LABEL_662;
@@ -2143,41 +2143,41 @@ LABEL_59:
     goto LABEL_660;
   }
 
-  v39 = [a10 layout];
+  layout = [drawingContext layout];
   v493 = 0;
   v494 = &v493;
   v495 = 0x2020000000;
   v496 = 0;
-  if (!v39)
+  if (!layout)
   {
-    if ([a10 cachesLayout])
+    if ([drawingContext cachesLayout])
     {
-      v39 = objc_alloc_init(_NSCoreTypesetterLayoutCache);
-      [a10 setLayout:v39];
+      layout = objc_alloc_init(_NSCoreTypesetterLayoutCache);
+      [drawingContext setLayout:layout];
     }
 
     else
     {
-      v39 = 0;
+      layout = 0;
     }
   }
 
-  v376 = v39;
+  v376 = layout;
   cf = 0;
-  v40 = [(NSCoreTypesetter *)self delegate];
+  delegate = [(NSCoreTypesetter *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v41 = [(NSCoreTypesetterDelegate *)v40 textAttachmentLayoutContext];
+    textAttachmentLayoutContext = [(NSCoreTypesetterDelegate *)delegate textAttachmentLayoutContext];
   }
 
   else
   {
-    v41 = 0;
+    textAttachmentLayoutContext = 0;
   }
 
-  v491 = v41;
+  v491 = textAttachmentLayoutContext;
   v490 = 0;
-  [(_NSCoreTypesetterLayoutCache *)v39 getCTLine:&v491 attachmentLayoutContext:&v490 lineValidForDrawing:?];
+  [(_NSCoreTypesetterLayoutCache *)layout getCTLine:&v491 attachmentLayoutContext:&v490 lineValidForDrawing:?];
   if (v491)
   {
     v42 = v491;
@@ -2185,21 +2185,21 @@ LABEL_59:
 
   if (!self->_laidOutLineFragment && (!cf || (v490 & 1) == 0))
   {
-    if (v18)
+    if (stringCopy)
     {
       v490 = 1;
-      v44 = a8;
+      attributesCopy = attributes;
       do
       {
         LOBYTE(buffer[0]) = 1;
-        if ((__NSValidateCoreTextAttributes(v44, a6 == 0, buffer) & 1) == 0)
+        if ((__NSValidateCoreTextAttributes(attributesCopy, context == 0, buffer) & 1) == 0)
         {
           break;
         }
 
         v499 += v500;
         v490 &= LOBYTE(buffer[0]);
-        if (!v491 && ([(__CFDictionary *)v44 objectForKeyedSubscript:@"NSAttachment"]|| [(__CFDictionary *)v44 objectForKeyedSubscript:@"CTAdaptiveImageProvider"]))
+        if (!v491 && ([(__CFDictionary *)attributesCopy objectForKeyedSubscript:@"NSAttachment"]|| [(__CFDictionary *)attributesCopy objectForKeyedSubscript:@"CTAdaptiveImageProvider"]))
         {
           v491 = objc_alloc_init(_NSTextAttachmentLayoutContext);
         }
@@ -2209,10 +2209,10 @@ LABEL_59:
           break;
         }
 
-        v44 = [v18 attributesAtIndex:? effectiveRange:?];
+        attributesCopy = [stringCopy attributesAtIndex:? effectiveRange:?];
       }
 
-      while (v44);
+      while (attributesCopy);
       if (v499 >= v29)
       {
         v45 = v426;
@@ -2230,11 +2230,11 @@ LABEL_59:
 
 LABEL_198:
       v373 = 0;
-      v83 = a11;
+      interfaceCopy3 = interface;
       goto LABEL_657;
     }
 
-    v104 = __NSValidateCoreTextAttributes(a8, a6 == 0, &v490);
+    v104 = __NSValidateCoreTextAttributes(attributes, context == 0, &v490);
     v105 = v104;
     if (v491)
     {
@@ -2246,7 +2246,7 @@ LABEL_198:
       v106 = v104;
     }
 
-    if (v106 == 1 && ([a8 objectForKeyedSubscript:@"NSAttachment"] || objc_msgSend(a8, "objectForKeyedSubscript:", @"CTAdaptiveImageProvider")) && Length == 1 && CFStringGetCharacterAtIndex(theString, 0) == 65532)
+    if (v106 == 1 && ([attributes objectForKeyedSubscript:@"NSAttachment"] || objc_msgSend(attributes, "objectForKeyedSubscript:", @"CTAdaptiveImageProvider")) && Length == 1 && CFStringGetCharacterAtIndex(theString, 0) == 65532)
     {
       v491 = objc_alloc_init(_NSTextAttachmentLayoutContext);
     }
@@ -2261,12 +2261,12 @@ LABEL_95:
   line = 0;
   if (v491)
   {
-    [(_NSTextAttachmentLayoutContext *)v491 setApplicationFrameworkContext:v384];
-    [(_NSTextAttachmentLayoutContext *)v491 setUsesFontLeading:(a9 >> 1) & 1];
-    v43 = [(NSCoreTypesetter *)self allowsFontOverridingTextAttachmentVerticalMetrics];
-    [(_NSTextAttachmentLayoutContext *)v491 setAllowsFontOverridingTextAttachmentVerticalMetrics:v43];
+    [(_NSTextAttachmentLayoutContext *)v491 setApplicationFrameworkContext:applicationFrameworkContext];
+    [(_NSTextAttachmentLayoutContext *)v491 setUsesFontLeading:(options >> 1) & 1];
+    allowsFontOverridingTextAttachmentVerticalMetrics = [(NSCoreTypesetter *)self allowsFontOverridingTextAttachmentVerticalMetrics];
+    [(_NSTextAttachmentLayoutContext *)v491 setAllowsFontOverridingTextAttachmentVerticalMetrics:allowsFontOverridingTextAttachmentVerticalMetrics];
     v373 = 0;
-    if (!v40 && width > 0.0)
+    if (!delegate && width > 0.0)
     {
       v373 = [[NSTextContainer alloc] initWithSize:width, 40000.0];
       [(NSTextContainer *)v373 setLineFragmentPadding:0.0];
@@ -2279,13 +2279,13 @@ LABEL_95:
     v373 = 0;
   }
 
-  v46 = v383;
-  if (!v18)
+  v46 = stringCopy2;
+  if (!stringCopy)
   {
-    v46 = [objc_allocWithZone(_NSCachedAttributedString) initWithString:v383 attributes:a8];
+    v46 = [objc_allocWithZone(_NSCachedAttributedString) initWithString:stringCopy2 attributes:attributes];
   }
 
-  v47 = [(NSCoreTypesetter *)self keyframe];
+  keyframe = [(NSCoreTypesetter *)self keyframe];
   v516.x = 0.0;
   *&v516.y = &v516;
   *&v517.width = 0x2020000000;
@@ -2313,7 +2313,7 @@ LABEL_95:
     *&v469 = v50;
     *(&v469 + 1) = v46;
     *(&v470 + 1) = &rect1;
-    *&v470 = v47;
+    *&v470 = keyframe;
     [(__CFString *)v46 enumerateAttribute:@"NSTextAnimation" inRange:0 options:v51 usingBlock:0, buffer];
     v52 = *(*&rect1.origin.y + 24);
     if (v52 < [(__CFString *)v46 length])
@@ -2330,16 +2330,16 @@ LABEL_95:
   _Block_object_dispose(&v516, 8);
   if (v49 == v46)
   {
-    v55 = a8;
+    attributesCopy2 = attributes;
   }
 
   else
   {
-    v18 = v49;
-    v55 = 0;
+    stringCopy = v49;
+    attributesCopy2 = 0;
   }
 
-  v405 = v55;
+  v405 = attributesCopy2;
   v56 = MEMORY[0x1E696AA80];
   if (cf)
   {
@@ -2355,15 +2355,15 @@ LABEL_95:
     }
 
     [(NSCoreTypesetter *)self _updateBidiLevelsAndBaseWritingDirectionForAttributedString:v49 paragraphRange:0, v29];
-    v58 = [(NSCoreTypesetter *)self layoutOrientation];
-    v59 = [(NSCoreTypesetter *)self limitsLayoutForSuspiciousContents];
-    BaseLineFromAttributedString = __NSCoreTypesetterCreateBaseLineFromAttributedString(v49, 0, v29, v58, v59, v491, self->_bidiLevels, self->_resolvedBaseWritingDirection);
+    layoutOrientation = [(NSCoreTypesetter *)self layoutOrientation];
+    limitsLayoutForSuspiciousContents = [(NSCoreTypesetter *)self limitsLayoutForSuspiciousContents];
+    BaseLineFromAttributedString = __NSCoreTypesetterCreateBaseLineFromAttributedString(v49, 0, v29, layoutOrientation, limitsLayoutForSuspiciousContents, v491, self->_bidiLevels, self->_resolvedBaseWritingDirection);
   }
 
   v60 = BaseLineFromAttributedString;
   cf = BaseLineFromAttributedString;
 LABEL_131:
-  v61 = [(NSCoreTypesetter *)self _fallbackWritingDirection];
+  _fallbackWritingDirection = [(NSCoreTypesetter *)self _fallbackWritingDirection];
   if (!v433 || (v62 = [(NSParagraphStyle *)v433 baseWritingDirection], IsRightToLeft = v62, v62 == -1))
   {
     if (v60)
@@ -2373,40 +2373,40 @@ LABEL_131:
 
     else
     {
-      IsRightToLeft = v61;
+      IsRightToLeft = _fallbackWritingDirection;
     }
 
     if (v394)
     {
-      v64 = IsRightToLeft;
+      baseWritingDirection = IsRightToLeft;
       goto LABEL_143;
     }
 
     if (!v433)
     {
 LABEL_142:
-      v64 = [NSParagraphStyle defaultWritingDirectionForLanguage:0];
+      baseWritingDirection = [NSParagraphStyle defaultWritingDirectionForLanguage:0];
       goto LABEL_143;
     }
   }
 
   else
   {
-    v64 = v62;
+    baseWritingDirection = v62;
     if (v394)
     {
       goto LABEL_143;
     }
   }
 
-  v64 = [(NSParagraphStyle *)v433 baseWritingDirection];
-  if (v64 == NSWritingDirectionNatural)
+  baseWritingDirection = [(NSParagraphStyle *)v433 baseWritingDirection];
+  if (baseWritingDirection == NSWritingDirectionNatural)
   {
     goto LABEL_142;
   }
 
 LABEL_143:
-  v410 = v18;
+  v410 = stringCopy;
   v488 = 0.0;
   v487 = 0.0;
   v65 = [(NSCoreTypesetter *)self isSimpleRectangularTextContainerForStartingCharacterAtIndex:0];
@@ -2416,13 +2416,13 @@ LABEL_143:
     v66 = height;
     rect_16 = width;
     v67 = rect_8;
-    v424 = rect;
+    rectCopy = rect;
     v68 = 0.0;
   }
 
   else
   {
-    if (Length == v500 || v18 == 0)
+    if (Length == v500 || stringCopy == 0)
     {
       v70 = v405;
     }
@@ -2438,7 +2438,7 @@ LABEL_143:
     v488 = v72;
     v487 = v73;
     [(NSCoreTypesetter *)self lineFragmentRectForProposedRect:0 atIndex:IsRightToLeft writingDirection:0 remainingRect:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), 10000000.0, v72];
-    v424 = v74;
+    rectCopy = v74;
     v67 = v75;
     v77 = v76;
     v66 = v78;
@@ -2452,10 +2452,10 @@ LABEL_143:
     v385 = v80;
   }
 
-  v81 = [a6 CGContext];
+  cGContext = [context CGContext];
   v486 = 0.0;
   v485 = 0.0;
-  [NSCoreTypesetter _minMaxPositionsForLineFragmentWithParagraphStyle:v433 baseWidth:v64 writingDirection:1 isBeginningOfParagraph:&v486 minPosition:&v485 maxPosition:rect_16];
+  [NSCoreTypesetter _minMaxPositionsForLineFragmentWithParagraphStyle:v433 baseWidth:baseWritingDirection writingDirection:1 isBeginningOfParagraph:&v486 minPosition:&v485 maxPosition:rect_16];
   if (v485 <= v486)
   {
     v82 = rect_16;
@@ -2466,7 +2466,7 @@ LABEL_143:
     v82 = v485 - v486;
   }
 
-  v83 = a11;
+  interfaceCopy3 = interface;
   if (cf)
   {
     line = CFRetain(cf);
@@ -2474,7 +2474,7 @@ LABEL_143:
     v374 = 0;
     TrailingWhitespaceWidth = CTLineGetTrailingWhitespaceWidth(line);
     v498 = TypographicBounds - TrailingWhitespaceWidth;
-    if ((v426 & 1) == 0 && v430 <= 1 && v82 > 0.0)
+    if ((v426 & 1) == 0 && lineBreakMode <= 1 && v82 > 0.0)
     {
       v374 = [(NSCoreTypesetter *)self _getFirstOverflowTabStopIndexInLineRef:cf range:0 string:v29 paragraphStyle:theString availableWidth:v433 offset:v82, v486]!= 0x7FFFFFFFFFFFFFFFLL;
     }
@@ -2488,7 +2488,7 @@ LABEL_143:
     v498 = 0.0;
   }
 
-  if (a6)
+  if (context)
   {
     *buffer = 0;
     *&buffer[4] = buffer;
@@ -2503,14 +2503,14 @@ LABEL_143:
     [(__CFString *)v49 enumerateAttribute:@"NSLink" inRange:0 options:v85 usingBlock:0x100000, v484];
     if (*(*&buffer[4] + 24) == 1)
     {
-      v86 = [v418 linkTextAttributesProvider];
+      linkTextAttributesProvider = [drawingContextCopy linkTextAttributesProvider];
       v87 = +[NSTextLayoutManager linkRenderingAttributesForLabels];
       v483[0] = MEMORY[0x1E69E9820];
       v483[1] = 3221225472;
       v372 = v483;
       v483[2] = __180__NSCoreTypesetter__stringDrawingCoreTextEngineWithOriginalString_rect_padding_graphicsContext_forceClipping_attributes_stringDrawingOptions_drawingContext_stringDrawingInterface___block_invoke_2;
       v483[3] = &unk_1E7267B20;
-      v483[6] = v86;
+      v483[6] = linkTextAttributesProvider;
       v483[4] = v49;
       v483[5] = v87;
     }
@@ -2528,16 +2528,16 @@ LABEL_143:
     v372 = 0;
   }
 
-  v382 = (a9 >> 10) & 1;
+  v382 = (options >> 10) & 1;
   v406 = width;
   if (v426)
   {
     v422 = v68;
     v88 = v486;
-    v89 = v424;
-    v90 = v424 + v486;
-    v91 = v418;
-    if ((a9 & 8) != 0)
+    v89 = rectCopy;
+    v90 = rectCopy + v486;
+    v91 = drawingContextCopy;
+    if ((options & 8) != 0)
     {
 LABEL_209:
       if (line)
@@ -2562,7 +2562,7 @@ LABEL_209:
 
       else
       {
-        v114 = __NSCoreTypesetterTruncateLine(self, &line, v433, v430, 0, &v498, &TrailingWhitespaceWidth, v82);
+        v114 = __NSCoreTypesetterTruncateLine(self, &line, v433, lineBreakMode, 0, &v498, &TrailingWhitespaceWidth, v82);
         v115 = v498;
         v116 = 0.0;
         if (v498 <= v82)
@@ -2582,19 +2582,19 @@ LABEL_209:
             }
           }
 
-          v118 = [(NSParagraphStyle *)v433 horizontalAlignment];
+          horizontalAlignment = [(NSParagraphStyle *)v433 horizontalAlignment];
           v119 = line;
           v120 = v396 || [(NSParagraphStyle *)v433 _alignmentFollowsWritingDirection];
-          v116 = _flushFactorFromAlignment(v118, IsRightToLeft, v119, v120, v382);
+          v116 = _flushFactorFromAlignment(horizontalAlignment, IsRightToLeft, v119, v120, v382);
         }
 
         v90 = v90 + CTLineGetPenOffsetForFlush(line, v116, v82);
       }
 
       v121 = v115 > v82 && v82 > 0.0;
-      if (a6)
+      if (context)
       {
-        v122 = [a6 isFlipped] ^ 1;
+        v122 = [context isFlipped] ^ 1;
       }
 
       else
@@ -2611,7 +2611,7 @@ LABEL_209:
       if (v426)
       {
         v123 = v90;
-        v124 = a5;
+        paddingCopy4 = padding;
         v125 = v67;
         v126 = v67;
       }
@@ -2643,7 +2643,7 @@ LABEL_209:
           v526.size.height = v66;
           if (CGRectGetHeight(v526) <= 0.0)
           {
-            v124 = a5;
+            paddingCopy4 = padding;
             v128 = v488;
           }
 
@@ -2654,7 +2654,7 @@ LABEL_209:
             v527.size.width = rect_16;
             v527.size.height = v66;
             v128 = CGRectGetHeight(v527);
-            v124 = a5;
+            paddingCopy4 = padding;
           }
 
           v126 = v128 - v487;
@@ -2662,7 +2662,7 @@ LABEL_209:
 
         else
         {
-          v124 = a5;
+          paddingCopy4 = padding;
           v126 = v487;
         }
 
@@ -2685,7 +2685,7 @@ LABEL_209:
 
       v131 = v115 + v129;
       v498 = v131;
-      if (v429)
+      if (laidOutLineFragment)
       {
         v132 = v131 <= v82 || v82 <= 0.0;
         v133 = v488;
@@ -2699,7 +2699,7 @@ LABEL_209:
           v134 = v82;
         }
 
-        v135 = [(NSTypesetter *)self applicationFrameworkContext];
+        applicationFrameworkContext2 = [(NSTypesetter *)self applicationFrameworkContext];
         v136 = v487;
         v528.origin.x = rect;
         v528.origin.y = rect_8;
@@ -2713,14 +2713,14 @@ LABEL_209:
         v482 = v114;
         v481[5] = line;
         v481[4] = self;
-        __NSCoreTypesetterProcessTextLineFragment(v410, theString, v405, 0, Length, v135, v481, v123 - (v123 - v130), v136, v123 - v130, v422, v134, v133, v385, MaxX);
+        __NSCoreTypesetterProcessTextLineFragment(v410, theString, v405, 0, Length, applicationFrameworkContext2, v481, v123 - (v123 - v130), v136, v123 - v130, v422, v134, v133, v385, MaxX);
       }
 
       else
       {
         if (v121)
         {
-          if ((v426 & 1) != 0 || (v529.origin.x = v424, v529.origin.y = v67, v529.size.width = rect_16, v529.size.height = v419, CGRectGetHeight(v529) <= 0.0))
+          if ((v426 & 1) != 0 || (v529.origin.x = rectCopy, v529.origin.y = v67, v529.size.width = rect_16, v529.size.height = v419, CGRectGetHeight(v529) <= 0.0))
           {
             *buffer = 0;
             v455 = 0.0;
@@ -2735,8 +2735,8 @@ LABEL_209:
             v419 = *buffer - v455;
           }
 
-          v139 = v424 - v124;
-          v140 = rect_16 + v124 * 2.0;
+          v139 = rectCopy - paddingCopy4;
+          v140 = rect_16 + paddingCopy4 * 2.0;
         }
 
         else
@@ -2748,19 +2748,19 @@ LABEL_209:
         }
 
         v141 = line;
-        v142 = [(NSTypesetter *)self applicationFrameworkContext];
+        applicationFrameworkContext3 = [(NSTypesetter *)self applicationFrameworkContext];
         v479[0] = MEMORY[0x1E69E9820];
         v479[1] = 3221225472;
         v479[2] = __180__NSCoreTypesetter__stringDrawingCoreTextEngineWithOriginalString_rect_padding_graphicsContext_forceClipping_attributes_stringDrawingOptions_drawingContext_stringDrawingInterface___block_invoke_4;
         v479[3] = &unk_1E7267B70;
-        v480 = v395;
+        v480 = wantsMultilineDeviceMetrics;
         *&v479[6] = v126;
         *&v479[7] = v123;
         *&v479[8] = v125;
         v479[4] = &v502;
         v479[5] = &v506;
-        __NSCoreTypesetterRenderLineAndAttachments(v141, a6, v142, v491, 0, v372, v395, v479, v123, v125, v139, v67, v140, v419);
-        if (((a9 & 8) == 0) | v395 & 1)
+        __NSCoreTypesetterRenderLineAndAttachments(v141, context, applicationFrameworkContext3, v491, 0, v372, wantsMultilineDeviceMetrics, v479, v123, v125, v139, v67, v140, v419);
+        if (((options & 8) == 0) | wantsMultilineDeviceMetrics & 1)
         {
           v513 = *MEMORY[0x1E696AA78];
           v143 = v498;
@@ -2775,7 +2775,7 @@ LABEL_209:
 
         else
         {
-          *(&v143 - 2) = CTLineGetImageBounds(line, v81);
+          *(&v143 - 2) = CTLineGetImageBounds(line, cGContext);
           *&v513 = v144;
           *(&v513 + 1) = v145;
           v514.width = v143;
@@ -2801,16 +2801,16 @@ LABEL_209:
         }
       }
 
-      if (a11)
+      if (interface)
       {
-        a11->var0 = 2;
+        interface->var0 = 2;
       }
 
       goto LABEL_653;
     }
 
 LABEL_202:
-    v107 = [(NSCoreTypesetter *)self isBeginningOfDocument];
+    isBeginningOfDocument = [(NSCoreTypesetter *)self isBeginningOfDocument];
     if (Length == v500 || v410 == 0)
     {
       v109 = v405;
@@ -2821,7 +2821,7 @@ LABEL_202:
       v109 = 0;
     }
 
-    LOBYTE(v364) = !v107;
+    LOBYTE(v364) = !isBeginningOfDocument;
     [NSCoreTypesetter _getLineMetricsForRange:"_getLineMetricsForRange:attributes:attributedString:applySpacing:usesSystemFontLeading:usesNegativeFontLeading:" attributes:0 attributedString:v29 applySpacing:v109 usesSystemFontLeading:v364 usesNegativeFontLeading:?];
     v422 = v110;
     v488 = v111;
@@ -2831,15 +2831,15 @@ LABEL_202:
   }
 
   v92 = Length == v29 && v65;
-  v91 = v418;
-  if (v92 && (v430 > 1 || v82 <= 0.0 || !v374 && ![(NSCoreTypesetter *)self forcedLineBreaks]&& v498 <= v82))
+  v91 = drawingContextCopy;
+  if (v92 && (lineBreakMode > 1 || v82 <= 0.0 || !v374 && ![(NSCoreTypesetter *)self forcedLineBreaks]&& v498 <= v82))
   {
-    v89 = v424;
-    v90 = v424 + v486;
+    v89 = rectCopy;
+    v90 = rectCopy + v486;
     goto LABEL_202;
   }
 
-  if (a6 && ![a6 isFlipped])
+  if (context && ![context isFlipped])
   {
     goto LABEL_653;
   }
@@ -2856,8 +2856,8 @@ LABEL_202:
   v468 = 0u;
   v469 = 0u;
   *buffer = 0u;
-  v93 = [v418 maximumNumberOfLines];
-  v407 = [(NSCoreTypesetter *)self enforcesMinimumTextLineFragment];
+  maximumNumberOfLines2 = [drawingContextCopy maximumNumberOfLines];
+  enforcesMinimumTextLineFragment = [(NSCoreTypesetter *)self enforcesMinimumTextLineFragment];
   v380 = v49;
   v94 = [NSParagraphArbitrator paragraphArbitratorWithAttributedString:v49 range:0, v29];
   v455 = 0.0;
@@ -2881,7 +2881,7 @@ LABEL_202:
   *&v463 = 0;
   v462 = v95;
   v368 = v99;
-  v369 = v97;
+  rectCopy3 = v97;
   *(&v463 + 1) = v97;
   v370 = v98;
   v371 = v96;
@@ -2893,9 +2893,9 @@ LABEL_202:
   WORD4(v466) = 0;
   v516 = v412;
   v517 = v411;
-  if (v93)
+  if (maximumNumberOfLines2)
   {
-    v102 = v93;
+    v102 = maximumNumberOfLines2;
   }
 
   else
@@ -2936,8 +2936,8 @@ LABEL_202:
   *&v148 = 0.0;
   v149 = 0;
   v150 = 0;
-  p_var3 = &a11->var3;
-  if (!a11)
+  p_var3 = &interface->var3;
+  if (!interface)
   {
     p_var3 = 0;
   }
@@ -2947,7 +2947,7 @@ LABEL_202:
   v403 = *MEMORY[0x1E695F058];
   v400 = *(MEMORY[0x1E695F058] + 24);
   v401 = *(MEMORY[0x1E695F058] + 16);
-  v378 = ((a9 & 8) == 0) | v395;
+  v378 = ((options & 8) == 0) | wantsMultilineDeviceMetrics;
   v367 = v443;
   v377 = INFINITY;
   v379 = 0.0;
@@ -2959,9 +2959,9 @@ LABEL_202:
     v420 = v150;
     if ((v150 & 1) != 0 && [(NSDictionary *)[(NSCoreTypesetter *)self _extraLineFragmentAttributes] count])
     {
-      v388 = [(NSCoreTypesetter *)self _extraLineFragmentAttributes];
+      _extraLineFragmentAttributes = [(NSCoreTypesetter *)self _extraLineFragmentAttributes];
       v433 = [(NSCoreTypesetter *)self _paragraphStyleFromAttributes:?];
-      v405 = v388;
+      v405 = _extraLineFragmentAttributes;
     }
 
     else
@@ -2971,22 +2971,22 @@ LABEL_202:
         v433 = -[NSCoreTypesetter _paragraphStyleFromAttributes:](self, "_paragraphStyleFromAttributes:", [v410 attributesAtIndex:v148 - ((v148 != 0) & v420) effectiveRange:0]);
       }
 
-      v388 = 0;
+      _extraLineFragmentAttributes = 0;
     }
 
     v427 = v29;
     if (!v433 || v392 && ([v91 wrapsForTruncationMode] & 1) != 0)
     {
-      v423 = 0;
+      lineBreakMode2 = 0;
     }
 
     else
     {
-      v423 = [(NSParagraphStyle *)v433 lineBreakMode];
+      lineBreakMode2 = [(NSParagraphStyle *)v433 lineBreakMode];
     }
 
     v153 = line;
-    v154 = [(NSCoreTypesetter *)self _fallbackWritingDirection];
+    _fallbackWritingDirection2 = [(NSCoreTypesetter *)self _fallbackWritingDirection];
     if (!v433 || (v155 = [(NSParagraphStyle *)v433 baseWritingDirection], v156 = v155, v155 == -1))
     {
       if (v153)
@@ -2996,30 +2996,30 @@ LABEL_202:
 
       else
       {
-        v156 = v154;
+        v156 = _fallbackWritingDirection2;
       }
 
       if (v394)
       {
-        v157 = v156;
+        baseWritingDirection2 = v156;
         goto LABEL_310;
       }
 
       if (v433)
       {
 LABEL_308:
-        v157 = [(NSParagraphStyle *)v433 baseWritingDirection];
-        if (v157 != NSWritingDirectionNatural)
+        baseWritingDirection2 = [(NSParagraphStyle *)v433 baseWritingDirection];
+        if (baseWritingDirection2 != NSWritingDirectionNatural)
         {
           goto LABEL_310;
         }
       }
 
-      v157 = [NSParagraphStyle defaultWritingDirectionForLanguage:0];
+      baseWritingDirection2 = [NSParagraphStyle defaultWritingDirectionForLanguage:0];
       goto LABEL_310;
     }
 
-    v157 = v155;
+    baseWritingDirection2 = v155;
     if ((v394 & 1) == 0)
     {
       goto LABEL_308;
@@ -3041,27 +3041,27 @@ LABEL_310:
 
     if (v433)
     {
-      v160 = [(NSParagraphStyle *)v433 lineBreakStrategy];
+      lineBreakStrategy = [(NSParagraphStyle *)v433 lineBreakStrategy];
     }
 
     else
     {
-      v160 = +[NSTypesetter defaultLineBreakStrategy];
+      lineBreakStrategy = +[NSTypesetter defaultLineBreakStrategy];
     }
 
-    if (v160 == 0xFFFF)
+    if (lineBreakStrategy == 0xFFFF)
     {
-      v160 = __NSLineBreakStrategyStandardActualOptions([(NSParagraphStyle *)v433 isFullyJustified]);
+      lineBreakStrategy = __NSLineBreakStrategyStandardActualOptions([(NSParagraphStyle *)v433 isFullyJustified]);
     }
 
-    if (v423)
+    if (lineBreakMode2)
     {
-      v161 = v160 & 0xFFFFFFFFFFFFFFF3 | 4;
+      v161 = lineBreakStrategy & 0xFFFFFFFFFFFFFFF3 | 4;
     }
 
     else
     {
-      v161 = v160;
+      v161 = lineBreakStrategy;
     }
 
     if (v433)
@@ -3100,7 +3100,7 @@ LABEL_331:
     [(NSParagraphArbitrator *)v94 setParagraphLine:line];
     [(NSParagraphArbitrator *)v94 setLineBreakStrategy:v161];
     [(NSParagraphArbitrator *)v94 setHyphenationFactor:v165];
-    [(NSParagraphArbitrator *)v94 setTypesetterBehavior:v398];
+    [(NSParagraphArbitrator *)v94 setTypesetterBehavior:typesetterBehavior];
     if (self->_validateLineBreakIndex)
     {
       v454[6] = MEMORY[0x1E69E9820];
@@ -3142,7 +3142,7 @@ LABEL_334:
       goto LABEL_340;
     }
 
-    v386 = v157;
+    v386 = baseWritingDirection2;
     v170 = v148;
     v425 = v427;
     while (1)
@@ -3155,13 +3155,13 @@ LABEL_334:
       {
         v519 = *&v170;
         LOBYTE(v366) = v491 != 0;
-        v176 = [(NSCoreTypesetter *)self _createLayoutLineFragmentStartingWithCharacterIndex:&v519 proposedLineFragmentRect:&v516 baseLineRef:&line range:v170 paragraphStyle:v425 paragraphArbitrator:v433 lineBreakMode:v94 hasAttachments:v423 lineFragmentRect:v366 glyphOrigin:&rect1 hyphenated:&v453 forcedClusterBreak:&v452, v391, v367];
-        v174 = v176;
+        v367 = [(NSCoreTypesetter *)self _createLayoutLineFragmentStartingWithCharacterIndex:&v519 proposedLineFragmentRect:&v516 baseLineRef:&line range:v170 paragraphStyle:v425 paragraphArbitrator:v433 lineBreakMode:v94 hasAttachments:lineBreakMode2 lineFragmentRect:v366 glyphOrigin:&rect1 hyphenated:&v453 forcedClusterBreak:&v452, v391, v367];
+        v174 = v367;
         v167 = v427;
         location = v148;
         if (line)
         {
-          StringRange = CTLineGetStringRange(v176);
+          StringRange = CTLineGetStringRange(v367);
           location = StringRange.location;
           v167 = StringRange.length;
         }
@@ -3192,7 +3192,7 @@ LABEL_358:
 
       if (v170 == v148)
       {
-        if (v423 > 1 || v172 <= 0.0 || (v171 = v498, !v374 && v498 <= v172))
+        if (lineBreakMode2 > 1 || v172 <= 0.0 || (v171 = v498, !v374 && v498 <= v172))
         {
           if (![(NSCoreTypesetter *)self forcedLineBreaks])
           {
@@ -3212,7 +3212,7 @@ LABEL_358:
         }
       }
 
-      v173 = [(NSCoreTypesetter *)self _createLineRefForParentLineRef:&line range:v170 availableWidth:v425 offset:v94 paragraphArbitrator:v423 lineBreakMode:&v452 hyphenated:v172 forcedClusterBreak:v391];
+      v173 = [(NSCoreTypesetter *)self _createLineRefForParentLineRef:&line range:v170 availableWidth:v425 offset:v94 paragraphArbitrator:lineBreakMode2 lineBreakMode:&v452 hyphenated:v172 forcedClusterBreak:v391];
       v174 = v173;
       if (!v173)
       {
@@ -3232,13 +3232,13 @@ LABEL_359:
       }
 
       v178 = v405;
-      if (theString != v383)
+      if (theString != stringCopy2)
       {
         v178 = v405;
         if (Length != v500)
         {
-          v178 = line ? 0 : v388;
-          if (!(line | v388))
+          v178 = line ? 0 : _extraLineFragmentAttributes;
+          if (!(line | _extraLineFragmentAttributes))
           {
             v178 = [v410 attributesAtIndex:v148 - ((v148 != 0) & v420) effectiveRange:0];
           }
@@ -3248,10 +3248,10 @@ LABEL_359:
       v179 = rangeOfParagraphSeparatorAtIndex(Length, buffer, location + v167);
       v181 = v179;
       v182 = v180;
-      if (v429)
+      if (laidOutLineFragment)
       {
-        v183 = [(NSCoreTypesetter *)self isBeginningOfDocument];
-        if (v181 + v182 == Length && v183)
+        isBeginningOfDocument2 = [(NSCoreTypesetter *)self isBeginningOfDocument];
+        if (v181 + v182 == Length && isBeginningOfDocument2)
         {
 LABEL_372:
           if (v182)
@@ -3297,16 +3297,16 @@ LABEL_378:
       v530.origin.y = rect_8;
       v530.size.width = width;
       v530.size.height = height;
-      if (CGRectGetHeight(v530) <= 0.0 || v407)
+      if (CGRectGetHeight(v530) <= 0.0 || enforcesMinimumTextLineFragment)
       {
         v189 = v519;
       }
 
       else
       {
-        v190 = [(NSCoreTypesetter *)self forcedLineBreaks];
+        forcedLineBreaks = [(NSCoreTypesetter *)self forcedLineBreaks];
         v189 = v519;
-        if (!v190)
+        if (!forcedLineBreaks)
         {
           y = v516.y;
           v531.origin.x = rect;
@@ -3345,7 +3345,7 @@ LABEL_395:
       }
 
       v194 = v456;
-      if ((!v429 || !v431) && *(v456 + 145) != 1)
+      if ((!laidOutLineFragment || !v431) && *(v456 + 145) != 1)
       {
         goto LABEL_458;
       }
@@ -3447,41 +3447,41 @@ LABEL_422:
       v451 = v198 + v451;
       if (v431 == 1 && [(NSCoreTypesetter *)self _shouldShowLineBadges])
       {
-        v205 = [(NSParagraphArbitrator *)v397 debugString];
-        if (v205)
+        debugString = [(NSParagraphArbitrator *)v397 debugString];
+        if (debugString)
         {
           *&v206 = COERCE_DOUBLE([UIFont systemFontOfSize:9.0]);
           if (+[NSTextGraphicsContextProvider textGraphicsContextProviderClassRespondsToColorQuery])
           {
-            v207 = [(objc_class *)+[NSTextGraphicsContextProvider textGraphicsContextProviderClass](NSTextGraphicsContextProvider colorClassForApplicationFrameworkContext:"colorClassForApplicationFrameworkContext:", v384];
+            v384 = [(objc_class *)+[NSTextGraphicsContextProvider textGraphicsContextProviderClass](NSTextGraphicsContextProvider colorClassForApplicationFrameworkContext:"colorClassForApplicationFrameworkContext:", applicationFrameworkContext];
           }
 
           else
           {
-            v207 = +[NSTextGraphicsContextProvider __defaultColorClass];
+            v384 = +[NSTextGraphicsContextProvider __defaultColorClass];
           }
 
-          v230 = v207;
-          v231 = [(objc_class *)v207 blackColor];
+          v230 = v384;
+          blackColor = [(objc_class *)v384 blackColor];
           *&v232 = COERCE_DOUBLE([(objc_class *)v230 systemYellowColor]);
           *&v518[0] = @"NSFont";
           *&v518[1] = @"NSColor";
           v519 = *&v206;
-          v520 = v231;
+          v520 = blackColor;
           *&v518[2] = @"NSBackgroundColor";
           v521 = *&v232;
           v233 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v519 forKeys:v518 count:3];
-          v205 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v205 attributes:v233];
+          debugString = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:debugString attributes:v233];
         }
       }
 
       else
       {
-        v205 = 0;
+        debugString = 0;
       }
 
       v208 = v456;
-      if (v429)
+      if (laidOutLineFragment)
       {
         v209 = *(v456 + 40);
         v210 = *(v456 + 120);
@@ -3506,7 +3506,7 @@ LABEL_422:
         v532.size.height = *(v456 + 120);
         MinX = CGRectGetMinX(v532);
         v219 = *(v456 + 96);
-        v220 = [(NSTypesetter *)self applicationFrameworkContext];
+        applicationFrameworkContext4 = [(NSTypesetter *)self applicationFrameworkContext];
         v533.origin.x = rect;
         v533.origin.y = rect_8;
         v533.size.width = v406;
@@ -3518,9 +3518,9 @@ LABEL_422:
         v448[3] = &unk_1E7267BC0;
         v448[6] = &v455;
         v449 = v200;
-        v448[4] = v205;
+        v448[4] = debugString;
         v448[5] = self;
-        __NSCoreTypesetterProcessTextLineFragment(v410, theString, v405, v209, location - v209, v220, v448, v211 - MinX, v217, v212 + v219, v214, v216, v210, v385, v221);
+        __NSCoreTypesetterProcessTextLineFragment(v410, theString, v405, v209, location - v209, applicationFrameworkContext4, v448, v211 - MinX, v217, v212 + v219, v214, v216, v210, v385, v221);
         v208 = v456;
         width = v406;
       }
@@ -3538,7 +3538,7 @@ LABEL_422:
             if (v225 <= 0.0 || v451 <= v225)
             {
               v229 = v368;
-              v228 = v369;
+              rectCopy2 = rectCopy3;
               v227 = v370;
               v226 = v371;
             }
@@ -3552,18 +3552,18 @@ LABEL_422:
               v227 = height + v519 - v518[0];
               v208 = v456;
               v222 = *(v456 + 32);
-              v228 = rect;
+              rectCopy2 = rect;
               v229 = v406;
             }
 
             v234 = *(v208 + 96);
             v235 = *(v208 + 104);
-            v236 = [(NSTypesetter *)self applicationFrameworkContext];
+            applicationFrameworkContext5 = [(NSTypesetter *)self applicationFrameworkContext];
             v444[0] = MEMORY[0x1E69E9820];
             v444[1] = 3221225472;
             v444[2] = __180__NSCoreTypesetter__stringDrawingCoreTextEngineWithOriginalString_rect_padding_graphicsContext_forceClipping_attributes_stringDrawingOptions_drawingContext_stringDrawingInterface___block_invoke_8;
             v444[3] = &unk_1E7267BE8;
-            v447 = v395;
+            v447 = wantsMultilineDeviceMetrics;
             *&v444[8] = rect_8 + v235;
             v445 = v223 + rect + v234;
             v446 = v224 + rect_8 + v235;
@@ -3571,7 +3571,7 @@ LABEL_422:
             v444[5] = &v506;
             v444[6] = &v493;
             v444[7] = &v455;
-            __NSCoreTypesetterRenderLineAndAttachments(v222, a6, v236, v491, v205, v372, v395, v444, v445, v446, v228, v226, v229, v227);
+            __NSCoreTypesetterRenderLineAndAttachments(v222, context, applicationFrameworkContext5, v491, debugString, v372, wantsMultilineDeviceMetrics, v444, v445, v446, rectCopy2, v226, v229, v227);
             v208 = v456;
             width = v406;
           }
@@ -3628,7 +3628,7 @@ LABEL_458:
       *(v246 + 56) = *&v148;
       *(v246 + 64) = v427;
       *(v246 + 72) = v244;
-      *(v246 + 80) = v423;
+      *(v246 + 80) = lineBreakMode2;
       *(v246 + 88) = 0;
       *(v246 + 96) = origin;
       *(v246 + 112) = size;
@@ -3649,7 +3649,7 @@ LABEL_458:
       v159 = rect1.size.width;
       if (rect1.size.width > 0.0)
       {
-        v249 = [(NSParagraphStyle *)v433 spansAllLines];
+        spansAllLines = [(NSParagraphStyle *)v433 spansAllLines];
         if (v433)
         {
           if (![(NSParagraphStyle *)v433 isFullyJustified])
@@ -3663,13 +3663,13 @@ LABEL_468:
           v252 = *(v456 + 56);
           v253 = *(v456 + 64);
           v254 = rect1.size.width;
-          v255 = [(NSParagraphArbitrator *)v94 mayCompressLines];
+          mayCompressLines = [(NSParagraphArbitrator *)v94 mayCompressLines];
           if (v248 <= v254)
           {
-            v255 = v251 + v250 != v253 + v252 || v249;
+            mayCompressLines = v251 + v250 != v253 + v252 || spansAllLines;
           }
 
-          if (*(v456 + 145) == 1 && ((*(v456 + 32) != 0) & v255) == 1)
+          if (*(v456 + 145) == 1 && ((*(v456 + 32) != 0) & mayCompressLines) == 1)
           {
             v256 = CTLineCreateJustifiedLine(*(v456 + 32), 1.0, rect1.size.width);
             if (v256)
@@ -3682,10 +3682,10 @@ LABEL_468:
           if (v433)
           {
 LABEL_475:
-            v257 = [(NSParagraphStyle *)v433 _alignmentFollowsWritingDirection];
-            v258 = [(NSParagraphStyle *)v433 horizontalAlignment];
+            _alignmentFollowsWritingDirection = [(NSParagraphStyle *)v433 _alignmentFollowsWritingDirection];
+            horizontalAlignment2 = [(NSParagraphStyle *)v433 horizontalAlignment];
 LABEL_477:
-            v159 = _flushFactorFromAlignment(v258, rect_24, line, (v396 | v257) & 1, v382);
+            v159 = _flushFactorFromAlignment(horizontalAlignment2, rect_24, line, (v396 | _alignmentFollowsWritingDirection) & 1, v382);
             *(v456 + 88) = v159;
             goto LABEL_478;
           }
@@ -3696,8 +3696,8 @@ LABEL_477:
           goto LABEL_468;
         }
 
-        v257 = [-[NSTypesetter defaultParagraphStyle](self "defaultParagraphStyle")];
-        v258 = [-[NSTypesetter defaultParagraphStyle](self "defaultParagraphStyle")];
+        _alignmentFollowsWritingDirection = [-[NSTypesetter defaultParagraphStyle](self "defaultParagraphStyle")];
+        horizontalAlignment2 = [-[NSTypesetter defaultParagraphStyle](self "defaultParagraphStyle")];
         goto LABEL_477;
       }
 
@@ -3711,7 +3711,7 @@ LABEL_478:
       v259 = v431 + 1;
       if (!line)
       {
-        v407 = 0;
+        enforcesMinimumTextLineFragment = 0;
         v152 = 0;
         goto LABEL_569;
       }
@@ -3719,7 +3719,7 @@ LABEL_478:
       if (v399 - 1 == v431)
       {
         v152 = 0;
-        v407 = 0;
+        enforcesMinimumTextLineFragment = 0;
         v29 = v427;
         v148 += v427;
         v431 = v399;
@@ -3739,7 +3739,7 @@ LABEL_478:
         v170 = location + v167;
       }
 
-      v407 = 0;
+      enforcesMinimumTextLineFragment = 0;
       ++v431;
       v264 = v261 >= v260;
       v263 = v261 - v260;
@@ -3784,10 +3784,10 @@ LABEL_496:
       v149 = v404;
     }
 
-    v91 = v418;
+    v91 = drawingContextCopy;
     if ((v149 & 1) != 0 || v148 >= Length)
     {
-      if (self->_wantsExtraLineFragment && (v420 & 1) != 0 && v429)
+      if (self->_wantsExtraLineFragment && (v420 & 1) != 0 && laidOutLineFragment)
       {
         v294 = *(v456 + 40);
         v295 = *(v456 + 104);
@@ -3796,7 +3796,7 @@ LABEL_496:
         v297 = *(v456 + 96);
         v299 = *(v456 + 120);
         v300 = *(v456 + 128);
-        v301 = [(NSTypesetter *)self applicationFrameworkContext];
+        applicationFrameworkContext6 = [(NSTypesetter *)self applicationFrameworkContext];
         v302 = *(v456 + 136);
         v534.origin.x = rect;
         v534.origin.y = rect_8;
@@ -3808,7 +3808,7 @@ LABEL_496:
         v443[0] = __180__NSCoreTypesetter__stringDrawingCoreTextEngineWithOriginalString_rect_padding_graphicsContext_forceClipping_attributes_stringDrawingOptions_drawingContext_stringDrawingInterface___block_invoke_9;
         v443[1] = &unk_1E7267AA8;
         v443[2] = self;
-        __NSCoreTypesetterProcessTextLineFragment(v410, theString, v405, v294, Length - v294, v301, v442, v297 + v296 * v298 + v300 - (v297 + v296 * v298 + v300), v302, v297 + v296 * v298 + v300, v295, 0.0, v299, v385, v303);
+        __NSCoreTypesetterProcessTextLineFragment(v410, theString, v405, v294, Length - v294, applicationFrameworkContext6, v442, v297 + v296 * v298 + v300 - (v297 + v296 * v298 + v300), v302, v297 + v296 * v298 + v300, v295, 0.0, v299, v385, v303);
         v421 = 0;
         width = v406;
         v29 = v427;
@@ -3943,12 +3943,12 @@ LABEL_552:
     {
       v306 = v272;
       [(NSCoreTypesetter *)self _updateBidiLevelsAndBaseWritingDirectionForAttributedString:v380 paragraphRange:v148];
-      v91 = v418;
+      v91 = drawingContextCopy;
       v149 = v271;
       v269 = v428;
-      v307 = [(NSCoreTypesetter *)self layoutOrientation];
-      v308 = [(NSCoreTypesetter *)self limitsLayoutForSuspiciousContents];
-      line = __NSCoreTypesetterCreateBaseLineFromAttributedString(v380, v148, v306, v307, v308, v491, self->_bidiLevels, self->_resolvedBaseWritingDirection);
+      layoutOrientation2 = [(NSCoreTypesetter *)self layoutOrientation];
+      limitsLayoutForSuspiciousContents2 = [(NSCoreTypesetter *)self limitsLayoutForSuspiciousContents];
+      line = __NSCoreTypesetterCreateBaseLineFromAttributedString(v380, v148, v306, layoutOrientation2, limitsLayoutForSuspiciousContents2, v491, self->_bidiLevels, self->_resolvedBaseWritingDirection);
       v309 = CTLineGetTypographicBounds(line, 0, 0, 0);
       TrailingWhitespaceWidth = CTLineGetTrailingWhitespaceWidth(line);
       v498 = v309 - TrailingWhitespaceWidth;
@@ -3993,7 +3993,7 @@ LABEL_561:
     else
     {
       v29 = 0;
-      v91 = v418;
+      v91 = drawingContextCopy;
       v149 = v271;
       v269 = v428;
       if (*&v148 == 0.0)
@@ -4021,7 +4021,7 @@ LABEL_566:
 
   while ((v149 & 1) == 0 && (v148 < Length) | v421 & 1);
   v311 = v456;
-  v83 = a11;
+  interfaceCopy3 = interface;
   if (*(v456 + 145) != 1)
   {
     goto LABEL_645;
@@ -4045,7 +4045,7 @@ LABEL_566:
   if (!v392)
   {
 LABEL_576:
-    v312 = *(v311 + 80);
+    lineBreakMode3 = *(v311 + 80);
     v313 = 1;
     goto LABEL_594;
   }
@@ -4071,17 +4071,17 @@ LABEL_575:
 LABEL_580:
   if ([v91 wrapsForTruncationMode])
   {
-    v312 = [*(v456 + 72) lineBreakMode];
+    lineBreakMode3 = [*(v456 + 72) lineBreakMode];
   }
 
   else if (v381 >= 3)
   {
-    v312 = 4;
+    lineBreakMode3 = 4;
   }
 
   else
   {
-    v312 = v387;
+    lineBreakMode3 = containerBreakMode;
   }
 
   v311 = v456;
@@ -4118,7 +4118,7 @@ LABEL_594:
   if (v322 <= 0.0 || v322 >= v321)
   {
     v324 = 0.0;
-    if ((v312 - 3) >= 3)
+    if ((lineBreakMode3 - 3) >= 3)
     {
       v325 = 0.0;
     }
@@ -4136,7 +4136,7 @@ LABEL_594:
     else
     {
       v324 = v325;
-      v323 = (v312 - 3) < 3;
+      v323 = (lineBreakMode3 - 3) < 3;
     }
   }
 
@@ -4144,13 +4144,13 @@ LABEL_594:
   {
     v323 = 0;
     v324 = 0.0;
-    if ((v312 - 3) < 3)
+    if ((lineBreakMode3 - 3) < 3)
     {
       v324 = *(v320 + 112);
     }
   }
 
-  v326 = __NSCoreTypesetterTruncateLine(self, (v320 + 32), *(v320 + 72), v312, v323, &rect1.origin.x, &v519, v324);
+  v326 = __NSCoreTypesetterTruncateLine(self, (v320 + 32), *(v320 + 72), lineBreakMode3, v323, &rect1.origin.x, &v519, v324);
   if (v322 > 0.0 && v322 < 10000000.0)
   {
     v327 = CTLineGetPenOffsetForFlush(*(v456 + 32), *(v456 + 88), v322);
@@ -4158,7 +4158,7 @@ LABEL_594:
   }
 
   v328 = v456;
-  if (v429)
+  if (laidOutLineFragment)
   {
     v329 = *(v456 + 32);
     v330 = v149;
@@ -4178,8 +4178,8 @@ LABEL_594:
     if (v332 + v331 == *(v328 + 64) + *(v328 + 56))
     {
       *&v518[0] = v332 + v331;
-      v344 = [v410 string];
-      [v344 getParagraphStart:0 end:v518 contentsEnd:0 forRange:{*&v518[0] - 1, 1}];
+      string = [v410 string];
+      [string getParagraphStart:0 end:v518 contentsEnd:0 forRange:{*&v518[0] - 1, 1}];
       if (*&v518[0] > (v332 + v331))
       {
         v331 = *&v518[0] - v332;
@@ -4233,7 +4233,7 @@ LABEL_594:
     v535.size.height = v353;
     v355 = CGRectGetMinX(v535);
     v356 = *(v456 + 96);
-    v357 = [(NSTypesetter *)self applicationFrameworkContext];
+    applicationFrameworkContext7 = [(NSTypesetter *)self applicationFrameworkContext];
     v536.origin.x = rect;
     v536.origin.y = rect_8;
     v536.size.width = v406;
@@ -4247,7 +4247,7 @@ LABEL_594:
     v441 = v330 & 1;
     v439[5] = &v455;
     v439[4] = self;
-    __NSCoreTypesetterProcessTextLineFragment(v410, theString, v405, v332, v331, v357, v439, v346 - v355, v354, v351 + v356, v352, v350, v353, v385, v358);
+    __NSCoreTypesetterProcessTextLineFragment(v410, theString, v405, v332, v331, applicationFrameworkContext7, v439, v346 - v355, v354, v351 + v356, v352, v350, v353, v385, v358);
     v339 = v456;
     width = v406;
   }
@@ -4265,24 +4265,24 @@ LABEL_594:
       v371 = rect_8 - v518[0];
       v328 = v456;
       v368 = width;
-      v369 = rect;
+      rectCopy3 = rect;
     }
 
     v335 = *(v328 + 96);
     v336 = *(v328 + 104);
     v337 = *(v328 + 32);
-    v338 = [(NSTypesetter *)self applicationFrameworkContext];
+    applicationFrameworkContext8 = [(NSTypesetter *)self applicationFrameworkContext];
     v435[0] = MEMORY[0x1E69E9820];
     v435[1] = 3221225472;
     v435[2] = __180__NSCoreTypesetter__stringDrawingCoreTextEngineWithOriginalString_rect_padding_graphicsContext_forceClipping_attributes_stringDrawingOptions_drawingContext_stringDrawingInterface___block_invoke_11;
     v435[3] = &unk_1E7267B70;
-    v438 = v395;
+    v438 = wantsMultilineDeviceMetrics;
     *&v435[6] = rect_8 + v336;
     v436 = v333 + rect + v335;
     v437 = v334 + rect_8 + v336;
     v435[4] = &v502;
     v435[5] = &v506;
-    __NSCoreTypesetterRenderLineAndAttachments(v337, a6, v338, v491, 0, v372, v395, v435, v436, v437, v369, v371, v368, v370);
+    __NSCoreTypesetterRenderLineAndAttachments(v337, context, applicationFrameworkContext8, v491, 0, v372, wantsMultilineDeviceMetrics, v435, v436, v437, rectCopy3, v371, v368, v370);
     v339 = v456;
     if (v378)
     {
@@ -4325,9 +4325,9 @@ LABEL_645:
   [v91 setNumberOfLineFragments:v431];
   [v91 setTotalBounds:{v513, v514}];
   [(NSParagraphArbitrator *)v94 reset];
-  if (a11)
+  if (interface)
   {
-    a11->var0 = 3;
+    interface->var0 = 3;
   }
 
   _Block_object_dispose(&v455, 8);
@@ -4344,20 +4344,20 @@ LABEL_653:
   }
 
 LABEL_657:
-  if (v83)
+  if (interfaceCopy3)
   {
-    v83->var1 = v494[3];
+    interfaceCopy3->var1 = v494[3];
   }
 
   [(_NSTextAttachmentLayoutContext *)v491 setTextContainer:0];
 
   _Block_object_dispose(&v493, 8);
 LABEL_660:
-  if (v395)
+  if (wantsMultilineDeviceMetrics)
   {
     v359 = v507[4];
     v507[5] = v503[3] + v507[5];
-    [v418 setMultilineDeviceMetricsRect:v359];
+    [drawingContextCopy setMultilineDeviceMetricsRect:v359];
   }
 
 LABEL_662:
@@ -4580,9 +4580,9 @@ void __180__NSCoreTypesetter__stringDrawingCoreTextEngineWithOriginalString_rect
   }
 }
 
-- (int)_NSFastDrawString:(id)a3 length:(unint64_t)a4 attributes:(id)a5 paragraphStyle:(id)a6 typesetterBehavior:(int64_t)a7 lineBreakMode:(int64_t)a8 rect:(CGRect)a9 padding:(double)a10 graphicsContext:(id)a11 baselineRendering:(BOOL)a12 usesFontLeading:(BOOL)a13 usesScreenFont:(BOOL)a14 scrollable:(BOOL)a15 syncAlignment:(BOOL)a16 mirrored:(BOOL)a17 boundingRectPointer:(CGRect *)a18 baselineOffsetPointer:(double *)a19 drawingContext:(id)a20
+- (int)_NSFastDrawString:(id)string length:(unint64_t)length attributes:(id)attributes paragraphStyle:(id)style typesetterBehavior:(int64_t)behavior lineBreakMode:(int64_t)mode rect:(CGRect)rect padding:(double)self0 graphicsContext:(id)self1 baselineRendering:(BOOL)self2 usesFontLeading:(BOOL)self3 usesScreenFont:(BOOL)self4 scrollable:(BOOL)self5 syncAlignment:(BOOL)self6 mirrored:(BOOL)self7 boundingRectPointer:(CGRect *)self8 baselineOffsetPointer:(double *)self9 drawingContext:(id)drawingContext
 {
-  v20 = MEMORY[0x1EEE9AC00](self, a2, a3, a4, a5, a6, a7, a8);
+  v20 = MEMORY[0x1EEE9AC00](self, a2, string, length, attributes, style, behavior, mode);
   v270 = v22;
   theString = v21;
   v24 = v23;
@@ -4596,9 +4596,9 @@ void __180__NSCoreTypesetter__stringDrawingCoreTextEngineWithOriginalString_rect
   v39 = v38;
   v41 = v40;
   v328[128] = *MEMORY[0x1E69E9840];
-  v42 = [v40 laidOutLineFragment];
+  laidOutLineFragment = [v40 laidOutLineFragment];
   v43 = [v26 count];
-  v268 = [v41 applicationFrameworkContext];
+  applicationFrameworkContext = [v41 applicationFrameworkContext];
   v44 = [v26 objectForKey:@"NSColor"];
   v45 = [v26 objectForKey:@"NSShadow"];
   v46 = v45;
@@ -4630,18 +4630,18 @@ void __180__NSCoreTypesetter__stringDrawingCoreTextEngineWithOriginalString_rect
   }
 
   v274 = v49;
-  v267 = a20;
-  v50 = [a20 layout];
+  drawingContextCopy = drawingContext;
+  layout = [drawingContext layout];
   v325 = 0;
   v324 = 0;
   v323 = 0;
   v322 = 0.0;
   v321 = 0;
   v320 = 0;
-  if ([(_NSCoreTypesetterLayoutCache *)v50 getCount:&v324 glyphs:&v323 advances:&v322 elasticAdvances:&v321 resolvedFont:&v320 textAlignment:?])
+  if ([(_NSCoreTypesetterLayoutCache *)layout getCount:&v324 glyphs:&v323 advances:&v322 elasticAdvances:&v321 resolvedFont:&v320 textAlignment:?])
   {
-    v51 = v42;
-    if (v42)
+    v51 = laidOutLineFragment;
+    if (laidOutLineFragment)
     {
       [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
     }
@@ -4656,7 +4656,7 @@ void __180__NSCoreTypesetter__stringDrawingCoreTextEngineWithOriginalString_rect
     goto LABEL_16;
   }
 
-  v266 = v42;
+  v266 = laidOutLineFragment;
   if (![v26 objectForKey:*MEMORY[0x1E69655D0]])
   {
     v67 = [v26 objectForKey:@"NSFont"];
@@ -4686,7 +4686,7 @@ void __180__NSCoreTypesetter__stringDrawingCoreTextEngineWithOriginalString_rect
       }
 
       v265 = v28;
-      if (v268 == 2 && a14)
+      if (applicationFrameworkContext == 2 && font)
       {
         v88 = v24;
         v68 = [v68 screenFontWithRenderingMode:0];
@@ -4716,9 +4716,9 @@ void __180__NSCoreTypesetter__stringDrawingCoreTextEngineWithOriginalString_rect
       v100 = [v26 objectForKey:@"NSLigature"];
       if (v100)
       {
-        v101 = [v100 intValue];
-        HIDWORD(v261) = v101 != 0;
-        if (!v101)
+        intValue = [v100 intValue];
+        HIDWORD(v261) = intValue != 0;
+        if (!intValue)
         {
           ++v48;
         }
@@ -4737,14 +4737,14 @@ void __180__NSCoreTypesetter__stringDrawingCoreTextEngineWithOriginalString_rect
         v102 = +[NSParagraphStyle defaultParagraphStyle];
       }
 
-      if ([(NSParagraphStyle *)v102 _isSuitableForFastStringDrawingWithAlignment:&v319 mirrorsTextAlignment:a17 lineBreakMode:0 tighteningFactorForTruncation:0])
+      if ([(NSParagraphStyle *)v102 _isSuitableForFastStringDrawingWithAlignment:&v319 mirrorsTextAlignment:mirrored lineBreakMode:0 tighteningFactorForTruncation:0])
       {
         if ([v26 objectForKey:@"NSParagraphStyle"])
         {
           ++v48;
         }
 
-        if (a16 && (v319 - 3) <= 1)
+        if (alignment && (v319 - 3) <= 1)
         {
           v319 = 2 * ([(NSParagraphStyle *)v88 baseWritingDirection]== NSWritingDirectionRightToLeft);
         }
@@ -4811,7 +4811,7 @@ void __180__NSCoreTypesetter__stringDrawingCoreTextEngineWithOriginalString_rect
 
             v260 = 0;
             v115 = 0;
-            v249 = 0;
+            coveredCharacterSet = 0;
             v315 = 0;
             v316 = 0;
             v116 = v327;
@@ -4819,7 +4819,7 @@ void __180__NSCoreTypesetter__stringDrawingCoreTextEngineWithOriginalString_rect
             v312 = CStringPtr;
             LODWORD(v254) = v99;
 LABEL_115:
-            v118 = v267;
+            v118 = drawingContextCopy;
 LABEL_116:
             v119 = v115 + 64;
             v120 = v115;
@@ -4849,13 +4849,13 @@ LABEL_116:
                 v124 = v315;
                 if (v316 <= v120 || v315 > v120)
                 {
-                  v126 = OUTLINED_FUNCTION_0_3(v118, v106, v107, v108, v109, v110, v111, v112, v246, v247, v249, v250, recta, v254, glyphs, v260, v261, v263, v265, v266, v267, v268, v269, v270, theString, v274, v276, v277, v278, v279, v280, v281, v282, v283, v284, v285, v286, v287, v288, v289, v290, v291, theSet[0], theSet[1], v293, *(&v293 + 1), *buffer, v295, v296, v297, v298, v299, v300, v301, v302, v303, v304, v305, v306, v307, v308, v309, v310);
+                  v126 = OUTLINED_FUNCTION_0_3(v118, v106, v107, v108, v109, v110, v111, v112, v246, v247, coveredCharacterSet, v250, recta, v254, glyphs, v260, v261, v263, v265, v266, drawingContextCopy, applicationFrameworkContext, v269, v270, theString, v274, v276, v277, v278, v279, v280, v281, v282, v283, v284, v285, v286, v287, v288, v289, v290, v291, theSet[0], theSet[1], v293, *(&v293 + 1), *buffer, v295, v296, v297, v298, v299, v300, v301, v302, v303, v304, v305, v306, v307, v308, v309, v310);
                   v127 = v116;
                   v129 = v128;
                   CFStringGetCharacters(v126, v329, buffer);
                   v117 = v129;
                   v116 = v127;
-                  v118 = v267;
+                  v118 = drawingContextCopy;
                   v124 = v315;
                 }
 
@@ -4871,7 +4871,7 @@ LABEL_327:
                   v237 = v117;
                   CTFontTransformGlyphsWithLanguage();
                   v117 = v237;
-                  v118 = v267;
+                  v118 = drawingContextCopy;
                   if (v238 != 0.0)
                   {
                     return 0;
@@ -4889,7 +4889,7 @@ LABEL_327:
                     v240 = v117;
                     [v68 _totalAdvancementForNativeGlyphs:v260 count:v53];
                     v117 = v240;
-                    v118 = v267;
+                    v118 = drawingContextCopy;
                     v239 = v241;
                   }
                 }
@@ -4919,15 +4919,15 @@ LABEL_327:
                 v320 = v319;
                 if ([v118 cachesLayout])
                 {
-                  if (v50)
+                  if (layout)
                   {
-                    v245 = v50;
+                    v245 = layout;
                   }
 
                   else
                   {
                     v245 = objc_alloc_init(_NSCoreTypesetterLayoutCache);
-                    [v267 setLayout:v245];
+                    [drawingContextCopy setLayout:v245];
                   }
 
                   [(_NSCoreTypesetterLayoutCache *)&v245->super.isa setCount:v243 glyphs:v328 advances:v327 elasticAdvances:v68 resolvedFont:v244 textAlignment:v239];
@@ -4956,8 +4956,8 @@ LABEL_16:
                 if (v51 && v32 > 0.0 && ([v41 enforcesMinimumTextLineFragment] & 1) == 0 && v55 > v32)
                 {
                   v66 = *(MEMORY[0x1E696AA80] + 16);
-                  a18->origin = *MEMORY[0x1E696AA80];
-                  a18->size = v66;
+                  pointer->origin = *MEMORY[0x1E696AA80];
+                  pointer->size = v66;
                   return 2;
                 }
 
@@ -4993,14 +4993,14 @@ LABEL_16:
                 rect = v32;
                 v259 = v55;
                 v251 = v53;
-                if (!a11)
+                if (!context)
                 {
                   if (v320 != 2)
                   {
                     v81 = v262;
                     v80 = v264;
                     v82 = theString;
-                    v83 = a18;
+                    pointerCopy2 = pointer;
                     if (v320 == 1)
                     {
                       v84 = v37 + (v34 - v72) * 0.5;
@@ -5012,7 +5012,7 @@ LABEL_16:
                     }
 
 LABEL_275:
-                    if (v83 | v51)
+                    if (pointerCopy2 | v51)
                     {
                       v206 = 0.0;
                       if (v70)
@@ -5030,7 +5030,7 @@ LABEL_275:
                         while (v208);
                       }
 
-                      if (v270 != 2 && !a11 && v34 != 0.0 && v206 > v34 + 0.001)
+                      if (v270 != 2 && !context && v34 != 0.0 && v206 > v34 + 0.001)
                       {
                         return 1;
                       }
@@ -5042,7 +5042,7 @@ LABEL_275:
                         v212 = v213;
                       }
 
-                      if (a12)
+                      if (rendering)
                       {
                         v214 = v57 - v259;
                       }
@@ -5067,7 +5067,7 @@ LABEL_275:
                         v275 = v212;
                         v217 = v41[72] == 1 && [(__CFString *)v82 length]> v80;
                         v218 = [(__CFString *)v82 length];
-                        v219 = [v41 applicationFrameworkContext];
+                        applicationFrameworkContext2 = [v41 applicationFrameworkContext];
                         v332.origin.x = v37;
                         v332.origin.y = v36;
                         v332.size.width = v34;
@@ -5084,7 +5084,7 @@ LABEL_275:
                         v285 = v41;
                         v286 = v324;
                         LOBYTE(v291) = v217;
-                        __NSCoreTypesetterProcessTextLineFragment(0, v82, v26, 0, v218, v219, &v281, 0.0, v57, v84 + 0.0, v214, v216, v259, v275, MaxX);
+                        __NSCoreTypesetterProcessTextLineFragment(0, v82, v26, 0, v218, applicationFrameworkContext2, &v281, 0.0, v57, v84 + 0.0, v214, v216, v259, v275, MaxX);
                         if (v217)
                         {
                           v221 = *MEMORY[0x1E696AA78];
@@ -5099,7 +5099,7 @@ LABEL_275:
                           }
 
                           theStringa = *&v221;
-                          v222 = [v41 _extraLineFragmentAttributes];
+                          _extraLineFragmentAttributes = [v41 _extraLineFragmentAttributes];
                           v223 = 0.0;
                           if (v81)
                           {
@@ -5107,19 +5107,19 @@ LABEL_275:
                             v223 = v224;
                           }
 
-                          if (!v222)
+                          if (!_extraLineFragmentAttributes)
                           {
-                            v222 = v26;
+                            _extraLineFragmentAttributes = v26;
                           }
 
                           *&glyphsb = v57;
-                          if ([v222 count])
+                          if ([_extraLineFragmentAttributes count])
                           {
                             [v41 isBeginningOfDocument];
                             [OUTLINED_FUNCTION_1_3() _getLineMetricsForRange:? attributes:? attributedString:? applySpacing:? usesSystemFontLeading:? usesNegativeFontLeading:?];
                             v271 = v225;
                             v227 = v226;
-                            v81 = [v41 _paragraphStyleFromAttributes:v222];
+                            v81 = [v41 _paragraphStyleFromAttributes:_extraLineFragmentAttributes];
                             v228 = v259;
                           }
 
@@ -5156,7 +5156,7 @@ LABEL_275:
 
                           v233 = v229 + v223 + v227;
                           v234 = [(__CFString *)v82 length];
-                          v235 = [v41 applicationFrameworkContext];
+                          applicationFrameworkContext3 = [v41 applicationFrameworkContext];
                           v333.origin.x = v37;
                           v333.origin.y = v36;
                           v333.size.width = v34;
@@ -5168,22 +5168,22 @@ LABEL_275:
                           v279 = &unk_1E7267AA8;
                           v280 = v41;
                           v57 = *&glyphsb;
-                          __NSCoreTypesetterProcessTextLineFragment(0, v82, v26, v234, 0, v235, &v276, 0.0, *&glyphsb, *&theStringa, v233, 0.0, v271, v275, v236);
+                          __NSCoreTypesetterProcessTextLineFragment(0, v82, v26, v234, 0, applicationFrameworkContext3, &v276, 0.0, *&glyphsb, *&theStringa, v233, 0.0, v271, v275, v236);
                         }
                       }
 
-                      else if (v83)
+                      else if (pointerCopy2)
                       {
-                        v83->origin.x = 0.0;
-                        v83->origin.y = v214;
-                        v83->size.width = v216;
-                        v83->size.height = v259;
+                        pointerCopy2->origin.x = 0.0;
+                        pointerCopy2->origin.y = v214;
+                        pointerCopy2->size.width = v216;
+                        pointerCopy2->size.height = v259;
                       }
                     }
 
-                    if (a19)
+                    if (offsetPointer)
                     {
-                      *a19 = v57;
+                      *offsetPointer = v57;
                     }
 
                     return 2;
@@ -5194,7 +5194,7 @@ LABEL_275:
                   v80 = v264;
                   v82 = theString;
 LABEL_274:
-                  v83 = a18;
+                  pointerCopy2 = pointer;
                   goto LABEL_275;
                 }
 
@@ -5203,9 +5203,9 @@ LABEL_274:
                   __assert_rtn("[NSCoreTypesetter _NSFastDrawString:length:attributes:paragraphStyle:typesetterBehavior:lineBreakMode:rect:padding:graphicsContext:baselineRendering:usesFontLeading:usesScreenFont:scrollable:syncAlignment:mirrored:boundingRectPointer:baselineOffsetPointer:drawingContext:]", "NSCoreTypesetter.m", 1659, "!wantsTextLineFragments");
                 }
 
-                v76 = [a11 CGContext];
-                v77 = [a11 isFlipped];
-                v78 = v77;
+                cGContext = [context CGContext];
+                isFlipped = [context isFlipped];
+                v78 = isFlipped;
                 if (v34 <= 0.0)
                 {
                   v85 = 0;
@@ -5213,7 +5213,7 @@ LABEL_274:
                   goto LABEL_106;
                 }
 
-                if (a15 && v320)
+                if (scrollable && v320)
                 {
                   while (v73 < v71)
                   {
@@ -5270,7 +5270,7 @@ LABEL_104:
                       v248 = v94;
                       v85 = 0;
 LABEL_106:
-                      if (a12)
+                      if (rendering)
                       {
                         *&glyphsa = v57;
                         v89 = v30;
@@ -5283,7 +5283,7 @@ LABEL_106:
 LABEL_254:
                         if (v52)
                         {
-                          CGContextSaveGState(v76);
+                          CGContextSaveGState(cGContext);
                         }
 
                         v197 = 0;
@@ -5303,7 +5303,7 @@ LABEL_105:
                   if (v270 == 2)
                   {
                     v70 = (v73 - v69) >> 4;
-                    if (a12)
+                    if (rendering)
                     {
                       *&glyphsa = v57;
                       v89 = v30;
@@ -5327,7 +5327,7 @@ LABEL_243:
 
                     v195 = v194 - v57;
                     *&glyphsa = v57;
-                    if (v77)
+                    if (isFlipped)
                     {
                       v195 = v57;
                     }
@@ -5345,43 +5345,43 @@ LABEL_243:
                     if (v32 > 0.0)
                     {
 LABEL_261:
-                      CGContextSaveGState(v76);
+                      CGContextSaveGState(cGContext);
                       v331.origin.x = v37 - v89;
                       v331.origin.y = v198;
                       v331.size.width = v34 + v89 * 2.0;
                       v331.size.height = v199;
-                      CGContextClipToRect(v76, v331);
+                      CGContextClipToRect(cGContext, v331);
                       v197 = 1;
 LABEL_262:
                       v57 = *&glyphsa;
                       CGContextGetFontRenderingStyle();
-                      [v321 applyToGraphicsContext:a11];
-                      v203 = v269;
+                      [v321 applyToGraphicsContext:context];
+                      blackColor = v269;
                       v84 = v248;
                       if (!v269)
                       {
                         if (+[NSTextGraphicsContextProvider textGraphicsContextProviderClassRespondsToColorQuery])
                         {
-                          v204 = [(objc_class *)+[NSTextGraphicsContextProvider textGraphicsContextProviderClass](NSTextGraphicsContextProvider colorClassForApplicationFrameworkContext:"colorClassForApplicationFrameworkContext:", v268];
+                          v268 = [(objc_class *)+[NSTextGraphicsContextProvider textGraphicsContextProviderClass](NSTextGraphicsContextProvider colorClassForApplicationFrameworkContext:"colorClassForApplicationFrameworkContext:", applicationFrameworkContext];
                         }
 
                         else
                         {
-                          v204 = +[NSTextGraphicsContextProvider __defaultColorClass];
+                          v268 = +[NSTextGraphicsContextProvider __defaultColorClass];
                         }
 
-                        v203 = [(objc_class *)v204 blackColor];
+                        blackColor = [(objc_class *)v268 blackColor];
                         v52 = v274;
                       }
 
-                      [v203 set];
-                      CGContextSetCharacterSpacing(v76, 0.0);
+                      [blackColor set];
+                      CGContextSetCharacterSpacing(cGContext, 0.0);
                       if (v52)
                       {
-                        [v52 applyToGraphicsContext:a11];
+                        [v52 applyToGraphicsContext:context];
                       }
 
-                      CGContextSetTextPosition(v76, v248, v90);
+                      CGContextSetTextPosition(cGContext, v248, v90);
                       CTFontDrawGlyphsWithAdvances();
                       CGContextSetFontRenderingStyle();
                       v205 = v197 ^ 1;
@@ -5392,7 +5392,7 @@ LABEL_262:
 
                       if ((v205 & 1) == 0)
                       {
-                        CGContextRestoreGState(v76);
+                        CGContextRestoreGState(cGContext);
                       }
 
                       v82 = theString;
@@ -5493,11 +5493,11 @@ LABEL_258:
               }
             }
 
-            if (!v249)
+            if (!coveredCharacterSet)
             {
               v137 = v117;
-              v249 = [v68 coveredCharacterSet];
-              if (!v249)
+              coveredCharacterSet = [v68 coveredCharacterSet];
+              if (!coveredCharacterSet)
               {
                 return 0;
               }
@@ -5785,7 +5785,7 @@ LABEL_240:
                 v156 = v315;
                 if (v316 <= v115 || v315 > v115)
                 {
-                  v158 = OUTLINED_FUNCTION_0_3(IsCharacterMember, v145, v146, v147, v148, v149, v150, v151, v246, v247, v249, v250, recta, v254, glyphs, v260, v261, v263, v265, v266, v267, v268, v269, v270, theString, v274, v276, v277, v278, v279, v280, v281, v282, v283, v284, v285, v286, v287, v288, v289, v290, v291, theSet[0], theSet[1], v293, *(&v293 + 1), *buffer, v295, v296, v297, v298, v299, v300, v301, v302, v303, v304, v305, v306, v307, v308, v309, v310);
+                  v158 = OUTLINED_FUNCTION_0_3(IsCharacterMember, v145, v146, v147, v148, v149, v150, v151, v246, v247, coveredCharacterSet, v250, recta, v254, glyphs, v260, v261, v263, v265, v266, drawingContextCopy, applicationFrameworkContext, v269, v270, theString, v274, v276, v277, v278, v279, v280, v281, v282, v283, v284, v285, v286, v287, v288, v289, v290, v291, theSet[0], theSet[1], v293, *(&v293 + 1), *buffer, v295, v296, v297, v298, v299, v300, v301, v302, v303, v304, v305, v306, v307, v308, v309, v310);
                   v160 = v159;
                   v162 = v161;
                   CFStringGetCharacters(v158, v330, buffer);

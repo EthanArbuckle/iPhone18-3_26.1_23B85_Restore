@@ -1,59 +1,59 @@
 @interface UNSNotificationPipelineAdapter
-+ (void)addInitialBulletins:(id)a3 categories:(id)a4 sourceDescription:(id)a5 settings:(id)a6;
-+ (void)createBulletin:(id)a3 category:(id)a4 destinations:(unint64_t)a5 sourceDescription:(id)a6 settings:(id)a7 completion:(id)a8;
-+ (void)deleteBulletin:(id)a3 sourceDescription:(id)a4 completion:(id)a5;
-+ (void)updateBulletin:(id)a3 category:(id)a4 destinations:(unint64_t)a5 sourceDescription:(id)a6 settings:(id)a7 completion:(id)a8;
++ (void)addInitialBulletins:(id)bulletins categories:(id)categories sourceDescription:(id)description settings:(id)settings;
++ (void)createBulletin:(id)bulletin category:(id)category destinations:(unint64_t)destinations sourceDescription:(id)description settings:(id)settings completion:(id)completion;
++ (void)deleteBulletin:(id)bulletin sourceDescription:(id)description completion:(id)completion;
++ (void)updateBulletin:(id)bulletin category:(id)category destinations:(unint64_t)destinations sourceDescription:(id)description settings:(id)settings completion:(id)completion;
 - (UNSNotificationPipelineAdapter)init;
 @end
 
 @implementation UNSNotificationPipelineAdapter
 
-+ (void)createBulletin:(id)a3 category:(id)a4 destinations:(unint64_t)a5 sourceDescription:(id)a6 settings:(id)a7 completion:(id)a8
++ (void)createBulletin:(id)bulletin category:(id)category destinations:(unint64_t)destinations sourceDescription:(id)description settings:(id)settings completion:(id)completion
 {
-  v13 = _Block_copy(a8);
+  v13 = _Block_copy(completion);
   v14 = swift_allocObject();
   *(v14 + 16) = v13;
   swift_getObjCClassMetadata();
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a7;
-  sub_270ADBD34(v15, a4, a5, v17, v18, sub_270ADF234, v14, &unk_2880956E0, sub_270ADF178, MEMORY[0x277D77C40]);
+  bulletinCopy = bulletin;
+  categoryCopy = category;
+  descriptionCopy = description;
+  settingsCopy = settings;
+  sub_270ADBD34(bulletinCopy, category, destinations, descriptionCopy, settingsCopy, sub_270ADF234, v14, &unk_2880956E0, sub_270ADF178, MEMORY[0x277D77C40]);
 }
 
-+ (void)updateBulletin:(id)a3 category:(id)a4 destinations:(unint64_t)a5 sourceDescription:(id)a6 settings:(id)a7 completion:(id)a8
++ (void)updateBulletin:(id)bulletin category:(id)category destinations:(unint64_t)destinations sourceDescription:(id)description settings:(id)settings completion:(id)completion
 {
-  v13 = _Block_copy(a8);
+  v13 = _Block_copy(completion);
   v14 = swift_allocObject();
   *(v14 + 16) = v13;
   swift_getObjCClassMetadata();
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a7;
-  sub_270ADBD34(v15, a4, a5, v17, v18, sub_270ADE14C, v14, &unk_288095690, sub_270ADF238, MEMORY[0x277D77C48]);
+  bulletinCopy = bulletin;
+  categoryCopy = category;
+  descriptionCopy = description;
+  settingsCopy = settings;
+  sub_270ADBD34(bulletinCopy, category, destinations, descriptionCopy, settingsCopy, sub_270ADE14C, v14, &unk_288095690, sub_270ADF238, MEMORY[0x277D77C48]);
 }
 
-+ (void)deleteBulletin:(id)a3 sourceDescription:(id)a4 completion:(id)a5
++ (void)deleteBulletin:(id)bulletin sourceDescription:(id)description completion:(id)completion
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(completion);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
   swift_getObjCClassMetadata();
-  v9 = a3;
-  v10 = a4;
-  sub_270ADC540(v9, v10, sub_270ADE090, v8);
+  bulletinCopy = bulletin;
+  descriptionCopy = description;
+  sub_270ADC540(bulletinCopy, descriptionCopy, sub_270ADE090, v8);
 }
 
-+ (void)addInitialBulletins:(id)a3 categories:(id)a4 sourceDescription:(id)a5 settings:(id)a6
++ (void)addInitialBulletins:(id)bulletins categories:(id)categories sourceDescription:(id)description settings:(id)settings
 {
   sub_270ADB120(0, &qword_281257BA0, 0x277CF3518);
   v8 = sub_270AE3D5C();
   sub_270ADB120(0, &qword_281257B80, 0x277CE1F98);
   v9 = sub_270AE3CBC();
-  v10 = a5;
-  v11 = a6;
-  sub_270ADD5A8(v8, v9, v10, v11);
+  descriptionCopy = description;
+  settingsCopy = settings;
+  sub_270ADD5A8(v8, v9, descriptionCopy, settingsCopy);
 }
 
 - (UNSNotificationPipelineAdapter)init

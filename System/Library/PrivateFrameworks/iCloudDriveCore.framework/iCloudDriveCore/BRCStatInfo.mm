@@ -1,20 +1,20 @@
 @interface BRCStatInfo
-- (BOOL)check:(id)a3 logToFile:(__sFILE *)a4;
-- (BOOL)checkStateWithItemID:(id)a3 logToFile:(__sFILE *)a4;
+- (BOOL)check:(id)check logToFile:(__sFILE *)file;
+- (BOOL)checkStateWithItemID:(id)d logToFile:(__sFILE *)file;
 - (BOOL)iWorkShareable;
-- (BOOL)isEtagEqual:(id)a3;
-- (BRCStatInfo)initWithStatInfo:(id)a3;
+- (BOOL)isEtagEqual:(id)equal;
+- (BRCStatInfo)initWithStatInfo:(id)info;
 - (BRMangledID)_aliasTargetMangledID;
 - (NSString)representableName;
 - (id)_aliasTargetItemID;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithContext:(id)a3 origName:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithContext:(id)context origName:(id)name;
 - (id)displayName;
-- (id)lazyXattrWithXattrStager:(id)a3;
-- (unint64_t)diffAgainst:(id)a3;
+- (id)lazyXattrWithXattrStager:(id)stager;
+- (unint64_t)diffAgainst:(id)against;
 - (void)_aliasTargetItemID;
-- (void)_updateAliasTarget:(id)a3;
-- (void)setCreatorRowID:(id)a3;
+- (void)_updateAliasTarget:(id)target;
+- (void)setCreatorRowID:(id)d;
 @end
 
 @implementation BRCStatInfo
@@ -24,8 +24,8 @@
   aliasTarget = self->_aliasTarget;
   if (aliasTarget)
   {
-    v3 = [(NSString *)aliasTarget stringByDeletingLastPathComponent];
-    v4 = [objc_alloc(MEMORY[0x277CFAE60]) initWithAliasTargetContainerString:v3];
+    stringByDeletingLastPathComponent = [(NSString *)aliasTarget stringByDeletingLastPathComponent];
+    v4 = [objc_alloc(MEMORY[0x277CFAE60]) initWithAliasTargetContainerString:stringByDeletingLastPathComponent];
   }
 
   else
@@ -46,8 +46,8 @@
   if (self->_aliasTarget)
   {
     v3 = [BRCItemID alloc];
-    v4 = [(NSString *)self->_aliasTarget lastPathComponent];
-    v5 = [(BRCItemID *)v3 initWithUUIDString:v4];
+    lastPathComponent = [(NSString *)self->_aliasTarget lastPathComponent];
+    v5 = [(BRCItemID *)v3 initWithUUIDString:lastPathComponent];
   }
 
   else
@@ -58,21 +58,21 @@
   return v5;
 }
 
-- (void)_updateAliasTarget:(id)a3
+- (void)_updateAliasTarget:(id)target
 {
-  v4 = a3;
-  v5 = [v4 clientZone];
-  v6 = [v5 mangledID];
-  v7 = [v6 aliasTargetContainerString];
+  targetCopy = target;
+  clientZone = [targetCopy clientZone];
+  mangledID = [clientZone mangledID];
+  aliasTargetContainerString = [mangledID aliasTargetContainerString];
 
-  if (!v7)
+  if (!aliasTargetContainerString)
   {
     [BRCStatInfo _updateAliasTarget:];
   }
 
-  v8 = [v4 itemID];
-  v9 = [v8 itemIDString];
-  v10 = [v7 stringByAppendingPathComponent:v9];
+  itemID = [targetCopy itemID];
+  itemIDString = [itemID itemIDString];
+  v10 = [aliasTargetContainerString stringByAppendingPathComponent:itemIDString];
   aliasTarget = self->_aliasTarget;
   self->_aliasTarget = v10;
 }
@@ -85,40 +85,40 @@
   v6 = v4 || v5 == 0;
   if (v6 || (-[BRCStatInfo logicalName](self, "logicalName"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 br_isPackageRoot], v7, !v8))
   {
-    v10 = [(BRCStatInfo *)self logicalName];
+    logicalName = [(BRCStatInfo *)self logicalName];
   }
 
   else
   {
-    v9 = [(BRCStatInfo *)self logicalName];
-    v10 = [v9 br_representableDirectoryName];
+    logicalName2 = [(BRCStatInfo *)self logicalName];
+    logicalName = [logicalName2 br_representableDirectoryName];
   }
 
-  return v10;
+  return logicalName;
 }
 
 - (BOOL)iWorkShareable
 {
   v3 = [BRCUserDefaults defaultsForMangledID:0];
-  v4 = [v3 iworkShareableExtensions];
+  iworkShareableExtensions = [v3 iworkShareableExtensions];
 
-  v5 = [(BRCStatInfo *)self logicalName];
-  v6 = [v5 br_pathExtension];
-  v7 = [v6 lowercaseString];
-  v8 = v7;
+  logicalName = [(BRCStatInfo *)self logicalName];
+  br_pathExtension = [logicalName br_pathExtension];
+  lowercaseString = [br_pathExtension lowercaseString];
+  v8 = lowercaseString;
   v9 = &stru_2837504F0;
-  if (v7)
+  if (lowercaseString)
   {
-    v9 = v7;
+    v9 = lowercaseString;
   }
 
   v10 = v9;
 
-  v11 = [v4 containsObject:v10];
+  v11 = [iworkShareableExtensions containsObject:v10];
   if (v11)
   {
-    v12 = [(BRCStatInfo *)self type];
-    v14 = v12 == 8 || (v12 - 1) < 2;
+    type = [(BRCStatInfo *)self type];
+    v14 = type == 8 || (type - 1) < 2;
   }
 
   else
@@ -129,81 +129,81 @@
   return v14;
 }
 
-- (id)descriptionWithContext:(id)a3 origName:(id)a4
+- (id)descriptionWithContext:(id)context origName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  nameCopy = name;
   v8 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:64];
   parentID = self->_parentID;
   if (parentID)
   {
-    v10 = [BRCDumpContext stringFromItemID:parentID context:v6];
+    v10 = [BRCDumpContext stringFromItemID:parentID context:contextCopy];
     [v8 appendFormat:@"p:%@ ", v10];
   }
 
   logicalName = self->_logicalName;
   if (logicalName)
   {
-    v12 = [(NSString *)logicalName fp_obfuscatedFilename];
-    if (v6)
+    fp_obfuscatedFilename = [(NSString *)logicalName fp_obfuscatedFilename];
+    if (contextCopy)
     {
-      v13 = [v6 highlightedString:v12 type:1];
+      v13 = [contextCopy highlightedString:fp_obfuscatedFilename type:1];
 
-      v12 = v13;
+      fp_obfuscatedFilename = v13;
     }
 
-    [v8 appendFormat:@"n:%@ ", v12];
-    if (v7)
+    [v8 appendFormat:@"n:%@ ", fp_obfuscatedFilename];
+    if (nameCopy)
     {
-      v14 = [v7 fp_obfuscatedFilename];
-      [v8 appendFormat:@"(o:\"%@\"", v14];
+      fp_obfuscatedFilename2 = [nameCopy fp_obfuscatedFilename];
+      [v8 appendFormat:@"(o:\"%@\"", fp_obfuscatedFilename2];
     }
   }
 
   aliasTarget = self->_aliasTarget;
   if (aliasTarget)
   {
-    v16 = [(NSString *)aliasTarget br_obfuscateAliasTarget];
-    if (v6)
+    br_obfuscateAliasTarget = [(NSString *)aliasTarget br_obfuscateAliasTarget];
+    if (contextCopy)
     {
-      v17 = [v6 highlightedString:v16 type:1];
+      v17 = [contextCopy highlightedString:br_obfuscateAliasTarget type:1];
 
-      v16 = v17;
+      br_obfuscateAliasTarget = v17;
     }
 
-    [v8 appendFormat:@"target:%@ ", v16];
+    [v8 appendFormat:@"target:%@ ", br_obfuscateAliasTarget];
   }
 
-  v18 = BRCPrettyPrintEnumWithContext(self->_type, &brc_item_type_pretty_entries, v6);
+  v18 = BRCPrettyPrintEnumWithContext(self->_type, &brc_item_type_pretty_entries, contextCopy);
   [v8 appendFormat:@"%@ ", v18];
 
   if (self->_state)
   {
-    v19 = BRCPrettyPrintEnumWithContext(self->_state, &brc_item_state_pretty_entries, v6);
+    v19 = BRCPrettyPrintEnumWithContext(self->_state, &brc_item_state_pretty_entries, contextCopy);
     [v8 appendFormat:@"%@ ", v19];
   }
 
   ckInfo = self->_ckInfo;
   if (ckInfo)
   {
-    v21 = [(BRFieldCKInfo *)ckInfo etag];
-    [v8 appendFormat:@"etag:%@ ", v21];
+    etag = [(BRFieldCKInfo *)ckInfo etag];
+    [v8 appendFormat:@"etag:%@ ", etag];
 
-    v22 = [(BRFieldCKInfo *)self->_ckInfo etagBeforeCrossZoneMove];
+    etagBeforeCrossZoneMove = [(BRFieldCKInfo *)self->_ckInfo etagBeforeCrossZoneMove];
 
-    if (v22)
+    if (etagBeforeCrossZoneMove)
     {
-      v23 = [(BRFieldCKInfo *)self->_ckInfo etagBeforeCrossZoneMove];
-      [v8 appendFormat:@"prev-etag:%@ ", v23];
+      etagBeforeCrossZoneMove2 = [(BRFieldCKInfo *)self->_ckInfo etagBeforeCrossZoneMove];
+      [v8 appendFormat:@"prev-etag:%@ ", etagBeforeCrossZoneMove2];
     }
 
     if ([(BRFieldCKInfo *)self->_ckInfo hasDeletionChangeToken])
     {
       v24 = objc_alloc(MEMORY[0x277CBC670]);
-      v25 = [(BRFieldCKInfo *)self->_ckInfo deletionChangeToken];
-      v26 = [v24 initWithData:v25];
+      deletionChangeToken = [(BRFieldCKInfo *)self->_ckInfo deletionChangeToken];
+      v26 = [v24 initWithData:deletionChangeToken];
 
-      v27 = [v26 descriptionWithContext:v6];
+      v27 = [v26 descriptionWithContext:contextCopy];
       [v8 appendFormat:@"deletion-token:%@ ", v27];
     }
   }
@@ -258,8 +258,8 @@
   xattrSignature = self->_xattrSignature;
   if (xattrSignature)
   {
-    v32 = [(NSData *)xattrSignature brc_hexadecimalString];
-    [v8 appendFormat:@"ea:%@ ", v32];
+    brc_hexadecimalString = [(NSData *)xattrSignature brc_hexadecimalString];
+    [v8 appendFormat:@"ea:%@ ", brc_hexadecimalString];
   }
 
   if (self->_finderTags)
@@ -270,8 +270,8 @@
   trashPutBackPath = self->_trashPutBackPath;
   if (trashPutBackPath || self->_trashPutBackParentID)
   {
-    v34 = [(NSString *)trashPutBackPath fp_obfuscatedPath];
-    [v8 appendFormat:@"trash-put-back{%@, %@} ", v34, self->_trashPutBackParentID];
+    fp_obfuscatedPath = [(NSString *)trashPutBackPath fp_obfuscatedPath];
+    [v8 appendFormat:@"trash-put-back{%@, %@} ", fp_obfuscatedPath, self->_trashPutBackParentID];
   }
 
   if (self->_creatorRowID)
@@ -284,54 +284,54 @@
   return v8;
 }
 
-- (BRCStatInfo)initWithStatInfo:(id)a3
+- (BRCStatInfo)initWithStatInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v25.receiver = self;
   v25.super_class = BRCStatInfo;
   v5 = [(BRCStatInfo *)&v25 init];
   if (v5)
   {
-    v6 = [*(v4 + 1) copy];
+    v6 = [*(infoCopy + 1) copy];
     ckInfo = v5->_ckInfo;
     v5->_ckInfo = v6;
 
-    v5->_state = *(v4 + 24);
-    v5->_type = *(v4 + 25);
-    v5->_mode = *(v4 + 26);
-    v5->_birthtime = *(v4 + 4);
-    v5->_lastUsedTime = *(v4 + 5);
-    v5->_favoriteRank = *(v4 + 6);
-    v8 = [*(v4 + 2) copy];
+    v5->_state = *(infoCopy + 24);
+    v5->_type = *(infoCopy + 25);
+    v5->_mode = *(infoCopy + 26);
+    v5->_birthtime = *(infoCopy + 4);
+    v5->_lastUsedTime = *(infoCopy + 5);
+    v5->_favoriteRank = *(infoCopy + 6);
+    v8 = [*(infoCopy + 2) copy];
     parentID = v5->_parentID;
     v5->_parentID = v8;
 
-    v10 = [*(v4 + 7) copy];
+    v10 = [*(infoCopy + 7) copy];
     logicalName = v5->_logicalName;
     v5->_logicalName = v10;
 
-    v12 = [*(v4 + 8) copy];
+    v12 = [*(infoCopy + 8) copy];
     aliasTarget = v5->_aliasTarget;
     v5->_aliasTarget = v12;
 
-    v14 = [*(v4 + 12) copy];
+    v14 = [*(infoCopy + 12) copy];
     finderTags = v5->_finderTags;
     v5->_finderTags = v14;
 
-    v5->_hiddenExt = *(v4 + 72);
-    v16 = [*(v4 + 10) copy];
+    v5->_hiddenExt = *(infoCopy + 72);
+    v16 = [*(infoCopy + 10) copy];
     xattrSignature = v5->_xattrSignature;
     v5->_xattrSignature = v16;
 
-    v18 = [*(v4 + 13) copy];
+    v18 = [*(infoCopy + 13) copy];
     trashPutBackPath = v5->_trashPutBackPath;
     v5->_trashPutBackPath = v18;
 
-    v20 = [*(v4 + 14) copy];
+    v20 = [*(infoCopy + 14) copy];
     trashPutBackParentID = v5->_trashPutBackParentID;
     v5->_trashPutBackParentID = v20;
 
-    v22 = [*(v4 + 15) copy];
+    v22 = [*(infoCopy + 15) copy];
     creatorRowID = v5->_creatorRowID;
     v5->_creatorRowID = v22;
   }
@@ -339,24 +339,24 @@
   return v5;
 }
 
-- (BOOL)checkStateWithItemID:(id)a3 logToFile:(__sFILE *)a4
+- (BOOL)checkStateWithItemID:(id)d logToFile:(__sFILE *)file
 {
   state = self->_state;
   if (state >= 2)
   {
-    fprintf(a4, "item %s has invalid state: %d\n", [a3 UTF8String], self->_state);
+    fprintf(file, "item %s has invalid state: %d\n", [d UTF8String], self->_state);
   }
 
   return state < 2;
 }
 
-- (BOOL)check:(id)a3 logToFile:(__sFILE *)a4
+- (BOOL)check:(id)check logToFile:(__sFILE *)file
 {
-  v6 = a3;
-  v7 = [(BRCStatInfo *)self checkStateWithItemID:v6 logToFile:a4];
+  checkCopy = check;
+  v7 = [(BRCStatInfo *)self checkStateWithItemID:checkCopy logToFile:file];
   if (self->_type >= 0xBu)
   {
-    fprintf(a4, "item %s has invalid type: %d\n", [v6 UTF8String], self->_type);
+    fprintf(file, "item %s has invalid type: %d\n", [checkCopy UTF8String], self->_type);
     v8 = 0;
   }
 
@@ -367,38 +367,38 @@
 
   if (self->_mode >= 4u)
   {
-    fprintf(a4, "item %s has invalid mode: 0%0x\n", [v6 UTF8String], self->_mode);
+    fprintf(file, "item %s has invalid mode: 0%0x\n", [checkCopy UTF8String], self->_mode);
     v8 = 0;
   }
 
   if (!self->_parentID)
   {
-    fprintf(a4, "item %s has an invalid parent id\n", [v6 UTF8String]);
+    fprintf(file, "item %s has an invalid parent id\n", [checkCopy UTF8String]);
     v8 = 0;
   }
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithStatInfo:self];
 }
 
-- (unint64_t)diffAgainst:(id)a3
+- (unint64_t)diffAgainst:(id)against
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  againstCopy = against;
+  v5 = againstCopy;
+  if (!againstCopy)
   {
     [BRCStatInfo diffAgainst:];
     v17 = 0x7FFFLL;
     goto LABEL_89;
   }
 
-  v6 = v4[1];
+  v6 = againstCopy[1];
   v7 = self->_ckInfo;
   v8 = v6;
   v9 = v8;
@@ -744,26 +744,26 @@ LABEL_89:
 
 - (id)displayName
 {
-  v3 = [(BRCStatInfo *)self logicalName];
-  v4 = [v3 br_displayFilenameWithExtensionHidden:{-[BRCStatInfo isHiddenExt](self, "isHiddenExt")}];
+  logicalName = [(BRCStatInfo *)self logicalName];
+  v4 = [logicalName br_displayFilenameWithExtensionHidden:{-[BRCStatInfo isHiddenExt](self, "isHiddenExt")}];
 
   return v4;
 }
 
-- (BOOL)isEtagEqual:(id)a3
+- (BOOL)isEtagEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v4 = [a3 ckInfo];
-  v5 = [v4 hasEtag];
-  if (v5 == [(BRFieldCKInfo *)self->_ckInfo hasEtag])
+  ckInfo = [equal ckInfo];
+  hasEtag = [ckInfo hasEtag];
+  if (hasEtag == [(BRFieldCKInfo *)self->_ckInfo hasEtag])
   {
-    v7 = [v4 etag];
-    v8 = [(BRFieldCKInfo *)self->_ckInfo etag];
-    v6 = [v7 isEqualToString:v8];
+    etag = [ckInfo etag];
+    etag2 = [(BRFieldCKInfo *)self->_ckInfo etag];
+    v6 = [etag isEqualToString:etag2];
   }
 
   else
@@ -774,23 +774,23 @@ LABEL_89:
   return v6;
 }
 
-- (void)setCreatorRowID:(id)a3
+- (void)setCreatorRowID:(id)d
 {
-  v4 = a3;
-  if ([v4 longLongValue] < 0)
+  dCopy = d;
+  if ([dCopy longLongValue] < 0)
   {
     [BRCStatInfo setCreatorRowID:];
   }
 
   creatorRowID = self->_creatorRowID;
-  self->_creatorRowID = v4;
+  self->_creatorRowID = dCopy;
 }
 
-- (id)lazyXattrWithXattrStager:(id)a3
+- (id)lazyXattrWithXattrStager:(id)stager
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  stagerCopy = stager;
+  v5 = stagerCopy;
   if (self->_xattrSignature)
   {
     lazyXattr = self->_lazyXattr;
@@ -801,7 +801,7 @@ LABEL_89:
 
     else
     {
-      v8 = [v4 loadXattrBlobForSignature:? error:?];
+      v8 = [stagerCopy loadXattrBlobForSignature:? error:?];
       v9 = self->_lazyXattr;
       self->_lazyXattr = v8;
 

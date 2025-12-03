@@ -1,5 +1,5 @@
 @interface ASVWorldSingleFingerGesture
-- (ASVWorldSingleFingerGesture)initWithTouch:(id)a3 dataSource:(id)a4 worldDelegate:(id)a5 enabledGestureTypes:(unint64_t)a6;
+- (ASVWorldSingleFingerGesture)initWithTouch:(id)touch dataSource:(id)source worldDelegate:(id)delegate enabledGestureTypes:(unint64_t)types;
 - (ASVWorldSingleFingerGestureDelegate)worldDelegate;
 - (float)potentialAssetDistanceFromInitialLocationOnScreen;
 - (void)finishGesture;
@@ -9,16 +9,16 @@
 
 @implementation ASVWorldSingleFingerGesture
 
-- (ASVWorldSingleFingerGesture)initWithTouch:(id)a3 dataSource:(id)a4 worldDelegate:(id)a5 enabledGestureTypes:(unint64_t)a6
+- (ASVWorldSingleFingerGesture)initWithTouch:(id)touch dataSource:(id)source worldDelegate:(id)delegate enabledGestureTypes:(unint64_t)types
 {
-  v10 = a5;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = ASVWorldSingleFingerGesture;
-  v11 = [(ASVSingleFingerGesture *)&v15 initWithTouch:a3 dataSource:a4 delegate:v10 enabledGestureTypes:a6];
+  v11 = [(ASVSingleFingerGesture *)&v15 initWithTouch:touch dataSource:source delegate:delegateCopy enabledGestureTypes:types];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_worldDelegate, v10);
+    objc_storeWeak(&v11->_worldDelegate, delegateCopy);
     dragOffsetCorrector = v12->_dragOffsetCorrector;
     v12->_dragOffsetCorrector = 0;
   }
@@ -54,8 +54,8 @@
 {
   if ([(ASVGesture *)self firstTouchWasOnAsset])
   {
-    v3 = [(ASVGesture *)self dataSource];
-    [v3 assetScreenPosition];
+    dataSource = [(ASVGesture *)self dataSource];
+    [dataSource assetScreenPosition];
     [(ASVGesture *)self setLatestAssetLocationOnScreen:?];
 
     if (![(ASVSingleFingerGesture *)self panThresholdPassed])
@@ -76,21 +76,21 @@
         v14 = [[ASVWorldGestureDragOffsetCorrector alloc] initWithInitialDragOffset:v10 thresholdDragOffset:COERCE_DOUBLE(vsub_f32(v12, v13))];
         [(ASVWorldSingleFingerGesture *)self setDragOffsetCorrector:v14];
 
-        v15 = [(ASVWorldSingleFingerGesture *)self worldDelegate];
-        [v15 gestureBeganTranslation:self];
+        worldDelegate = [(ASVWorldSingleFingerGesture *)self worldDelegate];
+        [worldDelegate gestureBeganTranslation:self];
       }
     }
 
     if ([(ASVSingleFingerGesture *)self panThresholdPassed])
     {
-      v16 = [(ASVWorldSingleFingerGesture *)self dragOffsetCorrector];
-      [v16 currentDragOffset];
+      dragOffsetCorrector = [(ASVWorldSingleFingerGesture *)self dragOffsetCorrector];
+      [dragOffsetCorrector currentDragOffset];
       v18 = v17;
 
       [(ASVSingleFingerGesture *)self latestTouchLocation];
       v20 = COERCE_DOUBLE(vsub_f32(v19, v18));
-      v21 = [(ASVWorldSingleFingerGesture *)self worldDelegate];
-      [v21 gesture:self translatedAssetToScreenPoint:v20];
+      worldDelegate2 = [(ASVWorldSingleFingerGesture *)self worldDelegate];
+      [worldDelegate2 gesture:self translatedAssetToScreenPoint:v20];
     }
   }
 }
@@ -99,8 +99,8 @@
 {
   if ([(ASVSingleFingerGesture *)self panThresholdPassed])
   {
-    v3 = [(ASVWorldSingleFingerGesture *)self worldDelegate];
-    [v3 gestureEndedTranslation:self];
+    worldDelegate = [(ASVWorldSingleFingerGesture *)self worldDelegate];
+    [worldDelegate gestureEndedTranslation:self];
   }
 
   else

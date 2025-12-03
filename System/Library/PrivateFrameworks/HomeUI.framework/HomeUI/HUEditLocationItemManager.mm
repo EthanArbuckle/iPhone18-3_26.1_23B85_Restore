@@ -1,65 +1,65 @@
 @interface HUEditLocationItemManager
 - (BOOL)_inviteUsersItemAllowed;
 - (BOOL)_isCurrentUserRestrictedGuest;
-- (HUEditLocationItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (HUEditLocationItemManager)initWithHomeBuilder:(id)a3 delegate:(id)a4 context:(unint64_t)a5;
-- (id)_buildItemModulesForHome:(id)a3;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (HUEditLocationItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (HUEditLocationItemManager)initWithHomeBuilder:(id)builder delegate:(id)delegate context:(unint64_t)context;
+- (id)_buildItemModulesForHome:(id)home;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (id)_homeFuture;
-- (id)_itemsToHideInSet:(id)a3;
-- (id)updateLocationServicesEnabled:(BOOL)a3;
+- (id)_itemsToHideInSet:(id)set;
+- (id)updateLocationServicesEnabled:(BOOL)enabled;
 - (void)_registerForExternalUpdates;
 - (void)_unregisterForExternalUpdates;
-- (void)pinCodeManagerDidUpdate:(id)a3 pinCodes:(id)a4;
+- (void)pinCodeManagerDidUpdate:(id)update pinCodes:(id)codes;
 @end
 
 @implementation HUEditLocationItemManager
 
-- (HUEditLocationItemManager)initWithHomeBuilder:(id)a3 delegate:(id)a4 context:(unint64_t)a5
+- (HUEditLocationItemManager)initWithHomeBuilder:(id)builder delegate:(id)delegate context:(unint64_t)context
 {
-  v9 = a3;
+  builderCopy = builder;
   v18.receiver = self;
   v18.super_class = HUEditLocationItemManager;
-  v10 = [(HFItemManager *)&v18 initWithDelegate:a4 sourceItem:0];
+  v10 = [(HFItemManager *)&v18 initWithDelegate:delegate sourceItem:0];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_homeBuilder, a3);
-    v11->_context = a5;
-    v12 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v13 = [v9 home];
-    v14 = [v12 pinCodeManagerForHome:v13];
+    objc_storeStrong(&v10->_homeBuilder, builder);
+    v11->_context = context;
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    home = [builderCopy home];
+    v14 = [mEMORY[0x277D146E8] pinCodeManagerForHome:home];
     [(HUEditLocationItemManager *)v11 setPinCodeManager:v14];
 
-    v15 = [(HUEditLocationItemManager *)v11 pinCodeManager];
-    v16 = [v15 fetchFromAccessoryCache];
+    pinCodeManager = [(HUEditLocationItemManager *)v11 pinCodeManager];
+    fetchFromAccessoryCache = [pinCodeManager fetchFromAccessoryCache];
   }
 
   return v11;
 }
 
-- (HUEditLocationItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HUEditLocationItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithHomeBuilder_delegate_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUEditLocationItemManager.m" lineNumber:154 description:{@"%s is unavailable; use %@ instead", "-[HUEditLocationItemManager initWithDelegate:sourceItem:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUEditLocationItemManager.m" lineNumber:154 description:{@"%s is unavailable; use %@ instead", "-[HUEditLocationItemManager initWithDelegate:sourceItem:]", v7}];
 
   return 0;
 }
 
-- (id)updateLocationServicesEnabled:(BOOL)a3
+- (id)updateLocationServicesEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v6 = [(HFItemManager *)self home];
+  home = [(HFItemManager *)self home];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__HUEditLocationItemManager_updateLocationServicesEnabled___block_invoke;
   v9[3] = &unk_277DB8C00;
   v7 = v5;
   v10 = v7;
-  [v6 updateLocationServicesEnabled:v3 completion:v9];
+  [home updateLocationServicesEnabled:enabledCopy completion:v9];
 
   return v7;
 }
@@ -80,39 +80,39 @@ uint64_t __59__HUEditLocationItemManager_updateLocationServicesEnabled___block_i
   return [v2 finishWithResult:v3 error:a2];
 }
 
-- (id)_buildItemModulesForHome:(id)a3
+- (id)_buildItemModulesForHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v5 = objc_opt_new();
-  v6 = [[HUUserNotificationTopicListModule alloc] initWithItemUpdater:self home:v4];
+  v6 = [[HUUserNotificationTopicListModule alloc] initWithItemUpdater:self home:homeCopy];
   [(HUEditLocationItemManager *)self setNotificationSettingsModule:v6];
 
-  v7 = [[HUMatterConnectedServicesItemModule alloc] initWithItemUpdater:self home:v4];
+  v7 = [[HUMatterConnectedServicesItemModule alloc] initWithItemUpdater:self home:homeCopy];
   [(HUEditLocationItemManager *)self setConnectedServicesItemModule:v7];
 
   if (![(HUEditLocationItemManager *)self _isCurrentUserRestrictedGuest])
   {
-    v8 = [(HUEditLocationItemManager *)self notificationSettingsModule];
-    [v5 addObject:v8];
+    notificationSettingsModule = [(HUEditLocationItemManager *)self notificationSettingsModule];
+    [v5 addObject:notificationSettingsModule];
   }
 
   if (![(HUEditLocationItemManager *)self _isCurrentUserRestrictedGuest])
   {
-    v9 = [(HUEditLocationItemManager *)self connectedServicesItemModule];
-    [v5 addObject:v9];
+    connectedServicesItemModule = [(HUEditLocationItemManager *)self connectedServicesItemModule];
+    [v5 addObject:connectedServicesItemModule];
   }
 
   return v5;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v182[6] = *MEMORY[0x277D85DE8];
-  v142 = a3;
-  v4 = [MEMORY[0x277D14B38] emptyItem];
-  [(HUEditLocationItemManager *)self setNameItem:v4];
+  homeCopy = home;
+  emptyItem = [MEMORY[0x277D14B38] emptyItem];
+  [(HUEditLocationItemManager *)self setNameItem:emptyItem];
 
-  v5 = [(HUEditLocationItemManager *)self _inviteUsersItemAllowed];
+  _inviteUsersItemAllowed = [(HUEditLocationItemManager *)self _inviteUsersItemAllowed];
   objc_initWeak(&location, self);
   v6 = objc_alloc(MEMORY[0x277D14B38]);
   v178[0] = *MEMORY[0x277D13F60];
@@ -126,12 +126,12 @@ uint64_t __59__HUEditLocationItemManager_updateLocationServicesEnabled___block_i
   v178[1] = v8;
   v178[2] = v9;
   v10 = MEMORY[0x277CCABB0];
-  v11 = [MEMORY[0x277D14808] sharedDispatcher];
-  v12 = [v10 numberWithInt:{objc_msgSend(v11, "isUsingiCloud") ^ 1}];
+  mEMORY[0x277D14808] = [MEMORY[0x277D14808] sharedDispatcher];
+  v12 = [v10 numberWithInt:{objc_msgSend(mEMORY[0x277D14808], "isUsingiCloud") ^ 1}];
   v182[2] = v12;
   v179 = *MEMORY[0x277D13FB8];
   v13 = v179;
-  v14 = [MEMORY[0x277CCABB0] numberWithInt:!v5];
+  v14 = [MEMORY[0x277CCABB0] numberWithInt:!_inviteUsersItemAllowed];
   v15 = *MEMORY[0x277D13EA0];
   v182[3] = v14;
   v182[4] = @"plus";
@@ -139,18 +139,18 @@ uint64_t __59__HUEditLocationItemManager_updateLocationServicesEnabled___block_i
   v180 = v15;
   v181 = v16;
   v17 = MEMORY[0x277CBEB98];
-  v18 = [(HFItemManager *)self home];
-  v19 = [v17 na_setWithSafeObject:v18];
+  home = [(HFItemManager *)self home];
+  v19 = [v17 na_setWithSafeObject:home];
   v182[5] = v19;
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v182 forKeys:v178 count:6];
   v21 = [v6 initWithResults:v20];
   [(HUEditLocationItemManager *)self setInviteUsersItem:v21];
 
   v22 = [HURestrictedGuestScheduleItem alloc];
-  v23 = [(HFItemManager *)self home];
-  v24 = [(HFItemManager *)self home];
-  v25 = [v24 currentUser];
-  v26 = [(HURestrictedGuestScheduleItem *)v22 initWithHome:v23 user:v25];
+  home2 = [(HFItemManager *)self home];
+  home3 = [(HFItemManager *)self home];
+  currentUser = [home3 currentUser];
+  v26 = [(HURestrictedGuestScheduleItem *)v22 initWithHome:home2 user:currentUser];
   [(HUEditLocationItemManager *)self setHomeScheduleItem:v26];
 
   v27 = +[HUWallpaperPickerInlineViewController useWallpaperPickerCell];
@@ -176,7 +176,7 @@ uint64_t __59__HUEditLocationItemManager_updateLocationServicesEnabled___block_i
   v35 = *MEMORY[0x277D14068];
   v176[3] = *MEMORY[0x277D14068];
   v36 = MEMORY[0x277CCABB0];
-  [v142 hf_showPredictedScenesOnDashboard];
+  [homeCopy hf_showPredictedScenesOnDashboard];
   v37 = [v36 numberWithInteger:HFPrimaryStateFromBOOL()];
   v177[3] = v37;
   v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v177 forKeys:v176 count:4];
@@ -225,8 +225,8 @@ uint64_t __59__HUEditLocationItemManager_updateLocationServicesEnabled___block_i
   [(HUEditLocationItemManager *)self setDetailNotesItem:v56];
 
   v57 = [HUSoftwareUpdateSettingsItem alloc];
-  v58 = [(HFItemManager *)self home];
-  v59 = [(HUSoftwareUpdateSettingsItem *)v57 initWithHome:v58];
+  home4 = [(HFItemManager *)self home];
+  v59 = [(HUSoftwareUpdateSettingsItem *)v57 initWithHome:home4];
   [(HUEditLocationItemManager *)self setSoftwareUpdateItem:v59];
 
   v60 = objc_alloc(MEMORY[0x277D14B38]);
@@ -248,20 +248,20 @@ uint64_t __59__HUEditLocationItemManager_updateLocationServicesEnabled___block_i
   [(HUEditLocationItemManager *)self setSoundCheckItem:v63];
 
   v64 = [HUSiriTriggerPhraseSettingItem alloc];
-  v65 = [(HFItemManager *)self home];
-  v66 = [(HUSiriTriggerPhraseSettingItem *)v64 initWithHome:v65];
+  home5 = [(HFItemManager *)self home];
+  v66 = [(HUSiriTriggerPhraseSettingItem *)v64 initWithHome:home5];
   [(HUEditLocationItemManager *)self setSiriTriggerPhraseSettingItem:v66];
 
-  v67 = [(HFItemManager *)self home];
-  v68 = [v67 accessories];
-  v69 = [v68 na_any:&__block_literal_global_122_2];
+  home6 = [(HFItemManager *)self home];
+  accessories = [home6 accessories];
+  v69 = [accessories na_any:&__block_literal_global_122_2];
 
   if (v69)
   {
-    v70 = [(HFItemManager *)self home];
-    v71 = [v70 hf_currentUserIsAdministrator];
+    home7 = [(HFItemManager *)self home];
+    hf_currentUserIsAdministrator = [home7 hf_currentUserIsAdministrator];
 
-    v72 = v71 ^ 1u;
+    v72 = hf_currentUserIsAdministrator ^ 1u;
   }
 
   else
@@ -272,14 +272,14 @@ uint64_t __59__HUEditLocationItemManager_updateLocationServicesEnabled___block_i
   v73 = HFLogForCategory();
   if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
   {
-    v74 = [(HFItemManager *)self home];
-    v75 = [v74 hf_currentUserIsAdministrator];
+    home8 = [(HFItemManager *)self home];
+    hf_currentUserIsAdministrator2 = [home8 hf_currentUserIsAdministrator];
     *buf = 138412802;
-    v159 = self;
+    selfCopy = self;
     v160 = 1024;
     *v161 = v69;
     *&v161[4] = 1024;
-    *&v161[6] = v75;
+    *&v161[6] = hf_currentUserIsAdministrator2;
     _os_log_impl(&dword_20CEB6000, v73, OS_LOG_TYPE_DEFAULT, "%@:atLeastOneDeviceSupportsHomeLevelLocationServicesSetting = %{BOOL}d currentUserIsAdministrator = %{BOOL}d", buf, 0x18u);
   }
 
@@ -296,49 +296,49 @@ uint64_t __59__HUEditLocationItemManager_updateLocationServicesEnabled___block_i
   v167[3] = v78;
   v166[4] = v35;
   v79 = MEMORY[0x277CCABB0];
-  v80 = [(HFItemManager *)self home];
-  [v80 isLocationServicesEnabled];
+  home9 = [(HFItemManager *)self home];
+  [home9 isLocationServicesEnabled];
   v81 = [v79 numberWithInteger:HFPrimaryStateFromBOOL()];
   v167[4] = v81;
   v82 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v167 forKeys:v166 count:5];
   v83 = [v76 initWithResults:v82];
   [(HUEditLocationItemManager *)self setLocationServicesSettingItem:v83];
 
-  v147 = [(HUEditLocationItemManager *)self nameItem];
-  v165[0] = v147;
-  v145 = [(HUEditLocationItemManager *)self inviteUsersItem];
-  v165[1] = v145;
-  v141 = [(HUEditLocationItemManager *)self wallpaperPickerItem];
-  v165[2] = v141;
-  v140 = [(HUEditLocationItemManager *)self homeScheduleItem];
-  v165[3] = v140;
-  v139 = [(HUEditLocationItemManager *)self showPredictedScenes];
-  v165[4] = v139;
-  v84 = [(HUEditLocationItemManager *)self cameraItem];
-  v165[5] = v84;
-  v85 = [(HUEditLocationItemManager *)self chooseWallpaperItem];
-  v165[6] = v85;
-  v86 = [(HUEditLocationItemManager *)self wallpaperThumbnailItem];
-  v165[7] = v86;
-  v87 = [(HUEditLocationItemManager *)self detailNotesItem];
-  v165[8] = v87;
-  v88 = [(HUEditLocationItemManager *)self softwareUpdateItem];
-  v165[9] = v88;
-  v89 = [(HUEditLocationItemManager *)self siriTriggerPhraseSettingItem];
-  v165[10] = v89;
-  v90 = [(HUEditLocationItemManager *)self soundCheckItem];
-  v165[11] = v90;
-  v91 = [(HUEditLocationItemManager *)self locationServicesSettingItem];
-  v165[12] = v91;
-  v92 = [(HUEditLocationItemManager *)self removeItem];
-  v165[13] = v92;
+  nameItem = [(HUEditLocationItemManager *)self nameItem];
+  v165[0] = nameItem;
+  inviteUsersItem = [(HUEditLocationItemManager *)self inviteUsersItem];
+  v165[1] = inviteUsersItem;
+  wallpaperPickerItem = [(HUEditLocationItemManager *)self wallpaperPickerItem];
+  v165[2] = wallpaperPickerItem;
+  homeScheduleItem = [(HUEditLocationItemManager *)self homeScheduleItem];
+  v165[3] = homeScheduleItem;
+  showPredictedScenes = [(HUEditLocationItemManager *)self showPredictedScenes];
+  v165[4] = showPredictedScenes;
+  cameraItem = [(HUEditLocationItemManager *)self cameraItem];
+  v165[5] = cameraItem;
+  chooseWallpaperItem = [(HUEditLocationItemManager *)self chooseWallpaperItem];
+  v165[6] = chooseWallpaperItem;
+  wallpaperThumbnailItem = [(HUEditLocationItemManager *)self wallpaperThumbnailItem];
+  v165[7] = wallpaperThumbnailItem;
+  detailNotesItem = [(HUEditLocationItemManager *)self detailNotesItem];
+  v165[8] = detailNotesItem;
+  softwareUpdateItem = [(HUEditLocationItemManager *)self softwareUpdateItem];
+  v165[9] = softwareUpdateItem;
+  siriTriggerPhraseSettingItem = [(HUEditLocationItemManager *)self siriTriggerPhraseSettingItem];
+  v165[10] = siriTriggerPhraseSettingItem;
+  soundCheckItem = [(HUEditLocationItemManager *)self soundCheckItem];
+  v165[11] = soundCheckItem;
+  locationServicesSettingItem = [(HUEditLocationItemManager *)self locationServicesSettingItem];
+  v165[12] = locationServicesSettingItem;
+  removeItem = [(HUEditLocationItemManager *)self removeItem];
+  v165[13] = removeItem;
   v138 = [MEMORY[0x277CBEA60] arrayWithObjects:v165 count:14];
 
   v93 = HFLogForCategory();
   if (os_log_type_enabled(v93, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
-    v159 = "[HUEditLocationItemManager _buildItemProvidersForHome:]";
+    selfCopy = "[HUEditLocationItemManager _buildItemProvidersForHome:]";
     _os_log_impl(&dword_20CEB6000, v93, OS_LOG_TYPE_DEFAULT, "(%s) Creating 'guests'", buf, 0xCu);
   }
 
@@ -348,20 +348,20 @@ uint64_t __59__HUEditLocationItemManager_updateLocationServicesEnabled___block_i
   v150[2] = __56__HUEditLocationItemManager__buildItemProvidersForHome___block_invoke_130;
   v150[3] = &unk_277DB8670;
   objc_copyWeak(&v152, &location);
-  v95 = v142;
+  v95 = homeCopy;
   v151 = v95;
   v96 = [v94 initWithResultsBlock:v150];
   [(HUEditLocationItemManager *)self setGuestsItem:v96];
 
-  v97 = [(HFItemManager *)self home];
-  v98 = [v97 hf_accessoriesSupportingAccessCodes];
-  v99 = [v98 count] == 0;
+  home10 = [(HFItemManager *)self home];
+  hf_accessoriesSupportingAccessCodes = [home10 hf_accessoriesSupportingAccessCodes];
+  v99 = [hf_accessoriesSupportingAccessCodes count] == 0;
 
   if (v99)
   {
-    v101 = [(HFItemManager *)self home];
-    v102 = [v101 restrictedGuests];
-    v100 = [v102 count] != 0;
+    home11 = [(HFItemManager *)self home];
+    restrictedGuests = [home11 restrictedGuests];
+    v100 = [restrictedGuests count] != 0;
   }
 
   else
@@ -373,14 +373,14 @@ uint64_t __59__HUEditLocationItemManager_updateLocationServicesEnabled___block_i
   if (os_log_type_enabled(v103, OS_LOG_TYPE_DEFAULT))
   {
     v104 = NSStringFromBOOL();
-    v105 = [(HFItemManager *)self home];
-    v106 = [v105 hf_accessoriesSupportingAccessCodes];
-    v107 = [v106 count];
-    v108 = [(HFItemManager *)self home];
-    v109 = [v108 restrictedGuests];
-    v110 = [v109 count];
+    home12 = [(HFItemManager *)self home];
+    hf_accessoriesSupportingAccessCodes2 = [home12 hf_accessoriesSupportingAccessCodes];
+    v107 = [hf_accessoriesSupportingAccessCodes2 count];
+    home13 = [(HFItemManager *)self home];
+    restrictedGuests2 = [home13 restrictedGuests];
+    v110 = [restrictedGuests2 count];
     *buf = 136315906;
-    v159 = "[HUEditLocationItemManager _buildItemProvidersForHome:]";
+    selfCopy = "[HUEditLocationItemManager _buildItemProvidersForHome:]";
     v160 = 2112;
     *v161 = v104;
     *&v161[8] = 2048;
@@ -394,40 +394,40 @@ uint64_t __59__HUEditLocationItemManager_updateLocationServicesEnabled___block_i
   {
     v111 = objc_alloc(MEMORY[0x277D14B48]);
     v112 = MEMORY[0x277CBEB98];
-    v113 = [(HUEditLocationItemManager *)self guestsItem];
-    v114 = [v112 setWithObject:v113];
+    guestsItem = [(HUEditLocationItemManager *)self guestsItem];
+    v114 = [v112 setWithObject:guestsItem];
     v115 = [v111 initWithItems:v114];
     [(HUEditLocationItemManager *)self setNonBlockingItemProvider:v115];
 
     v116 = [MEMORY[0x277CBEB98] setWithObject:*MEMORY[0x277D13B88]];
-    v117 = [(HUEditLocationItemManager *)self nonBlockingItemProvider];
-    [v117 setClientInvalidationReasons:v116];
+    nonBlockingItemProvider = [(HUEditLocationItemManager *)self nonBlockingItemProvider];
+    [nonBlockingItemProvider setClientInvalidationReasons:v116];
   }
 
   v118 = objc_alloc(MEMORY[0x277D14B40]);
   v119 = [MEMORY[0x277CBEB98] setWithArray:v138];
   v120 = [v118 initWithItems:v119];
 
-  v121 = [(HFItemManager *)self home];
-  v122 = [(HFItemManager *)self home];
-  v123 = [v122 currentUser];
-  v124 = [v121 homeAccessControlForUser:v123];
+  home14 = [(HFItemManager *)self home];
+  home15 = [(HFItemManager *)self home];
+  currentUser2 = [home15 currentUser];
+  v124 = [home14 homeAccessControlForUser:currentUser2];
 
-  v125 = [v124 restrictedGuestAccessSettings];
-  v126 = [v125 accessAllowedToAccessories];
+  restrictedGuestAccessSettings = [v124 restrictedGuestAccessSettings];
+  accessAllowedToAccessories = [restrictedGuestAccessSettings accessAllowedToAccessories];
   v127 = objc_alloc(MEMORY[0x277D14290]);
-  v128 = [(HFItemManager *)self home];
-  v129 = [v127 initWithHome:v128];
+  home16 = [(HFItemManager *)self home];
+  v129 = [v127 initWithHome:home16];
   [(HUEditLocationItemManager *)self setAllowedAccessoryCategoryItemProvider:v129];
 
   v148[0] = MEMORY[0x277D85DD0];
   v148[1] = 3221225472;
   v148[2] = __56__HUEditLocationItemManager__buildItemProvidersForHome___block_invoke_159;
   v148[3] = &unk_277DB8B00;
-  v130 = v126;
+  v130 = accessAllowedToAccessories;
   v149 = v130;
-  v131 = [(HUEditLocationItemManager *)self allowedAccessoryCategoryItemProvider];
-  [v131 setFilter:v148];
+  allowedAccessoryCategoryItemProvider = [(HUEditLocationItemManager *)self allowedAccessoryCategoryItemProvider];
+  [allowedAccessoryCategoryItemProvider setFilter:v148];
 
   v132 = [objc_alloc(MEMORY[0x277D14CA0]) initWithHome:v95];
   [v132 setIncludeCurrentUser:1];
@@ -436,11 +436,11 @@ uint64_t __59__HUEditLocationItemManager_updateLocationServicesEnabled___block_i
   [v133 setFilter:&__block_literal_global_168_1];
   [(HUEditLocationItemManager *)self setInviteItemProvider:v133];
   v134 = [MEMORY[0x277CBEB18] arrayWithObjects:{v120, v132, v133, 0}];
-  v135 = [(HUEditLocationItemManager *)self nonBlockingItemProvider];
-  [v134 na_safeAddObject:v135];
+  nonBlockingItemProvider2 = [(HUEditLocationItemManager *)self nonBlockingItemProvider];
+  [v134 na_safeAddObject:nonBlockingItemProvider2];
 
-  v136 = [(HUEditLocationItemManager *)self allowedAccessoryCategoryItemProvider];
-  [v134 na_safeAddObject:v136];
+  allowedAccessoryCategoryItemProvider2 = [(HUEditLocationItemManager *)self allowedAccessoryCategoryItemProvider];
+  [v134 na_safeAddObject:allowedAccessoryCategoryItemProvider2];
 
   objc_destroyWeak(&v152);
   objc_destroyWeak(&v154);
@@ -720,15 +720,15 @@ BOOL __56__HUEditLocationItemManager__buildItemProvidersForHome___block_invoke_3
 - (BOOL)_inviteUsersItemAllowed
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v4 = [v3 homeManager];
-  v5 = [v4 hasOptedToHH2];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  homeManager = [mEMORY[0x277D146E8] homeManager];
+  hasOptedToHH2 = [homeManager hasOptedToHH2];
 
-  if (v5)
+  if (hasOptedToHH2)
   {
-    v6 = [(HFItemManager *)self home];
-    v7 = [v6 residentDevices];
-    v8 = [v7 count] != 0;
+    home = [(HFItemManager *)self home];
+    residentDevices = [home residentDevices];
+    v8 = [residentDevices count] != 0;
   }
 
   else
@@ -739,16 +739,16 @@ BOOL __56__HUEditLocationItemManager__buildItemProvidersForHome___block_invoke_3
   v9 = HFLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(HFItemManager *)self home];
-    v11 = [v10 residentDevices];
+    home2 = [(HFItemManager *)self home];
+    residentDevices2 = [home2 residentDevices];
     v13 = 136315906;
     v14 = "[HUEditLocationItemManager _inviteUsersItemAllowed]";
     v15 = 1024;
-    v16 = v5;
+    v16 = hasOptedToHH2;
     v17 = 1024;
     v18 = v8;
     v19 = 2048;
-    v20 = [v11 count];
+    v20 = [residentDevices2 count];
     _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "%s hasOptedToHH2 = %{BOOL}d, shouldShowInviteUsersItem = %{BOOL}d, residentDevices.count = %ld", &v13, 0x22u);
   }
 
@@ -758,108 +758,108 @@ BOOL __56__HUEditLocationItemManager__buildItemProvidersForHome___block_invoke_3
 - (id)_homeFuture
 {
   v2 = MEMORY[0x277D2C900];
-  v3 = [(HUEditLocationItemManager *)self homeBuilder];
-  v4 = [v3 home];
-  v5 = [v2 futureWithResult:v4];
+  homeBuilder = [(HUEditLocationItemManager *)self homeBuilder];
+  home = [homeBuilder home];
+  v5 = [v2 futureWithResult:home];
 
   return v5;
 }
 
-- (id)_itemsToHideInSet:(id)a3
+- (id)_itemsToHideInSet:(id)set
 {
   v28.receiver = self;
   v28.super_class = HUEditLocationItemManager;
-  v4 = [(HFItemManager *)&v28 _itemsToHideInSet:a3];
+  v4 = [(HFItemManager *)&v28 _itemsToHideInSet:set];
   v5 = [v4 mutableCopy];
 
-  v6 = [(HFItemManager *)self home];
-  v7 = [v6 hf_currentUserIsAdministrator];
+  home = [(HFItemManager *)self home];
+  hf_currentUserIsAdministrator = [home hf_currentUserIsAdministrator];
 
-  if ((v7 & 1) == 0)
+  if ((hf_currentUserIsAdministrator & 1) == 0)
   {
-    v8 = [(HUEditLocationItemManager *)self inviteUsersItem];
-    [v5 addObject:v8];
+    inviteUsersItem = [(HUEditLocationItemManager *)self inviteUsersItem];
+    [v5 addObject:inviteUsersItem];
 
-    v9 = [(HUEditLocationItemManager *)self homeBuilder];
-    v10 = [v9 userNotes];
-    v11 = [v10 length];
+    homeBuilder = [(HUEditLocationItemManager *)self homeBuilder];
+    userNotes = [homeBuilder userNotes];
+    v11 = [userNotes length];
 
     if (!v11)
     {
-      v12 = [(HUEditLocationItemManager *)self detailNotesItem];
-      [v5 addObject:v12];
+      detailNotesItem = [(HUEditLocationItemManager *)self detailNotesItem];
+      [v5 addObject:detailNotesItem];
     }
   }
 
-  v13 = [MEMORY[0x277D14808] sharedDispatcher];
-  v14 = [v13 isUsingiCloud];
+  mEMORY[0x277D14808] = [MEMORY[0x277D14808] sharedDispatcher];
+  isUsingiCloud = [mEMORY[0x277D14808] isUsingiCloud];
 
-  if (!v14 || [(HUEditLocationItemManager *)self _isCurrentUserRestrictedGuest])
+  if (!isUsingiCloud || [(HUEditLocationItemManager *)self _isCurrentUserRestrictedGuest])
   {
-    v15 = [(HUEditLocationItemManager *)self userItemProvider];
-    v16 = [v15 items];
-    [v5 unionSet:v16];
+    userItemProvider = [(HUEditLocationItemManager *)self userItemProvider];
+    items = [userItemProvider items];
+    [v5 unionSet:items];
 
-    v17 = [(HUEditLocationItemManager *)self guestsItem];
-    [v5 addObject:v17];
+    guestsItem = [(HUEditLocationItemManager *)self guestsItem];
+    [v5 addObject:guestsItem];
 
-    v18 = [(HUEditLocationItemManager *)self inviteItemProvider];
-    v19 = [v18 items];
-    [v5 unionSet:v19];
+    inviteItemProvider = [(HUEditLocationItemManager *)self inviteItemProvider];
+    items2 = [inviteItemProvider items];
+    [v5 unionSet:items2];
   }
 
   if ([(HUEditLocationItemManager *)self _isCurrentUserRestrictedGuest])
   {
-    v20 = [(HUEditLocationItemManager *)self showPredictedScenes];
-    [v5 addObject:v20];
+    showPredictedScenes = [(HUEditLocationItemManager *)self showPredictedScenes];
+    [v5 addObject:showPredictedScenes];
   }
 
   if ([(HUEditLocationItemManager *)self context]== 1)
   {
-    v21 = [(HUEditLocationItemManager *)self wallpaperPickerItem];
-    [v5 addObject:v21];
+    wallpaperPickerItem = [(HUEditLocationItemManager *)self wallpaperPickerItem];
+    [v5 addObject:wallpaperPickerItem];
 
-    v22 = [(HUEditLocationItemManager *)self showPredictedScenes];
-    [v5 na_safeAddObject:v22];
+    showPredictedScenes2 = [(HUEditLocationItemManager *)self showPredictedScenes];
+    [v5 na_safeAddObject:showPredictedScenes2];
 
-    v23 = [(HUEditLocationItemManager *)self cameraItem];
-    [v5 addObject:v23];
+    cameraItem = [(HUEditLocationItemManager *)self cameraItem];
+    [v5 addObject:cameraItem];
 
-    v24 = [(HUEditLocationItemManager *)self chooseWallpaperItem];
-    [v5 addObject:v24];
+    chooseWallpaperItem = [(HUEditLocationItemManager *)self chooseWallpaperItem];
+    [v5 addObject:chooseWallpaperItem];
 
-    v25 = [(HUEditLocationItemManager *)self wallpaperThumbnailItem];
-    [v5 addObject:v25];
+    wallpaperThumbnailItem = [(HUEditLocationItemManager *)self wallpaperThumbnailItem];
+    [v5 addObject:wallpaperThumbnailItem];
   }
 
   if ([MEMORY[0x277D14CE8] isRunningInStoreDemoMode])
   {
-    v26 = [(HUEditLocationItemManager *)self removeItem];
-    [v5 addObject:v26];
+    removeItem = [(HUEditLocationItemManager *)self removeItem];
+    [v5 addObject:removeItem];
   }
 
   return v5;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v113[1] = *MEMORY[0x277D85DE8];
-  v99 = a3;
+  itemsCopy = items;
   v4 = objc_opt_new();
   v5 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUEditLocationNameSectionIdentifier"];
   v6 = _HULocalizedStringWithDefaultValue(@"HUEditLocationNameSectionTitle", @"HUEditLocationNameSectionTitle", 1);
   [v5 setHeaderTitle:v6];
 
-  v7 = [(HUEditLocationItemManager *)self nameItem];
-  v113[0] = v7;
+  nameItem = [(HUEditLocationItemManager *)self nameItem];
+  v113[0] = nameItem;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v113 count:1];
   [v5 setItems:v8];
 
   v98 = v5;
   [v4 addObject:v5];
   v9 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUScheduleSectionIdentifier"];
-  v10 = [(HUEditLocationItemManager *)self homeScheduleItem];
-  v112 = v10;
+  homeScheduleItem = [(HUEditLocationItemManager *)self homeScheduleItem];
+  v112 = homeScheduleItem;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v112 count:1];
   [v9 setItems:v11];
 
@@ -872,11 +872,11 @@ BOOL __56__HUEditLocationItemManager__buildItemProvidersForHome___block_invoke_3
   v97 = v9;
   [v4 addObject:v9];
   v14 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUAllowedAccessoriesSectionIdentifier"];
-  v15 = [(HUEditLocationItemManager *)self allowedAccessoryCategoryItemProvider];
-  v16 = [v15 items];
-  v17 = [v16 allObjects];
-  v18 = [MEMORY[0x277D14778] defaultItemComparator];
-  v19 = [v17 sortedArrayUsingComparator:v18];
+  allowedAccessoryCategoryItemProvider = [(HUEditLocationItemManager *)self allowedAccessoryCategoryItemProvider];
+  items = [allowedAccessoryCategoryItemProvider items];
+  allObjects = [items allObjects];
+  defaultItemComparator = [MEMORY[0x277D14778] defaultItemComparator];
+  v19 = [allObjects sortedArrayUsingComparator:defaultItemComparator];
   [v14 setItems:v19];
 
   v20 = _HULocalizedStringWithDefaultValue(@"HURestrictedGuest_AllowedAccessoriesSection_Header", @"HURestrictedGuest_AllowedAccessoriesSection_Header", 1);
@@ -896,66 +896,66 @@ BOOL __56__HUEditLocationItemManager__buildItemProvidersForHome___block_invoke_3
   v23 = __62__HUEditLocationItemManager__buildSectionsWithDisplayedItems___block_invoke(v100);
   [v21 setFooterTitle:v23];
 
-  v24 = [(HUEditLocationItemManager *)self userItemProvider];
-  v25 = [v24 items];
-  v26 = [(HUEditLocationItemManager *)self inviteItemProvider];
-  v27 = [v26 items];
-  v28 = [v25 setByAddingObjectsFromSet:v27];
-  v29 = [v28 allObjects];
+  userItemProvider = [(HUEditLocationItemManager *)self userItemProvider];
+  items2 = [userItemProvider items];
+  inviteItemProvider = [(HUEditLocationItemManager *)self inviteItemProvider];
+  items3 = [inviteItemProvider items];
+  v28 = [items2 setByAddingObjectsFromSet:items3];
+  allObjects2 = [v28 allObjects];
 
-  v30 = [MEMORY[0x277D14778] defaultItemComparator];
-  v94 = v29;
-  v31 = [v29 sortedArrayUsingComparator:v30];
+  defaultItemComparator2 = [MEMORY[0x277D14778] defaultItemComparator];
+  v94 = allObjects2;
+  v31 = [allObjects2 sortedArrayUsingComparator:defaultItemComparator2];
   v111[0] = v31;
-  v32 = [(HUEditLocationItemManager *)self guestsItem];
-  v111[1] = v32;
+  guestsItem = [(HUEditLocationItemManager *)self guestsItem];
+  v111[1] = guestsItem;
   v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v111 count:2];
-  v34 = [v33 na_arrayByFlattening];
-  [v21 setItems:v34];
+  na_arrayByFlattening = [v33 na_arrayByFlattening];
+  [v21 setItems:na_arrayByFlattening];
 
   if ([(HUEditLocationItemManager *)self _inviteUsersItemAllowed])
   {
-    v35 = [v21 items];
-    v110[0] = v35;
-    v36 = [(HUEditLocationItemManager *)self inviteUsersItem];
-    v110[1] = v36;
+    items4 = [v21 items];
+    v110[0] = items4;
+    inviteUsersItem = [(HUEditLocationItemManager *)self inviteUsersItem];
+    v110[1] = inviteUsersItem;
     v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v110 count:2];
-    v38 = [v37 na_arrayByFlattening];
-    [v21 setItems:v38];
+    na_arrayByFlattening2 = [v37 na_arrayByFlattening];
+    [v21 setItems:na_arrayByFlattening2];
   }
 
   v95 = v21;
   [v4 addObject:v21];
-  v39 = [(HUEditLocationItemManager *)self notificationSettingsModule];
-  v40 = [v39 buildSectionsWithDisplayedItems:v99];
+  notificationSettingsModule = [(HUEditLocationItemManager *)self notificationSettingsModule];
+  v40 = [notificationSettingsModule buildSectionsWithDisplayedItems:itemsCopy];
   [v4 addObjectsFromArray:v40];
 
   v41 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUEditLocationSiriTriggerPhraseSectionIdentifier"];
-  v42 = [(HUEditLocationItemManager *)self siriTriggerPhraseSettingItem];
-  v109 = v42;
+  siriTriggerPhraseSettingItem = [(HUEditLocationItemManager *)self siriTriggerPhraseSettingItem];
+  v109 = siriTriggerPhraseSettingItem;
   v43 = [MEMORY[0x277CBEA60] arrayWithObjects:&v109 count:1];
   [v41 setItems:v43];
 
   v93 = v41;
   [v4 addObject:v41];
   v44 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUEditLocationSoftwareUpdateSectionIdentifier"];
-  v45 = [(HFItemManager *)self home];
-  v46 = [HUSoftwareUpdateSettingsItem footerTitleForHome:v45];
+  home = [(HFItemManager *)self home];
+  v46 = [HUSoftwareUpdateSettingsItem footerTitleForHome:home];
   [v44 setFooterTitle:v46];
 
-  v47 = [(HUEditLocationItemManager *)self softwareUpdateItem];
-  v108 = v47;
+  softwareUpdateItem = [(HUEditLocationItemManager *)self softwareUpdateItem];
+  v108 = softwareUpdateItem;
   v48 = [MEMORY[0x277CBEA60] arrayWithObjects:&v108 count:1];
   [v44 setItems:v48];
 
   v92 = v44;
   [v4 addObject:v44];
-  v49 = [(HUEditLocationItemManager *)self connectedServicesItemModule];
-  v50 = [v49 buildSectionsWithDisplayedItems:v99];
+  connectedServicesItemModule = [(HUEditLocationItemManager *)self connectedServicesItemModule];
+  v50 = [connectedServicesItemModule buildSectionsWithDisplayedItems:itemsCopy];
   [v4 addObjectsFromArray:v50];
 
-  v51 = [(HUEditLocationItemManager *)self soundCheckItem];
-  LODWORD(v50) = [v99 containsObject:v51];
+  soundCheckItem = [(HUEditLocationItemManager *)self soundCheckItem];
+  LODWORD(v50) = [itemsCopy containsObject:soundCheckItem];
 
   if (v50)
   {
@@ -963,8 +963,8 @@ BOOL __56__HUEditLocationItemManager__buildItemProvidersForHome___block_invoke_3
     v53 = _HULocalizedStringWithDefaultValue(@"HUHomeMediaSettingSection_Title", @"HUHomeMediaSettingSection_Title", 1);
     [v52 setHeaderTitle:v53];
 
-    v54 = [(HUEditLocationItemManager *)self soundCheckItem];
-    v107 = v54;
+    soundCheckItem2 = [(HUEditLocationItemManager *)self soundCheckItem];
+    v107 = soundCheckItem2;
     v55 = [MEMORY[0x277CBEA60] arrayWithObjects:&v107 count:1];
     [v52 setItems:v55];
 
@@ -973,8 +973,8 @@ BOOL __56__HUEditLocationItemManager__buildItemProvidersForHome___block_invoke_3
 
   v56 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUEditLocationScenesSectionIdentifier"];
   v57 = MEMORY[0x277CBEA60];
-  v58 = [(HUEditLocationItemManager *)self showPredictedScenes];
-  v59 = [v57 na_arrayWithSafeObject:v58];
+  showPredictedScenes = [(HUEditLocationItemManager *)self showPredictedScenes];
+  v59 = [v57 na_arrayWithSafeObject:showPredictedScenes];
   [v56 setItems:v59];
 
   v60 = _HULocalizedStringWithDefaultValue(@"HUEditLocationScenesSectionTitle", @"HUEditLocationScenesSectionTitle", 1);
@@ -986,14 +986,14 @@ BOOL __56__HUEditLocationItemManager__buildItemProvidersForHome___block_invoke_3
   v62 = _HULocalizedStringWithDefaultValue(@"HUEditLocationWallpaperSectionTitle", @"HUEditLocationWallpaperSectionTitle", 1);
   [v61 setHeaderTitle:v62];
 
-  v63 = [(HUEditLocationItemManager *)self cameraItem];
-  v106[0] = v63;
-  v64 = [(HUEditLocationItemManager *)self chooseWallpaperItem];
-  v106[1] = v64;
-  v65 = [(HUEditLocationItemManager *)self wallpaperThumbnailItem];
-  v106[2] = v65;
-  v66 = [(HUEditLocationItemManager *)self wallpaperPickerItem];
-  v106[3] = v66;
+  cameraItem = [(HUEditLocationItemManager *)self cameraItem];
+  v106[0] = cameraItem;
+  chooseWallpaperItem = [(HUEditLocationItemManager *)self chooseWallpaperItem];
+  v106[1] = chooseWallpaperItem;
+  wallpaperThumbnailItem = [(HUEditLocationItemManager *)self wallpaperThumbnailItem];
+  v106[2] = wallpaperThumbnailItem;
+  wallpaperPickerItem = [(HUEditLocationItemManager *)self wallpaperPickerItem];
+  v106[3] = wallpaperPickerItem;
   v67 = [MEMORY[0x277CBEA60] arrayWithObjects:v106 count:4];
   [v61 setItems:v67];
 
@@ -1005,8 +1005,8 @@ BOOL __56__HUEditLocationItemManager__buildItemProvidersForHome___block_invoke_3
   v70 = _HULocalizedStringWithDefaultValue(@"HUEditLocationDetailsFooterTitle", @"HUEditLocationDetailsFooterTitle", 1);
   [v68 setFooterTitle:v70];
 
-  v71 = [(HUEditLocationItemManager *)self detailNotesItem];
-  v105 = v71;
+  detailNotesItem = [(HUEditLocationItemManager *)self detailNotesItem];
+  v105 = detailNotesItem;
   v72 = [MEMORY[0x277CBEA60] arrayWithObjects:&v105 count:1];
   [v68 setItems:v72];
 
@@ -1019,8 +1019,8 @@ BOOL __56__HUEditLocationItemManager__buildItemProvidersForHome___block_invoke_3
 
   v78 = objc_alloc(MEMORY[0x277CCA898]);
   v103 = *MEMORY[0x277D740E8];
-  v79 = [MEMORY[0x277D14C80] locationPrivacyURL];
-  v104 = v79;
+  locationPrivacyURL = [MEMORY[0x277D14C80] locationPrivacyURL];
+  v104 = locationPrivacyURL;
   v80 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v104 forKeys:&v103 count:1];
   v81 = [v78 initWithString:v74 attributes:v80];
   [v77 appendAttributedString:v81];
@@ -1030,20 +1030,20 @@ BOOL __56__HUEditLocationItemManager__buildItemProvidersForHome___block_invoke_3
   [v82 setHeaderTitle:v83];
 
   [v82 setAttributedFooterTitle:v77];
-  v84 = [(HUEditLocationItemManager *)self locationServicesSettingItem];
-  v102 = v84;
+  locationServicesSettingItem = [(HUEditLocationItemManager *)self locationServicesSettingItem];
+  v102 = locationServicesSettingItem;
   v85 = [MEMORY[0x277CBEA60] arrayWithObjects:&v102 count:1];
   [v82 setItems:v85];
 
   [v4 addObject:v82];
   v86 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUEditLocationRemoveSectionIdentifier"];
-  v87 = [(HUEditLocationItemManager *)self removeItem];
-  v101 = v87;
+  removeItem = [(HUEditLocationItemManager *)self removeItem];
+  v101 = removeItem;
   v88 = [MEMORY[0x277CBEA60] arrayWithObjects:&v101 count:1];
   [v86 setItems:v88];
 
   [v4 addObject:v86];
-  v89 = [MEMORY[0x277D14778] filterSections:v4 toDisplayedItems:v99];
+  v89 = [MEMORY[0x277D14778] filterSections:v4 toDisplayedItems:itemsCopy];
 
   return v89;
 }
@@ -1079,10 +1079,10 @@ id __62__HUEditLocationItemManager__buildSectionsWithDisplayedItems___block_invo
 
 - (BOOL)_isCurrentUserRestrictedGuest
 {
-  v3 = [(HFItemManager *)self home];
-  v4 = [(HFItemManager *)self home];
-  v5 = [v4 currentUser];
-  v6 = [v3 hf_userIsRestrictedGuest:v5];
+  home = [(HFItemManager *)self home];
+  home2 = [(HFItemManager *)self home];
+  currentUser = [home2 currentUser];
+  v6 = [home hf_userIsRestrictedGuest:currentUser];
 
   return v6;
 }
@@ -1092,8 +1092,8 @@ id __62__HUEditLocationItemManager__buildSectionsWithDisplayedItems___block_invo
   v4.receiver = self;
   v4.super_class = HUEditLocationItemManager;
   [(HFItemManager *)&v4 _registerForExternalUpdates];
-  v3 = [(HUEditLocationItemManager *)self pinCodeManager];
-  [v3 addObserver:self];
+  pinCodeManager = [(HUEditLocationItemManager *)self pinCodeManager];
+  [pinCodeManager addObserver:self];
 }
 
 - (void)_unregisterForExternalUpdates
@@ -1101,11 +1101,11 @@ id __62__HUEditLocationItemManager__buildSectionsWithDisplayedItems___block_invo
   v4.receiver = self;
   v4.super_class = HUEditLocationItemManager;
   [(HFItemManager *)&v4 _unregisterForExternalUpdates];
-  v3 = [(HUEditLocationItemManager *)self pinCodeManager];
-  [v3 removeObserver:self];
+  pinCodeManager = [(HUEditLocationItemManager *)self pinCodeManager];
+  [pinCodeManager removeObserver:self];
 }
 
-- (void)pinCodeManagerDidUpdate:(id)a3 pinCodes:(id)a4
+- (void)pinCodeManagerDidUpdate:(id)update pinCodes:(id)codes
 {
   v17 = *MEMORY[0x277D85DE8];
   v6 = HFLogForCategory();
@@ -1113,18 +1113,18 @@ id __62__HUEditLocationItemManager__buildSectionsWithDisplayedItems___block_invo
   {
     v7 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
     v16 = v7;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@: %@ Reloading PIN Code related items...", buf, 0x16u);
   }
 
-  v8 = [(HUEditLocationItemManager *)self nonBlockingItemProvider];
+  nonBlockingItemProvider = [(HUEditLocationItemManager *)self nonBlockingItemProvider];
 
-  if (v8)
+  if (nonBlockingItemProvider)
   {
-    v9 = [(HUEditLocationItemManager *)self nonBlockingItemProvider];
-    v12 = v9;
+    nonBlockingItemProvider2 = [(HUEditLocationItemManager *)self nonBlockingItemProvider];
+    v12 = nonBlockingItemProvider2;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v12 count:1];
     v11 = [(HFItemManager *)self reloadAndUpdateItemsForProviders:v10 senderSelector:a2];
   }

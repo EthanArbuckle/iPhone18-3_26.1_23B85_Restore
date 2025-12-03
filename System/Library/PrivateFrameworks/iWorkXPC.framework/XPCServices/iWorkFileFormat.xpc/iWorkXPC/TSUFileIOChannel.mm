@@ -1,21 +1,21 @@
 @interface TSUFileIOChannel
 - (BOOL)isValid;
-- (TSUFileIOChannel)initWithType:(unint64_t)a3 descriptor:(int)a4 cleanupHandler:(id)a5;
-- (void)addBarrier:(id)a3;
+- (TSUFileIOChannel)initWithType:(unint64_t)type descriptor:(int)descriptor cleanupHandler:(id)handler;
+- (void)addBarrier:(id)barrier;
 - (void)close;
 - (void)dealloc;
-- (void)flushWithCompletion:(id)a3;
-- (void)readFromOffset:(int64_t)a3 length:(unint64_t)a4 handler:(id)a5;
-- (void)setLowWater:(unint64_t)a3;
-- (void)truncateToLength:(int64_t)a3 completion:(id)a4;
-- (void)writeData:(id)a3 offset:(int64_t)a4 handler:(id)a5;
+- (void)flushWithCompletion:(id)completion;
+- (void)readFromOffset:(int64_t)offset length:(unint64_t)length handler:(id)handler;
+- (void)setLowWater:(unint64_t)water;
+- (void)truncateToLength:(int64_t)length completion:(id)completion;
+- (void)writeData:(id)data offset:(int64_t)offset handler:(id)handler;
 @end
 
 @implementation TSUFileIOChannel
 
-- (TSUFileIOChannel)initWithType:(unint64_t)a3 descriptor:(int)a4 cleanupHandler:(id)a5
+- (TSUFileIOChannel)initWithType:(unint64_t)type descriptor:(int)descriptor cleanupHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v21.receiver = self;
   v21.super_class = TSUFileIOChannel;
   v9 = [(TSUFileIOChannel *)&v21 init];
@@ -32,8 +32,8 @@
     cleanup_handler[1] = 3221225472;
     cleanup_handler[2] = sub_1000A1600;
     cleanup_handler[3] = &unk_1001CE0E0;
-    v20 = v8;
-    v15 = dispatch_io_create(a3, a4, v14, cleanup_handler);
+    v20 = handlerCopy;
+    v15 = dispatch_io_create(type, descriptor, v14, cleanup_handler);
     channel = v10->_channel;
     v10->_channel = v15;
 
@@ -48,9 +48,9 @@
 
   else
   {
-    if (v8)
+    if (handlerCopy)
     {
-      (*(v8 + 2))(v8, 12);
+      (*(handlerCopy + 2))(handlerCopy, 12);
     }
 
     v17 = 0;
@@ -76,9 +76,9 @@
   [(TSUFileIOChannel *)&v5 dealloc];
 }
 
-- (void)readFromOffset:(int64_t)a3 length:(unint64_t)a4 handler:(id)a5
+- (void)readFromOffset:(int64_t)offset length:(unint64_t)length handler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v9 = atomic_load(&self->_isClosed);
   if (v9)
   {
@@ -107,15 +107,15 @@
   io_handler[1] = 3221225472;
   io_handler[2] = sub_1000A1930;
   io_handler[3] = &unk_1001CE128;
-  v17 = v8;
-  v15 = v8;
-  dispatch_io_read(v13, a3, a4, ioQueue, io_handler);
+  v17 = handlerCopy;
+  v15 = handlerCopy;
+  dispatch_io_read(v13, offset, length, ioQueue, io_handler);
 }
 
-- (void)writeData:(id)a3 offset:(int64_t)a4 handler:(id)a5
+- (void)writeData:(id)data offset:(int64_t)offset handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  handlerCopy = handler;
   v10 = atomic_load(&self->_isClosed);
   if (v10)
   {
@@ -137,13 +137,13 @@
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  if (!v8)
+  if (!dataCopy)
   {
-    v8 = &_dispatch_data_empty;
+    dataCopy = &_dispatch_data_empty;
     v13 = &_dispatch_data_empty;
   }
 
-  size = dispatch_data_get_size(v8);
+  size = dispatch_data_get_size(dataCopy);
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x2020000000;
@@ -157,9 +157,9 @@
   io_handler[3] = &unk_1001CE170;
   v21 = v23;
   v22 = size;
-  v20 = v9;
-  v18 = v9;
-  dispatch_io_write(v16, a4, v8, ioQueue, io_handler);
+  v20 = handlerCopy;
+  v18 = handlerCopy;
+  dispatch_io_write(v16, offset, dataCopy, ioQueue, io_handler);
 
   _Block_object_dispose(v23, 8);
 }
@@ -215,7 +215,7 @@ LABEL_14:
   }
 }
 
-- (void)setLowWater:(unint64_t)a3
+- (void)setLowWater:(unint64_t)water
 {
   v5 = atomic_load(&self->_isClosed);
   if (v5)
@@ -238,12 +238,12 @@ LABEL_14:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  dispatch_io_set_low_water(self->_channel, a3);
+  dispatch_io_set_low_water(self->_channel, water);
 }
 
-- (void)addBarrier:(id)a3
+- (void)addBarrier:(id)barrier
 {
-  v4 = a3;
+  barrierCopy = barrier;
   v5 = atomic_load(&self->_isClosed);
   if (v5)
   {
@@ -265,12 +265,12 @@ LABEL_14:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  dispatch_io_barrier(self->_channel, v4);
+  dispatch_io_barrier(self->_channel, barrierCopy);
 }
 
-- (void)flushWithCompletion:(id)a3
+- (void)flushWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = atomic_load(&self->_isClosed);
   if (v5)
   {
@@ -298,14 +298,14 @@ LABEL_14:
   v10[2] = sub_1000A25BC;
   v10[3] = &unk_1001C5A18;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = completionCopy;
+  v9 = completionCopy;
   dispatch_io_barrier(channel, v10);
 }
 
-- (void)truncateToLength:(int64_t)a3 completion:(id)a4
+- (void)truncateToLength:(int64_t)length completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = atomic_load(&self->_isClosed);
   if (v7)
   {
@@ -332,10 +332,10 @@ LABEL_14:
   barrier[1] = 3221225472;
   barrier[2] = sub_1000A2924;
   barrier[3] = &unk_1001CE2B8;
-  v13 = v6;
-  v14 = a3;
+  v13 = completionCopy;
+  lengthCopy = length;
   barrier[4] = self;
-  v11 = v6;
+  v11 = completionCopy;
   dispatch_io_barrier(channel, barrier);
 }
 

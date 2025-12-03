@@ -1,20 +1,20 @@
 @interface MTAAnalogStopwatchHandView
-- (MTAAnalogStopwatchHandView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setAnchorStyle:(unint64_t)a3;
-- (void)setAngle:(double)a3;
-- (void)setColor:(id)a3;
-- (void)setHasTail:(BOOL)a3;
-- (void)setWidth:(double)a3;
+- (MTAAnalogStopwatchHandView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)setAnchorStyle:(unint64_t)style;
+- (void)setAngle:(double)angle;
+- (void)setColor:(id)color;
+- (void)setHasTail:(BOOL)tail;
+- (void)setWidth:(double)width;
 @end
 
 @implementation MTAAnalogStopwatchHandView
 
-- (MTAAnalogStopwatchHandView)initWithFrame:(CGRect)a3
+- (MTAAnalogStopwatchHandView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MTAAnalogStopwatchHandView;
-  v3 = [(MTAAnalogStopwatchHandView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTAAnalogStopwatchHandView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
@@ -24,55 +24,55 @@
   return v3;
 }
 
-- (void)setAngle:(double)a3
+- (void)setAngle:(double)angle
 {
-  if (self->_angle != a3)
+  if (self->_angle != angle)
   {
-    self->_angle = a3;
+    self->_angle = angle;
     [(MTAAnalogStopwatchHandView *)self setNeedsDisplay];
   }
 }
 
-- (void)setWidth:(double)a3
+- (void)setWidth:(double)width
 {
-  if (self->_width != a3)
+  if (self->_width != width)
   {
-    self->_width = a3;
+    self->_width = width;
     [(MTAAnalogStopwatchHandView *)self setNeedsDisplay];
   }
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_color isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_color, a3);
+    objc_storeStrong(&self->_color, color);
     [(MTAAnalogStopwatchHandView *)self setNeedsDisplay];
   }
 }
 
-- (void)setHasTail:(BOOL)a3
+- (void)setHasTail:(BOOL)tail
 {
-  if (self->_hasTail != a3)
+  if (self->_hasTail != tail)
   {
-    self->_hasTail = a3;
+    self->_hasTail = tail;
     [(MTAAnalogStopwatchHandView *)self setNeedsDisplay];
   }
 }
 
-- (void)setAnchorStyle:(unint64_t)a3
+- (void)setAnchorStyle:(unint64_t)style
 {
-  if (self->_anchorStyle != a3)
+  if (self->_anchorStyle != style)
   {
-    self->_anchorStyle = a3;
+    self->_anchorStyle = style;
     [(MTAAnalogStopwatchHandView *)self setNeedsDisplay];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(MTAAnalogStopwatchHandView *)self width:a3.origin.x];
+  [(MTAAnalogStopwatchHandView *)self width:rect.origin.x];
   v5 = v4;
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
@@ -85,9 +85,9 @@
   v10 = v9;
   v11 = v9 * 0.5;
   v12 = objc_opt_new();
-  v13 = [(MTAAnalogStopwatchHandView *)self hasTail];
+  hasTail = [(MTAAnalogStopwatchHandView *)self hasTail];
   v14 = 0.0;
-  if (v13)
+  if (hasTail)
   {
     v14 = v11 / 5.0;
   }
@@ -98,18 +98,18 @@
   CGAffineTransformMakeRotation(&v25, v15);
   [v12 applyTransform:&v25];
   [v12 setLineWidth:v5];
-  v16 = [(MTAAnalogStopwatchHandView *)self color];
-  [v16 setStroke];
+  color = [(MTAAnalogStopwatchHandView *)self color];
+  [color setStroke];
 
   [v12 stroke];
   if ([(MTAAnalogStopwatchHandView *)self anchorStyle]== 1)
   {
     UIRoundToViewScale();
     v18 = [UIBezierPath bezierPathWithArcCenter:1 radius:CGPointZero.x startAngle:CGPointZero.y endAngle:v17 clockwise:0.0, 6.28318531];
-    v19 = [(MTAAnalogStopwatchHandView *)self color];
+    color2 = [(MTAAnalogStopwatchHandView *)self color];
 LABEL_7:
-    v24 = v19;
-    [v19 setFill];
+    v24 = color2;
+    [color2 setFill];
 
     [v18 fill];
     goto LABEL_8;
@@ -120,13 +120,13 @@ LABEL_7:
     UIRoundToViewScale();
     y = CGPointZero.y;
     v22 = [UIBezierPath bezierPathWithArcCenter:1 radius:CGPointZero.x startAngle:y endAngle:v21 clockwise:0.0, 6.28318531];
-    v23 = [(MTAAnalogStopwatchHandView *)self color];
-    [v23 setFill];
+    color3 = [(MTAAnalogStopwatchHandView *)self color];
+    [color3 setFill];
 
     [v22 fill];
     v18 = [UIBezierPath bezierPathWithArcCenter:1 radius:CGPointZero.x startAngle:y endAngle:v5 clockwise:0.0, 6.28318531];
 
-    v19 = +[UIColor mtui_backgroundColor];
+    color2 = +[UIColor mtui_backgroundColor];
     goto LABEL_7;
   }
 

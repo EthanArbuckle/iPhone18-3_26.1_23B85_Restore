@@ -1,158 +1,158 @@
 @interface VNError
-+ (id)errorForCVReturnCode:(int)a3 localizedDescription:(id)a4;
-+ (id)errorForCVReturnCode:(int)a3 width:(unint64_t)a4 height:(unint64_t)a5 pixelFormat:(unsigned int)a6 localizedDescription:(id)a7;
-+ (id)errorForCancellationOfRequest:(id)a3;
-+ (id)errorForDataUnavailableWithLocalizedDescription:(id)a3;
-+ (id)errorForDataUnavailableWithLocalizedDescription:(id)a3 underlyingError:(id)a4;
-+ (id)errorForEspressoErrorInfo:(id)a3 localizedDescription:(id)a4;
-+ (id)errorForEspressoReturnStatus:(int)a3 localizedDescription:(id)a4;
-+ (id)errorForExecutionTimeoutWithLocalizedDescription:(id)a3;
-+ (id)errorForExecutionTimeoutWithLocalizedDescription:(id)a3 underlyingError:(id)a4;
-+ (id)errorForFailedEspressoPlan:(void *)a3 localizedDescription:(id)a4;
-+ (id)errorForGPURequiredByRequest:(id)a3;
-+ (id)errorForInternalErrorWithLocalizedDescription:(id)a3;
-+ (id)errorForInternalErrorWithLocalizedDescription:(id)a3 underlyingError:(id)a4;
-+ (id)errorForInvalidArgument:(id)a3 named:(id)a4;
-+ (id)errorForInvalidArgumentWithLocalizedDescription:(id)a3;
-+ (id)errorForInvalidFormatErrorWithLocalizedDescription:(id)a3;
-+ (id)errorForInvalidImageFailureWithLocalizedDescription:(id)a3;
-+ (id)errorForInvalidModelWithLocalizedDescription:(id)a3;
-+ (id)errorForInvalidModelWithLocalizedDescription:(id)a3 underlyingError:(id)a4;
-+ (id)errorForInvalidOperationForRequestClass:(Class)a3 revision:(unint64_t)a4;
-+ (id)errorForInvalidOperationForRequestSpecifier:(id)a3;
-+ (id)errorForInvalidOperationWithLocalizedDescription:(id)a3;
-+ (id)errorForInvalidOption:(id)a3 named:(id)a4;
-+ (id)errorForInvalidOption:(id)a3 named:(id)a4 localizedDescription:(id)a5;
-+ (id)errorForInvalidOptionWithLocalizedDescription:(id)a3;
-+ (id)errorForMemoryAllocationFailureWithLocalizedDescription:(id)a3;
-+ (id)errorForMissingOptionNamed:(id)a3;
-+ (id)errorForOSStatus:(int)a3 localizedDescription:(id)a4;
-+ (id)errorForOperationFailedErrorWithLocalizedDescription:(id)a3;
-+ (id)errorForOperationFailedErrorWithLocalizedDescription:(id)a3 underlyingError:(id)a4;
-+ (id)errorForOutOfBoundsErrorWithLocalizedDescription:(id)a3;
-+ (id)errorForUnimplementedFunctionWithLocalizedDescription:(id)a3;
-+ (id)errorForUnimplementedMethod:(SEL)a3 ofObject:(id)a4;
-+ (id)errorForUnknownErrorWithLocalizedDescription:(id)a3;
-+ (id)errorForUnsupportedComputeDevice:(id)a3;
-+ (id)errorForUnsupportedComputeDeviceWithLocalizedDescription:(id)a3;
-+ (id)errorForUnsupportedComputeStage:(id)a3;
-+ (id)errorForUnsupportedConfigurationOfRequest:(id)a3;
-+ (id)errorForUnsupportedProcessingDevice:(id)a3;
-+ (id)errorForUnsupportedRequestClassName:(id)a3;
-+ (id)errorForUnsupportedRequestSpecifier:(id)a3;
-+ (id)errorForUnsupportedRevision:(unint64_t)a3 ofRequest:(id)a4;
-+ (id)errorForUnsupportedRevision:(unint64_t)a3 ofRequestClass:(Class)a4;
-+ (id)errorForUnsupportedSerializingHeaderVersion:(unsigned int)a3;
-+ (id)errorForVImageError:(int64_t)a3 localizedDescription:(id)a4;
-+ (id)errorWithCode:(int64_t)a3 message:(id)a4;
-+ (id)errorWithCode:(int64_t)a3 message:(id)a4 underlyingError:(id)a5;
-+ (id)errorWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5;
-+ (void)VNAssert:(BOOL)a3 log:(id)a4;
-+ (void)VNAssertClass:(Class)a3 needsToOverrideMethod:(SEL)a4;
-+ (void)logInternalError:(id)a3;
++ (id)errorForCVReturnCode:(int)code localizedDescription:(id)description;
++ (id)errorForCVReturnCode:(int)code width:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format localizedDescription:(id)description;
++ (id)errorForCancellationOfRequest:(id)request;
++ (id)errorForDataUnavailableWithLocalizedDescription:(id)description;
++ (id)errorForDataUnavailableWithLocalizedDescription:(id)description underlyingError:(id)error;
++ (id)errorForEspressoErrorInfo:(id)info localizedDescription:(id)description;
++ (id)errorForEspressoReturnStatus:(int)status localizedDescription:(id)description;
++ (id)errorForExecutionTimeoutWithLocalizedDescription:(id)description;
++ (id)errorForExecutionTimeoutWithLocalizedDescription:(id)description underlyingError:(id)error;
++ (id)errorForFailedEspressoPlan:(void *)plan localizedDescription:(id)description;
++ (id)errorForGPURequiredByRequest:(id)request;
++ (id)errorForInternalErrorWithLocalizedDescription:(id)description;
++ (id)errorForInternalErrorWithLocalizedDescription:(id)description underlyingError:(id)error;
++ (id)errorForInvalidArgument:(id)argument named:(id)named;
++ (id)errorForInvalidArgumentWithLocalizedDescription:(id)description;
++ (id)errorForInvalidFormatErrorWithLocalizedDescription:(id)description;
++ (id)errorForInvalidImageFailureWithLocalizedDescription:(id)description;
++ (id)errorForInvalidModelWithLocalizedDescription:(id)description;
++ (id)errorForInvalidModelWithLocalizedDescription:(id)description underlyingError:(id)error;
++ (id)errorForInvalidOperationForRequestClass:(Class)class revision:(unint64_t)revision;
++ (id)errorForInvalidOperationForRequestSpecifier:(id)specifier;
++ (id)errorForInvalidOperationWithLocalizedDescription:(id)description;
++ (id)errorForInvalidOption:(id)option named:(id)named;
++ (id)errorForInvalidOption:(id)option named:(id)named localizedDescription:(id)description;
++ (id)errorForInvalidOptionWithLocalizedDescription:(id)description;
++ (id)errorForMemoryAllocationFailureWithLocalizedDescription:(id)description;
++ (id)errorForMissingOptionNamed:(id)named;
++ (id)errorForOSStatus:(int)status localizedDescription:(id)description;
++ (id)errorForOperationFailedErrorWithLocalizedDescription:(id)description;
++ (id)errorForOperationFailedErrorWithLocalizedDescription:(id)description underlyingError:(id)error;
++ (id)errorForOutOfBoundsErrorWithLocalizedDescription:(id)description;
++ (id)errorForUnimplementedFunctionWithLocalizedDescription:(id)description;
++ (id)errorForUnimplementedMethod:(SEL)method ofObject:(id)object;
++ (id)errorForUnknownErrorWithLocalizedDescription:(id)description;
++ (id)errorForUnsupportedComputeDevice:(id)device;
++ (id)errorForUnsupportedComputeDeviceWithLocalizedDescription:(id)description;
++ (id)errorForUnsupportedComputeStage:(id)stage;
++ (id)errorForUnsupportedConfigurationOfRequest:(id)request;
++ (id)errorForUnsupportedProcessingDevice:(id)device;
++ (id)errorForUnsupportedRequestClassName:(id)name;
++ (id)errorForUnsupportedRequestSpecifier:(id)specifier;
++ (id)errorForUnsupportedRevision:(unint64_t)revision ofRequest:(id)request;
++ (id)errorForUnsupportedRevision:(unint64_t)revision ofRequestClass:(Class)class;
++ (id)errorForUnsupportedSerializingHeaderVersion:(unsigned int)version;
++ (id)errorForVImageError:(int64_t)error localizedDescription:(id)description;
++ (id)errorWithCode:(int64_t)code message:(id)message;
++ (id)errorWithCode:(int64_t)code message:(id)message underlyingError:(id)error;
++ (id)errorWithDomain:(id)domain code:(int64_t)code userInfo:(id)info;
++ (void)VNAssert:(BOOL)assert log:(id)log;
++ (void)VNAssertClass:(Class)class needsToOverrideMethod:(SEL)method;
++ (void)logInternalError:(id)error;
 @end
 
 @implementation VNError
 
-+ (void)VNAssertClass:(Class)a3 needsToOverrideMethod:(SEL)a4
++ (void)VNAssertClass:(Class)class needsToOverrideMethod:(SEL)method
 {
   v7 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v8 = NSStringFromClass(a3);
-  v9 = NSStringFromSelector(a4);
+  v8 = NSStringFromClass(class);
+  v9 = NSStringFromSelector(method);
   v10 = [v7 initWithFormat:@"Base class implementation is not provided. %@ must implement %@", v8, v9];
 
-  [a1 VNAssert:0 log:v10];
+  [self VNAssert:0 log:v10];
 }
 
-+ (void)VNAssert:(BOOL)a3 log:(id)a4
++ (void)VNAssert:(BOOL)assert log:(id)log
 {
-  v12 = a4;
-  if (!a3)
+  logCopy = log;
+  if (!assert)
   {
-    v5 = [v12 UTF8String];
-    VNValidatedLog(4, @"%s", v6, v7, v8, v9, v10, v11, v5);
+    uTF8String = [logCopy UTF8String];
+    VNValidatedLog(4, @"%s", v6, v7, v8, v9, v10, v11, uTF8String);
   }
 }
 
-+ (void)logInternalError:(id)a3
++ (void)logInternalError:(id)error
 {
-  v3 = a3;
-  if (v3)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v13 = v3;
-    v4 = [v3 code];
-    v5 = [v13 localizedDescription];
-    [v5 cStringUsingEncoding:1];
-    v6 = [v13 localizedFailureReason];
-    [v6 cStringUsingEncoding:1];
-    VNValidatedLog(4, @"Error code: %llu; description: %s; reason: %s", v7, v8, v9, v10, v11, v12, v4);
+    v13 = errorCopy;
+    code = [errorCopy code];
+    localizedDescription = [v13 localizedDescription];
+    [localizedDescription cStringUsingEncoding:1];
+    localizedFailureReason = [v13 localizedFailureReason];
+    [localizedFailureReason cStringUsingEncoding:1];
+    VNValidatedLog(4, @"Error code: %llu; description: %s; reason: %s", v7, v8, v9, v10, v11, v12, code);
 
-    v3 = v13;
+    errorCopy = v13;
   }
 }
 
-+ (id)errorForOSStatus:(int)a3 localizedDescription:(id)a4
++ (id)errorForOSStatus:(int)status localizedDescription:(id)description
 {
-  v6 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{a4, *MEMORY[0x1E696A578], 0}];
-  v7 = [a1 errorWithDomain:*MEMORY[0x1E696A768] code:a3 userInfo:v6];
+  v6 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{description, *MEMORY[0x1E696A578], 0}];
+  v7 = [self errorWithDomain:*MEMORY[0x1E696A768] code:status userInfo:v6];
 
   return v7;
 }
 
-+ (id)errorForCVReturnCode:(int)a3 width:(unint64_t)a4 height:(unint64_t)a5 pixelFormat:(unsigned int)a6 localizedDescription:(id)a7
++ (id)errorForCVReturnCode:(int)code width:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format localizedDescription:(id)description
 {
-  v9 = *&a3;
-  v10 = a7;
+  v9 = *&code;
+  descriptionCopy = description;
   v11 = objc_alloc(MEMORY[0x1E696AEC0]);
   v12 = VisionCoreFourCharCodeToString();
-  v13 = [v11 initWithFormat:@"%@ Width = %lu, Height = %lu, Format = %@", v10, a4, a5, v12];
+  v13 = [v11 initWithFormat:@"%@ Width = %lu, Height = %lu, Format = %@", descriptionCopy, width, height, v12];
 
   v14 = [VNError errorForCVReturnCode:v9 localizedDescription:v13];
 
   return v14;
 }
 
-+ (id)errorForCVReturnCode:(int)a3 localizedDescription:(id)a4
++ (id)errorForCVReturnCode:(int)code localizedDescription:(id)description
 {
-  v6 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{a4, *MEMORY[0x1E696A578], 0}];
-  v7 = [a1 errorWithDomain:*MEMORY[0x1E696A768] code:a3 userInfo:v6];
+  v6 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{description, *MEMORY[0x1E696A578], 0}];
+  v7 = [self errorWithDomain:*MEMORY[0x1E696A768] code:code userInfo:v6];
 
   return v7;
 }
 
-+ (id)errorForVImageError:(int64_t)a3 localizedDescription:(id)a4
++ (id)errorForVImageError:(int64_t)error localizedDescription:(id)description
 {
-  v6 = a4;
+  descriptionCopy = description;
   v7 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v8 = [MEMORY[0x1E696AD98] numberWithLong:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithLong:error];
   v9 = [v7 initWithFormat:@"vImage_Error %@", v8];
 
-  if ([v6 length])
+  if ([descriptionCopy length])
   {
-    v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ (%@)", v6, v9];
+    v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ (%@)", descriptionCopy, v9];
 
     v9 = v10;
   }
 
-  v11 = [a1 errorForInternalErrorWithLocalizedDescription:v9];
+  v11 = [self errorForInternalErrorWithLocalizedDescription:v9];
 
   return v11;
 }
 
-+ (id)errorForFailedEspressoPlan:(void *)a3 localizedDescription:(id)a4
++ (id)errorForFailedEspressoPlan:(void *)plan localizedDescription:(id)description
 {
-  v5 = a4;
+  descriptionCopy = description;
   error_info = espresso_plan_get_error_info();
-  v8 = [a1 errorForEspressoErrorInfo:error_info localizedDescription:{v7, v5}];
+  v8 = [self errorForEspressoErrorInfo:error_info localizedDescription:{v7, descriptionCopy}];
 
   return v8;
 }
 
-+ (id)errorForEspressoErrorInfo:(id)a3 localizedDescription:(id)a4
++ (id)errorForEspressoErrorInfo:(id)info localizedDescription:(id)description
 {
-  var2 = a3.var2;
-  v5 = *&a3.var0;
-  v7 = a4;
+  var2 = info.var2;
+  v5 = *&info.var0;
+  descriptionCopy = description;
   v8 = MEMORY[0x1E696AEC0];
   if (v5 >= 3)
   {
@@ -166,152 +166,152 @@
 
   v10 = [v8 stringWithFormat:@"%s (%@)", var2, v9];
 
-  if (v7)
+  if (descriptionCopy)
   {
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ - %@", v7, v10];
+    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ - %@", descriptionCopy, v10];
 
     v10 = v11;
   }
 
-  v12 = [a1 errorForInternalErrorWithLocalizedDescription:v10];
+  v12 = [self errorForInternalErrorWithLocalizedDescription:v10];
 
   return v12;
 }
 
-+ (id)errorForEspressoReturnStatus:(int)a3 localizedDescription:(id)a4
++ (id)errorForEspressoReturnStatus:(int)status localizedDescription:(id)description
 {
-  v4 = *&a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AD60] string];
-  [v7 appendFormat:@"%d", v4];
+  v4 = *&status;
+  descriptionCopy = description;
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"%d", v4];
   status_string = espresso_get_status_string();
   if (status_string)
   {
-    [v7 appendFormat:@": %s", status_string];
+    [string appendFormat:@": %s", status_string];
   }
 
-  if ([v6 length])
+  if ([descriptionCopy length])
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (%@)", v6, v7];
+    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (%@)", descriptionCopy, string];
   }
 
   else
   {
-    v9 = v7;
+    v9 = string;
   }
 
   v10 = v9;
 
-  v11 = [a1 errorForInternalErrorWithLocalizedDescription:v10];
+  v11 = [self errorForInternalErrorWithLocalizedDescription:v10];
 
   return v11;
 }
 
-+ (id)errorForUnsupportedComputeDeviceWithLocalizedDescription:(id)a3
++ (id)errorForUnsupportedComputeDeviceWithLocalizedDescription:(id)description
 {
-  v3 = [a1 errorWithCode:22 message:a3];
+  v3 = [self errorWithCode:22 message:description];
 
   return v3;
 }
 
-+ (id)errorForUnsupportedComputeDevice:(id)a3
++ (id)errorForUnsupportedComputeDevice:(id)device
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unsupported compute device %@", v4];
-  v6 = [a1 errorForUnsupportedComputeDeviceWithLocalizedDescription:v5];
+  deviceCopy = device;
+  deviceCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unsupported compute device %@", deviceCopy];
+  v6 = [self errorForUnsupportedComputeDeviceWithLocalizedDescription:deviceCopy];
 
   return v6;
 }
 
-+ (id)errorForUnsupportedComputeStage:(id)a3
++ (id)errorForUnsupportedComputeStage:(id)stage
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unsupported compute stage %@", v4];
-  v6 = [a1 errorWithCode:21 message:v5];
+  stageCopy = stage;
+  stageCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unsupported compute stage %@", stageCopy];
+  v6 = [self errorWithCode:21 message:stageCopy];
 
   return v6;
 }
 
-+ (id)errorForDataUnavailableWithLocalizedDescription:(id)a3 underlyingError:(id)a4
++ (id)errorForDataUnavailableWithLocalizedDescription:(id)description underlyingError:(id)error
 {
-  v4 = [a1 errorWithCode:17 message:a3 underlyingError:a4];
+  v4 = [self errorWithCode:17 message:description underlyingError:error];
 
   return v4;
 }
 
-+ (id)errorForDataUnavailableWithLocalizedDescription:(id)a3
++ (id)errorForDataUnavailableWithLocalizedDescription:(id)description
 {
-  v3 = [a1 errorForDataUnavailableWithLocalizedDescription:a3 underlyingError:0];
+  v3 = [self errorForDataUnavailableWithLocalizedDescription:description underlyingError:0];
 
   return v3;
 }
 
-+ (id)errorForUnsupportedRequestSpecifier:(id)a3
++ (id)errorForUnsupportedRequestSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 requestRevision];
-  v6 = [v4 requestClassAndReturnError:0];
+  specifierCopy = specifier;
+  requestRevision = [specifierCopy requestRevision];
+  v6 = [specifierCopy requestClassAndReturnError:0];
   if (v6)
   {
-    v7 = [a1 errorForUnsupportedRevision:v5 ofRequestClass:v6];
+    v7 = [self errorForUnsupportedRevision:requestRevision ofRequestClass:v6];
   }
 
   else
   {
-    v8 = [v4 requestClassName];
-    v7 = [a1 errorForUnsupportedRequestClassName:v8];
+    requestClassName = [specifierCopy requestClassName];
+    v7 = [self errorForUnsupportedRequestClassName:requestClassName];
   }
 
   return v7;
 }
 
-+ (id)errorForUnsupportedRequestClassName:(id)a3
++ (id)errorForUnsupportedRequestClassName:(id)name
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is not a supported request", a3];
-  v5 = [a1 errorWithCode:19 message:v4];
+  name = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is not a supported request", name];
+  v5 = [self errorWithCode:19 message:name];
 
   return v5;
 }
 
-+ (id)errorForUnsupportedRevision:(unint64_t)a3 ofRequestClass:(Class)a4
++ (id)errorForUnsupportedRevision:(unint64_t)revision ofRequestClass:(Class)class
 {
   v7 = MEMORY[0x1E696AEC0];
-  v8 = NSStringFromClass(a4);
-  v9 = VNRequestRevisionString(a4, a3);
+  v8 = NSStringFromClass(class);
+  v9 = VNRequestRevisionString(class, revision);
   v10 = [v7 stringWithFormat:@"%@ does not support %@", v8, v9];
 
-  v11 = [a1 errorWithCode:16 message:v10];
+  v11 = [self errorWithCode:16 message:v10];
 
   return v11;
 }
 
-+ (id)errorForUnsupportedRevision:(unint64_t)a3 ofRequest:(id)a4
++ (id)errorForUnsupportedRevision:(unint64_t)revision ofRequest:(id)request
 {
-  v6 = a4;
-  v7 = [a1 errorForUnsupportedRevision:a3 ofRequestClass:objc_opt_class()];
+  requestCopy = request;
+  v7 = [self errorForUnsupportedRevision:revision ofRequestClass:objc_opt_class()];
 
   return v7;
 }
 
-+ (id)errorForUnsupportedConfigurationOfRequest:(id)a3
++ (id)errorForUnsupportedConfigurationOfRequest:(id)request
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"The current configuration of %@ is not supported", a3];
-  v5 = [a1 errorForInvalidOperationWithLocalizedDescription:v4];
+  request = [MEMORY[0x1E696AEC0] stringWithFormat:@"The current configuration of %@ is not supported", request];
+  v5 = [self errorForInvalidOperationWithLocalizedDescription:request];
 
   return v5;
 }
 
-+ (id)errorForUnsupportedProcessingDevice:(id)a3
++ (id)errorForUnsupportedProcessingDevice:(id)device
 {
-  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"processing with %@ is not supported", a3];
-  v4 = [VNError errorForInvalidOperationWithLocalizedDescription:v3];
+  device = [MEMORY[0x1E696AEC0] stringWithFormat:@"processing with %@ is not supported", device];
+  v4 = [VNError errorForInvalidOperationWithLocalizedDescription:device];
 
   return v4;
 }
 
-+ (id)errorForGPURequiredByRequest:(id)a3
++ (id)errorForGPURequiredByRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
@@ -322,232 +322,232 @@
   return v8;
 }
 
-+ (id)errorForUnknownErrorWithLocalizedDescription:(id)a3
++ (id)errorForUnknownErrorWithLocalizedDescription:(id)description
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptionCopy = description;
   v8 = *MEMORY[0x1E696A578];
-  v9[0] = v4;
+  v9[0] = descriptionCopy;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  v6 = [a1 errorWithDomain:@"com.apple.Vision" code:11 userInfo:v5];
+  v6 = [self errorWithDomain:@"com.apple.Vision" code:11 userInfo:v5];
 
   return v6;
 }
 
-+ (id)errorForOperationFailedErrorWithLocalizedDescription:(id)a3 underlyingError:(id)a4
++ (id)errorForOperationFailedErrorWithLocalizedDescription:(id)description underlyingError:(id)error
 {
-  v4 = [a1 errorWithCode:3 message:a3 underlyingError:a4];
+  v4 = [self errorWithCode:3 message:description underlyingError:error];
 
   return v4;
 }
 
-+ (id)errorForOperationFailedErrorWithLocalizedDescription:(id)a3
++ (id)errorForOperationFailedErrorWithLocalizedDescription:(id)description
 {
-  v3 = [a1 errorForOperationFailedErrorWithLocalizedDescription:a3 underlyingError:0];
+  v3 = [self errorForOperationFailedErrorWithLocalizedDescription:description underlyingError:0];
 
   return v3;
 }
 
-+ (id)errorForInvalidModelWithLocalizedDescription:(id)a3 underlyingError:(id)a4
++ (id)errorForInvalidModelWithLocalizedDescription:(id)description underlyingError:(id)error
 {
-  v4 = [a1 errorWithCode:15 message:a3 underlyingError:a4];
+  v4 = [self errorWithCode:15 message:description underlyingError:error];
 
   return v4;
 }
 
-+ (id)errorForInvalidModelWithLocalizedDescription:(id)a3
++ (id)errorForInvalidModelWithLocalizedDescription:(id)description
 {
-  v3 = [a1 errorForInvalidModelWithLocalizedDescription:a3 underlyingError:0];
+  v3 = [self errorForInvalidModelWithLocalizedDescription:description underlyingError:0];
 
   return v3;
 }
 
-+ (id)errorForInvalidArgument:(id)a3 named:(id)a4
++ (id)errorForInvalidArgument:(id)argument named:(id)named
 {
-  v6 = a4;
+  namedCopy = named;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = _prettyPrintedValue(a3);
-  v9 = [v7 stringWithFormat:@"argument %@ has an invalid value of %@", v6, v8];
+  v8 = _prettyPrintedValue(argument);
+  v9 = [v7 stringWithFormat:@"argument %@ has an invalid value of %@", namedCopy, v8];
 
-  v10 = [a1 errorForInvalidArgumentWithLocalizedDescription:v9];
+  v10 = [self errorForInvalidArgumentWithLocalizedDescription:v9];
 
   return v10;
 }
 
-+ (id)errorForInvalidArgumentWithLocalizedDescription:(id)a3
++ (id)errorForInvalidArgumentWithLocalizedDescription:(id)description
 {
-  v3 = [a1 errorWithCode:14 message:a3];
+  v3 = [self errorWithCode:14 message:description];
 
   return v3;
 }
 
-+ (id)errorForInvalidOptionWithLocalizedDescription:(id)a3
++ (id)errorForInvalidOptionWithLocalizedDescription:(id)description
 {
-  v3 = [a1 errorWithCode:5 message:a3];
+  v3 = [self errorWithCode:5 message:description];
 
   return v3;
 }
 
-+ (id)errorForInvalidOption:(id)a3 named:(id)a4 localizedDescription:(id)a5
++ (id)errorForInvalidOption:(id)option named:(id)named localizedDescription:(id)description
 {
-  v8 = a4;
-  v9 = a5;
+  namedCopy = named;
+  descriptionCopy = description;
   v10 = MEMORY[0x1E696AEC0];
-  v11 = _prettyPrintedValue(a3);
-  v12 = [v10 stringWithFormat:@"option %@ has an invalid value of %@", v8, v11];
+  v11 = _prettyPrintedValue(option);
+  v12 = [v10 stringWithFormat:@"option %@ has an invalid value of %@", namedCopy, v11];
 
-  if ([v9 length])
+  if ([descriptionCopy length])
   {
-    v13 = [v12 stringByAppendingFormat:@" - %@", v9];
+    descriptionCopy = [v12 stringByAppendingFormat:@" - %@", descriptionCopy];
 
-    v12 = v13;
+    v12 = descriptionCopy;
   }
 
-  v14 = [a1 errorForInvalidOptionWithLocalizedDescription:v12];
+  v14 = [self errorForInvalidOptionWithLocalizedDescription:v12];
 
   return v14;
 }
 
-+ (id)errorForInvalidOption:(id)a3 named:(id)a4
++ (id)errorForInvalidOption:(id)option named:(id)named
 {
-  v4 = [a1 errorForInvalidOption:a3 named:a4 localizedDescription:0];
+  v4 = [self errorForInvalidOption:option named:named localizedDescription:0];
 
   return v4;
 }
 
-+ (id)errorForMissingOptionNamed:(id)a3
++ (id)errorForMissingOptionNamed:(id)named
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"missing option %@", a3];
-  v5 = [a1 errorWithCode:7 message:v4];
+  named = [MEMORY[0x1E696AEC0] stringWithFormat:@"missing option %@", named];
+  v5 = [self errorWithCode:7 message:named];
 
   return v5;
 }
 
-+ (id)errorForInvalidOperationForRequestSpecifier:(id)a3
++ (id)errorForInvalidOperationForRequestSpecifier:(id)specifier
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ does not support operation", a3];
-  v5 = [a1 errorForInvalidOperationWithLocalizedDescription:v4];
+  specifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ does not support operation", specifier];
+  v5 = [self errorForInvalidOperationWithLocalizedDescription:specifier];
 
   return v5;
 }
 
-+ (id)errorForInvalidOperationForRequestClass:(Class)a3 revision:(unint64_t)a4
++ (id)errorForInvalidOperationForRequestClass:(Class)class revision:(unint64_t)revision
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = VNRequestRevisionString(a3, a4);
+  v6 = VNRequestRevisionString(class, revision);
   v7 = [v5 stringWithFormat:@"%@ does not support operation", v6];
 
-  v8 = [a1 errorForInvalidOperationWithLocalizedDescription:v7];
+  v8 = [self errorForInvalidOperationWithLocalizedDescription:v7];
 
   return v8;
 }
 
-+ (id)errorForInvalidOperationWithLocalizedDescription:(id)a3
++ (id)errorForInvalidOperationWithLocalizedDescription:(id)description
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptionCopy = description;
   v8 = *MEMORY[0x1E696A578];
-  v9[0] = v4;
+  v9[0] = descriptionCopy;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  v6 = [a1 errorWithDomain:@"com.apple.Vision" code:12 userInfo:v5];
+  v6 = [self errorWithDomain:@"com.apple.Vision" code:12 userInfo:v5];
 
   return v6;
 }
 
-+ (id)errorForOutOfBoundsErrorWithLocalizedDescription:(id)a3
++ (id)errorForOutOfBoundsErrorWithLocalizedDescription:(id)description
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptionCopy = description;
   v8 = *MEMORY[0x1E696A578];
-  v9[0] = v4;
+  v9[0] = descriptionCopy;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  v6 = [a1 errorWithDomain:@"com.apple.Vision" code:4 userInfo:v5];
+  v6 = [self errorWithDomain:@"com.apple.Vision" code:4 userInfo:v5];
 
   return v6;
 }
 
-+ (id)errorForUnimplementedMethod:(SEL)a3 ofObject:(id)a4
++ (id)errorForUnimplementedMethod:(SEL)method ofObject:(id)object
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = VNMethodSignatureStringForObjectAndSelector(a4, a3);
+  v6 = VNMethodSignatureStringForObjectAndSelector(object, method);
   v7 = [v5 stringWithFormat:@"%@ must be overridden", v6];
 
-  v8 = [a1 errorForUnimplementedFunctionWithLocalizedDescription:v7];
+  v8 = [self errorForUnimplementedFunctionWithLocalizedDescription:v7];
 
   return v8;
 }
 
-+ (id)errorForUnimplementedFunctionWithLocalizedDescription:(id)a3
++ (id)errorForUnimplementedFunctionWithLocalizedDescription:(id)description
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptionCopy = description;
   v8 = *MEMORY[0x1E696A578];
-  v9[0] = v4;
+  v9[0] = descriptionCopy;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  v6 = [a1 errorWithDomain:@"com.apple.Vision" code:8 userInfo:v5];
+  v6 = [self errorWithDomain:@"com.apple.Vision" code:8 userInfo:v5];
 
   return v6;
 }
 
-+ (id)errorForUnsupportedSerializingHeaderVersion:(unsigned int)a3
++ (id)errorForUnsupportedSerializingHeaderVersion:(unsigned int)version
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unsupported serialized header version %u", *&a3];
-  v5 = [a1 errorForInvalidFormatErrorWithLocalizedDescription:v4];
+  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unsupported serialized header version %u", *&version];
+  v5 = [self errorForInvalidFormatErrorWithLocalizedDescription:v4];
 
   return v5;
 }
 
-+ (id)errorForInvalidFormatErrorWithLocalizedDescription:(id)a3
++ (id)errorForInvalidFormatErrorWithLocalizedDescription:(id)description
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptionCopy = description;
   v8 = *MEMORY[0x1E696A578];
-  v9[0] = v4;
+  v9[0] = descriptionCopy;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  v6 = [a1 errorWithDomain:@"com.apple.Vision" code:2 userInfo:v5];
+  v6 = [self errorWithDomain:@"com.apple.Vision" code:2 userInfo:v5];
 
   return v6;
 }
 
-+ (id)errorForExecutionTimeoutWithLocalizedDescription:(id)a3 underlyingError:(id)a4
++ (id)errorForExecutionTimeoutWithLocalizedDescription:(id)description underlyingError:(id)error
 {
-  v5 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{a3, *MEMORY[0x1E696A578], a4, *MEMORY[0x1E696AA08], 0}];
-  v6 = [a1 errorWithDomain:@"com.apple.Vision" code:20 userInfo:v5];
+  v5 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{description, *MEMORY[0x1E696A578], error, *MEMORY[0x1E696AA08], 0}];
+  v6 = [self errorWithDomain:@"com.apple.Vision" code:20 userInfo:v5];
 
   return v6;
 }
 
-+ (id)errorForExecutionTimeoutWithLocalizedDescription:(id)a3
++ (id)errorForExecutionTimeoutWithLocalizedDescription:(id)description
 {
-  v3 = [a1 errorForExecutionTimeoutWithLocalizedDescription:a3 underlyingError:0];
+  v3 = [self errorForExecutionTimeoutWithLocalizedDescription:description underlyingError:0];
 
   return v3;
 }
 
-+ (id)errorForInternalErrorWithLocalizedDescription:(id)a3 underlyingError:(id)a4
++ (id)errorForInternalErrorWithLocalizedDescription:(id)description underlyingError:(id)error
 {
-  v5 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{a3, *MEMORY[0x1E696A578], a4, *MEMORY[0x1E696AA08], 0}];
-  v6 = [a1 errorWithDomain:@"com.apple.Vision" code:9 userInfo:v5];
+  v5 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{description, *MEMORY[0x1E696A578], error, *MEMORY[0x1E696AA08], 0}];
+  v6 = [self errorWithDomain:@"com.apple.Vision" code:9 userInfo:v5];
 
   return v6;
 }
 
-+ (id)errorForInternalErrorWithLocalizedDescription:(id)a3
++ (id)errorForInternalErrorWithLocalizedDescription:(id)description
 {
-  v3 = [a1 errorForInternalErrorWithLocalizedDescription:a3 underlyingError:0];
+  v3 = [self errorForInternalErrorWithLocalizedDescription:description underlyingError:0];
 
   return v3;
 }
 
-+ (id)errorForInvalidImageFailureWithLocalizedDescription:(id)a3
++ (id)errorForInvalidImageFailureWithLocalizedDescription:(id)description
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  descriptionCopy = description;
+  v5 = descriptionCopy;
+  if (descriptionCopy)
   {
     v9 = *MEMORY[0x1E696A578];
-    v10[0] = v4;
+    v10[0] = descriptionCopy;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   }
 
@@ -556,20 +556,20 @@
     v6 = 0;
   }
 
-  v7 = [a1 errorWithDomain:@"com.apple.Vision" code:13 userInfo:v6];
+  v7 = [self errorWithDomain:@"com.apple.Vision" code:13 userInfo:v6];
 
   return v7;
 }
 
-+ (id)errorForMemoryAllocationFailureWithLocalizedDescription:(id)a3
++ (id)errorForMemoryAllocationFailureWithLocalizedDescription:(id)description
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  descriptionCopy = description;
+  v5 = descriptionCopy;
+  if (descriptionCopy)
   {
     v9 = *MEMORY[0x1E696A578];
-    v10[0] = v4;
+    v10[0] = descriptionCopy;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   }
 
@@ -578,15 +578,15 @@
     v6 = 0;
   }
 
-  v7 = [a1 errorWithDomain:@"com.apple.Vision" code:10 userInfo:v6];
+  v7 = [self errorWithDomain:@"com.apple.Vision" code:10 userInfo:v6];
 
   return v7;
 }
 
-+ (id)errorForCancellationOfRequest:(id)a3
++ (id)errorForCancellationOfRequest:(id)request
 {
-  v4 = a3;
-  if (v4)
+  requestCopy = request;
+  if (requestCopy)
   {
     v5 = MEMORY[0x1E696AEC0];
     v6 = objc_opt_class();
@@ -600,33 +600,33 @@
   }
 
   v9 = MEMORY[0x1E695DF20];
-  v10 = [v4 description];
+  v10 = [requestCopy description];
   v11 = [v9 dictionaryWithObjectsAndKeys:{v8, *MEMORY[0x1E696A578], v10, @"VNRequest", 0}];
 
-  v12 = [a1 errorWithDomain:@"com.apple.Vision" code:1 userInfo:v11];
+  v12 = [self errorWithDomain:@"com.apple.Vision" code:1 userInfo:v11];
 
   return v12;
 }
 
-+ (id)errorWithCode:(int64_t)a3 message:(id)a4 underlyingError:(id)a5
++ (id)errorWithCode:(int64_t)code message:(id)message underlyingError:(id)error
 {
-  v7 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{a4, *MEMORY[0x1E696A578], a5, *MEMORY[0x1E696AA08], 0}];
-  v8 = [a1 errorWithDomain:@"com.apple.Vision" code:a3 userInfo:v7];
+  v7 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{message, *MEMORY[0x1E696A578], error, *MEMORY[0x1E696AA08], 0}];
+  v8 = [self errorWithDomain:@"com.apple.Vision" code:code userInfo:v7];
 
   return v8;
 }
 
-+ (id)errorWithCode:(int64_t)a3 message:(id)a4
++ (id)errorWithCode:(int64_t)code message:(id)message
 {
-  v4 = [a1 errorWithCode:a3 message:a4 underlyingError:0];
+  v4 = [self errorWithCode:code message:message underlyingError:0];
 
   return v4;
 }
 
-+ (id)errorWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5
++ (id)errorWithDomain:(id)domain code:(int64_t)code userInfo:(id)info
 {
-  v6 = [MEMORY[0x1E696ABC0] errorWithDomain:a3 code:a4 userInfo:a5];
-  [a1 logInternalError:v6];
+  v6 = [MEMORY[0x1E696ABC0] errorWithDomain:domain code:code userInfo:info];
+  [self logInternalError:v6];
 
   return v6;
 }

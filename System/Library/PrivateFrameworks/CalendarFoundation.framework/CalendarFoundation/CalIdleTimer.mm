@@ -1,5 +1,5 @@
 @interface CalIdleTimer
-- (CalIdleTimer)initWithQueue:(id)a3 timeoutInSeconds:(unint64_t)a4 leewayInSeconds:(unint64_t)a5 timeoutBlock:(id)a6;
+- (CalIdleTimer)initWithQueue:(id)queue timeoutInSeconds:(unint64_t)seconds leewayInSeconds:(unint64_t)inSeconds timeoutBlock:(id)block;
 - (void)cancel;
 - (void)poke;
 - (void)start;
@@ -7,23 +7,23 @@
 
 @implementation CalIdleTimer
 
-- (CalIdleTimer)initWithQueue:(id)a3 timeoutInSeconds:(unint64_t)a4 leewayInSeconds:(unint64_t)a5 timeoutBlock:(id)a6
+- (CalIdleTimer)initWithQueue:(id)queue timeoutInSeconds:(unint64_t)seconds leewayInSeconds:(unint64_t)inSeconds timeoutBlock:(id)block
 {
-  v11 = a3;
-  v12 = a6;
+  queueCopy = queue;
+  blockCopy = block;
   v18.receiver = self;
   v18.super_class = CalIdleTimer;
   v13 = [(CalIdleTimer *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_queue, a3);
-    v15 = _Block_copy(v12);
+    objc_storeStrong(&v13->_queue, queue);
+    v15 = _Block_copy(blockCopy);
     timeoutBlock = v14->_timeoutBlock;
     v14->_timeoutBlock = v15;
 
-    v14->_timeoutInSeconds = a4;
-    v14->_leewayInSeconds = a5;
+    v14->_timeoutInSeconds = seconds;
+    v14->_leewayInSeconds = inSeconds;
   }
 
   return v14;

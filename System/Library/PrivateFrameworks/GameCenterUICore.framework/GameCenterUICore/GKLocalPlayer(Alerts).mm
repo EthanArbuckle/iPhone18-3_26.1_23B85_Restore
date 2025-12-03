@@ -15,30 +15,30 @@
 
   v12 = [v3 localizedStringWithFormat:v6, v7];
 
-  v8 = [MEMORY[0x277D75D28] _gkKeyWindowRootViewController];
+  _gkKeyWindowRootViewController = [MEMORY[0x277D75D28] _gkKeyWindowRootViewController];
   v9 = GKGameCenterUIFrameworkBundle();
   v10 = GKGetLocalizedStringFromTableInBundle();
-  v11 = [v8 _gkPresentAlertWithTitle:v12 message:0 buttonTitle:v10];
+  v11 = [_gkKeyWindowRootViewController _gkPresentAlertWithTitle:v12 message:0 buttonTitle:v10];
 }
 
 - (uint64_t)alertUserInStoreDemoModeEnabled
 {
-  v0 = [MEMORY[0x277D0C1D8] shared];
-  v1 = [v0 isStoreDemoModeEnabled];
+  mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+  isStoreDemoModeEnabled = [mEMORY[0x277D0C1D8] isStoreDemoModeEnabled];
 
-  if (v1)
+  if (isStoreDemoModeEnabled)
   {
-    v2 = [MEMORY[0x277D75D28] _gkKeyWindowRootViewController];
+    _gkKeyWindowRootViewController = [MEMORY[0x277D75D28] _gkKeyWindowRootViewController];
     v3 = GKGameCenterUIFrameworkBundle();
     v4 = GKGetLocalizedStringFromTableInBundle();
     v5 = GKGameCenterUIFrameworkBundle();
     v6 = GKGetLocalizedStringFromTableInBundle();
     v7 = GKGameCenterUIFrameworkBundle();
     v8 = GKGetLocalizedStringFromTableInBundle();
-    v9 = [v2 _gkPresentAlertWithTitle:v4 message:v6 buttonTitle:v8];
+    v9 = [_gkKeyWindowRootViewController _gkPresentAlertWithTitle:v4 message:v6 buttonTitle:v8];
   }
 
-  return v1;
+  return isStoreDemoModeEnabled;
 }
 
 @end

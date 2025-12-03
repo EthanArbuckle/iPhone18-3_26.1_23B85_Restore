@@ -7,8 +7,8 @@
 - (id)outputImage
 {
   v65[3] = *MEMORY[0x1E69E9840];
-  v3 = [(CIReductionFilter *)self offsetAndCrop];
-  if (v3 && (v4 = v3, [v3 extent], !CGRectIsEmpty(v67)))
+  offsetAndCrop = [(CIReductionFilter *)self offsetAndCrop];
+  if (offsetAndCrop && (v4 = offsetAndCrop, [offsetAndCrop extent], !CGRectIsEmpty(v67)))
   {
     if (-[CIAreaReductionFilter _reduce4X4](self, "_reduce4X4") && ([v4 extent], v6 > 2.0))
     {
@@ -26,7 +26,7 @@
         v12 = v11;
         v14 = v13;
         v16 = v15;
-        v17 = [(CIAreaReductionFilter *)self _reduce4X4];
+        _reduce4X4 = [(CIAreaReductionFilter *)self _reduce4X4];
         v60[0] = MEMORY[0x1E69E9820];
         v60[1] = 3221225472;
         v60[2] = __36__CIAreaReductionFilter_outputImage__block_invoke;
@@ -39,7 +39,7 @@
         v65[1] = [CIVector vectorWithX:v14 Y:v16];
         v18 = (v7 + 1);
         v65[2] = [MEMORY[0x1E696AD98] numberWithInt:v7];
-        v4 = [v17 applyWithExtent:v60 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v65, 3), v10, v12, ceil(v14 * 0.25), ceil(v16 * 0.25)}];
+        v4 = [_reduce4X4 applyWithExtent:v60 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v65, 3), v10, v12, ceil(v14 * 0.25), ceil(v16 * 0.25)}];
         [v4 extent];
         v7 = v18;
         if (v19 <= 2.0)
@@ -75,7 +75,7 @@ LABEL_13:
           v25 = v24;
           v27 = v26;
           v29 = v28;
-          v30 = [(CIAreaReductionFilter *)self _reduce2X2];
+          _reduce2X2 = [(CIAreaReductionFilter *)self _reduce2X2];
           v59[0] = MEMORY[0x1E69E9820];
           v59[1] = 3221225472;
           v59[2] = __36__CIAreaReductionFilter_outputImage__block_invoke_2;
@@ -88,7 +88,7 @@ LABEL_13:
           v64[1] = [CIVector vectorWithX:v27 Y:v29];
           v31 = (v18 + 1);
           v64[2] = [MEMORY[0x1E696AD98] numberWithInt:v18];
-          v4 = [v30 applyWithExtent:v59 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v64, 3), v23, v25, ceil(v27 * 0.5), ceil(v29 * 0.5)}];
+          v4 = [_reduce2X2 applyWithExtent:v59 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v64, 3), v23, v25, ceil(v27 * 0.5), ceil(v29 * 0.5)}];
           [v4 extent];
           v18 = v31;
           if (v32 <= 1.0)
@@ -116,7 +116,7 @@ LABEL_19:
         v37 = v36;
         v39 = v38;
         v41 = v40;
-        v42 = [(CIAreaReductionFilter *)self _reduce1X4];
+        _reduce1X4 = [(CIAreaReductionFilter *)self _reduce1X4];
         v58[0] = MEMORY[0x1E69E9820];
         v58[1] = 3221225472;
         v58[2] = __36__CIAreaReductionFilter_outputImage__block_invoke_3;
@@ -129,7 +129,7 @@ LABEL_19:
         v63[1] = [MEMORY[0x1E696AD98] numberWithDouble:v41];
         v43 = (v31 + 1);
         v63[2] = [MEMORY[0x1E696AD98] numberWithInt:v31];
-        v4 = [v42 applyWithExtent:v58 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v63, 3), v35, v37, v39, ceil(v41 * 0.25)}];
+        v4 = [_reduce1X4 applyWithExtent:v58 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v63, 3), v35, v37, v39, ceil(v41 * 0.25)}];
         [v4 extent];
         v31 = v43;
       }
@@ -147,7 +147,7 @@ LABEL_19:
         v49 = v48;
         v51 = v50;
         v53 = v52;
-        v54 = [(CIAreaReductionFilter *)self _reduce4X1];
+        _reduce4X1 = [(CIAreaReductionFilter *)self _reduce4X1];
         v57[0] = MEMORY[0x1E69E9820];
         v57[1] = 3221225472;
         v57[2] = __36__CIAreaReductionFilter_outputImage__block_invoke_4;
@@ -159,7 +159,7 @@ LABEL_19:
         v62[0] = v4;
         v62[1] = [MEMORY[0x1E696AD98] numberWithDouble:v51];
         v62[2] = [MEMORY[0x1E696AD98] numberWithInt:v43];
-        v4 = [v54 applyWithExtent:v57 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v62, 3), v47, v49, ceil(v51 * 0.25), v53}];
+        v4 = [_reduce4X1 applyWithExtent:v57 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v62, 3), v47, v49, ceil(v51 * 0.25), v53}];
         [v4 extent];
         v43 = (v43 + 1);
       }
@@ -167,9 +167,9 @@ LABEL_19:
       while (v55 > 1.0);
     }
 
-    v56 = [(CIReductionFilter *)self _reduceCrop];
+    _reduceCrop = [(CIReductionFilter *)self _reduceCrop];
     v61 = v4;
-    return [v56 applyWithExtent:&__block_literal_global_62 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v61, 1), 0.0, 0.0, 1.0, 1.0}];
+    return [_reduceCrop applyWithExtent:&__block_literal_global_62 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v61, 1), 0.0, 0.0, 1.0, 1.0}];
   }
 
   else

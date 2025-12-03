@@ -1,35 +1,35 @@
 @interface HMDAccessoryVersion
-- (HMDAccessoryVersion)initWithCoder:(id)a3;
-- (HMDAccessoryVersion)initWithMatterVersionString:(id)a3;
-- (HMDAccessoryVersion)initWithString:(id)a3;
+- (HMDAccessoryVersion)initWithCoder:(id)coder;
+- (HMDAccessoryVersion)initWithMatterVersionString:(id)string;
+- (HMDAccessoryVersion)initWithString:(id)string;
 - (NSString)rawVersionString;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDAccessoryVersion
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = HMDAccessoryVersion;
-  [(HMDAccessoryVersion *)&v6 encodeWithCoder:v4];
+  [(HMDAccessoryVersion *)&v6 encodeWithCoder:coderCopy];
   rawVersionString = self->_rawVersionString;
   if (rawVersionString)
   {
-    [v4 encodeObject:rawVersionString forKey:@"HM.rawVersionString"];
+    [coderCopy encodeObject:rawVersionString forKey:@"HM.rawVersionString"];
   }
 }
 
-- (HMDAccessoryVersion)initWithCoder:(id)a3
+- (HMDAccessoryVersion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HMDAccessoryVersion;
-  v5 = [(HMDAccessoryVersion *)&v9 initWithCoder:v4];
+  v5 = [(HMDAccessoryVersion *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.rawVersionString"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.rawVersionString"];
     rawVersionString = v5->_rawVersionString;
     v5->_rawVersionString = v6;
   }
@@ -42,32 +42,32 @@
   rawVersionString = self->_rawVersionString;
   if (rawVersionString)
   {
-    v3 = rawVersionString;
+    versionString = rawVersionString;
   }
 
   else
   {
-    v3 = [(HMDAccessoryVersion *)self versionString];
+    versionString = [(HMDAccessoryVersion *)self versionString];
   }
 
-  return v3;
+  return versionString;
 }
 
-- (HMDAccessoryVersion)initWithMatterVersionString:(id)a3
+- (HMDAccessoryVersion)initWithMatterVersionString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v12.receiver = self;
   v12.super_class = HMDAccessoryVersion;
-  v5 = [(HMDAccessoryVersion *)&v12 initWithString:v4];
+  v5 = [(HMDAccessoryVersion *)&v12 initWithString:stringCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [(HMDAccessoryVersion *)v5 versionString];
-    v8 = [v4 isEqualToString:v7];
+    versionString = [(HMDAccessoryVersion *)v5 versionString];
+    v8 = [stringCopy isEqualToString:versionString];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [v4 copy];
+      v9 = [stringCopy copy];
       rawVersionString = v6->_rawVersionString;
       v6->_rawVersionString = v9;
     }
@@ -76,14 +76,14 @@
   return v6;
 }
 
-- (HMDAccessoryVersion)initWithString:(id)a3
+- (HMDAccessoryVersion)initWithString:(id)string
 {
-  v4 = a3;
-  if ([v4 integerValue] < 10000)
+  stringCopy = string;
+  if ([stringCopy integerValue] < 10000)
   {
     v12.receiver = self;
     v12.super_class = HMDAccessoryVersion;
-    v5 = [(HMDAccessoryVersion *)&v12 initWithString:v4];
+    v5 = [(HMDAccessoryVersion *)&v12 initWithString:stringCopy];
   }
 
   else
@@ -94,12 +94,12 @@
   v6 = v5;
   if (v5)
   {
-    v7 = [(HMDAccessoryVersion *)v5 versionString];
-    v8 = [v4 isEqualToString:v7];
+    versionString = [(HMDAccessoryVersion *)v5 versionString];
+    v8 = [stringCopy isEqualToString:versionString];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [v4 copy];
+      v9 = [stringCopy copy];
       rawVersionString = v6->_rawVersionString;
       v6->_rawVersionString = v9;
     }

@@ -2,17 +2,17 @@
 - (DSNavigationDelegate)delegate;
 - (DSTouchIDController)init;
 - (id)_cancelLeftNavigationItem;
-- (void)_userDidTapCancelButton:(id)a3;
+- (void)_userDidTapCancelButton:(id)button;
 - (void)addNavigationItems;
 - (void)beginEnrollment;
 - (void)dealloc;
 - (void)deleteIdentity;
-- (void)enrollResult:(int)a3 bkIdentity:(id)a4;
-- (void)ratchetViewController:(id)a3 didFinishWithResult:(id)a4 error:(id)a5;
+- (void)enrollResult:(int)result bkIdentity:(id)identity;
+- (void)ratchetViewController:(id)controller didFinishWithResult:(id)result error:(id)error;
 - (void)resetTouchID;
 - (void)restartEnrollment;
-- (void)shouldShowWithCompletion:(id)a3;
-- (void)startRatchetEvalInPresentationContext:(id)a3;
+- (void)shouldShowWithCompletion:(id)completion;
+- (void)startRatchetEvalInPresentationContext:(id)context;
 - (void)updateTouchIDPaneConfiguration;
 - (void)viewDidLoad;
 @end
@@ -67,16 +67,16 @@
   return v11;
 }
 
-- (void)shouldShowWithCompletion:(id)a3
+- (void)shouldShowWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = sharedWorkQueue();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__DSTouchIDController_shouldShowWithCompletion___block_invoke;
   block[3] = &unk_278F75490;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(v4, block);
 }
 
@@ -136,8 +136,8 @@ uint64_t __48__DSTouchIDController_shouldShowWithCompletion___block_invoke(uint6
   [(DSTouchIDController *)self setBoldButton:v8];
 
   v9 = DSUILocStringForKey(@"NOT_NOW");
-  v10 = [(DSTouchIDController *)self delegate];
-  v11 = [DSUIUtilities setUpLinkButtonForController:self title:v9 target:v10 selector:sel_pushNextPane];
+  delegate = [(DSTouchIDController *)self delegate];
+  v11 = [DSUIUtilities setUpLinkButtonForController:self title:v9 target:delegate selector:sel_pushNextPane];
 }
 
 - (void)resetTouchID
@@ -159,10 +159,10 @@ uint64_t __48__DSTouchIDController_shouldShowWithCompletion___block_invoke(uint6
 - (void)updateTouchIDPaneConfiguration
 {
   v3 = +[DSTouchIDController isTouchIDEnrolled];
-  v4 = [(DSTouchIDController *)self boldButton];
-  [v4 removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
+  boldButton = [(DSTouchIDController *)self boldButton];
+  [boldButton removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
 
-  v5 = [(DSTouchIDController *)self headerView];
+  headerView = [(DSTouchIDController *)self headerView];
   v6 = !v3;
   if (v3)
   {
@@ -195,14 +195,14 @@ uint64_t __48__DSTouchIDController_shouldShowWithCompletion___block_invoke(uint6
   }
 
   v10 = DSUILocStringForKey(v7);
-  [v5 setDetailText:v10];
+  [headerView setDetailText:v10];
 
-  v11 = [(DSTouchIDController *)self boldButton];
+  boldButton2 = [(DSTouchIDController *)self boldButton];
   v12 = DSUILocStringForKey(v8);
-  [v11 setTitle:v12 forState:0];
+  [boldButton2 setTitle:v12 forState:0];
 
-  v13 = [(DSTouchIDController *)self boldButton];
-  [v13 addTarget:self action:*v9 forControlEvents:64];
+  boldButton3 = [(DSTouchIDController *)self boldButton];
+  [boldButton3 addTarget:self action:*v9 forControlEvents:64];
 }
 
 - (void)dealloc
@@ -233,23 +233,23 @@ uint64_t __48__DSTouchIDController_shouldShowWithCompletion___block_invoke(uint6
 
   v4 = v3;
   _Block_object_dispose(&v14, 8);
-  v5 = [v3 sharedInstance];
-  v6 = [v5 getEnrollUIViewController:1 bundleName:0];
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance getEnrollUIViewController:1 bundleName:0];
   enrollController = self->_enrollController;
   self->_enrollController = v6;
 
   if (self->_enrollController)
   {
-    v8 = [(DSTouchIDController *)self delegate];
-    v9 = [v8 authContext];
+    delegate = [(DSTouchIDController *)self delegate];
+    authContext = [delegate authContext];
 
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __38__DSTouchIDController_beginEnrollment__block_invoke;
     v11[3] = &unk_278F75B48;
     v11[4] = self;
-    v12 = v9;
-    v10 = v9;
+    v12 = authContext;
+    v10 = authContext;
     [v10 evaluatePolicy:1007 options:MEMORY[0x277CBEC10] reply:v11];
   }
 }
@@ -325,18 +325,18 @@ void __38__DSTouchIDController_beginEnrollment__block_invoke_346(id *a1)
 
 - (void)addNavigationItems
 {
-  v3 = [(DSTouchIDController *)self enrollController];
-  v4 = [v3 navigationItem];
+  enrollController = [(DSTouchIDController *)self enrollController];
+  navigationItem = [enrollController navigationItem];
   v5 = objc_alloc(MEMORY[0x277D751E0]);
   v6 = DSUILocStringForKey(@"QUICK_EXIT");
-  v7 = [(DSTouchIDController *)self delegate];
-  v8 = [v5 initWithTitle:v6 style:0 target:v7 action:sel_quickExit];
-  [v4 setRightBarButtonItem:v8];
+  delegate = [(DSTouchIDController *)self delegate];
+  v8 = [v5 initWithTitle:v6 style:0 target:delegate action:sel_quickExit];
+  [navigationItem setRightBarButtonItem:v8];
 
-  v11 = [(DSTouchIDController *)self enrollController];
-  v9 = [v11 navigationItem];
-  v10 = [(DSTouchIDController *)self _cancelLeftNavigationItem];
-  [v9 setLeftBarButtonItem:v10 animated:1];
+  enrollController2 = [(DSTouchIDController *)self enrollController];
+  navigationItem2 = [enrollController2 navigationItem];
+  _cancelLeftNavigationItem = [(DSTouchIDController *)self _cancelLeftNavigationItem];
+  [navigationItem2 setLeftBarButtonItem:_cancelLeftNavigationItem animated:1];
 }
 
 - (id)_cancelLeftNavigationItem
@@ -354,7 +354,7 @@ void __38__DSTouchIDController_beginEnrollment__block_invoke_346(id *a1)
   return cancelLeftNavigationItem;
 }
 
-- (void)_userDidTapCancelButton:(id)a3
+- (void)_userDidTapCancelButton:(id)button
 {
   v4 = DSLogBiometrics_1;
   if (os_log_type_enabled(DSLogBiometrics_1, OS_LOG_TYPE_INFO))
@@ -364,20 +364,20 @@ void __38__DSTouchIDController_beginEnrollment__block_invoke_346(id *a1)
   }
 
   [(DSTouchIDController *)self deleteIdentity];
-  v5 = [(DSTouchIDController *)self navigationController];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(DSTouchIDController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 
   [(DSTouchIDController *)self updateTouchIDPaneConfiguration];
 }
 
-- (void)enrollResult:(int)a3 bkIdentity:(id)a4
+- (void)enrollResult:(int)result bkIdentity:(id)identity
 {
-  v6 = a4;
-  if (v6)
+  identityCopy = identity;
+  if (identityCopy)
   {
-    v7 = [MEMORY[0x277CF1BF8] manager];
-    v8 = [v6 uuid];
-    v9 = [v7 getIdentityFromUUID:v8];
+    manager = [MEMORY[0x277CF1BF8] manager];
+    uuid = [identityCopy uuid];
+    v9 = [manager getIdentityFromUUID:uuid];
   }
 
   else
@@ -385,16 +385,16 @@ void __38__DSTouchIDController_beginEnrollment__block_invoke_346(id *a1)
     v9 = 0;
   }
 
-  if (a3 <= 3)
+  if (result <= 3)
   {
-    if (!a3)
+    if (!result)
     {
       self->_enrollComplete = 0;
       [(DSTouchIDController *)self addNavigationItems];
       goto LABEL_22;
     }
 
-    if (a3 == 1)
+    if (result == 1)
     {
       if (v9)
       {
@@ -421,8 +421,8 @@ void __38__DSTouchIDController_beginEnrollment__block_invoke_346(id *a1)
         v15 = [v14 nextIdentityNameForIdentityType:1];
         [v9 setName:v15];
 
-        v11 = [MEMORY[0x277CF1BF8] manager];
-        [v11 updateIdentity:v9];
+        manager2 = [MEMORY[0x277CF1BF8] manager];
+        [manager2 updateIdentity:v9];
         goto LABEL_21;
       }
 
@@ -435,7 +435,7 @@ void __38__DSTouchIDController_beginEnrollment__block_invoke_346(id *a1)
       goto LABEL_22;
     }
 
-    if (a3 != 3)
+    if (result != 3)
     {
       goto LABEL_22;
     }
@@ -443,13 +443,13 @@ void __38__DSTouchIDController_beginEnrollment__block_invoke_346(id *a1)
     goto LABEL_13;
   }
 
-  if ((a3 - 6) < 2)
+  if ((result - 6) < 2)
   {
 LABEL_13:
     if (v9)
     {
-      v11 = [MEMORY[0x277CF1BF8] manager];
-      [v11 removeIdentity:v9];
+      manager2 = [MEMORY[0x277CF1BF8] manager];
+      [manager2 removeIdentity:v9];
 LABEL_21:
 
       goto LABEL_22;
@@ -458,18 +458,18 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (a3 == 4)
+  if (result == 4)
   {
     self->_enrollComplete = 1;
-    v16 = [(DSTouchIDController *)self navigationController];
-    [v16 dismissViewControllerAnimated:1 completion:0];
+    navigationController = [(DSTouchIDController *)self navigationController];
+    [navigationController dismissViewControllerAnimated:1 completion:0];
 
-    v11 = [(DSTouchIDController *)self delegate];
-    [v11 pushNextPane];
+    manager2 = [(DSTouchIDController *)self delegate];
+    [manager2 pushNextPane];
     goto LABEL_21;
   }
 
-  if (a3 == 9)
+  if (result == 9)
   {
     identity = self->_identity;
     self->_identity = 0;
@@ -480,17 +480,17 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)startRatchetEvalInPresentationContext:(id)a3
+- (void)startRatchetEvalInPresentationContext:(id)context
 {
   v19[4] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CD4860];
-  v5 = a3;
+  contextCopy = context;
   v6 = objc_alloc_init(v4);
   v7 = DSUIDTOLocStringForKey(@"RATCHET_ACTION_BUTTON_TITLE");
   [v6 setCountdownPrimaryActionTitle:v7];
 
-  v8 = [(DSTouchIDController *)self delegate];
-  v9 = [v8 deepLinkForCurrentFlowAndPane];
+  delegate = [(DSTouchIDController *)self delegate];
+  deepLinkForCurrentFlowAndPane = [delegate deepLinkForCurrentFlowAndPane];
 
   v10 = MEMORY[0x277CD4858];
   v18[0] = &unk_285BB9388;
@@ -500,10 +500,10 @@ LABEL_22:
   v12 = DSUIDTOLocStringForKey(@"RATCHET_ENDED_DETAIL_TOUCHID");
   v19[1] = v12;
   v18[2] = &unk_285BB93B8;
-  v13 = [MEMORY[0x277CBEBC0] URLWithString:v9];
+  v13 = [MEMORY[0x277CBEBC0] URLWithString:deepLinkForCurrentFlowAndPane];
   v18[3] = &unk_285BB93D0;
   v19[2] = v13;
-  v19[3] = v5;
+  v19[3] = contextCopy;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:4];
   v15 = [v10 makeViewControllerWithOptions:v14 configuration:v6];
   ratchetVC = self->_ratchetVC;
@@ -515,14 +515,14 @@ LABEL_22:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)ratchetViewController:(id)a3 didFinishWithResult:(id)a4 error:(id)a5
+- (void)ratchetViewController:(id)controller didFinishWithResult:(id)result error:(id)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(DSTouchIDController *)self delegate];
-  v12 = [v10 objectForKeyedSubscript:&unk_285BB93A0];
+  controllerCopy = controller;
+  errorCopy = error;
+  resultCopy = result;
+  delegate = [(DSTouchIDController *)self delegate];
+  v12 = [resultCopy objectForKeyedSubscript:&unk_285BB93A0];
 
   if (v12)
   {
@@ -531,37 +531,37 @@ LABEL_22:
     block[2] = __71__DSTouchIDController_ratchetViewController_didFinishWithResult_error___block_invoke;
     block[3] = &unk_278F752F8;
     block[4] = self;
-    v25 = v11;
-    v26 = v8;
+    v25 = delegate;
+    v26 = controllerCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
   else
   {
-    v13 = [v9 userInfo];
-    v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277CD4788]];
+    userInfo = [errorCopy userInfo];
+    v14 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CD4788]];
 
-    if ([v9 code] || !v14)
+    if ([errorCopy code] || !v14)
     {
       v16 = DSLogBiometrics_1;
       if (os_log_type_enabled(DSLogBiometrics_1, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v28 = v9;
+        v28 = errorCopy;
         _os_log_impl(&dword_248C7E000, v16, OS_LOG_TYPE_INFO, "TouchID Change Ratchet not armed. Reason: %@", buf, 0xCu);
       }
 
-      v17 = [(DSTouchIDController *)self navigationController];
-      v18 = [v17 topViewController];
+      navigationController = [(DSTouchIDController *)self navigationController];
+      topViewController = [navigationController topViewController];
       v19 = objc_opt_class();
       v20 = objc_opt_class();
 
       if (v19 == v20)
       {
-        v21 = [(DSTouchIDController *)self navigationController];
-        v22 = [v21 popToViewController:self animated:0];
+        navigationController2 = [(DSTouchIDController *)self navigationController];
+        v22 = [navigationController2 popToViewController:self animated:0];
 
-        [v11 pushNextPane];
+        [delegate pushNextPane];
       }
     }
 
@@ -574,7 +574,7 @@ LABEL_22:
         _os_log_impl(&dword_248C7E000, v15, OS_LOG_TYPE_INFO, "TouchID Change Ratchet initiated, timer counting down. User exiting Safety Check.", buf, 2u);
       }
 
-      [v11 exitFlowForRatchetWait];
+      [delegate exitFlowForRatchetWait];
     }
   }
 

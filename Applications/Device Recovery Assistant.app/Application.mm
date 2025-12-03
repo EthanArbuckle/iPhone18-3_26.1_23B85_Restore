@@ -7,9 +7,9 @@
 - (void)_invalidatePowerAndVolumeUpLongPressTimer;
 - (void)_invalidatePowerButtonLongPressTimer;
 - (void)_invalidatePowerButtonPressTimer;
-- (void)_powerAndVolumeUpLongPressFired:(id)a3;
-- (void)_powerButtonLongPressFired:(id)a3;
-- (void)_powerButtonPressCountTimerFired:(id)a3;
+- (void)_powerAndVolumeUpLongPressFired:(id)fired;
+- (void)_powerButtonLongPressFired:(id)fired;
+- (void)_powerButtonPressCountTimerFired:(id)fired;
 - (void)_resetButtonsStatesUIKitWorkaround;
 - (void)_resetPowerButtonPressCount;
 - (void)_showExitConfirmation;
@@ -18,7 +18,7 @@
 - (void)_showPowerDownView;
 - (void)_startPowerAndVolumeUpLongPressTimerIfNeeded;
 - (void)_startPowerButtonPressCountTimer;
-- (void)handlePressEvent:(id)a3 phase:(int64_t)a4;
+- (void)handlePressEvent:(id)event phase:(int64_t)phase;
 @end
 
 @implementation Application
@@ -57,9 +57,9 @@
   return v2;
 }
 
-- (void)handlePressEvent:(id)a3 phase:(int64_t)a4
+- (void)handlePressEvent:(id)event phase:(int64_t)phase
 {
-  if (![a3 _hidEvent])
+  if (![event _hidEvent])
   {
     v11 = sub_100012608();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -103,13 +103,13 @@ LABEL_13:
     *&v34[18] = 1024;
     *&v34[20] = v7;
     v35 = 2048;
-    v36 = a4;
+    phaseCopy = phase;
     v37 = 1024;
     v38 = v7 | (IntegerValue << 16);
     v39 = 1024;
-    v40 = [(Application *)self isPowerButtonDown];
+    isPowerButtonDown = [(Application *)self isPowerButtonDown];
     v41 = 1024;
-    v42 = [(Application *)self isVolumeUpButtonDown];
+    isVolumeUpButtonDown = [(Application *)self isVolumeUpButtonDown];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}s: [Keyboard HID Event Info] usagePage: 0x%x, usage: 0x%x, phase: %ld, hash: 0x%x. Currently, isPowerButtonDown:%d, isVolumeUpButtonDown:%d", v34, 0x34u);
   }
 
@@ -117,10 +117,10 @@ LABEL_13:
   {
     if (v8 == 786480)
     {
-      v18 = [(Application *)self isPowerButtonDown];
-      if (a4)
+      isPowerButtonDown2 = [(Application *)self isPowerButtonDown];
+      if (phase)
       {
-        if (v18)
+        if (isPowerButtonDown2)
         {
           [(Application *)self setIsPowerButtonDown:0];
           [(Application *)self _invalidatePowerButtonLongPressTimer];
@@ -137,11 +137,11 @@ LABEL_13:
           v20 = sub_100012608();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
-            v21 = [(Application *)self powerButtonPressCount];
+            powerButtonPressCount = [(Application *)self powerButtonPressCount];
             *v34 = 136446466;
             *&v34[4] = "[Application handlePressEvent:phase:]";
             *&v34[12] = 2048;
-            *&v34[14] = v21;
+            *&v34[14] = powerButtonPressCount;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%{public}s: Power button press count: %ld", v34, 0x16u);
           }
 
@@ -177,7 +177,7 @@ LABEL_13:
         }
       }
 
-      else if ((v18 & 1) == 0)
+      else if ((isPowerButtonDown2 & 1) == 0)
       {
         [(Application *)self setIsPowerButtonDown:1];
         [(Application *)self setIsActionTriggeredForCurrentPressSequence:0];
@@ -213,14 +213,14 @@ LABEL_17:
         *v34 = 136446466;
         *&v34[4] = "[Application handlePressEvent:phase:]";
         *&v34[12] = 2048;
-        *&v34[14] = a4;
+        *&v34[14] = phase;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}s: HID Event phase %ld isn't caught/handled by us", v34, 0x16u);
       }
 
       goto LABEL_54;
     }
 
-    if (!a4)
+    if (!phase)
     {
       v14 = sub_100012608();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -234,10 +234,10 @@ LABEL_17:
       goto LABEL_53;
     }
 
-    v13 = [(Application *)self isActionTriggeredForCurrentPressSequence];
+    isActionTriggeredForCurrentPressSequence = [(Application *)self isActionTriggeredForCurrentPressSequence];
     v14 = sub_100012608();
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-    if (v13)
+    if (isActionTriggeredForCurrentPressSequence)
     {
       if (v15)
       {
@@ -271,10 +271,10 @@ LABEL_51:
     goto LABEL_17;
   }
 
-  v25 = [(Application *)self isVolumeUpButtonDown];
-  if (!a4)
+  isVolumeUpButtonDown2 = [(Application *)self isVolumeUpButtonDown];
+  if (!phase)
   {
-    if ((v25 & 1) == 0)
+    if ((isVolumeUpButtonDown2 & 1) == 0)
     {
       [(Application *)self setIsVolumeUpButtonDown:1];
       v33 = sub_100012608();
@@ -291,7 +291,7 @@ LABEL_51:
     goto LABEL_54;
   }
 
-  if (v25)
+  if (isVolumeUpButtonDown2)
   {
     [(Application *)self setIsVolumeUpButtonDown:0];
     [(Application *)self _invalidatePowerAndVolumeUpLongPressTimer];
@@ -303,10 +303,10 @@ LABEL_51:
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "%{public}s: Volume Up button up.", v34, 0xCu);
     }
 
-    v27 = [(Application *)self isActionTriggeredForCurrentPressSequence];
+    isActionTriggeredForCurrentPressSequence2 = [(Application *)self isActionTriggeredForCurrentPressSequence];
     v14 = sub_100012608();
     v28 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-    if (v27)
+    if (isActionTriggeredForCurrentPressSequence2)
     {
       if (v28)
       {
@@ -342,9 +342,9 @@ LABEL_54:
     [(Application *)self setIsActionTriggeredForCurrentPressSequence:0];
     if ([(Application *)self powerButtonPressCount]>= 1)
     {
-      v30 = [(Application *)self powerButtonPressTimer];
+      powerButtonPressTimer = [(Application *)self powerButtonPressTimer];
 
-      if (!v30)
+      if (!powerButtonPressTimer)
       {
         [(Application *)self _resetPowerButtonPressCount];
       }
@@ -354,12 +354,12 @@ LABEL_54:
 
 - (void)_invalidatePowerButtonLongPressTimer
 {
-  v3 = [(Application *)self powerButtonLongPressTimer];
+  powerButtonLongPressTimer = [(Application *)self powerButtonLongPressTimer];
 
-  if (v3)
+  if (powerButtonLongPressTimer)
   {
-    v4 = [(Application *)self powerButtonLongPressTimer];
-    [v4 invalidate];
+    powerButtonLongPressTimer2 = [(Application *)self powerButtonLongPressTimer];
+    [powerButtonLongPressTimer2 invalidate];
 
     [(Application *)self setPowerButtonLongPressTimer:0];
     v5 = sub_100012608();
@@ -374,12 +374,12 @@ LABEL_54:
 
 - (void)_invalidatePowerAndVolumeUpLongPressTimer
 {
-  v3 = [(Application *)self powerAndVolumeUpLongPressTimer];
+  powerAndVolumeUpLongPressTimer = [(Application *)self powerAndVolumeUpLongPressTimer];
 
-  if (v3)
+  if (powerAndVolumeUpLongPressTimer)
   {
-    v4 = [(Application *)self powerAndVolumeUpLongPressTimer];
-    [v4 invalidate];
+    powerAndVolumeUpLongPressTimer2 = [(Application *)self powerAndVolumeUpLongPressTimer];
+    [powerAndVolumeUpLongPressTimer2 invalidate];
 
     [(Application *)self setPowerAndVolumeUpLongPressTimer:0];
     v5 = sub_100012608();
@@ -394,12 +394,12 @@ LABEL_54:
 
 - (void)_invalidatePowerButtonPressTimer
 {
-  v3 = [(Application *)self powerButtonPressTimer];
+  powerButtonPressTimer = [(Application *)self powerButtonPressTimer];
 
-  if (v3)
+  if (powerButtonPressTimer)
   {
-    v4 = [(Application *)self powerButtonPressTimer];
-    [v4 invalidate];
+    powerButtonPressTimer2 = [(Application *)self powerButtonPressTimer];
+    [powerButtonPressTimer2 invalidate];
 
     [(Application *)self setPowerButtonPressTimer:0];
     v5 = sub_100012608();
@@ -427,7 +427,7 @@ LABEL_54:
   }
 }
 
-- (void)_powerButtonPressCountTimerFired:(id)a3
+- (void)_powerButtonPressCountTimerFired:(id)fired
 {
   v4 = sub_100012608();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -435,7 +435,7 @@ LABEL_54:
     v5 = 136446466;
     v6 = "[Application _powerButtonPressCountTimerFired:]";
     v7 = 2048;
-    v8 = [(Application *)self powerButtonPressCount];
+    powerButtonPressCount = [(Application *)self powerButtonPressCount];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}s: Power button press count timer expired. Resetting count from %ld to 0.", &v5, 0x16u);
   }
 
@@ -563,7 +563,7 @@ LABEL_54:
   }
 }
 
-- (void)_powerButtonLongPressFired:(id)a3
+- (void)_powerButtonLongPressFired:(id)fired
 {
   v4 = sub_100012608();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -589,17 +589,17 @@ LABEL_54:
     v7 = sub_100012608();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(Application *)self isPowerButtonDown];
-      v9 = [(Application *)self isVolumeUpButtonDown];
-      v10 = [(Application *)self isActionTriggeredForCurrentPressSequence];
+      isPowerButtonDown = [(Application *)self isPowerButtonDown];
+      isVolumeUpButtonDown = [(Application *)self isVolumeUpButtonDown];
+      isActionTriggeredForCurrentPressSequence = [(Application *)self isActionTriggeredForCurrentPressSequence];
       v12 = 136446978;
       v13 = "[Application _powerButtonLongPressFired:]";
       v14 = 1024;
-      v15 = v8;
+      v15 = isPowerButtonDown;
       v16 = 1024;
-      v17 = v9;
+      v17 = isVolumeUpButtonDown;
       v18 = 1024;
-      v19 = v10;
+      v19 = isActionTriggeredForCurrentPressSequence;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}s: Power long press conditions not met (Power:%d, VolUp:%d, ActionTriggered:%d). Menu not shown.", &v12, 0x1Eu);
     }
   }
@@ -621,7 +621,7 @@ LABEL_54:
   [(Application *)self setPowerButtonLongPressTimer:0];
 }
 
-- (void)_powerAndVolumeUpLongPressFired:(id)a3
+- (void)_powerAndVolumeUpLongPressFired:(id)fired
 {
   v4 = sub_100012608();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -663,17 +663,17 @@ LABEL_54:
     v7 = sub_100012608();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(Application *)self isPowerButtonDown];
-      v9 = [(Application *)self isVolumeUpButtonDown];
-      v10 = [(Application *)self isActionTriggeredForCurrentPressSequence];
+      isPowerButtonDown = [(Application *)self isPowerButtonDown];
+      isVolumeUpButtonDown = [(Application *)self isVolumeUpButtonDown];
+      isActionTriggeredForCurrentPressSequence = [(Application *)self isActionTriggeredForCurrentPressSequence];
       v12 = 136446978;
       v13 = "[Application _powerAndVolumeUpLongPressFired:]";
       v14 = 1024;
-      v15 = v8;
+      v15 = isPowerButtonDown;
       v16 = 1024;
-      v17 = v9;
+      v17 = isVolumeUpButtonDown;
       v18 = 1024;
-      v19 = v10;
+      v19 = isActionTriggeredForCurrentPressSequence;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}s: Power+VolUp long press conditions not met (Power:%d, VolUp:%d, ActionTriggered:%d). Power down view not shown.", &v12, 0x1Eu);
     }
   }
@@ -796,11 +796,11 @@ LABEL_54:
 - (void)_showPowerDownView
 {
   v3 = +[DREAlertManager sharedInstance];
-  v4 = [v3 alertVisible];
+  alertVisible = [v3 alertVisible];
 
   v5 = sub_100012608();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (alertVisible)
   {
     if (v6)
     {
@@ -836,9 +836,9 @@ LABEL_54:
   v15 = 0u;
   v16 = 0u;
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 connectedScenes];
+  connectedScenes = [v2 connectedScenes];
 
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [connectedScenes countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -849,7 +849,7 @@ LABEL_54:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(connectedScenes);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
@@ -858,17 +858,17 @@ LABEL_54:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v9 = [v8 keyWindow];
-            if (v9)
+            keyWindow = [v8 keyWindow];
+            if (keyWindow)
             {
-              v10 = v9;
+              v10 = keyWindow;
               goto LABEL_13;
             }
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [connectedScenes countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -881,41 +881,41 @@ LABEL_54:
   v10 = 0;
 LABEL_13:
 
-  v11 = [v10 rootViewController];
+  rootViewController = [v10 rootViewController];
 
-  return v11;
+  return rootViewController;
 }
 
 - (void)_showExitConfirmation
 {
-  v6 = [(Application *)self _getTopViewController];
-  v2 = [v6 view];
-  v3 = [v2 window];
-  v4 = [v3 windowScene];
-  v5 = [v4 delegate];
+  _getTopViewController = [(Application *)self _getTopViewController];
+  view = [_getTopViewController view];
+  window = [view window];
+  windowScene = [window windowScene];
+  delegate = [windowScene delegate];
 
-  [v5 promptToCancelAndRebootFromViewController:v6];
+  [delegate promptToCancelAndRebootFromViewController:_getTopViewController];
 }
 
 - (void)_showNeRDBootConfirmation
 {
-  v6 = [(Application *)self _getTopViewController];
-  v2 = [v6 view];
-  v3 = [v2 window];
-  v4 = [v3 windowScene];
-  v5 = [v4 delegate];
+  _getTopViewController = [(Application *)self _getTopViewController];
+  view = [_getTopViewController view];
+  window = [view window];
+  windowScene = [window windowScene];
+  delegate = [windowScene delegate];
 
-  [v5 promptToBootToNeRDFromViewController:v6];
+  [delegate promptToBootToNeRDFromViewController:_getTopViewController];
 }
 
 - (void)_showMenuView
 {
   v3 = +[DREAlertManager sharedInstance];
-  v4 = [v3 alertVisible];
+  alertVisible = [v3 alertVisible];
 
   v5 = sub_100012608();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (alertVisible)
   {
     if (v6)
     {

@@ -1,10 +1,10 @@
 @interface JSServerDataCache
-- (id)offerRankingItemsForServices:(id)a3 :(id)a4 :(id)a5;
+- (id)offerRankingItemsForServices:(id)services :(id)a4 :(id)a5;
 @end
 
 @implementation JSServerDataCache
 
-- (id)offerRankingItemsForServices:(id)a3 :(id)a4 :(id)a5
+- (id)offerRankingItemsForServices:(id)services :(id)a4 :(id)a5
 {
   v7 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
@@ -14,7 +14,7 @@
     a5 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v11 = self;
+  selfCopy = self;
   v12 = sub_10013A3AC(v7, v8, v10, a5);
 
   return v12;

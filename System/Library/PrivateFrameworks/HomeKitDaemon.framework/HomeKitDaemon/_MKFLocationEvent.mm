@@ -1,14 +1,14 @@
 @interface _MKFLocationEvent
-+ (id)modelIDForParentRelationshipTo:(id)a3;
++ (id)modelIDForParentRelationshipTo:(id)to;
 - (MKFHome)home;
 - (MKFLocationEventDatabaseID)databaseID;
 @end
 
 @implementation _MKFLocationEvent
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -22,10 +22,10 @@
 
 - (MKFHome)home
 {
-  v2 = [(_MKFLocationEvent *)self trigger];
-  v3 = [v2 home];
+  trigger = [(_MKFLocationEvent *)self trigger];
+  home = [trigger home];
 
-  return v3;
+  return home;
 }
 
 - (MKFLocationEventDatabaseID)databaseID

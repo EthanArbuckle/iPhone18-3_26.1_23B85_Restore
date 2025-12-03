@@ -1,21 +1,21 @@
 @interface HealthAppHealthDaemonOrchestrationClient
 - (_TtC21HealthAppHealthDaemon40HealthAppHealthDaemonOrchestrationClient)init;
-- (void)runBackgroundGenerationWithPlugins:(id)a3 commitAsUrgent:(BOOL)a4 generationType:(unint64_t)a5 completion:(id)a6;
+- (void)runBackgroundGenerationWithPlugins:(id)plugins commitAsUrgent:(BOOL)urgent generationType:(unint64_t)type completion:(id)completion;
 @end
 
 @implementation HealthAppHealthDaemonOrchestrationClient
 
-- (void)runBackgroundGenerationWithPlugins:(id)a3 commitAsUrgent:(BOOL)a4 generationType:(unint64_t)a5 completion:(id)a6
+- (void)runBackgroundGenerationWithPlugins:(id)plugins commitAsUrgent:(BOOL)urgent generationType:(unint64_t)type completion:(id)completion
 {
-  v8 = _Block_copy(a6);
-  if (a3)
+  v8 = _Block_copy(completion);
+  if (plugins)
   {
     sub_2293C0600();
   }
 
   *(swift_allocObject() + 16) = v8;
   v9 = *(&self->super.isa + OBJC_IVAR____TtC21HealthAppHealthDaemon40HealthAppHealthDaemonOrchestrationClient_connection);
-  v10 = self;
+  selfCopy = self;
   sub_2293C00E0();
 }
 

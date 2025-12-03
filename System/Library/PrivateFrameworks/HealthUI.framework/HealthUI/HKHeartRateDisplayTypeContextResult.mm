@@ -1,21 +1,21 @@
 @interface HKHeartRateDisplayTypeContextResult
-- (HKHeartRateDisplayTypeContextResult)initWithContext:(int64_t)a3 statistics:(id)a4;
+- (HKHeartRateDisplayTypeContextResult)initWithContext:(int64_t)context statistics:(id)statistics;
 - (id)debugDescription;
 @end
 
 @implementation HKHeartRateDisplayTypeContextResult
 
-- (HKHeartRateDisplayTypeContextResult)initWithContext:(int64_t)a3 statistics:(id)a4
+- (HKHeartRateDisplayTypeContextResult)initWithContext:(int64_t)context statistics:(id)statistics
 {
-  v6 = a4;
+  statisticsCopy = statistics;
   v10.receiver = self;
   v10.super_class = HKHeartRateDisplayTypeContextResult;
   v7 = [(HKHeartRateDisplayTypeContextResult *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(HKHeartRateDisplayTypeContextResult *)v7 setContext:a3];
-    [(HKHeartRateDisplayTypeContextResult *)v8 setStatistics:v6];
+    [(HKHeartRateDisplayTypeContextResult *)v7 setContext:context];
+    [(HKHeartRateDisplayTypeContextResult *)v8 setStatistics:statisticsCopy];
   }
 
   return v8;
@@ -24,16 +24,16 @@
 - (id)debugDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(HKHeartRateDisplayTypeContextResult *)self context];
-  v5 = [(HKHeartRateDisplayTypeContextResult *)self statistics];
-  v6 = v5;
+  context = [(HKHeartRateDisplayTypeContextResult *)self context];
+  statistics = [(HKHeartRateDisplayTypeContextResult *)self statistics];
+  v6 = statistics;
   v7 = @"None";
-  if (v5)
+  if (statistics)
   {
-    v7 = v5;
+    v7 = statistics;
   }
 
-  v8 = [v3 stringWithFormat:@"Context Display Type: %ld, Statistics: %@", v4, v7];
+  v8 = [v3 stringWithFormat:@"Context Display Type: %ld, Statistics: %@", context, v7];
 
   return v8;
 }

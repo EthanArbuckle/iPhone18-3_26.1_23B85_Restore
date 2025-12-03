@@ -1,15 +1,15 @@
 @interface ArcadeDownloadPackGameLockupPlaceholder
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
 @implementation ArcadeDownloadPackGameLockupPlaceholder
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
-  v5 = [(ArcadeDownloadPackGameLockupPlaceholder *)v4 traitCollection];
+  width = fits.width;
+  selfCopy = self;
+  traitCollection = [(ArcadeDownloadPackGameLockupPlaceholder *)selfCopy traitCollection];
   v6 = sub_100644F2C(width);
   v8 = v7;
 
@@ -29,7 +29,7 @@
   sub_100643F28(v4);
   sub_10002A400(v4, v4[3]);
   LayoutMarginsAware<>.layoutFrame.getter();
-  v3 = [v2 traitCollection];
+  traitCollection = [v2 traitCollection];
   dispatch thunk of Placeable.place(at:with:)();
 
   sub_100007000(v4);

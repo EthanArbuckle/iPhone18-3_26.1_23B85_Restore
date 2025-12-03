@@ -1,22 +1,22 @@
 @interface SKUITrailersCell
 - (CGRect)imageFrame;
-- (SKUITrailersCell)initWithFrame:(CGRect)a3;
+- (SKUITrailersCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBackgroundColor:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setImage:(id)image;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SKUITrailersCell
 
-- (SKUITrailersCell)initWithFrame:(CGRect)a3
+- (SKUITrailersCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUITrailersCell initWithFrame:];
@@ -24,29 +24,29 @@
 
   v12.receiver = self;
   v12.super_class = SKUITrailersCell;
-  v8 = [(SKUITrailersCell *)&v12 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUITrailersCell *)&v12 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = objc_alloc_init(MEMORY[0x277D755E8]);
-    imageView = v8->_imageView;
-    v8->_imageView = v9;
+    imageView = height->_imageView;
+    height->_imageView = v9;
 
-    [(SKUITrailersCell *)v8 addSubview:v8->_imageView];
+    [(SKUITrailersCell *)height addSubview:height->_imageView];
   }
 
-  return v8;
+  return height;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v15 = a3;
-  v4 = [(UILabel *)self->_titleLabel text];
+  titleCopy = title;
+  text = [(UILabel *)self->_titleLabel text];
 
-  v6 = v15;
-  if (v4 != v15)
+  v6 = titleCopy;
+  if (text != titleCopy)
   {
     titleLabel = self->_titleLabel;
-    if (v15)
+    if (titleCopy)
     {
       if (!titleLabel)
       {
@@ -60,15 +60,15 @@
 
         [(UILabel *)self->_titleLabel setNumberOfLines:1];
         v12 = self->_titleLabel;
-        v13 = [(SKUITrailersCell *)self backgroundColor];
-        [(UILabel *)v12 setBackgroundColor:v13];
+        backgroundColor = [(SKUITrailersCell *)self backgroundColor];
+        [(UILabel *)v12 setBackgroundColor:backgroundColor];
 
         [(SKUITrailersCell *)self addSubview:self->_titleLabel];
         titleLabel = self->_titleLabel;
       }
 
-      [(UILabel *)titleLabel setText:v15];
-      v5 = [(SKUITrailersCell *)self setNeedsLayout];
+      [(UILabel *)titleLabel setText:titleCopy];
+      setNeedsLayout = [(SKUITrailersCell *)self setNeedsLayout];
     }
 
     else
@@ -78,22 +78,22 @@
       self->_titleLabel = 0;
     }
 
-    v6 = v15;
+    v6 = titleCopy;
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](setNeedsLayout, v6);
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v15 = a3;
-  v4 = [(UILabel *)self->_subtitleLabel text];
+  subtitleCopy = subtitle;
+  text = [(UILabel *)self->_subtitleLabel text];
 
-  v6 = v15;
-  if (v4 != v15)
+  v6 = subtitleCopy;
+  if (text != subtitleCopy)
   {
     subtitleLabel = self->_subtitleLabel;
-    if (v15)
+    if (subtitleCopy)
     {
       if (!subtitleLabel)
       {
@@ -107,15 +107,15 @@
 
         [(UILabel *)self->_subtitleLabel setNumberOfLines:1];
         v12 = self->_subtitleLabel;
-        v13 = [(SKUITrailersCell *)self backgroundColor];
-        [(UILabel *)v12 setBackgroundColor:v13];
+        backgroundColor = [(SKUITrailersCell *)self backgroundColor];
+        [(UILabel *)v12 setBackgroundColor:backgroundColor];
 
         [(SKUITrailersCell *)self addSubview:self->_subtitleLabel];
         subtitleLabel = self->_subtitleLabel;
       }
 
-      [(UILabel *)subtitleLabel setText:v15];
-      v5 = [(SKUITrailersCell *)self setNeedsLayout];
+      [(UILabel *)subtitleLabel setText:subtitleCopy];
+      setNeedsLayout = [(SKUITrailersCell *)self setNeedsLayout];
     }
 
     else
@@ -125,24 +125,24 @@
       self->_subtitleLabel = 0;
     }
 
-    v6 = v15;
+    v6 = subtitleCopy;
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](setNeedsLayout, v6);
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v6 = a3;
-  v4 = [(UIImageView *)self->_imageView image];
+  imageCopy = image;
+  image = [(UIImageView *)self->_imageView image];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = imageCopy;
+  if (image != imageCopy)
   {
-    [(UIImageView *)self->_imageView setImage:v6];
+    [(UIImageView *)self->_imageView setImage:imageCopy];
     [(UIImageView *)self->_imageView sizeToFit];
     [(SKUITrailersCell *)self setNeedsLayout];
-    v5 = v6;
+    v5 = imageCopy;
   }
 }
 
@@ -164,12 +164,12 @@
   [(SKUITrailersCell *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v9 = 7.5;
   v10 = 10.0;
-  if ((v8 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v9 = 10.0;
   }
@@ -180,10 +180,10 @@
   v15 = v14;
   [(SKUITrailersCell *)self bounds];
   v17 = floor((v16 - v13) * 0.5);
-  v18 = [MEMORY[0x277D75418] currentDevice];
-  v19 = [v18 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  if ((v19 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v10 = 15.0;
   }
@@ -207,15 +207,15 @@
   [(UILabel *)self->_subtitleLabel setFrame:v11, v25, v26, v27];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = SKUITrailersCell;
-  v4 = a3;
-  [(SKUITrailersCell *)&v5 setBackgroundColor:v4];
-  [(UIImageView *)self->_imageView setBackgroundColor:v4, v5.receiver, v5.super_class];
-  [(UILabel *)self->_titleLabel setBackgroundColor:v4];
-  [(UILabel *)self->_subtitleLabel setBackgroundColor:v4];
+  colorCopy = color;
+  [(SKUITrailersCell *)&v5 setBackgroundColor:colorCopy];
+  [(UIImageView *)self->_imageView setBackgroundColor:colorCopy, v5.receiver, v5.super_class];
+  [(UILabel *)self->_titleLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_subtitleLabel setBackgroundColor:colorCopy];
 }
 
 - (void)prepareForReuse

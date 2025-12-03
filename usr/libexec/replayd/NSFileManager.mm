@@ -1,14 +1,14 @@
 @interface NSFileManager
-- (id)_srGetCreationDateForFile:(id)a3;
+- (id)_srGetCreationDateForFile:(id)file;
 - (id)dateSuffix;
-- (id)outputPath:(int)a3 bundleID:(id)a4;
-- (id)trimmedOutputPath:(id)a3;
-- (int64_t)_srDeleteFilesOlderThanTimeToLiveInSeconds:(double)a3 deleteSystemFiles:(BOOL)a4;
-- (int64_t)_srSizeOfTempDir:(id *)a3;
+- (id)outputPath:(int)path bundleID:(id)d;
+- (id)trimmedOutputPath:(id)path;
+- (int64_t)_srDeleteFilesOlderThanTimeToLiveInSeconds:(double)seconds deleteSystemFiles:(BOOL)files;
+- (int64_t)_srSizeOfTempDir:(id *)dir;
 - (unint64_t)_srDeviceFreeDiskSpace;
-- (void)_srDeleteFilesWithPrefix:(id)a3;
-- (void)_srMoveFileFromURL:(id)a3 toURL:(id)a4 completion:(id)a5;
-- (void)_srRemoveFile:(id)a3 completion:(id)a4;
+- (void)_srDeleteFilesWithPrefix:(id)prefix;
+- (void)_srMoveFileFromURL:(id)l toURL:(id)rL completion:(id)completion;
+- (void)_srRemoveFile:(id)file completion:(id)completion;
 - (void)_srSetupTempDirectory;
 @end
 
@@ -22,8 +22,8 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "_srSetupTempDirectory", buf, 2u);
   }
 
-  v3 = [(NSFileManager *)self _srTempPath];
-  v4 = [(NSFileManager *)self fileExistsAtPath:v3 isDirectory:0];
+  _srTempPath = [(NSFileManager *)self _srTempPath];
+  v4 = [(NSFileManager *)self fileExistsAtPath:_srTempPath isDirectory:0];
 
   if (v4)
   {
@@ -32,9 +32,9 @@
 
   else
   {
-    v5 = [(NSFileManager *)self _srTempPath];
+    _srTempPath2 = [(NSFileManager *)self _srTempPath];
     v7 = 0;
-    [(NSFileManager *)self createDirectoryAtPath:v5 withIntermediateDirectories:0 attributes:0 error:&v7];
+    [(NSFileManager *)self createDirectoryAtPath:_srTempPath2 withIntermediateDirectories:0 attributes:0 error:&v7];
     v6 = v7;
 
     if (v6)
@@ -59,70 +59,70 @@
   return v5;
 }
 
-- (id)outputPath:(int)a3 bundleID:(id)a4
+- (id)outputPath:(int)path bundleID:(id)d
 {
-  v6 = a4;
-  v7 = [(NSFileManager *)self dateSuffix];
+  dCopy = d;
+  dateSuffix = [(NSFileManager *)self dateSuffix];
   v8 = +[NSFileManager defaultManager];
-  v9 = [v8 _srTempPath];
-  v10 = v9;
-  switch(a3)
+  _srTempPath = [v8 _srTempPath];
+  v10 = _srTempPath;
+  switch(path)
   {
     case 1:
-      [NSString stringWithFormat:@"%@/ClipRecording_%@.mp4", v9, v7];
+      [NSString stringWithFormat:@"%@/ClipRecording_%@.mp4", _srTempPath, dateSuffix];
       goto LABEL_7;
     case 3:
-      [NSString stringWithFormat:@"%@/LocalCapture_%@.mp4", v9, v7];
+      [NSString stringWithFormat:@"%@/LocalCapture_%@.mp4", _srTempPath, dateSuffix];
       goto LABEL_7;
     case 2:
-      [NSString stringWithFormat:@"%@/ScreenRecording_%@.mp4", v9, v7];
+      [NSString stringWithFormat:@"%@/ScreenRecording_%@.mp4", _srTempPath, dateSuffix];
       v11 = LABEL_7:;
       goto LABEL_9;
   }
 
-  v12 = [NSBundle _rpLocalizedAppNameFromBundleID:v6];
-  v11 = [NSString stringWithFormat:@"%@/%@_%@.mp4", v10, v12, v7];
+  v12 = [NSBundle _rpLocalizedAppNameFromBundleID:dCopy];
+  v11 = [NSString stringWithFormat:@"%@/%@_%@.mp4", v10, v12, dateSuffix];
 
 LABEL_9:
 
   return v11;
 }
 
-- (id)trimmedOutputPath:(id)a3
+- (id)trimmedOutputPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 _srTempPath];
-  v6 = [NSBundle _rpLocalizedAppNameFromBundleID:v3];
+  _srTempPath = [v4 _srTempPath];
+  v6 = [NSBundle _rpLocalizedAppNameFromBundleID:pathCopy];
 
-  v7 = [NSString stringWithFormat:@"%@/%@_trimmed.mp4", v5, v6];
+  v7 = [NSString stringWithFormat:@"%@/%@_trimmed.mp4", _srTempPath, v6];
 
   return v7;
 }
 
-- (int64_t)_srSizeOfTempDir:(id *)a3
+- (int64_t)_srSizeOfTempDir:(id *)dir
 {
   v5 = +[NSFileManager defaultManager];
-  v6 = [(NSFileManager *)self _srTempPath];
-  v7 = [v5 attributesOfItemAtPath:v6 error:a3];
+  _srTempPath = [(NSFileManager *)self _srTempPath];
+  v7 = [v5 attributesOfItemAtPath:_srTempPath error:dir];
 
-  v8 = [v7 fileSize];
-  return v8;
+  fileSize = [v7 fileSize];
+  return fileSize;
 }
 
-- (int64_t)_srDeleteFilesOlderThanTimeToLiveInSeconds:(double)a3 deleteSystemFiles:(BOOL)a4
+- (int64_t)_srDeleteFilesOlderThanTimeToLiveInSeconds:(double)seconds deleteSystemFiles:(BOOL)files
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v42 = a3;
+    secondsCopy = seconds;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "_srDeleteFilesOlderThanTimeToLiveInSeconds: %i", buf, 8u);
   }
 
   v7 = +[NSFileManager defaultManager];
-  v8 = [(NSFileManager *)self _srTempPath];
+  _srTempPath = [(NSFileManager *)self _srTempPath];
   v39 = 0;
-  v9 = [v7 contentsOfDirectoryAtPath:v8 error:&v39];
+  v9 = [v7 contentsOfDirectoryAtPath:_srTempPath error:&v39];
   v10 = v39;
 
   sub_100004B08(v11, v10);
@@ -147,10 +147,10 @@ LABEL_9:
         }
 
         v16 = *(*(&v35 + 1) + 8 * i);
-        if (a4 || ([*(*(&v35 + 1) + 8 * i) containsString:@"ScreenRecording_"] & 1) == 0)
+        if (files || ([*(*(&v35 + 1) + 8 * i) containsString:@"ScreenRecording_"] & 1) == 0)
         {
-          v17 = [(NSFileManager *)self _srTempPath];
-          v18 = [NSString stringWithFormat:@"%@/%@", v17, v16];
+          _srTempPath2 = [(NSFileManager *)self _srTempPath];
+          v18 = [NSString stringWithFormat:@"%@/%@", _srTempPath2, v16];
 
           v34 = v10;
           v19 = [(NSFileManager *)self attributesOfItemAtPath:v18 error:&v34];
@@ -158,12 +158,12 @@ LABEL_9:
 
           sub_100004B08(v21, v20);
           v22 = +[NSDate date];
-          v23 = [v19 fileModificationDate];
-          [v22 timeIntervalSinceDate:v23];
+          fileModificationDate = [v19 fileModificationDate];
+          [v22 timeIntervalSinceDate:fileModificationDate];
           v25 = v24;
 
-          v26 = [v19 fileSize];
-          if (a3 == 0.0 || v25 > a3)
+          fileSize = [v19 fileSize];
+          if (seconds == 0.0 || v25 > seconds)
           {
             if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
             {
@@ -183,7 +183,7 @@ LABEL_9:
 
             else
             {
-              v29 = v26;
+              v29 = fileSize;
             }
 
             v32 += v29;
@@ -208,64 +208,64 @@ LABEL_9:
   return v32;
 }
 
-- (void)_srRemoveFile:(id)a3 completion:(id)a4
+- (void)_srRemoveFile:(id)file completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  fileCopy = file;
+  completionCopy = completion;
   v8 = dispatch_get_global_queue(-32768, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100004C48;
   block[3] = &unk_1000A10D8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = fileCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = fileCopy;
   dispatch_async(v8, block);
 }
 
-- (void)_srMoveFileFromURL:(id)a3 toURL:(id)a4 completion:(id)a5
+- (void)_srMoveFileFromURL:(id)l toURL:(id)rL completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  rLCopy = rL;
+  completionCopy = completion;
   v11 = dispatch_get_global_queue(0, 0);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100004E08;
   v15[3] = &unk_1000A1100;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = rLCopy;
+  v17 = lCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = lCopy;
+  v14 = rLCopy;
   dispatch_async(v11, v15);
 }
 
-- (void)_srDeleteFilesWithPrefix:(id)a3
+- (void)_srDeleteFilesWithPrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100004F84;
   v7[3] = &unk_1000A1128;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = prefixCopy;
+  v6 = prefixCopy;
   dispatch_async(v5, v7);
 }
 
-- (id)_srGetCreationDateForFile:(id)a3
+- (id)_srGetCreationDateForFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v3 path];
+  path = [fileCopy path];
 
-  v6 = [v4 attributesOfItemAtPath:v5 error:0];
+  v6 = [v4 attributesOfItemAtPath:path error:0];
 
   v7 = [v6 objectForKey:NSFileCreationDate];
 
@@ -275,13 +275,13 @@ LABEL_9:
 - (unint64_t)_srDeviceFreeDiskSpace
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(NSFileManager *)self _srTempPath];
-  v5 = [v3 attributesOfFileSystemForPath:v4 error:0];
+  _srTempPath = [(NSFileManager *)self _srTempPath];
+  v5 = [v3 attributesOfFileSystemForPath:_srTempPath error:0];
 
   v6 = [v5 objectForKeyedSubscript:NSFileSystemFreeSize];
-  v7 = [v6 unsignedLongValue];
+  unsignedLongValue = [v6 unsignedLongValue];
 
-  return v7;
+  return unsignedLongValue;
 }
 
 @end

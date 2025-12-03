@@ -1,7 +1,7 @@
 @interface VCPCtrTracker
 - (VCPCtrTracker)init;
 - (void)dealloc;
-- (void)setupTrackerWithReferenceFrame:(__CVBuffer *)a3 withROI:(CGPoint *)a4;
+- (void)setupTrackerWithReferenceFrame:(__CVBuffer *)frame withROI:(CGPoint *)i;
 @end
 
 @implementation VCPCtrTracker
@@ -39,7 +39,7 @@
   [(VCPCtrTracker *)&v5 dealloc];
 }
 
-- (void)setupTrackerWithReferenceFrame:(__CVBuffer *)a3 withROI:(CGPoint *)a4
+- (void)setupTrackerWithReferenceFrame:(__CVBuffer *)frame withROI:(CGPoint *)i
 {
   P = self->P;
   if (!P)
@@ -50,7 +50,7 @@
 
   for (i = 0; i != 4; ++i)
   {
-    P[i] = a4[i];
+    P[i] = i[i];
   }
 
   context = self->context;
@@ -66,7 +66,7 @@
     self->context = v10;
   }
 
-  ctrTrackerInitialization_setUpTracker(a3, v10, a4);
+  ctrTrackerInitialization_setUpTracker(frame, v10, i);
 }
 
 @end

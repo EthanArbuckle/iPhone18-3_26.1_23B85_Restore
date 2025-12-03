@@ -8,8 +8,8 @@
 {
   v3 = MEMORY[0x1E696AAE8];
   v4 = a3;
-  v5 = [v3 sfui_bundle];
-  v6 = [MEMORY[0x1E69DCAB8] imageNamed:v4 inBundle:v5];
+  sfui_bundle = [v3 sfui_bundle];
+  v6 = [MEMORY[0x1E69DCAB8] imageNamed:v4 inBundle:sfui_bundle];
 
   return v6;
 }

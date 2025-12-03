@@ -1,18 +1,18 @@
 @interface FCCKRecordZone
 - (id)description;
-- (id)initWithDatabase:(void *)a3 delegate:(void *)a4 recordZoneID:;
-- (void)fetchChangesWithChangeToken:(void *)a3 desiredKeys:(char)a4 fetchAllChanges:(uint64_t)a5 qualityOfService:(void *)a6 completion:;
+- (id)initWithDatabase:(void *)database delegate:(void *)delegate recordZoneID:;
+- (void)fetchChangesWithChangeToken:(void *)token desiredKeys:(char)keys fetchAllChanges:(uint64_t)changes qualityOfService:(void *)service completion:;
 @end
 
 @implementation FCCKRecordZone
 
-- (id)initWithDatabase:(void *)a3 delegate:(void *)a4 recordZoneID:
+- (id)initWithDatabase:(void *)database delegate:(void *)delegate recordZoneID:
 {
   v25 = *MEMORY[0x1E69E9840];
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  if (!a1)
+  databaseCopy = database;
+  delegateCopy = delegate;
+  if (!self)
   {
     goto LABEL_12;
   }
@@ -30,7 +30,7 @@
     v24 = v14;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (!v10)
+    if (!delegateCopy)
     {
 LABEL_5:
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -49,35 +49,35 @@ LABEL_5:
     }
   }
 
-  else if (!v10)
+  else if (!delegateCopy)
   {
     goto LABEL_5;
   }
 
-  v16.receiver = a1;
+  v16.receiver = self;
   v16.super_class = FCCKRecordZone;
   v11 = objc_msgSendSuper2(&v16, sel_init);
-  a1 = v11;
+  self = v11;
   if (v11)
   {
-    if (v8 && v10)
+    if (v8 && delegateCopy)
     {
       objc_storeStrong(v11 + 3, a2);
-      objc_storeWeak(a1 + 4, v9);
-      objc_storeStrong(a1 + 2, a4);
+      objc_storeWeak(self + 4, databaseCopy);
+      objc_storeStrong(self + 2, delegate);
     }
 
     else
     {
 
-      a1 = 0;
+      self = 0;
     }
   }
 
 LABEL_12:
 
   v12 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
 uint64_t __46__FCCKRecordZone_performActionWithRecordZone___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -113,43 +113,43 @@ uint64_t __46__FCCKRecordZone_performActionWithRecordZone___block_invoke(uint64_
   return (*(v5 + 16))(v5, v7, 0);
 }
 
-- (void)fetchChangesWithChangeToken:(void *)a3 desiredKeys:(char)a4 fetchAllChanges:(uint64_t)a5 qualityOfService:(void *)a6 completion:
+- (void)fetchChangesWithChangeToken:(void *)token desiredKeys:(char)keys fetchAllChanges:(uint64_t)changes qualityOfService:(void *)service completion:
 {
   v33 = *MEMORY[0x1E69E9840];
   v11 = a2;
-  v12 = a3;
-  v13 = a6;
-  v14 = v13;
-  if (a1)
+  tokenCopy = token;
+  serviceCopy = service;
+  v14 = serviceCopy;
+  if (self)
   {
-    if (v13)
+    if (serviceCopy)
     {
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v22 = __102__FCCKRecordZone_fetchChangesWithChangeToken_desiredKeys_fetchAllChanges_qualityOfService_completion___block_invoke;
       v23 = &unk_1E7C387A0;
-      v24 = a1;
+      selfCopy = self;
       v25 = v11;
-      v29 = a4;
-      v26 = v12;
-      v28 = a5;
+      keysCopy = keys;
+      v26 = tokenCopy;
+      changesCopy = changes;
       v27 = v14;
       v15 = v21;
       v16 = v15;
-      if (*(a1 + 8))
+      if (*(self + 8))
       {
-        (v22)(v15, *(a1 + 16), 0);
+        (v22)(v15, *(self + 16), 0);
       }
 
       else
       {
-        WeakRetained = objc_loadWeakRetained((a1 + 32));
-        v19 = *(a1 + 16);
+        WeakRetained = objc_loadWeakRetained((self + 32));
+        v19 = *(self + 16);
         *buf = MEMORY[0x1E69E9820];
         *&buf[8] = 3221225472;
         *&buf[16] = __46__FCCKRecordZone_performActionWithRecordZone___block_invoke;
         *&v31 = &unk_1E7C38750;
-        *(&v31 + 1) = a1;
+        *(&v31 + 1) = self;
         v32 = v16;
         [WeakRetained ensureRecordZoneExistsWithID:v19 completionHandler:buf];
       }
@@ -221,12 +221,12 @@ void __102__FCCKRecordZone_fetchChangesWithChangeToken_desiredKeys_fetchAllChang
     recordZoneID = 0;
   }
 
-  v5 = [(CKRecordZoneID *)recordZoneID zoneName];
-  [v3 addField:@"recordZoneName" value:v5];
+  zoneName = [(CKRecordZoneID *)recordZoneID zoneName];
+  [v3 addField:@"recordZoneName" value:zoneName];
 
-  v6 = [v3 descriptionString];
+  descriptionString = [v3 descriptionString];
 
-  return v6;
+  return descriptionString;
 }
 
 @end

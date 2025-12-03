@@ -1,37 +1,37 @@
 @interface NanoRoutePlanningResponse
 + (void)clearDiskRouteStorage;
-- (BOOL)canNavigateRouteWithID:(id)a3;
+- (BOOL)canNavigateRouteWithID:(id)d;
 - (BOOL)hasReceivedAllExpectedRoutes;
 - (GEOComposedRoute)selectedRoute;
 - (NSArray)companionRoutes;
 - (NSUUID)selectedRouteID;
 - (NanoRoutePlanningResponse)init;
-- (NanoRoutePlanningResponse)initWithCoder:(id)a3;
-- (id)_generateCompanionRouteFromComposedRoute:(id)a3;
-- (id)companionRouteWithID:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NanoRoutePlanningResponse)initWithCoder:(id)coder;
+- (id)_generateCompanionRouteFromComposedRoute:(id)route;
+- (id)companionRouteWithID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)routeWithID:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)routeWithID:(id)d;
 - (id)selectedCompanionRoute;
 - (id)snapshot;
-- (id)userInfoForRouteWithID:(id)a3;
+- (id)userInfoForRouteWithID:(id)d;
 - (unint64_t)numberOfRoutes;
 - (unint64_t)selectedRouteIndex;
 - (void)_generateCompanionRoutesFromComposedRoutes;
-- (void)_populateCopy:(id)a3;
-- (void)_setRoutes:(id)a3 withRouteIDs:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setObject:(id)a3 forUserInfoKey:(id)a4 forRouteID:(id)a5;
-- (void)setRoutes:(id)a3;
+- (void)_populateCopy:(id)copy;
+- (void)_setRoutes:(id)routes withRouteIDs:(id)ds;
+- (void)encodeWithCoder:(id)coder;
+- (void)setObject:(id)object forUserInfoKey:(id)key forRouteID:(id)d;
+- (void)setRoutes:(id)routes;
 @end
 
 @implementation NanoRoutePlanningResponse
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_routeIDs forKey:@"_routeIDs"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_routeIDs forKey:@"_routeIDs"];
   BOOL = GEOConfigGetBOOL();
   v6 = BOOL;
   block[0] = _NSConcreteStackBlock;
@@ -48,7 +48,7 @@
     }
 
 LABEL_23:
-    [v4 encodeObject:self->_routes forKey:@"_routes"];
+    [coderCopy encodeObject:self->_routes forKey:@"_routes"];
     goto LABEL_24;
   }
 
@@ -91,14 +91,14 @@ LABEL_3:
         {
 LABEL_22:
 
-          [v4 encodeBool:1 forKey:@"DiskRouteStorage"];
+          [coderCopy encodeBool:1 forKey:@"DiskRouteStorage"];
           goto LABEL_23;
         }
 
-        v17 = self;
-        if (!v17)
+        selfCopy = self;
+        if (!selfCopy)
         {
-          v22 = @"<nil>";
+          selfCopy = @"<nil>";
           goto LABEL_21;
         }
 
@@ -106,27 +106,27 @@ LABEL_22:
         v19 = NSStringFromClass(v18);
         if (objc_opt_respondsToSelector())
         {
-          v20 = [(NanoRoutePlanningResponse *)v17 performSelector:"accessibilityIdentifier"];
+          v20 = [(NanoRoutePlanningResponse *)selfCopy performSelector:"accessibilityIdentifier"];
           v21 = v20;
           if (v20 && ![v20 isEqualToString:v19])
           {
-            v22 = [NSString stringWithFormat:@"%@<%p, %@>", v19, v17, v21];
+            selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v19, selfCopy, v21];
 
             goto LABEL_19;
           }
         }
 
-        v22 = [NSString stringWithFormat:@"%@<%p>", v19, v17];
+        selfCopy = [NSString stringWithFormat:@"%@<%p>", v19, selfCopy];
 LABEL_19:
 
 LABEL_21:
-        v23 = v22;
-        v24 = [v12 uniqueRouteID];
+        v23 = selfCopy;
+        uniqueRouteID = [v12 uniqueRouteID];
 
         *buf = 138543874;
-        v34 = v22;
+        v34 = selfCopy;
         v35 = 2114;
-        v36 = v24;
+        v36 = uniqueRouteID;
         v37 = 2112;
         v38 = v15;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to write route %{public}@ to disk: %@", buf, 0x20u);
@@ -146,25 +146,25 @@ LABEL_21:
 
 LABEL_11:
 
-  [v4 encodeBool:1 forKey:@"DiskRouteStorage"];
+  [coderCopy encodeBool:1 forKey:@"DiskRouteStorage"];
 LABEL_24:
-  [v4 encodeObject:self->_selectedRouteID forKey:@"_selectedRouteID"];
+  [coderCopy encodeObject:self->_selectedRouteID forKey:@"_selectedRouteID"];
   v25 = [NSNumber numberWithUnsignedInteger:self->_routeOrigin];
-  [v4 encodeObject:v25 forKey:@"_routeOrigin"];
+  [coderCopy encodeObject:v25 forKey:@"_routeOrigin"];
 
   v26 = [NSNumber numberWithUnsignedInteger:self->_expectedNumberOfRoutes];
-  [v4 encodeObject:v26 forKey:@"_expectedNumberOfRoutes"];
+  [coderCopy encodeObject:v26 forKey:@"_expectedNumberOfRoutes"];
 
-  [v4 encodeObject:self->_traceRecordingData forKey:@"_traceRecordingData"];
-  [v4 encodeObject:self->_directionsRequest forKey:@"_directionsRequest"];
-  [v4 encodeObject:self->_directionsResponse forKey:@"_directionsResponse"];
-  [v4 encodeObject:self->_lastError forKey:@"_lastError"];
-  [v4 encodeObject:self->_userInfoByRouteID forKey:@"_userInfoByRouteID"];
+  [coderCopy encodeObject:self->_traceRecordingData forKey:@"_traceRecordingData"];
+  [coderCopy encodeObject:self->_directionsRequest forKey:@"_directionsRequest"];
+  [coderCopy encodeObject:self->_directionsResponse forKey:@"_directionsResponse"];
+  [coderCopy encodeObject:self->_lastError forKey:@"_lastError"];
+  [coderCopy encodeObject:self->_userInfoByRouteID forKey:@"_userInfoByRouteID"];
 }
 
-- (NanoRoutePlanningResponse)initWithCoder:(id)a3
+- (NanoRoutePlanningResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v38.receiver = self;
   v38.super_class = NanoRoutePlanningResponse;
   v5 = [(NanoRoutePlanningResponse *)&v38 init];
@@ -172,9 +172,9 @@ LABEL_24:
   {
     v6 = objc_opt_class();
     v7 = [NSSet setWithObjects:v6, objc_opt_class(), 0];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"_routeIDs"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"_routeIDs"];
 
-    if ([v4 decodeBoolForKey:@"DiskRouteStorage"] && v8)
+    if ([coderCopy decodeBoolForKey:@"DiskRouteStorage"] && v8)
     {
       v9 = sub_100021DB0(v8, &stru_101625FE8);
     }
@@ -183,35 +183,35 @@ LABEL_24:
     {
       v10 = objc_opt_class();
       v11 = [NSSet setWithObjects:v10, objc_opt_class(), 0];
-      v9 = [v4 decodeObjectOfClasses:v11 forKey:@"_routes"];
+      v9 = [coderCopy decodeObjectOfClasses:v11 forKey:@"_routes"];
     }
 
     [(NanoRoutePlanningResponse *)v5 _setRoutes:v9 withRouteIDs:v8];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_routeOrigin"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_routeOrigin"];
     v5->_routeOrigin = [v12 unsignedIntegerValue];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_selectedRouteID"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_selectedRouteID"];
     selectedRouteID = v5->_selectedRouteID;
     v5->_selectedRouteID = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_expectedNumberOfRoutes"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_expectedNumberOfRoutes"];
     v5->_expectedNumberOfRoutes = [v15 unsignedIntegerValue];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_traceRecordingData"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_traceRecordingData"];
     traceRecordingData = v5->_traceRecordingData;
     v5->_traceRecordingData = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_directionsRequest"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_directionsRequest"];
     directionsRequest = v5->_directionsRequest;
     v5->_directionsRequest = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_directionsResponse"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_directionsResponse"];
     directionsResponse = v5->_directionsResponse;
     v5->_directionsResponse = v20;
 
     v22 = objc_opt_class();
     v23 = [NSSet setWithObjects:v22, objc_opt_class(), 0];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"_lastError"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"_lastError"];
     lastError = v5->_lastError;
     v5->_lastError = v24;
 
@@ -220,7 +220,7 @@ LABEL_24:
     v28 = objc_opt_class();
     v29 = objc_opt_class();
     v30 = [NSSet setWithObjects:v26, v27, v28, v29, objc_opt_class(), 0];
-    v31 = [v4 decodeObjectOfClasses:v30 forKey:@"_userInfoByRouteID"];
+    v31 = [coderCopy decodeObjectOfClasses:v30 forKey:@"_userInfoByRouteID"];
     v32 = [v31 mutableCopy];
     userInfoByRouteID = v5->_userInfoByRouteID;
     v5->_userInfoByRouteID = v32;
@@ -237,23 +237,23 @@ LABEL_24:
   return v5;
 }
 
-- (void)_populateCopy:(id)a3
+- (void)_populateCopy:(id)copy
 {
-  objc_storeStrong(a3 + 2, self->_routeIDs);
-  v5 = a3;
-  objc_storeStrong(v5 + 3, self->_routes);
-  objc_storeStrong(v5 + 4, self->_companionRoutes);
-  v5[10] = self->_routeOrigin;
-  objc_storeStrong(v5 + 5, self->_selectedRouteID);
-  v5[11] = self->_expectedNumberOfRoutes;
-  objc_storeStrong(v5 + 7, self->_traceRecordingData);
-  objc_storeStrong(v5 + 8, self->_directionsRequest);
-  objc_storeStrong(v5 + 9, self->_directionsResponse);
-  objc_storeStrong(v5 + 1, self->_userInfoByRouteID);
-  objc_storeStrong(v5 + 6, self->_lastError);
+  objc_storeStrong(copy + 2, self->_routeIDs);
+  copyCopy = copy;
+  objc_storeStrong(copyCopy + 3, self->_routes);
+  objc_storeStrong(copyCopy + 4, self->_companionRoutes);
+  copyCopy[10] = self->_routeOrigin;
+  objc_storeStrong(copyCopy + 5, self->_selectedRouteID);
+  copyCopy[11] = self->_expectedNumberOfRoutes;
+  objc_storeStrong(copyCopy + 7, self->_traceRecordingData);
+  objc_storeStrong(copyCopy + 8, self->_directionsRequest);
+  objc_storeStrong(copyCopy + 9, self->_directionsResponse);
+  objc_storeStrong(copyCopy + 1, self->_userInfoByRouteID);
+  objc_storeStrong(copyCopy + 6, self->_lastError);
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(NanoRoutePlanningMutableResponse);
   [(NanoRoutePlanningResponse *)self _populateCopy:v4];
@@ -274,7 +274,7 @@ LABEL_24:
   MNClearStoredRoutesWithSubpathUsedBefore();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(NanoRoutePlanningResponse);
   [(NanoRoutePlanningResponse *)self _populateCopy:v4];
@@ -284,11 +284,11 @@ LABEL_24:
 - (id)snapshot
 {
   v3 = objc_alloc_init(NanoRoutePlanningResponseSnapshot);
-  v4 = [(NanoRoutePlanningResponse *)self routeIDs];
-  [(NanoRoutePlanningResponseSnapshot *)v3 setRouteIdentifiers:v4];
+  routeIDs = [(NanoRoutePlanningResponse *)self routeIDs];
+  [(NanoRoutePlanningResponseSnapshot *)v3 setRouteIdentifiers:routeIDs];
 
-  v5 = [(NanoRoutePlanningResponse *)self selectedRouteID];
-  [(NanoRoutePlanningResponseSnapshot *)v3 setSelectedRouteIdentifier:v5];
+  selectedRouteID = [(NanoRoutePlanningResponse *)self selectedRouteID];
+  [(NanoRoutePlanningResponseSnapshot *)v3 setSelectedRouteIdentifier:selectedRouteID];
 
   if ([(NSArray *)self->_routes count])
   {
@@ -315,19 +315,19 @@ LABEL_6:
   return v3;
 }
 
-- (BOOL)canNavigateRouteWithID:(id)a3
+- (BOOL)canNavigateRouteWithID:(id)d
 {
-  v3 = [(NanoRoutePlanningResponse *)self userInfoForRouteWithID:a3];
+  v3 = [(NanoRoutePlanningResponse *)self userInfoForRouteWithID:d];
   v4 = [v3 objectForKeyedSubscript:@"canNavigate"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (id)userInfoForRouteWithID:(id)a3
+- (id)userInfoForRouteWithID:(id)d
 {
   v5 = 0;
-  if (a3)
+  if (d)
   {
     userInfoByRouteID = self->_userInfoByRouteID;
     if (userInfoByRouteID)
@@ -340,9 +340,9 @@ LABEL_6:
   return v5;
 }
 
-- (id)routeWithID:(id)a3
+- (id)routeWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if ([(NanoRoutePlanningResponse *)self numberOfRoutes])
   {
     v11 = 0;
@@ -351,14 +351,14 @@ LABEL_6:
     v14 = sub_1006A2B4C;
     v15 = sub_1006A2B5C;
     v16 = 0;
-    v5 = [(NanoRoutePlanningResponse *)self routes];
+    routes = [(NanoRoutePlanningResponse *)self routes];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_1006A2B64;
     v8[3] = &unk_101625F08;
-    v9 = v4;
+    v9 = dCopy;
     v10 = &v11;
-    [v5 enumerateObjectsWithOptions:1 usingBlock:v8];
+    [routes enumerateObjectsWithOptions:1 usingBlock:v8];
 
     v6 = v12[5];
     _Block_object_dispose(&v11, 8);
@@ -374,11 +374,11 @@ LABEL_6:
 
 - (unint64_t)selectedRouteIndex
 {
-  v3 = [(NanoRoutePlanningResponse *)self selectedRouteID];
-  if (v3)
+  selectedRouteID = [(NanoRoutePlanningResponse *)self selectedRouteID];
+  if (selectedRouteID)
   {
-    v4 = [(NanoRoutePlanningResponse *)self routeIDs];
-    v5 = [v4 indexOfObject:v3];
+    routeIDs = [(NanoRoutePlanningResponse *)self routeIDs];
+    v5 = [routeIDs indexOfObject:selectedRouteID];
   }
 
   else
@@ -391,10 +391,10 @@ LABEL_6:
 
 - (GEOComposedRoute)selectedRoute
 {
-  v3 = [(NanoRoutePlanningResponse *)self selectedRouteID];
-  if (v3)
+  selectedRouteID = [(NanoRoutePlanningResponse *)self selectedRouteID];
+  if (selectedRouteID)
   {
-    v4 = [(NanoRoutePlanningResponse *)self routeWithID:v3];
+    v4 = [(NanoRoutePlanningResponse *)self routeWithID:selectedRouteID];
   }
 
   else
@@ -410,26 +410,26 @@ LABEL_6:
   selectedRouteID = self->_selectedRouteID;
   if (selectedRouteID)
   {
-    v3 = selectedRouteID;
+    firstObject = selectedRouteID;
   }
 
   else
   {
-    v3 = [(NSArray *)self->_routeIDs firstObject];
+    firstObject = [(NSArray *)self->_routeIDs firstObject];
   }
 
-  return v3;
+  return firstObject;
 }
 
 - (BOOL)hasReceivedAllExpectedRoutes
 {
-  v3 = [(NanoRoutePlanningResponse *)self numberOfRoutes];
-  if (v3)
+  numberOfRoutes = [(NanoRoutePlanningResponse *)self numberOfRoutes];
+  if (numberOfRoutes)
   {
     expectedNumberOfRoutes = self->_expectedNumberOfRoutes;
     if (expectedNumberOfRoutes)
     {
-      v5 = v3 == expectedNumberOfRoutes;
+      v5 = numberOfRoutes == expectedNumberOfRoutes;
     }
 
     else
@@ -437,10 +437,10 @@ LABEL_6:
       v5 = 1;
     }
 
-    LOBYTE(v3) = v5;
+    LOBYTE(numberOfRoutes) = v5;
   }
 
-  return v3;
+  return numberOfRoutes;
 }
 
 - (unint64_t)numberOfRoutes
@@ -454,48 +454,48 @@ LABEL_6:
   return [(NSArray *)routes count];
 }
 
-- (id)_generateCompanionRouteFromComposedRoute:(id)a3
+- (id)_generateCompanionRouteFromComposedRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   v5 = +[MNNanoFormattedStringFormatter sharedFormatter];
-  v6 = [v4 destination];
+  destination = [routeCopy destination];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v8 = [v4 destination];
-  v9 = v8;
+  destination2 = [routeCopy destination];
+  v9 = destination2;
   if (isKindOfClass)
   {
-    v10 = [v8 name];
+    name = [destination2 name];
   }
 
   else
   {
-    v11 = [v8 geoMapItem];
-    v10 = [v11 name];
+    geoMapItem = [destination2 geoMapItem];
+    name = [geoMapItem name];
   }
 
-  v12 = [[GEOCompanionRouteDetails alloc] initWithRoute:v4 destinationName:v10 stringFormatter:v5 traffic:0];
-  v13 = [v4 uniqueRouteID];
-  v14 = [(NanoRoutePlanningResponse *)self userInfoForRouteWithID:v13];
+  v12 = [[GEOCompanionRouteDetails alloc] initWithRoute:routeCopy destinationName:name stringFormatter:v5 traffic:0];
+  uniqueRouteID = [routeCopy uniqueRouteID];
+  v14 = [(NanoRoutePlanningResponse *)self userInfoForRouteWithID:uniqueRouteID];
   v15 = [v14 objectForKeyedSubscript:@"canNavigate"];
 
   if (v15)
   {
-    v16 = [v15 BOOLValue];
+    bOOLValue = [v15 BOOLValue];
   }
 
   else
   {
-    v16 = [objc_opt_class() _canRunNavigationForRoute:v4];
+    bOOLValue = [objc_opt_class() _canRunNavigationForRoute:routeCopy];
   }
 
-  [v12 setCanNavigate:v16];
-  v17 = [(NanoRoutePlanningResponse *)self directionsRequest];
-  [v12 setRequest:v17];
+  [v12 setCanNavigate:bOOLValue];
+  directionsRequest = [(NanoRoutePlanningResponse *)self directionsRequest];
+  [v12 setRequest:directionsRequest];
 
-  v18 = [(NanoRoutePlanningResponse *)self directionsResponse];
-  v19 = [v18 preJupiterCompatibleDirectionsResponseWithRoute:v4];
+  directionsResponse = [(NanoRoutePlanningResponse *)self directionsResponse];
+  v19 = [directionsResponse preJupiterCompatibleDirectionsResponseWithRoute:routeCopy];
   [v12 setResponse:v19];
 
   return v12;
@@ -532,12 +532,12 @@ LABEL_6:
   }
 }
 
-- (id)companionRouteWithID:(id)a3
+- (id)companionRouteWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if ([(NanoRoutePlanningResponse *)self numberOfRoutes])
   {
-    v5 = [v4 _maps_data];
+    _maps_data = [dCopy _maps_data];
     v30 = 0;
     v31 = &v30;
     v32 = 0x3032000000;
@@ -549,16 +549,16 @@ LABEL_6:
     v25 = 3221225472;
     v26 = sub_1006A3318;
     v27 = &unk_101625EB8;
-    v7 = v5;
+    v7 = _maps_data;
     v28 = v7;
     v29 = &v30;
     [(NSArray *)companionRoutes enumerateObjectsWithOptions:1 usingBlock:&v24];
     v8 = v31[5];
     if (!v8)
     {
-      v9 = [(NanoRoutePlanningResponse *)self routeWithID:v4, v24, v25, v26, v27];
-      v10 = [(NanoRoutePlanningResponse *)self routes];
-      v11 = [v10 indexOfObject:v9];
+      v9 = [(NanoRoutePlanningResponse *)self routeWithID:dCopy, v24, v25, v26, v27];
+      routes = [(NanoRoutePlanningResponse *)self routes];
+      v11 = [routes indexOfObject:v9];
 
       if (v11 != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -576,8 +576,8 @@ LABEL_6:
         else
         {
           v18 = [NSMutableArray alloc];
-          v19 = [(NanoRoutePlanningResponse *)self routes];
-          v16 = [v18 initWithCapacity:{objc_msgSend(v19, "count")}];
+          routes2 = [(NanoRoutePlanningResponse *)self routes];
+          v16 = [v18 initWithCapacity:{objc_msgSend(routes2, "count")}];
         }
 
         v20 = v31[5];
@@ -610,10 +610,10 @@ LABEL_6:
 
 - (id)selectedCompanionRoute
 {
-  v3 = [(NanoRoutePlanningResponse *)self selectedRouteID];
-  if (v3)
+  selectedRouteID = [(NanoRoutePlanningResponse *)self selectedRouteID];
+  if (selectedRouteID)
   {
-    v4 = [(NanoRoutePlanningResponse *)self companionRouteWithID:v3];
+    v4 = [(NanoRoutePlanningResponse *)self companionRouteWithID:selectedRouteID];
   }
 
   else
@@ -645,8 +645,8 @@ LABEL_6:
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v7 = [(NanoRoutePlanningResponse *)self routes];
-      v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      routes = [(NanoRoutePlanningResponse *)self routes];
+      v8 = [routes countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v8)
       {
         v9 = v8;
@@ -658,7 +658,7 @@ LABEL_6:
           {
             if (*v15 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(routes);
             }
 
             v12 = [(NanoRoutePlanningResponse *)self _generateCompanionRouteFromComposedRoute:*(*(&v14 + 1) + 8 * v11)];
@@ -666,7 +666,7 @@ LABEL_6:
           }
 
           while (v9 != v11);
-          v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+          v9 = [routes countByEnumeratingWithState:&v14 objects:v18 count:16];
         }
 
         while (v9);
@@ -684,14 +684,14 @@ LABEL_6:
   return v3;
 }
 
-- (void)setObject:(id)a3 forUserInfoKey:(id)a4 forRouteID:(id)a5
+- (void)setObject:(id)object forUserInfoKey:(id)key forRouteID:(id)d
 {
-  if (a5)
+  if (d)
   {
-    v8 = a5;
-    v9 = a4;
-    v10 = a3;
-    v11 = [(NanoRoutePlanningResponse *)self userInfoForRouteWithID:v8];
+    dCopy = d;
+    keyCopy = key;
+    objectCopy = object;
+    v11 = [(NanoRoutePlanningResponse *)self userInfoForRouteWithID:dCopy];
     v12 = [v11 mutableCopy];
     v13 = v12;
     if (v12)
@@ -706,7 +706,7 @@ LABEL_6:
 
     v22 = v14;
 
-    [v22 setObject:v10 forKeyedSubscript:v9];
+    [v22 setObject:objectCopy forKeyedSubscript:keyCopy];
     v15 = [(NSDictionary *)self->_userInfoByRouteID mutableCopy];
     v16 = v15;
     if (v15)
@@ -722,7 +722,7 @@ LABEL_6:
     v18 = v17;
 
     v19 = [v22 copy];
-    [v18 setObject:v19 forKeyedSubscript:v8];
+    [v18 setObject:v19 forKeyedSubscript:dCopy];
 
     v20 = [v18 copy];
     userInfoByRouteID = self->_userInfoByRouteID;
@@ -730,22 +730,22 @@ LABEL_6:
   }
 }
 
-- (void)_setRoutes:(id)a3 withRouteIDs:(id)a4
+- (void)_setRoutes:(id)routes withRouteIDs:(id)ds
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_routes, a3);
-  v9 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
+  routesCopy = routes;
+  dsCopy = ds;
+  objc_storeStrong(&self->_routes, routes);
+  v9 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(routesCopy, "count")}];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1006A3834;
   v16[3] = &unk_101625E70;
-  v10 = v8;
+  v10 = dsCopy;
   v17 = v10;
-  v18 = self;
+  selfCopy = self;
   v11 = v9;
   v19 = v11;
-  [v7 enumerateObjectsWithOptions:0 usingBlock:v16];
+  [routesCopy enumerateObjectsWithOptions:0 usingBlock:v16];
   v12 = [v11 copy];
   userInfoByRouteID = self->_userInfoByRouteID;
   self->_userInfoByRouteID = v12;
@@ -760,28 +760,28 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v7)
+  if (routesCopy)
   {
-    v14 = sub_100021DB0(v7, &stru_101625E90);
+    v14 = sub_100021DB0(routesCopy, &stru_101625E90);
     goto LABEL_5;
   }
 
 LABEL_6:
 }
 
-- (void)setRoutes:(id)a3
+- (void)setRoutes:(id)routes
 {
-  v4 = a3;
+  routesCopy = routes;
   routes = self->_routes;
-  if (routes != v4)
+  if (routes != routesCopy)
   {
-    v7 = v4;
-    v6 = [(NSArray *)routes isEqualToArray:v4];
-    v4 = v7;
+    v7 = routesCopy;
+    v6 = [(NSArray *)routes isEqualToArray:routesCopy];
+    routesCopy = v7;
     if ((v6 & 1) == 0)
     {
       [(NanoRoutePlanningResponse *)self _setRoutes:v7 withRouteIDs:0];
-      v4 = v7;
+      routesCopy = v7;
     }
   }
 }
@@ -789,9 +789,9 @@ LABEL_6:
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(NanoRoutePlanningResponse *)self routeIDs];
-  v5 = [(NanoRoutePlanningResponse *)self lastError];
-  v6 = [NSString stringWithFormat:@"<%@: %p, routeIDs: %@, error: %@, (%lu/%lu)>", v3, self, v4, v5, [(NanoRoutePlanningResponse *)self numberOfRoutes], [(NanoRoutePlanningResponse *)self expectedNumberOfRoutes]];
+  routeIDs = [(NanoRoutePlanningResponse *)self routeIDs];
+  lastError = [(NanoRoutePlanningResponse *)self lastError];
+  v6 = [NSString stringWithFormat:@"<%@: %p, routeIDs: %@, error: %@, (%lu/%lu)>", v3, self, routeIDs, lastError, [(NanoRoutePlanningResponse *)self numberOfRoutes], [(NanoRoutePlanningResponse *)self expectedNumberOfRoutes]];
 
   return v6;
 }

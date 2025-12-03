@@ -5,59 +5,59 @@
 + (BOOL)shouldAlignToSpacingGuides;
 + (BOOL)shouldSnapToGrid;
 + (BOOL)shouldUseHapticFeedbackWhenSnapping;
-+ (void)setGuideColor:(id)a3;
-+ (void)setShouldAlignCenters:(BOOL)a3;
-+ (void)setShouldAlignEdges:(BOOL)a3;
-+ (void)setShouldAlignToSizingGuides:(BOOL)a3;
-+ (void)setShouldAlignToSpacingGuides:(BOOL)a3;
-+ (void)setShouldSnapToGrid:(BOOL)a3;
-+ (void)setShouldUseHapticFeedbackWhenSnapping:(BOOL)a3;
-- (BOOL)p_guidesAreRelevantForEdge:(int)a3 whileDraggingKnobTag:(unint64_t)a4;
-- (BOOL)p_sizingGuidesAreRelevantForOrientation:(int)a3 whileDraggingKnobTag:(unint64_t)a4;
-- (CGPoint)snapRectToGuides:(CGRect)a3;
-- (CGPoint)snapRectToGuides:(CGRect)a3 forKnobTag:(unint64_t)a4;
-- (CGPoint)snapRectToGuides:(CGRect)a3 forKnobTag:(unint64_t)a4 snapSize:(BOOL)a5;
-- (CGPoint)snapRectToGuides:(CGRect)a3 forKnobTag:(unint64_t)a4 snapSize:(BOOL)a5 snapWithBackgroundAlignmentProvider:(BOOL)a6 isLine:(BOOL)a7 startPoint:(CGPoint)a8 endPoint:(CGPoint)a9;
-- (CGPoint)snapRectToGuides:(CGRect)a3 forKnobTag:(unint64_t)a4 snapSize:(BOOL)a5 snapWithBackgroundAlignmentProvider:(BOOL)a6 isLine:(BOOL)a7 startPoint:(CGPoint)a8 endPoint:(CGPoint)a9 hasHorizontalFlip:(BOOL)a10 hasVerticalFlip:(BOOL)a11 snapWithGuides:(BOOL)a12;
++ (void)setGuideColor:(id)color;
++ (void)setShouldAlignCenters:(BOOL)centers;
++ (void)setShouldAlignEdges:(BOOL)edges;
++ (void)setShouldAlignToSizingGuides:(BOOL)guides;
++ (void)setShouldAlignToSpacingGuides:(BOOL)guides;
++ (void)setShouldSnapToGrid:(BOOL)grid;
++ (void)setShouldUseHapticFeedbackWhenSnapping:(BOOL)snapping;
+- (BOOL)p_guidesAreRelevantForEdge:(int)edge whileDraggingKnobTag:(unint64_t)tag;
+- (BOOL)p_sizingGuidesAreRelevantForOrientation:(int)orientation whileDraggingKnobTag:(unint64_t)tag;
+- (CGPoint)snapRectToGuides:(CGRect)guides;
+- (CGPoint)snapRectToGuides:(CGRect)guides forKnobTag:(unint64_t)tag;
+- (CGPoint)snapRectToGuides:(CGRect)guides forKnobTag:(unint64_t)tag snapSize:(BOOL)size;
+- (CGPoint)snapRectToGuides:(CGRect)guides forKnobTag:(unint64_t)tag snapSize:(BOOL)size snapWithBackgroundAlignmentProvider:(BOOL)provider isLine:(BOOL)line startPoint:(CGPoint)point endPoint:(CGPoint)endPoint;
+- (CGPoint)snapRectToGuides:(CGRect)guides forKnobTag:(unint64_t)tag snapSize:(BOOL)size snapWithBackgroundAlignmentProvider:(BOOL)provider isLine:(BOOL)line startPoint:(CGPoint)point endPoint:(CGPoint)endPoint hasHorizontalFlip:(BOOL)self0 hasVerticalFlip:(BOOL)self1 snapWithGuides:(BOOL)self2;
 - (CGRect)i_currentGuidesRect;
-- (CGRect)p_alignmentFrameInRootForLayout:(id)a3;
-- (CRLCanvasGuideController)initWithInteractiveCanvasController:(id)a3;
+- (CGRect)p_alignmentFrameInRootForLayout:(id)layout;
+- (CRLCanvasGuideController)initWithInteractiveCanvasController:(id)controller;
 - (CRLInteractiveCanvasController)interactiveCanvasController;
 - (NSArray)decoratorOverlayRenderables;
-- (double)p_maxSnapForSnapDistance:(double)a3;
+- (double)p_maxSnapForSnapDistance:(double)distance;
 - (double)snapDistanceToUseForGuides;
-- (float)p_spacingForCenterOrSpacingGuide:(id)a3;
-- (id)p_closestGuideForOffset:(double)a3 predicate:(id)a4 inArray:(id)a5;
-- (id)p_guideClosestToEdge:(int)a3 ofFrame:(CGRect)a4;
-- (id)p_guidesForEdge:(int)a3 ofFrame:(CGRect)a4;
-- (id)p_guidesForOffset:(double)a3 predicate:(id)a4 inArray:(id)a5;
-- (id)p_predicateCanBeSnappedToByEdge:(int)a3 ofFrame:(CGRect)a4 inVisibleUnscaledRect:(CGRect)a5;
-- (id)p_predicateCanBeSnappedToInVisibleUnscaledRect:(CGRect)a3;
-- (int64_t)p_indexToInsertGuide:(id)a3 inSortedArray:(id)a4;
-- (void)beginAlignmentOperationForRep:(id)a3;
-- (void)beginAlignmentOperationForReps:(id)a3 preventCenterGuides:(BOOL)a4 preventSpacingGuides:(BOOL)a5 preventSizingGuides:(BOOL)a6;
+- (float)p_spacingForCenterOrSpacingGuide:(id)guide;
+- (id)p_closestGuideForOffset:(double)offset predicate:(id)predicate inArray:(id)array;
+- (id)p_guideClosestToEdge:(int)edge ofFrame:(CGRect)frame;
+- (id)p_guidesForEdge:(int)edge ofFrame:(CGRect)frame;
+- (id)p_guidesForOffset:(double)offset predicate:(id)predicate inArray:(id)array;
+- (id)p_predicateCanBeSnappedToByEdge:(int)edge ofFrame:(CGRect)frame inVisibleUnscaledRect:(CGRect)rect;
+- (id)p_predicateCanBeSnappedToInVisibleUnscaledRect:(CGRect)rect;
+- (int64_t)p_indexToInsertGuide:(id)guide inSortedArray:(id)array;
+- (void)beginAlignmentOperationForRep:(id)rep;
+- (void)beginAlignmentOperationForReps:(id)reps preventCenterGuides:(BOOL)guides preventSpacingGuides:(BOOL)spacingGuides preventSizingGuides:(BOOL)sizingGuides;
 - (void)endAlignmentOperation;
 - (void)hideAlignmentGuides;
 - (void)hideSizingGuides;
-- (void)p_addAlignmentGuide:(id)a3 toSortedArray:(id)a4;
-- (void)p_addCenterAlignmentGuide:(id)a3 toSortedArray:(id)a4;
-- (void)p_addGuidesForLayout:(id)a3;
-- (void)p_addSizingGuide:(id)a3 toSortedArray:(id)a4;
-- (void)p_addSpacingGuide:(id)a3 toSortedArray:(id)a4;
-- (void)p_addSpacingGuidesForFrame:(CGRect)a3 spacing:(id)a4 isVerticalSpacing:(BOOL)a5;
-- (void)p_getOffset:(double *)a3 andGuidesArray:(id *)a4 forEdge:(int)a5 ofFrame:(CGRect)a6;
-- (void)showGuidesAlignedWithRect:(CGRect)a3 forKnobTag:(unint64_t)a4 shouldRenderX:(BOOL)a5 shouldRenderY:(BOOL)a6 shouldRenderSizeGuides:(BOOL)a7;
-- (void)showSizingGuideUIForRep:(id)a3 matchingWidth:(BOOL)a4 matchingHeight:(BOOL)a5;
-- (void)showSizingGuidesAlignedWithLayout:(id)a3 forKnobTag:(unint64_t)a4;
+- (void)p_addAlignmentGuide:(id)guide toSortedArray:(id)array;
+- (void)p_addCenterAlignmentGuide:(id)guide toSortedArray:(id)array;
+- (void)p_addGuidesForLayout:(id)layout;
+- (void)p_addSizingGuide:(id)guide toSortedArray:(id)array;
+- (void)p_addSpacingGuide:(id)guide toSortedArray:(id)array;
+- (void)p_addSpacingGuidesForFrame:(CGRect)frame spacing:(id)spacing isVerticalSpacing:(BOOL)verticalSpacing;
+- (void)p_getOffset:(double *)offset andGuidesArray:(id *)array forEdge:(int)edge ofFrame:(CGRect)frame;
+- (void)showGuidesAlignedWithRect:(CGRect)rect forKnobTag:(unint64_t)tag shouldRenderX:(BOOL)x shouldRenderY:(BOOL)y shouldRenderSizeGuides:(BOOL)guides;
+- (void)showSizingGuideUIForRep:(id)rep matchingWidth:(BOOL)width matchingHeight:(BOOL)height;
+- (void)showSizingGuidesAlignedWithLayout:(id)layout forKnobTag:(unint64_t)tag;
 @end
 
 @implementation CRLCanvasGuideController
 
-+ (void)setShouldAlignEdges:(BOOL)a3
++ (void)setShouldAlignEdges:(BOOL)edges
 {
-  v3 = a3;
+  edgesCopy = edges;
   v4 = +[NSUserDefaults standardUserDefaults];
-  [v4 setBool:v3 forKey:@"CRLDisplayEdgeGuides"];
+  [v4 setBool:edgesCopy forKey:@"CRLDisplayEdgeGuides"];
 }
 
 + (BOOL)shouldAlignEdges
@@ -68,11 +68,11 @@
   return v3;
 }
 
-+ (void)setShouldAlignToSpacingGuides:(BOOL)a3
++ (void)setShouldAlignToSpacingGuides:(BOOL)guides
 {
-  v3 = a3;
+  guidesCopy = guides;
   v4 = +[NSUserDefaults standardUserDefaults];
-  [v4 setBool:v3 forKey:@"CRLDisplaySpacingGuides"];
+  [v4 setBool:guidesCopy forKey:@"CRLDisplaySpacingGuides"];
 }
 
 + (BOOL)shouldAlignToSpacingGuides
@@ -83,14 +83,14 @@
   return v3;
 }
 
-+ (void)setShouldAlignToSizingGuides:(BOOL)a3
++ (void)setShouldAlignToSizingGuides:(BOOL)guides
 {
-  v3 = a3;
+  guidesCopy = guides;
   v4 = +[NSUserDefaults standardUserDefaults];
-  [v4 setBool:v3 forKey:@"CRLDisplaySizingGuides"];
+  [v4 setBool:guidesCopy forKey:@"CRLDisplaySizingGuides"];
 }
 
-+ (void)setGuideColor:(id)a3
++ (void)setGuideColor:(id)color
 {
   +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
@@ -127,11 +127,11 @@
   return v3;
 }
 
-+ (void)setShouldAlignCenters:(BOOL)a3
++ (void)setShouldAlignCenters:(BOOL)centers
 {
-  v3 = a3;
+  centersCopy = centers;
   v4 = +[NSUserDefaults standardUserDefaults];
-  [v4 setBool:v3 forKey:@"CRLDisplayCenterGuides"];
+  [v4 setBool:centersCopy forKey:@"CRLDisplayCenterGuides"];
 }
 
 + (BOOL)shouldAlignCenters
@@ -142,13 +142,13 @@
   return v3;
 }
 
-+ (void)setShouldSnapToGrid:(BOOL)a3
++ (void)setShouldSnapToGrid:(BOOL)grid
 {
-  v3 = a3;
+  gridCopy = grid;
   if ([CRLFeatureFlagsHelper isOSFeatureEnabled:10])
   {
     v4 = +[NSUserDefaults standardUserDefaults];
-    [v4 setBool:v3 forKey:@"CRLSnapToGrid"];
+    [v4 setBool:gridCopy forKey:@"CRLSnapToGrid"];
   }
 }
 
@@ -168,23 +168,23 @@
 
 - (double)snapDistanceToUseForGuides
 {
-  v3 = [(CRLCanvasGuideController *)self interactiveCanvasController];
+  interactiveCanvasController = [(CRLCanvasGuideController *)self interactiveCanvasController];
   v4 = 7.0;
-  if (![v3 isCanvasBackgroundAlignmentSnappingEnabled])
+  if (![interactiveCanvasController isCanvasBackgroundAlignmentSnappingEnabled])
   {
     goto LABEL_4;
   }
 
-  v5 = [(CRLCanvasGuideController *)self interactiveCanvasController];
-  v6 = [v5 canvasBackground];
-  v7 = [v6 alignmentProvider];
+  interactiveCanvasController2 = [(CRLCanvasGuideController *)self interactiveCanvasController];
+  canvasBackground = [interactiveCanvasController2 canvasBackground];
+  alignmentProvider = [canvasBackground alignmentProvider];
 
-  if (v7)
+  if (alignmentProvider)
   {
-    v3 = [(CRLCanvasGuideController *)self interactiveCanvasController];
-    v8 = [v3 canvasBackground];
-    v9 = [v8 alignmentProvider];
-    [v9 snapDistanceForViewScale:1.0];
+    interactiveCanvasController = [(CRLCanvasGuideController *)self interactiveCanvasController];
+    canvasBackground2 = [interactiveCanvasController canvasBackground];
+    alignmentProvider2 = [canvasBackground2 alignmentProvider];
+    [alignmentProvider2 snapDistanceForViewScale:1.0];
     v4 = v10;
 
 LABEL_4:
@@ -193,11 +193,11 @@ LABEL_4:
   return v4;
 }
 
-+ (void)setShouldUseHapticFeedbackWhenSnapping:(BOOL)a3
++ (void)setShouldUseHapticFeedbackWhenSnapping:(BOOL)snapping
 {
-  v3 = a3;
+  snappingCopy = snapping;
   v4 = +[NSUserDefaults standardUserDefaults];
-  [v4 setBool:v3 forKey:@"CRLUseHapticFeedbackWhenSnapping"];
+  [v4 setBool:snappingCopy forKey:@"CRLUseHapticFeedbackWhenSnapping"];
 }
 
 + (BOOL)shouldUseHapticFeedbackWhenSnapping
@@ -208,18 +208,18 @@ LABEL_4:
   return v3;
 }
 
-- (CRLCanvasGuideController)initWithInteractiveCanvasController:(id)a3
+- (CRLCanvasGuideController)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v16.receiver = self;
   v16.super_class = CRLCanvasGuideController;
   v5 = [(CRLCanvasGuideController *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (controllerCopy)
     {
-      objc_storeWeak(&v5->_icc, v4);
+      objc_storeWeak(&v5->_icc, controllerCopy);
       v7 = dispatch_queue_create("com.apple.freeform.CRLGuideGeneration", 0);
       guideGenerationAccessQueue = v6->_guideGenerationAccessQueue;
       v6->_guideGenerationAccessQueue = v7;
@@ -268,10 +268,10 @@ LABEL_4:
   return v6;
 }
 
-- (void)beginAlignmentOperationForRep:(id)a3
+- (void)beginAlignmentOperationForRep:(id)rep
 {
-  v4 = a3;
-  if (!v4)
+  repCopy = rep;
+  if (!repCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -300,13 +300,13 @@ LABEL_4:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:444 isFatal:0 description:"invalid nil value for '%{public}s'", "rep"];
   }
 
-  v8 = [NSSet setWithObject:v4];
+  v8 = [NSSet setWithObject:repCopy];
   [(CRLCanvasGuideController *)self beginAlignmentOperationForReps:v8];
 }
 
-- (void)beginAlignmentOperationForReps:(id)a3 preventCenterGuides:(BOOL)a4 preventSpacingGuides:(BOOL)a5 preventSizingGuides:(BOOL)a6
+- (void)beginAlignmentOperationForReps:(id)reps preventCenterGuides:(BOOL)guides preventSpacingGuides:(BOOL)spacingGuides preventSizingGuides:(BOOL)sizingGuides
 {
-  v7 = a3;
+  repsCopy = reps;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -336,13 +336,13 @@ LABEL_4:
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:453 isFatal:0 description:"This operation must only be performed on the main thread."];
   }
 
-  if (v7 && [v7 count])
+  if (repsCopy && [repsCopy count])
   {
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v11 = v7;
+    v11 = repsCopy;
     v12 = [v11 countByEnumeratingWithState:&v57 objects:v61 count:16];
     if (v12)
     {
@@ -448,9 +448,9 @@ LABEL_32:
     block[1] = 3221225472;
     block[2] = sub_100103A54;
     block[3] = &unk_10183CBF8;
-    v44 = a4;
-    v45 = a5;
-    v46 = a6;
+    guidesCopy = guides;
+    spacingGuidesCopy = spacingGuides;
+    sizingGuidesCopy = sizingGuides;
     block[4] = self;
     v40 = v51;
     v38 = v11;
@@ -471,7 +471,7 @@ LABEL_32:
       v32[2] = sub_100104954;
       v32[3] = &unk_101839FD0;
       v33 = v18;
-      v34 = self;
+      selfCopy = self;
       v35 = v55;
       v36 = v53;
       dispatch_async(v28, v32);
@@ -514,54 +514,54 @@ LABEL_32:
   }
 }
 
-- (CGPoint)snapRectToGuides:(CGRect)a3
+- (CGPoint)snapRectToGuides:(CGRect)guides
 {
-  [(CRLCanvasGuideController *)self snapRectToGuides:0 forKnobTag:1 snapSize:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CRLCanvasGuideController *)self snapRectToGuides:0 forKnobTag:1 snapSize:guides.origin.x, guides.origin.y, guides.size.width, guides.size.height];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)snapRectToGuides:(CGRect)a3 forKnobTag:(unint64_t)a4
+- (CGPoint)snapRectToGuides:(CGRect)guides forKnobTag:(unint64_t)tag
 {
-  [(CRLCanvasGuideController *)self snapRectToGuides:a4 forKnobTag:1 snapSize:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CRLCanvasGuideController *)self snapRectToGuides:tag forKnobTag:1 snapSize:guides.origin.x, guides.origin.y, guides.size.width, guides.size.height];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)snapRectToGuides:(CGRect)a3 forKnobTag:(unint64_t)a4 snapSize:(BOOL)a5
+- (CGPoint)snapRectToGuides:(CGRect)guides forKnobTag:(unint64_t)tag snapSize:(BOOL)size
 {
   LOBYTE(v7) = 1;
-  [(CRLCanvasGuideController *)self snapRectToGuides:a4 forKnobTag:a5 snapSize:1 snapWithBackgroundAlignmentProvider:0 isLine:0 startPoint:0 endPoint:a3.origin.x hasHorizontalFlip:a3.origin.y hasVerticalFlip:a3.size.width snapWithGuides:a3.size.height, CGPointZero.x, CGPointZero.y, CGPointZero.x, CGPointZero.y, v7];
+  [(CRLCanvasGuideController *)self snapRectToGuides:tag forKnobTag:size snapSize:1 snapWithBackgroundAlignmentProvider:0 isLine:0 startPoint:0 endPoint:guides.origin.x hasHorizontalFlip:guides.origin.y hasVerticalFlip:guides.size.width snapWithGuides:guides.size.height, CGPointZero.x, CGPointZero.y, CGPointZero.x, CGPointZero.y, v7];
   result.y = v6;
   result.x = v5;
   return result;
 }
 
-- (CGPoint)snapRectToGuides:(CGRect)a3 forKnobTag:(unint64_t)a4 snapSize:(BOOL)a5 snapWithBackgroundAlignmentProvider:(BOOL)a6 isLine:(BOOL)a7 startPoint:(CGPoint)a8 endPoint:(CGPoint)a9
+- (CGPoint)snapRectToGuides:(CGRect)guides forKnobTag:(unint64_t)tag snapSize:(BOOL)size snapWithBackgroundAlignmentProvider:(BOOL)provider isLine:(BOOL)line startPoint:(CGPoint)point endPoint:(CGPoint)endPoint
 {
   LOBYTE(v11) = 1;
-  [(CRLCanvasGuideController *)self snapRectToGuides:a4 forKnobTag:a5 snapSize:a6 snapWithBackgroundAlignmentProvider:a7 isLine:0 startPoint:0 endPoint:a3.origin.x hasHorizontalFlip:a3.origin.y hasVerticalFlip:a3.size.width snapWithGuides:a3.size.height, a8.x, a8.y, a9.x, a9.y, v11];
+  [(CRLCanvasGuideController *)self snapRectToGuides:tag forKnobTag:size snapSize:provider snapWithBackgroundAlignmentProvider:line isLine:0 startPoint:0 endPoint:guides.origin.x hasHorizontalFlip:guides.origin.y hasVerticalFlip:guides.size.width snapWithGuides:guides.size.height, point.x, point.y, endPoint.x, endPoint.y, v11];
   result.y = v10;
   result.x = v9;
   return result;
 }
 
-- (CGPoint)snapRectToGuides:(CGRect)a3 forKnobTag:(unint64_t)a4 snapSize:(BOOL)a5 snapWithBackgroundAlignmentProvider:(BOOL)a6 isLine:(BOOL)a7 startPoint:(CGPoint)a8 endPoint:(CGPoint)a9 hasHorizontalFlip:(BOOL)a10 hasVerticalFlip:(BOOL)a11 snapWithGuides:(BOOL)a12
+- (CGPoint)snapRectToGuides:(CGRect)guides forKnobTag:(unint64_t)tag snapSize:(BOOL)size snapWithBackgroundAlignmentProvider:(BOOL)provider isLine:(BOOL)line startPoint:(CGPoint)point endPoint:(CGPoint)endPoint hasHorizontalFlip:(BOOL)self0 hasVerticalFlip:(BOOL)self1 snapWithGuides:(BOOL)self2
 {
-  v86 = a10;
-  v87 = a11;
-  v85 = a7;
-  v12 = a6;
-  y = a9.y;
-  x = a9.x;
-  v16 = a8.y;
-  v17 = a8.x;
-  height = a3.size.height;
-  width = a3.size.width;
-  v21 = a3.origin.y;
-  v22 = a3.origin.x;
+  flipCopy = flip;
+  verticalFlipCopy = verticalFlip;
+  lineCopy = line;
+  providerCopy = provider;
+  y = endPoint.y;
+  x = endPoint.x;
+  v16 = point.y;
+  v17 = point.x;
+  height = guides.size.height;
+  width = guides.size.width;
+  v21 = guides.origin.y;
+  v22 = guides.origin.x;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -637,7 +637,7 @@ LABEL_32:
     v84 = height;
     v81 = v16;
     v33 = 7.0;
-    if (v12)
+    if (providerCopy)
     {
       [(CRLCanvasGuideController *)self snapDistanceToUseForGuides];
     }
@@ -651,7 +651,7 @@ LABEL_32:
     v42 = v41;
     v44 = v43;
 
-    if (a12)
+    if (withGuides)
     {
       v45 = objc_alloc_init(CRLBidirectionalGeometricOperator);
       v88[0] = _NSConcreteStackBlock;
@@ -660,7 +660,7 @@ LABEL_32:
       v88[3] = &unk_10183CCF0;
       v88[5] = v35;
       v88[4] = self;
-      v88[6] = a4;
+      v88[6] = tag;
       *&v88[7] = v22;
       *&v88[8] = v21;
       *&v88[9] = width;
@@ -669,7 +669,7 @@ LABEL_32:
       v88[12] = v40;
       v88[13] = v42;
       v88[14] = v44;
-      v89 = a5;
+      sizeCopy = size;
       [(CRLBidirectionalGeometricOperator *)v45 executeBidirectionalOperation:v88];
       v46 = [(CRLBidirectionalGeometricOperator *)v45 valueForKey:@"CRLCanvasGuideControllerHorizontalSnapOffsetKey" swapped:0];
       [v46 floatValue];
@@ -679,39 +679,39 @@ LABEL_32:
       v51 = v50;
 
       v52 = [(CRLBidirectionalGeometricOperator *)v45 valueForKey:@"CRLCanvasGuideControllerDidSnapHorizontalKey" swapped:0];
-      v53 = [v52 BOOLValue];
+      bOOLValue = [v52 BOOLValue];
 
       v54 = [(CRLBidirectionalGeometricOperator *)v45 valueForKey:@"CRLCanvasGuideControllerDidSnapHorizontalKey" swapped:1];
-      v55 = [v54 BOOLValue];
+      bOOLValue2 = [v54 BOOLValue];
     }
 
     else
     {
-      v55 = 0;
-      v53 = 0;
+      bOOLValue2 = 0;
+      bOOLValue = 0;
       v48 = CGPointZero.x;
       v51 = CGPointZero.y;
     }
 
-    v56 = [(CRLCanvasGuideController *)self interactiveCanvasController];
-    v57 = [v56 canvasBackground];
+    interactiveCanvasController = [(CRLCanvasGuideController *)self interactiveCanvasController];
+    canvasBackground = [interactiveCanvasController canvasBackground];
 
-    v58 = [v57 alignmentProvider];
-    v59 = v58;
-    if (!v12 || !v58 || (-[CRLCanvasGuideController interactiveCanvasController](self, "interactiveCanvasController"), v60 = objc_claimAutoreleasedReturnValue(), v61 = [v60 isCanvasBackgroundAlignmentSnappingEnabled], v60, !v61))
+    alignmentProvider = [canvasBackground alignmentProvider];
+    v59 = alignmentProvider;
+    if (!providerCopy || !alignmentProvider || (-[CRLCanvasGuideController interactiveCanvasController](self, "interactiveCanvasController"), v60 = objc_claimAutoreleasedReturnValue(), v61 = [v60 isCanvasBackgroundAlignmentSnappingEnabled], v60, !v61))
     {
-      self->_didJustSnapInX = v53;
-      self->_didJustSnapInY = v55;
+      self->_didJustSnapInX = bOOLValue;
+      self->_didJustSnapInY = bOOLValue2;
 LABEL_66:
 
       goto LABEL_67;
     }
 
-    if (a4 == 5 || !a4)
+    if (tag == 5 || !tag)
     {
-      v63 = v86;
-      v62 = v87;
-      if (v85)
+      v63 = flipCopy;
+      v62 = verticalFlipCopy;
+      if (lineCopy)
       {
         [v59 alignmentPointForPoint:{v83, v81}];
         if (vabdd_f64(v80, v83) <= 0.01)
@@ -756,13 +756,13 @@ LABEL_52:
         v74 = v72;
       }
 
-      if (v53 && fabs(v48) < fabs(v71) && a12)
+      if (bOOLValue && fabs(v48) < fabs(v71) && withGuides)
       {
         self->_didJustSnapInX = 1;
         v73 = v48;
       }
 
-      if (v55 && fabs(v51) < fabs(v72) && a12)
+      if (bOOLValue2 && fabs(v51) < fabs(v72) && withGuides)
       {
         self->_didJustSnapInY = 1;
       }
@@ -776,42 +776,42 @@ LABEL_52:
       goto LABEL_66;
     }
 
-    v63 = v86;
-    v62 = v87;
-    if (v86 && v87)
+    v63 = flipCopy;
+    v62 = verticalFlipCopy;
+    if (flipCopy && verticalFlipCopy)
     {
-      v68 = sub_100345B0C(a4);
+      tagCopy = sub_100345B0C(tag);
     }
 
     else
     {
-      v68 = a4;
-      if (v87)
+      tagCopy = tag;
+      if (verticalFlipCopy)
       {
-        v70 = sub_100346034(a4);
-        v68 = sub_100345B08(v70);
+        v70 = sub_100346034(tag);
+        tagCopy = sub_100345B08(v70);
       }
 
-      else if (v86)
+      else if (flipCopy)
       {
-        v68 = sub_100346034(a4);
+        tagCopy = sub_100346034(tag);
       }
     }
 
-    v77 = sub_100345F44(v68, v22, v21, width, v84);
+    v77 = sub_100345F44(tagCopy, v22, v21, width, v84);
     v82 = v78;
     v83 = v77;
     [v59 alignmentPointForPoint:?];
-    if (a4 <= 5)
+    if (tag <= 5)
     {
-      if (a4 != 2)
+      if (tag != 2)
       {
-        if (a4 == 3)
+        if (tag == 3)
         {
           goto LABEL_51;
         }
 
-        if (a4 != 4)
+        if (tag != 4)
         {
           goto LABEL_52;
         }
@@ -825,9 +825,9 @@ LABEL_77:
 
     else
     {
-      if (a4 <= 7)
+      if (tag <= 7)
       {
-        if (a4 != 6)
+        if (tag != 6)
         {
           goto LABEL_51;
         }
@@ -835,9 +835,9 @@ LABEL_77:
         goto LABEL_77;
       }
 
-      if (a4 != 8)
+      if (tag != 8)
       {
-        if (a4 != 9)
+        if (tag != 9)
         {
           goto LABEL_52;
         }
@@ -861,15 +861,15 @@ LABEL_67:
   return result;
 }
 
-- (void)showGuidesAlignedWithRect:(CGRect)a3 forKnobTag:(unint64_t)a4 shouldRenderX:(BOOL)a5 shouldRenderY:(BOOL)a6 shouldRenderSizeGuides:(BOOL)a7
+- (void)showGuidesAlignedWithRect:(CGRect)rect forKnobTag:(unint64_t)tag shouldRenderX:(BOOL)x shouldRenderY:(BOOL)y shouldRenderSizeGuides:(BOOL)guides
 {
-  v92 = a7;
-  v7 = a6;
-  v8 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  guidesCopy = guides;
+  yCopy = y;
+  xCopy = x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -911,14 +911,14 @@ LABEL_67:
     self->_lastIgnoredRectForDisplayingGuides.origin.y = y;
     self->_lastIgnoredRectForDisplayingGuides.size.width = width;
     self->_lastIgnoredRectForDisplayingGuides.size.height = height;
-    self->_lastIgnoredKnobTag = a4;
-    self->_lastIgnoredShouldShowSizeGuides = v92;
+    self->_lastIgnoredKnobTag = tag;
+    self->_lastIgnoredShouldShowSizeGuides = guidesCopy;
     return;
   }
 
   v21 = +[NSMutableSet set];
-  v22 = sub_100345928(a4);
-  if (a4 && (v22 & 0x3DE) == 0)
+  v22 = sub_100345928(tag);
+  if (tag && (v22 & 0x3DE) == 0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -948,45 +948,45 @@ LABEL_67:
     [CRLAssertionHandler handleFailureInFunction:v25 file:v26 lineNumber:1162 isFatal:0 description:"Attempting to do guide operation for an unsupported knob type"];
   }
 
-  if (v8)
+  if (xCopy)
   {
-    if ([(CRLCanvasGuideController *)self p_guidesAreRelevantForEdge:0 whileDraggingKnobTag:a4])
+    if ([(CRLCanvasGuideController *)self p_guidesAreRelevantForEdge:0 whileDraggingKnobTag:tag])
     {
-      v27 = [(CRLCanvasGuideController *)self p_guidesForEdge:0 ofFrame:x, y, width, height];
-      [v21 addObjectsFromArray:v27];
+      height = [(CRLCanvasGuideController *)self p_guidesForEdge:0 ofFrame:x, y, width, height];
+      [v21 addObjectsFromArray:height];
     }
 
-    if ([(CRLCanvasGuideController *)self p_guidesAreRelevantForEdge:2 whileDraggingKnobTag:a4])
+    if ([(CRLCanvasGuideController *)self p_guidesAreRelevantForEdge:2 whileDraggingKnobTag:tag])
     {
-      v28 = [(CRLCanvasGuideController *)self p_guidesForEdge:2 ofFrame:x, y, width, height];
-      [v21 addObjectsFromArray:v28];
+      height2 = [(CRLCanvasGuideController *)self p_guidesForEdge:2 ofFrame:x, y, width, height];
+      [v21 addObjectsFromArray:height2];
     }
 
-    if ([(CRLCanvasGuideController *)self p_guidesAreRelevantForEdge:1 whileDraggingKnobTag:a4])
+    if ([(CRLCanvasGuideController *)self p_guidesAreRelevantForEdge:1 whileDraggingKnobTag:tag])
     {
-      v29 = [(CRLCanvasGuideController *)self p_guidesForEdge:1 ofFrame:x, y, width, height];
-      [v21 addObjectsFromArray:v29];
+      height3 = [(CRLCanvasGuideController *)self p_guidesForEdge:1 ofFrame:x, y, width, height];
+      [v21 addObjectsFromArray:height3];
     }
   }
 
-  if (v7)
+  if (yCopy)
   {
-    if ([(CRLCanvasGuideController *)self p_guidesAreRelevantForEdge:3 whileDraggingKnobTag:a4])
+    if ([(CRLCanvasGuideController *)self p_guidesAreRelevantForEdge:3 whileDraggingKnobTag:tag])
     {
-      v30 = [(CRLCanvasGuideController *)self p_guidesForEdge:3 ofFrame:x, y, width, height];
-      [v21 addObjectsFromArray:v30];
+      height4 = [(CRLCanvasGuideController *)self p_guidesForEdge:3 ofFrame:x, y, width, height];
+      [v21 addObjectsFromArray:height4];
     }
 
-    if ([(CRLCanvasGuideController *)self p_guidesAreRelevantForEdge:5 whileDraggingKnobTag:a4])
+    if ([(CRLCanvasGuideController *)self p_guidesAreRelevantForEdge:5 whileDraggingKnobTag:tag])
     {
-      v31 = [(CRLCanvasGuideController *)self p_guidesForEdge:5 ofFrame:x, y, width, height];
-      [v21 addObjectsFromArray:v31];
+      height5 = [(CRLCanvasGuideController *)self p_guidesForEdge:5 ofFrame:x, y, width, height];
+      [v21 addObjectsFromArray:height5];
     }
 
-    if ([(CRLCanvasGuideController *)self p_guidesAreRelevantForEdge:4 whileDraggingKnobTag:a4])
+    if ([(CRLCanvasGuideController *)self p_guidesAreRelevantForEdge:4 whileDraggingKnobTag:tag])
     {
-      v32 = [(CRLCanvasGuideController *)self p_guidesForEdge:4 ofFrame:x, y, width, height];
-      [v21 addObjectsFromArray:v32];
+      height6 = [(CRLCanvasGuideController *)self p_guidesForEdge:4 ofFrame:x, y, width, height];
+      [v21 addObjectsFromArray:height6];
     }
   }
 
@@ -1004,9 +1004,9 @@ LABEL_67:
       goto LABEL_67;
     }
 
-    if (v8)
+    if (xCopy)
     {
-      if (a4 && (sub_100345928(a4) & 0x92) == 0)
+      if (tag && (sub_100345928(tag) & 0x92) == 0)
       {
         goto LABEL_47;
       }
@@ -1028,12 +1028,12 @@ LABEL_67:
         }
       }
 
-      if (a4)
+      if (tag)
       {
 LABEL_47:
-        if ((sub_100345928(a4) & 0x248) == 0)
+        if ((sub_100345928(tag) & 0x248) == 0)
         {
-          if (!v7)
+          if (!yCopy)
           {
             if (self->_shouldAlignCenters)
             {
@@ -1041,10 +1041,10 @@ LABEL_47:
             }
 
 LABEL_70:
-            if ((sub_100345928(a4) & 4) != 0 || (sub_100345928(a4) & 0x100) != 0)
+            if ((sub_100345928(tag) & 4) != 0 || (sub_100345928(tag) & 0x100) != 0)
             {
 LABEL_77:
-              if (v7 && (!a4 || (sub_100345928(a4) & 0x10) == 0 && (sub_100345928(a4) & 0x40) == 0))
+              if (yCopy && (!tag || (sub_100345928(tag) & 0x10) == 0 && (sub_100345928(tag) & 0x40) == 0))
               {
                 v133.origin.x = x;
                 v133.origin.y = y;
@@ -1110,12 +1110,12 @@ LABEL_72:
       }
     }
 
-    if (!v7)
+    if (!yCopy)
     {
       goto LABEL_67;
     }
 
-    if (!a4)
+    if (!tag)
     {
 LABEL_56:
       v130.origin.x = x;
@@ -1135,7 +1135,7 @@ LABEL_56:
         }
       }
 
-      if (!a4)
+      if (!tag)
       {
 LABEL_62:
         v131.origin.x = x;
@@ -1161,12 +1161,12 @@ LABEL_67:
           goto LABEL_86;
         }
 
-        if (!v8)
+        if (!xCopy)
         {
           goto LABEL_77;
         }
 
-        if (!a4)
+        if (!tag)
         {
           goto LABEL_72;
         }
@@ -1175,7 +1175,7 @@ LABEL_67:
       }
 
 LABEL_61:
-      if ((sub_100345928(a4) & 0x380) == 0)
+      if ((sub_100345928(tag) & 0x380) == 0)
       {
         goto LABEL_67;
       }
@@ -1184,7 +1184,7 @@ LABEL_61:
     }
 
 LABEL_55:
-    if ((sub_100345928(a4) & 0xE) == 0)
+    if ((sub_100345928(tag) & 0xE) == 0)
     {
       goto LABEL_61;
     }
@@ -1266,9 +1266,9 @@ LABEL_86:
   {
     if (v105[5])
     {
-      v71 = [v117[5] parentSpacing];
-      v72 = [v71 integerOffset];
-      v73 = v72 == [v105[5] integerOffset];
+      parentSpacing = [v117[5] parentSpacing];
+      integerOffset = [parentSpacing integerOffset];
+      v73 = integerOffset == [v105[5] integerOffset];
 
       if (!v73)
       {
@@ -1298,9 +1298,9 @@ LABEL_100:
     goto LABEL_106;
   }
 
-  v75 = [v111[5] parentSpacing];
-  v76 = [v75 integerOffset];
-  v77 = v76 == [v99[5] integerOffset];
+  parentSpacing2 = [v111[5] parentSpacing];
+  integerOffset2 = [parentSpacing2 integerOffset];
+  v77 = integerOffset2 == [v99[5] integerOffset];
 
   if (v77)
   {
@@ -1312,8 +1312,8 @@ LABEL_106:
 LABEL_107:
   if ([(CRLCanvasGuideController *)self doNotRemoveExistingGuidesWhenDisplaying])
   {
-    v78 = [(NSSet *)self->_currentGuides allObjects];
-    [v65 addObjectsFromArray:v78];
+    allObjects = [(NSSet *)self->_currentGuides allObjects];
+    [v65 addObjectsFromArray:allObjects];
   }
 
   objc_storeStrong(&self->_currentGuides, v21);
@@ -1322,16 +1322,16 @@ LABEL_107:
   self->_currentGuidesRect.size.width = width;
   self->_currentGuidesRect.size.height = height;
   [(NSMutableSet *)self->_currentSizingGuideUIRenderables removeAllObjects];
-  if (v92 && self->_shouldAlignToSizingGuides && (sub_100345928(a4) & 0x3DE) != 0)
+  if (guidesCopy && self->_shouldAlignToSizingGuides && (sub_100345928(tag) & 0x3DE) != 0)
   {
     v79 = objc_alloc_init(NSMutableSet);
-    if ([(CRLCanvasGuideController *)self p_sizingGuidesAreRelevantForOrientation:0 whileDraggingKnobTag:a4])
+    if ([(CRLCanvasGuideController *)self p_sizingGuidesAreRelevantForOrientation:0 whileDraggingKnobTag:tag])
     {
       v80 = [(CRLCanvasGuideController *)self p_guidesForOffset:0 predicate:self->_horizontalSizingGuides inArray:width];
       [v79 addObjectsFromArray:v80];
     }
 
-    if ([(CRLCanvasGuideController *)self p_sizingGuidesAreRelevantForOrientation:1 whileDraggingKnobTag:a4])
+    if ([(CRLCanvasGuideController *)self p_sizingGuidesAreRelevantForOrientation:1 whileDraggingKnobTag:tag])
     {
       v81 = [(CRLCanvasGuideController *)self p_guidesForOffset:0 predicate:self->_verticalSizingGuides inArray:height];
       [v79 addObjectsFromArray:v81];
@@ -1382,9 +1382,9 @@ LABEL_107:
   _Block_object_dispose(&v116, 8);
 }
 
-- (void)showSizingGuidesAlignedWithLayout:(id)a3 forKnobTag:(unint64_t)a4
+- (void)showSizingGuidesAlignedWithLayout:(id)layout forKnobTag:(unint64_t)tag
 {
-  v6 = a3;
+  layoutCopy = layout;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -1421,12 +1421,12 @@ LABEL_107:
     dispatch_semaphore_signal(self->_guideGenerationStateLock);
     if (guideGenerationState == 2)
     {
-      [v6 alignmentFrameForProvidingGuidesInRoot];
+      [layoutCopy alignmentFrameForProvidingGuidesInRoot];
       v12 = v11;
       v14 = v13;
-      if (v6)
+      if (layoutCopy)
       {
-        [v6 transform];
+        [layoutCopy transform];
       }
 
       else
@@ -1438,7 +1438,7 @@ LABEL_107:
       sub_1001208E0(v15);
       if (v16 == 90.0 || fabs(v16 + -90.0) < 0.00999999978)
       {
-        v17 = sub_100345B30(a4);
+        v17 = sub_100345B30(tag);
       }
 
       else
@@ -1448,19 +1448,19 @@ LABEL_107:
           goto LABEL_23;
         }
 
-        v17 = sub_100345934(a4);
+        v17 = sub_100345934(tag);
       }
 
-      a4 = v17;
+      tag = v17;
 LABEL_23:
       v18 = objc_alloc_init(NSMutableArray);
-      if ([(CRLCanvasGuideController *)self p_sizingGuidesAreRelevantForOrientation:0 whileDraggingKnobTag:a4])
+      if ([(CRLCanvasGuideController *)self p_sizingGuidesAreRelevantForOrientation:0 whileDraggingKnobTag:tag])
       {
         v19 = [(CRLCanvasGuideController *)self p_guidesForOffset:0 predicate:self->_horizontalSizingGuides inArray:v12];
         [v18 addObjectsFromArray:v19];
       }
 
-      if ([(CRLCanvasGuideController *)self p_sizingGuidesAreRelevantForOrientation:1 whileDraggingKnobTag:a4])
+      if ([(CRLCanvasGuideController *)self p_sizingGuidesAreRelevantForOrientation:1 whileDraggingKnobTag:tag])
       {
         v20 = [(CRLCanvasGuideController *)self p_guidesForOffset:0 predicate:self->_verticalSizingGuides inArray:v14];
         [v18 addObjectsFromArray:v20];
@@ -1487,7 +1487,7 @@ LABEL_23:
             }
 
             v26 = *(*(&v30 + 1) + 8 * i);
-            [v26 setSnappingObjectLayout:{v6, v30}];
+            [v26 setSnappingObjectLayout:{layoutCopy, v30}];
             currentSizingGuideUIRenderables = self->_currentSizingGuideUIRenderables;
             WeakRetained = objc_loadWeakRetained(&self->_icc);
             v29 = [v26 renderableWithICC:WeakRetained];
@@ -1503,16 +1503,16 @@ LABEL_23:
   }
 }
 
-- (void)showSizingGuideUIForRep:(id)a3 matchingWidth:(BOOL)a4 matchingHeight:(BOOL)a5
+- (void)showSizingGuideUIForRep:(id)rep matchingWidth:(BOOL)width matchingHeight:(BOOL)height
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  heightCopy = height;
+  widthCopy = width;
+  repCopy = rep;
   v9 = [CRLCanvasSizingGuideUILayer alloc];
-  v10 = [v8 layout];
+  layout = [repCopy layout];
 
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v14 = [(CRLCanvasSizingGuideUILayer *)v9 initForLayout:v10 withICC:WeakRetained showWidth:v6 showHeight:v5];
+  v14 = [(CRLCanvasSizingGuideUILayer *)v9 initForLayout:layout withICC:WeakRetained showWidth:widthCopy showHeight:heightCopy];
 
   currentSizingGuideUIRenderables = self->_currentSizingGuideUIRenderables;
   v13 = [CRLCanvasRenderable renderableFromLayer:v14];
@@ -1574,12 +1574,12 @@ LABEL_23:
   [v6 setDuration:0.400000006];
   [v6 setFromValue:&off_1018E2F10];
   [v6 setToValue:&off_1018E3110];
-  v7 = [(CRLCanvasGuideController *)self decoratorOverlayRenderables];
+  decoratorOverlayRenderables = [(CRLCanvasGuideController *)self decoratorOverlayRenderables];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v8 = [decoratorOverlayRenderables countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1590,7 +1590,7 @@ LABEL_23:
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(decoratorOverlayRenderables);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
@@ -1598,7 +1598,7 @@ LABEL_23:
         [v12 addAnimation:v6 forKey:@"fade out"];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [decoratorOverlayRenderables countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
@@ -1631,8 +1631,8 @@ LABEL_23:
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v7 = [(NSMutableDictionary *)self->_horizontalSpacings allValues];
-    v8 = [v7 countByEnumeratingWithState:&v51 objects:v57 count:16];
+    allValues = [(NSMutableDictionary *)self->_horizontalSpacings allValues];
+    v8 = [allValues countByEnumeratingWithState:&v51 objects:v57 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1643,13 +1643,13 @@ LABEL_23:
         {
           if (*v52 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v51 + 1) + 8 * i) needsRedraw];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v51 objects:v57 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v51 objects:v57 count:16];
       }
 
       while (v9);
@@ -1659,8 +1659,8 @@ LABEL_23:
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v12 = [(NSMutableDictionary *)self->_verticalSpacings allValues];
-    v13 = [v12 countByEnumeratingWithState:&v47 objects:v56 count:16];
+    allValues2 = [(NSMutableDictionary *)self->_verticalSpacings allValues];
+    v13 = [allValues2 countByEnumeratingWithState:&v47 objects:v56 count:16];
     if (v13)
     {
       v14 = v13;
@@ -1671,13 +1671,13 @@ LABEL_23:
         {
           if (*v48 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(allValues2);
           }
 
           [*(*(&v47 + 1) + 8 * j) needsRedraw];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v47 objects:v56 count:16];
+        v14 = [allValues2 countByEnumeratingWithState:&v47 objects:v56 count:16];
       }
 
       while (v14);
@@ -1709,10 +1709,10 @@ LABEL_23:
           if (v23 && [v23 infinite])
           {
             v25 = v6;
-            v26 = [v24 guideType];
+            guideType = [v24 guideType];
             WeakRetained = objc_loadWeakRetained(&self->_icc);
             [WeakRetained visibleUnscaledRect];
-            if (v26 == 1)
+            if (guideType == 1)
             {
               [v24 setStart:v28];
 
@@ -1756,8 +1756,8 @@ LABEL_23:
       while (v18);
     }
 
-    v40 = [(NSMutableSet *)self->_currentSizingGuideUIRenderables allObjects];
-    [v6 addObjectsFromArray:v40];
+    allObjects = [(NSMutableSet *)self->_currentSizingGuideUIRenderables allObjects];
+    [v6 addObjectsFromArray:allObjects];
   }
 
   else
@@ -1768,42 +1768,42 @@ LABEL_23:
   return v6;
 }
 
-- (double)p_maxSnapForSnapDistance:(double)a3
+- (double)p_maxSnapForSnapDistance:(double)distance
 {
   WeakRetained = objc_loadWeakRetained(&self->_icc);
   [WeakRetained viewScale];
   *&v5 = v5 + -1.0;
-  v6 = a3 / (tanhf(*&v5) + 1.0);
+  v6 = distance / (tanhf(*&v5) + 1.0);
 
   return v6;
 }
 
-- (BOOL)p_sizingGuidesAreRelevantForOrientation:(int)a3 whileDraggingKnobTag:(unint64_t)a4
+- (BOOL)p_sizingGuidesAreRelevantForOrientation:(int)orientation whileDraggingKnobTag:(unint64_t)tag
 {
-  v4 = (a4 & 0xFFFFFFFFFFFFFFFDLL) != 4;
-  v6 = a4 != 2 && a4 != 8;
-  if (!a3)
+  v4 = (tag & 0xFFFFFFFFFFFFFFFDLL) != 4;
+  v6 = tag != 2 && tag != 8;
+  if (!orientation)
   {
     v4 = v6;
   }
 
-  return a4 && v4;
+  return tag && v4;
 }
 
-- (BOOL)p_guidesAreRelevantForEdge:(int)a3 whileDraggingKnobTag:(unint64_t)a4
+- (BOOL)p_guidesAreRelevantForEdge:(int)edge whileDraggingKnobTag:(unint64_t)tag
 {
-  if (a4 > 3)
+  if (tag > 3)
   {
-    if (a4 > 6)
+    if (tag > 6)
     {
-      if (a4 == 9)
+      if (tag == 9)
       {
         v5 = 0;
-        if (a3 <= 3)
+        if (edge <= 3)
         {
-          if (a3 != 1)
+          if (edge != 1)
           {
-            if (a3 != 2)
+            if (edge != 2)
             {
               return v5;
             }
@@ -1815,9 +1815,9 @@ LABEL_23:
         }
 
 LABEL_35:
-        if (a3 != 4)
+        if (edge != 4)
         {
-          if (a3 != 5)
+          if (edge != 5)
           {
             return v5;
           }
@@ -1828,12 +1828,12 @@ LABEL_35:
         return self->_shouldAlignCenters;
       }
 
-      if (a4 != 8)
+      if (tag != 8)
       {
-        if (a4 == 7)
+        if (tag == 7)
         {
           v5 = 0;
-          if (a3 > 3)
+          if (edge > 3)
           {
             goto LABEL_35;
           }
@@ -1844,12 +1844,12 @@ LABEL_35:
         goto LABEL_44;
       }
 
-      if (a3 == 4)
+      if (edge == 4)
       {
         return self->_shouldAlignCenters;
       }
 
-      if (a3 != 5)
+      if (edge != 5)
       {
         return 0;
       }
@@ -1857,14 +1857,14 @@ LABEL_35:
       return self->_shouldAlignEdges;
     }
 
-    if (a4 == 4)
+    if (tag == 4)
     {
-      if (a3 == 1)
+      if (edge == 1)
       {
         return self->_shouldAlignCenters;
       }
 
-      if (a3)
+      if (edge)
       {
         return 0;
       }
@@ -1872,14 +1872,14 @@ LABEL_35:
       return self->_shouldAlignEdges;
     }
 
-    if (a4 == 6)
+    if (tag == 6)
     {
-      if (a3 == 1)
+      if (edge == 1)
       {
         return self->_shouldAlignCenters;
       }
 
-      if (a3 != 2)
+      if (edge != 2)
       {
         return 0;
       }
@@ -1890,16 +1890,16 @@ LABEL_35:
     goto LABEL_44;
   }
 
-  if (a4 > 1)
+  if (tag > 1)
   {
-    if (a4 != 2)
+    if (tag != 2)
     {
-      if ((a3 & 0xFFFFFFFE) == 2)
+      if ((edge & 0xFFFFFFFE) == 2)
       {
         return self->_shouldAlignEdges;
       }
 
-      if (a3 == 4 || a3 == 1)
+      if (edge == 4 || edge == 1)
       {
         return self->_shouldAlignCenters;
       }
@@ -1907,12 +1907,12 @@ LABEL_35:
       return 0;
     }
 
-    if (a3 == 4)
+    if (edge == 4)
     {
       return self->_shouldAlignCenters;
     }
 
-    if (a3 != 3)
+    if (edge != 3)
     {
       return 0;
     }
@@ -1920,9 +1920,9 @@ LABEL_35:
     return self->_shouldAlignEdges;
   }
 
-  if (!a4)
+  if (!tag)
   {
-    if (a3 > 5)
+    if (edge > 5)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -1953,7 +1953,7 @@ LABEL_35:
       return 0;
     }
 
-    if (((1 << a3) & 0x2D) == 0)
+    if (((1 << edge) & 0x2D) == 0)
     {
       return self->_shouldAlignCenters;
     }
@@ -1961,7 +1961,7 @@ LABEL_35:
     return self->_shouldAlignEdges;
   }
 
-  if (a4 != 1)
+  if (tag != 1)
   {
 LABEL_44:
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -1988,18 +1988,18 @@ LABEL_44:
 
     v7 = [NSString stringWithUTF8String:"[CRLCanvasGuideController p_guidesAreRelevantForEdge:whileDraggingKnobTag:]"];
     v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLCanvasGuideController.m"];
-    [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:1674 isFatal:0 description:"unexpected knob tag %zu", a4];
+    [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:1674 isFatal:0 description:"unexpected knob tag %zu", tag];
 
     return 0;
   }
 
   v5 = 0;
-  if (a3 <= 2)
+  if (edge <= 2)
   {
 LABEL_12:
-    if (a3)
+    if (edge)
     {
-      if (a3 != 1)
+      if (edge != 1)
       {
         return v5;
       }
@@ -2010,12 +2010,12 @@ LABEL_12:
     return self->_shouldAlignEdges;
   }
 
-  if (a3 == 4)
+  if (edge == 4)
   {
     return self->_shouldAlignCenters;
   }
 
-  if (a3 == 3)
+  if (edge == 3)
   {
     return self->_shouldAlignEdges;
   }
@@ -2023,12 +2023,12 @@ LABEL_12:
   return v5;
 }
 
-- (CGRect)p_alignmentFrameInRootForLayout:(id)a3
+- (CGRect)p_alignmentFrameInRootForLayout:(id)layout
 {
   alignmentFrameInRootByLayout = self->_alignmentFrameInRootByLayout;
   if (alignmentFrameInRootByLayout)
   {
-    v4 = [(NSMapTable *)alignmentFrameInRootByLayout objectForKeyedSubscript:a3];
+    v4 = [(NSMapTable *)alignmentFrameInRootByLayout objectForKeyedSubscript:layout];
     if (!v4)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -2067,7 +2067,7 @@ LABEL_12:
 
   else
   {
-    [a3 alignmentFrameForProvidingGuidesInRoot];
+    [layout alignmentFrameForProvidingGuidesInRoot];
     v9 = v16;
     v11 = v17;
     v13 = v18;
@@ -2085,21 +2085,21 @@ LABEL_12:
   return result;
 }
 
-- (void)p_addGuidesForLayout:(id)a3
+- (void)p_addGuidesForLayout:(id)layout
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 shouldDisplayGuides])
+  layoutCopy = layout;
+  v5 = layoutCopy;
+  if (layoutCopy && [layoutCopy shouldDisplayGuides])
   {
-    v6 = [v5 additionalGuides];
-    v7 = [(CRLCanvasGuideController *)self interactiveCanvasController];
-    [v7 transformGuides:v6 forLayout:v5];
+    additionalGuides = [v5 additionalGuides];
+    interactiveCanvasController = [(CRLCanvasGuideController *)self interactiveCanvasController];
+    [interactiveCanvasController transformGuides:additionalGuides forLayout:v5];
 
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v8 = v6;
+    v8 = additionalGuides;
     v9 = [v8 countByEnumeratingWithState:&v42 objects:v47 count:16];
     if (v9)
     {
@@ -2170,9 +2170,9 @@ LABEL_12:
       [v15 addObject:v25];
     }
 
-    v29 = [(CRLCanvasGuideController *)self interactiveCanvasController];
+    interactiveCanvasController2 = [(CRLCanvasGuideController *)self interactiveCanvasController];
     v37 = v5;
-    [v29 transformGuides:v15 forLayout:v5];
+    [interactiveCanvasController2 transformGuides:v15 forLayout:v5];
 
     v40 = 0u;
     v41 = 0u;
@@ -2223,16 +2223,16 @@ LABEL_12:
   }
 }
 
-- (void)p_addSpacingGuidesForFrame:(CGRect)a3 spacing:(id)a4 isVerticalSpacing:(BOOL)a5
+- (void)p_addSpacingGuidesForFrame:(CGRect)frame spacing:(id)spacing isVerticalSpacing:(BOOL)verticalSpacing
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v19 = a4;
+  verticalSpacingCopy = verticalSpacing;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  spacingCopy = spacing;
   v11 = 120;
-  if (v5)
+  if (verticalSpacingCopy)
   {
     v11 = 112;
     v12 = 136;
@@ -2243,7 +2243,7 @@ LABEL_12:
     v12 = 128;
   }
 
-  if (v5)
+  if (verticalSpacingCopy)
   {
     v13 = 3;
   }
@@ -2253,7 +2253,7 @@ LABEL_12:
     v13 = 0;
   }
 
-  if (v5)
+  if (verticalSpacingCopy)
   {
     v14 = 5;
   }
@@ -2265,61 +2265,61 @@ LABEL_12:
 
   v15 = *(&self->super.isa + v11);
   v16 = *(&self->super.isa + v12);
-  if ([v19 needsGuideForEdge:v13 ofRect:{x, y, width, height}])
+  if ([spacingCopy needsGuideForEdge:v13 ofRect:{x, y, width, height}])
   {
-    v17 = [[CRLCanvasSpacingGuide alloc] initForEdge:v13 ofGeneratingObjectRect:v19 andParentSpacing:x, y, width, height];
-    [(CRLCanvasGuideController *)self p_addSpacingGuide:v17 toSortedArray:v15];
-    [(CRLCanvasGuideController *)self p_addSpacingGuide:v17 toSortedArray:v16];
+    height = [[CRLCanvasSpacingGuide alloc] initForEdge:v13 ofGeneratingObjectRect:spacingCopy andParentSpacing:x, y, width, height];
+    [(CRLCanvasGuideController *)self p_addSpacingGuide:height toSortedArray:v15];
+    [(CRLCanvasGuideController *)self p_addSpacingGuide:height toSortedArray:v16];
   }
 
   else
   {
-    v17 = 0;
+    height = 0;
   }
 
-  if ([v19 needsGuideForEdge:v14 ofRect:{x, y, width, height}])
+  if ([spacingCopy needsGuideForEdge:v14 ofRect:{x, y, width, height}])
   {
-    v18 = [[CRLCanvasSpacingGuide alloc] initForEdge:v14 ofGeneratingObjectRect:v19 andParentSpacing:x, y, width, height];
+    height2 = [[CRLCanvasSpacingGuide alloc] initForEdge:v14 ofGeneratingObjectRect:spacingCopy andParentSpacing:x, y, width, height];
 
-    [(CRLCanvasGuideController *)self p_addSpacingGuide:v18 toSortedArray:v15];
-    [(CRLCanvasGuideController *)self p_addSpacingGuide:v18 toSortedArray:v16];
-    v17 = v18;
+    [(CRLCanvasGuideController *)self p_addSpacingGuide:height2 toSortedArray:v15];
+    [(CRLCanvasGuideController *)self p_addSpacingGuide:height2 toSortedArray:v16];
+    height = height2;
   }
 }
 
-- (void)p_addAlignmentGuide:(id)a3 toSortedArray:(id)a4
+- (void)p_addAlignmentGuide:(id)guide toSortedArray:(id)array
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 insertObject:v7 atIndex:{-[CRLCanvasGuideController p_indexToInsertGuide:inSortedArray:](self, "p_indexToInsertGuide:inSortedArray:", v7, v6)}];
+  arrayCopy = array;
+  guideCopy = guide;
+  [arrayCopy insertObject:guideCopy atIndex:{-[CRLCanvasGuideController p_indexToInsertGuide:inSortedArray:](self, "p_indexToInsertGuide:inSortedArray:", guideCopy, arrayCopy)}];
 }
 
-- (void)p_addSpacingGuide:(id)a3 toSortedArray:(id)a4
+- (void)p_addSpacingGuide:(id)guide toSortedArray:(id)array
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 insertObject:v7 atIndex:{-[CRLCanvasGuideController p_indexToInsertGuide:inSortedArray:](self, "p_indexToInsertGuide:inSortedArray:", v7, v6)}];
+  arrayCopy = array;
+  guideCopy = guide;
+  [arrayCopy insertObject:guideCopy atIndex:{-[CRLCanvasGuideController p_indexToInsertGuide:inSortedArray:](self, "p_indexToInsertGuide:inSortedArray:", guideCopy, arrayCopy)}];
 }
 
-- (void)p_addSizingGuide:(id)a3 toSortedArray:(id)a4
+- (void)p_addSizingGuide:(id)guide toSortedArray:(id)array
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 insertObject:v7 atIndex:{-[CRLCanvasGuideController p_indexToInsertGuide:inSortedArray:](self, "p_indexToInsertGuide:inSortedArray:", v7, v6)}];
+  arrayCopy = array;
+  guideCopy = guide;
+  [arrayCopy insertObject:guideCopy atIndex:{-[CRLCanvasGuideController p_indexToInsertGuide:inSortedArray:](self, "p_indexToInsertGuide:inSortedArray:", guideCopy, arrayCopy)}];
 }
 
-- (void)p_addCenterAlignmentGuide:(id)a3 toSortedArray:(id)a4
+- (void)p_addCenterAlignmentGuide:(id)guide toSortedArray:(id)array
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 insertObject:v7 atIndex:{-[CRLCanvasGuideController p_indexToInsertGuide:inSortedArray:](self, "p_indexToInsertGuide:inSortedArray:", v7, v6)}];
+  arrayCopy = array;
+  guideCopy = guide;
+  [arrayCopy insertObject:guideCopy atIndex:{-[CRLCanvasGuideController p_indexToInsertGuide:inSortedArray:](self, "p_indexToInsertGuide:inSortedArray:", guideCopy, arrayCopy)}];
 }
 
-- (int64_t)p_indexToInsertGuide:(id)a3 inSortedArray:(id)a4
+- (int64_t)p_indexToInsertGuide:(id)guide inSortedArray:(id)array
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 count];
+  guideCopy = guide;
+  arrayCopy = array;
+  v7 = [arrayCopy count];
   if (v7 < 0)
   {
     sub_101315530();
@@ -2337,8 +2337,8 @@ LABEL_12:
   while (1)
   {
     v10 = (v9 + v8) >> 1;
-    v11 = [v6 objectAtIndexedSubscript:v10];
-    [v5 offset];
+    v11 = [arrayCopy objectAtIndexedSubscript:v10];
+    [guideCopy offset];
     v13 = sub_1004C31F4(v12);
     [v11 offset];
     if (v13 == sub_1004C31F4(v14))
@@ -2346,7 +2346,7 @@ LABEL_12:
       break;
     }
 
-    [v5 offset];
+    [guideCopy offset];
     v16 = v15;
     [v11 offset];
     if (v16 < v17)
@@ -2366,7 +2366,7 @@ LABEL_12:
   }
 
   [v11 offset];
-  [v5 setOffset:?];
+  [guideCopy setOffset:?];
 
   v8 = (v9 + v8) >> 1;
   v9 = v10;
@@ -2381,20 +2381,20 @@ LABEL_14:
   return v10;
 }
 
-- (void)p_getOffset:(double *)a3 andGuidesArray:(id *)a4 forEdge:(int)a5 ofFrame:(CGRect)a6
+- (void)p_getOffset:(double *)offset andGuidesArray:(id *)array forEdge:(int)edge ofFrame:(CGRect)frame
 {
-  if (a5 > 2)
+  if (edge > 2)
   {
-    switch(a5)
+    switch(edge)
     {
       case 3:
-        MinY = CGRectGetMinY(a6);
+        MinY = CGRectGetMinY(frame);
         break;
       case 4:
-        MinY = CGRectGetMidY(a6);
+        MinY = CGRectGetMidY(frame);
         break;
       case 5:
-        MinY = CGRectGetMaxY(a6);
+        MinY = CGRectGetMaxY(frame);
         break;
       default:
         return;
@@ -2405,46 +2405,46 @@ LABEL_14:
 
   else
   {
-    if (a5)
+    if (edge)
     {
-      if (a5 == 1)
+      if (edge == 1)
       {
-        MinY = CGRectGetMidX(a6);
+        MinY = CGRectGetMidX(frame);
       }
 
       else
       {
-        if (a5 != 2)
+        if (edge != 2)
         {
           return;
         }
 
-        MinY = CGRectGetMaxX(a6);
+        MinY = CGRectGetMaxX(frame);
       }
     }
 
     else
     {
-      MinY = CGRectGetMinX(a6);
+      MinY = CGRectGetMinX(frame);
     }
 
     v10 = 120;
   }
 
-  *a3 = MinY;
-  *a4 = *(&self->super.isa + v10);
+  *offset = MinY;
+  *array = *(&self->super.isa + v10);
 }
 
-- (id)p_guidesForEdge:(int)a3 ofFrame:(CGRect)a4
+- (id)p_guidesForEdge:(int)edge ofFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v7 = *&a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v7 = *&edge;
   v24 = 0;
   v25 = 0.0;
-  [(CRLCanvasGuideController *)self p_getOffset:&v25 andGuidesArray:&v24 forEdge:*&a3 ofFrame:?];
+  [(CRLCanvasGuideController *)self p_getOffset:&v25 andGuidesArray:&v24 forEdge:*&edge ofFrame:?];
   v9 = v24;
   WeakRetained = objc_loadWeakRetained(&self->_icc);
   [WeakRetained visibleUnscaledRect];
@@ -2460,11 +2460,11 @@ LABEL_14:
   return v21;
 }
 
-- (id)p_guidesForOffset:(double)a3 predicate:(id)a4 inArray:(id)a5
+- (id)p_guidesForOffset:(double)offset predicate:(id)predicate inArray:(id)array
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 count];
+  predicateCopy = predicate;
+  arrayCopy = array;
+  v9 = [arrayCopy count];
   if (v9 < 0)
   {
     sub_1013156F0();
@@ -2491,17 +2491,17 @@ LABEL_14:
     v16 = v11;
     v17 = v13 + v12;
     v18 = (v13 + v12) >> 1;
-    v11 = [v8 objectAtIndexedSubscript:v18];
+    v11 = [arrayCopy objectAtIndexedSubscript:v18];
 
     [v11 offset];
-    if (vabdd_f64(a3, v19) < 0.01)
+    if (vabdd_f64(offset, v19) < 0.01)
     {
       break;
     }
 
     [v11 offset];
     v13 = v18 - 1;
-    if (v20 <= a3)
+    if (v20 <= offset)
     {
       v12 = v18 + 1;
     }
@@ -2511,7 +2511,7 @@ LABEL_14:
       v12 = v14;
     }
 
-    if (v20 <= a3)
+    if (v20 <= offset)
     {
       v13 = v15;
     }
@@ -2525,15 +2525,15 @@ LABEL_14:
     do
     {
       v23 = v11;
-      v11 = [v8 objectAtIndexedSubscript:v22 - 2];
+      v11 = [arrayCopy objectAtIndexedSubscript:v22 - 2];
 
       [v11 offset];
-      if (vabdd_f64(v24, a3) > 0.01)
+      if (vabdd_f64(v24, offset) > 0.01)
       {
         break;
       }
 
-      if (!v7 || [v7 evaluateWithObject:v11])
+      if (!predicateCopy || [predicateCopy evaluateWithObject:v11])
       {
         [v21 addObject:v11];
       }
@@ -2549,15 +2549,15 @@ LABEL_14:
     do
     {
       v25 = v11;
-      v11 = [v8 objectAtIndexedSubscript:v18];
+      v11 = [arrayCopy objectAtIndexedSubscript:v18];
 
       [v11 offset];
-      if (vabdd_f64(v26, a3) > 0.01)
+      if (vabdd_f64(v26, offset) > 0.01)
       {
         break;
       }
 
-      if (!v7 || [v7 evaluateWithObject:v11])
+      if (!predicateCopy || [predicateCopy evaluateWithObject:v11])
       {
         [v21 addObject:v11];
       }
@@ -2573,13 +2573,13 @@ LABEL_26:
   return v21;
 }
 
-- (id)p_guideClosestToEdge:(int)a3 ofFrame:(CGRect)a4
+- (id)p_guideClosestToEdge:(int)edge ofFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = *&a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v8 = *&edge;
   v25 = 0.0;
   WeakRetained = objc_loadWeakRetained(&self->_icc);
   [WeakRetained visibleUnscaledRect];
@@ -2598,11 +2598,11 @@ LABEL_26:
   return v21;
 }
 
-- (id)p_closestGuideForOffset:(double)a3 predicate:(id)a4 inArray:(id)a5
+- (id)p_closestGuideForOffset:(double)offset predicate:(id)predicate inArray:(id)array
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 count];
+  predicateCopy = predicate;
+  arrayCopy = array;
+  v10 = [arrayCopy count];
   if (v10 < 0)
   {
     sub_1013158B0();
@@ -2629,17 +2629,17 @@ LABEL_26:
     v17 = v14;
     v18 = v14 + v12;
     v19 = (v14 + v12) >> 1;
-    v13 = [v9 objectAtIndexedSubscript:v19];
+    v13 = [arrayCopy objectAtIndexedSubscript:v19];
 
     [v13 offset];
-    if (v20 == a3)
+    if (v20 == offset)
     {
       break;
     }
 
     [v13 offset];
     v14 = v19 - 1;
-    if (v21 <= a3)
+    if (v21 <= offset)
     {
       v12 = v19 + 1;
     }
@@ -2649,19 +2649,19 @@ LABEL_26:
       v12 = v16;
     }
 
-    if (v21 <= a3)
+    if (v21 <= offset)
     {
       v14 = v17;
     }
   }
 
   while (v12 <= v14);
-  v22 = [v9 objectAtIndexedSubscript:v19];
+  v22 = [arrayCopy objectAtIndexedSubscript:v19];
 
   [v22 offset];
-  v24 = vabdd_f64(v23, a3);
+  v24 = vabdd_f64(v23, offset);
   [(CRLCanvasGuideController *)self snapDistanceToUseForGuides];
-  if (v24 >= v25 + v25 || v8 && ![v8 evaluateWithObject:v22])
+  if (v24 >= v25 + v25 || predicateCopy && ![predicateCopy evaluateWithObject:v22])
   {
     v26 = 0;
   }
@@ -2677,10 +2677,10 @@ LABEL_26:
     do
     {
       v28 = v22;
-      v22 = [v9 objectAtIndexedSubscript:v27 - 2];
+      v22 = [arrayCopy objectAtIndexedSubscript:v27 - 2];
 
       [v22 offset];
-      v30 = vabdd_f64(v29, a3);
+      v30 = vabdd_f64(v29, offset);
       [(CRLCanvasGuideController *)self snapDistanceToUseForGuides];
       if (v30 > v31 + v31)
       {
@@ -2690,13 +2690,13 @@ LABEL_26:
       if (v26)
       {
         [v26 offset];
-        if (v30 >= vabdd_f64(v32, a3))
+        if (v30 >= vabdd_f64(v32, offset))
         {
           continue;
         }
       }
 
-      if (!v8 || [v8 evaluateWithObject:v22])
+      if (!predicateCopy || [predicateCopy evaluateWithObject:v22])
       {
         v33 = v22;
 
@@ -2715,10 +2715,10 @@ LABEL_26:
     do
     {
       v35 = v22;
-      v22 = [v9 objectAtIndexedSubscript:v34];
+      v22 = [arrayCopy objectAtIndexedSubscript:v34];
 
       [v22 offset];
-      v37 = vabdd_f64(v36, a3);
+      v37 = vabdd_f64(v36, offset);
       [(CRLCanvasGuideController *)self snapDistanceToUseForGuides];
       if (v37 > v38 + v38)
       {
@@ -2728,13 +2728,13 @@ LABEL_26:
       if (v26)
       {
         [v26 offset];
-        if (v37 >= vabdd_f64(v39, a3))
+        if (v37 >= vabdd_f64(v39, offset))
         {
           continue;
         }
       }
 
-      if (!v8 || [v8 evaluateWithObject:v22])
+      if (!predicateCopy || [predicateCopy evaluateWithObject:v22])
       {
         v40 = v22;
 
@@ -2752,9 +2752,9 @@ LABEL_35:
   return v26;
 }
 
-- (float)p_spacingForCenterOrSpacingGuide:(id)a3
+- (float)p_spacingForCenterOrSpacingGuide:(id)guide
 {
-  v3 = a3;
+  guideCopy = guide;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -2793,9 +2793,9 @@ LABEL_35:
   if (objc_opt_isKindOfClass())
   {
     v7 = objc_opt_class();
-    v8 = sub_100014370(v7, v3);
-    v9 = [v8 parentSpacing];
-    [v9 exactOffset];
+    v8 = sub_100014370(v7, guideCopy);
+    parentSpacing = [v8 parentSpacing];
+    [parentSpacing exactOffset];
     v11 = v10;
 
 LABEL_16:
@@ -2809,7 +2809,7 @@ LABEL_16:
   if (objc_opt_isKindOfClass())
   {
     v13 = objc_opt_class();
-    v8 = sub_100014370(v13, v3);
+    v8 = sub_100014370(v13, guideCopy);
     [v8 exactOffset];
     v11 = v14;
     goto LABEL_16;
@@ -2820,12 +2820,12 @@ LABEL_17:
   return v12;
 }
 
-- (id)p_predicateCanBeSnappedToInVisibleUnscaledRect:(CGRect)a3
+- (id)p_predicateCanBeSnappedToInVisibleUnscaledRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (+[CRLCanvasGuideController shouldSnapToOffscreenContent])
   {
     v7 = 0;
@@ -2847,15 +2847,15 @@ LABEL_17:
   return v7;
 }
 
-- (id)p_predicateCanBeSnappedToByEdge:(int)a3 ofFrame:(CGRect)a4 inVisibleUnscaledRect:(CGRect)a5
+- (id)p_predicateCanBeSnappedToByEdge:(int)edge ofFrame:(CGRect)frame inVisibleUnscaledRect:(CGRect)rect
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010A380;
   v7[3] = &unk_10183D058;
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
+  edgeCopy = edge;
+  frameCopy = frame;
+  rectCopy = rect;
   v5 = [NSPredicate predicateWithBlock:v7];
 
   return v5;

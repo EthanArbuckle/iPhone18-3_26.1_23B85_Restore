@@ -2,27 +2,27 @@
 - (BOOL)isBluetoothAudioPrediction;
 - (BOOL)isBluetoothPrediction;
 - (BOOL)isCarPlayPrediction;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFirstWakePrediction;
 - (BOOL)isHeadphonesPrediction;
 - (BOOL)isLocationBasedSuggestion;
-- (_SBProactiveAppSuggestion)initWithAppSuggestion:(id)a3;
+- (_SBProactiveAppSuggestion)initWithAppSuggestion:(id)suggestion;
 - (id)bundleIdentifier;
 - (unint64_t)hash;
 @end
 
 @implementation _SBProactiveAppSuggestion
 
-- (_SBProactiveAppSuggestion)initWithAppSuggestion:(id)a3
+- (_SBProactiveAppSuggestion)initWithAppSuggestion:(id)suggestion
 {
-  v5 = a3;
+  suggestionCopy = suggestion;
   v9.receiver = self;
   v9.super_class = _SBProactiveAppSuggestion;
   v6 = [(_SBProactiveAppSuggestion *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_appSuggestion, a3);
+    objc_storeStrong(&v6->_appSuggestion, suggestion);
   }
 
   return v7;
@@ -30,64 +30,64 @@
 
 - (id)bundleIdentifier
 {
-  v2 = [(ATXProactiveSuggestion *)self->_appSuggestion executableSpecification];
-  v3 = [v2 executableObject];
+  executableSpecification = [(ATXProactiveSuggestion *)self->_appSuggestion executableSpecification];
+  executableObject = [executableSpecification executableObject];
 
-  return v3;
+  return executableObject;
 }
 
 - (BOOL)isLocationBasedSuggestion
 {
-  v2 = [(ATXProactiveSuggestion *)self->_appSuggestion uiSpecification];
-  v3 = [v2 predictionReasons];
+  uiSpecification = [(ATXProactiveSuggestion *)self->_appSuggestion uiSpecification];
+  predictionReasons = [uiSpecification predictionReasons];
 
-  return (*&v3 & 0x11800) != 0;
+  return (*&predictionReasons & 0x11800) != 0;
 }
 
 - (BOOL)isHeadphonesPrediction
 {
-  v2 = [(ATXProactiveSuggestion *)self->_appSuggestion uiSpecification];
-  v3 = [v2 predictionReasons] == 4;
+  uiSpecification = [(ATXProactiveSuggestion *)self->_appSuggestion uiSpecification];
+  v3 = [uiSpecification predictionReasons] == 4;
 
   return v3;
 }
 
 - (BOOL)isBluetoothPrediction
 {
-  v2 = [(ATXProactiveSuggestion *)self->_appSuggestion uiSpecification];
-  v3 = [v2 predictionReasons] == 16;
+  uiSpecification = [(ATXProactiveSuggestion *)self->_appSuggestion uiSpecification];
+  v3 = [uiSpecification predictionReasons] == 16;
 
   return v3;
 }
 
 - (BOOL)isBluetoothAudioPrediction
 {
-  v2 = [(ATXProactiveSuggestion *)self->_appSuggestion uiSpecification];
-  v3 = (~[v2 predictionReasons] & 0x14) == 0;
+  uiSpecification = [(ATXProactiveSuggestion *)self->_appSuggestion uiSpecification];
+  v3 = (~[uiSpecification predictionReasons] & 0x14) == 0;
 
   return v3;
 }
 
 - (BOOL)isCarPlayPrediction
 {
-  v2 = [(ATXProactiveSuggestion *)self->_appSuggestion uiSpecification];
-  v3 = ([v2 predictionReasons] >> 6) & 1;
+  uiSpecification = [(ATXProactiveSuggestion *)self->_appSuggestion uiSpecification];
+  v3 = ([uiSpecification predictionReasons] >> 6) & 1;
 
   return v3;
 }
 
 - (BOOL)isFirstWakePrediction
 {
-  v2 = [(ATXProactiveSuggestion *)self->_appSuggestion uiSpecification];
-  v3 = ([v2 predictionReasons] >> 10) & 1;
+  uiSpecification = [(ATXProactiveSuggestion *)self->_appSuggestion uiSpecification];
+  v3 = ([uiSpecification predictionReasons] >> 10) & 1;
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -97,9 +97,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(_SBProactiveAppSuggestion *)v4 resultUUID];
-      v6 = [(_SBProactiveAppSuggestion *)self resultUUID];
-      v7 = [v5 isEqual:v6];
+      resultUUID = [(_SBProactiveAppSuggestion *)equalCopy resultUUID];
+      resultUUID2 = [(_SBProactiveAppSuggestion *)self resultUUID];
+      v7 = [resultUUID isEqual:resultUUID2];
     }
 
     else
@@ -113,8 +113,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(_SBProactiveAppSuggestion *)self resultUUID];
-  v3 = [v2 hash];
+  resultUUID = [(_SBProactiveAppSuggestion *)self resultUUID];
+  v3 = [resultUUID hash];
 
   return v3;
 }

@@ -19,11 +19,11 @@
   v132 = a4;
   IsMerchantApp = PKPaymentSetupContextIsMerchantApp();
   IsAvailable = PKFelicaSecureElementIsAvailable();
-  v119 = [v12 paymentSetupSupportedInRegion];
+  paymentSetupSupportedInRegion = [v12 paymentSetupSupportedInRegion];
   v107 = v12;
-  v13 = [v12 targetDevice];
-  v14 = [v13 appleAccountInformation];
-  v126 = [v14 isManagedAppleAccount];
+  targetDevice = [v12 targetDevice];
+  appleAccountInformation = [targetDevice appleAccountInformation];
+  isManagedAppleAccount = [appleAccountInformation isManagedAppleAccount];
 
   if (PKIsPhone())
   {
@@ -43,8 +43,8 @@
     v161 = 0u;
     v158 = 0u;
     v159 = 0u;
-    v15 = [a1 allSetupProducts];
-    v16 = [v15 countByEnumeratingWithState:&v158 objects:v173 count:16];
+    allSetupProducts = [self allSetupProducts];
+    v16 = [allSetupProducts countByEnumeratingWithState:&v158 objects:v173 count:16];
     if (v16)
     {
       v17 = v16;
@@ -55,25 +55,25 @@
         {
           if (*v159 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(allSetupProducts);
           }
 
           v20 = *(*(&v158 + 1) + 8 * i);
-          if ([a1 _localCredentials:v113 containProduct:v20])
+          if ([self _localCredentials:v113 containProduct:v20])
           {
             [v116 addObject:v20];
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v158 objects:v173 count:16];
+        v17 = [allSetupProducts countByEnumeratingWithState:&v158 objects:v173 count:16];
       }
 
       while (v17);
     }
   }
 
-  v120 = a1;
-  [a1 filteredPaymentSetupProductModel:v107 mobileCarrierRegion:v125 deviceRegion:v124 cardOnFiles:v116];
+  selfCopy = self;
+  [self filteredPaymentSetupProductModel:v107 mobileCarrierRegion:v125 deviceRegion:v124 cardOnFiles:v116];
   v154 = 0u;
   v155 = 0u;
   v156 = 0u;
@@ -95,15 +95,15 @@
 
         v25 = *(*(&v154 + 1) + 8 * v24);
         v26 = [v116 containsObject:v25];
-        v27 = [v25 configuration];
-        if ([v27 type] == 7 && objc_msgSend(v27, "featureIdentifier") == 2 && (v132 > 8 || ((1 << v132) & 0x109) == 0))
+        configuration = [v25 configuration];
+        if ([configuration type] == 7 && objc_msgSend(configuration, "featureIdentifier") == 2 && (v132 > 8 || ((1 << v132) & 0x109) == 0))
         {
           v58 = PKLogFacilityTypeGetObject();
           if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
           {
-            v59 = [v25 displayName];
+            displayName = [v25 displayName];
             *buf = 138412290;
-            v164 = v59;
+            v164 = displayName;
             _os_log_impl(&dword_1BD026000, v58, OS_LOG_TYPE_DEFAULT, "Product: %@ is not supported in context", buf, 0xCu);
           }
 
@@ -115,8 +115,8 @@
           v28 = 1;
         }
 
-        v29 = [v25 setupProductMethods];
-        v30 = [v29 count];
+        setupProductMethods = [v25 setupProductMethods];
+        v30 = [setupProductMethods count];
 
         v31 = [v25 supportsSetupProductMethodForType:2];
         v32 = v31;
@@ -137,9 +137,9 @@
 LABEL_79:
           if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
           {
-            v60 = [v25 displayName];
+            displayName2 = [v25 displayName];
             *buf = 138412290;
-            v164 = v60;
+            v164 = displayName2;
             _os_log_impl(&dword_1BD026000, v37, OS_LOG_TYPE_DEFAULT, "Product: %@ is unsupported and will not be shown in the flow picker", buf, 0xCu);
           }
 
@@ -159,9 +159,9 @@ LABEL_79:
               goto LABEL_78;
             }
 
-            v44 = [v25 displayName];
+            displayName3 = [v25 displayName];
             *buf = 138412290;
-            v164 = v44;
+            v164 = displayName3;
             v49 = v37;
             v50 = "Product: %@ is not supported in setup context due to lack of card on file";
 LABEL_73:
@@ -171,9 +171,9 @@ LABEL_73:
 
           if (v38)
           {
-            v39 = [v25 displayName];
+            displayName4 = [v25 displayName];
             *buf = 138412290;
-            v164 = v39;
+            v164 = displayName4;
             _os_log_impl(&dword_1BD026000, v37, OS_LOG_TYPE_DEFAULT, "Product: %@ is supported due to matching card on file (DCI / In-App check)", buf, 0xCu);
           }
 
@@ -192,9 +192,9 @@ LABEL_73:
               goto LABEL_78;
             }
 
-            v44 = [v25 displayName];
+            displayName3 = [v25 displayName];
             *buf = 138412290;
-            v164 = v44;
+            v164 = displayName3;
             v49 = v37;
             v50 = "Product: %@ is not supported due to lack of card on file and Type F support";
             goto LABEL_73;
@@ -202,9 +202,9 @@ LABEL_73:
 
           if (v47)
           {
-            v48 = [v25 displayName];
+            displayName5 = [v25 displayName];
             *buf = 138412290;
-            v164 = v48;
+            v164 = displayName5;
             _os_log_impl(&dword_1BD026000, v37, OS_LOG_TYPE_DEFAULT, "Product: %@ is supported due to matching card on file (type f support check)", buf, 0xCu);
           }
 
@@ -219,9 +219,9 @@ LABEL_73:
           {
             if (v41)
             {
-              v44 = [v25 displayName];
+              displayName3 = [v25 displayName];
               *buf = 138412290;
-              v164 = v44;
+              v164 = displayName3;
               v45 = v37;
               v46 = "Product: %@ is not supported due to lack of SE";
               goto LABEL_76;
@@ -232,9 +232,9 @@ LABEL_73:
 
           if (v41)
           {
-            v42 = [v25 displayName];
+            displayName6 = [v25 displayName];
             *buf = 138412290;
-            v164 = v42;
+            v164 = displayName6;
             _os_log_impl(&dword_1BD026000, v37, OS_LOG_TYPE_DEFAULT, "Product: %@ is supported due to matching card on file and bridge context (SE check)", buf, 0xCu);
           }
 
@@ -246,9 +246,9 @@ LABEL_73:
           v37 = PKLogFacilityTypeGetObject();
           if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
           {
-            v44 = [v25 displayName];
+            displayName3 = [v25 displayName];
             *buf = 138412290;
-            v164 = v44;
+            v164 = displayName3;
             v45 = v37;
             v46 = "Product: %@ is not supported in setup context due to HSA requirement";
 LABEL_76:
@@ -262,13 +262,13 @@ LABEL_78:
           goto LABEL_79;
         }
 
-        v43 = [v27 state];
-        if ((v43 - 3) >= 2)
+        state = [configuration state];
+        if ((state - 3) >= 2)
         {
-          if (v43 == 2)
+          if (state == 2)
           {
-            v51 = [v25 featureApplications];
-            v52 = [v51 count];
+            featureApplications = [v25 featureApplications];
+            v52 = [featureApplications count];
 
             v37 = PKLogFacilityTypeGetObject();
             v53 = os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT);
@@ -276,10 +276,10 @@ LABEL_78:
             {
               if (v53)
               {
-                v44 = [v25 displayName];
+                displayName3 = [v25 displayName];
                 v61 = PKPaymentSetupProductStateToString();
                 *buf = 138543618;
-                v164 = v44;
+                v164 = displayName3;
                 v165 = 2114;
                 v166 = v61;
                 _os_log_impl(&dword_1BD026000, v37, OS_LOG_TYPE_DEFAULT, "Product: %{public}@ is set as: %{public}@ not including", buf, 0x16u);
@@ -292,10 +292,10 @@ LABEL_78:
 
             if (v53)
             {
-              v54 = [v25 displayName];
+              displayName7 = [v25 displayName];
               v55 = PKPaymentSetupProductStateToString();
               *buf = 138543618;
-              v164 = v54;
+              v164 = displayName7;
               v165 = 2114;
               v166 = v55;
               _os_log_impl(&dword_1BD026000, v37, OS_LOG_TYPE_DEFAULT, "Product: %{public}@ is set as: %{public}@ but has existing featureApplications so including", buf, 0x16u);
@@ -308,9 +308,9 @@ LABEL_78:
           v37 = PKLogFacilityTypeGetObject();
           if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
           {
-            v44 = [v25 displayName];
+            displayName3 = [v25 displayName];
             *buf = 138543362;
-            v164 = v44;
+            v164 = displayName3;
             v45 = v37;
             v46 = "Product: %{public}@ is set allowed during setup assistant as it requires onboarding";
             goto LABEL_76;
@@ -324,9 +324,9 @@ LABEL_78:
           v56 = PKLogFacilityTypeGetObject();
           if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
           {
-            v57 = [v25 displayName];
+            displayName8 = [v25 displayName];
             *buf = 138412290;
-            v164 = v57;
+            v164 = displayName8;
             _os_log_impl(&dword_1BD026000, v56, OS_LOG_TYPE_DEFAULT, "Product: %@ is supported due to matching card but cannot be manually provisioned", buf, 0xCu);
           }
         }
@@ -352,9 +352,9 @@ LABEL_82:
   v151 = 0u;
   v152 = 0u;
   v153 = 0u;
-  v110 = [v120 allSections];
+  allSections = [selfCopy allSections];
   v64 = 0x1E695D000uLL;
-  v115 = [v110 countByEnumeratingWithState:&v150 objects:v171 count:16];
+  v115 = [allSections countByEnumeratingWithState:&v150 objects:v171 count:16];
   if (v115)
   {
     v114 = *v151;
@@ -368,7 +368,7 @@ LABEL_82:
       {
         if (*v151 != v114)
         {
-          objc_enumerationMutation(v110);
+          objc_enumerationMutation(allSections);
         }
 
         v118 = v65;
@@ -379,8 +379,8 @@ LABEL_82:
         v148 = 0u;
         v149 = 0u;
         v117 = v66;
-        v129 = [v66 categories];
-        v137 = [v129 countByEnumeratingWithState:&v146 objects:v170 count:16];
+        categories = [v66 categories];
+        v137 = [categories countByEnumeratingWithState:&v146 objects:v170 count:16];
         if (v137)
         {
           v135 = *v147;
@@ -390,7 +390,7 @@ LABEL_82:
             {
               if (*v147 != v135)
               {
-                objc_enumerationMutation(v129);
+                objc_enumerationMutation(categories);
               }
 
               v68 = *(*(&v146 + 1) + 8 * j);
@@ -399,9 +399,9 @@ LABEL_82:
                 v70 = PKLogFacilityTypeGetObject();
                 if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
                 {
-                  v71 = [v68 identifier];
+                  identifier = [v68 identifier];
                   *buf = 138412290;
-                  v164 = v71;
+                  v164 = identifier;
                   v72 = v70;
                   v73 = "Dropping category: %@ as it is not supported in setup assistant";
 LABEL_118:
@@ -414,9 +414,9 @@ LABEL_118:
                 v70 = PKLogFacilityTypeGetObject();
                 if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
                 {
-                  v71 = [v68 identifier];
+                  identifier = [v68 identifier];
                   *buf = 138412290;
-                  v164 = v71;
+                  v164 = identifier;
                   v72 = v70;
                   v73 = "Dropping category: %@ as it is not supported in bridge";
                   goto LABEL_118;
@@ -428,9 +428,9 @@ LABEL_118:
                 v70 = PKLogFacilityTypeGetObject();
                 if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
                 {
-                  v71 = [v68 identifier];
+                  identifier = [v68 identifier];
                   *buf = 138412290;
-                  v164 = v71;
+                  v164 = identifier;
                   v72 = v70;
                   v73 = "Dropping category: %@ as it requires NFC support";
                   goto LABEL_118;
@@ -442,9 +442,9 @@ LABEL_118:
                 v70 = PKLogFacilityTypeGetObject();
                 if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
                 {
-                  v71 = [v68 identifier];
+                  identifier = [v68 identifier];
                   *buf = 138412290;
-                  v164 = v71;
+                  v164 = identifier;
                   v72 = v70;
                   v73 = "Dropping category: %@ as it is not supported in merchant apps";
                   goto LABEL_118;
@@ -453,7 +453,7 @@ LABEL_118:
 
               else
               {
-                if (!v126 || ([v68 allowOnManagedAccount] & 1) != 0)
+                if (!isManagedAppleAccount || ([v68 allowOnManagedAccount] & 1) != 0)
                 {
                   v69 = 1;
                   goto LABEL_120;
@@ -462,9 +462,9 @@ LABEL_118:
                 v70 = PKLogFacilityTypeGetObject();
                 if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
                 {
-                  v71 = [v68 identifier];
+                  identifier = [v68 identifier];
                   *buf = 138412290;
-                  v164 = v71;
+                  v164 = identifier;
                   v72 = v70;
                   v73 = "Dropping category: %@ as it is not supported on managed account";
                   goto LABEL_118;
@@ -473,11 +473,11 @@ LABEL_118:
 
               v69 = 0;
 LABEL_120:
-              v74 = [v68 productIdentifiers];
-              v75 = [v63 productsForProductIdentifiers:v74];
+              productIdentifiers = [v68 productIdentifiers];
+              v75 = [v63 productsForProductIdentifiers:productIdentifiers];
 
-              v76 = [v68 regions];
-              v77 = [v76 mutableCopy];
+              regions = [v68 regions];
+              v77 = [regions mutableCopy];
               v78 = v77;
               if (v77)
               {
@@ -508,10 +508,10 @@ LABEL_120:
                       objc_enumerationMutation(v80);
                     }
 
-                    v85 = [*(*(&v142 + 1) + 8 * k) regions];
-                    if (v85)
+                    regions2 = [*(*(&v142 + 1) + 8 * k) regions];
+                    if (regions2)
                     {
-                      [v79 unionSet:v85];
+                      [v79 unionSet:regions2];
                     }
                   }
 
@@ -528,16 +528,16 @@ LABEL_120:
                   goto LABEL_146;
                 }
 
-                v86 = [v68 identifier];
-                if ([v86 isEqualToString:v123])
+                identifier2 = [v68 identifier];
+                if ([identifier2 isEqualToString:v123])
                 {
                   v87 = 1;
                 }
 
                 else
                 {
-                  v88 = [v68 identifier];
-                  v87 = [v88 isEqualToString:v121];
+                  identifier3 = [v68 identifier];
+                  v87 = [identifier3 isEqualToString:v121];
                 }
 
                 if (v124)
@@ -562,9 +562,9 @@ LABEL_120:
                   v92 = PKLogFacilityTypeGetObject();
                   if (os_log_type_enabled(v92, OS_LOG_TYPE_DEFAULT))
                   {
-                    v99 = [v68 identifier];
+                    identifier4 = [v68 identifier];
                     *buf = 138412802;
-                    v164 = v99;
+                    v164 = identifier4;
                     v165 = 2112;
                     v166 = @"NO";
                     v167 = 2112;
@@ -596,8 +596,8 @@ LABEL_146:
                           objc_enumerationMutation(v93);
                         }
 
-                        v98 = [*(*(&v138 + 1) + 8 * m) productIdentifier];
-                        [v92 addObject:v98];
+                        productIdentifier = [*(*(&v138 + 1) + 8 * m) productIdentifier];
+                        [v92 addObject:productIdentifier];
                       }
 
                       v95 = [v93 countByEnumeratingWithState:&v138 objects:v162 count:16];
@@ -621,9 +621,9 @@ LABEL_154:
                     v100 = PKLogFacilityTypeGetObject();
                     if (os_log_type_enabled(v100, OS_LOG_TYPE_DEFAULT))
                     {
-                      v101 = [v68 identifier];
+                      identifier5 = [v68 identifier];
                       *buf = 138412290;
-                      v164 = v101;
+                      v164 = identifier5;
                       v102 = v100;
                       v103 = "Dropping category: %@ as it has no products that are supported";
                       goto LABEL_163;
@@ -632,7 +632,7 @@ LABEL_154:
 
                   else
                   {
-                    if (v119 == 1)
+                    if (paymentSetupSupportedInRegion == 1)
                     {
                       goto LABEL_154;
                     }
@@ -640,9 +640,9 @@ LABEL_154:
                     v100 = PKLogFacilityTypeGetObject();
                     if (os_log_type_enabled(v100, OS_LOG_TYPE_DEFAULT))
                     {
-                      v101 = [v68 identifier];
+                      identifier5 = [v68 identifier];
                       *buf = 138412290;
-                      v164 = v101;
+                      v164 = identifier5;
                       v102 = v100;
                       v103 = "Dropping category: %@ as it has no products and apple pay unsupported";
 LABEL_163:
@@ -659,7 +659,7 @@ LABEL_166:
               v63 = v133;
             }
 
-            v137 = [v129 countByEnumeratingWithState:&v146 objects:v170 count:16];
+            v137 = [categories countByEnumeratingWithState:&v146 objects:v170 count:16];
           }
 
           while (v137);
@@ -685,7 +685,7 @@ LABEL_166:
       }
 
       while (v118 + 1 != v115);
-      v115 = [v110 countByEnumeratingWithState:&v150 objects:v171 count:16];
+      v115 = [allSections countByEnumeratingWithState:&v150 objects:v171 count:16];
     }
 
     while (v115);
@@ -700,16 +700,16 @@ LABEL_166:
 - (uint64_t)_localCredentials:()PKUIUtilities containProduct:
 {
   v5 = a3;
-  v6 = [a4 configuration];
-  v7 = [v6 productIdentifier];
+  configuration = [a4 configuration];
+  productIdentifier = [configuration productIdentifier];
 
-  if (v7)
+  if (productIdentifier)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __78__PKPaymentSetupProductModel_PKUIUtilities___localCredentials_containProduct___block_invoke;
     v10[3] = &unk_1E8021270;
-    v11 = v7;
+    v11 = productIdentifier;
     v8 = [v5 pk_containsObjectPassingTest:v10];
   }
 

@@ -1,20 +1,20 @@
 @interface _MPStoreDownloadBlockObserver
-- (_MPStoreDownloadBlockObserver)initWithDownload:(id)a3;
-- (void)downloadManager:(id)a3 downloadDidFinish:(id)a4;
-- (void)downloadManager:(id)a3 downloadPurchaseDidFinish:(id)a4;
+- (_MPStoreDownloadBlockObserver)initWithDownload:(id)download;
+- (void)downloadManager:(id)manager downloadDidFinish:(id)finish;
+- (void)downloadManager:(id)manager downloadPurchaseDidFinish:(id)finish;
 @end
 
 @implementation _MPStoreDownloadBlockObserver
 
-- (void)downloadManager:(id)a3 downloadPurchaseDidFinish:(id)a4
+- (void)downloadManager:(id)manager downloadPurchaseDidFinish:(id)finish
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  finishCopy = finish;
   didFinishPurchaseHandler = self->_didFinishPurchaseHandler;
   if (didFinishPurchaseHandler)
   {
-    didFinishPurchaseHandler[2](didFinishPurchaseHandler, v7);
+    didFinishPurchaseHandler[2](didFinishPurchaseHandler, finishCopy);
     v9 = self->_didFinishPurchaseHandler;
     self->_didFinishPurchaseHandler = 0;
   }
@@ -34,17 +34,17 @@
   }
 }
 
-- (void)downloadManager:(id)a3 downloadDidFinish:(id)a4
+- (void)downloadManager:(id)manager downloadDidFinish:(id)finish
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (self->_download == v7)
+  managerCopy = manager;
+  finishCopy = finish;
+  if (self->_download == finishCopy)
   {
     didFinishPurchaseHandler = self->_didFinishPurchaseHandler;
     if (didFinishPurchaseHandler)
     {
-      didFinishPurchaseHandler[2](didFinishPurchaseHandler, v7);
+      didFinishPurchaseHandler[2](didFinishPurchaseHandler, finishCopy);
       v9 = self->_didFinishPurchaseHandler;
       self->_didFinishPurchaseHandler = 0;
     }
@@ -52,7 +52,7 @@
     didFinishDownloadHandler = self->_didFinishDownloadHandler;
     if (didFinishDownloadHandler)
     {
-      didFinishDownloadHandler[2](didFinishDownloadHandler, v7);
+      didFinishDownloadHandler[2](didFinishDownloadHandler, finishCopy);
       v11 = self->_didFinishDownloadHandler;
       self->_didFinishDownloadHandler = 0;
     }
@@ -70,21 +70,21 @@
   }
 }
 
-- (_MPStoreDownloadBlockObserver)initWithDownload:(id)a3
+- (_MPStoreDownloadBlockObserver)initWithDownload:(id)download
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  downloadCopy = download;
   v11.receiver = self;
   v11.super_class = _MPStoreDownloadBlockObserver;
   v6 = [(_MPStoreDownloadBlockObserver *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_download, a3);
-    if (v5)
+    objc_storeStrong(&v6->_download, download);
+    if (downloadCopy)
     {
       v8 = +[MPStoreDownloadManager sharedManager];
-      v12[0] = v5;
+      v12[0] = downloadCopy;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
       [v8 addObserver:v7 forDownloads:v9];
     }

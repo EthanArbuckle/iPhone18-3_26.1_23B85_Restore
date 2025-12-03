@@ -1,8 +1,8 @@
 @interface PIReframeKeyframe
-+ (id)keyframesFromDictionaryRepresentations:(id)a3;
++ (id)keyframesFromDictionaryRepresentations:(id)representations;
 - (NSDictionary)dictionaryRepresentation;
-- (PIReframeKeyframe)initWithDictionaryRepresentation:(id)a3;
-- (__n128)initWithTime:(__n128)a3 homography:(__n128)a4;
+- (PIReframeKeyframe)initWithDictionaryRepresentation:(id)representation;
+- (__n128)initWithTime:(__n128)time homography:(__n128)homography;
 - (id)description;
 @end
 
@@ -76,14 +76,14 @@
   return v6;
 }
 
-- (PIReframeKeyframe)initWithDictionaryRepresentation:(id)a3
+- (PIReframeKeyframe)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"timeValue"];
-  v6 = [v4 objectForKeyedSubscript:@"timeScale"];
-  v7 = [v4 objectForKeyedSubscript:@"homography"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"timeValue"];
+  v6 = [representationCopy objectForKeyedSubscript:@"timeScale"];
+  v7 = [representationCopy objectForKeyedSubscript:@"homography"];
 
-  v8 = 0;
+  selfCopy = 0;
   if (v5 && v6)
   {
     if ([v7 count] == 9 && (memset(&v32, 0, sizeof(v32)), CMTimeMake(&v32, objc_msgSend(v5, "longLongValue"), objc_msgSend(v6, "intValue")), (v32.flags & 1) != 0))
@@ -115,43 +115,43 @@
 
       v31 = v32;
       self = [(PIReframeKeyframe *)self initWithTime:&v31 homography:COERCE_DOUBLE(__PAIR64__(v24, v27)), COERCE_DOUBLE(__PAIR64__(v23, v26)), COERCE_DOUBLE(__PAIR64__(v22, v25))];
-      v8 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v8 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (__n128)initWithTime:(__n128)a3 homography:(__n128)a4
+- (__n128)initWithTime:(__n128)time homography:(__n128)homography
 {
-  v13.receiver = a1;
+  v13.receiver = self;
   v13.super_class = PIReframeKeyframe;
   v7 = [(PIReframeKeyframe *)&v13 init];
   v8 = *(a6 + 16);
   *(v7 + 8) = *a6;
   *(v7 + 3) = v8;
   *(v7 + 2) = a2;
-  *(v7 + 3) = a3;
-  result = a4;
-  *(v7 + 4) = a4;
+  *(v7 + 3) = time;
+  result = homography;
+  *(v7 + 4) = homography;
   return result;
 }
 
-+ (id)keyframesFromDictionaryRepresentations:(id)a3
++ (id)keyframesFromDictionaryRepresentations:(id)representations
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  representationsCopy = representations;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(representationsCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = representationsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {

@@ -20,13 +20,13 @@
 
 - (void)prewarm
 {
-  v2 = self;
+  selfCopy = self;
   sub_10040B504();
 }
 
 - (void)userAccountInfoDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_10040BB0C();
 }
 

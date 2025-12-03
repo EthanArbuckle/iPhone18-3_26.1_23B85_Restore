@@ -1,7 +1,7 @@
 @interface FCCheckDraftContentAccessOperation
 - (BOOL)validateOperation;
 - (FCCheckDraftContentAccessOperation)init;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -17,9 +17,9 @@
 - (BOOL)validateOperation
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(FCCheckDraftContentAccessOperation *)self context];
+  context = [(FCCheckDraftContentAccessOperation *)self context];
 
-  if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!context && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"check draft content access operation requires context"];
     v17 = 136315906;
@@ -33,9 +33,9 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v17, 0x26u);
   }
 
-  v4 = [(FCCheckDraftContentAccessOperation *)self channelMemberships];
+  channelMemberships = [(FCCheckDraftContentAccessOperation *)self channelMemberships];
 
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!channelMemberships && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"check draft content access operation requires channel memberships"];
     v17 = 136315906;
@@ -49,8 +49,8 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v17, 0x26u);
   }
 
-  v5 = [(FCCheckDraftContentAccessOperation *)self issueIDs];
-  if (v5)
+  issueIDs = [(FCCheckDraftContentAccessOperation *)self issueIDs];
+  if (issueIDs)
   {
 
 LABEL_10:
@@ -58,9 +58,9 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v6 = [(FCCheckDraftContentAccessOperation *)self articleIDs];
+  articleIDs = [(FCCheckDraftContentAccessOperation *)self articleIDs];
 
-  if (v6)
+  if (articleIDs)
   {
     goto LABEL_10;
   }
@@ -81,9 +81,9 @@ LABEL_10:
 
   v7 = 0;
 LABEL_11:
-  v8 = [(FCCheckDraftContentAccessOperation *)self checkAccessCompletion];
+  checkAccessCompletion = [(FCCheckDraftContentAccessOperation *)self checkAccessCompletion];
 
-  if (!v8 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!checkAccessCompletion && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"check draft content access operation requires completion"];
     v17 = 136315906;
@@ -97,9 +97,9 @@ LABEL_11:
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v17, 0x26u);
   }
 
-  if (v3)
+  if (context)
   {
-    v9 = v4 == 0;
+    v9 = channelMemberships == 0;
   }
 
   else
@@ -117,7 +117,7 @@ LABEL_11:
     v10 = v7;
   }
 
-  if (v8)
+  if (checkAccessCompletion)
   {
     result = v10;
   }
@@ -134,15 +134,15 @@ LABEL_11:
 - (void)performOperation
 {
   v62 = *MEMORY[0x1E69E9840];
-  v3 = [(FCCheckDraftContentAccessOperation *)self channelMemberships];
-  v4 = [(FCCheckDraftContentAccessOperation *)self articleIDs];
-  v5 = [(FCCheckDraftContentAccessOperation *)self issueIDs];
+  channelMemberships = [(FCCheckDraftContentAccessOperation *)self channelMemberships];
+  articleIDs = [(FCCheckDraftContentAccessOperation *)self articleIDs];
+  issueIDs = [(FCCheckDraftContentAccessOperation *)self issueIDs];
   v6 = objc_opt_new();
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v7 = v4;
+  v7 = articleIDs;
   v8 = [v7 countByEnumeratingWithState:&v50 objects:v61 count:16];
   if (v8)
   {
@@ -170,7 +170,7 @@ LABEL_11:
   v49 = 0u;
   v47 = 0u;
   v46 = 0u;
-  v12 = v5;
+  v12 = issueIDs;
   v13 = [v12 countByEnumeratingWithState:&v46 objects:v60 count:16];
   if (v13)
   {
@@ -198,7 +198,7 @@ LABEL_11:
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v17 = v3;
+  v17 = channelMemberships;
   v18 = [v17 countByEnumeratingWithState:&v42 objects:v59 count:16];
   if (v18)
   {
@@ -214,11 +214,11 @@ LABEL_11:
         }
 
         v22 = *(*(&v42 + 1) + 8 * k);
-        v23 = [v22 draftIssueListID];
-        [v6 fc_safelyAddObject:v23];
+        draftIssueListID = [v22 draftIssueListID];
+        [v6 fc_safelyAddObject:draftIssueListID];
 
-        v24 = [v22 draftArticleListID];
-        [v6 fc_safelyAddObject:v24];
+        draftArticleListID = [v22 draftArticleListID];
+        [v6 fc_safelyAddObject:draftArticleListID];
       }
 
       v19 = [v17 countByEnumeratingWithState:&v42 objects:v59 count:16];
@@ -228,13 +228,13 @@ LABEL_11:
   }
 
   v25 = objc_opt_new();
-  v26 = [(FCCheckDraftContentAccessOperation *)self context];
-  [v25 setContext:v26];
+  context = [(FCCheckDraftContentAccessOperation *)self context];
+  [v25 setContext:context];
 
-  v27 = [v6 allObjects];
-  [v25 setTopLevelRecordIDs:v27];
+  allObjects = [v6 allObjects];
+  [v25 setTopLevelRecordIDs:allObjects];
 
-  v38 = self;
+  selfCopy = self;
   v57[0] = @"Article";
   v57[1] = @"ArticleList";
   v58[0] = MEMORY[0x1E695E0F0];
@@ -268,13 +268,13 @@ LABEL_11:
   v39[1] = 3221225472;
   v39[2] = __54__FCCheckDraftContentAccessOperation_performOperation__block_invoke;
   v39[3] = &unk_1E7C417A0;
-  v39[4] = v38;
+  v39[4] = selfCopy;
   v40 = v12;
   v41 = v7;
   v35 = v7;
   v36 = v12;
   [v25 setRecordChainCompletionHandler:v39];
-  [(FCOperation *)v38 associateChildOperation:v25];
+  [(FCOperation *)selfCopy associateChildOperation:v25];
   [v25 start];
 
   v37 = *MEMORY[0x1E69E9840];
@@ -552,12 +552,12 @@ void __54__FCCheckDraftContentAccessOperation_performOperation__block_invoke_26(
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v4 = a3;
-  v6 = [(FCCheckDraftContentAccessOperation *)self checkAccessCompletion];
-  v5 = [(FCCheckDraftContentAccessOperation *)self resultAccessByContentID];
-  v6[2](v6, v5, v4);
+  errorCopy = error;
+  checkAccessCompletion = [(FCCheckDraftContentAccessOperation *)self checkAccessCompletion];
+  resultAccessByContentID = [(FCCheckDraftContentAccessOperation *)self resultAccessByContentID];
+  checkAccessCompletion[2](checkAccessCompletion, resultAccessByContentID, errorCopy);
 }
 
 @end

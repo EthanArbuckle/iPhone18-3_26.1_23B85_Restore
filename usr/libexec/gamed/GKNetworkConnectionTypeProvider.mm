@@ -6,7 +6,7 @@
 
 - (NSString)connectionType
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001BA8C8();
   v4 = v3;
 

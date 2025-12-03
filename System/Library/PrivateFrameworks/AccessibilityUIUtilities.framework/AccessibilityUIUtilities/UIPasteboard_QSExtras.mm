@@ -2,102 +2,102 @@
 + (BOOL)_accessibilityUseQuickSpeakPasteBoard;
 + (id)_accessibilityQuickSpeakPasteboard;
 + (id)generalPasteboard;
-+ (id)pasteboardWithName:(id)a3 create:(BOOL)a4;
++ (id)pasteboardWithName:(id)name create:(BOOL)create;
 + (id)pasteboardWithUniqueName;
-+ (void)_accessibilitySetUseQuickSpeakPasteBoard:(BOOL)a3;
++ (void)_accessibilitySetUseQuickSpeakPasteBoard:(BOOL)board;
 - (BOOL)_accessibilityShouldSwapReceiverWithQuickSpeakPasteboard;
-- (BOOL)containsPasteboardTypes:(id)a3;
-- (BOOL)containsPasteboardTypes:(id)a3 inItemSet:(id)a4;
+- (BOOL)containsPasteboardTypes:(id)types;
+- (BOOL)containsPasteboardTypes:(id)types inItemSet:(id)set;
 - (id)URL;
 - (id)URLs;
 - (id)color;
 - (id)colors;
-- (id)dataForPasteboardType:(id)a3;
-- (id)dataForPasteboardType:(id)a3 inItemSet:(id)a4;
+- (id)dataForPasteboardType:(id)type;
+- (id)dataForPasteboardType:(id)type inItemSet:(id)set;
 - (id)image;
 - (id)images;
-- (id)itemSetWithPasteboardTypes:(id)a3;
+- (id)itemSetWithPasteboardTypes:(id)types;
 - (id)items;
 - (id)pasteboardTypes;
-- (id)pasteboardTypesForItemSet:(id)a3;
+- (id)pasteboardTypesForItemSet:(id)set;
 - (id)string;
 - (id)strings;
-- (id)valueForPasteboardType:(id)a3;
-- (id)valuesForPasteboardType:(id)a3 inItemSet:(id)a4;
+- (id)valueForPasteboardType:(id)type;
+- (id)valuesForPasteboardType:(id)type inItemSet:(id)set;
 - (int64_t)changeCount;
 - (int64_t)numberOfItems;
-- (void)addItems:(id)a3;
-- (void)setData:(id)a3 forPasteboardType:(id)a4;
-- (void)setItems:(id)a3;
-- (void)setStrings:(id)a3;
-- (void)setValue:(id)a3 forPasteboardType:(id)a4;
+- (void)addItems:(id)items;
+- (void)setData:(id)data forPasteboardType:(id)type;
+- (void)setItems:(id)items;
+- (void)setStrings:(id)strings;
+- (void)setValue:(id)value forPasteboardType:(id)type;
 @end
 
 @implementation UIPasteboard_QSExtras
 
 + (id)generalPasteboard
 {
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [a1 _accessibilityUseQuickSpeakPasteBoard])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [self _accessibilityUseQuickSpeakPasteBoard])
   {
-    v3 = [a1 _accessibilityQuickSpeakPasteboard];
+    _accessibilityQuickSpeakPasteboard = [self _accessibilityQuickSpeakPasteboard];
   }
 
   else
   {
-    v5.receiver = a1;
+    v5.receiver = self;
     v5.super_class = &OBJC_METACLASS___UIPasteboard_QSExtras;
-    v3 = objc_msgSendSuper2(&v5, sel_generalPasteboard);
+    _accessibilityQuickSpeakPasteboard = objc_msgSendSuper2(&v5, sel_generalPasteboard);
   }
 
-  return v3;
+  return _accessibilityQuickSpeakPasteboard;
 }
 
-+ (id)pasteboardWithName:(id)a3 create:(BOOL)a4
++ (id)pasteboardWithName:(id)name create:(BOOL)create
 {
-  v4 = a4;
-  v6 = a3;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [a1 _accessibilityUseQuickSpeakPasteBoard])
+  createCopy = create;
+  nameCopy = name;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [self _accessibilityUseQuickSpeakPasteBoard])
   {
-    v7 = [a1 _accessibilityQuickSpeakPasteboard];
+    _accessibilityQuickSpeakPasteboard = [self _accessibilityQuickSpeakPasteboard];
   }
 
   else
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &OBJC_METACLASS___UIPasteboard_QSExtras;
-    v7 = objc_msgSendSuper2(&v10, sel_pasteboardWithName_create_, v6, v4);
+    _accessibilityQuickSpeakPasteboard = objc_msgSendSuper2(&v10, sel_pasteboardWithName_create_, nameCopy, createCopy);
   }
 
-  v8 = v7;
+  v8 = _accessibilityQuickSpeakPasteboard;
 
   return v8;
 }
 
 + (id)pasteboardWithUniqueName
 {
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [a1 _accessibilityUseQuickSpeakPasteBoard])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [self _accessibilityUseQuickSpeakPasteBoard])
   {
-    v3 = [a1 _accessibilityQuickSpeakPasteboard];
+    _accessibilityQuickSpeakPasteboard = [self _accessibilityQuickSpeakPasteboard];
   }
 
   else
   {
-    v5.receiver = a1;
+    v5.receiver = self;
     v5.super_class = &OBJC_METACLASS___UIPasteboard_QSExtras;
-    v3 = objc_msgSendSuper2(&v5, sel_pasteboardWithUniqueName);
+    _accessibilityQuickSpeakPasteboard = objc_msgSendSuper2(&v5, sel_pasteboardWithUniqueName);
   }
 
-  return v3;
+  return _accessibilityQuickSpeakPasteboard;
 }
 
 - (int64_t)changeCount
 {
   if ([(UIPasteboard_QSExtras *)self _accessibilityShouldSwapReceiverWithQuickSpeakPasteboard])
   {
-    v3 = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
-    v4 = [v3 changeCount];
+    _accessibilityQuickSpeakPasteboard = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
+    changeCount = [_accessibilityQuickSpeakPasteboard changeCount];
 
-    return v4;
+    return changeCount;
   }
 
   else
@@ -112,110 +112,110 @@
 {
   if ([(UIPasteboard_QSExtras *)self _accessibilityShouldSwapReceiverWithQuickSpeakPasteboard])
   {
-    v3 = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
-    v4 = [v3 pasteboardTypes];
+    _accessibilityQuickSpeakPasteboard = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
+    pasteboardTypes = [_accessibilityQuickSpeakPasteboard pasteboardTypes];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = UIPasteboard_QSExtras;
-    v4 = [(UIPasteboard_QSExtras *)&v6 pasteboardTypes];
+    pasteboardTypes = [(UIPasteboard_QSExtras *)&v6 pasteboardTypes];
   }
 
-  return v4;
+  return pasteboardTypes;
 }
 
-- (BOOL)containsPasteboardTypes:(id)a3
+- (BOOL)containsPasteboardTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   if ([(UIPasteboard_QSExtras *)self _accessibilityShouldSwapReceiverWithQuickSpeakPasteboard])
   {
-    v5 = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
-    v6 = [v5 containsPasteboardTypes:v4];
+    _accessibilityQuickSpeakPasteboard = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
+    v6 = [_accessibilityQuickSpeakPasteboard containsPasteboardTypes:typesCopy];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = UIPasteboard_QSExtras;
-    v6 = [(UIPasteboard_QSExtras *)&v8 containsPasteboardTypes:v4];
+    v6 = [(UIPasteboard_QSExtras *)&v8 containsPasteboardTypes:typesCopy];
   }
 
   return v6;
 }
 
-- (id)dataForPasteboardType:(id)a3
+- (id)dataForPasteboardType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   if ([(UIPasteboard_QSExtras *)self _accessibilityShouldSwapReceiverWithQuickSpeakPasteboard])
   {
-    v5 = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
-    v6 = [v5 dataForPasteboardType:v4];
+    _accessibilityQuickSpeakPasteboard = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
+    v6 = [_accessibilityQuickSpeakPasteboard dataForPasteboardType:typeCopy];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = UIPasteboard_QSExtras;
-    v6 = [(UIPasteboard_QSExtras *)&v8 dataForPasteboardType:v4];
+    v6 = [(UIPasteboard_QSExtras *)&v8 dataForPasteboardType:typeCopy];
   }
 
   return v6;
 }
 
-- (id)valueForPasteboardType:(id)a3
+- (id)valueForPasteboardType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   if ([(UIPasteboard_QSExtras *)self _accessibilityShouldSwapReceiverWithQuickSpeakPasteboard])
   {
-    v5 = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
-    v6 = [v5 valueForPasteboardType:v4];
+    _accessibilityQuickSpeakPasteboard = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
+    v6 = [_accessibilityQuickSpeakPasteboard valueForPasteboardType:typeCopy];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = UIPasteboard_QSExtras;
-    v6 = [(UIPasteboard_QSExtras *)&v8 valueForPasteboardType:v4];
+    v6 = [(UIPasteboard_QSExtras *)&v8 valueForPasteboardType:typeCopy];
   }
 
   return v6;
 }
 
-- (void)setValue:(id)a3 forPasteboardType:(id)a4
+- (void)setValue:(id)value forPasteboardType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  typeCopy = type;
   if ([(UIPasteboard_QSExtras *)self _accessibilityShouldSwapReceiverWithQuickSpeakPasteboard])
   {
-    v8 = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
-    [v8 setValue:v6 forPasteboardType:v7];
+    _accessibilityQuickSpeakPasteboard = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
+    [_accessibilityQuickSpeakPasteboard setValue:valueCopy forPasteboardType:typeCopy];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = UIPasteboard_QSExtras;
-    [(UIPasteboard_QSExtras *)&v9 setValue:v6 forPasteboardType:v7];
+    [(UIPasteboard_QSExtras *)&v9 setValue:valueCopy forPasteboardType:typeCopy];
   }
 }
 
-- (void)setData:(id)a3 forPasteboardType:(id)a4
+- (void)setData:(id)data forPasteboardType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  typeCopy = type;
   if ([(UIPasteboard_QSExtras *)self _accessibilityShouldSwapReceiverWithQuickSpeakPasteboard])
   {
-    v8 = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
-    [v8 setData:v6 forPasteboardType:v7];
+    _accessibilityQuickSpeakPasteboard = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
+    [_accessibilityQuickSpeakPasteboard setData:dataCopy forPasteboardType:typeCopy];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = UIPasteboard_QSExtras;
-    [(UIPasteboard_QSExtras *)&v9 setData:v6 forPasteboardType:v7];
+    [(UIPasteboard_QSExtras *)&v9 setData:dataCopy forPasteboardType:typeCopy];
   }
 }
 
@@ -223,10 +223,10 @@
 {
   if ([(UIPasteboard_QSExtras *)self _accessibilityShouldSwapReceiverWithQuickSpeakPasteboard])
   {
-    v3 = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
-    v4 = [v3 numberOfItems];
+    _accessibilityQuickSpeakPasteboard = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
+    numberOfItems = [_accessibilityQuickSpeakPasteboard numberOfItems];
 
-    return v4;
+    return numberOfItems;
   }
 
   else
@@ -237,116 +237,116 @@
   }
 }
 
-- (id)pasteboardTypesForItemSet:(id)a3
+- (id)pasteboardTypesForItemSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   if ([(UIPasteboard_QSExtras *)self _accessibilityShouldSwapReceiverWithQuickSpeakPasteboard])
   {
-    v5 = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
-    v6 = [v5 pasteboardTypesForItemSet:v4];
+    _accessibilityQuickSpeakPasteboard = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
+    v6 = [_accessibilityQuickSpeakPasteboard pasteboardTypesForItemSet:setCopy];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = UIPasteboard_QSExtras;
-    v6 = [(UIPasteboard_QSExtras *)&v8 pasteboardTypesForItemSet:v4];
+    v6 = [(UIPasteboard_QSExtras *)&v8 pasteboardTypesForItemSet:setCopy];
   }
 
   return v6;
 }
 
-- (void)setStrings:(id)a3
+- (void)setStrings:(id)strings
 {
-  v4 = a3;
+  stringsCopy = strings;
   if ([(UIPasteboard_QSExtras *)self _accessibilityShouldSwapReceiverWithQuickSpeakPasteboard])
   {
-    v5 = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
-    [v5 setStrings:v4];
+    _accessibilityQuickSpeakPasteboard = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
+    [_accessibilityQuickSpeakPasteboard setStrings:stringsCopy];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = UIPasteboard_QSExtras;
-    [(UIPasteboard_QSExtras *)&v6 setStrings:v4];
+    [(UIPasteboard_QSExtras *)&v6 setStrings:stringsCopy];
   }
 }
 
-- (BOOL)containsPasteboardTypes:(id)a3 inItemSet:(id)a4
+- (BOOL)containsPasteboardTypes:(id)types inItemSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
+  typesCopy = types;
+  setCopy = set;
   if ([(UIPasteboard_QSExtras *)self _accessibilityShouldSwapReceiverWithQuickSpeakPasteboard])
   {
-    v8 = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
-    v9 = [v8 containsPasteboardTypes:v6 inItemSet:v7];
+    _accessibilityQuickSpeakPasteboard = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
+    v9 = [_accessibilityQuickSpeakPasteboard containsPasteboardTypes:typesCopy inItemSet:setCopy];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = UIPasteboard_QSExtras;
-    v9 = [(UIPasteboard_QSExtras *)&v11 containsPasteboardTypes:v6 inItemSet:v7];
+    v9 = [(UIPasteboard_QSExtras *)&v11 containsPasteboardTypes:typesCopy inItemSet:setCopy];
   }
 
   return v9;
 }
 
-- (id)itemSetWithPasteboardTypes:(id)a3
+- (id)itemSetWithPasteboardTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   if ([(UIPasteboard_QSExtras *)self _accessibilityShouldSwapReceiverWithQuickSpeakPasteboard])
   {
-    v5 = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
-    v6 = [v5 itemSetWithPasteboardTypes:v4];
+    _accessibilityQuickSpeakPasteboard = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
+    v6 = [_accessibilityQuickSpeakPasteboard itemSetWithPasteboardTypes:typesCopy];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = UIPasteboard_QSExtras;
-    v6 = [(UIPasteboard_QSExtras *)&v8 itemSetWithPasteboardTypes:v4];
+    v6 = [(UIPasteboard_QSExtras *)&v8 itemSetWithPasteboardTypes:typesCopy];
   }
 
   return v6;
 }
 
-- (id)valuesForPasteboardType:(id)a3 inItemSet:(id)a4
+- (id)valuesForPasteboardType:(id)type inItemSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  setCopy = set;
   if ([(UIPasteboard_QSExtras *)self _accessibilityShouldSwapReceiverWithQuickSpeakPasteboard])
   {
-    v8 = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
-    v9 = [v8 valuesForPasteboardType:v6 inItemSet:v7];
+    _accessibilityQuickSpeakPasteboard = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
+    v9 = [_accessibilityQuickSpeakPasteboard valuesForPasteboardType:typeCopy inItemSet:setCopy];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = UIPasteboard_QSExtras;
-    v9 = [(UIPasteboard_QSExtras *)&v11 valuesForPasteboardType:v6 inItemSet:v7];
+    v9 = [(UIPasteboard_QSExtras *)&v11 valuesForPasteboardType:typeCopy inItemSet:setCopy];
   }
 
   return v9;
 }
 
-- (id)dataForPasteboardType:(id)a3 inItemSet:(id)a4
+- (id)dataForPasteboardType:(id)type inItemSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  setCopy = set;
   if ([(UIPasteboard_QSExtras *)self _accessibilityShouldSwapReceiverWithQuickSpeakPasteboard])
   {
-    v8 = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
-    v9 = [v8 dataForPasteboardType:v6 inItemSet:v7];
+    _accessibilityQuickSpeakPasteboard = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
+    v9 = [_accessibilityQuickSpeakPasteboard dataForPasteboardType:typeCopy inItemSet:setCopy];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = UIPasteboard_QSExtras;
-    v9 = [(UIPasteboard_QSExtras *)&v11 dataForPasteboardType:v6 inItemSet:v7];
+    v9 = [(UIPasteboard_QSExtras *)&v11 dataForPasteboardType:typeCopy inItemSet:setCopy];
   }
 
   return v9;
@@ -356,51 +356,51 @@
 {
   if ([(UIPasteboard_QSExtras *)self _accessibilityShouldSwapReceiverWithQuickSpeakPasteboard])
   {
-    v3 = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
-    v4 = [v3 items];
+    _accessibilityQuickSpeakPasteboard = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
+    items = [_accessibilityQuickSpeakPasteboard items];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = UIPasteboard_QSExtras;
-    v4 = [(UIPasteboard_QSExtras *)&v6 items];
+    items = [(UIPasteboard_QSExtras *)&v6 items];
   }
 
-  return v4;
+  return items;
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   if ([(UIPasteboard_QSExtras *)self _accessibilityShouldSwapReceiverWithQuickSpeakPasteboard])
   {
-    v5 = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
-    [v5 setItems:v4];
+    _accessibilityQuickSpeakPasteboard = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
+    [_accessibilityQuickSpeakPasteboard setItems:itemsCopy];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = UIPasteboard_QSExtras;
-    [(UIPasteboard_QSExtras *)&v6 setItems:v4];
+    [(UIPasteboard_QSExtras *)&v6 setItems:itemsCopy];
   }
 }
 
-- (void)addItems:(id)a3
+- (void)addItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   if ([(UIPasteboard_QSExtras *)self _accessibilityShouldSwapReceiverWithQuickSpeakPasteboard])
   {
-    v5 = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
-    [v5 addItems:v4];
+    _accessibilityQuickSpeakPasteboard = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
+    [_accessibilityQuickSpeakPasteboard addItems:itemsCopy];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = UIPasteboard_QSExtras;
-    [(UIPasteboard_QSExtras *)&v6 addItems:v4];
+    [(UIPasteboard_QSExtras *)&v6 addItems:itemsCopy];
   }
 }
 
@@ -408,44 +408,44 @@
 {
   if ([(UIPasteboard_QSExtras *)self _accessibilityShouldSwapReceiverWithQuickSpeakPasteboard])
   {
-    v3 = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
-    v4 = [v3 string];
+    _accessibilityQuickSpeakPasteboard = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
+    string = [_accessibilityQuickSpeakPasteboard string];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = UIPasteboard_QSExtras;
-    v4 = [(UIPasteboard_QSExtras *)&v6 string];
+    string = [(UIPasteboard_QSExtras *)&v6 string];
   }
 
-  return v4;
+  return string;
 }
 
 - (id)strings
 {
   if ([(UIPasteboard_QSExtras *)self _accessibilityShouldSwapReceiverWithQuickSpeakPasteboard])
   {
-    v3 = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
-    v4 = [v3 strings];
+    _accessibilityQuickSpeakPasteboard = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
+    strings = [_accessibilityQuickSpeakPasteboard strings];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = UIPasteboard_QSExtras;
-    v4 = [(UIPasteboard_QSExtras *)&v6 strings];
+    strings = [(UIPasteboard_QSExtras *)&v6 strings];
   }
 
-  return v4;
+  return strings;
 }
 
 - (id)URL
 {
   if ([(UIPasteboard_QSExtras *)self _accessibilityShouldSwapReceiverWithQuickSpeakPasteboard])
   {
-    v3 = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
-    v4 = [v3 URL];
+    _accessibilityQuickSpeakPasteboard = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
+    v4 = [_accessibilityQuickSpeakPasteboard URL];
   }
 
   else
@@ -462,121 +462,121 @@
 {
   if ([(UIPasteboard_QSExtras *)self _accessibilityShouldSwapReceiverWithQuickSpeakPasteboard])
   {
-    v3 = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
-    v4 = [v3 URLs];
+    _accessibilityQuickSpeakPasteboard = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
+    uRLs = [_accessibilityQuickSpeakPasteboard URLs];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = UIPasteboard_QSExtras;
-    v4 = [(UIPasteboard_QSExtras *)&v6 URLs];
+    uRLs = [(UIPasteboard_QSExtras *)&v6 URLs];
   }
 
-  return v4;
+  return uRLs;
 }
 
 - (id)image
 {
   if ([(UIPasteboard_QSExtras *)self _accessibilityShouldSwapReceiverWithQuickSpeakPasteboard])
   {
-    v3 = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
-    v4 = [v3 image];
+    _accessibilityQuickSpeakPasteboard = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
+    image = [_accessibilityQuickSpeakPasteboard image];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = UIPasteboard_QSExtras;
-    v4 = [(UIPasteboard_QSExtras *)&v6 image];
+    image = [(UIPasteboard_QSExtras *)&v6 image];
   }
 
-  return v4;
+  return image;
 }
 
 - (id)images
 {
   if ([(UIPasteboard_QSExtras *)self _accessibilityShouldSwapReceiverWithQuickSpeakPasteboard])
   {
-    v3 = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
-    v4 = [v3 images];
+    _accessibilityQuickSpeakPasteboard = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
+    images = [_accessibilityQuickSpeakPasteboard images];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = UIPasteboard_QSExtras;
-    v4 = [(UIPasteboard_QSExtras *)&v6 images];
+    images = [(UIPasteboard_QSExtras *)&v6 images];
   }
 
-  return v4;
+  return images;
 }
 
 - (id)color
 {
   if ([(UIPasteboard_QSExtras *)self _accessibilityShouldSwapReceiverWithQuickSpeakPasteboard])
   {
-    v3 = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
-    v4 = [v3 color];
+    _accessibilityQuickSpeakPasteboard = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
+    color = [_accessibilityQuickSpeakPasteboard color];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = UIPasteboard_QSExtras;
-    v4 = [(UIPasteboard_QSExtras *)&v6 color];
+    color = [(UIPasteboard_QSExtras *)&v6 color];
   }
 
-  return v4;
+  return color;
 }
 
 - (id)colors
 {
   if ([(UIPasteboard_QSExtras *)self _accessibilityShouldSwapReceiverWithQuickSpeakPasteboard])
   {
-    v3 = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
-    v4 = [v3 colors];
+    _accessibilityQuickSpeakPasteboard = [objc_opt_class() _accessibilityQuickSpeakPasteboard];
+    colors = [_accessibilityQuickSpeakPasteboard colors];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = UIPasteboard_QSExtras;
-    v4 = [(UIPasteboard_QSExtras *)&v6 colors];
+    colors = [(UIPasteboard_QSExtras *)&v6 colors];
   }
 
-  return v4;
+  return colors;
 }
 
 + (BOOL)_accessibilityUseQuickSpeakPasteBoard
 {
-  v2 = objc_getAssociatedObject(a1, &QuickSpeakUsePBFlagStorageKey);
-  v3 = [v2 BOOLValue];
+  v2 = objc_getAssociatedObject(self, &QuickSpeakUsePBFlagStorageKey);
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-+ (void)_accessibilitySetUseQuickSpeakPasteBoard:(BOOL)a3
++ (void)_accessibilitySetUseQuickSpeakPasteBoard:(BOOL)board
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  objc_setAssociatedObject(a1, &QuickSpeakUsePBFlagStorageKey, v5, 1);
+  objc_setAssociatedObject(self, &QuickSpeakUsePBFlagStorageKey, v5, 1);
 
-  if (!a3)
+  if (!board)
   {
 
-    objc_setAssociatedObject(a1, &QuickSpeakPasteboardStorageKey, 0, 1);
+    objc_setAssociatedObject(self, &QuickSpeakPasteboardStorageKey, 0, 1);
   }
 }
 
 + (id)_accessibilityQuickSpeakPasteboard
 {
-  v3 = objc_getAssociatedObject(a1, &QuickSpeakPasteboardStorageKey);
+  v3 = objc_getAssociatedObject(self, &QuickSpeakPasteboardStorageKey);
   if (!v3)
   {
-    v5.receiver = a1;
+    v5.receiver = self;
     v5.super_class = &OBJC_METACLASS___UIPasteboard_QSExtras;
     v3 = objc_msgSendSuper2(&v5, sel_pasteboardWithName_create_, @"QuickSpeakPasteboard", 1);
-    objc_setAssociatedObject(a1, &QuickSpeakPasteboardStorageKey, v3, 1);
+    objc_setAssociatedObject(self, &QuickSpeakPasteboardStorageKey, v3, 1);
   }
 
   return v3;

@@ -1,9 +1,9 @@
 @interface ICBuyProductRequest
-- (ICBuyProductRequest)initWithRequestContext:(id)a3 buyParameters:(id)a4 includeKeybagSyncData:(BOOL)a5;
-- (ICBuyProductRequest)initWithRequestContext:(id)a3 buyParametersString:(id)a4 includeKeybagSyncData:(BOOL)a5;
+- (ICBuyProductRequest)initWithRequestContext:(id)context buyParameters:(id)parameters includeKeybagSyncData:(BOOL)data;
+- (ICBuyProductRequest)initWithRequestContext:(id)context buyParametersString:(id)string includeKeybagSyncData:(BOOL)data;
 - (void)cancel;
 - (void)execute;
-- (void)performRequestWithResponseHandler:(id)a3;
+- (void)performRequestWithResponseHandler:(id)handler;
 @end
 
 @implementation ICBuyProductRequest
@@ -25,7 +25,7 @@
   {
     buyParameters = self->_buyParameters;
     *buf = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
     v11 = buyParameters;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Performing BuyProdcut request with params %{public}@", buf, 0x16u);
@@ -288,42 +288,42 @@ LABEL_6:
   [*(a1 + 32) finishWithError:v5];
 }
 
-- (void)performRequestWithResponseHandler:(id)a3
+- (void)performRequestWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MEMORY[0x1E696ADC8] ic_sharedRequestOperationQueueWithQualityOfService:25];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__ICBuyProductRequest_performRequestWithResponseHandler___block_invoke;
   v7[3] = &unk_1E7BFA490;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(ICRequestOperation *)self performRequestOnOperationQueue:v5 withCompletionHandler:v7];
 }
 
-- (ICBuyProductRequest)initWithRequestContext:(id)a3 buyParametersString:(id)a4 includeKeybagSyncData:(BOOL)a5
+- (ICBuyProductRequest)initWithRequestContext:(id)context buyParametersString:(id)string includeKeybagSyncData:(BOOL)data
 {
-  v5 = a5;
+  dataCopy = data;
   v8 = MEMORY[0x1E695DFF8];
-  v9 = a3;
-  v10 = [v8 ic_queryParametersDictionaryFromString:a4];
-  v11 = [(ICBuyProductRequest *)self initWithRequestContext:v9 buyParameters:v10 includeKeybagSyncData:v5];
+  contextCopy = context;
+  v10 = [v8 ic_queryParametersDictionaryFromString:string];
+  v11 = [(ICBuyProductRequest *)self initWithRequestContext:contextCopy buyParameters:v10 includeKeybagSyncData:dataCopy];
 
   return v11;
 }
 
-- (ICBuyProductRequest)initWithRequestContext:(id)a3 buyParameters:(id)a4 includeKeybagSyncData:(BOOL)a5
+- (ICBuyProductRequest)initWithRequestContext:(id)context buyParameters:(id)parameters includeKeybagSyncData:(BOOL)data
 {
-  v9 = a3;
-  v10 = a4;
+  contextCopy = context;
+  parametersCopy = parameters;
   v11 = [(ICRequestOperation *)self init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_requestContext, a3);
-    objc_storeStrong(&v12->_buyParameters, a4);
-    v12->_includeKeybagSyncData = a5;
+    objc_storeStrong(&v11->_requestContext, context);
+    objc_storeStrong(&v12->_buyParameters, parameters);
+    v12->_includeKeybagSyncData = data;
   }
 
   return v12;

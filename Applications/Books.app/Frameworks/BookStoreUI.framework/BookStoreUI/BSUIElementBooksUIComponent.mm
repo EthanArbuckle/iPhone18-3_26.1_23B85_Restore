@@ -1,17 +1,17 @@
 @interface BSUIElementBooksUIComponent
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation BSUIElementBooksUIComponent
 
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  var0 = a4.var0;
-  v8 = a3;
-  v10 = [a5 objectForAttribute:217 node:var0];
+  var0 = node.var0;
+  boxCopy = box;
+  v10 = [attributes objectForAttribute:217 node:var0];
   objc_opt_class();
   v9 = TUIDynamicCast();
-  [v8 setRawComponentModel:v9];
+  [boxCopy setRawComponentModel:v9];
 }
 
 @end

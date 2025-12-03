@@ -1,10 +1,10 @@
 @interface AASignedOutAccountKeychain
 - (AASignedOutAccountKeychain)init;
-- (AASignedOutAccountKeychain)initWithKeychainManagerStore:(id)a3;
+- (AASignedOutAccountKeychain)initWithKeychainManagerStore:(id)store;
 - (id)_lastSignedOutAccountDescriptor;
-- (id)fetchLastSignedOutAccountAltDSID:(id *)a3;
-- (void)deleteLastSignedOutAccountAltDSID:(id *)a3;
-- (void)setLastSignedOutAccountAltDSID:(id)a3 error:(id *)a4;
+- (id)fetchLastSignedOutAccountAltDSID:(id *)d;
+- (void)deleteLastSignedOutAccountAltDSID:(id *)d;
+- (void)setLastSignedOutAccountAltDSID:(id)d error:(id *)error;
 @end
 
 @implementation AASignedOutAccountKeychain
@@ -24,33 +24,33 @@
   return v2;
 }
 
-- (AASignedOutAccountKeychain)initWithKeychainManagerStore:(id)a3
+- (AASignedOutAccountKeychain)initWithKeychainManagerStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = AASignedOutAccountKeychain;
   v6 = [(AASignedOutAccountKeychain *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_keychainManager, a3);
+    objc_storeStrong(&v6->_keychainManager, store);
   }
 
   return v7;
 }
 
-- (id)fetchLastSignedOutAccountAltDSID:(id *)a3
+- (id)fetchLastSignedOutAccountAltDSID:(id *)d
 {
-  v5 = [(AASignedOutAccountKeychain *)self _lastSignedOutAccountDescriptor];
+  _lastSignedOutAccountDescriptor = [(AASignedOutAccountKeychain *)self _lastSignedOutAccountDescriptor];
   keychainManager = self->_keychainManager;
   v21 = 0;
-  v7 = [(AAKeychainManagerStore *)keychainManager aa_keychainItemForDescriptor:v5 error:&v21];
+  v7 = [(AAKeychainManagerStore *)keychainManager aa_keychainItemForDescriptor:_lastSignedOutAccountDescriptor error:&v21];
   v8 = v21;
-  v9 = [v7 value];
+  value = [v7 value];
   if ([v8 code] == -25300)
   {
-    v10 = [v8 domain];
-    v11 = [v10 isEqualToString:*MEMORY[0x1E696A768]];
+    domain = [v8 domain];
+    v11 = [domain isEqualToString:*MEMORY[0x1E696A768]];
 
     if (v11)
     {
@@ -62,11 +62,11 @@
 
 LABEL_8:
 
-      if (a3)
+      if (d)
       {
         v13 = v8;
         v14 = 0;
-        *a3 = v8;
+        *d = v8;
       }
 
       else
@@ -90,9 +90,9 @@ LABEL_8:
   }
 
   v20 = 0;
-  v15 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v9 error:&v20];
+  v15 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:value error:&v20];
   v16 = v20;
-  if (v9)
+  if (value)
   {
     v14 = v15;
   }
@@ -105,11 +105,11 @@ LABEL_8:
       [AASignedOutAccountKeychain fetchLastSignedOutAccountAltDSID:];
     }
 
-    if (a3)
+    if (d)
     {
       v18 = v16;
       v14 = 0;
-      *a3 = v16;
+      *d = v16;
     }
 
     else
@@ -123,15 +123,15 @@ LABEL_19:
   return v14;
 }
 
-- (void)setLastSignedOutAccountAltDSID:(id)a3 error:(id *)a4
+- (void)setLastSignedOutAccountAltDSID:(id)d error:(id *)error
 {
   v17 = 0;
-  v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v17];
+  v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:d requiringSecureCoding:1 error:&v17];
   v7 = v17;
   if (v6)
   {
-    v8 = [(AASignedOutAccountKeychain *)self _lastSignedOutAccountDescriptor];
-    v9 = [objc_alloc(MEMORY[0x1E6985DE0]) initWithDescriptor:v8 value:v6];
+    _lastSignedOutAccountDescriptor = [(AASignedOutAccountKeychain *)self _lastSignedOutAccountDescriptor];
+    v9 = [objc_alloc(MEMORY[0x1E6985DE0]) initWithDescriptor:_lastSignedOutAccountDescriptor value:v6];
     keychainManager = self->_keychainManager;
     v16 = 0;
     [(AAKeychainManagerStore *)keychainManager aa_addOrUpdateKeychainItem:v9 error:&v16];
@@ -144,10 +144,10 @@ LABEL_19:
         [AASignedOutAccountKeychain setLastSignedOutAccountAltDSID:error:];
       }
 
-      if (a4)
+      if (error)
       {
         v13 = v11;
-        *a4 = v11;
+        *error = v11;
       }
     }
   }
@@ -160,24 +160,24 @@ LABEL_19:
       [AASignedOutAccountKeychain setLastSignedOutAccountAltDSID:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v15 = v7;
-      *a4 = v7;
+      *error = v7;
     }
   }
 }
 
-- (void)deleteLastSignedOutAccountAltDSID:(id *)a3
+- (void)deleteLastSignedOutAccountAltDSID:(id *)d
 {
-  v5 = [(AASignedOutAccountKeychain *)self _lastSignedOutAccountDescriptor];
-  [(AAKeychainManagerStore *)self->_keychainManager aa_deleteKeychainItemsForDescriptor:v5 error:a3];
-  if (a3)
+  _lastSignedOutAccountDescriptor = [(AASignedOutAccountKeychain *)self _lastSignedOutAccountDescriptor];
+  [(AAKeychainManagerStore *)self->_keychainManager aa_deleteKeychainItemsForDescriptor:_lastSignedOutAccountDescriptor error:d];
+  if (d)
   {
     v6 = _AALogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(AASignedOutAccountKeychain *)a3 deleteLastSignedOutAccountAltDSID:v6, v7, v8, v9, v10, v11, v12];
+      [(AASignedOutAccountKeychain *)d deleteLastSignedOutAccountAltDSID:v6, v7, v8, v9, v10, v11, v12];
     }
   }
 }

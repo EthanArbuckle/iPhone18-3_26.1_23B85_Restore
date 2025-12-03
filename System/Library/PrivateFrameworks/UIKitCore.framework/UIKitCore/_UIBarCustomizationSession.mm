@@ -1,5 +1,5 @@
 @interface _UIBarCustomizationSession
-+ (_UIBarCustomizationSession)sessionWithVisibleItems:(id)a3 additionalItems:(id)a4;
++ (_UIBarCustomizationSession)sessionWithVisibleItems:(id)items additionalItems:(id)additionalItems;
 - (NSArray)additionalItems;
 - (NSArray)visibleItems;
 - (_UIBarCustomizerAnimating)beginAnimationCoordinator;
@@ -8,18 +8,18 @@
 
 @implementation _UIBarCustomizationSession
 
-+ (_UIBarCustomizationSession)sessionWithVisibleItems:(id)a3 additionalItems:(id)a4
++ (_UIBarCustomizationSession)sessionWithVisibleItems:(id)items additionalItems:(id)additionalItems
 {
-  v5 = a4;
-  v6 = a3;
+  additionalItemsCopy = additionalItems;
+  itemsCopy = items;
   v7 = objc_opt_new();
-  v8 = [v6 copy];
+  v8 = [itemsCopy copy];
   [v7 setSourceItems:v8];
 
-  v9 = [v6 mutableCopy];
+  v9 = [itemsCopy mutableCopy];
   [v7 set_mutableVisibleItems:v9];
 
-  v10 = [v5 mutableCopy];
+  v10 = [additionalItemsCopy mutableCopy];
   [v7 set_mutableAdditionalItems:v10];
 
   return v7;
@@ -58,8 +58,8 @@
 - (NSArray)visibleItems
 {
   v2 = MEMORY[0x1E695DEC8];
-  v3 = [(_UIBarCustomizationSession *)self _mutableVisibleItems];
-  v4 = [v2 arrayWithArray:v3];
+  _mutableVisibleItems = [(_UIBarCustomizationSession *)self _mutableVisibleItems];
+  v4 = [v2 arrayWithArray:_mutableVisibleItems];
 
   return v4;
 }
@@ -67,8 +67,8 @@
 - (NSArray)additionalItems
 {
   v2 = MEMORY[0x1E695DEC8];
-  v3 = [(_UIBarCustomizationSession *)self _mutableAdditionalItems];
-  v4 = [v2 arrayWithArray:v3];
+  _mutableAdditionalItems = [(_UIBarCustomizationSession *)self _mutableAdditionalItems];
+  v4 = [v2 arrayWithArray:_mutableAdditionalItems];
 
   return v4;
 }

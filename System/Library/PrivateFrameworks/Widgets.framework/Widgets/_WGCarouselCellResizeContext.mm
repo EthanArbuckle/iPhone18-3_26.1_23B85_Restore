@@ -1,15 +1,15 @@
 @interface _WGCarouselCellResizeContext
-- (void)setActive:(BOOL)a3;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation _WGCarouselCellResizeContext
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
-    if (!a3)
+    self->_active = active;
+    if (!active)
     {
       [(_WGCarouselCellResizeContext *)self setCompactHeight:-1.0];
 

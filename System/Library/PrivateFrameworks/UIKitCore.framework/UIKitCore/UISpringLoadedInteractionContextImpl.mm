@@ -1,16 +1,16 @@
 @interface UISpringLoadedInteractionContextImpl
-- (CGPoint)locationInView:(id)a3;
+- (CGPoint)locationInView:(id)view;
 - (UIDropSession)dropSession;
 - (UISpringLoadedGestureRecognizer)currentRecognizer;
 @end
 
 @implementation UISpringLoadedInteractionContextImpl
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  v4 = a3;
-  v5 = [(UISpringLoadedInteractionContextImpl *)self currentRecognizer];
-  [v5 locationInView:v4];
+  viewCopy = view;
+  currentRecognizer = [(UISpringLoadedInteractionContextImpl *)self currentRecognizer];
+  [currentRecognizer locationInView:viewCopy];
   v7 = v6;
   v9 = v8;
 
@@ -23,10 +23,10 @@
 
 - (UIDropSession)dropSession
 {
-  v2 = [(UISpringLoadedInteractionContextImpl *)self currentRecognizer];
-  v3 = [v2 dropSession];
+  currentRecognizer = [(UISpringLoadedInteractionContextImpl *)self currentRecognizer];
+  dropSession = [currentRecognizer dropSession];
 
-  return v3;
+  return dropSession;
 }
 
 - (UISpringLoadedGestureRecognizer)currentRecognizer

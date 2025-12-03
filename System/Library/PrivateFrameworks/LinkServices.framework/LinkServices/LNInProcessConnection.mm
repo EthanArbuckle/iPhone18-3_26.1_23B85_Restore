@@ -1,8 +1,8 @@
 @interface LNInProcessConnection
-- (BOOL)refreshWithOptions:(id)a3;
+- (BOOL)refreshWithOptions:(id)options;
 - (id)connectionInterface;
-- (void)acquireAssertionsForConnectionOperation:(id)a3;
-- (void)connectWithOptions:(id)a3;
+- (void)acquireAssertionsForConnectionOperation:(id)operation;
+- (void)connectWithOptions:(id)options;
 @end
 
 @implementation LNInProcessConnection
@@ -35,18 +35,18 @@ uint64_t __64__LNInProcessConnection_allowsExtendingTimeoutOnProgressUpdates__bl
   return v5;
 }
 
-- (void)acquireAssertionsForConnectionOperation:(id)a3
+- (void)acquireAssertionsForConnectionOperation:(id)operation
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v5 = getLNLogCategoryConnection();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(LNConnection *)self logPrefix];
+    logPrefix = [(LNConnection *)self logPrefix];
     v8 = 138543362;
-    v9 = v6;
+    v9 = logPrefix;
     _os_log_impl(&dword_19763D000, v5, OS_LOG_TYPE_INFO, "%{public}@ Assertion is not required for in-process connection", &v8, 0xCu);
   }
 
@@ -101,8 +101,8 @@ uint64_t __64__LNInProcessConnection_allowsExtendingTimeoutOnProgressUpdates__bl
     v9 = v8;
     _Block_object_dispose(&v20, 8);
     v10 = [v8 alloc];
-    v11 = [(LNConnection *)self queue];
-    v12 = [v10 initWithConnection:0 connectionListener:0 queue:v11 appContext:v7];
+    queue = [(LNConnection *)self queue];
+    v12 = [v10 initWithConnection:0 connectionListener:0 queue:queue appContext:v7];
     v13 = self->_connectionInterface;
     self->_connectionInterface = v12;
 
@@ -112,11 +112,11 @@ uint64_t __64__LNInProcessConnection_allowsExtendingTimeoutOnProgressUpdates__bl
   return v3;
 }
 
-- (BOOL)refreshWithOptions:(id)a3
+- (BOOL)refreshWithOptions:(id)options
 {
   v6.receiver = self;
   v6.super_class = LNInProcessConnection;
-  v4 = [(LNConnection *)&v6 refreshWithOptions:a3];
+  v4 = [(LNConnection *)&v6 refreshWithOptions:options];
   if (v4)
   {
     [(LNConnection *)self setConnected];
@@ -125,11 +125,11 @@ uint64_t __64__LNInProcessConnection_allowsExtendingTimeoutOnProgressUpdates__bl
   return v4;
 }
 
-- (void)connectWithOptions:(id)a3
+- (void)connectWithOptions:(id)options
 {
   v4.receiver = self;
   v4.super_class = LNInProcessConnection;
-  [(LNConnection *)&v4 connectWithOptions:a3];
+  [(LNConnection *)&v4 connectWithOptions:options];
   [(LNConnection *)self setConnected];
 }
 

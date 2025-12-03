@@ -1,25 +1,25 @@
 @interface SBSRemoteAlertHandle
 + (SBSRemoteAlertHandleClient)defaultHandleClient;
-+ (id)handleWithConfiguration:(id)a3;
-+ (id)lookupHandlesForDefinition:(id)a3 creatingIfNone:(BOOL)a4 configurationContext:(id)a5;
-+ (id)newHandleWithDefinition:(id)a3 configurationContext:(id)a4;
++ (id)handleWithConfiguration:(id)configuration;
++ (id)lookupHandlesForDefinition:(id)definition creatingIfNone:(BOOL)none configurationContext:(id)context;
++ (id)newHandleWithDefinition:(id)definition configurationContext:(id)context;
 - (BOOL)isActive;
 - (BOOL)isValid;
-- (id)_initWithHandleID:(id)a3 handleClient:(id)a4;
+- (id)_initWithHandleID:(id)d handleClient:(id)client;
 - (void)_didActivate;
 - (void)_didDeactivate;
-- (void)_invalidateWithError:(id)a3 shouldInvalidateHandleClient:(BOOL)a4;
-- (void)activateWithContext:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)_invalidateWithError:(id)error shouldInvalidateHandleClient:(BOOL)client;
+- (void)activateWithContext:(id)context;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation SBSRemoteAlertHandle
 
-- (id)_initWithHandleID:(id)a3 handleClient:(id)a4
+- (id)_initWithHandleID:(id)d handleClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  clientCopy = client;
   v15.receiver = self;
   v15.super_class = SBSRemoteAlertHandle;
   v8 = [(SBSRemoteAlertHandle *)&v15 init];
@@ -31,8 +31,8 @@
     calloutSerialQueue = v9->_calloutSerialQueue;
     v9->_calloutSerialQueue = Serial;
 
-    objc_storeWeak(&v9->_handleClient, v7);
-    v12 = [v6 copy];
+    objc_storeWeak(&v9->_handleClient, clientCopy);
+    v12 = [dCopy copy];
     handleID = v9->_handleID;
     v9->_handleID = v12;
 
@@ -42,15 +42,15 @@
   return v9;
 }
 
-+ (id)lookupHandlesForDefinition:(id)a3 creatingIfNone:(BOOL)a4 configurationContext:(id)a5
++ (id)lookupHandlesForDefinition:(id)definition creatingIfNone:(BOOL)none configurationContext:(id)context
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  noneCopy = none;
+  definitionCopy = definition;
+  contextCopy = context;
+  v11 = contextCopy;
+  if (definitionCopy)
   {
-    if (v10)
+    if (contextCopy)
     {
       goto LABEL_5;
     }
@@ -58,43 +58,43 @@
 
   else
   {
-    [SBSRemoteAlertHandle lookupHandlesForDefinition:a2 creatingIfNone:a1 configurationContext:?];
+    [SBSRemoteAlertHandle lookupHandlesForDefinition:a2 creatingIfNone:self configurationContext:?];
     if (v11)
     {
       goto LABEL_5;
     }
   }
 
-  if (v6)
+  if (noneCopy)
   {
     v11 = objc_alloc_init(SBSRemoteAlertConfigurationContext);
   }
 
 LABEL_5:
-  v12 = [a1 defaultHandleClient];
-  v13 = [v12 remoteAlertHandlesForDefinition:v9 allowsCreation:v6 configurationContext:v11];
+  defaultHandleClient = [self defaultHandleClient];
+  v13 = [defaultHandleClient remoteAlertHandlesForDefinition:definitionCopy allowsCreation:noneCopy configurationContext:v11];
 
   return v13;
 }
 
-+ (id)newHandleWithDefinition:(id)a3 configurationContext:(id)a4
++ (id)newHandleWithDefinition:(id)definition configurationContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  definitionCopy = definition;
+  contextCopy = context;
+  if (!definitionCopy)
   {
-    [SBSRemoteAlertHandle newHandleWithDefinition:a2 configurationContext:a1];
+    [SBSRemoteAlertHandle newHandleWithDefinition:a2 configurationContext:self];
   }
 
-  v9 = [a1 defaultHandleClient];
-  v10 = [v9 createRemoteAlertHandleWithDefinition:v7 configurationContext:v8];
+  defaultHandleClient = [self defaultHandleClient];
+  v10 = [defaultHandleClient createRemoteAlertHandleWithDefinition:definitionCopy configurationContext:contextCopy];
 
   return v10;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
   lock_observers = self->_lock_observers;
   if (!lock_observers)
@@ -106,15 +106,15 @@ LABEL_5:
     lock_observers = self->_lock_observers;
   }
 
-  [(NSHashTable *)lock_observers addObject:v7];
+  [(NSHashTable *)lock_observers addObject:observerCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers removeObject:v4];
+  [(NSHashTable *)self->_lock_observers removeObject:observerCopy];
 
   if (![(NSHashTable *)self->_lock_observers count])
   {
@@ -125,11 +125,11 @@ LABEL_5:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)activateWithContext:(id)a3
+- (void)activateWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   WeakRetained = objc_loadWeakRetained(&self->_handleClient);
-  [WeakRetained activateRemoteAlertHandle:self withContext:v4];
+  [WeakRetained activateRemoteAlertHandle:self withContext:contextCopy];
 }
 
 - (BOOL)isActive
@@ -299,18 +299,18 @@ uint64_t __43__SBSRemoteAlertHandle_defaultHandleClient__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_invalidateWithError:(id)a3 shouldInvalidateHandleClient:(BOOL)a4
+- (void)_invalidateWithError:(id)error shouldInvalidateHandleClient:(BOOL)client
 {
-  v6 = a3;
+  errorCopy = error;
   calloutSerialQueue = self->_calloutSerialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__SBSRemoteAlertHandle__invalidateWithError_shouldInvalidateHandleClient___block_invoke;
   block[3] = &unk_1E73603C8;
-  v11 = a4;
+  clientCopy = client;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = errorCopy;
+  v8 = errorCopy;
   dispatch_async(calloutSerialQueue, block);
 }
 
@@ -411,9 +411,9 @@ void __74__SBSRemoteAlertHandle__invalidateWithError_shouldInvalidateHandleClien
   }
 }
 
-+ (id)handleWithConfiguration:(id)a3
++ (id)handleWithConfiguration:(id)configuration
 {
-  v3 = [a1 newHandleWithDefinition:a3 configurationContext:0];
+  v3 = [self newHandleWithDefinition:configuration configurationContext:0];
 
   return v3;
 }

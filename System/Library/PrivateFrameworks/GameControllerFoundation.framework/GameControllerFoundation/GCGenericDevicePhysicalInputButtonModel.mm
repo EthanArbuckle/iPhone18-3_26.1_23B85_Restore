@@ -1,51 +1,51 @@
 @interface GCGenericDevicePhysicalInputButtonModel
-- (BOOL)isEqual:(id)a3;
-- (GCGenericDevicePhysicalInputButtonModel)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GCGenericDevicePhysicalInputButtonModel)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCGenericDevicePhysicalInputButtonModel
 
-- (GCGenericDevicePhysicalInputButtonModel)initWithCoder:(id)a3
+- (GCGenericDevicePhysicalInputButtonModel)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = GCGenericDevicePhysicalInputButtonModel;
-  v3 = a3;
-  v4 = [(GCGenericDevicePhysicalInputElementModel *)&v9 initWithCoder:v3];
-  [v3 decodeDoubleForKey:{@"pressedThreshold", v9.receiver, v9.super_class}];
+  coderCopy = coder;
+  v4 = [(GCGenericDevicePhysicalInputElementModel *)&v9 initWithCoder:coderCopy];
+  [coderCopy decodeDoubleForKey:{@"pressedThreshold", v9.receiver, v9.super_class}];
   v4->_pressedThreshold = v5;
-  [v3 decodeDoubleForKey:@"touchedThreshold"];
+  [coderCopy decodeDoubleForKey:@"touchedThreshold"];
   v4->_touchedThreshold = v6;
-  v4->_sourcePressedValueExtendedEventFieldIndex = [v3 decodeIntegerForKey:@"sourcePressedValueExtendedEventFieldIndex"];
-  v7 = [v3 decodeIntegerForKey:@"sourceTouchedValueExtendedEventFieldIndex"];
+  v4->_sourcePressedValueExtendedEventFieldIndex = [coderCopy decodeIntegerForKey:@"sourcePressedValueExtendedEventFieldIndex"];
+  v7 = [coderCopy decodeIntegerForKey:@"sourceTouchedValueExtendedEventFieldIndex"];
 
   v4->_sourceTouchedValueExtendedEventFieldIndex = v7;
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = GCGenericDevicePhysicalInputButtonModel;
-  v4 = a3;
-  [(GCGenericDevicePhysicalInputElementModel *)&v5 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(GCGenericDevicePhysicalInputElementModel *)&v5 encodeWithCoder:coderCopy];
   [(GCGenericDevicePhysicalInputButtonModel *)self pressedThreshold:v5.receiver];
-  [v4 encodeDouble:@"pressedThreshold" forKey:?];
+  [coderCopy encodeDouble:@"pressedThreshold" forKey:?];
   [(GCGenericDevicePhysicalInputButtonModel *)self touchedThreshold];
-  [v4 encodeDouble:@"touchedThreshold" forKey:?];
-  [v4 encodeInteger:-[GCGenericDevicePhysicalInputButtonModel sourcePressedValueExtendedEventFieldIndex](self forKey:{"sourcePressedValueExtendedEventFieldIndex"), @"sourcePressedValueExtendedEventFieldIndex"}];
-  [v4 encodeInteger:-[GCGenericDevicePhysicalInputButtonModel sourceTouchedValueExtendedEventFieldIndex](self forKey:{"sourceTouchedValueExtendedEventFieldIndex"), @"sourceTouchedValueExtendedEventFieldIndex"}];
+  [coderCopy encodeDouble:@"touchedThreshold" forKey:?];
+  [coderCopy encodeInteger:-[GCGenericDevicePhysicalInputButtonModel sourcePressedValueExtendedEventFieldIndex](self forKey:{"sourcePressedValueExtendedEventFieldIndex"), @"sourcePressedValueExtendedEventFieldIndex"}];
+  [coderCopy encodeInteger:-[GCGenericDevicePhysicalInputButtonModel sourceTouchedValueExtendedEventFieldIndex](self forKey:{"sourceTouchedValueExtendedEventFieldIndex"), @"sourceTouchedValueExtendedEventFieldIndex"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v15.receiver = self;
   v15.super_class = GCGenericDevicePhysicalInputButtonModel;
-  if (-[GCGenericDevicePhysicalInputElementModel isEqual:](&v15, sel_isEqual_, v4) && (-[GCGenericDevicePhysicalInputButtonModel pressedThreshold](self, "pressedThreshold"), v6 = v5, [v4 pressedThreshold], v6 == v7) && (-[GCGenericDevicePhysicalInputButtonModel touchedThreshold](self, "touchedThreshold"), v9 = v8, objc_msgSend(v4, "touchedThreshold"), v9 == v10) && (v11 = -[GCGenericDevicePhysicalInputButtonModel sourcePressedValueExtendedEventFieldIndex](self, "sourcePressedValueExtendedEventFieldIndex"), v11 == objc_msgSend(v4, "sourcePressedValueExtendedEventFieldIndex")))
+  if (-[GCGenericDevicePhysicalInputElementModel isEqual:](&v15, sel_isEqual_, equalCopy) && (-[GCGenericDevicePhysicalInputButtonModel pressedThreshold](self, "pressedThreshold"), v6 = v5, [equalCopy pressedThreshold], v6 == v7) && (-[GCGenericDevicePhysicalInputButtonModel touchedThreshold](self, "touchedThreshold"), v9 = v8, objc_msgSend(equalCopy, "touchedThreshold"), v9 == v10) && (v11 = -[GCGenericDevicePhysicalInputButtonModel sourcePressedValueExtendedEventFieldIndex](self, "sourcePressedValueExtendedEventFieldIndex"), v11 == objc_msgSend(equalCopy, "sourcePressedValueExtendedEventFieldIndex")))
   {
-    v12 = [(GCGenericDevicePhysicalInputButtonModel *)self sourceTouchedValueExtendedEventFieldIndex];
-    v13 = v12 == [v4 sourceTouchedValueExtendedEventFieldIndex];
+    sourceTouchedValueExtendedEventFieldIndex = [(GCGenericDevicePhysicalInputButtonModel *)self sourceTouchedValueExtendedEventFieldIndex];
+    v13 = sourceTouchedValueExtendedEventFieldIndex == [equalCopy sourceTouchedValueExtendedEventFieldIndex];
   }
 
   else

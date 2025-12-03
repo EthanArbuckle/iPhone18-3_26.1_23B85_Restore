@@ -1,15 +1,15 @@
 @interface PaperDocumentViewController
-- (_TtC8PaperKit27PaperDocumentViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8PaperKit27PaperDocumentViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)didScreenEdgePan;
-- (void)pageDidChange:(id)a3;
-- (void)pageDidScroll:(id)a3;
-- (void)pageLabelViewTapped:(id)a3;
-- (void)pageWillScroll:(id)a3;
-- (void)toolPickerIsRulerActiveDidChange:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)pageDidChange:(id)change;
+- (void)pageDidScroll:(id)scroll;
+- (void)pageLabelViewTapped:(id)tapped;
+- (void)pageWillScroll:(id)scroll;
+- (void)toolPickerIsRulerActiveDidChange:(id)change;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateViewConstraints;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PaperDocumentViewController
@@ -20,11 +20,11 @@
   v5.super_class = type metadata accessor for PaperDocumentViewController(0);
   v2 = v5.receiver;
   [(PaperDocumentViewController *)&v5 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    [v3 setClipsToBounds_];
+    v4 = view;
+    [view setClipsToBounds_];
   }
 
   else
@@ -42,37 +42,37 @@
   PaperDocumentViewController.updateThumbnailViewConstraints()();
 }
 
-- (void)pageDidChange:(id)a3
+- (void)pageDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  PaperDocumentViewController.pageDidChange(_:)(v4);
+  changeCopy = change;
+  selfCopy = self;
+  PaperDocumentViewController.pageDidChange(_:)(changeCopy);
 }
 
-- (void)pageWillScroll:(id)a3
+- (void)pageWillScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  PaperDocumentViewController.pageWillScroll(_:)(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  PaperDocumentViewController.pageWillScroll(_:)(scrollCopy);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   PaperDocumentViewController.traitCollectionDidChange(_:)(v9);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  PaperDocumentViewController.viewWillTransition(to:with:)(a4, width, height);
+  selfCopy = self;
+  PaperDocumentViewController.viewWillTransition(to:with:)(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
@@ -86,23 +86,23 @@
     swift_beginAccess();
     v5 = *(&self->super.super.super.isa + v4);
     *(&self->super.super.super.isa + v4) = 0;
-    v6 = self;
+    selfCopy = self;
     PaperDocumentViewController.isThumbnailViewCollapsed.didset(v5);
   }
 }
 
-- (void)toolPickerIsRulerActiveDidChange:(id)a3
+- (void)toolPickerIsRulerActiveDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  PaperDocumentViewController.toolPickerIsRulerActiveDidChange(_:)(v4);
+  changeCopy = change;
+  selfCopy = self;
+  PaperDocumentViewController.toolPickerIsRulerActiveDidChange(_:)(changeCopy);
 }
 
-- (void)pageLabelViewTapped:(id)a3
+- (void)pageLabelViewTapped:(id)tapped
 {
-  if (a3)
+  if (tapped)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -111,7 +111,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   PaperDocumentViewController.pageLabelViewTapped(_:)();
@@ -119,20 +119,20 @@
   outlined destroy of StocksKitCurrencyCache.Provider?(v6, &_sypSgMd);
 }
 
-- (_TtC8PaperKit27PaperDocumentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8PaperKit27PaperDocumentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)pageDidScroll:(id)a3
+- (void)pageDidScroll:(id)scroll
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  scrollCopy = scroll;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = scroll;
   PaperDocumentViewController.pageDidScroll(_:)(v9);
 }
 

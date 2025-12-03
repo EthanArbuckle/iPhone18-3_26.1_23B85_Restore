@@ -1,22 +1,22 @@
 @interface GKDaemonProxySignposter
-+ (void)endWithRequestId:(id)a3;
-+ (void)startWithRequestId:(id)a3 key:(id)a4;
++ (void)endWithRequestId:(id)id;
++ (void)startWithRequestId:(id)id key:(id)key;
 @end
 
 @implementation GKDaemonProxySignposter
 
-+ (void)startWithRequestId:(id)a3 key:(id)a4
++ (void)startWithRequestId:(id)id key:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  sub_227A3EF14(v5, v6);
+  idCopy = id;
+  keyCopy = key;
+  sub_227A3EF14(idCopy, keyCopy);
 }
 
-+ (void)endWithRequestId:(id)a3
++ (void)endWithRequestId:(id)id
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  sub_227A3F22C(v4);
+  idCopy = id;
+  sub_227A3F22C(idCopy);
 }
 
 @end

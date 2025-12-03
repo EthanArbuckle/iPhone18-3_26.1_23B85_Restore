@@ -1,23 +1,23 @@
 @interface BCCardSetScrollingAssertion
 - (BCCardContent)cardContent;
-- (BCCardSetScrollingAssertion)initWithContent:(id)a3;
+- (BCCardSetScrollingAssertion)initWithContent:(id)content;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation BCCardSetScrollingAssertion
 
-- (BCCardSetScrollingAssertion)initWithContent:(id)a3
+- (BCCardSetScrollingAssertion)initWithContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v8.receiver = self;
   v8.super_class = BCCardSetScrollingAssertion;
   v5 = [(BCCardSetScrollingAssertion *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_cardContent, v4);
-    [v4 setPerformantForScrolling:1];
+    objc_storeWeak(&v5->_cardContent, contentCopy);
+    [contentCopy setPerformantForScrolling:1];
   }
 
   return v6;
@@ -33,8 +33,8 @@
 
 - (void)invalidate
 {
-  v2 = [(BCCardSetScrollingAssertion *)self cardContent];
-  [v2 setPerformantForScrolling:0];
+  cardContent = [(BCCardSetScrollingAssertion *)self cardContent];
+  [cardContent setPerformantForScrolling:0];
 }
 
 - (BCCardContent)cardContent

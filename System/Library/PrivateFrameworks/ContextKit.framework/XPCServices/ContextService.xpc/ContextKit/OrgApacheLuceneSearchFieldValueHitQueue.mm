@@ -1,12 +1,12 @@
 @interface OrgApacheLuceneSearchFieldValueHitQueue
-- (id)fillFieldsWithOrgApacheLuceneSearchFieldValueHitQueue_Entry:(id)a3;
-- (id)getComparatorsWithOrgApacheLuceneIndexLeafReaderContext:(id)a3;
+- (id)fillFieldsWithOrgApacheLuceneSearchFieldValueHitQueue_Entry:(id)entry;
+- (id)getComparatorsWithOrgApacheLuceneIndexLeafReaderContext:(id)context;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchFieldValueHitQueue
 
-- (id)getComparatorsWithOrgApacheLuceneIndexLeafReaderContext:(id)a3
+- (id)getComparatorsWithOrgApacheLuceneIndexLeafReaderContext:(id)context
 {
   comparators = self->comparators_;
   if (!comparators)
@@ -33,7 +33,7 @@
         break;
       }
 
-      IOSObjectArray_Set(v6, v7++, [(IOSClass *)v10 getLeafComparatorWithOrgApacheLuceneIndexLeafReaderContext:a3]);
+      IOSObjectArray_Set(v6, v7++, [(IOSClass *)v10 getLeafComparatorWithOrgApacheLuceneIndexLeafReaderContext:context]);
       if (v7 >= v6->super.size_)
       {
         return v6;
@@ -47,7 +47,7 @@ LABEL_10:
   return v6;
 }
 
-- (id)fillFieldsWithOrgApacheLuceneSearchFieldValueHitQueue_Entry:(id)a3
+- (id)fillFieldsWithOrgApacheLuceneSearchFieldValueHitQueue_Entry:(id)entry
 {
   comparators = self->comparators_;
   if (!comparators)
@@ -70,12 +70,12 @@ LABEL_10:
       }
 
       v11 = (&v9->elementType_)[v8];
-      if (!v11 || !a3)
+      if (!v11 || !entry)
       {
         break;
       }
 
-      IOSObjectArray_Set(v7, v8++, [(IOSClass *)v11 valueWithInt:*(a3 + 5)]);
+      IOSObjectArray_Set(v7, v8++, [(IOSClass *)v11 valueWithInt:*(entry + 5)]);
       if (size == v8)
       {
         goto LABEL_11;
@@ -86,13 +86,13 @@ LABEL_14:
     JreThrowNullPointerException();
   }
 
-  if (!a3)
+  if (!entry)
   {
     goto LABEL_14;
   }
 
 LABEL_11:
-  v12 = new_OrgApacheLuceneSearchFieldDoc_initWithInt_withFloat_withNSObjectArray_(*(a3 + 3), v7, *(a3 + 2));
+  v12 = new_OrgApacheLuceneSearchFieldDoc_initWithInt_withFloat_withNSObjectArray_(*(entry + 3), v7, *(entry + 2));
 
   return v12;
 }

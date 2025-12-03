@@ -3,10 +3,10 @@
 - (CGPoint)originContentOffset;
 - (UIScrollView)scrollView;
 - (_PUScrollViewPPTScrollHelper)init;
-- (_PUScrollViewPPTScrollHelper)initWithScrollView:(id)a3;
+- (_PUScrollViewPPTScrollHelper)initWithScrollView:(id)view;
 - (void)_endScroll;
 - (void)_incrementScroll;
-- (void)scrollWithStartHandler:(id)a3 incrementHandler:(id)a4 completionHandler:(id)a5;
+- (void)scrollWithStartHandler:(id)handler incrementHandler:(id)incrementHandler completionHandler:(id)completionHandler;
 @end
 
 @implementation _PUScrollViewPPTScrollHelper
@@ -36,22 +36,22 @@
 
 - (void)_endScroll
 {
-  v3 = [(_PUScrollViewPPTScrollHelper *)self _completionHandler];
+  _completionHandler = [(_PUScrollViewPPTScrollHelper *)self _completionHandler];
 
-  if (v3)
+  if (_completionHandler)
   {
-    v4 = [(_PUScrollViewPPTScrollHelper *)self _completionHandler];
-    v4[2]();
+    _completionHandler2 = [(_PUScrollViewPPTScrollHelper *)self _completionHandler];
+    _completionHandler2[2]();
   }
 
   [(_PUScrollViewPPTScrollHelper *)self _setIncrementHandler:0];
   [(_PUScrollViewPPTScrollHelper *)self _setCompletionHandler:0];
-  v5 = [(_PUScrollViewPPTScrollHelper *)self _displayLink];
-  [v5 invalidate];
+  _displayLink = [(_PUScrollViewPPTScrollHelper *)self _displayLink];
+  [_displayLink invalidate];
 
-  v6 = [(_PUScrollViewPPTScrollHelper *)self scrollView];
-  [v6 _reenableImplicitAnimationsAfterScrollTest];
-  [v6 _pu_setPPTScrollHelper:0];
+  scrollView = [(_PUScrollViewPPTScrollHelper *)self scrollView];
+  [scrollView _reenableImplicitAnimationsAfterScrollTest];
+  [scrollView _pu_setPPTScrollHelper:0];
 }
 
 - (void)_incrementScroll
@@ -62,8 +62,8 @@
   v7 = v5 - v6;
   [(_PUScrollViewPPTScrollHelper *)self _setLastIncrementTime:v5];
   v10 = 0;
-  v8 = [(_PUScrollViewPPTScrollHelper *)self _incrementHandler];
-  (v8)[2](v8, &v10, v7);
+  _incrementHandler = [(_PUScrollViewPPTScrollHelper *)self _incrementHandler];
+  (_incrementHandler)[2](_incrementHandler, &v10, v7);
 
   if (v10)
   {
@@ -72,20 +72,20 @@
 
   else
   {
-    v9 = [(_PUScrollViewPPTScrollHelper *)self _displayLink];
+    _displayLink = [(_PUScrollViewPPTScrollHelper *)self _displayLink];
 
-    if (!v9)
+    if (!_displayLink)
     {
       [(_PUScrollViewPPTScrollHelper *)self performSelector:a2 withObject:0 afterDelay:0.0];
     }
   }
 }
 
-- (void)scrollWithStartHandler:(id)a3 incrementHandler:(id)a4 completionHandler:(id)a5
+- (void)scrollWithStartHandler:(id)handler incrementHandler:(id)incrementHandler completionHandler:(id)completionHandler
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
+  handlerCopy = handler;
+  incrementHandlerCopy = incrementHandler;
+  completionHandlerCopy = completionHandler;
   v10 = getenv("CA_BENCHMARK");
   if (v10 && *v10 != 48)
   {
@@ -98,13 +98,13 @@
   }
 
   [(_PUScrollViewPPTScrollHelper *)self _setDisplayLink:v11];
-  v12 = [(_PUScrollViewPPTScrollHelper *)self scrollView];
-  [v12 _pu_setPPTScrollHelper:self];
-  [v12 _suppressImplicitAnimationsForScrollTest];
+  scrollView = [(_PUScrollViewPPTScrollHelper *)self scrollView];
+  [scrollView _pu_setPPTScrollHelper:self];
+  [scrollView _suppressImplicitAnimationsForScrollTest];
   if (v11)
   {
-    v13 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [v11 addToRunLoop:v13 forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [v11 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
   }
 
   else
@@ -114,24 +114,24 @@
 
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   [(_PUScrollViewPPTScrollHelper *)self _setLastIncrementTime:?];
-  [(_PUScrollViewPPTScrollHelper *)self _setIncrementHandler:v8];
-  [(_PUScrollViewPPTScrollHelper *)self _setCompletionHandler:v9];
-  if (v14)
+  [(_PUScrollViewPPTScrollHelper *)self _setIncrementHandler:incrementHandlerCopy];
+  [(_PUScrollViewPPTScrollHelper *)self _setCompletionHandler:completionHandlerCopy];
+  if (handlerCopy)
   {
-    v14[2]();
+    handlerCopy[2]();
   }
 }
 
-- (_PUScrollViewPPTScrollHelper)initWithScrollView:(id)a3
+- (_PUScrollViewPPTScrollHelper)initWithScrollView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = _PUScrollViewPPTScrollHelper;
   v5 = [(_PUScrollViewPPTScrollHelper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scrollView, v4);
+    objc_storeWeak(&v5->_scrollView, viewCopy);
   }
 
   return v6;
@@ -139,8 +139,8 @@
 
 - (_PUScrollViewPPTScrollHelper)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"UIScrollView+PhotosUI.m" lineNumber:286 description:{@"%s is not available as initializer", "-[_PUScrollViewPPTScrollHelper init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIScrollView+PhotosUI.m" lineNumber:286 description:{@"%s is not available as initializer", "-[_PUScrollViewPPTScrollHelper init]"}];
 
   abort();
 }

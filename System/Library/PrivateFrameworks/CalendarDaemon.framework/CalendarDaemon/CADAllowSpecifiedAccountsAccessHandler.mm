@@ -1,19 +1,19 @@
 @interface CADAllowSpecifiedAccountsAccessHandler
-- (BOOL)isActionAllowed:(unint64_t)a3 forStore:(void *)a4 inDatabase:(CalDatabase *)a5;
-- (CADAllowSpecifiedAccountsAccessHandler)initWithAllowedSourceIdentifiers:(id)a3 databaseDataProvider:(id)a4;
+- (BOOL)isActionAllowed:(unint64_t)allowed forStore:(void *)store inDatabase:(CalDatabase *)database;
+- (CADAllowSpecifiedAccountsAccessHandler)initWithAllowedSourceIdentifiers:(id)identifiers databaseDataProvider:(id)provider;
 @end
 
 @implementation CADAllowSpecifiedAccountsAccessHandler
 
-- (CADAllowSpecifiedAccountsAccessHandler)initWithAllowedSourceIdentifiers:(id)a3 databaseDataProvider:(id)a4
+- (CADAllowSpecifiedAccountsAccessHandler)initWithAllowedSourceIdentifiers:(id)identifiers databaseDataProvider:(id)provider
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   v11.receiver = self;
   v11.super_class = CADAllowSpecifiedAccountsAccessHandler;
-  v7 = [(CADAccountAccessHandler *)&v11 initWithDatabaseDataProvider:a4];
+  v7 = [(CADAccountAccessHandler *)&v11 initWithDatabaseDataProvider:provider];
   if (v7)
   {
-    v8 = [MEMORY[0x277CBEB98] setWithArray:v6];
+    v8 = [MEMORY[0x277CBEB98] setWithArray:identifiersCopy];
     allowedSourceIdentifiers = v7->_allowedSourceIdentifiers;
     v7->_allowedSourceIdentifiers = v8;
   }
@@ -21,16 +21,16 @@
   return v7;
 }
 
-- (BOOL)isActionAllowed:(unint64_t)a3 forStore:(void *)a4 inDatabase:(CalDatabase *)a5
+- (BOOL)isActionAllowed:(unint64_t)allowed forStore:(void *)store inDatabase:(CalDatabase *)database
 {
-  v7 = self;
-  v8 = [(CADAccountAccessHandler *)self dataProvider];
-  v9 = [v8 storeIDForStore:a4 inDatabase:a5];
+  selfCopy = self;
+  dataProvider = [(CADAccountAccessHandler *)self dataProvider];
+  v9 = [dataProvider storeIDForStore:store inDatabase:database];
 
-  v10 = [(CADAllowSpecifiedAccountsAccessHandler *)v7 allowedSourceIdentifiers];
-  LOBYTE(v7) = [v10 containsObject:v9];
+  allowedSourceIdentifiers = [(CADAllowSpecifiedAccountsAccessHandler *)selfCopy allowedSourceIdentifiers];
+  LOBYTE(selfCopy) = [allowedSourceIdentifiers containsObject:v9];
 
-  return v7;
+  return selfCopy;
 }
 
 @end

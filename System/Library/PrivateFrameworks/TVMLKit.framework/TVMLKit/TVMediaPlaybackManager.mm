@@ -2,7 +2,7 @@
 - (BOOL)_canMenu;
 - (BOOL)_canSwipeUp;
 - (BOOL)onSupplementaryUIShouldPresent;
-- (TVMediaPlaybackManager)initWithMediaController:(id)a3;
+- (TVMediaPlaybackManager)initWithMediaController:(id)controller;
 - (TVMediaPlaybackManagerDelegate)delegate;
 - (int)_processBackgroundedStateTriggers;
 - (int)_processForegroundedStateTriggers;
@@ -20,22 +20,22 @@
 - (void)dealloc;
 - (void)onAppear;
 - (void)onSupplementaryUIShouldDismiss;
-- (void)setDelegate:(id)a3;
-- (void)setShowcaseFactor:(double)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setShowcaseFactor:(double)factor;
 @end
 
 @implementation TVMediaPlaybackManager
 
-- (TVMediaPlaybackManager)initWithMediaController:(id)a3
+- (TVMediaPlaybackManager)initWithMediaController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = TVMediaPlaybackManager;
   v6 = [(TVMediaPlaybackManager *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mediaController, a3);
+    objc_storeStrong(&v6->_mediaController, controller);
     v8 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v7 action:sel__onMenu];
     [(UITapGestureRecognizer *)v8 setDelegate:v7];
     [(UITapGestureRecognizer *)v8 setAllowedPressTypes:&unk_287E487B0];
@@ -64,10 +64,10 @@
   [(TVMediaPlaybackManager *)&v4 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
   self->_delegateFlags.hasShouldEnableUIModeImplicitly = objc_opt_respondsToSelector() & 1;
   self->_delegateFlags.hasEvaluateSwipeUpMessage = objc_opt_respondsToSelector() & 1;
   v5 = objc_opt_respondsToSelector();
@@ -105,11 +105,11 @@
   }
 }
 
-- (void)setShowcaseFactor:(double)a3
+- (void)setShowcaseFactor:(double)factor
 {
-  if (self->_showcaseFactor != a3)
+  if (self->_showcaseFactor != factor)
   {
-    self->_showcaseFactor = a3;
+    self->_showcaseFactor = factor;
     [(TVMediaPlaybackManager *)self _onShowcaseFactorDidChange];
   }
 }
@@ -146,7 +146,7 @@
     {
       if (mediaPlaybackState == 1)
       {
-        v5 = [(TVMediaPlaybackManager *)self _processBackgroundedStateTriggers];
+        _processBackgroundedStateTriggers = [(TVMediaPlaybackManager *)self _processBackgroundedStateTriggers];
       }
 
       else
@@ -156,13 +156,13 @@
           goto LABEL_17;
         }
 
-        v5 = [(TVMediaPlaybackManager *)self _processForegroundedStateTriggers];
+        _processBackgroundedStateTriggers = [(TVMediaPlaybackManager *)self _processForegroundedStateTriggers];
       }
     }
 
     else
     {
-      v5 = [(TVMediaPlaybackManager *)self _processUndefinedStateTriggers];
+      _processBackgroundedStateTriggers = [(TVMediaPlaybackManager *)self _processUndefinedStateTriggers];
     }
   }
 
@@ -170,7 +170,7 @@
   {
     if (mediaPlaybackState == 5)
     {
-      v5 = [(TVMediaPlaybackManager *)self _processWillBeForegroundedStateTriggers];
+      _processBackgroundedStateTriggers = [(TVMediaPlaybackManager *)self _processWillBeForegroundedStateTriggers];
     }
 
     else
@@ -180,21 +180,21 @@
         goto LABEL_17;
       }
 
-      v5 = [(TVMediaPlaybackManager *)self _processPausedStateTriggers];
+      _processBackgroundedStateTriggers = [(TVMediaPlaybackManager *)self _processPausedStateTriggers];
     }
   }
 
   else if (mediaPlaybackState == 3)
   {
-    v5 = [(TVMediaPlaybackManager *)self _processWaitingForTimeoutStateTriggers];
+    _processBackgroundedStateTriggers = [(TVMediaPlaybackManager *)self _processWaitingForTimeoutStateTriggers];
   }
 
   else
   {
-    v5 = [(TVMediaPlaybackManager *)self _processWillBeBackgroundedStateTriggers];
+    _processBackgroundedStateTriggers = [(TVMediaPlaybackManager *)self _processWillBeBackgroundedStateTriggers];
   }
 
-  v3 = v5;
+  v3 = _processBackgroundedStateTriggers;
 LABEL_17:
   self->_mediaPlaybackTrigger = 0;
   self->_mediaPlaybackTriggerModifier = 0;
@@ -205,16 +205,16 @@ LABEL_17:
     [(TVMediaPlaybackManager *)self _processStateEnter];
   }
 
-  v6 = [(TVMediaPlaybackManager *)self menuGestureRecognizer];
-  [v6 setEnabled:{-[TVMediaPlaybackManager _canMenu](self, "_canMenu")}];
+  menuGestureRecognizer = [(TVMediaPlaybackManager *)self menuGestureRecognizer];
+  [menuGestureRecognizer setEnabled:{-[TVMediaPlaybackManager _canMenu](self, "_canMenu")}];
 
-  v7 = [(TVMediaPlaybackManager *)self swipeUpGestureRecognizer];
-  [v7 setEnabled:{-[TVMediaPlaybackManager _canSwipeUp](self, "_canSwipeUp")}];
+  swipeUpGestureRecognizer = [(TVMediaPlaybackManager *)self swipeUpGestureRecognizer];
+  [swipeUpGestureRecognizer setEnabled:{-[TVMediaPlaybackManager _canSwipeUp](self, "_canSwipeUp")}];
 
   if ((v3 & 0xFFFFFFFE) != 4 && self->_delegateFlags.hasEvaluateSwipeUpMessage)
   {
-    v8 = [(TVMediaPlaybackManager *)self delegate];
-    [v8 evaluateSwipeUpMessageForMediaPlaybackManager:self];
+    delegate = [(TVMediaPlaybackManager *)self delegate];
+    [delegate evaluateSwipeUpMessageForMediaPlaybackManager:self];
   }
 }
 
@@ -236,8 +236,8 @@ LABEL_17:
         return;
       }
 
-      v9 = [(TVMediaPlaybackManager *)self mediaController];
-      [v9 setShowsVideoControls:1];
+      mediaController = [(TVMediaPlaybackManager *)self mediaController];
+      [mediaController setShowsVideoControls:1];
     }
 
     self->_mediaPlaybackStateModifier = 0;
@@ -248,16 +248,16 @@ LABEL_17:
   {
     if (mediaPlaybackState == 5)
     {
-      v4 = [(TVMediaPlaybackManager *)self mediaController];
-      v5 = [v4 mediaInfo];
-      if ([v5 intent] == 1)
+      mediaController2 = [(TVMediaPlaybackManager *)self mediaController];
+      mediaInfo = [mediaController2 mediaInfo];
+      if ([mediaInfo intent] == 1)
       {
         hasPresentPlaybackController = self->_delegateFlags.hasPresentPlaybackController;
 
         if (hasPresentPlaybackController)
         {
-          v7 = [(TVMediaPlaybackManager *)self delegate];
-          v8 = [v7 presentForegroundPlaybackControllerForMediaPlaybackManager:self];
+          delegate = [(TVMediaPlaybackManager *)self delegate];
+          v8 = [delegate presentForegroundPlaybackControllerForMediaPlaybackManager:self];
 
           if (v8)
           {
@@ -271,7 +271,7 @@ LABEL_17:
       }
     }
 
-    v10 = [(TVMediaPlaybackManager *)self delegate];
+    delegate2 = [(TVMediaPlaybackManager *)self delegate];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __44__TVMediaPlaybackManager__processStateEnter__block_invoke;
@@ -282,15 +282,15 @@ LABEL_17:
     v12[2] = __44__TVMediaPlaybackManager__processStateEnter__block_invoke_2;
     v12[3] = &unk_279D6EBD0;
     v12[4] = self;
-    [v10 mediaPlaybackManager:self shouldHideUI:mediaPlaybackState == 5 animated:1 animations:v13 completion:v12];
+    [delegate2 mediaPlaybackManager:self shouldHideUI:mediaPlaybackState == 5 animated:1 animations:v13 completion:v12];
 
     return;
   }
 
   if (mediaPlaybackState == 6)
   {
-    v11 = [(TVMediaPlaybackManager *)self mediaController];
-    [v11 pause];
+    mediaController3 = [(TVMediaPlaybackManager *)self mediaController];
+    [mediaController3 pause];
   }
 }
 
@@ -339,15 +339,15 @@ uint64_t __44__TVMediaPlaybackManager__processStateEnter__block_invoke_2(uint64_
   mediaPlaybackState = self->_mediaPlaybackState;
   if ((self->_mediaPlaybackTrigger | 4) == 5)
   {
-    v4 = [(TVMediaPlaybackManager *)self mediaController];
-    v5 = [v4 state];
+    mediaController = [(TVMediaPlaybackManager *)self mediaController];
+    state = [mediaController state];
 
-    if (v5)
+    if (state)
     {
-      v6 = [(TVMediaPlaybackManager *)self mediaController];
-      v7 = [v6 state];
+      mediaController2 = [(TVMediaPlaybackManager *)self mediaController];
+      state2 = [mediaController2 state];
 
-      if (v7 != 1 && self->_isFirstAppearance && -[TVMediaPlaybackManager goesToForegroundOnFirstAppear](self, "goesToForegroundOnFirstAppear") || self->_delegateFlags.hasShouldEnableUIModeImplicitly && (-[TVMediaPlaybackManager delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 mediaPlaybackManager:self shouldEnableUIModeImplicitly:0], v8, !v9))
+      if (state2 != 1 && self->_isFirstAppearance && -[TVMediaPlaybackManager goesToForegroundOnFirstAppear](self, "goesToForegroundOnFirstAppear") || self->_delegateFlags.hasShouldEnableUIModeImplicitly && (-[TVMediaPlaybackManager delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 mediaPlaybackManager:self shouldEnableUIModeImplicitly:0], v8, !v9))
       {
         mediaPlaybackState = 2;
         v10 = 1;
@@ -356,7 +356,7 @@ uint64_t __44__TVMediaPlaybackManager__processStateEnter__block_invoke_2(uint64_
       else
       {
         v10 = 0;
-        if ((v7 - 1) < 2 || v7 == 4)
+        if ((state2 - 1) < 2 || state2 == 4)
         {
           mediaPlaybackState = 1;
         }
@@ -367,8 +367,8 @@ uint64_t __44__TVMediaPlaybackManager__processStateEnter__block_invoke_2(uint64_
         }
       }
 
-      v12 = [(TVMediaPlaybackManager *)self delegate];
-      [v12 mediaPlaybackManager:self shouldHideUI:v10 animated:0 animations:0 completion:0];
+      delegate = [(TVMediaPlaybackManager *)self delegate];
+      [delegate mediaPlaybackManager:self shouldHideUI:v10 animated:0 animations:0 completion:0];
     }
   }
 
@@ -383,10 +383,10 @@ uint64_t __44__TVMediaPlaybackManager__processStateEnter__block_invoke_2(uint64_
   {
     if (mediaPlaybackTrigger == 5)
     {
-      v5 = [(TVMediaPlaybackManager *)self mediaController];
-      v6 = [v5 state];
+      mediaController = [(TVMediaPlaybackManager *)self mediaController];
+      state = [mediaController state];
 
-      if (v6 == 3)
+      if (state == 3)
       {
         return 3;
       }
@@ -431,17 +431,17 @@ uint64_t __44__TVMediaPlaybackManager__processStateEnter__block_invoke_2(uint64_
   switch(mediaPlaybackTrigger)
   {
     case 5:
-      v5 = [(TVMediaPlaybackManager *)self mediaController];
-      if ([v5 state] == 1)
+      mediaController = [(TVMediaPlaybackManager *)self mediaController];
+      if ([mediaController state] == 1)
       {
       }
 
       else
       {
-        v6 = [(TVMediaPlaybackManager *)self mediaController];
-        v7 = [v6 state];
+        mediaController2 = [(TVMediaPlaybackManager *)self mediaController];
+        state = [mediaController2 state];
 
-        if (v7 != 2)
+        if (state != 2)
         {
           return mediaPlaybackState;
         }
@@ -484,10 +484,10 @@ uint64_t __44__TVMediaPlaybackManager__processStateEnter__block_invoke_2(uint64_
 
   if (mediaPlaybackTrigger == 5)
   {
-    v4 = [(TVMediaPlaybackManager *)self mediaController];
-    v5 = [v4 state];
+    mediaController = [(TVMediaPlaybackManager *)self mediaController];
+    state = [mediaController state];
 
-    if (v5 != 3)
+    if (state != 3)
     {
       return 1;
     }
@@ -514,8 +514,8 @@ uint64_t __44__TVMediaPlaybackManager__processStateEnter__block_invoke_2(uint64_
   mediaPlaybackTrigger = self->_mediaPlaybackTrigger;
   if (mediaPlaybackTrigger == 6)
   {
-    v5 = [(TVMediaPlaybackManager *)self mediaController];
-    if ([v5 state] == 3)
+    mediaController = [(TVMediaPlaybackManager *)self mediaController];
+    if ([mediaController state] == 3)
     {
       if ((self->_mediaPlaybackStateModifier & 2) != 0)
       {
@@ -572,14 +572,14 @@ uint64_t __44__TVMediaPlaybackManager__processStateEnter__block_invoke_2(uint64_
   mediaPlaybackState = self->_mediaPlaybackState;
   if (self->_mediaPlaybackTrigger == 7 && ![(TVMediaPlaybackManager *)self _shouldPause])
   {
-    v4 = [(TVMediaPlaybackManager *)self mediaController];
-    v5 = [v4 state];
+    mediaController = [(TVMediaPlaybackManager *)self mediaController];
+    state = [mediaController state];
 
-    v6 = [(TVMediaPlaybackManager *)self mediaController];
-    v7 = [v6 mediaInfo];
-    v8 = [v7 intent];
+    mediaController2 = [(TVMediaPlaybackManager *)self mediaController];
+    mediaInfo = [mediaController2 mediaInfo];
+    intent = [mediaInfo intent];
 
-    if (v8 == 1 && v5 == 2)
+    if (intent == 1 && state == 2)
     {
       return 3;
     }
@@ -609,29 +609,29 @@ uint64_t __44__TVMediaPlaybackManager__processStateEnter__block_invoke_2(uint64_
     return 0;
   }
 
-  v3 = [(TVMediaPlaybackManager *)self mediaController];
-  v4 = [v3 state];
+  mediaController = [(TVMediaPlaybackManager *)self mediaController];
+  state = [mediaController state];
 
-  if (v4 == 4)
+  if (state == 4)
   {
     return 0;
   }
 
-  v6 = v4 & 0xFFFFFFFFFFFFFFFELL;
-  v7 = [(TVMediaPlaybackManager *)self mediaController];
-  v8 = [v7 mediaInfo];
-  v9 = [v8 intent];
+  v6 = state & 0xFFFFFFFFFFFFFFFELL;
+  mediaController2 = [(TVMediaPlaybackManager *)self mediaController];
+  mediaInfo = [mediaController2 mediaInfo];
+  intent = [mediaInfo intent];
 
   mediaPlaybackState = self->_mediaPlaybackState;
-  if (mediaPlaybackState != 1 || v9)
+  if (mediaPlaybackState != 1 || intent)
   {
     v11 = 0;
-    if (mediaPlaybackState == 2 && v9 == 1)
+    if (mediaPlaybackState == 2 && intent == 1)
     {
       if (self->_delegateFlags.hasShouldEnableUIModeImplicitly)
       {
-        v12 = [(TVMediaPlaybackManager *)self delegate];
-        v11 = [v12 mediaPlaybackManager:self shouldEnableUIModeImplicitly:1];
+        delegate = [(TVMediaPlaybackManager *)self delegate];
+        v11 = [delegate mediaPlaybackManager:self shouldEnableUIModeImplicitly:1];
       }
 
       else
@@ -651,14 +651,14 @@ uint64_t __44__TVMediaPlaybackManager__processStateEnter__block_invoke_2(uint64_
 
 - (BOOL)_canMenu
 {
-  v3 = [(TVMediaPlaybackManager *)self mediaController];
-  v4 = [v3 mediaInfo];
-  v5 = [v4 intent];
+  mediaController = [(TVMediaPlaybackManager *)self mediaController];
+  mediaInfo = [mediaController mediaInfo];
+  intent = [mediaInfo intent];
 
   mediaPlaybackState = self->_mediaPlaybackState;
   if (mediaPlaybackState == 2)
   {
-    if (v5 != 1)
+    if (intent != 1)
     {
       return 1;
     }
@@ -668,8 +668,8 @@ uint64_t __44__TVMediaPlaybackManager__processStateEnter__block_invoke_2(uint64_
       return 1;
     }
 
-    v7 = [(TVMediaPlaybackManager *)self delegate];
-    v8 = [v7 mediaPlaybackManager:self shouldEnableUIModeImplicitly:0];
+    delegate = [(TVMediaPlaybackManager *)self delegate];
+    v8 = [delegate mediaPlaybackManager:self shouldEnableUIModeImplicitly:0];
 
     if (v8)
     {

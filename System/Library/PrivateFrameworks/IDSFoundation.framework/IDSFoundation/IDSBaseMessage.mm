@@ -1,20 +1,20 @@
 @interface IDSBaseMessage
-- (BOOL)hasRequiredKeys:(id *)a3;
+- (BOOL)hasRequiredKeys:(id *)keys;
 - (IDSBaseMessage)init;
 - (IDSEventTracingOperation)currentSendEventTracingOperation;
 - (NSDictionary)messageBody;
 - (NSDictionary)messageBodyUsingCache;
 - (NSString)uniqueIDString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)dualModeConfig;
 - (void)_cacheBody;
 - (void)_clearCache;
-- (void)addSubEventTracingOperation:(id)a3;
-- (void)handleResponseDictionary:(id)a3;
-- (void)setRetryCount:(id)a3;
+- (void)addSubEventTracingOperation:(id)operation;
+- (void)handleResponseDictionary:(id)dictionary;
+- (void)setRetryCount:(id)count;
 - (void)startSendEventTracing;
-- (void)stopCurrentEventTracingOperationWithError:(id)a3;
-- (void)stopEventTracingWithError:(id)a3;
+- (void)stopCurrentEventTracingOperationWithError:(id)error;
+- (void)stopEventTracingWithError:(id)error;
 @end
 
 @implementation IDSBaseMessage
@@ -25,24 +25,24 @@
   cachedBody = self->_cachedBody;
   if (cachedBody)
   {
-    v4 = cachedBody;
+    messageBody = cachedBody;
   }
 
   else
   {
-    v4 = [(IDSBaseMessage *)self messageBody];
+    messageBody = [(IDSBaseMessage *)self messageBody];
   }
 
-  return v4;
+  return messageBody;
 }
 
 - (void)_cacheBody
 {
   if (!self->_cachedBody)
   {
-    v4 = [(IDSBaseMessage *)self messageBody];
+    messageBody = [(IDSBaseMessage *)self messageBody];
     cachedBody = self->_cachedBody;
-    self->_cachedBody = v4;
+    self->_cachedBody = messageBody;
   }
 }
 
@@ -54,8 +54,8 @@
   if (v2)
   {
     v2->_uniqueID = FastRandomUInt();
-    v3 = [MEMORY[0x1E695DF00] date];
-    [(IDSBaseMessage *)v2 setCreationDate:v3];
+    date = [MEMORY[0x1E695DF00] date];
+    [(IDSBaseMessage *)v2 setCreationDate:date];
 
     [(IDSBaseMessage *)v2 setTimeout:20.0];
     [(IDSBaseMessage *)v2 setHighPriority:1];
@@ -83,7 +83,7 @@
   currentSendEventTracingOperation = self->_currentSendEventTracingOperation;
   self->_currentSendEventTracingOperation = 0;
 
-  v4 = [(IDSBaseMessage *)self currentSendEventTracingOperation];
+  currentSendEventTracingOperation = [(IDSBaseMessage *)self currentSendEventTracingOperation];
 }
 
 - (IDSEventTracingOperation)currentSendEventTracingOperation
@@ -102,149 +102,149 @@
   return currentSendEventTracingOperation;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(IDSBaseMessage *)self dsAuthID];
-  [v4 setDSAuthID:v5];
+  dsAuthID = [(IDSBaseMessage *)self dsAuthID];
+  [v4 setDSAuthID:dsAuthID];
 
-  v6 = [(IDSBaseMessage *)self topic];
-  [v4 setTopic:v6];
+  topic = [(IDSBaseMessage *)self topic];
+  [v4 setTopic:topic];
 
   [v4 setUniqueID:FastRandomUInt()];
   [v4 setForceCellular:{-[IDSBaseMessage forceCellular](self, "forceCellular")}];
   [v4 setTimeoutRetries:{-[IDSBaseMessage timeoutRetries](self, "timeoutRetries")}];
   [v4 setHighPriority:{-[IDSBaseMessage highPriority](self, "highPriority")}];
-  v7 = [(IDSBaseMessage *)self userInfo];
-  [v4 setUserInfo:v7];
+  userInfo = [(IDSBaseMessage *)self userInfo];
+  [v4 setUserInfo:userInfo];
 
-  v8 = [(IDSBaseMessage *)self serviceData];
-  [v4 setServiceData:v8];
+  serviceData = [(IDSBaseMessage *)self serviceData];
+  [v4 setServiceData:serviceData];
 
-  v9 = [(IDSBaseMessage *)self clientInfo];
-  [v4 setClientInfo:v9];
+  clientInfo = [(IDSBaseMessage *)self clientInfo];
+  [v4 setClientInfo:clientInfo];
 
   [v4 setWantsResponse:{-[IDSBaseMessage wantsResponse](self, "wantsResponse")}];
   [v4 setWantsMultipleResponses:{-[IDSBaseMessage wantsMultipleResponses](self, "wantsMultipleResponses")}];
   [v4 setHttpDoNotDecodeData:{-[IDSBaseMessage httpDoNotDecodeData](self, "httpDoNotDecodeData")}];
   [v4 setWantsBinaryPush:{-[IDSBaseMessage wantsBinaryPush](self, "wantsBinaryPush")}];
   [v4 setWantsIntegerUniqueIDs:{-[IDSBaseMessage wantsIntegerUniqueIDs](self, "wantsIntegerUniqueIDs")}];
-  v10 = [(IDSBaseMessage *)self creationDate];
-  [v4 setCreationDate:v10];
+  creationDate = [(IDSBaseMessage *)self creationDate];
+  [v4 setCreationDate:creationDate];
 
-  v11 = [(IDSBaseMessage *)self context];
-  [v4 setContext:v11];
+  context = [(IDSBaseMessage *)self context];
+  [v4 setContext:context];
 
   [(IDSBaseMessage *)self timeSent];
   [v4 setTimeSent:?];
-  v12 = [(IDSBaseMessage *)self completionBlock];
-  [v4 setCompletionBlock:v12];
+  completionBlock = [(IDSBaseMessage *)self completionBlock];
+  [v4 setCompletionBlock:completionBlock];
 
-  v13 = [(IDSBaseMessage *)self deliveryAcknowledgementBlock];
-  [v4 setDeliveryAcknowledgementBlock:v13];
+  deliveryAcknowledgementBlock = [(IDSBaseMessage *)self deliveryAcknowledgementBlock];
+  [v4 setDeliveryAcknowledgementBlock:deliveryAcknowledgementBlock];
 
   [(IDSBaseMessage *)self timeout];
   [v4 setTimeout:?];
-  v14 = [(IDSBaseMessage *)self responseAlertInfo];
-  [v4 setResponseAlertInfo:v14];
+  responseAlertInfo = [(IDSBaseMessage *)self responseAlertInfo];
+  [v4 setResponseAlertInfo:responseAlertInfo];
 
-  v15 = [(IDSBaseMessage *)self retryCount];
-  [v4 setRetryCount:v15];
+  retryCount = [(IDSBaseMessage *)self retryCount];
+  [v4 setRetryCount:retryCount];
 
-  v16 = [(IDSBaseMessage *)self originalTimestamp];
-  [v4 setOriginalTimestamp:v16];
+  originalTimestamp = [(IDSBaseMessage *)self originalTimestamp];
+  [v4 setOriginalTimestamp:originalTimestamp];
 
   [v4 setImportanceLevel:{-[IDSBaseMessage importanceLevel](self, "importanceLevel")}];
   [v4 setDeliveryMechanism:{-[IDSBaseMessage deliveryMechanism](self, "deliveryMechanism")}];
-  v17 = [(IDSBaseMessage *)self service];
-  [v4 setService:v17];
+  service = [(IDSBaseMessage *)self service];
+  [v4 setService:service];
 
-  v18 = [(IDSBaseMessage *)self subService];
-  [v4 setSubService:v18];
+  subService = [(IDSBaseMessage *)self subService];
+  [v4 setSubService:subService];
 
-  v19 = [(IDSBaseMessage *)self underlyingService];
-  [v4 setUnderlyingService:v19];
+  underlyingService = [(IDSBaseMessage *)self underlyingService];
+  [v4 setUnderlyingService:underlyingService];
 
   [v4 setHasAttemptedAPSDelivery:{-[IDSBaseMessage hasAttemptedAPSDelivery](self, "hasAttemptedAPSDelivery")}];
-  v20 = [(IDSBaseMessage *)self signingSession];
-  [v4 setSigningSession:v20];
+  signingSession = [(IDSBaseMessage *)self signingSession];
+  [v4 setSigningSession:signingSession];
 
-  v21 = [(IDSBaseMessage *)self URLOverride];
-  [v4 setURLOverride:v21];
+  uRLOverride = [(IDSBaseMessage *)self URLOverride];
+  [v4 setURLOverride:uRLOverride];
 
   [v4 setIgnoreMaxRetryCount:{-[IDSBaseMessage ignoreMaxRetryCount](self, "ignoreMaxRetryCount")}];
-  v22 = [(IDSBaseMessage *)self pushAckTimestamp];
-  [v4 setPushAckTimestamp:v22];
+  pushAckTimestamp = [(IDSBaseMessage *)self pushAckTimestamp];
+  [v4 setPushAckTimestamp:pushAckTimestamp];
 
-  v23 = [(IDSBaseMessage *)self baaSigningDigest];
-  [v4 setBaaSigningDigest:v23];
+  baaSigningDigest = [(IDSBaseMessage *)self baaSigningDigest];
+  [v4 setBaaSigningDigest:baaSigningDigest];
 
-  v24 = [(IDSBaseMessage *)self baaSigningError];
-  [v4 setBaaSigningError:v24];
+  baaSigningError = [(IDSBaseMessage *)self baaSigningError];
+  [v4 setBaaSigningError:baaSigningError];
 
-  v25 = [(IDSBaseMessage *)self splunkHint];
-  [v4 setSplunkHint:v25];
+  splunkHint = [(IDSBaseMessage *)self splunkHint];
+  [v4 setSplunkHint:splunkHint];
 
-  v26 = [(IDSBaseMessage *)self requestStart];
-  [v4 setRequestStart:v26];
+  requestStart = [(IDSBaseMessage *)self requestStart];
+  [v4 setRequestStart:requestStart];
 
-  v27 = [(IDSBaseMessage *)self requestEnd];
-  [v4 setRequestEnd:v27];
+  requestEnd = [(IDSBaseMessage *)self requestEnd];
+  [v4 setRequestEnd:requestEnd];
 
-  v28 = [(IDSBaseMessage *)self overallEventTracingOperation];
-  [v4 setOverallEventTracingOperation:v28];
+  overallEventTracingOperation = [(IDSBaseMessage *)self overallEventTracingOperation];
+  [v4 setOverallEventTracingOperation:overallEventTracingOperation];
 
   objc_storeStrong(v4 + 39, self->_currentSendEventTracingOperation);
-  v29 = [(IDSBaseMessage *)self sendReasonContainer];
-  [v4 setSendReasonContainer:v29];
+  sendReasonContainer = [(IDSBaseMessage *)self sendReasonContainer];
+  [v4 setSendReasonContainer:sendReasonContainer];
 
   return v4;
 }
 
-- (void)stopCurrentEventTracingOperationWithError:(id)a3
+- (void)stopCurrentEventTracingOperationWithError:(id)error
 {
-  v8 = a3;
-  v4 = [(IDSBaseMessage *)self splunkHint];
+  errorCopy = error;
+  splunkHint = [(IDSBaseMessage *)self splunkHint];
 
-  if (v4)
+  if (splunkHint)
   {
     currentSendEventTracingOperation = self->_currentSendEventTracingOperation;
-    v6 = [(IDSBaseMessage *)self splunkHint];
-    [(IDSEventTracingOperation *)currentSendEventTracingOperation addStringSubfieldWithName:@"Splunk Hint" value:v6];
+    splunkHint2 = [(IDSBaseMessage *)self splunkHint];
+    [(IDSEventTracingOperation *)currentSendEventTracingOperation addStringSubfieldWithName:@"Splunk Hint" value:splunkHint2];
   }
 
-  [(IDSEventTracingOperation *)self->_currentSendEventTracingOperation stopWithError:v8];
+  [(IDSEventTracingOperation *)self->_currentSendEventTracingOperation stopWithError:errorCopy];
   v7 = self->_currentSendEventTracingOperation;
   self->_currentSendEventTracingOperation = 0;
 }
 
-- (void)addSubEventTracingOperation:(id)a3
+- (void)addSubEventTracingOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [(IDSBaseMessage *)self currentSendEventTracingOperation];
-  [v5 addSubOperationWithOperation:v4];
+  operationCopy = operation;
+  currentSendEventTracingOperation = [(IDSBaseMessage *)self currentSendEventTracingOperation];
+  [currentSendEventTracingOperation addSubOperationWithOperation:operationCopy];
 }
 
-- (void)stopEventTracingWithError:(id)a3
+- (void)stopEventTracingWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(IDSBaseMessage *)self stopCurrentEventTracingOperationWithError:0];
-  v5 = [(IDSBaseMessage *)self overallEventTracingOperation];
-  [v5 stopWithError:v4];
+  overallEventTracingOperation = [(IDSBaseMessage *)self overallEventTracingOperation];
+  [overallEventTracingOperation stopWithError:errorCopy];
 }
 
 - (NSString)uniqueIDString
 {
   v2 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[IDSBaseMessage uniqueID](self, "uniqueID")}];
-  v3 = [v2 stringValue];
+  stringValue = [v2 stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (unint64_t)dualModeConfig
 {
-  v3 = [(IDSBaseMessage *)self topic];
-  v4 = [v3 isEqualToString:@"com.apple.private.alloy.lightrose"];
+  topic = [(IDSBaseMessage *)self topic];
+  v4 = [topic isEqualToString:@"com.apple.private.alloy.lightrose"];
 
   if (v4)
   {
@@ -257,27 +257,27 @@
   }
 }
 
-- (void)setRetryCount:(id)a3
+- (void)setRetryCount:(id)count
 {
-  v5 = a3;
-  if (self->_retryCount != v5)
+  countCopy = count;
+  if (self->_retryCount != countCopy)
   {
-    v6 = v5;
+    v6 = countCopy;
     [(IDSBaseMessage *)self _clearCache];
-    objc_storeStrong(&self->_retryCount, a3);
-    v5 = v6;
+    objc_storeStrong(&self->_retryCount, count);
+    countCopy = v6;
   }
 }
 
-- (BOOL)hasRequiredKeys:(id *)a3
+- (BOOL)hasRequiredKeys:(id *)keys
 {
   v34 = *MEMORY[0x1E69E9840];
   if (-[IDSBaseMessage requiresPushTokenKeys](self, "requiresPushTokenKeys") && (-[IDSBaseMessage pushToken](self, "pushToken"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 length], v4, !v5))
   {
-    if (a3)
+    if (keys)
     {
       [MEMORY[0x1E695DEC8] arrayWithObject:@"push token"];
-      *a3 = v13 = 0;
+      *keys = v13 = 0;
     }
 
     else
@@ -288,13 +288,13 @@
 
   else
   {
-    v23 = [(IDSBaseMessage *)self requiredKeys];
-    if ([v23 count])
+    requiredKeys = [(IDSBaseMessage *)self requiredKeys];
+    if ([requiredKeys count])
     {
-      v6 = [(IDSBaseMessage *)self messageBodyUsingCache];
-      v24 = self;
-      v7 = v23;
-      v8 = v6;
+      messageBodyUsingCache = [(IDSBaseMessage *)self messageBodyUsingCache];
+      selfCopy = self;
+      v7 = requiredKeys;
+      v8 = messageBodyUsingCache;
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
@@ -325,7 +325,7 @@
                 *buf = 138412546;
                 v30 = v15;
                 v31 = 2112;
-                v32 = v24;
+                v32 = selfCopy;
                 _os_log_impl(&dword_1A7AD9000, v17, OS_LOG_TYPE_DEFAULT, "Missing message key: %@   (Message: %@)", buf, 0x16u);
               }
 
@@ -334,14 +334,14 @@
                 if (MarcoShouldLog())
                 {
                   v20 = v15;
-                  v21 = v24;
+                  v21 = selfCopy;
                   MarcoLog();
                 }
 
                 if (IMShouldLog())
                 {
                   v20 = v15;
-                  v21 = v24;
+                  v21 = selfCopy;
                   IMLogString();
                 }
               }
@@ -349,7 +349,7 @@
               if (MarcoShouldLogCheckpoints())
               {
                 v20 = v15;
-                v21 = v24;
+                v21 = selfCopy;
                 MarcoNoteCheckpoint();
               }
 
@@ -374,10 +374,10 @@
         v13 = 1;
       }
 
-      if (a3)
+      if (keys)
       {
         v18 = v10;
-        *a3 = v10;
+        *keys = v10;
       }
     }
 
@@ -393,28 +393,28 @@
 - (NSDictionary)messageBody
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(IDSBaseMessage *)self serviceData];
-  if (v4)
+  serviceData = [(IDSBaseMessage *)self serviceData];
+  if (serviceData)
   {
-    CFDictionarySetValue(v3, @"service-data", v4);
+    CFDictionarySetValue(v3, @"service-data", serviceData);
   }
 
-  v5 = [(IDSBaseMessage *)self clientInfo];
-  if (v5)
+  clientInfo = [(IDSBaseMessage *)self clientInfo];
+  if (clientInfo)
   {
-    CFDictionarySetValue(v3, @"client-data", v5);
+    CFDictionarySetValue(v3, @"client-data", clientInfo);
   }
 
-  v6 = [(IDSBaseMessage *)self retryCount];
-  if (v6)
+  retryCount = [(IDSBaseMessage *)self retryCount];
+  if (retryCount)
   {
-    CFDictionarySetValue(v3, [(IDSBaseMessage *)self retryCountKey], v6);
+    CFDictionarySetValue(v3, [(IDSBaseMessage *)self retryCountKey], retryCount);
   }
 
-  v7 = [(IDSBaseMessage *)self originalTimestamp];
-  if (v7)
+  originalTimestamp = [(IDSBaseMessage *)self originalTimestamp];
+  if (originalTimestamp)
   {
-    CFDictionarySetValue(v3, @"oe", v7);
+    CFDictionarySetValue(v3, @"oe", originalTimestamp);
   }
 
   if (![(IDSBaseMessage *)self wantsResponse])
@@ -422,25 +422,25 @@
     CFDictionarySetValue(v3, @"nr", &unk_1F1B20390);
   }
 
-  v8 = [(IDSBaseMessage *)self sendReasonContainer];
+  sendReasonContainer = [(IDSBaseMessage *)self sendReasonContainer];
 
-  if (v8)
+  if (sendReasonContainer)
   {
-    v9 = [(IDSBaseMessage *)self sendReasonContainer];
-    v10 = [v9 reasonString];
+    sendReasonContainer2 = [(IDSBaseMessage *)self sendReasonContainer];
+    reasonString = [sendReasonContainer2 reasonString];
 
-    if (v10)
+    if (reasonString)
     {
-      CFDictionarySetValue(v3, @"mrc", v10);
+      CFDictionarySetValue(v3, @"mrc", reasonString);
     }
   }
 
   return v3;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKey:@"alert"];
+  v4 = [dictionary objectForKey:@"alert"];
   [(IDSBaseMessage *)self setResponseAlertInfo:v4];
 }
 

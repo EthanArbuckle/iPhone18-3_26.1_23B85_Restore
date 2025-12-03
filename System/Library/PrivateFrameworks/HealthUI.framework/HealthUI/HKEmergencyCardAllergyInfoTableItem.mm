@@ -3,16 +3,16 @@
 - (id)_multilineStringValue;
 - (id)_placeholderText;
 - (id)title;
-- (void)_updateMultilineStringValueWithValue:(id)a3;
+- (void)_updateMultilineStringValueWithValue:(id)value;
 @end
 
 @implementation HKEmergencyCardAllergyInfoTableItem
 
 - (BOOL)hasPresentableData
 {
-  v2 = [(HKEmergencyCardTableItem *)self data];
-  v3 = [v2 allergyInfo];
-  v4 = v3 != 0;
+  data = [(HKEmergencyCardTableItem *)self data];
+  allergyInfo = [data allergyInfo];
+  v4 = allergyInfo != 0;
 
   return v4;
 }
@@ -35,17 +35,17 @@
 
 - (id)_multilineStringValue
 {
-  v2 = [(HKEmergencyCardTableItem *)self data];
-  v3 = [v2 allergyInfo];
+  data = [(HKEmergencyCardTableItem *)self data];
+  allergyInfo = [data allergyInfo];
 
-  return v3;
+  return allergyInfo;
 }
 
-- (void)_updateMultilineStringValueWithValue:(id)a3
+- (void)_updateMultilineStringValueWithValue:(id)value
 {
-  v4 = a3;
-  v5 = [(HKEmergencyCardTableItem *)self data];
-  [v5 setAllergyInfo:v4];
+  valueCopy = value;
+  data = [(HKEmergencyCardTableItem *)self data];
+  [data setAllergyInfo:valueCopy];
 }
 
 @end

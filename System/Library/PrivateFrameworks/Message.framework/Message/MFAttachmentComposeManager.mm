@@ -1,19 +1,19 @@
 @interface MFAttachmentComposeManager
-- (BOOL)updateAttachment:(id)a3 withNewData:(id)a4;
+- (BOOL)updateAttachment:(id)attachment withNewData:(id)data;
 - (MFAttachmentComposeManager)init;
-- (id)_composeAttachmentDataProviderForContext:(id)a3;
-- (id)_contentIDWithoutBracket:(id)a3;
-- (id)_fetchDataForAttachment:(id)a3 withProvider:(id)a4 request:(id)a5 syncLock:(id *)a6;
-- (id)_providerForURL:(id)a3;
-- (id)_queueForAttachment:(id)a3;
-- (id)attachmentForCID:(id)a3;
-- (id)attachmentForData:(id)a3 mimeType:(id)a4 fileName:(id)a5 contentID:(id)a6 context:(id)a7;
-- (id)attachmentForItemProvider:(id)a3 mimeType:(id)a4 fileName:(id)a5 contentID:(id)a6 context:(id)a7;
-- (id)attachmentsForContext:(id)a3;
-- (void)_callProgressBlockForAttachmentURL:(id)a3 withBytes:(int64_t)a4 expectedSize:(int64_t)a5;
-- (void)loadAttachmentURL:(id)a3 forContextID:(id)a4;
+- (id)_composeAttachmentDataProviderForContext:(id)context;
+- (id)_contentIDWithoutBracket:(id)bracket;
+- (id)_fetchDataForAttachment:(id)attachment withProvider:(id)provider request:(id)request syncLock:(id *)lock;
+- (id)_providerForURL:(id)l;
+- (id)_queueForAttachment:(id)attachment;
+- (id)attachmentForCID:(id)d;
+- (id)attachmentForData:(id)data mimeType:(id)type fileName:(id)name contentID:(id)d context:(id)context;
+- (id)attachmentForItemProvider:(id)provider mimeType:(id)type fileName:(id)name contentID:(id)d context:(id)context;
+- (id)attachmentsForContext:(id)context;
+- (void)_callProgressBlockForAttachmentURL:(id)l withBytes:(int64_t)bytes expectedSize:(int64_t)size;
+- (void)loadAttachmentURL:(id)l forContextID:(id)d;
 - (void)removeAllAttachments;
-- (void)removeAttachmentForURL:(id)a3;
+- (void)removeAttachmentForURL:(id)l;
 @end
 
 @implementation MFAttachmentComposeManager
@@ -33,22 +33,22 @@
   return v2;
 }
 
-- (id)_queueForAttachment:(id)a3
+- (id)_queueForAttachment:(id)attachment
 {
-  v4 = a3;
-  if (([v4 isDataAvailableLocally] & 1) == 0)
+  attachmentCopy = attachment;
+  if (([attachmentCopy isDataAvailableLocally] & 1) == 0)
   {
-    v5 = [v4 url];
+    v5 = [attachmentCopy url];
     v6 = [(MFAttachmentManager *)self _dataProviderForAttachmentURL:v5 error:0];
 
-    v7 = [v6 messageForAttachment:v4];
+    v7 = [v6 messageForAttachment:attachmentCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v7 mailbox];
-      v9 = [v8 attachmentDownloadQueue];
+      mailbox = [v7 mailbox];
+      attachmentDownloadQueue = [mailbox attachmentDownloadQueue];
 
-      if (v9)
+      if (attachmentDownloadQueue)
       {
         goto LABEL_9;
       }
@@ -69,20 +69,20 @@
     defaultDownloadQueue = self->_defaultDownloadQueue;
   }
 
-  v9 = defaultDownloadQueue;
+  attachmentDownloadQueue = defaultDownloadQueue;
 LABEL_9:
 
-  return v9;
+  return attachmentDownloadQueue;
 }
 
-- (id)_fetchDataForAttachment:(id)a3 withProvider:(id)a4 request:(id)a5 syncLock:(id *)a6
+- (id)_fetchDataForAttachment:(id)attachment withProvider:(id)provider request:(id)request syncLock:(id *)lock
 {
   v60 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v39 = a4;
-  v43 = v9;
-  v44 = a5;
-  v10 = [v9 url];
+  attachmentCopy = attachment;
+  providerCopy = provider;
+  v43 = attachmentCopy;
+  requestCopy = request;
+  v10 = [attachmentCopy url];
   v41 = v10;
   v45 = [(NSMutableDictionary *)self->super._attachments objectForKeyedSubscript:v10];
   if (v45)
@@ -91,29 +91,29 @@ LABEL_9:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v55 = v9;
+      v55 = attachmentCopy;
       v56 = 2112;
       v57 = v10;
       _os_log_impl(&dword_1B0389000, v11, OS_LOG_TYPE_DEFAULT, "Attachment %p with url %@ already exists in the dictionary of attachment compose manager", buf, 0x16u);
     }
 
-    v40 = [v9 customConsumer];
-    if (v40)
+    customConsumer = [attachmentCopy customConsumer];
+    if (customConsumer)
     {
       v12 = [v45 objectForKeyedSubscript:@"MFAttachmentCollectionFilterKey"];
-      [v12 addDataConsumer:v40];
+      [v12 addDataConsumer:customConsumer];
     }
 
     v13 = [v45 objectForKeyedSubscript:@"MFAttachmentAttachmentKey"];
-    [v13 addObject:v44];
+    [v13 addObject:requestCopy];
     v14 = [v45 objectForKeyedSubscript:@"MFAttachmentPrimaryConsumerKey"];
     v15 = [v45 objectForKeyedSubscript:@"MFAttachmentSyncLockKey"];
   }
 
   else
   {
-    v40 = [v9 path];
-    if (v40 && ([v9 isContainedInRFC822] & 1) == 0 && (objc_msgSend(MEMORY[0x1E696AC08], "defaultManager"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isReadableFileAtPath:", v40), v16, (v17 & 1) != 0))
+    customConsumer = [attachmentCopy path];
+    if (customConsumer && ([attachmentCopy isContainedInRFC822] & 1) == 0 && (objc_msgSend(MEMORY[0x1E696AC08], "defaultManager"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isReadableFileAtPath:", customConsumer), v16, (v17 & 1) != 0))
     {
       v18 = 0x1E69AD798;
     }
@@ -128,27 +128,27 @@ LABEL_9:
     v20 = [objc_alloc(MEMORY[0x1E69AD738]) initWithMainConsumer:v14];
     v37 = v19;
     v38 = v20;
-    v21 = [v9 customConsumer];
+    customConsumer2 = [attachmentCopy customConsumer];
 
-    if (v21)
+    if (customConsumer2)
     {
-      v22 = [v9 customConsumer];
-      [v20 addDataConsumer:v22];
+      customConsumer3 = [attachmentCopy customConsumer];
+      [v20 addDataConsumer:customConsumer3];
     }
 
-    v23 = [MEMORY[0x1E695DF90] dictionary];
-    v24 = [MEMORY[0x1E695DF70] arrayWithObject:v44];
-    [v23 setObject:v24 forKeyedSubscript:@"MFAttachmentAttachmentKey"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v24 = [MEMORY[0x1E695DF70] arrayWithObject:requestCopy];
+    [dictionary setObject:v24 forKeyedSubscript:@"MFAttachmentAttachmentKey"];
 
-    [v23 setObject:v14 forKeyedSubscript:@"MFAttachmentPrimaryConsumerKey"];
-    [v23 setObject:v20 forKeyedSubscript:@"MFAttachmentCollectionFilterKey"];
-    [v23 setObject:v19 forKeyedSubscript:@"MFAttachmentSyncLockKey"];
+    [dictionary setObject:v14 forKeyedSubscript:@"MFAttachmentPrimaryConsumerKey"];
+    [dictionary setObject:v20 forKeyedSubscript:@"MFAttachmentCollectionFilterKey"];
+    [dictionary setObject:v19 forKeyedSubscript:@"MFAttachmentSyncLockKey"];
     v25 = EDAttachmentsLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [v9 ef_publicDescription];
+      ef_publicDescription = [attachmentCopy ef_publicDescription];
       *buf = 138543874;
-      v55 = v26;
+      v55 = ef_publicDescription;
       v56 = 2112;
       v57 = v10;
       v58 = 2114;
@@ -160,12 +160,12 @@ LABEL_9:
     aBlock[1] = 3221225472;
     aBlock[2] = __84__MFAttachmentComposeManager__fetchDataForAttachment_withProvider_request_syncLock___block_invoke;
     aBlock[3] = &unk_1E7AA4D10;
-    v47 = v44;
-    v48 = self;
+    v47 = requestCopy;
+    selfCopy = self;
     v27 = v10;
     v49 = v27;
-    v50 = v39;
-    v28 = v9;
+    v50 = providerCopy;
+    v28 = attachmentCopy;
     v51 = v28;
     v13 = v38;
     v52 = v13;
@@ -177,18 +177,18 @@ LABEL_9:
 
     [v31 setPowerAssertionId:@"com.apple.message.MFAttachmentComposeManager"];
     [v31 retainArguments];
-    v32 = [v31 monitor];
-    [v23 setObject:v32 forKeyedSubscript:@"MFAttachmentMonitorKey"];
+    monitor = [v31 monitor];
+    [dictionary setObject:monitor forKeyedSubscript:@"MFAttachmentMonitorKey"];
 
-    [(NSMutableDictionary *)self->super._attachments setObject:v23 forKeyedSubscript:v27];
+    [(NSMutableDictionary *)self->super._attachments setObject:dictionary forKeyedSubscript:v27];
     v33 = [(MFAttachmentComposeManager *)self _queueForAttachment:v28];
     [v33 addInvocation:v31];
   }
 
-  if (a6)
+  if (lock)
   {
     v34 = v15;
-    *a6 = v15;
+    *lock = v15;
   }
 
   v35 = *MEMORY[0x1E69E9840];
@@ -415,10 +415,10 @@ LABEL_13:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_callProgressBlockForAttachmentURL:(id)a3 withBytes:(int64_t)a4 expectedSize:(int64_t)a5
+- (void)_callProgressBlockForAttachmentURL:(id)l withBytes:(int64_t)bytes expectedSize:(int64_t)size
 {
   v47 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  lCopy = l;
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v9 = v8;
   v34 = 0;
@@ -434,7 +434,7 @@ LABEL_13:
   block[3] = &unk_1E7AA4D38;
   v33 = &v34;
   block[4] = self;
-  v24 = v7;
+  v24 = lCopy;
   v32 = v24;
   dispatch_sync(arrayAccessQueue, block);
   v29 = 0u;
@@ -456,32 +456,32 @@ LABEL_13:
         }
 
         v15 = *(*(&v27 + 1) + 8 * i);
-        v16 = [v15 lastProgressBytes];
+        lastProgressBytes = [v15 lastProgressBytes];
         [v15 lastProgressTime];
-        if (v9 - v17 >= 0.0333333333 || a5 * 0.02 <= (a4 - v16))
+        if (v9 - v17 >= 0.0333333333 || size * 0.02 <= (bytes - lastProgressBytes))
         {
           v19 = MFLogGeneral();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
           {
-            v21 = [v15 attachment];
-            v22 = [v21 fileName];
+            attachment = [v15 attachment];
+            fileName = [attachment fileName];
             *buf = 138412802;
-            v41 = v22;
+            v41 = fileName;
             v42 = 2048;
-            v43 = a4;
+            bytesCopy = bytes;
             v44 = 2048;
-            v45 = a5;
+            sizeCopy = size;
             _os_log_debug_impl(&dword_1B0389000, v19, OS_LOG_TYPE_DEBUG, "Calling progress block for %@.  %lu/%lu", buf, 0x20u);
           }
 
-          [v15 setLastProgressBytes:a4];
+          [v15 setLastProgressBytes:bytes];
           [v15 setLastProgressTime:v9];
           aBlock[0] = MEMORY[0x1E69E9820];
           aBlock[1] = 3221225472;
           aBlock[2] = __88__MFAttachmentComposeManager__callProgressBlockForAttachmentURL_withBytes_expectedSize___block_invoke_48;
           aBlock[3] = &unk_1E7AA33B0;
           aBlock[4] = v15;
-          aBlock[5] = a4;
+          aBlock[5] = bytes;
           v20 = _Block_copy(aBlock);
           if ([v15 wantsCompletionBlockOffMainThread])
           {
@@ -522,9 +522,9 @@ void __88__MFAttachmentComposeManager__callProgressBlockForAttachmentURL_withByt
   [v2 setCompletedUnitCount:v1];
 }
 
-- (id)attachmentsForContext:(id)a3
+- (id)attachmentsForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -536,10 +536,10 @@ void __88__MFAttachmentComposeManager__callProgressBlockForAttachmentURL_withByt
   block[1] = 3221225472;
   block[2] = __52__MFAttachmentComposeManager_attachmentsForContext___block_invoke;
   block[3] = &unk_1E7AA4D38;
-  v10 = v4;
+  v10 = contextCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = contextCopy;
   dispatch_sync(composeAttachmentsQueue, block);
   v7 = v13[5];
 
@@ -598,52 +598,52 @@ void __52__MFAttachmentComposeManager_attachmentsForContext___block_invoke(void 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)attachmentForCID:(id)a3
+- (id)attachmentForCID:(id)d
 {
-  v4 = [MEMORY[0x1E696AF20] componentsWithURL:a3 resolvingAgainstBaseURL:0];
+  v4 = [MEMORY[0x1E696AF20] componentsWithURL:d resolvingAgainstBaseURL:0];
   [v4 setQuery:0];
-  v5 = [v4 path];
-  v6 = [(MFAttachmentManager *)self attachmentForContentID:v5 preferredSchemes:&unk_1F2774CE0];
+  path = [v4 path];
+  v6 = [(MFAttachmentManager *)self attachmentForContentID:path preferredSchemes:&unk_1F2774CE0];
 
   return v6;
 }
 
-- (id)_providerForURL:(id)a3
+- (id)_providerForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   os_unfair_lock_lock(&self->super._providersLock);
   providers = self->super._providers;
-  v6 = [v4 absoluteString];
-  v7 = [(NSMutableDictionary *)providers objectForKeyedSubscript:v6];
+  absoluteString = [lCopy absoluteString];
+  v7 = [(NSMutableDictionary *)providers objectForKeyedSubscript:absoluteString];
 
   os_unfair_lock_unlock(&self->super._providersLock);
 
   return v7;
 }
 
-- (id)_composeAttachmentDataProviderForContext:(id)a3
+- (id)_composeAttachmentDataProviderForContext:(id)context
 {
   v4 = MEMORY[0x1E695DFF8];
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"x-attach-compose://%@", a3];
-  v6 = [v4 URLWithString:v5];
+  context = [MEMORY[0x1E696AEC0] stringWithFormat:@"x-attach-compose://%@", context];
+  v6 = [v4 URLWithString:context];
 
   v7 = [(MFAttachmentComposeManager *)self _providerForURL:v6];
 
   return v7;
 }
 
-- (id)attachmentForData:(id)a3 mimeType:(id)a4 fileName:(id)a5 contentID:(id)a6 context:(id)a7
+- (id)attachmentForData:(id)data mimeType:(id)type fileName:(id)name contentID:(id)d context:(id)context
 {
   v59 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v55 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if ([v12 length] >= 0x834 || !+[MFAttachmentPlaceholder isPlaceholderSerializedRepresentation:](MFAttachmentPlaceholder, "isPlaceholderSerializedRepresentation:", v12))
+  dataCopy = data;
+  typeCopy = type;
+  nameCopy = name;
+  dCopy = d;
+  contextCopy = context;
+  if ([dataCopy length] >= 0x834 || !+[MFAttachmentPlaceholder isPlaceholderSerializedRepresentation:](MFAttachmentPlaceholder, "isPlaceholderSerializedRepresentation:", dataCopy))
   {
     v18 = 0;
-    if (v15)
+    if (contextCopy)
     {
       goto LABEL_8;
     }
@@ -651,13 +651,13 @@ void __52__MFAttachmentComposeManager_attachmentsForContext___block_invoke(void 
     goto LABEL_5;
   }
 
-  v16 = [MFAttachmentPlaceholder placeholderFromSerializedRepresentation:v12];
+  v16 = [MFAttachmentPlaceholder placeholderFromSerializedRepresentation:dataCopy];
   v17 = v16;
-  if (!v14)
+  if (!dCopy)
   {
     [v16 contentID];
-    v14 = v18 = v17;
-    if (v15)
+    dCopy = v18 = v17;
+    if (contextCopy)
     {
       goto LABEL_8;
     }
@@ -675,13 +675,13 @@ LABEL_15:
   }
 
   v18 = v16;
-  if (!v15)
+  if (!contextCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_8:
-  if (![v12 length])
+  if (![dataCopy length])
   {
     v19 = MFLogGeneral();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -692,95 +692,95 @@ LABEL_8:
     goto LABEL_15;
   }
 
-  v20 = [(MFAttachmentComposeManager *)self _contentIDWithoutBracket:v14];
+  v20 = [(MFAttachmentComposeManager *)self _contentIDWithoutBracket:dCopy];
 
-  if (![v13 length])
+  if (![nameCopy length])
   {
     v21 = v20;
 
-    v13 = v21;
+    nameCopy = v21;
   }
 
   v22 = MEMORY[0x1E695DFF8];
-  v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"x-attach-compose://%@", v15];
-  v19 = [v22 URLWithString:v23];
+  contextCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"x-attach-compose://%@", contextCopy];
+  v19 = [v22 URLWithString:contextCopy];
 
   v24 = [(MFAttachmentComposeManager *)self _providerForURL:v19];
   if (v24)
   {
     v52 = v24;
-    [(MFComposeAttachmentDataProvider *)v24 addData:v12 forContentID:v20];
+    [(MFComposeAttachmentDataProvider *)v24 addData:dataCopy forContentID:v20];
   }
 
   else
   {
-    v52 = [[MFComposeAttachmentDataProvider alloc] initWithData:v12 forContentID:v20];
+    v52 = [[MFComposeAttachmentDataProvider alloc] initWithData:dataCopy forContentID:v20];
     [(MFAttachmentManager *)self addProvider:v52 forBaseURL:v19];
   }
 
-  v26 = [v13 pathExtension];
-  v27 = [v26 lowercaseString];
+  pathExtension = [nameCopy pathExtension];
+  lowercaseString = [pathExtension lowercaseString];
 
-  v51 = v27;
-  if ([v27 isEqualToString:@"zip"])
+  v51 = lowercaseString;
+  if ([lowercaseString isEqualToString:@"zip"])
   {
-    v53 = [v13 stringByDeletingPathExtension];
-    v28 = [v53 pathExtension];
-    v29 = v28;
-    if (v28 && [v28 length])
+    stringByDeletingPathExtension = [nameCopy stringByDeletingPathExtension];
+    pathExtension2 = [stringByDeletingPathExtension pathExtension];
+    v29 = pathExtension2;
+    if (pathExtension2 && [pathExtension2 length])
     {
-      v50 = [v29 ef_declaredUTTypeFromExtension];
-      v30 = [v50 identifier];
-      v31 = [v30 ef_conformsToIWorkUTType];
+      ef_declaredUTTypeFromExtension = [v29 ef_declaredUTTypeFromExtension];
+      identifier = [ef_declaredUTTypeFromExtension identifier];
+      ef_conformsToIWorkUTType = [identifier ef_conformsToIWorkUTType];
 
-      if (v31)
+      if (ef_conformsToIWorkUTType)
       {
-        v32 = v53;
+        v32 = stringByDeletingPathExtension;
 
         v33 = EDAttachmentsLog();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
         {
-          v34 = [v50 identifier];
-          [MFAttachmentComposeManager attachmentForData:v34 mimeType:buf fileName:v33 contentID:? context:?];
+          identifier2 = [ef_declaredUTTypeFromExtension identifier];
+          [MFAttachmentComposeManager attachmentForData:identifier2 mimeType:buf fileName:v33 contentID:? context:?];
         }
       }
 
       else
       {
-        v32 = v13;
+        v32 = nameCopy;
       }
     }
 
     else
     {
-      v32 = v13;
+      v32 = nameCopy;
     }
 
-    v13 = v32;
+    nameCopy = v32;
   }
 
-  v54 = [v13 ef_filenameWithExtensionForMimeType:v55];
+  v54 = [nameCopy ef_filenameWithExtensionForMimeType:typeCopy];
 
   v35 = [MFAttachment alloc];
   v36 = [v19 URLByAppendingPathComponent:v20];
   v25 = [(MFAttachment *)v35 initWithURL:v36 attachmentManager:self];
 
-  v37 = [v54 ef_sanitizedFileName];
-  [(MFAttachment *)v25 setFileName:v37];
+  ef_sanitizedFileName = [v54 ef_sanitizedFileName];
+  [(MFAttachment *)v25 setFileName:ef_sanitizedFileName];
 
   [(MFAttachment *)v25 setContentID:v20];
-  if (v55)
+  if (typeCopy)
   {
     [(MFAttachment *)v25 setMimeType:?];
   }
 
   else
   {
-    v38 = [v54 pathExtension];
-    v39 = [v38 lowercaseString];
+    pathExtension3 = [v54 pathExtension];
+    lowercaseString2 = [pathExtension3 lowercaseString];
 
-    v40 = [MEMORY[0x1E696AF48] sharedMappings];
-    v41 = [v40 MIMETypeForExtension:v39];
+    mEMORY[0x1E696AF48] = [MEMORY[0x1E696AF48] sharedMappings];
+    v41 = [mEMORY[0x1E696AF48] MIMETypeForExtension:lowercaseString2];
 
     [(MFAttachment *)v25 setMimeType:v41];
   }
@@ -792,7 +792,7 @@ LABEL_8:
   }
 
   [(MFAttachmentManager *)self setContentID:v20 forAttachment:v25];
-  -[MFAttachment setDecodedFileSize:](v25, "setDecodedFileSize:", [v12 length]);
+  -[MFAttachment setDecodedFileSize:](v25, "setDecodedFileSize:", [dataCopy length]);
   if (v25)
   {
     if (!self->_composeAttachmentURLs)
@@ -803,7 +803,7 @@ LABEL_8:
     }
 
     v44 = [(MFAttachment *)v25 url];
-    v45 = [v44 absoluteString];
+    absoluteString = [v44 absoluteString];
 
     composeAttachmentsQueue = self->_composeAttachmentsQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -811,13 +811,13 @@ LABEL_8:
     block[2] = __84__MFAttachmentComposeManager_attachmentForData_mimeType_fileName_contentID_context___block_invoke;
     block[3] = &unk_1E7AA26E0;
     block[4] = self;
-    v57 = v45;
-    v47 = v45;
+    v57 = absoluteString;
+    v47 = absoluteString;
     dispatch_async(composeAttachmentsQueue, block);
   }
 
-  v14 = v20;
-  v13 = v54;
+  dCopy = v20;
+  nameCopy = v54;
 LABEL_40:
 
   v48 = *MEMORY[0x1E69E9840];
@@ -839,44 +839,44 @@ uint64_t __84__MFAttachmentComposeManager_attachmentForData_mimeType_fileName_co
   return result;
 }
 
-- (id)attachmentForItemProvider:(id)a3 mimeType:(id)a4 fileName:(id)a5 contentID:(id)a6 context:(id)a7
+- (id)attachmentForItemProvider:(id)provider mimeType:(id)type fileName:(id)name contentID:(id)d context:(id)context
 {
-  v36 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v13 && ![0 length])
+  providerCopy = provider;
+  typeCopy = type;
+  nameCopy = name;
+  dCopy = d;
+  contextCopy = context;
+  if (!typeCopy && ![0 length])
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"MFAttachmentComposeManager.m" lineNumber:392 description:{@"Invalid parameter not satisfying: %@", @"mimeType || mimeType.length > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFAttachmentComposeManager.m" lineNumber:392 description:{@"Invalid parameter not satisfying: %@", @"mimeType || mimeType.length > 0"}];
   }
 
-  v17 = [(MFAttachmentComposeManager *)self _contentIDWithoutBracket:v15];
+  v17 = [(MFAttachmentComposeManager *)self _contentIDWithoutBracket:dCopy];
 
-  if (![v14 length])
+  if (![nameCopy length])
   {
     v18 = v17;
 
-    v14 = v18;
+    nameCopy = v18;
   }
 
-  v19 = [v14 ef_filenameWithExtensionForMimeType:v13];
+  v19 = [nameCopy ef_filenameWithExtensionForMimeType:typeCopy];
 
   v20 = MEMORY[0x1E695DFF8];
-  v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"x-attach-compose://%@", v16];
-  v22 = [v20 URLWithString:v21];
+  contextCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"x-attach-compose://%@", contextCopy];
+  v22 = [v20 URLWithString:contextCopy];
 
   v23 = [(MFAttachmentComposeManager *)self _providerForURL:v22];
   v24 = v23;
   if (v23)
   {
-    [(MFComposeAttachmentDataProvider *)v23 addDataItemProvider:v36 forContentID:v17];
+    [(MFComposeAttachmentDataProvider *)v23 addDataItemProvider:providerCopy forContentID:v17];
   }
 
   else
   {
-    v24 = [[MFComposeAttachmentDataProvider alloc] initWithAttachmentDataItemProvider:v36 forContentID:v17];
+    v24 = [[MFComposeAttachmentDataProvider alloc] initWithAttachmentDataItemProvider:providerCopy forContentID:v17];
     [(MFAttachmentManager *)self addProvider:v24 forBaseURL:v22];
   }
 
@@ -886,7 +886,7 @@ uint64_t __84__MFAttachmentComposeManager_attachmentForData_mimeType_fileName_co
 
   [(MFAttachment *)v27 setFileName:v19];
   [(MFAttachment *)v27 setContentID:v17];
-  [(MFAttachment *)v27 setMimeType:v13];
+  [(MFAttachment *)v27 setMimeType:typeCopy];
   [(MFAttachmentManager *)self setContentID:v17 forAttachment:v27];
   if (v27)
   {
@@ -898,7 +898,7 @@ uint64_t __84__MFAttachmentComposeManager_attachmentForData_mimeType_fileName_co
     }
 
     v30 = [(MFAttachment *)v27 url];
-    v31 = [v30 absoluteString];
+    absoluteString = [v30 absoluteString];
 
     composeAttachmentsQueue = self->_composeAttachmentsQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -906,8 +906,8 @@ uint64_t __84__MFAttachmentComposeManager_attachmentForData_mimeType_fileName_co
     block[2] = __92__MFAttachmentComposeManager_attachmentForItemProvider_mimeType_fileName_contentID_context___block_invoke;
     block[3] = &unk_1E7AA26E0;
     block[4] = self;
-    v38 = v31;
-    v33 = v31;
+    v38 = absoluteString;
+    v33 = absoluteString;
     dispatch_async(composeAttachmentsQueue, block);
   }
 
@@ -928,40 +928,40 @@ uint64_t __92__MFAttachmentComposeManager_attachmentForItemProvider_mimeType_fil
   return result;
 }
 
-- (id)_contentIDWithoutBracket:(id)a3
+- (id)_contentIDWithoutBracket:(id)bracket
 {
-  v3 = a3;
-  if (!v3)
+  bracketCopy = bracket;
+  if (!bracketCopy)
   {
-    v3 = [MEMORY[0x1E696AEC0] mf_messageIDStringWithDomainHint:0];
+    bracketCopy = [MEMORY[0x1E696AEC0] mf_messageIDStringWithDomainHint:0];
   }
 
-  if ([v3 hasPrefix:@"<"])
+  if ([bracketCopy hasPrefix:@"<"])
   {
-    v4 = [v3 substringWithRange:{1, objc_msgSend(v3, "length") - 2}];
+    v4 = [bracketCopy substringWithRange:{1, objc_msgSend(bracketCopy, "length") - 2}];
 
-    v3 = v4;
+    bracketCopy = v4;
   }
 
-  return v3;
+  return bracketCopy;
 }
 
-- (void)loadAttachmentURL:(id)a3 forContextID:(id)a4
+- (void)loadAttachmentURL:(id)l forContextID:(id)d
 {
-  v12 = a4;
-  v6 = [(MFAttachmentComposeManager *)self attachmentForCID:a3];
-  v7 = [v6 fetchLocalData];
-  v8 = [v6 mimeType];
-  v9 = [v6 fileName];
-  v10 = [v6 contentID];
-  v11 = [(MFAttachmentComposeManager *)self attachmentForData:v7 mimeType:v8 fileName:v9 contentID:v10 context:v12];
+  dCopy = d;
+  v6 = [(MFAttachmentComposeManager *)self attachmentForCID:l];
+  fetchLocalData = [v6 fetchLocalData];
+  mimeType = [v6 mimeType];
+  fileName = [v6 fileName];
+  contentID = [v6 contentID];
+  v11 = [(MFAttachmentComposeManager *)self attachmentForData:fetchLocalData mimeType:mimeType fileName:fileName contentID:contentID context:dCopy];
 }
 
-- (BOOL)updateAttachment:(id)a3 withNewData:(id)a4
+- (BOOL)updateAttachment:(id)attachment withNewData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 url];
+  attachmentCopy = attachment;
+  dataCopy = data;
+  v8 = [attachmentCopy url];
   v9 = [(MFAttachmentManager *)self _dataProviderForAttachmentURL:v8 error:0];
 
   objc_opt_class();
@@ -969,27 +969,27 @@ uint64_t __92__MFAttachmentComposeManager_attachmentForItemProvider_mimeType_fil
   if (isKindOfClass)
   {
     v11 = v9;
-    v12 = [v6 url];
+    v12 = [attachmentCopy url];
     [v11 removeDataForAttachment:v12];
 
-    v13 = [v6 contentID];
-    [v11 addData:v7 forContentID:v13];
+    contentID = [attachmentCopy contentID];
+    [v11 addData:dataCopy forContentID:contentID];
   }
 
   return isKindOfClass & 1;
 }
 
-- (void)removeAttachmentForURL:(id)a3
+- (void)removeAttachmentForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   composeAttachmentsQueue = self->_composeAttachmentsQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__MFAttachmentComposeManager_removeAttachmentForURL___block_invoke;
   v7[3] = &unk_1E7AA26E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = lCopy;
+  v6 = lCopy;
   dispatch_sync(composeAttachmentsQueue, v7);
 }
 

@@ -1,14 +1,14 @@
 @interface ComAppleContextkitCategoriesConstellation_QIDCount
-- (ComAppleContextkitCategoriesConstellation_QIDCount)initWithNSString:(id)a3 withInt:(int)a4;
+- (ComAppleContextkitCategoriesConstellation_QIDCount)initWithNSString:(id)string withInt:(int)int;
 - (void)dealloc;
 @end
 
 @implementation ComAppleContextkitCategoriesConstellation_QIDCount
 
-- (ComAppleContextkitCategoriesConstellation_QIDCount)initWithNSString:(id)a3 withInt:(int)a4
+- (ComAppleContextkitCategoriesConstellation_QIDCount)initWithNSString:(id)string withInt:(int)int
 {
-  JreStrongAssign(&self->qid_, a3);
-  self->count_ = a4;
+  JreStrongAssign(&self->qid_, string);
+  self->count_ = int;
   return self;
 }
 

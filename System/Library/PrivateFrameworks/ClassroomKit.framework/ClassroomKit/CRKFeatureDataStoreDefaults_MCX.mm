@@ -1,16 +1,16 @@
 @interface CRKFeatureDataStoreDefaults_MCX
-+ (BOOL)defaultAskValueForFeature:(id)a3;
++ (BOOL)defaultAskValueForFeature:(id)feature;
 + (id)restrictionDefaultValues;
-+ (unint64_t)defaultValueForFeature:(id)a3;
++ (unint64_t)defaultValueForFeature:(id)feature;
 @end
 
 @implementation CRKFeatureDataStoreDefaults_MCX
 
-+ (unint64_t)defaultValueForFeature:(id)a3
++ (unint64_t)defaultValueForFeature:(id)feature
 {
-  v3 = a3;
-  v4 = [objc_opt_class() restrictionDefaultValues];
-  v5 = [v4 objectForKeyedSubscript:v3];
+  featureCopy = feature;
+  restrictionDefaultValues = [objc_opt_class() restrictionDefaultValues];
+  v5 = [restrictionDefaultValues objectForKeyedSubscript:featureCopy];
 
   v6 = [v5 objectForKeyedSubscript:@"value"];
 
@@ -18,16 +18,16 @@
   return v7;
 }
 
-+ (BOOL)defaultAskValueForFeature:(id)a3
++ (BOOL)defaultAskValueForFeature:(id)feature
 {
-  v3 = a3;
-  v4 = [objc_opt_class() restrictionDefaultValues];
-  v5 = [v4 objectForKeyedSubscript:v3];
+  featureCopy = feature;
+  restrictionDefaultValues = [objc_opt_class() restrictionDefaultValues];
+  v5 = [restrictionDefaultValues objectForKeyedSubscript:featureCopy];
 
   v6 = [v5 objectForKeyedSubscript:@"ask"];
 
-  LOBYTE(v4) = [v6 BOOLValue];
-  return v4;
+  LOBYTE(restrictionDefaultValues) = [v6 BOOLValue];
+  return restrictionDefaultValues;
 }
 
 + (id)restrictionDefaultValues
@@ -36,7 +36,7 @@
   block[1] = 3221225472;
   block[2] = __59__CRKFeatureDataStoreDefaults_MCX_restrictionDefaultValues__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (restrictionDefaultValues_onceToken != -1)
   {
     dispatch_once(&restrictionDefaultValues_onceToken, block);

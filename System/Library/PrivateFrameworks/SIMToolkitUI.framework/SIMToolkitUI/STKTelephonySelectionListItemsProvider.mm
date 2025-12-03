@@ -1,15 +1,15 @@
 @interface STKTelephonySelectionListItemsProvider
-- (STKTelephonySelectionListItemsProvider)initWithTelephonyClient:(id)a3;
-- (id)selectionListItemsForContext:(id)a3 options:(id)a4;
+- (STKTelephonySelectionListItemsProvider)initWithTelephonyClient:(id)client;
+- (id)selectionListItemsForContext:(id)context options:(id)options;
 - (void)dealloc;
 @end
 
 @implementation STKTelephonySelectionListItemsProvider
 
-- (STKTelephonySelectionListItemsProvider)initWithTelephonyClient:(id)a3
+- (STKTelephonySelectionListItemsProvider)initWithTelephonyClient:(id)client
 {
-  v6 = a3;
-  if (!v6)
+  clientCopy = client;
+  if (!clientCopy)
   {
     [(STKTelephonySelectionListItemsProvider *)a2 initWithTelephonyClient:?];
   }
@@ -20,7 +20,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_telephonyClient, a3);
+    objc_storeStrong(&v7->_telephonyClient, client);
   }
 
   return v8;
@@ -33,14 +33,14 @@
   [(STKTelephonySelectionListItemsProvider *)&v2 dealloc];
 }
 
-- (id)selectionListItemsForContext:(id)a3 options:(id)a4
+- (id)selectionListItemsForContext:(id)context options:(id)options
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a4 objectForKeyedSubscript:@"STKCTListItems"];
+  contextCopy = context;
+  v7 = [options objectForKeyedSubscript:@"STKCTListItems"];
   if (v7)
   {
-    v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
+    itemList = objc_alloc_init(MEMORY[0x277CBEB18]);
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -51,7 +51,7 @@
     {
       v11 = v10;
       v26 = v7;
-      v27 = v6;
+      v27 = contextCopy;
       v12 = *v30;
       v13 = *MEMORY[0x277CC40E0];
       v14 = *MEMORY[0x277CC37C0];
@@ -71,7 +71,7 @@
           v20 = [v17 objectForKeyedSubscript:v14];
           v21 = [v18 initWithText:v19 selected:v20 != 0];
 
-          [v8 addObject:v21];
+          [itemList addObject:v21];
         }
 
         v9 = v15;
@@ -80,7 +80,7 @@
 
       while (v11);
       v7 = v26;
-      v6 = v27;
+      contextCopy = v27;
     }
   }
 
@@ -88,14 +88,14 @@
   {
     telephonyClient = self->_telephonyClient;
     v28 = 0;
-    v23 = [(CoreTelephonyClient *)telephonyClient getSIMToolkitListItems:v6 items:&v28];
+    v23 = [(CoreTelephonyClient *)telephonyClient getSIMToolkitListItems:contextCopy items:&v28];
     v9 = v28;
-    v8 = [v9 itemList];
+    itemList = [v9 itemList];
   }
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return itemList;
 }
 
 - (void)initWithTelephonyClient:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

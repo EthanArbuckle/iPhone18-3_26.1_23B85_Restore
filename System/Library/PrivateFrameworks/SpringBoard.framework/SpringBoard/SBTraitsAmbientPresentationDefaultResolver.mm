@@ -1,31 +1,31 @@
 @interface SBTraitsAmbientPresentationDefaultResolver
-- (SBTraitsAmbientPresentationDefaultResolver)initWithThresholdRole:(id)a3 componentOrder:(id)a4;
-- (void)resolveStagePreferencesWithContext:(id)a3 preferencesTree:(id)a4;
+- (SBTraitsAmbientPresentationDefaultResolver)initWithThresholdRole:(id)role componentOrder:(id)order;
+- (void)resolveStagePreferencesWithContext:(id)context preferencesTree:(id)tree;
 @end
 
 @implementation SBTraitsAmbientPresentationDefaultResolver
 
-- (SBTraitsAmbientPresentationDefaultResolver)initWithThresholdRole:(id)a3 componentOrder:(id)a4
+- (SBTraitsAmbientPresentationDefaultResolver)initWithThresholdRole:(id)role componentOrder:(id)order
 {
-  v7 = a3;
+  roleCopy = role;
   v11.receiver = self;
   v11.super_class = SBTraitsAmbientPresentationDefaultResolver;
-  v8 = [(SBTraitsAmbientPresentationStageComponent *)&v11 initWithComponentOrder:a4];
+  v8 = [(SBTraitsAmbientPresentationStageComponent *)&v11 initWithComponentOrder:order];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_thresholdRole, a3);
+    objc_storeStrong(&v8->_thresholdRole, role);
   }
 
   return v9;
 }
 
-- (void)resolveStagePreferencesWithContext:(id)a3 preferencesTree:(id)a4
+- (void)resolveStagePreferencesWithContext:(id)context preferencesTree:(id)tree
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 acquiredParticipants];
-  v7 = [v6 sortedArrayUsingComparator:&__block_literal_global_87];
+  contextCopy = context;
+  acquiredParticipants = [contextCopy acquiredParticipants];
+  v7 = [acquiredParticipants sortedArrayUsingComparator:&__block_literal_global_87];
 
   v23 = 0u;
   v24 = 0u;
@@ -48,8 +48,8 @@
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = [v13 role];
-        v15 = [v14 isEqualToString:self->_thresholdRole];
+        role = [v13 role];
+        v15 = [role isEqualToString:self->_thresholdRole];
 
         v10 |= v15;
         if (v10)
@@ -72,7 +72,7 @@
         v18[2] = __97__SBTraitsAmbientPresentationDefaultResolver_resolveStagePreferencesWithContext_preferencesTree___block_invoke_2;
         v18[3] = &unk_2783B0C40;
         v20 = v16;
-        v19 = v5;
+        v19 = contextCopy;
         [v13 updateAmbientPresentationSettingsWithBlock:v18];
       }
 

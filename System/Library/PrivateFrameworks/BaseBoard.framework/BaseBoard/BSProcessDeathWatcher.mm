@@ -1,5 +1,5 @@
 @interface BSProcessDeathWatcher
-- (BSProcessDeathWatcher)initWithPID:(int)a3 queue:(id)a4 deathHandler:(id)a5;
+- (BSProcessDeathWatcher)initWithPID:(int)d queue:(id)queue deathHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -13,19 +13,19 @@
   [(BSProcessDeathWatcher *)&v3 dealloc];
 }
 
-- (BSProcessDeathWatcher)initWithPID:(int)a3 queue:(id)a4 deathHandler:(id)a5
+- (BSProcessDeathWatcher)initWithPID:(int)d queue:(id)queue deathHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  handlerCopy = handler;
   v10 = [(BSProcessDeathWatcher *)self init];
   if (v10)
   {
-    v11 = [v9 copy];
+    v11 = [handlerCopy copy];
     deathHandler = v10->_deathHandler;
     v10->_deathHandler = v11;
 
     v13 = [BSDispatchSource alloc];
-    v14 = [(BSDispatchSource *)v13 initWithType:a3 handle:0x80000000uLL mask:v8 queue:0 configureSourceBlock:?];
+    v14 = [(BSDispatchSource *)v13 initWithType:d handle:0x80000000uLL mask:queueCopy queue:0 configureSourceBlock:?];
     source = v10->_source;
     v10->_source = v14;
 

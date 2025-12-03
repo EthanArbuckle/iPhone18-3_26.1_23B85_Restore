@@ -1,30 +1,30 @@
 @interface SFActivityBitmaps
-+ (void)adjustStartTime:(unint64_t *)a3 endTime:(unint64_t *)a4 currMachAbsTime:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
++ (void)adjustStartTime:(unint64_t *)time endTime:(unint64_t *)endTime currMachAbsTime:(unint64_t)absTime;
+- (BOOL)isEqual:(id)equal;
 - (SFActivityBitmaps)init;
-- (SFActivityBitmaps)initWithName:(id)a3;
+- (SFActivityBitmaps)initWithName:(id)name;
 - (id)description;
-- (id)getWrappedBitmapsFromTime:(unint64_t)a3 toTime:(unint64_t)a4;
-- (unint64_t)adjustStartTime:(unint64_t)a3;
+- (id)getWrappedBitmapsFromTime:(unint64_t)time toTime:(unint64_t)toTime;
+- (unint64_t)adjustStartTime:(unint64_t)time;
 - (unint64_t)endTime;
-- (unint64_t)getAlignedBitmapStartingAtTime:(unint64_t)a3;
+- (unint64_t)getAlignedBitmapStartingAtTime:(unint64_t)time;
 - (unint64_t)getHammingWeight;
 - (unint64_t)getLongestContiguousHammingWeight;
-- (void)addActivityWithFlowId:(unint64_t)a3 startTime:(unint64_t)a4 part1:(unint64_t)a5 part2:(unint64_t)a6;
-- (void)clearAndSetNewActivityWithStartTime:(unint64_t)a3 part1:(unint64_t)a4 part:(unint64_t)a5;
+- (void)addActivityWithFlowId:(unint64_t)id startTime:(unint64_t)time part1:(unint64_t)part1 part2:(unint64_t)part2;
+- (void)clearAndSetNewActivityWithStartTime:(unint64_t)time part1:(unint64_t)part1 part:(unint64_t)part;
 - (void)freeUpBufferSpace;
 - (void)resetAllActivities;
-- (void)resetStartTimeToEarlierTime:(unint64_t)a3;
-- (void)setActivityWithStartTime:(unint64_t)a3 part1:(unint64_t)a4 part2:(unint64_t)a5;
-- (void)setAlignedBitmap:(unint64_t)a3 withStartTime:(unint64_t)a4;
-- (void)tallyUpHammingWeightTo:(id)a3;
+- (void)resetStartTimeToEarlierTime:(unint64_t)time;
+- (void)setActivityWithStartTime:(unint64_t)time part1:(unint64_t)part1 part2:(unint64_t)part2;
+- (void)setAlignedBitmap:(unint64_t)bitmap withStartTime:(unint64_t)time;
+- (void)tallyUpHammingWeightTo:(id)to;
 @end
 
 @implementation SFActivityBitmaps
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   if ([(SFActivityBitmaps *)self isUpdated])
   {
     v4 = MEMORY[0x277CCACA8];
@@ -32,11 +32,11 @@
     v6 = timeStringMillisecondsFromReferenceInterval(([(SFActivityBitmaps *)self startTime]+ v5) + -978307200.0);
     v7 = [v4 stringWithFormat:@"[Activity startTime: %@ (%llu), endTime: %llu] ", v6, -[SFActivityBitmaps startTime](self, "startTime"), -[SFActivityBitmaps endTime](self, "endTime")];
 
-    [v3 appendString:v7];
+    [string appendString:v7];
   }
 
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"[wordOffset: %llu, numOfWords:%llu] <", -[SFActivityBitmaps wordOffset](self, "wordOffset"), -[SFActivityBitmaps numOfWords](self, "numOfWords")];
-  [v3 appendString:v8];
+  [string appendString:v8];
   if ([(SFActivityBitmaps *)self numOfWords])
   {
     v9 = 0;
@@ -44,7 +44,7 @@
     {
       v10 = [(SFActivityBitmaps *)self getWordAtOffset:[(SFActivityBitmaps *)self wordOffset]+ v9];
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%016llX ", v10];
-      [v3 appendString:v11];
+      [string appendString:v11];
 
       ++v9;
     }
@@ -52,9 +52,9 @@
     while (v9 < [(SFActivityBitmaps *)self numOfWords]);
   }
 
-  [v3 appendString:@">"];
+  [string appendString:@">"];
 
-  return v3;
+  return string;
 }
 
 - (unint64_t)endTime
@@ -84,16 +84,16 @@
   return v3;
 }
 
-- (SFActivityBitmaps)initWithName:(id)a3
+- (SFActivityBitmaps)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v8.receiver = self;
   v8.super_class = SFActivityBitmaps;
   v5 = [(SFActivityBitmaps *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SFActivityBitmaps *)v5 setAppName:v4];
+    [(SFActivityBitmaps *)v5 setAppName:nameCopy];
     [(SFActivityBitmaps *)v6 setStartTime:-1];
     [(SFActivityBitmaps *)v6 setWordOffset:0];
     [(SFActivityBitmaps *)v6 setNumOfWords:0];
@@ -102,7 +102,7 @@
   return v6;
 }
 
-- (void)addActivityWithFlowId:(unint64_t)a3 startTime:(unint64_t)a4 part1:(unint64_t)a5 part2:(unint64_t)a6
+- (void)addActivityWithFlowId:(unint64_t)id startTime:(unint64_t)time part1:(unint64_t)part1 part2:(unint64_t)part2
 {
   v60 = *MEMORY[0x277D85DE8];
   v11 = flowLogHandle;
@@ -112,11 +112,11 @@
     v13 = v11;
     v14 = [(SFActivityBitmaps *)self description];
     v52 = 134218498;
-    v53 = a3;
+    idCopy5 = id;
     v54 = 2112;
     v55 = appName;
     v56 = 2112;
-    v57 = v14;
+    timeCopy3 = v14;
     _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_DEBUG, "[Bitmap] flow id %llu, %@: current bitmaps stored before adding new bitmap: %@", &v52, 0x20u);
   }
 
@@ -125,26 +125,26 @@
     goto LABEL_58;
   }
 
-  a4 = [(SFActivityBitmaps *)self adjustStartTime:a4];
-  v15 = a4 + 1024;
-  v16 = [(SFActivityBitmaps *)self startTime];
-  if ([(SFActivityBitmaps *)self startTime]> a4)
+  time = [(SFActivityBitmaps *)self adjustStartTime:time];
+  v15 = time + 1024;
+  startTime = [(SFActivityBitmaps *)self startTime];
+  if ([(SFActivityBitmaps *)self startTime]> time)
   {
     [(SFActivityBitmaps *)self freeUpBufferSpace];
     v17 = flowLogHandle;
     if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_INFO))
     {
       v18 = v17;
-      v19 = [(SFActivityBitmaps *)self appName];
-      v20 = [(SFActivityBitmaps *)self startTime];
+      appName = [(SFActivityBitmaps *)self appName];
+      startTime2 = [(SFActivityBitmaps *)self startTime];
       v52 = 134218754;
-      v53 = a3;
+      idCopy5 = id;
       v54 = 2112;
-      v55 = v19;
+      v55 = appName;
       v56 = 2048;
-      v57 = a4;
+      timeCopy3 = time;
       v58 = 2048;
-      v59 = v20;
+      v59 = startTime2;
       _os_log_impl(&dword_23255B000, v18, OS_LOG_TYPE_INFO, "[Bitmap] flow id %llu, %@: the activity bitmap to add with start time %llu is smaller than existing startTime %llu.", &v52, 0x2Au);
     }
 
@@ -160,27 +160,27 @@
         }
 
         v41 = v44;
-        v45 = [(SFActivityBitmaps *)self appName];
-        v46 = [(SFActivityBitmaps *)self startTime];
+        appName2 = [(SFActivityBitmaps *)self appName];
+        startTime3 = [(SFActivityBitmaps *)self startTime];
         v52 = 134218754;
-        v53 = a3;
+        idCopy5 = id;
         v54 = 2112;
-        v55 = v45;
+        v55 = appName2;
         v56 = 2048;
-        v57 = a4;
+        timeCopy3 = time;
         v58 = 2048;
-        v59 = v46;
+        v59 = startTime3;
         _os_log_impl(&dword_23255B000, v41, OS_LOG_TYPE_INFO, "[Bitmap] flow %llu, %@: the activity bitmap with start time %llu is discarded, current earliest startTime: %llu.", &v52, 0x2Au);
 
         goto LABEL_53;
       }
     }
 
-    v22 = [(SFActivityBitmaps *)self startTime];
-    v23 = v22 - a4;
-    if (a4 >= v22)
+    startTime4 = [(SFActivityBitmaps *)self startTime];
+    v23 = startTime4 - time;
+    if (time >= startTime4)
     {
-      v23 = a4 - v22;
+      v23 = time - startTime4;
     }
 
     if ((v23 & 7) <= 4)
@@ -203,15 +203,15 @@
       v25 = v24 >> 6;
     }
 
-    v26 = [(SFActivityBitmaps *)self numOfWords];
-    if (v25 >= 8 - v26)
+    numOfWords = [(SFActivityBitmaps *)self numOfWords];
+    if (v25 >= 8 - numOfWords)
     {
-      v25 = 8 - v26;
+      v25 = 8 - numOfWords;
     }
 
     if ([(SFActivityBitmaps *)self startTime]< v25 << 9)
     {
-      [(SFActivityBitmaps *)self resetStartTimeToEarlierTime:a4];
+      [(SFActivityBitmaps *)self resetStartTimeToEarlierTime:time];
       goto LABEL_51;
     }
 
@@ -234,10 +234,10 @@
     goto LABEL_50;
   }
 
-  v27 = v15 - (v16 + 4096);
-  if (v15 > v16 + 4096)
+  v27 = v15 - (startTime + 4096);
+  if (v15 > startTime + 4096)
   {
-    if (((a4 - v16) & 7u) <= 4uLL)
+    if (((time - startTime) & 7u) <= 4uLL)
     {
       v28 = v27 >> 3;
     }
@@ -279,31 +279,31 @@ LABEL_50:
     if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v48 = v47;
-      v49 = [(SFActivityBitmaps *)self appName];
-      v50 = [(SFActivityBitmaps *)self startTime];
+      appName3 = [(SFActivityBitmaps *)self appName];
+      startTime5 = [(SFActivityBitmaps *)self startTime];
       v52 = 134218754;
-      v53 = a3;
+      idCopy5 = id;
       v54 = 2112;
-      v55 = v49;
+      v55 = appName3;
       v56 = 2048;
-      v57 = a4;
+      timeCopy3 = time;
       v58 = 2048;
-      v59 = v50;
+      v59 = startTime5;
       _os_log_impl(&dword_23255B000, v48, OS_LOG_TYPE_DEFAULT, "[Bitmap] flow id %llu, %@: the activity bitmap to add with start time %llu will replace all previous bitmaps with startTime %llu", &v52, 0x2Au);
     }
 
 LABEL_58:
-    [(SFActivityBitmaps *)self clearAndSetNewActivityWithStartTime:a4 part1:a5 part:a6];
+    [(SFActivityBitmaps *)self clearAndSetNewActivityWithStartTime:time part1:part1 part:part2];
     goto LABEL_59;
   }
 
   if ([(SFActivityBitmaps *)self numOfWords]<= 7)
   {
-    v32 = [(SFActivityBitmaps *)self startTime];
-    v33 = v15 - v32;
-    if (v32 >= v15)
+    startTime6 = [(SFActivityBitmaps *)self startTime];
+    v33 = v15 - startTime6;
+    if (startTime6 >= v15)
     {
-      v33 = v32 - v15;
+      v33 = startTime6 - v15;
     }
 
     if ((v33 & 7) <= 4)
@@ -326,34 +326,34 @@ LABEL_58:
       v35 = v34 >> 6;
     }
 
-    v36 = [(SFActivityBitmaps *)self numOfWords];
-    if (v36 <= v35)
+    numOfWords2 = [(SFActivityBitmaps *)self numOfWords];
+    if (numOfWords2 <= v35)
     {
       v37 = v35;
     }
 
     else
     {
-      v37 = v36;
+      v37 = numOfWords2;
     }
 
     [(SFActivityBitmaps *)self setNumOfWords:v37];
   }
 
 LABEL_51:
-  [(SFActivityBitmaps *)self setActivityWithStartTime:a4 part1:a5 part2:a6];
+  [(SFActivityBitmaps *)self setActivityWithStartTime:time part1:part1 part2:part2];
   v40 = flowLogHandle;
   if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v41 = v40;
-    v42 = [(SFActivityBitmaps *)self appName];
+    appName4 = [(SFActivityBitmaps *)self appName];
     v43 = [(SFActivityBitmaps *)self description];
     v52 = 134218498;
-    v53 = a3;
+    idCopy5 = id;
     v54 = 2112;
-    v55 = v42;
+    v55 = appName4;
     v56 = 2112;
-    v57 = v43;
+    timeCopy3 = v43;
     _os_log_impl(&dword_23255B000, v41, OS_LOG_TYPE_DEBUG, "[Bitmap] flow id %llu, %@: current bitmaps stored after adding new bitmap: %@", &v52, 0x20u);
 
 LABEL_53:
@@ -363,39 +363,39 @@ LABEL_59:
   v51 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setActivityWithStartTime:(unint64_t)a3 part1:(unint64_t)a4 part2:(unint64_t)a5
+- (void)setActivityWithStartTime:(unint64_t)time part1:(unint64_t)part1 part2:(unint64_t)part2
 {
-  v8 = [(SFActivityBitmaps *)self adjustStartTime:a3];
-  [(SFActivityBitmaps *)self setAlignedBitmap:a4 withStartTime:v8];
+  v8 = [(SFActivityBitmaps *)self adjustStartTime:time];
+  [(SFActivityBitmaps *)self setAlignedBitmap:part1 withStartTime:v8];
 
-  [(SFActivityBitmaps *)self setAlignedBitmap:a5 withStartTime:v8 + 512];
+  [(SFActivityBitmaps *)self setAlignedBitmap:part2 withStartTime:v8 + 512];
 }
 
-- (unint64_t)getAlignedBitmapStartingAtTime:(unint64_t)a3
+- (unint64_t)getAlignedBitmapStartingAtTime:(unint64_t)time
 {
-  v5 = [(SFActivityBitmaps *)self startTime];
-  v6 = v5 + ([(SFActivityBitmaps *)self numOfWords]<< 9);
-  if (v6 <= a3)
+  startTime = [(SFActivityBitmaps *)self startTime];
+  v6 = startTime + ([(SFActivityBitmaps *)self numOfWords]<< 9);
+  if (v6 <= time)
   {
     return 0;
   }
 
-  v7 = a3 + 512;
-  if (a3 + 512 <= [(SFActivityBitmaps *)self startTime])
+  v7 = time + 512;
+  if (time + 512 <= [(SFActivityBitmaps *)self startTime])
   {
     return 0;
   }
 
-  if ([(SFActivityBitmaps *)self startTime]<= a3)
+  if ([(SFActivityBitmaps *)self startTime]<= time)
   {
     v12 = v7 - v6;
     if (v7 <= v6)
     {
-      v14 = [(SFActivityBitmaps *)self startTime];
-      v15 = a3 - v14;
-      if (v14 >= a3)
+      startTime2 = [(SFActivityBitmaps *)self startTime];
+      v15 = time - startTime2;
+      if (startTime2 >= time)
       {
-        v15 = v14 - a3;
+        v15 = startTime2 - time;
       }
 
       if ((v15 & 7) <= 4)
@@ -442,11 +442,11 @@ LABEL_59:
 
   else
   {
-    v8 = [(SFActivityBitmaps *)self startTime];
-    v9 = a3 - v8;
-    if (v8 > a3)
+    startTime3 = [(SFActivityBitmaps *)self startTime];
+    v9 = time - startTime3;
+    if (startTime3 > time)
     {
-      v9 = v8 - a3;
+      v9 = startTime3 - time;
     }
 
     if ((v9 & 7) <= 4)
@@ -463,24 +463,24 @@ LABEL_59:
   }
 }
 
-- (void)setAlignedBitmap:(unint64_t)a3 withStartTime:(unint64_t)a4
+- (void)setAlignedBitmap:(unint64_t)bitmap withStartTime:(unint64_t)time
 {
   v7 = [(SFActivityBitmaps *)self startTime]+ 4096;
-  if (v7 > a4)
+  if (v7 > time)
   {
-    v8 = a4 + 512;
-    if (a4 + 512 > [(SFActivityBitmaps *)self startTime])
+    v8 = time + 512;
+    if (time + 512 > [(SFActivityBitmaps *)self startTime])
     {
-      if ([(SFActivityBitmaps *)self startTime]<= a4)
+      if ([(SFActivityBitmaps *)self startTime]<= time)
       {
         v16 = v8 - v7;
         if (v8 <= v7)
         {
-          v20 = [(SFActivityBitmaps *)self startTime];
-          v21 = a4 - v20;
-          if (v20 >= a4)
+          startTime = [(SFActivityBitmaps *)self startTime];
+          v21 = time - startTime;
+          if (startTime >= time)
           {
-            v21 = v20 - a4;
+            v21 = startTime - time;
           }
 
           if ((v21 & 7) <= 4)
@@ -497,22 +497,22 @@ LABEL_59:
           v24 = v22 & 0x3F;
           if (v24)
           {
-            v25 = a3 << v24;
-            v26 = (a3 >> -v24) & ~(-1 << v24);
+            v25 = bitmap << v24;
+            v26 = (bitmap >> -v24) & ~(-1 << v24);
             v27 = [(SFActivityBitmaps *)self getWordAtOffset:[(SFActivityBitmaps *)self wordOffset]+ v23];
             v28 = [(SFActivityBitmaps *)self getWordAtOffset:v23 + 1 + [(SFActivityBitmaps *)self wordOffset]];
             [(SFActivityBitmaps *)self writeWord:v27 | v25 atOffset:[(SFActivityBitmaps *)self wordOffset]+ v23];
-            v29 = [(SFActivityBitmaps *)self wordOffset];
+            wordOffset = [(SFActivityBitmaps *)self wordOffset];
             v15 = v28 | v26;
-            v14 = v23 + 1 + v29;
+            wordOffset4 = v23 + 1 + wordOffset;
           }
 
           else
           {
             v30 = [(SFActivityBitmaps *)self getWordAtOffset:[(SFActivityBitmaps *)self wordOffset]+ v23];
-            v31 = [(SFActivityBitmaps *)self wordOffset];
-            v15 = v30 | a3;
-            v14 = v31 + v23;
+            wordOffset2 = [(SFActivityBitmaps *)self wordOffset];
+            v15 = v30 | bitmap;
+            wordOffset4 = wordOffset2 + v23;
           }
         }
 
@@ -528,21 +528,21 @@ LABEL_59:
             LOBYTE(v16) = (v16 >> 3) + 1;
           }
 
-          v17 = a3 << v16;
+          v17 = bitmap << v16;
           v18 = [(SFActivityBitmaps *)self getWordAtOffset:[(SFActivityBitmaps *)self wordOffset]+ 8];
-          v19 = [(SFActivityBitmaps *)self wordOffset];
+          wordOffset3 = [(SFActivityBitmaps *)self wordOffset];
           v15 = v18 | v17;
-          v14 = v19 + 8;
+          wordOffset4 = wordOffset3 + 8;
         }
       }
 
       else
       {
-        v9 = [(SFActivityBitmaps *)self startTime];
-        v10 = a4 - v9;
-        if (v9 > a4)
+        startTime2 = [(SFActivityBitmaps *)self startTime];
+        v10 = time - startTime2;
+        if (startTime2 > time)
         {
-          v10 = v9 - a4;
+          v10 = startTime2 - time;
         }
 
         if ((v10 & 7) <= 4)
@@ -555,26 +555,26 @@ LABEL_59:
           v11 = (v10 >> 3) + 1;
         }
 
-        v12 = (a3 >> v11) & ~(-1 << -v11);
+        v12 = (bitmap >> v11) & ~(-1 << -v11);
         v13 = [(SFActivityBitmaps *)self getWordAtOffset:[(SFActivityBitmaps *)self wordOffset]];
-        v14 = [(SFActivityBitmaps *)self wordOffset];
+        wordOffset4 = [(SFActivityBitmaps *)self wordOffset];
         v15 = v12 | v13;
       }
 
-      [(SFActivityBitmaps *)self writeWord:v15 atOffset:v14];
+      [(SFActivityBitmaps *)self writeWord:v15 atOffset:wordOffset4];
     }
   }
 }
 
-- (void)resetStartTimeToEarlierTime:(unint64_t)a3
+- (void)resetStartTimeToEarlierTime:(unint64_t)time
 {
-  if ([(SFActivityBitmaps *)self isUpdated]&& [(SFActivityBitmaps *)self startTime]> a3)
+  if ([(SFActivityBitmaps *)self isUpdated]&& [(SFActivityBitmaps *)self startTime]> time)
   {
-    v5 = [(SFActivityBitmaps *)self startTime];
-    v6 = a3 - v5;
-    if (v5 > a3)
+    startTime = [(SFActivityBitmaps *)self startTime];
+    v6 = time - startTime;
+    if (startTime > time)
     {
-      v6 = v5 - a3;
+      v6 = startTime - time;
     }
 
     if ((v6 & 7) <= 4)
@@ -643,13 +643,13 @@ LABEL_59:
       [(SFActivityBitmaps *)self setNumOfWords:([(SFActivityBitmaps *)self numOfWords]+ v8) & 7];
       [(SFActivityBitmaps *)self setWordOffset:([(SFActivityBitmaps *)self wordOffset]- v8) & 7];
 
-      [(SFActivityBitmaps *)self setStartTime:a3];
+      [(SFActivityBitmaps *)self setStartTime:time];
     }
 
     else
     {
 
-      [(SFActivityBitmaps *)self clearAndSetNewActivityWithStartTime:a3 part1:0 part:0];
+      [(SFActivityBitmaps *)self clearAndSetNewActivityWithStartTime:time part1:0 part:0];
     }
   }
 }
@@ -673,37 +673,37 @@ LABEL_59:
   }
 }
 
-- (void)clearAndSetNewActivityWithStartTime:(unint64_t)a3 part1:(unint64_t)a4 part:(unint64_t)a5
+- (void)clearAndSetNewActivityWithStartTime:(unint64_t)time part1:(unint64_t)part1 part:(unint64_t)part
 {
-  [(SFActivityBitmaps *)self setStartTime:a3];
+  [(SFActivityBitmaps *)self setStartTime:time];
   [(SFActivityBitmaps *)self setWordOffset:0];
   [(SFActivityBitmaps *)self setNumOfWords:2];
   *self->_bitmapsBuffer = 0u;
   *&self->_bitmapsBuffer[48] = 0u;
   *&self->_bitmapsBuffer[32] = 0u;
   *&self->_bitmapsBuffer[16] = 0u;
-  *self->_bitmapsBuffer = a4;
-  *&self->_bitmapsBuffer[8] = a5;
+  *self->_bitmapsBuffer = part1;
+  *&self->_bitmapsBuffer[8] = part;
 }
 
-- (id)getWrappedBitmapsFromTime:(unint64_t)a3 toTime:(unint64_t)a4
+- (id)getWrappedBitmapsFromTime:(unint64_t)time toTime:(unint64_t)toTime
 {
   if ([(SFActivityBitmaps *)self isUpdated]&& [(SFActivityBitmaps *)self numOfWords])
   {
-    v7 = [(SFActivityBitmaps *)self startTime];
-    v8 = [(SFActivityBitmaps *)self endTime];
-    if (a3 == -1)
+    startTime = [(SFActivityBitmaps *)self startTime];
+    endTime = [(SFActivityBitmaps *)self endTime];
+    if (time == -1)
     {
-      i = [(SFActivityBitmaps *)self getWrappedBitmapsFromTime:v7 toTime:v8];
+      i = [(SFActivityBitmaps *)self getWrappedBitmapsFromTime:startTime toTime:endTime];
     }
 
     else
     {
       i = 0;
-      if (v7 < a4 && v8 > a3)
+      if (startTime < toTime && endTime > time)
       {
-        v10 = ((a4 - a3) & 0x1FF) != 0 ? ((a4 - a3) >> 9) + 1 : (a4 - a3) >> 9;
-        v11 = [(SFActivityBitmaps *)self adjustStartTime:a3, v8];
+        v10 = ((toTime - time) & 0x1FF) != 0 ? ((toTime - time) >> 9) + 1 : (toTime - time) >> 9;
+        v11 = [(SFActivityBitmaps *)self adjustStartTime:time, endTime];
         for (i = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:8 * v10]; v10; --v10)
         {
           v13 = [(SFActivityBitmaps *)self getAlignedBitmapStartingAtTime:v11];
@@ -722,36 +722,36 @@ LABEL_59:
   return i;
 }
 
-- (unint64_t)adjustStartTime:(unint64_t)a3
+- (unint64_t)adjustStartTime:(unint64_t)time
 {
   if ([(SFActivityBitmaps *)self isUpdated])
   {
-    v5 = [(SFActivityBitmaps *)self startTime];
-    if (v5 >= a3)
+    startTime = [(SFActivityBitmaps *)self startTime];
+    if (startTime >= time)
     {
-      v6 = v5 - a3;
+      v6 = startTime - time;
     }
 
     else
     {
-      v6 = a3 - v5;
+      v6 = time - startTime;
     }
 
-    v7 = [(SFActivityBitmaps *)self startTime];
-    v8 = [(SFActivityBitmaps *)self startTime];
+    startTime2 = [(SFActivityBitmaps *)self startTime];
+    startTime3 = [(SFActivityBitmaps *)self startTime];
     v9 = (v6 + 8 * ((v6 & 7) > 4)) & 0xFFFFFFFFFFFFFFF8;
-    if (v7 <= a3)
+    if (startTime2 <= time)
     {
-      return v8 + v9;
+      return startTime3 + v9;
     }
 
     else
     {
-      return v8 - v9;
+      return startTime3 - v9;
     }
   }
 
-  return a3;
+  return time;
 }
 
 - (void)resetAllActivities
@@ -832,17 +832,17 @@ LABEL_59:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self != v5)
     {
-      v6 = [(SFActivityBitmaps *)self startTime];
-      if (v6 != [(SFActivityBitmaps *)v5 startTime]|| ([(SFActivityBitmaps *)self freeUpBufferSpace], [(SFActivityBitmaps *)v5 freeUpBufferSpace], v7 = [(SFActivityBitmaps *)self numOfWords], v7 != [(SFActivityBitmaps *)v5 numOfWords]))
+      startTime = [(SFActivityBitmaps *)self startTime];
+      if (startTime != [(SFActivityBitmaps *)v5 startTime]|| ([(SFActivityBitmaps *)self freeUpBufferSpace], [(SFActivityBitmaps *)v5 freeUpBufferSpace], v7 = [(SFActivityBitmaps *)self numOfWords], v7 != [(SFActivityBitmaps *)v5 numOfWords]))
       {
         v10 = 0;
 LABEL_14:
@@ -880,15 +880,15 @@ LABEL_15:
   return v10;
 }
 
-+ (void)adjustStartTime:(unint64_t *)a3 endTime:(unint64_t *)a4 currMachAbsTime:(unint64_t)a5
++ (void)adjustStartTime:(unint64_t *)time endTime:(unint64_t *)endTime currMachAbsTime:(unint64_t)absTime
 {
-  if (*a3 != -1)
+  if (*time != -1)
   {
-    v9 = [a1 alignToBitmapTimeline:?];
-    v10 = [a1 alignToBitmapTimeline:*a4];
-    v11 = [a1 alignToBitmapTimeline:a5];
+    v9 = [self alignToBitmapTimeline:?];
+    v10 = [self alignToBitmapTimeline:*endTime];
+    v11 = [self alignToBitmapTimeline:absTime];
     v12 = v9 + 4096;
-    *a3 = v9;
+    *time = v9;
     if (v9 + 4096 >= v11)
     {
       v12 = v11;
@@ -899,18 +899,18 @@ LABEL_15:
       v12 = v10;
     }
 
-    *a4 = v12;
+    *endTime = v12;
   }
 }
 
-- (void)tallyUpHammingWeightTo:(id)a3
+- (void)tallyUpHammingWeightTo:(id)to
 {
-  v6 = a3;
-  v4 = [(SFActivityBitmaps *)self getHammingWeight];
-  if (v4)
+  toCopy = to;
+  getHammingWeight = [(SFActivityBitmaps *)self getHammingWeight];
+  if (getHammingWeight)
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v4];
-    [v6 setObject:v5 forKey:self->_appName];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:getHammingWeight];
+    [toCopy setObject:v5 forKey:self->_appName];
   }
 }
 

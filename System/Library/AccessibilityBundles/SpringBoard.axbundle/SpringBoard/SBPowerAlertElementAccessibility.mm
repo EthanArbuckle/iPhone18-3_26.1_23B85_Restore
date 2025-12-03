@@ -1,23 +1,23 @@
 @interface SBPowerAlertElementAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (double)preferredAlertingDuration:(double)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (double)preferredAlertingDuration:(double)duration;
 @end
 
 @implementation SBPowerAlertElementAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBPowerAlertElement"];
-  [v3 validateProtocol:@"SBSystemApertureContextProviding" hasOptionalInstanceMethod:@"preferredAlertingDuration:"];
-  [v3 validateClass:@"SBPowerAlertElement" conformsToProtocol:@"SBSystemApertureContextProviding"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBPowerAlertElement"];
+  [validationsCopy validateProtocol:@"SBSystemApertureContextProviding" hasOptionalInstanceMethod:@"preferredAlertingDuration:"];
+  [validationsCopy validateClass:@"SBPowerAlertElement" conformsToProtocol:@"SBSystemApertureContextProviding"];
 }
 
-- (double)preferredAlertingDuration:(double)a3
+- (double)preferredAlertingDuration:(double)duration
 {
   v7.receiver = self;
   v7.super_class = SBPowerAlertElementAccessibility;
-  [(SBPowerAlertElementAccessibility *)&v7 preferredAlertingDuration:a3];
+  [(SBPowerAlertElementAccessibility *)&v7 preferredAlertingDuration:duration];
   v4 = v3;
   IsVoiceOverRunning = UIAccessibilityIsVoiceOverRunning();
   result = 15.0;

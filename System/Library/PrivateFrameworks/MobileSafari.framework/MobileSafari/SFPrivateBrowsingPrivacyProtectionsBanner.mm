@@ -1,14 +1,14 @@
 @interface SFPrivateBrowsingPrivacyProtectionsBanner
 - (BOOL)_shouldUseCompactModeLayout;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (SFPrivateBrowsingPrivacyProtectionsBanner)init;
-- (id)_titleLabelFont:(BOOL)a3;
+- (id)_titleLabelFont:(BOOL)font;
 - (void)_createLayoutConstraints;
 - (void)_dismiss;
 - (void)_reducePrivacyProtections;
 - (void)_updateButtonStackViewAxisIfNeeded;
 - (void)layoutSubviews;
-- (void)setLayoutMargins:(UIEdgeInsets)a3;
+- (void)setLayoutMargins:(UIEdgeInsets)margins;
 - (void)themeDidChange;
 - (void)updateConstraintsForLayoutMode;
 @end
@@ -52,8 +52,8 @@
     [(UILabel *)v3->_titleLabel setText:v13];
 
     [(UILabel *)v3->_titleLabel setNumberOfLines:0];
-    v14 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v3->_titleLabel setTextColor:v14];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v3->_titleLabel setTextColor:secondaryLabelColor];
 
     LODWORD(v15) = 1148846080;
     [(UILabel *)v3->_titleLabel setContentCompressionResistancePriority:1 forAxis:v15];
@@ -66,23 +66,23 @@
 
     [(_SFDimmingButton *)v3->_dismissButton setAccessibilityIdentifier:@"DismissBannerButton"];
     v19 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)v3 _titleLabelFont:1];
-    v20 = [(_SFDimmingButton *)v3->_dismissButton titleLabel];
-    [v20 setFont:v19];
+    titleLabel = [(_SFDimmingButton *)v3->_dismissButton titleLabel];
+    [titleLabel setFont:v19];
 
-    v21 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(_SFDimmingButton *)v3->_dismissButton setTintColor:v21];
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(_SFDimmingButton *)v3->_dismissButton setTintColor:secondaryLabelColor2];
 
-    v22 = [MEMORY[0x1E69DC888] systemGray5Color];
-    [(_SFDimmingButton *)v3->_dismissButton setDimmableBackgroundColor:v22];
+    systemGray5Color = [MEMORY[0x1E69DC888] systemGray5Color];
+    [(_SFDimmingButton *)v3->_dismissButton setDimmableBackgroundColor:systemGray5Color];
 
-    v23 = [(_SFDimmingButton *)v3->_dismissButton titleLabel];
-    [v23 setLineBreakMode:0];
+    titleLabel2 = [(_SFDimmingButton *)v3->_dismissButton titleLabel];
+    [titleLabel2 setLineBreakMode:0];
 
-    v24 = [(_SFDimmingButton *)v3->_dismissButton titleLabel];
-    [v24 setTextAlignment:1];
+    titleLabel3 = [(_SFDimmingButton *)v3->_dismissButton titleLabel];
+    [titleLabel3 setTextAlignment:1];
 
-    v25 = [(_SFDimmingButton *)v3->_dismissButton titleLabel];
-    [v25 setAdjustsFontForContentSizeCategory:1];
+    titleLabel4 = [(_SFDimmingButton *)v3->_dismissButton titleLabel];
+    [titleLabel4 setAdjustsFontForContentSizeCategory:1];
 
     [(_SFDimmingButton *)v3->_dismissButton setTapTargetSideMargin:&unk_1EFF74288];
     [(_SFDimmingButton *)v3->_dismissButton _setCornerRadius:13.5];
@@ -101,23 +101,23 @@
 
     [(_SFDimmingButton *)v3->_reducePrivacyProtectionsButton setAccessibilityIdentifier:@"ReducePrivacyProtectionsButton"];
     v31 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)v3 _titleLabelFont:1];
-    v32 = [(_SFDimmingButton *)v3->_reducePrivacyProtectionsButton titleLabel];
-    [v32 setFont:v31];
+    titleLabel5 = [(_SFDimmingButton *)v3->_reducePrivacyProtectionsButton titleLabel];
+    [titleLabel5 setFont:v31];
 
-    v33 = [MEMORY[0x1E69DC888] labelColor];
-    [(_SFDimmingButton *)v3->_reducePrivacyProtectionsButton setTintColor:v33];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(_SFDimmingButton *)v3->_reducePrivacyProtectionsButton setTintColor:labelColor];
 
-    v34 = [MEMORY[0x1E69DC888] systemGray5Color];
-    [(_SFDimmingButton *)v3->_reducePrivacyProtectionsButton setDimmableBackgroundColor:v34];
+    systemGray5Color2 = [MEMORY[0x1E69DC888] systemGray5Color];
+    [(_SFDimmingButton *)v3->_reducePrivacyProtectionsButton setDimmableBackgroundColor:systemGray5Color2];
 
-    v35 = [(_SFDimmingButton *)v3->_reducePrivacyProtectionsButton titleLabel];
-    [v35 setLineBreakMode:0];
+    titleLabel6 = [(_SFDimmingButton *)v3->_reducePrivacyProtectionsButton titleLabel];
+    [titleLabel6 setLineBreakMode:0];
 
-    v36 = [(_SFDimmingButton *)v3->_reducePrivacyProtectionsButton titleLabel];
-    [v36 setTextAlignment:1];
+    titleLabel7 = [(_SFDimmingButton *)v3->_reducePrivacyProtectionsButton titleLabel];
+    [titleLabel7 setTextAlignment:1];
 
-    v37 = [(_SFDimmingButton *)v3->_reducePrivacyProtectionsButton titleLabel];
-    [v37 setAdjustsFontForContentSizeCategory:1];
+    titleLabel8 = [(_SFDimmingButton *)v3->_reducePrivacyProtectionsButton titleLabel];
+    [titleLabel8 setAdjustsFontForContentSizeCategory:1];
 
     [(_SFDimmingButton *)v3->_reducePrivacyProtectionsButton setTapTargetSideMargin:&unk_1EFF74288];
     [(_SFDimmingButton *)v3->_reducePrivacyProtectionsButton _setCornerRadius:13.5];
@@ -154,8 +154,8 @@
 
 - (BOOL)_shouldUseCompactModeLayout
 {
-  v2 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self traitCollection];
-  if ([v2 horizontalSizeClass] == 1)
+  traitCollection = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 1)
   {
     LOBYTE(v3) = 1;
   }
@@ -171,75 +171,75 @@
 - (void)_createLayoutConstraints
 {
   v56[6] = *MEMORY[0x1E69E9840];
-  v3 = [(UILabel *)self->_titleLabel topAnchor];
-  v4 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self topAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4 constant:9.0];
+  topAnchor = [(UILabel *)self->_titleLabel topAnchor];
+  topAnchor2 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self topAnchor];
+  v5 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:9.0];
   titleTopConstraint = self->_titleTopConstraint;
   self->_titleTopConstraint = v5;
 
   [(NSLayoutConstraint *)self->_titleTopConstraint setActive:1];
-  v7 = [(UIStackView *)self->_buttonStackView widthAnchor];
+  widthAnchor = [(UIStackView *)self->_buttonStackView widthAnchor];
   [(UILabel *)self->_titleLabel frame];
-  v9 = [v7 constraintEqualToConstant:v8];
+  v9 = [widthAnchor constraintEqualToConstant:v8];
   compactModeButtonStackViewWidthConstraint = self->_compactModeButtonStackViewWidthConstraint;
   self->_compactModeButtonStackViewWidthConstraint = v9;
 
   v56[0] = self->_compactModeButtonStackViewWidthConstraint;
-  v51 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v53 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self layoutMarginsGuide];
-  v49 = [v53 leadingAnchor];
-  v47 = [v51 constraintEqualToAnchor:v49];
+  leadingAnchor = [(UILabel *)self->_titleLabel leadingAnchor];
+  layoutMarginsGuide = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v47 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v56[1] = v47;
-  v45 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self layoutMarginsGuide];
-  v43 = [v45 trailingAnchor];
-  v41 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v39 = [v43 constraintEqualToAnchor:v41];
+  layoutMarginsGuide2 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self layoutMarginsGuide];
+  trailingAnchor = [layoutMarginsGuide2 trailingAnchor];
+  trailingAnchor2 = [(UILabel *)self->_titleLabel trailingAnchor];
+  v39 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v56[2] = v39;
-  v37 = [(UIStackView *)self->_buttonStackView topAnchor];
-  v11 = [(UILabel *)self->_titleLabel bottomAnchor];
-  v12 = [v37 constraintEqualToAnchor:v11 constant:8.0];
+  topAnchor3 = [(UIStackView *)self->_buttonStackView topAnchor];
+  bottomAnchor = [(UILabel *)self->_titleLabel bottomAnchor];
+  v12 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:8.0];
   v56[3] = v12;
-  v13 = [(UIStackView *)self->_buttonStackView centerXAnchor];
-  v14 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self centerXAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  centerXAnchor = [(UIStackView *)self->_buttonStackView centerXAnchor];
+  centerXAnchor2 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self centerXAnchor];
+  v15 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v56[4] = v15;
-  v16 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self bottomAnchor];
-  v17 = [(UIStackView *)self->_buttonStackView bottomAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17 constant:9.0];
+  bottomAnchor2 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self bottomAnchor];
+  bottomAnchor3 = [(UIStackView *)self->_buttonStackView bottomAnchor];
+  v18 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:9.0];
   v56[5] = v18;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:6];
   compactModeConstraints = self->_compactModeConstraints;
   self->_compactModeConstraints = v19;
 
-  v54 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v52 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self leadingAnchor];
-  v50 = [v54 constraintEqualToAnchor:v52 constant:20.0];
+  leadingAnchor3 = [(UILabel *)self->_titleLabel leadingAnchor];
+  leadingAnchor4 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self leadingAnchor];
+  v50 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:20.0];
   v55[0] = v50;
-  v48 = [(UIStackView *)self->_buttonStackView leadingAnchor];
-  v46 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v44 = [v48 constraintEqualToAnchor:v46 constant:16.0];
+  leadingAnchor5 = [(UIStackView *)self->_buttonStackView leadingAnchor];
+  trailingAnchor3 = [(UILabel *)self->_titleLabel trailingAnchor];
+  v44 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor3 constant:16.0];
   v55[1] = v44;
-  v42 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self bottomAnchor];
-  v40 = [(UILabel *)self->_titleLabel bottomAnchor];
-  v38 = [v42 constraintEqualToAnchor:v40 constant:9.0];
+  bottomAnchor4 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self bottomAnchor];
+  bottomAnchor5 = [(UILabel *)self->_titleLabel bottomAnchor];
+  v38 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:9.0];
   v55[2] = v38;
-  v36 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self trailingAnchor];
-  v35 = [(UIStackView *)self->_buttonStackView trailingAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35 constant:20.0];
+  trailingAnchor4 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self trailingAnchor];
+  trailingAnchor5 = [(UIStackView *)self->_buttonStackView trailingAnchor];
+  v34 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:20.0];
   v55[3] = v34;
-  v33 = [(UIStackView *)self->_buttonStackView centerYAnchor];
-  v32 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self centerYAnchor];
-  v21 = [v33 constraintEqualToAnchor:v32];
+  centerYAnchor = [(UIStackView *)self->_buttonStackView centerYAnchor];
+  centerYAnchor2 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self centerYAnchor];
+  v21 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v55[4] = v21;
-  v22 = [(UIStackView *)self->_buttonStackView topAnchor];
-  v23 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self safeAreaLayoutGuide];
-  v24 = [v23 topAnchor];
-  v25 = [v22 constraintGreaterThanOrEqualToAnchor:v24 constant:10.0];
+  topAnchor4 = [(UIStackView *)self->_buttonStackView topAnchor];
+  safeAreaLayoutGuide = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self safeAreaLayoutGuide];
+  topAnchor5 = [safeAreaLayoutGuide topAnchor];
+  v25 = [topAnchor4 constraintGreaterThanOrEqualToAnchor:topAnchor5 constant:10.0];
   v55[5] = v25;
-  v26 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self safeAreaLayoutGuide];
-  v27 = [v26 bottomAnchor];
-  v28 = [(UIStackView *)self->_buttonStackView bottomAnchor];
-  v29 = [v27 constraintGreaterThanOrEqualToAnchor:v28 constant:10.0];
+  safeAreaLayoutGuide2 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self safeAreaLayoutGuide];
+  bottomAnchor6 = [safeAreaLayoutGuide2 bottomAnchor];
+  bottomAnchor7 = [(UIStackView *)self->_buttonStackView bottomAnchor];
+  v29 = [bottomAnchor6 constraintGreaterThanOrEqualToAnchor:bottomAnchor7 constant:10.0];
   v55[6] = v29;
   v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:7];
   regularModeConstraints = self->_regularModeConstraints;
@@ -248,9 +248,9 @@
 
 - (void)updateConstraintsForLayoutMode
 {
-  v3 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self _shouldUseCompactModeLayout];
+  _shouldUseCompactModeLayout = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self _shouldUseCompactModeLayout];
   titleLabel = self->_titleLabel;
-  if (v3)
+  if (_shouldUseCompactModeLayout)
   {
     v5 = 1;
     [(UILabel *)titleLabel setTextAlignment:1];
@@ -279,12 +279,12 @@
   [v10 activateConstraints:v11];
 }
 
-- (id)_titleLabelFont:(BOOL)a3
+- (id)_titleLabelFont:(BOOL)font
 {
-  v3 = a3;
+  fontCopy = font;
   v4 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
   v5 = v4;
-  if (v3)
+  if (fontCopy)
   {
     v6 = 32770;
   }
@@ -294,19 +294,19 @@
     v6 = 0x8000;
   }
 
-  v7 = [v4 fontDescriptor];
-  v8 = [v7 fontDescriptorWithSymbolicTraits:v6];
+  fontDescriptor = [v4 fontDescriptor];
+  v8 = [fontDescriptor fontDescriptorWithSymbolicTraits:v6];
 
   v9 = [MEMORY[0x1E69DB878] fontWithDescriptor:v8 size:0.0];
 
   return v9;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   LODWORD(v3) = 1148846080;
   LODWORD(v4) = 1112014848;
-  [(SFPrivateBrowsingPrivacyProtectionsBanner *)self systemLayoutSizeFittingSize:a3.width withHorizontalFittingPriority:a3.height verticalFittingPriority:v3, v4];
+  [(SFPrivateBrowsingPrivacyProtectionsBanner *)self systemLayoutSizeFittingSize:fits.width withHorizontalFittingPriority:fits.height verticalFittingPriority:v3, v4];
   result.height = v6;
   result.width = v5;
   return result;
@@ -321,21 +321,21 @@
   }
 }
 
-- (void)setLayoutMargins:(UIEdgeInsets)a3
+- (void)setLayoutMargins:(UIEdgeInsets)margins
 {
-  if (a3.left == 0.0)
+  if (margins.left == 0.0)
   {
-    a3.left = 20.0;
+    margins.left = 20.0;
   }
 
-  if (a3.right == 0.0)
+  if (margins.right == 0.0)
   {
-    a3.right = 20.0;
+    margins.right = 20.0;
   }
 
   v3.receiver = self;
   v3.super_class = SFPrivateBrowsingPrivacyProtectionsBanner;
-  [(SFPrivateBrowsingPrivacyProtectionsBanner *)&v3 setLayoutMargins:a3.top, a3.left, a3.bottom, a3.right];
+  [(SFPrivateBrowsingPrivacyProtectionsBanner *)&v3 setLayoutMargins:margins.top, margins.left, margins.bottom, margins.right];
 }
 
 - (void)layoutSubviews
@@ -346,8 +346,8 @@
   [(UILabel *)self->_titleLabel bounds];
   Height = CGRectGetHeight(v19);
   v4 = _SFRoundFloatToPixels(Height);
-  v5 = [(UILabel *)self->_titleLabel font];
-  [v5 lineHeight];
+  font = [(UILabel *)self->_titleLabel font];
+  [font lineHeight];
   v7 = _SFRoundFloatToPixels(v6);
 
   v8 = 9.0;
@@ -381,27 +381,27 @@
 {
   v33[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v4 = [(_SFDimmingButton *)self->_reducePrivacyProtectionsButton titleLabel];
-  v5 = [v4 text];
+  titleLabel = [(_SFDimmingButton *)self->_reducePrivacyProtectionsButton titleLabel];
+  text = [titleLabel text];
   v32 = *MEMORY[0x1E69DB648];
   v6 = v32;
   v7 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self _titleLabelFont:1];
   v33[0] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:&v32 count:1];
-  v9 = [v3 initWithString:v5 attributes:v8];
+  v9 = [v3 initWithString:text attributes:v8];
 
   v10 = CTLineCreateWithAttributedString(v9);
   BoundsWithOptions = CTLineGetBoundsWithOptions(v10, 0);
   width = BoundsWithOptions.size.width;
   CFRelease(v10);
   v12 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v13 = [(_SFDimmingButton *)self->_dismissButton titleLabel];
-  v14 = [v13 text];
+  titleLabel2 = [(_SFDimmingButton *)self->_dismissButton titleLabel];
+  text2 = [titleLabel2 text];
   v30 = v6;
   v15 = [(SFPrivateBrowsingPrivacyProtectionsBanner *)self _titleLabelFont:1];
   v31 = v15;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-  v17 = [v12 initWithString:v14 attributes:v16];
+  v17 = [v12 initWithString:text2 attributes:v16];
 
   v18 = CTLineCreateWithAttributedString(v17);
   v35 = CTLineGetBoundsWithOptions(v18, 0);
@@ -430,35 +430,35 @@ LABEL_9:
 
 - (void)themeDidChange
 {
-  v10 = [(SFPinnableBanner *)self theme];
-  [(SFThemeColorEffectView *)self->_backdrop setTheme:v10];
-  v3 = [v10 overrideTintColor];
-  v4 = v3;
-  if (v3)
+  theme = [(SFPinnableBanner *)self theme];
+  [(SFThemeColorEffectView *)self->_backdrop setTheme:theme];
+  overrideTintColor = [theme overrideTintColor];
+  v4 = overrideTintColor;
+  if (overrideTintColor)
   {
-    v5 = v3;
+    systemGray5Color = overrideTintColor;
     p_reducePrivacyProtectionsButton = &self->_reducePrivacyProtectionsButton;
-    [(_SFDimmingButton *)self->_reducePrivacyProtectionsButton setDimmableBackgroundColor:v5];
-    v7 = [v10 themeColor];
+    [(_SFDimmingButton *)self->_reducePrivacyProtectionsButton setDimmableBackgroundColor:systemGray5Color];
+    themeColor = [theme themeColor];
     v8 = 1;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69DC888] systemGray5Color];
+    systemGray5Color = [MEMORY[0x1E69DC888] systemGray5Color];
     p_reducePrivacyProtectionsButton = &self->_reducePrivacyProtectionsButton;
-    [(_SFDimmingButton *)self->_reducePrivacyProtectionsButton setDimmableBackgroundColor:v5];
-    v7 = [MEMORY[0x1E69DC888] labelColor];
+    [(_SFDimmingButton *)self->_reducePrivacyProtectionsButton setDimmableBackgroundColor:systemGray5Color];
+    themeColor = [MEMORY[0x1E69DC888] labelColor];
     v8 = 0;
   }
 
-  [(_SFDimmingButton *)*p_reducePrivacyProtectionsButton setTintColor:v7];
+  [(_SFDimmingButton *)*p_reducePrivacyProtectionsButton setTintColor:themeColor];
 
   [(_SFDimmingButton *)*p_reducePrivacyProtectionsButton setTintAdjustmentMode:v8];
-  [(_SFDimmingButton *)self->_dismissButton setDimmableBackgroundColor:v5];
+  [(_SFDimmingButton *)self->_dismissButton setDimmableBackgroundColor:systemGray5Color];
   if (v4)
   {
-    [v10 themeColor];
+    [theme themeColor];
   }
 
   else

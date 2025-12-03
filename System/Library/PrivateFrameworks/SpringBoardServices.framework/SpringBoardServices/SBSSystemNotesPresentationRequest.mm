@@ -1,22 +1,22 @@
 @interface SBSSystemNotesPresentationRequest
-+ (void)performPresentationWithConfiguration:(id)a3 completion:(id)a4;
++ (void)performPresentationWithConfiguration:(id)configuration completion:(id)completion;
 @end
 
 @implementation SBSSystemNotesPresentationRequest
 
-+ (void)performPresentationWithConfiguration:(id)a3 completion:(id)a4
++ (void)performPresentationWithConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __85__SBSSystemNotesPresentationRequest_performPresentationWithConfiguration_completion___block_invoke;
   v10[3] = &unk_1E7360398;
-  v11 = v6;
-  v12 = v7;
-  v13 = a1;
-  v8 = v6;
-  v9 = v7;
+  v11 = configurationCopy;
+  v12 = completionCopy;
+  selfCopy = self;
+  v8 = configurationCopy;
+  v9 = completionCopy;
   [v8 prepareForXPCCall:v10];
 }
 

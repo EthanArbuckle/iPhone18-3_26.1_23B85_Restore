@@ -1,24 +1,24 @@
 @interface CRWiFiCarManager
 - (BOOL)isPowered;
-- (BOOL)removeNetworkCredentialsForCarPlayUUID:(id)a3;
-- (BOOL)saveNetworkCredentials:(id)a3 forCarPlayUUID:(id)a4;
+- (BOOL)removeNetworkCredentialsForCarPlayUUID:(id)d;
+- (BOOL)saveNetworkCredentials:(id)credentials forCarPlayUUID:(id)d;
 - (CRWiFiCarManager)init;
 - (__WiFiManagerClient)_lock_wifiManager;
-- (__WiFiNetwork)firstNetworkPassingTest:(id)a3;
-- (__WiFiNetwork)networkForCarPlayUUID:(id)a3;
-- (__WiFiNetwork)networkForSSID:(id)a3;
-- (id)_getSecurityTypeForNetwork:(__WiFiNetwork *)a3;
-- (void)_lock_setWiFiDevice:(__WiFiDeviceClient *)a3;
+- (__WiFiNetwork)firstNetworkPassingTest:(id)test;
+- (__WiFiNetwork)networkForCarPlayUUID:(id)d;
+- (__WiFiNetwork)networkForSSID:(id)d;
+- (id)_getSecurityTypeForNetwork:(__WiFiNetwork *)network;
+- (void)_lock_setWiFiDevice:(__WiFiDeviceClient *)device;
 - (void)_powerStateDidChange;
-- (void)_setSecurityType:(id)a3 forNetwork:(__WiFiNetwork *)a4;
+- (void)_setSecurityType:(id)type forNetwork:(__WiFiNetwork *)network;
 - (void)_updateWiFiDevice;
 - (void)dealloc;
-- (void)disassociateFromNetworkWithCarPlayUUID:(id)a3;
+- (void)disassociateFromNetworkWithCarPlayUUID:(id)d;
 - (void)invalidate;
-- (void)removeNetworkCredentialsForCarPlayNetwork:(__WiFiNetwork *)a3;
-- (void)setInCar:(BOOL)a3 carPlayUUID:(id)a4;
-- (void)setPowered:(BOOL)a3;
-- (void)updateExistingNetwork:(__WiFiNetwork *)a3 password:(id)a4 securityType:(id)a5 channel:(id)a6 carPlayUUID:(id)a7;
+- (void)removeNetworkCredentialsForCarPlayNetwork:(__WiFiNetwork *)network;
+- (void)setInCar:(BOOL)car carPlayUUID:(id)d;
+- (void)setPowered:(BOOL)powered;
+- (void)updateExistingNetwork:(__WiFiNetwork *)network password:(id)password securityType:(id)type channel:(id)channel carPlayUUID:(id)d;
 @end
 
 @implementation CRWiFiCarManager
@@ -93,7 +93,7 @@
   return powered;
 }
 
-- (void)setPowered:(BOOL)a3
+- (void)setPowered:(BOOL)powered
 {
   [(NSRecursiveLock *)self->_lock lock];
   if (!self->_poweredHasBeenSet)
@@ -111,15 +111,15 @@
   [(NSRecursiveLock *)lock unlock];
 }
 
-- (void)disassociateFromNetworkWithCarPlayUUID:(id)a3
+- (void)disassociateFromNetworkWithCarPlayUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CWFInterface *)self->_wifiInterface currentKnownNetworkProfile];
-  v6 = v5;
-  if (v5 && [v5 isCarPlay])
+  dCopy = d;
+  currentKnownNetworkProfile = [(CWFInterface *)self->_wifiInterface currentKnownNetworkProfile];
+  v6 = currentKnownNetworkProfile;
+  if (currentKnownNetworkProfile && [currentKnownNetworkProfile isCarPlay])
   {
-    v7 = [v6 carplayUUID];
-    if ([v4 isEqualToString:v7])
+    carplayUUID = [v6 carplayUUID];
+    if ([dCopy isEqualToString:carplayUUID])
     {
       v8 = CarGeneralLogging();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -133,9 +133,9 @@
   }
 }
 
-- (__WiFiNetwork)firstNetworkPassingTest:(id)a3
+- (__WiFiNetwork)firstNetworkPassingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -148,7 +148,7 @@
   v10[1] = 3221225472;
   v10[2] = sub_100076B2C;
   v10[3] = &unk_1000E0208;
-  v6 = v4;
+  v6 = testCopy;
   v11 = v6;
   v12 = &v13;
   [v5 enumerateObjectsUsingBlock:v10];
@@ -168,44 +168,44 @@
   return v8;
 }
 
-- (__WiFiNetwork)networkForCarPlayUUID:(id)a3
+- (__WiFiNetwork)networkForCarPlayUUID:(id)d
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100076C6C;
   v6[3] = &unk_1000E0230;
-  v7 = self;
-  v8 = a3;
-  v3 = v8;
-  v4 = [(CRWiFiCarManager *)v7 firstNetworkPassingTest:v6];
+  selfCopy = self;
+  dCopy = d;
+  v3 = dCopy;
+  v4 = [(CRWiFiCarManager *)selfCopy firstNetworkPassingTest:v6];
 
   return v4;
 }
 
-- (__WiFiNetwork)networkForSSID:(id)a3
+- (__WiFiNetwork)networkForSSID:(id)d
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100076D54;
   v7[3] = &unk_1000E0258;
-  v8 = a3;
-  v4 = v8;
+  dCopy = d;
+  v4 = dCopy;
   v5 = [(CRWiFiCarManager *)self firstNetworkPassingTest:v7];
 
   return v5;
 }
 
-- (void)updateExistingNetwork:(__WiFiNetwork *)a3 password:(id)a4 securityType:(id)a5 channel:(id)a6 carPlayUUID:(id)a7
+- (void)updateExistingNetwork:(__WiFiNetwork *)network password:(id)password securityType:(id)type channel:(id)channel carPlayUUID:(id)d
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  passwordCopy = password;
+  typeCopy = type;
+  channelCopy = channel;
+  dCopy = d;
   v16 = WiFiNetworkCopyPassword();
   v30 = v16;
-  if (v12 && v16)
+  if (passwordCopy && v16)
   {
-    if ([v16 isEqual:v12])
+    if ([v16 isEqual:passwordCopy])
     {
 LABEL_4:
       v17 = 0;
@@ -213,7 +213,7 @@ LABEL_4:
     }
   }
 
-  else if (!v12)
+  else if (!passwordCopy)
   {
     goto LABEL_4;
   }
@@ -222,24 +222,24 @@ LABEL_4:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v32 = v15;
+    v32 = dCopy;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "updating password for existing network %@", buf, 0xCu);
   }
 
   WiFiNetworkSetProperty();
   v17 = 1;
 LABEL_9:
-  v19 = [(CRWiFiCarManager *)self _getSecurityTypeForNetwork:a3];
+  v19 = [(CRWiFiCarManager *)self _getSecurityTypeForNetwork:network];
   v20 = v19;
-  if (v13 && v19)
+  if (typeCopy && v19)
   {
-    if ([v19 isEqual:v13])
+    if ([v19 isEqual:typeCopy])
     {
       goto LABEL_17;
     }
   }
 
-  else if (!v13)
+  else if (!typeCopy)
   {
     goto LABEL_17;
   }
@@ -250,26 +250,26 @@ LABEL_9:
     *buf = 138412802;
     v32 = v20;
     v33 = 2112;
-    v34 = v13;
+    v34 = typeCopy;
     v35 = 2112;
-    v36 = v15;
+    v36 = dCopy;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "updating securityType from %@ to %@ for existing network %@", buf, 0x20u);
   }
 
-  [(CRWiFiCarManager *)self _setSecurityType:v13 forNetwork:a3];
+  [(CRWiFiCarManager *)self _setSecurityType:typeCopy forNetwork:network];
   v17 = 1;
 LABEL_17:
   v22 = WiFiNetworkGetChannel();
   v23 = v22;
-  if (v14 && v22)
+  if (channelCopy && v22)
   {
-    if ([v22 isEqual:v14])
+    if ([v22 isEqual:channelCopy])
     {
       goto LABEL_25;
     }
   }
 
-  else if (!v14)
+  else if (!channelCopy)
   {
     goto LABEL_25;
   }
@@ -280,9 +280,9 @@ LABEL_17:
     *buf = 138412802;
     v32 = v23;
     v33 = 2112;
-    v34 = v14;
+    v34 = channelCopy;
     v35 = 2112;
-    v36 = v15;
+    v36 = dCopy;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "updating channel from %@ to %@ for existing network %@", buf, 0x20u);
   }
 
@@ -303,17 +303,17 @@ LABEL_25:
     v17 = 1;
   }
 
-  v27 = [(CRWiFiCarManager *)self _uuidForNetwork:a3];
+  v27 = [(CRWiFiCarManager *)self _uuidForNetwork:network];
   v28 = v27;
-  if (v15 && v27)
+  if (dCopy && v27)
   {
-    if ([v27 isEqual:v15])
+    if ([v27 isEqual:dCopy])
     {
       goto LABEL_33;
     }
   }
 
-  else if (!v15)
+  else if (!dCopy)
   {
 LABEL_33:
     if (!v17)
@@ -328,7 +328,7 @@ LABEL_33:
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v32 = v15;
+    v32 = dCopy;
     v33 = 2112;
     v34 = v28;
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "updating CarPlay UUID to %@ for existing network %@", buf, 0x16u);
@@ -343,16 +343,16 @@ LABEL_39:
 LABEL_40:
 }
 
-- (BOOL)saveNetworkCredentials:(id)a3 forCarPlayUUID:(id)a4
+- (BOOL)saveNetworkCredentials:(id)credentials forCarPlayUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  credentialsCopy = credentials;
+  dCopy = d;
+  if (dCopy)
   {
-    v8 = [v6 objectForKey:@"SSID_STR"];
-    v9 = [v6 objectForKey:@"password"];
-    v10 = [v6 objectForKey:@"CHANNEL"];
-    v11 = [v6 objectForKey:@"securityType"];
+    v8 = [credentialsCopy objectForKey:@"SSID_STR"];
+    v9 = [credentialsCopy objectForKey:@"password"];
+    v10 = [credentialsCopy objectForKey:@"CHANNEL"];
+    v11 = [credentialsCopy objectForKey:@"securityType"];
     if (v8 && [v8 length])
     {
       if (v9 && [v9 length])
@@ -371,7 +371,7 @@ LABEL_40:
           v10 = [NSNumber numberWithInt:1];
         }
 
-        v14 = [v6 objectForKey:@"CARPLAY_PPID"];
+        v14 = [credentialsCopy objectForKey:@"CARPLAY_PPID"];
         v15 = +[CARAnalytics sharedInstance];
         [v15 setWifiChannel:v10];
 
@@ -387,7 +387,7 @@ LABEL_40:
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "received network credentials SSID: %@, channel: %@, securityType: %@", buf, 0x20u);
         }
 
-        v17 = [(CRWiFiCarManager *)self networkForCarPlayUUID:v7];
+        v17 = [(CRWiFiCarManager *)self networkForCarPlayUUID:dCopy];
         if (v17)
         {
           v18 = v17;
@@ -403,7 +403,7 @@ LABEL_40:
           if (v20 && ([v20 isEqual:v8] & 1) != 0)
           {
             v11 = v56;
-            [(CRWiFiCarManager *)self updateExistingNetwork:v18 password:v9 securityType:v56 channel:v10 carPlayUUID:v7];
+            [(CRWiFiCarManager *)self updateExistingNetwork:v18 password:v9 securityType:v56 channel:v10 carPlayUUID:dCopy];
 
 LABEL_55:
             v29 = 1;
@@ -414,7 +414,7 @@ LABEL_55:
           if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v58 = v7;
+            v58 = dCopy;
             _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "updated SSID, removing network %@, will be re-added", buf, 0xCu);
           }
 
@@ -446,14 +446,14 @@ LABEL_55:
               }
 
               v11 = v56;
-              [(CRWiFiCarManager *)self updateExistingNetwork:v40 password:v9 securityType:v56 channel:v10 carPlayUUID:v7];
+              [(CRWiFiCarManager *)self updateExistingNetwork:v40 password:v9 securityType:v56 channel:v10 carPlayUUID:dCopy];
               goto LABEL_55;
             }
           }
         }
 
         v42 = +[NSMutableDictionary dictionary];
-        [v42 setObject:v7 forKey:@"CARPLAY_UUID"];
+        [v42 setObject:dCopy forKey:@"CARPLAY_UUID"];
         [v42 setObject:&__kCFBooleanTrue forKey:@"CARPLAY_NETWORK"];
         v43 = v12[494];
         v44 = v42;
@@ -526,7 +526,7 @@ LABEL_44:
           if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v58 = v7;
+            v58 = dCopy;
             _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, "adding network %@", buf, 0xCu);
           }
 
@@ -569,7 +569,7 @@ LABEL_25:
   return v29;
 }
 
-- (id)_getSecurityTypeForNetwork:(__WiFiNetwork *)a3
+- (id)_getSecurityTypeForNetwork:(__WiFiNetwork *)network
 {
   if (!WiFiNetworkSupportsWPA3())
   {
@@ -584,11 +584,11 @@ LABEL_25:
   return &off_1000E8260;
 }
 
-- (void)_setSecurityType:(id)a3 forNetwork:(__WiFiNetwork *)a4
+- (void)_setSecurityType:(id)type forNetwork:(__WiFiNetwork *)network
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 isEqualToNumber:&off_1000E8260] || objc_msgSend(v5, "isEqualToNumber:", &off_1000E8248)))
+  typeCopy = type;
+  v5 = typeCopy;
+  if (typeCopy && ([typeCopy isEqualToNumber:&off_1000E8260] || objc_msgSend(v5, "isEqualToNumber:", &off_1000E8248)))
   {
     WiFiNetworkSetSAE();
   }
@@ -599,9 +599,9 @@ LABEL_25:
   }
 }
 
-- (BOOL)removeNetworkCredentialsForCarPlayUUID:(id)a3
+- (BOOL)removeNetworkCredentialsForCarPlayUUID:(id)d
 {
-  v4 = [(CRWiFiCarManager *)self networkForCarPlayUUID:a3];
+  v4 = [(CRWiFiCarManager *)self networkForCarPlayUUID:d];
   if (v4)
   {
     [(CRWiFiCarManager *)self removeNetworkCredentialsForCarPlayNetwork:v4];
@@ -610,7 +610,7 @@ LABEL_25:
   return v4 != 0;
 }
 
-- (void)removeNetworkCredentialsForCarPlayNetwork:(__WiFiNetwork *)a3
+- (void)removeNetworkCredentialsForCarPlayNetwork:(__WiFiNetwork *)network
 {
   if (WiFiNetworkGetType() == 1)
   {
@@ -630,14 +630,14 @@ LABEL_25:
   [(NSRecursiveLock *)self->_lock unlock];
 }
 
-- (void)setInCar:(BOOL)a3 carPlayUUID:(id)a4
+- (void)setInCar:(BOOL)car carPlayUUID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   v6 = CarGeneralLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = dCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "setting WiFiManager to in-car %@", &v7, 0xCu);
   }
 
@@ -753,14 +753,14 @@ LABEL_4:
   return result;
 }
 
-- (void)_lock_setWiFiDevice:(__WiFiDeviceClient *)a3
+- (void)_lock_setWiFiDevice:(__WiFiDeviceClient *)device
 {
-  if (a3)
+  if (device)
   {
     device = self->_device;
     if (device)
     {
-      if (CFEqual(a3, device))
+      if (CFEqual(device, device))
       {
         return;
       }
@@ -774,7 +774,7 @@ LABEL_4:
           v8 = 138543618;
           v9 = v7;
           v10 = 2114;
-          v11 = a3;
+          deviceCopy = device;
           _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Unexpected WiFi device change from %{public}@ -> %{public}@", &v8, 0x16u);
         }
 
@@ -787,7 +787,7 @@ LABEL_4:
       }
     }
 
-    self->_device = CFRetain(a3);
+    self->_device = CFRetain(device);
     WiFiDeviceClientRegisterPowerCallback();
     [(CRWiFiCarManager *)self _powerStateDidChange];
   }

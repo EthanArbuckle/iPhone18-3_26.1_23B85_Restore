@@ -1,25 +1,25 @@
 @interface WeakHostWrapper
-- (void)extensionDidFinishWith:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)promptForFlowCancelWithCompletion:(id)a3;
+- (void)extensionDidFinishWith:(id)with context:(id)context completion:(id)completion;
+- (void)promptForFlowCancelWithCompletion:(id)completion;
 @end
 
 @implementation WeakHostWrapper
 
-- (void)extensionDidFinishWith:(id)a3 context:(id)a4 completion:(id)a5
+- (void)extensionDidFinishWith:(id)with context:(id)context completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   _Block_copy(v8);
-  v9 = a3;
-  v10 = a4;
+  withCopy = with;
+  contextCopy = context;
 
-  sub_26114BB70(v9, v10, self, v8);
+  sub_26114BB70(withCopy, contextCopy, self, v8);
   _Block_release(v8);
   _Block_release(v8);
 }
 
-- (void)promptForFlowCancelWithCompletion:(id)a3
+- (void)promptForFlowCancelWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(completion);
   _Block_copy(v3);
 
   sub_26114BD20(v4, v3);

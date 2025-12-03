@@ -1,42 +1,42 @@
 @interface CLTelephonyServiceAdapter
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
-- (BOOL)syncgetActiveCall:(BOOL *)a3;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
+- (BOOL)syncgetActiveCall:(BOOL *)call;
 - (BOOL)syncgetCampOnlyState;
-- (BOOL)syncgetCopyServingOperator:(id *)a3;
-- (BOOL)syncgetCopyServingProvider:(id *)a3;
-- (BOOL)syncgetCopyServingProviderFromCarrierBundle:(id *)a3;
-- (BOOL)syncgetDetectedCells:(void *)a3;
+- (BOOL)syncgetCopyServingOperator:(id *)operator;
+- (BOOL)syncgetCopyServingProvider:(id *)provider;
+- (BOOL)syncgetCopyServingProviderFromCarrierBundle:(id *)bundle;
+- (BOOL)syncgetDetectedCells:(void *)cells;
 - (BOOL)syncgetIsRegisteredOnCell;
-- (BOOL)syncgetServingCells:(void *)a3 addNeighborCells:(BOOL)a4;
-- (BOOL)syncgetServingGsmCell:(Cell *)a3;
-- (BOOL)syncgetSignalStrength:(int *)a3;
-- (BOOL)syncgetUplinkFrequency:(float *)a3 andBandwidth:(float *)a4;
+- (BOOL)syncgetServingCells:(void *)cells addNeighborCells:(BOOL)neighborCells;
+- (BOOL)syncgetServingGsmCell:(Cell *)cell;
+- (BOOL)syncgetSignalStrength:(int *)strength;
+- (BOOL)syncgetUplinkFrequency:(float *)frequency andBandwidth:(float *)bandwidth;
 - (CLTelephonyServiceAdapter)init;
-- (id)syncgetCopyServingOperatorForSim:(int)a3;
-- (id)syncgetCopyServingProviderFromCarrierBundleForSim:(int)a3;
+- (id)syncgetCopyServingOperatorForSim:(int)sim;
+- (id)syncgetCopyServingProviderFromCarrierBundleForSim:(int)sim;
 - (id)syncgetRegistrationInfoDictionary;
 - (int)syncgetRadioAccessTechnology;
-- (int)syncgetRadioAccessTechnologyForSim:(int)a3;
+- (int)syncgetRadioAccessTechnologyForSim:(int)sim;
 - (int)syncgetRegistrationStatus;
-- (int)syncgetRegistrationStatusForSim:(int)a3;
-- (int)syncgetSignalStrengthForSim:(int)a3;
+- (int)syncgetRegistrationStatusForSim:(int)sim;
+- (int)syncgetSignalStrengthForSim:(int)sim;
 - (void)adaptee;
-- (void)assertCommCenter:(int)a3 with:(int)a4;
+- (void)assertCommCenter:(int)center with:(int)with;
 - (void)beginService;
-- (void)doAsync:(id)a3;
-- (void)doAsync:(id)a3 withReply:(id)a4;
-- (void)dumpLogWithReason:(id)a3;
+- (void)doAsync:(id)async;
+- (void)doAsync:(id)async withReply:(id)reply;
+- (void)dumpLogWithReason:(id)reason;
 - (void)endService;
-- (void)fetchIratStreamingInfoWithReply:(id)a3;
-- (void)fetchIsCellAvailableWithReply:(id)a3;
-- (void)fetchSignalStrengthMeasurementForSim:(int)a3 withReply:(id)a4;
-- (void)fetchUmtsApnForInstance:(int)a3 WithReply:(id)a4;
-- (void)fetchUmtsApnWithReply:(id)a3;
-- (void)requestCamping:(BOOL)a3;
-- (void)resetModemWithReason:(id)a3;
-- (void)sendNotificationToClients:(id)a3 notificationData:(id)a4;
-- (void)updateTAInfo:(TAData *)a3;
+- (void)fetchIratStreamingInfoWithReply:(id)reply;
+- (void)fetchIsCellAvailableWithReply:(id)reply;
+- (void)fetchSignalStrengthMeasurementForSim:(int)sim withReply:(id)reply;
+- (void)fetchUmtsApnForInstance:(int)instance WithReply:(id)reply;
+- (void)fetchUmtsApnWithReply:(id)reply;
+- (void)requestCamping:(BOOL)camping;
+- (void)resetModemWithReason:(id)reason;
+- (void)sendNotificationToClients:(id)clients notificationData:(id)data;
+- (void)updateTAInfo:(TAData *)info;
 @end
 
 @implementation CLTelephonyServiceAdapter
@@ -51,12 +51,12 @@
   return result;
 }
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -93,34 +93,34 @@
   v2();
 }
 
-- (void)doAsync:(id)a3
+- (void)doAsync:(id)async
 {
-  v4 = [(CLTelephonyServiceAdapter *)self adaptee];
-  v5 = *(a3 + 2);
+  adaptee = [(CLTelephonyServiceAdapter *)self adaptee];
+  v5 = *(async + 2);
 
-  v5(a3, v4);
+  v5(async, adaptee);
 }
 
-- (void)doAsync:(id)a3 withReply:(id)a4
+- (void)doAsync:(id)async withReply:(id)reply
 {
-  (*(a3 + 2))(a3, [(CLTelephonyServiceAdapter *)self adaptee]);
-  v5 = *(a4 + 2);
+  (*(async + 2))(async, [(CLTelephonyServiceAdapter *)self adaptee]);
+  v5 = *(reply + 2);
 
-  v5(a4);
+  v5(reply);
 }
 
-- (void)fetchIsCellAvailableWithReply:(id)a3
+- (void)fetchIsCellAvailableWithReply:(id)reply
 {
-  v4 = [(CLTelephonyServiceAdapter *)self adaptee];
-  v5 = (*(*v4 + 216))(v4);
-  v6 = *(a3 + 2);
+  adaptee = [(CLTelephonyServiceAdapter *)self adaptee];
+  v5 = (*(*adaptee + 216))(adaptee);
+  v6 = *(reply + 2);
 
-  v6(a3, v5);
+  v6(reply, v5);
 }
 
-- (void)requestCamping:(BOOL)a3
+- (void)requestCamping:(BOOL)camping
 {
-  v3 = a3;
+  campingCopy = camping;
   if (*([(CLTelephonyServiceAdapter *)self adaptee]+ 18))
   {
     v4 = _CTServerConnectionSetCampOnlyMode() == 0;
@@ -144,7 +144,7 @@
     v7 = 2082;
     v8 = "";
     v9 = 1026;
-    v10 = v3;
+    v10 = campingCopy;
     v11 = 1026;
     v12 = v4;
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#camp request, campRequest:%{public}hhd, success:%{public}hhd}", v6, 0x1Eu);
@@ -153,36 +153,36 @@
 
 - (BOOL)syncgetCampOnlyState
 {
-  v2 = [(CLTelephonyServiceAdapter *)self adaptee];
+  adaptee = [(CLTelephonyServiceAdapter *)self adaptee];
 
-  return sub_10057DBB8(v2);
+  return sub_10057DBB8(adaptee);
 }
 
-- (void)updateTAInfo:(TAData *)a3
+- (void)updateTAInfo:(TAData *)info
 {
-  v4 = [(CLTelephonyServiceAdapter *)self adaptee];
-  v5 = *&a3->var8.var3;
-  v7[2] = *&a3->var6;
+  adaptee = [(CLTelephonyServiceAdapter *)self adaptee];
+  v5 = *&info->var8.var3;
+  v7[2] = *&info->var6;
   v7[3] = v5;
-  v8 = *&a3->var9.var3;
-  v6 = *&a3->var4;
-  v7[0] = *&a3->var0;
+  v8 = *&info->var9.var3;
+  v6 = *&info->var4;
+  v7[0] = *&info->var0;
   v7[1] = v6;
-  sub_10057DEB4(v4, v7);
+  sub_10057DEB4(adaptee, v7);
 }
 
-- (void)assertCommCenter:(int)a3 with:(int)a4
+- (void)assertCommCenter:(int)center with:(int)with
 {
-  v6 = [(CLTelephonyServiceAdapter *)self adaptee];
+  adaptee = [(CLTelephonyServiceAdapter *)self adaptee];
 
-  sub_10057E33C(v6, a3, a4);
+  sub_10057E33C(adaptee, center, with);
 }
 
-- (BOOL)syncgetUplinkFrequency:(float *)a3 andBandwidth:(float *)a4
+- (BOOL)syncgetUplinkFrequency:(float *)frequency andBandwidth:(float *)bandwidth
 {
-  v6 = [(CLTelephonyServiceAdapter *)self adaptee];
-  *a3 = v6[41];
-  *a4 = v6[42];
+  adaptee = [(CLTelephonyServiceAdapter *)self adaptee];
+  *frequency = adaptee[41];
+  *bandwidth = adaptee[42];
   return 1;
 }
 
@@ -193,32 +193,32 @@
   return v2;
 }
 
-- (void)fetchUmtsApnWithReply:(id)a3
+- (void)fetchUmtsApnWithReply:(id)reply
 {
   v4 = [(CLTelephonyServiceAdapter *)self adaptee]+ 176;
 
-  sub_100912BD4(v4, a3);
+  sub_100912BD4(v4, reply);
 }
 
-- (void)fetchUmtsApnForInstance:(int)a3 WithReply:(id)a4
+- (void)fetchUmtsApnForInstance:(int)instance WithReply:(id)reply
 {
   v6 = [(CLTelephonyServiceAdapter *)self adaptee]+ 176;
 
-  sub_100913074(v6, a3, a4);
+  sub_100913074(v6, instance, reply);
 }
 
-- (void)fetchIratStreamingInfoWithReply:(id)a3
+- (void)fetchIratStreamingInfoWithReply:(id)reply
 {
-  v4 = [(CLTelephonyServiceAdapter *)self adaptee];
+  adaptee = [(CLTelephonyServiceAdapter *)self adaptee];
 
-  sub_10057E700(v4, a3);
+  sub_10057E700(adaptee, reply);
 }
 
-- (BOOL)syncgetDetectedCells:(void *)a3
+- (BOOL)syncgetDetectedCells:(void *)cells
 {
-  v4 = [(CLTelephonyServiceAdapter *)self adaptee];
+  adaptee = [(CLTelephonyServiceAdapter *)self adaptee];
 
-  return sub_10057E81C(v4, a3);
+  return sub_10057E81C(adaptee, cells);
 }
 
 - (BOOL)syncgetIsRegisteredOnCell
@@ -230,48 +230,48 @@
 
 - (int)syncgetRadioAccessTechnology
 {
-  v2 = [(CLTelephonyServiceAdapter *)self adaptee];
+  adaptee = [(CLTelephonyServiceAdapter *)self adaptee];
 
-  return sub_10057F5A0(v2);
+  return sub_10057F5A0(adaptee);
 }
 
-- (int)syncgetRadioAccessTechnologyForSim:(int)a3
+- (int)syncgetRadioAccessTechnologyForSim:(int)sim
 {
-  v4 = [(CLTelephonyServiceAdapter *)self adaptee];
+  adaptee = [(CLTelephonyServiceAdapter *)self adaptee];
 
-  return sub_10057F614(v4, a3);
+  return sub_10057F614(adaptee, sim);
 }
 
-- (void)fetchSignalStrengthMeasurementForSim:(int)a3 withReply:(id)a4
+- (void)fetchSignalStrengthMeasurementForSim:(int)sim withReply:(id)reply
 {
-  v5 = *&a3;
+  v5 = *&sim;
   v6 = [(CLTelephonyServiceAdapter *)self adaptee]+ 176;
 
-  sub_100084F30(v6, v5, a4);
+  sub_100084F30(v6, v5, reply);
 }
 
 - (int)syncgetRegistrationStatus
 {
-  v2 = [(CLTelephonyServiceAdapter *)self adaptee];
+  adaptee = [(CLTelephonyServiceAdapter *)self adaptee];
 
-  return sub_1000EC7AC(v2);
+  return sub_1000EC7AC(adaptee);
 }
 
-- (int)syncgetRegistrationStatusForSim:(int)a3
+- (int)syncgetRegistrationStatusForSim:(int)sim
 {
-  v4 = [(CLTelephonyServiceAdapter *)self adaptee];
+  adaptee = [(CLTelephonyServiceAdapter *)self adaptee];
 
-  return sub_10057F70C(v4, a3);
+  return sub_10057F70C(adaptee, sim);
 }
 
-- (BOOL)syncgetActiveCall:(BOOL *)a3
+- (BOOL)syncgetActiveCall:(BOOL *)call
 {
   [*(-[CLTelephonyServiceAdapter adaptee](self "adaptee") + 88)];
-  *a3 = 0;
+  *call = 0;
   return 1;
 }
 
-- (BOOL)syncgetCopyServingOperator:(id *)a3
+- (BOOL)syncgetCopyServingOperator:(id *)operator
 {
   __p[0] = 0;
   __p[1] = 0;
@@ -288,7 +288,7 @@
     v6 = __p[0];
   }
 
-  *a3 = [v5 initWithUTF8String:v6];
+  *operator = [v5 initWithUTF8String:v6];
   if (SHIBYTE(v9) < 0)
   {
     operator delete(__p[0]);
@@ -297,14 +297,14 @@
   return v4;
 }
 
-- (id)syncgetCopyServingOperatorForSim:(int)a3
+- (id)syncgetCopyServingOperatorForSim:(int)sim
 {
   v4 = [(CLTelephonyServiceAdapter *)self adaptee]+ 176;
 
-  return sub_1009138AC(v4, a3);
+  return sub_1009138AC(v4, sim);
 }
 
-- (BOOL)syncgetCopyServingProvider:(id *)a3
+- (BOOL)syncgetCopyServingProvider:(id *)provider
 {
   __p[0] = 0;
   __p[1] = 0;
@@ -321,7 +321,7 @@
     v6 = __p[0];
   }
 
-  *a3 = [v5 initWithUTF8String:v6];
+  *provider = [v5 initWithUTF8String:v6];
   if (SHIBYTE(v9) < 0)
   {
     operator delete(__p[0]);
@@ -330,7 +330,7 @@
   return v4;
 }
 
-- (BOOL)syncgetCopyServingProviderFromCarrierBundle:(id *)a3
+- (BOOL)syncgetCopyServingProviderFromCarrierBundle:(id *)bundle
 {
   __p[0] = 0;
   __p[1] = 0;
@@ -347,7 +347,7 @@
     v6 = __p[0];
   }
 
-  *a3 = [v5 initWithUTF8String:v6];
+  *bundle = [v5 initWithUTF8String:v6];
   if (SHIBYTE(v9) < 0)
   {
     operator delete(__p[0]);
@@ -356,30 +356,30 @@
   return v4;
 }
 
-- (id)syncgetCopyServingProviderFromCarrierBundleForSim:(int)a3
+- (id)syncgetCopyServingProviderFromCarrierBundleForSim:(int)sim
 {
   v4 = [(CLTelephonyServiceAdapter *)self adaptee]+ 176;
 
-  return sub_1009138BC(v4, a3);
+  return sub_1009138BC(v4, sim);
 }
 
-- (BOOL)syncgetSignalStrength:(int *)a3
+- (BOOL)syncgetSignalStrength:(int *)strength
 {
-  v3 = [(CLTelephonyServiceAdapter *)self adaptee];
+  adaptee = [(CLTelephonyServiceAdapter *)self adaptee];
 
-  return sub_10057FF4C(v3);
+  return sub_10057FF4C(adaptee);
 }
 
-- (int)syncgetSignalStrengthForSim:(int)a3
+- (int)syncgetSignalStrengthForSim:(int)sim
 {
   v4 = [(CLTelephonyServiceAdapter *)self adaptee]+ 176;
 
-  return sub_100913878(v4, a3);
+  return sub_100913878(v4, sim);
 }
 
-- (void)resetModemWithReason:(id)a3
+- (void)resetModemWithReason:(id)reason
 {
-  v4 = sub_100580340(-[CLTelephonyServiceAdapter adaptee](self, "adaptee"), [a3 UTF8String]);
+  v4 = sub_100580340(-[CLTelephonyServiceAdapter adaptee](self, "adaptee"), [reason UTF8String]);
   if (qword_1025D4600 != -1)
   {
     sub_1018C726C();
@@ -395,7 +395,7 @@
     v12 = 1026;
     v13 = v4;
     v14 = 2081;
-    v15 = [a3 UTF8String];
+    uTF8String = [reason UTF8String];
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:attempt to reset modem, success:%{public}hhd, reason:%{private, location:escape_only}s}", &v8, 0x22u);
     if (qword_1025D4600 != -1)
     {
@@ -406,7 +406,7 @@
   v6 = qword_1025D4608;
   if (os_signpost_enabled(qword_1025D4608))
   {
-    v7 = [a3 UTF8String];
+    uTF8String2 = [reason UTF8String];
     v8 = 68289539;
     v9 = 0;
     v10 = 2082;
@@ -414,35 +414,35 @@
     v12 = 1026;
     v13 = v4;
     v14 = 2081;
-    v15 = v7;
+    uTF8String = uTF8String2;
     _os_signpost_emit_with_name_impl(dword_100000000, v6, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "attempt to reset modem", "{msg%{public}.0s:attempt to reset modem, success:%{public}hhd, reason:%{private, location:escape_only}s}", &v8, 0x22u);
   }
 }
 
-- (void)dumpLogWithReason:(id)a3
+- (void)dumpLogWithReason:(id)reason
 {
-  v4 = [(CLTelephonyServiceAdapter *)self adaptee];
-  v5 = [a3 UTF8String];
+  adaptee = [(CLTelephonyServiceAdapter *)self adaptee];
+  uTF8String = [reason UTF8String];
 
-  sub_1005805A4(v4, v5);
+  sub_1005805A4(adaptee, uTF8String);
 }
 
-- (BOOL)syncgetServingCells:(void *)a3 addNeighborCells:(BOOL)a4
+- (BOOL)syncgetServingCells:(void *)cells addNeighborCells:(BOOL)neighborCells
 {
-  v4 = a4;
-  v6 = [(CLTelephonyServiceAdapter *)self adaptee];
+  neighborCellsCopy = neighborCells;
+  adaptee = [(CLTelephonyServiceAdapter *)self adaptee];
 
-  return sub_1005807FC(v6, a3, v4);
+  return sub_1005807FC(adaptee, cells, neighborCellsCopy);
 }
 
-- (BOOL)syncgetServingGsmCell:(Cell *)a3
+- (BOOL)syncgetServingGsmCell:(Cell *)cell
 {
-  v4 = [(CLTelephonyServiceAdapter *)self adaptee];
+  adaptee = [(CLTelephonyServiceAdapter *)self adaptee];
 
-  return sub_1005808E8(v4, a3);
+  return sub_1005808E8(adaptee, cell);
 }
 
-- (void)sendNotificationToClients:(id)a3 notificationData:(id)a4
+- (void)sendNotificationToClients:(id)clients notificationData:(id)data
 {
   v4 = *(*[(CLTelephonyServiceAdapter *)self adaptee]+ 272);
 

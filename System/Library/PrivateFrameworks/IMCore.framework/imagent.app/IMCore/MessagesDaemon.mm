@@ -1,10 +1,10 @@
 @interface MessagesDaemon
 - (ParentalControlsProtocol)parentalControls;
 - (id)intentProcessor;
-- (void)notifyClientsNewSetupInfoAvailableWithRequiredCapabilities:(unint64_t)a3;
-- (void)setCurrentMessageContext:(id)a3;
-- (void)setIMessageIDSHandler:(id)a3;
-- (void)setParentalControls:(id)a3;
+- (void)notifyClientsNewSetupInfoAvailableWithRequiredCapabilities:(unint64_t)capabilities;
+- (void)setCurrentMessageContext:(id)context;
+- (void)setIMessageIDSHandler:(id)handler;
+- (void)setParentalControls:(id)controls;
 @end
 
 @implementation MessagesDaemon
@@ -18,32 +18,32 @@
   return v4;
 }
 
-- (void)setParentalControls:(id)a3
+- (void)setParentalControls:(id)controls
 {
   swift_beginAccess();
   parentalControls = self->parentalControls;
-  self->parentalControls = a3;
+  self->parentalControls = controls;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
 
-- (void)setCurrentMessageContext:(id)a3
+- (void)setCurrentMessageContext:(id)context
 {
   swift_beginAccess();
   currentMessageContext = self->currentMessageContext;
-  self->currentMessageContext = a3;
-  v6 = a3;
+  self->currentMessageContext = context;
+  contextCopy = context;
 }
 
-- (void)setIMessageIDSHandler:(id)a3
+- (void)setIMessageIDSHandler:(id)handler
 {
   swift_beginAccess();
   iMessageIDSHandler = self->iMessageIDSHandler;
-  self->iMessageIDSHandler = a3;
-  v6 = a3;
+  self->iMessageIDSHandler = handler;
+  handlerCopy = handler;
 }
 
-- (void)notifyClientsNewSetupInfoAvailableWithRequiredCapabilities:(unint64_t)a3
+- (void)notifyClientsNewSetupInfoAvailableWithRequiredCapabilities:(unint64_t)capabilities
 {
   v3 = *&self->connectionManager[32];
   sub_10003526C(self->connectionManager, *&self->connectionManager[24]);

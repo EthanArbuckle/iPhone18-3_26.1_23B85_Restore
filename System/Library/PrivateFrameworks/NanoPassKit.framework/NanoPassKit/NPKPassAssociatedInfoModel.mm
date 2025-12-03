@@ -1,47 +1,47 @@
 @interface NPKPassAssociatedInfoModel
-+ (id)accountBalanceForAccount:(id)a3;
-- (BOOL)_shouldAddCommutePlan:(id)a3 action:(id)a4 withBalancesByID:(id)a5;
++ (id)accountBalanceForAccount:(id)account;
+- (BOOL)_shouldAddCommutePlan:(id)plan action:(id)action withBalancesByID:(id)d;
 - (BOOL)hasDeviceBoundCommutePlans;
-- (BOOL)isEqual:(id)a3;
-- (NPKPassAssociatedInfoModel)initWithPass:(id)a3 transitProperties:(id)a4 balances:(id)a5 commutePlanValueRequired:(BOOL)a6;
-- (id)_actionWithIdentifier:(id)a3 type:(unint64_t)a4;
-- (id)_actionWithIdentifiers:(id)a3 type:(unint64_t)a4;
-- (id)_allPassBalanceFieldsWithBalancesByID:(id)a3;
-- (id)_balanceByIDWithBalances:(id)a3;
-- (id)_balanceFieldBalance:(id)a3 fieldIdentifier:(id)a4;
-- (id)_balanceFieldsWithBalancesByID:(id)a3 passFields:(id)a4 maximumCount:(unint64_t)a5;
-- (id)_balancePassFieldsFromPass:(id)a3;
-- (id)_commutePlanFieldsWithBalancesByID:(id)a3 dynamicPlansByID:(id)a4;
-- (id)_commutePlanWithFelicaPassProperties:(id)a3;
-- (id)_commutePlansByIDWithPlans:(id)a3;
-- (id)_fieldForCommutePlan:(id)a3 action:(id)a4 isLegacyPass:(BOOL)a5 balancedByID:(id)a6;
-- (id)_formattedValueWithCommutePlan:(id)a3 balancesByID:(id)a4;
-- (id)_identifierFromAction:(id)a3 type:(unint64_t)a4;
-- (id)_primaryDisplayableBalanceFieldWithBalancesByID:(id)a3;
-- (id)_rawCountValueWithCommutePlan:(id)a3 balancesByID:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (NPKPassAssociatedInfoModel)initWithPass:(id)pass transitProperties:(id)properties balances:(id)balances commutePlanValueRequired:(BOOL)required;
+- (id)_actionWithIdentifier:(id)identifier type:(unint64_t)type;
+- (id)_actionWithIdentifiers:(id)identifiers type:(unint64_t)type;
+- (id)_allPassBalanceFieldsWithBalancesByID:(id)d;
+- (id)_balanceByIDWithBalances:(id)balances;
+- (id)_balanceFieldBalance:(id)balance fieldIdentifier:(id)identifier;
+- (id)_balanceFieldsWithBalancesByID:(id)d passFields:(id)fields maximumCount:(unint64_t)count;
+- (id)_balancePassFieldsFromPass:(id)pass;
+- (id)_commutePlanFieldsWithBalancesByID:(id)d dynamicPlansByID:(id)iD;
+- (id)_commutePlanWithFelicaPassProperties:(id)properties;
+- (id)_commutePlansByIDWithPlans:(id)plans;
+- (id)_fieldForCommutePlan:(id)plan action:(id)action isLegacyPass:(BOOL)pass balancedByID:(id)d;
+- (id)_formattedValueWithCommutePlan:(id)plan balancesByID:(id)d;
+- (id)_identifierFromAction:(id)action type:(unint64_t)type;
+- (id)_primaryDisplayableBalanceFieldWithBalancesByID:(id)d;
+- (id)_rawCountValueWithCommutePlan:(id)plan balancesByID:(id)d;
 - (id)description;
-- (void)setBalances:(id)a3;
-- (void)setCommutePlanValueRequired:(BOOL)a3;
-- (void)setDynamicPlans:(id)a3;
-- (void)setTiles:(id)a3;
-- (void)setTransitPassProperties:(id)a3;
+- (void)setBalances:(id)balances;
+- (void)setCommutePlanValueRequired:(BOOL)required;
+- (void)setDynamicPlans:(id)plans;
+- (void)setTiles:(id)tiles;
+- (void)setTransitPassProperties:(id)properties;
 - (void)updateItemFields;
 @end
 
 @implementation NPKPassAssociatedInfoModel
 
-+ (id)accountBalanceForAccount:(id)a3
++ (id)accountBalanceForAccount:(id)account
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 feature] == 4)
+  accountCopy = account;
+  if ([accountCopy feature] == 4)
   {
-    v4 = [v3 appleBalanceDetails];
-    v5 = [v4 currentBalance];
+    appleBalanceDetails = [accountCopy appleBalanceDetails];
+    currentBalance = [appleBalanceDetails currentBalance];
 
-    if (v5)
+    if (currentBalance)
     {
-      v6 = [objc_alloc(MEMORY[0x277D38008]) initWithIdentifier:@"account-balance-identifier" forCurrencyAmount:v5];
+      v6 = [objc_alloc(MEMORY[0x277D38008]) initWithIdentifier:@"account-balance-identifier" forCurrencyAmount:currentBalance];
     }
 
     else
@@ -54,12 +54,12 @@
         v9 = pk_General_log();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [v3 accountIdentifier];
-          v11 = [v3 appleBalanceDetails];
+          accountIdentifier = [accountCopy accountIdentifier];
+          appleBalanceDetails2 = [accountCopy appleBalanceDetails];
           v14 = 138412546;
-          v15 = v10;
+          v15 = accountIdentifier;
           v16 = 2112;
-          v17 = v11;
+          v17 = appleBalanceDetails2;
           _os_log_impl(&dword_25B300000, v9, OS_LOG_TYPE_DEFAULT, "Notice: NPKPassAssociatedInfoManager: Account apple balance not available for account with identifier %@, account details: %@", &v14, 0x16u);
         }
       }
@@ -78,45 +78,45 @@
   return v6;
 }
 
-- (NPKPassAssociatedInfoModel)initWithPass:(id)a3 transitProperties:(id)a4 balances:(id)a5 commutePlanValueRequired:(BOOL)a6
+- (NPKPassAssociatedInfoModel)initWithPass:(id)pass transitProperties:(id)properties balances:(id)balances commutePlanValueRequired:(BOOL)required
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  passCopy = pass;
+  propertiesCopy = properties;
+  balancesCopy = balances;
   v20.receiver = self;
   v20.super_class = NPKPassAssociatedInfoModel;
   v14 = [(NPKPassAssociatedInfoModel *)&v20 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_pass, a3);
-    v16 = v12;
-    if (!v12)
+    objc_storeStrong(&v14->_pass, pass);
+    v16 = propertiesCopy;
+    if (!propertiesCopy)
     {
-      v16 = [MEMORY[0x277D38310] passPropertiesForPass:v11];
+      v16 = [MEMORY[0x277D38310] passPropertiesForPass:passCopy];
     }
 
     v17 = [v16 copy];
     transitPassProperties = v15->_transitPassProperties;
     v15->_transitPassProperties = v17;
 
-    if (!v12)
+    if (!propertiesCopy)
     {
     }
 
-    objc_storeStrong(&v15->_balances, a5);
-    v15->_commutePlanValueRequired = a6;
+    objc_storeStrong(&v15->_balances, balances);
+    v15->_commutePlanValueRequired = required;
     [(NPKPassAssociatedInfoModel *)v15 updateItemFields];
   }
 
   return v15;
 }
 
-- (void)setTransitPassProperties:(id)a3
+- (void)setTransitPassProperties:(id)properties
 {
-  if (self->_transitPassProperties != a3)
+  if (self->_transitPassProperties != properties)
   {
-    v5 = [a3 copy];
+    v5 = [properties copy];
     transitPassProperties = self->_transitPassProperties;
     self->_transitPassProperties = v5;
 
@@ -124,11 +124,11 @@
   }
 }
 
-- (void)setBalances:(id)a3
+- (void)setBalances:(id)balances
 {
-  if (self->_balances != a3)
+  if (self->_balances != balances)
   {
-    v5 = [a3 copy];
+    v5 = [balances copy];
     balances = self->_balances;
     self->_balances = v5;
 
@@ -136,11 +136,11 @@
   }
 }
 
-- (void)setDynamicPlans:(id)a3
+- (void)setDynamicPlans:(id)plans
 {
-  if (self->_dynamicPlans != a3)
+  if (self->_dynamicPlans != plans)
   {
-    v5 = [a3 copy];
+    v5 = [plans copy];
     dynamicPlans = self->_dynamicPlans;
     self->_dynamicPlans = v5;
 
@@ -148,29 +148,29 @@
   }
 }
 
-- (void)setCommutePlanValueRequired:(BOOL)a3
+- (void)setCommutePlanValueRequired:(BOOL)required
 {
-  if (self->_commutePlanValueRequired != a3)
+  if (self->_commutePlanValueRequired != required)
   {
-    self->_commutePlanValueRequired = a3;
+    self->_commutePlanValueRequired = required;
     [(NPKPassAssociatedInfoModel *)self updateItemFields];
   }
 }
 
-- (void)setTiles:(id)a3
+- (void)setTiles:(id)tiles
 {
-  if (self->_tiles != a3)
+  if (self->_tiles != tiles)
   {
-    v5 = [a3 copy];
+    v5 = [tiles copy];
     tiles = self->_tiles;
     self->_tiles = v5;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -180,10 +180,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PKPaymentPass *)self->_pass uniqueID];
-      v7 = [(PKPaymentPass *)v5->_pass uniqueID];
-      if (NPKIsEqual(v6, v7) && NPKIsEqual(self->_balanceFields, v5->_balanceFields) && NPKIsEqual(self->_balances, v5->_balances) && NPKIsEqual(self->_transitPassProperties, v5->_transitPassProperties) && NPKIsEqual(self->_transitAppletState, v5->_transitAppletState) && NPKIsEqual(self->_tiles, v5->_tiles) && NPKIsEqual(self->_dynamicPlans, v5->_dynamicPlans) && self->_rangingSuspensionReason == v5->_rangingSuspensionReason)
+      v5 = equalCopy;
+      uniqueID = [(PKPaymentPass *)self->_pass uniqueID];
+      uniqueID2 = [(PKPaymentPass *)v5->_pass uniqueID];
+      if (NPKIsEqual(uniqueID, uniqueID2) && NPKIsEqual(self->_balanceFields, v5->_balanceFields) && NPKIsEqual(self->_balances, v5->_balances) && NPKIsEqual(self->_transitPassProperties, v5->_transitPassProperties) && NPKIsEqual(self->_transitAppletState, v5->_transitAppletState) && NPKIsEqual(self->_tiles, v5->_tiles) && NPKIsEqual(self->_dynamicPlans, v5->_dynamicPlans) && self->_rangingSuspensionReason == v5->_rangingSuspensionReason)
       {
         v8 = NPKIsEqual(self->_precursorPassDescription, v5->_precursorPassDescription);
       }
@@ -210,8 +210,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(NPKPassAssociatedInfoModel *)self commutePlanFields];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  commutePlanFields = [(NPKPassAssociatedInfoModel *)self commutePlanFields];
+  v3 = [commutePlanFields countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -221,7 +221,7 @@
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(commutePlanFields);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) isDeviceBound])
@@ -231,7 +231,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [commutePlanFields countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -256,17 +256,17 @@ LABEL_11:
   v7 = v6;
   if (v5)
   {
-    v8 = [MEMORY[0x277CBEB18] array];
-    [v8 addObject:v5];
-    v9 = [v5 identifier];
+    array = [MEMORY[0x277CBEB18] array];
+    [array addObject:v5];
+    identifier = [v5 identifier];
     v20 = MEMORY[0x277D85DD0];
     v21 = 3221225472;
     v22 = __46__NPKPassAssociatedInfoModel_updateItemFields__block_invoke;
     v23 = &unk_279948E70;
-    v24 = v9;
-    v25 = v8;
-    v10 = v8;
-    v11 = v9;
+    v24 = identifier;
+    v25 = array;
+    v10 = array;
+    v11 = identifier;
     [v7 enumerateObjectsUsingBlock:&v20];
     v12 = [v10 copy];
     balanceFields = self->_balanceFields;
@@ -285,8 +285,8 @@ LABEL_11:
   self->_commutePlanFields = v16;
 
   v18 = MEMORY[0x277D37F98];
-  v19 = [(PKPaymentPass *)self->_pass uniqueID];
-  [v18 npkClearTransitValuePendingStateIfNecessaryForPassWithID:v19 withBalanceFields:self->_balanceFields commutePlanFields:self->_commutePlanFields];
+  uniqueID = [(PKPaymentPass *)self->_pass uniqueID];
+  [v18 npkClearTransitValuePendingStateIfNecessaryForPassWithID:uniqueID withBalanceFields:self->_balanceFields commutePlanFields:self->_commutePlanFields];
 }
 
 void __46__NPKPassAssociatedInfoModel_updateItemFields__block_invoke(uint64_t a1, void *a2)
@@ -303,29 +303,29 @@ void __46__NPKPassAssociatedInfoModel_updateItemFields__block_invoke(uint64_t a1
   }
 }
 
-- (id)_primaryDisplayableBalanceFieldWithBalancesByID:(id)a3
+- (id)_primaryDisplayableBalanceFieldWithBalancesByID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if ([(PKPaymentPass *)self->_pass isContentLoaded]&& [(PKPaymentPass *)self->_pass isStoredValuePass])
   {
     v5 = [(NPKPassAssociatedInfoModel *)self _balancePassFieldsFromPass:self->_pass];
-    v6 = [(NPKPassAssociatedInfoModel *)self _balanceFieldsWithBalancesByID:v4 passFields:v5 maximumCount:1];
+    v6 = [(NPKPassAssociatedInfoModel *)self _balanceFieldsWithBalancesByID:dCopy passFields:v5 maximumCount:1];
 
     if ([v6 count])
     {
-      v7 = [v6 firstObject];
+      firstObject = [v6 firstObject];
 LABEL_7:
-      v8 = v7;
+      v8 = firstObject;
       goto LABEL_9;
     }
   }
 
   else
   {
-    v6 = [v4 objectForKey:@"account-balance-identifier"];
+    v6 = [dCopy objectForKey:@"account-balance-identifier"];
     if (v6)
     {
-      v7 = [(NPKPassAssociatedInfoModel *)self _balanceFieldBalance:v6 fieldIdentifier:@"account-balance-item"];
+      firstObject = [(NPKPassAssociatedInfoModel *)self _balanceFieldBalance:v6 fieldIdentifier:@"account-balance-item"];
       goto LABEL_7;
     }
   }
@@ -336,80 +336,80 @@ LABEL_9:
   return v8;
 }
 
-- (id)_allPassBalanceFieldsWithBalancesByID:(id)a3
+- (id)_allPassBalanceFieldsWithBalancesByID:(id)d
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  dCopy = d;
+  array = [MEMORY[0x277CBEB18] array];
   if ([(PKPaymentPass *)self->_pass isContentLoaded])
   {
     v6 = [(NPKPassAssociatedInfoModel *)self _balancePassFieldsFromPass:self->_pass];
-    v7 = [(NPKPassAssociatedInfoModel *)self _balanceFieldsWithBalancesByID:v4 passFields:v6 maximumCount:0];
-    [v5 addObjectsFromArray:v7];
+    v7 = [(NPKPassAssociatedInfoModel *)self _balanceFieldsWithBalancesByID:dCopy passFields:v6 maximumCount:0];
+    [array addObjectsFromArray:v7];
   }
 
-  return v5;
+  return array;
 }
 
-- (id)_balanceFieldBalance:(id)a3 fieldIdentifier:(id)a4
+- (id)_balanceFieldBalance:(id)balance fieldIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  balanceCopy = balance;
   v7 = [NPKBalanceField alloc];
   v8 = PKLocalizedAppleBalanceString(&cfstr_PassBalanceTit.isa);
-  v9 = [v6 formattedValue];
-  v10 = [(NPKBalanceField *)v7 initWithBalance:v6 label:v8 formattedValue:v9 identifier:v5 primaryBalance:1 action:0 pendingUpdateExpireDate:0];
+  formattedValue = [balanceCopy formattedValue];
+  v10 = [(NPKBalanceField *)v7 initWithBalance:balanceCopy label:v8 formattedValue:formattedValue identifier:identifierCopy primaryBalance:1 action:0 pendingUpdateExpireDate:0];
 
   return v10;
 }
 
-- (id)_balanceFieldsWithBalancesByID:(id)a3 passFields:(id)a4 maximumCount:(unint64_t)a5
+- (id)_balanceFieldsWithBalancesByID:(id)d passFields:(id)fields maximumCount:(unint64_t)count
 {
   v61 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x277CBEB18] array];
+  dCopy = d;
+  fieldsCopy = fields;
+  array = [MEMORY[0x277CBEB18] array];
   v11 = *MEMORY[0x277D38850];
-  v12 = [v8 objectForKey:*MEMORY[0x277D38850]];
+  v12 = [dCopy objectForKey:*MEMORY[0x277D38850]];
   v13 = v12;
   v49 = v12 == 0;
-  v46 = self;
-  v47 = a5;
-  v43 = v9;
+  selfCopy = self;
+  countCopy = count;
+  v43 = fieldsCopy;
   if (v12)
   {
     pass = self->_pass;
-    v15 = [v12 value];
-    v16 = [(PKPaymentPass *)pass npkPendingAddValueStateExpireDateForBalanceFieldWithIdentifier:v11 currentBalance:v15];
+    value = [v12 value];
+    v16 = [(PKPaymentPass *)pass npkPendingAddValueStateExpireDateForBalanceFieldWithIdentifier:v11 currentBalance:value];
 
     v17 = [(NPKPassAssociatedInfoModel *)self _actionWithIdentifier:0 type:1];
     v18 = [NPKBalanceField alloc];
     v19 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.NanoPassKitUI"];
     v20 = [v19 localizedStringForKey:@"PASS_DETAILS_HEADER_TRANSIT_BALANCE" value:&stru_286C934F8 table:@"NanoPassKitUI-Transit"];
-    v21 = [v13 formattedValue];
-    v22 = [(NPKBalanceField *)v18 initWithBalance:v13 label:v20 formattedValue:v21 identifier:v11 primaryBalance:1 action:v17 pendingUpdateExpireDate:v16];
+    formattedValue = [v13 formattedValue];
+    v22 = [(NPKBalanceField *)v18 initWithBalance:v13 label:v20 formattedValue:formattedValue identifier:v11 primaryBalance:1 action:v17 pendingUpdateExpireDate:v16];
 
-    self = v46;
-    [v10 addObject:v22];
+    self = selfCopy;
+    [array addObject:v22];
 
-    a5 = v47;
-    v9 = v43;
+    count = countCopy;
+    fieldsCopy = v43;
   }
 
-  if ([v8 count])
+  if ([dCopy count])
   {
     v42 = v13;
     v57 = 0u;
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v23 = v9;
+    v23 = fieldsCopy;
     v24 = [v23 countByEnumeratingWithState:&v55 objects:v60 count:16];
     if (v24)
     {
       v25 = v24;
       v26 = *v56;
       v44 = v23;
-      v45 = v10;
+      v45 = array;
       v48 = *v56;
       while (2)
       {
@@ -425,19 +425,19 @@ LABEL_9:
           v28 = *(*(&v55 + 1) + 8 * v27);
           if ([v28 foreignReferenceType])
           {
-            v29 = [v28 foreignReferenceIdentifiers];
-            if (v29)
+            foreignReferenceIdentifiers = [v28 foreignReferenceIdentifiers];
+            if (foreignReferenceIdentifiers)
             {
-              v30 = v29;
-              if ([v29 count] == 1)
+              v30 = foreignReferenceIdentifiers;
+              if ([foreignReferenceIdentifiers count] == 1)
               {
-                v31 = [v30 anyObject];
-                v32 = [v8 objectForKeyedSubscript:v31];
+                anyObject = [v30 anyObject];
+                v32 = [dCopy objectForKeyedSubscript:anyObject];
               }
 
               else
               {
-                v31 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v30, "count")}];
+                anyObject = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v30, "count")}];
                 v51 = 0u;
                 v52 = 0u;
                 v53 = 0u;
@@ -457,8 +457,8 @@ LABEL_9:
                         objc_enumerationMutation(v33);
                       }
 
-                      v38 = [v8 objectForKeyedSubscript:*(*(&v51 + 1) + 8 * i)];
-                      [v31 npkSafelyAddObject:v38];
+                      v38 = [dCopy objectForKeyedSubscript:*(*(&v51 + 1) + 8 * i)];
+                      [anyObject npkSafelyAddObject:v38];
                     }
 
                     v35 = [v33 countByEnumeratingWithState:&v51 objects:v59 count:16];
@@ -467,10 +467,10 @@ LABEL_9:
                   while (v35);
                 }
 
-                v32 = [objc_alloc(MEMORY[0x277D38008]) initWithComponentBalances:v31 identifiers:v33];
-                v10 = v45;
-                self = v46;
-                a5 = v47;
+                v32 = [objc_alloc(MEMORY[0x277D38008]) initWithComponentBalances:anyObject identifiers:v33];
+                array = v45;
+                self = selfCopy;
+                count = countCopy;
                 v23 = v44;
               }
 
@@ -479,11 +479,11 @@ LABEL_9:
                 v39 = [(NPKPassAssociatedInfoModel *)self _balanceFieldWithPassField:v28 balance:v32 isPrimaryBalance:v49];
                 if (v39)
                 {
-                  [v10 addObject:v39];
+                  [array addObject:v39];
                   v49 = 0;
                 }
 
-                if (a5 && [v10 count] >= a5)
+                if (count && [array count] >= count)
                 {
 
                   goto LABEL_32;
@@ -512,26 +512,26 @@ LABEL_9:
 LABEL_32:
 
     v13 = v42;
-    v9 = v43;
+    fieldsCopy = v43;
   }
 
   v40 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return array;
 }
 
-- (id)_balanceByIDWithBalances:(id)a3
+- (id)_balanceByIDWithBalances:(id)balances
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  balancesCopy = balances;
+  v5 = [v3 dictionaryWithCapacity:{objc_msgSend(balancesCopy, "count")}];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __55__NPKPassAssociatedInfoModel__balanceByIDWithBalances___block_invoke;
   v8[3] = &unk_279948E98;
   v6 = v5;
   v9 = v6;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [balancesCopy enumerateObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -579,16 +579,16 @@ void __55__NPKPassAssociatedInfoModel__balanceByIDWithBalances___block_invoke(ui
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_commutePlansByIDWithPlans:(id)a3
+- (id)_commutePlansByIDWithPlans:(id)plans
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  plansCopy = plans;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = plansCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -604,8 +604,8 @@ void __55__NPKPassAssociatedInfoModel__balanceByIDWithBalances___block_invoke(ui
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 uniqueIdentifier];
-        [v4 setObject:v10 forKeyedSubscript:v11];
+        uniqueIdentifier = [v10 uniqueIdentifier];
+        [v4 setObject:v10 forKeyedSubscript:uniqueIdentifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -619,39 +619,39 @@ void __55__NPKPassAssociatedInfoModel__balanceByIDWithBalances___block_invoke(ui
   return v4;
 }
 
-- (id)_commutePlanFieldsWithBalancesByID:(id)a3 dynamicPlansByID:(id)a4
+- (id)_commutePlanFieldsWithBalancesByID:(id)d dynamicPlansByID:(id)iD
 {
   v66 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   if (![(PKPaymentPass *)self->_pass isTransitPass])
   {
-    v50 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
     goto LABEL_28;
   }
 
-  v50 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v10 = [(NPKPassAssociatedInfoModel *)self pass];
-  v47 = [v10 transitCommutePlanType];
+  pass = [(NPKPassAssociatedInfoModel *)self pass];
+  transitCommutePlanType = [pass transitCommutePlanType];
 
-  v11 = [(NPKPassAssociatedInfoModel *)self pass];
-  v12 = [v11 transitCommutePlans];
+  pass2 = [(NPKPassAssociatedInfoModel *)self pass];
+  transitCommutePlans = [pass2 transitCommutePlans];
   v59[0] = MEMORY[0x277D85DD0];
   v59[1] = 3221225472;
   v59[2] = __82__NPKPassAssociatedInfoModel__commutePlanFieldsWithBalancesByID_dynamicPlansByID___block_invoke;
   v59[3] = &unk_279948EC0;
   v59[4] = self;
-  v13 = v6;
+  v13 = dCopy;
   v60 = v13;
   v14 = v9;
   v61 = v14;
-  v49 = v7;
-  v62 = v7;
+  v49 = iDCopy;
+  v62 = iDCopy;
   v15 = v8;
   v63 = v15;
-  [v12 enumerateObjectsUsingBlock:v59];
+  [transitCommutePlans enumerateObjectsUsingBlock:v59];
 
   v48 = v15;
   if ([v14 count])
@@ -669,7 +669,7 @@ void __55__NPKPassAssociatedInfoModel__balanceByIDWithBalances___block_invoke(ui
 
     v18 = v17;
     v45 = v14;
-    v46 = v6;
+    v46 = dCopy;
     v19 = *v56;
     do
     {
@@ -681,16 +681,16 @@ void __55__NPKPassAssociatedInfoModel__balanceByIDWithBalances___block_invoke(ui
         }
 
         v21 = *(*(&v55 + 1) + 8 * i);
-        v22 = [v21 identifier];
-        v23 = [(NPKPassAssociatedInfoModel *)self _actionWithIdentifier:v22 type:2];
+        identifier = [v21 identifier];
+        v23 = [(NPKPassAssociatedInfoModel *)self _actionWithIdentifier:identifier type:2];
 
-        v24 = [(NPKPassAssociatedInfoModel *)self pass];
-        v25 = [v24 transitCommutePlanType];
+        pass3 = [(NPKPassAssociatedInfoModel *)self pass];
+        transitCommutePlanType2 = [pass3 transitCommutePlanType];
 
         if ([(NPKPassAssociatedInfoModel *)self _shouldAddCommutePlan:v21 action:v23 withBalancesByID:v13])
         {
-          v26 = [(NPKPassAssociatedInfoModel *)self _fieldForCommutePlan:v21 action:v23 isLegacyPass:v25 == 1 balancedByID:v13];
-          [v50 addObject:v26];
+          v26 = [(NPKPassAssociatedInfoModel *)self _fieldForCommutePlan:v21 action:v23 isLegacyPass:transitCommutePlanType2 == 1 balancedByID:v13];
+          [array addObject:v26];
         }
       }
 
@@ -715,7 +715,7 @@ void __55__NPKPassAssociatedInfoModel__balanceByIDWithBalances___block_invoke(ui
 
     v28 = v27;
     v45 = v14;
-    v46 = v6;
+    v46 = dCopy;
     v29 = *v52;
     do
     {
@@ -727,16 +727,16 @@ void __55__NPKPassAssociatedInfoModel__balanceByIDWithBalances___block_invoke(ui
         }
 
         v31 = *(*(&v51 + 1) + 8 * j);
-        v32 = [v31 identifier];
-        v33 = [(NPKPassAssociatedInfoModel *)self _actionWithIdentifier:v32 type:2];
+        identifier2 = [v31 identifier];
+        v33 = [(NPKPassAssociatedInfoModel *)self _actionWithIdentifier:identifier2 type:2];
 
-        v34 = [(NPKPassAssociatedInfoModel *)self pass];
-        v35 = [v34 transitCommutePlanType];
+        pass4 = [(NPKPassAssociatedInfoModel *)self pass];
+        transitCommutePlanType3 = [pass4 transitCommutePlanType];
 
         if ([(NPKPassAssociatedInfoModel *)self _shouldAddCommutePlan:v31 action:v33 withBalancesByID:v13])
         {
-          v36 = [(NPKPassAssociatedInfoModel *)self _fieldForCommutePlan:v31 action:v33 isLegacyPass:v35 == 1 balancedByID:v13];
-          [v50 addObject:v36];
+          v36 = [(NPKPassAssociatedInfoModel *)self _fieldForCommutePlan:v31 action:v33 isLegacyPass:transitCommutePlanType3 == 1 balancedByID:v13];
+          [array addObject:v36];
         }
       }
 
@@ -747,22 +747,22 @@ void __55__NPKPassAssociatedInfoModel__balanceByIDWithBalances___block_invoke(ui
   }
 
   v14 = v45;
-  v6 = v46;
+  dCopy = v46;
 LABEL_24:
 
-  v7 = v49;
-  if (v47 == 1 || (-[NPKPassAssociatedInfoModel pass](self, "pass"), v37 = objc_claimAutoreleasedReturnValue(), [v37 transitCommutePlans], v38 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend(v38, "count"), v38, v37, !v39))
+  iDCopy = v49;
+  if (transitCommutePlanType == 1 || (-[NPKPassAssociatedInfoModel pass](self, "pass"), v37 = objc_claimAutoreleasedReturnValue(), [v37 transitCommutePlans], v38 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend(v38, "count"), v38, v37, !v39))
   {
-    v40 = [(NPKPassAssociatedInfoModel *)self transitPassProperties];
-    v41 = [v40 felicaProperties];
-    v42 = [(NPKPassAssociatedInfoModel *)self _commutePlanWithFelicaPassProperties:v41];
-    [v50 addObjectsFromArray:v42];
+    transitPassProperties = [(NPKPassAssociatedInfoModel *)self transitPassProperties];
+    felicaProperties = [transitPassProperties felicaProperties];
+    v42 = [(NPKPassAssociatedInfoModel *)self _commutePlanWithFelicaPassProperties:felicaProperties];
+    [array addObjectsFromArray:v42];
   }
 
 LABEL_28:
   v43 = *MEMORY[0x277D85DE8];
 
-  return v50;
+  return array;
 }
 
 void __82__NPKPassAssociatedInfoModel__commutePlanFieldsWithBalancesByID_dynamicPlansByID___block_invoke(id *a1, void *a2)
@@ -902,52 +902,52 @@ LABEL_33:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_fieldForCommutePlan:(id)a3 action:(id)a4 isLegacyPass:(BOOL)a5 balancedByID:(id)a6
+- (id)_fieldForCommutePlan:(id)plan action:(id)action isLegacyPass:(BOOL)pass balancedByID:(id)d
 {
   v44 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v37 = a4;
-  v11 = a6;
-  v12 = [v10 title];
-  v13 = v12;
-  if (a5)
+  planCopy = plan;
+  actionCopy = action;
+  dCopy = d;
+  title = [planCopy title];
+  v13 = title;
+  if (pass)
   {
-    v14 = [v12 value];
+    value = [title value];
 
-    v15 = [v10 title];
-    [v15 label];
+    title2 = [planCopy title];
+    [title2 label];
   }
 
   else
   {
-    v14 = [v12 label];
+    value = [title label];
 
-    v15 = [v10 title];
-    [v15 value];
+    title2 = [planCopy title];
+    [title2 value];
   }
   v36 = ;
 
   v16 = [NPKDateRange alloc];
-  v17 = [v10 startDate];
-  v18 = [v10 expiryDate];
-  v35 = [(NPKDateRange *)v16 initWithStartDate:v17 expirationDate:v18 formatterStyle:3];
+  startDate = [planCopy startDate];
+  expiryDate = [planCopy expiryDate];
+  v35 = [(NPKDateRange *)v16 initWithStartDate:startDate expirationDate:expiryDate formatterStyle:3];
 
-  v19 = [(NPKPassAssociatedInfoModel *)self _rawCountValueWithCommutePlan:v10 balancesByID:v11];
+  v19 = [(NPKPassAssociatedInfoModel *)self _rawCountValueWithCommutePlan:planCopy balancesByID:dCopy];
   pass = self->_pass;
-  v21 = [v10 uniqueIdentifier];
-  v22 = [v10 expiryDate];
-  v23 = [(PKPaymentPass *)pass npkPendingAddValueStateExpireDateForCommutePlanFieldWithIdentifier:v21 expiryDate:v22 rawCountValue:v19];
+  uniqueIdentifier = [planCopy uniqueIdentifier];
+  expiryDate2 = [planCopy expiryDate];
+  v23 = [(PKPaymentPass *)pass npkPendingAddValueStateExpireDateForCommutePlanFieldWithIdentifier:uniqueIdentifier expiryDate:expiryDate2 rawCountValue:v19];
 
   v24 = pk_General_log();
-  LODWORD(v21) = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
+  LODWORD(uniqueIdentifier) = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
 
-  if (v21)
+  if (uniqueIdentifier)
   {
     v25 = pk_General_log();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v39 = v14;
+      v39 = value;
       v40 = 2112;
       v41 = v19;
       v42 = 2112;
@@ -957,41 +957,41 @@ LABEL_33:
   }
 
   v26 = [NPKCommutePlanField alloc];
-  v27 = [(NPKPassAssociatedInfoModel *)self _formattedValueWithCommutePlan:v10 balancesByID:v11];
-  [v10 uniqueIdentifier];
-  v29 = v28 = v14;
-  v30 = [v10 details];
-  LOBYTE(v33) = [v10 isDeviceBound];
-  v34 = [(NPKCommutePlanField *)v26 initWithLabel:v28 detailLabel:v36 formattedValue:v27 rawCountValue:v19 usageDateRange:v35 identifier:v29 details:v30 action:v37 isDeviceBound:v33 pendingUpdateExpireDate:v23];
+  v27 = [(NPKPassAssociatedInfoModel *)self _formattedValueWithCommutePlan:planCopy balancesByID:dCopy];
+  [planCopy uniqueIdentifier];
+  v29 = v28 = value;
+  details = [planCopy details];
+  LOBYTE(v33) = [planCopy isDeviceBound];
+  v34 = [(NPKCommutePlanField *)v26 initWithLabel:v28 detailLabel:v36 formattedValue:v27 rawCountValue:v19 usageDateRange:v35 identifier:v29 details:details action:actionCopy isDeviceBound:v33 pendingUpdateExpireDate:v23];
 
   v31 = *MEMORY[0x277D85DE8];
 
   return v34;
 }
 
-- (BOOL)_shouldAddCommutePlan:(id)a3 action:(id)a4 withBalancesByID:(id)a5
+- (BOOL)_shouldAddCommutePlan:(id)plan action:(id)action withBalancesByID:(id)d
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 properties];
-  v12 = [v8 expiryDate];
-  if (!v12)
+  planCopy = plan;
+  actionCopy = action;
+  dCopy = d;
+  properties = [planCopy properties];
+  expiryDate = [planCopy expiryDate];
+  if (!expiryDate)
   {
     goto LABEL_9;
   }
 
-  v13 = (v11 & 1) == 0;
-  v14 = [v8 expiryDate];
+  v13 = (properties & 1) == 0;
+  expiryDate2 = [planCopy expiryDate];
   v15 = [MEMORY[0x277CBEAA8] now];
-  v16 = [v14 compare:v15];
+  v16 = [expiryDate2 compare:v15];
 
   v17 = v16 == 1 || v13;
-  if (v17 & 1) != 0 || ([v9 isActionAvailable] & 1) != 0 || (objc_msgSend(v8, "isPlanDisplayable"))
+  if (v17 & 1) != 0 || ([actionCopy isActionAvailable] & 1) != 0 || (objc_msgSend(planCopy, "isPlanDisplayable"))
   {
 LABEL_9:
-    if (-[NPKPassAssociatedInfoModel isCommutePlanValueRequired](self, "isCommutePlanValueRequired") && ([v8 properties] & 4) != 0)
+    if (-[NPKPassAssociatedInfoModel isCommutePlanValueRequired](self, "isCommutePlanValueRequired") && ([planCopy properties] & 4) != 0)
     {
       v39 = 0;
       v40 = &v39;
@@ -1003,16 +1003,16 @@ LABEL_9:
       v48 = __Block_byref_object_copy__17;
       v49 = __Block_byref_object_dispose__17;
       v50 = objc_alloc_init(MEMORY[0x277CCAB68]);
-      v19 = [v8 details];
+      details = [planCopy details];
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
       v34[2] = __76__NPKPassAssociatedInfoModel__shouldAddCommutePlan_action_withBalancesByID___block_invoke;
       v34[3] = &unk_279948EE8;
       v37 = v47;
       v38 = &v39;
-      v35 = v10;
-      v36 = v9;
-      [v19 enumerateObjectsUsingBlock:v34];
+      v35 = dCopy;
+      v36 = actionCopy;
+      [details enumerateObjectsUsingBlock:v34];
 
       if ((v40[3] & 1) == 0)
       {
@@ -1024,10 +1024,10 @@ LABEL_9:
           v22 = pk_General_log();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
           {
-            v23 = [v8 identifier];
+            identifier = [planCopy identifier];
             v24 = *(*&v47[8] + 40);
             *buf = 138412546;
-            v44 = v23;
+            v44 = identifier;
             v45 = 2112;
             v46 = v24;
             _os_log_impl(&dword_25B300000, v22, OS_LOG_TYPE_DEFAULT, "Notice: NPKPassAssociatedInfoModel: should not add commute plan with identifier:%@. decision detail: %@", buf, 0x16u);
@@ -1050,8 +1050,8 @@ LABEL_9:
   else
   {
     v25 = MEMORY[0x277CCACA8];
-    v26 = [v8 expiryDate];
-    v27 = [v25 stringWithFormat:@" is timed commute plan:%d, is expired:%d, expiry date:%@, is action available:%d", 1, 1, v26, objc_msgSend(v9, "isActionAvailable")];
+    expiryDate3 = [planCopy expiryDate];
+    v27 = [v25 stringWithFormat:@" is timed commute plan:%d, is expired:%d, expiry date:%@, is action available:%d", 1, 1, expiryDate3, objc_msgSend(actionCopy, "isActionAvailable")];
 
     v28 = pk_General_log();
     v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT);
@@ -1061,9 +1061,9 @@ LABEL_9:
       v30 = pk_General_log();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
-        v31 = [v8 identifier];
+        identifier2 = [planCopy identifier];
         *v47 = 138412546;
-        *&v47[4] = v31;
+        *&v47[4] = identifier2;
         *&v47[12] = 2112;
         *&v47[14] = v27;
         _os_log_impl(&dword_25B300000, v30, OS_LOG_TYPE_DEFAULT, "Notice: NPKPassAssociatedInfoModel: should not add commute plan with identifier:%@. decision detail:%@", v47, 0x16u);
@@ -1152,11 +1152,11 @@ LABEL_15:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_formattedValueWithCommutePlan:(id)a3 balancesByID:(id)a4
+- (id)_formattedValueWithCommutePlan:(id)plan balancesByID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  if (([v5 properties] & 4) != 0)
+  planCopy = plan;
+  dCopy = d;
+  if (([planCopy properties] & 4) != 0)
   {
     v13 = 0;
     v14 = &v13;
@@ -1164,14 +1164,14 @@ LABEL_15:
     v16 = __Block_byref_object_copy__17;
     v17 = __Block_byref_object_dispose__17;
     v18 = 0;
-    v8 = [v5 details];
+    details = [planCopy details];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __74__NPKPassAssociatedInfoModel__formattedValueWithCommutePlan_balancesByID___block_invoke;
     v10[3] = &unk_279948F10;
-    v11 = v6;
+    v11 = dCopy;
     v12 = &v13;
-    [v8 enumerateObjectsUsingBlock:v10];
+    [details enumerateObjectsUsingBlock:v10];
 
     v7 = v14[5];
     _Block_object_dispose(&v13, 8);
@@ -1266,26 +1266,26 @@ void __74__NPKPassAssociatedInfoModel__formattedValueWithCommutePlan_balancesByI
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_rawCountValueWithCommutePlan:(id)a3 balancesByID:(id)a4
+- (id)_rawCountValueWithCommutePlan:(id)plan balancesByID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  planCopy = plan;
+  dCopy = d;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__17;
   v17 = __Block_byref_object_dispose__17;
   v18 = 0;
-  if (([v5 properties] & 4) != 0)
+  if (([planCopy properties] & 4) != 0)
   {
-    v8 = [v5 details];
+    details = [planCopy details];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __73__NPKPassAssociatedInfoModel__rawCountValueWithCommutePlan_balancesByID___block_invoke;
     v10[3] = &unk_279948F38;
     v12 = &v13;
-    v11 = v6;
-    [v8 enumerateObjectsUsingBlock:v10];
+    v11 = dCopy;
+    [details enumerateObjectsUsingBlock:v10];
 
     v7 = v14[5];
   }
@@ -1356,13 +1356,13 @@ LABEL_3:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_commutePlanWithFelicaPassProperties:(id)a3
+- (id)_commutePlanWithFelicaPassProperties:(id)properties
 {
   v75 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = v4;
-  if (!v3)
+  propertiesCopy = properties;
+  array = [MEMORY[0x277CBEB18] array];
+  v5 = array;
+  if (!propertiesCopy)
   {
     goto LABEL_21;
   }
@@ -1371,7 +1371,7 @@ LABEL_3:
   aBlock[1] = 3221225472;
   aBlock[2] = __67__NPKPassAssociatedInfoModel__commutePlanWithFelicaPassProperties___block_invoke;
   aBlock[3] = &unk_279948F60;
-  v67 = v4;
+  v67 = array;
   v72 = v67;
   v6 = _Block_copy(aBlock);
   v7 = pk_General_log();
@@ -1382,16 +1382,16 @@ LABEL_3:
     v9 = pk_General_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v3 hasShinkansenTicket];
+      hasShinkansenTicket = [propertiesCopy hasShinkansenTicket];
       *buf = 67109120;
-      v74 = v10;
+      v74 = hasShinkansenTicket;
       _os_log_impl(&dword_25B300000, v9, OS_LOG_TYPE_DEFAULT, "Notice: NPKTransitBalanceModel: has Shinkansen ticket:%d", buf, 8u);
     }
   }
 
   v68 = v5;
   v66 = v6;
-  if ([v3 hasShinkansenTicket])
+  if ([propertiesCopy hasShinkansenTicket])
   {
     v69[0] = MEMORY[0x277D85DD0];
     v69[1] = 3221225472;
@@ -1399,30 +1399,30 @@ LABEL_3:
     v69[3] = &unk_279948F88;
     v70 = v6;
     v63 = _Block_copy(v69);
-    v11 = [v3 shinkansenValidityTerm];
-    v12 = [v3 shinkansenValidityStartDate];
-    v13 = [v12 calendar];
-    v59 = v11;
-    v14 = [v11 integerValue];
-    v58 = v12;
-    v15 = [v12 date];
-    v57 = v13;
-    v16 = [v13 dateByAddingUnit:16 value:v14 toDate:v15 options:0];
+    shinkansenValidityTerm = [propertiesCopy shinkansenValidityTerm];
+    shinkansenValidityStartDate = [propertiesCopy shinkansenValidityStartDate];
+    calendar = [shinkansenValidityStartDate calendar];
+    v59 = shinkansenValidityTerm;
+    integerValue = [shinkansenValidityTerm integerValue];
+    v58 = shinkansenValidityStartDate;
+    date = [shinkansenValidityStartDate date];
+    v57 = calendar;
+    v16 = [calendar dateByAddingUnit:16 value:integerValue toDate:date options:0];
 
-    v56 = [v3 shinkansenValidityStartDate];
-    v17 = [v56 date];
-    v18 = [v3 shinkansenOriginStation];
-    v19 = [v3 shinkansenDestinationStation];
-    v20 = [v3 shinkansenDepartureTime];
-    v21 = [v3 shinkansenArrivalTime];
-    v22 = [v3 shinkansenTrainName];
-    v23 = [v3 shinkansenCarNumber];
-    v24 = [v3 displayableShinkansenSeat];
+    shinkansenValidityStartDate2 = [propertiesCopy shinkansenValidityStartDate];
+    date2 = [shinkansenValidityStartDate2 date];
+    shinkansenOriginStation = [propertiesCopy shinkansenOriginStation];
+    shinkansenDestinationStation = [propertiesCopy shinkansenDestinationStation];
+    shinkansenDepartureTime = [propertiesCopy shinkansenDepartureTime];
+    shinkansenArrivalTime = [propertiesCopy shinkansenArrivalTime];
+    shinkansenTrainName = [propertiesCopy shinkansenTrainName];
+    shinkansenCarNumber = [propertiesCopy shinkansenCarNumber];
+    displayableShinkansenSeat = [propertiesCopy displayableShinkansenSeat];
     v61 = v16;
-    v63[2](v63, v17, v18, v19, v20, v21, v22, v23, v24, v16, [v3 isShinkansenTicketActive]);
+    v63[2](v63, date2, shinkansenOriginStation, shinkansenDestinationStation, shinkansenDepartureTime, shinkansenArrivalTime, shinkansenTrainName, shinkansenCarNumber, displayableShinkansenSeat, v16, [propertiesCopy isShinkansenTicketActive]);
 
-    v25 = [v3 shinkansenSecondaryOriginStation];
-    if (v25 || ([v3 shinkansenSecondaryDestinationStation], (v25 = objc_claimAutoreleasedReturnValue()) != 0))
+    shinkansenSecondaryOriginStation = [propertiesCopy shinkansenSecondaryOriginStation];
+    if (shinkansenSecondaryOriginStation || ([propertiesCopy shinkansenSecondaryDestinationStation], (shinkansenSecondaryOriginStation = objc_claimAutoreleasedReturnValue()) != 0))
     {
 
       v26 = v63;
@@ -1430,26 +1430,26 @@ LABEL_3:
 
     else
     {
-      v54 = [v3 shinkansenSecondaryTrainName];
+      shinkansenSecondaryTrainName = [propertiesCopy shinkansenSecondaryTrainName];
 
       v26 = v63;
-      if (!v54)
+      if (!shinkansenSecondaryTrainName)
       {
         goto LABEL_11;
       }
     }
 
-    v64 = [v3 shinkansenValidityStartDate];
-    v27 = [v64 date];
-    v28 = [v3 shinkansenSecondaryOriginStation];
-    v29 = [v3 shinkansenSecondaryDestinationStation];
-    v30 = [v3 shinkansenSecondaryDepartureTime];
-    v31 = [v3 shinkansenSecondaryArrivalTime];
-    v32 = [v3 shinkansenSecondaryTrainName];
-    v33 = [v3 shinkansenSecondaryCarNumber];
-    v34 = [v3 displayableShinkansenSecondarySeat];
-    LOBYTE(v55) = [v3 isShinkansenTicketActive];
-    (v26)[2](v26, v27, v28, v29, v30, v31, v32, v33, v34, v61, v55);
+    shinkansenValidityStartDate3 = [propertiesCopy shinkansenValidityStartDate];
+    date3 = [shinkansenValidityStartDate3 date];
+    shinkansenSecondaryOriginStation2 = [propertiesCopy shinkansenSecondaryOriginStation];
+    shinkansenSecondaryDestinationStation = [propertiesCopy shinkansenSecondaryDestinationStation];
+    shinkansenSecondaryDepartureTime = [propertiesCopy shinkansenSecondaryDepartureTime];
+    shinkansenSecondaryArrivalTime = [propertiesCopy shinkansenSecondaryArrivalTime];
+    shinkansenSecondaryTrainName2 = [propertiesCopy shinkansenSecondaryTrainName];
+    shinkansenSecondaryCarNumber = [propertiesCopy shinkansenSecondaryCarNumber];
+    displayableShinkansenSecondarySeat = [propertiesCopy displayableShinkansenSecondarySeat];
+    LOBYTE(v55) = [propertiesCopy isShinkansenTicketActive];
+    (v26)[2](v26, date3, shinkansenSecondaryOriginStation2, shinkansenSecondaryDestinationStation, shinkansenSecondaryDepartureTime, shinkansenSecondaryArrivalTime, shinkansenSecondaryTrainName2, shinkansenSecondaryCarNumber, displayableShinkansenSecondarySeat, v61, v55);
 
 LABEL_11:
     v6 = v66;
@@ -1463,40 +1463,40 @@ LABEL_11:
     v37 = pk_General_log();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
-      v38 = [v3 hasGreenCarTicket];
+      hasGreenCarTicket = [propertiesCopy hasGreenCarTicket];
       *buf = 67109120;
-      v74 = v38;
+      v74 = hasGreenCarTicket;
       _os_log_impl(&dword_25B300000, v37, OS_LOG_TYPE_DEFAULT, "Notice: NPKTransitBalanceModel: has Green Car ticket ticket:%d", buf, 8u);
     }
   }
 
-  if ([v3 hasGreenCarTicket])
+  if ([propertiesCopy hasGreenCarTicket])
   {
-    v39 = [MEMORY[0x277CBEB18] array];
-    v40 = [v3 greenCarValidityStartDate];
-    v41 = [v40 calendar];
-    v60 = v40;
-    v42 = [v40 date];
-    v65 = v41;
-    v62 = [v41 dateByAddingUnit:16 value:1 toDate:v42 options:0];
+    array2 = [MEMORY[0x277CBEB18] array];
+    greenCarValidityStartDate = [propertiesCopy greenCarValidityStartDate];
+    calendar2 = [greenCarValidityStartDate calendar];
+    v60 = greenCarValidityStartDate;
+    date4 = [greenCarValidityStartDate date];
+    v65 = calendar2;
+    v62 = [calendar2 dateByAddingUnit:16 value:1 toDate:date4 options:0];
 
-    v43 = [v3 greenCarOriginStation];
-    v44 = [v3 greenCarDestinationStation];
-    v45 = __NPKRouteDescriptionForStations(v43, v44);
+    greenCarOriginStation = [propertiesCopy greenCarOriginStation];
+    greenCarDestinationStation = [propertiesCopy greenCarDestinationStation];
+    v45 = __NPKRouteDescriptionForStations(greenCarOriginStation, greenCarDestinationStation);
     if (v45)
     {
-      [v39 addObject:v45];
+      [array2 addObject:v45];
     }
 
     v46 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.NanoPassKitUI"];
     v47 = [v46 localizedStringForKey:@"PASS_DETAILS_HEADER_GREEN_CAR_UPGRADE" value:&stru_286C934F8 table:@"NanoPassKitUI-Transit"];
 
-    v48 = [v39 componentsJoinedByString:@"\n"];
-    v49 = [v3 greenCarValidityStartDate];
-    v50 = [v49 date];
+    v48 = [array2 componentsJoinedByString:@"\n"];
+    greenCarValidityStartDate2 = [propertiesCopy greenCarValidityStartDate];
+    date5 = [greenCarValidityStartDate2 date];
 
     v6 = v66;
-    v66[2](v66, v47, v48, v50, v62);
+    v66[2](v66, v47, v48, date5, v62);
   }
 
   v51 = v67;
@@ -1645,9 +1645,9 @@ void __67__NPKPassAssociatedInfoModel__commutePlanWithFelicaPassProperties___blo
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)_actionWithIdentifier:(id)a3 type:(unint64_t)a4
+- (id)_actionWithIdentifier:(id)identifier type:(unint64_t)type
 {
-  if (a3)
+  if (identifier)
   {
     v6 = [MEMORY[0x277CBEB98] setWithObject:?];
   }
@@ -1657,21 +1657,21 @@ void __67__NPKPassAssociatedInfoModel__commutePlanWithFelicaPassProperties___blo
     v6 = 0;
   }
 
-  v7 = [(NPKPassAssociatedInfoModel *)self _actionWithIdentifiers:v6 type:a4];
+  v7 = [(NPKPassAssociatedInfoModel *)self _actionWithIdentifiers:v6 type:type];
 
   return v7;
 }
 
-- (id)_actionWithIdentifiers:(id)a3 type:(unint64_t)a4
+- (id)_actionWithIdentifiers:(id)identifiers type:(unint64_t)type
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifiersCopy = identifiers;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [(PKPaymentPass *)self->_pass availableActions];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  availableActions = [(PKPaymentPass *)self->_pass availableActions];
+  v8 = [availableActions countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1682,12 +1682,12 @@ void __67__NPKPassAssociatedInfoModel__commutePlanWithFelicaPassProperties___blo
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(availableActions);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [(NPKPassAssociatedInfoModel *)self _identifierFromAction:v12 type:a4];
-        if ([v12 type] == a4 && (!v6 || (objc_msgSend(v6, "containsObject:", v13) & 1) != 0))
+        v13 = [(NPKPassAssociatedInfoModel *)self _identifierFromAction:v12 type:type];
+        if ([v12 type] == type && (!identifiersCopy || (objc_msgSend(identifiersCopy, "containsObject:", v13) & 1) != 0))
         {
           v14 = v12;
 
@@ -1695,7 +1695,7 @@ void __67__NPKPassAssociatedInfoModel__commutePlanWithFelicaPassProperties___blo
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [availableActions countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v9)
       {
         continue;
@@ -1713,21 +1713,21 @@ LABEL_13:
   return v14;
 }
 
-- (id)_identifierFromAction:(id)a3 type:(unint64_t)a4
+- (id)_identifierFromAction:(id)action type:(unint64_t)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 == 2)
+  actionCopy = action;
+  v6 = actionCopy;
+  if (type == 2)
   {
-    v7 = [v5 associatedPlanIdentifier];
+    associatedPlanIdentifier = [actionCopy associatedPlanIdentifier];
     goto LABEL_5;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
-    v7 = [v5 associatedEnteredValueIdentifier];
+    associatedPlanIdentifier = [actionCopy associatedEnteredValueIdentifier];
 LABEL_5:
-    v8 = v7;
+    v8 = associatedPlanIdentifier;
     goto LABEL_7;
   }
 
@@ -1737,37 +1737,37 @@ LABEL_7:
   return v8;
 }
 
-- (id)_balancePassFieldsFromPass:(id)a3
+- (id)_balancePassFieldsFromPass:(id)pass
 {
   v50 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isStoredValuePass])
+  passCopy = pass;
+  if ([passCopy isStoredValuePass])
   {
-    v32 = [v3 balanceFields];
+    balanceFields = [passCopy balanceFields];
   }
 
   else
   {
-    v32 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    if ([v3 isAccessPass])
+    balanceFields = objc_alloc_init(MEMORY[0x277CBEB18]);
+    if ([passCopy isAccessPass])
     {
-      v4 = [v3 balanceFields];
-      v5 = [v4 count];
+      balanceFields2 = [passCopy balanceFields];
+      v5 = [balanceFields2 count];
 
       if (v5)
       {
-        v6 = [v3 balanceFields];
-        [v32 addObjectsFromArray:v6];
+        balanceFields3 = [passCopy balanceFields];
+        [balanceFields addObjectsFromArray:balanceFields3];
       }
     }
 
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v8 = [v3 frontFieldBuckets];
-    [v7 addObjectsFromArray:v8];
+    frontFieldBuckets = [passCopy frontFieldBuckets];
+    [v7 addObjectsFromArray:frontFieldBuckets];
 
-    v27 = v3;
-    v9 = [v3 backFieldBuckets];
-    [v7 addObjectsFromArray:v9];
+    v27 = passCopy;
+    backFieldBuckets = [passCopy backFieldBuckets];
+    [v7 addObjectsFromArray:backFieldBuckets];
 
     v10 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v43 = 0u;
@@ -1815,12 +1815,12 @@ LABEL_7:
                 v17 = *(*(&v39 + 1) + 8 * v16);
                 if ([v17 foreignReferenceType] == 1)
                 {
-                  v18 = [v17 foreignReferenceIdentifiers];
+                  foreignReferenceIdentifiers = [v17 foreignReferenceIdentifiers];
                   v35 = 0u;
                   v36 = 0u;
                   v37 = 0u;
                   v38 = 0u;
-                  v19 = [v18 countByEnumeratingWithState:&v35 objects:v47 count:16];
+                  v19 = [foreignReferenceIdentifiers countByEnumeratingWithState:&v35 objects:v47 count:16];
                   if (v19)
                   {
                     v20 = v19;
@@ -1832,7 +1832,7 @@ LABEL_7:
                       {
                         if (*v36 != v22)
                         {
-                          objc_enumerationMutation(v18);
+                          objc_enumerationMutation(foreignReferenceIdentifiers);
                         }
 
                         v24 = *(*(&v35 + 1) + 8 * i);
@@ -1843,14 +1843,14 @@ LABEL_7:
                         }
                       }
 
-                      v20 = [v18 countByEnumeratingWithState:&v35 objects:v47 count:16];
+                      v20 = [foreignReferenceIdentifiers countByEnumeratingWithState:&v35 objects:v47 count:16];
                     }
 
                     while (v20);
                     v14 = v33;
                     if (v21)
                     {
-                      [v32 addObject:v17];
+                      [balanceFields addObject:v17];
                     }
                   }
                 }
@@ -1875,38 +1875,38 @@ LABEL_7:
       while (v30);
     }
 
-    v3 = v27;
+    passCopy = v27;
   }
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v32;
+  return balanceFields;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCAB68];
   v4 = objc_opt_class();
-  v5 = [(NPKPassAssociatedInfoModel *)self pass];
-  v6 = [v5 uniqueID];
-  v7 = [(NPKPassAssociatedInfoModel *)self balanceFields];
-  v8 = [v3 stringWithFormat:@"<%@:%p> {passUniqueID:%@, balanceFields:%@", v4, self, v6, v7];
+  pass = [(NPKPassAssociatedInfoModel *)self pass];
+  uniqueID = [pass uniqueID];
+  balanceFields = [(NPKPassAssociatedInfoModel *)self balanceFields];
+  v8 = [v3 stringWithFormat:@"<%@:%p> {passUniqueID:%@, balanceFields:%@", v4, self, uniqueID, balanceFields];
 
-  v9 = [(NPKPassAssociatedInfoModel *)self transitPassProperties];
+  transitPassProperties = [(NPKPassAssociatedInfoModel *)self transitPassProperties];
 
-  if (v9)
+  if (transitPassProperties)
   {
-    v10 = [(NPKPassAssociatedInfoModel *)self transitPassProperties];
-    [v8 appendFormat:@" transitPassProperties:%@", v10];
+    transitPassProperties2 = [(NPKPassAssociatedInfoModel *)self transitPassProperties];
+    [v8 appendFormat:@" transitPassProperties:%@", transitPassProperties2];
   }
 
-  v11 = [(NPKPassAssociatedInfoModel *)self balances];
-  v12 = [v11 count];
+  balances = [(NPKPassAssociatedInfoModel *)self balances];
+  v12 = [balances count];
 
   if (v12)
   {
-    v13 = [(NPKPassAssociatedInfoModel *)self balances];
-    [v8 appendFormat:@" balances:%@", v13];
+    balances2 = [(NPKPassAssociatedInfoModel *)self balances];
+    [v8 appendFormat:@" balances:%@", balances2];
   }
 
   [v8 appendString:@"}"];

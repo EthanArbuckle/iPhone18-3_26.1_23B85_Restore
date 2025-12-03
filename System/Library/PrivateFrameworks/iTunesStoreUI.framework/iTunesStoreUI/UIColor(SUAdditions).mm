@@ -18,7 +18,7 @@
   if (v4)
   {
     v5 = v4;
-    v6 = [a1 initWithCGColor:v4];
+    v6 = [self initWithCGColor:v4];
     CGColorRelease(v5);
     return v6;
   }

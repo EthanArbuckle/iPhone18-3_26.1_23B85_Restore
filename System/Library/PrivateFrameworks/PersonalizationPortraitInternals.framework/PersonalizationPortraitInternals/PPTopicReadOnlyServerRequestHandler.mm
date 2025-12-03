@@ -1,24 +1,24 @@
 @interface PPTopicReadOnlyServerRequestHandler
-+ (id)filterQIDDictionary:(id)a3 withAllowlistOfProcess:(id)a4 allowlist:(id)a5;
-+ (id)filterScoredTopicsNotInAllowlist:(id)a3 withAllowlistOfProcess:(id)a4 allowlist:(id)a5;
-+ (id)filterTopicRecordsNotInAllowlist:(id)a3 withAllowlistOfProcess:(id)a4 allowlist:(id)a5;
++ (id)filterQIDDictionary:(id)dictionary withAllowlistOfProcess:(id)process allowlist:(id)allowlist;
++ (id)filterScoredTopicsNotInAllowlist:(id)allowlist withAllowlistOfProcess:(id)process allowlist:(id)a5;
++ (id)filterTopicRecordsNotInAllowlist:(id)allowlist withAllowlistOfProcess:(id)process allowlist:(id)a5;
 - (PPTopicReadOnlyServerRequestHandler)init;
-- (void)cachePath:(id)a3;
-- (void)rankedTopicsWithQuery:(id)a3 queryId:(unint64_t)a4;
-- (void)registerFeedback:(id)a3 completion:(id)a4;
-- (void)registerUniversalSearchSpotlightFeedback:(id)a3 completion:(id)a4;
-- (void)scoresForTopicMapping:(id)a3 query:(id)a4 queryId:(unint64_t)a5;
-- (void)topicCacheSandboxExtensionToken:(id)a3;
-- (void)topicExtractionsFromText:(id)a3 queryId:(unint64_t)a4;
-- (void)topicRecordsWithQuery:(id)a3 queryId:(unint64_t)a4;
-- (void)unmapMappedTopicIdentifier:(id)a3 mappingIdentifier:(id)a4 completion:(id)a5;
+- (void)cachePath:(id)path;
+- (void)rankedTopicsWithQuery:(id)query queryId:(unint64_t)id;
+- (void)registerFeedback:(id)feedback completion:(id)completion;
+- (void)registerUniversalSearchSpotlightFeedback:(id)feedback completion:(id)completion;
+- (void)scoresForTopicMapping:(id)mapping query:(id)query queryId:(unint64_t)id;
+- (void)topicCacheSandboxExtensionToken:(id)token;
+- (void)topicExtractionsFromText:(id)text queryId:(unint64_t)id;
+- (void)topicRecordsWithQuery:(id)query queryId:(unint64_t)id;
+- (void)unmapMappedTopicIdentifier:(id)identifier mappingIdentifier:(id)mappingIdentifier completion:(id)completion;
 @end
 
 @implementation PPTopicReadOnlyServerRequestHandler
 
-- (void)topicCacheSandboxExtensionToken:(id)a3
+- (void)topicCacheSandboxExtensionToken:(id)token
 {
-  v3 = a3;
+  tokenCopy = token;
   v4 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -31,12 +31,12 @@
   v6 = [v5 topicCacheSandboxExtensionToken:&v8];
   v7 = v8;
 
-  v3[2](v3, v6, v7);
+  tokenCopy[2](tokenCopy, v6, v7);
 }
 
-- (void)cachePath:(id)a3
+- (void)cachePath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -49,21 +49,21 @@
   v6 = [v5 cachePath:&v8];
   v7 = v8;
 
-  v3[2](v3, v6, v7);
+  pathCopy[2](pathCopy, v6, v7);
 }
 
-- (void)registerUniversalSearchSpotlightFeedback:(id)a3 completion:(id)a4
+- (void)registerUniversalSearchSpotlightFeedback:(id)feedback completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  feedbackCopy = feedback;
   v7 = +[PPLocalTopicStore defaultStore];
-  [v7 registerUniversalSearchSpotlightFeedback:v6 completion:v5];
+  [v7 registerUniversalSearchSpotlightFeedback:feedbackCopy completion:completionCopy];
 }
 
-- (void)registerFeedback:(id)a3 completion:(id)a4
+- (void)registerFeedback:(id)feedback completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  feedbackCopy = feedback;
   v7 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -76,9 +76,9 @@
   v10[1] = 3221225472;
   v10[2] = __67__PPTopicReadOnlyServerRequestHandler_registerFeedback_completion___block_invoke;
   v10[3] = &unk_2789776F8;
-  v11 = v5;
-  v9 = v5;
-  [v8 registerFeedback:v6 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [v8 registerFeedback:feedbackCopy completion:v10];
 }
 
 uint64_t __67__PPTopicReadOnlyServerRequestHandler_registerFeedback_completion___block_invoke(uint64_t a1)
@@ -92,12 +92,12 @@ uint64_t __67__PPTopicReadOnlyServerRequestHandler_registerFeedback_completion__
   return result;
 }
 
-- (void)unmapMappedTopicIdentifier:(id)a3 mappingIdentifier:(id)a4 completion:(id)a5
+- (void)unmapMappedTopicIdentifier:(id)identifier mappingIdentifier:(id)mappingIdentifier completion:(id)completion
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  mappingIdentifierCopy = mappingIdentifier;
+  completionCopy = completion;
   v11 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -120,7 +120,7 @@ uint64_t __67__PPTopicReadOnlyServerRequestHandler_registerFeedback_completion__
 
   v17 = +[PPLocalTopicStore defaultStore];
   v33 = 0;
-  v18 = [v17 unmapMappedTopicIdentifier:v8 mappingIdentifier:v9 error:&v33];
+  v18 = [v17 unmapMappedTopicIdentifier:identifierCopy mappingIdentifier:mappingIdentifierCopy error:&v33];
   v19 = v33;
 
   v20 = pp_topics_signpost_handle();
@@ -154,7 +154,7 @@ uint64_t __67__PPTopicReadOnlyServerRequestHandler_registerFeedback_completion__
       v25 = MEMORY[0x277CBEC10];
     }
 
-    v10[2](v10, v25, 0);
+    completionCopy[2](completionCopy, v25, 0);
     v30 = pp_xpc_server_log_handle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
@@ -162,7 +162,7 @@ uint64_t __67__PPTopicReadOnlyServerRequestHandler_registerFeedback_completion__
       *buf = 138412546;
       v35 = v31;
       v36 = 2112;
-      v37 = v9;
+      v37 = mappingIdentifierCopy;
       _os_log_impl(&dword_23224A000, v30, OS_LOG_TYPE_DEFAULT, "PPTopicReadOnlyServer: unmapMappedTopicIdentifier process:%@ mappingIdentifier:%@", buf, 0x16u);
     }
   }
@@ -176,23 +176,23 @@ uint64_t __67__PPTopicReadOnlyServerRequestHandler_registerFeedback_completion__
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:&v38 count:1];
     v25 = [v22 initWithDomain:@"PPServerSideErrorDomain" code:1 userInfo:v24];
 
-    (v10)[2](v10, 0, v25);
+    (completionCopy)[2](completionCopy, 0, v25);
   }
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scoresForTopicMapping:(id)a3 query:(id)a4 queryId:(unint64_t)a5
+- (void)scoresForTopicMapping:(id)mapping query:(id)query queryId:(unint64_t)id
 {
   v34 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  mappingCopy = mapping;
+  queryCopy = query;
   v11 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     clientProcessName = self->_clientProcessName;
     *buf = 134218242;
-    v27 = a5;
+    idCopy3 = id;
     v28 = 2112;
     v29 = clientProcessName;
     _os_log_impl(&dword_23224A000, v11, OS_LOG_TYPE_DEFAULT, "PPTopicReadOnlyServer: scoresForTopicMapping queryId:%llu process:%@", buf, 0x16u);
@@ -203,27 +203,27 @@ uint64_t __67__PPTopicReadOnlyServerRequestHandler_registerFeedback_completion__
   v20[1] = 3221225472;
   v20[2] = __75__PPTopicReadOnlyServerRequestHandler_scoresForTopicMapping_query_queryId___block_invoke;
   v20[3] = &unk_278975258;
-  v14 = v9;
+  v14 = mappingCopy;
   v21 = v14;
-  v15 = v10;
+  v15 = queryCopy;
   v22 = v15;
-  v23 = self;
-  v24 = a5;
+  selfCopy = self;
+  idCopy2 = id;
   v25 = a2;
   [(PPXPCServerPipelinedBatchQueryManager *)queryManager runConcurrentlyWithRequestThrottle:v20];
   v16 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = self->_clientProcessName;
-    v18 = [v15 customizedDescription];
+    customizedDescription = [v15 customizedDescription];
     *buf = 134218754;
-    v27 = a5;
+    idCopy3 = id;
     v28 = 2112;
     v29 = v17;
     v30 = 2112;
     v31 = v14;
     v32 = 2112;
-    v33 = v18;
+    v33 = customizedDescription;
     _os_log_impl(&dword_23224A000, v16, OS_LOG_TYPE_DEFAULT, "PPTopicReadOnlyServer: scoresForTopicMapping queryId:%llu process:%@ mappingId:%@ query:%@", buf, 0x2Au);
   }
 
@@ -365,16 +365,16 @@ uint64_t __75__PPTopicReadOnlyServerRequestHandler_scoresForTopicMapping_query_q
   return result;
 }
 
-- (void)topicExtractionsFromText:(id)a3 queryId:(unint64_t)a4
+- (void)topicExtractionsFromText:(id)text queryId:(unint64_t)id
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  textCopy = text;
   v7 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     clientProcessName = self->_clientProcessName;
     *buf = 134218242;
-    v20 = a4;
+    idCopy3 = id;
     v21 = 2112;
     v22 = clientProcessName;
     _os_log_impl(&dword_23224A000, v7, OS_LOG_TYPE_DEFAULT, "PPTopicReadOnlyServer: topicExtractionsFromText queryId:%llu process:%@", buf, 0x16u);
@@ -385,10 +385,10 @@ uint64_t __75__PPTopicReadOnlyServerRequestHandler_scoresForTopicMapping_query_q
   v15[1] = 3221225472;
   v15[2] = __72__PPTopicReadOnlyServerRequestHandler_topicExtractionsFromText_queryId___block_invoke;
   v15[3] = &unk_278978A80;
-  v10 = v6;
+  v10 = textCopy;
   v16 = v10;
-  v17 = self;
-  v18 = a4;
+  selfCopy = self;
+  idCopy2 = id;
   [(PPXPCServerPipelinedBatchQueryManager *)queryManager runConcurrentlyWithRequestThrottle:v15];
   v11 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -396,7 +396,7 @@ uint64_t __75__PPTopicReadOnlyServerRequestHandler_scoresForTopicMapping_query_q
     v12 = self->_clientProcessName;
     v13 = [v10 length];
     *buf = 134218498;
-    v20 = a4;
+    idCopy3 = id;
     v21 = 2112;
     v22 = v12;
     v23 = 2048;
@@ -516,16 +516,16 @@ uint64_t __72__PPTopicReadOnlyServerRequestHandler_topicExtractionsFromText_quer
   return result;
 }
 
-- (void)topicRecordsWithQuery:(id)a3 queryId:(unint64_t)a4
+- (void)topicRecordsWithQuery:(id)query queryId:(unint64_t)id
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  queryCopy = query;
   v7 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     clientProcessName = self->_clientProcessName;
     *buf = 134218242;
-    v20 = a4;
+    idCopy3 = id;
     v21 = 2112;
     v22 = clientProcessName;
     _os_log_impl(&dword_23224A000, v7, OS_LOG_TYPE_DEFAULT, "PPTopicReadOnlyServer: topicRecordsWithQuery queryId:%llu process:%@", buf, 0x16u);
@@ -536,22 +536,22 @@ uint64_t __72__PPTopicReadOnlyServerRequestHandler_topicExtractionsFromText_quer
   v15[1] = 3221225472;
   v15[2] = __69__PPTopicReadOnlyServerRequestHandler_topicRecordsWithQuery_queryId___block_invoke;
   v15[3] = &unk_278978A80;
-  v10 = v6;
-  v17 = self;
-  v18 = a4;
+  v10 = queryCopy;
+  selfCopy = self;
+  idCopy2 = id;
   v16 = v10;
   [(PPXPCServerPipelinedBatchQueryManager *)queryManager runConcurrentlyWithRequestThrottle:v15];
   v11 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = self->_clientProcessName;
-    v13 = [v10 customizedDescription];
+    customizedDescription = [v10 customizedDescription];
     *buf = 134218498;
-    v20 = a4;
+    idCopy3 = id;
     v21 = 2112;
     v22 = v12;
     v23 = 2112;
-    v24 = v13;
+    v24 = customizedDescription;
     _os_log_impl(&dword_23224A000, v11, OS_LOG_TYPE_DEFAULT, "PPTopicReadOnlyServer: topicRecordsWithQuery queryId:%llu process:%@ query:%@", buf, 0x20u);
   }
 
@@ -704,16 +704,16 @@ uint64_t __69__PPTopicReadOnlyServerRequestHandler_topicRecordsWithQuery_queryId
   return result;
 }
 
-- (void)rankedTopicsWithQuery:(id)a3 queryId:(unint64_t)a4
+- (void)rankedTopicsWithQuery:(id)query queryId:(unint64_t)id
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  queryCopy = query;
   v7 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     clientProcessName = self->_clientProcessName;
     *buf = 134218242;
-    v19 = a4;
+    idCopy3 = id;
     v20 = 2112;
     v21 = clientProcessName;
     _os_log_impl(&dword_23224A000, v7, OS_LOG_TYPE_DEFAULT, "PPTopicReadOnlyServer: rankedTopicsWithQuery queryId:%llu process:%@", buf, 0x16u);
@@ -725,21 +725,21 @@ uint64_t __69__PPTopicReadOnlyServerRequestHandler_topicRecordsWithQuery_queryId
   v15[2] = __69__PPTopicReadOnlyServerRequestHandler_rankedTopicsWithQuery_queryId___block_invoke;
   v15[3] = &unk_278978A80;
   v15[4] = self;
-  v17 = a4;
-  v10 = v6;
+  idCopy2 = id;
+  v10 = queryCopy;
   v16 = v10;
   [(PPXPCServerPipelinedBatchQueryManager *)queryManager runConcurrentlyWithRequestThrottle:v15];
   v11 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = self->_clientProcessName;
-    v13 = [v10 customizedDescription];
+    customizedDescription = [v10 customizedDescription];
     *buf = 134218498;
-    v19 = a4;
+    idCopy3 = id;
     v20 = 2112;
     v21 = v12;
     v22 = 2112;
-    v23 = v13;
+    v23 = customizedDescription;
     _os_log_impl(&dword_23224A000, v11, OS_LOG_TYPE_DEFAULT, "PPTopicReadOnlyServer: rankedTopicsWithQuery queryId:%llu process:%@ query:%@", buf, 0x20u);
   }
 
@@ -969,23 +969,23 @@ uint64_t __69__PPTopicReadOnlyServerRequestHandler_rankedTopicsWithQuery_queryId
   return v2;
 }
 
-+ (id)filterQIDDictionary:(id)a3 withAllowlistOfProcess:(id)a4 allowlist:(id)a5
++ (id)filterQIDDictionary:(id)dictionary withAllowlistOfProcess:(id)process allowlist:(id)allowlist
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  dictionaryCopy = dictionary;
+  processCopy = process;
+  allowlistCopy = allowlist;
+  if (processCopy)
   {
-    if ([v7 count] && !objc_msgSend(v9, "shouldBypassAllowlist:", v8))
+    if ([dictionaryCopy count] && !objc_msgSend(allowlistCopy, "shouldBypassAllowlist:", processCopy))
     {
-      v11 = [v9 filterTopicDictionary:v7 clientProcess:v8];
+      v11 = [allowlistCopy filterTopicDictionary:dictionaryCopy clientProcess:processCopy];
       v12 = [v11 count];
-      v13 = [v7 count];
-      v14 = v7;
+      v13 = [dictionaryCopy count];
+      v14 = dictionaryCopy;
       if (v12 < v13)
       {
-        v15 = [v7 count];
+        v15 = [dictionaryCopy count];
         v16 = [v11 count];
         v17 = pp_topics_log_handle();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -993,9 +993,9 @@ uint64_t __69__PPTopicReadOnlyServerRequestHandler_rankedTopicsWithQuery_queryId
           v20 = 134218498;
           v21 = v15 - v16;
           v22 = 2048;
-          v23 = [v7 count];
+          v23 = [dictionaryCopy count];
           v24 = 2112;
-          v25 = v8;
+          v25 = processCopy;
           _os_log_impl(&dword_23224A000, v17, OS_LOG_TYPE_DEFAULT, "PPTopicReadOnlyServer filtered out %tu of %tu qid records from mapping due to allowlist for client process %@", &v20, 0x20u);
         }
 
@@ -1007,7 +1007,7 @@ uint64_t __69__PPTopicReadOnlyServerRequestHandler_rankedTopicsWithQuery_queryId
 
     else
     {
-      v10 = v7;
+      v10 = dictionaryCopy;
     }
   }
 
@@ -1021,26 +1021,26 @@ uint64_t __69__PPTopicReadOnlyServerRequestHandler_rankedTopicsWithQuery_queryId
   return v10;
 }
 
-+ (id)filterTopicRecordsNotInAllowlist:(id)a3 withAllowlistOfProcess:(id)a4 allowlist:(id)a5
++ (id)filterTopicRecordsNotInAllowlist:(id)allowlist withAllowlistOfProcess:(id)process allowlist:(id)a5
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  allowlistCopy = allowlist;
+  processCopy = process;
   v9 = a5;
-  if (v8)
+  if (processCopy)
   {
-    if ([v7 count] && !objc_msgSend(v9, "shouldBypassAllowlist:", v8))
+    if ([allowlistCopy count] && !objc_msgSend(v9, "shouldBypassAllowlist:", processCopy))
     {
-      v11 = [v9 indicesOfAllowedTopicsInRecordArray:v7 clientProcess:v8];
+      v11 = [v9 indicesOfAllowedTopicsInRecordArray:allowlistCopy clientProcess:processCopy];
       v12 = [v11 count];
-      if (v12 >= [v7 count])
+      if (v12 >= [allowlistCopy count])
       {
-        v16 = v7;
+        v16 = allowlistCopy;
       }
 
       else
       {
-        v13 = [v7 count];
+        v13 = [allowlistCopy count];
         v14 = [v11 count];
         v15 = pp_topics_log_handle();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -1048,13 +1048,13 @@ uint64_t __69__PPTopicReadOnlyServerRequestHandler_rankedTopicsWithQuery_queryId
           v19 = 134218498;
           v20 = v13 - v14;
           v21 = 2048;
-          v22 = [v7 count];
+          v22 = [allowlistCopy count];
           v23 = 2112;
-          v24 = v8;
+          v24 = processCopy;
           _os_log_impl(&dword_23224A000, v15, OS_LOG_TYPE_DEFAULT, "PPTopicReadOnlyServer filtered out %tu of %tu topic records due to allowance policy for client process %@", &v19, 0x20u);
         }
 
-        v16 = [v7 objectsAtIndexes:v11];
+        v16 = [allowlistCopy objectsAtIndexes:v11];
       }
 
       v10 = v16;
@@ -1062,7 +1062,7 @@ uint64_t __69__PPTopicReadOnlyServerRequestHandler_rankedTopicsWithQuery_queryId
 
     else
     {
-      v10 = v7;
+      v10 = allowlistCopy;
     }
   }
 
@@ -1076,26 +1076,26 @@ uint64_t __69__PPTopicReadOnlyServerRequestHandler_rankedTopicsWithQuery_queryId
   return v10;
 }
 
-+ (id)filterScoredTopicsNotInAllowlist:(id)a3 withAllowlistOfProcess:(id)a4 allowlist:(id)a5
++ (id)filterScoredTopicsNotInAllowlist:(id)allowlist withAllowlistOfProcess:(id)process allowlist:(id)a5
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  allowlistCopy = allowlist;
+  processCopy = process;
   v9 = a5;
-  if (v8)
+  if (processCopy)
   {
-    if ([v7 count] && !objc_msgSend(v9, "shouldBypassAllowlist:", v8))
+    if ([allowlistCopy count] && !objc_msgSend(v9, "shouldBypassAllowlist:", processCopy))
     {
-      v11 = [v9 indicesOfAllowedTopicsInScoredTopicArray:v7 clientProcess:v8];
+      v11 = [v9 indicesOfAllowedTopicsInScoredTopicArray:allowlistCopy clientProcess:processCopy];
       v12 = [v11 count];
-      if (v12 >= [v7 count])
+      if (v12 >= [allowlistCopy count])
       {
-        v16 = v7;
+        v16 = allowlistCopy;
       }
 
       else
       {
-        v13 = [v7 count];
+        v13 = [allowlistCopy count];
         v14 = [v11 count];
         v15 = pp_topics_log_handle();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -1103,13 +1103,13 @@ uint64_t __69__PPTopicReadOnlyServerRequestHandler_rankedTopicsWithQuery_queryId
           v19 = 134218498;
           v20 = v13 - v14;
           v21 = 2048;
-          v22 = [v7 count];
+          v22 = [allowlistCopy count];
           v23 = 2112;
-          v24 = v8;
+          v24 = processCopy;
           _os_log_impl(&dword_23224A000, v15, OS_LOG_TYPE_DEFAULT, "PPTopicReadOnlyServer filtered out %tu of %tu scored topic due to allowlist for client process %@", &v19, 0x20u);
         }
 
-        v16 = [v7 objectsAtIndexes:v11];
+        v16 = [allowlistCopy objectsAtIndexes:v11];
       }
 
       v10 = v16;
@@ -1117,7 +1117,7 @@ uint64_t __69__PPTopicReadOnlyServerRequestHandler_rankedTopicsWithQuery_queryId
 
     else
     {
-      v10 = v7;
+      v10 = allowlistCopy;
     }
   }
 

@@ -1,14 +1,14 @@
 @interface POXSDurationDefinition
-- (id)stringFromValue:(id)a3;
-- (id)valueFromString:(id)a3;
+- (id)stringFromValue:(id)value;
+- (id)valueFromString:(id)string;
 @end
 
 @implementation POXSDurationDefinition
 
-- (id)valueFromString:(id)a3
+- (id)valueFromString:(id)string
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:v3];
+  stringCopy = string;
+  v4 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:stringCopy];
   v5 = [v4 scanString:@"-" intoString:0];
   [v4 scanString:@"+" intoString:0];
   v6 = [v4 scanString:@"P" intoString:0] ^ 1;
@@ -20,8 +20,8 @@
     {
       v16 = 0.0;
       v6 = [v4 scanDouble:&v16] ^ 1;
-      v9 = [v4 scanLocation];
-      v10 = [v3 characterAtIndex:v9];
+      scanLocation = [v4 scanLocation];
+      v10 = [stringCopy characterAtIndex:scanLocation];
       if (v10 > 82)
       {
         break;
@@ -53,7 +53,7 @@ LABEL_22:
 
       v6 = 1;
 LABEL_25:
-      [v4 setScanLocation:v9 + 1];
+      [v4 setScanLocation:scanLocation + 1];
       if ([v4 isAtEnd] & 1) != 0 || (v6)
       {
         goto LABEL_27;
@@ -110,38 +110,38 @@ LABEL_27:
   return v13;
 }
 
-- (id)stringFromValue:(id)a3
+- (id)stringFromValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 longLongValue];
-    v5 = [MEMORY[0x277CCAB68] string];
-    v6 = v5;
-    if ((v4 & 0x8000000000000000) != 0)
+    longLongValue = [valueCopy longLongValue];
+    string = [MEMORY[0x277CCAB68] string];
+    v6 = string;
+    if ((longLongValue & 0x8000000000000000) != 0)
     {
-      [v5 appendString:@"-"];
-      v4 = -v4;
+      [string appendString:@"-"];
+      longLongValue = -longLongValue;
     }
 
-    v7 = v4 % 0x93A80;
+    v7 = longLongValue % 0x93A80;
     [v6 appendString:@"P"];
-    if (v4 >= 0x93A80)
+    if (longLongValue >= 0x93A80)
     {
-      [v6 appendFormat:@"%llu%C", v4 / 0x93A80, 87];
+      [v6 appendFormat:@"%llu%C", longLongValue / 0x93A80, 87];
     }
 
-    v8 = v4 % 0x15180;
+    v8 = longLongValue % 0x15180;
     if (v7 >> 7 >= 0x2A3)
     {
       [v6 appendFormat:@"%llu%C", v7 / 0x15180uLL, 68];
     }
 
-    v9 = v4 % 0xE10;
-    if (v8 <= 0xE0F && (v9 <= 0x3B ? (v10 = v4 == 60 * (v4 / 0x3C)) : (v10 = 0), v10))
+    v9 = longLongValue % 0xE10;
+    if (v8 <= 0xE0F && (v9 <= 0x3B ? (v10 = longLongValue == 60 * (longLongValue / 0x3C)) : (v10 = 0), v10))
     {
-      if (!v4)
+      if (!longLongValue)
       {
         [v6 appendString:@"T0S"];
       }
@@ -157,12 +157,12 @@ LABEL_27:
 
       if (v9 >= 0x3C)
       {
-        [v6 appendFormat:@"%llu%C", v4 % 0xE10 / 0x3C, 77];
+        [v6 appendFormat:@"%llu%C", longLongValue % 0xE10 / 0x3C, 77];
       }
 
-      if (v4 % 0x3C)
+      if (longLongValue % 0x3C)
       {
-        [v6 appendFormat:@"%llu%C", v4 % 0x3C, 83];
+        [v6 appendFormat:@"%llu%C", longLongValue % 0x3C, 83];
       }
     }
   }

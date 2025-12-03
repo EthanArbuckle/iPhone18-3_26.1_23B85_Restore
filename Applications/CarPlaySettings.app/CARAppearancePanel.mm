@@ -1,23 +1,23 @@
 @interface CARAppearancePanel
 + (NSArray)styles;
-- (CARAppearancePanel)initWithPanelController:(id)a3;
+- (CARAppearancePanel)initWithPanelController:(id)controller;
 - (id)cellSpecifier;
 - (id)specifierSections;
 - (int64_t)_currentUserInterfaceStylePreference;
 - (void)_updateSpecifiers;
-- (void)_vehicleDidChange:(id)a3;
-- (void)setDarkModeOnly:(BOOL)a3;
+- (void)_vehicleDidChange:(id)change;
+- (void)setDarkModeOnly:(BOOL)only;
 - (void)viewDidLoad;
 @end
 
 @implementation CARAppearancePanel
 
-- (CARAppearancePanel)initWithPanelController:(id)a3
+- (CARAppearancePanel)initWithPanelController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v40.receiver = self;
   v40.super_class = CARAppearancePanel;
-  v5 = [(CARSettingsPanel *)&v40 initWithPanelController:v4];
+  v5 = [(CARSettingsPanel *)&v40 initWithPanelController:controllerCopy];
   if (v5)
   {
     objc_initWeak(&location, v5);
@@ -26,8 +26,8 @@
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v7 = [objc_opt_class() styles];
-    v8 = [v7 countByEnumeratingWithState:&v35 objects:v41 count:16];
+    styles = [objc_opt_class() styles];
+    v8 = [styles countByEnumeratingWithState:&v35 objects:v41 count:16];
     if (v8)
     {
       v9 = *v36;
@@ -37,7 +37,7 @@
         {
           if (*v36 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(styles);
           }
 
           v11 = *(*(&v35 + 1) + 8 * i);
@@ -47,16 +47,16 @@
           }
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v35 objects:v41 count:16];
+        v8 = [styles countByEnumeratingWithState:&v35 objects:v41 count:16];
       }
 
       while (v8);
     }
 
     objc_storeStrong(&v5->_currentStyles, v6);
-    v12 = [v4 loadWallpaperPreferences];
+    loadWallpaperPreferences = [controllerCopy loadWallpaperPreferences];
     wallpaperPreferences = v5->_wallpaperPreferences;
-    v5->_wallpaperPreferences = v12;
+    v5->_wallpaperPreferences = loadWallpaperPreferences;
 
     v14 = [CARSettingsGroupCellSpecifier alloc];
     v15 = [(NSArray *)v5->_currentStyles valueForKey:@"name"];
@@ -69,12 +69,12 @@
     appearanceGroupSpecifier = v5->_appearanceGroupSpecifier;
     v5->_appearanceGroupSpecifier = v16;
 
-    v18 = [(CARSettingsGroupCellSpecifier *)v5->_appearanceGroupSpecifier groupSpecifiers];
-    v19 = [v18 objectAtIndexedSubscript:0];
+    groupSpecifiers = [(CARSettingsGroupCellSpecifier *)v5->_appearanceGroupSpecifier groupSpecifiers];
+    v19 = [groupSpecifiers objectAtIndexedSubscript:0];
     [v19 setAccessibilityIdentifier:@"CPSettingsAppearanceAutomatic"];
 
-    v20 = [(CARSettingsGroupCellSpecifier *)v5->_appearanceGroupSpecifier groupSpecifiers];
-    v21 = [v20 objectAtIndexedSubscript:1];
+    groupSpecifiers2 = [(CARSettingsGroupCellSpecifier *)v5->_appearanceGroupSpecifier groupSpecifiers];
+    v21 = [groupSpecifiers2 objectAtIndexedSubscript:1];
     [v21 setAccessibilityIdentifier:@"CPSettingsAppearanceAlwaysDark"];
 
     v22 = [CARSettingsSwitchCellSpecifier alloc];
@@ -137,16 +137,16 @@
   if (![(CARAppearancePanel *)self darkModeOnly])
   {
     v4 = [CARSettingsCellSpecifierSection alloc];
-    v5 = [(CARAppearancePanel *)self appearanceGroupSpecifier];
-    v6 = [v5 groupSpecifiers];
-    v7 = [(CARSettingsCellSpecifierSection *)v4 initWithTitle:0 specifiers:v6];
+    appearanceGroupSpecifier = [(CARAppearancePanel *)self appearanceGroupSpecifier];
+    groupSpecifiers = [appearanceGroupSpecifier groupSpecifiers];
+    v7 = [(CARSettingsCellSpecifierSection *)v4 initWithTitle:0 specifiers:groupSpecifiers];
     [v3 addObject:v7];
   }
 
   if ([(CARAppearancePanel *)self _currentUserInterfaceStylePreference]== 2)
   {
-    v8 = [(CARAppearancePanel *)self darkMapsSwitchSpecifier];
-    v12 = v8;
+    darkMapsSwitchSpecifier = [(CARAppearancePanel *)self darkMapsSwitchSpecifier];
+    v12 = darkMapsSwitchSpecifier;
     v9 = [NSArray arrayWithObjects:&v12 count:1];
 
     v10 = [[CARSettingsCellSpecifierSection alloc] initWithTitle:0 specifiers:v9];
@@ -156,11 +156,11 @@
   return v3;
 }
 
-- (void)setDarkModeOnly:(BOOL)a3
+- (void)setDarkModeOnly:(BOOL)only
 {
-  if (self->_darkModeOnly != a3)
+  if (self->_darkModeOnly != only)
   {
-    self->_darkModeOnly = a3;
+    self->_darkModeOnly = only;
     [(CARSettingsTablePanel *)self reloadSpecifiers];
 
     [(CARAppearancePanel *)self _updateSpecifiers];
@@ -176,32 +176,32 @@
 
 - (int64_t)_currentUserInterfaceStylePreference
 {
-  v3 = [(CARSettingsPanel *)self panelController];
-  v4 = [v3 vehicle];
-  v5 = [v4 appearanceModePreference];
+  panelController = [(CARSettingsPanel *)self panelController];
+  vehicle = [panelController vehicle];
+  appearanceModePreference = [vehicle appearanceModePreference];
 
-  if (v5 != -1)
+  if (appearanceModePreference != -1)
   {
-    return v5;
+    return appearanceModePreference;
   }
 
-  v7 = [(CARSettingsPanel *)self panelController];
-  v8 = [v7 carSession];
-  v9 = [v8 configuration];
-  v10 = [v9 userInterfaceStyle];
+  panelController2 = [(CARSettingsPanel *)self panelController];
+  carSession = [panelController2 carSession];
+  configuration = [carSession configuration];
+  userInterfaceStyle = [configuration userInterfaceStyle];
 
-  return v10;
+  return userInterfaceStyle;
 }
 
 - (void)_updateSpecifiers
 {
-  v3 = [(CARAppearancePanel *)self _currentUserInterfaceStylePreference];
+  _currentUserInterfaceStylePreference = [(CARAppearancePanel *)self _currentUserInterfaceStylePreference];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(CARAppearancePanel *)self currentStyles];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  currentStyles = [(CARAppearancePanel *)self currentStyles];
+  v5 = [currentStyles countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -215,10 +215,10 @@ LABEL_3:
     {
       if (*v17 != v8)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(currentStyles);
       }
 
-      if ([*(*(&v16 + 1) + 8 * v9) style] == v3)
+      if ([*(*(&v16 + 1) + 8 * v9) style] == _currentUserInterfaceStylePreference)
       {
         break;
       }
@@ -226,7 +226,7 @@ LABEL_3:
       ++v10;
       if (v6 == ++v9)
       {
-        v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v6 = [currentStyles countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -243,14 +243,14 @@ LABEL_9:
     v10 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v11 = [(CARAppearancePanel *)self appearanceGroupSpecifier];
-  [v11 setSelectedIndex:v10];
+  appearanceGroupSpecifier = [(CARAppearancePanel *)self appearanceGroupSpecifier];
+  [appearanceGroupSpecifier setSelectedIndex:v10];
 
-  v12 = [(CARSettingsPanel *)self panelController];
-  v13 = [v12 vehicle];
-  v14 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v13 mapsAppearancePreference] == 2);
-  v15 = [(CARAppearancePanel *)self darkMapsSwitchSpecifier];
-  [v15 setCellValue:v14];
+  panelController = [(CARSettingsPanel *)self panelController];
+  vehicle = [panelController vehicle];
+  v14 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [vehicle mapsAppearancePreference] == 2);
+  darkMapsSwitchSpecifier = [(CARAppearancePanel *)self darkMapsSwitchSpecifier];
+  [darkMapsSwitchSpecifier setCellValue:v14];
 }
 
 + (NSArray)styles
@@ -265,7 +265,7 @@ LABEL_9:
   return v3;
 }
 
-- (void)_vehicleDidChange:(id)a3
+- (void)_vehicleDidChange:(id)change
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

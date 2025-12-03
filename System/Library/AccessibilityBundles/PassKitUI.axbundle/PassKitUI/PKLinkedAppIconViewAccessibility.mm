@@ -1,19 +1,19 @@
 @interface PKLinkedAppIconViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)didMoveToWindow;
-- (void)linkedApplicationDidChangeState:(id)a3;
+- (void)linkedApplicationDidChangeState:(id)state;
 @end
 
 @implementation PKLinkedAppIconViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKLinkedAppIconView" hasInstanceVariable:@"_iconButton" withType:"WLEasyToHitCustomButton"];
-  [v3 validateClass:@"PKLinkedAppIconView" hasInstanceMethod:@"linkedApplication" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKLinkedAppIconView" hasInstanceMethod:@"linkedApplicationDidChangeState:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"PKLinkedApplication" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKLinkedAppIconView" hasInstanceVariable:@"_iconButton" withType:"WLEasyToHitCustomButton"];
+  [validationsCopy validateClass:@"PKLinkedAppIconView" hasInstanceMethod:@"linkedApplication" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKLinkedAppIconView" hasInstanceMethod:@"linkedApplicationDidChangeState:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"PKLinkedApplication" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -34,13 +34,13 @@
   [v3 setAccessibilityHint:v8];
 }
 
-- (void)linkedApplicationDidChangeState:(id)a3
+- (void)linkedApplicationDidChangeState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   [(PKLinkedAppIconViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
   v5.receiver = self;
   v5.super_class = PKLinkedAppIconViewAccessibility;
-  [(PKLinkedAppIconViewAccessibility *)&v5 linkedApplicationDidChangeState:v4];
+  [(PKLinkedAppIconViewAccessibility *)&v5 linkedApplicationDidChangeState:stateCopy];
 }
 
 - (void)didMoveToWindow

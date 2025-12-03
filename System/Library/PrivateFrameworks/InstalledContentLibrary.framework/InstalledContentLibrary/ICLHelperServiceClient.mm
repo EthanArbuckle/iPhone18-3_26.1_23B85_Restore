@@ -1,12 +1,12 @@
 @interface ICLHelperServiceClient
 + (id)sharedInstance;
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3;
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler;
 - (id)_sharedConnection;
-- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (id)resolveStagingBaseWithSandboxExtension:(id *)a3 forVolumeUUID:(id)a4 withinStagingSubsystem:(unint64_t)a5 error:(id *)a6;
-- (id)stagingURLWithSandboxExtension:(id *)a3 forSystemContentWithinSubsystem:(unint64_t)a4 error:(id *)a5;
-- (id)stagingURLWithSandboxExtension:(id *)a3 forUserContentWithinSubsystem:(unint64_t)a4 error:(id *)a5;
-- (id)volumeUUIDForURL:(id)a3 error:(id *)a4;
+- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (id)resolveStagingBaseWithSandboxExtension:(id *)extension forVolumeUUID:(id)d withinStagingSubsystem:(unint64_t)subsystem error:(id *)error;
+- (id)stagingURLWithSandboxExtension:(id *)extension forSystemContentWithinSubsystem:(unint64_t)subsystem error:(id *)error;
+- (id)stagingURLWithSandboxExtension:(id *)extension forUserContentWithinSubsystem:(unint64_t)subsystem error:(id *)error;
+- (id)volumeUUIDForURL:(id)l error:(id *)error;
 - (void)_invalidateObject;
 - (void)dealloc;
 @end
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __40__ICLHelperServiceClient_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_2 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_2, block);
@@ -41,8 +41,8 @@ uint64_t __40__ICLHelperServiceClient_sharedInstance__block_invoke()
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(ICLHelperServiceClient *)obj xpcConnection];
-  [v2 invalidate];
+  xpcConnection = [(ICLHelperServiceClient *)obj xpcConnection];
+  [xpcConnection invalidate];
 
   [(ICLHelperServiceClient *)obj setXpcConnection:0];
   objc_sync_exit(obj);
@@ -58,56 +58,56 @@ uint64_t __40__ICLHelperServiceClient_sharedInstance__block_invoke()
 
 - (id)_sharedConnection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(ICLHelperServiceClient *)v2 xpcConnection];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  xpcConnection = [(ICLHelperServiceClient *)selfCopy xpcConnection];
 
-  if (!v3)
+  if (!xpcConnection)
   {
     v4 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithServiceName:@"com.apple.MobileInstallationHelperService"];
-    [(ICLHelperServiceClient *)v2 setXpcConnection:v4];
+    [(ICLHelperServiceClient *)selfCopy setXpcConnection:v4];
 
-    v5 = [(ICLHelperServiceClient *)v2 xpcConnection];
+    xpcConnection2 = [(ICLHelperServiceClient *)selfCopy xpcConnection];
 
-    if (!v5)
+    if (!xpcConnection2)
     {
       goto LABEL_5;
     }
 
     v6 = MobileInstallationHelperServiceProtocolInterface();
-    v7 = [(ICLHelperServiceClient *)v2 xpcConnection];
-    [v7 setRemoteObjectInterface:v6];
+    xpcConnection3 = [(ICLHelperServiceClient *)selfCopy xpcConnection];
+    [xpcConnection3 setRemoteObjectInterface:v6];
 
-    objc_initWeak(&location, v2);
+    objc_initWeak(&location, selfCopy);
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __43__ICLHelperServiceClient__sharedConnection__block_invoke;
     v14[3] = &unk_1E7AE2450;
     objc_copyWeak(&v15, &location);
-    v8 = [(ICLHelperServiceClient *)v2 xpcConnection];
-    [v8 setInterruptionHandler:v14];
+    xpcConnection4 = [(ICLHelperServiceClient *)selfCopy xpcConnection];
+    [xpcConnection4 setInterruptionHandler:v14];
 
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __43__ICLHelperServiceClient__sharedConnection__block_invoke_2;
     v12[3] = &unk_1E7AE2450;
     objc_copyWeak(&v13, &location);
-    v9 = [(ICLHelperServiceClient *)v2 xpcConnection];
-    [v9 setInvalidationHandler:v12];
+    xpcConnection5 = [(ICLHelperServiceClient *)selfCopy xpcConnection];
+    [xpcConnection5 setInvalidationHandler:v12];
 
-    v10 = [(ICLHelperServiceClient *)v2 xpcConnection];
-    [v10 resume];
+    xpcConnection6 = [(ICLHelperServiceClient *)selfCopy xpcConnection];
+    [xpcConnection6 resume];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
   }
 
-  v5 = [(ICLHelperServiceClient *)v2 xpcConnection];
+  xpcConnection2 = [(ICLHelperServiceClient *)selfCopy xpcConnection];
 LABEL_5:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return xpcConnection2;
 }
 
 void __43__ICLHelperServiceClient__sharedConnection__block_invoke(uint64_t a1)
@@ -122,20 +122,20 @@ void __43__ICLHelperServiceClient__sharedConnection__block_invoke_2(uint64_t a1)
   [WeakRetained _invalidateObject];
 }
 
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ICLHelperServiceClient *)self _sharedConnection];
-  v7 = v5;
-  if (v5)
+  handlerCopy = handler;
+  _sharedConnection = [(ICLHelperServiceClient *)self _sharedConnection];
+  v7 = _sharedConnection;
+  if (_sharedConnection)
   {
-    v8 = [v5 remoteObjectProxyWithErrorHandler:v4];
+    v8 = [_sharedConnection remoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
   {
     v9 = _CreateAndLogError("[ICLHelperServiceClient _remoteObjectProxyWithErrorHandler:]", 89, @"MIInstallerErrorDomain", 4, 0, 0, @"Failed to get XPC connection", v6, v11);
-    v4[2](v4, v9);
+    handlerCopy[2](handlerCopy, v9);
 
     v8 = 0;
   }
@@ -143,20 +143,20 @@ void __43__ICLHelperServiceClient__sharedConnection__block_invoke_2(uint64_t a1)
   return v8;
 }
 
-- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ICLHelperServiceClient *)self _sharedConnection];
-  v7 = v5;
-  if (v5)
+  handlerCopy = handler;
+  _sharedConnection = [(ICLHelperServiceClient *)self _sharedConnection];
+  v7 = _sharedConnection;
+  if (_sharedConnection)
   {
-    v8 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+    v8 = [_sharedConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
   {
     v9 = _CreateAndLogError("[ICLHelperServiceClient _synchronousRemoteObjectProxyWithErrorHandler:]", 100, @"MIInstallerErrorDomain", 4, 0, 0, @"Failed to get XPC connection", v6, v11);
-    v4[2](v4, v9);
+    handlerCopy[2](handlerCopy, v9);
 
     v8 = 0;
   }
@@ -164,9 +164,9 @@ void __43__ICLHelperServiceClient__sharedConnection__block_invoke_2(uint64_t a1)
   return v8;
 }
 
-- (id)volumeUUIDForURL:(id)a3 error:(id *)a4
+- (id)volumeUUIDForURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -191,12 +191,12 @@ void __43__ICLHelperServiceClient__sharedConnection__block_invoke_2(uint64_t a1)
   v11[3] = &unk_1E7AE2478;
   v11[4] = &v13;
   v11[5] = &v19;
-  [v7 volumeUUIDForURL:v6 completion:v11];
+  [v7 volumeUUIDForURL:lCopy completion:v11];
 
   v8 = v20[5];
-  if (a4 && !v8)
+  if (error && !v8)
   {
-    *a4 = v14[5];
+    *error = v14[5];
     v8 = v20[5];
   }
 
@@ -243,9 +243,9 @@ void __49__ICLHelperServiceClient_volumeUUIDForURL_error___block_invoke_2(uint64
   *(v8 + 40) = v9;
 }
 
-- (id)resolveStagingBaseWithSandboxExtension:(id *)a3 forVolumeUUID:(id)a4 withinStagingSubsystem:(unint64_t)a5 error:(id *)a6
+- (id)resolveStagingBaseWithSandboxExtension:(id *)extension forVolumeUUID:(id)d withinStagingSubsystem:(unint64_t)subsystem error:(id *)error
 {
-  v10 = a4;
+  dCopy = d;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -277,18 +277,18 @@ void __49__ICLHelperServiceClient_volumeUUIDForURL_error___block_invoke_2(uint64
   v15[4] = &v23;
   v15[5] = &v29;
   v15[6] = &v17;
-  [v11 resolveStagingBaseWithSandboxExtensionForVolumeUUID:v10 withinStagingSubsystem:a5 completion:v15];
+  [v11 resolveStagingBaseWithSandboxExtensionForVolumeUUID:dCopy withinStagingSubsystem:subsystem completion:v15];
 
   v12 = v30[5];
-  if (a6 && !v12)
+  if (error && !v12)
   {
-    *a6 = v24[5];
+    *error = v24[5];
     v12 = v30[5];
   }
 
-  if (a3 && v12)
+  if (extension && v12)
   {
-    *a3 = v18[5];
+    *extension = v18[5];
     v12 = v30[5];
   }
 
@@ -339,7 +339,7 @@ void __108__ICLHelperServiceClient_resolveStagingBaseWithSandboxExtension_forVol
   *(v13 + 40) = v14;
 }
 
-- (id)stagingURLWithSandboxExtension:(id *)a3 forUserContentWithinSubsystem:(unint64_t)a4 error:(id *)a5
+- (id)stagingURLWithSandboxExtension:(id *)extension forUserContentWithinSubsystem:(unint64_t)subsystem error:(id *)error
 {
   v26 = 0;
   v27 = &v26;
@@ -372,18 +372,18 @@ void __108__ICLHelperServiceClient_resolveStagingBaseWithSandboxExtension_forVol
   v12[4] = &v20;
   v12[5] = &v26;
   v12[6] = &v14;
-  [v8 stagingURLWithSandboxExtensionForUserContentWithinSubsystem:a4 completion:v12];
+  [v8 stagingURLWithSandboxExtensionForUserContentWithinSubsystem:subsystem completion:v12];
 
   v9 = v27[5];
-  if (a5 && !v9)
+  if (error && !v9)
   {
-    *a5 = v21[5];
+    *error = v21[5];
     v9 = v27[5];
   }
 
-  if (a3 && v9)
+  if (extension && v9)
   {
-    *a3 = v15[5];
+    *extension = v15[5];
     v9 = v27[5];
   }
 
@@ -434,7 +434,7 @@ void __93__ICLHelperServiceClient_stagingURLWithSandboxExtension_forUserContentW
   *(v13 + 40) = v14;
 }
 
-- (id)stagingURLWithSandboxExtension:(id *)a3 forSystemContentWithinSubsystem:(unint64_t)a4 error:(id *)a5
+- (id)stagingURLWithSandboxExtension:(id *)extension forSystemContentWithinSubsystem:(unint64_t)subsystem error:(id *)error
 {
   v26 = 0;
   v27 = &v26;
@@ -467,18 +467,18 @@ void __93__ICLHelperServiceClient_stagingURLWithSandboxExtension_forUserContentW
   v12[4] = &v20;
   v12[5] = &v26;
   v12[6] = &v14;
-  [v8 stagingURLWithSandboxExtensionForSystemContentWithinSubsystem:a4 completion:v12];
+  [v8 stagingURLWithSandboxExtensionForSystemContentWithinSubsystem:subsystem completion:v12];
 
   v9 = v27[5];
-  if (a5 && !v9)
+  if (error && !v9)
   {
-    *a5 = v21[5];
+    *error = v21[5];
     v9 = v27[5];
   }
 
-  if (a3 && v9)
+  if (extension && v9)
   {
-    *a3 = v15[5];
+    *extension = v15[5];
     v9 = v27[5];
   }
 

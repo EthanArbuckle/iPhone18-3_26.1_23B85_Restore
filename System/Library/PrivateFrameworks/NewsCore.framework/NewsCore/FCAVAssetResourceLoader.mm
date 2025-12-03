@@ -1,10 +1,10 @@
 @interface FCAVAssetResourceLoader
-- (BOOL)_isHLSURL:(id)a3;
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4;
+- (BOOL)_isHLSURL:(id)l;
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource;
 - (FCAVAssetResourceLoader)init;
-- (FCAVAssetResourceLoader)initWithCacheDirectory:(id)a3 networkReachability:(id)a4;
-- (void)prefetchMasterPlaylistForAssetURL:(id)a3 completionHandler:(id)a4;
-- (void)registerAVURLAssetForAutomaticResourceManagement:(id)a3;
+- (FCAVAssetResourceLoader)initWithCacheDirectory:(id)directory networkReachability:(id)reachability;
+- (void)prefetchMasterPlaylistForAssetURL:(id)l completionHandler:(id)handler;
+- (void)registerAVURLAssetForAutomaticResourceManagement:(id)management;
 @end
 
 @implementation FCAVAssetResourceLoader
@@ -35,16 +35,16 @@
   objc_exception_throw(v6);
 }
 
-- (FCAVAssetResourceLoader)initWithCacheDirectory:(id)a3 networkReachability:(id)a4
+- (FCAVAssetResourceLoader)initWithCacheDirectory:(id)directory networkReachability:(id)reachability
 {
-  v6 = a3;
-  v7 = a4;
+  directoryCopy = directory;
+  reachabilityCopy = reachability;
   v14.receiver = self;
   v14.super_class = FCAVAssetResourceLoader;
   v8 = [(FCAVAssetResourceLoader *)&v14 init];
   if (v8)
   {
-    v9 = [[FCAssetManager alloc] initWithName:@"playlists" directory:v6 keyManager:0 avAssetFactory:0 resourceURLGenerator:0 networkBehaviorMonitor:0 networkReachability:v7];
+    v9 = [[FCAssetManager alloc] initWithName:@"playlists" directory:directoryCopy keyManager:0 avAssetFactory:0 resourceURLGenerator:0 networkBehaviorMonitor:0 networkReachability:reachabilityCopy];
     assetManager = v8->_assetManager;
     v8->_assetManager = v9;
 
@@ -56,35 +56,35 @@
   return v8;
 }
 
-- (void)registerAVURLAssetForAutomaticResourceManagement:(id)a3
+- (void)registerAVURLAssetForAutomaticResourceManagement:(id)management
 {
-  v10 = a3;
-  v4 = [v10 URL];
+  managementCopy = management;
+  v4 = [managementCopy URL];
   v5 = [(FCAVAssetResourceLoader *)self _isHLSURL:v4];
 
   if (v5)
   {
-    v6 = [(FCAVAssetResourceLoader *)self whitelistedMasterPlaylistURLs];
-    v7 = [v10 URL];
-    [v6 addObject:v7];
+    whitelistedMasterPlaylistURLs = [(FCAVAssetResourceLoader *)self whitelistedMasterPlaylistURLs];
+    v7 = [managementCopy URL];
+    [whitelistedMasterPlaylistURLs addObject:v7];
 
-    v8 = [v10 resourceLoader];
+    resourceLoader = [managementCopy resourceLoader];
     v9 = FCAVWorkQueue();
-    [v8 setDelegate:self queue:v9];
+    [resourceLoader setDelegate:self queue:v9];
   }
 }
 
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 request];
-  v7 = [v6 URL];
-  v8 = [v7 pathExtension];
+  resourceCopy = resource;
+  request = [resourceCopy request];
+  v7 = [request URL];
+  pathExtension = [v7 pathExtension];
 
-  v9 = [(FCAVAssetResourceLoader *)self whitelistedMasterPlaylistURLs];
-  v10 = [v6 URL];
-  v11 = [v9 containsObject:v10];
+  whitelistedMasterPlaylistURLs = [(FCAVAssetResourceLoader *)self whitelistedMasterPlaylistURLs];
+  v10 = [request URL];
+  v11 = [whitelistedMasterPlaylistURLs containsObject:v10];
 
   if (v11)
   {
@@ -92,31 +92,31 @@
     v30 = 3221225472;
     v31 = __82__FCAVAssetResourceLoader_resourceLoader_shouldWaitForLoadingOfRequestedResource___block_invoke;
     v32 = &unk_1E7C450F8;
-    v33 = v5;
-    v34 = v8;
+    v33 = resourceCopy;
+    v34 = pathExtension;
     v12 = _Block_copy(&v29);
     v13 = [(FCAVAssetResourceLoader *)self assetManager:v29];
-    v14 = [v6 URL];
+    v14 = [request URL];
     v15 = [v13 assetHandleForURL:v14 lifetimeHint:0];
 
-    v16 = [v15 dataProvider];
+    dataProvider = [v15 dataProvider];
 
     v17 = FCAVAssetLog;
     v18 = os_log_type_enabled(FCAVAssetLog, OS_LOG_TYPE_DEFAULT);
-    if (v16)
+    if (dataProvider)
     {
       if (v18)
       {
         v19 = v17;
-        v20 = [v6 URL];
-        v21 = [v20 lastPathComponent];
+        v20 = [request URL];
+        lastPathComponent = [v20 lastPathComponent];
         *buf = 138543362;
-        v36 = v21;
+        v36 = lastPathComponent;
         _os_log_impl(&dword_1B63EF000, v19, OS_LOG_TYPE_DEFAULT, "returning master playlist %{public}@ from cache", buf, 0xCu);
       }
 
-      v22 = [v15 dataProvider];
-      v12[2](v12, v22, 0);
+      dataProvider2 = [v15 dataProvider];
+      v12[2](v12, dataProvider2, 0);
     }
 
     else
@@ -124,10 +124,10 @@
       if (v18)
       {
         v23 = v17;
-        v24 = [v6 URL];
-        v25 = [v24 lastPathComponent];
+        v24 = [request URL];
+        lastPathComponent2 = [v24 lastPathComponent];
         *buf = 138543362;
-        v36 = v25;
+        v36 = lastPathComponent2;
         _os_log_impl(&dword_1B63EF000, v23, OS_LOG_TYPE_DEFAULT, "fetching master playlist %{public}@ from network", buf, 0xCu);
       }
 
@@ -170,11 +170,11 @@ void __82__FCAVAssetResourceLoader_resourceLoader_shouldWaitForLoadingOfRequeste
   }
 }
 
-- (void)prefetchMasterPlaylistForAssetURL:(id)a3 completionHandler:(id)a4
+- (void)prefetchMasterPlaylistForAssetURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(FCAVAssetResourceLoader *)self _isHLSURL:v6])
+  lCopy = l;
+  handlerCopy = handler;
+  if ([(FCAVAssetResourceLoader *)self _isHLSURL:lCopy])
   {
     v8 = FCAVWorkQueue();
     v13[0] = MEMORY[0x1E69E9820];
@@ -182,9 +182,9 @@ void __82__FCAVAssetResourceLoader_resourceLoader_shouldWaitForLoadingOfRequeste
     v13[2] = __79__FCAVAssetResourceLoader_prefetchMasterPlaylistForAssetURL_completionHandler___block_invoke_2;
     v13[3] = &unk_1E7C38FF0;
     v13[4] = self;
-    v14 = v6;
-    v15 = v7;
-    v9 = v7;
+    v14 = lCopy;
+    v15 = handlerCopy;
+    v9 = handlerCopy;
     dispatch_async(v8, v13);
 
     v10 = v14;
@@ -196,11 +196,11 @@ void __82__FCAVAssetResourceLoader_resourceLoader_shouldWaitForLoadingOfRequeste
     v17 = 3221225472;
     v18 = __79__FCAVAssetResourceLoader_prefetchMasterPlaylistForAssetURL_completionHandler___block_invoke;
     v19 = &unk_1E7C379C8;
-    v20 = v7;
-    v11 = v7[2];
-    v12 = v7;
+    v20 = handlerCopy;
+    v11 = handlerCopy[2];
+    v12 = handlerCopy;
     v11(v12, 0, MEMORY[0x1E695E0F0], 0);
-    v10 = v7;
+    v10 = handlerCopy;
   }
 }
 
@@ -230,19 +230,19 @@ void __79__FCAVAssetResourceLoader_prefetchMasterPlaylistForAssetURL_completionH
   }
 }
 
-- (BOOL)_isHLSURL:(id)a3
+- (BOOL)_isHLSURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 pathExtension];
-  if ([v4 isEqualToString:@"m3u8"])
+  lCopy = l;
+  pathExtension = [lCopy pathExtension];
+  if ([pathExtension isEqualToString:@"m3u8"])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 pathExtension];
-    v5 = [v6 isEqualToString:@"m3u"];
+    pathExtension2 = [lCopy pathExtension];
+    v5 = [pathExtension2 isEqualToString:@"m3u"];
   }
 
   return v5;

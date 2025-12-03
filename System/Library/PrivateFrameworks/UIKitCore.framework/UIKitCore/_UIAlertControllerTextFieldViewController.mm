@@ -3,19 +3,19 @@
 - (_UIAlertControllerTextFieldViewController)init;
 - (_UIAlertControllerTextFieldViewControllerContaining)container;
 - (double)_bottomMarginForTextFields;
-- (id)addTextFieldWithPlaceholder:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)textFieldAtIndex:(int64_t)a3;
+- (id)addTextFieldWithPlaceholder:(id)placeholder;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)textFieldAtIndex:(int64_t)index;
 - (id)textFieldContainerViews;
-- (void)_returnKeyPressedInTextField:(id)a3;
+- (void)_returnKeyPressedInTextField:(id)field;
 - (void)_updatePreferredContentSize;
 - (void)removeAllTextFields;
-- (void)setHidden:(BOOL)a3;
-- (void)setTextFieldsCanBecomeFirstResponder:(BOOL)a3;
-- (void)setVisualStyle:(id)a3;
+- (void)setHidden:(BOOL)hidden;
+- (void)setTextFieldsCanBecomeFirstResponder:(BOOL)responder;
+- (void)setVisualStyle:(id)style;
 - (void)updateTextFieldStyle;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -32,8 +32,8 @@
   {
     objc_storeStrong(&v4->_collectionViewLayout, v3);
     [(UICollectionViewFlowLayout *)v5->_collectionViewLayout setMinimumLineSpacing:0.0];
-    v6 = [(UICollectionViewController *)v5 collectionView];
-    [v6 setCollectionViewLayout:v5->_collectionViewLayout];
+    collectionView = [(UICollectionViewController *)v5 collectionView];
+    [collectionView setCollectionViewLayout:v5->_collectionViewLayout];
 
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     textFieldViews = v5->textFieldViews;
@@ -43,20 +43,20 @@
     textFields = v5->textFields;
     v5->textFields = v9;
 
-    v11 = [(UICollectionViewController *)v5 collectionView];
-    [v11 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"UIAlertTextFieldTableIdentifier"];
+    collectionView2 = [(UICollectionViewController *)v5 collectionView];
+    [collectionView2 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"UIAlertTextFieldTableIdentifier"];
 
-    v12 = [(UICollectionViewController *)v5 collectionView];
-    [v12 setAllowsSelection:0];
+    collectionView3 = [(UICollectionViewController *)v5 collectionView];
+    [collectionView3 setAllowsSelection:0];
 
-    v13 = [(UICollectionViewController *)v5 collectionView];
-    [v13 setBackgroundColor:0];
+    collectionView4 = [(UICollectionViewController *)v5 collectionView];
+    [collectionView4 setBackgroundColor:0];
 
-    v14 = [(UICollectionViewController *)v5 collectionView];
-    [v14 setScrollEnabled:0];
+    collectionView5 = [(UICollectionViewController *)v5 collectionView];
+    [collectionView5 setScrollEnabled:0];
 
-    v15 = [(UICollectionViewController *)v5 collectionView];
-    [v15 _setFirstResponderKeyboardAvoidanceEnabled:0];
+    collectionView6 = [(UICollectionViewController *)v5 collectionView];
+    [collectionView6 _setFirstResponderKeyboardAvoidanceEnabled:0];
 
     v5->_textFieldsCanBecomeFirstResponder = 1;
   }
@@ -69,38 +69,38 @@
   v4.receiver = self;
   v4.super_class = _UIAlertControllerTextFieldViewController;
   [(UIViewController *)&v4 viewDidLoad];
-  v3 = [(UIViewController *)self view];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(UIViewController *)self view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = _UIAlertControllerTextFieldViewController;
-  [(UICollectionViewController *)&v10 viewWillAppear:a3];
-  v4 = [(UICollectionViewController *)self collectionView];
+  [(UICollectionViewController *)&v10 viewWillAppear:appear];
+  collectionView = [(UICollectionViewController *)self collectionView];
   [(UIAlertControllerVisualStyle *)self->_visualStyle textFieldContentInset];
-  [v4 setContentInset:?];
+  [collectionView setContentInset:?];
 
-  v5 = [(NSMutableArray *)self->textFields firstObject];
-  if ([(_UIAlertControllerTextFieldViewController *)self textFieldsCanBecomeFirstResponder]&& ![UISystemInputViewController canUseSystemInputViewControllerForResponder:v5])
+  firstObject = [(NSMutableArray *)self->textFields firstObject];
+  if ([(_UIAlertControllerTextFieldViewController *)self textFieldsCanBecomeFirstResponder]&& ![UISystemInputViewController canUseSystemInputViewControllerForResponder:firstObject])
   {
-    v6 = [(UIViewController *)self transitionCoordinator];
+    transitionCoordinator = [(UIViewController *)self transitionCoordinator];
 
-    if (v6)
+    if (transitionCoordinator)
     {
-      v7 = [(UIViewController *)self transitionCoordinator];
+      transitionCoordinator2 = [(UIViewController *)self transitionCoordinator];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __60___UIAlertControllerTextFieldViewController_viewWillAppear___block_invoke;
       v8[3] = &unk_1E70F3B98;
-      v9 = v5;
-      [v7 animateAlongsideTransition:v8 completion:0];
+      v9 = firstObject;
+      [transitionCoordinator2 animateAlongsideTransition:v8 completion:0];
     }
 
     else
     {
-      [v5 becomeFirstResponder];
+      [firstObject becomeFirstResponder];
     }
   }
 }
@@ -108,8 +108,8 @@
 - (void)viewWillLayoutSubviews
 {
   collectionViewLayout = self->_collectionViewLayout;
-  v4 = [(UIViewController *)self view];
-  [v4 bounds];
+  view = [(UIViewController *)self view];
+  [view bounds];
   [(UICollectionViewFlowLayout *)collectionViewLayout setEstimatedItemSize:CGRectGetWidth(v6), 24.0];
 
   v5.receiver = self;
@@ -117,9 +117,9 @@
   [(UIViewController *)&v5 viewWillLayoutSubviews];
 }
 
-- (void)setVisualStyle:(id)a3
+- (void)setVisualStyle:(id)style
 {
-  objc_storeStrong(&self->_visualStyle, a3);
+  objc_storeStrong(&self->_visualStyle, style);
 
   [(_UIAlertControllerTextFieldViewController *)self updateTextFieldStyle];
 }
@@ -137,81 +137,81 @@
     v5 = [off_1E70ECC20 preferredFontDescriptorWithTextStyle:@"UICTFontTextStyleHeadline" addingSymbolicTraits:0 options:2];
     v6 = [off_1E70ECC18 fontWithDescriptor:v5 size:0.0];
     [v6 _scaledValueForValue:24.0];
-    v7 = [(UIViewController *)self view];
-    UIRoundToViewScale(v7);
+    view = [(UIViewController *)self view];
+    UIRoundToViewScale(view);
     v9 = v8;
 
     return v9;
   }
 }
 
-- (id)addTextFieldWithPlaceholder:(id)a3
+- (id)addTextFieldWithPlaceholder:(id)placeholder
 {
   textFieldViews = self->textFieldViews;
-  v5 = a3;
+  placeholderCopy = placeholder;
   if ([(NSMutableArray *)textFieldViews count])
   {
-    v6 = [(NSMutableArray *)self->textFieldViews lastObject];
-    [v6 setContainerView:0];
+    lastObject = [(NSMutableArray *)self->textFieldViews lastObject];
+    [lastObject setContainerView:0];
   }
 
   v7 = [_UIAlertControllerTextFieldView alloc];
   v8 = [(_UIAlertControllerTextFieldView *)v7 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-  v9 = [(_UIAlertControllerTextFieldView *)v8 textField];
-  [v9 setAutocorrectionType:1];
-  [v9 setAutocapitalizationType:0];
-  [v9 setSmartQuotesType:1];
-  [v9 setSmartDashesType:1];
-  [v9 setPlaceholder:v5];
+  textField = [(_UIAlertControllerTextFieldView *)v8 textField];
+  [textField setAutocorrectionType:1];
+  [textField setAutocapitalizationType:0];
+  [textField setSmartQuotesType:1];
+  [textField setSmartDashesType:1];
+  [textField setPlaceholder:placeholderCopy];
 
-  [v9 setAdjustsFontForContentSizeCategory:1];
-  [v9 addTarget:self action:sel__returnKeyPressedInTextField_ forControlEvents:0x80000];
+  [textField setAdjustsFontForContentSizeCategory:1];
+  [textField addTarget:self action:sel__returnKeyPressedInTextField_ forControlEvents:0x80000];
   [(NSMutableArray *)self->textFieldViews addObject:v8];
-  [(NSMutableArray *)self->textFields addObject:v9];
+  [(NSMutableArray *)self->textFields addObject:textField];
   [(_UIAlertControllerTextFieldViewController *)self updateTextFieldStyle];
-  v10 = [(UICollectionViewController *)self collectionView];
-  [v10 reloadData];
+  collectionView = [(UICollectionViewController *)self collectionView];
+  [collectionView reloadData];
 
-  return v9;
+  return textField;
 }
 
-- (void)_returnKeyPressedInTextField:(id)a3
+- (void)_returnKeyPressedInTextField:(id)field
 {
-  v12 = a3;
-  v4 = [(_UIAlertControllerTextFieldViewController *)self container];
-  v5 = [v4 _shouldSupportReturnKeyPresses];
+  fieldCopy = field;
+  container = [(_UIAlertControllerTextFieldViewController *)self container];
+  _shouldSupportReturnKeyPresses = [container _shouldSupportReturnKeyPresses];
 
-  v6 = v12;
-  if (v5)
+  v6 = fieldCopy;
+  if (_shouldSupportReturnKeyPresses)
   {
-    v7 = [v12 textFieldView];
-    v8 = [(NSMutableArray *)self->textFieldViews indexOfObject:v7];
+    textFieldView = [fieldCopy textFieldView];
+    v8 = [(NSMutableArray *)self->textFieldViews indexOfObject:textFieldView];
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v9 = v8 + 1;
       if (v8 + 1 <= ([(NSMutableArray *)self->textFieldViews count]- 1))
       {
-        v10 = [(NSMutableArray *)self->textFieldViews objectAtIndex:v9];
-        v11 = [v10 textField];
-        [v11 becomeFirstResponder];
+        container2 = [(NSMutableArray *)self->textFieldViews objectAtIndex:v9];
+        textField = [container2 textField];
+        [textField becomeFirstResponder];
       }
 
       else
       {
-        v10 = [(_UIAlertControllerTextFieldViewController *)self container];
-        [v10 _returnKeyPressedInLastTextField];
+        container2 = [(_UIAlertControllerTextFieldViewController *)self container];
+        [container2 _returnKeyPressedInLastTextField];
       }
     }
 
-    v6 = v12;
+    v6 = fieldCopy;
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  self->_hidden = a3;
-  v4 = [(_UIAlertControllerTextFieldViewController *)self isHidden];
-  if (v4)
+  self->_hidden = hidden;
+  isHidden = [(_UIAlertControllerTextFieldViewController *)self isHidden];
+  if (isHidden)
   {
     [(UIViewController *)self setPreferredContentSize:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   }
@@ -221,8 +221,8 @@
     [(_UIAlertControllerTextFieldViewController *)self _updatePreferredContentSize];
   }
 
-  v5 = [(UIViewController *)self view];
-  [v5 setHidden:v4];
+  view = [(UIViewController *)self view];
+  [view setHidden:isHidden];
 }
 
 - (void)_updatePreferredContentSize
@@ -252,18 +252,18 @@
   [(UIViewController *)self setPreferredContentSize:v4, v3];
 }
 
-- (id)textFieldAtIndex:(int64_t)a3
+- (id)textFieldAtIndex:(int64_t)index
 {
-  v3 = [(NSMutableArray *)self->textFieldViews objectAtIndex:a3];
-  v4 = [v3 textField];
+  v3 = [(NSMutableArray *)self->textFieldViews objectAtIndex:index];
+  textField = [v3 textField];
 
-  return v4;
+  return textField;
 }
 
 - (id)textFieldContainerViews
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -284,12 +284,12 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 containerView];
+        containerView = [v9 containerView];
 
-        if (v10)
+        if (containerView)
         {
-          v11 = [v9 containerView];
-          [v3 addObject:v11];
+          containerView2 = [v9 containerView];
+          [array addObject:containerView2];
         }
       }
 
@@ -299,44 +299,44 @@
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (void)removeAllTextFields
 {
   [(NSMutableArray *)self->textFieldViews removeAllObjects];
   [(NSMutableArray *)self->textFields removeAllObjects];
-  v3 = [(UICollectionViewController *)self collectionView];
-  [v3 reloadData];
+  collectionView = [(UICollectionViewController *)self collectionView];
+  [collectionView reloadData];
 }
 
-- (void)setTextFieldsCanBecomeFirstResponder:(BOOL)a3
+- (void)setTextFieldsCanBecomeFirstResponder:(BOOL)responder
 {
-  if (self->_textFieldsCanBecomeFirstResponder != a3)
+  if (self->_textFieldsCanBecomeFirstResponder != responder)
   {
-    v4 = a3;
-    self->_textFieldsCanBecomeFirstResponder = a3;
-    v5 = [(NSMutableArray *)self->textFields firstObject];
-    v6 = v5;
-    if (v4)
+    responderCopy = responder;
+    self->_textFieldsCanBecomeFirstResponder = responder;
+    firstObject = [(NSMutableArray *)self->textFields firstObject];
+    v6 = firstObject;
+    if (responderCopy)
     {
-      [v5 becomeFirstResponder];
+      [firstObject becomeFirstResponder];
     }
 
     else
     {
-      [v5 resignFirstResponder];
+      [firstObject resignFirstResponder];
     }
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   textFieldViews = self->textFieldViews;
-  v7 = a4;
-  v8 = a3;
-  v9 = -[NSMutableArray objectAtIndex:](textFieldViews, "objectAtIndex:", [v7 row]);
-  v10 = [v8 dequeueReusableCellWithReuseIdentifier:@"UIAlertTextFieldTableIdentifier" forIndexPath:v7];
+  pathCopy = path;
+  viewCopy = view;
+  v9 = -[NSMutableArray objectAtIndex:](textFieldViews, "objectAtIndex:", [pathCopy row]);
+  v10 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"UIAlertTextFieldTableIdentifier" forIndexPath:pathCopy];
 
   [v10 setBackgroundColor:0];
   [(UIAlertControllerVisualStyle *)self->_visualStyle textFieldHorizontalMargin];
@@ -406,7 +406,7 @@ LABEL_3:
       goto LABEL_12;
     }
 
-    v10 = [v9 resignFirstResponder];
+    resignFirstResponder = [v9 resignFirstResponder];
   }
 
   else
@@ -415,14 +415,14 @@ LABEL_9:
 
     v9 = 0;
 LABEL_12:
-    v10 = 1;
+    resignFirstResponder = 1;
   }
 
   v13.receiver = self;
   v13.super_class = _UIAlertControllerTextFieldViewController;
-  v11 = [(UIResponder *)&v13 resignFirstResponder];
+  resignFirstResponder2 = [(UIResponder *)&v13 resignFirstResponder];
 
-  return v11 & v10;
+  return resignFirstResponder2 & resignFirstResponder;
 }
 
 - (_UIAlertControllerTextFieldViewControllerContaining)container

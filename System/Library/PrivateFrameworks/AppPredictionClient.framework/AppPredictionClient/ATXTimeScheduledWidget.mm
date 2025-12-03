@@ -1,77 +1,77 @@
 @interface ATXTimeScheduledWidget
-- (ATXTimeScheduledWidget)initWithCoder:(id)a3;
-- (ATXTimeScheduledWidget)initWithContainer:(id)a3 kind:(id)a4 extensionId:(id)a5 family:(int64_t)a6 intentDescription:(id)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXTimeScheduledWidget:(id)a3;
+- (ATXTimeScheduledWidget)initWithCoder:(id)coder;
+- (ATXTimeScheduledWidget)initWithContainer:(id)container kind:(id)kind extensionId:(id)id family:(int64_t)family intentDescription:(id)description;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXTimeScheduledWidget:(id)widget;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXTimeScheduledWidget
 
-- (ATXTimeScheduledWidget)initWithContainer:(id)a3 kind:(id)a4 extensionId:(id)a5 family:(int64_t)a6 intentDescription:(id)a7
+- (ATXTimeScheduledWidget)initWithContainer:(id)container kind:(id)kind extensionId:(id)id family:(int64_t)family intentDescription:(id)description
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  containerCopy = container;
+  kindCopy = kind;
+  idCopy = id;
+  descriptionCopy = description;
   v24.receiver = self;
   v24.super_class = ATXTimeScheduledWidget;
   v16 = [(ATXTimeScheduledWidget *)&v24 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [containerCopy copy];
     container = v16->_container;
     v16->_container = v17;
 
-    v19 = [v13 copy];
+    v19 = [kindCopy copy];
     kind = v16->_kind;
     v16->_kind = v19;
 
-    v21 = [v14 copy];
+    v21 = [idCopy copy];
     extensionId = v16->_extensionId;
     v16->_extensionId = v21;
 
-    v16->_family = a6;
-    objc_storeStrong(&v16->_intentDescription, a7);
+    v16->_family = family;
+    objc_storeStrong(&v16->_intentDescription, description);
   }
 
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   kind = self->_kind;
-  v5 = a3;
-  [v5 encodeObject:kind forKey:@"kind"];
-  [v5 encodeObject:self->_extensionId forKey:@"extension"];
-  [v5 encodeObject:self->_container forKey:@"container"];
-  [v5 encodeInteger:self->_family forKey:@"family"];
-  [v5 encodeObject:self->_intentDescription forKey:@"intentDescription"];
+  coderCopy = coder;
+  [coderCopy encodeObject:kind forKey:@"kind"];
+  [coderCopy encodeObject:self->_extensionId forKey:@"extension"];
+  [coderCopy encodeObject:self->_container forKey:@"container"];
+  [coderCopy encodeInteger:self->_family forKey:@"family"];
+  [coderCopy encodeObject:self->_intentDescription forKey:@"intentDescription"];
 }
 
-- (ATXTimeScheduledWidget)initWithCoder:(id)a3
+- (ATXTimeScheduledWidget)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = ATXTimeScheduledWidget;
   v5 = [(ATXTimeScheduledWidget *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
     kind = v5->_kind;
     v5->_kind = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extension"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extension"];
     extensionId = v5->_extensionId;
     v5->_extensionId = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"container"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"container"];
     container = v5->_container;
     v5->_container = v10;
 
-    v5->_family = [v4 decodeIntegerForKey:@"family"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intentDescription"];
+    v5->_family = [coderCopy decodeIntegerForKey:@"family"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intentDescription"];
     intentDescription = v5->_intentDescription;
     v5->_intentDescription = v12;
   }
@@ -87,29 +87,29 @@
   return self->_family - (v5 - v4 + 32 * v4) + 32 * (v5 - v4 + 32 * v4);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXTimeScheduledWidget *)self isEqualToATXTimeScheduledWidget:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXTimeScheduledWidget *)self isEqualToATXTimeScheduledWidget:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXTimeScheduledWidget:(id)a3
+- (BOOL)isEqualToATXTimeScheduledWidget:(id)widget
 {
-  v4 = a3;
+  widgetCopy = widget;
   v5 = self->_container;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == widgetCopy[1])
   {
   }
 
@@ -125,7 +125,7 @@
 
   v8 = self->_kind;
   v9 = v8;
-  if (v8 == v4[2])
+  if (v8 == widgetCopy[2])
   {
   }
 
@@ -141,7 +141,7 @@
 
   v11 = self->_extensionId;
   v12 = v11;
-  if (v11 == v4[3])
+  if (v11 == widgetCopy[3])
   {
 
     goto LABEL_13;
@@ -152,7 +152,7 @@
   if (v13)
   {
 LABEL_13:
-    v14 = self->_family == v4[4];
+    v14 = self->_family == widgetCopy[4];
     goto LABEL_14;
   }
 

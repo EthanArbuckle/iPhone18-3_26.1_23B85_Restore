@@ -1,15 +1,15 @@
 @interface PKGenerationModelAvailabilityController
 + (id)sharedInstance;
 - (BOOL)isGenerationModelAvailable;
-- (BOOL)presentEnrollmentScreenViewControllerIfNecessaryInWindow:(id)a3;
-- (BOOL)presentGreymatterAvailabilityAlertControllerInWindow:(id)a3;
+- (BOOL)presentEnrollmentScreenViewControllerIfNecessaryInWindow:(id)window;
+- (BOOL)presentGreymatterAvailabilityAlertControllerInWindow:(id)window;
 - (BOOL)shouldShowEnrollmentUI;
 - (PKGenerationModelAvailabilityController)init;
 - (id)nameAndAddressDescription;
-- (id)stringRepresentationOfAvailabilityStatus:(int64_t)a3;
-- (void)_handleModelAvailabilityStatusDidChange:(int64_t)a3 completion:(id)a4;
+- (id)stringRepresentationOfAvailabilityStatus:(int64_t)status;
+- (void)_handleModelAvailabilityStatusDidChange:(int64_t)change completion:(id)completion;
 - (void)queryGenerationModelAvailabilityStatus;
-- (void)queryGenerationModelAvailabilityStatusWithCompletionHandler:(id)a3;
+- (void)queryGenerationModelAvailabilityStatusWithCompletionHandler:(id)handler;
 @end
 
 @implementation PKGenerationModelAvailabilityController
@@ -70,9 +70,9 @@ void __57__PKGenerationModelAvailabilityController_sharedInstance__block_invoke(
 
     else
     {
-      v4 = [MEMORY[0x1E696AAE8] mainBundle];
-      v5 = [v4 bundleIdentifier];
-      v6 = [v5 isEqualToString:@"com.apple.mobilenotes"];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      v6 = [bundleIdentifier isEqualToString:@"com.apple.mobilenotes"];
 
       if (v6 && !PKIsQuickNoteOnPhone() || (v3 = PKIsInternalTestApp()) != 0)
       {
@@ -96,11 +96,11 @@ void __57__PKGenerationModelAvailabilityController_sharedInstance__block_invoke(
 
 - (id)nameAndAddressDescription
 {
-  v7 = self;
+  selfCopy = self;
   v2 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [v2 stringWithFormat:@"<%@: %p>", v4, &v7];
+  v5 = [v2 stringWithFormat:@"<%@: %p>", v4, &selfCopy];
 
   return v5;
 }
@@ -121,17 +121,17 @@ void __81__PKGenerationModelAvailabilityController_queryGenerationModelAvailabil
   }
 }
 
-- (void)queryGenerationModelAvailabilityStatusWithCompletionHandler:(id)a3
+- (void)queryGenerationModelAvailabilityStatusWithCompletionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = os_log_create("com.apple.pencilkit", "ModelAvailability");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PKGenerationModelAvailabilityController *)self nameAndAddressDescription];
+    nameAndAddressDescription = [(PKGenerationModelAvailabilityController *)self nameAndAddressDescription];
     v7 = [(PKGenerationModelAvailabilityController *)self stringRepresentationOfAvailabilityStatus:self->_generationModelAvailabilityStatus];
     *buf = 138412546;
-    v17 = v6;
+    v17 = nameAndAddressDescription;
     v18 = 2112;
     v19 = v7;
     _os_log_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_DEFAULT, "%@ Current Generative Model availability status is %@", buf, 0x16u);
@@ -142,9 +142,9 @@ void __81__PKGenerationModelAvailabilityController_queryGenerationModelAvailabil
     v11 = os_log_create("com.apple.pencilkit", "ModelAvailability");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(PKGenerationModelAvailabilityController *)self nameAndAddressDescription];
+      nameAndAddressDescription2 = [(PKGenerationModelAvailabilityController *)self nameAndAddressDescription];
       *buf = 138412290;
-      v17 = v12;
+      v17 = nameAndAddressDescription2;
       _os_log_impl(&dword_1C7CCA000, v11, OS_LOG_TYPE_DEFAULT, "%@ Querying new Generative Model availability status", buf, 0xCu);
     }
 
@@ -154,7 +154,7 @@ void __81__PKGenerationModelAvailabilityController_queryGenerationModelAvailabil
     v13[2] = __103__PKGenerationModelAvailabilityController_queryGenerationModelAvailabilityStatusWithCompletionHandler___block_invoke;
     v13[3] = &unk_1E82D7788;
     objc_copyWeak(&v15, buf);
-    v14 = v4;
+    v14 = handlerCopy;
     [PKGenerationModelAvailabilityController generationModelAvailabilityForGenerationToolWithCompletionHandler:v13];
 
     objc_destroyWeak(&v15);
@@ -164,7 +164,7 @@ void __81__PKGenerationModelAvailabilityController_queryGenerationModelAvailabil
   else
   {
     self->_generationModelAvailabilityStatus = 1;
-    (*(v4 + 2))(v4, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
   }
 }
 
@@ -180,17 +180,17 @@ void __103__PKGenerationModelAvailabilityController_queryGenerationModelAvailabi
   [WeakRetained _handleModelAvailabilityStatusDidChange:a2 completion:v5];
 }
 
-- (void)_handleModelAvailabilityStatusDidChange:(int64_t)a3 completion:(id)a4
+- (void)_handleModelAvailabilityStatusDidChange:(int64_t)change completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v7 = os_log_create("com.apple.pencilkit", "ModelAvailability");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(PKGenerationModelAvailabilityController *)self nameAndAddressDescription];
-    v9 = [(PKGenerationModelAvailabilityController *)self stringRepresentationOfAvailabilityStatus:a3];
+    nameAndAddressDescription = [(PKGenerationModelAvailabilityController *)self nameAndAddressDescription];
+    v9 = [(PKGenerationModelAvailabilityController *)self stringRepresentationOfAvailabilityStatus:change];
     *buf = 138412546;
-    v15 = v8;
+    v15 = nameAndAddressDescription;
     v16 = 2112;
     v17 = v9;
     _os_log_impl(&dword_1C7CCA000, v7, OS_LOG_TYPE_DEFAULT, "%@ Handling Model Availability status change to %@", buf, 0x16u);
@@ -200,10 +200,10 @@ void __103__PKGenerationModelAvailabilityController_queryGenerationModelAvailabi
   v11[1] = 3221225472;
   v11[2] = __94__PKGenerationModelAvailabilityController__handleModelAvailabilityStatusDidChange_completion___block_invoke;
   v11[3] = &unk_1E82D77B0;
-  v12 = v6;
-  v13 = a3;
+  v12 = completionCopy;
+  changeCopy = change;
   v11[4] = self;
-  v10 = v6;
+  v10 = completionCopy;
   PKPerformOnMainThread(v11);
 }
 
@@ -226,23 +226,23 @@ void __94__PKGenerationModelAvailabilityController__handleModelAvailabilityStatu
   }
 }
 
-- (id)stringRepresentationOfAvailabilityStatus:(int64_t)a3
+- (id)stringRepresentationOfAvailabilityStatus:(int64_t)status
 {
-  if (a3 > 2)
+  if (status > 2)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_1E82D77D0[a3];
+    return off_1E82D77D0[status];
   }
 }
 
-- (BOOL)presentGreymatterAvailabilityAlertControllerInWindow:(id)a3
+- (BOOL)presentGreymatterAvailabilityAlertControllerInWindow:(id)window
 {
-  v4 = a3;
-  if ([(PKGenerationModelAvailabilityController *)self presentEnrollmentScreenViewControllerIfNecessaryInWindow:v4])
+  windowCopy = window;
+  if ([(PKGenerationModelAvailabilityController *)self presentEnrollmentScreenViewControllerIfNecessaryInWindow:windowCopy])
   {
     v5 = 1;
   }
@@ -263,8 +263,8 @@ void __94__PKGenerationModelAvailabilityController__handleModelAvailabilityStatu
     v15 = [v12 actionWithTitle:v14 style:1 handler:0];
     [v11 addAction:v15];
 
-    v16 = [v4 rootViewController];
-    [v16 presentViewController:v11 animated:1 completion:0];
+    rootViewController = [windowCopy rootViewController];
+    [rootViewController presentViewController:v11 animated:1 completion:0];
   }
 
   else
@@ -275,19 +275,19 @@ void __94__PKGenerationModelAvailabilityController__handleModelAvailabilityStatu
   return v5;
 }
 
-- (BOOL)presentEnrollmentScreenViewControllerIfNecessaryInWindow:(id)a3
+- (BOOL)presentEnrollmentScreenViewControllerIfNecessaryInWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   if ([(PKGenerationModelAvailabilityController *)self shouldShowEnrollmentUI])
   {
-    v5 = [PKToolPicker activeToolPickerForWindow:v4];
+    v5 = [PKToolPicker activeToolPickerForWindow:windowCopy];
     [v5 setKeyboardSceneDelegateVisibilityObserver:self];
     if ((objc_opt_respondsToSelector() & 1) != 0 && (+[PKGenerationModelAvailabilityController enrollmentScreenViewController], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v7 = v6;
-      v8 = [v4 rootViewController];
+      rootViewController = [windowCopy rootViewController];
       v9 = 1;
-      [v8 presentViewController:v7 animated:1 completion:0];
+      [rootViewController presentViewController:v7 animated:1 completion:0];
     }
 
     else

@@ -1,17 +1,17 @@
 @interface _RELocalTrainingContext
-- (_RELocalTrainingContext)initWithConnection:(id)a3;
+- (_RELocalTrainingContext)initWithConnection:(id)connection;
 - (id)_elementRelevanceEngine;
-- (void)_configureForRelevanceEngine:(id)a3;
+- (void)_configureForRelevanceEngine:(id)engine;
 - (void)_handleInvalidation;
-- (void)performTrainingWithElements:(id)a3 events:(id)a4 interactions:(id)a5 completion:(id)a6;
-- (void)updateRemoteAttribute:(id)a3 forKey:(id)a4 completion:(id)a5;
+- (void)performTrainingWithElements:(id)elements events:(id)events interactions:(id)interactions completion:(id)completion;
+- (void)updateRemoteAttribute:(id)attribute forKey:(id)key completion:(id)completion;
 @end
 
 @implementation _RELocalTrainingContext
 
-- (_RELocalTrainingContext)initWithConnection:(id)a3
+- (_RELocalTrainingContext)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v19.receiver = self;
   v19.super_class = _RELocalTrainingContext;
   v6 = [(RETrainingContext *)&v19 init];
@@ -23,7 +23,7 @@
     v6->_queue = v8;
 
     [(_RELocalTrainingContext *)v6 _configureForRelevanceEngine:0];
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     connection = v6->_connection;
     v11 = RERemoteTrainingClientInterface();
     [(NSXPCConnection *)connection setRemoteObjectInterface:v11];
@@ -51,27 +51,27 @@
 
 - (id)_elementRelevanceEngine
 {
-  v2 = [(RETrainingContext *)self relevanceEngine];
-  v3 = [v2 coordinator];
-  v4 = [v3 elementRelevanceEngine];
+  relevanceEngine = [(RETrainingContext *)self relevanceEngine];
+  coordinator = [relevanceEngine coordinator];
+  elementRelevanceEngine = [coordinator elementRelevanceEngine];
 
-  return v4;
+  return elementRelevanceEngine;
 }
 
-- (void)_configureForRelevanceEngine:(id)a3
+- (void)_configureForRelevanceEngine:(id)engine
 {
   v6.receiver = self;
   v6.super_class = _RELocalTrainingContext;
-  [(RETrainingContext *)&v6 _configureForRelevanceEngine:a3];
-  v4 = [(_RELocalTrainingContext *)self _elementRelevanceEngine];
-  v5 = [v4 queue];
+  [(RETrainingContext *)&v6 _configureForRelevanceEngine:engine];
+  _elementRelevanceEngine = [(_RELocalTrainingContext *)self _elementRelevanceEngine];
+  queue = [_elementRelevanceEngine queue];
 
-  if (!v5)
+  if (!queue)
   {
-    v5 = dispatch_get_global_queue(17, 0);
+    queue = dispatch_get_global_queue(17, 0);
   }
 
-  dispatch_set_target_queue(self->_queue, v5);
+  dispatch_set_target_queue(self->_queue, queue);
 }
 
 - (void)_handleInvalidation
@@ -85,17 +85,17 @@
   dispatch_async(queue, block);
 }
 
-- (void)performTrainingWithElements:(id)a3 events:(id)a4 interactions:(id)a5 completion:(id)a6
+- (void)performTrainingWithElements:(id)elements events:(id)events interactions:(id)interactions completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  elementsCopy = elements;
+  eventsCopy = events;
+  interactionsCopy = interactions;
+  completionCopy = completion;
   v14 = self->_queue;
-  v15 = [(_RELocalTrainingContext *)self _elementRelevanceEngine];
-  v16 = [v15 queue];
+  _elementRelevanceEngine = [(_RELocalTrainingContext *)self _elementRelevanceEngine];
+  queue = [_elementRelevanceEngine queue];
 
-  if (v16)
+  if (queue)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -103,12 +103,12 @@
     block[2] = __86___RELocalTrainingContext_performTrainingWithElements_events_interactions_completion___block_invoke;
     block[3] = &unk_2785FB098;
     block[4] = self;
-    v20 = v16;
-    v21 = v10;
-    v22 = v11;
-    v23 = v12;
+    v20 = queue;
+    v21 = elementsCopy;
+    v22 = eventsCopy;
+    v23 = interactionsCopy;
     v24 = v14;
-    v25 = v13;
+    v25 = completionCopy;
     dispatch_async(queue, block);
   }
 
@@ -121,27 +121,27 @@
       _os_log_impl(&dword_22859F000, v18, OS_LOG_TYPE_DEFAULT, "Attempting to train, but the trainingQueue is nil!", buf, 2u);
     }
 
-    dispatch_async(v14, v13);
+    dispatch_async(v14, completionCopy);
   }
 }
 
-- (void)updateRemoteAttribute:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)updateRemoteAttribute:(id)attribute forKey:(id)key completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  attributeCopy = attribute;
+  keyCopy = key;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __67___RELocalTrainingContext_updateRemoteAttribute_forKey_completion___block_invoke;
   v15[3] = &unk_2785FB0C0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = attributeCopy;
+  v17 = keyCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = keyCopy;
+  v14 = attributeCopy;
   dispatch_async(queue, v15);
 }
 

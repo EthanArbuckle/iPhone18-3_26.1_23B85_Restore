@@ -1,12 +1,12 @@
 @interface CKEditableCollectionView
-- (CKEditableCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
+- (CKEditableCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
 - (UIEdgeInsets)effectiveBalloonCellContentAlignmentInsets;
 - (UIEdgeInsets)effectiveCellMarginInsets;
 - (UIEdgeInsets)initialSafeAreaInsets;
 - (UIEdgeInsets)marginInsets;
 - (UIEdgeInsets)safeAreaInsets;
-- (id)dequeueReusableCellWithReuseIdentifier:(id)a3 forIndexPath:(id)a4;
-- (void)_ck_setEditing:(BOOL)a3 animated:(BOOL)a4;
+- (id)dequeueReusableCellWithReuseIdentifier:(id)identifier forIndexPath:(id)path;
+- (void)_ck_setEditing:(BOOL)editing animated:(BOOL)animated;
 @end
 
 @implementation CKEditableCollectionView
@@ -20,10 +20,10 @@
   v26 = v3;
   v27 = v6;
   v28 = v5;
-  v7 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v8 = [v7 isModernSplitViewControllerEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernSplitViewControllerEnabled = [mEMORY[0x1E69A8070] isModernSplitViewControllerEnabled];
 
-  if (v8)
+  if (isModernSplitViewControllerEnabled)
   {
 LABEL_14:
     *&v14 = v25;
@@ -52,9 +52,9 @@ LABEL_14:
     v27 = v15;
     v28 = v13;
     v16 = [(CKEditableCollectionView *)self window:v14];
-    v17 = [v16 windowScene];
+    windowScene = [v16 windowScene];
 
-    if (v17 && ([v17 interfaceOrientation] - 3) <= 1)
+    if (windowScene && ([windowScene interfaceOrientation] - 3) <= 1)
     {
       v18 = +[CKUIBehavior sharedBehaviors];
       [v18 landscapeKeyboardInsets];
@@ -88,18 +88,18 @@ LABEL_15:
   return result;
 }
 
-- (CKEditableCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (CKEditableCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
   v5.receiver = self;
   v5.super_class = CKEditableCollectionView;
-  return [(CKEditableCollectionView *)&v5 initWithFrame:a4 collectionViewLayout:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(CKEditableCollectionView *)&v5 initWithFrame:layout collectionViewLayout:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
-- (id)dequeueReusableCellWithReuseIdentifier:(id)a3 forIndexPath:(id)a4
+- (id)dequeueReusableCellWithReuseIdentifier:(id)identifier forIndexPath:(id)path
 {
   v8.receiver = self;
   v8.super_class = CKEditableCollectionView;
-  v5 = [(CKEditableCollectionView *)&v8 dequeueReusableCellWithReuseIdentifier:a3 forIndexPath:a4];
+  v5 = [(CKEditableCollectionView *)&v8 dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -165,33 +165,33 @@ LABEL_15:
   return result;
 }
 
-- (void)_ck_setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)_ck_setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  if (self->__ck_editing != a3)
+  if (self->__ck_editing != editing)
   {
     v14[11] = v4;
     v14[12] = v5;
-    self->__ck_editing = a3;
-    if (!a3)
+    self->__ck_editing = editing;
+    if (!editing)
     {
-      v9 = [(CKEditableCollectionView *)self indexPathsForSelectedItems];
+      indexPathsForSelectedItems = [(CKEditableCollectionView *)self indexPathsForSelectedItems];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __52__CKEditableCollectionView__ck_setEditing_animated___block_invoke;
       v14[3] = &unk_1E72F42A8;
       v14[4] = self;
-      [v9 enumerateObjectsUsingBlock:v14];
+      [indexPathsForSelectedItems enumerateObjectsUsingBlock:v14];
     }
 
-    v10 = [(CKEditableCollectionView *)self indexPathsForVisibleItems];
+    indexPathsForVisibleItems = [(CKEditableCollectionView *)self indexPathsForVisibleItems];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __52__CKEditableCollectionView__ck_setEditing_animated___block_invoke_2;
     v11[3] = &unk_1E72F42D0;
     v11[4] = self;
-    v12 = a3;
-    v13 = a4;
-    [v10 enumerateObjectsUsingBlock:v11];
+    editingCopy = editing;
+    animatedCopy = animated;
+    [indexPathsForVisibleItems enumerateObjectsUsingBlock:v11];
   }
 }
 

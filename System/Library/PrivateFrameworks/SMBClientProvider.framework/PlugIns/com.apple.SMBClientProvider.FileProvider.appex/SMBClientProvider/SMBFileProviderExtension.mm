@@ -1,6 +1,6 @@
 @interface SMBFileProviderExtension
 - (SMBFileProviderExtension)init;
-- (id)clusterDomainItemsOrError:(id *)a3;
+- (id)clusterDomainItemsOrError:(id *)error;
 @end
 
 @implementation SMBFileProviderExtension
@@ -31,31 +31,31 @@
   return v11;
 }
 
-- (id)clusterDomainItemsOrError:(id *)a3
+- (id)clusterDomainItemsOrError:(id *)error
 {
   v5 = objc_opt_new();
-  v6 = self;
-  objc_sync_enter(v6);
-  if (([(SMBFileProviderExtension *)v6 _hasManagerOrError:a3]& 1) != 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (([(SMBFileProviderExtension *)selfCopy _hasManagerOrError:error]& 1) != 0)
   {
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
 
-    v7 = [(SMBFileProviderExtension *)v6 domain];
-    if (v7 && (-[SMBFileProviderExtension domain](v6, "domain"), v8 = objc_claimAutoreleasedReturnValue(), [v8 identifier], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v7, v9))
+    domain = [(SMBFileProviderExtension *)selfCopy domain];
+    if (domain && (-[SMBFileProviderExtension domain](selfCopy, "domain"), v8 = objc_claimAutoreleasedReturnValue(), [v8 identifier], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, domain, v9))
     {
-      v10 = [(SMBFileProviderExtension *)v6 domain];
-      v11 = [v10 identifier];
+      domain2 = [(SMBFileProviderExtension *)selfCopy domain];
+      identifier = [domain2 identifier];
 
-      v12 = [v11 length];
+      v12 = [identifier length];
       v13 = livefs_std_log();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        sub_100001404(v11, v13, v14, v15, v16, v17, v18, v19);
+        sub_100001404(identifier, v13, v14, v15, v16, v17, v18, v19);
       }
 
-      v20 = [(SMBFileProviderExtension *)v6 manager];
+      manager = [(SMBFileProviderExtension *)selfCopy manager];
       v50 = 0;
-      v21 = [v20 volumes:&v50];
+      v21 = [manager volumes:&v50];
       v22 = v50;
 
       v23 = livefs_std_log();
@@ -71,13 +71,13 @@
         v26 = livefs_std_log();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
         {
-          sub_1000014F8(a3, v25, v26);
+          sub_1000014F8(error, v25, v26);
         }
 
-        if (a3)
+        if (error)
         {
           v27 = v25;
-          *a3 = v25;
+          *error = v25;
         }
       }
 
@@ -96,7 +96,7 @@
         v46[1] = 3221225472;
         v46[2] = sub_10000118C;
         v46[3] = &unk_100004168;
-        v47 = v11;
+        v47 = identifier;
         v49 = v12;
         v48 = v5;
         [v21 enumerateKeysAndObjectsUsingBlock:v46];
@@ -115,7 +115,7 @@
         sub_10000159C(v37, v38, v39, v40, v41, v42, v43, v44);
       }
 
-      *a3 = [LiveFSFPExtensionHelper getNSErrorFromLiveFSErrno:22];
+      *error = [LiveFSFPExtensionHelper getNSErrorFromLiveFSErrno:22];
       v36 = &__NSArray0__struct;
     }
   }
@@ -128,7 +128,7 @@
       sub_100001388(v28, v29, v30, v31, v32, v33, v34, v35);
     }
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
 
     v36 = 0;
   }

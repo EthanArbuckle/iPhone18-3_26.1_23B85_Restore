@@ -1,22 +1,22 @@
 @interface EligibilityOverrideData
-- (BOOL)isEqual:(id)a3;
-- (EligibilityOverrideData)initWithAnswer:(unint64_t)a3 context:(id)a4;
-- (EligibilityOverrideData)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (EligibilityOverrideData)initWithAnswer:(unint64_t)answer context:(id)context;
+- (EligibilityOverrideData)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EligibilityOverrideData
 
 - (id)description
 {
-  v3 = [(EligibilityOverrideData *)self context];
-  v4 = v3;
-  if (v3)
+  context = [(EligibilityOverrideData *)self context];
+  v4 = context;
+  if (context)
   {
-    v5 = [v3 description];
+    v5 = [context description];
   }
 
   else
@@ -25,15 +25,15 @@
   }
 
   v6 = objc_opt_class();
-  v7 = [(EligibilityOverrideData *)self answer];
-  if (sub_10001F30C(v7))
+  answer = [(EligibilityOverrideData *)self answer];
+  if (sub_10001F30C(answer))
   {
     [NSString stringWithUTF8String:?];
   }
 
   else
   {
-    [NSString stringWithFormat:@"<Unknown: %llu>", v7];
+    [NSString stringWithFormat:@"<Unknown: %llu>", answer];
   }
   v8 = ;
   v9 = [NSString stringWithFormat:@"<%@: answer: %@ context: %@>", v6, v8, v5];;
@@ -41,14 +41,14 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = EligibilityOverrideData;
-  if ([(EligibilityOverrideData *)&v13 isEqual:v4])
+  if ([(EligibilityOverrideData *)&v13 isEqual:equalCopy])
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       v10 = 1;
       goto LABEL_16;
@@ -57,13 +57,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(EligibilityOverrideData *)self answer];
-      if (v6 == [(EligibilityOverrideData *)v5 answer])
+      v5 = equalCopy;
+      answer = [(EligibilityOverrideData *)self answer];
+      if (answer == [(EligibilityOverrideData *)v5 answer])
       {
-        v7 = [(EligibilityOverrideData *)self context];
-        v8 = [(EligibilityOverrideData *)v5 context];
-        v9 = sub_1000277EC(v7, v8);
+        context = [(EligibilityOverrideData *)self context];
+        context2 = [(EligibilityOverrideData *)v5 context];
+        v9 = sub_1000277EC(context, context2);
 
         if (v9)
         {
@@ -111,39 +111,39 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v3 = [(EligibilityOverrideData *)self answer];
-  v4 = [(EligibilityOverrideData *)self context];
-  v5 = [v4 hash];
+  answer = [(EligibilityOverrideData *)self answer];
+  context = [(EligibilityOverrideData *)self context];
+  v5 = [context hash];
 
-  return v5 ^ v3;
+  return v5 ^ answer;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setAnswer:{-[EligibilityOverrideData answer](self, "answer")}];
-  v6 = [(EligibilityOverrideData *)self context];
-  v7 = [v6 copyWithZone:a3];
+  context = [(EligibilityOverrideData *)self context];
+  v7 = [context copyWithZone:zone];
   [v5 setContext:v7];
 
   return v5;
 }
 
-- (EligibilityOverrideData)initWithCoder:(id)a3
+- (EligibilityOverrideData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = EligibilityOverrideData;
   v5 = [(EligibilityOverrideData *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"answer"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"answer"];
     v5->_answer = [v6 unsignedIntegerValue];
 
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [NSSet setWithObjects:v7, v8, objc_opt_class(), 0];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"context"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"context"];
     context = v5->_context;
     v5->_context = v10;
   }
@@ -151,27 +151,27 @@ LABEL_16:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [NSNumber numberWithUnsignedLongLong:[(EligibilityOverrideData *)self answer]];
-  [v4 encodeObject:v5 forKey:@"answer"];
+  [coderCopy encodeObject:v5 forKey:@"answer"];
 
-  v6 = [(EligibilityOverrideData *)self context];
-  [v4 encodeObject:v6 forKey:@"context"];
+  context = [(EligibilityOverrideData *)self context];
+  [coderCopy encodeObject:context forKey:@"context"];
 }
 
-- (EligibilityOverrideData)initWithAnswer:(unint64_t)a3 context:(id)a4
+- (EligibilityOverrideData)initWithAnswer:(unint64_t)answer context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = EligibilityOverrideData;
   v7 = [(EligibilityOverrideData *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(EligibilityOverrideData *)v7 setAnswer:a3];
-    [(EligibilityOverrideData *)v8 setContext:v6];
+    [(EligibilityOverrideData *)v7 setAnswer:answer];
+    [(EligibilityOverrideData *)v8 setContext:contextCopy];
   }
 
   return v8;

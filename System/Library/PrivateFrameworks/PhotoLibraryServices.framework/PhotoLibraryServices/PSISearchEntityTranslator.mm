@@ -1,22 +1,22 @@
 @interface PSISearchEntityTranslator
-+ (id)_lookupIdentifierForSearchEntity:(id)a3;
-+ (id)psiGroupFromSearchEntity:(id)a3;
-+ (id)zeroScorePSIGroupFromLabel:(id)a3 type:(unint64_t)a4 identifier:(id)a5;
-+ (unint64_t)_indexCategoryForSearchEntityType:(unint64_t)a3;
++ (id)_lookupIdentifierForSearchEntity:(id)entity;
++ (id)psiGroupFromSearchEntity:(id)entity;
++ (id)zeroScorePSIGroupFromLabel:(id)label type:(unint64_t)type identifier:(id)identifier;
++ (unint64_t)_indexCategoryForSearchEntityType:(unint64_t)type;
 @end
 
 @implementation PSISearchEntityTranslator
 
-+ (unint64_t)_indexCategoryForSearchEntityType:(unint64_t)a3
++ (unint64_t)_indexCategoryForSearchEntityType:(unint64_t)type
 {
   result = 0;
-  if (a3 <= 1519)
+  if (type <= 1519)
   {
-    if (a3 > 1007)
+    if (type > 1007)
     {
-      if (a3 <= 1203)
+      if (type <= 1203)
       {
-        if (a3 == 1203)
+        if (type == 1203)
         {
           v4 = 1203;
         }
@@ -26,18 +26,18 @@
           v4 = 0;
         }
 
-        if (a3 == 1202)
+        if (type == 1202)
         {
           v4 = 1202;
         }
 
-        if (a3 == 1201)
+        if (type == 1201)
         {
           v4 = 1201;
         }
 
         v12 = 1104;
-        if (a3 == 1200)
+        if (type == 1200)
         {
           v13 = 1200;
         }
@@ -47,28 +47,28 @@
           v13 = 0;
         }
 
-        if (a3 != 1103)
+        if (type != 1103)
         {
           v12 = v13;
         }
 
-        if (a3 <= 1200)
+        if (type <= 1200)
         {
           v4 = v12;
         }
 
         v6 = 1103;
-        if (a3 != 1102)
+        if (type != 1102)
         {
           v6 = 0;
         }
 
-        if (a3 == 1101)
+        if (type == 1101)
         {
           v6 = 1101;
         }
 
-        if (a3 == 1100)
+        if (type == 1100)
         {
           v14 = 1100;
         }
@@ -78,22 +78,22 @@
           v14 = 0;
         }
 
-        if (a3 == 1008)
+        if (type == 1008)
         {
           v14 = 1008;
         }
 
-        if (a3 <= 1100)
+        if (type <= 1100)
         {
           v6 = v14;
         }
 
-        v9 = a3 <= 1102;
+        v9 = type <= 1102;
       }
 
       else
       {
-        if (a3 == 1510)
+        if (type == 1510)
         {
           v4 = 1510;
         }
@@ -103,17 +103,17 @@
           v4 = 0;
         }
 
-        if (a3 == 1500)
+        if (type == 1500)
         {
           v4 = 1500;
         }
 
-        if (a3 == 1402)
+        if (type == 1402)
         {
           v4 = 1402;
         }
 
-        if (a3 == 1401)
+        if (type == 1401)
         {
           v5 = 1401;
         }
@@ -123,17 +123,17 @@
           v5 = 0;
         }
 
-        if (a3 == 1400)
+        if (type == 1400)
         {
           v5 = 1400;
         }
 
-        if (a3 <= 1401)
+        if (type <= 1401)
         {
           v4 = v5;
         }
 
-        if (a3 == 1330)
+        if (type == 1330)
         {
           v6 = 1330;
         }
@@ -143,18 +143,18 @@
           v6 = 0;
         }
 
-        if (a3 == 1320)
+        if (type == 1320)
         {
           v6 = 1320;
         }
 
-        if (a3 == 1310)
+        if (type == 1310)
         {
           v6 = 1310;
         }
 
         v7 = 1205;
-        if (a3 == 1300)
+        if (type == 1300)
         {
           v8 = 1300;
         }
@@ -164,25 +164,25 @@
           v8 = 0;
         }
 
-        if (a3 != 1204)
+        if (type != 1204)
         {
           v7 = v8;
         }
 
-        if (a3 <= 1309)
+        if (type <= 1309)
         {
           v6 = v7;
         }
 
-        v9 = a3 <= 1399;
+        v9 = type <= 1399;
       }
     }
 
     else
     {
-      if (a3 <= 999)
+      if (type <= 999)
       {
-        switch(a3)
+        switch(type)
         {
           case 1uLL:
           case 2uLL:
@@ -207,7 +207,7 @@
       }
 
       v4 = 1005;
-      if (a3 == 1007)
+      if (type == 1007)
       {
         v17 = 1007;
       }
@@ -217,17 +217,17 @@
         v17 = 0;
       }
 
-      if (a3 != 1004)
+      if (type != 1004)
       {
         v4 = v17;
       }
 
-      if (a3 == 1003)
+      if (type == 1003)
       {
         v4 = 1003;
       }
 
-      if (a3 == 1001)
+      if (type == 1001)
       {
         v6 = 1001;
       }
@@ -237,12 +237,12 @@
         v6 = 0;
       }
 
-      if (a3 == 1000)
+      if (type == 1000)
       {
         v6 = 1000;
       }
 
-      v9 = a3 <= 1002;
+      v9 = type <= 1002;
     }
 
 LABEL_132:
@@ -257,9 +257,9 @@ LABEL_132:
     }
   }
 
-  if (a3 <= 1899)
+  if (type <= 1899)
   {
-    if (a3 == 1802)
+    if (type == 1802)
     {
       v4 = 1802;
     }
@@ -269,17 +269,17 @@ LABEL_132:
       v4 = 0;
     }
 
-    if (a3 == 1801)
+    if (type == 1801)
     {
       v4 = 1801;
     }
 
-    if (a3 == 1800)
+    if (type == 1800)
     {
       v4 = 1800;
     }
 
-    if (a3 == 1701)
+    if (type == 1701)
     {
       v10 = 1701;
     }
@@ -289,17 +289,17 @@ LABEL_132:
       v10 = 0;
     }
 
-    if (a3 == 1700)
+    if (type == 1700)
     {
       v10 = 1700;
     }
 
-    if (a3 <= 1799)
+    if (type <= 1799)
     {
       v4 = v10;
     }
 
-    if (a3 == 1610)
+    if (type == 1610)
     {
       v6 = 1610;
     }
@@ -309,17 +309,17 @@ LABEL_132:
       v6 = 0;
     }
 
-    if (a3 == 1600)
+    if (type == 1600)
     {
       v6 = 1600;
     }
 
-    if (a3 == 1540)
+    if (type == 1540)
     {
       v6 = 1540;
     }
 
-    if (a3 == 1530)
+    if (type == 1530)
     {
       v11 = 1530;
     }
@@ -329,23 +329,23 @@ LABEL_132:
       v11 = 0;
     }
 
-    if (a3 == 1520)
+    if (type == 1520)
     {
       v11 = 1520;
     }
 
-    if (a3 <= 1539)
+    if (type <= 1539)
     {
       v6 = v11;
     }
 
-    v9 = a3 <= 1699;
+    v9 = type <= 1699;
     goto LABEL_132;
   }
 
-  if (a3 > 1999)
+  if (type > 1999)
   {
-    if (a3 == 2600)
+    if (type == 2600)
     {
       v4 = 2600;
     }
@@ -355,12 +355,12 @@ LABEL_132:
       v4 = 0;
     }
 
-    if (a3 == 2500)
+    if (type == 2500)
     {
       v4 = 2500;
     }
 
-    if (a3 == 2401)
+    if (type == 2401)
     {
       v15 = 2401;
     }
@@ -370,17 +370,17 @@ LABEL_132:
       v15 = 0;
     }
 
-    if (a3 == 2400)
+    if (type == 2400)
     {
       v15 = 2400;
     }
 
-    if (a3 <= 2499)
+    if (type <= 2499)
     {
       v4 = v15;
     }
 
-    if (a3 == 2300)
+    if (type == 2300)
     {
       v6 = 2300;
     }
@@ -390,12 +390,12 @@ LABEL_132:
       v6 = 0;
     }
 
-    if (a3 == 2200)
+    if (type == 2200)
     {
       v6 = 2200;
     }
 
-    if (a3 == 2100)
+    if (type == 2100)
     {
       v16 = 2100;
     }
@@ -405,21 +405,21 @@ LABEL_132:
       v16 = 0;
     }
 
-    if (a3 == 2000)
+    if (type == 2000)
     {
       v16 = 2000;
     }
 
-    if (a3 <= 2199)
+    if (type <= 2199)
     {
       v6 = v16;
     }
 
-    v9 = a3 <= 2399;
+    v9 = type <= 2399;
     goto LABEL_132;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 0x76CuLL:
     case 0x76DuLL:
@@ -438,7 +438,7 @@ LABEL_132:
     case 0x77AuLL:
     case 0x77BuLL:
 LABEL_8:
-      result = a3;
+      result = type;
       break;
     case 0x77CuLL:
       result = 1917;
@@ -459,50 +459,50 @@ LABEL_8:
   return result;
 }
 
-+ (id)zeroScorePSIGroupFromLabel:(id)a3 type:(unint64_t)a4 identifier:(id)a5
++ (id)zeroScorePSIGroupFromLabel:(id)label type:(unint64_t)type identifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = -[PSIGroup initWithContentString:lookupIdentifier:category:score:]([PSIGroup alloc], "initWithContentString:lookupIdentifier:category:score:", v9, v8, [a1 _indexCategoryForSearchEntityType:a4], 0.0);
+  identifierCopy = identifier;
+  labelCopy = label;
+  v10 = -[PSIGroup initWithContentString:lookupIdentifier:category:score:]([PSIGroup alloc], "initWithContentString:lookupIdentifier:category:score:", labelCopy, identifierCopy, [self _indexCategoryForSearchEntityType:type], 0.0);
 
   return v10;
 }
 
-+ (id)_lookupIdentifierForSearchEntity:(id)a3
++ (id)_lookupIdentifierForSearchEntity:(id)entity
 {
-  v3 = a3;
-  v4 = [v3 type];
-  v5 = 0;
-  if (v4 > 1519)
+  entityCopy = entity;
+  type = [entityCopy type];
+  identifier9 = 0;
+  if (type > 1519)
   {
-    if (v4 > 1599)
+    if (type > 1599)
     {
-      if (v4 == 1600)
+      if (type == 1600)
       {
-        v6 = [v3 identifier];
-        v21 = [v6 integerValue];
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%lu", @"meaning", v21];
-        v5 = LABEL_24:;
+        identifier = [entityCopy identifier];
+        integerValue = [identifier integerValue];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%lu", @"meaning", integerValue];
+        identifier9 = LABEL_24:;
 
         goto LABEL_30;
       }
 
-      if (v4 != 2500)
+      if (type != 2500)
       {
-        if (v4 != 2600)
+        if (type != 2600)
         {
           goto LABEL_30;
         }
 
-        v12 = [v3 identifier];
-        v13 = [v12 integerValue];
+        identifier2 = [entityCopy identifier];
+        integerValue2 = [identifier2 integerValue];
 
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%u", @"humanAction", v13];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%u", @"humanAction", integerValue2];
         goto LABEL_29;
       }
 
-      v19 = [v3 identifier];
-      v8 = [v19 integerValue];
+      identifier3 = [entityCopy identifier];
+      integerValue3 = [identifier3 integerValue];
 
       v9 = MEMORY[0x1E696AEC0];
       v10 = @"audio";
@@ -510,25 +510,25 @@ LABEL_8:
 
     else
     {
-      switch(v4)
+      switch(type)
       {
         case 1520:
-          v16 = [v3 identifier];
-          v8 = [v16 integerValue];
+          identifier4 = [entityCopy identifier];
+          integerValue3 = [identifier4 integerValue];
 
           v9 = MEMORY[0x1E696AEC0];
           v10 = @"privateEncryptedComputeKGID";
           break;
         case 1530:
-          v17 = [v3 identifier];
-          v8 = [v17 integerValue];
+          identifier5 = [entityCopy identifier];
+          integerValue3 = [identifier5 integerValue];
 
           v9 = MEMORY[0x1E696AEC0];
           v10 = @"privateEncryptedComputeMUID";
           break;
         case 1540:
-          v7 = [v3 identifier];
-          v8 = [v7 integerValue];
+          identifier6 = [entityCopy identifier];
+          integerValue3 = [identifier6 integerValue];
 
           v9 = MEMORY[0x1E696AEC0];
           v10 = @"privateEncryptedComputeAMP";
@@ -541,22 +541,22 @@ LABEL_8:
     goto LABEL_28;
   }
 
-  if (v4 > 1329)
+  if (type > 1329)
   {
-    switch(v4)
+    switch(type)
     {
       case 1330:
         goto LABEL_20;
       case 1500:
-        v18 = [v3 identifier];
-        v8 = [v18 integerValue];
+        identifier7 = [entityCopy identifier];
+        integerValue3 = [identifier7 integerValue];
 
         v9 = MEMORY[0x1E696AEC0];
         v10 = @"scene";
         break;
       case 1510:
-        v11 = [v3 identifier];
-        v8 = [v11 integerValue];
+        identifier8 = [entityCopy identifier];
+        integerValue3 = [identifier8 integerValue];
 
         v9 = MEMORY[0x1E696AEC0];
         v10 = @"parseRichLabel";
@@ -566,51 +566,51 @@ LABEL_8:
     }
 
 LABEL_28:
-    [v9 stringWithFormat:@"%@/%llu", v10, v8];
+    [v9 stringWithFormat:@"%@/%llu", v10, integerValue3];
     goto LABEL_29;
   }
 
-  if (v4 != 1103)
+  if (type != 1103)
   {
-    if (v4 != 1300)
+    if (type != 1300)
     {
-      if (v4 != 1320)
+      if (type != 1320)
       {
         goto LABEL_30;
       }
 
-      v6 = [v3 identifier];
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", @"contributor", v6];
+      identifier = [entityCopy identifier];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", @"contributor", identifier];
       goto LABEL_24;
     }
 
 LABEL_20:
-    v5 = [v3 identifier];
+    identifier9 = [entityCopy identifier];
 
     goto LABEL_30;
   }
 
-  v14 = [v3 identifier];
-  v15 = [v14 integerValue];
+  identifier10 = [entityCopy identifier];
+  integerValue4 = [identifier10 integerValue];
 
-  [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%lu", @"season", v15];
-  v5 = LABEL_29:;
+  [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%lu", @"season", integerValue4];
+  identifier9 = LABEL_29:;
 LABEL_30:
 
-  return v5;
+  return identifier9;
 }
 
-+ (id)psiGroupFromSearchEntity:(id)a3
++ (id)psiGroupFromSearchEntity:(id)entity
 {
-  v4 = a3;
-  v5 = [a1 _indexCategoryForSearchEntityType:{objc_msgSend(v4, "type")}];
-  v6 = [a1 _lookupIdentifierForSearchEntity:v4];
+  entityCopy = entity;
+  v5 = [self _indexCategoryForSearchEntityType:{objc_msgSend(entityCopy, "type")}];
+  v6 = [self _lookupIdentifierForSearchEntity:entityCopy];
   v7 = [PSIGroup alloc];
-  v8 = [v4 label];
-  [v4 rankingScore];
+  label = [entityCopy label];
+  [entityCopy rankingScore];
   v10 = v9;
 
-  v11 = [(PSIGroup *)v7 initWithContentString:v8 lookupIdentifier:v6 category:v5 score:v10];
+  v11 = [(PSIGroup *)v7 initWithContentString:label lookupIdentifier:v6 category:v5 score:v10];
 
   return v11;
 }

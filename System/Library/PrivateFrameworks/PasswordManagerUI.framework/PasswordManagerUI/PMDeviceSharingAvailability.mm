@@ -1,11 +1,11 @@
 @interface PMDeviceSharingAvailability
 - (PMDeviceSharingAvailability)init;
-- (PMDeviceSharingAvailability)initWithDevicesWithSharingAvailable:(id)a3 devicesWithSharingUnavailable:(id)a4;
+- (PMDeviceSharingAvailability)initWithDevicesWithSharingAvailable:(id)available devicesWithSharingUnavailable:(id)unavailable;
 @end
 
 @implementation PMDeviceSharingAvailability
 
-- (PMDeviceSharingAvailability)initWithDevicesWithSharingAvailable:(id)a3 devicesWithSharingUnavailable:(id)a4
+- (PMDeviceSharingAvailability)initWithDevicesWithSharingAvailable:(id)available devicesWithSharingUnavailable:(id)unavailable
 {
   type metadata accessor for PMDevice(self);
   v5 = sub_21CB85824();

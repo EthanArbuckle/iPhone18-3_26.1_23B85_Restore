@@ -1,25 +1,25 @@
 @interface VFXCameraEffectDepthOfField
 + (id)depthOfField;
 - (BOOL)showCircleOfConfusion;
-- (VFXCameraEffectDepthOfField)initWithCoder:(id)a3;
+- (VFXCameraEffectDepthOfField)initWithCoder:(id)coder;
 - (double)createCFXObject;
 - (float)fStop;
 - (float)inFocusDistance;
 - (float)maximumBlurRadius;
 - (float)outOfFocusDistance;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)mode;
 - (int64_t)quality;
 - (void)_updateModelFromPresentation;
 - (void)_updatePresentationFromModel;
-- (void)encodeWithCoder:(id)a3;
-- (void)setFStop:(float)a3;
-- (void)setInFocusDistance:(float)a3;
-- (void)setMaximumBlurRadius:(float)a3;
-- (void)setMode:(int64_t)a3;
-- (void)setOutOfFocusDistance:(float)a3;
-- (void)setQuality:(int64_t)a3;
-- (void)setShowCircleOfConfusion:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setFStop:(float)stop;
+- (void)setInFocusDistance:(float)distance;
+- (void)setMaximumBlurRadius:(float)radius;
+- (void)setMode:(int64_t)mode;
+- (void)setOutOfFocusDistance:(float)distance;
+- (void)setQuality:(int64_t)quality;
+- (void)setShowCircleOfConfusion:(BOOL)confusion;
 @end
 
 @implementation VFXCameraEffectDepthOfField
@@ -64,19 +64,19 @@
   return v11;
 }
 
-- (void)setQuality:(int64_t)a3
+- (void)setQuality:(int64_t)quality
 {
-  if (self->super._isPresentationObject || self->_quality != a3)
+  if (self->super._isPresentationObject || self->_quality != quality)
   {
     v5[6] = v3;
     v5[7] = v4;
-    self->_quality = a3;
+    self->_quality = quality;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2ABEAC;
     v5[3] = &unk_1E7A7E248;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = quality;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"quality", v5);
   }
 }
@@ -108,19 +108,19 @@
   return showCircleOfConfusion & 1;
 }
 
-- (void)setShowCircleOfConfusion:(BOOL)a3
+- (void)setShowCircleOfConfusion:(BOOL)confusion
 {
-  if (self->super._isPresentationObject || self->_showCircleOfConfusion != a3)
+  if (self->super._isPresentationObject || self->_showCircleOfConfusion != confusion)
   {
     v7 = v3;
     v8 = v4;
-    self->_showCircleOfConfusion = a3;
+    self->_showCircleOfConfusion = confusion;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2AC008;
     v5[3] = &unk_1E7A7E298;
     v5[4] = self;
-    v6 = a3;
+    confusionCopy = confusion;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"showCircleOfConfusion", v5);
   }
 }
@@ -149,19 +149,19 @@
   return v11;
 }
 
-- (void)setMode:(int64_t)a3
+- (void)setMode:(int64_t)mode
 {
-  if (self->super._isPresentationObject || self->_mode != a3)
+  if (self->super._isPresentationObject || self->_mode != mode)
   {
     v5[6] = v3;
     v5[7] = v4;
-    self->_mode = a3;
+    self->_mode = mode;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2AC160;
     v5[3] = &unk_1E7A7E248;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = mode;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"mode", v5);
   }
 }
@@ -190,19 +190,19 @@
   return v11;
 }
 
-- (void)setFStop:(float)a3
+- (void)setFStop:(float)stop
 {
-  if (self->super._isPresentationObject || self->_fStop != a3)
+  if (self->super._isPresentationObject || self->_fStop != stop)
   {
     v7 = v3;
     v8 = v4;
-    self->_fStop = a3;
+    self->_fStop = stop;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2AC2C0;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    stopCopy = stop;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"fStop", v5);
   }
 }
@@ -231,19 +231,19 @@
   return v11;
 }
 
-- (void)setInFocusDistance:(float)a3
+- (void)setInFocusDistance:(float)distance
 {
-  if (self->super._isPresentationObject || self->_inFocusDistance != a3)
+  if (self->super._isPresentationObject || self->_inFocusDistance != distance)
   {
     v7 = v3;
     v8 = v4;
-    self->_inFocusDistance = a3;
+    self->_inFocusDistance = distance;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2AC420;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    distanceCopy = distance;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"inFocusDistance", v5);
   }
 }
@@ -272,19 +272,19 @@
   return v11;
 }
 
-- (void)setOutOfFocusDistance:(float)a3
+- (void)setOutOfFocusDistance:(float)distance
 {
-  if (self->super._isPresentationObject || self->_outOfFocusDistance != a3)
+  if (self->super._isPresentationObject || self->_outOfFocusDistance != distance)
   {
     v7 = v3;
     v8 = v4;
-    self->_outOfFocusDistance = a3;
+    self->_outOfFocusDistance = distance;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2AC580;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    distanceCopy = distance;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"outOfFocusDistance", v5);
   }
 }
@@ -313,19 +313,19 @@
   return v11;
 }
 
-- (void)setMaximumBlurRadius:(float)a3
+- (void)setMaximumBlurRadius:(float)radius
 {
-  if (self->super._isPresentationObject || self->_maximumBlurRadius != a3)
+  if (self->super._isPresentationObject || self->_maximumBlurRadius != radius)
   {
     v7 = v3;
     v8 = v4;
-    self->_maximumBlurRadius = a3;
+    self->_maximumBlurRadius = radius;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2AC6E0;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    radiusCopy = radius;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"maximumBlurRadius", v5);
   }
 }
@@ -337,11 +337,11 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v28.receiver = self;
   v28.super_class = VFXCameraEffectDepthOfField;
-  v4 = [(VFXCameraEffect *)&v28 copyWithZone:a3];
+  v4 = [(VFXCameraEffect *)&v28 copyWithZone:zone];
   objc_msgSend_setQuality_(v4, v5, self->_quality, v6);
   objc_msgSend_setShowCircleOfConfusion_(v4, v7, self->_showCircleOfConfusion, v8);
   objc_msgSend_setMode_(v4, v9, self->_mode, v10);
@@ -380,25 +380,25 @@
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v2);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v20.receiver = self;
   v20.super_class = VFXCameraEffectDepthOfField;
   [(VFXCameraEffect *)&v20 encodeWithCoder:?];
-  objc_msgSend_encodeInteger_forKey_(a3, v5, self->_quality, @"quality");
-  objc_msgSend_encodeBool_forKey_(a3, v6, self->_showCircleOfConfusion, @"showCircleOfConfusion");
-  objc_msgSend_encodeInteger_forKey_(a3, v7, self->_mode, @"mode");
+  objc_msgSend_encodeInteger_forKey_(coder, v5, self->_quality, @"quality");
+  objc_msgSend_encodeBool_forKey_(coder, v6, self->_showCircleOfConfusion, @"showCircleOfConfusion");
+  objc_msgSend_encodeInteger_forKey_(coder, v7, self->_mode, @"mode");
   *&v8 = self->_fStop;
-  objc_msgSend_encodeFloat_forKey_(a3, v9, @"fStop", v10, v8);
+  objc_msgSend_encodeFloat_forKey_(coder, v9, @"fStop", v10, v8);
   *&v11 = self->_inFocusDistance;
-  objc_msgSend_encodeFloat_forKey_(a3, v12, @"inFocusDistance", v13, v11);
+  objc_msgSend_encodeFloat_forKey_(coder, v12, @"inFocusDistance", v13, v11);
   *&v14 = self->_outOfFocusDistance;
-  objc_msgSend_encodeFloat_forKey_(a3, v15, @"outOfFocusDistance", v16, v14);
+  objc_msgSend_encodeFloat_forKey_(coder, v15, @"outOfFocusDistance", v16, v14);
   *&v17 = self->_maximumBlurRadius;
-  objc_msgSend_encodeFloat_forKey_(a3, v18, @"maximumBlurRadius", v19, v17);
+  objc_msgSend_encodeFloat_forKey_(coder, v18, @"maximumBlurRadius", v19, v17);
 }
 
-- (VFXCameraEffectDepthOfField)initWithCoder:(id)a3
+- (VFXCameraEffectDepthOfField)initWithCoder:(id)coder
 {
   v49.receiver = self;
   v49.super_class = VFXCameraEffectDepthOfField;
@@ -407,33 +407,33 @@
   {
     v8 = objc_msgSend_immediateMode(VFXTransaction, v4, v5, v6);
     objc_msgSend_setImmediateMode_(VFXTransaction, v9, 1, v10);
-    v13 = objc_msgSend_decodeIntegerForKey_(a3, v11, @"quality", v12);
+    v13 = objc_msgSend_decodeIntegerForKey_(coder, v11, @"quality", v12);
     objc_msgSend_setQuality_(v7, v14, v13, v15);
-    v18 = objc_msgSend_decodeBoolForKey_(a3, v16, @"showCircleOfConfusion", v17);
+    v18 = objc_msgSend_decodeBoolForKey_(coder, v16, @"showCircleOfConfusion", v17);
     objc_msgSend_setShowCircleOfConfusion_(v7, v19, v18, v20);
-    objc_msgSend_decodeFloatForKey_(a3, v21, @"fStop", v22);
+    objc_msgSend_decodeFloatForKey_(coder, v21, @"fStop", v22);
     objc_msgSend_setFStop_(v7, v23, v24, v25);
-    if (objc_msgSend_containsValueForKey_(a3, v26, @"mode", v27))
+    if (objc_msgSend_containsValueForKey_(coder, v26, @"mode", v27))
     {
-      v30 = objc_msgSend_decodeIntegerForKey_(a3, v28, @"mode", v29);
+      v30 = objc_msgSend_decodeIntegerForKey_(coder, v28, @"mode", v29);
       objc_msgSend_setMode_(v7, v31, v30, v32);
     }
 
-    if (objc_msgSend_containsValueForKey_(a3, v28, @"inFocusDistance", v29))
+    if (objc_msgSend_containsValueForKey_(coder, v28, @"inFocusDistance", v29))
     {
-      objc_msgSend_decodeFloatForKey_(a3, v33, @"inFocusDistance", v34);
+      objc_msgSend_decodeFloatForKey_(coder, v33, @"inFocusDistance", v34);
       objc_msgSend_setInFocusDistance_(v7, v35, v36, v37);
     }
 
-    if (objc_msgSend_containsValueForKey_(a3, v33, @"outOfFocusDistance", v34))
+    if (objc_msgSend_containsValueForKey_(coder, v33, @"outOfFocusDistance", v34))
     {
-      objc_msgSend_decodeFloatForKey_(a3, v38, @"outOfFocusDistance", v39);
+      objc_msgSend_decodeFloatForKey_(coder, v38, @"outOfFocusDistance", v39);
       objc_msgSend_setOutOfFocusDistance_(v7, v40, v41, v42);
     }
 
-    if (objc_msgSend_containsValueForKey_(a3, v38, @"maximumBlurRadius", v39))
+    if (objc_msgSend_containsValueForKey_(coder, v38, @"maximumBlurRadius", v39))
     {
-      objc_msgSend_decodeFloatForKey_(a3, v43, @"maximumBlurRadius", v44);
+      objc_msgSend_decodeFloatForKey_(coder, v43, @"maximumBlurRadius", v44);
       objc_msgSend_setMaximumBlurRadius_(v7, v45, v46, v47);
     }
 

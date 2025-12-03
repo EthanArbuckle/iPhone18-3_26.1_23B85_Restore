@@ -1,32 +1,32 @@
 @interface HDHRPregnancySampleProvider
-- (HDHRPregnancySampleProvider)initWithProfile:(id)a3;
-- (id)getSamplesWithError:(id *)a3;
+- (HDHRPregnancySampleProvider)initWithProfile:(id)profile;
+- (id)getSamplesWithError:(id *)error;
 @end
 
 @implementation HDHRPregnancySampleProvider
 
-- (HDHRPregnancySampleProvider)initWithProfile:(id)a3
+- (HDHRPregnancySampleProvider)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v8.receiver = self;
   v8.super_class = HDHRPregnancySampleProvider;
   v5 = [(HDHRPregnancySampleProvider *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
   }
 
   return v6;
 }
 
-- (id)getSamplesWithError:(id *)a3
+- (id)getSamplesWithError:(id *)error
 {
-  v5 = [MEMORY[0x277CCD720] pregnancyType];
+  pregnancyType = [MEMORY[0x277CCD720] pregnancyType];
   v6 = MEMORY[0x277D10848];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v15 = 0;
-  v8 = [v6 samplesWithType:v5 profile:WeakRetained encodingOptions:0 predicate:0 limit:0 anchor:0 error:&v15];
+  v8 = [v6 samplesWithType:pregnancyType profile:WeakRetained encodingOptions:0 predicate:0 limit:0 anchor:0 error:&v15];
   v9 = v15;
 
   if (v9)
@@ -38,11 +38,11 @@
       [HDHRPregnancySampleProvider getSamplesWithError:];
     }
 
-    if (a3)
+    if (error)
     {
       v11 = v9;
       v12 = 0;
-      *a3 = v9;
+      *error = v9;
     }
 
     else

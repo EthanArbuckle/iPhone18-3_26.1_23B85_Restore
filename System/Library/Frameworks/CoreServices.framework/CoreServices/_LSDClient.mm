@@ -1,10 +1,10 @@
 @interface _LSDClient
-- (_LSDClient)initWithXPCConnection:(id)a3;
+- (_LSDClient)initWithXPCConnection:(id)connection;
 @end
 
 @implementation _LSDClient
 
-- (_LSDClient)initWithXPCConnection:(id)a3
+- (_LSDClient)initWithXPCConnection:(id)connection
 {
   v6.receiver = self;
   v6.super_class = _LSDClient;
@@ -12,7 +12,7 @@
   _LSAssertRunningInServer("[_LSDClient initWithXPCConnection:]");
   if (v4)
   {
-    objc_storeStrong(&v4->_XPCConnection, a3);
+    objc_storeStrong(&v4->_XPCConnection, connection);
   }
 
   return v4;

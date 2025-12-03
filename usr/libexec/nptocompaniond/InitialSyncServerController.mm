@@ -1,6 +1,6 @@
 @interface InitialSyncServerController
 - (_TtC14NanoPhotosSync27InitialSyncServerController)init;
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4;
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session;
 @end
 
 @implementation InitialSyncServerController
@@ -13,12 +13,12 @@
   return result;
 }
 
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session
 {
-  v5 = a3;
-  v6 = a4;
+  coordinatorCopy = coordinator;
+  sessionCopy = session;
 
-  sub_10002421C(v6);
+  sub_10002421C(sessionCopy);
 }
 
 @end

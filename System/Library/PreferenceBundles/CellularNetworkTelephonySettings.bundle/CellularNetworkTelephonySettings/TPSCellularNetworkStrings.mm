@@ -1,6 +1,6 @@
 @interface TPSCellularNetworkStrings
 + (NSBundle)classBundle;
-+ (id)localizedStringForKey:(id)a3;
++ (id)localizedStringForKey:(id)key;
 @end
 
 @implementation TPSCellularNetworkStrings
@@ -12,12 +12,12 @@
   return [NSBundle bundleForClass:v2];
 }
 
-+ (id)localizedStringForKey:(id)a3
++ (id)localizedStringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 classBundle];
-  v6 = [a1 localizationTableName];
-  v7 = [v5 localizedStringForKey:v4 value:&stru_81F8 table:v6];
+  keyCopy = key;
+  classBundle = [self classBundle];
+  localizationTableName = [self localizationTableName];
+  v7 = [classBundle localizedStringForKey:keyCopy value:&stru_81F8 table:localizationTableName];
 
   return v7;
 }

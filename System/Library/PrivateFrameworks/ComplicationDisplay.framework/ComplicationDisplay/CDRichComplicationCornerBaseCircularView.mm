@@ -1,22 +1,22 @@
 @interface CDRichComplicationCornerBaseCircularView
-- (CDRichComplicationCornerBaseCircularView)initWithFontFallback:(int64_t)a3;
+- (CDRichComplicationCornerBaseCircularView)initWithFontFallback:(int64_t)fallback;
 - (id)_circularView;
 - (void)layoutSubviews;
 @end
 
 @implementation CDRichComplicationCornerBaseCircularView
 
-- (CDRichComplicationCornerBaseCircularView)initWithFontFallback:(int64_t)a3
+- (CDRichComplicationCornerBaseCircularView)initWithFontFallback:(int64_t)fallback
 {
   v8.receiver = self;
   v8.super_class = CDRichComplicationCornerBaseCircularView;
-  v3 = [(CDRichComplicationCornerView *)&v8 initWithFontFallback:a3];
+  v3 = [(CDRichComplicationCornerView *)&v8 initWithFontFallback:fallback];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CDRichComplicationCornerBaseCircularView *)v3 _circularView];
+    _circularView = [(CDRichComplicationCornerBaseCircularView *)v3 _circularView];
     circularView = v4->_circularView;
-    v4->_circularView = v5;
+    v4->_circularView = _circularView;
 
     [(CDRichComplicationCornerBaseCircularView *)v4 addSubview:v4->_circularView];
   }
@@ -29,13 +29,13 @@
   v23.receiver = self;
   v23.super_class = CDRichComplicationCornerBaseCircularView;
   [(CDRichComplicationCornerBaseCircularView *)&v23 layoutSubviews];
-  v3 = [(CDRichComplicationView *)self device];
-  v4 = ___LayoutConstants_block_invoke_11(v3, v3);
+  device = [(CDRichComplicationView *)self device];
+  v4 = ___LayoutConstants_block_invoke_11(device, device);
   v6 = v5;
   v8 = v7;
 
-  v9 = [(CDRichComplicationView *)self device];
-  v10 = CDRichComplicationCornerBaseCircularViewRect(v9, [(CDRichComplicationCornerView *)self cornerComplicationPosition]);
+  device2 = [(CDRichComplicationView *)self device];
+  v10 = CDRichComplicationCornerBaseCircularViewRect(device2, [(CDRichComplicationCornerView *)self cornerComplicationPosition]);
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -47,8 +47,8 @@
   v22[2] = *(MEMORY[0x277CBF2C0] + 32);
   [(UIView *)circularView setTransform:v22];
   [(UIView *)self->_circularView setFrame:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), v14, v16];
-  v19 = [(UIView *)self->_circularView layer];
-  [v19 setCornerRadius:v4 * 0.5];
+  layer = [(UIView *)self->_circularView layer];
+  [layer setCornerRadius:v4 * 0.5];
 
   v20 = self->_circularView;
   [(CDRichComplicationCornerView *)self outerComponentRotationInDegree];

@@ -3,18 +3,18 @@
 - (NSArray)apps;
 - (STStorageAppsMonitor)init;
 - (id)appSizesDict;
-- (id)appWithIdentifier:(id)a3;
+- (id)appWithIdentifier:(id)identifier;
 - (id)appsSortedBySize;
 - (id)categorySizesDict;
-- (id)childAppsForApp:(id)a3;
-- (id)filteredApps:(id)a3 sortedUsingBlock:(id)a4;
+- (id)childAppsForApp:(id)app;
+- (id)filteredApps:(id)apps sortedUsingBlock:(id)block;
 - (id)storageInfoDict;
 - (id)updateApps;
-- (void)_logAppSizes:(id)a3;
-- (void)addDeviceInfoToDict:(id)a3;
-- (void)addNumber:(int64_t)a3 toDict:(id)a4 forKey:(id)a5;
-- (void)addTimestampToDict:(id)a3;
-- (void)applicationInstallsDidChange:(id)a3;
+- (void)_logAppSizes:(id)sizes;
+- (void)addDeviceInfoToDict:(id)dict;
+- (void)addNumber:(int64_t)number toDict:(id)dict forKey:(id)key;
+- (void)addTimestampToDict:(id)dict;
+- (void)applicationInstallsDidChange:(id)change;
 - (void)dealloc;
 - (void)loadApps;
 - (void)logAppSizes;
@@ -61,9 +61,9 @@ uint64_t __37__STStorageAppsMonitor_sharedMonitor__block_invoke()
     appsLock = v2->_appsLock;
     v2->_appsLock = v5;
 
-    v7 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
     appsByID = v2->_appsByID;
-    v2->_appsByID = v7;
+    v2->_appsByID = dictionary;
 
     v2->_sharedContainerClass = NSClassFromString(&cfstr_Ststorageshare.isa);
     objc_initWeak(&location, v2);
@@ -122,8 +122,8 @@ void __28__STStorageAppsMonitor_init__block_invoke(uint64_t a1)
   v5 = +[STStorageMediaMonitor sharedMonitor];
   [v5 startMonitor];
 
-  v6 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v6 addObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace addObserver:self];
 
   objc_initWeak(&location, self);
   serialQueue = self->_serialQueue;
@@ -134,17 +134,17 @@ void __28__STStorageAppsMonitor_init__block_invoke(uint64_t a1)
   objc_copyWeak(&v19, &location);
   [(NSOperationQueue *)serialQueue addOperationWithBlock:&v15];
   v8 = [(STStorageAppsMonitor *)self updateApps:v15];
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v10 = +[STStorageDataNotifier sharedNotifier];
-  [v9 addObserver:self selector:sel_refreshApps_ name:@"STNotify_AppsAdded" object:v10];
+  [defaultCenter addObserver:self selector:sel_refreshApps_ name:@"STNotify_AppsAdded" object:v10];
 
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
   v12 = +[STStorageDataNotifier sharedNotifier];
-  [v11 addObserver:self selector:sel_appsStateChanged_ name:@"STNotify_AppsStateChanged" object:v12];
+  [defaultCenter2 addObserver:self selector:sel_appsStateChanged_ name:@"STNotify_AppsStateChanged" object:v12];
 
-  v13 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
   v14 = +[STStorageDataNotifier sharedNotifier];
-  [v13 addObserver:self selector:sel_mediaSizesChanged_ name:@"STNotify_MediaSizesChanged" object:v14];
+  [defaultCenter3 addObserver:self selector:sel_mediaSizesChanged_ name:@"STNotify_MediaSizesChanged" object:v14];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -159,17 +159,17 @@ void __36__STStorageAppsMonitor_startMonitor__block_invoke(uint64_t a1)
 
 - (void)stopMonitor
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = +[STStorageDataNotifier sharedNotifier];
-  [v3 removeObserver:self name:@"STNotify_AppsAdded" object:v4];
+  [defaultCenter removeObserver:self name:@"STNotify_AppsAdded" object:v4];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
   v6 = +[STStorageDataNotifier sharedNotifier];
-  [v5 removeObserver:self name:@"STNotify_AppsStateChanged" object:v6];
+  [defaultCenter2 removeObserver:self name:@"STNotify_AppsStateChanged" object:v6];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
   v8 = +[STStorageDataNotifier sharedNotifier];
-  [v7 removeObserver:self name:@"STNotify_MediaSizesChanged" object:v8];
+  [defaultCenter3 removeObserver:self name:@"STNotify_MediaSizesChanged" object:v8];
 
   v9 = +[STUpdateMonitor sharedMonitor];
   [v9 stopMonitor];
@@ -180,8 +180,8 @@ void __36__STStorageAppsMonitor_startMonitor__block_invoke(uint64_t a1)
   v11 = +[STStorageMediaMonitor sharedMonitor];
   [v11 stopMonitor];
 
-  v12 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v12 removeObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace removeObserver:self];
 
   appSizer = self->_appSizer;
 
@@ -193,10 +193,10 @@ void __36__STStorageAppsMonitor_startMonitor__block_invoke(uint64_t a1)
   v114 = *MEMORY[0x277D85DE8];
   STLog(1, @"%s", v2, v3, v4, v5, v6, v7, "[STStorageAppsMonitor loadApps]");
   v9 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
-  v10 = [(STStorageAppsMonitor *)self prevApps];
-  v11 = [(STStorageAppsMonitor *)self usageBundles];
-  v95 = v10;
-  v12 = [STStorageDataManager updateAppsWithPrevious:v10 usageBundles:v11 skipAppRecordBlock:&__block_literal_global_31];
+  prevApps = [(STStorageAppsMonitor *)self prevApps];
+  usageBundles = [(STStorageAppsMonitor *)self usageBundles];
+  v95 = prevApps;
+  v12 = [STStorageDataManager updateAppsWithPrevious:prevApps usageBundles:usageBundles skipAppRecordBlock:&__block_literal_global_31];
 
   [(STStorageAppsMonitor *)self setPrevApps:v12];
   v97 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v12, "count")}];
@@ -207,7 +207,7 @@ void __36__STStorageAppsMonitor_startMonitor__block_invoke(uint64_t a1)
   [v15 refreshDates];
 
   v16 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
-  v96 = self;
+  selfCopy = self;
   [(STMSizer *)self->_appSizer flushCacheAsynchronously];
   v17 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
   v106 = 0u;
@@ -240,8 +240,8 @@ void __36__STStorageAppsMonitor_startMonitor__block_invoke(uint64_t a1)
 
   v23 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
   v24 = [STStorageDataManager computeCategoriesForApps:v18];
-  categorySizes = v96->_categorySizes;
-  v96->_categorySizes = v24;
+  categorySizes = selfCopy->_categorySizes;
+  selfCopy->_categorySizes = v24;
 
   v26 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
   STLog(1, @"%0.3f secs: update apps", v27, v28, v29, v30, v31, v32, COERCE__INT64((v13 - v9) / 1000000000.0));
@@ -276,20 +276,20 @@ void __36__STStorageAppsMonitor_startMonitor__block_invoke(uint64_t a1)
       }
 
       v75 = *(*(&v102 + 1) + 8 * j);
-      v76 = [v75 appRecord];
-      v77 = [v76 linkedParentApplication];
+      appRecord = [v75 appRecord];
+      linkedParentApplication = [appRecord linkedParentApplication];
 
-      if (v77)
+      if (linkedParentApplication)
       {
-        v78 = [v77 bundleIdentifier];
-        if ([v78 length])
+        bundleIdentifier = [linkedParentApplication bundleIdentifier];
+        if ([bundleIdentifier length])
         {
           if (!v72)
           {
             v72 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:10];
           }
 
-          v79 = [(NSDictionary *)v72 objectForKey:v78];
+          v79 = [(NSDictionary *)v72 objectForKey:bundleIdentifier];
           if (v79)
           {
             v80 = v79;
@@ -302,7 +302,7 @@ void __36__STStorageAppsMonitor_startMonitor__block_invoke(uint64_t a1)
             v81 = [MEMORY[0x277CBEA60] arrayWithObjects:&v111 count:1];
           }
 
-          [(NSDictionary *)v72 setObject:v81 forKey:v78];
+          [(NSDictionary *)v72 setObject:v81 forKey:bundleIdentifier];
         }
       }
 
@@ -313,8 +313,8 @@ void __36__STStorageAppsMonitor_startMonitor__block_invoke(uint64_t a1)
           goto LABEL_24;
         }
 
-        v78 = [v75 appIdentifier];
-        [(NSDictionary *)v97 setObject:v75 forKey:v78];
+        bundleIdentifier = [v75 appIdentifier];
+        [(NSDictionary *)v97 setObject:v75 forKey:bundleIdentifier];
       }
 
 LABEL_24:
@@ -346,10 +346,10 @@ LABEL_28:
         }
 
         v87 = *(*(&v98 + 1) + 8 * k);
-        v88 = [v87 bundleIdentifier];
-        if ([v88 length])
+        bundleIdentifier2 = [v87 bundleIdentifier];
+        if ([bundleIdentifier2 length])
         {
-          v89 = [(NSDictionary *)v72 objectForKey:v88];
+          v89 = [(NSDictionary *)v72 objectForKey:bundleIdentifier2];
           [v87 setChildApps:v89];
         }
 
@@ -365,19 +365,19 @@ LABEL_28:
     while (v84);
   }
 
-  [(NSLock *)v96->_appsLock lock];
-  appsByID = v96->_appsByID;
-  v96->_appsByID = v97;
+  [(NSLock *)selfCopy->_appsLock lock];
+  appsByID = selfCopy->_appsByID;
+  selfCopy->_appsByID = v97;
   v91 = v97;
 
-  childAppsByParentID = v96->_childAppsByParentID;
-  v96->_childAppsByParentID = v72;
+  childAppsByParentID = selfCopy->_childAppsByParentID;
+  selfCopy->_childAppsByParentID = v72;
   v93 = v72;
 
-  v96->_sortNeeded = 1;
-  [(NSLock *)v96->_appsLock unlock];
-  [(STStorageAppsMonitor *)v96 logAppSizes];
-  [(STStorageAppsMonitor *)v96 notifyAppsChanged];
+  selfCopy->_sortNeeded = 1;
+  [(NSLock *)selfCopy->_appsLock unlock];
+  [(STStorageAppsMonitor *)selfCopy logAppSizes];
+  [(STStorageAppsMonitor *)selfCopy notifyAppsChanged];
 
   v94 = *MEMORY[0x277D85DE8];
 }
@@ -404,12 +404,12 @@ BOOL __32__STStorageAppsMonitor_loadApps__block_invoke(uint64_t a1, void *a2)
 - (id)updateApps
 {
   STLog(1, @"%s", v2, v3, v4, v5, v6, v7, "[STStorageAppsMonitor updateApps]");
-  v9 = self;
-  objc_sync_enter(v9);
-  updateAppsOperation = v9->_updateAppsOperation;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  updateAppsOperation = selfCopy->_updateAppsOperation;
   if (!updateAppsOperation || [(NSOperation *)updateAppsOperation isFinished])
   {
-    objc_initWeak(&location, v9);
+    objc_initWeak(&location, selfCopy);
     v11 = MEMORY[0x277CCA8C8];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -417,17 +417,17 @@ BOOL __32__STStorageAppsMonitor_loadApps__block_invoke(uint64_t a1, void *a2)
     v16[3] = &unk_279D1CE40;
     objc_copyWeak(&v17, &location);
     v12 = [v11 blockOperationWithBlock:v16];
-    v13 = v9->_updateAppsOperation;
-    v9->_updateAppsOperation = v12;
+    v13 = selfCopy->_updateAppsOperation;
+    selfCopy->_updateAppsOperation = v12;
 
-    [(NSOperation *)v9->_updateAppsOperation addDependency:v9->_initialLoadOperation];
-    [(NSOperationQueue *)v9->_serialQueue addOperation:v9->_updateAppsOperation];
+    [(NSOperation *)selfCopy->_updateAppsOperation addDependency:selfCopy->_initialLoadOperation];
+    [(NSOperationQueue *)selfCopy->_serialQueue addOperation:selfCopy->_updateAppsOperation];
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
   }
 
-  v14 = v9->_updateAppsOperation;
-  objc_sync_exit(v9);
+  v14 = selfCopy->_updateAppsOperation;
+  objc_sync_exit(selfCopy);
 
   return v14;
 }
@@ -443,17 +443,17 @@ void __34__STStorageAppsMonitor_updateApps__block_invoke(uint64_t a1)
   objc_destroyWeak(&to);
 }
 
-- (void)applicationInstallsDidChange:(id)a3
+- (void)applicationInstallsDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = STSharedSerialQueue();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__STStorageAppsMonitor_applicationInstallsDidChange___block_invoke;
   v7[3] = &unk_279D1CEB0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changeCopy;
+  selfCopy = self;
+  v6 = changeCopy;
   dispatch_async(v5, v7);
 }
 
@@ -550,17 +550,17 @@ void __53__STStorageAppsMonitor_applicationInstallsDidChange___block_invoke(uint
   [v2 postAppSizesChanged:0];
 }
 
-- (id)filteredApps:(id)a3 sortedUsingBlock:(id)a4
+- (id)filteredApps:(id)apps sortedUsingBlock:(id)block
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STStorageAppsMonitor *)self apps];
-  v9 = [v8 mutableCopy];
+  appsCopy = apps;
+  blockCopy = block;
+  apps = [(STStorageAppsMonitor *)self apps];
+  v9 = [apps mutableCopy];
 
   if ([v9 count])
   {
-    if (v6)
+    if (appsCopy)
     {
       v10 = [MEMORY[0x277CBEA60] arrayWithArray:v9];
       v20 = 0u;
@@ -582,7 +582,7 @@ void __53__STStorageAppsMonitor_applicationInstallsDidChange___block_invoke(uint
             }
 
             v15 = *(*(&v20 + 1) + 8 * i);
-            if ((v6[2](v6, v15) & 1) == 0)
+            if ((appsCopy[2](appsCopy, v15) & 1) == 0)
             {
               [v9 removeObject:v15];
             }
@@ -595,15 +595,15 @@ void __53__STStorageAppsMonitor_applicationInstallsDidChange___block_invoke(uint
       }
     }
 
-    if (v7)
+    if (blockCopy)
     {
-      if (STStorageAppSortBySizeBlock == v7)
+      if (STStorageAppSortBySizeBlock == blockCopy)
       {
         goto LABEL_18;
       }
 
       v16 = v9;
-      v17 = v7;
+      v17 = blockCopy;
     }
 
     else
@@ -626,16 +626,16 @@ LABEL_18:
 {
   v44 = *MEMORY[0x277D85DE8];
   [(NSLock *)self->_appsLock lock];
-  v3 = [(NSDictionary *)self->_appsByID allValues];
-  v33 = self;
+  allValues = [(NSDictionary *)self->_appsByID allValues];
+  selfCopy = self;
   [(NSLock *)self->_appsLock unlock];
-  v32 = [v3 count];
+  v32 = [allValues count];
   v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:?];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v5 = v3;
+  v5 = allValues;
   v6 = [v5 countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v6)
   {
@@ -651,20 +651,20 @@ LABEL_18:
         }
 
         v10 = *(*(&v38 + 1) + 8 * i);
-        v11 = [v10 appSizeIfComputed];
-        v12 = v11;
-        if (v11)
+        appSizeIfComputed = [v10 appSizeIfComputed];
+        v12 = appSizeIfComputed;
+        if (appSizeIfComputed)
         {
-          v13 = [v11 userTotal];
-          if (v13 <= 4096)
+          userTotal = [appSizeIfComputed userTotal];
+          if (userTotal <= 4096)
           {
             goto LABEL_16;
           }
 
-          v14 = v13;
-          if (v13 <= 0xF423F)
+          v14 = userTotal;
+          if (userTotal <= 0xF423F)
           {
-            sharedContainerClass = v33->_sharedContainerClass;
+            sharedContainerClass = selfCopy->_sharedContainerClass;
             if (objc_opt_isKindOfClass())
             {
               goto LABEL_16;
@@ -700,8 +700,8 @@ LABEL_16:
     while (v7);
   }
 
-  v20 = [v4 allKeys];
-  v21 = [v20 sortedArrayUsingComparator:&__block_literal_global_66];
+  allKeys = [v4 allKeys];
+  v21 = [allKeys sortedArrayUsingComparator:&__block_literal_global_66];
 
   v22 = [MEMORY[0x277CBEB18] arrayWithCapacity:v32];
   v34 = 0u;
@@ -768,11 +768,11 @@ uint64_t __40__STStorageAppsMonitor_appsSortedBySize__block_invoke(uint64_t a1, 
   if (self->_sortNeeded)
   {
     [(NSLock *)self->_appsLock unlock];
-    v3 = [(STStorageAppsMonitor *)self appsSortedBySize];
+    appsSortedBySize = [(STStorageAppsMonitor *)self appsSortedBySize];
     [(NSLock *)self->_appsLock lock];
     self->_sortNeeded = 0;
     allApps = self->_allApps;
-    self->_allApps = v3;
+    self->_allApps = appsSortedBySize;
   }
 
   v5 = self->_allApps;
@@ -781,25 +781,25 @@ uint64_t __40__STStorageAppsMonitor_appsSortedBySize__block_invoke(uint64_t a1, 
   return v5;
 }
 
-- (id)appWithIdentifier:(id)a3
+- (id)appWithIdentifier:(id)identifier
 {
   appsLock = self->_appsLock;
-  v5 = a3;
+  identifierCopy = identifier;
   [(NSLock *)appsLock lock];
-  v6 = [(NSDictionary *)self->_appsByID objectForKey:v5];
+  v6 = [(NSDictionary *)self->_appsByID objectForKey:identifierCopy];
 
   [(NSLock *)self->_appsLock unlock];
 
   return v6;
 }
 
-- (id)childAppsForApp:(id)a3
+- (id)childAppsForApp:(id)app
 {
-  v4 = [a3 bundleIdentifier];
-  if ([v4 length])
+  bundleIdentifier = [app bundleIdentifier];
+  if ([bundleIdentifier length])
   {
     [(NSLock *)self->_appsLock lock];
-    v5 = [(NSDictionary *)self->_childAppsByParentID objectForKey:v4];
+    v5 = [(NSDictionary *)self->_childAppsByParentID objectForKey:bundleIdentifier];
     [(NSLock *)self->_appsLock unlock];
   }
 
@@ -823,48 +823,48 @@ uint64_t __40__STStorageAppsMonitor_appsSortedBySize__block_invoke(uint64_t a1, 
   return v6;
 }
 
-- (void)addNumber:(int64_t)a3 toDict:(id)a4 forKey:(id)a5
+- (void)addNumber:(int64_t)number toDict:(id)dict forKey:(id)key
 {
-  if (a3)
+  if (number)
   {
     v7 = MEMORY[0x277CCABB0];
-    v8 = a5;
-    v9 = a4;
-    v10 = [v7 numberWithLongLong:a3];
-    [v9 setObject:v10 forKey:v8];
+    keyCopy = key;
+    dictCopy = dict;
+    v10 = [v7 numberWithLongLong:number];
+    [dictCopy setObject:v10 forKey:keyCopy];
   }
 }
 
-- (void)addDeviceInfoToDict:(id)a3
+- (void)addDeviceInfoToDict:(id)dict
 {
-  v8 = a3;
+  dictCopy = dict;
   v4 = MGGetStringAnswer();
-  [v8 setObject:v4 forKey:@"device-type"];
+  [dictCopy setObject:v4 forKey:@"device-type"];
   v5 = MGGetStringAnswer();
-  [v8 setObject:v5 forKey:@"os-version"];
+  [dictCopy setObject:v5 forKey:@"os-version"];
   v6 = +[STStorageDiskMonitor sharedMonitor];
-  v7 = [v6 storageSpace];
-  -[STStorageAppsMonitor addNumber:toDict:forKey:](self, "addNumber:toDict:forKey:", [v6 deviceSize], v8, @"device-size");
-  -[STStorageAppsMonitor addNumber:toDict:forKey:](self, "addNumber:toDict:forKey:", [v7 usedBytes], v8, @"device-used");
-  -[STStorageAppsMonitor addNumber:toDict:forKey:](self, "addNumber:toDict:forKey:", [v7 purgeableBytes], v8, @"device-purgeable");
-  if ([v7 isLowSpace])
+  storageSpace = [v6 storageSpace];
+  -[STStorageAppsMonitor addNumber:toDict:forKey:](self, "addNumber:toDict:forKey:", [v6 deviceSize], dictCopy, @"device-size");
+  -[STStorageAppsMonitor addNumber:toDict:forKey:](self, "addNumber:toDict:forKey:", [storageSpace usedBytes], dictCopy, @"device-used");
+  -[STStorageAppsMonitor addNumber:toDict:forKey:](self, "addNumber:toDict:forKey:", [storageSpace purgeableBytes], dictCopy, @"device-purgeable");
+  if ([storageSpace isLowSpace])
   {
-    [v8 setObject:MEMORY[0x277CBEC38] forKey:@"is-low-space"];
-    if ([v7 isVeryLowSpace])
+    [dictCopy setObject:MEMORY[0x277CBEC38] forKey:@"is-low-space"];
+    if ([storageSpace isVeryLowSpace])
     {
-      [v8 setObject:MEMORY[0x277CBEC38] forKey:@"is-very-low-space"];
+      [dictCopy setObject:MEMORY[0x277CBEC38] forKey:@"is-very-low-space"];
     }
   }
 }
 
-- (void)addTimestampToDict:(id)a3
+- (void)addTimestampToDict:(id)dict
 {
   v3 = MEMORY[0x277CCAA68];
-  v4 = a3;
+  dictCopy = dict;
   v7 = objc_alloc_init(v3);
   v5 = [MEMORY[0x277CBEAA8] now];
   v6 = [v7 stringFromDate:v5];
-  [v4 setObject:v6 forKey:@"date"];
+  [dictCopy setObject:v6 forKey:@"date"];
 }
 
 - (id)storageInfoDict
@@ -875,11 +875,11 @@ uint64_t __40__STStorageAppsMonitor_appsSortedBySize__block_invoke(uint64_t a1, 
   v22 = v3;
   [(STStorageAppsMonitor *)self addDeviceInfoToDict:v3];
   v23 = [MEMORY[0x277CBEB18] arrayWithCapacity:9];
-  v4 = [(STSizeDict *)self->_categorySizes dictionary];
+  dictionary = [(STSizeDict *)self->_categorySizes dictionary];
   for (i = 0; i != 9; ++i)
   {
     v6 = STKeyForCategory(i);
-    v7 = [v4 objectForKey:v6];
+    v7 = [dictionary objectForKey:v6];
     v8 = v7;
     if (v7 && ([v7 isZero] & 1) == 0)
     {
@@ -898,13 +898,13 @@ uint64_t __40__STStorageAppsMonitor_appsSortedBySize__block_invoke(uint64_t a1, 
     }
   }
 
-  v12 = [(STStorageAppsMonitor *)self apps];
-  v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v12, "count")}];
+  apps = [(STStorageAppsMonitor *)self apps];
+  v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(apps, "count")}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v14 = v12;
+  v14 = apps;
   v15 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v15)
   {
@@ -919,8 +919,8 @@ uint64_t __40__STStorageAppsMonitor_appsSortedBySize__block_invoke(uint64_t a1, 
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v24 + 1) + 8 * j) infoDict];
-        [v13 addObject:v19];
+        infoDict = [*(*(&v24 + 1) + 8 * j) infoDict];
+        [v13 addObject:infoDict];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -940,13 +940,13 @@ uint64_t __40__STStorageAppsMonitor_appsSortedBySize__block_invoke(uint64_t a1, 
 - (id)appSizesDict
 {
   v21 = *MEMORY[0x277D85DE8];
-  v2 = [(STStorageAppsMonitor *)self apps];
-  v3 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v2, "count")}];
+  apps = [(STStorageAppsMonitor *)self apps];
+  v3 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(apps, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = v2;
+  v4 = apps;
   v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
@@ -962,14 +962,14 @@ uint64_t __40__STStorageAppsMonitor_appsSortedBySize__block_invoke(uint64_t a1, 
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 appSize];
-        v11 = [v10 userTotal];
+        appSize = [v9 appSize];
+        userTotal = [appSize userTotal];
 
-        if (v11)
+        if (userTotal)
         {
-          v12 = [MEMORY[0x277CCABB0] numberWithLongLong:v11];
-          v13 = [v9 bundleIdentifier];
-          [v3 setObject:v12 forKey:v13];
+          v12 = [MEMORY[0x277CCABB0] numberWithLongLong:userTotal];
+          bundleIdentifier = [v9 bundleIdentifier];
+          [v3 setObject:v12 forKey:bundleIdentifier];
         }
       }
 
@@ -990,11 +990,11 @@ uint64_t __40__STStorageAppsMonitor_appsSortedBySize__block_invoke(uint64_t a1, 
   [(STStorageAppsMonitor *)self addTimestampToDict:v3];
   [(STStorageAppsMonitor *)self addDeviceInfoToDict:v3];
   v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:9];
-  v5 = [(STSizeDict *)self->_categorySizes dictionary];
+  dictionary = [(STSizeDict *)self->_categorySizes dictionary];
   for (i = 0; i != 9; ++i)
   {
     v7 = STKeyForCategory(i);
-    v8 = [v5 objectForKey:v7];
+    v8 = [dictionary objectForKey:v7];
     v9 = v8;
     if (v8 && ([v8 isZero] & 1) == 0)
     {
@@ -1025,27 +1025,27 @@ uint64_t __40__STStorageAppsMonitor_appsSortedBySize__block_invoke(uint64_t a1, 
 
   v7 = objc_autoreleasePoolPush();
   [(STMSizer *)self->_appSizer startSizer];
-  v8 = [(STStorageAppsMonitor *)self updateApps];
-  [v8 waitUntilFinished];
+  updateApps = [(STStorageAppsMonitor *)self updateApps];
+  [updateApps waitUntilFinished];
   [(STMSizer *)self->_appSizer stopSizer];
   [(STMSizeCache *)self->_appSizer writeCacheToPref];
 
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)_logAppSizes:(id)a3
+- (void)_logAppSizes:(id)sizes
 {
-  v4 = [(NSDictionary *)self->_appsByID allValues];
-  v5 = [(STSizeDict *)self->_categorySizes dictionary];
+  allValues = [(NSDictionary *)self->_appsByID allValues];
+  dictionary = [(STSizeDict *)self->_categorySizes dictionary];
   v6 = dispatch_get_global_queue(17, 0);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __37__STStorageAppsMonitor__logAppSizes___block_invoke;
   v9[3] = &unk_279D1CEB0;
-  v10 = v4;
-  v11 = v5;
-  v7 = v5;
-  v8 = v4;
+  v10 = allValues;
+  v11 = dictionary;
+  v7 = dictionary;
+  v8 = allValues;
   dispatch_async(v6, v9);
 }
 

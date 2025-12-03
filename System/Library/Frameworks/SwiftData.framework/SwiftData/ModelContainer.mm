@@ -1,10 +1,10 @@
 @interface ModelContainer
-- (void)_observeRemoteNotifications:(id)a3;
+- (void)_observeRemoteNotifications:(id)notifications;
 @end
 
 @implementation ModelContainer
 
-- (void)_observeRemoteNotifications:(id)a3
+- (void)_observeRemoteNotifications:(id)notifications
 {
   v3 = sub_197520BFC();
   v4 = *(v3 - 8);

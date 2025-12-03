@@ -1,9 +1,9 @@
 @interface CPAssistantCellConfiguration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConfiguration:(id)a3;
-- (CPAssistantCellConfiguration)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConfiguration:(id)configuration;
+- (CPAssistantCellConfiguration)initWithCoder:(id)coder;
 - (CPAssistantCellConfiguration)initWithPosition:(CPAssistantCellPosition)position visibility:(CPAssistantCellVisibility)visibility assistantAction:(CPAssistantCellActionType)assistantAction;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPAssistantCellConfiguration
@@ -23,10 +23,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -34,20 +34,20 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CPAssistantCellConfiguration *)self isEqualToConfiguration:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CPAssistantCellConfiguration *)self isEqualToConfiguration:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToConfiguration:(id)a3
+- (BOOL)isEqualToConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   position = self->_position;
-  if (position == [v4 position] && (visibility = self->_visibility, visibility == objc_msgSend(v4, "visibility")))
+  if (position == [configurationCopy position] && (visibility = self->_visibility, visibility == objc_msgSend(configurationCopy, "visibility")))
   {
     assistantAction = self->_assistantAction;
-    v8 = assistantAction == [v4 assistantAction];
+    v8 = assistantAction == [configurationCopy assistantAction];
   }
 
   else
@@ -58,28 +58,28 @@
   return v8;
 }
 
-- (CPAssistantCellConfiguration)initWithCoder:(id)a3
+- (CPAssistantCellConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = CPAssistantCellConfiguration;
   v5 = [(CPAssistantCellConfiguration *)&v7 init];
   if (v5)
   {
-    v5->_position = [v4 decodeIntegerForKey:@"kCPAssistantCellConfigurationPositionKey"];
-    v5->_visibility = [v4 decodeIntegerForKey:@"kCPAssistantCellConfigurationVisibilityKey"];
-    v5->_assistantAction = [v4 decodeIntegerForKey:@"kCPAssistantCellConfigurationIntentKey"];
+    v5->_position = [coderCopy decodeIntegerForKey:@"kCPAssistantCellConfigurationPositionKey"];
+    v5->_visibility = [coderCopy decodeIntegerForKey:@"kCPAssistantCellConfigurationVisibilityKey"];
+    v5->_assistantAction = [coderCopy decodeIntegerForKey:@"kCPAssistantCellConfigurationIntentKey"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[CPAssistantCellConfiguration position](self forKey:{"position"), @"kCPAssistantCellConfigurationPositionKey"}];
-  [v4 encodeInteger:-[CPAssistantCellConfiguration visibility](self forKey:{"visibility"), @"kCPAssistantCellConfigurationVisibilityKey"}];
-  [v4 encodeInteger:-[CPAssistantCellConfiguration assistantAction](self forKey:{"assistantAction"), @"kCPAssistantCellConfigurationIntentKey"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[CPAssistantCellConfiguration position](self forKey:{"position"), @"kCPAssistantCellConfigurationPositionKey"}];
+  [coderCopy encodeInteger:-[CPAssistantCellConfiguration visibility](self forKey:{"visibility"), @"kCPAssistantCellConfigurationVisibilityKey"}];
+  [coderCopy encodeInteger:-[CPAssistantCellConfiguration assistantAction](self forKey:{"assistantAction"), @"kCPAssistantCellConfigurationIntentKey"}];
 }
 
 @end

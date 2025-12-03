@@ -1,9 +1,9 @@
 @interface _BackgroundViewRenderManager
 + (id)sharedManager;
 - (_BackgroundViewRenderManager)init;
-- (void)addViewToQueue:(id)a3;
+- (void)addViewToQueue:(id)queue;
 - (void)cancelAllRendering;
-- (void)removeViewFromQueue:(id)a3;
+- (void)removeViewFromQueue:(id)queue;
 @end
 
 @implementation _BackgroundViewRenderManager
@@ -40,53 +40,53 @@
   return v2;
 }
 
-- (void)addViewToQueue:(id)a3
+- (void)addViewToQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = self->_viewsInQueue;
   objc_sync_enter(v5);
-  if ([(NSMutableSet *)self->_viewsInQueue containsObject:v4])
+  if ([(NSMutableSet *)self->_viewsInQueue containsObject:queueCopy])
   {
-    [(_BackgroundViewRenderManager *)self removeViewFromQueue:v4];
+    [(_BackgroundViewRenderManager *)self removeViewFromQueue:queueCopy];
   }
 
-  [(NSMutableSet *)self->_viewsInQueue addObject:v4];
+  [(NSMutableSet *)self->_viewsInQueue addObject:queueCopy];
   v6 = [_BackgroundViewRenderOperation alloc];
   viewsInQueue = self->_viewsInQueue;
-  [v4 bounds];
+  [queueCopy bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v4 traitCollection];
-  v17 = [(_BackgroundViewRenderOperation *)v6 initWithView:v4 views:viewsInQueue bounds:v16 traitCollection:v9, v11, v13, v15];
+  traitCollection = [queueCopy traitCollection];
+  v17 = [(_BackgroundViewRenderOperation *)v6 initWithView:queueCopy views:viewsInQueue bounds:traitCollection traitCollection:v9, v11, v13, v15];
 
   v19 = _NSConcreteStackBlock;
   v20 = 3221225472;
   v21 = sub_10005F79C;
   v22 = &unk_10020EC68;
-  v23 = self;
-  v18 = v4;
+  selfCopy = self;
+  v18 = queueCopy;
   v24 = v18;
   [(_BackgroundViewRenderOperation *)v17 setCompletionBlock:&v19];
-  [(NSOperationQueue *)self->_queue addOperation:v17, v19, v20, v21, v22, v23];
+  [(NSOperationQueue *)self->_queue addOperation:v17, v19, v20, v21, v22, selfCopy];
 
   objc_sync_exit(v5);
 }
 
-- (void)removeViewFromQueue:(id)a3
+- (void)removeViewFromQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = self->_viewsInQueue;
   objc_sync_enter(v5);
-  if ([(NSMutableSet *)self->_viewsInQueue containsObject:v4])
+  if ([(NSMutableSet *)self->_viewsInQueue containsObject:queueCopy])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(NSOperationQueue *)self->_queue operations];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    operations = [(NSOperationQueue *)self->_queue operations];
+    v7 = [operations countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = *v15;
@@ -96,12 +96,12 @@
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(operations);
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [v10 view];
-          v12 = v11 == v4;
+          view = [v10 view];
+          v12 = view == queueCopy;
 
           if (v12)
           {
@@ -110,14 +110,14 @@
             if (v13)
             {
               [v13 cancel];
-              [(NSMutableSet *)self->_viewsInQueue removeObject:v4];
+              [(NSMutableSet *)self->_viewsInQueue removeObject:queueCopy];
             }
 
             goto LABEL_13;
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [operations countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v7)
         {
           continue;

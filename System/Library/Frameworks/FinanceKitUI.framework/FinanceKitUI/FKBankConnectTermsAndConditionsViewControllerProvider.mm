@@ -1,12 +1,12 @@
 @interface FKBankConnectTermsAndConditionsViewControllerProvider
-+ (id)makeViewControllerWithTermsAndConditionsID:(id)a3;
-+ (id)makeViewControllerWithTermsAndConditionsID:(id)a3 completion:(id)a4;
++ (id)makeViewControllerWithTermsAndConditionsID:(id)d;
++ (id)makeViewControllerWithTermsAndConditionsID:(id)d completion:(id)completion;
 - (FKBankConnectTermsAndConditionsViewControllerProvider)init;
 @end
 
 @implementation FKBankConnectTermsAndConditionsViewControllerProvider
 
-+ (id)makeViewControllerWithTermsAndConditionsID:(id)a3
++ (id)makeViewControllerWithTermsAndConditionsID:(id)d
 {
   v3 = type metadata accessor for BankConnectTermsAndConditionsWebView(0);
   v4 = *(*(v3 - 8) + 64);
@@ -45,7 +45,7 @@
   return v15;
 }
 
-+ (id)makeViewControllerWithTermsAndConditionsID:(id)a3 completion:(id)a4
++ (id)makeViewControllerWithTermsAndConditionsID:(id)d completion:(id)completion
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -55,7 +55,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = sub_23875EA80();
   v8 = v7;
   v9 = swift_allocObject();

@@ -1,28 +1,28 @@
 @interface ODBATCHSiriSchemaODBATCHTurnRestatementScore
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODBATCHSiriSchemaODBATCHTurnRestatementScore)initWithDictionary:(id)a3;
-- (ODBATCHSiriSchemaODBATCHTurnRestatementScore)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODBATCHSiriSchemaODBATCHTurnRestatementScore)initWithDictionary:(id)dictionary;
+- (ODBATCHSiriSchemaODBATCHTurnRestatementScore)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsCrossDevice:(BOOL)a3;
-- (void)setHasSemanticSimilarityScore:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsCrossDevice:(BOOL)device;
+- (void)setHasSemanticSimilarityScore:(BOOL)score;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODBATCHSiriSchemaODBATCHTurnRestatementScore
 
-- (ODBATCHSiriSchemaODBATCHTurnRestatementScore)initWithDictionary:(id)a3
+- (ODBATCHSiriSchemaODBATCHTurnRestatementScore)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = ODBATCHSiriSchemaODBATCHTurnRestatementScore;
   v5 = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"currentTurnId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"currentTurnId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,7 +30,7 @@
       [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)v5 setCurrentTurnId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"nextTurnId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"nextTurnId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,7 +38,7 @@
       [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)v5 setNextTurnId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"utteranceRestatementScore"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"utteranceRestatementScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -46,7 +46,7 @@
       [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)v5 setUtteranceRestatementScore:?];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"semanticSimilarityScore"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"semanticSimilarityScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,7 +54,7 @@
       [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)v5 setSemanticSimilarityScore:?];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"isCrossDevice"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"isCrossDevice"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,30 +67,30 @@
   return v5;
 }
 
-- (ODBATCHSiriSchemaODBATCHTurnRestatementScore)initWithJSON:(id)a3
+- (ODBATCHSiriSchemaODBATCHTurnRestatementScore)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -103,42 +103,42 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_currentTurnId)
   {
-    v4 = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self currentTurnId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    currentTurnId = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self currentTurnId];
+    dictionaryRepresentation = [currentTurnId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"currentTurnId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"currentTurnId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"currentTurnId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"currentTurnId"];
     }
   }
 
   if ((*(&self->_isCrossDevice + 1) & 4) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODBATCHSiriSchemaODBATCHTurnRestatementScore isCrossDevice](self, "isCrossDevice")}];
-    [v3 setObject:v7 forKeyedSubscript:@"isCrossDevice"];
+    [dictionary setObject:v7 forKeyedSubscript:@"isCrossDevice"];
   }
 
   if (self->_nextTurnId)
   {
-    v8 = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self nextTurnId];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    nextTurnId = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self nextTurnId];
+    dictionaryRepresentation2 = [nextTurnId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"nextTurnId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"nextTurnId"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"nextTurnId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"nextTurnId"];
     }
   }
 
@@ -148,7 +148,7 @@
     v12 = MEMORY[0x1E696AD98];
     [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self semanticSimilarityScore];
     v13 = [v12 numberWithDouble:?];
-    [v3 setObject:v13 forKeyedSubscript:@"semanticSimilarityScore"];
+    [dictionary setObject:v13 forKeyedSubscript:@"semanticSimilarityScore"];
 
     v11 = *(&self->_isCrossDevice + 1);
   }
@@ -158,12 +158,12 @@
     v14 = MEMORY[0x1E696AD98];
     [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self utteranceRestatementScore];
     v15 = [v14 numberWithDouble:?];
-    [v3 setObject:v15 forKeyedSubscript:@"utteranceRestatementScore"];
+    [dictionary setObject:v15 forKeyedSubscript:@"utteranceRestatementScore"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -250,28 +250,28 @@
   return v4 ^ v3 ^ v7 ^ v11 ^ v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self currentTurnId];
-  v6 = [v4 currentTurnId];
-  if ((v5 != 0) == (v6 == 0))
+  currentTurnId = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self currentTurnId];
+  currentTurnId2 = [equalCopy currentTurnId];
+  if ((currentTurnId != 0) == (currentTurnId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self currentTurnId];
-  if (v7)
+  currentTurnId3 = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self currentTurnId];
+  if (currentTurnId3)
   {
-    v8 = v7;
-    v9 = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self currentTurnId];
-    v10 = [v4 currentTurnId];
-    v11 = [v9 isEqual:v10];
+    v8 = currentTurnId3;
+    currentTurnId4 = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self currentTurnId];
+    currentTurnId5 = [equalCopy currentTurnId];
+    v11 = [currentTurnId4 isEqual:currentTurnId5];
 
     if (!v11)
     {
@@ -283,22 +283,22 @@
   {
   }
 
-  v5 = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self nextTurnId];
-  v6 = [v4 nextTurnId];
-  if ((v5 != 0) == (v6 == 0))
+  currentTurnId = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self nextTurnId];
+  currentTurnId2 = [equalCopy nextTurnId];
+  if ((currentTurnId != 0) == (currentTurnId2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self nextTurnId];
-  if (v12)
+  nextTurnId = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self nextTurnId];
+  if (nextTurnId)
   {
-    v13 = v12;
-    v14 = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self nextTurnId];
-    v15 = [v4 nextTurnId];
-    v16 = [v14 isEqual:v15];
+    v13 = nextTurnId;
+    nextTurnId2 = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self nextTurnId];
+    nextTurnId3 = [equalCopy nextTurnId];
+    v16 = [nextTurnId2 isEqual:nextTurnId3];
 
     if (!v16)
     {
@@ -311,20 +311,20 @@ LABEL_11:
   }
 
   v19 = *(&self->_isCrossDevice + 1);
-  v20 = v4[41];
+  v20 = equalCopy[41];
   if ((v19 & 1) == (v20 & 1))
   {
     if (v19)
     {
       utteranceRestatementScore = self->_utteranceRestatementScore;
-      [v4 utteranceRestatementScore];
+      [equalCopy utteranceRestatementScore];
       if (utteranceRestatementScore != v22)
       {
         goto LABEL_12;
       }
 
       v19 = *(&self->_isCrossDevice + 1);
-      v20 = v4[41];
+      v20 = equalCopy[41];
     }
 
     v23 = (v19 >> 1) & 1;
@@ -333,20 +333,20 @@ LABEL_11:
       if (v23)
       {
         semanticSimilarityScore = self->_semanticSimilarityScore;
-        [v4 semanticSimilarityScore];
+        [equalCopy semanticSimilarityScore];
         if (semanticSimilarityScore != v25)
         {
           goto LABEL_12;
         }
 
         v19 = *(&self->_isCrossDevice + 1);
-        v20 = v4[41];
+        v20 = equalCopy[41];
       }
 
       v26 = (v19 >> 2) & 1;
       if (v26 == ((v20 >> 2) & 1))
       {
-        if (!v26 || (isCrossDevice = self->_isCrossDevice, isCrossDevice == [v4 isCrossDevice]))
+        if (!v26 || (isCrossDevice = self->_isCrossDevice, isCrossDevice == [equalCopy isCrossDevice]))
         {
           v17 = 1;
           goto LABEL_13;
@@ -362,22 +362,22 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
-  v4 = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self currentTurnId];
+  toCopy = to;
+  currentTurnId = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self currentTurnId];
 
-  if (v4)
+  if (currentTurnId)
   {
-    v5 = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self currentTurnId];
+    currentTurnId2 = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self currentTurnId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self nextTurnId];
+  nextTurnId = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self nextTurnId];
 
-  if (v6)
+  if (nextTurnId)
   {
-    v7 = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self nextTurnId];
+    nextTurnId2 = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self nextTurnId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -388,24 +388,24 @@ LABEL_13:
     v8 = *(&self->_isCrossDevice + 1);
   }
 
-  v9 = v10;
+  v9 = toCopy;
   if ((v8 & 2) != 0)
   {
     PBDataWriterWriteDoubleField();
-    v9 = v10;
+    v9 = toCopy;
     v8 = *(&self->_isCrossDevice + 1);
   }
 
   if ((v8 & 4) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v9 = v10;
+    v9 = toCopy;
   }
 }
 
-- (void)setHasIsCrossDevice:(BOOL)a3
+- (void)setHasIsCrossDevice:(BOOL)device
 {
-  if (a3)
+  if (device)
   {
     v3 = 4;
   }
@@ -418,9 +418,9 @@ LABEL_13:
   *(&self->_isCrossDevice + 1) = *(&self->_isCrossDevice + 1) & 0xFB | v3;
 }
 
-- (void)setHasSemanticSimilarityScore:(BOOL)a3
+- (void)setHasSemanticSimilarityScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }
@@ -433,26 +433,26 @@ LABEL_13:
   *(&self->_isCrossDevice + 1) = *(&self->_isCrossDevice + 1) & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = ODBATCHSiriSchemaODBATCHTurnRestatementScore;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self currentTurnId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  currentTurnId = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self currentTurnId];
+  v7 = [currentTurnId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self deleteCurrentTurnId];
   }
 
-  v9 = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self nextTurnId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  nextTurnId = [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self nextTurnId];
+  v10 = [nextTurnId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ODBATCHSiriSchemaODBATCHTurnRestatementScore *)self deleteNextTurnId];
   }

@@ -7,7 +7,7 @@
 
 - (uint64_t)skan_version
 {
-  v1 = [a1 stringByReplacingOccurrencesOfString:@"[. withString:]" options:@"." range:{1024, 0, objc_msgSend(a1, "length")}];
+  v1 = [self stringByReplacingOccurrencesOfString:@"[. withString:]" options:@"." range:{1024, 0, objc_msgSend(self, "length")}];
   if (skan_version_onceToken != -1)
   {
     [NSString(SKAdNetworkAdditions) skan_version];
@@ -17,15 +17,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 + (__CFString)skan_versionStringFromSKAdNetworkVersion:()SKAdNetworkAdditions

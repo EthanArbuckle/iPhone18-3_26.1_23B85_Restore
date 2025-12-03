@@ -1,23 +1,23 @@
 @interface SKEraseOperation
 - (BOOL)run;
-- (SKEraseOperation)initWithEraser:(id)a3 withCompletionBlock:(id)a4;
+- (SKEraseOperation)initWithEraser:(id)eraser withCompletionBlock:(id)block;
 - (void)finished;
 @end
 
 @implementation SKEraseOperation
 
-- (SKEraseOperation)initWithEraser:(id)a3 withCompletionBlock:(id)a4
+- (SKEraseOperation)initWithEraser:(id)eraser withCompletionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  eraserCopy = eraser;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = SKEraseOperation;
   v9 = [(SKManagerOperation *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_eraser, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_eraser, eraser);
+    v11 = [blockCopy copy];
     callbackBlock = v10->_callbackBlock;
     v10->_callbackBlock = v11;
   }
@@ -93,9 +93,9 @@
   v3 = sub_10000BFD0();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(SKDisk *)self->_resultingDisk mountPoint];
+    mountPoint = [(SKDisk *)self->_resultingDisk mountPoint];
     *buf = 138412290;
-    v16 = v4;
+    v16 = mountPoint;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Erase Complete, Mount Point: %@", buf, 0xCu);
   }
 
@@ -111,9 +111,9 @@
   v10 = sub_10000BFD0();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(SKDisk *)self->_resultingDisk mountPoint];
+    mountPoint2 = [(SKDisk *)self->_resultingDisk mountPoint];
     *buf = 138412290;
-    v16 = v11;
+    v16 = mountPoint2;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Recache Complete, Mount Point: %@", buf, 0xCu);
   }
 

@@ -1,17 +1,17 @@
 @interface HUMediaAccessControlEditorTableViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityHomeUIHandleTVandSpeakersTableViewCells;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation HUMediaAccessControlEditorTableViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUMediaAccessControlEditorTableViewController" isKindOfClass:@"UITableViewController"];
-  [v3 validateClass:@"HUItemTableViewController" hasInstanceMethod:@"itemManager" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUItemTableViewController" isKindOfClass:@"UITableViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUMediaAccessControlEditorTableViewController" isKindOfClass:@"UITableViewController"];
+  [validationsCopy validateClass:@"HUItemTableViewController" hasInstanceMethod:@"itemManager" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUItemTableViewController" isKindOfClass:@"UITableViewController"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -26,27 +26,27 @@
 {
   v37 = *MEMORY[0x29EDCA608];
   v27 = [MEMORY[0x29EDB9FE0] indexPathForRow:0 inSection:0];
-  v3 = [v27 section];
+  section = [v27 section];
   v35 = 0;
   objc_opt_class();
   v4 = __UIAccessibilityCastAsClass();
   v26 = v4;
-  v5 = [v4 tableView];
-  v6 = [v5 visibleCells];
+  tableView = [v4 tableView];
+  visibleCells = [tableView visibleCells];
 
   v7 = [(HUMediaAccessControlEditorTableViewControllerAccessibility *)self safeValueForKey:@"itemManager"];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v6;
+  obj = visibleCells;
   v8 = [obj countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = *v32;
     v11 = 0x29EDBA000uLL;
-    v28 = v3;
+    v28 = section;
     v29 = v7;
     do
     {
@@ -61,7 +61,7 @@
         v35 = 0;
         v14 = *(v11 + 248);
         objc_opt_class();
-        v15 = [v7 displayedSectionIdentifierForSectionIndex:v3];
+        v15 = [v7 displayedSectionIdentifierForSectionIndex:section];
         v16 = __UIAccessibilityCastAsClass();
 
         if (v35 == 1)
@@ -73,8 +73,8 @@
         {
           v17 = *(v11 + 248);
           v18 = accessibilityHomeUILocalizedString(@"allow.speaker.and.tv.access.option");
-          v19 = [v13 textLabel];
-          [v19 text];
+          textLabel = [v13 textLabel];
+          [textLabel text];
           v20 = v9;
           v21 = v11;
           v23 = v22 = v10;
@@ -85,7 +85,7 @@
           v11 = v21;
           v9 = v20;
 
-          v3 = v28;
+          section = v28;
           v7 = v29;
         }
       }

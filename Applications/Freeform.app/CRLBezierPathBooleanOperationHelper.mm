@@ -1,26 +1,26 @@
 @interface CRLBezierPathBooleanOperationHelper
-+ (BOOL)hasAnyCrossingBetweenPath:(id)a3 andPath:(id)a4;
-+ (BOOL)hasAtLeastTwoVisuallyDistinctSubregionsInPath:(id)a3;
-+ (id)linePathWithLinePath:(id)a3 intersectedWithFilledPath:(id)a4;
-+ (id)linePathWithLinePath:(id)a3 intersectedWithFilledPath:(id)a4 outMapToInputPaths:(id *)a5;
-+ (id)linePathWithLinePath:(id)a3 subtractingFilledPath:(id)a4;
-+ (id)linePathWithLinePath:(id)a3 subtractingFilledPath:(id)a4 outMapToInputPaths:(id *)a5;
-+ (id)pathByFloodFillingPaths:(id)a3 atFillPoint:(CGPoint)a4;
-+ (id)pathByNormalizingPath:(id)a3;
-+ (id)pathByPerformingBooleanOperation:(unint64_t)a3 onPaths:(id)a4;
-+ (id)pathByPerformingBooleanOperation:(unint64_t)a3 onPaths:(id)a4 outMapToInputPaths:(id *)a5;
-+ (id)pathsBySeparatingVisuallyDistinctSubregionsOfPath:(id)a3;
++ (BOOL)hasAnyCrossingBetweenPath:(id)path andPath:(id)andPath;
++ (BOOL)hasAtLeastTwoVisuallyDistinctSubregionsInPath:(id)path;
++ (id)linePathWithLinePath:(id)path intersectedWithFilledPath:(id)filledPath;
++ (id)linePathWithLinePath:(id)path intersectedWithFilledPath:(id)filledPath outMapToInputPaths:(id *)paths;
++ (id)linePathWithLinePath:(id)path subtractingFilledPath:(id)filledPath;
++ (id)linePathWithLinePath:(id)path subtractingFilledPath:(id)filledPath outMapToInputPaths:(id *)paths;
++ (id)pathByFloodFillingPaths:(id)paths atFillPoint:(CGPoint)point;
++ (id)pathByNormalizingPath:(id)path;
++ (id)pathByPerformingBooleanOperation:(unint64_t)operation onPaths:(id)paths;
++ (id)pathByPerformingBooleanOperation:(unint64_t)operation onPaths:(id)paths outMapToInputPaths:(id *)inputPaths;
++ (id)pathsBySeparatingVisuallyDistinctSubregionsOfPath:(id)path;
 @end
 
 @implementation CRLBezierPathBooleanOperationHelper
 
-+ (id)pathByNormalizingPath:(id)a3
++ (id)pathByNormalizingPath:(id)path
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  pathCopy = path;
+  v4 = pathCopy;
+  if (pathCopy)
   {
-    if ([v3 containsElementsOtherThanMoveAndClose])
+    if ([pathCopy containsElementsOtherThanMoveAndClose])
     {
       v13 = 0u;
       v14 = 0u;
@@ -76,21 +76,21 @@
   return v9;
 }
 
-+ (id)pathByPerformingBooleanOperation:(unint64_t)a3 onPaths:(id)a4
++ (id)pathByPerformingBooleanOperation:(unint64_t)operation onPaths:(id)paths
 {
-  v4 = [a1 pathByPerformingBooleanOperation:a3 onPaths:a4 outMapToInputPaths:0];
+  v4 = [self pathByPerformingBooleanOperation:operation onPaths:paths outMapToInputPaths:0];
 
   return v4;
 }
 
-+ (id)pathByPerformingBooleanOperation:(unint64_t)a3 onPaths:(id)a4 outMapToInputPaths:(id *)a5
++ (id)pathByPerformingBooleanOperation:(unint64_t)operation onPaths:(id)paths outMapToInputPaths:(id *)inputPaths
 {
-  v8 = a4;
-  v9 = v8;
-  if (a5)
+  pathsCopy = paths;
+  v9 = pathsCopy;
+  if (inputPaths)
   {
     v10 = objc_alloc_init(CRLBezierPathBooleanOperationInputPathMap);
-    *a5 = v10;
+    *inputPaths = v10;
     v11 = v10;
     if (v9)
     {
@@ -130,7 +130,7 @@ LABEL_9:
   }
 
   v11 = 0;
-  if (!v8)
+  if (!pathsCopy)
   {
     goto LABEL_9;
   }
@@ -143,7 +143,7 @@ LABEL_18:
     goto LABEL_67;
   }
 
-  if (a3 >= 4)
+  if (operation >= 4)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -171,7 +171,7 @@ LABEL_18:
 
     v18 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", "+[CRLBezierPathBooleanOperationHelper pathByPerformingBooleanOperation:onPaths:outMapToInputPaths:]");
     v19 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLUtility/CRLBezierPathBooleanOperationHelper.mm"];
-    [CRLAssertionHandler handleFailureInFunction:v18 file:v19 lineNumber:883 isFatal:0 description:"Unsupported BOOLean operation type: %zu", a3];
+    [CRLAssertionHandler handleFailureInFunction:v18 file:v19 lineNumber:883 isFatal:0 description:"Unsupported BOOLean operation type: %zu", operation];
 
     v12 = +[CRLBezierPath bezierPath];
     v20 = [v9 objectAtIndexedSubscript:0];
@@ -180,7 +180,7 @@ LABEL_18:
 
   else
   {
-    if (a3 == 3 && [v9 count] >= 3)
+    if (operation == 3 && [v9 count] >= 3)
     {
       v12 = +[CRLBezierPath bezierPath];
       v13 = [v9 objectAtIndexedSubscript:0];
@@ -239,15 +239,15 @@ LABEL_18:
 
     if ([v25 count] == 1 || (v61.origin.x = x, v61.origin.y = y, v61.size.width = width, v61.size.height = height, CGRectIsNull(v61)))
     {
-      if (a3 - 2 < 2 || !a3)
+      if (operation - 2 < 2 || !operation)
       {
         v35 = [v25 objectAtIndexedSubscript:0];
-        v12 = [a1 pathByNormalizingPath:v35];
+        v12 = [self pathByNormalizingPath:v35];
 
         goto LABEL_67;
       }
 
-      if (a3 == 1)
+      if (operation == 1)
       {
         v12 = +[CRLBezierPath bezierPath];
         v34 = [v25 objectAtIndexedSubscript:0];
@@ -261,24 +261,24 @@ LABEL_18:
     for (j = 0; j < [v25 count]; ++j)
     {
       v38 = [v25 objectAtIndexedSubscript:j];
-      if (a3 == 1 || j <= 1)
+      if (operation == 1 || j <= 1)
       {
         v39 = +[NSMutableArray array];
         [v36 addObject:v39];
       }
 
-      v40 = [v36 lastObject];
-      [v40 addObject:v38];
+      lastObject = [v36 lastObject];
+      [lastObject addObject:v38];
     }
 
-    if (a3 - 1 > 2)
+    if (operation - 1 > 2)
     {
       v41 = 2;
     }
 
     else
     {
-      v41 = dword_101465AB0[a3 - 1];
+      v41 = dword_101465AB0[operation - 1];
     }
 
     v55 = 0u;
@@ -336,21 +336,21 @@ LABEL_67:
   return v12;
 }
 
-+ (id)linePathWithLinePath:(id)a3 subtractingFilledPath:(id)a4
++ (id)linePathWithLinePath:(id)path subtractingFilledPath:(id)filledPath
 {
-  v4 = [a1 linePathWithLinePath:a3 subtractingFilledPath:a4 outMapToInputPaths:0];
+  v4 = [self linePathWithLinePath:path subtractingFilledPath:filledPath outMapToInputPaths:0];
 
   return v4;
 }
 
-+ (id)linePathWithLinePath:(id)a3 subtractingFilledPath:(id)a4 outMapToInputPaths:(id *)a5
++ (id)linePathWithLinePath:(id)path subtractingFilledPath:(id)filledPath outMapToInputPaths:(id *)paths
 {
-  v7 = a3;
-  v8 = a4;
-  if (a5)
+  pathCopy = path;
+  filledPathCopy = filledPath;
+  if (paths)
   {
     v9 = objc_alloc_init(CRLBezierPathBooleanOperationInputPathMap);
-    *a5 = v9;
+    *paths = v9;
     v10 = v9;
   }
 
@@ -359,26 +359,26 @@ LABEL_67:
     v10 = 0;
   }
 
-  v11 = sub_100414AE4(3, v7, v8, v10);
+  v11 = sub_100414AE4(3, pathCopy, filledPathCopy, v10);
 
   return v11;
 }
 
-+ (id)linePathWithLinePath:(id)a3 intersectedWithFilledPath:(id)a4
++ (id)linePathWithLinePath:(id)path intersectedWithFilledPath:(id)filledPath
 {
-  v4 = [a1 linePathWithLinePath:a3 intersectedWithFilledPath:a4 outMapToInputPaths:0];
+  v4 = [self linePathWithLinePath:path intersectedWithFilledPath:filledPath outMapToInputPaths:0];
 
   return v4;
 }
 
-+ (id)linePathWithLinePath:(id)a3 intersectedWithFilledPath:(id)a4 outMapToInputPaths:(id *)a5
++ (id)linePathWithLinePath:(id)path intersectedWithFilledPath:(id)filledPath outMapToInputPaths:(id *)paths
 {
-  v7 = a3;
-  v8 = a4;
-  if (a5)
+  pathCopy = path;
+  filledPathCopy = filledPath;
+  if (paths)
   {
     v9 = objc_alloc_init(CRLBezierPathBooleanOperationInputPathMap);
-    *a5 = v9;
+    *paths = v9;
     v10 = v9;
   }
 
@@ -387,17 +387,17 @@ LABEL_67:
     v10 = 0;
   }
 
-  v11 = sub_100414AE4(1, v7, v8, v10);
+  v11 = sub_100414AE4(1, pathCopy, filledPathCopy, v10);
 
   return v11;
 }
 
-+ (BOOL)hasAnyCrossingBetweenPath:(id)a3 andPath:(id)a4
++ (BOOL)hasAnyCrossingBetweenPath:(id)path andPath:(id)andPath
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
-  v8 = v6;
+  pathCopy = path;
+  andPathCopy = andPath;
+  v7 = pathCopy;
+  v8 = andPathCopy;
   v9 = v8;
   if (v7)
   {
@@ -557,13 +557,13 @@ LABEL_29:
   return 0;
 }
 
-+ (BOOL)hasAtLeastTwoVisuallyDistinctSubregionsInPath:(id)a3
++ (BOOL)hasAtLeastTwoVisuallyDistinctSubregionsInPath:(id)path
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  pathCopy = path;
+  v4 = pathCopy;
+  if (pathCopy)
   {
-    v5 = sub_100415E80(v3, 2uLL);
+    v5 = sub_100415E80(pathCopy, 2uLL);
     if ([v5 count] >= 3)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -634,13 +634,13 @@ LABEL_29:
   return v9;
 }
 
-+ (id)pathsBySeparatingVisuallyDistinctSubregionsOfPath:(id)a3
++ (id)pathsBySeparatingVisuallyDistinctSubregionsOfPath:(id)path
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  pathCopy = path;
+  v4 = pathCopy;
+  if (pathCopy)
   {
-    v5 = sub_100415E80(v3, 0);
+    v5 = sub_100415E80(pathCopy, 0);
   }
 
   else
@@ -679,13 +679,13 @@ LABEL_29:
   return v5;
 }
 
-+ (id)pathByFloodFillingPaths:(id)a3 atFillPoint:(CGPoint)a4
++ (id)pathByFloodFillingPaths:(id)paths atFillPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v4 = a3;
-  v30 = v4;
-  if (!v4)
+  y = point.y;
+  x = point.x;
+  pathsCopy = paths;
+  v30 = pathsCopy;
+  if (!pathsCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -717,7 +717,7 @@ LABEL_29:
     goto LABEL_22;
   }
 
-  if ([v4 count])
+  if ([pathsCopy count])
   {
     if (!sub_1001208AC(x, y))
     {

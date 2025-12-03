@@ -1,223 +1,223 @@
 @interface PCPInputSignals
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCalendarEvents:(id)a3;
-- (void)addHomeKitHomes:(id)a3;
-- (void)addLocationHistory:(id)a3;
-- (void)addLocationOfInterests:(id)a3;
-- (void)addMapsHistoricalNavigation:(id)a3;
-- (void)addMapsViewedPlaces:(id)a3;
-- (void)addMotionActivity:(id)a3;
-- (void)addPropagatedLocations:(id)a3;
-- (void)addTransitions:(id)a3;
-- (void)addVisit:(id)a3;
-- (void)addWorkouts:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCalendarEvents:(id)events;
+- (void)addHomeKitHomes:(id)homes;
+- (void)addLocationHistory:(id)history;
+- (void)addLocationOfInterests:(id)interests;
+- (void)addMapsHistoricalNavigation:(id)navigation;
+- (void)addMapsViewedPlaces:(id)places;
+- (void)addMotionActivity:(id)activity;
+- (void)addPropagatedLocations:(id)locations;
+- (void)addTransitions:(id)transitions;
+- (void)addVisit:(id)visit;
+- (void)addWorkouts:(id)workouts;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PCPInputSignals
 
-- (void)addVisit:(id)a3
+- (void)addVisit:(id)visit
 {
-  v4 = a3;
+  visitCopy = visit;
   visits = self->_visits;
-  v8 = v4;
+  v8 = visitCopy;
   if (!visits)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_visits;
     self->_visits = v6;
 
-    v4 = v8;
+    visitCopy = v8;
     visits = self->_visits;
   }
 
-  [(NSMutableArray *)visits addObject:v4];
+  [(NSMutableArray *)visits addObject:visitCopy];
 }
 
-- (void)addTransitions:(id)a3
+- (void)addTransitions:(id)transitions
 {
-  v4 = a3;
+  transitionsCopy = transitions;
   transitions = self->_transitions;
-  v8 = v4;
+  v8 = transitionsCopy;
   if (!transitions)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_transitions;
     self->_transitions = v6;
 
-    v4 = v8;
+    transitionsCopy = v8;
     transitions = self->_transitions;
   }
 
-  [(NSMutableArray *)transitions addObject:v4];
+  [(NSMutableArray *)transitions addObject:transitionsCopy];
 }
 
-- (void)addLocationOfInterests:(id)a3
+- (void)addLocationOfInterests:(id)interests
 {
-  v4 = a3;
+  interestsCopy = interests;
   locationOfInterests = self->_locationOfInterests;
-  v8 = v4;
+  v8 = interestsCopy;
   if (!locationOfInterests)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_locationOfInterests;
     self->_locationOfInterests = v6;
 
-    v4 = v8;
+    interestsCopy = v8;
     locationOfInterests = self->_locationOfInterests;
   }
 
-  [(NSMutableArray *)locationOfInterests addObject:v4];
+  [(NSMutableArray *)locationOfInterests addObject:interestsCopy];
 }
 
-- (void)addLocationHistory:(id)a3
+- (void)addLocationHistory:(id)history
 {
-  v4 = a3;
+  historyCopy = history;
   locationHistorys = self->_locationHistorys;
-  v8 = v4;
+  v8 = historyCopy;
   if (!locationHistorys)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_locationHistorys;
     self->_locationHistorys = v6;
 
-    v4 = v8;
+    historyCopy = v8;
     locationHistorys = self->_locationHistorys;
   }
 
-  [(NSMutableArray *)locationHistorys addObject:v4];
+  [(NSMutableArray *)locationHistorys addObject:historyCopy];
 }
 
-- (void)addCalendarEvents:(id)a3
+- (void)addCalendarEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   calendarEvents = self->_calendarEvents;
-  v8 = v4;
+  v8 = eventsCopy;
   if (!calendarEvents)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_calendarEvents;
     self->_calendarEvents = v6;
 
-    v4 = v8;
+    eventsCopy = v8;
     calendarEvents = self->_calendarEvents;
   }
 
-  [(NSMutableArray *)calendarEvents addObject:v4];
+  [(NSMutableArray *)calendarEvents addObject:eventsCopy];
 }
 
-- (void)addMapsHistoricalNavigation:(id)a3
+- (void)addMapsHistoricalNavigation:(id)navigation
 {
-  v4 = a3;
+  navigationCopy = navigation;
   mapsHistoricalNavigations = self->_mapsHistoricalNavigations;
-  v8 = v4;
+  v8 = navigationCopy;
   if (!mapsHistoricalNavigations)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_mapsHistoricalNavigations;
     self->_mapsHistoricalNavigations = v6;
 
-    v4 = v8;
+    navigationCopy = v8;
     mapsHistoricalNavigations = self->_mapsHistoricalNavigations;
   }
 
-  [(NSMutableArray *)mapsHistoricalNavigations addObject:v4];
+  [(NSMutableArray *)mapsHistoricalNavigations addObject:navigationCopy];
 }
 
-- (void)addMapsViewedPlaces:(id)a3
+- (void)addMapsViewedPlaces:(id)places
 {
-  v4 = a3;
+  placesCopy = places;
   mapsViewedPlaces = self->_mapsViewedPlaces;
-  v8 = v4;
+  v8 = placesCopy;
   if (!mapsViewedPlaces)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_mapsViewedPlaces;
     self->_mapsViewedPlaces = v6;
 
-    v4 = v8;
+    placesCopy = v8;
     mapsViewedPlaces = self->_mapsViewedPlaces;
   }
 
-  [(NSMutableArray *)mapsViewedPlaces addObject:v4];
+  [(NSMutableArray *)mapsViewedPlaces addObject:placesCopy];
 }
 
-- (void)addMotionActivity:(id)a3
+- (void)addMotionActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   motionActivitys = self->_motionActivitys;
-  v8 = v4;
+  v8 = activityCopy;
   if (!motionActivitys)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_motionActivitys;
     self->_motionActivitys = v6;
 
-    v4 = v8;
+    activityCopy = v8;
     motionActivitys = self->_motionActivitys;
   }
 
-  [(NSMutableArray *)motionActivitys addObject:v4];
+  [(NSMutableArray *)motionActivitys addObject:activityCopy];
 }
 
-- (void)addHomeKitHomes:(id)a3
+- (void)addHomeKitHomes:(id)homes
 {
-  v4 = a3;
+  homesCopy = homes;
   homeKitHomes = self->_homeKitHomes;
-  v8 = v4;
+  v8 = homesCopy;
   if (!homeKitHomes)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_homeKitHomes;
     self->_homeKitHomes = v6;
 
-    v4 = v8;
+    homesCopy = v8;
     homeKitHomes = self->_homeKitHomes;
   }
 
-  [(NSMutableArray *)homeKitHomes addObject:v4];
+  [(NSMutableArray *)homeKitHomes addObject:homesCopy];
 }
 
-- (void)addWorkouts:(id)a3
+- (void)addWorkouts:(id)workouts
 {
-  v4 = a3;
+  workoutsCopy = workouts;
   workouts = self->_workouts;
-  v8 = v4;
+  v8 = workoutsCopy;
   if (!workouts)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_workouts;
     self->_workouts = v6;
 
-    v4 = v8;
+    workoutsCopy = v8;
     workouts = self->_workouts;
   }
 
-  [(NSMutableArray *)workouts addObject:v4];
+  [(NSMutableArray *)workouts addObject:workoutsCopy];
 }
 
-- (void)addPropagatedLocations:(id)a3
+- (void)addPropagatedLocations:(id)locations
 {
-  v4 = a3;
+  locationsCopy = locations;
   propagatedLocations = self->_propagatedLocations;
-  v8 = v4;
+  v8 = locationsCopy;
   if (!propagatedLocations)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_propagatedLocations;
     self->_propagatedLocations = v6;
 
-    v4 = v8;
+    locationsCopy = v8;
     propagatedLocations = self->_propagatedLocations;
   }
 
-  [(NSMutableArray *)propagatedLocations addObject:v4];
+  [(NSMutableArray *)propagatedLocations addObject:locationsCopy];
 }
 
 - (id)description
@@ -226,8 +226,8 @@
   v8.receiver = self;
   v8.super_class = PCPInputSignals;
   v4 = [(PCPInputSignals *)&v8 description];
-  v5 = [(PCPInputSignals *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PCPInputSignals *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -235,11 +235,11 @@
 - (id)dictionaryRepresentation
 {
   v144 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_currentTimeCFAbsolute];
-    [v3 setObject:v4 forKey:@"currentTimeCFAbsolute"];
+    [dictionary setObject:v4 forKey:@"currentTimeCFAbsolute"];
   }
 
   if ([(NSMutableArray *)self->_visits count])
@@ -264,8 +264,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v129 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v129 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v129 objects:v143 count:16];
@@ -274,7 +274,7 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"visit"];
+    [dictionary setObject:v5 forKey:@"visit"];
   }
 
   if ([(NSMutableArray *)self->_transitions count])
@@ -299,8 +299,8 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v125 + 1) + 8 * j) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation2 = [*(*(&v125 + 1) + 8 * j) dictionaryRepresentation];
+          [v12 addObject:dictionaryRepresentation2];
         }
 
         v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v125 objects:v142 count:16];
@@ -309,7 +309,7 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKey:@"transitions"];
+    [dictionary setObject:v12 forKey:@"transitions"];
   }
 
   if ([(NSMutableArray *)self->_locationOfInterests count])
@@ -334,8 +334,8 @@
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v121 + 1) + 8 * k) dictionaryRepresentation];
-          [v19 addObject:v25];
+          dictionaryRepresentation3 = [*(*(&v121 + 1) + 8 * k) dictionaryRepresentation];
+          [v19 addObject:dictionaryRepresentation3];
         }
 
         v22 = [(NSMutableArray *)v20 countByEnumeratingWithState:&v121 objects:v141 count:16];
@@ -344,7 +344,7 @@
       while (v22);
     }
 
-    [v3 setObject:v19 forKey:@"locationOfInterests"];
+    [dictionary setObject:v19 forKey:@"locationOfInterests"];
   }
 
   if ([(NSMutableArray *)self->_locationHistorys count])
@@ -369,8 +369,8 @@
             objc_enumerationMutation(v27);
           }
 
-          v32 = [*(*(&v117 + 1) + 8 * m) dictionaryRepresentation];
-          [v26 addObject:v32];
+          dictionaryRepresentation4 = [*(*(&v117 + 1) + 8 * m) dictionaryRepresentation];
+          [v26 addObject:dictionaryRepresentation4];
         }
 
         v29 = [(NSMutableArray *)v27 countByEnumeratingWithState:&v117 objects:v140 count:16];
@@ -379,7 +379,7 @@
       while (v29);
     }
 
-    [v3 setObject:v26 forKey:@"locationHistory"];
+    [dictionary setObject:v26 forKey:@"locationHistory"];
   }
 
   if ([(NSMutableArray *)self->_calendarEvents count])
@@ -404,8 +404,8 @@
             objc_enumerationMutation(v34);
           }
 
-          v39 = [*(*(&v113 + 1) + 8 * n) dictionaryRepresentation];
-          [v33 addObject:v39];
+          dictionaryRepresentation5 = [*(*(&v113 + 1) + 8 * n) dictionaryRepresentation];
+          [v33 addObject:dictionaryRepresentation5];
         }
 
         v36 = [(NSMutableArray *)v34 countByEnumeratingWithState:&v113 objects:v139 count:16];
@@ -414,14 +414,14 @@
       while (v36);
     }
 
-    [v3 setObject:v33 forKey:@"calendarEvents"];
+    [dictionary setObject:v33 forKey:@"calendarEvents"];
   }
 
   mapsActiveNavigation = self->_mapsActiveNavigation;
   if (mapsActiveNavigation)
   {
-    v41 = [(PCPMapsActiveNavigation *)mapsActiveNavigation dictionaryRepresentation];
-    [v3 setObject:v41 forKey:@"mapsActiveNavigation"];
+    dictionaryRepresentation6 = [(PCPMapsActiveNavigation *)mapsActiveNavigation dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"mapsActiveNavigation"];
   }
 
   if ([(NSMutableArray *)self->_mapsHistoricalNavigations count])
@@ -446,8 +446,8 @@
             objc_enumerationMutation(v43);
           }
 
-          v48 = [*(*(&v109 + 1) + 8 * ii) dictionaryRepresentation];
-          [v42 addObject:v48];
+          dictionaryRepresentation7 = [*(*(&v109 + 1) + 8 * ii) dictionaryRepresentation];
+          [v42 addObject:dictionaryRepresentation7];
         }
 
         v45 = [(NSMutableArray *)v43 countByEnumeratingWithState:&v109 objects:v138 count:16];
@@ -456,7 +456,7 @@
       while (v45);
     }
 
-    [v3 setObject:v42 forKey:@"mapsHistoricalNavigation"];
+    [dictionary setObject:v42 forKey:@"mapsHistoricalNavigation"];
   }
 
   if ([(NSMutableArray *)self->_mapsViewedPlaces count])
@@ -481,8 +481,8 @@
             objc_enumerationMutation(v50);
           }
 
-          v55 = [*(*(&v105 + 1) + 8 * jj) dictionaryRepresentation];
-          [v49 addObject:v55];
+          dictionaryRepresentation8 = [*(*(&v105 + 1) + 8 * jj) dictionaryRepresentation];
+          [v49 addObject:dictionaryRepresentation8];
         }
 
         v52 = [(NSMutableArray *)v50 countByEnumeratingWithState:&v105 objects:v137 count:16];
@@ -491,14 +491,14 @@
       while (v52);
     }
 
-    [v3 setObject:v49 forKey:@"mapsViewedPlaces"];
+    [dictionary setObject:v49 forKey:@"mapsViewedPlaces"];
   }
 
   parkedCar = self->_parkedCar;
   if (parkedCar)
   {
-    v57 = [(PCPParkedCar *)parkedCar dictionaryRepresentation];
-    [v3 setObject:v57 forKey:@"parkedCar"];
+    dictionaryRepresentation9 = [(PCPParkedCar *)parkedCar dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation9 forKey:@"parkedCar"];
   }
 
   if ([(NSMutableArray *)self->_motionActivitys count])
@@ -523,8 +523,8 @@
             objc_enumerationMutation(v59);
           }
 
-          v64 = [*(*(&v101 + 1) + 8 * kk) dictionaryRepresentation];
-          [v58 addObject:v64];
+          dictionaryRepresentation10 = [*(*(&v101 + 1) + 8 * kk) dictionaryRepresentation];
+          [v58 addObject:dictionaryRepresentation10];
         }
 
         v61 = [(NSMutableArray *)v59 countByEnumeratingWithState:&v101 objects:v136 count:16];
@@ -533,7 +533,7 @@
       while (v61);
     }
 
-    [v3 setObject:v58 forKey:@"motionActivity"];
+    [dictionary setObject:v58 forKey:@"motionActivity"];
   }
 
   if ([(NSMutableArray *)self->_homeKitHomes count])
@@ -558,8 +558,8 @@
             objc_enumerationMutation(v66);
           }
 
-          v71 = [*(*(&v97 + 1) + 8 * mm) dictionaryRepresentation];
-          [v65 addObject:v71];
+          dictionaryRepresentation11 = [*(*(&v97 + 1) + 8 * mm) dictionaryRepresentation];
+          [v65 addObject:dictionaryRepresentation11];
         }
 
         v68 = [(NSMutableArray *)v66 countByEnumeratingWithState:&v97 objects:v135 count:16];
@@ -568,7 +568,7 @@
       while (v68);
     }
 
-    [v3 setObject:v65 forKey:@"homeKitHomes"];
+    [dictionary setObject:v65 forKey:@"homeKitHomes"];
   }
 
   if ([(NSMutableArray *)self->_workouts count])
@@ -593,8 +593,8 @@
             objc_enumerationMutation(v73);
           }
 
-          v78 = [*(*(&v93 + 1) + 8 * nn) dictionaryRepresentation];
-          [v72 addObject:v78];
+          dictionaryRepresentation12 = [*(*(&v93 + 1) + 8 * nn) dictionaryRepresentation];
+          [v72 addObject:dictionaryRepresentation12];
         }
 
         v75 = [(NSMutableArray *)v73 countByEnumeratingWithState:&v93 objects:v134 count:16];
@@ -603,7 +603,7 @@
       while (v75);
     }
 
-    [v3 setObject:v72 forKey:@"workouts"];
+    [dictionary setObject:v72 forKey:@"workouts"];
   }
 
   if ([(NSMutableArray *)self->_propagatedLocations count])
@@ -628,8 +628,8 @@
             objc_enumerationMutation(v80);
           }
 
-          v85 = [*(*(&v89 + 1) + 8 * i1) dictionaryRepresentation];
-          [v79 addObject:v85];
+          dictionaryRepresentation13 = [*(*(&v89 + 1) + 8 * i1) dictionaryRepresentation];
+          [v79 addObject:dictionaryRepresentation13];
         }
 
         v82 = [(NSMutableArray *)v80 countByEnumeratingWithState:&v89 objects:v133 count:16];
@@ -638,24 +638,24 @@
       while (v82);
     }
 
-    [v3 setObject:v79 forKey:@"propagatedLocations"];
+    [dictionary setObject:v79 forKey:@"propagatedLocations"];
   }
 
   currentTimeZoneAbbreviation = self->_currentTimeZoneAbbreviation;
   if (currentTimeZoneAbbreviation)
   {
-    [v3 setObject:currentTimeZoneAbbreviation forKey:@"currentTimeZoneAbbreviation"];
+    [dictionary setObject:currentTimeZoneAbbreviation forKey:@"currentTimeZoneAbbreviation"];
   }
 
   v87 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v128 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     currentTimeCFAbsolute = self->_currentTimeCFAbsolute;
@@ -1032,23 +1032,23 @@
   v72 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = *&self->_currentTimeCFAbsolute;
-    *(v4 + 128) |= 1u;
+    toCopy[1] = *&self->_currentTimeCFAbsolute;
+    *(toCopy + 128) |= 1u;
   }
 
-  v49 = v4;
+  v49 = toCopy;
   if ([(PCPInputSignals *)self visitsCount])
   {
     [v49 clearVisits];
-    v5 = [(PCPInputSignals *)self visitsCount];
-    if (v5)
+    visitsCount = [(PCPInputSignals *)self visitsCount];
+    if (visitsCount)
     {
-      v6 = v5;
+      v6 = visitsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(PCPInputSignals *)self visitAtIndex:i];
@@ -1060,10 +1060,10 @@
   if ([(PCPInputSignals *)self transitionsCount])
   {
     [v49 clearTransitions];
-    v9 = [(PCPInputSignals *)self transitionsCount];
-    if (v9)
+    transitionsCount = [(PCPInputSignals *)self transitionsCount];
+    if (transitionsCount)
     {
-      v10 = v9;
+      v10 = transitionsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(PCPInputSignals *)self transitionsAtIndex:j];
@@ -1075,10 +1075,10 @@
   if ([(PCPInputSignals *)self locationOfInterestsCount])
   {
     [v49 clearLocationOfInterests];
-    v13 = [(PCPInputSignals *)self locationOfInterestsCount];
-    if (v13)
+    locationOfInterestsCount = [(PCPInputSignals *)self locationOfInterestsCount];
+    if (locationOfInterestsCount)
     {
-      v14 = v13;
+      v14 = locationOfInterestsCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(PCPInputSignals *)self locationOfInterestsAtIndex:k];
@@ -1090,10 +1090,10 @@
   if ([(PCPInputSignals *)self locationHistorysCount])
   {
     [v49 clearLocationHistorys];
-    v17 = [(PCPInputSignals *)self locationHistorysCount];
-    if (v17)
+    locationHistorysCount = [(PCPInputSignals *)self locationHistorysCount];
+    if (locationHistorysCount)
     {
-      v18 = v17;
+      v18 = locationHistorysCount;
       for (m = 0; m != v18; ++m)
       {
         v20 = [(PCPInputSignals *)self locationHistoryAtIndex:m];
@@ -1105,10 +1105,10 @@
   if ([(PCPInputSignals *)self calendarEventsCount])
   {
     [v49 clearCalendarEvents];
-    v21 = [(PCPInputSignals *)self calendarEventsCount];
-    if (v21)
+    calendarEventsCount = [(PCPInputSignals *)self calendarEventsCount];
+    if (calendarEventsCount)
     {
-      v22 = v21;
+      v22 = calendarEventsCount;
       for (n = 0; n != v22; ++n)
       {
         v24 = [(PCPInputSignals *)self calendarEventsAtIndex:n];
@@ -1125,10 +1125,10 @@
   if ([(PCPInputSignals *)self mapsHistoricalNavigationsCount])
   {
     [v49 clearMapsHistoricalNavigations];
-    v25 = [(PCPInputSignals *)self mapsHistoricalNavigationsCount];
-    if (v25)
+    mapsHistoricalNavigationsCount = [(PCPInputSignals *)self mapsHistoricalNavigationsCount];
+    if (mapsHistoricalNavigationsCount)
     {
-      v26 = v25;
+      v26 = mapsHistoricalNavigationsCount;
       for (ii = 0; ii != v26; ++ii)
       {
         v28 = [(PCPInputSignals *)self mapsHistoricalNavigationAtIndex:ii];
@@ -1140,10 +1140,10 @@
   if ([(PCPInputSignals *)self mapsViewedPlacesCount])
   {
     [v49 clearMapsViewedPlaces];
-    v29 = [(PCPInputSignals *)self mapsViewedPlacesCount];
-    if (v29)
+    mapsViewedPlacesCount = [(PCPInputSignals *)self mapsViewedPlacesCount];
+    if (mapsViewedPlacesCount)
     {
-      v30 = v29;
+      v30 = mapsViewedPlacesCount;
       for (jj = 0; jj != v30; ++jj)
       {
         v32 = [(PCPInputSignals *)self mapsViewedPlacesAtIndex:jj];
@@ -1160,10 +1160,10 @@
   if ([(PCPInputSignals *)self motionActivitysCount])
   {
     [v49 clearMotionActivitys];
-    v33 = [(PCPInputSignals *)self motionActivitysCount];
-    if (v33)
+    motionActivitysCount = [(PCPInputSignals *)self motionActivitysCount];
+    if (motionActivitysCount)
     {
-      v34 = v33;
+      v34 = motionActivitysCount;
       for (kk = 0; kk != v34; ++kk)
       {
         v36 = [(PCPInputSignals *)self motionActivityAtIndex:kk];
@@ -1175,10 +1175,10 @@
   if ([(PCPInputSignals *)self homeKitHomesCount])
   {
     [v49 clearHomeKitHomes];
-    v37 = [(PCPInputSignals *)self homeKitHomesCount];
-    if (v37)
+    homeKitHomesCount = [(PCPInputSignals *)self homeKitHomesCount];
+    if (homeKitHomesCount)
     {
-      v38 = v37;
+      v38 = homeKitHomesCount;
       for (mm = 0; mm != v38; ++mm)
       {
         v40 = [(PCPInputSignals *)self homeKitHomesAtIndex:mm];
@@ -1190,10 +1190,10 @@
   if ([(PCPInputSignals *)self workoutsCount])
   {
     [v49 clearWorkouts];
-    v41 = [(PCPInputSignals *)self workoutsCount];
-    if (v41)
+    workoutsCount = [(PCPInputSignals *)self workoutsCount];
+    if (workoutsCount)
     {
-      v42 = v41;
+      v42 = workoutsCount;
       for (nn = 0; nn != v42; ++nn)
       {
         v44 = [(PCPInputSignals *)self workoutsAtIndex:nn];
@@ -1205,10 +1205,10 @@
   if ([(PCPInputSignals *)self propagatedLocationsCount])
   {
     [v49 clearPropagatedLocations];
-    v45 = [(PCPInputSignals *)self propagatedLocationsCount];
-    if (v45)
+    propagatedLocationsCount = [(PCPInputSignals *)self propagatedLocationsCount];
+    if (propagatedLocationsCount)
     {
-      v46 = v45;
+      v46 = propagatedLocationsCount;
       for (i1 = 0; i1 != v46; ++i1)
       {
         v48 = [(PCPInputSignals *)self propagatedLocationsAtIndex:i1];
@@ -1223,10 +1223,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v136 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -1254,7 +1254,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v121 + 1) + 8 * v11) copyWithZone:a3];
+        v12 = [*(*(&v121 + 1) + 8 * v11) copyWithZone:zone];
         [v6 addVisit:v12];
 
         ++v11;
@@ -1287,7 +1287,7 @@
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v117 + 1) + 8 * v17) copyWithZone:a3];
+        v18 = [*(*(&v117 + 1) + 8 * v17) copyWithZone:zone];
         [v6 addTransitions:v18];
 
         ++v17;
@@ -1320,7 +1320,7 @@
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v113 + 1) + 8 * v23) copyWithZone:a3];
+        v24 = [*(*(&v113 + 1) + 8 * v23) copyWithZone:zone];
         [v6 addLocationOfInterests:v24];
 
         ++v23;
@@ -1353,7 +1353,7 @@
           objc_enumerationMutation(v25);
         }
 
-        v30 = [*(*(&v109 + 1) + 8 * v29) copyWithZone:a3];
+        v30 = [*(*(&v109 + 1) + 8 * v29) copyWithZone:zone];
         [v6 addLocationHistory:v30];
 
         ++v29;
@@ -1386,7 +1386,7 @@
           objc_enumerationMutation(v31);
         }
 
-        v36 = [*(*(&v105 + 1) + 8 * v35) copyWithZone:a3];
+        v36 = [*(*(&v105 + 1) + 8 * v35) copyWithZone:zone];
         [v6 addCalendarEvents:v36];
 
         ++v35;
@@ -1399,7 +1399,7 @@
     while (v33);
   }
 
-  v37 = [(PCPMapsActiveNavigation *)self->_mapsActiveNavigation copyWithZone:a3];
+  v37 = [(PCPMapsActiveNavigation *)self->_mapsActiveNavigation copyWithZone:zone];
   v38 = v6[7];
   v6[7] = v37;
 
@@ -1423,7 +1423,7 @@
           objc_enumerationMutation(v39);
         }
 
-        v44 = [*(*(&v101 + 1) + 8 * v43) copyWithZone:a3];
+        v44 = [*(*(&v101 + 1) + 8 * v43) copyWithZone:zone];
         [v6 addMapsHistoricalNavigation:v44];
 
         ++v43;
@@ -1456,7 +1456,7 @@
           objc_enumerationMutation(v45);
         }
 
-        v50 = [*(*(&v97 + 1) + 8 * v49) copyWithZone:a3];
+        v50 = [*(*(&v97 + 1) + 8 * v49) copyWithZone:zone];
         [v6 addMapsViewedPlaces:v50];
 
         ++v49;
@@ -1469,7 +1469,7 @@
     while (v47);
   }
 
-  v51 = [(PCPParkedCar *)self->_parkedCar copyWithZone:a3];
+  v51 = [(PCPParkedCar *)self->_parkedCar copyWithZone:zone];
   v52 = v6[11];
   v6[11] = v51;
 
@@ -1493,7 +1493,7 @@
           objc_enumerationMutation(v53);
         }
 
-        v58 = [*(*(&v93 + 1) + 8 * v57) copyWithZone:a3];
+        v58 = [*(*(&v93 + 1) + 8 * v57) copyWithZone:zone];
         [v6 addMotionActivity:v58];
 
         ++v57;
@@ -1526,7 +1526,7 @@
           objc_enumerationMutation(v59);
         }
 
-        v64 = [*(*(&v89 + 1) + 8 * v63) copyWithZone:a3];
+        v64 = [*(*(&v89 + 1) + 8 * v63) copyWithZone:zone];
         [v6 addHomeKitHomes:v64];
 
         ++v63;
@@ -1559,7 +1559,7 @@
           objc_enumerationMutation(v65);
         }
 
-        v70 = [*(*(&v85 + 1) + 8 * v69) copyWithZone:a3];
+        v70 = [*(*(&v85 + 1) + 8 * v69) copyWithZone:zone];
         [v6 addWorkouts:v70];
 
         ++v69;
@@ -1592,7 +1592,7 @@
           objc_enumerationMutation(v71);
         }
 
-        v76 = [*(*(&v81 + 1) + 8 * v75) copyWithZone:{a3, v81}];
+        v76 = [*(*(&v81 + 1) + 8 * v75) copyWithZone:{zone, v81}];
         [v6 addPropagatedLocations:v76];
 
         ++v75;
@@ -1605,7 +1605,7 @@
     while (v73);
   }
 
-  v77 = [(NSString *)self->_currentTimeZoneAbbreviation copyWithZone:a3];
+  v77 = [(NSString *)self->_currentTimeZoneAbbreviation copyWithZone:zone];
   v78 = v6[3];
   v6[3] = v77;
 
@@ -1613,24 +1613,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_35;
   }
 
-  v5 = *(v4 + 128);
+  v5 = *(equalCopy + 128);
   if (*&self->_has)
   {
-    if ((*(v4 + 128) & 1) == 0 || self->_currentTimeCFAbsolute != *(v4 + 1))
+    if ((*(equalCopy + 128) & 1) == 0 || self->_currentTimeCFAbsolute != *(equalCopy + 1))
     {
       goto LABEL_35;
     }
   }
 
-  else if (*(v4 + 128))
+  else if (*(equalCopy + 128))
   {
 LABEL_35:
     v20 = 0;
@@ -1638,13 +1638,13 @@ LABEL_35:
   }
 
   visits = self->_visits;
-  if (visits | *(v4 + 14) && ![(NSMutableArray *)visits isEqual:?])
+  if (visits | *(equalCopy + 14) && ![(NSMutableArray *)visits isEqual:?])
   {
     goto LABEL_35;
   }
 
   transitions = self->_transitions;
-  if (transitions | *(v4 + 13))
+  if (transitions | *(equalCopy + 13))
   {
     if (![(NSMutableArray *)transitions isEqual:?])
     {
@@ -1653,7 +1653,7 @@ LABEL_35:
   }
 
   locationOfInterests = self->_locationOfInterests;
-  if (locationOfInterests | *(v4 + 6))
+  if (locationOfInterests | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)locationOfInterests isEqual:?])
     {
@@ -1662,7 +1662,7 @@ LABEL_35:
   }
 
   locationHistorys = self->_locationHistorys;
-  if (locationHistorys | *(v4 + 5))
+  if (locationHistorys | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)locationHistorys isEqual:?])
     {
@@ -1671,7 +1671,7 @@ LABEL_35:
   }
 
   calendarEvents = self->_calendarEvents;
-  if (calendarEvents | *(v4 + 2))
+  if (calendarEvents | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)calendarEvents isEqual:?])
     {
@@ -1680,7 +1680,7 @@ LABEL_35:
   }
 
   mapsActiveNavigation = self->_mapsActiveNavigation;
-  if (mapsActiveNavigation | *(v4 + 7))
+  if (mapsActiveNavigation | *(equalCopy + 7))
   {
     if (![(PCPMapsActiveNavigation *)mapsActiveNavigation isEqual:?])
     {
@@ -1689,7 +1689,7 @@ LABEL_35:
   }
 
   mapsHistoricalNavigations = self->_mapsHistoricalNavigations;
-  if (mapsHistoricalNavigations | *(v4 + 8))
+  if (mapsHistoricalNavigations | *(equalCopy + 8))
   {
     if (![(NSMutableArray *)mapsHistoricalNavigations isEqual:?])
     {
@@ -1698,7 +1698,7 @@ LABEL_35:
   }
 
   mapsViewedPlaces = self->_mapsViewedPlaces;
-  if (mapsViewedPlaces | *(v4 + 9))
+  if (mapsViewedPlaces | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)mapsViewedPlaces isEqual:?])
     {
@@ -1707,7 +1707,7 @@ LABEL_35:
   }
 
   parkedCar = self->_parkedCar;
-  if (parkedCar | *(v4 + 11))
+  if (parkedCar | *(equalCopy + 11))
   {
     if (![(PCPParkedCar *)parkedCar isEqual:?])
     {
@@ -1716,7 +1716,7 @@ LABEL_35:
   }
 
   motionActivitys = self->_motionActivitys;
-  if (motionActivitys | *(v4 + 10))
+  if (motionActivitys | *(equalCopy + 10))
   {
     if (![(NSMutableArray *)motionActivitys isEqual:?])
     {
@@ -1725,7 +1725,7 @@ LABEL_35:
   }
 
   homeKitHomes = self->_homeKitHomes;
-  if (homeKitHomes | *(v4 + 4))
+  if (homeKitHomes | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)homeKitHomes isEqual:?])
     {
@@ -1734,7 +1734,7 @@ LABEL_35:
   }
 
   workouts = self->_workouts;
-  if (workouts | *(v4 + 15))
+  if (workouts | *(equalCopy + 15))
   {
     if (![(NSMutableArray *)workouts isEqual:?])
     {
@@ -1743,7 +1743,7 @@ LABEL_35:
   }
 
   propagatedLocations = self->_propagatedLocations;
-  if (propagatedLocations | *(v4 + 12))
+  if (propagatedLocations | *(equalCopy + 12))
   {
     if (![(NSMutableArray *)propagatedLocations isEqual:?])
     {
@@ -1752,7 +1752,7 @@ LABEL_35:
   }
 
   currentTimeZoneAbbreviation = self->_currentTimeZoneAbbreviation;
-  if (currentTimeZoneAbbreviation | *(v4 + 3))
+  if (currentTimeZoneAbbreviation | *(equalCopy + 3))
   {
     v20 = [(NSString *)currentTimeZoneAbbreviation isEqual:?];
   }
@@ -1818,14 +1818,14 @@ LABEL_36:
   return v18 ^ v21 ^ [(NSString *)self->_currentTimeZoneAbbreviation hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v121 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 128))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 128))
   {
-    self->_currentTimeCFAbsolute = *(v4 + 1);
+    self->_currentTimeCFAbsolute = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -1833,7 +1833,7 @@ LABEL_36:
   v109 = 0u;
   v106 = 0u;
   v107 = 0u;
-  v6 = *(v4 + 14);
+  v6 = *(fromCopy + 14);
   v7 = [v6 countByEnumeratingWithState:&v106 objects:v120 count:16];
   if (v7)
   {

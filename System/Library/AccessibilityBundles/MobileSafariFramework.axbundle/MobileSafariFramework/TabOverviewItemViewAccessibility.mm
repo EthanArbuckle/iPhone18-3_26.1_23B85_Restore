@@ -1,5 +1,5 @@
 @interface TabOverviewItemViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityScrollToVisible;
 - (_NSRange)_accessibilityRowRange;
 - (id)_accessibilitySupplementaryFooterViews;
@@ -13,23 +13,23 @@
 
 @implementation TabOverviewItemViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFTabOverviewItemView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"SFTabOverviewItemView" hasSwiftField:@"thumbnailView" withSwiftType:"TabThumbnailView"];
-  [v3 validateClass:@"SFTabOverviewItemView" hasSwiftField:@"configuration" withSwiftType:"Configuration"];
-  [v3 validateSwiftStruct:@"MobileSafari.TabOverviewItemView[class].Configuration" hasSwiftField:@"canBeClosed" withSwiftType:"Bool"];
-  [v3 validateSwiftStruct:@"MobileSafari.TabOverviewItemView[class].Configuration" hasSwiftField:@"isPinned" withSwiftType:"Bool"];
-  [v3 validateSwiftStruct:@"MobileSafari.TabOverviewItemView[class].Configuration" hasSwiftField:@"isSelected" withSwiftType:"Bool"];
-  [v3 validateSwiftStruct:@"MobileSafari.TabOverviewItemView[class].Configuration" hasSwiftField:@"showsMultipleSelectionIndicator" withSwiftType:"Bool"];
-  [v3 validateClass:@"SFTabThumbnailView" hasInstanceMethod:@"trailingCornerButtonReceivedTap" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SFTabThumbnailView" hasSwiftField:@"trailingCornerButton" withSwiftType:"CornerButton"];
-  [v3 validateClass:@"SFTabOverview" hasInstanceMethod:@"indexInAllItemsForItemView:" withFullSignature:{"q", "@", 0}];
-  [v3 validateClass:@"SFTabOverview" hasInstanceMethod:@"totalItemCount" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SFTabOverview" hasSwiftField:@"content" withSwiftType:"Content"];
-  [v3 validateSwiftStruct:@"MobileSafari.TabOverview[class].Content" hasSwiftField:@"cancelRetitlingButtonStyle" withSwiftType:"CancelEditingButtonStyle"];
-  [v3 validateSwiftEnum:@"MobileSafari.TabOverviewLargeTitleView[class].CancelEditingButtonStyle"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFTabOverviewItemView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"SFTabOverviewItemView" hasSwiftField:@"thumbnailView" withSwiftType:"TabThumbnailView"];
+  [validationsCopy validateClass:@"SFTabOverviewItemView" hasSwiftField:@"configuration" withSwiftType:"Configuration"];
+  [validationsCopy validateSwiftStruct:@"MobileSafari.TabOverviewItemView[class].Configuration" hasSwiftField:@"canBeClosed" withSwiftType:"Bool"];
+  [validationsCopy validateSwiftStruct:@"MobileSafari.TabOverviewItemView[class].Configuration" hasSwiftField:@"isPinned" withSwiftType:"Bool"];
+  [validationsCopy validateSwiftStruct:@"MobileSafari.TabOverviewItemView[class].Configuration" hasSwiftField:@"isSelected" withSwiftType:"Bool"];
+  [validationsCopy validateSwiftStruct:@"MobileSafari.TabOverviewItemView[class].Configuration" hasSwiftField:@"showsMultipleSelectionIndicator" withSwiftType:"Bool"];
+  [validationsCopy validateClass:@"SFTabThumbnailView" hasInstanceMethod:@"trailingCornerButtonReceivedTap" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SFTabThumbnailView" hasSwiftField:@"trailingCornerButton" withSwiftType:"CornerButton"];
+  [validationsCopy validateClass:@"SFTabOverview" hasInstanceMethod:@"indexInAllItemsForItemView:" withFullSignature:{"q", "@", 0}];
+  [validationsCopy validateClass:@"SFTabOverview" hasInstanceMethod:@"totalItemCount" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SFTabOverview" hasSwiftField:@"content" withSwiftType:"Content"];
+  [validationsCopy validateSwiftStruct:@"MobileSafari.TabOverview[class].Content" hasSwiftField:@"cancelRetitlingButtonStyle" withSwiftType:"CancelEditingButtonStyle"];
+  [validationsCopy validateSwiftEnum:@"MobileSafari.TabOverviewLargeTitleView[class].CancelEditingButtonStyle"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -50,16 +50,16 @@
   v3 = [(TabOverviewItemViewAccessibility *)self _accessibilityAncestorIsKindOf:MEMORY[0x29C2E0540](@"SFTabOverview", a2)];
   v4 = [v3 safeSwiftValueForKey:@"content"];
   v5 = [v4 safeSwiftValueForKey:@"cancelRetitlingButtonStyle"];
-  v6 = [v5 safeSwiftEnumCase];
-  v7 = [v6 isEqualToString:@"undo"];
+  safeSwiftEnumCase = [v5 safeSwiftEnumCase];
+  v7 = [safeSwiftEnumCase isEqualToString:@"undo"];
 
   if (v7)
   {
-    v8 = 0;
+    array = 0;
     goto LABEL_8;
   }
 
-  v8 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   objc_initWeak(&location, self);
   v9 = [(TabOverviewItemViewAccessibility *)self safeSwiftValueForKey:@"configuration"];
   if ([v9 safeSwiftBoolForKey:@"canBeClosed"])
@@ -82,7 +82,7 @@
         v19 = [v17 initWithName:v18 actionHandler:v22];
 
         [v19 _accessibilitySetInternalCustomActionIdentifier:@"AX_CLOSE"];
-        [v8 addObject:v19];
+        [array addObject:v19];
 
         objc_destroyWeak(&v23);
       }
@@ -101,12 +101,12 @@ LABEL_7:
   objc_copyWeak(&v21, &location);
   v13 = [v11 initWithName:v12 actionHandler:v20];
 
-  [v8 addObject:v13];
+  [array addObject:v13];
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
 LABEL_8:
 
-  return v8;
+  return array;
 }
 
 uint64_t __62__TabOverviewItemViewAccessibility_accessibilityCustomActions__block_invoke(uint64_t a1)
@@ -136,17 +136,17 @@ uint64_t __62__TabOverviewItemViewAccessibility_accessibilityCustomActions__bloc
     v3 = MEMORY[0x29EDB8D80];
     v4 = [(TabOverviewItemViewAccessibility *)self safeSwiftValueForKey:@"thumbnailView"];
     v5 = [v4 safeSwiftValueForKey:@"trailingCornerButton"];
-    v6 = [v3 axArrayByIgnoringNilElementsWithCount:{1, v5}];
+    _accessibilitySupplementaryFooterViews = [v3 axArrayByIgnoringNilElementsWithCount:{1, v5}];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = TabOverviewItemViewAccessibility;
-    v6 = [(TabOverviewItemViewAccessibility *)&v8 _accessibilitySupplementaryFooterViews];
+    _accessibilitySupplementaryFooterViews = [(TabOverviewItemViewAccessibility *)&v8 _accessibilitySupplementaryFooterViews];
   }
 
-  return v6;
+  return _accessibilitySupplementaryFooterViews;
 }
 
 - (id)automationElements
@@ -248,19 +248,19 @@ uint64_t __58__TabOverviewItemViewAccessibility__accessibilityRowRange__block_in
   {
     v10.receiver = self;
     v10.super_class = TabOverviewItemViewAccessibility;
-    v5 = [(TabOverviewItemViewAccessibility *)&v10 accessibilityLabel];
+    accessibilityLabel = [(TabOverviewItemViewAccessibility *)&v10 accessibilityLabel];
     v8 = accessibilityMobileSafariLocalizedString(@"tab.pinned");
-    v6 = __AXStringForVariables();
+    accessibilityLabel2 = __AXStringForVariables();
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = TabOverviewItemViewAccessibility;
-    v6 = [(TabOverviewItemViewAccessibility *)&v9 accessibilityLabel];
+    accessibilityLabel2 = [(TabOverviewItemViewAccessibility *)&v9 accessibilityLabel];
   }
 
-  return v6;
+  return accessibilityLabel2;
 }
 
 @end

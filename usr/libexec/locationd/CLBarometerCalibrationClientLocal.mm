@@ -1,18 +1,18 @@
 @interface CLBarometerCalibrationClientLocal
-- (CLBarometerCalibrationClientLocal)initWithOdometerNotifier:(void *)a3;
-- (void)onBarometerElevationSpectatorUpdate:(CLElevationChangeEntry *)a3;
+- (CLBarometerCalibrationClientLocal)initWithOdometerNotifier:(void *)notifier;
+- (void)onBarometerElevationSpectatorUpdate:(CLElevationChangeEntry *)update;
 @end
 
 @implementation CLBarometerCalibrationClientLocal
 
-- (CLBarometerCalibrationClientLocal)initWithOdometerNotifier:(void *)a3
+- (CLBarometerCalibrationClientLocal)initWithOdometerNotifier:(void *)notifier
 {
   v5.receiver = self;
   v5.super_class = CLBarometerCalibrationClientLocal;
   result = [(CLBarometerCalibrationClientLocal *)&v5 init];
   if (result)
   {
-    result->_odometerNotifier = a3;
+    result->_odometerNotifier = notifier;
     result->_valid = 1;
   }
 
@@ -24,14 +24,14 @@
   return result;
 }
 
-- (void)onBarometerElevationSpectatorUpdate:(CLElevationChangeEntry *)a3
+- (void)onBarometerElevationSpectatorUpdate:(CLElevationChangeEntry *)update
 {
   memset(&v5[4], 0, 128);
-  v3 = *&a3->var2;
-  v5[0] = *&a3->var0;
+  v3 = *&update->var2;
+  v5[0] = *&update->var0;
   v5[1] = v3;
-  v4 = *&a3->var8;
-  v5[2] = *&a3->var5;
+  v4 = *&update->var8;
+  v5[2] = *&update->var5;
   v5[3] = v4;
   sub_1000A7610(self->_odometerNotifier, v5);
 }

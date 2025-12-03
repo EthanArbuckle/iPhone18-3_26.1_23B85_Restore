@@ -2,10 +2,10 @@
 + (const)periodicActivityID;
 + (id)sharedInstance;
 + (int64_t)periodicActivityInterval;
-+ (void)registerPeriodicActivityWithIdentifier:(id)a3 queue:(id)a4 activity:(id)a5;
++ (void)registerPeriodicActivityWithIdentifier:(id)identifier queue:(id)queue activity:(id)activity;
 - (PeriodicMaintenanceActivity)init;
-- (void)_handleActivityRun:(id)a3;
-- (void)_registerPeriodicActivityWithIdentifier:(id)a3 queue:(id)a4 activity:(id)a5;
+- (void)_handleActivityRun:(id)run;
+- (void)_registerPeriodicActivityWithIdentifier:(id)identifier queue:(id)queue activity:(id)activity;
 - (void)_registerPeriodicMaintenanceActivity;
 - (void)dealloc;
 @end
@@ -14,35 +14,35 @@
 
 + (int64_t)periodicActivityInterval
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PeriodicMaintenanceActivity.m" lineNumber:38 description:{@"Subclasses must provide an impl for %s", "+[PeriodicMaintenanceActivity periodicActivityInterval]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PeriodicMaintenanceActivity.m" lineNumber:38 description:{@"Subclasses must provide an impl for %s", "+[PeriodicMaintenanceActivity periodicActivityInterval]"}];
 
   return *MEMORY[0x277D86298];
 }
 
 + (const)periodicActivityID
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PeriodicMaintenanceActivity.m" lineNumber:44 description:{@"Subclasses must provide an impl for %s", "+[PeriodicMaintenanceActivity periodicActivityID]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PeriodicMaintenanceActivity.m" lineNumber:44 description:{@"Subclasses must provide an impl for %s", "+[PeriodicMaintenanceActivity periodicActivityID]"}];
 
   return "";
 }
 
 + (id)sharedInstance
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PeriodicMaintenanceActivity.m" lineNumber:50 description:{@"Subclasses must provide an impl for %s", "+[PeriodicMaintenanceActivity sharedInstance]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PeriodicMaintenanceActivity.m" lineNumber:50 description:{@"Subclasses must provide an impl for %s", "+[PeriodicMaintenanceActivity sharedInstance]"}];
 
   return 0;
 }
 
-+ (void)registerPeriodicActivityWithIdentifier:(id)a3 queue:(id)a4 activity:(id)a5
++ (void)registerPeriodicActivityWithIdentifier:(id)identifier queue:(id)queue activity:(id)activity
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_opt_class() sharedInstance];
-  [v10 _registerPeriodicActivityWithIdentifier:v9 queue:v8 activity:v7];
+  activityCopy = activity;
+  queueCopy = queue;
+  identifierCopy = identifier;
+  sharedInstance = [objc_opt_class() sharedInstance];
+  [sharedInstance _registerPeriodicActivityWithIdentifier:identifierCopy queue:queueCopy activity:activityCopy];
 }
 
 - (PeriodicMaintenanceActivity)init
@@ -74,8 +74,8 @@ LABEL_6:
 
 - (void)dealloc
 {
-  v3 = [objc_opt_class() periodicActivityID];
-  xpc_activity_unregister(v3);
+  periodicActivityID = [objc_opt_class() periodicActivityID];
+  xpc_activity_unregister(periodicActivityID);
   v4.receiver = self;
   v4.super_class = PeriodicMaintenanceActivity;
   [(PeriodicMaintenanceActivity *)&v4 dealloc];
@@ -91,15 +91,15 @@ LABEL_6:
     xpc_dictionary_set_string(v3, *MEMORY[0x277D86340], *MEMORY[0x277D86348]);
     xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86360], 1);
     v5 = *MEMORY[0x277D86288];
-    v6 = [objc_opt_class() periodicActivityInterval];
-    xpc_dictionary_set_int64(v4, v5, v6);
-    v7 = [objc_opt_class() periodicActivityID];
+    periodicActivityInterval = [objc_opt_class() periodicActivityInterval];
+    xpc_dictionary_set_int64(v4, v5, periodicActivityInterval);
+    periodicActivityID = [objc_opt_class() periodicActivityID];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __67__PeriodicMaintenanceActivity__registerPeriodicMaintenanceActivity__block_invoke;
     handler[3] = &unk_27898D680;
     handler[4] = self;
-    xpc_activity_register(v7, v4, handler);
+    xpc_activity_register(periodicActivityID, v4, handler);
   }
 
   else
@@ -113,7 +113,7 @@ LABEL_6:
       *buf = 138412546;
       v15 = v11;
       v16 = 2080;
-      v17 = [objc_opt_class() periodicActivityID];
+      periodicActivityID2 = [objc_opt_class() periodicActivityID];
       _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_ERROR, "[%@] Unable to create xpc_activity criteria for %s", buf, 0x16u);
     }
   }
@@ -150,10 +150,10 @@ void __67__PeriodicMaintenanceActivity__registerPeriodicMaintenanceActivity__blo
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleActivityRun:(id)a3
+- (void)_handleActivityRun:(id)run
 {
   v41 = *MEMORY[0x277D85DE8];
-  activity = a3;
+  activity = run;
   obj = self->_activities;
   objc_sync_enter(obj);
   nextActivityIndex = self->_nextActivityIndex;
@@ -215,17 +215,17 @@ LABEL_13:
       {
         v13 = objc_opt_class();
         v14 = NSStringFromClass(v13);
-        v15 = [v11 activityIdentifier];
+        activityIdentifier = [v11 activityIdentifier];
         *buf = 138412546;
         v38 = v14;
         v39 = 2112;
-        v40 = v15;
+        v40 = activityIdentifier;
         _os_log_impl(&dword_23255B000, v12, OS_LOG_TYPE_DEFAULT, "[%@] Ready to run periodic activity %@", buf, 0x16u);
       }
 
-      v16 = [v11 activityQueue];
-      v17 = [v11 activityBlock];
-      dispatch_async(v16, v17);
+      activityQueue = [v11 activityQueue];
+      activityBlock = [v11 activityBlock];
+      dispatch_async(activityQueue, activityBlock);
 
       v18 = nextActivityIndex + 1;
       v19 = v7 == nextActivityIndex ? 0 : nextActivityIndex + 1;
@@ -271,14 +271,14 @@ LABEL_13:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerPeriodicActivityWithIdentifier:(id)a3 queue:(id)a4 activity:(id)a5
+- (void)_registerPeriodicActivityWithIdentifier:(id)identifier queue:(id)queue activity:(id)activity
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9 && v10 && [v8 length])
+  identifierCopy = identifier;
+  queueCopy = queue;
+  activityCopy = activity;
+  v11 = activityCopy;
+  if (queueCopy && activityCopy && [identifierCopy length])
   {
     v12 = self->_activities;
     objc_sync_enter(v12);
@@ -290,7 +290,7 @@ LABEL_13:
       *buf = 138412546;
       *&buf[4] = v15;
       *&buf[12] = 2112;
-      *&buf[14] = v8;
+      *&buf[14] = identifierCopy;
       _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_INFO, "[%@] Registering periodic activity %@", buf, 0x16u);
     }
 
@@ -303,16 +303,16 @@ LABEL_13:
     v27[1] = 3221225472;
     v27[2] = __86__PeriodicMaintenanceActivity__registerPeriodicActivityWithIdentifier_queue_activity___block_invoke;
     v27[3] = &unk_27898E9C0;
-    v17 = v8;
+    v17 = identifierCopy;
     v28 = v17;
-    v29 = self;
+    selfCopy = self;
     v30 = buf;
     [(NSMutableArray *)activities enumerateObjectsUsingBlock:v27];
     if (*(*&buf[8] + 24) == 1)
     {
       v18 = objc_alloc_init(MaintenanceActivity);
       [(MaintenanceActivity *)v18 setActivityBlock:v11];
-      [(MaintenanceActivity *)v18 setActivityQueue:v9];
+      [(MaintenanceActivity *)v18 setActivityQueue:queueCopy];
       [(MaintenanceActivity *)v18 setActivityIdentifier:v17];
       [(NSMutableArray *)self->_activities addObject:v18];
       v19 = otherLogHandle;

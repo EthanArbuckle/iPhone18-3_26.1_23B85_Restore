@@ -2,16 +2,16 @@
 + (AMSNetworkQualityInquiry)sharedInstance;
 + (BOOL)isEntitled;
 + (NSDictionary)lastConnectionReport;
-+ (id)reportForConnectionInterface:(id)a3 fromReports:(id)a4;
++ (id)reportForConnectionInterface:(id)interface fromReports:(id)reports;
 - (AMSNetworkQualityInquiry)init;
 - (id)investigateNetworks;
 - (void)dealloc;
-- (void)didStartTrackingNOI:(id)a3;
-- (void)didStopTrackingAllNOIs:(id)a3;
-- (void)didStopTrackingNOI:(id)a3;
+- (void)didStartTrackingNOI:(id)i;
+- (void)didStopTrackingAllNOIs:(id)is;
+- (void)didStopTrackingNOI:(id)i;
 - (void)drainKnownNetworksReadyHandlers;
-- (void)performWhenKnownNetworksReady:(id)a3;
-- (void)updateLastConnectionReportWithTask:(id)a3;
+- (void)performWhenKnownNetworksReady:(id)ready;
+- (void)updateLastConnectionReportWithTask:(id)task;
 @end
 
 @implementation AMSNetworkQualityInquiry
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __42__AMSNetworkQualityInquiry_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED6E2FF8 != -1)
   {
     dispatch_once(&qword_1ED6E2FF8, block);
@@ -70,13 +70,13 @@ void __42__AMSNetworkQualityInquiry_sharedInstance__block_invoke()
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v19 = objc_opt_class();
       v15 = v19;
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@: Missing entitlements to perform network quality inquiry.", buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Missing entitlements to perform network quality inquiry.", buf, 0xCu);
     }
 
     goto LABEL_11;
@@ -115,16 +115,16 @@ void __42__AMSNetworkQualityInquiry_sharedInstance__block_invoke()
     }
 
 LABEL_11:
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
 LABEL_5:
   self = self;
-  v12 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v12;
+  return selfCopy;
 }
 
 + (BOOL)isEntitled
@@ -421,32 +421,32 @@ void __47__AMSNetworkQualityInquiry_investigateNetworks__block_invoke_56(uint64_
 
 + (NSDictionary)lastConnectionReport
 {
-  v2 = [a1 sharedInstance];
-  v3 = [v2 lastConnectionReport];
+  sharedInstance = [self sharedInstance];
+  lastConnectionReport = [sharedInstance lastConnectionReport];
 
-  return v3;
+  return lastConnectionReport;
 }
 
-+ (id)reportForConnectionInterface:(id)a3 fromReports:(id)a4
++ (id)reportForConnectionInterface:(id)interface fromReports:(id)reports
 {
-  v5 = a4;
-  v6 = v5;
+  reportsCopy = reports;
+  v6 = reportsCopy;
   v7 = 0;
-  if (a3 && v5)
+  if (interface && reportsCopy)
   {
     v8 = MEMORY[0x1E6977E30];
-    v9 = a3;
-    v10 = [[v8 alloc] initWithInterfaceName:v9];
+    interfaceCopy = interface;
+    v10 = [[v8 alloc] initWithInterfaceName:interfaceCopy];
 
-    v11 = [v10 type];
-    if ((v11 - 1) > 2)
+    type = [v10 type];
+    if ((type - 1) > 2)
     {
       v7 = 0;
     }
 
     else
     {
-      v12 = off_1E73BA440[v11 - 1];
+      v12 = off_1E73BA440[type - 1];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __69__AMSNetworkQualityInquiry_reportForConnectionInterface_fromReports___block_invoke;
@@ -467,13 +467,13 @@ uint64_t __69__AMSNetworkQualityInquiry_reportForConnectionInterface_fromReports
   return v4;
 }
 
-- (void)updateLastConnectionReportWithTask:(id)a3
+- (void)updateLastConnectionReportWithTask:(id)task
 {
-  v4 = [a3 _timingData];
-  v5 = v4;
-  if (v4)
+  _timingData = [task _timingData];
+  v5 = _timingData;
+  if (_timingData)
   {
-    v6 = [v4 objectForKeyedSubscript:@"_kCFNTimingDataConnectionInterfaceIdentifier"];
+    v6 = [_timingData objectForKeyedSubscript:@"_kCFNTimingDataConnectionInterfaceIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -481,15 +481,15 @@ uint64_t __69__AMSNetworkQualityInquiry_reportForConnectionInterface_fromReports
 
       if (v7)
       {
-        v8 = [(AMSNetworkQualityInquiry *)self investigateNetworks];
+        investigateNetworks = [(AMSNetworkQualityInquiry *)self investigateNetworks];
         v9[0] = MEMORY[0x1E69E9820];
         v9[1] = 3221225472;
         v9[2] = __63__AMSNetworkQualityInquiry_updateLastConnectionReportWithTask___block_invoke;
         v9[3] = &unk_1E73B5B60;
         v7 = v7;
         v10 = v7;
-        v11 = self;
-        [v8 addFinishBlock:v9];
+        selfCopy = self;
+        [investigateNetworks addFinishBlock:v9];
       }
     }
 
@@ -521,17 +521,17 @@ uint64_t __63__AMSNetworkQualityInquiry_updateLastConnectionReportWithTask___blo
   return result;
 }
 
-- (void)performWhenKnownNetworksReady:(id)a3
+- (void)performWhenKnownNetworksReady:(id)ready
 {
-  v4 = a3;
+  readyCopy = ready;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__AMSNetworkQualityInquiry_performWhenKnownNetworksReady___block_invoke;
   v7[3] = &unk_1E73B36D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = readyCopy;
+  v6 = readyCopy;
   dispatch_async(queue, v7);
 }
 
@@ -553,12 +553,12 @@ void __58__AMSNetworkQualityInquiry_performWhenKnownNetworksReady___block_invoke
   }
 }
 
-- (void)didStartTrackingNOI:(id)a3
+- (void)didStartTrackingNOI:(id)i
 {
   queue = self->_queue;
-  v5 = a3;
+  iCopy = i;
   dispatch_assert_queue_V2(queue);
-  [(NSMutableSet *)self->_knownNetworks addObject:v5];
+  [(NSMutableSet *)self->_knownNetworks addObject:iCopy];
 
   if ([(AMSNetworkQualityInquiry *)self areKnownNetworksReady])
   {
@@ -567,41 +567,41 @@ void __58__AMSNetworkQualityInquiry_performWhenKnownNetworksReady___block_invoke
   }
 }
 
-- (void)didStopTrackingNOI:(id)a3
+- (void)didStopTrackingNOI:(id)i
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  iCopy = i;
   dispatch_assert_queue_V2(self->_queue);
-  [(NSMutableSet *)self->_knownNetworks removeObject:v4];
+  [(NSMutableSet *)self->_knownNetworks removeObject:iCopy];
   v5 = +[AMSLogConfig sharedConfig];
   if (!v5)
   {
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEBUG, "%{public}@: Stopped tracking %@, searching for interface again", &v7, 0x16u);
+    v10 = iCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: Stopped tracking %@, searching for interface again", &v7, 0x16u);
   }
 
-  -[NWNetworkOfInterestManager trackNOIAnyForInterfaceType:options:](self->_manager, "trackNOIAnyForInterfaceType:options:", [v4 interface], 0);
+  -[NWNetworkOfInterestManager trackNOIAnyForInterfaceType:options:](self->_manager, "trackNOIAnyForInterfaceType:options:", [iCopy interface], 0);
 }
 
-- (void)didStopTrackingAllNOIs:(id)a3
+- (void)didStopTrackingAllNOIs:(id)is
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  isCopy = is;
   dispatch_assert_queue_V2(self->_queue);
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = v4;
+  v5 = isCopy;
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {

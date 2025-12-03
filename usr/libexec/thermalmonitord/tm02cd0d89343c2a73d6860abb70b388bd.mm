@@ -1,16 +1,16 @@
 @interface tm02cd0d89343c2a73d6860abb70b388bd
-- (id)initProduct:(id)a3;
-- (void)updateAllThermalLoad:(BOOL)a3;
+- (id)initProduct:(id)product;
+- (void)updateAllThermalLoad:(BOOL)load;
 - (void)updateCoreAnalyticsInfo;
 @end
 
 @implementation tm02cd0d89343c2a73d6860abb70b388bd
 
-- (id)initProduct:(id)a3
+- (id)initProduct:(id)product
 {
   v6.receiver = self;
   v6.super_class = tm02cd0d89343c2a73d6860abb70b388bd;
-  v3 = [(CommonProduct *)&v6 initProduct:a3];
+  v3 = [(CommonProduct *)&v6 initProduct:product];
   v4 = v3;
   if (v3)
   {
@@ -20,17 +20,17 @@
   return v4;
 }
 
-- (void)updateAllThermalLoad:(BOOL)a3
+- (void)updateAllThermalLoad:(BOOL)load
 {
-  v3 = a3;
-  v5 = [(tm02cd0d89343c2a73d6860abb70b388bd *)self gasGaugeBatteryTemperature];
+  loadCopy = load;
+  gasGaugeBatteryTemperature = [(tm02cd0d89343c2a73d6860abb70b388bd *)self gasGaugeBatteryTemperature];
   v6 = HIDWORD(qword_1000AB824);
   v73 = qword_1000AB82C;
   v8 = HIDWORD(qword_1000AB82C);
   v7 = qword_1000AB834;
   v9 = HIDWORD(qword_1000AB834);
-  v10 = [(tm02cd0d89343c2a73d6860abb70b388bd *)self arcModuleTemperature];
-  if (v3)
+  arcModuleTemperature = [(tm02cd0d89343c2a73d6860abb70b388bd *)self arcModuleTemperature];
+  if (loadCopy)
   {
     [(tm02cd0d89343c2a73d6860abb70b388bd *)self resetVTFilterState];
   }
@@ -47,25 +47,25 @@
   filteredArcModuleTemperature = self->_filteredArcModuleTemperature;
   if ((filteredArcModuleTemperature & 0x80000000) == 0)
   {
-    v10 = (filteredArcModuleTemperature + ((v10 - filteredArcModuleTemperature) * 0.14286));
+    arcModuleTemperature = (filteredArcModuleTemperature + ((arcModuleTemperature - filteredArcModuleTemperature) * 0.14286));
   }
 
-  self->_filteredArcModuleTemperature = v10;
+  self->_filteredArcModuleTemperature = arcModuleTemperature;
   v15 = [(CommonProduct *)self findComponent:18];
   v16 = [(CommonProduct *)self dieTempMaxAverage]/ 100.0;
   v17 = [(CommonProduct *)self dieTempFilteredMaxAverage]/ 100.0;
   *&v18 = v17;
   *&v17 = v16;
   [v15 calculateControlEffort:v17 trigger:v18];
-  sub_10000533C(53, (v5 * 0.5 + 146.1 + v9 * 0.42));
-  sub_10000533C(52, (v5 * 0.46 + 152.1 + v8 * 0.51));
+  sub_10000533C(53, (gasGaugeBatteryTemperature * 0.5 + 146.1 + v9 * 0.42));
+  sub_10000533C(52, (gasGaugeBatteryTemperature * 0.46 + 152.1 + v8 * 0.51));
   sub_10000533C(60, (self->_filteredBacklightCurrentLI2 * -0.76 + 37.1 + v6 * 0.96));
   sub_10000533C(57, (self->_filteredBacklightCurrentLI2 * 9.57 + 635.0 + v6 * 0.74));
-  sub_10000533C(54, (v5 * 0.85 + -233.1 + v8 * 0.05 + v7 * 0.15));
-  sub_10000533C(55, (v5 * 0.71 + 177.4 + v8 * 0.1 + v7 * 0.15));
-  sub_10000533C(56, (v5 * 0.64 + 45.16 + v8 * 0.32));
+  sub_10000533C(54, (gasGaugeBatteryTemperature * 0.85 + -233.1 + v8 * 0.05 + v7 * 0.15));
+  sub_10000533C(55, (gasGaugeBatteryTemperature * 0.71 + 177.4 + v8 * 0.1 + v7 * 0.15));
+  sub_10000533C(56, (gasGaugeBatteryTemperature * 0.64 + 45.16 + v8 * 0.32));
   sub_10000533C(58, (v6 * 1.11 + -192.0 + v73 * -0.09 + self->_filteredArcModuleTemperature * 0.019));
-  sub_10000533C(59, v5);
+  sub_10000533C(59, gasGaugeBatteryTemperature);
   v19 = qword_1000AB8F4;
   v20 = [(CommonProduct *)self findComponent:19];
   v21 = v19 / 100.0;
@@ -110,15 +110,15 @@
   v50 = [(CommonProduct *)self findComponent:26];
   *&v51 = v49 / 100.0;
   [v50 calculateControlEffort:v51];
-  v52 = [(CommonProduct *)self getChargerState];
-  if (v52 - 10 > 0x3C)
+  getChargerState = [(CommonProduct *)self getChargerState];
+  if (getChargerState - 10 > 0x3C)
   {
     goto LABEL_12;
   }
 
-  if (((1 << (v52 - 10)) & 0x1004010000100000) == 0)
+  if (((1 << (getChargerState - 10)) & 0x1004010000100000) == 0)
   {
-    if (v52 == 10)
+    if (getChargerState == 10)
     {
       v63 = dword_1000AB900;
       v64 = [(CommonProduct *)self findComponent:28];
@@ -138,7 +138,7 @@ LABEL_14:
     }
 
 LABEL_12:
-    if (v52)
+    if (getChargerState)
     {
       return;
     }

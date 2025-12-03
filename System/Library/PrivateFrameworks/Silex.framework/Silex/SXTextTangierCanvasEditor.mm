@@ -6,10 +6,10 @@
 
 - (id)documentRoot
 {
-  v2 = [(TSDCanvasEditor *)self interactiveCanvasController];
-  v3 = [v2 documentRoot];
+  interactiveCanvasController = [(TSDCanvasEditor *)self interactiveCanvasController];
+  documentRoot = [interactiveCanvasController documentRoot];
 
-  return v3;
+  return documentRoot;
 }
 
 @end

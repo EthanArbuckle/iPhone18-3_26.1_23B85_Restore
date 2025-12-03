@@ -1,21 +1,21 @@
 @interface AADeviceListRequest
-- (AADeviceListRequest)initWithAccount:(id)a3;
+- (AADeviceListRequest)initWithAccount:(id)account;
 - (id)urlRequest;
 - (id)urlString;
 @end
 
 @implementation AADeviceListRequest
 
-- (AADeviceListRequest)initWithAccount:(id)a3
+- (AADeviceListRequest)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = AADeviceListRequest;
   v6 = [(AADeviceListRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
@@ -24,15 +24,15 @@
 - (id)urlString
 {
   v3 = +[AAURLConfiguration urlConfiguration];
-  v4 = [v3 getDeviceListURL];
+  getDeviceListURL = [v3 getDeviceListURL];
 
-  if (v4)
+  if (getDeviceListURL)
   {
-    v5 = [(ACAccount *)self->_account aa_personID];
+    aa_personID = [(ACAccount *)self->_account aa_personID];
 
-    if (v5)
+    if (aa_personID)
     {
-      v5 = v4;
+      aa_personID = getDeviceListURL;
     }
   }
 
@@ -45,10 +45,10 @@
       _os_log_impl(&dword_1B6F6A000, v6, OS_LOG_TYPE_DEFAULT, "Error! AADeviceListRequest could not find a base URL.", v8, 2u);
     }
 
-    v5 = 0;
+    aa_personID = 0;
   }
 
-  return v5;
+  return aa_personID;
 }
 
 - (id)urlRequest
@@ -56,13 +56,13 @@
   v14 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = AADeviceListRequest;
-  v3 = [(AARequest *)&v11 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AARequest *)&v11 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
-  v5 = [(AADeviceListRequest *)self urlString];
-  if (v5)
+  urlString = [(AADeviceListRequest *)self urlString];
+  if (urlString)
   {
-    v6 = [MEMORY[0x1E695DFF8] URLWithString:v5];
+    v6 = [MEMORY[0x1E695DFF8] URLWithString:urlString];
     [v4 setURL:v6];
 
     [v4 setHTTPMethod:@"GET"];

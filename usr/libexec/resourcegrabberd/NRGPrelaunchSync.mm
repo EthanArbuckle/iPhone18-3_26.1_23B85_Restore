@@ -3,7 +3,7 @@
 - (void)_prelaunchCompleted;
 - (void)_progressChanged;
 - (void)dealloc;
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4;
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session;
 @end
 
 @implementation NRGPrelaunchSync
@@ -40,9 +40,9 @@
   [(NRGPrelaunchSync *)&v5 dealloc];
 }
 
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session
 {
-  v5 = a3;
+  coordinatorCopy = coordinator;
   [@"com.apple.nanoresourcegrabber.pairedsync" UTF8String];
   v6 = os_transaction_create();
   syncTransaction = self->_syncTransaction;
@@ -52,16 +52,16 @@
   v15 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.Carousel.Prelaunch"];
   +[NSDate timeIntervalSinceReferenceDate];
   [v15 setDouble:@"StartDate" forKey:?];
-  v8 = [v15 synchronize];
+  synchronize = [v15 synchronize];
   v9 = objc_alloc_init(NPSManager);
   v10 = [NSSet setWithObjects:@"StartDate", 0];
   [v9 synchronizeNanoDomain:@"com.apple.Carousel.Prelaunch" keys:v10];
 
-  v11 = [v5 activeSyncSession];
+  activeSyncSession = [coordinatorCopy activeSyncSession];
 
-  v12 = [v11 pairedDevice];
+  pairedDevice = [activeSyncSession pairedDevice];
   v13 = [[NSUUID alloc] initWithUUIDString:@"15874345-3594-4D3F-9A28-BA2AEA650A0D"];
-  v14 = [v12 supportsCapability:v13];
+  v14 = [pairedDevice supportsCapability:v13];
 
   if (v14)
   {
@@ -76,8 +76,8 @@
     v7 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.Carousel.Prelaunch"];
     [v7 doubleForKey:@"Progress"];
     v5 = v4;
-    v6 = [(PSYSyncCoordinator *)self->_pairedSyncCoordinator activeSyncSession];
-    [v6 reportProgress:v5];
+    activeSyncSession = [(PSYSyncCoordinator *)self->_pairedSyncCoordinator activeSyncSession];
+    [activeSyncSession reportProgress:v5];
   }
 }
 
@@ -86,8 +86,8 @@
   if (self->_syncSessionActive)
   {
     self->_syncSessionActive = 0;
-    v4 = [(PSYSyncCoordinator *)self->_pairedSyncCoordinator activeSyncSession];
-    [v4 syncDidComplete];
+    activeSyncSession = [(PSYSyncCoordinator *)self->_pairedSyncCoordinator activeSyncSession];
+    [activeSyncSession syncDidComplete];
 
     syncTransaction = self->_syncTransaction;
     self->_syncTransaction = 0;

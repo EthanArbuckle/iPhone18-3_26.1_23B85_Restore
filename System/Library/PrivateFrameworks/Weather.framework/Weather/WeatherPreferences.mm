@@ -1,46 +1,46 @@
 @interface WeatherPreferences
-+ (BOOL)performUpgradeOfPersistence:(id)a3 fileManager:(id)a4 error:(id *)a5;
-+ (WeatherPreferences)preferencesWithPersistence:(id)a3;
-+ (id)readInternalDefaultValueForKey:(id)a3;
++ (BOOL)performUpgradeOfPersistence:(id)persistence fileManager:(id)manager error:(id *)error;
++ (WeatherPreferences)preferencesWithPersistence:(id)persistence;
++ (id)readInternalDefaultValueForKey:(id)key;
 + (id)serviceDebuggingPath;
 + (id)sharedPreferences;
 + (id)userDefaultsPersistence;
 - (BOOL)_defaultsAreValid;
 - (BOOL)_defaultsCurrent;
-- (BOOL)areCitiesDefault:(id)a3;
+- (BOOL)areCitiesDefault:(id)default;
 - (BOOL)ensureValidSelectedCityID;
 - (BOOL)isLocalWeatherEnabled;
 - (City)localWeatherCity;
 - (SynchronizedDefaultsDelegate)syncDelegate;
 - (WeatherPreferences)init;
-- (WeatherPreferences)initWithPersistence:(id)a3;
+- (WeatherPreferences)initWithPersistence:(id)persistence;
 - (id)UUID;
 - (id)_cacheDirectoryPath;
 - (id)_defaultCities;
-- (id)citiesByConsolidatingDuplicates:(id)a3 originalOrder:(id)a4;
-- (id)citiesByConsolidatingDuplicatesInBucket:(id)a3;
-- (id)cityFromPreferencesDictionary:(id)a3;
+- (id)citiesByConsolidatingDuplicates:(id)duplicates originalOrder:(id)order;
+- (id)citiesByConsolidatingDuplicatesInBucket:(id)bucket;
+- (id)cityFromPreferencesDictionary:(id)dictionary;
 - (id)loadSavedCities;
-- (id)readInternalDefaultValueForKey:(id)a3;
+- (id)readInternalDefaultValueForKey:(id)key;
 - (int)loadActiveCity;
 - (int)loadDefaultSelectedCity;
 - (int)userTemperatureUnit;
 - (void)_clearCachedObjects;
 - (void)forceSyncCloudPreferences;
 - (void)resetLocale;
-- (void)saveToDiskWithCities:(id)a3;
-- (void)saveToDiskWithCities:(id)a3 activeCity:(unint64_t)a4;
-- (void)saveToDiskWithCity:(id)a3 forActiveIndex:(unint64_t)a4;
-- (void)saveToDiskWithLocalWeatherCity:(id)a3;
+- (void)saveToDiskWithCities:(id)cities;
+- (void)saveToDiskWithCities:(id)cities activeCity:(unint64_t)city;
+- (void)saveToDiskWithCity:(id)city forActiveIndex:(unint64_t)index;
+- (void)saveToDiskWithLocalWeatherCity:(id)city;
 - (void)saveToUbiquitousStore;
-- (void)setActiveCity:(unint64_t)a3;
-- (void)setCelsius:(BOOL)a3;
-- (void)setDefaultCities:(id)a3;
-- (void)setDefaultSelectedCity:(unint64_t)a3;
-- (void)setSyncDelegate:(id)a3;
+- (void)setActiveCity:(unint64_t)city;
+- (void)setCelsius:(BOOL)celsius;
+- (void)setDefaultCities:(id)cities;
+- (void)setDefaultSelectedCity:(unint64_t)city;
+- (void)setSyncDelegate:(id)delegate;
 - (void)setupUbiquitousStoreIfNeeded;
-- (void)synchronizeStateToDiskDoNotify:(BOOL)a3;
-- (void)temperatureUnitObserver:(id)a3 didChangeTemperatureUnitTo:(int)a4;
+- (void)synchronizeStateToDiskDoNotify:(BOOL)notify;
+- (void)temperatureUnitObserver:(id)observer didChangeTemperatureUnitTo:(int)to;
 @end
 
 @implementation WeatherPreferences
@@ -77,15 +77,15 @@ void __39__WeatherPreferences_sharedPreferences__block_invoke()
 + (id)userDefaultsPersistence
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [v2 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.weather"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v3 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.weather"];
 
   v4 = [objc_alloc(MEMORY[0x277CBEBD0]) _initWithSuiteName:@"group.com.apple.weather" container:v3];
   v5 = WALogForCategory(5);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 dictionaryRepresentation];
-    v7 = [v6 valueForKey:@"Cities"];
+    dictionaryRepresentation = [v4 dictionaryRepresentation];
+    v7 = [dictionaryRepresentation valueForKey:@"Cities"];
     v8 = [v7 valueForKeyPath:@"Name"];
     v12 = 136315650;
     v13 = "+[WeatherPreferences userDefaultsPersistence]";
@@ -102,32 +102,32 @@ void __39__WeatherPreferences_sharedPreferences__block_invoke()
   return v9;
 }
 
-+ (WeatherPreferences)preferencesWithPersistence:(id)a3
++ (WeatherPreferences)preferencesWithPersistence:(id)persistence
 {
-  v3 = a3;
-  v4 = [[WeatherPreferences alloc] initWithPersistence:v3];
+  persistenceCopy = persistence;
+  v4 = [[WeatherPreferences alloc] initWithPersistence:persistenceCopy];
 
   return v4;
 }
 
 - (WeatherPreferences)init
 {
-  v3 = [objc_opt_class() userDefaultsPersistence];
-  v4 = [(WeatherPreferences *)self initWithPersistence:v3];
+  userDefaultsPersistence = [objc_opt_class() userDefaultsPersistence];
+  v4 = [(WeatherPreferences *)self initWithPersistence:userDefaultsPersistence];
 
   return v4;
 }
 
-- (WeatherPreferences)initWithPersistence:(id)a3
+- (WeatherPreferences)initWithPersistence:(id)persistence
 {
-  v5 = a3;
+  persistenceCopy = persistence;
   v14.receiver = self;
   v14.super_class = WeatherPreferences;
   v6 = [(WeatherPreferences *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_persistence, a3);
+    objc_storeStrong(&v6->_persistence, persistence);
     v8 = +[WeatherInternalPreferences sharedInternalPreferences];
     v9 = [v8 objectForKey:@"ServiceDebugging"];
     v7->_serviceDebugging = [v9 BOOLValue];
@@ -136,25 +136,25 @@ void __39__WeatherPreferences_sharedPreferences__block_invoke()
     v11 = [v10 objectForKey:@"LogLocaleAndUnits"];
     v7->_logUnitsAndLocale = [v11 BOOLValue];
 
-    v12 = [MEMORY[0x277D7B2D8] sharedObserver];
-    [v12 addObserver:v7];
+    mEMORY[0x277D7B2D8] = [MEMORY[0x277D7B2D8] sharedObserver];
+    [mEMORY[0x277D7B2D8] addObserver:v7];
   }
 
   return v7;
 }
 
-- (void)setSyncDelegate:(id)a3
+- (void)setSyncDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(WeatherPreferences *)self cloudPreferences];
-  [v5 setSyncDelegate:v4];
+  delegateCopy = delegate;
+  cloudPreferences = [(WeatherPreferences *)self cloudPreferences];
+  [cloudPreferences setSyncDelegate:delegateCopy];
 }
 
 - (void)setupUbiquitousStoreIfNeeded
 {
-  v3 = [(WeatherPreferences *)self cloudPreferences];
+  cloudPreferences = [(WeatherPreferences *)self cloudPreferences];
 
-  if (!v3)
+  if (!cloudPreferences)
   {
     v4 = [[WeatherCloudPreferences alloc] initWithLocalPreferences:self];
     [(WeatherPreferences *)self setCloudPreferences:v4];
@@ -163,27 +163,27 @@ void __39__WeatherPreferences_sharedPreferences__block_invoke()
 
 - (BOOL)ensureValidSelectedCityID
 {
-  v3 = [(WeatherPreferences *)self loadSavedCities];
+  loadSavedCities = [(WeatherPreferences *)self loadSavedCities];
   v4 = [(WeatherPreferencesPersistence *)self->_persistence objectForKey:@"DefaultSelectedCity"];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 intValue];
-    if ([v3 count] > v6)
+    intValue = [v4 intValue];
+    if ([loadSavedCities count] > intValue)
     {
-      v7 = [v3 objectAtIndexedSubscript:{objc_msgSend(v5, "intValue")}];
+      v7 = [loadSavedCities objectAtIndexedSubscript:{objc_msgSend(v5, "intValue")}];
       if ([v7 isLocalWeatherCity])
       {
-        v8 = @"_localCity_";
+        locationID = @"_localCity_";
       }
 
       else
       {
-        v8 = [v7 locationID];
+        locationID = [v7 locationID];
       }
 
-      v9 = v8;
-      [(WeatherPreferences *)self setDefaultSelectedCityID:v8];
+      v9 = locationID;
+      [(WeatherPreferences *)self setDefaultSelectedCityID:locationID];
     }
 
     [(WeatherPreferencesPersistence *)self->_persistence setObject:0 forKey:@"DefaultSelectedCity"];
@@ -193,9 +193,9 @@ void __39__WeatherPreferences_sharedPreferences__block_invoke()
   return v5 != 0;
 }
 
-- (void)setCelsius:(BOOL)a3
+- (void)setCelsius:(BOOL)celsius
 {
-  v3 = a3;
+  celsiusCopy = celsius;
   v17 = *MEMORY[0x277D85DE8];
   if (self->_logUnitsAndLocale)
   {
@@ -206,7 +206,7 @@ void __39__WeatherPreferences_sharedPreferences__block_invoke()
       v6 = NSStringFromWFTemperatureUnit();
       v7 = v6;
       v8 = @"FAHRENHEIT";
-      if (v3)
+      if (celsiusCopy)
       {
         v8 = @"CELSIUS";
       }
@@ -221,7 +221,7 @@ void __39__WeatherPreferences_sharedPreferences__block_invoke()
 
   v9 = [objc_alloc(MEMORY[0x277D7B2D0]) initWithResultHandler:0];
   v10 = v9;
-  if (v3)
+  if (celsiusCopy)
   {
     v11 = 2;
   }
@@ -239,10 +239,10 @@ void __39__WeatherPreferences_sharedPreferences__block_invoke()
 
 - (int)userTemperatureUnit
 {
-  v2 = [MEMORY[0x277D7B2D8] sharedObserver];
-  v3 = [v2 temperatureUnit];
+  mEMORY[0x277D7B2D8] = [MEMORY[0x277D7B2D8] sharedObserver];
+  temperatureUnit = [mEMORY[0x277D7B2D8] temperatureUnit];
 
-  return v3;
+  return temperatureUnit;
 }
 
 - (BOOL)_defaultsAreValid
@@ -272,10 +272,10 @@ void __39__WeatherPreferences_sharedPreferences__block_invoke()
   return v4;
 }
 
-- (id)cityFromPreferencesDictionary:(id)a3
+- (id)cityFromPreferencesDictionary:(id)dictionary
 {
   v13[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (![(WeatherPreferences *)self _defaultsCurrent])
   {
     v13[0] = 0x28822C008;
@@ -288,12 +288,12 @@ void __39__WeatherPreferences_sharedPreferences__block_invoke()
     v11[3] = &unk_279E68990;
     v12 = v5;
     v6 = v5;
-    v7 = [v4 na_filter:v11];
+    v7 = [dictionaryCopy na_filter:v11];
 
-    v4 = v7;
+    dictionaryCopy = v7;
   }
 
-  v8 = [CityPersistenceConversions cityFromDictionary:v4];
+  v8 = [CityPersistenceConversions cityFromDictionary:dictionaryCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 
@@ -317,52 +317,52 @@ void __39__WeatherPreferences_sharedPreferences__block_invoke()
   return v4;
 }
 
-- (void)saveToDiskWithLocalWeatherCity:(id)a3
+- (void)saveToDiskWithLocalWeatherCity:(id)city
 {
   persistence = self->_persistence;
-  v5 = [(WeatherPreferences *)self preferencesDictionaryForCity:a3];
+  v5 = [(WeatherPreferences *)self preferencesDictionaryForCity:city];
   [(WeatherPreferencesPersistence *)persistence setObject:v5 forKey:@"LocalWeather"];
 
   [(WeatherPreferences *)self synchronizeStateToDiskDoNotify:1];
 }
 
-- (void)saveToDiskWithCity:(id)a3 forActiveIndex:(unint64_t)a4
+- (void)saveToDiskWithCity:(id)city forActiveIndex:(unint64_t)index
 {
   persistence = self->_persistence;
-  v7 = a3;
+  cityCopy = city;
   v8 = [(WeatherPreferencesPersistence *)persistence arrayForKey:@"Cities"];
   v12 = [v8 mutableCopy];
 
-  v9 = [(WeatherPreferences *)self preferencesDictionaryForCity:v7];
+  v9 = [(WeatherPreferences *)self preferencesDictionaryForCity:cityCopy];
 
-  if (v9 && [v12 count] > a4)
+  if (v9 && [v12 count] > index)
   {
-    [v12 replaceObjectAtIndex:a4 withObject:v9];
+    [v12 replaceObjectAtIndex:index withObject:v9];
   }
 
   [(WeatherPreferencesPersistence *)self->_persistence setObject:v12 forKey:@"Cities"];
   v10 = self->_persistence;
-  v11 = [MEMORY[0x277CBEAA8] date];
-  [(WeatherPreferencesPersistence *)v10 setObject:v11 forKey:@"LastUpdated"];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(WeatherPreferencesPersistence *)v10 setObject:date forKey:@"LastUpdated"];
 
   [(WeatherPreferences *)self synchronizeStateToDiskDoNotify:1];
 }
 
-- (void)saveToDiskWithCities:(id)a3
+- (void)saveToDiskWithCities:(id)cities
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  citiesCopy = cities;
   v5 = +[WeatherInternalPreferences sharedInternalPreferences];
   v6 = [v5 BOOLForKey:@"AlwaysUseLocallyAvailableSavedCities"];
 
-  v7 = WALogForCategory(5);
-  v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
+  array = WALogForCategory(5);
+  v8 = os_log_type_enabled(array, OS_LOG_TYPE_DEFAULT);
   if (v6)
   {
     if (v8)
     {
       LOWORD(v17) = 0;
-      _os_log_impl(&dword_272ACF000, v7, OS_LOG_TYPE_DEFAULT, "[WeatherPreferences] AlwaysUseLocallyAvailableSavedCities = 1, do not save new cities to disk.", &v17, 2u);
+      _os_log_impl(&dword_272ACF000, array, OS_LOG_TYPE_DEFAULT, "[WeatherPreferences] AlwaysUseLocallyAvailableSavedCities = 1, do not save new cities to disk.", &v17, 2u);
     }
   }
 
@@ -371,30 +371,30 @@ void __39__WeatherPreferences_sharedPreferences__block_invoke()
     if (v8)
     {
       v17 = 138412290;
-      v18 = v4;
-      _os_log_impl(&dword_272ACF000, v7, OS_LOG_TYPE_DEFAULT, "Saving cities to disk: %@", &v17, 0xCu);
+      v18 = citiesCopy;
+      _os_log_impl(&dword_272ACF000, array, OS_LOG_TYPE_DEFAULT, "Saving cities to disk: %@", &v17, 0xCu);
     }
 
-    v7 = [MEMORY[0x277CBEB18] array];
-    v9 = [v4 count];
+    array = [MEMORY[0x277CBEB18] array];
+    v9 = [citiesCopy count];
     if (v9)
     {
       v10 = v9;
       for (i = 0; i != v10; ++i)
       {
-        v12 = [v4 objectAtIndex:i];
+        v12 = [citiesCopy objectAtIndex:i];
         if (([v12 isLocalWeatherCity] & 1) == 0 && (objc_msgSend(v12, "isTransient") & 1) == 0)
         {
           v13 = [(WeatherPreferences *)self preferencesDictionaryForCity:v12];
-          [v7 na_safeAddObject:v13];
+          [array na_safeAddObject:v13];
         }
       }
     }
 
-    [(WeatherPreferencesPersistence *)self->_persistence setObject:v7 forKey:@"Cities"];
+    [(WeatherPreferencesPersistence *)self->_persistence setObject:array forKey:@"Cities"];
     persistence = self->_persistence;
-    v15 = [MEMORY[0x277CBEAA8] date];
-    [(WeatherPreferencesPersistence *)persistence setObject:v15 forKey:@"LastUpdated"];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(WeatherPreferencesPersistence *)persistence setObject:date forKey:@"LastUpdated"];
 
     [(WeatherPreferencesPersistence *)self->_persistence setObject:@"The Weather Channel" forKey:@"ServiceProvider"];
     [(WeatherPreferencesPersistence *)self->_persistence setObject:@"2.1" forKey:@"PrefsVersion"];
@@ -404,11 +404,11 @@ void __39__WeatherPreferences_sharedPreferences__block_invoke()
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveToDiskWithCities:(id)a3 activeCity:(unint64_t)a4
+- (void)saveToDiskWithCities:(id)cities activeCity:(unint64_t)city
 {
-  [(WeatherPreferences *)self saveToDiskWithCities:a3];
+  [(WeatherPreferences *)self saveToDiskWithCities:cities];
   persistence = self->_persistence;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:city];
   [(WeatherPreferencesPersistence *)persistence setObject:v7 forKey:@"ActiveCity"];
 
   [(WeatherPreferences *)self synchronizeStateToDiskDoNotify:1];
@@ -496,14 +496,14 @@ void __36__WeatherPreferences__defaultCities__block_invoke_2()
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDefaultCities:(id)a3
+- (void)setDefaultCities:(id)cities
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  citiesCopy = cities;
   v4 = WALogForCategory(5);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [v3 valueForKeyPath:@"name"];
+    v5 = [citiesCopy valueForKeyPath:@"name"];
     *buf = 136315394;
     v24 = "[WeatherPreferences setDefaultCities:]";
     v25 = 2112;
@@ -511,15 +511,15 @@ void __36__WeatherPreferences__defaultCities__block_invoke_2()
     _os_log_impl(&dword_272ACF000, v4, OS_LOG_TYPE_INFO, "%s cities: %@", buf, 0x16u);
   }
 
-  if (v3)
+  if (citiesCopy)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v17 = v3;
-    v7 = v3;
+    v17 = citiesCopy;
+    v7 = citiesCopy;
     v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
@@ -566,7 +566,7 @@ void __36__WeatherPreferences__defaultCities__block_invoke_2()
     v15 = __defaultCities;
     __defaultCities = v6;
 
-    v3 = v17;
+    citiesCopy = v17;
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -583,8 +583,8 @@ void __36__WeatherPreferences__defaultCities__block_invoke_2()
     _os_log_impl(&dword_272ACF000, v3, OS_LOG_TYPE_INFO, "%s ", buf, 0xCu);
   }
 
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v6 = @"Cities";
   v7 = +[WeatherInternalPreferences sharedInternalPreferences];
   v8 = [v7 BOOLForKey:@"AlwaysUseLocallyAvailableSavedCities"];
@@ -603,19 +603,19 @@ void __36__WeatherPreferences__defaultCities__block_invoke_2()
 
   v10 = [(WeatherPreferencesPersistence *)self->_persistence arrayForKey:v6];
   v11 = [v10 na_filter:&__block_literal_global_121];
-  [v5 addObjectsFromArray:v11];
+  [array2 addObjectsFromArray:v11];
 
-  v12 = [(WeatherPreferences *)self isLocalWeatherEnabled];
+  isLocalWeatherEnabled = [(WeatherPreferences *)self isLocalWeatherEnabled];
   v13 = WALogForCategory(0);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [MEMORY[0x277CCABB0] numberWithBool:v12];
+    v14 = [MEMORY[0x277CCABB0] numberWithBool:isLocalWeatherEnabled];
     *buf = 138412290;
     v54 = v14;
     _os_log_impl(&dword_272ACF000, v13, OS_LOG_TYPE_DEFAULT, "in loadSavedCities, localWeatherEnabled=%@", buf, 0xCu);
   }
 
-  if (v12)
+  if (isLocalWeatherEnabled)
   {
     v15 = [(WeatherPreferencesPersistence *)self->_persistence objectForKey:@"LocalWeather"];
     if (v15)
@@ -638,26 +638,26 @@ void __36__WeatherPreferences__defaultCities__block_invoke_2()
       _os_log_impl(&dword_272ACF000, v18, OS_LOG_TYPE_DEFAULT, "in loadSavedCities, local weather city = %@", buf, 0xCu);
     }
 
-    [v4 na_safeAddObject:v17];
+    [array na_safeAddObject:v17];
   }
 
-  v19 = [MEMORY[0x277CBEB18] array];
-  if (v5 && [(WeatherPreferences *)self _defaultsAreValid])
+  array3 = [MEMORY[0x277CBEB18] array];
+  if (array2 && [(WeatherPreferences *)self _defaultsAreValid])
   {
     v44 = v6;
-    v46 = v4;
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    v46 = array;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v45 = v5;
-    obj = v5;
+    v45 = array2;
+    obj = array2;
     v21 = [obj countByEnumeratingWithState:&v48 objects:v52 count:16];
     if (v21)
     {
       v22 = v21;
-      v23 = 20 - v12;
+      v23 = 20 - isLocalWeatherEnabled;
       v24 = *v49;
 LABEL_20:
       v25 = 0;
@@ -668,23 +668,23 @@ LABEL_20:
           objc_enumerationMutation(obj);
         }
 
-        v26 = self;
+        selfCopy = self;
         v27 = [(WeatherPreferences *)self cityFromPreferencesDictionary:*(*(&v48 + 1) + 8 * v25)];
-        [v19 na_safeAddObject:v27];
-        v28 = [v27 name];
-        v29 = [v20 objectForKey:v28];
+        [array3 na_safeAddObject:v27];
+        name = [v27 name];
+        array4 = [dictionary objectForKey:name];
 
-        if (!v29)
+        if (!array4)
         {
-          v29 = [MEMORY[0x277CBEB18] array];
+          array4 = [MEMORY[0x277CBEB18] array];
         }
 
-        [v29 addObject:v27];
-        v30 = [v27 name];
-        [v20 setObject:v29 forKey:v30];
+        [array4 addObject:v27];
+        name2 = [v27 name];
+        [dictionary setObject:array4 forKey:name2];
 
-        v31 = [v19 count];
-        self = v26;
+        v31 = [array3 count];
+        self = selfCopy;
         if (v31 == v23)
         {
           break;
@@ -712,19 +712,19 @@ LABEL_20:
     }
 
     v33 = WALogForCategory(5);
-    v4 = v46;
+    array = v46;
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v54 = v19;
+      v54 = array3;
       _os_log_impl(&dword_272ACF000, v33, OS_LOG_TYPE_DEFAULT, "Safely add stored cities: %@", buf, 0xCu);
     }
 
-    v34 = [(WeatherPreferences *)self citiesByConsolidatingDuplicates:v20 originalOrder:v19];
+    v34 = [(WeatherPreferences *)self citiesByConsolidatingDuplicates:dictionary originalOrder:array3];
 
     [v46 addObjectsFromArray:v34];
-    v35 = [(WeatherPreferences *)self loadActiveCity];
-    if ([v46 count] <= v35)
+    loadActiveCity = [(WeatherPreferences *)self loadActiveCity];
+    if ([v46 count] <= loadActiveCity)
     {
       -[WeatherPreferences setActiveCity:](self, "setActiveCity:", [v46 count] - 1);
     }
@@ -738,48 +738,48 @@ LABEL_20:
     }
 
     v37 = v46;
-    v19 = v34;
+    array3 = v34;
     v6 = v44;
-    v5 = v45;
+    array2 = v45;
   }
 
   else
   {
-    v38 = [(WeatherPreferences *)self _defaultCities];
-    [v19 addObjectsFromArray:v38];
+    _defaultCities = [(WeatherPreferences *)self _defaultCities];
+    [array3 addObjectsFromArray:_defaultCities];
 
-    if (![v4 count] && !objc_msgSend(v19, "count"))
+    if (![array count] && !objc_msgSend(array3, "count"))
     {
       v39 = objc_alloc_init(City);
       [(City *)v39 setLatitude:37.3175];
       [(City *)v39 setLongitude:-122.041944];
       [(City *)v39 setName:@"Cupertino"];
-      [v4 addObject:v39];
+      [array addObject:v39];
     }
 
-    [v4 addObjectsFromArray:v19];
+    [array addObjectsFromArray:array3];
     v40 = WALogForCategory(5);
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v54 = v4;
+      v54 = array;
       _os_log_impl(&dword_272ACF000, v40, OS_LOG_TYPE_DEFAULT, "No saved cities, and defaults are not valid. Laod new default cities: %@", buf, 0xCu);
     }
 
-    v41 = v4;
+    v41 = array;
   }
 
   v42 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return array;
 }
 
-- (id)citiesByConsolidatingDuplicates:(id)a3 originalOrder:(id)a4
+- (id)citiesByConsolidatingDuplicates:(id)duplicates originalOrder:(id)order
 {
   v33 = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v17 = a4;
-  v6 = [MEMORY[0x277CBEB18] array];
+  duplicatesCopy = duplicates;
+  orderCopy = order;
+  array = [MEMORY[0x277CBEB18] array];
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -788,19 +788,19 @@ LABEL_20:
   v24[1] = 3221225472;
   v24[2] = __68__WeatherPreferences_citiesByConsolidatingDuplicates_originalOrder___block_invoke;
   v24[3] = &unk_279E689B8;
-  v7 = v6;
+  v7 = array;
   v25 = v7;
-  v26 = self;
+  selfCopy = self;
   v27 = &v28;
-  [v18 enumerateKeysAndObjectsUsingBlock:v24];
+  [duplicatesCopy enumerateKeysAndObjectsUsingBlock:v24];
   if (v29[3])
   {
-    v8 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = v17;
+    v9 = orderCopy;
     v10 = [v9 countByEnumeratingWithState:&v20 objects:v32 count:16];
     if (v10)
     {
@@ -823,7 +823,7 @@ LABEL_20:
           v14 = [v7 na_firstObjectPassingTest:v19];
           if (v14)
           {
-            [v8 addObject:v14];
+            [array2 addObject:v14];
             [v7 removeObject:v14];
           }
         }
@@ -837,13 +837,13 @@ LABEL_20:
 
   else
   {
-    v8 = [MEMORY[0x277CBEB18] arrayWithArray:v17];
+    array2 = [MEMORY[0x277CBEB18] arrayWithArray:orderCopy];
   }
 
   _Block_object_dispose(&v28, 8);
   v15 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return array2;
 }
 
 void __68__WeatherPreferences_citiesByConsolidatingDuplicates_originalOrder___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -868,19 +868,19 @@ void __68__WeatherPreferences_citiesByConsolidatingDuplicates_originalOrder___bl
   }
 }
 
-- (id)citiesByConsolidatingDuplicatesInBucket:(id)a3
+- (id)citiesByConsolidatingDuplicatesInBucket:(id)bucket
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [v3 firstObject];
-  [v4 addObject:v5];
+  bucketCopy = bucket;
+  array = [MEMORY[0x277CBEB18] array];
+  firstObject = [bucketCopy firstObject];
+  [array addObject:firstObject];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v3;
+  v6 = bucketCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -901,9 +901,9 @@ void __68__WeatherPreferences_citiesByConsolidatingDuplicates_originalOrder___bl
         v14[2] = __62__WeatherPreferences_citiesByConsolidatingDuplicatesInBucket___block_invoke;
         v14[3] = &unk_279E68358;
         v14[4] = v11;
-        if (([v4 na_all:v14] & 1) == 0)
+        if (([array na_all:v14] & 1) == 0)
         {
-          [v4 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -915,7 +915,7 @@ void __68__WeatherPreferences_citiesByConsolidatingDuplicates_originalOrder___bl
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return array;
 }
 
 - (int)loadActiveCity
@@ -932,15 +932,15 @@ void __68__WeatherPreferences_citiesByConsolidatingDuplicates_originalOrder___bl
   }
 
   v4 = v3;
-  v5 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  return v5;
+  return intValue;
 }
 
-- (void)setActiveCity:(unint64_t)a3
+- (void)setActiveCity:(unint64_t)city
 {
   persistence = self->_persistence;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:city];
   [(WeatherPreferencesPersistence *)persistence setObject:v4 forKey:@"ActiveCity"];
 }
 
@@ -950,30 +950,30 @@ void __68__WeatherPreferences_citiesByConsolidatingDuplicates_originalOrder___bl
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
-- (void)setDefaultSelectedCity:(unint64_t)a3
+- (void)setDefaultSelectedCity:(unint64_t)city
 {
   persistence = self->_persistence;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:city];
   [(WeatherPreferencesPersistence *)persistence setObject:v4 forKey:@"DefaultSelectedCity"];
 }
 
-- (void)synchronizeStateToDiskDoNotify:(BOOL)a3
+- (void)synchronizeStateToDiskDoNotify:(BOOL)notify
 {
-  v3 = a3;
+  notifyCopy = notify;
   [(WeatherPreferencesPersistence *)self->_persistence synchronize];
   [(WeatherPreferences *)self saveToUbiquitousStore];
-  if (v3)
+  if (notifyCopy)
   {
     v5 = WALogForCategory(5);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -981,17 +981,17 @@ void __68__WeatherPreferences_citiesByConsolidatingDuplicates_originalOrder___bl
       [WeatherPreferences synchronizeStateToDiskDoNotify:v5];
     }
 
-    v6 = [MEMORY[0x277CCA9A0] defaultCenter];
-    v7 = [MEMORY[0x277CCAC38] processInfo];
-    v8 = [v7 processName];
-    [v6 postNotificationName:@"WeatherGroupPrefsDidUpdateNotification" object:v8 userInfo:0 deliverImmediately:1];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
+    [defaultCenter postNotificationName:@"WeatherGroupPrefsDidUpdateNotification" object:processName userInfo:0 deliverImmediately:1];
   }
 }
 
 - (void)forceSyncCloudPreferences
 {
-  v2 = [(WeatherPreferences *)self cloudPreferences];
-  [v2 forceSync];
+  cloudPreferences = [(WeatherPreferences *)self cloudPreferences];
+  [cloudPreferences forceSync];
 }
 
 - (id)UUID
@@ -1032,8 +1032,8 @@ void __68__WeatherPreferences_citiesByConsolidatingDuplicates_originalOrder___bl
   objc_storeStrong(p_UUID, v11);
   [(WeatherPreferencesPersistence *)self->_persistence setObject:self->_UUID forKey:@"UUID"];
   persistence = self->_persistence;
-  v13 = [MEMORY[0x277CBEAA8] date];
-  [(WeatherPreferencesPersistence *)persistence setObject:v13 forKey:@"UUIDTimestamp"];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(WeatherPreferencesPersistence *)persistence setObject:date forKey:@"UUIDTimestamp"];
 
   v4 = self->_UUID;
   v6 = v11;
@@ -1049,9 +1049,9 @@ LABEL_9:
   cacheDirectoryPath = self->_cacheDirectoryPath;
   if (!cacheDirectoryPath)
   {
-    v4 = [MEMORY[0x277D75128] sharedApplication];
-    v5 = [v4 userLibraryDirectory];
-    v6 = [v5 stringByAppendingPathComponent:@"Caches/Weather"];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    userLibraryDirectory = [mEMORY[0x277D75128] userLibraryDirectory];
+    v6 = [userLibraryDirectory stringByAppendingPathComponent:@"Caches/Weather"];
     v7 = self->_cacheDirectoryPath;
     self->_cacheDirectoryPath = v6;
 
@@ -1061,20 +1061,20 @@ LABEL_9:
   return cacheDirectoryPath;
 }
 
-+ (id)readInternalDefaultValueForKey:(id)a3
++ (id)readInternalDefaultValueForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[WeatherInternalPreferences sharedInternalPreferences];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:keyCopy];
 
   return v5;
 }
 
-- (id)readInternalDefaultValueForKey:(id)a3
+- (id)readInternalDefaultValueForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[WeatherInternalPreferences sharedInternalPreferences];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:keyCopy];
 
   return v5;
 }
@@ -1085,15 +1085,15 @@ LABEL_9:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 + (id)serviceDebuggingPath
@@ -1154,31 +1154,31 @@ void __42__WeatherPreferences_serviceDebuggingPath__block_invoke()
 
   else
   {
-    v7 = [(WeatherPreferences *)self cloudPreferences];
-    v6 = [(WeatherPreferences *)self loadSavedCities];
-    [v7 saveCitiesToCloud:v6];
+    cloudPreferences = [(WeatherPreferences *)self cloudPreferences];
+    loadSavedCities = [(WeatherPreferences *)self loadSavedCities];
+    [cloudPreferences saveCitiesToCloud:loadSavedCities];
   }
 }
 
-- (BOOL)areCitiesDefault:(id)a3
+- (BOOL)areCitiesDefault:(id)default
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WeatherPreferences *)self _defaultCities];
-  v6 = [v4 count];
-  v27 = v5;
-  if (v6 == [v5 count])
+  defaultCopy = default;
+  _defaultCities = [(WeatherPreferences *)self _defaultCities];
+  v6 = [defaultCopy count];
+  v27 = _defaultCities;
+  if (v6 == [_defaultCities count])
   {
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    obj = v4;
+    obj = defaultCopy;
     v7 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v7)
     {
       v8 = v7;
-      v25 = v4;
+      v25 = defaultCopy;
       LODWORD(v9) = 0;
       v10 = *v29;
       v11 = *MEMORY[0x277D7B1F0];
@@ -1225,7 +1225,7 @@ void __42__WeatherPreferences_serviceDebuggingPath__block_invoke()
 
       v22 = 1;
 LABEL_13:
-      v4 = v25;
+      defaultCopy = v25;
     }
 
     else
@@ -1243,28 +1243,28 @@ LABEL_13:
   return v22;
 }
 
-- (void)temperatureUnitObserver:(id)a3 didChangeTemperatureUnitTo:(int)a4
+- (void)temperatureUnitObserver:(id)observer didChangeTemperatureUnitTo:(int)to
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v9 = @"kWeatherPrefsUpdateNotificationKey";
   v6 = NSStringFromWFTemperatureUnit();
   v10[0] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-  [v5 postNotificationName:@"kWeatherPrefsDidUpdateUserTemperatureUnit" object:self userInfo:v7];
+  [defaultCenter postNotificationName:@"kWeatherPrefsDidUpdateUserTemperatureUnit" object:self userInfo:v7];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)performUpgradeOfPersistence:(id)a3 fileManager:(id)a4 error:(id *)a5
++ (BOOL)performUpgradeOfPersistence:(id)persistence fileManager:(id)manager error:(id *)error
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  persistenceCopy = persistence;
+  managerCopy = manager;
+  v9 = managerCopy;
+  if (persistenceCopy)
   {
-    if (!v8)
+    if (!managerCopy)
     {
       v9 = objc_opt_new();
     }
@@ -1300,18 +1300,18 @@ LABEL_13:
     v18 = v9;
     v20 = v27;
     v21 = &v23;
-    v19 = v7;
+    v19 = persistenceCopy;
     dispatch_sync(v11, v17);
-    if (a5)
+    if (error)
     {
       v12 = *(v28 + 5);
       if (v12)
       {
-        *a5 = v12;
+        *error = v12;
       }
     }
 
-    LOBYTE(a5) = *(v24 + 24);
+    LOBYTE(error) = *(v24 + 24);
 
     _Block_object_dispose(&v23, 8);
     _Block_object_dispose(v27, 8);
@@ -1326,19 +1326,19 @@ LABEL_13:
       _os_log_impl(&dword_272ACF000, v13, OS_LOG_TYPE_DEFAULT, "WeatherPreferences _performMigration - failed to update persistence.", v27, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v33 = *MEMORY[0x277CCA450];
       v34[0] = @"persistence was nil; can't upgrade it";
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:&v33 count:1];
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.weather.errorDomain" code:3 userInfo:v14];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.weather.errorDomain" code:3 userInfo:v14];
 
-      LOBYTE(a5) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
-  return a5 & 1;
+  return error & 1;
 }
 
 uint64_t __68__WeatherPreferences_performUpgradeOfPersistence_fileManager_error___block_invoke()

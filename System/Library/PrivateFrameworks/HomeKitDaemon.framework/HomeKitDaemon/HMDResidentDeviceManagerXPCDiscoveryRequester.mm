@@ -1,18 +1,18 @@
 @interface HMDResidentDeviceManagerXPCDiscoveryRequester
-- (void)residentDeviceManager:(id)a3 didCompleteDiscoveryWithPrimaryResidentDevice:(id)a4 error:(id)a5;
+- (void)residentDeviceManager:(id)manager didCompleteDiscoveryWithPrimaryResidentDevice:(id)device error:(id)error;
 @end
 
 @implementation HMDResidentDeviceManagerXPCDiscoveryRequester
 
-- (void)residentDeviceManager:(id)a3 didCompleteDiscoveryWithPrimaryResidentDevice:(id)a4 error:(id)a5
+- (void)residentDeviceManager:(id)manager didCompleteDiscoveryWithPrimaryResidentDevice:(id)device error:(id)error
 {
-  v10 = a4;
-  v7 = a5;
-  v8 = [(HMDResidentDeviceManagerXPCDiscoveryRequester *)self block];
-  v9 = v8;
-  if (v8)
+  deviceCopy = device;
+  errorCopy = error;
+  block = [(HMDResidentDeviceManagerXPCDiscoveryRequester *)self block];
+  v9 = block;
+  if (block)
   {
-    (*(v8 + 16))(v8, v10, v7);
+    (*(block + 16))(block, deviceCopy, errorCopy);
   }
 }
 

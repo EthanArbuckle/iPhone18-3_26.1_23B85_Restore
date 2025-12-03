@@ -1,17 +1,17 @@
 @interface EMCachingContactStore
 + (OS_os_log)signpostLog;
 + (id)log;
-- (BOOL)contactExistsForEmailAddress:(id)a3;
-- (EMCachingContactStore)initWithOptions:(unint64_t)a3 cacheFuture:(id)a4;
-- (EMCachingContactStore)initWithStore:(id)a3 options:(unint64_t)a4 cacheFuture:(id)a5;
-- (id)_fetchDisplayNameForEmailAddress:(id)a3 abbreviated:(BOOL)a4;
-- (id)displayNameForEmailAddress:(id)a3;
-- (id)displayNameForEmailAddress:(id)a3 abbreviated:(BOOL)a4;
+- (BOOL)contactExistsForEmailAddress:(id)address;
+- (EMCachingContactStore)initWithOptions:(unint64_t)options cacheFuture:(id)future;
+- (EMCachingContactStore)initWithStore:(id)store options:(unint64_t)options cacheFuture:(id)future;
+- (id)_fetchDisplayNameForEmailAddress:(id)address abbreviated:(BOOL)abbreviated;
+- (id)displayNameForEmailAddress:(id)address;
+- (id)displayNameForEmailAddress:(id)address abbreviated:(BOOL)abbreviated;
 - (id)emailAddressCacheFinishedFuture;
-- (id)initForTestingWithStore:(id)a3 options:(unint64_t)a4 cacheFuture:(id)a5 scheduler:(id)a6;
-- (id)initForTestingWithStore:(id)a3 options:(unint64_t)a4 emailAddressCache:(id)a5;
+- (id)initForTestingWithStore:(id)store options:(unint64_t)options cacheFuture:(id)future scheduler:(id)scheduler;
+- (id)initForTestingWithStore:(id)store options:(unint64_t)options emailAddressCache:(id)cache;
 - (unint64_t)signpostID;
-- (void)_commonInitWithStore:(id)a3 options:(unint64_t)a4 emailAddressCache:(id)a5 cacheFuture:(id)a6 scheduler:(id)a7;
+- (void)_commonInitWithStore:(id)store options:(unint64_t)options emailAddressCache:(id)cache cacheFuture:(id)future scheduler:(id)scheduler;
 - (void)_invalidateDisplayNameCache;
 - (void)_invalidateEmailAddressCache;
 - (void)_scheduleEmailAddressCachePopulation;
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = __28__EMCachingContactStore_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_5 != -1)
   {
     dispatch_once(&log_onceToken_5, block);
@@ -51,7 +51,7 @@ void __28__EMCachingContactStore_log__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __36__EMCachingContactStore_signpostLog__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (signpostLog_onceToken != -1)
   {
     dispatch_once(&signpostLog_onceToken, block);
@@ -72,93 +72,93 @@ void __36__EMCachingContactStore_signpostLog__block_invoke(uint64_t a1)
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
 
-- (EMCachingContactStore)initWithOptions:(unint64_t)a3 cacheFuture:(id)a4
+- (EMCachingContactStore)initWithOptions:(unint64_t)options cacheFuture:(id)future
 {
-  v6 = a4;
+  futureCopy = future;
   v7 = objc_alloc_init(MEMORY[0x1E695CE18]);
-  v8 = [(EMCachingContactStore *)self initWithStore:v7 options:a3 cacheFuture:v6];
+  v8 = [(EMCachingContactStore *)self initWithStore:v7 options:options cacheFuture:futureCopy];
 
   return v8;
 }
 
-- (EMCachingContactStore)initWithStore:(id)a3 options:(unint64_t)a4 cacheFuture:(id)a5
+- (EMCachingContactStore)initWithStore:(id)store options:(unint64_t)options cacheFuture:(id)future
 {
-  v8 = a3;
-  v9 = a5;
+  storeCopy = store;
+  futureCopy = future;
   v13.receiver = self;
   v13.super_class = EMCachingContactStore;
   v10 = [(EMCachingContactStore *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(EMCachingContactStore *)v10 _commonInitWithStore:v8 options:a4 emailAddressCache:0 cacheFuture:v9];
+    [(EMCachingContactStore *)v10 _commonInitWithStore:storeCopy options:options emailAddressCache:0 cacheFuture:futureCopy];
   }
 
   return v11;
 }
 
-- (id)initForTestingWithStore:(id)a3 options:(unint64_t)a4 emailAddressCache:(id)a5
+- (id)initForTestingWithStore:(id)store options:(unint64_t)options emailAddressCache:(id)cache
 {
-  v8 = a3;
-  v9 = a5;
+  storeCopy = store;
+  cacheCopy = cache;
   v13.receiver = self;
   v13.super_class = EMCachingContactStore;
   v10 = [(EMCachingContactStore *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(EMCachingContactStore *)v10 _commonInitWithStore:v8 options:a4 emailAddressCache:v9 cacheFuture:0];
+    [(EMCachingContactStore *)v10 _commonInitWithStore:storeCopy options:options emailAddressCache:cacheCopy cacheFuture:0];
   }
 
   return v11;
 }
 
-- (id)initForTestingWithStore:(id)a3 options:(unint64_t)a4 cacheFuture:(id)a5 scheduler:(id)a6
+- (id)initForTestingWithStore:(id)store options:(unint64_t)options cacheFuture:(id)future scheduler:(id)scheduler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  storeCopy = store;
+  futureCopy = future;
+  schedulerCopy = scheduler;
   v16.receiver = self;
   v16.super_class = EMCachingContactStore;
   v13 = [(EMCachingContactStore *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    [(EMCachingContactStore *)v13 _commonInitWithStore:v10 options:a4 emailAddressCache:0 cacheFuture:v11 scheduler:v12];
+    [(EMCachingContactStore *)v13 _commonInitWithStore:storeCopy options:options emailAddressCache:0 cacheFuture:futureCopy scheduler:schedulerCopy];
   }
 
   return v14;
 }
 
-- (void)_commonInitWithStore:(id)a3 options:(unint64_t)a4 emailAddressCache:(id)a5 cacheFuture:(id)a6 scheduler:(id)a7
+- (void)_commonInitWithStore:(id)store options:(unint64_t)options emailAddressCache:(id)cache cacheFuture:(id)future scheduler:(id)scheduler
 {
-  v35 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  objc_storeStrong(&self->_cnStore, a3);
-  self->_options = a4;
-  if (a4)
+  storeCopy = store;
+  cacheCopy = cache;
+  futureCopy = future;
+  schedulerCopy = scheduler;
+  objc_storeStrong(&self->_cnStore, store);
+  self->_options = options;
+  if (options)
   {
     v16 = [objc_alloc(MEMORY[0x1E699B7E0]) initWithCountLimit:100];
     displayNameCache = self->_displayNameCache;
     self->_displayNameCache = v16;
 
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:self selector:sel__invalidateDisplayNameCache name:*MEMORY[0x1E695C3D8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__invalidateDisplayNameCache name:*MEMORY[0x1E695C3D8] object:0];
   }
 
-  if ((a4 & 2) != 0)
+  if ((options & 2) != 0)
   {
-    if (v14)
+    if (futureCopy)
     {
-      v19 = v14;
+      v19 = futureCopy;
       cacheCanStartFuture = self->_cacheCanStartFuture;
       self->_cacheCanStartFuture = v19;
     }
@@ -172,13 +172,13 @@ void __36__EMCachingContactStore_signpostLog__block_invoke(uint64_t a1)
       self->_cacheCanStartFuture = v22;
     }
 
-    v24 = [MEMORY[0x1E699B868] promise];
+    promise = [MEMORY[0x1E699B868] promise];
     emailAddressCacheFinished = self->_emailAddressCacheFinished;
-    self->_emailAddressCacheFinished = v24;
+    self->_emailAddressCacheFinished = promise;
 
-    if (v15)
+    if (schedulerCopy)
     {
-      v26 = v15;
+      v26 = schedulerCopy;
       addressCacheScheduler = self->_addressCacheScheduler;
       self->_addressCacheScheduler = v26;
     }
@@ -192,14 +192,14 @@ void __36__EMCachingContactStore_signpostLog__block_invoke(uint64_t a1)
       self->_addressCacheScheduler = v29;
     }
 
-    if (v13)
+    if (cacheCopy)
     {
-      v31 = [MEMORY[0x1E699B7C8] futureWithResult:v13];
+      v31 = [MEMORY[0x1E699B7C8] futureWithResult:cacheCopy];
       [(EMCachingContactStore *)self setEmailAddressCacheFuture:v31];
 
-      v32 = [(EMCachingContactStore *)self emailAddressCacheFinished];
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v32 finishWithResult:v33];
+      emailAddressCacheFinished = [(EMCachingContactStore *)self emailAddressCacheFinished];
+      null = [MEMORY[0x1E695DFB0] null];
+      [emailAddressCacheFinished finishWithResult:null];
     }
 
     else
@@ -207,25 +207,25 @@ void __36__EMCachingContactStore_signpostLog__block_invoke(uint64_t a1)
       [(EMCachingContactStore *)self _scheduleEmailAddressCachePopulation];
     }
 
-    v34 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v34 addObserver:self selector:sel__invalidateEmailAddressCache name:*MEMORY[0x1E695C3D8] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__invalidateEmailAddressCache name:*MEMORY[0x1E695C3D8] object:0];
   }
 }
 
-- (id)displayNameForEmailAddress:(id)a3
+- (id)displayNameForEmailAddress:(id)address
 {
-  v3 = [(EMCachingContactStore *)self displayNameForEmailAddress:a3 abbreviated:0];
+  v3 = [(EMCachingContactStore *)self displayNameForEmailAddress:address abbreviated:0];
 
   return v3;
 }
 
-- (id)displayNameForEmailAddress:(id)a3 abbreviated:(BOOL)a4
+- (id)displayNameForEmailAddress:(id)address abbreviated:(BOOL)abbreviated
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  abbreviatedCopy = abbreviated;
+  addressCopy = address;
+  if (addressCopy)
   {
-    if (v4)
+    if (abbreviatedCopy)
     {
       v7 = @"short:";
     }
@@ -235,16 +235,16 @@ void __36__EMCachingContactStore_signpostLog__block_invoke(uint64_t a1)
       v7 = @"full:";
     }
 
-    v8 = [(__CFString *)v7 stringByAppendingString:v6];
-    v9 = [(EMCachingContactStore *)self displayNameCache];
+    v8 = [(__CFString *)v7 stringByAppendingString:addressCopy];
+    displayNameCache = [(EMCachingContactStore *)self displayNameCache];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __64__EMCachingContactStore_displayNameForEmailAddress_abbreviated___block_invoke;
     v12[3] = &unk_1E826C4A0;
     v12[4] = self;
-    v13 = v6;
-    v14 = v4;
-    v10 = [v9 objectForKey:v8 generator:v12];
+    v13 = addressCopy;
+    v14 = abbreviatedCopy;
+    v10 = [displayNameCache objectForKey:v8 generator:v12];
   }
 
   else
@@ -255,12 +255,12 @@ void __36__EMCachingContactStore_signpostLog__block_invoke(uint64_t a1)
   return v10;
 }
 
-- (id)_fetchDisplayNameForEmailAddress:(id)a3 abbreviated:(BOOL)a4
+- (id)_fetchDisplayNameForEmailAddress:(id)address abbreviated:(BOOL)abbreviated
 {
-  v4 = a4;
+  abbreviatedCopy = abbreviated;
   v31[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v4)
+  addressCopy = address;
+  if (abbreviatedCopy)
   {
     v7 = 1000;
   }
@@ -270,30 +270,30 @@ void __36__EMCachingContactStore_signpostLog__block_invoke(uint64_t a1)
     v7 = 0;
   }
 
-  v8 = [(EMCachingContactStore *)self emailAddressCacheFuture];
-  v9 = [v8 resultIfAvailable];
-  if (v9)
+  emailAddressCacheFuture = [(EMCachingContactStore *)self emailAddressCacheFuture];
+  resultIfAvailable = [emailAddressCacheFuture resultIfAvailable];
+  if (resultIfAvailable)
   {
-    v10 = [(EMCachingContactStore *)self contactExistsForEmailAddress:v6];
+    v10 = [(EMCachingContactStore *)self contactExistsForEmailAddress:addressCopy];
 
     if (!v10)
     {
-      v11 = [v6 emailAddressValue];
-      v12 = v11;
-      if (v11)
+      emailAddressValue = [addressCopy emailAddressValue];
+      v12 = emailAddressValue;
+      if (emailAddressValue)
       {
         v13 = MEMORY[0x1E695CD58];
-        v14 = [v11 displayName];
-        v15 = [v14 ec_personNameComponents];
-        v16 = [v12 simpleAddress];
-        v17 = [v13 em_contactWithPersonNameComponents:v15 emailAddress:v16 emailAddressLabel:0 allowInvalidEmailAddress:1];
+        displayName = [emailAddressValue displayName];
+        ec_personNameComponents = [displayName ec_personNameComponents];
+        simpleAddress = [v12 simpleAddress];
+        v17 = [v13 em_contactWithPersonNameComponents:ec_personNameComponents emailAddress:simpleAddress emailAddressLabel:0 allowInvalidEmailAddress:1];
       }
 
       else
       {
-        v22 = [v6 stringValue];
-        v14 = v22;
-        if (!v22)
+        stringValue = [addressCopy stringValue];
+        displayName = stringValue;
+        if (!stringValue)
         {
           v17 = 0;
 LABEL_14:
@@ -309,8 +309,8 @@ LABEL_10:
         }
 
         v23 = MEMORY[0x1E695CD58];
-        v15 = [v22 ea_addressCommentPersonNameComponents];
-        v17 = [v23 em_contactWithPersonNameComponents:v15 emailAddress:v14 emailAddressLabel:0 allowInvalidEmailAddress:1];
+        ec_personNameComponents = [stringValue ea_addressCommentPersonNameComponents];
+        v17 = [v23 em_contactWithPersonNameComponents:ec_personNameComponents emailAddress:displayName emailAddressLabel:0 allowInvalidEmailAddress:1];
       }
 
       goto LABEL_14;
@@ -321,11 +321,11 @@ LABEL_10:
   {
   }
 
-  v18 = [(EMCachingContactStore *)self cnStore];
+  cnStore = [(EMCachingContactStore *)self cnStore];
   v19 = [MEMORY[0x1E695CD80] descriptorForRequiredKeysForStyle:v7];
   v31[0] = v19;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
-  v17 = [v18 em_fetchContactForEmailAddress:v6 keysToFetch:v20 createIfNeeded:1];
+  v17 = [cnStore em_fetchContactForEmailAddress:addressCopy keysToFetch:v20 createIfNeeded:1];
 
   if (v17)
   {
@@ -337,22 +337,22 @@ LABEL_15:
 LABEL_16:
   if (![v21 length])
   {
-    v24 = [v6 ea_addressComment];
+    ea_addressComment = [addressCopy ea_addressComment];
 
-    v21 = v24;
+    v21 = ea_addressComment;
   }
 
-  if (v21 == v6)
+  if (v21 == addressCopy)
   {
-    v25 = [v6 ea_uncommentedAddress];
+    ea_uncommentedAddress = [addressCopy ea_uncommentedAddress];
 
-    v21 = v25;
+    v21 = ea_uncommentedAddress;
   }
 
   if ([v21 isEqualToString:@"Hide My Email"])
   {
-    v26 = [v6 ea_uncommentedAddress];
-    v27 = [v26 hasSuffix:@"icloud.com"];
+    ea_uncommentedAddress2 = [addressCopy ea_uncommentedAddress];
+    v27 = [ea_uncommentedAddress2 hasSuffix:@"icloud.com"];
 
     if (v27)
     {
@@ -367,48 +367,48 @@ LABEL_16:
   return v21;
 }
 
-- (BOOL)contactExistsForEmailAddress:(id)a3
+- (BOOL)contactExistsForEmailAddress:(id)address
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EMCachingContactStore *)self options];
-  v6 = [(EMCachingContactStore *)self emailAddressCacheFuture];
+  addressCopy = address;
+  options = [(EMCachingContactStore *)self options];
+  emailAddressCacheFuture = [(EMCachingContactStore *)self emailAddressCacheFuture];
   v20 = 0;
-  v7 = [v6 resultIfAvailable:&v20];
+  v7 = [emailAddressCacheFuture resultIfAvailable:&v20];
   v8 = v20;
 
   if (v7)
   {
-    v9 = v4;
-    v10 = [v9 emailAddressValue];
-    v11 = [v10 simpleAddress];
-    v12 = v11;
-    if (v11)
+    v9 = addressCopy;
+    emailAddressValue = [v9 emailAddressValue];
+    simpleAddress = [emailAddressValue simpleAddress];
+    v12 = simpleAddress;
+    if (simpleAddress)
     {
-      v13 = v11;
+      stringValue = simpleAddress;
     }
 
     else
     {
-      v13 = [v9 stringValue];
+      stringValue = [v9 stringValue];
     }
 
-    v14 = v13;
+    cnStore = stringValue;
 
-    v17 = [v7 containsObject:v14];
+    v17 = [v7 containsObject:cnStore];
   }
 
   else
   {
-    if (!v8 && (v5 & 2) != 0)
+    if (!v8 && (options & 2) != 0)
     {
       [(EMCachingContactStore *)self _scheduleEmailAddressCachePopulation];
     }
 
-    v14 = [(EMCachingContactStore *)self cnStore];
+    cnStore = [(EMCachingContactStore *)self cnStore];
     v21[0] = *MEMORY[0x1E695C258];
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
-    v16 = [v14 em_fetchContactForEmailAddress:v4 keysToFetch:v15 createIfNeeded:0];
+    v16 = [cnStore em_fetchContactForEmailAddress:addressCopy keysToFetch:v15 createIfNeeded:0];
     v17 = v16 != 0;
   }
 
@@ -418,27 +418,27 @@ LABEL_16:
 
 - (id)emailAddressCacheFinishedFuture
 {
-  v2 = [(EMCachingContactStore *)self emailAddressCacheFinished];
-  v3 = [v2 future];
+  emailAddressCacheFinished = [(EMCachingContactStore *)self emailAddressCacheFinished];
+  future = [emailAddressCacheFinished future];
 
-  return v3;
+  return future;
 }
 
 - (void)_invalidateDisplayNameCache
 {
-  v2 = [(EMCachingContactStore *)self displayNameCache];
-  [v2 removeAllObjects];
+  displayNameCache = [(EMCachingContactStore *)self displayNameCache];
+  [displayNameCache removeAllObjects];
 }
 
 - (void)_invalidateEmailAddressCache
 {
-  v3 = [(EMCachingContactStore *)self addressCacheScheduler];
+  addressCacheScheduler = [(EMCachingContactStore *)self addressCacheScheduler];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __53__EMCachingContactStore__invalidateEmailAddressCache__block_invoke;
   v4[3] = &unk_1E826C098;
   v4[4] = self;
-  [v3 performBlock:v4];
+  [addressCacheScheduler performBlock:v4];
 }
 
 void __53__EMCachingContactStore__invalidateEmailAddressCache__block_invoke(uint64_t a1)
@@ -458,13 +458,13 @@ void __53__EMCachingContactStore__invalidateEmailAddressCache__block_invoke(uint
 - (void)_scheduleEmailAddressCachePopulation
 {
   objc_initWeak(&location, self);
-  v3 = [(EMCachingContactStore *)self cacheCanStartFuture];
+  cacheCanStartFuture = [(EMCachingContactStore *)self cacheCanStartFuture];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __61__EMCachingContactStore__scheduleEmailAddressCachePopulation__block_invoke;
   v4[3] = &unk_1E826C4C8;
   objc_copyWeak(&v5, &location);
-  [v3 addSuccessBlock:v4];
+  [cacheCanStartFuture addSuccessBlock:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -488,14 +488,14 @@ void __61__EMCachingContactStore__scheduleEmailAddressCachePopulation__block_inv
     _os_log_impl(&dword_1C6655000, v4, OS_LOG_TYPE_DEFAULT, "[Email Address Cache] %lld: Scheduling cache population", buf, 0xCu);
   }
 
-  v5 = [(EMCachingContactStore *)self addressCacheScheduler];
+  addressCacheScheduler = [(EMCachingContactStore *)self addressCacheScheduler];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__EMCachingContactStore__scheduleEmailAddressCachePopulationImpl__block_invoke;
   v7[3] = &unk_1E826C4F0;
   v7[4] = self;
   v7[5] = v3;
-  [v5 performBlock:v7];
+  [addressCacheScheduler performBlock:v7];
 
   v6 = *MEMORY[0x1E69E9840];
 }

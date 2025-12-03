@@ -1,15 +1,15 @@
 @interface UIKeyboardKeyplaneTransition
 - (UIKeyboardKeyplaneTransitionDelegate)transitionDelegate;
-- (void)addTransitionView:(id)a3 startFrame:(CGRect)a4 endFrame:(CGRect)a5;
+- (void)addTransitionView:(id)view startFrame:(CGRect)frame endFrame:(CGRect)endFrame;
 - (void)cancelNonInteractiveAnimation;
 - (void)dealloc;
 - (void)finalizeTransition;
-- (void)finishWithProgress:(double)a3 completionBlock:(id)a4;
-- (void)rebuildWithStartKeyplane:(id)a3 startView:(id)a4 endKeyplane:(id)a5 endView:(id)a6;
+- (void)finishWithProgress:(double)progress completionBlock:(id)block;
+- (void)rebuildWithStartKeyplane:(id)keyplane startView:(id)view endKeyplane:(id)endKeyplane endView:(id)endView;
 - (void)removeAllAnimations;
-- (void)runNonInteractivelyWithCompletion:(id)a3;
-- (void)transitionToFinalState:(id)a3;
-- (void)updateWithProgress:(double)a3;
+- (void)runNonInteractivelyWithCompletion:(id)completion;
+- (void)transitionToFinalState:(id)state;
+- (void)updateWithProgress:(double)progress;
 @end
 
 @implementation UIKeyboardKeyplaneTransition
@@ -32,47 +32,47 @@
   [(UIKeyboardKeyplaneTransition *)&v6 dealloc];
 }
 
-- (void)rebuildWithStartKeyplane:(id)a3 startView:(id)a4 endKeyplane:(id)a5 endView:(id)a6
+- (void)rebuildWithStartKeyplane:(id)keyplane startView:(id)view endKeyplane:(id)endKeyplane endView:(id)endView
 {
-  v14 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  keyplaneCopy = keyplane;
+  viewCopy = view;
+  endKeyplaneCopy = endKeyplane;
+  endViewCopy = endView;
   [(UIKeyboardKeyplaneTransition *)self removeAllAnimations];
   [(NSMutableArray *)self->_transitionViews removeAllObjects];
-  if (v11)
+  if (viewCopy)
   {
-    objc_storeStrong(&self->_startView, a4);
+    objc_storeStrong(&self->_startView, view);
   }
 
-  if (v13)
+  if (endViewCopy)
   {
-    objc_storeStrong(&self->_endView, a6);
+    objc_storeStrong(&self->_endView, endView);
   }
 
-  if (v14)
+  if (keyplaneCopy)
   {
-    objc_storeStrong(&self->_start, a3);
+    objc_storeStrong(&self->_start, keyplane);
   }
 
-  if (v12)
+  if (endKeyplaneCopy)
   {
-    objc_storeStrong(&self->_end, a5);
+    objc_storeStrong(&self->_end, endKeyplane);
   }
 }
 
-- (void)addTransitionView:(id)a3 startFrame:(CGRect)a4 endFrame:(CGRect)a5
+- (void)addTransitionView:(id)view startFrame:(CGRect)frame endFrame:(CGRect)endFrame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.size.height;
-  v10 = a4.size.width;
-  v11 = a4.origin.y;
-  v12 = a4.origin.x;
-  v31 = a3;
-  if (v31)
+  height = endFrame.size.height;
+  width = endFrame.size.width;
+  y = endFrame.origin.y;
+  x = endFrame.origin.x;
+  v9 = frame.size.height;
+  v10 = frame.size.width;
+  v11 = frame.origin.y;
+  v12 = frame.origin.x;
+  viewCopy = view;
+  if (viewCopy)
   {
     v33.origin.x = v12;
     v33.origin.y = v11;
@@ -96,7 +96,7 @@
           transitionViews = self->_transitionViews;
         }
 
-        [(NSMutableArray *)transitionViews addObject:v31];
+        [(NSMutableArray *)transitionViews addObject:viewCopy];
         v35.origin.x = v12;
         v35.origin.y = v11;
         v35.size.width = v10;
@@ -124,8 +124,8 @@
         v22 = [MEMORY[0x1E696B098] valueWithCGPoint:{v18, v19}];
         [v20 setToValue:v22];
 
-        v23 = [v31 layer];
-        [v23 addAnimation:v20 forKey:@"position interpolation"];
+        layer = [viewCopy layer];
+        [layer addAnimation:v20 forKey:@"position interpolation"];
 
         v24 = *MEMORY[0x1E695EFF8];
         v25 = *(MEMORY[0x1E695EFF8] + 8);
@@ -136,73 +136,73 @@
         v28 = [MEMORY[0x1E696B098] valueWithCGRect:{v24, v25, width, height}];
         [v26 setToValue:v28];
 
-        v29 = [v31 layer];
-        [v29 addAnimation:v26 forKey:@"bounds interpolation"];
+        layer2 = [viewCopy layer];
+        [layer2 addAnimation:v26 forKey:@"bounds interpolation"];
       }
     }
   }
 }
 
-- (void)runNonInteractivelyWithCompletion:(id)a3
+- (void)runNonInteractivelyWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3);
+    (*(completion + 2))(completion);
   }
 }
 
 - (void)cancelNonInteractiveAnimation
 {
-  v4 = [(UIKeyboardKeyplaneTransition *)self completionBlock];
+  completionBlock = [(UIKeyboardKeyplaneTransition *)self completionBlock];
   [(UIKeyboardKeyplaneTransition *)self setCompletionBlock:0];
-  v3 = v4;
-  if (v4)
+  v3 = completionBlock;
+  if (completionBlock)
   {
-    (*(v4 + 16))(v4);
-    v3 = v4;
+    (*(completionBlock + 16))(completionBlock);
+    v3 = completionBlock;
   }
 }
 
-- (void)updateWithProgress:(double)a3
+- (void)updateWithProgress:(double)progress
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [(UIView *)self->_startView layer];
-  [v5 setSpeed:0.0];
+  layer = [(UIView *)self->_startView layer];
+  [layer setSpeed:0.0];
 
-  v6 = [(UIView *)self->_endView layer];
-  [v6 setSpeed:0.0];
+  layer2 = [(UIView *)self->_endView layer];
+  [layer2 setSpeed:0.0];
 
-  self->_currentProgress = a3;
-  if (a3 <= 1.0)
+  self->_currentProgress = progress;
+  if (progress <= 1.0)
   {
-    v7 = a3;
+    progressCopy = progress;
   }
 
   else
   {
-    v7 = 1.0;
+    progressCopy = 1.0;
   }
 
-  if (a3 < 0.0)
+  if (progress < 0.0)
   {
-    v7 = 0.0;
+    progressCopy = 0.0;
   }
 
   if (self->_initiallyAtEnd)
   {
-    v8 = 1.0 - v7;
+    v8 = 1.0 - progressCopy;
   }
 
   else
   {
-    v8 = v7;
+    v8 = progressCopy;
   }
 
-  v9 = [(UIView *)self->_startView layer];
-  [v9 setTimeOffset:v8];
+  layer3 = [(UIView *)self->_startView layer];
+  [layer3 setTimeOffset:v8];
 
-  v10 = [(UIView *)self->_endView layer];
-  [v10 setTimeOffset:v8];
+  layer4 = [(UIView *)self->_endView layer];
+  [layer4 setTimeOffset:v8];
 
   v25 = 0u;
   v26 = 0u;
@@ -224,11 +224,11 @@
         }
 
         v16 = *(*(&v23 + 1) + 8 * i);
-        v17 = [v16 layer];
-        [v17 setSpeed:0.0];
+        layer5 = [v16 layer];
+        [layer5 setSpeed:0.0];
 
-        v18 = [v16 layer];
-        [v18 setTimeOffset:v8];
+        layer6 = [v16 layer];
+        [layer6 setTimeOffset:v8];
       }
 
       v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -237,23 +237,23 @@
     while (v13);
   }
 
-  v19 = [(UIKeyboardKeyplaneTransition *)self transitionDelegate];
+  transitionDelegate = [(UIKeyboardKeyplaneTransition *)self transitionDelegate];
   [(UIKeyboardKeyplaneTransition *)self startHeight];
   v21 = v20;
   [(UIKeyboardKeyplaneTransition *)self endHeight];
-  [v19 updateProgress:v8 startHeight:v21 endHeight:v22];
+  [transitionDelegate updateProgress:v8 startHeight:v21 endHeight:v22];
 }
 
 - (void)removeAllAnimations
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(UIView *)self->_startView layer];
+  layer = [(UIView *)self->_startView layer];
   LODWORD(v4) = 1.0;
-  [v3 setSpeed:v4];
+  [layer setSpeed:v4];
 
-  v5 = [(UIView *)self->_endView layer];
+  layer2 = [(UIView *)self->_endView layer];
   LODWORD(v6) = 1.0;
-  [v5 setSpeed:v6];
+  [layer2 setSpeed:v6];
 
   v19 = 0u;
   v20 = 0u;
@@ -275,15 +275,15 @@
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 layer];
-        [v13 removeAnimationForKey:@"position interpolation"];
+        layer3 = [v12 layer];
+        [layer3 removeAnimationForKey:@"position interpolation"];
 
-        v14 = [v12 layer];
-        [v14 removeAnimationForKey:@"bounds interpolation"];
+        layer4 = [v12 layer];
+        [layer4 removeAnimationForKey:@"bounds interpolation"];
 
-        v15 = [v12 layer];
+        layer5 = [v12 layer];
         LODWORD(v16) = 1.0;
-        [v15 setSpeed:v16];
+        [layer5 setSpeed:v16];
       }
 
       v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -304,23 +304,23 @@
     self->_displayLink = 0;
   }
 
-  v5 = [(UIKeyboardKeyplaneTransition *)self completionBlock];
+  completionBlock = [(UIKeyboardKeyplaneTransition *)self completionBlock];
 
-  if (v5)
+  if (completionBlock)
   {
-    v6 = [(UIKeyboardKeyplaneTransition *)self completionBlock];
-    v6[2]();
+    completionBlock2 = [(UIKeyboardKeyplaneTransition *)self completionBlock];
+    completionBlock2[2]();
 
     [(UIKeyboardKeyplaneTransition *)self setCompletionBlock:0];
   }
 
-  v7 = [(UIKeyboardKeyplaneTransition *)self transitionDelegate];
-  [v7 transitionDidFinish:1];
+  transitionDelegate = [(UIKeyboardKeyplaneTransition *)self transitionDelegate];
+  [transitionDelegate transitionDidFinish:1];
 }
 
-- (void)transitionToFinalState:(id)a3
+- (void)transitionToFinalState:(id)state
 {
-  [a3 timestamp];
+  [state timestamp];
   finishProgress = self->_finishProgress;
   if (vabdd_f64(self->_currentProgress, finishProgress) < 0.01 || (finishDuration = self->_finishDuration, v7 = v4 - self->_finalTransitionStartTime, v7 >= finishDuration))
   {
@@ -336,18 +336,18 @@
   }
 }
 
-- (void)finishWithProgress:(double)a3 completionBlock:(id)a4
+- (void)finishWithProgress:(double)progress completionBlock:(id)block
 {
-  [(UIKeyboardKeyplaneTransition *)self setCompletionBlock:a4];
-  v6 = 1.0 - a3;
+  [(UIKeyboardKeyplaneTransition *)self setCompletionBlock:block];
+  progressCopy = 1.0 - progress;
   if (!self->_initiallyAtEnd)
   {
-    v6 = a3;
+    progressCopy = progress;
   }
 
   currentProgress = self->_currentProgress;
   self->_liftOffProgress = currentProgress;
-  self->_finishProgress = v6;
+  self->_finishProgress = progressCopy;
   v8 = currentProgress >= 0.0 && currentProgress <= 1.0;
   v9 = 3.0;
   if (!v8)
@@ -355,17 +355,17 @@
     v9 = 9.0;
   }
 
-  self->_finishDuration = vabdd_f64(currentProgress, v6) / v9;
+  self->_finishDuration = vabdd_f64(currentProgress, progressCopy) / v9;
   self->_finalTransitionStartTime = CACurrentMediaTime();
-  v10 = [(UIView *)self->_startView window];
-  v11 = [v10 screen];
-  v12 = [v11 displayLinkWithTarget:self selector:sel_transitionToFinalState_];
+  window = [(UIView *)self->_startView window];
+  screen = [window screen];
+  v12 = [screen displayLinkWithTarget:self selector:sel_transitionToFinalState_];
   displayLink = self->_displayLink;
   self->_displayLink = v12;
 
   v14 = self->_displayLink;
-  v15 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [(CADisplayLink *)v14 addToRunLoop:v15 forMode:*MEMORY[0x1E695DA28]];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [(CADisplayLink *)v14 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 }
 
 - (UIKeyboardKeyplaneTransitionDelegate)transitionDelegate

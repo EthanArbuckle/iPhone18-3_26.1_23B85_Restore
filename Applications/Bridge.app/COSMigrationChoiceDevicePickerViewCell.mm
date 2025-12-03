@@ -1,16 +1,16 @@
 @interface COSMigrationChoiceDevicePickerViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (COSMigrationChoiceDevicePickerViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (COSMigrationChoiceDevicePickerViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation COSMigrationChoiceDevicePickerViewCell
 
-- (COSMigrationChoiceDevicePickerViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (COSMigrationChoiceDevicePickerViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = COSMigrationChoiceDevicePickerViewCell;
-  v4 = [(COSMigrationChoiceDevicePickerViewCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(COSMigrationChoiceDevicePickerViewCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [[BPSMultipleWatchMigrationView alloc] initWithFrame:1 andStyle:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -35,9 +35,9 @@
   [(BPSMultipleWatchMigrationView *)migrationPickerView setFrame:0.0, 0.0, v3, v4];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(BPSMultipleWatchMigrationView *)self->_migrationPickerView sizeThatFits:a3.width, a3.height];
+  [(BPSMultipleWatchMigrationView *)self->_migrationPickerView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;

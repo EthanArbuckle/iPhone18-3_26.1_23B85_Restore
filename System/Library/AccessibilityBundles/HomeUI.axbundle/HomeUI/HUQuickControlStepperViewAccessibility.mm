@@ -1,22 +1,22 @@
 @interface HUQuickControlStepperViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySelectedStepperSegment;
 - (id)_accessibilitySummaryView;
 - (void)_accessibilityAnnounceState;
-- (void)_handleGesture:(id)a3;
+- (void)_handleGesture:(id)gesture;
 @end
 
 @implementation HUQuickControlStepperViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUQuickControlContainerView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlContainerView" hasInstanceMethod:@"summaryView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlStepperView" hasInstanceMethod:@"segmentViews" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlStepperView" hasInstanceMethod:@"_handleGesture:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"HUQuickControlStepperView" hasInstanceMethod:@"selectedSegmentIndex" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlStepperSegmentView" hasInstanceMethod:@"isSegmentViewHighlighted" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUQuickControlContainerView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlContainerView" hasInstanceMethod:@"summaryView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlStepperView" hasInstanceMethod:@"segmentViews" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlStepperView" hasInstanceMethod:@"_handleGesture:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlStepperView" hasInstanceMethod:@"selectedSegmentIndex" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlStepperSegmentView" hasInstanceMethod:@"isSegmentViewHighlighted" withFullSignature:{"B", 0}];
 }
 
 - (id)_accessibilitySelectedStepperSegment
@@ -53,13 +53,13 @@ void __78__HUQuickControlStepperViewAccessibility__accessibilitySelectedStepperS
   }
 }
 
-- (void)_handleGesture:(id)a3
+- (void)_handleGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   v5 = [(HUQuickControlStepperViewAccessibility *)self safeValueForKey:@"selectedSegmentIndex"];
   v7.receiver = self;
   v7.super_class = HUQuickControlStepperViewAccessibility;
-  [(HUQuickControlStepperViewAccessibility *)&v7 _handleGesture:v4];
+  [(HUQuickControlStepperViewAccessibility *)&v7 _handleGesture:gestureCopy];
 
   v6 = [(HUQuickControlStepperViewAccessibility *)self safeValueForKey:@"selectedSegmentIndex"];
   if (v5 != v6)
@@ -70,12 +70,12 @@ void __78__HUQuickControlStepperViewAccessibility__accessibilitySelectedStepperS
 
 - (void)_accessibilityAnnounceState
 {
-  v2 = [(HUQuickControlStepperViewAccessibility *)self _accessibilitySummaryView];
-  v4 = [v2 accessibilityValue];
+  _accessibilitySummaryView = [(HUQuickControlStepperViewAccessibility *)self _accessibilitySummaryView];
+  accessibilityValue = [_accessibilitySummaryView accessibilityValue];
 
-  if (v4)
+  if (accessibilityValue)
   {
-    v3 = [objc_alloc(MEMORY[0x29EDBD7E8]) initWithString:v4];
+    v3 = [objc_alloc(MEMORY[0x29EDBD7E8]) initWithString:accessibilityValue];
     [v3 setAttribute:&unk_2A21CEBE0 forKey:*MEMORY[0x29EDBD860]];
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v3);
   }

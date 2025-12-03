@@ -1,18 +1,18 @@
 @interface CKInboxItem
-- (CKInboxItem)initWithTitle:(id)a3 subtitle:(id)a4 systemImage:(id)a5 accessoryText:(id)a6 filterMode:(id)a7 action:(id)a8;
-- (void)updateAccessory:(id)a3;
+- (CKInboxItem)initWithTitle:(id)title subtitle:(id)subtitle systemImage:(id)image accessoryText:(id)text filterMode:(id)mode action:(id)action;
+- (void)updateAccessory:(id)accessory;
 @end
 
 @implementation CKInboxItem
 
-- (CKInboxItem)initWithTitle:(id)a3 subtitle:(id)a4 systemImage:(id)a5 accessoryText:(id)a6 filterMode:(id)a7 action:(id)a8
+- (CKInboxItem)initWithTitle:(id)title subtitle:(id)subtitle systemImage:(id)image accessoryText:(id)text filterMode:(id)mode action:(id)action
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  imageCopy = image;
+  textCopy = text;
+  modeCopy = mode;
+  actionCopy = action;
   v30.receiver = self;
   v30.super_class = CKInboxItem;
   v20 = [(CKInboxItem *)&v30 init];
@@ -22,15 +22,15 @@
     identifier = v20->_identifier;
     v20->_identifier = v21;
 
-    v23 = [v19 copy];
+    v23 = [actionCopy copy];
     action = v20->_action;
     v20->_action = v23;
 
-    v25 = [v18 copy];
+    v25 = [modeCopy copy];
     filterMode = v20->_filterMode;
     v20->_filterMode = v25;
 
-    v27 = [[CKInboxItemSwift alloc] initWithIdentifier:v20->_identifier title:v14 subtitle:v15 systemImage:v16 accessoryText:v17];
+    v27 = [[CKInboxItemSwift alloc] initWithIdentifier:v20->_identifier title:titleCopy subtitle:subtitleCopy systemImage:imageCopy accessoryText:textCopy];
     inboxItemSwift = v20->_inboxItemSwift;
     v20->_inboxItemSwift = v27;
   }
@@ -38,11 +38,11 @@
   return v20;
 }
 
-- (void)updateAccessory:(id)a3
+- (void)updateAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [(CKInboxItem *)self inboxItemSwift];
-  [v5 updateWithAccessoryText:v4];
+  accessoryCopy = accessory;
+  inboxItemSwift = [(CKInboxItem *)self inboxItemSwift];
+  [inboxItemSwift updateWithAccessoryText:accessoryCopy];
 }
 
 @end

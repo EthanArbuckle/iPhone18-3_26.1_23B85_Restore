@@ -1,9 +1,9 @@
 @interface QSSVocToken
 - (NSString)orthography;
-- (Offset<siri::speech::schema_fb::VocToken>)addObjectToBuffer:(void *)a3;
-- (QSSVocToken)initWithFlatbuffData:(id)a3 root:(const VocToken *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::VocToken>)addObjectToBuffer:(void *)buffer;
+- (QSSVocToken)initWithFlatbuffData:(id)data root:(const VocToken *)root verify:(BOOL)verify;
 - (id)flatbuffData;
-- (void)blob:(id)a3;
+- (void)blob:(id)blob;
 @end
 
 @implementation QSSVocToken
@@ -37,18 +37,18 @@ flatbuffers::DetachedBuffer *__27__QSSVocToken_flatbuffData__block_invoke(uint64
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::VocToken>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::VocToken>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(QSSVocToken *)self orthography];
-  v6 = v5;
-  if (!v5)
+  orthography = [(QSSVocToken *)self orthography];
+  v6 = orthography;
+  if (!orthography)
   {
-    v5 = &stru_2879AE8E0;
+    orthography = &stru_2879AE8E0;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  LODWORD(v7) = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)orthography UTF8String];
+  v8 = strlen(uTF8String);
+  LODWORD(uTF8String) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
   v15 = 0;
   v16 = &v15;
@@ -62,16 +62,16 @@ flatbuffers::DetachedBuffer *__27__QSSVocToken_flatbuffData__block_invoke(uint64
   v14[2] = __33__QSSVocToken_addObjectToBuffer___block_invoke;
   v14[3] = &unk_279C4C2C8;
   v14[4] = &v15;
-  v14[5] = a3;
+  v14[5] = buffer;
   [(QSSVocToken *)self blob:v14];
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v9 = *(a3 + 8);
-  v10 = *(a3 + 12);
-  v11 = *(a3 + 10);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, v7);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 6, *(v16 + 12));
-  v12.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v9 - v10 + v11);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v9 = *(buffer + 8);
+  v10 = *(buffer + 12);
+  v11 = *(buffer + 10);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, uTF8String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 6, *(v16 + 12));
+  v12.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v9 - v10 + v11);
   _Block_object_dispose(&v15, 8);
   return v12;
 }
@@ -83,14 +83,14 @@ uint64_t __33__QSSVocToken_addObjectToBuffer___block_invoke(uint64_t a1, const v
   return result;
 }
 
-- (void)blob:(id)a3
+- (void)blob:(id)blob
 {
   root = self->_root;
   v5 = &root[-*root->var0];
-  v6 = a3;
+  blobCopy = blob;
   v7 = *root[*v5[6].var0 + *root[*v5[6].var0].var0].var0;
-  v8 = v6;
-  (*(a3 + 2))();
+  v8 = blobCopy;
+  (*(blob + 2))();
 }
 
 - (NSString)orthography
@@ -116,42 +116,42 @@ uint64_t __33__QSSVocToken_addObjectToBuffer___block_invoke(uint64_t a1, const v
   return v6;
 }
 
-- (QSSVocToken)initWithFlatbuffData:(id)a3 root:(const VocToken *)a4 verify:(BOOL)a5
+- (QSSVocToken)initWithFlatbuffData:(id)data root:(const VocToken *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSVocToken;
   v10 = [(QSSVocToken *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -173,9 +173,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

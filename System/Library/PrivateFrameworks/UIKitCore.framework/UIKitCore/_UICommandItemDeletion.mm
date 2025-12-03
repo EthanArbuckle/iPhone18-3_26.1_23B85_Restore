@@ -1,40 +1,40 @@
 @interface _UICommandItemDeletion
-+ (id)deletionWithAnchor:(id)a3;
-- (BOOL)acceptBoolItemInsertionVisit:(id)a3 itemDeletionVisit:(id)a4 menuInsertionVisit:(id)a5 menuDeletionVisit:(id)a6;
-- (_UICommandItemDeletion)initWithAnchor:(id)a3;
-- (void)acceptItemInsertionVisit:(id)a3 itemDeletionVisit:(id)a4 menuInsertionVisit:(id)a5 menuDeletionVisit:(id)a6;
++ (id)deletionWithAnchor:(id)anchor;
+- (BOOL)acceptBoolItemInsertionVisit:(id)visit itemDeletionVisit:(id)deletionVisit menuInsertionVisit:(id)insertionVisit menuDeletionVisit:(id)menuDeletionVisit;
+- (_UICommandItemDeletion)initWithAnchor:(id)anchor;
+- (void)acceptItemInsertionVisit:(id)visit itemDeletionVisit:(id)deletionVisit menuInsertionVisit:(id)insertionVisit menuDeletionVisit:(id)menuDeletionVisit;
 @end
 
 @implementation _UICommandItemDeletion
 
-+ (id)deletionWithAnchor:(id)a3
++ (id)deletionWithAnchor:(id)anchor
 {
-  v3 = a3;
-  v4 = [[_UICommandItemDeletion alloc] initWithAnchor:v3];
+  anchorCopy = anchor;
+  v4 = [[_UICommandItemDeletion alloc] initWithAnchor:anchorCopy];
 
   return v4;
 }
 
-- (_UICommandItemDeletion)initWithAnchor:(id)a3
+- (_UICommandItemDeletion)initWithAnchor:(id)anchor
 {
   v4.receiver = self;
   v4.super_class = _UICommandItemDeletion;
-  return [(_UICommandChange *)&v4 initWithAnchor:a3];
+  return [(_UICommandChange *)&v4 initWithAnchor:anchor];
 }
 
-- (void)acceptItemInsertionVisit:(id)a3 itemDeletionVisit:(id)a4 menuInsertionVisit:(id)a5 menuDeletionVisit:(id)a6
+- (void)acceptItemInsertionVisit:(id)visit itemDeletionVisit:(id)deletionVisit menuInsertionVisit:(id)insertionVisit menuDeletionVisit:(id)menuDeletionVisit
 {
-  if (a4)
+  if (deletionVisit)
   {
-    (*(a4 + 2))(a4, self);
+    (*(deletionVisit + 2))(deletionVisit, self);
   }
 }
 
-- (BOOL)acceptBoolItemInsertionVisit:(id)a3 itemDeletionVisit:(id)a4 menuInsertionVisit:(id)a5 menuDeletionVisit:(id)a6
+- (BOOL)acceptBoolItemInsertionVisit:(id)visit itemDeletionVisit:(id)deletionVisit menuInsertionVisit:(id)insertionVisit menuDeletionVisit:(id)menuDeletionVisit
 {
-  if (a4)
+  if (deletionVisit)
   {
-    return (*(a4 + 2))(a4, self);
+    return (*(deletionVisit + 2))(deletionVisit, self);
   }
 
   else

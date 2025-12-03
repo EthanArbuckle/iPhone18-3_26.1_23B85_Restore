@@ -1,21 +1,21 @@
 @interface CBPeer
-- (BOOL)hasTag:(id)a3;
+- (BOOL)hasTag:(id)tag;
 - (CBManager)manager;
-- (CBPeer)initWithInfo:(id)a3 manager:(id)a4;
-- (id)customProperty:(id)a3;
+- (CBPeer)initWithInfo:(id)info manager:(id)manager;
+- (id)customProperty:(id)property;
 - (id)customPropertyNames;
 - (id)getTags;
-- (id)peerStateToString:(int64_t)a3;
-- (id)sendInternalSyncMsg:(int)a3 args:(id)a4;
+- (id)peerStateToString:(int64_t)string;
+- (id)sendInternalSyncMsg:(int)msg args:(id)args;
 - (unint64_t)hash;
-- (void)handleHostStateUpdated:(id)a3;
-- (void)handleLinkEncryptionChanged:(id)a3;
-- (void)handleMTUChanged:(id)a3;
-- (void)handleMsg:(int)a3 args:(id)a4;
-- (void)sendInternalMsg:(int)a3 args:(id)a4;
-- (void)setCustomProperty:(id)a3 value:(id)a4;
-- (void)tag:(id)a3;
-- (void)untag:(id)a3;
+- (void)handleHostStateUpdated:(id)updated;
+- (void)handleLinkEncryptionChanged:(id)changed;
+- (void)handleMTUChanged:(id)changed;
+- (void)handleMsg:(int)msg args:(id)args;
+- (void)sendInternalMsg:(int)msg args:(id)args;
+- (void)setCustomProperty:(id)property value:(id)value;
+- (void)tag:(id)tag;
+- (void)untag:(id)untag;
 @end
 
 @implementation CBPeer
@@ -27,42 +27,42 @@
   return WeakRetained;
 }
 
-- (CBPeer)initWithInfo:(id)a3 manager:(id)a4
+- (CBPeer)initWithInfo:(id)info manager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = CBPeer;
   v8 = [(CBPeer *)&v15 init];
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"kCBMsgArgDeviceUUID"];
+    v9 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgDeviceUUID"];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [v6 objectForKeyedSubscript:@"kCBMsgArgATTMTU"];
+    v11 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgATTMTU"];
     v8->_mtuLength = [v11 unsignedIntegerValue];
 
-    v12 = [v6 objectForKeyedSubscript:@"kCBMsgArgPairingState"];
+    v12 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgPairingState"];
     v8->_pairingState = [v12 integerValue];
 
     v8->_isLinkEncrypted = 0;
     v8->_hostState = 0;
     v8->_role = -1;
-    objc_storeWeak(&v8->_manager, v7);
-    v13 = [v6 objectForKeyedSubscript:@"kCBMsgArgConnectionTransport"];
+    objc_storeWeak(&v8->_manager, managerCopy);
+    v13 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgConnectionTransport"];
     v8->_connectedTransport = [v13 unsignedIntegerValue];
   }
 
   return v8;
 }
 
-- (void)handleMsg:(int)a3 args:(id)a4
+- (void)handleMsg:(int)msg args:(id)args
 {
-  v6 = a4;
-  if ((a3 - 175) < 3)
+  argsCopy = args;
+  if ((msg - 175) < 3)
   {
-    [self *off_1E81203B0[a3 - 175]];
+    [self *off_1E81203B0[msg - 175]];
 LABEL_3:
 
     return;
@@ -79,96 +79,96 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [CBScalablePipeManager handleMsg:a3 args:v7];
+  [CBScalablePipeManager handleMsg:msg args:v7];
 }
 
-- (id)peerStateToString:(int64_t)a3
+- (id)peerStateToString:(int64_t)string
 {
-  if (a3 > 3)
+  if (string > 3)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_1E81203C8[a3];
+    return off_1E81203C8[string];
   }
 }
 
-- (void)handleMTUChanged:(id)a3
+- (void)handleMTUChanged:(id)changed
 {
-  v4 = [a3 objectForKeyedSubscript:@"kCBMsgArgATTMTU"];
+  v4 = [changed objectForKeyedSubscript:@"kCBMsgArgATTMTU"];
   -[CBPeer setMtuLength:](self, "setMtuLength:", [v4 unsignedIntegerValue]);
 }
 
-- (void)handleHostStateUpdated:(id)a3
+- (void)handleHostStateUpdated:(id)updated
 {
-  v4 = [a3 objectForKeyedSubscript:@"kCBMsgArgState"];
+  v4 = [updated objectForKeyedSubscript:@"kCBMsgArgState"];
   -[CBPeer setHostState:](self, "setHostState:", [v4 integerValue]);
 }
 
-- (void)handleLinkEncryptionChanged:(id)a3
+- (void)handleLinkEncryptionChanged:(id)changed
 {
-  v4 = [a3 objectForKeyedSubscript:@"kCBMsgArgState"];
+  v4 = [changed objectForKeyedSubscript:@"kCBMsgArgState"];
   -[CBPeer setIsLinkEncrypted:](self, "setIsLinkEncrypted:", [v4 BOOLValue]);
 }
 
-- (id)sendInternalSyncMsg:(int)a3 args:(id)a4
+- (id)sendInternalSyncMsg:(int)msg args:(id)args
 {
-  v4 = a3;
-  v6 = a4;
-  if (!v6)
+  msgCopy = msg;
+  argsCopy = args;
+  if (!argsCopy)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:1];
+    argsCopy = [MEMORY[0x1E695DF90] dictionaryWithCapacity:1];
   }
 
-  v7 = [(CBPeer *)self identifier];
-  [v6 setObject:v7 forKeyedSubscript:@"kCBMsgArgDeviceUUID"];
+  identifier = [(CBPeer *)self identifier];
+  [argsCopy setObject:identifier forKeyedSubscript:@"kCBMsgArgDeviceUUID"];
 
-  v8 = [(CBPeer *)self manager];
-  v9 = [v8 sendSyncMsg:v4 args:v6];
+  manager = [(CBPeer *)self manager];
+  v9 = [manager sendSyncMsg:msgCopy args:argsCopy];
 
   return v9;
 }
 
-- (void)sendInternalMsg:(int)a3 args:(id)a4
+- (void)sendInternalMsg:(int)msg args:(id)args
 {
-  v4 = a3;
-  v6 = a4;
-  if (!v6)
+  msgCopy = msg;
+  argsCopy = args;
+  if (!argsCopy)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:1];
+    argsCopy = [MEMORY[0x1E695DF90] dictionaryWithCapacity:1];
   }
 
-  v9 = v6;
-  v7 = [(CBPeer *)self identifier];
-  [v9 setObject:v7 forKeyedSubscript:@"kCBMsgArgDeviceUUID"];
+  v9 = argsCopy;
+  identifier = [(CBPeer *)self identifier];
+  [v9 setObject:identifier forKeyedSubscript:@"kCBMsgArgDeviceUUID"];
 
   WeakRetained = objc_loadWeakRetained(&self->_manager);
-  [WeakRetained sendMsg:v4 args:v9];
+  [WeakRetained sendMsg:msgCopy args:v9];
 }
 
-- (void)tag:(id)a3
+- (void)tag:(id)tag
 {
-  v4 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{a3, @"kCBMsgArgName", 0}];
+  v4 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{tag, @"kCBMsgArgName", 0}];
   [(CBPeer *)self sendInternalMsg:179 args:v4];
 }
 
-- (void)untag:(id)a3
+- (void)untag:(id)untag
 {
-  v4 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{a3, @"kCBMsgArgName", 0}];
+  v4 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{untag, @"kCBMsgArgName", 0}];
   [(CBPeer *)self sendInternalMsg:180 args:v4];
 }
 
-- (BOOL)hasTag:(id)a3
+- (BOOL)hasTag:(id)tag
 {
-  v4 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{a3, @"kCBMsgArgName", 0}];
+  v4 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{tag, @"kCBMsgArgName", 0}];
   v5 = [(CBPeer *)self sendInternalSyncMsg:181 args:v4];
 
   v6 = [v5 objectForKeyedSubscript:@"kCBMsgArgData"];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (id)getTags
@@ -179,15 +179,15 @@ LABEL_3:
   return v3;
 }
 
-- (void)setCustomProperty:(id)a3 value:(id)a4
+- (void)setCustomProperty:(id)property value:(id)value
 {
-  v5 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{a3, @"kCBMsgArgName", a4, @"kCBMsgArgValue", 0}];
+  v5 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{property, @"kCBMsgArgName", value, @"kCBMsgArgValue", 0}];
   [(CBPeer *)self sendInternalMsg:183 args:v5];
 }
 
-- (id)customProperty:(id)a3
+- (id)customProperty:(id)property
 {
-  v4 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{a3, @"kCBMsgArgName", 0}];
+  v4 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{property, @"kCBMsgArgName", 0}];
   v5 = [(CBPeer *)self sendInternalSyncMsg:184 args:v4];
 
   v6 = [v5 objectForKeyedSubscript:@"kCBMsgArgCustomPropertyValue"];
@@ -205,8 +205,8 @@ LABEL_3:
 
 - (unint64_t)hash
 {
-  v2 = [(CBPeer *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(CBPeer *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }

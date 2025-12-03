@@ -1,95 +1,95 @@
 @interface PRComplicationDescriptor
 - (BOOL)hasMatchingDescriptor;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PRComplicationDescriptor)initWithCoder:(id)a3;
-- (PRComplicationDescriptor)initWithPRSWidget:(id)a3;
-- (PRComplicationDescriptor)initWithUniqueIdentifier:(id)a3 widget:(id)a4;
-- (PRComplicationDescriptor)initWithUniqueIdentifier:(id)a3 widget:(id)a4 suggestedComplication:(id)a5;
+- (PRComplicationDescriptor)initWithCoder:(id)coder;
+- (PRComplicationDescriptor)initWithPRSWidget:(id)widget;
+- (PRComplicationDescriptor)initWithUniqueIdentifier:(id)identifier widget:(id)widget;
+- (PRComplicationDescriptor)initWithUniqueIdentifier:(id)identifier widget:(id)widget suggestedComplication:(id)complication;
 - (id)PRSWidget;
-- (id)copyWithIntent:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithIntent:(id)intent;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)intent;
 - (id)widgetDescriptor;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRComplicationDescriptor
 
-- (PRComplicationDescriptor)initWithUniqueIdentifier:(id)a3 widget:(id)a4
+- (PRComplicationDescriptor)initWithUniqueIdentifier:(id)identifier widget:(id)widget
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  widgetCopy = widget;
   v12.receiver = self;
   v12.super_class = PRComplicationDescriptor;
   v8 = [(PRComplicationDescriptor *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     uniqueIdentifier = v8->_uniqueIdentifier;
     v8->_uniqueIdentifier = v9;
 
-    objc_storeStrong(&v8->_widget, a4);
+    objc_storeStrong(&v8->_widget, widget);
   }
 
   return v8;
 }
 
-- (PRComplicationDescriptor)initWithUniqueIdentifier:(id)a3 widget:(id)a4 suggestedComplication:(id)a5
+- (PRComplicationDescriptor)initWithUniqueIdentifier:(id)identifier widget:(id)widget suggestedComplication:(id)complication
 {
-  v8 = a5;
-  v9 = [(PRComplicationDescriptor *)self initWithUniqueIdentifier:a3 widget:a4];
+  complicationCopy = complication;
+  v9 = [(PRComplicationDescriptor *)self initWithUniqueIdentifier:identifier widget:widget];
   v10 = v9;
   if (v9)
   {
-    [(PRComplicationDescriptor *)v9 setSuggestedComplication:v8];
+    [(PRComplicationDescriptor *)v9 setSuggestedComplication:complicationCopy];
   }
 
   return v10;
 }
 
-- (PRComplicationDescriptor)initWithPRSWidget:(id)a3
+- (PRComplicationDescriptor)initWithPRSWidget:(id)widget
 {
-  if (a3)
+  if (widget)
   {
     v4 = MEMORY[0x1E6994290];
-    v5 = a3;
+    widgetCopy = widget;
     v6 = [v4 alloc];
-    v7 = [v5 extensionBundleIdentifier];
-    v8 = [v5 containerBundleIdentifier];
-    v9 = [v6 initWithExtensionBundleIdentifier:v7 containerBundleIdentifier:v8 deviceIdentifier:0];
+    extensionBundleIdentifier = [widgetCopy extensionBundleIdentifier];
+    containerBundleIdentifier = [widgetCopy containerBundleIdentifier];
+    v9 = [v6 initWithExtensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier deviceIdentifier:0];
 
     v10 = objc_alloc(MEMORY[0x1E6994370]);
-    v11 = [v5 kind];
-    v12 = [v5 family];
-    v13 = [v5 intent];
-    v14 = [v10 initWithExtensionIdentity:v9 kind:v11 family:v12 intent:v13 activityIdentifier:0];
+    kind = [widgetCopy kind];
+    family = [widgetCopy family];
+    intent = [widgetCopy intent];
+    v14 = [v10 initWithExtensionIdentity:v9 kind:kind family:family intent:intent activityIdentifier:0];
 
-    v15 = [v5 uniqueIdentifier];
+    uniqueIdentifier = [widgetCopy uniqueIdentifier];
 
-    self = [(PRComplicationDescriptor *)self initWithUniqueIdentifier:v15 widget:v14];
-    v16 = self;
+    self = [(PRComplicationDescriptor *)self initWithUniqueIdentifier:uniqueIdentifier widget:v14];
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 - (BOOL)hasMatchingDescriptor
 {
-  v3 = [(PRComplicationDescriptor *)self widgetDescriptor];
-  v4 = [(PRComplicationDescriptor *)self widget];
-  [v4 family];
+  widgetDescriptor = [(PRComplicationDescriptor *)self widgetDescriptor];
+  widget = [(PRComplicationDescriptor *)self widget];
+  [widget family];
   v5 = CHSWidgetFamilyMaskFromWidgetFamily();
 
-  if (v3)
+  if (widgetDescriptor)
   {
-    v6 = (v5 & ~[v3 supportedFamilies]) == 0;
+    v6 = (v5 & ~[widgetDescriptor supportedFamilies]) == 0;
   }
 
   else
@@ -104,12 +104,12 @@
 {
   v3 = objc_alloc(MEMORY[0x1E69C5060]);
   uniqueIdentifier = self->_uniqueIdentifier;
-  v5 = [(CHSWidget *)self->_widget kind];
-  v6 = [(CHSWidget *)self->_widget extensionBundleIdentifier];
-  v7 = [(CHSWidget *)self->_widget containerBundleIdentifier];
-  v8 = [(CHSWidget *)self->_widget family];
-  v9 = [(CHSWidget *)self->_widget intent];
-  v10 = [v3 initWithUniqueIdentifier:uniqueIdentifier kind:v5 extensionBundleIdentifier:v6 containerBundleIdentifier:v7 family:v8 intent:v9];
+  kind = [(CHSWidget *)self->_widget kind];
+  extensionBundleIdentifier = [(CHSWidget *)self->_widget extensionBundleIdentifier];
+  containerBundleIdentifier = [(CHSWidget *)self->_widget containerBundleIdentifier];
+  family = [(CHSWidget *)self->_widget family];
+  intent = [(CHSWidget *)self->_widget intent];
+  v10 = [v3 initWithUniqueIdentifier:uniqueIdentifier kind:kind extensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier family:family intent:intent];
 
   return v10;
 }
@@ -122,16 +122,16 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = [MEMORY[0x1E698E6A0] builderWithObject:self ofExpectedClass:objc_opt_class()];
   uniqueIdentifier = self->_uniqueIdentifier;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __36__PRComplicationDescriptor_isEqual___block_invoke;
   v18[3] = &unk_1E7843888;
-  v7 = v4;
+  v7 = equalCopy;
   v19 = v7;
   v8 = [v5 appendString:uniqueIdentifier counterpart:v18];
   widget = self->_widget;
@@ -149,10 +149,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendString:self->_uniqueIdentifier];
-  v5 = [v3 appendObject:self->_widget];
-  v6 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendString:self->_uniqueIdentifier];
+  v5 = [builder appendObject:self->_widget];
+  v6 = [builder hash];
 
   return v6;
 }
@@ -163,12 +163,12 @@
   [v3 appendString:self->_uniqueIdentifier withName:@"uniqueIdentifier" skipIfEmpty:1];
   v4 = [v3 appendObject:self->_widget withName:@"widget" skipIfNil:1];
   v5 = [v3 appendObject:self->_suggestedComplication withName:@"suggestedComplication" skipIfNil:1];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PRComplicationDescriptor alloc];
   v5 = [(NSString *)self->_uniqueIdentifier copy];
@@ -179,24 +179,24 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PRComplicationDescriptor *)self uniqueIdentifier];
-  [v4 encodeObject:v5 forKey:@"uniqueIdentifier"];
+  coderCopy = coder;
+  uniqueIdentifier = [(PRComplicationDescriptor *)self uniqueIdentifier];
+  [coderCopy encodeObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
 
-  v6 = [(PRComplicationDescriptor *)self widget];
-  [v4 encodeObject:v6 forKey:@"widget"];
+  widget = [(PRComplicationDescriptor *)self widget];
+  [coderCopy encodeObject:widget forKey:@"widget"];
 
-  v7 = [(PRComplicationDescriptor *)self suggestedComplication];
-  [v4 encodeObject:v7 forKey:@"suggestedComplication"];
+  suggestedComplication = [(PRComplicationDescriptor *)self suggestedComplication];
+  [coderCopy encodeObject:suggestedComplication forKey:@"suggestedComplication"];
 }
 
-- (PRComplicationDescriptor)initWithCoder:(id)a3
+- (PRComplicationDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"widget"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"widget"];
   v7 = v6;
   if (v5)
   {
@@ -210,31 +210,31 @@
 
   if (v8)
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suggestedComplication"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suggestedComplication"];
     self = [(PRComplicationDescriptor *)self initWithUniqueIdentifier:v5 widget:v7 suggestedComplication:v9];
 
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)intent
 {
-  v2 = [(CHSWidget *)self->_widget intentReference];
-  v3 = [v2 intent];
+  intentReference = [(CHSWidget *)self->_widget intentReference];
+  intent = [intentReference intent];
 
-  return v3;
+  return intent;
 }
 
-- (id)copyWithIntent:(id)a3
+- (id)copyWithIntent:(id)intent
 {
-  v4 = [(CHSWidget *)self->_widget widgetByReplacingIntent:a3];
+  v4 = [(CHSWidget *)self->_widget widgetByReplacingIntent:intent];
   v5 = [(PRComplicationDescriptor *)self copy];
   [v5 setWidget:v4];
 

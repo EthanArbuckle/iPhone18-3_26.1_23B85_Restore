@@ -1,13 +1,13 @@
 @interface InteractiveViewController.OnCoreAnimationDidStart
-- (void)animationDidStart:(id)a3;
+- (void)animationDidStart:(id)start;
 @end
 
 @implementation InteractiveViewController.OnCoreAnimationDidStart
 
-- (void)animationDidStart:(id)a3
+- (void)animationDidStart:(id)start
 {
-  v4 = a3;
-  v5 = self;
+  startCopy = start;
+  selfCopy = self;
   sub_220EFD304();
 }
 

@@ -1,14 +1,14 @@
 @interface HKConceptAttribute
 - (BOOL)BOOLValue;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKConceptAttribute)init;
-- (HKConceptAttribute)initWithCoder:(id)a3;
-- (HKConceptAttribute)initWithType:(int64_t)a3 BOOLValue:(BOOL)a4;
-- (HKConceptAttribute)initWithType:(int64_t)a3 numberValue:(id)a4;
-- (HKConceptAttribute)initWithType:(int64_t)a3 value:(id)a4 version:(int64_t)a5 deleted:(BOOL)a6;
+- (HKConceptAttribute)initWithCoder:(id)coder;
+- (HKConceptAttribute)initWithType:(int64_t)type BOOLValue:(BOOL)value;
+- (HKConceptAttribute)initWithType:(int64_t)type numberValue:(id)value;
+- (HKConceptAttribute)initWithType:(int64_t)type value:(id)value version:(int64_t)version deleted:(BOOL)deleted;
 - (NSNumber)numberValue;
 - (int64_t)longLongValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKConceptAttribute
@@ -23,57 +23,57 @@
   return 0;
 }
 
-- (HKConceptAttribute)initWithType:(int64_t)a3 value:(id)a4 version:(int64_t)a5 deleted:(BOOL)a6
+- (HKConceptAttribute)initWithType:(int64_t)type value:(id)value version:(int64_t)version deleted:(BOOL)deleted
 {
-  v10 = a4;
+  valueCopy = value;
   v16.receiver = self;
   v16.super_class = HKConceptAttribute;
   v11 = [(HKConceptAttribute *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_type = a3;
-    v13 = [v10 copy];
+    v11->_type = type;
+    v13 = [valueCopy copy];
     stringValue = v12->_stringValue;
     v12->_stringValue = v13;
 
-    v12->_version = a5;
-    v12->_deleted = a6;
+    v12->_version = version;
+    v12->_deleted = deleted;
   }
 
   return v12;
 }
 
-- (HKConceptAttribute)initWithType:(int64_t)a3 numberValue:(id)a4
+- (HKConceptAttribute)initWithType:(int64_t)type numberValue:(id)value
 {
-  v6 = [a4 stringValue];
-  v7 = [(HKConceptAttribute *)self initWithType:a3 stringValue:v6];
+  stringValue = [value stringValue];
+  v7 = [(HKConceptAttribute *)self initWithType:type stringValue:stringValue];
 
   return v7;
 }
 
-- (HKConceptAttribute)initWithType:(int64_t)a3 BOOLValue:(BOOL)a4
+- (HKConceptAttribute)initWithType:(int64_t)type BOOLValue:(BOOL)value
 {
   v4 = HKConceptAttributeValueTrue;
-  if (!a4)
+  if (!value)
   {
     v4 = HKConceptAttributeValueFalse;
   }
 
-  return [(HKConceptAttribute *)self initWithType:a3 stringValue:*v4];
+  return [(HKConceptAttribute *)self initWithType:type stringValue:*v4];
 }
 
 - (NSNumber)numberValue
 {
-  v2 = [(HKConceptAttribute *)self stringValue];
-  if (v2)
+  stringValue = [(HKConceptAttribute *)self stringValue];
+  if (stringValue)
   {
     if (numberValue_onceToken != -1)
     {
       [HKConceptAttribute numberValue];
     }
 
-    v3 = [numberValue_numberFormatter numberFromString:v2];
+    v3 = [numberValue_numberFormatter numberFromString:stringValue];
   }
 
   else
@@ -93,24 +93,24 @@ uint64_t __33__HKConceptAttribute_numberValue__block_invoke()
 
 - (BOOL)BOOLValue
 {
-  v2 = [(HKConceptAttribute *)self stringValue];
-  v3 = [v2 isEqualToString:@"true"];
+  stringValue = [(HKConceptAttribute *)self stringValue];
+  v3 = [stringValue isEqualToString:@"true"];
 
   return v3;
 }
 
 - (int64_t)longLongValue
 {
-  v2 = [(HKConceptAttribute *)self numberValue];
-  v3 = [v2 longLongValue];
+  numberValue = [(HKConceptAttribute *)self numberValue];
+  longLongValue = [numberValue longLongValue];
 
-  return v3;
+  return longLongValue;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -120,7 +120,7 @@ uint64_t __33__HKConceptAttribute_numberValue__block_invoke()
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (self->_type != v5->_type)
       {
         goto LABEL_9;
@@ -158,34 +158,34 @@ LABEL_12:
   return v8;
 }
 
-- (HKConceptAttribute)initWithCoder:(id)a3
+- (HKConceptAttribute)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HKConceptAttribute;
   v5 = [(HKConceptAttribute *)&v9 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"Type"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Value"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"Type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Value"];
     stringValue = v5->_stringValue;
     v5->_stringValue = v6;
 
-    v5->_version = [v4 decodeInt64ForKey:@"Version"];
-    v5->_deleted = [v4 decodeBoolForKey:@"Deleted"];
+    v5->_version = [coderCopy decodeInt64ForKey:@"Version"];
+    v5->_deleted = [coderCopy decodeBoolForKey:@"Deleted"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"Type"];
-  [v5 encodeObject:self->_stringValue forKey:@"Value"];
-  [v5 encodeInt64:self->_version forKey:@"Version"];
-  [v5 encodeBool:self->_deleted forKey:@"Deleted"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"Type"];
+  [coderCopy encodeObject:self->_stringValue forKey:@"Value"];
+  [coderCopy encodeInt64:self->_version forKey:@"Version"];
+  [coderCopy encodeBool:self->_deleted forKey:@"Deleted"];
 }
 
 @end

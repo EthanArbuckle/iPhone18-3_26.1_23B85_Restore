@@ -1,18 +1,18 @@
 @interface WFCompactTitledPlatterView
 - (CGRect)_mainContentFrame;
-- (CGSize)sizeThatFitsContentWithSize:(CGSize)a3;
+- (CGSize)sizeThatFitsContentWithSize:(CGSize)size;
 - (NSString)title;
-- (WFCompactTitledPlatterView)initWithRecipe:(int64_t)a3;
+- (WFCompactTitledPlatterView)initWithRecipe:(int64_t)recipe;
 - (WFCompactTitledPlatterViewDelegate)delegate;
 - (WFIcon)icon;
 - (void)configureSashViewIfNecessary;
 - (void)layoutHeaderViews;
 - (void)layoutSubviews;
-- (void)setAppearanceProvider:(id)a3;
-- (void)setIcon:(id)a3;
+- (void)setAppearanceProvider:(id)provider;
+- (void)setIcon:(id)icon;
 - (void)setNeedsLayout;
-- (void)setSashVisible:(BOOL)a3;
-- (void)setTitle:(id)a3;
+- (void)setSashVisible:(BOOL)visible;
+- (void)setTitle:(id)title;
 @end
 
 @implementation WFCompactTitledPlatterView
@@ -24,45 +24,45 @@
   return WeakRetained;
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   [(WFCompactTitledPlatterView *)self configureSashViewIfNecessary];
-  v5 = [(WFCompactTitledPlatterView *)self sashView];
-  [v5 setIcon:v4];
+  sashView = [(WFCompactTitledPlatterView *)self sashView];
+  [sashView setIcon:iconCopy];
 }
 
 - (WFIcon)icon
 {
-  v2 = [(WFCompactTitledPlatterView *)self sashView];
-  v3 = [v2 icon];
+  sashView = [(WFCompactTitledPlatterView *)self sashView];
+  icon = [sashView icon];
 
-  return v3;
+  return icon;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   [(WFCompactTitledPlatterView *)self configureSashViewIfNecessary];
-  v6 = [v4 copy];
+  v6 = [titleCopy copy];
 
-  v5 = [(WFCompactTitledPlatterView *)self sashView];
-  [v5 setTitle:v6];
+  sashView = [(WFCompactTitledPlatterView *)self sashView];
+  [sashView setTitle:v6];
 }
 
 - (NSString)title
 {
-  v2 = [(WFCompactTitledPlatterView *)self sashView];
-  v3 = [v2 title];
+  sashView = [(WFCompactTitledPlatterView *)self sashView];
+  title = [sashView title];
 
-  return v3;
+  return title;
 }
 
-- (void)setAppearanceProvider:(id)a3
+- (void)setAppearanceProvider:(id)provider
 {
-  objc_storeStrong(&self->_appearanceProvider, a3);
-  v5 = a3;
-  [(WFCompactPlatterSashView *)self->_sashView setAppearanceProvider:v5];
+  objc_storeStrong(&self->_appearanceProvider, provider);
+  providerCopy = provider;
+  [(WFCompactPlatterSashView *)self->_sashView setAppearanceProvider:providerCopy];
 
   [(WFCompactTitledPlatterView *)self layoutSubviews];
 }
@@ -77,9 +77,9 @@
   if (!CGRectIsEmpty(v19))
   {
     [(WFCompactTitledPlatterView *)self layoutHeaderViews];
-    v7 = [(WFCompactTitledPlatterView *)self sashVisible];
+    sashVisible = [(WFCompactTitledPlatterView *)self sashVisible];
     v8 = 0.0;
-    if (v7)
+    if (sashVisible)
     {
       [(WFCompactPlatterSashView *)self->_sashView contentBaseline];
     }
@@ -94,9 +94,9 @@
   v20.size.height = height;
   if (!CGRectIsEmpty(v20))
   {
-    v9 = [(WFCompactTitledPlatterView *)self window];
-    v10 = [v9 screen];
-    [v10 scale];
+    window = [(WFCompactTitledPlatterView *)self window];
+    screen = [window screen];
+    [screen scale];
     UIRectIntegralWithScale();
     x = v11;
     y = v12;
@@ -115,11 +115,11 @@
   return result;
 }
 
-- (CGSize)sizeThatFitsContentWithSize:(CGSize)a3
+- (CGSize)sizeThatFitsContentWithSize:(CGSize)size
 {
   v11.receiver = self;
   v11.super_class = WFCompactTitledPlatterView;
-  [(PLPlatterView *)&v11 sizeThatFitsContentWithSize:a3.width, a3.height];
+  [(PLPlatterView *)&v11 sizeThatFitsContentWithSize:size.width, size.height];
   v5 = v4;
   v7 = v6;
   [(WFCompactTitledPlatterView *)self configureSashViewIfNecessary];
@@ -155,8 +155,8 @@
   height = v21.size.height;
   if (!CGRectIsEmpty(v21))
   {
-    v7 = [(PLPlatterView *)self customContentView];
-    [v7 setFrame:{x, y, width, height}];
+    customContentView = [(PLPlatterView *)self customContentView];
+    [customContentView setFrame:{x, y, width, height}];
   }
 
   if ([(WFCompactTitledPlatterView *)self sashVisible])
@@ -169,17 +169,17 @@
     v8 = 0.0;
   }
 
-  v9 = [(PLPlatterView *)self customContentView];
-  [v9 frame];
+  customContentView2 = [(PLPlatterView *)self customContentView];
+  [customContentView2 frame];
   v11 = v10;
   v13 = v12 + 0.0;
   v15 = v8 + v14;
   v17 = v16 - v8;
-  v18 = [(PLPlatterView *)self customContentView];
-  [v18 setFrame:{v13, v15, v11, v17}];
+  customContentView3 = [(PLPlatterView *)self customContentView];
+  [customContentView3 setFrame:{v13, v15, v11, v17}];
 
-  v19 = [(WFCompactTitledPlatterView *)self delegate];
-  [v19 layoutCustomContentViewForPlatterView:self];
+  delegate = [(WFCompactTitledPlatterView *)self delegate];
+  [delegate layoutCustomContentViewForPlatterView:self];
 }
 
 - (void)layoutHeaderViews
@@ -193,9 +193,9 @@
   {
     [(WFCompactPlatterSashView *)self->_sashView sizeThatFits:width, height];
     BSRectWithSize();
-    v7 = [(WFCompactTitledPlatterView *)self window];
-    v8 = [v7 screen];
-    [v8 scale];
+    window = [(WFCompactTitledPlatterView *)self window];
+    screen = [window screen];
+    [screen scale];
     UIRectIntegralWithScale();
     x = v9;
     y = v10;
@@ -203,11 +203,11 @@
     height = v12;
   }
 
-  v13 = [(WFCompactTitledPlatterView *)self sashView];
-  [v13 setFrame:{x, y, width, height}];
+  sashView = [(WFCompactTitledPlatterView *)self sashView];
+  [sashView setFrame:{x, y, width, height}];
 
-  v14 = [(WFCompactTitledPlatterView *)self sashView];
-  [v14 setNeedsLayout];
+  sashView2 = [(WFCompactTitledPlatterView *)self sashView];
+  [sashView2 setNeedsLayout];
 }
 
 - (void)configureSashViewIfNecessary
@@ -227,18 +227,18 @@
   }
 }
 
-- (void)setSashVisible:(BOOL)a3
+- (void)setSashVisible:(BOOL)visible
 {
-  self->_sashVisible = a3;
-  if (a3)
+  self->_sashVisible = visible;
+  if (visible)
   {
     [(WFCompactTitledPlatterView *)self configureSashViewIfNecessary];
   }
 
   else
   {
-    v4 = [(WFCompactTitledPlatterView *)self sashView];
-    [v4 removeFromSuperview];
+    sashView = [(WFCompactTitledPlatterView *)self sashView];
+    [sashView removeFromSuperview];
   }
 
   [(WFCompactTitledPlatterView *)self setNeedsLayout];
@@ -251,15 +251,15 @@
   v4.receiver = self;
   v4.super_class = WFCompactTitledPlatterView;
   [(WFCompactTitledPlatterView *)&v4 setNeedsLayout];
-  v3 = [(WFCompactTitledPlatterView *)self sashView];
-  [v3 setNeedsLayout];
+  sashView = [(WFCompactTitledPlatterView *)self sashView];
+  [sashView setNeedsLayout];
 }
 
-- (WFCompactTitledPlatterView)initWithRecipe:(int64_t)a3
+- (WFCompactTitledPlatterView)initWithRecipe:(int64_t)recipe
 {
   v7.receiver = self;
   v7.super_class = WFCompactTitledPlatterView;
-  v3 = [(PLPlatterView *)&v7 initWithRecipe:a3];
+  v3 = [(PLPlatterView *)&v7 initWithRecipe:recipe];
   v4 = v3;
   if (v3)
   {

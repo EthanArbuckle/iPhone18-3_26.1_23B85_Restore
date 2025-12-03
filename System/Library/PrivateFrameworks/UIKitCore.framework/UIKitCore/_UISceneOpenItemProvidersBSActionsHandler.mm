@@ -1,25 +1,25 @@
 @interface _UISceneOpenItemProvidersBSActionsHandler
 - (BOOL)currentAppSupportsOpenInPlace;
-- (id)URLContextsFetchedFromItemProviders:(id)a3 collectionIdentifier:(id)a4 contentOwner:(int64_t)a5 payload:(id)a6;
-- (id)URLContextsFromOpenItemProvidersActions:(id)a3 payload:(id)a4;
-- (id)_launchOptionsFromActions:(id)a3 forFBSScene:(id)a4 uiSceneSession:(id)a5 transitionContext:(id)a6;
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
-- (id)_substituteActionsForAction:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
-- (id)bestUTIForAppFromProviderRegisteredTypeIdentifiers:(id)a3;
-- (id)dragContinuationFromEndpoint:(id)a3;
-- (id)itemCollectionFromDragContinuation:(id)a3;
-- (id)itemProvidersFromPBItemCollection:(id)a3 userInfo:(id)a4;
-- (id)openURLOptionsFromBasePayload:(id)a3 sourceProcessHandle:(id)a4 dragContentOwner:(int64_t)a5;
-- (id)uniqueFileNameWithStakedClaims:(id)a3 hint:(id)a4 extension:(id)a5;
+- (id)URLContextsFetchedFromItemProviders:(id)providers collectionIdentifier:(id)identifier contentOwner:(int64_t)owner payload:(id)payload;
+- (id)URLContextsFromOpenItemProvidersActions:(id)actions payload:(id)payload;
+- (id)_launchOptionsFromActions:(id)actions forFBSScene:(id)scene uiSceneSession:(id)session transitionContext:(id)context;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
+- (id)_substituteActionsForAction:(id)action forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
+- (id)bestUTIForAppFromProviderRegisteredTypeIdentifiers:(id)identifiers;
+- (id)dragContinuationFromEndpoint:(id)endpoint;
+- (id)itemCollectionFromDragContinuation:(id)continuation;
+- (id)itemProvidersFromPBItemCollection:(id)collection userInfo:(id)info;
+- (id)openURLOptionsFromBasePayload:(id)payload sourceProcessHandle:(id)handle dragContentOwner:(int64_t)owner;
+- (id)uniqueFileNameWithStakedClaims:(id)claims hint:(id)hint extension:(id)extension;
 @end
 
 @implementation _UISceneOpenItemProvidersBSActionsHandler
 
-- (id)_substituteActionsForAction:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_substituteActionsForAction:(id)action forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a6;
+  actionCopy = action;
+  contextCopy = context;
   if ([UIApp _appSupportsSceneItemProviders])
   {
     v10 = 0;
@@ -28,22 +28,22 @@
   else
   {
     v10 = [MEMORY[0x1E695DFA8] set];
-    v11 = v8;
-    v28 = v8;
-    if ([v9 isUISubclass])
+    v11 = actionCopy;
+    v28 = actionCopy;
+    if ([contextCopy isUISubclass])
     {
-      v12 = [v9 payload];
+      payload = [contextCopy payload];
     }
 
     else
     {
-      v12 = 0;
+      payload = 0;
     }
 
     v27 = v11;
     v13 = [MEMORY[0x1E695DFD8] setWithObject:v11];
-    v26 = v12;
-    v14 = [(_UISceneOpenItemProvidersBSActionsHandler *)self URLContextsFromOpenItemProvidersActions:v13 payload:v12];
+    v26 = payload;
+    v14 = [(_UISceneOpenItemProvidersBSActionsHandler *)self URLContextsFromOpenItemProvidersActions:v13 payload:payload];
 
     v31 = 0u;
     v32 = 0u;
@@ -67,8 +67,8 @@
           v20 = *(*(&v29 + 1) + 8 * i);
           v21 = [UIOpenURLAction alloc];
           v22 = [v20 URL];
-          v23 = [v20 options];
-          v24 = [(UIOpenURLAction *)v21 initWithURL:v22 openURLOptions:v23 workspaceOriginatingProcess:0 responder:0];
+          options = [v20 options];
+          v24 = [(UIOpenURLAction *)v21 initWithURL:v22 openURLOptions:options workspaceOriginatingProcess:0 responder:0];
           [v10 addObject:v24];
         }
 
@@ -78,30 +78,30 @@
       while (v17);
     }
 
-    v8 = v28;
+    actionCopy = v28;
   }
 
   return v10;
 }
 
-- (id)_launchOptionsFromActions:(id)a3 forFBSScene:(id)a4 uiSceneSession:(id)a5 transitionContext:(id)a6
+- (id)_launchOptionsFromActions:(id)actions forFBSScene:(id)scene uiSceneSession:(id)session transitionContext:(id)context
 {
   v55 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v31 = a4;
-  v32 = a5;
-  v36 = a6;
-  v11 = [UIApp _appSupportsSceneItemProviders];
-  v34 = v10;
-  v37 = [v10 objectsPassingTest:&__block_literal_global_409];
-  if ([v36 isUISubclass])
+  actionsCopy = actions;
+  sceneCopy = scene;
+  sessionCopy = session;
+  contextCopy = context;
+  _appSupportsSceneItemProviders = [UIApp _appSupportsSceneItemProviders];
+  v34 = actionsCopy;
+  v37 = [actionsCopy objectsPassingTest:&__block_literal_global_409];
+  if ([contextCopy isUISubclass])
   {
-    v33 = [v36 payload];
+    payload = [contextCopy payload];
   }
 
   else
   {
-    v33 = 0;
+    payload = 0;
   }
 
   v48 = 0;
@@ -116,7 +116,7 @@
   aBlock[3] = &unk_1E70F7F68;
   aBlock[4] = &v48;
   v35 = _Block_copy(aBlock);
-  if (v11)
+  if (_appSupportsSceneItemProviders)
   {
     newValue = [MEMORY[0x1E695DFA8] set];
     v12 = [MEMORY[0x1E695DFA8] set];
@@ -140,12 +140,12 @@
           }
 
           v16 = *(*(&v43 + 1) + 8 * i);
-          v17 = [v16 continuationEndpoint];
-          v18 = [(_UISceneOpenItemProvidersBSActionsHandler *)self dragContinuationFromEndpoint:v17];
+          continuationEndpoint = [v16 continuationEndpoint];
+          v18 = [(_UISceneOpenItemProvidersBSActionsHandler *)self dragContinuationFromEndpoint:continuationEndpoint];
 
           v19 = [(_UISceneOpenItemProvidersBSActionsHandler *)self itemCollectionFromDragContinuation:v18];
-          v20 = [v16 userInfo];
-          v21 = [(_UISceneOpenItemProvidersBSActionsHandler *)self itemProvidersFromPBItemCollection:v19 userInfo:v20];
+          userInfo = [v16 userInfo];
+          v21 = [(_UISceneOpenItemProvidersBSActionsHandler *)self itemProvidersFromPBItemCollection:v19 userInfo:userInfo];
 
           v22 = [[_UISceneOpenItemProvidersDataTransferSession alloc] initWithItemProviders:v21 itemCollection:v19 continuation:v18];
           v23 = +[_UISceneOpenItemProvidersDataTransferSessionManager sharedInstance];
@@ -174,7 +174,7 @@
 
   else
   {
-    v26 = [(_UISceneOpenItemProvidersBSActionsHandler *)self URLContextsFromOpenItemProvidersActions:v37 payload:v33];
+    v26 = [(_UISceneOpenItemProvidersBSActionsHandler *)self URLContextsFromOpenItemProvidersActions:v37 payload:payload];
     v35[2](v35, v26, @"_UISceneConnectionOptionsURLContextKey");
     newValue = 0;
   }
@@ -194,18 +194,18 @@
   return v27;
 }
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 objectsPassingTest:&__block_literal_global_13_1];
-  v36 = [MEMORY[0x1E695DF70] array];
+  actionsCopy = actions;
+  iSceneCopy = iScene;
+  v10 = [actionsCopy objectsPassingTest:&__block_literal_global_13_1];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = [MEMORY[0x1E695DFA8] set];
-  if (v9 && (v9[208] & 0x80) != 0)
+  if (iSceneCopy && (iSceneCopy[208] & 0x80) != 0)
   {
-    v33 = v9;
-    v34 = v8;
+    v33 = iSceneCopy;
+    v34 = actionsCopy;
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
@@ -227,18 +227,18 @@
           }
 
           v16 = *(*(&v41 + 1) + 8 * i);
-          v17 = [v16 continuationEndpoint];
-          v18 = [(_UISceneOpenItemProvidersBSActionsHandler *)self dragContinuationFromEndpoint:v17];
+          continuationEndpoint = [v16 continuationEndpoint];
+          v18 = [(_UISceneOpenItemProvidersBSActionsHandler *)self dragContinuationFromEndpoint:continuationEndpoint];
 
           v19 = [(_UISceneOpenItemProvidersBSActionsHandler *)self itemCollectionFromDragContinuation:v18];
-          v20 = [v16 userInfo];
-          v21 = [(_UISceneOpenItemProvidersBSActionsHandler *)self itemProvidersFromPBItemCollection:v19 userInfo:v20];
+          userInfo = [v16 userInfo];
+          v21 = [(_UISceneOpenItemProvidersBSActionsHandler *)self itemProvidersFromPBItemCollection:v19 userInfo:userInfo];
 
           v22 = [[_UISceneOpenItemProvidersDataTransferSession alloc] initWithItemProviders:v21 itemCollection:v19 continuation:v18];
           v23 = +[_UISceneOpenItemProvidersDataTransferSessionManager sharedInstance];
           [v23 addSession:v22];
 
-          [v36 addObject:v22];
+          [array addObject:v22];
           [v11 addObject:v21];
         }
 
@@ -248,18 +248,18 @@
       while (v13);
     }
 
-    v9 = v33;
+    iSceneCopy = v33;
     if ([v11 count])
     {
-      v24 = [v33 delegate];
-      [v24 _scene:v33 openItemProviders:v11];
+      delegate = [v33 delegate];
+      [delegate _scene:v33 openItemProviders:v11];
     }
 
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v25 = v36;
+    v25 = array;
     v26 = [v25 countByEnumeratingWithState:&v37 objects:v45 count:16];
     if (v26)
     {
@@ -283,27 +283,27 @@
       while (v27);
     }
 
-    v8 = v34;
+    actionsCopy = v34;
     v10 = v32;
   }
 
-  v30 = [v8 mutableCopy];
+  v30 = [actionsCopy mutableCopy];
   [v30 minusSet:v10];
 
   return v30;
 }
 
-- (id)URLContextsFromOpenItemProvidersActions:(id)a3 payload:(id)a4
+- (id)URLContextsFromOpenItemProvidersActions:(id)actions payload:(id)payload
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v20 = a4;
+  actionsCopy = actions;
+  payloadCopy = payload;
   v6 = [MEMORY[0x1E695DFA8] set];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v5;
+  obj = actionsCopy;
   v7 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v7)
   {
@@ -323,8 +323,8 @@
         v11 = *(*(&v24 + 1) + 8 * v10);
         if ([v11 providerSource] == 1)
         {
-          v12 = [v11 continuationEndpoint];
-          v13 = [(_UISceneOpenItemProvidersBSActionsHandler *)self dragContinuationFromEndpoint:v12];
+          continuationEndpoint = [v11 continuationEndpoint];
+          v13 = [(_UISceneOpenItemProvidersBSActionsHandler *)self dragContinuationFromEndpoint:continuationEndpoint];
 
           v14 = [(_UISceneOpenItemProvidersBSActionsHandler *)self itemCollectionFromDragContinuation:v13];
           if (objc_opt_respondsToSelector())
@@ -333,9 +333,9 @@
           }
 
           v15 = [(_UISceneOpenItemProvidersBSActionsHandler *)self itemProvidersFromPBItemCollection:v14 userInfo:0];
-          v16 = [v14 UUID];
-          v17 = [v16 UUIDString];
-          v18 = -[_UISceneOpenItemProvidersBSActionsHandler URLContextsFetchedFromItemProviders:collectionIdentifier:contentOwner:payload:](self, "URLContextsFetchedFromItemProviders:collectionIdentifier:contentOwner:payload:", v15, v17, [v14 originatorDataOwner], v20);
+          uUID = [v14 UUID];
+          uUIDString = [uUID UUIDString];
+          v18 = -[_UISceneOpenItemProvidersBSActionsHandler URLContextsFetchedFromItemProviders:collectionIdentifier:contentOwner:payload:](self, "URLContextsFetchedFromItemProviders:collectionIdentifier:contentOwner:payload:", v15, uUIDString, [v14 originatorDataOwner], payloadCopy);
 
           [v13 dragContinuationDidFinishRequestingData];
           v6 = v18;
@@ -355,42 +355,42 @@
   return v6;
 }
 
-- (id)bestUTIForAppFromProviderRegisteredTypeIdentifiers:(id)a3
+- (id)bestUTIForAppFromProviderRegisteredTypeIdentifiers:(id)identifiers
 {
   v39[3] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [*MEMORY[0x1E6982E48] identifier];
-  v39[0] = v4;
-  v5 = [*MEMORY[0x1E6982D60] identifier];
-  v39[1] = v5;
-  v6 = [*MEMORY[0x1E6982D50] identifier];
-  v39[2] = v6;
+  identifiersCopy = identifiers;
+  identifier = [*MEMORY[0x1E6982E48] identifier];
+  v39[0] = identifier;
+  identifier2 = [*MEMORY[0x1E6982D60] identifier];
+  v39[1] = identifier2;
+  identifier3 = [*MEMORY[0x1E6982D50] identifier];
+  v39[2] = identifier3;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:3];
 
-  v8 = [v3 arrayByExcludingObjectsInArray:v7];
-  v9 = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
-  v10 = v9;
+  v8 = [identifiersCopy arrayByExcludingObjectsInArray:v7];
+  bundleRecordForCurrentProcess = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
+  v10 = bundleRecordForCurrentProcess;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
   v36 = __Block_byref_object_copy__140;
   v37 = __Block_byref_object_dispose__140;
   v38 = 0;
-  if (v9)
+  if (bundleRecordForCurrentProcess)
   {
-    v11 = [v9 claimRecords];
+    claimRecords = [bundleRecordForCurrentProcess claimRecords];
   }
 
   else
   {
-    v11 = 0;
+    claimRecords = 0;
   }
 
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __96___UISceneOpenItemProvidersBSActionsHandler_bestUTIForAppFromProviderRegisteredTypeIdentifiers___block_invoke;
   v29[3] = &unk_1E7118750;
-  v12 = v11;
+  v12 = claimRecords;
   v30 = v12;
   v13 = v7;
   v31 = v13;
@@ -425,9 +425,9 @@
       v14 = v34[5];
       if (!v14)
       {
-        v17 = [v3 firstObject];
+        firstObject = [identifiersCopy firstObject];
         v18 = v34[5];
-        v34[5] = v17;
+        v34[5] = firstObject;
 
         v14 = v34[5];
       }
@@ -443,77 +443,77 @@
 
 - (BOOL)currentAppSupportsOpenInPlace
 {
-  v2 = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
+  bundleRecordForCurrentProcess = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
   v3 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [v2 supportsOpenInPlace];
+    supportsOpenInPlace = [bundleRecordForCurrentProcess supportsOpenInPlace];
   }
 
   else
   {
-    v5 = 0;
+    supportsOpenInPlace = 0;
   }
 
-  return v5;
+  return supportsOpenInPlace;
 }
 
-- (id)openURLOptionsFromBasePayload:(id)a3 sourceProcessHandle:(id)a4 dragContentOwner:(int64_t)a5
+- (id)openURLOptionsFromBasePayload:(id)payload sourceProcessHandle:(id)handle dragContentOwner:(int64_t)owner
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  payloadCopy = payload;
+  handleCopy = handle;
+  if (payloadCopy)
   {
-    v10 = [v8 mutableCopy];
+    dictionary = [payloadCopy mutableCopy];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v11 = v10;
-  v12 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+  v11 = dictionary;
+  v12 = [MEMORY[0x1E696AD98] numberWithInteger:owner];
   [v11 setObject:v12 forKey:@"_UISceneOpenURLOptionsContentOwnerKey"];
 
   v13 = *MEMORY[0x1E69635A0];
   v14 = [v11 objectForKeyedSubscript:*MEMORY[0x1E69635A0]];
-  v15 = [v14 BOOLValue];
+  bOOLValue = [v14 BOOLValue];
 
-  if ((v15 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[_UISceneOpenItemProvidersBSActionsHandler currentAppSupportsOpenInPlace](self, "currentAppSupportsOpenInPlace")}];
     [v11 setObject:v16 forKeyedSubscript:v13];
   }
 
-  v17 = [UISceneOpenURLOptions _optionsFromPayload:v11 sourceProcessHandle:v9];
+  v17 = [UISceneOpenURLOptions _optionsFromPayload:v11 sourceProcessHandle:handleCopy];
 
   return v17;
 }
 
-- (id)URLContextsFetchedFromItemProviders:(id)a3 collectionIdentifier:(id)a4 contentOwner:(int64_t)a5 payload:(id)a6
+- (id)URLContextsFetchedFromItemProviders:(id)providers collectionIdentifier:(id)identifier contentOwner:(int64_t)owner payload:(id)payload
 {
   v54 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v36 = a4;
-  v35 = a6;
+  providersCopy = providers;
+  identifierCopy = identifier;
+  payloadCopy = payload;
   v34 = [MEMORY[0x1E695DFA8] set];
   v33 = [MEMORY[0x1E695DFA8] set];
   v10 = dispatch_group_create();
-  if ([v9 count] && !-[_UISceneOpenItemProvidersBSActionsHandler currentAppSupportsReceivingMultipleItems](self, "currentAppSupportsReceivingMultipleItems"))
+  if ([providersCopy count] && !-[_UISceneOpenItemProvidersBSActionsHandler currentAppSupportsReceivingMultipleItems](self, "currentAppSupportsReceivingMultipleItems"))
   {
-    v11 = [v9 subarrayWithRange:{0, 1}];
+    v11 = [providersCopy subarrayWithRange:{0, 1}];
 
-    v9 = v11;
+    providersCopy = v11;
   }
 
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = v9;
+  obj = providersCopy;
   v12 = [obj countByEnumeratingWithState:&v49 objects:v53 count:16];
   if (v12)
   {
@@ -531,13 +531,13 @@
         }
 
         v16 = *(*(&v49 + 1) + 8 * i);
-        v17 = [v16 registeredTypeIdentifiers];
-        v18 = [(_UISceneOpenItemProvidersBSActionsHandler *)self bestUTIForAppFromProviderRegisteredTypeIdentifiers:v17];
+        registeredTypeIdentifiers = [v16 registeredTypeIdentifiers];
+        v18 = [(_UISceneOpenItemProvidersBSActionsHandler *)self bestUTIForAppFromProviderRegisteredTypeIdentifiers:registeredTypeIdentifiers];
 
         if (v18)
         {
           dispatch_group_enter(v10);
-          v19 = [(_UISceneOpenItemProvidersBSActionsHandler *)self currentAppSupportsOpenInPlace];
+          currentAppSupportsOpenInPlace = [(_UISceneOpenItemProvidersBSActionsHandler *)self currentAppSupportsOpenInPlace];
           aBlock[0] = MEMORY[0x1E69E9820];
           aBlock[1] = 3221225472;
           aBlock[2] = __123___UISceneOpenItemProvidersBSActionsHandler_URLContextsFetchedFromItemProviders_collectionIdentifier_contentOwner_payload___block_invoke;
@@ -545,14 +545,14 @@
           aBlock[4] = v16;
           aBlock[5] = self;
           v43 = v33;
-          v44 = v36;
-          v45 = v35;
-          v48 = a5;
+          v44 = identifierCopy;
+          v45 = payloadCopy;
+          ownerCopy = owner;
           v46 = v34;
           v47 = v10;
           v20 = _Block_copy(aBlock);
           v21 = v20;
-          if (v19)
+          if (currentAppSupportsOpenInPlace)
           {
             v39[0] = MEMORY[0x1E69E9820];
             v39[1] = 3221225472;
@@ -590,25 +590,25 @@
   return v27;
 }
 
-- (id)uniqueFileNameWithStakedClaims:(id)a3 hint:(id)a4 extension:(id)a5
+- (id)uniqueFileNameWithStakedClaims:(id)claims hint:(id)hint extension:(id)extension
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 length])
+  claimsCopy = claims;
+  hintCopy = hint;
+  extensionCopy = extension;
+  if ([hintCopy length])
   {
-    if ([v9 length])
+    if ([extensionCopy length])
     {
-      v10 = [v8 stringByAppendingPathExtension:v9];
+      v10 = [hintCopy stringByAppendingPathExtension:extensionCopy];
     }
 
     else
     {
-      v10 = v8;
+      v10 = hintCopy;
     }
 
     v13 = v10;
-    if ([v7 containsObject:v10])
+    if ([claimsCopy containsObject:v10])
     {
       LODWORD(v19) = 0;
       do
@@ -616,11 +616,11 @@
         if (v19)
         {
           v19 = (v19 + 1);
-          v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %d", v8, v19];
+          v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %d", hintCopy, v19];
 
-          if ([v9 length])
+          if ([extensionCopy length])
           {
-            v13 = [v20 stringByAppendingPathExtension:v9];
+            v13 = [v20 stringByAppendingPathExtension:extensionCopy];
           }
 
           else
@@ -635,7 +635,7 @@
         }
       }
 
-      while (([v7 containsObject:v13] & 1) != 0);
+      while (([claimsCopy containsObject:v13] & 1) != 0);
     }
   }
 
@@ -645,8 +645,8 @@
     v12 = [v11 localizedStringForKey:@"DROPPED_DOCUMENT" value:@"Dropped Document" table:@"Localizable"];
 
     v22 = v12;
-    v13 = [v12 stringByAppendingPathExtension:v9];
-    if ([v7 containsObject:v13])
+    v13 = [v12 stringByAppendingPathExtension:extensionCopy];
+    if ([claimsCopy containsObject:v13])
     {
       LODWORD(v14) = 0;
       do
@@ -659,9 +659,9 @@
           v14 = (v14 + 1);
           v18 = [v15 localizedStringWithFormat:v17, v14];
 
-          if ([v9 length])
+          if ([extensionCopy length])
           {
-            v13 = [v18 stringByAppendingPathExtension:v9];
+            v13 = [v18 stringByAppendingPathExtension:extensionCopy];
           }
 
           else
@@ -676,27 +676,27 @@
         }
       }
 
-      while (([v7 containsObject:v13] & 1) != 0);
+      while (([claimsCopy containsObject:v13] & 1) != 0);
     }
   }
 
   return v13;
 }
 
-- (id)itemProvidersFromPBItemCollection:(id)a3 userInfo:(id)a4
+- (id)itemProvidersFromPBItemCollection:(id)collection userInfo:(id)info
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  collectionCopy = collection;
+  infoCopy = info;
   v7 = objc_alloc(MEMORY[0x1E695DF70]);
-  v8 = [v5 items];
-  v9 = [v7 initWithCapacity:{objc_msgSend(v8, "count")}];
+  items = [collectionCopy items];
+  v9 = [v7 initWithCapacity:{objc_msgSend(items, "count")}];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = [v5 items];
+  obj = [collectionCopy items];
   v10 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
@@ -718,7 +718,7 @@
         v18[3] = &unk_1E70F7970;
         v19 = v14;
         v15 = v14;
-        [v6 enumerateKeysAndObjectsUsingBlock:v18];
+        [infoCopy enumerateKeysAndObjectsUsingBlock:v18];
         [v9 addObject:v15];
       }
 
@@ -731,11 +731,11 @@
   return v9;
 }
 
-- (id)dragContinuationFromEndpoint:(id)a3
+- (id)dragContinuationFromEndpoint:(id)endpoint
 {
   v3 = MEMORY[0x1E696B0B8];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithListenerEndpoint:v4];
+  endpointCopy = endpoint;
+  v5 = [[v3 alloc] initWithListenerEndpoint:endpointCopy];
 
   v6 = _DUINewDragContinuationInterface();
   [v5 setRemoteObjectInterface:v6];
@@ -746,9 +746,9 @@
   return v7;
 }
 
-- (id)itemCollectionFromDragContinuation:(id)a3
+- (id)itemCollectionFromDragContinuation:(id)continuation
 {
-  v3 = a3;
+  continuationCopy = continuation;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -760,7 +760,7 @@
   v6[2] = __80___UISceneOpenItemProvidersBSActionsHandler_itemCollectionFromDragContinuation___block_invoke;
   v6[3] = &unk_1E7118818;
   v6[4] = &v7;
-  [v3 requestItemCollectionWithReply:v6];
+  [continuationCopy requestItemCollectionWithReply:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
 

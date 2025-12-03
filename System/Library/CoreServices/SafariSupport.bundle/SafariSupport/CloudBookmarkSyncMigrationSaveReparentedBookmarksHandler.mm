@@ -1,37 +1,37 @@
 @interface CloudBookmarkSyncMigrationSaveReparentedBookmarksHandler
 - (id)_nextCloudBookmarkToSave;
-- (id)positionForCloudBookmarkWithRecordName:(id)a3;
-- (id)recordIDForParentSyncServerID:(id)a3;
-- (void)_didFailSavingWithError:(id)a3;
-- (void)_didFinishSavingRecordsWithNames:(id)a3;
-- (void)beginSavingReparentedBookmarksInOperationGroup:(id)a3 withRecordNames:(id)a4 lastKnownPositionInRoot:(id)a5 completionHandler:(id)a6;
+- (id)positionForCloudBookmarkWithRecordName:(id)name;
+- (id)recordIDForParentSyncServerID:(id)d;
+- (void)_didFailSavingWithError:(id)error;
+- (void)_didFinishSavingRecordsWithNames:(id)names;
+- (void)beginSavingReparentedBookmarksInOperationGroup:(id)group withRecordNames:(id)names lastKnownPositionInRoot:(id)root completionHandler:(id)handler;
 @end
 
 @implementation CloudBookmarkSyncMigrationSaveReparentedBookmarksHandler
 
-- (void)beginSavingReparentedBookmarksInOperationGroup:(id)a3 withRecordNames:(id)a4 lastKnownPositionInRoot:(id)a5 completionHandler:(id)a6
+- (void)beginSavingReparentedBookmarksInOperationGroup:(id)group withRecordNames:(id)names lastKnownPositionInRoot:(id)root completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v16 = v10;
-  v18 = a6;
-  v17 = v11;
-  v12 = v9;
-  v13 = v11;
-  v14 = v18;
-  v15 = v10;
+  groupCopy = group;
+  namesCopy = names;
+  rootCopy = root;
+  v16 = namesCopy;
+  handlerCopy = handler;
+  v17 = rootCopy;
+  v12 = groupCopy;
+  v13 = rootCopy;
+  v14 = handlerCopy;
+  v15 = namesCopy;
   WBSDispatchAsyncToMainQueueWithAutoreleasePool();
 }
 
-- (void)_didFailSavingWithError:(id)a3
+- (void)_didFailSavingWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_retainBlock(self->_completionHandler);
   v6 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    sub_10008627C(v6, v4);
+    sub_10008627C(v6, errorCopy);
   }
 
   completionHandler = self->_completionHandler;
@@ -41,13 +41,13 @@
   namesOfRemainingRecordsToSave = self->_namesOfRemainingRecordsToSave;
   self->_namesOfRemainingRecordsToSave = 0;
 
-  v5[2](v5, 0, v4);
+  v5[2](v5, 0, errorCopy);
 }
 
-- (void)_didFinishSavingRecordsWithNames:(id)a3
+- (void)_didFinishSavingRecordsWithNames:(id)names
 {
   completionHandler = self->_completionHandler;
-  v5 = a3;
+  namesCopy = names;
   v6 = objc_retainBlock(completionHandler);
   v7 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -63,18 +63,18 @@
   namesOfRemainingRecordsToSave = self->_namesOfRemainingRecordsToSave;
   self->_namesOfRemainingRecordsToSave = 0;
 
-  v6[2](v6, v5, 0);
+  v6[2](v6, namesCopy, 0);
 }
 
 - (id)_nextCloudBookmarkToSave
 {
-  v3 = [(NSMutableArray *)self->_namesOfRemainingRecordsToSave firstObject];
-  if (v3)
+  firstObject = [(NSMutableArray *)self->_namesOfRemainingRecordsToSave firstObject];
+  if (firstObject)
   {
     [(NSMutableArray *)self->_namesOfRemainingRecordsToSave removeObjectAtIndex:0];
-    v4 = [(CloudBookmarkDatabaseHandler *)self databaseRef];
-    v5 = [(CloudBookmarkDatabaseHandler *)self databaseAccessor];
-    v6 = [CloudBookmark cloudBookmarkForReparentedItemWithRecordName:v3 inDatabase:v4 databaseAccessor:v5 updater:self];
+    databaseRef = [(CloudBookmarkDatabaseHandler *)self databaseRef];
+    databaseAccessor = [(CloudBookmarkDatabaseHandler *)self databaseAccessor];
+    v6 = [CloudBookmark cloudBookmarkForReparentedItemWithRecordName:firstObject inDatabase:databaseRef databaseAccessor:databaseAccessor updater:self];
   }
 
   else
@@ -85,31 +85,31 @@
   return v6;
 }
 
-- (id)recordIDForParentSyncServerID:(id)a3
+- (id)recordIDForParentSyncServerID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [CKRecordID alloc];
-  v6 = [(CloudBookmarkDatabaseHandler *)self bookmarkStore];
-  v7 = [v6 bookmarksRecordZoneID];
-  v8 = [v5 initWithRecordName:v4 zoneID:v7];
+  bookmarkStore = [(CloudBookmarkDatabaseHandler *)self bookmarkStore];
+  bookmarksRecordZoneID = [bookmarkStore bookmarksRecordZoneID];
+  v8 = [v5 initWithRecordName:dCopy zoneID:bookmarksRecordZoneID];
 
   return v8;
 }
 
-- (id)positionForCloudBookmarkWithRecordName:(id)a3
+- (id)positionForCloudBookmarkWithRecordName:(id)name
 {
-  v4 = [(CloudBookmarkDatabaseHandler *)self databaseRef];
-  v5 = [(CloudBookmarkDatabaseHandler *)self databaseAccessor];
-  v6 = [WBBookmarkDatabaseSyncData databaseSyncDataInDatabase:v4 databaseAccessor:v5];
+  databaseRef = [(CloudBookmarkDatabaseHandler *)self databaseRef];
+  databaseAccessor = [(CloudBookmarkDatabaseHandler *)self databaseAccessor];
+  v6 = [WBBookmarkDatabaseSyncData databaseSyncDataInDatabase:databaseRef databaseAccessor:databaseAccessor];
 
-  v7 = [v6 nextChangeID];
-  v8 = [(CloudBookmarkDatabaseHandler *)self databaseRef];
-  v9 = [(CloudBookmarkDatabaseHandler *)self databaseAccessor];
-  [v6 writeToDatabase:v8 databaseAccessor:v9];
+  nextChangeID = [v6 nextChangeID];
+  databaseRef2 = [(CloudBookmarkDatabaseHandler *)self databaseRef];
+  databaseAccessor2 = [(CloudBookmarkDatabaseHandler *)self databaseAccessor];
+  [v6 writeToDatabase:databaseRef2 databaseAccessor:databaseAccessor2];
 
   lastKnownPositionInRoot = self->_lastKnownPositionInRoot;
-  v11 = [(CloudBookmarkDatabaseHandler *)self deviceIdentifier];
-  v12 = [WBSCRDTPosition positionBetweenPosition:lastKnownPositionInRoot andPosition:0 withDeviceIdentifier:v11 changeID:v7];
+  deviceIdentifier = [(CloudBookmarkDatabaseHandler *)self deviceIdentifier];
+  v12 = [WBSCRDTPosition positionBetweenPosition:lastKnownPositionInRoot andPosition:0 withDeviceIdentifier:deviceIdentifier changeID:nextChangeID];
 
   objc_storeStrong(&self->_lastKnownPositionInRoot, v12);
 

@@ -1,26 +1,26 @@
 @interface QLFileIconImageView
-- (QLFileIconImageView)initWithCoder:(id)a3;
-- (void)setCornerRadius:(double)a3;
+- (QLFileIconImageView)initWithCoder:(id)coder;
+- (void)setCornerRadius:(double)radius;
 @end
 
 @implementation QLFileIconImageView
 
-- (QLFileIconImageView)initWithCoder:(id)a3
+- (QLFileIconImageView)initWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = QLFileIconImageView;
-  v3 = [(QLFileIconImageView *)&v5 initWithCoder:a3];
+  v3 = [(QLFileIconImageView *)&v5 initWithCoder:coder];
   [(QLFileIconImageView *)v3 setCornerRadius:3.0];
   return v3;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v4 = [(QLFileIconImageView *)self layer];
-  [v4 setCornerRadius:3.0];
+  layer = [(QLFileIconImageView *)self layer];
+  [layer setCornerRadius:3.0];
 
-  v5 = [(QLFileIconImageView *)self layer];
-  [v5 setMasksToBounds:1];
+  layer2 = [(QLFileIconImageView *)self layer];
+  [layer2 setMasksToBounds:1];
 }
 
 @end

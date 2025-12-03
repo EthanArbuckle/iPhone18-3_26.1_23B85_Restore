@@ -1,40 +1,40 @@
 @interface CRLWPFont
-+ (BOOL)isSystemFontName:(id)a3;
-+ (BOOL)isSystemUIFontIdentifier:(id)a3;
-+ (CRLWPFont)fontWithDesiredPostScriptName:(id)a3;
-+ (CRLWPFont)fontWithDesiredPostScriptName:(id)a3 atSize:(double)a4;
-+ (CRLWPFont)fontWithDesiredPostScriptName:(id)a3 fallbackFont:(id)a4 ofType:(unint64_t)a5;
-+ (CRLWPFont)fontWithOpaqueIdentifier:(id)a3;
-+ (id)baseFontForFamilyName:(id)a3;
-+ (id)baseFontWithDescriptor:(id)a3;
-+ (id)facesOfFontFamily:(id)a3;
-+ (id)loadPlatformFontForPostScriptName:(id)a3 size:(double)a4;
-+ (id)loadPlatformFontOrFallbackForPostScriptName:(id)a3 size:(double)a4 foundType:(unint64_t *)a5;
-+ (id)localizedFamilyNameForPlatformFont:(id)a3;
++ (BOOL)isSystemFontName:(id)name;
++ (BOOL)isSystemUIFontIdentifier:(id)identifier;
++ (CRLWPFont)fontWithDesiredPostScriptName:(id)name;
++ (CRLWPFont)fontWithDesiredPostScriptName:(id)name atSize:(double)size;
++ (CRLWPFont)fontWithDesiredPostScriptName:(id)name fallbackFont:(id)font ofType:(unint64_t)type;
++ (CRLWPFont)fontWithOpaqueIdentifier:(id)identifier;
++ (id)baseFontForFamilyName:(id)name;
++ (id)baseFontWithDescriptor:(id)descriptor;
++ (id)facesOfFontFamily:(id)family;
++ (id)loadPlatformFontForPostScriptName:(id)name size:(double)size;
++ (id)loadPlatformFontOrFallbackForPostScriptName:(id)name size:(double)size foundType:(unint64_t *)type;
++ (id)localizedFamilyNameForPlatformFont:(id)font;
 + (id)localizedMasqueradingFontFamilyNames;
 + (id)masqueradingFontNames;
 + (id)missingFont;
-+ (id)postScriptNameForFamilyName:(id)a3;
-+ (id)systemFontOfSize:(double)a3 withWeight:(double)a4;
-+ (unint64_t)optionsForLoadingPlatformFontWithPostScriptName:(id)a3;
-- (BOOL)isBaseFontEqualToBaseFontFor:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)postScriptNameForFamilyName:(id)name;
++ (id)systemFontOfSize:(double)size withWeight:(double)weight;
++ (unint64_t)optionsForLoadingPlatformFontWithPostScriptName:(id)name;
+- (BOOL)isBaseFontEqualToBaseFontFor:(id)for;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isMasqueradingFontName;
 - (CRLWPFont)baseFont;
-- (CRLWPFont)initWithDesiredPostScriptName:(id)a3 platformFontDescriptor:(id)a4 andPlatformFont:(id)a5 ofType:(unint64_t)a6 localizedFamilyName:(id)a7;
-- (CRLWPFont)initWithDesiredPostScriptName:(id)a3 size:(double)a4;
+- (CRLWPFont)initWithDesiredPostScriptName:(id)name platformFontDescriptor:(id)descriptor andPlatformFont:(id)font ofType:(unint64_t)type localizedFamilyName:(id)familyName;
+- (CRLWPFont)initWithDesiredPostScriptName:(id)name size:(double)size;
 - (NSArray)familyFaces;
 - (NSString)desiredPostScriptName;
 - (NSString)displayName;
 - (__CTFont)ctFont;
-- (__CTFont)ctFontForSize:(double)a3;
-- (__CTFont)ctFontForSize:(double)a3 bold:(BOOL)a4 italic:(BOOL)a5;
-- (__CTFont)ctFontForSize:(double)a3 bold:(BOOL)a4 italic:(BOOL)a5 traits:(id)a6;
+- (__CTFont)ctFontForSize:(double)size;
+- (__CTFont)ctFontForSize:(double)size bold:(BOOL)bold italic:(BOOL)italic;
+- (__CTFont)ctFontForSize:(double)size bold:(BOOL)bold italic:(BOOL)italic traits:(id)traits;
 - (double)size;
-- (id)copyWithSize:(double)a3;
-- (id)copyWithSize:(double)a3 bold:(BOOL)a4 italic:(BOOL)a5;
-- (id)copyWithSize:(double)a3 bold:(BOOL)a4 italic:(BOOL)a5 traits:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithSize:(double)size;
+- (id)copyWithSize:(double)size bold:(BOOL)bold italic:(BOOL)italic;
+- (id)copyWithSize:(double)size bold:(BOOL)bold italic:(BOOL)italic traits:(id)traits;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -43,17 +43,17 @@
 
 + (id)missingFont
 {
-  v2 = [a1 missingFontPostScriptName];
-  v3 = [CRLWPFont fontWithDesiredPostScriptName:v2];
+  missingFontPostScriptName = [self missingFontPostScriptName];
+  v3 = [CRLWPFont fontWithDesiredPostScriptName:missingFontPostScriptName];
 
   return v3;
 }
 
-+ (id)systemFontOfSize:(double)a3 withWeight:(double)a4
++ (id)systemFontOfSize:(double)size withWeight:(double)weight
 {
-  v6 = [UIFont systemFontOfSize:a3 weight:?];
-  v7 = [a1 alloc];
-  v8 = [_TtC8Freeform20CRLWPSystemFontNames nameForWeight:a4];
+  v6 = [UIFont systemFontOfSize:size weight:?];
+  v7 = [self alloc];
+  v8 = [_TtC8Freeform20CRLWPSystemFontNames nameForWeight:weight];
   v9 = [v7 initWithDesiredPostScriptName:v8 platformFontDescriptor:0 andPlatformFont:v6 ofType:1];
 
   return v9;
@@ -83,107 +83,107 @@
   return v3;
 }
 
-+ (CRLWPFont)fontWithDesiredPostScriptName:(id)a3
++ (CRLWPFont)fontWithDesiredPostScriptName:(id)name
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDesiredPostScriptName:v4 size:0.0];
+  nameCopy = name;
+  v5 = [[self alloc] initWithDesiredPostScriptName:nameCopy size:0.0];
 
   return v5;
 }
 
-+ (CRLWPFont)fontWithOpaqueIdentifier:(id)a3
++ (CRLWPFont)fontWithOpaqueIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 familyName];
+  identifierCopy = identifier;
+  familyName = [identifierCopy familyName];
 
-  if (v5)
+  if (familyName)
   {
-    v6 = [v4 familyName];
+    familyName2 = [identifierCopy familyName];
 
-    [a1 baseFontForFamilyName:v6];
+    [self baseFontForFamilyName:familyName2];
   }
 
   else
   {
-    v6 = [v4 desiredPostScriptName];
+    familyName2 = [identifierCopy desiredPostScriptName];
 
-    [a1 fontWithDesiredPostScriptName:v6];
+    [self fontWithDesiredPostScriptName:familyName2];
   }
   v7 = ;
 
   return v7;
 }
 
-+ (CRLWPFont)fontWithDesiredPostScriptName:(id)a3 fallbackFont:(id)a4 ofType:(unint64_t)a5
++ (CRLWPFont)fontWithDesiredPostScriptName:(id)name fallbackFont:(id)font ofType:(unint64_t)type
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a1 alloc];
-  v11 = [v8 platformFont];
+  fontCopy = font;
+  nameCopy = name;
+  v10 = [self alloc];
+  platformFont = [fontCopy platformFont];
 
-  v12 = [v10 initWithDesiredPostScriptName:v9 platformFontDescriptor:0 andPlatformFont:v11 ofType:a5];
+  v12 = [v10 initWithDesiredPostScriptName:nameCopy platformFontDescriptor:0 andPlatformFont:platformFont ofType:type];
 
   return v12;
 }
 
-+ (CRLWPFont)fontWithDesiredPostScriptName:(id)a3 atSize:(double)a4
++ (CRLWPFont)fontWithDesiredPostScriptName:(id)name atSize:(double)size
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithDesiredPostScriptName:v6 size:a4];
+  nameCopy = name;
+  v7 = [[self alloc] initWithDesiredPostScriptName:nameCopy size:size];
 
   return v7;
 }
 
-+ (id)baseFontWithDescriptor:(id)a3
++ (id)baseFontWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = CTFontCreateWithFontDescriptor(v4, 0.0, 0);
-  v6 = [a1 alloc];
-  v7 = [(__CTFontDescriptor *)v4 postscriptName];
-  v8 = [v6 initWithDesiredPostScriptName:v7 platformFontDescriptor:v4 andPlatformFont:v5 ofType:1];
+  descriptorCopy = descriptor;
+  v5 = CTFontCreateWithFontDescriptor(descriptorCopy, 0.0, 0);
+  v6 = [self alloc];
+  postscriptName = [(__CTFontDescriptor *)descriptorCopy postscriptName];
+  v8 = [v6 initWithDesiredPostScriptName:postscriptName platformFontDescriptor:descriptorCopy andPlatformFont:v5 ofType:1];
 
   return v8;
 }
 
-+ (id)baseFontForFamilyName:(id)a3
++ (id)baseFontForFamilyName:(id)name
 {
-  v4 = a3;
-  v5 = [a1 helveticaFont];
-  v6 = [v5 familyName];
-  v7 = [v4 isEqual:v6];
+  nameCopy = name;
+  helveticaFont = [self helveticaFont];
+  familyName = [helveticaFont familyName];
+  v7 = [nameCopy isEqual:familyName];
 
   if (v7)
   {
-    v8 = [a1 helveticaFont];
+    helveticaFont2 = [self helveticaFont];
   }
 
   else
   {
-    if (v4)
+    if (nameCopy)
     {
       v24 = kCTFontFamilyNameAttribute;
-      v25 = v4;
+      v25 = nameCopy;
       v9 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
       v10 = CTFontDescriptorCreateWithAttributes(v9);
       if (v10)
       {
         v11 = v10;
         v12 = CTFontCreateWithFontDescriptor(v10, 0.0, 0);
-        v13 = [(__CTFont *)v12 fontName];
+        fontName = [(__CTFont *)v12 fontName];
         v14 = +[CRLWPFont missingFontPostScriptName];
-        v15 = [v13 isEqual:v14];
+        v15 = [fontName isEqual:v14];
 
         v16 = [CRLWPFont alloc];
         v17 = v16;
         if (v15)
         {
-          v18 = [(CRLWPFont *)v16 initWithDesiredPostScriptName:v4];
+          v18 = [(CRLWPFont *)v16 initWithDesiredPostScriptName:nameCopy];
         }
 
         else
         {
-          v22 = [(__CTFont *)v12 fontName];
-          v18 = [(CRLWPFont *)v17 initWithDesiredPostScriptName:v22 platformFontDescriptor:v11 andPlatformFont:v12 ofType:1];
+          fontName2 = [(__CTFont *)v12 fontName];
+          v18 = [(CRLWPFont *)v17 initWithDesiredPostScriptName:fontName2 platformFontDescriptor:v11 andPlatformFont:v12 ofType:1];
         }
 
         CFRelease(v11);
@@ -224,31 +224,31 @@
       }
     }
 
-    v8 = [a1 missingFont];
+    helveticaFont2 = [self missingFont];
   }
 
-  v18 = v8;
+  v18 = helveticaFont2;
 LABEL_20:
 
   return v18;
 }
 
-+ (id)loadPlatformFontOrFallbackForPostScriptName:(id)a3 size:(double)a4 foundType:(unint64_t *)a5
++ (id)loadPlatformFontOrFallbackForPostScriptName:(id)name size:(double)size foundType:(unint64_t *)type
 {
-  v8 = a3;
-  *a5 = 1;
+  nameCopy = name;
+  *type = 1;
   p_superclass = &OBJC_METACLASS___CRLTemporaryDirectory.superclass;
   v10 = +[CRLWPFontVerifier sharedInstance];
-  if ([a1 isSystemUIFontIdentifier:v8])
+  if ([self isSystemUIFontIdentifier:nameCopy])
   {
-    [_TtC8Freeform20CRLWPSystemFontNames weightForName:v8];
-    v12 = [UIFont systemFontOfSize:a4 weight:v11];
+    [_TtC8Freeform20CRLWPSystemFontNames weightForName:nameCopy];
+    v12 = [UIFont systemFontOfSize:size weight:v11];
     goto LABEL_5;
   }
 
-  if ([v10 isFontWithPostscriptNameInstalled:v8])
+  if ([v10 isFontWithPostscriptNameInstalled:nameCopy])
   {
-    v12 = [a1 loadPlatformFontForPostScriptName:v8 size:a4];
+    v12 = [self loadPlatformFontForPostScriptName:nameCopy size:size];
 LABEL_5:
     v13 = v12;
     if (!v12)
@@ -260,7 +260,7 @@ LABEL_5:
   }
 
   v28 = +[CRLWPFallbackFontList sharedInstance];
-  [v28 fallbackListForPostscriptFontName:v8];
+  [v28 fallbackListForPostscriptFontName:nameCopy];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -274,7 +274,7 @@ LABEL_5:
 
   v18 = v17;
   v19 = *v30;
-  v27 = a5;
+  typeCopy = type;
   while (2)
   {
     for (i = 0; i != v18; i = i + 1)
@@ -285,11 +285,11 @@ LABEL_5:
       }
 
       v21 = *(*(&v29 + 1) + 8 * i);
-      if ([v10 isFontWithPostscriptNameInstalled:{v21, v27}])
+      if ([v10 isFontWithPostscriptNameInstalled:{v21, typeCopy}])
       {
-        v13 = [a1 loadPlatformFontForPostScriptName:v21 size:a4];
-        v24 = [a1 masqueradingFontNames];
-        v25 = [v24 containsObject:v21];
+        v13 = [self loadPlatformFontForPostScriptName:v21 size:size];
+        masqueradingFontNames = [self masqueradingFontNames];
+        v25 = [masqueradingFontNames containsObject:v21];
 
         v26 = 2;
         if (v25)
@@ -300,16 +300,16 @@ LABEL_5:
         goto LABEL_25;
       }
 
-      v22 = [a1 masqueradingFontNames];
-      v23 = [v22 containsObject:v21];
+      masqueradingFontNames2 = [self masqueradingFontNames];
+      v23 = [masqueradingFontNames2 containsObject:v21];
 
       if (v23)
       {
-        v13 = [a1 loadPlatformFontForPostScriptName:v21 size:a4];
+        v13 = [self loadPlatformFontForPostScriptName:v21 size:size];
         v26 = 3;
 LABEL_25:
-        a5 = v27;
-        *v27 = v26;
+        type = typeCopy;
+        *typeCopy = v26;
         p_superclass = (&OBJC_METACLASS___CRLTemporaryDirectory + 8);
         goto LABEL_26;
       }
@@ -317,7 +317,7 @@ LABEL_25:
 
     v18 = [v16 countByEnumeratingWithState:&v29 objects:v33 count:16];
     v13 = 0;
-    a5 = v27;
+    type = typeCopy;
     p_superclass = (&OBJC_METACLASS___CRLTemporaryDirectory + 8);
     if (v18)
     {
@@ -332,10 +332,10 @@ LABEL_26:
   if (!v13)
   {
 LABEL_6:
-    v14 = [p_superclass + 414 missingFontName];
-    v13 = [a1 loadPlatformFontForPostScriptName:v14 size:a4];
+    missingFontName = [p_superclass + 414 missingFontName];
+    v13 = [self loadPlatformFontForPostScriptName:missingFontName size:size];
 
-    *a5 = 2;
+    *type = 2;
   }
 
 LABEL_7:
@@ -343,12 +343,12 @@ LABEL_7:
   return v13;
 }
 
-+ (BOOL)isSystemFontName:(id)a3
++ (BOOL)isSystemFontName:(id)name
 {
-  v3 = a3;
-  if ([v3 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
-    v4 = [v3 characterAtIndex:0] == 46;
+    v4 = [nameCopy characterAtIndex:0] == 46;
   }
 
   else
@@ -359,18 +359,18 @@ LABEL_7:
   return v4;
 }
 
-+ (BOOL)isSystemUIFontIdentifier:(id)a3
++ (BOOL)isSystemUIFontIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[_TtC8Freeform20CRLWPSystemFontNames allSystemFontNames];
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:identifierCopy];
 
   return v5;
 }
 
-+ (unint64_t)optionsForLoadingPlatformFontWithPostScriptName:(id)a3
++ (unint64_t)optionsForLoadingPlatformFontWithPostScriptName:(id)name
 {
-  if ([a1 isSystemFontName:a3])
+  if ([self isSystemFontName:name])
   {
     return 1024;
   }
@@ -381,57 +381,57 @@ LABEL_7:
   }
 }
 
-+ (id)loadPlatformFontForPostScriptName:(id)a3 size:(double)a4
++ (id)loadPlatformFontForPostScriptName:(id)name size:(double)size
 {
-  v6 = a3;
-  v7 = CTFontCreateWithNameAndOptions(v6, a4, 0, [a1 optionsForLoadingPlatformFontWithPostScriptName:v6]);
+  nameCopy = name;
+  v7 = CTFontCreateWithNameAndOptions(nameCopy, size, 0, [self optionsForLoadingPlatformFontWithPostScriptName:nameCopy]);
 
   return v7;
 }
 
-+ (id)localizedFamilyNameForPlatformFont:(id)a3
++ (id)localizedFamilyNameForPlatformFont:(id)font
 {
-  v4 = a3;
-  if ([CRLWPFont isSystemUIFontRef:v4])
+  fontCopy = font;
+  if ([CRLWPFont isSystemUIFontRef:fontCopy])
   {
     v5 = +[NSBundle mainBundle];
-    v6 = [v5 localizedStringForKey:@"System Font" value:0 table:0];
+    familyName = [v5 localizedStringForKey:@"System Font" value:0 table:0];
   }
 
   else
   {
-    v7 = [v4 fontName];
-    v8 = [a1 isSystemFontName:v7];
+    fontName = [fontCopy fontName];
+    v8 = [self isSystemFontName:fontName];
 
-    if (v8 || (v6 = CTFontCopyLocalizedName(v4, kCTFontFamilyNameKey, 0)) == 0)
+    if (v8 || (familyName = CTFontCopyLocalizedName(fontCopy, kCTFontFamilyNameKey, 0)) == 0)
     {
-      v6 = [v4 familyName];
+      familyName = [fontCopy familyName];
     }
   }
 
-  return v6;
+  return familyName;
 }
 
-- (CRLWPFont)initWithDesiredPostScriptName:(id)a3 size:(double)a4
+- (CRLWPFont)initWithDesiredPostScriptName:(id)name size:(double)size
 {
   v10 = 0;
-  v6 = a3;
-  v7 = [objc_opt_class() loadPlatformFontOrFallbackForPostScriptName:v6 size:&v10 foundType:a4];
-  v8 = [(CRLWPFont *)self initWithDesiredPostScriptName:v6 platformFontDescriptor:0 andPlatformFont:v7 ofType:v10];
+  nameCopy = name;
+  v7 = [objc_opt_class() loadPlatformFontOrFallbackForPostScriptName:nameCopy size:&v10 foundType:size];
+  v8 = [(CRLWPFont *)self initWithDesiredPostScriptName:nameCopy platformFontDescriptor:0 andPlatformFont:v7 ofType:v10];
 
   return v8;
 }
 
-- (CRLWPFont)initWithDesiredPostScriptName:(id)a3 platformFontDescriptor:(id)a4 andPlatformFont:(id)a5 ofType:(unint64_t)a6 localizedFamilyName:(id)a7
+- (CRLWPFont)initWithDesiredPostScriptName:(id)name platformFontDescriptor:(id)descriptor andPlatformFont:(id)font ofType:(unint64_t)type localizedFamilyName:(id)familyName
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = v16;
-  if (!v13)
+  nameCopy = name;
+  descriptorCopy = descriptor;
+  fontCopy = font;
+  familyNameCopy = familyName;
+  v17 = familyNameCopy;
+  if (!nameCopy)
   {
-    v47 = v16;
+    v47 = familyNameCopy;
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
     {
@@ -458,7 +458,7 @@ LABEL_7:
     v20 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Fonts/CRLWPFont.m"];
     [CRLAssertionHandler handleFailureInFunction:v19 file:v20 lineNumber:300 isFatal:0 description:"invalid nil value for '%{public}s'", "desiredPostScriptName"];
 
-    v13 = 0;
+    nameCopy = 0;
     v17 = v47;
   }
 
@@ -468,12 +468,12 @@ LABEL_7:
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_desiredPostScriptName, a3);
-    v22->_type = a6;
-    objc_storeStrong(&v22->_platformFont, a5);
-    if (v14)
+    objc_storeStrong(&v21->_desiredPostScriptName, name);
+    v22->_type = type;
+    objc_storeStrong(&v22->_platformFont, font);
+    if (descriptorCopy)
     {
-      v23 = v14;
+      v23 = descriptorCopy;
     }
 
     else
@@ -484,20 +484,20 @@ LABEL_7:
     platformFontDescriptor = v22->_platformFontDescriptor;
     v22->_platformFontDescriptor = v23;
 
-    v25 = [v15 familyName];
+    familyName = [fontCopy familyName];
 
-    if (v25)
+    if (familyName)
     {
-      v26 = [v15 familyName];
+      familyName2 = [fontCopy familyName];
     }
 
     else
     {
-      v26 = &stru_1018BCA28;
+      familyName2 = &stru_1018BCA28;
     }
 
     familyName = v22->_familyName;
-    v22->_familyName = &v26->isa;
+    v22->_familyName = &familyName2->isa;
 
     v28 = CTFontDescriptorCopyAttribute(v22->_platformFontDescriptor, kCTFontNameAttribute);
     postScriptName = v22->_postScriptName;
@@ -505,9 +505,9 @@ LABEL_7:
 
     if (!v22->_postScriptName)
     {
-      v30 = [v15 fontName];
+      fontName = [fontCopy fontName];
       v31 = v22->_postScriptName;
-      v22->_postScriptName = v30;
+      v22->_postScriptName = fontName;
     }
 
     v32 = +[CRLWPFallbackFontList sharedInstance];
@@ -522,9 +522,9 @@ LABEL_7:
 
     else
     {
-      if (a6 == 3)
+      if (type == 3)
       {
-        v36 = [v32 localizedNameForMasqueradingFontName:v13];
+        v36 = [v32 localizedNameForMasqueradingFontName:nameCopy];
         localizedFamilyName = v22->_localizedFamilyName;
         v22->_localizedFamilyName = v36;
 
@@ -567,7 +567,7 @@ LABEL_36:
           goto LABEL_47;
         }
 
-        objc_storeStrong(&v22->_localizedFamilyName, a3);
+        objc_storeStrong(&v22->_localizedFamilyName, name);
         +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
         {
@@ -600,7 +600,7 @@ LABEL_35:
         goto LABEL_36;
       }
 
-      v35 = [objc_opt_class() localizedFamilyNameForPlatformFont:v15];
+      v35 = [objc_opt_class() localizedFamilyNameForPlatformFont:fontCopy];
     }
 
     v39 = v22->_localizedFamilyName;
@@ -613,14 +613,14 @@ LABEL_47:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CRLWPFont alloc];
-  v5 = [(CRLWPFont *)self desiredPostScriptName];
-  v6 = [(CRLWPFont *)self platformFont];
-  v7 = [(CRLWPFont *)self type];
-  v8 = [(CRLWPFont *)self localizedFamilyName];
-  v9 = [(CRLWPFont *)v4 initWithDesiredPostScriptName:v5 platformFontDescriptor:0 andPlatformFont:v6 ofType:v7 localizedFamilyName:v8];
+  desiredPostScriptName = [(CRLWPFont *)self desiredPostScriptName];
+  platformFont = [(CRLWPFont *)self platformFont];
+  type = [(CRLWPFont *)self type];
+  localizedFamilyName = [(CRLWPFont *)self localizedFamilyName];
+  v9 = [(CRLWPFont *)v4 initWithDesiredPostScriptName:desiredPostScriptName platformFontDescriptor:0 andPlatformFont:platformFont ofType:type localizedFamilyName:localizedFamilyName];
 
   return v9;
 }
@@ -645,27 +645,27 @@ LABEL_47:
 - (BOOL)isMasqueradingFontName
 {
   v3 = +[CRLWPFont masqueradingFontNames];
-  v4 = [(CRLWPFont *)self postScriptName];
-  v5 = [v3 containsObject:v4];
+  postScriptName = [(CRLWPFont *)self postScriptName];
+  v5 = [v3 containsObject:postScriptName];
 
   return v5;
 }
 
-- (BOOL)isBaseFontEqualToBaseFontFor:(id)a3
+- (BOOL)isBaseFontEqualToBaseFontFor:(id)for
 {
-  v4 = a3;
-  v5 = [(CRLWPFont *)self baseFont];
-  v6 = [v4 baseFont];
+  forCopy = for;
+  baseFont = [(CRLWPFont *)self baseFont];
+  baseFont2 = [forCopy baseFont];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(forCopy) = [baseFont isEqual:baseFont2];
+  return forCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, equalCopy);
 
   if (v6 == self)
   {
@@ -677,17 +677,17 @@ LABEL_47:
     goto LABEL_7;
   }
 
-  v7 = [(CRLWPFont *)self platformFont];
-  v8 = [(CRLWPFont *)v6 platformFont];
-  if (([v7 isEqual:v8] & 1) == 0)
+  platformFont = [(CRLWPFont *)self platformFont];
+  platformFont2 = [(CRLWPFont *)v6 platformFont];
+  if (([platformFont isEqual:platformFont2] & 1) == 0)
   {
 
     goto LABEL_7;
   }
 
-  v9 = [(CRLWPFont *)self desiredPostScriptName];
-  v10 = [(CRLWPFont *)v6 desiredPostScriptName];
-  v11 = [v9 isEqual:v10];
+  desiredPostScriptName = [(CRLWPFont *)self desiredPostScriptName];
+  desiredPostScriptName2 = [(CRLWPFont *)v6 desiredPostScriptName];
+  v11 = [desiredPostScriptName isEqual:desiredPostScriptName2];
 
   if ((v11 & 1) == 0)
   {
@@ -720,17 +720,17 @@ LABEL_8:
 
 - (__CTFont)ctFont
 {
-  v2 = [(CRLWPFont *)self platformFont];
-  v3 = CFRetain(v2);
+  platformFont = [(CRLWPFont *)self platformFont];
+  v3 = CFRetain(platformFont);
   v4 = CFAutorelease(v3);
 
   return v4;
 }
 
-- (__CTFont)ctFontForSize:(double)a3
+- (__CTFont)ctFontForSize:(double)size
 {
   [(CRLWPFont *)self size];
-  if (v5 == a3)
+  if (v5 == size)
   {
 
     return [(CRLWPFont *)self ctFont];
@@ -738,35 +738,35 @@ LABEL_8:
 
   else
   {
-    v7 = [(CRLWPFont *)self postScriptName];
-    v8 = [CRLWPFontCacheKey cacheKeyWithFontName:v7 size:a3];
+    postScriptName = [(CRLWPFont *)self postScriptName];
+    v8 = [CRLWPFontCacheKey cacheKeyWithFontName:postScriptName size:size];
 
-    v9 = [(CRLWPFont *)self alternatePlatformFonts];
-    objc_sync_enter(v9);
-    v10 = [(CRLWPFont *)self alternatePlatformFonts];
-    v11 = [v10 objectForKeyedSubscript:v8];
+    alternatePlatformFonts = [(CRLWPFont *)self alternatePlatformFonts];
+    objc_sync_enter(alternatePlatformFonts);
+    alternatePlatformFonts2 = [(CRLWPFont *)self alternatePlatformFonts];
+    v11 = [alternatePlatformFonts2 objectForKeyedSubscript:v8];
 
     if (v11)
     {
-      v12 = [(CRLWPFont *)self alternatePlatformFonts];
-      v13 = [v12 objectForKeyedSubscript:v8];
+      alternatePlatformFonts3 = [(CRLWPFont *)self alternatePlatformFonts];
+      v13 = [alternatePlatformFonts3 objectForKeyedSubscript:v8];
       v14 = CFRetain(v13);
       v15 = CFAutorelease(v14);
 
-      objc_sync_exit(v9);
+      objc_sync_exit(alternatePlatformFonts);
     }
 
     else
     {
-      objc_sync_exit(v9);
+      objc_sync_exit(alternatePlatformFonts);
 
-      CopyWithAttributes = CTFontCreateCopyWithAttributes([(CRLWPFont *)self ctFont], a3, 0, 0);
-      v17 = [(CRLWPFont *)self alternatePlatformFonts];
-      objc_sync_enter(v17);
-      v18 = [(CRLWPFont *)self alternatePlatformFonts];
-      [v18 setObject:CopyWithAttributes forKeyedSubscript:v8];
+      CopyWithAttributes = CTFontCreateCopyWithAttributes([(CRLWPFont *)self ctFont], size, 0, 0);
+      alternatePlatformFonts4 = [(CRLWPFont *)self alternatePlatformFonts];
+      objc_sync_enter(alternatePlatformFonts4);
+      alternatePlatformFonts5 = [(CRLWPFont *)self alternatePlatformFonts];
+      [alternatePlatformFonts5 setObject:CopyWithAttributes forKeyedSubscript:v8];
 
-      objc_sync_exit(v17);
+      objc_sync_exit(alternatePlatformFonts4);
       v15 = CFAutorelease(CopyWithAttributes);
     }
 
@@ -774,44 +774,44 @@ LABEL_8:
   }
 }
 
-- (__CTFont)ctFontForSize:(double)a3 bold:(BOOL)a4 italic:(BOOL)a5 traits:(id)a6
+- (__CTFont)ctFontForSize:(double)size bold:(BOOL)bold italic:(BOOL)italic traits:(id)traits
 {
-  v6 = a5;
-  v7 = a4;
-  v10 = a6;
-  v11 = [(CRLWPFont *)self postScriptName];
-  v12 = [CRLWPFontCacheKey cacheKeyWithFontName:v11 fontSize:v7 bold:v6 italic:v10 fontFeatures:a3];
+  italicCopy = italic;
+  boldCopy = bold;
+  traitsCopy = traits;
+  postScriptName = [(CRLWPFont *)self postScriptName];
+  v12 = [CRLWPFontCacheKey cacheKeyWithFontName:postScriptName fontSize:boldCopy bold:italicCopy italic:traitsCopy fontFeatures:size];
 
-  v13 = [(CRLWPFont *)self alternatePlatformFonts];
-  objc_sync_enter(v13);
-  v14 = [(CRLWPFont *)self alternatePlatformFonts];
-  v15 = [v14 objectForKeyedSubscript:v12];
+  alternatePlatformFonts = [(CRLWPFont *)self alternatePlatformFonts];
+  objc_sync_enter(alternatePlatformFonts);
+  alternatePlatformFonts2 = [(CRLWPFont *)self alternatePlatformFonts];
+  v15 = [alternatePlatformFonts2 objectForKeyedSubscript:v12];
 
   if (v15)
   {
-    v16 = [(CRLWPFont *)self alternatePlatformFonts];
-    v17 = [v16 objectForKeyedSubscript:v12];
+    alternatePlatformFonts3 = [(CRLWPFont *)self alternatePlatformFonts];
+    v17 = [alternatePlatformFonts3 objectForKeyedSubscript:v12];
     v18 = CFRetain(v17);
     v19 = CFAutorelease(v18);
   }
 
   else
   {
-    objc_sync_exit(v13);
+    objc_sync_exit(alternatePlatformFonts);
 
-    v19 = [(CRLWPFont *)self ctFontForSize:v7 bold:v6 italic:a3];
-    if ([v10 count])
+    v19 = [(CRLWPFont *)self ctFontForSize:boldCopy bold:italicCopy italic:size];
+    if ([traitsCopy count])
     {
       v20 = CTFontCopyFontDescriptor(v19);
       if (v20)
       {
         v21 = v20;
-        v22 = [[NSDictionary alloc] initWithObjectsAndKeys:{v10, kCTFontFeatureSettingsAttribute, 0}];
+        v22 = [[NSDictionary alloc] initWithObjectsAndKeys:{traitsCopy, kCTFontFeatureSettingsAttribute, 0}];
         CopyWithAttributes = CTFontDescriptorCreateCopyWithAttributes(v21, v22);
         CFRelease(v21);
         if (CopyWithAttributes)
         {
-          v24 = CTFontCreateWithFontDescriptor(CopyWithAttributes, a3, 0);
+          v24 = CTFontCreateWithFontDescriptor(CopyWithAttributes, size, 0);
           CFRelease(CopyWithAttributes);
           if (v24)
           {
@@ -821,39 +821,39 @@ LABEL_8:
       }
     }
 
-    v13 = [(CRLWPFont *)self alternatePlatformFonts];
-    objc_sync_enter(v13);
-    v16 = [(CRLWPFont *)self alternatePlatformFonts];
-    [v16 setObject:v19 forKeyedSubscript:v12];
+    alternatePlatformFonts = [(CRLWPFont *)self alternatePlatformFonts];
+    objc_sync_enter(alternatePlatformFonts);
+    alternatePlatformFonts3 = [(CRLWPFont *)self alternatePlatformFonts];
+    [alternatePlatformFonts3 setObject:v19 forKeyedSubscript:v12];
   }
 
-  objc_sync_exit(v13);
+  objc_sync_exit(alternatePlatformFonts);
   return v19;
 }
 
-- (__CTFont)ctFontForSize:(double)a3 bold:(BOOL)a4 italic:(BOOL)a5
+- (__CTFont)ctFontForSize:(double)size bold:(BOOL)bold italic:(BOOL)italic
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = [(CRLWPFont *)self postScriptName];
-  v10 = [CRLWPFontCacheKey cacheKeyWithFontName:v9 fontSize:v6 bold:v5 italic:0 fontFeatures:a3];
+  italicCopy = italic;
+  boldCopy = bold;
+  postScriptName = [(CRLWPFont *)self postScriptName];
+  v10 = [CRLWPFontCacheKey cacheKeyWithFontName:postScriptName fontSize:boldCopy bold:italicCopy italic:0 fontFeatures:size];
 
-  v11 = [(CRLWPFont *)self alternatePlatformFonts];
-  objc_sync_enter(v11);
-  v12 = [(CRLWPFont *)self alternatePlatformFonts];
-  v13 = [v12 objectForKeyedSubscript:v10];
+  alternatePlatformFonts = [(CRLWPFont *)self alternatePlatformFonts];
+  objc_sync_enter(alternatePlatformFonts);
+  alternatePlatformFonts2 = [(CRLWPFont *)self alternatePlatformFonts];
+  v13 = [alternatePlatformFonts2 objectForKeyedSubscript:v10];
 
   if (!v13)
   {
-    objc_sync_exit(v11);
+    objc_sync_exit(alternatePlatformFonts);
 
-    v18 = CFRetain([(CRLWPFont *)self ctFontForSize:a3]);
+    v18 = CFRetain([(CRLWPFont *)self ctFontForSize:size]);
     SymbolicTraits = CTFontGetSymbolicTraits(v18);
     v20 = SymbolicTraits;
-    if (((SymbolicTraits & 2) == 0) == v6)
+    if (((SymbolicTraits & 2) == 0) == boldCopy)
     {
-      v21 = v6 ? 2 : 0;
-      CopyWithSymbolicTraits = CTFontCreateCopyWithSymbolicTraits(v18, a3, 0, SymbolicTraits & 0xFFFFFFFD | v21, 2u);
+      v21 = boldCopy ? 2 : 0;
+      CopyWithSymbolicTraits = CTFontCreateCopyWithSymbolicTraits(v18, size, 0, SymbolicTraits & 0xFFFFFFFD | v21, 2u);
       if (CopyWithSymbolicTraits)
       {
         v23 = CopyWithSymbolicTraits;
@@ -861,9 +861,9 @@ LABEL_8:
         {
           CFRelease(v18);
 LABEL_12:
-          if ((v20 & 1) != v5)
+          if ((v20 & 1) != italicCopy)
           {
-            v24 = CTFontCreateCopyWithSymbolicTraits(v23, a3, 0, v20 & 0xFFFFFFFE | v5, 1u);
+            v24 = CTFontCreateCopyWithSymbolicTraits(v23, size, 0, v20 & 0xFFFFFFFE | italicCopy, 1u);
             if (v24)
             {
               v25 = v24;
@@ -871,12 +871,12 @@ LABEL_12:
               {
                 CFRelease(v23);
 LABEL_18:
-                v26 = [(CRLWPFont *)self alternatePlatformFonts];
-                objc_sync_enter(v26);
-                v27 = [(CRLWPFont *)self alternatePlatformFonts];
-                [v27 setObject:v25 forKeyedSubscript:v10];
+                alternatePlatformFonts3 = [(CRLWPFont *)self alternatePlatformFonts];
+                objc_sync_enter(alternatePlatformFonts3);
+                alternatePlatformFonts4 = [(CRLWPFont *)self alternatePlatformFonts];
+                [alternatePlatformFonts4 setObject:v25 forKeyedSubscript:v10];
 
-                objc_sync_exit(v26);
+                objc_sync_exit(alternatePlatformFonts3);
                 v17 = CFAutorelease(v25);
                 goto LABEL_19;
               }
@@ -897,93 +897,93 @@ LABEL_18:
     goto LABEL_12;
   }
 
-  v14 = [(CRLWPFont *)self alternatePlatformFonts];
-  v15 = [v14 objectForKeyedSubscript:v10];
+  alternatePlatformFonts5 = [(CRLWPFont *)self alternatePlatformFonts];
+  v15 = [alternatePlatformFonts5 objectForKeyedSubscript:v10];
   v16 = CFRetain(v15);
   v17 = CFAutorelease(v16);
 
-  objc_sync_exit(v11);
+  objc_sync_exit(alternatePlatformFonts);
 LABEL_19:
 
   return v17;
 }
 
-- (id)copyWithSize:(double)a3
+- (id)copyWithSize:(double)size
 {
-  v4 = [(CRLWPFont *)self ctFontForSize:a3];
-  v5 = [(__CTFont *)v4 fontName];
+  v4 = [(CRLWPFont *)self ctFontForSize:size];
+  fontName = [(__CTFont *)v4 fontName];
   if (![(CRLWPFont *)self isRequestedFont])
   {
-    v6 = [(CRLWPFont *)self desiredPostScriptName];
+    desiredPostScriptName = [(CRLWPFont *)self desiredPostScriptName];
 
-    v5 = v6;
+    fontName = desiredPostScriptName;
   }
 
   v7 = [CRLWPFont alloc];
-  v8 = [(CRLWPFont *)self type];
-  v9 = [(CRLWPFont *)self localizedFamilyName];
-  v10 = [(CRLWPFont *)v7 initWithDesiredPostScriptName:v5 platformFontDescriptor:0 andPlatformFont:v4 ofType:v8 localizedFamilyName:v9];
+  type = [(CRLWPFont *)self type];
+  localizedFamilyName = [(CRLWPFont *)self localizedFamilyName];
+  v10 = [(CRLWPFont *)v7 initWithDesiredPostScriptName:fontName platformFontDescriptor:0 andPlatformFont:v4 ofType:type localizedFamilyName:localizedFamilyName];
 
   return v10;
 }
 
-- (id)copyWithSize:(double)a3 bold:(BOOL)a4 italic:(BOOL)a5
+- (id)copyWithSize:(double)size bold:(BOOL)bold italic:(BOOL)italic
 {
-  v6 = [(CRLWPFont *)self ctFontForSize:a4 bold:a5 italic:a3];
-  v7 = [(__CTFont *)v6 fontName];
+  v6 = [(CRLWPFont *)self ctFontForSize:bold bold:italic italic:size];
+  fontName = [(__CTFont *)v6 fontName];
   if (![(CRLWPFont *)self isRequestedFont])
   {
-    v8 = [(CRLWPFont *)self desiredPostScriptName];
+    desiredPostScriptName = [(CRLWPFont *)self desiredPostScriptName];
 
-    v7 = v8;
+    fontName = desiredPostScriptName;
   }
 
   v9 = [CRLWPFont alloc];
-  v10 = [(CRLWPFont *)self type];
-  v11 = [(CRLWPFont *)self localizedFamilyName];
-  v12 = [(CRLWPFont *)v9 initWithDesiredPostScriptName:v7 platformFontDescriptor:0 andPlatformFont:v6 ofType:v10 localizedFamilyName:v11];
+  type = [(CRLWPFont *)self type];
+  localizedFamilyName = [(CRLWPFont *)self localizedFamilyName];
+  v12 = [(CRLWPFont *)v9 initWithDesiredPostScriptName:fontName platformFontDescriptor:0 andPlatformFont:v6 ofType:type localizedFamilyName:localizedFamilyName];
 
   return v12;
 }
 
-- (id)copyWithSize:(double)a3 bold:(BOOL)a4 italic:(BOOL)a5 traits:(id)a6
+- (id)copyWithSize:(double)size bold:(BOOL)bold italic:(BOOL)italic traits:(id)traits
 {
-  v7 = [(CRLWPFont *)self ctFontForSize:a4 bold:a5 italic:a6 traits:a3];
-  v8 = [(__CTFont *)v7 fontName];
+  v7 = [(CRLWPFont *)self ctFontForSize:bold bold:italic italic:traits traits:size];
+  fontName = [(__CTFont *)v7 fontName];
   if (![(CRLWPFont *)self isRequestedFont])
   {
-    v9 = [(CRLWPFont *)self desiredPostScriptName];
+    desiredPostScriptName = [(CRLWPFont *)self desiredPostScriptName];
 
-    v8 = v9;
+    fontName = desiredPostScriptName;
   }
 
   v10 = [CRLWPFont alloc];
-  v11 = [(CRLWPFont *)self type];
-  v12 = [(CRLWPFont *)self localizedFamilyName];
-  v13 = [(CRLWPFont *)v10 initWithDesiredPostScriptName:v8 platformFontDescriptor:0 andPlatformFont:v7 ofType:v11 localizedFamilyName:v12];
+  type = [(CRLWPFont *)self type];
+  localizedFamilyName = [(CRLWPFont *)self localizedFamilyName];
+  v13 = [(CRLWPFont *)v10 initWithDesiredPostScriptName:fontName platformFontDescriptor:0 andPlatformFont:v7 ofType:type localizedFamilyName:localizedFamilyName];
 
   return v13;
 }
 
 - (NSString)displayName
 {
-  v3 = [(CRLWPFont *)self localizedFamilyName];
-  if ([(CRLWPFont *)self isFallbackFont]|| !v3)
+  localizedFamilyName = [(CRLWPFont *)self localizedFamilyName];
+  if ([(CRLWPFont *)self isFallbackFont]|| !localizedFamilyName)
   {
-    v4 = [(CRLWPFont *)self desiredPostScriptName];
+    desiredPostScriptName = [(CRLWPFont *)self desiredPostScriptName];
 
-    v3 = v4;
+    localizedFamilyName = desiredPostScriptName;
   }
 
-  return v3;
+  return localizedFamilyName;
 }
 
 - (id)description
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CRLWPFont *)self displayName];
-  v6 = [(CRLWPFont *)self desiredPostScriptName];
+  displayName = [(CRLWPFont *)self displayName];
+  desiredPostScriptName = [(CRLWPFont *)self desiredPostScriptName];
   if ([(CRLWPFont *)self isFallbackFont])
   {
     v7 = @"Fallback";
@@ -994,9 +994,9 @@ LABEL_19:
     v7 = @"Requested";
   }
 
-  v8 = [(CRLWPFont *)self postScriptName];
+  postScriptName = [(CRLWPFont *)self postScriptName];
   [(CRLWPFont *)self size];
-  v10 = [NSString stringWithFormat:@"%@: <%p> Display: %@ (Wanted: %@ - Status: %@ as: %@) @ %.2fpts", v4, self, v5, v6, v7, v8, v9];
+  v10 = [NSString stringWithFormat:@"%@: <%p> Display: %@ (Wanted: %@ - Status: %@ as: %@) @ %.2fpts", v4, self, displayName, desiredPostScriptName, v7, postScriptName, v9];
 
   return v10;
 }
@@ -1004,16 +1004,16 @@ LABEL_19:
 - (NSArray)familyFaces
 {
   v3 = objc_opt_class();
-  v4 = [(CRLWPFont *)self familyName];
-  v5 = [v3 facesOfFontFamily:v4];
+  familyName = [(CRLWPFont *)self familyName];
+  v5 = [v3 facesOfFontFamily:familyName];
 
   return v5;
 }
 
 - (double)size
 {
-  v2 = [(CRLWPFont *)self platformFont];
-  [v2 pointSize];
+  platformFont = [(CRLWPFont *)self platformFont];
+  [platformFont pointSize];
   v4 = v3;
 
   return v4;
@@ -1024,28 +1024,28 @@ LABEL_19:
   if ([(CRLWPFont *)self isRequestedFont])
   {
     v3 = objc_opt_class();
-    v4 = [(CRLWPFont *)self familyName];
-    v5 = [v3 postScriptNameForFamilyName:v4];
+    familyName = [(CRLWPFont *)self familyName];
+    v5 = [v3 postScriptNameForFamilyName:familyName];
     v6 = [CRLWPFont fontWithDesiredPostScriptName:v5];
   }
 
   else
   {
-    v4 = [(CRLWPFont *)self desiredPostScriptName];
-    v6 = [CRLWPFont fontWithDesiredPostScriptName:v4];
+    familyName = [(CRLWPFont *)self desiredPostScriptName];
+    v6 = [CRLWPFont fontWithDesiredPostScriptName:familyName];
   }
 
   return v6;
 }
 
-+ (id)facesOfFontFamily:(id)a3
++ (id)facesOfFontFamily:(id)family
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  familyCopy = family;
+  v4 = familyCopy;
+  if (familyCopy)
   {
     v31 = kCTFontFamilyNameAttribute;
-    v32 = v3;
+    v32 = familyCopy;
     v5 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
     v6 = CTFontDescriptorCreateWithAttributes(v5);
     v24 = objc_opt_new();
@@ -1144,14 +1144,14 @@ LABEL_25:
   return v24;
 }
 
-+ (id)postScriptNameForFamilyName:(id)a3
++ (id)postScriptNameForFamilyName:(id)name
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  nameCopy = name;
+  v4 = nameCopy;
+  if (nameCopy)
   {
     v13 = kCTFontFamilyNameAttribute;
-    v14 = v3;
+    v14 = nameCopy;
     v5 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
     v6 = CTFontDescriptorCreateWithAttributes(v5);
     if (v6)

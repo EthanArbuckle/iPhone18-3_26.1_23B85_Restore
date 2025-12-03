@@ -13,9 +13,9 @@
   v2 = [(PLDuetState *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     overlappingStates = v2->_overlappingStates;
-    v2->_overlappingStates = v3;
+    v2->_overlappingStates = array;
   }
 
   return v2;
@@ -23,15 +23,15 @@
 
 - (double)duration
 {
-  v3 = [(PLDuetState *)self startDate];
-  if (v3)
+  startDate = [(PLDuetState *)self startDate];
+  if (startDate)
   {
-    v4 = [(PLDuetState *)self endDate];
-    if (v4)
+    endDate = [(PLDuetState *)self endDate];
+    if (endDate)
     {
-      v5 = [(PLDuetState *)self endDate];
-      v6 = [(PLDuetState *)self startDate];
-      [v5 timeIntervalSinceDate:v6];
+      endDate2 = [(PLDuetState *)self endDate];
+      startDate2 = [(PLDuetState *)self startDate];
+      [endDate2 timeIntervalSinceDate:startDate2];
       v8 = v7;
     }
 
@@ -52,12 +52,12 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(PLDuetState *)self startDate];
-  v5 = [(PLDuetState *)self endDate];
+  startDate = [(PLDuetState *)self startDate];
+  endDate = [(PLDuetState *)self endDate];
   [(PLDuetState *)self cpuSeconds];
   v7 = v6;
-  v8 = [(PLDuetState *)self info];
-  v9 = [v3 stringWithFormat:@"startDate=%@, endDate=%@, cpuSeconds=%f, info=%@", v4, v5, v7, v8];
+  info = [(PLDuetState *)self info];
+  v9 = [v3 stringWithFormat:@"startDate=%@, endDate=%@, cpuSeconds=%f, info=%@", startDate, endDate, v7, info];
 
   return v9;
 }

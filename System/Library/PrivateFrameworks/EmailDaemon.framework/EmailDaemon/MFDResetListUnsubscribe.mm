@@ -1,15 +1,15 @@
 @interface MFDResetListUnsubscribe
-- (void)resetListUnsubscribeSuggestionsWithCompletion:(id)a3;
+- (void)resetListUnsubscribeSuggestionsWithCompletion:(id)completion;
 @end
 
 @implementation MFDResetListUnsubscribe
 
-- (void)resetListUnsubscribeSuggestionsWithCompletion:(id)a3
+- (void)resetListUnsubscribeSuggestionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v3 = objc_alloc_init(EMListUnsubscribeDetector);
   [v3 removeAllPersistedCommands];
-  v4[2](v4, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
 @end

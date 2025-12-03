@@ -1,8 +1,8 @@
 @interface HAPMetadataCharacteristic
-- (BOOL)isEqual:(id)a3;
-- (HAPMetadataCharacteristic)initWithName:(id)a3 uuid:(id)a4 description:(id)a5 format:(id)a6 properties:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (HAPMetadataCharacteristic)initWithName:(id)name uuid:(id)uuid description:(id)description format:(id)format properties:(id)properties;
 - (id)description;
-- (id)generateDictionary:(id)a3;
+- (id)generateDictionary:(id)dictionary;
 - (unint64_t)hash;
 - (void)dump;
 @end
@@ -11,33 +11,33 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HAPMetadataCharacteristic *)self name];
-  v4 = [v3 hash];
-  v5 = [(HAPMetadataCharacteristic *)self uuidStr];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(HAPMetadataCharacteristic *)self chrDescription];
-  v8 = [v7 hash];
-  v9 = [(HAPMetadataCharacteristic *)self format];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(HAPMetadataCharacteristic *)self properties];
-  v12 = [v11 hash];
-  v13 = [(HAPMetadataCharacteristic *)self units];
-  v14 = v12 ^ [v13 hash];
-  v15 = [(HAPMetadataCharacteristic *)self valueMetadata];
-  v16 = v14 ^ [v15 hash];
+  name = [(HAPMetadataCharacteristic *)self name];
+  v4 = [name hash];
+  uuidStr = [(HAPMetadataCharacteristic *)self uuidStr];
+  v6 = [uuidStr hash] ^ v4;
+  chrDescription = [(HAPMetadataCharacteristic *)self chrDescription];
+  v8 = [chrDescription hash];
+  format = [(HAPMetadataCharacteristic *)self format];
+  v10 = v6 ^ v8 ^ [format hash];
+  properties = [(HAPMetadataCharacteristic *)self properties];
+  v12 = [properties hash];
+  units = [(HAPMetadataCharacteristic *)self units];
+  v14 = v12 ^ [units hash];
+  valueMetadata = [(HAPMetadataCharacteristic *)self valueMetadata];
+  v16 = v14 ^ [valueMetadata hash];
 
   return v10 ^ v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self != v4)
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -54,9 +54,9 @@ LABEL_37:
       goto LABEL_38;
     }
 
-    v7 = [(HAPMetadataCharacteristic *)self name];
-    v8 = [(HAPMetadataCharacteristic *)v6 name];
-    if (![v7 isEqualToString:v8])
+    name = [(HAPMetadataCharacteristic *)self name];
+    name2 = [(HAPMetadataCharacteristic *)v6 name];
+    if (![name isEqualToString:name2])
     {
       v16 = 0;
 LABEL_36:
@@ -64,9 +64,9 @@ LABEL_36:
       goto LABEL_37;
     }
 
-    v9 = [(HAPMetadataCharacteristic *)self uuidStr];
-    v10 = [(HAPMetadataCharacteristic *)v6 uuidStr];
-    if (![v9 isEqualToString:v10])
+    uuidStr = [(HAPMetadataCharacteristic *)self uuidStr];
+    uuidStr2 = [(HAPMetadataCharacteristic *)v6 uuidStr];
+    if (![uuidStr isEqualToString:uuidStr2])
     {
       v16 = 0;
 LABEL_35:
@@ -74,9 +74,9 @@ LABEL_35:
       goto LABEL_36;
     }
 
-    v11 = [(HAPMetadataCharacteristic *)self chrDescription];
-    v12 = [(HAPMetadataCharacteristic *)v6 chrDescription];
-    if (![v11 isEqualToString:v12])
+    chrDescription = [(HAPMetadataCharacteristic *)self chrDescription];
+    chrDescription2 = [(HAPMetadataCharacteristic *)v6 chrDescription];
+    if (![chrDescription isEqualToString:chrDescription2])
     {
       v16 = 0;
 LABEL_34:
@@ -84,10 +84,10 @@ LABEL_34:
       goto LABEL_35;
     }
 
-    v13 = [(HAPMetadataCharacteristic *)self format];
-    v33 = [(HAPMetadataCharacteristic *)v6 format];
-    v34 = v13;
-    if (![v13 isEqualToString:v33])
+    format = [(HAPMetadataCharacteristic *)self format];
+    format2 = [(HAPMetadataCharacteristic *)v6 format];
+    v34 = format;
+    if (![format isEqualToString:format2])
     {
       v16 = 0;
 LABEL_33:
@@ -95,10 +95,10 @@ LABEL_33:
       goto LABEL_34;
     }
 
-    v14 = [(HAPMetadataCharacteristic *)self properties];
-    v31 = [(HAPMetadataCharacteristic *)v6 properties];
-    v32 = v14;
-    if (![v14 isEqualToNumber:v31])
+    properties = [(HAPMetadataCharacteristic *)self properties];
+    properties2 = [(HAPMetadataCharacteristic *)v6 properties];
+    v32 = properties;
+    if (![properties isEqualToNumber:properties2])
     {
       v16 = 0;
 LABEL_32:
@@ -106,13 +106,13 @@ LABEL_32:
       goto LABEL_33;
     }
 
-    v30 = [(HAPMetadataCharacteristic *)self units];
-    if (v30 || ([(HAPMetadataCharacteristic *)v6 units], (v24 = objc_claimAutoreleasedReturnValue()) != 0))
+    units = [(HAPMetadataCharacteristic *)self units];
+    if (units || ([(HAPMetadataCharacteristic *)v6 units], (v24 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v15 = [(HAPMetadataCharacteristic *)self units];
-      v28 = [(HAPMetadataCharacteristic *)v6 units];
-      v29 = v15;
-      if (![v15 isEqualToString:v28])
+      units2 = [(HAPMetadataCharacteristic *)self units];
+      units3 = [(HAPMetadataCharacteristic *)v6 units];
+      v29 = units2;
+      if (![units2 isEqualToString:units3])
       {
         v16 = 0;
         goto LABEL_28;
@@ -127,12 +127,12 @@ LABEL_32:
       v27 = 0;
     }
 
-    v17 = [(HAPMetadataCharacteristic *)self valueMetadata];
-    if (v17 || ([(HAPMetadataCharacteristic *)v6 valueMetadata], (v22 = objc_claimAutoreleasedReturnValue()) != 0))
+    valueMetadata = [(HAPMetadataCharacteristic *)self valueMetadata];
+    if (valueMetadata || ([(HAPMetadataCharacteristic *)v6 valueMetadata], (v22 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v25 = [(HAPMetadataCharacteristic *)self valueMetadata:v22];
       [(HAPMetadataCharacteristic *)v6 valueMetadata];
-      v18 = v26 = v17;
+      v18 = v26 = valueMetadata;
       v16 = [v25 isEqual:?];
 
       if (v26)
@@ -141,8 +141,8 @@ LABEL_32:
         if (!v27)
         {
 LABEL_29:
-          v19 = v30;
-          if (!v30)
+          v19 = units;
+          if (!units)
           {
 
             v19 = 0;
@@ -187,26 +187,26 @@ LABEL_38:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = HMFGetLogIdentifier();
-    v6 = [(HAPMetadataCharacteristic *)self name];
-    v7 = [(HAPMetadataCharacteristic *)self uuidStr];
-    v8 = [(HAPMetadataCharacteristic *)self chrDescription];
-    v9 = [(HAPMetadataCharacteristic *)self format];
-    v10 = [(HAPMetadataCharacteristic *)self properties];
-    v11 = [(HAPMetadataCharacteristic *)self units];
+    name = [(HAPMetadataCharacteristic *)self name];
+    uuidStr = [(HAPMetadataCharacteristic *)self uuidStr];
+    chrDescription = [(HAPMetadataCharacteristic *)self chrDescription];
+    format = [(HAPMetadataCharacteristic *)self format];
+    properties = [(HAPMetadataCharacteristic *)self properties];
+    units = [(HAPMetadataCharacteristic *)self units];
     v13 = 138544898;
     v14 = v5;
     v15 = 2112;
-    v16 = v6;
+    v16 = name;
     v17 = 2112;
-    v18 = v7;
+    v18 = uuidStr;
     v19 = 2112;
-    v20 = v8;
+    v20 = chrDescription;
     v21 = 2112;
-    v22 = v9;
+    v22 = format;
     v23 = 2112;
-    v24 = v10;
+    v24 = properties;
     v25 = 2112;
-    v26 = v11;
+    v26 = units;
     _os_log_impl(&dword_22AADC000, v4, OS_LOG_TYPE_INFO, "%{public}@HAPMetadataCharacteristic %@(%@):  description: %@  format: %@  properties: %@  units:%@", &v13, 0x48u);
   }
 
@@ -217,79 +217,79 @@ LABEL_38:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPMetadataCharacteristic *)self name];
-  v5 = [(HAPMetadataCharacteristic *)self uuidStr];
-  v6 = [(HAPMetadataCharacteristic *)self chrDescription];
-  v7 = [(HAPMetadataCharacteristic *)self format];
-  v8 = [(HAPMetadataCharacteristic *)self properties];
-  v9 = [v3 stringWithFormat:@"HAPMetadataCharacteristic %@(%@) - %@ - format %@, properties %@", v4, v5, v6, v7, v8];
+  name = [(HAPMetadataCharacteristic *)self name];
+  uuidStr = [(HAPMetadataCharacteristic *)self uuidStr];
+  chrDescription = [(HAPMetadataCharacteristic *)self chrDescription];
+  format = [(HAPMetadataCharacteristic *)self format];
+  properties = [(HAPMetadataCharacteristic *)self properties];
+  v9 = [v3 stringWithFormat:@"HAPMetadataCharacteristic %@(%@) - %@ - format %@, properties %@", name, uuidStr, chrDescription, format, properties];
 
   return v9;
 }
 
-- (id)generateDictionary:(id)a3
+- (id)generateDictionary:(id)dictionary
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
-  v6 = [v4 dictionary];
-  v7 = [(HAPMetadataCharacteristic *)self uuidStr];
-  v8 = [HAPMetadata shortenHAPType:v7 baseUUIDSuffix:v5];
+  dictionaryCopy = dictionary;
+  dictionary = [v4 dictionary];
+  uuidStr = [(HAPMetadataCharacteristic *)self uuidStr];
+  v8 = [HAPMetadata shortenHAPType:uuidStr baseUUIDSuffix:dictionaryCopy];
 
-  [v6 setObject:v8 forKeyedSubscript:@"ShortUUID"];
-  v9 = [(HAPMetadataCharacteristic *)self chrDescription];
-  [v6 setObject:v9 forKeyedSubscript:@"DefaultDescription"];
+  [dictionary setObject:v8 forKeyedSubscript:@"ShortUUID"];
+  chrDescription = [(HAPMetadataCharacteristic *)self chrDescription];
+  [dictionary setObject:chrDescription forKeyedSubscript:@"DefaultDescription"];
 
-  v10 = [(HAPMetadataCharacteristic *)self format];
-  [v6 setObject:v10 forKeyedSubscript:@"Format"];
+  format = [(HAPMetadataCharacteristic *)self format];
+  [dictionary setObject:format forKeyedSubscript:@"Format"];
 
-  v11 = [(HAPMetadataCharacteristic *)self properties];
-  [v6 setObject:v11 forKeyedSubscript:@"Properties"];
+  properties = [(HAPMetadataCharacteristic *)self properties];
+  [dictionary setObject:properties forKeyedSubscript:@"Properties"];
 
-  [v6 setObject:&stru_283E79C60 forKeyedSubscript:@"LocalizationKey"];
-  v12 = [(HAPMetadataCharacteristic *)self units];
+  [dictionary setObject:&stru_283E79C60 forKeyedSubscript:@"LocalizationKey"];
+  units = [(HAPMetadataCharacteristic *)self units];
 
-  if (v12)
+  if (units)
   {
-    v13 = [(HAPMetadataCharacteristic *)self units];
-    [v6 setObject:v13 forKeyedSubscript:@"Units"];
+    units2 = [(HAPMetadataCharacteristic *)self units];
+    [dictionary setObject:units2 forKeyedSubscript:@"Units"];
   }
 
-  v14 = [(HAPMetadataCharacteristic *)self valueMetadata];
-  v15 = [v14 generateDictionary];
-  [v6 addEntriesFromDictionary:v15];
+  valueMetadata = [(HAPMetadataCharacteristic *)self valueMetadata];
+  generateDictionary = [valueMetadata generateDictionary];
+  [dictionary addEntriesFromDictionary:generateDictionary];
 
-  return v6;
+  return dictionary;
 }
 
-- (HAPMetadataCharacteristic)initWithName:(id)a3 uuid:(id)a4 description:(id)a5 format:(id)a6 properties:(id)a7
+- (HAPMetadataCharacteristic)initWithName:(id)name uuid:(id)uuid description:(id)description format:(id)format properties:(id)properties
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
+  nameCopy = name;
+  uuidCopy = uuid;
+  descriptionCopy = description;
+  formatCopy = format;
+  propertiesCopy = properties;
+  v17 = propertiesCopy;
   v18 = 0;
-  if (v12 && v13 && v14 && v15 && v16)
+  if (nameCopy && uuidCopy && descriptionCopy && formatCopy && propertiesCopy)
   {
     v29.receiver = self;
     v29.super_class = HAPMetadataCharacteristic;
     v18 = [(HAPMetadataCharacteristic *)&v29 init];
     if (v18)
     {
-      v19 = [v12 copy];
+      v19 = [nameCopy copy];
       v20 = *(v18 + 1);
       *(v18 + 1) = v19;
 
-      v21 = [v13 copy];
+      v21 = [uuidCopy copy];
       v22 = *(v18 + 3);
       *(v18 + 3) = v21;
 
-      v23 = [v14 copy];
+      v23 = [descriptionCopy copy];
       v24 = *(v18 + 2);
       *(v18 + 2) = v23;
 
-      v25 = [v15 copy];
+      v25 = [formatCopy copy];
       v26 = *(v18 + 5);
       *(v18 + 5) = v25;
 

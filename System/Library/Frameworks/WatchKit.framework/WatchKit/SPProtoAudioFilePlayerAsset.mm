@@ -1,11 +1,11 @@
 @interface SPProtoAudioFilePlayerAsset
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SPProtoAudioFilePlayerAsset
@@ -16,87 +16,87 @@
   v8.receiver = self;
   v8.super_class = SPProtoAudioFilePlayerAsset;
   v4 = [(SPProtoAudioFilePlayerAsset *)&v8 description];
-  v5 = [(SPProtoAudioFilePlayerAsset *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SPProtoAudioFilePlayerAsset *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   upsertWithMetaData = self->_upsertWithMetaData;
   if (upsertWithMetaData)
   {
-    v5 = [(SPProtoAudioFilePlayerAssetUpdateMetaData *)upsertWithMetaData dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"upsertWithMetaData"];
+    dictionaryRepresentation = [(SPProtoAudioFilePlayerAssetUpdateMetaData *)upsertWithMetaData dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"upsertWithMetaData"];
   }
 
   destroy = self->_destroy;
   if (destroy)
   {
-    v7 = [(SPProtoObjectMessage *)destroy dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"destroy"];
+    dictionaryRepresentation2 = [(SPProtoObjectMessage *)destroy dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"destroy"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_upsertWithMetaData)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_destroy)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_upsertWithMetaData)
   {
-    [v4 setUpsertWithMetaData:?];
-    v4 = v5;
+    [toCopy setUpsertWithMetaData:?];
+    toCopy = v5;
   }
 
   if (self->_destroy)
   {
     [v5 setDestroy:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SPProtoAudioFilePlayerAssetUpdateMetaData *)self->_upsertWithMetaData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SPProtoAudioFilePlayerAssetUpdateMetaData *)self->_upsertWithMetaData copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(SPProtoObjectMessage *)self->_destroy copyWithZone:a3];
+  v8 = [(SPProtoObjectMessage *)self->_destroy copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((upsertWithMetaData = self->_upsertWithMetaData, !(upsertWithMetaData | v4[2])) || -[SPProtoAudioFilePlayerAssetUpdateMetaData isEqual:](upsertWithMetaData, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((upsertWithMetaData = self->_upsertWithMetaData, !(upsertWithMetaData | equalCopy[2])) || -[SPProtoAudioFilePlayerAssetUpdateMetaData isEqual:](upsertWithMetaData, "isEqual:")))
   {
     destroy = self->_destroy;
-    if (destroy | v4[1])
+    if (destroy | equalCopy[1])
     {
       v7 = [(SPProtoObjectMessage *)destroy isEqual:?];
     }
@@ -115,12 +115,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   upsertWithMetaData = self->_upsertWithMetaData;
-  v6 = v4[2];
-  v9 = v4;
+  v6 = fromCopy[2];
+  v9 = fromCopy;
   if (upsertWithMetaData)
   {
     if (!v6)
@@ -141,10 +141,10 @@
     [(SPProtoAudioFilePlayerAsset *)self setUpsertWithMetaData:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   destroy = self->_destroy;
-  v8 = v4[1];
+  v8 = fromCopy[1];
   if (destroy)
   {
     if (v8)

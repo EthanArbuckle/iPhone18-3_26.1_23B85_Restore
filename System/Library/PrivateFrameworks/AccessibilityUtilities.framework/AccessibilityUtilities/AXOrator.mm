@@ -1,48 +1,48 @@
 @interface AXOrator
 - (AXOrator)init;
 - (AXOratorDelegate)delegate;
-- (BOOL)_canSpeakTaggedContent:(id)a3;
-- (BOOL)_changeSpeakingSpeed:(double)a3;
-- (BOOL)_skipByUnit:(BOOL)a3 boundary:(unint64_t)a4;
-- (BOOL)_successWithCode:(int64_t)a3 error:(id *)a4;
-- (BOOL)canResumeWithContent:(id)a3;
+- (BOOL)_canSpeakTaggedContent:(id)content;
+- (BOOL)_changeSpeakingSpeed:(double)speed;
+- (BOOL)_skipByUnit:(BOOL)unit boundary:(unint64_t)boundary;
+- (BOOL)_successWithCode:(int64_t)code error:(id *)error;
+- (BOOL)canResumeWithContent:(id)content;
 - (BOOL)isPaused;
 - (BOOL)isSpeaking;
-- (BOOL)pauseSpeaking:(id *)a3;
-- (BOOL)resumeSpeakingAfterDelay:(double)a3 error:(id *)a4;
+- (BOOL)pauseSpeaking:(id *)speaking;
+- (BOOL)resumeSpeakingAfterDelay:(double)delay error:(id *)error;
 - (BOOL)speakFaster;
 - (BOOL)speakSlower;
-- (BOOL)startSpeakingWithPreferredLanguage:(id)a3 delayBeforeStart:(double)a4 error:(id *)a5;
-- (BOOL)stopSpeaking:(id *)a3;
+- (BOOL)startSpeakingWithPreferredLanguage:(id)language delayBeforeStart:(double)start error:(id *)error;
+- (BOOL)stopSpeaking:(id *)speaking;
 - (NSString)content;
 - (NSString)currentVoiceIdentifier;
 - (_NSRange)lastSpokenSubstringRange;
 - (_NSRange)lastUtteranceSubstringRange;
 - (double)currentSpeechRateForAdjustment;
 - (float)speechRate;
-- (id)_getLangCodeForItem:(id)a3;
-- (id)_speechSequenceItemsStartingAtContentLocation:(unint64_t)a3;
+- (id)_getLangCodeForItem:(id)item;
+- (id)_speechSequenceItemsStartingAtContentLocation:(unint64_t)location;
 - (id)currentVoiceSelection;
-- (int64_t)_currentTokenIndex:(BOOL)a3;
+- (int64_t)_currentTokenIndex:(BOOL)index;
 - (void)_clearAllContentState;
 - (void)_processAdditionalContentInPreparationForSpeech;
 - (void)_respeakUtteranceIfNeeded;
 - (void)_speakNextItemInSequence;
-- (void)_speakNextTokenFromCurrentTokenIndex:(int64_t)a3 forward:(BOOL)a4 boundary:(unint64_t)a5;
+- (void)_speakNextTokenFromCurrentTokenIndex:(int64_t)index forward:(BOOL)forward boundary:(unint64_t)boundary;
 - (void)_startSpeakingSequence;
 - (void)_tokenizeContentIfNeeded;
 - (void)_updateAudioSessionCategory;
 - (void)_updateSequenceForSpellOutBehavior;
-- (void)addAdditionalContentToSpeechQueue:(id)a3;
-- (void)setAudioSessionInactiveTimeout:(double)a3;
-- (void)setContent:(id)a3;
-- (void)speakStatusWithLanguage:(id)a3 rate:(id)a4;
-- (void)speechSynthesizer:(id)a3 didCancelSpeechUtterance:(id)a4;
-- (void)speechSynthesizer:(id)a3 didContinueSpeechUtterance:(id)a4;
-- (void)speechSynthesizer:(id)a3 didFinishSpeechUtterance:(id)a4;
-- (void)speechSynthesizer:(id)a3 didPauseSpeechUtterance:(id)a4;
-- (void)speechSynthesizer:(id)a3 didStartSpeechUtterance:(id)a4;
-- (void)speechSynthesizer:(id)a3 willSpeakRangeOfSpeechString:(_NSRange)a4 utterance:(id)a5;
+- (void)addAdditionalContentToSpeechQueue:(id)queue;
+- (void)setAudioSessionInactiveTimeout:(double)timeout;
+- (void)setContent:(id)content;
+- (void)speakStatusWithLanguage:(id)language rate:(id)rate;
+- (void)speechSynthesizer:(id)synthesizer didCancelSpeechUtterance:(id)utterance;
+- (void)speechSynthesizer:(id)synthesizer didContinueSpeechUtterance:(id)utterance;
+- (void)speechSynthesizer:(id)synthesizer didFinishSpeechUtterance:(id)utterance;
+- (void)speechSynthesizer:(id)synthesizer didPauseSpeechUtterance:(id)utterance;
+- (void)speechSynthesizer:(id)synthesizer didStartSpeechUtterance:(id)utterance;
+- (void)speechSynthesizer:(id)synthesizer willSpeakRangeOfSpeechString:(_NSRange)string utterance:(id)utterance;
 @end
 
 @implementation AXOrator
@@ -58,8 +58,8 @@
     [(AXOrator *)v2 setLastUtteranceSubstringRange:0x7FFFFFFFFFFFFFFFLL, 0];
     [(AXOrator *)v3 setLastSpokenSubstringRange:0x7FFFFFFFFFFFFFFFLL, 0];
     [(AXOrator *)v3 setSpeakingContext:0];
-    v4 = [MEMORY[0x1E695DF70] array];
-    [(AXOrator *)v3 setAdditionalContentToProcess:v4];
+    array = [MEMORY[0x1E695DF70] array];
+    [(AXOrator *)v3 setAdditionalContentToProcess:array];
 
     objc_initWeak(&location, v3);
     v5 = +[AXSettings sharedInstance];
@@ -89,19 +89,19 @@ void __16__AXOrator_init__block_invoke(uint64_t a1)
 
 - (NSString)content
 {
-  v2 = [(AXOrator *)self selectedContent];
-  v3 = [v2 content];
+  selectedContent = [(AXOrator *)self selectedContent];
+  content = [selectedContent content];
 
-  return v3;
+  return content;
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
-  v4 = a3;
-  if (v4)
+  contentCopy = content;
+  if (contentCopy)
   {
-    v5 = v4;
-    v6 = [AXLanguageManager stringByReplacingFatWidthCharactersWithBasicCharacters:v4];
+    v5 = contentCopy;
+    v6 = [AXLanguageManager stringByReplacingFatWidthCharactersWithBasicCharacters:contentCopy];
 
     v7 = [[AXLanguageTaggedContent alloc] initWithContent:v6];
     [(AXOrator *)self setSelectedContent:v7];
@@ -112,11 +112,11 @@ void __16__AXOrator_init__block_invoke(uint64_t a1)
       _os_log_impl(&dword_18B15E000, v8, OS_LOG_TYPE_INFO, "Orator did set content. Will tag content now", v11, 2u);
     }
 
-    v9 = [(AXOrator *)self selectedContent];
-    [v9 tagContent];
+    selectedContent = [(AXOrator *)self selectedContent];
+    [selectedContent tagContent];
 
-    v10 = [(AXOrator *)self selectedContent];
-    self->_contentIsSpeakable = [(AXOrator *)self _canSpeakTaggedContent:v10];
+    selectedContent2 = [(AXOrator *)self selectedContent];
+    self->_contentIsSpeakable = [(AXOrator *)self _canSpeakTaggedContent:selectedContent2];
 
     self->_isProcessingContentForSpeech = 1;
   }
@@ -129,13 +129,13 @@ void __16__AXOrator_init__block_invoke(uint64_t a1)
   }
 }
 
-- (void)addAdditionalContentToSpeechQueue:(id)a3
+- (void)addAdditionalContentToSpeechQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [(AXOrator *)self isProcessingContentForSpeech];
-  if (v4 && v5)
+  queueCopy = queue;
+  isProcessingContentForSpeech = [(AXOrator *)self isProcessingContentForSpeech];
+  if (queueCopy && isProcessingContentForSpeech)
   {
-    v6 = [AXLanguageManager stringByReplacingFatWidthCharactersWithBasicCharacters:v4];
+    v6 = [AXLanguageManager stringByReplacingFatWidthCharactersWithBasicCharacters:queueCopy];
 
     v7 = [[AXLanguageTaggedContent alloc] initWithContent:v6];
     v8 = AXLogSpokenContentTextProcessing();
@@ -149,22 +149,22 @@ void __16__AXOrator_init__block_invoke(uint64_t a1)
     [ModifySpeechJobsLock lock];
     if ([(AXOrator *)self isProcessingContentForSpeech])
     {
-      v9 = [(AXLanguageTaggedContent *)v7 tags];
+      tags = [(AXLanguageTaggedContent *)v7 tags];
 
-      if (v9)
+      if (tags)
       {
-        v10 = [(AXOrator *)self additionalContentToProcess];
-        v11 = [(AXLanguageTaggedContent *)v7 tags];
-        [v10 addObjectsFromArray:v11];
+        additionalContentToProcess = [(AXOrator *)self additionalContentToProcess];
+        tags2 = [(AXLanguageTaggedContent *)v7 tags];
+        [additionalContentToProcess addObjectsFromArray:tags2];
 
-        v12 = [(AXOrator *)self selectedContent];
-        [v12 appendLanguageTaggedContent:v7];
+        selectedContent = [(AXOrator *)self selectedContent];
+        [selectedContent appendLanguageTaggedContent:v7];
       }
     }
 
     [ModifySpeechJobsLock unlock];
 
-    v4 = v6;
+    queueCopy = v6;
   }
 
   [(AXOrator *)self setIsFetchingAdditionalContent:0];
@@ -224,29 +224,29 @@ LABEL_6:
 
 - (NSString)currentVoiceIdentifier
 {
-  v3 = [(AXOrator *)self speechSequenceItems];
-  if ([v3 count])
+  speechSequenceItems = [(AXOrator *)self speechSequenceItems];
+  if ([speechSequenceItems count])
   {
-    v4 = [(AXOrator *)self speechSequenceItems];
-    v5 = [v4 objectAtIndex:0];
-    [(AXOrator *)self _getLangCodeForItem:v5];
+    speechSequenceItems2 = [(AXOrator *)self speechSequenceItems];
+    dialectForSystemLanguage = [speechSequenceItems2 objectAtIndex:0];
+    [(AXOrator *)self _getLangCodeForItem:dialectForSystemLanguage];
   }
 
   else
   {
-    v4 = +[AXLanguageManager sharedInstance];
-    v5 = [v4 dialectForSystemLanguage];
-    [v5 specificLanguageID];
+    speechSequenceItems2 = +[AXLanguageManager sharedInstance];
+    dialectForSystemLanguage = [speechSequenceItems2 dialectForSystemLanguage];
+    [dialectForSystemLanguage specificLanguageID];
   }
   v6 = ;
 
-  v7 = [(AXOrator *)self lastUtteranceLanguageCode];
+  lastUtteranceLanguageCode = [(AXOrator *)self lastUtteranceLanguageCode];
 
-  if (v7)
+  if (lastUtteranceLanguageCode)
   {
-    v8 = [(AXOrator *)self lastUtteranceLanguageCode];
+    lastUtteranceLanguageCode2 = [(AXOrator *)self lastUtteranceLanguageCode];
 
-    v6 = v8;
+    v6 = lastUtteranceLanguageCode2;
   }
 
   v9 = +[AXSettings sharedInstance];
@@ -256,62 +256,62 @@ LABEL_6:
   return v11;
 }
 
-- (BOOL)startSpeakingWithPreferredLanguage:(id)a3 delayBeforeStart:(double)a4 error:(id *)a5
+- (BOOL)startSpeakingWithPreferredLanguage:(id)language delayBeforeStart:(double)start error:(id *)error
 {
-  v8 = a3;
+  languageCopy = language;
   [(AXOrator *)self setCurrentLanguageCode:0];
   [(AXOrator *)self setPreferredLanguageWasSpecified:1];
   contentIsSpeakable = self->_contentIsSpeakable;
   if (contentIsSpeakable)
   {
-    if (!v8)
+    if (!languageCopy)
     {
       [(AXOrator *)self setPreferredLanguageWasSpecified:0];
-      v10 = [(AXOrator *)self selectedContent];
-      v11 = [v10 primaryUnambiguousDialect];
+      selectedContent = [(AXOrator *)self selectedContent];
+      primaryUnambiguousDialect = [selectedContent primaryUnambiguousDialect];
 
-      if (!v11)
+      if (!primaryUnambiguousDialect)
       {
-        v12 = [(AXOrator *)self selectedContent];
-        v11 = [v12 primaryAmbiguousDialect];
+        selectedContent2 = [(AXOrator *)self selectedContent];
+        primaryUnambiguousDialect = [selectedContent2 primaryAmbiguousDialect];
       }
 
-      v8 = [v11 specificLanguageID];
+      languageCopy = [primaryUnambiguousDialect specificLanguageID];
     }
 
-    v13 = [(AXOrator *)self speechSynthesizer];
+    speechSynthesizer = [(AXOrator *)self speechSynthesizer];
 
-    if (!v13)
+    if (!speechSynthesizer)
     {
       v14 = objc_alloc_init(MEMORY[0x1E6958508]);
       [(AXOrator *)self setSpeechSynthesizer:v14];
 
-      v15 = [(AXOrator *)self speechSynthesizer];
-      [v15 setIsInternalSynth:1];
+      speechSynthesizer2 = [(AXOrator *)self speechSynthesizer];
+      [speechSynthesizer2 setIsInternalSynth:1];
 
       v16 = *MEMORY[0x1E6988648];
-      v17 = [(AXOrator *)self speechSynthesizer];
-      [v17 setSpeechSource:v16];
+      speechSynthesizer3 = [(AXOrator *)self speechSynthesizer];
+      [speechSynthesizer3 setSpeechSource:v16];
 
-      v18 = [(AXOrator *)self speechSynthesizer];
-      [v18 setDelegate:self];
+      speechSynthesizer4 = [(AXOrator *)self speechSynthesizer];
+      [speechSynthesizer4 setDelegate:self];
 
-      v19 = [(AXOrator *)self speechSynthesizer];
-      [v19 setUsesApplicationAudioSession:0];
+      speechSynthesizer5 = [(AXOrator *)self speechSynthesizer];
+      [speechSynthesizer5 setUsesApplicationAudioSession:0];
 
       [(AXOrator *)self _updateAudioSessionCategory];
     }
 
-    v20 = [(AXOrator *)self speakingContext];
-    if (a5 && v20 == 1)
+    speakingContext = [(AXOrator *)self speakingContext];
+    if (error && speakingContext == 1)
     {
       self->_contentIsSpeakable = 0;
     }
 
-    v21 = [(AXOrator *)self selectedContent];
-    [v21 setUserPreferredLangID:v8];
+    selectedContent3 = [(AXOrator *)self selectedContent];
+    [selectedContent3 setUserPreferredLangID:languageCopy];
 
-    if (a4 == 0.0)
+    if (start == 0.0)
     {
       [(AXOrator *)self _startSpeakingSequence];
     }
@@ -322,24 +322,24 @@ LABEL_6:
     }
   }
 
-  else if (a5)
+  else if (error)
   {
-    *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"AXOratorErrorDomain" code:1 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"AXOratorErrorDomain" code:1 userInfo:0];
   }
 
   return contentIsSpeakable;
 }
 
-- (BOOL)pauseSpeaking:(id *)a3
+- (BOOL)pauseSpeaking:(id *)speaking
 {
-  v5 = [(AXOrator *)self speakingContent];
+  speakingContent = [(AXOrator *)self speakingContent];
 
-  if (v5)
+  if (speakingContent)
   {
     if ([(AXOrator *)self isSpeaking])
     {
-      v6 = [(AXOrator *)self speechSynthesizer];
-      v7 = [v6 pauseSpeakingAtBoundary:0];
+      speechSynthesizer = [(AXOrator *)self speechSynthesizer];
+      v7 = [speechSynthesizer pauseSpeakingAtBoundary:0];
 
       if (v7)
       {
@@ -363,25 +363,25 @@ LABEL_6:
     v8 = 2;
   }
 
-  return [(AXOrator *)self _successWithCode:v8 error:a3];
+  return [(AXOrator *)self _successWithCode:v8 error:speaking];
 }
 
-- (BOOL)stopSpeaking:(id *)a3
+- (BOOL)stopSpeaking:(id *)speaking
 {
-  v4 = [(AXOrator *)self lastUtterance];
+  lastUtterance = [(AXOrator *)self lastUtterance];
   [(AXOrator *)self _clearAllContentState];
-  [(AXOrator *)self setLastUtterance:v4];
-  v5 = [(AXOrator *)self speechSynthesizer];
-  v6 = [v5 stopSpeakingAtBoundary:0];
+  [(AXOrator *)self setLastUtterance:lastUtterance];
+  speechSynthesizer = [(AXOrator *)self speechSynthesizer];
+  v6 = [speechSynthesizer stopSpeakingAtBoundary:0];
 
   return v6;
 }
 
-- (BOOL)resumeSpeakingAfterDelay:(double)a3 error:(id *)a4
+- (BOOL)resumeSpeakingAfterDelay:(double)delay error:(id *)error
 {
-  v7 = [(AXOrator *)self speakingContent];
+  speakingContent = [(AXOrator *)self speakingContent];
 
-  if (v7)
+  if (speakingContent)
   {
     if ([(AXOrator *)self isSpeaking])
     {
@@ -397,7 +397,7 @@ LABEL_6:
       aBlock[4] = self;
       v9 = _Block_copy(aBlock);
       v10 = v9;
-      if (a3 == 0.0)
+      if (delay == 0.0)
       {
         (*(v9 + 2))(v9);
       }
@@ -416,7 +416,7 @@ LABEL_6:
     v8 = 2;
   }
 
-  return [(AXOrator *)self _successWithCode:v8 error:a4];
+  return [(AXOrator *)self _successWithCode:v8 error:error];
 }
 
 void __43__AXOrator_resumeSpeakingAfterDelay_error___block_invoke(uint64_t a1)
@@ -464,19 +464,19 @@ void __43__AXOrator_resumeSpeakingAfterDelay_error___block_invoke(uint64_t a1)
 
 - (BOOL)isPaused
 {
-  v2 = [(AXOrator *)self speechSynthesizer];
-  v3 = [v2 isPaused];
+  speechSynthesizer = [(AXOrator *)self speechSynthesizer];
+  isPaused = [speechSynthesizer isPaused];
 
-  return v3;
+  return isPaused;
 }
 
 - (BOOL)isSpeaking
 {
-  v3 = [(AXOrator *)self speechSynthesizer];
-  if ([v3 isSpeaking])
+  speechSynthesizer = [(AXOrator *)self speechSynthesizer];
+  if ([speechSynthesizer isSpeaking])
   {
-    v4 = [(AXOrator *)self speechSynthesizer];
-    v5 = [v4 isPaused] ^ 1;
+    speechSynthesizer2 = [(AXOrator *)self speechSynthesizer];
+    v5 = [speechSynthesizer2 isPaused] ^ 1;
   }
 
   else
@@ -490,23 +490,23 @@ void __43__AXOrator_resumeSpeakingAfterDelay_error___block_invoke(uint64_t a1)
 - (id)currentVoiceSelection
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [(AXOrator *)self lastUtteranceLanguageCode];
-  v5 = [v3 spokenContentVoiceSelectionForLanguage:v4];
+  lastUtteranceLanguageCode = [(AXOrator *)self lastUtteranceLanguageCode];
+  v5 = [v3 spokenContentVoiceSelectionForLanguage:lastUtteranceLanguageCode];
 
   return v5;
 }
 
 - (double)currentSpeechRateForAdjustment
 {
-  v2 = [(AXOrator *)self currentVoiceSelection];
-  v3 = [v2 rate];
-  v4 = v3;
-  if (!v3)
+  currentVoiceSelection = [(AXOrator *)self currentVoiceSelection];
+  rate = [currentVoiceSelection rate];
+  v4 = rate;
+  if (!rate)
   {
-    v3 = &unk_1EFE97610;
+    rate = &unk_1EFE97610;
   }
 
-  [v3 floatValue];
+  [rate floatValue];
   v6 = v5;
 
   return v6;
@@ -528,10 +528,10 @@ void __43__AXOrator_resumeSpeakingAfterDelay_error___block_invoke(uint64_t a1)
   return [(AXOrator *)self _changeSpeakingSpeed:v4];
 }
 
-- (void)speakStatusWithLanguage:(id)a3 rate:(id)a4
+- (void)speakStatusWithLanguage:(id)language rate:(id)rate
 {
   v5 = speakStatusWithLanguage_rate__onceToken;
-  v6 = a3;
+  languageCopy = language;
   if (v5 != -1)
   {
     [AXOrator speakStatusWithLanguage:rate:];
@@ -551,11 +551,11 @@ void __43__AXOrator_resumeSpeakingAfterDelay_error___block_invoke(uint64_t a1)
   self->_statusUtterance = v11;
 
   v13 = +[AXSettings sharedInstance];
-  v14 = [v13 spokenContentVoiceSelectionForLanguage:v6];
+  v14 = [v13 spokenContentVoiceSelectionForLanguage:languageCopy];
 
   [(AVSpeechUtterance *)self->_statusUtterance setVoiceSelection:v14];
-  v15 = [speakStatusWithLanguage_rate__QuickManager audioSession];
-  [v15 setCategory:*MEMORY[0x1E69580A0] withOptions:2 error:0];
+  audioSession = [speakStatusWithLanguage_rate__QuickManager audioSession];
+  [audioSession setCategory:*MEMORY[0x1E69580A0] withOptions:2 error:0];
 
   [speakStatusWithLanguage_rate__QuickManager stopSpeakingAtBoundary:0];
   [speakStatusWithLanguage_rate__QuickManager speakUtterance:self->_statusUtterance];
@@ -568,18 +568,18 @@ uint64_t __41__AXOrator_speakStatusWithLanguage_rate___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)canResumeWithContent:(id)a3
+- (BOOL)canResumeWithContent:(id)content
 {
-  v4 = a3;
-  v5 = [(AXOrator *)self speechSynthesizer];
-  if ([v5 isSpeaking])
+  contentCopy = content;
+  speechSynthesizer = [(AXOrator *)self speechSynthesizer];
+  if ([speechSynthesizer isSpeaking])
   {
-    v6 = [(AXOrator *)self speechSynthesizer];
-    if ([v6 isPaused])
+    speechSynthesizer2 = [(AXOrator *)self speechSynthesizer];
+    if ([speechSynthesizer2 isPaused])
     {
-      v7 = [(AXOrator *)self speakingContent];
-      v8 = [v7 content];
-      v9 = [v8 isEqualToString:v4];
+      speakingContent = [(AXOrator *)self speakingContent];
+      content = [speakingContent content];
+      v9 = [content isEqualToString:contentCopy];
     }
 
     else
@@ -598,13 +598,13 @@ uint64_t __41__AXOrator_speakStatusWithLanguage_rate___block_invoke()
 
 - (void)_startSpeakingSequence
 {
-  v3 = [(AXOrator *)self selectedContent];
-  [(AXOrator *)self setSpeakingContent:v3];
+  selectedContent = [(AXOrator *)self selectedContent];
+  [(AXOrator *)self setSpeakingContent:selectedContent];
 
   [(AXOrator *)self setSpeakingContentTokenRanges:0];
-  v4 = [(AXOrator *)self speakingContent];
-  v5 = [v4 tags];
-  v6 = [v5 mutableCopy];
+  speakingContent = [(AXOrator *)self speakingContent];
+  tags = [speakingContent tags];
+  v6 = [tags mutableCopy];
   [(AXOrator *)self setSpeechSequenceItems:v6];
 
   [(AXOrator *)self _updateSequenceForSpellOutBehavior];
@@ -618,14 +618,14 @@ uint64_t __41__AXOrator_speakStatusWithLanguage_rate___block_invoke()
   v24 = *MEMORY[0x1E69E9840];
   if ([(AXOrator *)self spellOutContent])
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v18 = self;
-    v4 = [(AXOrator *)self speechSequenceItems];
-    v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    selfCopy = self;
+    speechSequenceItems = [(AXOrator *)self speechSequenceItems];
+    v5 = [speechSequenceItems countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v5)
     {
       v6 = v5;
@@ -636,66 +636,66 @@ uint64_t __41__AXOrator_speakStatusWithLanguage_rate___block_invoke()
         {
           if (*v20 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(speechSequenceItems);
           }
 
           v9 = *(*(&v19 + 1) + 8 * i);
           for (j = [v9 range]; ; j += v16)
           {
-            v11 = [v9 range];
-            if (j >= v11 + v12)
+            range = [v9 range];
+            if (j >= range + v12)
             {
               break;
             }
 
-            v13 = [v9 content];
-            v14 = [v13 rangeOfComposedCharacterSequenceAtIndex:j];
+            content = [v9 content];
+            v14 = [content rangeOfComposedCharacterSequenceAtIndex:j];
             v16 = v15;
 
             v17 = [v9 copy];
             [v17 setRange:{v14, v16}];
-            [v3 addObject:v17];
+            [array addObject:v17];
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v6 = [speechSequenceItems countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v6);
     }
 
-    [(AXOrator *)v18 setSpeechSequenceItems:v3];
+    [(AXOrator *)selfCopy setSpeechSequenceItems:array];
   }
 }
 
-- (id)_getLangCodeForItem:(id)a3
+- (id)_getLangCodeForItem:(id)item
 {
-  v4 = a3;
-  if (-[AXOrator preferredLanguageWasSpecified](self, "preferredLanguageWasSpecified") && (-[AXOrator speakingContent](self, "speakingContent"), v5 = objc_claimAutoreleasedReturnValue(), [v5 userPreferredLangID], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v4, "canBeSpokenByLanguage:", v6), v6, v5, v7))
+  itemCopy = item;
+  if (-[AXOrator preferredLanguageWasSpecified](self, "preferredLanguageWasSpecified") && (-[AXOrator speakingContent](self, "speakingContent"), v5 = objc_claimAutoreleasedReturnValue(), [v5 userPreferredLangID], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(itemCopy, "canBeSpokenByLanguage:", v6), v6, v5, v7))
   {
-    v8 = [(AXOrator *)self speakingContent];
-    v9 = [v8 userPreferredLangID];
+    speakingContent = [(AXOrator *)self speakingContent];
+    userPreferredLangID = [speakingContent userPreferredLangID];
   }
 
   else
   {
-    v10 = [v4 dialect];
-    v11 = [v10 specificLanguageID];
+    dialect = [itemCopy dialect];
+    specificLanguageID = [dialect specificLanguageID];
 
-    if ([v4 wasPredicted])
+    if ([itemCopy wasPredicted])
     {
       goto LABEL_10;
     }
 
-    v12 = [(AXOrator *)self speakingContent];
-    v13 = [v12 userPreferredLangID];
-    if ([v4 canBeSpokenByLanguage:v13])
+    speakingContent2 = [(AXOrator *)self speakingContent];
+    userPreferredLangID2 = [speakingContent2 userPreferredLangID];
+    if ([itemCopy canBeSpokenByLanguage:userPreferredLangID2])
     {
     }
 
     else
     {
-      v14 = [v4 canBeSpokenByLanguage:v11];
+      v14 = [itemCopy canBeSpokenByLanguage:specificLanguageID];
 
       if (v14)
       {
@@ -703,35 +703,35 @@ uint64_t __41__AXOrator_speakStatusWithLanguage_rate___block_invoke()
       }
     }
 
-    v8 = [(AXOrator *)self speakingContent];
-    v9 = [v8 userPreferredLangID];
+    speakingContent = [(AXOrator *)self speakingContent];
+    userPreferredLangID = [speakingContent userPreferredLangID];
   }
 
-  v11 = v9;
+  specificLanguageID = userPreferredLangID;
 LABEL_10:
 
-  return v11;
+  return specificLanguageID;
 }
 
 - (void)_processAdditionalContentInPreparationForSpeech
 {
   [ModifySpeechJobsLock lock];
-  v3 = [(AXOrator *)self additionalContentToProcess];
-  if ([v3 count])
+  additionalContentToProcess = [(AXOrator *)self additionalContentToProcess];
+  if ([additionalContentToProcess count])
   {
-    v4 = [(AXOrator *)self speechSequenceItems];
+    speechSequenceItems = [(AXOrator *)self speechSequenceItems];
 
-    if (!v4)
+    if (!speechSequenceItems)
     {
       goto LABEL_5;
     }
 
-    v5 = [(AXOrator *)self speechSequenceItems];
-    v6 = [(AXOrator *)self additionalContentToProcess];
-    [v5 addObjectsFromArray:v6];
+    speechSequenceItems2 = [(AXOrator *)self speechSequenceItems];
+    additionalContentToProcess2 = [(AXOrator *)self additionalContentToProcess];
+    [speechSequenceItems2 addObjectsFromArray:additionalContentToProcess2];
 
-    v3 = [(AXOrator *)self additionalContentToProcess];
-    [v3 removeAllObjects];
+    additionalContentToProcess = [(AXOrator *)self additionalContentToProcess];
+    [additionalContentToProcess removeAllObjects];
   }
 
 LABEL_5:
@@ -746,11 +746,11 @@ LABEL_5:
   [(AXOrator *)self _processAdditionalContentInPreparationForSpeech];
   if (self->_contentIsSpeakable)
   {
-    v3 = [(AXOrator *)self delegate];
+    delegate = [(AXOrator *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v4 = [(AXOrator *)self speechSequenceItems];
-      v5 = [v4 count];
+      speechSequenceItems = [(AXOrator *)self speechSequenceItems];
+      v5 = [speechSequenceItems count];
 
       if (v5 > 4)
       {
@@ -758,29 +758,29 @@ LABEL_5:
       }
 
       [(AXOrator *)self setIsFetchingAdditionalContent:1];
-      v3 = [(AXOrator *)self delegate];
-      [v3 oratorShouldFetchNextElements:self shouldScrollOpaqueProviderIfNecessary:0];
+      delegate = [(AXOrator *)self delegate];
+      [delegate oratorShouldFetchNextElements:self shouldScrollOpaqueProviderIfNecessary:0];
     }
   }
 
 LABEL_6:
-  v6 = [(AXOrator *)self speechSequenceItems];
-  v7 = [v6 count];
+  speechSequenceItems2 = [(AXOrator *)self speechSequenceItems];
+  v7 = [speechSequenceItems2 count];
 
   if (v7)
   {
-    v8 = [(AXOrator *)self speechSequenceItems];
-    v9 = [v8 objectAtIndex:0];
+    speechSequenceItems3 = [(AXOrator *)self speechSequenceItems];
+    v9 = [speechSequenceItems3 objectAtIndex:0];
 
-    v10 = [(AXOrator *)self speechSequenceItems];
-    [v10 removeObjectAtIndex:0];
+    speechSequenceItems4 = [(AXOrator *)self speechSequenceItems];
+    [speechSequenceItems4 removeObjectAtIndex:0];
 
     v11 = [(AXOrator *)self _getLangCodeForItem:v9];
-    v12 = [v9 range];
+    range = [v9 range];
     v14 = v13;
-    v15 = [(AXOrator *)self currentLanguageCode];
+    currentLanguageCode = [(AXOrator *)self currentLanguageCode];
 
-    if (!v15)
+    if (!currentLanguageCode)
     {
       [(AXOrator *)self setCurrentLanguageCode:v11];
     }
@@ -793,51 +793,51 @@ LABEL_6:
 
     else
     {
-      v19 = [(AXOrator *)self currentLanguageCode];
-      if ([v19 isEqualToString:v11])
+      currentLanguageCode2 = [(AXOrator *)self currentLanguageCode];
+      if ([currentLanguageCode2 isEqualToString:v11])
       {
-        v20 = [(AXOrator *)self spellOutContent];
+        spellOutContent = [(AXOrator *)self spellOutContent];
 
-        if (!v20)
+        if (!spellOutContent)
         {
           do
           {
-            v21 = [(AXOrator *)self speechSequenceItems];
-            v22 = [v21 count];
+            speechSequenceItems5 = [(AXOrator *)self speechSequenceItems];
+            v22 = [speechSequenceItems5 count];
 
             if (!v22)
             {
               break;
             }
 
-            v23 = [(AXOrator *)self speechSequenceItems];
-            v19 = [v23 objectAtIndex:0];
+            speechSequenceItems6 = [(AXOrator *)self speechSequenceItems];
+            currentLanguageCode2 = [speechSequenceItems6 objectAtIndex:0];
 
-            v24 = [(AXOrator *)self currentLanguageCode];
-            v25 = [v19 canBeSpokenByLanguage:v24];
+            currentLanguageCode3 = [(AXOrator *)self currentLanguageCode];
+            v25 = [currentLanguageCode2 canBeSpokenByLanguage:currentLanguageCode3];
 
             v66 = v25;
             if (v25)
             {
-              v26 = [(AXOrator *)self speechSequenceItems];
-              [v26 removeObjectAtIndex:0];
+              speechSequenceItems7 = [(AXOrator *)self speechSequenceItems];
+              [speechSequenceItems7 removeObjectAtIndex:0];
 
-              [v19 range];
+              [currentLanguageCode2 range];
               v14 += v27;
             }
 
-            v28 = [v19 contentSubstring];
-            if ([v28 length])
+            contentSubstring = [currentLanguageCode2 contentSubstring];
+            if ([contentSubstring length])
             {
-              v29 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-              [v19 contentSubstring];
+              newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+              [currentLanguageCode2 contentSubstring];
               v30 = v11;
               v31 = v14;
-              v33 = v32 = v12;
-              v34 = [v19 contentSubstring];
-              v35 = [v29 characterIsMember:{objc_msgSend(v33, "characterAtIndex:", objc_msgSend(v34, "length") - 1)}];
+              v33 = v32 = range;
+              contentSubstring2 = [currentLanguageCode2 contentSubstring];
+              v35 = [newlineCharacterSet characterIsMember:{objc_msgSend(v33, "characterAtIndex:", objc_msgSend(contentSubstring2, "length") - 1)}];
 
-              v12 = v32;
+              range = v32;
               v14 = v31;
               v11 = v30;
 
@@ -868,22 +868,22 @@ LABEL_26:
     [v36 quickSpeakSpeakingRateForLanguage:v37];
     v39 = v38;
 
-    v40 = [(AXOrator *)self speakingContent];
-    v41 = [v40 content];
-    v42 = [v41 length];
+    speakingContent = [(AXOrator *)self speakingContent];
+    content = [speakingContent content];
+    v42 = [content length];
 
-    if (v14 + v12 > v42)
+    if (v14 + range > v42)
     {
       v43 = AXLogOrator();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
       {
-        v44 = [(AXOrator *)self speakingContent];
+        speakingContent2 = [(AXOrator *)self speakingContent];
         *buf = 134218498;
-        v69 = v12;
+        v69 = range;
         v70 = 2048;
         v71 = v14;
         v72 = 2112;
-        v73 = v44;
+        v73 = speakingContent2;
         _os_log_impl(&dword_18B15E000, v43, OS_LOG_TYPE_INFO, "Our substring range was greater than speaking content! (%lu,%lu) %@", buf, 0x20u);
       }
 
@@ -895,19 +895,19 @@ LABEL_26:
     v46 = +[AXSettings sharedInstance];
     v47 = [v46 spokenContentVoiceSelectionForLanguage:v45];
 
-    v48 = [(AXOrator *)self speakingContent];
-    v49 = [v48 content];
-    v67 = v12;
-    v50 = [v49 substringWithRange:{v12, v14}];
+    speakingContent3 = [(AXOrator *)self speakingContent];
+    content2 = [speakingContent3 content];
+    v67 = range;
+    v50 = [content2 substringWithRange:{range, v14}];
 
     v51 = MEMORY[0x1E6958500];
-    v52 = [v47 voiceId];
-    v53 = [v51 voiceWithIdentifier:v52];
+    voiceId = [v47 voiceId];
+    v53 = [v51 voiceWithIdentifier:voiceId];
 
-    v54 = [v53 synthesisProviderVoice];
-    LODWORD(v52) = [v54 isPersonalVoice];
+    synthesisProviderVoice = [v53 synthesisProviderVoice];
+    LODWORD(voiceId) = [synthesisProviderVoice isPersonalVoice];
 
-    if (v52)
+    if (voiceId)
     {
       v55 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v50];
       [v55 addAttribute:@"AXAccessibilityLanguageCode" value:v45 range:{0, objc_msgSend(v50, "length")}];
@@ -921,21 +921,21 @@ LABEL_26:
 
     [v56 setVoiceSelection:v47];
     [v56 setProcessEmoticons:1];
-    v57 = [(AXOrator *)self speechSynthesizer];
-    [v57 stopSpeakingAtBoundary:0];
+    speechSynthesizer = [(AXOrator *)self speechSynthesizer];
+    [speechSynthesizer stopSpeakingAtBoundary:0];
 
     [(AXOrator *)self _updateAudioSessionCategory];
-    v58 = [(AXOrator *)self speechSynthesizer];
-    [v58 speakUtterance:v56];
+    speechSynthesizer2 = [(AXOrator *)self speechSynthesizer];
+    [speechSynthesizer2 speakUtterance:v56];
 
     [(AXOrator *)self setLastUtteranceLanguageCode:v45];
     [(AXOrator *)self setLastUtteranceSubstringRange:v67, v14];
     [(AXOrator *)self setLastUtteranceLanguageTag:v64];
-    v59 = [(AXOrator *)self lastUtterance];
-    [v59 rate];
+    lastUtterance = [(AXOrator *)self lastUtterance];
+    [lastUtterance rate];
     if (v60 != v39)
     {
-      v61 = [(AXOrator *)self delegate];
+      delegate2 = [(AXOrator *)self delegate];
       v62 = objc_opt_respondsToSelector();
 
       if ((v62 & 1) == 0)
@@ -949,27 +949,27 @@ LABEL_39:
         return;
       }
 
-      v59 = [(AXOrator *)self delegate];
-      [v59 oratorDidChangeSpeakingRate:self];
+      lastUtterance = [(AXOrator *)self delegate];
+      [lastUtterance oratorDidChangeSpeakingRate:self];
     }
 
     goto LABEL_38;
   }
 
-  v16 = [(AXOrator *)self speechSynthesizer];
-  [v16 stopSpeakingAtBoundary:0];
+  speechSynthesizer3 = [(AXOrator *)self speechSynthesizer];
+  [speechSynthesizer3 stopSpeakingAtBoundary:0];
 
-  v17 = [(AXOrator *)self delegate];
+  delegate3 = [(AXOrator *)self delegate];
   v18 = objc_opt_respondsToSelector();
 
   if (v18)
   {
-    v65 = [(AXOrator *)self delegate];
-    [v65 oratorDidFinishSpeaking:self];
+    delegate4 = [(AXOrator *)self delegate];
+    [delegate4 oratorDidFinishSpeaking:self];
   }
 }
 
-- (BOOL)_changeSpeakingSpeed:(double)a3
+- (BOOL)_changeSpeakingSpeed:(double)speed
 {
   v5 = AXLogOrator();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -978,21 +978,21 @@ LABEL_39:
   }
 
   v6 = +[AXSettings sharedInstance];
-  if (*MEMORY[0x1E6958370] >= a3 && *MEMORY[0x1E6958378] <= a3)
+  if (*MEMORY[0x1E6958370] >= speed && *MEMORY[0x1E6958378] <= speed)
   {
-    v9 = [(AXOrator *)self lastUtteranceLanguageCode];
-    v8 = a3;
-    *&v10 = v8;
-    [v6 setQuickSpeakSpeakingRate:v9 forLanguage:v10];
+    lastUtteranceLanguageCode = [(AXOrator *)self lastUtteranceLanguageCode];
+    speedCopy = speed;
+    *&v10 = speedCopy;
+    [v6 setQuickSpeakSpeakingRate:lastUtteranceLanguageCode forLanguage:v10];
 
     [(AXOrator *)self _respeakUtteranceIfNeeded];
-    v11 = [(AXOrator *)self delegate];
+    delegate = [(AXOrator *)self delegate];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [(AXOrator *)self delegate];
-      [v13 oratorDidChangeSpeakingRate:self];
+      delegate2 = [(AXOrator *)self delegate];
+      [delegate2 oratorDidChangeSpeakingRate:self];
     }
 
     v7 = 1;
@@ -1006,18 +1006,18 @@ LABEL_39:
   return v7;
 }
 
-- (id)_speechSequenceItemsStartingAtContentLocation:(unint64_t)a3
+- (id)_speechSequenceItemsStartingAtContentLocation:(unint64_t)location
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [(AXOrator *)self speakingContent];
-  v7 = [v6 tags];
+  speakingContent = [(AXOrator *)self speakingContent];
+  tags = [speakingContent tags];
 
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v8 = [tags countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1028,35 +1028,35 @@ LABEL_39:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(tags);
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [v12 range];
-        if (a3 < v13 || a3 - v13 >= v14)
+        range = [v12 range];
+        if (location < range || location - range >= v14)
         {
-          if ([v12 range] > a3)
+          if ([v12 range] > location)
           {
-            [v5 addObject:v12];
+            [array addObject:v12];
           }
         }
 
         else
         {
           v16 = [v12 copy];
-          v17 = [v16 range];
-          [v16 setRange:{a3, v18 - a3 + v17}];
-          [v5 addObject:v16];
+          range2 = [v16 range];
+          [v16 setRange:{location, v18 - location + range2}];
+          [array addObject:v16];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [tags countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v9);
   }
 
-  return v5;
+  return array;
 }
 
 - (void)_respeakUtteranceIfNeeded
@@ -1066,18 +1066,18 @@ LABEL_39:
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (int64_t)_currentTokenIndex:(BOOL)a3
+- (int64_t)_currentTokenIndex:(BOOL)index
 {
-  v3 = a3;
+  indexCopy = index;
   v25 = *MEMORY[0x1E69E9840];
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0x7FFFFFFFFFFFFFFFLL;
-  v5 = [(AXOrator *)self speechSynthesizer];
-  v6 = [v5 isSpeaking];
+  speechSynthesizer = [(AXOrator *)self speechSynthesizer];
+  isSpeaking = [speechSynthesizer isSpeaking];
 
-  if (v6)
+  if (isSpeaking)
   {
     if ([(AXOrator *)self lastSpokenSubstringRange]== 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -1099,9 +1099,9 @@ LABEL_39:
       [(AXOrator *)v9 _currentTokenIndex:buf, v8];
     }
 
-    v10 = [(AXOrator *)self speakingContentTokenRanges];
-    v11 = v10;
-    if (v3)
+    speakingContentTokenRanges = [(AXOrator *)self speakingContentTokenRanges];
+    v11 = speakingContentTokenRanges;
+    if (indexCopy)
     {
       v12 = 0;
     }
@@ -1115,18 +1115,18 @@ LABEL_39:
     v18[1] = 3221225472;
     v18[2] = __31__AXOrator__currentTokenIndex___block_invoke;
     v18[3] = &unk_1E71EB608;
-    v19 = v3;
+    v19 = indexCopy;
     v18[4] = self;
     v18[5] = &v20;
-    [v10 enumerateObjectsWithOptions:v12 usingBlock:v18];
+    [speakingContentTokenRanges enumerateObjectsWithOptions:v12 usingBlock:v18];
   }
 
   else
   {
-    if (v3)
+    if (indexCopy)
     {
-      v13 = [(AXOrator *)self speakingContentTokenRanges];
-      v14 = [v13 count];
+      speakingContentTokenRanges2 = [(AXOrator *)self speakingContentTokenRanges];
+      v14 = [speakingContentTokenRanges2 count];
       v21[3] = v14;
     }
 
@@ -1177,48 +1177,48 @@ LABEL_4:
   return result;
 }
 
-- (void)_speakNextTokenFromCurrentTokenIndex:(int64_t)a3 forward:(BOOL)a4 boundary:(unint64_t)a5
+- (void)_speakNextTokenFromCurrentTokenIndex:(int64_t)index forward:(BOOL)forward boundary:(unint64_t)boundary
 {
-  v6 = a4;
-  v9 = [(AXOrator *)self numberOfTokensToSkip];
-  if (v6)
+  forwardCopy = forward;
+  numberOfTokensToSkip = [(AXOrator *)self numberOfTokensToSkip];
+  if (forwardCopy)
   {
-    v10 = v9;
+    v10 = numberOfTokensToSkip;
   }
 
   else
   {
-    v10 = -v9;
+    v10 = -numberOfTokensToSkip;
   }
 
-  v11 = v10 + a3;
-  v12 = [(AXOrator *)self speakingContentTokenRanges];
-  v13 = [v12 count];
+  v11 = v10 + index;
+  speakingContentTokenRanges = [(AXOrator *)self speakingContentTokenRanges];
+  v13 = [speakingContentTokenRanges count];
 
   if (v11 < v13)
   {
     if (v11 <= 0)
     {
-      v24 = [(AXOrator *)self delegate];
+      delegate = [(AXOrator *)self delegate];
       v25 = objc_opt_respondsToSelector();
 
       if (v25)
       {
         [(AXOrator *)self setIsFetchingAdditionalContent:1];
-        v26 = [(AXOrator *)self delegate];
-        [v26 oratorShouldFetchNextElements:self shouldScrollOpaqueProviderIfNecessary:1];
+        delegate2 = [(AXOrator *)self delegate];
+        [delegate2 oratorShouldFetchNextElements:self shouldScrollOpaqueProviderIfNecessary:1];
       }
 
-      if (a5 == 0x7FFFFFFFFFFFFFFFLL)
+      if (boundary == 0x7FFFFFFFFFFFFFFFLL)
       {
         [ModifySpeechJobsLock lock];
-        v27 = [(AXOrator *)self speakingContent];
-        v28 = [v27 tags];
-        v29 = [v28 mutableCopy];
+        speakingContent = [(AXOrator *)self speakingContent];
+        tags = [speakingContent tags];
+        v29 = [tags mutableCopy];
 
         [(AXOrator *)self setSpeechSequenceItems:v29];
-        v30 = [(AXOrator *)self additionalContentToProcess];
-        [v30 removeAllObjects];
+        additionalContentToProcess = [(AXOrator *)self additionalContentToProcess];
+        [additionalContentToProcess removeAllObjects];
 
         [ModifySpeechJobsLock unlock];
         goto LABEL_21;
@@ -1227,27 +1227,27 @@ LABEL_4:
 
     else
     {
-      v14 = [(AXOrator *)self speakingContentTokenRanges];
-      v15 = [v14 objectAtIndex:v11];
-      v16 = [v15 rangeValue];
+      speakingContentTokenRanges2 = [(AXOrator *)self speakingContentTokenRanges];
+      v15 = [speakingContentTokenRanges2 objectAtIndex:v11];
+      rangeValue = [v15 rangeValue];
 
-      v17 = v16 <= a5;
-      if (!v6)
+      v17 = rangeValue <= boundary;
+      if (!forwardCopy)
       {
-        v17 = v16 >= a5;
+        v17 = rangeValue >= boundary;
       }
 
       if (v17)
       {
         [ModifySpeechJobsLock lock];
-        v18 = self;
-        v19 = v16;
+        selfCopy2 = self;
+        boundaryCopy = rangeValue;
 LABEL_20:
-        v32 = [(AXOrator *)v18 _speechSequenceItemsStartingAtContentLocation:v19];
+        v32 = [(AXOrator *)selfCopy2 _speechSequenceItemsStartingAtContentLocation:boundaryCopy];
         [(AXOrator *)self setSpeechSequenceItems:v32];
 
-        v33 = [(AXOrator *)self additionalContentToProcess];
-        [v33 removeAllObjects];
+        additionalContentToProcess2 = [(AXOrator *)self additionalContentToProcess];
+        [additionalContentToProcess2 removeAllObjects];
 
         [ModifySpeechJobsLock unlock];
         goto LABEL_21;
@@ -1262,27 +1262,27 @@ LABEL_17:
     }
 
     [ModifySpeechJobsLock lock];
-    v18 = self;
-    v19 = a5;
+    selfCopy2 = self;
+    boundaryCopy = boundary;
     goto LABEL_20;
   }
 
-  if (a5 != 0x7FFFFFFFFFFFFFFFLL)
+  if (boundary != 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_17;
   }
 
-  v20 = [MEMORY[0x1E695DF70] array];
-  [(AXOrator *)self setSpeechSequenceItems:v20];
+  array = [MEMORY[0x1E695DF70] array];
+  [(AXOrator *)self setSpeechSequenceItems:array];
 
-  v21 = [(AXOrator *)self delegate];
+  delegate3 = [(AXOrator *)self delegate];
   v22 = objc_opt_respondsToSelector();
 
   if (v22)
   {
     [(AXOrator *)self setIsFetchingAdditionalContent:1];
-    v23 = [(AXOrator *)self delegate];
-    [v23 oratorShouldFetchNextElements:self shouldScrollOpaqueProviderIfNecessary:1];
+    delegate4 = [(AXOrator *)self delegate];
+    [delegate4 oratorShouldFetchNextElements:self shouldScrollOpaqueProviderIfNecessary:1];
   }
 
 LABEL_21:
@@ -1292,10 +1292,10 @@ LABEL_21:
     [AXOrator _speakNextTokenFromCurrentTokenIndex:? forward:? boundary:?];
   }
 
-  v35 = [(AXOrator *)self speechSynthesizer];
-  v36 = [v35 isPaused];
+  speechSynthesizer = [(AXOrator *)self speechSynthesizer];
+  isPaused = [speechSynthesizer isPaused];
 
-  if (v36)
+  if (isPaused)
   {
     [(AXOrator *)self setShouldSpeakNextItemOnResume:1];
   }
@@ -1306,18 +1306,18 @@ LABEL_21:
   }
 }
 
-- (BOOL)_skipByUnit:(BOOL)a3 boundary:(unint64_t)a4
+- (BOOL)_skipByUnit:(BOOL)unit boundary:(unint64_t)boundary
 {
-  v5 = a3;
+  unitCopy = unit;
   v7 = AXLogOrator();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [AXOrator _skipByUnit:boundary:];
   }
 
-  v8 = [(AXOrator *)self speakingContent];
+  speakingContent = [(AXOrator *)self speakingContent];
 
-  if (!v8)
+  if (!speakingContent)
   {
     goto LABEL_13;
   }
@@ -1330,23 +1330,23 @@ LABEL_21:
     [AXOrator _skipByUnit:? boundary:?];
   }
 
-  v10 = [(AXOrator *)self speakingContentTokenRanges];
-  v11 = [v10 count];
+  speakingContentTokenRanges = [(AXOrator *)self speakingContentTokenRanges];
+  v11 = [speakingContentTokenRanges count];
 
   if (!v11)
   {
     _AXAssert();
   }
 
-  v12 = [(AXOrator *)self speakingContentTokenRanges];
-  v13 = [v12 count];
+  speakingContentTokenRanges2 = [(AXOrator *)self speakingContentTokenRanges];
+  v13 = [speakingContentTokenRanges2 count];
 
   if (!v13)
   {
     goto LABEL_13;
   }
 
-  v14 = [(AXOrator *)self _currentTokenIndex:v5];
+  v14 = [(AXOrator *)self _currentTokenIndex:unitCopy];
   v15 = AXLogOrator();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
@@ -1357,7 +1357,7 @@ LABEL_21:
   {
     v21.location = [(AXOrator *)self lastSpokenSubstringRange];
     v16 = NSStringFromRange(v21);
-    v20 = [(AXOrator *)self speakingContentTokenRanges];
+    speakingContentTokenRanges3 = [(AXOrator *)self speakingContentTokenRanges];
     _AXAssert();
 
 LABEL_13:
@@ -1371,7 +1371,7 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  [(AXOrator *)self _speakNextTokenFromCurrentTokenIndex:v14 forward:v5 boundary:a4];
+  [(AXOrator *)self _speakNextTokenFromCurrentTokenIndex:v14 forward:unitCopy boundary:boundary];
   v17 = AXLogOrator();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
@@ -1387,59 +1387,59 @@ LABEL_16:
 - (void)_tokenizeContentIfNeeded
 {
   [ModifySpeechJobsLock lock];
-  v3 = [(AXOrator *)self speakingContentTokenRanges];
+  speakingContentTokenRanges = [(AXOrator *)self speakingContentTokenRanges];
 
-  if (v3)
+  if (speakingContentTokenRanges)
   {
-    v4 = [(AXOrator *)self speakingContentTokenRanges];
-    v5 = [v4 lastObject];
-    v6 = [v5 rangeValue];
+    speakingContentTokenRanges2 = [(AXOrator *)self speakingContentTokenRanges];
+    lastObject = [speakingContentTokenRanges2 lastObject];
+    rangeValue = [lastObject rangeValue];
     v8 = v7;
 
-    v9 = v6 + v8;
-    v10 = [(AXOrator *)self speakingContent];
-    v11 = [v10 content];
-    v12 = [v11 length];
+    v9 = rangeValue + v8;
+    speakingContent = [(AXOrator *)self speakingContent];
+    content = [speakingContent content];
+    v12 = [content length];
 
     if (v9 > v12)
     {
       goto LABEL_10;
     }
 
-    v13 = [(AXOrator *)self content];
-    v14 = [v13 length] - v9;
+    content2 = [(AXOrator *)self content];
+    v14 = [content2 length] - v9;
   }
 
   else
   {
-    v13 = [(AXOrator *)self speakingContent];
-    v15 = [v13 content];
-    v14 = [v15 length];
+    content2 = [(AXOrator *)self speakingContent];
+    v13Content = [content2 content];
+    v14 = [v13Content length];
 
     v9 = 0;
   }
 
-  v16 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __36__AXOrator__tokenizeContentIfNeeded__block_invoke;
   aBlock[3] = &unk_1E71EB630;
-  v17 = v16;
+  v17 = array;
   v28 = v17;
   v18 = _Block_copy(aBlock);
-  v19 = [(AXOrator *)self speakingContent];
-  v20 = [v19 content];
-  v21 = [(AXOrator *)self speakingContent];
-  v22 = [v21 content];
+  speakingContent2 = [(AXOrator *)self speakingContent];
+  content3 = [speakingContent2 content];
+  speakingContent3 = [(AXOrator *)self speakingContent];
+  content4 = [speakingContent3 content];
   v23 = 1;
-  [v20 enumerateSubstringsInRange:0 options:objc_msgSend(v22 usingBlock:{"length"), 1, v18}];
+  [content3 enumerateSubstringsInRange:0 options:objc_msgSend(content4 usingBlock:{"length"), 1, v18}];
 
   if ([v17 count] <= 4)
   {
     [v17 removeAllObjects];
-    v24 = [(AXOrator *)self speakingContent];
-    v25 = [v24 content];
-    [v25 enumerateSubstringsInRange:v9 options:v14 usingBlock:{1028, v18}];
+    speakingContent4 = [(AXOrator *)self speakingContent];
+    content5 = [speakingContent4 content];
+    [content5 enumerateSubstringsInRange:v9 options:v14 usingBlock:{1028, v18}];
 
     v26 = [v17 count];
     if (v26 / 5 <= 1)
@@ -1476,10 +1476,10 @@ void __36__AXOrator__tokenizeContentIfNeeded__block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)setAudioSessionInactiveTimeout:(double)a3
+- (void)setAudioSessionInactiveTimeout:(double)timeout
 {
-  v4 = [(AXOrator *)self speechSynthesizer];
-  [v4 setAudioSessionInactiveTimeout:a3];
+  speechSynthesizer = [(AXOrator *)self speechSynthesizer];
+  [speechSynthesizer setAudioSessionInactiveTimeout:timeout];
 }
 
 - (void)_clearAllContentState
@@ -1495,8 +1495,8 @@ void __36__AXOrator__tokenizeContentIfNeeded__block_invoke(uint64_t a1, void *a2
   [(AXOrator *)self setShouldSpeakNextItemOnResume:0];
   [ModifySpeechJobsLock lock];
   [(AXOrator *)self setIsProcessingContentForSpeech:0];
-  v3 = [(AXOrator *)self additionalContentToProcess];
-  [v3 removeAllObjects];
+  additionalContentToProcess = [(AXOrator *)self additionalContentToProcess];
+  [additionalContentToProcess removeAllObjects];
 
   v4 = ModifySpeechJobsLock;
 
@@ -1507,36 +1507,36 @@ void __36__AXOrator__tokenizeContentIfNeeded__block_invoke(uint64_t a1, void *a2
 {
   v3 = *MEMORY[0x1E6958068];
   v4 = 2 * (([(AXOrator *)self speakingContext]& 0xFFFFFFFFFFFFFFFELL) == 2);
-  v5 = [(AXOrator *)self speechSynthesizer];
-  [v5 setSetActiveOptions:1];
+  speechSynthesizer = [(AXOrator *)self speechSynthesizer];
+  [speechSynthesizer setSetActiveOptions:1];
 
-  v6 = [(AXOrator *)self speechSynthesizer];
-  [v6 setAudioSessionCategory:v3];
+  speechSynthesizer2 = [(AXOrator *)self speechSynthesizer];
+  [speechSynthesizer2 setAudioSessionCategory:v3];
 
-  v7 = [(AXOrator *)self speechSynthesizer];
-  [v7 setAudioSessionCategoryOptions:v4];
+  speechSynthesizer3 = [(AXOrator *)self speechSynthesizer];
+  [speechSynthesizer3 setAudioSessionCategoryOptions:v4];
 }
 
-- (BOOL)_canSpeakTaggedContent:(id)a3
+- (BOOL)_canSpeakTaggedContent:(id)content
 {
-  v3 = a3;
-  v4 = [v3 content];
-  v5 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  contentCopy = content;
+  content = [contentCopy content];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v6 = [content stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   v7 = [v6 length];
 
   if (v7)
   {
-    v8 = [v3 ambiguousLangMaps];
-    if ([v8 count])
+    ambiguousLangMaps = [contentCopy ambiguousLangMaps];
+    if ([ambiguousLangMaps count])
     {
       v9 = 1;
     }
 
     else
     {
-      v10 = [v3 unambiguousLangMaps];
-      v9 = [v10 count] != 0;
+      unambiguousLangMaps = [contentCopy unambiguousLangMaps];
+      v9 = [unambiguousLangMaps count] != 0;
     }
   }
 
@@ -1548,13 +1548,13 @@ void __36__AXOrator__tokenizeContentIfNeeded__block_invoke(uint64_t a1, void *a2
   return v9;
 }
 
-- (BOOL)_successWithCode:(int64_t)a3 error:(id *)a4
+- (BOOL)_successWithCode:(int64_t)code error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    if (a3)
+    if (code)
     {
-      v6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"AXOratorErrorDomain" code:a3 userInfo:0];
+      v6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"AXOratorErrorDomain" code:code userInfo:0];
     }
 
     else
@@ -1563,41 +1563,41 @@ void __36__AXOrator__tokenizeContentIfNeeded__block_invoke(uint64_t a1, void *a2
     }
 
     v7 = v6;
-    *a4 = v7;
+    *error = v7;
   }
 
-  return a3 == 0;
+  return code == 0;
 }
 
-- (void)speechSynthesizer:(id)a3 didFinishSpeechUtterance:(id)a4
+- (void)speechSynthesizer:(id)synthesizer didFinishSpeechUtterance:(id)utterance
 {
-  v5 = a4;
+  utteranceCopy = utterance;
   AXAssertMainThreadCallback();
-  v18 = [(AXOrator *)self lastUtterance];
-  v6 = [(AXOrator *)self delegate];
+  lastUtterance = [(AXOrator *)self lastUtterance];
+  delegate = [(AXOrator *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
-  v8 = v18;
-  if ((v7 & 1) != 0 && v18 == v5)
+  v8 = lastUtterance;
+  if ((v7 & 1) != 0 && lastUtterance == utteranceCopy)
   {
-    v9 = [(AXOrator *)self speechSequenceItems];
-    if ([v9 count])
+    speechSequenceItems = [(AXOrator *)self speechSequenceItems];
+    if ([speechSequenceItems count])
     {
 
 LABEL_5:
-      v8 = v18;
+      v8 = lastUtterance;
       goto LABEL_7;
     }
 
-    v10 = [(AXOrator *)self additionalContentToProcess];
-    v11 = [v10 count];
+    additionalContentToProcess = [(AXOrator *)self additionalContentToProcess];
+    v11 = [additionalContentToProcess count];
 
-    v8 = v18;
+    v8 = lastUtterance;
     if (!v11)
     {
       [(AXOrator *)self setIsFetchingAdditionalContent:1];
-      v16 = [(AXOrator *)self delegate];
-      [v16 oratorShouldFetchNextElements:self shouldScrollOpaqueProviderIfNecessary:1];
+      delegate2 = [(AXOrator *)self delegate];
+      [delegate2 oratorShouldFetchNextElements:self shouldScrollOpaqueProviderIfNecessary:1];
 
       [(AXOrator *)self _processAdditionalContentInPreparationForSpeech];
       goto LABEL_5;
@@ -1605,17 +1605,17 @@ LABEL_5:
   }
 
 LABEL_7:
-  if (v8 == v5)
+  if (v8 == utteranceCopy)
   {
-    v14 = [(AXOrator *)self speechSequenceItems];
-    if (![v14 count])
+    speechSequenceItems2 = [(AXOrator *)self speechSequenceItems];
+    if (![speechSequenceItems2 count])
     {
-      v15 = [(AXOrator *)self additionalContentToProcess];
-      if (![v15 count])
+      additionalContentToProcess2 = [(AXOrator *)self additionalContentToProcess];
+      if (![additionalContentToProcess2 count])
       {
-        v17 = [(AXOrator *)self isFetchingAdditionalContent];
+        isFetchingAdditionalContent = [(AXOrator *)self isFetchingAdditionalContent];
 
-        if (!v17)
+        if (!isFetchingAdditionalContent)
         {
           [(AXOrator *)self _clearAllContentState];
         }
@@ -1631,8 +1631,8 @@ LABEL_15:
 
   if (!v8)
   {
-    v12 = [(AXOrator *)self speechSequenceItems];
-    v13 = [v12 count];
+    speechSequenceItems3 = [(AXOrator *)self speechSequenceItems];
+    v13 = [speechSequenceItems3 count];
 
     if (!v13)
     {
@@ -1644,78 +1644,78 @@ LABEL_16:
   [(AXOrator *)self _updateAudioSessionCategory];
 }
 
-- (void)speechSynthesizer:(id)a3 didPauseSpeechUtterance:(id)a4
+- (void)speechSynthesizer:(id)synthesizer didPauseSpeechUtterance:(id)utterance
 {
   AXAssertMainThreadCallback();
-  v5 = [(AXOrator *)self delegate];
+  delegate = [(AXOrator *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AXOrator *)self delegate];
-    [v7 oratorDidPauseSpeaking:self];
+    delegate2 = [(AXOrator *)self delegate];
+    [delegate2 oratorDidPauseSpeaking:self];
   }
 
   [(AXOrator *)self _updateAudioSessionCategory];
 }
 
-- (void)speechSynthesizer:(id)a3 didContinueSpeechUtterance:(id)a4
+- (void)speechSynthesizer:(id)synthesizer didContinueSpeechUtterance:(id)utterance
 {
   AXAssertMainThreadCallback();
-  v5 = [(AXOrator *)self delegate];
+  delegate = [(AXOrator *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AXOrator *)self delegate];
-    [v7 oratorDidResumeSpeaking:self];
+    delegate2 = [(AXOrator *)self delegate];
+    [delegate2 oratorDidResumeSpeaking:self];
   }
 
   [(AXOrator *)self _updateAudioSessionCategory];
 }
 
-- (void)speechSynthesizer:(id)a3 didStartSpeechUtterance:(id)a4
+- (void)speechSynthesizer:(id)synthesizer didStartSpeechUtterance:(id)utterance
 {
   AXAssertMainThreadCallback();
-  v5 = [(AXOrator *)self delegate];
+  delegate = [(AXOrator *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AXOrator *)self delegate];
-    [v7 oratorDidStartSpeaking:self];
+    delegate2 = [(AXOrator *)self delegate];
+    [delegate2 oratorDidStartSpeaking:self];
   }
 }
 
-- (void)speechSynthesizer:(id)a3 didCancelSpeechUtterance:(id)a4
+- (void)speechSynthesizer:(id)synthesizer didCancelSpeechUtterance:(id)utterance
 {
-  v5 = a4;
+  utteranceCopy = utterance;
   AXAssertMainThreadCallback();
   [(AXOrator *)self _updateAudioSessionCategory];
-  v10 = [(AXOrator *)self lastUtterance];
+  lastUtterance = [(AXOrator *)self lastUtterance];
 
-  v6 = v10;
-  if (v10 == v5)
+  v6 = lastUtterance;
+  if (lastUtterance == utteranceCopy)
   {
-    v7 = [(AXOrator *)self delegate];
+    delegate = [(AXOrator *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(AXOrator *)self delegate];
-      [v9 oratorDidCancelSpeaking:self];
+      delegate2 = [(AXOrator *)self delegate];
+      [delegate2 oratorDidCancelSpeaking:self];
     }
 
     [(AXOrator *)self _clearAllContentState];
-    v6 = v10;
+    v6 = lastUtterance;
   }
 }
 
-- (void)speechSynthesizer:(id)a3 willSpeakRangeOfSpeechString:(_NSRange)a4 utterance:(id)a5
+- (void)speechSynthesizer:(id)synthesizer willSpeakRangeOfSpeechString:(_NSRange)string utterance:(id)utterance
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a5;
+  length = string.length;
+  location = string.location;
+  utteranceCopy = utterance;
   v9 = dispatch_get_current_queue();
   v10 = MEMORY[0x1E69E96A0];
 
@@ -1724,14 +1724,14 @@ LABEL_16:
     _AXAssert();
   }
 
-  v11 = [(AXOrator *)self lastUtterance];
+  lastUtterance = [(AXOrator *)self lastUtterance];
 
-  if (v11 != v8)
+  if (lastUtterance != utteranceCopy)
   {
-    v12 = AXLogOrator();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    delegate2 = AXLogOrator();
+    if (os_log_type_enabled(delegate2, OS_LOG_TYPE_DEBUG))
     {
-      [AXOrator speechSynthesizer:v8 willSpeakRangeOfSpeechString:self utterance:?];
+      [AXOrator speechSynthesizer:utteranceCopy willSpeakRangeOfSpeechString:self utterance:?];
     }
 
     goto LABEL_15;
@@ -1739,20 +1739,20 @@ LABEL_16:
 
   if ([(AXOrator *)self lastUtteranceSubstringRange]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = AXLogOrator();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    delegate2 = AXLogOrator();
+    if (os_log_type_enabled(delegate2, OS_LOG_TYPE_ERROR))
     {
       v24.location = location;
       v24.length = length;
-      [AXOrator speechSynthesizer:v24 willSpeakRangeOfSpeechString:v8 utterance:v12];
+      [AXOrator speechSynthesizer:v24 willSpeakRangeOfSpeechString:utteranceCopy utterance:delegate2];
     }
 
     goto LABEL_15;
   }
 
   v13 = [(AXOrator *)self lastUtteranceSubstringRange]+ location;
-  v14 = [(AXOrator *)self lastUtteranceSubstringRange];
-  if (v13 + length > v14 + v15)
+  lastUtteranceSubstringRange = [(AXOrator *)self lastUtteranceSubstringRange];
+  if (v13 + length > lastUtteranceSubstringRange + v15)
   {
     v25.location = v13;
     v25.length = length;
@@ -1772,15 +1772,15 @@ LABEL_16:
     [AXOrator speechSynthesizer:v27 willSpeakRangeOfSpeechString:? utterance:?];
   }
 
-  v18 = [(AXOrator *)self delegate];
+  delegate = [(AXOrator *)self delegate];
   v19 = objc_opt_respondsToSelector();
 
   if (v19)
   {
-    v12 = [(AXOrator *)self delegate];
-    v20 = [(AXOrator *)self speakingContent];
-    v21 = [v20 content];
-    [v12 orator:self willSpeakRange:v13 ofContent:length, v21];
+    delegate2 = [(AXOrator *)self delegate];
+    speakingContent = [(AXOrator *)self speakingContent];
+    content = [speakingContent content];
+    [delegate2 orator:self willSpeakRange:v13 ofContent:length, content];
 
 LABEL_15:
   }

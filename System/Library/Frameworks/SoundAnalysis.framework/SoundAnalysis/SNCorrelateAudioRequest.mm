@@ -1,13 +1,13 @@
 @interface SNCorrelateAudioRequest
-- (void)setOverlapFactor:(double)a3;
+- (void)setOverlapFactor:(double)factor;
 @end
 
 @implementation SNCorrelateAudioRequest
 
-- (void)setOverlapFactor:(double)a3
+- (void)setOverlapFactor:(double)factor
 {
-  v4 = self;
-  sub_1C9855280(a3);
+  selfCopy = self;
+  sub_1C9855280(factor);
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface WADeviceAnalytics_UsageStats
-- (WADeviceAnalytics_UsageStats)initWithUniqueMO:(id)a3;
+- (WADeviceAnalytics_UsageStats)initWithUniqueMO:(id)o;
 @end
 
 @implementation WADeviceAnalytics_UsageStats
 
-- (WADeviceAnalytics_UsageStats)initWithUniqueMO:(id)a3
+- (WADeviceAnalytics_UsageStats)initWithUniqueMO:(id)o
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  oCopy = o;
+  if (!oCopy)
   {
 
     self = 0;
@@ -35,16 +35,16 @@
   self = [(WADeviceAnalytics_UsageStats *)&v11 init];
   if (self)
   {
-    v5 = [v4 valueForKey:@"latestCompleteWeekUsageSeconds"];
+    v5 = [oCopy valueForKey:@"latestCompleteWeekUsageSeconds"];
     -[WADeviceAnalytics_UsageStats setLatestCompleteWeekUsageSeconds:](self, "setLatestCompleteWeekUsageSeconds:", [v5 integerValue]);
 
-    v6 = [v4 valueForKey:@"latestCompleteWeekUsagePercentage"];
+    v6 = [oCopy valueForKey:@"latestCompleteWeekUsagePercentage"];
     -[WADeviceAnalytics_UsageStats setLatestCompleteWeekUsagePercentage:](self, "setLatestCompleteWeekUsagePercentage:", [v6 shortValue]);
 
-    v7 = [v4 valueForKey:@"latestCompleteWeekUsageCumulativeSeconds"];
+    v7 = [oCopy valueForKey:@"latestCompleteWeekUsageCumulativeSeconds"];
     -[WADeviceAnalytics_UsageStats setLatestCompleteWeekUsageCumulativeSeconds:](self, "setLatestCompleteWeekUsageCumulativeSeconds:", [v7 integerValue]);
 
-    v8 = [v4 valueForKey:@"latestCompleteWeekUsageCumulativePercentage"];
+    v8 = [oCopy valueForKey:@"latestCompleteWeekUsageCumulativePercentage"];
     [(WADeviceAnalytics_UsageStats *)self setLatestCompleteWeekUsageCumulativePercentage:[v8 shortValue]];
 LABEL_5:
   }

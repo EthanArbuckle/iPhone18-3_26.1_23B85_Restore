@@ -1,128 +1,128 @@
 @interface CUIKDateStrings
-+ (id)_cachedDateFormatterForDomain:(id)a3 calendar:(id)a4 formatterKey:(id)a5 creationBlock:(id)a6;
-+ (id)_languageIDfromLocalID:(id)a3;
-+ (id)_newDateFormatterForDateStyle:(unint64_t)a3 timeStyle:(unint64_t)a4 calendar:(id)a5;
-+ (id)_newDateFormatterForFormat:(id)a3 calendar:(id)a4;
-+ (id)_newDateFormatterForTemplate:(id)a3 calendar:(id)a4;
-+ (id)_overlayDayOnlyStringForFormat:(id)a3 date:(id)a4 inCalendar:(id)a5;
-+ (id)_significantLocaleComponents:(id)a3;
-+ (id)_zodiacSymbolForDate:(id)a3 inCalendar:(id)a4;
-+ (id)cachedDateFormatterForDateStyle:(unint64_t)a3 timeStyle:(unint64_t)a4 calendar:(id)a5;
-+ (id)cachedDateFormatterForFormat:(id)a3 calendar:(id)a4;
-+ (id)cachedDateFormatterForTemplate:(id)a3 calendar:(id)a4;
-+ (id)longStringForDate:(id)a3 inCalendar:(id)a4;
-+ (id)mediumStringForDate:(id)a3 inCalendar:(id)a4;
-+ (id)monthDayStringForDate:(id)a3 inCalendar:(id)a4;
-+ (id)monthStringForDate:(id)a3 inCalendar:(id)a4;
-+ (id)overlayCalendarPickerDisplayNameForCalendarWithIdentifier:(id)a3;
-+ (id)overlayFirstDayOfLunarMonthLocalizedStringInCalendar:(id)a3;
-+ (id)overlayLocalizedStringForKey:(id)a3 calendar:(id)a4;
-+ (id)overlayMediumStringForDate:(id)a3 inCalendar:(id)a4;
-+ (id)overlayShortStringForDate:(id)a3 inCalendar:(id)a4 alwaysShowingDayNumber:(BOOL)a5;
-+ (id)overlayYearStringForDate:(id)a3 inCalendar:(id)a4;
-+ (id)stylizedTimelineHourStringForHourDate:(id)a3 baseFontSize:(double)a4;
-+ (id)yearMonthDayStringForDate:(id)a3 inCalendar:(id)a4;
-+ (id)yearMonthStringForDate:(id)a3 inCalendar:(id)a4;
-+ (id)yearStringForDate:(id)a3 inCalendar:(id)a4;
-+ (unint64_t)overlayCalendarTypeForCalendarIdentifier:(id)a3;
++ (id)_cachedDateFormatterForDomain:(id)domain calendar:(id)calendar formatterKey:(id)key creationBlock:(id)block;
++ (id)_languageIDfromLocalID:(id)d;
++ (id)_newDateFormatterForDateStyle:(unint64_t)style timeStyle:(unint64_t)timeStyle calendar:(id)calendar;
++ (id)_newDateFormatterForFormat:(id)format calendar:(id)calendar;
++ (id)_newDateFormatterForTemplate:(id)template calendar:(id)calendar;
++ (id)_overlayDayOnlyStringForFormat:(id)format date:(id)date inCalendar:(id)calendar;
++ (id)_significantLocaleComponents:(id)components;
++ (id)_zodiacSymbolForDate:(id)date inCalendar:(id)calendar;
++ (id)cachedDateFormatterForDateStyle:(unint64_t)style timeStyle:(unint64_t)timeStyle calendar:(id)calendar;
++ (id)cachedDateFormatterForFormat:(id)format calendar:(id)calendar;
++ (id)cachedDateFormatterForTemplate:(id)template calendar:(id)calendar;
++ (id)longStringForDate:(id)date inCalendar:(id)calendar;
++ (id)mediumStringForDate:(id)date inCalendar:(id)calendar;
++ (id)monthDayStringForDate:(id)date inCalendar:(id)calendar;
++ (id)monthStringForDate:(id)date inCalendar:(id)calendar;
++ (id)overlayCalendarPickerDisplayNameForCalendarWithIdentifier:(id)identifier;
++ (id)overlayFirstDayOfLunarMonthLocalizedStringInCalendar:(id)calendar;
++ (id)overlayLocalizedStringForKey:(id)key calendar:(id)calendar;
++ (id)overlayMediumStringForDate:(id)date inCalendar:(id)calendar;
++ (id)overlayShortStringForDate:(id)date inCalendar:(id)calendar alwaysShowingDayNumber:(BOOL)number;
++ (id)overlayYearStringForDate:(id)date inCalendar:(id)calendar;
++ (id)stylizedTimelineHourStringForHourDate:(id)date baseFontSize:(double)size;
++ (id)yearMonthDayStringForDate:(id)date inCalendar:(id)calendar;
++ (id)yearMonthStringForDate:(id)date inCalendar:(id)calendar;
++ (id)yearStringForDate:(id)date inCalendar:(id)calendar;
++ (unint64_t)overlayCalendarTypeForCalendarIdentifier:(id)identifier;
 @end
 
 @implementation CUIKDateStrings
 
-+ (id)_newDateFormatterForDateStyle:(unint64_t)a3 timeStyle:(unint64_t)a4 calendar:(id)a5
++ (id)_newDateFormatterForDateStyle:(unint64_t)style timeStyle:(unint64_t)timeStyle calendar:(id)calendar
 {
-  v7 = a5;
+  calendarCopy = calendar;
   v8 = objc_opt_new();
-  v9 = [v7 locale];
-  [v8 setLocale:v9];
+  locale = [calendarCopy locale];
+  [v8 setLocale:locale];
 
-  [v8 setCalendar:v7];
-  [v8 setDateStyle:a3];
-  [v8 setTimeStyle:a4];
-  v10 = [v7 timeZone];
+  [v8 setCalendar:calendarCopy];
+  [v8 setDateStyle:style];
+  [v8 setTimeStyle:timeStyle];
+  timeZone = [calendarCopy timeZone];
 
-  [v8 setTimeZone:v10];
+  [v8 setTimeZone:timeZone];
   return v8;
 }
 
-+ (id)_newDateFormatterForFormat:(id)a3 calendar:(id)a4
++ (id)_newDateFormatterForFormat:(id)format calendar:(id)calendar
 {
-  v6 = a3;
-  v7 = [a1 _newDateFormatterForDateStyle:4 timeStyle:4 calendar:a4];
-  [v7 setDateFormat:v6];
+  formatCopy = format;
+  v7 = [self _newDateFormatterForDateStyle:4 timeStyle:4 calendar:calendar];
+  [v7 setDateFormat:formatCopy];
 
   return v7;
 }
 
-+ (id)_newDateFormatterForTemplate:(id)a3 calendar:(id)a4
++ (id)_newDateFormatterForTemplate:(id)template calendar:(id)calendar
 {
   v6 = MEMORY[0x1E696AB78];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 locale];
-  v10 = [v6 dateFormatFromTemplate:v8 options:0 locale:v9];
+  calendarCopy = calendar;
+  templateCopy = template;
+  locale = [calendarCopy locale];
+  v10 = [v6 dateFormatFromTemplate:templateCopy options:0 locale:locale];
 
-  v11 = [a1 _newDateFormatterForFormat:v10 calendar:v7];
+  v11 = [self _newDateFormatterForFormat:v10 calendar:calendarCopy];
   return v11;
 }
 
-+ (id)_cachedDateFormatterForDomain:(id)a3 calendar:(id)a4 formatterKey:(id)a5 creationBlock:(id)a6
++ (id)_cachedDateFormatterForDomain:(id)domain calendar:(id)calendar formatterKey:(id)key creationBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [MEMORY[0x1E696AF00] currentThread];
-  v14 = [v13 threadDictionary];
+  domainCopy = domain;
+  calendarCopy = calendar;
+  keyCopy = key;
+  blockCopy = block;
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v15 = [v14 objectForKeyedSubscript:v9];
+  v15 = [threadDictionary objectForKeyedSubscript:domainCopy];
   if (!v15)
   {
     v15 = objc_opt_new();
-    [v14 setObject:v15 forKeyedSubscript:v9];
+    [threadDictionary setObject:v15 forKeyedSubscript:domainCopy];
   }
 
-  v16 = [v10 timeZone];
-  v17 = [v15 objectForKey:v16];
+  timeZone = [calendarCopy timeZone];
+  v17 = [v15 objectForKey:timeZone];
 
   if (!v17)
   {
     v17 = objc_opt_new();
-    v18 = [v10 timeZone];
-    [v15 setObject:v17 forKey:v18];
+    timeZone2 = [calendarCopy timeZone];
+    [v15 setObject:v17 forKey:timeZone2];
   }
 
-  v19 = [v17 objectForKey:v10];
+  v19 = [v17 objectForKey:calendarCopy];
   if (!v19)
   {
     v19 = objc_opt_new();
-    [v17 setObject:v19 forKey:v10];
+    [v17 setObject:v19 forKey:calendarCopy];
   }
 
-  v20 = [v19 objectForKey:v11];
+  v20 = [v19 objectForKey:keyCopy];
   if (!v20)
   {
-    v20 = v12[2](v12);
-    [v19 setObject:v20 forKey:v11];
+    v20 = blockCopy[2](blockCopy);
+    [v19 setObject:v20 forKey:keyCopy];
   }
 
   return v20;
 }
 
-+ (id)cachedDateFormatterForFormat:(id)a3 calendar:(id)a4
++ (id)cachedDateFormatterForFormat:(id)format calendar:(id)calendar
 {
-  v6 = a3;
-  v7 = a4;
+  formatCopy = format;
+  calendarCopy = calendar;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __57__CUIKDateStrings_cachedDateFormatterForFormat_calendar___block_invoke;
   v12[3] = &unk_1E839AC38;
-  v14 = v7;
-  v15 = a1;
-  v13 = v6;
-  v8 = v7;
-  v9 = v6;
-  v10 = [a1 _cachedDateFormatterForDomain:@"com.apple.calendarUIKit.dateStrings.formattersByFormat" calendar:v8 formatterKey:v9 creationBlock:v12];
+  v14 = calendarCopy;
+  selfCopy = self;
+  v13 = formatCopy;
+  v8 = calendarCopy;
+  v9 = formatCopy;
+  v10 = [self _cachedDateFormatterForDomain:@"com.apple.calendarUIKit.dateStrings.formattersByFormat" calendar:v8 formatterKey:v9 creationBlock:v12];
 
   return v10;
 }
@@ -134,20 +134,20 @@ id __57__CUIKDateStrings_cachedDateFormatterForFormat_calendar___block_invoke(ui
   return v1;
 }
 
-+ (id)cachedDateFormatterForTemplate:(id)a3 calendar:(id)a4
++ (id)cachedDateFormatterForTemplate:(id)template calendar:(id)calendar
 {
-  v6 = a3;
-  v7 = a4;
+  templateCopy = template;
+  calendarCopy = calendar;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __59__CUIKDateStrings_cachedDateFormatterForTemplate_calendar___block_invoke;
   v12[3] = &unk_1E839AC38;
-  v14 = v7;
-  v15 = a1;
-  v13 = v6;
-  v8 = v7;
-  v9 = v6;
-  v10 = [a1 _cachedDateFormatterForDomain:@"com.apple.calendarUIKit.dateStrings.formattersByTemplate" calendar:v8 formatterKey:v9 creationBlock:v12];
+  v14 = calendarCopy;
+  selfCopy = self;
+  v13 = templateCopy;
+  v8 = calendarCopy;
+  v9 = templateCopy;
+  v10 = [self _cachedDateFormatterForDomain:@"com.apple.calendarUIKit.dateStrings.formattersByTemplate" calendar:v8 formatterKey:v9 creationBlock:v12];
 
   return v10;
 }
@@ -159,20 +159,20 @@ id __59__CUIKDateStrings_cachedDateFormatterForTemplate_calendar___block_invoke(
   return v1;
 }
 
-+ (id)cachedDateFormatterForDateStyle:(unint64_t)a3 timeStyle:(unint64_t)a4 calendar:(id)a5
++ (id)cachedDateFormatterForDateStyle:(unint64_t)style timeStyle:(unint64_t)timeStyle calendar:(id)calendar
 {
-  v8 = a5;
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu:%lu", a3, a4];
+  calendarCopy = calendar;
+  timeStyle = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu:%lu", style, timeStyle];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __70__CUIKDateStrings_cachedDateFormatterForDateStyle_timeStyle_calendar___block_invoke;
   v13[3] = &unk_1E839AC60;
-  v16 = a3;
-  v17 = a4;
-  v14 = v8;
-  v15 = a1;
-  v10 = v8;
-  v11 = [a1 _cachedDateFormatterForDomain:@"com.apple.calendarUIKit.dateStrings.formattersByStyles" calendar:v10 formatterKey:v9 creationBlock:v13];
+  styleCopy = style;
+  timeStyleCopy = timeStyle;
+  v14 = calendarCopy;
+  selfCopy = self;
+  v10 = calendarCopy;
+  v11 = [self _cachedDateFormatterForDomain:@"com.apple.calendarUIKit.dateStrings.formattersByStyles" calendar:v10 formatterKey:timeStyle creationBlock:v13];
 
   return v11;
 }
@@ -184,143 +184,143 @@ id __70__CUIKDateStrings_cachedDateFormatterForDateStyle_timeStyle_calendar___bl
   return v1;
 }
 
-+ (id)yearStringForDate:(id)a3 inCalendar:(id)a4
++ (id)yearStringForDate:(id)date inCalendar:(id)calendar
 {
-  v6 = a3;
-  v7 = [a1 cachedDateFormatterForTemplate:@"y" calendar:a4];
-  v8 = [v7 stringFromDate:v6];
+  dateCopy = date;
+  v7 = [self cachedDateFormatterForTemplate:@"y" calendar:calendar];
+  v8 = [v7 stringFromDate:dateCopy];
 
   return v8;
 }
 
-+ (id)yearMonthStringForDate:(id)a3 inCalendar:(id)a4
++ (id)yearMonthStringForDate:(id)date inCalendar:(id)calendar
 {
-  v6 = a3;
-  v7 = [a1 cachedDateFormatterForTemplate:@"yMMMM" calendar:a4];
-  v8 = [v7 stringFromDate:v6];
+  dateCopy = date;
+  v7 = [self cachedDateFormatterForTemplate:@"yMMMM" calendar:calendar];
+  v8 = [v7 stringFromDate:dateCopy];
 
   return v8;
 }
 
-+ (id)yearMonthDayStringForDate:(id)a3 inCalendar:(id)a4
++ (id)yearMonthDayStringForDate:(id)date inCalendar:(id)calendar
 {
-  v6 = a3;
-  v7 = [a1 cachedDateFormatterForTemplate:@"UMMMd" calendar:a4];
-  v8 = [v7 stringFromDate:v6];
+  dateCopy = date;
+  v7 = [self cachedDateFormatterForTemplate:@"UMMMd" calendar:calendar];
+  v8 = [v7 stringFromDate:dateCopy];
 
   return v8;
 }
 
-+ (id)monthStringForDate:(id)a3 inCalendar:(id)a4
++ (id)monthStringForDate:(id)date inCalendar:(id)calendar
 {
-  v6 = a3;
-  v7 = [a1 cachedDateFormatterForTemplate:@"MMM" calendar:a4];
-  v8 = [v7 stringFromDate:v6];
+  dateCopy = date;
+  v7 = [self cachedDateFormatterForTemplate:@"MMM" calendar:calendar];
+  v8 = [v7 stringFromDate:dateCopy];
 
   return v8;
 }
 
-+ (id)monthDayStringForDate:(id)a3 inCalendar:(id)a4
++ (id)monthDayStringForDate:(id)date inCalendar:(id)calendar
 {
-  v6 = a3;
-  v7 = [a1 cachedDateFormatterForTemplate:@"MMMd" calendar:a4];
-  v8 = [v7 stringFromDate:v6];
+  dateCopy = date;
+  v7 = [self cachedDateFormatterForTemplate:@"MMMd" calendar:calendar];
+  v8 = [v7 stringFromDate:dateCopy];
 
   return v8;
 }
 
-+ (id)mediumStringForDate:(id)a3 inCalendar:(id)a4
++ (id)mediumStringForDate:(id)date inCalendar:(id)calendar
 {
-  v6 = a3;
-  v7 = [a1 cachedDateFormatterForDateStyle:2 timeStyle:0 calendar:a4];
-  v8 = [v7 stringFromDate:v6];
+  dateCopy = date;
+  v7 = [self cachedDateFormatterForDateStyle:2 timeStyle:0 calendar:calendar];
+  v8 = [v7 stringFromDate:dateCopy];
 
   return v8;
 }
 
-+ (id)longStringForDate:(id)a3 inCalendar:(id)a4
++ (id)longStringForDate:(id)date inCalendar:(id)calendar
 {
-  v6 = a3;
-  v7 = [a1 cachedDateFormatterForDateStyle:3 timeStyle:0 calendar:a4];
-  v8 = [v7 stringFromDate:v6];
+  dateCopy = date;
+  v7 = [self cachedDateFormatterForDateStyle:3 timeStyle:0 calendar:calendar];
+  v8 = [v7 stringFromDate:dateCopy];
 
   return v8;
 }
 
-+ (unint64_t)overlayCalendarTypeForCalendarIdentifier:(id)a3
++ (unint64_t)overlayCalendarTypeForCalendarIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E695D828]])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:*MEMORY[0x1E695D828]])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E695D860]])
+  else if ([identifierCopy isEqualToString:*MEMORY[0x1E695D860]])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E695D880]])
+  else if ([identifierCopy isEqualToString:*MEMORY[0x1E695D880]])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E695D890]])
+  else if ([identifierCopy isEqualToString:*MEMORY[0x1E695D890]])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E695D818]])
+  else if ([identifierCopy isEqualToString:*MEMORY[0x1E695D818]])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E695D858]])
+  else if ([identifierCopy isEqualToString:*MEMORY[0x1E695D858]])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E695D8A0]])
+  else if ([identifierCopy isEqualToString:*MEMORY[0x1E695D8A0]])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E695D8A8]])
+  else if ([identifierCopy isEqualToString:*MEMORY[0x1E695D8A8]])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E695D8B0]])
+  else if ([identifierCopy isEqualToString:*MEMORY[0x1E695D8B0]])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E695D8B8]])
+  else if ([identifierCopy isEqualToString:*MEMORY[0x1E695D8B8]])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E695D8D0]])
+  else if ([identifierCopy isEqualToString:*MEMORY[0x1E695D8D0]])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E695D8D8]])
+  else if ([identifierCopy isEqualToString:*MEMORY[0x1E695D8D8]])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E695D8E8]])
+  else if ([identifierCopy isEqualToString:*MEMORY[0x1E695D8E8]])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E695D838]])
+  else if ([identifierCopy isEqualToString:*MEMORY[0x1E695D838]])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E695D8E0]])
+  else if ([identifierCopy isEqualToString:*MEMORY[0x1E695D8E0]])
   {
     v4 = 15;
   }
@@ -330,7 +330,7 @@ id __70__CUIKDateStrings_cachedDateFormatterForDateStyle_timeStyle_calendar___bl
     v5 = +[CUIKLogSubsystem dateStrings];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(CUIKDateStrings *)v3 overlayCalendarTypeForCalendarIdentifier:v5];
+      [(CUIKDateStrings *)identifierCopy overlayCalendarTypeForCalendarIdentifier:v5];
     }
 
     v4 = 0;
@@ -339,10 +339,10 @@ id __70__CUIKDateStrings_cachedDateFormatterForDateStyle_timeStyle_calendar___bl
   return v4;
 }
 
-+ (id)_significantLocaleComponents:(id)a3
++ (id)_significantLocaleComponents:(id)components
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF58] componentsFromLocaleIdentifier:a3];
+  v3 = [MEMORY[0x1E695DF58] componentsFromLocaleIdentifier:components];
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
@@ -386,9 +386,9 @@ id __70__CUIKDateStrings_cachedDateFormatterForDateStyle_timeStyle_calendar___bl
   return v4;
 }
 
-+ (id)_languageIDfromLocalID:(id)a3
++ (id)_languageIDfromLocalID:(id)d
 {
-  v3 = [a1 _significantLocaleComponents:a3];
+  v3 = [self _significantLocaleComponents:d];
   v4 = [MEMORY[0x1E695DF58] localeIdentifierFromComponents:v3];
   v5 = [v3 objectForKey:*MEMORY[0x1E695D9B0]];
   v6 = [v5 isEqualToString:@"zh"];
@@ -405,46 +405,46 @@ id __70__CUIKDateStrings_cachedDateFormatterForDateStyle_timeStyle_calendar___bl
   return v8;
 }
 
-+ (id)overlayLocalizedStringForKey:(id)a3 calendar:(id)a4
++ (id)overlayLocalizedStringForKey:(id)key calendar:(id)calendar
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a4 locale];
-  v8 = [v7 localeIdentifier];
+  keyCopy = key;
+  locale = [calendar locale];
+  localeIdentifier = [locale localeIdentifier];
 
-  v9 = [a1 _languageIDfromLocalID:v8];
+  v9 = [self _languageIDfromLocalID:localeIdentifier];
   v10 = CUIKBundle();
-  v11 = [v10 preferredLocalizations];
-  v12 = [v11 firstObject];
+  preferredLocalizations = [v10 preferredLocalizations];
+  firstObject = [preferredLocalizations firstObject];
 
   v13 = CUIKBundle();
-  v14 = [v13 localizations];
+  localizations = [v13 localizations];
 
   v15 = MEMORY[0x1E696AAE8];
   v22[0] = v9;
-  v22[1] = v12;
+  v22[1] = firstObject;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
-  v17 = [v15 preferredLocalizationsFromArray:v14 forPreferences:v16];
+  v17 = [v15 preferredLocalizationsFromArray:localizations forPreferences:v16];
 
   v18 = CUIKBundle();
-  v19 = [v17 firstObject];
-  v20 = [v18 localizedStringForKey:v6 value:0 table:0 localization:v19];
+  firstObject2 = [v17 firstObject];
+  v20 = [v18 localizedStringForKey:keyCopy value:0 table:0 localization:firstObject2];
 
   return v20;
 }
 
-+ (id)overlayFirstDayOfLunarMonthLocalizedStringInCalendar:(id)a3
++ (id)overlayFirstDayOfLunarMonthLocalizedStringInCalendar:(id)calendar
 {
-  v4 = a3;
-  v5 = [v4 calendarIdentifier];
-  v6 = [a1 overlayCalendarTypeForCalendarIdentifier:v5] - 1;
-  v7 = [a1 overlayLocalizedStringForKey:off_1E839ACF8[v6] calendar:v4];
+  calendarCopy = calendar;
+  calendarIdentifier = [calendarCopy calendarIdentifier];
+  v6 = [self overlayCalendarTypeForCalendarIdentifier:calendarIdentifier] - 1;
+  v7 = [self overlayLocalizedStringForKey:off_1E839ACF8[v6] calendar:calendarCopy];
   if (!v7)
   {
     v8 = +[CUIKLogSubsystem dateStrings];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(CUIKDateStrings *)v5 overlayFirstDayOfLunarMonthLocalizedStringInCalendar:v4];
+      [(CUIKDateStrings *)calendarIdentifier overlayFirstDayOfLunarMonthLocalizedStringInCalendar:calendarCopy];
     }
 
     v9 = CUIKBundle();
@@ -526,13 +526,13 @@ LABEL_27:
   return v7;
 }
 
-+ (id)overlayCalendarPickerDisplayNameForCalendarWithIdentifier:(id)a3
++ (id)overlayCalendarPickerDisplayNameForCalendarWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  switch([a1 overlayCalendarTypeForCalendarIdentifier:v4])
+  identifierCopy = identifier;
+  switch([self overlayCalendarTypeForCalendarIdentifier:identifierCopy])
   {
     case 0:
-      v5 = v4;
+      v5 = identifierCopy;
       break;
     case 1:
       v6 = CUIKBundle();
@@ -624,29 +624,29 @@ LABEL_19:
   return v5;
 }
 
-+ (id)_overlayDayOnlyStringForFormat:(id)a3 date:(id)a4 inCalendar:(id)a5
++ (id)_overlayDayOnlyStringForFormat:(id)format date:(id)date inCalendar:(id)calendar
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  formatCopy = format;
+  dateCopy = date;
+  calendarCopy = calendar;
   if (_overlayDayOnlyStringForFormat_date_inCalendar__onceToken != -1)
   {
     +[CUIKDateStrings _overlayDayOnlyStringForFormat:date:inCalendar:];
   }
 
-  if (_overlayDayOnlyStringForFormat_date_inCalendar__s_previousCalendar != v10 && ([v10 isEqual:?] & 1) == 0)
+  if (_overlayDayOnlyStringForFormat_date_inCalendar__s_previousCalendar != calendarCopy && ([calendarCopy isEqual:?] & 1) == 0)
   {
     [_overlayDayOnlyStringForFormat_date_inCalendar__s_cachedStrings removeAllObjects];
-    objc_storeStrong(&_overlayDayOnlyStringForFormat_date_inCalendar__s_previousCalendar, a5);
+    objc_storeStrong(&_overlayDayOnlyStringForFormat_date_inCalendar__s_previousCalendar, calendar);
   }
 
-  v11 = [v10 component:16 fromDate:v9];
-  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%ld", v8, v11];
+  v11 = [calendarCopy component:16 fromDate:dateCopy];
+  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%ld", formatCopy, v11];
   v13 = [_overlayDayOnlyStringForFormat_date_inCalendar__s_cachedStrings objectForKey:v12];
   if (!v13)
   {
-    v14 = [a1 cachedDateFormatterForFormat:v8 calendar:v10];
-    v13 = [v14 stringFromDate:v9];
+    v14 = [self cachedDateFormatterForFormat:formatCopy calendar:calendarCopy];
+    v13 = [v14 stringFromDate:dateCopy];
 
     [_overlayDayOnlyStringForFormat_date_inCalendar__s_cachedStrings setObject:v13 forKey:v12];
   }
@@ -663,19 +663,19 @@ uint64_t __66__CUIKDateStrings__overlayDayOnlyStringForFormat_date_inCalendar___
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)overlayShortStringForDate:(id)a3 inCalendar:(id)a4 alwaysShowingDayNumber:(BOOL)a5
++ (id)overlayShortStringForDate:(id)date inCalendar:(id)calendar alwaysShowingDayNumber:(BOOL)number
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 components:2147483664 fromDate:v8];
-  if ([v10 day] != 1 || (objc_msgSend(v10, "isRepeatedDay") & 1) != 0 || a5)
+  dateCopy = date;
+  calendarCopy = calendar;
+  v10 = [calendarCopy components:2147483664 fromDate:dateCopy];
+  if ([v10 day] != 1 || (objc_msgSend(v10, "isRepeatedDay") & 1) != 0 || number)
   {
-    v11 = [a1 overlayDayNumberStringForDate:v8 inCalendar:v9];
+    v11 = [self overlayDayNumberStringForDate:dateCopy inCalendar:calendarCopy];
   }
 
   else
   {
-    v11 = [a1 monthStringForDate:v8 inCalendar:v9];
+    v11 = [self monthStringForDate:dateCopy inCalendar:calendarCopy];
   }
 
   v12 = v11;
@@ -683,19 +683,19 @@ uint64_t __66__CUIKDateStrings__overlayDayOnlyStringForFormat_date_inCalendar___
   return v12;
 }
 
-+ (id)overlayMediumStringForDate:(id)a3 inCalendar:(id)a4
++ (id)overlayMediumStringForDate:(id)date inCalendar:(id)calendar
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 components:2147483664 fromDate:v6];
+  dateCopy = date;
+  calendarCopy = calendar;
+  v8 = [calendarCopy components:2147483664 fromDate:dateCopy];
   if ([v8 day] == 1 && (objc_msgSend(v8, "isRepeatedDay") & 1) == 0)
   {
-    v9 = [a1 monthDayStringForDate:v6 inCalendar:v7];
+    v9 = [self monthDayStringForDate:dateCopy inCalendar:calendarCopy];
   }
 
   else
   {
-    v9 = [a1 overlayDayNumberStringForDate:v6 inCalendar:v7];
+    v9 = [self overlayDayNumberStringForDate:dateCopy inCalendar:calendarCopy];
   }
 
   v10 = v9;
@@ -703,15 +703,15 @@ uint64_t __66__CUIKDateStrings__overlayDayOnlyStringForFormat_date_inCalendar___
   return v10;
 }
 
-+ (id)_zodiacSymbolForDate:(id)a3 inCalendar:(id)a4
++ (id)_zodiacSymbolForDate:(id)date inCalendar:(id)calendar
 {
-  v5 = a3;
-  v6 = a4;
+  dateCopy = date;
+  calendarCopy = calendar;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__CUIKDateStrings__zodiacSymbolForDate_inCalendar___block_invoke;
   block[3] = &unk_1E8399BD8;
-  v7 = v6;
+  v7 = calendarCopy;
   v13 = v7;
   if (_zodiacSymbolForDate_inCalendar__onceToken != -1)
   {
@@ -720,7 +720,7 @@ uint64_t __66__CUIKDateStrings__overlayDayOnlyStringForFormat_date_inCalendar___
 
   if (_zodiacSymbolForDate_inCalendar__s_formatter)
   {
-    [v7 component:4 fromDate:v5];
+    [v7 component:4 fromDate:dateCopy];
     v11 = 0;
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCharacters:v10 length:udat_getSymbols()];
   }
@@ -742,19 +742,19 @@ void __51__CUIKDateStrings__zodiacSymbolForDate_inCalendar___block_invoke(uint64
   _zodiacSymbolForDate_inCalendar__s_formatter = udat_open();
 }
 
-+ (id)overlayYearStringForDate:(id)a3 inCalendar:(id)a4
++ (id)overlayYearStringForDate:(id)date inCalendar:(id)calendar
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 calendarIdentifier];
-  v9 = [v8 isEqualToString:*MEMORY[0x1E695D828]];
+  dateCopy = date;
+  calendarCopy = calendar;
+  calendarIdentifier = [calendarCopy calendarIdentifier];
+  v9 = [calendarIdentifier isEqualToString:*MEMORY[0x1E695D828]];
 
   if (v9)
   {
-    v10 = [a1 cachedDateFormatterForFormat:@"U" calendar:v7];
-    v11 = [v10 stringFromDate:v6];
+    v10 = [self cachedDateFormatterForFormat:@"U" calendar:calendarCopy];
+    v11 = [v10 stringFromDate:dateCopy];
 
-    v12 = [a1 _zodiacSymbolForDate:v6 inCalendar:v7];
+    v12 = [self _zodiacSymbolForDate:dateCopy inCalendar:calendarCopy];
     if (v12)
     {
       v13 = v12;
@@ -770,28 +770,28 @@ void __51__CUIKDateStrings__zodiacSymbolForDate_inCalendar___block_invoke(uint64
 
   else
   {
-    v14 = [a1 yearStringForDate:v6 inCalendar:v7];
+    v14 = [self yearStringForDate:dateCopy inCalendar:calendarCopy];
   }
 
   return v14;
 }
 
-+ (id)stylizedTimelineHourStringForHourDate:(id)a3 baseFontSize:(double)a4
++ (id)stylizedTimelineHourStringForHourDate:(id)date baseFontSize:(double)size
 {
   v131[2] = *MEMORY[0x1E69E9840];
-  v69 = a3;
+  dateCopy = date;
   v68 = [MEMORY[0x1E695DFE8] timeZoneWithName:@"GMT"];
   if ([MEMORY[0x1E6992F68] uses24HourTime])
   {
-    v5 = [v69 localizedStringWithFormat:*MEMORY[0x1E6992E88] timeZone:v68];
-    v6 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v5];
-    v7 = [v5 length];
+    timelineHourDateFormatter = [dateCopy localizedStringWithFormat:*MEMORY[0x1E6992E88] timeZone:v68];
+    v6 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:timelineHourDateFormatter];
+    v7 = [timelineHourDateFormatter length];
     v130[0] = *MEMORY[0x1E69DB648];
-    v8 = [MEMORY[0x1E69DB878] systemFontOfSize:floor(a4)];
+    v8 = [MEMORY[0x1E69DB878] systemFontOfSize:floor(size)];
     v131[0] = v8;
     v130[1] = *MEMORY[0x1E69DB650];
-    v9 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v131[1] = v9;
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v131[1] = secondaryLabelColor;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v131 forKeys:v130 count:2];
 
     [v6 setAttributes:v10 range:{0, v7}];
@@ -799,11 +799,11 @@ void __51__CUIKDateStrings__zodiacSymbolForDate_inCalendar___block_invoke(uint64
 
   else
   {
-    v5 = [MEMORY[0x1E6992F68] timelineHourDateFormatter];
+    timelineHourDateFormatter = [MEMORY[0x1E6992F68] timelineHourDateFormatter];
     v11 = [MEMORY[0x1E695DFE8] timeZoneForSecondsFromGMT:0];
-    [v5 setTimeZone:v11];
+    [timelineHourDateFormatter setTimeZone:v11];
 
-    v12 = [v5 _attributedStringWithFieldsFromDate:v69];
+    v12 = [timelineHourDateFormatter _attributedStringWithFieldsFromDate:dateCopy];
     v13 = [v12 mutableCopy];
 
     v107 = 0;
@@ -818,7 +818,7 @@ void __51__CUIKDateStrings__zodiacSymbolForDate_inCalendar___block_invoke(uint64
     v105[3] = __Block_byref_object_copy__11;
     v105[4] = __Block_byref_object_dispose__11;
     v106 = 0;
-    v14 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v101 = 0;
     v102 = &v101;
     v103 = 0x2020000000;
@@ -833,7 +833,7 @@ void __51__CUIKDateStrings__zodiacSymbolForDate_inCalendar___block_invoke(uint64
     v98 = &v107;
     v99 = &v101;
     v100 = v105;
-    v65 = v14;
+    v65 = array;
     v97 = v65;
     [v16 enumerateAttributesInRange:0 options:v15 usingBlock:{0, v95}];
     if (([v108[5] isEqual:@"AM"] & 1) != 0 || objc_msgSend(v108[5], "isEqual:", @"PM"))
@@ -856,7 +856,7 @@ void __51__CUIKDateStrings__zodiacSymbolForDate_inCalendar___block_invoke(uint64
     v87 = 0x3010000000;
     v88 = &unk_1CADB7076;
     v89 = xmmword_1CAD58160;
-    v17 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v18 = [v16 length];
     v80[0] = MEMORY[0x1E69E9820];
     v80[1] = 3221225472;
@@ -866,20 +866,20 @@ void __51__CUIKDateStrings__zodiacSymbolForDate_inCalendar___block_invoke(uint64
     v81 = v19;
     v83 = &v85;
     v84 = &v90;
-    v67 = v17;
+    v67 = array2;
     v82 = v67;
     [v19 enumerateAttributesInRange:0 options:v18 usingBlock:{0, v80}];
     if (v91[4] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v20 = [MEMORY[0x1E69DB878] systemFontOfSize:floor(a4) weight:*MEMORY[0x1E69DB970]];
+      v20 = [MEMORY[0x1E69DB878] systemFontOfSize:floor(size) weight:*MEMORY[0x1E69DB970]];
       v21 = *MEMORY[0x1E69DB648];
       v66 = v20;
       v114[0] = v20;
       v22 = *MEMORY[0x1E69DB650];
       v113[0] = v21;
       v113[1] = v22;
-      v23 = [MEMORY[0x1E69DC888] cuik_timelineHourColor];
-      v114[1] = v23;
+      cuik_timelineHourColor = [MEMORY[0x1E69DC888] cuik_timelineHourColor];
+      v114[1] = cuik_timelineHourColor;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v114 forKeys:v113 count:2];
 
       [v19 setAttributes:v24 range:{0, objc_msgSend(v19, "length")}];
@@ -887,11 +887,11 @@ void __51__CUIKDateStrings__zodiacSymbolForDate_inCalendar___block_invoke(uint64
 
     else
     {
-      v25 = [MEMORY[0x1E69DC888] cuik_timelineHourColor];
+      cuik_timelineHourColor2 = [MEMORY[0x1E69DC888] cuik_timelineHourColor];
       v59 = *MEMORY[0x1E69DB650];
       v128 = *MEMORY[0x1E69DB650];
-      v129 = v25;
-      v66 = v25;
+      v129 = cuik_timelineHourColor2;
+      v66 = cuik_timelineHourColor2;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v129 forKeys:&v128 count:1];
       v26 = v91[4];
       if (v26 != 0x7FFFFFFFFFFFFFFFLL)
@@ -917,8 +917,8 @@ void __51__CUIKDateStrings__zodiacSymbolForDate_inCalendar___block_invoke(uint64
               objc_enumerationMutation(v27);
             }
 
-            v31 = [*(*(&v76 + 1) + 8 * i) rangeValue];
-            [v19 addAttributes:v24 range:{v31, v32}];
+            rangeValue = [*(*(&v76 + 1) + 8 * i) rangeValue];
+            [v19 addAttributes:v24 range:{rangeValue, v32}];
           }
 
           v28 = [v27 countByEnumeratingWithState:&v76 objects:v127 count:16];
@@ -927,7 +927,7 @@ void __51__CUIKDateStrings__zodiacSymbolForDate_inCalendar___block_invoke(uint64
         while (v28);
       }
 
-      v33 = [MEMORY[0x1E69DB878] systemFontOfSize:floor(a4 * 1.36363636)];
+      v33 = [MEMORY[0x1E69DB878] systemFontOfSize:floor(size * 1.36363636)];
       v34 = [MEMORY[0x1E69DB878] cuik_createFontFromFont:v33 withFontGrade:2];
       v35 = *MEMORY[0x1E69DB648];
       v125 = *MEMORY[0x1E69DB648];
@@ -947,18 +947,18 @@ void __51__CUIKDateStrings__zodiacSymbolForDate_inCalendar___block_invoke(uint64
       v124[0] = &unk_1F4ABEBE8;
       v124[1] = &unk_1F4ABEC00;
       v63 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v124 forKeys:v123 count:2];
-      v38 = [v64 fontDescriptor];
+      fontDescriptor = [v64 fontDescriptor];
       v121 = *MEMORY[0x1E69DB8B0];
       v120 = v63;
       v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v120 count:1];
       v122 = v39;
       v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v122 forKeys:&v121 count:1];
-      v62 = [v38 fontDescriptorByAddingAttributes:v40];
+      v62 = [fontDescriptor fontDescriptorByAddingAttributes:v40];
 
-      v41 = [MEMORY[0x1E69DB878] fontWithDescriptor:v62 size:floor(a4)];
+      v41 = [MEMORY[0x1E69DB878] fontWithDescriptor:v62 size:floor(size)];
       v118 = v59;
-      v42 = [MEMORY[0x1E69DC888] cuik_timelineDesignatorColor];
-      v119 = v42;
+      cuik_timelineDesignatorColor = [MEMORY[0x1E69DC888] cuik_timelineDesignatorColor];
+      v119 = cuik_timelineDesignatorColor;
       v60 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v119 forKeys:&v118 count:1];
 
       v43 = v86[4];
@@ -995,8 +995,8 @@ void __51__CUIKDateStrings__zodiacSymbolForDate_inCalendar___block_invoke(uint64
               objc_enumerationMutation(v47);
             }
 
-            v51 = [*(*(&v72 + 1) + 8 * j) rangeValue];
-            [v19 addAttributes:v44 range:{v51, v52}];
+            rangeValue2 = [*(*(&v72 + 1) + 8 * j) rangeValue];
+            [v19 addAttributes:v44 range:{rangeValue2, v52}];
           }
 
           v48 = [v47 countByEnumeratingWithState:&v72 objects:v115 count:16];

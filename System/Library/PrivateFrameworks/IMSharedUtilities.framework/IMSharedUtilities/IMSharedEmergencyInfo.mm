@@ -1,25 +1,25 @@
 @interface IMSharedEmergencyInfo
-+ (id)infoFromDictionary:(id)a3 isStewieTranscriptSharingMessage:(BOOL *)a4;
-- (IMSharedEmergencyInfo)initWithCoder:(id)a3;
-- (IMSharedEmergencyInfo)initWithStewieUserPersona:(id)a3 stewieUserPersona:(id)a4 conversationID:(id)a5 messageType:(int64_t)a6;
++ (id)infoFromDictionary:(id)dictionary isStewieTranscriptSharingMessage:(BOOL *)message;
+- (IMSharedEmergencyInfo)initWithCoder:(id)coder;
+- (IMSharedEmergencyInfo)initWithStewieUserPersona:(id)persona stewieUserPersona:(id)userPersona conversationID:(id)d messageType:(int64_t)type;
 - (NSDictionary)dictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IMSharedEmergencyInfo
 
-+ (id)infoFromDictionary:(id)a3 isStewieTranscriptSharingMessage:(BOOL *)a4
++ (id)infoFromDictionary:(id)dictionary isStewieTranscriptSharingMessage:(BOOL *)message
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  dictionaryCopy = dictionary;
+  v6 = dictionaryCopy;
+  if (message)
   {
-    *a4 = 0;
+    *message = 0;
   }
 
-  v7 = [v5 _dictionaryForKey:@"eufo"];
+  v7 = [dictionaryCopy _dictionaryForKey:@"eufo"];
   if (v7)
   {
   }
@@ -35,9 +35,9 @@
     }
   }
 
-  if (a4)
+  if (message)
   {
-    *a4 = 1;
+    *message = 1;
   }
 
   v9 = [v6 _dictionaryForKey:@"eufo"];
@@ -64,7 +64,7 @@
       v17 = 1;
     }
 
-    if (a4)
+    if (message)
     {
       goto LABEL_16;
     }
@@ -73,7 +73,7 @@
   }
 
   v17 = 1;
-  if (!a4)
+  if (!message)
   {
 LABEL_15:
     v18 = [v6 _stringForKey:@"cid"];
@@ -101,21 +101,21 @@ LABEL_21:
   return v20;
 }
 
-- (IMSharedEmergencyInfo)initWithStewieUserPersona:(id)a3 stewieUserPersona:(id)a4 conversationID:(id)a5 messageType:(int64_t)a6
+- (IMSharedEmergencyInfo)initWithStewieUserPersona:(id)persona stewieUserPersona:(id)userPersona conversationID:(id)d messageType:(int64_t)type
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  personaCopy = persona;
+  userPersonaCopy = userPersona;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = IMSharedEmergencyInfo;
   v14 = [(IMSharedEmergencyInfo *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_emergencyUserPersona, a3);
-    objc_storeStrong(&v15->_senderPersona, a4);
-    objc_storeStrong(&v15->_conversationID, a5);
-    v15->_messageType = a6;
+    objc_storeStrong(&v14->_emergencyUserPersona, persona);
+    objc_storeStrong(&v15->_senderPersona, userPersona);
+    objc_storeStrong(&v15->_conversationID, d);
+    v15->_messageType = type;
   }
 
   return v15;
@@ -123,21 +123,21 @@ LABEL_21:
 
 - (NSDictionary)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(IMSharedPersona *)self->_emergencyUserPersona dictionaryRepresentation];
-  [v3 setValue:v4 forKey:@"eufo"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionaryRepresentation = [(IMSharedPersona *)self->_emergencyUserPersona dictionaryRepresentation];
+  [dictionary setValue:dictionaryRepresentation forKey:@"eufo"];
 
-  v5 = [(IMSharedPersona *)self->_senderPersona dictionaryRepresentation];
-  [v3 setValue:v5 forKey:@"prsna"];
+  dictionaryRepresentation2 = [(IMSharedPersona *)self->_senderPersona dictionaryRepresentation];
+  [dictionary setValue:dictionaryRepresentation2 forKey:@"prsna"];
 
-  [v3 setValue:self->_conversationID forKey:@"cid"];
+  [dictionary setValue:self->_conversationID forKey:@"cid"];
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:self->_messageType];
-  [v3 setValue:v6 forKey:@"t"];
+  [dictionary setValue:v6 forKey:@"t"];
 
-  return v3;
+  return dictionary;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [IMSharedEmergencyInfo alloc];
   emergencyUserPersona = self->_emergencyUserPersona;
@@ -148,26 +148,26 @@ LABEL_21:
   return [(IMSharedEmergencyInfo *)v4 initWithStewieUserPersona:emergencyUserPersona stewieUserPersona:senderPersona conversationID:conversationID messageType:messageType];
 }
 
-- (IMSharedEmergencyInfo)initWithCoder:(id)a3
+- (IMSharedEmergencyInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eufo"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"prsna"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cid"];
-  v8 = [v4 decodeIntegerForKey:@"t"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eufo"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"prsna"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cid"];
+  v8 = [coderCopy decodeIntegerForKey:@"t"];
 
   v9 = [(IMSharedEmergencyInfo *)self initWithStewieUserPersona:v5 stewieUserPersona:v6 conversationID:v7 messageType:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   emergencyUserPersona = self->_emergencyUserPersona;
-  v5 = a3;
-  [v5 encodeObject:emergencyUserPersona forKey:@"eufo"];
-  [v5 encodeObject:self->_senderPersona forKey:@"prsna"];
-  [v5 encodeObject:self->_conversationID forKey:@"cid"];
-  [v5 encodeInteger:self->_messageType forKey:@"t"];
+  coderCopy = coder;
+  [coderCopy encodeObject:emergencyUserPersona forKey:@"eufo"];
+  [coderCopy encodeObject:self->_senderPersona forKey:@"prsna"];
+  [coderCopy encodeObject:self->_conversationID forKey:@"cid"];
+  [coderCopy encodeInteger:self->_messageType forKey:@"t"];
 }
 
 - (id)description
@@ -177,9 +177,9 @@ LABEL_21:
   v4 = [v3 appendInteger:self->_messageType withName:@"messageType"];
   v5 = [v3 appendObject:self->_emergencyUserPersona withName:@"emergencyUserPersona"];
   v6 = [v3 appendObject:self->_senderPersona withName:@"senderPersona"];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

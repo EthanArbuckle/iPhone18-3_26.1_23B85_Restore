@@ -11,12 +11,12 @@
 - (int64_t)currentParticipantsState;
 - (void)_sendSettingsControllerDidChange;
 - (void)_sendSettingsControllerDidChangeAllowInviters;
-- (void)auxiliaryAction:(id)a3;
-- (void)copyLink:(id)a3;
-- (void)setAllowInviters:(int64_t)a3;
-- (void)setDefaultPermission:(int64_t)a3;
-- (void)setPublicPermission:(int64_t)a3;
-- (void)setSettings:(id)a3;
+- (void)auxiliaryAction:(id)action;
+- (void)copyLink:(id)link;
+- (void)setAllowInviters:(int64_t)inviters;
+- (void)setDefaultPermission:(int64_t)permission;
+- (void)setPublicPermission:(int64_t)permission;
+- (void)setSettings:(id)settings;
 - (void)updateSections;
 @end
 
@@ -36,37 +36,37 @@
     v5 = [[UITableView alloc] initWithFrame:1 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     [(_UIShareInvitationSettingsController *)v2 setStaticTableView:v5];
 
-    v6 = [(_UIShareInvitationSettingsController *)v2 staticTableView];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+    staticTableView = [(_UIShareInvitationSettingsController *)v2 staticTableView];
+    [staticTableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v7 = [(_UIShareInvitationSettingsController *)v2 staticTableView];
-    [v7 setSectionFooterHeight:UITableViewAutomaticDimension];
+    staticTableView2 = [(_UIShareInvitationSettingsController *)v2 staticTableView];
+    [staticTableView2 setSectionFooterHeight:UITableViewAutomaticDimension];
 
-    v8 = [(_UIShareInvitationSettingsController *)v2 staticTableView];
-    [v8 setEstimatedSectionFooterHeight:25.0];
+    staticTableView3 = [(_UIShareInvitationSettingsController *)v2 staticTableView];
+    [staticTableView3 setEstimatedSectionFooterHeight:25.0];
 
-    v9 = [(_UIShareInvitationSettingsController *)v2 view];
-    [v9 addSubview:v2->_staticTableView];
+    view = [(_UIShareInvitationSettingsController *)v2 view];
+    [view addSubview:v2->_staticTableView];
 
-    v31 = [(_UIShareInvitationSettingsController *)v2 view];
-    v30 = [v31 bottomAnchor];
-    v29 = [(UITableView *)v2->_staticTableView bottomAnchor];
-    v28 = [v30 constraintEqualToAnchor:v29];
+    view2 = [(_UIShareInvitationSettingsController *)v2 view];
+    bottomAnchor = [view2 bottomAnchor];
+    bottomAnchor2 = [(UITableView *)v2->_staticTableView bottomAnchor];
+    v28 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v33[0] = v28;
-    v27 = [(_UIShareInvitationSettingsController *)v2 view];
-    v26 = [v27 rightAnchor];
-    v25 = [(UITableView *)v2->_staticTableView rightAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    view3 = [(_UIShareInvitationSettingsController *)v2 view];
+    rightAnchor = [view3 rightAnchor];
+    rightAnchor2 = [(UITableView *)v2->_staticTableView rightAnchor];
+    v24 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v33[1] = v24;
-    v23 = [(_UIShareInvitationSettingsController *)v2 view];
-    v10 = [v23 leftAnchor];
-    v11 = [(UITableView *)v2->_staticTableView leftAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    view4 = [(_UIShareInvitationSettingsController *)v2 view];
+    leftAnchor = [view4 leftAnchor];
+    leftAnchor2 = [(UITableView *)v2->_staticTableView leftAnchor];
+    v12 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v33[2] = v12;
-    v13 = [(_UIShareInvitationSettingsController *)v2 view];
-    v14 = [v13 topAnchor];
-    v15 = [(UITableView *)v2->_staticTableView topAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    view5 = [(_UIShareInvitationSettingsController *)v2 view];
+    topAnchor = [view5 topAnchor];
+    topAnchor2 = [(UITableView *)v2->_staticTableView topAnchor];
+    v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v33[3] = v16;
     v17 = [NSArray arrayWithObjects:v33 count:4];
     [NSLayoutConstraint activateConstraints:v17];
@@ -74,8 +74,8 @@
     v18 = [[_UIShareTableStaticDataSource alloc] initWithTableView:v2->_staticTableView];
     [(_UIShareInvitationSettingsController *)v2 setStaticTableDataSource:v18];
 
-    v19 = [(_UIShareInvitationSettingsController *)v2 staticTableDataSource];
-    [v19 setDefaultTarget:v2];
+    staticTableDataSource = [(_UIShareInvitationSettingsController *)v2 staticTableDataSource];
+    [staticTableDataSource setDefaultTarget:v2];
 
     v20 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
     v21 = [v20 localizedStringForKey:@"SETTINGS_TITLE_TEXT" value:@"Share Options" table:@"Localizable"];
@@ -87,45 +87,45 @@
 
 - (void)updateSections
 {
-  v3 = [(_UIShareInvitationSettingsController *)self _sections];
-  v4 = [(_UIShareInvitationSettingsController *)self staticTableDataSource];
-  [v4 setSections:v3];
+  _sections = [(_UIShareInvitationSettingsController *)self _sections];
+  staticTableDataSource = [(_UIShareInvitationSettingsController *)self staticTableDataSource];
+  [staticTableDataSource setSections:_sections];
 
-  v5 = [(_UIShareInvitationSettingsController *)self staticTableView];
-  [v5 reloadData];
+  staticTableView = [(_UIShareInvitationSettingsController *)self staticTableView];
+  [staticTableView reloadData];
 }
 
 - (id)share
 {
-  v3 = [(_UIShareInvitationSettingsController *)self overviewControllerDelegate];
-  v4 = [v3 viewControllerShare:self];
+  overviewControllerDelegate = [(_UIShareInvitationSettingsController *)self overviewControllerDelegate];
+  v4 = [overviewControllerDelegate viewControllerShare:self];
 
   return v4;
 }
 
 - (id)_sections
 {
-  v103 = [(_UIShareInvitationSettingsController *)self overviewControllerDelegate];
-  v112 = [(_UIShareInvitationSettingsController *)self proxiedOverviewController];
+  overviewControllerDelegate = [(_UIShareInvitationSettingsController *)self overviewControllerDelegate];
+  proxiedOverviewController = [(_UIShareInvitationSettingsController *)self proxiedOverviewController];
   v114 = +[NSMutableArray array];
-  v81 = [v103 shareViewControllerIsInitialShare:v112];
-  v113 = [(BRShareSettings *)self->_settings hasACL];
-  v3 = [v103 viewControllerShare:self];
+  v81 = [overviewControllerDelegate shareViewControllerIsInitialShare:proxiedOverviewController];
+  hasACL = [(BRShareSettings *)self->_settings hasACL];
+  v3 = [overviewControllerDelegate viewControllerShare:self];
   v100 = v3;
   if (v3)
   {
-    v4 = [v3 owner];
-    v5 = [v4 isCurrentUser];
+    owner = [v3 owner];
+    isCurrentUser = [owner isCurrentUser];
   }
 
   else
   {
-    v5 = 1;
+    isCurrentUser = 1;
   }
 
-  v111 = self;
-  v101 = v5;
-  v6 = [(BRShareSettings *)self->_settings shouldShowMode]& v5;
+  selfCopy = self;
+  v101 = isCurrentUser;
+  v6 = [(BRShareSettings *)self->_settings shouldShowMode]& isCurrentUser;
   v158[0] = @"title";
   v109 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
   v107 = [v109 localizedStringForKey:@"Who can access" value:@"Who can access" table:@"Localizable"];
@@ -179,14 +179,14 @@
 
   v105 = [(BRShareSettings *)self->_settings shouldShowPermissions]& v101;
   v14 = @"publicPermission";
-  if (v113)
+  if (hasACL)
   {
     v14 = @"defaultPermission";
   }
 
   v108 = v14;
   v99 = v13;
-  if (v113)
+  if (hasACL)
   {
     v97 = [(BRShareSettings *)self->_settings defaultPermission]== 0;
   }
@@ -241,8 +241,8 @@
   v110 = [v18 mutableCopy];
 
   v19 = &BRFormatPhoneNumber_ptr;
-  v20 = v103;
-  v21 = self;
+  v20 = overviewControllerDelegate;
+  selfCopy2 = self;
   v22 = v97;
   if (v97 || self->_hasEverBeenInMixedPermissionState)
   {
@@ -266,7 +266,7 @@
     v28 = [v23 initWithString:v25 attributes:v27];
 
     [v110 setObject:v28 forKey:@"footer"];
-    v111->_permissionSectionIndex = [v114 count];
+    selfCopy->_permissionSectionIndex = [v114 count];
 
     v22 = v97;
   }
@@ -276,9 +276,9 @@
     [v114 addObject:v110];
   }
 
-  v29 = (v113 & 1) != 0 || v111->_settings == 0;
-  v30 = [(_UIShareInvitationSettingsController *)v111 defaultPermission]== 3 || v111->_settings == 0;
-  if (([v103 shareViewControllerIsNotesOrRemindersOrDocSharing:v112] & v29) == 1)
+  v29 = (hasACL & 1) != 0 || selfCopy->_settings == 0;
+  v30 = [(_UIShareInvitationSettingsController *)selfCopy defaultPermission]== 3 || selfCopy->_settings == 0;
+  if (([overviewControllerDelegate shareViewControllerIsNotesOrRemindersOrDocSharing:proxiedOverviewController] & v29) == 1)
   {
     v31 = v101 & (v30 || v22);
   }
@@ -289,17 +289,17 @@
   }
 
   v32 = +[UIShareFeature coOwners];
-  v33 = [v32 isEnabled];
+  isEnabled = [v32 isEnabled];
 
-  if (v33 && v31)
+  if (isEnabled && v31)
   {
-    v34 = [v103 editableParticipants];
-    v35 = [v34 count];
+    editableParticipants = [overviewControllerDelegate editableParticipants];
+    v35 = [editableParticipants count];
 
-    v111->_allowInviters = [(_UIShareInvitationSettingsController *)v111 currentParticipantsState];
-    if (v35 < 2 || [v103 isShowAddPeople])
+    selfCopy->_allowInviters = [(_UIShareInvitationSettingsController *)selfCopy currentParticipantsState];
+    if (v35 < 2 || [overviewControllerDelegate isShowAddPeople])
     {
-      v36 = [v103 shareViewControllerAllowOthersToInvite];
+      shareViewControllerAllowOthersToInvite = [overviewControllerDelegate shareViewControllerAllowOthersToInvite];
       v142 = @"items";
       v139[0] = @"title";
       v37 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
@@ -313,7 +313,7 @@
       v39 = [NSNumber numberWithInt:v29 & v30];
       v140[3] = v39;
       v139[4] = @"value";
-      v40 = [NSNumber numberWithBool:v36];
+      v40 = [NSNumber numberWithBool:shareViewControllerAllowOthersToInvite];
       v140[4] = v40;
       v139[5] = @"toggleCreationCallback";
       v41 = NSStringFromSelector("createdInviteToggle:");
@@ -371,9 +371,9 @@
       v75 = [NSDictionary dictionaryWithObjects:v138 forKeys:v137 count:2];
       v44 = [v75 mutableCopy];
 
-      if (v111->_allowInviters != 3)
+      if (selfCopy->_allowInviters != 3)
       {
-        v20 = v103;
+        v20 = overviewControllerDelegate;
         v19 = &BRFormatPhoneNumber_ptr;
         goto LABEL_34;
       }
@@ -389,25 +389,25 @@
       v37 = [v76 initWithString:v78 attributes:v80];
 
       [v44 setObject:v37 forKey:@"footer"];
-      v111->_hasEverBeenInMixedAllowInvitersState = 1;
-      v111->_allowInvitersSectionIndex = [v114 count];
-      v20 = v103;
+      selfCopy->_hasEverBeenInMixedAllowInvitersState = 1;
+      selfCopy->_allowInvitersSectionIndex = [v114 count];
+      v20 = overviewControllerDelegate;
     }
 
 LABEL_34:
     [v114 addObject:v44];
 
-    v21 = v111;
+    selfCopy2 = selfCopy;
   }
 
   v117 = 0u;
   v118 = 0u;
   v115 = 0u;
   v116 = 0u;
-  v45 = [v20 viewControllerShare:v21];
-  v46 = [v45 participants];
+  v45 = [v20 viewControllerShare:selfCopy2];
+  participants = [v45 participants];
 
-  v47 = [v46 countByEnumeratingWithState:&v115 objects:v129 count:16];
+  v47 = [participants countByEnumeratingWithState:&v115 objects:v129 count:16];
   if (v47)
   {
     v48 = v47;
@@ -418,7 +418,7 @@ LABEL_34:
       {
         if (*v116 != v49)
         {
-          objc_enumerationMutation(v46);
+          objc_enumerationMutation(participants);
         }
 
         v51 = *(*(&v115 + 1) + 8 * i);
@@ -429,7 +429,7 @@ LABEL_34:
         }
       }
 
-      v48 = [v46 countByEnumeratingWithState:&v115 objects:v129 count:16];
+      v48 = [participants countByEnumeratingWithState:&v115 objects:v129 count:16];
       v52 = 1;
       if (v48)
       {
@@ -447,8 +447,8 @@ LABEL_34:
 
 LABEL_47:
 
-  v53 = [(BRShareSettings *)v21->_settings shouldHideCopyLink];
-  if ((v52 & 1) == 0 && ((v53 | v81) & 1) == 0 && ((v113 ^ 1) & 1) == 0)
+  shouldHideCopyLink = [(BRShareSettings *)selfCopy2->_settings shouldHideCopyLink];
+  if ((v52 & 1) == 0 && ((shouldHideCopyLink | v81) & 1) == 0 && ((hasACL ^ 1) & 1) == 0)
   {
     v127[0] = @"items";
     v124[0] = @"title";
@@ -469,18 +469,18 @@ LABEL_47:
     v127[1] = @"footer";
     v59 = [v19[240] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
     v60 = [v59 localizedStringForKey:@"SETTINGS_COPY_LINK_SUBTITLE" value:@"Only added people will have access." table:@"Localizable"];
-    v61 = [v20 shareViewControllerItemUTI:v112];
+    v61 = [v20 shareViewControllerItemUTI:proxiedOverviewController];
     v62 = _CDAdaptLocalizedStringForItemType();
     v128[1] = v62;
     v63 = [NSDictionary dictionaryWithObjects:v128 forKeys:v127 count:2];
 
-    v20 = v103;
+    v20 = overviewControllerDelegate;
     [v114 addObject:v63];
   }
 
-  v64 = [v20 shareViewControllerAuxiliaryActionTitle:v112];
+  v64 = [v20 shareViewControllerAuxiliaryActionTitle:proxiedOverviewController];
   v65 = v64;
-  if (!((v64 == 0) | v113 & 1))
+  if (!((v64 == 0) | hasACL & 1))
   {
     v122 = @"items";
     v119[0] = @"title";
@@ -506,32 +506,32 @@ LABEL_47:
 
 - (void)_sendSettingsControllerDidChange
 {
-  v3 = [(_UIShareInvitationSettingsController *)self delegate];
-  [v3 settingsControllerDidChange:self changedAllowInviters:0];
+  delegate = [(_UIShareInvitationSettingsController *)self delegate];
+  [delegate settingsControllerDidChange:self changedAllowInviters:0];
 }
 
 - (void)_sendSettingsControllerDidChangeAllowInviters
 {
-  v3 = [(_UIShareInvitationSettingsController *)self delegate];
-  [v3 settingsControllerDidChange:self changedAllowInviters:1];
+  delegate = [(_UIShareInvitationSettingsController *)self delegate];
+  [delegate settingsControllerDidChange:self changedAllowInviters:1];
 }
 
-- (void)setAllowInviters:(int64_t)a3
+- (void)setAllowInviters:(int64_t)inviters
 {
-  if (self->_allowInviters != a3)
+  if (self->_allowInviters != inviters)
   {
-    v5 = [(_UIShareInvitationSettingsController *)self overviewControllerDelegate];
-    v6 = [v5 editableParticipants];
+    overviewControllerDelegate = [(_UIShareInvitationSettingsController *)self overviewControllerDelegate];
+    editableParticipants = [overviewControllerDelegate editableParticipants];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v7 = [editableParticipants countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
       v9 = *v15;
-      if (a3 == 1)
+      if (inviters == 1)
       {
         v10 = 2;
       }
@@ -547,7 +547,7 @@ LABEL_47:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(editableParticipants);
           }
 
           v12 = *(*(&v14 + 1) + 8 * i);
@@ -557,13 +557,13 @@ LABEL_47:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [editableParticipants countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
     }
 
-    self->_allowInviters = a3;
+    self->_allowInviters = inviters;
     [(_UIShareInvitationSettingsController *)self _sendSettingsControllerDidChangeAllowInviters];
     if (self->_hasEverBeenInMixedAllowInvitersState)
     {
@@ -579,41 +579,41 @@ LABEL_47:
 
 - (int64_t)currentParticipantsState
 {
-  v2 = [(_UIShareInvitationSettingsController *)self overviewControllerDelegate];
-  v3 = [v2 shareViewControllerCurrentParticipantsState];
+  overviewControllerDelegate = [(_UIShareInvitationSettingsController *)self overviewControllerDelegate];
+  shareViewControllerCurrentParticipantsState = [overviewControllerDelegate shareViewControllerCurrentParticipantsState];
 
-  return v3;
+  return shareViewControllerCurrentParticipantsState;
 }
 
 - (BOOL)allowOthersToInvite
 {
   WeakRetained = objc_loadWeakRetained(&self->_overviewControllerDelegate);
-  v3 = [WeakRetained shareViewControllerAllowOthersToInvite];
+  shareViewControllerAllowOthersToInvite = [WeakRetained shareViewControllerAllowOthersToInvite];
 
-  return v3;
+  return shareViewControllerAllowOthersToInvite;
 }
 
 - (BOOL)shouldShowAllowInviting
 {
-  v3 = [(_UIShareInvitationSettingsController *)self overviewControllerDelegate];
-  v4 = [v3 viewControllerShare:self];
+  overviewControllerDelegate = [(_UIShareInvitationSettingsController *)self overviewControllerDelegate];
+  v4 = [overviewControllerDelegate viewControllerShare:self];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 owner];
-    v7 = [v6 isCurrentUser];
+    owner = [v4 owner];
+    isCurrentUser = [owner isCurrentUser];
   }
 
   else
   {
-    v7 = 1;
+    isCurrentUser = 1;
   }
 
-  v8 = [(BRShareSettings *)self->_settings hasACL];
+  hasACL = [(BRShareSettings *)self->_settings hasACL];
   settings = self->_settings;
   if (settings)
   {
-    v10 = v8;
+    v10 = hasACL;
   }
 
   else
@@ -624,7 +624,7 @@ LABEL_47:
   if ([(BRShareSettings *)settings defaultPermission]== 3)
   {
     v11 = 1;
-    if (!v8)
+    if (!hasACL)
     {
 LABEL_9:
       v12 = 0;
@@ -635,7 +635,7 @@ LABEL_9:
   else
   {
     v11 = self->_settings == 0;
-    if (!v8)
+    if (!hasACL)
     {
       goto LABEL_9;
     }
@@ -643,12 +643,12 @@ LABEL_9:
 
   v12 = [(BRShareSettings *)self->_settings defaultPermission]== 0;
 LABEL_12:
-  v13 = [(_UIShareInvitationSettingsController *)self proxiedOverviewController];
-  v14 = [v3 shareViewControllerIsNotesOrRemindersOrDocSharing:v13];
+  proxiedOverviewController = [(_UIShareInvitationSettingsController *)self proxiedOverviewController];
+  v14 = [overviewControllerDelegate shareViewControllerIsNotesOrRemindersOrDocSharing:proxiedOverviewController];
 
   if ((v14 & v10) == 1)
   {
-    v15 = v7 & (v11 || v12);
+    v15 = isCurrentUser & (v11 || v12);
   }
 
   else
@@ -659,18 +659,18 @@ LABEL_12:
   return v15;
 }
 
-- (void)setDefaultPermission:(int64_t)a3
+- (void)setDefaultPermission:(int64_t)permission
 {
-  if ([(BRShareSettings *)self->_settings defaultPermission]!= a3)
+  if ([(BRShareSettings *)self->_settings defaultPermission]!= permission)
   {
-    v5 = [(_UIShareInvitationSettingsController *)self allowInviteToggle];
+    allowInviteToggle = [(_UIShareInvitationSettingsController *)self allowInviteToggle];
 
-    if (v5)
+    if (allowInviteToggle)
     {
-      v6 = [(_UIShareInvitationSettingsController *)self overviewControllerDelegate];
-      if ((a3 != 2) != [v6 shareViewControllerAllowOthersToInvite])
+      overviewControllerDelegate = [(_UIShareInvitationSettingsController *)self overviewControllerDelegate];
+      if ((permission != 2) != [overviewControllerDelegate shareViewControllerAllowOthersToInvite])
       {
-        [v6 shareViewControllerSetAllowOthersToInvite:a3 != 2];
+        [overviewControllerDelegate shareViewControllerSetAllowOthersToInvite:permission != 2];
       }
 
       block[0] = _NSConcreteStackBlock;
@@ -681,40 +681,40 @@ LABEL_12:
       dispatch_async(&_dispatch_main_q, block);
     }
 
-    v7 = [(_UIShareInvitationSettingsController *)self shouldShowAllowInviting];
-    [(BRShareSettings *)self->_settings setDefaultPermission:a3];
+    shouldShowAllowInviting = [(_UIShareInvitationSettingsController *)self shouldShowAllowInviting];
+    [(BRShareSettings *)self->_settings setDefaultPermission:permission];
     [(_UIShareInvitationSettingsController *)self _sendSettingsControllerDidChange];
-    v8 = [(_UIShareInvitationSettingsController *)self shouldShowAllowInviting];
-    if (self->_hasEverBeenInMixedPermissionState || v7 != v8)
+    shouldShowAllowInviting2 = [(_UIShareInvitationSettingsController *)self shouldShowAllowInviting];
+    if (self->_hasEverBeenInMixedPermissionState || shouldShowAllowInviting != shouldShowAllowInviting2)
     {
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = sub_10000B458;
       v9[3] = &unk_10004CC28;
       v9[4] = self;
-      v10 = v7;
-      v11 = v8;
-      v12 = v5 != 0;
+      v10 = shouldShowAllowInviting;
+      v11 = shouldShowAllowInviting2;
+      v12 = allowInviteToggle != 0;
       dispatch_async(&_dispatch_main_q, v9);
     }
   }
 }
 
-- (void)setPublicPermission:(int64_t)a3
+- (void)setPublicPermission:(int64_t)permission
 {
-  if ([(BRShareSettings *)self->_settings publicPermission]!= a3)
+  if ([(BRShareSettings *)self->_settings publicPermission]!= permission)
   {
-    [(BRShareSettings *)self->_settings setPublicPermission:a3];
+    [(BRShareSettings *)self->_settings setPublicPermission:permission];
 
     [(_UIShareInvitationSettingsController *)self _sendSettingsControllerDidChange];
   }
 }
 
-- (void)setSettings:(id)a3
+- (void)setSettings:(id)settings
 {
-  if (self->_settings != a3)
+  if (self->_settings != settings)
   {
-    v4 = [a3 copy];
+    v4 = [settings copy];
     settings = self->_settings;
     self->_settings = v4;
 
@@ -722,28 +722,28 @@ LABEL_12:
   }
 }
 
-- (void)copyLink:(id)a3
+- (void)copyLink:(id)link
 {
-  v4 = [(_UIShareInvitationSettingsController *)self overviewControllerDelegate];
-  v5 = [(_UIShareInvitationSettingsController *)self proxiedOverviewController];
+  overviewControllerDelegate = [(_UIShareInvitationSettingsController *)self overviewControllerDelegate];
+  proxiedOverviewController = [(_UIShareInvitationSettingsController *)self proxiedOverviewController];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000B880;
   v6[3] = &unk_10004CAD0;
   v6[4] = self;
-  [v4 shareViewControllerCopyShareURL:v5 completion:v6];
+  [overviewControllerDelegate shareViewControllerCopyShareURL:proxiedOverviewController completion:v6];
 }
 
-- (void)auxiliaryAction:(id)a3
+- (void)auxiliaryAction:(id)action
 {
-  v4 = [(_UIShareInvitationSettingsController *)self overviewControllerDelegate];
-  v5 = [(_UIShareInvitationSettingsController *)self proxiedOverviewController];
+  overviewControllerDelegate = [(_UIShareInvitationSettingsController *)self overviewControllerDelegate];
+  proxiedOverviewController = [(_UIShareInvitationSettingsController *)self proxiedOverviewController];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000B9F4;
   v6[3] = &unk_10004C920;
   v6[4] = self;
-  [v4 shareViewControllerPerformAuxiliaryAction:v5 completion:v6];
+  [overviewControllerDelegate shareViewControllerPerformAuxiliaryAction:proxiedOverviewController completion:v6];
 }
 
 - (_UIShareInvitationSettingsDelegate)delegate

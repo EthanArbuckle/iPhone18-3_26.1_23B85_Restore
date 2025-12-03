@@ -1,23 +1,23 @@
 @interface CLFindMyAccessoryRangingManager
-- (CLFindMyAccessoryRangingManager)initWithDelegate:(id)a3 delegateQueue:(id)a4;
-- (void)connectToDevice:(id)a3;
-- (void)disconnectFromDevice:(id)a3;
-- (void)fetchFirmwareVersionFromDevice:(id)a3;
+- (CLFindMyAccessoryRangingManager)initWithDelegate:(id)delegate delegateQueue:(id)queue;
+- (void)connectToDevice:(id)device;
+- (void)disconnectFromDevice:(id)device;
+- (void)fetchFirmwareVersionFromDevice:(id)device;
 - (void)handleInterruption;
-- (void)handleMessage:(shared_ptr<CLConnectionMessage>)a3;
-- (void)initRoseWithParameters:(id)a3 onDevice:(id)a4;
-- (void)prepareForStartRangingOnDevice:(id)a3;
-- (void)setRoseRangingParameters:(id)a3 onDevice:(id)a4;
-- (void)startEventCounterOnDevice:(id)a3;
-- (void)startRangingWithParameters:(id)a3 onDevice:(id)a4;
-- (void)stopEventCounterOnDevice:(id)a3;
-- (void)stopRangingOnDevice:(id)a3;
-- (void)stopRoseWithParameters:(id)a3 onDevice:(id)a4;
+- (void)handleMessage:(shared_ptr<CLConnectionMessage>)message;
+- (void)initRoseWithParameters:(id)parameters onDevice:(id)device;
+- (void)prepareForStartRangingOnDevice:(id)device;
+- (void)setRoseRangingParameters:(id)parameters onDevice:(id)device;
+- (void)startEventCounterOnDevice:(id)device;
+- (void)startRangingWithParameters:(id)parameters onDevice:(id)device;
+- (void)stopEventCounterOnDevice:(id)device;
+- (void)stopRangingOnDevice:(id)device;
+- (void)stopRoseWithParameters:(id)parameters onDevice:(id)device;
 @end
 
 @implementation CLFindMyAccessoryRangingManager
 
-- (CLFindMyAccessoryRangingManager)initWithDelegate:(id)a3 delegateQueue:(id)a4
+- (CLFindMyAccessoryRangingManager)initWithDelegate:(id)delegate delegateQueue:(id)queue
 {
   v9.receiver = self;
   v9.super_class = CLFindMyAccessoryRangingManager;
@@ -25,11 +25,11 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_delegate, a3);
-    if (a4)
+    objc_storeWeak(&v6->_delegate, delegate);
+    if (queue)
     {
-      v7->_delegateQueue = a4;
-      dispatch_retain(a4);
+      v7->_delegateQueue = queue;
+      dispatch_retain(queue);
     }
 
     else
@@ -43,9 +43,9 @@
   return 0;
 }
 
-- (void)handleMessage:(shared_ptr<CLConnectionMessage>)a3
+- (void)handleMessage:(shared_ptr<CLConnectionMessage>)message
 {
-  var0 = a3.var0;
+  var0 = message.var0;
   v14 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46C8 != -1)
   {
@@ -138,7 +138,7 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connectToDevice:(id)a3
+- (void)connectToDevice:(id)device
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -150,7 +150,7 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)disconnectFromDevice:(id)a3
+- (void)disconnectFromDevice:(id)device
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -162,7 +162,7 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)initRoseWithParameters:(id)a3 onDevice:(id)a4
+- (void)initRoseWithParameters:(id)parameters onDevice:(id)device
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -174,7 +174,7 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopRoseWithParameters:(id)a3 onDevice:(id)a4
+- (void)stopRoseWithParameters:(id)parameters onDevice:(id)device
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -186,7 +186,7 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setRoseRangingParameters:(id)a3 onDevice:(id)a4
+- (void)setRoseRangingParameters:(id)parameters onDevice:(id)device
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -198,7 +198,7 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)prepareForStartRangingOnDevice:(id)a3
+- (void)prepareForStartRangingOnDevice:(id)device
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -210,7 +210,7 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startRangingWithParameters:(id)a3 onDevice:(id)a4
+- (void)startRangingWithParameters:(id)parameters onDevice:(id)device
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -222,7 +222,7 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopRangingOnDevice:(id)a3
+- (void)stopRangingOnDevice:(id)device
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -234,7 +234,7 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startEventCounterOnDevice:(id)a3
+- (void)startEventCounterOnDevice:(id)device
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -246,7 +246,7 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopEventCounterOnDevice:(id)a3
+- (void)stopEventCounterOnDevice:(id)device
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -258,7 +258,7 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchFirmwareVersionFromDevice:(id)a3
+- (void)fetchFirmwareVersionFromDevice:(id)device
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc(MEMORY[0x1E696ABC0]);

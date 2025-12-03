@@ -1,11 +1,11 @@
 @interface DirectionsElevationLabelView
 + (id)_formatter;
-- (DirectionsElevationLabelView)initWithStyle:(int64_t)a3;
+- (DirectionsElevationLabelView)initWithStyle:(int64_t)style;
 - (id)accessibilityIdentifier;
 - (void)_refreshLabel;
-- (void)setElevation:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setFont:(id)a3 color:(id)a4;
+- (void)setElevation:(id)elevation;
+- (void)setFont:(id)font;
+- (void)setFont:(id)font color:(id)color;
 @end
 
 @implementation DirectionsElevationLabelView
@@ -23,9 +23,9 @@
   v3 = +[NSLocale currentLocale];
   if (([v3 _navigation_distanceUsesMetricSystem] & 1) == 0)
   {
-    v4 = [(NSMeasurement *)v17 unit];
+    unit = [(NSMeasurement *)v17 unit];
     v5 = +[NSUnitLength feet];
-    v6 = [v4 isEqual:v5];
+    v6 = [unit isEqual:v5];
 
     if (v6)
     {
@@ -41,8 +41,8 @@
 LABEL_5:
   if (v17)
   {
-    v8 = [objc_opt_class() _formatter];
-    v9 = [v8 stringFromMeasurement:v17];
+    _formatter = [objc_opt_class() _formatter];
+    v9 = [_formatter stringFromMeasurement:v17];
     [(UILabel *)self->_label setText:v9];
 
     style = self->_style;
@@ -66,8 +66,8 @@ LABEL_5:
     }
 
     v14 = [v11 localizedStringForKey:v13 value:@"localized string not found" table:0];
-    v15 = [(UILabel *)self->_label text];
-    v16 = [NSString localizedStringWithFormat:v14, v15];
+    text = [(UILabel *)self->_label text];
+    v16 = [NSString localizedStringWithFormat:v14, text];
     [(DirectionsElevationLabelView *)self setAccessibilityLabel:v16];
   }
 
@@ -79,11 +79,11 @@ LABEL_5:
 LABEL_12:
 }
 
-- (void)setElevation:(id)a3
+- (void)setElevation:(id)elevation
 {
-  v5 = a3;
+  elevationCopy = elevation;
   v6 = self->_elevation;
-  v7 = v5;
+  v7 = elevationCopy;
   if (v7 | v6)
   {
     v9 = v7;
@@ -92,19 +92,19 @@ LABEL_12:
     v7 = v9;
     if ((v8 & 1) == 0)
     {
-      objc_storeStrong(&self->_elevation, a3);
+      objc_storeStrong(&self->_elevation, elevation);
       [(DirectionsElevationLabelView *)self _refreshLabel];
       v7 = v9;
     }
   }
 }
 
-- (void)setFont:(id)a3 color:(id)a4
+- (void)setFont:(id)font color:(id)color
 {
   label = self->_label;
-  v10 = a4;
-  v7 = a3;
-  [(UILabel *)label setFont:v7];
+  colorCopy = color;
+  fontCopy = font;
+  [(UILabel *)label setFont:fontCopy];
   if (sub_10000FA08(self) == 5)
   {
     v8 = -1;
@@ -115,34 +115,34 @@ LABEL_12:
     v8 = 1;
   }
 
-  v9 = [UIImageSymbolConfiguration configurationWithFont:v7 scale:v8];
+  v9 = [UIImageSymbolConfiguration configurationWithFont:fontCopy scale:v8];
 
   [(UIImageView *)self->_imageView setPreferredSymbolConfiguration:v9];
-  [(UILabel *)self->_label setTextColor:v10];
-  [(UIImageView *)self->_imageView setTintColor:v10];
+  [(UILabel *)self->_label setTextColor:colorCopy];
+  [(UIImageView *)self->_imageView setTintColor:colorCopy];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   label = self->_label;
-  v5 = a3;
-  v6 = [(UILabel *)label textColor];
-  [(DirectionsElevationLabelView *)self setFont:v5 color:v6];
+  fontCopy = font;
+  textColor = [(UILabel *)label textColor];
+  [(DirectionsElevationLabelView *)self setFont:fontCopy color:textColor];
 }
 
-- (DirectionsElevationLabelView)initWithStyle:(int64_t)a3
+- (DirectionsElevationLabelView)initWithStyle:(int64_t)style
 {
   v41.receiver = self;
   v41.super_class = DirectionsElevationLabelView;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v7 = [(DirectionsElevationLabelView *)&v41 initWithFrame:CGRectZero.origin.x, y, width, height];
-  v8 = v7;
-  if (v7)
+  height = [(DirectionsElevationLabelView *)&v41 initWithFrame:CGRectZero.origin.x, y, width, height];
+  v8 = height;
+  if (height)
   {
-    v7->_style = a3;
-    [(DirectionsElevationLabelView *)v7 setIsAccessibilityElement:1];
+    height->_style = style;
+    [(DirectionsElevationLabelView *)height setIsAccessibilityElement:1];
     LODWORD(v9) = 1148846080;
     [(DirectionsElevationLabelView *)v8 setContentCompressionResistancePriority:1 forAxis:v9];
     LODWORD(v10) = 1148829696;
@@ -159,7 +159,7 @@ LABEL_12:
     LODWORD(v14) = 1148829696;
     [(UILabel *)v8->_label setContentCompressionResistancePriority:0 forAxis:v14];
     v15 = @"arrow.down.forward.circle.fill";
-    if (!a3)
+    if (!style)
     {
       v15 = @"arrow.up.forward.circle.fill";
     }
@@ -174,8 +174,8 @@ LABEL_12:
 
     [(UIImageView *)v8->_imageView setAccessibilityIdentifier:@"ImageView"];
     [(UIImageView *)v8->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v21 = [(UILabel *)v8->_label textColor];
-    [(UIImageView *)v8->_imageView setTintColor:v21];
+    textColor = [(UILabel *)v8->_label textColor];
+    [(UIImageView *)v8->_imageView setTintColor:textColor];
 
     LODWORD(v22) = 1148846080;
     [(UIImageView *)v8->_imageView setContentHuggingPriority:0 forAxis:v22];
@@ -211,8 +211,8 @@ LABEL_12:
     [(DirectionsElevationLabelView *)v8 addSubview:v30];
     LODWORD(v35) = 1148846080;
     v36 = [v30 _maps_constraintsEqualToEdgesOfView:v8 priority:v35];
-    v37 = [v36 allConstraints];
-    [NSLayoutConstraint activateConstraints:v37];
+    allConstraints = [v36 allConstraints];
+    [NSLayoutConstraint activateConstraints:allConstraints];
 
     v38 = +[NSNotificationCenter defaultCenter];
     v39 = MNLocaleDidChangeNotification();

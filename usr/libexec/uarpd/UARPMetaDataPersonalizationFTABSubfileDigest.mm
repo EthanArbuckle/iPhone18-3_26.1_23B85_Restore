@@ -1,7 +1,7 @@
 @interface UARPMetaDataPersonalizationFTABSubfileDigest
 - (UARPMetaDataPersonalizationFTABSubfileDigest)init;
-- (UARPMetaDataPersonalizationFTABSubfileDigest)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataPersonalizationFTABSubfileDigest)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataPersonalizationFTABSubfileDigest)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataPersonalizationFTABSubfileDigest)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 @end
 
@@ -23,16 +23,16 @@
   return v3;
 }
 
-- (UARPMetaDataPersonalizationFTABSubfileDigest)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataPersonalizationFTABSubfileDigest)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataPersonalizationFTABSubfileDigest *)self init];
   v7 = v6;
   if (v6)
   {
     v12.receiver = v6;
     v12.super_class = UARPMetaDataPersonalizationFTABSubfileDigest;
-    v8 = [(UARPMetaData *)&v12 dataFromPlistValue:v5];
+    v8 = [(UARPMetaData *)&v12 dataFromPlistValue:valueCopy];
     digest = v7->_digest;
     v7->_digest = v8;
 
@@ -52,12 +52,12 @@
   return v10;
 }
 
-- (UARPMetaDataPersonalizationFTABSubfileDigest)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataPersonalizationFTABSubfileDigest)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataPersonalizationFTABSubfileDigest *)self init];
   if (v6)
   {
-    v7 = [[NSData alloc] initWithBytes:a4 length:a3];
+    v7 = [[NSData alloc] initWithBytes:value length:length];
     digest = v6->_digest;
     v6->_digest = v7;
 
@@ -69,9 +69,9 @@
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [(UARPMetaDataPersonalizationFTABSubfileDigest *)self digest];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  tlvName = [(UARPMetaData *)self tlvName];
+  digest = [(UARPMetaDataPersonalizationFTABSubfileDigest *)self digest];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, digest];
 
   return v5;
 }

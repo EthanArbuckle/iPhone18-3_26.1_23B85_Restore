@@ -1,21 +1,21 @@
 @interface HAP2AccessoryServerPairingDriverPairSetupWorkItem
-+ (id)pairSetupWithType:(unint64_t)a3;
-- (BOOL)pairSetupSession:(id)a3 didPairWithPeer:(id)a4 error:(id *)a5;
-- (BOOL)pairSetupSession:(id)a3 didReceiveBackoffRequestWithTimeInterval:(double)a4;
++ (id)pairSetupWithType:(unint64_t)type;
+- (BOOL)pairSetupSession:(id)session didPairWithPeer:(id)peer error:(id *)error;
+- (BOOL)pairSetupSession:(id)session didReceiveBackoffRequestWithTimeInterval:(double)interval;
 - (HAP2AccessoryServerPairingDriverDelegate)delegate;
-- (HAP2AccessoryServerPairingDriverPairSetupWorkItem)initWithPairSetupType:(unint64_t)a3;
+- (HAP2AccessoryServerPairingDriverPairSetupWorkItem)initWithPairSetupType:(unint64_t)type;
 - (NSString)description;
-- (id)pairSetupSession:(id)a3 didReceiveLocalPairingIdentityRequestWithError:(id *)a4;
-- (void)_pairingStoppedWithError:(id)a3;
+- (id)pairSetupSession:(id)session didReceiveLocalPairingIdentityRequestWithError:(id *)error;
+- (void)_pairingStoppedWithError:(id)error;
 - (void)_resetPairingState;
-- (void)cancelWithError:(id)a3;
-- (void)pairSetupSession:(id)a3 didReceiveProductData:(id)a4;
-- (void)pairSetupSession:(id)a3 didReceiveSetupCodeRequestWithCompletionHandler:(id)a4;
-- (void)pairSetupSession:(id)a3 didReceiveSetupExchangeData:(id)a4;
-- (void)pairSetupSession:(id)a3 didStopWithError:(id)a4;
-- (void)pairSetupSessionDidReceiveInvalidSetupCode:(id)a3;
-- (void)pairSetupSessionDidStart:(id)a3;
-- (void)runForPairingDriver:(id)a3;
+- (void)cancelWithError:(id)error;
+- (void)pairSetupSession:(id)session didReceiveProductData:(id)data;
+- (void)pairSetupSession:(id)session didReceiveSetupCodeRequestWithCompletionHandler:(id)handler;
+- (void)pairSetupSession:(id)session didReceiveSetupExchangeData:(id)data;
+- (void)pairSetupSession:(id)session didStopWithError:(id)error;
+- (void)pairSetupSessionDidReceiveInvalidSetupCode:(id)code;
+- (void)pairSetupSessionDidStart:(id)start;
+- (void)runForPairingDriver:(id)driver;
 @end
 
 @implementation HAP2AccessoryServerPairingDriverPairSetupWorkItem
@@ -27,18 +27,18 @@
   return WeakRetained;
 }
 
-- (BOOL)pairSetupSession:(id)a3 didReceiveBackoffRequestWithTimeInterval:(double)a4
+- (BOOL)pairSetupSession:(id)session didReceiveBackoffRequestWithTimeInterval:(double)interval
 {
-  v6 = a3;
+  sessionCopy = session;
   objc_initWeak(&location, self);
-  v7 = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __111__HAP2AccessoryServerPairingDriverPairSetupWorkItem_pairSetupSession_didReceiveBackoffRequestWithTimeInterval___block_invoke;
   v9[3] = &unk_2786D6FF0;
   objc_copyWeak(v10, &location);
-  v10[1] = *&a4;
-  [v7 addBlock:v9];
+  v10[1] = *&interval;
+  [operationQueue addBlock:v9];
 
   objc_destroyWeak(v10);
   objc_destroyWeak(&location);
@@ -53,17 +53,17 @@ void __111__HAP2AccessoryServerPairingDriverPairSetupWorkItem_pairSetupSession_d
   [WeakRetained setInvalidSetupCode:1];
 }
 
-- (void)pairSetupSessionDidReceiveInvalidSetupCode:(id)a3
+- (void)pairSetupSessionDidReceiveInvalidSetupCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   objc_initWeak(&location, self);
-  v5 = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __96__HAP2AccessoryServerPairingDriverPairSetupWorkItem_pairSetupSessionDidReceiveInvalidSetupCode___block_invoke;
   v6[3] = &unk_2786D6FC8;
   objc_copyWeak(&v7, &location);
-  [v5 addBlock:v6];
+  [operationQueue addBlock:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -76,20 +76,20 @@ void __96__HAP2AccessoryServerPairingDriverPairSetupWorkItem_pairSetupSessionDid
   [WeakRetained setInvalidSetupCode:1];
 }
 
-- (void)pairSetupSession:(id)a3 didReceiveSetupCodeRequestWithCompletionHandler:(id)a4
+- (void)pairSetupSession:(id)session didReceiveSetupCodeRequestWithCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v8 = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __118__HAP2AccessoryServerPairingDriverPairSetupWorkItem_pairSetupSession_didReceiveSetupCodeRequestWithCompletionHandler___block_invoke;
   v10[3] = &unk_2786D6FA0;
   objc_copyWeak(&v12, &location);
-  v9 = v7;
+  v9 = handlerCopy;
   v11 = v9;
-  [v8 addBlock:v10];
+  [operationQueue addBlock:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -147,22 +147,22 @@ void __118__HAP2AccessoryServerPairingDriverPairSetupWorkItem_pairSetupSession_d
   }
 }
 
-- (void)pairSetupSession:(id)a3 didStopWithError:(id)a4
+- (void)pairSetupSession:(id)session didStopWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   objc_initWeak(&location, self);
-  v8 = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __87__HAP2AccessoryServerPairingDriverPairSetupWorkItem_pairSetupSession_didStopWithError___block_invoke;
   v11[3] = &unk_2786D6F50;
   objc_copyWeak(&v14, &location);
-  v9 = v6;
+  v9 = sessionCopy;
   v12 = v9;
-  v10 = v7;
+  v10 = errorCopy;
   v13 = v10;
-  [v8 addBlock:v11];
+  [operationQueue addBlock:v11];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -180,19 +180,19 @@ void __87__HAP2AccessoryServerPairingDriverPairSetupWorkItem_pairSetupSession_di
   }
 }
 
-- (void)pairSetupSessionDidStart:(id)a3
+- (void)pairSetupSessionDidStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   objc_initWeak(&location, self);
-  v5 = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__HAP2AccessoryServerPairingDriverPairSetupWorkItem_pairSetupSessionDidStart___block_invoke;
   v7[3] = &unk_2786D6EB0;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = startCopy;
   v8 = v6;
-  [v5 addBlock:v7];
+  [operationQueue addBlock:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -211,20 +211,20 @@ void __78__HAP2AccessoryServerPairingDriverPairSetupWorkItem_pairSetupSessionDid
   }
 }
 
-- (void)pairSetupSession:(id)a3 didReceiveProductData:(id)a4
+- (void)pairSetupSession:(id)session didReceiveProductData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  dataCopy = data;
   objc_initWeak(&location, self);
-  v8 = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __92__HAP2AccessoryServerPairingDriverPairSetupWorkItem_pairSetupSession_didReceiveProductData___block_invoke;
   v10[3] = &unk_2786D6EB0;
   objc_copyWeak(&v12, &location);
-  v9 = v7;
+  v9 = dataCopy;
   v11 = v9;
-  [v8 addBlock:v10];
+  [operationQueue addBlock:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -267,20 +267,20 @@ void __92__HAP2AccessoryServerPairingDriverPairSetupWorkItem_pairSetupSession_di
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pairSetupSession:(id)a3 didReceiveSetupExchangeData:(id)a4
+- (void)pairSetupSession:(id)session didReceiveSetupExchangeData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  dataCopy = data;
   objc_initWeak(&location, self);
-  v8 = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __98__HAP2AccessoryServerPairingDriverPairSetupWorkItem_pairSetupSession_didReceiveSetupExchangeData___block_invoke;
   v10[3] = &unk_2786D6EB0;
   objc_copyWeak(&v12, &location);
-  v9 = v7;
+  v9 = dataCopy;
   v11 = v9;
-  [v8 addBlock:v10];
+  [operationQueue addBlock:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -336,12 +336,12 @@ void __98__HAP2AccessoryServerPairingDriverPairSetupWorkItem_pairSetupSession_di
   }
 }
 
-- (id)pairSetupSession:(id)a3 didReceiveLocalPairingIdentityRequestWithError:(id *)a4
+- (id)pairSetupSession:(id)session didReceiveLocalPairingIdentityRequestWithError:(id *)error
 {
-  v6 = a3;
-  v7 = [(HAP2AccessoryServerPairingDriverWorkItem *)self pairingDriver];
-  v8 = [v7 delegate];
-  if (v8)
+  sessionCopy = session;
+  pairingDriver = [(HAP2AccessoryServerPairingDriverWorkItem *)self pairingDriver];
+  delegate = [pairingDriver delegate];
+  if (delegate)
   {
     v9 = dispatch_group_create();
     v23 = 0;
@@ -365,7 +365,7 @@ void __98__HAP2AccessoryServerPairingDriverPairSetupWorkItem_pairSetupSession_di
     v16 = &v17;
     v10 = v9;
     v14 = v10;
-    [v8 pairingDriver:v7 didRequestLocalPairingIdentityWithCompletion:v13];
+    [delegate pairingDriver:pairingDriver didRequestLocalPairingIdentityWithCompletion:v13];
     if (dispatch_group_wait(v10, 0xFFFFFFFFFFFFFFFFLL))
     {
       v11 = 0;
@@ -373,9 +373,9 @@ void __98__HAP2AccessoryServerPairingDriverPairSetupWorkItem_pairSetupSession_di
 
     else
     {
-      if (a4)
+      if (error)
       {
-        *a4 = v18[5];
+        *error = v18[5];
       }
 
       v11 = v24[5];
@@ -385,10 +385,10 @@ void __98__HAP2AccessoryServerPairingDriverPairSetupWorkItem_pairSetupSession_di
     _Block_object_dispose(&v23, 8);
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] hapErrorWithCode:6];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -416,12 +416,12 @@ void __117__HAP2AccessoryServerPairingDriverPairSetupWorkItem_pairSetupSession_d
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (BOOL)pairSetupSession:(id)a3 didPairWithPeer:(id)a4 error:(id *)a5
+- (BOOL)pairSetupSession:(id)session didPairWithPeer:(id)peer error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v28 = a3;
-  v8 = a4;
-  v9 = [(HAP2AccessoryServerPairingDriverWorkItem *)self pairingDriver];
+  sessionCopy = session;
+  peerCopy = peer;
+  pairingDriver = [(HAP2AccessoryServerPairingDriverWorkItem *)self pairingDriver];
   if (hap2LogInitialize_onceToken != -1)
   {
     dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
@@ -431,21 +431,21 @@ void __117__HAP2AccessoryServerPairingDriverPairSetupWorkItem_pairSetupSession_d
   if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    *&buf[4] = v8;
+    *&buf[4] = peerCopy;
     _os_log_impl(&dword_22AADC000, v10, OS_LOG_TYPE_INFO, "Request to save pairing peer: %@", buf, 0xCu);
   }
 
-  v11 = [v9 delegate];
-  v12 = [v9 accessoryServer];
-  v13 = v12;
-  if (!v11 || !v12)
+  delegate = [pairingDriver delegate];
+  accessoryServer = [pairingDriver accessoryServer];
+  v13 = accessoryServer;
+  if (!delegate || !accessoryServer)
   {
-    if (a5)
+    if (error)
     {
       v21 = [MEMORY[0x277CCA9B8] hapErrorWithCode:2];
 LABEL_18:
       v20 = 0;
-      *a5 = v21;
+      *error = v21;
       goto LABEL_24;
     }
 
@@ -454,10 +454,10 @@ LABEL_19:
     goto LABEL_24;
   }
 
-  v14 = [v12 deviceID];
-  v15 = [v14 deviceIDString];
-  v16 = [v8 identifier];
-  v17 = [v15 isEqualToString:v16];
+  deviceID = [accessoryServer deviceID];
+  deviceIDString = [deviceID deviceIDString];
+  identifier = [peerCopy identifier];
+  v17 = [deviceIDString isEqualToString:identifier];
 
   if ((v17 & 1) == 0)
   {
@@ -470,16 +470,16 @@ LABEL_19:
     if (os_log_type_enabled(hap2Log_default, OS_LOG_TYPE_ERROR))
     {
       v25 = v22;
-      v26 = [v13 deviceID];
-      v27 = [v8 identifier];
+      deviceID2 = [v13 deviceID];
+      identifier2 = [peerCopy identifier];
       *buf = 138412546;
-      *&buf[4] = v26;
+      *&buf[4] = deviceID2;
       *&buf[12] = 2112;
-      *&buf[14] = v27;
+      *&buf[14] = identifier2;
       _os_log_error_impl(&dword_22AADC000, v25, OS_LOG_TYPE_ERROR, "The peer's identifier doesn't match any more %@ -> %@", buf, 0x16u);
     }
 
-    if (a5)
+    if (error)
     {
       v21 = [MEMORY[0x277CCA9B8] hapErrorWithCode:7];
       goto LABEL_18;
@@ -503,7 +503,7 @@ LABEL_19:
   v19 = v18;
   v30 = v19;
   v31 = buf;
-  [v11 pairingDriver:v9 didSaveRemotePairingIdentity:v8 completion:v29];
+  [delegate pairingDriver:pairingDriver didSaveRemotePairingIdentity:peerCopy completion:v29];
   if (dispatch_group_wait(v19, 0xFFFFFFFFFFFFFFFFLL))
   {
     v20 = 0;
@@ -511,9 +511,9 @@ LABEL_19:
 
   else
   {
-    if (a5)
+    if (error)
     {
-      *a5 = *(*&buf[8] + 40);
+      *error = *(*&buf[8] + 40);
     }
 
     v20 = *(*&buf[8] + 40) == 0;
@@ -541,15 +541,15 @@ void __92__HAP2AccessoryServerPairingDriverPairSetupWorkItem_pairSetupSession_di
   v10.receiver = self;
   v10.super_class = HAP2AccessoryServerPairingDriverPairSetupWorkItem;
   v4 = [(HAP2AccessoryServerPairingDriverWorkItem *)&v10 description];
-  v5 = [(HAP2AccessoryServerPairingDriverPairSetupWorkItem *)self pairSetupType];
-  if (v5 > 7)
+  pairSetupType = [(HAP2AccessoryServerPairingDriverPairSetupWorkItem *)self pairSetupType];
+  if (pairSetupType > 7)
   {
     v6 = &stru_283E79C60;
   }
 
   else
   {
-    v6 = off_2786D52B0[v5];
+    v6 = off_2786D52B0[pairSetupType];
   }
 
   v7 = v6;
@@ -558,20 +558,20 @@ void __92__HAP2AccessoryServerPairingDriverPairSetupWorkItem_pairSetupSession_di
   return v8;
 }
 
-- (void)_pairingStoppedWithError:(id)a3
+- (void)_pairingStoppedWithError:(id)error
 {
-  v5 = a3;
-  v4 = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
-  [v4 assertCurrentQueue];
+  errorCopy = error;
+  operationQueue = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
   [(HAP2AccessoryServerPairingDriverPairSetupWorkItem *)self _resetPairingState];
-  [(HAP2AccessoryServerPairingDriverWorkItem *)self finishWithError:v5];
+  [(HAP2AccessoryServerPairingDriverWorkItem *)self finishWithError:errorCopy];
 }
 
 - (void)_resetPairingState
 {
-  v3 = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
-  [v3 assertCurrentQueue];
+  operationQueue = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
   [(HAP2AccessoryServerPairingDriverPairSetupWorkItem *)self setPairingSession:0];
   [(HAP2AccessoryServerPairingDriverPairSetupWorkItem *)self setInvalidSetupCode:0];
@@ -580,19 +580,19 @@ void __92__HAP2AccessoryServerPairingDriverPairSetupWorkItem_pairSetupSession_di
   [(HAP2AccessoryServerPairingDriverPairSetupWorkItem *)self setCancelError:0];
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_initWeak(&location, self);
-  v5 = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__HAP2AccessoryServerPairingDriverPairSetupWorkItem_cancelWithError___block_invoke;
   v7[3] = &unk_2786D6EB0;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = errorCopy;
   v8 = v6;
-  [v5 addBlock:v7];
+  [operationQueue addBlock:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -614,29 +614,29 @@ void __69__HAP2AccessoryServerPairingDriverPairSetupWorkItem_cancelWithError___b
   }
 }
 
-- (void)runForPairingDriver:(id)a3
+- (void)runForPairingDriver:(id)driver
 {
-  v4 = a3;
-  v5 = [v4 delegate];
-  objc_storeWeak(&self->_delegate, v5);
+  driverCopy = driver;
+  delegate = [driverCopy delegate];
+  objc_storeWeak(&self->_delegate, delegate);
 
-  v6 = [v4 transport];
+  transport = [driverCopy transport];
 
   transport = self->_transport;
-  self->_transport = v6;
+  self->_transport = transport;
 
   v8 = [[HAPSRPPairSetupSession alloc] initWithRole:0 pairSetupType:[(HAP2AccessoryServerPairingDriverPairSetupWorkItem *)self pairSetupType] delegate:self];
   pairingSession = self->_pairingSession;
   self->_pairingSession = v8;
 
-  v10 = [(HAP2AccessoryServerPairingDriverWorkItem *)self pairingActivity];
+  pairingActivity = [(HAP2AccessoryServerPairingDriverWorkItem *)self pairingActivity];
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HAP2AccessoryServerPairingDriverPairSetupWorkItem pairSetupType](self, "pairSetupType")}];
 
-  v12 = [(HAP2AccessoryServerPairingDriverPairSetupWorkItem *)self pairingSession];
-  [v12 start];
+  pairingSession = [(HAP2AccessoryServerPairingDriverPairSetupWorkItem *)self pairingSession];
+  [pairingSession start];
 }
 
-- (HAP2AccessoryServerPairingDriverPairSetupWorkItem)initWithPairSetupType:(unint64_t)a3
+- (HAP2AccessoryServerPairingDriverPairSetupWorkItem)initWithPairSetupType:(unint64_t)type
 {
   v8.receiver = self;
   v8.super_class = HAP2AccessoryServerPairingDriverPairSetupWorkItem;
@@ -644,16 +644,16 @@ void __69__HAP2AccessoryServerPairingDriverPairSetupWorkItem_cancelWithError___b
   v5 = v4;
   if (v4)
   {
-    v4->_pairSetupType = a3;
+    v4->_pairSetupType = type;
     v6 = v4;
   }
 
   return v5;
 }
 
-+ (id)pairSetupWithType:(unint64_t)a3
++ (id)pairSetupWithType:(unint64_t)type
 {
-  v3 = [[a1 alloc] initWithPairSetupType:a3];
+  v3 = [[self alloc] initWithPairSetupType:type];
 
   return v3;
 }

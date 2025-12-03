@@ -1,16 +1,16 @@
 @interface WBSTabGroupUIString
-+ (id)accessiblityLabelForTabGroupWithTitle:(id)a3 andTheseTabs:(unint64_t)a4;
-+ (id)menuTitleCreateGroupWithTheseTabs:(unint64_t)a3;
-+ (id)uniqueTabGroupTitleWithExisting:(id)a3;
++ (id)accessiblityLabelForTabGroupWithTitle:(id)title andTheseTabs:(unint64_t)tabs;
++ (id)menuTitleCreateGroupWithTheseTabs:(unint64_t)tabs;
++ (id)uniqueTabGroupTitleWithExisting:(id)existing;
 @end
 
 @implementation WBSTabGroupUIString
 
-+ (id)uniqueTabGroupTitleWithExisting:(id)a3
++ (id)uniqueTabGroupTitleWithExisting:(id)existing
 {
-  v3 = a3;
+  existingCopy = existing;
   v4 = _WBSLocalizedString();
-  if ([v3 containsObject:v4] && objc_msgSend(v3, "count"))
+  if ([existingCopy containsObject:v4] && objc_msgSend(existingCopy, "count"))
   {
     v5 = 1;
     while (1)
@@ -19,12 +19,12 @@
       v7 = _WBSLocalizedString();
       v8 = [v6 localizedStringWithFormat:v7, v5];
 
-      if (![v3 containsObject:v8])
+      if (![existingCopy containsObject:v8])
       {
         break;
       }
 
-      if (++v5 > [v3 count])
+      if (++v5 > [existingCopy count])
       {
         goto LABEL_6;
       }
@@ -40,31 +40,31 @@ LABEL_6:
   return v8;
 }
 
-+ (id)menuTitleCreateGroupWithTheseTabs:(unint64_t)a3
++ (id)menuTitleCreateGroupWithTheseTabs:(unint64_t)tabs
 {
-  if (a3 == 1)
+  if (tabs == 1)
   {
-    v3 = _WBSLocalizedString();
+    tabs = _WBSLocalizedString();
   }
 
   else
   {
     v5 = MEMORY[0x1E696AEC0];
     v6 = _WBSLocalizedString();
-    v3 = [v5 localizedStringWithFormat:v6, a3];
+    tabs = [v5 localizedStringWithFormat:v6, tabs];
   }
 
-  return v3;
+  return tabs;
 }
 
-+ (id)accessiblityLabelForTabGroupWithTitle:(id)a3 andTheseTabs:(unint64_t)a4
++ (id)accessiblityLabelForTabGroupWithTitle:(id)title andTheseTabs:(unint64_t)tabs
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a3;
+  titleCopy = title;
   v7 = _WBSLocalizedString();
-  v8 = [v5 localizedStringWithFormat:v7, v6, a4];
+  tabs = [v5 localizedStringWithFormat:v7, titleCopy, tabs];
 
-  return v8;
+  return tabs;
 }
 
 @end

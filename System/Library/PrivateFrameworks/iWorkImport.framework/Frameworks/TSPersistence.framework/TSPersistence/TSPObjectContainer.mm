@@ -1,18 +1,18 @@
 @interface TSPObjectContainer
-+ (int64_t)objectIdentifierForPackageIdentifier:(unsigned __int8)a3;
-- (TSPObjectContainer)initWithContext:(id)a3;
-- (TSPObjectContainer)initWithContext:(id)a3 packageIdentifier:(unsigned __int8)a4;
++ (int64_t)objectIdentifierForPackageIdentifier:(unsigned __int8)identifier;
+- (TSPObjectContainer)initWithContext:(id)context;
+- (TSPObjectContainer)initWithContext:(id)context packageIdentifier:(unsigned __int8)identifier;
 - (int64_t)tsp_identifier;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)prepareForComponentWriteWithDelayedObjects:(id)a3;
-- (void)saveToArchiver:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)prepareForComponentWriteWithDelayedObjects:(id)objects;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSPObjectContainer
 
-- (TSPObjectContainer)initWithContext:(id)a3
+- (TSPObjectContainer)initWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSPObjectContainer initWithContext:]");
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPObjectContainer.mm");
@@ -27,11 +27,11 @@
   objc_exception_throw(v16);
 }
 
-- (TSPObjectContainer)initWithContext:(id)a3 packageIdentifier:(unsigned __int8)a4
+- (TSPObjectContainer)initWithContext:(id)context packageIdentifier:(unsigned __int8)identifier
 {
-  v4 = a4;
-  v7 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  contextCopy = context;
+  if (!identifierCopy)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSPObjectContainer initWithContext:packageIdentifier:]");
@@ -43,25 +43,25 @@
 
   v18.receiver = self;
   v18.super_class = TSPObjectContainer;
-  v15 = [(TSPObject *)&v18 initWithContext:v7];
+  v15 = [(TSPObject *)&v18 initWithContext:contextCopy];
   v16 = v15;
   if (v15)
   {
-    v15->_packageIdentifier = v4;
+    v15->_packageIdentifier = identifierCopy;
   }
 
   return v16;
 }
 
-+ (int64_t)objectIdentifierForPackageIdentifier:(unsigned __int8)a3
++ (int64_t)objectIdentifierForPackageIdentifier:(unsigned __int8)identifier
 {
-  if (a3 == 2)
+  if (identifier == 2)
   {
     v3 = &qword_276C11CF8;
     return *v3;
   }
 
-  if (a3 == 1)
+  if (identifier == 1)
   {
     v3 = &qword_276C11CF0;
     return *v3;
@@ -90,9 +90,9 @@
   return result;
 }
 
-- (void)prepareForComponentWriteWithDelayedObjects:(id)a3
+- (void)prepareForComponentWriteWithDelayedObjects:(id)objects
 {
-  v15 = a3;
+  objectsCopy = objects;
   if (self->_childObjects)
   {
     v6 = MEMORY[0x277D81150];
@@ -103,16 +103,16 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v11, v12);
   }
 
-  v13 = objc_msgSend_allObjects(v15, v4, v5);
+  v13 = objc_msgSend_allObjects(objectsCopy, v4, v5);
   childObjects = self->_childObjects;
   self->_childObjects = v13;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors(&descriptor_table_TSPMessages_2eproto, 0);
-  v6 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812FC248[60]);
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812FC248[60]);
 
   v8 = *(v6 + 48);
   self->_packageIdentifier = v8;
@@ -131,21 +131,21 @@
   v19[2] = sub_276A4B844;
   v19[3] = &unk_27A6E3B40;
   v19[4] = self;
-  v16 = v4;
+  v16 = unarchiverCopy;
   v17 = objc_opt_class();
   objc_msgSend_readRepeatedWeakReferenceMessage_class_protocol_completion_(v16, v18, v6 + 24, v17, 0, v19);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v8 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors(&descriptor_table_TSPMessages_2eproto, 0);
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v8, v4, sub_276A4B95C, off_2812FC248[60]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_276A4B95C, off_2812FC248[60]);
 
   packageIdentifier = self->_packageIdentifier;
   *(v5 + 16) |= 1u;
   *(v5 + 48) = packageIdentifier;
-  objc_msgSend_setWeakReferenceArray_message_(v8, v7, self->_childObjects, v5 + 24);
+  objc_msgSend_setWeakReferenceArray_message_(archiverCopy, v7, self->_childObjects, v5 + 24);
 }
 
 @end

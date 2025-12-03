@@ -3,15 +3,15 @@
 - (_SYDeviceMonitor)init;
 - (id)allDevices;
 - (id)currentTargetableDevice;
-- (id)deviceForNRDevice:(id)a3;
-- (id)deviceForPairingID:(id)a3;
+- (id)deviceForNRDevice:(id)device;
+- (id)deviceForPairingID:(id)d;
 - (void)_clearDeviceList;
-- (void)_deviceDidBecomeActive:(id)a3;
-- (void)_deviceDidBecomeInactive:(id)a3;
+- (void)_deviceDidBecomeActive:(id)active;
+- (void)_deviceDidBecomeInactive:(id)inactive;
 - (void)_rebuildDeviceList;
-- (void)addNRDevice:(id)a3;
-- (void)deviceBecameTargetable:(id)a3;
-- (void)removeNRDevice:(id)a3;
+- (void)addNRDevice:(id)device;
+- (void)deviceBecameTargetable:(id)targetable;
+- (void)removeNRDevice:(id)device;
 @end
 
 @implementation _SYDeviceMonitor
@@ -66,23 +66,23 @@
     syncQ = v2->_syncQ;
     v2->_syncQ = v6;
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v2 selector:sel__deviceDidBecomeActive_ name:*MEMORY[0x1E69B3660] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__deviceDidBecomeActive_ name:*MEMORY[0x1E69B3660] object:0];
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v2 selector:sel__deviceDidBecomeActive_ name:*MEMORY[0x1E69B3678] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__deviceDidBecomeActive_ name:*MEMORY[0x1E69B3678] object:0];
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v2 selector:sel__deviceDidBecomeInactive_ name:*MEMORY[0x1E69B3668] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel__deviceDidBecomeInactive_ name:*MEMORY[0x1E69B3668] object:0];
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v2 selector:sel__deviceDidBecomeInactive_ name:*MEMORY[0x1E69B3688] object:0];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:v2 selector:sel__deviceDidBecomeInactive_ name:*MEMORY[0x1E69B3688] object:0];
 
     [(_SYDeviceMonitor *)v2 _rebuildDeviceList];
-    v12 = [(_SYDeviceMonitor *)v2 currentTargetableDevice];
-    v13 = [v12 pairingID];
+    currentTargetableDevice = [(_SYDeviceMonitor *)v2 currentTargetableDevice];
+    pairingID = [currentTargetableDevice pairingID];
     currentTargetDeviceUUID = v2->_currentTargetDeviceUUID;
-    v2->_currentTargetDeviceUUID = v13;
+    v2->_currentTargetDeviceUUID = pairingID;
 
     v15 = v2;
   }
@@ -112,30 +112,30 @@
   dispatch_barrier_sync(syncQ, block);
 }
 
-- (void)deviceBecameTargetable:(id)a3
+- (void)deviceBecameTargetable:(id)targetable
 {
-  v9 = a3;
-  v4 = [v9 pairingID];
-  v5 = [v4 isEqual:self->_currentTargetDeviceUUID];
+  targetableCopy = targetable;
+  pairingID = [targetableCopy pairingID];
+  v5 = [pairingID isEqual:self->_currentTargetDeviceUUID];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [v9 pairingID];
+    pairingID2 = [targetableCopy pairingID];
     currentTargetDeviceUUID = self->_currentTargetDeviceUUID;
-    self->_currentTargetDeviceUUID = v6;
+    self->_currentTargetDeviceUUID = pairingID2;
 
-    if (v9)
+    if (targetableCopy)
     {
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v8 postNotificationName:@"SYDeviceTargetedNewDeviceNotification" object:v9];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"SYDeviceTargetedNewDeviceNotification" object:targetableCopy];
     }
   }
 }
 
-- (void)_deviceDidBecomeActive:(id)a3
+- (void)_deviceDidBecomeActive:(id)active
 {
-  v4 = [a3 userInfo];
-  v8 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69B3658]];
+  userInfo = [active userInfo];
+  v8 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69B3658]];
 
   v5 = [(_SYDeviceMonitor *)self deviceForNRDevice:v8];
 
@@ -147,29 +147,29 @@
   v6 = [(_SYDeviceMonitor *)self deviceForNRDevice:v8];
   if ([v6 isTargetable])
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 postNotificationName:@"SYDeviceTargetabilityChangedNotification" object:v6];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"SYDeviceTargetabilityChangedNotification" object:v6];
   }
 }
 
-- (void)_deviceDidBecomeInactive:(id)a3
+- (void)_deviceDidBecomeInactive:(id)inactive
 {
-  v4 = [a3 userInfo];
-  v7 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69B3658]];
+  userInfo = [inactive userInfo];
+  v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69B3658]];
 
   v5 = [(_SYDeviceMonitor *)self deviceForNRDevice:v7];
   if (v5)
   {
     [(_SYDeviceMonitor *)self removeNRDevice:v7];
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 postNotificationName:@"SYDeviceRemovedNotification" object:v5];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"SYDeviceRemovedNotification" object:v5];
   }
 }
 
-- (void)addNRDevice:(id)a3
+- (void)addNRDevice:(id)device
 {
-  v4 = a3;
-  v5 = [[SYDevice alloc] initWithNRDevice:v4];
+  deviceCopy = device;
+  v5 = [[SYDevice alloc] initWithNRDevice:deviceCopy];
 
   syncQ = self->_syncQ;
   v8[0] = MEMORY[0x1E69E9820];
@@ -182,10 +182,10 @@
   dispatch_barrier_sync(syncQ, v8);
 }
 
-- (void)removeNRDevice:(id)a3
+- (void)removeNRDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 valueForProperty:*MEMORY[0x1E69B3610]];
+  deviceCopy = device;
+  v5 = [deviceCopy valueForProperty:*MEMORY[0x1E69B3610]];
   syncQ = self->_syncQ;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -193,16 +193,16 @@
   block[3] = &unk_1E86CA0F8;
   block[4] = self;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = deviceCopy;
+  v7 = deviceCopy;
   v8 = v5;
   dispatch_barrier_sync(syncQ, block);
 }
 
-- (id)deviceForNRDevice:(id)a3
+- (id)deviceForNRDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 valueForProperty:*MEMORY[0x1E69B3610]];
+  deviceCopy = device;
+  v5 = [deviceCopy valueForProperty:*MEMORY[0x1E69B3610]];
   if (v5)
   {
     v6 = [(_SYDeviceMonitor *)self deviceForPairingID:v5];
@@ -222,7 +222,7 @@
     block[2] = __38___SYDeviceMonitor_deviceForNRDevice___block_invoke;
     block[3] = &unk_1E86CB0E0;
     block[4] = self;
-    v10 = v4;
+    v10 = deviceCopy;
     v11 = &v12;
     dispatch_sync(syncQ, block);
     v6 = v13[5];
@@ -233,9 +233,9 @@
   return v6;
 }
 
-- (id)deviceForPairingID:(id)a3
+- (id)deviceForPairingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -248,9 +248,9 @@
   block[2] = __39___SYDeviceMonitor_deviceForPairingID___block_invoke;
   block[3] = &unk_1E86CB0E0;
   block[4] = self;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(syncQ, block);
   v7 = v13[5];
 

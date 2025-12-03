@@ -1,13 +1,13 @@
 @interface UIToolTipInteraction
-+ (id)_defaultToolTipInteractionFromInteractions:(id)a3;
++ (id)_defaultToolTipInteractionFromInteractions:(id)interactions;
 + (id)_newDefaultToolTipInteraction;
 - (UIToolTipInteraction)init;
 - (UIToolTipInteraction)initWithDefaultToolTip:(NSString *)defaultToolTip;
 - (UIView)view;
 - (id)delegate;
-- (id)toolTipAtPoint:(CGPoint)a3 boundingRect:(CGRect *)a4;
+- (id)toolTipAtPoint:(CGPoint)point boundingRect:(CGRect *)rect;
 - (void)_refreshStyle;
-- (void)didMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
 - (void)setDefaultToolTip:(NSString *)defaultToolTip;
 - (void)setDelegate:(id)delegate;
 - (void)setEnabled:(BOOL)enabled;
@@ -56,10 +56,10 @@ void __28__UIToolTipInteraction_init__block_invoke()
   if (WeakRetained)
   {
     v5 = objc_loadWeakRetained(&self->_view);
-    v6 = [v5 traitCollection];
-    v7 = [v6 userInterfaceIdiom];
+    traitCollection = [v5 traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    v8 = [_UIVisualStyleRegistry registryForIdiom:v7];
+    v8 = [_UIVisualStyleRegistry registryForIdiom:userInterfaceIdiom];
     v9 = [v8 visualStyleClassForStylableClass:objc_opt_class()];
 
     v10 = [v9 alloc];
@@ -103,15 +103,15 @@ LABEL_8:
 LABEL_9:
 }
 
-+ (id)_defaultToolTipInteractionFromInteractions:(id)a3
++ (id)_defaultToolTipInteractionFromInteractions:(id)interactions
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  interactionsCopy = interactions;
+  v4 = [interactionsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -122,7 +122,7 @@ LABEL_9:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(interactionsCopy);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -138,7 +138,7 @@ LABEL_9:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [interactionsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -193,78 +193,78 @@ LABEL_12:
   }
 }
 
-- (id)toolTipAtPoint:(CGPoint)a3 boundingRect:(CGRect *)a4
+- (id)toolTipAtPoint:(CGPoint)point boundingRect:(CGRect *)rect
 {
-  y = a3.y;
-  x = a3.x;
-  if (!a4)
+  y = point.y;
+  x = point.x;
+  if (!rect)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"UIToolTipInteraction.m" lineNumber:99 description:@"boundingRect must not be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIToolTipInteraction.m" lineNumber:99 description:@"boundingRect must not be nil"];
   }
 
   if (self->_enabled)
   {
     if (self->_delegateImplementsToolTipAtPoint)
     {
-      v8 = [(UIToolTipInteraction *)self delegate];
-      v9 = [v8 toolTipInteraction:self configurationAtPoint:{x, y}];
+      delegate = [(UIToolTipInteraction *)self delegate];
+      v9 = [delegate toolTipInteraction:self configurationAtPoint:{x, y}];
 
       if (v9)
       {
         [v9 sourceRect];
         if (CGRectIsNull(v29))
         {
-          v10 = [(UIToolTipInteraction *)self view];
-          [v10 bounds];
-          a4->origin.x = v11;
-          a4->origin.y = v12;
-          a4->size.width = v13;
-          a4->size.height = v14;
+          view = [(UIToolTipInteraction *)self view];
+          [view bounds];
+          rect->origin.x = v11;
+          rect->origin.y = v12;
+          rect->size.width = v13;
+          rect->size.height = v14;
         }
 
         else
         {
           [v9 sourceRect];
-          a4->origin.x = v21;
-          a4->origin.y = v22;
-          a4->size.width = v23;
-          a4->size.height = v24;
+          rect->origin.x = v21;
+          rect->origin.y = v22;
+          rect->size.width = v23;
+          rect->size.height = v24;
         }
 
-        v15 = [v9 toolTip];
+        toolTip = [v9 toolTip];
       }
 
       else
       {
-        v15 = 0;
+        toolTip = 0;
       }
     }
 
     else
     {
-      v16 = [(UIToolTipInteraction *)self view];
-      [v16 bounds];
-      a4->origin.x = v17;
-      a4->origin.y = v18;
-      a4->size.width = v19;
-      a4->size.height = v20;
+      view2 = [(UIToolTipInteraction *)self view];
+      [view2 bounds];
+      rect->origin.x = v17;
+      rect->origin.y = v18;
+      rect->size.width = v19;
+      rect->size.height = v20;
 
-      v15 = [(UIToolTipInteraction *)self defaultToolTip];
+      toolTip = [(UIToolTipInteraction *)self defaultToolTip];
     }
   }
 
   else
   {
-    v15 = 0;
+    toolTip = 0;
   }
 
-  return v15;
+  return toolTip;
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  objc_storeWeak(&self->_view, a3);
+  objc_storeWeak(&self->_view, view);
 
   [(UIToolTipInteraction *)self _refreshStyle];
 }

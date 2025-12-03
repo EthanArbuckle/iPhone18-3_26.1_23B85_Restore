@@ -1,29 +1,29 @@
 @interface CreateContainerResponseParserDelegate
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4;
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6;
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code;
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length;
 @end
 
 @implementation CreateContainerResponseParserDelegate
 
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length
 {
-  if (a4 == 1836413042)
+  if (code == 1836413042)
   {
-    self->_updateRequired = *a5 != 0;
+    self->_updateRequired = *bytes != 0;
   }
 
-  else if (a4 == 1835624804)
+  else if (code == 1835624804)
   {
-    self->_containerID = bswap32(*a5);
+    self->_containerID = bswap32(*bytes);
   }
 }
 
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code
 {
   result = 1;
-  if (a4 <= 1835819883)
+  if (code <= 1835819883)
   {
-    if (a4 == 1835360880)
+    if (code == 1835360880)
     {
       return result;
     }
@@ -32,11 +32,11 @@
     goto LABEL_7;
   }
 
-  if (a4 != 1835819884 && a4 != 1835821428)
+  if (code != 1835819884 && code != 1835821428)
   {
     v5 = 1836413042;
 LABEL_7:
-    if (a4 != v5)
+    if (code != v5)
     {
       return 0;
     }

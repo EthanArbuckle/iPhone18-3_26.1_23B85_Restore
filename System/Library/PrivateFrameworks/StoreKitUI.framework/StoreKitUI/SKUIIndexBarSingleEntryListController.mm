@@ -1,14 +1,14 @@
 @interface SKUIIndexBarSingleEntryListController
-- (SKUIIndexBarSingleEntryListController)initWithEntryViewElement:(id)a3;
-- (id)targetIndexBarEntryIDForEntryDescriptorAtIndex:(int64_t)a3 returningRelativeSectionIndex:(int64_t *)a4;
+- (SKUIIndexBarSingleEntryListController)initWithEntryViewElement:(id)element;
+- (id)targetIndexBarEntryIDForEntryDescriptorAtIndex:(int64_t)index returningRelativeSectionIndex:(int64_t *)sectionIndex;
 - (void)reloadViewElementData;
 @end
 
 @implementation SKUIIndexBarSingleEntryListController
 
-- (SKUIIndexBarSingleEntryListController)initWithEntryViewElement:(id)a3
+- (SKUIIndexBarSingleEntryListController)initWithEntryViewElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIIndexBarSingleEntryListController initWithEntryViewElement:];
@@ -20,7 +20,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_entryViewElement, a3);
+    objc_storeStrong(&v6->_entryViewElement, element);
   }
 
   return v7;
@@ -31,11 +31,11 @@
   v7.receiver = self;
   v7.super_class = SKUIIndexBarSingleEntryListController;
   [(SKUIIndexBarEntryListController *)&v7 reloadViewElementData];
-  v3 = [(SKUIIndexBarEntryViewElement *)self->_entryViewElement childElement];
+  childElement = [(SKUIIndexBarEntryViewElement *)self->_entryViewElement childElement];
   descriptiveViewElement = self->_descriptiveViewElement;
-  if (descriptiveViewElement != v3 && ([(SKUIViewElement *)descriptiveViewElement isEqual:v3]& 1) == 0)
+  if (descriptiveViewElement != childElement && ([(SKUIViewElement *)descriptiveViewElement isEqual:childElement]& 1) == 0)
   {
-    objc_storeStrong(&self->_descriptiveViewElement, v3);
+    objc_storeStrong(&self->_descriptiveViewElement, childElement);
     [(SKUIIndexBarEntryListController *)self _didInvalidate];
   }
 
@@ -48,11 +48,11 @@
   }
 }
 
-- (id)targetIndexBarEntryIDForEntryDescriptorAtIndex:(int64_t)a3 returningRelativeSectionIndex:(int64_t *)a4
+- (id)targetIndexBarEntryIDForEntryDescriptorAtIndex:(int64_t)index returningRelativeSectionIndex:(int64_t *)sectionIndex
 {
-  if (a4)
+  if (sectionIndex)
   {
-    *a4 = 0;
+    *sectionIndex = 0;
   }
 
   return [(SKUIIndexBarEntryViewElement *)self->_entryViewElement targetIndexBarEntryID];

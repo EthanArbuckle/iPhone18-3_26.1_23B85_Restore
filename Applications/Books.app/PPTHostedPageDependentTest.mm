@@ -6,7 +6,7 @@
 
 - (BOOL)hasHandler
 {
-  v2 = self;
+  selfCopy = self;
   sub_10025D868();
 
   return 0;

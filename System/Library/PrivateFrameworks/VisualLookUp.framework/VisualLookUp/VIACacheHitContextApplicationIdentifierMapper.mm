@@ -1,22 +1,22 @@
 @interface VIACacheHitContextApplicationIdentifierMapper
-- (id)updateBuilder:(id)a3 withDictionary:(id)a4;
+- (id)updateBuilder:(id)builder withDictionary:(id)dictionary;
 @end
 
 @implementation VIACacheHitContextApplicationIdentifierMapper
 
-- (id)updateBuilder:(id)a3 withDictionary:(id)a4
+- (id)updateBuilder:(id)builder withDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 objectForKeyedSubscript:@"com.apple.argos.cache_hit_context_key.application_id"];
+  builderCopy = builder;
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"com.apple.argos.cache_hit_context_key.application_id"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 objectForKeyedSubscript:@"com.apple.argos.cache_hit_context_key.application_id"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"com.apple.argos.cache_hit_context_key.application_id"];
 
     if (v8)
     {
-      v9 = [v5 setApplicationIdentifer:v8];
+      v9 = [builderCopy setApplicationIdentifer:v8];
 
       v10 = 0;
       goto LABEL_6;

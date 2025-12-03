@@ -1,16 +1,16 @@
 @interface CKSharedLocationCollectionViewCell
-- (void)configureWithAttachmentItem:(id)a3;
+- (void)configureWithAttachmentItem:(id)item;
 @end
 
 @implementation CKSharedLocationCollectionViewCell
 
-- (void)configureWithAttachmentItem:(id)a3
+- (void)configureWithAttachmentItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CKSharedAssetCollectionViewCell *)self previewTitleLabel];
-  v6 = [v4 locationTitle];
-  v7 = [(CKSharedAssetCollectionViewCell *)self formattedTitleFromPreviewTitle:v6];
-  [v5 setAttributedText:v7];
+  itemCopy = item;
+  previewTitleLabel = [(CKSharedAssetCollectionViewCell *)self previewTitleLabel];
+  locationTitle = [itemCopy locationTitle];
+  v7 = [(CKSharedAssetCollectionViewCell *)self formattedTitleFromPreviewTitle:locationTitle];
+  [previewTitleLabel setAttributedText:v7];
 
   v8 = +[CKPreviewDispatchCache detailsPreviewCache];
   [v8 resume];
@@ -20,7 +20,7 @@
   v9[2] = __66__CKSharedLocationCollectionViewCell_configureWithAttachmentItem___block_invoke;
   v9[3] = &unk_1E72F0CF8;
   v9[4] = self;
-  [v4 generatePreviewWithCompletion:v9];
+  [itemCopy generatePreviewWithCompletion:v9];
 }
 
 void __66__CKSharedLocationCollectionViewCell_configureWithAttachmentItem___block_invoke(uint64_t a1, void *a2)

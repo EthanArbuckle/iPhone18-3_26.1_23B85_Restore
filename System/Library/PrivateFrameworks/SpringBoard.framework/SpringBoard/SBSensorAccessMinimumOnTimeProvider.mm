@@ -1,16 +1,16 @@
 @interface SBSensorAccessMinimumOnTimeProvider
 + (SensorAccessIndicator)sharedSensorAccessIndicator;
-+ (double)_remainingTimeToSatisfyMinimumOnTimeForIndicators:(int64_t)a3 error:(id *)a4;
-- (double)remainingTimeToSatisfyMinimumOnTimeForIndicators:(int64_t)a3 error:(id *)a4;
++ (double)_remainingTimeToSatisfyMinimumOnTimeForIndicators:(int64_t)indicators error:(id *)error;
+- (double)remainingTimeToSatisfyMinimumOnTimeForIndicators:(int64_t)indicators error:(id *)error;
 @end
 
 @implementation SBSensorAccessMinimumOnTimeProvider
 
-- (double)remainingTimeToSatisfyMinimumOnTimeForIndicators:(int64_t)a3 error:(id *)a4
+- (double)remainingTimeToSatisfyMinimumOnTimeForIndicators:(int64_t)indicators error:(id *)error
 {
   v6 = objc_opt_class();
 
-  [v6 _remainingTimeToSatisfyMinimumOnTimeForIndicators:a3 error:a4];
+  [v6 _remainingTimeToSatisfyMinimumOnTimeForIndicators:indicators error:error];
   return result;
 }
 
@@ -42,46 +42,46 @@ void __66__SBSensorAccessMinimumOnTimeProvider_sharedSensorAccessIndicator__bloc
   sharedSensorAccessIndicator___sharedSensorAccessIndicator = v0;
 }
 
-+ (double)_remainingTimeToSatisfyMinimumOnTimeForIndicators:(int64_t)a3 error:(id *)a4
++ (double)_remainingTimeToSatisfyMinimumOnTimeForIndicators:(int64_t)indicators error:(id *)error
 {
-  if ((a3 & 3) == 0)
+  if ((indicators & 3) == 0)
   {
     return 0.0;
   }
 
-  v5 = a3;
-  v6 = [a1 sharedSensorAccessIndicator];
-  v7 = v6;
-  if (v6)
+  indicatorsCopy = indicators;
+  sharedSensorAccessIndicator = [self sharedSensorAccessIndicator];
+  v7 = sharedSensorAccessIndicator;
+  if (sharedSensorAccessIndicator)
   {
     v15 = 0;
-    v8 = [v6 getRemainingTimeThrowsAndReturnError:&v15];
+    v8 = [sharedSensorAccessIndicator getRemainingTimeThrowsAndReturnError:&v15];
     v9 = v15;
     v10 = v9;
     if (!v8 || v9)
     {
       v11 = 3.0;
-      if (a4 && v9)
+      if (error && v9)
       {
         v13 = v9;
-        *a4 = v10;
+        *error = v10;
       }
     }
 
     else
     {
       v11 = 0.0;
-      if (v5)
+      if (indicatorsCopy)
       {
         v11 = fmax([v8 remainingMicrophoneDurationNanoSeconds] / 1000000000.0, 0.0);
       }
 
-      if ((v5 & 2) != 0)
+      if ((indicatorsCopy & 2) != 0)
       {
-        v12 = [v8 remainingCameraDurationNanoSeconds];
-        if (v11 < v12 / 1000000000.0)
+        remainingCameraDurationNanoSeconds = [v8 remainingCameraDurationNanoSeconds];
+        if (v11 < remainingCameraDurationNanoSeconds / 1000000000.0)
         {
-          v11 = v12 / 1000000000.0;
+          v11 = remainingCameraDurationNanoSeconds / 1000000000.0;
         }
       }
     }

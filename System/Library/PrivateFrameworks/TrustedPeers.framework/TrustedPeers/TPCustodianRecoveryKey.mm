@@ -1,9 +1,9 @@
 @interface TPCustodianRecoveryKey
-+ (id)custodianRecoveryKeyWithData:(id)a3 sig:(id)a4 keyFactory:(id)a5;
-+ (id)peerIDForData:(id)a3 sig:(id)a4 peerIDHashAlgo:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (TPCustodianRecoveryKey)initWithUUID:(id)a3 signingPublicKey:(id)a4 encryptionPublicKey:(id)a5 kind:(int)a6 data:(id)a7 sig:(id)a8 peerID:(id)a9;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)custodianRecoveryKeyWithData:(id)data sig:(id)sig keyFactory:(id)factory;
++ (id)peerIDForData:(id)data sig:(id)sig peerIDHashAlgo:(int64_t)algo;
+- (BOOL)isEqual:(id)equal;
+- (TPCustodianRecoveryKey)initWithUUID:(id)d signingPublicKey:(id)key encryptionPublicKey:(id)publicKey kind:(int)kind data:(id)data sig:(id)sig peerID:(id)iD;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
 @end
@@ -12,18 +12,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(TPCustodianRecoveryKey *)self data];
-  v4 = [v3 hash];
+  data = [(TPCustodianRecoveryKey *)self data];
+  v4 = [data hash];
   v5 = [(TPCustodianRecoveryKey *)self sig];
   v6 = [v5 hash] - v4 + 32 * v4;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -33,10 +33,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(TPCustodianRecoveryKey *)self data];
-      v7 = [(TPCustodianRecoveryKey *)v5 data];
-      if ([v6 isEqualToData:v7])
+      v5 = equalCopy;
+      data = [(TPCustodianRecoveryKey *)self data];
+      data2 = [(TPCustodianRecoveryKey *)v5 data];
+      if ([data isEqualToData:data2])
       {
         v8 = [(TPCustodianRecoveryKey *)self sig];
         v9 = [(TPCustodianRecoveryKey *)v5 sig];
@@ -58,15 +58,15 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSUUID *)self->_uuid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSUUID *)self->_uuid copyWithZone:zone];
   [v5 setUuid:v6];
 
   [v5 setSigningPublicKey:self->_signingPublicKey];
   [v5 setEncryptionPublicKey:self->_encryptionPublicKey];
-  v7 = [(NSString *)self->_peerID copyWithZone:a3];
+  v7 = [(NSString *)self->_peerID copyWithZone:zone];
   [v5 setPeerID:v7];
 
   [v5 setKind:self->_kind];
@@ -76,47 +76,47 @@
 - (id)dictionaryRepresentation
 {
   v3 = [TPPBCustodianRecoveryKey alloc];
-  v4 = [(TPCustodianRecoveryKey *)self data];
-  v5 = [(TPPBCustodianRecoveryKey *)v3 initWithData:v4];
+  data = [(TPCustodianRecoveryKey *)self data];
+  v5 = [(TPPBCustodianRecoveryKey *)v3 initWithData:data];
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [(TPPBCustodianRecoveryKey *)v5 dictionaryRepresentation];
-  [v6 addEntriesFromDictionary:v7];
+  dictionaryRepresentation = [(TPPBCustodianRecoveryKey *)v5 dictionaryRepresentation];
+  [v6 addEntriesFromDictionary:dictionaryRepresentation];
 
-  v8 = [(TPCustodianRecoveryKey *)self peerID];
-  [v6 setObject:v8 forKeyedSubscript:@"peerID"];
+  peerID = [(TPCustodianRecoveryKey *)self peerID];
+  [v6 setObject:peerID forKeyedSubscript:@"peerID"];
 
   return v6;
 }
 
-- (TPCustodianRecoveryKey)initWithUUID:(id)a3 signingPublicKey:(id)a4 encryptionPublicKey:(id)a5 kind:(int)a6 data:(id)a7 sig:(id)a8 peerID:(id)a9
+- (TPCustodianRecoveryKey)initWithUUID:(id)d signingPublicKey:(id)key encryptionPublicKey:(id)publicKey kind:(int)kind data:(id)data sig:(id)sig peerID:(id)iD
 {
-  v31 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  dCopy = d;
+  keyCopy = key;
+  publicKeyCopy = publicKey;
+  dataCopy = data;
+  sigCopy = sig;
+  iDCopy = iD;
   v32.receiver = self;
   v32.super_class = TPCustodianRecoveryKey;
   v21 = [(TPCustodianRecoveryKey *)&v32 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_uuid, a3);
-    objc_storeStrong(&v22->_signingPublicKey, a4);
-    objc_storeStrong(&v22->_encryptionPublicKey, a5);
-    v22->_kind = a6;
-    v23 = [v18 copy];
+    objc_storeStrong(&v21->_uuid, d);
+    objc_storeStrong(&v22->_signingPublicKey, key);
+    objc_storeStrong(&v22->_encryptionPublicKey, publicKey);
+    v22->_kind = kind;
+    v23 = [dataCopy copy];
     data = v22->_data;
     v22->_data = v23;
 
-    v25 = [v19 copy];
+    v25 = [sigCopy copy];
     sig = v22->_sig;
     v22->_sig = v25;
 
     v27 = +[TPStringTable defaultTable];
-    v28 = [v27 stringWithString:v20];
+    v28 = [v27 stringWithString:iDCopy];
     peerID = v22->_peerID;
     v22->_peerID = v28;
   }
@@ -124,31 +124,31 @@
   return v22;
 }
 
-+ (id)custodianRecoveryKeyWithData:(id)a3 sig:(id)a4 keyFactory:(id)a5
++ (id)custodianRecoveryKeyWithData:(id)data sig:(id)sig keyFactory:(id)factory
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [[TPPBCustodianRecoveryKey alloc] initWithData:v7];
+  dataCopy = data;
+  sigCopy = sig;
+  factoryCopy = factory;
+  v10 = [[TPPBCustodianRecoveryKey alloc] initWithData:dataCopy];
   v11 = v10;
   if (v10)
   {
-    v12 = [(TPPBCustodianRecoveryKey *)v10 signingPublicKey];
-    v13 = [v9 keyFromSPKI:v12];
+    signingPublicKey = [(TPPBCustodianRecoveryKey *)v10 signingPublicKey];
+    v13 = [factoryCopy keyFromSPKI:signingPublicKey];
 
-    if (v13 && checkTypesafeSignature(v13, v8, v7, @"TPPB.CustodianRecoveryKey"))
+    if (v13 && checkTypesafeSignature(v13, sigCopy, dataCopy, @"TPPB.CustodianRecoveryKey"))
     {
-      v14 = [(TPPBCustodianRecoveryKey *)v11 encryptionPublicKey];
-      v15 = [v9 keyFromSPKI:v14];
+      encryptionPublicKey = [(TPPBCustodianRecoveryKey *)v11 encryptionPublicKey];
+      v15 = [factoryCopy keyFromSPKI:encryptionPublicKey];
 
       if (v15)
       {
-        v16 = [TPCustodianRecoveryKey peerIDForData:v7 sig:v8 peerIDHashAlgo:1];
+        v16 = [TPCustodianRecoveryKey peerIDForData:dataCopy sig:sigCopy peerIDHashAlgo:1];
         v17 = [TPCustodianRecoveryKey alloc];
         v18 = objc_alloc(MEMORY[0x277CCAD78]);
-        v19 = [(TPPBCustodianRecoveryKey *)v11 uuid];
-        v20 = [v18 initWithUUIDString:v19];
-        v21 = [(TPCustodianRecoveryKey *)v17 initWithUUID:v20 signingPublicKey:v13 encryptionPublicKey:v15 kind:[(TPPBCustodianRecoveryKey *)v11 kind] data:v7 sig:v8 peerID:v16];
+        uuid = [(TPPBCustodianRecoveryKey *)v11 uuid];
+        v20 = [v18 initWithUUIDString:uuid];
+        v21 = [(TPCustodianRecoveryKey *)v17 initWithUUID:v20 signingPublicKey:v13 encryptionPublicKey:v15 kind:[(TPPBCustodianRecoveryKey *)v11 kind] data:dataCopy sig:sigCopy peerID:v16];
       }
 
       else
@@ -171,17 +171,17 @@
   return v21;
 }
 
-+ (id)peerIDForData:(id)a3 sig:(id)a4 peerIDHashAlgo:(int64_t)a5
++ (id)peerIDForData:(id)data sig:(id)sig peerIDHashAlgo:(int64_t)algo
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[TPHashBuilder alloc] initWithAlgo:a5];
-  [(TPHashBuilder *)v9 updateWithData:v8];
+  sigCopy = sig;
+  dataCopy = data;
+  v9 = [[TPHashBuilder alloc] initWithAlgo:algo];
+  [(TPHashBuilder *)v9 updateWithData:dataCopy];
 
-  [(TPHashBuilder *)v9 updateWithData:v7];
-  v10 = [(TPHashBuilder *)v9 finalHash];
+  [(TPHashBuilder *)v9 updateWithData:sigCopy];
+  finalHash = [(TPHashBuilder *)v9 finalHash];
 
-  return v10;
+  return finalHash;
 }
 
 @end

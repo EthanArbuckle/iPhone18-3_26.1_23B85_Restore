@@ -1,8 +1,8 @@
 @interface BSServiceConnectionListener
-+ (BSServiceConnectionListener)_listenerWithManager:(uint64_t)a3 configuration:(uint64_t)a4 handler:;
++ (BSServiceConnectionListener)_listenerWithManager:(uint64_t)manager configuration:(uint64_t)configuration handler:;
 + (id)extendBootstrap;
-+ (id)listenerWithConfiguration:(id)a3 handler:(id)a4;
-+ (id)listenerWithConfigurator:(id)a3;
++ (id)listenerWithConfiguration:(id)configuration handler:(id)handler;
++ (id)listenerWithConfigurator:(id)configurator;
 - (BSServiceConnectionEndpoint)endpoint;
 - (BSServiceConnectionListener)init;
 - (BSServiceSpecification)specification;
@@ -11,7 +11,7 @@
 - (NSString)service;
 - (void)activate;
 - (void)dealloc;
-- (void)didReceiveConnection:(id)a3;
+- (void)didReceiveConnection:(id)connection;
 - (void)invalidate;
 @end
 
@@ -32,8 +32,8 @@
       }
 
       v5 = service;
-      v6 = [(BSService *)v5 identifier];
-      v7 = [BSServiceConnectionEndpoint nullEndpointForService:v6 instance:self->_instance];
+      identifier = [(BSService *)v5 identifier];
+      v7 = [BSServiceConnectionEndpoint nullEndpointForService:identifier instance:self->_instance];
     }
 
     else
@@ -46,8 +46,8 @@
 
       domain = self->_domain;
       v5 = v8;
-      v6 = [(BSService *)v5 identifier];
-      v7 = [BSServiceConnectionEndpoint _endpointForDomain:v6 service:self->_instance instance:?];
+      identifier = [(BSService *)v5 identifier];
+      v7 = [BSServiceConnectionEndpoint _endpointForDomain:identifier service:self->_instance instance:?];
     }
 
     v10 = self->_lock_endpoint;
@@ -79,7 +79,7 @@
       v29 = 2114;
       v30 = v14;
       v31 = 2048;
-      v32 = self;
+      selfCopy3 = self;
       v33 = 2114;
       v34 = @"BSServiceConnectionListener.m";
       v35 = 1024;
@@ -109,7 +109,7 @@
       v29 = 2114;
       v30 = v19;
       v31 = 2048;
-      v32 = self;
+      selfCopy3 = self;
       v33 = 2114;
       v34 = @"BSServiceConnectionListener.m";
       v35 = 1024;
@@ -145,7 +145,7 @@
     v29 = 2112;
     v30 = service;
     v31 = 2112;
-    v32 = domain;
+    selfCopy3 = domain;
     _os_log_impl(&dword_19A821000, v4, OS_LOG_TYPE_INFO, "activating listener for instance %@ of service %@ in domain %@", buf, 0x20u);
   }
 
@@ -172,7 +172,7 @@
       v29 = 2114;
       v30 = v25;
       v31 = 2048;
-      v32 = self;
+      selfCopy3 = self;
       v33 = 2114;
       v34 = @"BSServiceConnectionListener.m";
       v35 = 1024;
@@ -207,7 +207,7 @@
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSServiceConnectionListener.m";
     v18 = 1024;
@@ -241,7 +241,7 @@
       v13 = 2114;
       v14 = v8;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = @"BSServiceConnectionListener.m";
       v19 = 1024;
@@ -265,10 +265,10 @@
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)listenerWithConfiguration:(id)a3 handler:(id)a4
++ (id)listenerWithConfiguration:(id)configuration handler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!handler)
   {
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"block"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -281,7 +281,7 @@
       v20 = 2114;
       v21 = v15;
       v22 = 2048;
-      v23 = a1;
+      selfCopy = self;
       v24 = 2114;
       v25 = @"BSServiceConnectionListener.m";
       v26 = 1024;
@@ -303,15 +303,15 @@
   v17[1] = 3221225472;
   v17[2] = __65__BSServiceConnectionListener_listenerWithConfiguration_handler___block_invoke;
   v17[3] = &unk_1E75210F8;
-  v17[4] = a4;
-  v7 = [BSServiceConnectionListener _listenerWithManager:v6 configuration:a3 handler:v17];
+  v17[4] = handler;
+  v7 = [BSServiceConnectionListener _listenerWithManager:v6 configuration:configuration handler:v17];
 
   v8 = *MEMORY[0x1E69E9840];
 
   return v7;
 }
 
-+ (BSServiceConnectionListener)_listenerWithManager:(uint64_t)a3 configuration:(uint64_t)a4 handler:
++ (BSServiceConnectionListener)_listenerWithManager:(uint64_t)manager configuration:(uint64_t)configuration handler:
 {
   v61 = *MEMORY[0x1E69E9840];
   v7 = objc_opt_self();
@@ -345,7 +345,7 @@
     JUMPOUT(0x19A86D33CLL);
   }
 
-  if (!a3 || (v8 = *(a3 + 8)) == 0)
+  if (!manager || (v8 = *(manager + 8)) == 0)
   {
     v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"must configure a domain"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -407,7 +407,7 @@
     JUMPOUT(0x19A86D530);
   }
 
-  v11 = *(a3 + 16);
+  v11 = *(manager + 16);
   if (!v11)
   {
     v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"must configure a service"];
@@ -469,7 +469,7 @@
     JUMPOUT(0x19A86D728);
   }
 
-  if (!a4)
+  if (!configuration)
   {
     v47 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"handler"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -500,7 +500,7 @@
   }
 
   v13 = [BSServiceConnectionListener alloc];
-  v14 = *(a3 + 24);
+  v14 = *(manager + 24);
   v15 = v14;
   if (v13)
   {
@@ -513,7 +513,7 @@
       objc_storeStrong(&v16->_domain, v10);
       objc_storeStrong(&v13->_service, v12);
       objc_storeStrong(&v13->_instance, v14);
-      v17 = MEMORY[0x19A908200](a4);
+      v17 = MEMORY[0x19A908200](configuration);
       lock_handler = v13->_lock_handler;
       v13->_lock_handler = v17;
 
@@ -529,12 +529,12 @@
   return v13;
 }
 
-+ (id)listenerWithConfigurator:(id)a3
++ (id)listenerWithConfigurator:(id)configurator
 {
   v25 = *MEMORY[0x1E69E9840];
   v4 = +[BSServiceManager sharedInstance];
   v5 = objc_opt_self();
-  v6 = [[BSServiceConnectionListenerConfiguration alloc] initWithConfigurator:a3];
+  v6 = [[BSServiceConnectionListenerConfiguration alloc] initWithConfigurator:configurator];
   v7 = v6;
   if (!v6 || (v8 = *&v6[8]._os_unfair_lock_opaque) == 0)
   {
@@ -588,9 +588,9 @@
   }
 
   v3 = domain;
-  v4 = [(BSServiceDomain *)v3 identifier];
+  identifier = [(BSServiceDomain *)v3 identifier];
 
-  return v4;
+  return identifier;
 }
 
 - (NSString)service
@@ -602,9 +602,9 @@
   }
 
   v3 = service;
-  v4 = [(BSService *)v3 identifier];
+  identifier = [(BSService *)v3 identifier];
 
-  return v4;
+  return identifier;
 }
 
 - (BSServiceSpecification)specification
@@ -661,9 +661,9 @@
 + (id)extendBootstrap
 {
   v2 = +[BSServiceManager sharedInstance];
-  v3 = [(BSServiceManager *)v2 extendAutomaticBootstrapCompletion];
+  extendAutomaticBootstrapCompletion = [(BSServiceManager *)v2 extendAutomaticBootstrapCompletion];
 
-  return v3;
+  return extendAutomaticBootstrapCompletion;
 }
 
 void __71__BSServiceConnectionListener__listenerWithManager_legacyConfigurator___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -673,7 +673,7 @@ void __71__BSServiceConnectionListener__listenerWithManager_legacyConfigurator__
   [v5 listener:a2 didReceiveConnection:a3 withContext:?];
 }
 
-- (void)didReceiveConnection:(id)a3
+- (void)didReceiveConnection:(id)connection
 {
   v19 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
@@ -683,7 +683,7 @@ void __71__BSServiceConnectionListener__listenerWithManager_legacyConfigurator__
     os_unfair_lock_unlock(&self->_lock);
     if (v6)
     {
-      (v6)[2](v6, self, a3);
+      (v6)[2](v6, self, connection);
       goto LABEL_7;
     }
   }
@@ -696,22 +696,22 @@ void __71__BSServiceConnectionListener__listenerWithManager_legacyConfigurator__
   v5 = BSServiceLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    v8 = [a3 instance];
+    instance = [connection instance];
     domain = self->_domain;
     service = self->_service;
     v11 = 138413058;
-    v12 = v8;
+    v12 = instance;
     v13 = 2112;
     v14 = service;
     v15 = 2112;
     v16 = domain;
     v17 = 2112;
-    v18 = a3;
+    connectionCopy = connection;
     _os_log_error_impl(&dword_19A821000, v5, OS_LOG_TYPE_ERROR, "invalidating connection to instance %@ of service %@ of domain %@ because there is no handler for it : %@", &v11, 0x2Au);
   }
 
   v6 = 0;
-  [a3 invalidate];
+  [connection invalidate];
 LABEL_7:
 
   v7 = *MEMORY[0x1E69E9840];
@@ -727,8 +727,8 @@ LABEL_7:
   }
 
   v5 = domain;
-  v6 = [(BSServiceDomain *)v5 identifier];
-  [v3 appendString:v6 withName:@"domain"];
+  identifier = [(BSServiceDomain *)v5 identifier];
+  [v3 appendString:identifier withName:@"domain"];
 
   service = self->_service;
   if (service)
@@ -737,8 +737,8 @@ LABEL_7:
   }
 
   v8 = service;
-  v9 = [(BSService *)v8 identifier];
-  [v3 appendString:v9 withName:@"service"];
+  identifier2 = [(BSService *)v8 identifier];
+  [v3 appendString:identifier2 withName:@"service"];
 
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_invalidated)
@@ -758,9 +758,9 @@ LABEL_7:
 
   os_unfair_lock_unlock(&self->_lock);
   [v3 appendString:v10 withName:0];
-  v11 = [v3 build];
+  build = [v3 build];
 
-  return v11;
+  return build;
 }
 
 @end

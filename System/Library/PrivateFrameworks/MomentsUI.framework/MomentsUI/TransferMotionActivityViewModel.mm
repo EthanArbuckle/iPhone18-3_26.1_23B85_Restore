@@ -1,14 +1,14 @@
 @interface TransferMotionActivityViewModel
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TransferMotionActivityViewModel
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  TransferMotionActivityViewModel.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  TransferMotionActivityViewModel.encode(with:)(coderCopy);
 }
 
 @end

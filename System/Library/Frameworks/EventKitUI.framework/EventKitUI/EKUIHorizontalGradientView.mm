@@ -1,15 +1,15 @@
 @interface EKUIHorizontalGradientView
-- (EKUIHorizontalGradientView)initWithStartColor:(id)a3 endColor:(id)a4 start:(double)a5 end:(double)a6;
-- (void)drawRect:(CGRect)a3;
-- (void)layoutSublayersOfLayer:(id)a3;
+- (EKUIHorizontalGradientView)initWithStartColor:(id)color endColor:(id)endColor start:(double)start end:(double)end;
+- (void)drawRect:(CGRect)rect;
+- (void)layoutSublayersOfLayer:(id)layer;
 @end
 
 @implementation EKUIHorizontalGradientView
 
-- (EKUIHorizontalGradientView)initWithStartColor:(id)a3 endColor:(id)a4 start:(double)a5 end:(double)a6
+- (EKUIHorizontalGradientView)initWithStartColor:(id)color endColor:(id)endColor start:(double)start end:(double)end
 {
-  v11 = a3;
-  v12 = a4;
+  colorCopy = color;
+  endColorCopy = endColor;
   v18.receiver = self;
   v18.super_class = EKUIHorizontalGradientView;
   v13 = [(EKUIHorizontalGradientView *)&v18 init];
@@ -19,12 +19,12 @@
     gradientLayer = v13->_gradientLayer;
     v13->_gradientLayer = v14;
 
-    objc_storeStrong(&v13->_startColor, a3);
-    objc_storeStrong(&v13->_endColor, a4);
-    v13->_startPoint = a5;
-    v13->_endPoint = a6;
-    v16 = [(EKUIHorizontalGradientView *)v13 layer];
-    [v16 insertSublayer:v13->_gradientLayer atIndex:0];
+    objc_storeStrong(&v13->_startColor, color);
+    objc_storeStrong(&v13->_endColor, endColor);
+    v13->_startPoint = start;
+    v13->_endPoint = end;
+    layer = [(EKUIHorizontalGradientView *)v13 layer];
+    [layer insertSublayer:v13->_gradientLayer atIndex:0];
 
     [(EKUIHorizontalGradientView *)v13 setTranslatesAutoresizingMaskIntoConstraints:0];
   }
@@ -32,29 +32,29 @@
   return v13;
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
   v4.receiver = self;
   v4.super_class = EKUIHorizontalGradientView;
-  [(EKUIHorizontalGradientView *)&v4 layoutSublayersOfLayer:a3];
+  [(EKUIHorizontalGradientView *)&v4 layoutSublayersOfLayer:layer];
   [(EKUIHorizontalGradientView *)self bounds];
   [(CAGradientLayer *)self->_gradientLayer setFrame:?];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v9[2] = *MEMORY[0x1E69E9840];
   IsLeftToRight = CalInterfaceIsLeftToRight();
-  v5 = [(UIColor *)self->_startColor CGColor];
+  cGColor = [(UIColor *)self->_startColor CGColor];
   if (IsLeftToRight)
   {
-    v9[0] = v5;
+    v9[0] = cGColor;
     v6 = v9;
   }
 
   else
   {
-    v8 = v5;
+    v8 = cGColor;
     v6 = &v8;
   }
 

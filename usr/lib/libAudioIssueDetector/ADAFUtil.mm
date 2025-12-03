@@ -1,6 +1,6 @@
 @interface ADAFUtil
 + (BOOL)isProcessMediaserverd;
-+ (id)stringFromDataType:(unsigned int)a3;
++ (id)stringFromDataType:(unsigned int)type;
 @end
 
 @implementation ADAFUtil
@@ -33,13 +33,13 @@ void __33__ADAFUtil_isProcessMediaserverd__block_invoke()
   isProcessMediaserverd_isMediaserverd = v5;
 }
 
-+ (id)stringFromDataType:(unsigned int)a3
++ (id)stringFromDataType:(unsigned int)type
 {
-  if (a3 > 1835623275)
+  if (type > 1835623275)
   {
-    if (a3 != 1835623276)
+    if (type != 1835623276)
     {
-      if (a3 == 1936614505)
+      if (type == 1936614505)
       {
         return @"SoundClassification";
       }
@@ -52,9 +52,9 @@ void __33__ADAFUtil_isProcessMediaserverd__block_invoke()
 
   else
   {
-    if (a3 != 1702260324)
+    if (type != 1702260324)
     {
-      if (a3 == 1751213428)
+      if (type == 1751213428)
       {
         return @"HeadphoneAudioExposure";
       }

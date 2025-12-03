@@ -1,18 +1,18 @@
 @interface HMIMutableFloatArray
 - (HMIMutableFloatArray)init;
-- (HMIMutableFloatArray)initWithData:(id)a3;
-- (HMIMutableFloatArray)initWithDataTensor:(id)a3;
-- (HMIMutableFloatArray)initWithFloats:(const float *)a3 count:(unint64_t)a4;
-- (HMIMutableFloatArray)initWithValue:(float)a3 count:(unint64_t)a4;
+- (HMIMutableFloatArray)initWithData:(id)data;
+- (HMIMutableFloatArray)initWithDataTensor:(id)tensor;
+- (HMIMutableFloatArray)initWithFloats:(const float *)floats count:(unint64_t)count;
+- (HMIMutableFloatArray)initWithValue:(float)value count:(unint64_t)count;
 - (float)l2Norm;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)floatArrayByAdding:(id)a3;
-- (id)floatArrayByScaling:(float)a3;
-- (id)floatArrayBySubtracting:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)add:(id)a3;
-- (void)appendArray:(id)a3;
-- (void)subtract:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)floatArrayByAdding:(id)adding;
+- (id)floatArrayByScaling:(float)scaling;
+- (id)floatArrayBySubtracting:(id)subtracting;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)add:(id)add;
+- (void)appendArray:(id)array;
+- (void)subtract:(id)subtract;
 @end
 
 @implementation HMIMutableFloatArray
@@ -32,15 +32,15 @@
   return v2;
 }
 
-- (HMIMutableFloatArray)initWithData:(id)a3
+- (HMIMutableFloatArray)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = HMIMutableFloatArray;
   v5 = [(HMIMutableFloatArray *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [dataCopy mutableCopy];
     data = v5->_data;
     v5->_data = v6;
   }
@@ -48,39 +48,39 @@
   return v5;
 }
 
-- (HMIMutableFloatArray)initWithValue:(float)a3 count:(unint64_t)a4
+- (HMIMutableFloatArray)initWithValue:(float)value count:(unint64_t)count
 {
   v6 = [(HMIMutableFloatArray *)self init];
   if (v6)
   {
-    v7 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:4 * a4];
+    v7 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:4 * count];
     data = v6->_data;
     v6->_data = v7;
 
-    *&v9 = a3;
+    *&v9 = value;
     [(HMIMutableFloatArray *)v6 fillWithFloat:v9];
   }
 
   return v6;
 }
 
-- (HMIMutableFloatArray)initWithFloats:(const float *)a3 count:(unint64_t)a4
+- (HMIMutableFloatArray)initWithFloats:(const float *)floats count:(unint64_t)count
 {
   v6 = [(HMIMutableFloatArray *)self init];
-  [(HMIMutableFloatArray *)v6 appendFloats:a3 count:a4];
+  [(HMIMutableFloatArray *)v6 appendFloats:floats count:count];
   return v6;
 }
 
-- (HMIMutableFloatArray)initWithDataTensor:(id)a3
+- (HMIMutableFloatArray)initWithDataTensor:(id)tensor
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tensorCopy = tensor;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 shape];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  shape = [tensorCopy shape];
+  v6 = [shape countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -92,13 +92,13 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(shape);
         }
 
         v9 *= [*(*(&v13 + 1) + 8 * i) unsignedIntegerValue];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [shape countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -109,21 +109,21 @@
     v9 = 1;
   }
 
-  v11 = -[HMIMutableFloatArray initWithFloats:count:](self, "initWithFloats:count:", [v4 dataPointer], v9);
+  v11 = -[HMIMutableFloatArray initWithFloats:count:](self, "initWithFloats:count:", [tensorCopy dataPointer], v9);
   return v11;
 }
 
-- (void)appendArray:(id)a3
+- (void)appendArray:(id)array
 {
   data = self->_data;
-  v4 = [a3 data];
-  [(NSMutableData *)data appendData:v4];
+  data = [array data];
+  [(NSMutableData *)data appendData:data];
 }
 
-- (void)subtract:(id)a3
+- (void)subtract:(id)subtract
 {
-  v5 = a3;
-  [a3 floats];
+  subtractCopy = subtract;
+  [subtract floats];
   [(HMIMutableFloatArray *)self floats];
   [(HMIMutableFloatArray *)self mutableFloats];
   [(HMIMutableFloatArray *)self count];
@@ -131,10 +131,10 @@
   JUMPOUT(0x2318CBC90);
 }
 
-- (void)add:(id)a3
+- (void)add:(id)add
 {
-  v5 = a3;
-  [a3 floats];
+  addCopy = add;
+  [add floats];
   [(HMIMutableFloatArray *)self floats];
   [(HMIMutableFloatArray *)self mutableFloats];
   [(HMIMutableFloatArray *)self count];
@@ -149,34 +149,34 @@
   return sqrtf(__C);
 }
 
-- (id)floatArrayByScaling:(float)a3
+- (id)floatArrayByScaling:(float)scaling
 {
   v4 = [(HMIMutableFloatArray *)self copy];
-  *&v5 = a3;
+  *&v5 = scaling;
   [v4 scale:v5];
 
   return v4;
 }
 
-- (id)floatArrayByAdding:(id)a3
+- (id)floatArrayByAdding:(id)adding
 {
-  v4 = a3;
+  addingCopy = adding;
   v5 = [(HMIMutableFloatArray *)self copy];
-  [v5 add:v4];
+  [v5 add:addingCopy];
 
   return v5;
 }
 
-- (id)floatArrayBySubtracting:(id)a3
+- (id)floatArrayBySubtracting:(id)subtracting
 {
-  v4 = a3;
+  subtractingCopy = subtracting;
   v5 = [(HMIMutableFloatArray *)self copy];
-  [v5 subtract:v4];
+  [v5 subtract:subtractingCopy];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HMIMutableFloatArray alloc];
   data = self->_data;
@@ -184,7 +184,7 @@
   return [(HMIMutableFloatArray *)v4 initWithData:data];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [HMIMutableFloatArray alloc];
   data = self->_data;

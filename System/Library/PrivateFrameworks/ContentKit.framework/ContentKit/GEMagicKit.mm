@@ -1,30 +1,30 @@
 @interface GEMagicKit
-+ (id)magicForFileAtURL:(id)a3 decompress:(BOOL)a4;
-+ (id)magicForObject:(id)a3 decompress:(BOOL)a4;
-+ (id)rawMagicOutputForObject:(id)a3 cookie:(magic_set *)a4 flags:(int)a5;
-+ (id)typeHierarchyForType:(id)a3;
++ (id)magicForFileAtURL:(id)l decompress:(BOOL)decompress;
++ (id)magicForObject:(id)object decompress:(BOOL)decompress;
++ (id)rawMagicOutputForObject:(id)object cookie:(magic_set *)cookie flags:(int)flags;
++ (id)typeHierarchyForType:(id)type;
 + (magic_set)sharedMagicCookie;
 @end
 
 @implementation GEMagicKit
 
-+ (id)magicForFileAtURL:(id)a3 decompress:(BOOL)a4
++ (id)magicForFileAtURL:(id)l decompress:(BOOL)decompress
 {
-  v4 = a4;
-  if (![a3 isFileURL])
+  decompressCopy = decompress;
+  if (![l isFileURL])
   {
     return 0;
   }
 
-  v6 = [a3 path];
+  path = [l path];
 
-  return [GEMagicKit magicForFileAtPath:v6 decompress:v4];
+  return [GEMagicKit magicForFileAtPath:path decompress:decompressCopy];
 }
 
-+ (id)typeHierarchyForType:(id)a3
++ (id)typeHierarchyForType:(id)type
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(__CFDictionary *)UTTypeCopyDeclaration(a3) objectForKey:*MEMORY[0x277CC2040]];
+  v3 = [(__CFDictionary *)UTTypeCopyDeclaration(type) objectForKey:*MEMORY[0x277CC2040]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -70,30 +70,30 @@
   return [v9 arrayWithObject:v3];
 }
 
-+ (id)rawMagicOutputForObject:(id)a3 cookie:(magic_set *)a4 flags:(int)a5
++ (id)rawMagicOutputForObject:(id)object cookie:(magic_set *)cookie flags:(int)flags
 {
-  if (a4)
+  if (cookie)
   {
-    *(a4 + 17) = a5;
+    *(cookie + 17) = flags;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [a3 bytes];
-    v8 = [a3 length];
-    if (!a4)
+    bytes = [object bytes];
+    v8 = [object length];
+    if (!cookie)
     {
       return 0;
     }
 
     v15 = v8;
-    if (file_reset(a4, 1, v9, v10, v11, v12, v13, v14) == -1 || file_buffer(a4, -1, 0, v7, v15, v16, v17, v18) == -1)
+    if (file_reset(cookie, 1, v9, v10, v11, v12, v13, v14) == -1 || file_buffer(cookie, -1, 0, bytes, v15, v16, v17, v18) == -1)
     {
       return 0;
     }
 
-    v19 = file_getbuffer(a4);
+    v19 = file_getbuffer(cookie);
   }
 
   else
@@ -101,12 +101,12 @@
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [MEMORY[0x277CBEAD8] raise:@"MagicKit" format:{@"Invalid object (expected data or path string): %@", a3}];
+      [MEMORY[0x277CBEAD8] raise:@"MagicKit" format:{@"Invalid object (expected data or path string): %@", object}];
       return 0;
     }
 
-    v20 = [a3 fileSystemRepresentation];
-    v19 = magic_file(a4, v20, v21, v22, v23, v24, v25, v26);
+    fileSystemRepresentation = [object fileSystemRepresentation];
+    v19 = magic_file(cookie, fileSystemRepresentation, v21, v22, v23, v24, v25, v26);
   }
 
   v27 = v19;
@@ -120,9 +120,9 @@
   return [v28 stringWithUTF8String:v27];
 }
 
-+ (id)magicForObject:(id)a3 decompress:(BOOL)a4
++ (id)magicForObject:(id)object decompress:(BOOL)decompress
 {
-  if (a4)
+  if (decompress)
   {
     v6 = 4;
   }
@@ -133,11 +133,11 @@
   }
 
   v7 = +[GEMagicKit sharedMagicCookie];
-  v8 = [a1 rawMagicOutputForObject:a3 cookie:v7 flags:v6];
-  v9 = [a1 rawMagicOutputForObject:a3 cookie:v7 flags:v6 | 0x410];
+  v8 = [self rawMagicOutputForObject:object cookie:v7 flags:v6];
+  0x410 = [self rawMagicOutputForObject:object cookie:v7 flags:v6 | 0x410];
   if (v8)
   {
-    v10 = v9 == 0;
+    v10 = 0x410 == 0;
   }
 
   else
@@ -150,8 +150,8 @@
     return 0;
   }
 
-  v11 = v9;
-  v12 = [objc_msgSend(v9 componentsSeparatedByString:{@";", "objectAtIndex:", 0}];
+  v11 = 0x410;
+  v12 = [objc_msgSend(0x410 componentsSeparatedByString:{@";", "objectAtIndex:", 0}];
   v13 = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x277CC1F60], v12, 0);
   if (!v13)
   {

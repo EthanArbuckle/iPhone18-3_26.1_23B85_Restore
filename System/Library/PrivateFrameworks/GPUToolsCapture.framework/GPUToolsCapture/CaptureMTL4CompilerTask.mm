@@ -1,6 +1,6 @@
 @interface CaptureMTL4CompilerTask
-- (BOOL)conformsToProtocol:(id)a3;
-- (CaptureMTL4CompilerTask)initWithBaseObject:(id)a3 captureContext:(GTTraceContext *)a4 captureCompiler:(id)a5;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (CaptureMTL4CompilerTask)initWithBaseObject:(id)object captureContext:(GTTraceContext *)context captureCompiler:(id)compiler;
 - (NSString)description;
 - (unint64_t)streamReference;
 - (void)dealloc;
@@ -17,13 +17,13 @@
   [(CaptureMTL4CompilerTask *)&v3 dealloc];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTL4CompilerTask *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTL4CompilerTask *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -78,21 +78,21 @@
   }
 }
 
-- (CaptureMTL4CompilerTask)initWithBaseObject:(id)a3 captureContext:(GTTraceContext *)a4 captureCompiler:(id)a5
+- (CaptureMTL4CompilerTask)initWithBaseObject:(id)object captureContext:(GTTraceContext *)context captureCompiler:(id)compiler
 {
-  v9 = a3;
-  v10 = a5;
+  objectCopy = object;
+  compilerCopy = compiler;
   v15.receiver = self;
   v15.super_class = CaptureMTL4CompilerTask;
   v11 = [(CaptureMTL4CompilerTask *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_baseObject, a3);
-    objc_storeStrong(&v12->_captureCompiler, a5);
-    v12->_traceContext = a4;
-    v13 = DEVICEOBJECT(v9);
-    v12->_traceStream = GTTraceContext_openStream(a4, v13, v12);
+    objc_storeStrong(&v11->_baseObject, object);
+    objc_storeStrong(&v12->_captureCompiler, compiler);
+    v12->_traceContext = context;
+    v13 = DEVICEOBJECT(objectCopy);
+    v12->_traceStream = GTTraceContext_openStream(context, v13, v12);
   }
 
   return v12;

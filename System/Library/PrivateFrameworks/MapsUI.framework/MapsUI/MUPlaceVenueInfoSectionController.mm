@@ -1,6 +1,6 @@
 @interface MUPlaceVenueInfoSectionController
 - (MUPlaceSectionHeaderViewModel)sectionHeaderViewModel;
-- (MUPlaceVenueInfoSectionController)initWithMapItem:(id)a3;
+- (MUPlaceVenueInfoSectionController)initWithMapItem:(id)item;
 - (void)_setupSectionView;
 @end
 
@@ -12,11 +12,11 @@
   if (!sectionHeaderViewModel)
   {
     v4 = [MUPlaceSectionHeaderViewModel alloc];
-    v5 = [(MUPlaceSectionController *)self mapItem];
-    v6 = [v5 _venueInfo];
-    v7 = [v6 contents];
-    v8 = [v7 title];
-    v9 = [(MUPlaceSectionHeaderViewModel *)v4 initWithTitleString:v8];
+    mapItem = [(MUPlaceSectionController *)self mapItem];
+    _venueInfo = [mapItem _venueInfo];
+    contents = [_venueInfo contents];
+    title = [contents title];
+    v9 = [(MUPlaceSectionHeaderViewModel *)v4 initWithTitleString:title];
     v10 = self->_sectionHeaderViewModel;
     self->_sectionHeaderViewModel = v9;
 
@@ -28,12 +28,12 @@
 
 - (void)_setupSectionView
 {
-  v3 = [(MUPlaceSectionController *)self mapItem];
-  v4 = [v3 _venueInfo];
-  v14 = [v4 contents];
+  mapItem = [(MUPlaceSectionController *)self mapItem];
+  _venueInfo = [mapItem _venueInfo];
+  contents = [_venueInfo contents];
 
-  v5 = [v14 items];
-  v6 = [MUTextPairViewModel textPairViewModelsFromStrings:v5];
+  items = [contents items];
+  v6 = [MUTextPairViewModel textPairViewModelsFromStrings:items];
 
   v7 = [MUTextPairVerticalCardView alloc];
   v8 = [(MUTextPairVerticalCardView *)v7 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -42,19 +42,19 @@
 
   [(MUTextPairVerticalCardView *)self->_contentView setViewModels:v6];
   v10 = self->_contentView;
-  v11 = [(MUPlaceVenueInfoSectionController *)self sectionHeaderViewModel];
-  v12 = [MUPlaceSectionView insetTextSectionViewForContentView:v10 sectionHeaderViewModel:v11 sectionFooterViewModel:0];
+  sectionHeaderViewModel = [(MUPlaceVenueInfoSectionController *)self sectionHeaderViewModel];
+  v12 = [MUPlaceSectionView insetTextSectionViewForContentView:v10 sectionHeaderViewModel:sectionHeaderViewModel sectionFooterViewModel:0];
   sectionView = self->_sectionView;
   self->_sectionView = v12;
 
   [(MUPlaceSectionView *)self->_sectionView configureWithSectionController:self];
 }
 
-- (MUPlaceVenueInfoSectionController)initWithMapItem:(id)a3
+- (MUPlaceVenueInfoSectionController)initWithMapItem:(id)item
 {
   v8.receiver = self;
   v8.super_class = MUPlaceVenueInfoSectionController;
-  v3 = [(MUPlaceSectionController *)&v8 initWithMapItem:a3];
+  v3 = [(MUPlaceSectionController *)&v8 initWithMapItem:item];
   if (v3)
   {
     v4 = MUGetPlaceCardLog();

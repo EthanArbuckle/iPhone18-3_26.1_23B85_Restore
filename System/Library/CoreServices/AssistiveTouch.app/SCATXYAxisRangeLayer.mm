@@ -1,20 +1,20 @@
 @interface SCATXYAxisRangeLayer
-- (SCATXYAxisRangeLayer)initWithAxis:(int)a3;
-- (id)_backgroundColorForTheme:(int)a3;
-- (id)_borderBackgroundColorForTheme:(int)a3;
-- (id)_borderForegroundColorForTheme:(int)a3;
+- (SCATXYAxisRangeLayer)initWithAxis:(int)axis;
+- (id)_backgroundColorForTheme:(int)theme;
+- (id)_borderBackgroundColorForTheme:(int)theme;
+- (id)_borderForegroundColorForTheme:(int)theme;
 - (void)removeAllAnimations;
 - (void)resetLineLayer;
-- (void)updateFrameForParentBounds:(CGRect)a3 refinementPoint:(CGPoint *)a4;
-- (void)updateTheme:(int)a3 animated:(BOOL)a4;
-- (void)updateToFitWithinParentBounds:(CGRect)a3;
+- (void)updateFrameForParentBounds:(CGRect)bounds refinementPoint:(CGPoint *)point;
+- (void)updateTheme:(int)theme animated:(BOOL)animated;
+- (void)updateToFitWithinParentBounds:(CGRect)bounds;
 @end
 
 @implementation SCATXYAxisRangeLayer
 
-- (SCATXYAxisRangeLayer)initWithAxis:(int)a3
+- (SCATXYAxisRangeLayer)initWithAxis:(int)axis
 {
-  v3 = *&a3;
+  v3 = *&axis;
   v13.receiver = self;
   v13.super_class = SCATXYAxisRangeLayer;
   v4 = [(SCATAxisLayer *)&v13 initWithAxis:?];
@@ -24,19 +24,19 @@
     [(SCATXYAxisRangeLayer *)v4 setBorderWidth:?];
     v5 = [(SCATAxisLayer *)[SCATXYAxisLineLayer alloc] initWithAxis:v3];
     [(SCATXYAxisRangeLayer *)v4 setLineLayer:v5];
-    v6 = [(SCATAxisLayer *)v4 compositingLayer];
-    [(SCATXYAxisRangeLayer *)v4 insertSublayer:v5 below:v6];
+    compositingLayer = [(SCATAxisLayer *)v4 compositingLayer];
+    [(SCATXYAxisRangeLayer *)v4 insertSublayer:v5 below:compositingLayer];
 
     v7 = kCAFilterPlusL;
     v8 = [CAFilter filterWithType:kCAFilterPlusL];
     [(SCATXYAxisRangeLayer *)v4 setCompositingFilter:v8];
 
-    v9 = [(SCATAxisLayer *)v4 foregroundLayer];
-    [v9 setBorderWidth:1.0];
+    foregroundLayer = [(SCATAxisLayer *)v4 foregroundLayer];
+    [foregroundLayer setBorderWidth:1.0];
 
-    v10 = [(SCATAxisLayer *)v4 foregroundLayer];
+    foregroundLayer2 = [(SCATAxisLayer *)v4 foregroundLayer];
     v11 = [CAFilter filterWithType:v7];
-    [v10 setCompositingFilter:v11];
+    [foregroundLayer2 setCompositingFilter:v11];
   }
 
   return v4;
@@ -44,8 +44,8 @@
 
 - (void)removeAllAnimations
 {
-  v3 = [(SCATXYAxisRangeLayer *)self presentationLayer];
-  [v3 position];
+  presentationLayer = [(SCATXYAxisRangeLayer *)self presentationLayer];
+  [presentationLayer position];
   v5 = v4;
   v7 = v6;
 
@@ -53,51 +53,51 @@
   v16.super_class = SCATXYAxisRangeLayer;
   [(SCATXYAxisRangeLayer *)&v16 removeAllAnimations];
   [(SCATAxisLayer *)self updateLayerTreePosition:v5, v7];
-  v8 = [(SCATXYAxisRangeLayer *)self lineLayer];
-  v9 = [v8 presentationLayer];
-  [v9 position];
+  lineLayer = [(SCATXYAxisRangeLayer *)self lineLayer];
+  presentationLayer2 = [lineLayer presentationLayer];
+  [presentationLayer2 position];
   v11 = v10;
   v13 = v12;
 
-  v14 = [(SCATXYAxisRangeLayer *)self lineLayer];
-  [v14 removeAllAnimations];
+  lineLayer2 = [(SCATXYAxisRangeLayer *)self lineLayer];
+  [lineLayer2 removeAllAnimations];
 
-  v15 = [(SCATXYAxisRangeLayer *)self lineLayer];
-  [v15 updateLayerTreePosition:{v11, v13}];
+  lineLayer3 = [(SCATXYAxisRangeLayer *)self lineLayer];
+  [lineLayer3 updateLayerTreePosition:{v11, v13}];
 }
 
 - (void)resetLineLayer
 {
-  v3 = [(SCATXYAxisRangeLayer *)self lineLayer];
-  [v3 removeFromSuperlayer];
+  lineLayer = [(SCATXYAxisRangeLayer *)self lineLayer];
+  [lineLayer removeFromSuperlayer];
 
-  v4 = [(SCATXYAxisRangeLayer *)self lineLayer];
-  [v4 removeAllAnimations];
+  lineLayer2 = [(SCATXYAxisRangeLayer *)self lineLayer];
+  [lineLayer2 removeAllAnimations];
 
-  v5 = [(SCATXYAxisRangeLayer *)self lineLayer];
+  lineLayer3 = [(SCATXYAxisRangeLayer *)self lineLayer];
   LODWORD(v6) = 1.0;
-  [v5 setSpeed:v6];
+  [lineLayer3 setSpeed:v6];
 
-  v8 = [(SCATXYAxisRangeLayer *)self lineLayer];
-  v7 = [(SCATAxisLayer *)self compositingLayer];
-  [(SCATXYAxisRangeLayer *)self insertSublayer:v8 below:v7];
+  lineLayer4 = [(SCATXYAxisRangeLayer *)self lineLayer];
+  compositingLayer = [(SCATAxisLayer *)self compositingLayer];
+  [(SCATXYAxisRangeLayer *)self insertSublayer:lineLayer4 below:compositingLayer];
 }
 
-- (void)updateTheme:(int)a3 animated:(BOOL)a4
+- (void)updateTheme:(int)theme animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = *&a3;
+  animatedCopy = animated;
+  v5 = *&theme;
   v13.receiver = self;
   v13.super_class = SCATXYAxisRangeLayer;
   [SCATAxisLayer updateTheme:"updateTheme:animated:" animated:?];
-  if (!v4)
+  if (!animatedCopy)
   {
     +[CATransaction begin];
     [CATransaction setDisableActions:1];
   }
 
-  v7 = [(SCATXYAxisRangeLayer *)self lineLayer];
-  [v7 updateTheme:v5 animated:v4];
+  lineLayer = [(SCATXYAxisRangeLayer *)self lineLayer];
+  [lineLayer updateTheme:v5 animated:animatedCopy];
 
   v8 = [(SCATXYAxisRangeLayer *)self _backgroundColorForTheme:v5];
   -[SCATAxisLayer setBackgroundColor:](self, "setBackgroundColor:", [v8 CGColor]);
@@ -106,23 +106,23 @@
   -[SCATXYAxisRangeLayer setBorderColor:](self, "setBorderColor:", [v9 CGColor]);
 
   v10 = [(SCATXYAxisRangeLayer *)self _borderForegroundColorForTheme:v5];
-  v11 = [v10 CGColor];
-  v12 = [(SCATAxisLayer *)self foregroundLayer];
-  [v12 setBorderColor:v11];
+  cGColor = [v10 CGColor];
+  foregroundLayer = [(SCATAxisLayer *)self foregroundLayer];
+  [foregroundLayer setBorderColor:cGColor];
 
-  if (!v4)
+  if (!animatedCopy)
   {
     +[CATransaction commit];
   }
 }
 
-- (void)updateFrameForParentBounds:(CGRect)a3 refinementPoint:(CGPoint *)a4
+- (void)updateFrameForParentBounds:(CGRect)bounds refinementPoint:(CGPoint *)point
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a4)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (point)
   {
     +[SCATAxisLayer rangeLayerMaxWidth];
     v11 = v10;
@@ -144,10 +144,10 @@
     v11 = v13;
   }
 
-  v14 = [(SCATAxisLayer *)self axis];
+  axis = [(SCATAxisLayer *)self axis];
   [objc_opt_class() rangeLayerFrameInset];
   v16 = v15 * -0.5;
-  if (v14)
+  if (axis)
   {
     v40.origin.x = x;
     v40.origin.y = y;
@@ -158,7 +158,7 @@
     v18 = v41.origin.y;
     v19 = v11;
     v11 = v41.size.width;
-    if (!a4)
+    if (!point)
     {
       goto LABEL_17;
     }
@@ -174,19 +174,19 @@
     v17 = v43.origin.x;
     v18 = v43.origin.y;
     v19 = v43.size.height;
-    if (!a4)
+    if (!point)
     {
       goto LABEL_17;
     }
   }
 
-  v20 = [(SCATXYAxisRangeLayer *)self superlayer];
-  v21 = [v20 delegate];
+  superlayer = [(SCATXYAxisRangeLayer *)self superlayer];
+  delegate = [superlayer delegate];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [HNDScreen convertPoint:v21 toView:a4->x, a4->y];
+    [HNDScreen convertPoint:delegate toView:point->x, point->y];
     v23 = v22;
     v25 = v24;
     if ([(SCATAxisLayer *)self axis])
@@ -202,7 +202,7 @@
 
   else
   {
-    v37 = v21;
+    v37 = delegate;
     _AXAssert();
   }
 
@@ -221,12 +221,12 @@ LABEL_17:
   v28 = [(SCATAxisLayer *)self foregroundLayer:v45.origin.x];
   [v28 setFrame:{1.0, 1.0, v26, v27}];
 
-  v29 = [(SCATAxisLayer *)self compositingLayer];
-  [v29 setFrame:{1.0, 1.0, v26, v27}];
+  compositingLayer = [(SCATAxisLayer *)self compositingLayer];
+  [compositingLayer setFrame:{1.0, 1.0, v26, v27}];
 
-  LODWORD(v29) = [(SCATAxisLayer *)self axis];
+  LODWORD(compositingLayer) = [(SCATAxisLayer *)self axis];
   +[SCATAxisLayer lineLayerMaxWidth];
-  if (v29)
+  if (compositingLayer)
   {
     v19 = v30;
   }
@@ -236,8 +236,8 @@ LABEL_17:
     v11 = v30;
   }
 
-  v31 = [(SCATXYAxisRangeLayer *)self lineLayer];
-  [v31 setFrame:{0.0, 0.0, v11, v19}];
+  lineLayer = [(SCATXYAxisRangeLayer *)self lineLayer];
+  [lineLayer setFrame:{0.0, 0.0, v11, v19}];
 
   v46.origin.x = 0.0;
   v46.origin.y = 0.0;
@@ -247,19 +247,19 @@ LABEL_17:
   v32 = v47.size.width;
   v33 = v47.size.height;
   v34 = [(SCATXYAxisRangeLayer *)self lineLayer:v47.origin.x];
-  v35 = [v34 foregroundLayer];
-  [v35 setFrame:{1.0, 1.0, v32, v33}];
+  foregroundLayer = [v34 foregroundLayer];
+  [foregroundLayer setFrame:{1.0, 1.0, v32, v33}];
 
-  v38 = [(SCATXYAxisRangeLayer *)self lineLayer];
-  v36 = [v38 compositingLayer];
-  [v36 setFrame:{1.0, 1.0, v32, v33}];
+  lineLayer2 = [(SCATXYAxisRangeLayer *)self lineLayer];
+  compositingLayer2 = [lineLayer2 compositingLayer];
+  [compositingLayer2 setFrame:{1.0, 1.0, v32, v33}];
 }
 
-- (void)updateToFitWithinParentBounds:(CGRect)a3
+- (void)updateToFitWithinParentBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  [(SCATXYAxisRangeLayer *)self frame:a3.origin.x];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  [(SCATXYAxisRangeLayer *)self frame:bounds.origin.x];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -306,13 +306,13 @@ LABEL_17:
   v16 = [(SCATAxisLayer *)self foregroundLayer:v20.origin.x];
   [v16 setFrame:{1.0, 1.0, v14, v15}];
 
-  v17 = [(SCATAxisLayer *)self compositingLayer];
-  [v17 setFrame:{1.0, 1.0, v14, v15}];
+  compositingLayer = [(SCATAxisLayer *)self compositingLayer];
+  [compositingLayer setFrame:{1.0, 1.0, v14, v15}];
 }
 
-- (id)_backgroundColorForTheme:(int)a3
+- (id)_backgroundColorForTheme:(int)theme
 {
-  if (a3)
+  if (theme)
   {
     v3 = +[UIColor clearColor];
   }
@@ -341,9 +341,9 @@ LABEL_17:
   return v3;
 }
 
-- (id)_borderBackgroundColorForTheme:(int)a3
+- (id)_borderBackgroundColorForTheme:(int)theme
 {
-  if (a3 > 1)
+  if (theme > 1)
   {
     +[UIColor clearColor];
   }
@@ -360,9 +360,9 @@ LABEL_17:
   return v4;
 }
 
-- (id)_borderForegroundColorForTheme:(int)a3
+- (id)_borderForegroundColorForTheme:(int)theme
 {
-  if (a3 > 1)
+  if (theme > 1)
   {
     +[UIColor clearColor];
   }

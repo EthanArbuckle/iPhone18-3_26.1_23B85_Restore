@@ -1,20 +1,20 @@
 @interface AFSiriActivationRequest
-- (AFSiriActivationRequest)initWithContext:(id)a3;
-- (void)performRequestWithCompletion:(id)a3;
-- (void)performRequestWithResultHandler:(id)a3;
+- (AFSiriActivationRequest)initWithContext:(id)context;
+- (void)performRequestWithCompletion:(id)completion;
+- (void)performRequestWithResultHandler:(id)handler;
 @end
 
 @implementation AFSiriActivationRequest
 
-- (void)performRequestWithCompletion:(id)a3
+- (void)performRequestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __56__AFSiriActivationRequest_performRequestWithCompletion___block_invoke;
   v6[3] = &unk_1E7348700;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(AFSiriActivationRequest *)self performRequestWithResultHandler:v6];
 }
 
@@ -28,10 +28,10 @@ void __56__AFSiriActivationRequest_performRequestWithCompletion___block_invoke(u
   }
 }
 
-- (void)performRequestWithResultHandler:(id)a3
+- (void)performRequestWithResultHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   *keys = xmmword_1E73486C8;
   values[0] = xpc_int64_create(6);
   values[1] = AFSiriActivationCreateXPCDictionaryFromContext(self->_context);
@@ -44,17 +44,17 @@ void __56__AFSiriActivationRequest_performRequestWithCompletion___block_invoke(u
     v11[1] = 3221225472;
     v11[2] = __59__AFSiriActivationRequest_performRequestWithResultHandler___block_invoke;
     v11[3] = &unk_1E7348638;
-    v13 = v4;
+    v13 = handlerCopy;
     v12 = v7;
     xpc_connection_send_message_with_reply(v12, v5, 0, v11);
   }
 
   else
   {
-    if (v4)
+    if (handlerCopy)
     {
       v8 = [AFSiriActivationResult newWithBuilder:&__block_literal_global_89];
-      (*(v4 + 2))(v4, v8);
+      (*(handlerCopy + 2))(handlerCopy, v8);
     }
 
     if (v7)
@@ -120,15 +120,15 @@ void __59__AFSiriActivationRequest_performRequestWithResultHandler___block_invok
   [v2 setError:v3];
 }
 
-- (AFSiriActivationRequest)initWithContext:(id)a3
+- (AFSiriActivationRequest)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = AFSiriActivationRequest;
   v5 = [(AFSiriActivationRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [contextCopy copy];
     context = v5->_context;
     v5->_context = v6;
   }

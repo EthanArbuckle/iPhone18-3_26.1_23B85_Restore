@@ -91,9 +91,9 @@
     width = v73.size.width;
     height = v73.size.height;
     v10 = [CIVector vectorWithCGRect:?];
-    v11 = [(CIImage *)self->inputMinMaxImage imageByClampingToExtent];
-    v12 = [(CILensModelCalculator *)self cpuParams];
-    v13 = [(CILensModelCalculator *)self kernel];
+    imageByClampingToExtent = [(CIImage *)self->inputMinMaxImage imageByClampingToExtent];
+    cpuParams = [(CILensModelCalculator *)self cpuParams];
+    kernel = [(CILensModelCalculator *)self kernel];
     v14 = MEMORY[0x1E695F040];
     v15 = *MEMORY[0x1E695F040];
     v16 = *(MEMORY[0x1E695F040] + 8);
@@ -109,16 +109,16 @@
     *&v62[7] = height;
     v70[0] = self->inputImage;
     v70[1] = v10;
-    v70[2] = v11;
-    v70[3] = v12;
+    v70[2] = imageByClampingToExtent;
+    v70[3] = cpuParams;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:4];
     v68 = @"kCIKernelOutputFormat";
     v69 = [MEMORY[0x1E696AD98] numberWithInt:2056];
-    v20 = [v13 applyWithExtent:v62 roiCallback:v19 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", &v69, &v68, 1), v15, v16, v18, v17}];
-    v21 = [(CILensModelCalculator *)self mtlKernel];
-    if (v21)
+    v20 = [kernel applyWithExtent:v62 roiCallback:v19 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", &v69, &v68, 1), v15, v16, v18, v17}];
+    mtlKernel = [(CILensModelCalculator *)self mtlKernel];
+    if (mtlKernel)
     {
-      v22 = v21;
+      v22 = mtlKernel;
       [(CIVector *)self->inputOriginalSize X];
       v24 = v23;
       [(CIVector *)self->inputOriginalSize Y];
@@ -182,9 +182,9 @@
       *&v58[6] = width;
       *&v58[7] = height;
       v67[0] = v46;
-      v67[1] = v12;
+      v67[1] = cpuParams;
       v52 = self->inputImage;
-      v67[2] = v11;
+      v67[2] = imageByClampingToExtent;
       v67[3] = v52;
       v67[4] = v47;
       v53 = [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:5];

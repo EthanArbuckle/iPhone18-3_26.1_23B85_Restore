@@ -4,7 +4,7 @@
 + (SRSTSharedState)serving;
 + (SRSTSharedState)unshared;
 - (SRSTSharedState)init;
-- (SRSTSharedState)initWithUnderlyingObject:(id)a3;
+- (SRSTSharedState)initWithUnderlyingObject:(id)object;
 - (id)makeProxy;
 - (unint64_t)hash;
 @end
@@ -43,8 +43,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(_SRSTSharedState *)self->_underlyingObject name];
-  v3 = [v2 hash];
+  name = [(_SRSTSharedState *)self->_underlyingObject name];
+  v3 = [name hash];
 
   return v3;
 }
@@ -56,14 +56,14 @@
   return v2;
 }
 
-- (SRSTSharedState)initWithUnderlyingObject:(id)a3
+- (SRSTSharedState)initWithUnderlyingObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = SRSTSharedState;
   v5 = [(SRSTSharedState *)&v8 init];
   underlyingObject = v5->_underlyingObject;
-  v5->_underlyingObject = v4;
+  v5->_underlyingObject = objectCopy;
 
   return v5;
 }

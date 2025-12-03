@@ -1,21 +1,21 @@
 @interface PKAccountWebServiceApplePayTrustRequest
-- (PKAccountWebServiceApplePayTrustRequest)initWithApplePayTrustProtocol:(id)a3;
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (PKAccountWebServiceApplePayTrustRequest)initWithApplePayTrustProtocol:(id)protocol;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 - (id)endpointComponents;
 @end
 
 @implementation PKAccountWebServiceApplePayTrustRequest
 
-- (PKAccountWebServiceApplePayTrustRequest)initWithApplePayTrustProtocol:(id)a3
+- (PKAccountWebServiceApplePayTrustRequest)initWithApplePayTrustProtocol:(id)protocol
 {
-  v5 = a3;
+  protocolCopy = protocol;
   v9.receiver = self;
   v9.super_class = PKAccountWebServiceApplePayTrustRequest;
   v6 = [(PKOverlayableWebServiceRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_protocol, a3);
+    objc_storeStrong(&v6->_protocol, protocol);
   }
 
   return v7;
@@ -23,22 +23,22 @@
 
 - (id)endpointComponents
 {
-  v2 = [(PKAccountWebServiceApplePayTrustProtocol *)self->_protocol endpointComponents];
-  v3 = [v2 arrayByAddingObject:@"signature"];
+  endpointComponents = [(PKAccountWebServiceApplePayTrustProtocol *)self->_protocol endpointComponents];
+  v3 = [endpointComponents arrayByAddingObject:@"signature"];
 
   return v3;
 }
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKAccountWebServiceApplePayTrustProtocol *)self->_protocol baseURL];
-  v6 = [(PKAccountWebServiceApplePayTrustRequest *)self endpointComponents];
-  v7 = [(PKAccountWebServiceApplePayTrustProtocol *)self->_protocol hashResponse];
-  v8 = [v7 referenceIdentifier];
+  informationCopy = information;
+  baseURL = [(PKAccountWebServiceApplePayTrustProtocol *)self->_protocol baseURL];
+  endpointComponents = [(PKAccountWebServiceApplePayTrustRequest *)self endpointComponents];
+  hashResponse = [(PKAccountWebServiceApplePayTrustProtocol *)self->_protocol hashResponse];
+  referenceIdentifier = [hashResponse referenceIdentifier];
 
-  if (!v5)
+  if (!baseURL)
   {
     v18 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -58,7 +58,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!v6)
+  if (!endpointComponents)
   {
     v18 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -75,7 +75,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (!v4)
+  if (!informationCopy)
   {
     v18 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -92,7 +92,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (!v8)
+  if (!referenceIdentifier)
   {
     v18 = PKLogFacilityTypeGetObject(0xFuLL);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -112,20 +112,20 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v9 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:v5 endpointComponents:v6 queryParameters:0 appleAccountInformation:v4];
+  v9 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:baseURL endpointComponents:endpointComponents queryParameters:0 appleAccountInformation:informationCopy];
   [v9 setHTTPMethod:@"POST"];
   [v9 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v10 setObject:v8 forKeyedSubscript:@"referenceIdentifier"];
-  v11 = [(PKApplePayTrustSignature *)self->_signature signatureData];
-  v12 = [v11 hexEncoding];
-  [v10 setObject:v12 forKeyedSubscript:@"signatureData"];
+  [v10 setObject:referenceIdentifier forKeyedSubscript:@"referenceIdentifier"];
+  signatureData = [(PKApplePayTrustSignature *)self->_signature signatureData];
+  hexEncoding = [signatureData hexEncoding];
+  [v10 setObject:hexEncoding forKeyedSubscript:@"signatureData"];
 
-  v13 = [(PKApplePayTrustSignature *)self->_signature paymentData];
-  v14 = v13;
-  if (v13)
+  paymentData = [(PKApplePayTrustSignature *)self->_signature paymentData];
+  v14 = paymentData;
+  if (paymentData)
   {
-    v15 = [v13 base64EncodedStringWithOptions:0];
+    v15 = [paymentData base64EncodedStringWithOptions:0];
     [v10 setObject:v15 forKeyedSubscript:@"paymentData"];
   }
 

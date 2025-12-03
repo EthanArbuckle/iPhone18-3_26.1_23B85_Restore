@@ -1,15 +1,15 @@
 @interface TSCEFunction_op_Add
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_op_Add
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
-  v9 = *(*a5 + 8);
-  shouldTreatValueAsDateArgument = TSCEArgumentAccessor::shouldTreatValueAsDateArgument(v8, a3, v10, v11, v12);
-  v17 = TSCEArgumentAccessor::shouldTreatValueAsDateArgument(v9, a3, v14, v15, v16);
+  v8 = **arguments;
+  v9 = *(*arguments + 8);
+  shouldTreatValueAsDateArgument = TSCEArgumentAccessor::shouldTreatValueAsDateArgument(v8, context, v10, v11, v12);
+  v17 = TSCEArgumentAccessor::shouldTreatValueAsDateArgument(v9, context, v14, v15, v16);
   if ((shouldTreatValueAsDateArgument & v17) != 1)
   {
     if ((shouldTreatValueAsDateArgument | v17))
@@ -26,15 +26,15 @@
       if (shouldTreatValueAsDateArgument)
       {
         v102 = 0;
-        v22 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v8, v18, a3, a4, 0, &v102);
+        v22 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v8, v18, context, spec, 0, &v102);
         v27 = v102;
         v101 = v27;
-        v29 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v9, v28, a3, a4, 1, &v101);
+        v29 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v9, v28, context, spec, 1, &v101);
         v30 = v101;
 
         if (v8)
         {
-          objc_msgSend_formatWithContext_(v8, v31, a3, v32, v33);
+          objc_msgSend_formatWithContext_(v8, v31, context, v32, v33);
         }
 
         else
@@ -48,15 +48,15 @@
       else
       {
         v99 = 0;
-        v22 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v9, v18, a3, a4, 1, &v99);
+        v22 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v9, v18, context, spec, 1, &v99);
         v43 = v99;
         v98 = v43;
-        v29 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v44, a3, a4, 0, &v98);
+        v29 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v44, context, spec, 0, &v98);
         v30 = v98;
 
         if (v9)
         {
-          objc_msgSend_formatWithContext_(v9, v45, a3, v46, v47);
+          objc_msgSend_formatWithContext_(v9, v45, context, v46, v47);
         }
 
         else
@@ -70,7 +70,7 @@
       v42 = v30;
       if (v30)
       {
-        v55 = objc_msgSend_raiseErrorOrConvert_(a3, v63, v30, v65, v66);
+        v55 = objc_msgSend_raiseErrorOrConvert_(context, v63, v30, v65, v66);
         goto LABEL_24;
       }
 
@@ -101,7 +101,7 @@ LABEL_41:
     else
     {
       v97 = 0;
-      v22 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v34, a3, a4, 0, &v97);
+      v22 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v34, context, spec, 0, &v97);
       v42 = v97;
     }
 
@@ -111,7 +111,7 @@ LABEL_41:
       if (v42)
       {
 LABEL_14:
-        v55 = objc_msgSend_raiseErrorOrConvert_(a3, v52, v42, v53, v54);
+        v55 = objc_msgSend_raiseErrorOrConvert_(context, v52, v42, v53, v54);
 LABEL_24:
         v26 = v55;
         goto LABEL_25;
@@ -121,7 +121,7 @@ LABEL_24:
     else
     {
       v96 = v42;
-      v29 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v9, v48, a3, a4, 1, &v96);
+      v29 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v9, v48, context, spec, 1, &v96);
       v56 = v96;
 
       v42 = v56;
@@ -132,12 +132,12 @@ LABEL_24:
     }
 
     v95 = 0;
-    v26 = objc_msgSend_add_functionSpec_outError_(v22, v52, v29, a4, &v95);
+    v26 = objc_msgSend_add_functionSpec_outError_(v22, v52, v29, spec, &v95);
     v57 = v95;
     if (v57)
     {
       v42 = v57;
-      v62 = objc_msgSend_raiseErrorOrConvert_(a3, v58, v57, v60, v61);
+      v62 = objc_msgSend_raiseErrorOrConvert_(context, v58, v57, v60, v61);
 
       v26 = v62;
 LABEL_25:
@@ -148,12 +148,12 @@ LABEL_25:
     isDuration = objc_msgSend_isDuration(v22, v58, v59, v60, v61);
     if (isDuration != objc_msgSend_isDuration(v29, v81, v82, v83, v84) && (objc_msgSend_isUnitlessZero(v22, v85, v86, v87, v88) & 1) == 0 && (objc_msgSend_isUnitlessZero(v29, v85, v86, v87, v88) & 1) == 0)
     {
-      objc_msgSend_reportLossOfUnitsWarningInContext_(TSCEWarning, v85, a3, v87, v88);
+      objc_msgSend_reportLossOfUnitsWarningInContext_(TSCEWarning, v85, context, v87, v88);
     }
 
     if (v8)
     {
-      objc_msgSend_formatWithContext_(v8, v85, a3, v87, v88);
+      objc_msgSend_formatWithContext_(v8, v85, context, v87, v88);
     }
 
     else
@@ -163,7 +163,7 @@ LABEL_25:
 
     if (v9)
     {
-      objc_msgSend_formatWithContext_(v9, v85, a3, v87, v88);
+      objc_msgSend_formatWithContext_(v9, v85, context, v87, v88);
     }
 
     else
@@ -178,7 +178,7 @@ LABEL_25:
   }
 
   v22 = objc_msgSend_invalidDateManipulationError(TSCEError, v18, v19, v20, v21);
-  v26 = objc_msgSend_raiseErrorOrConvert_(a3, v23, v22, v24, v25);
+  v26 = objc_msgSend_raiseErrorOrConvert_(context, v23, v22, v24, v25);
 LABEL_42:
 
 LABEL_43:

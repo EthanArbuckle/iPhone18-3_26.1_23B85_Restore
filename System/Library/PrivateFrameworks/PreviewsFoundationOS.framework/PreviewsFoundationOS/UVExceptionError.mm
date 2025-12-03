@@ -1,34 +1,34 @@
 @interface UVExceptionError
-- (UVExceptionError)initWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5;
-- (UVExceptionError)initWithException:(id)a3;
+- (UVExceptionError)initWithDomain:(id)domain code:(int64_t)code userInfo:(id)info;
+- (UVExceptionError)initWithException:(id)exception;
 @end
 
 @implementation UVExceptionError
 
-- (UVExceptionError)initWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5
+- (UVExceptionError)initWithDomain:(id)domain code:(int64_t)code userInfo:(id)info
 {
   v8 = MEMORY[0x277CBEAD8];
-  v9 = a5;
-  v10 = a3;
+  infoCopy = info;
+  domainCopy = domain;
   v11 = [v8 alloc];
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"UVExceptionError instantiated for domain %@ with code %zd.", v10, a4];
+  code = [MEMORY[0x277CCACA8] stringWithFormat:@"UVExceptionError instantiated for domain %@ with code %zd.", domainCopy, code];
 
-  v13 = [v11 initWithName:@"No exception specified" reason:v12 userInfo:v9];
+  v13 = [v11 initWithName:@"No exception specified" reason:code userInfo:infoCopy];
   v14 = [(UVExceptionError *)self initWithException:v13];
 
   return v14;
 }
 
-- (UVExceptionError)initWithException:(id)a3
+- (UVExceptionError)initWithException:(id)exception
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  exceptionCopy = exception;
   v13[0] = *MEMORY[0x277CCA450];
-  v6 = [v5 name];
-  v14[0] = v6;
+  name = [exceptionCopy name];
+  v14[0] = name;
   v13[1] = *MEMORY[0x277CCA470];
-  v7 = [v5 reason];
-  v14[1] = v7;
+  reason = [exceptionCopy reason];
+  v14[1] = reason;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
   v12.receiver = self;
   v12.super_class = UVExceptionError;
@@ -36,7 +36,7 @@
 
   if (v9)
   {
-    objc_storeStrong(&v9->_exception, a3);
+    objc_storeStrong(&v9->_exception, exception);
   }
 
   v10 = *MEMORY[0x277D85DE8];

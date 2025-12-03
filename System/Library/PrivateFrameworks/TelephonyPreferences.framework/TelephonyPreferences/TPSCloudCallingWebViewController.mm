@@ -1,21 +1,21 @@
 @interface TPSCloudCallingWebViewController
-- (TPSCloudCallingWebViewController)initWithType:(int64_t)a3;
-- (void)_cancelButtonClicked:(id)a3;
+- (TPSCloudCallingWebViewController)initWithType:(int64_t)type;
+- (void)_cancelButtonClicked:(id)clicked;
 - (void)cancelWebView;
 - (void)doProvisioningCanceled;
 - (void)doProvisioningDone;
 - (void)doProvisioningFailed;
 - (void)doWebViewTimedOut;
-- (void)loadURL:(id)a3 body:(id)a4 completion:(id)a5;
+- (void)loadURL:(id)l body:(id)body completion:(id)completion;
 - (void)loadView;
-- (void)loadWebViewWithSpinner:(id)a3;
-- (void)setupControllerInWebFrame:(id)a3;
-- (void)webView:(id)a3 didFailLoadWithError:(id)a4;
+- (void)loadWebViewWithSpinner:(id)spinner;
+- (void)setupControllerInWebFrame:(id)frame;
+- (void)webView:(id)view didFailLoadWithError:(id)error;
 @end
 
 @implementation TPSCloudCallingWebViewController
 
-- (TPSCloudCallingWebViewController)initWithType:(int64_t)a3
+- (TPSCloudCallingWebViewController)initWithType:(int64_t)type
 {
   v9.receiver = self;
   v9.super_class = TPSCloudCallingWebViewController;
@@ -23,7 +23,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_type = a3;
+    v4->_type = type;
     v6 = objc_alloc_init(MEMORY[0x277D75D88]);
     webView = v5->_webView;
     v5->_webView = v6;
@@ -35,12 +35,12 @@
 - (void)loadView
 {
   v3 = objc_alloc(MEMORY[0x277D75D18]);
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v21 = [v3 initWithFrame:?];
 
-  v5 = [MEMORY[0x277D75348] whiteColor];
-  [v21 setBackgroundColor:v5];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v21 setBackgroundColor:whiteColor];
 
   [v21 setAutoresizingMask:18];
   [(TPSCloudCallingWebViewController *)self setView:v21];
@@ -49,29 +49,29 @@
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(TPSCloudCallingWebViewController *)self webView];
-  [v14 setFrame:{v7, v9, v11, v13}];
+  webView = [(TPSCloudCallingWebViewController *)self webView];
+  [webView setFrame:{v7, v9, v11, v13}];
 
-  v15 = [(TPSCloudCallingWebViewController *)self webView];
-  [v15 setScalesPageToFit:1];
+  webView2 = [(TPSCloudCallingWebViewController *)self webView];
+  [webView2 setScalesPageToFit:1];
 
-  v16 = [(TPSCloudCallingWebViewController *)self webView];
-  [v16 setDelegate:self];
+  webView3 = [(TPSCloudCallingWebViewController *)self webView];
+  [webView3 setDelegate:self];
 
-  v17 = [(TPSCloudCallingWebViewController *)self webView];
-  [v17 setAutoresizingMask:18];
+  webView4 = [(TPSCloudCallingWebViewController *)self webView];
+  [webView4 setAutoresizingMask:18];
 
-  v18 = [(TPSCloudCallingWebViewController *)self webView];
-  [v21 addSubview:v18];
+  webView5 = [(TPSCloudCallingWebViewController *)self webView];
+  [v21 addSubview:webView5];
 
   v19 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__cancelButtonClicked_];
-  v20 = [(TPSCloudCallingWebViewController *)self navigationItem];
-  [v20 setLeftBarButtonItem:v19];
+  navigationItem = [(TPSCloudCallingWebViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v19];
 }
 
-- (void)loadWebViewWithSpinner:(id)a3
+- (void)loadWebViewWithSpinner:(id)spinner
 {
-  v4 = a3;
+  spinnerCopy = spinner;
   v5 = TPSLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -79,7 +79,7 @@
     _os_log_impl(&dword_21B8E9000, v5, OS_LOG_TYPE_DEFAULT, "loadWebViewWithSpinner", buf, 2u);
   }
 
-  [(TPSCloudCallingWebViewController *)self setCompletionBlock:v4];
+  [(TPSCloudCallingWebViewController *)self setCompletionBlock:spinnerCopy];
   if (!self->_activityIndicator)
   {
     v6 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:2];
@@ -87,8 +87,8 @@
     self->_activityIndicator = v6;
 
     [(UIActivityIndicatorView *)self->_activityIndicator setAutoresizingMask:45];
-    v8 = [(TPSCloudCallingWebViewController *)self view];
-    [v8 center];
+    view = [(TPSCloudCallingWebViewController *)self view];
+    [view center];
     [(UIActivityIndicatorView *)self->_activityIndicator setCenter:?];
 
     [(UIActivityIndicatorView *)self->_activityIndicator setHidesWhenStopped:1];
@@ -121,44 +121,44 @@ void __59__TPSCloudCallingWebViewController_loadWebViewWithSpinner___block_invok
   }
 }
 
-- (void)loadURL:(id)a3 body:(id)a4 completion:(id)a5
+- (void)loadURL:(id)l body:(id)body completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  bodyCopy = body;
+  completionCopy = completion;
   v11 = TPSLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v26 = v8;
+    v26 = lCopy;
     v27 = 2112;
-    v28 = v9;
+    v28 = bodyCopy;
     _os_log_impl(&dword_21B8E9000, v11, OS_LOG_TYPE_DEFAULT, "LoadURL: %@ body: %@", buf, 0x16u);
   }
 
   url = self->_url;
-  self->_url = v8;
-  v13 = v8;
+  self->_url = lCopy;
+  v13 = lCopy;
 
   body = self->_body;
-  self->_body = v9;
-  v15 = v9;
+  self->_body = bodyCopy;
+  v15 = bodyCopy;
 
   [(UIActivityIndicatorView *)self->_activityIndicator stopAnimating];
   [(UIActivityIndicatorView *)self->_activityIndicator removeFromSuperview];
   activityIndicator = self->_activityIndicator;
   self->_activityIndicator = 0;
 
-  [(TPSCloudCallingWebViewController *)self setCompletionBlock:v10];
+  [(TPSCloudCallingWebViewController *)self setCompletionBlock:completionCopy];
   v17 = [objc_alloc(MEMORY[0x277CCAB70]) initWithURL:v13 cachePolicy:1 timeoutInterval:30.0];
   [(NSURL *)v17 setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-  v18 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v19 = [v18 firstObject];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  firstObject = [preferredLanguages firstObject];
 
-  if (v19)
+  if (firstObject)
   {
-    v20 = v19;
+    v20 = firstObject;
   }
 
   else
@@ -180,8 +180,8 @@ void __59__TPSCloudCallingWebViewController_loadWebViewWithSpinner___block_invok
     _os_log_impl(&dword_21B8E9000, v22, OS_LOG_TYPE_DEFAULT, "Loading URL request: %@", buf, 0xCu);
   }
 
-  v23 = [(TPSCloudCallingWebViewController *)self webView];
-  [v23 loadRequest:v17];
+  webView = [(TPSCloudCallingWebViewController *)self webView];
+  [webView loadRequest:v17];
 
   v24 = *MEMORY[0x277D85DE8];
 }
@@ -198,7 +198,7 @@ void __59__TPSCloudCallingWebViewController_loadWebViewWithSpinner___block_invok
   [(TPSCloudCallingWebViewController *)self doProvisioningCanceled];
 }
 
-- (void)_cancelButtonClicked:(id)a3
+- (void)_cancelButtonClicked:(id)clicked
 {
   v4 = TPSLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -219,8 +219,8 @@ void __59__TPSCloudCallingWebViewController_loadWebViewWithSpinner___block_invok
     _os_log_impl(&dword_21B8E9000, v3, OS_LOG_TYPE_DEFAULT, "doProvisioningDone", buf, 2u);
   }
 
-  v4 = [(TPSCloudCallingWebViewController *)self completionBlock];
-  v5 = [v4 copy];
+  completionBlock = [(TPSCloudCallingWebViewController *)self completionBlock];
+  v5 = [completionBlock copy];
 
   [(TPSCloudCallingWebViewController *)self setCompletionBlock:0];
   v7[0] = MEMORY[0x277D85DD0];
@@ -252,8 +252,8 @@ uint64_t __54__TPSCloudCallingWebViewController_doProvisioningDone__block_invoke
     _os_log_impl(&dword_21B8E9000, v3, OS_LOG_TYPE_DEFAULT, "doProvisioningCanceled", buf, 2u);
   }
 
-  v4 = [(TPSCloudCallingWebViewController *)self completionBlock];
-  v5 = [v4 copy];
+  completionBlock = [(TPSCloudCallingWebViewController *)self completionBlock];
+  v5 = [completionBlock copy];
 
   [(TPSCloudCallingWebViewController *)self setCompletionBlock:0];
   v7[0] = MEMORY[0x277D85DD0];
@@ -284,8 +284,8 @@ uint64_t __58__TPSCloudCallingWebViewController_doProvisioningCanceled__block_in
     [(TPSCloudCallingWebViewController *)v3 doProvisioningFailed];
   }
 
-  v4 = [(TPSCloudCallingWebViewController *)self completionBlock];
-  v5 = [v4 copy];
+  completionBlock = [(TPSCloudCallingWebViewController *)self completionBlock];
+  v5 = [completionBlock copy];
 
   [(TPSCloudCallingWebViewController *)self setCompletionBlock:0];
   v7[0] = MEMORY[0x277D85DD0];
@@ -317,8 +317,8 @@ uint64_t __56__TPSCloudCallingWebViewController_doProvisioningFailed__block_invo
     _os_log_impl(&dword_21B8E9000, v3, OS_LOG_TYPE_DEFAULT, "doWebViewTimedOut", buf, 2u);
   }
 
-  v4 = [(TPSCloudCallingWebViewController *)self completionBlock];
-  v5 = [v4 copy];
+  completionBlock = [(TPSCloudCallingWebViewController *)self completionBlock];
+  v5 = [completionBlock copy];
 
   [(TPSCloudCallingWebViewController *)self setCompletionBlock:0];
   v7[0] = MEMORY[0x277D85DD0];
@@ -341,31 +341,31 @@ uint64_t __53__TPSCloudCallingWebViewController_doWebViewTimedOut__block_invoke(
   return result;
 }
 
-- (void)webView:(id)a3 didFailLoadWithError:(id)a4
+- (void)webView:(id)view didFailLoadWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = TPSLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [TPSCloudCallingWebViewController webView:v5 didFailLoadWithError:v6];
+    [TPSCloudCallingWebViewController webView:errorCopy didFailLoadWithError:v6];
   }
 
-  if ([v5 code] != -999)
+  if ([errorCopy code] != -999)
   {
     [(TPSCloudCallingWebViewController *)self doProvisioningFailed];
   }
 }
 
-- (void)setupControllerInWebFrame:(id)a3
+- (void)setupControllerInWebFrame:(id)frame
 {
-  v12 = a3;
-  v4 = [v12 globalContext];
-  if (!v4)
+  frameCopy = frame;
+  globalContext = [frameCopy globalContext];
+  if (!globalContext)
   {
     [TPSCloudCallingWebViewController setupControllerInWebFrame:];
   }
 
-  v5 = v4;
+  v5 = globalContext;
   v6 = CloudCallingWebViewController_controllerClass;
   if (!CloudCallingWebViewController_controllerClass)
   {
@@ -380,16 +380,16 @@ uint64_t __53__TPSCloudCallingWebViewController_doWebViewTimedOut__block_invoke(
   }
 
   v8 = v7;
-  v9 = [v12 windowObject];
-  v10 = [v9 JSObject];
+  windowObject = [frameCopy windowObject];
+  jSObject = [windowObject JSObject];
 
-  if (!v10)
+  if (!jSObject)
   {
     [TPSCloudCallingWebViewController setupControllerInWebFrame:];
   }
 
   v11 = JSStringCreateWithCFString(@"WiFiCallingWebViewController");
-  JSObjectSetProperty(v5, v10, v11, v8, 0, 0);
+  JSObjectSetProperty(v5, jSObject, v11, v8, 0, 0);
 }
 
 - (void)webView:(uint64_t)a1 didFailLoadWithError:(NSObject *)a2 .cold.1(uint64_t a1, NSObject *a2)

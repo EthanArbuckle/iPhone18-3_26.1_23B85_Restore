@@ -1,10 +1,10 @@
 @interface SUScriptNavigationBar
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (NSArray)navigationItems;
 - (NSString)prompt;
-- (SUScriptNavigationBar)initWithNativeNavigationBar:(id)a3;
+- (SUScriptNavigationBar)initWithNativeNavigationBar:(id)bar;
 - (SUScriptNavigationItem)backNavigationItem;
 - (SUScriptNavigationItem)leftItem;
 - (SUScriptNavigationItem)rightItem;
@@ -12,31 +12,31 @@
 - (id)_copyTopNavigationItem;
 - (id)_nativeNavigationBar;
 - (id)_topNavigationItem;
-- (id)buttonWithTitle:(id)a3 style:(id)a4 target:(id)a5 action:(id)a6;
+- (id)buttonWithTitle:(id)title style:(id)style target:(id)target action:(id)action;
 - (id)scriptAttributeKeys;
 - (id)translucent;
 - (int64_t)barStyle;
-- (void)setBackNavigationItem:(id)a3;
-- (void)setLeftItem:(id)a3 animated:(BOOL)a4;
-- (void)setNavigationItems:(id)a3;
-- (void)setPrompt:(id)a3;
-- (void)setRightItem:(id)a3 animated:(BOOL)a4;
-- (void)setTopNavigationItem:(id)a3;
-- (void)setTranslucent:(id)a3;
+- (void)setBackNavigationItem:(id)item;
+- (void)setLeftItem:(id)item animated:(BOOL)animated;
+- (void)setNavigationItems:(id)items;
+- (void)setPrompt:(id)prompt;
+- (void)setRightItem:(id)item animated:(BOOL)animated;
+- (void)setTopNavigationItem:(id)item;
+- (void)setTranslucent:(id)translucent;
 - (void)tearDownUserInterface;
 @end
 
 @implementation SUScriptNavigationBar
 
-- (SUScriptNavigationBar)initWithNativeNavigationBar:(id)a3
+- (SUScriptNavigationBar)initWithNativeNavigationBar:(id)bar
 {
   v7.receiver = self;
   v7.super_class = SUScriptNavigationBar;
   v4 = [(SUScriptObject *)&v7 init];
   v5 = v4;
-  if (a3 && v4)
+  if (bar && v4)
   {
-    [(SUScriptObject *)v4 setNativeObject:[SUScriptNativeObject objectWithNativeObject:a3]];
+    [(SUScriptObject *)v4 setNativeObject:[SUScriptNativeObject objectWithNativeObject:bar]];
   }
 
   return v5;
@@ -62,20 +62,20 @@
   v8 = 3221225472;
   v9 = __43__SUScriptNavigationBar_backNavigationItem__block_invoke;
   v10 = &unk_1E81650B0;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   WebThreadRunOnMainThread();
-  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __43__SUScriptNavigationBar_backNavigationItem__block_invoke, &unk_1E81650B0, v11, &v13], (v3 = v14[5]) != 0))
+  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __43__SUScriptNavigationBar_backNavigationItem__block_invoke, &unk_1E81650B0, selfCopy, &v13], (v3 = v14[5]) != 0))
   {
-    v4 = v3;
+    null = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v5 = v4;
+  v5 = null;
   _Block_object_dispose(&v13, 8);
   return v5;
 }
@@ -113,9 +113,9 @@ uint64_t __33__SUScriptNavigationBar_barStyle__block_invoke(uint64_t a1)
 
 - (SUScriptNavigationItem)leftItem
 {
-  v2 = [(SUScriptNavigationBar *)self _topNavigationItem];
+  _topNavigationItem = [(SUScriptNavigationBar *)self _topNavigationItem];
 
-  return [v2 leftItem];
+  return [_topNavigationItem leftItem];
 }
 
 - (NSArray)navigationItems
@@ -130,20 +130,20 @@ uint64_t __33__SUScriptNavigationBar_barStyle__block_invoke(uint64_t a1)
   v8 = 3221225472;
   v9 = __40__SUScriptNavigationBar_navigationItems__block_invoke;
   v10 = &unk_1E81650B0;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   WebThreadRunOnMainThread();
-  if (v14[5] && ([(SUScriptObject *)self checkInScriptObjects:v7, 3221225472, __40__SUScriptNavigationBar_navigationItems__block_invoke, &unk_1E81650B0, v11, &v13], (v3 = v14[5]) != 0))
+  if (v14[5] && ([(SUScriptObject *)self checkInScriptObjects:v7, 3221225472, __40__SUScriptNavigationBar_navigationItems__block_invoke, &unk_1E81650B0, selfCopy, &v13], (v3 = v14[5]) != 0))
   {
-    v4 = v3;
+    null = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v5 = v4;
+  v5 = null;
   _Block_object_dispose(&v13, 8);
   return v5;
 }
@@ -195,19 +195,19 @@ uint64_t __40__SUScriptNavigationBar_navigationItems__block_invoke(uint64_t a1)
 
 - (NSString)prompt
 {
-  v2 = [(SUScriptNavigationBar *)self _topNavigationItem];
+  _topNavigationItem = [(SUScriptNavigationBar *)self _topNavigationItem];
 
-  return [v2 prompt];
+  return [_topNavigationItem prompt];
 }
 
 - (SUScriptNavigationItem)rightItem
 {
-  v2 = [(SUScriptNavigationBar *)self _topNavigationItem];
+  _topNavigationItem = [(SUScriptNavigationBar *)self _topNavigationItem];
 
-  return [v2 rightItem];
+  return [_topNavigationItem rightItem];
 }
 
-- (void)setBackNavigationItem:(id)a3
+- (void)setBackNavigationItem:(id)item
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"topNavigationItem"];
@@ -223,15 +223,15 @@ uint64_t __37__SUScriptNavigationBar_setBarStyle___block_invoke(uint64_t a1)
   return [v2 setBarStyle:v3];
 }
 
-- (void)setLeftItem:(id)a3 animated:(BOOL)a4
+- (void)setLeftItem:(id)item animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(SUScriptNavigationBar *)self _topNavigationItem];
+  animatedCopy = animated;
+  _topNavigationItem = [(SUScriptNavigationBar *)self _topNavigationItem];
 
-  [v6 setLeftItem:a3 animated:v4];
+  [_topNavigationItem setLeftItem:item animated:animatedCopy];
 }
 
-- (void)setNavigationItems:(id)a3
+- (void)setNavigationItems:(id)items
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"navigationItems"];
@@ -239,22 +239,22 @@ uint64_t __37__SUScriptNavigationBar_setBarStyle___block_invoke(uint64_t a1)
   [v3 throwException:v4];
 }
 
-- (void)setPrompt:(id)a3
+- (void)setPrompt:(id)prompt
 {
-  v4 = [(SUScriptNavigationBar *)self _topNavigationItem];
+  _topNavigationItem = [(SUScriptNavigationBar *)self _topNavigationItem];
 
-  [v4 setPrompt:a3];
+  [_topNavigationItem setPrompt:prompt];
 }
 
-- (void)setRightItem:(id)a3 animated:(BOOL)a4
+- (void)setRightItem:(id)item animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(SUScriptNavigationBar *)self _topNavigationItem];
+  animatedCopy = animated;
+  _topNavigationItem = [(SUScriptNavigationBar *)self _topNavigationItem];
 
-  [v6 setRightItem:a3 animated:v4];
+  [_topNavigationItem setRightItem:item animated:animatedCopy];
 }
 
-- (void)setTopNavigationItem:(id)a3
+- (void)setTopNavigationItem:(id)item
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"topNavigationItem"];
@@ -262,10 +262,10 @@ uint64_t __37__SUScriptNavigationBar_setBarStyle___block_invoke(uint64_t a1)
   [v3 throwException:v4];
 }
 
-- (void)setTranslucent:(id)a3
+- (void)setTranslucent:(id)translucent
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_respondsToSelector())
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !translucent) || (isKindOfClass & 1) != 0 || (objc_opt_respondsToSelector())
   {
     WebThreadRunOnMainThread();
   }
@@ -299,15 +299,15 @@ uint64_t __40__SUScriptNavigationBar_setTranslucent___block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -348,32 +348,32 @@ uint64_t __36__SUScriptNavigationBar_translucent__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)buttonWithTitle:(id)a3 style:(id)a4 target:(id)a5 action:(id)a6
+- (id)buttonWithTitle:(id)title style:(id)style target:(id)target action:(id)action
 {
   v11 = objc_alloc_init(SUScriptButton);
   [(SUScriptObject *)self checkInScriptObject:v11];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    [(SUScriptButton *)v11 setAction:a6];
+    [(SUScriptButton *)v11 setAction:action];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SUScriptButton *)v11 setStyle:a4];
+    [(SUScriptButton *)v11 setStyle:style];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SUScriptButton *)v11 setTarget:a5];
+    [(SUScriptButton *)v11 setTarget:target];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SUScriptButton *)v11 setTitle:a3];
+    [(SUScriptButton *)v11 setTitle:title];
   }
 
   return v11;
@@ -381,31 +381,31 @@ uint64_t __36__SUScriptNavigationBar_translucent__block_invoke(uint64_t a1)
 
 - (id)_copyTopNavigationItem
 {
-  v3 = [(SUScriptNavigationBar *)self _nativeNavigationBar];
-  v4 = [v3 topItem];
-  v5 = [(SUScriptObject *)self parentViewController];
-  v6 = [v5 navigationController];
-  if (v3 == [v6 navigationBar] && objc_msgSend(v5, "isDescendantOfViewController:", objc_msgSend(v6, "topViewController")))
+  _nativeNavigationBar = [(SUScriptNavigationBar *)self _nativeNavigationBar];
+  topItem = [_nativeNavigationBar topItem];
+  parentViewController = [(SUScriptObject *)self parentViewController];
+  navigationController = [parentViewController navigationController];
+  if (_nativeNavigationBar == [navigationController navigationBar] && objc_msgSend(parentViewController, "isDescendantOfViewController:", objc_msgSend(navigationController, "topViewController")))
   {
-    v4 = [v5 navigationItemForScriptInterface];
+    topItem = [parentViewController navigationItemForScriptInterface];
   }
 
-  if (v4)
+  if (topItem)
   {
-    v4 = [[SUScriptNavigationItem alloc] initWithNativeNavigationItem:v4];
-    [(SUScriptObject *)self checkInScriptObject:v4];
+    topItem = [[SUScriptNavigationItem alloc] initWithNativeNavigationItem:topItem];
+    [(SUScriptObject *)self checkInScriptObject:topItem];
   }
 
-  return v4;
+  return topItem;
 }
 
 - (id)_nativeNavigationBar
 {
-  v3 = [(SUScriptNativeObject *)[(SUScriptObject *)self nativeObject] object];
+  object = [(SUScriptNativeObject *)[(SUScriptObject *)self nativeObject] object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return v3;
+    return object;
   }
 
   v5 = [-[SUScriptObject parentViewController](self "parentViewController")];
@@ -434,27 +434,27 @@ uint64_t __43__SUScriptNavigationBar__topNavigationItem__block_invoke(uint64_t a
   return result;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_5 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptNavigationBar;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_3, 5);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_3, 5);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptNavigationBar;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -464,14 +464,14 @@ uint64_t __43__SUScriptNavigationBar__topNavigationItem__block_invoke(uint64_t a
 {
   v4.receiver = self;
   v4.super_class = SUScriptNavigationBar;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_5 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_5 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_3 = sel_setLeftItem_animated_;
     *algn_1EBF3A7D8 = @"setLeftItem";

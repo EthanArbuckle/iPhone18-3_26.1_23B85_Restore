@@ -1,39 +1,39 @@
 @interface CPLCloudKitErrors
-+ (BOOL)_isCKErrorForRejectedRecord:(id)a3;
-+ (BOOL)getCloudKitErrorCode:(int64_t *)a3 internalCode:(int64_t *)a4 fromError:(id)a5;
-+ (BOOL)isContainerHasBeenWipedError:(id)a3;
-+ (BOOL)isFeatureDisabledError:(id)a3;
-+ (BOOL)isOperationCancelledOrDeferredError:(id)a3;
-+ (BOOL)isOperationThrottledError:(id)a3;
-+ (BOOL)isPartialFailureError:(id)a3;
-+ (BOOL)isRecordNotFoundError:(id)a3;
-+ (id)CPLErrorForCloudKitError:(id)a3 scopeProvider:(id)a4 withRequestUUIDs:(id)a5 description:(id)a6;
-+ (id)CPLErrorForCloudKitError:(id)a3 scopeProvider:(id)a4 withRequestUUIDs:(id)a5 description:(id)a6 arguments:(char *)a7;
-+ (id)CPLErrorForCloudKitError:(id)a3 withRequestUUIDs:(id)a4 description:(id)a5;
-+ (id)CPLErrorForCloudKitUploadError:(id)a3 getDestinationRecordIDs:(id)a4 scopeProvider:(id)a5 withRequestUUIDs:(id)a6 uploadAction:(id)a7;
-+ (id)_bestErrorForUnderlyingError:(id)a3 scopeProvider:(id)a4;
-+ (id)_betterErrorForRecordId:(id)a3 recordError:(id)a4;
-+ (id)_errorForCancelledError:(id)a3;
-+ (id)_filteredPartialFailureError:(id)a3 itemClass:(Class)a4;
-+ (id)_rejectionReasonFromPartialError:(id)a3 identifier:(id)a4;
-+ (id)errorsPerRecordIDForPartialFailureError:(id)a3;
-+ (id)errorsPerZoneIDForPartialFailureError:(id)a3;
-+ (id)realErrorForError:(id)a3;
++ (BOOL)_isCKErrorForRejectedRecord:(id)record;
++ (BOOL)getCloudKitErrorCode:(int64_t *)code internalCode:(int64_t *)internalCode fromError:(id)error;
++ (BOOL)isContainerHasBeenWipedError:(id)error;
++ (BOOL)isFeatureDisabledError:(id)error;
++ (BOOL)isOperationCancelledOrDeferredError:(id)error;
++ (BOOL)isOperationThrottledError:(id)error;
++ (BOOL)isPartialFailureError:(id)error;
++ (BOOL)isRecordNotFoundError:(id)error;
++ (id)CPLErrorForCloudKitError:(id)error scopeProvider:(id)provider withRequestUUIDs:(id)ds description:(id)description;
++ (id)CPLErrorForCloudKitError:(id)error scopeProvider:(id)provider withRequestUUIDs:(id)ds description:(id)description arguments:(char *)arguments;
++ (id)CPLErrorForCloudKitError:(id)error withRequestUUIDs:(id)ds description:(id)description;
++ (id)CPLErrorForCloudKitUploadError:(id)error getDestinationRecordIDs:(id)ds scopeProvider:(id)provider withRequestUUIDs:(id)iDs uploadAction:(id)action;
++ (id)_bestErrorForUnderlyingError:(id)error scopeProvider:(id)provider;
++ (id)_betterErrorForRecordId:(id)id recordError:(id)error;
++ (id)_errorForCancelledError:(id)error;
++ (id)_filteredPartialFailureError:(id)error itemClass:(Class)class;
++ (id)_rejectionReasonFromPartialError:(id)error identifier:(id)identifier;
++ (id)errorsPerRecordIDForPartialFailureError:(id)error;
++ (id)errorsPerZoneIDForPartialFailureError:(id)error;
++ (id)realErrorForError:(id)error;
 @end
 
 @implementation CPLCloudKitErrors
 
-+ (BOOL)_isCKErrorForRejectedRecord:(id)a3
++ (BOOL)_isCKErrorForRejectedRecord:(id)record
 {
-  v3 = a3;
-  v4 = [v3 code] - 1;
+  recordCopy = record;
+  v4 = [recordCopy code] - 1;
   if (v4 >= 0x1F || ((0x4405EE01u >> v4) & 1) == 0)
   {
-    v5 = [v3 userInfo];
-    v6 = [v5 objectForKey:NSUnderlyingErrorKey];
+    userInfo = [recordCopy userInfo];
+    v6 = [userInfo objectForKey:NSUnderlyingErrorKey];
 
-    v7 = [v6 domain];
-    v8 = [v7 isEqualToString:CKUnderlyingErrorDomain];
+    domain = [v6 domain];
+    v8 = [domain isEqualToString:CKUnderlyingErrorDomain];
 
     if ((v8 & 1) == 0)
     {
@@ -43,9 +43,9 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v9 = [v6 code];
+    code = [v6 code];
 
-    if (v9 != 2038 && v9 != 3006)
+    if (code != 2038 && code != 3006)
     {
       goto LABEL_11;
     }
@@ -57,51 +57,51 @@ LABEL_12:
   return v11;
 }
 
-+ (id)_betterErrorForRecordId:(id)a3 recordError:(id)a4
++ (id)_betterErrorForRecordId:(id)id recordError:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7 || (v9 = v8) == 0)
+  idCopy = id;
+  errorCopy = error;
+  if (!idCopy || (v9 = errorCopy) == 0)
   {
-    sub_1001AC6C0(a2, a1);
+    sub_1001AC6C0(a2, self);
   }
 
-  v10 = [v8 localizedDescription];
-  if (v10)
+  localizedDescription = [errorCopy localizedDescription];
+  if (localizedDescription)
   {
-    v11 = [NSString stringWithFormat:@"%@ (for record %@)", v10, v7];
+    idCopy = [NSString stringWithFormat:@"%@ (for record %@)", localizedDescription, idCopy];
   }
 
   else
   {
-    v11 = [NSString stringWithFormat:@"record %@", v7];
+    idCopy = [NSString stringWithFormat:@"record %@", idCopy];
   }
 
   v12 = objc_alloc_init(NSMutableDictionary);
-  v13 = [v9 userInfo];
+  userInfo = [v9 userInfo];
 
-  if (v13)
+  if (userInfo)
   {
-    v14 = [v9 userInfo];
-    [v12 setDictionary:v14];
+    userInfo2 = [v9 userInfo];
+    [v12 setDictionary:userInfo2];
 
-    [v12 setObject:v11 forKey:NSLocalizedDescriptionKey];
+    [v12 setObject:idCopy forKey:NSLocalizedDescriptionKey];
   }
 
-  v15 = [v9 domain];
-  v16 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", v15, [v9 code], v12);
+  domain = [v9 domain];
+  v16 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", domain, [v9 code], v12);
 
   return v16;
 }
 
-+ (id)_rejectionReasonFromPartialError:(id)a3 identifier:(id)a4
++ (id)_rejectionReasonFromPartialError:(id)error identifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 userInfo];
-  v8 = [v7 objectForKey:NSUnderlyingErrorKey];
+  errorCopy = error;
+  identifierCopy = identifier;
+  userInfo = [errorCopy userInfo];
+  v8 = [userInfo objectForKey:NSUnderlyingErrorKey];
   v9 = CKErrorServerDescriptionKey;
-  v10 = [v7 objectForKeyedSubscript:CKErrorServerDescriptionKey];
+  v10 = [userInfo objectForKeyedSubscript:CKErrorServerDescriptionKey];
   if (v10)
   {
     v11 = v10;
@@ -109,8 +109,8 @@ LABEL_12:
 
   else
   {
-    v12 = [v8 userInfo];
-    v11 = [v12 objectForKeyedSubscript:v9];
+    userInfo2 = [v8 userInfo];
+    v11 = [userInfo2 objectForKeyedSubscript:v9];
 
     if (!v11)
     {
@@ -118,15 +118,15 @@ LABEL_16:
       if (v8 && ([v8 domain], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "isEqualToString:", CKUnderlyingErrorDomain), v20, v21))
       {
         v22 = [NSString alloc];
-        v23 = [v5 domain];
-        v24 = [v22 initWithFormat:@"%@ %ld/%ld", v23, objc_msgSend(v5, "code"), objc_msgSend(v8, "code")];
+        domain = [errorCopy domain];
+        v24 = [v22 initWithFormat:@"%@ %ld/%ld", domain, objc_msgSend(errorCopy, "code"), objc_msgSend(v8, "code")];
       }
 
       else
       {
         v25 = [NSString alloc];
-        v23 = [v5 domain];
-        v24 = [v25 initWithFormat:@"%@ %ld", v23, objc_msgSend(v5, "code"), v27];
+        domain = [errorCopy domain];
+        v24 = [v25 initWithFormat:@"%@ %ld", domain, objc_msgSend(errorCopy, "code"), v27];
       }
 
       v18 = v24;
@@ -160,14 +160,14 @@ LABEL_16:
     }
   }
 
-  if ([v11 rangeOfString:v6] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([v11 rangeOfString:identifierCopy] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v17 = v11;
     v18 = v17;
     goto LABEL_21;
   }
 
-  v19 = [v11 stringByReplacingOccurrencesOfString:v6 withString:@"<redacted>"];
+  v19 = [v11 stringByReplacingOccurrencesOfString:identifierCopy withString:@"<redacted>"];
 
   v17 = v19;
   v18 = v17;
@@ -181,16 +181,16 @@ LABEL_21:
   return v18;
 }
 
-+ (id)_bestErrorForUnderlyingError:(id)a3 scopeProvider:(id)a4
++ (id)_bestErrorForUnderlyingError:(id)error scopeProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 domain];
-  if ([v8 isEqual:CKErrorDomain])
+  errorCopy = error;
+  providerCopy = provider;
+  domain = [errorCopy domain];
+  if ([domain isEqual:CKErrorDomain])
   {
-    v9 = [v6 code];
+    code = [errorCopy code];
 
-    if (v9 == 2)
+    if (code == 2)
     {
       v49[0] = 0;
       v49[1] = v49;
@@ -202,8 +202,8 @@ LABEL_21:
       v46 = sub_1000044D0;
       v47 = sub_10000534C;
       v48 = 0;
-      v10 = [v6 userInfo];
-      v11 = [v10 objectForKey:CKPartialErrorsByItemIDKey];
+      userInfo = [errorCopy userInfo];
+      v11 = [userInfo objectForKey:CKPartialErrorsByItemIDKey];
       v37 = 0;
       v38 = &v37;
       v39 = 0x3032000000;
@@ -215,8 +215,8 @@ LABEL_21:
       v29 = sub_1000A19FC;
       v30 = &unk_1002768E0;
       v35 = objc_opt_class();
-      v36 = a1;
-      v31 = v7;
+      selfCopy = self;
+      v31 = providerCopy;
       v32 = v49;
       v33 = &v43;
       v34 = &v37;
@@ -231,7 +231,7 @@ LABEL_21:
       {
         if (![v44[5] count])
         {
-          v13 = v6;
+          v13 = errorCopy;
 LABEL_19:
 
           _Block_object_dispose(&v37, 8);
@@ -245,14 +245,14 @@ LABEL_19:
         v20 = v44[5];
         if (v19 < 4)
         {
-          v21 = [v20 allKeys];
-          v23 = [v21 componentsJoinedByString:{@", "}];
+          allKeys = [v20 allKeys];
+          v23 = [allKeys componentsJoinedByString:{@", "}];
         }
 
         else
         {
-          v21 = [v20 allKeys];
-          v22 = [v21 subarrayWithRange:{0, 3}];
+          allKeys = [v20 allKeys];
+          v22 = [allKeys subarrayWithRange:{0, 3}];
           v23 = [v22 componentsJoinedByString:{@", "}];
         }
 
@@ -260,9 +260,9 @@ LABEL_19:
         v51 = CPLErrorRejectedRecordIdentifiersAndReasonsKey;
         v52 = v24;
         v25 = [NSDictionary dictionaryWithObjects:&v52 forKeys:&v51 count:1];
-        v13 = [CPLErrors cplErrorWithCode:18 underlyingError:v6 userInfo:v25 description:@"%@ were rejected by server", v23, v27, v28, v29, v30];
+        v13 = [CPLErrors cplErrorWithCode:18 underlyingError:errorCopy userInfo:v25 description:@"%@ were rejected by server", v23, v27, v28, v29, v30];
 
-        v6 = v23;
+        errorCopy = v23;
       }
 
       goto LABEL_19;
@@ -273,70 +273,70 @@ LABEL_19:
   {
   }
 
-  if ([v6 code] == 20)
+  if ([errorCopy code] == 20)
   {
-    v14 = [v6 domain];
-    v15 = [v14 isEqualToString:CKErrorDomain];
+    domain2 = [errorCopy domain];
+    v15 = [domain2 isEqualToString:CKErrorDomain];
 
     if (v15)
     {
-      v16 = [v6 userInfo];
-      v17 = [v16 objectForKey:NSUnderlyingErrorKey];
+      userInfo2 = [errorCopy userInfo];
+      v17 = [userInfo2 objectForKey:NSUnderlyingErrorKey];
 
       if (v17)
       {
         v18 = v17;
 
-        v6 = v18;
+        errorCopy = v18;
       }
     }
   }
 
-  v13 = v6;
+  v13 = errorCopy;
 LABEL_20:
 
   return v13;
 }
 
-+ (id)CPLErrorForCloudKitError:(id)a3 withRequestUUIDs:(id)a4 description:(id)a5
++ (id)CPLErrorForCloudKitError:(id)error withRequestUUIDs:(id)ds description:(id)description
 {
-  v5 = [a1 CPLErrorForCloudKitError:a3 scopeProvider:0 withRequestUUIDs:a4 description:a5 arguments:&v8];
+  v5 = [self CPLErrorForCloudKitError:error scopeProvider:0 withRequestUUIDs:ds description:description arguments:&v8];
 
   return v5;
 }
 
-+ (id)CPLErrorForCloudKitError:(id)a3 scopeProvider:(id)a4 withRequestUUIDs:(id)a5 description:(id)a6
++ (id)CPLErrorForCloudKitError:(id)error scopeProvider:(id)provider withRequestUUIDs:(id)ds description:(id)description
 {
-  v6 = [a1 CPLErrorForCloudKitError:a3 scopeProvider:a4 withRequestUUIDs:a5 description:a6 arguments:&v9];
+  v6 = [self CPLErrorForCloudKitError:error scopeProvider:provider withRequestUUIDs:ds description:description arguments:&v9];
 
   return v6;
 }
 
-+ (id)_errorForCancelledError:(id)a3
++ (id)_errorForCancelledError:(id)error
 {
-  v5 = a3;
-  v6 = [v5 domain];
-  v7 = [v6 isEqualToString:CKErrorDomain];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v7 = [domain isEqualToString:CKErrorDomain];
 
   if ((v7 & 1) == 0)
   {
-    sub_1001AC794(a2, a1, v5);
+    sub_1001AC794(a2, self, errorCopy);
   }
 
-  v8 = [v5 userInfo];
-  v9 = [v8 objectForKeyedSubscript:NSUnderlyingErrorKey];
+  userInfo = [errorCopy userInfo];
+  v9 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-  if (!v9 || ([v9 domain], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToString:", CKErrorDomain), v10, !v11) || (objc_msgSend(a1, "_errorForCancelledError:", v9), (v12 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!v9 || ([v9 domain], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToString:", CKErrorDomain), v10, !v11) || (objc_msgSend(self, "_errorForCancelledError:", v9), (v12 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v13 = [v9 code];
-    if ((v13 - 132) >= 2)
+    code = [v9 code];
+    if ((code - 132) >= 2)
     {
-      if (v13 == 20)
+      if (code == 20)
       {
         v16[0] = NSLocalizedDescriptionKey;
         v16[1] = NSUnderlyingErrorKey;
         v17[0] = @"CloudKit operation has been cancelled by caller";
-        v17[1] = v5;
+        v17[1] = errorCopy;
         v14 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:2];
         v12 = [NSError errorWithDomain:NSCocoaErrorDomain code:3072 userInfo:v14];
       }
@@ -349,63 +349,63 @@ LABEL_20:
 
     else
     {
-      v12 = [CPLErrors cplErrorWithCode:257 underlyingError:v5 description:@"CloudKit operation has been deferred by system"];
+      v12 = [CPLErrors cplErrorWithCode:257 underlyingError:errorCopy description:@"CloudKit operation has been deferred by system"];
     }
   }
 
   return v12;
 }
 
-+ (id)CPLErrorForCloudKitError:(id)a3 scopeProvider:(id)a4 withRequestUUIDs:(id)a5 description:(id)a6 arguments:(char *)a7
++ (id)CPLErrorForCloudKitError:(id)error scopeProvider:(id)provider withRequestUUIDs:(id)ds description:(id)description arguments:(char *)arguments
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (![v12 isCPLError])
+  errorCopy = error;
+  providerCopy = provider;
+  dsCopy = ds;
+  descriptionCopy = description;
+  if (![errorCopy isCPLError])
   {
-    v23 = [v12 domain];
-    v24 = [v23 isEqualToString:CKErrorDomain];
+    domain = [errorCopy domain];
+    v24 = [domain isEqualToString:CKErrorDomain];
 
     if (!v24)
     {
-      if ([v12 isCPLOperationCancelledError])
+      if ([errorCopy isCPLOperationCancelledError])
       {
-        v34 = v12;
-        v12 = v34;
+        v34 = errorCopy;
+        errorCopy = v34;
       }
 
       else
       {
-        v37 = [v12 cplUnderlyingError];
-        v38 = [[NSString alloc] initWithFormat:v15 arguments:a7];
-        v39 = [v37 localizedDescription];
-        v34 = [CPLErrors cplErrorWithCode:80 underlyingError:v12 description:@"%@ (%@)", v38, v39];
+        cplUnderlyingError = [errorCopy cplUnderlyingError];
+        v38 = [[NSString alloc] initWithFormat:descriptionCopy arguments:arguments];
+        localizedDescription = [cplUnderlyingError localizedDescription];
+        v34 = [CPLErrors cplErrorWithCode:80 underlyingError:errorCopy description:@"%@ (%@)", v38, localizedDescription];
       }
 
       goto LABEL_138;
     }
 
-    v96 = v13;
-    v25 = [v12 userInfo];
-    v97 = [v25 objectForKey:CKErrorRetryAfterKey];
+    v96 = providerCopy;
+    userInfo = [errorCopy userInfo];
+    v97 = [userInfo objectForKey:CKErrorRetryAfterKey];
 
-    v26 = [v12 code];
-    if (v26 == 2)
+    code = [errorCopy code];
+    if (code == 2)
     {
-      v27 = [a1 _bestErrorForUnderlyingError:v12 scopeProvider:v13];
+      v27 = [self _bestErrorForUnderlyingError:errorCopy scopeProvider:providerCopy];
       v28 = v27;
-      if (v27 == v12)
+      if (v27 == errorCopy)
       {
-        v32 = 2;
+        code2 = 2;
       }
 
       else
       {
         v29 = v27;
 
-        v30 = [v29 domain];
-        v31 = [v30 isEqualToString:CKErrorDomain];
+        domain2 = [v29 domain];
+        v31 = [domain2 isEqualToString:CKErrorDomain];
 
         if (!v31)
         {
@@ -418,7 +418,7 @@ LABEL_20:
               v34 = v29;
 LABEL_137:
 
-              v12 = v29;
+              errorCopy = v29;
               goto LABEL_138;
             }
           }
@@ -445,33 +445,33 @@ LABEL_136:
           goto LABEL_137;
         }
 
-        v32 = [v29 code];
+        code2 = [v29 code];
         if (!v97)
         {
-          v33 = [v29 userInfo];
-          v97 = [v33 objectForKey:CKErrorRetryAfterKey];
+          userInfo2 = [v29 userInfo];
+          v97 = [userInfo2 objectForKey:CKErrorRetryAfterKey];
         }
 
-        v12 = v29;
+        errorCopy = v29;
       }
     }
 
     else
     {
-      v32 = v26;
+      code2 = code;
     }
 
-    v29 = v12;
-    v40 = [v12 userInfo];
-    v41 = [v40 objectForKey:NSUnderlyingErrorKey];
+    v29 = errorCopy;
+    userInfo3 = [errorCopy userInfo];
+    v41 = [userInfo3 objectForKey:NSUnderlyingErrorKey];
 
     if (!v41)
     {
       goto LABEL_90;
     }
 
-    v42 = [v41 domain];
-    v43 = [v42 isEqualToString:CKUnderlyingErrorDomain];
+    domain3 = [v41 domain];
+    v43 = [domain3 isEqualToString:CKUnderlyingErrorDomain];
 
     if (!v43)
     {
@@ -479,14 +479,14 @@ LABEL_136:
     }
 
     v44 = v41;
-    v45 = [v41 code];
-    if (v45 <= 2034)
+    code3 = [v41 code];
+    if (code3 <= 2034)
     {
-      if (v45 <= 2023)
+      if (code3 <= 2023)
       {
-        if (v45 <= 2010)
+        if (code3 <= 2010)
         {
-          if (v45 == 1002)
+          if (code3 == 1002)
           {
             v57 = 0;
             v58 = 0;
@@ -494,7 +494,7 @@ LABEL_136:
             goto LABEL_126;
           }
 
-          if (v45 == 1020)
+          if (code3 == 1020)
           {
 LABEL_105:
             v57 = 0;
@@ -503,7 +503,7 @@ LABEL_105:
             goto LABEL_126;
           }
 
-          if (v45 != 2006)
+          if (code3 != 2006)
           {
             goto LABEL_90;
           }
@@ -515,7 +515,7 @@ LABEL_98:
           goto LABEL_126;
         }
 
-        if ((v45 - 2011) < 2)
+        if ((code3 - 2011) < 2)
         {
 LABEL_101:
           v57 = 0;
@@ -528,10 +528,10 @@ LABEL_90:
         v44 = v41;
         v57 = 0;
         v54 = 80;
-        if (v32 <= 111)
+        if (code2 <= 111)
         {
           v58 = 0;
-          switch(v32)
+          switch(code2)
           {
             case 2:
             case 4:
@@ -592,7 +592,7 @@ LABEL_90:
             case 29:
               goto LABEL_106;
             default:
-              if (v32 != 111)
+              if (code2 != 111)
               {
                 goto LABEL_126;
               }
@@ -623,19 +623,19 @@ LABEL_90:
           goto LABEL_155;
         }
 
-        if (v32 > 131)
+        if (code2 > 131)
         {
-          if ((v32 - 132) < 2)
+          if ((code2 - 132) < 2)
           {
 LABEL_95:
-            v67 = [a1 _errorForCancelledError:v29];
+            v67 = [self _errorForCancelledError:v29];
             if (!v67)
             {
               v67 = +[CPLErrors operationCancelledError];
             }
 
             v34 = v67;
-            v13 = v96;
+            providerCopy = v96;
             v47 = v97;
             v46 = v44;
             goto LABEL_136;
@@ -649,7 +649,7 @@ LABEL_95:
 
           v57 = 0;
           v58 = 0;
-          if (v32 == 2008)
+          if (code2 == 2008)
           {
             v54 = v71;
           }
@@ -657,7 +657,7 @@ LABEL_95:
           goto LABEL_126;
         }
 
-        if (v32 == 112)
+        if (code2 == 112)
         {
           v57 = 0;
           v58 = 0;
@@ -666,7 +666,7 @@ LABEL_95:
         }
 
         v58 = 0;
-        if (v32 == 115)
+        if (code2 == 115)
         {
           goto LABEL_101;
         }
@@ -679,7 +679,7 @@ LABEL_127:
         if (!v47)
         {
 LABEL_129:
-          v95 = v14;
+          v95 = dsCopy;
           if (v58)
           {
             v74 = [NSNumber numberWithInteger:v58];
@@ -692,8 +692,8 @@ LABEL_129:
             [v68 setObject:v57 forKeyedSubscript:CPLErrorResetReason];
           }
 
-          v75 = [v29 cplUnderlyingError];
-          v76 = [[NSString alloc] initWithFormat:v15 arguments:a7];
+          cplUnderlyingError2 = [v29 cplUnderlyingError];
+          v76 = [[NSString alloc] initWithFormat:descriptionCopy arguments:arguments];
           v77 = v54;
           if (![v68 count])
           {
@@ -701,14 +701,14 @@ LABEL_129:
             v68 = 0;
           }
 
-          v13 = v96;
+          providerCopy = v96;
           v78 = [v68 copy];
-          [v75 localizedDescription];
+          [cplUnderlyingError2 localizedDescription];
           v79 = v46 = v68;
           v34 = [CPLErrors cplErrorWithCode:v77 underlyingError:v29 userInfo:v78 description:@"%@ (%@)", v76, v79];
 
           v47 = v98;
-          v14 = v95;
+          dsCopy = v95;
           goto LABEL_136;
         }
 
@@ -720,9 +720,9 @@ LABEL_128:
         goto LABEL_129;
       }
 
-      if (v45 > 2029)
+      if (code3 > 2029)
       {
-        if ((v45 - 2030) < 2)
+        if ((code3 - 2030) < 2)
         {
           goto LABEL_98;
         }
@@ -730,17 +730,17 @@ LABEL_128:
         goto LABEL_90;
       }
 
-      if (v45 == 2024)
+      if (code3 == 2024)
       {
         goto LABEL_98;
       }
 
-      if (v45 != 2026)
+      if (code3 != 2026)
       {
-        if (v45 == 2029)
+        if (code3 == 2029)
         {
-          v55 = [v41 localizedDescription];
-          v56 = [v55 rangeOfString:@"Snapshot in progress"];
+          localizedDescription2 = [v41 localizedDescription];
+          v56 = [localizedDescription2 rangeOfString:@"Snapshot in progress"];
 
           v57 = 0;
           if (v56 == 0x7FFFFFFFFFFFFFFFLL)
@@ -760,7 +760,7 @@ LABEL_128:
         goto LABEL_90;
       }
 
-      if (v32 != 26)
+      if (code2 != 26)
       {
         v58 = 0;
         v57 = @"Container reset by server";
@@ -771,7 +771,7 @@ LABEL_128:
 LABEL_108:
       v57 = 0;
       v58 = 0;
-      if ([a1 isContainerHasBeenWipedError:v29])
+      if ([self isContainerHasBeenWipedError:v29])
       {
         v54 = 1011;
       }
@@ -784,11 +784,11 @@ LABEL_108:
       goto LABEL_126;
     }
 
-    if (v45 <= 2046)
+    if (code3 <= 2046)
     {
-      if (v45 > 2038)
+      if (code3 > 2038)
       {
-        if (v45 == 2039)
+        if (code3 == 2039)
         {
 LABEL_102:
 
@@ -823,7 +823,7 @@ LABEL_155:
           goto LABEL_128;
         }
 
-        if (v45 == 2045)
+        if (code3 == 2045)
         {
 LABEL_106:
           v57 = 0;
@@ -835,7 +835,7 @@ LABEL_106:
         goto LABEL_90;
       }
 
-      if (v45 == 2035)
+      if (code3 == 2035)
       {
 LABEL_107:
         v57 = 0;
@@ -844,12 +844,12 @@ LABEL_107:
         goto LABEL_126;
       }
 
-      if (v45 != 2036)
+      if (code3 != 2036)
       {
         goto LABEL_90;
       }
 
-      if (v32 != 26)
+      if (code2 != 26)
       {
 LABEL_116:
         v57 = 0;
@@ -861,11 +861,11 @@ LABEL_116:
       goto LABEL_108;
     }
 
-    if (v45 <= 2048)
+    if (code3 <= 2048)
     {
       v57 = 0;
       v58 = 0;
-      if (v45 == 2047)
+      if (code3 == 2047)
       {
         v54 = 2009;
       }
@@ -878,7 +878,7 @@ LABEL_116:
       goto LABEL_126;
     }
 
-    if (v45 == 2049)
+    if (code3 == 2049)
     {
       v57 = 0;
       v58 = 0;
@@ -886,7 +886,7 @@ LABEL_116:
       goto LABEL_126;
     }
 
-    if (v45 == 2057)
+    if (code3 == 2057)
     {
       v57 = 0;
       v58 = 0;
@@ -894,23 +894,23 @@ LABEL_116:
       goto LABEL_126;
     }
 
-    if (v45 != 6000)
+    if (code3 != 6000)
     {
       goto LABEL_90;
     }
 
-    v48 = [v41 userInfo];
-    v49 = [v48 objectForKey:NSUnderlyingErrorKey];
+    userInfo4 = [v41 userInfo];
+    v49 = [userInfo4 objectForKey:NSUnderlyingErrorKey];
 
     if (v49)
     {
-      v50 = [v49 domain];
-      v51 = [v50 isEqualToString:@"CPL"];
+      domain4 = [v49 domain];
+      v51 = [domain4 isEqualToString:@"CPL"];
 
       if (v51)
       {
-        v52 = [v49 code];
-        if (v52 == 11)
+        code4 = [v49 code];
+        if (code4 == 11)
         {
           v53 = 1002;
         }
@@ -920,7 +920,7 @@ LABEL_116:
           v53 = 80;
         }
 
-        if (v52 == 1)
+        if (code4 == 1)
         {
           v54 = 33;
 LABEL_88:
@@ -933,13 +933,13 @@ LABEL_88:
         goto LABEL_83;
       }
 
-      v59 = [v49 domain];
-      v60 = [v59 isEqualToString:@"completeMyMoment"];
+      domain5 = [v49 domain];
+      v60 = [domain5 isEqualToString:@"completeMyMoment"];
 
       if (v60)
       {
-        v61 = [v49 code];
-        if (v61 == 11)
+        code5 = [v49 code];
+        if (code5 == 11)
         {
           v53 = 1002;
         }
@@ -949,7 +949,7 @@ LABEL_88:
           v53 = 80;
         }
 
-        if (v61 == 12)
+        if (code5 == 12)
         {
           v54 = 36;
           goto LABEL_88;
@@ -971,15 +971,15 @@ LABEL_83:
         goto LABEL_90;
       }
 
-      v64 = [v49 domain];
-      v65 = [v64 isEqualToString:@"sharedLibrary"];
+      domain6 = [v49 domain];
+      v65 = [domain6 isEqualToString:@"sharedLibrary"];
 
       if (v65)
       {
-        v66 = [v49 code];
-        if ((v66 - 14) <= 3)
+        code6 = [v49 code];
+        if ((code6 - 14) <= 3)
         {
-          v54 = qword_100243F20[(v66 - 14)];
+          v54 = qword_100243F20[(code6 - 14)];
           goto LABEL_88;
         }
       }
@@ -989,9 +989,9 @@ LABEL_83:
     goto LABEL_90;
   }
 
-  v16 = [[NSString alloc] initWithFormat:v15 arguments:a7];
-  v17 = [v12 userInfo];
-  v18 = [v17 objectForKeyedSubscript:NSLocalizedDescriptionKey];
+  v16 = [[NSString alloc] initWithFormat:descriptionCopy arguments:arguments];
+  userInfo5 = [errorCopy userInfo];
+  v18 = [userInfo5 objectForKeyedSubscript:NSLocalizedDescriptionKey];
   if (v18)
   {
     v19 = [[NSString alloc] initWithFormat:@"%@ (%@)", v16, v18];
@@ -999,7 +999,7 @@ LABEL_83:
     v16 = v19;
   }
 
-  v20 = [v17 mutableCopy];
+  v20 = [userInfo5 mutableCopy];
   v21 = v20;
   if (v20)
   {
@@ -1014,29 +1014,29 @@ LABEL_83:
   v35 = v22;
 
   [v35 setObject:v16 forKey:NSLocalizedDescriptionKey];
-  v36 = [v12 domain];
-  v34 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", v36, [v12 code], v35);
+  domain7 = [errorCopy domain];
+  v34 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", domain7, [errorCopy code], v35);
 
 LABEL_138:
-  v80 = [v14 count];
+  v80 = [dsCopy count];
   if (v80 && v34)
   {
     v81 = v80;
     if (v80 < 6)
     {
-      v85 = [v14 componentsJoinedByString:{@", "}];
+      v85 = [dsCopy componentsJoinedByString:{@", "}];
     }
 
     else
     {
       v82 = [NSString alloc];
-      v83 = [v14 subarrayWithRange:{v81 - 5, 5}];
+      v83 = [dsCopy subarrayWithRange:{v81 - 5, 5}];
       v84 = [v83 componentsJoinedByString:{@", "}];
       v85 = [v82 initWithFormat:@"..., %@", v84];
     }
 
-    v86 = [v34 userInfo];
-    v87 = [v86 mutableCopy];
+    userInfo6 = [v34 userInfo];
+    v87 = [userInfo6 mutableCopy];
     v88 = v87;
     if (v87)
     {
@@ -1052,8 +1052,8 @@ LABEL_138:
 
     [v90 setObject:v85 forKey:CPLErrorRequestUUIDs];
     v91 = [NSError alloc];
-    v92 = [v34 domain];
-    v93 = [v91 initWithDomain:v92 code:objc_msgSend(v34 userInfo:{"code"), v90}];
+    domain8 = [v34 domain];
+    v93 = [v91 initWithDomain:domain8 code:objc_msgSend(v34 userInfo:{"code"), v90}];
 
     v34 = v93;
   }
@@ -1066,24 +1066,24 @@ LABEL_138:
   return v34;
 }
 
-+ (id)CPLErrorForCloudKitUploadError:(id)a3 getDestinationRecordIDs:(id)a4 scopeProvider:(id)a5 withRequestUUIDs:(id)a6 uploadAction:(id)a7
++ (id)CPLErrorForCloudKitUploadError:(id)error getDestinationRecordIDs:(id)ds scopeProvider:(id)provider withRequestUUIDs:(id)iDs uploadAction:(id)action
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v12 domain];
-  if ([v17 isEqualToString:CKErrorDomain])
+  errorCopy = error;
+  dsCopy = ds;
+  providerCopy = provider;
+  iDsCopy = iDs;
+  actionCopy = action;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:CKErrorDomain])
   {
-    v18 = [v12 code];
+    code = [errorCopy code];
 
-    if (v18 == 12)
+    if (code == 12)
     {
-      v19 = v13[2](v13);
+      v19 = dsCopy[2](dsCopy);
       if ([v19 count] >= 2)
       {
-        v45 = a1;
+        selfCopy = self;
         v20 = [[NSCountedSet alloc] initWithCapacity:{objc_msgSend(v19, "count")}];
         v50 = 0u;
         v51 = 0u;
@@ -1117,10 +1117,10 @@ LABEL_138:
         v26 = [v20 count];
         if (v26 != [v21 count])
         {
-          v41 = v15;
-          v42 = v13;
-          v43 = v12;
-          v27 = v16;
+          v41 = iDsCopy;
+          v42 = dsCopy;
+          v43 = errorCopy;
+          v27 = actionCopy;
           v28 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v21, "count")}];
           v40 = v27;
           v29 = [[NSString alloc] initWithFormat:@"Tried to %@ the same record twice in the same batch", v27];
@@ -1146,7 +1146,7 @@ LABEL_138:
                 v35 = *(*(&v46 + 1) + 8 * j);
                 if ([v30 countForObject:v35] >= 2)
                 {
-                  v36 = [v14 rejectedScopedIdentifierForRejectedCKRecordID:v35];
+                  v36 = [providerCopy rejectedScopedIdentifierForRejectedCKRecordID:v35];
                   [v28 setObject:v29 forKeyedSubscript:v36];
                 }
               }
@@ -1164,22 +1164,22 @@ LABEL_138:
             v37 = [NSDictionary dictionaryWithObjects:&v55 forKeys:&v54 count:1];
             v38 = [CPLErrors cplErrorWithCode:18 underlyingError:v43 userInfo:v37 description:@"Tried to %@ the same record twice in the same batch", v40];
 
-            v16 = v40;
-            v12 = v43;
+            actionCopy = v40;
+            errorCopy = v43;
 
-            v15 = v41;
-            v13 = v42;
+            iDsCopy = v41;
+            dsCopy = v42;
             goto LABEL_28;
           }
 
-          v13 = v42;
-          v12 = v43;
-          v16 = v40;
-          v15 = v41;
+          dsCopy = v42;
+          errorCopy = v43;
+          actionCopy = v40;
+          iDsCopy = v41;
         }
 
         v19 = v44;
-        a1 = v45;
+        self = selfCopy;
       }
     }
   }
@@ -1188,19 +1188,19 @@ LABEL_138:
   {
   }
 
-  v38 = [a1 CPLErrorForCloudKitError:v12 scopeProvider:v14 withRequestUUIDs:v15 description:{@"Failed to %@ some records", v16}];
+  v38 = [self CPLErrorForCloudKitError:errorCopy scopeProvider:providerCopy withRequestUUIDs:iDsCopy description:{@"Failed to %@ some records", actionCopy}];
 LABEL_28:
 
   return v38;
 }
 
-+ (BOOL)getCloudKitErrorCode:(int64_t *)a3 internalCode:(int64_t *)a4 fromError:(id)a5
++ (BOOL)getCloudKitErrorCode:(int64_t *)code internalCode:(int64_t *)internalCode fromError:(id)error
 {
-  v8 = a5;
+  errorCopy = error;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
-  v33 = [v8 code];
+  code = [errorCopy code];
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -1209,17 +1209,17 @@ LABEL_28:
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  v9 = [v8 domain];
-  v10 = [v9 isEqualToString:CKErrorDomain];
+  domain = [errorCopy domain];
+  v10 = [domain isEqualToString:CKErrorDomain];
 
   if (v10)
   {
-    v11 = [v8 code];
-    v31[3] = v11;
-    if (v11 == 2)
+    code2 = [errorCopy code];
+    v31[3] = code2;
+    if (code2 == 2)
     {
-      v12 = [v8 userInfo];
-      v13 = [v12 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
+      userInfo = [errorCopy userInfo];
+      v13 = [userInfo objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_1000A31C8;
@@ -1227,35 +1227,35 @@ LABEL_28:
       v21[4] = &v30;
       v21[5] = &v26;
       v21[6] = &v22;
-      v21[7] = a1;
+      v21[7] = self;
       [v13 enumerateKeysAndObjectsUsingBlock:v21];
     }
 
     if ((v23[3] & 1) == 0)
     {
       *(v23 + 24) = 1;
-      v14 = [v8 userInfo];
-      v15 = [v14 objectForKeyedSubscript:NSUnderlyingErrorKey];
+      userInfo2 = [errorCopy userInfo];
+      v15 = [userInfo2 objectForKeyedSubscript:NSUnderlyingErrorKey];
 
       if (v15 && ([v15 domain], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqualToString:", CKUnderlyingErrorDomain), v16, v17))
       {
-        v18 = [v15 code];
+        code3 = [v15 code];
       }
 
       else
       {
-        v18 = 0;
+        code3 = 0;
       }
 
-      v27[3] = v18;
+      v27[3] = code3;
     }
   }
 
   v19 = *(v23 + 24);
   if (v19 == 1)
   {
-    *a3 = v31[3];
-    *a4 = v27[3];
+    *code = v31[3];
+    *internalCode = v27[3];
   }
 
   _Block_object_dispose(&v22, 8);
@@ -1265,13 +1265,13 @@ LABEL_28:
   return v19;
 }
 
-+ (BOOL)isPartialFailureError:(id)a3
++ (BOOL)isPartialFailureError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:CKErrorDomain])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:CKErrorDomain])
   {
-    v5 = [v3 code] == 2;
+    v5 = [errorCopy code] == 2;
   }
 
   else
@@ -1282,28 +1282,28 @@ LABEL_28:
   return v5;
 }
 
-+ (id)_filteredPartialFailureError:(id)a3 itemClass:(Class)a4
++ (id)_filteredPartialFailureError:(id)error itemClass:(Class)class
 {
-  v7 = a3;
-  if (([a1 isPartialFailureError:v7] & 1) == 0)
+  errorCopy = error;
+  if (([self isPartialFailureError:errorCopy] & 1) == 0)
   {
-    sub_1001AC870(a2, a1, v7);
+    sub_1001AC870(a2, self, errorCopy);
   }
 
-  v8 = [v7 userInfo];
-  v9 = [v8 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
+  userInfo = [errorCopy userInfo];
+  v9 = [userInfo objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000A33F8;
   v15[3] = &unk_100276930;
-  v18 = a4;
+  classCopy = class;
   v19 = a2;
-  v16 = v7;
-  v20 = a1;
+  v16 = errorCopy;
+  selfCopy = self;
   v10 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v9, "count")}];
   v17 = v10;
-  v11 = v7;
+  v11 = errorCopy;
   [v9 enumerateKeysAndObjectsUsingBlock:v15];
   v12 = v17;
   v13 = v10;
@@ -1311,41 +1311,41 @@ LABEL_28:
   return v10;
 }
 
-+ (id)errorsPerRecordIDForPartialFailureError:(id)a3
++ (id)errorsPerRecordIDForPartialFailureError:(id)error
 {
-  v4 = a3;
-  v5 = [a1 _filteredPartialFailureError:v4 itemClass:objc_opt_class()];
+  errorCopy = error;
+  v5 = [self _filteredPartialFailureError:errorCopy itemClass:objc_opt_class()];
 
   return v5;
 }
 
-+ (id)errorsPerZoneIDForPartialFailureError:(id)a3
++ (id)errorsPerZoneIDForPartialFailureError:(id)error
 {
-  v4 = a3;
-  v5 = [a1 _filteredPartialFailureError:v4 itemClass:objc_opt_class()];
+  errorCopy = error;
+  v5 = [self _filteredPartialFailureError:errorCopy itemClass:objc_opt_class()];
 
   return v5;
 }
 
-+ (id)realErrorForError:(id)a3
++ (id)realErrorForError:(id)error
 {
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_1000044D0;
   v16 = sub_10000534C;
-  v4 = a3;
-  v17 = v4;
-  if ([a1 isPartialFailureError:v4])
+  errorCopy = error;
+  v17 = errorCopy;
+  if ([self isPartialFailureError:errorCopy])
   {
-    v5 = [v4 userInfo];
-    v6 = [v5 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
+    userInfo = [errorCopy userInfo];
+    v6 = [userInfo objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
 
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000A3720;
     v9[3] = &unk_100276958;
-    v10 = v4;
+    v10 = errorCopy;
     v11 = &v12;
     [v6 enumerateKeysAndObjectsUsingBlock:v9];
   }
@@ -1356,13 +1356,13 @@ LABEL_28:
   return v7;
 }
 
-+ (BOOL)isRecordNotFoundError:(id)a3
++ (BOOL)isRecordNotFoundError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:CKErrorDomain])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:CKErrorDomain])
   {
-    v5 = [v3 code] == 11;
+    v5 = [errorCopy code] == 11;
   }
 
   else
@@ -1373,25 +1373,25 @@ LABEL_28:
   return v5;
 }
 
-+ (BOOL)isFeatureDisabledError:(id)a3
++ (BOOL)isFeatureDisabledError:(id)error
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKey:NSUnderlyingErrorKey];
+  userInfo = [error userInfo];
+  v4 = [userInfo objectForKey:NSUnderlyingErrorKey];
 
   if (v4)
   {
-    v5 = [v4 domain];
-    v6 = [v5 isEqualToString:CKUnderlyingErrorDomain];
+    domain = [v4 domain];
+    v6 = [domain isEqualToString:CKUnderlyingErrorDomain];
 
     if (v6)
     {
-      v7 = [v4 userInfo];
-      v8 = [v7 objectForKey:NSUnderlyingErrorKey];
+      userInfo2 = [v4 userInfo];
+      v8 = [userInfo2 objectForKey:NSUnderlyingErrorKey];
 
       if (v8)
       {
-        v9 = [v8 domain];
-        LOBYTE(v6) = (([v9 isEqualToString:@"CPL"] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"completeMyMoment")) && objc_msgSend(v8, "code") == 11;
+        domain2 = [v8 domain];
+        LOBYTE(v6) = (([domain2 isEqualToString:@"CPL"] & 1) != 0 || objc_msgSend(domain2, "isEqualToString:", @"completeMyMoment")) && objc_msgSend(v8, "code") == 11;
       }
 
       else
@@ -1409,17 +1409,17 @@ LABEL_28:
   return v6;
 }
 
-+ (BOOL)isOperationCancelledOrDeferredError:(id)a3
++ (BOOL)isOperationCancelledOrDeferredError:(id)error
 {
-  v4 = a3;
-  if ([v4 isCPLOperationCancelledError] & 1) != 0 || (objc_msgSend(v4, "isCPLOperationDeferredError"))
+  errorCopy = error;
+  if ([errorCopy isCPLOperationCancelledError] & 1) != 0 || (objc_msgSend(errorCopy, "isCPLOperationDeferredError"))
   {
     v5 = 1;
     goto LABEL_4;
   }
 
-  v7 = [v4 domain];
-  v8 = [v7 isEqualToString:CKErrorDomain];
+  domain = [errorCopy domain];
+  v8 = [domain isEqualToString:CKErrorDomain];
 
   if (!v8)
   {
@@ -1428,16 +1428,16 @@ LABEL_10:
     goto LABEL_4;
   }
 
-  v9 = [v4 code];
+  code = [errorCopy code];
   v5 = 1;
-  if ((v9 - 132) >= 2 && v9 != 20)
+  if ((code - 132) >= 2 && code != 20)
   {
-    v10 = [v4 userInfo];
-    v11 = [v10 objectForKeyedSubscript:NSUnderlyingErrorKey];
+    userInfo = [errorCopy userInfo];
+    v11 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
     if (v11)
     {
-      v5 = [a1 isOperationCancelledOrDeferredError:v11];
+      v5 = [self isOperationCancelledOrDeferredError:v11];
 
       goto LABEL_4;
     }
@@ -1450,23 +1450,23 @@ LABEL_4:
   return v5;
 }
 
-+ (BOOL)isOperationThrottledError:(id)a3
++ (BOOL)isOperationThrottledError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:CKErrorDomain])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:CKErrorDomain])
   {
-    if ([v3 code] == 7)
+    if ([errorCopy code] == 7)
     {
 
 LABEL_7:
-      v5 = 1;
+      isCPLThrottlingError = 1;
       goto LABEL_8;
     }
 
-    v6 = [v3 code];
+    code = [errorCopy code];
 
-    if (v6 == 6)
+    if (code == 6)
     {
       goto LABEL_7;
     }
@@ -1476,28 +1476,28 @@ LABEL_7:
   {
   }
 
-  v5 = [v3 isCPLThrottlingError];
+  isCPLThrottlingError = [errorCopy isCPLThrottlingError];
 LABEL_8:
 
-  return v5;
+  return isCPLThrottlingError;
 }
 
-+ (BOOL)isContainerHasBeenWipedError:(id)a3
++ (BOOL)isContainerHasBeenWipedError:(id)error
 {
-  v3 = a3;
-  if ([v3 code] == 26)
+  errorCopy = error;
+  if ([errorCopy code] == 26)
   {
-    v4 = [v3 userInfo];
-    v5 = [v4 objectForKeyedSubscript:CKErrorUserDidResetEncryptedDataKey];
-    v6 = [v5 BOOLValue];
+    userInfo = [errorCopy userInfo];
+    v5 = [userInfo objectForKeyedSubscript:CKErrorUserDidResetEncryptedDataKey];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 @end

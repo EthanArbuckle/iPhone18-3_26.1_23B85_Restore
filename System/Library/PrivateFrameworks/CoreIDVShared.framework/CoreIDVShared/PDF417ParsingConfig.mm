@@ -1,16 +1,16 @@
 @interface PDF417ParsingConfig
 - (_TtC13CoreIDVShared19PDF417ParsingConfig)init;
-- (_TtC13CoreIDVShared19PDF417ParsingConfig)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC13CoreIDVShared19PDF417ParsingConfig)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PDF417ParsingConfig
 
-- (_TtC13CoreIDVShared19PDF417ParsingConfig)initWithCoder:(id)a3
+- (_TtC13CoreIDVShared19PDF417ParsingConfig)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   sub_2259D8718(0, &qword_281059A60);
-  v6 = a3;
+  coderCopy = coder;
   result = sub_225CCEF14();
   if (result)
   {
@@ -36,13 +36,13 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v7 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v5 = sub_225CCE444();
   v6 = sub_225CCE444();
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:v5 forKey:v6];
 }
 
 - (_TtC13CoreIDVShared19PDF417ParsingConfig)init

@@ -6,7 +6,7 @@
 
 - (void)didToggleCaptions
 {
-  v2 = self;
+  selfCopy = self;
   InCallControlsToggleCaptionsCell.didToggleCaptions()();
 }
 

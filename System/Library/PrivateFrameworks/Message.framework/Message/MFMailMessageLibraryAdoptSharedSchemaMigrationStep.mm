@@ -1,5 +1,5 @@
 @interface MFMailMessageLibraryAdoptSharedSchemaMigrationStep
-+ (void)cleanUpAfterMigrationWithConnection:(id)a3;
++ (void)cleanUpAfterMigrationWithConnection:(id)connection;
 - (BOOL)_cleanupOldSchema;
 - (BOOL)_createIndexes;
 - (BOOL)_createTemporaryTables;
@@ -16,7 +16,7 @@
 - (BOOL)performMigrationStep;
 - (EFSQLSchema)protectedSchema;
 - (EFSQLSchema)schema;
-- (MFMailMessageLibraryAdoptSharedSchemaMigrationStep)initWithSQLiteConnection:(id)a3 protectedDatabaseName:(id)a4;
+- (MFMailMessageLibraryAdoptSharedSchemaMigrationStep)initWithSQLiteConnection:(id)connection protectedDatabaseName:(id)name;
 - (id)_accountsTableSchema;
 - (id)_addressesTableSchema;
 - (id)_conversationIDMessageIDTableSchema;
@@ -38,27 +38,27 @@
 
 @implementation MFMailMessageLibraryAdoptSharedSchemaMigrationStep
 
-+ (void)cleanUpAfterMigrationWithConnection:(id)a3
++ (void)cleanUpAfterMigrationWithConnection:(id)connection
 {
-  v3 = a3;
-  if ([v3 databaseIsAttached:@"ssms_mem"])
+  connectionCopy = connection;
+  if ([connectionCopy databaseIsAttached:@"ssms_mem"])
   {
-    [v3 executeStatementString:@"DETACH DATABASE ssms_mem" errorMessage:@"Detaching ssms_mem database"];
+    [connectionCopy executeStatementString:@"DETACH DATABASE ssms_mem" errorMessage:@"Detaching ssms_mem database"];
   }
 }
 
-- (MFMailMessageLibraryAdoptSharedSchemaMigrationStep)initWithSQLiteConnection:(id)a3 protectedDatabaseName:(id)a4
+- (MFMailMessageLibraryAdoptSharedSchemaMigrationStep)initWithSQLiteConnection:(id)connection protectedDatabaseName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = MFMailMessageLibraryAdoptSharedSchemaMigrationStep;
   v9 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_connection, a3);
-    objc_storeStrong(&v10->_protectedDatabaseName, a4);
+    objc_storeStrong(&v9->_connection, connection);
+    objc_storeStrong(&v10->_protectedDatabaseName, name);
   }
 
   return v10;
@@ -67,45 +67,45 @@
 - (EFSQLSchema)schema
 {
   v25[13] = *MEMORY[0x1E69E9840];
-  v24 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _messagesTableSchema];
-  v23 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _recipientsTableSchema];
-  v21 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _messageReferencesTableSchema];
-  v20 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _conversationsTableSchema];
-  v22 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _conversationIDMessageIDTableSchema];
-  v19 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _spotlightMessageReindexTableSchema];
-  v3 = [v23 columnForName:@"message"];
-  [v3 setAsForeignKeyForTable:v24 onDelete:2 onUpdate:0];
+  _messagesTableSchema = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _messagesTableSchema];
+  _recipientsTableSchema = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _recipientsTableSchema];
+  _messageReferencesTableSchema = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _messageReferencesTableSchema];
+  _conversationsTableSchema = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _conversationsTableSchema];
+  _conversationIDMessageIDTableSchema = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _conversationIDMessageIDTableSchema];
+  _spotlightMessageReindexTableSchema = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _spotlightMessageReindexTableSchema];
+  v3 = [_recipientsTableSchema columnForName:@"message"];
+  [v3 setAsForeignKeyForTable:_messagesTableSchema onDelete:2 onUpdate:0];
 
-  v4 = [v21 columnForName:@"message"];
-  [v4 setAsForeignKeyForTable:v24 onDelete:2 onUpdate:0];
+  v4 = [_messageReferencesTableSchema columnForName:@"message"];
+  [v4 setAsForeignKeyForTable:_messagesTableSchema onDelete:2 onUpdate:0];
 
-  v5 = [v22 columnForName:@"conversation_id"];
-  [v5 setAsForeignKeyForTable:v20 onDelete:2 onUpdate:2];
+  v5 = [_conversationIDMessageIDTableSchema columnForName:@"conversation_id"];
+  [v5 setAsForeignKeyForTable:_conversationsTableSchema onDelete:2 onUpdate:2];
 
-  v6 = [v19 columnForName:@"message_id"];
-  [v6 setAsForeignKeyForTable:v24 onDelete:2 onUpdate:0];
+  v6 = [_spotlightMessageReindexTableSchema columnForName:@"message_id"];
+  [v6 setAsForeignKeyForTable:_messagesTableSchema onDelete:2 onUpdate:0];
 
   v7 = objc_alloc(MEMORY[0x1E699B940]);
-  v25[0] = v24;
-  v8 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _mailboxesTableSchema];
-  v25[1] = v8;
-  v25[2] = v23;
-  v25[3] = v21;
-  v25[4] = v20;
-  v25[5] = v22;
-  v9 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _propertiesTableSchema];
-  v25[6] = v9;
-  v10 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _messageDataTableSchema];
-  v25[7] = v10;
-  v11 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _messageDataDeletedTableSchema];
-  v25[8] = v11;
-  v12 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _popUIDsTableSchema];
-  v25[9] = v12;
-  v13 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _accountsTableSchema];
-  v25[10] = v13;
-  v14 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _spotlightTombstonesTableSchema];
-  v25[11] = v14;
-  v25[12] = v19;
+  v25[0] = _messagesTableSchema;
+  _mailboxesTableSchema = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _mailboxesTableSchema];
+  v25[1] = _mailboxesTableSchema;
+  v25[2] = _recipientsTableSchema;
+  v25[3] = _messageReferencesTableSchema;
+  v25[4] = _conversationsTableSchema;
+  v25[5] = _conversationIDMessageIDTableSchema;
+  _propertiesTableSchema = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _propertiesTableSchema];
+  v25[6] = _propertiesTableSchema;
+  _messageDataTableSchema = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _messageDataTableSchema];
+  v25[7] = _messageDataTableSchema;
+  _messageDataDeletedTableSchema = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _messageDataDeletedTableSchema];
+  v25[8] = _messageDataDeletedTableSchema;
+  _popUIDsTableSchema = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _popUIDsTableSchema];
+  v25[9] = _popUIDsTableSchema;
+  _accountsTableSchema = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _accountsTableSchema];
+  v25[10] = _accountsTableSchema;
+  _spotlightTombstonesTableSchema = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _spotlightTombstonesTableSchema];
+  v25[11] = _spotlightTombstonesTableSchema;
+  v25[12] = _spotlightMessageReindexTableSchema;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:13];
   v16 = [v7 initWithTables:v15];
 
@@ -204,8 +204,8 @@
   [v13 addObject:v15];
 
   v16 = objc_alloc(MEMORY[0x1E699B900]);
-  v17 = [v12 name];
-  v18 = [v16 initWithTableName:v17 indexedColumns:v13];
+  name = [v12 name];
+  v18 = [v16 initWithTableName:name indexedColumns:v13];
   [v12 addIndex:v18];
 
   v20 = __74__MFMailMessageLibraryAdoptSharedSchemaMigrationStep__messagesTableSchema__block_invoke(v19, &unk_1F2774F98);
@@ -217,8 +217,8 @@
   [v20 addObject:v22];
 
   v23 = objc_alloc(MEMORY[0x1E699B900]);
-  v24 = [v12 name];
-  v25 = [v23 initWithTableName:v24 indexedColumns:v20];
+  name2 = [v12 name];
+  v25 = [v23 initWithTableName:name2 indexedColumns:v20];
   [v12 addIndex:v25];
 
   v27 = __74__MFMailMessageLibraryAdoptSharedSchemaMigrationStep__messagesTableSchema__block_invoke(v26, &unk_1F2774FB0);
@@ -230,8 +230,8 @@
   [v27 addObject:v29];
 
   v30 = objc_alloc(MEMORY[0x1E699B900]);
-  v31 = [v12 name];
-  v32 = [v30 initWithTableName:v31 indexedColumns:v27];
+  name3 = [v12 name];
+  v32 = [v30 initWithTableName:name3 indexedColumns:v27];
   [v12 addIndex:v32];
 
   v33 = __74__MFMailMessageLibraryAdoptSharedSchemaMigrationStep__messagesTableSchema__block_invoke([v12 addIndexForColumns:&unk_1F2774FC8], &unk_1F2774FE0);
@@ -240,8 +240,8 @@
   [v33 addObject:v34];
 
   v35 = objc_alloc(MEMORY[0x1E699B900]);
-  v36 = [v12 name];
-  v37 = [v35 initWithTableName:v36 indexedColumns:v33];
+  name4 = [v12 name];
+  v37 = [v35 initWithTableName:name4 indexedColumns:v33];
   [v12 addIndex:v37];
 
   [v12 addIndexForColumns:&unk_1F2774FF8];
@@ -505,14 +505,14 @@ id __74__MFMailMessageLibraryAdoptSharedSchemaMigrationStep__messagesTableSchema
 {
   v12[4] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E699B940]);
-  v4 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _addressesTableSchema];
-  v12[0] = v4;
-  v5 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _subjectsTableSchema];
-  v12[1] = v5;
-  v6 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _summariesTableSchema];
-  v12[2] = v6;
-  v7 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _protectedMessageDataTableSchema];
-  v12[3] = v7;
+  _addressesTableSchema = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _addressesTableSchema];
+  v12[0] = _addressesTableSchema;
+  _subjectsTableSchema = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _subjectsTableSchema];
+  v12[1] = _subjectsTableSchema;
+  _summariesTableSchema = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _summariesTableSchema];
+  v12[2] = _summariesTableSchema;
+  _protectedMessageDataTableSchema = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _protectedMessageDataTableSchema];
+  v12[3] = _protectedMessageDataTableSchema;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:4];
   v9 = [v3 initWithTables:v8];
 
@@ -584,24 +584,24 @@ id __74__MFMailMessageLibraryAdoptSharedSchemaMigrationStep__messagesTableSchema
 
 - (BOOL)performMigrationStep
 {
-  v4 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
-  if (([v4 protectedDatabaseAttached] & 1) == 0)
+  connection = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
+  if (([connection protectedDatabaseAttached] & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"MFMailMessageLibraryAdoptSharedSchemaMigrationStep.m" lineNumber:412 description:@"Protected database must be attached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFMailMessageLibraryAdoptSharedSchemaMigrationStep.m" lineNumber:412 description:@"Protected database must be attached"];
   }
 
-  v5 = ![MFDbJournal mergeAllJournalsUsingConnection:v4]&& [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _initializeOldProtectedSchema]&& [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _transformSchema]&& [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _transformProtectedSchema]&& [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _createTemporaryTables]&& [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _migrateData]&& [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _dropTemporaryTables]&& [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _createIndexes]&& [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _cleanupOldSchema];
+  v5 = ![MFDbJournal mergeAllJournalsUsingConnection:connection]&& [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _initializeOldProtectedSchema]&& [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _transformSchema]&& [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _transformProtectedSchema]&& [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _createTemporaryTables]&& [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _migrateData]&& [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _dropTemporaryTables]&& [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _createIndexes]&& [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self _cleanupOldSchema];
 
   return v5;
 }
 
 - (BOOL)_initializeOldProtectedSchema
 {
-  v2 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
-  if ([v2 executeStatementString:@"CREATE TABLE IF NOT EXISTS protected.messages (message_id INTEGER PRIMARY KEY errorMessage:{sender, subject, _to, cc, bcc)", @"Creating protected messages"}])
+  connection = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
+  if ([connection executeStatementString:@"CREATE TABLE IF NOT EXISTS protected.messages (message_id INTEGER PRIMARY KEY errorMessage:{sender, subject, _to, cc, bcc)", @"Creating protected messages"}])
   {
-    v3 = [v2 executeStatementString:@"CREATE TABLE IF NOT EXISTS protected.message_data (message_data_id INTEGER PRIMARY KEY errorMessage:{data)", @"Creating protected message_data"}];
+    v3 = [connection executeStatementString:@"CREATE TABLE IF NOT EXISTS protected.message_data (message_data_id INTEGER PRIMARY KEY errorMessage:{data)", @"Creating protected message_data"}];
   }
 
   else
@@ -614,12 +614,12 @@ id __74__MFMailMessageLibraryAdoptSharedSchemaMigrationStep__messagesTableSchema
 
 - (BOOL)_transformSchema
 {
-  v3 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
-  if ([v3 executeStatementString:@"ALTER TABLE main.messages RENAME TO messages_old" errorMessage:@"Moving messages table aside"] && objc_msgSend(v3, "executeStatementString:errorMessage:", @"ALTER TABLE mailboxes RENAME TO mailboxes_old", @"Moving mailboxes table aside") && objc_msgSend(v3, "executeStatementString:errorMessage:", @"ALTER TABLE conversations RENAME TO conversations_old", @"Moving conversations table aside") && objc_msgSend(v3, "executeStatementString:errorMessage:", @"ALTER TABLE conversation_id_message_id RENAME TO conversation_id_message_id_old", @"Moving conversation_id_message_id table aside") && objc_msgSend(v3, "executeStatementString:errorMessage:", @"ALTER TABLE properties RENAME TO properties_old", @"Moving properties table aside") && objc_msgSend(v3, "executeStatementString:errorMessage:", @"ALTER TABLE main.message_data RENAME TO message_data_old", @"Moving message_data table aside") && objc_msgSend(v3, "executeStatementString:errorMessage:", @"ALTER TABLE message_data_deleted RENAME TO message_data_deleted_old", @"Moving message_data_deleted_old table aside") && objc_msgSend(v3, "executeStatementString:errorMessage:", @"ALTER TABLE pop_uids RENAME TO pop_uids_old", @"Moving pop_uids table aside") && objc_msgSend(v3, "executeStatementString:errorMessage:", @"ALTER TABLE accounts RENAME TO accounts_old", @"Moving accounts table aside") && objc_msgSend(v3, "executeStatementString:errorMessage:", @"ALTER TABLE spotlight_tombstones RENAME TO spotlight_tombstones_old", @"Moving spotlight_tombstones table aside") && objc_msgSend(v3, "executeStatementString:errorMessage:", @"ALTER TABLE spotlight_message_reindex RENAME TO spotlight_message_reindex_old", @"Moving spotlight_message_reindex table aside"))
+  connection = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
+  if ([connection executeStatementString:@"ALTER TABLE main.messages RENAME TO messages_old" errorMessage:@"Moving messages table aside"] && objc_msgSend(connection, "executeStatementString:errorMessage:", @"ALTER TABLE mailboxes RENAME TO mailboxes_old", @"Moving mailboxes table aside") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"ALTER TABLE conversations RENAME TO conversations_old", @"Moving conversations table aside") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"ALTER TABLE conversation_id_message_id RENAME TO conversation_id_message_id_old", @"Moving conversation_id_message_id table aside") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"ALTER TABLE properties RENAME TO properties_old", @"Moving properties table aside") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"ALTER TABLE main.message_data RENAME TO message_data_old", @"Moving message_data table aside") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"ALTER TABLE message_data_deleted RENAME TO message_data_deleted_old", @"Moving message_data_deleted_old table aside") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"ALTER TABLE pop_uids RENAME TO pop_uids_old", @"Moving pop_uids table aside") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"ALTER TABLE accounts RENAME TO accounts_old", @"Moving accounts table aside") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"ALTER TABLE spotlight_tombstones RENAME TO spotlight_tombstones_old", @"Moving spotlight_tombstones table aside") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"ALTER TABLE spotlight_message_reindex RENAME TO spotlight_message_reindex_old", @"Moving spotlight_message_reindex table aside"))
   {
-    v4 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self schema];
-    v5 = [v4 definitionWithDatabaseName:0 includeIndexes:0];
-    v6 = [v3 executeStatementString:v5 errorMessage:@"Unable to create new tables"];
+    schema = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self schema];
+    v5 = [schema definitionWithDatabaseName:0 includeIndexes:0];
+    v6 = [connection executeStatementString:v5 errorMessage:@"Unable to create new tables"];
   }
 
   else
@@ -632,21 +632,21 @@ id __74__MFMailMessageLibraryAdoptSharedSchemaMigrationStep__messagesTableSchema
 
 - (BOOL)_transformProtectedSchema
 {
-  v3 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
-  v4 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self protectedSchema];
-  v5 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self protectedDatabaseName];
-  v6 = [v4 definitionWithDatabaseName:v5];
-  v7 = [v3 executeStatementString:v6 errorMessage:@"Unable to create new protected tables"];
+  connection = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
+  protectedSchema = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self protectedSchema];
+  protectedDatabaseName = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self protectedDatabaseName];
+  v6 = [protectedSchema definitionWithDatabaseName:protectedDatabaseName];
+  v7 = [connection executeStatementString:v6 errorMessage:@"Unable to create new protected tables"];
 
   return v7;
 }
 
 - (BOOL)_createTemporaryTables
 {
-  v2 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
-  if ([v2 executeStatementString:@"ATTACH DATABASE ':memory:' AS ssms_mem" errorMessage:@"Unable to create in-memory database"] && objc_msgSend(v2, "executeStatementString:errorMessage:", @"CREATE TABLE ssms_mem.parsed_subjects(original PRIMARY KEY ON CONFLICT IGNORE, prefix TEXT COLLATE BINARY, unprefixed TEXT COLLATE RTRIM) WITHOUT ROWID", @"Creating ssms_mem.parsed_subjects table") && objc_msgSend(v2, "executeStatementString:errorMessage:", @"CREATE TABLE ssms_mem.summary_id_by_message(message INTEGER PRIMARY KEY, summary_id INTEGER)", @"Creating ssms_mem.summary_id_by_message table"))
+  connection = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
+  if ([connection executeStatementString:@"ATTACH DATABASE ':memory:' AS ssms_mem" errorMessage:@"Unable to create in-memory database"] && objc_msgSend(connection, "executeStatementString:errorMessage:", @"CREATE TABLE ssms_mem.parsed_subjects(original PRIMARY KEY ON CONFLICT IGNORE, prefix TEXT COLLATE BINARY, unprefixed TEXT COLLATE RTRIM) WITHOUT ROWID", @"Creating ssms_mem.parsed_subjects table") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"CREATE TABLE ssms_mem.summary_id_by_message(message INTEGER PRIMARY KEY, summary_id INTEGER)", @"Creating ssms_mem.summary_id_by_message table"))
   {
-    v3 = [v2 executeStatementString:@"CREATE TABLE ssms_mem.parsed_addresses(fullAddress TEXT NOT NULL PRIMARY KEY ON CONFLICT IGNORE errorMessage:{address TEXT, comment TEXT) WITHOUT ROWID", @"Creating ssms_mem.parsed_addresses table"}];
+    v3 = [connection executeStatementString:@"CREATE TABLE ssms_mem.parsed_addresses(fullAddress TEXT NOT NULL PRIMARY KEY ON CONFLICT IGNORE errorMessage:{address TEXT, comment TEXT) WITHOUT ROWID", @"Creating ssms_mem.parsed_addresses table"}];
   }
 
   else
@@ -659,10 +659,10 @@ id __74__MFMailMessageLibraryAdoptSharedSchemaMigrationStep__messagesTableSchema
 
 - (BOOL)_dropTemporaryTables
 {
-  v2 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
-  if ([v2 executeStatementString:@"DROP TABLE ssms_mem.parsed_subjects" errorMessage:@"Dropping ssms_mem.subject_prefixes table"] && objc_msgSend(v2, "executeStatementString:errorMessage:", @"DROP TABLE ssms_mem.parsed_addresses", @"Dropping ssms_mem.parsed_addresses table"))
+  connection = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
+  if ([connection executeStatementString:@"DROP TABLE ssms_mem.parsed_subjects" errorMessage:@"Dropping ssms_mem.subject_prefixes table"] && objc_msgSend(connection, "executeStatementString:errorMessage:", @"DROP TABLE ssms_mem.parsed_addresses", @"Dropping ssms_mem.parsed_addresses table"))
   {
-    v3 = [v2 executeStatementString:@"DROP TABLE ssms_mem.summary_id_by_message" errorMessage:@"Dropping ssms_mem.summary_id_by_message table"];
+    v3 = [connection executeStatementString:@"DROP TABLE ssms_mem.summary_id_by_message" errorMessage:@"Dropping ssms_mem.summary_id_by_message table"];
   }
 
   else
@@ -685,10 +685,10 @@ id __74__MFMailMessageLibraryAdoptSharedSchemaMigrationStep__messagesTableSchema
 
 - (BOOL)_migrateNonMessages
 {
-  v2 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
-  if ([v2 executeStatementString:@"INSERT INTO message_references (message errorMessage:{reference, is_originator) SELECT message_id, ifnull(reference, 0), ifnull(is_originator, 0) FROM threads", @"Populating message_references"}] && objc_msgSend(v2, "executeStatementString:errorMessage:", @"INSERT INTO mailboxes (ROWID, url, total_count, unread_count, deleted_count, sequence_identifier, flagged_count, to_cc_count, server_unread_count, last_sync_status_count, most_recent_status_count, reconcile) SELECT ROWID, url, ifnull(total_count, 0), ifnull(unread_count, 0), ifnull(deleted_count, 0), sequence_identifier, ifnull(flagged_count, 0), ifnull(to_cc_count, 0), ifnull(server_unread_count, 0), ifnull(last_sync_status_count, 0), ifnull(most_recent_status_count, 0), ifnull(reconcile, 0) FROM mailboxes_old", @"Populating mailboxes") && objc_msgSend(v2, "executeStatementString:errorMessage:", @"INSERT INTO conversations (conversation_id, flags, sync_key) SELECT conversation_id, (ifnull(flags, 0) & ~0x2) | ((ifnull(flags, 0) & 0x2) << 1), sync_key FROM conversations_old ", @"Populating conversations") && objc_msgSend(v2, "executeStatementString:errorMessage:", @"INSERT INTO conversation_id_message_id (conversation_id, message_id, date_sent) SELECT conversation_id, message_id, ifnull(date_sent, 0) FROM conversation_id_message_id_old", @"Populating conversation_id_message_id") && objc_msgSend(v2, "executeStatementString:errorMessage:", @"INSERT INTO properties (key, value) SELECT key, value FROM properties_old", @"Populating properties") && objc_msgSend(v2, "executeStatementString:errorMessage:", @"INSERT INTO main.message_data (ROWID, message_id, part, partial, complete, length) SELECT ROWID, message_id, part, partial, complete, length FROM message_data_old WHERE part != 'summary' ", @"Populating message_data") && objc_msgSend(v2, "executeStatementString:errorMessage:", @"INSERT INTO message_data_deleted (message_data_id) SELECT message_data_id FROM message_data_deleted_old", @"Populating message_data_deleted") && objc_msgSend(v2, "executeStatementString:errorMessage:", @"INSERT INTO pop_uids (mailbox, uid, date_added, flags, del) SELECT mailbox, uid, date_added, flags, del FROM pop_uids_old", @"Populating pop_uids") && objc_msgSend(v2, "executeStatementString:errorMessage:", @"INSERT INTO accounts (ROWID, text_id) SELECT ROWID, text_id FROM accounts_old", @"Populating accounts") && objc_msgSend(v2, "executeStatementString:errorMessage:", @"INSERT INTO spotlight_tombstones (ROWID, type, identifier, transaction_id) SELECT ROWID, type, identifier, transaction_id FROM spotlight_tombstones_old", @"Populating spotlight_tombstones"))
+  connection = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
+  if ([connection executeStatementString:@"INSERT INTO message_references (message errorMessage:{reference, is_originator) SELECT message_id, ifnull(reference, 0), ifnull(is_originator, 0) FROM threads", @"Populating message_references"}] && objc_msgSend(connection, "executeStatementString:errorMessage:", @"INSERT INTO mailboxes (ROWID, url, total_count, unread_count, deleted_count, sequence_identifier, flagged_count, to_cc_count, server_unread_count, last_sync_status_count, most_recent_status_count, reconcile) SELECT ROWID, url, ifnull(total_count, 0), ifnull(unread_count, 0), ifnull(deleted_count, 0), sequence_identifier, ifnull(flagged_count, 0), ifnull(to_cc_count, 0), ifnull(server_unread_count, 0), ifnull(last_sync_status_count, 0), ifnull(most_recent_status_count, 0), ifnull(reconcile, 0) FROM mailboxes_old", @"Populating mailboxes") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"INSERT INTO conversations (conversation_id, flags, sync_key) SELECT conversation_id, (ifnull(flags, 0) & ~0x2) | ((ifnull(flags, 0) & 0x2) << 1), sync_key FROM conversations_old ", @"Populating conversations") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"INSERT INTO conversation_id_message_id (conversation_id, message_id, date_sent) SELECT conversation_id, message_id, ifnull(date_sent, 0) FROM conversation_id_message_id_old", @"Populating conversation_id_message_id") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"INSERT INTO properties (key, value) SELECT key, value FROM properties_old", @"Populating properties") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"INSERT INTO main.message_data (ROWID, message_id, part, partial, complete, length) SELECT ROWID, message_id, part, partial, complete, length FROM message_data_old WHERE part != 'summary' ", @"Populating message_data") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"INSERT INTO message_data_deleted (message_data_id) SELECT message_data_id FROM message_data_deleted_old", @"Populating message_data_deleted") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"INSERT INTO pop_uids (mailbox, uid, date_added, flags, del) SELECT mailbox, uid, date_added, flags, del FROM pop_uids_old", @"Populating pop_uids") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"INSERT INTO accounts (ROWID, text_id) SELECT ROWID, text_id FROM accounts_old", @"Populating accounts") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"INSERT INTO spotlight_tombstones (ROWID, type, identifier, transaction_id) SELECT ROWID, type, identifier, transaction_id FROM spotlight_tombstones_old", @"Populating spotlight_tombstones"))
   {
-    v3 = [v2 executeStatementString:@"INSERT INTO spotlight_message_reindex (message_id errorMessage:{type) SELECT message_id, type FROM spotlight_message_reindex_old", @"Populating spotlight_message_reindex"}];
+    v3 = [connection executeStatementString:@"INSERT INTO spotlight_message_reindex (message_id errorMessage:{type) SELECT message_id, type FROM spotlight_message_reindex_old", @"Populating spotlight_message_reindex"}];
   }
 
   else
@@ -701,13 +701,13 @@ id __74__MFMailMessageLibraryAdoptSharedSchemaMigrationStep__messagesTableSchema
 
 - (BOOL)_migrateSubjects
 {
-  v2 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
-  v3 = [v2 preparedStatementForQueryString:@"SELECT DISTINCT subject FROM protected.messages JOIN main.messages_old ON main.messages_old.ROWID = protected.messages.message_id "];
-  v4 = [v3 compiled];
-  v5 = [v2 preparedStatementForQueryString:{@"INSERT INTO ssms_mem.parsed_subjects (original, prefix, unprefixed) VALUES (?1, ?2, ?3)"}];
-  v6 = [v5 compiled];
-  v7 = [v2 preparedStatementForQueryString:{@"INSERT INTO ssms_mem.parsed_subjects (original, prefix, unprefixed) VALUES (?1, NULL, ?1)"}];
-  v8 = [v7 compiled];
+  connection = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
+  v3 = [connection preparedStatementForQueryString:@"SELECT DISTINCT subject FROM protected.messages JOIN main.messages_old ON main.messages_old.ROWID = protected.messages.message_id "];
+  compiled = [v3 compiled];
+  v5 = [connection preparedStatementForQueryString:{@"INSERT INTO ssms_mem.parsed_subjects (original, prefix, unprefixed) VALUES (?1, ?2, ?3)"}];
+  compiled2 = [v5 compiled];
+  v7 = [connection preparedStatementForQueryString:{@"INSERT INTO ssms_mem.parsed_subjects (original, prefix, unprefixed) VALUES (?1, NULL, ?1)"}];
+  compiled3 = [v7 compiled];
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -717,10 +717,10 @@ id __74__MFMailMessageLibraryAdoptSharedSchemaMigrationStep__messagesTableSchema
   v15[2] = __70__MFMailMessageLibraryAdoptSharedSchemaMigrationStep__migrateSubjects__block_invoke;
   v15[3] = &unk_1E7AA6418;
   v17 = &v21;
-  v18 = v4;
-  v19 = v6;
-  v20 = v8;
-  v9 = v2;
+  v18 = compiled;
+  v19 = compiled2;
+  v20 = compiled3;
+  v9 = connection;
   v16 = v9;
   v14 = 0;
   v10 = [v3 executeUsingBlock:v15 error:&v14];
@@ -806,10 +806,10 @@ void __70__MFMailMessageLibraryAdoptSharedSchemaMigrationStep__migrateSubjects__
 
 - (BOOL)_migrateSummaries
 {
-  v2 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
-  if ([v2 executeStatementString:@"CREATE TABLE ssms_mem.temp_summaries(message INTEGER PRIMARY KEY errorMessage:{summary TEXT NOT NULL)", @"Creating ssms_mem.temp_summaries table"}] && objc_msgSend(v2, "executeStatementString:errorMessage:", @"INSERT INTO ssms_mem.temp_summaries (message, summary) SELECT main.message_data_old.message_id, protected.message_data.data FROM main.message_data_old JOIN protected.message_data ON protected.message_data.message_data_id = main.message_data_old.ROWID WHERE main.message_data_old.part = 'summary' AND protected.message_data.data IS NOT NULL ", @"Populating ssms_mem.temp_summaries") && objc_msgSend(v2, "executeStatementString:errorMessage:", @"INSERT OR IGNORE INTO protected.summaries (summary) SELECT summary FROM ssms_mem.temp_summaries ", @"Populating protected.summaries") && objc_msgSend(v2, "executeStatementString:errorMessage:", @"INSERT INTO ssms_mem.summary_id_by_message (message, summary_id) SELECT ssms_mem.temp_summaries.message, protected.summaries.ROWID FROM ssms_mem.temp_summaries JOIN protected.summaries ON protected.summaries.summary = ssms_mem.temp_summaries.summary ", @"Populating ssms_mem.summary_id_by_message"))
+  connection = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
+  if ([connection executeStatementString:@"CREATE TABLE ssms_mem.temp_summaries(message INTEGER PRIMARY KEY errorMessage:{summary TEXT NOT NULL)", @"Creating ssms_mem.temp_summaries table"}] && objc_msgSend(connection, "executeStatementString:errorMessage:", @"INSERT INTO ssms_mem.temp_summaries (message, summary) SELECT main.message_data_old.message_id, protected.message_data.data FROM main.message_data_old JOIN protected.message_data ON protected.message_data.message_data_id = main.message_data_old.ROWID WHERE main.message_data_old.part = 'summary' AND protected.message_data.data IS NOT NULL ", @"Populating ssms_mem.temp_summaries") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"INSERT OR IGNORE INTO protected.summaries (summary) SELECT summary FROM ssms_mem.temp_summaries ", @"Populating protected.summaries") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"INSERT INTO ssms_mem.summary_id_by_message (message, summary_id) SELECT ssms_mem.temp_summaries.message, protected.summaries.ROWID FROM ssms_mem.temp_summaries JOIN protected.summaries ON protected.summaries.summary = ssms_mem.temp_summaries.summary ", @"Populating ssms_mem.summary_id_by_message"))
   {
-    v3 = [v2 executeStatementString:@"DROP TABLE ssms_mem.temp_summaries" errorMessage:@"Dropping ssms_mem.temp_summaries table"];
+    v3 = [connection executeStatementString:@"DROP TABLE ssms_mem.temp_summaries" errorMessage:@"Dropping ssms_mem.temp_summaries table"];
   }
 
   else
@@ -822,13 +822,13 @@ void __70__MFMailMessageLibraryAdoptSharedSchemaMigrationStep__migrateSubjects__
 
 - (BOOL)_migrateSendersAndRecipients
 {
-  v2 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
-  v3 = [v2 sqlDB];
-  [v2 handleSQLResult:sqlite3_create_function(v3 message:{"rawAddress", 1, 1, 0, rawAddress, 0, 0), @"error creating user function rawAddress"}];
-  [v2 handleSQLResult:sqlite3_create_function(v3 message:{"displayName", 1, 1, 0, displayName, 0, 0), @"error creating user function displayName"}];
-  v4 = [v2 executeStatementString:@"CREATE TABLE ssms_mem.temp_recipients(message INTEGER NOT NULL errorMessage:{fullAddress TEXT NOT NULL, type INTEGER NOT NULL, position INTEGER NOT NULL)", @"Creating ssms_mem.temp_recipients table"}];
-  v5 = [v2 preparedStatementForQueryString:{@"INSERT INTO ssms_mem.temp_recipients (message, fullAddress, type, position) VALUES (?, ?, ?, ?)"}];
-  v6 = [v5 compiled];
+  connection = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
+  sqlDB = [connection sqlDB];
+  [connection handleSQLResult:sqlite3_create_function(sqlDB message:{"rawAddress", 1, 1, 0, rawAddress, 0, 0), @"error creating user function rawAddress"}];
+  [connection handleSQLResult:sqlite3_create_function(sqlDB message:{"displayName", 1, 1, 0, displayName, 0, 0), @"error creating user function displayName"}];
+  v4 = [connection executeStatementString:@"CREATE TABLE ssms_mem.temp_recipients(message INTEGER NOT NULL errorMessage:{fullAddress TEXT NOT NULL, type INTEGER NOT NULL, position INTEGER NOT NULL)", @"Creating ssms_mem.temp_recipients table"}];
+  v5 = [connection preparedStatementForQueryString:{@"INSERT INTO ssms_mem.temp_recipients (message, fullAddress, type, position) VALUES (?, ?, ?, ?)"}];
+  compiled = [v5 compiled];
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -838,12 +838,12 @@ void __70__MFMailMessageLibraryAdoptSharedSchemaMigrationStep__migrateSubjects__
   aBlock[2] = __82__MFMailMessageLibraryAdoptSharedSchemaMigrationStep__migrateSendersAndRecipients__block_invoke;
   aBlock[3] = &unk_1E7AA6468;
   v24 = &v26;
-  v25 = v6;
-  v7 = v2;
+  v25 = compiled;
+  v7 = connection;
   v23 = v7;
   v8 = _Block_copy(aBlock);
   v9 = [v7 preparedStatementForQueryString:{@"SELECT protected.messages.message_id, protected.messages._to, protected.messages.cc, protected.messages.bcc FROM protected.messages JOIN main.messages_old ON main.messages_old.ROWID = protected.messages.message_id "}];
-  v10 = [v9 compiled];
+  compiled2 = [v9 compiled];
   if (!v4)
   {
     v12 = 0;
@@ -857,8 +857,8 @@ LABEL_12:
   v20[1] = 3221225472;
   v20[2] = __82__MFMailMessageLibraryAdoptSharedSchemaMigrationStep__migrateSendersAndRecipients__block_invoke_3;
   v20[3] = &unk_1E7AA6490;
-  v21[1] = v10;
-  v21[2] = v6;
+  v21[1] = compiled2;
+  v21[2] = compiled;
   v18 = v21;
   v21[0] = v8;
   v19 = 0;
@@ -903,8 +903,8 @@ LABEL_13:
     v16 = 0;
   }
 
-  [v7 handleSQLResult:sqlite3_create_function(v3 message:{"rawAddress", 1, 1, 0, 0, 0, 0), @"error deleting user function rawAddress"}];
-  [v7 handleSQLResult:sqlite3_create_function(v3 message:{"displayName", 1, 1, 0, 0, 0, 0), @"error deleting user function displayName"}];
+  [v7 handleSQLResult:sqlite3_create_function(sqlDB message:{"rawAddress", 1, 1, 0, 0, 0, 0), @"error deleting user function rawAddress"}];
+  [v7 handleSQLResult:sqlite3_create_function(sqlDB message:{"displayName", 1, 1, 0, 0, 0, 0), @"error deleting user function displayName"}];
   if (v4)
   {
   }
@@ -1011,15 +1011,15 @@ uint64_t __82__MFMailMessageLibraryAdoptSharedSchemaMigrationStep__migrateSender
 - (BOOL)_migrateMessages
 {
   v20[31] = *MEMORY[0x1E69E9840];
-  v2 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
-  v3 = [v2 executeStatementString:@"DELETE FROM protected.messages WHERE ROWID IN (SELECT message_id FROM messages_deleted)" errorMessage:@"Deleting rows from protected.messages"];
+  connection = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
+  v3 = [connection executeStatementString:@"DELETE FROM protected.messages WHERE ROWID IN (SELECT message_id FROM messages_deleted)" errorMessage:@"Deleting rows from protected.messages"];
   v19[0] = @"ROWID";
   v19[1] = @"message_id";
   v20[0] = @"messages_old.ROWID";
   v20[1] = @"ifnull(messages_old.message_id, 0)";
   v19[2] = @"remote_id";
   v19[3] = @"document_id";
-  if ([v2 columnExists:@"document_id" inTable:@"messages_old" type:0])
+  if ([connection columnExists:@"document_id" inTable:@"messages_old" type:0])
   {
     v4 = @"document_id";
   }
@@ -1104,7 +1104,7 @@ uint64_t __82__MFMailMessageLibraryAdoptSharedSchemaMigrationStep__migrateSender
 
   if (v3)
   {
-    LOBYTE(v3) = [v2 executeStatementString:v13 errorMessage:@"Populating messages"];
+    LOBYTE(v3) = [connection executeStatementString:v13 errorMessage:@"Populating messages"];
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -1121,20 +1121,20 @@ void __70__MFMailMessageLibraryAdoptSharedSchemaMigrationStep__migrateMessages__
 
 - (BOOL)_createIndexes
 {
-  v3 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
-  v4 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self schema];
-  v5 = [v4 indexDefinitionsWithDatabaseName:0];
-  v6 = [v3 executeStatementString:v5 errorMessage:@"Unable to create new indexes"];
+  connection = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
+  schema = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self schema];
+  v5 = [schema indexDefinitionsWithDatabaseName:0];
+  v6 = [connection executeStatementString:v5 errorMessage:@"Unable to create new indexes"];
 
   return v6;
 }
 
 - (BOOL)_cleanupOldSchema
 {
-  v2 = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
-  if ([v2 executeStatementString:@"DROP TABLE IF EXISTS messages_old" errorMessage:@"Dropping old messages table"] && objc_msgSend(v2, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS mailboxes_old", @"Dropping old mailboxes table") && objc_msgSend(v2, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS threads", @"Dropping threads table") && objc_msgSend(v2, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS conversations_old", @"Dropping old conversations table") && objc_msgSend(v2, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS conversation_id_message_id_old", @"Dropping old conversation_id_message_id table") && objc_msgSend(v2, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS properties_old", @"Dropping old properties table") && objc_msgSend(v2, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS message_data_old", @"Dropping old message_data table") && objc_msgSend(v2, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS message_data_deleted_old", @"Dropping old message_data_deleted table") && objc_msgSend(v2, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS pop_uids_old", @"Dropping old pop_uids table") && objc_msgSend(v2, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS accounts_old", @"Dropping old accounts table") && objc_msgSend(v2, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS spotlight_tombstones_old", @"Dropping spotlight_tombstones table") && objc_msgSend(v2, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS spotlight_message_reindex_old", @"Dropping spotlight_message_reindex table") && objc_msgSend(v2, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS messages_deleted", @"Dropping messages_deleted table") && objc_msgSend(v2, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS protected.messages", @"Dropping protected.messages"))
+  connection = [(MFMailMessageLibraryAdoptSharedSchemaMigrationStep *)self connection];
+  if ([connection executeStatementString:@"DROP TABLE IF EXISTS messages_old" errorMessage:@"Dropping old messages table"] && objc_msgSend(connection, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS mailboxes_old", @"Dropping old mailboxes table") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS threads", @"Dropping threads table") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS conversations_old", @"Dropping old conversations table") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS conversation_id_message_id_old", @"Dropping old conversation_id_message_id table") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS properties_old", @"Dropping old properties table") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS message_data_old", @"Dropping old message_data table") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS message_data_deleted_old", @"Dropping old message_data_deleted table") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS pop_uids_old", @"Dropping old pop_uids table") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS accounts_old", @"Dropping old accounts table") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS spotlight_tombstones_old", @"Dropping spotlight_tombstones table") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS spotlight_message_reindex_old", @"Dropping spotlight_message_reindex table") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS messages_deleted", @"Dropping messages_deleted table") && objc_msgSend(connection, "executeStatementString:errorMessage:", @"DROP TABLE IF EXISTS protected.messages", @"Dropping protected.messages"))
   {
-    v3 = [v2 executeStatementString:@"DROP TABLE IF EXISTS protected.message_data" errorMessage:@"Dropping protected.message_data"];
+    v3 = [connection executeStatementString:@"DROP TABLE IF EXISTS protected.message_data" errorMessage:@"Dropping protected.message_data"];
   }
 
   else

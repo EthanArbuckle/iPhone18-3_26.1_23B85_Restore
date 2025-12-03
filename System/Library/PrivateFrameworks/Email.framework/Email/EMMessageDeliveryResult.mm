@@ -1,43 +1,43 @@
 @interface EMMessageDeliveryResult
-- (EMMessageDeliveryResult)initWithCoder:(id)a3;
-- (EMMessageDeliveryResult)initWithStatus:(int64_t)a3 error:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (EMMessageDeliveryResult)initWithCoder:(id)coder;
+- (EMMessageDeliveryResult)initWithStatus:(int64_t)status error:(id)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMMessageDeliveryResult
 
-- (EMMessageDeliveryResult)initWithStatus:(int64_t)a3 error:(id)a4
+- (EMMessageDeliveryResult)initWithStatus:(int64_t)status error:(id)error
 {
-  v7 = a4;
+  errorCopy = error;
   v11.receiver = self;
   v11.super_class = EMMessageDeliveryResult;
   v8 = [(EMMessageDeliveryResult *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_status = a3;
-    objc_storeStrong(&v8->_error, a4);
+    v8->_status = status;
+    objc_storeStrong(&v8->_error, error);
   }
 
   return v9;
 }
 
-- (EMMessageDeliveryResult)initWithCoder:(id)a3
+- (EMMessageDeliveryResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"EFPropertyKey_status"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_error"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"EFPropertyKey_status"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_error"];
   v7 = [(EMMessageDeliveryResult *)self initWithStatus:v5 error:v6];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:-[EMMessageDeliveryResult status](self forKey:{"status"), @"EFPropertyKey_status"}];
-  v4 = [(EMMessageDeliveryResult *)self error];
-  [v5 encodeObject:v4 forKey:@"EFPropertyKey_error"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[EMMessageDeliveryResult status](self forKey:{"status"), @"EFPropertyKey_status"}];
+  error = [(EMMessageDeliveryResult *)self error];
+  [coderCopy encodeObject:error forKey:@"EFPropertyKey_error"];
 }
 
 @end

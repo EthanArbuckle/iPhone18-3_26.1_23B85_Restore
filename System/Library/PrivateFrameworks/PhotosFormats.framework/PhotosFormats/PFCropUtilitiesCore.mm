@@ -1,35 +1,35 @@
 @interface PFCropUtilitiesCore
-+ (CGFloat)_interpolationV2ScoreForFocusRegion:(double)a3 insideCropRect:(double)a4 withImportantRect:(double)a5;
-+ (CGPoint)_translationToIncludeRect:(CGRect)a3 insideRect:(CGRect)a4;
-+ (CGRect)_faceAreaRectWithPadding:(CGRect)a3;
-+ (CGSize)_interpolationCropSizeForRatio:(double)a3 andZoom:(double)a4 forImageSize:(CGSize)a5;
-+ (double)_curatedLibraryAdjustedRectWithFaceAreaRect:(double)a3 proposedCropRect:(double)a4 assetRect:(CGFloat)a5 verticalContentMode:(CGFloat)a6;
-+ (double)_interpolationCropToSize:(double)a3 withinRect:(double)a4 withPreferredRect:(double)a5 andAcceptableRect:(double)a6 outputScore:(uint64_t)a7;
-+ (double)_interpolationFactorFor:(double)a3 between:(double)a4 and:(double)a5;
-+ (double)_interpolationV2AdjustedCrop:(double)a3 toFocusRegion:(double)a4 withFullsizeRect:(double)a5 andImportantRect:(double)a6;
-+ (double)_interpolationV2CropForAspectRatio:(double)a3 withFocusRegion:(double)a4 andAcceptableRect:(double)a5 andPreferredRect:(uint64_t)a6 andImageRect:(uint64_t)a7 outputCropScore:(double *)a8;
-+ (double)_rectDimensionOffset:(CGRect)a3 insideRect:(CGRect)a4 forEdge:(unsigned int)a5;
-+ (double)_rectDimensionSize:(CGRect)a3 forEdge:(unsigned int)a4;
-+ (uint64_t)_interpolationCropForAspectRatio:(uint64_t)a3 andZoom:(uint64_t)a4 acceptableRect:(uint64_t)a5 andPreferredRect:(double)a6 andImageRect:(double)a7 outputCropScore:(double)a8;
-+ (uint64_t)_interpolationV2MaxCropSizeForAspectRatio:(double)a3 andZoom:(double)a4 withFocusRegion:(double)a5 forImageSize:(double)a6 withImportantRect:(double)a7;
-+ (uint64_t)_interpolationV2ScoreAlongEdge:(double)a3 forCrop:(double)a4 withFullsizeRect:(double)a5 andPreferredRect:(double)a6 andAcceptableRect:(double)a7;
-+ (uint64_t)_interpolationV2ScoreForCrop:(double)a3 withFullsizeRect:(double)a4 andPreferredRect:(double)a5 andAcceptableRect:(double)a6;
-+ (uint64_t)bestCropRectV2ForAspectRatio:(CGFloat)a3 withFocusRegion:(double)a4 sourcePixelWidth:(double)a5 sourcePixelHeight:(uint64_t)a6 sourcePreferredCropRectNormalized:(uint64_t)a7 sourceAcceptableCropRectNormalized:(unint64_t)a8 sourceFaceAreaRectNormalized:(unint64_t)a9 outputCropScore:(double *)a10;
-+ (void)_curatedLibraryCropForAspectRatio:(CGFloat)a3 verticalContentMode:(CGFloat)a4 cropMode:(CGFloat)a5 sourcePixelWidth:(uint64_t)a6 sourcePixelHeight:(uint64_t)a7 sourcePreferredCropRectNormalized:(uint64_t)a8 sourceAcceptableCropRectNormalized:(uint64_t)a9 sourceFaceAreaRectNormalized:(unint64_t)a10;
++ (CGFloat)_interpolationV2ScoreForFocusRegion:(double)region insideCropRect:(double)rect withImportantRect:(double)importantRect;
++ (CGPoint)_translationToIncludeRect:(CGRect)rect insideRect:(CGRect)insideRect;
++ (CGRect)_faceAreaRectWithPadding:(CGRect)padding;
++ (CGSize)_interpolationCropSizeForRatio:(double)ratio andZoom:(double)zoom forImageSize:(CGSize)size;
++ (double)_curatedLibraryAdjustedRectWithFaceAreaRect:(double)rect proposedCropRect:(double)cropRect assetRect:(CGFloat)assetRect verticalContentMode:(CGFloat)mode;
++ (double)_interpolationCropToSize:(double)size withinRect:(double)rect withPreferredRect:(double)preferredRect andAcceptableRect:(double)acceptableRect outputScore:(uint64_t)score;
++ (double)_interpolationFactorFor:(double)for between:(double)between and:(double)and;
++ (double)_interpolationV2AdjustedCrop:(double)crop toFocusRegion:(double)region withFullsizeRect:(double)rect andImportantRect:(double)importantRect;
++ (double)_interpolationV2CropForAspectRatio:(double)ratio withFocusRegion:(double)region andAcceptableRect:(double)rect andPreferredRect:(uint64_t)preferredRect andImageRect:(uint64_t)imageRect outputCropScore:(double *)score;
++ (double)_rectDimensionOffset:(CGRect)offset insideRect:(CGRect)rect forEdge:(unsigned int)edge;
++ (double)_rectDimensionSize:(CGRect)size forEdge:(unsigned int)edge;
++ (uint64_t)_interpolationCropForAspectRatio:(uint64_t)ratio andZoom:(uint64_t)zoom acceptableRect:(uint64_t)rect andPreferredRect:(double)preferredRect andImageRect:(double)imageRect outputCropScore:(double)score;
++ (uint64_t)_interpolationV2MaxCropSizeForAspectRatio:(double)ratio andZoom:(double)zoom withFocusRegion:(double)region forImageSize:(double)size withImportantRect:(double)rect;
++ (uint64_t)_interpolationV2ScoreAlongEdge:(double)edge forCrop:(double)crop withFullsizeRect:(double)rect andPreferredRect:(double)preferredRect andAcceptableRect:(double)acceptableRect;
++ (uint64_t)_interpolationV2ScoreForCrop:(double)crop withFullsizeRect:(double)rect andPreferredRect:(double)preferredRect andAcceptableRect:(double)acceptableRect;
++ (uint64_t)bestCropRectV2ForAspectRatio:(CGFloat)ratio withFocusRegion:(double)region sourcePixelWidth:(double)width sourcePixelHeight:(uint64_t)height sourcePreferredCropRectNormalized:(uint64_t)normalized sourceAcceptableCropRectNormalized:(unint64_t)rectNormalized sourceFaceAreaRectNormalized:(unint64_t)areaRectNormalized outputCropScore:(double *)self0;
++ (void)_curatedLibraryCropForAspectRatio:(CGFloat)ratio verticalContentMode:(CGFloat)mode cropMode:(CGFloat)cropMode sourcePixelWidth:(uint64_t)width sourcePixelHeight:(uint64_t)height sourcePreferredCropRectNormalized:(uint64_t)normalized sourceAcceptableCropRectNormalized:(uint64_t)rectNormalized sourceFaceAreaRectNormalized:(unint64_t)self0;
 @end
 
 @implementation PFCropUtilitiesCore
 
-+ (CGPoint)_translationToIncludeRect:(CGRect)a3 insideRect:(CGRect)a4
++ (CGPoint)_translationToIncludeRect:(CGRect)rect insideRect:(CGRect)insideRect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = insideRect.size.height;
+  width = insideRect.size.width;
+  y = insideRect.origin.y;
+  x = insideRect.origin.x;
+  v8 = rect.size.height;
+  v9 = rect.size.width;
+  v10 = rect.origin.y;
+  v11 = rect.origin.x;
   [PFCropUtilitiesCore _rectDimensionOffset:"_rectDimensionOffset:insideRect:forEdge:" insideRect:0 forEdge:?];
   v20 = v12;
   [PFCropUtilitiesCore _rectDimensionOffset:2 insideRect:v11 forEdge:v10, v9, v8, x, y, width, height];
@@ -44,33 +44,33 @@
   return result;
 }
 
-+ (double)_rectDimensionOffset:(CGRect)a3 insideRect:(CGRect)a4 forEdge:(unsigned int)a5
++ (double)_rectDimensionOffset:(CGRect)offset insideRect:(CGRect)rect forEdge:(unsigned int)edge
 {
-  v5 = a4.origin.x + a4.size.width - (a3.origin.x + a3.size.width);
-  x = a4.origin.y + a4.size.height - (a3.origin.y + a3.size.height);
-  if (a5 != 3)
+  v5 = rect.origin.x + rect.size.width - (offset.origin.x + offset.size.width);
+  x = rect.origin.y + rect.size.height - (offset.origin.y + offset.size.height);
+  if (edge != 3)
   {
-    x = a3.origin.x;
+    x = offset.origin.x;
   }
 
-  if (a5 != 2)
+  if (edge != 2)
   {
     v5 = x;
   }
 
-  result = a3.origin.x - a4.origin.x;
-  v8 = a3.origin.y - a4.origin.y;
-  if (a5 != 1)
+  result = offset.origin.x - rect.origin.x;
+  v8 = offset.origin.y - rect.origin.y;
+  if (edge != 1)
   {
     v8 = result;
   }
 
-  if (a5)
+  if (edge)
   {
     result = v8;
   }
 
-  if (a5 > 1)
+  if (edge > 1)
   {
     return v5;
   }
@@ -78,22 +78,22 @@
   return result;
 }
 
-+ (CGRect)_faceAreaRectWithPadding:(CGRect)a3
++ (CGRect)_faceAreaRectWithPadding:(CGRect)padding
 {
-  if (a3.size.width >= a3.size.height)
+  if (padding.size.width >= padding.size.height)
   {
-    height = a3.size.height;
+    height = padding.size.height;
   }
 
   else
   {
-    height = a3.size.width;
+    height = padding.size.width;
   }
 
-  v4 = a3.origin.x + height * -0.1;
-  v5 = a3.origin.y + height * -0.25;
-  v6 = a3.size.width + height * 0.2;
-  v7 = a3.size.height + height * 0.75;
+  v4 = padding.origin.x + height * -0.1;
+  v5 = padding.origin.y + height * -0.25;
+  v6 = padding.size.width + height * 0.2;
+  v7 = padding.size.height + height * 0.75;
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -101,77 +101,77 @@
   return result;
 }
 
-+ (double)_rectDimensionSize:(CGRect)a3 forEdge:(unsigned int)a4
++ (double)_rectDimensionSize:(CGRect)size forEdge:(unsigned int)edge
 {
-  result = a3.size.width;
-  if (a4 > 1)
+  result = size.size.width;
+  if (edge > 1)
   {
-    if (a4 != 3)
+    if (edge != 3)
     {
       return result;
     }
 
-    return a3.size.height;
+    return size.size.height;
   }
 
-  if (a4 == 1)
+  if (edge == 1)
   {
-    return a3.size.height;
+    return size.size.height;
   }
 
   return result;
 }
 
-+ (double)_interpolationV2CropForAspectRatio:(double)a3 withFocusRegion:(double)a4 andAcceptableRect:(double)a5 andPreferredRect:(uint64_t)a6 andImageRect:(uint64_t)a7 outputCropScore:(double *)a8
++ (double)_interpolationV2CropForAspectRatio:(double)ratio withFocusRegion:(double)region andAcceptableRect:(double)rect andPreferredRect:(uint64_t)preferredRect andImageRect:(uint64_t)imageRect outputCropScore:(double *)score
 {
-  [PFCropUtilitiesCore _interpolationV2MaxCropSizeForAspectRatio:a1 andZoom:1.0 withFocusRegion:a2 forImageSize:a3 withImportantRect:a4, a5, a27, a28, a17, a18, a19, a20];
-  [PFCropUtilitiesCore _interpolationCropToSize:a8 withinRect:a21 withPreferredRect:a22 andAcceptableRect:a23 outputScore:a24, a17, a18, a19, a20];
+  [PFCropUtilitiesCore _interpolationV2MaxCropSizeForAspectRatio:self andZoom:1.0 withFocusRegion:a2 forImageSize:ratio withImportantRect:region, rect, a27, a28, a17, a18, a19, a20];
+  [PFCropUtilitiesCore _interpolationCropToSize:score withinRect:a21 withPreferredRect:a22 andAcceptableRect:a23 outputScore:a24, a17, a18, a19, a20];
   [PFCropUtilitiesCore _interpolationV2AdjustedCrop:*&a25 toFocusRegion:*&a26 withFullsizeRect:*&a27 andImportantRect:*&a28, a17, a18, a19, a20];
   v30 = v26;
   v31 = v27;
   v32 = v28;
   v33 = v29;
-  if (a8)
+  if (score)
   {
     [PFCropUtilitiesCore _interpolationV2ScoreForCrop:v26 withFullsizeRect:v27 andPreferredRect:v28 andAcceptableRect:v29, a25, a26, a27, a28, a21, a22, a23, a24, a17, a18, a19, a20];
     v37 = v34;
-    [PFCropUtilitiesCore _interpolationV2ScoreForFocusRegion:a2 insideCropRect:a3 withImportantRect:a4, a5, v30, v31, v32, v33, a17, a18, a19, a20];
-    *a8 = v37 * v35;
+    [PFCropUtilitiesCore _interpolationV2ScoreForFocusRegion:a2 insideCropRect:ratio withImportantRect:region, rect, v30, v31, v32, v33, a17, a18, a19, a20];
+    *score = v37 * v35;
   }
 
   return v30;
 }
 
-+ (uint64_t)_interpolationV2MaxCropSizeForAspectRatio:(double)a3 andZoom:(double)a4 withFocusRegion:(double)a5 forImageSize:(double)a6 withImportantRect:(double)a7
++ (uint64_t)_interpolationV2MaxCropSizeForAspectRatio:(double)ratio andZoom:(double)zoom withFocusRegion:(double)region forImageSize:(double)size withImportantRect:(double)rect
 {
   [PFCropUtilitiesCore _rectDimensionSize:0 forEdge:a9, a10, a11, a12];
   [PFCropUtilitiesCore _rectDimensionSize:1 forEdge:a9, a10, a11, a12];
-  [PFCropUtilitiesCore _rectDimensionOffset:0 insideRect:a9 forEdge:a10, a11, a12, 0.0, 0.0, a7, a8];
-  [PFCropUtilitiesCore _rectDimensionOffset:2 insideRect:a9 forEdge:a10, a11, a12, 0.0, 0.0, a7, a8];
-  [PFCropUtilitiesCore _rectDimensionOffset:1 insideRect:a9 forEdge:a10, a11, a12, 0.0, 0.0, a7, a8];
-  [PFCropUtilitiesCore _rectDimensionOffset:3 insideRect:a9 forEdge:a10, a11, a12, 0.0, 0.0, a7, a8];
-  [PFCropUtilitiesCore _rectDimensionSize:0 forEdge:a3, a4, a5, a6];
-  [PFCropUtilitiesCore _rectDimensionSize:1 forEdge:a3, a4, a5, a6];
-  [PFCropUtilitiesCore _rectDimensionOffset:0 insideRect:a3 forEdge:a4, a5, a6, 0.0, 0.0, 1.0, 1.0];
-  [PFCropUtilitiesCore _rectDimensionOffset:2 insideRect:a3 forEdge:a4, a5, a6, 0.0, 0.0, 1.0, 1.0];
-  [PFCropUtilitiesCore _rectDimensionOffset:1 insideRect:a3 forEdge:a4, a5, a6, 0.0, 0.0, 1.0, 1.0];
-  return [PFCropUtilitiesCore _rectDimensionOffset:3 insideRect:a3 forEdge:a4, a5, a6, 0.0, 0.0, 1.0, 1.0];
+  [PFCropUtilitiesCore _rectDimensionOffset:0 insideRect:a9 forEdge:a10, a11, a12, 0.0, 0.0, rect, a8];
+  [PFCropUtilitiesCore _rectDimensionOffset:2 insideRect:a9 forEdge:a10, a11, a12, 0.0, 0.0, rect, a8];
+  [PFCropUtilitiesCore _rectDimensionOffset:1 insideRect:a9 forEdge:a10, a11, a12, 0.0, 0.0, rect, a8];
+  [PFCropUtilitiesCore _rectDimensionOffset:3 insideRect:a9 forEdge:a10, a11, a12, 0.0, 0.0, rect, a8];
+  [PFCropUtilitiesCore _rectDimensionSize:0 forEdge:ratio, zoom, region, size];
+  [PFCropUtilitiesCore _rectDimensionSize:1 forEdge:ratio, zoom, region, size];
+  [PFCropUtilitiesCore _rectDimensionOffset:0 insideRect:ratio forEdge:zoom, region, size, 0.0, 0.0, 1.0, 1.0];
+  [PFCropUtilitiesCore _rectDimensionOffset:2 insideRect:ratio forEdge:zoom, region, size, 0.0, 0.0, 1.0, 1.0];
+  [PFCropUtilitiesCore _rectDimensionOffset:1 insideRect:ratio forEdge:zoom, region, size, 0.0, 0.0, 1.0, 1.0];
+  return [PFCropUtilitiesCore _rectDimensionOffset:3 insideRect:ratio forEdge:zoom, region, size, 0.0, 0.0, 1.0, 1.0];
 }
 
-+ (double)_interpolationV2AdjustedCrop:(double)a3 toFocusRegion:(double)a4 withFullsizeRect:(double)a5 andImportantRect:(double)a6
++ (double)_interpolationV2AdjustedCrop:(double)crop toFocusRegion:(double)region withFullsizeRect:(double)rect andImportantRect:(double)importantRect
 {
-  [PFCropUtilitiesCore _translationToIncludeRect:a13 insideRect:a14, a15, a16, a1 + a5 * a3, a2 + a6 * a4, a3 * a7, a4 * a8];
-  v29 = a1 - v28;
-  [PFCropUtilitiesCore _translationToIncludeRect:v29 insideRect:a2 - v30, a3, a4, a9, a10, a11, a12];
+  [PFCropUtilitiesCore _translationToIncludeRect:a13 insideRect:a14, a15, a16, self + rect * crop, a2 + importantRect * region, crop * a7, region * a8];
+  v29 = self - v28;
+  [PFCropUtilitiesCore _translationToIncludeRect:v29 insideRect:a2 - v30, crop, region, a9, a10, a11, a12];
   return v29 + v31;
 }
 
-+ (CGFloat)_interpolationV2ScoreForFocusRegion:(double)a3 insideCropRect:(double)a4 withImportantRect:(double)a5
++ (CGFloat)_interpolationV2ScoreForFocusRegion:(double)region insideCropRect:(double)rect withImportantRect:(double)importantRect
 {
-  v23.origin.x = a5 + a1 * a7;
+  v23.origin.x = importantRect + self * a7;
   v23.origin.y = a6 + a2 * a8;
-  v23.size.width = a3 * a7;
-  v23.size.height = a4 * a8;
+  v23.size.width = region * a7;
+  v23.size.height = rect * a8;
   v21.origin.x = a9;
   v21.origin.y = a10;
   v21.size.width = a11;
@@ -180,21 +180,21 @@
   return v22.size.width * v22.size.height / (a11 * a12);
 }
 
-+ (uint64_t)_interpolationV2ScoreForCrop:(double)a3 withFullsizeRect:(double)a4 andPreferredRect:(double)a5 andAcceptableRect:(double)a6
++ (uint64_t)_interpolationV2ScoreForCrop:(double)crop withFullsizeRect:(double)rect andPreferredRect:(double)preferredRect andAcceptableRect:(double)acceptableRect
 {
   [PFCropUtilitiesCore _interpolationV2ScoreAlongEdge:0 forCrop:a17 withFullsizeRect:a18 andPreferredRect:a19 andAcceptableRect:a20, a21, a22, a23, a24];
-  [PFCropUtilitiesCore _interpolationV2ScoreAlongEdge:2 forCrop:a1 withFullsizeRect:a2 andPreferredRect:a3 andAcceptableRect:a4, a5, a6, a7, a8, a17, a18, a19, a20, a21, a22, a23, a24];
-  [PFCropUtilitiesCore _interpolationV2ScoreAlongEdge:1 forCrop:a1 withFullsizeRect:a2 andPreferredRect:a3 andAcceptableRect:a4, a5, a6, a7, a8, a17, a18, a19, a20, a21, a22, a23, a24];
-  return [PFCropUtilitiesCore _interpolationV2ScoreAlongEdge:3 forCrop:a1 withFullsizeRect:a2 andPreferredRect:a3 andAcceptableRect:a4, a5, a6, a7, a8, a17, a18, a19, a20, a21, a22, a23, a24];
+  [PFCropUtilitiesCore _interpolationV2ScoreAlongEdge:2 forCrop:self withFullsizeRect:a2 andPreferredRect:crop andAcceptableRect:rect, preferredRect, acceptableRect, a7, a8, a17, a18, a19, a20, a21, a22, a23, a24];
+  [PFCropUtilitiesCore _interpolationV2ScoreAlongEdge:1 forCrop:self withFullsizeRect:a2 andPreferredRect:crop andAcceptableRect:rect, preferredRect, acceptableRect, a7, a8, a17, a18, a19, a20, a21, a22, a23, a24];
+  return [PFCropUtilitiesCore _interpolationV2ScoreAlongEdge:3 forCrop:self withFullsizeRect:a2 andPreferredRect:crop andAcceptableRect:rect, preferredRect, acceptableRect, a7, a8, a17, a18, a19, a20, a21, a22, a23, a24];
 }
 
-+ (uint64_t)_interpolationV2ScoreAlongEdge:(double)a3 forCrop:(double)a4 withFullsizeRect:(double)a5 andPreferredRect:(double)a6 andAcceptableRect:(double)a7
++ (uint64_t)_interpolationV2ScoreAlongEdge:(double)edge forCrop:(double)crop withFullsizeRect:(double)rect andPreferredRect:(double)preferredRect andAcceptableRect:(double)acceptableRect
 {
-  [PFCropUtilitiesCore _rectDimensionOffset:a1 insideRect:a2 forEdge:a3, a4, a5];
+  [PFCropUtilitiesCore _rectDimensionOffset:self insideRect:a2 forEdge:edge, crop, rect];
   v36 = v29;
-  [PFCropUtilitiesCore _rectDimensionOffset:a11 insideRect:a12 forEdge:a13, a14, a15, a5, a6, a7, a8];
+  [PFCropUtilitiesCore _rectDimensionOffset:a11 insideRect:a12 forEdge:a13, a14, a15, rect, preferredRect, acceptableRect, a8];
   v35 = v30;
-  [PFCropUtilitiesCore _rectDimensionOffset:a11 insideRect:a16 forEdge:a17, a18, a19, a5, a6, a7, a8];
+  [PFCropUtilitiesCore _rectDimensionOffset:a11 insideRect:a16 forEdge:a17, a18, a19, rect, preferredRect, acceptableRect, a8];
   v32 = v31;
   result = [PFCropUtilitiesCore _rectDimensionSize:a11 forEdge:a16, a17, a18, a19];
   if (v36 > 0.0)
@@ -225,14 +225,14 @@
   return result;
 }
 
-+ (uint64_t)_interpolationCropForAspectRatio:(uint64_t)a3 andZoom:(uint64_t)a4 acceptableRect:(uint64_t)a5 andPreferredRect:(double)a6 andImageRect:(double)a7 outputCropScore:(double)a8
++ (uint64_t)_interpolationCropForAspectRatio:(uint64_t)ratio andZoom:(uint64_t)zoom acceptableRect:(uint64_t)rect andPreferredRect:(double)preferredRect andImageRect:(double)imageRect outputCropScore:(double)score
 {
-  [PFCropUtilitiesCore _interpolationCropSizeForRatio:a1 andZoom:a2 forImageSize:a18, a19];
+  [PFCropUtilitiesCore _interpolationCropSizeForRatio:self andZoom:a2 forImageSize:a18, a19];
 
-  return [PFCropUtilitiesCore _interpolationCropToSize:"_interpolationCropToSize:withinRect:withPreferredRect:andAcceptableRect:outputScore:" withinRect:a5 withPreferredRect:? andAcceptableRect:? outputScore:?];
+  return [PFCropUtilitiesCore _interpolationCropToSize:"_interpolationCropToSize:withinRect:withPreferredRect:andAcceptableRect:outputScore:" withinRect:rect withPreferredRect:? andAcceptableRect:? outputScore:?];
 }
 
-+ (double)_interpolationCropToSize:(double)a3 withinRect:(double)a4 withPreferredRect:(double)a5 andAcceptableRect:(double)a6 outputScore:(uint64_t)a7
++ (double)_interpolationCropToSize:(double)size withinRect:(double)rect withPreferredRect:(double)preferredRect andAcceptableRect:(double)acceptableRect outputScore:(uint64_t)score
 {
   v64.origin.y = a17;
   v63 = *MEMORY[0x1E69E9840];
@@ -248,10 +248,10 @@
     if (!CGRectIsNull(v65) && a12 >= 0.0 && a13 >= 0.0 && a14 > 0.0 && a15 > 0.0)
     {
       v54 = a2;
-      if ((a1 == 0.0 || a2 == 0.0 || a1 == *MEMORY[0x1E69BDDB0] && a2 == *(MEMORY[0x1E69BDDB0] + 8)) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
+      if ((self == 0.0 || a2 == 0.0 || self == *MEMORY[0x1E69BDDB0] && a2 == *(MEMORY[0x1E69BDDB0] + 8)) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
       {
         *buf = 134218496;
-        v58 = a1;
+        selfCopy = self;
         v59 = 2048;
         v60 = a2;
         v61 = 2048;
@@ -281,19 +281,19 @@
       }
 
       v33 = !IsNull;
-      v34 = a1 >= a18 || IsNull;
+      v34 = self >= a18 || IsNull;
       v53 = v32;
       if ((v34 & 1) == 0)
       {
-        [PFCropUtilitiesCore _interpolationWithFactor:a1 / a18 between:a16 + a18 * 0.5 and:a16];
+        [PFCropUtilitiesCore _interpolationWithFactor:self / a18 between:a16 + a18 * 0.5 and:a16];
         v25 = v39;
-        v40 = 2.0 - a1 / a18;
+        v40 = 2.0 - self / a18;
         goto LABEL_33;
       }
 
-      if ((v33 & v30) == 1 && a1 < a14)
+      if ((v33 & v30) == 1 && self < a14)
       {
-        [PFCropUtilitiesCore _interpolationFactorFor:a1 between:a18 and:a14];
+        [PFCropUtilitiesCore _interpolationFactorFor:self between:a18 and:a14];
         v36 = v35;
         [PFCropUtilitiesCore _interpolationWithFactor:"_interpolationWithFactor:between:and:" between:? and:?];
         v25 = v37;
@@ -303,7 +303,7 @@
       else
       {
         v40 = 0.0;
-        if (a1 >= a5)
+        if (self >= preferredRect)
         {
           v25 = 0.0;
 LABEL_33:
@@ -322,9 +322,9 @@ LABEL_43:
             }
 
             v47 = 0.0;
-            if (v54 < a6)
+            if (v54 < acceptableRect)
             {
-              [PFCropUtilitiesCore _interpolationFactorFor:v54 between:v53 and:a6, 0.0];
+              [PFCropUtilitiesCore _interpolationFactorFor:v54 between:v53 and:acceptableRect, 0.0];
               v45 = v48;
               [PFCropUtilitiesCore _interpolationWithFactor:"_interpolationWithFactor:between:and:" between:? and:?];
               v46 = 1.0;
@@ -358,7 +358,7 @@ LABEL_44:
           goto LABEL_49;
         }
 
-        [PFCropUtilitiesCore _interpolationFactorFor:a1 between:v31 and:?];
+        [PFCropUtilitiesCore _interpolationFactorFor:self between:v31 and:?];
         v36 = v41;
         [PFCropUtilitiesCore _interpolationWithFactor:"_interpolationWithFactor:between:and:" between:? and:?];
         v25 = v42;
@@ -370,7 +370,7 @@ LABEL_44:
     }
   }
 
-  v25 = fmax(a5 - a1, 0.0) * 0.5;
+  v25 = fmax(preferredRect - self, 0.0) * 0.5;
   if (a9)
   {
     v26 = 0.5005;
@@ -381,46 +381,46 @@ LABEL_49:
   return v25;
 }
 
-+ (double)_interpolationFactorFor:(double)a3 between:(double)a4 and:(double)a5
++ (double)_interpolationFactorFor:(double)for between:(double)between and:(double)and
 {
-  v6 = a5 - a4;
+  v6 = and - between;
   result = 0.5;
   if (v6 > 0.0)
   {
-    return (a3 - a4) / v6;
+    return (for - between) / v6;
   }
 
   return result;
 }
 
-+ (CGSize)_interpolationCropSizeForRatio:(double)a3 andZoom:(double)a4 forImageSize:(CGSize)a5
++ (CGSize)_interpolationCropSizeForRatio:(double)ratio andZoom:(double)zoom forImageSize:(CGSize)size
 {
-  width = a5.height * a3;
-  if (a5.width < a5.height * a3)
+  width = size.height * ratio;
+  if (size.width < size.height * ratio)
   {
-    width = a5.width;
+    width = size.width;
   }
 
-  v6 = width / a4;
-  height = a5.width / a3;
-  if (a5.height < height)
+  v6 = width / zoom;
+  height = size.width / ratio;
+  if (size.height < height)
   {
-    height = a5.height;
+    height = size.height;
   }
 
-  v8 = height / a4;
+  v8 = height / zoom;
   v9 = v6;
   result.height = v8;
   result.width = v9;
   return result;
 }
 
-+ (double)_curatedLibraryAdjustedRectWithFaceAreaRect:(double)a3 proposedCropRect:(double)a4 assetRect:(CGFloat)a5 verticalContentMode:(CGFloat)a6
++ (double)_curatedLibraryAdjustedRectWithFaceAreaRect:(double)rect proposedCropRect:(double)cropRect assetRect:(CGFloat)assetRect verticalContentMode:(CGFloat)mode
 {
-  if (!CGRectIsEmpty(*&a1))
+  if (!CGRectIsEmpty(*&self))
   {
-    v28.origin.x = a5;
-    v28.origin.y = a6;
+    v28.origin.x = assetRect;
+    v28.origin.y = mode;
     v28.size.width = a7;
     v28.size.height = a8;
     if (!CGRectIsEmpty(v28))
@@ -429,13 +429,13 @@ LABEL_49:
       v29.size.height = a12;
       v29.origin.x = a9;
       v29.origin.y = a10;
-      v30.origin.x = a5;
-      v30.origin.y = a6;
+      v30.origin.x = assetRect;
+      v30.origin.y = mode;
       v30.size.width = a7;
       v30.size.height = a8;
       if (CGRectContainsRect(v29, v30))
       {
-        v26 = fmax(a9 + a1 * a11 + a3 * a11 * 0.5 + a7 * -0.5, 0.0);
+        v26 = fmax(a9 + self * a11 + rect * a11 * 0.5 + a7 * -0.5, 0.0);
         if (a7 + v26 <= a11)
         {
           return v26;
@@ -449,38 +449,38 @@ LABEL_49:
     }
   }
 
-  return a5;
+  return assetRect;
 }
 
-+ (void)_curatedLibraryCropForAspectRatio:(CGFloat)a3 verticalContentMode:(CGFloat)a4 cropMode:(CGFloat)a5 sourcePixelWidth:(uint64_t)a6 sourcePixelHeight:(uint64_t)a7 sourcePreferredCropRectNormalized:(uint64_t)a8 sourceAcceptableCropRectNormalized:(uint64_t)a9 sourceFaceAreaRectNormalized:(unint64_t)a10
++ (void)_curatedLibraryCropForAspectRatio:(CGFloat)ratio verticalContentMode:(CGFloat)mode cropMode:(CGFloat)cropMode sourcePixelWidth:(uint64_t)width sourcePixelHeight:(uint64_t)height sourcePreferredCropRectNormalized:(uint64_t)normalized sourceAcceptableCropRectNormalized:(uint64_t)rectNormalized sourceFaceAreaRectNormalized:(unint64_t)self0
 {
-  v23 = a10;
+  areaRectNormalizedCopy = areaRectNormalized;
   v24 = a11;
-  v25 = a10 / a11;
+  v25 = areaRectNormalized / a11;
   if (!a11)
   {
     v25 = 1.0;
   }
 
-  if (vabdd_f64(a1, v25) > 0.00000999999975)
+  if (vabdd_f64(self, v25) > 0.00000999999975)
   {
     PFSizeWithAspectRatioFittingSize();
     v31 = v29;
-    v32 = v23 * 0.5 + 0.0 + v29 * -0.5;
+    v32 = areaRectNormalizedCopy * 0.5 + 0.0 + v29 * -0.5;
     v65 = v30;
     v33 = v24 * 0.5 + 0.0 + v30 * -0.5;
-    if (a9 == 1)
+    if (rectNormalized == 1)
     {
-      [PFCropUtilitiesCore _curatedLibraryAdjustedRectWithFaceAreaRect:a8 proposedCropRect:a19 assetRect:a20 verticalContentMode:a21, a22, v32, v33, v29, v30, 0, 0, *&v23, *&v24];
+      [PFCropUtilitiesCore _curatedLibraryAdjustedRectWithFaceAreaRect:normalized proposedCropRect:a19 assetRect:a20 verticalContentMode:a21, a22, v32, v33, v29, v30, 0, 0, *&areaRectNormalizedCopy, *&v24];
     }
 
     else
     {
       v35 = a15;
-      if (a9 == 3)
+      if (rectNormalized == 3)
       {
         rect_8 = v31;
-        rect_16 = v23 * 0.5 + 0.0 + v31 * -0.5;
+        rect_16 = areaRectNormalizedCopy * 0.5 + 0.0 + v31 * -0.5;
         v69.origin.x = a19;
         v69.origin.y = a20;
         v69.size.width = a21;
@@ -488,9 +488,9 @@ LABEL_49:
         if (CGRectIsEmpty(v69))
         {
           v70.origin.x = a2;
-          v70.origin.y = a3;
-          v70.size.width = a4;
-          v70.size.height = a5;
+          v70.origin.y = ratio;
+          v70.size.width = mode;
+          v70.size.height = cropMode;
           IsNull = CGRectIsNull(v70);
           v38 = v65;
           v31 = rect_8;
@@ -507,14 +507,14 @@ LABEL_49:
 
       else
       {
-        if (a9 != 2)
+        if (rectNormalized != 2)
         {
           v38 = v30;
           goto LABEL_18;
         }
 
         rect_8 = v31;
-        rect_16 = v23 * 0.5 + 0.0 + v31 * -0.5;
+        rect_16 = areaRectNormalizedCopy * 0.5 + 0.0 + v31 * -0.5;
         if (!CGRectIsNull(*&v35))
         {
           v67.origin.x = a15;
@@ -534,13 +534,13 @@ LABEL_49:
             v73.size.height = a22;
             if (!CGRectIsEmpty(v73))
             {
-              v74.size.width = a21 * v23 + a21 * v23;
+              v74.size.width = a21 * areaRectNormalizedCopy + a21 * areaRectNormalizedCopy;
               v74.size.height = a22 * v24 + a22 * v24;
-              v74.origin.x = a19 * v23 + 0.0 + a21 * v23 * 0.5 + v74.size.width * -0.5;
+              v74.origin.x = a19 * areaRectNormalizedCopy + 0.0 + a21 * areaRectNormalizedCopy * 0.5 + v74.size.width * -0.5;
               v74.origin.y = a20 * v24 + 0.0 + a22 * v24 * 0.5 + v74.size.height * -0.5;
               v77.origin.x = 0.0;
               v77.origin.y = 0.0;
-              v77.size.width = v23;
+              v77.size.width = areaRectNormalizedCopy;
               v77.size.height = v24;
               v75 = CGRectIntersection(v74, v77);
               v48 = v33;
@@ -574,7 +574,7 @@ LABEL_49:
 
               v76.origin.x = 0.0;
               v76.origin.y = 0.0;
-              v76.size.width = v23;
+              v76.size.width = areaRectNormalizedCopy;
               v76.size.height = v24;
               v79.origin.x = v54;
               v79.origin.y = v33;
@@ -583,9 +583,9 @@ LABEL_49:
               v56 = CGRectContainsRect(v76, v79);
               v31 = v53;
               v57 = v53 + fmax(v54, 0.0);
-              if (v57 > v23)
+              if (v57 > areaRectNormalizedCopy)
               {
-                v57 = v23;
+                v57 = areaRectNormalizedCopy;
               }
 
               v58 = v57 - v53;
@@ -633,7 +633,7 @@ LABEL_18:
           {
             v72.origin.x = 0.0;
             v72.origin.y = 0.0;
-            v72.size.width = v23;
+            v72.size.width = areaRectNormalizedCopy;
             v72.size.height = v24;
             CGRectIsEmpty(v72);
           }
@@ -642,7 +642,7 @@ LABEL_18:
         }
       }
 
-      [PFCropUtilitiesCore _curatedLibraryAdjustedRectWithFaceAreaRect:a8 proposedCropRect:a19 assetRect:a20 verticalContentMode:a21, a22, rect_16, v33, rect_8, v65, 0, 0, *&v23, *&v24];
+      [PFCropUtilitiesCore _curatedLibraryAdjustedRectWithFaceAreaRect:normalized proposedCropRect:a19 assetRect:a20 verticalContentMode:a21, a22, rect_16, v33, rect_8, v65, 0, 0, *&areaRectNormalizedCopy, *&v24];
     }
 
 LABEL_17:
@@ -654,18 +654,18 @@ LABEL_17:
   }
 }
 
-+ (uint64_t)bestCropRectV2ForAspectRatio:(CGFloat)a3 withFocusRegion:(double)a4 sourcePixelWidth:(double)a5 sourcePixelHeight:(uint64_t)a6 sourcePreferredCropRectNormalized:(uint64_t)a7 sourceAcceptableCropRectNormalized:(unint64_t)a8 sourceFaceAreaRectNormalized:(unint64_t)a9 outputCropScore:(double *)a10
++ (uint64_t)bestCropRectV2ForAspectRatio:(CGFloat)ratio withFocusRegion:(double)region sourcePixelWidth:(double)width sourcePixelHeight:(uint64_t)height sourcePreferredCropRectNormalized:(uint64_t)normalized sourceAcceptableCropRectNormalized:(unint64_t)rectNormalized sourceFaceAreaRectNormalized:(unint64_t)areaRectNormalized outputCropScore:(double *)self0
 {
-  v26 = a8;
-  v27 = a9;
-  v86 = a14 * a8 + 0.0;
-  v92 = a16 * a8;
-  v93 = a15 * a9 + 0.0;
-  v79 = a17 * a9;
-  v28 = a18 * a8 + 0.0;
-  v84 = a20 * a8;
-  v85 = a19 * a9 + 0.0;
-  r1 = a21 * a9;
+  rectNormalizedCopy = rectNormalized;
+  areaRectNormalizedCopy = areaRectNormalized;
+  v86 = a14 * rectNormalized + 0.0;
+  v92 = a16 * rectNormalized;
+  v93 = a15 * areaRectNormalized + 0.0;
+  v79 = a17 * areaRectNormalized;
+  v28 = a18 * rectNormalized + 0.0;
+  v84 = a20 * rectNormalized;
+  v85 = a19 * areaRectNormalized + 0.0;
+  r1 = a21 * areaRectNormalized;
   v90 = *(MEMORY[0x1E695F050] + 8);
   v91 = *MEMORY[0x1E695F050];
   v29 = *(MEMORY[0x1E695F050] + 16);
@@ -697,17 +697,17 @@ LABEL_17:
 
   v78 = v28;
   v87 = v29;
-  v94 = v26;
-  v95 = v27;
+  v94 = rectNormalizedCopy;
+  v95 = areaRectNormalizedCopy;
   if (v31 == 1)
   {
-    v32 = a22 * v26 + 0.0;
-    v98.size.width = a24 * v26;
-    v98.size.height = a25 * v27;
+    v32 = a22 * rectNormalizedCopy + 0.0;
+    v98.size.width = a24 * rectNormalizedCopy;
+    v98.size.height = a25 * areaRectNormalizedCopy;
     v98.origin.x = v32;
-    v98.origin.y = (1.0 - (a23 + a25)) * v27 + 0.0;
-    r2 = a24 * v26;
-    v75 = a25 * v27;
+    v98.origin.y = (1.0 - (a23 + a25)) * areaRectNormalizedCopy + 0.0;
+    r2 = a24 * rectNormalizedCopy;
+    v75 = a25 * areaRectNormalizedCopy;
     y = v98.origin.y;
     if (!CGRectIsNull(v98))
     {
@@ -715,19 +715,19 @@ LABEL_17:
       v34 = v85;
       v36 = r1;
       v35 = v84;
-      v37 = a22 * v26 + 0.0;
+      v37 = a22 * rectNormalizedCopy + 0.0;
       if (v32 < 0.0)
       {
         goto LABEL_28;
       }
 
       v38 = a2;
-      if ((1.0 - (a23 + a25)) * v27 + 0.0 < 0.0 || r2 <= 0.0)
+      if ((1.0 - (a23 + a25)) * areaRectNormalizedCopy + 0.0 < 0.0 || r2 <= 0.0)
       {
         height = r1;
         width = v84;
         x = v78;
-        v44 = a5;
+        widthCopy4 = width;
         goto LABEL_31;
       }
 
@@ -743,33 +743,33 @@ LABEL_28:
       {
         v39 = v78;
         v40 = v85;
-        height = a25 * v27;
+        height = a25 * areaRectNormalizedCopy;
         width = r2;
-        v34 = (1.0 - (a23 + a25)) * v27 + 0.0;
+        v34 = (1.0 - (a23 + a25)) * areaRectNormalizedCopy + 0.0;
         x = v37;
         if (!CGRectIsNull(*(&v35 - 2)))
         {
-          height = a25 * v27;
+          height = a25 * areaRectNormalizedCopy;
           width = r2;
-          v34 = (1.0 - (a23 + a25)) * v27 + 0.0;
+          v34 = (1.0 - (a23 + a25)) * areaRectNormalizedCopy + 0.0;
           x = v37;
           if (v78 >= 0.0)
           {
-            height = a25 * v27;
+            height = a25 * areaRectNormalizedCopy;
             width = r2;
-            v34 = (1.0 - (a23 + a25)) * v27 + 0.0;
+            v34 = (1.0 - (a23 + a25)) * areaRectNormalizedCopy + 0.0;
             x = v37;
             if (v85 >= 0.0)
             {
-              height = a25 * v27;
+              height = a25 * areaRectNormalizedCopy;
               width = r2;
-              v34 = (1.0 - (a23 + a25)) * v27 + 0.0;
+              v34 = (1.0 - (a23 + a25)) * areaRectNormalizedCopy + 0.0;
               x = v37;
               if (v84 > 0.0)
               {
-                height = a25 * v27;
+                height = a25 * areaRectNormalizedCopy;
                 width = r2;
-                v34 = (1.0 - (a23 + a25)) * v27 + 0.0;
+                v34 = (1.0 - (a23 + a25)) * areaRectNormalizedCopy + 0.0;
                 x = v37;
                 if (r1 > 0.0)
                 {
@@ -778,9 +778,9 @@ LABEL_28:
                   v99.origin.y = v85;
                   v99.size.height = r1;
                   v116.origin.x = v37;
-                  v116.origin.y = (1.0 - (a23 + a25)) * v27 + 0.0;
+                  v116.origin.y = (1.0 - (a23 + a25)) * areaRectNormalizedCopy + 0.0;
                   v116.size.width = r2;
-                  v116.size.height = a25 * v27;
+                  v116.size.height = a25 * areaRectNormalizedCopy;
                   v100 = CGRectUnion(v99, v116);
                   x = v100.origin.x;
                   v34 = v100.origin.y;
@@ -799,7 +799,7 @@ LABEL_28:
         v101.size.height = v79;
         if (!CGRectIsNull(v101))
         {
-          v44 = a5;
+          widthCopy4 = width;
           if (v86 >= 0.0 && v93 >= 0.0 && v92 > 0.0 && v79 > 0.0)
           {
             [PFCropUtilitiesCore _faceAreaRectWithPadding:v37, y, r2, v75];
@@ -823,7 +823,7 @@ LABEL_28:
         }
       }
 
-      v44 = a5;
+      widthCopy4 = width;
 LABEL_30:
       v38 = a2;
       goto LABEL_31;
@@ -832,7 +832,7 @@ LABEL_30:
     width = v84;
     v34 = v85;
     x = v28;
-    v37 = a22 * v26 + 0.0;
+    v37 = a22 * rectNormalizedCopy + 0.0;
     height = r1;
   }
 
@@ -848,7 +848,7 @@ LABEL_30:
     x = v28;
   }
 
-  v44 = a5;
+  widthCopy4 = width;
   v33 = v79;
   v38 = a2;
 LABEL_31:
@@ -883,12 +883,12 @@ LABEL_31:
     v50 = v94;
     v49 = v95;
     v51 = 0.0;
-    v46 = a4;
+    regionCopy2 = region;
   }
 
   else
   {
-    v46 = a4;
+    regionCopy2 = region;
     if (v86 < 0.0 || v93 < 0.0 || v92 <= 0.0)
     {
       v50 = v94;
@@ -928,10 +928,10 @@ LABEL_31:
 
   v96 = 0.0;
   v111.origin.x = v38;
-  v111.origin.y = a3;
-  v111.size.width = v46;
-  v111.size.height = v44;
-  if (CGRectIsNull(v111) || v38 < 0.0 || a3 < 0.0 || v46 <= 0.0 || v44 <= 0.0 || (v122.origin.x = 0.0, v122.origin.y = 0.0, v122.size.width = 1.0, v122.size.height = 1.0, v112.origin.x = v38, v112.origin.y = a3, v112.size.width = v46, v112.size.height = v44, CGRectEqualToRect(v112, v122)) || (v114.origin.y = v90, v114.origin.x = v91, v114.size.width = v87, v114.size.height = v89, CGRectIsNull(v114)) || v91 < 0.0 || v90 < 0.0 || v87 <= 0.0 || v89 <= 0.0 || (v115.origin.x = v51, v115.origin.y = v45, v115.size.width = v50, v115.size.height = v49, CGRectIsNull(v115)) || v51 < 0.0 || v45 < 0.0 || v50 <= 0.0 || v49 <= 0.0)
+  v111.origin.y = ratio;
+  v111.size.width = regionCopy2;
+  v111.size.height = widthCopy4;
+  if (CGRectIsNull(v111) || v38 < 0.0 || ratio < 0.0 || regionCopy2 <= 0.0 || widthCopy4 <= 0.0 || (v122.origin.x = 0.0, v122.origin.y = 0.0, v122.size.width = 1.0, v122.size.height = 1.0, v112.origin.x = v38, v112.origin.y = ratio, v112.size.width = regionCopy2, v112.size.height = widthCopy4, CGRectEqualToRect(v112, v122)) || (v114.origin.y = v90, v114.origin.x = v91, v114.size.width = v87, v114.size.height = v89, CGRectIsNull(v114)) || v91 < 0.0 || v90 < 0.0 || v87 <= 0.0 || v89 <= 0.0 || (v115.origin.x = v51, v115.origin.y = v45, v115.size.width = v50, v115.size.height = v49, CGRectIsNull(v115)) || v51 < 0.0 || v45 < 0.0 || v50 <= 0.0 || v49 <= 0.0)
   {
     v69 = v50;
     v70 = v49;
@@ -940,7 +940,7 @@ LABEL_31:
     v55 = v91;
     v57 = v87;
     v58 = v89;
-    result = [PFCropUtilitiesCore _interpolationCropForAspectRatio:&v96 acceptableRect:a1 andPreferredRect:v91 andImageRect:v90 outputCropScore:v87, *&v68, *&v45, *&v69, *&v70, 0, 0, *&v94, *&v95];
+    result = [PFCropUtilitiesCore _interpolationCropForAspectRatio:&v96 acceptableRect:self andPreferredRect:v91 andImageRect:v90 outputCropScore:v87, *&v68, *&v45, *&v69, *&v70, 0, 0, *&v94, *&v95];
   }
 
   else
@@ -953,13 +953,13 @@ LABEL_31:
     v57 = v87;
     v56 = v90;
     v55 = v91;
-    result = [PFCropUtilitiesCore _interpolationV2CropForAspectRatio:&v96 withFocusRegion:a1 andAcceptableRect:v67 andPreferredRect:1.0 - (a3 + v44) andImageRect:v46 outputCropScore:v44, *&v91, *&v90, *&v87, *&v89, *&v71, *&v45, *&v72, *&v73, 0, 0, *&v94, *&v95];
+    result = [PFCropUtilitiesCore _interpolationV2CropForAspectRatio:&v96 withFocusRegion:self andAcceptableRect:v67 andPreferredRect:1.0 - (ratio + widthCopy4) andImageRect:regionCopy2 outputCropScore:widthCopy4, *&v91, *&v90, *&v87, *&v89, *&v71, *&v45, *&v72, *&v73, 0, 0, *&v94, *&v95];
   }
 
   v60 = v96;
-  if (a10)
+  if (score)
   {
-    *a10 = v96;
+    *score = v96;
   }
 
   if (v60 < 0.5)
@@ -1023,7 +1023,7 @@ LABEL_31:
       v66 = v75;
     }
 
-    return [PFCropUtilitiesCore _interpolationCropForAspectRatio:0 acceptableRect:a1 andPreferredRect:v63 andImageRect:v64 outputCropScore:v65, v66, *&v55, *&v56, *&v57, *&v58, 0, 0, *&v94, *&v95];
+    return [PFCropUtilitiesCore _interpolationCropForAspectRatio:0 acceptableRect:self andPreferredRect:v63 andImageRect:v64 outputCropScore:v65, v66, *&v55, *&v56, *&v57, *&v58, 0, 0, *&v94, *&v95];
   }
 
   return result;

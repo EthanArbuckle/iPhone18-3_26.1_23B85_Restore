@@ -1,12 +1,12 @@
 @interface THModelGlossaryEntryAnchor
-+ (id)glossaryEntryAnchorWithGlossaryEntry:(id)a3;
++ (id)glossaryEntryAnchorWithGlossaryEntry:(id)entry;
 @end
 
 @implementation THModelGlossaryEntryAnchor
 
-+ (id)glossaryEntryAnchorWithGlossaryEntry:(id)a3
++ (id)glossaryEntryAnchorWithGlossaryEntry:(id)entry
 {
-  v3 = [(THModelBoundAnchor *)[THModelGlossaryEntryAnchor alloc] initWithGlossaryEntry:a3];
+  v3 = [(THModelBoundAnchor *)[THModelGlossaryEntryAnchor alloc] initWithGlossaryEntry:entry];
 
   return v3;
 }

@@ -3,7 +3,7 @@
 - (BOOL)shouldEnableReportAnIssue;
 - (BOOL)shouldShowAddPhotoButton;
 - (BOOL)shouldShowPhotoThumbnailFeed;
-- (PhotoViewerToolbarController)initWithMapItem:(id)a3;
+- (PhotoViewerToolbarController)initWithMapItem:(id)item;
 - (PhotoViewerToolbarControllerActionHandling)delegate;
 - (void)_addPhotoTapped;
 - (void)_leftButtonTapped;
@@ -34,71 +34,71 @@
 - (BOOL)shouldShowAddPhotoButton
 {
   mapItem = self->_mapItem;
-  v3 = [(MKMapItem *)mapItem _mapkit_preferredFirstPhotoVendor];
-  v4 = [MKPOIEnrichmentAvailibility shouldShowAddPhotoButtonsOnSingleFullScreenPhotoViewerForMapItem:mapItem photoAttribution:v3];
+  _mapkit_preferredFirstPhotoVendor = [(MKMapItem *)mapItem _mapkit_preferredFirstPhotoVendor];
+  v4 = [MKPOIEnrichmentAvailibility shouldShowAddPhotoButtonsOnSingleFullScreenPhotoViewerForMapItem:mapItem photoAttribution:_mapkit_preferredFirstPhotoVendor];
 
   return v4;
 }
 
 - (BOOL)shouldEnableReportAnIssue
 {
-  v3 = [(PhotoViewerToolbarController *)self delegate];
-  v4 = [v3 photoViewerToolbarControllerGetCurrentPhoto:self];
-  v5 = [v4 attribution];
+  delegate = [(PhotoViewerToolbarController *)self delegate];
+  v4 = [delegate photoViewerToolbarControllerGetCurrentPhoto:self];
+  attribution = [v4 attribution];
 
-  if (!v5)
+  if (!attribution)
   {
-    v5 = [(MKMapItem *)self->_mapItem _mapkit_preferredFirstPhotoVendor];
+    attribution = [(MKMapItem *)self->_mapItem _mapkit_preferredFirstPhotoVendor];
   }
 
-  v6 = [MKPOIEnrichmentAvailibility shouldShowReportAnIssueOnPhotoGalleryForMapItem:self->_mapItem photoAttribution:v5];
+  v6 = [MKPOIEnrichmentAvailibility shouldShowReportAnIssueOnPhotoGalleryForMapItem:self->_mapItem photoAttribution:attribution];
 
   return v6;
 }
 
 - (BOOL)shouldEnablePersonalizedAttribution
 {
-  v2 = self;
-  v3 = [(PhotoViewerToolbarController *)self delegate];
-  LOBYTE(v2) = [v3 photoViewerToolbarControllerShouldEnablePersonalizedAttribution:v2];
+  selfCopy = self;
+  delegate = [(PhotoViewerToolbarController *)self delegate];
+  LOBYTE(selfCopy) = [delegate photoViewerToolbarControllerShouldEnablePersonalizedAttribution:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)_morePhotosButtonTapped
 {
-  v3 = [(PhotoViewerToolbarController *)self delegate];
-  [v3 photoViewerToolbarControllerTappedMorePhotos:self];
+  delegate = [(PhotoViewerToolbarController *)self delegate];
+  [delegate photoViewerToolbarControllerTappedMorePhotos:self];
 }
 
 - (void)_rightButtonTapped
 {
-  v3 = [(PhotoViewerToolbarController *)self delegate];
-  [v3 photoViewerToolbarControllerTappedRight:self];
+  delegate = [(PhotoViewerToolbarController *)self delegate];
+  [delegate photoViewerToolbarControllerTappedRight:self];
 }
 
 - (void)_leftButtonTapped
 {
-  v3 = [(PhotoViewerToolbarController *)self delegate];
-  [v3 photoViewerToolbarControllerTappedLeft:self];
+  delegate = [(PhotoViewerToolbarController *)self delegate];
+  [delegate photoViewerToolbarControllerTappedLeft:self];
 }
 
 - (void)_addPhotoTapped
 {
-  v3 = [(PhotoViewerToolbarController *)self delegate];
-  [v3 photoViewerToolbarControllerTappedAddPhoto:self];
+  delegate = [(PhotoViewerToolbarController *)self delegate];
+  [delegate photoViewerToolbarControllerTappedAddPhoto:self];
 }
 
-- (PhotoViewerToolbarController)initWithMapItem:(id)a3
+- (PhotoViewerToolbarController)initWithMapItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = PhotoViewerToolbarController;
   v6 = [(PhotoViewerToolbarController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapItem, a3);
+    objc_storeStrong(&v6->_mapItem, item);
   }
 
   return v7;

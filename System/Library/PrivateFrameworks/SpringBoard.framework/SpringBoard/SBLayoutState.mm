@@ -1,22 +1,22 @@
 @interface SBLayoutState
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqual:(id)a3 withRole:(int64_t)a4;
-- (BOOL)isMeaningfullyDifferentFromLayoutState:(id)a3;
-- (BOOL)layoutContainsRole:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqual:(id)equal withRole:(int64_t)role;
+- (BOOL)isMeaningfullyDifferentFromLayoutState:(id)state;
+- (BOOL)layoutContainsRole:(int64_t)role;
 - (SBLayoutState)init;
-- (id)_initWithLayoutElements:(id)a3 interfaceOrientation:(int64_t)a4 interfaceOrientationByLayoutElement:(id)a5;
+- (id)_initWithLayoutElements:(id)elements interfaceOrientation:(int64_t)orientation interfaceOrientationByLayoutElement:(id)element;
 - (id)appLayout;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)elementWithIdentifier:(id)a3;
-- (id)elementWithRole:(int64_t)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)elementWithIdentifier:(id)identifier;
+- (id)elementWithRole:(int64_t)role;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (int64_t)_interfaceOrientationForElementIdentifier:(id)a3 unknownAllowed:(BOOL)a4;
+- (int64_t)_interfaceOrientationForElementIdentifier:(id)identifier unknownAllowed:(BOOL)allowed;
 - (int64_t)interfaceOrientation;
-- (int64_t)interfaceOrientationForLayoutElement:(id)a3;
-- (int64_t)interfaceOrientationForLayoutElement:(id)a3 unknownAllowed:(BOOL)a4;
-- (int64_t)interfaceOrientationForLayoutRole:(int64_t)a3;
+- (int64_t)interfaceOrientationForLayoutElement:(id)element;
+- (int64_t)interfaceOrientationForLayoutElement:(id)element unknownAllowed:(BOOL)allowed;
+- (int64_t)interfaceOrientationForLayoutRole:(int64_t)role;
 - (unint64_t)hash;
 @end
 
@@ -37,36 +37,36 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBLayoutState *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBLayoutState *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(SBLayoutState *)self elements];
-  v5 = [v3 appendUnsignedInteger:objc_msgSend(v4 withName:{"count"), @"elements"}];
+  elements = [(SBLayoutState *)self elements];
+  v5 = [v3 appendUnsignedInteger:objc_msgSend(elements withName:{"count"), @"elements"}];
 
   return v3;
 }
 
-- (id)_initWithLayoutElements:(id)a3 interfaceOrientation:(int64_t)a4 interfaceOrientationByLayoutElement:(id)a5
+- (id)_initWithLayoutElements:(id)elements interfaceOrientation:(int64_t)orientation interfaceOrientationByLayoutElement:(id)element
 {
-  v8 = a3;
-  v9 = a5;
+  elementsCopy = elements;
+  elementCopy = element;
   v16.receiver = self;
   v16.super_class = SBLayoutState;
   v10 = [(SBLayoutState *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [elementsCopy copy];
     elements = v10->_elements;
     v10->_elements = v11;
 
-    v10->_interfaceOrientation = a4;
-    v13 = [v9 copy];
+    v10->_interfaceOrientation = orientation;
+    v13 = [elementCopy copy];
     interfaceOrientationByLayoutElementIdentifier = v10->_interfaceOrientationByLayoutElementIdentifier;
     v10->_interfaceOrientationByLayoutElementIdentifier = v13;
   }
@@ -88,82 +88,82 @@
   return v8;
 }
 
-- (int64_t)interfaceOrientationForLayoutRole:(int64_t)a3
+- (int64_t)interfaceOrientationForLayoutRole:(int64_t)role
 {
-  v4 = [(SBLayoutState *)self elementWithRole:a3];
+  v4 = [(SBLayoutState *)self elementWithRole:role];
   v5 = [(SBLayoutState *)self interfaceOrientationForLayoutElement:v4];
 
   return v5;
 }
 
-- (int64_t)interfaceOrientationForLayoutElement:(id)a3
+- (int64_t)interfaceOrientationForLayoutElement:(id)element
 {
-  v4 = [a3 uniqueIdentifier];
-  v5 = [(SBLayoutState *)self interfaceOrientationForElementIdentifier:v4];
+  uniqueIdentifier = [element uniqueIdentifier];
+  v5 = [(SBLayoutState *)self interfaceOrientationForElementIdentifier:uniqueIdentifier];
 
   return v5;
 }
 
-- (int64_t)interfaceOrientationForLayoutElement:(id)a3 unknownAllowed:(BOOL)a4
+- (int64_t)interfaceOrientationForLayoutElement:(id)element unknownAllowed:(BOOL)allowed
 {
-  v4 = a4;
-  v6 = [a3 uniqueIdentifier];
-  v7 = [(SBLayoutState *)self _interfaceOrientationForElementIdentifier:v6 unknownAllowed:v4];
+  allowedCopy = allowed;
+  uniqueIdentifier = [element uniqueIdentifier];
+  v7 = [(SBLayoutState *)self _interfaceOrientationForElementIdentifier:uniqueIdentifier unknownAllowed:allowedCopy];
 
   return v7;
 }
 
-- (int64_t)_interfaceOrientationForElementIdentifier:(id)a3 unknownAllowed:(BOOL)a4
+- (int64_t)_interfaceOrientationForElementIdentifier:(id)identifier unknownAllowed:(BOOL)allowed
 {
-  v7 = a3;
-  v8 = [(SBLayoutState *)self elementWithIdentifier:v7];
+  identifierCopy = identifier;
+  v8 = [(SBLayoutState *)self elementWithIdentifier:identifierCopy];
   if (!v8 || (interfaceOrientationByLayoutElementIdentifier = self->_interfaceOrientationByLayoutElementIdentifier, v8, !interfaceOrientationByLayoutElementIdentifier))
   {
-    v11 = 0;
+    _defaultInterfaceOrientation = 0;
 LABEL_8:
-    if (!a4)
+    if (!allowed)
     {
-      v11 = [(SBLayoutState *)self _defaultInterfaceOrientation];
+      _defaultInterfaceOrientation = [(SBLayoutState *)self _defaultInterfaceOrientation];
     }
 
     goto LABEL_10;
   }
 
-  v10 = [(NSDictionary *)self->_interfaceOrientationByLayoutElementIdentifier objectForKey:v7];
+  v10 = [(NSDictionary *)self->_interfaceOrientationByLayoutElementIdentifier objectForKey:identifierCopy];
   if (!v10)
   {
     [SBLayoutState _interfaceOrientationForElementIdentifier:a2 unknownAllowed:self];
   }
 
-  v11 = [v10 integerValue];
+  _defaultInterfaceOrientation = [v10 integerValue];
 
-  if (!v11)
+  if (!_defaultInterfaceOrientation)
   {
     goto LABEL_8;
   }
 
 LABEL_10:
 
-  return v11;
+  return _defaultInterfaceOrientation;
 }
 
-- (BOOL)layoutContainsRole:(int64_t)a3
+- (BOOL)layoutContainsRole:(int64_t)role
 {
-  v3 = [(SBLayoutState *)self elementWithRole:a3];
+  v3 = [(SBLayoutState *)self elementWithRole:role];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)elementWithRole:(int64_t)a3
+- (id)elementWithRole:(int64_t)role
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(SBLayoutState *)self elements];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  elements = [(SBLayoutState *)self elements];
+  v5 = [elements countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -174,18 +174,18 @@ LABEL_10:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(elements);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 layoutRole] == a3)
+        if ([v9 layoutRole] == role)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [elements countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -201,16 +201,16 @@ LABEL_11:
   return v10;
 }
 
-- (id)elementWithIdentifier:(id)a3
+- (id)elementWithIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(SBLayoutState *)self elements];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  elements = [(SBLayoutState *)self elements];
+  v6 = [elements countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -220,12 +220,12 @@ LABEL_11:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(elements);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 uniqueIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        uniqueIdentifier = [v9 uniqueIdentifier];
+        v11 = [uniqueIdentifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -234,7 +234,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [elements countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -249,10 +249,10 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3 withRole:(int64_t)a4
+- (BOOL)isEqual:(id)equal withRole:(int64_t)role
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -262,23 +262,23 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"layoutRole == %d", a4];
-      v8 = [(SBLayoutState *)self elements];
-      v9 = [v8 filteredSetUsingPredicate:v7];
-      v10 = [v9 anyObject];
+      role = [MEMORY[0x277CCAC30] predicateWithFormat:@"layoutRole == %d", role];
+      elements = [(SBLayoutState *)self elements];
+      v9 = [elements filteredSetUsingPredicate:role];
+      anyObject = [v9 anyObject];
 
-      v11 = [(SBLayoutState *)v6 elements];
-      v12 = [v11 filteredSetUsingPredicate:v7];
-      v13 = [v12 anyObject];
+      elements2 = [(SBLayoutState *)equalCopy elements];
+      v12 = [elements2 filteredSetUsingPredicate:role];
+      anyObject2 = [v12 anyObject];
 
-      if (v10 | v13)
+      if (anyObject | anyObject2)
       {
         v14 = 0;
-        if (v10 && v13)
+        if (anyObject && anyObject2)
         {
-          v15 = [v10 uniqueIdentifier];
-          v16 = [v13 uniqueIdentifier];
-          v14 = [v15 isEqualToString:v16];
+          uniqueIdentifier = [anyObject uniqueIdentifier];
+          uniqueIdentifier2 = [anyObject2 uniqueIdentifier];
+          v14 = [uniqueIdentifier isEqualToString:uniqueIdentifier2];
         }
       }
 
@@ -297,27 +297,27 @@ LABEL_11:
   return v14;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBLayoutState *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBLayoutState *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBLayoutState *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBLayoutState *)self succinctDescriptionBuilder];
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [(SBLayoutState *)self interfaceOrientationByLayoutElementIdentifier];
+  interfaceOrientationByLayoutElementIdentifier = [(SBLayoutState *)self interfaceOrientationByLayoutElementIdentifier];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __55__SBLayoutState_descriptionBuilderWithMultilinePrefix___block_invoke;
   v14[3] = &unk_2783B7F10;
   v15 = v6;
   v8 = v6;
-  [v7 bs_each:v14];
+  [interfaceOrientationByLayoutElementIdentifier bs_each:v14];
 
   if ([(SBLayoutState *)self interfaceOrientation]== 1)
   {
@@ -344,13 +344,13 @@ LABEL_11:
     v9 = 0;
   }
 
-  v10 = [v5 appendObject:v9 withName:@"interfaceOrientation"];
-  [v5 appendDictionarySection:v8 withName:@"interfaceOrientationByLayoutElement" skipIfEmpty:0];
-  v11 = [(SBLayoutState *)self elements];
-  v12 = [v11 allObjects];
-  [v5 appendArraySection:v12 withName:@"elements" multilinePrefix:v4 skipIfEmpty:1];
+  v10 = [succinctDescriptionBuilder appendObject:v9 withName:@"interfaceOrientation"];
+  [succinctDescriptionBuilder appendDictionarySection:v8 withName:@"interfaceOrientationByLayoutElement" skipIfEmpty:0];
+  elements = [(SBLayoutState *)self elements];
+  allObjects = [elements allObjects];
+  [succinctDescriptionBuilder appendArraySection:allObjects withName:@"elements" multilinePrefix:prefixCopy skipIfEmpty:1];
 
-  return v5;
+  return succinctDescriptionBuilder;
 }
 
 void __55__SBLayoutState_descriptionBuilderWithMultilinePrefix___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -386,10 +386,10 @@ void __55__SBLayoutState_descriptionBuilderWithMultilinePrefix___block_invoke(ui
   [v6 setObject:v7 forKey:v8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
-  if (self == v7)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
     goto LABEL_19;
@@ -402,12 +402,12 @@ void __55__SBLayoutState_descriptionBuilderWithMultilinePrefix___block_invoke(ui
     goto LABEL_19;
   }
 
-  v8 = [(SBLayoutState *)self elements];
-  if (v8 || ([(SBLayoutState *)v7 elements], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  elements = [(SBLayoutState *)self elements];
+  if (elements || ([(SBLayoutState *)equalCopy elements], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = [(SBLayoutState *)self elements];
-    v5 = [(SBLayoutState *)v7 elements];
-    if (([v4 isEqualToSet:v5] & 1) == 0)
+    elements2 = [(SBLayoutState *)self elements];
+    elements3 = [(SBLayoutState *)equalCopy elements];
+    if (([elements2 isEqualToSet:elements3] & 1) == 0)
     {
 
       v10 = 0;
@@ -422,12 +422,12 @@ void __55__SBLayoutState_descriptionBuilderWithMultilinePrefix___block_invoke(ui
     v9 = 0;
   }
 
-  v11 = [(SBLayoutState *)self interfaceOrientation];
-  if (v11 == [(SBLayoutState *)v7 interfaceOrientation])
+  interfaceOrientation = [(SBLayoutState *)self interfaceOrientation];
+  if (interfaceOrientation == [(SBLayoutState *)equalCopy interfaceOrientation])
   {
-    v12 = [(SBLayoutState *)self interfaceOrientationByLayoutElementIdentifier];
-    v13 = [(SBLayoutState *)v7 interfaceOrientationByLayoutElementIdentifier];
-    v10 = SBEqualObjects(v12, v13);
+    interfaceOrientationByLayoutElementIdentifier = [(SBLayoutState *)self interfaceOrientationByLayoutElementIdentifier];
+    interfaceOrientationByLayoutElementIdentifier2 = [(SBLayoutState *)equalCopy interfaceOrientationByLayoutElementIdentifier];
+    v10 = SBEqualObjects(interfaceOrientationByLayoutElementIdentifier, interfaceOrientationByLayoutElementIdentifier2);
 
     if (!v9)
     {
@@ -444,7 +444,7 @@ LABEL_15:
   }
 
 LABEL_16:
-  if (!v8)
+  if (!elements)
   {
   }
 
@@ -460,8 +460,8 @@ LABEL_19:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(SBLayoutState *)self elements];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  elements = [(SBLayoutState *)self elements];
+  v5 = [elements countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -473,14 +473,14 @@ LABEL_19:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(elements);
         }
 
         v9 = [v3 appendObject:*(*(&v13 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [elements countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -582,16 +582,16 @@ LABEL_19:
   return v11;
 }
 
-- (BOOL)isMeaningfullyDifferentFromLayoutState:(id)a3
+- (BOOL)isMeaningfullyDifferentFromLayoutState:(id)state
 {
-  v4 = [a3 elements];
-  v5 = [v4 bs_filter:&__block_literal_global_195];
+  elements = [state elements];
+  v5 = [elements bs_filter:&__block_literal_global_195];
 
-  v6 = [(SBLayoutState *)self elements];
-  v7 = [v6 bs_filter:&__block_literal_global_195];
+  elements2 = [(SBLayoutState *)self elements];
+  v7 = [elements2 bs_filter:&__block_literal_global_195];
 
-  LOBYTE(v6) = [v5 isEqual:v7];
-  return v6 ^ 1;
+  LOBYTE(elements2) = [v5 isEqual:v7];
+  return elements2 ^ 1;
 }
 
 BOOL __73__SBLayoutState_SwitcherSupport__isMeaningfullyDifferentFromLayoutState___block_invoke(uint64_t a1, void *a2)

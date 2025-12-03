@@ -1,10 +1,10 @@
 @interface PXVerticalSwipeGestureRecognizerHelper
-- (BOOL)verticalSwipeGestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)verticalSwipeGestureRecognizerShouldBegin:(id)a3 ignoringScrollViews:(BOOL)a4;
+- (BOOL)verticalSwipeGestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)verticalSwipeGestureRecognizerShouldBegin:(id)begin ignoringScrollViews:(BOOL)views;
 - (PXVerticalSwipeGestureRecognizerHelper)init;
 - (PXVerticalSwipeGestureRecognizerHelperDelegate)delegate;
-- (id)_panGestureRecognizerForVerticalSwipeGestureRecognizer:(id)a3;
-- (void)setDelegate:(id)a3;
+- (id)_panGestureRecognizerForVerticalSwipeGestureRecognizer:(id)recognizer;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation PXVerticalSwipeGestureRecognizerHelper
@@ -16,52 +16,52 @@
   return WeakRetained;
 }
 
-- (id)_panGestureRecognizerForVerticalSwipeGestureRecognizer:(id)a3
+- (id)_panGestureRecognizerForVerticalSwipeGestureRecognizer:(id)recognizer
 {
-  v5 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXVerticalSwipeGestureRecognizerHelper.m" lineNumber:113 description:{@"unexpected class for verticalSwipeGestureRecognizer %@", v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXVerticalSwipeGestureRecognizerHelper.m" lineNumber:113 description:{@"unexpected class for verticalSwipeGestureRecognizer %@", recognizerCopy}];
   }
 
-  return v5;
+  return recognizerCopy;
 }
 
-- (BOOL)verticalSwipeGestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)verticalSwipeGestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = [(PXVerticalSwipeGestureRecognizerHelper *)self _panGestureRecognizerForVerticalSwipeGestureRecognizer:a3];
+  gestureRecognizerCopy = gestureRecognizer;
+  v7 = [(PXVerticalSwipeGestureRecognizerHelper *)self _panGestureRecognizerForVerticalSwipeGestureRecognizer:recognizer];
   v15 = 0;
-  v8 = [v6 px_isPanGestureRecognizerOfScrollView:&v15];
+  v8 = [gestureRecognizerCopy px_isPanGestureRecognizerOfScrollView:&v15];
 
   v9 = v15;
   v10 = v9;
   if (v8 && ([v9 px_hasHiddenAncestor] & 1) == 0)
   {
-    v11 = [(PXVerticalSwipeGestureRecognizerHelper *)self dependentScrollViews];
-    v12 = [v11 objectForKey:v7];
+    dependentScrollViews = [(PXVerticalSwipeGestureRecognizerHelper *)self dependentScrollViews];
+    weakObjectsHashTable = [dependentScrollViews objectForKey:v7];
 
-    if (!v12)
+    if (!weakObjectsHashTable)
     {
-      v12 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-      v13 = [(PXVerticalSwipeGestureRecognizerHelper *)self dependentScrollViews];
-      [v13 setObject:v12 forKey:v7];
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      dependentScrollViews2 = [(PXVerticalSwipeGestureRecognizerHelper *)self dependentScrollViews];
+      [dependentScrollViews2 setObject:weakObjectsHashTable forKey:v7];
     }
 
-    [v12 addObject:v10];
+    [weakObjectsHashTable addObject:v10];
   }
 
   return v8;
 }
 
-- (BOOL)verticalSwipeGestureRecognizerShouldBegin:(id)a3 ignoringScrollViews:(BOOL)a4
+- (BOOL)verticalSwipeGestureRecognizerShouldBegin:(id)begin ignoringScrollViews:(BOOL)views
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = [(PXVerticalSwipeGestureRecognizerHelper *)self _panGestureRecognizerForVerticalSwipeGestureRecognizer:a3];
-  v5 = [v4 view];
-  [v4 velocityInView:v5];
+  v4 = [(PXVerticalSwipeGestureRecognizerHelper *)self _panGestureRecognizerForVerticalSwipeGestureRecognizer:begin];
+  view = [v4 view];
+  [v4 velocityInView:view];
   v7 = v6;
   v9 = v8;
 
@@ -69,9 +69,9 @@
   PXRadiansToDegrees();
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -88,9 +88,9 @@
   v2 = [(PXVerticalSwipeGestureRecognizerHelper *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     v4 = *(v2 + 3);
-    *(v2 + 3) = v3;
+    *(v2 + 3) = weakToStrongObjectsMapTable;
 
     *(v2 + 9) = 257;
   }

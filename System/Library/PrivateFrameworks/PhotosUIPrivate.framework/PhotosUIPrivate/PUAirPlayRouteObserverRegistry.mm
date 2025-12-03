@@ -2,19 +2,19 @@
 - (AVOutputDeviceDiscoverySession)_discoverySession;
 - (PUAirPlayRouteObserverRegistry)init;
 - (PUAirPlayRouteObserverRegistryDelegate)delegate;
-- (void)_appEnteredBackground:(id)a3;
-- (void)_appEnteringForeground:(id)a3;
-- (void)_availableOutputDevicesDidChange:(id)a3;
+- (void)_appEnteredBackground:(id)background;
+- (void)_appEnteringForeground:(id)foreground;
+- (void)_availableOutputDevicesDidChange:(id)change;
 - (void)_discoverySessionIsolationQueue_updateRouteAvailability;
-- (void)_setDiscoverySession:(id)a3;
-- (void)_setRouteAvailability:(unint64_t)a3;
+- (void)_setDiscoverySession:(id)session;
+- (void)_setRouteAvailability:(unint64_t)availability;
 - (void)_updateAllObservers;
 - (void)_updateDiscoverySession;
-- (void)_updateObserver:(id)a3;
-- (void)addRouteObserver:(id)a3;
+- (void)_updateObserver:(id)observer;
+- (void)addRouteObserver:(id)observer;
 - (void)dealloc;
-- (void)removeRouteObserver:(id)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)removeRouteObserver:(id)observer;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation PUAirPlayRouteObserverRegistry
@@ -26,47 +26,47 @@
   return WeakRetained;
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if ([a4 isEqualToString:@"routeAvailability"])
+  if ([key isEqualToString:@"routeAvailability"])
   {
-    v5 = [(PUAirPlayRouteObserverRegistry *)self _discoverySessionIsolationQueue];
+    _discoverySessionIsolationQueue = [(PUAirPlayRouteObserverRegistry *)self _discoverySessionIsolationQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __62__PUAirPlayRouteObserverRegistry_settings_changedValueForKey___block_invoke;
     block[3] = &unk_1E7B80DD0;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(_discoverySessionIsolationQueue, block);
   }
 }
 
-- (void)_appEnteringForeground:(id)a3
+- (void)_appEnteringForeground:(id)foreground
 {
   [(PUAirPlayRouteObserverRegistry *)self _setDiscoveryAllowed:1];
 
   [(PUAirPlayRouteObserverRegistry *)self _updateDiscoverySession];
 }
 
-- (void)_appEnteredBackground:(id)a3
+- (void)_appEnteredBackground:(id)background
 {
   [(PUAirPlayRouteObserverRegistry *)self _setDiscoveryAllowed:0];
 
   [(PUAirPlayRouteObserverRegistry *)self _updateDiscoverySession];
 }
 
-- (void)_availableOutputDevicesDidChange:(id)a3
+- (void)_availableOutputDevicesDidChange:(id)change
 {
-  v5 = a3;
-  v6 = [(PUAirPlayRouteObserverRegistry *)self _discoverySessionIsolationQueue];
+  changeCopy = change;
+  _discoverySessionIsolationQueue = [(PUAirPlayRouteObserverRegistry *)self _discoverySessionIsolationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__PUAirPlayRouteObserverRegistry__availableOutputDevicesDidChange___block_invoke;
   block[3] = &unk_1E7B7F350;
-  v9 = v5;
-  v10 = self;
+  v9 = changeCopy;
+  selfCopy = self;
   v11 = a2;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = changeCopy;
+  dispatch_async(_discoverySessionIsolationQueue, block);
 }
 
 uint64_t __67__PUAirPlayRouteObserverRegistry__availableOutputDevicesDidChange___block_invoke(uint64_t a1)
@@ -93,18 +93,18 @@ uint64_t __67__PUAirPlayRouteObserverRegistry__availableOutputDevicesDidChange__
   v20 = 0x2020000000;
   v21 = 2;
   v3 = +[PUAirPlaySettings sharedInstance];
-  v4 = [v3 routeAvailabilityOverride];
+  routeAvailabilityOverride = [v3 routeAvailabilityOverride];
 
-  if (v4)
+  if (routeAvailabilityOverride)
   {
-    if (v4 == 1)
+    if (routeAvailabilityOverride == 1)
     {
       v5 = v19;
       v6 = 1;
       goto LABEL_6;
     }
 
-    if (v4 == 2)
+    if (routeAvailabilityOverride == 2)
     {
       v5 = v19;
       v6 = 2;
@@ -115,9 +115,9 @@ LABEL_6:
 
   else
   {
-    v7 = [(PUAirPlayRouteObserverRegistry *)self _discoverySession];
-    v8 = [v7 _pu_routeAvailability];
-    v19[3] = v8;
+    _discoverySession = [(PUAirPlayRouteObserverRegistry *)self _discoverySession];
+    _pu_routeAvailability = [_discoverySession _pu_routeAvailability];
+    v19[3] = _pu_routeAvailability;
 
     v9 = PLAirPlayGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -141,20 +141,20 @@ LABEL_6:
     if (v19[3])
     {
       [(PUAirPlayRouteObserverRegistry *)self setLastKnownRouteAvailability:?];
-      v12 = [MEMORY[0x1E695DF00] date];
-      [(PUAirPlayRouteObserverRegistry *)self setLastKnownRouteAvailabilityDate:v12];
+      date = [MEMORY[0x1E695DF00] date];
+      [(PUAirPlayRouteObserverRegistry *)self setLastKnownRouteAvailabilityDate:date];
     }
 
     else
     {
-      v13 = [(PUAirPlayRouteObserverRegistry *)self lastKnownRouteAvailabilityDate];
-      [v13 timeIntervalSinceNow];
+      lastKnownRouteAvailabilityDate = [(PUAirPlayRouteObserverRegistry *)self lastKnownRouteAvailabilityDate];
+      [lastKnownRouteAvailabilityDate timeIntervalSinceNow];
       v15 = v14;
 
       if (v15 <= 0.0 && v15 >= -15.0)
       {
-        v16 = [(PUAirPlayRouteObserverRegistry *)self lastKnownRouteAvailability];
-        v19[3] = v16;
+        lastKnownRouteAvailability = [(PUAirPlayRouteObserverRegistry *)self lastKnownRouteAvailability];
+        v19[3] = lastKnownRouteAvailability;
       }
     }
   }
@@ -171,25 +171,25 @@ LABEL_6:
 
 - (void)_updateDiscoverySession
 {
-  v3 = [(PUAirPlayRouteObserverRegistry *)self _routeObservers];
-  if ([v3 count])
+  _routeObservers = [(PUAirPlayRouteObserverRegistry *)self _routeObservers];
+  if ([_routeObservers count])
   {
-    v4 = [(PUAirPlayRouteObserverRegistry *)self _isDiscoveryAllowed];
+    _isDiscoveryAllowed = [(PUAirPlayRouteObserverRegistry *)self _isDiscoveryAllowed];
   }
 
   else
   {
-    v4 = 0;
+    _isDiscoveryAllowed = 0;
   }
 
-  v5 = [(PUAirPlayRouteObserverRegistry *)self _discoverySessionIsolationQueue];
+  _discoverySessionIsolationQueue = [(PUAirPlayRouteObserverRegistry *)self _discoverySessionIsolationQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __57__PUAirPlayRouteObserverRegistry__updateDiscoverySession__block_invoke;
   v6[3] = &unk_1E7B7FF98;
   v6[4] = self;
-  v7 = v4;
-  dispatch_async(v5, v6);
+  v7 = _isDiscoveryAllowed;
+  dispatch_async(_discoverySessionIsolationQueue, v6);
 }
 
 void __57__PUAirPlayRouteObserverRegistry__updateDiscoverySession__block_invoke(uint64_t a1)
@@ -255,13 +255,13 @@ LABEL_15:
 
 - (AVOutputDeviceDiscoverySession)_discoverySession
 {
-  v4 = [MEMORY[0x1E696AF00] currentThread];
-  v5 = [v4 isMainThread];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  isMainThread = [currentThread isMainThread];
 
-  if (v5)
+  if (isMainThread)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PUAirPlayRouteObserverRegistry.m" lineNumber:170 description:@"_discoverySession may only be accessed on background queue"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAirPlayRouteObserverRegistry.m" lineNumber:170 description:@"_discoverySession may only be accessed on background queue"];
   }
 
   discoverySession = self->__discoverySession;
@@ -269,33 +269,33 @@ LABEL_15:
   return discoverySession;
 }
 
-- (void)_setDiscoverySession:(id)a3
+- (void)_setDiscoverySession:(id)session
 {
-  v12 = a3;
-  v6 = [MEMORY[0x1E696AF00] currentThread];
-  v7 = [v6 isMainThread];
+  sessionCopy = session;
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  isMainThread = [currentThread isMainThread];
 
-  if (v7)
+  if (isMainThread)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PUAirPlayRouteObserverRegistry.m" lineNumber:160 description:@"_discoverySession may only be accessed on background queue"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAirPlayRouteObserverRegistry.m" lineNumber:160 description:@"_discoverySession may only be accessed on background queue"];
   }
 
   discoverySession = self->__discoverySession;
   p_discoverySession = &self->__discoverySession;
-  v10 = v12;
-  if (discoverySession != v12)
+  v10 = sessionCopy;
+  if (discoverySession != sessionCopy)
   {
-    objc_storeStrong(p_discoverySession, a3);
-    v10 = v12;
+    objc_storeStrong(p_discoverySession, session);
+    v10 = sessionCopy;
   }
 }
 
-- (void)_setRouteAvailability:(unint64_t)a3
+- (void)_setRouteAvailability:(unint64_t)availability
 {
-  if (self->_routeAvailability != a3)
+  if (self->_routeAvailability != availability)
   {
-    self->_routeAvailability = a3;
+    self->_routeAvailability = availability;
     [(PUAirPlayRouteObserverRegistry *)self _updateAllObservers];
   }
 }
@@ -307,8 +307,8 @@ LABEL_15:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(PUAirPlayRouteObserverRegistry *)self _routeObservers];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  _routeObservers = [(PUAirPlayRouteObserverRegistry *)self _routeObservers];
+  v4 = [_routeObservers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -320,49 +320,49 @@ LABEL_15:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_routeObservers);
         }
 
         [(PUAirPlayRouteObserverRegistry *)self _updateObserver:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [_routeObservers countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_updateObserver:(id)a3
+- (void)_updateObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PUAirPlayRouteObserverRegistry *)self delegate];
-  [v5 airPlayRouteObserverRegistryRouteAvailabilityChanged:self forRouteObserver:v4];
+  observerCopy = observer;
+  delegate = [(PUAirPlayRouteObserverRegistry *)self delegate];
+  [delegate airPlayRouteObserverRegistryRouteAvailabilityChanged:self forRouteObserver:observerCopy];
 }
 
-- (void)removeRouteObserver:(id)a3
+- (void)removeRouteObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PUAirPlayRouteObserverRegistry *)self _routeObservers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  _routeObservers = [(PUAirPlayRouteObserverRegistry *)self _routeObservers];
+  [_routeObservers removeObject:observerCopy];
 
   [(PUAirPlayRouteObserverRegistry *)self _updateDiscoverySession];
 }
 
-- (void)addRouteObserver:(id)a3
+- (void)addRouteObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PUAirPlayRouteObserverRegistry *)self _routeObservers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  _routeObservers = [(PUAirPlayRouteObserverRegistry *)self _routeObservers];
+  [_routeObservers addObject:observerCopy];
 
   [(PUAirPlayRouteObserverRegistry *)self _updateDiscoverySession];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PUAirPlayRouteObserverRegistry;
@@ -380,20 +380,20 @@ LABEL_15:
     [(PUAirPlayRouteObserverRegistry *)v2 _setRouteObservers:v3];
     v4 = dispatch_queue_create("com.apple.photos.PHAirPlayRouteAvailability", 0);
     [(PUAirPlayRouteObserverRegistry *)v2 _setDiscoverySessionIsolationQueue:v4];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel__appEnteredBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__appEnteredBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v2 selector:sel__appEnteringForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__appEnteringForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
 
     v2->__discoveryAllowed = 1;
-    v7 = [MEMORY[0x1E69C4598] sharedScheduler];
+    mEMORY[0x1E69C4598] = [MEMORY[0x1E69C4598] sharedScheduler];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __38__PUAirPlayRouteObserverRegistry_init__block_invoke;
     v9[3] = &unk_1E7B80DD0;
     v10 = v2;
-    [v7 scheduleMainQueueTask:v9];
+    [mEMORY[0x1E69C4598] scheduleMainQueueTask:v9];
   }
 
   return v2;

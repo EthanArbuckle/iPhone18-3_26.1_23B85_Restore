@@ -15,8 +15,8 @@
     pipelineParameters = v2->_pipelineParameters;
     v2->_pipelineParameters = v3;
 
-    v5 = [(ADExecutorParameters *)v2 logger];
-    [(ADJasperPearlInFieldCalibrationPipelineParameters *)v2->_pipelineParameters setLogger:v5];
+    logger = [(ADExecutorParameters *)v2 logger];
+    [(ADJasperPearlInFieldCalibrationPipelineParameters *)v2->_pipelineParameters setLogger:logger];
 
     [(ADJasperPearlInFieldCalibrationPipelineParameters *)v2->_pipelineParameters setIsReportTelemetry:1];
   }

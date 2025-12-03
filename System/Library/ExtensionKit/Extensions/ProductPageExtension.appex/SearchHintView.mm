@@ -1,13 +1,13 @@
 @interface SearchHintView
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtC20ProductPageExtension14SearchHintView)initWithCoder:(id)a3;
-- (_TtC20ProductPageExtension14SearchHintView)initWithFrame:(CGRect)a3;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtC20ProductPageExtension14SearchHintView)initWithCoder:(id)coder;
+- (_TtC20ProductPageExtension14SearchHintView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation SearchHintView
 
-- (_TtC20ProductPageExtension14SearchHintView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension14SearchHintView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension14SearchHintView_isHighlighted) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension14SearchHintView_showSeparator) = 0;
@@ -21,15 +21,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100691340();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = sub_100691CB4(a4);
+  selfCopy = self;
+  v7 = sub_100691CB4(in);
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -46,7 +46,7 @@
   return result;
 }
 
-- (_TtC20ProductPageExtension14SearchHintView)initWithFrame:(CGRect)a3
+- (_TtC20ProductPageExtension14SearchHintView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

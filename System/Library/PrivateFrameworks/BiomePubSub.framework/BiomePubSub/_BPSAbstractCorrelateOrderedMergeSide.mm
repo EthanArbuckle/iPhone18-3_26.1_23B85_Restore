@@ -1,51 +1,51 @@
 @interface _BPSAbstractCorrelateOrderedMergeSide
-- (_BPSAbstractCorrelateOrderedMergeSide)initWithIndex:(unint64_t)a3 combiner:(id)a4;
-- (int64_t)receiveInput:(id)a3;
-- (void)receiveCompletion:(id)a3;
-- (void)receiveSubscription:(id)a3;
+- (_BPSAbstractCorrelateOrderedMergeSide)initWithIndex:(unint64_t)index combiner:(id)combiner;
+- (int64_t)receiveInput:(id)input;
+- (void)receiveCompletion:(id)completion;
+- (void)receiveSubscription:(id)subscription;
 @end
 
 @implementation _BPSAbstractCorrelateOrderedMergeSide
 
-- (_BPSAbstractCorrelateOrderedMergeSide)initWithIndex:(unint64_t)a3 combiner:(id)a4
+- (_BPSAbstractCorrelateOrderedMergeSide)initWithIndex:(unint64_t)index combiner:(id)combiner
 {
-  v7 = a4;
+  combinerCopy = combiner;
   v11.receiver = self;
   v11.super_class = _BPSAbstractCorrelateOrderedMergeSide;
   v8 = [(_BPSAbstractCorrelateOrderedMergeSide *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_index = a3;
-    objc_storeStrong(&v8->_combiner, a4);
+    v8->_index = index;
+    objc_storeStrong(&v8->_combiner, combiner);
   }
 
   return v9;
 }
 
-- (void)receiveSubscription:(id)a3
+- (void)receiveSubscription:(id)subscription
 {
-  v4 = a3;
-  v5 = [(_BPSAbstractCorrelateOrderedMergeSide *)self combiner];
-  [v5 receiveSubscription:v4 atIndex:{-[_BPSAbstractCorrelateOrderedMergeSide index](self, "index")}];
+  subscriptionCopy = subscription;
+  combiner = [(_BPSAbstractCorrelateOrderedMergeSide *)self combiner];
+  [combiner receiveSubscription:subscriptionCopy atIndex:{-[_BPSAbstractCorrelateOrderedMergeSide index](self, "index")}];
 }
 
-- (int64_t)receiveInput:(id)a3
+- (int64_t)receiveInput:(id)input
 {
-  v4 = self;
-  v5 = a3;
-  v6 = [(_BPSAbstractCorrelateOrderedMergeSide *)v4 combiner];
-  v7 = [v6 receiveInput:v5 atIndex:{-[_BPSAbstractCorrelateOrderedMergeSide index](v4, "index")}];
+  selfCopy = self;
+  inputCopy = input;
+  combiner = [(_BPSAbstractCorrelateOrderedMergeSide *)selfCopy combiner];
+  v7 = [combiner receiveInput:inputCopy atIndex:{-[_BPSAbstractCorrelateOrderedMergeSide index](selfCopy, "index")}];
 
   return v7;
 }
 
-- (void)receiveCompletion:(id)a3
+- (void)receiveCompletion:(id)completion
 {
-  v6 = self;
-  v4 = a3;
-  v5 = [(_BPSAbstractCorrelateOrderedMergeSide *)v6 combiner];
-  [v5 receiveCompletion:v4 atIndex:{-[_BPSAbstractCorrelateOrderedMergeSide index](v6, "index")}];
+  selfCopy = self;
+  completionCopy = completion;
+  combiner = [(_BPSAbstractCorrelateOrderedMergeSide *)selfCopy combiner];
+  [combiner receiveCompletion:completionCopy atIndex:{-[_BPSAbstractCorrelateOrderedMergeSide index](selfCopy, "index")}];
 }
 
 @end

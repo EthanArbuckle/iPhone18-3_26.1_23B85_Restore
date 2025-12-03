@@ -1,14 +1,14 @@
 @interface _UIFilteredDataSource
-- (BOOL)respondsToSelector:(SEL)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)_filteredNumberOfItemsGivenSection:(int64_t)a3 numberOfItems:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)_filteredNumberOfItemsGivenSection:(int64_t)section numberOfItems:(int64_t)items;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 @end
 
 @implementation _UIFilteredDataSource
 
-- (int64_t)_filteredNumberOfItemsGivenSection:(int64_t)a3 numberOfItems:(int64_t)a4
+- (int64_t)_filteredNumberOfItemsGivenSection:(int64_t)section numberOfItems:(int64_t)items
 {
   if ([(_UIFilteredDataSource *)self filterType]!= 1)
   {
@@ -20,9 +20,9 @@
   {
     v8 = 12;
 LABEL_9:
-    if (v8 >= a4)
+    if (v8 >= items)
     {
-      return a4;
+      return items;
     }
 
     else
@@ -32,9 +32,9 @@ LABEL_9:
   }
 
   maxVisibleSection = self->_maxVisibleSection;
-  if (maxVisibleSection <= a3)
+  if (maxVisibleSection <= section)
   {
-    if (maxVisibleSection == a3)
+    if (maxVisibleSection == section)
     {
       return self->_numberOfVisibleItemsInLastSection;
     }
@@ -45,27 +45,27 @@ LABEL_9:
     }
   }
 
-  return a4;
+  return items;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(_UIFilteredDataSource *)self tableDataSource];
-  v8 = [v7 tableView:v6 numberOfRowsInSection:a4];
+  viewCopy = view;
+  tableDataSource = [(_UIFilteredDataSource *)self tableDataSource];
+  v8 = [tableDataSource tableView:viewCopy numberOfRowsInSection:section];
 
-  return [(_UIFilteredDataSource *)self _filteredNumberOfItemsGivenSection:a4 numberOfItems:v8];
+  return [(_UIFilteredDataSource *)self _filteredNumberOfItemsGivenSection:section numberOfItems:v8];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   self->_limitingWithSections = 0;
-  v5 = [(_UIFilteredDataSource *)self tableDataSource];
+  tableDataSource = [(_UIFilteredDataSource *)self tableDataSource];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(_UIFilteredDataSource *)self tableDataSource];
-    v7 = [v6 numberOfSectionsInTableView:v4];
+    tableDataSource2 = [(_UIFilteredDataSource *)self tableDataSource];
+    v7 = [tableDataSource2 numberOfSectionsInTableView:viewCopy];
   }
 
   else
@@ -89,8 +89,8 @@ LABEL_11:
       v9 = 0;
       while (1)
       {
-        v10 = [(_UIFilteredDataSource *)self tableDataSource];
-        v11 = [v10 tableView:v4 numberOfRowsInSection:v8];
+        tableDataSource3 = [(_UIFilteredDataSource *)self tableDataSource];
+        v11 = [tableDataSource3 tableView:viewCopy numberOfRowsInSection:v8];
 
         if (v11 + v9 == 12)
         {
@@ -122,19 +122,19 @@ LABEL_14:
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UIFilteredDataSource *)self tableDataSource];
-  v9 = [v8 tableView:v7 cellForRowAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  tableDataSource = [(_UIFilteredDataSource *)self tableDataSource];
+  v9 = [tableDataSource tableView:viewCopy cellForRowAtIndexPath:pathCopy];
 
   return v9;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  v3 = [(_UIFilteredDataSource *)self tableDataSource];
+  tableDataSource = [(_UIFilteredDataSource *)self tableDataSource];
   v4 = objc_opt_respondsToSelector();
 
   return v4 & 1;

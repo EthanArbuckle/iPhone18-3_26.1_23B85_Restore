@@ -34,10 +34,10 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [v7 characteristicType];
-  v9 = [v7 metadata];
+  characteristicType = [v7 characteristicType];
+  metadata = [v7 metadata];
 
-  v10 = [a1 hf_valueFormatterForCharacteristicType:v8 withMetadata:v9 options:v6];
+  v10 = [self hf_valueFormatterForCharacteristicType:characteristicType withMetadata:metadata options:v6];
 
   return v10;
 }
@@ -52,10 +52,10 @@
     NSLog(&cfstr_NoCharacterist_1.isa);
   }
 
-  v11 = [a1 _hf_customValueFormatterForCharacteristicType:v8 metadata:v9 options:v10];
+  v11 = [self _hf_customValueFormatterForCharacteristicType:v8 metadata:v9 options:v10];
   if (!v11)
   {
-    v11 = [a1 _hf_valueFormatterForCharacteristicMetadata:v9 options:v10];
+    v11 = [self _hf_valueFormatterForCharacteristicMetadata:v9 options:v10];
   }
 
   return v11;
@@ -66,7 +66,7 @@
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = [a1 _hf_valueSetFormatterForCharacteristicType:v8 options:v10];
+  v11 = [self _hf_valueSetFormatterForCharacteristicType:v8 options:v10];
   if (v11)
   {
     v12 = v11;
@@ -105,17 +105,17 @@
   v17 = qword_280E03D38;
   if ([v17 containsObject:v8])
   {
-    v18 = [a1 _hf_microgramsPerMeterCubedFormatter];
+    _hf_microgramsPerMeterCubedFormatter = [self _hf_microgramsPerMeterCubedFormatter];
   }
 
   else if ([v8 isEqualToString:*MEMORY[0x277CCF8A0]])
   {
-    v18 = [a1 _hf_filterChangeIndicationFormatter];
+    _hf_microgramsPerMeterCubedFormatter = [self _hf_filterChangeIndicationFormatter];
   }
 
   else if ([v13 containsObject:v8])
   {
-    v18 = [a1 _hf_positionFormatterWithMetadata:v9 options:v10];
+    _hf_microgramsPerMeterCubedFormatter = [self _hf_positionFormatterWithMetadata:v9 options:v10];
   }
 
   else
@@ -125,23 +125,23 @@
       if ([v14 containsObject:v8] || objc_msgSend(v16, "containsObject:", v8) && _HFCharacteristicMetadataTypeIsReallyBinary(v9))
       {
         v21 = +[HFFormatterManager sharedInstance];
-        v19 = [v21 BOOLeanFormatter];
+        bOOLeanFormatter = [v21 BOOLeanFormatter];
       }
 
       else
       {
-        v19 = 0;
+        bOOLeanFormatter = 0;
       }
 
       goto LABEL_22;
     }
 
-    v18 = [a1 _hf_partsPerMillionFormatter];
+    _hf_microgramsPerMeterCubedFormatter = [self _hf_partsPerMillionFormatter];
   }
 
-  v19 = v18;
+  bOOLeanFormatter = _hf_microgramsPerMeterCubedFormatter;
 LABEL_22:
-  v12 = v19;
+  v12 = bOOLeanFormatter;
 
 LABEL_23:
 
@@ -152,34 +152,34 @@ LABEL_23:
 {
   v21[2] = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [v4 units];
+  units = [v4 units];
   v6 = *MEMORY[0x277CCF6F8];
   v7 = *MEMORY[0x277CCF700];
   v21[0] = *MEMORY[0x277CCF6F8];
   v21[1] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
-  v9 = [v8 containsObject:v5];
+  v9 = [v8 containsObject:units];
 
   if (v9)
   {
     v10 = +[HFFormatterManager sharedInstance];
-    v11 = [v10 temperatureFormatter];
+    temperatureFormatter = [v10 temperatureFormatter];
 
-    [v11 setInputIsCelsius:{objc_msgSend(v5, "isEqualToString:", v6)}];
-    if (!v11)
+    [temperatureFormatter setInputIsCelsius:{objc_msgSend(units, "isEqualToString:", v6)}];
+    if (!temperatureFormatter)
     {
       goto LABEL_15;
     }
 
 LABEL_14:
-    v14 = v11;
+    v14 = temperatureFormatter;
     goto LABEL_24;
   }
 
-  if ([v5 isEqualToString:*MEMORY[0x277CCF710]])
+  if ([units isEqualToString:*MEMORY[0x277CCF710]])
   {
-    v11 = [a1 _hf_percentFormatterForMetadata:v4];
-    if (v11)
+    temperatureFormatter = [self _hf_percentFormatterForMetadata:v4];
+    if (temperatureFormatter)
     {
       goto LABEL_14;
     }
@@ -187,60 +187,60 @@ LABEL_14:
 
   else
   {
-    if ([v5 isEqualToString:*MEMORY[0x277CCF718]])
+    if ([units isEqualToString:*MEMORY[0x277CCF718]])
     {
       v12 = +[HFFormatterManager sharedInstance];
-      v13 = [v12 timeIntervalFormatter];
+      timeIntervalFormatter = [v12 timeIntervalFormatter];
     }
 
-    else if ([v5 isEqualToString:*MEMORY[0x277CCF6F0]])
+    else if ([units isEqualToString:*MEMORY[0x277CCF6F0]])
     {
       v12 = +[HFFormatterManager sharedInstance];
-      v13 = [v12 arcDegreeFormatter];
+      timeIntervalFormatter = [v12 arcDegreeFormatter];
     }
 
     else
     {
-      if (![v5 isEqualToString:*MEMORY[0x277CCF708]])
+      if (![units isEqualToString:*MEMORY[0x277CCF708]])
       {
         goto LABEL_15;
       }
 
       v12 = +[HFFormatterManager sharedInstance];
-      v13 = [v12 luxFormatter];
+      timeIntervalFormatter = [v12 luxFormatter];
     }
 
-    v11 = v13;
+    temperatureFormatter = timeIntervalFormatter;
 
-    if (v11)
+    if (temperatureFormatter)
     {
       goto LABEL_14;
     }
   }
 
 LABEL_15:
-  v15 = [v4 format];
-  if ([v15 isEqualToString:*MEMORY[0x277CCF6B0]])
+  format = [v4 format];
+  if ([format isEqualToString:*MEMORY[0x277CCF6B0]])
   {
     v16 = +[HFFormatterManager sharedInstance];
-    v17 = [v16 BOOLeanFormatter];
+    bOOLeanFormatter = [v16 BOOLeanFormatter];
 LABEL_22:
-    v18 = v17;
+    v18 = bOOLeanFormatter;
 
     goto LABEL_23;
   }
 
-  if ([v15 isEqualToString:*MEMORY[0x277CCF6C8]])
+  if ([format isEqualToString:*MEMORY[0x277CCF6C8]])
   {
     v16 = +[HFFormatterManager sharedInstance];
-    v17 = [v16 identityFormatter];
+    bOOLeanFormatter = [v16 identityFormatter];
     goto LABEL_22;
   }
 
   if (![v4 hf_isNumeric])
   {
     v16 = +[HFFormatterManager sharedInstance];
-    v17 = [v16 emptyStringFormatter];
+    bOOLeanFormatter = [v16 emptyStringFormatter];
     goto LABEL_22;
   }
 
@@ -258,24 +258,24 @@ LABEL_24:
 {
   v3 = a3;
   v4 = +[HFFormatterManager sharedInstance];
-  v5 = [v4 percentFormatter];
+  percentFormatter = [v4 percentFormatter];
 
-  v6 = [v3 maximumValue];
+  maximumValue = [v3 maximumValue];
 
-  if (v6)
+  if (maximumValue)
   {
-    v7 = [v3 maximumValue];
-    [v5 setMaximumValue:v7];
+    maximumValue2 = [v3 maximumValue];
+    [percentFormatter setMaximumValue:maximumValue2];
   }
 
-  return v5;
+  return percentFormatter;
 }
 
 + (id)_hf_positionFormatterWithMetadata:()HFCharacteristicValueFormatting options:
 {
   v22[3] = *MEMORY[0x277D85DE8];
   v6 = a4;
-  v7 = [a1 _hf_percentFormatterForMetadata:a3];
+  v7 = [self _hf_percentFormatterForMetadata:a3];
   v8 = *MEMORY[0x277CD0F58];
   v21[0] = *MEMORY[0x277CD0E30];
   v21[1] = v8;
@@ -330,14 +330,14 @@ LABEL_24:
 {
   v22[2] = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [MEMORY[0x277CD1970] hf_powerStateCharacteristicTypes];
-  v6 = [v5 containsObject:v4];
+  hf_powerStateCharacteristicTypes = [MEMORY[0x277CD1970] hf_powerStateCharacteristicTypes];
+  v6 = [hf_powerStateCharacteristicTypes containsObject:v4];
 
   if (v6)
   {
-    v7 = [a1 _hf_powerStateFormatter];
+    _hf_powerStateFormatter = [self _hf_powerStateFormatter];
 LABEL_31:
-    v17 = v7;
+    v17 = _hf_powerStateFormatter;
     goto LABEL_32;
   }
 
@@ -349,7 +349,7 @@ LABEL_31:
 
   if (v10)
   {
-    v7 = [a1 _hf_doorStateFormatter];
+    _hf_powerStateFormatter = [self _hf_doorStateFormatter];
     goto LABEL_31;
   }
 
@@ -361,7 +361,7 @@ LABEL_31:
 
   if (v13)
   {
-    v7 = [a1 _hf_heatingCoolingFormatter];
+    _hf_powerStateFormatter = [self _hf_heatingCoolingFormatter];
     goto LABEL_31;
   }
 
@@ -373,73 +373,73 @@ LABEL_31:
 
   if (v16)
   {
-    v7 = [a1 _hf_lockMechanismStateFormatter];
+    _hf_powerStateFormatter = [self _hf_lockMechanismStateFormatter];
     goto LABEL_31;
   }
 
   if ([v4 isEqualToString:*MEMORY[0x277CCFA18]])
   {
-    v7 = [a1 _hf_rotationDirectionFormatter];
+    _hf_powerStateFormatter = [self _hf_rotationDirectionFormatter];
     goto LABEL_31;
   }
 
   if ([v4 isEqualToString:*MEMORY[0x277CCFB88]])
   {
-    v7 = [a1 _hf_temperatureUnitFormatter];
+    _hf_powerStateFormatter = [self _hf_temperatureUnitFormatter];
     goto LABEL_31;
   }
 
   if ([v4 isEqualToString:*MEMORY[0x277CCF950]])
   {
-    v7 = [a1 _hf_lockMechanismLastKnownActionFormatter];
+    _hf_powerStateFormatter = [self _hf_lockMechanismLastKnownActionFormatter];
     goto LABEL_31;
   }
 
   if ([v4 isEqualToString:*MEMORY[0x277CCF768]])
   {
-    v7 = [a1 _hf_airParticulateSizeFormatter];
+    _hf_powerStateFormatter = [self _hf_airParticulateSizeFormatter];
     goto LABEL_31;
   }
 
   if ([v4 isEqualToString:*MEMORY[0x277CCF770]])
   {
-    v7 = [a1 _hf_airQualityFormatter];
+    _hf_powerStateFormatter = [self _hf_airQualityFormatter];
     goto LABEL_31;
   }
 
   if ([v4 isEqualToString:*MEMORY[0x277CCF9E0]])
   {
-    v7 = [a1 _hf_positionStateFormatter];
+    _hf_powerStateFormatter = [self _hf_positionStateFormatter];
     goto LABEL_31;
   }
 
   if ([v4 isEqualToString:*MEMORY[0x277CCF858]])
   {
-    v7 = [a1 _hf_currentSecuritySystemStateFormatter];
+    _hf_powerStateFormatter = [self _hf_currentSecuritySystemStateFormatter];
     goto LABEL_31;
   }
 
   if ([v4 isEqualToString:*MEMORY[0x277CCFB60]])
   {
-    v7 = [a1 _hf_targetSecuritySystemStateFormatter];
+    _hf_powerStateFormatter = [self _hf_targetSecuritySystemStateFormatter];
     goto LABEL_31;
   }
 
   if ([v4 isEqualToString:*MEMORY[0x277CCF7E8]])
   {
-    v7 = [a1 _hf_contactStateStateFormatter];
+    _hf_powerStateFormatter = [self _hf_contactStateStateFormatter];
     goto LABEL_31;
   }
 
   if ([v4 isEqualToString:*MEMORY[0x277CCF7F8]])
   {
-    v7 = [a1 _hf_currentAirPurifierStateFormatter];
+    _hf_powerStateFormatter = [self _hf_currentAirPurifierStateFormatter];
     goto LABEL_31;
   }
 
   if ([v4 isEqualToString:*MEMORY[0x277CCF920]])
   {
-    v7 = [a1 _hf_configurationStateFormatter];
+    _hf_powerStateFormatter = [self _hf_configurationStateFormatter];
     goto LABEL_31;
   }
 
@@ -567,10 +567,10 @@ LABEL_32:
 {
   v8 = a4;
   v9 = a3;
-  v10 = [v9 characteristicType];
-  v11 = [v9 metadata];
+  characteristicType = [v9 characteristicType];
+  metadata = [v9 metadata];
 
-  v12 = [a1 hf_controlDescriptionFormatterForCharacteristicType:v10 withMetadata:v11 options:v8 form:a5];
+  v12 = [self hf_controlDescriptionFormatterForCharacteristicType:characteristicType withMetadata:metadata options:v8 form:a5];
 
   return v12;
 }
@@ -580,7 +580,7 @@ LABEL_32:
   v49[7] = *MEMORY[0x277D85DE8];
   v10 = a3;
   v11 = a5;
-  v12 = [a1 hf_valueFormatterForCharacteristicType:v10 withMetadata:a4 options:v11];
+  v12 = [self hf_valueFormatterForCharacteristicType:v10 withMetadata:a4 options:v11];
   if (qword_280E03D40 != -1)
   {
     dispatch_once(&qword_280E03D40, &__block_literal_global_288);
@@ -595,8 +595,8 @@ LABEL_8:
     goto LABEL_21;
   }
 
-  v15 = [MEMORY[0x277CD1970] hf_powerStateCharacteristicTypes];
-  v16 = [v15 containsObject:v10];
+  hf_powerStateCharacteristicTypes = [MEMORY[0x277CD1970] hf_powerStateCharacteristicTypes];
+  v16 = [hf_powerStateCharacteristicTypes containsObject:v10];
 
   if (v16)
   {
@@ -627,7 +627,7 @@ LABEL_7:
     v45[1] = 3221225472;
     v45[2] = __126__NSFormatter_HFCharacteristicValueFormatting__hf_controlDescriptionFormatterForCharacteristicType_withMetadata_options_form___block_invoke_4;
     v45[3] = &unk_277E01BC8;
-    v47 = a1;
+    selfCopy = self;
     v46 = v10;
     v48 = a6;
     v19 = [(HFFormatterTransformer *)v25 initWithSourceFormatter:v12 transformBlock:v45];
@@ -664,7 +664,7 @@ LABEL_7:
     {
       if (![v10 isEqualToString:*MEMORY[0x277CCFBC0]])
       {
-        v35 = [a1 _hf_controlTitleForCharacteristicType:v10];
+        v35 = [self _hf_controlTitleForCharacteristicType:v10];
         if (v35)
         {
           v36 = [HFFormatterTransformer alloc];

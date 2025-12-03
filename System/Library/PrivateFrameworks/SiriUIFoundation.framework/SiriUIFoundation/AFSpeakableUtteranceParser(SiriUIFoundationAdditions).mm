@@ -25,8 +25,8 @@
   v7 = [objc_opt_class() _domainsForStringWithFormat:v6];
   if (v7)
   {
-    v8 = [a1 _builtInDomains];
-    v9 = [v7 isSubsetOfSet:v8] ^ 1;
+    _builtInDomains = [self _builtInDomains];
+    v9 = [v7 isSubsetOfSet:_builtInDomains] ^ 1;
   }
 
   else
@@ -71,12 +71,12 @@ LABEL_9:
 - (id)_builtInDomains
 {
   v2 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  if ([a1 handleTTSCodes])
+  if ([self handleTTSCodes])
   {
     [v2 addObject:@"tts"];
   }
 
-  if ([a1 handlesFunctions])
+  if ([self handlesFunctions])
   {
     [v2 addObject:@"fn"];
   }

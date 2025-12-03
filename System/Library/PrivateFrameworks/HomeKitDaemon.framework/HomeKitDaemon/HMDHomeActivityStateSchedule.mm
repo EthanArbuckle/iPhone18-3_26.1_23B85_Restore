@@ -1,21 +1,21 @@
 @interface HMDHomeActivityStateSchedule
 + (id)logCategory;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMDHome)home;
-- (HMDHomeActivityStateSchedule)initWithActivityState:(unint64_t)a3;
+- (HMDHomeActivityStateSchedule)initWithActivityState:(unint64_t)state;
 - (HMDHomeActivityStateScheduleDelegate)delegate;
 - (NSArray)scheduleEntries;
-- (id)_relayMessageToPrimaryResident:(id)a3 inContext:(id)a4;
-- (id)_scheduleEntriesFromPayload:(id)a3;
+- (id)_relayMessageToPrimaryResident:(id)resident inContext:(id)context;
+- (id)_scheduleEntriesFromPayload:(id)payload;
 - (id)endDateIfActiveScheduleEntry;
 - (id)nextStartDate;
-- (void)_handleUpdateScheduleEntriesMessage:(id)a3;
+- (void)_handleUpdateScheduleEntriesMessage:(id)message;
 - (void)_registerForMessages;
-- (void)_relayOrHandleMessage:(id)a3 inContext:(id)a4 then:(id)a5;
-- (void)configureWithDataSource:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_relayOrHandleMessage:(id)message inContext:(id)context then:(id)then;
+- (void)configureWithDataSource:(id)source;
+- (void)encodeWithCoder:(id)coder;
 - (void)notifyObserversOfHomeActivityStateScheduleUpdate;
-- (void)setScheduleEntries:(id)a3;
+- (void)setScheduleEntries:(id)entries;
 @end
 
 @implementation HMDHomeActivityStateSchedule
@@ -34,27 +34,27 @@
   return WeakRetained;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDHomeActivityStateSchedule *)self uuid];
-  v6 = [v5 UUIDString];
-  [v4 encodeObject:v6 forKey:*MEMORY[0x277CCFDF8]];
+  coderCopy = coder;
+  uuid = [(HMDHomeActivityStateSchedule *)self uuid];
+  uUIDString = [uuid UUIDString];
+  [coderCopy encodeObject:uUIDString forKey:*MEMORY[0x277CCFDF8]];
 
-  v7 = [(HMDHomeActivityStateSchedule *)self scheduleEntries];
-  [v4 encodeObject:v7 forKey:*MEMORY[0x277CCFDE8]];
+  scheduleEntries = [(HMDHomeActivityStateSchedule *)self scheduleEntries];
+  [coderCopy encodeObject:scheduleEntries forKey:*MEMORY[0x277CCFDE8]];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDHomeActivityStateSchedule state](self, "state")}];
-  [v4 encodeObject:v8 forKey:*MEMORY[0x277CCFDE0]];
+  [coderCopy encodeObject:v8 forKey:*MEMORY[0x277CCFDE0]];
 
-  v9 = [(HMDHomeActivityStateSchedule *)self home];
-  [v4 encodeObject:v9 forKey:@"home"];
+  home = [(HMDHomeActivityStateSchedule *)self home];
+  [coderCopy encodeObject:home forKey:@"home"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -64,7 +64,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -78,10 +78,10 @@
 
       v7 = v6;
 
-      v8 = [(HMDHomeActivityStateSchedule *)self uuid];
-      v9 = [(HMDHomeActivityStateSchedule *)v7 uuid];
+      uuid = [(HMDHomeActivityStateSchedule *)self uuid];
+      uuid2 = [(HMDHomeActivityStateSchedule *)v7 uuid];
 
-      v10 = [v8 isEqual:v9];
+      v10 = [uuid isEqual:uuid2];
     }
 
     else
@@ -93,27 +93,27 @@
   return v10;
 }
 
-- (void)_handleUpdateScheduleEntriesMessage:(id)a3
+- (void)_handleUpdateScheduleEntriesMessage:(id)message
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 messagePayload];
-  v6 = [(HMDHomeActivityStateSchedule *)self _scheduleEntriesFromPayload:v5];
+  messageCopy = message;
+  messagePayload = [messageCopy messagePayload];
+  v6 = [(HMDHomeActivityStateSchedule *)self _scheduleEntriesFromPayload:messagePayload];
 
   if (v6)
   {
     v7 = [MEMORY[0x277CD1A70] sortedScheduleEntries:v6];
     if ([(HMDHomeActivityStateSchedule *)self _validateScheduleEntries:v7])
     {
-      v8 = [(HMDHomeActivityStateSchedule *)self workContext];
+      workContext = [(HMDHomeActivityStateSchedule *)self workContext];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __68__HMDHomeActivityStateSchedule__handleUpdateScheduleEntriesMessage___block_invoke;
       v19[3] = &unk_27867C6C8;
       v20 = v7;
-      v21 = self;
-      v22 = v4;
-      [(HMDHomeActivityStateSchedule *)self _relayOrHandleMessage:v22 inContext:v8 then:v19];
+      selfCopy = self;
+      v22 = messageCopy;
+      [(HMDHomeActivityStateSchedule *)self _relayOrHandleMessage:v22 inContext:workContext then:v19];
 
       v9 = v20;
     }
@@ -121,7 +121,7 @@
     else
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = self;
+      selfCopy2 = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
@@ -135,14 +135,14 @@
 
       objc_autoreleasePoolPop(v14);
       v9 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-      [v4 respondWithError:v9];
+      [messageCopy respondWithError:v9];
     }
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy3 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -154,7 +154,7 @@
 
     objc_autoreleasePoolPop(v10);
     v7 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-    [v4 respondWithError:v7];
+    [messageCopy respondWithError:v7];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -224,21 +224,21 @@ uint64_t __68__HMDHomeActivityStateSchedule__handleUpdateScheduleEntriesMessage_
   return v3;
 }
 
-- (void)setScheduleEntries:(id)a3
+- (void)setScheduleEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   os_unfair_lock_lock_with_options();
   scheduleEntries = self->_scheduleEntries;
-  self->_scheduleEntries = v4;
+  self->_scheduleEntries = entriesCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
 - (void)notifyObserversOfHomeActivityStateScheduleUpdate
 {
-  v3 = [(HMDHomeActivityStateSchedule *)self delegate];
-  v4 = [(HMDHomeActivityStateSchedule *)self dataSource];
-  v5 = [v4 queue];
+  delegate = [(HMDHomeActivityStateSchedule *)self delegate];
+  dataSource = [(HMDHomeActivityStateSchedule *)self dataSource];
+  queue = [dataSource queue];
 
   if (objc_opt_respondsToSelector())
   {
@@ -246,17 +246,17 @@ uint64_t __68__HMDHomeActivityStateSchedule__handleUpdateScheduleEntriesMessage_
     block[1] = 3221225472;
     block[2] = __80__HMDHomeActivityStateSchedule_notifyObserversOfHomeActivityStateScheduleUpdate__block_invoke;
     block[3] = &unk_27868A728;
-    v7 = v3;
-    dispatch_async(v5, block);
+    v7 = delegate;
+    dispatch_async(queue, block);
   }
 }
 
-- (id)_scheduleEntriesFromPayload:(id)a3
+- (id)_scheduleEntriesFromPayload:(id)payload
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  [v3 hmf_arrayForKey:*MEMORY[0x277CCFDF0]];
+  payloadCopy = payload;
+  array = [MEMORY[0x277CBEB18] array];
+  [payloadCopy hmf_arrayForKey:*MEMORY[0x277CCFDF0]];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -289,7 +289,7 @@ LABEL_3:
       if (!v13)
       {
         v20 = objc_autoreleasePoolPush();
-        v21 = self;
+        selfCopy = self;
         v22 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
@@ -309,7 +309,7 @@ LABEL_20:
       }
 
       v14 = v13;
-      [v4 addObject:v13];
+      [array addObject:v13];
 
       if (v7 == ++v9)
       {
@@ -324,7 +324,7 @@ LABEL_20:
     }
 
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy2 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -340,7 +340,7 @@ LABEL_20:
 
 LABEL_13:
 
-  v15 = [v4 copy];
+  v15 = [array copy];
 LABEL_21:
 
   v24 = *MEMORY[0x277D85DE8];
@@ -348,86 +348,86 @@ LABEL_21:
   return v15;
 }
 
-- (id)_relayMessageToPrimaryResident:(id)a3 inContext:(id)a4
+- (id)_relayMessageToPrimaryResident:(id)resident inContext:(id)context
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDHomeActivityStateSchedule *)self home];
-  if (([v8 hasAnyResident] & 1) == 0)
+  residentCopy = resident;
+  contextCopy = context;
+  home = [(HMDHomeActivityStateSchedule *)self home];
+  if (([home hasAnyResident] & 1) == 0)
   {
     v11 = MEMORY[0x277D0F7C0];
     v12 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48 description:@"This operation requires a resident" reason:0 suggestion:0];
     goto LABEL_6;
   }
 
-  v9 = [v8 administratorHandler];
-  v10 = [v9 shouldRelayMessages];
+  administratorHandler = [home administratorHandler];
+  shouldRelayMessages = [administratorHandler shouldRelayMessages];
 
-  if (v10)
+  if (shouldRelayMessages)
   {
-    if ([v6 isRemote])
+    if ([residentCopy isRemote])
     {
       v11 = MEMORY[0x277D0F7C0];
       v12 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:3202];
 LABEL_6:
       v13 = v12;
-      v14 = [v11 futureWithError:v12];
+      futureWithNoValue = [v11 futureWithError:v12];
 
       goto LABEL_11;
     }
 
-    v15 = [v6 mutableCopy];
-    v16 = [v6 identifier];
-    [v15 setIdentifier:v16];
+    v15 = [residentCopy mutableCopy];
+    identifier = [residentCopy identifier];
+    [v15 setIdentifier:identifier];
 
     [v15 setSecureRemote:1];
     v17 = [HMDRemoteHomeMessageDestination alloc];
-    v18 = [v6 destination];
-    v19 = [v18 target];
-    v20 = [v8 uuid];
-    v21 = [(HMDRemoteHomeMessageDestination *)v17 initWithTarget:v19 homeUUID:v20];
+    destination = [residentCopy destination];
+    target = [destination target];
+    uuid = [home uuid];
+    v21 = [(HMDRemoteHomeMessageDestination *)v17 initWithTarget:target homeUUID:uuid];
     [v15 setDestination:v21];
 
     [v15 setResponseHandler:0];
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
       v25 = HMFGetLogIdentifier();
-      v26 = [v6 identifier];
+      identifier2 = [residentCopy identifier];
       *buf = 138543618;
       v35 = v25;
       v36 = 2114;
-      v37 = v26;
+      v37 = identifier2;
       _os_log_impl(&dword_229538000, v24, OS_LOG_TYPE_INFO, "%{public}@(RequestID: %{public}@) Relaying to the primary resident", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v22);
-    v27 = [(HMDHomeActivityStateSchedule *)v23 msgDispatcher];
+    msgDispatcher = [(HMDHomeActivityStateSchedule *)selfCopy msgDispatcher];
     v28 = [v15 copy];
-    v29 = [v27 sendMessageExpectingResponse:v28];
+    v29 = [msgDispatcher sendMessageExpectingResponse:v28];
 
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __73__HMDHomeActivityStateSchedule__relayMessageToPrimaryResident_inContext___block_invoke;
     v32[3] = &unk_2786882F0;
-    v32[4] = v23;
-    v33 = v6;
-    v14 = [v29 inContext:v7 recover:v32];
+    v32[4] = selfCopy;
+    v33 = residentCopy;
+    futureWithNoValue = [v29 inContext:contextCopy recover:v32];
   }
 
   else
   {
-    v14 = [MEMORY[0x277D0F7C0] futureWithNoValue];
+    futureWithNoValue = [MEMORY[0x277D0F7C0] futureWithNoValue];
   }
 
 LABEL_11:
 
   v30 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return futureWithNoValue;
 }
 
 uint64_t __73__HMDHomeActivityStateSchedule__relayMessageToPrimaryResident_inContext___block_invoke(uint64_t a1, void *a2)
@@ -468,39 +468,39 @@ uint64_t __73__HMDHomeActivityStateSchedule__relayMessageToPrimaryResident_inCon
   return 2;
 }
 
-- (void)_relayOrHandleMessage:(id)a3 inContext:(id)a4 then:(id)a5
+- (void)_relayOrHandleMessage:(id)message inContext:(id)context then:(id)then
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [(HMDHomeActivityStateSchedule *)self _relayMessageToPrimaryResident:v10 inContext:v9];
-  v11 = [v12 inContext:v9 then:v8];
+  thenCopy = then;
+  contextCopy = context;
+  messageCopy = message;
+  v12 = [(HMDHomeActivityStateSchedule *)self _relayMessageToPrimaryResident:messageCopy inContext:contextCopy];
+  v11 = [v12 inContext:contextCopy then:thenCopy];
 
-  [v10 respondWithOutcomeOf:v11];
+  [messageCopy respondWithOutcomeOf:v11];
 }
 
 - (void)_registerForMessages
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomeActivityStateSchedule *)self home];
-  if (v3)
+  home = [(HMDHomeActivityStateSchedule *)self home];
+  if (home)
   {
-    v4 = [(HMDHomeActivityStateSchedule *)self msgDispatcher];
+    msgDispatcher = [(HMDHomeActivityStateSchedule *)self msgDispatcher];
     v5 = *MEMORY[0x277CCFE00];
     v6 = +[HMDRemoteMessagePolicy defaultSecurePrimaryResidentPolicy];
     v15[0] = v6;
-    v7 = [HMDUserMessagePolicy userMessagePolicyWithHome:v3 userPrivilege:4 remoteAccessRequired:0];
+    v7 = [HMDUserMessagePolicy userMessagePolicyWithHome:home userPrivilege:4 remoteAccessRequired:0];
     v15[1] = v7;
     v8 = [HMDXPCMessagePolicy policyWithEntitlements:5];
     v15[2] = v8;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:3];
-    [v4 registerForMessage:v5 receiver:self policies:v9 selector:sel__handleUpdateScheduleEntriesMessage_];
+    [msgDispatcher registerForMessage:v5 receiver:self policies:v9 selector:sel__handleUpdateScheduleEntriesMessage_];
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -519,28 +519,28 @@ uint64_t __73__HMDHomeActivityStateSchedule__relayMessageToPrimaryResident_inCon
 - (id)nextStartDate
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomeActivityStateSchedule *)self scheduleEntries];
-  v4 = [v3 count];
+  scheduleEntries = [(HMDHomeActivityStateSchedule *)self scheduleEntries];
+  v4 = [scheduleEntries count];
 
   if (v4)
   {
-    v5 = [(HMDHomeActivityStateSchedule *)self dataSource];
-    v6 = [v5 currentDate];
+    dataSource = [(HMDHomeActivityStateSchedule *)self dataSource];
+    currentDate = [dataSource currentDate];
 
-    v7 = [(HMDHomeActivityStateSchedule *)self scheduleEntries];
-    v8 = [v7 firstObject];
+    scheduleEntries2 = [(HMDHomeActivityStateSchedule *)self scheduleEntries];
+    firstObject = [scheduleEntries2 firstObject];
 
-    v9 = [(HMDHomeActivityStateSchedule *)self gregorian];
-    v24 = v8;
-    v10 = [v8 start];
-    v11 = [v9 nextDateAfterDate:v6 matchingComponents:v10 options:0];
+    gregorian = [(HMDHomeActivityStateSchedule *)self gregorian];
+    v24 = firstObject;
+    start = [firstObject start];
+    v11 = [gregorian nextDateAfterDate:currentDate matchingComponents:start options:0];
 
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v12 = [(HMDHomeActivityStateSchedule *)self scheduleEntries];
-    v13 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    scheduleEntries3 = [(HMDHomeActivityStateSchedule *)self scheduleEntries];
+    v13 = [scheduleEntries3 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v13)
     {
       v14 = v13;
@@ -551,13 +551,13 @@ uint64_t __73__HMDHomeActivityStateSchedule__relayMessageToPrimaryResident_inCon
         {
           if (*v26 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(scheduleEntries3);
           }
 
           v17 = *(*(&v25 + 1) + 8 * i);
-          v18 = [(HMDHomeActivityStateSchedule *)self gregorian];
-          v19 = [v17 start];
-          v20 = [v18 nextDateAfterDate:v6 matchingComponents:v19 options:0];
+          gregorian2 = [(HMDHomeActivityStateSchedule *)self gregorian];
+          start2 = [v17 start];
+          v20 = [gregorian2 nextDateAfterDate:currentDate matchingComponents:start2 options:0];
 
           if ([v20 compare:v11] == -1)
           {
@@ -567,7 +567,7 @@ uint64_t __73__HMDHomeActivityStateSchedule__relayMessageToPrimaryResident_inCon
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v14 = [scheduleEntries3 countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v14);
@@ -587,20 +587,20 @@ uint64_t __73__HMDHomeActivityStateSchedule__relayMessageToPrimaryResident_inCon
 - (id)endDateIfActiveScheduleEntry
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomeActivityStateSchedule *)self scheduleEntries];
-  v4 = [v3 count];
+  scheduleEntries = [(HMDHomeActivityStateSchedule *)self scheduleEntries];
+  v4 = [scheduleEntries count];
 
   if (v4)
   {
-    v5 = [(HMDHomeActivityStateSchedule *)self dataSource];
-    v6 = [v5 currentDate];
+    dataSource = [(HMDHomeActivityStateSchedule *)self dataSource];
+    currentDate = [dataSource currentDate];
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = [(HMDHomeActivityStateSchedule *)self scheduleEntries];
-    v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    scheduleEntries2 = [(HMDHomeActivityStateSchedule *)self scheduleEntries];
+    v8 = [scheduleEntries2 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v8)
     {
       v9 = v8;
@@ -611,17 +611,17 @@ uint64_t __73__HMDHomeActivityStateSchedule__relayMessageToPrimaryResident_inCon
         {
           if (*v22 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(scheduleEntries2);
           }
 
           v12 = *(*(&v21 + 1) + 8 * i);
-          v13 = [(HMDHomeActivityStateSchedule *)self gregorian];
-          v14 = [v12 start];
-          v15 = [v13 nextDateAfterDate:v6 matchingComponents:v14 options:0];
+          gregorian = [(HMDHomeActivityStateSchedule *)self gregorian];
+          start = [v12 start];
+          v15 = [gregorian nextDateAfterDate:currentDate matchingComponents:start options:0];
 
-          v16 = [(HMDHomeActivityStateSchedule *)self gregorian];
+          gregorian2 = [(HMDHomeActivityStateSchedule *)self gregorian];
           v17 = [v12 end];
-          v18 = [v16 nextDateAfterDate:v6 matchingComponents:v17 options:0];
+          v18 = [gregorian2 nextDateAfterDate:currentDate matchingComponents:v17 options:0];
 
           if ([v18 compare:v15] == -1)
           {
@@ -630,7 +630,7 @@ uint64_t __73__HMDHomeActivityStateSchedule__relayMessageToPrimaryResident_inCon
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v9 = [scheduleEntries2 countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v9)
         {
           continue;
@@ -654,57 +654,57 @@ LABEL_12:
   return v18;
 }
 
-- (void)configureWithDataSource:(id)a3
+- (void)configureWithDataSource:(id)source
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sourceCopy = source;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [(HMDHomeActivityStateManagerDataSource *)v4 messageDispatcher];
-    v10 = [(HMDHomeActivityStateManagerDataSource *)v4 home];
-    v11 = [(HMDHomeActivityStateManagerDataSource *)v4 queue];
+    messageDispatcher = [(HMDHomeActivityStateManagerDataSource *)sourceCopy messageDispatcher];
+    home = [(HMDHomeActivityStateManagerDataSource *)sourceCopy home];
+    queue = [(HMDHomeActivityStateManagerDataSource *)sourceCopy queue];
     v24 = 138544130;
     v25 = v8;
     v26 = 2112;
-    v27 = v9;
+    v27 = messageDispatcher;
     v28 = 2112;
-    v29 = v10;
+    v29 = home;
     v30 = 2112;
-    v31 = v11;
+    v31 = queue;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_DEBUG, "%{public}@Configuring Home Activity State Schedule with message dispatcher: %@, home: %@, queue: %@", &v24, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v5);
-  dataSource = v6->_dataSource;
-  v6->_dataSource = v4;
-  v13 = v4;
+  dataSource = selfCopy->_dataSource;
+  selfCopy->_dataSource = sourceCopy;
+  v13 = sourceCopy;
 
-  v14 = [(HMDHomeActivityStateManagerDataSource *)v13 messageDispatcher];
-  msgDispatcher = v6->_msgDispatcher;
-  v6->_msgDispatcher = v14;
+  messageDispatcher2 = [(HMDHomeActivityStateManagerDataSource *)v13 messageDispatcher];
+  msgDispatcher = selfCopy->_msgDispatcher;
+  selfCopy->_msgDispatcher = messageDispatcher2;
 
-  v16 = [(HMDHomeActivityStateManagerDataSource *)v13 home];
-  objc_storeWeak(&v6->_home, v16);
+  home2 = [(HMDHomeActivityStateManagerDataSource *)v13 home];
+  objc_storeWeak(&selfCopy->_home, home2);
 
-  v17 = [(HMDHomeActivityStateManagerDataSource *)v13 queue];
-  workQueue = v6->_workQueue;
-  v6->_workQueue = v17;
+  queue2 = [(HMDHomeActivityStateManagerDataSource *)v13 queue];
+  workQueue = selfCopy->_workQueue;
+  selfCopy->_workQueue = queue2;
 
   v19 = objc_alloc(MEMORY[0x277D0F7A8]);
-  v20 = [(HMDHomeActivityStateManagerDataSource *)v13 queue];
-  v21 = [v19 initWithQueue:v20];
-  workContext = v6->_workContext;
-  v6->_workContext = v21;
+  queue3 = [(HMDHomeActivityStateManagerDataSource *)v13 queue];
+  v21 = [v19 initWithQueue:queue3];
+  workContext = selfCopy->_workContext;
+  selfCopy->_workContext = v21;
 
-  [(HMDHomeActivityStateSchedule *)v6 _registerForMessages];
+  [(HMDHomeActivityStateSchedule *)selfCopy _registerForMessages];
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDHomeActivityStateSchedule)initWithActivityState:(unint64_t)a3
+- (HMDHomeActivityStateSchedule)initWithActivityState:(unint64_t)state
 {
   v12.receiver = self;
   v12.super_class = HMDHomeActivityStateSchedule;
@@ -715,15 +715,15 @@ LABEL_12:
     gregorian = v4->_gregorian;
     v4->_gregorian = v5;
 
-    v7 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     uuid = v4->_uuid;
-    v4->_uuid = v7;
+    v4->_uuid = uUID;
 
-    v9 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     scheduleEntries = v4->_scheduleEntries;
-    v4->_scheduleEntries = v9;
+    v4->_scheduleEntries = array;
 
-    v4->_state = a3;
+    v4->_state = state;
   }
 
   return v4;

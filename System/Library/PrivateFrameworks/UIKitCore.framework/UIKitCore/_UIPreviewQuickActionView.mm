@@ -2,23 +2,23 @@
 - (UIImageView)backgroundViewImage;
 - (UIImageView)imageView;
 - (UILabel)label;
-- (_UIPreviewQuickActionView)initWithCoder:(id)a3;
-- (_UIPreviewQuickActionView)initWithFrame:(CGRect)a3;
+- (_UIPreviewQuickActionView)initWithCoder:(id)coder;
+- (_UIPreviewQuickActionView)initWithFrame:(CGRect)frame;
 - (id)centerYAnchor;
 - (void)_updateCircleBackgroundImage;
 - (void)layoutSubviews;
-- (void)setQuickAction:(id)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setQuickAction:(id)action;
+- (void)setSelected:(BOOL)selected;
 - (void)updateFromQuickAction;
 @end
 
 @implementation _UIPreviewQuickActionView
 
-- (_UIPreviewQuickActionView)initWithCoder:(id)a3
+- (_UIPreviewQuickActionView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _UIPreviewQuickActionView;
-  v3 = [(UIView *)&v6 initWithCoder:a3];
+  v3 = [(UIView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -28,11 +28,11 @@
   return v4;
 }
 
-- (_UIPreviewQuickActionView)initWithFrame:(CGRect)a3
+- (_UIPreviewQuickActionView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UIPreviewQuickActionView;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -52,73 +52,73 @@
 
 - (id)centerYAnchor
 {
-  v2 = [(_UIPreviewQuickActionView *)self imageView];
-  v3 = [v2 bottomAnchor];
+  imageView = [(_UIPreviewQuickActionView *)self imageView];
+  bottomAnchor = [imageView bottomAnchor];
 
-  return v3;
+  return bottomAnchor;
 }
 
-- (void)setQuickAction:(id)a3
+- (void)setQuickAction:(id)action
 {
-  v5 = a3;
-  if (self->_quickAction != v5)
+  actionCopy = action;
+  if (self->_quickAction != actionCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_quickAction, a3);
+    v6 = actionCopy;
+    objc_storeStrong(&self->_quickAction, action);
     [(_UIPreviewQuickActionView *)self updateFromQuickAction];
-    v5 = v6;
+    actionCopy = v6;
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    self->_selected = a3;
+    self->_selected = selected;
     [(_UIPreviewQuickActionView *)self updateFromQuickAction];
   }
 }
 
 - (void)updateFromQuickAction
 {
-  v3 = [(_UIPreviewQuickActionView *)self quickAction];
-  v4 = [v3 title];
-  v5 = [(_UIPreviewQuickActionView *)self label];
-  [v5 setText:v4];
+  quickAction = [(_UIPreviewQuickActionView *)self quickAction];
+  title = [quickAction title];
+  label = [(_UIPreviewQuickActionView *)self label];
+  [label setText:title];
 
-  v6 = [(_UIPreviewQuickActionView *)self quickAction];
-  v7 = [v6 image];
-  v8 = [v7 imageWithRenderingMode:2];
-  v9 = [(_UIPreviewQuickActionView *)self imageView];
-  [v9 setImage:v8];
+  quickAction2 = [(_UIPreviewQuickActionView *)self quickAction];
+  image = [quickAction2 image];
+  v8 = [image imageWithRenderingMode:2];
+  imageView = [(_UIPreviewQuickActionView *)self imageView];
+  [imageView setImage:v8];
 
-  v10 = [(_UIPreviewQuickActionView *)self quickAction];
-  v11 = [v10 _color];
-  v12 = [(_UIPreviewQuickActionView *)self label];
-  [v12 setTextColor:v11];
+  quickAction3 = [(_UIPreviewQuickActionView *)self quickAction];
+  _color = [quickAction3 _color];
+  label2 = [(_UIPreviewQuickActionView *)self label];
+  [label2 setTextColor:_color];
 
   if ([(_UIPreviewQuickActionView *)self selected])
   {
-    v13 = [(_UIPreviewQuickActionView *)self quickAction];
-    v14 = [v13 _color];
-    v15 = [(_UIPreviewQuickActionView *)self backgroundViewImage];
-    [v15 setTintColor:v14];
+    quickAction4 = [(_UIPreviewQuickActionView *)self quickAction];
+    _color2 = [quickAction4 _color];
+    backgroundViewImage = [(_UIPreviewQuickActionView *)self backgroundViewImage];
+    [backgroundViewImage setTintColor:_color2];
 
-    v16 = +[UIColor whiteColor];
-    v17 = [(_UIPreviewQuickActionView *)self imageView];
-    [v17 setTintColor:v16];
+    quickAction5 = +[UIColor whiteColor];
+    imageView2 = [(_UIPreviewQuickActionView *)self imageView];
+    [imageView2 setTintColor:quickAction5];
   }
 
   else
   {
     v18 = +[UIColor whiteColor];
-    v19 = [(_UIPreviewQuickActionView *)self backgroundViewImage];
-    [v19 setTintColor:v18];
+    backgroundViewImage2 = [(_UIPreviewQuickActionView *)self backgroundViewImage];
+    [backgroundViewImage2 setTintColor:v18];
 
-    v16 = [(_UIPreviewQuickActionView *)self quickAction];
-    v17 = [v16 _color];
-    v20 = [(_UIPreviewQuickActionView *)self imageView];
-    [v20 setTintColor:v17];
+    quickAction5 = [(_UIPreviewQuickActionView *)self quickAction];
+    imageView2 = [quickAction5 _color];
+    imageView3 = [(_UIPreviewQuickActionView *)self imageView];
+    [imageView3 setTintColor:imageView2];
   }
 
   [(UIView *)self setNeedsLayout];
@@ -126,8 +126,8 @@
 
 - (void)_updateCircleBackgroundImage
 {
-  v3 = [(_UIPreviewQuickActionView *)self backgroundViewImage];
-  [v3 bounds];
+  backgroundViewImage = [(_UIPreviewQuickActionView *)self backgroundViewImage];
+  [backgroundViewImage bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -141,8 +141,8 @@
   [v16 fill];
   v13 = _UIGraphicsGetImageFromCurrentImageContext(0);
   v14 = [v13 imageWithRenderingMode:2];
-  v15 = [(_UIPreviewQuickActionView *)self backgroundViewImage];
-  [v15 setImage:v14];
+  backgroundViewImage2 = [(_UIPreviewQuickActionView *)self backgroundViewImage];
+  [backgroundViewImage2 setImage:v14];
 
   UIGraphicsEndImageContext();
 }

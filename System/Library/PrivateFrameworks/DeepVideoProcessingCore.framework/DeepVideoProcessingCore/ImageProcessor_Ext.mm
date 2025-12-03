@@ -1,13 +1,13 @@
 @interface ImageProcessor_Ext
 - (BOOL)allocateNormalizedBuffers;
-- (BOOL)shouldScaleBuffer:(__CVBuffer *)a3;
-- (ImageProcessor_Ext)initWithUsage:(int64_t)a3 device:(id)a4 commandQueue:(id)a5 opticalFlowModeOnly:(BOOL)a6;
-- (int64_t)allocateRGBABuffersForBuffer:(__CVBuffer *)a3;
-- (int64_t)getPixelAttributesForBuffer:(__CVBuffer *)a3;
+- (BOOL)shouldScaleBuffer:(__CVBuffer *)buffer;
+- (ImageProcessor_Ext)initWithUsage:(int64_t)usage device:(id)device commandQueue:(id)queue opticalFlowModeOnly:(BOOL)only;
+- (int64_t)allocateRGBABuffersForBuffer:(__CVBuffer *)buffer;
+- (int64_t)getPixelAttributesForBuffer:(__CVBuffer *)buffer;
 - (int64_t)mapInternalBufferWithTexture;
-- (int64_t)preProcessFirstInput:(__CVBuffer *)a3 secondInput:(__CVBuffer *)a4 waitForCompletion:(BOOL)a5;
-- (int64_t)preserveCMAttachmentFirstFrame:(id)a3 secondFrame:(id)a4;
-- (int64_t)restoreCMAttachmentToFirstFrame:(id)a3 secondFrame:(id)a4 synthesizedFrame:(__CVBuffer *)a5;
+- (int64_t)preProcessFirstInput:(__CVBuffer *)input secondInput:(__CVBuffer *)secondInput waitForCompletion:(BOOL)completion;
+- (int64_t)preserveCMAttachmentFirstFrame:(id)frame secondFrame:(id)secondFrame;
+- (int64_t)restoreCMAttachmentToFirstFrame:(id)frame secondFrame:(id)secondFrame synthesizedFrame:(__CVBuffer *)synthesizedFrame;
 - (void)dealloc;
 @end
 
@@ -72,13 +72,13 @@
   return 1;
 }
 
-- (BOOL)shouldScaleBuffer:(__CVBuffer *)a3
+- (BOOL)shouldScaleBuffer:(__CVBuffer *)buffer
 {
-  Width = CVPixelBufferGetWidth(a3);
+  Width = CVPixelBufferGetWidth(buffer);
   v9 = Width;
-  Height = CVPixelBufferGetHeight(a3);
+  Height = CVPixelBufferGetHeight(buffer);
   v8 = Height;
-  if (CVPixelBufferGetPixelFormatType(a3) == 1278226536)
+  if (CVPixelBufferGetPixelFormatType(buffer) == 1278226536)
   {
     Height /= 3uLL;
     v8 = Height;
@@ -93,10 +93,10 @@
   return self->_width < Width || self->_height < v8;
 }
 
-- (ImageProcessor_Ext)initWithUsage:(int64_t)a3 device:(id)a4 commandQueue:(id)a5 opticalFlowModeOnly:(BOOL)a6
+- (ImageProcessor_Ext)initWithUsage:(int64_t)usage device:(id)device commandQueue:(id)queue opticalFlowModeOnly:(BOOL)only
 {
-  v11 = a4;
-  v12 = a5;
+  deviceCopy = device;
+  queueCopy = queue;
   v25.receiver = self;
   v25.super_class = ImageProcessor_Ext;
   v13 = [(ImageProcessor_Ext *)&v25 init];
@@ -106,10 +106,10 @@
     goto LABEL_15;
   }
 
-  if (v11 && v12)
+  if (deviceCopy && queueCopy)
   {
-    objc_storeStrong(&v13->_device, a4);
-    v15 = v12;
+    objc_storeStrong(&v13->_device, device);
+    newCommandQueue = queueCopy;
   }
 
   else
@@ -118,11 +118,11 @@
     device = v14->_device;
     v14->_device = v16;
 
-    v15 = [(MTLDevice *)v14->_device newCommandQueue];
+    newCommandQueue = [(MTLDevice *)v14->_device newCommandQueue];
   }
 
   commandQueue = v14->_commandQueue;
-  v14->_commandQueue = v15;
+  v14->_commandQueue = newCommandQueue;
 
   if (!v14->_device)
   {
@@ -134,12 +134,12 @@
     goto LABEL_15;
   }
 
-  v14->_usage = a3;
-  v14->_opticalFlowOnlyMode = a6;
+  v14->_usage = usage;
+  v14->_opticalFlowOnlyMode = only;
   v14->_firstRotation = 0;
   v14->_secondRotation = 0;
   v14->_RGBAFormat = 1111970369;
-  getInputFrameSizeForUsage(a3, &v14->_width, &v14->_height);
+  getInputFrameSizeForUsage(usage, &v14->_width, &v14->_height);
   v19 = objc_alloc_init(VEScaler);
   scaler = v14->_scaler;
   v14->_scaler = v19;
@@ -178,14 +178,14 @@ LABEL_14:
   return v23;
 }
 
-- (int64_t)getPixelAttributesForBuffer:(__CVBuffer *)a3
+- (int64_t)getPixelAttributesForBuffer:(__CVBuffer *)buffer
 {
-  if (!a3)
+  if (!buffer)
   {
     return 9;
   }
 
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   v6 = CVPixelFormatDescriptionCreateWithPixelFormatType(*MEMORY[0x277CBECE8], PixelFormatType);
   if (v6)
   {
@@ -200,7 +200,7 @@ LABEL_14:
     self->_isYUV = [v11 BOOLValue];
 
     v12 = [(__CFDictionary *)v8 objectForKeyedSubscript:*MEMORY[0x277CC4F38]];
-    v13 = [v12 BOOLValue];
+    bOOLValue = [v12 BOOLValue];
 
     CFRelease(v8);
     if (self->_isYUV)
@@ -218,14 +218,14 @@ LABEL_14:
 
     else
     {
-      if (!v13)
+      if (!bOOLValue)
       {
 LABEL_10:
 
         return 0;
       }
 
-      v14 = CVPixelBufferGetPixelFormatType(a3);
+      v14 = CVPixelBufferGetPixelFormatType(buffer);
     }
 
     self->_RGBAFormat = v14;
@@ -235,21 +235,21 @@ LABEL_10:
   return 9;
 }
 
-- (int64_t)preserveCMAttachmentFirstFrame:(id)a3 secondFrame:(id)a4
+- (int64_t)preserveCMAttachmentFirstFrame:(id)frame secondFrame:(id)secondFrame
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  frameCopy = frame;
+  secondFrameCopy = secondFrame;
+  v8 = secondFrameCopy;
   v9 = 12;
-  if (v6 && v7)
+  if (frameCopy && secondFrameCopy)
   {
-    v10 = CMCopyDictionaryOfAttachments(0, [v6 buffer], 1u);
+    v10 = CMCopyDictionaryOfAttachments(0, [frameCopy buffer], 1u);
     self->_anchorFrameCMAttachment = v10;
     if (v10)
     {
       if (self->_isFullRange)
       {
-        CMRemoveAllAttachments([v6 buffer]);
+        CMRemoveAllAttachments([frameCopy buffer]);
         CMRemoveAllAttachments([v8 buffer]);
       }
 
@@ -265,21 +265,21 @@ LABEL_10:
   return v9;
 }
 
-- (int64_t)restoreCMAttachmentToFirstFrame:(id)a3 secondFrame:(id)a4 synthesizedFrame:(__CVBuffer *)a5
+- (int64_t)restoreCMAttachmentToFirstFrame:(id)frame secondFrame:(id)secondFrame synthesizedFrame:(__CVBuffer *)synthesizedFrame
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  frameCopy = frame;
+  secondFrameCopy = secondFrame;
+  v10 = secondFrameCopy;
   v11 = 12;
-  if (v8 && v9)
+  if (frameCopy && secondFrameCopy)
   {
     if (self->_isFullRange)
     {
-      CMSetAttachments([v8 buffer], self->_anchorFrameCMAttachment, 1u);
+      CMSetAttachments([frameCopy buffer], self->_anchorFrameCMAttachment, 1u);
       CMSetAttachments([v10 buffer], self->_anchorFrameCMAttachment, 1u);
-      if (a5)
+      if (synthesizedFrame)
       {
-        CMSetAttachments(a5, self->_anchorFrameCMAttachment, 1u);
+        CMSetAttachments(synthesizedFrame, self->_anchorFrameCMAttachment, 1u);
       }
     }
 
@@ -290,16 +290,16 @@ LABEL_10:
   return v11;
 }
 
-- (int64_t)allocateRGBABuffersForBuffer:(__CVBuffer *)a3
+- (int64_t)allocateRGBABuffersForBuffer:(__CVBuffer *)buffer
 {
-  if (!a3)
+  if (!buffer)
   {
     return 9;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
+  Width = CVPixelBufferGetWidth(buffer);
   v30 = Width;
-  Height = CVPixelBufferGetHeight(a3);
+  Height = CVPixelBufferGetHeight(buffer);
   v29 = Height;
   if (self->_inputScaling)
   {
@@ -538,39 +538,39 @@ LABEL_25:
   return 9;
 }
 
-- (int64_t)preProcessFirstInput:(__CVBuffer *)a3 secondInput:(__CVBuffer *)a4 waitForCompletion:(BOOL)a5
+- (int64_t)preProcessFirstInput:(__CVBuffer *)input secondInput:(__CVBuffer *)secondInput waitForCompletion:(BOOL)completion
 {
   v5 = 12;
-  if (!a3 || !a4)
+  if (!input || !secondInput)
   {
     return v5;
   }
 
-  v7 = a5;
-  self->_isYUV = isBufferYUV(a3);
-  v10 = [(ImageProcessor_Ext *)self shouldScaleBuffer:a3];
+  completionCopy = completion;
+  self->_isYUV = isBufferYUV(input);
+  v10 = [(ImageProcessor_Ext *)self shouldScaleBuffer:input];
   self->_inputScaling = v10;
   if (self->_isYUV || self->_firstRotation || self->_secondRotation != 0 || v10)
   {
     if (!self->_rgbaBuffersAllocated)
     {
-      v11 = [(ImageProcessor_Ext *)self allocateRGBABuffersForBuffer:a3];
-      if (v11)
+      mapInternalBufferWithTexture = [(ImageProcessor_Ext *)self allocateRGBABuffersForBuffer:input];
+      if (mapInternalBufferWithTexture)
       {
-        return v11;
+        return mapInternalBufferWithTexture;
       }
     }
 
-    [(VEScaler *)self->_scaler downScaleFrameSource:a3 destination:self->_rgbaFirst rotate:self->_firstRotation waitForCompletion:v7];
-    [(VEScaler *)self->_scaler downScaleFrameSource:a4 destination:self->_rgbaSecond rotate:self->_secondRotation waitForCompletion:v7];
+    [(VEScaler *)self->_scaler downScaleFrameSource:input destination:self->_rgbaFirst rotate:self->_firstRotation waitForCompletion:completionCopy];
+    [(VEScaler *)self->_scaler downScaleFrameSource:secondInput destination:self->_rgbaSecond rotate:self->_secondRotation waitForCompletion:completionCopy];
     v12 = 1;
   }
 
   else
   {
     v12 = 0;
-    self->_rgbaFirst = a3;
-    self->_rgbaSecond = a4;
+    self->_rgbaFirst = input;
+    self->_rgbaSecond = secondInput;
   }
 
   self->_rgbaInternalGenerated = v12;
@@ -624,17 +624,17 @@ LABEL_25:
       rgbaDownscaleFirst = self->_rgbaDownscaleFirst;
     }
 
-    [(VEScaler *)self->_scaler downScaleFrameSource:a3 destination:rgbaDownscaleFirst rotate:self->_firstRotation waitForCompletion:v7];
-    [(VEScaler *)self->_scaler downScaleFrameSource:a4 destination:self->_rgbaDownscaleSecond rotate:self->_secondRotation waitForCompletion:v7];
+    [(VEScaler *)self->_scaler downScaleFrameSource:input destination:rgbaDownscaleFirst rotate:self->_firstRotation waitForCompletion:completionCopy];
+    [(VEScaler *)self->_scaler downScaleFrameSource:secondInput destination:self->_rgbaDownscaleSecond rotate:self->_secondRotation waitForCompletion:completionCopy];
   }
 
-  v11 = [(ImageProcessor_Ext *)self mapInternalBufferWithTexture];
-  if (v11)
+  mapInternalBufferWithTexture = [(ImageProcessor_Ext *)self mapInternalBufferWithTexture];
+  if (mapInternalBufferWithTexture)
   {
-    return v11;
+    return mapInternalBufferWithTexture;
   }
 
-  v21 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
   if (self->_opticalFlowOnlyMode)
   {
     goto LABEL_30;
@@ -646,7 +646,7 @@ LABEL_25:
     v22 = 136;
   }
 
-  v23 = [(Normalization_Ext *)self->_normalization rescaleFrameRangeToCommandBuffer:v21 input:*(&self->super.isa + v22) output:self->_unifiedRGBTexture];
+  v23 = [(Normalization_Ext *)self->_normalization rescaleFrameRangeToCommandBuffer:commandBuffer input:*(&self->super.isa + v22) output:self->_unifiedRGBTexture];
   if (v23)
   {
     v5 = v23;
@@ -657,11 +657,11 @@ LABEL_25:
 LABEL_30:
     if (self->_pseudoDepth || (OUTLINED_FUNCTION_2_1(), v13))
     {
-      [(Normalization_Ext *)self->_normalization normalizeFramesFirstInput:self->_rgbaDownscaleFirstTexture secondInput:self->_rgbaDownscaleSecondTexture packedFirst:self->_packedDownscaledFirstRGBTexture packedSecond:self->_packedDownscaledSecondRGBTexture commandBuffer:v21];
+      [(Normalization_Ext *)self->_normalization normalizeFramesFirstInput:self->_rgbaDownscaleFirstTexture secondInput:self->_rgbaDownscaleSecondTexture packedFirst:self->_packedDownscaledFirstRGBTexture packedSecond:self->_packedDownscaledSecondRGBTexture commandBuffer:commandBuffer];
     }
 
-    [v21 commit];
-    [v21 waitUntilScheduled];
+    [commandBuffer commit];
+    [commandBuffer waitUntilScheduled];
     v5 = 0;
   }
 

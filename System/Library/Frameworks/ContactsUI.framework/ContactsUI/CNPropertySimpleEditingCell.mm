@@ -4,57 +4,57 @@
 - (id)variableConstraints;
 - (void)dealloc;
 - (void)prepareForReuse;
-- (void)textFieldChanged:(id)a3;
-- (void)updateValueWithPropertyItem:(id)a3;
+- (void)textFieldChanged:(id)changed;
+- (void)updateValueWithPropertyItem:(id)item;
 @end
 
 @implementation CNPropertySimpleEditingCell
 
-- (void)textFieldChanged:(id)a3
+- (void)textFieldChanged:(id)changed
 {
-  v9 = [a3 object];
-  v4 = [(CNPropertyCell *)self propertyItem];
-  v5 = [v9 text];
-  v6 = [v4 valueForDisplayString:v5];
+  object = [changed object];
+  propertyItem = [(CNPropertyCell *)self propertyItem];
+  text = [object text];
+  v6 = [propertyItem valueForDisplayString:text];
 
-  v7 = [(CNPropertyCell *)self delegate];
-  v8 = [(CNPropertyCell *)self propertyItem];
-  [v7 propertyCell:self didUpdateItem:v8 withNewValue:v6];
+  delegate = [(CNPropertyCell *)self delegate];
+  propertyItem2 = [(CNPropertyCell *)self propertyItem];
+  [delegate propertyCell:self didUpdateItem:propertyItem2 withNewValue:v6];
 }
 
 - (void)prepareForReuse
 {
-  v3 = [(CNPropertySimpleEditingCell *)self textField];
-  [v3 resignFirstResponder];
+  textField = [(CNPropertySimpleEditingCell *)self textField];
+  [textField resignFirstResponder];
 
   v4.receiver = self;
   v4.super_class = CNPropertySimpleEditingCell;
   [(CNContactCell *)&v4 prepareForReuse];
 }
 
-- (void)updateValueWithPropertyItem:(id)a3
+- (void)updateValueWithPropertyItem:(id)item
 {
-  v9 = a3;
+  itemCopy = item;
   if (([(UITextField *)self->_textField isFirstResponder]& 1) == 0)
   {
-    if (v9)
+    if (itemCopy)
     {
-      v4 = [v9 editingStringValue];
-      [(UITextField *)self->_textField setText:v4];
+      editingStringValue = [itemCopy editingStringValue];
+      [(UITextField *)self->_textField setText:editingStringValue];
 
-      if ([v9 isReadonly] & 1) != 0 || (objc_msgSend(v9, "isSuggested"))
+      if ([itemCopy isReadonly] & 1) != 0 || (objc_msgSend(itemCopy, "isSuggested"))
       {
         v5 = 0;
       }
 
       else
       {
-        v5 = [v9 showValueWithLabelStyle] ^ 1;
+        v5 = [itemCopy showValueWithLabelStyle] ^ 1;
       }
 
       [(UITextField *)self->_textField setUserInteractionEnabled:v5];
-      v6 = [v9 placeholderString];
-      [(UITextField *)self->_textField setPlaceholder:v6];
+      placeholderString = [itemCopy placeholderString];
+      [(UITextField *)self->_textField setPlaceholder:placeholderString];
     }
 
     else
@@ -64,8 +64,8 @@
     }
 
     [(UITextField *)self->_textField _cnui_applyContactStyle];
-    v7 = [v9 property];
-    v8 = [CNKeyboardSettings newKeyboardSettingsForProperty:v7];
+    property = [itemCopy property];
+    v8 = [CNKeyboardSettings newKeyboardSettingsForProperty:property];
 
     [(UITextField *)self->_textField setKeyboardType:[CNKeyboardSettings keyboardTypeFromDictionary:v8]];
     [(UITextField *)self->_textField setAutocapitalizationType:[CNKeyboardSettings autocapitalizationTypeFromDictionary:v8]];
@@ -78,41 +78,41 @@
   v3 = MEMORY[0x1E695DF70];
   v20.receiver = self;
   v20.super_class = CNPropertySimpleEditingCell;
-  v4 = [(CNPropertyEditingCell *)&v20 variableConstraints];
-  v5 = [v3 arrayWithArray:v4];
+  variableConstraints = [(CNPropertyEditingCell *)&v20 variableConstraints];
+  v5 = [v3 arrayWithArray:variableConstraints];
 
-  v6 = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
+  ab_preferredContentSizeCategoryIsAccessibilityCategory = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
   v7 = MEMORY[0x1E696ACD8];
-  v8 = [(CNPropertySimpleEditingCell *)self valueView];
-  if (v6)
+  valueView = [(CNPropertySimpleEditingCell *)self valueView];
+  if (ab_preferredContentSizeCategoryIsAccessibilityCategory)
   {
-    v9 = [(CNPropertyEditingCell *)self labelView];
-    v10 = [v7 constraintWithItem:v8 attribute:3 relatedBy:0 toItem:v9 attribute:4 multiplier:1.0 constant:4.0];
+    labelView = [(CNPropertyEditingCell *)self labelView];
+    v10 = [v7 constraintWithItem:valueView attribute:3 relatedBy:0 toItem:labelView attribute:4 multiplier:1.0 constant:4.0];
     v11 = 1148846080;
   }
 
   else
   {
-    v12 = [(CNPropertySimpleEditingCell *)self contentView];
-    v13 = [v7 constraintWithItem:v8 attribute:10 relatedBy:0 toItem:v12 attribute:10 multiplier:1.0 constant:0.0];
+    contentView = [(CNPropertySimpleEditingCell *)self contentView];
+    v13 = [v7 constraintWithItem:valueView attribute:10 relatedBy:0 toItem:contentView attribute:10 multiplier:1.0 constant:0.0];
     [v5 addObject:v13];
 
-    v14 = [v5 lastObject];
+    lastObject = [v5 lastObject];
     LODWORD(v15) = 1148796928;
-    [v14 setPriority:v15];
+    [lastObject setPriority:v15];
 
     v16 = MEMORY[0x1E696ACD8];
-    v8 = [(CNPropertySimpleEditingCell *)self valueView];
-    v9 = [(CNPropertySimpleEditingCell *)self contentView];
-    v10 = [v16 constraintWithItem:v8 attribute:3 relatedBy:0 toItem:v9 attribute:15 multiplier:1.0 constant:0.0];
+    valueView = [(CNPropertySimpleEditingCell *)self valueView];
+    labelView = [(CNPropertySimpleEditingCell *)self contentView];
+    v10 = [v16 constraintWithItem:valueView attribute:3 relatedBy:0 toItem:labelView attribute:15 multiplier:1.0 constant:0.0];
     v11 = 1148813312;
   }
 
   [v5 addObject:v10];
 
-  v17 = [v5 lastObject];
+  lastObject2 = [v5 lastObject];
   LODWORD(v18) = v11;
-  [v17 setPriority:v18];
+  [lastObject2 setPriority:v18];
 
   return v5;
 }
@@ -122,18 +122,18 @@
   v3 = MEMORY[0x1E695DF70];
   v13.receiver = self;
   v13.super_class = CNPropertySimpleEditingCell;
-  v4 = [(CNPropertyEditingCell *)&v13 constantConstraints];
-  v5 = [v3 arrayWithArray:v4];
+  constantConstraints = [(CNPropertyEditingCell *)&v13 constantConstraints];
+  v5 = [v3 arrayWithArray:constantConstraints];
 
   v6 = MEMORY[0x1E696ACD8];
-  v7 = [(CNPropertySimpleEditingCell *)self contentView];
-  v8 = [(CNPropertySimpleEditingCell *)self valueView];
-  v9 = [v6 constraintWithItem:v7 attribute:16 relatedBy:0 toItem:v8 attribute:4 multiplier:1.0 constant:0.0];
+  contentView = [(CNPropertySimpleEditingCell *)self contentView];
+  valueView = [(CNPropertySimpleEditingCell *)self valueView];
+  v9 = [v6 constraintWithItem:contentView attribute:16 relatedBy:0 toItem:valueView attribute:4 multiplier:1.0 constant:0.0];
   [v5 addObject:v9];
 
-  v10 = [v5 lastObject];
+  lastObject = [v5 lastObject];
   LODWORD(v11) = 1148813312;
-  [v10 setPriority:v11];
+  [lastObject setPriority:v11];
 
   return v5;
 }
@@ -152,14 +152,14 @@
     [(UITextField *)self->_textField setAutocapitalizationType:0];
     [(UITextField *)self->_textField setAutocorrectionType:1];
     [(UITextField *)self->_textField setClearButtonMode:1];
-    v7 = [(UITextField *)self->_textField textInputTraits];
-    [v7 setReturnKeyGoesToNextResponder:1];
+    textInputTraits = [(UITextField *)self->_textField textInputTraits];
+    [textInputTraits setReturnKeyGoesToNextResponder:1];
 
     LODWORD(v8) = 1148846080;
     [(UITextField *)self->_textField setContentHuggingPriority:1 forAxis:v8];
     [(UITextField *)self->_textField _cnui_applyContactStyle];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:self selector:sel_textFieldChanged_ name:*MEMORY[0x1E69DE5C0] object:self->_textField];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_textFieldChanged_ name:*MEMORY[0x1E69DE5C0] object:self->_textField];
 
     textField = self->_textField;
   }
@@ -169,8 +169,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CNPropertySimpleEditingCell;

@@ -1,37 +1,37 @@
 @interface SOSClient
 - (BOOL)SOSMonitorModeSOSIsActive;
 - (id)SOSMonitorModeSOSIsActiveDescription;
-- (id)initSOSClientWithAccount:(id)a3;
+- (id)initSOSClientWithAccount:(id)account;
 - (void)SOSMonitorModeDisableSOS;
 - (void)SOSMonitorModeEnableSOS;
-- (void)SOSMonitorModeSOSIsActiveWithCallback:(id)a3;
-- (void)accountStatus:(id)a3;
-- (void)assertStashedAccountCredential:(id)a3;
-- (void)circleHash:(id)a3;
-- (void)getWatchdogParameters:(id)a3;
-- (void)ghostBustInfo:(id)a3;
-- (void)iCloudIdentityStatus:(id)a3;
-- (void)iCloudIdentityStatus_internal:(id)a3;
-- (void)importInitialSyncCredentials:(id)a3 complete:(id)a4;
-- (void)kvsPerformanceCounters:(id)a3;
-- (void)rateLimitingPerformanceCounters:(id)a3;
-- (void)removeV0Peers:(id)a3;
-- (void)rpcTriggerBackup:(id)a3 complete:(id)a4;
-- (void)rpcTriggerRingUpdate:(id)a3;
-- (void)rpcTriggerSync:(id)a3 complete:(id)a4;
-- (void)setWatchdogParmeters:(id)a3 complete:(id)a4;
-- (void)stashedCredentialPublicKey:(id)a3;
-- (void)userPublicKey:(id)a3;
+- (void)SOSMonitorModeSOSIsActiveWithCallback:(id)callback;
+- (void)accountStatus:(id)status;
+- (void)assertStashedAccountCredential:(id)credential;
+- (void)circleHash:(id)hash;
+- (void)getWatchdogParameters:(id)parameters;
+- (void)ghostBustInfo:(id)info;
+- (void)iCloudIdentityStatus:(id)status;
+- (void)iCloudIdentityStatus_internal:(id)status_internal;
+- (void)importInitialSyncCredentials:(id)credentials complete:(id)complete;
+- (void)kvsPerformanceCounters:(id)counters;
+- (void)rateLimitingPerformanceCounters:(id)counters;
+- (void)removeV0Peers:(id)peers;
+- (void)rpcTriggerBackup:(id)backup complete:(id)complete;
+- (void)rpcTriggerRingUpdate:(id)update;
+- (void)rpcTriggerSync:(id)sync complete:(id)complete;
+- (void)setWatchdogParmeters:(id)parmeters complete:(id)complete;
+- (void)stashedCredentialPublicKey:(id)key;
+- (void)userPublicKey:(id)key;
 @end
 
 @implementation SOSClient
 
 - (id)SOSMonitorModeSOSIsActiveDescription
 {
-  v2 = [(SOSClient *)self account];
-  v3 = [v2 SOSMonitorModeSOSIsActiveDescription];
+  account = [(SOSClient *)self account];
+  sOSMonitorModeSOSIsActiveDescription = [account SOSMonitorModeSOSIsActiveDescription];
 
-  return v3;
+  return sOSMonitorModeSOSIsActiveDescription;
 }
 
 - (BOOL)SOSMonitorModeSOSIsActive
@@ -55,212 +55,212 @@
   return self;
 }
 
-- (void)SOSMonitorModeSOSIsActiveWithCallback:(id)a3
+- (void)SOSMonitorModeSOSIsActiveWithCallback:(id)callback
 {
-  v4 = a3;
-  v5 = [(SOSClient *)self account];
+  callbackCopy = callback;
+  account = [(SOSClient *)self account];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10025A100;
   v7[3] = &unk_100347638;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performTransaction:v7];
+  v8 = callbackCopy;
+  v6 = callbackCopy;
+  [account performTransaction:v7];
 }
 
 - (void)SOSMonitorModeEnableSOS
 {
-  v3 = [(SOSClient *)self account];
+  account = [(SOSClient *)self account];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10025A238;
   v4[3] = &unk_1003475E8;
   v4[4] = self;
-  [v3 performTransaction:v4];
+  [account performTransaction:v4];
 }
 
 - (void)SOSMonitorModeDisableSOS
 {
-  v3 = [(SOSClient *)self account];
+  account = [(SOSClient *)self account];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10025A304;
   v4[3] = &unk_1003475E8;
   v4[4] = self;
-  [v3 performTransaction:v4];
+  [account performTransaction:v4];
 }
 
-- (void)removeV0Peers:(id)a3
+- (void)removeV0Peers:(id)peers
 {
-  v4 = a3;
-  v5 = [(SOSClient *)self account];
-  [v5 removeV0Peers:v4];
+  peersCopy = peers;
+  account = [(SOSClient *)self account];
+  [account removeV0Peers:peersCopy];
 }
 
-- (void)iCloudIdentityStatus_internal:(id)a3
+- (void)iCloudIdentityStatus_internal:(id)status_internal
 {
-  v4 = a3;
-  v5 = [(SOSClient *)self account];
-  [v5 iCloudIdentityStatus_internal:v4];
+  status_internalCopy = status_internal;
+  account = [(SOSClient *)self account];
+  [account iCloudIdentityStatus_internal:status_internalCopy];
 }
 
-- (void)rpcTriggerRingUpdate:(id)a3
+- (void)rpcTriggerRingUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   if ([(SOSClient *)self SOSMonitorModeSOSIsActive])
   {
-    v6 = [(SOSClient *)self account];
-    [v6 rpcTriggerRingUpdate:v4];
+    account = [(SOSClient *)self account];
+    [account rpcTriggerRingUpdate:updateCopy];
   }
 
   else
   {
     v5 = [NSError alloc];
-    v6 = [v5 initWithDomain:kSOSErrorDomain code:10 userInfo:&__NSDictionary0__struct];
-    v4[2](v4);
+    account = [v5 initWithDomain:kSOSErrorDomain code:10 userInfo:&__NSDictionary0__struct];
+    updateCopy[2](updateCopy);
   }
 }
 
-- (void)rpcTriggerBackup:(id)a3 complete:(id)a4
+- (void)rpcTriggerBackup:(id)backup complete:(id)complete
 {
-  v9 = a3;
-  v6 = a4;
+  backupCopy = backup;
+  completeCopy = complete;
   if ([(SOSClient *)self SOSMonitorModeSOSIsActive])
   {
-    v7 = [(SOSClient *)self account];
-    [v7 rpcTriggerBackup:v9 complete:v6];
+    account = [(SOSClient *)self account];
+    [account rpcTriggerBackup:backupCopy complete:completeCopy];
   }
 
   else
   {
     v8 = [NSError alloc];
-    v7 = [v8 initWithDomain:kSOSErrorDomain code:10 userInfo:&__NSDictionary0__struct];
-    v6[2](v6, v7);
+    account = [v8 initWithDomain:kSOSErrorDomain code:10 userInfo:&__NSDictionary0__struct];
+    completeCopy[2](completeCopy, account);
   }
 }
 
-- (void)accountStatus:(id)a3
+- (void)accountStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(SOSClient *)self account];
-  [v5 accountStatus:v4];
+  statusCopy = status;
+  account = [(SOSClient *)self account];
+  [account accountStatus:statusCopy];
 }
 
-- (void)iCloudIdentityStatus:(id)a3
+- (void)iCloudIdentityStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(SOSClient *)self account];
-  [v5 iCloudIdentityStatus:v4];
+  statusCopy = status;
+  account = [(SOSClient *)self account];
+  [account iCloudIdentityStatus:statusCopy];
 }
 
-- (void)ghostBustInfo:(id)a3
+- (void)ghostBustInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(SOSClient *)self account];
-  [v5 ghostBustInfo:v4];
+  infoCopy = info;
+  account = [(SOSClient *)self account];
+  [account ghostBustInfo:infoCopy];
 }
 
-- (void)setWatchdogParmeters:(id)a3 complete:(id)a4
+- (void)setWatchdogParmeters:(id)parmeters complete:(id)complete
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SOSClient *)self account];
-  [v8 setWatchdogParmeters:v7 complete:v6];
+  completeCopy = complete;
+  parmetersCopy = parmeters;
+  account = [(SOSClient *)self account];
+  [account setWatchdogParmeters:parmetersCopy complete:completeCopy];
 }
 
-- (void)getWatchdogParameters:(id)a3
+- (void)getWatchdogParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [(SOSClient *)self account];
-  [v5 getWatchdogParameters:v4];
+  parametersCopy = parameters;
+  account = [(SOSClient *)self account];
+  [account getWatchdogParameters:parametersCopy];
 }
 
-- (void)rpcTriggerSync:(id)a3 complete:(id)a4
+- (void)rpcTriggerSync:(id)sync complete:(id)complete
 {
-  v8 = a3;
-  v6 = a4;
+  syncCopy = sync;
+  completeCopy = complete;
   if ([(SOSClient *)self SOSMonitorModeSOSIsActive])
   {
-    v7 = [(SOSClient *)self account];
-    [v7 rpcTriggerSync:v8 complete:v6];
+    account = [(SOSClient *)self account];
+    [account rpcTriggerSync:syncCopy complete:completeCopy];
   }
 
   else
   {
-    v6[2](v6, 1, 0);
+    completeCopy[2](completeCopy, 1, 0);
   }
 }
 
-- (void)importInitialSyncCredentials:(id)a3 complete:(id)a4
+- (void)importInitialSyncCredentials:(id)credentials complete:(id)complete
 {
-  v8 = a3;
-  v6 = a4;
+  credentialsCopy = credentials;
+  completeCopy = complete;
   if ([(SOSClient *)self checkEntitlement:@"com.apple.private.security.initial-sync"])
   {
-    v7 = [(SOSClient *)self account];
-    [v7 importInitialSyncCredentials:v8 complete:v6];
+    account = [(SOSClient *)self account];
+    [account importInitialSyncCredentials:credentialsCopy complete:completeCopy];
   }
 
   else
   {
-    v7 = [NSError errorWithDomain:kSOSErrorDomain code:7 userInfo:0];
-    v6[2](v6, 0, v7);
+    account = [NSError errorWithDomain:kSOSErrorDomain code:7 userInfo:0];
+    completeCopy[2](completeCopy, 0, account);
   }
 }
 
-- (void)circleHash:(id)a3
+- (void)circleHash:(id)hash
 {
-  v4 = a3;
-  v5 = [(SOSClient *)self account];
-  [v5 circleHash:v4];
+  hashCopy = hash;
+  account = [(SOSClient *)self account];
+  [account circleHash:hashCopy];
 }
 
-- (void)assertStashedAccountCredential:(id)a3
+- (void)assertStashedAccountCredential:(id)credential
 {
-  v4 = a3;
-  v5 = [(SOSClient *)self account];
-  [v5 assertStashedAccountCredential:v4];
+  credentialCopy = credential;
+  account = [(SOSClient *)self account];
+  [account assertStashedAccountCredential:credentialCopy];
 }
 
-- (void)stashedCredentialPublicKey:(id)a3
+- (void)stashedCredentialPublicKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SOSClient *)self account];
-  [v5 stashedCredentialPublicKey:v4];
+  keyCopy = key;
+  account = [(SOSClient *)self account];
+  [account stashedCredentialPublicKey:keyCopy];
 }
 
-- (void)rateLimitingPerformanceCounters:(id)a3
+- (void)rateLimitingPerformanceCounters:(id)counters
 {
-  v4 = a3;
-  v5 = [(SOSClient *)self account];
-  [v5 rateLimitingPerformanceCounters:v4];
+  countersCopy = counters;
+  account = [(SOSClient *)self account];
+  [account rateLimitingPerformanceCounters:countersCopy];
 }
 
-- (void)kvsPerformanceCounters:(id)a3
+- (void)kvsPerformanceCounters:(id)counters
 {
-  v4 = a3;
-  v5 = [(SOSClient *)self account];
-  [v5 kvsPerformanceCounters:v4];
+  countersCopy = counters;
+  account = [(SOSClient *)self account];
+  [account kvsPerformanceCounters:countersCopy];
 }
 
-- (void)userPublicKey:(id)a3
+- (void)userPublicKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SOSClient *)self account];
-  [v5 userPublicKey:v4];
+  keyCopy = key;
+  account = [(SOSClient *)self account];
+  [account userPublicKey:keyCopy];
 }
 
-- (id)initSOSClientWithAccount:(id)a3
+- (id)initSOSClientWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = SOSClient;
   v6 = [(SOSClient *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;

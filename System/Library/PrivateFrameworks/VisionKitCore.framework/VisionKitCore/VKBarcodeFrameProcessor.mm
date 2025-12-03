@@ -3,18 +3,18 @@
 - (VKBarcodeFrameProcessorConfiguration)configuration;
 - (__n128)warpTransform;
 - (id)_barcodeRequest;
-- (id)_performRecognition:(uint64_t)a1;
+- (id)_performRecognition:(uint64_t)recognition;
 - (id)resultHandler;
-- (void)_performAssociation:(void *)a1;
-- (void)_processRecognitionResults:(void *)a3 forFrame:;
+- (void)_performAssociation:(void *)association;
+- (void)_processRecognitionResults:(void *)results forFrame:;
 - (void)_removeAllItems;
-- (void)applyWarpTransform:(__n128)a3;
-- (void)processFrame:(id)a3;
+- (void)applyWarpTransform:(__n128)transform;
+- (void)processFrame:(id)frame;
 - (void)reset;
-- (void)sendResult:(void *)a1;
-- (void)setConfiguration:(id)a3;
-- (void)setResultHandler:(id)a3;
-- (void)setWarpTransform:(uint64_t)a1;
+- (void)sendResult:(void *)result;
+- (void)setConfiguration:(id)configuration;
+- (void)setResultHandler:(id)handler;
+- (void)setWarpTransform:(uint64_t)transform;
 @end
 
 @implementation VKBarcodeFrameProcessor
@@ -35,9 +35,9 @@
     *v2->_anon_50 = *MEMORY[0x1E69E9B10];
     *&v2->_anon_50[16] = v6;
     *&v2->_anon_50[32] = *(v5 + 32);
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     recognizedItems = v2->_recognizedItems;
-    v2->_recognizedItems = v7;
+    v2->_recognizedItems = array;
   }
 
   return v2;
@@ -52,20 +52,20 @@
   return v3;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(VKBarcodeFrameProcessor *)self configuration];
-  v6 = [v5 isEqual:v4];
+  configurationCopy = configuration;
+  configuration = [(VKBarcodeFrameProcessor *)self configuration];
+  v6 = [configuration isEqual:configurationCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [v4 copy];
+    v7 = [configurationCopy copy];
     v9 = MEMORY[0x1E69E9820];
     v10 = 3221225472;
     v11 = __44__VKBarcodeFrameProcessor_setConfiguration___block_invoke;
     v12 = &unk_1E7BE4768;
-    v13 = self;
+    selfCopy = self;
     v14 = v7;
     v8 = v7;
     vk_performWhileLocked(self, &v9);
@@ -83,16 +83,16 @@
   return v4;
 }
 
-- (void)setResultHandler:(id)a3
+- (void)setResultHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44__VKBarcodeFrameProcessor_setResultHandler___block_invoke;
   v6[3] = &unk_1E7BE47B8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   vk_performWhileLocked(self, v6);
 }
 
@@ -104,7 +104,7 @@ void __44__VKBarcodeFrameProcessor_setResultHandler___block_invoke(uint64_t a1)
   *(v3 + 136) = v2;
 }
 
-- (void)applyWarpTransform:(__n128)a3
+- (void)applyWarpTransform:(__n128)transform
 {
   v12 = 0;
   v13 = &v12;
@@ -117,17 +117,17 @@ void __44__VKBarcodeFrameProcessor_setResultHandler___block_invoke(uint64_t a1)
   v6[2] = __46__VKBarcodeFrameProcessor_applyWarpTransform___block_invoke;
   v6[3] = &unk_1E7BE4808;
   v7 = a2;
-  v8 = a3;
+  transformCopy = transform;
   v9 = a4;
-  v10 = a1;
+  selfCopy = self;
   v11 = &v12;
-  vk_performWhileLocked(a1, v6);
+  vk_performWhileLocked(self, v6);
   v5 = objc_alloc_init(VKRecognizedItemFrameProcessorResult);
   [(VKRecognizedItemFrameProcessorResult *)v5 setAllItems:v13[5]];
   [(VKRecognizedItemFrameProcessorResult *)v5 setAddedItems:MEMORY[0x1E695E0F0]];
   [(VKRecognizedItemFrameProcessorResult *)v5 setUpdatedItems:v13[5]];
   [(VKRecognizedItemFrameProcessorResult *)v5 setRemovedItems:MEMORY[0x1E695E0F0]];
-  [(VKBarcodeFrameProcessor *)a1 sendResult:v5];
+  [(VKBarcodeFrameProcessor *)self sendResult:v5];
 
   _Block_object_dispose(&v12, 8);
 }
@@ -211,15 +211,15 @@ __n128 __44__VKBarcodeFrameProcessor_setWarpTransform___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)processFrame:(id)a3
+- (void)processFrame:(id)frame
 {
-  v4 = a3;
-  v5 = [(VKBarcodeFrameProcessor *)self configuration];
+  frameCopy = frame;
+  configuration = [(VKBarcodeFrameProcessor *)self configuration];
   currentConfig = self->_currentConfig;
-  self->_currentConfig = v5;
+  self->_currentConfig = configuration;
 
-  v7 = [(VKBarcodeFrameProcessor *)self _performRecognition:v4];
-  [(VKBarcodeFrameProcessor *)self _processRecognitionResults:v7 forFrame:v4];
+  v7 = [(VKBarcodeFrameProcessor *)self _performRecognition:frameCopy];
+  [(VKBarcodeFrameProcessor *)self _processRecognitionResults:v7 forFrame:frameCopy];
 }
 
 - (void)reset
@@ -230,23 +230,23 @@ __n128 __44__VKBarcodeFrameProcessor_setWarpTransform___block_invoke(uint64_t a1
   [(VKBarcodeFrameProcessor *)&self->super.super.isa _removeAllItems];
 }
 
-- (void)_performAssociation:(void *)a1
+- (void)_performAssociation:(void *)association
 {
   v3 = a2;
-  if (a1)
+  if (association)
   {
     v33 = 0;
     v34 = &v33;
     v35 = 0x3032000000;
     v36 = __Block_byref_object_copy__18;
     v37 = __Block_byref_object_dispose__18;
-    v38 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v27 = 0;
     v28 = &v27;
     v29 = 0x3032000000;
     v30 = __Block_byref_object_copy__18;
     v31 = __Block_byref_object_dispose__18;
-    v32 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v21 = 0;
     v22 = &v21;
     v23 = 0x3032000000;
@@ -258,24 +258,24 @@ __n128 __44__VKBarcodeFrameProcessor_setWarpTransform___block_invoke(uint64_t a1
     v17 = 0x3032000000;
     v18 = __Block_byref_object_copy__18;
     v19 = __Block_byref_object_dispose__18;
-    v20 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v5 = MEMORY[0x1E69E9820];
     v6 = 3221225472;
     v7 = __47__VKBarcodeFrameProcessor__performAssociation___block_invoke;
     v8 = &unk_1E7BE4858;
     v9 = v3;
-    v10 = a1;
+    associationCopy = association;
     v11 = &v27;
     v12 = &v15;
     v13 = &v33;
     v14 = &v21;
-    vk_performWhileLocked(a1, &v5);
+    vk_performWhileLocked(association, &v5);
     v4 = objc_alloc_init(VKRecognizedItemFrameProcessorResult);
     [(VKRecognizedItemFrameProcessorResult *)v4 setAllItems:v16[5], v5, v6, v7, v8];
     [(VKRecognizedItemFrameProcessorResult *)v4 setAddedItems:v34[5]];
     [(VKRecognizedItemFrameProcessorResult *)v4 setUpdatedItems:v28[5]];
     [(VKRecognizedItemFrameProcessorResult *)v4 setRemovedItems:v22[5]];
-    [(VKBarcodeFrameProcessor *)a1 sendResult:v4];
+    [(VKBarcodeFrameProcessor *)association sendResult:v4];
 
     _Block_object_dispose(&v15, 8);
     _Block_object_dispose(&v21, 8);
@@ -363,35 +363,35 @@ LABEL_13:
   return [*(*(a1 + 40) + 128) addObjectsFromArray:*(*(*(a1 + 56) + 8) + 40)];
 }
 
-- (void)sendResult:(void *)a1
+- (void)sendResult:(void *)result
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (result)
   {
     if (!v3)
     {
       [VKAssert handleFailedAssertWithCondition:"result" functionName:"[VKBarcodeFrameProcessor sendResult:]" simulateCrash:0 showAlert:0 format:@"Expecting a non-nil result object."];
     }
 
-    v5 = [a1 resultHandler];
-    if (v5)
+    resultHandler = [result resultHandler];
+    if (resultHandler)
     {
-      v6 = [a1 resultHandlerQueue];
-      if (v6)
+      resultHandlerQueue = [result resultHandlerQueue];
+      if (resultHandlerQueue)
       {
         OUTLINED_FUNCTION_0_1();
         v7[1] = 3221225472;
         v7[2] = __38__VKBarcodeFrameProcessor_sendResult___block_invoke;
         v7[3] = &unk_1E7BE47E0;
-        v9 = v5;
+        v9 = resultHandler;
         v8 = v4;
-        dispatch_async(v6, v7);
+        dispatch_async(resultHandlerQueue, v7);
       }
 
       else
       {
-        (v5)[2](v5, v4);
+        (resultHandler)[2](resultHandler, v4);
       }
     }
   }
@@ -399,20 +399,20 @@ LABEL_13:
 
 - (__n128)warpTransform
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  [a1 lock];
-  v3 = a1[5];
-  [a1 unlock];
+  [self lock];
+  v3 = self[5];
+  [self unlock];
   return v3;
 }
 
-- (void)setWarpTransform:(uint64_t)a1
+- (void)setWarpTransform:(uint64_t)transform
 {
-  if (a1)
+  if (transform)
   {
     OUTLINED_FUNCTION_0_1();
     v5[1] = 3221225472;
@@ -426,24 +426,24 @@ LABEL_13:
   }
 }
 
-- (id)_performRecognition:(uint64_t)a1
+- (id)_performRecognition:(uint64_t)recognition
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (recognition)
   {
     v3 = a2;
-    [VKBarcodeFrameProcessor setWarpTransform:a1];
-    v4 = [(VKBarcodeFrameProcessor *)a1 _barcodeRequest];
-    v5 = [v3 info];
-    [v5 regionOfInterest];
-    [v4 setRegionOfInterest:?];
+    [VKBarcodeFrameProcessor setWarpTransform:recognition];
+    _barcodeRequest = [(VKBarcodeFrameProcessor *)recognition _barcodeRequest];
+    info = [v3 info];
+    [info regionOfInterest];
+    [_barcodeRequest setRegionOfInterest:?];
 
-    v6 = [v3 imageRequestHandler];
+    imageRequestHandler = [v3 imageRequestHandler];
 
-    v19[0] = v4;
+    v19[0] = _barcodeRequest;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
     v15 = 0;
-    [v6 performRequests:v7 error:&v15];
+    [imageRequestHandler performRequests:v7 error:&v15];
     v8 = v15;
 
     if (v8)
@@ -456,49 +456,49 @@ LABEL_13:
         _os_log_error_impl(&dword_1B4335000, v9, OS_LOG_TYPE_ERROR, "Error performing recognition request. %@", buf, 0xCu);
       }
 
-      v10 = MEMORY[0x1E695E0F0];
+      results = MEMORY[0x1E695E0F0];
     }
 
     else
     {
-      v10 = [v4 results];
-      if (![*(a1 + 144) isForSingleItem] || !objc_msgSend(v10, "count"))
+      results = [_barcodeRequest results];
+      if (![*(recognition + 144) isForSingleItem] || !objc_msgSend(results, "count"))
       {
         goto LABEL_10;
       }
 
-      [*(a1 + 144) comparisonPoint];
-      v9 = VKVNRectClosestToPoint(v10, v11, v12);
+      [*(recognition + 144) comparisonPoint];
+      v9 = VKVNRectClosestToPoint(results, v11, v12);
       v16 = v9;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
 
-      v10 = v13;
+      results = v13;
     }
 
 LABEL_10:
     goto LABEL_11;
   }
 
-  v10 = 0;
+  results = 0;
 LABEL_11:
 
-  return v10;
+  return results;
 }
 
-- (void)_processRecognitionResults:(void *)a3 forFrame:
+- (void)_processRecognitionResults:(void *)results forFrame:
 {
   v26 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1 && ([a1 isCancelled] & 1) == 0)
+  resultsCopy = results;
+  if (self && ([self isCancelled] & 1) == 0)
   {
     v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
-    [a1 lock];
-    v19 = a1[6];
-    v20 = a1[5];
-    v18 = a1[7];
-    v17 = a1;
-    [a1 unlock];
+    [self lock];
+    v19 = self[6];
+    v20 = self[5];
+    v18 = self[7];
+    selfCopy = self;
+    [self unlock];
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
@@ -520,8 +520,8 @@ LABEL_11:
 
           v13 = *(*(&v21 + 1) + 8 * i);
           v14 = [VKRecognizedBarcode alloc];
-          v15 = [v6 info];
-          v16 = [(VKRecognizedBarcode *)v14 initWithFrameInfo:v15 barcodeObservation:v13];
+          info = [resultsCopy info];
+          v16 = [(VKRecognizedBarcode *)v14 initWithFrameInfo:info barcodeObservation:v13];
 
           [(VKRecognizedItem *)v16 applyHomographyWarpTransform:*&v20, *&v19, *&v18];
           [v7 addObject:v16];
@@ -533,34 +533,34 @@ LABEL_11:
       while (v10);
     }
 
-    [(VKBarcodeFrameProcessor *)v17 _performAssociation:v7];
+    [(VKBarcodeFrameProcessor *)selfCopy _performAssociation:v7];
   }
 }
 
 - (void)_removeAllItems
 {
-  if (a1)
+  if (self)
   {
-    [a1 lock];
-    v3 = [a1[16] copy];
-    [a1[16] removeAllObjects];
-    [a1 unlock];
+    [self lock];
+    v3 = [self[16] copy];
+    [self[16] removeAllObjects];
+    [self unlock];
     if ([v3 count])
     {
       v2 = objc_alloc_init(VKRecognizedItemFrameProcessorResult);
       [(VKRecognizedItemFrameProcessorResult *)v2 setRemovedItems:v3];
-      [(VKBarcodeFrameProcessor *)a1 sendResult:v2];
+      [(VKBarcodeFrameProcessor *)self sendResult:v2];
     }
   }
 }
 
 - (id)_barcodeRequest
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc_init(MEMORY[0x1E69844A0]);
-    v3 = [*(a1 + 144) symbologies];
-    [v2 setSymbologies:v3];
+    symbologies = [*(self + 144) symbologies];
+    [v2 setSymbologies:symbologies];
   }
 
   else

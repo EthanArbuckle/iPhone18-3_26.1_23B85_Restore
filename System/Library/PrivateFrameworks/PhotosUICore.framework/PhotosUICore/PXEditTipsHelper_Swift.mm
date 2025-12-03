@@ -1,9 +1,9 @@
 @interface PXEditTipsHelper_Swift
-+ (BOOL)isTipValid:(id)a3;
++ (BOOL)isTipValid:(id)valid;
 + (PXEditTipsHelper_Swift)shared;
-+ (void)setTip:(id)a3 isPresentable:(BOOL)a4;
-+ (void)setTipActionPerformed:(id)a3;
-+ (void)setTipsPresentationDelegate:(id)a3;
++ (void)setTip:(id)tip isPresentable:(BOOL)presentable;
++ (void)setTipActionPerformed:(id)performed;
++ (void)setTipsPresentationDelegate:(id)delegate;
 - (PXEditTipsHelper_Swift)init;
 @end
 
@@ -21,16 +21,16 @@
   return v3;
 }
 
-+ (void)setTipsPresentationDelegate:(id)a3
++ (void)setTipsPresentationDelegate:(id)delegate
 {
   swift_getObjCClassMetadata();
   swift_unknownObjectRetain();
   static PXEditTipsHelper.setTipsPresentationDelegate(_:)();
 }
 
-+ (void)setTip:(id)a3 isPresentable:(BOOL)a4
++ (void)setTip:(id)tip isPresentable:(BOOL)presentable
 {
-  v4 = a4;
+  presentableCopy = presentable;
   v5 = sub_1A524C674();
   v7 = v6;
   v8 = sub_1A3FA19C0();
@@ -38,7 +38,7 @@
   if (v9 || (sub_1A524EAB4() & 1) != 0)
   {
 
-    sub_1A3FA19EC(v4);
+    sub_1A3FA19EC(presentableCopy);
   }
 
   else
@@ -58,17 +58,17 @@
       }
     }
 
-    sub_1A3FA2110(v4);
+    sub_1A3FA2110(presentableCopy);
   }
 }
 
-+ (void)setTipActionPerformed:(id)a3
++ (void)setTipActionPerformed:(id)performed
 {
   v3 = sub_1A524C674();
   _s12PhotosUICore16PXEditTipsHelperC21setTipActionPerformedyySSFZ_0(v3, v4);
 }
 
-+ (BOOL)isTipValid:(id)a3
++ (BOOL)isTipValid:(id)valid
 {
   v3 = sub_1A524C674();
   v5 = _s12PhotosUICore16PXEditTipsHelperC10isTipValidySbSSFZ_0(v3, v4);

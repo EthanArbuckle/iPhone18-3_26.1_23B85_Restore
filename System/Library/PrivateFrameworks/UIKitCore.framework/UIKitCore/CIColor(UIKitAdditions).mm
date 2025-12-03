@@ -7,9 +7,9 @@
 - (uint64_t)initWithColor:()UIKitAdditions
 {
   v5 = a3;
-  v6 = [a3 CGColor];
+  cGColor = [a3 CGColor];
 
-  return [a1 initWithCGColor:v6];
+  return [self initWithCGColor:cGColor];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface _UIUpdateVisibleCellsContext
 - (_UIUpdateVisibleCellsContext)init;
 - (id)description;
-- (void)addPreferredAttributes:(uint64_t)a1;
+- (void)addPreferredAttributes:(uint64_t)attributes;
 @end
 
 @implementation _UIUpdateVisibleCellsContext
@@ -35,24 +35,24 @@
   return v2;
 }
 
-- (void)addPreferredAttributes:(uint64_t)a1
+- (void)addPreferredAttributes:(uint64_t)attributes
 {
-  if (!a1)
+  if (!attributes)
   {
     return;
   }
 
   if (!a2)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:sel_addPreferredAttributes_ object:a1 file:@"UICollectionViewLayout.m" lineNumber:3080 description:{@"Invalid parameter not satisfying: %@", @"attributes"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel_addPreferredAttributes_ object:attributes file:@"UICollectionViewLayout.m" lineNumber:3080 description:{@"Invalid parameter not satisfying: %@", @"attributes"}];
   }
 
   [a2 size];
   v5 = v4;
   v7 = v6;
-  v12 = [a2 indexPath];
-  if (v12)
+  indexPath = [a2 indexPath];
+  if (indexPath)
   {
     if (a2)
     {
@@ -62,25 +62,25 @@
 
   else
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:sel_addPreferredAttributes_ object:a1 file:@"UICollectionViewLayout.m" lineNumber:3084 description:{@"Received preferred attributes without an index path. Attributes: %@", a2}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:sel_addPreferredAttributes_ object:attributes file:@"UICollectionViewLayout.m" lineNumber:3084 description:{@"Received preferred attributes without an index path. Attributes: %@", a2}];
 
     if (a2)
     {
 LABEL_6:
       if (a2[288])
       {
-        v8 = *(a1 + 8);
+        v8 = *(attributes + 8);
         v9 = [MEMORY[0x1E696B098] valueWithCGSize:{v5, v7}];
         [v8 addObject:v9];
 
-        [*(a1 + 24) addObject:v12];
+        [*(attributes + 24) addObject:indexPath];
       }
     }
   }
 
-  [*(a1 + 32) addIndex:{objc_msgSend(v12, "section")}];
-  [*(a1 + 16) addObject:a2];
+  [*(attributes + 32) addIndex:{objc_msgSend(indexPath, "section")}];
+  [*(attributes + 16) addObject:a2];
 }
 
 - (id)description

@@ -1,10 +1,10 @@
 @interface CNSaveRequestVerifier
-+ (BOOL)_areDirectPropertiesOfSaveRequest:(id)a3 authorizedForSavingWithContext:(id)a4 error:(id *)a5;
-+ (BOOL)_arePropertiesOfContacts:(id)a3 inSaveRequest:(id)a4 authorizedForSavingWithContext:(id)a5 error:(id *)a6;
-+ (BOOL)_isEditingOfContacts:(id)a3 inSaveRequest:(id)a4 authorizedForSavingWithContext:(id)a5 error:(id *)a6;
-+ (BOOL)isSaveRequest:(id)a3 authorizedForSavingWithContext:(id)a4 error:(id *)a5;
-+ (BOOL)isValidSaveRequest:(id)a3 error:(id *)a4;
-+ (id)insertedAndUpdatedContactsForSaveRequest:(id)a3;
++ (BOOL)_areDirectPropertiesOfSaveRequest:(id)request authorizedForSavingWithContext:(id)context error:(id *)error;
++ (BOOL)_arePropertiesOfContacts:(id)contacts inSaveRequest:(id)request authorizedForSavingWithContext:(id)context error:(id *)error;
++ (BOOL)_isEditingOfContacts:(id)contacts inSaveRequest:(id)request authorizedForSavingWithContext:(id)context error:(id *)error;
++ (BOOL)isSaveRequest:(id)request authorizedForSavingWithContext:(id)context error:(id *)error;
++ (BOOL)isValidSaveRequest:(id)request error:(id *)error;
++ (id)insertedAndUpdatedContactsForSaveRequest:(id)request;
 + (id)os_log;
 @end
 
@@ -31,22 +31,22 @@ uint64_t __31__CNSaveRequestVerifier_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)insertedAndUpdatedContactsForSaveRequest:(id)a3
++ (id)insertedAndUpdatedContactsForSaveRequest:(id)request
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  requestCopy = request;
   v4 = MEMORY[0x1E695DF70];
-  v5 = [v3 updatedContacts];
-  v6 = [v4 arrayWithArray:v5];
+  updatedContacts = [requestCopy updatedContacts];
+  v6 = [v4 arrayWithArray:updatedContacts];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [v3 addedContactsByContainerIdentifier];
-  v8 = [v7 allValues];
+  addedContactsByContainerIdentifier = [requestCopy addedContactsByContainerIdentifier];
+  allValues = [addedContactsByContainerIdentifier allValues];
 
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v9 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -57,13 +57,13 @@ uint64_t __31__CNSaveRequestVerifier_os_log__block_invoke()
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         [v6 addObjectsFromArray:*(*(&v14 + 1) + 8 * i)];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
@@ -72,11 +72,11 @@ uint64_t __31__CNSaveRequestVerifier_os_log__block_invoke()
   return v6;
 }
 
-+ (BOOL)isValidSaveRequest:(id)a3 error:(id *)a4
++ (BOOL)isValidSaveRequest:(id)request error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = [a1 insertedAndUpdatedContactsForSaveRequest:a3];
-  v6 = [MEMORY[0x1E695DF70] array];
+  v5 = [self insertedAndUpdatedContactsForSaveRequest:request];
+  array = [MEMORY[0x1E695DF70] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -106,7 +106,7 @@ uint64_t __31__CNSaveRequestVerifier_os_log__block_invoke()
       v14 = v19;
       if (!v13)
       {
-        [v6 _cn_addNonNilObject:v14];
+        [array _cn_addNonNilObject:v14];
         v10 = 0;
       }
     }
@@ -124,13 +124,13 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  v16 = [CNErrorFactory validationErrorByAggregatingValidationErrors:v6];
+  v16 = [CNErrorFactory validationErrorByAggregatingValidationErrors:array];
   v8 = v16;
-  if (a4)
+  if (error)
   {
     v17 = v16;
     v15 = 0;
-    *a4 = v8;
+    *error = v8;
   }
 
   else
@@ -143,30 +143,30 @@ LABEL_17:
   return v15;
 }
 
-+ (BOOL)isSaveRequest:(id)a3 authorizedForSavingWithContext:(id)a4 error:(id *)a5
++ (BOOL)isSaveRequest:(id)request authorizedForSavingWithContext:(id)context error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  requestCopy = request;
+  contextCopy = context;
   v22 = 0;
-  v10 = [a1 _areDirectPropertiesOfSaveRequest:v8 authorizedForSavingWithContext:v9 error:&v22];
+  v10 = [self _areDirectPropertiesOfSaveRequest:requestCopy authorizedForSavingWithContext:contextCopy error:&v22];
   v11 = v22;
   if (v10)
   {
-    v12 = [a1 insertedAndUpdatedContactsForSaveRequest:v8];
+    v12 = [self insertedAndUpdatedContactsForSaveRequest:requestCopy];
     v21 = v11;
-    v13 = [a1 _arePropertiesOfContacts:v12 inSaveRequest:v8 authorizedForSavingWithContext:v9 error:&v21];
+    v13 = [self _arePropertiesOfContacts:v12 inSaveRequest:requestCopy authorizedForSavingWithContext:contextCopy error:&v21];
     v14 = v21;
 
     if (v13)
     {
-      v15 = [v8 deletedContacts];
-      v16 = [v12 arrayByAddingObjectsFromArray:v15];
+      deletedContacts = [requestCopy deletedContacts];
+      v16 = [v12 arrayByAddingObjectsFromArray:deletedContacts];
 
       v20 = v14;
-      v17 = [a1 _isEditingOfContacts:v16 inSaveRequest:v8 authorizedForSavingWithContext:v9 error:&v20];
+      v17 = [self _isEditingOfContacts:v16 inSaveRequest:requestCopy authorizedForSavingWithContext:contextCopy error:&v20];
       v11 = v20;
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_10;
       }
@@ -176,7 +176,7 @@ LABEL_17:
     {
       v17 = 0;
       v11 = v14;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_10;
       }
@@ -187,7 +187,7 @@ LABEL_17:
   {
     v12 = 0;
     v17 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -196,7 +196,7 @@ LABEL_17:
   if ((v17 & 1) == 0)
   {
     v18 = v11;
-    *a5 = v11;
+    *error = v11;
   }
 
 LABEL_10:
@@ -204,67 +204,67 @@ LABEL_10:
   return v17;
 }
 
-+ (BOOL)_areDirectPropertiesOfSaveRequest:(id)a3 authorizedForSavingWithContext:(id)a4 error:(id *)a5
++ (BOOL)_areDirectPropertiesOfSaveRequest:(id)request authorizedForSavingWithContext:(id)context error:(id *)error
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  requestCopy = request;
   v9 = MEMORY[0x1E695DF70];
-  v10 = a4;
-  v11 = [v9 array];
-  LOBYTE(v9) = [v10 isClientFirstOrSecondParty];
+  contextCopy = context;
+  array = [v9 array];
+  LOBYTE(v9) = [contextCopy isClientFirstOrSecondParty];
 
   if ((v9 & 1) == 0)
   {
-    if ([v8 ignoresGuardianRestrictions])
+    if ([requestCopy ignoresGuardianRestrictions])
     {
-      [v11 addObject:@"ignoresGuardianRestrictions"];
+      [array addObject:@"ignoresGuardianRestrictions"];
     }
 
-    v12 = [v8 meCardIdentifier];
+    meCardIdentifier = [requestCopy meCardIdentifier];
 
-    if (v12)
+    if (meCardIdentifier)
     {
-      [v11 addObject:@"meCardIdentifier"];
+      [array addObject:@"meCardIdentifier"];
     }
 
-    v13 = [v8 deletedContainers];
-    v14 = [v13 count];
+    deletedContainers = [requestCopy deletedContainers];
+    v14 = [deletedContainers count];
 
     if (v14)
     {
-      [v11 addObject:@"deletedContainers"];
+      [array addObject:@"deletedContainers"];
     }
 
-    v15 = [v8 addedContainersByParentContainerIdentifier];
-    v16 = [v15 count];
+    addedContainersByParentContainerIdentifier = [requestCopy addedContainersByParentContainerIdentifier];
+    v16 = [addedContainersByParentContainerIdentifier count];
 
     if (v16)
     {
-      [v11 addObject:@"addedContainersByParentContainerIdentifier"];
+      [array addObject:@"addedContainersByParentContainerIdentifier"];
     }
 
-    v17 = [v8 addedAccountContainersByParentContainerIdentifier];
-    v18 = [v17 count];
+    addedAccountContainersByParentContainerIdentifier = [requestCopy addedAccountContainersByParentContainerIdentifier];
+    v18 = [addedAccountContainersByParentContainerIdentifier count];
 
     if (v18)
     {
-      [v11 addObject:@"addedAccountContainersByParentContainerIdentifier"];
+      [array addObject:@"addedAccountContainersByParentContainerIdentifier"];
     }
   }
 
-  v19 = [v11 count];
+  v19 = [array count];
   if (v19)
   {
-    v20 = [a1 os_log];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    os_log = [self os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
-      [CNSaveRequestVerifier _areDirectPropertiesOfSaveRequest:v11 authorizedForSavingWithContext:v20 error:?];
+      [CNSaveRequestVerifier _areDirectPropertiesOfSaveRequest:array authorizedForSavingWithContext:os_log error:?];
     }
 
-    v30[0] = v11;
+    v30[0] = array;
     v29[0] = @"CNKeyPaths";
     v29[1] = @"CNInvalidRecords";
-    v28 = v8;
+    v28 = requestCopy;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v28 count:1];
     v30[1] = v21;
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:2];
@@ -272,10 +272,10 @@ LABEL_10:
 
     v24 = v23;
     v25 = v24;
-    if (a5)
+    if (error)
     {
       v26 = v24;
-      *a5 = v25;
+      *error = v25;
     }
   }
 
@@ -287,29 +287,29 @@ LABEL_10:
   return v19 == 0;
 }
 
-+ (BOOL)_arePropertiesOfContacts:(id)a3 inSaveRequest:(id)a4 authorizedForSavingWithContext:(id)a5 error:(id *)a6
++ (BOOL)_arePropertiesOfContacts:(id)contacts inSaveRequest:(id)request authorizedForSavingWithContext:(id)context error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if ([a5 isClientFirstOrSecondParty] & 1) != 0 || (objc_msgSend(v10, "ignoresContactProviderRestrictions"))
+  contactsCopy = contacts;
+  requestCopy = request;
+  if ([context isClientFirstOrSecondParty] & 1) != 0 || (objc_msgSend(requestCopy, "ignoresContactProviderRestrictions"))
   {
     v11 = 1;
   }
 
   else
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v13 = v9;
+    v13 = contactsCopy;
     v14 = [v13 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v14)
     {
-      v24 = v10;
-      v25 = v9;
+      v24 = requestCopy;
+      v25 = contactsCopy;
       v15 = *v28;
       v16 = 1;
       while (2)
@@ -322,14 +322,14 @@ LABEL_10:
           }
 
           v18 = *(*(&v27 + 1) + 8 * i);
-          if (a6)
+          if (error)
           {
             v26 = 0;
             v19 = [CNContactVerifier arePropertiesOfContactAuthorized:v18 error:&v26];
             v20 = v26;
             if (!v19)
             {
-              [v12 addObject:v20];
+              [array addObject:v20];
               v16 = 0;
             }
           }
@@ -354,20 +354,20 @@ LABEL_10:
       {
         v14 = 0;
         v11 = 1;
-        v10 = v24;
-        v9 = v25;
+        requestCopy = v24;
+        contactsCopy = v25;
         goto LABEL_24;
       }
 
 LABEL_19:
-      v21 = [CNErrorFactory validationErrorByAggregatingValidationErrors:v12];
+      v21 = [CNErrorFactory validationErrorByAggregatingValidationErrors:array];
       v14 = v21;
-      v10 = v24;
-      if (a6)
+      requestCopy = v24;
+      if (error)
       {
         v22 = v21;
         v11 = 0;
-        *a6 = v14;
+        *error = v14;
       }
 
       else
@@ -375,7 +375,7 @@ LABEL_19:
         v11 = 0;
       }
 
-      v9 = v25;
+      contactsCopy = v25;
     }
 
     else
@@ -390,13 +390,13 @@ LABEL_24:
   return v11;
 }
 
-+ (BOOL)_isEditingOfContacts:(id)a3 inSaveRequest:(id)a4 authorizedForSavingWithContext:(id)a5 error:(id *)a6
++ (BOOL)_isEditingOfContacts:(id)contacts inSaveRequest:(id)request authorizedForSavingWithContext:(id)context error:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v35 = a5;
-  if ([v35 isClientFirstOrSecondParty] && (objc_msgSend(v10, "ignoresGuardianRestrictions") & 1) != 0)
+  contactsCopy = contacts;
+  requestCopy = request;
+  contextCopy = context;
+  if ([contextCopy isClientFirstOrSecondParty] && (objc_msgSend(requestCopy, "ignoresGuardianRestrictions") & 1) != 0)
   {
     v11 = 0;
 LABEL_34:
@@ -409,7 +409,7 @@ LABEL_34:
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v12 = v9;
+  v12 = contactsCopy;
   v11 = [v12 countByEnumeratingWithState:&v37 objects:v46 count:16];
   if (!v11)
   {
@@ -417,9 +417,9 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  v34 = a6;
-  v31 = v10;
-  v32 = v9;
+  errorCopy = error;
+  v31 = requestCopy;
+  v32 = contactsCopy;
   v36 = 0;
   v13 = *v38;
   v33 = 1;
@@ -439,18 +439,18 @@ LABEL_34:
 
       if (v17)
       {
-        v18 = [v15 snapshot];
+        snapshot = [v15 snapshot];
         if (![CNDowntimeWhitelist isWhitelistedContact:v15])
         {
           v44 = @"downtimeWhitelist";
           v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v44 count:1];
-          if (([v18 areKeysAvailable:v21] & 1) == 0)
+          if (([snapshot areKeysAvailable:v21] & 1) == 0)
           {
 
             goto LABEL_25;
           }
 
-          v22 = [CNDowntimeWhitelist isWhitelistedContact:v18];
+          v22 = [CNDowntimeWhitelist isWhitelistedContact:snapshot];
 
           if (!v22)
           {
@@ -458,18 +458,18 @@ LABEL_34:
           }
         }
 
-        if (![v35 isClientFirstOrSecondParty])
+        if (![contextCopy isClientFirstOrSecondParty])
         {
           goto LABEL_21;
         }
 
-        if (v18)
+        if (snapshot)
         {
           v43 = @"downtimeWhitelist";
           v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v43 count:1];
-          if ([v18 areKeysAvailable:v19])
+          if ([snapshot areKeysAvailable:v19])
           {
-            v20 = [CNDowntimeWhitelist isWhitelistedContact:v18];
+            v20 = [CNDowntimeWhitelist isWhitelistedContact:snapshot];
 
             if (!v20)
             {
@@ -482,20 +482,20 @@ LABEL_34:
           }
 
 LABEL_21:
-          if (!v34)
+          if (!errorCopy)
           {
 
             goto LABEL_31;
           }
 
-          v23 = v36;
+          array = v36;
           if (!v36)
           {
-            v23 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
           }
 
-          v36 = v23;
-          [v23 addObject:v15];
+          v36 = array;
+          [array addObject:v15];
           v33 = 0;
         }
 
@@ -518,14 +518,14 @@ LABEL_25:
   {
     v11 = 0;
     v24 = 1;
-    v10 = v31;
-    v9 = v32;
+    requestCopy = v31;
+    contactsCopy = v32;
     goto LABEL_39;
   }
 
 LABEL_31:
-  v10 = v31;
-  v9 = v32;
+  requestCopy = v31;
+  contactsCopy = v32;
   if ([v36 count])
   {
     v41 = @"CNInvalidRecords";
@@ -542,11 +542,11 @@ LABEL_31:
 
   v28 = v27;
   v11 = v28;
-  if (v34)
+  if (errorCopy)
   {
     v29 = v28;
     v24 = 0;
-    *v34 = v11;
+    *errorCopy = v11;
   }
 
   else

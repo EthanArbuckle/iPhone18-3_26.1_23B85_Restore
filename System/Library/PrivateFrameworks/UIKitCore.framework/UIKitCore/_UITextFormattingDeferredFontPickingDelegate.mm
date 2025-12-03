@@ -1,16 +1,16 @@
 @interface _UITextFormattingDeferredFontPickingDelegate
 - (UIResponderStandardEditActions)editResponder;
 - (void)_removeAssociatedDelegate;
-- (void)fontPickerViewControllerDidCancel:(id)a3;
-- (void)fontPickerViewControllerDidPickFont:(id)a3;
-- (void)setEditResponder:(id)a3;
+- (void)fontPickerViewControllerDidCancel:(id)cancel;
+- (void)fontPickerViewControllerDidPickFont:(id)font;
+- (void)setEditResponder:(id)responder;
 @end
 
 @implementation _UITextFormattingDeferredFontPickingDelegate
 
-- (void)setEditResponder:(id)a3
+- (void)setEditResponder:(id)responder
 {
-  obj = a3;
+  obj = responder;
   objc_setAssociatedObject(obj, &_UITextFormattingDeferredFontPickingDelegateIdentifier, self, 1);
   objc_storeWeak(&self->_editResponder, obj);
 }
@@ -26,38 +26,38 @@
   }
 }
 
-- (void)fontPickerViewControllerDidCancel:(id)a3
+- (void)fontPickerViewControllerDidCancel:(id)cancel
 {
-  [a3 dismissViewControllerAnimated:1 completion:0];
+  [cancel dismissViewControllerAnimated:1 completion:0];
 
   [(_UITextFormattingDeferredFontPickingDelegate *)self _removeAssociatedDelegate];
 }
 
-- (void)fontPickerViewControllerDidPickFont:(id)a3
+- (void)fontPickerViewControllerDidPickFont:(id)font
 {
-  v4 = a3;
-  v5 = [v4 selectedFontDescriptor];
-  if (v5)
+  fontCopy = font;
+  selectedFontDescriptor = [fontCopy selectedFontDescriptor];
+  if (selectedFontDescriptor)
   {
     v6 = MEMORY[0x1E695DF20];
     [(_UITextFormattingDeferredFontPickingDelegate *)self fontSize];
-    v7 = [off_1E70ECC18 fontWithDescriptor:v5 size:?];
+    v7 = [off_1E70ECC18 fontWithDescriptor:selectedFontDescriptor size:?];
     v8 = [v6 dictionaryWithObject:v7 forKey:*off_1E70EC918];
 
     if (v8)
     {
-      v9 = [(_UITextFormattingDeferredFontPickingDelegate *)self editResponder];
+      editResponder = [(_UITextFormattingDeferredFontPickingDelegate *)self editResponder];
 
-      if (v9)
+      if (editResponder)
       {
-        v10 = [(_UITextFormattingDeferredFontPickingDelegate *)self editResponder];
-        SendUpdatesToEditResponder(v8, v10);
+        editResponder2 = [(_UITextFormattingDeferredFontPickingDelegate *)self editResponder];
+        SendUpdatesToEditResponder(v8, editResponder2);
       }
     }
   }
 
   v11 = dispatch_time(0, 300000000);
-  objc_initWeak(&location, v4);
+  objc_initWeak(&location, fontCopy);
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __84___UITextFormattingDeferredFontPickingDelegate_fontPickerViewControllerDidPickFont___block_invoke;

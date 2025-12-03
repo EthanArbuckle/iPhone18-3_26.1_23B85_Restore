@@ -1,16 +1,16 @@
 @interface PPKVOObserver
-+ (PPKVOObserver)observerWithName:(id)a3 object:(id)a4 key:(id)a5 handler:(id)a6;
++ (PPKVOObserver)observerWithName:(id)name object:(id)object key:(id)key handler:(id)handler;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation PPKVOObserver
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (self->_observee == a4)
+  if (self->_observee == object)
   {
-    if ([a3 isEqualToString:self->_key])
+    if ([path isEqualToString:self->_key])
     {
       handler = self->_handler;
       if (handler)
@@ -31,17 +31,17 @@
   [(PPKVOObserver *)&v3 dealloc];
 }
 
-+ (PPKVOObserver)observerWithName:(id)a3 object:(id)a4 key:(id)a5 handler:(id)a6
++ (PPKVOObserver)observerWithName:(id)name object:(id)object key:(id)key handler:(id)handler
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  handlerCopy = handler;
+  keyCopy = key;
+  objectCopy = object;
+  nameCopy = name;
   v13 = [PPKVOObserver alloc];
-  v14 = v12;
-  v15 = v10;
-  v16 = v11;
-  v17 = v9;
+  v14 = nameCopy;
+  v15 = keyCopy;
+  v16 = objectCopy;
+  v17 = handlerCopy;
   if (v13)
   {
     v31.receiver = v13;
@@ -50,9 +50,9 @@
     v13 = v18;
     if (v18)
     {
-      objc_storeStrong(v18 + 1, a3);
-      objc_storeStrong(&v13->_key, a5);
-      objc_storeStrong(&v13->_observee, a4);
+      objc_storeStrong(v18 + 1, name);
+      objc_storeStrong(&v13->_key, key);
+      objc_storeStrong(&v13->_observee, object);
       v19 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v20 = dispatch_queue_attr_make_with_qos_class(v19, QOS_CLASS_UTILITY, 0);
 

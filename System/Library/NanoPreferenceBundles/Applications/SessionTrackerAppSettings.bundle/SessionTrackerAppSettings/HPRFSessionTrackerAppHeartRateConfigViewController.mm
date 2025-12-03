@@ -4,25 +4,25 @@
 - (NSArray)tableStructure;
 - (WOHeartRateConfiguration)configuration;
 - (WOHeartRateConfigurationRequest)request;
-- (id)_footerForSection:(int64_t)a3;
+- (id)_footerForSection:(int64_t)section;
 - (id)_maximumHeartRateDisplayValue;
 - (id)_restingHeartRateDisplayValue;
-- (id)_zoneRangeDisplayValueForSpecifier:(id)a3;
+- (id)_zoneRangeDisplayValueForSpecifier:(id)specifier;
 - (id)applicationBundleIdentifier;
 - (id)localizedPaneTitle;
 - (id)specifiers;
-- (void)_insertConfigurationTypeSpecifiers:(id)a3;
-- (void)_insertMaximumHeartRateSpecifiers:(id)a3;
-- (void)_insertRestingHeartRateSpecifiers:(id)a3;
-- (void)_insertSpecifiers:(id)a3 forSection:(int64_t)a4;
-- (void)_insertZonesSpecifiers:(id)a3;
-- (void)_mainThread_handleLoadingActiveConfiguration:(id)a3 inactiveConfiguration:(id)a4;
+- (void)_insertConfigurationTypeSpecifiers:(id)specifiers;
+- (void)_insertMaximumHeartRateSpecifiers:(id)specifiers;
+- (void)_insertRestingHeartRateSpecifiers:(id)specifiers;
+- (void)_insertSpecifiers:(id)specifiers forSection:(int64_t)section;
+- (void)_insertZonesSpecifiers:(id)specifiers;
+- (void)_mainThread_handleLoadingActiveConfiguration:(id)configuration inactiveConfiguration:(id)inactiveConfiguration;
 - (void)_pressedAutomaticPreference;
 - (void)_pressedManualPreference;
-- (void)_pressedZoneForSpecifier:(id)a3;
+- (void)_pressedZoneForSpecifier:(id)specifier;
 - (void)_restingHeartRateButtonTap;
-- (void)setConfiguration:(id)a3;
-- (void)updateZone:(id)a3 withNewZone:(id)a4;
+- (void)setConfiguration:(id)configuration;
+- (void)updateZone:(id)zone withNewZone:(id)newZone;
 - (void)viewDidLoad;
 @end
 
@@ -36,7 +36,7 @@
   v3 = +[NRPairedDeviceRegistry sharedInstance];
   v4 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v5 = [v3 getAllDevicesWithArchivedDevicesMatching:v4];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
 
   v7 = FIUIHealthStoreForDevice();
   v8 = [[FIUIUnitManager alloc] initWithHealthStore:v7];
@@ -56,50 +56,50 @@
 - (id)applicationBundleIdentifier
 {
   v2 = [NSBundle bundleForClass:objc_opt_class()];
-  v3 = [v2 bundleIdentifier];
+  bundleIdentifier = [v2 bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
-- (void)_mainThread_handleLoadingActiveConfiguration:(id)a3 inactiveConfiguration:(id)a4
+- (void)_mainThread_handleLoadingActiveConfiguration:(id)configuration inactiveConfiguration:(id)inactiveConfiguration
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  inactiveConfigurationCopy = inactiveConfiguration;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v8 = [v6 configurationType];
-  if (v8 == &dword_0 + 1)
+  configurationType = [configurationCopy configurationType];
+  if (configurationType == &dword_0 + 1)
   {
-    [(HPRFSessionTrackerAppHeartRateConfigViewController *)self setManualConfiguration:v6];
+    [(HPRFSessionTrackerAppHeartRateConfigViewController *)self setManualConfiguration:configurationCopy];
   }
 
-  else if (!v8)
+  else if (!configurationType)
   {
-    [(HPRFSessionTrackerAppHeartRateConfigViewController *)self setAutomaticConfiguration:v6];
+    [(HPRFSessionTrackerAppHeartRateConfigViewController *)self setAutomaticConfiguration:configurationCopy];
   }
 
-  v9 = [v7 configurationType];
-  if (v9 == &dword_0 + 1)
+  configurationType2 = [inactiveConfigurationCopy configurationType];
+  if (configurationType2 == &dword_0 + 1)
   {
-    [(HPRFSessionTrackerAppHeartRateConfigViewController *)self setManualConfiguration:v7];
+    [(HPRFSessionTrackerAppHeartRateConfigViewController *)self setManualConfiguration:inactiveConfigurationCopy];
   }
 
-  else if (!v9)
+  else if (!configurationType2)
   {
-    [(HPRFSessionTrackerAppHeartRateConfigViewController *)self setAutomaticConfiguration:v7];
+    [(HPRFSessionTrackerAppHeartRateConfigViewController *)self setAutomaticConfiguration:inactiveConfigurationCopy];
   }
 
-  [(HPRFSessionTrackerAppHeartRateConfigViewController *)self setConfiguration:v6];
+  [(HPRFSessionTrackerAppHeartRateConfigViewController *)self setConfiguration:configurationCopy];
   _HKInitializeLogging();
   v10 = HKLogWorkouts;
   if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_INFO))
   {
     v11 = v10;
-    v12 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self automaticConfiguration];
-    v13 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self manualConfiguration];
+    automaticConfiguration = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self automaticConfiguration];
+    manualConfiguration = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self manualConfiguration];
     v14 = 138412546;
-    v15 = v12;
+    v15 = automaticConfiguration;
     v16 = 2112;
-    v17 = v13;
+    v17 = manualConfiguration;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "Loaded heart rate configurations automatic %@, manual %@", &v14, 0x16u);
   }
 
@@ -134,10 +134,10 @@
 
       else
       {
-        v4 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
+        configuration = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
 
         v3 = &off_38748;
-        if (!v4)
+        if (!configuration)
         {
           v3 = &off_38730;
         }
@@ -158,27 +158,27 @@
   return v6;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  objc_storeWeak(&self->_configuration, a3);
+  objc_storeWeak(&self->_configuration, configuration);
   tableStructure = self->_tableStructure;
   self->_tableStructure = 0;
 }
 
 - (BOOL)_hasData
 {
-  v2 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self manualConfiguration];
-  v3 = v2 != 0;
+  manualConfiguration = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self manualConfiguration];
+  v3 = manualConfiguration != 0;
 
   return v3;
 }
 
 - (BOOL)_shouldManuallyConfigure
 {
-  v2 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
-  v3 = [v2 isEditable];
+  configuration = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
+  isEditable = [configuration isEditable];
 
-  return v3;
+  return isEditable;
 }
 
 - (id)specifiers
@@ -192,8 +192,8 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self tableStructure];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  tableStructure = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self tableStructure];
+  v7 = [tableStructure countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -205,7 +205,7 @@
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(tableStructure);
         }
 
         -[HPRFSessionTrackerAppHeartRateConfigViewController _insertSpecifiers:forSection:](self, "_insertSpecifiers:forSection:", v3, [*(*(&v17 + 1) + 8 * v10) integerValue]);
@@ -213,7 +213,7 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [tableStructure countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -230,105 +230,105 @@
   return v14;
 }
 
-- (void)_insertSpecifiers:(id)a3 forSection:(int64_t)a4
+- (void)_insertSpecifiers:(id)specifiers forSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 > 1)
+  specifiersCopy = specifiers;
+  v7 = specifiersCopy;
+  if (section > 1)
   {
-    if (a4 == 2)
+    if (section == 2)
     {
-      v8 = v6;
-      v6 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self _insertMaximumHeartRateSpecifiers:v6];
+      v8 = specifiersCopy;
+      specifiersCopy = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self _insertMaximumHeartRateSpecifiers:specifiersCopy];
     }
 
     else
     {
-      if (a4 != 3)
+      if (section != 3)
       {
         goto LABEL_11;
       }
 
-      v8 = v6;
-      v6 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self _insertZonesSpecifiers:v6];
+      v8 = specifiersCopy;
+      specifiersCopy = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self _insertZonesSpecifiers:specifiersCopy];
     }
   }
 
-  else if (a4)
+  else if (section)
   {
-    if (a4 != 1)
+    if (section != 1)
     {
       goto LABEL_11;
     }
 
-    v8 = v6;
-    v6 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self _insertRestingHeartRateSpecifiers:v6];
+    v8 = specifiersCopy;
+    specifiersCopy = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self _insertRestingHeartRateSpecifiers:specifiersCopy];
   }
 
   else
   {
-    v8 = v6;
-    v6 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self _insertConfigurationTypeSpecifiers:v6];
+    v8 = specifiersCopy;
+    specifiersCopy = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self _insertConfigurationTypeSpecifiers:specifiersCopy];
   }
 
   v7 = v8;
 LABEL_11:
 
-  _objc_release_x1(v6, v7);
+  _objc_release_x1(specifiersCopy, v7);
 }
 
-- (void)_insertConfigurationTypeSpecifiers:(id)a3
+- (void)_insertConfigurationTypeSpecifiers:(id)specifiers
 {
-  v21 = a3;
+  specifiersCopy = specifiers;
   v4 = [PSSpecifier groupSpecifierWithID:@"HEART_RATE_CONFIGURATION_TYPE_GROUP_ID"];
   [v4 setProperty:&__kCFBooleanTrue forKey:PSIsRadioGroupKey];
   v5 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self _footerForSection:0];
   [v4 setProperty:v5 forKey:PSFooterTextGroupKey];
 
-  [v21 addObject:v4];
+  [specifiersCopy addObject:v4];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"HEART_RATE_CONFIGURATION_AUTOMATIC" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
   v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:0 get:0 detail:0 cell:3 edit:0];
 
   [v8 setIdentifier:@"HEART_RATE_CONFIGURATION_TYPE_AUTOMATIC_ID"];
   [v8 setButtonAction:"_pressedAutomaticPreference"];
-  v9 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
-  v10 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self automaticConfiguration];
+  configuration = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
+  automaticConfiguration = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self automaticConfiguration];
 
-  if (v9 == v10)
+  if (configuration == automaticConfiguration)
   {
     [v4 setProperty:v8 forKey:PSRadioGroupCheckedSpecifierKey];
   }
 
-  [v21 addObject:v8];
+  [specifiersCopy addObject:v8];
   v11 = [NSBundle bundleForClass:objc_opt_class()];
   v12 = [v11 localizedStringForKey:@"HEART_RATE_CONFIGURATION_MANUAL" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
   v13 = [PSSpecifier preferenceSpecifierNamed:v12 target:self set:0 get:0 detail:0 cell:3 edit:0];
 
   [v13 setIdentifier:@"HEART_RATE_CONFIGURATION_TYPE_MANUAL_ID"];
   [v13 setButtonAction:"_pressedManualPreference"];
-  v14 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
-  v15 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self manualConfiguration];
+  configuration2 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
+  manualConfiguration = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self manualConfiguration];
 
-  if (v14 == v15)
+  if (configuration2 == manualConfiguration)
   {
     [v4 setProperty:v13 forKey:PSRadioGroupCheckedSpecifierKey];
   }
 
-  [v21 addObject:v13];
-  v16 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
+  [specifiersCopy addObject:v13];
+  configuration3 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
 
-  if (!v16)
+  if (!configuration3)
   {
     v17 = [PSSpecifier groupSpecifierWithID:@"FitnessAppButtonGroup"];
 
-    [v21 addObject:v17];
+    [specifiersCopy addObject:v17];
     v18 = [NSBundle bundleForClass:objc_opt_class()];
     v19 = [v18 localizedStringForKey:@"FITNESS_APP_BUTTON_NAME" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
     v20 = [PSSpecifier preferenceSpecifierNamed:v19 target:self set:0 get:0 detail:0 cell:13 edit:0];
 
     [v20 setButtonAction:"_restingHeartRateButtonTap"];
-    [v21 addObject:v20];
+    [specifiersCopy addObject:v20];
     v4 = v17;
     v13 = v20;
   }
@@ -349,36 +349,36 @@ LABEL_11:
   [v3 openURL:v4 options:&__NSDictionary0__struct completionHandler:&stru_35220];
 }
 
-- (void)_insertRestingHeartRateSpecifiers:(id)a3
+- (void)_insertRestingHeartRateSpecifiers:(id)specifiers
 {
-  v4 = a3;
+  specifiersCopy = specifiers;
   v9 = [PSSpecifier groupSpecifierWithID:@"RESTING_HEART_RATE_GROUP_ID"];
   v5 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self _footerForSection:1];
   [v9 setProperty:v5 forKey:PSFooterTextGroupKey];
 
-  [v4 addObject:v9];
+  [specifiersCopy addObject:v9];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"HEART_RATE_CONFIGURATION_RESTING_TITLE" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
   v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:0 get:"_restingHeartRateDisplayValue" detail:0 cell:4 edit:0];
 
-  [v4 addObject:v8];
+  [specifiersCopy addObject:v8];
 }
 
-- (void)_insertMaximumHeartRateSpecifiers:(id)a3
+- (void)_insertMaximumHeartRateSpecifiers:(id)specifiers
 {
-  v4 = a3;
+  specifiersCopy = specifiers;
   v8 = [PSSpecifier groupSpecifierWithID:@"RESTING_HEART_RATE_GROUP_ID"];
-  [v4 addObject:v8];
+  [specifiersCopy addObject:v8];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"HEART_RATE_CONFIGURATION_MAXIMUM_TITLE" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
   v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:0 get:"_maximumHeartRateDisplayValue" detail:0 cell:4 edit:0];
 
-  [v4 addObject:v7];
+  [specifiersCopy addObject:v7];
 }
 
-- (void)_insertZonesSpecifiers:(id)a3
+- (void)_insertZonesSpecifiers:(id)specifiers
 {
-  v32 = a3;
+  specifiersCopy = specifiers;
   v4 = &_s11SeymourCore12DependenciesC7resolve14failureHandlerxxycSg_tlF_ptr;
   v5 = [PSSpecifier groupSpecifierWithID:@"RESTING_HEART_RATE_GROUP_ID"];
   v6 = &_s11SeymourCore12DependenciesC7resolve14failureHandlerxxycSg_tlF_ptr;
@@ -388,10 +388,10 @@ LABEL_11:
   [v5 setName:v9];
 
   v30 = v5;
-  [v32 addObject:v5];
-  v10 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
-  v11 = [v10 zones];
-  v12 = [v11 count];
+  [specifiersCopy addObject:v5];
+  configuration = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
+  zones = [configuration zones];
+  v12 = [zones count];
 
   if (v12)
   {
@@ -406,8 +406,8 @@ LABEL_11:
       v18 = v17 = v6;
       v19 = v13 + 1;
       v20 = [NSString localizedStringWithFormat:v18, v13 + 1];
-      v21 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
-      if ([v21 isEditable])
+      configuration2 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
+      if ([configuration2 isEditable])
       {
         v22 = 2;
       }
@@ -420,20 +420,20 @@ LABEL_11:
       v23 = [v14 preferenceSpecifierNamed:v20 target:self set:0 get:"_zoneRangeDisplayValueForSpecifier:" detail:0 cell:v22 edit:0];
 
       [v23 setProperty:&__kCFBooleanTrue forKey:v31];
-      v24 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
-      v25 = [v24 zones];
-      v26 = [v25 objectAtIndexedSubscript:v13];
+      configuration3 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
+      zones2 = [configuration3 zones];
+      v26 = [zones2 objectAtIndexedSubscript:v13];
       [v23 setUserInfo:v26];
 
       v6 = v17;
       v7 = v16;
 
       [v23 setButtonAction:"_pressedZoneForSpecifier:"];
-      [v32 addObject:v23];
+      [specifiersCopy addObject:v23];
 
-      v27 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
-      v28 = [v27 zones];
-      v29 = [v28 count];
+      configuration4 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
+      zones3 = [configuration4 zones];
+      v29 = [zones3 count];
 
       v4 = &_s11SeymourCore12DependenciesC7resolve14failureHandlerxxycSg_tlF_ptr;
       ++v13;
@@ -443,25 +443,25 @@ LABEL_11:
   }
 }
 
-- (id)_footerForSection:(int64_t)a3
+- (id)_footerForSection:(int64_t)section
 {
-  if (a3 == 1)
+  if (section == 1)
   {
     _HKInitializeLogging();
     v12 = HKLogWorkouts;
     if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_INFO))
     {
       v13 = v12;
-      v14 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
+      configuration = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
       v19[0] = 67109120;
-      v19[1] = [v14 hasDefaultRestingHeartRate];
+      v19[1] = [configuration hasDefaultRestingHeartRate];
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_INFO, "Resting heart rate section: %d", v19, 8u);
     }
 
-    v15 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
-    v16 = [v15 hasDefaultRestingHeartRate];
+    configuration2 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
+    hasDefaultRestingHeartRate = [configuration2 hasDefaultRestingHeartRate];
 
-    if (v16)
+    if (hasDefaultRestingHeartRate)
     {
       v9 = [NSBundle bundleForClass:objc_opt_class()];
       v10 = v9;
@@ -474,14 +474,14 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  if (a3)
+  if (section)
   {
     goto LABEL_11;
   }
 
-  v4 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
+  configuration3 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
 
-  if (!v4)
+  if (!configuration3)
   {
     v9 = [NSBundle bundleForClass:objc_opt_class()];
     v10 = v9;
@@ -489,10 +489,10 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v5 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
-  v6 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self automaticConfiguration];
+  configuration4 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
+  automaticConfiguration = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self automaticConfiguration];
 
-  if (v5 == v6)
+  if (configuration4 == automaticConfiguration)
   {
     v9 = [NSBundle bundleForClass:objc_opt_class()];
     v10 = v9;
@@ -500,10 +500,10 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v7 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
-  v8 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self manualConfiguration];
+  configuration5 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
+  manualConfiguration = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self manualConfiguration];
 
-  if (v7 != v8)
+  if (configuration5 != manualConfiguration)
   {
     goto LABEL_11;
   }
@@ -521,14 +521,14 @@ LABEL_15:
 
 - (void)_pressedAutomaticPreference
 {
-  v3 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
-  v4 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self automaticConfiguration];
+  configuration = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
+  automaticConfiguration = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self automaticConfiguration];
 
-  if (v3 != v4)
+  if (configuration != automaticConfiguration)
   {
     [WOHeartRateConfiguration setConfigurationType:0];
-    v5 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self automaticConfiguration];
-    [(HPRFSessionTrackerAppHeartRateConfigViewController *)self setConfiguration:v5];
+    automaticConfiguration2 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self automaticConfiguration];
+    [(HPRFSessionTrackerAppHeartRateConfigViewController *)self setConfiguration:automaticConfiguration2];
 
     [(HPRFSessionTrackerAppHeartRateConfigViewController *)self reloadSpecifiers];
   }
@@ -536,14 +536,14 @@ LABEL_15:
 
 - (void)_pressedManualPreference
 {
-  v3 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
-  v4 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self manualConfiguration];
+  configuration = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
+  manualConfiguration = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self manualConfiguration];
 
-  if (v3 != v4)
+  if (configuration != manualConfiguration)
   {
     [WOHeartRateConfiguration setConfigurationType:1];
-    v5 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self manualConfiguration];
-    [(HPRFSessionTrackerAppHeartRateConfigViewController *)self setConfiguration:v5];
+    manualConfiguration2 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self manualConfiguration];
+    [(HPRFSessionTrackerAppHeartRateConfigViewController *)self setConfiguration:manualConfiguration2];
 
     [(HPRFSessionTrackerAppHeartRateConfigViewController *)self reloadSpecifiers];
   }
@@ -551,61 +551,61 @@ LABEL_15:
 
 - (id)_restingHeartRateDisplayValue
 {
-  v3 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self formattingManager];
-  v4 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
-  v5 = [v4 restingHeartRate];
-  v6 = [v3 localizedStringWithHeartRate:v5 unitStyle:3];
+  formattingManager = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self formattingManager];
+  configuration = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
+  restingHeartRate = [configuration restingHeartRate];
+  v6 = [formattingManager localizedStringWithHeartRate:restingHeartRate unitStyle:3];
 
   return v6;
 }
 
 - (id)_maximumHeartRateDisplayValue
 {
-  v3 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self formattingManager];
-  v4 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
-  v5 = [v4 maximumHeartRate];
-  v6 = [v3 localizedStringWithHeartRate:v5 unitStyle:3];
+  formattingManager = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self formattingManager];
+  configuration = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
+  maximumHeartRate = [configuration maximumHeartRate];
+  v6 = [formattingManager localizedStringWithHeartRate:maximumHeartRate unitStyle:3];
 
   return v6;
 }
 
-- (id)_zoneRangeDisplayValueForSpecifier:(id)a3
+- (id)_zoneRangeDisplayValueForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
+  specifierCopy = specifier;
+  userInfo = [specifierCopy userInfo];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v4 userInfo];
+    userInfo2 = [specifierCopy userInfo];
 
-    if (!v6)
+    if (!userInfo2)
     {
       v16 = 0;
       goto LABEL_19;
     }
 
-    v7 = [v6 lowerDisplayBound];
+    lowerDisplayBound = [userInfo2 lowerDisplayBound];
 
-    if (v7)
+    if (lowerDisplayBound)
     {
-      v8 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self formattingManager];
-      v9 = [v6 lowerDisplayBound];
-      v7 = [v8 localizedStringWithHeartRate:v9 unitStyle:0];
+      formattingManager = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self formattingManager];
+      lowerDisplayBound2 = [userInfo2 lowerDisplayBound];
+      lowerDisplayBound = [formattingManager localizedStringWithHeartRate:lowerDisplayBound2 unitStyle:0];
     }
 
-    v10 = [v6 upperDisplayBound];
+    upperDisplayBound = [userInfo2 upperDisplayBound];
 
-    if (v10)
+    if (upperDisplayBound)
     {
-      v11 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self formattingManager];
-      v12 = [v6 upperDisplayBound];
-      v13 = [v11 localizedStringWithHeartRate:v12 unitStyle:0];
+      formattingManager2 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self formattingManager];
+      upperDisplayBound2 = [userInfo2 upperDisplayBound];
+      v13 = [formattingManager2 localizedStringWithHeartRate:upperDisplayBound2 unitStyle:0];
 
-      if (v7 && v13)
+      if (lowerDisplayBound && v13)
       {
         v14 = [NSBundle bundleForClass:objc_opt_class()];
         v15 = [v14 localizedStringForKey:@"HEART_RATE_CONFIGURATION_ZONE_MANUAL_VALUE" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
-        [NSString stringWithFormat:v15, v7, v13];
+        [NSString stringWithFormat:v15, lowerDisplayBound, v13];
         v16 = LABEL_13:;
 
         goto LABEL_16;
@@ -620,7 +620,7 @@ LABEL_15:
       }
     }
 
-    if (!v7)
+    if (!lowerDisplayBound)
     {
       v16 = 0;
       goto LABEL_17;
@@ -628,7 +628,7 @@ LABEL_15:
 
     v13 = [NSBundle bundleForClass:objc_opt_class()];
     v14 = [v13 localizedStringForKey:@"HEART_RATE_CONFIGURATION_LAST_ZONE_MANUAL_VALUE" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
-    v16 = [NSString stringWithFormat:v14, v7];
+    v16 = [NSString stringWithFormat:v14, lowerDisplayBound];
 LABEL_16:
 
 LABEL_17:
@@ -636,7 +636,7 @@ LABEL_17:
   }
 
   v16 = 0;
-  v6 = v5;
+  userInfo2 = userInfo;
 LABEL_18:
 
 LABEL_19:
@@ -644,37 +644,37 @@ LABEL_19:
   return v16;
 }
 
-- (void)_pressedZoneForSpecifier:(id)a3
+- (void)_pressedZoneForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
-  v6 = [v5 isEditable];
+  specifierCopy = specifier;
+  configuration = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
+  isEditable = [configuration isEditable];
 
-  if (!v6)
+  if (!isEditable)
   {
     goto LABEL_10;
   }
 
-  v7 = [v4 userInfo];
+  userInfo = [specifierCopy userInfo];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v4 userInfo];
+    userInfo2 = [specifierCopy userInfo];
 
-    if (v8)
+    if (userInfo2)
     {
       _HKInitializeLogging();
       v9 = HKLogWorkouts;
       if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_INFO))
       {
         v13 = 138412290;
-        v14 = v8;
+        v14 = userInfo2;
         _os_log_impl(&dword_0, v9, OS_LOG_TYPE_INFO, "Push editing for Heart Rate Zone (%@)", &v13, 0xCu);
       }
 
-      v10 = [[HPRFSessionTrackerAppHeartRateZoneViewController alloc] initWithDelegate:self zone:v8];
-      v11 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self navigationController];
-      [v11 pushViewController:v10 animated:1];
+      v10 = [[HPRFSessionTrackerAppHeartRateZoneViewController alloc] initWithDelegate:self zone:userInfo2];
+      navigationController = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self navigationController];
+      [navigationController pushViewController:v10 animated:1];
 
       goto LABEL_10;
     }
@@ -688,33 +688,33 @@ LABEL_19:
   v12 = HKLogWorkouts;
   if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_ERROR))
   {
-    sub_22038(v4, v12, self);
+    sub_22038(specifierCopy, v12, self);
   }
 
 LABEL_10:
 }
 
-- (void)updateZone:(id)a3 withNewZone:(id)a4
+- (void)updateZone:(id)zone withNewZone:(id)newZone
 {
-  v6 = a3;
-  v7 = a4;
+  zoneCopy = zone;
+  newZoneCopy = newZone;
   _HKInitializeLogging();
   v8 = HKLogWorkouts;
   if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_INFO))
   {
     v13 = 138412546;
-    v14 = v6;
+    v14 = zoneCopy;
     v15 = 2112;
-    v16 = v7;
+    v16 = newZoneCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "Updating Heart Rate Zone (%@) to (%@)", &v13, 0x16u);
   }
 
-  v9 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
-  v10 = [v9 zones];
-  v11 = +[WOHeartRateZone zones:replacingZoneAtIndex:withZone:](WOHeartRateZone, "zones:replacingZoneAtIndex:withZone:", v10, [v6 zoneIndex], v7);
+  configuration = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
+  zones = [configuration zones];
+  v11 = +[WOHeartRateZone zones:replacingZoneAtIndex:withZone:](WOHeartRateZone, "zones:replacingZoneAtIndex:withZone:", zones, [zoneCopy zoneIndex], newZoneCopy);
 
-  v12 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
-  [v12 setZones:v11];
+  configuration2 = [(HPRFSessionTrackerAppHeartRateConfigViewController *)self configuration];
+  [configuration2 setZones:v11];
 
   [(HPRFSessionTrackerAppHeartRateConfigViewController *)self reloadSpecifiers];
   [WOHeartRateConfiguration setConfiguredZones:v11];

@@ -1,49 +1,49 @@
 @interface PGMoodSourceScene
 - (unint64_t)_sourceInputCount;
-- (void)_combineMoodVectorsWithGraph:(id)a3;
+- (void)_combineMoodVectorsWithGraph:(id)graph;
 @end
 
 @implementation PGMoodSourceScene
 
-- (void)_combineMoodVectorsWithGraph:(id)a3
+- (void)_combineMoodVectorsWithGraph:(id)graph
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  graphCopy = graph;
   v28 = objc_opt_new();
   v5 = objc_opt_new();
-  v6 = [(PGMoodSource *)self options];
-  v7 = [v6 sceneIdentifiersByMomentNodeIdentifier];
+  options = [(PGMoodSource *)self options];
+  sceneIdentifiersByMomentNodeIdentifier = [options sceneIdentifiersByMomentNodeIdentifier];
 
-  if (!v7)
+  if (!sceneIdentifiersByMomentNodeIdentifier)
   {
-    v8 = [(PGMoodSource *)self enrichedMemory];
+    enrichedMemory = [(PGMoodSource *)self enrichedMemory];
 
-    if (v8)
+    if (enrichedMemory)
     {
-      v9 = [(PGMoodSource *)self enrichedMemory];
-      v10 = [v9 memoryMomentNodes];
-      [PGMoodUtilities moodSceneIdentifiersByMomentForMomentNodes:v10];
+      enrichedMemory2 = [(PGMoodSource *)self enrichedMemory];
+      memoryMomentNodes = [enrichedMemory2 memoryMomentNodes];
+      [PGMoodUtilities moodSceneIdentifiersByMomentForMomentNodes:memoryMomentNodes];
     }
 
     else
     {
-      v9 = [(PGMoodSource *)self assetCollection];
-      v10 = [(PGMoodSource *)self options];
-      [PGMoodUtilities moodSceneIdentifiersByMomentForAssetCollection:v9 withGraph:v4 moodOptions:v10];
+      enrichedMemory2 = [(PGMoodSource *)self assetCollection];
+      memoryMomentNodes = [(PGMoodSource *)self options];
+      [PGMoodUtilities moodSceneIdentifiersByMomentForAssetCollection:enrichedMemory2 withGraph:graphCopy moodOptions:memoryMomentNodes];
     }
-    v7 = ;
+    sceneIdentifiersByMomentNodeIdentifier = ;
 
-    v11 = [(PGMoodSource *)self options];
-    [v11 setSceneIdentifiersByMomentNodeIdentifier:v7];
+    options2 = [(PGMoodSource *)self options];
+    [options2 setSceneIdentifiersByMomentNodeIdentifier:sceneIdentifiersByMomentNodeIdentifier];
   }
 
-  v24 = v7;
-  v25 = v4;
+  v24 = sceneIdentifiersByMomentNodeIdentifier;
+  v25 = graphCopy;
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = [v7 objectEnumerator];
+  obj = [sceneIdentifiersByMomentNodeIdentifier objectEnumerator];
   v29 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v29)
   {
@@ -83,8 +83,8 @@
               v20 = *(*(&v34 + 1) + 8 * i);
               if ([objc_opt_class() shouldUseSceneIdentifier:v20])
               {
-                v21 = [v20 moodIdentifier];
-                v22 = [(PGMoodSource *)self _moodVectorForMoodIdentifier:v21];
+                moodIdentifier = [v20 moodIdentifier];
+                v22 = [(PGMoodSource *)self _moodVectorForMoodIdentifier:moodIdentifier];
 
                 if (v22)
                 {
@@ -142,9 +142,9 @@ uint64_t __50__PGMoodSourceScene__combineMoodVectorsWithGraph___block_invoke(uin
 
 - (unint64_t)_sourceInputCount
 {
-  v3 = [(PGMoodSource *)self options];
-  v4 = [v3 momentIDs];
-  v5 = [v4 count];
+  options = [(PGMoodSource *)self options];
+  momentIDs = [options momentIDs];
+  v5 = [momentIDs count];
 
   if (!v5)
   {

@@ -1,16 +1,16 @@
 @interface TypistCandidateBarMecabra
-- (BOOL)hasCandidate:(id)a3 withAlternativeText:(id)a4 inRange:(_NSRange)a5;
-- (BOOL)hasVisibleCandidate:(id)a3;
+- (BOOL)hasCandidate:(id)candidate withAlternativeText:(id)text inRange:(_NSRange)range;
+- (BOOL)hasVisibleCandidate:(id)candidate;
 - (BOOL)isExtendedCandidateViewMode;
-- (BOOL)scrollCandidateBar:(int)a3;
+- (BOOL)scrollCandidateBar:(int)bar;
 - (BOOL)scrollCandidateBarByOneScreen;
 - (TypistCandidateBarMecabra)init;
-- (id)candidateUIInformation:(id)a3;
+- (id)candidateUIInformation:(id)information;
 - (id)getAllCandidates;
 - (id)getVisibleCandidates;
-- (int64_t)getIndexOfCandidate:(id)a3 withAlternativeText:(id)a4;
-- (int64_t)selectCandidate:(id)a3;
-- (int64_t)selectCandidateAtIndex:(int64_t)a3;
+- (int64_t)getIndexOfCandidate:(id)candidate withAlternativeText:(id)text;
+- (int64_t)selectCandidate:(id)candidate;
+- (int64_t)selectCandidateAtIndex:(int64_t)index;
 - (void)hideExtendedCandidateView;
 - (void)showExtendedCandidateView;
 - (void)toggleExtendedCandidateViewMode;
@@ -25,9 +25,9 @@
   return [(TypistCandidateBar *)&v3 init];
 }
 
-- (id)candidateUIInformation:(id)a3
+- (id)candidateUIInformation:(id)information
 {
-  v3 = a3;
+  informationCopy = information;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -38,7 +38,7 @@
   v7[1] = 3221225472;
   v7[2] = __52__TypistCandidateBarMecabra_candidateUIInformation___block_invoke;
   v7[3] = &unk_279DF4758;
-  v4 = v3;
+  v4 = informationCopy;
   v8 = v4;
   v9 = &v10;
   [TypistKeyboardUtilities runOnMainThread:v7];
@@ -235,10 +235,10 @@ LABEL_32:
   return [(objc_class *)v2 getVisibleCandidateList:@"typistCandidateBarTypeMecabra"];
 }
 
-- (BOOL)hasVisibleCandidate:(id)a3
+- (BOOL)hasVisibleCandidate:(id)candidate
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  candidateCopy = candidate;
   [(TypistCandidateBarMecabra *)self getVisibleCandidates];
   v13 = 0u;
   v14 = 0u;
@@ -257,8 +257,8 @@ LABEL_32:
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) candidate];
-        v10 = [v9 isEqualToString:v4];
+        candidate = [*(*(&v13 + 1) + 8 * i) candidate];
+        v10 = [candidate isEqualToString:candidateCopy];
 
         if (v10)
         {
@@ -283,11 +283,11 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)hasCandidate:(id)a3 withAlternativeText:(id)a4 inRange:(_NSRange)a5
+- (BOOL)hasCandidate:(id)candidate withAlternativeText:(id)text inRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v7 = [(TypistCandidateBarMecabra *)self getIndexOfCandidate:a3 withAlternativeText:a4];
+  length = range.length;
+  location = range.location;
+  v7 = [(TypistCandidateBarMecabra *)self getIndexOfCandidate:candidate withAlternativeText:text];
   v9 = v7 >= location && v7 - location < length;
   return v7 >= 0 && v9;
 }
@@ -313,19 +313,19 @@ LABEL_11:
   while (v3);
   v14.receiver = self;
   v14.super_class = TypistCandidateBarMecabra;
-  v12 = [(TypistCandidateBar *)&v14 getAllCandidates];
+  getAllCandidates = [(TypistCandidateBar *)&v14 getAllCandidates];
 
-  return v12;
+  return getAllCandidates;
 }
 
-- (int64_t)getIndexOfCandidate:(id)a3 withAlternativeText:(id)a4
+- (int64_t)getIndexOfCandidate:(id)candidate withAlternativeText:(id)text
 {
-  v6 = a3;
-  v7 = a4;
+  candidateCopy = candidate;
+  textCopy = text;
   if (+[TypistKeyboardUtilities hasMarkedText])
   {
     v8 = +[TypistKeyboardUtilities markedText];
-    v9 = [v8 isEqualToString:v6];
+    v9 = [v8 isEqualToString:candidateCopy];
 
     if (v9)
     {
@@ -334,8 +334,8 @@ LABEL_11:
     }
   }
 
-  v11 = [(TypistCandidateBarMecabra *)self getAllCandidates];
-  if (![v11 count])
+  getAllCandidates = [(TypistCandidateBarMecabra *)self getAllCandidates];
+  if (![getAllCandidates count])
   {
     goto LABEL_16;
   }
@@ -343,21 +343,21 @@ LABEL_11:
   v10 = 0;
   while (1)
   {
-    v12 = [v11 objectAtIndex:v10];
-    v13 = [v12 candidate];
-    if (([v6 isEqualToString:v13] & 1) == 0)
+    v12 = [getAllCandidates objectAtIndex:v10];
+    candidate = [v12 candidate];
+    if (([candidateCopy isEqualToString:candidate] & 1) == 0)
     {
 
       goto LABEL_11;
     }
 
-    if (!v7)
+    if (!textCopy)
     {
       break;
     }
 
-    v14 = [v12 alternativeText];
-    v15 = [v7 isEqualToString:v14];
+    alternativeText = [v12 alternativeText];
+    v15 = [textCopy isEqualToString:alternativeText];
 
     if (v15)
     {
@@ -367,7 +367,7 @@ LABEL_11:
 LABEL_11:
     ++v10;
 
-    if (v10 >= [v11 count])
+    if (v10 >= [getAllCandidates count])
     {
       v10 = 0x7FFFFFFFFFFFFFFFLL;
       goto LABEL_15;
@@ -401,17 +401,17 @@ LABEL_18:
   return [(TypistCandidateBarMecabra *)self scrollCandidateBar:v3];
 }
 
-- (int64_t)selectCandidate:(id)a3
+- (int64_t)selectCandidate:(id)candidate
 {
-  v4 = a3;
-  if ([(TypistCandidateBar *)self hasCandidate:v4])
+  candidateCopy = candidate;
+  if ([(TypistCandidateBar *)self hasCandidate:candidateCopy])
   {
-    v5 = [(TypistCandidateBarMecabra *)self getIndexOfCandidate:v4];
-    if ([(TypistCandidateBar *)self hasCandidate:v4])
+    v5 = [(TypistCandidateBarMecabra *)self getIndexOfCandidate:candidateCopy];
+    if ([(TypistCandidateBar *)self hasCandidate:candidateCopy])
     {
-      if (![(TypistCandidateBarMecabra *)self hasVisibleCandidate:v4])
+      if (![(TypistCandidateBarMecabra *)self hasVisibleCandidate:candidateCopy])
       {
-        TYLog(@"Looking for candidate [%@] in the candidate bar...", v6, v7, v8, v9, v10, v11, v12, v4);
+        TYLog(@"Looking for candidate [%@] in the candidate bar...", v6, v7, v8, v9, v10, v11, v12, candidateCopy);
         if ([(TypistCandidateBarMecabra *)self scrollCandidateBarByOneScreen])
         {
             ;
@@ -422,7 +422,7 @@ LABEL_18:
 
     if (v5 <= 0x7FFFFFFFFFFFFFFELL)
     {
-      [(TypistCandidateBar *)self centerOfCandidate:v4];
+      [(TypistCandidateBar *)self centerOfCandidate:candidateCopy];
       v14 = v13;
       v16 = v15;
       v17 = MEMORY[0x277D44358];
@@ -430,7 +430,7 @@ LABEL_18:
       v20[1] = 3221225472;
       v20[2] = __45__TypistCandidateBarMecabra_selectCandidate___block_invoke;
       v20[3] = &unk_279DF4DB0;
-      v21 = v4;
+      v21 = candidateCopy;
       v22 = v14;
       v23 = v16;
       v18 = [v17 eventStreamWithEventActions:v20];
@@ -461,24 +461,24 @@ void __45__TypistCandidateBarMecabra_selectCandidate___block_invoke(uint64_t a1,
   [v14 tap:{*(a1 + 40), *(a1 + 48)}];
 }
 
-- (int64_t)selectCandidateAtIndex:(int64_t)a3
+- (int64_t)selectCandidateAtIndex:(int64_t)index
 {
-  v5 = [(TypistCandidateBarMecabra *)self getAllCandidates];
-  if ([v5 count] <= a3)
+  getAllCandidates = [(TypistCandidateBarMecabra *)self getAllCandidates];
+  if ([getAllCandidates count] <= index)
   {
     v15 = -1;
   }
 
   else
   {
-    [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData showCandidateAtIndex:"showCandidateAtIndex:", a3];
-    v6 = [v5 objectAtIndex:a3];
-    v7 = [v6 candidate];
+    [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData showCandidateAtIndex:"showCandidateAtIndex:", index];
+    v6 = [getAllCandidates objectAtIndex:index];
+    candidate = [v6 candidate];
 
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:index];
     TYLogl(OS_LOG_TYPE_DEBUG, @"The candidate at position %@ is %@", v9, v10, v11, v12, v13, v14, v8);
 
-    v15 = [(TypistCandidateBarMecabra *)self selectCandidate:v7];
+    v15 = [(TypistCandidateBarMecabra *)self selectCandidate:candidate];
   }
 
   return v15;
@@ -541,16 +541,16 @@ void __60__TypistCandidateBarMecabra_toggleExtendedCandidateViewMode__block_invo
   [v13 tap:{*(*(*(a1 + 32) + 8) + 32), *(*(*(a1 + 32) + 8) + 40)}];
 }
 
-- (BOOL)scrollCandidateBar:(int)a3
+- (BOOL)scrollCandidateBar:(int)bar
 {
-  if ((a3 & 0xFFFFFFFE) == 2)
+  if ((bar & 0xFFFFFFFE) == 2)
   {
     if ([(TypistCandidateBarMecabra *)self isExtendedCandidateViewMode])
     {
 LABEL_9:
-      v12 = [(TypistCandidateBarMecabra *)self isExtendedCandidateViewMode];
+      isExtendedCandidateViewMode = [(TypistCandidateBarMecabra *)self isExtendedCandidateViewMode];
       v19 = @"Bar View";
-      if (v12)
+      if (isExtendedCandidateViewMode)
       {
         v19 = @"Extended View";
       }
@@ -561,7 +561,7 @@ LABEL_9:
     }
   }
 
-  else if (a3 <= 1 && ![(TypistCandidateBarMecabra *)self isExtendedCandidateViewMode])
+  else if (bar <= 1 && ![(TypistCandidateBarMecabra *)self isExtendedCandidateViewMode])
   {
     goto LABEL_9;
   }
@@ -582,7 +582,7 @@ LABEL_9:
   v21[3] = &unk_279DF4E28;
   v21[4] = self;
   v21[5] = v29;
-  v22 = a3;
+  barCopy = bar;
   v21[6] = &v23;
   [TypistKeyboardUtilities runOnMainThread:v21];
   if (v24[5])
@@ -591,13 +591,13 @@ LABEL_9:
     [TypistKeyboardUtilities waitFor:0.5];
   }
 
-  v5 = [(TypistCandidateBarMecabra *)self getVisibleCandidates];
-  v6 = [v5 lastObject];
-  v7 = [v6 candidate];
-  v8 = [(TypistCandidateBarMecabra *)self getAllCandidates];
-  v9 = [v8 lastObject];
-  v10 = [v9 candidate];
-  v11 = [v7 isEqualToString:v10] ^ 1;
+  getVisibleCandidates = [(TypistCandidateBarMecabra *)self getVisibleCandidates];
+  lastObject = [getVisibleCandidates lastObject];
+  candidate = [lastObject candidate];
+  getAllCandidates = [(TypistCandidateBarMecabra *)self getAllCandidates];
+  lastObject2 = [getAllCandidates lastObject];
+  candidate2 = [lastObject2 candidate];
+  v11 = [candidate isEqualToString:candidate2] ^ 1;
 
   _Block_object_dispose(&v23, 8);
   _Block_object_dispose(v29, 8);

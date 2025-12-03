@@ -6,9 +6,9 @@
 
 - (BOOL)accessibilityPerformEscape
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 postNotificationName:@"accessibilityDismissActionSheet" object:0];
-  MEMORY[0x29EDC9740](v3);
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter postNotificationName:@"accessibilityDismissActionSheet" object:0];
+  MEMORY[0x29EDC9740](defaultCenter);
   return 1;
 }
 

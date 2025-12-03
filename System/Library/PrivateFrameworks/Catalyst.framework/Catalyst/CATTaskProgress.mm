@@ -1,35 +1,35 @@
 @interface CATTaskProgress
-+ (Class)classForResultObjectWithRequestClassName:(id)a3;
-+ (id)progressForOperation:(id)a3;
-+ (void)assertResultObject:(id)a3 isValidForRequestClassName:(id)a4;
++ (Class)classForResultObjectWithRequestClassName:(id)name;
++ (id)progressForOperation:(id)operation;
++ (void)assertResultObject:(id)object isValidForRequestClassName:(id)name;
 - (CATTaskProgress)init;
-- (CATTaskProgress)initWithCoder:(id)a3;
-- (CATTaskProgress)initWithOperation:(id)a3;
-- (CATTaskProgress)initWithOperationUUID:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CATTaskProgress)initWithCoder:(id)coder;
+- (CATTaskProgress)initWithOperation:(id)operation;
+- (CATTaskProgress)initWithOperationUUID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)progressStateDescription;
 - (unint64_t)state;
-- (void)encodeWithCoder:(id)a3;
-- (void)setProgress:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setProgress:(id)progress;
 @end
 
 @implementation CATTaskProgress
 
-+ (id)progressForOperation:(id)a3
++ (id)progressForOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithOperation:v4];
+  operationCopy = operation;
+  v5 = [[self alloc] initWithOperation:operationCopy];
 
   return v5;
 }
 
-- (CATTaskProgress)initWithOperationUUID:(id)a3
+- (CATTaskProgress)initWithOperationUUID:(id)d
 {
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
     [(CATTaskProgress *)a2 initWithOperationUUID:?];
   }
@@ -39,7 +39,7 @@
   v6 = [(CATTaskProgress *)&v10 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [dCopy copy];
     UUID = v6->_UUID;
     v6->_UUID = v7;
 
@@ -50,42 +50,42 @@
   return v6;
 }
 
-- (CATTaskProgress)initWithOperation:(id)a3
+- (CATTaskProgress)initWithOperation:(id)operation
 {
-  v5 = a3;
-  if (!v5)
+  operationCopy = operation;
+  if (!operationCopy)
   {
     [(CATTaskProgress *)a2 initWithOperation:?];
   }
 
-  v6 = [v5 UUID];
-  v7 = [(CATTaskProgress *)self initWithOperationUUID:v6];
+  uUID = [operationCopy UUID];
+  v7 = [(CATTaskProgress *)self initWithOperationUUID:uUID];
 
   if (v7)
   {
-    v8 = [v5 request];
+    request = [operationCopy request];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
     requestClassName = v7->_requestClassName;
     v7->_requestClassName = v10;
 
-    v12 = [v5 resultObject];
+    resultObject = [operationCopy resultObject];
     resultObject = v7->_resultObject;
-    v7->_resultObject = v12;
+    v7->_resultObject = resultObject;
 
-    v7->_phase = [v5 phase];
-    v14 = [v5 error];
+    v7->_phase = [operationCopy phase];
+    error = [operationCopy error];
     error = v7->_error;
-    v7->_error = v14;
+    v7->_error = error;
 
-    v16 = [v5 userInfo];
+    userInfo = [operationCopy userInfo];
     userInfo = v7->_userInfo;
-    v7->_userInfo = v16;
+    v7->_userInfo = userInfo;
 
     v7->_isCancelable = [objc_opt_class() isCancelable];
-    v7->_isCanceled = [v5 isCanceled];
-    v7->_completedUnitCount = [v5 completedUnitCount];
-    v7->_totalUnitCount = [v5 totalUnitCount];
+    v7->_isCanceled = [operationCopy isCanceled];
+    v7->_completedUnitCount = [operationCopy completedUnitCount];
+    v7->_totalUnitCount = [operationCopy totalUnitCount];
     [objc_opt_class() assertResultObject:v7->_resultObject isValidForRequestClassName:v7->_requestClassName];
   }
 
@@ -94,10 +94,10 @@
 
 - (CATTaskProgress)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"CATTaskProgress.m" lineNumber:93 description:{@"%@ cannot call %@ because it is not allowed", v5, v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CATTaskProgress.m" lineNumber:93 description:{@"%@ cannot call %@ because it is not allowed", v5, v6}];
 
   return 0;
 }
@@ -109,8 +109,8 @@
     return 0;
   }
 
-  v3 = [(CATTaskProgress *)self error];
-  if (v3)
+  error = [(CATTaskProgress *)self error];
+  if (error)
   {
     v4 = 2;
   }
@@ -123,66 +123,66 @@
   return v4;
 }
 
-+ (void)assertResultObject:(id)a3 isValidForRequestClassName:(id)a4
++ (void)assertResultObject:(id)object isValidForRequestClassName:(id)name
 {
-  v9 = a3;
-  v7 = a4;
-  if (v9)
+  objectCopy = object;
+  nameCopy = name;
+  if (objectCopy)
   {
-    v8 = [objc_opt_class() classForResultObjectWithRequestClassName:v7];
+    v8 = [objc_opt_class() classForResultObjectWithRequestClassName:nameCopy];
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [(CATTaskProgress *)a2 assertResultObject:a1 isValidForRequestClassName:v9, v8];
+      [(CATTaskProgress *)a2 assertResultObject:self isValidForRequestClassName:objectCopy, v8];
     }
   }
 }
 
-+ (Class)classForResultObjectWithRequestClassName:(id)a3
++ (Class)classForResultObjectWithRequestClassName:(id)name
 {
-  v3 = NSClassFromString(a3);
-  v4 = [(objc_class *)v3 allowlistedClassForResultObject];
-  if (!v4)
+  v3 = NSClassFromString(name);
+  allowlistedClassForResultObject = [(objc_class *)v3 allowlistedClassForResultObject];
+  if (!allowlistedClassForResultObject)
   {
-    v4 = [(objc_class *)v3 whitelistedClassForResultObject];
+    allowlistedClassForResultObject = [(objc_class *)v3 whitelistedClassForResultObject];
   }
 
-  return v4;
+  return allowlistedClassForResultObject;
 }
 
 - (id)progressStateDescription
 {
-  v3 = [(CATTaskProgress *)self state];
-  if (v3 >= 3)
+  state = [(CATTaskProgress *)self state];
+  if (state >= 3)
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", -[CATTaskProgress state](self, "state")];
   }
 
   else
   {
-    v4 = off_278DA7A90[v3];
+    v4 = off_278DA7A90[state];
   }
 
   return v4;
 }
 
-- (CATTaskProgress)initWithCoder:(id)a3
+- (CATTaskProgress)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v38.receiver = self;
   v38.super_class = CATTaskProgress;
   v5 = [(CATTaskProgress *)&v38 init];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"UUID"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"UUID"];
     UUID = v5->_UUID;
     v5->_UUID = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phase"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phase"];
     v5->_phase = [v9 unsignedIntegerValue];
 
     v10 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"error"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"error"];
     error = v5->_error;
     v5->_error = v11;
 
@@ -198,29 +198,29 @@
     v19 = objc_opt_class();
     v20 = objc_opt_class();
     v21 = [v37 setWithObjects:{v36, v35, v13, v14, v15, v16, v17, v18, v19, v20, objc_opt_class(), 0}];
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"userInfo"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"userInfo"];
     userInfo = v5->_userInfo;
     v5->_userInfo = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isCancelable"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isCancelable"];
     v5->_isCancelable = [v24 BOOLValue];
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isCanceled"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isCanceled"];
     v5->_isCanceled = [v25 BOOLValue];
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalUnitCount"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalUnitCount"];
     v5->_totalUnitCount = [v26 integerValue];
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"completedUnitCount"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"completedUnitCount"];
     v5->_completedUnitCount = [v27 integerValue];
 
     v28 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"requestClassName"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"requestClassName"];
     requestClassName = v5->_requestClassName;
     v5->_requestClassName = v29;
 
     v31 = [MEMORY[0x277CBEB98] setWithObjects:{objc_msgSend(objc_opt_class(), "classForResultObjectWithRequestClassName:", v5->_requestClassName), 0}];
-    v32 = [v4 decodeObjectOfClasses:v31 forKey:@"resultObject"];
+    v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"resultObject"];
     resultObject = v5->_resultObject;
     v5->_resultObject = v32;
   }
@@ -228,67 +228,67 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CATTaskProgress *)self UUID];
-  [v4 encodeObject:v5 forKey:@"UUID"];
+  coderCopy = coder;
+  uUID = [(CATTaskProgress *)self UUID];
+  [coderCopy encodeObject:uUID forKey:@"UUID"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CATTaskProgress phase](self, "phase")}];
-  [v4 encodeObject:v6 forKey:@"phase"];
+  [coderCopy encodeObject:v6 forKey:@"phase"];
 
-  v7 = [(CATTaskProgress *)self requestClassName];
-  [v4 encodeObject:v7 forKey:@"requestClassName"];
+  requestClassName = [(CATTaskProgress *)self requestClassName];
+  [coderCopy encodeObject:requestClassName forKey:@"requestClassName"];
 
-  v8 = [(CATTaskProgress *)self resultObject];
-  [v4 encodeObject:v8 forKey:@"resultObject"];
+  resultObject = [(CATTaskProgress *)self resultObject];
+  [coderCopy encodeObject:resultObject forKey:@"resultObject"];
 
-  v9 = [(CATTaskProgress *)self error];
-  [v4 encodeObject:v9 forKey:@"error"];
+  error = [(CATTaskProgress *)self error];
+  [coderCopy encodeObject:error forKey:@"error"];
 
-  v10 = [(CATTaskProgress *)self userInfo];
-  [v4 encodeObject:v10 forKey:@"userInfo"];
+  userInfo = [(CATTaskProgress *)self userInfo];
+  [coderCopy encodeObject:userInfo forKey:@"userInfo"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[CATTaskProgress isCancelable](self, "isCancelable")}];
-  [v4 encodeObject:v11 forKey:@"isCancelable"];
+  [coderCopy encodeObject:v11 forKey:@"isCancelable"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:{-[CATTaskProgress isCanceled](self, "isCanceled")}];
-  [v4 encodeObject:v12 forKey:@"isCanceled"];
+  [coderCopy encodeObject:v12 forKey:@"isCanceled"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithInteger:{-[CATTaskProgress totalUnitCount](self, "totalUnitCount")}];
-  [v4 encodeObject:v13 forKey:@"totalUnitCount"];
+  [coderCopy encodeObject:v13 forKey:@"totalUnitCount"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithInteger:{-[CATTaskProgress completedUnitCount](self, "completedUnitCount")}];
-  [v4 encodeObject:v14 forKey:@"completedUnitCount"];
+  [coderCopy encodeObject:v14 forKey:@"completedUnitCount"];
 }
 
 - (id)description
 {
-  v3 = [(CATTaskProgress *)self state];
+  state = [(CATTaskProgress *)self state];
   v4 = MEMORY[0x277CCACA8];
-  if (v3 == 2)
+  if (state == 2)
   {
-    v6 = [(CATTaskProgress *)self error];
-    [v4 stringWithFormat:@"finished, error = %@", v6];
+    error = [(CATTaskProgress *)self error];
+    [v4 stringWithFormat:@"finished, error = %@", error];
   }
 
   else
   {
-    if (v3 == 1)
+    if (state == 1)
     {
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"finished"];
       goto LABEL_7;
     }
 
-    v6 = [(CATTaskProgress *)self progressStateDescription];
-    [v4 stringWithFormat:@"state = %@", v6];
+    error = [(CATTaskProgress *)self progressStateDescription];
+    [v4 stringWithFormat:@"state = %@", error];
   }
   v5 = ;
 
 LABEL_7:
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(CATTaskProgress *)self UUID];
-  v9 = [v7 stringWithFormat:@"{ UUID = %@, %@ }", v8, v5];
+  uUID = [(CATTaskProgress *)self UUID];
+  v9 = [v7 stringWithFormat:@"{ UUID = %@, %@ }", uUID, v5];
 
   return v9;
 }
@@ -297,23 +297,23 @@ LABEL_7:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CATTaskProgress *)self UUID];
-  v6 = [v5 UUIDString];
-  v7 = [(CATTaskProgress *)self progressStateDescription];
-  v8 = [(CATTaskProgress *)self error];
-  v9 = [v3 stringWithFormat:@"<%@: %p { UUID = %@, state = %@, error = %@ }>", v4, self, v6, v7, v8];
+  uUID = [(CATTaskProgress *)self UUID];
+  uUIDString = [uUID UUIDString];
+  progressStateDescription = [(CATTaskProgress *)self progressStateDescription];
+  error = [(CATTaskProgress *)self error];
+  v9 = [v3 stringWithFormat:@"<%@: %p { UUID = %@, state = %@, error = %@ }>", v4, self, uUIDString, progressStateDescription, error];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
   if (v4 == objc_opt_class())
   {
-    v6 = [CATTaskProgress allocWithZone:a3];
-    v7 = [(CATTaskProgress *)self UUID];
-    v8 = [(CATTaskProgress *)v6 initWithOperationUUID:v7];
+    v6 = [CATTaskProgress allocWithZone:zone];
+    uUID = [(CATTaskProgress *)self UUID];
+    v8 = [(CATTaskProgress *)v6 initWithOperationUUID:uUID];
 
     [(CATTaskProgress *)v8 setProgress:self];
     return v8;
@@ -326,42 +326,42 @@ LABEL_7:
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [CATMutableTaskProgress allocWithZone:a3];
-  v5 = [(CATTaskProgress *)self UUID];
-  v6 = [(CATMutableTaskProgress *)v4 initWithOperationUUID:v5];
+  v4 = [CATMutableTaskProgress allocWithZone:zone];
+  uUID = [(CATTaskProgress *)self UUID];
+  v6 = [(CATMutableTaskProgress *)v4 initWithOperationUUID:uUID];
 
   [(CATMutableTaskProgress *)v6 setProgress:self];
   return v6;
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
-  v21 = a3;
-  v4 = [v21 error];
-  v5 = [v4 copy];
+  progressCopy = progress;
+  error = [progressCopy error];
+  v5 = [error copy];
   [(CATTaskProgress *)self setError:v5];
 
-  -[CATTaskProgress setPhase:](self, "setPhase:", [v21 phase]);
-  -[CATTaskProgress setIsCancelable:](self, "setIsCancelable:", [v21 isCancelable]);
-  -[CATTaskProgress setIsCanceled:](self, "setIsCanceled:", [v21 isCanceled]);
-  -[CATTaskProgress setTotalUnitCount:](self, "setTotalUnitCount:", [v21 totalUnitCount]);
-  -[CATTaskProgress setCompletedUnitCount:](self, "setCompletedUnitCount:", [v21 completedUnitCount]);
-  v6 = [v21 requestClassName];
-  [(CATTaskProgress *)self setRequestClassName:v6];
+  -[CATTaskProgress setPhase:](self, "setPhase:", [progressCopy phase]);
+  -[CATTaskProgress setIsCancelable:](self, "setIsCancelable:", [progressCopy isCancelable]);
+  -[CATTaskProgress setIsCanceled:](self, "setIsCanceled:", [progressCopy isCanceled]);
+  -[CATTaskProgress setTotalUnitCount:](self, "setTotalUnitCount:", [progressCopy totalUnitCount]);
+  -[CATTaskProgress setCompletedUnitCount:](self, "setCompletedUnitCount:", [progressCopy completedUnitCount]);
+  requestClassName = [progressCopy requestClassName];
+  [(CATTaskProgress *)self setRequestClassName:requestClassName];
 
-  v7 = [v21 resultObject];
+  resultObject = [progressCopy resultObject];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
 
-  v10 = [v21 resultObject];
-  if (![v10 conformsToProtocol:&unk_285616068])
+  resultObject2 = [progressCopy resultObject];
+  if (![resultObject2 conformsToProtocol:&unk_285616068])
   {
     goto LABEL_6;
   }
 
-  v11 = [v21 resultObject];
+  resultObject3 = [progressCopy resultObject];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
@@ -373,8 +373,8 @@ LABEL_6:
   {
 
 LABEL_13:
-    v15 = [v21 resultObject];
-    v16 = [v15 mutableCopy];
+    resultObject4 = [progressCopy resultObject];
+    v16 = [resultObject4 mutableCopy];
     goto LABEL_14;
   }
 
@@ -386,33 +386,33 @@ LABEL_13:
   }
 
 LABEL_7:
-  v12 = [v21 resultObject];
-  if (([v12 conformsToProtocol:&unk_28560FC78] & 1) == 0)
+  resultObject5 = [progressCopy resultObject];
+  if (([resultObject5 conformsToProtocol:&unk_28560FC78] & 1) == 0)
   {
 
     goto LABEL_11;
   }
 
-  v13 = [v21 resultObject];
+  resultObject6 = [progressCopy resultObject];
   v14 = objc_opt_respondsToSelector();
 
   if ((v14 & 1) == 0)
   {
 LABEL_11:
-    v15 = [v21 resultObject];
-    [(CATTaskProgress *)self setResultObject:v15];
+    resultObject4 = [progressCopy resultObject];
+    [(CATTaskProgress *)self setResultObject:resultObject4];
     goto LABEL_15;
   }
 
-  v15 = [v21 resultObject];
-  v16 = [v15 copy];
+  resultObject4 = [progressCopy resultObject];
+  v16 = [resultObject4 copy];
 LABEL_14:
   v18 = v16;
   [(CATTaskProgress *)self setResultObject:v16];
 
 LABEL_15:
-  v19 = [v21 userInfo];
-  v20 = [v19 copy];
+  userInfo = [progressCopy userInfo];
+  v20 = [userInfo copy];
   [(CATTaskProgress *)self setUserInfo:v20];
 }
 

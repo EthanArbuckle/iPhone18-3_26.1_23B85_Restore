@@ -1,29 +1,29 @@
 @interface PMLTrainingMock
 - (PMLTrainingMock)init;
-- (id)lastTrainingFeaturizationForModelName:(id)a3 andLocale:(id)a4;
-- (void)updateLastTrainingFeaturizationForModel:(id)a3 andData:(id)a4;
+- (id)lastTrainingFeaturizationForModelName:(id)name andLocale:(id)locale;
+- (void)updateLastTrainingFeaturizationForModel:(id)model andData:(id)data;
 @end
 
 @implementation PMLTrainingMock
 
-- (void)updateLastTrainingFeaturizationForModel:(id)a3 andData:(id)a4
+- (void)updateLastTrainingFeaturizationForModel:(id)model andData:(id)data
 {
   lastTrainingFeaturizations = self->_lastTrainingFeaturizations;
   v6 = MEMORY[0x277D42648];
-  v7 = a3;
-  v12 = [v6 tupleWithFirst:v7 second:a4];
+  modelCopy = model;
+  v12 = [v6 tupleWithFirst:modelCopy second:data];
   v8 = MEMORY[0x277D42648];
-  v9 = [v7 name];
-  v10 = [v7 locale];
+  name = [modelCopy name];
+  locale = [modelCopy locale];
 
-  v11 = [v8 tupleWithFirst:v9 second:v10];
+  v11 = [v8 tupleWithFirst:name second:locale];
   [(NSMutableDictionary *)lastTrainingFeaturizations setObject:v12 forKey:v11];
 }
 
-- (id)lastTrainingFeaturizationForModelName:(id)a3 andLocale:(id)a4
+- (id)lastTrainingFeaturizationForModelName:(id)name andLocale:(id)locale
 {
   lastTrainingFeaturizations = self->_lastTrainingFeaturizations;
-  v5 = [MEMORY[0x277D42648] tupleWithFirst:a3 second:a4];
+  v5 = [MEMORY[0x277D42648] tupleWithFirst:name second:locale];
   v6 = [(NSMutableDictionary *)lastTrainingFeaturizations objectForKeyedSubscript:v5];
 
   return v6;

@@ -1,41 +1,41 @@
 @interface PLDuplicateDetectorMetadata
-- (BOOL)_postProcessDuplicateWithPhotoLibrary:(id)a3 resultContainer:(id)a4 error:(id *)a5;
-- (PLDuplicateDetectorMetadata)initWithSourceOIDs:(id)a3;
-- (id)_combinedIdentifiersFromLimitedSelectionWithPhotoLibrary:(id)a3;
+- (BOOL)_postProcessDuplicateWithPhotoLibrary:(id)library resultContainer:(id)container error:(id *)error;
+- (PLDuplicateDetectorMetadata)initWithSourceOIDs:(id)ds;
+- (id)_combinedIdentifiersFromLimitedSelectionWithPhotoLibrary:(id)library;
 - (id)_fingerprintIsValidPredicate;
-- (id)_fingerprintRequestWithPhotoLibrary:(id)a3;
-- (id)_fullSizePreviewFingerprintRequestWithPhotoLibrary:(id)a3;
-- (id)_fullSizePreviewPredicateWithPhotoLibrary:(id)a3;
+- (id)_fingerprintRequestWithPhotoLibrary:(id)library;
+- (id)_fullSizePreviewFingerprintRequestWithPhotoLibrary:(id)library;
+- (id)_fullSizePreviewPredicateWithPhotoLibrary:(id)library;
 - (id)_fullSizePropertiesToFetch;
-- (id)_fullsizeIdentifiersFromLimitedSelectionWithPhotoLibrary:(id)a3;
-- (id)_generateDuplicateContainerFromResults:(id)a3 fullsizeFingerprintResults:(id)a4;
-- (id)_limitedSelectionFullSizePredicateWithPhotoLibrary:(id)a3;
-- (id)_limitedSelectionPredicateWithPhotoLibrary:(id)a3;
-- (id)_originalsIdentifiersFromLimitedSelectionWithPhotoLibrary:(id)a3;
-- (id)_postProcessFetchMetadataWithPhotoLibrary:(id)a3 resultContainer:(id)a4 error:(id *)a5;
-- (id)_postProcessingRequestWithDuplicateAssetOIDs:(id)a3 pathManager:(id)a4;
-- (id)_predicateWithPhotoLibrary:(id)a3;
+- (id)_fullsizeIdentifiersFromLimitedSelectionWithPhotoLibrary:(id)library;
+- (id)_generateDuplicateContainerFromResults:(id)results fullsizeFingerprintResults:(id)fingerprintResults;
+- (id)_limitedSelectionFullSizePredicateWithPhotoLibrary:(id)library;
+- (id)_limitedSelectionPredicateWithPhotoLibrary:(id)library;
+- (id)_originalsIdentifiersFromLimitedSelectionWithPhotoLibrary:(id)library;
+- (id)_postProcessFetchMetadataWithPhotoLibrary:(id)library resultContainer:(id)container error:(id *)error;
+- (id)_postProcessingRequestWithDuplicateAssetOIDs:(id)ds pathManager:(id)manager;
+- (id)_predicateWithPhotoLibrary:(id)library;
 - (id)_propertiesToFetch;
-- (id)detectDuplicatesWithPhotoLibrary:(id)a3 error:(id *)a4;
-- (void)_addFingerprint:(id)a3 oid:(id)a4 map:(id)a5;
-- (void)_buildAdjustedFingerprintMapWithPrimaryStoreFullsizeFingerprintResults:(id)a3 mutableOIDFingerprintMap:(id)a4 property:(id)a5 filterOnCPLResourceType:(unint64_t)a6;
-- (void)_processBlendedResult:(id)a3 fullsizeMap:(id)a4 oidFullsizeVideoMap:(id)a5 oidMediumVideoMap:(id)a6 inDuplicateMap:(id)a7;
+- (id)detectDuplicatesWithPhotoLibrary:(id)library error:(id *)error;
+- (void)_addFingerprint:(id)fingerprint oid:(id)oid map:(id)map;
+- (void)_buildAdjustedFingerprintMapWithPrimaryStoreFullsizeFingerprintResults:(id)results mutableOIDFingerprintMap:(id)map property:(id)property filterOnCPLResourceType:(unint64_t)type;
+- (void)_processBlendedResult:(id)result fullsizeMap:(id)map oidFullsizeVideoMap:(id)videoMap oidMediumVideoMap:(id)mediumVideoMap inDuplicateMap:(id)duplicateMap;
 @end
 
 @implementation PLDuplicateDetectorMetadata
 
-- (id)_postProcessingRequestWithDuplicateAssetOIDs:(id)a3 pathManager:(id)a4
+- (id)_postProcessingRequestWithDuplicateAssetOIDs:(id)ds pathManager:(id)manager
 {
   v25[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695D5E0];
-  v6 = a4;
-  v7 = a3;
+  managerCopy = manager;
+  dsCopy = ds;
   v8 = +[PLManagedAsset entityName];
   v9 = [v5 fetchRequestWithEntityName:v8];
 
-  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", v7];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", dsCopy];
 
-  [v9 setPredicate:v10];
+  [v9 setPredicate:dsCopy];
   [v9 setResultType:2];
   v25[0] = @"additionalAttributes";
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
@@ -45,7 +45,7 @@
   v24[1] = @"duration";
   v24[2] = @"kind";
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:3];
-  LODWORD(v8) = [PLDuplicateProcessor sharedLibraryDedupeEnabledWithPathManager:v6];
+  LODWORD(v8) = [PLDuplicateProcessor sharedLibraryDedupeEnabledWithPathManager:managerCopy];
 
   if (v8)
   {
@@ -76,17 +76,17 @@
   return v9;
 }
 
-- (id)_postProcessFetchMetadataWithPhotoLibrary:(id)a3 resultContainer:(id)a4 error:(id *)a5
+- (id)_postProcessFetchMetadataWithPhotoLibrary:(id)library resultContainer:(id)container error:(id *)error
 {
   v61 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v8, "count")}];
+  libraryCopy = library;
+  containerCopy = container;
+  v9 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(containerCopy, "count")}];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v10 = v8;
+  v10 = containerCopy;
   v11 = [v10 countByEnumeratingWithState:&v55 objects:v60 count:16];
   if (v11)
   {
@@ -100,9 +100,9 @@
           objc_enumerationMutation(v10);
         }
 
-        v14 = [*(*(&v55 + 1) + 8 * i) group];
-        v15 = [v14 allObjects];
-        [v9 addObjectsFromArray:v15];
+        group = [*(*(&v55 + 1) + 8 * i) group];
+        allObjects = [group allObjects];
+        [v9 addObjectsFromArray:allObjects];
       }
 
       v11 = [v10 countByEnumeratingWithState:&v55 objects:v60 count:16];
@@ -130,7 +130,7 @@
   v38[4] = self;
   v16 = v9;
   v39 = v16;
-  v17 = v7;
+  v17 = libraryCopy;
   v40 = v17;
   v41 = &v43;
   v42 = &v49;
@@ -141,10 +141,10 @@
     v29 = v50[5];
     v19 = 0;
 LABEL_24:
-    if (a5)
+    if (error)
     {
       v29 = v29;
-      *a5 = v29;
+      *error = v29;
     }
 
     goto LABEL_26;
@@ -268,14 +268,14 @@ void __95__PLDuplicateDetectorMetadata__postProcessFetchMetadataWithPhotoLibrary
   }
 }
 
-- (BOOL)_postProcessDuplicateWithPhotoLibrary:(id)a3 resultContainer:(id)a4 error:(id *)a5
+- (BOOL)_postProcessDuplicateWithPhotoLibrary:(id)library resultContainer:(id)container error:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  libraryCopy = library;
+  containerCopy = container;
   v42 = 0;
-  v33 = v8;
-  v10 = [(PLDuplicateDetectorMetadata *)self _postProcessFetchMetadataWithPhotoLibrary:v8 resultContainer:v9 error:&v42];
+  v33 = libraryCopy;
+  v10 = [(PLDuplicateDetectorMetadata *)self _postProcessFetchMetadataWithPhotoLibrary:libraryCopy resultContainer:containerCopy error:&v42];
   v11 = v42;
   v12 = v11;
   v34 = v10;
@@ -285,11 +285,11 @@ void __95__PLDuplicateDetectorMetadata__postProcessFetchMetadataWithPhotoLibrary
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v13 = v9;
+    v13 = containerCopy;
     v35 = [v13 countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v35)
     {
-      v30 = v9;
+      v30 = containerCopy;
       v14 = *v39;
       v15 = 0x1E755F000uLL;
       v31 = *v39;
@@ -314,8 +314,8 @@ void __95__PLDuplicateDetectorMetadata__postProcessFetchMetadataWithPhotoLibrary
           [PLDuplicateDetectorPostProcessing postProcessDuplicateSubGroupWithResult:v17 metadataMap:v19 metadataKey:v18 secondarySortKey:0 subGroupSplitDecisionBlock:v36];
 
           v20 = *(v15 + 3384);
-          v21 = [v33 pathManager];
-          LODWORD(v20) = [v20 sharedLibraryDedupeEnabledWithPathManager:v21];
+          pathManager = [v33 pathManager];
+          LODWORD(v20) = [v20 sharedLibraryDedupeEnabledWithPathManager:pathManager];
 
           if (v20)
           {
@@ -342,7 +342,7 @@ void __95__PLDuplicateDetectorMetadata__postProcessFetchMetadataWithPhotoLibrary
 
       while (v35);
 
-      v9 = v30;
+      containerCopy = v30;
     }
 
     else
@@ -350,10 +350,10 @@ void __95__PLDuplicateDetectorMetadata__postProcessFetchMetadataWithPhotoLibrary
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v28 = v11;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v34 != 0;
@@ -398,10 +398,10 @@ uint64_t __91__PLDuplicateDetectorMetadata__postProcessDuplicateWithPhotoLibrary
   return v18;
 }
 
-- (id)_fullsizeIdentifiersFromLimitedSelectionWithPhotoLibrary:(id)a3
+- (id)_fullsizeIdentifiersFromLimitedSelectionWithPhotoLibrary:(id)library
 {
   v28[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   v5 = MEMORY[0x1E695D5E0];
   v6 = +[PLInternalResource entityName];
   v7 = [v5 fetchRequestWithEntityName:v6];
@@ -428,13 +428,13 @@ uint64_t __91__PLDuplicateDetectorMetadata__postProcessDuplicateWithPhotoLibrary
   v22[1] = 3221225472;
   v22[2] = __88__PLDuplicateDetectorMetadata__fullsizeIdentifiersFromLimitedSelectionWithPhotoLibrary___block_invoke;
   v22[3] = &unk_1E7578100;
-  v23 = v4;
+  v23 = libraryCopy;
   v24 = v7;
-  v25 = self;
+  selfCopy = self;
   v16 = v15;
   v26 = v16;
   v17 = v7;
-  v18 = v4;
+  v18 = libraryCopy;
   [v18 performBlockAndWait:v22];
   v19 = v26;
   v20 = v16;
@@ -507,10 +507,10 @@ void __88__PLDuplicateDetectorMetadata__fullsizeIdentifiersFromLimitedSelectionW
   [v2 addObjectsFromArray:v3];
 }
 
-- (id)_originalsIdentifiersFromLimitedSelectionWithPhotoLibrary:(id)a3
+- (id)_originalsIdentifiersFromLimitedSelectionWithPhotoLibrary:(id)library
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   v5 = MEMORY[0x1E695D5E0];
   v6 = +[PLAdditionalAssetAttributes entityName];
   v7 = [v5 fetchRequestWithEntityName:v6];
@@ -529,13 +529,13 @@ void __88__PLDuplicateDetectorMetadata__fullsizeIdentifiersFromLimitedSelectionW
   v17[1] = 3221225472;
   v17[2] = __89__PLDuplicateDetectorMetadata__originalsIdentifiersFromLimitedSelectionWithPhotoLibrary___block_invoke;
   v17[3] = &unk_1E7578100;
-  v18 = v4;
+  v18 = libraryCopy;
   v19 = v7;
-  v20 = self;
+  selfCopy = self;
   v11 = v10;
   v21 = v11;
   v12 = v7;
-  v13 = v4;
+  v13 = libraryCopy;
   [v13 performBlockAndWait:v17];
   v14 = v21;
   v15 = v11;
@@ -608,14 +608,14 @@ void __89__PLDuplicateDetectorMetadata__originalsIdentifiersFromLimitedSelection
   [v2 addObjectsFromArray:v3];
 }
 
-- (id)_combinedIdentifiersFromLimitedSelectionWithPhotoLibrary:(id)a3
+- (id)_combinedIdentifiersFromLimitedSelectionWithPhotoLibrary:(id)library
 {
   combinedLimitedSelectionIdentifiers = self->_combinedLimitedSelectionIdentifiers;
   if (!combinedLimitedSelectionIdentifiers)
   {
-    v5 = a3;
-    v6 = [(PLDuplicateDetectorMetadata *)self _originalsIdentifiersFromLimitedSelectionWithPhotoLibrary:v5];
-    v7 = [(PLDuplicateDetectorMetadata *)self _fullsizeIdentifiersFromLimitedSelectionWithPhotoLibrary:v5];
+    libraryCopy = library;
+    v6 = [(PLDuplicateDetectorMetadata *)self _originalsIdentifiersFromLimitedSelectionWithPhotoLibrary:libraryCopy];
+    v7 = [(PLDuplicateDetectorMetadata *)self _fullsizeIdentifiersFromLimitedSelectionWithPhotoLibrary:libraryCopy];
 
     v8 = [v6 setByAddingObjectsFromSet:v7];
     v9 = self->_combinedLimitedSelectionIdentifiers;
@@ -641,15 +641,15 @@ void __89__PLDuplicateDetectorMetadata__originalsIdentifiersFromLimitedSelection
   return v2;
 }
 
-- (id)_fullSizePreviewPredicateWithPhotoLibrary:(id)a3
+- (id)_fullSizePreviewPredicateWithPhotoLibrary:(id)library
 {
   v19[4] = *MEMORY[0x1E69E9840];
   v17 = MEMORY[0x1E696AB28];
-  v4 = a3;
-  v5 = [(PLDuplicateDetectorMetadata *)self _limitedSelectionFullSizePredicateWithPhotoLibrary:v4];
+  libraryCopy = library;
+  v5 = [(PLDuplicateDetectorMetadata *)self _limitedSelectionFullSizePredicateWithPhotoLibrary:libraryCopy];
   v19[0] = v5;
-  v6 = [(PLDuplicateDetectorMetadata *)self _fullsizeFingerprintIsValidFullSizePredicate];
-  v19[1] = v6;
+  _fullsizeFingerprintIsValidFullSizePredicate = [(PLDuplicateDetectorMetadata *)self _fullsizeFingerprintIsValidFullSizePredicate];
+  v19[1] = _fullsizeFingerprintIsValidFullSizePredicate;
   v7 = MEMORY[0x1E696AB28];
   v8 = [PLDuplicateDetector duplicateDetectorExcludeZeroByteStableHashPredicateWithProperty:@"fingerprint"];
   v18[0] = v8;
@@ -658,9 +658,9 @@ void __89__PLDuplicateDetectorMetadata__originalsIdentifiersFromLimitedSelection
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
   v11 = [v7 orPredicateWithSubpredicates:v10];
   v19[2] = v11;
-  v12 = [v4 pathManager];
+  pathManager = [libraryCopy pathManager];
 
-  v13 = [PLDuplicateDetector duplicateDetectorProcessingFilterAssetsPredicateWithPrefix:@"asset" processingType:1 pathManager:v12];
+  v13 = [PLDuplicateDetector duplicateDetectorProcessingFilterAssetsPredicateWithPrefix:@"asset" processingType:1 pathManager:pathManager];
   v19[3] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:4];
   v15 = [v17 andPredicateWithSubpredicates:v14];
@@ -668,13 +668,13 @@ void __89__PLDuplicateDetectorMetadata__originalsIdentifiersFromLimitedSelection
   return v15;
 }
 
-- (id)_limitedSelectionFullSizePredicateWithPhotoLibrary:(id)a3
+- (id)_limitedSelectionFullSizePredicateWithPhotoLibrary:(id)library
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   if ([(NSArray *)self->_sourceAssetOIDs count])
   {
-    v5 = [(PLDuplicateDetectorMetadata *)self _combinedIdentifiersFromLimitedSelectionWithPhotoLibrary:v4];
+    v5 = [(PLDuplicateDetectorMetadata *)self _combinedIdentifiersFromLimitedSelectionWithPhotoLibrary:libraryCopy];
     v6 = MEMORY[0x1E696AB28];
     v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"fingerprint", v5];
     v17[0] = v7;
@@ -699,19 +699,19 @@ void __89__PLDuplicateDetectorMetadata__originalsIdentifiersFromLimitedSelection
   return v14;
 }
 
-- (id)_fullSizePreviewFingerprintRequestWithPhotoLibrary:(id)a3
+- (id)_fullSizePreviewFingerprintRequestWithPhotoLibrary:(id)library
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695D5E0];
-  v5 = a3;
+  libraryCopy = library;
   v6 = +[PLInternalResource entityName];
   v7 = [v4 fetchRequestWithEntityName:v6];
 
-  v8 = [(PLDuplicateDetectorMetadata *)self _fullSizePreviewPredicateWithPhotoLibrary:v5];
+  v8 = [(PLDuplicateDetectorMetadata *)self _fullSizePreviewPredicateWithPhotoLibrary:libraryCopy];
 
   [v7 setPredicate:v8];
-  v9 = [(PLDuplicateDetectorMetadata *)self _fullSizePropertiesToFetch];
-  [v7 setPropertiesToFetch:v9];
+  _fullSizePropertiesToFetch = [(PLDuplicateDetectorMetadata *)self _fullSizePropertiesToFetch];
+  [v7 setPropertiesToFetch:_fullSizePropertiesToFetch];
 
   [v7 setResultType:2];
   v12[0] = @"asset";
@@ -734,20 +734,20 @@ void __89__PLDuplicateDetectorMetadata__originalsIdentifiersFromLimitedSelection
   return v2;
 }
 
-- (id)_predicateWithPhotoLibrary:(id)a3
+- (id)_predicateWithPhotoLibrary:(id)library
 {
   v14[4] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AB28];
-  v5 = a3;
-  v6 = [(PLDuplicateDetectorMetadata *)self _limitedSelectionPredicateWithPhotoLibrary:v5];
+  libraryCopy = library;
+  v6 = [(PLDuplicateDetectorMetadata *)self _limitedSelectionPredicateWithPhotoLibrary:libraryCopy];
   v14[0] = v6;
-  v7 = [(PLDuplicateDetectorMetadata *)self _fingerprintIsValidPredicate];
-  v14[1] = v7;
+  _fingerprintIsValidPredicate = [(PLDuplicateDetectorMetadata *)self _fingerprintIsValidPredicate];
+  v14[1] = _fingerprintIsValidPredicate;
   v8 = [PLDuplicateDetector duplicateDetectorExcludeZeroByteStableHashPredicateWithProperty:@"originalStableHash"];
   v14[2] = v8;
-  v9 = [v5 pathManager];
+  pathManager = [libraryCopy pathManager];
 
-  v10 = [PLDuplicateDetector duplicateDetectorProcessingFilterAssetsPredicateWithPrefix:@"asset" processingType:1 pathManager:v9];
+  v10 = [PLDuplicateDetector duplicateDetectorProcessingFilterAssetsPredicateWithPrefix:@"asset" processingType:1 pathManager:pathManager];
   v14[3] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:4];
   v12 = [v4 andPredicateWithSubpredicates:v11];
@@ -768,13 +768,13 @@ void __89__PLDuplicateDetectorMetadata__originalsIdentifiersFromLimitedSelection
   return v6;
 }
 
-- (id)_limitedSelectionPredicateWithPhotoLibrary:(id)a3
+- (id)_limitedSelectionPredicateWithPhotoLibrary:(id)library
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   if ([(NSArray *)self->_sourceAssetOIDs count])
   {
-    v5 = [(PLDuplicateDetectorMetadata *)self _combinedIdentifiersFromLimitedSelectionWithPhotoLibrary:v4];
+    v5 = [(PLDuplicateDetectorMetadata *)self _combinedIdentifiersFromLimitedSelectionWithPhotoLibrary:libraryCopy];
     v6 = MEMORY[0x1E696AB28];
     v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"originalStableHash", v5];
     v12[0] = v7;
@@ -792,19 +792,19 @@ void __89__PLDuplicateDetectorMetadata__originalsIdentifiersFromLimitedSelection
   return v10;
 }
 
-- (id)_fingerprintRequestWithPhotoLibrary:(id)a3
+- (id)_fingerprintRequestWithPhotoLibrary:(id)library
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695D5E0];
-  v5 = a3;
+  libraryCopy = library;
   v6 = +[PLAdditionalAssetAttributes entityName];
   v7 = [v4 fetchRequestWithEntityName:v6];
 
-  v8 = [(PLDuplicateDetectorMetadata *)self _predicateWithPhotoLibrary:v5];
+  v8 = [(PLDuplicateDetectorMetadata *)self _predicateWithPhotoLibrary:libraryCopy];
 
   [v7 setPredicate:v8];
-  v9 = [(PLDuplicateDetectorMetadata *)self _propertiesToFetch];
-  [v7 setPropertiesToFetch:v9];
+  _propertiesToFetch = [(PLDuplicateDetectorMetadata *)self _propertiesToFetch];
+  [v7 setPropertiesToFetch:_propertiesToFetch];
 
   [v7 setResultType:2];
   v12[0] = @"asset";
@@ -814,45 +814,45 @@ void __89__PLDuplicateDetectorMetadata__originalsIdentifiersFromLimitedSelection
   return v7;
 }
 
-- (void)_addFingerprint:(id)a3 oid:(id)a4 map:(id)a5
+- (void)_addFingerprint:(id)fingerprint oid:(id)oid map:(id)map
 {
-  v10 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (v10 && v7)
+  fingerprintCopy = fingerprint;
+  oidCopy = oid;
+  mapCopy = map;
+  if (fingerprintCopy && oidCopy)
   {
-    v9 = [v8 objectForKeyedSubscript:v10];
+    v9 = [mapCopy objectForKeyedSubscript:fingerprintCopy];
     if (!v9)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-      [v8 setObject:v9 forKeyedSubscript:v10];
+      [mapCopy setObject:v9 forKeyedSubscript:fingerprintCopy];
     }
 
-    [v9 addObject:v7];
+    [v9 addObject:oidCopy];
   }
 }
 
-- (void)_buildAdjustedFingerprintMapWithPrimaryStoreFullsizeFingerprintResults:(id)a3 mutableOIDFingerprintMap:(id)a4 property:(id)a5 filterOnCPLResourceType:(unint64_t)a6
+- (void)_buildAdjustedFingerprintMapWithPrimaryStoreFullsizeFingerprintResults:(id)results mutableOIDFingerprintMap:(id)map property:(id)property filterOnCPLResourceType:(unint64_t)type
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v13)
+  resultsCopy = results;
+  mapCopy = map;
+  propertyCopy = property;
+  if (!propertyCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PLDuplicateDetectorMetadata.m" lineNumber:158 description:{@"Invalid parameter not satisfying: %@", @"property"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDuplicateDetectorMetadata.m" lineNumber:158 description:{@"Invalid parameter not satisfying: %@", @"property"}];
   }
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __160__PLDuplicateDetectorMetadata__buildAdjustedFingerprintMapWithPrimaryStoreFullsizeFingerprintResults_mutableOIDFingerprintMap_property_filterOnCPLResourceType___block_invoke;
   v17[3] = &unk_1E756EAE8;
-  v19 = v12;
-  v20 = a6;
-  v18 = v13;
-  v14 = v12;
-  v15 = v13;
-  [v11 enumerateObjectsUsingBlock:v17];
+  v19 = mapCopy;
+  typeCopy = type;
+  v18 = propertyCopy;
+  v14 = mapCopy;
+  v15 = propertyCopy;
+  [resultsCopy enumerateObjectsUsingBlock:v17];
 }
 
 void __160__PLDuplicateDetectorMetadata__buildAdjustedFingerprintMapWithPrimaryStoreFullsizeFingerprintResults_mutableOIDFingerprintMap_property_filterOnCPLResourceType___block_invoke(uint64_t a1, void *a2)
@@ -872,23 +872,23 @@ void __160__PLDuplicateDetectorMetadata__buildAdjustedFingerprintMapWithPrimaryS
   }
 }
 
-- (void)_processBlendedResult:(id)a3 fullsizeMap:(id)a4 oidFullsizeVideoMap:(id)a5 oidMediumVideoMap:(id)a6 inDuplicateMap:(id)a7
+- (void)_processBlendedResult:(id)result fullsizeMap:(id)map oidFullsizeVideoMap:(id)videoMap oidMediumVideoMap:(id)mediumVideoMap inDuplicateMap:(id)duplicateMap
 {
   v37 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v12 objectForKeyedSubscript:@"asset"];
-  v18 = [v12 objectForKeyedSubscript:@"asset.kind"];
-  v19 = [v18 shortValue];
+  resultCopy = result;
+  mapCopy = map;
+  videoMapCopy = videoMap;
+  mediumVideoMapCopy = mediumVideoMap;
+  duplicateMapCopy = duplicateMap;
+  v17 = [resultCopy objectForKeyedSubscript:@"asset"];
+  v18 = [resultCopy objectForKeyedSubscript:@"asset.kind"];
+  shortValue = [v18 shortValue];
 
   if (v17)
   {
-    if (v19 == 1)
+    if (shortValue == 1)
     {
-      v20 = [v14 objectForKeyedSubscript:v17];
+      v20 = [videoMapCopy objectForKeyedSubscript:v17];
       v21 = v20;
       if (v20)
       {
@@ -897,7 +897,7 @@ void __160__PLDuplicateDetectorMetadata__buildAdjustedFingerprintMapWithPrimaryS
 
       else
       {
-        v22 = [v15 objectForKeyedSubscript:v17];
+        v22 = [mediumVideoMapCopy objectForKeyedSubscript:v17];
       }
 
       v24 = v22;
@@ -905,15 +905,15 @@ void __160__PLDuplicateDetectorMetadata__buildAdjustedFingerprintMapWithPrimaryS
       if (!v24)
       {
 LABEL_14:
-        v27 = [v12 objectForKeyedSubscript:@"asset.adjustmentsState"];
-        v28 = [v27 unsignedShortValue];
+        v27 = [resultCopy objectForKeyedSubscript:@"asset.adjustmentsState"];
+        unsignedShortValue = [v27 unsignedShortValue];
 
-        if (v28)
+        if (unsignedShortValue)
         {
           v29 = PLDuplicateDetectionGetLog();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
           {
-            v30 = [v12 objectForKeyedSubscript:@"originalStableHash"];
+            v30 = [resultCopy objectForKeyedSubscript:@"originalStableHash"];
             v35 = 138543362;
             v36 = v30;
             _os_log_impl(&dword_19BF1F000, v29, OS_LOG_TYPE_DEBUG, "Adjusted asset missing full size render fingerprint. Original fingerprint: %{public}@", &v35, 0xCu);
@@ -922,27 +922,27 @@ LABEL_14:
           v24 = 0;
         }
 
-        else if (v19 != 1 || ([v12 objectForKeyedSubscript:@"originatingAssetIdentifier"], (v24 = objc_claimAutoreleasedReturnValue()) == 0))
+        else if (shortValue != 1 || ([resultCopy objectForKeyedSubscript:@"originatingAssetIdentifier"], (v24 = objc_claimAutoreleasedReturnValue()) == 0))
         {
-          v24 = [v12 objectForKeyedSubscript:@"originalStableHash"];
+          v24 = [resultCopy objectForKeyedSubscript:@"originalStableHash"];
         }
       }
     }
 
     else
     {
-      v24 = [v13 objectForKeyedSubscript:v17];
+      v24 = [mapCopy objectForKeyedSubscript:v17];
       if (!v24)
       {
         goto LABEL_14;
       }
     }
 
-    [(PLDuplicateDetectorMetadata *)self _addFingerprint:v24 oid:v17 map:v16];
+    [(PLDuplicateDetectorMetadata *)self _addFingerprint:v24 oid:v17 map:duplicateMapCopy];
     goto LABEL_30;
   }
 
-  if (v19 == 1 && ([v12 objectForKeyedSubscript:@"originatingAssetIdentifier"], (v23 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (shortValue == 1 && ([resultCopy objectForKeyedSubscript:@"originatingAssetIdentifier"], (v23 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v24 = v23;
     v25 = v24;
@@ -950,7 +950,7 @@ LABEL_14:
 
   else
   {
-    v26 = [v12 objectForKeyedSubscript:@"originalStableHash"];
+    v26 = [resultCopy objectForKeyedSubscript:@"originalStableHash"];
     if (v26)
     {
       v25 = v26;
@@ -958,7 +958,7 @@ LABEL_14:
 
     else
     {
-      v31 = [v12 objectForKeyedSubscript:@"fingerprint"];
+      v31 = [resultCopy objectForKeyedSubscript:@"fingerprint"];
       v32 = v31;
       if (v31)
       {
@@ -967,7 +967,7 @@ LABEL_14:
 
       else
       {
-        v33 = [v12 objectForKeyedSubscript:@"stableHash"];
+        v33 = [resultCopy objectForKeyedSubscript:@"stableHash"];
       }
 
       v25 = v33;
@@ -987,25 +987,25 @@ LABEL_14:
 LABEL_30:
 }
 
-- (id)_generateDuplicateContainerFromResults:(id)a3 fullsizeFingerprintResults:(id)a4
+- (id)_generateDuplicateContainerFromResults:(id)results fullsizeFingerprintResults:(id)fingerprintResults
 {
-  v26 = a3;
-  v6 = a4;
+  resultsCopy = results;
+  fingerprintResultsCopy = fingerprintResults;
   v24 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   context = objc_autoreleasePoolPush();
-  v23 = [v26 arrayByAddingObjectsFromArray:v6];
+  v23 = [resultsCopy arrayByAddingObjectsFromArray:fingerprintResultsCopy];
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [(PLDuplicateDetectorMetadata *)self _buildAdjustedFingerprintMapWithPrimaryStoreFullsizeFingerprintResults:v6 mutableOIDFingerprintMap:v7 property:@"fingerprint" filterOnCPLResourceType:2];
+  [(PLDuplicateDetectorMetadata *)self _buildAdjustedFingerprintMapWithPrimaryStoreFullsizeFingerprintResults:fingerprintResultsCopy mutableOIDFingerprintMap:v7 property:@"fingerprint" filterOnCPLResourceType:2];
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [(PLDuplicateDetectorMetadata *)self _buildAdjustedFingerprintMapWithPrimaryStoreFullsizeFingerprintResults:v6 mutableOIDFingerprintMap:v8 property:@"stableHash" filterOnCPLResourceType:2];
+  [(PLDuplicateDetectorMetadata *)self _buildAdjustedFingerprintMapWithPrimaryStoreFullsizeFingerprintResults:fingerprintResultsCopy mutableOIDFingerprintMap:v8 property:@"stableHash" filterOnCPLResourceType:2];
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [(PLDuplicateDetectorMetadata *)self _buildAdjustedFingerprintMapWithPrimaryStoreFullsizeFingerprintResults:v6 mutableOIDFingerprintMap:v9 property:@"fingerprint" filterOnCPLResourceType:16];
+  [(PLDuplicateDetectorMetadata *)self _buildAdjustedFingerprintMapWithPrimaryStoreFullsizeFingerprintResults:fingerprintResultsCopy mutableOIDFingerprintMap:v9 property:@"fingerprint" filterOnCPLResourceType:16];
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [(PLDuplicateDetectorMetadata *)self _buildAdjustedFingerprintMapWithPrimaryStoreFullsizeFingerprintResults:v6 mutableOIDFingerprintMap:v10 property:@"stableHash" filterOnCPLResourceType:16];
+  [(PLDuplicateDetectorMetadata *)self _buildAdjustedFingerprintMapWithPrimaryStoreFullsizeFingerprintResults:fingerprintResultsCopy mutableOIDFingerprintMap:v10 property:@"stableHash" filterOnCPLResourceType:16];
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [(PLDuplicateDetectorMetadata *)self _buildAdjustedFingerprintMapWithPrimaryStoreFullsizeFingerprintResults:v6 mutableOIDFingerprintMap:v11 property:@"fingerprint" filterOnCPLResourceType:6];
+  [(PLDuplicateDetectorMetadata *)self _buildAdjustedFingerprintMapWithPrimaryStoreFullsizeFingerprintResults:fingerprintResultsCopy mutableOIDFingerprintMap:v11 property:@"fingerprint" filterOnCPLResourceType:6];
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [(PLDuplicateDetectorMetadata *)self _buildAdjustedFingerprintMapWithPrimaryStoreFullsizeFingerprintResults:v6 mutableOIDFingerprintMap:v12 property:@"stableHash" filterOnCPLResourceType:6];
+  [(PLDuplicateDetectorMetadata *)self _buildAdjustedFingerprintMapWithPrimaryStoreFullsizeFingerprintResults:fingerprintResultsCopy mutableOIDFingerprintMap:v12 property:@"stableHash" filterOnCPLResourceType:6];
   v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
@@ -1065,17 +1065,17 @@ void __97__PLDuplicateDetectorMetadata__generateDuplicateContainerFromResults_fu
   }
 }
 
-- (id)detectDuplicatesWithPhotoLibrary:(id)a3 error:(id *)a4
+- (id)detectDuplicatesWithPhotoLibrary:(id)library error:(id *)error
 {
-  v6 = a3;
+  libraryCopy = library;
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
   v42 = __Block_byref_object_copy__61699;
   v43 = __Block_byref_object_dispose__61700;
   v44 = 0;
-  v7 = [(PLDuplicateDetectorMetadata *)self _fingerprintRequestWithPhotoLibrary:v6];
-  v8 = [(PLDuplicateDetectorMetadata *)self _fullSizePreviewFingerprintRequestWithPhotoLibrary:v6];
+  v7 = [(PLDuplicateDetectorMetadata *)self _fingerprintRequestWithPhotoLibrary:libraryCopy];
+  v8 = [(PLDuplicateDetectorMetadata *)self _fullSizePreviewFingerprintRequestWithPhotoLibrary:libraryCopy];
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -1092,12 +1092,12 @@ void __97__PLDuplicateDetectorMetadata__generateDuplicateContainerFromResults_fu
   v19[1] = 3221225472;
   v19[2] = __70__PLDuplicateDetectorMetadata_detectDuplicatesWithPhotoLibrary_error___block_invoke;
   v19[3] = &unk_1E7572760;
-  v9 = v6;
+  v9 = libraryCopy;
   v20 = v9;
   v24 = &v33;
   v10 = v7;
   v21 = v10;
-  v22 = self;
+  selfCopy = self;
   v25 = &v39;
   v26 = &v27;
   v11 = v8;
@@ -1113,7 +1113,7 @@ void __97__PLDuplicateDetectorMetadata__generateDuplicateContainerFromResults_fu
     objc_storeStrong(v14 + 5, obj);
     objc_autoreleasePoolPop(v12);
     v16 = v40[5];
-    if (!v15 && a4)
+    if (!v15 && error)
     {
       goto LABEL_5;
     }
@@ -1123,11 +1123,11 @@ void __97__PLDuplicateDetectorMetadata__generateDuplicateContainerFromResults_fu
   {
     v16 = v40[5];
     v13 = 0;
-    if (a4)
+    if (error)
     {
 LABEL_5:
       v16 = v16;
-      *a4 = v16;
+      *error = v16;
     }
   }
 
@@ -1228,16 +1228,16 @@ void __70__PLDuplicateDetectorMetadata_detectDuplicatesWithPhotoLibrary_error___
   }
 }
 
-- (PLDuplicateDetectorMetadata)initWithSourceOIDs:(id)a3
+- (PLDuplicateDetectorMetadata)initWithSourceOIDs:(id)ds
 {
-  v5 = a3;
+  dsCopy = ds;
   v10.receiver = self;
   v10.super_class = PLDuplicateDetectorMetadata;
   v6 = [(PLDuplicateDetectorMetadata *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sourceAssetOIDs, a3);
+    objc_storeStrong(&v6->_sourceAssetOIDs, ds);
     combinedLimitedSelectionIdentifiers = v7->_combinedLimitedSelectionIdentifiers;
     v7->_combinedLimitedSelectionIdentifiers = 0;
   }

@@ -1,13 +1,13 @@
 @interface NSValue
-+ (id)nrValueWithCGSize:(CGSize)a3;
++ (id)nrValueWithCGSize:(CGSize)size;
 @end
 
 @implementation NSValue
 
-+ (id)nrValueWithCGSize:(CGSize)a3
++ (id)nrValueWithCGSize:(CGSize)size
 {
-  v5 = a3;
-  v3 = [NSValue valueWithBytes:&v5 objCType:"{CGSize=dd}"];
+  sizeCopy = size;
+  v3 = [NSValue valueWithBytes:&sizeCopy objCType:"{CGSize=dd}"];
 
   return v3;
 }

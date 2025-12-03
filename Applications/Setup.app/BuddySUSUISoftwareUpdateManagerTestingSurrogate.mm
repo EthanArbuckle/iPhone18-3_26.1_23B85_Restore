@@ -1,113 +1,113 @@
 @interface BuddySUSUISoftwareUpdateManagerTestingSurrogate
 + (BOOL)enabled;
-- (BOOL)_setStateAndCallDelegateWithOptionalState:(id)a3 behavior:(id)a4;
+- (BOOL)_setStateAndCallDelegateWithOptionalState:(id)state behavior:(id)behavior;
 - (BOOL)downloadProgressIsDone;
-- (BOOL)enableUpdateButtonForError:(id)a3;
-- (BOOL)readyToDownloadUpdate:(id)a3;
-- (BuddySUSUISoftwareUpdateManagerTestingSurrogate)initWithDelegate:(id)a3 hostController:(id)a4;
+- (BOOL)enableUpdateButtonForError:(id)error;
+- (BOOL)readyToDownloadUpdate:(id)update;
+- (BuddySUSUISoftwareUpdateManagerTestingSurrogate)initWithDelegate:(id)delegate hostController:(id)controller;
 - (NSString)actionString;
 - (NSString)progressString;
 - (id)downloadDescriptor;
 - (id)downloadProgressPhase;
-- (id)errorForUpdate:(id)a3;
-- (id)humanReadableDescriptionForError:(id)a3;
-- (id)humanReadableDescriptionForError:(id)a3 enableButton:(BOOL *)a4;
-- (id)prettyNameForUpdate:(id)a3;
+- (id)errorForUpdate:(id)update;
+- (id)humanReadableDescriptionForError:(id)error;
+- (id)humanReadableDescriptionForError:(id)error enableButton:(BOOL *)button;
+- (id)prettyNameForUpdate:(id)update;
 - (id)publicCheckpointLogDetails;
 - (int)state;
-- (void)SUManagerIsDownloading:(id)a3;
-- (void)_performInstallWithUpdate:(id)a3;
-- (void)_promptForPasscodeWithBehavior:(id)a3 completion:(id)a4;
-- (void)_setDownloadProgress:(float)a3 nextIncrement:(float)a4 update:(id)a5 session:(id)a6 behavior:(id)a7 thenInstall:(BOOL)a8;
-- (void)_setStateAndCallDelegate:(int)a3;
-- (void)_startDownloadWithUpdate:(id)a3 thenInstall:(BOOL)a4 behavior:(id)a5 completion:(id)a6;
-- (void)_startPerformDownloadWithUpdate:(id)a3 thenInstall:(BOOL)a4;
-- (void)_updateClientUpdateReadyToDownloadIfNecessaryWithBehavior:(id)a3;
+- (void)SUManagerIsDownloading:(id)downloading;
+- (void)_performInstallWithUpdate:(id)update;
+- (void)_promptForPasscodeWithBehavior:(id)behavior completion:(id)completion;
+- (void)_setDownloadProgress:(float)progress nextIncrement:(float)increment update:(id)update session:(id)session behavior:(id)behavior thenInstall:(BOOL)install;
+- (void)_setStateAndCallDelegate:(int)delegate;
+- (void)_startDownloadWithUpdate:(id)update thenInstall:(BOOL)install behavior:(id)behavior completion:(id)completion;
+- (void)_startPerformDownloadWithUpdate:(id)update thenInstall:(BOOL)install;
+- (void)_updateClientUpdateReadyToDownloadIfNecessaryWithBehavior:(id)behavior;
 - (void)refreshState;
-- (void)scanForUpdatesCompletion:(id)a3;
-- (void)scanForUpdatesWithOptions:(id)a3 andCompletion:(id)a4;
-- (void)setAutoInstall:(id)a3;
-- (void)setServerFlowStyle:(id)a3;
-- (void)startDownloadAndInstall:(unint64_t)a3 update:(id)a4 withHandler:(id)a5;
-- (void)startInstallWithHandler:(id)a3;
+- (void)scanForUpdatesCompletion:(id)completion;
+- (void)scanForUpdatesWithOptions:(id)options andCompletion:(id)completion;
+- (void)setAutoInstall:(id)install;
+- (void)setServerFlowStyle:(id)style;
+- (void)startDownloadAndInstall:(unint64_t)install update:(id)update withHandler:(id)handler;
+- (void)startInstallWithHandler:(id)handler;
 @end
 
 @implementation BuddySUSUISoftwareUpdateManagerTestingSurrogate
 
 + (BOOL)enabled
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = +[BYTestingSurrogateBehaviorManager sharedInstance];
-  v2 = [location[0] domainSoftwareUpdate];
-  v3 = [location[0] enabledForDomain:v2];
+  domainSoftwareUpdate = [location[0] domainSoftwareUpdate];
+  v3 = [location[0] enabledForDomain:domainSoftwareUpdate];
 
   objc_storeStrong(location, 0);
   return v3 & 1;
 }
 
-- (BuddySUSUISoftwareUpdateManagerTestingSurrogate)initWithDelegate:(id)a3 hostController:(id)a4
+- (BuddySUSUISoftwareUpdateManagerTestingSurrogate)initWithDelegate:(id)delegate hostController:(id)controller
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, delegate);
   obj = 0;
-  objc_storeStrong(&obj, a4);
-  v5 = v16;
-  v16 = 0;
+  objc_storeStrong(&obj, controller);
+  v5 = selfCopy;
+  selfCopy = 0;
   v13.receiver = v5;
   v13.super_class = BuddySUSUISoftwareUpdateManagerTestingSurrogate;
-  v16 = [(BuddySUSUISoftwareUpdateManagerTestingSurrogate *)&v13 init];
-  objc_storeStrong(&v16, v16);
-  if (v16)
+  selfCopy = [(BuddySUSUISoftwareUpdateManagerTestingSurrogate *)&v13 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    v6 = v16;
+    v6 = selfCopy;
     objc_sync_enter(v6);
     v7 = +[BYTestingSurrogateBehaviorManager sharedInstance];
-    v8 = *(v16 + 1);
-    *(v16 + 1) = v7;
+    v8 = *(selfCopy + 1);
+    *(selfCopy + 1) = v7;
 
     v9 = &_dispatch_main_q;
-    v10 = *(v16 + 2);
-    *(v16 + 2) = v9;
+    v10 = *(selfCopy + 2);
+    *(selfCopy + 2) = v9;
 
-    objc_storeWeak(v16 + 3, location[0]);
-    objc_storeWeak(v16 + 4, obj);
-    *(v16 + 11) = 0;
+    objc_storeWeak(selfCopy + 3, location[0]);
+    objc_storeWeak(selfCopy + 4, obj);
+    *(selfCopy + 11) = 0;
     objc_sync_exit(v6);
   }
 
-  v11 = v16;
+  v11 = selfCopy;
   objc_storeStrong(&obj, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v11;
 }
 
-- (void)setServerFlowStyle:(id)a3
+- (void)setServerFlowStyle:(id)style
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, style);
   objc_storeStrong(location, 0);
 }
 
 - (int)state
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   state = self->_state;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return state;
 }
 
 - (NSString)progressString
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (self->_clientUpdateError && self->_state >= 0xAu)
   {
     v6 = @"Unable to Install Fake Update";
@@ -150,15 +150,15 @@
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (NSString)actionString
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   state = self->_state;
   if (state == 6 || (state - 8) < 2)
   {
@@ -190,60 +190,60 @@
     v6 = @"Installing Fake Update…";
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (BOOL)downloadProgressIsDone
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   downloadProgressIsDone = self->_downloadProgressIsDone;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return downloadProgressIsDone;
 }
 
 - (id)downloadProgressPhase
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = self->_downloadProgressPhase;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (id)downloadDescriptor
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = self->_downloadDescriptor;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)SUManagerIsDownloading:(id)a3
+- (void)SUManagerIsDownloading:(id)downloading
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  behaviorManager = v18->_behaviorManager;
-  v4 = [(BYTestingSurrogateBehaviorManager *)behaviorManager domainSoftwareUpdate];
-  v16 = [(BYTestingSurrogateBehaviorManager *)behaviorManager acquireNextBehaviorWithName:@"checkForPreexistingDownload" domain:v4];
+  objc_storeStrong(location, downloading);
+  behaviorManager = selfCopy->_behaviorManager;
+  domainSoftwareUpdate = [(BYTestingSurrogateBehaviorManager *)behaviorManager domainSoftwareUpdate];
+  v16 = [(BYTestingSurrogateBehaviorManager *)behaviorManager acquireNextBehaviorWithName:@"checkForPreexistingDownload" domain:domainSoftwareUpdate];
 
   [v16 duration];
   v6 = dispatch_time(0, (v5 * 1000000000.0));
-  completion_and_delegate_and_main_queue = v18->_completion_and_delegate_and_main_queue;
+  completion_and_delegate_and_main_queue = selfCopy->_completion_and_delegate_and_main_queue;
   block = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
   v11 = sub_1001868D0;
   v12 = &unk_10032BC78;
-  v13 = v18;
+  v13 = selfCopy;
   v14 = v16;
   v15 = location[0];
   dispatch_after(v6, completion_and_delegate_and_main_queue, &block);
@@ -256,8 +256,8 @@
 
 - (id)publicCheckpointLogDetails
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v17 = 0;
   if (self->_clientUpdateToDownloadAndInstall)
   {
@@ -330,34 +330,34 @@
   {
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v20;
 }
 
 - (void)refreshState
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!self->_state)
   {
     objc_exception_throw([NSException exceptionWithName:@"Testing surrogate refreshState currently assumes a non-idle state" reason:0 userInfo:0]);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)errorForUpdate:(id)a3
+- (id)errorForUpdate:(id)update
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v7;
+  objc_storeStrong(location, update);
+  v3 = selfCopy;
   objc_sync_enter(v3);
-  if ([location[0] isEqual:v7->_clientUpdateToDownloadAndInstall])
+  if ([location[0] isEqual:selfCopy->_clientUpdateToDownloadAndInstall])
   {
-    v8 = v7->_clientUpdateError;
+    v8 = selfCopy->_clientUpdateError;
   }
 
   else
@@ -373,15 +373,15 @@
   return v4;
 }
 
-- (BOOL)enableUpdateButtonForError:(id)a3
+- (BOOL)enableUpdateButtonForError:(id)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [location[0] domain];
+  objc_storeStrong(location, error);
+  domain = [location[0] domain];
   v4 = 0;
-  if ([v3 isEqualToString:@"BuddySUSUISoftwareUpdateManagerTestingSurrogate"])
+  if ([domain isEqualToString:@"BuddySUSUISoftwareUpdateManagerTestingSurrogate"])
   {
     v4 = [location[0] code] == 1;
   }
@@ -391,35 +391,35 @@
   return v7;
 }
 
-- (void)_setStateAndCallDelegate:(int)a3
+- (void)_setStateAndCallDelegate:(int)delegate
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
-  v3 = self;
-  objc_sync_enter(v3);
-  if (v6 != v8->_state)
+  delegateCopy = delegate;
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  if (delegateCopy != selfCopy->_state)
   {
-    state = v8->_state;
-    v8->_state = v6;
-    location = objc_loadWeakRetained(&v8->_weakDelegate);
-    [location manager:v8 didTransitionToState:v6 fromState:state];
+    state = selfCopy->_state;
+    selfCopy->_state = delegateCopy;
+    location = objc_loadWeakRetained(&selfCopy->_weakDelegate);
+    [location manager:selfCopy didTransitionToState:delegateCopy fromState:state];
     objc_storeStrong(&location, 0);
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy2);
 }
 
-- (BOOL)_setStateAndCallDelegateWithOptionalState:(id)a3 behavior:(id)a4
+- (BOOL)_setStateAndCallDelegateWithOptionalState:(id)state behavior:(id)behavior
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, state);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  v5 = [v11 results];
-  v6 = [v5 objectForKeyedSubscript:@"state"];
+  objc_storeStrong(&v11, behavior);
+  results = [v11 results];
+  v6 = [results objectForKeyedSubscript:@"state"];
   v7 = v6;
   if (!v6)
   {
@@ -430,7 +430,7 @@
 
   if (v10)
   {
-    -[BuddySUSUISoftwareUpdateManagerTestingSurrogate _setStateAndCallDelegate:](v13, "_setStateAndCallDelegate:", [v10 intValue]);
+    -[BuddySUSUISoftwareUpdateManagerTestingSurrogate _setStateAndCallDelegate:](selfCopy, "_setStateAndCallDelegate:", [v10 intValue]);
   }
 
   v8 = v10 != 0;
@@ -440,12 +440,12 @@
   return v8;
 }
 
-- (id)prettyNameForUpdate:(id)a3
+- (id)prettyNameForUpdate:(id)update
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, update);
   v12 = 0;
   if (!location[0])
   {
@@ -454,18 +454,18 @@
 
   if (![v12 length])
   {
-    v3 = [location[0] humanReadableUpdateName];
+    humanReadableUpdateName = [location[0] humanReadableUpdateName];
     v4 = v12;
-    v12 = v3;
+    v12 = humanReadableUpdateName;
   }
 
   if (![v12 length])
   {
-    v5 = [location[0] productVersion];
-    v6 = v5;
-    if (v5)
+    productVersion = [location[0] productVersion];
+    v6 = productVersion;
+    if (productVersion)
     {
-      v7 = v5;
+      v7 = productVersion;
     }
 
     else
@@ -484,17 +484,17 @@
   return v10;
 }
 
-- (id)humanReadableDescriptionForError:(id)a3
+- (id)humanReadableDescriptionForError:(id)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   if (location[0])
   {
-    v3 = [location[0] domain];
+    domain = [location[0] domain];
     v4 = 0;
-    if ([v3 isEqualToString:@"BuddySUSUISoftwareUpdateManagerTestingSurrogate"])
+    if ([domain isEqualToString:@"BuddySUSUISoftwareUpdateManagerTestingSurrogate"])
     {
       v4 = [location[0] code] == 0;
     }
@@ -506,9 +506,9 @@
 
     else
     {
-      v5 = [location[0] domain];
+      domain2 = [location[0] domain];
       v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [location[0] code]);
-      v10 = [NSString stringWithFormat:@"%@ code %@ (from testing surrogate)", v5, v6];
+      v10 = [NSString stringWithFormat:@"%@ code %@ (from testing surrogate)", domain2, v6];
     }
   }
 
@@ -523,46 +523,46 @@
   return v7;
 }
 
-- (id)humanReadableDescriptionForError:(id)a3 enableButton:(BOOL *)a4
+- (id)humanReadableDescriptionForError:(id)error enableButton:(BOOL *)button
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (a4)
+  objc_storeStrong(location, error);
+  if (button)
   {
-    *a4 = [(BuddySUSUISoftwareUpdateManagerTestingSurrogate *)v8 enableUpdateButtonForError:location[0]];
+    *button = [(BuddySUSUISoftwareUpdateManagerTestingSurrogate *)selfCopy enableUpdateButtonForError:location[0]];
   }
 
-  v5 = [(BuddySUSUISoftwareUpdateManagerTestingSurrogate *)v8 humanReadableDescriptionForError:location[0], a4];
+  button = [(BuddySUSUISoftwareUpdateManagerTestingSurrogate *)selfCopy humanReadableDescriptionForError:location[0], button];
   objc_storeStrong(location, 0);
 
-  return v5;
+  return button;
 }
 
-- (void)scanForUpdatesWithOptions:(id)a3 andCompletion:(id)a4
+- (void)scanForUpdatesWithOptions:(id)options andCompletion:(id)completion
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, options);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
-  [(BuddySUSUISoftwareUpdateManagerTestingSurrogate *)v21 _setStateAndCallDelegate:1];
-  behaviorManager = v21->_behaviorManager;
-  v6 = [(BYTestingSurrogateBehaviorManager *)behaviorManager domainSoftwareUpdate];
-  v18 = [(BYTestingSurrogateBehaviorManager *)behaviorManager acquireNextBehaviorWithName:@"scanForUpdates" domain:v6];
+  objc_storeStrong(&v19, completion);
+  [(BuddySUSUISoftwareUpdateManagerTestingSurrogate *)selfCopy _setStateAndCallDelegate:1];
+  behaviorManager = selfCopy->_behaviorManager;
+  domainSoftwareUpdate = [(BYTestingSurrogateBehaviorManager *)behaviorManager domainSoftwareUpdate];
+  v18 = [(BYTestingSurrogateBehaviorManager *)behaviorManager acquireNextBehaviorWithName:@"scanForUpdates" domain:domainSoftwareUpdate];
 
   [v18 duration];
   v8 = dispatch_time(0, (v7 * 1000000000.0));
-  completion_and_delegate_and_main_queue = v21->_completion_and_delegate_and_main_queue;
+  completion_and_delegate_and_main_queue = selfCopy->_completion_and_delegate_and_main_queue;
   v10 = _NSConcreteStackBlock;
   v11 = -1073741824;
   v12 = 0;
   v13 = sub_100187720;
   v14 = &unk_10032BC78;
   v15 = v18;
-  v16 = v21;
+  v16 = selfCopy;
   v17 = v19;
   dispatch_after(v8, completion_and_delegate_and_main_queue, &v10);
   objc_storeStrong(&v17, 0);
@@ -573,33 +573,33 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)scanForUpdatesCompletion:(id)a3
+- (void)scanForUpdatesCompletion:(id)completion
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddySUSUISoftwareUpdateManagerTestingSurrogate *)v4 scanForUpdatesWithOptions:0 andCompletion:location[0]];
+  objc_storeStrong(location, completion);
+  [(BuddySUSUISoftwareUpdateManagerTestingSurrogate *)selfCopy scanForUpdatesWithOptions:0 andCompletion:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)_updateClientUpdateReadyToDownloadIfNecessaryWithBehavior:(id)a3
+- (void)_updateClientUpdateReadyToDownloadIfNecessaryWithBehavior:(id)behavior
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v10;
+  objc_storeStrong(location, behavior);
+  v3 = selfCopy;
   objc_sync_enter(v3);
-  v4 = [location[0] results];
-  v5 = [v4 objectForKeyedSubscript:@"readyToDownload"];
+  results = [location[0] results];
+  v5 = [results objectForKeyedSubscript:@"readyToDownload"];
 
   if (v5)
   {
-    v6 = [location[0] results];
-    v7 = [v6 objectForKeyedSubscript:@"readyToDownload"];
-    v8 = [v7 BOOLValue];
-    v10->_clientUpdateReadyToDownload = v8 & 1;
+    results2 = [location[0] results];
+    v7 = [results2 objectForKeyedSubscript:@"readyToDownload"];
+    bOOLValue = [v7 BOOLValue];
+    selfCopy->_clientUpdateReadyToDownload = bOOLValue & 1;
   }
 
   objc_sync_exit(v3);
@@ -607,53 +607,53 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)readyToDownloadUpdate:(id)a3
+- (BOOL)readyToDownloadUpdate:(id)update
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v6;
+  objc_storeStrong(location, update);
+  v3 = selfCopy;
   objc_sync_enter(v3);
-  v7 = ([location[0] isEqual:v6->_clientUpdateToDownloadAndInstall] & 1) != 0 && v6->_clientUpdateReadyToDownload;
+  v7 = ([location[0] isEqual:selfCopy->_clientUpdateToDownloadAndInstall] & 1) != 0 && selfCopy->_clientUpdateReadyToDownload;
   objc_sync_exit(v3);
 
   objc_storeStrong(location, 0);
   return v7;
 }
 
-- (void)startDownloadAndInstall:(unint64_t)a3 update:(id)a4 withHandler:(id)a5
+- (void)startDownloadAndInstall:(unint64_t)install update:(id)update withHandler:(id)handler
 {
-  v28 = self;
+  selfCopy = self;
   v27 = a2;
-  v26 = a3;
+  installCopy = install;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, update);
   v24 = 0;
-  objc_storeStrong(&v24, a5);
-  if (v26 >= 2)
+  objc_storeStrong(&v24, handler);
+  if (installCopy >= 2)
   {
     objc_exception_throw([NSException exceptionWithName:@"Installation type not supported by testing surrogate" reason:0 userInfo:0]);
   }
 
-  v23 = v26 == 1;
-  behaviorManager = v28->_behaviorManager;
-  v7 = [(BYTestingSurrogateBehaviorManager *)behaviorManager domainSoftwareUpdate];
-  v22 = [(BYTestingSurrogateBehaviorManager *)behaviorManager acquireNextBehaviorWithName:@"startDownload" domain:v7];
+  v23 = installCopy == 1;
+  behaviorManager = selfCopy->_behaviorManager;
+  domainSoftwareUpdate = [(BYTestingSurrogateBehaviorManager *)behaviorManager domainSoftwareUpdate];
+  v22 = [(BYTestingSurrogateBehaviorManager *)behaviorManager acquireNextBehaviorWithName:@"startDownload" domain:domainSoftwareUpdate];
 
-  v8 = [v22 results];
-  v9 = [v8 objectForKeyedSubscript:@"promptForPasscode"];
-  v10 = [v9 BOOLValue];
+  results = [v22 results];
+  v9 = [results objectForKeyedSubscript:@"promptForPasscode"];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
-    v11 = v28;
+    v11 = selfCopy;
     v12 = _NSConcreteStackBlock;
     v13 = -1073741824;
     v14 = 0;
     v15 = sub_100188224;
     v16 = &unk_10032BBB0;
-    v17 = v28;
+    v17 = selfCopy;
     v18 = location;
     v21 = v23;
     v19 = v22;
@@ -667,7 +667,7 @@
 
   else
   {
-    [(BuddySUSUISoftwareUpdateManagerTestingSurrogate *)v28 _startDownloadWithUpdate:location thenInstall:v23 behavior:v22 completion:v24];
+    [(BuddySUSUISoftwareUpdateManagerTestingSurrogate *)selfCopy _startDownloadWithUpdate:location thenInstall:v23 behavior:v22 completion:v24];
   }
 
   objc_storeStrong(&v22, 0);
@@ -675,23 +675,23 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)_promptForPasscodeWithBehavior:(id)a3 completion:(id)a4
+- (void)_promptForPasscodeWithBehavior:(id)behavior completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, behavior);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, completion);
   [location[0] duration];
   v6 = dispatch_time(0, (v5 * 1000000000.0));
-  completion_and_delegate_and_main_queue = v17->_completion_and_delegate_and_main_queue;
+  completion_and_delegate_and_main_queue = selfCopy->_completion_and_delegate_and_main_queue;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
   v11 = sub_1001883A8;
   v12 = &unk_10032AFD0;
-  v13 = v17;
+  v13 = selfCopy;
   v14 = v15;
   dispatch_after(v6, completion_and_delegate_and_main_queue, &v8);
   objc_storeStrong(&v14, 0);
@@ -700,29 +700,29 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_startDownloadWithUpdate:(id)a3 thenInstall:(BOOL)a4 behavior:(id)a5 completion:(id)a6
+- (void)_startDownloadWithUpdate:(id)update thenInstall:(BOOL)install behavior:(id)behavior completion:(id)completion
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v24 = a4;
+  objc_storeStrong(location, update);
+  installCopy = install;
   v23 = 0;
-  objc_storeStrong(&v23, a5);
+  objc_storeStrong(&v23, behavior);
   v22 = 0;
-  objc_storeStrong(&v22, a6);
+  objc_storeStrong(&v22, completion);
   [v23 duration];
   v10 = dispatch_time(0, (v9 * 1000000000.0));
-  completion_and_delegate_and_main_queue = v26->_completion_and_delegate_and_main_queue;
+  completion_and_delegate_and_main_queue = selfCopy->_completion_and_delegate_and_main_queue;
   block = _NSConcreteStackBlock;
   v13 = -1073741824;
   v14 = 0;
   v15 = sub_1001886C4;
   v16 = &unk_10032BBB0;
   v17 = v23;
-  v18 = v26;
+  v18 = selfCopy;
   v19 = location[0];
-  v21 = v24;
+  v21 = installCopy;
   v20 = v22;
   dispatch_after(v10, completion_and_delegate_and_main_queue, &block);
   objc_storeStrong(&v20, 0);
@@ -734,80 +734,80 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_startPerformDownloadWithUpdate:(id)a3 thenInstall:(BOOL)a4
+- (void)_startPerformDownloadWithUpdate:(id)update thenInstall:(BOOL)install
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10 = a4;
-  dispatch_assert_queue_V2(v12[2]);
-  v5 = v12[1];
-  v6 = [v5 domainSoftwareUpdate];
-  v9 = [v5 acquireNextBehaviorWithName:@"performDownload" domain:v6];
+  objc_storeStrong(location, update);
+  installCopy = install;
+  dispatch_assert_queue_V2(selfCopy[2]);
+  v5 = selfCopy[1];
+  domainSoftwareUpdate = [v5 domainSoftwareUpdate];
+  v9 = [v5 acquireNextBehaviorWithName:@"performDownload" domain:domainSoftwareUpdate];
 
   LODWORD(v7) = 0;
   LODWORD(v8) = 1036831949;
-  [(dispatch_queue_t *)v12 _setDownloadProgress:location[0] nextIncrement:v12[6] update:v9 session:v10 behavior:v7 thenInstall:v8];
+  [(dispatch_queue_t *)selfCopy _setDownloadProgress:location[0] nextIncrement:selfCopy[6] update:v9 session:installCopy behavior:v7 thenInstall:v8];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_setDownloadProgress:(float)a3 nextIncrement:(float)a4 update:(id)a5 session:(id)a6 behavior:(id)a7 thenInstall:(BOOL)a8
+- (void)_setDownloadProgress:(float)progress nextIncrement:(float)increment update:(id)update session:(id)session behavior:(id)behavior thenInstall:(BOOL)install
 {
-  v57 = self;
+  selfCopy = self;
   v56 = a2;
-  v55 = a3;
-  v54 = a4;
+  progressCopy = progress;
+  incrementCopy = increment;
   location = 0;
-  objc_storeStrong(&location, a5);
+  objc_storeStrong(&location, update);
   v52 = 0;
-  objc_storeStrong(&v52, a6);
+  objc_storeStrong(&v52, session);
   v51 = 0;
-  objc_storeStrong(&v51, a7);
-  v50 = a8;
-  dispatch_assert_queue_V2(v57->_completion_and_delegate_and_main_queue);
-  if ([v52 isEqual:v57->_clientDownloadAndInstallSession])
+  objc_storeStrong(&v51, behavior);
+  installCopy = install;
+  dispatch_assert_queue_V2(selfCopy->_completion_and_delegate_and_main_queue);
+  if ([v52 isEqual:selfCopy->_clientDownloadAndInstallSession])
   {
-    WeakRetained = objc_loadWeakRetained(&v57->_weakDelegate);
-    v11 = [v51 results];
-    v47 = [v11 objectForKeyedSubscript:@"progressBeforeError"];
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_weakDelegate);
+    results = [v51 results];
+    v47 = [results objectForKeyedSubscript:@"progressBeforeError"];
 
-    v12 = [v51 error];
+    error = [v51 error];
     v13 = 0;
-    if (v12)
+    if (error)
     {
-      v14 = v12;
+      v14 = error;
       [v47 floatValue];
-      v12 = v14;
-      v13 = v15 <= v55;
+      error = v14;
+      v13 = v15 <= progressCopy;
     }
 
     if (v13)
     {
       v46 = 0;
-      v16 = v57;
+      v16 = selfCopy;
       objc_sync_enter(v16);
-      v17 = [v51 error];
-      clientUpdateError = v57->_clientUpdateError;
-      v57->_clientUpdateError = v17;
+      error2 = [v51 error];
+      clientUpdateError = selfCopy->_clientUpdateError;
+      selfCopy->_clientUpdateError = error2;
 
-      [(BuddySUSUISoftwareUpdateManagerTestingSurrogate *)v57 _updateClientUpdateReadyToDownloadIfNecessaryWithBehavior:v51];
-      objc_storeStrong(&v57->_downloadDescriptor, 0);
-      objc_storeStrong(&v57->_downloadProgressPhase, 0);
-      v46 = [(BuddySUSUISoftwareUpdateManagerTestingSurrogate *)v57 _setStateAndCallDelegateWithOptionalState:0 behavior:v51];
+      [(BuddySUSUISoftwareUpdateManagerTestingSurrogate *)selfCopy _updateClientUpdateReadyToDownloadIfNecessaryWithBehavior:v51];
+      objc_storeStrong(&selfCopy->_downloadDescriptor, 0);
+      objc_storeStrong(&selfCopy->_downloadProgressPhase, 0);
+      v46 = [(BuddySUSUISoftwareUpdateManagerTestingSurrogate *)selfCopy _setStateAndCallDelegateWithOptionalState:0 behavior:v51];
       objc_sync_exit(v16);
 
       if ((v46 & 1) == 0)
       {
-        [(BuddySUSUISoftwareUpdateManagerTestingSurrogate *)v57 scanForUpdatesCompletion:&stru_10032DF98];
+        [(BuddySUSUISoftwareUpdateManagerTestingSurrogate *)selfCopy scanForUpdatesCompletion:&stru_10032DF98];
       }
 
       if (objc_opt_respondsToSelector())
       {
-        v19 = v57;
-        v20 = [v51 error];
-        [WeakRetained manager:v19 downloadFailedWithError:v20];
+        v19 = selfCopy;
+        error3 = [v51 error];
+        [WeakRetained manager:v19 downloadFailedWithError:error3];
       }
 
       v49 = 1;
@@ -816,43 +816,43 @@
     else
     {
       v45 = 0;
-      v21 = v57;
+      v21 = selfCopy;
       objc_sync_enter(v21);
-      [(BuddySUSUISoftwareUpdateManagerTestingSurrogate *)v57 _updateClientUpdateReadyToDownloadIfNecessaryWithBehavior:v51];
-      if (v55 < 1.0)
+      [(BuddySUSUISoftwareUpdateManagerTestingSurrogate *)selfCopy _updateClientUpdateReadyToDownloadIfNecessaryWithBehavior:v51];
+      if (progressCopy < 1.0)
       {
-        if (v55 < 0.5)
+        if (progressCopy < 0.5)
         {
-          if (v55 > 0.0)
+          if (progressCopy > 0.0)
           {
-            objc_storeStrong(&v57->_downloadProgressPhase, kSUDownloadPhaseUpdateFetching);
+            objc_storeStrong(&selfCopy->_downloadProgressPhase, kSUDownloadPhaseUpdateFetching);
           }
         }
 
         else
         {
-          objc_storeStrong(&v57->_downloadProgressPhase, kSUDownloadPhasePreparingForInstallation);
+          objc_storeStrong(&selfCopy->_downloadProgressPhase, kSUDownloadPhasePreparingForInstallation);
         }
       }
 
       else
       {
-        v57->_downloadProgressIsDone = 1;
-        objc_storeStrong(&v57->_downloadProgressPhase, kSUDownloadPhasePreparingForInstallation);
+        selfCopy->_downloadProgressIsDone = 1;
+        objc_storeStrong(&selfCopy->_downloadProgressPhase, kSUDownloadPhasePreparingForInstallation);
       }
 
-      v22 = v55;
+      v22 = progressCopy;
       v42 = 0;
       v23 = 1;
-      if (v55 < 1.0)
+      if (progressCopy < 1.0)
       {
-        v43 = [v51 error];
+        error4 = [v51 error];
         v42 = 1;
         v23 = 0;
-        if (v43)
+        if (error4)
         {
           [v47 floatValue];
-          v23 = *&v22 <= (v55 + v54);
+          v23 = *&v22 <= (progressCopy + incrementCopy);
         }
       }
 
@@ -863,7 +863,7 @@
       v44 = v23;
       if (v23)
       {
-        v45 = [(BuddySUSUISoftwareUpdateManagerTestingSurrogate *)v57 _setStateAndCallDelegateWithOptionalState:0 behavior:v51, v22];
+        v45 = [(BuddySUSUISoftwareUpdateManagerTestingSurrogate *)selfCopy _setStateAndCallDelegateWithOptionalState:0 behavior:v51, v22];
       }
 
       objc_sync_exit(v21);
@@ -871,9 +871,9 @@
       if (objc_opt_respondsToSelector())
       {
         v41 = 0;
-        v24 = v57;
+        v24 = selfCopy;
         objc_sync_enter(v24);
-        if (v57->_state == 14)
+        if (selfCopy->_state == 14)
         {
           v41 = 2;
         }
@@ -885,27 +885,27 @@
 
         objc_sync_exit(v24);
 
-        *&v25 = v55;
-        [WeakRetained manager:v57 downloadDescriptor:location progressChangedToNormalizedPercentComplete:v41 displayStyle:v25];
+        *&v25 = progressCopy;
+        [WeakRetained manager:selfCopy downloadDescriptor:location progressChangedToNormalizedPercentComplete:v41 displayStyle:v25];
       }
 
-      if (v55 < 1.0)
+      if (progressCopy < 1.0)
       {
         [v51 duration];
         v27 = dispatch_time(0, (v26 * 1000000000.0));
-        completion_and_delegate_and_main_queue = v57->_completion_and_delegate_and_main_queue;
+        completion_and_delegate_and_main_queue = selfCopy->_completion_and_delegate_and_main_queue;
         v29 = _NSConcreteStackBlock;
         v30 = -1073741824;
         v31 = 0;
         v32 = sub_1001890E0;
         v33 = &unk_10032DFE0;
-        v38 = v55;
-        v39 = v54;
-        v34 = v57;
+        v38 = progressCopy;
+        v39 = incrementCopy;
+        v34 = selfCopy;
         v35 = location;
         v36 = v52;
         v37 = v51;
-        v40 = v50;
+        v40 = installCopy;
         dispatch_after(v27, completion_and_delegate_and_main_queue, &v29);
         objc_storeStrong(&v37, 0);
         objc_storeStrong(&v36, 0);
@@ -918,12 +918,12 @@
       {
         if (objc_opt_respondsToSelector())
         {
-          [WeakRetained managerDownloadFinished:v57];
+          [WeakRetained managerDownloadFinished:selfCopy];
         }
 
-        if (v50 && (v45 & 1) == 0)
+        if (installCopy && (v45 & 1) == 0)
         {
-          [(BuddySUSUISoftwareUpdateManagerTestingSurrogate *)v57 startInstallWithHandler:&stru_10032DFB8];
+          [(BuddySUSUISoftwareUpdateManagerTestingSurrogate *)selfCopy startInstallWithHandler:&stru_10032DFB8];
         }
 
         v49 = 1;
@@ -944,16 +944,16 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)startInstallWithHandler:(id)a3
+- (void)startInstallWithHandler:(id)handler
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, handler);
   v19 = 0;
-  v3 = v21;
+  v3 = selfCopy;
   objc_sync_enter(v3);
-  objc_storeStrong(&v19, v21->_clientUpdateToDownloadAndInstall);
+  objc_storeStrong(&v19, selfCopy->_clientUpdateToDownloadAndInstall);
   if (!v19)
   {
     objc_exception_throw([NSException exceptionWithName:@"Installation requested in testing surrogate without update" reason:0 userInfo:0]);
@@ -961,20 +961,20 @@
 
   objc_sync_exit(v3);
 
-  behaviorManager = v21->_behaviorManager;
-  v5 = [(BYTestingSurrogateBehaviorManager *)behaviorManager domainSoftwareUpdate];
-  v18 = [(BYTestingSurrogateBehaviorManager *)behaviorManager acquireNextBehaviorWithName:@"startInstall" domain:v5];
+  behaviorManager = selfCopy->_behaviorManager;
+  domainSoftwareUpdate = [(BYTestingSurrogateBehaviorManager *)behaviorManager domainSoftwareUpdate];
+  v18 = [(BYTestingSurrogateBehaviorManager *)behaviorManager acquireNextBehaviorWithName:@"startInstall" domain:domainSoftwareUpdate];
 
   [v18 duration];
   v7 = dispatch_time(0, (v6 * 1000000000.0));
-  completion_and_delegate_and_main_queue = v21->_completion_and_delegate_and_main_queue;
+  completion_and_delegate_and_main_queue = selfCopy->_completion_and_delegate_and_main_queue;
   block = _NSConcreteStackBlock;
   v10 = -1073741824;
   v11 = 0;
   v12 = sub_100189420;
   v13 = &unk_10032D218;
   v14 = v18;
-  v15 = v21;
+  v15 = selfCopy;
   v17 = location[0];
   v16 = v19;
   dispatch_after(v7, completion_and_delegate_and_main_queue, &block);
@@ -987,26 +987,26 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_performInstallWithUpdate:(id)a3
+- (void)_performInstallWithUpdate:(id)update
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  behaviorManager = v17->_behaviorManager;
-  v4 = [(BYTestingSurrogateBehaviorManager *)behaviorManager domainSoftwareUpdate];
-  v15 = [(BYTestingSurrogateBehaviorManager *)behaviorManager acquireNextBehaviorWithName:@"performInstall" domain:v4];
+  objc_storeStrong(location, update);
+  behaviorManager = selfCopy->_behaviorManager;
+  domainSoftwareUpdate = [(BYTestingSurrogateBehaviorManager *)behaviorManager domainSoftwareUpdate];
+  v15 = [(BYTestingSurrogateBehaviorManager *)behaviorManager acquireNextBehaviorWithName:@"performInstall" domain:domainSoftwareUpdate];
 
   [v15 duration];
   v6 = dispatch_time(0, (v5 * 1000000000.0));
-  completion_and_delegate_and_main_queue = v17->_completion_and_delegate_and_main_queue;
+  completion_and_delegate_and_main_queue = selfCopy->_completion_and_delegate_and_main_queue;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
   v11 = sub_100189768;
   v12 = &unk_10032B838;
   v13 = v15;
-  v14 = v17;
+  v14 = selfCopy;
   dispatch_after(v6, completion_and_delegate_and_main_queue, &v8);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v13, 0);
@@ -1014,12 +1014,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)setAutoInstall:(id)a3
+- (void)setAutoInstall:(id)install
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, install);
   objc_exception_throw([NSException exceptionWithName:@"Testing surrogate does not support setAutoInstall:" reason:0 userInfo:0]);
 }
 

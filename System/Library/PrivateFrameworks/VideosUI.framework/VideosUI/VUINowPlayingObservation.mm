@@ -1,23 +1,23 @@
 @interface VUINowPlayingObservation
-- (BOOL)isEqual:(id)a3;
-- (VUINowPlayingObservation)initWithBundleIdentifier:(id)a3 isPlaying:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (VUINowPlayingObservation)initWithBundleIdentifier:(id)identifier isPlaying:(BOOL)playing;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation VUINowPlayingObservation
 
-- (VUINowPlayingObservation)initWithBundleIdentifier:(id)a3 isPlaying:(BOOL)a4
+- (VUINowPlayingObservation)initWithBundleIdentifier:(id)identifier isPlaying:(BOOL)playing
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = VUINowPlayingObservation;
   v7 = [(VUINowPlayingObservation *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_playing = a4;
-    v9 = [v6 copy];
+    v7->_playing = playing;
+    v9 = [identifierCopy copy];
     nowPlayingAppBundleIdentifier = v8->_nowPlayingAppBundleIdentifier;
     v8->_nowPlayingAppBundleIdentifier = v9;
   }
@@ -27,34 +27,34 @@
 
 - (unint64_t)hash
 {
-  v3 = [(VUINowPlayingObservation *)self isPlaying];
-  v4 = [(VUINowPlayingObservation *)self nowPlayingAppBundleIdentifier];
-  v5 = [v4 hash];
+  isPlaying = [(VUINowPlayingObservation *)self isPlaying];
+  nowPlayingAppBundleIdentifier = [(VUINowPlayingObservation *)self nowPlayingAppBundleIdentifier];
+  v5 = [nowPlayingAppBundleIdentifier hash];
 
-  return v5 ^ v3;
+  return v5 ^ isPlaying;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(v13) = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v6 = v5;
-        v7 = [(VUINowPlayingObservation *)self nowPlayingAppBundleIdentifier];
-        v8 = [(VUINowPlayingObservation *)v6 nowPlayingAppBundleIdentifier];
-        v9 = v7;
-        v10 = v8;
+        nowPlayingAppBundleIdentifier = [(VUINowPlayingObservation *)self nowPlayingAppBundleIdentifier];
+        nowPlayingAppBundleIdentifier2 = [(VUINowPlayingObservation *)v6 nowPlayingAppBundleIdentifier];
+        v9 = nowPlayingAppBundleIdentifier;
+        v10 = nowPlayingAppBundleIdentifier2;
         v11 = v10;
         if (v9 == v10)
         {
@@ -78,8 +78,8 @@ LABEL_14:
           }
         }
 
-        v14 = [(VUINowPlayingObservation *)self isPlaying];
-        v13 = v14 ^ [(VUINowPlayingObservation *)v6 isPlaying]^ 1;
+        isPlaying = [(VUINowPlayingObservation *)self isPlaying];
+        v13 = isPlaying ^ [(VUINowPlayingObservation *)v6 isPlaying]^ 1;
 LABEL_15:
 
         goto LABEL_16;
@@ -103,8 +103,8 @@ LABEL_16:
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VUINowPlayingObservation *)self nowPlayingAppBundleIdentifier];
-  v7 = [v5 stringWithFormat:@"%@=%@", @"nowPlayingAppBundleIdentifier", v6];
+  nowPlayingAppBundleIdentifier = [(VUINowPlayingObservation *)self nowPlayingAppBundleIdentifier];
+  v7 = [v5 stringWithFormat:@"%@=%@", @"nowPlayingAppBundleIdentifier", nowPlayingAppBundleIdentifier];
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];

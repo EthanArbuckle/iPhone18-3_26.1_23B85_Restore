@@ -1,28 +1,28 @@
 @interface REHTMLParentElement
-- (REHTMLParentElement)initWithParents:(id)a3 children:(id)a4;
+- (REHTMLParentElement)initWithParents:(id)parents children:(id)children;
 - (id)_encodedData;
-- (id)addChildren:(id)a3;
+- (id)addChildren:(id)children;
 - (id)attributes;
 - (id)classes;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)elementBySettingAtttibutes:(id)a3;
-- (id)elementBySettingClasses:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)elementBySettingAtttibutes:(id)atttibutes;
+- (id)elementBySettingClasses:(id)classes;
 @end
 
 @implementation REHTMLParentElement
 
-- (REHTMLParentElement)initWithParents:(id)a3 children:(id)a4
+- (REHTMLParentElement)initWithParents:(id)parents children:(id)children
 {
-  v7 = a3;
-  v8 = a4;
+  parentsCopy = parents;
+  childrenCopy = children;
   v14.receiver = self;
   v14.super_class = REHTMLParentElement;
   v9 = [(REHTMLElement *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_parent, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_parent, parents);
+    v11 = [childrenCopy copy];
     children = v10->_children;
     v10->_children = v11;
   }
@@ -33,21 +33,21 @@
 - (id)_encodedData
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB28] data];
-  v4 = [(REHTMLElement *)self->_parent _prefixContentString];
-  v5 = [(REHTMLElement *)self _encodeString:v4];
+  data = [MEMORY[0x277CBEB28] data];
+  _prefixContentString = [(REHTMLElement *)self->_parent _prefixContentString];
+  v5 = [(REHTMLElement *)self _encodeString:_prefixContentString];
 
   if (v5)
   {
-    [v3 appendData:v5];
+    [data appendData:v5];
   }
 
-  v6 = [(REHTMLElement *)self->_parent _contentString];
-  v7 = [(REHTMLElement *)self _encodeString:v6];
+  _contentString = [(REHTMLElement *)self->_parent _contentString];
+  v7 = [(REHTMLElement *)self _encodeString:_contentString];
 
   if (v7)
   {
-    [v3 appendData:v7];
+    [data appendData:v7];
   }
 
   v21 = 0u;
@@ -69,8 +69,8 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v19 + 1) + 8 * i) encodedData];
-        [v3 appendData:v13];
+        encodedData = [*(*(&v19 + 1) + 8 * i) encodedData];
+        [data appendData:encodedData];
       }
 
       v10 = [(NSArray *)v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -79,15 +79,15 @@
     while (v10);
   }
 
-  v14 = [(REHTMLElement *)self->_parent _suffixContentString];
-  v15 = [(REHTMLElement *)self _encodeString:v14];
+  _suffixContentString = [(REHTMLElement *)self->_parent _suffixContentString];
+  v15 = [(REHTMLElement *)self _encodeString:_suffixContentString];
 
   if (v15)
   {
-    [v3 appendData:v15];
+    [data appendData:v15];
   }
 
-  v16 = [v3 copy];
+  v16 = [data copy];
 
   v17 = *MEMORY[0x277D85DE8];
 
@@ -96,11 +96,11 @@
 
 - (id)classes
 {
-  v2 = [(REHTMLElement *)self->_parent classes];
-  v3 = v2;
-  if (v2)
+  classes = [(REHTMLElement *)self->_parent classes];
+  v3 = classes;
+  if (classes)
   {
-    v4 = v2;
+    v4 = classes;
   }
 
   else
@@ -113,9 +113,9 @@
   return v4;
 }
 
-- (id)elementBySettingClasses:(id)a3
+- (id)elementBySettingClasses:(id)classes
 {
-  v4 = [(REHTMLElement *)self->_parent elementBySettingClasses:a3];
+  v4 = [(REHTMLElement *)self->_parent elementBySettingClasses:classes];
   v5 = [objc_alloc(objc_opt_class()) initWithParents:v4 children:self->_children];
 
   return v5;
@@ -123,11 +123,11 @@
 
 - (id)attributes
 {
-  v2 = [(REHTMLElement *)self->_parent attributes];
-  v3 = v2;
-  if (v2)
+  attributes = [(REHTMLElement *)self->_parent attributes];
+  v3 = attributes;
+  if (attributes)
   {
-    v4 = v2;
+    v4 = attributes;
   }
 
   else
@@ -140,38 +140,38 @@
   return v4;
 }
 
-- (id)elementBySettingAtttibutes:(id)a3
+- (id)elementBySettingAtttibutes:(id)atttibutes
 {
-  v4 = [(REHTMLElement *)self->_parent elementBySettingAtttibutes:a3];
+  v4 = [(REHTMLElement *)self->_parent elementBySettingAtttibutes:atttibutes];
   v5 = [objc_alloc(objc_opt_class()) initWithParents:v4 children:self->_children];
 
   return v5;
 }
 
-- (id)addChildren:(id)a3
+- (id)addChildren:(id)children
 {
-  v4 = a3;
-  if ([v4 count])
+  childrenCopy = children;
+  if ([childrenCopy count])
   {
     v5 = objc_alloc(objc_opt_class());
     parent = self->_parent;
-    v7 = [(NSArray *)self->_children arrayByAddingObjectsFromArray:v4];
-    v8 = [v5 initWithParents:parent children:v7];
+    v7 = [(NSArray *)self->_children arrayByAddingObjectsFromArray:childrenCopy];
+    selfCopy = [v5 initWithParents:parent children:v7];
   }
 
   else
   {
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = REHTMLParentElement;
-  v4 = [(REHTMLElement *)&v6 copyWithZone:a3];
+  v4 = [(REHTMLElement *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 2, self->_parent);
   objc_storeStrong(v4 + 3, self->_children);
   return v4;

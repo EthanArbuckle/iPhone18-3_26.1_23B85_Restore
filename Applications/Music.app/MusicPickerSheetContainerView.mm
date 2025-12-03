@@ -1,10 +1,10 @@
 @interface MusicPickerSheetContainerView
-- (_TtC5Music29MusicPickerSheetContainerView)initWithCoder:(id)a3;
+- (_TtC5Music29MusicPickerSheetContainerView)initWithCoder:(id)coder;
 @end
 
 @implementation MusicPickerSheetContainerView
 
-- (_TtC5Music29MusicPickerSheetContainerView)initWithCoder:(id)a3
+- (_TtC5Music29MusicPickerSheetContainerView)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.isa + OBJC_IVAR____TtC5Music29MusicPickerSheetContainerView_completionHandler);
   *v4 = 0;

@@ -1,20 +1,20 @@
 @interface HMDHAPAccessoryLocalNotifyUpdateManager
 + (id)logCategory;
 - (HMDHAPAccessory)hmdHAPAccessory;
-- (HMDHAPAccessoryLocalNotifyUpdateManager)initWithHome:(id)a3 hmdHAPAccessory:(id)a4 queue:(id)a5;
-- (HMDHAPAccessoryLocalNotifyUpdateManager)initWithHome:(id)a3 hmdHAPAccessory:(id)a4 queue:(id)a5 dataSource:(id)a6;
+- (HMDHAPAccessoryLocalNotifyUpdateManager)initWithHome:(id)home hmdHAPAccessory:(id)accessory queue:(id)queue;
+- (HMDHAPAccessoryLocalNotifyUpdateManager)initWithHome:(id)home hmdHAPAccessory:(id)accessory queue:(id)queue dataSource:(id)source;
 - (HMDHome)home;
-- (id)_filterOutUnchangedCharacteristicsFrom:(id)a3 enable:(BOOL)a4;
-- (id)_mergeFailedUpdateIfAnyToUpdate:(id)a3;
+- (id)_filterOutUnchangedCharacteristicsFrom:(id)from enable:(BOOL)enable;
+- (id)_mergeFailedUpdateIfAnyToUpdate:(id)update;
 - (id)logIdentifier;
 - (void)_handleUpdateComplete;
 - (void)_handleUpdateCompletedSuccessfully;
-- (void)_handleUpdateCompletedWithError:(id)a3;
+- (void)_handleUpdateCompletedWithError:(id)error;
 - (void)_processPendingUpdate;
 - (void)_removeFailedUpdateRetryTimer;
 - (void)_startFailedUpdateRetryTimer;
 - (void)processPendingUpdateIfAny;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDHAPAccessoryLocalNotifyUpdateManager
@@ -35,47 +35,47 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self hmdHAPAccessory];
-  v3 = [v2 shortDescription];
+  hmdHAPAccessory = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self hmdHAPAccessory];
+  shortDescription = [hmdHAPAccessory shortDescription];
 
-  return v3;
+  return shortDescription;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self failedUpdateRetryTimer];
+  fireCopy = fire;
+  failedUpdateRetryTimer = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self failedUpdateRetryTimer];
 
-  if (v5 == v4)
+  if (failedUpdateRetryTimer == fireCopy)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = HMFGetLogIdentifier();
-      v10 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)v7 failedUpdateRetryCount];
-      v11 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)v7 failedUpdate];
+      failedUpdateRetryCount = [(HMDHAPAccessoryLocalNotifyUpdateManager *)selfCopy failedUpdateRetryCount];
+      failedUpdate = [(HMDHAPAccessoryLocalNotifyUpdateManager *)selfCopy failedUpdate];
       v14 = 138543874;
       v15 = v9;
       v16 = 2048;
-      v17 = v10;
+      v17 = failedUpdateRetryCount;
       v18 = 2112;
-      v19 = v11;
+      v19 = failedUpdate;
       _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Failed update retry timer fired. Retry count: %ld. Failed update: %@", &v14, 0x20u);
     }
 
     objc_autoreleasePoolPop(v6);
-    v12 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)v7 failedUpdateRetryCount]+ 1;
-    [(HMDHAPAccessoryLocalNotifyUpdateManager *)v7 setFailedUpdateRetryCount:v12];
+    v12 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)selfCopy failedUpdateRetryCount]+ 1;
+    [(HMDHAPAccessoryLocalNotifyUpdateManager *)selfCopy setFailedUpdateRetryCount:v12];
     if (v12 >= 5)
     {
-      [(HMDHAPAccessoryLocalNotifyUpdateManager *)v7 _removeFailedUpdateRetryTimer];
-      [(HMDHAPAccessoryLocalNotifyUpdateManager *)v7 setFailedUpdate:0];
+      [(HMDHAPAccessoryLocalNotifyUpdateManager *)selfCopy _removeFailedUpdateRetryTimer];
+      [(HMDHAPAccessoryLocalNotifyUpdateManager *)selfCopy setFailedUpdate:0];
     }
 
-    [(HMDHAPAccessoryLocalNotifyUpdateManager *)v7 processPendingUpdateIfAny];
+    [(HMDHAPAccessoryLocalNotifyUpdateManager *)selfCopy processPendingUpdateIfAny];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -83,8 +83,8 @@
 
 - (void)_removeFailedUpdateRetryTimer
 {
-  v3 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self failedUpdateRetryTimer];
-  [v3 cancel];
+  failedUpdateRetryTimer = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self failedUpdateRetryTimer];
+  [failedUpdateRetryTimer cancel];
 
   [(HMDHAPAccessoryLocalNotifyUpdateManager *)self setFailedUpdateRetryTimer:0];
 
@@ -93,24 +93,24 @@
 
 - (void)_startFailedUpdateRetryTimer
 {
-  v3 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self failedUpdateRetryTimer];
+  failedUpdateRetryTimer = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self failedUpdateRetryTimer];
 
-  if (!v3)
+  if (!failedUpdateRetryTimer)
   {
-    v4 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self dataSource];
-    v5 = [v4 createBackoffTimer];
-    [(HMDHAPAccessoryLocalNotifyUpdateManager *)self setFailedUpdateRetryTimer:v5];
+    dataSource = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self dataSource];
+    createBackoffTimer = [dataSource createBackoffTimer];
+    [(HMDHAPAccessoryLocalNotifyUpdateManager *)self setFailedUpdateRetryTimer:createBackoffTimer];
 
-    v6 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self failedUpdateRetryTimer];
-    [v6 setDelegate:self];
+    failedUpdateRetryTimer2 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self failedUpdateRetryTimer];
+    [failedUpdateRetryTimer2 setDelegate:self];
 
-    v7 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self queue];
-    v8 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self failedUpdateRetryTimer];
-    [v8 setDelegateQueue:v7];
+    queue = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self queue];
+    failedUpdateRetryTimer3 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self failedUpdateRetryTimer];
+    [failedUpdateRetryTimer3 setDelegateQueue:queue];
   }
 
-  v9 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self failedUpdateRetryTimer];
-  [v9 resume];
+  failedUpdateRetryTimer4 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self failedUpdateRetryTimer];
+  [failedUpdateRetryTimer4 resume];
 }
 
 - (void)_handleUpdateComplete
@@ -128,29 +128,29 @@
   [(HMDHAPAccessoryLocalNotifyUpdateManager *)self _removeFailedUpdateRetryTimer];
 }
 
-- (void)_handleUpdateCompletedWithError:(id)a3
+- (void)_handleUpdateCompletedWithError:(id)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  errorCopy = error;
+  queue = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v4)
+  if (errorCopy)
   {
-    v6 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self inFlightUpdate];
-    [(HMDHAPAccessoryLocalNotifyUpdateManager *)self setFailedUpdate:v6];
+    inFlightUpdate = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self inFlightUpdate];
+    [(HMDHAPAccessoryLocalNotifyUpdateManager *)self setFailedUpdate:inFlightUpdate];
 
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)v8 failedUpdate];
+      failedUpdate = [(HMDHAPAccessoryLocalNotifyUpdateManager *)selfCopy failedUpdate];
       v15 = 138543618;
       v16 = v10;
       v17 = 2112;
-      v18 = v11;
+      v18 = failedUpdate;
       _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@Failed update: %@ needs retry.", &v15, 0x16u);
     }
 
@@ -158,18 +158,18 @@
   }
 
   [(HMDHAPAccessoryLocalNotifyUpdateManager *)self _handleUpdateComplete];
-  v12 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self pendingUpdate];
+  pendingUpdate = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self pendingUpdate];
 
-  if (v12)
+  if (pendingUpdate)
   {
     [(HMDHAPAccessoryLocalNotifyUpdateManager *)self processPendingUpdateIfAny];
   }
 
   else
   {
-    v13 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self failedUpdate];
+    failedUpdate2 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self failedUpdate];
 
-    if (v13)
+    if (failedUpdate2)
     {
       [(HMDHAPAccessoryLocalNotifyUpdateManager *)self _startFailedUpdateRetryTimer];
     }
@@ -178,83 +178,83 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_mergeFailedUpdateIfAnyToUpdate:(id)a3
+- (id)_mergeFailedUpdateIfAnyToUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self failedUpdate];
+  updateCopy = update;
+  failedUpdate = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self failedUpdate];
 
-  if (v5)
+  if (failedUpdate)
   {
-    v6 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self failedUpdate];
-    v7 = v6;
-    if (v4)
+    failedUpdate2 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self failedUpdate];
+    v7 = failedUpdate2;
+    if (updateCopy)
     {
-      [v4 copyRelevantFieldsFrom:v6];
+      [updateCopy copyRelevantFieldsFrom:failedUpdate2];
     }
 
     else
     {
-      v4 = v6;
+      updateCopy = failedUpdate2;
     }
   }
 
-  v8 = v4;
+  v8 = updateCopy;
 
-  return v4;
+  return updateCopy;
 }
 
 - (void)_processPendingUpdate
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = HMFGetLogIdentifier();
-    v8 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)v5 pendingUpdate];
-    v9 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)v5 failedUpdate];
+    pendingUpdate = [(HMDHAPAccessoryLocalNotifyUpdateManager *)selfCopy pendingUpdate];
+    failedUpdate = [(HMDHAPAccessoryLocalNotifyUpdateManager *)selfCopy failedUpdate];
     *buf = 138543874;
     v23 = v7;
     v24 = 2112;
-    v25 = v8;
+    v25 = pendingUpdate;
     v26 = 2112;
-    v27 = v9;
+    v27 = failedUpdate;
     _os_log_impl(&dword_2531F8000, v6, OS_LOG_TYPE_INFO, "%{public}@Processing enable notify update. Pending: %@. Failed: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v4);
   os_unfair_lock_lock_with_options();
-  v10 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)v5 pendingUpdate];
-  [(HMDHAPAccessoryLocalNotifyUpdateManager *)v5 setPendingUpdate:0];
+  pendingUpdate2 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)selfCopy pendingUpdate];
+  [(HMDHAPAccessoryLocalNotifyUpdateManager *)selfCopy setPendingUpdate:0];
   os_unfair_lock_unlock(&updateLocalNotifyLock);
-  [(HMDHAPAccessoryLocalNotifyUpdateManager *)v5 setInProcessing:1];
-  v11 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)v5 _mergeFailedUpdateIfAnyToUpdate:v10];
-  [(HMDHAPAccessoryLocalNotifyUpdateManager *)v5 setInFlightUpdate:v11];
+  [(HMDHAPAccessoryLocalNotifyUpdateManager *)selfCopy setInProcessing:1];
+  v11 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)selfCopy _mergeFailedUpdateIfAnyToUpdate:pendingUpdate2];
+  [(HMDHAPAccessoryLocalNotifyUpdateManager *)selfCopy setInFlightUpdate:v11];
 
-  v12 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)v5 inFlightUpdate];
-  [v12 performLocalNotifyUpdate];
+  inFlightUpdate = [(HMDHAPAccessoryLocalNotifyUpdateManager *)selfCopy inFlightUpdate];
+  [inFlightUpdate performLocalNotifyUpdate];
 
   v13 = objc_alloc(MEMORY[0x277D0F7A8]);
-  v14 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)v5 queue];
-  v15 = [v13 initWithQueue:v14];
+  queue2 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)selfCopy queue];
+  v15 = [v13 initWithQueue:queue2];
 
-  v16 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)v5 inFlightUpdate];
-  v17 = [v16 completionFuture];
+  inFlightUpdate2 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)selfCopy inFlightUpdate];
+  completionFuture = [inFlightUpdate2 completionFuture];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __64__HMDHAPAccessoryLocalNotifyUpdateManager__processPendingUpdate__block_invoke;
   v21[3] = &unk_2797333D8;
-  v21[4] = v5;
+  v21[4] = selfCopy;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __64__HMDHAPAccessoryLocalNotifyUpdateManager__processPendingUpdate__block_invoke_77;
   v20[3] = &unk_279733400;
-  v20[4] = v5;
-  v18 = [v17 inContext:v15 then:v21 orRecover:v20];
+  v20[4] = selfCopy;
+  v18 = [completionFuture inContext:v15 then:v21 orRecover:v20];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -317,13 +317,13 @@ uint64_t __64__HMDHAPAccessoryLocalNotifyUpdateManager__processPendingUpdate__bl
 
 - (void)processPendingUpdateIfAny
 {
-  v3 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self queue];
+  queue = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__HMDHAPAccessoryLocalNotifyUpdateManager_processPendingUpdateIfAny__block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __68__HMDHAPAccessoryLocalNotifyUpdateManager_processPendingUpdateIfAny__block_invoke(uint64_t a1)
@@ -351,17 +351,17 @@ void __68__HMDHAPAccessoryLocalNotifyUpdateManager_processPendingUpdateIfAny__bl
   }
 }
 
-- (id)_filterOutUnchangedCharacteristicsFrom:(id)a3 enable:(BOOL)a4
+- (id)_filterOutUnchangedCharacteristicsFrom:(id)from enable:(BOOL)enable
 {
-  v4 = a4;
+  enableCopy = enable;
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB18] array];
+  fromCopy = from;
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v5;
+  v7 = fromCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -377,9 +377,9 @@ void __68__HMDHAPAccessoryLocalNotifyUpdateManager_processPendingUpdateIfAny__bl
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        if ([v12 isNotificationEnabled] != v4)
+        if ([v12 isNotificationEnabled] != enableCopy)
         {
-          [v6 addObject:v12];
+          [array addObject:v12];
         }
       }
 
@@ -389,41 +389,41 @@ void __68__HMDHAPAccessoryLocalNotifyUpdateManager_processPendingUpdateIfAny__bl
     while (v9);
   }
 
-  v13 = [v6 copy];
+  v13 = [array copy];
   v14 = *MEMORY[0x277D85DE8];
 
   return v13;
 }
 
-- (HMDHAPAccessoryLocalNotifyUpdateManager)initWithHome:(id)a3 hmdHAPAccessory:(id)a4 queue:(id)a5 dataSource:(id)a6
+- (HMDHAPAccessoryLocalNotifyUpdateManager)initWithHome:(id)home hmdHAPAccessory:(id)accessory queue:(id)queue dataSource:(id)source
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  homeCopy = home;
+  accessoryCopy = accessory;
+  queueCopy = queue;
+  sourceCopy = source;
   v17.receiver = self;
   v17.super_class = HMDHAPAccessoryLocalNotifyUpdateManager;
   v14 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_home, v10);
-    objc_storeWeak(&v15->_hmdHAPAccessory, v11);
-    objc_storeStrong(&v15->_queue, a5);
+    objc_storeWeak(&v14->_home, homeCopy);
+    objc_storeWeak(&v15->_hmdHAPAccessory, accessoryCopy);
+    objc_storeStrong(&v15->_queue, queue);
     v15->_inProcessing = 0;
-    objc_storeStrong(&v15->_dataSource, a6);
+    objc_storeStrong(&v15->_dataSource, source);
   }
 
   return v15;
 }
 
-- (HMDHAPAccessoryLocalNotifyUpdateManager)initWithHome:(id)a3 hmdHAPAccessory:(id)a4 queue:(id)a5
+- (HMDHAPAccessoryLocalNotifyUpdateManager)initWithHome:(id)home hmdHAPAccessory:(id)accessory queue:(id)queue
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[HMDHAPAccessoryLocalNotifyUpdateManagerDefaultSource alloc] initWithHome:v10 hmdHAPAccessory:v9 queue:v8];
-  v12 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self initWithHome:v10 hmdHAPAccessory:v9 queue:v8 dataSource:v11];
+  queueCopy = queue;
+  accessoryCopy = accessory;
+  homeCopy = home;
+  v11 = [[HMDHAPAccessoryLocalNotifyUpdateManagerDefaultSource alloc] initWithHome:homeCopy hmdHAPAccessory:accessoryCopy queue:queueCopy];
+  v12 = [(HMDHAPAccessoryLocalNotifyUpdateManager *)self initWithHome:homeCopy hmdHAPAccessory:accessoryCopy queue:queueCopy dataSource:v11];
 
   return v12;
 }

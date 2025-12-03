@@ -1,16 +1,16 @@
 @interface PUUISaveToCameraRollActivity
-- (BOOL)_containsVideoComplementsInActivityItems:(id)a3 outVideoComplements:(id *)a4;
-- (BOOL)canPerformWithActivityItems:(id)a3;
-- (void)prepareWithActivityItems:(id)a3;
+- (BOOL)_containsVideoComplementsInActivityItems:(id)items outVideoComplements:(id *)complements;
+- (BOOL)canPerformWithActivityItems:(id)items;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation PUUISaveToCameraRollActivity
 
-- (BOOL)_containsVideoComplementsInActivityItems:(id)a3 outVideoComplements:(id *)a4
+- (BOOL)_containsVideoComplementsInActivityItems:(id)items outVideoComplements:(id *)complements
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (a4)
+  itemsCopy = items;
+  if (complements)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
@@ -24,7 +24,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v5;
+  v7 = itemsCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -60,20 +60,20 @@
     v10 = 0;
   }
 
-  if (a4)
+  if (complements)
   {
     v14 = v6;
-    *a4 = v6;
+    *complements = v6;
   }
 
   return v10 & 1;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v15 = 0;
-  v5 = [(PUUISaveToCameraRollActivity *)self _containsVideoComplementsInActivityItems:v4 outVideoComplements:&v15];
+  v5 = [(PUUISaveToCameraRollActivity *)self _containsVideoComplementsInActivityItems:itemsCopy outVideoComplements:&v15];
   v6 = v15;
   v7 = v6;
   if (v5)
@@ -81,7 +81,7 @@
     if ([v6 count])
     {
       objc_initWeak(&location, self);
-      v8 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+      px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __57__PUUISaveToCameraRollActivity_prepareWithActivityItems___block_invoke;
@@ -92,7 +92,7 @@
       v9[2] = __57__PUUISaveToCameraRollActivity_prepareWithActivityItems___block_invoke_2;
       v9[3] = &unk_1E7B7FA30;
       objc_copyWeak(&v10, &location);
-      [v8 performChanges:v11 completionHandler:v9];
+      [px_deprecated_appPhotoLibrary performChanges:v11 completionHandler:v9];
 
       objc_destroyWeak(&v10);
       objc_destroyWeak(&location);
@@ -103,7 +103,7 @@
   {
     v14.receiver = self;
     v14.super_class = PUUISaveToCameraRollActivity;
-    [(UIActivity *)&v14 prepareWithActivityItems:v4];
+    [(UIActivity *)&v14 prepareWithActivityItems:itemsCopy];
   }
 }
 
@@ -159,10 +159,10 @@ void __57__PUUISaveToCameraRollActivity_prepareWithActivityItems___block_invoke_
   [WeakRetained activityDidFinish:*(a1 + 40)];
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v4 = a3;
-  if ([(PUUISaveToCameraRollActivity *)self _containsVideoComplementsInActivityItems:v4 outVideoComplements:0])
+  itemsCopy = items;
+  if ([(PUUISaveToCameraRollActivity *)self _containsVideoComplementsInActivityItems:itemsCopy outVideoComplements:0])
   {
     v5 = ([MEMORY[0x1E69789A8] authorizationStatusForAccessLevel:1] - 3) < 2;
   }
@@ -171,7 +171,7 @@ void __57__PUUISaveToCameraRollActivity_prepareWithActivityItems___block_invoke_
   {
     v7.receiver = self;
     v7.super_class = PUUISaveToCameraRollActivity;
-    v5 = [(UISaveToCameraRollActivity *)&v7 canPerformWithActivityItems:v4];
+    v5 = [(UISaveToCameraRollActivity *)&v7 canPerformWithActivityItems:itemsCopy];
   }
 
   return v5;

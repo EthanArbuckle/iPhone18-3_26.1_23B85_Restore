@@ -1,7 +1,7 @@
 @interface RTAuthorizedLocationQueryMetrics
 - (RTAuthorizedLocationQueryMetrics)init;
 - (void)endTimer;
-- (void)setMotionSpeedLimitRejectionCodeFromLookbackHours:(double)a3;
+- (void)setMotionSpeedLimitRejectionCodeFromLookbackHours:(double)hours;
 - (void)startTimer;
 @end
 
@@ -73,17 +73,17 @@
   }
 }
 
-- (void)setMotionSpeedLimitRejectionCodeFromLookbackHours:(double)a3
+- (void)setMotionSpeedLimitRejectionCodeFromLookbackHours:(double)hours
 {
-  if (a3 >= 1.0)
+  if (hours >= 1.0)
   {
-    if (a3 >= 2.0)
+    if (hours >= 2.0)
     {
-      if (a3 >= 3.0)
+      if (hours >= 3.0)
       {
-        if (a3 >= 4.0)
+        if (hours >= 4.0)
         {
-          if (a3 >= 5.0)
+          if (hours >= 5.0)
           {
             v3 = 6;
           }

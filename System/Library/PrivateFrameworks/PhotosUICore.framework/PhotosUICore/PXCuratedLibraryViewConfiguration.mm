@@ -1,19 +1,19 @@
 @interface PXCuratedLibraryViewConfiguration
-- (BOOL)isZoomLevelEnabled:(int64_t)a3;
+- (BOOL)isZoomLevelEnabled:(int64_t)enabled;
 - (PXCuratedLibraryViewConfiguration)init;
-- (PXCuratedLibraryViewConfiguration)initWithPhotoLibrary:(id)a3;
+- (PXCuratedLibraryViewConfiguration)initWithPhotoLibrary:(id)library;
 - (PXLemonadeFeatureAvailabilityMonitor)featureAvailabilityMonitor;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)swift_propagateEnvironmentValuesToExtendedTraitCollection:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)swift_propagateEnvironmentValuesToExtendedTraitCollection:(id)collection;
 @end
 
 @implementation PXCuratedLibraryViewConfiguration
 
-- (void)swift_propagateEnvironmentValuesToExtendedTraitCollection:(id)a3
+- (void)swift_propagateEnvironmentValuesToExtendedTraitCollection:(id)collection
 {
   sub_1A3C35DC4(&unk_1EB126760);
   sub_1A3C52C70(0, &qword_1EB126868);
-  a3;
+  collection;
   self;
   sub_1A5245C64();
 }
@@ -22,21 +22,21 @@
 {
   type metadata accessor for LemonadeFeatureAvailabilityMonitor();
   v7 = 6;
-  v3 = self;
-  v4 = [(PXCuratedLibraryViewConfiguration *)v3 photoLibrary];
-  v5 = static LemonadeFeatureAvailabilityMonitor.sharedStatus(feature:for:)(&v7, v4);
+  selfCopy = self;
+  photoLibrary = [(PXCuratedLibraryViewConfiguration *)selfCopy photoLibrary];
+  v5 = static LemonadeFeatureAvailabilityMonitor.sharedStatus(feature:for:)(&v7, photoLibrary);
 
   return v5;
 }
 
-- (BOOL)isZoomLevelEnabled:(int64_t)a3
+- (BOOL)isZoomLevelEnabled:(int64_t)enabled
 {
-  if (!a3)
+  if (!enabled)
   {
     return 0;
   }
 
-  if (a3 == 3)
+  if (enabled == 3)
   {
     return [(PXCuratedLibraryViewConfiguration *)self enableDays];
   }
@@ -44,11 +44,11 @@
   return 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PXCuratedLibraryViewConfiguration alloc];
-  v5 = [(PXCuratedLibraryViewConfiguration *)self photoLibrary];
-  v6 = [(PXCuratedLibraryViewConfiguration *)v4 initWithPhotoLibrary:v5];
+  photoLibrary = [(PXCuratedLibraryViewConfiguration *)self photoLibrary];
+  v6 = [(PXCuratedLibraryViewConfiguration *)v4 initWithPhotoLibrary:photoLibrary];
 
   [(PXCuratedLibraryViewConfiguration *)v6 setInitialZoomLevel:[(PXCuratedLibraryViewConfiguration *)self initialZoomLevel]];
   [(PXCuratedLibraryViewConfiguration *)v6 setEnableDays:[(PXCuratedLibraryViewConfiguration *)self enableDays]];
@@ -58,8 +58,8 @@
   [(PXCuratedLibraryViewConfiguration *)v6 setAllowedInteractiveDismissBehaviors:[(PXCuratedLibraryViewConfiguration *)self allowedInteractiveDismissBehaviors]];
   [(PXCuratedLibraryViewConfiguration *)v6 setOverrideDefaultNumberOfColumns:[(PXCuratedLibraryViewConfiguration *)self overrideDefaultNumberOfColumns]];
   [(PXCuratedLibraryViewConfiguration *)v6 setSecondaryToolbarStyle:[(PXCuratedLibraryViewConfiguration *)self secondaryToolbarStyle]];
-  v7 = [(PXCuratedLibraryViewConfiguration *)self viewOptionsModel];
-  [(PXCuratedLibraryViewConfiguration *)v6 setViewOptionsModel:v7];
+  viewOptionsModel = [(PXCuratedLibraryViewConfiguration *)self viewOptionsModel];
+  [(PXCuratedLibraryViewConfiguration *)v6 setViewOptionsModel:viewOptionsModel];
 
   [(PXCuratedLibraryViewConfiguration *)v6 setEnableSecondaryToolbarContainerView:[(PXCuratedLibraryViewConfiguration *)self enableSecondaryToolbarContainerView]];
   [(PXCuratedLibraryViewConfiguration *)v6 setShowSecondaryToolbar:[(PXCuratedLibraryViewConfiguration *)self showSecondaryToolbar]];
@@ -69,22 +69,22 @@
 
 - (PXCuratedLibraryViewConfiguration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryViewConfiguration.m" lineNumber:38 description:{@"%s is not available as initializer", "-[PXCuratedLibraryViewConfiguration init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryViewConfiguration.m" lineNumber:38 description:{@"%s is not available as initializer", "-[PXCuratedLibraryViewConfiguration init]"}];
 
   abort();
 }
 
-- (PXCuratedLibraryViewConfiguration)initWithPhotoLibrary:(id)a3
+- (PXCuratedLibraryViewConfiguration)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v10.receiver = self;
   v10.super_class = PXCuratedLibraryViewConfiguration;
   v6 = [(PXCuratedLibraryViewConfiguration *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
+    objc_storeStrong(&v6->_photoLibrary, library);
     v7->_initialZoomLevel = 0;
     v7->_enableDays = MEMORY[0x1A590D320]() ^ 1;
     v7->_enableFooter = MEMORY[0x1A590D320]() ^ 1;

@@ -1,69 +1,69 @@
 @interface _TUIFeedCaptureImageResource
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)naturalSize;
-- (_TUIFeedCaptureImageResource)initWithResource:(id)a3 kind:(id)a4 instance:(id)a5 options:(id)a6;
-- (_TUIFeedCaptureImageResource)initWithResource:(id)a3 kind:(id)a4 naturalSize:(CGSize)a5 contentsScale:(double)a6 instance:(id)a7 options:(id)a8;
+- (_TUIFeedCaptureImageResource)initWithResource:(id)resource kind:(id)kind instance:(id)instance options:(id)options;
+- (_TUIFeedCaptureImageResource)initWithResource:(id)resource kind:(id)kind naturalSize:(CGSize)size contentsScale:(double)scale instance:(id)instance options:(id)options;
 - (unint64_t)hash;
 @end
 
 @implementation _TUIFeedCaptureImageResource
 
-- (_TUIFeedCaptureImageResource)initWithResource:(id)a3 kind:(id)a4 naturalSize:(CGSize)a5 contentsScale:(double)a6 instance:(id)a7 options:(id)a8
+- (_TUIFeedCaptureImageResource)initWithResource:(id)resource kind:(id)kind naturalSize:(CGSize)size contentsScale:(double)scale instance:(id)instance options:(id)options
 {
-  height = a5.height;
-  width = a5.width;
-  v16 = a3;
-  v17 = a4;
-  v18 = a7;
-  v19 = a8;
+  height = size.height;
+  width = size.width;
+  resourceCopy = resource;
+  kindCopy = kind;
+  instanceCopy = instance;
+  optionsCopy = options;
   v23.receiver = self;
   v23.super_class = _TUIFeedCaptureImageResource;
   v20 = [(_TUIFeedCaptureImageResource *)&v23 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_resource, a3);
-    objc_storeStrong(&v21->_kind, a4);
+    objc_storeStrong(&v20->_resource, resource);
+    objc_storeStrong(&v21->_kind, kind);
     v21->_naturalSize.width = width;
     v21->_naturalSize.height = height;
-    v21->_contentsScale = a6;
-    objc_storeStrong(&v21->_instance, a7);
-    objc_storeStrong(&v21->_options, a8);
+    v21->_contentsScale = scale;
+    objc_storeStrong(&v21->_instance, instance);
+    objc_storeStrong(&v21->_options, options);
     v21->_intrinsic = 0;
   }
 
   return v21;
 }
 
-- (_TUIFeedCaptureImageResource)initWithResource:(id)a3 kind:(id)a4 instance:(id)a5 options:(id)a6
+- (_TUIFeedCaptureImageResource)initWithResource:(id)resource kind:(id)kind instance:(id)instance options:(id)options
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  resourceCopy = resource;
+  kindCopy = kind;
+  instanceCopy = instance;
+  optionsCopy = options;
   v18.receiver = self;
   v18.super_class = _TUIFeedCaptureImageResource;
   v15 = [(_TUIFeedCaptureImageResource *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_resource, a3);
-    objc_storeStrong(&v16->_kind, a4);
+    objc_storeStrong(&v15->_resource, resource);
+    objc_storeStrong(&v16->_kind, kind);
     v16->_naturalSize = CGSizeZero;
     v16->_contentsScale = 1.0;
-    objc_storeStrong(&v16->_instance, a5);
-    objc_storeStrong(&v16->_options, a6);
+    objc_storeStrong(&v16->_instance, instance);
+    objc_storeStrong(&v16->_options, options);
     v16->_intrinsic = 1;
   }
 
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = TUIDynamicCast(v5, v4);
+  v6 = TUIDynamicCast(v5, equalCopy);
 
   if (v6 && ((kind = self->_kind, kind == v6[3]) || [(NSString *)kind isEqualToString:?]) && ((instance = self->_instance, instance == v6[5]) || [instance isEqual:?]))
   {

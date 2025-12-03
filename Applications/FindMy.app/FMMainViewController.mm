@@ -1,31 +1,31 @@
 @interface FMMainViewController
 - (BOOL)shouldAutorotate;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 - (void)viewLayoutMarginsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation FMMainViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001DFAC();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100026E9C(a3);
+  selfCopy = self;
+  sub_100026E9C(appear);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_10004C0B4();
 }
 
@@ -40,11 +40,11 @@
     swift_once();
   }
 
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    [v3 layoutMargins];
+    v4 = view;
+    [view layoutMargins];
     v6 = v5;
 
     qword_1006D4798 = v6;
@@ -58,10 +58,10 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [objc_opt_self() currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [objc_opt_self() currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -72,18 +72,18 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1000569D0(a3);
+  selfCopy = self;
+  sub_1000569D0(appear);
 }
 
 - (BOOL)shouldAutorotate
 {
-  v2 = [objc_opt_self() currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [objc_opt_self() currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  return v3 == 1;
+  return userInterfaceIdiom == 1;
 }
 
 @end

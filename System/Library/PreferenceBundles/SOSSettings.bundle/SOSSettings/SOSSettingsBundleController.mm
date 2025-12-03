@@ -1,10 +1,10 @@
 @interface SOSSettingsBundleController
-- (id)specifiersWithSpecifier:(id)a3;
+- (id)specifiersWithSpecifier:(id)specifier;
 @end
 
 @implementation SOSSettingsBundleController
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
   if (!self->_specifiersArray)
   {
@@ -28,9 +28,9 @@
     }
   }
 
-  v9 = [(SOSSettingsBundleController *)self specifiersArray];
+  specifiersArray = [(SOSSettingsBundleController *)self specifiersArray];
 
-  return v9;
+  return specifiersArray;
 }
 
 @end

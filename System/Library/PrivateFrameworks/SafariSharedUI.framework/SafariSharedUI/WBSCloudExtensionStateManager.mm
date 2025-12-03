@@ -1,53 +1,53 @@
 @interface WBSCloudExtensionStateManager
-+ (BOOL)_determineEnabledStateFromCloudExtensionState:(id)a3 forProfileServerID:(id)a4;
-+ (BOOL)test_determineEnabledStateFromCloudExtensionState:(id)a3 forProfileServerID:(id)a4;
++ (BOOL)_determineEnabledStateFromCloudExtensionState:(id)state forProfileServerID:(id)d;
++ (BOOL)test_determineEnabledStateFromCloudExtensionState:(id)state forProfileServerID:(id)d;
 + (WBSCloudExtensionStateManager)sharedManager;
-+ (id)_cloudExtensionStatesDictionaryForDeviceWithUUIDString:(id)a3 fromCloudExtensionStates:(id)a4;
-+ (id)_determineNewTabPageFromCloudDeviceState:(id)a3;
-+ (id)_removeDeviceWithUUIDString:(id)a3 fromCloudDevices:(id)a4;
-+ (id)_removeStatesForDeviceWithUUIDString:(id)a3 fromCloudExtensionStates:(id)a4;
-+ (id)_singleExtensionStates:(id)a3 withStateRemovedForDeviceWithUUIDString:(id)a4;
-+ (id)_uuidStringsOfInactiveCloudDevices:(id)a3 currentDeviceUUIDString:(id)a4;
-+ (id)test_cloudExtensionStatesDictionaryForDeviceWithUUIDString:(id)a3 fromCloudExtensionStates:(id)a4;
-+ (id)test_determineNewTabPageFromCloudDeviceState:(id)a3;
-+ (id)test_removeDeviceWithUUIDString:(id)a3 fromCloudDevices:(id)a4;
-+ (id)test_removeStatesForDeviceWithUUIDString:(id)a3 fromCloudExtensionStates:(id)a4;
-+ (id)test_uuidStringsOfInactiveCloudDevices:(id)a3 currentDeviceUUIDString:(id)a4;
++ (id)_cloudExtensionStatesDictionaryForDeviceWithUUIDString:(id)string fromCloudExtensionStates:(id)states;
++ (id)_determineNewTabPageFromCloudDeviceState:(id)state;
++ (id)_removeDeviceWithUUIDString:(id)string fromCloudDevices:(id)devices;
++ (id)_removeStatesForDeviceWithUUIDString:(id)string fromCloudExtensionStates:(id)states;
++ (id)_singleExtensionStates:(id)states withStateRemovedForDeviceWithUUIDString:(id)string;
++ (id)_uuidStringsOfInactiveCloudDevices:(id)devices currentDeviceUUIDString:(id)string;
++ (id)test_cloudExtensionStatesDictionaryForDeviceWithUUIDString:(id)string fromCloudExtensionStates:(id)states;
++ (id)test_determineNewTabPageFromCloudDeviceState:(id)state;
++ (id)test_removeDeviceWithUUIDString:(id)string fromCloudDevices:(id)devices;
++ (id)test_removeStatesForDeviceWithUUIDString:(id)string fromCloudExtensionStates:(id)states;
++ (id)test_uuidStringsOfInactiveCloudDevices:(id)devices currentDeviceUUIDString:(id)string;
 - (BOOL)_cloudDeviceMatchesLocalDeviceForCurrentDevice;
 - (BOOL)_cloudExtensionStatesMatchLocalExtensionStatesForCurrentDevice;
 - (BOOL)_cloudStateMatchesLocalStateForCurrentDevice;
-- (BOOL)_hasInstalledApplicationWithIdentifier:(id)a3;
-- (BOOL)isExtensionEnabledInCloudWithComposedIdentifier:(id)a3 forProfileServerID:(id)a4;
+- (BOOL)_hasInstalledApplicationWithIdentifier:(id)identifier;
+- (BOOL)isExtensionEnabledInCloudWithComposedIdentifier:(id)identifier forProfileServerID:(id)d;
 - (WBSCloudExtensionStateManager)init;
-- (id)_allComposedIdentifiersAssociatedWithComposedIdentifier:(id)a3;
-- (id)_cloudExtensionStateAssociatedWithComposedIdentifier:(id)a3;
-- (id)_cloudExtensionStateForComposedIdentifiers:(id)a3;
-- (id)_composedIdentifierForBundleIdentifier:(id)a3 relatedToComposedIdentifier:(id)a4;
+- (id)_allComposedIdentifiersAssociatedWithComposedIdentifier:(id)identifier;
+- (id)_cloudExtensionStateAssociatedWithComposedIdentifier:(id)identifier;
+- (id)_cloudExtensionStateForComposedIdentifiers:(id)identifiers;
+- (id)_composedIdentifierForBundleIdentifier:(id)identifier relatedToComposedIdentifier:(id)composedIdentifier;
 - (id)_defaultWebExtensionsController;
 - (id)_extensionDeviceDictionaryForCurrentDevice;
 - (id)_extensionStatesDictionaryForCurrentDevice;
 - (id)extensionAppsFromOtherDevices;
 - (void)_cloudExtensionStatesWereUpdated;
 - (void)_deleteCurrentDeviceFromCloudKit;
-- (void)_determineExtensionSyncAvailabilityIgnoringExtensionSyncEnabled:(BOOL)a3 completionHandler:(id)a4;
+- (void)_determineExtensionSyncAvailabilityIgnoringExtensionSyncEnabled:(BOOL)enabled completionHandler:(id)handler;
 - (void)_ensureCurrentDeviceIsSavedPeriodically;
-- (void)_extensionSyncEnabledStateDidChangeDistributedNotificationHandler:(id)a3;
-- (void)_getCloudExtensionStatesWithCompletionHandler:(id)a3;
-- (void)_getCloudSettingsContainerManateeStateWithCompletionHandler:(id)a3;
-- (void)_getPrimaryAppleAccountHasSafariSyncEnabledWithCompletionHandler:(id)a3;
-- (void)_managedExtensionStateDidChange:(id)a3;
-- (void)_pruneInactiveDevicesFromCloudKitWithCompletionHandler:(id)a3;
-- (void)_saveCurrentDeviceToCloudKitWithCompletionHandler:(id)a3;
-- (void)_saveExtensionStatesWithDictionaryRepresentation:(id)a3 forDevice:(id)a4 completionHandler:(id)a5;
+- (void)_extensionSyncEnabledStateDidChangeDistributedNotificationHandler:(id)handler;
+- (void)_getCloudExtensionStatesWithCompletionHandler:(id)handler;
+- (void)_getCloudSettingsContainerManateeStateWithCompletionHandler:(id)handler;
+- (void)_getPrimaryAppleAccountHasSafariSyncEnabledWithCompletionHandler:(id)handler;
+- (void)_managedExtensionStateDidChange:(id)change;
+- (void)_pruneInactiveDevicesFromCloudKitWithCompletionHandler:(id)handler;
+- (void)_saveCurrentDeviceToCloudKitWithCompletionHandler:(id)handler;
+- (void)_saveExtensionStatesWithDictionaryRepresentation:(id)representation forDevice:(id)device completionHandler:(id)handler;
 - (void)_schedulePruningOfInactiveDevices;
-- (void)_updateCloudExtensionStatesFromSafariBookmarksSyncAgent:(id)a3;
+- (void)_updateCloudExtensionStatesFromSafariBookmarksSyncAgent:(id)agent;
 - (void)_updateLocalStateFromCloudExtensionState;
 - (void)_updateStateProvidersFromCloudExtensionState;
-- (void)addProvider:(id)a3;
-- (void)getLockupViewsForAppsOnOtherDevicesWithCompletionHandler:(id)a3;
+- (void)addProvider:(id)provider;
+- (void)getLockupViewsForAppsOnOtherDevicesWithCompletionHandler:(id)handler;
 - (void)localExtensionStateDidChange;
-- (void)setExtensionSyncEnabled:(BOOL)a3;
-- (void)setManateeState:(int64_t)a3;
+- (void)setExtensionSyncEnabled:(BOOL)enabled;
+- (void)setManateeState:(int64_t)state;
 - (void)updateNewTabPageFromCloudDeviceState;
 @end
 
@@ -79,26 +79,26 @@ void __46__WBSCloudExtensionStateManager_sharedManager__block_invoke()
   v2 = [(WBSCloudExtensionStateManager *)&v11 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    v2->_extensionSyncEnabled = [v3 safari_BOOLForKey:*MEMORY[0x1E69C9128] defaultValue:1];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    v2->_extensionSyncEnabled = [safari_browserDefaults safari_BOOLForKey:*MEMORY[0x1E69C9128] defaultValue:1];
 
-    v4 = [MEMORY[0x1E69C88C8] sharedController];
-    v5 = [v4 hasAnyExtensionManagement];
+    mEMORY[0x1E69C88C8] = [MEMORY[0x1E69C88C8] sharedController];
+    hasAnyExtensionManagement = [mEMORY[0x1E69C88C8] hasAnyExtensionManagement];
 
-    if (v5)
+    if (hasAnyExtensionManagement)
     {
       [(WBSCloudExtensionStateManager *)v2 setExtensionSyncEnabled:0];
     }
 
     v2->_manateeState = 0;
-    v6 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v6 addObserver:v2 selector:sel__updateCloudExtensionStatesFromSafariBookmarksSyncAgent_ name:*MEMORY[0x1E69C8D00] object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__updateCloudExtensionStatesFromSafariBookmarksSyncAgent_ name:*MEMORY[0x1E69C8D00] object:0];
 
-    v7 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v7 addObserver:v2 selector:sel__extensionSyncEnabledStateDidChangeDistributedNotificationHandler_ name:@"CloudExtensionSyncStateDidChange" object:0];
+    defaultCenter2 = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__extensionSyncEnabledStateDidChangeDistributedNotificationHandler_ name:@"CloudExtensionSyncStateDidChange" object:0];
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v2 selector:sel__managedExtensionStateDidChange_ name:*MEMORY[0x1E69C8C38] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel__managedExtensionStateDidChange_ name:*MEMORY[0x1E69C8C38] object:0];
 
     [(WBSCloudExtensionStateManager *)v2 _updateCloudExtensionStatesFromSafariBookmarksSyncAgent:0];
     v9 = v2;
@@ -111,20 +111,20 @@ void __46__WBSCloudExtensionStateManager_sharedManager__block_invoke()
 {
   [(WBSCloudExtensionStateManager *)self _updateStateProvidersFromCloudExtensionState];
   [(WBSCloudExtensionStateManager *)self updateNewTabPageFromCloudDeviceState];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"WBSCloudExtensionStateDidChange" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"WBSCloudExtensionStateDidChange" object:0];
 }
 
 - (void)_updateStateProvidersFromCloudExtensionState
 {
   v84 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E695DFA8] set];
-  v4 = [(NSDictionary *)self->_cloudExtensionStates allValues];
-  v5 = [v4 firstObject];
-  v6 = [v5 firstObject];
+  allValues = [(NSDictionary *)self->_cloudExtensionStates allValues];
+  firstObject = [allValues firstObject];
+  v5FirstObject = [firstObject firstObject];
 
-  v43 = v6;
-  v7 = [v6 objectForKey:*MEMORY[0x1E69C9610]];
+  v43 = v5FirstObject;
+  v7 = [v5FirstObject objectForKey:*MEMORY[0x1E69C9610]];
 
   if (v7)
   {
@@ -148,7 +148,7 @@ void __46__WBSCloudExtensionStateManager_sharedManager__block_invoke()
     {
       v10 = v9;
       v11 = *v67;
-      v53 = self;
+      selfCopy = self;
       v47 = v3;
       v44 = *v67;
       do
@@ -167,7 +167,7 @@ void __46__WBSCloudExtensionStateManager_sharedManager__block_invoke()
           {
             v48 = v12;
             v14 = [(WBSCloudExtensionStateManager *)self _allComposedIdentifiersAssociatedWithComposedIdentifier:v13];
-            v15 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
             v62 = 0u;
             v63 = 0u;
             v64 = 0u;
@@ -212,7 +212,7 @@ void __46__WBSCloudExtensionStateManager_sharedManager__block_invoke()
                         {
                           v25 = v17;
 
-                          [v15 addObject:v24];
+                          [array addObject:v24];
                           v21 = v25;
                         }
                       }
@@ -222,7 +222,7 @@ void __46__WBSCloudExtensionStateManager_sharedManager__block_invoke()
 
                     while (v20);
 
-                    self = v53;
+                    self = selfCopy;
                     if (v21)
                     {
                       goto LABEL_30;
@@ -244,9 +244,9 @@ void __46__WBSCloudExtensionStateManager_sharedManager__block_invoke()
 LABEL_30:
             v26 = v52;
 
-            v27 = [(NSDictionary *)v52 allObjects];
+            allObjects = [(NSDictionary *)v52 allObjects];
             v3 = v47;
-            [v47 addObjectsFromArray:v27];
+            [v47 addObjectsFromArray:allObjects];
 
             if (v21)
             {
@@ -257,7 +257,7 @@ LABEL_30:
                 v57 = 0u;
                 v54 = 0u;
                 v55 = 0u;
-                v51 = v15;
+                v51 = array;
                 v29 = [v51 countByEnumeratingWithState:&v54 objects:v80 count:16];
                 if (v29)
                 {
@@ -273,7 +273,7 @@ LABEL_30:
                       }
 
                       v33 = *(*(&v54 + 1) + 8 * k);
-                      v34 = [v33 profileServerIDForStateManager:v53];
+                      v34 = [v33 profileServerIDForStateManager:selfCopy];
                       v35 = [objc_opt_class() _determineEnabledStateFromCloudExtensionState:v28 forProfileServerID:v34];
                       v36 = WBS_LOG_CHANNEL_PREFIXCloudExtensions();
                       if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
@@ -315,10 +315,10 @@ LABEL_30:
                 v38 = WBS_LOG_CHANNEL_PREFIXCloudExtensions();
                 if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
                 {
-                  cloudExtensionStates = v53->_cloudExtensionStates;
+                  cloudExtensionStates = selfCopy->_cloudExtensionStates;
                   v40 = v38;
                   v41 = [(NSDictionary *)cloudExtensionStates count];
-                  v42 = v53->_cloudExtensionStates;
+                  v42 = selfCopy->_cloudExtensionStates;
                   *buf = 134218243;
                   v71 = v41;
                   v72 = 2113;
@@ -327,7 +327,7 @@ LABEL_30:
                 }
               }
 
-              self = v53;
+              self = selfCopy;
             }
 
             v11 = v44;
@@ -378,11 +378,11 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
   v4 = [objc_opt_class() _determineNewTabPageFromCloudDeviceState:self->_cloudDevices];
-  v5 = [(WBSCloudExtensionStateManager *)self _defaultWebExtensionsController];
-  v6 = [v5 tabOverridePreferencesManager];
-  v7 = [v6 extensionComposedIdentifierForNewTabPreferenceInDefaults:v3];
+  _defaultWebExtensionsController = [(WBSCloudExtensionStateManager *)self _defaultWebExtensionsController];
+  tabOverridePreferencesManager = [_defaultWebExtensionsController tabOverridePreferencesManager];
+  v7 = [tabOverridePreferencesManager extensionComposedIdentifierForNewTabPreferenceInDefaults:safari_browserDefaults];
 
   v8 = WBS_LOG_CHANNEL_PREFIXCloudExtensions();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -412,8 +412,8 @@ LABEL_13:
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v12 = v31 = 0u;
-      v13 = [v12 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      defaultCenter2 = v31 = 0u;
+      v13 = [defaultCenter2 countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v13)
       {
         v14 = v13;
@@ -424,19 +424,19 @@ LABEL_13:
           {
             if (*v29 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(defaultCenter2);
             }
 
-            v17 = [v5 extensionWithComposedIdentifier:{*(*(&v28 + 1) + 8 * i), v28}];
-            v18 = [v5 webExtensionForExtension:v17];
+            v17 = [_defaultWebExtensionsController extensionWithComposedIdentifier:{*(*(&v28 + 1) + 8 * i), v28}];
+            v18 = [_defaultWebExtensionsController webExtensionForExtension:v17];
 
             if (v18)
             {
 
-              v20 = [v18 newTabOverridePageURL];
+              newTabOverridePageURL = [v18 newTabOverridePageURL];
               v21 = WBS_LOG_CHANNEL_PREFIXCloudExtensions();
               v22 = os_log_type_enabled(v21, OS_LOG_TYPE_INFO);
-              if (v20)
+              if (newTabOverridePageURL)
               {
                 if (v22)
                 {
@@ -447,12 +447,12 @@ LABEL_13:
                   _os_log_impl(&dword_1C6968000, v21, OS_LOG_TYPE_INFO, "Setting the new tab page to be existing extension %{sensitive, mask.hash}@ from sync", buf, 0x16u);
                 }
 
-                v23 = [v5 tabOverridePreferencesManager];
-                v24 = [v18 composedIdentifier];
-                [v23 setNewTabBehaviorWithExtensionComposedIdentifier:v24 inDefaults:v3 fromUserGesture:0];
+                tabOverridePreferencesManager2 = [_defaultWebExtensionsController tabOverridePreferencesManager];
+                composedIdentifier = [v18 composedIdentifier];
+                [tabOverridePreferencesManager2 setNewTabBehaviorWithExtensionComposedIdentifier:composedIdentifier inDefaults:safari_browserDefaults fromUserGesture:0];
 
-                v25 = [MEMORY[0x1E696AD88] defaultCenter];
-                [v25 postNotificationName:@"WBSNewTabPageDidChange" object:0];
+                defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+                [defaultCenter postNotificationName:@"WBSNewTabPageDidChange" object:0];
               }
 
               else if (v22)
@@ -468,7 +468,7 @@ LABEL_13:
             }
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v28 objects:v32 count:16];
+          v14 = [defaultCenter2 countByEnumeratingWithState:&v28 objects:v32 count:16];
           if (v14)
           {
             continue;
@@ -498,28 +498,28 @@ LABEL_13:
         _os_log_impl(&dword_1C6968000, v26, OS_LOG_TYPE_INFO, "Clearing local new tab page from sync", buf, 2u);
       }
 
-      v27 = [v5 tabOverridePreferencesManager];
-      [v27 clearNewTabBehaviorInDefaults:v3 fromUserGesture:0];
+      tabOverridePreferencesManager3 = [_defaultWebExtensionsController tabOverridePreferencesManager];
+      [tabOverridePreferencesManager3 clearNewTabBehaviorInDefaults:safari_browserDefaults fromUserGesture:0];
 
-      v12 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v12 postNotificationName:@"WBSNewTabPageDidChange" object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 postNotificationName:@"WBSNewTabPageDidChange" object:0];
     }
 
 LABEL_35:
   }
 }
 
-- (void)setExtensionSyncEnabled:(BOOL)a3
+- (void)setExtensionSyncEnabled:(BOOL)enabled
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (self->_extensionSyncEnabled != a3)
+  if (self->_extensionSyncEnabled != enabled)
   {
-    v3 = a3;
+    enabledCopy = enabled;
     v5 = WBS_LOG_CHANNEL_PREFIXCloudExtensions();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = @"NO";
-      if (v3)
+      if (enabledCopy)
       {
         v6 = @"YES";
       }
@@ -530,11 +530,11 @@ LABEL_35:
       _os_log_impl(&dword_1C6968000, v5, OS_LOG_TYPE_INFO, "Changing extension sync enabled to %{public}@", &v11, 0xCu);
     }
 
-    self->_extensionSyncEnabled = v3;
-    v8 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    [v8 setBool:v3 forKey:*MEMORY[0x1E69C9128]];
+    self->_extensionSyncEnabled = enabledCopy;
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    [safari_browserDefaults setBool:enabledCopy forKey:*MEMORY[0x1E69C9128]];
 
-    if (v3)
+    if (enabledCopy)
     {
       [(WBSCloudExtensionStateManager *)self localExtensionStateDidChange];
     }
@@ -549,27 +549,27 @@ LABEL_35:
     }
 
     [(WBSCloudExtensionStateManager *)self _updateCloudExtensionStatesFromSafariBookmarksSyncAgent:0];
-    v10 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v10 postNotificationName:@"CloudExtensionSyncStateDidChange" object:0 userInfo:0 deliverImmediately:1];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter postNotificationName:@"CloudExtensionSyncStateDidChange" object:0 userInfo:0 deliverImmediately:1];
   }
 }
 
-- (void)addProvider:(id)a3
+- (void)addProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   stateProviders = self->_stateProviders;
-  v8 = v4;
+  v8 = providerCopy;
   if (!stateProviders)
   {
     v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:1];
     v7 = self->_stateProviders;
     self->_stateProviders = v6;
 
-    v4 = v8;
+    providerCopy = v8;
     stateProviders = self->_stateProviders;
   }
 
-  [(NSMutableArray *)stateProviders addObject:v4];
+  [(NSMutableArray *)stateProviders addObject:providerCopy];
 }
 
 - (void)localExtensionStateDidChange
@@ -580,16 +580,16 @@ LABEL_35:
     v7[10] = v3;
     if ([(NSMutableArray *)self->_stateProviders count])
     {
-      v5 = [(WBSCloudExtensionStateManager *)self _extensionDeviceDictionaryForCurrentDevice];
-      if (v5)
+      _extensionDeviceDictionaryForCurrentDevice = [(WBSCloudExtensionStateManager *)self _extensionDeviceDictionaryForCurrentDevice];
+      if (_extensionDeviceDictionaryForCurrentDevice)
       {
-        v6 = [(WBSCloudExtensionStateManager *)self _extensionStatesDictionaryForCurrentDevice];
+        _extensionStatesDictionaryForCurrentDevice = [(WBSCloudExtensionStateManager *)self _extensionStatesDictionaryForCurrentDevice];
         v7[0] = MEMORY[0x1E69E9820];
         v7[1] = 3221225472;
         v7[2] = __61__WBSCloudExtensionStateManager_localExtensionStateDidChange__block_invoke;
         v7[3] = &unk_1E8283830;
         v7[4] = self;
-        [(WBSCloudExtensionStateManager *)self _saveExtensionStatesWithDictionaryRepresentation:v6 forDevice:v5 completionHandler:v7];
+        [(WBSCloudExtensionStateManager *)self _saveExtensionStatesWithDictionaryRepresentation:_extensionStatesDictionaryForCurrentDevice forDevice:_extensionDeviceDictionaryForCurrentDevice completionHandler:v7];
       }
     }
   }
@@ -641,50 +641,50 @@ uint64_t __61__WBSCloudExtensionStateManager_localExtensionStateDidChange__block
   return result;
 }
 
-- (void)getLockupViewsForAppsOnOtherDevicesWithCompletionHandler:(id)a3
+- (void)getLockupViewsForAppsOnOtherDevicesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6 = +[WBSASCLockupViewGenerator sharedGenerator];
-  v5 = [(WBSCloudExtensionStateManager *)self extensionAppsFromOtherDevices];
-  [v6 generateLockupViewsForAvailableApps:v5 lockupViewType:0 maintainRequestedOrderOfApps:0 completionHandler:v4];
+  extensionAppsFromOtherDevices = [(WBSCloudExtensionStateManager *)self extensionAppsFromOtherDevices];
+  [v6 generateLockupViewsForAvailableApps:extensionAppsFromOtherDevices lockupViewType:0 maintainRequestedOrderOfApps:0 completionHandler:handlerCopy];
 }
 
-- (BOOL)_hasInstalledApplicationWithIdentifier:(id)a3
+- (BOOL)_hasInstalledApplicationWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [v3 intValue];
+  identifierCopy = identifier;
+  intValue = [identifierCopy intValue];
   v5 = [MEMORY[0x1E69635F8] enumeratorWithOptions:0];
-  v6 = [v5 nextObject];
-  if (!v6)
+  nextObject = [v5 nextObject];
+  if (!nextObject)
   {
-    LOBYTE(v13) = 0;
+    LOBYTE(nextObject2) = 0;
     goto LABEL_12;
   }
 
-  v7 = v6;
-  v8 = v4;
+  v7 = nextObject;
+  v8 = intValue;
   while (v8)
   {
-    v9 = [v7 iTunesMetadata];
-    v10 = [v9 storeItemIdentifier];
+    iTunesMetadata = [v7 iTunesMetadata];
+    storeItemIdentifier = [iTunesMetadata storeItemIdentifier];
 
-    if (v10 == v8)
+    if (storeItemIdentifier == v8)
     {
       goto LABEL_10;
     }
 
 LABEL_7:
-    v13 = [v5 nextObject];
+    nextObject2 = [v5 nextObject];
 
-    v7 = v13;
-    if (!v13)
+    v7 = nextObject2;
+    if (!nextObject2)
     {
       goto LABEL_11;
     }
   }
 
-  v11 = [v7 applicationIdentifier];
-  v12 = [v3 isEqualToString:v11];
+  applicationIdentifier = [v7 applicationIdentifier];
+  v12 = [identifierCopy isEqualToString:applicationIdentifier];
 
   if ((v12 & 1) == 0)
   {
@@ -692,17 +692,17 @@ LABEL_7:
   }
 
 LABEL_10:
-  LOBYTE(v13) = 1;
+  LOBYTE(nextObject2) = 1;
 LABEL_11:
 
 LABEL_12:
-  return v13;
+  return nextObject2;
 }
 
 - (id)extensionAppsFromOtherDevices
 {
   v81 = *MEMORY[0x1E69E9840];
-  v49 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v3 = [MEMORY[0x1E695DFA8] set];
   v69 = 0u;
   v70 = 0u;
@@ -718,7 +718,7 @@ LABEL_12:
     v52 = *MEMORY[0x1E69C9618];
     v50 = *MEMORY[0x1E69C95A8];
     v48 = *MEMORY[0x1E69C9198];
-    v51 = self;
+    selfCopy = self;
     v59 = v3;
     v54 = v4;
     v58 = *v70;
@@ -787,7 +787,7 @@ LABEL_10:
                   v27 = v24;
 
                   v28 = 0;
-                  self = v51;
+                  self = selfCopy;
                   goto LABEL_24;
                 }
 
@@ -800,7 +800,7 @@ LABEL_10:
                 if (v20 == ++v22)
                 {
                   v20 = [v18 countByEnumeratingWithState:&v62 objects:v79 count:16];
-                  self = v51;
+                  self = selfCopy;
                   if (v20)
                   {
                     goto LABEL_10;
@@ -813,7 +813,7 @@ LABEL_10:
               v29 = v25;
               v28 = [v23 safari_stringForKey:v50];
 
-              self = v51;
+              self = selfCopy;
               if (v28)
               {
                 goto LABEL_25;
@@ -825,13 +825,13 @@ LABEL_10:
 LABEL_17:
             }
 
-            v30 = [v18 firstObject];
-            v28 = [v30 safari_stringForKey:v50];
+            firstObject = [v18 firstObject];
+            v28 = [firstObject safari_stringForKey:v50];
 
             if ([MEMORY[0x1E69C8880] isInternalInstall])
             {
-              v31 = [MEMORY[0x1E695E000] safari_browserDefaults];
-              v32 = [v31 dictionaryForKey:v48];
+              safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+              v32 = [safari_browserDefaults dictionaryForKey:v48];
               v27 = [v32 safari_stringForKey:v28];
 
               if (v27)
@@ -866,8 +866,8 @@ LABEL_27:
             }
 
             v37 = [(WBSCloudExtensionStateManager *)self _hasInstalledApplicationWithIdentifier:v36];
-            v38 = [v61 allObjects];
-            [v59 addObjectsFromArray:v38];
+            allObjects = [v61 allObjects];
+            [v59 addObjectsFromArray:allObjects];
 
             if (v37)
             {
@@ -895,7 +895,7 @@ LABEL_27:
               v41 = v40;
               if (v41)
               {
-                v42 = [v49 objectForKeyedSubscript:v41];
+                v42 = [dictionary objectForKeyedSubscript:v41];
 
                 if (!v42)
                 {
@@ -918,7 +918,7 @@ LABEL_27:
                     [(WBSAvailableAppWithExtension *)v44 setRequiredTeamID:v45];
                   }
 
-                  [v49 setObject:v44 forKeyedSubscript:v41];
+                  [dictionary setObject:v44 forKeyedSubscript:v41];
                 }
               }
             }
@@ -954,9 +954,9 @@ LABEL_27:
     while (v6);
   }
 
-  v46 = [v49 allValues];
+  allValues = [dictionary allValues];
 
-  return v46;
+  return allValues;
 }
 
 uint64_t __62__WBSCloudExtensionStateManager_extensionAppsFromOtherDevices__block_invoke_2(uint64_t a1, void *a2)
@@ -967,15 +967,15 @@ uint64_t __62__WBSCloudExtensionStateManager_extensionAppsFromOtherDevices__bloc
   return v4;
 }
 
-- (BOOL)isExtensionEnabledInCloudWithComposedIdentifier:(id)a3 forProfileServerID:(id)a4
+- (BOOL)isExtensionEnabledInCloudWithComposedIdentifier:(id)identifier forProfileServerID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   if (self->_extensionSyncEnabled)
   {
-    v7 = [(WBSCloudExtensionStateManager *)self _cloudExtensionStateAssociatedWithComposedIdentifier:a3];
+    v7 = [(WBSCloudExtensionStateManager *)self _cloudExtensionStateAssociatedWithComposedIdentifier:identifier];
     if ([v7 count])
     {
-      v8 = [objc_opt_class() _determineEnabledStateFromCloudExtensionState:v7 forProfileServerID:v6];
+      v8 = [objc_opt_class() _determineEnabledStateFromCloudExtensionState:v7 forProfileServerID:dCopy];
     }
 
     else
@@ -992,35 +992,35 @@ uint64_t __62__WBSCloudExtensionStateManager_extensionAppsFromOtherDevices__bloc
   return v8;
 }
 
-- (void)setManateeState:(int64_t)a3
+- (void)setManateeState:(int64_t)state
 {
-  if (self->_manateeState != a3)
+  if (self->_manateeState != state)
   {
-    self->_manateeState = a3;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 postNotificationName:@"WBSCloudExtensionManateeStateDidChange" object:0];
+    self->_manateeState = state;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"WBSCloudExtensionManateeStateDidChange" object:0];
   }
 }
 
-- (void)_determineExtensionSyncAvailabilityIgnoringExtensionSyncEnabled:(BOOL)a3 completionHandler:(id)a4
+- (void)_determineExtensionSyncAvailabilityIgnoringExtensionSyncEnabled:(BOOL)enabled completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = v6;
-  if ((a3 || self->_extensionSyncEnabled) && self->_manateeState != 2)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if ((enabled || self->_extensionSyncEnabled) && self->_manateeState != 2)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __115__WBSCloudExtensionStateManager__determineExtensionSyncAvailabilityIgnoringExtensionSyncEnabled_completionHandler___block_invoke;
     v8[3] = &unk_1E82838A8;
     v8[4] = self;
-    v9 = v6;
+    v9 = handlerCopy;
     [(WBSCloudExtensionStateManager *)self _getPrimaryAppleAccountHasSafariSyncEnabledWithCompletionHandler:v8];
   }
 
   else
   {
     self->_hasSuccessfullyUpdatedCloudExtensionStatesAtLeastOnce = 0;
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -1044,18 +1044,18 @@ uint64_t __115__WBSCloudExtensionStateManager__determineExtensionSyncAvailabilit
   }
 }
 
-- (void)_getCloudSettingsContainerManateeStateWithCompletionHandler:(id)a3
+- (void)_getCloudSettingsContainerManateeStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69C8A08] sharedProxy];
+  handlerCopy = handler;
+  mEMORY[0x1E69C8A08] = [MEMORY[0x1E69C8A08] sharedProxy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __93__WBSCloudExtensionStateManager__getCloudSettingsContainerManateeStateWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E82838F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 getCloudSettingsContainerManateeStateWithCompletionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [mEMORY[0x1E69C8A08] getCloudSettingsContainerManateeStateWithCompletionHandler:v7];
 }
 
 void __93__WBSCloudExtensionStateManager__getCloudSettingsContainerManateeStateWithCompletionHandler___block_invoke(uint64_t a1, char a2)
@@ -1106,18 +1106,18 @@ uint64_t __93__WBSCloudExtensionStateManager__getCloudSettingsContainerManateeSt
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)_getPrimaryAppleAccountHasSafariSyncEnabledWithCompletionHandler:(id)a3
+- (void)_getPrimaryAppleAccountHasSafariSyncEnabledWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69C89D0] sharedObserver];
+  handlerCopy = handler;
+  mEMORY[0x1E69C89D0] = [MEMORY[0x1E69C89D0] sharedObserver];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __98__WBSCloudExtensionStateManager__getPrimaryAppleAccountHasSafariSyncEnabledWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E82838F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 getPrimaryAppleAccountHasSafariSyncEnabledWithCompletionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [mEMORY[0x1E69C89D0] getPrimaryAppleAccountHasSafariSyncEnabledWithCompletionHandler:v7];
 }
 
 void __98__WBSCloudExtensionStateManager__getPrimaryAppleAccountHasSafariSyncEnabledWithCompletionHandler___block_invoke(uint64_t a1, char a2)
@@ -1146,14 +1146,14 @@ uint64_t __98__WBSCloudExtensionStateManager__getPrimaryAppleAccountHasSafariSyn
 - (id)_extensionDeviceDictionaryForCurrentDevice
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v2 = [(WBSCloudExtensionStateManager *)self _defaultWebExtensionsController];
-  v3 = [v2 _deviceUUIDString];
-  if ([v3 length])
+  _defaultWebExtensionsController = [(WBSCloudExtensionStateManager *)self _defaultWebExtensionsController];
+  _deviceUUIDString = [_defaultWebExtensionsController _deviceUUIDString];
+  if ([_deviceUUIDString length])
   {
-    v4 = [MEMORY[0x1E69C8860] currentDevice];
-    v5 = [v4 userAssignedName];
+    currentDevice = [MEMORY[0x1E69C8860] currentDevice];
+    userAssignedName = [currentDevice userAssignedName];
 
-    if (![(__CFString *)v5 length])
+    if (![(__CFString *)userAssignedName length])
     {
       v6 = WBS_LOG_CHANNEL_PREFIXCloudExtensions();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1161,18 +1161,18 @@ uint64_t __98__WBSCloudExtensionStateManager__getPrimaryAppleAccountHasSafariSyn
         [WBSCloudExtensionStateManager _extensionDeviceDictionaryForCurrentDevice];
       }
 
-      v5 = &stru_1F4646D10;
+      userAssignedName = &stru_1F4646D10;
     }
 
     v7 = *MEMORY[0x1E69C95D8];
     v15[0] = *MEMORY[0x1E69C95B8];
     v15[1] = v7;
-    v16[0] = v5;
-    v16[1] = v3;
+    v16[0] = userAssignedName;
+    v16[1] = _deviceUUIDString;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2];
-    v9 = [v2 tabOverridePreferencesManager];
-    v10 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    v11 = [v9 cloudExtensionStateForDefaults:v10];
+    tabOverridePreferencesManager = [_defaultWebExtensionsController tabOverridePreferencesManager];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    v11 = [tabOverridePreferencesManager cloudExtensionStateForDefaults:safari_browserDefaults];
     v12 = [v8 safari_dictionaryByMergingWithDictionary:v11];
   }
 
@@ -1193,7 +1193,7 @@ uint64_t __98__WBSCloudExtensionStateManager__getPrimaryAppleAccountHasSafariSyn
 - (id)_extensionStatesDictionaryForCurrentDevice
 {
   v49 = *MEMORY[0x1E69E9840];
-  v37 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   stateProviders = self->_stateProviders;
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
@@ -1210,7 +1210,7 @@ uint64_t __98__WBSCloudExtensionStateManager__getPrimaryAppleAccountHasSafariSyn
   {
     v28 = *v43;
     v36 = *MEMORY[0x1E69C9628];
-    v27 = self;
+    selfCopy = self;
     do
     {
       v4 = 0;
@@ -1261,7 +1261,7 @@ uint64_t __98__WBSCloudExtensionStateManager__getPrimaryAppleAccountHasSafariSyn
 
               v12 = *(*(&v38 + 1) + 8 * v11);
               v13 = [v8 safari_dictionaryForKey:v12];
-              v14 = [v37 safari_dictionaryForKey:v12];
+              v14 = [dictionary safari_dictionaryForKey:v12];
               if (!v14)
               {
                 if (!v33)
@@ -1299,7 +1299,7 @@ uint64_t __98__WBSCloudExtensionStateManager__getPrimaryAppleAccountHasSafariSyn
               [v21 setObject:v22 forKeyedSubscript:v36];
 
               v23 = [v21 copy];
-              [v37 setObject:v23 forKeyedSubscript:v12];
+              [dictionary setObject:v23 forKeyedSubscript:v12];
 
 LABEL_23:
               ++v11;
@@ -1311,7 +1311,7 @@ LABEL_23:
             {
 LABEL_25:
 
-              self = v27;
+              self = selfCopy;
               v6 = v30;
               v4 = v31;
               v7 = v34;
@@ -1330,7 +1330,7 @@ LABEL_25:
     while (v29);
   }
 
-  v24 = [v37 copy];
+  v24 = [dictionary copy];
 
   return v24;
 }
@@ -1362,19 +1362,19 @@ uint64_t __75__WBSCloudExtensionStateManager__extensionStatesDictionaryForCurren
   return v11;
 }
 
-- (void)_saveExtensionStatesWithDictionaryRepresentation:(id)a3 forDevice:(id)a4 completionHandler:(id)a5
+- (void)_saveExtensionStatesWithDictionaryRepresentation:(id)representation forDevice:(id)device completionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  representationCopy = representation;
+  deviceCopy = device;
+  handlerCopy = handler;
   v11 = WBS_LOG_CHANNEL_PREFIXCloudExtensions();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138478083;
-    v20 = v8;
+    v20 = representationCopy;
     v21 = 2113;
-    v22 = v9;
+    v22 = deviceCopy;
     _os_log_impl(&dword_1C6968000, v11, OS_LOG_TYPE_INFO, "Saving extension state to cloud: %{private}@, for device: %{private}@", buf, 0x16u);
   }
 
@@ -1382,12 +1382,12 @@ uint64_t __75__WBSCloudExtensionStateManager__extensionStatesDictionaryForCurren
   v15[1] = 3221225472;
   v15[2] = __110__WBSCloudExtensionStateManager__saveExtensionStatesWithDictionaryRepresentation_forDevice_completionHandler___block_invoke;
   v15[3] = &unk_1E8283948;
-  v17 = v9;
-  v18 = v10;
-  v16 = v8;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v17 = deviceCopy;
+  v18 = handlerCopy;
+  v16 = representationCopy;
+  v12 = deviceCopy;
+  v13 = representationCopy;
+  v14 = handlerCopy;
   [(WBSCloudExtensionStateManager *)self _determineExtensionSyncAvailabilityWithCompletionHandler:v15];
 }
 
@@ -1407,9 +1407,9 @@ void __110__WBSCloudExtensionStateManager__saveExtensionStatesWithDictionaryRepr
   }
 }
 
-- (void)_saveCurrentDeviceToCloudKitWithCompletionHandler:(id)a3
+- (void)_saveCurrentDeviceToCloudKitWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = WBS_LOG_CHANNEL_PREFIXCloudExtensions();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1422,8 +1422,8 @@ void __110__WBSCloudExtensionStateManager__saveExtensionStatesWithDictionaryRepr
   v7[2] = __83__WBSCloudExtensionStateManager__saveCurrentDeviceToCloudKitWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E82838A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(WBSCloudExtensionStateManager *)self _determineExtensionSyncAvailabilityWithCompletionHandler:v7];
 }
 
@@ -1520,9 +1520,9 @@ void __65__WBSCloudExtensionStateManager__deleteCurrentDeviceFromCloudKit__block
   }
 }
 
-- (void)_getCloudExtensionStatesWithCompletionHandler:(id)a3
+- (void)_getCloudExtensionStatesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = WBS_LOG_CHANNEL_PREFIXCloudExtensions();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1534,8 +1534,8 @@ void __65__WBSCloudExtensionStateManager__deleteCurrentDeviceFromCloudKit__block
   v7[1] = 3221225472;
   v7[2] = __79__WBSCloudExtensionStateManager__getCloudExtensionStatesWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E8283998;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(WBSCloudExtensionStateManager *)self _determineExtensionSyncAvailabilityIgnoringExtensionSyncEnabled:1 completionHandler:v7];
 }
 
@@ -1555,34 +1555,34 @@ void __79__WBSCloudExtensionStateManager__getCloudExtensionStatesWithCompletionH
   }
 }
 
-- (id)_composedIdentifierForBundleIdentifier:(id)a3 relatedToComposedIdentifier:(id)a4
+- (id)_composedIdentifierForBundleIdentifier:(id)identifier relatedToComposedIdentifier:(id)composedIdentifier
 {
-  v5 = a3;
-  v6 = developerIdentifierFromComposedIdentifier(a4);
-  v7 = [WBSWebExtensionsController _composedIdentifierForStateOfExtensionWithBundleIdentifier:v5 developerIdentifier:v6];
+  identifierCopy = identifier;
+  v6 = developerIdentifierFromComposedIdentifier(composedIdentifier);
+  v7 = [WBSWebExtensionsController _composedIdentifierForStateOfExtensionWithBundleIdentifier:identifierCopy developerIdentifier:v6];
 
   return v7;
 }
 
-- (id)_allComposedIdentifiersAssociatedWithComposedIdentifier:(id)a3
+- (id)_allComposedIdentifiersAssociatedWithComposedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DFA8] setWithObject:v4];
+  identifierCopy = identifier;
+  v5 = [MEMORY[0x1E695DFA8] setWithObject:identifierCopy];
   cloudExtensionStates = self->_cloudExtensionStates;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __89__WBSCloudExtensionStateManager__allComposedIdentifiersAssociatedWithComposedIdentifier___block_invoke;
   v14[3] = &unk_1E82839C0;
-  v7 = v4;
+  v7 = identifierCopy;
   v15 = v7;
   v8 = v5;
   v16 = v8;
-  v17 = self;
+  selfCopy = self;
   [(NSDictionary *)cloudExtensionStates enumerateKeysAndObjectsUsingBlock:v14];
   if ([MEMORY[0x1E69C8880] isInternalInstall])
   {
-    v9 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    v10 = [v9 dictionaryForKey:*MEMORY[0x1E69C91A0]];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    v10 = [safari_browserDefaults dictionaryForKey:*MEMORY[0x1E69C91A0]];
     v11 = [v10 safari_stringForKey:v7];
 
     if ([v11 length])
@@ -1717,16 +1717,16 @@ LABEL_26:
 LABEL_27:
 }
 
-- (id)_cloudExtensionStateForComposedIdentifiers:(id)a3
+- (id)_cloudExtensionStateForComposedIdentifiers:(id)identifiers
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  identifiersCopy = identifiers;
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -1742,7 +1742,7 @@ LABEL_27:
         }
 
         v11 = [(NSDictionary *)self->_cloudExtensionStates safari_arrayContainingObjectsOfClass:objc_opt_class() forKey:*(*(&v14 + 1) + 8 * i), v14];
-        [v5 addObjectsFromArray:v11];
+        [array addObjectsFromArray:v11];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -1751,14 +1751,14 @@ LABEL_27:
     while (v8);
   }
 
-  v12 = [v5 copy];
+  v12 = [array copy];
 
   return v12;
 }
 
-- (id)_cloudExtensionStateAssociatedWithComposedIdentifier:(id)a3
+- (id)_cloudExtensionStateAssociatedWithComposedIdentifier:(id)identifier
 {
-  v4 = [(WBSCloudExtensionStateManager *)self _allComposedIdentifiersAssociatedWithComposedIdentifier:a3];
+  v4 = [(WBSCloudExtensionStateManager *)self _allComposedIdentifiersAssociatedWithComposedIdentifier:identifier];
   v5 = [(WBSCloudExtensionStateManager *)self _cloudExtensionStateForComposedIdentifiers:v4];
 
   return v5;
@@ -1786,15 +1786,15 @@ LABEL_27:
   }
 }
 
-- (void)_updateCloudExtensionStatesFromSafariBookmarksSyncAgent:(id)a3
+- (void)_updateCloudExtensionStatesFromSafariBookmarksSyncAgent:(id)agent
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  agentCopy = agent;
   v5 = WBS_LOG_CHANNEL_PREFIXCloudExtensions();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = agentCopy;
     _os_log_impl(&dword_1C6968000, v5, OS_LOG_TYPE_INFO, "Updating cloud extension states from notification: %@", buf, 0xCu);
   }
 
@@ -1930,8 +1930,8 @@ void __89__WBSCloudExtensionStateManager__updateCloudExtensionStatesFromSafariBo
 - (void)_ensureCurrentDeviceIsSavedPeriodically
 {
   [(WBSPeriodicActivityScheduler *)self->_periodicDeviceSavingScheduler invalidate];
-  v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v4 = [v3 safari_dateForKey:*MEMORY[0x1E69C9180]];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v4 = [safari_browserDefaults safari_dateForKey:*MEMORY[0x1E69C9180]];
 
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x1E69C8FD0]);
@@ -2003,8 +2003,8 @@ void __72__WBSCloudExtensionStateManager__ensureCurrentDeviceIsSavedPeriodically
 
 - (void)_schedulePruningOfInactiveDevices
 {
-  v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v4 = [v3 safari_dateForKey:*MEMORY[0x1E69C9178]];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v4 = [safari_browserDefaults safari_dateForKey:*MEMORY[0x1E69C9178]];
 
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x1E69C8FD0]);
@@ -2070,12 +2070,12 @@ void __66__WBSCloudExtensionStateManager__schedulePruningOfInactiveDevices__bloc
   }
 }
 
-+ (id)_uuidStringsOfInactiveCloudDevices:(id)a3 currentDeviceUUIDString:(id)a4
++ (id)_uuidStringsOfInactiveCloudDevices:(id)devices currentDeviceUUIDString:(id)string
 {
-  v5 = a4;
+  stringCopy = string;
   v6 = MEMORY[0x1E695DF00];
   v7 = timeIntervalBeforeAssumingDeviceHasBecomeInactive_onceToken;
-  v8 = a3;
+  devicesCopy = devices;
   if (v7 != -1)
   {
     +[WBSCloudExtensionStateManager _uuidStringsOfInactiveCloudDevices:currentDeviceUUIDString:];
@@ -2086,11 +2086,11 @@ void __66__WBSCloudExtensionStateManager__schedulePruningOfInactiveDevices__bloc
   v14[1] = 3221225472;
   v14[2] = __92__WBSCloudExtensionStateManager__uuidStringsOfInactiveCloudDevices_currentDeviceUUIDString___block_invoke;
   v14[3] = &unk_1E8283A88;
-  v15 = v5;
+  v15 = stringCopy;
   v16 = v9;
   v10 = v9;
-  v11 = v5;
-  v12 = [v8 safari_mapAndFilterObjectsUsingBlock:v14];
+  v11 = stringCopy;
+  v12 = [devicesCopy safari_mapAndFilterObjectsUsingBlock:v14];
 
   return v12;
 }
@@ -2122,10 +2122,10 @@ id __92__WBSCloudExtensionStateManager__uuidStringsOfInactiveCloudDevices_curren
   return v5;
 }
 
-+ (id)_removeDeviceWithUUIDString:(id)a3 fromCloudDevices:(id)a4
++ (id)_removeDeviceWithUUIDString:(id)string fromCloudDevices:(id)devices
 {
-  v5 = a3;
-  v6 = a4;
+  stringCopy = string;
+  devicesCopy = devices;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x2020000000;
@@ -2135,9 +2135,9 @@ id __92__WBSCloudExtensionStateManager__uuidStringsOfInactiveCloudDevices_curren
   v10[2] = __78__WBSCloudExtensionStateManager__removeDeviceWithUUIDString_fromCloudDevices___block_invoke;
   v10[3] = &unk_1E8283AB0;
   v12 = v13;
-  v7 = v5;
+  v7 = stringCopy;
   v11 = v7;
-  v8 = [v6 safari_mapAndFilterObjectsUsingBlock:v10];
+  v8 = [devicesCopy safari_mapAndFilterObjectsUsingBlock:v10];
 
   _Block_object_dispose(v13, 8);
 
@@ -2171,17 +2171,17 @@ id __78__WBSCloudExtensionStateManager__removeDeviceWithUUIDString_fromCloudDevi
   return v5;
 }
 
-+ (id)_removeStatesForDeviceWithUUIDString:(id)a3 fromCloudExtensionStates:(id)a4
++ (id)_removeStatesForDeviceWithUUIDString:(id)string fromCloudExtensionStates:(id)states
 {
-  v6 = a3;
+  stringCopy = string;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __95__WBSCloudExtensionStateManager__removeStatesForDeviceWithUUIDString_fromCloudExtensionStates___block_invoke;
   v10[3] = &unk_1E8283AD8;
-  v11 = v6;
-  v12 = a1;
-  v7 = v6;
-  v8 = [a4 safari_mapAndFilterKeysAndObjectsUsingBlock:v10];
+  v11 = stringCopy;
+  selfCopy = self;
+  v7 = stringCopy;
+  v8 = [states safari_mapAndFilterKeysAndObjectsUsingBlock:v10];
 
   return v8;
 }
@@ -2202,10 +2202,10 @@ id __95__WBSCloudExtensionStateManager__removeStatesForDeviceWithUUIDString_from
   return v4;
 }
 
-+ (id)_singleExtensionStates:(id)a3 withStateRemovedForDeviceWithUUIDString:(id)a4
++ (id)_singleExtensionStates:(id)states withStateRemovedForDeviceWithUUIDString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
+  statesCopy = states;
+  stringCopy = string;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x2020000000;
@@ -2215,9 +2215,9 @@ id __95__WBSCloudExtensionStateManager__removeStatesForDeviceWithUUIDString_from
   v10[2] = __96__WBSCloudExtensionStateManager__singleExtensionStates_withStateRemovedForDeviceWithUUIDString___block_invoke;
   v10[3] = &unk_1E8283AB0;
   v12 = v13;
-  v7 = v6;
+  v7 = stringCopy;
   v11 = v7;
-  v8 = [v5 safari_mapAndFilterObjectsUsingBlock:v10];
+  v8 = [statesCopy safari_mapAndFilterObjectsUsingBlock:v10];
 
   _Block_object_dispose(v13, 8);
 
@@ -2251,9 +2251,9 @@ id __96__WBSCloudExtensionStateManager__singleExtensionStates_withStateRemovedFo
   return v5;
 }
 
-- (void)_pruneInactiveDevicesFromCloudKitWithCompletionHandler:(id)a3
+- (void)_pruneInactiveDevicesFromCloudKitWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = WBS_LOG_CHANNEL_PREFIXCloudExtensions();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2266,8 +2266,8 @@ id __96__WBSCloudExtensionStateManager__singleExtensionStates_withStateRemovedFo
   v7[2] = __88__WBSCloudExtensionStateManager__pruneInactiveDevicesFromCloudKitWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E82838A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(WBSCloudExtensionStateManager *)self _determineExtensionSyncAvailabilityWithCompletionHandler:v7];
 }
 
@@ -2374,11 +2374,11 @@ void __88__WBSCloudExtensionStateManager__pruneInactiveDevicesFromCloudKitWithCo
   }
 }
 
-+ (id)_determineNewTabPageFromCloudDeviceState:(id)a3
++ (id)_determineNewTabPageFromCloudDeviceState:(id)state
 {
-  v3 = [a3 sortedArrayUsingComparator:&__block_literal_global_85];
-  v4 = [v3 firstObject];
-  v5 = [v4 safari_stringForKey:*MEMORY[0x1E69C95C0] returningNilIfEmpty:1];
+  v3 = [state sortedArrayUsingComparator:&__block_literal_global_85];
+  firstObject = [v3 firstObject];
+  v5 = [firstObject safari_stringForKey:*MEMORY[0x1E69C95C0] returningNilIfEmpty:1];
 
   return v5;
 }
@@ -2410,18 +2410,18 @@ uint64_t __74__WBSCloudExtensionStateManager__determineNewTabPageFromCloudDevice
   return v8;
 }
 
-+ (BOOL)_determineEnabledStateFromCloudExtensionState:(id)a3 forProfileServerID:(id)a4
++ (BOOL)_determineEnabledStateFromCloudExtensionState:(id)state forProfileServerID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __98__WBSCloudExtensionStateManager__determineEnabledStateFromCloudExtensionState_forProfileServerID___block_invoke;
   v13[3] = &unk_1E8283B20;
-  v14 = v5;
-  v6 = v5;
-  v7 = [a3 sortedArrayUsingComparator:v13];
-  v8 = [v7 firstObject];
-  v9 = [v8 safari_dictionaryForKey:*MEMORY[0x1E69C9628]];
+  v14 = dCopy;
+  v6 = dCopy;
+  v7 = [state sortedArrayUsingComparator:v13];
+  firstObject = [v7 firstObject];
+  v9 = [firstObject safari_dictionaryForKey:*MEMORY[0x1E69C9628]];
   v10 = [v9 safari_dictionaryForKey:v6];
   v11 = [v10 safari_BOOLForKey:*MEMORY[0x1E69C95F0]];
 
@@ -2465,20 +2465,20 @@ uint64_t __98__WBSCloudExtensionStateManager__determineEnabledStateFromCloudExte
 - (BOOL)_cloudDeviceMatchesLocalDeviceForCurrentDevice
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(WBSCloudExtensionStateManager *)self _extensionDeviceDictionaryForCurrentDevice];
-  if (v3)
+  _extensionDeviceDictionaryForCurrentDevice = [(WBSCloudExtensionStateManager *)self _extensionDeviceDictionaryForCurrentDevice];
+  if (_extensionDeviceDictionaryForCurrentDevice)
   {
-    v4 = [(WBSCloudExtensionStateManager *)self _defaultWebExtensionsController];
-    v5 = [v4 _deviceUUIDString];
+    _defaultWebExtensionsController = [(WBSCloudExtensionStateManager *)self _defaultWebExtensionsController];
+    _deviceUUIDString = [_defaultWebExtensionsController _deviceUUIDString];
 
-    if ([v5 length])
+    if ([_deviceUUIDString length])
     {
       cloudDevices = self->_cloudDevices;
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __79__WBSCloudExtensionStateManager__cloudDeviceMatchesLocalDeviceForCurrentDevice__block_invoke;
       v17[3] = &unk_1E8283B48;
-      v18 = v5;
+      v18 = _deviceUUIDString;
       v7 = [(NSArray *)cloudDevices safari_firstObjectPassingTest:v17];
       if (!v7)
       {
@@ -2499,7 +2499,7 @@ uint64_t __98__WBSCloudExtensionStateManager__determineEnabledStateFromCloudExte
 
       v11 = [v10 safari_mapAndFilterKeysAndObjectsUsingBlock:&__block_literal_global_217];
 
-      v12 = [v11 isEqualToDictionary:v3];
+      v12 = [v11 isEqualToDictionary:_extensionDeviceDictionaryForCurrentDevice];
       if ((v12 & 1) == 0)
       {
         v13 = WBS_LOG_CHANNEL_PREFIXCloudExtensions();
@@ -2513,7 +2513,7 @@ uint64_t __98__WBSCloudExtensionStateManager__determineEnabledStateFromCloudExte
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
           *buf = 138477827;
-          v20 = v3;
+          v20 = _extensionDeviceDictionaryForCurrentDevice;
           _os_log_impl(&dword_1C6968000, v14, OS_LOG_TYPE_INFO, "Local extension device: %{private}@", buf, 0xCu);
         }
 
@@ -2550,16 +2550,16 @@ uint64_t __79__WBSCloudExtensionStateManager__cloudDeviceMatchesLocalDeviceForCu
   return v4;
 }
 
-+ (id)_cloudExtensionStatesDictionaryForDeviceWithUUIDString:(id)a3 fromCloudExtensionStates:(id)a4
++ (id)_cloudExtensionStatesDictionaryForDeviceWithUUIDString:(id)string fromCloudExtensionStates:(id)states
 {
-  v5 = a3;
+  stringCopy = string;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __113__WBSCloudExtensionStateManager__cloudExtensionStatesDictionaryForDeviceWithUUIDString_fromCloudExtensionStates___block_invoke;
   v9[3] = &unk_1E8283B70;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a4 safari_mapAndFilterKeysAndObjectsUsingBlock:v9];
+  v10 = stringCopy;
+  v6 = stringCopy;
+  v7 = [states safari_mapAndFilterKeysAndObjectsUsingBlock:v9];
 
   return v7;
 }
@@ -2616,13 +2616,13 @@ LABEL_11:
 - (BOOL)_cloudExtensionStatesMatchLocalExtensionStatesForCurrentDevice
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(WBSCloudExtensionStateManager *)self _extensionStatesDictionaryForCurrentDevice];
-  v4 = extensionsStatesDictionaryToUseForComparison(v3);
+  _extensionStatesDictionaryForCurrentDevice = [(WBSCloudExtensionStateManager *)self _extensionStatesDictionaryForCurrentDevice];
+  v4 = extensionsStatesDictionaryToUseForComparison(_extensionStatesDictionaryForCurrentDevice);
 
-  v5 = [(WBSCloudExtensionStateManager *)self _defaultWebExtensionsController];
-  v6 = [v5 _deviceUUIDString];
+  _defaultWebExtensionsController = [(WBSCloudExtensionStateManager *)self _defaultWebExtensionsController];
+  _deviceUUIDString = [_defaultWebExtensionsController _deviceUUIDString];
 
-  v7 = [objc_opt_class() _cloudExtensionStatesDictionaryForDeviceWithUUIDString:v6 fromCloudExtensionStates:self->_cloudExtensionStates];
+  v7 = [objc_opt_class() _cloudExtensionStatesDictionaryForDeviceWithUUIDString:_deviceUUIDString fromCloudExtensionStates:self->_cloudExtensionStates];
   v8 = extensionsStatesDictionaryToUseForComparison(v7);
 
   v9 = [v4 isEqualToDictionary:v8];
@@ -2674,24 +2674,24 @@ LABEL_10:
 
 - (BOOL)_cloudStateMatchesLocalStateForCurrentDevice
 {
-  v3 = [(WBSCloudExtensionStateManager *)self _cloudDeviceMatchesLocalDeviceForCurrentDevice];
-  if (v3)
+  _cloudDeviceMatchesLocalDeviceForCurrentDevice = [(WBSCloudExtensionStateManager *)self _cloudDeviceMatchesLocalDeviceForCurrentDevice];
+  if (_cloudDeviceMatchesLocalDeviceForCurrentDevice)
   {
 
-    LOBYTE(v3) = [(WBSCloudExtensionStateManager *)self _cloudExtensionStatesMatchLocalExtensionStatesForCurrentDevice];
+    LOBYTE(_cloudDeviceMatchesLocalDeviceForCurrentDevice) = [(WBSCloudExtensionStateManager *)self _cloudExtensionStatesMatchLocalExtensionStatesForCurrentDevice];
   }
 
-  return v3;
+  return _cloudDeviceMatchesLocalDeviceForCurrentDevice;
 }
 
-- (void)_extensionSyncEnabledStateDidChangeDistributedNotificationHandler:(id)a3
+- (void)_extensionSyncEnabledStateDidChangeDistributedNotificationHandler:(id)handler
 {
   v4 = MEMORY[0x1E695E000];
-  v6 = a3;
-  v5 = [v4 safari_browserDefaults];
-  self->_extensionSyncEnabled = [v5 safari_BOOLForKey:*MEMORY[0x1E69C9128] defaultValue:1];
+  handlerCopy = handler;
+  safari_browserDefaults = [v4 safari_browserDefaults];
+  self->_extensionSyncEnabled = [safari_browserDefaults safari_BOOLForKey:*MEMORY[0x1E69C9128] defaultValue:1];
 
-  [(WBSCloudExtensionStateManager *)self _updateCloudExtensionStatesFromSafariBookmarksSyncAgent:v6];
+  [(WBSCloudExtensionStateManager *)self _updateCloudExtensionStatesFromSafariBookmarksSyncAgent:handlerCopy];
 }
 
 - (id)_defaultWebExtensionsController
@@ -2725,12 +2725,12 @@ BOOL __64__WBSCloudExtensionStateManager__defaultWebExtensionsController__block_
   return v5;
 }
 
-- (void)_managedExtensionStateDidChange:(id)a3
+- (void)_managedExtensionStateDidChange:(id)change
 {
-  v4 = [MEMORY[0x1E69C88C8] sharedController];
-  v5 = [v4 hasAnyExtensionManagement];
+  mEMORY[0x1E69C88C8] = [MEMORY[0x1E69C88C8] sharedController];
+  hasAnyExtensionManagement = [mEMORY[0x1E69C88C8] hasAnyExtensionManagement];
 
-  if (v5)
+  if (hasAnyExtensionManagement)
   {
 
     [(WBSCloudExtensionStateManager *)self setExtensionSyncEnabled:0];
@@ -2757,13 +2757,13 @@ uint64_t __65__WBSCloudExtensionStateManager__managedExtensionStateDidChange___b
   return result;
 }
 
-+ (BOOL)test_determineEnabledStateFromCloudExtensionState:(id)a3 forProfileServerID:(id)a4
++ (BOOL)test_determineEnabledStateFromCloudExtensionState:(id)state forProfileServerID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  dCopy = d;
   if ([MEMORY[0x1E69C8880] isInternalInstall])
   {
-    v8 = [a1 _determineEnabledStateFromCloudExtensionState:v6 forProfileServerID:v7];
+    v8 = [self _determineEnabledStateFromCloudExtensionState:stateCopy forProfileServerID:dCopy];
   }
 
   else
@@ -2774,12 +2774,12 @@ uint64_t __65__WBSCloudExtensionStateManager__managedExtensionStateDidChange___b
   return v8;
 }
 
-+ (id)test_determineNewTabPageFromCloudDeviceState:(id)a3
++ (id)test_determineNewTabPageFromCloudDeviceState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if ([MEMORY[0x1E69C8880] isInternalInstall])
   {
-    v5 = [a1 _determineNewTabPageFromCloudDeviceState:v4];
+    v5 = [self _determineNewTabPageFromCloudDeviceState:stateCopy];
   }
 
   else
@@ -2790,13 +2790,13 @@ uint64_t __65__WBSCloudExtensionStateManager__managedExtensionStateDidChange___b
   return v5;
 }
 
-+ (id)test_uuidStringsOfInactiveCloudDevices:(id)a3 currentDeviceUUIDString:(id)a4
++ (id)test_uuidStringsOfInactiveCloudDevices:(id)devices currentDeviceUUIDString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
+  devicesCopy = devices;
+  stringCopy = string;
   if ([MEMORY[0x1E69C8880] isInternalInstall])
   {
-    v8 = [a1 _uuidStringsOfInactiveCloudDevices:v6 currentDeviceUUIDString:v7];
+    v8 = [self _uuidStringsOfInactiveCloudDevices:devicesCopy currentDeviceUUIDString:stringCopy];
   }
 
   else
@@ -2807,13 +2807,13 @@ uint64_t __65__WBSCloudExtensionStateManager__managedExtensionStateDidChange___b
   return v8;
 }
 
-+ (id)test_removeDeviceWithUUIDString:(id)a3 fromCloudDevices:(id)a4
++ (id)test_removeDeviceWithUUIDString:(id)string fromCloudDevices:(id)devices
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  devicesCopy = devices;
   if ([MEMORY[0x1E69C8880] isInternalInstall])
   {
-    v8 = [a1 _removeDeviceWithUUIDString:v6 fromCloudDevices:v7];
+    v8 = [self _removeDeviceWithUUIDString:stringCopy fromCloudDevices:devicesCopy];
   }
 
   else
@@ -2824,13 +2824,13 @@ uint64_t __65__WBSCloudExtensionStateManager__managedExtensionStateDidChange___b
   return v8;
 }
 
-+ (id)test_removeStatesForDeviceWithUUIDString:(id)a3 fromCloudExtensionStates:(id)a4
++ (id)test_removeStatesForDeviceWithUUIDString:(id)string fromCloudExtensionStates:(id)states
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  statesCopy = states;
   if ([MEMORY[0x1E69C8880] isInternalInstall])
   {
-    v8 = [a1 _removeStatesForDeviceWithUUIDString:v6 fromCloudExtensionStates:v7];
+    v8 = [self _removeStatesForDeviceWithUUIDString:stringCopy fromCloudExtensionStates:statesCopy];
   }
 
   else
@@ -2841,13 +2841,13 @@ uint64_t __65__WBSCloudExtensionStateManager__managedExtensionStateDidChange___b
   return v8;
 }
 
-+ (id)test_cloudExtensionStatesDictionaryForDeviceWithUUIDString:(id)a3 fromCloudExtensionStates:(id)a4
++ (id)test_cloudExtensionStatesDictionaryForDeviceWithUUIDString:(id)string fromCloudExtensionStates:(id)states
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  statesCopy = states;
   if ([MEMORY[0x1E69C8880] isInternalInstall])
   {
-    v8 = [a1 _cloudExtensionStatesDictionaryForDeviceWithUUIDString:v6 fromCloudExtensionStates:v7];
+    v8 = [self _cloudExtensionStatesDictionaryForDeviceWithUUIDString:stringCopy fromCloudExtensionStates:statesCopy];
   }
 
   else

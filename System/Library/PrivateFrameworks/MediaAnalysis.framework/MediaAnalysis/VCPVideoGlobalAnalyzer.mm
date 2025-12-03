@@ -1,48 +1,48 @@
 @interface VCPVideoGlobalAnalyzer
-- (BOOL)checkCameraZoom:(id *)a3 cameraMotionResults:(id)a4;
-- (BOOL)hasMeaningfulSceneSegment:(id)a3 withFpsRate:(float)a4;
-- (BOOL)isJunkTimeRange:(id *)a3 basedOnResults:(id)a4;
-- (float)analyzeOverallQuality:(id)a3 withFpsRate:(float)a4;
-- (float)assetActionScoreFromAnalysis:(id)a3;
-- (float)assetActivityLevelFromAnalysisResults:(id)a3;
-- (float)assetCameraMotionScoreFromAnalysis:(id)a3;
-- (float)assetExpressionScoreFromAnalysis:(id)a3;
-- (float)assetJunkScoreFromAnalysis:(id)a3;
-- (float)assetQualityScoreFromAnalysis:(id)a3 withFpsRate:(float)a4;
-- (float)assetVoiceScoreFromAnalysis:(id)a3;
-- (float)cameraActivityfromQuality:(float)a3;
-- (float)scaleForTimeRange:(id *)a3 basedOnFace:(id)a4;
-- (float)subjectActivityInTimeRange:(id *)a3 fromResults:(id)a4;
-- (int)generateLivePhotoRecommendationForResults:(id)a3 andPrivateResults:(id)a4 usingFaceAction:(BOOL)a5;
-- (int)setActivityLevel:(id)a3;
+- (BOOL)checkCameraZoom:(id *)zoom cameraMotionResults:(id)results;
+- (BOOL)hasMeaningfulSceneSegment:(id)segment withFpsRate:(float)rate;
+- (BOOL)isJunkTimeRange:(id *)range basedOnResults:(id)results;
+- (float)analyzeOverallQuality:(id)quality withFpsRate:(float)rate;
+- (float)assetActionScoreFromAnalysis:(id)analysis;
+- (float)assetActivityLevelFromAnalysisResults:(id)results;
+- (float)assetCameraMotionScoreFromAnalysis:(id)analysis;
+- (float)assetExpressionScoreFromAnalysis:(id)analysis;
+- (float)assetJunkScoreFromAnalysis:(id)analysis;
+- (float)assetQualityScoreFromAnalysis:(id)analysis withFpsRate:(float)rate;
+- (float)assetVoiceScoreFromAnalysis:(id)analysis;
+- (float)cameraActivityfromQuality:(float)quality;
+- (float)scaleForTimeRange:(id *)range basedOnFace:(id)face;
+- (float)subjectActivityInTimeRange:(id *)range fromResults:(id)results;
+- (int)generateLivePhotoRecommendationForResults:(id)results andPrivateResults:(id)privateResults usingFaceAction:(BOOL)action;
+- (int)setActivityLevel:(id)level;
 @end
 
 @implementation VCPVideoGlobalAnalyzer
 
-- (float)analyzeOverallQuality:(id)a3 withFpsRate:(float)a4
+- (float)analyzeOverallQuality:(id)quality withFpsRate:(float)rate
 {
-  v6 = a3;
-  if ((~[v6 vcp_types] & 0x98) != 0 || a4 <= 0.0)
+  qualityCopy = quality;
+  if ((~[qualityCopy vcp_types] & 0x98) != 0 || rate <= 0.0)
   {
     v9 = -1.0;
   }
 
   else
   {
-    *&v7 = a4;
+    *&v7 = rate;
     v9 = 0.0;
-    if ([(VCPVideoGlobalAnalyzer *)self hasMeaningfulSceneSegment:v6 withFpsRate:v7])
+    if ([(VCPVideoGlobalAnalyzer *)self hasMeaningfulSceneSegment:qualityCopy withFpsRate:v7])
     {
-      *&v8 = a4;
-      [(VCPVideoGlobalAnalyzer *)self assetQualityScoreFromAnalysis:v6 withFpsRate:v8];
+      *&v8 = rate;
+      [(VCPVideoGlobalAnalyzer *)self assetQualityScoreFromAnalysis:qualityCopy withFpsRate:v8];
       v11 = v10;
-      [(VCPVideoGlobalAnalyzer *)self assetActionScoreFromAnalysis:v6];
+      [(VCPVideoGlobalAnalyzer *)self assetActionScoreFromAnalysis:qualityCopy];
       v13 = v12;
-      [(VCPVideoGlobalAnalyzer *)self assetExpressionScoreFromAnalysis:v6];
+      [(VCPVideoGlobalAnalyzer *)self assetExpressionScoreFromAnalysis:qualityCopy];
       v15 = v14;
-      [(VCPVideoGlobalAnalyzer *)self assetVoiceScoreFromAnalysis:v6];
+      [(VCPVideoGlobalAnalyzer *)self assetVoiceScoreFromAnalysis:qualityCopy];
       v17 = v16;
-      [(VCPVideoGlobalAnalyzer *)self assetJunkScoreFromAnalysis:v6];
+      [(VCPVideoGlobalAnalyzer *)self assetJunkScoreFromAnalysis:qualityCopy];
       v19 = v18;
       v20 = (v17 * 0.1) + (v11 * 0.4);
       if (v13 >= 0.2 || v15 >= 0.2)
@@ -53,7 +53,7 @@
 
       else
       {
-        [(VCPVideoGlobalAnalyzer *)self assetCameraMotionScoreFromAnalysis:v6];
+        [(VCPVideoGlobalAnalyzer *)self assetCameraMotionScoreFromAnalysis:qualityCopy];
         v22 = v20 + (v21 * 0.35);
         v23 = 0.85;
       }
@@ -80,21 +80,21 @@
   return v9;
 }
 
-- (BOOL)checkCameraZoom:(id *)a3 cameraMotionResults:(id)a4
+- (BOOL)checkCameraZoom:(id *)zoom cameraMotionResults:(id)results
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  resultsCopy = results;
   memset(&v29, 0, sizeof(v29));
-  v6 = *&a3->var0.var3;
-  *&range.start.value = *&a3->var0.var0;
+  v6 = *&zoom->var0.var3;
+  *&range.start.value = *&zoom->var0.var0;
   *&range.start.epoch = v6;
-  *&range.duration.timescale = *&a3->var1.var1;
+  *&range.duration.timescale = *&zoom->var1.var1;
   CMTimeRangeGetEnd(&v29, &range);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = v5;
+  v7 = resultsCopy;
   v8 = [v7 countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v8)
   {
@@ -121,10 +121,10 @@ LABEL_3:
 
       time2 = range;
       memset(&time1, 0, sizeof(time1));
-      v12 = *&a3->var0.var3;
-      *&otherRange.start.value = *&a3->var0.var0;
+      v12 = *&zoom->var0.var3;
+      *&otherRange.start.value = *&zoom->var0.var0;
       *&otherRange.start.epoch = v12;
-      *&otherRange.duration.timescale = *&a3->var1.var1;
+      *&otherRange.duration.timescale = *&zoom->var1.var1;
       CMTimeRangeGetIntersection(&time1, &time2, &otherRange);
       if ((time1.start.flags & 1) == 0 || (time1.duration.flags & 1) == 0 || time1.duration.epoch || time1.duration.value < 0 || (time2.start = time1.duration, *&otherRange.start.value = *MEMORY[0x1E6960CC0], otherRange.start.epoch = *(MEMORY[0x1E6960CC0] + 16), CMTimeCompare(&time2.start, &otherRange.start)))
       {
@@ -132,8 +132,8 @@ LABEL_3:
         v14 = v13;
         if (v13)
         {
-          v15 = [v13 intValue];
-          v17 = !(v16 | ((v15 & 0x2FFC0) == 0)) && (v15 & 0x1FC0) == 4096;
+          intValue = [v13 intValue];
+          v17 = !(v16 | ((intValue & 0x2FFC0) == 0)) && (intValue & 0x1FC0) == 4096;
           v18 = v17;
 
           if (v18)
@@ -164,17 +164,17 @@ LABEL_25:
   return v19;
 }
 
-- (int)generateLivePhotoRecommendationForResults:(id)a3 andPrivateResults:(id)a4 usingFaceAction:(BOOL)a5
+- (int)generateLivePhotoRecommendationForResults:(id)results andPrivateResults:(id)privateResults usingFaceAction:(BOOL)action
 {
-  v54 = a5;
+  actionCopy = action;
   v81 = *MEMORY[0x1E69E9840];
-  v50 = a3;
-  v49 = a4;
+  resultsCopy = results;
+  privateResultsCopy = privateResults;
   {
     CMTimeMake(&[VCPVideoGlobalAnalyzer generateLivePhotoRecommendationForResults:andPrivateResults:usingFaceAction:]::kTrimLength, 2, 15);
   }
 
-  v47 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   memset(&v77, 0, sizeof(v77));
   v6 = MEMORY[0x1E6960CC0];
   *&start.start.value = *MEMORY[0x1E6960CC0];
@@ -189,25 +189,25 @@ LABEL_25:
   lhs.start.epoch = duration.start.epoch;
   CMTimeRangeMake(&start, &duration.start, &lhs.start);
   v75 = 0.0;
-  v55 = [v50 objectForKeyedSubscript:@"SceneResults"];
-  v48 = [v50 objectForKeyedSubscript:@"FineSubjectMotionResults"];
-  v46 = [v50 objectForKeyedSubscript:@"FaceResults"];
-  v53 = [v50 objectForKeyedSubscript:@"OrientationResults"];
-  v56 = [v49 objectForKeyedSubscript:@"MetaMotionProcessedResults"];
-  v52 = [v50 objectForKeyedSubscript:@"CameraMotionResults"];
+  v55 = [resultsCopy objectForKeyedSubscript:@"SceneResults"];
+  v48 = [resultsCopy objectForKeyedSubscript:@"FineSubjectMotionResults"];
+  v46 = [resultsCopy objectForKeyedSubscript:@"FaceResults"];
+  v53 = [resultsCopy objectForKeyedSubscript:@"OrientationResults"];
+  v56 = [privateResultsCopy objectForKeyedSubscript:@"MetaMotionProcessedResults"];
+  v52 = [resultsCopy objectForKeyedSubscript:@"CameraMotionResults"];
   if ([v55 count])
   {
-    v7 = [v55 lastObject];
+    lastObject = [v55 lastObject];
     memset(&duration, 0, sizeof(duration));
-    CMTimeRangeMakeFromDictionary(&duration, v7);
+    CMTimeRangeMakeFromDictionary(&duration, lastObject);
     *&lhs.start.value = *&duration.start.value;
     lhs.start.epoch = duration.start.epoch;
     rhs.start = duration.duration;
     CMTimeAdd(&time1.start, &lhs.start, &rhs.start);
     v77.duration = time1.start;
-    v8 = [v55 firstObject];
+    firstObject = [v55 firstObject];
 
-    CMTimeRangeMakeFromDictionary(&lhs, v8);
+    CMTimeRangeMakeFromDictionary(&lhs, firstObject);
     *&duration.start.epoch = *&lhs.start.epoch;
     *&v77.start.value = *&lhs.start.value;
     v77.start.epoch = lhs.start.epoch;
@@ -284,7 +284,7 @@ LABEL_25:
       lhs = duration;
       if (![(VCPVideoGlobalAnalyzer *)self checkCameraZoom:&lhs cameraMotionResults:v52])
       {
-        while (v9 < [v56 count] && v54)
+        while (v9 < [v56 count] && actionCopy)
         {
           memset(&lhs, 0, sizeof(lhs));
           v19 = [v56 objectAtIndex:v9];
@@ -319,7 +319,7 @@ LABEL_29:
           lhs.start = duration.duration;
           if (CMTimeGetSeconds(&lhs.start) >= 1.0)
           {
-            if (v21 || !v54)
+            if (v21 || !actionCopy)
             {
               goto LABEL_63;
             }
@@ -516,13 +516,13 @@ LABEL_66:
       if ((start.start.flags & 1) == 0 || (start.duration.flags & 1) == 0 || start.duration.epoch || start.duration.value < 0 || (duration.start = start.duration, *&lhs.start.value = *MEMORY[0x1E6960CC0], lhs.start.epoch = *(MEMORY[0x1E6960CC0] + 16), CMTimeCompare(&duration.start, &lhs.start)))
       {
 LABEL_82:
-        v44 = AddResultDictionary(&start.start, &start.duration, &v75, 0, 0, v47);
+        v44 = AddResultDictionary(&start.start, &start.duration, &v75, 0, 0, array);
         if (v44)
         {
           goto LABEL_67;
         }
 
-        [v50 setObject:v47 forKey:@"IrisRecommendResults"];
+        [resultsCopy setObject:array forKey:@"IrisRecommendResults"];
       }
     }
 
@@ -534,11 +534,11 @@ LABEL_67:
   return v44;
 }
 
-- (float)assetQualityScoreFromAnalysis:(id)a3 withFpsRate:(float)a4
+- (float)assetQualityScoreFromAnalysis:(id)analysis withFpsRate:(float)rate
 {
-  v5 = a3;
-  v6 = [v5 objectForKey:@"metadataRanges"];
-  v32 = a4;
+  analysisCopy = analysis;
+  v6 = [analysisCopy objectForKey:@"metadataRanges"];
+  rateCopy = rate;
   v7 = [v6 objectForKey:@"QualityResults"];
 
   v8 = 0;
@@ -599,7 +599,7 @@ LABEL_67:
 
   else
   {
-    v28 = ((((v9 * (v11 * -0.4)) / v13) + 1.0) * ((v12 * (v14 / v13)) / v13)) * (erff(((v13 / v32) + -10.0) / 424.26) + 1.0);
+    v28 = ((((v9 * (v11 * -0.4)) / v13) + 1.0) * ((v12 * (v14 / v13)) / v13)) * (erff(((v13 / rateCopy) + -10.0) / 424.26) + 1.0);
     if (v28 < 1.0)
     {
       v29 = v28;
@@ -624,10 +624,10 @@ LABEL_67:
   return v30;
 }
 
-- (float)assetActionScoreFromAnalysis:(id)a3
+- (float)assetActionScoreFromAnalysis:(id)analysis
 {
   v65 = *MEMORY[0x1E69E9840];
-  v41 = [a3 objectForKey:@"metadataRanges"];
+  v41 = [analysis objectForKey:@"metadataRanges"];
   v3 = [v41 objectForKey:?];
   v40 = [v3 count];
 
@@ -775,11 +775,11 @@ LABEL_27:
                 v27 = v26;
 
                 v28 = [(__CFDictionary *)v24 objectForKey:@"flags"];
-                v29 = [v28 unsignedIntegerValue];
+                unsignedIntegerValue = [v28 unsignedIntegerValue];
 
                 time2.start = time1.duration;
                 v30 = CMTimeGetSeconds(&time2.start);
-                if ((*&v29 & 0x20000) != 0)
+                if ((*&unsignedIntegerValue & 0x20000) != 0)
                 {
                   v31 = 1.0;
                 }
@@ -851,10 +851,10 @@ LABEL_27:
   return v36;
 }
 
-- (float)assetExpressionScoreFromAnalysis:(id)a3
+- (float)assetExpressionScoreFromAnalysis:(id)analysis
 {
   v53 = *MEMORY[0x1E69E9840];
-  v33 = [a3 objectForKey:@"metadataRanges"];
+  v33 = [analysis objectForKey:@"metadataRanges"];
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
@@ -920,14 +920,14 @@ LABEL_8:
               v11 = [(__CFDictionary *)v10 objectForKey:@"attributes"];
               v12 = [v11 objectForKey:@"faceBounds"];
               v13 = [(__CFDictionary *)v10 objectForKey:@"flags"];
-              v14 = [v13 intValue];
+              intValue = [v13 intValue];
               v54 = NSRectFromString(v12);
               v15 = v54.size.width * v54.size.height + -0.170000002;
               v16 = [VCPVideoGlobalAnalyzer assetExpressionScoreFromAnalysis:]::kAreaSigma[v15 > 0.0];
               time2.start = time1.duration;
               Seconds = CMTimeGetSeconds(&time2.start);
               v18 = expf(-(v15 * v15) / v16);
-              if ((v14 & 2) != 0)
+              if ((intValue & 2) != 0)
               {
                 v19 = 0.3;
               }
@@ -1018,15 +1018,15 @@ LABEL_8:
   return v29;
 }
 
-- (float)assetVoiceScoreFromAnalysis:(id)a3
+- (float)assetVoiceScoreFromAnalysis:(id)analysis
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [a3 objectForKey:@"metadataRanges"];
+  v3 = [analysis objectForKey:@"metadataRanges"];
   v4 = [v3 objectForKey:@"QualityResults"];
-  v5 = [v4 lastObject];
+  lastObject = [v4 lastObject];
 
   memset(&v26, 0, sizeof(v26));
-  CMTimeRangeMakeFromDictionary(&v26, v5);
+  CMTimeRangeMakeFromDictionary(&v26, lastObject);
   *&v20.start.value = *&v26.start.value;
   v20.start.epoch = v26.start.epoch;
   rhs = v26.duration;
@@ -1122,10 +1122,10 @@ LABEL_8:
   return v13;
 }
 
-- (float)assetCameraMotionScoreFromAnalysis:(id)a3
+- (float)assetCameraMotionScoreFromAnalysis:(id)analysis
 {
   v53 = *MEMORY[0x1E69E9840];
-  v33 = [a3 objectForKey:@"metadataRanges"];
+  v33 = [analysis objectForKey:@"metadataRanges"];
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
@@ -1190,10 +1190,10 @@ LABEL_8:
             if ((time1.start.flags & 1) == 0 || (time1.duration.flags & 1) == 0 || time1.duration.epoch || time1.duration.value < 0 || (time2.start = time1.duration, *&otherRange.start.value = *MEMORY[0x1E6960CC0], otherRange.start.epoch = *(MEMORY[0x1E6960CC0] + 16), CMTimeCompare(&time2.start, &otherRange.start)))
             {
               v12 = [(__CFDictionary *)v11 objectForKey:@"flags"];
-              v13 = [v12 intValue];
-              v14 = v13 & 0x3FFC0;
-              v15 = __clz(__rbit32(v13 & 0x2FFC0));
-              if (v16 | ((v13 & 0x2FFC0) == 0))
+              intValue = [v12 intValue];
+              v14 = intValue & 0x3FFC0;
+              v15 = __clz(__rbit32(intValue & 0x2FFC0));
+              if (v16 | ((intValue & 0x2FFC0) == 0))
               {
                 v17 = 0;
               }
@@ -1270,10 +1270,10 @@ LABEL_8:
   return v29;
 }
 
-- (BOOL)hasMeaningfulSceneSegment:(id)a3 withFpsRate:(float)a4
+- (BOOL)hasMeaningfulSceneSegment:(id)segment withFpsRate:(float)rate
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = [a3 objectForKey:@"metadataRanges"];
+  v5 = [segment objectForKey:@"metadataRanges"];
   v6 = [v5 objectForKey:@"SceneResults"];
 
   v23 = 0u;
@@ -1285,7 +1285,7 @@ LABEL_8:
   if (v8)
   {
     v9 = *v22;
-    v10 = a4;
+    rateCopy = rate;
     while (2)
     {
       for (i = 0; i != v8; ++i)
@@ -1306,7 +1306,7 @@ LABEL_8:
         Seconds = CMTimeGetSeconds(&duration);
         if (v15 >= 0.3)
         {
-          Seconds = Seconds / v10;
+          Seconds = Seconds / rateCopy;
           *&Seconds = Seconds;
           if (*&Seconds >= 3.0)
           {
@@ -1332,10 +1332,10 @@ LABEL_12:
   return v17;
 }
 
-- (float)assetJunkScoreFromAnalysis:(id)a3
+- (float)assetJunkScoreFromAnalysis:(id)analysis
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [a3 objectForKey:@"metadataRanges"];
+  v3 = [analysis objectForKey:@"metadataRanges"];
   v4 = [v3 objectForKey:@"InterestingnessResults"];
 
   v25 = 0u;
@@ -1414,15 +1414,15 @@ LABEL_14:
   return v19;
 }
 
-- (float)scaleForTimeRange:(id *)a3 basedOnFace:(id)a4
+- (float)scaleForTimeRange:(id *)range basedOnFace:(id)face
 {
   v40 = *MEMORY[0x1E69E9840];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v5 = a4;
-  v6 = [v5 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  faceCopy = face;
+  v6 = [faceCopy countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v6)
   {
     v7 = *v36;
@@ -1435,19 +1435,19 @@ LABEL_14:
       {
         if (*v36 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(faceCopy);
         }
 
         v11 = *(*(&v35 + 1) + 8 * v10);
         memset(&v34, 0, sizeof(v34));
         CMTimeRangeMakeFromDictionary(&v34, v11);
         range = v34;
-        v12 = *&a3->var0.var3;
-        *&otherRange.start.value = *&a3->var0.var0;
+        v12 = *&range->var0.var3;
+        *&otherRange.start.value = *&range->var0.var0;
         *&otherRange.start.epoch = v12;
-        *&otherRange.duration.timescale = *&a3->var1.var1;
+        *&otherRange.duration.timescale = *&range->var1.var1;
         CMTimeRangeGetIntersection(&v33, &range, &otherRange);
-        if ((v33.start.flags & 1) == 0 || (range = v34, v13 = *&a3->var0.var3, *&otherRange.start.value = *&a3->var0.var0, *&otherRange.start.epoch = v13, *&otherRange.duration.timescale = *&a3->var1.var1, CMTimeRangeGetIntersection(&v30, &range, &otherRange), (v30.duration.flags & 1) == 0) || (range = v34, v14 = *&a3->var0.var3, *&otherRange.start.value = *&a3->var0.var0, *&otherRange.start.epoch = v14, *&otherRange.duration.timescale = *&a3->var1.var1, CMTimeRangeGetIntersection(&v29, &range, &otherRange), v29.duration.epoch) || (range = v34, v20 = *&a3->var0.var3, *&otherRange.start.value = *&a3->var0.var0, *&otherRange.start.epoch = v20, *&otherRange.duration.timescale = *&a3->var1.var1, CMTimeRangeGetIntersection(&v28, &range, &otherRange), v28.duration.value < 0) || (range = v34, v21 = *&a3->var0.var3, *&otherRange.start.value = *&a3->var0.var0, *&otherRange.start.epoch = v21, *&otherRange.duration.timescale = *&a3->var1.var1, CMTimeRangeGetIntersection(&v27, &range, &otherRange), range.start = v27.duration, *&otherRange.start.value = *v9, otherRange.start.epoch = *(v9 + 16), CMTimeCompare(&range.start, &otherRange.start)))
+        if ((v33.start.flags & 1) == 0 || (range = v34, v13 = *&range->var0.var3, *&otherRange.start.value = *&range->var0.var0, *&otherRange.start.epoch = v13, *&otherRange.duration.timescale = *&range->var1.var1, CMTimeRangeGetIntersection(&v30, &range, &otherRange), (v30.duration.flags & 1) == 0) || (range = v34, v14 = *&range->var0.var3, *&otherRange.start.value = *&range->var0.var0, *&otherRange.start.epoch = v14, *&otherRange.duration.timescale = *&range->var1.var1, CMTimeRangeGetIntersection(&v29, &range, &otherRange), v29.duration.epoch) || (range = v34, v20 = *&range->var0.var3, *&otherRange.start.value = *&range->var0.var0, *&otherRange.start.epoch = v20, *&otherRange.duration.timescale = *&range->var1.var1, CMTimeRangeGetIntersection(&v28, &range, &otherRange), v28.duration.value < 0) || (range = v34, v21 = *&range->var0.var3, *&otherRange.start.value = *&range->var0.var0, *&otherRange.start.epoch = v21, *&otherRange.duration.timescale = *&range->var1.var1, CMTimeRangeGetIntersection(&v27, &range, &otherRange), range.start = v27.duration, *&otherRange.start.value = *v9, otherRange.start.epoch = *(v9 + 16), CMTimeCompare(&range.start, &otherRange.start)))
         {
           v15 = [(__CFDictionary *)v11 objectForKey:@"attributes"];
           v16 = [v15 objectForKey:@"faceBounds"];
@@ -1466,7 +1466,7 @@ LABEL_14:
       }
 
       while (v6 != v10);
-      v22 = [v5 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v22 = [faceCopy countByEnumeratingWithState:&v35 objects:v39 count:16];
       v6 = v22;
     }
 
@@ -1503,12 +1503,12 @@ LABEL_14:
   return v23;
 }
 
-- (float)subjectActivityInTimeRange:(id *)a3 fromResults:(id)a4
+- (float)subjectActivityInTimeRange:(id *)range fromResults:(id)results
 {
   v54 = *MEMORY[0x1E69E9840];
-  v39 = a4;
-  v6 = [v39 objectForKey:@"FaceResults"];
-  v7 = [v39 objectForKey:@"FineSubjectMotionResults"];
+  resultsCopy = results;
+  v6 = [resultsCopy objectForKey:@"FaceResults"];
+  v7 = [resultsCopy objectForKey:@"FineSubjectMotionResults"];
   v8 = [v7 count];
 
   if (v8)
@@ -1517,7 +1517,7 @@ LABEL_14:
     v51 = 0uLL;
     v48 = 0uLL;
     v49 = 0uLL;
-    v9 = [v39 objectForKey:@"FineSubjectMotionResults"];
+    v9 = [resultsCopy objectForKey:@"FineSubjectMotionResults"];
     v10 = [v9 countByEnumeratingWithState:&v48 objects:v53 count:16];
     if (v10)
     {
@@ -1536,10 +1536,10 @@ LABEL_14:
           v15 = *(*(&v48 + 1) + 8 * i);
           memset(&v47, 0, sizeof(v47));
           CMTimeRangeMakeFromDictionary(&v47, v15);
-          v16 = *&a3->var0.var3;
-          *&range.start.value = *&a3->var0.var0;
+          v16 = *&range->var0.var3;
+          *&range.start.value = *&range->var0.var0;
           *&range.start.epoch = v16;
-          *&range.duration.timescale = *&a3->var1.var1;
+          *&range.duration.timescale = *&range->var1.var1;
           memset(&v46, 0, sizeof(v46));
           otherRange = v47;
           CMTimeRangeGetIntersection(&v46, &range, &otherRange);
@@ -1593,7 +1593,7 @@ LABEL_39:
   v43 = 0uLL;
   v40 = 0uLL;
   v41 = 0uLL;
-  v9 = [v39 objectForKey:@"SubjectMotionResults"];
+  v9 = [resultsCopy objectForKey:@"SubjectMotionResults"];
   v23 = [v9 countByEnumeratingWithState:&v40 objects:v52 count:16];
   if (!v23)
   {
@@ -1615,10 +1615,10 @@ LABEL_39:
       v26 = *(*(&v40 + 1) + 8 * j);
       memset(&v47, 0, sizeof(v47));
       CMTimeRangeMakeFromDictionary(&v47, v26);
-      v27 = *&a3->var0.var3;
-      *&range.start.value = *&a3->var0.var0;
+      v27 = *&range->var0.var3;
+      *&range.start.value = *&range->var0.var0;
       *&range.start.epoch = v27;
-      *&range.duration.timescale = *&a3->var1.var1;
+      *&range.duration.timescale = *&range->var1.var1;
       memset(&v46, 0, sizeof(v46));
       otherRange = v47;
       CMTimeRangeGetIntersection(&v46, &range, &otherRange);
@@ -1695,9 +1695,9 @@ LABEL_40:
   return v37;
 }
 
-- (float)cameraActivityfromQuality:(float)a3
+- (float)cameraActivityfromQuality:(float)quality
 {
-  v3 = (a3 + -1.0) * -1.25;
+  v3 = (quality + -1.0) * -1.25;
   v4 = 1.0;
   if (v3 < 1.0)
   {
@@ -1714,14 +1714,14 @@ LABEL_40:
   return result;
 }
 
-- (BOOL)isJunkTimeRange:(id *)a3 basedOnResults:(id)a4
+- (BOOL)isJunkTimeRange:(id *)range basedOnResults:(id)results
 {
   v25 = *MEMORY[0x1E69E9840];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [a4 objectForKey:@"InterestingnessResults"];
+  v5 = [results objectForKey:@"InterestingnessResults"];
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
@@ -1740,10 +1740,10 @@ LABEL_40:
         v11 = *(*(&v20 + 1) + 8 * i);
         memset(&v19, 0, sizeof(v19));
         CMTimeRangeMakeFromDictionary(&v19, v11);
-        v12 = *&a3->var0.var3;
-        *&range.start.value = *&a3->var0.var0;
+        v12 = *&range->var0.var3;
+        *&range.start.value = *&range->var0.var0;
         *&range.start.epoch = v12;
-        *&range.duration.timescale = *&a3->var1.var1;
+        *&range.duration.timescale = *&range->var1.var1;
         memset(&v18, 0, sizeof(v18));
         v16 = v19;
         CMTimeRangeGetIntersection(&v18, &range, &v16);
@@ -1778,20 +1778,20 @@ LABEL_40:
     v14 = 0.0;
   }
 
-  *&v19.start.value = *&a3->var1.var0;
-  v19.start.epoch = a3->var1.var3;
+  *&v19.start.value = *&range->var1.var0;
+  v19.start.epoch = range->var1.var3;
   return v14 / CMTimeGetSeconds(&v19.start) > 0.300000012;
 }
 
-- (float)assetActivityLevelFromAnalysisResults:(id)a3
+- (float)assetActivityLevelFromAnalysisResults:(id)results
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultsCopy = results;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v5 = [v4 objectForKey:@"QualityResults"];
+  v5 = [resultsCopy objectForKey:@"QualityResults"];
   v6 = [v5 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (!v6)
   {
@@ -1832,10 +1832,10 @@ LABEL_28:
       if (v14 >= 0.200000003)
       {
         v29 = v31;
-        if (![(VCPVideoGlobalAnalyzer *)self isJunkTimeRange:&v29 basedOnResults:v4])
+        if (![(VCPVideoGlobalAnalyzer *)self isJunkTimeRange:&v29 basedOnResults:resultsCopy])
         {
           v29 = v31;
-          [(VCPVideoGlobalAnalyzer *)self subjectActivityInTimeRange:&v29 fromResults:v4];
+          [(VCPVideoGlobalAnalyzer *)self subjectActivityInTimeRange:&v29 fromResults:resultsCopy];
           v16 = v15;
           *&v17 = v14;
           [(VCPVideoGlobalAnalyzer *)self cameraActivityfromQuality:v17];
@@ -1898,17 +1898,17 @@ LABEL_29:
   return v27;
 }
 
-- (int)setActivityLevel:(id)a3
+- (int)setActivityLevel:(id)level
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  levelCopy = level;
+  array = [MEMORY[0x1E695DF70] array];
   v32 = 0.0;
   if (SocType() < 247)
   {
-    [(VCPVideoGlobalAnalyzer *)self assetActivityLevelFromAnalysisResults:v4];
+    [(VCPVideoGlobalAnalyzer *)self assetActivityLevelFromAnalysisResults:levelCopy];
     v32 = v7;
-    v8 = AddResultDictionary(0, 0, &v32, 0, 0, v5);
+    v8 = AddResultDictionary(0, 0, &v32, 0, 0, array);
     if (!v8)
     {
       goto LABEL_17;
@@ -1917,7 +1917,7 @@ LABEL_29:
 
   else
   {
-    v6 = [v4 objectForKeyedSubscript:@"ActivityLevelResults"];
+    v6 = [levelCopy objectForKeyedSubscript:@"ActivityLevelResults"];
     if ([v6 count] <= 1)
     {
 
@@ -1927,12 +1927,12 @@ LABEL_18:
     }
 
     memset(&v31, 0, sizeof(v31));
-    v9 = [v6 firstObject];
-    CMTimeRangeMakeFromDictionary(&v31, v9);
+    firstObject = [v6 firstObject];
+    CMTimeRangeMakeFromDictionary(&v31, firstObject);
 
     memset(&v30, 0, sizeof(v30));
-    v10 = [v6 lastObject];
-    CMTimeRangeMakeFromDictionary(&v30, v10);
+    lastObject = [v6 lastObject];
+    CMTimeRangeMakeFromDictionary(&v30, lastObject);
 
     memset(&v29, 0, sizeof(v29));
     start = v31.start;
@@ -1989,12 +1989,12 @@ LABEL_18:
     {
     }
 
-    v8 = AddResultDictionary(&v29.start, &v29.duration, &v32, 0, 0, v5);
+    v8 = AddResultDictionary(&v29.start, &v29.duration, &v32, 0, 0, array);
 
     if (!v8)
     {
 LABEL_17:
-      [v4 setObject:v5 forKey:{@"ActivityLevelResults", v21}];
+      [levelCopy setObject:array forKey:{@"ActivityLevelResults", v21}];
       goto LABEL_18;
     }
   }

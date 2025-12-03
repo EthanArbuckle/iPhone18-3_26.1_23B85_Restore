@@ -1,6 +1,6 @@
 @interface WDMedicalRecordPagingContext
-+ (id)sortDateComponentsOfDate:(id)a3;
-+ (id)sortDateComponentsOfDateComponents:(id)a3 withDayOffset:(int64_t)a4;
++ (id)sortDateComponentsOfDate:(id)date;
++ (id)sortDateComponentsOfDateComponents:(id)components withDayOffset:(int64_t)offset;
 - (BOOL)shouldQueryForNextBatch;
 - (WDMedicalRecordPagingContext)init;
 - (void)resetPagingContext;
@@ -52,25 +52,25 @@
   self->_removedRecords = v9;
 }
 
-+ (id)sortDateComponentsOfDate:(id)a3
++ (id)sortDateComponentsOfDate:(id)date
 {
   v3 = MEMORY[0x1E695DEE8];
-  v4 = a3;
-  v5 = [v3 hk_gregorianCalendarWithLocalTimeZone];
-  v6 = [v5 components:30 fromDate:v4];
+  dateCopy = date;
+  hk_gregorianCalendarWithLocalTimeZone = [v3 hk_gregorianCalendarWithLocalTimeZone];
+  v6 = [hk_gregorianCalendarWithLocalTimeZone components:30 fromDate:dateCopy];
 
   return v6;
 }
 
-+ (id)sortDateComponentsOfDateComponents:(id)a3 withDayOffset:(int64_t)a4
++ (id)sortDateComponentsOfDateComponents:(id)components withDayOffset:(int64_t)offset
 {
   v5 = MEMORY[0x1E695DEE8];
-  v6 = a3;
-  v7 = [v5 hk_gregorianCalendarWithLocalTimeZone];
-  v8 = [v7 dateFromComponents:v6];
+  componentsCopy = components;
+  hk_gregorianCalendarWithLocalTimeZone = [v5 hk_gregorianCalendarWithLocalTimeZone];
+  v8 = [hk_gregorianCalendarWithLocalTimeZone dateFromComponents:componentsCopy];
 
-  v9 = [v7 dateByAddingUnit:16 value:a4 toDate:v8 options:0];
-  v10 = [v7 components:30 fromDate:v9];
+  v9 = [hk_gregorianCalendarWithLocalTimeZone dateByAddingUnit:16 value:offset toDate:v8 options:0];
+  v10 = [hk_gregorianCalendarWithLocalTimeZone components:30 fromDate:v9];
 
   return v10;
 }

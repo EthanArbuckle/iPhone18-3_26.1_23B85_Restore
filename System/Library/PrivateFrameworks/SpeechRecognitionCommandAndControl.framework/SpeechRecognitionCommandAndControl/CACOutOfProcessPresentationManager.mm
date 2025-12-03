@@ -3,10 +3,10 @@
 + (int64_t)remoteViewType;
 - (BOOL)isShowing;
 - (CACOutOfProcessPresentationManager)init;
-- (void)handleAXNotificationData:(void *)a3;
+- (void)handleAXNotificationData:(void *)data;
 - (void)hide;
-- (void)observer:(id)a3 didObserveNotification:(int)a4 notificationData:(void *)a5;
-- (void)presentWithData:(id)a3;
+- (void)observer:(id)observer didObserveNotification:(int)notification notificationData:(void *)data;
+- (void)presentWithData:(id)data;
 @end
 
 @implementation CACOutOfProcessPresentationManager
@@ -19,10 +19,10 @@
   v2 = [(CACOutOfProcessPresentationManager *)&v11 init];
   if (v2)
   {
-    v3 = [objc_opt_class() axNotification];
-    if (v3)
+    axNotification = [objc_opt_class() axNotification];
+    if (axNotification)
     {
-      v4 = v3;
+      v4 = axNotification;
       v5 = [CACAXNotificationObserver alloc];
       v6 = [MEMORY[0x277CCABB0] numberWithInt:v4];
       v12[0] = v6;
@@ -38,34 +38,34 @@
   return v2;
 }
 
-- (void)presentWithData:(id)a3
+- (void)presentWithData:(id)data
 {
   v3 = MEMORY[0x277CE7E40];
-  v4 = a3;
-  v5 = [v3 server];
-  [v5 showRemoteView:objc_msgSend(objc_opt_class() withData:{"remoteViewType"), v4}];
+  dataCopy = data;
+  server = [v3 server];
+  [server showRemoteView:objc_msgSend(objc_opt_class() withData:{"remoteViewType"), dataCopy}];
 }
 
 - (BOOL)isShowing
 {
-  v2 = [MEMORY[0x277CE7E40] server];
-  v3 = [v2 isShowingRemoteView:{objc_msgSend(objc_opt_class(), "remoteViewType")}];
+  server = [MEMORY[0x277CE7E40] server];
+  v3 = [server isShowingRemoteView:{objc_msgSend(objc_opt_class(), "remoteViewType")}];
 
   return v3;
 }
 
 - (void)hide
 {
-  v2 = [MEMORY[0x277CE7E40] server];
-  [v2 hideRemoteView:{objc_msgSend(objc_opt_class(), "remoteViewType")}];
+  server = [MEMORY[0x277CE7E40] server];
+  [server hideRemoteView:{objc_msgSend(objc_opt_class(), "remoteViewType")}];
 }
 
-- (void)observer:(id)a3 didObserveNotification:(int)a4 notificationData:(void *)a5
+- (void)observer:(id)observer didObserveNotification:(int)notification notificationData:(void *)data
 {
-  if ([objc_opt_class() axNotification] == a4)
+  if ([objc_opt_class() axNotification] == notification)
   {
 
-    [(CACOutOfProcessPresentationManager *)self handleAXNotificationData:a5];
+    [(CACOutOfProcessPresentationManager *)self handleAXNotificationData:data];
   }
 }
 
@@ -85,7 +85,7 @@
   return 0;
 }
 
-- (void)handleAXNotificationData:(void *)a3
+- (void)handleAXNotificationData:(void *)data
 {
   objc_opt_class();
   OUTLINED_FUNCTION_0_6();

@@ -1,17 +1,17 @@
 @interface STPurgeUsageOperation
-- (BOOL)_runWithManagedObjectContext:(id)a3 error:(id *)a4;
-- (STPurgeUsageOperation)initWithPersistenceController:(id)a3 purgeAllUsage:(BOOL)a4;
+- (BOOL)_runWithManagedObjectContext:(id)context error:(id *)error;
+- (STPurgeUsageOperation)initWithPersistenceController:(id)controller purgeAllUsage:(BOOL)usage;
 - (void)main;
 @end
 
 @implementation STPurgeUsageOperation
 
-- (STPurgeUsageOperation)initWithPersistenceController:(id)a3 purgeAllUsage:(BOOL)a4
+- (STPurgeUsageOperation)initWithPersistenceController:(id)controller purgeAllUsage:(BOOL)usage
 {
   v6.receiver = self;
   v6.super_class = STPurgeUsageOperation;
-  result = [(STPersistenceOperation *)&v6 initWithPersistenceController:a3];
-  result->_purgeAllUsage = a4;
+  result = [(STPersistenceOperation *)&v6 initWithPersistenceController:controller];
+  result->_purgeAllUsage = usage;
   return result;
 }
 
@@ -22,28 +22,28 @@
 
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v4 = [(STOperation *)self activity];
-  os_activity_scope_enter(v4, &state);
+  activity = [(STOperation *)self activity];
+  os_activity_scope_enter(activity, &state);
 
-  v5 = [(STPersistenceOperation *)self persistenceController];
-  v6 = [v5 newBackgroundContext];
+  persistenceController = [(STPersistenceOperation *)self persistenceController];
+  newBackgroundContext = [persistenceController newBackgroundContext];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10005E9F8;
   v8[3] = &unk_1001A3020;
   v8[4] = self;
-  v7 = v6;
+  v7 = newBackgroundContext;
   v9 = v7;
   [v7 performBlock:v8];
 
   os_activity_scope_leave(&state);
 }
 
-- (BOOL)_runWithManagedObjectContext:(id)a3 error:(id *)a4
+- (BOOL)_runWithManagedObjectContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [STCoreUser fetchLocalUserInContext:v6 error:a4];
+  contextCopy = context;
+  v7 = [STCoreUser fetchLocalUserInContext:contextCopy error:error];
   if (v7)
   {
     v24 = v7;
@@ -81,8 +81,8 @@
         v31 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v13 = [v12 blocks];
-        v14 = [v13 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        blocks = [v12 blocks];
+        v14 = [blocks countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v14)
         {
           v15 = v14;
@@ -93,24 +93,24 @@
             {
               if (*v29 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(blocks);
               }
 
               v18 = *(*(&v28 + 1) + 8 * i);
               if ([v18 durationInMinutes] == 60)
               {
-                [v6 deleteObject:v18];
+                [contextCopy deleteObject:v18];
               }
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v28 objects:v36 count:16];
+            v15 = [blocks countByEnumeratingWithState:&v28 objects:v36 count:16];
           }
 
           while (v15);
         }
 
-        v19 = [v12 blocks];
-        v20 = [v19 count];
+        blocks2 = [v12 blocks];
+        v20 = [blocks2 count];
 
         v9 = v25;
         if (!v20)
@@ -123,7 +123,7 @@
           }
 
 LABEL_21:
-          [v6 deleteObject:v12];
+          [contextCopy deleteObject:v12];
         }
 
         v11 = v11 + 1;

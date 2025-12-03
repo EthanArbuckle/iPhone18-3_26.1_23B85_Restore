@@ -76,26 +76,26 @@ uint64_t __27__AADeviceInfo_currentInfo__block_invoke()
 
 - (id)deviceInfoDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(AADeviceInfo *)self udid];
-  if (v4)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  udid = [(AADeviceInfo *)self udid];
+  if (udid)
   {
-    [v3 setObject:v4 forKey:@"udid"];
+    [dictionary setObject:udid forKey:@"udid"];
   }
 
-  v5 = [(AADeviceInfo *)self serialNumber];
-  if (v5)
+  serialNumber = [(AADeviceInfo *)self serialNumber];
+  if (serialNumber)
   {
-    [v3 setObject:v5 forKey:@"serialNumber"];
+    [dictionary setObject:serialNumber forKey:@"serialNumber"];
   }
 
-  v6 = [(AADeviceInfo *)self regionCode];
-  if (v6)
+  regionCode = [(AADeviceInfo *)self regionCode];
+  if (regionCode)
   {
-    [v3 setObject:v6 forKey:@"regionCode"];
+    [dictionary setObject:regionCode forKey:@"regionCode"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)osVersion
@@ -241,13 +241,13 @@ uint64_t __27__AADeviceInfo_currentInfo__block_invoke()
 
 - (id)qualifiedBuildVersion
 {
-  v3 = [(AADeviceInfo *)self buildVersion];
-  if (v3)
+  buildVersion = [(AADeviceInfo *)self buildVersion];
+  if (buildVersion)
   {
-    v4 = [(AADeviceInfo *)self osName];
-    if (v4)
+    osName = [(AADeviceInfo *)self osName];
+    if (osName)
     {
-      v5 = v4;
+      v5 = osName;
     }
 
     else
@@ -255,7 +255,7 @@ uint64_t __27__AADeviceInfo_currentInfo__block_invoke()
       v5 = @"UNKNOWN OS";
     }
 
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (%@)", v3, v5];
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (%@)", buildVersion, v5];
   }
 
   else
@@ -277,9 +277,9 @@ uint64_t __27__AADeviceInfo_currentInfo__block_invoke()
 {
   v2 = objc_alloc(MEMORY[0x1E698CF30]);
   v3 = [v2 initWithEnvironmentName:*MEMORY[0x1E698CF20]];
-  v4 = [v3 publicToken];
+  publicToken = [v3 publicToken];
 
-  return v4;
+  return publicToken;
 }
 
 - (id)deviceClass
@@ -344,11 +344,11 @@ uint64_t __27__AADeviceInfo_currentInfo__block_invoke()
         _os_log_impl(&dword_1B6F6A000, v7, OS_LOG_TYPE_DEFAULT, "SecItemCopyMatching result: %d", buf, 8u);
       }
 
-      v9 = [MEMORY[0x1E696AFB0] UUID];
-      v10 = [v9 UUIDString];
-      v11 = [v10 dataUsingEncoding:4];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      v11 = [uUIDString dataUsingEncoding:4];
 
-      v14 = [v9 UUIDString];
+      uUIDString2 = [uUID UUIDString];
       CFDictionaryAddValue(Mutable, *MEMORY[0x1E697ABD8], *MEMORY[0x1E697ABE8]);
       CFDictionaryAddValue(Mutable, *MEMORY[0x1E697B3C0], v11);
       CFDictionaryRemoveValue(Mutable, v3);
@@ -371,48 +371,48 @@ uint64_t __27__AADeviceInfo_currentInfo__block_invoke()
         _os_log_impl(&dword_1B6F6A000, v7, OS_LOG_TYPE_DEFAULT, "SecItemCopyMatching succeeded with empty results", buf, 2u);
       }
 
-      v14 = 0;
+      uUIDString2 = 0;
     }
   }
 
   else
   {
     v13 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v14 = [v13 initWithData:result encoding:4];
+    uUIDString2 = [v13 initWithData:result encoding:4];
     CFRelease(result);
   }
 
   CFRelease(Mutable);
   v15 = *MEMORY[0x1E69E9840];
 
-  return v14;
+  return uUIDString2;
 }
 
 - (id)clientInfoHeader
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AADeviceInfo *)self productType];
-  v5 = [v3 stringWithFormat:@"%@", v4];
+  productType = [(AADeviceInfo *)self productType];
+  v5 = [v3 stringWithFormat:@"%@", productType];
 
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(AADeviceInfo *)self osName];
-  v8 = [(AADeviceInfo *)self osVersion];
-  v9 = [(AADeviceInfo *)self buildVersion];
-  v10 = [v6 stringWithFormat:@"%@%@;%@", v7, v8, v9];;
+  osName = [(AADeviceInfo *)self osName];
+  osVersion = [(AADeviceInfo *)self osVersion];
+  buildVersion = [(AADeviceInfo *)self buildVersion];
+  v10 = [v6 stringWithFormat:@"%@%@;%@", osName, osVersion, buildVersion];;
 
   v11 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v12 = [v11 infoDictionary];
+  infoDictionary = [v11 infoDictionary];
   v13 = *MEMORY[0x1E695E500];
-  v14 = [v12 objectForKey:*MEMORY[0x1E695E500]];
+  v14 = [infoDictionary objectForKey:*MEMORY[0x1E695E500]];
 
-  v15 = [MEMORY[0x1E696AAE8] mainBundle];
-  v16 = [v15 infoDictionary];
-  v17 = [v16 objectForKey:v13];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary2 = [mainBundle infoDictionary];
+  v17 = [infoDictionary2 objectForKey:v13];
 
   v18 = MEMORY[0x1E696AEC0];
-  v19 = [v11 bundleIdentifier];
-  v20 = [v15 bundleIdentifier];
-  v21 = [v18 stringWithFormat:@"%@/%@ (%@/%@)", v19, v14, v20, v17];
+  bundleIdentifier = [v11 bundleIdentifier];
+  bundleIdentifier2 = [mainBundle bundleIdentifier];
+  v21 = [v18 stringWithFormat:@"%@/%@ (%@/%@)", bundleIdentifier, v14, bundleIdentifier2, v17];
 
   v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@> <%@> <%@>", v5, v10, v21];
 
@@ -421,10 +421,10 @@ uint64_t __27__AADeviceInfo_currentInfo__block_invoke()
 
 - (id)userAgentHeader
 {
-  v3 = [(AADeviceInfo *)self productVersion];
-  v4 = [(AADeviceInfo *)self buildVersion];
-  v5 = [(AADeviceInfo *)self deviceClass];
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"iOS %@ %@ %@ Setup Assistant", v3, v4, v5];
+  productVersion = [(AADeviceInfo *)self productVersion];
+  buildVersion = [(AADeviceInfo *)self buildVersion];
+  deviceClass = [(AADeviceInfo *)self deviceClass];
+  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"iOS %@ %@ %@ Setup Assistant", productVersion, buildVersion, deviceClass];
 
   return v6;
 }
@@ -468,74 +468,74 @@ void __31__AADeviceInfo_isMultiUserMode__block_invoke()
 
 + (id)infoDictionary
 {
-  v2 = objc_alloc_init(a1);
-  v3 = [v2 deviceInfoDictionary];
+  v2 = objc_alloc_init(self);
+  deviceInfoDictionary = [v2 deviceInfoDictionary];
 
-  return v3;
+  return deviceInfoDictionary;
 }
 
 + (id)udid
 {
-  v2 = objc_alloc_init(a1);
-  v3 = [v2 udid];
+  v2 = objc_alloc_init(self);
+  udid = [v2 udid];
 
-  return v3;
+  return udid;
 }
 
 + (id)osVersion
 {
-  v2 = objc_alloc_init(a1);
-  v3 = [v2 osVersion];
+  v2 = objc_alloc_init(self);
+  osVersion = [v2 osVersion];
 
-  return v3;
+  return osVersion;
 }
 
 + (id)serialNumber
 {
-  v2 = objc_alloc_init(a1);
-  v3 = [v2 serialNumber];
+  v2 = objc_alloc_init(self);
+  serialNumber = [v2 serialNumber];
 
-  return v3;
+  return serialNumber;
 }
 
 + (id)apnsToken
 {
-  v2 = objc_alloc_init(a1);
-  v3 = [v2 apnsToken];
+  v2 = objc_alloc_init(self);
+  apnsToken = [v2 apnsToken];
 
-  return v3;
+  return apnsToken;
 }
 
 + (id)appleIDClientIdentifier
 {
-  v2 = objc_alloc_init(a1);
-  v3 = [v2 appleIDClientIdentifier];
+  v2 = objc_alloc_init(self);
+  appleIDClientIdentifier = [v2 appleIDClientIdentifier];
 
-  return v3;
+  return appleIDClientIdentifier;
 }
 
 + (id)clientInfoHeader
 {
-  v2 = objc_alloc_init(a1);
-  v3 = [v2 clientInfoHeader];
+  v2 = objc_alloc_init(self);
+  clientInfoHeader = [v2 clientInfoHeader];
 
-  return v3;
+  return clientInfoHeader;
 }
 
 + (id)userAgentHeader
 {
-  v2 = objc_alloc_init(a1);
-  v3 = [v2 userAgentHeader];
+  v2 = objc_alloc_init(self);
+  userAgentHeader = [v2 userAgentHeader];
 
-  return v3;
+  return userAgentHeader;
 }
 
 + (id)productVersion
 {
-  v2 = objc_alloc_init(a1);
-  v3 = [v2 productVersion];
+  v2 = objc_alloc_init(self);
+  productVersion = [v2 productVersion];
 
-  return v3;
+  return productVersion;
 }
 
 @end

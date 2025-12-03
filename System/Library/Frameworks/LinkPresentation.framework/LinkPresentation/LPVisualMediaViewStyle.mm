@@ -1,17 +1,17 @@
 @interface LPVisualMediaViewStyle
-- (LPVisualMediaViewStyle)initWithPlatform:(int64_t)a3;
+- (LPVisualMediaViewStyle)initWithPlatform:(int64_t)platform;
 @end
 
 @implementation LPVisualMediaViewStyle
 
-- (LPVisualMediaViewStyle)initWithPlatform:(int64_t)a3
+- (LPVisualMediaViewStyle)initWithPlatform:(int64_t)platform
 {
   v24.receiver = self;
   v24.super_class = LPVisualMediaViewStyle;
   v4 = [(LPVisualMediaViewStyle *)&v24 init];
   if (v4)
   {
-    v5 = [[LPVideoPlayButtonStyle alloc] initWithPlatform:a3];
+    v5 = [[LPVideoPlayButtonStyle alloc] initWithPlatform:platform];
     v6 = *(v4 + 1);
     *(v4 + 1) = v5;
 
@@ -29,8 +29,8 @@
     v12 = [[LPPointUnit alloc] initWithValue:12.0];
     [*(v4 + 3) setTrailing:v12];
 
-    v13 = [*(v4 + 3) trailing];
-    [*(v4 + 3) setLeading:v13];
+    trailing = [*(v4 + 3) trailing];
+    [*(v4 + 3) setLeading:trailing];
 
     v14 = [[LPPointUnit alloc] initWithValue:11.0];
     [*(v4 + 3) setTop:v14];
@@ -39,9 +39,9 @@
     [*(v4 + 3) setBottom:v15];
 
     *(v4 + 2) = xmmword_1AE9C6770;
-    v16 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
     v17 = *(v4 + 6);
-    *(v4 + 6) = v16;
+    *(v4 + 6) = blackColor;
 
     *(v4 + 56) = xmmword_1AE9C6770;
     LODWORD(v18) = 1058306785;

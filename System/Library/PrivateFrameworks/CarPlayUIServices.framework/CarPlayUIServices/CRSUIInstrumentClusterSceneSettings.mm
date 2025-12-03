@@ -1,7 +1,7 @@
 @interface CRSUIInstrumentClusterSceneSettings
 - (NSNumber)frameRateLimit;
 - (NSString)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (int64_t)mapStyle;
 - (unint64_t)displayLocation;
 - (unint64_t)hostedAltScreenPresentationType;
@@ -16,89 +16,89 @@
 
 - (unint64_t)itemType
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:4293273408];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:4293273408];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)showsCompass
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:4293273410];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:4293273410];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)showsSpeedLimit
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:4293273411];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:4293273411];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)showsETA
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:4293273412];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:4293273412];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (NSNumber)frameRateLimit
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3152422722];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:3152422722];
 
   return v3;
 }
 
 - (int64_t)mapStyle
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3152422721];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:3152422721];
 
-  v4 = [v3 integerValue];
-  return v4;
+  integerValue = [v3 integerValue];
+  return integerValue;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [CRSUIMutableInstrumentClusterSceneSettings allocWithZone:a3];
+  v4 = [CRSUIMutableInstrumentClusterSceneSettings allocWithZone:zone];
 
   return [(FBSSettings *)v4 initWithSettings:self];
 }
 
 - (unint64_t)layoutJustification
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:4293273409];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:4293273409];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)hostedAltScreenPresentationType
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:4293273415];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:4293273415];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)displayLocation
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:4293273416];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:4293273416];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (NSString)description

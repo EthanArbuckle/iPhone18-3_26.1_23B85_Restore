@@ -1,13 +1,13 @@
 @interface AVDarkModeCompatibleLabel
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation AVDarkModeCompatibleLabel
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = [(AVDarkModeCompatibleLabel *)self textColor];
-  [(AVDarkModeCompatibleLabel *)self setTextColor:v4];
+  textColor = [(AVDarkModeCompatibleLabel *)self textColor];
+  [(AVDarkModeCompatibleLabel *)self setTextColor:textColor];
 }
 
 @end

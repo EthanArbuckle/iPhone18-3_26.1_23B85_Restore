@@ -1,23 +1,23 @@
 @interface NeuralNetworkModelWithDataTransformer
-- (NeuralNetworkModelWithDataTransformer)initWithNeuralNetworkModel:(NeuralNetworkModel *)a3 andDataTransformer:(id)a4;
+- (NeuralNetworkModelWithDataTransformer)initWithNeuralNetworkModel:(NeuralNetworkModel *)model andDataTransformer:(id)transformer;
 - (void)dealloc;
 @end
 
 @implementation NeuralNetworkModelWithDataTransformer
 
-- (NeuralNetworkModelWithDataTransformer)initWithNeuralNetworkModel:(NeuralNetworkModel *)a3 andDataTransformer:(id)a4
+- (NeuralNetworkModelWithDataTransformer)initWithNeuralNetworkModel:(NeuralNetworkModel *)model andDataTransformer:(id)transformer
 {
-  v7 = a4;
+  transformerCopy = transformer;
   v14.receiver = self;
   v14.super_class = NeuralNetworkModelWithDataTransformer;
   v8 = [(NeuralNetworkModelWithDataTransformer *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    v10 = *&a3->plan;
-    v8->_neuralNetworkModel.modelNet = a3->modelNet;
+    v10 = *&model->plan;
+    v8->_neuralNetworkModel.modelNet = model->modelNet;
     *&v8->_neuralNetworkModel.plan = v10;
-    objc_storeStrong(&v8->_rangeBiasEstimatorModelDataTransformer, a4);
+    objc_storeStrong(&v8->_rangeBiasEstimatorModelDataTransformer, transformer);
   }
 
   v11 = qword_1009F9820;

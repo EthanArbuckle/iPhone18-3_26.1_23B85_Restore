@@ -1,16 +1,16 @@
 @interface WFNANDataSessionsTableViewController
-- (WFNANDataSessionsTableViewController)initWithContext:(id)a3 forPublisher:(id)a4;
+- (WFNANDataSessionsTableViewController)initWithContext:(id)context forPublisher:(id)publisher;
 - (void)_configureDataSource;
-- (void)_handleDataSessionsChangedNotification:(id)a3;
+- (void)_handleDataSessionsChangedNotification:(id)notification;
 - (void)viewDidLoad;
 @end
 
 @implementation WFNANDataSessionsTableViewController
 
-- (WFNANDataSessionsTableViewController)initWithContext:(id)a3 forPublisher:(id)a4
+- (WFNANDataSessionsTableViewController)initWithContext:(id)context forPublisher:(id)publisher
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  publisherCopy = publisher;
   v9 = +[WFAppearanceProxy defaultAppearanceProxy];
   v17.receiver = self;
   v17.super_class = WFNANDataSessionsTableViewController;
@@ -19,15 +19,15 @@
   if (v10)
   {
     v11 = MEMORY[0x277CBEB70];
-    v12 = [(WFNANDataSessionsTableViewController *)v10 _defaultSections];
-    v13 = [v11 orderedSetWithArray:v12];
+    _defaultSections = [(WFNANDataSessionsTableViewController *)v10 _defaultSections];
+    v13 = [v11 orderedSetWithArray:_defaultSections];
     sections = v10->_sections;
     v10->_sections = v13;
 
-    objc_storeStrong(&v10->_context, a3);
-    objc_storeStrong(&v10->_publisher, a4);
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v10 selector:sel__handleDataSessionsChangedNotification_ name:@"WFNANDataSessionsForPublishChangedNotification" object:0];
+    objc_storeStrong(&v10->_context, context);
+    objc_storeStrong(&v10->_publisher, publisher);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__handleDataSessionsChangedNotification_ name:@"WFNANDataSessionsForPublishChangedNotification" object:0];
 
     [(WFInsetTableViewController *)v10 setReloadDataOnUpdateSectionContentInset:0];
   }
@@ -41,12 +41,12 @@
   v10.super_class = WFNANDataSessionsTableViewController;
   [(WFNANDataSessionsTableViewController *)&v10 viewDidLoad];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(WiFiAwarePublisher *)self->_publisher configuration];
-  v5 = [v4 serviceName];
-  v6 = [(WiFiAwarePublisher *)self->_publisher configuration];
-  v7 = [v6 serviceSpecificInfo];
-  v8 = [v7 instanceName];
-  v9 = [v3 stringWithFormat:@"%@ [%@]", v5, v8];
+  configuration = [(WiFiAwarePublisher *)self->_publisher configuration];
+  serviceName = [configuration serviceName];
+  configuration2 = [(WiFiAwarePublisher *)self->_publisher configuration];
+  serviceSpecificInfo = [configuration2 serviceSpecificInfo];
+  instanceName = [serviceSpecificInfo instanceName];
+  v9 = [v3 stringWithFormat:@"%@ [%@]", serviceName, instanceName];
   [(WFNANDataSessionsTableViewController *)self setTitle:v9];
 
   [(WFNANDataSessionsTableViewController *)self _configureDataSource];
@@ -56,53 +56,53 @@
 {
   v30[1] = *MEMORY[0x277D85DE8];
   v3 = [WFNANDataSessionsTableViewDataSource alloc];
-  v4 = [(WFNANDataSessionsTableViewController *)self tableView];
-  v5 = [(WFNANDataSessionsTableViewController *)self context];
-  v6 = [(WFNANDataSessionsTableViewController *)self publisher];
-  v7 = [(WFNANDataSessionsTableViewController *)self sections];
+  tableView = [(WFNANDataSessionsTableViewController *)self tableView];
+  context = [(WFNANDataSessionsTableViewController *)self context];
+  publisher = [(WFNANDataSessionsTableViewController *)self publisher];
+  sections = [(WFNANDataSessionsTableViewController *)self sections];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __60__WFNANDataSessionsTableViewController__configureDataSource__block_invoke;
   v29[3] = &unk_279EC5440;
   v29[4] = self;
-  v8 = [(WFNANDataSessionsTableViewDataSource *)v3 initWithTableView:v4 context:v5 publisher:v6 sections:v7 cellProvider:v29];
+  v8 = [(WFNANDataSessionsTableViewDataSource *)v3 initWithTableView:tableView context:context publisher:publisher sections:sections cellProvider:v29];
   [(WFNANDataSessionsTableViewController *)self setDataSource:v8];
 
   v9 = objc_alloc_init(MEMORY[0x277CFB890]);
-  v10 = [MEMORY[0x277CBEB18] array];
-  v11 = [(WFNANDataSessionsTableViewController *)self sections];
-  v12 = [v11 count];
+  array = [MEMORY[0x277CBEB18] array];
+  sections2 = [(WFNANDataSessionsTableViewController *)self sections];
+  v12 = [sections2 count];
 
   if (v12)
   {
     v13 = 0;
     do
     {
-      v14 = [(WFNANDataSessionsTableViewController *)self sections];
-      v15 = [v14 objectAtIndexedSubscript:v13];
-      v16 = [v15 unsignedIntegerValue];
+      sections3 = [(WFNANDataSessionsTableViewController *)self sections];
+      v15 = [sections3 objectAtIndexedSubscript:v13];
+      unsignedIntegerValue = [v15 unsignedIntegerValue];
 
-      v17 = [(WFNANDataSessionsTableViewController *)self _identifierForSection:v16];
-      [v10 addObject:v17];
+      v17 = [(WFNANDataSessionsTableViewController *)self _identifierForSection:unsignedIntegerValue];
+      [array addObject:v17];
 
       ++v13;
-      v18 = [(WFNANDataSessionsTableViewController *)self sections];
-      v19 = [v18 count];
+      sections4 = [(WFNANDataSessionsTableViewController *)self sections];
+      v19 = [sections4 count];
     }
 
     while (v19 > v13);
   }
 
-  [v9 appendSectionsWithIdentifiers:v10];
+  [v9 appendSectionsWithIdentifiers:array];
   context = self->_context;
-  v21 = [(WFNANDataSessionsTableViewController *)self publisher];
-  v22 = [(WFNANTableViewContext *)context getDataSessionsCountForPublisher:v21];
+  publisher2 = [(WFNANDataSessionsTableViewController *)self publisher];
+  v22 = [(WFNANTableViewContext *)context getDataSessionsCountForPublisher:publisher2];
 
   if (v22)
   {
     v23 = self->_context;
-    v24 = [(WFNANDataSessionsTableViewController *)self publisher];
-    v25 = [(WFNANTableViewContext *)v23 getDataSessionsForPublisher:v24];
+    publisher3 = [(WFNANDataSessionsTableViewController *)self publisher];
+    v25 = [(WFNANTableViewContext *)v23 getDataSessionsForPublisher:publisher3];
     v26 = [(WFNANDataSessionsTableViewController *)self _identifierForSection:0];
     [v9 appendItemsWithIdentifiers:v25 intoSectionWithIdentifier:v26];
   }
@@ -110,13 +110,13 @@
   else
   {
     v30[0] = @"WFNANDataSessionsNoActiveSessionsIdentifier";
-    v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1];
+    publisher3 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1];
     v25 = [(WFNANDataSessionsTableViewController *)self _identifierForSection:0];
-    [v9 appendItemsWithIdentifiers:v24 intoSectionWithIdentifier:v25];
+    [v9 appendItemsWithIdentifiers:publisher3 intoSectionWithIdentifier:v25];
   }
 
-  v27 = [(WFNANDataSessionsTableViewController *)self dataSource];
-  [v27 applySnapshot:v9 animatingDifferences:1];
+  dataSource = [(WFNANDataSessionsTableViewController *)self dataSource];
+  [dataSource applySnapshot:v9 animatingDifferences:1];
 
   v28 = *MEMORY[0x277D85DE8];
 }
@@ -163,25 +163,25 @@ id __60__WFNANDataSessionsTableViewController__configureDataSource__block_invoke
   return v11;
 }
 
-- (void)_handleDataSessionsChangedNotification:(id)a3
+- (void)_handleDataSessionsChangedNotification:(id)notification
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFNANDataSessionsTableViewController *)self dataSource];
-  v6 = [v5 snapshot];
+  notificationCopy = notification;
+  dataSource = [(WFNANDataSessionsTableViewController *)self dataSource];
+  snapshot = [dataSource snapshot];
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"WFNANTableViewContextChangedPublisherKey"];
+  userInfo = [notificationCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"WFNANTableViewContextChangedPublisherKey"];
 
-  v9 = [v4 userInfo];
-  v10 = [v9 objectForKeyedSubscript:@"WFNANTableViewContextChangedDataSessionKey"];
+  userInfo2 = [notificationCopy userInfo];
+  v10 = [userInfo2 objectForKeyedSubscript:@"WFNANTableViewContextChangedDataSessionKey"];
 
-  v11 = [v4 userInfo];
+  userInfo3 = [notificationCopy userInfo];
 
-  v12 = [v11 objectForKeyedSubscript:@"WFNANTableViewContextChangedOperationTypeKey"];
+  v12 = [userInfo3 objectForKeyedSubscript:@"WFNANTableViewContextChangedOperationTypeKey"];
 
-  v13 = [(WFNANDataSessionsTableViewController *)self publisher];
-  if (v8 != v13 || v12 == 0)
+  publisher = [(WFNANDataSessionsTableViewController *)self publisher];
+  if (v8 != publisher || v12 == 0)
   {
   }
 
@@ -190,18 +190,18 @@ id __60__WFNANDataSessionsTableViewController__configureDataSource__block_invoke
 
     if (v10)
     {
-      v15 = [v12 unsignedIntegerValue];
-      if (v15 == 1)
+      unsignedIntegerValue = [v12 unsignedIntegerValue];
+      if (unsignedIntegerValue == 1)
       {
         v24 = v10;
         v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v24 count:1];
-        [v6 deleteItemsWithIdentifiers:v19];
+        [snapshot deleteItemsWithIdentifiers:v19];
 
         if ([(WFNANTableViewContext *)self->_context getDataSessionsCountForPublisher:self->_publisher])
         {
 LABEL_15:
-          v21 = [(WFNANDataSessionsTableViewController *)self dataSource];
-          [v21 applySnapshot:v6 animatingDifferences:1];
+          dataSource2 = [(WFNANDataSessionsTableViewController *)self dataSource];
+          [dataSource2 applySnapshot:snapshot animatingDifferences:1];
 
           goto LABEL_16;
         }
@@ -209,12 +209,12 @@ LABEL_15:
         v23 = @"WFNANDataSessionsNoActiveSessionsIdentifier";
         v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v23 count:1];
         v20 = [(WFNANDataSessionsTableViewController *)self _identifierForSection:0];
-        [v6 appendItemsWithIdentifiers:v18 intoSectionWithIdentifier:v20];
+        [snapshot appendItemsWithIdentifiers:v18 intoSectionWithIdentifier:v20];
       }
 
       else
       {
-        if (v15)
+        if (unsignedIntegerValue)
         {
           goto LABEL_15;
         }
@@ -222,7 +222,7 @@ LABEL_15:
         v26[0] = v10;
         v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
         v17 = [(WFNANDataSessionsTableViewController *)self _identifierForSection:0];
-        [v6 appendItemsWithIdentifiers:v16 intoSectionWithIdentifier:v17];
+        [snapshot appendItemsWithIdentifiers:v16 intoSectionWithIdentifier:v17];
 
         if ([(WFNANTableViewContext *)self->_context getDataSessionsCountForPublisher:self->_publisher]!= 1)
         {
@@ -231,7 +231,7 @@ LABEL_15:
 
         v25 = @"WFNANDataSessionsNoActiveSessionsIdentifier";
         v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v25 count:1];
-        [v6 deleteItemsWithIdentifiers:v18];
+        [snapshot deleteItemsWithIdentifiers:v18];
       }
 
       goto LABEL_15;

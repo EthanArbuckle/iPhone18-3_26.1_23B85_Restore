@@ -1,19 +1,19 @@
 @interface TKHostToken
 + (id)keychainItemClasses;
 - (BOOL)isRegistered;
-- (TKHostToken)initWithCoder:(id)a3;
-- (TKHostToken)initWithTokenID:(id)a3 persistent:(BOOL)a4;
+- (TKHostToken)initWithCoder:(id)coder;
+- (TKHostToken)initWithTokenID:(id)d persistent:(BOOL)persistent;
 - (TKHostTokenDriver)driver;
 - (TKHostTokenRegistry)registry;
 - (id)description;
-- (void)acquireTokenConnection:(BOOL)a3 canRequireCardInsertion:(BOOL)a4 completion:(id)a5;
-- (void)attemptSmartCardRegistrationWithCompletion:(id)a3;
-- (void)connectionCanRequireCardInsertion:(BOOL)a3 withCompletion:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleAcquisitionError:(id)a3 canRequireCardInsertion:(BOOL)a4 completion:(id)a5;
-- (void)isEndpointValidWithCompletion:(id)a3;
-- (void)setDriver:(id)a3;
-- (void)setKeychainItems:(id)a3;
+- (void)acquireTokenConnection:(BOOL)connection canRequireCardInsertion:(BOOL)insertion completion:(id)completion;
+- (void)attemptSmartCardRegistrationWithCompletion:(id)completion;
+- (void)connectionCanRequireCardInsertion:(BOOL)insertion withCompletion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleAcquisitionError:(id)error canRequireCardInsertion:(BOOL)insertion completion:(id)completion;
+- (void)isEndpointValidWithCompletion:(id)completion;
+- (void)setDriver:(id)driver;
+- (void)setKeychainItems:(id)items;
 @end
 
 @implementation TKHostToken
@@ -40,43 +40,43 @@
   return v3;
 }
 
-- (void)setDriver:(id)a3
+- (void)setDriver:(id)driver
 {
-  v4 = a3;
+  driverCopy = driver;
   driverQueue = self->_driverQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100001B68;
   v7[3] = &unk_100038760;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = driverCopy;
+  v6 = driverCopy;
   dispatch_sync(driverQueue, v7);
 }
 
-- (TKHostToken)initWithTokenID:(id)a3 persistent:(BOOL)a4
+- (TKHostToken)initWithTokenID:(id)d persistent:(BOOL)persistent
 {
-  v7 = a3;
+  dCopy = d;
   v21.receiver = self;
   v21.super_class = TKHostToken;
   v8 = [(TKHostToken *)&v21 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_tokenID, a3);
-    v9->_persistent = a4;
+    objc_storeStrong(&v8->_tokenID, d);
+    v9->_persistent = persistent;
     keychainItems = v9->_keychainItems;
     v9->_keychainItems = &__NSArray0__struct;
 
-    v11 = [NSString stringWithFormat:@"hosttoken:%@", v7];
-    v12 = [v11 UTF8String];
+    dCopy = [NSString stringWithFormat:@"hosttoken:%@", dCopy];
+    uTF8String = [dCopy UTF8String];
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v14 = dispatch_queue_create(v12, v13);
+    v14 = dispatch_queue_create(uTF8String, v13);
     queue = v9->_queue;
     v9->_queue = v14;
 
-    v16 = [NSString stringWithFormat:@"hosttoken-driver:%@", v7];
-    v17 = dispatch_queue_create([v16 UTF8String], 0);
+    dCopy2 = [NSString stringWithFormat:@"hosttoken-driver:%@", dCopy];
+    v17 = dispatch_queue_create([dCopy2 UTF8String], 0);
     driverQueue = v9->_driverQueue;
     v9->_driverQueue = v17;
 
@@ -90,9 +90,9 @@
 
 - (id)description
 {
-  v3 = [(TKHostToken *)self isRegistered];
+  isRegistered = [(TKHostToken *)self isRegistered];
   v4 = &stru_1000392E8;
-  if (v3)
+  if (isRegistered)
   {
     v4 = @"-REGISTERED";
   }
@@ -111,48 +111,48 @@
     v7 = "TRNS";
   }
 
-  v8 = [(TKHostToken *)self tokenID];
-  v9 = [NSString stringWithFormat:@"%@ %s%@-%@", v6, v7, v5, v8, v11.receiver, v11.super_class];
+  tokenID = [(TKHostToken *)self tokenID];
+  v9 = [NSString stringWithFormat:@"%@ %s%@-%@", v6, v7, v5, tokenID, v11.receiver, v11.super_class];
 
   return v9;
 }
 
 - (BOOL)isRegistered
 {
-  v2 = [(TKHostToken *)self tokenRegistration];
-  v3 = v2 != 0;
+  tokenRegistration = [(TKHostToken *)self tokenRegistration];
+  v3 = tokenRegistration != 0;
 
   return v3;
 }
 
-- (void)connectionCanRequireCardInsertion:(BOOL)a3 withCompletion:(id)a4
+- (void)connectionCanRequireCardInsertion:(BOOL)insertion withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(TKHostToken *)self queue];
+  completionCopy = completion;
+  queue = [(TKHostToken *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100001F1C;
   block[3] = &unk_1000387D8;
-  v11 = a3;
+  insertionCopy = insertion;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = completionCopy;
+  v8 = completionCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)isEndpointValidWithCompletion:(id)a3
+- (void)isEndpointValidWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(TKHostToken *)v5 endpoint];
-  v7 = [(TKHostToken *)v5 driver];
-  v8 = [v7 valid];
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  endpoint = [(TKHostToken *)selfCopy endpoint];
+  driver = [(TKHostToken *)selfCopy driver];
+  valid = [driver valid];
 
-  objc_sync_exit(v5);
-  if (((v6 != 0) & v8) != 0)
+  objc_sync_exit(selfCopy);
+  if (((endpoint != 0) & valid) != 0)
   {
-    v9 = [[NSXPCConnection alloc] initWithListenerEndpoint:v6];
+    v9 = [[NSXPCConnection alloc] initWithListenerEndpoint:endpoint];
     v10 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___TKClientTokenProtocol];
     [v9 setRemoteObjectInterface:v10];
 
@@ -161,9 +161,9 @@
     v18[1] = 3221225472;
     v18[2] = sub_100002394;
     v18[3] = &unk_100038800;
-    v11 = v4;
+    v11 = completionCopy;
     v20 = v11;
-    v18[4] = v5;
+    v18[4] = selfCopy;
     v12 = v9;
     v19 = v12;
     v13 = [v12 remoteObjectProxyWithErrorHandler:v18];
@@ -179,66 +179,66 @@
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)acquireTokenConnection:(BOOL)a3 canRequireCardInsertion:(BOOL)a4 completion:(id)a5
+- (void)acquireTokenConnection:(BOOL)connection canRequireCardInsertion:(BOOL)insertion completion:(id)completion
 {
-  v6 = a3;
-  v8 = a5;
-  if (v6)
+  connectionCopy = connection;
+  completionCopy = completion;
+  if (connectionCopy)
   {
-    v9 = [(TKHostToken *)self registry];
-    v10 = [v9 driverCache];
-    v11 = [(TKHostToken *)self tokenID];
-    v12 = [v11 classID];
+    registry = [(TKHostToken *)self registry];
+    driverCache = [registry driverCache];
+    tokenID = [(TKHostToken *)self tokenID];
+    classID = [tokenID classID];
     v22 = 0;
-    v13 = [v10 hostTokenDriverWithClassID:v12 error:&v22];
+    v13 = [driverCache hostTokenDriverWithClassID:classID error:&v22];
     v14 = v22;
     [(TKHostToken *)self setDriver:v13];
 
-    v15 = [(TKHostToken *)self driver];
+    driver = [(TKHostToken *)self driver];
 
-    if (v15)
+    if (driver)
     {
-      v16 = [(TKHostToken *)self driver];
-      v17 = [(TKHostToken *)self tokenID];
+      driver2 = [(TKHostToken *)self driver];
+      tokenID2 = [(TKHostToken *)self tokenID];
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
       v19[2] = sub_100002648;
       v19[3] = &unk_100038878;
       v19[4] = self;
-      v21 = a4;
-      v20 = v8;
-      [v16 acquireTokenWithTokenID:v17 completion:v19];
+      insertionCopy = insertion;
+      v20 = completionCopy;
+      [driver2 acquireTokenWithTokenID:tokenID2 completion:v19];
     }
 
-    else if (v8)
+    else if (completionCopy)
     {
-      (*(v8 + 2))(v8, 0, v14);
+      (*(completionCopy + 2))(completionCopy, 0, v14);
     }
   }
 
   else
   {
     v18 = [[TKHostTokenConnection alloc] initWithToken:self];
-    if (v8)
+    if (completionCopy)
     {
-      (*(v8 + 2))(v8, v18, 0);
+      (*(completionCopy + 2))(completionCopy, v18, 0);
     }
   }
 }
 
-- (void)handleAcquisitionError:(id)a3 canRequireCardInsertion:(BOOL)a4 completion:(id)a5
+- (void)handleAcquisitionError:(id)error canRequireCardInsertion:(BOOL)insertion completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  errorCopy = error;
+  completionCopy = completion;
   if ([(TKHostToken *)self isRegistered])
   {
-    if (a4)
+    if (insertion)
     {
-      [(TKHostToken *)self attemptSmartCardRegistrationWithCompletion:v9];
+      [(TKHostToken *)self attemptSmartCardRegistrationWithCompletion:completionCopy];
     }
 
     else
@@ -250,60 +250,60 @@
         sub_10001D884(self, v11);
       }
 
-      if (v9)
+      if (completionCopy)
       {
-        v9[2](v9, 0, v10);
+        completionCopy[2](completionCopy, 0, v10);
       }
     }
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    v9[2](v9, 0, v8);
+    completionCopy[2](completionCopy, 0, errorCopy);
   }
 }
 
-- (void)attemptSmartCardRegistrationWithCompletion:(id)a3
+- (void)attemptSmartCardRegistrationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(TKHostToken *)self driver];
-  v6 = [v5 context];
-  v7 = [v6 smartCardRegistrationRegistry];
+  completionCopy = completion;
+  driver = [(TKHostToken *)self driver];
+  context = [driver context];
+  smartCardRegistrationRegistry = [context smartCardRegistrationRegistry];
 
-  if (!v7)
+  if (!smartCardRegistrationRegistry)
   {
     v8 = [TKSmartCardTokenRegistrationRegistry alloc];
-    v9 = [(TKHostToken *)self driver];
-    v10 = [v9 context];
-    v11 = [v10 registry];
-    v7 = [(TKSmartCardTokenRegistrationRegistry *)v8 initWithHostTokenRegistry:v11];
+    driver2 = [(TKHostToken *)self driver];
+    context2 = [driver2 context];
+    registry = [context2 registry];
+    smartCardRegistrationRegistry = [(TKSmartCardTokenRegistrationRegistry *)v8 initWithHostTokenRegistry:registry];
   }
 
-  v12 = [(TKHostToken *)self tokenID];
-  v13 = [(TKHostToken *)self tokenRegistration];
+  tokenID = [(TKHostToken *)self tokenID];
+  tokenRegistration = [(TKHostToken *)self tokenRegistration];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100002A60;
   v15[3] = &unk_1000388A0;
   v15[4] = self;
-  v16 = v4;
-  v14 = v4;
-  [(TKSmartCardTokenRegistrationRegistry *)v7 createNFCSlotForTokenID:v12 tokenRegistration:v13 completion:v15];
+  v16 = completionCopy;
+  v14 = completionCopy;
+  [(TKSmartCardTokenRegistrationRegistry *)smartCardRegistrationRegistry createNFCSlotForTokenID:tokenID tokenRegistration:tokenRegistration completion:v15];
 }
 
-- (void)setKeychainItems:(id)a3
+- (void)setKeychainItems:(id)items
 {
-  v5 = a3;
-  if (![(NSArray *)self->_keychainItems isEqualToArray:v5])
+  itemsCopy = items;
+  if (![(NSArray *)self->_keychainItems isEqualToArray:itemsCopy])
   {
-    obj = a3;
+    obj = items;
     v6 = [&__NSArray0__struct mutableCopy];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v20 = v5;
-    v7 = v5;
+    v20 = itemsCopy;
+    v7 = itemsCopy;
     v8 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v8)
     {
@@ -334,8 +334,8 @@
       while (v9);
     }
 
-    v13 = [(TKHostToken *)self registry];
-    v14 = [v13 keychain];
+    registry = [(TKHostToken *)self registry];
+    keychain = [registry keychain];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_100002DEC;
@@ -343,15 +343,15 @@
     v21[4] = self;
     v22 = v6;
     v15 = v6;
-    [v14 accessKeychainWithBlock:v21];
+    [keychain accessKeychainWithBlock:v21];
 
     objc_storeStrong(&self->_keychainItems, obj);
-    v16 = [(TKHostToken *)self registry];
-    v17 = [v16 beginTransaction:@"setKeychainItems"];
-    v18 = [v17 markModified];
-    [v18 commit];
+    registry2 = [(TKHostToken *)self registry];
+    v17 = [registry2 beginTransaction:@"setKeychainItems"];
+    markModified = [v17 markModified];
+    [markModified commit];
 
-    v5 = v20;
+    itemsCopy = v20;
   }
 }
 
@@ -367,21 +367,21 @@
   return v3;
 }
 
-- (TKHostToken)initWithCoder:(id)a3
+- (TKHostToken)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tokenid"];
-  v6 = [v4 decodeBoolForKey:@"persistent"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tokenregistration"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tokenid"];
+  v6 = [coderCopy decodeBoolForKey:@"persistent"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tokenregistration"];
   v8 = [(TKHostToken *)self initWithTokenID:v5 persistent:v6 tokenRegistration:v7];
   if ((v6 & 1) != 0 || v7)
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
     configurationData = v8->_configurationData;
     v8->_configurationData = v9;
 
-    v11 = [objc_opt_class() keychainItemClasses];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"items"];
+    keychainItemClasses = [objc_opt_class() keychainItemClasses];
+    v12 = [coderCopy decodeObjectOfClasses:keychainItemClasses forKey:@"items"];
     keychainItems = v8->_keychainItems;
     v8->_keychainItems = v12;
   }
@@ -389,23 +389,23 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(TKHostToken *)self tokenID];
-  [v8 encodeObject:v4 forKey:@"tokenid"];
+  coderCopy = coder;
+  tokenID = [(TKHostToken *)self tokenID];
+  [coderCopy encodeObject:tokenID forKey:@"tokenid"];
 
-  [v8 encodeBool:-[TKHostToken persistent](self forKey:{"persistent"), @"persistent"}];
-  v5 = [(TKHostToken *)self tokenRegistration];
-  [v8 encodeObject:v5 forKey:@"tokenregistration"];
+  [coderCopy encodeBool:-[TKHostToken persistent](self forKey:{"persistent"), @"persistent"}];
+  tokenRegistration = [(TKHostToken *)self tokenRegistration];
+  [coderCopy encodeObject:tokenRegistration forKey:@"tokenregistration"];
 
   if ([(TKHostToken *)self persistent]|| [(TKHostToken *)self isRegistered])
   {
-    v6 = [(TKHostToken *)self configurationData];
-    [v8 encodeObject:v6 forKey:@"data"];
+    configurationData = [(TKHostToken *)self configurationData];
+    [coderCopy encodeObject:configurationData forKey:@"data"];
 
-    v7 = [(TKHostToken *)self keychainItems];
-    [v8 encodeObject:v7 forKey:@"items"];
+    keychainItems = [(TKHostToken *)self keychainItems];
+    [coderCopy encodeObject:keychainItems forKey:@"items"];
   }
 }
 

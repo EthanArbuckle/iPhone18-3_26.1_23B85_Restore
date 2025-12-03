@@ -1,10 +1,10 @@
 @interface CPMapButton
-- (CPMapButton)initWithCoder:(id)a3;
+- (CPMapButton)initWithCoder:(id)coder;
 - (CPMapButton)initWithHandler:(void *)handler;
 - (CPMapButtonDelegate)controlDelegate;
 - (NSString)description;
 - (UIImage)image;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)handlePrimaryAction;
 - (void)setEnabled:(BOOL)enabled;
 - (void)setFocusedImage:(UIImage *)focusedImage;
@@ -21,9 +21,9 @@
   v5 = [(CPMapButton *)&v11 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v5->_identifier;
-    v5->_identifier = v6;
+    v5->_identifier = uUID;
 
     v5->_enabled = 1;
     v8 = MEMORY[0x2383C2A40](v4);
@@ -34,23 +34,23 @@
   return v5;
 }
 
-- (CPMapButton)initWithCoder:(id)a3
+- (CPMapButton)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CPMapButton *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPMapButtonIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPMapButtonIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v5->_enabled = [v4 decodeBoolForKey:@"CPMapButtonEnabled"];
-    v5->_hidden = [v4 decodeBoolForKey:@"CPMapButtonHidden"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPMapButtonImage"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"CPMapButtonEnabled"];
+    v5->_hidden = [coderCopy decodeBoolForKey:@"CPMapButtonHidden"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPMapButtonImage"];
     imageSet = v5->_imageSet;
     v5->_imageSet = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPMapButtonFocusedImage"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPMapButtonFocusedImage"];
     v11 = objc_opt_class();
     v12 = CPSanitizeImage(v10, v11);
     focusedImage = v5->_focusedImage;
@@ -60,19 +60,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CPMapButton *)self identifier];
-  [v4 encodeObject:v5 forKey:@"CPMapButtonIdentifier"];
+  coderCopy = coder;
+  identifier = [(CPMapButton *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"CPMapButtonIdentifier"];
 
-  [v4 encodeBool:-[CPMapButton isEnabled](self forKey:{"isEnabled"), @"CPMapButtonEnabled"}];
-  [v4 encodeBool:-[CPMapButton isHidden](self forKey:{"isHidden"), @"CPMapButtonHidden"}];
-  v6 = [(CPMapButton *)self imageSet];
-  [v4 encodeObject:v6 forKey:@"CPMapButtonImage"];
+  [coderCopy encodeBool:-[CPMapButton isEnabled](self forKey:{"isEnabled"), @"CPMapButtonEnabled"}];
+  [coderCopy encodeBool:-[CPMapButton isHidden](self forKey:{"isHidden"), @"CPMapButtonHidden"}];
+  imageSet = [(CPMapButton *)self imageSet];
+  [coderCopy encodeObject:imageSet forKey:@"CPMapButtonImage"];
 
-  v7 = [(CPMapButton *)self focusedImage];
-  [v4 encodeObject:v7 forKey:@"CPMapButtonFocusedImage"];
+  focusedImage = [(CPMapButton *)self focusedImage];
+  [coderCopy encodeObject:focusedImage forKey:@"CPMapButtonFocusedImage"];
 }
 
 - (NSString)description
@@ -81,10 +81,10 @@
   v10.receiver = self;
   v10.super_class = CPMapButton;
   v4 = [(CPMapButton *)&v10 description];
-  v5 = [(CPMapButton *)self identifier];
+  identifier = [(CPMapButton *)self identifier];
   v6 = CPSStringFromBOOL([(CPMapButton *)self isEnabled]);
   v7 = CPSStringFromBOOL([(CPMapButton *)self isHidden]);
-  v8 = [v3 stringWithFormat:@"%@ {UUID: %@, enabled: %@, hidden: %@}", v4, v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"%@ {UUID: %@, enabled: %@, hidden: %@}", v4, identifier, v6, v7];
 
   return v8;
 }
@@ -94,8 +94,8 @@
   if (self->_enabled != enabled)
   {
     self->_enabled = enabled;
-    v5 = [(CPMapButton *)self controlDelegate];
-    [v5 control:self setEnabled:self->_enabled];
+    controlDelegate = [(CPMapButton *)self controlDelegate];
+    [controlDelegate control:self setEnabled:self->_enabled];
   }
 }
 
@@ -111,17 +111,17 @@
   imageSet = self->_imageSet;
   self->_imageSet = v4;
 
-  v6 = [(CPMapButton *)self controlDelegate];
-  v7 = [(CPMapButton *)self imageSet];
-  [v6 mapButton:self setImageSet:v7];
+  controlDelegate = [(CPMapButton *)self controlDelegate];
+  imageSet = [(CPMapButton *)self imageSet];
+  [controlDelegate mapButton:self setImageSet:imageSet];
 }
 
 - (UIImage)image
 {
-  v2 = [(CPMapButton *)self imageSet];
-  v3 = [v2 image];
+  imageSet = [(CPMapButton *)self imageSet];
+  image = [imageSet image];
 
-  return v3;
+  return image;
 }
 
 - (void)setFocusedImage:(UIImage *)focusedImage
@@ -135,8 +135,8 @@
     v8 = self->_focusedImage;
     self->_focusedImage = v7;
 
-    v9 = [(CPMapButton *)self controlDelegate];
-    [v9 mapButton:self setFocusedImage:self->_focusedImage];
+    controlDelegate = [(CPMapButton *)self controlDelegate];
+    [controlDelegate mapButton:self setFocusedImage:self->_focusedImage];
   }
 }
 
@@ -144,7 +144,7 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_236ED4000, a2, OS_LOG_TYPE_ERROR, "%@ action handler nil", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

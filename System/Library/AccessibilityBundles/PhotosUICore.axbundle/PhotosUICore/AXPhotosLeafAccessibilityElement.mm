@@ -1,6 +1,6 @@
 @interface AXPhotosLeafAccessibilityElement
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (AXPhotosLeafAccessibilityElement)initWithAccessibilityContainer:(id)a3 forLeaf:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (AXPhotosLeafAccessibilityElement)initWithAccessibilityContainer:(id)container forLeaf:(id)leaf;
 - (BOOL)_accessibilityIsPHAssetLocallyAvailable;
 - (BOOL)isAccessibilityElement;
 - (CGRect)accessibilityFrame;
@@ -32,49 +32,49 @@
 
 @implementation AXPhotosLeafAccessibilityElement
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axContentKind" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axAsset" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axSubtitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axIsSelected" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PHAsset" hasInstanceMethod:@"mainFileURL" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHAsset" hasInstanceMethod:@"px_isUnsavedSyndicatedAsset" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PHAsset" hasInstanceMethod:@"px_wasSavedThroughSyndication" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axInfoSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXStoryStyleSwitchingFullsizeLayout" hasInstanceMethod:@"_axStyleTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXCuratedLibraryUIViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXCuratedLibraryUIViewController" hasInstanceMethod:@"viewProvider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXCuratedLibraryViewDelegate" hasInstanceMethod:@"curatedLibraryViewControllerExpand:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"PXCuratedLibraryViewProvider" hasInstanceMethod:@"viewModel" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PXCuratedLibraryViewModel" hasInstanceMethod:@"isFullyExpanded" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PXStoryRelatedOverlayLayout"];
-  [v3 validateClass:@"PXStoryStyleSwitchingFullsizeLayout"];
-  [v3 validateClass:@"PXGPageControl"];
-  [v3 validateClass:@"PXCuratedLibraryUIViewController"];
-  [v3 validateClass:@"PXCuratedLibraryUIViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axIdentifier" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axContentKind" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axAsset" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axSubtitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axIsSelected" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PHAsset" hasInstanceMethod:@"mainFileURL" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHAsset" hasInstanceMethod:@"px_isUnsavedSyndicatedAsset" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PHAsset" hasInstanceMethod:@"px_wasSavedThroughSyndication" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PXGBasicAXGroup" hasInstanceMethod:@"axInfoSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXStoryStyleSwitchingFullsizeLayout" hasInstanceMethod:@"_axStyleTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryUIViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryUIViewController" hasInstanceMethod:@"viewProvider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryViewDelegate" hasInstanceMethod:@"curatedLibraryViewControllerExpand:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryViewProvider" hasInstanceMethod:@"viewModel" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryViewModel" hasInstanceMethod:@"isFullyExpanded" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PXStoryRelatedOverlayLayout"];
+  [validationsCopy validateClass:@"PXStoryStyleSwitchingFullsizeLayout"];
+  [validationsCopy validateClass:@"PXGPageControl"];
+  [validationsCopy validateClass:@"PXCuratedLibraryUIViewController"];
+  [validationsCopy validateClass:@"PXCuratedLibraryUIViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"PXGReusableAXInfo" hasInstanceMethod:@"axIdentifier" withFullSignature:{"@", 0}];
 }
 
-- (AXPhotosLeafAccessibilityElement)initWithAccessibilityContainer:(id)a3 forLeaf:(id)a4
+- (AXPhotosLeafAccessibilityElement)initWithAccessibilityContainer:(id)container forLeaf:(id)leaf
 {
   v8.receiver = self;
   v8.super_class = AXPhotosLeafAccessibilityElement;
-  v5 = a4;
-  v6 = [(AXPhotosLeafAccessibilityElement *)&v8 initWithAccessibilityContainer:a3];
-  [(AXPhotosLeafAccessibilityElement *)v6 setLeaf:v5, v8.receiver, v8.super_class];
+  leafCopy = leaf;
+  v6 = [(AXPhotosLeafAccessibilityElement *)&v8 initWithAccessibilityContainer:container];
+  [(AXPhotosLeafAccessibilityElement *)v6 setLeaf:leafCopy, v8.receiver, v8.super_class];
 
   return v6;
 }
 
 - (CGRect)accessibilityFrame
 {
-  v2 = [(AXPhotosLeafAccessibilityElement *)self leaf];
-  [v2 accessibilityFrame];
+  leaf = [(AXPhotosLeafAccessibilityElement *)self leaf];
+  [leaf accessibilityFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -98,16 +98,16 @@
     return 1;
   }
 
-  v3 = [(AXPhotosLeafAccessibilityElement *)self _axLeafView];
-  v4 = [v3 _accessibilityViewIsVisible];
+  _axLeafView = [(AXPhotosLeafAccessibilityElement *)self _axLeafView];
+  _accessibilityViewIsVisible = [_axLeafView _accessibilityViewIsVisible];
 
-  return v4;
+  return _accessibilityViewIsVisible;
 }
 
 - (int64_t)_accessibilityContentKind
 {
-  v2 = [(AXPhotosLeafAccessibilityElement *)self leaf];
-  v3 = [v2 safeIntegerForKey:@"axContentKind"];
+  leaf = [(AXPhotosLeafAccessibilityElement *)self leaf];
+  v3 = [leaf safeIntegerForKey:@"axContentKind"];
 
   return v3;
 }
@@ -116,11 +116,11 @@
 {
   if ([(AXPhotosLeafAccessibilityElement *)self _accessibilityContentKind]== 6)
   {
-    v3 = [(AXPhotosLeafAccessibilityElement *)self _axLeafAsset];
+    _axLeafAsset = [(AXPhotosLeafAccessibilityElement *)self _axLeafAsset];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 accessibilityURL];
+      accessibilityURL = [_axLeafAsset accessibilityURL];
 LABEL_6:
 
       goto LABEL_9;
@@ -128,101 +128,101 @@ LABEL_6:
 
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v3 safeValueForKey:@"mainFileURL"];
-      v4 = __UIAccessibilitySafeClass();
+      v5 = [_axLeafAsset safeValueForKey:@"mainFileURL"];
+      accessibilityURL = __UIAccessibilitySafeClass();
 
       goto LABEL_6;
     }
   }
 
-  v4 = 0;
+  accessibilityURL = 0;
 LABEL_9:
 
-  return v4;
+  return accessibilityURL;
 }
 
 - (id)_accessibilityPHAssetLocalIdentifier
 {
-  v2 = [(AXPhotosLeafAccessibilityElement *)self _axLeafAsset];
-  v3 = [v2 _accessibilityPHAssetLocalIdentifier];
+  _axLeafAsset = [(AXPhotosLeafAccessibilityElement *)self _axLeafAsset];
+  _accessibilityPHAssetLocalIdentifier = [_axLeafAsset _accessibilityPHAssetLocalIdentifier];
 
-  return v3;
+  return _accessibilityPHAssetLocalIdentifier;
 }
 
 - (id)_accessibilityPhotoLibraryURL
 {
-  v2 = [(AXPhotosLeafAccessibilityElement *)self _axLeafAsset];
-  v3 = [v2 _accessibilityPhotoLibraryURL];
+  _axLeafAsset = [(AXPhotosLeafAccessibilityElement *)self _axLeafAsset];
+  _accessibilityPhotoLibraryURL = [_axLeafAsset _accessibilityPhotoLibraryURL];
 
-  return v3;
+  return _accessibilityPhotoLibraryURL;
 }
 
 - (BOOL)_accessibilityIsPHAssetLocallyAvailable
 {
-  v2 = [(AXPhotosLeafAccessibilityElement *)self _axLeafAsset];
-  v3 = [v2 _accessibilityIsPHAssetLocallyAvailable];
+  _axLeafAsset = [(AXPhotosLeafAccessibilityElement *)self _axLeafAsset];
+  _accessibilityIsPHAssetLocallyAvailable = [_axLeafAsset _accessibilityIsPHAssetLocallyAvailable];
 
-  return v3;
+  return _accessibilityIsPHAssetLocallyAvailable;
 }
 
 - (id)accessibilityCustomContent
 {
   if ([(AXPhotosLeafAccessibilityElement *)self _accessibilityContentKind]== 6)
   {
-    v3 = [(AXPhotosLeafAccessibilityElement *)self _axLeafAsset];
-    v4 = [v3 accessibilityCustomContent];
+    _axLeafAsset = [(AXPhotosLeafAccessibilityElement *)self _axLeafAsset];
+    accessibilityCustomContent = [_axLeafAsset accessibilityCustomContent];
   }
 
   else
   {
-    v4 = 0;
+    accessibilityCustomContent = 0;
   }
 
-  return v4;
+  return accessibilityCustomContent;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(AXPhotosLeafAccessibilityElement *)self _accessibilityContentKind];
-  if (v3 > 4)
+  _accessibilityContentKind = [(AXPhotosLeafAccessibilityElement *)self _accessibilityContentKind];
+  if (_accessibilityContentKind > 4)
   {
-    if (v3 == 5)
+    if (_accessibilityContentKind == 5)
     {
-      v7 = [(AXPhotosLeafAccessibilityElement *)self _axLeafView];
+      _axLeafView = [(AXPhotosLeafAccessibilityElement *)self _axLeafView];
     }
 
     else
     {
-      if (v3 != 6)
+      if (_accessibilityContentKind != 6)
       {
         goto LABEL_16;
       }
 
-      v7 = [(AXPhotosLeafAccessibilityElement *)self _axLeafAsset];
+      _axLeafView = [(AXPhotosLeafAccessibilityElement *)self _axLeafAsset];
     }
 
-    v5 = v7;
-    v8 = [v7 accessibilityLabel];
+    v5 = _axLeafView;
+    accessibilityLabel = [_axLeafView accessibilityLabel];
     goto LABEL_12;
   }
 
-  if ((v3 - 2) < 2)
+  if ((_accessibilityContentKind - 2) < 2)
   {
-    v4 = [(AXPhotosLeafAccessibilityElement *)self leaf];
-    v5 = v4;
+    leaf = [(AXPhotosLeafAccessibilityElement *)self leaf];
+    v5 = leaf;
     v6 = @"axText";
 LABEL_9:
-    v8 = [v4 safeValueForKey:v6];
+    accessibilityLabel = [leaf safeValueForKey:v6];
 LABEL_12:
-    v9 = v8;
+    accessibilityLabel2 = accessibilityLabel;
 
     goto LABEL_13;
   }
 
-  if (v3 == 1)
+  if (_accessibilityContentKind == 1)
   {
-    v4 = [(AXPhotosLeafAccessibilityElement *)self leaf];
-    v5 = v4;
+    leaf = [(AXPhotosLeafAccessibilityElement *)self leaf];
+    v5 = leaf;
     v6 = @"axTitle";
     goto LABEL_9;
   }
@@ -230,34 +230,34 @@ LABEL_12:
 LABEL_16:
   v11.receiver = self;
   v11.super_class = AXPhotosLeafAccessibilityElement;
-  v9 = [(AXPhotosLeafAccessibilityElement *)&v11 accessibilityLabel];
+  accessibilityLabel2 = [(AXPhotosLeafAccessibilityElement *)&v11 accessibilityLabel];
 LABEL_13:
 
-  return v9;
+  return accessibilityLabel2;
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(AXPhotosLeafAccessibilityElement *)self _accessibilityContentKind];
-  if (v3 == 6)
+  _accessibilityContentKind = [(AXPhotosLeafAccessibilityElement *)self _accessibilityContentKind];
+  if (_accessibilityContentKind == 6)
   {
-    v10 = [(AXPhotosLeafAccessibilityElement *)self leaf];
-    v4 = [v10 safeValueForKey:@"axAsset"];
+    leaf = [(AXPhotosLeafAccessibilityElement *)self leaf];
+    _axLeafView = [leaf safeValueForKey:@"axAsset"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v17.receiver = self;
       v17.super_class = AXPhotosLeafAccessibilityElement;
-      v5 = [(AXPhotosLeafAccessibilityElement *)&v17 accessibilityValue];
-      if ([v4 safeBoolForKey:@"px_isUnsavedSyndicatedAsset"])
+      accessibilityValue = [(AXPhotosLeafAccessibilityElement *)&v17 accessibilityValue];
+      if ([_axLeafView safeBoolForKey:@"px_isUnsavedSyndicatedAsset"])
       {
         v11 = @"not.yet.saved";
       }
 
       else
       {
-        if (![v4 safeBoolForKey:@"px_wasSavedThroughSyndication"])
+        if (![_axLeafView safeBoolForKey:@"px_wasSavedThroughSyndication"])
         {
           goto LABEL_19;
         }
@@ -268,30 +268,30 @@ LABEL_13:
       v15 = accessibilityPhotosUICoreLocalizedString(v11);
       v12 = __UIAXStringForVariables();
 
-      v5 = v12;
+      accessibilityValue = v12;
       goto LABEL_19;
     }
 
 LABEL_15:
     v16.receiver = self;
     v16.super_class = AXPhotosLeafAccessibilityElement;
-    v5 = [(AXPhotosLeafAccessibilityElement *)&v16 accessibilityValue];
+    accessibilityValue = [(AXPhotosLeafAccessibilityElement *)&v16 accessibilityValue];
     goto LABEL_20;
   }
 
-  if (v3 == 5)
+  if (_accessibilityContentKind == 5)
   {
-    v4 = [(AXPhotosLeafAccessibilityElement *)self _axLeafView];
-    v5 = [v4 accessibilityValue];
+    _axLeafView = [(AXPhotosLeafAccessibilityElement *)self _axLeafView];
+    accessibilityValue = [_axLeafView accessibilityValue];
     MEMORY[0x29C2E6930](@"PXGPageControl");
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(AXPhotosLeafAccessibilityElement *)self accessibilityContainer];
+      accessibilityContainer = [(AXPhotosLeafAccessibilityElement *)self accessibilityContainer];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [v6 group];
-        v8 = [v7 safeValueForKey:@"axInfoSource"];
+        group = [accessibilityContainer group];
+        v8 = [group safeValueForKey:@"axInfoSource"];
 
         MEMORY[0x29C2E6930](@"PXStoryStyleSwitchingFullsizeLayout");
         if (objc_opt_isKindOfClass())
@@ -299,7 +299,7 @@ LABEL_15:
           v14 = [v8 safeStringForKey:@"_axStyleTitle"];
           v9 = __UIAXStringForVariables();
 
-          v5 = v9;
+          accessibilityValue = v9;
         }
       }
     }
@@ -307,41 +307,41 @@ LABEL_15:
     goto LABEL_19;
   }
 
-  if (v3 != 1)
+  if (_accessibilityContentKind != 1)
   {
     goto LABEL_15;
   }
 
-  v4 = [(AXPhotosLeafAccessibilityElement *)self leaf];
-  v5 = [v4 safeValueForKey:@"axSubtitle"];
+  _axLeafView = [(AXPhotosLeafAccessibilityElement *)self leaf];
+  accessibilityValue = [_axLeafView safeValueForKey:@"axSubtitle"];
 LABEL_19:
 
 LABEL_20:
 
-  return v5;
+  return accessibilityValue;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v14.receiver = self;
   v14.super_class = AXPhotosLeafAccessibilityElement;
-  v3 = [(AXPhotosLeafAccessibilityElement *)&v14 accessibilityTraits];
-  v4 = [(AXPhotosLeafAccessibilityElement *)self _accessibilityContentKind];
-  if (v4 <= 2)
+  accessibilityTraits = [(AXPhotosLeafAccessibilityElement *)&v14 accessibilityTraits];
+  _accessibilityContentKind = [(AXPhotosLeafAccessibilityElement *)self _accessibilityContentKind];
+  if (_accessibilityContentKind <= 2)
   {
-    if (v4 != 1)
+    if (_accessibilityContentKind != 1)
     {
-      if (v4 != 2)
+      if (_accessibilityContentKind != 2)
       {
         goto LABEL_17;
       }
 
-      v6 = [(AXPhotosLeafAccessibilityElement *)self accessibilityContainer];
+      accessibilityContainer = [(AXPhotosLeafAccessibilityElement *)self accessibilityContainer];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [v6 group];
-        v8 = [v7 safeValueForKey:@"axInfoSource"];
+        group = [accessibilityContainer group];
+        v8 = [group safeValueForKey:@"axInfoSource"];
 
         MEMORY[0x29C2E6930](@"PXStoryRelatedOverlayLayout");
         isKindOfClass = objc_opt_isKindOfClass();
@@ -351,7 +351,7 @@ LABEL_20:
           v10 = 0;
         }
 
-        v3 |= v10;
+        accessibilityTraits |= v10;
       }
 
       goto LABEL_14;
@@ -362,11 +362,11 @@ LABEL_20:
 
   else
   {
-    if (v4 != 3)
+    if (_accessibilityContentKind != 3)
     {
-      if (v4 != 5)
+      if (_accessibilityContentKind != 5)
       {
-        if (v4 != 6)
+        if (_accessibilityContentKind != 6)
         {
           goto LABEL_17;
         }
@@ -375,8 +375,8 @@ LABEL_20:
         goto LABEL_16;
       }
 
-      v6 = [(AXPhotosLeafAccessibilityElement *)self _axLeafView];
-      v3 |= [v6 accessibilityTraits];
+      accessibilityContainer = [(AXPhotosLeafAccessibilityElement *)self _axLeafView];
+      accessibilityTraits |= [accessibilityContainer accessibilityTraits];
 LABEL_14:
 
       goto LABEL_17;
@@ -386,19 +386,19 @@ LABEL_14:
   }
 
 LABEL_16:
-  v3 |= *v5;
+  accessibilityTraits |= *v5;
 LABEL_17:
-  v11 = [(AXPhotosLeafAccessibilityElement *)self leaf];
-  v12 = [v11 safeBoolForKey:@"axIsSelected"];
+  leaf = [(AXPhotosLeafAccessibilityElement *)self leaf];
+  v12 = [leaf safeBoolForKey:@"axIsSelected"];
 
   if (v12)
   {
-    return *MEMORY[0x29EDC7FC0] | v3;
+    return *MEMORY[0x29EDC7FC0] | accessibilityTraits;
   }
 
   else
   {
-    return v3 & ~*MEMORY[0x29EDC7FC0];
+    return accessibilityTraits & ~*MEMORY[0x29EDC7FC0];
   }
 }
 
@@ -426,34 +426,34 @@ LABEL_17:
 
 - (id)accessibilityIdentifier
 {
-  v3 = [(AXPhotosLeafAccessibilityElement *)self _axLeafContentView];
-  if (v3)
+  _axLeafContentView = [(AXPhotosLeafAccessibilityElement *)self _axLeafContentView];
+  if (_axLeafContentView)
   {
     v4 = MEMORY[0x29EDBA0F8];
     v5 = objc_opt_class();
-    v6 = NSStringFromClass(v5);
-    v7 = [v4 stringWithFormat:@"%@_AX", v6];
+    accessibilityContainer = NSStringFromClass(v5);
+    accessibilityIdentifier = [v4 stringWithFormat:@"%@_AX", accessibilityContainer];
 LABEL_3:
 
     goto LABEL_4;
   }
 
-  v9 = [(AXPhotosLeafAccessibilityElement *)self leaf];
+  leaf = [(AXPhotosLeafAccessibilityElement *)self leaf];
 
-  if (!v9 || (-[AXPhotosLeafAccessibilityElement leaf](self, "leaf"), v10 = objc_claimAutoreleasedReturnValue(), [v10 safeStringForKey:@"axIdentifier"], v7 = objc_claimAutoreleasedReturnValue(), v10, !v7))
+  if (!leaf || (-[AXPhotosLeafAccessibilityElement leaf](self, "leaf"), v10 = objc_claimAutoreleasedReturnValue(), [v10 safeStringForKey:@"axIdentifier"], accessibilityIdentifier = objc_claimAutoreleasedReturnValue(), v10, !accessibilityIdentifier))
   {
-    v6 = [(AXPhotosLeafAccessibilityElement *)self accessibilityContainer];
+    accessibilityContainer = [(AXPhotosLeafAccessibilityElement *)self accessibilityContainer];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v6 group];
-      v12 = [v11 safeValueForKey:@"axInfoSource"];
+      group = [accessibilityContainer group];
+      v12 = [group safeValueForKey:@"axInfoSource"];
 
       if (v12)
       {
         v13 = MEMORY[0x29EDBA0F8];
-        v14 = [v12 className];
-        v7 = [v13 stringWithFormat:@"%@-Info", v14];
+        className = [v12 className];
+        accessibilityIdentifier = [v13 stringWithFormat:@"%@-Info", className];
 
         goto LABEL_3;
       }
@@ -461,109 +461,109 @@ LABEL_3:
 
     v15.receiver = self;
     v15.super_class = AXPhotosLeafAccessibilityElement;
-    v7 = [(AXPhotosLeafAccessibilityElement *)&v15 accessibilityIdentifier];
+    accessibilityIdentifier = [(AXPhotosLeafAccessibilityElement *)&v15 accessibilityIdentifier];
   }
 
 LABEL_4:
 
-  return v7;
+  return accessibilityIdentifier;
 }
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v3 = [(AXPhotosLeafAccessibilityElement *)self _axLeafContentView];
-  v4 = v3;
-  if (v3)
+  _axLeafContentView = [(AXPhotosLeafAccessibilityElement *)self _axLeafContentView];
+  v4 = _axLeafContentView;
+  if (_axLeafContentView)
   {
-    v5 = [v3 _accessibilitySupplementaryFooterViews];
+    _accessibilitySupplementaryFooterViews = [_axLeafContentView _accessibilitySupplementaryFooterViews];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = AXPhotosLeafAccessibilityElement;
-    v5 = [(AXPhotosLeafAccessibilityElement *)&v8 _accessibilitySupplementaryFooterViews];
+    _accessibilitySupplementaryFooterViews = [(AXPhotosLeafAccessibilityElement *)&v8 _accessibilitySupplementaryFooterViews];
   }
 
-  v6 = v5;
+  v6 = _accessibilitySupplementaryFooterViews;
 
   return v6;
 }
 
 - (id)accessibilityCustomRotors
 {
-  v3 = [(AXPhotosLeafAccessibilityElement *)self _axLeafContentView];
-  v4 = v3;
-  if (v3)
+  _axLeafContentView = [(AXPhotosLeafAccessibilityElement *)self _axLeafContentView];
+  v4 = _axLeafContentView;
+  if (_axLeafContentView)
   {
-    v5 = [v3 accessibilityCustomRotors];
+    accessibilityCustomRotors = [_axLeafContentView accessibilityCustomRotors];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = AXPhotosLeafAccessibilityElement;
-    v5 = [(AXPhotosLeafAccessibilityElement *)&v8 accessibilityCustomRotors];
+    accessibilityCustomRotors = [(AXPhotosLeafAccessibilityElement *)&v8 accessibilityCustomRotors];
   }
 
-  v6 = v5;
+  v6 = accessibilityCustomRotors;
 
   return v6;
 }
 
 - (id)automationElements
 {
-  v3 = [(AXPhotosLeafAccessibilityElement *)self _axLeafContentView];
-  v4 = v3;
-  if (v3)
+  _axLeafContentView = [(AXPhotosLeafAccessibilityElement *)self _axLeafContentView];
+  v4 = _axLeafContentView;
+  if (_axLeafContentView)
   {
-    v5 = [v3 automationElements];
+    automationElements = [_axLeafContentView automationElements];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = AXPhotosLeafAccessibilityElement;
-    v5 = [(AXPhotosLeafAccessibilityElement *)&v8 automationElements];
+    automationElements = [(AXPhotosLeafAccessibilityElement *)&v8 automationElements];
   }
 
-  v6 = v5;
+  v6 = automationElements;
 
   return v6;
 }
 
 - (void)accessibilityIncrement
 {
-  v2 = [(AXPhotosLeafAccessibilityElement *)self _axLeafView];
-  [v2 accessibilityIncrement];
+  _axLeafView = [(AXPhotosLeafAccessibilityElement *)self _axLeafView];
+  [_axLeafView accessibilityIncrement];
 }
 
 - (void)accessibilityDecrement
 {
-  v2 = [(AXPhotosLeafAccessibilityElement *)self _axLeafView];
-  [v2 accessibilityDecrement];
+  _axLeafView = [(AXPhotosLeafAccessibilityElement *)self _axLeafView];
+  [_axLeafView accessibilityDecrement];
 }
 
 - (int64_t)_accessibilityPageCount
 {
-  v2 = [(AXPhotosLeafAccessibilityElement *)self _axLeafView];
-  v3 = [v2 _accessibilityPageCount];
+  _axLeafView = [(AXPhotosLeafAccessibilityElement *)self _axLeafView];
+  _accessibilityPageCount = [_axLeafView _accessibilityPageCount];
 
-  return v3;
+  return _accessibilityPageCount;
 }
 
 - (int64_t)_accessibilityPageIndex
 {
-  v2 = [(AXPhotosLeafAccessibilityElement *)self _axLeafView];
-  v3 = [v2 _accessibilityPageIndex];
+  _axLeafView = [(AXPhotosLeafAccessibilityElement *)self _axLeafView];
+  _accessibilityPageIndex = [_axLeafView _accessibilityPageIndex];
 
-  return v3;
+  return _accessibilityPageIndex;
 }
 
 - (id)_axLeafView
 {
-  v2 = [(AXPhotosLeafAccessibilityElement *)self leaf];
-  v3 = [v2 safeUIViewForKey:@"axView"];
+  leaf = [(AXPhotosLeafAccessibilityElement *)self leaf];
+  v3 = [leaf safeUIViewForKey:@"axView"];
 
   return v3;
 }
@@ -572,8 +572,8 @@ LABEL_4:
 {
   if ([(AXPhotosLeafAccessibilityElement *)self _accessibilityContentKind]== 6)
   {
-    v3 = [(AXPhotosLeafAccessibilityElement *)self leaf];
-    v4 = [v3 safeValueForKey:@"axAsset"];
+    leaf = [(AXPhotosLeafAccessibilityElement *)self leaf];
+    v4 = [leaf safeValueForKey:@"axAsset"];
   }
 
   else
@@ -586,13 +586,13 @@ LABEL_4:
 
 - (void)_axExpandLibrary
 {
-  v2 = [(AXPhotosLeafAccessibilityElement *)self _accessibilityCuratedLibraryUIViewController];
-  [v2 safeValueForKey:@"delegate"];
+  _accessibilityCuratedLibraryUIViewController = [(AXPhotosLeafAccessibilityElement *)self _accessibilityCuratedLibraryUIViewController];
+  [_accessibilityCuratedLibraryUIViewController safeValueForKey:@"delegate"];
   v5[0] = 0;
   v5[1] = v5;
   v5[2] = 0x2020000000;
   v3 = v6 = 0;
-  v4 = v2;
+  v4 = _accessibilityCuratedLibraryUIViewController;
   AXPerformSafeBlock();
 
   _Block_object_dispose(v5, 8);
@@ -608,8 +608,8 @@ uint64_t __52__AXPhotosLeafAccessibilityElement__axExpandLibrary__block_invoke(u
 - (id)accessibilityCustomActions
 {
   v12[1] = *MEMORY[0x29EDCA608];
-  v3 = [(AXPhotosLeafAccessibilityElement *)self _accessibilityCuratedLibraryUIViewController];
-  v4 = [v3 safeValueForKey:@"viewProvider"];
+  _accessibilityCuratedLibraryUIViewController = [(AXPhotosLeafAccessibilityElement *)self _accessibilityCuratedLibraryUIViewController];
+  v4 = [_accessibilityCuratedLibraryUIViewController safeValueForKey:@"viewProvider"];
   v5 = [v4 safeValueForKey:@"viewModel"];
 
   if ([v5 safeBoolForKey:@"isFullyExpanded"])
@@ -647,15 +647,15 @@ uint64_t __52__AXPhotosLeafAccessibilityElement__axExpandLibrary__block_invoke(u
     v6[3] = &unk_29F2E6158;
     v6[4] = self;
     v3 = [(AXPhotosLeafAccessibilityElement *)self _accessibilityFindAncestor:v6 startWithSelf:1];
-    v4 = [v3 _accessibilityViewController];
+    _accessibilityViewController = [v3 _accessibilityViewController];
   }
 
   else
   {
-    v4 = 0;
+    _accessibilityViewController = 0;
   }
 
-  return v4;
+  return _accessibilityViewController;
 }
 
 uint64_t __80__AXPhotosLeafAccessibilityElement__accessibilityCuratedLibraryUIViewController__block_invoke(uint64_t a1, void *a2)

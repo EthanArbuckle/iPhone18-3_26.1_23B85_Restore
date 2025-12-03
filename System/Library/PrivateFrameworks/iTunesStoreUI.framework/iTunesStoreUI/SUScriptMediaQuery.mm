@@ -1,30 +1,30 @@
 @interface SUScriptMediaQuery
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (MPMediaQuery)nativeQuery;
 - (NSArray)collections;
 - (NSArray)items;
 - (NSString)groupingType;
-- (id)canFilterByProperty:(id)a3;
+- (id)canFilterByProperty:(id)property;
 - (id)filterPredicates;
-- (id)makeFilterPredicateWithProperty:(id)a3 value:(id)a4 comparisonType:(id)a5;
+- (id)makeFilterPredicateWithProperty:(id)property value:(id)value comparisonType:(id)type;
 - (id)scriptAttributeKeys;
 - (void)_beginWatchingLibraryIfNecessary;
 - (void)_resetCaches;
-- (void)addFilterPredicate:(id)a3;
+- (void)addFilterPredicate:(id)predicate;
 - (void)dealloc;
-- (void)removeFilterPredicate:(id)a3;
-- (void)setFilterPredicates:(id)a3;
-- (void)setGroupingType:(id)a3;
+- (void)removeFilterPredicate:(id)predicate;
+- (void)setFilterPredicates:(id)predicates;
+- (void)setGroupingType:(id)type;
 @end
 
 @implementation SUScriptMediaQuery
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E696FBA8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E696FBA8] object:0];
 
   v4.receiver = self;
   v4.super_class = SUScriptMediaQuery;
@@ -33,12 +33,12 @@
 
 - (MPMediaQuery)nativeQuery
 {
-  v2 = [(SUScriptObject *)self nativeObject];
+  nativeObject = [(SUScriptObject *)self nativeObject];
 
-  return [(SUScriptNativeObject *)v2 object];
+  return [(SUScriptNativeObject *)nativeObject object];
 }
 
-- (void)addFilterPredicate:(id)a3
+- (void)addFilterPredicate:(id)predicate
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -68,7 +68,7 @@ uint64_t __41__SUScriptMediaQuery_addFilterPredicate___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)canFilterByProperty:(id)a3
+- (id)canFilterByProperty:(id)property
 {
   v6 = 0;
   v7 = &v6;
@@ -116,14 +116,14 @@ uint64_t __42__SUScriptMediaQuery_canFilterByProperty___block_invoke(uint64_t a1
   return result;
 }
 
-- (id)makeFilterPredicateWithProperty:(id)a3 value:(id)a4 comparisonType:(id)a5
+- (id)makeFilterPredicateWithProperty:(id)property value:(id)value comparisonType:(id)type
 {
-  v5 = [[SUScriptMediaPropertyPredicate alloc] initWithProperty:a3 value:a4 comparisonType:a5];
+  v5 = [[SUScriptMediaPropertyPredicate alloc] initWithProperty:property value:value comparisonType:type];
 
   return v5;
 }
 
-- (void)removeFilterPredicate:(id)a3
+- (void)removeFilterPredicate:(id)predicate
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -166,15 +166,15 @@ uint64_t __44__SUScriptMediaQuery_removeFilterPredicate___block_invoke(uint64_t 
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -251,15 +251,15 @@ id __33__SUScriptMediaQuery_collections__block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -327,15 +327,15 @@ id __38__SUScriptMediaQuery_filterPredicates__block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -365,15 +365,15 @@ unint64_t __34__SUScriptMediaQuery_groupingType__block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -429,21 +429,21 @@ id __27__SUScriptMediaQuery_items__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setFilterPredicates:(id)a3
+- (void)setFilterPredicates:(id)predicates
 {
-  v3 = a3;
-  if (a3)
+  predicatesCopy = predicates;
+  if (predicates)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
-      v3 = 0;
+      predicatesCopy = 0;
       goto LABEL_7;
     }
 
-    v3 = [v3 copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
-    if (!v3)
+    predicatesCopy = [predicatesCopy copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
+    if (!predicatesCopy)
     {
       [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
       goto LABEL_7;
@@ -494,7 +494,7 @@ void __42__SUScriptMediaQuery_setFilterPredicates___block_invoke(uint64_t a1)
   [objc_msgSend(objc_msgSend(*(a1 + 40) "nativeObject")];
 }
 
-- (void)setGroupingType:(id)a3
+- (void)setGroupingType:(id)type
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -569,11 +569,11 @@ LABEL_18:
 {
   if (!self->_watchingLibrary)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     self->_watchingLibrary = 1;
     v4 = *MEMORY[0x1E696FBA8];
 
-    [v3 addObserver:self selector:sel__libraryChangedNotification_ name:v4 object:0];
+    [defaultCenter addObserver:self selector:sel__libraryChangedNotification_ name:v4 object:0];
   }
 }
 
@@ -585,27 +585,27 @@ LABEL_18:
   self->_items = 0;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_35 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptMediaQuery;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_30, 4);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_30, 4);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptMediaQuery;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -615,14 +615,14 @@ LABEL_18:
 {
   v4.receiver = self;
   v4.super_class = SUScriptMediaQuery;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_35 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_35 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_30 = sel_addFilterPredicate_;
     unk_1EBF3B070 = @"addFilterPredicate";

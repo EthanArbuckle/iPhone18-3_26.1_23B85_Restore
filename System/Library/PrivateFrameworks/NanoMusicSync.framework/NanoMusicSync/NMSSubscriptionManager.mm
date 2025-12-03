@@ -3,13 +3,13 @@
 - (NMSSubscriptionManager)init;
 - (int64_t)subscriptionType;
 - (unint64_t)subscriptionCapabilities;
-- (void)_handleActiveUserIdentityDidChangeNotification:(id)a3;
-- (void)_handleSubscriptionStatusDidChangeNotification:(id)a3;
-- (void)_handleUserIdentityStoreDidChangeNotification:(id)a3;
+- (void)_handleActiveUserIdentityDidChangeNotification:(id)notification;
+- (void)_handleSubscriptionStatusDidChangeNotification:(id)notification;
+- (void)_handleUserIdentityStoreDidChangeNotification:(id)notification;
 - (void)_retrySubscriptionStatusRequest;
 - (void)_updateActiveAccount;
 - (void)_updateSubscriptionStatus;
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3;
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability;
 @end
 
 @implementation NMSSubscriptionManager
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __39__NMSSubscriptionManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken_1 != -1)
   {
     dispatch_once(&sharedManager_onceToken_1, block);
@@ -172,10 +172,10 @@ void __30__NMSSubscriptionManager_init__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability
 {
-  v4 = a3;
-  if ([v4 isRemoteServerLikelyReachable] && objc_msgSend(v4, "isCurrentNetworkLinkHighQuality"))
+  reachabilityCopy = reachability;
+  if ([reachabilityCopy isRemoteServerLikelyReachable] && objc_msgSend(reachabilityCopy, "isCurrentNetworkLinkHighQuality"))
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -206,7 +206,7 @@ uint64_t __73__NMSSubscriptionManager_environmentMonitorDidChangeNetworkReachabi
   return result;
 }
 
-- (void)_handleSubscriptionStatusDidChangeNotification:(id)a3
+- (void)_handleSubscriptionStatusDidChangeNotification:(id)notification
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -229,7 +229,7 @@ uint64_t __73__NMSSubscriptionManager__handleSubscriptionStatusDidChangeNotifica
   return [*(a1 + 32) _updateSubscriptionStatus];
 }
 
-- (void)_handleUserIdentityStoreDidChangeNotification:(id)a3
+- (void)_handleUserIdentityStoreDidChangeNotification:(id)notification
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -252,7 +252,7 @@ uint64_t __72__NMSSubscriptionManager__handleUserIdentityStoreDidChangeNotificat
   return [*(a1 + 32) _updateActiveAccount];
 }
 
-- (void)_handleActiveUserIdentityDidChangeNotification:(id)a3
+- (void)_handleActiveUserIdentityDidChangeNotification:(id)notification
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -298,13 +298,13 @@ void __46__NMSSubscriptionManager__updateActiveAccount__block_invoke(uint64_t a1
     _os_log_impl(&dword_25B27B000, v3, OS_LOG_TYPE_DEFAULT, "[Subscription] Will get subscription status now", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277D7FB78] sharedStatusController];
+  mEMORY[0x277D7FB78] = [MEMORY[0x277D7FB78] sharedStatusController];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __51__NMSSubscriptionManager__updateSubscriptionStatus__block_invoke;
   v5[3] = &unk_27993EC90;
   v5[4] = self;
-  [v4 getSubscriptionStatusWithCompletionHandler:v5];
+  [mEMORY[0x277D7FB78] getSubscriptionStatusWithCompletionHandler:v5];
 }
 
 void __51__NMSSubscriptionManager__updateSubscriptionStatus__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -452,8 +452,8 @@ void __51__NMSSubscriptionManager__updateSubscriptionStatus__block_invoke_25(uin
   failedGetSubscriptionStatusAttempts = self->_failedGetSubscriptionStatusAttempts;
   if (!failedGetSubscriptionStatusAttempts)
   {
-    v4 = [MEMORY[0x277D7FA90] sharedMonitor];
-    [v4 registerObserver:self];
+    mEMORY[0x277D7FA90] = [MEMORY[0x277D7FA90] sharedMonitor];
+    [mEMORY[0x277D7FA90] registerObserver:self];
 
     failedGetSubscriptionStatusAttempts = self->_failedGetSubscriptionStatusAttempts;
   }

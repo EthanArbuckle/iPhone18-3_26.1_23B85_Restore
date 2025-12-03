@@ -1,101 +1,101 @@
 @interface CRLSelectionModelTranslator
-- (BOOL)isSelectionPathUserSelectable:(id)a3 isInCollaborationMode:(BOOL)a4;
-- (id)boardItemsForSelectionPath:(id)a3;
-- (id)containerToInsertIntoForSelectionPath:(id)a3;
-- (id)infoForSelectionPath:(id)a3;
-- (id)infosForSelectionPath:(id)a3;
-- (id)selectionPathForInfos:(id)a3;
-- (id)selectionPathForNothingSelectedInsideGroup:(id)a3;
-- (id)selectionPathForRange:(_NSRange)a3 onStorage:(id)a4;
-- (id)selectionPathForRange:(_NSRange)a3 onStorage:(id)a4 headCursorAffinity:(unint64_t)a5 tailCursorAffinity:(unint64_t)a6;
-- (id)selectionPathForSelection:(id)a3 onStorage:(id)a4;
-- (id)selectionPathForTextRange:(id)a3 onStorage:(id)a4;
-- (id)selectionPathRemovingCrossContainerSelectionsForSelectionPath:(id)a3;
-- (id)unlockedBoardItemsForSelectionPath:(id)a3;
-- (id)unsafePossiblyUnselectableSelectionPathForInfos:(id)a3;
-- (id)visualSelectionPathForRange:(_NSRange)a3 onStorage:(id)a4;
-- (id)visualSelectionPathForTextRange:(id)a3 onStorage:(id)a4;
+- (BOOL)isSelectionPathUserSelectable:(id)selectable isInCollaborationMode:(BOOL)mode;
+- (id)boardItemsForSelectionPath:(id)path;
+- (id)containerToInsertIntoForSelectionPath:(id)path;
+- (id)infoForSelectionPath:(id)path;
+- (id)infosForSelectionPath:(id)path;
+- (id)selectionPathForInfos:(id)infos;
+- (id)selectionPathForNothingSelectedInsideGroup:(id)group;
+- (id)selectionPathForRange:(_NSRange)range onStorage:(id)storage;
+- (id)selectionPathForRange:(_NSRange)range onStorage:(id)storage headCursorAffinity:(unint64_t)affinity tailCursorAffinity:(unint64_t)cursorAffinity;
+- (id)selectionPathForSelection:(id)selection onStorage:(id)storage;
+- (id)selectionPathForTextRange:(id)range onStorage:(id)storage;
+- (id)selectionPathRemovingCrossContainerSelectionsForSelectionPath:(id)path;
+- (id)unlockedBoardItemsForSelectionPath:(id)path;
+- (id)unsafePossiblyUnselectableSelectionPathForInfos:(id)infos;
+- (id)visualSelectionPathForRange:(_NSRange)range onStorage:(id)storage;
+- (id)visualSelectionPathForTextRange:(id)range onStorage:(id)storage;
 @end
 
 @implementation CRLSelectionModelTranslator
 
-- (id)infoForSelectionPath:(id)a3
+- (id)infoForSelectionPath:(id)path
 {
-  v3 = [(CRLSelectionModelTranslator *)self infosForSelectionPath:a3];
+  v3 = [(CRLSelectionModelTranslator *)self infosForSelectionPath:path];
   if ([v3 count] == 1)
   {
-    v4 = [v3 anyObject];
+    anyObject = [v3 anyObject];
   }
 
   else
   {
-    v4 = 0;
+    anyObject = 0;
   }
 
-  return v4;
+  return anyObject;
 }
 
-- (id)infosForSelectionPath:(id)a3
+- (id)infosForSelectionPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[NSSet set];
-  v5 = [v3 mostSpecificSelectionOfClass:objc_opt_class()];
+  v5 = [pathCopy mostSpecificSelectionOfClass:objc_opt_class()];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 boardItems];
+    boardItems = [v5 boardItems];
 
     if ([v6 itemCount] == 1)
     {
-      v8 = [v6 boardItems];
-      v9 = [v8 anyObject];
+      boardItems2 = [v6 boardItems];
+      anyObject = [boardItems2 anyObject];
 
-      if ([v9 conformsToProtocol:&OBJC_PROTOCOL___CRLContainerInfo])
+      if ([anyObject conformsToProtocol:&OBJC_PROTOCOL___CRLContainerInfo])
       {
-        v10 = [v9 infoForSelectionPath:v3];
+        v10 = [anyObject infoForSelectionPath:pathCopy];
         if (v10)
         {
           v11 = [NSSet setWithObject:v10];
 
-          v7 = v11;
+          boardItems = v11;
         }
       }
     }
 
-    v4 = v7;
+    v4 = boardItems;
   }
 
   return v4;
 }
 
-- (id)unsafePossiblyUnselectableSelectionPathForInfos:(id)a3
+- (id)unsafePossiblyUnselectableSelectionPathForInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   v5 = +[NSThread currentThread];
-  v6 = [v5 threadDictionary];
-  [v6 setObject:&__kCFBooleanTrue forKey:@"CRLSelectionModelTranslatorThreadShouldSuppressSelectableAssert"];
+  threadDictionary = [v5 threadDictionary];
+  [threadDictionary setObject:&__kCFBooleanTrue forKey:@"CRLSelectionModelTranslatorThreadShouldSuppressSelectableAssert"];
 
-  v7 = [(CRLSelectionModelTranslator *)self selectionPathForInfos:v4];
+  v7 = [(CRLSelectionModelTranslator *)self selectionPathForInfos:infosCopy];
 
   v8 = +[NSThread currentThread];
-  v9 = [v8 threadDictionary];
-  [v9 removeObjectForKey:@"CRLSelectionModelTranslatorThreadShouldSuppressSelectableAssert"];
+  threadDictionary2 = [v8 threadDictionary];
+  [threadDictionary2 removeObjectForKey:@"CRLSelectionModelTranslatorThreadShouldSuppressSelectableAssert"];
 
   return v7;
 }
 
-- (id)selectionPathForInfos:(id)a3
+- (id)selectionPathForInfos:(id)infos
 {
-  v3 = a3;
+  infosCopy = infos;
   v4 = +[NSThread currentThread];
-  v5 = [v4 threadDictionary];
-  v6 = [v5 objectForKey:@"CRLSelectionModelTranslatorThreadShouldSuppressSelectableAssert"];
+  threadDictionary = [v4 threadDictionary];
+  v6 = [threadDictionary objectForKey:@"CRLSelectionModelTranslatorThreadShouldSuppressSelectableAssert"];
 
   v144 = 0u;
   v145 = 0u;
   v142 = 0u;
   v143 = 0u;
-  v7 = v3;
+  v7 = infosCopy;
   v8 = [v7 countByEnumeratingWithState:&v142 objects:v159 count:16];
   v129 = v7;
   if (v8)
@@ -255,8 +255,8 @@ LABEL_27:
           if (v47)
           {
             v48 = objc_opt_class();
-            v49 = [v47 parentInfo];
-            v50 = sub_100014370(v48, v49);
+            parentInfo = [v47 parentInfo];
+            v50 = sub_100014370(v48, parentInfo);
 
             if (v50)
             {
@@ -312,7 +312,7 @@ LABEL_27:
 
             else
             {
-              v57 = [v47 parentInfo];
+              parentInfo2 = [v47 parentInfo];
               objc_opt_class();
               isKindOfClass = objc_opt_isKindOfClass();
 
@@ -364,8 +364,8 @@ LABEL_27:
                 }
 
                 v64 = objc_opt_class();
-                v65 = [v47 parentInfo];
-                v66 = sub_100013F00(v64, v65);
+                parentInfo3 = [v47 parentInfo];
+                v66 = sub_100013F00(v64, parentInfo3);
 
                 v44 = v126;
                 if (v126)
@@ -524,8 +524,8 @@ LABEL_27:
             v97 = v96;
             if (v96)
             {
-              v98 = [v96 allNestedChildrenItemsIncludingGroups];
-              [v88 addObjectsFromArray:v98];
+              allNestedChildrenItemsIncludingGroups = [v96 allNestedChildrenItemsIncludingGroups];
+              [v88 addObjectsFromArray:allNestedChildrenItemsIncludingGroups];
             }
           }
 
@@ -571,17 +571,17 @@ LABEL_27:
       if ([v127 count] == 1)
       {
         v86 = v44;
-        v114 = [v127 anyObject];
-        if (v114)
+        anyObject = [v127 anyObject];
+        if (anyObject)
         {
-          v115 = v114;
+          v115 = anyObject;
           do
           {
             v116 = [[_TtC8Freeform17CRLGroupSelection alloc] initWithGroupItem:v115];
             [v124 insertObject:v116 atIndex:2];
             v117 = objc_opt_class();
-            v118 = [v115 parentInfo];
-            v119 = sub_100014370(v117, v118);
+            parentInfo4 = [v115 parentInfo];
+            v119 = sub_100014370(v117, parentInfo4);
 
             v115 = v119;
           }
@@ -653,13 +653,13 @@ LABEL_120:
   return v112;
 }
 
-- (id)selectionPathForTextRange:(id)a3 onStorage:(id)a4
+- (id)selectionPathForTextRange:(id)range onStorage:(id)storage
 {
-  v6 = a3;
-  v7 = a4;
+  rangeCopy = range;
+  storageCopy = storage;
   v8 = objc_opt_class();
-  v9 = [v7 parentInfo];
-  v10 = sub_100014370(v8, v9);
+  parentInfo = [storageCopy parentInfo];
+  v10 = sub_100014370(v8, parentInfo);
 
   if (v10)
   {
@@ -667,9 +667,9 @@ LABEL_120:
     v12 = [(CRLSelectionModelTranslator *)self selectionPathForInfos:v11];
 
     v13 = [CRLWPSelection alloc];
-    v14 = [v6 nsRange];
+    nsRange = [rangeCopy nsRange];
     LOBYTE(v22) = 1;
-    v16 = -[CRLWPSelection initWithType:range:styleInsertionBehavior:caretAffinity:smartFieldRange:leadingEdge:storage:](v13, "initWithType:range:styleInsertionBehavior:caretAffinity:smartFieldRange:leadingEdge:storage:", 0, v14, v15, 0, [v6 caretAffinity], 0x7FFFFFFFFFFFFFFFLL, 0, v22, v7);
+    v16 = -[CRLWPSelection initWithType:range:styleInsertionBehavior:caretAffinity:smartFieldRange:leadingEdge:storage:](v13, "initWithType:range:styleInsertionBehavior:caretAffinity:smartFieldRange:leadingEdge:storage:", 0, nsRange, v15, 0, [rangeCopy caretAffinity], 0x7FFFFFFFFFFFFFFFLL, 0, v22, storageCopy);
     v17 = [v12 selectionPathWithAppendedSelection:v16];
   }
 
@@ -707,24 +707,24 @@ LABEL_120:
   return v17;
 }
 
-- (id)selectionPathForRange:(_NSRange)a3 onStorage:(id)a4
+- (id)selectionPathForRange:(_NSRange)range onStorage:(id)storage
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
   v8 = [_TtC8Freeform12CRLTextRange textRangeWith:location, length];
-  v9 = [(CRLSelectionModelTranslator *)self selectionPathForTextRange:v8 onStorage:v7];
+  v9 = [(CRLSelectionModelTranslator *)self selectionPathForTextRange:v8 onStorage:storageCopy];
 
   return v9;
 }
 
-- (id)visualSelectionPathForTextRange:(id)a3 onStorage:(id)a4
+- (id)visualSelectionPathForTextRange:(id)range onStorage:(id)storage
 {
-  v6 = a3;
-  v7 = a4;
+  rangeCopy = range;
+  storageCopy = storage;
   v8 = objc_opt_class();
-  v9 = [v7 parentInfo];
-  v10 = sub_100014370(v8, v9);
+  parentInfo = [storageCopy parentInfo];
+  v10 = sub_100014370(v8, parentInfo);
 
   if (v10)
   {
@@ -732,12 +732,12 @@ LABEL_120:
     v12 = [(CRLSelectionModelTranslator *)self selectionPathForInfos:v11];
 
     v13 = [CRLWPSelection alloc];
-    v14 = [v6 nsRange];
+    nsRange = [rangeCopy nsRange];
     v16 = v15;
-    v17 = [v6 caretAffinity];
-    LOBYTE(v24) = [v6 insertionEdge] == 0;
-    v18 = [(CRLWPSelection *)v13 initWithType:7 range:v14 styleInsertionBehavior:v16 caretAffinity:0 smartFieldRange:v17 leadingEdge:0x7FFFFFFFFFFFFFFFLL storage:0, v24, v7];
-    v19 = [v12 selectionPathWithAppendedSelection:v18];
+    caretAffinity = [rangeCopy caretAffinity];
+    LOBYTE(v24) = [rangeCopy insertionEdge] == 0;
+    storageCopy = [(CRLWPSelection *)v13 initWithType:7 range:nsRange styleInsertionBehavior:v16 caretAffinity:0 smartFieldRange:caretAffinity leadingEdge:0x7FFFFFFFFFFFFFFFLL storage:0, v24, storageCopy];
+    v19 = [v12 selectionPathWithAppendedSelection:storageCopy];
   }
 
   else
@@ -774,35 +774,35 @@ LABEL_120:
   return v19;
 }
 
-- (id)visualSelectionPathForRange:(_NSRange)a3 onStorage:(id)a4
+- (id)visualSelectionPathForRange:(_NSRange)range onStorage:(id)storage
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
   v8 = [_TtC8Freeform12CRLTextRange textRangeWith:location, length];
-  v9 = [(CRLSelectionModelTranslator *)self visualSelectionPathForTextRange:v8 onStorage:v7];
+  v9 = [(CRLSelectionModelTranslator *)self visualSelectionPathForTextRange:v8 onStorage:storageCopy];
 
   return v9;
 }
 
-- (id)selectionPathForRange:(_NSRange)a3 onStorage:(id)a4 headCursorAffinity:(unint64_t)a5 tailCursorAffinity:(unint64_t)a6
+- (id)selectionPathForRange:(_NSRange)range onStorage:(id)storage headCursorAffinity:(unint64_t)affinity tailCursorAffinity:(unint64_t)cursorAffinity
 {
-  length = a3.length;
-  location = a3.location;
-  v11 = a4;
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
   v12 = objc_opt_class();
-  v13 = [v11 parentInfo];
-  v14 = sub_100014370(v12, v13);
+  parentInfo = [storageCopy parentInfo];
+  v14 = sub_100014370(v12, parentInfo);
 
   if (v14)
   {
     v15 = [NSSet setWithObject:v14];
     v16 = [(CRLSelectionModelTranslator *)self selectionPathForInfos:v15];
 
-    v17 = [CRLWPSelection selectionWithRange:location type:length leadingEdge:0 storage:1, v11];
-    [v17 setHeadCursorAffinity:a5];
-    [v17 setTailCursorAffinity:a6];
-    v18 = [v16 selectionPathWithAppendedSelection:v17];
+    storageCopy = [CRLWPSelection selectionWithRange:location type:length leadingEdge:0 storage:1, storageCopy];
+    [storageCopy setHeadCursorAffinity:affinity];
+    [storageCopy setTailCursorAffinity:cursorAffinity];
+    v18 = [v16 selectionPathWithAppendedSelection:storageCopy];
   }
 
   else
@@ -839,21 +839,21 @@ LABEL_120:
   return v18;
 }
 
-- (id)selectionPathForSelection:(id)a3 onStorage:(id)a4
+- (id)selectionPathForSelection:(id)selection onStorage:(id)storage
 {
-  v6 = a3;
-  v7 = a4;
+  selectionCopy = selection;
+  storageCopy = storage;
   v8 = objc_opt_class();
-  v9 = [v7 parentInfo];
+  parentInfo = [storageCopy parentInfo];
 
-  v10 = sub_100014370(v8, v9);
+  v10 = sub_100014370(v8, parentInfo);
 
   if (v10)
   {
     v11 = [NSSet setWithObject:v10];
     v12 = [(CRLSelectionModelTranslator *)self selectionPathForInfos:v11];
 
-    v13 = [v12 selectionPathWithAppendedSelection:v6];
+    v13 = [v12 selectionPathWithAppendedSelection:selectionCopy];
   }
 
   else
@@ -890,10 +890,10 @@ LABEL_120:
   return v13;
 }
 
-- (id)selectionPathForNothingSelectedInsideGroup:(id)a3
+- (id)selectionPathForNothingSelectedInsideGroup:(id)group
 {
-  v4 = a3;
-  v5 = [NSSet setWithObject:v4];
+  groupCopy = group;
+  v5 = [NSSet setWithObject:groupCopy];
   v6 = [(CRLSelectionModelTranslator *)self selectionPathForInfos:v5];
 
   v7 = objc_opt_class();
@@ -929,49 +929,49 @@ LABEL_120:
     [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:212 isFatal:0 description:"We expect this selection to be a plain board item selection, not one for editing in a group."];
   }
 
-  v13 = [[_TtC8Freeform17CRLGroupSelection alloc] initWithGroupItem:v4];
+  v13 = [[_TtC8Freeform17CRLGroupSelection alloc] initWithGroupItem:groupCopy];
 
   v14 = [v6 selectionPathReplacingMostSpecificLocationOfSelection:v9 withSelection:v13];
 
   return v14;
 }
 
-- (id)boardItemsForSelectionPath:(id)a3
+- (id)boardItemsForSelectionPath:(id)path
 {
-  v3 = a3;
-  v4 = [v3 mostSpecificSelectionOfClass:objc_opt_class()];
+  pathCopy = path;
+  v4 = [pathCopy mostSpecificSelectionOfClass:objc_opt_class()];
 
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = [v4 boardItems];
+    boardItems = [v4 boardItems];
   }
 
   else
   {
-    v5 = +[NSSet set];
+    boardItems = +[NSSet set];
   }
 
-  v6 = v5;
+  v6 = boardItems;
 
   return v6;
 }
 
-- (id)unlockedBoardItemsForSelectionPath:(id)a3
+- (id)unlockedBoardItemsForSelectionPath:(id)path
 {
-  v3 = [(CRLSelectionModelTranslator *)self boardItemsForSelectionPath:a3];
+  v3 = [(CRLSelectionModelTranslator *)self boardItemsForSelectionPath:path];
   v4 = [v3 objectsPassingTest:&stru_1018602A0];
 
   return v4;
 }
 
-- (id)containerToInsertIntoForSelectionPath:(id)a3
+- (id)containerToInsertIntoForSelectionPath:(id)path
 {
-  v3 = a3;
-  v4 = [v3 mostSpecificSelectionOfClass:objc_opt_class()];
+  pathCopy = path;
+  v4 = [pathCopy mostSpecificSelectionOfClass:objc_opt_class()];
   v5 = v4;
   if (v4 && ([v4 hasSelectedItemsInNonGroupContainer] & 1) == 0)
   {
-    v32 = v3;
+    v32 = pathCopy;
     v7 = &_s10Foundation9IndexPathVSHAAMc_ptr;
     v8 = +[NSMutableArray array];
     v41 = 0u;
@@ -996,28 +996,28 @@ LABEL_6:
 
         v36 = v11;
         v12 = *(*(&v41 + 1) + 8 * v11);
-        v13 = [v7[423] array];
-        [v13 addObject:v12];
-        v14 = [v12 parentInfo];
+        array = [v7[423] array];
+        [array addObject:v12];
+        parentInfo = [v12 parentInfo];
         do
         {
           v15 = objc_opt_class();
-          v21 = sub_1003038E0(v14, v15, 1, v16, v17, v18, v19, v20, &OBJC_PROTOCOL___CRLContainerInfo);
-          [v13 crl_addNonNilObject:v21];
-          v22 = [v14 parentInfo];
+          v21 = sub_1003038E0(parentInfo, v15, 1, v16, v17, v18, v19, v20, &OBJC_PROTOCOL___CRLContainerInfo);
+          [array crl_addNonNilObject:v21];
+          v14ParentInfo = [parentInfo parentInfo];
 
-          v14 = v22;
+          parentInfo = v14ParentInfo;
         }
 
-        while (v22);
+        while (v14ParentInfo);
         if (v10)
         {
-          [v8 addObjectsFromArray:v13];
+          [v8 addObjectsFromArray:array];
         }
 
         else
         {
-          v23 = [NSSet setWithArray:v13];
+          v23 = [NSSet setWithArray:array];
           v37 = 0u;
           v38 = 0u;
           v39 = 0u;
@@ -1079,41 +1079,41 @@ LABEL_6:
 
     if ([v8 count])
     {
-      v6 = [v8 firstObject];
+      firstObject = [v8 firstObject];
     }
 
     else
     {
-      v6 = 0;
+      firstObject = 0;
     }
 
-    v3 = v32;
+    pathCopy = v32;
   }
 
   else
   {
-    v6 = 0;
+    firstObject = 0;
   }
 
-  return v6;
+  return firstObject;
 }
 
-- (id)selectionPathRemovingCrossContainerSelectionsForSelectionPath:(id)a3
+- (id)selectionPathRemovingCrossContainerSelectionsForSelectionPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CRLSelectionModelTranslator *)self infosForSelectionPath:v4];
+  pathCopy = path;
+  v5 = [(CRLSelectionModelTranslator *)self infosForSelectionPath:pathCopy];
   v6 = &_s10Foundation9IndexPathVSHAAMc_ptr;
   v7 = +[NSMutableSet set];
-  v8 = [v4 mostSpecificSelectionOfClass:objc_opt_class()];
+  v8 = [pathCopy mostSpecificSelectionOfClass:objc_opt_class()];
   v9 = v8;
   if (!v8 || ([v8 isCrossContainerSelection] & 1) == 0)
   {
-    v20 = v4;
+    v20 = pathCopy;
     goto LABEL_54;
   }
 
   v64 = v9;
-  v65 = self;
+  selfCopy = self;
   if ([v9 hasSelectedItemsInNonGroupContainer])
   {
     v10 = v7;
@@ -1122,8 +1122,8 @@ LABEL_6:
     v82 = 0u;
     v79 = 0u;
     v80 = 0u;
-    v11 = [v5 allObjects];
-    v12 = [v11 countByEnumeratingWithState:&v79 objects:v86 count:16];
+    allObjects = [v5 allObjects];
+    v12 = [allObjects countByEnumeratingWithState:&v79 objects:v86 count:16];
     if (v12)
     {
       v13 = v12;
@@ -1134,13 +1134,13 @@ LABEL_6:
         {
           if (*v80 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(allObjects);
           }
 
           v16 = *(*(&v79 + 1) + 8 * i);
           v17 = objc_opt_class();
-          v18 = [v16 parentInfo];
-          v19 = sub_100014370(v17, v18);
+          parentInfo = [v16 parentInfo];
+          v19 = sub_100014370(v17, parentInfo);
 
           if (v19)
           {
@@ -1148,7 +1148,7 @@ LABEL_6:
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v79 objects:v86 count:16];
+        v13 = [allObjects countByEnumeratingWithState:&v79 objects:v86 count:16];
       }
 
       while (v13);
@@ -1161,8 +1161,8 @@ LABEL_6:
 
   else
   {
-    v21 = [v5 allObjects];
-    [v7 addObjectsFromArray:v21];
+    allObjects2 = [v5 allObjects];
+    [v7 addObjectsFromArray:allObjects2];
   }
 
   v22 = [(CRLSelectionModelTranslator *)self selectionPathForInfos:v7];
@@ -1206,8 +1206,8 @@ LABEL_6:
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v52 = [v23 childInfos];
-    v53 = [v52 countByEnumeratingWithState:&v71 objects:v84 count:16];
+    childInfos = [v23 childInfos];
+    v53 = [childInfos countByEnumeratingWithState:&v71 objects:v84 count:16];
     if (v53)
     {
       v54 = v53;
@@ -1218,7 +1218,7 @@ LABEL_6:
         {
           if (*v72 != v55)
           {
-            objc_enumerationMutation(v52);
+            objc_enumerationMutation(childInfos);
           }
 
           v57 = *(*(&v71 + 1) + 8 * k);
@@ -1228,7 +1228,7 @@ LABEL_6:
           }
         }
 
-        v54 = [v52 countByEnumeratingWithState:&v71 objects:v84 count:16];
+        v54 = [childInfos countByEnumeratingWithState:&v71 objects:v84 count:16];
       }
 
       while (v54);
@@ -1237,7 +1237,7 @@ LABEL_6:
 LABEL_52:
     v22 = v62;
     v7 = v63;
-    self = v65;
+    self = selfCopy;
     goto LABEL_53;
   }
 
@@ -1253,7 +1253,7 @@ LABEL_52:
     v62 = v22;
     v63 = v7;
     v60 = v5;
-    v61 = v4;
+    v61 = pathCopy;
     v66 = *v68;
     do
     {
@@ -1265,9 +1265,9 @@ LABEL_52:
         }
 
         v29 = *(*(&v67 + 1) + 8 * m);
-        v30 = [v29 parentInfo];
+        parentInfo2 = [v29 parentInfo];
         v31 = objc_opt_class();
-        v37 = sub_1003038E0(v30, v31, 1, v32, v33, v34, v35, v36, &OBJC_PROTOCOL___CRLCanvasElementInfo);
+        v37 = sub_1003038E0(parentInfo2, v31, 1, v32, v33, v34, v35, v36, &OBJC_PROTOCOL___CRLCanvasElementInfo);
 
         while (v37 != v23)
         {
@@ -1275,9 +1275,9 @@ LABEL_52:
           {
             v38 = v37;
 
-            v39 = [v38 parentInfo];
+            parentInfo3 = [v38 parentInfo];
             v40 = objc_opt_class();
-            v37 = sub_1003038E0(v39, v40, 1, v41, v42, v43, v44, v45, &OBJC_PROTOCOL___CRLCanvasElementInfo);
+            v37 = sub_1003038E0(parentInfo3, v40, 1, v41, v42, v43, v44, v45, &OBJC_PROTOCOL___CRLCanvasElementInfo);
 
             v29 = v38;
           }
@@ -1300,7 +1300,7 @@ LABEL_32:
 
     while (v27);
     v5 = v60;
-    v4 = v61;
+    pathCopy = v61;
     goto LABEL_52;
   }
 
@@ -1314,16 +1314,16 @@ LABEL_54:
   return v20;
 }
 
-- (BOOL)isSelectionPathUserSelectable:(id)a3 isInCollaborationMode:(BOOL)a4
+- (BOOL)isSelectionPathUserSelectable:(id)selectable isInCollaborationMode:(BOOL)mode
 {
-  v5 = a3;
-  v6 = [v5 mostSpecificSelectionOfClass:objc_opt_class()];
+  selectableCopy = selectable;
+  v6 = [selectableCopy mostSpecificSelectionOfClass:objc_opt_class()];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v7 = [v6 containerGroups];
-  v8 = [v7 countByEnumeratingWithState:&v41 objects:v47 count:16];
+  containerGroups = [v6 containerGroups];
+  v8 = [containerGroups countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1334,7 +1334,7 @@ LABEL_3:
     {
       if (*v42 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(containerGroups);
       }
 
       if ([*(*(&v41 + 1) + 8 * v11) isEffectivelyEmpty])
@@ -1344,7 +1344,7 @@ LABEL_3:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v41 objects:v47 count:16];
+        v9 = [containerGroups countByEnumeratingWithState:&v41 objects:v47 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -1375,7 +1375,7 @@ LABEL_9:
     v12 = 1;
   }
 
-  [(CRLSelectionModelTranslator *)self boardItemsForSelectionPath:v5];
+  [(CRLSelectionModelTranslator *)self boardItemsForSelectionPath:selectableCopy];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -1423,8 +1423,8 @@ LABEL_9:
   }
 
 LABEL_24:
-  v23 = [(CRLSelectionModelTranslator *)self infosForSelectionPath:v5];
-  v14 = [v5 mostSpecificSelectionOfClass:0];
+  v23 = [(CRLSelectionModelTranslator *)self infosForSelectionPath:selectableCopy];
+  v14 = [selectableCopy mostSpecificSelectionOfClass:0];
   objc_opt_class();
   v24 = (objc_opt_isKindOfClass() & 1) == 0 && [v23 count] == 1;
   v35 = 0u;

@@ -3,7 +3,7 @@
 - (AirPortAssistantManagerDelegate)delegate;
 - (void)startSearchingForUnconfiguredAccessories;
 - (void)stopSearchingForUnconfiguredAccessories;
-- (void)wacDevicesAdded:(id)a3 andWACDevicesRemoved:(id)a4 withController:(id)a5;
+- (void)wacDevicesAdded:(id)added andWACDevicesRemoved:(id)removed withController:(id)controller;
 @end
 
 @implementation AirPortAssistantManager
@@ -33,11 +33,11 @@
     NSLog(@"Plugin: AirPortAssistantManager startSearchingForUnconfiguredAccessories", a2);
   }
 
-  v3 = [(AirPortAssistantController *)self->_airportAssistantController start2_4WiFiScan];
-  v4 = v3;
+  start2_4WiFiScan = [(AirPortAssistantController *)self->_airportAssistantController start2_4WiFiScan];
+  v4 = start2_4WiFiScan;
   if (self->__debugLog)
   {
-    NSLog(@"Plugin: Start Scan status: %d", v3);
+    NSLog(@"Plugin: Start Scan status: %d", start2_4WiFiScan);
   }
 
   if (!v4)
@@ -56,11 +56,11 @@ LABEL_7:
     [WeakRetained updateState:1];
 
     [(AirPortAssistantController *)self->_airportAssistantController stop2_4WiFiScan];
-    v7 = [(AirPortAssistantController *)self->_airportAssistantController start2_4WiFiScan];
-    v8 = v7;
+    start2_4WiFiScan2 = [(AirPortAssistantController *)self->_airportAssistantController start2_4WiFiScan];
+    v8 = start2_4WiFiScan2;
     if (self->__debugLog)
     {
-      NSLog(@"Plugin: Start Scan status: %d", v7);
+      NSLog(@"Plugin: Start Scan status: %d", start2_4WiFiScan2);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -88,26 +88,26 @@ LABEL_13:
   [WeakRetained updateState:1];
 }
 
-- (void)wacDevicesAdded:(id)a3 andWACDevicesRemoved:(id)a4 withController:(id)a5
+- (void)wacDevicesAdded:(id)added andWACDevicesRemoved:(id)removed withController:(id)controller
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  addedCopy = added;
+  removedCopy = removed;
+  controllerCopy = controller;
   if (self->__debugLog)
   {
     NSLog(@"Plugin: AirPortAssistantManager wacDevicesAdded:andWACDevicesRemoved:withController");
     if (self->__debugLog)
     {
-      NSLog(@"Plugin: Devices Added: %@", v11);
+      NSLog(@"Plugin: Devices Added: %@", addedCopy);
       if (self->__debugLog)
       {
-        NSLog(@"Plugin: Devices Removed: %@", v8);
+        NSLog(@"Plugin: Devices Removed: %@", removedCopy);
       }
     }
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained wacDevicesAdded:v11 andWACDevicesRemoved:v8];
+  [WeakRetained wacDevicesAdded:addedCopy andWACDevicesRemoved:removedCopy];
 }
 
 - (AirPortAssistantManagerDelegate)delegate

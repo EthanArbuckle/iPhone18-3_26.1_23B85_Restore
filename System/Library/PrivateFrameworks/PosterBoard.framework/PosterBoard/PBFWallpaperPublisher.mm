@@ -1,13 +1,13 @@
 @interface PBFWallpaperPublisher
-- (BOOL)_updatePath:(id)a3 addingIfNotExists:(BOOL)a4;
+- (BOOL)_updatePath:(id)path addingIfNotExists:(BOOL)exists;
 - (PBFWallpaperPublisher)init;
 - (unint64_t)_update;
 - (void)_compact;
-- (void)_updateSelectedLockPath:(id)a3 selectedHomePath:(id)a4 activeLockPath:(id)a5 activeHomePath:(id)a6;
-- (void)activateWithSelectedLockPath:(id)a3 selectedHomePath:(id)a4 activeLockPath:(id)a5 activeHomePath:(id)a6 recentlyChanged:(BOOL)a7;
-- (void)updateHomePath:(id)a3 matchingLockPath:(id)a4;
-- (void)updatePath:(id)a3;
-- (void)updateSelectedLockPath:(id)a3 selectedHomePath:(id)a4 activeLockPath:(id)a5 activeHomePath:(id)a6;
+- (void)_updateSelectedLockPath:(id)path selectedHomePath:(id)homePath activeLockPath:(id)lockPath activeHomePath:(id)activeHomePath;
+- (void)activateWithSelectedLockPath:(id)path selectedHomePath:(id)homePath activeLockPath:(id)lockPath activeHomePath:(id)activeHomePath recentlyChanged:(BOOL)changed;
+- (void)updateHomePath:(id)path matchingLockPath:(id)lockPath;
+- (void)updatePath:(id)path;
+- (void)updateSelectedLockPath:(id)path selectedHomePath:(id)homePath activeLockPath:(id)lockPath activeHomePath:(id)activeHomePath;
 @end
 
 @implementation PBFWallpaperPublisher
@@ -36,82 +36,82 @@
   return v2;
 }
 
-- (BOOL)_updatePath:(id)a3 addingIfNotExists:(BOOL)a4
+- (BOOL)_updatePath:(id)path addingIfNotExists:(BOOL)exists
 {
-  v4 = a4;
-  v7 = a3;
-  if (!v7)
+  existsCopy = exists;
+  pathCopy = path;
+  if (!pathCopy)
   {
     [PBFWallpaperPublisher _updatePath:a2 addingIfNotExists:?];
   }
 
-  v8 = v7;
-  v9 = [v7 identity];
-  v10 = [v9 posterUUID];
-  v11 = [(NSMutableDictionary *)self->_pathsByUUID objectForKey:v10];
+  v8 = pathCopy;
+  identity = [pathCopy identity];
+  posterUUID = [identity posterUUID];
+  v11 = [(NSMutableDictionary *)self->_pathsByUUID objectForKey:posterUUID];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 identity];
-    v4 = [v9 isNewerVersionOfIdentity:v13];
-    if (v4)
+    identity2 = [v11 identity];
+    existsCopy = [identity isNewerVersionOfIdentity:identity2];
+    if (existsCopy)
     {
-      [(NSMutableDictionary *)self->_pathsByUUID setObject:v8 forKey:v10];
-      [(NSMutableDictionary *)self->_isPairedByUUID removeObjectForKey:v10];
+      [(NSMutableDictionary *)self->_pathsByUUID setObject:v8 forKey:posterUUID];
+      [(NSMutableDictionary *)self->_isPairedByUUID removeObjectForKey:posterUUID];
     }
   }
 
-  else if (v4)
+  else if (existsCopy)
   {
-    [(NSMutableDictionary *)self->_pathsByUUID setObject:v8 forKey:v10];
-    LOBYTE(v4) = 1;
+    [(NSMutableDictionary *)self->_pathsByUUID setObject:v8 forKey:posterUUID];
+    LOBYTE(existsCopy) = 1;
   }
 
-  return v4;
+  return existsCopy;
 }
 
 - (void)_compact
 {
   v3 = MEMORY[0x277CBEB58];
-  v4 = [(NSMutableDictionary *)self->_pathsByUUID allKeys];
-  v15 = [v3 setWithArray:v4];
+  allKeys = [(NSMutableDictionary *)self->_pathsByUUID allKeys];
+  v15 = [v3 setWithArray:allKeys];
 
   v5 = MEMORY[0x277CBEB58];
-  v6 = [(NSMutableDictionary *)self->_isPairedByUUID allKeys];
-  v7 = [v5 setWithArray:v6];
+  allKeys2 = [(NSMutableDictionary *)self->_isPairedByUUID allKeys];
+  v7 = [v5 setWithArray:allKeys2];
 
   for (i = 0; i != 4; ++i)
   {
-    v9 = [(PFServerPosterPath *)self->_paths[i] identity];
-    v10 = [v9 posterUUID];
+    identity = [(PFServerPosterPath *)self->_paths[i] identity];
+    posterUUID = [identity posterUUID];
 
-    [v15 removeObject:v10];
-    [v7 removeObject:v10];
+    [v15 removeObject:posterUUID];
+    [v7 removeObject:posterUUID];
   }
 
   pathsByUUID = self->_pathsByUUID;
-  v12 = [v15 allObjects];
-  [(NSMutableDictionary *)pathsByUUID removeObjectsForKeys:v12];
+  allObjects = [v15 allObjects];
+  [(NSMutableDictionary *)pathsByUUID removeObjectsForKeys:allObjects];
 
   isPairedByUUID = self->_isPairedByUUID;
-  v14 = [v7 allObjects];
-  [(NSMutableDictionary *)isPairedByUUID removeObjectsForKeys:v14];
+  allObjects2 = [v7 allObjects];
+  [(NSMutableDictionary *)isPairedByUUID removeObjectsForKeys:allObjects2];
 }
 
-- (void)_updateSelectedLockPath:(id)a3 selectedHomePath:(id)a4 activeLockPath:(id)a5 activeHomePath:(id)a6
+- (void)_updateSelectedLockPath:(id)path selectedHomePath:(id)homePath activeLockPath:(id)lockPath activeHomePath:(id)activeHomePath
 {
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v31 = v10;
+  pathCopy = path;
+  homePathCopy = homePath;
+  lockPathCopy = lockPath;
+  activeHomePathCopy = activeHomePath;
+  v31 = pathCopy;
   v32 = v31;
-  v30 = v11;
+  v30 = homePathCopy;
   v33 = v30;
-  v29 = v12;
+  v29 = lockPathCopy;
   v34 = v29;
-  v14 = v13;
+  v14 = activeHomePathCopy;
   v15 = 0;
   v16 = 0;
   v35 = v14;
@@ -135,16 +135,16 @@
     pathsByUUID = self->_pathsByUUID;
     if (v20)
     {
-      v22 = [*(&v32 + v18 * 8) identity];
-      v23 = [v22 posterUUID];
-      v24 = [(NSMutableDictionary *)pathsByUUID objectForKey:v23];
+      identity = [*(&v32 + v18 * 8) identity];
+      posterUUID = [identity posterUUID];
+      v24 = [(NSMutableDictionary *)pathsByUUID objectForKey:posterUUID];
     }
 
     else
     {
-      v22 = [(PFServerPosterPath *)self->_paths[v18] identity];
-      v23 = [v22 posterUUID];
-      v24 = [(NSMutableDictionary *)pathsByUUID objectForKey:v23];
+      identity = [(PFServerPosterPath *)self->_paths[v18] identity];
+      posterUUID = [identity posterUUID];
+      v24 = [(NSMutableDictionary *)pathsByUUID objectForKey:posterUUID];
     }
 
     *(&v32 + v18 * 8) = v24;
@@ -196,10 +196,10 @@
     if (PRSWallpaperObserverLocationsIndexIsValid())
     {
       v7 = paths[v6];
-      v8 = [(PFServerPosterPath *)v7 identity];
-      v9 = [v8 posterUUID];
+      identity = [(PFServerPosterPath *)v7 identity];
+      posterUUID = [identity posterUUID];
 
-      v10 = [(NSMutableDictionary *)self->_isPairedByUUID objectForKey:v9];
+      v10 = [(NSMutableDictionary *)self->_isPairedByUUID objectForKey:posterUUID];
       if (!v10)
       {
         v20 = 0;
@@ -212,21 +212,21 @@
           {
             v15 = objc_opt_class();
             v18 = NSStringFromClass(v15);
-            v17 = [(PFServerPosterPath *)v7 identity];
+            identity2 = [(PFServerPosterPath *)v7 identity];
             *buf = 138544130;
             v22 = v18;
             v23 = 2048;
-            v24 = self;
+            selfCopy = self;
             v25 = 2112;
-            v26 = v17;
+            v26 = identity2;
             v27 = 2114;
             v28 = v12;
             _os_log_error_impl(&dword_21B526000, v13, OS_LOG_TYPE_ERROR, "<%{public}@:%p> failed to load homeConfig for %@ with error: %{public}@", buf, 0x2Au);
           }
         }
 
-        v10 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v11, "selectedAppearanceType", v17) == 3}];
-        [(NSMutableDictionary *)self->_isPairedByUUID setObject:v10 forKey:v9];
+        v10 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v11, "selectedAppearanceType", identity2) == 3}];
+        [(NSMutableDictionary *)self->_isPairedByUUID setObject:v10 forKey:posterUUID];
       }
 
       if ([v10 BOOLValue])
@@ -259,31 +259,31 @@
   return v3;
 }
 
-- (void)activateWithSelectedLockPath:(id)a3 selectedHomePath:(id)a4 activeLockPath:(id)a5 activeHomePath:(id)a6 recentlyChanged:(BOOL)a7
+- (void)activateWithSelectedLockPath:(id)path selectedHomePath:(id)homePath activeLockPath:(id)lockPath activeHomePath:(id)activeHomePath recentlyChanged:(BOOL)changed
 {
-  v40 = a7;
+  changedCopy = changed;
   v51 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (!v12)
+  pathCopy = path;
+  homePathCopy = homePath;
+  lockPathCopy = lockPath;
+  activeHomePathCopy = activeHomePath;
+  if (!pathCopy)
   {
     [PBFWallpaperPublisher activateWithSelectedLockPath:a2 selectedHomePath:? activeLockPath:? activeHomePath:? recentlyChanged:?];
   }
 
-  if (!v13)
+  if (!homePathCopy)
   {
     [PBFWallpaperPublisher activateWithSelectedLockPath:a2 selectedHomePath:? activeLockPath:? activeHomePath:? recentlyChanged:?];
   }
 
-  if (!v14)
+  if (!lockPathCopy)
   {
     [PBFWallpaperPublisher activateWithSelectedLockPath:a2 selectedHomePath:? activeLockPath:? activeHomePath:? recentlyChanged:?];
   }
 
-  v16 = v15;
-  if (!v15)
+  v16 = activeHomePathCopy;
+  if (!activeHomePathCopy)
   {
     [PBFWallpaperPublisher activateWithSelectedLockPath:a2 selectedHomePath:? activeLockPath:? activeHomePath:? recentlyChanged:?];
   }
@@ -294,10 +294,10 @@
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
     v20 = PRSWallpaperObserverLocationsDescription();
-    v21 = [v12 identity];
-    v22 = [v13 identity];
-    [v14 identity];
-    v23 = v38 = v14;
+    identity = [pathCopy identity];
+    identity2 = [homePathCopy identity];
+    [lockPathCopy identity];
+    v23 = v38 = lockPathCopy;
     [v16 identity];
     v24 = v39 = v16;
     *buf = 138544898;
@@ -307,9 +307,9 @@
     *&buf[22] = 2114;
     v42 = v20;
     v43 = 2114;
-    v44 = v21;
+    v44 = identity;
     v45 = 2114;
-    v46 = v22;
+    v46 = identity2;
     v47 = 2114;
     v48 = v23;
     v49 = 2114;
@@ -317,14 +317,14 @@
     _os_log_impl(&dword_21B526000, v17, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> received activation with recentlyChanged=(%{public}@) {\n\tsl=%{public}@\n\tsh=%{public}@\n\tal=%{public}@\n\tah=%{public}@\n}", buf, 0x48u);
 
     v16 = v39;
-    v14 = v38;
+    lockPathCopy = v38;
   }
 
-  v25 = v12;
+  v25 = pathCopy;
   *buf = v25;
-  v26 = v13;
+  v26 = homePathCopy;
   *&buf[8] = v26;
-  v27 = v14;
+  v27 = lockPathCopy;
   *&buf[16] = v27;
   v28 = v16;
   v29 = 0;
@@ -339,15 +339,15 @@
   for (i = 0; i != 4; ++i)
   {
     pathsByUUID = self->_pathsByUUID;
-    v32 = [*&buf[i * 8] identity];
-    v33 = [v32 posterUUID];
-    v34 = [(NSMutableDictionary *)pathsByUUID objectForKey:v33];
+    identity3 = [*&buf[i * 8] identity];
+    posterUUID = [identity3 posterUUID];
+    v34 = [(NSMutableDictionary *)pathsByUUID objectForKey:posterUUID];
     v35 = self->_paths[i];
     self->_paths[i] = v34;
   }
 
   [(PBFWallpaperPublisher *)self _update];
-  if (v40)
+  if (changedCopy)
   {
     v36 = 15;
   }
@@ -363,72 +363,72 @@
   }
 }
 
-- (void)updateSelectedLockPath:(id)a3 selectedHomePath:(id)a4 activeLockPath:(id)a5 activeHomePath:(id)a6
+- (void)updateSelectedLockPath:(id)path selectedHomePath:(id)homePath activeLockPath:(id)lockPath activeHomePath:(id)activeHomePath
 {
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  pathCopy = path;
+  homePathCopy = homePath;
+  lockPathCopy = lockPath;
+  activeHomePathCopy = activeHomePath;
   v14 = PRSLogObserver();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    v17 = [v10 identity];
-    [v11 identity];
+    identity = [pathCopy identity];
+    [homePathCopy identity];
     v18 = v21 = self;
-    v19 = [v12 identity];
-    v20 = [v13 identity];
+    identity2 = [lockPathCopy identity];
+    identity3 = [activeHomePathCopy identity];
     *buf = 138544642;
     v23 = v16;
     v24 = 2048;
     v25 = v21;
     v26 = 2114;
-    v27 = v17;
+    v27 = identity;
     v28 = 2114;
     v29 = v18;
     v30 = 2114;
-    v31 = v19;
+    v31 = identity2;
     v32 = 2114;
-    v33 = v20;
+    v33 = identity3;
     _os_log_impl(&dword_21B526000, v14, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> received multi-update {\n\tsl=%{public}@\n\tsh=%{public}@\n\tal=%{public}@\n\tah=%{public}@\n}", buf, 0x3Eu);
 
     self = v21;
   }
 
-  [(PBFWallpaperPublisher *)self _updateSelectedLockPath:v10 selectedHomePath:v11 activeLockPath:v12 activeHomePath:v13];
+  [(PBFWallpaperPublisher *)self _updateSelectedLockPath:pathCopy selectedHomePath:homePathCopy activeLockPath:lockPathCopy activeHomePath:activeHomePathCopy];
 }
 
-- (void)updatePath:(id)a3
+- (void)updatePath:(id)path
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  pathCopy = path;
+  if (!pathCopy)
   {
     [PBFWallpaperPublisher updatePath:a2];
   }
 
-  v6 = v5;
+  v6 = pathCopy;
   v7 = PRSLogObserver();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [v6 identity];
+    identity = [v6 identity];
     v22 = 138543874;
     v23 = v9;
     v24 = 2048;
-    v25 = self;
+    selfCopy = self;
     v26 = 2114;
-    v27 = v10;
+    v27 = identity;
     _os_log_impl(&dword_21B526000, v7, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> received single-update with %{public}@", &v22, 0x20u);
   }
 
   pathsByUUID = self->_pathsByUUID;
-  v12 = [v6 identity];
-  v13 = [v12 posterUUID];
-  v14 = [(NSMutableDictionary *)pathsByUUID objectForKey:v13];
+  identity2 = [v6 identity];
+  posterUUID = [identity2 posterUUID];
+  v14 = [(NSMutableDictionary *)pathsByUUID objectForKey:posterUUID];
 
   if (v14)
   {
@@ -439,14 +439,14 @@
       v6 = v15;
     }
 
-    v16 = [v6 identity];
+    identity3 = [v6 identity];
     v17 = 0;
     v18 = 0;
     paths = self->_paths;
     do
     {
-      v20 = [(PFServerPosterPath *)*paths identity];
-      v21 = [v16 isNewerVersionOfIdentity:v20];
+      identity4 = [(PFServerPosterPath *)*paths identity];
+      v21 = [identity3 isNewerVersionOfIdentity:identity4];
 
       if (v21)
       {
@@ -466,50 +466,50 @@
   }
 }
 
-- (void)updateHomePath:(id)a3 matchingLockPath:(id)a4
+- (void)updateHomePath:(id)path matchingLockPath:(id)lockPath
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  pathCopy = path;
+  lockPathCopy = lockPath;
+  if (!lockPathCopy)
   {
     [PBFWallpaperPublisher updateHomePath:a2 matchingLockPath:?];
   }
 
-  v9 = v8;
+  v9 = lockPathCopy;
   v10 = PRSLogObserver();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    v13 = [v7 identity];
-    v14 = [v9 identity];
+    identity = [pathCopy identity];
+    identity2 = [v9 identity];
     v28 = 138544130;
     v29 = v12;
     v30 = 2048;
-    v31 = self;
+    selfCopy = self;
     v32 = 2114;
-    v33 = v13;
+    v33 = identity;
     v34 = 2114;
-    v35 = v14;
+    v35 = identity2;
     _os_log_impl(&dword_21B526000, v10, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> received pairing-update {\n\thomePath=%{public}@\n\tmatchingLockPath=%{public}@\n}", &v28, 0x2Au);
   }
 
-  v15 = [v9 identity];
-  v16 = [v15 posterUUID];
-  v17 = [(PFServerPosterPath *)self->_paths[0] identity];
-  v18 = [v17 posterUUID];
-  v19 = [v16 isEqual:v18];
+  identity3 = [v9 identity];
+  posterUUID = [identity3 posterUUID];
+  identity4 = [(PFServerPosterPath *)self->_paths[0] identity];
+  posterUUID2 = [identity4 posterUUID];
+  v19 = [posterUUID isEqual:posterUUID2];
 
-  v20 = [(PFServerPosterPath *)self->_paths[2] identity];
-  v21 = [v20 posterUUID];
-  v22 = [v16 isEqual:v21];
+  identity5 = [(PFServerPosterPath *)self->_paths[2] identity];
+  posterUUID3 = [identity5 posterUUID];
+  v22 = [posterUUID isEqual:posterUUID3];
 
   if ((v19 & 1) != 0 || v22)
   {
-    if (v7)
+    if (pathCopy)
     {
-      v23 = v7;
+      v23 = pathCopy;
     }
 
     else

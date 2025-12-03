@@ -1,8 +1,8 @@
 @interface CPSBarButtonItem
-- (CPSBarButtonItem)initWithCPBarButton:(id)a3;
-- (CPSBarButtonItem)initWithCPBarButton:(id)a3 type:(unint64_t)a4;
+- (CPSBarButtonItem)initWithCPBarButton:(id)button;
+- (CPSBarButtonItem)initWithCPBarButton:(id)button type:(unint64_t)type;
 - (CPSButtonDelegate)delegate;
-- (void)didSelectButton:(id)a3 withInteractionModel:(unint64_t)a4;
+- (void)didSelectButton:(id)button withInteractionModel:(unint64_t)model;
 @end
 
 @implementation CPSBarButtonItem
@@ -14,12 +14,12 @@
   return WeakRetained;
 }
 
-- (CPSBarButtonItem)initWithCPBarButton:(id)a3
+- (CPSBarButtonItem)initWithCPBarButton:(id)button
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, button);
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v4 = 3;
@@ -28,70 +28,70 @@
     v4 = 0;
   }
 
-  v5 = v9;
-  v9 = 0;
-  v9 = [(CPSBarButtonItem *)v5 initWithCPBarButton:location[0] type:v4];
-  v7 = MEMORY[0x277D82BE0](v9);
+  v5 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(CPSBarButtonItem *)v5 initWithCPBarButton:location[0] type:v4];
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (CPSBarButtonItem)initWithCPBarButton:(id)a3 type:(unint64_t)a4
+- (CPSBarButtonItem)initWithCPBarButton:(id)button type:(unint64_t)type
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16 = a4;
-  v12 = v18;
-  v14 = [location[0] title];
-  v13 = [location[0] image];
+  objc_storeStrong(location, button);
+  typeCopy = type;
+  v12 = selfCopy;
+  title = [location[0] title];
+  image = [location[0] image];
   v4 = barButtonStyle(location[0]);
-  v18 = 0;
+  selfCopy = 0;
   v15.receiver = v12;
   v15.super_class = CPSBarButtonItem;
-  v18 = [(CPUIBarButtonItem *)&v15 initWithTitle:v14 image:v13 style:v4 type:a4];
-  objc_storeStrong(&v18, v18);
-  MEMORY[0x277D82BD8](v13);
-  *&v5 = MEMORY[0x277D82BD8](v14).n128_u64[0];
-  if (v18)
+  selfCopy = [(CPUIBarButtonItem *)&v15 initWithTitle:title image:image style:v4 type:type];
+  objc_storeStrong(&selfCopy, selfCopy);
+  MEMORY[0x277D82BD8](image);
+  *&v5 = MEMORY[0x277D82BD8](title).n128_u64[0];
+  if (selfCopy)
   {
-    v6 = [location[0] identifier];
-    cps_identifier = v18->_cps_identifier;
-    v18->_cps_identifier = v6;
+    identifier = [location[0] identifier];
+    cps_identifier = selfCopy->_cps_identifier;
+    selfCopy->_cps_identifier = identifier;
     MEMORY[0x277D82BD8](cps_identifier);
-    objc_storeStrong(&v18->_barButton, location[0]);
-    [(CPUIBarButtonItem *)v18 setCpui_delegate:v18];
-    v8 = [location[0] isEnabled];
-    [(CPUIBarButtonItem *)v18 setEnabled:v8];
+    objc_storeStrong(&selfCopy->_barButton, location[0]);
+    [(CPUIBarButtonItem *)selfCopy setCpui_delegate:selfCopy];
+    isEnabled = [location[0] isEnabled];
+    [(CPUIBarButtonItem *)selfCopy setEnabled:isEnabled];
   }
 
-  v10 = MEMORY[0x277D82BE0](v18);
+  v10 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 
-- (void)didSelectButton:(id)a3 withInteractionModel:(unint64_t)a4
+- (void)didSelectButton:(id)button withInteractionModel:(unint64_t)model
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = [MEMORY[0x277CF91B0] sharedInstance];
-  [v9 setLastButtonPressInteractionModel:a4];
-  *&v4 = MEMORY[0x277D82BD8](v9).n128_u64[0];
-  v10 = [(CPSBarButtonItem *)v13 delegate];
+  objc_storeStrong(location, button);
+  mEMORY[0x277CF91B0] = [MEMORY[0x277CF91B0] sharedInstance];
+  [mEMORY[0x277CF91B0] setLastButtonPressInteractionModel:model];
+  *&v4 = MEMORY[0x277D82BD8](mEMORY[0x277CF91B0]).n128_u64[0];
+  delegate = [(CPSBarButtonItem *)selfCopy delegate];
   v11 = objc_opt_respondsToSelector();
-  *&v5 = MEMORY[0x277D82BD8](v10).n128_u64[0];
+  *&v5 = MEMORY[0x277D82BD8](delegate).n128_u64[0];
   if (v11)
   {
-    v7 = [(CPSBarButtonItem *)v13 delegate];
-    v6 = [(CPSBarButtonItem *)v13 barButton];
-    [(CPSButtonDelegate *)v7 didSelectButton:?];
-    MEMORY[0x277D82BD8](v6);
-    MEMORY[0x277D82BD8](v7);
+    delegate2 = [(CPSBarButtonItem *)selfCopy delegate];
+    barButton = [(CPSBarButtonItem *)selfCopy barButton];
+    [(CPSButtonDelegate *)delegate2 didSelectButton:?];
+    MEMORY[0x277D82BD8](barButton);
+    MEMORY[0x277D82BD8](delegate2);
   }
 
   objc_storeStrong(location, 0);

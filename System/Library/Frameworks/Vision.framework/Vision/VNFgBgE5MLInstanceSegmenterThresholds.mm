@@ -1,5 +1,5 @@
 @interface VNFgBgE5MLInstanceSegmenterThresholds
-- (VNFgBgE5MLInstanceSegmenterThresholds)initWithRevision:(unint64_t)a3 error:(id *)a4;
+- (VNFgBgE5MLInstanceSegmenterThresholds)initWithRevision:(unint64_t)revision error:(id *)error;
 - (id)initDefaultConfigRevision1;
 @end
 
@@ -20,28 +20,28 @@
   return result;
 }
 
-- (VNFgBgE5MLInstanceSegmenterThresholds)initWithRevision:(unint64_t)a3 error:(id *)a4
+- (VNFgBgE5MLInstanceSegmenterThresholds)initWithRevision:(unint64_t)revision error:(id *)error
 {
-  v4 = self;
-  if (a3 == 1)
+  selfCopy = self;
+  if (revision == 1)
   {
-    v4 = [(VNFgBgE5MLInstanceSegmenterThresholds *)self initDefaultConfigRevision1:1];
-    v5 = v4;
+    selfCopy = [(VNFgBgE5MLInstanceSegmenterThresholds *)self initDefaultConfigRevision1:1];
+    errorCopy = selfCopy;
   }
 
   else
   {
-    v5 = a4;
-    if (a4)
+    errorCopy = error;
+    if (error)
     {
       v6 = +[VNFgBgInstanceSegmenterError genericErrorConfigDescription];
-      v5->super.isa = [VNFgBgInstanceSegmenterError errorWithCode:-4 description:v6];
+      errorCopy->super.isa = [VNFgBgInstanceSegmenterError errorWithCode:-4 description:v6];
 
-      v5 = 0;
+      errorCopy = 0;
     }
   }
 
-  return v5;
+  return errorCopy;
 }
 
 @end

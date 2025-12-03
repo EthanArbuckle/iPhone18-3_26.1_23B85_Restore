@@ -9,28 +9,28 @@
 - (id)accessibilityLabel
 {
   v2 = [(MOSuggestionSheetMosaicCellAccessibility *)self safeSwiftValueForKey:@"assetView"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v7.receiver = self;
   v7.super_class = MOSuggestionSheetMosaicCellAccessibility;
-  v3 = [(MOSuggestionSheetMosaicCellAccessibility *)&v7 accessibilityTraits];
+  accessibilityTraits = [(MOSuggestionSheetMosaicCellAccessibility *)&v7 accessibilityTraits];
   v4 = [(MOSuggestionSheetMosaicCellAccessibility *)self safeSwiftValueForKey:@"assetView"];
-  v5 = [v4 accessibilityTraits];
+  accessibilityTraits2 = [v4 accessibilityTraits];
 
-  return v5 | v3;
+  return accessibilityTraits2 | accessibilityTraits;
 }
 
 - (id)accessibilityCustomActions
 {
   v2 = [(MOSuggestionSheetMosaicCellAccessibility *)self safeSwiftValueForKey:@"assetView"];
-  v3 = [v2 accessibilityCustomActions];
+  accessibilityCustomActions = [v2 accessibilityCustomActions];
 
-  return v3;
+  return accessibilityCustomActions;
 }
 
 @end

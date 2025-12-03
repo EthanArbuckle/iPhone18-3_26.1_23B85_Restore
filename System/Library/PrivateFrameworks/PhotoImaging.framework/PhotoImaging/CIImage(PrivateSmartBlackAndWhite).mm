@@ -20,7 +20,7 @@
   v6[2] = &unk_1F471F8A0;
   v5[2] = @"inputTone";
   v5[3] = @"inputHue";
-  v2 = [MEMORY[0x1E696AD98] numberWithDouble:a1];
+  v2 = [MEMORY[0x1E696AD98] numberWithDouble:self];
   v6[3] = v2;
   v6[4] = &unk_1F471F8A0;
   v5[4] = @"inputGrain";

@@ -1,36 +1,36 @@
 @interface WDAtrialFibrillationInternalSettingsViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (WDAtrialFibrillationInternalSettingsViewController)initWithHealthStore:(id)a3;
-- (id)_buttonCellForTableView:(id)a3 text:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (WDAtrialFibrillationInternalSettingsViewController)initWithHealthStore:(id)store;
+- (id)_buttonCellForTableView:(id)view text:(id)text;
 - (id)_featureAvailabilityStatusString;
-- (id)_featureAvailabilityStringForFeatureName:(id)a3 onboardedCountryCodeSupportedState:(id)a4;
-- (id)makeFeatureStateViewControllerForFeatureIdentifier:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)_featureAvailabilityStringForFeatureName:(id)name onboardedCountryCodeSupportedState:(id)state;
+- (id)makeFeatureStateViewControllerForFeatureIdentifier:(id)identifier;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_addNewSample;
 - (void)_deleteAllNotifications;
 - (void)_deleteAllNotificationsAndTachograms;
 - (void)_fakeNewAnalyzedSample;
 - (void)_resetOnboarding;
-- (void)_showFeatureStateViewControllerForFeatureIdentifier:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)_showFeatureStateViewControllerForFeatureIdentifier:(id)identifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation WDAtrialFibrillationInternalSettingsViewController
 
-- (WDAtrialFibrillationInternalSettingsViewController)initWithHealthStore:(id)a3
+- (WDAtrialFibrillationInternalSettingsViewController)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = WDAtrialFibrillationInternalSettingsViewController;
   v6 = [(WDAtrialFibrillationInternalSettingsViewController *)&v13 initWithStyle:1];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
     v8 = objc_alloc(MEMORY[0x277CCD570]);
-    v9 = [v8 initWithCategory:0 domainName:*MEMORY[0x277CCE460] healthStore:v5];
+    v9 = [v8 initWithCategory:0 domainName:*MEMORY[0x277CCE460] healthStore:storeCopy];
     keyValueDomain = v7->_keyValueDomain;
     v7->_keyValueDomain = v9;
 
@@ -41,33 +41,33 @@
   return v7;
 }
 
-- (id)makeFeatureStateViewControllerForFeatureIdentifier:(id)a3
+- (id)makeFeatureStateViewControllerForFeatureIdentifier:(id)identifier
 {
   v3 = objc_alloc_init(MEMORY[0x277D75D28]);
 
   return v3;
 }
 
-- (void)_showFeatureStateViewControllerForFeatureIdentifier:(id)a3
+- (void)_showFeatureStateViewControllerForFeatureIdentifier:(id)identifier
 {
-  v4 = [(WDAtrialFibrillationInternalSettingsViewController *)self makeFeatureStateViewControllerForFeatureIdentifier:a3];
+  v4 = [(WDAtrialFibrillationInternalSettingsViewController *)self makeFeatureStateViewControllerForFeatureIdentifier:identifier];
   [(WDAtrialFibrillationInternalSettingsViewController *)self showViewController:v4 sender:self];
 }
 
-- (id)_buttonCellForTableView:(id)a3 text:(id)a4
+- (id)_buttonCellForTableView:(id)view text:(id)text
 {
-  v5 = a4;
-  v6 = [a3 dequeueReusableCellWithIdentifier:@"ButtonCell"];
+  textCopy = text;
+  v6 = [view dequeueReusableCellWithIdentifier:@"ButtonCell"];
   if (!v6)
   {
     v6 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"ButtonCell"];
-    v7 = [MEMORY[0x277D75348] hk_appKeyColor];
-    v8 = [v6 textLabel];
-    [v8 setTextColor:v7];
+    hk_appKeyColor = [MEMORY[0x277D75348] hk_appKeyColor];
+    textLabel = [v6 textLabel];
+    [textLabel setTextColor:hk_appKeyColor];
   }
 
-  v9 = [v6 textLabel];
-  [v9 setText:v5];
+  textLabel2 = [v6 textLabel];
+  [textLabel2 setText:textCopy];
 
   return v6;
 }
@@ -88,8 +88,8 @@
 
   v6 = objc_alloc(MEMORY[0x277CCD438]);
   v7 = *MEMORY[0x277CCC070];
-  v8 = [(WDAtrialFibrillationInternalSettingsViewController *)self healthStore];
-  v9 = [v6 initWithFeatureIdentifier:v7 healthStore:v8];
+  healthStore = [(WDAtrialFibrillationInternalSettingsViewController *)self healthStore];
+  v9 = [v6 initWithFeatureIdentifier:v7 healthStore:healthStore];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -166,16 +166,16 @@ void __70__WDAtrialFibrillationInternalSettingsViewController__resetOnboarding__
   }
 
   [(WDAtrialFibrillationInternalSettingsViewController *)self setDeletingSamples:1];
-  v6 = [(WDAtrialFibrillationInternalSettingsViewController *)self healthStore];
-  v7 = [MEMORY[0x277CCD0C0] atrialFibrillationEventType];
-  v11 = v7;
+  healthStore = [(WDAtrialFibrillationInternalSettingsViewController *)self healthStore];
+  atrialFibrillationEventType = [MEMORY[0x277CCD0C0] atrialFibrillationEventType];
+  v11 = atrialFibrillationEventType;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v11 count:1];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __77__WDAtrialFibrillationInternalSettingsViewController__deleteAllNotifications__block_invoke;
   v10[3] = &unk_2796E6CC8;
   v10[4] = self;
-  [v6 deleteAllSamplesWithTypes:v8 sourceBundleIdentifier:0 options:2 completion:v10];
+  [healthStore deleteAllSamplesWithTypes:v8 sourceBundleIdentifier:0 options:2 completion:v10];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -215,20 +215,20 @@ void __77__WDAtrialFibrillationInternalSettingsViewController__deleteAllNotifica
     _os_log_impl(&dword_251E85000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Deleting all atrial fibrillation event and tachogram samples", buf, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CCD0C0] atrialFibrillationEventType];
-  v12[0] = v6;
-  v7 = [MEMORY[0x277CCD920] heartbeatSeriesType];
-  v12[1] = v7;
+  atrialFibrillationEventType = [MEMORY[0x277CCD0C0] atrialFibrillationEventType];
+  v12[0] = atrialFibrillationEventType;
+  heartbeatSeriesType = [MEMORY[0x277CCD920] heartbeatSeriesType];
+  v12[1] = heartbeatSeriesType;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
 
   [(WDAtrialFibrillationInternalSettingsViewController *)self setDeletingSamples:1];
-  v9 = [(WDAtrialFibrillationInternalSettingsViewController *)self healthStore];
+  healthStore = [(WDAtrialFibrillationInternalSettingsViewController *)self healthStore];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __90__WDAtrialFibrillationInternalSettingsViewController__deleteAllNotificationsAndTachograms__block_invoke;
   v11[3] = &unk_2796E6CC8;
   v11[4] = self;
-  [v9 deleteAllSamplesWithTypes:v8 sourceBundleIdentifier:0 options:2 completion:v11];
+  [healthStore deleteAllSamplesWithTypes:v8 sourceBundleIdentifier:0 options:2 completion:v11];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -256,19 +256,19 @@ void __90__WDAtrialFibrillationInternalSettingsViewController__deleteAllNotifica
 
 - (void)_fakeNewAnalyzedSample
 {
-  v3 = [(WDAtrialFibrillationInternalSettingsViewController *)self keyValueDomain];
-  v2 = [MEMORY[0x277CBEAA8] date];
-  [v3 setDate:v2 forKey:*MEMORY[0x277CCE4A0] completion:&__block_literal_global_4];
+  keyValueDomain = [(WDAtrialFibrillationInternalSettingsViewController *)self keyValueDomain];
+  date = [MEMORY[0x277CBEAA8] date];
+  [keyValueDomain setDate:date forKey:*MEMORY[0x277CCE4A0] completion:&__block_literal_global_4];
 }
 
 - (void)_addNewSample
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [v3 dateByAddingTimeInterval:0.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [date dateByAddingTimeInterval:0.0];
   v5 = MEMORY[0x277CCD0B0];
-  v6 = [MEMORY[0x277CCD0C0] atrialFibrillationEventType];
-  v7 = [MEMORY[0x277CCD2E8] localDevice];
-  v8 = [v5 categorySampleWithType:v6 value:0 startDate:v4 endDate:v3 device:v7 metadata:MEMORY[0x277CBEC10]];
+  atrialFibrillationEventType = [MEMORY[0x277CCD0C0] atrialFibrillationEventType];
+  localDevice = [MEMORY[0x277CCD2E8] localDevice];
+  v8 = [v5 categorySampleWithType:atrialFibrillationEventType value:0 startDate:v4 endDate:date device:localDevice metadata:MEMORY[0x277CBEC10]];
 
   healthStore = self->_healthStore;
   v11[0] = MEMORY[0x277D85DD0];
@@ -351,16 +351,16 @@ LABEL_9:
 {
   v3 = objc_alloc(MEMORY[0x277CCD438]);
   v4 = *MEMORY[0x277CCC070];
-  v5 = [(WDAtrialFibrillationInternalSettingsViewController *)self healthStore];
-  v6 = [v3 initWithFeatureIdentifier:v4 healthStore:v5];
+  healthStore = [(WDAtrialFibrillationInternalSettingsViewController *)self healthStore];
+  v6 = [v3 initWithFeatureIdentifier:v4 healthStore:healthStore];
 
   v32 = 0;
   v7 = [v6 onboardedCountryCodeSupportedStateWithError:&v32];
   v8 = v32;
   v9 = objc_alloc(MEMORY[0x277CCD438]);
   v10 = *MEMORY[0x277CCC078];
-  v11 = [(WDAtrialFibrillationInternalSettingsViewController *)self healthStore];
-  v12 = [v9 initWithFeatureIdentifier:v10 healthStore:v11];
+  healthStore2 = [(WDAtrialFibrillationInternalSettingsViewController *)self healthStore];
+  v12 = [v9 initWithFeatureIdentifier:v10 healthStore:healthStore2];
 
   v31 = v8;
   v13 = [v12 onboardedCountryCodeSupportedStateWithError:&v31];
@@ -368,8 +368,8 @@ LABEL_9:
 
   v15 = objc_alloc(MEMORY[0x277CCD438]);
   v16 = *MEMORY[0x277CCC080];
-  v17 = [(WDAtrialFibrillationInternalSettingsViewController *)self healthStore];
-  v18 = [v15 initWithFeatureIdentifier:v16 healthStore:v17];
+  healthStore3 = [(WDAtrialFibrillationInternalSettingsViewController *)self healthStore];
+  v18 = [v15 initWithFeatureIdentifier:v16 healthStore:healthStore3];
 
   v30 = v14;
   v19 = [v18 onboardedCountryCodeSupportedStateWithError:&v30];
@@ -400,40 +400,40 @@ LABEL_9:
   return v21;
 }
 
-- (id)_featureAvailabilityStringForFeatureName:(id)a3 onboardedCountryCodeSupportedState:(id)a4
+- (id)_featureAvailabilityStringForFeatureName:(id)name onboardedCountryCodeSupportedState:(id)state
 {
-  if (a4)
+  if (state)
   {
-    v5 = a3;
-    [a4 integerValue];
-    v6 = NSStringFromHKFeatureAvailabilityOnboardedCountrySupportedState();
+    nameCopy = name;
+    [state integerValue];
+    nameCopy2 = NSStringFromHKFeatureAvailabilityOnboardedCountrySupportedState();
     v7 = MEMORY[0x277CCACA8];
-    v8 = [v6 lowercaseString];
-    v9 = [v7 stringWithFormat:@"%@ is %@.", v5, v8];
+    lowercaseString = [nameCopy2 lowercaseString];
+    nameCopy2 = [v7 stringWithFormat:@"%@ is %@.", nameCopy, lowercaseString];
   }
 
   else
   {
     v10 = MEMORY[0x277CCACA8];
-    v6 = a3;
-    v9 = [v10 stringWithFormat:@"%@: Unknown state.", v6];
+    nameCopy2 = name;
+    nameCopy2 = [v10 stringWithFormat:@"%@: Unknown state.", nameCopy2];
   }
 
-  return v9;
+  return nameCopy2;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_sections objectAtIndexedSubscript:a4];
-  v5 = [v4 integerValue];
+  v4 = [(NSArray *)self->_sections objectAtIndexedSubscript:section];
+  integerValue = [v4 integerValue];
 
   v6 = 3;
-  if (v5 != 1)
+  if (integerValue != 1)
   {
     v6 = 0;
   }
 
-  if (v5)
+  if (integerValue)
   {
     return v6;
   }
@@ -444,24 +444,24 @@ LABEL_9:
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[NSArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [v7 section]);
-  v9 = [v8 integerValue];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[NSArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [pathCopy section]);
+  integerValue = [v8 integerValue];
 
-  if (v9 == 1)
+  if (integerValue == 1)
   {
     goto LABEL_11;
   }
 
-  if (v9)
+  if (integerValue)
   {
     goto LABEL_15;
   }
 
-  v10 = [v7 row];
+  v10 = [pathCopy row];
   if (v10 <= 1)
   {
     if (!v10)
@@ -494,7 +494,7 @@ LABEL_9:
   if (v10 != 4)
   {
 LABEL_11:
-    v12 = [v7 row];
+    v12 = [pathCopy row];
     switch(v12)
     {
       case 2:
@@ -518,18 +518,18 @@ LABEL_15:
 
   v11 = @"Add New Sample";
 LABEL_21:
-  v15 = [(WDAtrialFibrillationInternalSettingsViewController *)self _buttonCellForTableView:v6 text:v11];
+  v15 = [(WDAtrialFibrillationInternalSettingsViewController *)self _buttonCellForTableView:viewCopy text:v11];
 LABEL_22:
 
   return v15;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([v5 section] != 1)
+  pathCopy = path;
+  if ([pathCopy section] != 1)
   {
-    v7 = [v5 row];
+    v7 = [pathCopy row];
     LOBYTE(v6) = 1;
     if (v7 <= 1)
     {
@@ -566,18 +566,18 @@ LABEL_12:
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v11 = a4;
-  v5 = [(WDAtrialFibrillationInternalSettingsViewController *)self tableView];
-  [v5 deselectRowAtIndexPath:v11 animated:1];
+  pathCopy = path;
+  tableView = [(WDAtrialFibrillationInternalSettingsViewController *)self tableView];
+  [tableView deselectRowAtIndexPath:pathCopy animated:1];
 
-  v6 = -[NSArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [v11 section]);
-  v7 = [v6 integerValue];
+  v6 = -[NSArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [pathCopy section]);
+  integerValue = [v6 integerValue];
 
-  if (v7 == 1)
+  if (integerValue == 1)
   {
-    v9 = [v11 row];
+    v9 = [pathCopy row];
     if (v9 == 2)
     {
       v10 = MEMORY[0x277CCC080];
@@ -601,9 +601,9 @@ LABEL_12:
     [(WDAtrialFibrillationInternalSettingsViewController *)self _showFeatureStateViewControllerForFeatureIdentifier:*v10];
   }
 
-  else if (!v7)
+  else if (!integerValue)
   {
-    v8 = [v11 row];
+    v8 = [pathCopy row];
     if (v8 <= 1)
     {
       if (v8)
@@ -640,22 +640,22 @@ LABEL_12:
 LABEL_18:
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v5 = [(NSArray *)self->_sections objectAtIndexedSubscript:a4];
-  v6 = [v5 integerValue];
+  v5 = [(NSArray *)self->_sections objectAtIndexedSubscript:section];
+  integerValue = [v5 integerValue];
 
-  if (v6 == 1)
+  if (integerValue == 1)
   {
-    v7 = [(WDAtrialFibrillationInternalSettingsViewController *)self _featureAvailabilityStatusString];
+    _featureAvailabilityStatusString = [(WDAtrialFibrillationInternalSettingsViewController *)self _featureAvailabilityStatusString];
   }
 
   else
   {
-    v7 = 0;
+    _featureAvailabilityStatusString = 0;
   }
 
-  return v7;
+  return _featureAvailabilityStatusString;
 }
 
 void __70__WDAtrialFibrillationInternalSettingsViewController__resetOnboarding__block_invoke_cold_1(uint64_t a1, void *a2)

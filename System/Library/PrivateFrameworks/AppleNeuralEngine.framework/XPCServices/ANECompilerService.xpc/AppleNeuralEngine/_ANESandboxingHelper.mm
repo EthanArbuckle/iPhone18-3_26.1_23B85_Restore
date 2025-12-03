@@ -1,10 +1,10 @@
 @interface _ANESandboxingHelper
-+ (BOOL)canAccessPathAt:(id)a3 methodName:(id)a4 error:(id *)a5;
-+ (id)issueSandboxExtensionForModel:(id)a3 error:(id *)a4;
-+ (id)issueSandboxExtensionForPath:(id)a3 error:(id *)a4;
-+ (id)sandboxExtensionPathForModelURL:(id)a3;
-+ (int64_t)consumeSandboxExtension:(id)a3 forModel:(id)a4 error:(id *)a5;
-+ (int64_t)consumeSandboxExtension:(id)a3 forPath:(id)a4 error:(id *)a5;
++ (BOOL)canAccessPathAt:(id)at methodName:(id)name error:(id *)error;
++ (id)issueSandboxExtensionForModel:(id)model error:(id *)error;
++ (id)issueSandboxExtensionForPath:(id)path error:(id *)error;
++ (id)sandboxExtensionPathForModelURL:(id)l;
++ (int64_t)consumeSandboxExtension:(id)extension forModel:(id)model error:(id *)error;
++ (int64_t)consumeSandboxExtension:(id)extension forPath:(id)path error:(id *)error;
 + (void)initialize;
 @end
 
@@ -17,52 +17,52 @@
   _objc_release_x1();
 }
 
-+ (BOOL)canAccessPathAt:(id)a3 methodName:(id)a4 error:(id *)a5
++ (BOOL)canAccessPathAt:(id)at methodName:(id)name error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
+  nameCopy = name;
+  atCopy = at;
   v9 = +[NSFileManager defaultManager];
-  v10 = [v9 fileExistsAtPath:v8];
+  v10 = [v9 fileExistsAtPath:atCopy];
 
-  if (a5 && (v10 & 1) == 0)
+  if (error && (v10 & 1) == 0)
   {
-    *a5 = [_ANEErrors fileAccessErrorForMethod:v7];
+    *error = [_ANEErrors fileAccessErrorForMethod:nameCopy];
   }
 
   return v10;
 }
 
-+ (id)sandboxExtensionPathForModelURL:(id)a3
++ (id)sandboxExtensionPathForModelURL:(id)l
 {
-  v3 = a3;
-  if ([v3 hasDirectoryPath])
+  lCopy = l;
+  if ([lCopy hasDirectoryPath])
   {
-    v4 = [v3 path];
+    path = [lCopy path];
 
-    v5 = [NSString stringWithFormat:@"%@/", v4];
+    v5 = [NSString stringWithFormat:@"%@/", path];
   }
 
   else
   {
-    v4 = [v3 URLByDeletingLastPathComponent];
+    path = [lCopy URLByDeletingLastPathComponent];
 
-    v6 = [v4 path];
-    v5 = [NSString stringWithFormat:@"%@/", v6];
+    v4Path = [path path];
+    v5 = [NSString stringWithFormat:@"%@/", v4Path];
   }
 
   return v5;
 }
 
-+ (id)issueSandboxExtensionForPath:(id)a3 error:(id *)a4
++ (id)issueSandboxExtensionForPath:(id)path error:(id *)error
 {
-  v6 = a3;
+  pathCopy = path;
   v7 = +[_ANEStrings systemLibraryPath];
-  v8 = [v6 hasPrefix:v7];
+  v8 = [pathCopy hasPrefix:v7];
 
   if (+[_ANEDeviceInfo isInternalBuild])
   {
     v9 = +[_ANEStrings internalLibraryPath];
-    v10 = [v6 hasPrefix:v9];
+    v10 = [pathCopy hasPrefix:v9];
   }
 
   else
@@ -74,7 +74,7 @@
   v12 = objc_opt_class();
   v13 = NSStringFromSelector(a2);
   v28 = 0;
-  v14 = [v12 canAccessPathAt:v6 methodName:v13 error:&v28];
+  v14 = [v12 canAccessPathAt:pathCopy methodName:v13 error:&v28];
   v15 = v28;
 
   if (!v14)
@@ -87,30 +87,30 @@
       *buf = 138412802;
       v30 = v27;
       v31 = 2112;
-      v32 = v6;
+      v32 = pathCopy;
       v33 = 2112;
       v34 = v15;
       _os_log_error_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "%@: Inaccessible file (%@) : error=%@", buf, 0x20u);
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_13;
       }
     }
 
-    else if (!a4)
+    else if (!error)
     {
       goto LABEL_13;
     }
 
     v20 = v15;
-    *a4 = v15;
+    *error = v15;
     goto LABEL_13;
   }
 
   if (((v8 | v10) & 1) == 0)
   {
-    [v6 UTF8String];
+    [pathCopy UTF8String];
     v16 = sandbox_extension_issue_file();
     if (v16)
     {
@@ -140,7 +140,7 @@ LABEL_13:
     *buf = 138412802;
     v30 = v25;
     v31 = 2112;
-    v32 = v6;
+    v32 = pathCopy;
     v33 = 2112;
     v34 = v11;
     _os_log_debug_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "%@: pathStr=%@ sandboxExtension=%@", buf, 0x20u);
@@ -149,12 +149,12 @@ LABEL_13:
   return v11;
 }
 
-+ (id)issueSandboxExtensionForModel:(id)a3 error:(id *)a4
++ (id)issueSandboxExtensionForModel:(id)model error:(id *)error
 {
-  v6 = a3;
+  modelCopy = model;
   v7 = objc_opt_class();
-  v8 = [v6 modelURL];
-  v9 = [v7 sandboxExtensionPathForModelURL:v8];
+  modelURL = [modelCopy modelURL];
+  v9 = [v7 sandboxExtensionPathForModelURL:modelURL];
 
   v10 = qword_100021B18;
   if (os_log_type_enabled(qword_100021B18, OS_LOG_TYPE_DEBUG))
@@ -164,13 +164,13 @@ LABEL_13:
     v20 = 138412802;
     v21 = v17;
     v22 = 2112;
-    v23 = v6;
+    v23 = modelCopy;
     v24 = 2112;
     v25 = v9;
     _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "%@: model=%@ modelPathStr=%@", &v20, 0x20u);
   }
 
-  v11 = [objc_opt_class() issueSandboxExtensionForPath:v9 error:a4];
+  v11 = [objc_opt_class() issueSandboxExtensionForPath:v9 error:error];
   v12 = +[_ANEStrings noSandboxExtension];
   v13 = [v11 isEqualToString:v12];
 
@@ -184,7 +184,7 @@ LABEL_13:
       v20 = 138412802;
       v21 = v19;
       v22 = 2112;
-      v23 = v6;
+      v23 = modelCopy;
       v24 = 2112;
       v25 = v11;
       _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "%@: model=%@ sandboxExtension=%@", &v20, 0x20u);
@@ -194,26 +194,26 @@ LABEL_13:
   return v11;
 }
 
-+ (int64_t)consumeSandboxExtension:(id)a3 forModel:(id)a4 error:(id *)a5
++ (int64_t)consumeSandboxExtension:(id)extension forModel:(id)model error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
+  modelCopy = model;
+  extensionCopy = extension;
   v9 = objc_opt_class();
-  v10 = [v7 modelURL];
+  modelURL = [modelCopy modelURL];
 
-  v11 = [v9 sandboxExtensionPathForModelURL:v10];
+  v11 = [v9 sandboxExtensionPathForModelURL:modelURL];
 
-  v12 = [objc_opt_class() consumeSandboxExtension:v8 forPath:v11 error:a5];
+  v12 = [objc_opt_class() consumeSandboxExtension:extensionCopy forPath:v11 error:error];
   return v12;
 }
 
-+ (int64_t)consumeSandboxExtension:(id)a3 forPath:(id)a4 error:(id *)a5
++ (int64_t)consumeSandboxExtension:(id)extension forPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 length])
+  extensionCopy = extension;
+  pathCopy = path;
+  if ([extensionCopy length])
   {
-    [v8 UTF8String];
+    [extensionCopy UTF8String];
     v10 = sandbox_extension_consume();
     v11 = qword_100021B18;
     if ((v10 & 0x8000000000000000) == 0)
@@ -236,7 +236,7 @@ LABEL_13:
       *buf = 138413058;
       v29 = v14;
       v30 = 2112;
-      v31 = v8;
+      v31 = extensionCopy;
       v32 = 1024;
       LODWORD(v33[0]) = v15;
       WORD2(v33[0]) = 2080;
@@ -247,7 +247,7 @@ LABEL_13:
     v18 = objc_opt_class();
     v19 = NSStringFromSelector(a2);
     v27 = 0;
-    v20 = [v18 canAccessPathAt:v9 methodName:v19 error:&v27];
+    v20 = [v18 canAccessPathAt:pathCopy methodName:v19 error:&v27];
     v21 = v27;
 
     if ((v20 & 1) == 0 && (v22 = qword_100021B18, os_log_type_enabled(qword_100021B18, OS_LOG_TYPE_ERROR)))
@@ -257,18 +257,18 @@ LABEL_13:
       *buf = 138412802;
       v29 = v26;
       v30 = 2112;
-      v31 = v8;
+      v31 = extensionCopy;
       v32 = 2112;
       v33[0] = v21;
       _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%@: Inaccessible file (%@) : error=%@", buf, 0x20u);
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_14;
       }
     }
 
-    else if (!a5)
+    else if (!error)
     {
 LABEL_14:
 
@@ -276,7 +276,7 @@ LABEL_14:
     }
 
     v23 = v21;
-    *a5 = v21;
+    *error = v21;
     goto LABEL_14;
   }
 

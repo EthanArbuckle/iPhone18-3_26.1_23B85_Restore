@@ -1,21 +1,21 @@
 @interface PKPaymentSetupServiceProviderProductWithItem
-- (PKPaymentSetupServiceProviderProductWithItem)initWithServiceProviderProduct:(id)a3 item:(id)a4;
+- (PKPaymentSetupServiceProviderProductWithItem)initWithServiceProviderProduct:(id)product item:(id)item;
 @end
 
 @implementation PKPaymentSetupServiceProviderProductWithItem
 
-- (PKPaymentSetupServiceProviderProductWithItem)initWithServiceProviderProduct:(id)a3 item:(id)a4
+- (PKPaymentSetupServiceProviderProductWithItem)initWithServiceProviderProduct:(id)product item:(id)item
 {
-  v7 = a3;
-  v8 = a4;
+  productCopy = product;
+  itemCopy = item;
   v12.receiver = self;
   v12.super_class = PKPaymentSetupServiceProviderProductWithItem;
   v9 = [(PKPaymentSetupServiceProviderProductWithItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_serviceProviderProduct, a3);
-    objc_storeStrong(&v10->_item, a4);
+    objc_storeStrong(&v9->_serviceProviderProduct, product);
+    objc_storeStrong(&v10->_item, item);
   }
 
   return v10;

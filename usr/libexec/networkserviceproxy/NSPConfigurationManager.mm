@@ -2,42 +2,42 @@
 - (BOOL)getGeohashSharingPreference;
 - (BOOL)getPrivateAccessTokensEnabled;
 - (BOOL)policyIncludesUnlimited;
-- (BOOL)setUserTier:(unint64_t)a3 resetDate:(id)a4 clearResetDate:(BOOL)a5 changeSource:(unint64_t)a6;
-- (NSPConfigurationManager)initWithDelegate:(id)a3 configuration:(id)a4;
+- (BOOL)setUserTier:(unint64_t)tier resetDate:(id)date clearResetDate:(BOOL)resetDate changeSource:(unint64_t)source;
+- (NSPConfigurationManager)initWithDelegate:(id)delegate configuration:(id)configuration;
 - (id)currentConfiguration;
 - (id)diagnostics;
 - (id)mergeProxyTrafficStateWithCurrentPolicy;
 - (unint64_t)configurationSubscriberPoliciesCount;
 - (unint64_t)getPrivacyProxyAccountType;
 - (void)clearResetDate;
-- (void)copyProxyInfo:(id)a3;
+- (void)copyProxyInfo:(id)info;
 - (void)dealloc;
-- (void)handlePathChange:(id)a3;
+- (void)handlePathChange:(id)change;
 - (void)publishDailyConfigurationStats;
-- (void)refreshConfigurationWithReason:(unint64_t)a3 completionHandler:(id)a4;
+- (void)refreshConfigurationWithReason:(unint64_t)reason completionHandler:(id)handler;
 - (void)resetConfigurationManager;
-- (void)setConfigurationTrialVersion:(int64_t)a3;
-- (void)setGeohashOverride:(id)a3;
-- (void)setProxyTrafficState:(unint64_t)a3 proxyTraffic:(unint64_t)a4;
-- (void)setResetDate:(id)a3;
+- (void)setConfigurationTrialVersion:(int64_t)version;
+- (void)setGeohashOverride:(id)override;
+- (void)setProxyTrafficState:(unint64_t)state proxyTraffic:(unint64_t)traffic;
+- (void)setResetDate:(id)date;
 - (void)setup;
-- (void)updateConfiguration:(id)a3;
+- (void)updateConfiguration:(id)configuration;
 @end
 
 @implementation NSPConfigurationManager
 
 - (void)resetConfigurationManager
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_configuration;
   }
 
-  v28 = [(NSPConfigurationManager *)self geohashSharingEnabledStatus];
-  if (v2)
+  geohashSharingEnabledStatus = [(NSPConfigurationManager *)self geohashSharingEnabledStatus];
+  if (selfCopy)
   {
-    configuration = v2->_configuration;
+    configuration = selfCopy->_configuration;
   }
 
   else
@@ -45,10 +45,10 @@
     configuration = 0;
   }
 
-  v27 = [(NSPConfiguration *)configuration geohashOverride];
-  if (v2)
+  geohashOverride = [(NSPConfiguration *)configuration geohashOverride];
+  if (selfCopy)
   {
-    v4 = v2->_configuration;
+    v4 = selfCopy->_configuration;
   }
 
   else
@@ -56,10 +56,10 @@
     v4 = 0;
   }
 
-  v26 = [(NSPConfiguration *)v4 preferredPathRoutingEnabledStatus];
-  if (v2)
+  preferredPathRoutingEnabledStatus = [(NSPConfiguration *)v4 preferredPathRoutingEnabledStatus];
+  if (selfCopy)
   {
-    v5 = v2->_configuration;
+    v5 = selfCopy->_configuration;
   }
 
   else
@@ -67,10 +67,10 @@
     v5 = 0;
   }
 
-  v6 = [(NSPConfiguration *)v5 privateAccessTokensEnabledStatus];
-  if (v2)
+  privateAccessTokensEnabledStatus = [(NSPConfiguration *)v5 privateAccessTokensEnabledStatus];
+  if (selfCopy)
   {
-    v7 = v2->_configuration;
+    v7 = selfCopy->_configuration;
   }
 
   else
@@ -78,10 +78,10 @@
     v7 = 0;
   }
 
-  v8 = [(NSPConfiguration *)v7 privateAccessTokensAllowTools];
-  if (v2)
+  privateAccessTokensAllowTools = [(NSPConfiguration *)v7 privateAccessTokensAllowTools];
+  if (selfCopy)
   {
-    v9 = v2->_configuration;
+    v9 = selfCopy->_configuration;
   }
 
   else
@@ -89,10 +89,10 @@
     v9 = 0;
   }
 
-  v10 = [(NSPConfiguration *)v9 inProcessFlowDivert];
-  if (v2)
+  inProcessFlowDivert = [(NSPConfiguration *)v9 inProcessFlowDivert];
+  if (selfCopy)
   {
-    v11 = v2->_configuration;
+    v11 = selfCopy->_configuration;
   }
 
   else
@@ -100,10 +100,10 @@
     v11 = 0;
   }
 
-  v12 = [(NSPConfiguration *)v11 proxyTrafficState];
-  if (v2)
+  proxyTrafficState = [(NSPConfiguration *)v11 proxyTrafficState];
+  if (selfCopy)
   {
-    v13 = v2->_configuration;
+    v13 = selfCopy->_configuration;
   }
 
   else
@@ -111,10 +111,10 @@
     v13 = 0;
   }
 
-  v14 = [(NSPConfiguration *)v13 userTier];
-  if (v2)
+  userTier = [(NSPConfiguration *)v13 userTier];
+  if (selfCopy)
   {
-    v15 = v2->_configuration;
+    v15 = selfCopy->_configuration;
   }
 
   else
@@ -122,10 +122,10 @@
     v15 = 0;
   }
 
-  v16 = [(NSPConfiguration *)v15 proxyAccountType];
-  if (v2)
+  proxyAccountType = [(NSPConfiguration *)v15 proxyAccountType];
+  if (selfCopy)
   {
-    v17 = v2->_configuration;
+    v17 = selfCopy->_configuration;
   }
 
   else
@@ -133,10 +133,10 @@
     v17 = 0;
   }
 
-  v18 = [(NSPConfiguration *)v17 proxyAccountUnlimited];
-  if (v2)
+  proxyAccountUnlimited = [(NSPConfiguration *)v17 proxyAccountUnlimited];
+  if (selfCopy)
   {
-    v19 = v2->_configuration;
+    v19 = selfCopy->_configuration;
   }
 
   else
@@ -144,10 +144,10 @@
     v19 = 0;
   }
 
-  v20 = [(NSPConfiguration *)v19 userPreferredTier];
-  if (v2)
+  userPreferredTier = [(NSPConfiguration *)v19 userPreferredTier];
+  if (selfCopy)
   {
-    v21 = v2->_configuration;
+    v21 = selfCopy->_configuration;
   }
 
   else
@@ -155,10 +155,10 @@
     v21 = 0;
   }
 
-  v22 = [(NSPConfiguration *)v21 subscriberEnabledFromNonSettingsApp];
-  if (v2)
+  subscriberEnabledFromNonSettingsApp = [(NSPConfiguration *)v21 subscriberEnabledFromNonSettingsApp];
+  if (selfCopy)
   {
-    v23 = v2->_configuration;
+    v23 = selfCopy->_configuration;
   }
 
   else
@@ -166,67 +166,67 @@
     v23 = 0;
   }
 
-  v25 = [(NSPConfiguration *)v23 lastPrivateCloudComputeEnvironment];
-  sub_100088994(v2);
-  if (v2)
+  lastPrivateCloudComputeEnvironment = [(NSPConfiguration *)v23 lastPrivateCloudComputeEnvironment];
+  sub_100088994(selfCopy);
+  if (selfCopy)
   {
-    [(NSPConfiguration *)v2->_configuration setGeohashSharingEnabledStatus:v28];
-    [(NSPConfiguration *)v2->_configuration setGeohashOverride:v27];
-    [(NSPConfiguration *)v2->_configuration setPreferredPathRoutingEnabledStatus:v26];
-    [(NSPConfiguration *)v2->_configuration setPrivateAccessTokensEnabledStatus:v6];
-    [(NSPConfiguration *)v2->_configuration setPrivateAccessTokensAllowTools:v8];
-    [(NSPConfiguration *)v2->_configuration setInProcessFlowDivert:v10];
-    [(NSPConfiguration *)v2->_configuration setProxyTrafficState:v12];
-    [(NSPConfiguration *)v2->_configuration setUserTier:v14];
-    [(NSPConfiguration *)v2->_configuration setProxyAccountType:v16];
-    [(NSPConfiguration *)v2->_configuration setProxyAccountUnlimited:v18];
-    [(NSPConfiguration *)v2->_configuration setUserPreferredTier:v20];
-    [(NSPConfiguration *)v2->_configuration setSubscriberEnabledFromNonSettingsApp:v22];
-    v24 = v2->_configuration;
+    [(NSPConfiguration *)selfCopy->_configuration setGeohashSharingEnabledStatus:geohashSharingEnabledStatus];
+    [(NSPConfiguration *)selfCopy->_configuration setGeohashOverride:geohashOverride];
+    [(NSPConfiguration *)selfCopy->_configuration setPreferredPathRoutingEnabledStatus:preferredPathRoutingEnabledStatus];
+    [(NSPConfiguration *)selfCopy->_configuration setPrivateAccessTokensEnabledStatus:privateAccessTokensEnabledStatus];
+    [(NSPConfiguration *)selfCopy->_configuration setPrivateAccessTokensAllowTools:privateAccessTokensAllowTools];
+    [(NSPConfiguration *)selfCopy->_configuration setInProcessFlowDivert:inProcessFlowDivert];
+    [(NSPConfiguration *)selfCopy->_configuration setProxyTrafficState:proxyTrafficState];
+    [(NSPConfiguration *)selfCopy->_configuration setUserTier:userTier];
+    [(NSPConfiguration *)selfCopy->_configuration setProxyAccountType:proxyAccountType];
+    [(NSPConfiguration *)selfCopy->_configuration setProxyAccountUnlimited:proxyAccountUnlimited];
+    [(NSPConfiguration *)selfCopy->_configuration setUserPreferredTier:userPreferredTier];
+    [(NSPConfiguration *)selfCopy->_configuration setSubscriberEnabledFromNonSettingsApp:subscriberEnabledFromNonSettingsApp];
+    v24 = selfCopy->_configuration;
   }
 
   else
   {
-    [0 setGeohashSharingEnabledStatus:v28];
-    [0 setGeohashOverride:v27];
-    [0 setPreferredPathRoutingEnabledStatus:v26];
-    [0 setPrivateAccessTokensEnabledStatus:v6];
-    [0 setPrivateAccessTokensAllowTools:v8];
-    [0 setInProcessFlowDivert:v10];
-    [0 setProxyTrafficState:v12];
-    [0 setUserTier:v14];
-    [0 setProxyAccountType:v16];
-    [0 setProxyAccountUnlimited:v18];
-    [0 setUserPreferredTier:v20];
-    [0 setSubscriberEnabledFromNonSettingsApp:v22];
+    [0 setGeohashSharingEnabledStatus:geohashSharingEnabledStatus];
+    [0 setGeohashOverride:geohashOverride];
+    [0 setPreferredPathRoutingEnabledStatus:preferredPathRoutingEnabledStatus];
+    [0 setPrivateAccessTokensEnabledStatus:privateAccessTokensEnabledStatus];
+    [0 setPrivateAccessTokensAllowTools:privateAccessTokensAllowTools];
+    [0 setInProcessFlowDivert:inProcessFlowDivert];
+    [0 setProxyTrafficState:proxyTrafficState];
+    [0 setUserTier:userTier];
+    [0 setProxyAccountType:proxyAccountType];
+    [0 setProxyAccountUnlimited:proxyAccountUnlimited];
+    [0 setUserPreferredTier:userPreferredTier];
+    [0 setSubscriberEnabledFromNonSettingsApp:subscriberEnabledFromNonSettingsApp];
     v24 = 0;
   }
 
-  [(NSPConfiguration *)v24 setLastPrivateCloudComputeEnvironment:v25];
-  sub_100088D7C(v2);
+  [(NSPConfiguration *)v24 setLastPrivateCloudComputeEnvironment:lastPrivateCloudComputeEnvironment];
+  sub_100088D7C(selfCopy);
 }
 
 - (BOOL)policyIncludesUnlimited
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_configuration;
   }
 
-  v3 = [(NSPConfigurationManager *)self proxyTrafficState];
-  v4 = [v3 unsignedLongLongValue];
+  proxyTrafficState = [(NSPConfigurationManager *)self proxyTrafficState];
+  unsignedLongLongValue = [proxyTrafficState unsignedLongLongValue];
 
-  if ((v4 & 0x20000) != 0)
+  if ((unsignedLongLongValue & 0x20000) != 0)
   {
-    v6 = sub_10008A834(&v2->super.isa);
-    v7 = sub_10008A61C(v2, v6);
+    v6 = sub_10008A834(&selfCopy->super.isa);
+    v7 = sub_10008A61C(selfCopy, v6);
     v8 = v7;
     if (v7 && [v7 containsObject:&off_100114038])
     {
-      if (v2)
+      if (selfCopy)
       {
-        configuration = v2->_configuration;
+        configuration = selfCopy->_configuration;
       }
 
       else
@@ -235,17 +235,17 @@
       }
 
       v10 = configuration;
-      v11 = [(NSPConfiguration *)v10 proxyAccountUnlimited];
-      if ([v11 BOOLValue])
+      proxyAccountUnlimited = [(NSPConfiguration *)v10 proxyAccountUnlimited];
+      if ([proxyAccountUnlimited BOOLValue])
       {
         v5 = 1;
       }
 
       else
       {
-        if (v2)
+        if (selfCopy)
         {
-          v12 = v2->_configuration;
+          v12 = selfCopy->_configuration;
         }
 
         else
@@ -254,12 +254,12 @@
         }
 
         v13 = v12;
-        v14 = [(NSPConfiguration *)v13 cloudSubscriptionCheckEnabled];
-        if (v14)
+        cloudSubscriptionCheckEnabled = [(NSPConfiguration *)v13 cloudSubscriptionCheckEnabled];
+        if (cloudSubscriptionCheckEnabled)
         {
-          if (v2)
+          if (selfCopy)
           {
-            v15 = v2->_configuration;
+            v15 = selfCopy->_configuration;
           }
 
           else
@@ -267,10 +267,10 @@
             v15 = 0;
           }
 
-          v16 = [(NSPConfiguration *)v15 cloudSubscriptionCheckEnabled];
-          v17 = [v16 BOOLValue];
+          cloudSubscriptionCheckEnabled2 = [(NSPConfiguration *)v15 cloudSubscriptionCheckEnabled];
+          bOOLValue = [cloudSubscriptionCheckEnabled2 BOOLValue];
 
-          v5 = v17 ^ 1;
+          v5 = bOOLValue ^ 1;
         }
 
         else
@@ -314,9 +314,9 @@
   }
 
   v5 = configuration;
-  v6 = [(NSPConfiguration *)v5 proxyTrafficState];
+  proxyTrafficState = [(NSPConfiguration *)v5 proxyTrafficState];
 
-  if (v6)
+  if (proxyTrafficState)
   {
     v7 = sub_10008A834(&self->super.isa);
     v8 = sub_10008A61C(self, v7);
@@ -327,7 +327,7 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v50 = self;
+        selfCopy4 = self;
         _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%@ failed to find conditions in the current policy", buf, 0xCu);
       }
 
@@ -349,8 +349,8 @@ LABEL_31:
       }
 
       v26 = v25;
-      v27 = [(NSPConfiguration *)v26 proxyTrafficState];
-      v28 = [v27 unsignedLongLongValue];
+      proxyTrafficState2 = [(NSPConfiguration *)v26 proxyTrafficState];
+      unsignedLongLongValue = [proxyTrafficState2 unsignedLongLongValue];
 
       v29 = nplog_obj();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
@@ -366,11 +366,11 @@ LABEL_31:
         }
 
         v31 = v30;
-        v32 = [(NSPConfiguration *)v31 proxyTrafficState];
-        v33 = [NSPConfiguration proxyTrafficStateToString:v32];
+        proxyTrafficState3 = [(NSPConfiguration *)v31 proxyTrafficState];
+        v33 = [NSPConfiguration proxyTrafficStateToString:proxyTrafficState3];
         v34 = [v7 description];
         *buf = 138412802;
-        v50 = self;
+        selfCopy4 = self;
         v51 = 2112;
         v52 = v33;
         v53 = 2112;
@@ -378,137 +378,137 @@ LABEL_31:
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "%@ merging proxy traffic state [%@] with current proxy policy [%@]", buf, 0x20u);
       }
 
-      if ((v28 & 1) == 0 && [v9 containsObject:&off_100114050])
+      if ((unsignedLongLongValue & 1) == 0 && [v9 containsObject:&off_100114050])
       {
         [v9 removeObject:&off_100114050];
       }
 
-      if ((v28 & 2) == 0 && [v9 containsObject:&off_100114068])
+      if ((unsignedLongLongValue & 2) == 0 && [v9 containsObject:&off_100114068])
       {
         [v9 removeObject:&off_100114068];
       }
 
-      if ((v28 & 4) == 0 && [v9 containsObject:&off_100114080])
+      if ((unsignedLongLongValue & 4) == 0 && [v9 containsObject:&off_100114080])
       {
         [v9 removeObject:&off_100114080];
       }
 
-      if ((v28 & 8) == 0 && [v9 containsObject:&off_100114098])
+      if ((unsignedLongLongValue & 8) == 0 && [v9 containsObject:&off_100114098])
       {
         [v9 removeObject:&off_100114098];
       }
 
-      if ((v28 & 0x10) == 0 && [v9 containsObject:&off_1001140B0])
+      if ((unsignedLongLongValue & 0x10) == 0 && [v9 containsObject:&off_1001140B0])
       {
         [v9 removeObject:&off_1001140B0];
       }
 
-      if ((v28 & 0x40000) == 0 && [v9 containsObject:&off_1001140C8])
+      if ((unsignedLongLongValue & 0x40000) == 0 && [v9 containsObject:&off_1001140C8])
       {
         [v9 removeObject:&off_1001140C8];
       }
 
-      if ((v28 & 0x80000) == 0 && [v9 containsObject:&off_1001140E0])
+      if ((unsignedLongLongValue & 0x80000) == 0 && [v9 containsObject:&off_1001140E0])
       {
         [v9 removeObject:&off_1001140E0];
       }
 
-      if ((v28 & 0x100000) == 0 && [v9 containsObject:&off_1001140F8])
+      if ((unsignedLongLongValue & 0x100000) == 0 && [v9 containsObject:&off_1001140F8])
       {
         [v9 removeObject:&off_1001140F8];
       }
 
-      if ((v28 & 0x200000) == 0 && [v9 containsObject:&off_100114110])
+      if ((unsignedLongLongValue & 0x200000) == 0 && [v9 containsObject:&off_100114110])
       {
         [v9 removeObject:&off_100114110];
       }
 
-      if ((v28 & 0x20) == 0 && [v9 containsObject:&off_100114128])
+      if ((unsignedLongLongValue & 0x20) == 0 && [v9 containsObject:&off_100114128])
       {
         [v9 removeObject:&off_100114128];
       }
 
-      if ((v28 & 0x40) == 0 && [v9 containsObject:&off_100114140])
+      if ((unsignedLongLongValue & 0x40) == 0 && [v9 containsObject:&off_100114140])
       {
         [v9 removeObject:&off_100114140];
       }
 
-      if ((v28 & 0x80) == 0 && [v9 containsObject:&off_100114158])
+      if ((unsignedLongLongValue & 0x80) == 0 && [v9 containsObject:&off_100114158])
       {
         [v9 removeObject:&off_100114158];
       }
 
-      if ((v28 & 0x100) == 0 && [v9 containsObject:&off_100114170])
+      if ((unsignedLongLongValue & 0x100) == 0 && [v9 containsObject:&off_100114170])
       {
         [v9 removeObject:&off_100114170];
       }
 
-      if ((v28 & 0x200) == 0 && [v9 containsObject:&off_100114188])
+      if ((unsignedLongLongValue & 0x200) == 0 && [v9 containsObject:&off_100114188])
       {
         [v9 removeObject:&off_100114188];
       }
 
-      if ((v28 & 0x400) == 0 && [v9 containsObject:&off_1001141A0])
+      if ((unsignedLongLongValue & 0x400) == 0 && [v9 containsObject:&off_1001141A0])
       {
         [v9 removeObject:&off_1001141A0];
       }
 
-      if ((v28 & 0x10000) == 0 && [v9 containsObject:&off_1001141B8])
+      if ((unsignedLongLongValue & 0x10000) == 0 && [v9 containsObject:&off_1001141B8])
       {
         [v9 removeObject:&off_1001141B8];
       }
 
-      if ((v28 & 0x800) == 0 && [v9 containsObject:&off_1001141D0])
+      if ((unsignedLongLongValue & 0x800) == 0 && [v9 containsObject:&off_1001141D0])
       {
         [v9 removeObject:&off_1001141D0];
       }
 
-      if ((v28 & 0x1000) == 0 && [v9 containsObject:&off_1001141E8])
+      if ((unsignedLongLongValue & 0x1000) == 0 && [v9 containsObject:&off_1001141E8])
       {
         [v9 removeObject:&off_1001141E8];
       }
 
-      if ((v28 & 0x2000) == 0 && [v9 containsObject:&off_100114200])
+      if ((unsignedLongLongValue & 0x2000) == 0 && [v9 containsObject:&off_100114200])
       {
         [v9 removeObject:&off_100114200];
       }
 
-      if ((v28 & 0x4000) == 0 && [v9 containsObject:&off_100114218])
+      if ((unsignedLongLongValue & 0x4000) == 0 && [v9 containsObject:&off_100114218])
       {
         [v9 removeObject:&off_100114218];
       }
 
-      if ((v28 & 0x8000) == 0 && [v9 containsObject:&off_100114230])
+      if ((unsignedLongLongValue & 0x8000) == 0 && [v9 containsObject:&off_100114230])
       {
         [v9 removeObject:&off_100114230];
       }
 
-      if ((v28 & 0x20000) == 0 && [v9 containsObject:&off_100114038])
+      if ((unsignedLongLongValue & 0x20000) == 0 && [v9 containsObject:&off_100114038])
       {
         [v9 removeObject:&off_100114038];
       }
 
-      if ((v28 & 0x400000) == 0 && [v9 containsObject:&off_100114248])
+      if ((unsignedLongLongValue & 0x400000) == 0 && [v9 containsObject:&off_100114248])
       {
         [v9 removeObject:&off_100114248];
       }
 
-      if ((v28 & 0x800000) == 0 && [v9 containsObject:&off_100114260])
+      if ((unsignedLongLongValue & 0x800000) == 0 && [v9 containsObject:&off_100114260])
       {
         [v9 removeObject:&off_100114260];
       }
 
-      if ((v28 & 0x1000000) == 0 && [v9 containsObject:&off_100114278])
+      if ((unsignedLongLongValue & 0x1000000) == 0 && [v9 containsObject:&off_100114278])
       {
         [v9 removeObject:&off_100114278];
       }
 
-      if ((v28 & 0x2000000) == 0 && [v9 containsObject:&off_100114290])
+      if ((unsignedLongLongValue & 0x2000000) == 0 && [v9 containsObject:&off_100114290])
       {
         [v9 removeObject:&off_100114290];
       }
 
-      if ((v28 & 0x4000000) == 0 && [v9 containsObject:&off_1001142A8])
+      if ((unsignedLongLongValue & 0x4000000) == 0 && [v9 containsObject:&off_1001142A8])
       {
         [v9 removeObject:&off_1001142A8];
       }
@@ -547,7 +547,7 @@ LABEL_31:
       {
         v42 = [v35 description];
         *buf = 138412546;
-        v50 = self;
+        selfCopy4 = self;
         v51 = 2112;
         v52 = v42;
         _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_INFO, "%@ merged privacy proxy policy: [%@]", buf, 0x16u);
@@ -571,8 +571,8 @@ LABEL_128:
     }
 
     v11 = v10;
-    v12 = [(NSPConfiguration *)v11 proxyAccountUnlimited];
-    if ([v12 BOOLValue])
+    proxyAccountUnlimited = [(NSPConfiguration *)v11 proxyAccountUnlimited];
+    if ([proxyAccountUnlimited BOOLValue])
     {
 
 LABEL_24:
@@ -597,10 +597,10 @@ LABEL_24:
     }
 
     v16 = v15;
-    v17 = [(NSPConfiguration *)v16 cloudSubscriptionCheckEnabled];
-    if (v17)
+    cloudSubscriptionCheckEnabled = [(NSPConfiguration *)v16 cloudSubscriptionCheckEnabled];
+    if (cloudSubscriptionCheckEnabled)
     {
-      v18 = v17;
+      v18 = cloudSubscriptionCheckEnabled;
       if (self)
       {
         v19 = self->_configuration;
@@ -612,10 +612,10 @@ LABEL_24:
       }
 
       v20 = v19;
-      v21 = [(NSPConfiguration *)v20 cloudSubscriptionCheckEnabled];
-      v22 = [v21 BOOLValue];
+      cloudSubscriptionCheckEnabled2 = [(NSPConfiguration *)v20 cloudSubscriptionCheckEnabled];
+      bOOLValue = [cloudSubscriptionCheckEnabled2 BOOLValue];
 
-      if ((v22 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
         goto LABEL_24;
       }
@@ -640,7 +640,7 @@ LABEL_24:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v50 = self;
+    selfCopy4 = self;
     _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%@ proxy traffic state is nil", buf, 0xCu);
   }
 
@@ -660,9 +660,9 @@ LABEL_129:
   return self;
 }
 
-- (void)updateConfiguration:(id)a3
+- (void)updateConfiguration:(id)configuration
 {
-  v3 = __chkstk_darwin(self, a2, a3);
+  v3 = __chkstk_darwin(self, a2, configuration);
   v535 = v4;
   if (v3)
   {
@@ -677,7 +677,7 @@ LABEL_129:
   v6 = v5;
   v539 = [v6 copy];
 
-  v7 = [v3 effectiveUserTier];
+  effectiveUserTier = [v3 effectiveUserTier];
   if (v3)
   {
     v8 = v3[4];
@@ -705,10 +705,10 @@ LABEL_129:
   }
 
   v540 = v11;
-  v12 = [v540 proxyConfigurationData];
-  v13 = [v539 proxyConfigurationData];
-  v14 = v12;
-  v15 = v13;
+  proxyConfigurationData = [v540 proxyConfigurationData];
+  proxyConfigurationData2 = [v539 proxyConfigurationData];
+  v14 = proxyConfigurationData;
+  v15 = proxyConfigurationData2;
   v16 = v15;
   if (!(v14 | v15) || v14 && v15 && [v14 isEqual:v15])
   {
@@ -729,10 +729,10 @@ LABEL_129:
     v534 = 1;
   }
 
-  v18 = [v540 enabled];
-  v19 = [v539 enabled];
-  v20 = v18;
-  v21 = v19;
+  enabled = [v540 enabled];
+  enabled2 = [v539 enabled];
+  v20 = enabled;
+  v21 = enabled2;
   v22 = v21;
   if (v20 | v21 && (!v20 || !v21 || ![v20 isEqual:v21]))
   {
@@ -740,10 +740,10 @@ LABEL_129:
     v33 = nplog_obj();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
-      v34 = [v540 enabled];
-      v35 = [v34 BOOLValue];
+      enabled3 = [v540 enabled];
+      bOOLValue = [enabled3 BOOLValue];
       v36 = @"disabled";
-      if (v35)
+      if (bOOLValue)
       {
         v36 = @"enabled";
       }
@@ -762,10 +762,10 @@ LABEL_129:
       v704 = sub_1000875B8;
       v705 = os_transaction_create();
       v37 = *(v541 + 32);
-      v38 = [v37 enabled];
-      v39 = [v38 BOOLValue];
+      enabled4 = [v37 enabled];
+      bOOLValue2 = [enabled4 BOOLValue];
 
-      if (v39)
+      if (bOOLValue2)
       {
         v40 = *(v541 + 32);
         [v40 setConfigServerEnabled:&__kCFBooleanTrue];
@@ -774,8 +774,8 @@ LABEL_129:
         sub_10008720C(v541);
         sub_100088604(v541);
         v41 = *(v541 + 32);
-        v42 = [v41 configServerHost];
-        *(v541 + 10) = [v42 isEqualToString:@"mask-api.icloud.com"] ^ 1;
+        configServerHost = [v41 configServerHost];
+        *(v541 + 10) = [configServerHost isEqualToString:@"mask-api.icloud.com"] ^ 1;
 
         v43 = NPGetInternalQueue();
         block = _NSConcreteStackBlock;
@@ -811,36 +811,36 @@ LABEL_129:
     goto LABEL_147;
   }
 
-  v23 = [v540 enabled];
-  v24 = [v23 BOOLValue];
+  enabled5 = [v540 enabled];
+  bOOLValue3 = [enabled5 BOOLValue];
 
-  if ((v24 & 1) == 0)
+  if ((bOOLValue3 & 1) == 0)
   {
     goto LABEL_146;
   }
 
-  v25 = [v540 configServerHost];
-  v26 = [v539 configServerHost];
-  v27 = [v25 isEqualToString:v26];
+  configServerHost2 = [v540 configServerHost];
+  configServerHost3 = [v539 configServerHost];
+  v27 = [configServerHost2 isEqualToString:configServerHost3];
 
   if ((v27 & 1) == 0)
   {
     v45 = nplog_obj();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
     {
-      v46 = [v540 configServerHost];
+      configServerHost4 = [v540 configServerHost];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v46;
+      *(&buf + 4) = configServerHost4;
       _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "configuration server host changed to %@", &buf, 0xCu);
     }
 
     goto LABEL_34;
   }
 
-  v28 = [v540 overrideConfigServerPath];
-  v29 = [v539 overrideConfigServerPath];
-  v30 = v28;
-  v31 = v29;
+  overrideConfigServerPath = [v540 overrideConfigServerPath];
+  overrideConfigServerPath2 = [v539 overrideConfigServerPath];
+  v30 = overrideConfigServerPath;
+  v31 = overrideConfigServerPath2;
   v32 = v31;
   if (!(v30 | v31) || v30 && v31 && [v30 isEqual:v31])
   {
@@ -852,42 +852,42 @@ LABEL_129:
     v30 = nplog_obj();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
-      v47 = [v540 overrideConfigServerPath];
+      overrideConfigServerPath3 = [v540 overrideConfigServerPath];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v47;
+      *(&buf + 4) = overrideConfigServerPath3;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "user-configured server path changed to %@", &buf, 0xCu);
     }
 
     v534 = 1;
   }
 
-  v48 = [v540 configServerHeaders];
-  v49 = [v539 configServerHeaders];
-  v50 = [v48 isEqualToString:v49];
+  configServerHeaders = [v540 configServerHeaders];
+  configServerHeaders2 = [v539 configServerHeaders];
+  v50 = [configServerHeaders isEqualToString:configServerHeaders2];
 
   if ((v50 & 1) == 0)
   {
     v51 = nplog_obj();
     if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
     {
-      v52 = [v540 configServerHeaders];
+      configServerHeaders3 = [v540 configServerHeaders];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v52;
+      *(&buf + 4) = configServerHeaders3;
       _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEFAULT, "configuration server headers changed to %@", &buf, 0xCu);
     }
 
     v534 = 1;
   }
 
-  v53 = [v540 ignoreInvalidCerts];
-  if (v53 != [v539 ignoreInvalidCerts])
+  ignoreInvalidCerts = [v540 ignoreInvalidCerts];
+  if (ignoreInvalidCerts != [v539 ignoreInvalidCerts])
   {
     v45 = nplog_obj();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
     {
-      v54 = [v540 ignoreInvalidCerts];
+      ignoreInvalidCerts2 = [v540 ignoreInvalidCerts];
       v55 = "no";
-      if (v54)
+      if (ignoreInvalidCerts2)
       {
         v55 = "yes";
       }
@@ -927,9 +927,9 @@ LABEL_147:
     }
 
     v165 = v164;
-    v166 = [v165 saveToPreferences];
+    saveToPreferences = [v165 saveToPreferences];
 
-    if (v166)
+    if (saveToPreferences)
     {
       if (v541)
       {
@@ -972,40 +972,40 @@ LABEL_147:
     goto LABEL_156;
   }
 
-  v56 = [v540 ignoreSignature];
-  if (v56 != [v539 ignoreSignature])
+  ignoreSignature = [v540 ignoreSignature];
+  if (ignoreSignature != [v539 ignoreSignature])
   {
     v57 = nplog_obj();
     if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
     {
-      v58 = [v540 ignoreSignature];
+      ignoreSignature2 = [v540 ignoreSignature];
       LODWORD(buf) = 67109120;
-      DWORD1(buf) = v58;
+      DWORD1(buf) = ignoreSignature2;
       _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "ignore configuration signature %d", &buf, 8u);
     }
 
     v534 = 1;
   }
 
-  v59 = [v540 ignorePlatformBinary];
-  if (v59 != [v539 ignorePlatformBinary])
+  ignorePlatformBinary = [v540 ignorePlatformBinary];
+  if (ignorePlatformBinary != [v539 ignorePlatformBinary])
   {
     v60 = nplog_obj();
     if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
     {
-      v61 = [v540 ignorePlatformBinary];
+      ignorePlatformBinary2 = [v540 ignorePlatformBinary];
       LODWORD(buf) = 67109120;
-      DWORD1(buf) = v61;
+      DWORD1(buf) = ignorePlatformBinary2;
       _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_DEFAULT, "ignore platform binary %d", &buf, 8u);
     }
 
     v534 = 1;
   }
 
-  v62 = [v540 cloudSubscriptionCheckEnabled];
-  v63 = [v539 cloudSubscriptionCheckEnabled];
-  v64 = v62;
-  v65 = v63;
+  cloudSubscriptionCheckEnabled = [v540 cloudSubscriptionCheckEnabled];
+  cloudSubscriptionCheckEnabled2 = [v539 cloudSubscriptionCheckEnabled];
+  v64 = cloudSubscriptionCheckEnabled;
+  v65 = cloudSubscriptionCheckEnabled2;
   v66 = v65;
   if (!(v64 | v65) || v64 && v65 && [v64 isEqual:v65])
   {
@@ -1017,10 +1017,10 @@ LABEL_147:
     v67 = nplog_obj();
     if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
     {
-      v68 = [v540 cloudSubscriptionCheckEnabled];
-      v69 = [v68 BOOLValue];
+      cloudSubscriptionCheckEnabled3 = [v540 cloudSubscriptionCheckEnabled];
+      bOOLValue4 = [cloudSubscriptionCheckEnabled3 BOOLValue];
       v70 = "no";
-      if (v69)
+      if (bOOLValue4)
       {
         v70 = "yes";
       }
@@ -1032,17 +1032,17 @@ LABEL_147:
 
     if (v541)
     {
-      v71 = [*(v541 + 32) cloudSubscriptionCheckEnabled];
-      v72 = [v71 BOOLValue];
+      cloudSubscriptionCheckEnabled4 = [*(v541 + 32) cloudSubscriptionCheckEnabled];
+      bOOLValue5 = [cloudSubscriptionCheckEnabled4 BOOLValue];
 
-      if ((v72 & 1) == 0)
+      if ((bOOLValue5 & 1) == 0)
       {
         [*(v541 + 32) setProxyAccountType:0];
         [*(v541 + 32) setProxyAccountUnlimited:0];
       }
 
-      v73 = [*(v541 + 32) cloudSubscriptionCheckEnabled];
-      v74 = [v73 BOOLValue];
+      cloudSubscriptionCheckEnabled5 = [*(v541 + 32) cloudSubscriptionCheckEnabled];
+      bOOLValue6 = [cloudSubscriptionCheckEnabled5 BOOLValue];
 
       block = 0;
       p_block = &block;
@@ -1055,7 +1055,7 @@ LABEL_147:
       *(&buf + 1) = 3221225472;
       v702 = sub_100089654;
       v703 = &unk_1001099F8;
-      v706 = v74;
+      v706 = bOOLValue6;
       v704 = v541;
       v705 = &block;
       dispatch_async(v75, &buf);
@@ -1066,10 +1066,10 @@ LABEL_147:
     v534 = 1;
   }
 
-  v76 = [v540 trialConfigVersion];
-  v77 = [v539 trialConfigVersion];
-  v78 = v76;
-  v79 = v77;
+  trialConfigVersion = [v540 trialConfigVersion];
+  trialConfigVersion2 = [v539 trialConfigVersion];
+  v78 = trialConfigVersion;
+  v79 = trialConfigVersion2;
   v80 = v79;
   if (!(v78 | v79) || v78 && v79 && [v78 isEqual:v79])
   {
@@ -1081,9 +1081,9 @@ LABEL_147:
     v81 = nplog_obj();
     if (os_log_type_enabled(v81, OS_LOG_TYPE_DEFAULT))
     {
-      v82 = [v540 trialConfigVersion];
+      trialConfigVersion3 = [v540 trialConfigVersion];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v82;
+      *(&buf + 4) = trialConfigVersion3;
       _os_log_impl(&_mh_execute_header, v81, OS_LOG_TYPE_DEFAULT, "Trial configuration version changed to %@", &buf, 0xCu);
     }
 
@@ -1107,16 +1107,16 @@ LABEL_147:
     v534 = 1;
   }
 
-  v83 = [v540 resurrectionDate];
-  v84 = [v539 resurrectionDate];
-  v85 = v83;
-  v86 = v84;
+  resurrectionDate = [v540 resurrectionDate];
+  resurrectionDate2 = [v539 resurrectionDate];
+  v85 = resurrectionDate;
+  v86 = resurrectionDate2;
   v87 = v86;
   if (v85 | v86 && (!v85 || !v86 || ![v85 isEqual:v86]))
   {
 
-    v95 = [v540 resurrectionDate];
-    v96 = [NSDateFormatter localizedStringFromDate:v95 dateStyle:1 timeStyle:2];
+    resurrectionDate3 = [v540 resurrectionDate];
+    v96 = [NSDateFormatter localizedStringFromDate:resurrectionDate3 dateStyle:1 timeStyle:2];
 
     v97 = nplog_obj();
     if (os_log_type_enabled(v97, OS_LOG_TYPE_DEFAULT))
@@ -1135,8 +1135,8 @@ LABEL_147:
       v704 = sub_1000875B8;
       v705 = os_transaction_create();
       v98 = *(v541 + 32);
-      v99 = [v98 resurrectionDate];
-      v100 = v99 == 0;
+      resurrectionDate4 = [v98 resurrectionDate];
+      v100 = resurrectionDate4 == 0;
 
       v101 = *(v541 + 32);
       v102 = v101;
@@ -1146,25 +1146,25 @@ LABEL_147:
 
         sub_10008720C(v541);
         sub_100088604(v541);
-        v103 = NPGetInternalQueue();
+        resurrectionDate5 = NPGetInternalQueue();
         block = _NSConcreteStackBlock;
         p_block = 3221225472;
         v677 = sub_100089738;
         v678 = &unk_100109450;
         v679 = v541;
         p_buf = &buf;
-        dispatch_async(v103, &block);
+        dispatch_async(resurrectionDate5, &block);
       }
 
       else
       {
-        v103 = [v101 resurrectionDate];
+        resurrectionDate5 = [v101 resurrectionDate];
 
         sub_100088294(v541);
         sub_100087FD4(v541);
         sub_100088994(v541);
         v104 = *(v541 + 32);
-        [v104 setResurrectionDate:v103];
+        [v104 setResurrectionDate:resurrectionDate5];
 
         sub_1000879CC(v541);
         v105 = NPGetInternalQueue();
@@ -1183,26 +1183,26 @@ LABEL_147:
     goto LABEL_147;
   }
 
-  v88 = [v540 userTier];
-  v89 = [v88 unsignedIntValue];
-  v90 = [v539 userTier];
-  LOBYTE(v89) = v89 == [v90 unsignedIntValue];
+  userTier = [v540 userTier];
+  unsignedIntValue = [userTier unsignedIntValue];
+  userTier2 = [v539 userTier];
+  LOBYTE(unsignedIntValue) = unsignedIntValue == [userTier2 unsignedIntValue];
 
-  if ((v89 & 1) == 0)
+  if ((unsignedIntValue & 1) == 0)
   {
     v91 = nplog_obj();
     if (os_log_type_enabled(v91, OS_LOG_TYPE_DEFAULT))
     {
-      v92 = [v540 userTier];
-      v93 = [v92 unsignedIntValue];
-      if (v93 >= 3)
+      userTier3 = [v540 userTier];
+      unsignedIntValue2 = [userTier3 unsignedIntValue];
+      if (unsignedIntValue2 >= 3)
       {
-        v94 = [NSString stringWithFormat:@"(unknown: %i)", v93];
+        v94 = [NSString stringWithFormat:@"(unknown: %i)", unsignedIntValue2];
       }
 
       else
       {
-        v94 = *(&off_10010AAE8 + v93);
+        v94 = *(&off_10010AAE8 + unsignedIntValue2);
       }
 
       v106 = v94;
@@ -1234,29 +1234,29 @@ LABEL_147:
     v534 = 1;
   }
 
-  v108 = [v540 userPreferredTier];
-  v109 = [v108 unsignedIntValue];
-  v110 = [v539 userPreferredTier];
-  LOBYTE(v109) = v109 == [v110 unsignedIntValue];
+  userPreferredTier = [v540 userPreferredTier];
+  unsignedIntValue3 = [userPreferredTier unsignedIntValue];
+  userPreferredTier2 = [v539 userPreferredTier];
+  LOBYTE(unsignedIntValue3) = unsignedIntValue3 == [userPreferredTier2 unsignedIntValue];
 
-  if ((v109 & 1) == 0)
+  if ((unsignedIntValue3 & 1) == 0)
   {
     v111 = nplog_obj();
     if (os_log_type_enabled(v111, OS_LOG_TYPE_DEFAULT))
     {
-      v112 = [v540 userTier];
-      v113 = [v112 unsignedIntValue];
-      if (v113 >= 3)
+      userTier4 = [v540 userTier];
+      unsignedIntValue4 = [userTier4 unsignedIntValue];
+      if (unsignedIntValue4 >= 3)
       {
-        v114 = [NSString stringWithFormat:@"(unknown: %i)", v113];
+        v113 = [NSString stringWithFormat:@"(unknown: %i)", unsignedIntValue4];
       }
 
       else
       {
-        v114 = *(&off_10010AAE8 + v113);
+        v113 = *(&off_10010AAE8 + unsignedIntValue4);
       }
 
-      v115 = v114;
+      v115 = v113;
       LODWORD(buf) = 138412290;
       *(&buf + 4) = v115;
       _os_log_impl(&_mh_execute_header, v111, OS_LOG_TYPE_DEFAULT, "user preferred tier changed to %@", &buf, 0xCu);
@@ -1285,23 +1285,23 @@ LABEL_147:
     v534 = 1;
   }
 
-  if (v7 != [v541 effectiveUserTier])
+  if (effectiveUserTier != [v541 effectiveUserTier])
   {
     v117 = nplog_obj();
     if (os_log_type_enabled(v117, OS_LOG_TYPE_DEFAULT))
     {
-      v118 = [v541 effectiveUserTier];
-      if (v118 >= 3)
+      effectiveUserTier2 = [v541 effectiveUserTier];
+      if (effectiveUserTier2 >= 3)
       {
-        v119 = [NSString stringWithFormat:@"(unknown: %i)", v118];
+        v118 = [NSString stringWithFormat:@"(unknown: %i)", effectiveUserTier2];
       }
 
       else
       {
-        v119 = *(&off_10010AAE8 + (v118 & 3));
+        v118 = *(&off_10010AAE8 + (effectiveUserTier2 & 3));
       }
 
-      v120 = v119;
+      v120 = v118;
       LODWORD(buf) = 138412290;
       *(&buf + 4) = v120;
       _os_log_impl(&_mh_execute_header, v117, OS_LOG_TYPE_DEFAULT, "effective user tier changed to %@", &buf, 0xCu);
@@ -1330,13 +1330,13 @@ LABEL_147:
     v534 = 1;
   }
 
-  v122 = [v540 willResetSubscriberTierTomorrow];
-  v123 = [v539 willResetSubscriberTierTomorrow];
-  if (v122 == v123)
+  willResetSubscriberTierTomorrow = [v540 willResetSubscriberTierTomorrow];
+  willResetSubscriberTierTomorrow2 = [v539 willResetSubscriberTierTomorrow];
+  if (willResetSubscriberTierTomorrow == willResetSubscriberTierTomorrow2)
   {
-    v125 = [v540 resetTomorrowDate];
-    v126 = [v539 resetTomorrowDate];
-    v127 = v125 != v126;
+    resetTomorrowDate = [v540 resetTomorrowDate];
+    resetTomorrowDate2 = [v539 resetTomorrowDate];
+    v127 = resetTomorrowDate != resetTomorrowDate2;
 
     v124 = v127 | v534;
   }
@@ -1348,20 +1348,20 @@ LABEL_147:
 
   v534 = v124;
 
-  v128 = [v540 proxyConfiguration];
-  v129 = [v128 enabled];
-  v130 = [v539 proxyConfiguration];
-  v131 = [v130 enabled];
+  proxyConfiguration = [v540 proxyConfiguration];
+  enabled6 = [proxyConfiguration enabled];
+  proxyConfiguration2 = [v539 proxyConfiguration];
+  enabled7 = [proxyConfiguration2 enabled];
 
-  if (v129 != v131)
+  if (enabled6 != enabled7)
   {
     v132 = nplog_obj();
     if (os_log_type_enabled(v132, OS_LOG_TYPE_DEFAULT))
     {
-      v133 = [v540 proxyConfiguration];
-      v134 = [v133 enabled];
+      proxyConfiguration3 = [v540 proxyConfiguration];
+      enabled8 = [proxyConfiguration3 enabled];
       v135 = "disabled";
-      if (v134)
+      if (enabled8)
       {
         v135 = "enabled";
       }
@@ -1380,14 +1380,14 @@ LABEL_147:
       v704 = sub_1000875B8;
       v705 = os_transaction_create();
       v136 = *(v541 + 32);
-      v137 = [v136 proxyConfiguration];
-      v138 = [v137 enabled];
+      proxyConfiguration4 = [v136 proxyConfiguration];
+      enabled9 = [proxyConfiguration4 enabled];
 
       v139 = NPGetInternalQueue();
       v140 = v139;
       block = _NSConcreteStackBlock;
       p_block = 3221225472;
-      if (v138)
+      if (enabled9)
       {
         v141 = sub_100089994;
       }
@@ -1409,10 +1409,10 @@ LABEL_147:
     goto LABEL_147;
   }
 
-  v142 = [v540 proxyConfiguration];
-  v143 = [v142 enabled];
+  proxyConfiguration5 = [v540 proxyConfiguration];
+  enabled10 = [proxyConfiguration5 enabled];
 
-  if (!v143)
+  if (!enabled10)
   {
 LABEL_146:
     if ((v534 & 1) == 0)
@@ -1423,17 +1423,17 @@ LABEL_146:
     goto LABEL_147;
   }
 
-  v144 = [v540 proxyAccountType];
-  v145 = [v539 proxyAccountType];
-  v146 = sub_1000904EC(v144, v145);
+  proxyAccountType = [v540 proxyAccountType];
+  proxyAccountType2 = [v539 proxyAccountType];
+  v146 = sub_1000904EC(proxyAccountType, proxyAccountType2);
 
   if (v146)
   {
     v147 = nplog_obj();
     if (os_log_type_enabled(v147, OS_LOG_TYPE_DEFAULT))
     {
-      v148 = [v540 proxyAccountType];
-      v149 = [NSPConfiguration proxyAccountTypeToString:v148];
+      proxyAccountType3 = [v540 proxyAccountType];
+      v149 = [NSPConfiguration proxyAccountTypeToString:proxyAccountType3];
       LODWORD(buf) = 138412290;
       *(&buf + 4) = v149;
       _os_log_impl(&_mh_execute_header, v147, OS_LOG_TYPE_DEFAULT, "proxy account type changed to %@", &buf, 0xCu);
@@ -1442,19 +1442,19 @@ LABEL_146:
     v534 = 1;
   }
 
-  v150 = [v540 proxyAccountUnlimited];
-  v151 = [v539 proxyAccountUnlimited];
-  v152 = sub_1000904EC(v150, v151);
+  proxyAccountUnlimited = [v540 proxyAccountUnlimited];
+  proxyAccountUnlimited2 = [v539 proxyAccountUnlimited];
+  v152 = sub_1000904EC(proxyAccountUnlimited, proxyAccountUnlimited2);
 
   if (v152)
   {
     v153 = nplog_obj();
     if (os_log_type_enabled(v153, OS_LOG_TYPE_DEFAULT))
     {
-      v154 = [v540 proxyAccountUnlimited];
-      v155 = [v154 BOOLValue];
+      proxyAccountUnlimited3 = [v540 proxyAccountUnlimited];
+      bOOLValue7 = [proxyAccountUnlimited3 BOOLValue];
       v156 = "false";
-      if (v155)
+      if (bOOLValue7)
       {
         v156 = "true";
       }
@@ -1467,77 +1467,77 @@ LABEL_146:
     v534 = 1;
   }
 
-  v157 = [v540 proxyConfiguration];
-  v158 = [v157 authInfo];
-  v159 = [v158 authURL];
-  v160 = [v539 proxyConfiguration];
-  v161 = [v160 authInfo];
-  v162 = [v161 authURL];
-  if (sub_1000904EC(v159, v162))
+  proxyConfiguration6 = [v540 proxyConfiguration];
+  authInfo = [proxyConfiguration6 authInfo];
+  authURL = [authInfo authURL];
+  proxyConfiguration7 = [v539 proxyConfiguration];
+  authInfo2 = [proxyConfiguration7 authInfo];
+  authURL2 = [authInfo2 authURL];
+  if (sub_1000904EC(authURL, authURL2))
   {
   }
 
   else
   {
     obj = [v540 proxyConfiguration];
-    v575 = [obj authInfo];
-    v562 = [v575 accessTokenURL];
-    v574 = [v539 proxyConfiguration];
-    v567 = [v574 authInfo];
-    v556 = [v567 accessTokenURL];
-    if (sub_1000904EC(v562, v556))
+    authInfo3 = [obj authInfo];
+    accessTokenURL = [authInfo3 accessTokenURL];
+    proxyConfiguration8 = [v539 proxyConfiguration];
+    authInfo4 = [proxyConfiguration8 authInfo];
+    accessTokenURL2 = [authInfo4 accessTokenURL];
+    if (sub_1000904EC(accessTokenURL, accessTokenURL2))
     {
       v171 = 1;
     }
 
     else
     {
-      v550 = [v540 proxyConfiguration];
-      v542 = [v550 authInfo];
-      v545 = [v539 proxyConfiguration];
-      v172 = [v545 authInfo];
-      if (sub_10008B3A0(v541, v542, v172))
+      proxyConfiguration9 = [v540 proxyConfiguration];
+      authInfo5 = [proxyConfiguration9 authInfo];
+      proxyConfiguration10 = [v539 proxyConfiguration];
+      authInfo6 = [proxyConfiguration10 authInfo];
+      if (sub_10008B3A0(v541, authInfo5, authInfo6))
       {
-        v536 = [v540 proxyConfiguration];
-        v531 = [v536 authInfo];
-        v523 = [v531 accessTokenKnownOrigins];
-        v528 = [v539 proxyConfiguration];
-        v525 = [v528 authInfo];
-        v173 = [v525 accessTokenKnownOrigins];
-        if (sub_1000904EC(v523, v173))
+        proxyConfiguration11 = [v540 proxyConfiguration];
+        authInfo7 = [proxyConfiguration11 authInfo];
+        accessTokenKnownOrigins = [authInfo7 accessTokenKnownOrigins];
+        proxyConfiguration12 = [v539 proxyConfiguration];
+        authInfo8 = [proxyConfiguration12 authInfo];
+        accessTokenKnownOrigins2 = [authInfo8 accessTokenKnownOrigins];
+        if (sub_1000904EC(accessTokenKnownOrigins, accessTokenKnownOrigins2))
         {
           v171 = 1;
         }
 
         else
         {
-          v521 = [v540 proxyConfiguration];
-          v519 = [v521 authInfo];
-          v513 = [v519 accessTokenBlockedIssuers];
-          v517 = [v539 proxyConfiguration];
-          v515 = [v517 authInfo];
-          v511 = [v515 accessTokenBlockedIssuers];
-          if (sub_1000904EC(v513, v511))
+          proxyConfiguration13 = [v540 proxyConfiguration];
+          authInfo9 = [proxyConfiguration13 authInfo];
+          accessTokenBlockedIssuers = [authInfo9 accessTokenBlockedIssuers];
+          proxyConfiguration14 = [v539 proxyConfiguration];
+          authInfo10 = [proxyConfiguration14 authInfo];
+          accessTokenBlockedIssuers2 = [authInfo10 accessTokenBlockedIssuers];
+          if (sub_1000904EC(accessTokenBlockedIssuers, accessTokenBlockedIssuers2))
           {
             v171 = 1;
           }
 
           else
           {
-            v509 = [v540 proxyConfiguration];
-            v507 = [v509 authInfo];
-            v174 = [v507 authType];
-            v505 = [v539 proxyConfiguration];
-            v503 = [v505 authInfo];
-            if (v174 == [v503 authType])
+            proxyConfiguration15 = [v540 proxyConfiguration];
+            authInfo11 = [proxyConfiguration15 authInfo];
+            authType = [authInfo11 authType];
+            proxyConfiguration16 = [v539 proxyConfiguration];
+            authInfo12 = [proxyConfiguration16 authInfo];
+            if (authType == [authInfo12 authType])
             {
-              v502 = [v540 proxyConfiguration];
-              v501 = [v502 authInfo];
-              v498 = [v501 nonDefaultAttesters];
-              v500 = [v539 proxyConfiguration];
-              v499 = [v500 authInfo];
-              v175 = [v499 nonDefaultAttesters];
-              v171 = sub_1000904EC(v498, v175);
+              proxyConfiguration17 = [v540 proxyConfiguration];
+              authInfo13 = [proxyConfiguration17 authInfo];
+              nonDefaultAttesters = [authInfo13 nonDefaultAttesters];
+              proxyConfiguration18 = [v539 proxyConfiguration];
+              authInfo14 = [proxyConfiguration18 authInfo];
+              nonDefaultAttesters2 = [authInfo14 nonDefaultAttesters];
+              v171 = sub_1000904EC(nonDefaultAttesters, nonDefaultAttesters2);
             }
 
             else
@@ -1563,30 +1563,30 @@ LABEL_146:
   v176 = nplog_obj();
   if (os_log_type_enabled(v176, OS_LOG_TYPE_DEFAULT))
   {
-    v177 = [v540 proxyConfiguration];
-    v178 = [v177 authInfo];
+    proxyConfiguration19 = [v540 proxyConfiguration];
+    authInfo15 = [proxyConfiguration19 authInfo];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v178;
+    *(&buf + 4) = authInfo15;
     _os_log_impl(&_mh_execute_header, v176, OS_LOG_TYPE_DEFAULT, "authentication info updated to %@", &buf, 0xCu);
   }
 
   sub_100089A74(v541);
   v534 = 1;
 LABEL_181:
-  v179 = [v540 proxyConfiguration];
-  v524 = [v179 proxies];
+  proxyConfiguration20 = [v540 proxyConfiguration];
+  proxies = [proxyConfiguration20 proxies];
 
-  v180 = [v539 proxyConfiguration];
-  v522 = [v180 proxies];
+  proxyConfiguration21 = [v539 proxyConfiguration];
+  proxies2 = [proxyConfiguration21 proxies];
 
-  v181 = [v524 count];
-  if (v181 != [v522 count])
+  v181 = [proxies count];
+  if (v181 != [proxies2 count])
   {
     v261 = nplog_obj();
     if (os_log_type_enabled(v261, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v524;
+      *(&buf + 4) = proxies;
       _os_log_impl(&_mh_execute_header, v261, OS_LOG_TYPE_DEFAULT, "proxy info updated to %@", &buf, 0xCu);
     }
 
@@ -1594,7 +1594,7 @@ LABEL_181:
     goto LABEL_308;
   }
 
-  if (![v524 count])
+  if (![proxies count])
   {
     goto LABEL_246;
   }
@@ -1603,7 +1603,7 @@ LABEL_181:
   v673 = 0u;
   v672 = 0u;
   v671 = 0u;
-  obja = v524;
+  obja = proxies;
   v576 = [obja countByEnumeratingWithState:&v671 objects:v700 count:16];
   if (!v576)
   {
@@ -1624,13 +1624,13 @@ LABEL_181:
         v183 = v184;
       }
 
-      v574 = v183;
+      proxyConfiguration8 = v183;
       v185 = *(*(&v671 + 1) + 8 * v183);
       v667 = 0u;
       v668 = 0u;
       v669 = 0u;
       v670 = 0u;
-      v186 = v522;
+      v186 = proxies2;
       v187 = [v186 countByEnumeratingWithState:&v667 objects:v699 count:16];
       if (!v187)
       {
@@ -1659,72 +1659,72 @@ LABEL_190:
         }
 
         v190 = *(*(&v667 + 1) + 8 * v189);
-        v191 = [v185 proxyHop];
-        if (v191 != [v190 proxyHop])
+        proxyHop = [v185 proxyHop];
+        if (proxyHop != [v190 proxyHop])
         {
           goto LABEL_240;
         }
 
-        v192 = [v185 proxyURL];
-        v193 = [v190 proxyURL];
-        v194 = v192;
-        v195 = v193;
+        proxyURL = [v185 proxyURL];
+        proxyURL2 = [v190 proxyURL];
+        v194 = proxyURL;
+        v195 = proxyURL2;
         v196 = v195;
         if (!(v194 | v195) || v194 && v195 && [v194 isEqual:v195])
         {
 
-          v197 = [v185 tcpProxyFqdn];
-          v198 = [v190 tcpProxyFqdn];
-          v194 = v197;
-          v199 = v198;
+          tcpProxyFqdn = [v185 tcpProxyFqdn];
+          tcpProxyFqdn2 = [v190 tcpProxyFqdn];
+          v194 = tcpProxyFqdn;
+          v199 = tcpProxyFqdn2;
           v196 = v199;
           if (!(v194 | v199) || v194 && v199 && [v194 isEqual:v199])
           {
 
-            v200 = [v185 proxyKeyInfos];
-            v201 = [v190 proxyKeyInfos];
-            v194 = v200;
-            v202 = v201;
+            proxyKeyInfos = [v185 proxyKeyInfos];
+            proxyKeyInfos2 = [v190 proxyKeyInfos];
+            v194 = proxyKeyInfos;
+            v202 = proxyKeyInfos2;
             v196 = v202;
             if (!(v194 | v202) || v194 && v202 && [v194 isEqual:v202])
             {
 
-              v203 = [v185 tokenKeyInfo];
-              v204 = [v190 tokenKeyInfo];
-              v194 = v203;
-              v205 = v204;
+              tokenKeyInfo = [v185 tokenKeyInfo];
+              tokenKeyInfo2 = [v190 tokenKeyInfo];
+              v194 = tokenKeyInfo;
+              v205 = tokenKeyInfo2;
               v196 = v205;
               if (!(v194 | v205) || v194 && v205 && [v194 isEqual:v205])
               {
 
-                v206 = [v185 preferredPathConfigUri];
-                v207 = [v190 preferredPathConfigUri];
-                v194 = v206;
-                v208 = v207;
+                preferredPathConfigUri = [v185 preferredPathConfigUri];
+                preferredPathConfigUri2 = [v190 preferredPathConfigUri];
+                v194 = preferredPathConfigUri;
+                v208 = preferredPathConfigUri2;
                 v196 = v208;
                 if (!(v194 | v208) || v194 && v208 && [v194 isEqual:v208])
                 {
 
-                  v209 = [v185 tokenChallenge];
-                  v210 = [v190 tokenChallenge];
-                  v194 = v209;
-                  v211 = v210;
+                  tokenChallenge = [v185 tokenChallenge];
+                  tokenChallenge2 = [v190 tokenChallenge];
+                  v194 = tokenChallenge;
+                  v211 = tokenChallenge2;
                   v196 = v211;
                   if (!(v194 | v211) || v194 && v211 && [v194 isEqual:v211])
                   {
 
-                    v212 = [v185 bootstrapAddresses];
-                    v213 = [v190 bootstrapAddresses];
-                    v194 = v212;
-                    v214 = v213;
+                    bootstrapAddresses = [v185 bootstrapAddresses];
+                    bootstrapAddresses2 = [v190 bootstrapAddresses];
+                    v194 = bootstrapAddresses;
+                    v214 = bootstrapAddresses2;
                     v196 = v214;
                     if (!(v194 | v214) || v194 && v214 && [v194 isEqual:v214])
                     {
 
-                      v215 = [v185 allowedNextHops];
-                      v216 = [v190 allowedNextHops];
-                      v194 = v215;
-                      v217 = v216;
+                      allowedNextHops = [v185 allowedNextHops];
+                      allowedNextHops2 = [v190 allowedNextHops];
+                      v194 = allowedNextHops;
+                      v217 = allowedNextHops2;
                       v196 = v217;
                       if (!(v194 | v217) || v194 && v217 && [v194 isEqual:v217])
                       {
@@ -1751,47 +1751,47 @@ LABEL_240:
         }
       }
 
-      v218 = [v185 preferredPathPatterns];
-      v219 = [v190 preferredPathPatterns];
-      v220 = sub_1000904EC(v218, v219);
+      preferredPathPatterns = [v185 preferredPathPatterns];
+      preferredPathPatterns2 = [v190 preferredPathPatterns];
+      v220 = sub_1000904EC(preferredPathPatterns, preferredPathPatterns2);
 
       if (v220)
       {
         goto LABEL_240;
       }
 
-      v221 = [v185 proxyVersion];
-      v222 = [v190 proxyVersion];
-      v223 = sub_1000904EC(v221, v222);
+      proxyVersion = [v185 proxyVersion];
+      proxyVersion2 = [v190 proxyVersion];
+      v223 = sub_1000904EC(proxyVersion, proxyVersion2);
 
       if (v223)
       {
         goto LABEL_240;
       }
 
-      v224 = [v185 fallbackSupportsUDPProxying];
-      if (v224 != [v190 fallbackSupportsUDPProxying])
+      fallbackSupportsUDPProxying = [v185 fallbackSupportsUDPProxying];
+      if (fallbackSupportsUDPProxying != [v190 fallbackSupportsUDPProxying])
       {
         goto LABEL_240;
       }
 
-      v225 = [v185 algorithm];
-      if (v225 != [v190 algorithm])
+      algorithm = [v185 algorithm];
+      if (algorithm != [v190 algorithm])
       {
         goto LABEL_240;
       }
 
-      v226 = [v185 proxyIndex];
-      if (v226 != [v190 proxyIndex])
+      proxyIndex = [v185 proxyIndex];
+      if (proxyIndex != [v190 proxyIndex])
       {
         goto LABEL_240;
       }
 
-      v183 = v574 + 1;
+      v183 = proxyConfiguration8 + 1;
       v182 = v568;
     }
 
-    while (v574 + 1 != v576);
+    while (proxyConfiguration8 + 1 != v576);
     v576 = [obja countByEnumeratingWithState:&v671 objects:v700 count:16];
     v182 = v568;
   }
@@ -1800,20 +1800,20 @@ LABEL_240:
 LABEL_245:
 
 LABEL_246:
-  v227 = [v540 proxyConfiguration];
-  v551 = [v227 pathWeights];
+  proxyConfiguration22 = [v540 proxyConfiguration];
+  pathWeights = [proxyConfiguration22 pathWeights];
 
-  v228 = [v539 proxyConfiguration];
-  v569 = [v228 pathWeights];
+  proxyConfiguration23 = [v539 proxyConfiguration];
+  pathWeights2 = [proxyConfiguration23 pathWeights];
 
-  v229 = [v551 count];
-  if (v229 != [v569 count])
+  v229 = [pathWeights count];
+  if (v229 != [pathWeights2 count])
   {
     v263 = nplog_obj();
     if (os_log_type_enabled(v263, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v551;
+      *(&buf + 4) = pathWeights;
       _os_log_impl(&_mh_execute_header, v263, OS_LOG_TYPE_DEFAULT, "proxy path list updated to %@", &buf, 0xCu);
     }
 
@@ -1823,7 +1823,7 @@ LABEL_308:
     goto LABEL_309;
   }
 
-  if (![v551 count])
+  if (![pathWeights count])
   {
     goto LABEL_271;
   }
@@ -1832,7 +1832,7 @@ LABEL_308:
   v665 = 0u;
   v664 = 0u;
   v663 = 0u;
-  v546 = v551;
+  v546 = pathWeights;
   v563 = [v546 countByEnumeratingWithState:&v663 objects:v698 count:16];
   if (!v563)
   {
@@ -1852,13 +1852,13 @@ LABEL_308:
         v230 = v231;
       }
 
-      v574 = v230;
+      proxyConfiguration8 = v230;
       v232 = *(*(&v663 + 1) + 8 * v230);
       v659 = 0u;
       v660 = 0u;
       v661 = 0u;
       v662 = 0u;
-      v577 = v569;
+      v577 = pathWeights2;
       v233 = [v577 countByEnumeratingWithState:&v659 objects:v697 count:16];
       if (!v233)
       {
@@ -1887,8 +1887,8 @@ LABEL_256:
         }
 
         v235 = *(*(&v659 + 1) + 8 * v234);
-        v236 = [v232 weight];
-        if (v236 != [v235 weight] || (v237 = objc_msgSend(v232, "proxiesCount"), v237 != objc_msgSend(v235, "proxiesCount")))
+        weight = [v232 weight];
+        if (weight != [v235 weight] || (v237 = objc_msgSend(v232, "proxiesCount"), v237 != objc_msgSend(v235, "proxiesCount")))
         {
 LABEL_265:
           if (++v234 == v233)
@@ -1913,11 +1913,11 @@ LABEL_265:
         v238 = 0;
         do
         {
-          v239 = [v524 objectAtIndex:{*(objc_msgSend(v232, "proxies") + v238)}];
-          v240 = [v522 objectAtIndex:{*(objc_msgSend(v235, "proxies") + v238)}];
-          v241 = [v239 proxyURL];
-          v242 = [v240 proxyURL];
-          v243 = [v241 isEqualToString:v242];
+          v239 = [proxies objectAtIndex:{*(objc_msgSend(v232, "proxies") + v238)}];
+          v240 = [proxies2 objectAtIndex:{*(objc_msgSend(v235, "proxies") + v238)}];
+          proxyURL3 = [v239 proxyURL];
+          proxyURL4 = [v240 proxyURL];
+          v243 = [proxyURL3 isEqualToString:proxyURL4];
 
           if ((v243 & 1) == 0)
           {
@@ -1928,8 +1928,8 @@ LABEL_265:
         while (++v238 < [v232 proxiesCount]);
       }
 
-      v230 = v574 + 1;
-      if (v574 + 1 != v563)
+      v230 = proxyConfiguration8 + 1;
+      if (proxyConfiguration8 + 1 != v563)
       {
         continue;
       }
@@ -1949,16 +1949,16 @@ LABEL_265:
 LABEL_270:
 
 LABEL_271:
-  v244 = [v540 proxyConfiguration];
-  v552 = [v244 fallbackPathWeights];
+  proxyConfiguration24 = [v540 proxyConfiguration];
+  fallbackPathWeights = [proxyConfiguration24 fallbackPathWeights];
 
-  v245 = [v539 proxyConfiguration];
-  v570 = [v245 fallbackPathWeights];
+  proxyConfiguration25 = [v539 proxyConfiguration];
+  fallbackPathWeights2 = [proxyConfiguration25 fallbackPathWeights];
 
-  v246 = [v552 count];
-  if (v246 == [v570 count])
+  v246 = [fallbackPathWeights count];
+  if (v246 == [fallbackPathWeights2 count])
   {
-    if (![v552 count])
+    if (![fallbackPathWeights count])
     {
       goto LABEL_646;
     }
@@ -1967,7 +1967,7 @@ LABEL_271:
     v657 = 0u;
     v656 = 0u;
     v655 = 0u;
-    v547 = v552;
+    v547 = fallbackPathWeights;
     v564 = [v547 countByEnumeratingWithState:&v655 objects:v696 count:16];
     if (!v564)
     {
@@ -1986,13 +1986,13 @@ LABEL_276:
         v247 = v248;
       }
 
-      v574 = v247;
+      proxyConfiguration8 = v247;
       v249 = *(*(&v655 + 1) + 8 * v247);
       v651 = 0u;
       v652 = 0u;
       v653 = 0u;
       v654 = 0u;
-      v578 = v570;
+      v578 = fallbackPathWeights2;
       v250 = [v578 countByEnumeratingWithState:&v651 objects:v695 count:16];
       if (!v250)
       {
@@ -2022,11 +2022,11 @@ LABEL_280:
         }
 
         v252 = *(*(&v651 + 1) + 8 * v251);
-        v253 = [v249 weight];
-        if (v253 == [v252 weight])
+        weight2 = [v249 weight];
+        if (weight2 == [v252 weight])
         {
-          v254 = [v249 proxiesCount];
-          if (v254 == [v252 proxiesCount])
+          proxiesCount = [v249 proxiesCount];
+          if (proxiesCount == [v252 proxiesCount])
           {
             break;
           }
@@ -2052,8 +2052,8 @@ LABEL_290:
 
 LABEL_293:
 
-      v247 = v574 + 1;
-      if (v574 + 1 != v564)
+      v247 = proxyConfiguration8 + 1;
+      if (proxyConfiguration8 + 1 != v564)
       {
         goto LABEL_276;
       }
@@ -2070,11 +2070,11 @@ LABEL_645:
     v255 = 0;
     while (1)
     {
-      v256 = [v524 objectAtIndex:{*(objc_msgSend(v249, "proxies") + v255)}];
-      v257 = [v522 objectAtIndex:{*(objc_msgSend(v252, "proxies") + v255)}];
-      v258 = [v256 proxyURL];
-      v259 = [v257 proxyURL];
-      v260 = [v258 isEqualToString:v259];
+      v256 = [proxies objectAtIndex:{*(objc_msgSend(v249, "proxies") + v255)}];
+      v257 = [proxies2 objectAtIndex:{*(objc_msgSend(v252, "proxies") + v255)}];
+      proxyURL5 = [v256 proxyURL];
+      proxyURL6 = [v257 proxyURL];
+      v260 = [proxyURL5 isEqualToString:proxyURL6];
 
       if ((v260 & 1) == 0)
       {
@@ -2092,7 +2092,7 @@ LABEL_645:
   if (os_log_type_enabled(v365, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v552;
+    *(&buf + 4) = fallbackPathWeights;
     _os_log_impl(&_mh_execute_header, v365, OS_LOG_TYPE_DEFAULT, "fallback proxy path list updated to %@", &buf, 0xCu);
   }
 
@@ -2101,23 +2101,23 @@ LABEL_645:
 LABEL_646:
 
 LABEL_309:
-  v265 = [v540 proxyConfiguration];
-  v516 = [v265 resolvers];
+  proxyConfiguration26 = [v540 proxyConfiguration];
+  resolvers = [proxyConfiguration26 resolvers];
 
-  v266 = [v539 proxyConfiguration];
-  v518 = [v266 resolvers];
+  proxyConfiguration27 = [v539 proxyConfiguration];
+  resolvers2 = [proxyConfiguration27 resolvers];
 
-  v267 = [v516 count];
-  if (v267 == [v518 count])
+  v267 = [resolvers count];
+  if (v267 == [resolvers2 count])
   {
-    if ([v516 count])
+    if ([resolvers count])
     {
       v650 = 0u;
       v649 = 0u;
       v648 = 0u;
       v647 = 0u;
-      v574 = v516;
-      objd = [v574 countByEnumeratingWithState:&v647 objects:v694 count:16];
+      proxyConfiguration8 = resolvers;
+      objd = [proxyConfiguration8 countByEnumeratingWithState:&v647 objects:v694 count:16];
       if (objd)
       {
         v579 = *v648;
@@ -2127,7 +2127,7 @@ LABEL_309:
           {
             if (*v648 != v579)
             {
-              objc_enumerationMutation(v574);
+              objc_enumerationMutation(proxyConfiguration8);
             }
 
             v269 = *(*(&v647 + 1) + 8 * i);
@@ -2135,7 +2135,7 @@ LABEL_309:
             v644 = 0u;
             v645 = 0u;
             v646 = 0u;
-            v270 = v518;
+            v270 = resolvers2;
             v271 = [v270 countByEnumeratingWithState:&v643 objects:v693 count:16];
             if (!v271)
             {
@@ -2145,7 +2145,7 @@ LABEL_379:
               if (os_log_type_enabled(v308, OS_LOG_TYPE_DEFAULT))
               {
                 LODWORD(buf) = 138412290;
-                *(&buf + 4) = v574;
+                *(&buf + 4) = proxyConfiguration8;
                 _os_log_impl(&_mh_execute_header, v308, OS_LOG_TYPE_DEFAULT, "resolver info updated to %@", &buf, 0xCu);
               }
 
@@ -2165,26 +2165,26 @@ LABEL_379:
                 }
 
                 v275 = *(*(&v643 + 1) + 8 * j);
-                v276 = [v269 dohURL];
-                v277 = [v275 dohURL];
-                v278 = v276;
-                v279 = v277;
+                dohURL = [v269 dohURL];
+                dohURL2 = [v275 dohURL];
+                v278 = dohURL;
+                v279 = dohURL2;
                 v280 = v279;
                 if (v278 | v279 && (!v278 || !v279 || ![v278 isEqual:v279]))
                 {
                   goto LABEL_331;
                 }
 
-                v281 = [v269 obliviousDoHConfig];
-                v282 = [v275 obliviousDoHConfig];
-                v278 = v281;
-                v283 = v282;
+                obliviousDoHConfig = [v269 obliviousDoHConfig];
+                obliviousDoHConfig2 = [v275 obliviousDoHConfig];
+                v278 = obliviousDoHConfig;
+                v283 = obliviousDoHConfig2;
                 v280 = v283;
                 if (!(v278 | v283) || v278 && v283 && [v278 isEqual:v283])
                 {
 
-                  v284 = [v269 weight];
-                  v272 |= v284 == [v275 weight];
+                  weight3 = [v269 weight];
+                  v272 |= weight3 == [v275 weight];
                 }
 
                 else
@@ -2204,7 +2204,7 @@ LABEL_331:
             }
           }
 
-          objd = [v574 countByEnumeratingWithState:&v647 objects:v694 count:16];
+          objd = [proxyConfiguration8 countByEnumeratingWithState:&v647 objects:v694 count:16];
           if (objd)
           {
             continue;
@@ -2219,20 +2219,20 @@ LABEL_331:
     v640 = 0u;
     v641 = 0u;
     v639 = 0u;
-    v285 = [v540 proxyConfiguration];
-    obje = [v285 policyTierMaps];
+    proxyConfiguration28 = [v540 proxyConfiguration];
+    obje = [proxyConfiguration28 policyTierMaps];
 
     v580 = [obje countByEnumeratingWithState:&v639 objects:v692 count:16];
     if (v580)
     {
       v286 = 0;
       v287 = 0;
-      v574 = *v640;
+      proxyConfiguration8 = *v640;
       while (1)
       {
         for (k = 0; k != v580; k = k + 1)
         {
-          if (*v640 != v574)
+          if (*v640 != proxyConfiguration8)
           {
             objc_enumerationMutation(obje);
           }
@@ -2242,10 +2242,10 @@ LABEL_331:
           v636 = 0u;
           v637 = 0u;
           v638 = 0u;
-          v290 = [v539 proxyConfiguration];
-          v291 = [v290 policyTierMaps];
+          proxyConfiguration29 = [v539 proxyConfiguration];
+          policyTierMaps = [proxyConfiguration29 policyTierMaps];
 
-          v292 = [v291 countByEnumeratingWithState:&v635 objects:v691 count:16];
+          v292 = [policyTierMaps countByEnumeratingWithState:&v635 objects:v691 count:16];
           if (!v292)
           {
             goto LABEL_363;
@@ -2258,47 +2258,47 @@ LABEL_331:
             {
               if (*v636 != v293)
               {
-                objc_enumerationMutation(v291);
+                objc_enumerationMutation(policyTierMaps);
               }
 
               v295 = *(*(&v635 + 1) + 8 * m);
-              v296 = [v289 tier];
-              if (v296 == [v295 tier])
+              tier = [v289 tier];
+              if (tier == [v295 tier])
               {
-                v297 = [v289 policy];
+                policy = [v289 policy];
 
-                v298 = [v295 policy];
+                policy2 = [v295 policy];
 
-                v299 = [v297 conditionsCount];
-                if (v299 == [v298 conditionsCount])
+                conditionsCount = [policy conditionsCount];
+                if (conditionsCount == [policy2 conditionsCount])
                 {
-                  if (![v297 conditionsCount] || !objc_msgSend(v297, "conditionsCount"))
+                  if (![policy conditionsCount] || !objc_msgSend(policy, "conditionsCount"))
                   {
 LABEL_362:
-                    v287 = v298;
-                    v286 = v297;
+                    v287 = policy2;
+                    v286 = policy;
                     goto LABEL_363;
                   }
 
                   v300 = 0;
                   while (1)
                   {
-                    v301 = *([v297 conditions] + v300);
-                    if (![v298 conditionsCount])
+                    v301 = *([policy conditions] + v300);
+                    if (![policy2 conditionsCount])
                     {
                       break;
                     }
 
                     v302 = 0;
-                    while (*([v298 conditions] + v302) != v301)
+                    while (*([policy2 conditions] + v302) != v301)
                     {
-                      if (++v302 >= [v298 conditionsCount])
+                      if (++v302 >= [policy2 conditionsCount])
                       {
                         goto LABEL_369;
                       }
                     }
 
-                    if (++v300 >= [v297 conditionsCount])
+                    if (++v300 >= [policy conditionsCount])
                     {
                       goto LABEL_362;
                     }
@@ -2309,7 +2309,7 @@ LABEL_369:
                   if (os_log_type_enabled(v304, OS_LOG_TYPE_DEFAULT))
                   {
                     LODWORD(buf) = 138412290;
-                    *(&buf + 4) = v297;
+                    *(&buf + 4) = policy;
                     goto LABEL_371;
                   }
                 }
@@ -2320,7 +2320,7 @@ LABEL_369:
                   if (os_log_type_enabled(v304, OS_LOG_TYPE_DEFAULT))
                   {
                     LODWORD(buf) = 138412290;
-                    *(&buf + 4) = v297;
+                    *(&buf + 4) = policy;
 LABEL_371:
                     _os_log_impl(&_mh_execute_header, v304, OS_LOG_TYPE_DEFAULT, "policy information updated to %@", &buf, 0xCu);
                   }
@@ -2332,7 +2332,7 @@ LABEL_371:
               }
             }
 
-            v292 = [v291 countByEnumeratingWithState:&v635 objects:v691 count:16];
+            v292 = [policyTierMaps countByEnumeratingWithState:&v635 objects:v691 count:16];
             if (v292)
             {
               continue;
@@ -2356,9 +2356,9 @@ LABEL_363:
     v287 = 0;
 LABEL_374:
 
-    v305 = [v540 proxyTrafficState];
-    v306 = [v539 proxyTrafficState];
-    v307 = sub_1000904EC(v305, v306);
+    proxyTrafficState = [v540 proxyTrafficState];
+    proxyTrafficState2 = [v539 proxyTrafficState];
+    v307 = sub_1000904EC(proxyTrafficState, proxyTrafficState2);
 
     if (v307)
     {
@@ -2366,8 +2366,8 @@ LABEL_374:
       v534 = 1;
     }
 
-    v298 = v287;
-    v297 = v286;
+    policy2 = v287;
+    policy = v286;
 LABEL_377:
   }
 
@@ -2377,7 +2377,7 @@ LABEL_377:
     if (os_log_type_enabled(v303, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v516;
+      *(&buf + 4) = resolvers;
       _os_log_impl(&_mh_execute_header, v303, OS_LOG_TYPE_DEFAULT, "resolver info updated to %@", &buf, 0xCu);
     }
 
@@ -2386,22 +2386,22 @@ LABEL_382:
     v534 = 1;
   }
 
-  v309 = [v540 proxyConfiguration];
-  v514 = [v309 obliviousConfigs];
+  proxyConfiguration30 = [v540 proxyConfiguration];
+  obliviousConfigs = [proxyConfiguration30 obliviousConfigs];
 
-  v310 = [v539 proxyConfiguration];
-  v512 = [v310 obliviousConfigs];
+  proxyConfiguration31 = [v539 proxyConfiguration];
+  obliviousConfigs2 = [proxyConfiguration31 obliviousConfigs];
 
-  v311 = [v514 count];
-  if (v311 == [v512 count])
+  v311 = [obliviousConfigs count];
+  if (v311 == [obliviousConfigs2 count])
   {
-    if ([v514 count])
+    if ([obliviousConfigs count])
     {
       v633 = 0u;
       v634 = 0u;
       v631 = 0u;
       v632 = 0u;
-      v504 = v514;
+      v504 = obliviousConfigs;
       v508 = [v504 countByEnumeratingWithState:&v631 objects:v690 count:16];
       if (!v508)
       {
@@ -2425,7 +2425,7 @@ LABEL_388:
       v628 = 0u;
       v629 = 0u;
       v630 = 0u;
-      v537 = v512;
+      v537 = obliviousConfigs2;
       v548 = [v537 countByEnumeratingWithState:&v627 objects:v689 count:16];
       if (v548)
       {
@@ -2445,13 +2445,13 @@ LABEL_388:
 
             v553 = v314;
             v565 = *(*(&v627 + 1) + 8 * v314);
-            v316 = [v559 obliviousHTTPConfig];
-            v317 = [v565 obliviousHTTPConfig];
-            v318 = v316;
-            v319 = v317;
+            obliviousHTTPConfig = [v559 obliviousHTTPConfig];
+            obliviousHTTPConfig2 = [v565 obliviousHTTPConfig];
+            v318 = obliviousHTTPConfig;
+            v319 = obliviousHTTPConfig2;
             v320 = v319;
-            v571 = v318;
-            v574 = v319;
+            obliviousTargets3 = v318;
+            proxyConfiguration8 = v319;
             if (v318 | v319)
             {
               v324 = v319;
@@ -2467,18 +2467,18 @@ LABEL_388:
               }
 
               v363 = [v318 isEqual:v319];
-              v320 = v574;
-              v324 = v574;
+              v320 = proxyConfiguration8;
+              v324 = proxyConfiguration8;
               if (!v363)
               {
                 goto LABEL_455;
               }
             }
 
-            v321 = [v559 transparencyKeyBundle];
-            v322 = [v565 transparencyKeyBundle];
-            v318 = v321;
-            v323 = v322;
+            transparencyKeyBundle = [v559 transparencyKeyBundle];
+            transparencyKeyBundle2 = [v565 transparencyKeyBundle];
+            v318 = transparencyKeyBundle;
+            v323 = transparencyKeyBundle2;
             v324 = v323;
             if (v318 | v323)
             {
@@ -2504,10 +2504,10 @@ LABEL_388:
               }
             }
 
-            v325 = [v559 transparencyProof];
-            v326 = [v565 transparencyProof];
-            v327 = v325;
-            v328 = v326;
+            transparencyProof = [v559 transparencyProof];
+            transparencyProof2 = [v565 transparencyProof];
+            v327 = transparencyProof;
+            v328 = transparencyProof2;
             v329 = v328;
             if (v327 | v328)
             {
@@ -2533,10 +2533,10 @@ LABEL_388:
               }
             }
 
-            v330 = [v559 transparencyInternalProof];
-            v331 = [v565 transparencyInternalProof];
-            v332 = v330;
-            v333 = v331;
+            transparencyInternalProof = [v559 transparencyInternalProof];
+            transparencyInternalProof2 = [v565 transparencyInternalProof];
+            v332 = transparencyInternalProof;
+            v333 = transparencyInternalProof2;
             v334 = v333;
             if (v332 | v333 && (!v332 || !v333 || ![v332 isEqual:v333]))
             {
@@ -2550,16 +2550,16 @@ LABEL_456:
               goto LABEL_457;
             }
 
-            v335 = [v559 obliviousHTTPType];
-            if (v335 != [v565 obliviousHTTPType])
+            obliviousHTTPType = [v559 obliviousHTTPType];
+            if (obliviousHTTPType != [v565 obliviousHTTPType])
             {
               goto LABEL_453;
             }
 
-            v336 = [v559 obliviousTargets];
-            v337 = [v336 count];
-            v338 = [v565 obliviousTargets];
-            v339 = v337 == [v338 count];
+            obliviousTargets = [v559 obliviousTargets];
+            v337 = [obliviousTargets count];
+            obliviousTargets2 = [v565 obliviousTargets];
+            v339 = v337 == [obliviousTargets2 count];
 
             if (!v339)
             {
@@ -2570,8 +2570,8 @@ LABEL_456:
             v626 = 0u;
             v623 = 0u;
             v624 = 0u;
-            v571 = [v559 obliviousTargets];
-            v529 = [v571 countByEnumeratingWithState:&v623 objects:v688 count:16];
+            obliviousTargets3 = [v559 obliviousTargets];
+            v529 = [obliviousTargets3 countByEnumeratingWithState:&v623 objects:v688 count:16];
             if (!v529)
             {
               goto LABEL_436;
@@ -2586,7 +2586,7 @@ LABEL_456:
                 if (*v624 != v526)
                 {
                   v341 = v340;
-                  objc_enumerationMutation(v571);
+                  objc_enumerationMutation(obliviousTargets3);
                   v340 = v341;
                 }
 
@@ -2596,8 +2596,8 @@ LABEL_456:
                 v620 = 0u;
                 v621 = 0u;
                 v622 = 0u;
-                v574 = [v565 obliviousTargets];
-                objf = [v574 countByEnumeratingWithState:&v619 objects:v687 count:16];
+                proxyConfiguration8 = [v565 obliviousTargets];
+                objf = [proxyConfiguration8 countByEnumeratingWithState:&v619 objects:v687 count:16];
                 if (!objf)
                 {
                   goto LABEL_456;
@@ -2610,14 +2610,14 @@ LABEL_408:
                 {
                   if (*v620 != v581)
                   {
-                    objc_enumerationMutation(v574);
+                    objc_enumerationMutation(proxyConfiguration8);
                   }
 
                   v344 = *(*(&v619 + 1) + 8 * v343);
-                  v345 = [v342 targetHost];
-                  v346 = [v344 targetHost];
-                  v347 = v345;
-                  v348 = v346;
+                  targetHost = [v342 targetHost];
+                  targetHost2 = [v344 targetHost];
+                  v347 = targetHost;
+                  v348 = targetHost2;
                   v349 = v348;
                   if (v347 | v348)
                   {
@@ -2643,10 +2643,10 @@ LABEL_408:
                     }
                   }
 
-                  v350 = [v342 proxyURLPath];
-                  v351 = [v344 proxyURLPath];
-                  v352 = v350;
-                  v353 = v351;
+                  proxyURLPath = [v342 proxyURLPath];
+                  proxyURLPath2 = [v344 proxyURLPath];
+                  v352 = proxyURLPath;
+                  v353 = proxyURLPath2;
                   v354 = v353;
                   if (v352 | v353)
                   {
@@ -2672,10 +2672,10 @@ LABEL_408:
                     }
                   }
 
-                  v355 = [v342 processes];
-                  v356 = [v344 processes];
-                  v357 = v355;
-                  v358 = v356;
+                  processes = [v342 processes];
+                  processes2 = [v344 processes];
+                  v357 = processes;
+                  v358 = processes2;
                   v359 = v358;
                   if (v357 | v358 && (!v357 || !v358 || ([v357 isEqual:v358] & 1) == 0))
                   {
@@ -2686,14 +2686,14 @@ LABEL_430:
                     goto LABEL_431;
                   }
 
-                  v360 = [v342 proxyIndex];
-                  if (v360 != [v344 proxyIndex])
+                  proxyIndex2 = [v342 proxyIndex];
+                  if (proxyIndex2 != [v344 proxyIndex])
                   {
                     goto LABEL_429;
                   }
 
-                  v361 = [v342 weight];
-                  v362 = v361 == [v344 weight];
+                  weight4 = [v342 weight];
+                  v362 = weight4 == [v344 weight];
 
                   if (v362)
                   {
@@ -2703,7 +2703,7 @@ LABEL_430:
 LABEL_431:
                   if (objf == ++v343)
                   {
-                    objf = [v574 countByEnumeratingWithState:&v619 objects:v687 count:16];
+                    objf = [proxyConfiguration8 countByEnumeratingWithState:&v619 objects:v687 count:16];
                     if (objf)
                     {
                       goto LABEL_408;
@@ -2722,7 +2722,7 @@ LABEL_431:
                 break;
               }
 
-              v529 = [v571 countByEnumeratingWithState:&v623 objects:v688 count:16];
+              v529 = [obliviousTargets3 countByEnumeratingWithState:&v623 objects:v688 count:16];
               if (v529)
               {
                 continue;
@@ -2787,7 +2787,7 @@ LABEL_474:
     if (os_log_type_enabled(v364, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v514;
+      *(&buf + 4) = obliviousConfigs;
       _os_log_impl(&_mh_execute_header, v364, OS_LOG_TYPE_DEFAULT, "oblivious configs updated to %@", &buf, 0xCu);
     }
 
@@ -2795,17 +2795,17 @@ LABEL_474:
     v534 = 1;
   }
 
-  v367 = [v540 proxyConfiguration];
-  v368 = [v367 hasPreferredPathEnabledPercentage];
-  v369 = [v539 proxyConfiguration];
-  if (v368 == [v369 hasPreferredPathEnabledPercentage])
+  proxyConfiguration32 = [v540 proxyConfiguration];
+  hasPreferredPathEnabledPercentage = [proxyConfiguration32 hasPreferredPathEnabledPercentage];
+  proxyConfiguration33 = [v539 proxyConfiguration];
+  if (hasPreferredPathEnabledPercentage == [proxyConfiguration33 hasPreferredPathEnabledPercentage])
   {
-    v370 = [v540 proxyConfiguration];
-    v371 = [v370 preferredPathEnabledPercentage];
-    v372 = [v539 proxyConfiguration];
-    LOBYTE(v371) = v371 == [v372 preferredPathEnabledPercentage];
+    proxyConfiguration34 = [v540 proxyConfiguration];
+    preferredPathEnabledPercentage = [proxyConfiguration34 preferredPathEnabledPercentage];
+    proxyConfiguration35 = [v539 proxyConfiguration];
+    LOBYTE(preferredPathEnabledPercentage) = preferredPathEnabledPercentage == [proxyConfiguration35 preferredPathEnabledPercentage];
 
-    if (v371)
+    if (preferredPathEnabledPercentage)
     {
       goto LABEL_481;
     }
@@ -2818,31 +2818,31 @@ LABEL_474:
   v373 = nplog_obj();
   if (os_log_type_enabled(v373, OS_LOG_TYPE_DEFAULT))
   {
-    v374 = [v539 proxyConfiguration];
-    v375 = [v374 hasPreferredPathEnabledPercentage];
+    proxyConfiguration36 = [v539 proxyConfiguration];
+    hasPreferredPathEnabledPercentage2 = [proxyConfiguration36 hasPreferredPathEnabledPercentage];
     LODWORD(buf) = 67109120;
-    DWORD1(buf) = v375;
+    DWORD1(buf) = hasPreferredPathEnabledPercentage2;
     _os_log_impl(&_mh_execute_header, v373, OS_LOG_TYPE_DEFAULT, "preferred path enabled percentage changed to %u", &buf, 8u);
   }
 
   v534 = 1;
 LABEL_481:
-  v376 = [v540 proxyConfiguration];
-  v549 = [v376 proxiedContentMaps];
+  proxyConfiguration37 = [v540 proxyConfiguration];
+  proxiedContentMaps = [proxyConfiguration37 proxiedContentMaps];
 
-  v377 = [v539 proxyConfiguration];
-  v566 = [v377 proxiedContentMaps];
+  proxyConfiguration38 = [v539 proxyConfiguration];
+  proxiedContentMaps2 = [proxyConfiguration38 proxiedContentMaps];
 
-  v378 = [v549 count];
-  if (v378 == [v566 count])
+  v378 = [proxiedContentMaps count];
+  if (v378 == [proxiedContentMaps2 count])
   {
-    if ([v549 count])
+    if ([proxiedContentMaps count])
     {
       v617 = 0u;
       v618 = 0u;
       v615 = 0u;
       v616 = 0u;
-      v554 = v549;
+      v554 = proxiedContentMaps;
       v572 = [v554 countByEnumeratingWithState:&v615 objects:v686 count:16];
       if (!v572)
       {
@@ -2860,13 +2860,13 @@ LABEL_486:
         v379 = v380;
       }
 
-      v574 = v379;
+      proxyConfiguration8 = v379;
       v381 = *(*(&v615 + 1) + 8 * v379);
       v611 = 0u;
       v612 = 0u;
       v613 = 0u;
       v614 = 0u;
-      objg = v566;
+      objg = proxiedContentMaps2;
       v382 = [objg countByEnumeratingWithState:&v611 objects:v685 count:16];
       if (v382)
       {
@@ -2884,10 +2884,10 @@ LABEL_486:
             }
 
             v387 = *(*(&v611 + 1) + 8 * v385);
-            v388 = [v381 identifier];
-            v389 = [v387 identifier];
-            v390 = v388;
-            v391 = v389;
+            identifier = [v381 identifier];
+            identifier2 = [v387 identifier];
+            v390 = identifier;
+            v391 = identifier2;
             v392 = v391;
             if (v390 | v391 && (!v390 || !v391 || ![v390 isEqual:v391]))
             {
@@ -2900,52 +2900,52 @@ LABEL_515:
               goto LABEL_516;
             }
 
-            v393 = [v381 enabled];
-            if (v393 != [v387 enabled])
+            enabled11 = [v381 enabled];
+            if (enabled11 != [v387 enabled])
             {
               goto LABEL_515;
             }
 
-            v394 = [v381 systemProcessOnly];
-            if (v394 != [v387 systemProcessOnly])
+            systemProcessOnly = [v381 systemProcessOnly];
+            if (systemProcessOnly != [v387 systemProcessOnly])
             {
               goto LABEL_515;
             }
 
-            v395 = [v381 matchExactHostnames];
-            if (v395 != [v387 matchExactHostnames])
+            matchExactHostnames = [v381 matchExactHostnames];
+            if (matchExactHostnames != [v387 matchExactHostnames])
             {
               goto LABEL_515;
             }
 
-            v396 = [v381 isPrivacyProxy];
-            if (v396 != [v387 isPrivacyProxy])
+            isPrivacyProxy = [v381 isPrivacyProxy];
+            if (isPrivacyProxy != [v387 isPrivacyProxy])
             {
               goto LABEL_515;
             }
 
-            v397 = [v381 proxiesCount];
-            if (v397 != [v387 proxiesCount])
+            proxiesCount2 = [v381 proxiesCount];
+            if (proxiesCount2 != [v387 proxiesCount])
             {
               goto LABEL_515;
             }
 
-            v398 = [v381 hasResolver];
-            if (v398 != [v387 hasResolver])
+            hasResolver = [v381 hasResolver];
+            if (hasResolver != [v387 hasResolver])
             {
               goto LABEL_515;
             }
 
-            v399 = [v381 resolver];
-            if (v399 != [v387 resolver])
+            resolver = [v381 resolver];
+            if (resolver != [v387 resolver])
             {
               goto LABEL_515;
             }
 
-            v400 = [v381 hostnames];
-            v401 = [v387 hostnames];
-            v402 = v400;
-            v403 = v401;
+            hostnames = [v381 hostnames];
+            hostnames2 = [v387 hostnames];
+            v402 = hostnames;
+            v403 = hostnames2;
             v404 = v403;
             if (v402 | v403 && (!v402 || !v403 || ![v402 isEqual:v403]))
             {
@@ -2954,10 +2954,10 @@ LABEL_515:
               goto LABEL_514;
             }
 
-            v405 = [v381 processes];
-            v406 = [v387 processes];
-            v390 = v405;
-            v407 = v406;
+            processes3 = [v381 processes];
+            processes4 = [v387 processes];
+            v390 = processes3;
+            v407 = processes4;
             v392 = v407;
             if (v390 | v407 && (!v390 || !v407 || ([v390 isEqual:v407] & 1) == 0))
             {
@@ -2965,14 +2965,14 @@ LABEL_515:
               goto LABEL_514;
             }
 
-            v582 = [v381 hasPercentEnabled];
-            if (v582 != [v387 hasPercentEnabled])
+            hasPercentEnabled = [v381 hasPercentEnabled];
+            if (hasPercentEnabled != [v387 hasPercentEnabled])
             {
               goto LABEL_514;
             }
 
-            v583 = [v381 percentEnabled];
-            v584 = v583 == [v387 percentEnabled];
+            percentEnabled = [v381 percentEnabled];
+            v584 = percentEnabled == [v387 percentEnabled];
 
             if (!v584)
             {
@@ -3015,8 +3015,8 @@ LABEL_516:
               goto LABEL_536;
             }
 
-            v379 = v574 + 1;
-            if (v574 + 1 == v572)
+            v379 = proxyConfiguration8 + 1;
+            if (proxyConfiguration8 + 1 == v572)
             {
               v572 = [v554 countByEnumeratingWithState:&v615 objects:v686 count:16];
               if (!v572)
@@ -3053,7 +3053,7 @@ LABEL_539:
     if (os_log_type_enabled(v411, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v549;
+      *(&buf + 4) = proxiedContentMaps;
       _os_log_impl(&_mh_execute_header, v411, OS_LOG_TYPE_DEFAULT, "proxied content maps updated to %@", &buf, 0xCu);
     }
 
@@ -3061,19 +3061,19 @@ LABEL_539:
     v534 = 1;
   }
 
-  v413 = [v540 geohashSharingEnabledStatus];
-  v414 = [v539 geohashSharingEnabledStatus];
-  v415 = sub_1000904EC(v413, v414);
+  geohashSharingEnabledStatus = [v540 geohashSharingEnabledStatus];
+  geohashSharingEnabledStatus2 = [v539 geohashSharingEnabledStatus];
+  v415 = sub_1000904EC(geohashSharingEnabledStatus, geohashSharingEnabledStatus2);
 
   if (v415)
   {
     v416 = nplog_obj();
     if (os_log_type_enabled(v416, OS_LOG_TYPE_DEFAULT))
     {
-      v417 = [v540 geohashSharingEnabledStatus];
-      v418 = [v417 BOOLValue];
+      geohashSharingEnabledStatus3 = [v540 geohashSharingEnabledStatus];
+      bOOLValue8 = [geohashSharingEnabledStatus3 BOOLValue];
       v419 = "disabled";
-      if (v418)
+      if (bOOLValue8)
       {
         v419 = "enabled";
       }
@@ -3087,27 +3087,27 @@ LABEL_539:
     v534 = 1;
   }
 
-  v420 = [v540 geohashOverride];
-  v421 = [v539 geohashOverride];
-  v422 = v421;
-  if (v420 == v421)
+  geohashOverride = [v540 geohashOverride];
+  geohashOverride2 = [v539 geohashOverride];
+  v422 = geohashOverride2;
+  if (geohashOverride == geohashOverride2)
   {
   }
 
   else
   {
-    v423 = [v540 geohashOverride];
-    v424 = [v539 geohashOverride];
-    v425 = [v423 isEqualToString:v424];
+    geohashOverride3 = [v540 geohashOverride];
+    geohashOverride4 = [v539 geohashOverride];
+    v425 = [geohashOverride3 isEqualToString:geohashOverride4];
 
     if ((v425 & 1) == 0)
     {
       v426 = nplog_obj();
       if (os_log_type_enabled(v426, OS_LOG_TYPE_DEFAULT))
       {
-        v427 = [v540 geohashOverride];
+        geohashOverride5 = [v540 geohashOverride];
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v427;
+        *(&buf + 4) = geohashOverride5;
         _os_log_impl(&_mh_execute_header, v426, OS_LOG_TYPE_DEFAULT, "Geohash override changed to %@", &buf, 0xCu);
       }
 
@@ -3116,18 +3116,18 @@ LABEL_539:
     }
   }
 
-  v428 = [v540 epoch];
-  v429 = [v539 epoch];
-  v430 = sub_1000904EC(v428, v429);
+  epoch = [v540 epoch];
+  epoch2 = [v539 epoch];
+  v430 = sub_1000904EC(epoch, epoch2);
 
   if (v430)
   {
     v431 = nplog_obj();
     if (os_log_type_enabled(v431, OS_LOG_TYPE_DEFAULT))
     {
-      v432 = [v540 epoch];
+      epoch3 = [v540 epoch];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v432;
+      *(&buf + 4) = epoch3;
       _os_log_impl(&_mh_execute_header, v431, OS_LOG_TYPE_DEFAULT, "Configuration epoch changed to %@", &buf, 0xCu);
     }
 
@@ -3135,19 +3135,19 @@ LABEL_539:
     v534 = 1;
   }
 
-  v433 = [v540 preferredPathRoutingEnabledStatus];
-  v434 = [v539 preferredPathRoutingEnabledStatus];
-  v435 = sub_1000904EC(v433, v434);
+  preferredPathRoutingEnabledStatus = [v540 preferredPathRoutingEnabledStatus];
+  preferredPathRoutingEnabledStatus2 = [v539 preferredPathRoutingEnabledStatus];
+  v435 = sub_1000904EC(preferredPathRoutingEnabledStatus, preferredPathRoutingEnabledStatus2);
 
   if (v435)
   {
     v436 = nplog_obj();
     if (os_log_type_enabled(v436, OS_LOG_TYPE_DEFAULT))
     {
-      v437 = [v540 preferredPathRoutingEnabledStatus];
-      v438 = [v437 BOOLValue];
+      preferredPathRoutingEnabledStatus3 = [v540 preferredPathRoutingEnabledStatus];
+      bOOLValue9 = [preferredPathRoutingEnabledStatus3 BOOLValue];
       v439 = "disabled";
-      if (v438)
+      if (bOOLValue9)
       {
         v439 = "enabled";
       }
@@ -3160,19 +3160,19 @@ LABEL_539:
     v534 = 1;
   }
 
-  v440 = [v540 privateAccessTokensEnabledStatus];
-  v441 = [v539 privateAccessTokensEnabledStatus];
-  v442 = sub_1000904EC(v440, v441);
+  privateAccessTokensEnabledStatus = [v540 privateAccessTokensEnabledStatus];
+  privateAccessTokensEnabledStatus2 = [v539 privateAccessTokensEnabledStatus];
+  v442 = sub_1000904EC(privateAccessTokensEnabledStatus, privateAccessTokensEnabledStatus2);
 
   if (v442)
   {
     v443 = nplog_obj();
     if (os_log_type_enabled(v443, OS_LOG_TYPE_DEFAULT))
     {
-      v444 = [v540 privateAccessTokensEnabledStatus];
-      v445 = [v444 BOOLValue];
+      privateAccessTokensEnabledStatus3 = [v540 privateAccessTokensEnabledStatus];
+      bOOLValue10 = [privateAccessTokensEnabledStatus3 BOOLValue];
       v446 = "disabled";
-      if (v445)
+      if (bOOLValue10)
       {
         v446 = "enabled";
       }
@@ -3186,19 +3186,19 @@ LABEL_539:
     v534 = 1;
   }
 
-  v447 = [v540 privateAccessTokensAllowTools];
-  v448 = [v539 privateAccessTokensAllowTools];
-  v449 = sub_1000904EC(v447, v448);
+  privateAccessTokensAllowTools = [v540 privateAccessTokensAllowTools];
+  privateAccessTokensAllowTools2 = [v539 privateAccessTokensAllowTools];
+  v449 = sub_1000904EC(privateAccessTokensAllowTools, privateAccessTokensAllowTools2);
 
   if (v449)
   {
     v450 = nplog_obj();
     if (os_log_type_enabled(v450, OS_LOG_TYPE_DEFAULT))
     {
-      v451 = [v540 privateAccessTokensAllowTools];
-      v452 = [v451 BOOLValue];
+      privateAccessTokensAllowTools3 = [v540 privateAccessTokensAllowTools];
+      bOOLValue11 = [privateAccessTokensAllowTools3 BOOLValue];
       v453 = "disallowed";
-      if (v452)
+      if (bOOLValue11)
       {
         v453 = "allowed";
       }
@@ -3211,19 +3211,19 @@ LABEL_539:
     v534 = 1;
   }
 
-  v454 = [v540 inProcessFlowDivert];
-  v455 = [v539 inProcessFlowDivert];
-  v456 = sub_1000904EC(v454, v455);
+  inProcessFlowDivert = [v540 inProcessFlowDivert];
+  inProcessFlowDivert2 = [v539 inProcessFlowDivert];
+  v456 = sub_1000904EC(inProcessFlowDivert, inProcessFlowDivert2);
 
   if (v456)
   {
     v457 = nplog_obj();
     if (os_log_type_enabled(v457, OS_LOG_TYPE_DEFAULT))
     {
-      v458 = [v540 inProcessFlowDivert];
-      v459 = [v458 BOOLValue];
+      inProcessFlowDivert3 = [v540 inProcessFlowDivert];
+      bOOLValue12 = [inProcessFlowDivert3 BOOLValue];
       v460 = "disabled";
-      if (v459)
+      if (bOOLValue12)
       {
         v460 = "enabled";
       }
@@ -3236,22 +3236,22 @@ LABEL_539:
     v534 = 1;
   }
 
-  v461 = [v540 proxyConfiguration];
-  v544 = [v461 trustedNetworkDiscoveredProxies];
+  proxyConfiguration39 = [v540 proxyConfiguration];
+  trustedNetworkDiscoveredProxies = [proxyConfiguration39 trustedNetworkDiscoveredProxies];
 
-  v462 = [v539 proxyConfiguration];
-  v573 = [v462 trustedNetworkDiscoveredProxies];
+  proxyConfiguration40 = [v539 proxyConfiguration];
+  trustedNetworkDiscoveredProxies2 = [proxyConfiguration40 trustedNetworkDiscoveredProxies];
 
-  v463 = [v544 count];
-  if (v463 == [v573 count])
+  v463 = [trustedNetworkDiscoveredProxies count];
+  if (v463 == [trustedNetworkDiscoveredProxies2 count])
   {
-    if ([v544 count])
+    if ([trustedNetworkDiscoveredProxies count])
     {
       v609 = 0u;
       v610 = 0u;
       v607 = 0u;
       v608 = 0u;
-      v464 = v544;
+      v464 = trustedNetworkDiscoveredProxies;
       v465 = [v464 countByEnumeratingWithState:&v607 objects:v684 count:16];
       if (v465)
       {
@@ -3270,7 +3270,7 @@ LABEL_585:
           v604 = 0u;
           v605 = 0u;
           v606 = 0u;
-          v469 = v573;
+          v469 = trustedNetworkDiscoveredProxies2;
           v470 = [v469 countByEnumeratingWithState:&v603 objects:v683 count:16];
           if (!v470)
           {
@@ -3346,18 +3346,18 @@ LABEL_605:
     v534 = 1;
   }
 
-  v475 = [v540 proxyConfiguration];
-  v476 = [v475 quotaInfo];
-  v538 = [v476 quotaServices];
+  proxyConfiguration41 = [v540 proxyConfiguration];
+  quotaInfo = [proxyConfiguration41 quotaInfo];
+  quotaServices = [quotaInfo quotaServices];
 
-  v477 = [v539 proxyConfiguration];
-  v478 = [v477 quotaInfo];
-  v561 = [v478 quotaServices];
+  proxyConfiguration42 = [v539 proxyConfiguration];
+  quotaInfo2 = [proxyConfiguration42 quotaInfo];
+  quotaServices2 = [quotaInfo2 quotaServices];
 
-  v479 = [v538 count];
-  if (v479 == [v561 count])
+  v479 = [quotaServices count];
+  if (v479 == [quotaServices2 count])
   {
-    if (![v538 count])
+    if (![quotaServices count])
     {
       goto LABEL_640;
     }
@@ -3366,7 +3366,7 @@ LABEL_605:
     v602 = 0u;
     v599 = 0u;
     v600 = 0u;
-    v527 = v538;
+    v527 = quotaServices;
     v533 = [v527 countByEnumeratingWithState:&v599 objects:v682 count:16];
     if (!v533)
     {
@@ -3392,7 +3392,7 @@ LABEL_605:
         v596 = 0u;
         v597 = 0u;
         v598 = 0u;
-        v585 = v561;
+        v585 = quotaServices2;
         v483 = [v585 countByEnumeratingWithState:&v595 objects:v681 count:16];
         if (!v483)
         {
@@ -3421,29 +3421,29 @@ LABEL_615:
           }
 
           v485 = *(*(&v595 + 1) + 8 * v484);
-          v486 = [v482 serviceURL];
-          v487 = [v485 serviceURL];
-          if (![v486 isEqualToString:v487])
+          serviceURL = [v482 serviceURL];
+          serviceURL2 = [v485 serviceURL];
+          if (![serviceURL isEqualToString:serviceURL2])
           {
 
             goto LABEL_626;
           }
 
-          v488 = [v482 supportedUseCaseIdentifiers];
-          if (!v488)
+          supportedUseCaseIdentifiers = [v482 supportedUseCaseIdentifiers];
+          if (!supportedUseCaseIdentifiers)
           {
-            v574 = [v485 supportedUseCaseIdentifiers];
-            if (!v574)
+            proxyConfiguration8 = [v485 supportedUseCaseIdentifiers];
+            if (!proxyConfiguration8)
             {
               break;
             }
           }
 
-          v489 = [v482 supportedUseCaseIdentifiers];
-          v490 = [v485 supportedUseCaseIdentifiers];
-          v491 = [v489 isEqualToArray:v490];
+          supportedUseCaseIdentifiers2 = [v482 supportedUseCaseIdentifiers];
+          supportedUseCaseIdentifiers3 = [v485 supportedUseCaseIdentifiers];
+          v491 = [supportedUseCaseIdentifiers2 isEqualToArray:supportedUseCaseIdentifiers3];
 
-          if (v488)
+          if (supportedUseCaseIdentifiers)
           {
           }
 
@@ -3469,7 +3469,7 @@ LABEL_626:
           }
         }
 
-        v574 = 0;
+        proxyConfiguration8 = 0;
 LABEL_630:
 
         v480 = v555 + 1;
@@ -3501,9 +3501,9 @@ LABEL_639:
   sub_100089D94(v541);
   v534 = 1;
 LABEL_640:
-  v494 = [v540 lastPrivateCloudComputeEnvironment];
-  v495 = [v539 lastPrivateCloudComputeEnvironment];
-  v496 = sub_1000904EC(v494, v495);
+  lastPrivateCloudComputeEnvironment = [v540 lastPrivateCloudComputeEnvironment];
+  lastPrivateCloudComputeEnvironment2 = [v539 lastPrivateCloudComputeEnvironment];
+  v496 = sub_1000904EC(lastPrivateCloudComputeEnvironment, lastPrivateCloudComputeEnvironment2);
 
   if ((v496 | v534))
   {
@@ -3513,22 +3513,22 @@ LABEL_640:
 LABEL_156:
 }
 
-- (void)setConfigurationTrialVersion:(int64_t)a3
+- (void)setConfigurationTrialVersion:(int64_t)version
 {
-  v4 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_configuration;
   }
 
-  v5 = [(NSPConfigurationManager *)self trialConfigVersion];
-  v6 = [v5 longValue];
+  trialConfigVersion = [(NSPConfigurationManager *)self trialConfigVersion];
+  longValue = [trialConfigVersion longValue];
 
-  if (v6 != a3)
+  if (longValue != version)
   {
-    if (v4)
+    if (selfCopy)
     {
-      configuration = v4->_configuration;
+      configuration = selfCopy->_configuration;
     }
 
     else
@@ -3537,17 +3537,17 @@ LABEL_156:
     }
 
     v9 = [(NSPConfiguration *)configuration copy];
-    v8 = [NSNumber numberWithLong:a3];
+    v8 = [NSNumber numberWithLong:version];
     [v9 setTrialConfigVersion:v8];
 
-    [(NSPConfigurationManager *)v4 updateConfiguration:v9];
+    [(NSPConfigurationManager *)selfCopy updateConfiguration:v9];
   }
 }
 
-- (void)setResetDate:(id)a3
+- (void)setResetDate:(id)date
 {
-  v4 = a3;
-  if (v4)
+  dateCopy = date;
+  if (dateCopy)
   {
     if (self)
     {
@@ -3560,14 +3560,14 @@ LABEL_156:
     }
 
     v6 = [(NSPConfiguration *)configuration copy];
-    v7 = [v6 willResetSubscriberTierTomorrow];
+    willResetSubscriberTierTomorrow = [v6 willResetSubscriberTierTomorrow];
 
-    if (!v7)
+    if (!willResetSubscriberTierTomorrow)
     {
       [v6 setWillResetSubscriberTierTomorrow:&off_1001142C0];
     }
 
-    [v6 setResetTomorrowDate:v4];
+    [v6 setResetTomorrowDate:dateCopy];
     [(NSPConfigurationManager *)self updateConfiguration:v6];
   }
 
@@ -3585,7 +3585,7 @@ LABEL_156:
 
 - (void)clearResetDate
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_configuration;
@@ -3594,13 +3594,13 @@ LABEL_156:
   v3 = [(NSPConfigurationManager *)self copy];
   [v3 setWillResetSubscriberTierTomorrow:&off_1001142C0];
   [v3 setResetTomorrowDate:0];
-  [(NSPConfigurationManager *)v2 updateConfiguration:v3];
+  [(NSPConfigurationManager *)selfCopy updateConfiguration:v3];
 }
 
-- (BOOL)setUserTier:(unint64_t)a3 resetDate:(id)a4 clearResetDate:(BOOL)a5 changeSource:(unint64_t)a6
+- (BOOL)setUserTier:(unint64_t)tier resetDate:(id)date clearResetDate:(BOOL)resetDate changeSource:(unint64_t)source
 {
-  v7 = a5;
-  v10 = a4;
+  resetDateCopy = resetDate;
+  dateCopy = date;
   if (self)
   {
     configuration = self->_configuration;
@@ -3611,10 +3611,10 @@ LABEL_156:
     configuration = 0;
   }
 
-  v12 = [(NSPConfiguration *)configuration userTier];
-  v13 = [v12 unsignedIntegerValue];
+  userTier = [(NSPConfiguration *)configuration userTier];
+  unsignedIntegerValue = [userTier unsignedIntegerValue];
 
-  if (v13 != a3)
+  if (unsignedIntegerValue != tier)
   {
     if (self)
     {
@@ -3627,10 +3627,10 @@ LABEL_156:
     }
 
     v20 = v19;
-    v21 = [(NSPConfiguration *)v20 cloudSubscriptionCheckEnabled];
-    if (v21)
+    cloudSubscriptionCheckEnabled = [(NSPConfiguration *)v20 cloudSubscriptionCheckEnabled];
+    if (cloudSubscriptionCheckEnabled)
     {
-      v22 = v21;
+      v22 = cloudSubscriptionCheckEnabled;
       if (self)
       {
         v23 = self->_configuration;
@@ -3641,10 +3641,10 @@ LABEL_156:
         v23 = 0;
       }
 
-      v24 = [(NSPConfiguration *)v23 cloudSubscriptionCheckEnabled];
-      v25 = [v24 BOOLValue];
+      cloudSubscriptionCheckEnabled2 = [(NSPConfiguration *)v23 cloudSubscriptionCheckEnabled];
+      bOOLValue = [cloudSubscriptionCheckEnabled2 BOOLValue];
 
-      if (!v25)
+      if (!bOOLValue)
       {
 LABEL_37:
         if (self)
@@ -3658,21 +3658,21 @@ LABEL_37:
         }
 
         v39 = [(NSPConfiguration *)v38 copy];
-        v40 = [NSNumber numberWithUnsignedInteger:a3];
+        v40 = [NSNumber numberWithUnsignedInteger:tier];
         [v39 setUserTier:v40];
 
-        v41 = [NSNumber numberWithUnsignedInteger:a3];
+        v41 = [NSNumber numberWithUnsignedInteger:tier];
         [v39 setUserPreferredTier:v41];
 
-        if (a3 == 2)
+        if (tier == 2)
         {
-          if (a6 == 1)
+          if (source == 1)
           {
             v42 = &off_1001142C0;
             goto LABEL_49;
           }
 
-          if (a6 == 3)
+          if (source == 3)
           {
             v42 = &off_1001142D8;
 LABEL_49:
@@ -3680,16 +3680,16 @@ LABEL_49:
           }
         }
 
-        else if (a3 == 1 && v10)
+        else if (tier == 1 && dateCopy)
         {
           [v39 setWillResetSubscriberTierTomorrow:&off_1001142D8];
           v43 = v39;
-          v44 = v10;
+          v44 = dateCopy;
           goto LABEL_52;
         }
 
         [v39 setWillResetSubscriberTierTomorrow:&off_1001142C0];
-        if (!v7)
+        if (!resetDateCopy)
         {
 LABEL_53:
           [(NSPConfigurationManager *)self updateConfiguration:v39];
@@ -3721,9 +3721,9 @@ LABEL_52:
       v32 = 0;
     }
 
-    v33 = [(NSPConfiguration *)v32 proxyAccountType];
+    proxyAccountType = [(NSPConfiguration *)v32 proxyAccountType];
 
-    if (v33)
+    if (proxyAccountType)
     {
       if (self)
       {
@@ -3735,10 +3735,10 @@ LABEL_52:
         v34 = 0;
       }
 
-      v35 = [(NSPConfiguration *)v34 proxyAccountType];
-      v36 = [v35 unsignedIntegerValue];
+      proxyAccountType2 = [(NSPConfiguration *)v34 proxyAccountType];
+      unsignedIntegerValue2 = [proxyAccountType2 unsignedIntegerValue];
 
-      if (a3 != 2 || v36 != 1)
+      if (tier != 2 || unsignedIntegerValue2 != 1)
       {
         goto LABEL_37;
       }
@@ -3756,18 +3756,18 @@ LABEL_52:
       v37 = nplog_obj();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
       {
-        if (a3 >= 3)
+        if (tier >= 3)
         {
-          v46 = [NSString stringWithFormat:@"(unknown: %i)", a3];
+          tier = [NSString stringWithFormat:@"(unknown: %i)", tier];
         }
 
         else
         {
-          v46 = *(&off_10010AAE8 + (a3 & 3));
+          tier = *(&off_10010AAE8 + (tier & 3));
         }
 
         *buf = 138412290;
-        v48 = v46;
+        v48 = tier;
         _os_log_error_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "invalid to set %@ tier until proxy account type is available", buf, 0xCu);
       }
     }
@@ -3786,10 +3786,10 @@ LABEL_52:
     v14 = 0;
   }
 
-  v15 = [(NSPConfiguration *)v14 willResetSubscriberTierTomorrow];
-  v16 = [v15 BOOLValue];
+  willResetSubscriberTierTomorrow = [(NSPConfiguration *)v14 willResetSubscriberTierTomorrow];
+  bOOLValue2 = [willResetSubscriberTierTomorrow BOOLValue];
 
-  if (!v10 && v16)
+  if (!dateCopy && bOOLValue2)
   {
     if (self)
     {
@@ -3803,7 +3803,7 @@ LABEL_52:
 
     v18 = [(NSPConfiguration *)v17 copy];
     [v18 setWillResetSubscriberTierTomorrow:&off_1001142C0];
-    if (v7)
+    if (resetDateCopy)
     {
       [v18 setResetTomorrowDate:0];
     }
@@ -3823,11 +3823,11 @@ LABEL_52:
     v26 = 0;
   }
 
-  v27 = [(NSPConfiguration *)v26 willResetSubscriberTierTomorrow];
-  v28 = [v27 BOOLValue];
+  willResetSubscriberTierTomorrow2 = [(NSPConfiguration *)v26 willResetSubscriberTierTomorrow];
+  bOOLValue3 = [willResetSubscriberTierTomorrow2 BOOLValue];
 
   v29 = 1;
-  if (v10 && (v28 & 1) == 0)
+  if (dateCopy && (bOOLValue3 & 1) == 0)
   {
     if (self)
     {
@@ -3841,7 +3841,7 @@ LABEL_52:
 
     v31 = [(NSPConfiguration *)v30 copy];
     [v31 setWillResetSubscriberTierTomorrow:&off_1001142D8];
-    [v31 setResetTomorrowDate:v10];
+    [v31 setResetTomorrowDate:dateCopy];
     [(NSPConfigurationManager *)self updateConfiguration:v31];
 
     goto LABEL_54;
@@ -3859,15 +3859,15 @@ LABEL_55:
     self = self->_configuration;
   }
 
-  v2 = [(NSPConfigurationManager *)self geohashSharingEnabledStatus];
-  v3 = [v2 BOOLValue];
+  geohashSharingEnabledStatus = [(NSPConfigurationManager *)self geohashSharingEnabledStatus];
+  bOOLValue = [geohashSharingEnabledStatus BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setGeohashOverride:(id)a3
+- (void)setGeohashOverride:(id)override
 {
-  v11 = a3;
+  overrideCopy = override;
   if (self)
   {
     configuration = self->_configuration;
@@ -3879,8 +3879,8 @@ LABEL_55:
   }
 
   v5 = configuration;
-  v6 = [(NSPConfiguration *)v5 geohashOverride];
-  if (v6 == v11)
+  geohashOverride = [(NSPConfiguration *)v5 geohashOverride];
+  if (geohashOverride == overrideCopy)
   {
   }
 
@@ -3896,8 +3896,8 @@ LABEL_55:
       v7 = 0;
     }
 
-    v8 = [(NSPConfiguration *)v7 geohashOverride];
-    v9 = [v8 isEqualToString:v11];
+    geohashOverride2 = [(NSPConfiguration *)v7 geohashOverride];
+    v9 = [geohashOverride2 isEqualToString:overrideCopy];
 
     if (v9)
     {
@@ -3915,7 +3915,7 @@ LABEL_55:
     }
 
     v5 = [(NSPConfiguration *)v10 copy];
-    [(NSPConfiguration *)v5 setGeohashOverride:v11];
+    [(NSPConfiguration *)v5 setGeohashOverride:overrideCopy];
     [(NSPConfigurationManager *)self updateConfiguration:v5];
   }
 
@@ -3929,10 +3929,10 @@ LABEL_12:
     self = self->_configuration;
   }
 
-  v2 = [(NSPConfigurationManager *)self privateAccessTokensEnabledStatus];
-  v3 = [v2 BOOLValue];
+  privateAccessTokensEnabledStatus = [(NSPConfigurationManager *)self privateAccessTokensEnabledStatus];
+  bOOLValue = [privateAccessTokensEnabledStatus BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (unint64_t)getPrivacyProxyAccountType
@@ -3942,27 +3942,27 @@ LABEL_12:
     self = self->_configuration;
   }
 
-  v2 = [(NSPConfigurationManager *)self proxyAccountType];
-  v3 = [v2 unsignedIntegerValue];
+  proxyAccountType = [(NSPConfigurationManager *)self proxyAccountType];
+  unsignedIntegerValue = [proxyAccountType unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)setProxyTrafficState:(unint64_t)a3 proxyTraffic:(unint64_t)a4
+- (void)setProxyTrafficState:(unint64_t)state proxyTraffic:(unint64_t)traffic
 {
-  v6 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_configuration;
   }
 
-  v7 = [(NSPConfigurationManager *)self proxyTrafficState];
-  v8 = [v7 unsignedLongLongValue];
+  proxyTrafficState = [(NSPConfigurationManager *)self proxyTrafficState];
+  unsignedLongLongValue = [proxyTrafficState unsignedLongLongValue];
 
-  v9 = v8 & ~a3 | a4 & a3;
-  if (v6)
+  v9 = unsignedLongLongValue & ~state | traffic & state;
+  if (selfCopy)
   {
-    configuration = v6->_configuration;
+    configuration = selfCopy->_configuration;
   }
 
   else
@@ -3970,14 +3970,14 @@ LABEL_12:
     configuration = 0;
   }
 
-  v11 = [(NSPConfiguration *)configuration proxyTrafficState];
-  v12 = [v11 unsignedLongLongValue];
+  proxyTrafficState2 = [(NSPConfiguration *)configuration proxyTrafficState];
+  unsignedLongLongValue2 = [proxyTrafficState2 unsignedLongLongValue];
 
-  if (v12 != v9)
+  if (unsignedLongLongValue2 != v9)
   {
-    if (v6)
+    if (selfCopy)
     {
-      v13 = v6->_configuration;
+      v13 = selfCopy->_configuration;
     }
 
     else
@@ -3988,11 +3988,11 @@ LABEL_12:
     v19 = [(NSPConfiguration *)v13 copy];
     if ((v9 & 0x20000) != 0)
     {
-      v14 = v6 ? v6->_configuration : 0;
-      v15 = [(NSPConfiguration *)v14 proxyTrafficState];
-      v16 = [v15 unsignedLongLongValue];
+      v14 = selfCopy ? selfCopy->_configuration : 0;
+      proxyTrafficState3 = [(NSPConfiguration *)v14 proxyTrafficState];
+      unsignedLongLongValue3 = [proxyTrafficState3 unsignedLongLongValue];
 
-      if ((v16 & 0x20000) == 0)
+      if ((unsignedLongLongValue3 & 0x20000) == 0)
       {
         v17 = +[NSDate now];
         [v19 setAnyAppEnabledDate:v17];
@@ -4002,13 +4002,13 @@ LABEL_12:
     v18 = [NSNumber numberWithUnsignedLongLong:v9];
     [v19 setProxyTrafficState:v18];
 
-    [(NSPConfigurationManager *)v6 updateConfiguration:v19];
+    [(NSPConfigurationManager *)selfCopy updateConfiguration:v19];
   }
 }
 
-- (void)refreshConfigurationWithReason:(unint64_t)a3 completionHandler:(id)a4
+- (void)refreshConfigurationWithReason:(unint64_t)reason completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   if (self)
   {
     configuration = self->_configuration;
@@ -4020,8 +4020,8 @@ LABEL_12:
   }
 
   v8 = configuration;
-  v9 = [(NSPConfiguration *)v8 enabled];
-  if (([v9 BOOLValue] & 1) == 0)
+  enabled = [(NSPConfiguration *)v8 enabled];
+  if (([enabled BOOLValue] & 1) == 0)
   {
     goto LABEL_15;
   }
@@ -4037,8 +4037,8 @@ LABEL_12:
   }
 
   v11 = v10;
-  v12 = [(NSPConfiguration *)v11 configServerEnabled];
-  if (![v12 BOOLValue])
+  configServerEnabled = [(NSPConfiguration *)v11 configServerEnabled];
+  if (![configServerEnabled BOOLValue])
   {
 
 LABEL_15:
@@ -4056,10 +4056,10 @@ LABEL_15:
   }
 
   v14 = v13;
-  v15 = [(NSPConfiguration *)v14 resurrectionDate];
-  if (v15)
+  resurrectionDate = [(NSPConfiguration *)v14 resurrectionDate];
+  if (resurrectionDate)
   {
-    v16 = v15;
+    v16 = resurrectionDate;
     if (self)
     {
       v17 = self->_configuration;
@@ -4070,8 +4070,8 @@ LABEL_15:
       v17 = 0;
     }
 
-    v18 = [(NSPConfiguration *)v17 resurrectionDate];
-    [v18 timeIntervalSinceNow];
+    resurrectionDate2 = [(NSPConfiguration *)v17 resurrectionDate];
+    [resurrectionDate2 timeIntervalSinceNow];
     v20 = v19;
 
     if (v20 >= 0.0)
@@ -4095,8 +4095,8 @@ LABEL_15:
   v22[1] = 3221225472;
   v22[2] = sub_100091860;
   v22[3] = &unk_10010A880;
-  v23 = v6;
-  sub_1000875D4(self, a3, v22);
+  v23 = handlerCopy;
+  sub_1000875D4(self, reason, v22);
 
 LABEL_16:
 }
@@ -4112,34 +4112,34 @@ LABEL_16:
     self = self->_configuration;
   }
 
-  v2 = [(NSPConfigurationManager *)self proxyConfiguration];
-  v3 = [v2 policyTierMaps];
+  proxyConfiguration = [(NSPConfigurationManager *)self proxyConfiguration];
+  policyTierMaps = [proxyConfiguration policyTierMaps];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
-  if (v4)
+  conditionsCount = [policyTierMaps countByEnumeratingWithState:&v10 objects:v14 count:16];
+  if (conditionsCount)
   {
     v5 = *v11;
     while (2)
     {
-      for (i = 0; i != v4; i = i + 1)
+      for (i = 0; i != conditionsCount; i = i + 1)
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(policyTierMaps);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
         if ([v7 tier] == 2)
         {
-          v8 = [v7 policy];
-          v4 = [v8 conditionsCount];
+          policy = [v7 policy];
+          conditionsCount = [policy conditionsCount];
 
           goto LABEL_13;
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
-      if (v4)
+      conditionsCount = [policyTierMaps countByEnumeratingWithState:&v10 objects:v14 count:16];
+      if (conditionsCount)
       {
         continue;
       }
@@ -4150,15 +4150,15 @@ LABEL_16:
 
 LABEL_13:
 
-  return v4;
+  return conditionsCount;
 }
 
-- (void)handlePathChange:(id)a3
+- (void)handlePathChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   if (self)
   {
-    objc_storeStrong(&self->_path, a3);
+    objc_storeStrong(&self->_path, change);
     path = self->_path;
   }
 
@@ -4196,7 +4196,7 @@ LABEL_13:
     if (self)
     {
       objc_storeStrong(&self->_networkCharacteristics, v7);
-      if ([v5 status] == 1 && self->_configFetchOnNetworkChange)
+      if ([changeCopy status] == 1 && self->_configFetchOnNetworkChange)
       {
         v16 = nplog_obj();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -4226,7 +4226,7 @@ LABEL_13:
 
     else
     {
-      [v5 status];
+      [changeCopy status];
     }
   }
 
@@ -4241,16 +4241,16 @@ LABEL_13:
   v12[1] = 3221225472;
   v13 = sub_100092298;
   v14 = &unk_100109910;
-  v15 = self;
+  selfCopy = self;
   v3 = v12;
   if (self)
   {
     if (os_variant_has_internal_content())
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v5 = [WeakRetained getSavedPrivateCloudComputeEnvironment];
+      getSavedPrivateCloudComputeEnvironment = [WeakRetained getSavedPrivateCloudComputeEnvironment];
 
-      if (!v5)
+      if (!getSavedPrivateCloudComputeEnvironment)
       {
         v16 = 0;
         v17 = &v16;
@@ -4263,7 +4263,7 @@ LABEL_13:
           *(&buf + 1) = 3221225472;
           v21 = sub_1000950CC;
           v22 = &unk_100109650;
-          v23 = &v16;
+          selfCopy2 = &v16;
           sub_1000950CC(&buf);
           v7 = v17[3];
         }
@@ -4278,7 +4278,7 @@ LABEL_13:
           v21 = sub_100091CB0;
           v22 = &unk_10010A8F8;
           v10 = v3;
-          v23 = self;
+          selfCopy2 = self;
           v24 = v10;
           [v9 selectedEnvironmentNameWithCompletionHandler:&buf];
 
@@ -4297,7 +4297,7 @@ LABEL_13:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v5;
+        *(&buf + 4) = getSavedPrivateCloudComputeEnvironment;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Has saved private cloud compute environment %@", &buf, 0xCu);
       }
     }
@@ -4314,7 +4314,7 @@ LABEL_8:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "Dealloc: \nConfiguration: %@", buf, 0xCu);
   }
 
@@ -4323,19 +4323,19 @@ LABEL_8:
   [(NSPConfigurationManager *)&v4 dealloc];
 }
 
-- (NSPConfigurationManager)initWithDelegate:(id)a3 configuration:(id)a4
+- (NSPConfigurationManager)initWithDelegate:(id)delegate configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  delegateCopy = delegate;
+  configurationCopy = configuration;
+  v8 = configurationCopy;
+  if (!delegateCopy)
   {
     v17 = nplog_obj();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
     {
 LABEL_12:
 
-      v14 = 0;
+      selfCopy = 0;
       goto LABEL_8;
     }
 
@@ -4347,7 +4347,7 @@ LABEL_14:
     goto LABEL_12;
   }
 
-  if (!v7)
+  if (!configurationCopy)
   {
     v17 = nplog_obj();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
@@ -4367,8 +4367,8 @@ LABEL_14:
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v6);
-    objc_storeStrong((v10 + 32), a4);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    objc_storeStrong((v10 + 32), configuration);
     *(v10 + 16) = sub_100090458(v10);
     ++*(v10 + 56);
     sub_1000892C0(v10);
@@ -4387,10 +4387,10 @@ LABEL_14:
   }
 
   self = v10;
-  v14 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v14;
+  return selfCopy;
 }
 
 - (void)publishDailyConfigurationStats
@@ -4398,23 +4398,23 @@ LABEL_8:
   v18 = objc_alloc_init(NSPConfigurationStats);
   if (self)
   {
-    v3 = [(NSPConfiguration *)self->_configuration proxyConfiguration];
-    -[NSPConfigurationStats setConfigurationVersion:](v18, "setConfigurationVersion:", [v3 version]);
+    proxyConfiguration = [(NSPConfiguration *)self->_configuration proxyConfiguration];
+    -[NSPConfigurationStats setConfigurationVersion:](v18, "setConfigurationVersion:", [proxyConfiguration version]);
 
     configuration = self->_configuration;
   }
 
   else
   {
-    v17 = [0 proxyConfiguration];
-    -[NSPConfigurationStats setConfigurationVersion:](v18, "setConfigurationVersion:", [v17 version]);
+    proxyConfiguration2 = [0 proxyConfiguration];
+    -[NSPConfigurationStats setConfigurationVersion:](v18, "setConfigurationVersion:", [proxyConfiguration2 version]);
 
     configuration = 0;
   }
 
   v5 = configuration;
-  v6 = [(NSPConfiguration *)v5 enabled];
-  -[NSPConfigurationStats setConfigurationEnabled:](v18, "setConfigurationEnabled:", [v6 BOOLValue]);
+  enabled = [(NSPConfiguration *)v5 enabled];
+  -[NSPConfigurationStats setConfigurationEnabled:](v18, "setConfigurationEnabled:", [enabled BOOLValue]);
 
   if (self)
   {
@@ -4427,18 +4427,18 @@ LABEL_8:
   }
 
   v8 = v7;
-  v9 = [(NSPConfiguration *)v8 proxyConfiguration];
-  -[NSPConfigurationStats setTokenFetchEnabled:](v18, "setTokenFetchEnabled:", [v9 enabled]);
+  proxyConfiguration3 = [(NSPConfiguration *)v8 proxyConfiguration];
+  -[NSPConfigurationStats setTokenFetchEnabled:](v18, "setTokenFetchEnabled:", [proxyConfiguration3 enabled]);
 
-  v10 = [(NSPConfigurationManager *)self effectiveUserTier];
-  if (v10 >= 3)
+  effectiveUserTier = [(NSPConfigurationManager *)self effectiveUserTier];
+  if (effectiveUserTier >= 3)
   {
-    v11 = [NSString stringWithFormat:@"(unknown: %i)", v10];
+    v11 = [NSString stringWithFormat:@"(unknown: %i)", effectiveUserTier];
   }
 
   else
   {
-    v11 = *(&off_10010AAE8 + (v10 & 3));
+    v11 = *(&off_10010AAE8 + (effectiveUserTier & 3));
   }
 
   [(NSPConfigurationStats *)v18 setTierType:v11];
@@ -4454,23 +4454,23 @@ LABEL_8:
   }
 
   v13 = v12;
-  v14 = [(NSPConfiguration *)v13 proxyTrafficState];
-  v15 = [v14 unsignedLongLongValue];
+  proxyTrafficState = [(NSPConfiguration *)v13 proxyTrafficState];
+  unsignedLongLongValue = [proxyTrafficState unsignedLongLongValue];
 
-  if (v15)
+  if (unsignedLongLongValue)
   {
     [(NSPConfigurationStats *)v18 setSafariUnencryptedEnabled:1];
   }
 
   v16 = v18;
-  if ((v15 & 2) != 0)
+  if ((unsignedLongLongValue & 2) != 0)
   {
     [(NSPConfigurationStats *)v18 setSafariDNSEnabled:1];
     v16 = v18;
-    if ((v15 & 4) == 0)
+    if ((unsignedLongLongValue & 4) == 0)
     {
 LABEL_14:
-      if ((v15 & 8) == 0)
+      if ((unsignedLongLongValue & 8) == 0)
       {
         goto LABEL_15;
       }
@@ -4479,17 +4479,17 @@ LABEL_14:
     }
   }
 
-  else if ((v15 & 4) == 0)
+  else if ((unsignedLongLongValue & 4) == 0)
   {
     goto LABEL_14;
   }
 
   [(NSPConfigurationStats *)v18 setSafariTrackersEnabled:1];
   v16 = v18;
-  if ((v15 & 8) == 0)
+  if ((unsignedLongLongValue & 8) == 0)
   {
 LABEL_15:
-    if ((v15 & 0x10) == 0)
+    if ((unsignedLongLongValue & 0x10) == 0)
     {
       goto LABEL_16;
     }
@@ -4500,10 +4500,10 @@ LABEL_15:
 LABEL_44:
   [(NSPConfigurationStats *)v18 setSafariAllEnabled:1];
   v16 = v18;
-  if ((v15 & 0x10) == 0)
+  if ((unsignedLongLongValue & 0x10) == 0)
   {
 LABEL_16:
-    if ((v15 & 0x40000) == 0)
+    if ((unsignedLongLongValue & 0x40000) == 0)
     {
       goto LABEL_17;
     }
@@ -4514,10 +4514,10 @@ LABEL_16:
 LABEL_45:
   [(NSPConfigurationStats *)v18 setSafariHTTPEnabled:1];
   v16 = v18;
-  if ((v15 & 0x40000) == 0)
+  if ((unsignedLongLongValue & 0x40000) == 0)
   {
 LABEL_17:
-    if ((v15 & 0x80000) == 0)
+    if ((unsignedLongLongValue & 0x80000) == 0)
     {
       goto LABEL_18;
     }
@@ -4528,10 +4528,10 @@ LABEL_17:
 LABEL_46:
   [(NSPConfigurationStats *)v18 setSafariPrivateUnencryptedEnabled:1];
   v16 = v18;
-  if ((v15 & 0x80000) == 0)
+  if ((unsignedLongLongValue & 0x80000) == 0)
   {
 LABEL_18:
-    if ((v15 & 0x100000) == 0)
+    if ((unsignedLongLongValue & 0x100000) == 0)
     {
       goto LABEL_19;
     }
@@ -4542,10 +4542,10 @@ LABEL_18:
 LABEL_47:
   [(NSPConfigurationStats *)v18 setSafariPrivateDNSEnabled:1];
   v16 = v18;
-  if ((v15 & 0x100000) == 0)
+  if ((unsignedLongLongValue & 0x100000) == 0)
   {
 LABEL_19:
-    if ((v15 & 0x200000) == 0)
+    if ((unsignedLongLongValue & 0x200000) == 0)
     {
       goto LABEL_20;
     }
@@ -4556,10 +4556,10 @@ LABEL_19:
 LABEL_48:
   [(NSPConfigurationStats *)v18 setSafariPrivateAllEnabled:1];
   v16 = v18;
-  if ((v15 & 0x200000) == 0)
+  if ((unsignedLongLongValue & 0x200000) == 0)
   {
 LABEL_20:
-    if ((v15 & 0x20) == 0)
+    if ((unsignedLongLongValue & 0x20) == 0)
     {
       goto LABEL_21;
     }
@@ -4570,10 +4570,10 @@ LABEL_20:
 LABEL_49:
   [(NSPConfigurationStats *)v18 setSafariMetricsEnabled:1];
   v16 = v18;
-  if ((v15 & 0x20) == 0)
+  if ((unsignedLongLongValue & 0x20) == 0)
   {
 LABEL_21:
-    if ((v15 & 0x40) == 0)
+    if ((unsignedLongLongValue & 0x40) == 0)
     {
       goto LABEL_22;
     }
@@ -4584,10 +4584,10 @@ LABEL_21:
 LABEL_50:
   [(NSPConfigurationStats *)v18 setMailTrackersEnabled:1];
   v16 = v18;
-  if ((v15 & 0x40) == 0)
+  if ((unsignedLongLongValue & 0x40) == 0)
   {
 LABEL_22:
-    if ((v15 & 0x80) == 0)
+    if ((unsignedLongLongValue & 0x80) == 0)
     {
       goto LABEL_23;
     }
@@ -4598,10 +4598,10 @@ LABEL_22:
 LABEL_51:
   [(NSPConfigurationStats *)v18 setUnencryptedEnabled:1];
   v16 = v18;
-  if ((v15 & 0x80) == 0)
+  if ((unsignedLongLongValue & 0x80) == 0)
   {
 LABEL_23:
-    if ((v15 & 0x100) == 0)
+    if ((unsignedLongLongValue & 0x100) == 0)
     {
       goto LABEL_24;
     }
@@ -4612,10 +4612,10 @@ LABEL_23:
 LABEL_52:
   [(NSPConfigurationStats *)v18 setDnsEnabled:1];
   v16 = v18;
-  if ((v15 & 0x100) == 0)
+  if ((unsignedLongLongValue & 0x100) == 0)
   {
 LABEL_24:
-    if ((v15 & 0x200) == 0)
+    if ((unsignedLongLongValue & 0x200) == 0)
     {
       goto LABEL_25;
     }
@@ -4626,10 +4626,10 @@ LABEL_24:
 LABEL_53:
   [(NSPConfigurationStats *)v18 setKnownTrackersEnabled:1];
   v16 = v18;
-  if ((v15 & 0x200) == 0)
+  if ((unsignedLongLongValue & 0x200) == 0)
   {
 LABEL_25:
-    if ((v15 & 0x400) == 0)
+    if ((unsignedLongLongValue & 0x400) == 0)
     {
       goto LABEL_26;
     }
@@ -4640,10 +4640,10 @@ LABEL_25:
 LABEL_54:
   [(NSPConfigurationStats *)v18 setAppTrackersEnabled:1];
   v16 = v18;
-  if ((v15 & 0x400) == 0)
+  if ((unsignedLongLongValue & 0x400) == 0)
   {
 LABEL_26:
-    if ((v15 & 0x10000) == 0)
+    if ((unsignedLongLongValue & 0x10000) == 0)
     {
       goto LABEL_27;
     }
@@ -4654,10 +4654,10 @@ LABEL_26:
 LABEL_55:
   [(NSPConfigurationStats *)v18 setNewsURLResolutionEnabled:1];
   v16 = v18;
-  if ((v15 & 0x10000) == 0)
+  if ((unsignedLongLongValue & 0x10000) == 0)
   {
 LABEL_27:
-    if ((v15 & 0x800) == 0)
+    if ((unsignedLongLongValue & 0x800) == 0)
     {
       goto LABEL_28;
     }
@@ -4668,10 +4668,10 @@ LABEL_27:
 LABEL_56:
   [(NSPConfigurationStats *)v18 setNewsEmbeddedContentEnabled:1];
   v16 = v18;
-  if ((v15 & 0x800) == 0)
+  if ((unsignedLongLongValue & 0x800) == 0)
   {
 LABEL_28:
-    if ((v15 & 0x1000) == 0)
+    if ((unsignedLongLongValue & 0x1000) == 0)
     {
       goto LABEL_29;
     }
@@ -4682,10 +4682,10 @@ LABEL_28:
 LABEL_57:
   [(NSPConfigurationStats *)v18 setExposureNotificationsEnabled:1];
   v16 = v18;
-  if ((v15 & 0x1000) == 0)
+  if ((unsignedLongLongValue & 0x1000) == 0)
   {
 LABEL_29:
-    if ((v15 & 0x2000) == 0)
+    if ((unsignedLongLongValue & 0x2000) == 0)
     {
       goto LABEL_30;
     }
@@ -4696,10 +4696,10 @@ LABEL_29:
 LABEL_58:
   [(NSPConfigurationStats *)v18 setAppleCertificatesEnabled:1];
   v16 = v18;
-  if ((v15 & 0x2000) == 0)
+  if ((unsignedLongLongValue & 0x2000) == 0)
   {
 LABEL_30:
-    if ((v15 & 0x4000) == 0)
+    if ((unsignedLongLongValue & 0x4000) == 0)
     {
       goto LABEL_31;
     }
@@ -4710,10 +4710,10 @@ LABEL_30:
 LABEL_59:
   [(NSPConfigurationStats *)v18 setNetworkToolsEnabled:1];
   v16 = v18;
-  if ((v15 & 0x4000) == 0)
+  if ((unsignedLongLongValue & 0x4000) == 0)
   {
 LABEL_31:
-    if ((v15 & 0x8000) == 0)
+    if ((unsignedLongLongValue & 0x8000) == 0)
     {
       goto LABEL_32;
     }
@@ -4724,10 +4724,10 @@ LABEL_31:
 LABEL_60:
   [(NSPConfigurationStats *)v18 setMetricsUploadEnabled:1];
   v16 = v18;
-  if ((v15 & 0x8000) == 0)
+  if ((unsignedLongLongValue & 0x8000) == 0)
   {
 LABEL_32:
-    if ((v15 & 0x20000) == 0)
+    if ((unsignedLongLongValue & 0x20000) == 0)
     {
       goto LABEL_33;
     }
@@ -4738,10 +4738,10 @@ LABEL_32:
 LABEL_61:
   [(NSPConfigurationStats *)v18 setBrandedCallingEnabled:1];
   v16 = v18;
-  if ((v15 & 0x20000) == 0)
+  if ((unsignedLongLongValue & 0x20000) == 0)
   {
 LABEL_33:
-    if ((v15 & 0x400000) == 0)
+    if ((unsignedLongLongValue & 0x400000) == 0)
     {
       goto LABEL_34;
     }
@@ -4752,10 +4752,10 @@ LABEL_33:
 LABEL_62:
   [(NSPConfigurationStats *)v18 setAppMetricsEnabled:1];
   v16 = v18;
-  if ((v15 & 0x400000) == 0)
+  if ((unsignedLongLongValue & 0x400000) == 0)
   {
 LABEL_34:
-    if ((v15 & 0x800000) == 0)
+    if ((unsignedLongLongValue & 0x800000) == 0)
     {
       goto LABEL_35;
     }
@@ -4766,10 +4766,10 @@ LABEL_34:
 LABEL_63:
   [(NSPConfigurationStats *)v18 setPromotedContentEnabled:1];
   v16 = v18;
-  if ((v15 & 0x800000) == 0)
+  if ((unsignedLongLongValue & 0x800000) == 0)
   {
 LABEL_35:
-    if ((v15 & 0x1000000) == 0)
+    if ((unsignedLongLongValue & 0x1000000) == 0)
     {
       goto LABEL_36;
     }
@@ -4780,10 +4780,10 @@ LABEL_35:
 LABEL_64:
   [(NSPConfigurationStats *)v18 setPostbackFetchEnabled:1];
   v16 = v18;
-  if ((v15 & 0x1000000) == 0)
+  if ((unsignedLongLongValue & 0x1000000) == 0)
   {
 LABEL_36:
-    if ((v15 & 0x2000000) == 0)
+    if ((unsignedLongLongValue & 0x2000000) == 0)
     {
       goto LABEL_37;
     }
@@ -4794,10 +4794,10 @@ LABEL_36:
 LABEL_65:
   [(NSPConfigurationStats *)v18 setPasswordManagerIconFetchEnabled:1];
   v16 = v18;
-  if ((v15 & 0x2000000) == 0)
+  if ((unsignedLongLongValue & 0x2000000) == 0)
   {
 LABEL_37:
-    if ((v15 & 0x4000000) == 0)
+    if ((unsignedLongLongValue & 0x4000000) == 0)
     {
       goto LABEL_39;
     }
@@ -4808,7 +4808,7 @@ LABEL_37:
 LABEL_66:
   [(NSPConfigurationStats *)v18 setLaunchWarningDetailsEnabled:1];
   v16 = v18;
-  if ((v15 & 0x4000000) != 0)
+  if ((unsignedLongLongValue & 0x4000000) != 0)
   {
 LABEL_38:
     [(NSPConfigurationStats *)v18 setPodcastsLinkPresentationEnabled:1];
@@ -4819,21 +4819,21 @@ LABEL_39:
   [(NSPProxyAnalytics *)v16 sendAnalytics];
 }
 
-- (void)copyProxyInfo:(id)a3
+- (void)copyProxyInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (infoCopy)
   {
     if (self)
     {
-      [v4 setConfigFetchedSuccessCount:self->_configFetchSuccessCount];
+      [infoCopy setConfigFetchedSuccessCount:self->_configFetchSuccessCount];
       configFetchFailedCount = self->_configFetchFailedCount;
     }
 
     else
     {
-      [v4 setConfigFetchedSuccessCount:0];
+      [infoCopy setConfigFetchedSuccessCount:0];
       configFetchFailedCount = 0;
     }
 
@@ -4855,15 +4855,15 @@ LABEL_39:
 - (id)diagnostics
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(NSPConfigurationManager *)self effectiveUserTier];
-  if (v4 >= 3)
+  effectiveUserTier = [(NSPConfigurationManager *)self effectiveUserTier];
+  if (effectiveUserTier >= 3)
   {
-    v5 = [NSString stringWithFormat:@"(unknown: %i)", v4];
+    v5 = [NSString stringWithFormat:@"(unknown: %i)", effectiveUserTier];
   }
 
   else
   {
-    v5 = *(&off_10010AAE8 + (v4 & 3));
+    v5 = *(&off_10010AAE8 + (effectiveUserTier & 3));
   }
 
   [v3 setObject:v5 forKeyedSubscript:@"EffectiveUserTier"];

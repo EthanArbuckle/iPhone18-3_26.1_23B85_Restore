@@ -1,19 +1,19 @@
 @interface SKDiskOperations
-- (BOOL)isEqual:(id)a3;
-- (SKDiskOperations)initWithWholeDiskOperation:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SKDiskOperations)initWithWholeDiskOperation:(id)operation;
 @end
 
 @implementation SKDiskOperations
 
-- (SKDiskOperations)initWithWholeDiskOperation:(id)a3
+- (SKDiskOperations)initWithWholeDiskOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v11.receiver = self;
   v11.super_class = SKDiskOperations;
   v5 = [(SKDiskOperations *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [operationCopy copy];
     wholeDiskOperation = v5->_wholeDiskOperation;
     v5->_wholeDiskOperation = v6;
 
@@ -25,12 +25,12 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(SKDiskOperations *)self wholeDiskOperation];
-  v6 = [v5 objectForKeyedSubscript:off_1000592F8];
-  v7 = [v4 isEqual:v6];
+  equalCopy = equal;
+  wholeDiskOperation = [(SKDiskOperations *)self wholeDiskOperation];
+  v6 = [wholeDiskOperation objectForKeyedSubscript:off_1000592F8];
+  v7 = [equalCopy isEqual:v6];
 
   return v7;
 }

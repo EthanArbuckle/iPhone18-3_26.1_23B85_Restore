@@ -1,8 +1,8 @@
 @interface RideBookingAccessProxy
 + (id)coordinator;
 + (id)imageCache;
-+ (id)rideBookingCurrentBookedSessionForAppIdentifier:(id)a3 rideIdentifier:(id)a4;
-+ (id)rideBookingCurrentRideBookingSessionCreateIfNecessary:(BOOL)a3;
++ (id)rideBookingCurrentBookedSessionForAppIdentifier:(id)identifier rideIdentifier:(id)rideIdentifier;
++ (id)rideBookingCurrentRideBookingSessionCreateIfNecessary:(BOOL)necessary;
 @end
 
 @implementation RideBookingAccessProxy
@@ -27,14 +27,14 @@
   return v2;
 }
 
-+ (id)rideBookingCurrentBookedSessionForAppIdentifier:(id)a3 rideIdentifier:(id)a4
++ (id)rideBookingCurrentBookedSessionForAppIdentifier:(id)identifier rideIdentifier:(id)rideIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  rideIdentifierCopy = rideIdentifier;
   if (sub_100016C50())
   {
-    v8 = a1;
-    objc_sync_enter(v8);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (!qword_10195E390)
     {
       v9 = objc_opt_new();
@@ -43,9 +43,9 @@
     }
 
     v11 = 0;
-    if (v6 && v7)
+    if (identifierCopy && rideIdentifierCopy)
     {
-      v12 = [v6 stringByAppendingString:v7];
+      v12 = [identifierCopy stringByAppendingString:rideIdentifierCopy];
       v13 = [qword_10195E390 objectForKey:v12];
       v14 = v13;
       if (v13 && ![(RidesharingAnalyticsBookedSession *)v13 sessionEnded])
@@ -57,17 +57,17 @@
       {
         v11 = objc_alloc_init(RidesharingAnalyticsBookedSession);
 
-        v15 = [v6 copy];
+        v15 = [identifierCopy copy];
         [(RidesharingAnalyticsBookedSession *)v11 setAppIdentifier:v15];
 
-        v16 = [v7 sha1Hash];
-        [(RidesharingAnalyticsBookedSession *)v11 setSessionId:v16];
+        sha1Hash = [rideIdentifierCopy sha1Hash];
+        [(RidesharingAnalyticsBookedSession *)v11 setSessionId:sha1Hash];
 
         [qword_10195E390 setObject:v11 forKey:v12];
       }
     }
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -78,16 +78,16 @@
   return v11;
 }
 
-+ (id)rideBookingCurrentRideBookingSessionCreateIfNecessary:(BOOL)a3
++ (id)rideBookingCurrentRideBookingSessionCreateIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   if (sub_100016C50())
   {
-    v5 = a1;
-    objc_sync_enter(v5);
-    v6 = [qword_10195E388 sessionEnded];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    sessionEnded = [qword_10195E388 sessionEnded];
     v7 = qword_10195E388;
-    if (!qword_10195E388 || (v6 & v3) != 0)
+    if (!qword_10195E388 || (sessionEnded & necessaryCopy) != 0)
     {
       v8 = objc_alloc_init(RidesharingAnalyticsBookingSession);
       v9 = qword_10195E388;
@@ -97,7 +97,7 @@
     }
 
     v10 = v7;
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else

@@ -1,7 +1,7 @@
 @interface TripleClickCell
 - (unint64_t)accessibilityTraits;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation TripleClickCell
@@ -10,12 +10,12 @@
 {
   v9.receiver = self;
   v9.super_class = TripleClickCell;
-  v3 = [(TripleClickCell *)&v9 accessibilityTraits];
-  v4 = [(TripleClickCell *)self specifier];
-  v5 = [v4 propertyForKey:@"AXChecked"];
-  v6 = [v5 BOOLValue];
+  accessibilityTraits = [(TripleClickCell *)&v9 accessibilityTraits];
+  specifier = [(TripleClickCell *)self specifier];
+  v5 = [specifier propertyForKey:@"AXChecked"];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = UIAccessibilityTraitSelected;
   }
@@ -25,31 +25,31 @@
     v7 = 0;
   }
 
-  return v7 | v3;
+  return v7 | accessibilityTraits;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v23.receiver = self;
   v23.super_class = TripleClickCell;
-  [(TripleClickCell *)&v23 refreshCellContentsWithSpecifier:v4];
-  v5 = [(TripleClickCell *)self defaultContentConfiguration];
+  [(TripleClickCell *)&v23 refreshCellContentsWithSpecifier:specifierCopy];
+  defaultContentConfiguration = [(TripleClickCell *)self defaultContentConfiguration];
   v6 = [UIImage systemImageNamed:@"checkmark"];
   [v6 size];
   v8 = v7;
   v10 = v9;
-  v11 = [v5 imageProperties];
-  [v11 setReservedLayoutSize:{v8, v10}];
+  imageProperties = [defaultContentConfiguration imageProperties];
+  [imageProperties setReservedLayoutSize:{v8, v10}];
 
-  v12 = [v4 propertyForKey:@"AXCheckStateCannotChange"];
-  v13 = [v12 BOOLValue];
+  v12 = [specifierCopy propertyForKey:@"AXCheckStateCannotChange"];
+  bOOLValue = [v12 BOOLValue];
 
-  if (v13)
+  if (bOOLValue)
   {
     v14 = +[UIColor tertiaryLabelColor];
-    v15 = [v5 textProperties];
-    [v15 setColor:v14];
+    textProperties = [defaultContentConfiguration textProperties];
+    [textProperties setColor:v14];
 
     [(TripleClickCell *)self setSelectionStyle:0];
   }
@@ -58,28 +58,28 @@
   v21[1] = 3221225472;
   v21[2] = __52__TripleClickCell_refreshCellContentsWithSpecifier___block_invoke;
   v21[3] = &__block_descriptor_33_e26___UIColor_16__0__UIColor_8l;
-  v22 = v13;
-  v16 = [v5 imageProperties];
-  [v16 setTintColorTransformer:v21];
+  v22 = bOOLValue;
+  imageProperties2 = [defaultContentConfiguration imageProperties];
+  [imageProperties2 setTintColorTransformer:v21];
 
-  v17 = [v4 propertyForKey:@"AXChecked"];
-  v18 = [v17 BOOLValue];
+  v17 = [specifierCopy propertyForKey:@"AXChecked"];
+  bOOLValue2 = [v17 BOOLValue];
 
-  if (v18)
+  if (bOOLValue2)
   {
-    [v5 setImage:v6];
+    [defaultContentConfiguration setImage:v6];
   }
 
   else
   {
     v19 = objc_opt_new();
-    [v5 setImage:v19];
+    [defaultContentConfiguration setImage:v19];
   }
 
-  v20 = [v4 name];
-  [v5 setText:v20];
+  name = [specifierCopy name];
+  [defaultContentConfiguration setText:name];
 
-  [(TripleClickCell *)self setContentConfiguration:v5];
+  [(TripleClickCell *)self setContentConfiguration:defaultContentConfiguration];
 }
 
 id __52__TripleClickCell_refreshCellContentsWithSpecifier___block_invoke(uint64_t a1, void *a2)

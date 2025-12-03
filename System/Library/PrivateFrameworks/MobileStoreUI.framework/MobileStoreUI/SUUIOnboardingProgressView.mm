@@ -1,25 +1,25 @@
 @interface SUUIOnboardingProgressView
-+ (CGSize)preferredImageSizeForViewSize:(CGSize)a3;
++ (CGSize)preferredImageSizeForViewSize:(CGSize)size;
 - (CGSize)preferredImageSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUIOnboardingProgressView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUIOnboardingProgressView)initWithFrame:(CGRect)frame;
 - (UIColor)fillColor;
 - (id)_borderColor;
 - (void)layoutSubviews;
-- (void)setFillColor:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setProgress:(double)a3 animated:(BOOL)a4;
-- (void)setTitle:(id)a3;
+- (void)setFillColor:(id)color;
+- (void)setImage:(id)image;
+- (void)setProgress:(double)progress animated:(BOOL)animated;
+- (void)setTitle:(id)title;
 - (void)tintColorDidChange;
 @end
 
 @implementation SUUIOnboardingProgressView
 
-- (SUUIOnboardingProgressView)initWithFrame:(CGRect)a3
+- (SUUIOnboardingProgressView)initWithFrame:(CGRect)frame
 {
   v28.receiver = self;
   v28.super_class = SUUIOnboardingProgressView;
-  v3 = [(SUUIOnboardingProgressView *)&v28 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIOnboardingProgressView *)&v28 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -33,44 +33,44 @@
     v4->_borderView = v13;
 
     [(SUUIOnboardingProgressView *)v4 addSubview:v4->_borderView];
-    v15 = [(SUUIShapeView *)v4->_borderView layer];
-    v16 = [MEMORY[0x277D75348] clearColor];
-    [v15 setFillColor:{objc_msgSend(v16, "CGColor")}];
+    layer = [(SUUIShapeView *)v4->_borderView layer];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [layer setFillColor:{objc_msgSend(clearColor, "CGColor")}];
 
-    [v15 setLineWidth:3.0];
-    v17 = [(SUUIOnboardingProgressView *)v4 _borderColor];
-    [v15 setStrokeColor:{objc_msgSend(v17, "CGColor")}];
+    [layer setLineWidth:3.0];
+    _borderColor = [(SUUIOnboardingProgressView *)v4 _borderColor];
+    [layer setStrokeColor:{objc_msgSend(_borderColor, "CGColor")}];
 
     v18 = [[SUUIShapeView alloc] initWithFrame:v6, v8, v10, v12];
     progressView = v4->_progressView;
     v4->_progressView = v18;
 
     v20 = v4->_progressView;
-    v21 = [MEMORY[0x277D75348] clearColor];
-    [(SUUIShapeView *)v20 setBackgroundColor:v21];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(SUUIShapeView *)v20 setBackgroundColor:clearColor2];
 
     v22 = v4->_progressView;
     CGAffineTransformMakeRotation(&v27, -1.57079633);
     [(SUUIShapeView *)v22 setTransform:&v27];
     [(SUUIOnboardingProgressView *)v4 addSubview:v4->_progressView];
-    v23 = [(SUUIShapeView *)v4->_progressView layer];
-    v24 = [MEMORY[0x277D75348] clearColor];
-    [v23 setFillColor:{objc_msgSend(v24, "CGColor")}];
+    layer2 = [(SUUIShapeView *)v4->_progressView layer];
+    clearColor3 = [MEMORY[0x277D75348] clearColor];
+    [layer2 setFillColor:{objc_msgSend(clearColor3, "CGColor")}];
 
-    [v23 setLineWidth:6.0];
-    v25 = [(SUUIOnboardingProgressView *)v4 tintColor];
-    [v23 setStrokeColor:{objc_msgSend(v25, "CGColor")}];
+    [layer2 setLineWidth:6.0];
+    tintColor = [(SUUIOnboardingProgressView *)v4 tintColor];
+    [layer2 setStrokeColor:{objc_msgSend(tintColor, "CGColor")}];
 
-    [v23 setStrokeEnd:0.0];
-    [v23 setStrokeStart:0.0];
+    [layer2 setStrokeEnd:0.0];
+    [layer2 setStrokeStart:0.0];
   }
 
   return v4;
 }
 
-+ (CGSize)preferredImageSizeForViewSize:(CGSize)a3
++ (CGSize)preferredImageSizeForViewSize:(CGSize)size
 {
-  v3 = a3.width + -12.0 + -8.0;
+  v3 = size.width + -12.0 + -8.0;
   v4 = v3;
   result.height = v4;
   result.width = v3;
@@ -79,12 +79,12 @@
 
 - (UIColor)fillColor
 {
-  v2 = [(SUUIShapeView *)self->_borderView layer];
-  v3 = [v2 fillColor];
+  layer = [(SUUIShapeView *)self->_borderView layer];
+  fillColor = [layer fillColor];
 
-  if (v3)
+  if (fillColor)
   {
-    v4 = [MEMORY[0x277D75348] colorWithCGColor:v3];
+    v4 = [MEMORY[0x277D75348] colorWithCGColor:fillColor];
   }
 
   else
@@ -106,22 +106,22 @@
   return result;
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
   borderView = self->_borderView;
-  v4 = a3;
-  v6 = [(SUUIShapeView *)borderView layer];
-  v5 = [v4 CGColor];
+  colorCopy = color;
+  layer = [(SUUIShapeView *)borderView layer];
+  cGColor = [colorCopy CGColor];
 
-  [v6 setFillColor:v5];
+  [layer setFillColor:cGColor];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   imageView = self->_imageView;
-  v11 = v4;
-  if (v4)
+  v11 = imageCopy;
+  if (imageCopy)
   {
     if (!imageView)
     {
@@ -130,15 +130,15 @@
       self->_imageView = v6;
 
       v8 = self->_imageView;
-      v9 = [MEMORY[0x277D75348] clearColor];
-      [(UIImageView *)v8 setBackgroundColor:v9];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(UIImageView *)v8 setBackgroundColor:clearColor];
 
       [(SUUIOnboardingProgressView *)self addSubview:self->_imageView];
-      v4 = v11;
+      imageCopy = v11;
       imageView = self->_imageView;
     }
 
-    [(UIImageView *)imageView setImage:v4];
+    [(UIImageView *)imageView setImage:imageCopy];
     [(SUUIOnboardingProgressView *)self setNeedsLayout];
   }
 
@@ -150,20 +150,20 @@
   }
 }
 
-- (void)setProgress:(double)a3 animated:(BOOL)a4
+- (void)setProgress:(double)progress animated:(BOOL)animated
 {
   progress = self->_progress;
-  if (progress != a3)
+  if (progress != progress)
   {
-    if (a3 > 1.0)
+    if (progress > 1.0)
     {
-      a3 = 1.0;
+      progress = 1.0;
     }
 
-    v7 = fmax(a3, 0.0);
+    v7 = fmax(progress, 0.0);
     self->_progress = v7;
-    v11 = [(SUUIShapeView *)self->_progressView layer];
-    if (a4)
+    layer = [(SUUIShapeView *)self->_progressView layer];
+    if (animated)
     {
       v8 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"strokeEnd"];
       [v8 setDuration:{vabdd_f64(progress, v7) * 0.6}];
@@ -175,21 +175,21 @@
       v10 = [MEMORY[0x277CCABB0] numberWithDouble:self->_progress];
       [v8 setToValue:v10];
 
-      [v11 addAnimation:v8 forKey:0];
+      [layer addAnimation:v8 forKey:0];
     }
 
     else
     {
-      [v11 removeAllAnimations];
-      [v11 setStrokeEnd:self->_progress];
+      [layer removeAllAnimations];
+      [layer setStrokeEnd:self->_progress];
     }
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v15 = a3;
-  v4 = [v15 length];
+  titleCopy = title;
+  v4 = [titleCopy length];
   titleLabel = self->_titleLabel;
   if (v4)
   {
@@ -200,8 +200,8 @@
       self->_titleLabel = v6;
 
       v8 = self->_titleLabel;
-      v9 = [MEMORY[0x277D75348] clearColor];
-      [(UILabel *)v8 setBackgroundColor:v9];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(UILabel *)v8 setBackgroundColor:clearColor];
 
       v10 = self->_titleLabel;
       v11 = [MEMORY[0x277D74300] systemFontOfSize:14.0];
@@ -210,14 +210,14 @@
       [(UILabel *)self->_titleLabel setNumberOfLines:2];
       [(UILabel *)self->_titleLabel setTextAlignment:1];
       v12 = self->_titleLabel;
-      v13 = [(SUUIOnboardingProgressView *)self tintColor];
-      [(UILabel *)v12 setTextColor:v13];
+      tintColor = [(SUUIOnboardingProgressView *)self tintColor];
+      [(UILabel *)v12 setTextColor:tintColor];
 
       [(SUUIOnboardingProgressView *)self addSubview:self->_titleLabel];
       titleLabel = self->_titleLabel;
     }
 
-    [(UILabel *)titleLabel setText:v15];
+    [(UILabel *)titleLabel setText:titleCopy];
     [(SUUIOnboardingProgressView *)self setNeedsLayout];
   }
 
@@ -238,23 +238,23 @@
   v10 = v9;
   [(SUUIShapeView *)self->_borderView setFrame:?];
   [(SUUIShapeView *)self->_progressView setFrame:v4, v6, v8, v10];
-  v29 = [(SUUIShapeView *)self->_borderView layer];
-  [v29 lineWidth];
+  layer = [(SUUIShapeView *)self->_borderView layer];
+  [layer lineWidth];
   v12 = v11 * 0.5;
   v13 = MEMORY[0x277D75208];
   [(SUUIShapeView *)self->_borderView bounds];
   v32 = CGRectInset(v31, v12, v12);
   v14 = [v13 bezierPathWithOvalInRect:{v32.origin.x, v32.origin.y, v32.size.width, v32.size.height}];
-  [v29 setPath:{objc_msgSend(v14, "CGPath")}];
+  [layer setPath:{objc_msgSend(v14, "CGPath")}];
 
-  v15 = [(SUUIShapeView *)self->_progressView layer];
-  [v15 lineWidth];
+  layer2 = [(SUUIShapeView *)self->_progressView layer];
+  [layer2 lineWidth];
   v17 = v16 * 0.5;
   v18 = MEMORY[0x277D75208];
   [(SUUIShapeView *)self->_progressView bounds];
   v34 = CGRectInset(v33, v17, v17);
   v19 = [v18 bezierPathWithOvalInRect:{v34.origin.x, v34.origin.y, v34.size.width, v34.size.height}];
-  [v15 setPath:{objc_msgSend(v19, "CGPath")}];
+  [layer2 setPath:{objc_msgSend(v19, "CGPath")}];
 
   imageView = self->_imageView;
   if (imageView)
@@ -286,13 +286,13 @@
 LABEL_6:
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(SUUIOnboardingProgressView *)self traitCollection:a3.width];
-  v4 = [v3 horizontalSizeClass];
+  v3 = [(SUUIOnboardingProgressView *)self traitCollection:fits.width];
+  horizontalSizeClass = [v3 horizontalSizeClass];
 
   v5 = 78.0;
-  if (v4 == 2)
+  if (horizontalSizeClass == 2)
   {
     v5 = 120.0;
   }
@@ -305,15 +305,15 @@ LABEL_6:
 
 - (void)tintColorDidChange
 {
-  v3 = [(SUUIOnboardingProgressView *)self tintColor];
-  v4 = [(SUUIShapeView *)self->_borderView layer];
-  v5 = [(SUUIOnboardingProgressView *)self _borderColor];
-  [v4 setStrokeColor:{objc_msgSend(v5, "CGColor")}];
+  tintColor = [(SUUIOnboardingProgressView *)self tintColor];
+  layer = [(SUUIShapeView *)self->_borderView layer];
+  _borderColor = [(SUUIOnboardingProgressView *)self _borderColor];
+  [layer setStrokeColor:{objc_msgSend(_borderColor, "CGColor")}];
 
-  v6 = [(SUUIShapeView *)self->_progressView layer];
-  [v6 setStrokeColor:{objc_msgSend(v3, "CGColor")}];
+  layer2 = [(SUUIShapeView *)self->_progressView layer];
+  [layer2 setStrokeColor:{objc_msgSend(tintColor, "CGColor")}];
 
-  [(UILabel *)self->_titleLabel setTextColor:v3];
+  [(UILabel *)self->_titleLabel setTextColor:tintColor];
   v7.receiver = self;
   v7.super_class = SUUIOnboardingProgressView;
   [(SUUIOnboardingProgressView *)&v7 tintColorDidChange];
@@ -321,8 +321,8 @@ LABEL_6:
 
 - (id)_borderColor
 {
-  v2 = [(SUUIOnboardingProgressView *)self tintColor];
-  v3 = [v2 colorWithAlphaComponent:0.5];
+  tintColor = [(SUUIOnboardingProgressView *)self tintColor];
+  v3 = [tintColor colorWithAlphaComponent:0.5];
 
   return v3;
 }

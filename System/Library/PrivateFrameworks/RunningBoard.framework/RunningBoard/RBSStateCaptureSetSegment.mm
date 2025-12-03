@@ -69,7 +69,7 @@ __CFString *__33__RBSStateCaptureSetSegment_init__block_invoke(uint64_t a1)
   os_unfair_lock_lock(&_stateCaptureLock);
   v3 = [(NSMutableSet *)self->_items copy];
   os_unfair_lock_unlock(&_stateCaptureLock);
-  v4 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -89,8 +89,8 @@ __CFString *__33__RBSStateCaptureSetSegment_init__block_invoke(uint64_t a1)
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) captureState];
-        [v4 appendString:v10];
+        captureState = [*(*(&v13 + 1) + 8 * i) captureState];
+        [string appendString:captureState];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -101,7 +101,7 @@ __CFString *__33__RBSStateCaptureSetSegment_init__block_invoke(uint64_t a1)
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return string;
 }
 
 @end

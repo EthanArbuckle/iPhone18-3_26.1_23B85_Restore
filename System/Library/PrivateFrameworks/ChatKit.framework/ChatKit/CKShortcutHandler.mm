@@ -1,23 +1,23 @@
 @interface CKShortcutHandler
-+ (void)performActionForShortcutItem:(id)a3 navigationProvider:(id)a4 chatController:(id)a5 completion:(id)a6;
++ (void)performActionForShortcutItem:(id)item navigationProvider:(id)provider chatController:(id)controller completion:(id)completion;
 @end
 
 @implementation CKShortcutHandler
 
-+ (void)performActionForShortcutItem:(id)a3 navigationProvider:(id)a4 chatController:(id)a5 completion:(id)a6
++ (void)performActionForShortcutItem:(id)item navigationProvider:(id)provider chatController:(id)controller completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  itemCopy = item;
+  providerCopy = provider;
+  controllerCopy = controller;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v13 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v28 = v9;
+      v28 = itemCopy;
       _os_log_impl(&dword_19020E000, v13, OS_LOG_TYPE_INFO, "Performing action for shortcut item: %@", buf, 0xCu);
     }
   }
@@ -26,14 +26,14 @@
   v20 = 3221225472;
   v21 = __95__CKShortcutHandler_performActionForShortcutItem_navigationProvider_chatController_completion___block_invoke;
   v22 = &unk_1E72F1C80;
-  v23 = v9;
-  v24 = v10;
-  v25 = v11;
-  v26 = v12;
-  v14 = v11;
-  v15 = v12;
-  v16 = v10;
-  v17 = v9;
+  v23 = itemCopy;
+  v24 = providerCopy;
+  v25 = controllerCopy;
+  v26 = completionCopy;
+  v14 = controllerCopy;
+  v15 = completionCopy;
+  v16 = providerCopy;
+  v17 = itemCopy;
   v18 = _Block_copy(&v19);
   [v16 setDeferredHandleURLBlock:{v18, v19, v20, v21, v22}];
 }

@@ -1,7 +1,7 @@
 @interface HiddenCardViewController
 - (_TtC8StocksUI24HiddenCardViewController)init;
-- (_TtC8StocksUI24HiddenCardViewController)initWithCoder:(id)a3;
-- (_TtC8StocksUI24HiddenCardViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8StocksUI24HiddenCardViewController)initWithCoder:(id)coder;
+- (_TtC8StocksUI24HiddenCardViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation HiddenCardViewController
@@ -16,7 +16,7 @@
   return [(HiddenCardViewController *)&v5 initWithNibName:0 bundle:0];
 }
 
-- (_TtC8StocksUI24HiddenCardViewController)initWithCoder:(id)a3
+- (_TtC8StocksUI24HiddenCardViewController)initWithCoder:(id)coder
 {
   sub_22088B9AC();
   sub_22088B3FC();
@@ -25,7 +25,7 @@
   return result;
 }
 
-- (_TtC8StocksUI24HiddenCardViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8StocksUI24HiddenCardViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

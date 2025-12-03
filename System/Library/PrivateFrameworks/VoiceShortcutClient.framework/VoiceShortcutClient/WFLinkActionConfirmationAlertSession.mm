@@ -1,17 +1,17 @@
 @interface WFLinkActionConfirmationAlertSession
-- (WFLinkActionConfirmationAlertSession)initWithAppBundleIdentifier:(id)a3 actionMetadata:(id)a4 shouldShowPrompt:(BOOL)a5 dialog:(id)a6 dialogString:(id)a7 viewSnippet:(id)a8 confirmationActionName:(id)a9;
-- (WFLinkActionConfirmationAlertSession)initWithCoder:(id)a3;
-- (WFLinkActionConfirmationAlertSession)initWithXPCDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (WFLinkActionConfirmationAlertSession)initWithAppBundleIdentifier:(id)identifier actionMetadata:(id)metadata shouldShowPrompt:(BOOL)prompt dialog:(id)dialog dialogString:(id)string viewSnippet:(id)snippet confirmationActionName:(id)name;
+- (WFLinkActionConfirmationAlertSession)initWithCoder:(id)coder;
+- (WFLinkActionConfirmationAlertSession)initWithXPCDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation WFLinkActionConfirmationAlertSession
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  xdict = a3;
+  xdict = dictionary;
   v4 = [MEMORY[0x1E698E7A8] coderWithMessage:xdict];
   v5 = [(NSString *)self->_appBundleIdentifier dataUsingEncoding:4];
   xpc_dictionary_set_data(xdict, [@"appBundleIdentifier" UTF8String], objc_msgSend(v5, "bytes"), objc_msgSend(v5, "length"));
@@ -56,13 +56,13 @@
   }
 }
 
-- (WFLinkActionConfirmationAlertSession)initWithXPCDictionary:(id)a3
+- (WFLinkActionConfirmationAlertSession)initWithXPCDictionary:(id)dictionary
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E7A8] coderWithMessage:v4];
+  dictionaryCopy = dictionary;
+  v5 = [MEMORY[0x1E698E7A8] coderWithMessage:dictionaryCopy];
   length = 0;
-  data = xpc_dictionary_get_data(v4, [@"appBundleIdentifier" UTF8String], &length);
+  data = xpc_dictionary_get_data(dictionaryCopy, [@"appBundleIdentifier" UTF8String], &length);
   if (length)
   {
     v7 = data;
@@ -72,7 +72,7 @@
     v11 = [v5 decodeBoolForKey:@"shouldShowPrompt"];
     v12 = [v5 decodeObjectOfClass:NSClassFromString(@"LNDialog") forKey:@"dialog"];
     length = 0;
-    v13 = xpc_dictionary_get_data(v4, [@"dialogString" UTF8String], &length);
+    v13 = xpc_dictionary_get_data(dictionaryCopy, [@"dialogString" UTF8String], &length);
     if (length)
     {
       v14 = v13;
@@ -97,7 +97,7 @@
 
     self = v20;
 
-    v17 = self;
+    selfCopy = self;
   }
 
   else
@@ -109,22 +109,22 @@
       _os_log_error_impl(&dword_1B1DE3000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%s: appBundleIdentifier is empty.", buf, 0xCu);
     }
 
-    v17 = 0;
+    selfCopy = 0;
   }
 
   v23 = *MEMORY[0x1E69E9840];
-  return v17;
+  return selfCopy;
 }
 
-- (WFLinkActionConfirmationAlertSession)initWithCoder:(id)a3
+- (WFLinkActionConfirmationAlertSession)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appBundleIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionMetadata"];
-  v7 = [v4 decodeBoolForKey:@"shouldShowPrompt"];
-  if ([v4 containsValueForKey:@"dialog"])
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appBundleIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionMetadata"];
+  v7 = [coderCopy decodeBoolForKey:@"shouldShowPrompt"];
+  if ([coderCopy containsValueForKey:@"dialog"])
   {
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dialog"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dialog"];
   }
 
   else
@@ -132,9 +132,9 @@
     v8 = 0;
   }
 
-  if ([v4 containsValueForKey:@"dialogString"])
+  if ([coderCopy containsValueForKey:@"dialogString"])
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dialogString"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dialogString"];
   }
 
   else
@@ -142,9 +142,9 @@
     v9 = 0;
   }
 
-  if ([v4 containsValueForKey:@"viewSnippet"])
+  if ([coderCopy containsValueForKey:@"viewSnippet"])
   {
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"viewSnippet"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"viewSnippet"];
   }
 
   else
@@ -152,9 +152,9 @@
     v10 = 0;
   }
 
-  if ([v4 containsValueForKey:@"confirmationActionName"])
+  if ([coderCopy containsValueForKey:@"confirmationActionName"])
   {
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"confirmationActionName"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"confirmationActionName"];
   }
 
   else
@@ -167,32 +167,32 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFLinkActionConfirmationAlertSession *)self appBundleIdentifier];
-  [v4 encodeObject:v5 forKey:@"appBundleIdentifier"];
+  coderCopy = coder;
+  appBundleIdentifier = [(WFLinkActionConfirmationAlertSession *)self appBundleIdentifier];
+  [coderCopy encodeObject:appBundleIdentifier forKey:@"appBundleIdentifier"];
 
-  v6 = [(WFLinkActionConfirmationAlertSession *)self actionMetadata];
-  [v4 encodeObject:v6 forKey:@"actionMetadata"];
+  actionMetadata = [(WFLinkActionConfirmationAlertSession *)self actionMetadata];
+  [coderCopy encodeObject:actionMetadata forKey:@"actionMetadata"];
 
-  [v4 encodeBool:-[WFLinkActionConfirmationAlertSession shouldShowPrompt](self forKey:{"shouldShowPrompt"), @"shouldShowPrompt"}];
-  v7 = [(WFLinkActionConfirmationAlertSession *)self dialog];
-  [v4 encodeObject:v7 forKey:@"dialog"];
+  [coderCopy encodeBool:-[WFLinkActionConfirmationAlertSession shouldShowPrompt](self forKey:{"shouldShowPrompt"), @"shouldShowPrompt"}];
+  dialog = [(WFLinkActionConfirmationAlertSession *)self dialog];
+  [coderCopy encodeObject:dialog forKey:@"dialog"];
 
-  v8 = [(WFLinkActionConfirmationAlertSession *)self dialogString];
-  [v4 encodeObject:v8 forKey:@"dialogString"];
+  dialogString = [(WFLinkActionConfirmationAlertSession *)self dialogString];
+  [coderCopy encodeObject:dialogString forKey:@"dialogString"];
 
-  v9 = [(WFLinkActionConfirmationAlertSession *)self viewSnippet];
-  [v4 encodeObject:v9 forKey:@"viewSnippet"];
+  viewSnippet = [(WFLinkActionConfirmationAlertSession *)self viewSnippet];
+  [coderCopy encodeObject:viewSnippet forKey:@"viewSnippet"];
 
-  v10 = [(WFLinkActionConfirmationAlertSession *)self confirmationActionName];
-  [v4 encodeObject:v10 forKey:@"confirmationActionName"];
+  confirmationActionName = [(WFLinkActionConfirmationAlertSession *)self confirmationActionName];
+  [coderCopy encodeObject:confirmationActionName forKey:@"confirmationActionName"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong((v4 + 16), self->_appBundleIdentifier);
   objc_storeStrong((v4 + 24), self->_actionMetadata);
   *(v4 + 8) = self->_shouldShowPrompt;
@@ -203,27 +203,27 @@
   return v4;
 }
 
-- (WFLinkActionConfirmationAlertSession)initWithAppBundleIdentifier:(id)a3 actionMetadata:(id)a4 shouldShowPrompt:(BOOL)a5 dialog:(id)a6 dialogString:(id)a7 viewSnippet:(id)a8 confirmationActionName:(id)a9
+- (WFLinkActionConfirmationAlertSession)initWithAppBundleIdentifier:(id)identifier actionMetadata:(id)metadata shouldShowPrompt:(BOOL)prompt dialog:(id)dialog dialogString:(id)string viewSnippet:(id)snippet confirmationActionName:(id)name
 {
-  v24 = a3;
-  v23 = a4;
-  v22 = a6;
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
+  identifierCopy = identifier;
+  metadataCopy = metadata;
+  dialogCopy = dialog;
+  stringCopy = string;
+  snippetCopy = snippet;
+  nameCopy = name;
   v25.receiver = self;
   v25.super_class = WFLinkActionConfirmationAlertSession;
   v18 = [(WFLinkActionConfirmationAlertSession *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_appBundleIdentifier, a3);
-    objc_storeStrong(&v19->_actionMetadata, a4);
-    v19->_shouldShowPrompt = a5;
-    objc_storeStrong(&v19->_dialog, a6);
-    objc_storeStrong(&v19->_dialogString, a7);
-    objc_storeStrong(&v19->_viewSnippet, a8);
-    objc_storeStrong(&v19->_confirmationActionName, a9);
+    objc_storeStrong(&v18->_appBundleIdentifier, identifier);
+    objc_storeStrong(&v19->_actionMetadata, metadata);
+    v19->_shouldShowPrompt = prompt;
+    objc_storeStrong(&v19->_dialog, dialog);
+    objc_storeStrong(&v19->_dialogString, string);
+    objc_storeStrong(&v19->_viewSnippet, snippet);
+    objc_storeStrong(&v19->_confirmationActionName, name);
   }
 
   return v19;

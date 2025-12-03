@@ -1,21 +1,21 @@
 @interface AWDWifiAssociation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBand:(BOOL)a3;
-- (void)setHasChannel:(BOOL)a3;
-- (void)setHasDeauthReason:(BOOL)a3;
-- (void)setHasError:(BOOL)a3;
-- (void)setHasNoise:(BOOL)a3;
-- (void)setHasPhymode:(BOOL)a3;
-- (void)setHasSignal:(BOOL)a3;
-- (void)setHasTxrate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasBand:(BOOL)band;
+- (void)setHasChannel:(BOOL)channel;
+- (void)setHasDeauthReason:(BOOL)reason;
+- (void)setHasError:(BOOL)error;
+- (void)setHasNoise:(BOOL)noise;
+- (void)setHasPhymode:(BOOL)phymode;
+- (void)setHasSignal:(BOOL)signal;
+- (void)setHasTxrate:(BOOL)txrate;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWifiAssociation
@@ -32,9 +32,9 @@
   [(AWDWifiAssociation *)&v3 dealloc];
 }
 
-- (void)setHasError:(BOOL)a3
+- (void)setHasError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 16;
   }
@@ -47,9 +47,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasChannel:(BOOL)a3
+- (void)setHasChannel:(BOOL)channel
 {
-  if (a3)
+  if (channel)
   {
     v3 = 4;
   }
@@ -62,9 +62,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasSignal:(BOOL)a3
+- (void)setHasSignal:(BOOL)signal
 {
-  if (a3)
+  if (signal)
   {
     v3 = 128;
   }
@@ -77,9 +77,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasDeauthReason:(BOOL)a3
+- (void)setHasDeauthReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 8;
   }
@@ -92,9 +92,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasNoise:(BOOL)a3
+- (void)setHasNoise:(BOOL)noise
 {
-  if (a3)
+  if (noise)
   {
     v3 = 32;
   }
@@ -107,9 +107,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasTxrate:(BOOL)a3
+- (void)setHasTxrate:(BOOL)txrate
 {
-  if (a3)
+  if (txrate)
   {
     v3 = 256;
   }
@@ -122,9 +122,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasPhymode:(BOOL)a3
+- (void)setHasPhymode:(BOOL)phymode
 {
-  if (a3)
+  if (phymode)
   {
     v3 = 64;
   }
@@ -137,9 +137,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasBand:(BOOL)a3
+- (void)setHasBand:(BOOL)band
 {
-  if (a3)
+  if (band)
   {
     v3 = 2;
   }
@@ -161,11 +161,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -184,7 +184,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_error), @"error"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_error), @"error"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -198,77 +198,77 @@ LABEL_4:
   }
 
 LABEL_29:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_channel), @"channel"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_channel), @"channel"}];
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_5:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_signal), @"signal"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_signal), @"signal"}];
   }
 
 LABEL_6:
   bssidOui = self->_bssidOui;
   if (bssidOui)
   {
-    [v3 setObject:bssidOui forKey:@"bssid_oui"];
+    [dictionary setObject:bssidOui forKey:@"bssid_oui"];
   }
 
   security = self->_security;
   if (security)
   {
-    [v3 setObject:security forKey:@"security"];
+    [dictionary setObject:security forKey:@"security"];
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_deauthReason), @"deauth_reason"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_deauthReason), @"deauth_reason"}];
   }
 
   deauthSourceOui = self->_deauthSourceOui;
   if (deauthSourceOui)
   {
-    [v3 setObject:deauthSourceOui forKey:@"deauth_source_oui"];
+    [dictionary setObject:deauthSourceOui forKey:@"deauth_source_oui"];
   }
 
   v8 = self->_has;
   if ((v8 & 0x20) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_noise), @"noise"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_noise), @"noise"}];
     v8 = self->_has;
   }
 
   if ((v8 & 0x100) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_txrate), @"txrate"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_txrate), @"txrate"}];
   }
 
   countryCode = self->_countryCode;
   if (countryCode)
   {
-    [v3 setObject:countryCode forKey:@"country_code"];
+    [dictionary setObject:countryCode forKey:@"country_code"];
   }
 
   v10 = self->_has;
   if ((v10 & 0x40) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_phymode), @"phymode"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_phymode), @"phymode"}];
     v10 = self->_has;
   }
 
   if ((v10 & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_band), @"band"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_band), @"band"}];
   }
 
   privateMacType = self->_privateMacType;
   if (privateMacType)
   {
-    [v3 setObject:privateMacType forKey:@"privateMacType"];
+    [dictionary setObject:privateMacType forKey:@"privateMacType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -379,13 +379,13 @@ LABEL_6:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 52) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 52) |= 1u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -404,8 +404,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 16) = self->_error;
-  *(a3 + 52) |= 0x10u;
+  *(to + 16) = self->_error;
+  *(to + 52) |= 0x10u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -419,80 +419,80 @@ LABEL_4:
   }
 
 LABEL_30:
-  *(a3 + 8) = self->_channel;
-  *(a3 + 52) |= 4u;
+  *(to + 8) = self->_channel;
+  *(to + 52) |= 4u;
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_5:
-    *(a3 + 24) = self->_signal;
-    *(a3 + 52) |= 0x80u;
+    *(to + 24) = self->_signal;
+    *(to + 52) |= 0x80u;
   }
 
 LABEL_6:
   if (self->_bssidOui)
   {
-    [a3 setBssidOui:?];
+    [to setBssidOui:?];
   }
 
   if (self->_security)
   {
-    [a3 setSecurity:?];
+    [to setSecurity:?];
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(a3 + 12) = self->_deauthReason;
-    *(a3 + 52) |= 8u;
+    *(to + 12) = self->_deauthReason;
+    *(to + 52) |= 8u;
   }
 
   if (self->_deauthSourceOui)
   {
-    [a3 setDeauthSourceOui:?];
+    [to setDeauthSourceOui:?];
   }
 
   v6 = self->_has;
   if ((v6 & 0x20) != 0)
   {
-    *(a3 + 17) = self->_noise;
-    *(a3 + 52) |= 0x20u;
+    *(to + 17) = self->_noise;
+    *(to + 52) |= 0x20u;
     v6 = self->_has;
   }
 
   if ((v6 & 0x100) != 0)
   {
-    *(a3 + 25) = self->_txrate;
-    *(a3 + 52) |= 0x100u;
+    *(to + 25) = self->_txrate;
+    *(to + 52) |= 0x100u;
   }
 
   if (self->_countryCode)
   {
-    [a3 setCountryCode:?];
+    [to setCountryCode:?];
   }
 
   v7 = self->_has;
   if ((v7 & 0x40) != 0)
   {
-    *(a3 + 18) = self->_phymode;
-    *(a3 + 52) |= 0x40u;
+    *(to + 18) = self->_phymode;
+    *(to + 52) |= 0x40u;
     v7 = self->_has;
   }
 
   if ((v7 & 2) != 0)
   {
-    *(a3 + 4) = self->_band;
-    *(a3 + 52) |= 2u;
+    *(to + 4) = self->_band;
+    *(to + 52) |= 2u;
   }
 
   if (self->_privateMacType)
   {
 
-    [a3 setPrivateMacType:?];
+    [to setPrivateMacType:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -543,15 +543,15 @@ LABEL_5:
 
 LABEL_6:
 
-  *(v6 + 24) = [(NSData *)self->_bssidOui copyWithZone:a3];
-  *(v6 + 88) = [(NSString *)self->_security copyWithZone:a3];
+  *(v6 + 24) = [(NSData *)self->_bssidOui copyWithZone:zone];
+  *(v6 + 88) = [(NSString *)self->_security copyWithZone:zone];
   if ((*&self->_has & 8) != 0)
   {
     *(v6 + 48) = self->_deauthReason;
     *(v6 + 104) |= 8u;
   }
 
-  *(v6 + 56) = [(NSData *)self->_deauthSourceOui copyWithZone:a3];
+  *(v6 + 56) = [(NSData *)self->_deauthSourceOui copyWithZone:zone];
   v8 = self->_has;
   if ((v8 & 0x20) != 0)
   {
@@ -566,7 +566,7 @@ LABEL_6:
     *(v6 + 104) |= 0x100u;
   }
 
-  *(v6 + 40) = [(NSString *)self->_countryCode copyWithZone:a3];
+  *(v6 + 40) = [(NSString *)self->_countryCode copyWithZone:zone];
   v9 = self->_has;
   if ((v9 & 0x40) != 0)
   {
@@ -581,20 +581,20 @@ LABEL_6:
     *(v6 + 104) |= 2u;
   }
 
-  *(v6 + 80) = [(NSString *)self->_privateMacType copyWithZone:a3];
+  *(v6 + 80) = [(NSString *)self->_privateMacType copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 52);
+    v7 = *(equal + 52);
     if (has)
     {
-      if ((v7 & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((v7 & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_59;
       }
@@ -609,7 +609,7 @@ LABEL_59:
 
     if ((has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_error != *(a3 + 16))
+      if ((v7 & 0x10) == 0 || self->_error != *(equal + 16))
       {
         goto LABEL_59;
       }
@@ -622,7 +622,7 @@ LABEL_59:
 
     if ((has & 4) != 0)
     {
-      if ((v7 & 4) == 0 || self->_channel != *(a3 + 8))
+      if ((v7 & 4) == 0 || self->_channel != *(equal + 8))
       {
         goto LABEL_59;
       }
@@ -635,7 +635,7 @@ LABEL_59:
 
     if ((has & 0x80) != 0)
     {
-      if ((v7 & 0x80) == 0 || self->_signal != *(a3 + 24))
+      if ((v7 & 0x80) == 0 || self->_signal != *(equal + 24))
       {
         goto LABEL_59;
       }
@@ -647,16 +647,16 @@ LABEL_59:
     }
 
     bssidOui = self->_bssidOui;
-    if (!(bssidOui | *(a3 + 3)) || (v5 = [(NSData *)bssidOui isEqual:?]) != 0)
+    if (!(bssidOui | *(equal + 3)) || (v5 = [(NSData *)bssidOui isEqual:?]) != 0)
     {
       security = self->_security;
-      if (!(security | *(a3 + 11)) || (v5 = [(NSString *)security isEqual:?]) != 0)
+      if (!(security | *(equal + 11)) || (v5 = [(NSString *)security isEqual:?]) != 0)
       {
         v10 = self->_has;
-        v11 = *(a3 + 52);
+        v11 = *(equal + 52);
         if ((v10 & 8) != 0)
         {
-          if ((v11 & 8) == 0 || self->_deauthReason != *(a3 + 12))
+          if ((v11 & 8) == 0 || self->_deauthReason != *(equal + 12))
           {
             goto LABEL_59;
           }
@@ -668,7 +668,7 @@ LABEL_59:
         }
 
         deauthSourceOui = self->_deauthSourceOui;
-        if (deauthSourceOui | *(a3 + 7))
+        if (deauthSourceOui | *(equal + 7))
         {
           v5 = [(NSData *)deauthSourceOui isEqual:?];
           if (!v5)
@@ -679,10 +679,10 @@ LABEL_59:
           v10 = self->_has;
         }
 
-        v13 = *(a3 + 52);
+        v13 = *(equal + 52);
         if ((v10 & 0x20) != 0)
         {
-          if ((v13 & 0x20) == 0 || self->_noise != *(a3 + 17))
+          if ((v13 & 0x20) == 0 || self->_noise != *(equal + 17))
           {
             goto LABEL_59;
           }
@@ -695,19 +695,19 @@ LABEL_59:
 
         if ((v10 & 0x100) != 0)
         {
-          if ((*(a3 + 52) & 0x100) == 0 || self->_txrate != *(a3 + 25))
+          if ((*(equal + 52) & 0x100) == 0 || self->_txrate != *(equal + 25))
           {
             goto LABEL_59;
           }
         }
 
-        else if ((*(a3 + 52) & 0x100) != 0)
+        else if ((*(equal + 52) & 0x100) != 0)
         {
           goto LABEL_59;
         }
 
         countryCode = self->_countryCode;
-        if (countryCode | *(a3 + 5))
+        if (countryCode | *(equal + 5))
         {
           v5 = [(NSString *)countryCode isEqual:?];
           if (!v5)
@@ -718,10 +718,10 @@ LABEL_59:
           v10 = self->_has;
         }
 
-        v15 = *(a3 + 52);
+        v15 = *(equal + 52);
         if ((v10 & 0x40) != 0)
         {
-          if ((v15 & 0x40) == 0 || self->_phymode != *(a3 + 18))
+          if ((v15 & 0x40) == 0 || self->_phymode != *(equal + 18))
           {
             goto LABEL_59;
           }
@@ -734,7 +734,7 @@ LABEL_59:
 
         if ((v10 & 2) != 0)
         {
-          if ((v15 & 2) == 0 || self->_band != *(a3 + 4))
+          if ((v15 & 2) == 0 || self->_band != *(equal + 4))
           {
             goto LABEL_59;
           }
@@ -746,7 +746,7 @@ LABEL_59:
         }
 
         privateMacType = self->_privateMacType;
-        if (privateMacType | *(a3 + 10))
+        if (privateMacType | *(equal + 10))
         {
 
           LOBYTE(v5) = [(NSString *)privateMacType isEqual:?];
@@ -877,14 +877,14 @@ LABEL_20:
   return v17 ^ v18 ^ v16 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v13 ^ v14 ^ [(NSString *)self->_privateMacType hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 52);
+  v5 = *(from + 52);
   if (v5)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v5 = *(a3 + 52);
+    v5 = *(from + 52);
     if ((v5 & 0x10) == 0)
     {
 LABEL_3:
@@ -902,9 +902,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_error = *(a3 + 16);
+  self->_error = *(from + 16);
   *&self->_has |= 0x10u;
-  v5 = *(a3 + 52);
+  v5 = *(from + 52);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -917,71 +917,71 @@ LABEL_4:
   }
 
 LABEL_30:
-  self->_channel = *(a3 + 8);
+  self->_channel = *(from + 8);
   *&self->_has |= 4u;
-  if ((*(a3 + 52) & 0x80) != 0)
+  if ((*(from + 52) & 0x80) != 0)
   {
 LABEL_5:
-    self->_signal = *(a3 + 24);
+    self->_signal = *(from + 24);
     *&self->_has |= 0x80u;
   }
 
 LABEL_6:
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDWifiAssociation *)self setBssidOui:?];
   }
 
-  if (*(a3 + 11))
+  if (*(from + 11))
   {
     [(AWDWifiAssociation *)self setSecurity:?];
   }
 
-  if ((*(a3 + 52) & 8) != 0)
+  if ((*(from + 52) & 8) != 0)
   {
-    self->_deauthReason = *(a3 + 12);
+    self->_deauthReason = *(from + 12);
     *&self->_has |= 8u;
   }
 
-  if (*(a3 + 7))
+  if (*(from + 7))
   {
     [(AWDWifiAssociation *)self setDeauthSourceOui:?];
   }
 
-  v6 = *(a3 + 52);
+  v6 = *(from + 52);
   if ((v6 & 0x20) != 0)
   {
-    self->_noise = *(a3 + 17);
+    self->_noise = *(from + 17);
     *&self->_has |= 0x20u;
-    v6 = *(a3 + 52);
+    v6 = *(from + 52);
   }
 
   if ((v6 & 0x100) != 0)
   {
-    self->_txrate = *(a3 + 25);
+    self->_txrate = *(from + 25);
     *&self->_has |= 0x100u;
   }
 
-  if (*(a3 + 5))
+  if (*(from + 5))
   {
     [(AWDWifiAssociation *)self setCountryCode:?];
   }
 
-  v7 = *(a3 + 52);
+  v7 = *(from + 52);
   if ((v7 & 0x40) != 0)
   {
-    self->_phymode = *(a3 + 18);
+    self->_phymode = *(from + 18);
     *&self->_has |= 0x40u;
-    v7 = *(a3 + 52);
+    v7 = *(from + 52);
   }
 
   if ((v7 & 2) != 0)
   {
-    self->_band = *(a3 + 4);
+    self->_band = *(from + 4);
     *&self->_has |= 2u;
   }
 
-  if (*(a3 + 10))
+  if (*(from + 10))
   {
 
     [(AWDWifiAssociation *)self setPrivateMacType:?];

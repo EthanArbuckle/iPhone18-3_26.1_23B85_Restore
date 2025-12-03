@@ -1,10 +1,10 @@
 @interface CardButtonConfiguration
 + (CardButtonConfiguration)none;
-+ (id)withType:(unint64_t)a3;
++ (id)withType:(unint64_t)type;
 - (CardButtonConfiguration)init;
 - (UIEdgeInsets)insets;
-- (id)withSystemImageNamed:(id)a3;
-- (id)withToolTip:(id)a3;
+- (id)withSystemImageNamed:(id)named;
+- (id)withToolTip:(id)tip;
 @end
 
 @implementation CardButtonConfiguration
@@ -38,26 +38,26 @@
   return result;
 }
 
-- (id)withToolTip:(id)a3
+- (id)withToolTip:(id)tip
 {
-  v4 = [a3 copy];
+  v4 = [tip copy];
   [(CardButtonConfiguration *)self setToolTip:v4];
 
   return self;
 }
 
-- (id)withSystemImageNamed:(id)a3
+- (id)withSystemImageNamed:(id)named
 {
-  v4 = [a3 copy];
+  v4 = [named copy];
   [(CardButtonConfiguration *)self setSystemImageName:v4];
 
   return self;
 }
 
-+ (id)withType:(unint64_t)a3
++ (id)withType:(unint64_t)type
 {
   v4 = objc_opt_new();
-  [v4 setType:a3];
+  [v4 setType:type];
 
   return v4;
 }

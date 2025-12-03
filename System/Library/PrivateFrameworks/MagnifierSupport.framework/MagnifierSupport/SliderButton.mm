@@ -1,85 +1,85 @@
 @interface SliderButton
-- (BOOL)clickPresentationInteractionShouldBegin:(id)a3;
-- (BOOL)clickPresentationInteractionShouldPresent:(id)a3;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)clickPresentationInteractionShouldBegin:(id)begin;
+- (BOOL)clickPresentationInteractionShouldPresent:(id)present;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (UIImage)largeContentImage;
-- (_TtC16MagnifierSupport12SliderButton)initWithFrame:(CGRect)a3;
-- (id)clickPresentationInteraction:(id)a3 presentationForPresentingViewController:(id)a4;
-- (id)clickPresentationInteraction:(id)a3 previewForHighlightingAtLocation:(CGPoint)a4;
-- (void)clickPresentationInteractionEnded:(id)a3 wasCancelled:(BOOL)a4;
-- (void)didTap:(id)a3;
+- (_TtC16MagnifierSupport12SliderButton)initWithFrame:(CGRect)frame;
+- (id)clickPresentationInteraction:(id)interaction presentationForPresentingViewController:(id)controller;
+- (id)clickPresentationInteraction:(id)interaction previewForHighlightingAtLocation:(CGPoint)location;
+- (void)clickPresentationInteractionEnded:(id)ended wasCancelled:(BOOL)cancelled;
+- (void)didTap:(id)tap;
 - (void)layoutSubviews;
 - (void)removeFromSuperview;
 @end
 
 @implementation SliderButton
 
-- (id)clickPresentationInteraction:(id)a3 presentationForPresentingViewController:(id)a4
+- (id)clickPresentationInteraction:(id)interaction presentationForPresentingViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_257C3E1BC(v6);
+  interactionCopy = interaction;
+  controllerCopy = controller;
+  selfCopy = self;
+  v9 = sub_257C3E1BC(interactionCopy);
 
   return v9;
 }
 
-- (BOOL)clickPresentationInteractionShouldBegin:(id)a3
+- (BOOL)clickPresentationInteractionShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  sub_257C3D7D8(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  sub_257C3D7D8(beginCopy);
   LOBYTE(self) = v6;
 
   return self & 1;
 }
 
-- (BOOL)clickPresentationInteractionShouldPresent:(id)a3
+- (BOOL)clickPresentationInteractionShouldPresent:(id)present
 {
-  v4 = a3;
-  v5 = self;
-  sub_257C3DAC0(v4);
+  presentCopy = present;
+  selfCopy = self;
+  sub_257C3DAC0(presentCopy);
   LOBYTE(self) = v6;
 
   return self & 1;
 }
 
-- (void)clickPresentationInteractionEnded:(id)a3 wasCancelled:(BOOL)a4
+- (void)clickPresentationInteractionEnded:(id)ended wasCancelled:(BOOL)cancelled
 {
-  v6 = a3;
-  v7 = self;
-  sub_257C3E454(a4);
+  endedCopy = ended;
+  selfCopy = self;
+  sub_257C3E454(cancelled);
 }
 
-- (id)clickPresentationInteraction:(id)a3 previewForHighlightingAtLocation:(CGPoint)a4
+- (id)clickPresentationInteraction:(id)interaction previewForHighlightingAtLocation:(CGPoint)location
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_257C3DE40(v5);
+  interactionCopy = interaction;
+  selfCopy = self;
+  v7 = sub_257C3DE40(interactionCopy);
 
   return v7;
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_257D4ACB0();
 }
 
-- (void)didTap:(id)a3
+- (void)didTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
+  tapCopy = tap;
+  selfCopy = self;
   sub_257D4B898();
 }
 
 - (void)removeFromSuperview
 {
-  v2 = self;
+  selfCopy = self;
   sub_257D4AF50();
 }
 
-- (_TtC16MagnifierSupport12SliderButton)initWithFrame:(CGRect)a3
+- (_TtC16MagnifierSupport12SliderButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -93,11 +93,11 @@
   return v2;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_257D4B564(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = sub_257D4B564(beginCopy);
 
   return self & 1;
 }

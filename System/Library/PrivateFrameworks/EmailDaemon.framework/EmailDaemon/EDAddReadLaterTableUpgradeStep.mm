@@ -1,15 +1,15 @@
 @interface EDAddReadLaterTableUpgradeStep
-+ (int)runWithConnection:(id)a3;
++ (int)runWithConnection:(id)connection;
 @end
 
 @implementation EDAddReadLaterTableUpgradeStep
 
-+ (int)runWithConnection:(id)a3
++ (int)runWithConnection:(id)connection
 {
-  v3 = a3;
-  if ([v3 executeStatementString:@"ALTER TABLE threads ADD COLUMN read_later_date INTEGER;" errorMessage:@"Unable to add read_later_date column to threads"])
+  connectionCopy = connection;
+  if ([connectionCopy executeStatementString:@"ALTER TABLE threads ADD COLUMN read_later_date INTEGER;" errorMessage:@"Unable to add read_later_date column to threads"])
   {
-    v4 = [v3 executeStatementString:@"CREATE TABLE IF NOT EXISTS read_later (global_message_id INTEGER PRIMARY KEY errorMessage:{date INTEGER NOT NULL);", @"Unable to create read_later table"}];
+    v4 = [connectionCopy executeStatementString:@"CREATE TABLE IF NOT EXISTS read_later (global_message_id INTEGER PRIMARY KEY errorMessage:{date INTEGER NOT NULL);", @"Unable to create read_later table"}];
   }
 
   else

@@ -1,8 +1,8 @@
 @interface ICURLBagRadioConfiguration
 - (BOOL)isContinueListeningAvailable;
-- (BOOL)shouldIncludeHTTPHeaderField:(id)a3 forRequestURL:(id)a4;
-- (ICURLBagRadioConfiguration)initWithBagRadioDictionary:(id)a3;
-- (id)urlForBagRadioKey:(id)a3;
+- (BOOL)shouldIncludeHTTPHeaderField:(id)field forRequestURL:(id)l;
+- (ICURLBagRadioConfiguration)initWithBagRadioDictionary:(id)dictionary;
+- (id)urlForBagRadioKey:(id)key;
 - (int64_t)continueListeningLoadStationThreshold;
 - (int64_t)continueListeningMaxQueueSizeInRequest;
 - (int64_t)continueListeningMaxUpcomingTracksSizeToMaintain;
@@ -12,9 +12,9 @@
 
 @implementation ICURLBagRadioConfiguration
 
-- (id)urlForBagRadioKey:(id)a3
+- (id)urlForBagRadioKey:(id)key
 {
-  v3 = [(NSDictionary *)self->_bagRadioDictionary objectForKey:a3];
+  v3 = [(NSDictionary *)self->_bagRadioDictionary objectForKey:key];
   if (_NSIsNSString())
   {
     v4 = [MEMORY[0x1E695DFF8] URLWithString:v3];
@@ -28,25 +28,25 @@
   return v4;
 }
 
-- (BOOL)shouldIncludeHTTPHeaderField:(id)a3 forRequestURL:(id)a4
+- (BOOL)shouldIncludeHTTPHeaderField:(id)field forRequestURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"X-Guid"])
+  fieldCopy = field;
+  lCopy = l;
+  if ([fieldCopy isEqualToString:@"X-Guid"])
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [v7 lastPathComponent];
+    lastPathComponent = [lCopy lastPathComponent];
     v10 = [(NSDictionary *)self->_bagRadioDictionary objectForKey:@"header-actions"];
     if (_NSIsNSDictionary())
     {
-      v11 = [v10 objectForKey:v6];
+      v11 = [v10 objectForKey:fieldCopy];
       if (_NSIsNSArray())
       {
-        v8 = [v11 containsObject:v9];
+        v8 = [v11 containsObject:lastPathComponent];
       }
 
       else
@@ -68,27 +68,27 @@
 {
   v2 = [(NSDictionary *)self->_bagRadioDictionary objectForKeyedSubscript:@"continue-listening"];
   v3 = [v2 objectForKeyedSubscript:@"max-queue-size-for-autoplay"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)continueListeningMaxUpcomingTracksSizeToMaintain
 {
   v2 = [(NSDictionary *)self->_bagRadioDictionary objectForKeyedSubscript:@"continue-listening"];
   v3 = [v2 objectForKeyedSubscript:@"max-upcoming-tracks-to-maintain"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)continueListeningMaxQueueSizeInRequest
 {
   v2 = [(NSDictionary *)self->_bagRadioDictionary objectForKeyedSubscript:@"continue-listening"];
   v3 = [v2 objectForKeyedSubscript:@"max-queue-size-in-request"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)isContinueListeningAvailable
@@ -104,15 +104,15 @@
   v2 = [(NSDictionary *)self->_bagRadioDictionary objectForKey:@"max-protocol-version"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 integerValue];
-    if (v3 >= 8)
+    integerValue = [v2 integerValue];
+    if (integerValue >= 8)
     {
       v4 = 8;
     }
 
     else
     {
-      v4 = v3;
+      v4 = integerValue;
     }
   }
 
@@ -129,27 +129,27 @@
   v2 = [(NSDictionary *)self->_bagRadioDictionary objectForKey:@"num-kbsyncs-to-include-for-getTracks"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 1;
+    integerValue = 1;
   }
 
-  return v3;
+  return integerValue;
 }
 
-- (ICURLBagRadioConfiguration)initWithBagRadioDictionary:(id)a3
+- (ICURLBagRadioConfiguration)initWithBagRadioDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = ICURLBagRadioConfiguration;
   v6 = [(ICURLBagRadioConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bagRadioDictionary, a3);
+    objc_storeStrong(&v6->_bagRadioDictionary, dictionary);
   }
 
   return v7;

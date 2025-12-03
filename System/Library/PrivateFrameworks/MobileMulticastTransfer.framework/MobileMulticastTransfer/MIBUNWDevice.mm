@@ -1,10 +1,10 @@
 @interface MIBUNWDevice
 - (MIBUNWDevice)init;
-- (void)_sendMessage:(id)a3;
-- (void)_sendOutgoingMessage:(id)a3 synchronous:(BOOL)a4 shouldWait:(BOOL *)a5;
+- (void)_sendMessage:(id)message;
+- (void)_sendOutgoingMessage:(id)message synchronous:(BOOL)synchronous shouldWait:(BOOL *)wait;
 - (void)bootstrap;
 - (void)invalidate;
-- (void)sendOutgoingMessage:(id)a3 synchronous:(BOOL)a4;
+- (void)sendOutgoingMessage:(id)message synchronous:(BOOL)synchronous;
 @end
 
 @implementation MIBUNWDevice
@@ -63,9 +63,9 @@ void __26__MIBUNWDevice_invalidate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)sendOutgoingMessage:(id)a3 synchronous:(BOOL)a4
+- (void)sendOutgoingMessage:(id)message synchronous:(BOOL)synchronous
 {
-  v6 = a3;
+  messageCopy = message;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -75,16 +75,16 @@ void __26__MIBUNWDevice_invalidate__block_invoke(uint64_t a1)
   v11 = 3221225472;
   v12 = __48__MIBUNWDevice_sendOutgoingMessage_synchronous___block_invoke;
   v13 = &unk_2798EBCF8;
-  v14 = self;
-  v8 = v6;
-  v17 = a4;
+  selfCopy = self;
+  v8 = messageCopy;
+  synchronousCopy = synchronous;
   v15 = v8;
   v16 = &v18;
   dispatch_sync(queue, &v10);
   if (*(v19 + 24) == 1)
   {
-    v9 = [v8 syncSemaphore];
-    dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
+    syncSemaphore = [v8 syncSemaphore];
+    dispatch_semaphore_wait(syncSemaphore, 0xFFFFFFFFFFFFFFFFLL);
 
     [v8 setSyncSemaphore:0];
   }
@@ -92,16 +92,16 @@ void __26__MIBUNWDevice_invalidate__block_invoke(uint64_t a1)
   _Block_object_dispose(&v18, 8);
 }
 
-- (void)_sendOutgoingMessage:(id)a3 synchronous:(BOOL)a4 shouldWait:(BOOL *)a5
+- (void)_sendOutgoingMessage:(id)message synchronous:(BOOL)synchronous shouldWait:(BOOL *)wait
 {
-  v6 = a4;
-  v8 = a3;
+  synchronousCopy = synchronous;
+  messageCopy = message;
   dispatch_assert_queue_V2(self->_queue);
-  *a5 = 0;
-  if (v6)
+  *wait = 0;
+  if (synchronousCopy)
   {
     v9 = dispatch_semaphore_create(0);
-    [v8 setSyncSemaphore:v9];
+    [messageCopy setSyncSemaphore:v9];
 
     if (self->_connection)
     {
@@ -111,15 +111,15 @@ void __26__MIBUNWDevice_invalidate__block_invoke(uint64_t a1)
 
   else
   {
-    [v8 setSyncSemaphore:0];
+    [messageCopy setSyncSemaphore:0];
     if (self->_connection)
     {
 LABEL_3:
-      [(MIBUNWDevice *)self _sendMessage:v8];
-      if (v6)
+      [(MIBUNWDevice *)self _sendMessage:messageCopy];
+      if (synchronousCopy)
       {
 LABEL_4:
-        *a5 = 1;
+        *wait = 1;
         goto LABEL_15;
       }
 
@@ -129,9 +129,9 @@ LABEL_4:
 
   if (self->_connectOnDemand && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [(NSMutableArray *)self->_messages addObject:v8];
+    [(NSMutableArray *)self->_messages addObject:messageCopy];
     [(MIBUNWDevice *)self performSelector:sel_connect];
-    if (!v6)
+    if (!synchronousCopy)
     {
       goto LABEL_15;
     }
@@ -151,7 +151,7 @@ LABEL_4:
     _os_log_impl(&dword_259B04000, v10, OS_LOG_TYPE_DEFAULT, "Cannot send outgoing message because there is no connection and on-demand connection is not enabled.", v11, 2u);
   }
 
-  [v8 setSyncSemaphore:0];
+  [messageCopy setSyncSemaphore:0];
 LABEL_15:
 }
 
@@ -171,10 +171,10 @@ void __60__MIBUNWDevice__sendOutgoingMessage_synchronous_shouldWait___block_invo
   }
 }
 
-- (void)_sendMessage:(id)a3
+- (void)_sendMessage:(id)message
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   dispatch_assert_queue_V2(self->_queue);
   if (MIBUOnceToken != -1)
   {
@@ -185,14 +185,14 @@ void __60__MIBUNWDevice__sendOutgoingMessage_synchronous_shouldWait___block_invo
   if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 type];
-    v8 = [v4 payload];
+    type = [messageCopy type];
+    payload = [messageCopy payload];
     *buf = 138543874;
-    v15 = self;
+    selfCopy = self;
     v16 = 1024;
-    v17 = v7;
+    v17 = type;
     v18 = 2114;
-    v19 = v8;
+    v19 = payload;
     _os_log_impl(&dword_259B04000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Sending message of type: %u with payload: %{public}@", buf, 0x1Cu);
   }
 
@@ -202,8 +202,8 @@ void __60__MIBUNWDevice__sendOutgoingMessage_synchronous_shouldWait___block_invo
   v12[2] = __29__MIBUNWDevice__sendMessage___block_invoke_8;
   v12[3] = &unk_2798EBD20;
   v12[4] = self;
-  v13 = v4;
-  v10 = v4;
+  v13 = messageCopy;
+  v10 = messageCopy;
   [(MIBUNWConnection *)connection sendMessage:v10 withCompletion:v12];
 
   v11 = *MEMORY[0x277D85DE8];

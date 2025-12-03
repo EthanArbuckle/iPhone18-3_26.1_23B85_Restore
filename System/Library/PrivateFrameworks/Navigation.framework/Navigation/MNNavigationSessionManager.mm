@@ -1,9 +1,9 @@
 @interface MNNavigationSessionManager
 - (BOOL)repeatCurrentGuidance;
 - (BOOL)repeatCurrentTrafficAlert;
-- (BOOL)vibrateForPrompt:(unint64_t)a3;
+- (BOOL)vibrateForPrompt:(unint64_t)prompt;
 - (MNNavigationSessionManager)init;
-- (MNNavigationSessionManager)initWithAuditToken:(id)a3;
+- (MNNavigationSessionManager)initWithAuditToken:(id)token;
 - (MNNavigationSessionManagerDelegate)delegate;
 - (id)_proxyUpdater;
 - (id)_routeManager;
@@ -11,77 +11,77 @@
 - (void)_didEndNavigation;
 - (void)advanceToNextLeg;
 - (void)dealloc;
-- (void)disableNavigationCapability:(unint64_t)a3;
-- (void)enableNavigationCapability:(unint64_t)a3;
+- (void)disableNavigationCapability:(unint64_t)capability;
+- (void)enableNavigationCapability:(unint64_t)capability;
 - (void)forceReroute;
-- (void)insertWaypoint:(id)a3;
-- (void)navigationSession:(id)a3 currentStepIndex:(unint64_t)a4 didUpdateDistanceUntilManeuver:(double)a5 timeUntilManeuver:(double)a6;
-- (void)navigationSession:(id)a3 currentStepIndex:(unint64_t)a4 didUpdateDistanceUntilSign:(double)a5 timeUntilSign:(double)a6;
-- (void)navigationSession:(id)a3 didArriveAtWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5;
-- (void)navigationSession:(id)a3 didEnterPreArrivalStateForWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5;
-- (void)navigationSession:(id)a3 didFailRerouteWithError:(id)a4;
-- (void)navigationSession:(id)a3 didProcessSpeechEvent:(id)a4;
-- (void)navigationSession:(id)a3 didReceiveRouteSignalStrength:(unint64_t)a4;
-- (void)navigationSession:(id)a3 didReceiveTransitAlert:(id)a4;
-- (void)navigationSession:(id)a3 didReroute:(id)a4 withLocation:(id)a5 withAlternateRoutes:(id)a6 rerouteReason:(unint64_t)a7;
-- (void)navigationSession:(id)a3 didResumeNavigatingFromWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5 reason:(unint64_t)a6;
-- (void)navigationSession:(id)a3 didSendNavigationServiceCallback:(id)a4;
-- (void)navigationSession:(id)a3 didStartSpeakingPrompt:(id)a4;
-- (void)navigationSession:(id)a3 didUpdateAlternateRoutes:(id)a4;
-- (void)navigationSession:(id)a3 didUpdateBackgroundWalkingRoute:(id)a4;
-- (void)navigationSession:(id)a3 didUpdateDisplayETA:(id)a4 remainingDistance:(id)a5 batteryChargeInfo:(id)a6;
-- (void)navigationSession:(id)a3 didUpdateETAResponseForRoute:(id)a4;
-- (void)navigationSession:(id)a3 didUpdateHeading:(double)a4 accuracy:(double)a5;
-- (void)navigationSession:(id)a3 didUpdateMatchedLocation:(id)a4;
-- (void)navigationSession:(id)a3 didUpdateMotionType:(unint64_t)a4 confidence:(unint64_t)a5;
-- (void)navigationSession:(id)a3 didUpdateVehicleParkingInfo:(id)a4;
-- (void)navigationSession:(id)a3 displayManeuverAlertForAnnouncementStage:(unint64_t)a4;
-- (void)navigationSession:(id)a3 hideJunctionViewForId:(id)a4;
-- (void)navigationSession:(id)a3 hideLaneDirectionsForId:(id)a4;
-- (void)navigationSession:(id)a3 isApproachingEndOfLeg:(unint64_t)a4;
-- (void)navigationSession:(id)a3 matchedToStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5;
-- (void)navigationSession:(id)a3 newGuidanceEventFeedback:(id)a4;
-- (void)navigationSession:(id)a3 proceedToRouteDistance:(double)a4 displayString:(id)a5 closestStepIndex:(unint64_t)a6;
-- (void)navigationSession:(id)a3 shouldEndWithReason:(unint64_t)a4;
-- (void)navigationSession:(id)a3 showJunctionView:(id)a4;
-- (void)navigationSession:(id)a3 showLaneDirections:(id)a4;
-- (void)navigationSession:(id)a3 updateSignsWithARInfo:(id)a4;
-- (void)navigationSession:(id)a3 updateSignsWithInfo:(id)a4;
-- (void)navigationSession:(id)a3 updatedGuidanceEventFeedback:(id)a4;
-- (void)navigationSession:(id)a3 willAnnounce:(unint64_t)a4 inSeconds:(double)a5;
-- (void)navigationSession:(id)a3 willProcessSpeechEvent:(id)a4;
-- (void)navigationSessionBeginGuidanceUpdate:(id)a3;
-- (void)navigationSessionDidArrive:(id)a3;
-- (void)navigationSessionDidCancelReroute:(id)a3;
-- (void)navigationSessionDidEnterPreArrivalState:(id)a3;
-- (void)navigationSessionDidFinishLocationUpdate:(id)a3;
-- (void)navigationSessionEndGuidanceUpdate:(id)a3;
-- (void)navigationSessionHideSecondaryStep:(id)a3;
-- (void)navigationSessionWillPause:(id)a3;
-- (void)navigationSessionWillReroute:(id)a3;
-- (void)navigationSessionWillResumeFromPause:(id)a3;
-- (void)navigationTraceManager:(id)a3 didUpdateTracePlaybackDetails:(id)a4;
-- (void)recordPedestrianTracePath:(id)a3;
-- (void)recordTraceBookmarkAtCurrentPositionWthScreenshotData:(id)a3;
-- (void)removeWaypointAtIndex:(unint64_t)a3;
-- (void)rerouteWithWaypoints:(id)a3;
+- (void)insertWaypoint:(id)waypoint;
+- (void)navigationSession:(id)session currentStepIndex:(unint64_t)index didUpdateDistanceUntilManeuver:(double)maneuver timeUntilManeuver:(double)untilManeuver;
+- (void)navigationSession:(id)session currentStepIndex:(unint64_t)index didUpdateDistanceUntilSign:(double)sign timeUntilSign:(double)untilSign;
+- (void)navigationSession:(id)session didArriveAtWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index;
+- (void)navigationSession:(id)session didEnterPreArrivalStateForWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index;
+- (void)navigationSession:(id)session didFailRerouteWithError:(id)error;
+- (void)navigationSession:(id)session didProcessSpeechEvent:(id)event;
+- (void)navigationSession:(id)session didReceiveRouteSignalStrength:(unint64_t)strength;
+- (void)navigationSession:(id)session didReceiveTransitAlert:(id)alert;
+- (void)navigationSession:(id)session didReroute:(id)reroute withLocation:(id)location withAlternateRoutes:(id)routes rerouteReason:(unint64_t)reason;
+- (void)navigationSession:(id)session didResumeNavigatingFromWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index reason:(unint64_t)reason;
+- (void)navigationSession:(id)session didSendNavigationServiceCallback:(id)callback;
+- (void)navigationSession:(id)session didStartSpeakingPrompt:(id)prompt;
+- (void)navigationSession:(id)session didUpdateAlternateRoutes:(id)routes;
+- (void)navigationSession:(id)session didUpdateBackgroundWalkingRoute:(id)route;
+- (void)navigationSession:(id)session didUpdateDisplayETA:(id)a remainingDistance:(id)distance batteryChargeInfo:(id)info;
+- (void)navigationSession:(id)session didUpdateETAResponseForRoute:(id)route;
+- (void)navigationSession:(id)session didUpdateHeading:(double)heading accuracy:(double)accuracy;
+- (void)navigationSession:(id)session didUpdateMatchedLocation:(id)location;
+- (void)navigationSession:(id)session didUpdateMotionType:(unint64_t)type confidence:(unint64_t)confidence;
+- (void)navigationSession:(id)session didUpdateVehicleParkingInfo:(id)info;
+- (void)navigationSession:(id)session displayManeuverAlertForAnnouncementStage:(unint64_t)stage;
+- (void)navigationSession:(id)session hideJunctionViewForId:(id)id;
+- (void)navigationSession:(id)session hideLaneDirectionsForId:(id)id;
+- (void)navigationSession:(id)session isApproachingEndOfLeg:(unint64_t)leg;
+- (void)navigationSession:(id)session matchedToStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex;
+- (void)navigationSession:(id)session newGuidanceEventFeedback:(id)feedback;
+- (void)navigationSession:(id)session proceedToRouteDistance:(double)distance displayString:(id)string closestStepIndex:(unint64_t)index;
+- (void)navigationSession:(id)session shouldEndWithReason:(unint64_t)reason;
+- (void)navigationSession:(id)session showJunctionView:(id)view;
+- (void)navigationSession:(id)session showLaneDirections:(id)directions;
+- (void)navigationSession:(id)session updateSignsWithARInfo:(id)info;
+- (void)navigationSession:(id)session updateSignsWithInfo:(id)info;
+- (void)navigationSession:(id)session updatedGuidanceEventFeedback:(id)feedback;
+- (void)navigationSession:(id)session willAnnounce:(unint64_t)announce inSeconds:(double)seconds;
+- (void)navigationSession:(id)session willProcessSpeechEvent:(id)event;
+- (void)navigationSessionBeginGuidanceUpdate:(id)update;
+- (void)navigationSessionDidArrive:(id)arrive;
+- (void)navigationSessionDidCancelReroute:(id)reroute;
+- (void)navigationSessionDidEnterPreArrivalState:(id)state;
+- (void)navigationSessionDidFinishLocationUpdate:(id)update;
+- (void)navigationSessionEndGuidanceUpdate:(id)update;
+- (void)navigationSessionHideSecondaryStep:(id)step;
+- (void)navigationSessionWillPause:(id)pause;
+- (void)navigationSessionWillReroute:(id)reroute;
+- (void)navigationSessionWillResumeFromPause:(id)pause;
+- (void)navigationTraceManager:(id)manager didUpdateTracePlaybackDetails:(id)details;
+- (void)recordPedestrianTracePath:(id)path;
+- (void)recordTraceBookmarkAtCurrentPositionWthScreenshotData:(id)data;
+- (void)removeWaypointAtIndex:(unint64_t)index;
+- (void)rerouteWithWaypoints:(id)waypoints;
 - (void)resumeOriginalDestination;
-- (void)setDisplayedStepIndex:(unint64_t)a3;
-- (void)setRideIndex:(unint64_t)a3 forSegmentIndex:(unint64_t)a4;
-- (void)setRoutesForPreview:(id)a3 selectedRouteIndex:(unint64_t)a4;
-- (void)setTraceIsPlaying:(BOOL)a3;
-- (void)setTracePlaybackSpeed:(double)a3;
-- (void)setTracePosition:(double)a3;
-- (void)startNavigationWithDetails:(id)a3;
-- (void)stopNavigationWithReason:(unint64_t)a3;
-- (void)switchToRoute:(id)a3;
-- (void)updateDestination:(id)a3;
-- (void)updateForStartNavigation:(id)a3;
-- (void)updateManager:(id)a3 didReceiveTransitError:(id)a4;
-- (void)updateManager:(id)a3 didReceiveTransitUpdateResponse:(id)a4;
-- (void)updateManager:(id)a3 didReceiveTransitUpdates:(id)a4;
-- (void)updateManager:(id)a3 willSendTransitUpdateRequestForRouteIDs:(id)a4;
-- (void)updateManager:(id)a3 willSendTransitUpdateRequests:(id)a4;
+- (void)setDisplayedStepIndex:(unint64_t)index;
+- (void)setRideIndex:(unint64_t)index forSegmentIndex:(unint64_t)segmentIndex;
+- (void)setRoutesForPreview:(id)preview selectedRouteIndex:(unint64_t)index;
+- (void)setTraceIsPlaying:(BOOL)playing;
+- (void)setTracePlaybackSpeed:(double)speed;
+- (void)setTracePosition:(double)position;
+- (void)startNavigationWithDetails:(id)details;
+- (void)stopNavigationWithReason:(unint64_t)reason;
+- (void)switchToRoute:(id)route;
+- (void)updateDestination:(id)destination;
+- (void)updateForStartNavigation:(id)navigation;
+- (void)updateManager:(id)manager didReceiveTransitError:(id)error;
+- (void)updateManager:(id)manager didReceiveTransitUpdateResponse:(id)response;
+- (void)updateManager:(id)manager didReceiveTransitUpdates:(id)updates;
+- (void)updateManager:(id)manager willSendTransitUpdateRequestForRouteIDs:(id)ds;
+- (void)updateManager:(id)manager willSendTransitUpdateRequests:(id)requests;
 @end
 
 @implementation MNNavigationSessionManager
@@ -93,17 +93,17 @@
   return WeakRetained;
 }
 
-- (void)navigationTraceManager:(id)a3 didUpdateTracePlaybackDetails:(id)a4
+- (void)navigationTraceManager:(id)manager didUpdateTracePlaybackDetails:(id)details
 {
-  v5 = a4;
+  detailsCopy = details;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self didUpdateTracePlaybackDetails:v5];
+  [WeakRetained navigationSessionManager:self didUpdateTracePlaybackDetails:detailsCopy];
 }
 
-- (void)navigationSession:(id)a3 didSendNavigationServiceCallback:(id)a4
+- (void)navigationSession:(id)session didSendNavigationServiceCallback:(id)callback
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  callbackCopy = callback;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (!WeakRetained)
@@ -127,10 +127,10 @@
   }
 
   v7 = objc_loadWeakRetained(&self->_delegate);
-  [v7 navigationSessionManager:self didSendNavigationServiceCallback:v5];
+  [v7 navigationSessionManager:self didSendNavigationServiceCallback:callbackCopy];
 
-  v8 = [v5 type];
-  if (v8 == 2)
+  type = [callbackCopy type];
+  if (type == 2)
   {
     [(MNNavigationSessionManager *)self _didEndNavigation];
   }
@@ -138,372 +138,372 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)navigationSession:(id)a3 didReceiveTransitAlert:(id)a4
+- (void)navigationSession:(id)session didReceiveTransitAlert:(id)alert
 {
-  v5 = a4;
+  alertCopy = alert;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self didReceiveTransitAlert:v5];
+  [WeakRetained navigationSessionManager:self didReceiveTransitAlert:alertCopy];
 }
 
-- (void)navigationSession:(id)a3 didProcessSpeechEvent:(id)a4
+- (void)navigationSession:(id)session didProcessSpeechEvent:(id)event
 {
-  v5 = a4;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self didProcessSpeechEvent:v5];
+  [WeakRetained navigationSessionManager:self didProcessSpeechEvent:eventCopy];
 }
 
-- (void)navigationSession:(id)a3 willProcessSpeechEvent:(id)a4
+- (void)navigationSession:(id)session willProcessSpeechEvent:(id)event
 {
-  v5 = a4;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self willProcessSpeechEvent:v5];
+  [WeakRetained navigationSessionManager:self willProcessSpeechEvent:eventCopy];
 }
 
-- (void)navigationSession:(id)a3 didStartSpeakingPrompt:(id)a4
+- (void)navigationSession:(id)session didStartSpeakingPrompt:(id)prompt
 {
-  v5 = a4;
+  promptCopy = prompt;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self didStartSpeakingPrompt:v5];
+  [WeakRetained navigationSessionManager:self didStartSpeakingPrompt:promptCopy];
 }
 
-- (void)navigationSession:(id)a3 didUpdateVehicleParkingInfo:(id)a4
+- (void)navigationSession:(id)session didUpdateVehicleParkingInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   v7 = objc_alloc_init(MNNavigationServiceCallback_DidUpdateVehicleParkingInfo);
-  [(MNNavigationServiceCallback_DidUpdateVehicleParkingInfo *)v7 setVehicleParkingInfo:v5];
+  [(MNNavigationServiceCallback_DidUpdateVehicleParkingInfo *)v7 setVehicleParkingInfo:infoCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained navigationSessionManager:self didSendNavigationServiceCallback:v7];
 }
 
-- (void)navigationSession:(id)a3 didUpdateBackgroundWalkingRoute:(id)a4
+- (void)navigationSession:(id)session didUpdateBackgroundWalkingRoute:(id)route
 {
-  v5 = a4;
+  routeCopy = route;
   v7 = objc_alloc_init(MNNavigationServiceCallback_DidUpdateBackgroundWalkingRoute);
-  [(MNNavigationServiceCallback_DidUpdateBackgroundWalkingRoute *)v7 setRouteInfo:v5];
+  [(MNNavigationServiceCallback_DidUpdateBackgroundWalkingRoute *)v7 setRouteInfo:routeCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained navigationSessionManager:self didSendNavigationServiceCallback:v7];
 }
 
-- (void)navigationSession:(id)a3 updatedGuidanceEventFeedback:(id)a4
+- (void)navigationSession:(id)session updatedGuidanceEventFeedback:(id)feedback
 {
-  v5 = a4;
+  feedbackCopy = feedback;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self updatedGuidanceEventFeedback:v5];
+  [WeakRetained navigationSessionManager:self updatedGuidanceEventFeedback:feedbackCopy];
 }
 
-- (void)navigationSession:(id)a3 newGuidanceEventFeedback:(id)a4
+- (void)navigationSession:(id)session newGuidanceEventFeedback:(id)feedback
 {
-  v5 = a4;
+  feedbackCopy = feedback;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self newGuidanceEventFeedback:v5];
+  [WeakRetained navigationSessionManager:self newGuidanceEventFeedback:feedbackCopy];
 }
 
-- (void)navigationSession:(id)a3 hideJunctionViewForId:(id)a4
+- (void)navigationSession:(id)session hideJunctionViewForId:(id)id
 {
-  v5 = a4;
+  idCopy = id;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self hideJunctionViewForId:v5];
+  [WeakRetained navigationSessionManager:self hideJunctionViewForId:idCopy];
 }
 
-- (void)navigationSession:(id)a3 showJunctionView:(id)a4
+- (void)navigationSession:(id)session showJunctionView:(id)view
 {
-  v5 = a4;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self showJunctionView:v5];
+  [WeakRetained navigationSessionManager:self showJunctionView:viewCopy];
 }
 
-- (void)navigationSession:(id)a3 hideLaneDirectionsForId:(id)a4
+- (void)navigationSession:(id)session hideLaneDirectionsForId:(id)id
 {
-  v5 = a4;
+  idCopy = id;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self hideLaneDirectionsForId:v5];
+  [WeakRetained navigationSessionManager:self hideLaneDirectionsForId:idCopy];
 }
 
-- (void)navigationSession:(id)a3 showLaneDirections:(id)a4
+- (void)navigationSession:(id)session showLaneDirections:(id)directions
 {
-  v5 = a4;
+  directionsCopy = directions;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self showLaneDirections:v5];
+  [WeakRetained navigationSessionManager:self showLaneDirections:directionsCopy];
 }
 
-- (void)navigationSession:(id)a3 updateSignsWithARInfo:(id)a4
+- (void)navigationSession:(id)session updateSignsWithARInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self updateSignsWithARInfo:v5];
+  [WeakRetained navigationSessionManager:self updateSignsWithARInfo:infoCopy];
 }
 
-- (void)navigationSession:(id)a3 updateSignsWithInfo:(id)a4
+- (void)navigationSession:(id)session updateSignsWithInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self updateSignsWithInfo:v5];
+  [WeakRetained navigationSessionManager:self updateSignsWithInfo:infoCopy];
 }
 
-- (void)navigationSessionEndGuidanceUpdate:(id)a3
+- (void)navigationSessionEndGuidanceUpdate:(id)update
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained navigationSessionManagerEndGuidanceUpdate:self];
 }
 
-- (void)navigationSessionBeginGuidanceUpdate:(id)a3
+- (void)navigationSessionBeginGuidanceUpdate:(id)update
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained navigationSessionManagerBeginGuidanceUpdate:self];
 }
 
-- (void)navigationSessionHideSecondaryStep:(id)a3
+- (void)navigationSessionHideSecondaryStep:(id)step
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained navigationSessionManagerHideSecondaryStep:self];
 }
 
-- (void)navigationSession:(id)a3 displayManeuverAlertForAnnouncementStage:(unint64_t)a4
+- (void)navigationSession:(id)session displayManeuverAlertForAnnouncementStage:(unint64_t)stage
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self displayManeuverAlertForAnnouncementStage:a4];
+  [WeakRetained navigationSessionManager:self displayManeuverAlertForAnnouncementStage:stage];
 }
 
-- (void)navigationSession:(id)a3 willAnnounce:(unint64_t)a4 inSeconds:(double)a5
+- (void)navigationSession:(id)session willAnnounce:(unint64_t)announce inSeconds:(double)seconds
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self willAnnounce:a4 inSeconds:a5];
+  [WeakRetained navigationSessionManager:self willAnnounce:announce inSeconds:seconds];
 }
 
-- (void)navigationSession:(id)a3 currentStepIndex:(unint64_t)a4 didUpdateDistanceUntilSign:(double)a5 timeUntilSign:(double)a6
+- (void)navigationSession:(id)session currentStepIndex:(unint64_t)index didUpdateDistanceUntilSign:(double)sign timeUntilSign:(double)untilSign
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self currentStepIndex:a4 didUpdateDistanceUntilSign:a5 timeUntilSign:a6];
+  [WeakRetained navigationSessionManager:self currentStepIndex:index didUpdateDistanceUntilSign:sign timeUntilSign:untilSign];
 }
 
-- (void)navigationSession:(id)a3 proceedToRouteDistance:(double)a4 displayString:(id)a5 closestStepIndex:(unint64_t)a6
+- (void)navigationSession:(id)session proceedToRouteDistance:(double)distance displayString:(id)string closestStepIndex:(unint64_t)index
 {
-  v9 = a5;
+  stringCopy = string;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self proceedToRouteDistance:v9 displayString:a6 closestStepIndex:a4];
+  [WeakRetained navigationSessionManager:self proceedToRouteDistance:stringCopy displayString:index closestStepIndex:distance];
 }
 
-- (void)navigationSession:(id)a3 didUpdateAlternateRoutes:(id)a4
+- (void)navigationSession:(id)session didUpdateAlternateRoutes:(id)routes
 {
-  v5 = a4;
+  routesCopy = routes;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self didUpdateAlternateRoutes:v5];
+  [WeakRetained navigationSessionManager:self didUpdateAlternateRoutes:routesCopy];
 }
 
-- (void)navigationSession:(id)a3 didFailRerouteWithError:(id)a4
+- (void)navigationSession:(id)session didFailRerouteWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self didFailRerouteWithError:v5];
+  [WeakRetained navigationSessionManager:self didFailRerouteWithError:errorCopy];
 }
 
-- (void)navigationSession:(id)a3 didReroute:(id)a4 withLocation:(id)a5 withAlternateRoutes:(id)a6 rerouteReason:(unint64_t)a7
+- (void)navigationSession:(id)session didReroute:(id)reroute withLocation:(id)location withAlternateRoutes:(id)routes rerouteReason:(unint64_t)reason
 {
   simulationLocationProvider = self->_simulationLocationProvider;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  [(MNSimulationLocationProvider *)simulationLocationProvider updateWithRouteInfo:v14 rerouteReason:a7];
+  routesCopy = routes;
+  locationCopy = location;
+  rerouteCopy = reroute;
+  [(MNSimulationLocationProvider *)simulationLocationProvider updateWithRouteInfo:rerouteCopy rerouteReason:reason];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self didRerouteWithRoute:v14 location:v13 withAlternateRoutes:v12 rerouteReason:a7];
+  [WeakRetained navigationSessionManager:self didRerouteWithRoute:rerouteCopy location:locationCopy withAlternateRoutes:routesCopy rerouteReason:reason];
 }
 
-- (void)navigationSessionDidCancelReroute:(id)a3
+- (void)navigationSessionDidCancelReroute:(id)reroute
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained navigationSessionManagerDidCancelReroute:self];
 }
 
-- (void)navigationSessionWillReroute:(id)a3
+- (void)navigationSessionWillReroute:(id)reroute
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained navigationSessionManagerWillReroute:self];
 }
 
-- (void)navigationSession:(id)a3 didUpdateMotionType:(unint64_t)a4 confidence:(unint64_t)a5
+- (void)navigationSession:(id)session didUpdateMotionType:(unint64_t)type confidence:(unint64_t)confidence
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self didUpdateMotionType:a4 confidence:a5];
+  [WeakRetained navigationSessionManager:self didUpdateMotionType:type confidence:confidence];
 }
 
-- (void)navigationSession:(id)a3 didUpdateHeading:(double)a4 accuracy:(double)a5
+- (void)navigationSession:(id)session didUpdateHeading:(double)heading accuracy:(double)accuracy
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self didUpdateHeading:a4 accuracy:a5];
+  [WeakRetained navigationSessionManager:self didUpdateHeading:heading accuracy:accuracy];
 }
 
-- (void)navigationSession:(id)a3 didUpdateETAResponseForRoute:(id)a4
+- (void)navigationSession:(id)session didUpdateETAResponseForRoute:(id)route
 {
-  v5 = a4;
+  routeCopy = route;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self didUpdateETAResponseForRoute:v5];
+  [WeakRetained navigationSessionManager:self didUpdateETAResponseForRoute:routeCopy];
 }
 
-- (void)navigationSession:(id)a3 didUpdateDisplayETA:(id)a4 remainingDistance:(id)a5 batteryChargeInfo:(id)a6
+- (void)navigationSession:(id)session didUpdateDisplayETA:(id)a remainingDistance:(id)distance batteryChargeInfo:(id)info
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
+  infoCopy = info;
+  distanceCopy = distance;
+  aCopy = a;
   v13 = objc_opt_new();
-  [v13 setDisplayETAInfo:v11];
+  [v13 setDisplayETAInfo:aCopy];
 
-  [v13 setRouteDistanceInfo:v10];
-  [v13 setBatteryChargeInfo:v9];
+  [v13 setRouteDistanceInfo:distanceCopy];
+  [v13 setBatteryChargeInfo:infoCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained navigationSessionManager:self didSendNavigationServiceCallback:v13];
 }
 
-- (void)navigationSession:(id)a3 didReceiveRouteSignalStrength:(unint64_t)a4
+- (void)navigationSession:(id)session didReceiveRouteSignalStrength:(unint64_t)strength
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self didReceiveRouteSignalStrength:a4];
+  [WeakRetained navigationSessionManager:self didReceiveRouteSignalStrength:strength];
 }
 
-- (void)navigationSessionWillResumeFromPause:(id)a3
+- (void)navigationSessionWillResumeFromPause:(id)pause
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained navigationSessionManagerWillResumeFromPause:self];
 }
 
-- (void)navigationSessionWillPause:(id)a3
+- (void)navigationSessionWillPause:(id)pause
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained navigationSessionManagerWillPause:self];
 }
 
-- (void)navigationSessionDidArrive:(id)a3
+- (void)navigationSessionDidArrive:(id)arrive
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained navigationSessionManagerDidArrive:self];
 }
 
-- (void)navigationSessionDidEnterPreArrivalState:(id)a3
+- (void)navigationSessionDidEnterPreArrivalState:(id)state
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained navigationSessionManagerDidEnterPreArrivalState:self];
 }
 
-- (void)navigationSession:(id)a3 didResumeNavigatingFromWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5 reason:(unint64_t)a6
+- (void)navigationSession:(id)session didResumeNavigatingFromWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index reason:(unint64_t)reason
 {
-  v9 = a4;
+  waypointCopy = waypoint;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self didResumeNavigatingFromWaypoint:v9 endOfLegIndex:a5 reason:a6];
+  [WeakRetained navigationSessionManager:self didResumeNavigatingFromWaypoint:waypointCopy endOfLegIndex:index reason:reason];
 }
 
-- (void)navigationSession:(id)a3 didArriveAtWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5
+- (void)navigationSession:(id)session didArriveAtWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index
 {
-  v7 = a4;
+  waypointCopy = waypoint;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self didArriveAtWaypoint:v7 endOfLegIndex:a5];
+  [WeakRetained navigationSessionManager:self didArriveAtWaypoint:waypointCopy endOfLegIndex:index];
 }
 
-- (void)navigationSession:(id)a3 didEnterPreArrivalStateForWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5
+- (void)navigationSession:(id)session didEnterPreArrivalStateForWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index
 {
-  v7 = a4;
+  waypointCopy = waypoint;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self didEnterPreArrivalStateForWaypoint:v7 endOfLegIndex:a5];
+  [WeakRetained navigationSessionManager:self didEnterPreArrivalStateForWaypoint:waypointCopy endOfLegIndex:index];
 }
 
-- (void)navigationSession:(id)a3 isApproachingEndOfLeg:(unint64_t)a4
+- (void)navigationSession:(id)session isApproachingEndOfLeg:(unint64_t)leg
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self isApproachingEndOfLeg:a4];
+  [WeakRetained navigationSessionManager:self isApproachingEndOfLeg:leg];
 }
 
-- (void)navigationSessionDidFinishLocationUpdate:(id)a3
+- (void)navigationSessionDidFinishLocationUpdate:(id)update
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained navigationSessionManagerDidFinishLocationUpdate:self];
 }
 
-- (void)navigationSession:(id)a3 currentStepIndex:(unint64_t)a4 didUpdateDistanceUntilManeuver:(double)a5 timeUntilManeuver:(double)a6
+- (void)navigationSession:(id)session currentStepIndex:(unint64_t)index didUpdateDistanceUntilManeuver:(double)maneuver timeUntilManeuver:(double)untilManeuver
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self currentStepIndex:a4 didUpdateDistanceUntilManeuver:a5 timeUntilManeuver:a6];
+  [WeakRetained navigationSessionManager:self currentStepIndex:index didUpdateDistanceUntilManeuver:maneuver timeUntilManeuver:untilManeuver];
 }
 
-- (void)navigationSession:(id)a3 matchedToStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5
+- (void)navigationSession:(id)session matchedToStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex
 {
   v9 = objc_opt_new();
-  [v9 setStepIndex:a4];
-  [v9 setSegmentIndex:a5];
+  [v9 setStepIndex:index];
+  [v9 setSegmentIndex:segmentIndex];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained navigationSessionManager:self didSendNavigationServiceCallback:v9];
 }
 
-- (void)navigationSession:(id)a3 didUpdateMatchedLocation:(id)a4
+- (void)navigationSession:(id)session didUpdateMatchedLocation:(id)location
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  locationCopy = location;
   v6 = MNGetPuckTrackingLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v5 uuid];
+    uuid = [locationCopy uuid];
     v11 = 138412290;
-    v12 = v7;
+    v12 = uuid;
     _os_log_impl(&dword_1D311E000, v6, OS_LOG_TYPE_INFO, "[MN] [%@] - Processing - in MNNavigationSessionManager::navigationSession:didUpdateMatchedLocation:", &v11, 0xCu);
   }
 
   v8 = objc_opt_new();
-  [v8 setLocation:v5];
+  [v8 setLocation:locationCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained navigationSessionManager:self didSendNavigationServiceCallback:v8];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)navigationSession:(id)a3 shouldEndWithReason:(unint64_t)a4
+- (void)navigationSession:(id)session shouldEndWithReason:(unint64_t)reason
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self shouldEndWithReason:a4];
+  [WeakRetained navigationSessionManager:self shouldEndWithReason:reason];
 }
 
-- (void)updateManager:(id)a3 didReceiveTransitError:(id)a4
+- (void)updateManager:(id)manager didReceiveTransitError:(id)error
 {
   traceManager = self->_traceManager;
-  v5 = a4;
-  v6 = [(MNNavigationTraceManager *)traceManager traceRecorder];
-  [v6 recordTransitUpdateError:v5];
+  errorCopy = error;
+  traceRecorder = [(MNNavigationTraceManager *)traceManager traceRecorder];
+  [traceRecorder recordTransitUpdateError:errorCopy];
 }
 
-- (void)updateManager:(id)a3 didReceiveTransitUpdates:(id)a4
+- (void)updateManager:(id)manager didReceiveTransitUpdates:(id)updates
 {
-  v5 = a4;
+  updatesCopy = updates;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self didReceiveTransitUpdates:v5];
+  [WeakRetained navigationSessionManager:self didReceiveTransitUpdates:updatesCopy];
 }
 
-- (void)updateManager:(id)a3 willSendTransitUpdateRequestForRouteIDs:(id)a4
+- (void)updateManager:(id)manager willSendTransitUpdateRequestForRouteIDs:(id)ds
 {
-  v5 = a4;
+  dsCopy = ds;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationSessionManager:self willSendTransitUpdateRequestForRouteIDs:v5];
+  [WeakRetained navigationSessionManager:self willSendTransitUpdateRequestForRouteIDs:dsCopy];
 }
 
-- (void)updateManager:(id)a3 didReceiveTransitUpdateResponse:(id)a4
+- (void)updateManager:(id)manager didReceiveTransitUpdateResponse:(id)response
 {
   traceManager = self->_traceManager;
-  v5 = a4;
-  v6 = [(MNNavigationTraceManager *)traceManager traceRecorder];
-  [v6 recordTransitUpdateResponse:v5];
+  responseCopy = response;
+  traceRecorder = [(MNNavigationTraceManager *)traceManager traceRecorder];
+  [traceRecorder recordTransitUpdateResponse:responseCopy];
 }
 
-- (void)updateManager:(id)a3 willSendTransitUpdateRequests:(id)a4
+- (void)updateManager:(id)manager willSendTransitUpdateRequests:(id)requests
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(MNNavigationTraceManager *)self->_traceManager traceRecorder];
-  [v6 timeSinceRecordingBegan];
+  requestsCopy = requests;
+  traceRecorder = [(MNNavigationTraceManager *)self->_traceManager traceRecorder];
+  [traceRecorder timeSinceRecordingBegan];
   v8 = v7;
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = v5;
+  v9 = requestsCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -520,8 +520,8 @@
         }
 
         v14 = *(*(&v17 + 1) + 8 * v13);
-        v15 = [(MNNavigationTraceManager *)self->_traceManager traceRecorder];
-        [v15 recordTransitUpdateRequest:v14 withTimestamp:v8];
+        traceRecorder2 = [(MNNavigationTraceManager *)self->_traceManager traceRecorder];
+        [traceRecorder2 recordTransitUpdateRequest:v14 withTimestamp:v8];
 
         ++v13;
       }
@@ -599,61 +599,61 @@
   return routeManager;
 }
 
-- (void)recordPedestrianTracePath:(id)a3
+- (void)recordPedestrianTracePath:(id)path
 {
   traceManager = self->_traceManager;
-  v4 = a3;
-  v7 = [(MNNavigationTraceManager *)traceManager traceRecorder];
-  [v7 recordMiscInfo:@"pedestrian_trace_path" value:v4];
+  pathCopy = path;
+  traceRecorder = [(MNNavigationTraceManager *)traceManager traceRecorder];
+  [traceRecorder recordMiscInfo:@"pedestrian_trace_path" value:pathCopy];
 
   v5 = MEMORY[0x1E696AD98];
-  [v7 timeSinceRecordingBegan];
+  [traceRecorder timeSinceRecordingBegan];
   v6 = [v5 numberWithDouble:?];
-  [v7 recordMiscInfo:@"pedestrian_trace_relative_timestamp" value:v6];
+  [traceRecorder recordMiscInfo:@"pedestrian_trace_relative_timestamp" value:v6];
 }
 
-- (void)recordTraceBookmarkAtCurrentPositionWthScreenshotData:(id)a3
+- (void)recordTraceBookmarkAtCurrentPositionWthScreenshotData:(id)data
 {
-  v4 = a3;
-  v5 = [(MNNavigationTraceManager *)self->_traceManager tracePlayer];
-  v6 = v5;
-  if (v5)
+  dataCopy = data;
+  tracePlayer = [(MNNavigationTraceManager *)self->_traceManager tracePlayer];
+  v6 = tracePlayer;
+  if (tracePlayer)
   {
-    v7 = [v5 trace];
+    trace = [tracePlayer trace];
     [v6 position];
     v9 = v8;
-    if (v7)
+    if (trace)
     {
 LABEL_3:
-      v10 = [[MNTraceBookmarkRecorder alloc] initWithTrace:v7];
+      v10 = [[MNTraceBookmarkRecorder alloc] initWithTrace:trace];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __84__MNNavigationSessionManager_recordTraceBookmarkAtCurrentPositionWthScreenshotData___block_invoke;
       v14[3] = &unk_1E8430BF8;
-      v15 = v7;
-      v16 = self;
-      [(MNTraceBookmarkRecorder *)v10 recordBookmarkAtTime:v4 withScreenshotData:v14 completionHandler:v9];
+      v15 = trace;
+      selfCopy = self;
+      [(MNTraceBookmarkRecorder *)v10 recordBookmarkAtTime:dataCopy withScreenshotData:v14 completionHandler:v9];
     }
   }
 
   else
   {
-    v11 = [(MNNavigationTraceManager *)self->_traceManager traceRecorder];
-    v12 = v11;
-    if (v11)
+    traceRecorder = [(MNNavigationTraceManager *)self->_traceManager traceRecorder];
+    v12 = traceRecorder;
+    if (traceRecorder)
     {
-      v7 = [v11 trace];
+      trace = [traceRecorder trace];
       [v12 timeSinceRecordingBegan];
       v9 = v13;
     }
 
     else
     {
-      v7 = 0;
+      trace = 0;
       v9 = 0.0;
     }
 
-    if (v7)
+    if (trace)
     {
       goto LABEL_3;
     }
@@ -672,74 +672,74 @@ void __84__MNNavigationSessionManager_recordTraceBookmarkAtCurrentPositionWthScr
   [WeakRetained navigationSessionManager:*(a1 + 40) didUpdateTracePlaybackDetails:v6];
 }
 
-- (void)setTracePosition:(double)a3
+- (void)setTracePosition:(double)position
 {
-  v5 = [(MNNavigationTraceManager *)self->_traceManager tracePlayer];
-  [v5 jumpToTime:a3];
+  tracePlayer = [(MNNavigationTraceManager *)self->_traceManager tracePlayer];
+  [tracePlayer jumpToTime:position];
 
   navigationSession = self->_navigationSession;
 
   [(MNNavigationSession *)navigationSession traceJumpedInTime];
 }
 
-- (void)setTracePlaybackSpeed:(double)a3
+- (void)setTracePlaybackSpeed:(double)speed
 {
-  v4 = [(MNNavigationTraceManager *)self->_traceManager tracePlayer];
-  [v4 setSpeedMultiplier:a3];
+  tracePlayer = [(MNNavigationTraceManager *)self->_traceManager tracePlayer];
+  [tracePlayer setSpeedMultiplier:speed];
 }
 
-- (void)setTraceIsPlaying:(BOOL)a3
+- (void)setTraceIsPlaying:(BOOL)playing
 {
-  v3 = a3;
-  v4 = [(MNNavigationTraceManager *)self->_traceManager tracePlayer];
-  v5 = v4;
-  if (v3)
+  playingCopy = playing;
+  tracePlayer = [(MNNavigationTraceManager *)self->_traceManager tracePlayer];
+  v5 = tracePlayer;
+  if (playingCopy)
   {
-    [v4 resume];
+    [tracePlayer resume];
   }
 
   else
   {
-    [v4 pause];
+    [tracePlayer pause];
   }
 }
 
-- (void)enableNavigationCapability:(unint64_t)a3
+- (void)enableNavigationCapability:(unint64_t)capability
 {
-  v4 = [(MNNavigationSession *)self->_navigationSession navigationCapabilities]& a3;
+  v4 = [(MNNavigationSession *)self->_navigationSession navigationCapabilities]& capability;
   navigationSession = self->_navigationSession;
 
   [(MNNavigationSession *)navigationSession setNavigationCapabilities:v4];
 }
 
-- (void)disableNavigationCapability:(unint64_t)a3
+- (void)disableNavigationCapability:(unint64_t)capability
 {
-  v4 = [(MNNavigationSession *)self->_navigationSession navigationCapabilities]& ~a3;
+  v4 = [(MNNavigationSession *)self->_navigationSession navigationCapabilities]& ~capability;
   navigationSession = self->_navigationSession;
 
   [(MNNavigationSession *)navigationSession setNavigationCapabilities:v4];
 }
 
-- (void)setRideIndex:(unint64_t)a3 forSegmentIndex:(unint64_t)a4
+- (void)setRideIndex:(unint64_t)index forSegmentIndex:(unint64_t)segmentIndex
 {
-  v7 = [(MNRouteManager *)self->_routeManager currentRouteInfo];
+  currentRouteInfo = [(MNRouteManager *)self->_routeManager currentRouteInfo];
   if (self->_navigationSession)
   {
-    v15 = v7;
-    v8 = [v7 route];
-    v9 = [v8 segments];
-    v10 = [v9 count];
+    v15 = currentRouteInfo;
+    route = [currentRouteInfo route];
+    segments = [route segments];
+    v10 = [segments count];
 
-    v7 = v15;
-    if (v10 > a4)
+    currentRouteInfo = v15;
+    if (v10 > segmentIndex)
     {
-      v11 = [v15 route];
-      v12 = [v11 segments];
-      v13 = [v12 objectAtIndex:a4];
+      route2 = [v15 route];
+      segments2 = [route2 segments];
+      v13 = [segments2 objectAtIndex:segmentIndex];
 
       if ([v13 type] == 6)
       {
-        [v13 setSelectedRideOptionIndex:a3];
+        [v13 setSelectedRideOptionIndex:index];
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         [WeakRetained navigationSessionManager:self didUpdateRouteWithNewRideSelection:v15];
 
@@ -747,26 +747,26 @@ void __84__MNNavigationSessionManager_recordTraceBookmarkAtCurrentPositionWthScr
         [(MNNavigationSession *)self->_navigationSession switchToRoute:v15];
       }
 
-      v7 = v15;
+      currentRouteInfo = v15;
     }
   }
 }
 
-- (void)setDisplayedStepIndex:(unint64_t)a3
+- (void)setDisplayedStepIndex:(unint64_t)index
 {
-  if ([(MNNavigationSession *)self->_navigationSession displayedStepIndex]!= a3)
+  if ([(MNNavigationSession *)self->_navigationSession displayedStepIndex]!= index)
   {
-    [(MNNavigationSession *)self->_navigationSession setDisplayedStepIndex:a3];
+    [(MNNavigationSession *)self->_navigationSession setDisplayedStepIndex:index];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained navigationSessionManager:self didUpdateDisplayedStepIndex:a3 segmentIndex:0];
+    [WeakRetained navigationSessionManager:self didUpdateDisplayedStepIndex:index segmentIndex:0];
   }
 
   proxyUpdater = self->_proxyUpdater;
 
-  [(MNNavigationProxyUpdater *)proxyUpdater setDisplayedStepIndex:a3];
+  [(MNNavigationProxyUpdater *)proxyUpdater setDisplayedStepIndex:index];
 }
 
-- (BOOL)vibrateForPrompt:(unint64_t)a3
+- (BOOL)vibrateForPrompt:(unint64_t)prompt
 {
   v20 = *MEMORY[0x1E69E9840];
   navigationSession = self->_navigationSession;
@@ -792,7 +792,7 @@ void __84__MNNavigationSessionManager_recordTraceBookmarkAtCurrentPositionWthScr
     navigationSession = self->_navigationSession;
   }
 
-  result = [(MNNavigationSession *)navigationSession vibrateForPrompt:a3];
+  result = [(MNNavigationSession *)navigationSession vibrateForPrompt:prompt];
   v7 = *MEMORY[0x1E69E9840];
   return result;
 }
@@ -859,10 +859,10 @@ void __84__MNNavigationSessionManager_recordTraceBookmarkAtCurrentPositionWthScr
   return result;
 }
 
-- (void)switchToRoute:(id)a3
+- (void)switchToRoute:(id)route
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  routeCopy = route;
   navigationSession = self->_navigationSession;
   if (!navigationSession)
   {
@@ -886,7 +886,7 @@ void __84__MNNavigationSessionManager_recordTraceBookmarkAtCurrentPositionWthScr
     navigationSession = self->_navigationSession;
   }
 
-  [(MNNavigationSession *)navigationSession switchToRoute:v4];
+  [(MNNavigationSession *)navigationSession switchToRoute:routeCopy];
 
   v6 = *MEMORY[0x1E69E9840];
 }
@@ -951,10 +951,10 @@ void __84__MNNavigationSessionManager_recordTraceBookmarkAtCurrentPositionWthScr
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateDestination:(id)a3
+- (void)updateDestination:(id)destination
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  destinationCopy = destination;
   navigationSession = self->_navigationSession;
   if (!navigationSession)
   {
@@ -978,7 +978,7 @@ void __84__MNNavigationSessionManager_recordTraceBookmarkAtCurrentPositionWthScr
     navigationSession = self->_navigationSession;
   }
 
-  [(MNNavigationSession *)navigationSession updateDestination:v4];
+  [(MNNavigationSession *)navigationSession updateDestination:destinationCopy];
 
   v6 = *MEMORY[0x1E69E9840];
 }
@@ -1013,7 +1013,7 @@ void __84__MNNavigationSessionManager_recordTraceBookmarkAtCurrentPositionWthScr
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeWaypointAtIndex:(unint64_t)a3
+- (void)removeWaypointAtIndex:(unint64_t)index
 {
   v19 = *MEMORY[0x1E69E9840];
   navigationSession = self->_navigationSession;
@@ -1039,14 +1039,14 @@ void __84__MNNavigationSessionManager_recordTraceBookmarkAtCurrentPositionWthScr
     navigationSession = self->_navigationSession;
   }
 
-  [(MNNavigationSession *)navigationSession removeWaypointAtIndex:a3];
+  [(MNNavigationSession *)navigationSession removeWaypointAtIndex:index];
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)insertWaypoint:(id)a3
+- (void)insertWaypoint:(id)waypoint
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  waypointCopy = waypoint;
   navigationSession = self->_navigationSession;
   if (!navigationSession)
   {
@@ -1070,15 +1070,15 @@ void __84__MNNavigationSessionManager_recordTraceBookmarkAtCurrentPositionWthScr
     navigationSession = self->_navigationSession;
   }
 
-  [(MNNavigationSession *)navigationSession insertWaypoint:v4];
+  [(MNNavigationSession *)navigationSession insertWaypoint:waypointCopy];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)rerouteWithWaypoints:(id)a3
+- (void)rerouteWithWaypoints:(id)waypoints
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  waypointsCopy = waypoints;
   navigationSession = self->_navigationSession;
   if (!navigationSession)
   {
@@ -1102,12 +1102,12 @@ void __84__MNNavigationSessionManager_recordTraceBookmarkAtCurrentPositionWthScr
     navigationSession = self->_navigationSession;
   }
 
-  [(MNNavigationSession *)navigationSession rerouteWithWaypoints:v4];
+  [(MNNavigationSession *)navigationSession rerouteWithWaypoints:waypointsCopy];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopNavigationWithReason:(unint64_t)a3
+- (void)stopNavigationWithReason:(unint64_t)reason
 {
   [(MNSessionUpdateManager *)self->_realTimeTransitUpdateManager stopUpdateRequests];
   [(MNSessionUpdateManager *)self->_realTimeTransitUpdateManager setDelegate:0];
@@ -1118,7 +1118,7 @@ void __84__MNNavigationSessionManager_recordTraceBookmarkAtCurrentPositionWthScr
   self->_navigationSession = 0;
   v9 = navigationSession;
 
-  [(MNNavigationSession *)v9 stopNavigationSessionWithReason:a3];
+  [(MNNavigationSession *)v9 stopNavigationSessionWithReason:reason];
   [(MNNavigationSession *)v9 unregisterObserver:self->_proxyUpdater];
   proxyUpdater = self->_proxyUpdater;
   self->_proxyUpdater = 0;
@@ -1128,23 +1128,23 @@ void __84__MNNavigationSessionManager_recordTraceBookmarkAtCurrentPositionWthScr
   self->_routeManager = 0;
 }
 
-- (void)startNavigationWithDetails:(id)a3
+- (void)startNavigationWithDetails:(id)details
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  detailsCopy = details;
   v5 = [[MNNavigationSession alloc] initWithRouteManager:self->_routeManager auditToken:self->_auditToken traceManager:self->_traceManager];
   navigationSession = self->_navigationSession;
   self->_navigationSession = v5;
 
   [(MNNavigationSession *)self->_navigationSession registerObserver:self];
-  v7 = [(MNNavigationSessionManager *)self _proxyUpdater];
-  [(MNNavigationSession *)self->_navigationSession registerObserver:v7];
-  [(MNNavigationSession *)self->_navigationSession startNavigationSessionWithDetails:v4];
+  _proxyUpdater = [(MNNavigationSessionManager *)self _proxyUpdater];
+  [(MNNavigationSession *)self->_navigationSession registerObserver:_proxyUpdater];
+  [(MNNavigationSession *)self->_navigationSession startNavigationSessionWithDetails:detailsCopy];
 
-  v8 = [(MNRouteManager *)self->_routeManager currentRoute];
-  v9 = [(MNRouteManager *)self->_routeManager currentRouteInfo];
+  currentRoute = [(MNRouteManager *)self->_routeManager currentRoute];
+  currentRouteInfo = [(MNRouteManager *)self->_routeManager currentRouteInfo];
 
-  if (!v9)
+  if (!currentRouteInfo)
   {
     v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"routeManager.currentRoute is unexpectedly nil"];
     v22 = GEOFindOrCreateLog();
@@ -1164,26 +1164,26 @@ void __84__MNNavigationSessionManager_recordTraceBookmarkAtCurrentPositionWthScr
     }
   }
 
-  if ([v8 transportType] == 1)
+  if ([currentRoute transportType] == 1)
   {
     v10 = objc_alloc_init(MNSessionUpdateManager);
     realTimeTransitUpdateManager = self->_realTimeTransitUpdateManager;
     self->_realTimeTransitUpdateManager = v10;
 
     [(MNSessionUpdateManager *)self->_realTimeTransitUpdateManager setDelegate:self];
-    v12 = [(MNRouteManager *)self->_routeManager requestingAppIdentifier];
-    [(MNSessionUpdateManager *)self->_realTimeTransitUpdateManager setRequestingAppIdentifier:v12];
+    requestingAppIdentifier = [(MNRouteManager *)self->_routeManager requestingAppIdentifier];
+    [(MNSessionUpdateManager *)self->_realTimeTransitUpdateManager setRequestingAppIdentifier:requestingAppIdentifier];
 
     [(MNSessionUpdateManager *)self->_realTimeTransitUpdateManager setAuditToken:self->_auditToken];
-    v13 = [(MNRouteManager *)self->_routeManager currentRouteInfo];
-    v14 = [v13 route];
-    v15 = [v14 origin];
-    v16 = [v15 latLng];
-    [(MNSessionUpdateManager *)self->_realTimeTransitUpdateManager setTripOrigin:v16];
+    currentRouteInfo2 = [(MNRouteManager *)self->_routeManager currentRouteInfo];
+    route = [currentRouteInfo2 route];
+    origin = [route origin];
+    latLng = [origin latLng];
+    [(MNSessionUpdateManager *)self->_realTimeTransitUpdateManager setTripOrigin:latLng];
 
     v17 = self->_realTimeTransitUpdateManager;
-    v18 = [(MNRouteManager *)self->_routeManager currentRouteInfo];
-    v23 = v18;
+    currentRouteInfo3 = [(MNRouteManager *)self->_routeManager currentRouteInfo];
+    v23 = currentRouteInfo3;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v23 count:1];
     [(MNSessionUpdateManager *)v17 startUpdateRequestsForRoutes:v19 andNavigationType:[(MNNavigationSession *)self->_navigationSession navigationType]];
   }
@@ -1191,61 +1191,61 @@ void __84__MNNavigationSessionManager_recordTraceBookmarkAtCurrentPositionWthScr
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateForStartNavigation:(id)a3
+- (void)updateForStartNavigation:(id)navigation
 {
-  v28 = a3;
-  v4 = [(MNNavigationSessionManager *)self _routeManager];
-  v5 = [(MNNavigationSessionManager *)self _traceManager];
-  -[MNNavigationTraceManager setNavigationType:](self->_traceManager, "setNavigationType:", [v28 navigationType]);
-  v6 = [v28 tracePlaybackPath];
+  navigationCopy = navigation;
+  _routeManager = [(MNNavigationSessionManager *)self _routeManager];
+  _traceManager = [(MNNavigationSessionManager *)self _traceManager];
+  -[MNNavigationTraceManager setNavigationType:](self->_traceManager, "setNavigationType:", [navigationCopy navigationType]);
+  tracePlaybackPath = [navigationCopy tracePlaybackPath];
 
-  if (v6)
+  if (tracePlaybackPath)
   {
     traceManager = self->_traceManager;
-    v8 = [v28 tracePlaybackPath];
-    [(MNNavigationTraceManager *)traceManager openForPlaybackWithTracePath:v8];
+    tracePlaybackPath2 = [navigationCopy tracePlaybackPath];
+    [(MNNavigationTraceManager *)traceManager openForPlaybackWithTracePath:tracePlaybackPath2];
   }
 
-  [v4 updateWithStartNavigationDetails:v28];
-  v9 = [[MNSimulationLocationProvider alloc] initWithStartNavigationDetails:v28];
+  [_routeManager updateWithStartNavigationDetails:navigationCopy];
+  v9 = [[MNSimulationLocationProvider alloc] initWithStartNavigationDetails:navigationCopy];
   simulationLocationProvider = self->_simulationLocationProvider;
   self->_simulationLocationProvider = v9;
 
-  v11 = [(MNNavigationTraceManager *)self->_traceManager tracePlayer];
+  tracePlayer = [(MNNavigationTraceManager *)self->_traceManager tracePlayer];
 
-  if (!v11)
+  if (!tracePlayer)
   {
-    if ([v28 isReconnecting] && (objc_msgSend(v28, "traceRecordingNameOverride"), v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+    if ([navigationCopy isReconnecting] && (objc_msgSend(navigationCopy, "traceRecordingNameOverride"), v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
     {
       v13 = self->_traceManager;
-      v14 = [v28 traceRecordingNameOverride];
-      [(MNNavigationTraceManager *)v13 openForRecordingWithTraceRecordingData:0 traceName:v14 selectedRouteIndex:0 isReconnecting:1 isSimulation:0];
+      traceRecordingNameOverride = [navigationCopy traceRecordingNameOverride];
+      [(MNNavigationTraceManager *)v13 openForRecordingWithTraceRecordingData:0 traceName:traceRecordingNameOverride selectedRouteIndex:0 isReconnecting:1 isSimulation:0];
     }
 
     else
     {
-      v15 = [v28 traceRecordingData];
+      traceRecordingData = [navigationCopy traceRecordingData];
 
-      if (!v15)
+      if (!traceRecordingData)
       {
         goto LABEL_13;
       }
 
-      v16 = [v28 simulationType];
+      simulationType = [navigationCopy simulationType];
       v17 = self->_traceManager;
-      if (v16 == -1)
+      if (simulationType == -1)
       {
-        v14 = [(MNRouteManager *)self->_routeManager currentRouteInfo];
-        v18 = [v28 traceRecordingData];
-        v19 = [v28 traceRecordingNameOverride];
-        [(MNNavigationTraceManager *)v17 openForSimulationWithRoute:v14 traceRecordingData:v18 traceNameOverride:v19];
+        traceRecordingNameOverride = [(MNRouteManager *)self->_routeManager currentRouteInfo];
+        traceRecordingData2 = [navigationCopy traceRecordingData];
+        traceRecordingNameOverride2 = [navigationCopy traceRecordingNameOverride];
+        [(MNNavigationTraceManager *)v17 openForSimulationWithRoute:traceRecordingNameOverride traceRecordingData:traceRecordingData2 traceNameOverride:traceRecordingNameOverride2];
       }
 
       else
       {
-        v14 = [v28 traceRecordingData];
-        v18 = [v28 traceRecordingNameOverride];
-        -[MNNavigationTraceManager openForRecordingWithTraceRecordingData:traceName:selectedRouteIndex:isReconnecting:isSimulation:](v17, "openForRecordingWithTraceRecordingData:traceName:selectedRouteIndex:isReconnecting:isSimulation:", v14, v18, [v28 selectedRouteIndex], 0, objc_msgSend(v28, "simulationType") != 0);
+        traceRecordingNameOverride = [navigationCopy traceRecordingData];
+        traceRecordingData2 = [navigationCopy traceRecordingNameOverride];
+        -[MNNavigationTraceManager openForRecordingWithTraceRecordingData:traceName:selectedRouteIndex:isReconnecting:isSimulation:](v17, "openForRecordingWithTraceRecordingData:traceName:selectedRouteIndex:isReconnecting:isSimulation:", traceRecordingNameOverride, traceRecordingData2, [navigationCopy selectedRouteIndex], 0, objc_msgSend(navigationCopy, "simulationType") != 0);
       }
     }
   }
@@ -1257,26 +1257,26 @@ LABEL_13:
   self->_realTimeTransitUpdateManager = 0;
 
   v21 = objc_opt_new();
-  [v21 setNavigationType:{objc_msgSend(v28, "navigationType")}];
-  [v21 setSimulationType:{objc_msgSend(v28, "simulationType")}];
-  v22 = [v4 currentRouteInfo];
-  [v21 setRouteInfo:v22];
+  [v21 setNavigationType:{objc_msgSend(navigationCopy, "navigationType")}];
+  [v21 setSimulationType:{objc_msgSend(navigationCopy, "simulationType")}];
+  currentRouteInfo = [_routeManager currentRouteInfo];
+  [v21 setRouteInfo:currentRouteInfo];
 
-  [v21 setIsResumingMultiStopRoute:{objc_msgSend(v28, "isResumingMultipointRoute")}];
-  if ([v28 isReconnecting])
+  [v21 setIsResumingMultiStopRoute:{objc_msgSend(navigationCopy, "isResumingMultipointRoute")}];
+  if ([navigationCopy isReconnecting])
   {
-    v23 = [v28 reconnectionDetails];
-    [v21 setInitialRouteSource:{objc_msgSend(v23, "initialRouteSource")}];
+    reconnectionDetails = [navigationCopy reconnectionDetails];
+    [v21 setInitialRouteSource:{objc_msgSend(reconnectionDetails, "initialRouteSource")}];
   }
 
   else
   {
-    v23 = [v4 currentRouteInfo];
-    v24 = [v23 route];
-    [v21 setInitialRouteSource:{objc_msgSend(v24, "source")}];
+    reconnectionDetails = [_routeManager currentRouteInfo];
+    route = [reconnectionDetails route];
+    [v21 setInitialRouteSource:{objc_msgSend(route, "source")}];
   }
 
-  if ([v28 navigationType] == 3)
+  if ([navigationCopy navigationType] == 3)
   {
     v25 = +[MNVoiceLanguageUtil systemDefaultVoiceLanguage];
     v26 = +[MNUserOptionsEngine sharedInstance];
@@ -1289,45 +1289,45 @@ LABEL_13:
   [WeakRetained navigationSessionManager:self didSendNavigationServiceCallback:v21];
 }
 
-- (void)setRoutesForPreview:(id)a3 selectedRouteIndex:(unint64_t)a4
+- (void)setRoutesForPreview:(id)preview selectedRouteIndex:(unint64_t)index
 {
-  v17 = a3;
-  v6 = [(MNNavigationSessionManager *)self _routeManager];
-  [v6 updateWithPreviewRoutes:v17 selectedRouteIndex:a4];
-  if ([v17 count])
+  previewCopy = preview;
+  _routeManager = [(MNNavigationSessionManager *)self _routeManager];
+  [_routeManager updateWithPreviewRoutes:previewCopy selectedRouteIndex:index];
+  if ([previewCopy count])
   {
-    v7 = [v17 firstObject];
-    v8 = [v7 route];
+    firstObject = [previewCopy firstObject];
+    route = [firstObject route];
 
-    v9 = [(MNNavigationSessionManager *)self _proxyUpdater];
-    [v9 enteredRoutePreviewWithTransportType:{objc_msgSend(v8, "transportType")}];
+    _proxyUpdater = [(MNNavigationSessionManager *)self _proxyUpdater];
+    [_proxyUpdater enteredRoutePreviewWithTransportType:{objc_msgSend(route, "transportType")}];
 
-    if ([v8 transportType] == 1)
+    if ([route transportType] == 1)
     {
       v10 = objc_alloc_init(MNSessionUpdateManager);
       realTimeTransitUpdateManager = self->_realTimeTransitUpdateManager;
       self->_realTimeTransitUpdateManager = v10;
 
       [(MNSessionUpdateManager *)self->_realTimeTransitUpdateManager setDelegate:self];
-      v12 = [(MNRouteManager *)self->_routeManager requestingAppIdentifier];
-      [(MNSessionUpdateManager *)self->_realTimeTransitUpdateManager setRequestingAppIdentifier:v12];
+      requestingAppIdentifier = [(MNRouteManager *)self->_routeManager requestingAppIdentifier];
+      [(MNSessionUpdateManager *)self->_realTimeTransitUpdateManager setRequestingAppIdentifier:requestingAppIdentifier];
 
       [(MNSessionUpdateManager *)self->_realTimeTransitUpdateManager setAuditToken:self->_auditToken];
       v13 = self->_realTimeTransitUpdateManager;
-      v14 = [(MNRouteManager *)self->_routeManager previewRoutes];
-      [(MNSessionUpdateManager *)v13 startUpdateRequestsForRoutes:v14 andNavigationType:[(MNNavigationSession *)self->_navigationSession navigationType]];
+      previewRoutes = [(MNRouteManager *)self->_routeManager previewRoutes];
+      [(MNSessionUpdateManager *)v13 startUpdateRequestsForRoutes:previewRoutes andNavigationType:[(MNNavigationSession *)self->_navigationSession navigationType]];
     }
   }
 
   else
   {
-    v8 = [(MNNavigationSessionManager *)self _proxyUpdater];
-    [v8 navigationSessionStopped:0];
+    route = [(MNNavigationSessionManager *)self _proxyUpdater];
+    [route navigationSessionStopped:0];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v16 = [v6 previewRoutes];
-  [WeakRetained navigationSessionManager:self didUpdatePreviewRoutes:v16 withSelectedRouteIndex:{objc_msgSend(v6, "selectedRouteIndex")}];
+  previewRoutes2 = [_routeManager previewRoutes];
+  [WeakRetained navigationSessionManager:self didUpdatePreviewRoutes:previewRoutes2 withSelectedRouteIndex:{objc_msgSend(_routeManager, "selectedRouteIndex")}];
 }
 
 - (void)dealloc
@@ -1342,16 +1342,16 @@ LABEL_13:
   [(MNNavigationSessionManager *)&v4 dealloc];
 }
 
-- (MNNavigationSessionManager)initWithAuditToken:(id)a3
+- (MNNavigationSessionManager)initWithAuditToken:(id)token
 {
-  v5 = a3;
+  tokenCopy = token;
   v11.receiver = self;
   v11.super_class = MNNavigationSessionManager;
   v6 = [(MNNavigationSessionManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_auditToken, a3);
+    objc_storeStrong(&v6->_auditToken, token);
     v8 = +[MNUserOptionsEngine sharedInstance];
     [v8 registerObserver:v7];
 

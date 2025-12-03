@@ -1,25 +1,25 @@
 @interface PreferencesAssistantSetInvertColors
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation PreferencesAssistantSetInvertColors
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[PSInvertColorsSettingsDetail isEnabled];
   if ([(PreferencesAssistantSetInvertColors *)self toggle])
   {
-    v6 = (v5 ^ 1);
+    value = (v5 ^ 1);
   }
 
   else
   {
-    v6 = [(PreferencesAssistantSetInvertColors *)self value];
+    value = [(PreferencesAssistantSetInvertColors *)self value];
   }
 
-  v7 = [(PreferencesAssistantSetInvertColors *)self dryRun];
-  if (v5 == v6)
+  dryRun = [(PreferencesAssistantSetInvertColors *)self dryRun];
+  if (v5 == value)
   {
     v8 = objc_alloc_init(SACommandFailed);
     [v8 setErrorCode:SASettingValueUnchangedErrorCode];
@@ -27,7 +27,7 @@
     v9 = v8 == 0;
     if (v8)
     {
-      v10 = v7;
+      v10 = dryRun;
     }
 
     else
@@ -37,7 +37,7 @@
 
     if ((v10 & 1) == 0)
     {
-      [PSInvertColorsSettingsDetail setEnabled:v6];
+      [PSInvertColorsSettingsDetail setEnabled:value];
       v9 = 0;
     }
   }
@@ -52,7 +52,7 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = @"Set";
-    if (v7)
+    if (dryRun)
     {
       v12 = @"Dry Run";
     }
@@ -72,7 +72,7 @@
     *&v20[12] = 2112;
     *&v20[14] = v13;
     *&v20[22] = 2112;
-    if (v6)
+    if (value)
     {
       v14 = @"ON";
     }
@@ -93,7 +93,7 @@
   if (v9)
   {
     v17 = objc_alloc_init(SASettingBooleanEntity);
-    [v17 setValue:v6];
+    [v17 setValue:value];
     v18 = [NSNumber numberWithBool:v5];
     [v17 setPreviousValue:v18];
 
@@ -101,8 +101,8 @@
     [v16 setSetting:v17];
   }
 
-  v19 = [v16 dictionary];
-  v4[2](v4, v19);
+  dictionary = [v16 dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface HKMedicationConcept
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKMedicationConcept)init;
-- (HKMedicationConcept)initWithCoder:(id)a3;
-- (HKMedicationConcept)initWithHealthConceptIdentifier:(id)a3 displayText:(id)a4 generalForm:(id)a5 relatedCodings:(id)a6;
+- (HKMedicationConcept)initWithCoder:(id)coder;
+- (HKMedicationConcept)initWithHealthConceptIdentifier:(id)identifier displayText:(id)text generalForm:(id)form relatedCodings:(id)codings;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMedicationConcept
@@ -19,15 +19,15 @@
   return 0;
 }
 
-- (HKMedicationConcept)initWithHealthConceptIdentifier:(id)a3 displayText:(id)a4 generalForm:(id)a5 relatedCodings:(id)a6
+- (HKMedicationConcept)initWithHealthConceptIdentifier:(id)identifier displayText:(id)text generalForm:(id)form relatedCodings:(id)codings
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  identifierCopy = identifier;
+  textCopy = text;
+  formCopy = form;
+  codingsCopy = codings;
+  if (identifierCopy)
   {
-    if (v11)
+    if (textCopy)
     {
       goto LABEL_3;
     }
@@ -36,17 +36,17 @@
   else
   {
     [HKMedicationConcept initWithHealthConceptIdentifier:displayText:generalForm:relatedCodings:];
-    if (v11)
+    if (textCopy)
     {
 LABEL_3:
-      if (v12)
+      if (formCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
       [HKMedicationConcept initWithHealthConceptIdentifier:displayText:generalForm:relatedCodings:];
-      if (v13)
+      if (codingsCopy)
       {
         goto LABEL_5;
       }
@@ -56,13 +56,13 @@ LABEL_10:
   }
 
   [HKMedicationConcept initWithHealthConceptIdentifier:displayText:generalForm:relatedCodings:];
-  if (!v12)
+  if (!formCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (v13)
+  if (codingsCopy)
   {
     goto LABEL_5;
   }
@@ -75,19 +75,19 @@ LABEL_5:
   v14 = [(HKMedicationConcept *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     identifier = v14->_identifier;
     v14->_identifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [textCopy copy];
     displayText = v14->_displayText;
     v14->_displayText = v17;
 
-    v19 = [v12 copy];
+    v19 = [formCopy copy];
     generalForm = v14->_generalForm;
     v14->_generalForm = v19;
 
-    v21 = [v13 copy];
+    v21 = [codingsCopy copy];
     relatedCodings = v14->_relatedCodings;
     v14->_relatedCodings = v21;
   }
@@ -95,10 +95,10 @@ LABEL_5:
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -108,26 +108,26 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       identifier = self->_identifier;
-      v7 = [(HKMedicationConcept *)v5 identifier];
-      v8 = v7;
-      if (identifier == v7)
+      identifier = [(HKMedicationConcept *)v5 identifier];
+      v8 = identifier;
+      if (identifier == identifier)
       {
       }
 
       else
       {
-        v9 = [(HKMedicationConcept *)v5 identifier];
-        if (!v9)
+        identifier2 = [(HKMedicationConcept *)v5 identifier];
+        if (!identifier2)
         {
           goto LABEL_24;
         }
 
-        v10 = v9;
+        v10 = identifier2;
         v11 = self->_identifier;
-        v12 = [(HKMedicationConcept *)v5 identifier];
-        LODWORD(v11) = [(HKHealthConceptIdentifier *)v11 isEqual:v12];
+        identifier3 = [(HKMedicationConcept *)v5 identifier];
+        LODWORD(v11) = [(HKHealthConceptIdentifier *)v11 isEqual:identifier3];
 
         if (!v11)
         {
@@ -136,24 +136,24 @@ LABEL_5:
       }
 
       displayText = self->_displayText;
-      v15 = [(HKMedicationConcept *)v5 displayText];
-      v8 = v15;
-      if (displayText == v15)
+      displayText = [(HKMedicationConcept *)v5 displayText];
+      v8 = displayText;
+      if (displayText == displayText)
       {
       }
 
       else
       {
-        v16 = [(HKMedicationConcept *)v5 displayText];
-        if (!v16)
+        displayText2 = [(HKMedicationConcept *)v5 displayText];
+        if (!displayText2)
         {
           goto LABEL_24;
         }
 
-        v17 = v16;
+        v17 = displayText2;
         v18 = self->_displayText;
-        v19 = [(HKMedicationConcept *)v5 displayText];
-        LODWORD(v18) = [(NSString *)v18 isEqual:v19];
+        displayText3 = [(HKMedicationConcept *)v5 displayText];
+        LODWORD(v18) = [(NSString *)v18 isEqual:displayText3];
 
         if (!v18)
         {
@@ -162,24 +162,24 @@ LABEL_5:
       }
 
       generalForm = self->_generalForm;
-      v21 = [(HKMedicationConcept *)v5 generalForm];
-      v8 = v21;
-      if (generalForm == v21)
+      generalForm = [(HKMedicationConcept *)v5 generalForm];
+      v8 = generalForm;
+      if (generalForm == generalForm)
       {
       }
 
       else
       {
-        v22 = [(HKMedicationConcept *)v5 generalForm];
-        if (!v22)
+        generalForm2 = [(HKMedicationConcept *)v5 generalForm];
+        if (!generalForm2)
         {
           goto LABEL_24;
         }
 
-        v23 = v22;
+        v23 = generalForm2;
         v24 = self->_generalForm;
-        v25 = [(HKMedicationConcept *)v5 generalForm];
-        LODWORD(v24) = [(NSString *)v24 isEqual:v25];
+        generalForm3 = [(HKMedicationConcept *)v5 generalForm];
+        LODWORD(v24) = [(NSString *)v24 isEqual:generalForm3];
 
         if (!v24)
         {
@@ -188,9 +188,9 @@ LABEL_5:
       }
 
       relatedCodings = self->_relatedCodings;
-      v27 = [(HKMedicationConcept *)v5 relatedCodings];
-      v8 = v27;
-      if (relatedCodings == v27)
+      relatedCodings = [(HKMedicationConcept *)v5 relatedCodings];
+      v8 = relatedCodings;
+      if (relatedCodings == relatedCodings)
       {
 
 LABEL_29:
@@ -198,13 +198,13 @@ LABEL_29:
         goto LABEL_26;
       }
 
-      v28 = [(HKMedicationConcept *)v5 relatedCodings];
-      if (v28)
+      relatedCodings2 = [(HKMedicationConcept *)v5 relatedCodings];
+      if (relatedCodings2)
       {
-        v29 = v28;
+        v29 = relatedCodings2;
         v30 = self->_relatedCodings;
-        v31 = [(HKMedicationConcept *)v5 relatedCodings];
-        LOBYTE(v30) = [(NSSet *)v30 isEqualToSet:v31];
+        relatedCodings3 = [(HKMedicationConcept *)v5 relatedCodings];
+        LOBYTE(v30) = [(NSSet *)v30 isEqualToSet:relatedCodings3];
 
         if (v30)
         {
@@ -239,28 +239,28 @@ LABEL_27:
   return v4 ^ v5 ^ [(NSSet *)self->_relatedCodings hash];
 }
 
-- (HKMedicationConcept)initWithCoder:(id)a3
+- (HKMedicationConcept)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = HKMedicationConcept;
   v5 = [(HKMedicationConcept *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IdentifierKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IdentifierKey"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DisplayTextKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DisplayTextKey"];
     displayText = v5->_displayText;
     v5->_displayText = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_GeneralFormKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_GeneralFormKey"];
     generalForm = v5->_generalForm;
     v5->_generalForm = v10;
 
     v12 = [MEMORY[0x1E695DFD8] hk_typesForSetOf:objc_opt_class()];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"_RelatedCodingsKey"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"_RelatedCodingsKey"];
     relatedCodings = v5->_relatedCodings;
     v5->_relatedCodings = v13;
   }
@@ -268,14 +268,14 @@ LABEL_27:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"IdentifierKey"];
-  [v5 encodeObject:self->_displayText forKey:@"DisplayTextKey"];
-  [v5 encodeObject:self->_generalForm forKey:@"_GeneralFormKey"];
-  [v5 encodeObject:self->_relatedCodings forKey:@"_RelatedCodingsKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"IdentifierKey"];
+  [coderCopy encodeObject:self->_displayText forKey:@"DisplayTextKey"];
+  [coderCopy encodeObject:self->_generalForm forKey:@"_GeneralFormKey"];
+  [coderCopy encodeObject:self->_relatedCodings forKey:@"_RelatedCodingsKey"];
 }
 
 - (void)initWithHealthConceptIdentifier:displayText:generalForm:relatedCodings:.cold.1()

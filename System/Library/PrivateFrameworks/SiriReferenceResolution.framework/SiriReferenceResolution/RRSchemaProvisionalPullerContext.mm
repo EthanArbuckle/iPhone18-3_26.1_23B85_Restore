@@ -1,30 +1,30 @@
 @interface RRSchemaProvisionalPullerContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (RRSchemaProvisionalPullerContext)initWithDictionary:(id)a3;
-- (RRSchemaProvisionalPullerContext)initWithJSON:(id)a3;
+- (RRSchemaProvisionalPullerContext)initWithDictionary:(id)dictionary;
+- (RRSchemaProvisionalPullerContext)initWithJSON:(id)n;
 - (RRSchemaProvisionalPullerEnded)ended;
 - (RRSchemaProvisionalPullerFailed)failed;
 - (RRSchemaProvisionalPullerStarted)started;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setEnded:(id)a3;
-- (void)setFailed:(id)a3;
-- (void)setStarted:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setEnded:(id)ended;
+- (void)setFailed:(id)failed;
+- (void)setStarted:(id)started;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RRSchemaProvisionalPullerContext
 
-- (RRSchemaProvisionalPullerContext)initWithDictionary:(id)a3
+- (RRSchemaProvisionalPullerContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = RRSchemaProvisionalPullerContext;
   v5 = [(RRSchemaProvisionalPullerContext *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"started"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"started"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,7 +32,7 @@
       [(RRSchemaProvisionalPullerContext *)v5 setStarted:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"ended"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"ended"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,7 +40,7 @@
       [(RRSchemaProvisionalPullerContext *)v5 setEnded:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"failed"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"failed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,30 +54,30 @@
   return v5;
 }
 
-- (RRSchemaProvisionalPullerContext)initWithJSON:(id)a3
+- (RRSchemaProvisionalPullerContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(RRSchemaProvisionalPullerContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(RRSchemaProvisionalPullerContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(RRSchemaProvisionalPullerContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -90,58 +90,58 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_ended)
   {
-    v4 = [(RRSchemaProvisionalPullerContext *)self ended];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    ended = [(RRSchemaProvisionalPullerContext *)self ended];
+    dictionaryRepresentation = [ended dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"ended"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"ended"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"ended"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"ended"];
     }
   }
 
   if (self->_failed)
   {
-    v7 = [(RRSchemaProvisionalPullerContext *)self failed];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    failed = [(RRSchemaProvisionalPullerContext *)self failed];
+    dictionaryRepresentation2 = [failed dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"failed"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"failed"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"failed"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"failed"];
     }
   }
 
   if (self->_started)
   {
-    v10 = [(RRSchemaProvisionalPullerContext *)self started];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    started = [(RRSchemaProvisionalPullerContext *)self started];
+    dictionaryRepresentation3 = [started dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"started"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"started"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"started"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"started"];
     }
   }
 
-  [(RRSchemaProvisionalPullerContext *)self willProduceDictionaryRepresentation:v3];
+  [(RRSchemaProvisionalPullerContext *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -151,34 +151,34 @@
   return v4 ^ [(RRSchemaProvisionalPullerFailed *)self->_failed hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   whichContextevent = self->_whichContextevent;
-  if (whichContextevent != [v4 whichContextevent])
+  if (whichContextevent != [equalCopy whichContextevent])
   {
     goto LABEL_18;
   }
 
-  v6 = [(RRSchemaProvisionalPullerContext *)self started];
-  v7 = [v4 started];
-  if ((v6 != 0) == (v7 == 0))
+  started = [(RRSchemaProvisionalPullerContext *)self started];
+  started2 = [equalCopy started];
+  if ((started != 0) == (started2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(RRSchemaProvisionalPullerContext *)self started];
-  if (v8)
+  started3 = [(RRSchemaProvisionalPullerContext *)self started];
+  if (started3)
   {
-    v9 = v8;
-    v10 = [(RRSchemaProvisionalPullerContext *)self started];
-    v11 = [v4 started];
-    v12 = [v10 isEqual:v11];
+    v9 = started3;
+    started4 = [(RRSchemaProvisionalPullerContext *)self started];
+    started5 = [equalCopy started];
+    v12 = [started4 isEqual:started5];
 
     if (!v12)
     {
@@ -190,20 +190,20 @@
   {
   }
 
-  v6 = [(RRSchemaProvisionalPullerContext *)self ended];
-  v7 = [v4 ended];
-  if ((v6 != 0) == (v7 == 0))
+  started = [(RRSchemaProvisionalPullerContext *)self ended];
+  started2 = [equalCopy ended];
+  if ((started != 0) == (started2 == 0))
   {
     goto LABEL_17;
   }
 
-  v13 = [(RRSchemaProvisionalPullerContext *)self ended];
-  if (v13)
+  ended = [(RRSchemaProvisionalPullerContext *)self ended];
+  if (ended)
   {
-    v14 = v13;
-    v15 = [(RRSchemaProvisionalPullerContext *)self ended];
-    v16 = [v4 ended];
-    v17 = [v15 isEqual:v16];
+    v14 = ended;
+    ended2 = [(RRSchemaProvisionalPullerContext *)self ended];
+    ended3 = [equalCopy ended];
+    v17 = [ended2 isEqual:ended3];
 
     if (!v17)
     {
@@ -215,12 +215,12 @@
   {
   }
 
-  v6 = [(RRSchemaProvisionalPullerContext *)self failed];
-  v7 = [v4 failed];
-  if ((v6 != 0) != (v7 == 0))
+  started = [(RRSchemaProvisionalPullerContext *)self failed];
+  started2 = [equalCopy failed];
+  if ((started != 0) != (started2 == 0))
   {
-    v18 = [(RRSchemaProvisionalPullerContext *)self failed];
-    if (!v18)
+    failed = [(RRSchemaProvisionalPullerContext *)self failed];
+    if (!failed)
     {
 
 LABEL_21:
@@ -228,10 +228,10 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v19 = v18;
-    v20 = [(RRSchemaProvisionalPullerContext *)self failed];
-    v21 = [v4 failed];
-    v22 = [v20 isEqual:v21];
+    v19 = failed;
+    failed2 = [(RRSchemaProvisionalPullerContext *)self failed];
+    failed3 = [equalCopy failed];
+    v22 = [failed2 isEqual:failed3];
 
     if (v22)
     {
@@ -251,34 +251,34 @@ LABEL_19:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(RRSchemaProvisionalPullerContext *)self started];
+  toCopy = to;
+  started = [(RRSchemaProvisionalPullerContext *)self started];
 
-  if (v4)
+  if (started)
   {
-    v5 = [(RRSchemaProvisionalPullerContext *)self started];
+    started2 = [(RRSchemaProvisionalPullerContext *)self started];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(RRSchemaProvisionalPullerContext *)self ended];
+  ended = [(RRSchemaProvisionalPullerContext *)self ended];
 
-  if (v6)
+  if (ended)
   {
-    v7 = [(RRSchemaProvisionalPullerContext *)self ended];
+    ended2 = [(RRSchemaProvisionalPullerContext *)self ended];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(RRSchemaProvisionalPullerContext *)self failed];
+  failed = [(RRSchemaProvisionalPullerContext *)self failed];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (failed)
   {
-    v10 = [(RRSchemaProvisionalPullerContext *)self failed];
+    failed2 = [(RRSchemaProvisionalPullerContext *)self failed];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
@@ -297,9 +297,9 @@ LABEL_19:
   return v3;
 }
 
-- (void)setFailed:(id)a3
+- (void)setFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   started = self->_started;
   self->_started = 0;
 
@@ -307,14 +307,14 @@ LABEL_19:
   self->_ended = 0;
 
   v7 = 103;
-  if (!v4)
+  if (!failedCopy)
   {
     v7 = 0;
   }
 
   self->_whichContextevent = v7;
   failed = self->_failed;
-  self->_failed = v4;
+  self->_failed = failedCopy;
 }
 
 - (RRSchemaProvisionalPullerEnded)ended
@@ -332,9 +332,9 @@ LABEL_19:
   return v3;
 }
 
-- (void)setEnded:(id)a3
+- (void)setEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   started = self->_started;
   self->_started = 0;
 
@@ -342,14 +342,14 @@ LABEL_19:
   self->_failed = 0;
 
   v7 = 102;
-  if (!v4)
+  if (!endedCopy)
   {
     v7 = 0;
   }
 
   self->_whichContextevent = v7;
   ended = self->_ended;
-  self->_ended = v4;
+  self->_ended = endedCopy;
 }
 
 - (RRSchemaProvisionalPullerStarted)started
@@ -367,9 +367,9 @@ LABEL_19:
   return v3;
 }
 
-- (void)setStarted:(id)a3
+- (void)setStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   ended = self->_ended;
   self->_ended = 0;
 
@@ -377,14 +377,14 @@ LABEL_19:
   self->_failed = 0;
 
   v7 = 101;
-  if (!v4)
+  if (!startedCopy)
   {
     v7 = 0;
   }
 
   self->_whichContextevent = v7;
   started = self->_started;
-  self->_started = v4;
+  self->_started = startedCopy;
 }
 
 @end

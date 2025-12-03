@@ -8,8 +8,8 @@
 
 - (id)hmd_snapshotFileName
 {
-  v2 = [objc_opt_class() hmd_snapshotFileNameDateFormatter];
-  v3 = [v2 stringFromDate:a1];
+  hmd_snapshotFileNameDateFormatter = [objc_opt_class() hmd_snapshotFileNameDateFormatter];
+  v3 = [hmd_snapshotFileNameDateFormatter stringFromDate:self];
 
   return v3;
 }
@@ -17,8 +17,8 @@
 + (id)hmd_dateFromSnapshotFileName:()HMDCameraUtilities
 {
   v4 = a3;
-  v5 = [a1 hmd_snapshotFileNameDateFormatter];
-  v6 = [v5 dateFromString:v4];
+  hmd_snapshotFileNameDateFormatter = [self hmd_snapshotFileNameDateFormatter];
+  v6 = [hmd_snapshotFileNameDateFormatter dateFromString:v4];
 
   return v6;
 }

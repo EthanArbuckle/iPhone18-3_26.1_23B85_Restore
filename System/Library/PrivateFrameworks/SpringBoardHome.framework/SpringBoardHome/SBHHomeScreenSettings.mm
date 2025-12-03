@@ -12,54 +12,54 @@
   v17.super_class = SBHHomeScreenSettings;
   [(PTSettings *)&v17 setDefaultValues];
   [(SBHHomeScreenSettings *)self setUsesMinimumViableHomeScreen:0];
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  [(SBHHomeScreenSettings *)self setShowPopOvers:(v4 & 0xFFFFFFFFFFFFFFFBLL) == 1];
-  v5 = [(SBHHomeScreenSettings *)self homeScreenPullToSearchSettings];
-  [v5 setDefaultValues];
+  [(SBHHomeScreenSettings *)self setShowPopOvers:(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1];
+  homeScreenPullToSearchSettings = [(SBHHomeScreenSettings *)self homeScreenPullToSearchSettings];
+  [homeScreenPullToSearchSettings setDefaultValues];
 
-  v6 = [(SBHHomeScreenSettings *)self todayViewPullToSearchSettings];
-  [v6 setDefaultValues];
-  [v6 setPullTransitionDistance:75.0];
-  [v6 setPullTransitionActivationThreshold:37.5];
-  [v6 setPullTransitionRubberbandThreshold:75.0];
-  [v6 setPullGestureBeganFromTopLeeway:75.0];
-  [v6 setAllowsKeyboardWhileInteractive:0];
-  v7 = [(SBHHomeScreenSettings *)self coversheetPullToSearchSettings];
-  [v7 setDefaultValues];
-  [v7 setPullTransitionDistance:75.0];
-  [v7 setPullTransitionActivationThreshold:37.5];
-  [v7 setPullTransitionRubberbandThreshold:75.0];
-  [v7 setPullGestureBeganFromTopLeeway:75.0];
-  if ((SBHSearchAffordancePresentationAnimationEnabled([v7 setAllowsKeyboardWhileInteractive:0]) & 1) == 0)
+  todayViewPullToSearchSettings = [(SBHHomeScreenSettings *)self todayViewPullToSearchSettings];
+  [todayViewPullToSearchSettings setDefaultValues];
+  [todayViewPullToSearchSettings setPullTransitionDistance:75.0];
+  [todayViewPullToSearchSettings setPullTransitionActivationThreshold:37.5];
+  [todayViewPullToSearchSettings setPullTransitionRubberbandThreshold:75.0];
+  [todayViewPullToSearchSettings setPullGestureBeganFromTopLeeway:75.0];
+  [todayViewPullToSearchSettings setAllowsKeyboardWhileInteractive:0];
+  coversheetPullToSearchSettings = [(SBHHomeScreenSettings *)self coversheetPullToSearchSettings];
+  [coversheetPullToSearchSettings setDefaultValues];
+  [coversheetPullToSearchSettings setPullTransitionDistance:75.0];
+  [coversheetPullToSearchSettings setPullTransitionActivationThreshold:37.5];
+  [coversheetPullToSearchSettings setPullTransitionRubberbandThreshold:75.0];
+  [coversheetPullToSearchSettings setPullGestureBeganFromTopLeeway:75.0];
+  if ((SBHSearchAffordancePresentationAnimationEnabled([coversheetPullToSearchSettings setAllowsKeyboardWhileInteractive:0]) & 1) == 0)
   {
-    v8 = [(SBHHomeScreenSettings *)self todayViewPullToSearchSettings];
-    v9 = [v8 pullTransitionAnimationSettings];
+    todayViewPullToSearchSettings2 = [(SBHHomeScreenSettings *)self todayViewPullToSearchSettings];
+    pullTransitionAnimationSettings = [todayViewPullToSearchSettings2 pullTransitionAnimationSettings];
 
-    [v9 setDampingRatio:1.0];
-    [v9 setResponse:0.54];
-    v10 = [(SBHHomeScreenSettings *)self homeScreenPullToSearchSettings];
-    [v10 setSearchContentFadeInStartThreshold:0.25];
+    [pullTransitionAnimationSettings setDampingRatio:1.0];
+    [pullTransitionAnimationSettings setResponse:0.54];
+    homeScreenPullToSearchSettings2 = [(SBHHomeScreenSettings *)self homeScreenPullToSearchSettings];
+    [homeScreenPullToSearchSettings2 setSearchContentFadeInStartThreshold:0.25];
 
-    v11 = [(SBHHomeScreenSettings *)self todayViewPullToSearchSettings];
-    [v11 setSearchContentFadeInStartThreshold:0.3];
+    todayViewPullToSearchSettings3 = [(SBHHomeScreenSettings *)self todayViewPullToSearchSettings];
+    [todayViewPullToSearchSettings3 setSearchContentFadeInStartThreshold:0.3];
 
-    v12 = [(SBHHomeScreenSettings *)self coversheetPullToSearchSettings];
-    [v12 setSearchContentFadeInStartThreshold:0.3];
+    coversheetPullToSearchSettings2 = [(SBHHomeScreenSettings *)self coversheetPullToSearchSettings];
+    [coversheetPullToSearchSettings2 setSearchContentFadeInStartThreshold:0.3];
   }
 
-  v13 = [(SBHHomeScreenSettings *)self libraryPullToSearchSettings];
-  [v13 setDefaultValues];
-  [v13 setPullTransitionDistance:100.0];
-  [v13 setPullTransitionActivationThreshold:0.5];
-  [v13 setPullGestureBeganFromTopLeeway:100.0];
-  v14 = [v13 pullTransitionAnimationSettings];
-  [v14 setDampingRatio:1.0];
-  v15 = [MEMORY[0x1E69DC938] currentDevice];
-  v16 = [v15 userInterfaceIdiom];
+  libraryPullToSearchSettings = [(SBHHomeScreenSettings *)self libraryPullToSearchSettings];
+  [libraryPullToSearchSettings setDefaultValues];
+  [libraryPullToSearchSettings setPullTransitionDistance:100.0];
+  [libraryPullToSearchSettings setPullTransitionActivationThreshold:0.5];
+  [libraryPullToSearchSettings setPullGestureBeganFromTopLeeway:100.0];
+  pullTransitionAnimationSettings2 = [libraryPullToSearchSettings pullTransitionAnimationSettings];
+  [pullTransitionAnimationSettings2 setDampingRatio:1.0];
+  currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  [v14 setResponse:dbl_1BEE85A70[(v16 & 0xFFFFFFFFFFFFFFFBLL) == 1]];
+  [pullTransitionAnimationSettings2 setResponse:dbl_1BEE85A70[(userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1]];
 }
 
 + (id)homeScreenDefaults
@@ -129,8 +129,8 @@ uint64_t __43__SBHHomeScreenSettings_homeScreenDefaults__block_invoke()
   v17 = [v14 sectionWithRows:v16];
 
   v18 = MEMORY[0x1E69C65E8];
-  v19 = [MEMORY[0x1E69C6640] action];
-  v20 = [v18 rowWithTitle:@"Restore Defaults" action:v19];
+  action = [MEMORY[0x1E69C6640] action];
+  v20 = [v18 rowWithTitle:@"Restore Defaults" action:action];
   v35 = v20;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v35 count:1];
 

@@ -1,9 +1,9 @@
 @interface InlineRecentsViewController
 + (id)_exportedInterface;
 + (id)_remoteViewControllerInterface;
-- (void)stickerRecentsController:(id)a3 didTapSticker:(id)a4;
-- (void)stickerRecentsControllerDidRequestMemojiEditor:(id)a3;
-- (void)stickerRecentsControllerDidTapAppButton:(id)a3;
+- (void)stickerRecentsController:(id)controller didTapSticker:(id)sticker;
+- (void)stickerRecentsControllerDidRequestMemojiEditor:(id)editor;
+- (void)stickerRecentsControllerDidTapAppButton:(id)button;
 - (void)viewDidLoad;
 @end
 
@@ -34,7 +34,7 @@
   _Block_object_dispose(&v18, 8);
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v3 stickerRecentsController];
+    stickerRecentsController = [v3 stickerRecentsController];
   }
 
   else
@@ -58,53 +58,53 @@
     v7 = v6;
     _Block_object_dispose(&v18, 8);
     v8 = objc_alloc_init(v6);
-    v5 = [v3 stickerRecentsControllerForStore:v8];
+    stickerRecentsController = [v3 stickerRecentsControllerForStore:v8];
   }
 
-  [v5 setDelegate:self];
-  [(InlineRecentsViewController *)self addChildViewController:v5];
-  v9 = [v5 view];
-  v10 = [(InlineRecentsViewController *)self view];
-  [v10 bounds];
-  [v9 setFrame:?];
+  [stickerRecentsController setDelegate:self];
+  [(InlineRecentsViewController *)self addChildViewController:stickerRecentsController];
+  view = [stickerRecentsController view];
+  view2 = [(InlineRecentsViewController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 
-  [v9 setAutoresizingMask:18];
-  v11 = [(InlineRecentsViewController *)self view];
-  [v11 addSubview:v9];
+  [view setAutoresizingMask:18];
+  view3 = [(InlineRecentsViewController *)self view];
+  [view3 addSubview:view];
 
-  [v5 didMoveToParentViewController:self];
+  [stickerRecentsController didMoveToParentViewController:self];
 }
 
-- (void)stickerRecentsControllerDidRequestMemojiEditor:(id)a3
+- (void)stickerRecentsControllerDidRequestMemojiEditor:(id)editor
 {
   [AppCardViewController setNextPresentationIsFullscreenModal:1];
-  v4 = [(InlineRecentsViewController *)self _remoteViewControllerProxy];
-  [v4 presentCard];
+  _remoteViewControllerProxy = [(InlineRecentsViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy presentCard];
 }
 
-- (void)stickerRecentsControllerDidTapAppButton:(id)a3
+- (void)stickerRecentsControllerDidTapAppButton:(id)button
 {
-  v3 = [(InlineRecentsViewController *)self _remoteViewControllerProxy];
-  [v3 presentCard];
+  _remoteViewControllerProxy = [(InlineRecentsViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy presentCard];
 }
 
-- (void)stickerRecentsController:(id)a3 didTapSticker:(id)a4
+- (void)stickerRecentsController:(id)controller didTapSticker:(id)sticker
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 imageFileURL];
-  v9 = [v8 path];
-  v10 = [NSFileHandle fileHandleForReadingAtPath:v9];
+  controllerCopy = controller;
+  stickerCopy = sticker;
+  imageFileURL = [stickerCopy imageFileURL];
+  path = [imageFileURL path];
+  v10 = [NSFileHandle fileHandleForReadingAtPath:path];
 
-  v11 = [(InlineRecentsViewController *)self _remoteViewControllerProxy];
+  _remoteViewControllerProxy = [(InlineRecentsViewController *)self _remoteViewControllerProxy];
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v7 imageFileURL];
-    v13 = [v12 absoluteString];
-    v14 = v13;
-    if (v13)
+    imageFileURL2 = [stickerCopy imageFileURL];
+    absoluteString = [imageFileURL2 absoluteString];
+    v14 = absoluteString;
+    if (absoluteString)
     {
-      v15 = v13;
+      v15 = absoluteString;
     }
 
     else
@@ -114,11 +114,11 @@
 
     v16 = v15;
 
-    v17 = [v7 localizedDescription];
-    v18 = v17;
-    if (v17)
+    localizedDescription = [stickerCopy localizedDescription];
+    v18 = localizedDescription;
+    if (localizedDescription)
     {
-      v19 = v17;
+      v19 = localizedDescription;
     }
 
     else
@@ -128,7 +128,7 @@
 
     v20 = v19;
 
-    [v11 stageStickerWithFileHandle:v10 url:v16 accessibilityLabel:v20];
+    [_remoteViewControllerProxy stageStickerWithFileHandle:v10 url:v16 accessibilityLabel:v20];
   }
 
   v25 = 0;
@@ -151,8 +151,8 @@
   _Block_object_dispose(&v25, 8);
   if (objc_opt_respondsToSelector())
   {
-    v23 = [(InlineRecentsViewController *)self _hostApplicationBundleIdentifier];
-    [v21 trackStickerSentFromHostBundleIdentifier:v23];
+    _hostApplicationBundleIdentifier = [(InlineRecentsViewController *)self _hostApplicationBundleIdentifier];
+    [v21 trackStickerSentFromHostBundleIdentifier:_hostApplicationBundleIdentifier];
   }
 }
 

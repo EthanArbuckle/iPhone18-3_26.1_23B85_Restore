@@ -1,56 +1,56 @@
 @interface PEResourceLoadResult
-+ (id)_resultWithContentEditingInput:(id)a3 asset:(id)a4 assetLoadingAsRaw:(BOOL)a5;
-- (void)setVideoComplementOriginalStillImageTime:(id *)a3;
++ (id)_resultWithContentEditingInput:(id)input asset:(id)asset assetLoadingAsRaw:(BOOL)raw;
+- (void)setVideoComplementOriginalStillImageTime:(id *)time;
 @end
 
 @implementation PEResourceLoadResult
 
-- (void)setVideoComplementOriginalStillImageTime:(id *)a3
+- (void)setVideoComplementOriginalStillImageTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_videoComplementOriginalStillImageTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_videoComplementOriginalStillImageTime.epoch = time->var3;
   *&self->_videoComplementOriginalStillImageTime.value = v3;
 }
 
-+ (id)_resultWithContentEditingInput:(id)a3 asset:(id)a4 assetLoadingAsRaw:(BOOL)a5
++ (id)_resultWithContentEditingInput:(id)input asset:(id)asset assetLoadingAsRaw:(BOOL)raw
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  rawCopy = raw;
+  inputCopy = input;
+  assetCopy = asset;
   v9 = objc_alloc_init(PEResourceLoadResult);
-  [(PEResourceLoadResult *)v9 _setContentEditingInput:v7];
-  v10 = [v7 fullSizeImageURL];
-  [(PEResourceLoadResult *)v9 _setImageURL:v10];
+  [(PEResourceLoadResult *)v9 _setContentEditingInput:inputCopy];
+  fullSizeImageURL = [inputCopy fullSizeImageURL];
+  [(PEResourceLoadResult *)v9 _setImageURL:fullSizeImageURL];
 
-  [(PEResourceLoadResult *)v9 _setAssetLoadingAsRaw:v5];
+  [(PEResourceLoadResult *)v9 _setAssetLoadingAsRaw:rawCopy];
   v24 = 0;
-  v11 = [PESerializationUtility editSourceForContentEditingInput:v7 useEmbeddedPreview:v5 ^ 1 error:&v24];
+  v11 = [PESerializationUtility editSourceForContentEditingInput:inputCopy useEmbeddedPreview:rawCopy ^ 1 error:&v24];
   [(PEResourceLoadResult *)v9 _setEditSource:v11];
-  [(PEResourceLoadResult *)v9 _setAsset:v8];
+  [(PEResourceLoadResult *)v9 _setAsset:assetCopy];
 
-  v12 = [v7 videoURL];
-  v13 = [v7 livePhoto];
+  videoURL = [inputCopy videoURL];
+  livePhoto = [inputCopy livePhoto];
 
-  if (v13)
+  if (livePhoto)
   {
-    v14 = [v7 livePhoto];
-    v15 = [v14 videoComplement];
-    v16 = [v15 videoPath];
+    livePhoto2 = [inputCopy livePhoto];
+    videoComplement = [livePhoto2 videoComplement];
+    videoPath = [videoComplement videoPath];
 
-    if (v16)
+    if (videoPath)
     {
       v17 = MEMORY[0x277CBEBC0];
-      v18 = [v7 livePhoto];
-      v19 = [v18 videoComplement];
-      v20 = [v19 videoPath];
-      v21 = [v17 fileURLWithPath:v20];
+      livePhoto3 = [inputCopy livePhoto];
+      videoComplement2 = [livePhoto3 videoComplement];
+      videoPath2 = [videoComplement2 videoPath];
+      v21 = [v17 fileURLWithPath:videoPath2];
 
-      v12 = v21;
+      videoURL = v21;
     }
   }
 
-  [(PEResourceLoadResult *)v9 _setVideoComplementURL:v12];
-  if ([v7 baseVersion] == 1)
+  [(PEResourceLoadResult *)v9 _setVideoComplementURL:videoURL];
+  if ([inputCopy baseVersion] == 1)
   {
     v22 = 1;
   }

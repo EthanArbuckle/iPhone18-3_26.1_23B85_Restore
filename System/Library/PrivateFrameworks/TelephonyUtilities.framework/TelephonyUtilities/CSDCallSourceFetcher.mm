@@ -1,9 +1,9 @@
 @interface CSDCallSourceFetcher
 - (CSDCallSourceFetcher)init;
-- (CSDCallSourceFetcher)initWithSerialQueue:(id)a3 timeout:(double)a4;
+- (CSDCallSourceFetcher)initWithSerialQueue:(id)queue timeout:(double)timeout;
 - (CSDCallSourceFetcherDataSource)dataSource;
-- (void)_waitForCallSourceWithIdentifier:(id)a3 completion:(id)a4;
-- (void)fetchCallSourceForIdentifier:(id)a3 completion:(id)a4;
+- (void)_waitForCallSourceWithIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchCallSourceForIdentifier:(id)identifier completion:(id)completion;
 - (void)handleCallSourcesChanged;
 @end
 
@@ -17,17 +17,17 @@
   return 0;
 }
 
-- (CSDCallSourceFetcher)initWithSerialQueue:(id)a3 timeout:(double)a4
+- (CSDCallSourceFetcher)initWithSerialQueue:(id)queue timeout:(double)timeout
 {
-  v7 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = CSDCallSourceFetcher;
   v8 = [(CSDCallSourceFetcher *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_serialQueue, a3);
-    v9->_timeout = a4;
+    objc_storeStrong(&v8->_serialQueue, queue);
+    v9->_timeout = timeout;
     v10 = +[NSMutableDictionary dictionary];
     pendingCompletions = v9->_pendingCompletions;
     v9->_pendingCompletions = v10;
@@ -36,46 +36,46 @@
   return v9;
 }
 
-- (void)fetchCallSourceForIdentifier:(id)a3 completion:(id)a4
+- (void)fetchCallSourceForIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(CSDCallSourceFetcher *)self serialQueue];
-  dispatch_assert_queue_V2(v7);
+  identifierCopy = identifier;
+  completionCopy = completion;
+  serialQueue = [(CSDCallSourceFetcher *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  v8 = [(CSDCallSourceFetcher *)self dataSource];
-  v9 = [v8 callSourceWithIdentifier:v10];
+  dataSource = [(CSDCallSourceFetcher *)self dataSource];
+  v9 = [dataSource callSourceWithIdentifier:identifierCopy];
 
   if (v9)
   {
-    v6[2](v6, v9);
+    completionCopy[2](completionCopy, v9);
   }
 
   else
   {
-    [(CSDCallSourceFetcher *)self _waitForCallSourceWithIdentifier:v10 completion:v6];
+    [(CSDCallSourceFetcher *)self _waitForCallSourceWithIdentifier:identifierCopy completion:completionCopy];
   }
 }
 
 - (void)handleCallSourcesChanged
 {
-  v2 = self;
-  v3 = [(CSDCallSourceFetcher *)self serialQueue];
-  dispatch_assert_queue_V2(v3);
+  selfCopy = self;
+  serialQueue = [(CSDCallSourceFetcher *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v4 = [(CSDCallSourceFetcher *)v2 pendingCompletions];
-  v5 = [v4 allKeys];
+  pendingCompletions = [(CSDCallSourceFetcher *)selfCopy pendingCompletions];
+  allKeys = [pendingCompletions allKeys];
 
-  obj = v5;
-  v23 = [v5 countByEnumeratingWithState:&v29 objects:v36 count:16];
+  obj = allKeys;
+  v23 = [allKeys countByEnumeratingWithState:&v29 objects:v36 count:16];
   if (v23)
   {
     v22 = *v30;
-    v21 = v2;
+    v21 = selfCopy;
     do
     {
       for (i = 0; i != v23; i = i + 1)
@@ -86,14 +86,14 @@
         }
 
         v7 = *(*(&v29 + 1) + 8 * i);
-        v8 = [(CSDCallSourceFetcher *)v2 dataSource];
-        v9 = [v8 callSourceWithIdentifier:v7];
+        dataSource = [(CSDCallSourceFetcher *)selfCopy dataSource];
+        v9 = [dataSource callSourceWithIdentifier:v7];
 
         if (v9)
         {
           v24 = i;
-          v10 = [(CSDCallSourceFetcher *)v2 pendingCompletions];
-          v11 = [v10 objectForKeyedSubscript:v7];
+          pendingCompletions2 = [(CSDCallSourceFetcher *)selfCopy pendingCompletions];
+          v11 = [pendingCompletions2 objectForKeyedSubscript:v7];
 
           v27 = 0u;
           v28 = 0u;
@@ -132,9 +132,9 @@
             while (v14);
           }
 
-          v2 = v21;
-          v19 = [(CSDCallSourceFetcher *)v21 pendingCompletions];
-          [v19 setObject:0 forKeyedSubscript:v7];
+          selfCopy = v21;
+          pendingCompletions3 = [(CSDCallSourceFetcher *)v21 pendingCompletions];
+          [pendingCompletions3 setObject:0 forKeyedSubscript:v7];
 
           i = v24;
         }
@@ -147,50 +147,50 @@
   }
 }
 
-- (void)_waitForCallSourceWithIdentifier:(id)a3 completion:(id)a4
+- (void)_waitForCallSourceWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDCallSourceFetcher *)self serialQueue];
-  dispatch_assert_queue_V2(v8);
+  identifierCopy = identifier;
+  completionCopy = completion;
+  serialQueue = [(CSDCallSourceFetcher *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   v9 = sub_100004778();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v6;
+    v26 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Waiting for call source with identifier %@", buf, 0xCu);
   }
 
-  v10 = [(CSDCallSourceFetcher *)self pendingCompletions];
-  v11 = [v10 objectForKeyedSubscript:v6];
+  pendingCompletions = [(CSDCallSourceFetcher *)self pendingCompletions];
+  v11 = [pendingCompletions objectForKeyedSubscript:identifierCopy];
 
   if (!v11)
   {
     v11 = +[NSMutableSet set];
-    v12 = [(CSDCallSourceFetcher *)self pendingCompletions];
-    [v12 setObject:v11 forKeyedSubscript:v6];
+    pendingCompletions2 = [(CSDCallSourceFetcher *)self pendingCompletions];
+    [pendingCompletions2 setObject:v11 forKeyedSubscript:identifierCopy];
   }
 
-  v13 = [v7 copy];
+  v13 = [completionCopy copy];
   v14 = objc_retainBlock(v13);
   [v11 addObject:v14];
 
   [(CSDCallSourceFetcher *)self timeout];
   v16 = dispatch_time(0, (v15 * 1000000000.0));
-  v17 = [(CSDCallSourceFetcher *)self serialQueue];
+  serialQueue2 = [(CSDCallSourceFetcher *)self serialQueue];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10010AAE8;
   v21[3] = &unk_10061BC18;
   v21[4] = self;
-  v22 = v6;
+  v22 = identifierCopy;
   v23 = v13;
-  v24 = v7;
-  v18 = v7;
+  v24 = completionCopy;
+  v18 = completionCopy;
   v19 = v13;
-  v20 = v6;
-  dispatch_after(v16, v17, v21);
+  v20 = identifierCopy;
+  dispatch_after(v16, serialQueue2, v21);
 }
 
 - (CSDCallSourceFetcherDataSource)dataSource

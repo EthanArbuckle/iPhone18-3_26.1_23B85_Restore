@@ -1,6 +1,6 @@
 @interface TSCH3DLabelsRenderer
 + (id)renderer;
-- (BOOL)beginResources:(id)a3 expectedSize:(void *)a4;
+- (BOOL)beginResources:(id)resources expectedSize:(void *)size;
 - (BOOL)cacheEnabled;
 - (BOOL)hasCachedLabels;
 - (BOOL)isCacheValid;
@@ -8,15 +8,15 @@
 - (TSCH3DLabelsRenderer)init;
 - (id).cxx_construct;
 - (id)effects;
-- (id)p_renderCacheFromScene:(id)a3 created:(BOOL *)a4 createIfAbsent:(BOOL)a5;
+- (id)p_renderCacheFromScene:(id)scene created:(BOOL *)created createIfAbsent:(BOOL)absent;
 - (id)p_renderCacheID;
 - (id)p_renderCacheKey;
 - (void)dealloc;
 - (void)endResources;
-- (void)postrender:(id)a3;
-- (void)prepareCachedIndex:(void *)a3 string:(id)a4 alignmentPadding:(void *)a5 width:(double)a6 bitmapContextInfo:(id)a7;
-- (void)prerender:(id)a3;
-- (void)renderAtPosition:(void *)a3 offset:(void *)a4 alignment:(unsigned int)a5 offset2D:(void *)a6 rotation:(float)a7 externalAttribute:(id)a8;
+- (void)postrender:(id)postrender;
+- (void)prepareCachedIndex:(void *)index string:(id)string alignmentPadding:(void *)padding width:(double)width bitmapContextInfo:(id)info;
+- (void)prerender:(id)prerender;
+- (void)renderAtPosition:(void *)position offset:(void *)offset alignment:(unsigned int)alignment offset2D:(void *)d rotation:(float)rotation externalAttribute:(id)attribute;
 - (void)unitToWorld;
 - (void)worldToStage;
 @end
@@ -169,27 +169,27 @@
   return v48;
 }
 
-- (id)p_renderCacheFromScene:(id)a3 created:(BOOL *)a4 createIfAbsent:(BOOL)a5
+- (id)p_renderCacheFromScene:(id)scene created:(BOOL *)created createIfAbsent:(BOOL)absent
 {
-  v5 = a5;
-  v8 = a3;
+  absentCopy = absent;
+  sceneCopy = scene;
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = sub_27621C85C;
   v31[3] = &unk_27A6B6C10;
   v31[4] = self;
   v9 = MEMORY[0x277C98B30](v31);
-  v14 = objc_msgSend_renderCache(v8, v10, v11, v12, v13);
+  v14 = objc_msgSend_renderCache(sceneCopy, v10, v11, v12, v13);
   v19 = objc_msgSend_p_renderCacheKey(self, v15, v16, v17, v18);
   v25 = objc_msgSend_p_renderCacheID(self, v20, v21, v22, v23);
-  if (v5)
+  if (absentCopy)
   {
-    objc_msgSend_cacheObjectForKey_cacheID_created_ifAbsent_(v14, v24, v26, v27, v28, v19, v25, a4, v9);
+    objc_msgSend_cacheObjectForKey_cacheID_created_ifAbsent_(v14, v24, v26, v27, v28, v19, v25, created, v9);
   }
 
   else
   {
-    objc_msgSend_cacheObjectForKey_cacheID_created_ifAbsent_(v14, v24, v26, v27, v28, v19, v25, a4, 0);
+    objc_msgSend_cacheObjectForKey_cacheID_created_ifAbsent_(v14, v24, v26, v27, v28, v19, v25, created, 0);
   }
   v29 = ;
 
@@ -259,15 +259,15 @@
   return v15;
 }
 
-- (void)prerender:(id)a3
+- (void)prerender:(id)prerender
 {
   v177 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  prerenderCopy = prerender;
   if (byte_280A46430 == 1)
   {
     v10 = objc_opt_class();
     v11 = NSStringFromSelector(a2);
-    NSLog(&cfstr_P.isa, v10, self, v11, v6);
+    NSLog(&cfstr_P.isa, v10, self, v11, prerenderCopy);
   }
 
   if (self->_pipeline)
@@ -280,7 +280,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
   }
 
-  objc_msgSend_setPipeline_(self, v5, v7, v8, v9, v6);
+  objc_msgSend_setPipeline_(self, v5, v7, v8, v9, prerenderCopy);
   objc_msgSend_setObjectRenderMode_(self->_pipeline, v27, v28, v29, v30, 1);
   v36 = objc_msgSend_camera(self->_pipeline, v31, v32, v33, v34);
   if (self->_labelCamera)
@@ -401,14 +401,14 @@
   objc_msgSend_resetWithScene_camera_(transforms, v170, v171, v172, v173, v169, v36);
 }
 
-- (void)postrender:(id)a3
+- (void)postrender:(id)postrender
 {
-  v63 = a3;
+  postrenderCopy = postrender;
   if (byte_280A46430 == 1)
   {
     v9 = objc_opt_class();
     v10 = NSStringFromSelector(a2);
-    NSLog(&cfstr_P.isa, v9, self, v10, v63);
+    NSLog(&cfstr_P.isa, v9, self, v10, postrenderCopy);
   }
 
   if (self->_resources)
@@ -421,12 +421,12 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23, v24, v25);
   }
 
-  if (self->_pipeline != v63)
+  if (self->_pipeline != postrenderCopy)
   {
     v26 = MEMORY[0x277D81150];
     v27 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, v6, v7, v8, "[TSCH3DLabelsRenderer postrender:]");
     v32 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v28, v29, v30, v31, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DLabelsRenderer.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v26, v33, v34, v35, v36, v27, v32, 763, 0, "pipeline %@ passed in for postrender is different %@", v63, self->_pipeline);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v26, v33, v34, v35, v36, v27, v32, 763, 0, "pipeline %@ passed in for postrender is different %@", postrenderCopy, self->_pipeline);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v37, v38, v39, v40);
   }
@@ -442,15 +442,15 @@
   objc_msgSend_resetWithScene_camera_(self->_transforms, v59, v60, v61, v62, 0, 0);
 }
 
-- (BOOL)beginResources:(id)a3 expectedSize:(void *)a4
+- (BOOL)beginResources:(id)resources expectedSize:(void *)size
 {
-  v8 = a3;
+  resourcesCopy = resources;
   if (byte_280A46430 == 1)
   {
     v12 = objc_opt_class();
     v13 = NSStringFromSelector(a2);
     v14 = MEMORY[0x277CCACA8];
-    sub_276152FD4("ivec2(%d, %d)", v15, v16, v17, v18, v19, v20, v21, *a4);
+    sub_276152FD4("ivec2(%d, %d)", v15, v16, v17, v18, v19, v20, v21, *size);
     if (v170 >= 0)
     {
       objc_msgSend_stringWithUTF8String_(v14, v22, v23, v24, v25, __p);
@@ -466,12 +466,12 @@
       operator delete(__p[0]);
     }
 
-    NSLog(&cfstr_P_0.isa, v12, self, v13, v8, v26);
+    NSLog(&cfstr_P_0.isa, v12, self, v13, resourcesCopy, v26);
   }
 
-  if (v8)
+  if (resourcesCopy)
   {
-    v27 = v8;
+    v27 = resourcesCopy;
     objc_msgSend_size(v27, v28, v29, v30, v31);
     v37 = __p[0];
     v36 = HIDWORD(__p[0]);
@@ -489,14 +489,14 @@
     v37 = 0;
   }
 
-  if (v37 != *a4 || v36 != *(a4 + 1))
+  if (v37 != *size || v36 != *(size + 1))
   {
     v53 = MEMORY[0x277D81150];
     v54 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v32, v33, v34, v35, "[TSCH3DLabelsRenderer beginResources:expectedSize:]");
     v66 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v55, v56, v57, v58, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DLabelsRenderer.mm");
-    if (v8)
+    if (resourcesCopy)
     {
-      objc_msgSend_size(v8, v59, v67, v68, v69);
+      objc_msgSend_size(resourcesCopy, v59, v67, v68, v69);
       v70 = v168;
     }
 
@@ -523,7 +523,7 @@
     }
 
     v84 = MEMORY[0x277CCACA8];
-    sub_276152FD4("ivec2(%d, %d)", v76, v77, v78, v79, v80, v81, v82, *a4);
+    sub_276152FD4("ivec2(%d, %d)", v76, v77, v78, v79, v80, v81, v82, *size);
     if (v170 >= 0)
     {
       objc_msgSend_stringWithUTF8String_(v84, v85, v86, v87, v88, __p);
@@ -554,7 +554,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v109, v110, v111, v112);
   }
 
-  objc_msgSend_setResources_(self, v32, v33, v34, v35, v8);
+  objc_msgSend_setResources_(self, v32, v33, v34, v35, resourcesCopy);
   v117 = objc_msgSend_scene(self->_pipeline, v113, v114, v115, v116);
   LOBYTE(__p[0]) = 0;
   v122 = objc_msgSend_p_renderCacheFromScene_created_createIfAbsent_(self, v118, v119, v120, v121, v117, __p, 1);
@@ -581,7 +581,7 @@
     v158 = *&v157;
     v162 = objc_msgSend_meshRenderer(self, v159, v157, v160, v161);
     *&v163 = v153 / v158;
-    objc_msgSend_beginResources_samples_(v162, v164, v163, v165, v166, v8);
+    objc_msgSend_beginResources_samples_(v162, v164, v163, v165, v166, resourcesCopy);
   }
 
   return 1;
@@ -627,16 +627,16 @@
   objc_msgSend_setMeshRenderer_(self, v74, v75, v76, v77, 0);
 }
 
-- (void)prepareCachedIndex:(void *)a3 string:(id)a4 alignmentPadding:(void *)a5 width:(double)a6 bitmapContextInfo:(id)a7
+- (void)prepareCachedIndex:(void *)index string:(id)string alignmentPadding:(void *)padding width:(double)width bitmapContextInfo:(id)info
 {
-  v13 = a4;
-  v15 = a7;
+  stringCopy = string;
+  infoCopy = info;
   if (byte_280A46430 == 1)
   {
     v18 = objc_opt_class();
     v19 = NSStringFromSelector(a2);
     v20 = MEMORY[0x277CCACA8];
-    sub_276152FD4("ivec2(%d, %d)", v21, v22, v23, v24, v25, v26, v27, *a3);
+    sub_276152FD4("ivec2(%d, %d)", v21, v22, v23, v24, v25, v26, v27, *index);
     if (v104 >= 0)
     {
       objc_msgSend_stringWithUTF8String_(v20, v28, v29, v30, v31, __p);
@@ -652,11 +652,11 @@
       operator delete(__p[0]);
     }
 
-    NSLog(&cfstr_P_0.isa, v18, self, v19, v32, v13);
+    NSLog(&cfstr_P_0.isa, v18, self, v19, v32, stringCopy);
   }
 
-  __p[0] = *a3;
-  v33 = objc_msgSend_resourceAtIndex_string_bitmapContextInfo_labelWidth_(self->_resources, v14, a6, v16, v17, __p, v13, v15);
+  __p[0] = *index;
+  v33 = objc_msgSend_resourceAtIndex_string_bitmapContextInfo_labelWidth_(self->_resources, v14, width, v16, v17, __p, stringCopy, infoCopy);
   objc_msgSend_setLabel_(self, v34, v35, v36, v37, v33);
 
   v42 = objc_msgSend_label(self, v38, v39, v40, v41);
@@ -734,24 +734,24 @@ LABEL_17:
   v96 = vdup_n_s32(v95);
   v97 = vbsl_s8(v96, v78, v93);
   v98 = vbic_s8(v94, v96);
-  v99 = *a5;
+  v99 = *padding;
   self->_info.sampledLabelSize = v78;
   self->_info.sampledLabelFullSize = v97;
   self->_info.sampledLabelRenderOffset = v98;
   self->_info.sampledAlignmentPadding = vmul_n_f32(v99, *&v101);
 }
 
-- (void)renderAtPosition:(void *)a3 offset:(void *)a4 alignment:(unsigned int)a5 offset2D:(void *)a6 rotation:(float)a7 externalAttribute:(id)a8
+- (void)renderAtPosition:(void *)position offset:(void *)offset alignment:(unsigned int)alignment offset2D:(void *)d rotation:(float)rotation externalAttribute:(id)attribute
 {
-  v15 = a8;
+  attributeCopy = attribute;
   if ((objc_msgSend_isCacheValid(self, v16, v17, v18, v19) & 1) == 0)
   {
-    *&v21 = *(a3 + 2) + *(a4 + 2);
-    v22 = *a4;
-    v23 = COERCE_DOUBLE(vadd_f32(*a3, *a4));
+    *&v21 = *(position + 2) + *(offset + 2);
+    v22 = *offset;
+    v23 = COERCE_DOUBLE(vadd_f32(*position, *offset));
     v218 = *&v23;
     v219 = LODWORD(v21);
-    v207 = v15;
+    v207 = attributeCopy;
     if (byte_280A46430 == 1)
     {
       v24 = objc_opt_class();
@@ -775,7 +775,7 @@ LABEL_17:
       }
 
       v46 = MEMORY[0x277CCACA8];
-      v47 = *a4;
+      v47 = *offset;
       sub_276152FD4("vec3(%f, %f, %f)", v38, v39, v40, v41, v42, v43, v44, SLOBYTE(v47));
       if (v222 >= 0)
       {
@@ -793,7 +793,7 @@ LABEL_17:
       }
 
       v60 = MEMORY[0x277CCACA8];
-      v199 = *a6;
+      v199 = *d;
       sub_276152FD4("vec2(%f, %f)", v52, v53, v54, v55, v56, v57, v58, SLOBYTE(v199));
       if (v222 >= 0)
       {
@@ -810,9 +810,9 @@ LABEL_17:
         operator delete(*&v220);
       }
 
-      NSLog(&cfstr_PLd.isa, v24, self, v25, v45, v59, a5, v65);
+      NSLog(&cfstr_PLd.isa, v24, self, v25, v45, v59, alignment, v65);
 
-      v15 = v207;
+      attributeCopy = v207;
     }
 
     pipeline = self->_pipeline;
@@ -832,12 +832,12 @@ LABEL_17:
     }
 
     v220 = vmul_f32(self->_info.sampledLabelSize, 0xBF000000BF000000);
-    *&v74 = sub_276205CDC(&self->_info, a5, &v220, &v215);
+    *&v74 = sub_276205CDC(&self->_info, alignment, &v220, &v215);
     v77 = v216;
     sampledLabelFullSize = self->_info.sampledLabelFullSize;
     if (byte_280A46430 == 1)
     {
-      v79 = *a6;
+      v79 = *d;
       v80 = v215;
       v81 = objc_opt_class();
       v206 = NSStringFromSelector(a2);
@@ -952,7 +952,7 @@ LABEL_17:
 
       NSLog(&cfstr_POffsetpositio.isa, v81, self, v206, v101, v114, v127, v141, v154, v160);
 
-      v15 = v207;
+      attributeCopy = v207;
     }
 
     v161 = objc_msgSend_meshRenderer(self, *&v73, v74, v75, v76);
@@ -973,10 +973,10 @@ LABEL_17:
     v213 = v77;
     v214 = 0;
     v212 = 1065353216;
-    v210 = vmul_n_f32(*a6, *&v208);
+    v210 = vmul_n_f32(*d, *&v208);
     v211 = sampledLabelFullSize;
     v209 = v215;
-    v184 = objc_msgSend_initWithRenderer_position_translation_scale_rotation_offset_alignmentOffset_externalAttribute_(v181, v182, COERCE_DOUBLE(__PAIR64__(v215.u32[1], LODWORD(a7))), v208, v183, self, &v220, &v213, &v211, &v210, &v209, v15);
+    v184 = objc_msgSend_initWithRenderer_position_translation_scale_rotation_offset_alignmentOffset_externalAttribute_(v181, v182, COERCE_DOUBLE(__PAIR64__(v215.u32[1], LODWORD(rotation))), v208, v183, self, &v220, &v213, &v211, &v210, &v209, attributeCopy);
     v189 = objc_msgSend_meshRenderer(self, v185, v186, v187, v188);
     objc_msgSend_renderWithMeshRenderLabelInfo_(v189, v190, v191, v192, v193, v184);
 

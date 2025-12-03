@@ -12,19 +12,19 @@
   v13.super_class = ZWShowHideZoomRegionButton;
   v2 = [(ZWShowHideZoomRegionButton *)&v13 init];
   v3 = [[UIView alloc] initWithFrame:{0.0, 0.0, 48.0, 15.0}];
-  v4 = [v3 layer];
-  [v4 setCornerRadius:7.5];
+  layer = [v3 layer];
+  [layer setCornerRadius:7.5];
 
   v5 = ZWLensInnerColor();
   [v3 setBackgroundColor:v5];
 
   v6 = ZWLensOuterBorderWidth();
-  v7 = [v3 layer];
-  [v7 setBorderWidth:v6];
+  layer2 = [v3 layer];
+  [layer2 setBorderWidth:v6];
 
   v8 = [CAFilter filterWithType:kCAFilterPlusD];
-  v9 = [v3 layer];
-  [v9 setCompositingFilter:v8];
+  layer3 = [v3 layer];
+  [layer3 setCompositingFilter:v8];
 
   [(ZWShowHideZoomRegionButton *)v2 setButtonView:v3];
   [(ZWShowHideZoomRegionButton *)v2 addSubview:v3];
@@ -41,26 +41,26 @@
 {
   [(ZWShowHideZoomRegionButton *)self bounds];
   [(ZWShowHideZoomRegionButton *)self setBounds:?];
-  v3 = [(ZWShowHideZoomRegionButton *)self buttonView];
-  [v3 bounds];
+  buttonView = [(ZWShowHideZoomRegionButton *)self buttonView];
+  [buttonView bounds];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(ZWShowHideZoomRegionButton *)self buttonView];
-  [v8 setBounds:{v5, v7, 15.0, 48.0}];
+  buttonView2 = [(ZWShowHideZoomRegionButton *)self buttonView];
+  [buttonView2 setBounds:{v5, v7, 15.0, 48.0}];
 }
 
 - (void)makeHorizontal
 {
   [(ZWShowHideZoomRegionButton *)self bounds];
   [(ZWShowHideZoomRegionButton *)self setBounds:?];
-  v3 = [(ZWShowHideZoomRegionButton *)self buttonView];
-  [v3 bounds];
+  buttonView = [(ZWShowHideZoomRegionButton *)self buttonView];
+  [buttonView bounds];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(ZWShowHideZoomRegionButton *)self buttonView];
-  [v8 setBounds:{v5, v7, 48.0, 15.0}];
+  buttonView2 = [(ZWShowHideZoomRegionButton *)self buttonView];
+  [buttonView2 setBounds:{v5, v7, 48.0, 15.0}];
 }
 
 @end

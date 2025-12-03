@@ -5,25 +5,25 @@
 - (NSString)debugDescription;
 - (NSString)description;
 - (NSString)waypointName;
-- (TraceWaypointRequest)initWithWaypoint:(id)a3;
-- (id)loadComposedWaypointWithTraits:(id)a3 clientResolvedCompletionHandler:(id)a4 completionHandler:(id)a5 networkActivityHandler:(id)a6;
-- (id)waypointIconWithScale:(double)a3;
-- (void)_maps_buildDescriptionWithBlock:(id)a3;
-- (void)setWaypointResult:(id)a3;
+- (TraceWaypointRequest)initWithWaypoint:(id)waypoint;
+- (id)loadComposedWaypointWithTraits:(id)traits clientResolvedCompletionHandler:(id)handler completionHandler:(id)completionHandler networkActivityHandler:(id)activityHandler;
+- (id)waypointIconWithScale:(double)scale;
+- (void)_maps_buildDescriptionWithBlock:(id)block;
+- (void)setWaypointResult:(id)result;
 @end
 
 @implementation TraceWaypointRequest
 
-- (void)setWaypointResult:(id)a3
+- (void)setWaypointResult:(id)result
 {
-  v7 = a3;
-  objc_storeStrong(&self->_waypointResult, a3);
-  v5 = [(TraceWaypointRequest *)self completionHandler];
+  resultCopy = result;
+  objc_storeStrong(&self->_waypointResult, result);
+  completionHandler = [(TraceWaypointRequest *)self completionHandler];
 
-  if (v5)
+  if (completionHandler)
   {
-    v6 = [(TraceWaypointRequest *)self completionHandler];
-    (v6)[2](v6, v7);
+    completionHandler2 = [(TraceWaypointRequest *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, resultCopy);
   }
 }
 
@@ -35,13 +35,13 @@
   v9 = sub_100A2BFCC;
   v10 = sub_100A2BFDC;
   v11 = 0;
-  v2 = [(TraceWaypointRequest *)self waypointResult];
+  waypointResult = [(TraceWaypointRequest *)self waypointResult];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100A2BFE4;
   v5[3] = &unk_101632238;
   v5[4] = &v6;
-  [v2 withValue:v5 orError:&stru_101632258];
+  [waypointResult withValue:v5 orError:&stru_101632258];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -49,16 +49,16 @@
   return v3;
 }
 
-- (id)loadComposedWaypointWithTraits:(id)a3 clientResolvedCompletionHandler:(id)a4 completionHandler:(id)a5 networkActivityHandler:(id)a6
+- (id)loadComposedWaypointWithTraits:(id)traits clientResolvedCompletionHandler:(id)handler completionHandler:(id)completionHandler networkActivityHandler:(id)activityHandler
 {
-  [(TraceWaypointRequest *)self setCompletionHandler:a5, a4];
-  v7 = [(TraceWaypointRequest *)self waypointResult];
+  [(TraceWaypointRequest *)self setCompletionHandler:completionHandler, handler];
+  waypointResult = [(TraceWaypointRequest *)self waypointResult];
 
-  if (v7)
+  if (waypointResult)
   {
-    v8 = [(TraceWaypointRequest *)self completionHandler];
-    v9 = [(TraceWaypointRequest *)self waypointResult];
-    (v8)[2](v8, v9);
+    completionHandler = [(TraceWaypointRequest *)self completionHandler];
+    waypointResult2 = [(TraceWaypointRequest *)self waypointResult];
+    (completionHandler)[2](completionHandler, waypointResult2);
   }
 
   return 0;
@@ -66,56 +66,56 @@
 
 - (NSString)waypointName
 {
-  v2 = [(TraceWaypointRequest *)self waypoint];
-  v3 = [v2 name];
+  waypoint = [(TraceWaypointRequest *)self waypoint];
+  name = [waypoint name];
 
-  return v3;
+  return name;
 }
 
-- (id)waypointIconWithScale:(double)a3
+- (id)waypointIconWithScale:(double)scale
 {
-  v5 = [(TraceWaypointRequest *)self waypoint];
-  v6 = [v5 styleAttributes];
-  v7 = v6;
-  if (v6)
+  waypoint = [(TraceWaypointRequest *)self waypoint];
+  styleAttributes = [waypoint styleAttributes];
+  v7 = styleAttributes;
+  if (styleAttributes)
   {
-    v8 = v6;
+    _styleAttributes = styleAttributes;
   }
 
   else
   {
-    v9 = [(TraceWaypointRequest *)self waypoint];
-    v10 = [v9 geoMapItem];
-    v8 = [v10 _styleAttributes];
+    waypoint2 = [(TraceWaypointRequest *)self waypoint];
+    geoMapItem = [waypoint2 geoMapItem];
+    _styleAttributes = [geoMapItem _styleAttributes];
   }
 
-  v11 = [MKIconManager imageForStyle:v8 size:2 forScale:0 format:a3];
+  v11 = [MKIconManager imageForStyle:_styleAttributes size:2 forScale:0 format:scale];
 
   return v11;
 }
 
 - (BOOL)hasCachedResult
 {
-  v2 = [(TraceWaypointRequest *)self waypointResult];
-  v3 = v2 != 0;
+  waypointResult = [(TraceWaypointRequest *)self waypointResult];
+  v3 = waypointResult != 0;
 
   return v3;
 }
 
 - (CLLocationCoordinate2D)coordinate
 {
-  v3 = [(TraceWaypointRequest *)self waypoint];
+  waypoint = [(TraceWaypointRequest *)self waypoint];
 
-  if (v3)
+  if (waypoint)
   {
-    v4 = [(TraceWaypointRequest *)self waypoint];
-    v5 = [v4 latLng];
-    [v5 lat];
+    waypoint2 = [(TraceWaypointRequest *)self waypoint];
+    latLng = [waypoint2 latLng];
+    [latLng lat];
     v7 = v6;
 
-    v8 = [(TraceWaypointRequest *)self waypoint];
-    v9 = [v8 latLng];
-    [v9 lng];
+    waypoint3 = [(TraceWaypointRequest *)self waypoint];
+    latLng2 = [waypoint3 latLng];
+    [latLng2 lng];
     v11 = v10;
   }
 
@@ -133,16 +133,16 @@
   return result;
 }
 
-- (void)_maps_buildDescriptionWithBlock:(id)a3
+- (void)_maps_buildDescriptionWithBlock:(id)block
 {
-  v5 = a3;
-  v6 = [(TraceWaypointRequest *)self waypoint];
-  (*(a3 + 2))(v5, @"waypointResult", v6);
+  blockCopy = block;
+  waypoint = [(TraceWaypointRequest *)self waypoint];
+  (*(block + 2))(blockCopy, @"waypointResult", waypoint);
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100A2C50C;
@@ -150,8 +150,8 @@
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(TraceWaypointRequest *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(TraceWaypointRequest *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -185,7 +185,7 @@ LABEL_9:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100A2C75C;
@@ -193,8 +193,8 @@ LABEL_9:
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(TraceWaypointRequest *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(TraceWaypointRequest *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -226,15 +226,15 @@ LABEL_9:
   return v12;
 }
 
-- (TraceWaypointRequest)initWithWaypoint:(id)a3
+- (TraceWaypointRequest)initWithWaypoint:(id)waypoint
 {
-  v4 = a3;
+  waypointCopy = waypoint;
   v9.receiver = self;
   v9.super_class = TraceWaypointRequest;
   v5 = [(TraceWaypointRequest *)&v9 init];
   if (v5)
   {
-    v6 = [Result resultWithValue:v4];
+    v6 = [Result resultWithValue:waypointCopy];
     waypointResult = v5->_waypointResult;
     v5->_waypointResult = v6;
   }

@@ -1,24 +1,24 @@
 @interface NEIKEv2TrafficSelector
 + (id)copyAllIPv4;
 + (id)copyAllIPv6;
-+ (id)copyConstrainedTrafficSelectorsForRequest:(void *)a3 reply:;
++ (id)copyConstrainedTrafficSelectorsForRequest:(void *)request reply:;
 - (NEIKEv2TrafficSelector)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (uint64_t)type;
 @end
 
 @implementation NEIKEv2TrafficSelector
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(NEIKEv2TrafficSelector *)self startAddress];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  startAddress = [(NEIKEv2TrafficSelector *)self startAddress];
+  v6 = [startAddress copy];
   [v4 setStartAddress:v6];
 
-  v7 = [(NEIKEv2TrafficSelector *)self endAddress];
-  v8 = [v7 copy];
+  endAddress = [(NEIKEv2TrafficSelector *)self endAddress];
+  v8 = [endAddress copy];
   [v4 setEndAddress:v8];
 
   [v4 setStartPort:{-[NEIKEv2TrafficSelector startPort](self, "startPort")}];
@@ -30,12 +30,12 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(NEIKEv2TrafficSelector *)self startAddress];
-  v5 = [v4 hostname];
-  v6 = [(NEIKEv2TrafficSelector *)self startPort];
-  v7 = [(NEIKEv2TrafficSelector *)self endAddress];
-  v8 = [v7 hostname];
-  v9 = [v3 initWithFormat:@"%@ : %u -> %@ : %u (%u)", v5, v6, v8, -[NEIKEv2TrafficSelector endPort](self, "endPort"), -[NEIKEv2TrafficSelector ipProtocol](self, "ipProtocol")];
+  startAddress = [(NEIKEv2TrafficSelector *)self startAddress];
+  hostname = [startAddress hostname];
+  startPort = [(NEIKEv2TrafficSelector *)self startPort];
+  endAddress = [(NEIKEv2TrafficSelector *)self endAddress];
+  hostname2 = [endAddress hostname];
+  v9 = [v3 initWithFormat:@"%@ : %u -> %@ : %u (%u)", hostname, startPort, hostname2, -[NEIKEv2TrafficSelector endPort](self, "endPort"), -[NEIKEv2TrafficSelector ipProtocol](self, "ipProtocol")];
 
   return v9;
 }
@@ -110,33 +110,33 @@
   if (result)
   {
     v1 = result;
-    v2 = [result startAddress];
-    if (v2)
+    startAddress = [result startAddress];
+    if (startAddress)
     {
-      v3 = v2;
-      v4 = [v1 endAddress];
-      if (v4)
+      v3 = startAddress;
+      endAddress = [v1 endAddress];
+      if (endAddress)
       {
-        v5 = v4;
-        v6 = [v1 startAddress];
-        v7 = [v6 addressFamily];
-        v8 = [v1 endAddress];
-        v9 = [v8 addressFamily];
+        v5 = endAddress;
+        startAddress2 = [v1 startAddress];
+        addressFamily = [startAddress2 addressFamily];
+        endAddress2 = [v1 endAddress];
+        addressFamily2 = [endAddress2 addressFamily];
 
-        if (v7 == v9)
+        if (addressFamily == addressFamily2)
         {
-          v10 = [v1 startAddress];
-          v11 = [v10 addressFamily];
+          startAddress3 = [v1 startAddress];
+          addressFamily3 = [startAddress3 addressFamily];
 
-          if (v11 == 2)
+          if (addressFamily3 == 2)
           {
             return 7;
           }
 
-          v12 = [v1 startAddress];
-          v13 = [v12 addressFamily];
+          startAddress4 = [v1 startAddress];
+          addressFamily4 = [startAddress4 addressFamily];
 
-          if (v13 == 30)
+          if (addressFamily4 == 30)
           {
             return 8;
           }
@@ -154,10 +154,10 @@
   return result;
 }
 
-+ (id)copyConstrainedTrafficSelectorsForRequest:(void *)a3 reply:
++ (id)copyConstrainedTrafficSelectorsForRequest:(void *)request reply:
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   objc_opt_self();
   if (!a2)
   {
@@ -178,7 +178,7 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  if (!v4)
+  if (!requestCopy)
   {
     v8 = ne_log_obj();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -192,7 +192,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v5 = v4;
+  v5 = requestCopy;
 LABEL_4:
 
   v6 = *MEMORY[0x1E69E9840];

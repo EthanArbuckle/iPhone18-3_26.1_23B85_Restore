@@ -3,12 +3,12 @@
 - (CGSize)iconSize;
 - (CGSize)minimumSize;
 - (CGSize)size;
-- (IFConcreteImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 finalizedIcon:(id)a5;
-- (IFConcreteImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 layerData:(id)a5;
-- (IFConcreteImage)initWithIOSurface:(__IOSurface *)a3 scale:(double)a4;
+- (IFConcreteImage)initWithCGImage:(CGImage *)image scale:(double)scale finalizedIcon:(id)icon;
+- (IFConcreteImage)initWithCGImage:(CGImage *)image scale:(double)scale layerData:(id)data;
+- (IFConcreteImage)initWithIOSurface:(__IOSurface *)surface scale:(double)scale;
 - (id)ICRIconLayer;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)ICRIconLayer;
 - (void)dealloc;
@@ -31,22 +31,22 @@
 
 - (id)ICRIconLayer
 {
-  v3 = [MEMORY[0x1E69C70A0] sharedDefaultDevice];
-  v4 = [(IFConcreteImage *)self finalizedIcon];
-  if (v4)
+  mEMORY[0x1E69C70A0] = [MEMORY[0x1E69C70A0] sharedDefaultDevice];
+  finalizedIcon = [(IFConcreteImage *)self finalizedIcon];
+  if (finalizedIcon)
   {
   }
 
   else
   {
-    v10 = [(IFConcreteImage *)self layerData];
+    layerData = [(IFConcreteImage *)self layerData];
 
-    if (v10 && v3)
+    if (layerData && mEMORY[0x1E69C70A0])
     {
       v11 = objc_alloc(MEMORY[0x1E69A89C8]);
-      v12 = [(IFConcreteImage *)self layerData];
+      layerData2 = [(IFConcreteImage *)self layerData];
       v17 = 0;
-      v13 = [v11 initFromSerializedData:v12 device:v3 error:&v17];
+      v13 = [v11 initFromSerializedData:layerData2 device:mEMORY[0x1E69C70A0] error:&v17];
       v8 = v17;
 
       if (!v13)
@@ -65,17 +65,17 @@
     }
   }
 
-  v5 = [(IFConcreteImage *)self finalizedIcon];
+  finalizedIcon2 = [(IFConcreteImage *)self finalizedIcon];
 
-  if (!v5 || ![MEMORY[0x1E69A89D8] instancesRespondToSelector:sel_initWithFinalizedIcon_])
+  if (!finalizedIcon2 || ![MEMORY[0x1E69A89D8] instancesRespondToSelector:sel_initWithFinalizedIcon_])
   {
     v9 = 0;
     goto LABEL_19;
   }
 
   v6 = objc_alloc(MEMORY[0x1E69A89D8]);
-  v7 = [(IFConcreteImage *)self finalizedIcon];
-  v8 = [v6 initWithFinalizedIcon:v7];
+  finalizedIcon3 = [(IFConcreteImage *)self finalizedIcon];
+  v8 = [v6 initWithFinalizedIcon:finalizedIcon3];
 
   if (v8)
   {
@@ -152,16 +152,16 @@ LABEL_19:
   return [(IFImage *)&v3 _init];
 }
 
-- (IFConcreteImage)initWithIOSurface:(__IOSurface *)a3 scale:(double)a4
+- (IFConcreteImage)initWithIOSurface:(__IOSurface *)surface scale:(double)scale
 {
   v6 = [(IFConcreteImage *)self init];
-  if (IOSurfaceGetPixelFormat(a3) == 1647534392)
+  if (IOSurfaceGetPixelFormat(surface) == 1647534392)
   {
     v7 = CGImageCreateFromIOSurface();
     if (v7)
     {
       v8 = v7;
-      v6 = [(IFConcreteImage *)v6 initWithCGImage:v7 scale:a4];
+      v6 = [(IFConcreteImage *)v6 initWithCGImage:v7 scale:scale];
       CGImageRelease(v8);
     }
   }
@@ -169,67 +169,67 @@ LABEL_19:
   return v6;
 }
 
-- (IFConcreteImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 layerData:(id)a5
+- (IFConcreteImage)initWithCGImage:(CGImage *)image scale:(double)scale layerData:(id)data
 {
-  v8 = a5;
+  dataCopy = data;
   v18.receiver = self;
   v18.super_class = IFConcreteImage;
-  v9 = [(IFImage *)&v18 _init];
-  if (v9)
+  _init = [(IFImage *)&v18 _init];
+  if (_init)
   {
-    if (a3)
+    if (image)
     {
-      v10 = CFRetain(a3);
-      v9->_CGImage = v10;
-      v11 = CGImageGetWidth(v10) / a4;
-      Height = CGImageGetHeight(v9->_CGImage);
-      v9->_size.width = v11;
-      v9->_size.height = Height / a4;
-      v9->_scale = a4;
-      v9->_minimumSize = *MEMORY[0x1E695F060];
-      v9->_placeholder = 0;
-      v9->_validationFlags = 0;
-      v13 = CGImageGetWidth(a3) / a4;
-      v14 = CGImageGetHeight(a3);
-      v9->_iconSize.width = v13;
-      v9->_iconSize.height = v14 / a4;
-      v15 = [v8 copy];
+      v10 = CFRetain(image);
+      _init->_CGImage = v10;
+      v11 = CGImageGetWidth(v10) / scale;
+      Height = CGImageGetHeight(_init->_CGImage);
+      _init->_size.width = v11;
+      _init->_size.height = Height / scale;
+      _init->_scale = scale;
+      _init->_minimumSize = *MEMORY[0x1E695F060];
+      _init->_placeholder = 0;
+      _init->_validationFlags = 0;
+      v13 = CGImageGetWidth(image) / scale;
+      v14 = CGImageGetHeight(image);
+      _init->_iconSize.width = v13;
+      _init->_iconSize.height = v14 / scale;
+      v15 = [dataCopy copy];
     }
 
     else
     {
       v15 = 0;
-      v9->_iconSize = *MEMORY[0x1E695F060];
+      _init->_iconSize = *MEMORY[0x1E695F060];
     }
 
-    layerData = v9->_layerData;
-    v9->_layerData = v15;
+    layerData = _init->_layerData;
+    _init->_layerData = v15;
   }
 
-  return v9;
+  return _init;
 }
 
-- (IFConcreteImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 finalizedIcon:(id)a5
+- (IFConcreteImage)initWithCGImage:(CGImage *)image scale:(double)scale finalizedIcon:(id)icon
 {
-  v9 = a5;
-  v10 = [(IFConcreteImage *)self initWithCGImage:a3 scale:a4];
+  iconCopy = icon;
+  v10 = [(IFConcreteImage *)self initWithCGImage:image scale:scale];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_finalizedIcon, a5);
+    objc_storeStrong(&v10->_finalizedIcon, icon);
   }
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   if ([(IFConcreteImage *)self CGImage])
   {
-    v5 = [(IFConcreteImage *)self CGImage];
-    v4[6] = v5;
-    CFRetain(v5);
+    cGImage = [(IFConcreteImage *)self CGImage];
+    v4[6] = cGImage;
+    CFRetain(cGImage);
   }
 
   [(IFConcreteImage *)self size];
@@ -244,8 +244,8 @@ LABEL_19:
 {
   v3 = MEMORY[0x1E696AEC0];
   CGImage = self->_CGImage;
-  v5 = [(IFConcreteImage *)self layerData];
-  v6 = [v3 stringWithFormat:@"<IFImage 0x%lx>  CGImage: %@ Layer data size: %lu", self, CGImage, objc_msgSend(v5, "length")];
+  layerData = [(IFConcreteImage *)self layerData];
+  v6 = [v3 stringWithFormat:@"<IFImage 0x%lx>  CGImage: %@ Layer data size: %lu", self, CGImage, objc_msgSend(layerData, "length")];
 
   return v6;
 }
@@ -254,7 +254,7 @@ LABEL_19:
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1B9DEC000, a2, OS_LOG_TYPE_ERROR, "Failed to create finalized icon from serialized data. Error: %@", &v2, 0xCu);
 }
 

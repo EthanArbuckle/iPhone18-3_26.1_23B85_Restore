@@ -1,57 +1,57 @@
 @interface HKMHValenceDistributionData
-- (BOOL)isEqual:(id)a3;
-- (HKMHValenceDistributionData)initWithCoder:(id)a3;
-- (HKMHValenceDistributionData)initWithMinimumValence:(double)a3 maximumValence:(double)a4 sampleCount:(int64_t)a5 reflectiveInterval:(int64_t)a6;
+- (BOOL)isEqual:(id)equal;
+- (HKMHValenceDistributionData)initWithCoder:(id)coder;
+- (HKMHValenceDistributionData)initWithMinimumValence:(double)valence maximumValence:(double)maximumValence sampleCount:(int64_t)count reflectiveInterval:(int64_t)interval;
 - (NSString)hk_redactedDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)addValenceDistribution:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)addValenceDistribution:(id)distribution;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMHValenceDistributionData
 
-- (HKMHValenceDistributionData)initWithMinimumValence:(double)a3 maximumValence:(double)a4 sampleCount:(int64_t)a5 reflectiveInterval:(int64_t)a6
+- (HKMHValenceDistributionData)initWithMinimumValence:(double)valence maximumValence:(double)maximumValence sampleCount:(int64_t)count reflectiveInterval:(int64_t)interval
 {
   v11.receiver = self;
   v11.super_class = HKMHValenceDistributionData;
   result = [(HKMHValenceDistributionData *)&v11 init];
   if (result)
   {
-    result->_minimumValence = a3;
-    result->_maximumValence = a4;
-    result->_sampleCount = a5;
-    result->_reflectiveInterval = a6;
+    result->_minimumValence = valence;
+    result->_maximumValence = maximumValence;
+    result->_sampleCount = count;
+    result->_reflectiveInterval = interval;
   }
 
   return result;
 }
 
-- (void)addValenceDistribution:(id)a3
+- (void)addValenceDistribution:(id)distribution
 {
-  v8 = a3;
-  [v8 minimumValence];
+  distributionCopy = distribution;
+  [distributionCopy minimumValence];
   if (v4 < self->_minimumValence)
   {
-    [v8 minimumValence];
+    [distributionCopy minimumValence];
     self->_minimumValence = v5;
   }
 
-  [v8 maximumValence];
+  [distributionCopy maximumValence];
   if (v6 > self->_maximumValence)
   {
-    [v8 maximumValence];
+    [distributionCopy maximumValence];
     self->_maximumValence = v7;
   }
 
-  self->_sampleCount += [v8 sampleCount];
+  self->_sampleCount += [distributionCopy sampleCount];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -61,7 +61,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_minimumValence == v5->_minimumValence && self->_maximumValence == v5->_maximumValence && self->_sampleCount == v5->_sampleCount && self->_reflectiveInterval == v5->_reflectiveInterval;
     }
 
@@ -85,9 +85,9 @@
   return v6 ^ v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HKMHValenceDistributionData allocWithZone:a3];
+  v4 = [HKMHValenceDistributionData allocWithZone:zone];
   minimumValence = self->_minimumValence;
   maximumValence = self->_maximumValence;
   sampleCount = self->_sampleCount;
@@ -120,27 +120,27 @@
   return v2;
 }
 
-- (HKMHValenceDistributionData)initWithCoder:(id)a3
+- (HKMHValenceDistributionData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"MinimumValence"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"MinimumValence"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"MaximumValence"];
+  [coderCopy decodeDoubleForKey:@"MaximumValence"];
   v8 = v7;
-  v9 = [v4 decodeIntegerForKey:@"SampleCount"];
-  v10 = [v4 decodeIntegerForKey:@"ReflectiveInterval"];
+  v9 = [coderCopy decodeIntegerForKey:@"SampleCount"];
+  v10 = [coderCopy decodeIntegerForKey:@"ReflectiveInterval"];
 
   return [(HKMHValenceDistributionData *)self initWithMinimumValence:v9 maximumValence:v10 sampleCount:v6 reflectiveInterval:v8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   minimumValence = self->_minimumValence;
-  v5 = a3;
-  [v5 encodeDouble:@"MinimumValence" forKey:minimumValence];
-  [v5 encodeDouble:@"MaximumValence" forKey:self->_maximumValence];
-  [v5 encodeInteger:self->_sampleCount forKey:@"SampleCount"];
-  [v5 encodeInteger:self->_reflectiveInterval forKey:@"ReflectiveInterval"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"MinimumValence" forKey:minimumValence];
+  [coderCopy encodeDouble:@"MaximumValence" forKey:self->_maximumValence];
+  [coderCopy encodeInteger:self->_sampleCount forKey:@"SampleCount"];
+  [coderCopy encodeInteger:self->_reflectiveInterval forKey:@"ReflectiveInterval"];
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface PCPrinter
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPCPrinter:(id)a3;
-- (BOOL)isEqualToPKPrinter:(id)a3;
-- (BOOL)isEqualToiCloudPrinter:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPCPrinter:(id)printer;
+- (BOOL)isEqualToPKPrinter:(id)printer;
+- (BOOL)isEqualToiCloudPrinter:(id)printer;
 - (BOOL)requiresAuthentication;
 - (BOOL)supportsJobAccountID;
-- (BOOL)updateIfNeeded:(id)a3;
+- (BOOL)updateIfNeeded:(id)needed;
 - (NSArray)classMembers;
 - (NSArray)printerStateReasons;
 - (NSArray)supportedMimeTypes;
@@ -17,8 +17,8 @@
 - (NSString)printerStateMessage;
 - (NSString)uuid;
 - (NSURL)printerURL;
-- (PCPrinter)initWithPKPrinter:(id)a3;
-- (PCPrinter)initWithPrinterInfo:(id)a3;
+- (PCPrinter)initWithPKPrinter:(id)printer;
+- (PCPrinter)initWithPrinterInfo:(id)info;
 - (id)authInfoRequired;
 - (id)deviceURI;
 - (id)printerURI;
@@ -29,25 +29,25 @@
 
 @implementation PCPrinter
 
-- (PCPrinter)initWithPrinterInfo:(id)a3
+- (PCPrinter)initWithPrinterInfo:(id)info
 {
   v8.receiver = self;
   v8.super_class = PCPrinter;
-  v3 = a3;
+  infoCopy = info;
   v4 = [(PCPrinter *)&v8 init];
-  v5 = [NSDictionary dictionaryWithDictionary:v3, v8.receiver, v8.super_class];
+  v5 = [NSDictionary dictionaryWithDictionary:infoCopy, v8.receiver, v8.super_class];
 
   [(PCPrinter *)v4 setPrinterInfo:v5];
   v6 = +[PKDefaults iCloudPrinters];
   return v4;
 }
 
-- (PCPrinter)initWithPKPrinter:(id)a3
+- (PCPrinter)initWithPKPrinter:(id)printer
 {
-  v4 = [a3 browseInfo];
+  browseInfo = [printer browseInfo];
   v7.receiver = self;
   v7.super_class = PCPrinter;
-  v5 = [(PCPrinter *)&v7 initPKPrinterWithBrowseInfo:v4];
+  v5 = [(PCPrinter *)&v7 initPKPrinterWithBrowseInfo:browseInfo];
 
   [(PCPrinter *)v5 setPrinterInfo:0];
   return v5;
@@ -62,81 +62,81 @@
 
 - (NSString)name
 {
-  v3 = [(PCPrinter *)self printerInfo];
+  printerInfo = [(PCPrinter *)self printerInfo];
 
-  if (v3)
+  if (printerInfo)
   {
-    v4 = [(PCPrinter *)self printerInfo];
-    v5 = [v4 objectForKeyedSubscript:@"printer-name"];
+    printerInfo2 = [(PCPrinter *)self printerInfo];
+    name = [printerInfo2 objectForKeyedSubscript:@"printer-name"];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = PCPrinter;
-    v5 = [(PCPrinter *)&v7 name];
+    name = [(PCPrinter *)&v7 name];
   }
 
-  return v5;
+  return name;
 }
 
 - (NSURL)printerURL
 {
-  v3 = [(PCPrinter *)self printerInfo];
+  printerInfo = [(PCPrinter *)self printerInfo];
 
-  if (v3)
+  if (printerInfo)
   {
-    v4 = [(PCPrinter *)self printerURI];
-    v5 = [NSURL URLWithString:v4];
+    printerURI = [(PCPrinter *)self printerURI];
+    printerURL = [NSURL URLWithString:printerURI];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = PCPrinter;
-    v5 = [(PCPrinter *)&v7 printerURL];
+    printerURL = [(PCPrinter *)&v7 printerURL];
   }
 
-  return v5;
+  return printerURL;
 }
 
 - (id)printerURI
 {
-  v2 = [(PCPrinter *)self printerInfo];
-  v3 = [v2 objectForKeyedSubscript:@"printer-uri-supported"];
+  printerInfo = [(PCPrinter *)self printerInfo];
+  v3 = [printerInfo objectForKeyedSubscript:@"printer-uri-supported"];
 
   return v3;
 }
 
 - (id)deviceURI
 {
-  v2 = [(PCPrinter *)self printerInfo];
-  v3 = [v2 objectForKeyedSubscript:@"device-uri"];
+  printerInfo = [(PCPrinter *)self printerInfo];
+  v3 = [printerInfo objectForKeyedSubscript:@"device-uri"];
 
   return v3;
 }
 
 - (NSString)uuid
 {
-  v3 = [(PCPrinter *)self _uuid];
+  _uuid = [(PCPrinter *)self _uuid];
 
-  if (!v3)
+  if (!_uuid)
   {
-    v4 = [(PCPrinter *)self printerInfo];
+    printerInfo = [(PCPrinter *)self printerInfo];
 
-    if (v4)
+    if (printerInfo)
     {
-      v5 = [(PCPrinter *)self deviceURI];
-      v6 = [v5 rangeOfString:@"uuid="];
+      deviceURI = [(PCPrinter *)self deviceURI];
+      v6 = [deviceURI rangeOfString:@"uuid="];
       if (v7)
       {
-        v8 = [v5 substringFromIndex:&v6[v7]];
+        uuid = [deviceURI substringFromIndex:&v6[v7]];
 
-        if (v8)
+        if (uuid)
         {
 LABEL_8:
-          v9 = [v8 uppercaseString];
-          [(PCPrinter *)self set_uuid:v9];
+          uppercaseString = [uuid uppercaseString];
+          [(PCPrinter *)self set_uuid:uppercaseString];
 
           goto LABEL_9;
         }
@@ -149,44 +149,44 @@ LABEL_8:
 
     v12.receiver = self;
     v12.super_class = PCPrinter;
-    v8 = [(PCPrinter *)&v12 uuid];
+    uuid = [(PCPrinter *)&v12 uuid];
     goto LABEL_8;
   }
 
 LABEL_9:
-  v10 = [(PCPrinter *)self _uuid];
+  _uuid2 = [(PCPrinter *)self _uuid];
 
-  return v10;
+  return _uuid2;
 }
 
 - (NSString)displayName
 {
-  v3 = [(PCPrinter *)self printerInfo];
+  printerInfo = [(PCPrinter *)self printerInfo];
 
-  if (v3)
+  if (printerInfo)
   {
-    v4 = [(PCPrinter *)self printerInfo];
-    v5 = [v4 objectForKeyedSubscript:@"printer-info"];
+    printerInfo2 = [(PCPrinter *)self printerInfo];
+    displayName = [printerInfo2 objectForKeyedSubscript:@"printer-info"];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = PCPrinter;
-    v5 = [(PCPrinter *)&v7 displayName];
+    displayName = [(PCPrinter *)&v7 displayName];
   }
 
-  return v5;
+  return displayName;
 }
 
 - (NSString)location
 {
-  v3 = [(PCPrinter *)self printerInfo];
+  printerInfo = [(PCPrinter *)self printerInfo];
 
-  if (v3)
+  if (printerInfo)
   {
-    v4 = [(PCPrinter *)self printerInfo];
-    v5 = [v4 objectForKeyedSubscript:@"printer-location"];
+    printerInfo2 = [(PCPrinter *)self printerInfo];
+    v5 = [printerInfo2 objectForKeyedSubscript:@"printer-location"];
 
     v6 = &stru_100026518;
     if (v5)
@@ -194,34 +194,34 @@ LABEL_9:
       v6 = v5;
     }
 
-    v7 = v6;
+    location = v6;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = PCPrinter;
-    v7 = [(PCPrinter *)&v9 location];
+    location = [(PCPrinter *)&v9 location];
   }
 
-  return v7;
+  return location;
 }
 
 - (NSAttributedString)displayNameWithLocation
 {
   v3 = [NSMutableAttributedString alloc];
-  v4 = [(PCPrinter *)self displayName];
-  v5 = [v3 initWithString:v4];
+  displayName = [(PCPrinter *)self displayName];
+  v5 = [v3 initWithString:displayName];
 
-  v6 = [(PCPrinter *)self location];
-  if ([v6 length])
+  location = [(PCPrinter *)self location];
+  if ([location length])
   {
-    v7 = [(PCPrinter *)self displayName];
-    v8 = [v7 containsString:v6];
+    displayName2 = [(PCPrinter *)self displayName];
+    v8 = [displayName2 containsString:location];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [NSString stringWithFormat:@" (%@)", v6];
+      v9 = [NSString stringWithFormat:@" (%@)", location];
       v10 = [[NSMutableAttributedString alloc] initWithString:v9];
       v15[0] = NSFontAttributeName;
       +[UIFont smallSystemFontSize];
@@ -242,12 +242,12 @@ LABEL_9:
 
 - (NSString)makeAndModel
 {
-  v3 = [(PCPrinter *)self printerInfo];
+  printerInfo = [(PCPrinter *)self printerInfo];
 
-  if (v3)
+  if (printerInfo)
   {
-    v4 = [(PCPrinter *)self printerInfo];
-    v5 = [v4 objectForKeyedSubscript:@"printer-make-and-model"];
+    printerInfo2 = [(PCPrinter *)self printerInfo];
+    v5 = [printerInfo2 objectForKeyedSubscript:@"printer-make-and-model"];
 
     v6 = &stru_100026518;
     if (v5)
@@ -255,47 +255,47 @@ LABEL_9:
       v6 = v5;
     }
 
-    v7 = v6;
+    makeAndModel = v6;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = PCPrinter;
-    v7 = [(PCPrinter *)&v9 makeAndModel];
+    makeAndModel = [(PCPrinter *)&v9 makeAndModel];
   }
 
-  return v7;
+  return makeAndModel;
 }
 
 - (int64_t)state
 {
-  v3 = [(PCPrinter *)self printerInfo];
+  printerInfo = [(PCPrinter *)self printerInfo];
 
-  if (!v3)
+  if (!printerInfo)
   {
     return 3;
   }
 
-  v4 = [(PCPrinter *)self printerInfo];
-  v5 = [v4 objectForKeyedSubscript:@"printer-state"];
-  v6 = [v5 integerValue];
+  printerInfo2 = [(PCPrinter *)self printerInfo];
+  v5 = [printerInfo2 objectForKeyedSubscript:@"printer-state"];
+  integerValue = [v5 integerValue];
 
-  return v6;
+  return integerValue;
 }
 
 - (NSString)printerStateMessage
 {
-  v2 = [(PCPrinter *)self printerInfo];
-  v3 = [v2 objectForKeyedSubscript:@"printer-state-message"];
+  printerInfo = [(PCPrinter *)self printerInfo];
+  v3 = [printerInfo objectForKeyedSubscript:@"printer-state-message"];
 
   return v3;
 }
 
 - (NSArray)printerStateReasons
 {
-  v3 = [(PCPrinter *)self printerInfo];
-  v4 = [v3 objectForKeyedSubscript:@"printer-state-reasons"];
+  printerInfo = [(PCPrinter *)self printerInfo];
+  v4 = [printerInfo objectForKeyedSubscript:@"printer-state-reasons"];
   v5 = [NSMutableArray arrayWithArray:v4];
 
   if ([(PCPrinter *)self isAirPrint])
@@ -311,26 +311,26 @@ LABEL_9:
 
 - (NSArray)classMembers
 {
-  v2 = [(PCPrinter *)self printerInfo];
-  v3 = [v2 objectForKeyedSubscript:@"member-names"];
+  printerInfo = [(PCPrinter *)self printerInfo];
+  v3 = [printerInfo objectForKeyedSubscript:@"member-names"];
 
   return v3;
 }
 
 - (int64_t)kind
 {
-  v2 = [(PCPrinter *)self deviceURI];
-  if ([v2 hasPrefix:@"usb:"] & 1) != 0 || (objc_msgSend(v2, "hasPrefix:", @"ippusb:") & 1) != 0 || (objc_msgSend(v2, "hasPrefix:", @"bluetooth:"))
+  deviceURI = [(PCPrinter *)self deviceURI];
+  if ([deviceURI hasPrefix:@"usb:"] & 1) != 0 || (objc_msgSend(deviceURI, "hasPrefix:", @"ippusb:") & 1) != 0 || (objc_msgSend(deviceURI, "hasPrefix:", @"bluetooth:"))
   {
     v3 = 3;
   }
 
-  else if ([v2 hasPrefix:@"mdns:"] & 1) != 0 || (objc_msgSend(v2, "hasPrefix:", @"dnssd:"))
+  else if ([deviceURI hasPrefix:@"mdns:"] & 1) != 0 || (objc_msgSend(deviceURI, "hasPrefix:", @"dnssd:"))
   {
     v3 = 4;
   }
 
-  else if ([v2 hasPrefix:@"smb:"])
+  else if ([deviceURI hasPrefix:@"smb:"])
   {
     v3 = 6;
   }
@@ -343,15 +343,15 @@ LABEL_9:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if ([v5 isEqual:objc_opt_class()])
   {
-    v6 = [v4 name];
-    v7 = [(PCPrinter *)self name];
-    v8 = [v6 isEqualToString:v7];
+    name = [equalCopy name];
+    name2 = [(PCPrinter *)self name];
+    v8 = [name isEqualToString:name2];
   }
 
   else
@@ -362,20 +362,20 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)isEqualToPCPrinter:(id)a3
+- (BOOL)isEqualToPCPrinter:(id)printer
 {
-  v5 = a3;
-  v6 = [v5 name];
-  v7 = [(PCPrinter *)self name];
-  if ([v6 isEqualToString:v7])
+  printerCopy = printer;
+  name = [printerCopy name];
+  name2 = [(PCPrinter *)self name];
+  if ([name isEqualToString:name2])
   {
-    v8 = [v5 uuid];
-    v9 = [(PCPrinter *)self uuid];
-    if (v8 != v9)
+    uuid = [printerCopy uuid];
+    uuid2 = [(PCPrinter *)self uuid];
+    if (uuid != uuid2)
     {
-      v10 = [v5 uuid];
-      v3 = [(PCPrinter *)self uuid];
-      if (![v10 isEqualToString:v3])
+      uuid3 = [printerCopy uuid];
+      uuid4 = [(PCPrinter *)self uuid];
+      if (![uuid3 isEqualToString:uuid4])
       {
         v11 = 0;
 LABEL_12:
@@ -384,15 +384,15 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v16 = v10;
+      v16 = uuid3;
     }
 
-    v12 = [v5 deviceURI];
-    v13 = [(PCPrinter *)self deviceURI];
-    if ([v12 isEqualToString:v13])
+    deviceURI = [printerCopy deviceURI];
+    deviceURI2 = [(PCPrinter *)self deviceURI];
+    if ([deviceURI isEqualToString:deviceURI2])
     {
-      v14 = [v5 category];
-      v11 = v14 == [(PCPrinter *)self category];
+      category = [printerCopy category];
+      v11 = category == [(PCPrinter *)self category];
     }
 
     else
@@ -400,8 +400,8 @@ LABEL_13:
       v11 = 0;
     }
 
-    v10 = v16;
-    if (v8 == v9)
+    uuid3 = v16;
+    if (uuid == uuid2)
     {
       goto LABEL_13;
     }
@@ -415,35 +415,35 @@ LABEL_14:
   return v11;
 }
 
-- (BOOL)isEqualToPKPrinter:(id)a3
+- (BOOL)isEqualToPKPrinter:(id)printer
 {
-  v4 = [a3 uuid];
-  v5 = [v4 uppercaseString];
-  v6 = [(PCPrinter *)self uuid];
-  v7 = [v5 isEqualToString:v6];
+  uuid = [printer uuid];
+  uppercaseString = [uuid uppercaseString];
+  uuid2 = [(PCPrinter *)self uuid];
+  v7 = [uppercaseString isEqualToString:uuid2];
 
   return v7;
 }
 
-- (BOOL)isEqualToiCloudPrinter:(id)a3
+- (BOOL)isEqualToiCloudPrinter:(id)printer
 {
-  v4 = a3;
-  v5 = [(PCPrinter *)self deviceURI];
-  v6 = [v4 printerURLs];
-  v7 = [v6 firstObject];
+  printerCopy = printer;
+  deviceURI = [(PCPrinter *)self deviceURI];
+  printerURLs = [printerCopy printerURLs];
+  firstObject = [printerURLs firstObject];
 
-  v8 = [NSURL URLWithString:v7];
-  v9 = [v8 scheme];
-  v10 = [v8 host];
-  v11 = [v8 path];
-  v12 = [NSString stringWithFormat:@"%@://%@%@", v9, v10, v11];
+  v8 = [NSURL URLWithString:firstObject];
+  scheme = [v8 scheme];
+  host = [v8 host];
+  path = [v8 path];
+  v12 = [NSString stringWithFormat:@"%@://%@%@", scheme, host, path];
 
-  if (([v7 isEqualToString:v5] & 1) != 0 || objc_msgSend(v12, "isEqualToString:", v5))
+  if (([firstObject isEqualToString:deviceURI] & 1) != 0 || objc_msgSend(v12, "isEqualToString:", deviceURI))
   {
-    v13 = [v4 uuid];
-    v14 = [v13 uppercaseString];
-    v15 = [(PCPrinter *)self uuid];
-    v16 = [v14 isEqualToString:v15];
+    uuid = [printerCopy uuid];
+    uppercaseString = [uuid uppercaseString];
+    uuid2 = [(PCPrinter *)self uuid];
+    v16 = [uppercaseString isEqualToString:uuid2];
   }
 
   else
@@ -454,13 +454,13 @@ LABEL_14:
   return v16;
 }
 
-- (BOOL)updateIfNeeded:(id)a3
+- (BOOL)updateIfNeeded:(id)needed
 {
-  v4 = a3;
-  if (-[PCPrinter isEqualToPCPrinter:](self, "isEqualToPCPrinter:", v4) && (-[PCPrinter printerInfo](self, "printerInfo"), v5 = objc_claimAutoreleasedReturnValue(), [v4 printerInfo], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqual:", v6), v6, v5, (v7 & 1) == 0))
+  neededCopy = needed;
+  if (-[PCPrinter isEqualToPCPrinter:](self, "isEqualToPCPrinter:", neededCopy) && (-[PCPrinter printerInfo](self, "printerInfo"), v5 = objc_claimAutoreleasedReturnValue(), [neededCopy printerInfo], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqual:", v6), v6, v5, (v7 & 1) == 0))
   {
-    v9 = [v4 printerInfo];
-    v10 = [NSDictionary dictionaryWithDictionary:v9];
+    printerInfo = [neededCopy printerInfo];
+    v10 = [NSDictionary dictionaryWithDictionary:printerInfo];
     [(PCPrinter *)self setPrinterInfo:v10];
 
     v8 = 1;
@@ -476,8 +476,8 @@ LABEL_14:
 
 - (NSArray)supportedMimeTypes
 {
-  v2 = [(PCPrinter *)self printerInfo];
-  v3 = [v2 objectForKeyedSubscript:@"document-format-supported"];
+  printerInfo = [(PCPrinter *)self printerInfo];
+  v3 = [printerInfo objectForKeyedSubscript:@"document-format-supported"];
 
   if (v3)
   {
@@ -496,8 +496,8 @@ LABEL_14:
 
 - (BOOL)supportsJobAccountID
 {
-  v2 = [(PCPrinter *)self printerInfo];
-  v3 = [v2 objectForKeyedSubscript:@"job-account-id-supported"];
+  printerInfo = [(PCPrinter *)self printerInfo];
+  v3 = [printerInfo objectForKeyedSubscript:@"job-account-id-supported"];
   v4 = v3 != 0;
 
   return v4;
@@ -505,8 +505,8 @@ LABEL_14:
 
 - (id)authInfoRequired
 {
-  v2 = [(PCPrinter *)self printerInfo];
-  v3 = [v2 objectForKeyedSubscript:@"auth-info-required"];
+  printerInfo = [(PCPrinter *)self printerInfo];
+  v3 = [printerInfo objectForKeyedSubscript:@"auth-info-required"];
 
   if (v3)
   {
@@ -523,8 +523,8 @@ LABEL_14:
 
 - (BOOL)requiresAuthentication
 {
-  v2 = [(PCPrinter *)self authInfoRequired];
-  v3 = [v2 isEqualToString:@"none"];
+  authInfoRequired = [(PCPrinter *)self authInfoRequired];
+  v3 = [authInfoRequired isEqualToString:@"none"];
 
   return v3 ^ 1;
 }

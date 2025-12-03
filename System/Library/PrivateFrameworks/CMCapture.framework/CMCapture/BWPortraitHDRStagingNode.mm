@@ -1,9 +1,9 @@
 @interface BWPortraitHDRStagingNode
 - (BWPortraitHDRStagingNode)init;
-- (void)bufferReceivedWithFlags:(unsigned int)a3 error:(int)a4;
+- (void)bufferReceivedWithFlags:(unsigned int)flags error:(int)error;
 - (void)dealloc;
-- (void)handleNodeError:(id)a3 forInput:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)handleNodeError:(id)error forInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWPortraitHDRStagingNode
@@ -49,11 +49,11 @@
   [(BWNode *)&v4 dealloc];
 }
 
-- (void)bufferReceivedWithFlags:(unsigned int)a3 error:(int)a4
+- (void)bufferReceivedWithFlags:(unsigned int)flags error:(int)error
 {
-  v5 = a3;
+  flagsCopy = flags;
   os_unfair_lock_lock(&self->_lock);
-  if (v5 & 0x40 | a4 && (self->_passthroughBuffer = 1, (v7 = self->_stagedBuffer) != 0))
+  if (flagsCopy & 0x40 | error && (self->_passthroughBuffer = 1, (v7 = self->_stagedBuffer) != 0))
   {
     v8 = CFRetain(v7);
     stagedBuffer = self->_stagedBuffer;
@@ -79,10 +79,10 @@
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  v6 = [CMGetAttachment(a3 @"StillImageProcessingFlags"];
-  v7 = CMGetAttachment(a3, @"BWStillImageCaptureSettings", 0);
+  v6 = [CMGetAttachment(buffer @"StillImageProcessingFlags"];
+  v7 = CMGetAttachment(buffer, @"BWStillImageCaptureSettings", 0);
   os_unfair_lock_lock(&self->_lock);
   settingsID = self->_settingsID;
   if (settingsID != [v7 settingsID])
@@ -91,14 +91,14 @@
     self->_settingsID = [v7 settingsID];
   }
 
-  v9 = CMGetAttachment(a3, @"PhotoManifest", 0);
+  v9 = CMGetAttachment(buffer, @"PhotoManifest", 0);
   if (v6 && (v10 = v9, [v7 deliverOriginalImage]) && (objc_msgSend(v7, "captureFlags") & 0x800) != 0 && objc_msgSend(objc_msgSend(v10, "photoDescriptors"), "count") >= 3 && ((objc_msgSend(objc_msgSend(objc_msgSend(v10, "photoDescriptors"), "objectAtIndexedSubscript:", 2), "processingFlags") ^ v6) & 3) == 0 && !self->_passthroughBuffer)
   {
     stagedBuffer = self->_stagedBuffer;
-    self->_stagedBuffer = a3;
-    if (a3)
+    self->_stagedBuffer = buffer;
+    if (buffer)
     {
-      CFRetain(a3);
+      CFRetain(buffer);
     }
 
     if (stagedBuffer)
@@ -114,16 +114,16 @@
     os_unfair_lock_unlock(&self->_lock);
     output = self->super._output;
 
-    [(BWNodeOutput *)output emitSampleBuffer:a3];
+    [(BWNodeOutput *)output emitSampleBuffer:buffer];
   }
 }
 
-- (void)handleNodeError:(id)a3 forInput:(id)a4
+- (void)handleNodeError:(id)error forInput:(id)input
 {
-  -[BWPortraitHDRStagingNode bufferReceivedWithFlags:error:](self, "bufferReceivedWithFlags:error:", 0, [a3 errorCode]);
+  -[BWPortraitHDRStagingNode bufferReceivedWithFlags:error:](self, "bufferReceivedWithFlags:error:", 0, [error errorCode]);
   output = self->super._output;
 
-  [(BWNodeOutput *)output emitNodeError:a3];
+  [(BWNodeOutput *)output emitNodeError:error];
 }
 
 @end

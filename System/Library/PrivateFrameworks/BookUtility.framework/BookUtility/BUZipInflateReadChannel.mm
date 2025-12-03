@@ -1,46 +1,46 @@
 @interface BUZipInflateReadChannel
-+ (void)test_setMaxBufferSize:(unint64_t)a3;
-- (BOOL)processData:(id)a3 inflateResult:(int *)a4 CRC:(unsigned int *)a5 isDone:(BOOL)a6 handler:(id)a7;
-- (BUZipInflateReadChannel)initWithReadChannel:(id)a3 uncompressedSize:(unint64_t)a4 CRC:(unsigned int)a5 validateCRC:(BOOL)a6;
++ (void)test_setMaxBufferSize:(unint64_t)size;
+- (BOOL)processData:(id)data inflateResult:(int *)result CRC:(unsigned int *)c isDone:(BOOL)done handler:(id)handler;
+- (BUZipInflateReadChannel)initWithReadChannel:(id)channel uncompressedSize:(unint64_t)size CRC:(unsigned int)c validateCRC:(BOOL)rC;
 - (void)close;
 - (void)dealloc;
-- (void)handleFailureWithHandler:(id)a3 error:(id)a4;
+- (void)handleFailureWithHandler:(id)handler error:(id)error;
 - (void)prepareBuffer;
-- (void)readWithHandler:(id)a3;
+- (void)readWithHandler:(id)handler;
 @end
 
 @implementation BUZipInflateReadChannel
 
-+ (void)test_setMaxBufferSize:(unint64_t)a3
++ (void)test_setMaxBufferSize:(unint64_t)size
 {
-  v3 = 0xFFFFFFFFLL;
-  if (a3 < 0xFFFFFFFF)
+  sizeCopy = 0xFFFFFFFFLL;
+  if (size < 0xFFFFFFFF)
   {
-    v3 = a3;
+    sizeCopy = size;
   }
 
-  if (!a3)
+  if (!size)
   {
-    v3 = 0x40000;
+    sizeCopy = 0x40000;
   }
 
-  qword_27EC72970 = v3;
+  qword_27EC72970 = sizeCopy;
 }
 
-- (BUZipInflateReadChannel)initWithReadChannel:(id)a3 uncompressedSize:(unint64_t)a4 CRC:(unsigned int)a5 validateCRC:(BOOL)a6
+- (BUZipInflateReadChannel)initWithReadChannel:(id)channel uncompressedSize:(unint64_t)size CRC:(unsigned int)c validateCRC:(BOOL)rC
 {
-  v11 = a3;
+  channelCopy = channel;
   v16.receiver = self;
   v16.super_class = BUZipInflateReadChannel;
   v12 = [(BUZipInflateReadChannel *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_readChannel, a3);
+    objc_storeStrong(&v12->_readChannel, channel);
     v13->_stream.next_in = 0;
-    v13->_remainingUncompressedSize = a4;
-    v13->_CRC = a5;
-    v13->_validateCRC = a6;
+    v13->_remainingUncompressedSize = size;
+    v13->_CRC = c;
+    v13->_validateCRC = rC;
     v13->_stream.avail_in = 0;
     v13->_stream.avail_out = 0;
     v13->_stream.next_out = 0;
@@ -92,9 +92,9 @@
   self->_stream.next_out = v9;
 }
 
-- (void)readWithHandler:(id)a3
+- (void)readWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x2020000000;
@@ -118,7 +118,7 @@
   v8[3] = &unk_278D1DDF8;
   v10 = v20;
   v8[4] = self;
-  v6 = v4;
+  v6 = handlerCopy;
   v9 = v6;
   v11 = v16;
   v12 = v18;
@@ -131,11 +131,11 @@
   _Block_object_dispose(v20, 8);
 }
 
-- (BOOL)processData:(id)a3 inflateResult:(int *)a4 CRC:(unsigned int *)a5 isDone:(BOOL)a6 handler:(id)a7
+- (BOOL)processData:(id)data inflateResult:(int *)result CRC:(unsigned int *)c isDone:(BOOL)done handler:(id)handler
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a7;
+  doneCopy = done;
+  dataCopy = data;
+  handlerCopy = handler;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -145,12 +145,12 @@
   applier[2] = sub_241DCD458;
   applier[3] = &unk_278D1DE20;
   v25 = &v28;
-  v26 = a4;
+  resultCopy = result;
   applier[4] = self;
-  v27 = a5;
-  v14 = v13;
+  cCopy = c;
+  v14 = handlerCopy;
   v24 = v14;
-  dispatch_data_apply(v12, applier);
+  dispatch_data_apply(dataCopy, applier);
   v17 = objc_msgSend_validateCRC(self, v15, v16);
   v19 = *(v29 + 24);
   if ((v17 & v19) != 1)
@@ -158,14 +158,14 @@
     goto LABEL_9;
   }
 
-  if (v8)
+  if (doneCopy)
   {
-    if (!a5)
+    if (!c)
     {
 LABEL_8:
       LOBYTE(v19) = 1;
 LABEL_9:
-      if ((v19 & 1) == 0 || !v8 || *a4 == 1)
+      if ((v19 & 1) == 0 || !doneCopy || *result == 1)
       {
         if (v19)
         {
@@ -192,7 +192,7 @@ LABEL_18:
     }
 
 LABEL_7:
-    if (self->_CRC != *a5)
+    if (self->_CRC != *c)
     {
       v21 = BUZipLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -207,7 +207,7 @@ LABEL_7:
   }
 
   v20 = 1;
-  if (a5 && *a4 == 1)
+  if (c && *result == 1)
   {
     goto LABEL_7;
   }
@@ -218,21 +218,21 @@ LABEL_20:
   return v20 & 1;
 }
 
-- (void)handleFailureWithHandler:(id)a3 error:(id)a4
+- (void)handleFailureWithHandler:(id)handler error:(id)error
 {
-  if (a4)
+  if (error)
   {
-    v5 = *(a3 + 2);
-    v9 = a3;
+    v5 = *(handler + 2);
+    handlerCopy = handler;
     v5();
   }
 
   else
   {
     v6 = MEMORY[0x277CCA9B8];
-    v7 = a3;
-    v9 = objc_msgSend_bu_fileReadUnknownErrorWithUserInfo_(v6, v8, 0);
-    (*(a3 + 2))(v7, 1, 0);
+    handlerCopy2 = handler;
+    handlerCopy = objc_msgSend_bu_fileReadUnknownErrorWithUserInfo_(v6, v8, 0);
+    (*(handler + 2))(handlerCopy2, 1, 0);
   }
 }
 

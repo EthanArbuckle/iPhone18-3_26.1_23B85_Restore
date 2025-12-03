@@ -1,8 +1,8 @@
 @interface FMNSXPCCachedConnection
-- (FMNSXPCCachedConnection)initWithFMNSXPCConnection:(id)a3;
+- (FMNSXPCCachedConnection)initWithFMNSXPCConnection:(id)connection;
 - (id)remoteObjectProxy;
 - (void)_invalidate;
-- (void)addFailureBlock:(id)a3;
+- (void)addFailureBlock:(id)block;
 - (void)invalidate;
 @end
 
@@ -10,22 +10,22 @@
 
 - (id)remoteObjectProxy
 {
-  v2 = [(FMNSXPCCachedConnection *)self connection];
-  v3 = [v2 remoteObjectProxy];
+  connection = [(FMNSXPCCachedConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (void)invalidate
 {
   objc_initWeak(&location, self);
-  v3 = [(FMNSXPCCachedConnection *)self serialQueue];
+  serialQueue = [(FMNSXPCCachedConnection *)self serialQueue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __37__FMNSXPCCachedConnection_invalidate__block_invoke;
   v4[3] = &unk_1E86BD6C0;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(serialQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -39,16 +39,16 @@ void __37__FMNSXPCCachedConnection_invalidate__block_invoke(uint64_t a1)
 
 - (void)_invalidate
 {
-  v3 = [(FMNSXPCCachedConnection *)self connection];
-  if (v3)
+  connection = [(FMNSXPCCachedConnection *)self connection];
+  if (connection)
   {
   }
 
   else
   {
-    v4 = [(FMNSXPCCachedConnection *)self failureBlock];
+    failureBlock = [(FMNSXPCCachedConnection *)self failureBlock];
 
-    if (!v4)
+    if (!failureBlock)
     {
       return;
     }
@@ -56,27 +56,27 @@ void __37__FMNSXPCCachedConnection_invalidate__block_invoke(uint64_t a1)
 
   [(FMNSXPCCachedConnection *)self setFailureBlock:0];
   [(FMNSXPCCachedConnection *)self setConnection:0];
-  v5 = [(FMNSXPCCachedConnection *)self didInvalidate];
+  didInvalidate = [(FMNSXPCCachedConnection *)self didInvalidate];
 
-  if (v5)
+  if (didInvalidate)
   {
-    v6 = [(FMNSXPCCachedConnection *)self didInvalidate];
-    v6[2]();
+    didInvalidate2 = [(FMNSXPCCachedConnection *)self didInvalidate];
+    didInvalidate2[2]();
 
     [(FMNSXPCCachedConnection *)self setDidInvalidate:0];
   }
 }
 
-- (FMNSXPCCachedConnection)initWithFMNSXPCConnection:(id)a3
+- (FMNSXPCCachedConnection)initWithFMNSXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = FMNSXPCCachedConnection;
   v5 = [(FMNSXPCCachedConnection *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(FMNSXPCCachedConnection *)v5 setConnection:v4];
+    [(FMNSXPCCachedConnection *)v5 setConnection:connectionCopy];
     v7 = dispatch_queue_create("FMNSXPCCachedConnectionSerialQueue", 0);
     [(FMNSXPCCachedConnection *)v6 setSerialQueue:v7];
   }
@@ -84,18 +84,18 @@ void __37__FMNSXPCCachedConnection_invalidate__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)addFailureBlock:(id)a3
+- (void)addFailureBlock:(id)block
 {
-  v4 = a3;
-  [(FMNSXPCCachedConnection *)self setFailureBlock:v4];
+  blockCopy = block;
+  [(FMNSXPCCachedConnection *)self setFailureBlock:blockCopy];
   objc_initWeak(&location, self);
-  v5 = [(FMNSXPCCachedConnection *)self connection];
+  connection = [(FMNSXPCCachedConnection *)self connection];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__FMNSXPCCachedConnection_addFailureBlock___block_invoke;
   v6[3] = &unk_1E86BD698;
   objc_copyWeak(&v7, &location);
-  [v5 addFailureBlock:v6];
+  [connection addFailureBlock:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);

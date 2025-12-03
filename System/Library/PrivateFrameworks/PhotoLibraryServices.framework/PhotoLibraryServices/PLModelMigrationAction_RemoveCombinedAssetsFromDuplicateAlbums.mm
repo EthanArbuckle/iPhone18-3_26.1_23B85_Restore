@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_RemoveCombinedAssetsFromDuplicateAlbums
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_RemoveCombinedAssetsFromDuplicateAlbums
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contextCopy = context;
   v6 = +[PLManagedAsset fetchRequest];
   v7 = MEMORY[0x1E696AB28];
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %d", @"duplicateAssetVisibilityState", 0];
@@ -25,7 +25,7 @@
   [v6 setPredicate:v15];
 
   [v6 setFetchBatchSize:100];
-  v16 = [PLModelMigrationActionUtility removeFromDuplicatesWithAction:self managedObjectContext:v5 fetchRequest:v6 requiresLibraryReprocessing:1 error:a4];
+  v16 = [PLModelMigrationActionUtility removeFromDuplicatesWithAction:self managedObjectContext:contextCopy fetchRequest:v6 requiresLibraryReprocessing:1 error:error];
 
   [(PLModelMigrationActionCore *)self finalizeProgress];
   return v16;

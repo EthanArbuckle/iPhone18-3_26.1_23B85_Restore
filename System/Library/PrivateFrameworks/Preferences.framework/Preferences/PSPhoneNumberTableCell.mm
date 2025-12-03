@@ -9,33 +9,33 @@
   v24.receiver = self;
   v24.super_class = PSPhoneNumberTableCell;
   [(PSEditableTableCell *)&v24 layoutSubviews];
-  v3 = [(PSPhoneNumberTableCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PSPhoneNumberTableCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(PSEditableTableCell *)self textField];
-  [v12 frame];
+  textField = [(PSEditableTableCell *)self textField];
+  [textField frame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
 
-  v19 = [MEMORY[0x1E69DC668] sharedApplication];
-  v20 = [v19 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  v21 = [(PSEditableTableCell *)self textField];
-  if (v20)
+  textField2 = [(PSEditableTableCell *)self textField];
+  if (userInterfaceLayoutDirection)
   {
-    [v21 setTextAlignment:0];
+    [textField2 setTextAlignment:0];
 
     v22 = 35.0;
   }
 
   else
   {
-    [v21 setTextAlignment:2];
+    [textField2 setTextAlignment:2];
 
     v25.origin.x = v5;
     v25.origin.y = v7;
@@ -44,8 +44,8 @@
     v22 = CGRectGetMaxX(v25) + -35.0 - v16;
   }
 
-  v23 = [(PSEditableTableCell *)self textField];
-  [v23 setFrame:{v22, v14, v16, v18}];
+  textField3 = [(PSEditableTableCell *)self textField];
+  [textField3 setFrame:{v22, v14, v16, v18}];
 }
 
 @end

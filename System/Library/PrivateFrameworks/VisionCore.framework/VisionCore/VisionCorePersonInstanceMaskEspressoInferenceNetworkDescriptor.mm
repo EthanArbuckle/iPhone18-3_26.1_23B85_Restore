@@ -1,16 +1,16 @@
 @interface VisionCorePersonInstanceMaskEspressoInferenceNetworkDescriptor
-+ (id)personInstanceMaskV1AndReturnError:(id *)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)personInstanceMaskV1AndReturnError:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)personInstanceMaskConfidencesOutput;
 - (NSArray)personInstanceMasksOutput;
 @end
 
 @implementation VisionCorePersonInstanceMaskEspressoInferenceNetworkDescriptor
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -22,7 +22,7 @@
     {
       v7.receiver = self;
       v7.super_class = VisionCorePersonInstanceMaskEspressoInferenceNetworkDescriptor;
-      v5 = [(VisionCoreInferenceNetworkDescriptor *)&v7 isEqual:v4];
+      v5 = [(VisionCoreInferenceNetworkDescriptor *)&v7 isEqual:equalCopy];
     }
 
     else
@@ -37,8 +37,8 @@
 - (NSArray)personInstanceMaskConfidencesOutput
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(VisionCoreInferenceNetworkDescriptor *)self outputs];
-  v3 = [v2 objectForKeyedSubscript:@"person_instance_confidences:0"];
+  outputs = [(VisionCoreInferenceNetworkDescriptor *)self outputs];
+  v3 = [outputs objectForKeyedSubscript:@"person_instance_confidences:0"];
   v6[0] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
@@ -48,21 +48,21 @@
 - (NSArray)personInstanceMasksOutput
 {
   v9[4] = *MEMORY[0x1E69E9840];
-  v2 = [(VisionCoreInferenceNetworkDescriptor *)self outputs];
-  v3 = [v2 objectForKeyedSubscript:@"person_instances_1:0"];
+  outputs = [(VisionCoreInferenceNetworkDescriptor *)self outputs];
+  v3 = [outputs objectForKeyedSubscript:@"person_instances_1:0"];
   v9[0] = v3;
-  v4 = [v2 objectForKeyedSubscript:@"person_instances_2:0"];
+  v4 = [outputs objectForKeyedSubscript:@"person_instances_2:0"];
   v9[1] = v4;
-  v5 = [v2 objectForKeyedSubscript:@"person_instances_3:0"];
+  v5 = [outputs objectForKeyedSubscript:@"person_instances_3:0"];
   v9[2] = v5;
-  v6 = [v2 objectForKeyedSubscript:@"person_instances_4:0"];
+  v6 = [outputs objectForKeyedSubscript:@"person_instances_4:0"];
   v9[3] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:4];
 
   return v7;
 }
 
-+ (id)personInstanceMaskV1AndReturnError:(id *)a3
++ (id)personInstanceMaskV1AndReturnError:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
   v4 = VisionCoreANEArchitectureName();
@@ -87,10 +87,10 @@
   v13 = &unk_1F59F94B0;
   v14 = @"person_instance_confidences:0";
   objc_opt_self();
-  v15 = [VisionCoreEspressoUtils URLForModelNamed:v10 error:a3];
+  v15 = [VisionCoreEspressoUtils URLForModelNamed:v10 error:error];
   if (v15)
   {
-    v31 = a3;
+    errorCopy = error;
     v32 = v7;
     v16 = [&unk_1F59F94B0 count];
     v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v16];
@@ -125,7 +125,7 @@
     [v17 setObject:&unk_1F59F90A8 forKeyedSubscript:@"person_instance_confidences:0"];
     v33 = 0;
     v34 = 0;
-    v23 = [VisionCoreEspressoUtils getInputImageTensorDescriptor:&v34 outputTensorDescriptors:&v33 forNetworkModelFileURL:v15 inputBlobName:@"image" pixelFormatType:1111970369 outputBlobNamesWithTypes:v17 confidencesBlobNamesWithLabelsFiles:0 error:v31];
+    v23 = [VisionCoreEspressoUtils getInputImageTensorDescriptor:&v34 outputTensorDescriptors:&v33 forNetworkModelFileURL:v15 inputBlobName:@"image" pixelFormatType:1111970369 outputBlobNamesWithTypes:v17 confidencesBlobNamesWithLabelsFiles:0 error:errorCopy];
     v24 = v34;
     v25 = v33;
     v26 = 0;
@@ -133,8 +133,8 @@
     {
       v27 = [[VisionCoreProcessingDescriptorSpecifier alloc] initWithIdentifier:@"VisionCoreInferenceNetworkIdentifierPersonInstanceMaskEspresso" version:v11];
       v28 = [VisionCorePersonInstanceMaskEspressoInferenceNetworkDescriptor alloc];
-      v29 = [v25 allValues];
-      v26 = [(VisionCoreInferenceNetworkDescriptor *)v28 initWithURL:v15 specifier:v27 networkHeadVersions:0 inputImage:v24 outputs:v29 confidencesOutput:0];
+      allValues = [v25 allValues];
+      v26 = [(VisionCoreInferenceNetworkDescriptor *)v28 initWithURL:v15 specifier:v27 networkHeadVersions:0 inputImage:v24 outputs:allValues confidencesOutput:0];
     }
 
     v7 = v32;

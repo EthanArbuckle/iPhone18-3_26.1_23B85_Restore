@@ -1,30 +1,30 @@
 @interface MapsAppleConnectAuthViewController
-+ (void)presentAppleConnectAuthControllerFrom:(id)a3 withProxyURL:(id)a4;
-- (MapsAppleConnectAuthViewController)initWithProxyURL:(id)a3;
++ (void)presentAppleConnectAuthControllerFrom:(id)from withProxyURL:(id)l;
+- (MapsAppleConnectAuthViewController)initWithProxyURL:(id)l;
 - (void)_dismissViewController;
 - (void)_doAppleConnectAuthentication;
-- (void)_updateStatus:(BOOL)a3 message:(id)a4;
-- (void)authenticator:(id)a3 didCompleteWithError:(id)a4;
-- (void)authenticator:(id)a3 didCompleteWithResult:(id)a4;
-- (void)setPersonID:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)_updateStatus:(BOOL)status message:(id)message;
+- (void)authenticator:(id)authenticator didCompleteWithError:(id)error;
+- (void)authenticator:(id)authenticator didCompleteWithResult:(id)result;
+- (void)setPersonID:(id)d;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation MapsAppleConnectAuthViewController
 
-- (void)setPersonID:(id)a3
+- (void)setPersonID:(id)d
 {
-  v4 = a3;
-  v5 = [(MapsAppleConnectAuthViewController *)self personID];
-  v6 = v5;
-  if (v5 == v4)
+  dCopy = d;
+  personID = [(MapsAppleConnectAuthViewController *)self personID];
+  v6 = personID;
+  if (personID == dCopy)
   {
   }
 
   else
   {
-    v7 = [v4 isEqual:v5];
+    v7 = [dCopy isEqual:personID];
 
     if ((v7 & 1) == 0)
     {
@@ -35,7 +35,7 @@
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Updating AppleConnect ID", v9, 2u);
       }
 
-      if (v4)
+      if (dCopy)
       {
         GEOConfigSetString();
       }
@@ -48,9 +48,9 @@
   }
 }
 
-- (void)authenticator:(id)a3 didCompleteWithError:(id)a4
+- (void)authenticator:(id)authenticator didCompleteWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   self->_state = 2;
   v6 = +[NSNotificationCenter defaultCenter];
   v7 = MapsAuthDidFinishNotification;
@@ -59,8 +59,8 @@
   v8 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
   [v6 postNotificationName:v7 object:self userInfo:v8];
 
-  v9 = [v5 domain];
-  LODWORD(v7) = [v9 isEqualToString:@"AppleConnectErrorDomain"];
+  domain = [errorCopy domain];
+  LODWORD(v7) = [domain isEqualToString:@"AppleConnectErrorDomain"];
 
   if (!v7)
   {
@@ -68,7 +68,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v17 = v5;
+      v17 = errorCopy;
       v13 = "Apple Connect Authentication failed with error: %@";
 LABEL_10:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, v13, buf, 0xCu);
@@ -76,22 +76,22 @@ LABEL_10:
 
 LABEL_11:
 
-    v14 = [v5 localizedDescription];
-    v15 = [NSString stringWithFormat:@"Failed with error: %@", v14];
+    localizedDescription = [errorCopy localizedDescription];
+    v15 = [NSString stringWithFormat:@"Failed with error: %@", localizedDescription];
     [(MapsAppleConnectAuthViewController *)self _updateStatus:0 message:v15];
 
     goto LABEL_12;
   }
 
-  v10 = [v5 code];
+  code = [errorCopy code];
   v11 = GEOGetMapsProxyAuthLog();
   v12 = v11;
-  if (v10 != -100)
+  if (code != -100)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v17 = v10;
+      v17 = code;
       v13 = "Apple Connect Authentication failed with error %ld";
       goto LABEL_10;
     }
@@ -110,19 +110,19 @@ LABEL_12:
   [(MapsAppleConnectAuthViewController *)self setPersonID:0];
 }
 
-- (void)authenticator:(id)a3 didCompleteWithResult:(id)a4
+- (void)authenticator:(id)authenticator didCompleteWithResult:(id)result
 {
-  v5 = a4;
+  resultCopy = result;
   self->_state = 2;
-  v6 = [v5 token];
-  if (![v6 length])
+  token = [resultCopy token];
+  if (![token length])
   {
 
     goto LABEL_7;
   }
 
-  v7 = [v5 personId];
-  v8 = [v7 length];
+  personId = [resultCopy personId];
+  v8 = [personId length];
 
   if (!v8)
   {
@@ -137,20 +137,20 @@ LABEL_7:
   v9 = GEOGetMapsProxyAuthLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [v5 username];
+    username = [resultCopy username];
     v16 = 138412290;
-    v17 = v10;
+    v17 = username;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Apple Connect Authentication Success for User: %@", &v16, 0xCu);
   }
 
   [(MapsAppleConnectAuthViewController *)self _updateStatus:1 message:@"Complete"];
   v11 = +[GEOMapsAuthServiceHelper sharedAuthHelper];
-  v12 = [v5 token];
-  v13 = [(MapsAppleConnectAuthViewController *)self authProxyURL];
-  [v11 renewMapsAuthProxyToken:0 fromToken:v12 authProxyURL:v13 suppressNotification:0];
+  token2 = [resultCopy token];
+  authProxyURL = [(MapsAppleConnectAuthViewController *)self authProxyURL];
+  [v11 renewMapsAuthProxyToken:0 fromToken:token2 authProxyURL:authProxyURL suppressNotification:0];
 
-  v14 = [v5 personId];
-  [(MapsAppleConnectAuthViewController *)self setPersonID:v14];
+  personId2 = [resultCopy personId];
+  [(MapsAppleConnectAuthViewController *)self setPersonID:personId2];
 
   [(MapsAppleConnectAuthViewController *)self _dismissViewController];
 LABEL_8:
@@ -198,24 +198,24 @@ LABEL_8:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_updateStatus:(BOOL)a3 message:(id)a4
+- (void)_updateStatus:(BOOL)status message:(id)message
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100A7FC94;
   block[3] = &unk_101660CE8;
-  v7 = a3;
+  statusCopy = status;
   block[4] = self;
-  v6 = a4;
-  v4 = v6;
+  messageCopy = message;
+  v4 = messageCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = MapsAppleConnectAuthViewController;
-  [(MapsAppleConnectAuthViewController *)&v5 viewDidAppear:a3];
+  [(MapsAppleConnectAuthViewController *)&v5 viewDidAppear:appear];
   if (!self->_alreadyDisplayedACAuth)
   {
     block[0] = _NSConcreteStackBlock;
@@ -238,12 +238,12 @@ LABEL_8:
 
   [(UIBarButtonItem *)self->_cancelButton setEnabled:0];
   v5 = self->_cancelButton;
-  v6 = [(MapsAppleConnectAuthViewController *)self navigationItem];
-  [v6 setLeftBarButtonItem:v5];
+  navigationItem = [(MapsAppleConnectAuthViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v5];
 
   v7 = +[UIColor systemBackgroundColor];
-  v8 = [(MapsAppleConnectAuthViewController *)self view];
-  [v8 setBackgroundColor:v7];
+  view = [(MapsAppleConnectAuthViewController *)self view];
+  [view setBackgroundColor:v7];
 
   v9 = [UILabel alloc];
   y = CGRectZero.origin.y;
@@ -285,122 +285,122 @@ LABEL_8:
   [v21 addSubview:v15];
   [v21 addSubview:self->_statusLabel];
   [v21 addSubview:self->_reAuthButton];
-  v22 = [(MapsAppleConnectAuthViewController *)self view];
-  [v22 addSubview:v21];
+  view2 = [(MapsAppleConnectAuthViewController *)self view];
+  [view2 addSubview:v21];
 
-  v77 = [v21 topAnchor];
-  v78 = [(MapsAppleConnectAuthViewController *)self view];
-  v76 = [v78 layoutMarginsGuide];
-  v75 = [v76 topAnchor];
-  v74 = [v77 constraintEqualToSystemSpacingBelowAnchor:v75 multiplier:3.0];
+  topAnchor = [v21 topAnchor];
+  view3 = [(MapsAppleConnectAuthViewController *)self view];
+  layoutMarginsGuide = [view3 layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide topAnchor];
+  v74 = [topAnchor constraintEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:3.0];
   v80[0] = v74;
-  v73 = [(MapsAppleConnectAuthViewController *)self view];
-  v72 = [v73 layoutMarginsGuide];
-  v71 = [v72 bottomAnchor];
-  v70 = [v21 bottomAnchor];
-  v69 = [v71 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v70 multiplier:5.0];
+  view4 = [(MapsAppleConnectAuthViewController *)self view];
+  layoutMarginsGuide2 = [view4 layoutMarginsGuide];
+  bottomAnchor = [layoutMarginsGuide2 bottomAnchor];
+  bottomAnchor2 = [v21 bottomAnchor];
+  v69 = [bottomAnchor constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:bottomAnchor2 multiplier:5.0];
   v80[1] = v69;
-  v67 = [v21 leadingAnchor];
-  v68 = [(MapsAppleConnectAuthViewController *)self view];
-  v66 = [v68 layoutMarginsGuide];
-  v65 = [v66 leadingAnchor];
-  v64 = [v67 constraintEqualToSystemSpacingAfterAnchor:v65 multiplier:1.0];
+  leadingAnchor = [v21 leadingAnchor];
+  view5 = [(MapsAppleConnectAuthViewController *)self view];
+  layoutMarginsGuide3 = [view5 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide3 leadingAnchor];
+  v64 = [leadingAnchor constraintEqualToSystemSpacingAfterAnchor:leadingAnchor2 multiplier:1.0];
   v80[2] = v64;
-  v63 = [(MapsAppleConnectAuthViewController *)self view];
-  v62 = [v63 layoutMarginsGuide];
-  v61 = [v62 trailingAnchor];
-  v60 = [v21 trailingAnchor];
-  v59 = [v61 constraintEqualToSystemSpacingAfterAnchor:v60 multiplier:1.0];
+  view6 = [(MapsAppleConnectAuthViewController *)self view];
+  layoutMarginsGuide4 = [view6 layoutMarginsGuide];
+  trailingAnchor = [layoutMarginsGuide4 trailingAnchor];
+  trailingAnchor2 = [v21 trailingAnchor];
+  v59 = [trailingAnchor constraintEqualToSystemSpacingAfterAnchor:trailingAnchor2 multiplier:1.0];
   v80[3] = v59;
-  v57 = [v13 topAnchor];
-  v56 = [v21 topAnchor];
-  v55 = [v57 constraintEqualToAnchor:v56];
+  topAnchor3 = [v13 topAnchor];
+  topAnchor4 = [v21 topAnchor];
+  v55 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v80[4] = v55;
-  v54 = [v15 topAnchor];
-  v53 = [v13 bottomAnchor];
-  v51 = [v54 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v53 multiplier:1.0];
+  topAnchor5 = [v15 topAnchor];
+  bottomAnchor3 = [v13 bottomAnchor];
+  v51 = [topAnchor5 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:bottomAnchor3 multiplier:1.0];
   v80[5] = v51;
-  v50 = [(UILabel *)self->_statusLabel topAnchor];
+  topAnchor6 = [(UILabel *)self->_statusLabel topAnchor];
   v58 = v15;
-  v49 = [v15 bottomAnchor];
-  v48 = [v50 constraintEqualToSystemSpacingBelowAnchor:v49 multiplier:3.0];
+  bottomAnchor4 = [v15 bottomAnchor];
+  v48 = [topAnchor6 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor4 multiplier:3.0];
   v80[6] = v48;
-  v47 = [(UIButton *)self->_reAuthButton topAnchor];
-  v46 = [(UILabel *)self->_statusLabel bottomAnchor];
-  v45 = [v47 constraintEqualToSystemSpacingBelowAnchor:v46 multiplier:3.0];
+  topAnchor7 = [(UIButton *)self->_reAuthButton topAnchor];
+  bottomAnchor5 = [(UILabel *)self->_statusLabel bottomAnchor];
+  v45 = [topAnchor7 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor5 multiplier:3.0];
   v80[7] = v45;
-  v44 = [v21 bottomAnchor];
-  v43 = [(UIButton *)self->_reAuthButton bottomAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43];
+  bottomAnchor6 = [v21 bottomAnchor];
+  bottomAnchor7 = [(UIButton *)self->_reAuthButton bottomAnchor];
+  v42 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
   v80[8] = v42;
-  v41 = [v15 centerXAnchor];
-  v40 = [v21 centerXAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  centerXAnchor = [v15 centerXAnchor];
+  centerXAnchor2 = [v21 centerXAnchor];
+  v39 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v80[9] = v39;
   v52 = v13;
-  v38 = [v13 leadingAnchor];
-  v37 = [v21 leadingAnchor];
-  v36 = [v38 constraintEqualToSystemSpacingAfterAnchor:v37 multiplier:1.0];
+  leadingAnchor3 = [v13 leadingAnchor];
+  leadingAnchor4 = [v21 leadingAnchor];
+  v36 = [leadingAnchor3 constraintEqualToSystemSpacingAfterAnchor:leadingAnchor4 multiplier:1.0];
   v80[10] = v36;
-  v35 = [v21 trailingAnchor];
-  v34 = [v13 trailingAnchor];
-  v33 = [v35 constraintEqualToSystemSpacingAfterAnchor:v34 multiplier:1.0];
+  trailingAnchor3 = [v21 trailingAnchor];
+  trailingAnchor4 = [v13 trailingAnchor];
+  v33 = [trailingAnchor3 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor4 multiplier:1.0];
   v80[11] = v33;
-  v32 = [(UILabel *)self->_statusLabel leadingAnchor];
-  v23 = [v21 leadingAnchor];
-  v24 = [v32 constraintEqualToSystemSpacingAfterAnchor:v23 multiplier:1.0];
+  leadingAnchor5 = [(UILabel *)self->_statusLabel leadingAnchor];
+  leadingAnchor6 = [v21 leadingAnchor];
+  v24 = [leadingAnchor5 constraintEqualToSystemSpacingAfterAnchor:leadingAnchor6 multiplier:1.0];
   v80[12] = v24;
-  v25 = [v21 trailingAnchor];
-  v26 = [(UILabel *)self->_statusLabel trailingAnchor];
-  v27 = [v25 constraintEqualToSystemSpacingAfterAnchor:v26 multiplier:1.0];
+  trailingAnchor5 = [v21 trailingAnchor];
+  trailingAnchor6 = [(UILabel *)self->_statusLabel trailingAnchor];
+  v27 = [trailingAnchor5 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor6 multiplier:1.0];
   v80[13] = v27;
-  v28 = [(UIButton *)self->_reAuthButton centerXAnchor];
-  v29 = [v21 centerXAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
+  centerXAnchor3 = [(UIButton *)self->_reAuthButton centerXAnchor];
+  centerXAnchor4 = [v21 centerXAnchor];
+  v30 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v80[14] = v30;
   v31 = [NSArray arrayWithObjects:v80 count:15];
   [NSLayoutConstraint activateConstraints:v31];
 }
 
-- (MapsAppleConnectAuthViewController)initWithProxyURL:(id)a3
+- (MapsAppleConnectAuthViewController)initWithProxyURL:(id)l
 {
   v6.receiver = self;
   v6.super_class = MapsAppleConnectAuthViewController;
-  v3 = a3;
+  lCopy = l;
   v4 = [(MapsAppleConnectAuthViewController *)&v6 init];
-  [(MapsAppleConnectAuthViewController *)v4 setAuthProxyURL:v3, v6.receiver, v6.super_class];
+  [(MapsAppleConnectAuthViewController *)v4 setAuthProxyURL:lCopy, v6.receiver, v6.super_class];
 
   return v4;
 }
 
-+ (void)presentAppleConnectAuthControllerFrom:(id)a3 withProxyURL:(id)a4
++ (void)presentAppleConnectAuthControllerFrom:(id)from withProxyURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 presentedViewController];
+  fromCopy = from;
+  lCopy = l;
+  presentedViewController = [fromCopy presentedViewController];
 
-  if (v7)
+  if (presentedViewController)
   {
     do
     {
-      v13 = [v5 presentedViewController];
+      presentedViewController2 = [fromCopy presentedViewController];
 
-      v8 = [v13 presentedViewController];
+      v13PresentedViewController = [presentedViewController2 presentedViewController];
 
-      v9 = v13;
-      v5 = v13;
+      v9 = presentedViewController2;
+      fromCopy = presentedViewController2;
     }
 
-    while (v8);
+    while (v13PresentedViewController);
   }
 
   else
   {
-    v9 = v5;
+    v9 = fromCopy;
   }
 
   v14 = v9;
-  if (!v6)
+  if (!lCopy)
   {
     v10 = GEOGetURL();
     if (!v10)
@@ -408,18 +408,18 @@ LABEL_8:
       v10 = GEOGetURL();
       if (!v10)
       {
-        v6 = [UIAlertController alertControllerWithTitle:@"I'm afraid I can't do that" message:@"No Maps Authentication URL found. Refusing to attempt Apple Connect Auth. Try switching to a secure environment before re-attempting." preferredStyle:1];
+        lCopy = [UIAlertController alertControllerWithTitle:@"I'm afraid I can't do that" message:@"No Maps Authentication URL found. Refusing to attempt Apple Connect Auth. Try switching to a secure environment before re-attempting." preferredStyle:1];
         v11 = [UIAlertAction actionWithTitle:@"OK" style:0 handler:0];
-        [v6 addAction:v11];
-        [v14 presentViewController:v6 animated:1 completion:0];
+        [lCopy addAction:v11];
+        [v14 presentViewController:lCopy animated:1 completion:0];
         goto LABEL_12;
       }
     }
 
-    v6 = v10;
+    lCopy = v10;
   }
 
-  v11 = [[MapsAppleConnectAuthViewController alloc] initWithProxyURL:v6];
+  v11 = [[MapsAppleConnectAuthViewController alloc] initWithProxyURL:lCopy];
   v12 = [[UINavigationController alloc] initWithRootViewController:v11];
   if ([v14 isViewLoaded])
   {

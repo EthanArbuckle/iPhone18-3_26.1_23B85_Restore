@@ -1,20 +1,20 @@
 @interface WalkingRouteAttributesBuilder
-- (WalkingRouteAttributesBuilder)initWithWalkPreferences:(id)a3;
-- (void)fillRouteAttributes:(id)a3;
+- (WalkingRouteAttributesBuilder)initWithWalkPreferences:(id)preferences;
+- (void)fillRouteAttributes:(id)attributes;
 @end
 
 @implementation WalkingRouteAttributesBuilder
 
-- (void)fillRouteAttributes:(id)a3
+- (void)fillRouteAttributes:(id)attributes
 {
-  v7 = a3;
-  [v7 setMainTransportType:2];
-  v4 = [(WalkingRouteAttributesBuilder *)self walkPreferences];
-  v5 = [v4 walkingOptions];
-  [v7 setWalkingOptions:v5];
+  attributesCopy = attributes;
+  [attributesCopy setMainTransportType:2];
+  walkPreferences = [(WalkingRouteAttributesBuilder *)self walkPreferences];
+  walkingOptions = [walkPreferences walkingOptions];
+  [attributesCopy setWalkingOptions:walkingOptions];
 
-  [v7 addUiContext:4];
-  [v7 setIncludePhonetics:1];
+  [attributesCopy addUiContext:4];
+  [attributesCopy setIncludePhonetics:1];
   if (GEOConfigGetBOOL())
   {
     v6 = MGGetBoolAnswer();
@@ -25,19 +25,19 @@
     v6 = 0;
   }
 
-  [v7 setIncludeCellularCoverage:v6];
+  [attributesCopy setIncludeCellularCoverage:v6];
 }
 
-- (WalkingRouteAttributesBuilder)initWithWalkPreferences:(id)a3
+- (WalkingRouteAttributesBuilder)initWithWalkPreferences:(id)preferences
 {
-  v5 = a3;
+  preferencesCopy = preferences;
   v9.receiver = self;
   v9.super_class = WalkingRouteAttributesBuilder;
   v6 = [(WalkingRouteAttributesBuilder *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_walkPreferences, a3);
+    objc_storeStrong(&v6->_walkPreferences, preferences);
   }
 
   return v7;

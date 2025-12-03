@@ -1,13 +1,13 @@
 @interface PSSGMessageReadyForServerRequest
-+ (id)messageWithSessionName:(id)a3;
++ (id)messageWithSessionName:(id)name;
 @end
 
 @implementation PSSGMessageReadyForServerRequest
 
-+ (id)messageWithSessionName:(id)a3
++ (id)messageWithSessionName:(id)name
 {
-  v3 = a3;
-  v4 = [(PSSGMessageBase *)[PSSGMessageReadyForServerRequest alloc] initWithType:2 string1:v3];
+  nameCopy = name;
+  v4 = [(PSSGMessageBase *)[PSSGMessageReadyForServerRequest alloc] initWithType:2 string1:nameCopy];
 
   return v4;
 }

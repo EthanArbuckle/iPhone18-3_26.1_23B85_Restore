@@ -1,111 +1,111 @@
 @interface AKAuthorizationCredentialStateController
 - (AKAuthorizationCredentialStateController)init;
-- (AKAuthorizationCredentialStateController)initWithClient:(id)a3;
-- (AKAuthorizationCredentialStateController)initWithClient:(id)a3 accountManager:(id)a4 localAccountsStorageController:(id)a5 sharedAccountsStorageController:(id)a6;
+- (AKAuthorizationCredentialStateController)initWithClient:(id)client;
+- (AKAuthorizationCredentialStateController)initWithClient:(id)client accountManager:(id)manager localAccountsStorageController:(id)controller sharedAccountsStorageController:(id)storageController;
 - (BOOL)_demoModeEnabled;
-- (BOOL)_isCapableOfSilentAuthForRequest:(id)a3;
-- (BOOL)_verifyUserID:(id)a3 forAltDSID:(id)a4;
-- (id)_fetchDeveloperTeamWithClientID:(id)a3 withAltDSID:(id)a4;
-- (id)_fetchDeveloperTeamWithTeamID:(id)a3 withAltDSID:(id)a4;
-- (int64_t)_internalCredentialStateForUserState:(int64_t)a3 error:(id)a4;
-- (int64_t)_sanitizedCredentialStateForExternalClients:(int64_t)a3;
-- (int64_t)getInternalCredentialStateForCredentialRequestContext:(id)a3;
-- (void)_getLocalAndSharedCredentialStateWithStateRequest:(id)a3 completion:(id)a4;
-- (void)_getLocalCredentialStateWithStateRequest:(id)a3 completion:(id)a4;
-- (void)_getSharedCredentialStateRequest:(id)a3 completion:(id)a4;
-- (void)_verifyClientInformationForRequest:(id)a3 completion:(id)a4;
-- (void)getCredentialStateForClientID:(id)a3 completion:(id)a4;
-- (void)getCredentialStateForRequest:(id)a3 completion:(id)a4;
+- (BOOL)_isCapableOfSilentAuthForRequest:(id)request;
+- (BOOL)_verifyUserID:(id)d forAltDSID:(id)iD;
+- (id)_fetchDeveloperTeamWithClientID:(id)d withAltDSID:(id)iD;
+- (id)_fetchDeveloperTeamWithTeamID:(id)d withAltDSID:(id)iD;
+- (int64_t)_internalCredentialStateForUserState:(int64_t)state error:(id)error;
+- (int64_t)_sanitizedCredentialStateForExternalClients:(int64_t)clients;
+- (int64_t)getInternalCredentialStateForCredentialRequestContext:(id)context;
+- (void)_getLocalAndSharedCredentialStateWithStateRequest:(id)request completion:(id)completion;
+- (void)_getLocalCredentialStateWithStateRequest:(id)request completion:(id)completion;
+- (void)_getSharedCredentialStateRequest:(id)request completion:(id)completion;
+- (void)_verifyClientInformationForRequest:(id)request completion:(id)completion;
+- (void)getCredentialStateForClientID:(id)d completion:(id)completion;
+- (void)getCredentialStateForRequest:(id)request completion:(id)completion;
 @end
 
 @implementation AKAuthorizationCredentialStateController
 
 - (AKAuthorizationCredentialStateController)init
 {
-  v3 = self;
+  selfCopy = self;
   [(AKAuthorizationCredentialStateController *)self doesNotRecognizeSelector:a2];
-  objc_storeStrong(&v3, 0);
+  objc_storeStrong(&selfCopy, 0);
   return 0;
 }
 
-- (AKAuthorizationCredentialStateController)initWithClient:(id)a3
+- (AKAuthorizationCredentialStateController)initWithClient:(id)client
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v13;
-  v13 = 0;
+  objc_storeStrong(location, client);
+  v3 = selfCopy;
+  selfCopy = 0;
   v11.receiver = v3;
   v11.super_class = AKAuthorizationCredentialStateController;
   v10 = [(AKAuthorizationCredentialStateController *)&v11 init];
-  v13 = v10;
-  objc_storeStrong(&v13, v10);
+  selfCopy = v10;
+  objc_storeStrong(&selfCopy, v10);
   if (v10)
   {
-    objc_storeStrong(&v13->_client, location[0]);
+    objc_storeStrong(&selfCopy->_client, location[0]);
     v4 = +[AKAccountManager sharedInstance];
-    accountManager = v13->_accountManager;
-    v13->_accountManager = v4;
+    accountManager = selfCopy->_accountManager;
+    selfCopy->_accountManager = v4;
     _objc_release(accountManager);
     v6 = +[AKAuthorizationStoreManager sharedInstance];
-    localAccountsStorageController = v13->_localAccountsStorageController;
-    v13->_localAccountsStorageController = v6;
+    localAccountsStorageController = selfCopy->_localAccountsStorageController;
+    selfCopy->_localAccountsStorageController = v6;
     _objc_release(localAccountsStorageController);
-    objc_storeStrong(&v13->_sharedAccountsStorageController, 0);
+    objc_storeStrong(&selfCopy->_sharedAccountsStorageController, 0);
   }
 
-  v9 = _objc_retain(v13);
+  v9 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
-- (AKAuthorizationCredentialStateController)initWithClient:(id)a3 accountManager:(id)a4 localAccountsStorageController:(id)a5 sharedAccountsStorageController:(id)a6
+- (AKAuthorizationCredentialStateController)initWithClient:(id)client accountManager:(id)manager localAccountsStorageController:(id)controller sharedAccountsStorageController:(id)storageController
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, manager);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
+  objc_storeStrong(&v15, controller);
   v14 = 0;
-  objc_storeStrong(&v14, a6);
-  v6 = v18;
-  v18 = 0;
+  objc_storeStrong(&v14, storageController);
+  v6 = selfCopy;
+  selfCopy = 0;
   v13.receiver = v6;
   v13.super_class = AKAuthorizationCredentialStateController;
   v12 = [(AKAuthorizationCredentialStateController *)&v13 init];
-  v18 = v12;
-  objc_storeStrong(&v18, v12);
+  selfCopy = v12;
+  objc_storeStrong(&selfCopy, v12);
   if (v12)
   {
-    objc_storeStrong(&v18->_client, location[0]);
-    objc_storeStrong(&v18->_accountManager, v16);
-    objc_storeStrong(&v18->_localAccountsStorageController, v15);
-    objc_storeStrong(&v18->_sharedAccountsStorageController, v14);
+    objc_storeStrong(&selfCopy->_client, location[0]);
+    objc_storeStrong(&selfCopy->_accountManager, v16);
+    objc_storeStrong(&selfCopy->_localAccountsStorageController, v15);
+    objc_storeStrong(&selfCopy->_sharedAccountsStorageController, v14);
   }
 
-  v8 = _objc_retain(v18);
+  v8 = _objc_retain(selfCopy);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (void)getCredentialStateForRequest:(id)a3 completion:(id)a4
+- (void)getCredentialStateForRequest:(id)request completion:(id)completion
 {
-  v67 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v65 = 0;
-  objc_storeStrong(&v65, a4);
-  if ([(AKAuthorizationCredentialStateController *)v67 _demoModeEnabled])
+  objc_storeStrong(&v65, completion);
+  if ([(AKAuthorizationCredentialStateController *)selfCopy _demoModeEnabled])
   {
     v64 = _AKLogSiwa();
     v63 = OS_LOG_TYPE_DEFAULT;
@@ -124,9 +124,9 @@
 
   else
   {
-    v27 = [location[0] clientID];
-    _objc_release(v27);
-    if (!v27)
+    clientID = [location[0] clientID];
+    _objc_release(clientID);
+    if (!clientID)
     {
       v60 = _AKLogSiwa();
       v59 = OS_LOG_TYPE_DEFAULT;
@@ -143,21 +143,21 @@
       v56 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [(AKClient *)v67->_client bundleID];
-        sub_1000194D4(v70, v24);
+        bundleID = [(AKClient *)selfCopy->_client bundleID];
+        sub_1000194D4(v70, bundleID);
         _os_log_impl(&_mh_execute_header, v57, v56, "Setting clientID to %@", v70, 0xCu);
-        _objc_release(v24);
+        _objc_release(bundleID);
       }
 
       objc_storeStrong(&v57, 0);
-      v23 = [(AKClient *)v67->_client bundleID];
+      bundleID2 = [(AKClient *)selfCopy->_client bundleID];
       [location[0] setClientID:?];
-      _objc_release(v23);
+      _objc_release(bundleID2);
     }
 
-    v22 = [location[0] teamID];
-    _objc_release(v22);
-    if (!v22)
+    teamID = [location[0] teamID];
+    _objc_release(teamID);
+    if (!teamID)
     {
       v55 = _AKLogSiwa();
       v54 = OS_LOG_TYPE_DEFAULT;
@@ -174,57 +174,57 @@
       v51 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [(AKClient *)v67->_client teamID];
-        sub_1000194D4(v69, v19);
+        teamID2 = [(AKClient *)selfCopy->_client teamID];
+        sub_1000194D4(v69, teamID2);
         _os_log_impl(&_mh_execute_header, v52, v51, "Setting teamID to %@", v69, 0xCu);
-        _objc_release(v19);
+        _objc_release(teamID2);
       }
 
       objc_storeStrong(&v52, 0);
-      v18 = [(AKClient *)v67->_client teamID];
+      teamID3 = [(AKClient *)selfCopy->_client teamID];
       [location[0] setTeamID:?];
-      _objc_release(v18);
+      _objc_release(teamID3);
     }
 
-    v50 = [(AKClient *)v67->_client hasOwnerAccess];
-    if (v50)
+    hasOwnerAccess = [(AKClient *)selfCopy->_client hasOwnerAccess];
+    if (hasOwnerAccess)
     {
       goto LABEL_28;
     }
 
-    v15 = [location[0] clientID];
-    v16 = [(AKClient *)v67->_client bundleID];
+    clientID2 = [location[0] clientID];
+    bundleID3 = [(AKClient *)selfCopy->_client bundleID];
     v47 = 0;
     v45 = 0;
     v17 = 0;
-    if ([v15 isEqualToString:?])
+    if ([clientID2 isEqualToString:?])
     {
-      v48 = [location[0] teamID];
+      teamID4 = [location[0] teamID];
       v47 = 1;
-      v46 = [(AKClient *)v67->_client teamID];
+      teamID5 = [(AKClient *)selfCopy->_client teamID];
       v45 = 1;
-      v17 = [v48 isEqualToString:?];
+      v17 = [teamID4 isEqualToString:?];
     }
 
     if (v45)
     {
-      _objc_release(v46);
+      _objc_release(teamID5);
     }
 
     if (v47)
     {
-      _objc_release(v48);
+      _objc_release(teamID4);
     }
 
-    _objc_release(v16);
-    _objc_release(v15);
+    _objc_release(bundleID3);
+    _objc_release(clientID2);
     v49 = v17 & 1;
     if (v17)
     {
 LABEL_28:
-      v10 = [location[0] altDSID];
-      _objc_release(v10);
-      if (v10)
+      altDSID = [location[0] altDSID];
+      _objc_release(altDSID);
+      if (altDSID)
       {
         v41 = _AKLogSiwa();
         v40 = OS_LOG_TYPE_DEFAULT;
@@ -241,10 +241,10 @@ LABEL_28:
 
       else
       {
-        v42 = [(AKAccountManager *)v67->_accountManager altDSIDForAuthKitAccountRequestingAuthorization];
-        if (v42)
+        altDSIDForAuthKitAccountRequestingAuthorization = [(AKAccountManager *)selfCopy->_accountManager altDSIDForAuthKitAccountRequestingAuthorization];
+        if (altDSIDForAuthKitAccountRequestingAuthorization)
         {
-          [location[0] setAltDSID:v42];
+          [location[0] setAltDSID:altDSIDForAuthKitAccountRequestingAuthorization];
           v61 = 0;
         }
 
@@ -257,7 +257,7 @@ LABEL_28:
           v61 = 1;
         }
 
-        objc_storeStrong(&v42, 0);
+        objc_storeStrong(&altDSIDForAuthKitAccountRequestingAuthorization, 0);
         if (v61)
         {
           goto LABEL_38;
@@ -266,14 +266,14 @@ LABEL_28:
 
       [location[0] setShouldIgnoreUserID:0];
       [location[0] setShouldIgnoreTeamID:0];
-      v5 = v67;
+      v5 = selfCopy;
       v4 = location[0];
       v31 = _NSConcreteStackBlock;
       v32 = -1073741824;
       v33 = 0;
       v34 = sub_100115620;
       v35 = &unk_100323A48;
-      v36 = _objc_retain(v67);
+      v36 = _objc_retain(selfCopy);
       v37 = _objc_retain(location[0]);
       v38 = _objc_retain(v65);
       [(AKAuthorizationCredentialStateController *)v5 _verifyClientInformationForRequest:v4 completion:&v31];
@@ -288,12 +288,12 @@ LABEL_28:
     v43 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(AKClient *)v67->_client bundleID];
-      v13 = [(AKClient *)v67->_client teamID];
-      sub_10001B098(v68, v14, v13);
+      bundleID4 = [(AKClient *)selfCopy->_client bundleID];
+      teamID6 = [(AKClient *)selfCopy->_client teamID];
+      sub_10001B098(v68, bundleID4, teamID6);
       _os_log_impl(&_mh_execute_header, oslog, v43, "Requested Credential state does not match XPC client's bundleID (%@) or teamID (%@), returning AKAuthenticationErrorInvalidContext", v68, 0x16u);
-      _objc_release(v13);
-      _objc_release(v14);
+      _objc_release(teamID6);
+      _objc_release(bundleID4);
     }
 
     objc_storeStrong(&oslog, 0);
@@ -309,28 +309,28 @@ LABEL_38:
   objc_storeStrong(location, 0);
 }
 
-- (int64_t)getInternalCredentialStateForCredentialRequestContext:(id)a3
+- (int64_t)getInternalCredentialStateForCredentialRequestContext:(id)context
 {
-  v44 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v42 = objc_alloc_init(AKAuthorizationCredentialStateRequest);
-  v41 = [location[0] authorizationRequest];
-  v19 = [v41 teamID];
+  authorizationRequest = [location[0] authorizationRequest];
+  teamID = [authorizationRequest teamID];
   [v42 setTeamID:?];
-  _objc_release(v19);
-  v18 = [v41 userIdentifier];
+  _objc_release(teamID);
+  userIdentifier = [authorizationRequest userIdentifier];
   [v42 setUserID:?];
-  _objc_release(v18);
-  v17 = [v41 clientID];
+  _objc_release(userIdentifier);
+  clientID = [authorizationRequest clientID];
   [v42 setClientID:?];
-  _objc_release(v17);
+  _objc_release(clientID);
   [v42 setShouldIgnoreTeamID:{objc_msgSend(location[0], "_isWebLogin")}];
   [v42 setShouldIgnoreUserID:1];
-  v16 = [v42 clientID];
-  _objc_release(v16);
-  if (!v16)
+  clientID2 = [v42 clientID];
+  _objc_release(clientID2);
+  if (!clientID2)
   {
     v40 = _AKLogSiwa();
     v39 = OS_LOG_TYPE_DEFAULT;
@@ -347,21 +347,21 @@ LABEL_38:
     v36 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(AKClient *)v44->_client bundleID];
-      sub_1000194D4(v46, v13);
+      bundleID = [(AKClient *)selfCopy->_client bundleID];
+      sub_1000194D4(v46, bundleID);
       _os_log_impl(&_mh_execute_header, v37, v36, "Setting clientID to %@", v46, 0xCu);
-      _objc_release(v13);
+      _objc_release(bundleID);
     }
 
     objc_storeStrong(&v37, 0);
-    v12 = [(AKClient *)v44->_client bundleID];
+    bundleID2 = [(AKClient *)selfCopy->_client bundleID];
     [v42 setClientID:?];
-    _objc_release(v12);
+    _objc_release(bundleID2);
   }
 
-  v11 = [v42 teamID];
-  _objc_release(v11);
-  if (!v11)
+  teamID2 = [v42 teamID];
+  _objc_release(teamID2);
+  if (!teamID2)
   {
     v35 = _AKLogSiwa();
     v34 = OS_LOG_TYPE_DEFAULT;
@@ -378,16 +378,16 @@ LABEL_38:
     v31 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(AKClient *)v44->_client teamID];
-      sub_1000194D4(v45, v8);
+      teamID3 = [(AKClient *)selfCopy->_client teamID];
+      sub_1000194D4(v45, teamID3);
       _os_log_impl(&_mh_execute_header, v32, v31, "Setting teamID to %@", v45, 0xCu);
-      _objc_release(v8);
+      _objc_release(teamID3);
     }
 
     objc_storeStrong(&v32, 0);
-    v7 = [(AKClient *)v44->_client teamID];
+    teamID4 = [(AKClient *)selfCopy->_client teamID];
     [v42 setTeamID:?];
-    _objc_release(v7);
+    _objc_release(teamID4);
   }
 
   v26 = 0;
@@ -395,7 +395,7 @@ LABEL_38:
   v28 = 0x20000000;
   v29 = 32;
   v30 = 2;
-  v6 = v44;
+  v6 = selfCopy;
   v5 = v42;
   v20 = _NSConcreteStackBlock;
   v21 = -1073741824;
@@ -403,25 +403,25 @@ LABEL_38:
   v23 = sub_100115F40;
   v24 = &unk_100323A70;
   v25[1] = &v26;
-  v25[0] = _objc_retain(v44);
+  v25[0] = _objc_retain(selfCopy);
   [(AKAuthorizationCredentialStateController *)v6 _verifyClientInformationForRequest:v5 completion:&v20];
   v4 = v27[3];
   objc_storeStrong(v25, 0);
   _Block_object_dispose(&v26, 8);
-  objc_storeStrong(&v41, 0);
+  objc_storeStrong(&authorizationRequest, 0);
   objc_storeStrong(&v42, 0);
   objc_storeStrong(location, 0);
   return v4;
 }
 
-- (void)getCredentialStateForClientID:(id)a3 completion:(id)a4
+- (void)getCredentialStateForClientID:(id)d completion:(id)completion
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, completion);
   v16 = _AKLogSiwa();
   v15 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -435,14 +435,14 @@ LABEL_38:
   [v14 setClientID:location[0]];
   [v14 setShouldIgnoreTeamID:1];
   [v14 setShouldIgnoreUserID:1];
-  v5 = v19;
+  v5 = selfCopy;
   v4 = v14;
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
   v9 = 0;
   v10 = sub_100116224;
   v11 = &unk_100323A98;
-  v12 = _objc_retain(v19);
+  v12 = _objc_retain(selfCopy);
   v13 = _objc_retain(v17);
   [(AKAuthorizationCredentialStateController *)v5 _verifyClientInformationForRequest:v4 completion:&v7];
   objc_storeStrong(&v13, 0);
@@ -452,25 +452,25 @@ LABEL_38:
   objc_storeStrong(location, 0);
 }
 
-- (void)_verifyClientInformationForRequest:(id)a3 completion:(id)a4
+- (void)_verifyClientInformationForRequest:(id)request completion:(id)completion
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v31 = 0;
-  objc_storeStrong(&v31, a4);
-  v18 = [location[0] teamID];
-  v19 = 1;
-  if (v18)
+  objc_storeStrong(&v31, completion);
+  teamID = [location[0] teamID];
+  shouldIgnoreTeamID = 1;
+  if (teamID)
   {
-    v19 = [location[0] shouldIgnoreTeamID];
+    shouldIgnoreTeamID = [location[0] shouldIgnoreTeamID];
   }
 
-  _objc_release(v18);
-  if (v19)
+  _objc_release(teamID);
+  if (shouldIgnoreTeamID)
   {
-    if (![(AKClient *)v33->_client hasInternalEntitledAccess])
+    if (![(AKClient *)selfCopy->_client hasInternalEntitledAccess])
     {
       v30 = _AKLogSiwa();
       v29 = 16;
@@ -504,22 +504,22 @@ LABEL_38:
     objc_storeStrong(&v26, 0);
   }
 
-  v10 = [location[0] clientID];
-  _objc_release(v10);
-  if (v10)
+  clientID = [location[0] clientID];
+  _objc_release(clientID);
+  if (clientID)
   {
-    accountManager = v33->_accountManager;
-    v5 = [location[0] altDSID];
+    accountManager = selfCopy->_accountManager;
+    altDSID = [location[0] altDSID];
     v20 = [AKAccountManager authKitAccountWithAltDSID:"authKitAccountWithAltDSID:error:" error:?];
-    _objc_release(v5);
-    if (([(AKAccountManager *)v33->_accountManager userUnderAgeForAccount:v20]& 1) != 0)
+    _objc_release(altDSID);
+    if (([(AKAccountManager *)selfCopy->_accountManager userUnderAgeForAccount:v20]& 1) != 0)
     {
-      [(AKAuthorizationCredentialStateController *)v33 _getLocalCredentialStateWithStateRequest:location[0] completion:v31];
+      [(AKAuthorizationCredentialStateController *)selfCopy _getLocalCredentialStateWithStateRequest:location[0] completion:v31];
     }
 
     else
     {
-      [(AKAuthorizationCredentialStateController *)v33 _getLocalAndSharedCredentialStateWithStateRequest:location[0] completion:v31];
+      [(AKAuthorizationCredentialStateController *)selfCopy _getLocalAndSharedCredentialStateWithStateRequest:location[0] completion:v31];
     }
 
     objc_storeStrong(&v20, 0);
@@ -551,13 +551,13 @@ LABEL_19:
   objc_storeStrong(location, 0);
 }
 
-- (int64_t)_internalCredentialStateForUserState:(int64_t)a3 error:(id)a4
+- (int64_t)_internalCredentialStateForUserState:(int64_t)state error:(id)error
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  *(&location + 1) = a3;
+  *(&location + 1) = state;
   *&location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, error);
   if (location == __PAIR128__(3, 0))
   {
     v8 = 3;
@@ -577,14 +577,14 @@ LABEL_19:
   return v8;
 }
 
-- (void)_getLocalAndSharedCredentialStateWithStateRequest:(id)a3 completion:(id)a4
+- (void)_getLocalAndSharedCredentialStateWithStateRequest:(id)request completion:(id)completion
 {
-  v63 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v61 = 0;
-  objc_storeStrong(&v61, a4);
+  objc_storeStrong(&v61, completion);
   v60 = dispatch_group_create();
   dispatch_group_enter(v60);
   v53 = 0;
@@ -599,7 +599,7 @@ LABEL_19:
   v50 = 0x20000000;
   v51 = 32;
   v52 = 2;
-  v14 = v63;
+  v14 = selfCopy;
   v13 = location[0];
   v42 = _NSConcreteStackBlock;
   v43 = -1073741824;
@@ -622,10 +622,10 @@ LABEL_19:
   v33 = 0x20000000;
   v34 = 32;
   v35 = 2;
-  if (v63->_sharedAccountsStorageController)
+  if (selfCopy->_sharedAccountsStorageController)
   {
     dispatch_group_enter(v60);
-    v12 = v63;
+    v12 = selfCopy;
     v11 = location[0];
     v25 = _NSConcreteStackBlock;
     v26 = -1073741824;
@@ -710,31 +710,31 @@ LABEL_19:
   objc_storeStrong(location, 0);
 }
 
-- (void)_getLocalCredentialStateWithStateRequest:(id)a3 completion:(id)a4
+- (void)_getLocalCredentialStateWithStateRequest:(id)request completion:(id)completion
 {
-  v160 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v158 = 0;
-  objc_storeStrong(&v158, a4);
-  v157 = [(AKAccountManager *)v160->_accountManager altDSIDForAuthKitAccountRequestingAuthorization];
-  v78 = v160;
-  v79 = [location[0] clientID];
+  objc_storeStrong(&v158, completion);
+  altDSIDForAuthKitAccountRequestingAuthorization = [(AKAccountManager *)selfCopy->_accountManager altDSIDForAuthKitAccountRequestingAuthorization];
+  v78 = selfCopy;
+  clientID = [location[0] clientID];
   v156 = [AKAuthorizationCredentialStateController _fetchDeveloperTeamWithClientID:v78 withAltDSID:"_fetchDeveloperTeamWithClientID:withAltDSID:"];
-  _objc_release(v79);
-  v81 = [v156 apps];
-  v80 = [location[0] clientID];
-  v155 = [v81 objectForKeyedSubscript:?];
-  _objc_release(v80);
-  _objc_release(v81);
+  _objc_release(clientID);
+  apps = [v156 apps];
+  clientID2 = [location[0] clientID];
+  v155 = [apps objectForKeyedSubscript:?];
+  _objc_release(clientID2);
+  _objc_release(apps);
   if (v155)
   {
-    v72 = [v156 teamID];
-    v71 = [location[0] teamID];
-    v73 = [v72 isEqualToString:?];
-    _objc_release(v71);
-    _objc_release(v72);
+    teamID = [v156 teamID];
+    teamID2 = [location[0] teamID];
+    v73 = [teamID isEqualToString:?];
+    _objc_release(teamID2);
+    _objc_release(teamID);
     v151 = v73;
     v148 = 0;
     v146 = 0;
@@ -745,8 +745,8 @@ LABEL_19:
 
     else
     {
-      v70 = v160;
-      v149 = [location[0] teamID];
+      v70 = selfCopy;
+      teamID3 = [location[0] teamID];
       v148 = 1;
       v147 = [AKAuthorizationCredentialStateController _fetchDeveloperTeamWithTeamID:v70 withAltDSID:"_fetchDeveloperTeamWithTeamID:withAltDSID:"];
       v146 = 1;
@@ -761,41 +761,41 @@ LABEL_19:
 
     if (v148)
     {
-      _objc_release(v149);
+      _objc_release(teamID3);
     }
 
     if (v150 || ([location[0] shouldIgnoreTeamID] & 1) == 0)
     {
       if (v150)
       {
-        v56 = [v156 userIdentifier];
-        v55 = [location[0] userID];
-        v57 = [v56 isEqualToString:?];
-        _objc_release(v55);
-        _objc_release(v56);
+        userIdentifier = [v156 userIdentifier];
+        userID = [location[0] userID];
+        v57 = [userIdentifier isEqualToString:?];
+        _objc_release(userID);
+        _objc_release(userIdentifier);
         v140 = v57;
-        v59 = [v150 userIdentifier];
-        v58 = [location[0] userID];
-        v60 = [v59 isEqualToString:?];
-        _objc_release(v58);
-        _objc_release(v59);
+        userIdentifier2 = [v150 userIdentifier];
+        userID2 = [location[0] userID];
+        v60 = [userIdentifier2 isEqualToString:?];
+        _objc_release(userID2);
+        _objc_release(userIdentifier2);
         v139 = v60;
-        v61 = [v155 transferState];
-        v62 = [v61 isEqualToString:AKAuthorizationTransferStateTransferred];
-        _objc_release(v61);
+        transferState = [v155 transferState];
+        v62 = [transferState isEqualToString:AKAuthorizationTransferStateTransferred];
+        _objc_release(transferState);
         v138 = v62;
-        v63 = [v155 transferState];
-        v64 = [v63 isEqualToString:AKAuthorizationTransferStateExpired];
-        _objc_release(v63);
+        transferState2 = [v155 transferState];
+        v64 = [transferState2 isEqualToString:AKAuthorizationTransferStateExpired];
+        _objc_release(transferState2);
         v137 = v64;
         v136 = [v155 state] == 3;
         v135 = 0;
         if (v62 & 1) != 0 || (v137)
         {
-          v53 = v160;
-          v54 = [location[0] userID];
+          v53 = selfCopy;
+          userID3 = [location[0] userID];
           v135 = [AKAuthorizationCredentialStateController _verifyUserID:v53 forAltDSID:"_verifyUserID:forAltDSID:"];
-          _objc_release(v54);
+          _objc_release(userID3);
         }
 
         if (v136)
@@ -815,12 +815,12 @@ LABEL_19:
           v130 = OS_LOG_TYPE_ERROR;
           if (os_log_type_enabled(v131, OS_LOG_TYPE_ERROR))
           {
-            v50 = [v155 clientID];
-            v49 = [v156 teamID];
-            sub_10001B098(v161, v50, v49);
+            clientID3 = [v155 clientID];
+            teamID4 = [v156 teamID];
+            sub_10001B098(v161, clientID3, teamID4);
             _os_log_error_impl(&_mh_execute_header, v131, v130, "Transfer state stored in database with clientID: %@, teamID: %@", v161, 0x16u);
-            _objc_release(v49);
-            _objc_release(v50);
+            _objc_release(teamID4);
+            _objc_release(clientID3);
           }
 
           objc_storeStrong(&v131, 0);
@@ -1149,10 +1149,10 @@ LABEL_19:
         v141 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(v142, OS_LOG_TYPE_DEFAULT))
         {
-          v67 = [location[0] teamID];
-          sub_1000194D4(v162, v67);
+          teamID5 = [location[0] teamID];
+          sub_1000194D4(v162, teamID5);
           _os_log_impl(&_mh_execute_header, v142, v141, "No developer teams were found with the Team ID: %@", v162, 0xCu);
-          _objc_release(v67);
+          _objc_release(teamID5);
         }
 
         objc_storeStrong(&v142, 0);
@@ -1190,10 +1190,10 @@ LABEL_19:
     v153 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v154, OS_LOG_TYPE_DEFAULT))
     {
-      v76 = [location[0] clientID];
-      sub_1000194D4(v163, v76);
+      clientID4 = [location[0] clientID];
+      sub_1000194D4(v163, clientID4);
       _os_log_impl(&_mh_execute_header, v154, v153, "No applications were found with the provided Client ID: %@", v163, 0xCu);
-      _objc_release(v76);
+      _objc_release(clientID4);
     }
 
     objc_storeStrong(&v154, 0);
@@ -1206,21 +1206,21 @@ LABEL_19:
 
   objc_storeStrong(&v155, 0);
   objc_storeStrong(&v156, 0);
-  objc_storeStrong(&v157, 0);
+  objc_storeStrong(&altDSIDForAuthKitAccountRequestingAuthorization, 0);
   objc_storeStrong(&v158, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_getSharedCredentialStateRequest:(id)a3 completion:(id)a4
+- (void)_getSharedCredentialStateRequest:(id)request completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  sharedAccountsStorageController = v16->_sharedAccountsStorageController;
-  v6 = [location[0] clientID];
+  objc_storeStrong(&v14, completion);
+  sharedAccountsStorageController = selfCopy->_sharedAccountsStorageController;
+  clientID = [location[0] clientID];
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
   v9 = 0;
@@ -1228,8 +1228,8 @@ LABEL_19:
   v11 = &unk_100323AE8;
   v13 = _objc_retain(v14);
   v12 = _objc_retain(location[0]);
-  [(AKSharedAccountsStoring *)sharedAccountsStorageController fetchAccountsSharedWithCurrentUserWithClientID:v6 completionHandler:?];
-  _objc_release(v6);
+  [(AKSharedAccountsStoring *)sharedAccountsStorageController fetchAccountsSharedWithCurrentUserWithClientID:clientID completionHandler:?];
+  _objc_release(clientID);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v14, 0);
@@ -1244,17 +1244,17 @@ LABEL_19:
   return v4;
 }
 
-- (BOOL)_isCapableOfSilentAuthForRequest:(id)a3
+- (BOOL)_isCapableOfSilentAuthForRequest:(id)request
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  accountManager = v10->_accountManager;
-  v6 = [location[0] altDSID];
+  objc_storeStrong(location, request);
+  accountManager = selfCopy->_accountManager;
+  altDSID = [location[0] altDSID];
   v8 = [AKAccountManager authKitAccountWithAltDSID:"authKitAccountWithAltDSID:error:" error:?];
-  _objc_release(v6);
-  v3 = [(AKAccountManager *)v10->_accountManager continuationTokenForAccount:v8];
+  _objc_release(altDSID);
+  v3 = [(AKAccountManager *)selfCopy->_accountManager continuationTokenForAccount:v8];
   v7 = v3 != 0;
   _objc_release(v3);
   objc_storeStrong(&v8, 0);
@@ -1262,11 +1262,11 @@ LABEL_19:
   return v7;
 }
 
-- (int64_t)_sanitizedCredentialStateForExternalClients:(int64_t)a3
+- (int64_t)_sanitizedCredentialStateForExternalClients:(int64_t)clients
 {
-  if ((a3 - 4) > 1)
+  if ((clients - 4) > 1)
   {
-    return a3;
+    return clients;
   }
 
   else
@@ -1275,14 +1275,14 @@ LABEL_19:
   }
 }
 
-- (id)_fetchDeveloperTeamWithTeamID:(id)a3 withAltDSID:(id)a4
+- (id)_fetchDeveloperTeamWithTeamID:(id)d withAltDSID:(id)iD
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, iD);
   v15 = _AKLogSiwa();
   v14 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -1299,7 +1299,7 @@ LABEL_19:
   v11 = sub_100003B3C;
   v12 = sub_100011290;
   v13 = 0;
-  [(AKAuthorizationStoring *)v18->_localAccountsStorageController fetchDeveloperTeamWithTeamID:location[0] withAltDSID:v16 completion:?];
+  [(AKAuthorizationStoring *)selfCopy->_localAccountsStorageController fetchDeveloperTeamWithTeamID:location[0] withAltDSID:v16 completion:?];
   v5 = _objc_retain(v8[5]);
   _Block_object_dispose(&v7, 8);
   objc_storeStrong(&v13, 0);
@@ -1309,14 +1309,14 @@ LABEL_19:
   return v5;
 }
 
-- (id)_fetchDeveloperTeamWithClientID:(id)a3 withAltDSID:(id)a4
+- (id)_fetchDeveloperTeamWithClientID:(id)d withAltDSID:(id)iD
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, iD);
   v15 = _AKLogSiwa();
   v14 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -1333,7 +1333,7 @@ LABEL_19:
   v11 = sub_100003B3C;
   v12 = sub_100011290;
   v13 = 0;
-  [(AKAuthorizationStoring *)v18->_localAccountsStorageController fetchDeveloperTeamWithClientID:location[0] withAltDSID:v16 completion:?];
+  [(AKAuthorizationStoring *)selfCopy->_localAccountsStorageController fetchDeveloperTeamWithClientID:location[0] withAltDSID:v16 completion:?];
   v5 = _objc_retain(v8[5]);
   _Block_object_dispose(&v7, 8);
   objc_storeStrong(&v13, 0);
@@ -1343,14 +1343,14 @@ LABEL_19:
   return v5;
 }
 
-- (BOOL)_verifyUserID:(id)a3 forAltDSID:(id)a4
+- (BOOL)_verifyUserID:(id)d forAltDSID:(id)iD
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, iD);
   if (location[0])
   {
     v14 = _AKLogSiwa();
@@ -1367,7 +1367,7 @@ LABEL_19:
     v10 = 0x20000000;
     v11 = 32;
     v12 = 0;
-    [(AKAuthorizationStoring *)v21->_localAccountsStorageController performUnsafeVerificationWithUserID:location[0] withAltDSID:v19 completion:?];
+    [(AKAuthorizationStoring *)selfCopy->_localAccountsStorageController performUnsafeVerificationWithUserID:location[0] withAltDSID:v19 completion:?];
     v22 = v9[3] & 1;
     v15 = 1;
     _Block_object_dispose(&v8, 8);

@@ -1,20 +1,20 @@
 @interface SBAmbientScheduledAlarmObserver
 - (SBAmbientScheduledAlarmObserver)init;
 - (SBAmbientScheduledAlarmObserverDelegate)delegate;
-- (id)_newScheduledTimerForFireDate:(id)a3;
+- (id)_newScheduledTimerForFireDate:(id)date;
 - (id)_timeIntervalsWithReasons;
-- (void)_firingAlarmUpdated:(id)a3;
+- (void)_firingAlarmUpdated:(id)updated;
 - (void)_invalidateAllScheduledTimers;
-- (void)_nextAlarmChanged:(id)a3;
-- (void)_publishTimerFired:(id)a3;
+- (void)_nextAlarmChanged:(id)changed;
+- (void)_publishTimerFired:(id)fired;
 - (void)_registerForAlarmNotifications;
-- (void)_scheduleTimersForAlarm:(id)a3;
-- (void)_timerFired:(id)a3;
+- (void)_scheduleTimersForAlarm:(id)alarm;
+- (void)_timerFired:(id)fired;
 - (void)_unregisterForAlarmNotifications;
 - (void)_updateAlarmObservation;
 - (void)_updateScheduledTimersForNextAlarm;
 - (void)dealloc;
-- (void)setObservationEnabled:(BOOL)a3;
+- (void)setObservationEnabled:(BOOL)enabled;
 @end
 
 @implementation SBAmbientScheduledAlarmObserver
@@ -51,20 +51,20 @@
   [(SBAmbientScheduledAlarmObserver *)&v4 dealloc];
 }
 
-- (void)setObservationEnabled:(BOOL)a3
+- (void)setObservationEnabled:(BOOL)enabled
 {
-  if (self->_observationEnabled != a3)
+  if (self->_observationEnabled != enabled)
   {
-    self->_observationEnabled = a3;
+    self->_observationEnabled = enabled;
     [(SBAmbientScheduledAlarmObserver *)self _updateAlarmObservation];
   }
 }
 
 - (void)_updateAlarmObservation
 {
-  v3 = [(SBAmbientScheduledAlarmObserver *)self observationEnabled];
+  observationEnabled = [(SBAmbientScheduledAlarmObserver *)self observationEnabled];
   alarmManager = self->_alarmManager;
-  if (v3)
+  if (observationEnabled)
   {
     if (!alarmManager)
     {
@@ -96,8 +96,8 @@
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v3 = [(NSMutableDictionary *)self->_scheduledTimers allValues];
-    v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    allValues = [(NSMutableDictionary *)self->_scheduledTimers allValues];
+    v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v4)
     {
       v5 = v4;
@@ -109,14 +109,14 @@
         {
           if (*v9 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v8 + 1) + 8 * v7++) invalidate];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v5 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
       }
 
       while (v5);
@@ -128,69 +128,69 @@
 
 - (void)_registerForAlarmNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__nextAlarmChanged_ name:*MEMORY[0x277D295C8] object:self->_alarmManager];
-  [v3 addObserver:self selector:sel__nextAlarmChanged_ name:*MEMORY[0x277D295D8] object:self->_alarmManager];
-  [v3 addObserver:self selector:sel__firingAlarmUpdated_ name:*MEMORY[0x277D295C0] object:self->_alarmManager];
-  [v3 addObserver:self selector:sel__firingAlarmUpdated_ name:*MEMORY[0x277D295B8] object:self->_alarmManager];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__nextAlarmChanged_ name:*MEMORY[0x277D295C8] object:self->_alarmManager];
+  [defaultCenter addObserver:self selector:sel__nextAlarmChanged_ name:*MEMORY[0x277D295D8] object:self->_alarmManager];
+  [defaultCenter addObserver:self selector:sel__firingAlarmUpdated_ name:*MEMORY[0x277D295C0] object:self->_alarmManager];
+  [defaultCenter addObserver:self selector:sel__firingAlarmUpdated_ name:*MEMORY[0x277D295B8] object:self->_alarmManager];
 }
 
 - (void)_unregisterForAlarmNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D295C8] object:self->_alarmManager];
-  [v3 removeObserver:self name:*MEMORY[0x277D295D8] object:self->_alarmManager];
-  [v3 removeObserver:self name:*MEMORY[0x277D295C0] object:self->_alarmManager];
-  [v3 removeObserver:self name:*MEMORY[0x277D295B8] object:self->_alarmManager];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D295C8] object:self->_alarmManager];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D295D8] object:self->_alarmManager];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D295C0] object:self->_alarmManager];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D295B8] object:self->_alarmManager];
 }
 
-- (void)_nextAlarmChanged:(id)a3
+- (void)_nextAlarmChanged:(id)changed
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = objc_opt_class();
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKey:*MEMORY[0x277D295D0]];
+  userInfo = [changedCopy userInfo];
+  v7 = [userInfo objectForKey:*MEMORY[0x277D295D0]];
   v8 = SBSafeCast(v5, v7);
 
   v9 = SBLogAmbientPresentation();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v4 name];
-    v11 = [v8 alarmID];
+    name = [changedCopy name];
+    alarmID = [v8 alarmID];
     v12 = 138543618;
-    v13 = v10;
+    v13 = name;
     v14 = 2114;
-    v15 = v11;
+    v15 = alarmID;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "Ambient Scheduled Alarm Observer recieved %{public}@ notification containing alarmID: %{public}@", &v12, 0x16u);
   }
 
   [(SBAmbientScheduledAlarmObserver *)self _updateScheduledTimersForNextAlarm];
 }
 
-- (void)_firingAlarmUpdated:(id)a3
+- (void)_firingAlarmUpdated:(id)updated
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updatedCopy = updated;
   v5 = SBLogAmbientPresentation();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [updatedCopy name];
     v8 = 138543362;
-    v9 = v6;
+    v9 = name;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Ambient Scheduled Alarm Observer recieved %{public}@ notification for firing alarm update", &v8, 0xCu);
   }
 
-  v7 = [(SBAmbientScheduledAlarmObserver *)self delegate];
-  [v7 alarmDidResetForAmbientScheduledAlarmObserver:self];
+  delegate = [(SBAmbientScheduledAlarmObserver *)self delegate];
+  [delegate alarmDidResetForAmbientScheduledAlarmObserver:self];
 
   [(SBAmbientScheduledAlarmObserver *)self _updateScheduledTimersForNextAlarm];
 }
 
 - (void)_updateScheduledTimersForNextAlarm
 {
-  v3 = [(MTAlarmManager *)self->_alarmManager nextAlarm];
-  if (v3)
+  nextAlarm = [(MTAlarmManager *)self->_alarmManager nextAlarm];
+  if (nextAlarm)
   {
     objc_initWeak(location, self);
     v7[0] = MEMORY[0x277D85DD0];
@@ -198,7 +198,7 @@
     v7[2] = __69__SBAmbientScheduledAlarmObserver__updateScheduledTimersForNextAlarm__block_invoke;
     v7[3] = &unk_2783B7678;
     objc_copyWeak(&v8, location);
-    v4 = [v3 addCompletionBlock:v7];
+    v4 = [nextAlarm addCompletionBlock:v7];
     objc_destroyWeak(&v8);
     objc_destroyWeak(location);
   }
@@ -212,8 +212,8 @@
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "No sleep alarm for ambient scheduled alarm observer!", location, 2u);
     }
 
-    v6 = [(SBAmbientScheduledAlarmObserver *)self delegate];
-    [v6 alarmDidResetForAmbientScheduledAlarmObserver:self];
+    delegate = [(SBAmbientScheduledAlarmObserver *)self delegate];
+    [delegate alarmDidResetForAmbientScheduledAlarmObserver:self];
   }
 }
 
@@ -257,21 +257,21 @@ void __69__SBAmbientScheduledAlarmObserver__updateScheduledTimersForNextAlarm__b
   [WeakRetained _scheduleTimersForAlarm:*(a1 + 32)];
 }
 
-- (void)_scheduleTimersForAlarm:(id)a3
+- (void)_scheduleTimersForAlarm:(id)alarm
 {
-  v4 = a3;
-  v5 = [v4 nextFireDate];
-  if (v5 && [(SBAmbientScheduledAlarmObserver *)self observationEnabled])
+  alarmCopy = alarm;
+  nextFireDate = [alarmCopy nextFireDate];
+  if (nextFireDate && [(SBAmbientScheduledAlarmObserver *)self observationEnabled])
   {
-    v6 = [(SBAmbientScheduledAlarmObserver *)self _timeIntervalsWithReasons];
+    _timeIntervalsWithReasons = [(SBAmbientScheduledAlarmObserver *)self _timeIntervalsWithReasons];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __59__SBAmbientScheduledAlarmObserver__scheduleTimersForAlarm___block_invoke;
     v7[3] = &unk_2783B76A0;
-    v8 = v5;
-    v9 = self;
-    v10 = v4;
-    [v6 enumerateKeysAndObjectsUsingBlock:v7];
+    v8 = nextFireDate;
+    selfCopy = self;
+    v10 = alarmCopy;
+    [_timeIntervalsWithReasons enumerateKeysAndObjectsUsingBlock:v7];
   }
 }
 
@@ -321,11 +321,11 @@ LABEL_9:
   }
 }
 
-- (id)_newScheduledTimerForFireDate:(id)a3
+- (id)_newScheduledTimerForFireDate:(id)date
 {
   v4 = MEMORY[0x277D3A180];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFireDate:v5 serviceIdentifier:@"com.apple.springboard.AmbientScheduledAlarmObserver" target:self selector:sel__timerFired_ userInfo:0];
+  dateCopy = date;
+  v6 = [[v4 alloc] initWithFireDate:dateCopy serviceIdentifier:@"com.apple.springboard.AmbientScheduledAlarmObserver" target:self selector:sel__timerFired_ userInfo:0];
 
   [v6 setMinimumEarlyFireProportion:1.0];
   [v6 setUserVisible:1];
@@ -333,15 +333,15 @@ LABEL_9:
   return v6;
 }
 
-- (void)_timerFired:(id)a3
+- (void)_timerFired:(id)fired
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  firedCopy = fired;
   v5 = SBLogAmbientPresentation();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v11 = v4;
+    v11 = firedCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Ambient Scheduled Alarm Observer scheduled timer fired! [ timer = %{public}@ ]", buf, 0xCu);
   }
 
@@ -351,8 +351,8 @@ LABEL_9:
   v7[2] = __47__SBAmbientScheduledAlarmObserver__timerFired___block_invoke;
   v7[3] = &unk_2783A9CE8;
   objc_copyWeak(&v9, buf);
-  v8 = v4;
-  v6 = v4;
+  v8 = firedCopy;
+  v6 = firedCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 
   objc_destroyWeak(&v9);
@@ -365,23 +365,23 @@ void __47__SBAmbientScheduledAlarmObserver__timerFired___block_invoke(uint64_t a
   [WeakRetained _publishTimerFired:*(a1 + 32)];
 }
 
-- (void)_publishTimerFired:(id)a3
+- (void)_publishTimerFired:(id)fired
 {
-  v4 = [(NSMutableDictionary *)self->_scheduledTimers allKeysForObject:a3];
-  v6 = [v4 firstObject];
+  v4 = [(NSMutableDictionary *)self->_scheduledTimers allKeysForObject:fired];
+  firstObject = [v4 firstObject];
 
-  if (v6)
+  if (firstObject)
   {
-    [(NSMutableDictionary *)self->_scheduledTimers removeObjectForKey:v6];
-    v5 = [(SBAmbientScheduledAlarmObserver *)self delegate];
-    [v5 scheduledAlarmObserver:self timerFiredForReason:v6];
+    [(NSMutableDictionary *)self->_scheduledTimers removeObjectForKey:firstObject];
+    delegate = [(SBAmbientScheduledAlarmObserver *)self delegate];
+    [delegate scheduledAlarmObserver:self timerFiredForReason:firstObject];
   }
 }
 
 - (id)_timeIntervalsWithReasons
 {
-  v3 = [(SBAmbientScheduledAlarmObserver *)self delegate];
-  v4 = [v3 timeIntervalsWithReasonsForScheduledTimersForAmbientScheduledAlarmObserver:self];
+  delegate = [(SBAmbientScheduledAlarmObserver *)self delegate];
+  v4 = [delegate timeIntervalsWithReasonsForScheduledTimersForAmbientScheduledAlarmObserver:self];
 
   return v4;
 }

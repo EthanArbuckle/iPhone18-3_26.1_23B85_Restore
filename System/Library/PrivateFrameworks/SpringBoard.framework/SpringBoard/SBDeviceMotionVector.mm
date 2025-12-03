@@ -1,36 +1,36 @@
 @interface SBDeviceMotionVector
-- (BOOL)isEqual:(id)a3;
-- (SBDeviceMotionVector)initWithDictionary:(id)a3;
-- (SBDeviceMotionVector)initWithX:(double)a3 y:(double)a4 z:(double)a5;
+- (BOOL)isEqual:(id)equal;
+- (SBDeviceMotionVector)initWithDictionary:(id)dictionary;
+- (SBDeviceMotionVector)initWithX:(double)x y:(double)y z:(double)z;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation SBDeviceMotionVector
 
-- (SBDeviceMotionVector)initWithX:(double)a3 y:(double)a4 z:(double)a5
+- (SBDeviceMotionVector)initWithX:(double)x y:(double)y z:(double)z
 {
   v9.receiver = self;
   v9.super_class = SBDeviceMotionVector;
   result = [(SBDeviceMotionVector *)&v9 init];
   if (result)
   {
-    result->_x = a3;
-    result->_y = a4;
-    result->_z = a5;
+    result->_x = x;
+    result->_y = y;
+    result->_z = z;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   x = self->_x;
-  [v4 x];
-  if (x == v6 && (y = self->_y, [v4 y], y == v8))
+  [equalCopy x];
+  if (x == v6 && (y = self->_y, [equalCopy y], y == v8))
   {
     z = self->_z;
-    [v4 z];
+    [equalCopy z];
     v11 = z == v10;
   }
 
@@ -59,18 +59,18 @@
   return v6;
 }
 
-- (SBDeviceMotionVector)initWithDictionary:(id)a3
+- (SBDeviceMotionVector)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"x"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"x"];
   [v5 doubleValue];
   v7 = v6;
 
-  v8 = [v4 objectForKeyedSubscript:@"y"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"y"];
   [v8 doubleValue];
   v10 = v9;
 
-  v11 = [v4 objectForKeyedSubscript:@"z"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"z"];
 
   [v11 doubleValue];
   v13 = v12;

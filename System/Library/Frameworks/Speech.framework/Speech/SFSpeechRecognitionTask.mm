@@ -2,21 +2,21 @@
 + (void)initialize;
 - (NSError)error;
 - (SFSpeechRecognitionTaskState)state;
-- (id)_initWithRequest:(id)a3 queue:(id)a4 languageCode:(id)a5 taskHint:(int64_t)a6;
-- (void)addRecordedSpeechSampleData:(id)a3;
+- (id)_initWithRequest:(id)request queue:(id)queue languageCode:(id)code taskHint:(int64_t)hint;
+- (void)addRecordedSpeechSampleData:(id)data;
 - (void)cancel;
-- (void)dictationConnection:(id)a3 speechRecognitionDidFail:(id)a4;
-- (void)dictationConnection:(id)a3 speechRecordingDidFail:(id)a4;
-- (void)dictationConnectionSpeechRecognitionDidSucceed:(id)a3;
-- (void)dictationConnectionSpeechRecordingDidBegin:(id)a3;
-- (void)dictationConnectionSpeechRecordingDidCancel:(id)a3;
-- (void)dictationConnectionSpeechRecordingDidEnd:(id)a3;
+- (void)dictationConnection:(id)connection speechRecognitionDidFail:(id)fail;
+- (void)dictationConnection:(id)connection speechRecordingDidFail:(id)fail;
+- (void)dictationConnectionSpeechRecognitionDidSucceed:(id)succeed;
+- (void)dictationConnectionSpeechRecordingDidBegin:(id)begin;
+- (void)dictationConnectionSpeechRecordingDidCancel:(id)cancel;
+- (void)dictationConnectionSpeechRecordingDidEnd:(id)end;
 - (void)finish;
-- (void)handleSpeechRecognitionDidFailWithError:(uint64_t)a1;
-- (void)localSpeechRecognitionClient:(id)a3 speechRecognitionDidFail:(id)a4;
-- (void)localSpeechRecognitionClient:(id)a3 speechRecordingDidFail:(id)a4;
-- (void)localSpeechRecognitionClientSpeechRecognitionDidSucceed:(id)a3;
-- (void)localSpeechRecognitionClientSpeechRecordingDidCancel:(id)a3;
+- (void)handleSpeechRecognitionDidFailWithError:(uint64_t)error;
+- (void)localSpeechRecognitionClient:(id)client speechRecognitionDidFail:(id)fail;
+- (void)localSpeechRecognitionClient:(id)client speechRecordingDidFail:(id)fail;
+- (void)localSpeechRecognitionClientSpeechRecognitionDidSucceed:(id)succeed;
+- (void)localSpeechRecognitionClientSpeechRecordingDidCancel:(id)cancel;
 - (void)stopSpeech;
 @end
 
@@ -41,17 +41,17 @@ uint64_t __37__SFSpeechRecognitionTask_stopSpeech__block_invoke(uint64_t a1)
   return [v2 stopSpeech];
 }
 
-- (void)addRecordedSpeechSampleData:(id)a3
+- (void)addRecordedSpeechSampleData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__SFSpeechRecognitionTask_addRecordedSpeechSampleData___block_invoke;
   v7[3] = &unk_1E797CB08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -64,7 +64,7 @@ uint64_t __55__SFSpeechRecognitionTask_addRecordedSpeechSampleData___block_invok
   return [v3 addAudioPacket:v2];
 }
 
-- (void)localSpeechRecognitionClientSpeechRecognitionDidSucceed:(id)a3
+- (void)localSpeechRecognitionClientSpeechRecognitionDidSucceed:(id)succeed
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -84,17 +84,17 @@ void __83__SFSpeechRecognitionTask_localSpeechRecognitionClientSpeechRecognition
   *(v2 + 16) = 0;
 }
 
-- (void)localSpeechRecognitionClient:(id)a3 speechRecognitionDidFail:(id)a4
+- (void)localSpeechRecognitionClient:(id)client speechRecognitionDidFail:(id)fail
 {
-  v5 = a4;
+  failCopy = fail;
   internalQueue = self->_internalQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __81__SFSpeechRecognitionTask_localSpeechRecognitionClient_speechRecognitionDidFail___block_invoke;
   v8[3] = &unk_1E797CB08;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = failCopy;
+  v7 = failCopy;
   dispatch_async(internalQueue, v8);
 }
 
@@ -107,19 +107,19 @@ void __81__SFSpeechRecognitionTask_localSpeechRecognitionClient_speechRecognitio
   *(v2 + 16) = 0;
 }
 
-- (void)handleSpeechRecognitionDidFailWithError:(uint64_t)a1
+- (void)handleSpeechRecognitionDidFailWithError:(uint64_t)error
 {
   v27[1] = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (error)
   {
-    dispatch_assert_queue_V2(*(a1 + 48));
+    dispatch_assert_queue_V2(*(error + 48));
     v4 = v3;
-    v5 = [v4 code];
+    code = [v4 code];
     v6 = MEMORY[0x1E698D280];
     v7 = MEMORY[0x1E696A578];
     v8 = v4;
-    if (v5 == 1700)
+    if (code == 1700)
     {
       v9 = MEMORY[0x1E696ABC0];
       v10 = *MEMORY[0x1E698D280];
@@ -141,7 +141,7 @@ void __81__SFSpeechRecognitionTask_localSpeechRecognitionClient_speechRecognitio
       v8 = v15;
     }
 
-    if (*(a1 + 56))
+    if (*(error + 56))
     {
       v16 = SFLogFramework;
       if (os_log_type_enabled(SFLogFramework, OS_LOG_TYPE_ERROR))
@@ -157,27 +157,27 @@ void __81__SFSpeechRecognitionTask_localSpeechRecognitionClient_speechRecognitio
     else
     {
       v17 = [v8 copy];
-      v18 = *(a1 + 56);
-      *(a1 + 56) = v17;
+      v18 = *(error + 56);
+      *(error + 56) = v17;
     }
 
-    *(a1 + 64) = 1;
+    *(error + 64) = 1;
   }
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)localSpeechRecognitionClient:(id)a3 speechRecordingDidFail:(id)a4
+- (void)localSpeechRecognitionClient:(id)client speechRecordingDidFail:(id)fail
 {
-  v5 = a4;
+  failCopy = fail;
   internalQueue = self->_internalQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __79__SFSpeechRecognitionTask_localSpeechRecognitionClient_speechRecordingDidFail___block_invoke;
   v8[3] = &unk_1E797CB08;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = failCopy;
+  v7 = failCopy;
   dispatch_async(internalQueue, v8);
 }
 
@@ -215,7 +215,7 @@ void __79__SFSpeechRecognitionTask_localSpeechRecognitionClient_speechRecordingD
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)localSpeechRecognitionClientSpeechRecordingDidCancel:(id)a3
+- (void)localSpeechRecognitionClientSpeechRecordingDidCancel:(id)cancel
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -235,7 +235,7 @@ void __80__SFSpeechRecognitionTask_localSpeechRecognitionClientSpeechRecordingDi
   *(v2 + 16) = 0;
 }
 
-- (void)dictationConnectionSpeechRecognitionDidSucceed:(id)a3
+- (void)dictationConnectionSpeechRecognitionDidSucceed:(id)succeed
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -263,9 +263,9 @@ void __74__SFSpeechRecognitionTask_dictationConnectionSpeechRecognitionDidSuccee
   *(*(a1 + 32) + 64) = 1;
 }
 
-- (void)dictationConnection:(id)a3 speechRecognitionDidFail:(id)a4
+- (void)dictationConnection:(id)connection speechRecognitionDidFail:(id)fail
 {
-  v5 = a4;
+  failCopy = fail;
   if (+[SFUtilities isSpeechXPCEnabled])
   {
     request = self->_request;
@@ -284,22 +284,22 @@ void __74__SFSpeechRecognitionTask_dictationConnectionSpeechRecognitionDidSuccee
   v10[2] = __72__SFSpeechRecognitionTask_dictationConnection_speechRecognitionDidFail___block_invoke;
   v10[3] = &unk_1E797CB08;
   v10[4] = self;
-  v11 = v5;
-  v9 = v5;
+  v11 = failCopy;
+  v9 = failCopy;
   dispatch_async(internalQueue, v10);
 }
 
-- (void)dictationConnection:(id)a3 speechRecordingDidFail:(id)a4
+- (void)dictationConnection:(id)connection speechRecordingDidFail:(id)fail
 {
-  v5 = a4;
+  failCopy = fail;
   internalQueue = self->_internalQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __70__SFSpeechRecognitionTask_dictationConnection_speechRecordingDidFail___block_invoke;
   v8[3] = &unk_1E797CB08;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = failCopy;
+  v7 = failCopy;
   dispatch_async(internalQueue, v8);
 }
 
@@ -332,7 +332,7 @@ void __70__SFSpeechRecognitionTask_dictationConnection_speechRecordingDidFail___
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dictationConnectionSpeechRecordingDidCancel:(id)a3
+- (void)dictationConnectionSpeechRecordingDidCancel:(id)cancel
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -343,7 +343,7 @@ void __70__SFSpeechRecognitionTask_dictationConnection_speechRecordingDidFail___
   dispatch_async(internalQueue, block);
 }
 
-- (void)dictationConnectionSpeechRecordingDidEnd:(id)a3
+- (void)dictationConnectionSpeechRecordingDidEnd:(id)end
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -354,7 +354,7 @@ void __70__SFSpeechRecognitionTask_dictationConnection_speechRecordingDidFail___
   dispatch_async(internalQueue, block);
 }
 
-- (void)dictationConnectionSpeechRecordingDidBegin:(id)a3
+- (void)dictationConnectionSpeechRecordingDidBegin:(id)begin
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -488,51 +488,51 @@ uint64_t __32__SFSpeechRecognitionTask_state__block_invoke(uint64_t result)
   return result;
 }
 
-- (id)_initWithRequest:(id)a3 queue:(id)a4 languageCode:(id)a5 taskHint:(int64_t)a6
+- (id)_initWithRequest:(id)request queue:(id)queue languageCode:(id)code taskHint:(int64_t)hint
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  requestCopy = request;
+  queueCopy = queue;
+  codeCopy = code;
   v30.receiver = self;
   v30.super_class = SFSpeechRecognitionTask;
   v14 = [(SFSpeechRecognitionTask *)&v30 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_request, a3);
-    objc_storeStrong(&v15->_externalQueue, a4);
+    objc_storeStrong(&v14->_request, request);
+    objc_storeStrong(&v15->_externalQueue, queue);
     v16 = dispatch_queue_create("com.apple.Speech.Task.Internal", 0);
     internalQueue = v15->_internalQueue;
     v15->_internalQueue = v16;
 
-    v18 = [v13 copy];
+    v18 = [codeCopy copy];
     languageCode = v15->_languageCode;
     v15->_languageCode = v18;
 
-    v20 = [MEMORY[0x1E696AFB0] UUID];
-    v21 = [v20 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     requestIdentifier = v15->_requestIdentifier;
-    v15->_requestIdentifier = v21;
+    v15->_requestIdentifier = uUIDString;
 
-    v23 = [v11 taskHint];
-    if (v23)
+    taskHint = [requestCopy taskHint];
+    if (taskHint)
     {
-      v24 = v23;
+      hintCopy = taskHint;
     }
 
     else
     {
-      v24 = a6;
+      hintCopy = hint;
     }
 
-    v15->_taskHint = v24;
+    v15->_taskHint = hintCopy;
     v25 = v15->_internalQueue;
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __72__SFSpeechRecognitionTask__initWithRequest_queue_languageCode_taskHint___block_invoke;
     v27[3] = &unk_1E797CB08;
     v28 = v15;
-    v29 = v13;
+    v29 = codeCopy;
     dispatch_async(v25, v27);
   }
 
@@ -605,7 +605,7 @@ LABEL_17:
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1 && SFLogInitIfNeeded_once != -1)
+  if (v3 == self && SFLogInitIfNeeded_once != -1)
   {
 
     dispatch_once(&SFLogInitIfNeeded_once, &__block_literal_global_3109);

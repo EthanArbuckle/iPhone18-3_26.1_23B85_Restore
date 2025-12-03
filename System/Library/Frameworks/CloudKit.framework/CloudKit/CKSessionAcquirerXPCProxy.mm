@@ -1,7 +1,7 @@
 @interface CKSessionAcquirerXPCProxy
 + (NSXPCInterface)CKXPCClientToDaemonSessionAcquisitionInterface;
 + (NSXPCInterface)CKXPCDaemonToClientSessionAcquisitionInterface;
-- (void)noteSessionReadinessError:(id)a3;
+- (void)noteSessionReadinessError:(id)error;
 @end
 
 @implementation CKSessionAcquirerXPCProxy
@@ -20,10 +20,10 @@
   return v2;
 }
 
-- (void)noteSessionReadinessError:(id)a3
+- (void)noteSessionReadinessError:(id)error
 {
-  v4 = a3;
-  v5 = self;
+  errorCopy = error;
+  selfCopy = self;
   sub_1884A16EC();
 }
 

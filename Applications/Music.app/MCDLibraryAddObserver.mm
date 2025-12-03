@@ -7,34 +7,34 @@
 - (BOOL)isSongAddable;
 - (BOOL)isSongAdded;
 - (BOOL)shouldShowFavoriteSong;
-- (void)_addItemToLibrary:(id)a3;
+- (void)_addItemToLibrary:(id)library;
 - (void)addAlbumToLibrary;
 - (void)addPlaylistToLibrary;
 - (void)addSongToLibrary;
-- (void)contentManager:(id)a3 didReceiveResponse:(id)a4;
-- (void)setSong:(id)a3;
-- (void)updateRequestForTracklist:(id)a3;
+- (void)contentManager:(id)manager didReceiveResponse:(id)response;
+- (void)setSong:(id)song;
+- (void)updateRequestForTracklist:(id)tracklist;
 @end
 
 @implementation MCDLibraryAddObserver
 
-- (void)updateRequestForTracklist:(id)a3
+- (void)updateRequestForTracklist:(id)tracklist
 {
-  v4 = a3;
-  v5 = [v4 playingItem];
-  v6 = [v5 metadataObject];
-  v7 = [v6 flattenedGenericObject];
+  tracklistCopy = tracklist;
+  playingItem = [tracklistCopy playingItem];
+  metadataObject = [playingItem metadataObject];
+  flattenedGenericObject = [metadataObject flattenedGenericObject];
 
-  if ([v7 type] == 1)
+  if ([flattenedGenericObject type] == 1)
   {
-    v8 = [v7 song];
-    [(MCDLibraryAddObserver *)self setSong:v8];
+    song = [flattenedGenericObject song];
+    [(MCDLibraryAddObserver *)self setSong:song];
 
     v9 = MCDMusicGeneralLogging();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [(MCDLibraryAddObserver *)self song];
-      v11 = [v10 debugDescription];
+      song2 = [(MCDLibraryAddObserver *)self song];
+      v11 = [song2 debugDescription];
       v32 = 138543362;
       v33 = v11;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "LibraryAddObserver: Song updated %{public}@", &v32, 0xCu);
@@ -46,42 +46,42 @@
     [(MCDLibraryAddObserver *)self setSong:0];
   }
 
-  v12 = [v4 playingItemIndexPath];
+  playingItemIndexPath = [tracklistCopy playingItemIndexPath];
 
-  if (!v12)
+  if (!playingItemIndexPath)
   {
     [(MCDLibraryAddObserver *)self setDidReceivePlaylistResponse:0];
-    v19 = 0;
+    album2 = 0;
     v21 = 0;
     goto LABEL_16;
   }
 
-  v13 = [v4 items];
-  v14 = [v4 playingItemIndexPath];
-  v15 = [v13 sectionAtIndex:{objc_msgSend(v14, "section")}];
+  items = [tracklistCopy items];
+  playingItemIndexPath2 = [tracklistCopy playingItemIndexPath];
+  v15 = [items sectionAtIndex:{objc_msgSend(playingItemIndexPath2, "section")}];
 
-  v16 = [v15 metadataObject];
-  v17 = [v16 type];
-  if (v17 == 2)
+  metadataObject2 = [v15 metadataObject];
+  type = [metadataObject2 type];
+  if (type == 2)
   {
-    v18 = [v16 album];
+    album = [metadataObject2 album];
     v20 = 0;
-    v19 = v18;
+    album2 = album;
     goto LABEL_12;
   }
 
-  if (v17 == 4)
+  if (type == 4)
   {
-    v18 = [v16 playlist];
-    v19 = 0;
-    v20 = v18;
+    album = [metadataObject2 playlist];
+    album2 = 0;
+    v20 = album;
 LABEL_12:
-    v21 = v18;
+    v21 = album;
     goto LABEL_14;
   }
 
   v21 = 0;
-  v19 = 0;
+  album2 = 0;
   v20 = 0;
 LABEL_14:
 
@@ -101,14 +101,14 @@ LABEL_16:
   v20 = 0;
 LABEL_17:
   [(MCDLibraryAddObserver *)self setDidReceiveAlbumResponse:0];
-  if (!v19)
+  if (!album2)
   {
-    v25 = [(MCDLibraryAddObserver *)self song];
-    v19 = [v25 album];
+    song3 = [(MCDLibraryAddObserver *)self song];
+    album2 = [song3 album];
 
     if (v21)
     {
-      if (v19)
+      if (album2)
       {
         goto LABEL_20;
       }
@@ -116,8 +116,8 @@ LABEL_17:
 
     else
     {
-      v21 = v19;
-      if (v19)
+      v21 = album2;
+      if (album2)
       {
         goto LABEL_20;
       }
@@ -129,22 +129,22 @@ LABEL_17:
 
 LABEL_20:
   v26 = [MCDStorePlaybackItemsManager alloc];
-  v27 = [(MCDAlbumTracksDataSource *)[MCDAlbumAddedDataSource alloc] initWithAlbum:v19 storeContent:0];
+  v27 = [(MCDAlbumTracksDataSource *)[MCDAlbumAddedDataSource alloc] initWithAlbum:album2 storeContent:0];
   v28 = [(_MCDContentManager *)v26 initWithDataSource:v27 delegate:self];
   [(MCDLibraryAddObserver *)self setAlbumsContentManager:v28];
 
 LABEL_21:
-  v29 = [(MCDLibraryAddObserver *)self song];
-  if (v29 || ([(MCDLibraryAddObserver *)self album], (v29 = objc_claimAutoreleasedReturnValue()) != 0))
+  song4 = [(MCDLibraryAddObserver *)self song];
+  if (song4 || ([(MCDLibraryAddObserver *)self album], (song4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v30 = v29;
+    v30 = song4;
   }
 
   else
   {
-    v31 = [(MCDLibraryAddObserver *)self playlist];
+    playlist = [(MCDLibraryAddObserver *)self playlist];
 
-    if (v31)
+    if (playlist)
     {
       goto LABEL_25;
     }
@@ -152,28 +152,28 @@ LABEL_21:
     v30 = MCDMusicGeneralLogging();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      sub_100DEEFA8(v4, v30);
+      sub_100DEEFA8(tracklistCopy, v30);
     }
   }
 
 LABEL_25:
 }
 
-- (void)setSong:(id)a3
+- (void)setSong:(id)song
 {
-  v5 = a3;
-  if (self->_song != v5)
+  songCopy = song;
+  if (self->_song != songCopy)
   {
-    objc_storeStrong(&self->_song, a3);
+    objc_storeStrong(&self->_song, song);
   }
 
-  v6 = [(MCDLibraryAddObserver *)self songAddStatusObserver];
-  v7 = v6;
-  if (v5)
+  songAddStatusObserver = [(MCDLibraryAddObserver *)self songAddStatusObserver];
+  v7 = songAddStatusObserver;
+  if (songCopy)
   {
-    v8 = [(MCDLibraryAddObserver *)self songAddStatusObserver];
+    songAddStatusObserver2 = [(MCDLibraryAddObserver *)self songAddStatusObserver];
 
-    if (v8)
+    if (songAddStatusObserver2)
     {
       v9 = v7;
     }
@@ -194,7 +194,7 @@ LABEL_25:
       objc_destroyWeak(&location);
     }
 
-    [v9 configureWithModelObject:v5];
+    [v9 configureWithModelObject:songCopy];
   }
 
   else
@@ -216,8 +216,8 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Adding song to library", v5, 2u);
   }
 
-  v4 = [(MCDLibraryAddObserver *)self song];
-  [(MCDLibraryAddObserver *)self _addItemToLibrary:v4];
+  song = [(MCDLibraryAddObserver *)self song];
+  [(MCDLibraryAddObserver *)self _addItemToLibrary:song];
 }
 
 - (void)addAlbumToLibrary
@@ -229,8 +229,8 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Adding album to library", v5, 2u);
   }
 
-  v4 = [(MCDLibraryAddObserver *)self album];
-  [(MCDLibraryAddObserver *)self _addItemToLibrary:v4];
+  album = [(MCDLibraryAddObserver *)self album];
+  [(MCDLibraryAddObserver *)self _addItemToLibrary:album];
 }
 
 - (void)addPlaylistToLibrary
@@ -242,30 +242,30 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Adding playlist to library", v5, 2u);
   }
 
-  v4 = [(MCDLibraryAddObserver *)self playlist];
-  [(MCDLibraryAddObserver *)self _addItemToLibrary:v4];
+  playlist = [(MCDLibraryAddObserver *)self playlist];
+  [(MCDLibraryAddObserver *)self _addItemToLibrary:playlist];
 }
 
-- (void)_addItemToLibrary:(id)a3
+- (void)_addItemToLibrary:(id)library
 {
-  v4 = a3;
-  if (v4)
+  libraryCopy = library;
+  if (libraryCopy)
   {
     v5 = objc_alloc_init(MPMutableSectionedCollection);
     [v5 appendSection:&stru_101107168];
-    [v5 appendItem:v4];
+    [v5 appendItem:libraryCopy];
     v6 = objc_alloc_init(MPModelLibraryImportChangeRequest);
     [v6 setShouldLibraryAdd:1];
     [v6 setModelObjects:v5];
-    v7 = [(MCDLibraryAddObserver *)self referralObject];
-    [v6 setReferralObject:v7];
+    referralObject = [(MCDLibraryAddObserver *)self referralObject];
+    [v6 setReferralObject:referralObject];
 
     v8 = +[MPModelLibraryTransientStateController sharedDeviceLibraryController];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000F300C;
     v9[3] = &unk_1010982D0;
-    v10 = v4;
+    v10 = libraryCopy;
     [v8 performLibraryImportChangeRequest:v6 withRelatedModelObjects:0 completion:v9];
   }
 
@@ -282,20 +282,20 @@ LABEL_25:
 - (BOOL)isCloudLibraryEnabled
 {
   v2 = +[MPCloudController sharedCloudController];
-  v3 = [v2 isCloudLibraryEnabled];
+  isCloudLibraryEnabled = [v2 isCloudLibraryEnabled];
 
-  return v3;
+  return isCloudLibraryEnabled;
 }
 
 - (BOOL)isSongAddable
 {
-  v3 = [(MCDLibraryAddObserver *)self songAddStatusObserver];
-  v4 = [v3 currentStatus];
+  songAddStatusObserver = [(MCDLibraryAddObserver *)self songAddStatusObserver];
+  currentStatus = [songAddStatusObserver currentStatus];
 
   v5 = MCDMusicGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(MCDLibraryAddObserver *)self song];
+    song = [(MCDLibraryAddObserver *)self song];
     if ([(MCDLibraryAddObserver *)self isCloudLibraryEnabled])
     {
       v7 = @"YES";
@@ -317,8 +317,8 @@ LABEL_25:
       v8 = @"NO";
     }
 
-    v13 = v6;
-    if (v4 == 2)
+    v13 = song;
+    if (currentStatus == 2)
     {
       v9 = @"YES";
     }
@@ -337,11 +337,11 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "isSongAddable: %p\n\tisCloudLibraryEnabled: %{public}@\n\tlibraryAdded: %{public}@\n\tlibraryAddEligible: %{public}@", &v12, 0x2Au);
   }
 
-  v10 = [(MCDLibraryAddObserver *)self isCloudLibraryEnabled];
+  isCloudLibraryEnabled = [(MCDLibraryAddObserver *)self isCloudLibraryEnabled];
   result = 0;
-  if (v10)
+  if (isCloudLibraryEnabled)
   {
-    if (v4 == 2)
+    if (currentStatus == 2)
     {
       return ![(MCDLibraryAddObserver *)self isSongAdded];
     }
@@ -352,36 +352,36 @@ LABEL_25:
 
 - (BOOL)isSongAdded
 {
-  v2 = [(MCDLibraryAddObserver *)self songAddStatusObserver];
-  v3 = [v2 currentStatus] == 1;
+  songAddStatusObserver = [(MCDLibraryAddObserver *)self songAddStatusObserver];
+  v3 = [songAddStatusObserver currentStatus] == 1;
 
   return v3;
 }
 
 - (BOOL)shouldShowFavoriteSong
 {
-  v3 = [(MCDLibraryAddObserver *)self songAddStatusObserver];
-  v4 = [v3 currentStatus];
+  songAddStatusObserver = [(MCDLibraryAddObserver *)self songAddStatusObserver];
+  currentStatus = [songAddStatusObserver currentStatus];
 
-  v5 = [(MCDLibraryAddObserver *)self song];
-  v6 = [v5 identifiers];
-  v7 = [v6 library];
-  v8 = [v7 databaseID];
-  v25 = self;
-  if (v8)
+  song = [(MCDLibraryAddObserver *)self song];
+  identifiers = [song identifiers];
+  library = [identifiers library];
+  databaseID = [library databaseID];
+  selfCopy = self;
+  if (databaseID)
   {
-    v23 = [(MCDLibraryAddObserver *)self song];
-    v24 = v4;
-    v9 = [v23 identifiers];
-    v10 = [v9 library];
-    v11 = [v10 databaseID];
+    song2 = [(MCDLibraryAddObserver *)self song];
+    v24 = currentStatus;
+    identifiers2 = [song2 identifiers];
+    library2 = [identifiers2 library];
+    databaseID2 = [library2 databaseID];
     +[MPMediaLibrary deviceMediaLibrary];
-    v13 = v12 = v5;
-    v14 = [v13 uniqueIdentifier];
-    v15 = [v11 isEqualToString:v14] ^ 1;
+    v13 = v12 = song;
+    uniqueIdentifier = [v13 uniqueIdentifier];
+    v15 = [databaseID2 isEqualToString:uniqueIdentifier] ^ 1;
 
-    v5 = v12;
-    v4 = v24;
+    song = v12;
+    currentStatus = v24;
   }
 
   else
@@ -392,10 +392,10 @@ LABEL_25:
   v16 = MCDMusicGeneralLogging();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [(MCDLibraryAddObserver *)v25 song];
-    v18 = v17;
+    song3 = [(MCDLibraryAddObserver *)selfCopy song];
+    v18 = song3;
     v19 = @"NO";
-    if (v4 == 1)
+    if (currentStatus == 1)
     {
       v20 = @"YES";
     }
@@ -406,8 +406,8 @@ LABEL_25:
     }
 
     *buf = 134218754;
-    v27 = v17;
-    if (v4 == 2)
+    v27 = song3;
+    if (currentStatus == 2)
     {
       v21 = @"YES";
     }
@@ -431,7 +431,7 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "shouldShowFavoriteSong: %p\n\tlibraryAdded: %{public}@\n\tlibraryAddEligible: %{public}@\n\tisHomeSharing: %{public}@", buf, 0x2Au);
   }
 
-  return ((v4 - 1) < 2) & (v15 ^ 1);
+  return ((currentStatus - 1) < 2) & (v15 ^ 1);
 }
 
 - (BOOL)isAlbumAddable
@@ -439,7 +439,7 @@ LABEL_25:
   v3 = MCDMusicGeneralLogging();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(MCDLibraryAddObserver *)self album];
+    album = [(MCDLibraryAddObserver *)self album];
     if ([(MCDLibraryAddObserver *)self didReceiveAlbumResponse])
     {
       v5 = @"YES";
@@ -470,9 +470,9 @@ LABEL_25:
       v7 = @"NO";
     }
 
-    v8 = [(MCDLibraryAddObserver *)self album];
+    album2 = [(MCDLibraryAddObserver *)self album];
     v13 = 134219010;
-    if ([v8 isLibraryAddEligible])
+    if ([album2 isLibraryAddEligible])
     {
       v9 = @"YES";
     }
@@ -482,7 +482,7 @@ LABEL_25:
       v9 = @"NO";
     }
 
-    v14 = v4;
+    v14 = album;
     v15 = 2114;
     v16 = v5;
     v17 = 2114;
@@ -496,8 +496,8 @@ LABEL_25:
 
   if ([(MCDLibraryAddObserver *)self didReceiveAlbumResponse]&& [(MCDLibraryAddObserver *)self isCloudLibraryEnabled])
   {
-    v10 = [(MCDLibraryAddObserver *)self album];
-    if ([v10 isLibraryAddEligible])
+    album3 = [(MCDLibraryAddObserver *)self album];
+    if ([album3 isLibraryAddEligible])
     {
       v11 = ![(MCDLibraryAddObserver *)self isAlbumAdded];
     }
@@ -518,10 +518,10 @@ LABEL_25:
 
 - (BOOL)isAlbumAdded
 {
-  v2 = [(MCDLibraryAddObserver *)self album];
-  v3 = [v2 isLibraryAdded];
+  album = [(MCDLibraryAddObserver *)self album];
+  isLibraryAdded = [album isLibraryAdded];
 
-  return v3;
+  return isLibraryAdded;
 }
 
 - (BOOL)isPlaylistAddable
@@ -529,7 +529,7 @@ LABEL_25:
   v3 = MCDMusicGeneralLogging();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(MCDLibraryAddObserver *)self playlist];
+    playlist = [(MCDLibraryAddObserver *)self playlist];
     if ([(MCDLibraryAddObserver *)self didReceivePlaylistResponse])
     {
       v5 = @"YES";
@@ -561,7 +561,7 @@ LABEL_25:
       v7 = @"NO";
     }
 
-    v12 = v4;
+    v12 = playlist;
     v13 = 2114;
     v14 = v5;
     v15 = 2114;
@@ -573,8 +573,8 @@ LABEL_25:
 
   if ([(MCDLibraryAddObserver *)self didReceivePlaylistResponse]&& [(MCDLibraryAddObserver *)self isCloudLibraryEnabled])
   {
-    v8 = [(MCDLibraryAddObserver *)self playlist];
-    if (v8)
+    playlist2 = [(MCDLibraryAddObserver *)self playlist];
+    if (playlist2)
     {
       v9 = ![(MCDLibraryAddObserver *)self isPlaylistAdded];
     }
@@ -595,30 +595,30 @@ LABEL_25:
 
 - (BOOL)isPlaylistAdded
 {
-  v2 = [(MCDLibraryAddObserver *)self playlist];
-  v3 = [v2 isLibraryAdded];
+  playlist = [(MCDLibraryAddObserver *)self playlist];
+  isLibraryAdded = [playlist isLibraryAdded];
 
-  return v3;
+  return isLibraryAdded;
 }
 
-- (void)contentManager:(id)a3 didReceiveResponse:(id)a4
+- (void)contentManager:(id)manager didReceiveResponse:(id)response
 {
-  v5 = a4;
-  v6 = [v5 results];
-  v7 = [v6 firstSection];
+  responseCopy = response;
+  results = [responseCopy results];
+  firstSection = [results firstSection];
 
-  v8 = [v7 type];
-  if (v8 == 4)
+  type = [firstSection type];
+  if (type == 4)
   {
     [(MCDLibraryAddObserver *)self setDidReceivePlaylistResponse:1];
-    v14 = [v7 playlist];
-    [(MCDLibraryAddObserver *)self setPlaylist:v14];
+    playlist = [firstSection playlist];
+    [(MCDLibraryAddObserver *)self setPlaylist:playlist];
 
     v10 = MCDMusicGeneralLogging();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [(MCDLibraryAddObserver *)self playlist];
-      v12 = [v11 debugDescription];
+      playlist2 = [(MCDLibraryAddObserver *)self playlist];
+      v12 = [playlist2 debugDescription];
       v15 = 138543362;
       v16 = v12;
       v13 = "LibraryAddObserver: Playlist updated %{public}@";
@@ -626,17 +626,17 @@ LABEL_25:
     }
   }
 
-  else if (v8 == 2)
+  else if (type == 2)
   {
     [(MCDLibraryAddObserver *)self setDidReceiveAlbumResponse:1];
-    v9 = [v7 album];
-    [(MCDLibraryAddObserver *)self setAlbum:v9];
+    album = [firstSection album];
+    [(MCDLibraryAddObserver *)self setAlbum:album];
 
     v10 = MCDMusicGeneralLogging();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [(MCDLibraryAddObserver *)self album];
-      v12 = [v11 debugDescription];
+      playlist2 = [(MCDLibraryAddObserver *)self album];
+      v12 = [playlist2 debugDescription];
       v15 = 138543362;
       v16 = v12;
       v13 = "LibraryAddObserver: Album updated %{public}@";
@@ -650,7 +650,7 @@ LABEL_7:
     v10 = MCDMusicGeneralLogging();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      sub_100DEF064(v5, v10);
+      sub_100DEF064(responseCopy, v10);
     }
   }
 }

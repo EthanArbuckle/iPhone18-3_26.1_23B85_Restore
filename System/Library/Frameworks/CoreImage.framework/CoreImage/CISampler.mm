@@ -6,7 +6,7 @@
 - (CIFilterShape)definition;
 - (CISampler)init;
 - (CISampler)initWithImage:(CIImage *)im options:(NSDictionary *)dict;
-- (id)_initWithImage:(id)a3 key0:(id)a4 vargs:(char *)a5;
+- (id)_initWithImage:(id)image key0:(id)key0 vargs:(char *)vargs;
 - (id)debugDescription;
 - (id)description;
 - (id)opaqueShape;
@@ -76,12 +76,12 @@ void __20__CISampler_dealloc__block_invoke_2(uint64_t a1)
   return 0;
 }
 
-- (id)_initWithImage:(id)a3 key0:(id)a4 vargs:(char *)a5
+- (id)_initWithImage:(id)image key0:(id)key0 vargs:(char *)vargs
 {
   v26 = *MEMORY[0x1E69E9840];
-  v23 = a5;
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  if (a4)
+  vargsCopy = vargs;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (key0)
   {
     *&v9 = 138543362;
     v20 = v9;
@@ -99,15 +99,15 @@ void __20__CISampler_dealloc__block_invoke_2(uint64_t a1)
         goto LABEL_13;
       }
 
-      v10 = v23;
-      v23 += 8;
+      v10 = vargsCopy;
+      vargsCopy += 8;
       v11 = *v10;
       if (*v10)
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 || (v12 = CFGetTypeID(v11), v12 == CGColorSpaceGetTypeID()))
         {
-          [v8 setValue:v11 forKey:{a4, v20}];
+          [dictionary setValue:v11 forKey:{key0, v20}];
         }
 
         else
@@ -116,7 +116,7 @@ void __20__CISampler_dealloc__block_invoke_2(uint64_t a1)
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
             *buf = v20;
-            v25 = a4;
+            key0Copy2 = key0;
             v15 = v17;
             v16 = "CISampler value for key '%{public}@' must be a NSObject or a CGColorSpaceRef. Skipping.";
             goto LABEL_16;
@@ -130,7 +130,7 @@ void __20__CISampler_dealloc__block_invoke_2(uint64_t a1)
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
           *buf = v20;
-          v25 = a4;
+          key0Copy2 = key0;
           v15 = v14;
           v16 = "CISampler value for key '%{public}@' is nil. Skipping.";
 LABEL_16:
@@ -139,15 +139,15 @@ LABEL_16:
       }
 
 LABEL_13:
-      v18 = v23;
-      v23 += 8;
-      a4 = *v18;
+      v18 = vargsCopy;
+      vargsCopy += 8;
+      key0 = *v18;
     }
 
     while (*v18);
   }
 
-  return [(CISampler *)self initWithImage:a3 options:v8, v20];
+  return [(CISampler *)self initWithImage:image options:dictionary, v20];
 }
 
 - (CISampler)initWithImage:(CIImage *)im options:(NSDictionary *)dict
@@ -160,7 +160,7 @@ LABEL_44:
     return 0;
   }
 
-  v6 = im;
+  imageByClampingToExtent = im;
   [-[NSDictionary valueForKey:](dict valueForKey:{@"blur", "doubleValue"}];
   v8 = fmax(v7, 0.0);
   if (v8 > 0.0)
@@ -176,7 +176,7 @@ LABEL_44:
       }
     }
 
-    v6 = [(CIImage *)v6 imageByApplyingGaussianBlurWithSigma:v8];
+    imageByClampingToExtent = [(CIImage *)imageByClampingToExtent imageByApplyingGaussianBlurWithSigma:v8];
   }
 
   v10 = [(NSDictionary *)dict valueForKey:@"wrap_mode"];
@@ -185,16 +185,16 @@ LABEL_44:
     v11 = v10;
     if ([v10 isEqual:@"clamp"])
     {
-      [(CIImage *)v6 extent];
+      [(CIImage *)imageByClampingToExtent extent];
       if (!CGRectIsInfinite(v41))
       {
-        v6 = [(CIImage *)v6 imageByClampingToExtent];
+        imageByClampingToExtent = [(CIImage *)imageByClampingToExtent imageByClampingToExtent];
       }
     }
 
     if ([v11 isEqual:@"periodic"])
     {
-      [(CIImage *)v6 extent];
+      [(CIImage *)imageByClampingToExtent extent];
       if (!CGRectIsInfinite(v42))
       {
         v12 = ci_logger_api();
@@ -214,15 +214,15 @@ LABEL_44:
     v14 = v13;
     if ([v13 isEqual:@"nearest"])
     {
-      v15 = [(CIImage *)v6 imageBySamplingNearest];
+      imageBySamplingNearest = [(CIImage *)imageByClampingToExtent imageBySamplingNearest];
 LABEL_18:
-      v6 = v15;
+      imageByClampingToExtent = imageBySamplingNearest;
       goto LABEL_22;
     }
 
     if (([v14 isEqual:@"point"] & 1) == 0 && objc_msgSend(v14, "isEqual:", @"linear"))
     {
-      v15 = [(CIImage *)v6 imageBySamplingLinear];
+      imageBySamplingNearest = [(CIImage *)imageByClampingToExtent imageBySamplingLinear];
       goto LABEL_18;
     }
   }
@@ -242,15 +242,15 @@ LABEL_22:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v19 = [v17 objCType];
-    if (!strcmp(v19, "{CGAffineTransform=dddddd}") || !strcmp(v19, "{?=dddddd}"))
+    objCType = [v17 objCType];
+    if (!strcmp(objCType, "{CGAffineTransform=dddddd}") || !strcmp(objCType, "{?=dddddd}"))
     {
       [v17 getValue:&v35 size:48];
 LABEL_29:
       *buf = v35;
       *&buf[16] = v36;
       v39 = v37;
-      v6 = [(CIImage *)v6 imageByApplyingTransform:buf, v35];
+      imageByClampingToExtent = [(CIImage *)imageByClampingToExtent imageByApplyingTransform:buf, v35];
       goto LABEL_35;
     }
   }
@@ -306,7 +306,7 @@ LABEL_35:
     v30 = v28;
     if (CI::ColorSpace_is_RGB_and_supports_output(v28, v29))
     {
-      v6 = [(CIImage *)v6 imageByColorMatchingWorkingSpaceToColorSpace:v30];
+      imageByClampingToExtent = [(CIImage *)imageByClampingToExtent imageByColorMatchingWorkingSpaceToColorSpace:v30];
     }
 
     else
@@ -321,16 +321,16 @@ LABEL_35:
     }
   }
 
-  if (!v6)
+  if (!imageByClampingToExtent)
   {
     goto LABEL_44;
   }
 
-  v32 = [(CIImage *)v6 _internalRepresentation];
-  v33 = v32;
-  if (v32)
+  _internalRepresentation = [(CIImage *)imageByClampingToExtent _internalRepresentation];
+  v33 = _internalRepresentation;
+  if (_internalRepresentation)
   {
-    CI::Object::ref(v32);
+    CI::Object::ref(_internalRepresentation);
   }
 
   self->_priv = v33;

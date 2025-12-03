@@ -1,20 +1,20 @@
 @interface VCSystemAudioCaptureSession
 - (BOOL)createAudioBufferPool;
-- (BOOL)setupAudioIOWithConfig:(id *)a3;
+- (BOOL)setupAudioIOWithConfig:(id *)config;
 - (BOOL)start;
 - (BOOL)stop;
-- (VCSystemAudioCaptureSession)initWithConfiguration:(id *)a3;
-- (void)cleanupQueue:(opaqueCMSimpleQueue *)a3;
+- (VCSystemAudioCaptureSession)initWithConfiguration:(id *)configuration;
+- (void)cleanupQueue:(opaqueCMSimpleQueue *)queue;
 - (void)createAudioBufferPool;
 - (void)dealloc;
 @end
 
 @implementation VCSystemAudioCaptureSession
 
-- (VCSystemAudioCaptureSession)initWithConfiguration:(id *)a3
+- (VCSystemAudioCaptureSession)initWithConfiguration:(id *)configuration
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!configuration)
   {
     [VCSystemAudioCaptureSession initWithConfiguration:];
 LABEL_21:
@@ -54,14 +54,14 @@ LABEL_14:
 
   pthread_mutex_init(&v5->_stateLock, 0);
   atomic_store(0, &v5->_shouldResetAudioBufferPool);
-  v8 = *&a3->var1.format.mSampleRate;
-  v9 = *&a3->var1.format.mBitsPerChannel;
-  *&v5->_audioBasicDescription.mBytesPerPacket = *&a3->var1.format.mBytesPerPacket;
+  v8 = *&configuration->var1.format.mSampleRate;
+  v9 = *&configuration->var1.format.mBitsPerChannel;
+  *&v5->_audioBasicDescription.mBytesPerPacket = *&configuration->var1.format.mBytesPerPacket;
   *&v5->_audioBasicDescription.mBitsPerChannel = v9;
   *&v5->_audioBasicDescription.mSampleRate = v8;
   v5->_audioBasicDescription.mChannelsPerFrame = 1;
-  v5->_samplesPerFrame = a3->var1.samplesPerFrame;
-  if (![(VCSystemAudioCaptureSession *)v5 setupAudioIOWithConfig:a3])
+  v5->_samplesPerFrame = configuration->var1.samplesPerFrame;
+  if (![(VCSystemAudioCaptureSession *)v5 setupAudioIOWithConfig:configuration])
   {
     [VCSystemAudioCaptureSession initWithConfiguration:];
     goto LABEL_21;
@@ -93,7 +93,7 @@ LABEL_14:
     v12 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      var6 = a3->var6;
+      var6 = configuration->var6;
       *buf = 136316162;
       *&buf[4] = v11;
       v18 = 2080;
@@ -127,7 +127,7 @@ LABEL_14:
       v10 = 1024;
       v11 = 70;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %p", buf, 0x26u);
     }
   }
@@ -141,11 +141,11 @@ LABEL_14:
   [(VCSystemAudioCaptureSession *)&v5 dealloc];
 }
 
-- (BOOL)setupAudioIOWithConfig:(id *)a3
+- (BOOL)setupAudioIOWithConfig:(id *)config
 {
   v25 = *MEMORY[0x1E69E9840];
-  mSampleRate = a3->var1.format.mSampleRate;
-  samplesPerFrame = a3->var1.samplesPerFrame;
+  mSampleRate = config->var1.format.mSampleRate;
+  samplesPerFrame = config->var1.samplesPerFrame;
   *&v6 = 0xAAAAAAAAAAAAAAAALL;
   *(&v6 + 1) = 0xAAAAAAAAAAAAAAAALL;
   v24 = v6;
@@ -153,7 +153,7 @@ LABEL_14:
   v22 = v6;
   v21 = v6;
   v20 = v6;
-  v11 = vrev64_s32(*&a3->var2);
+  v11 = vrev64_s32(*&config->var2);
   v17 = v6;
   v18 = v6;
   v19 = v6;
@@ -162,8 +162,8 @@ LABEL_14:
   v14 = v6;
   v12 = v6;
   v13 = v6;
-  var5 = a3->var5;
-  var4 = a3->var4;
+  var5 = config->var5;
+  var4 = config->var4;
   LODWORD(v12) = 1;
   WORD2(v12) = 2;
   *&v13 = __PAIR64__(mSampleRate, var5);
@@ -196,14 +196,14 @@ LABEL_14:
       v11 = 1024;
       v12 = 105;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %p", &v7, 0x26u);
     }
   }
 
-  v5 = [(VCAudioIO *)self->_audioIO start];
+  start = [(VCAudioIO *)self->_audioIO start];
   pthread_mutex_unlock(&self->_stateLock);
-  return v5 == 0;
+  return start == 0;
 }
 
 - (BOOL)stop
@@ -223,15 +223,15 @@ LABEL_14:
       v11 = 1024;
       v12 = 114;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %p", &v7, 0x26u);
     }
   }
 
-  v5 = [(VCAudioIO *)self->_audioIO stop];
+  stop = [(VCAudioIO *)self->_audioIO stop];
   atomic_store(1u, &self->_shouldResetAudioBufferPool);
   pthread_mutex_unlock(&self->_stateLock);
-  return v5 == 0;
+  return stop == 0;
 }
 
 - (BOOL)createAudioBufferPool
@@ -270,14 +270,14 @@ LABEL_14:
   return v3;
 }
 
-- (void)cleanupQueue:(opaqueCMSimpleQueue *)a3
+- (void)cleanupQueue:(opaqueCMSimpleQueue *)queue
 {
   v4[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (queue)
   {
     while (1)
     {
-      v4[0] = CMSimpleQueueDequeue(*a3);
+      v4[0] = CMSimpleQueueDequeue(*queue);
       if (!v4[0])
       {
         break;
@@ -286,12 +286,12 @@ LABEL_14:
       VCAudioBufferList_Destroy(v4);
     }
 
-    if (*a3)
+    if (*queue)
     {
-      CFRelease(*a3);
+      CFRelease(*queue);
     }
 
-    *a3 = 0;
+    *queue = 0;
   }
 }
 

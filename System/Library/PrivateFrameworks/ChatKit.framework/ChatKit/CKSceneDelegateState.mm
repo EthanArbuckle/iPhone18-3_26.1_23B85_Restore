@@ -1,10 +1,10 @@
 @interface CKSceneDelegateState
-+ (id)stateFromIsComposingNewMessage:(BOOL)a3 messageHasContent:(BOOL)a4 isShowingBlankTranscript:(BOOL)a5 isControllerCollapsed:(BOOL)a6 isTopVCChatNavigationController:(BOOL)a7 conversation:(id)a8 filterMode:(unint64_t)a9 isShowingInbox:(BOOL)a10 unreadMessages:(id)a11 storedFilterModes:(id)a12;
++ (id)stateFromIsComposingNewMessage:(BOOL)message messageHasContent:(BOOL)content isShowingBlankTranscript:(BOOL)transcript isControllerCollapsed:(BOOL)collapsed isTopVCChatNavigationController:(BOOL)controller conversation:(id)conversation filterMode:(unint64_t)mode isShowingInbox:(BOOL)self0 unreadMessages:(id)self1 storedFilterModes:(id)self2;
 + (id)unarchivingClasses;
-- (CKSceneDelegateState)initWithCoder:(id)a3;
-- (CKSceneDelegateState)initWithUnreadMessages:(id)a3 groupID:(id)a4 composingNewMessage:(BOOL)a5 filterMode:(unint64_t)a6 showingInbox:(BOOL)a7 storedFilterModes:(id)a8;
+- (CKSceneDelegateState)initWithCoder:(id)coder;
+- (CKSceneDelegateState)initWithUnreadMessages:(id)messages groupID:(id)d composingNewMessage:(BOOL)message filterMode:(unint64_t)mode showingInbox:(BOOL)inbox storedFilterModes:(id)modes;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKSceneDelegateState
@@ -24,83 +24,83 @@
   return v3;
 }
 
-- (CKSceneDelegateState)initWithUnreadMessages:(id)a3 groupID:(id)a4 composingNewMessage:(BOOL)a5 filterMode:(unint64_t)a6 showingInbox:(BOOL)a7 storedFilterModes:(id)a8
+- (CKSceneDelegateState)initWithUnreadMessages:(id)messages groupID:(id)d composingNewMessage:(BOOL)message filterMode:(unint64_t)mode showingInbox:(BOOL)inbox storedFilterModes:(id)modes
 {
-  v9 = a7;
-  v11 = a5;
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
+  inboxCopy = inbox;
+  messageCopy = message;
+  messagesCopy = messages;
+  dCopy = d;
+  modesCopy = modes;
   v21.receiver = self;
   v21.super_class = CKSceneDelegateState;
   v17 = [(CKSceneDelegateState *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    [(CKSceneDelegateState *)v17 setUnreadLastMessages:v14];
-    [(CKSceneDelegateState *)v18 setGroupID:v15];
-    [(CKSceneDelegateState *)v18 setComposingNewMessage:v11];
-    v19 = [MEMORY[0x1E695DF00] date];
-    [(CKSceneDelegateState *)v18 setDate:v19];
+    [(CKSceneDelegateState *)v17 setUnreadLastMessages:messagesCopy];
+    [(CKSceneDelegateState *)v18 setGroupID:dCopy];
+    [(CKSceneDelegateState *)v18 setComposingNewMessage:messageCopy];
+    date = [MEMORY[0x1E695DF00] date];
+    [(CKSceneDelegateState *)v18 setDate:date];
 
-    [(CKSceneDelegateState *)v18 setFilterMode:a6];
-    [(CKSceneDelegateState *)v18 setShowingInbox:v9];
-    [(CKSceneDelegateState *)v18 setStoredFilterModes:v16];
+    [(CKSceneDelegateState *)v18 setFilterMode:mode];
+    [(CKSceneDelegateState *)v18 setShowingInbox:inboxCopy];
+    [(CKSceneDelegateState *)v18 setStoredFilterModes:modesCopy];
   }
 
   return v18;
 }
 
-- (CKSceneDelegateState)initWithCoder:(id)a3
+- (CKSceneDelegateState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CKSceneDelegateState *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"unreadLastMessages"];
+    v6 = [coderCopy decodeObjectForKey:@"unreadLastMessages"];
     [(CKSceneDelegateState *)v5 setUnreadLastMessages:v6];
 
-    v7 = [v4 decodeObjectForKey:@"groupID"];
+    v7 = [coderCopy decodeObjectForKey:@"groupID"];
     [(CKSceneDelegateState *)v5 setGroupID:v7];
 
-    -[CKSceneDelegateState setComposingNewMessage:](v5, "setComposingNewMessage:", [v4 decodeBoolForKey:@"composingNewMessage"]);
-    v8 = [v4 decodeObjectForKey:@"date"];
+    -[CKSceneDelegateState setComposingNewMessage:](v5, "setComposingNewMessage:", [coderCopy decodeBoolForKey:@"composingNewMessage"]);
+    v8 = [coderCopy decodeObjectForKey:@"date"];
     [(CKSceneDelegateState *)v5 setDate:v8];
 
-    -[CKSceneDelegateState setFilterMode:](v5, "setFilterMode:", [v4 decodeIntegerForKey:@"filterMode"]);
-    -[CKSceneDelegateState setShowingInbox:](v5, "setShowingInbox:", [v4 decodeBoolForKey:@"showingInbox"]);
-    v9 = [v4 decodeObjectForKey:@"storedFilterModes"];
+    -[CKSceneDelegateState setFilterMode:](v5, "setFilterMode:", [coderCopy decodeIntegerForKey:@"filterMode"]);
+    -[CKSceneDelegateState setShowingInbox:](v5, "setShowingInbox:", [coderCopy decodeBoolForKey:@"showingInbox"]);
+    v9 = [coderCopy decodeObjectForKey:@"storedFilterModes"];
     [(CKSceneDelegateState *)v5 setStoredFilterModes:v9];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CKSceneDelegateState *)self unreadLastMessages];
-  [v4 encodeObject:v5 forKey:@"unreadLastMessages"];
+  coderCopy = coder;
+  unreadLastMessages = [(CKSceneDelegateState *)self unreadLastMessages];
+  [coderCopy encodeObject:unreadLastMessages forKey:@"unreadLastMessages"];
 
-  v6 = [(CKSceneDelegateState *)self groupID];
-  [v4 encodeObject:v6 forKey:@"groupID"];
+  groupID = [(CKSceneDelegateState *)self groupID];
+  [coderCopy encodeObject:groupID forKey:@"groupID"];
 
-  [v4 encodeBool:-[CKSceneDelegateState composingNewMessage](self forKey:{"composingNewMessage"), @"composingNewMessage"}];
-  v7 = [(CKSceneDelegateState *)self date];
-  [v4 encodeObject:v7 forKey:@"date"];
+  [coderCopy encodeBool:-[CKSceneDelegateState composingNewMessage](self forKey:{"composingNewMessage"), @"composingNewMessage"}];
+  date = [(CKSceneDelegateState *)self date];
+  [coderCopy encodeObject:date forKey:@"date"];
 
-  [v4 encodeInteger:-[CKSceneDelegateState filterMode](self forKey:{"filterMode"), @"filterMode"}];
-  [v4 encodeBool:-[CKSceneDelegateState showingInbox](self forKey:{"showingInbox"), @"showingInbox"}];
-  v8 = [(CKSceneDelegateState *)self storedFilterModes];
-  [v4 encodeObject:v8 forKey:@"storedFilterModes"];
+  [coderCopy encodeInteger:-[CKSceneDelegateState filterMode](self forKey:{"filterMode"), @"filterMode"}];
+  [coderCopy encodeBool:-[CKSceneDelegateState showingInbox](self forKey:{"showingInbox"), @"showingInbox"}];
+  storedFilterModes = [(CKSceneDelegateState *)self storedFilterModes];
+  [coderCopy encodeObject:storedFilterModes forKey:@"storedFilterModes"];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CKSceneDelegateState *)self unreadLastMessages];
-  v6 = [(CKSceneDelegateState *)self groupID];
+  unreadLastMessages = [(CKSceneDelegateState *)self unreadLastMessages];
+  groupID = [(CKSceneDelegateState *)self groupID];
   v7 = @"YES";
   if ([(CKSceneDelegateState *)self composingNewMessage])
   {
@@ -112,8 +112,8 @@
     v8 = @"NO";
   }
 
-  v9 = [(CKSceneDelegateState *)self date];
-  [v9 timeIntervalSinceNow];
+  date = [(CKSceneDelegateState *)self date];
+  [date timeIntervalSinceNow];
   v11 = v10;
   v12 = IMConversationListFilterModeStringValue([(CKSceneDelegateState *)self filterMode]);
   if (![(CKSceneDelegateState *)self showingInbox])
@@ -121,36 +121,36 @@
     v7 = @"NO";
   }
 
-  v13 = [(CKSceneDelegateState *)self storedFilterModes];
-  v14 = [v3 stringWithFormat:@"<%@ %p unreadLastMessages: %@ groupID: %@ composingNewMessage: %@ date: %f> filterMode: %@ showingInbox: %@, storedFilterModes: %@", v4, self, v5, v6, v8, v11, v12, v7, v13];
+  storedFilterModes = [(CKSceneDelegateState *)self storedFilterModes];
+  v14 = [v3 stringWithFormat:@"<%@ %p unreadLastMessages: %@ groupID: %@ composingNewMessage: %@ date: %f> filterMode: %@ showingInbox: %@, storedFilterModes: %@", v4, self, unreadLastMessages, groupID, v8, v11, v12, v7, storedFilterModes];
 
   return v14;
 }
 
-+ (id)stateFromIsComposingNewMessage:(BOOL)a3 messageHasContent:(BOOL)a4 isShowingBlankTranscript:(BOOL)a5 isControllerCollapsed:(BOOL)a6 isTopVCChatNavigationController:(BOOL)a7 conversation:(id)a8 filterMode:(unint64_t)a9 isShowingInbox:(BOOL)a10 unreadMessages:(id)a11 storedFilterModes:(id)a12
++ (id)stateFromIsComposingNewMessage:(BOOL)message messageHasContent:(BOOL)content isShowingBlankTranscript:(BOOL)transcript isControllerCollapsed:(BOOL)collapsed isTopVCChatNavigationController:(BOOL)controller conversation:(id)conversation filterMode:(unint64_t)mode isShowingInbox:(BOOL)self0 unreadMessages:(id)self1 storedFilterModes:(id)self2
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  controllerCopy = controller;
+  collapsedCopy = collapsed;
+  transcriptCopy = transcript;
+  contentCopy = content;
+  messageCopy = message;
   v42 = *MEMORY[0x1E69E9840];
-  v17 = a8;
-  v18 = a11;
-  v19 = a12;
-  v20 = (v12 | ~v13) & !v14;
-  if (v16)
+  conversationCopy = conversation;
+  messagesCopy = messages;
+  modesCopy = modes;
+  v20 = (controllerCopy | ~collapsedCopy) & !transcriptCopy;
+  if (messageCopy)
   {
-    v20 = v15;
+    v20 = contentCopy;
   }
 
-  v21 = @"-1";
-  if (v17 && v20)
+  groupID = @"-1";
+  if (conversationCopy && v20)
   {
-    v21 = [v17 groupID];
+    groupID = [conversationCopy groupID];
   }
 
-  v22 = v16 & v15;
+  v22 = messageCopy & contentCopy;
   v23 = IMLogHandleForCategory();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
   {
@@ -169,7 +169,7 @@
   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v41 = v21;
+    v41 = groupID;
     _os_log_impl(&dword_19020E000, v25, OS_LOG_TYPE_INFO, "  => Suspended group ID: %@", buf, 0xCu);
   }
 
@@ -180,10 +180,10 @@
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v27 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-  v28 = [v27 cachedChats];
+  mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+  cachedChats = [mEMORY[0x1E69A5AF8] cachedChats];
 
-  v29 = [v28 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  v29 = [cachedChats countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v29)
   {
     v30 = v29;
@@ -194,19 +194,19 @@
       {
         if (*v36 != v31)
         {
-          objc_enumerationMutation(v28);
+          objc_enumerationMutation(cachedChats);
         }
 
         [*(*(&v35 + 1) + 8 * i) __ck_saveWatermark];
       }
 
-      v30 = [v28 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v30 = [cachedChats countByEnumeratingWithState:&v35 objects:v39 count:16];
     }
 
     while (v30);
   }
 
-  v33 = [[CKSceneDelegateState alloc] initWithUnreadMessages:v18 groupID:v21 composingNewMessage:v22 filterMode:a9 showingInbox:a10 storedFilterModes:v19];
+  v33 = [[CKSceneDelegateState alloc] initWithUnreadMessages:messagesCopy groupID:groupID composingNewMessage:v22 filterMode:mode showingInbox:inbox storedFilterModes:modesCopy];
 
   return v33;
 }

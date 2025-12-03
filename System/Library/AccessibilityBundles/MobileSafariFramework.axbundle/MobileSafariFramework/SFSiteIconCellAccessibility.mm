@@ -1,14 +1,14 @@
 @interface SFSiteIconCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation SFSiteIconCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFSiteIconCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"SFSiteIconCell" hasInstanceVariable:@"_subtitleLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFSiteIconCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"SFSiteIconCell" hasInstanceVariable:@"_subtitleLabel" withType:"UILabel"];
 }
 
 @end

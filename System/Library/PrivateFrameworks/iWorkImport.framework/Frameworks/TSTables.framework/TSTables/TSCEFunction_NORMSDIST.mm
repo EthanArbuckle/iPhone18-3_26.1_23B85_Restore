@@ -1,33 +1,33 @@
 @interface TSCEFunction_NORMSDIST
-+ (double)probabilityWithZ:(double)a3;
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (double)probabilityWithZ:(double)z;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_NORMSDIST
 
-+ (double)probabilityWithZ:(double)a3
++ (double)probabilityWithZ:(double)z
 {
-  v3 = trunc(a3);
-  if (fabs(a3) <= 1000.0)
+  v3 = trunc(z);
+  if (fabs(z) <= 1000.0)
   {
-    v4 = a3;
+    zCopy = z;
   }
 
   else
   {
-    v4 = v3;
+    zCopy = v3;
   }
 
   pthread_mutex_lock(&stru_27CFB4098);
-  if (v4 >= 0.0)
+  if (zCopy >= 0.0)
   {
-    sub_221272900(v4);
+    sub_221272900(zCopy);
     v6 = v7;
   }
 
   else
   {
-    sub_221272900(-v4);
+    sub_221272900(-zCopy);
     v6 = 1.0 - v5;
   }
 
@@ -35,15 +35,15 @@
   return v6;
 }
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v7 = **a5;
+  v7 = **arguments;
   v27 = 0;
-  v9 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v7, v8, a3, a4, 0, &v27);
+  v9 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v7, v8, context, spec, 0, &v27);
   v14 = v27;
   if (v14)
   {
-    v15 = objc_msgSend_raiseErrorOrConvert_(a3, v10, v14, v12, v13);
+    v15 = objc_msgSend_raiseErrorOrConvert_(context, v10, v14, v12, v13);
   }
 
   else
@@ -53,7 +53,7 @@
     TSUDecimal::operator=();
     if (v7)
     {
-      objc_msgSend_formatWithContext_(v7, v20, a3, v21, v22);
+      objc_msgSend_formatWithContext_(v7, v20, context, v21, v22);
     }
 
     else

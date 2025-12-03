@@ -1,19 +1,19 @@
 @interface BSBrandManager
-- (BOOL)isBrandRegisteredWithIdentifier:(id)a3 forService:(id)a4 timeout:(double)a5 error:(id *)a6;
-- (void)brandAssetWithIdentifier:(id)a3 forService:(id)a4 completion:(id)a5;
-- (void)brandWithIdentifier:(id)a3 forService:(id)a4 completion:(id)a5;
-- (void)brandWithURI:(id)a3 completion:(id)a4;
-- (void)brandWithURI:(id)a3 usingSim:(id)a4 completion:(id)a5;
-- (void)clearUnusedCachedLogos:(id)a3;
-- (void)fetchAssetWithURL:(id)a3 type:(int64_t)a4 completion:(id)a5;
-- (void)isBrandRegisteredWithIdentifier:(id)a3 forService:(id)a4 completion:(id)a5;
+- (BOOL)isBrandRegisteredWithIdentifier:(id)identifier forService:(id)service timeout:(double)timeout error:(id *)error;
+- (void)brandAssetWithIdentifier:(id)identifier forService:(id)service completion:(id)completion;
+- (void)brandWithIdentifier:(id)identifier forService:(id)service completion:(id)completion;
+- (void)brandWithURI:(id)i completion:(id)completion;
+- (void)brandWithURI:(id)i usingSim:(id)sim completion:(id)completion;
+- (void)clearUnusedCachedLogos:(id)logos;
+- (void)fetchAssetWithURL:(id)l type:(int64_t)type completion:(id)completion;
+- (void)isBrandRegisteredWithIdentifier:(id)identifier forService:(id)service completion:(id)completion;
 @end
 
 @implementation BSBrandManager
 
-- (void)brandWithURI:(id)a3 completion:(id)a4
+- (void)brandWithURI:(id)i completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (self)
   {
     self = self->_shim;
@@ -23,9 +23,9 @@
   v8[1] = 3221225472;
   v8[2] = __42__BSBrandManager_brandWithURI_completion___block_invoke;
   v8[3] = &unk_2781C1688;
-  v9 = v6;
-  v7 = v6;
-  [(BSBrandManager *)self brandWithURI:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(BSBrandManager *)self brandWithURI:i completion:v8];
 }
 
 void __42__BSBrandManager_brandWithURI_completion___block_invoke(uint64_t a1, void *a2)
@@ -43,9 +43,9 @@ void __42__BSBrandManager_brandWithURI_completion___block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)brandWithURI:(id)a3 usingSim:(id)a4 completion:(id)a5
+- (void)brandWithURI:(id)i usingSim:(id)sim completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   if (self)
   {
     self = self->_shim;
@@ -55,9 +55,9 @@ void __42__BSBrandManager_brandWithURI_completion___block_invoke(uint64_t a1, vo
   v10[1] = 3221225472;
   v10[2] = __51__BSBrandManager_brandWithURI_usingSim_completion___block_invoke;
   v10[3] = &unk_2781C1688;
-  v11 = v8;
-  v9 = v8;
-  [(BSBrandManager *)self brandWithURI:a3 usingSim:a4 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(BSBrandManager *)self brandWithURI:i usingSim:sim completion:v10];
 }
 
 void __51__BSBrandManager_brandWithURI_usingSim_completion___block_invoke(uint64_t a1, void *a2)
@@ -75,49 +75,49 @@ void __51__BSBrandManager_brandWithURI_usingSim_completion___block_invoke(uint64
   }
 }
 
-- (void)clearUnusedCachedLogos:(id)a3
+- (void)clearUnusedCachedLogos:(id)logos
 {
   if (self)
   {
     self = self->_shim;
   }
 
-  [(BSBrandManager *)self clearUnusedCachedLogos:a3];
+  [(BSBrandManager *)self clearUnusedCachedLogos:logos];
 }
 
-- (void)fetchAssetWithURL:(id)a3 type:(int64_t)a4 completion:(id)a5
+- (void)fetchAssetWithURL:(id)l type:(int64_t)type completion:(id)completion
 {
   if (self)
   {
     self = self->_shim;
   }
 
-  [(BSBrandManager *)self fetchAssetWithURL:a3 assetType:a4 completion:a5];
+  [(BSBrandManager *)self fetchAssetWithURL:l assetType:type completion:completion];
 }
 
-- (void)isBrandRegisteredWithIdentifier:(id)a3 forService:(id)a4 completion:(id)a5
+- (void)isBrandRegisteredWithIdentifier:(id)identifier forService:(id)service completion:(id)completion
 {
   if (self)
   {
     self = self->_shim;
   }
 
-  [(BSBrandManager *)self isBrandRegisteredWithIdentifier:a3 forService:a4 completion:a5];
+  [(BSBrandManager *)self isBrandRegisteredWithIdentifier:identifier forService:service completion:completion];
 }
 
-- (BOOL)isBrandRegisteredWithIdentifier:(id)a3 forService:(id)a4 timeout:(double)a5 error:(id *)a6
+- (BOOL)isBrandRegisteredWithIdentifier:(id)identifier forService:(id)service timeout:(double)timeout error:(id *)error
 {
   if (self)
   {
     self = self->_shim;
   }
 
-  return [(BSBrandManager *)self isBrandRegisteredWithIdentifier:a3 forService:a4 timeout:a6 error:a5];
+  return [(BSBrandManager *)self isBrandRegisteredWithIdentifier:identifier forService:service timeout:error error:timeout];
 }
 
-- (void)brandWithIdentifier:(id)a3 forService:(id)a4 completion:(id)a5
+- (void)brandWithIdentifier:(id)identifier forService:(id)service completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   if (self)
   {
     self = self->_shim;
@@ -127,9 +127,9 @@ void __51__BSBrandManager_brandWithURI_usingSim_completion___block_invoke(uint64
   v10[1] = 3221225472;
   v10[2] = __60__BSBrandManager_brandWithIdentifier_forService_completion___block_invoke;
   v10[3] = &unk_2781C1688;
-  v11 = v8;
-  v9 = v8;
-  [(BSBrandManager *)self brandWithIdentifier:a3 forService:a4 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(BSBrandManager *)self brandWithIdentifier:identifier forService:service completion:v10];
 }
 
 void __60__BSBrandManager_brandWithIdentifier_forService_completion___block_invoke(uint64_t a1, void *a2)
@@ -147,9 +147,9 @@ void __60__BSBrandManager_brandWithIdentifier_forService_completion___block_invo
   }
 }
 
-- (void)brandAssetWithIdentifier:(id)a3 forService:(id)a4 completion:(id)a5
+- (void)brandAssetWithIdentifier:(id)identifier forService:(id)service completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   if (self)
   {
     self = self->_shim;
@@ -159,9 +159,9 @@ void __60__BSBrandManager_brandWithIdentifier_forService_completion___block_invo
   v10[1] = 3221225472;
   v10[2] = __65__BSBrandManager_brandAssetWithIdentifier_forService_completion___block_invoke;
   v10[3] = &unk_2781C16B0;
-  v11 = v8;
-  v9 = v8;
-  [(BSBrandManager *)self brandAssetWithIdentifier:a3 forService:a4 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(BSBrandManager *)self brandAssetWithIdentifier:identifier forService:service completion:v10];
 }
 
 @end

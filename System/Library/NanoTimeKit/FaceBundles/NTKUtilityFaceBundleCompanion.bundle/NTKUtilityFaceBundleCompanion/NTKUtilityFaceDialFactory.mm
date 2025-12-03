@@ -1,43 +1,43 @@
 @interface NTKUtilityFaceDialFactory
 + (id)_getImageCache;
-+ (id)_renderDialForDevice:(id)a3;
-+ (id)_renderNumbersForStyle:(unint64_t)a3 typeface:(unint64_t)a4 device:(id)a5;
-+ (id)dialImageForDevice:(id)a3;
-+ (id)numbersImageForStyle:(unint64_t)a3 typeface:(unint64_t)a4 device:(id)a5;
++ (id)_renderDialForDevice:(id)device;
++ (id)_renderNumbersForStyle:(unint64_t)style typeface:(unint64_t)typeface device:(id)device;
++ (id)dialImageForDevice:(id)device;
++ (id)numbersImageForStyle:(unint64_t)style typeface:(unint64_t)typeface device:(id)device;
 @end
 
 @implementation NTKUtilityFaceDialFactory
 
-+ (id)dialImageForDevice:(id)a3
++ (id)dialImageForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = +[NTKUtilityFaceDialFactory _getImageCache];
-  v5 = [NTKUtilityFaceDialFactory _dialIdentifierForDevice:v3];
+  v5 = [NTKUtilityFaceDialFactory _dialIdentifierForDevice:deviceCopy];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1140;
   v10[3] = &unk_104A0;
-  v11 = v3;
-  v6 = v3;
+  v11 = deviceCopy;
+  v6 = deviceCopy;
   v7 = [v4 imageForKey:v5 generatingIfNecessaryWithBlock:v10];
   v8 = [v7 imageWithRenderingMode:2];
 
   return v8;
 }
 
-+ (id)numbersImageForStyle:(unint64_t)a3 typeface:(unint64_t)a4 device:(id)a5
++ (id)numbersImageForStyle:(unint64_t)style typeface:(unint64_t)typeface device:(id)device
 {
-  v7 = a5;
+  deviceCopy = device;
   v8 = +[NTKUtilityFaceDialFactory _getImageCache];
-  v9 = [NTKUtilityFaceDialFactory _numbersIdentifierForStyle:a3 typeface:a4 device:v7];
+  v9 = [NTKUtilityFaceDialFactory _numbersIdentifierForStyle:style typeface:typeface device:deviceCopy];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_125C;
   v13[3] = &unk_104C8;
-  v15 = a3;
-  v16 = a4;
-  v14 = v7;
-  v10 = v7;
+  styleCopy = style;
+  typefaceCopy = typeface;
+  v14 = deviceCopy;
+  v10 = deviceCopy;
   v11 = [v8 imageForKey:v9 generatingIfNecessaryWithBlock:v13];
 
   return v11;
@@ -55,9 +55,9 @@
   return v3;
 }
 
-+ (id)_renderDialForDevice:(id)a3
++ (id)_renderDialForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v40 = 0;
   v38 = 0u;
   v39 = 0u;
@@ -78,8 +78,8 @@
   v22 = 0u;
   v23 = 0u;
   v21 = 0u;
-  sub_244C(v3, &v21);
-  [v3 screenScale];
+  sub_244C(deviceCopy, &v21);
+  [deviceCopy screenScale];
   v5 = v4 + v4;
   v6 = *&v21;
   v7 = *&v21 + *&v22;
@@ -120,9 +120,9 @@
   return v19;
 }
 
-+ (id)_renderNumbersForStyle:(unint64_t)a3 typeface:(unint64_t)a4 device:(id)a5
++ (id)_renderNumbersForStyle:(unint64_t)style typeface:(unint64_t)typeface device:(id)device
 {
-  v7 = a5;
+  deviceCopy = device;
   v52 = 0;
   v50 = 0u;
   v51 = 0u;
@@ -143,7 +143,7 @@
   v34 = 0u;
   v35 = 0u;
   v33 = 0u;
-  [v7 screenScale];
+  [deviceCopy screenScale];
   v9 = v8 + v8;
   v10 = *&v33;
   v11 = *&v33 + *&v34;
@@ -162,9 +162,9 @@
   v21 = -5;
   do
   {
-    if (a3 == 3)
+    if (style == 3)
     {
-      v22 = _NTKUtilityMinuteLayer(v21 + 5, v19, v20, v14, v16, v15, a4, v7);
+      v22 = _NTKUtilityMinuteLayer(v21 + 5, v19, v20, v14, v16, v15, typeface, deviceCopy);
     }
 
     else
@@ -180,7 +180,7 @@
   }
 
   while (v21 < 0x37);
-  if (a3)
+  if (style)
   {
     v24 = 0;
     v25 = v13 - v17;
@@ -188,9 +188,9 @@
     v27 = v25 - *&v36;
     do
     {
-      if (a3 != 1 || v24 == 3 * ((1431655766 * v24) >> 32))
+      if (style != 1 || v24 == 3 * ((1431655766 * v24) >> 32))
       {
-        v28 = _NTKUtilityHourLayer(v24, v26, v27, v14, v16, v15, a4);
+        v28 = _NTKUtilityHourLayer(v24, v26, v27, v14, v16, v15, typeface);
         [v12 addSublayer:v28];
         [v28 setContentsScale:v9];
       }

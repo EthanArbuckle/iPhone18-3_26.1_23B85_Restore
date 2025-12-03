@@ -1,32 +1,32 @@
 @interface HDSyncIdentityEntity
-+ (BOOL)enumerateConcreteIdentitiesWithTransaction:(id)a3 error:(id *)a4 enumerationHandler:(id)a5;
-+ (id)_concreteIdentityForIdentity:(void *)a3 database:(uint64_t)a4 error:;
-+ (id)childIdentitiesForCurrentSyncIdentityWithTransaction:(id)a3 error:(id *)a4;
-+ (id)concreteIdentityForIdentity:(id)a3 transaction:(id)a4 error:(id *)a5;
-+ (id)concreteIdentityForPersistentID:(int64_t)a3 database:(id)a4 error:(id *)a5;
-+ (id)concreteIdentityForPersistentID:(int64_t)a3 transaction:(id)a4 error:(id *)a5;
-+ (id)insertOrLookupConcreteIdentityForIdentity:(id)a3 database:(id)a4 error:(id *)a5;
-+ (id)insertOrLookupConcreteIdentityForIdentity:(id)a3 transaction:(id)a4 error:(id *)a5;
++ (BOOL)enumerateConcreteIdentitiesWithTransaction:(id)transaction error:(id *)error enumerationHandler:(id)handler;
++ (id)_concreteIdentityForIdentity:(void *)identity database:(uint64_t)database error:;
++ (id)childIdentitiesForCurrentSyncIdentityWithTransaction:(id)transaction error:(id *)error;
++ (id)concreteIdentityForIdentity:(id)identity transaction:(id)transaction error:(id *)error;
++ (id)concreteIdentityForPersistentID:(int64_t)d database:(id)database error:(id *)error;
++ (id)concreteIdentityForPersistentID:(int64_t)d transaction:(id)transaction error:(id *)error;
++ (id)insertOrLookupConcreteIdentityForIdentity:(id)identity database:(id)database error:(id *)error;
++ (id)insertOrLookupConcreteIdentityForIdentity:(id)identity transaction:(id)transaction error:(id *)error;
 + (id)uniquedColumns;
-+ (id)updateIsChild:(BOOL)a3 concreteIdentity:(id)a4 transaction:(id)a5 error:(id *)a6;
-- (id)concreteIdentityWithTransaction:(id)a3 error:(id *)a4;
++ (id)updateIsChild:(BOOL)child concreteIdentity:(id)identity transaction:(id)transaction error:(id *)error;
+- (id)concreteIdentityWithTransaction:(id)transaction error:(id *)error;
 @end
 
 @implementation HDSyncIdentityEntity
 
-+ (id)concreteIdentityForIdentity:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)concreteIdentityForIdentity:(id)identity transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = [a4 databaseForEntityClass:a1];
-  v10 = [(HDSyncIdentityEntity *)a1 _concreteIdentityForIdentity:v8 database:v9 error:a5];
+  identityCopy = identity;
+  v9 = [transaction databaseForEntityClass:self];
+  v10 = [(HDSyncIdentityEntity *)self _concreteIdentityForIdentity:identityCopy database:v9 error:error];
 
   return v10;
 }
 
-+ (id)_concreteIdentityForIdentity:(void *)a3 database:(uint64_t)a4 error:
++ (id)_concreteIdentityForIdentity:(void *)identity database:(uint64_t)database error:
 {
   v6 = a2;
-  v7 = a3;
+  identityCopy = identity;
   v8 = objc_opt_self();
   v21 = 0;
   v22 = &v21;
@@ -55,7 +55,7 @@
   v13[3] = &unk_278615C30;
   v13[4] = &v21;
   v13[5] = &v17;
-  if ([v7 executeCachedStatementForKey:&_concreteIdentityForIdentity_database_error__lookupKey error:a4 SQLGenerator:v16 bindingHandler:v14 enumerationHandler:v13] && v22[5])
+  if ([identityCopy executeCachedStatementForKey:&_concreteIdentityForIdentity_database_error__lookupKey error:database SQLGenerator:v16 bindingHandler:v14 enumerationHandler:v13] && v22[5])
   {
     v10 = [HDConcreteSyncIdentity alloc];
     v11 = [(HDConcreteSyncIdentity *)v10 initWithIdentity:v9 entity:v22[5] isChild:*(v18 + 24)];
@@ -72,19 +72,19 @@
   return v11;
 }
 
-+ (id)concreteIdentityForPersistentID:(int64_t)a3 transaction:(id)a4 error:(id *)a5
++ (id)concreteIdentityForPersistentID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
-  v8 = a4;
-  v9 = [v8 databaseForEntityClass:objc_opt_class()];
+  transactionCopy = transaction;
+  v9 = [transactionCopy databaseForEntityClass:objc_opt_class()];
 
-  v10 = [a1 concreteIdentityForPersistentID:a3 database:v9 error:a5];
+  v10 = [self concreteIdentityForPersistentID:d database:v9 error:error];
 
   return v10;
 }
 
-+ (id)concreteIdentityForPersistentID:(int64_t)a3 database:(id)a4 error:(id *)a5
++ (id)concreteIdentityForPersistentID:(int64_t)d database:(id)database error:(id *)error
 {
-  v8 = a4;
+  databaseCopy = database;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -95,13 +95,13 @@
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v9 = [(HDSQLiteEntity *)[HDSyncIdentityEntity alloc] initWithPersistentID:a3];
-  v14[4] = a3;
+  v9 = [(HDSQLiteEntity *)[HDSyncIdentityEntity alloc] initWithPersistentID:d];
+  v14[4] = d;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __71__HDSyncIdentityEntity_concreteIdentityForPersistentID_database_error___block_invoke;
   v15[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v15[4] = a1;
+  v15[4] = self;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __71__HDSyncIdentityEntity_concreteIdentityForPersistentID_database_error___block_invoke_2;
@@ -112,7 +112,7 @@
   v13[3] = &unk_278615C30;
   v13[4] = &v20;
   v13[5] = &v16;
-  if ([v8 executeCachedStatementForKey:&concreteIdentityForPersistentID_database_error__lookupKey error:a5 SQLGenerator:v15 bindingHandler:v14 enumerationHandler:v13])
+  if ([databaseCopy executeCachedStatementForKey:&concreteIdentityForPersistentID_database_error__lookupKey error:error SQLGenerator:v15 bindingHandler:v14 enumerationHandler:v13])
   {
     v10 = [HDConcreteSyncIdentity alloc];
     v11 = [(HDConcreteSyncIdentity *)v10 initWithIdentity:v9 entity:*(v17 + 24) isChild:?];
@@ -154,28 +154,28 @@ uint64_t __71__HDSyncIdentityEntity_concreteIdentityForPersistentID_database_err
   return 0;
 }
 
-+ (id)insertOrLookupConcreteIdentityForIdentity:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)insertOrLookupConcreteIdentityForIdentity:(id)identity transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = [a4 databaseForEntityClass:a1];
-  v10 = [a1 insertOrLookupConcreteIdentityForIdentity:v8 database:v9 error:a5];
+  identityCopy = identity;
+  v9 = [transaction databaseForEntityClass:self];
+  v10 = [self insertOrLookupConcreteIdentityForIdentity:identityCopy database:v9 error:error];
 
   return v10;
 }
 
-+ (id)insertOrLookupConcreteIdentityForIdentity:(id)a3 database:(id)a4 error:(id *)a5
++ (id)insertOrLookupConcreteIdentityForIdentity:(id)identity database:(id)database error:(id *)error
 {
   v25[4] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  identityCopy = identity;
+  databaseCopy = database;
+  if (!identityCopy)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"HDSyncIdentityEntity.m" lineNumber:198 description:@"Attempt to insert a nil sync identity into the db."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSyncIdentityEntity.m" lineNumber:198 description:@"Attempt to insert a nil sync identity into the db."];
   }
 
   v24 = 0;
-  v11 = [(HDSyncIdentityEntity *)a1 _concreteIdentityForIdentity:v9 database:v10 error:&v24];
+  v11 = [(HDSyncIdentityEntity *)self _concreteIdentityForIdentity:identityCopy database:databaseCopy error:&v24];
   v12 = v24;
   v13 = v12;
   if (v11)
@@ -185,11 +185,11 @@ uint64_t __71__HDSyncIdentityEntity_concreteIdentityForPersistentID_database_err
 
   else if (v12)
   {
-    if (a5)
+    if (error)
     {
       v17 = v12;
       v14 = 0;
-      *a5 = v13;
+      *error = v13;
     }
 
     else
@@ -210,9 +210,9 @@ uint64_t __71__HDSyncIdentityEntity_concreteIdentityForPersistentID_database_err
     v22[1] = 3221225472;
     v22[2] = __81__HDSyncIdentityEntity_insertOrLookupConcreteIdentityForIdentity_database_error___block_invoke;
     v22[3] = &unk_278614508;
-    v19 = v9;
+    v19 = identityCopy;
     v23 = v19;
-    v20 = [a1 insertOrReplaceEntity:0 database:v10 properties:v18 error:a5 bindingHandler:v22];
+    v20 = [self insertOrReplaceEntity:0 database:databaseCopy properties:v18 error:error bindingHandler:v22];
 
     if (v20)
     {
@@ -246,32 +246,32 @@ void __81__HDSyncIdentityEntity_insertOrLookupConcreteIdentityForIdentity_databa
   JUMPOUT(0x22AAC6B90);
 }
 
-+ (id)updateIsChild:(BOOL)a3 concreteIdentity:(id)a4 transaction:(id)a5 error:(id *)a6
++ (id)updateIsChild:(BOOL)child concreteIdentity:(id)identity transaction:(id)transaction error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = [v11 databaseForEntityClass:objc_opt_class()];
+  identityCopy = identity;
+  transactionCopy = transaction;
+  v12 = [transactionCopy databaseForEntityClass:objc_opt_class()];
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __73__HDSyncIdentityEntity_updateIsChild_concreteIdentity_transaction_error___block_invoke;
   v23[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v23[4] = a1;
+  v23[4] = self;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __73__HDSyncIdentityEntity_updateIsChild_concreteIdentity_transaction_error___block_invoke_2;
   v20[3] = &unk_278615C58;
-  v22 = a3;
-  v13 = v10;
+  childCopy = child;
+  v13 = identityCopy;
   v21 = v13;
-  v14 = [v12 executeCachedStatementForKey:&updateIsChild_concreteIdentity_transaction_error__updateKey error:a6 SQLGenerator:v23 bindingHandler:v20 enumerationHandler:0];
+  v14 = [v12 executeCachedStatementForKey:&updateIsChild_concreteIdentity_transaction_error__updateKey error:error SQLGenerator:v23 bindingHandler:v20 enumerationHandler:0];
   v15 = 0;
   if (v14)
   {
     v16 = [HDConcreteSyncIdentity alloc];
-    v17 = [v13 identity];
-    v18 = [v13 entity];
-    v15 = [(HDConcreteSyncIdentity *)v16 initWithIdentity:v17 entity:v18 isChild:a3];
+    identity = [v13 identity];
+    entity = [v13 entity];
+    v15 = [(HDConcreteSyncIdentity *)v16 initWithIdentity:identity entity:entity isChild:child];
   }
 
   return v15;
@@ -337,10 +337,10 @@ uint64_t __68__HDSyncIdentityEntity__concreteIdentityForIdentity_database_error_
   return 0;
 }
 
-- (id)concreteIdentityWithTransaction:(id)a3 error:(id *)a4
+- (id)concreteIdentityWithTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 databaseForEntity:self];
+  transactionCopy = transaction;
+  v7 = [transactionCopy databaseForEntity:self];
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -367,7 +367,7 @@ uint64_t __68__HDSyncIdentityEntity__concreteIdentityForIdentity_database_error_
   v11[2] = __62__HDSyncIdentityEntity_concreteIdentityWithTransaction_error___block_invoke_3;
   v11[3] = &unk_278615C30;
   v11[4] = &v18;
-  if ([v7 executeCachedStatementForKey:&concreteIdentityWithTransaction_error__lookupKey error:a4 SQLGenerator:v13 bindingHandler:v12 enumerationHandler:v11])
+  if ([v7 executeCachedStatementForKey:&concreteIdentityWithTransaction_error__lookupKey error:error SQLGenerator:v13 bindingHandler:v12 enumerationHandler:v11])
   {
     v8 = [HDConcreteSyncIdentity alloc];
     v9 = [(HDConcreteSyncIdentity *)v8 initWithIdentity:self entity:*(v15 + 24) isChild:?];
@@ -416,24 +416,24 @@ uint64_t __62__HDSyncIdentityEntity_concreteIdentityWithTransaction_error___bloc
   return 0;
 }
 
-+ (BOOL)enumerateConcreteIdentitiesWithTransaction:(id)a3 error:(id *)a4 enumerationHandler:(id)a5
++ (BOOL)enumerateConcreteIdentitiesWithTransaction:(id)transaction error:(id *)error enumerationHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [a3 databaseForEntityClass:a1];
-  v13 = v8;
+  handlerCopy = handler;
+  v9 = [transaction databaseForEntityClass:self];
+  v13 = handlerCopy;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __92__HDSyncIdentityEntity_enumerateConcreteIdentitiesWithTransaction_error_enumerationHandler___block_invoke;
   v14[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v14[4] = a1;
+  v14[4] = self;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __92__HDSyncIdentityEntity_enumerateConcreteIdentitiesWithTransaction_error_enumerationHandler___block_invoke_2;
   v12[3] = &unk_278613B30;
-  v10 = v8;
-  LOBYTE(a4) = [v9 executeCachedStatementForKey:&enumerateConcreteIdentitiesWithTransaction_error_enumerationHandler__lookupKey error:a4 SQLGenerator:v14 bindingHandler:0 enumerationHandler:v12];
+  v10 = handlerCopy;
+  LOBYTE(error) = [v9 executeCachedStatementForKey:&enumerateConcreteIdentitiesWithTransaction_error_enumerationHandler__lookupKey error:error SQLGenerator:v14 bindingHandler:0 enumerationHandler:v12];
 
-  return a4;
+  return error;
 }
 
 id __92__HDSyncIdentityEntity_enumerateConcreteIdentitiesWithTransaction_error_enumerationHandler___block_invoke(uint64_t a1)
@@ -467,16 +467,16 @@ uint64_t __92__HDSyncIdentityEntity_enumerateConcreteIdentitiesWithTransaction_e
   return v6;
 }
 
-+ (id)childIdentitiesForCurrentSyncIdentityWithTransaction:(id)a3 error:(id *)a4
++ (id)childIdentitiesForCurrentSyncIdentityWithTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
+  transactionCopy = transaction;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__19;
   v19 = __Block_byref_object_dispose__19;
   v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [v6 unprotectedDatabase];
+  unprotectedDatabase = [transactionCopy unprotectedDatabase];
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
@@ -487,14 +487,14 @@ uint64_t __92__HDSyncIdentityEntity_enumerateConcreteIdentitiesWithTransaction_e
   v12[1] = 3221225472;
   v12[2] = __83__HDSyncIdentityEntity_childIdentitiesForCurrentSyncIdentityWithTransaction_error___block_invoke;
   v12[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v12[4] = a1;
+  v12[4] = self;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __83__HDSyncIdentityEntity_childIdentitiesForCurrentSyncIdentityWithTransaction_error___block_invoke_3;
   v11[3] = &unk_278615C30;
   v11[4] = v13;
   v11[5] = &v15;
-  if ([v7 executeCachedStatementForKey:&childIdentitiesForCurrentSyncIdentityWithTransaction_error__lookupKey error:a4 SQLGenerator:v12 bindingHandler:&__block_literal_global_20 enumerationHandler:v11])
+  if ([unprotectedDatabase executeCachedStatementForKey:&childIdentitiesForCurrentSyncIdentityWithTransaction_error__lookupKey error:error SQLGenerator:v12 bindingHandler:&__block_literal_global_20 enumerationHandler:v11])
   {
     v8 = v16[5];
   }

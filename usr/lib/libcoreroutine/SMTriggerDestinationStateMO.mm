@@ -1,16 +1,16 @@
 @interface SMTriggerDestinationStateMO
-+ (id)initWithTriggerDestinationState:(id)a3 inManagedObjectContext:(id)a4;
-+ (id)managedObjectWithSessionIdentifier:(id)a3 lastLockDate:(id)a4 lastUnlockDate:(id)a5 predominantModeOfTransport:(unint64_t)a6 currentStatus:(unint64_t)a7 currentStatusDate:(id)a8 date:(id)a9 shouldRetryETAQuery:(BOOL)a10 numberOfETARetries:(unsigned __int16)a11 upperBoundEtaCrowFliesUpperBoundEta:(id)a12 upperBoundEtaMapsUpperBoundEta:(id)a13 roundTripReminderDate:(id)a14 timeToUpdateStatus:(id)a15 mapsExpectedTravelTime:(double)a16 remainingDistance:(double)a17 managedObjectContext:(id)a18;
++ (id)initWithTriggerDestinationState:(id)state inManagedObjectContext:(id)context;
++ (id)managedObjectWithSessionIdentifier:(id)identifier lastLockDate:(id)date lastUnlockDate:(id)unlockDate predominantModeOfTransport:(unint64_t)transport currentStatus:(unint64_t)status currentStatusDate:(id)statusDate date:(id)a9 shouldRetryETAQuery:(BOOL)self0 numberOfETARetries:(unsigned __int16)self1 upperBoundEtaCrowFliesUpperBoundEta:(id)self2 upperBoundEtaMapsUpperBoundEta:(id)self3 roundTripReminderDate:(id)self4 timeToUpdateStatus:(id)self5 mapsExpectedTravelTime:(double)self6 remainingDistance:(double)self7 managedObjectContext:(id)self8;
 @end
 
 @implementation SMTriggerDestinationStateMO
 
-+ (id)initWithTriggerDestinationState:(id)a3 inManagedObjectContext:(id)a4
++ (id)initWithTriggerDestinationState:(id)state inManagedObjectContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  stateCopy = state;
+  contextCopy = context;
+  v8 = contextCopy;
+  if (!stateCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -26,29 +26,29 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v7)
+  if (contextCopy)
   {
-    v31 = [v6 sessionIdentifier];
-    v25 = [v6 lastLockDate];
-    v30 = [v6 lastUnlockDate];
-    v29 = [v6 predominantModeOfTransport];
-    v27 = [v6 currentStatus];
-    v26 = [v6 currentStatusDate];
-    v24 = [v6 date];
-    v32 = [v6 shouldRetryETAQuery];
-    v9 = [v6 numberOfETARetries];
-    v28 = [v6 upperBoundEta];
-    v23 = [v28 crowFliesUpperBoundEta];
-    v10 = [v6 upperBoundEta];
-    v11 = [v10 mapsUpperBoundEta];
-    v12 = [v6 roundTripReminderDate];
-    v13 = [v6 timeToUpdateStatus];
-    [v6 mapsExpectedTravelTime];
+    sessionIdentifier = [stateCopy sessionIdentifier];
+    lastLockDate = [stateCopy lastLockDate];
+    lastUnlockDate = [stateCopy lastUnlockDate];
+    predominantModeOfTransport = [stateCopy predominantModeOfTransport];
+    currentStatus = [stateCopy currentStatus];
+    currentStatusDate = [stateCopy currentStatusDate];
+    date = [stateCopy date];
+    shouldRetryETAQuery = [stateCopy shouldRetryETAQuery];
+    numberOfETARetries = [stateCopy numberOfETARetries];
+    upperBoundEta = [stateCopy upperBoundEta];
+    crowFliesUpperBoundEta = [upperBoundEta crowFliesUpperBoundEta];
+    upperBoundEta2 = [stateCopy upperBoundEta];
+    mapsUpperBoundEta = [upperBoundEta2 mapsUpperBoundEta];
+    roundTripReminderDate = [stateCopy roundTripReminderDate];
+    timeToUpdateStatus = [stateCopy timeToUpdateStatus];
+    [stateCopy mapsExpectedTravelTime];
     v15 = v14;
-    [v6 remainingDistance];
-    WORD1(v22) = v9;
-    LOBYTE(v22) = v32;
-    v17 = [a1 managedObjectWithSessionIdentifier:v31 lastLockDate:v25 lastUnlockDate:v30 predominantModeOfTransport:v29 currentStatus:v27 currentStatusDate:v26 date:v15 shouldRetryETAQuery:v16 numberOfETARetries:v24 upperBoundEtaCrowFliesUpperBoundEta:v22 upperBoundEtaMapsUpperBoundEta:v23 roundTripReminderDate:v11 timeToUpdateStatus:v12 mapsExpectedTravelTime:v13 remainingDistance:v8 managedObjectContext:?];
+    [stateCopy remainingDistance];
+    WORD1(v22) = numberOfETARetries;
+    LOBYTE(v22) = shouldRetryETAQuery;
+    v17 = [self managedObjectWithSessionIdentifier:sessionIdentifier lastLockDate:lastLockDate lastUnlockDate:lastUnlockDate predominantModeOfTransport:predominantModeOfTransport currentStatus:currentStatus currentStatusDate:currentStatusDate date:v15 shouldRetryETAQuery:v16 numberOfETARetries:date upperBoundEtaCrowFliesUpperBoundEta:v22 upperBoundEtaMapsUpperBoundEta:crowFliesUpperBoundEta roundTripReminderDate:mapsUpperBoundEta timeToUpdateStatus:roundTripReminderDate mapsExpectedTravelTime:timeToUpdateStatus remainingDistance:v8 managedObjectContext:?];
 
     goto LABEL_8;
   }
@@ -70,20 +70,20 @@ LABEL_8:
   return v17;
 }
 
-+ (id)managedObjectWithSessionIdentifier:(id)a3 lastLockDate:(id)a4 lastUnlockDate:(id)a5 predominantModeOfTransport:(unint64_t)a6 currentStatus:(unint64_t)a7 currentStatusDate:(id)a8 date:(id)a9 shouldRetryETAQuery:(BOOL)a10 numberOfETARetries:(unsigned __int16)a11 upperBoundEtaCrowFliesUpperBoundEta:(id)a12 upperBoundEtaMapsUpperBoundEta:(id)a13 roundTripReminderDate:(id)a14 timeToUpdateStatus:(id)a15 mapsExpectedTravelTime:(double)a16 remainingDistance:(double)a17 managedObjectContext:(id)a18
++ (id)managedObjectWithSessionIdentifier:(id)identifier lastLockDate:(id)date lastUnlockDate:(id)unlockDate predominantModeOfTransport:(unint64_t)transport currentStatus:(unint64_t)status currentStatusDate:(id)statusDate date:(id)a9 shouldRetryETAQuery:(BOOL)self0 numberOfETARetries:(unsigned __int16)self1 upperBoundEtaCrowFliesUpperBoundEta:(id)self2 upperBoundEtaMapsUpperBoundEta:(id)self3 roundTripReminderDate:(id)self4 timeToUpdateStatus:(id)self5 mapsExpectedTravelTime:(double)self6 remainingDistance:(double)self7 managedObjectContext:(id)self8
 {
-  v40 = a3;
-  v23 = a4;
-  v24 = a5;
-  v25 = a8;
+  identifierCopy = identifier;
+  dateCopy = date;
+  unlockDateCopy = unlockDate;
+  statusDateCopy = statusDate;
   v26 = a9;
-  v27 = a12;
-  v28 = a13;
-  v29 = a14;
-  v30 = a15;
-  v31 = a18;
-  v39 = v23;
-  if (v31)
+  etaCopy = eta;
+  boundEtaCopy = boundEta;
+  reminderDateCopy = reminderDate;
+  updateStatusCopy = updateStatus;
+  contextCopy = context;
+  v39 = dateCopy;
+  if (contextCopy)
   {
     v59 = 0;
     v60 = &v59;
@@ -96,37 +96,37 @@ LABEL_8:
     v41[2] = __367__SMTriggerDestinationStateMO_managedObjectWithSessionIdentifier_lastLockDate_lastUnlockDate_predominantModeOfTransport_currentStatus_currentStatusDate_date_shouldRetryETAQuery_numberOfETARetries_upperBoundEtaCrowFliesUpperBoundEta_upperBoundEtaMapsUpperBoundEta_roundTripReminderDate_timeToUpdateStatus_mapsExpectedTravelTime_remainingDistance_managedObjectContext___block_invoke;
     v41[3] = &unk_2788CDDC0;
     v52 = &v59;
-    v36 = v31;
-    v32 = v28;
-    v42 = v31;
-    v33 = v40;
-    v43 = v40;
+    v36 = contextCopy;
+    v32 = boundEtaCopy;
+    v42 = contextCopy;
+    v33 = identifierCopy;
+    v43 = identifierCopy;
     v44 = v26;
-    v45 = v23;
-    v46 = v24;
-    v53 = a6;
-    v54 = a7;
-    v47 = v25;
-    v58 = a10;
-    v57 = a11;
-    v48 = v27;
-    v49 = v28;
-    v50 = v29;
-    v51 = v30;
-    v55 = a16;
-    v56 = a17;
+    v45 = dateCopy;
+    v46 = unlockDateCopy;
+    transportCopy = transport;
+    statusCopy = status;
+    v47 = statusDateCopy;
+    queryCopy = query;
+    retriesCopy = retries;
+    v48 = etaCopy;
+    v49 = boundEtaCopy;
+    v50 = reminderDateCopy;
+    v51 = updateStatusCopy;
+    timeCopy = time;
+    distanceCopy = distance;
     [v42 performBlockAndWait:v41];
     v34 = v60[5];
 
     _Block_object_dispose(&v59, 8);
-    v31 = v36;
+    contextCopy = v36;
   }
 
   else
   {
     v34 = 0;
-    v33 = v40;
-    v32 = v28;
+    v33 = identifierCopy;
+    v32 = boundEtaCopy;
   }
 
   return v34;

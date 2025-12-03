@@ -1,21 +1,21 @@
 @interface FCAsyncOnceOperation
 - (BOOL)finishedExecuting;
 - (BOOL)finishedExecutingWithFailure;
-- (FCAsyncOnceOperation)initWithBlock:(id)a3;
-- (FCAsyncOnceOperation)initWithTarget:(id)a3 selector:(SEL)a4;
-- (id)executeWithCallbackQueue:(id)a3 completionHandler:(id)a4;
-- (void)setRelativePriority:(int64_t)a3;
+- (FCAsyncOnceOperation)initWithBlock:(id)block;
+- (FCAsyncOnceOperation)initWithTarget:(id)target selector:(SEL)selector;
+- (id)executeWithCallbackQueue:(id)queue completionHandler:(id)handler;
+- (void)setRelativePriority:(int64_t)priority;
 @end
 
 @implementation FCAsyncOnceOperation
 
-- (FCAsyncOnceOperation)initWithBlock:(id)a3
+- (FCAsyncOnceOperation)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(FCAsyncOnceOperation *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     workBlock = v5->_workBlock;
     v5->_workBlock = v6;
 
@@ -27,16 +27,16 @@
   return v5;
 }
 
-- (FCAsyncOnceOperation)initWithTarget:(id)a3 selector:(SEL)a4
+- (FCAsyncOnceOperation)initWithTarget:(id)target selector:(SEL)selector
 {
-  v6 = a3;
-  objc_initWeak(&location, v6);
+  targetCopy = target;
+  objc_initWeak(&location, targetCopy);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __48__FCAsyncOnceOperation_initWithTarget_selector___block_invoke;
   aBlock[3] = &unk_1E7C420E0;
   objc_copyWeak(v11, &location);
-  v11[1] = a4;
+  v11[1] = selector;
   v7 = _Block_copy(aBlock);
   v8 = [(FCAsyncOnceOperation *)self initWithBlock:v7];
 
@@ -65,11 +65,11 @@ id __48__FCAsyncOnceOperation_initWithTarget_selector___block_invoke(uint64_t a1
   return v6;
 }
 
-- (id)executeWithCallbackQueue:(id)a3 completionHandler:(id)a4
+- (id)executeWithCallbackQueue:(id)queue completionHandler:(id)handler
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   [(NFMutexLock *)self->_lock lock];
   if (self->_finished)
   {
@@ -141,13 +141,13 @@ id __48__FCAsyncOnceOperation_initWithTarget_selector___block_invoke(uint64_t a1
     [(NFMutexLock *)self->_lock unlock];
     if (v16)
     {
-      dispatch_group_notify(v16, v6, v7);
+      dispatch_group_notify(v16, queueCopy, handlerCopy);
 
       goto LABEL_14;
     }
   }
 
-  v7[2](v7);
+  handlerCopy[2](handlerCopy);
 LABEL_14:
 
   v17 = *MEMORY[0x1E69E9840];
@@ -251,23 +251,23 @@ LABEL_4:
   return v3;
 }
 
-- (void)setRelativePriority:(int64_t)a3
+- (void)setRelativePriority:(int64_t)priority
 {
   [(NFMutexLock *)self->_lock lock];
-  self->_relativePriority = a3;
-  [(FCOperationCanceling *)self->_activeOperation setRelativePriority:a3];
+  self->_relativePriority = priority;
+  [(FCOperationCanceling *)self->_activeOperation setRelativePriority:priority];
   objc_opt_class();
   activeOperation = self->_activeOperation;
   if (activeOperation && (v6 = self->_activeOperation, (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = activeOperation;
     v8 = 25;
-    if (!a3)
+    if (!priority)
     {
       v8 = 17;
     }
 
-    if (a3 == -1)
+    if (priority == -1)
     {
       v9 = 9;
     }

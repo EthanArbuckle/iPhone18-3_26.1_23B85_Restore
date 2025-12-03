@@ -8,25 +8,25 @@
 - (id)titleString;
 - (void)_logConnectionDescription;
 - (void)_spinnerFinished;
-- (void)_tappedInternalManualMode:(id)a3;
+- (void)_tappedInternalManualMode:(id)mode;
 - (void)_unregisterNRObserver;
 - (void)dealloc;
-- (void)learnMoreButtonPressed:(id)a3;
-- (void)nanoRegistryStatusChanged:(id)a3;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)learnMoreButtonPressed:(id)pressed;
+- (void)nanoRegistryStatusChanged:(id)changed;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
 - (void)registerNRObserver;
-- (void)setPairingInfrastructureIsBusy:(BOOL)a3;
+- (void)setPairingInfrastructureIsBusy:(BOOL)busy;
 - (void)showConnectivityAlert;
 - (void)startUpdatingWelcomeText;
 - (void)stopUpdatingWelcomeText;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)suggestedButtonPressed:(id)pressed;
 - (void)updateImagesWithAnimation;
 - (void)updateRadioState;
 - (void)updateUIState;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSGetStartedViewController
@@ -47,9 +47,9 @@
 
     objc_storeStrong(&v3->_fallbackImageName, PBAssetsSetupAppleWatchSplashFallbackAssetName);
     v6 = +[NRPairedDeviceRegistry sharedInstance];
-    v7 = [v6 status];
+    status = [v6 status];
 
-    if (v7 != 2)
+    if (status != 2)
     {
       [(COSGetStartedViewController *)v3 setPairingInfrastructureIsBusy:1];
       v8 = pbb_setupflow_log();
@@ -87,49 +87,49 @@
   v63.receiver = self;
   v63.super_class = COSGetStartedViewController;
   [(COSGetStartedViewController *)&v63 viewDidLoad];
-  v3 = [(COSGetStartedViewController *)self desiredImageName];
-  v4 = [UIImage imageNamed:v3];
+  desiredImageName = [(COSGetStartedViewController *)self desiredImageName];
+  v4 = [UIImage imageNamed:desiredImageName];
 
   if (!v4)
   {
-    v5 = [(COSGetStartedViewController *)self fallbackImageName];
-    v4 = [UIImage imageNamed:v5];
+    fallbackImageName = [(COSGetStartedViewController *)self fallbackImageName];
+    v4 = [UIImage imageNamed:fallbackImageName];
   }
 
   v6 = [[UIImageView alloc] initWithImage:v4];
   marketingBannerImage = self->_marketingBannerImage;
   self->_marketingBannerImage = v6;
 
-  v8 = [(UIImageView *)self->_marketingBannerImage layer];
-  [v8 setMinificationFilter:kCAFilterTrilinear];
+  layer = [(UIImageView *)self->_marketingBannerImage layer];
+  [layer setMinificationFilter:kCAFilterTrilinear];
 
   [(UIImageView *)self->_marketingBannerImage setContentMode:1];
-  v9 = [(COSGetStartedViewController *)self contentView];
-  [v9 addSubview:self->_marketingBannerImage];
+  contentView = [(COSGetStartedViewController *)self contentView];
+  [contentView addSubview:self->_marketingBannerImage];
 
   [(UIImageView *)self->_marketingBannerImage setTranslatesAutoresizingMaskIntoConstraints:0];
-  v10 = [(UIImageView *)self->_marketingBannerImage topAnchor];
-  v11 = [(COSGetStartedViewController *)self contentView];
-  v12 = [v11 topAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  topAnchor = [(UIImageView *)self->_marketingBannerImage topAnchor];
+  contentView2 = [(COSGetStartedViewController *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v13 setActive:1];
 
-  v14 = [(UIImageView *)self->_marketingBannerImage bottomAnchor];
-  v15 = [(COSGetStartedViewController *)self contentView];
-  v16 = [v15 bottomAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  bottomAnchor = [(UIImageView *)self->_marketingBannerImage bottomAnchor];
+  contentView3 = [(COSGetStartedViewController *)self contentView];
+  bottomAnchor2 = [contentView3 bottomAnchor];
+  v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v17 setActive:1];
 
-  v18 = [(UIImageView *)self->_marketingBannerImage leftAnchor];
-  v19 = [(COSGetStartedViewController *)self contentView];
-  v20 = [v19 leftAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  leftAnchor = [(UIImageView *)self->_marketingBannerImage leftAnchor];
+  contentView4 = [(COSGetStartedViewController *)self contentView];
+  leftAnchor2 = [contentView4 leftAnchor];
+  v21 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   [v21 setActive:1];
 
-  v22 = [(UIImageView *)self->_marketingBannerImage rightAnchor];
-  v23 = [(COSGetStartedViewController *)self contentView];
-  v24 = [v23 rightAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24];
+  rightAnchor = [(UIImageView *)self->_marketingBannerImage rightAnchor];
+  contentView5 = [(COSGetStartedViewController *)self contentView];
+  rightAnchor2 = [contentView5 rightAnchor];
+  v25 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   [v25 setActive:1];
 
   if (self->_isAutomationUIEnabled)
@@ -152,20 +152,20 @@
     [(UIButton *)v32 setTintColor:v33];
 
     [(UIButton *)self->_automationButton addTarget:self action:"_tappedInternalManualMode:" forControlEvents:64];
-    v34 = [(COSGetStartedViewController *)self view];
-    [v34 addSubview:self->_automationButton];
+    view = [(COSGetStartedViewController *)self view];
+    [view addSubview:self->_automationButton];
 
     [(UIButton *)self->_automationButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIButton *)self->_automationButton sizeToFit];
-    v62 = [(UIButton *)self->_automationButton centerXAnchor];
-    v35 = [(COSGetStartedViewController *)self view];
-    v36 = [v35 centerXAnchor];
-    v37 = [v62 constraintEqualToAnchor:v36];
+    centerXAnchor = [(UIButton *)self->_automationButton centerXAnchor];
+    view2 = [(COSGetStartedViewController *)self view];
+    centerXAnchor2 = [view2 centerXAnchor];
+    v37 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v64[0] = v37;
-    v38 = [(UIButton *)self->_automationButton bottomAnchor];
-    v39 = [(COSGetStartedViewController *)self view];
-    v40 = [v39 bottomAnchor];
-    v41 = [v38 constraintEqualToAnchor:v40 constant:-100.0];
+    bottomAnchor3 = [(UIButton *)self->_automationButton bottomAnchor];
+    view3 = [(COSGetStartedViewController *)self view];
+    bottomAnchor4 = [view3 bottomAnchor];
+    v41 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-100.0];
     v64[1] = v41;
     [NSArray arrayWithObjects:v64 count:2];
     v43 = v42 = v4;
@@ -181,8 +181,8 @@
   [(MCProfileConnection *)self->_mcConnection registerObserver:self];
   if ((sub_100007C2C() & 1) != 0 || [(MCProfileConnection *)self->_mcConnection effectiveBoolValueForSetting:MCFeaturePairedWatchAllowed]== 2)
   {
-    v46 = [(COSGetStartedViewController *)self suggestedChoiceButton];
-    [v46 setEnabled:0];
+    suggestedChoiceButton = [(COSGetStartedViewController *)self suggestedChoiceButton];
+    [suggestedChoiceButton setEnabled:0];
   }
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -203,19 +203,19 @@
 
   [(UIActivityIndicatorView *)self->_spinner setHidesWhenStopped:1];
   [(UIActivityIndicatorView *)self->_spinner setTranslatesAutoresizingMaskIntoConstraints:0];
-  v53 = [(COSGetStartedViewController *)self suggestedChoiceButton];
-  [v53 addSubview:self->_spinner];
+  suggestedChoiceButton2 = [(COSGetStartedViewController *)self suggestedChoiceButton];
+  [suggestedChoiceButton2 addSubview:self->_spinner];
 
-  v54 = [(UIActivityIndicatorView *)self->_spinner centerYAnchor];
-  v55 = [(COSGetStartedViewController *)self suggestedChoiceButton];
-  v56 = [v55 centerYAnchor];
-  v57 = [v54 constraintEqualToAnchor:v56];
+  centerYAnchor = [(UIActivityIndicatorView *)self->_spinner centerYAnchor];
+  suggestedChoiceButton3 = [(COSGetStartedViewController *)self suggestedChoiceButton];
+  centerYAnchor2 = [suggestedChoiceButton3 centerYAnchor];
+  v57 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v57 setActive:1];
 
-  v58 = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
-  v59 = [(COSGetStartedViewController *)self suggestedChoiceButton];
-  v60 = [v59 centerXAnchor];
-  v61 = [v58 constraintEqualToAnchor:v60];
+  centerXAnchor3 = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
+  suggestedChoiceButton4 = [(COSGetStartedViewController *)self suggestedChoiceButton];
+  centerXAnchor4 = [suggestedChoiceButton4 centerXAnchor];
+  v61 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   [v61 setActive:1];
 
   [(COSGetStartedViewController *)self updateRadioState];
@@ -261,11 +261,11 @@
   return unpairInstructions;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v12.receiver = self;
   v12.super_class = COSGetStartedViewController;
-  [(COSGetStartedViewController *)&v12 viewDidAppear:a3];
+  [(COSGetStartedViewController *)&v12 viewDidAppear:appear];
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 BOOLForKey:@"DisplayGraduationUnpairInstructions"];
 
@@ -280,34 +280,34 @@
   if (v5)
   {
     v7 = +[NRPairedDeviceRegistry sharedInstance];
-    v8 = [v7 watchNeedsGraduation];
+    watchNeedsGraduation = [v7 watchNeedsGraduation];
 
-    if (v8)
+    if (watchNeedsGraduation)
     {
       v9 = pbb_setupflow_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(COSGetStartedViewController *)self _getUnpairInstructions];
+        _getUnpairInstructions = [(COSGetStartedViewController *)self _getUnpairInstructions];
         *buf = 138412290;
-        v14 = v10;
+        v14 = _getUnpairInstructions;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Present unpair instructions : %@", buf, 0xCu);
       }
 
-      v11 = [(COSGetStartedViewController *)self _getUnpairInstructions];
-      [v11 presentWithController:self];
+      _getUnpairInstructions2 = [(COSGetStartedViewController *)self _getUnpairInstructions];
+      [_getUnpairInstructions2 presentWithController:self];
     }
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = COSGetStartedViewController;
-  [(COSGetStartedViewController *)&v10 viewWillAppear:a3];
+  [(COSGetStartedViewController *)&v10 viewWillAppear:appear];
   [(COSGetStartedViewController *)self updateWelcomeText];
   [(COSGetStartedViewController *)self is_addGestureRecognizer];
   v4 = +[NRPairedDeviceRegistry sharedInstance];
-  v5 = [v4 compatibilityState];
+  compatibilityState = [v4 compatibilityState];
 
   v6 = +[NRPairedDeviceRegistry sharedInstance];
   [v6 status];
@@ -321,13 +321,13 @@
     v13 = 2080;
     v14 = "[COSGetStartedViewController viewWillAppear:]";
     v15 = 2048;
-    v16 = v5;
+    v16 = compatibilityState;
     v17 = 2112;
     v18 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%d %s - NR State: %lu; Status: %@", buf, 0x26u);
   }
 
-  if (v5 - 4 <= 0xFFFFFFFD)
+  if (compatibilityState - 4 <= 0xFFFFFFFD)
   {
     v9 = pbb_setupflow_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -347,8 +347,8 @@
   [(COSGetStartedViewController *)&v4 viewDidLayoutSubviews];
   if (self->_isAutomationUIEnabled)
   {
-    v3 = [(COSGetStartedViewController *)self view];
-    [v3 bringSubviewToFront:self->_automationButton];
+    view = [(COSGetStartedViewController *)self view];
+    [view bringSubviewToFront:self->_automationButton];
   }
 }
 
@@ -358,8 +358,8 @@
   v3 = +[NSDate date];
   v4 = [v2 components:32 fromDate:v3];
 
-  v5 = [v4 hour];
-  if ((v5 - 12) >= 5)
+  hour = [v4 hour];
+  if ((hour - 12) >= 5)
   {
     v6 = @"WELCOME_NIGHT";
   }
@@ -369,7 +369,7 @@
     v6 = @"WELCOME_DAY";
   }
 
-  if ((v5 - 2) >= 0xA)
+  if ((hour - 2) >= 0xA)
   {
     v7 = v6;
   }
@@ -433,17 +433,17 @@
   return v3;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   objc_initWeak(&location, self);
   [(UIActivityIndicatorView *)self->_spinner startAnimating];
-  v5 = [(COSGetStartedViewController *)self suggestedChoiceButton];
-  [v5 setEnabled:0];
+  suggestedChoiceButton = [(COSGetStartedViewController *)self suggestedChoiceButton];
+  [suggestedChoiceButton setEnabled:0];
 
-  v6 = [(COSGetStartedViewController *)self suggestedChoiceButton];
-  v7 = [v6 titleLabel];
-  [v7 setHidden:1];
+  suggestedChoiceButton2 = [(COSGetStartedViewController *)self suggestedChoiceButton];
+  titleLabel = [suggestedChoiceButton2 titleLabel];
+  [titleLabel setHidden:1];
 
   v8 = +[COSReachabilityMonitor sharedMonitor];
   v10[0] = _NSConcreteStackBlock;
@@ -459,23 +459,23 @@
   objc_destroyWeak(&location);
 }
 
-- (void)learnMoreButtonPressed:(id)a3
+- (void)learnMoreButtonPressed:(id)pressed
 {
   v3 = UIApp;
   v4 = sub_10002D2A4();
   [v3 openURL:v4 withCompletionHandler:0];
 }
 
-- (void)_tappedInternalManualMode:(id)a3
+- (void)_tappedInternalManualMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   objc_initWeak(&location, self);
-  v5 = [(COSGetStartedViewController *)self suggestedChoiceButton];
-  [v5 setEnabled:0];
+  suggestedChoiceButton = [(COSGetStartedViewController *)self suggestedChoiceButton];
+  [suggestedChoiceButton setEnabled:0];
 
-  v6 = [(COSGetStartedViewController *)self suggestedChoiceButton];
-  v7 = [v6 titleLabel];
-  [v7 setHidden:1];
+  suggestedChoiceButton2 = [(COSGetStartedViewController *)self suggestedChoiceButton];
+  titleLabel = [suggestedChoiceButton2 titleLabel];
+  [titleLabel setHidden:1];
 
   v8 = +[COSReachabilityMonitor sharedMonitor];
   v10[0] = _NSConcreteStackBlock;
@@ -523,9 +523,9 @@
   self->_welcomeTextUpdater = 0;
 }
 
-- (void)setPairingInfrastructureIsBusy:(BOOL)a3
+- (void)setPairingInfrastructureIsBusy:(BOOL)busy
 {
-  self->_pairingInfrastructureIsBusy = a3;
+  self->_pairingInfrastructureIsBusy = busy;
   v4 = pbb_setupflow_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -550,15 +550,15 @@
 
 - (void)_spinnerFinished
 {
-  v3 = [(COSGetStartedViewController *)self spinner];
-  [v3 stopAnimating];
+  spinner = [(COSGetStartedViewController *)self spinner];
+  [spinner stopAnimating];
 
-  v4 = [(COSGetStartedViewController *)self suggestedChoiceButton];
-  [v4 setEnabled:1];
+  suggestedChoiceButton = [(COSGetStartedViewController *)self suggestedChoiceButton];
+  [suggestedChoiceButton setEnabled:1];
 
-  v6 = [(COSGetStartedViewController *)self suggestedChoiceButton];
-  v5 = [v6 titleLabel];
-  [v5 setHidden:0];
+  suggestedChoiceButton2 = [(COSGetStartedViewController *)self suggestedChoiceButton];
+  titleLabel = [suggestedChoiceButton2 titleLabel];
+  [titleLabel setHidden:0];
 }
 
 - (void)updateRadioState
@@ -574,21 +574,21 @@
   v2 = MGGetBoolAnswer();
   v3 = +[PSBluetoothSettingsDetail isEnabled];
   v4 = +[COSReachabilityMonitor sharedMonitor];
-  v5 = [v4 isNetworkReachable];
+  isNetworkReachable = [v4 isNetworkReachable];
 
-  if ((v2 & (v3 ^ 1) & 1) != 0 || !v5)
+  if ((v2 & (v3 ^ 1) & 1) != 0 || !isNetworkReachable)
   {
     v6 = pbb_setupflow_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      sub_10018735C(v5, v6);
+      sub_10018735C(isNetworkReachable, v6);
     }
   }
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
-  v5 = [(COSGetStartedViewController *)self suggestedChoiceButton:a3];
+  v5 = [(COSGetStartedViewController *)self suggestedChoiceButton:notification];
   [v5 setEnabled:{-[MCProfileConnection effectiveBoolValueForSetting:](self->_mcConnection, "effectiveBoolValueForSetting:", MCFeaturePairedWatchAllowed) != 2}];
 }
 
@@ -647,10 +647,10 @@
   [(COSGetStartedViewController *)self presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)nanoRegistryStatusChanged:(id)a3
+- (void)nanoRegistryStatusChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:NRPairedDeviceRegistryStatusKey];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKey:NRPairedDeviceRegistryStatusKey];
 
   v6 = pbb_setupflow_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -662,10 +662,10 @@
 
   if (v5)
   {
-    v7 = [v5 integerValue];
-    if ((v7 - 5) >= 0xFFFFFFFFFFFFFFFDLL)
+    integerValue = [v5 integerValue];
+    if ((integerValue - 5) >= 0xFFFFFFFFFFFFFFFDLL)
     {
-      [(COSGetStartedViewController *)self setPairingInfrastructureIsBusy:v7 != 2];
+      [(COSGetStartedViewController *)self setPairingInfrastructureIsBusy:integerValue != 2];
     }
   }
 }

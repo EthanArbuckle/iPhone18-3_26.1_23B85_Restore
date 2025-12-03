@@ -2,9 +2,9 @@
 - (BOOL)hasCharacteristics;
 - (CPAccNavParam)param;
 - (CPAccNavParamKey)init;
-- (id)copySettingAccNavType:(int64_t)a3;
-- (id)copySettingDimension:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copySettingAccNavType:(int64_t)type;
+- (id)copySettingDimension:(id)dimension;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)unsetValue;
 @end
@@ -35,24 +35,24 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [v4 setKey:{-[CPAccNavParamKey key](self, "key")}];
-  v5 = [(CPAccNavParamKey *)self characteristics];
-  [v4 setCharacteristics:v5];
+  characteristics = [(CPAccNavParamKey *)self characteristics];
+  [v4 setCharacteristics:characteristics];
 
   [v4 setIsBoolValue:{-[CPAccNavParamKey isBoolValue](self, "isBoolValue")}];
   [v4 setEnumType:{-[CPAccNavParamKey enumType](self, "enumType")}];
-  v6 = [(CPAccNavParamKey *)self dimension];
-  [v4 setDimension:v6];
+  dimension = [(CPAccNavParamKey *)self dimension];
+  [v4 setDimension:dimension];
 
   [v4 setIsIntegerValue:{-[CPAccNavParamKey isIntegerValue](self, "isIntegerValue")}];
   [v4 setIsTimeIntervalValue:{-[CPAccNavParamKey isTimeIntervalValue](self, "isTimeIntervalValue")}];
   [v4 setHasVariants:{-[CPAccNavParamKey hasVariants](self, "hasVariants")}];
   [v4 setAccNavType:{-[CPAccNavParamKey accNavType](self, "accNavType")}];
-  v7 = [(CPAccNavParamKey *)self param];
-  [v4 setParam:v7];
+  param = [(CPAccNavParamKey *)self param];
+  [v4 setParam:param];
 
   return v4;
 }
@@ -71,9 +71,9 @@
   if ([(CPAccNavParamKey *)self hasCharacteristics])
   {
     v7 = MEMORY[0x277CCACA8];
-    v8 = [(CPAccNavParamKey *)self characteristics];
-    v9 = [v8 allObjects];
-    v10 = [v9 componentsJoinedByString:{@", "}];
+    characteristics = [(CPAccNavParamKey *)self characteristics];
+    allObjects = [characteristics allObjects];
+    v10 = [allObjects componentsJoinedByString:{@", "}];
     v11 = [v7 stringWithFormat:@" [%@]", v10];
     [v3 addObject:v11];
   }
@@ -89,25 +89,25 @@
 
 - (id)unsetValue
 {
-  v2 = [(CPAccNavParamKey *)self accNavType];
+  accNavType = [(CPAccNavParamKey *)self accNavType];
 
-  return NotSetFromCPAccNavType(v2);
+  return NotSetFromCPAccNavType(accNavType);
 }
 
-- (id)copySettingAccNavType:(int64_t)a3
+- (id)copySettingAccNavType:(int64_t)type
 {
   v4 = [(CPAccNavParamKey *)self copy];
-  [v4 setAccNavType:a3];
-  v5 = [v4 characteristics];
-  v6 = v5;
-  if (a3 == -1)
+  [v4 setAccNavType:type];
+  characteristics = [v4 characteristics];
+  v6 = characteristics;
+  if (type == -1)
   {
-    [v5 cp_setByRemovingObject:@"accNavType"];
+    [characteristics cp_setByRemovingObject:@"accNavType"];
   }
 
   else
   {
-    [v5 setByAddingObject:@"accNavType"];
+    [characteristics setByAddingObject:@"accNavType"];
   }
   v7 = ;
   [v4 setCharacteristics:v7];
@@ -117,28 +117,28 @@
 
 - (BOOL)hasCharacteristics
 {
-  v2 = [(CPAccNavParamKey *)self characteristics];
-  v3 = [v2 count] != 0;
+  characteristics = [(CPAccNavParamKey *)self characteristics];
+  v3 = [characteristics count] != 0;
 
   return v3;
 }
 
-- (id)copySettingDimension:(id)a3
+- (id)copySettingDimension:(id)dimension
 {
-  v4 = a3;
+  dimensionCopy = dimension;
   v5 = [(CPAccNavParamKey *)self copy];
-  [v5 setDimension:v4];
+  [v5 setDimension:dimensionCopy];
 
-  v6 = [v5 characteristics];
-  v7 = v6;
-  if (v4)
+  characteristics = [v5 characteristics];
+  v7 = characteristics;
+  if (dimensionCopy)
   {
-    [v6 setByAddingObject:@"dimension"];
+    [characteristics setByAddingObject:@"dimension"];
   }
 
   else
   {
-    [v6 cp_setByRemovingObject:@"dimension"];
+    [characteristics cp_setByRemovingObject:@"dimension"];
   }
   v8 = ;
   [v5 setCharacteristics:v8];

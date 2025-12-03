@@ -1,28 +1,28 @@
 @interface AXCVoiceSelection
 - (AXCVoiceSelection)init;
-- (AXCVoiceSelection)initWithVoiceId:(id)a3 rate:(id)a4 pitch:(id)a5 volume:(id)a6 voiceSettings:(id)a7 effects:(id)a8;
-- (AXCVoiceSelection)initWithVoiceId:(id)a3 rate:(id)a4 pitch:(id)a5 volume:(id)a6 voiceSettings:(id)a7 effects:(id)a8 boundLanguage:(id)a9;
+- (AXCVoiceSelection)initWithVoiceId:(id)id rate:(id)rate pitch:(id)pitch volume:(id)volume voiceSettings:(id)settings effects:(id)effects;
+- (AXCVoiceSelection)initWithVoiceId:(id)id rate:(id)rate pitch:(id)pitch volume:(id)volume voiceSettings:(id)settings effects:(id)effects boundLanguage:(id)language;
 - (NSArray)effects;
 - (NSDictionary)voiceSettings;
 - (NSNumber)pitch;
 - (NSNumber)rate;
 - (NSNumber)volume;
-- (void)encodeWithCoder:(id)a3;
-- (void)setEffects:(id)a3;
-- (void)setVoiceSettings:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setEffects:(id)effects;
+- (void)setVoiceSettings:(id)settings;
 @end
 
 @implementation AXCVoiceSelection
 
-- (AXCVoiceSelection)initWithVoiceId:(id)a3 rate:(id)a4 pitch:(id)a5 volume:(id)a6 voiceSettings:(id)a7 effects:(id)a8 boundLanguage:(id)a9
+- (AXCVoiceSelection)initWithVoiceId:(id)id rate:(id)rate pitch:(id)pitch volume:(id)volume voiceSettings:(id)settings effects:(id)effects boundLanguage:(id)language
 {
-  v10 = a7;
-  if (a3)
+  settingsCopy = settings;
+  if (id)
   {
     v14 = sub_19166B748();
     v16 = v15;
-    v17 = a9;
-    if (!v10)
+    languageCopy2 = language;
+    if (!settingsCopy)
     {
       goto LABEL_4;
     }
@@ -32,25 +32,25 @@
 
   v14 = 0;
   v16 = 0;
-  v17 = a9;
-  if (a7)
+  languageCopy2 = language;
+  if (settings)
   {
 LABEL_3:
     sub_1915DAA60(0, &qword_1EADB0230, 0x1E696AD98);
-    v10 = sub_19166B678();
+    settingsCopy = sub_19166B678();
   }
 
 LABEL_4:
-  if (a8)
+  if (effects)
   {
     type metadata accessor for AXAudioEffectConfiguration(0);
-    a8 = sub_19166BA08();
+    effects = sub_19166BA08();
   }
 
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = v17;
+  rateCopy = rate;
+  pitchCopy = pitch;
+  volumeCopy = volume;
+  v21 = languageCopy2;
   if (v21)
   {
     v22 = v21;
@@ -64,7 +64,7 @@ LABEL_4:
     v25 = 0;
   }
 
-  v26 = sub_19159F740(v14, v16, v18, v19, v20, v10, a8, v23, v25);
+  v26 = sub_19159F740(v14, v16, rateCopy, pitchCopy, volumeCopy, settingsCopy, effects, v23, v25);
 
   return v26;
 }
@@ -109,19 +109,19 @@ LABEL_4:
   return v4;
 }
 
-- (void)setVoiceSettings:(id)a3
+- (void)setVoiceSettings:(id)settings
 {
-  v3 = a3;
-  if (a3)
+  settingsCopy = settings;
+  if (settings)
   {
     sub_1915DAA60(0, &qword_1EADB0230, 0x1E696AD98);
-    v3 = sub_19166B678();
+    settingsCopy = sub_19166B678();
   }
 
   v5 = OBJC_IVAR___AXCVoiceSelection_voiceSettings;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = v3;
+  *(self + v5) = settingsCopy;
 }
 
 - (NSArray)effects
@@ -143,29 +143,29 @@ LABEL_4:
   return v4;
 }
 
-- (void)setEffects:(id)a3
+- (void)setEffects:(id)effects
 {
-  v3 = a3;
-  if (a3)
+  effectsCopy = effects;
+  if (effects)
   {
     type metadata accessor for AXAudioEffectConfiguration(0);
-    v3 = sub_19166BA08();
+    effectsCopy = sub_19166BA08();
   }
 
   v5 = OBJC_IVAR___AXCVoiceSelection_effects;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = v3;
+  *(self + v5) = effectsCopy;
 }
 
-- (AXCVoiceSelection)initWithVoiceId:(id)a3 rate:(id)a4 pitch:(id)a5 volume:(id)a6 voiceSettings:(id)a7 effects:(id)a8
+- (AXCVoiceSelection)initWithVoiceId:(id)id rate:(id)rate pitch:(id)pitch volume:(id)volume voiceSettings:(id)settings effects:(id)effects
 {
-  v9 = a7;
-  if (a3)
+  settingsCopy = settings;
+  if (id)
   {
     v13 = sub_19166B748();
     v15 = v14;
-    if (!v9)
+    if (!settingsCopy)
     {
       goto LABEL_4;
     }
@@ -175,21 +175,21 @@ LABEL_4:
 
   v13 = 0;
   v15 = 0;
-  if (a7)
+  if (settings)
   {
 LABEL_3:
     sub_1915DAA60(0, &qword_1EADB0230, 0x1E696AD98);
-    v9 = sub_19166B678();
+    settingsCopy = sub_19166B678();
   }
 
 LABEL_4:
-  if (a8)
+  if (effects)
   {
     type metadata accessor for AXAudioEffectConfiguration(0);
-    a8 = sub_19166BA08();
+    effects = sub_19166BA08();
   }
 
-  return AXCVoiceSelection.init(voiceId:rate:pitch:volume:voiceSettings:effects:)(v13, v15, a4, a5, a6, v9, a8);
+  return AXCVoiceSelection.init(voiceId:rate:pitch:volume:voiceSettings:effects:)(v13, v15, rate, pitch, volume, settingsCopy, effects);
 }
 
 - (AXCVoiceSelection)init
@@ -199,11 +199,11 @@ LABEL_4:
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  AXCVoiceSelection.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  AXCVoiceSelection.encode(with:)(coderCopy);
 }
 
 @end

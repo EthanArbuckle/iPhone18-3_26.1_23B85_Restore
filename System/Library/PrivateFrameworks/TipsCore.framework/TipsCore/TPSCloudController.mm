@@ -1,14 +1,14 @@
 @interface TPSCloudController
 + (id)sharedInstance;
-- (BOOL)isHintDisplayedForContentID:(id)a3;
+- (BOOL)isHintDisplayedForContentID:(id)d;
 - (TPSCloudController)init;
 - (id)_listDisplayContentIDs;
 - (void)_clearDisplayedContentIDs;
 - (void)checkForUpdates;
 - (void)dealloc;
-- (void)hintDisplayedForContentID:(id)a3;
-- (void)registerForNotifications:(id)a3;
-- (void)updateKVStoreItems:(id)a3;
+- (void)hintDisplayedForContentID:(id)d;
+- (void)registerForNotifications:(id)notifications;
+- (void)updateKVStoreItems:(id)items;
 @end
 
 @implementation TPSCloudController
@@ -34,9 +34,9 @@ uint64_t __36__TPSCloudController_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AFB8] defaultStore];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E696A9E8] object:v3];
+  defaultStore = [MEMORY[0x1E696AFB8] defaultStore];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E696A9E8] object:defaultStore];
 
   v5.receiver = self;
   v5.super_class = TPSCloudController;
@@ -105,9 +105,9 @@ void __37__TPSCloudController_checkForUpdates__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isHintDisplayedForContentID:(id)a3
+- (BOOL)isHintDisplayedForContentID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -122,23 +122,23 @@ void __37__TPSCloudController_checkForUpdates__block_invoke(uint64_t a1)
   v7[4] = self;
   v7[5] = &v8;
   dispatch_sync(queue, v7);
-  LOBYTE(self) = [v9[5] containsObject:v4];
+  LOBYTE(self) = [v9[5] containsObject:dCopy];
   _Block_object_dispose(&v8, 8);
 
   return self;
 }
 
-- (void)hintDisplayedForContentID:(id)a3
+- (void)hintDisplayedForContentID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__TPSCloudController_hintDisplayedForContentID___block_invoke;
   v7[3] = &unk_1E8101390;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -181,40 +181,40 @@ void __48__TPSCloudController_hintDisplayedForContentID___block_invoke(uint64_t 
 
 - (id)_listDisplayContentIDs
 {
-  v2 = [MEMORY[0x1E696AFB8] defaultStore];
-  [v2 synchronize];
-  v3 = [v2 dictionaryRepresentation];
+  defaultStore = [MEMORY[0x1E696AFB8] defaultStore];
+  [defaultStore synchronize];
+  dictionaryRepresentation = [defaultStore dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 - (void)_clearDisplayedContentIDs
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AFB8] defaultStore];
+  defaultStore = [MEMORY[0x1E696AFB8] defaultStore];
   v3 = +[TPSLogger daemon];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v2, "synchronize")}];
+    v4 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(defaultStore, "synchronize")}];
     v12 = 138412290;
     v13 = v4;
     _os_log_impl(&dword_1C00A7000, v3, OS_LOG_TYPE_DEFAULT, "Synchronizing: %@", &v12, 0xCu);
   }
 
-  v5 = [v2 dictionaryRepresentation];
+  dictionaryRepresentation = [defaultStore dictionaryRepresentation];
   v6 = +[TPSLogger daemon];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v5;
+    v13 = dictionaryRepresentation;
     _os_log_impl(&dword_1C00A7000, v6, OS_LOG_TYPE_DEFAULT, "Current state: %@", &v12, 0xCu);
   }
 
-  [v2 setArray:MEMORY[0x1E695E0F0] forKey:@"TPSDCloudHintDisplayed"];
+  [defaultStore setArray:MEMORY[0x1E695E0F0] forKey:@"TPSDCloudHintDisplayed"];
   v7 = +[TPSLogger daemon];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v2, "synchronize")}];
+    v8 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(defaultStore, "synchronize")}];
     v12 = 138412290;
     v13 = v8;
     _os_log_impl(&dword_1C00A7000, v7, OS_LOG_TYPE_DEFAULT, "Saving: %@", &v12, 0xCu);
@@ -223,37 +223,37 @@ void __48__TPSCloudController_hintDisplayedForContentID___block_invoke(uint64_t 
   v9 = +[TPSLogger daemon];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v2 dictionaryRepresentation];
+    dictionaryRepresentation2 = [defaultStore dictionaryRepresentation];
     v12 = 138412290;
-    v13 = v10;
+    v13 = dictionaryRepresentation2;
     _os_log_impl(&dword_1C00A7000, v9, OS_LOG_TYPE_DEFAULT, "After state: %@", &v12, 0xCu);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerForNotifications:(id)a3
+- (void)registerForNotifications:(id)notifications
 {
   if (!self->_registered)
   {
     v4 = MEMORY[0x1E696AD88];
-    v5 = a3;
-    v6 = [v4 defaultCenter];
-    [v6 addObserver:self selector:sel_updateKVStoreItems_ name:*MEMORY[0x1E696A9E8] object:v5];
+    notificationsCopy = notifications;
+    defaultCenter = [v4 defaultCenter];
+    [defaultCenter addObserver:self selector:sel_updateKVStoreItems_ name:*MEMORY[0x1E696A9E8] object:notificationsCopy];
 
     self->_registered = 1;
   }
 }
 
-- (void)updateKVStoreItems:(id)a3
+- (void)updateKVStoreItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = [TPSAnalyticsEventDaemonActive eventWithReason:@"cloudSync" alreadyRunning:1];
   [v5 log];
 
-  v6 = [v4 userInfo];
+  userInfo = [itemsCopy userInfo];
 
-  v7 = [v6 objectForKey:*MEMORY[0x1E696A9D8]];
+  v7 = [userInfo objectForKey:*MEMORY[0x1E696A9D8]];
   v8 = v7;
   if (v7 && [v7 integerValue] <= 1)
   {
@@ -262,8 +262,8 @@ void __48__TPSCloudController_hintDisplayedForContentID___block_invoke(uint64_t 
     v10[1] = 3221225472;
     v10[2] = __41__TPSCloudController_updateKVStoreItems___block_invoke;
     v10[3] = &unk_1E8101390;
-    v11 = v6;
-    v12 = self;
+    v11 = userInfo;
+    selfCopy = self;
     dispatch_sync(queue, v10);
   }
 }

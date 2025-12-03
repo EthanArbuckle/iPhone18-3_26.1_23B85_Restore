@@ -3,11 +3,11 @@
 - (FMFMapOptionsViewController)init;
 - (FMFMapOptionsViewControllerDelegate)delegate;
 - (MKMapAttribution)mapAttribution;
-- (void)_dismiss:(id)a3;
-- (void)attributionButtonPressed:(id)a3;
+- (void)_dismiss:(id)_dismiss;
+- (void)attributionButtonPressed:(id)pressed;
 - (void)awakeFromNib;
-- (void)openInMaps:(id)a3;
-- (void)segmentedControlChanged:(id)a3;
+- (void)openInMaps:(id)maps;
+- (void)segmentedControlChanged:(id)changed;
 - (void)viewDidLoad;
 @end
 
@@ -30,16 +30,16 @@
   [(FMFMapOptionsViewController *)&v2 awakeFromNib];
 }
 
-- (void)_dismiss:(id)a3
+- (void)_dismiss:(id)_dismiss
 {
-  v4 = [(FMFMapOptionsViewController *)self delegate];
-  [v4 _dismiss:self];
+  delegate = [(FMFMapOptionsViewController *)self delegate];
+  [delegate _dismiss:self];
 }
 
 - (CGSize)paneSize
 {
-  v2 = [(FMFMapOptionsViewController *)self view];
-  [v2 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
+  view = [(FMFMapOptionsViewController *)self view];
+  [view systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
   v4 = v3;
   v6 = v5;
 
@@ -63,29 +63,29 @@
   v15.super_class = FMFMapOptionsViewController;
   [(FMFMapOptionsViewController *)&v15 viewDidLoad];
   v4 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__dismiss_];
-  v5 = [(FMFMapOptionsViewController *)self topTapView];
-  [v5 addGestureRecognizer:v4];
+  topTapView = [(FMFMapOptionsViewController *)self topTapView];
+  [topTapView addGestureRecognizer:v4];
 
-  v6 = [(FMFMapOptionsViewController *)self mapAttributionButton];
-  v7 = [(FMFMapOptionsViewController *)self mapAttribution];
-  v8 = [v7 string];
-  [v6 setAttributedTitle:v8 forState:0];
+  mapAttributionButton = [(FMFMapOptionsViewController *)self mapAttributionButton];
+  mapAttribution = [(FMFMapOptionsViewController *)self mapAttribution];
+  string = [mapAttribution string];
+  [mapAttributionButton setAttributedTitle:string forState:0];
 
-  v9 = [(FMFMapOptionsViewController *)self delegate];
-  v10 = [v9 mapView];
-  v11 = [v10 mapType];
+  delegate = [(FMFMapOptionsViewController *)self delegate];
+  mapView = [delegate mapView];
+  mapType = [mapView mapType];
 
-  if (v11 == 4)
+  if (mapType == 4)
   {
     v12 = 1;
   }
 
   else
   {
-    v12 = v11;
+    v12 = mapType;
   }
 
-  if (v11 == 3)
+  if (mapType == 3)
   {
     v13 = 2;
   }
@@ -95,16 +95,16 @@
     v13 = v12;
   }
 
-  v14 = [(FMFMapOptionsViewController *)self segmentedControl];
-  [v14 setSelectedSegmentIndex:v13];
+  segmentedControl = [(FMFMapOptionsViewController *)self segmentedControl];
+  [segmentedControl setSelectedSegmentIndex:v13];
 }
 
-- (void)openInMaps:(id)a3
+- (void)openInMaps:(id)maps
 {
-  v4 = a3;
-  v5 = [(FMFMapOptionsViewController *)self delegate];
-  [v5 openInMapsButtonTapped:self];
-  [(FMFMapOptionsViewController *)self _dismiss:v4];
+  mapsCopy = maps;
+  delegate = [(FMFMapOptionsViewController *)self delegate];
+  [delegate openInMapsButtonTapped:self];
+  [(FMFMapOptionsViewController *)self _dismiss:mapsCopy];
 }
 
 - (MKMapAttribution)mapAttribution
@@ -116,8 +116,8 @@
     if (!mapAttribution_stringAttributes)
     {
       v13[0] = *MEMORY[0x277D740C0];
-      v4 = [MEMORY[0x277D75348] labelColor];
-      v14[0] = v4;
+      labelColor = [MEMORY[0x277D75348] labelColor];
+      v14[0] = labelColor;
       v13[1] = *MEMORY[0x277D740A8];
       v5 = [MEMORY[0x277D74300] boldSystemFontOfSize:12.0];
       v14[1] = v5;
@@ -126,9 +126,9 @@
       mapAttribution_stringAttributes = v6;
     }
 
-    v8 = [(FMFMapOptionsViewController *)self delegate];
-    v9 = [v8 mapView];
-    v10 = [v9 mapAttributionWithStringAttributes:mapAttribution_stringAttributes underlineText:1];
+    delegate = [(FMFMapOptionsViewController *)self delegate];
+    mapView = [delegate mapView];
+    v10 = [mapView mapAttributionWithStringAttributes:mapAttribution_stringAttributes underlineText:1];
     [(FMFMapOptionsViewController *)self setMapAttribution:v10];
 
     mapAttribution = self->_mapAttribution;
@@ -139,51 +139,51 @@
   return mapAttribution;
 }
 
-- (void)attributionButtonPressed:(id)a3
+- (void)attributionButtonPressed:(id)pressed
 {
-  v8 = a3;
-  v4 = [(FMFMapOptionsViewController *)self mapAttribution];
-  v5 = [v4 url];
+  pressedCopy = pressed;
+  mapAttribution = [(FMFMapOptionsViewController *)self mapAttribution];
+  v5 = [mapAttribution url];
 
   if (v5)
   {
-    v6 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    v7 = [v4 url];
-    [v6 openURL:v7 withOptions:0];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    v7 = [mapAttribution url];
+    [defaultWorkspace openURL:v7 withOptions:0];
   }
 
-  [(FMFMapOptionsViewController *)self _dismiss:v8];
+  [(FMFMapOptionsViewController *)self _dismiss:pressedCopy];
 }
 
-- (void)segmentedControlChanged:(id)a3
+- (void)segmentedControlChanged:(id)changed
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 selectedSegmentIndex];
+  changedCopy = changed;
+  selectedSegmentIndex = [changedCopy selectedSegmentIndex];
   v6 = LogCategory_Daemon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134217984;
-    v11 = v5;
+    v11 = selectedSegmentIndex;
     _os_log_impl(&dword_24A4E3000, v6, OS_LOG_TYPE_DEFAULT, "FMFMapOptionsViewController: newMapType %lu", &v10, 0xCu);
   }
 
-  if ([v4 selectedSegmentIndex] == 1)
+  if ([changedCopy selectedSegmentIndex] == 1)
   {
-    v5 = 4;
+    selectedSegmentIndex = 4;
   }
 
-  else if ([v4 selectedSegmentIndex] == 2)
+  else if ([changedCopy selectedSegmentIndex] == 2)
   {
-    v5 = 3;
+    selectedSegmentIndex = 3;
   }
 
-  v7 = [(FMFMapOptionsViewController *)self delegate];
-  v8 = [v7 mapView];
-  [v8 setMapType:v5];
+  delegate = [(FMFMapOptionsViewController *)self delegate];
+  mapView = [delegate mapView];
+  [mapView setMapType:selectedSegmentIndex];
 
-  [v7 mapTypeChanged:v5];
-  [(FMFMapOptionsViewController *)self _dismiss:v4];
+  [delegate mapTypeChanged:selectedSegmentIndex];
+  [(FMFMapOptionsViewController *)self _dismiss:changedCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }

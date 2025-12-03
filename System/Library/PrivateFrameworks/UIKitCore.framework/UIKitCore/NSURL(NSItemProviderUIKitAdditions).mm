@@ -30,7 +30,7 @@
 
 - (id)_title
 {
-  v1 = objc_getAssociatedObject(a1, &kTitleObjKey);
+  v1 = objc_getAssociatedObject(self, &kTitleObjKey);
   v2 = [v1 copy];
 
   return v2;
@@ -38,16 +38,16 @@
 
 - (id)_NSItemProviderArchive_customArchiveDictionary
 {
-  v2 = [MEMORY[0x1E695DF90] dictionary];
-  v3 = [a1 _title];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  _title = [self _title];
 
-  if (v3)
+  if (_title)
   {
-    v4 = [a1 _title];
-    [v2 setObject:v4 forKeyedSubscript:@"title"];
+    _title2 = [self _title];
+    [dictionary setObject:_title2 forKeyedSubscript:@"title"];
   }
 
-  return v2;
+  return dictionary;
 }
 
 - (void)_NSItemProviderArchive_didUnarchiveCustomDictionary:()NSItemProviderUIKitAdditions
@@ -58,7 +58,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a1 _setTitle:v4];
+      [self _setTitle:v4];
     }
   }
 }

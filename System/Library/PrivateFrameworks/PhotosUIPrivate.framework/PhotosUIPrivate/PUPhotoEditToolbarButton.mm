@@ -1,16 +1,16 @@
 @interface PUPhotoEditToolbarButton
-+ (id)buttonForTool:(id)a3 showingLabel:(BOOL)a4 selectionIndicatorType:(int64_t)a5 spec:(id)a6;
-+ (id)buttonWithImageNamed:(id)a3 selectedImageNamed:(id)a4 accessibilityLabel:(id)a5 spec:(id)a6;
-+ (id)constraintsForSelectionIndicatorType:(int64_t)a3 buttonImageView:(id)a4 selectionIndicator:(id)a5;
-+ (id)selectionIndicatorImageForType:(int64_t)a3;
++ (id)buttonForTool:(id)tool showingLabel:(BOOL)label selectionIndicatorType:(int64_t)type spec:(id)spec;
++ (id)buttonWithImageNamed:(id)named selectedImageNamed:(id)imageNamed accessibilityLabel:(id)label spec:(id)spec;
++ (id)constraintsForSelectionIndicatorType:(int64_t)type buttonImageView:(id)view selectionIndicator:(id)indicator;
++ (id)selectionIndicatorImageForType:(int64_t)type;
 - (id)baseConfiguration;
-- (id)imageConfigurationForSelectedState:(BOOL)a3;
-- (id)imageForState:(unint64_t)a3;
+- (id)imageConfigurationForSelectedState:(BOOL)state;
+- (id)imageForState:(unint64_t)state;
 - (id)largeContentImage;
 - (id)selectedConfiguration;
 - (id)unselectedConfiguration;
-- (void)buttonTouchUpAction:(id)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)buttonTouchUpAction:(id)action;
+- (void)setSelected:(BOOL)selected;
 - (void)updateConfiguration;
 @end
 
@@ -20,39 +20,39 @@
 {
   v3 = [(PUPhotoEditToolbarButton *)self imageConfigurationForSelectedState:0];
   v4 = MEMORY[0x1E69DCAB8];
-  v5 = [(PUPhotoEditToolbarButton *)self unselectedGlyphName];
-  v6 = [v4 _systemImageNamed:v5 withConfiguration:v3];
+  unselectedGlyphName = [(PUPhotoEditToolbarButton *)self unselectedGlyphName];
+  v6 = [v4 _systemImageNamed:unselectedGlyphName withConfiguration:v3];
 
   return v6;
 }
 
-- (id)imageForState:(unint64_t)a3
+- (id)imageForState:(unint64_t)state
 {
-  v3 = [(PUPhotoEditToolbarButton *)self imageView];
-  v4 = [v3 image];
+  imageView = [(PUPhotoEditToolbarButton *)self imageView];
+  image = [imageView image];
 
-  return v4;
+  return image;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v7.receiver = self;
   v7.super_class = PUPhotoEditToolbarButton;
   [(PUPhotoEditToolbarButton *)&v7 setSelected:?];
-  v5 = v3;
-  v6 = [(PUPhotoEditToolbarButton *)self selectionIndicator];
-  [v6 setAlpha:v5];
+  v5 = selectedCopy;
+  selectionIndicator = [(PUPhotoEditToolbarButton *)self selectionIndicator];
+  [selectionIndicator setAlpha:v5];
 }
 
-- (void)buttonTouchUpAction:(id)a3
+- (void)buttonTouchUpAction:(id)action
 {
-  v4 = [(PUPhotoEditToolbarButton *)self actionBlock];
+  actionBlock = [(PUPhotoEditToolbarButton *)self actionBlock];
 
-  if (v4)
+  if (actionBlock)
   {
-    v5 = [(PUPhotoEditToolbarButton *)self actionBlock];
-    v5[2](v5, self);
+    actionBlock2 = [(PUPhotoEditToolbarButton *)self actionBlock];
+    actionBlock2[2](actionBlock2, self);
   }
 }
 
@@ -68,15 +68,15 @@
     [(PUPhotoEditToolbarButton *)self unselectedConfiguration];
   }
   v9 = ;
-  v3 = [(PUPhotoEditToolbarButton *)self toolLabel];
+  toolLabel = [(PUPhotoEditToolbarButton *)self toolLabel];
 
-  if (v3)
+  if (toolLabel)
   {
     if ([(PUPhotoEditToolbarButton *)self isEnabled]&& [(PUPhotoEditToolbarButton *)self available])
     {
       if ([(PUPhotoEditToolbarButton *)self isSelected])
       {
-        v4 = [MEMORY[0x1E69DC888] labelColor];
+        labelColor = [MEMORY[0x1E69DC888] labelColor];
         v5 = 0;
         v6 = 0;
         v7 = 1;
@@ -84,7 +84,7 @@
 
       else
       {
-        v4 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+        labelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
         v7 = 0;
         v6 = 0;
         v5 = 1;
@@ -93,14 +93,14 @@
 
     else
     {
-      v4 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+      labelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
       v7 = 0;
       v5 = 0;
       v6 = 1;
     }
 
-    v8 = [(PUPhotoEditToolbarButton *)self toolLabel];
-    [v8 setTextColor:v4];
+    toolLabel2 = [(PUPhotoEditToolbarButton *)self toolLabel];
+    [toolLabel2 setTextColor:labelColor];
 
     if (v6)
     {
@@ -134,44 +134,44 @@ LABEL_14:
 
 - (id)unselectedConfiguration
 {
-  v3 = [(PUPhotoEditToolbarButton *)self baseConfiguration];
-  v4 = [(PUPhotoEditToolbarButton *)self unselectedGlyphName];
+  baseConfiguration = [(PUPhotoEditToolbarButton *)self baseConfiguration];
+  unselectedGlyphName = [(PUPhotoEditToolbarButton *)self unselectedGlyphName];
 
-  if (v4)
+  if (unselectedGlyphName)
   {
     v5 = [(PUPhotoEditToolbarButton *)self imageConfigurationForSelectedState:0];
     v6 = MEMORY[0x1E69DCAB8];
-    v7 = [(PUPhotoEditToolbarButton *)self unselectedGlyphName];
-    v8 = [v6 _systemImageNamed:v7 withConfiguration:v5];
-    [v3 setImage:v8];
+    unselectedGlyphName2 = [(PUPhotoEditToolbarButton *)self unselectedGlyphName];
+    v8 = [v6 _systemImageNamed:unselectedGlyphName2 withConfiguration:v5];
+    [baseConfiguration setImage:v8];
   }
 
-  return v3;
+  return baseConfiguration;
 }
 
 - (id)selectedConfiguration
 {
-  v3 = [(PUPhotoEditToolbarButton *)self baseConfiguration];
+  baseConfiguration = [(PUPhotoEditToolbarButton *)self baseConfiguration];
   v4 = [(PUPhotoEditToolbarButton *)self imageConfigurationForSelectedState:1];
   v5 = MEMORY[0x1E69DCAB8];
-  v6 = [(PUPhotoEditToolbarButton *)self selectedGlyphName];
-  v7 = v6;
-  if (!v6)
+  selectedGlyphName = [(PUPhotoEditToolbarButton *)self selectedGlyphName];
+  unselectedGlyphName = selectedGlyphName;
+  if (!selectedGlyphName)
   {
-    v7 = [(PUPhotoEditToolbarButton *)self unselectedGlyphName];
+    unselectedGlyphName = [(PUPhotoEditToolbarButton *)self unselectedGlyphName];
   }
 
-  v8 = [v5 _systemImageNamed:v7 withConfiguration:v4];
-  [v3 setImage:v8];
+  v8 = [v5 _systemImageNamed:unselectedGlyphName withConfiguration:v4];
+  [baseConfiguration setImage:v8];
 
-  if (!v6)
+  if (!selectedGlyphName)
   {
   }
 
-  return v3;
+  return baseConfiguration;
 }
 
-- (id)imageConfigurationForSelectedState:(BOOL)a3
+- (id)imageConfigurationForSelectedState:(BOOL)state
 {
   v24[1] = *MEMORY[0x1E69E9840];
   v5 = +[PUInterfaceManager currentTheme];
@@ -188,11 +188,11 @@ LABEL_14:
 
   v7 = [v6 configurationWithPointSize:?];
   v8 = [MEMORY[0x1E69DCAD8] configurationWithWeight:4];
-  v9 = [(PUPhotoEditToolbarButton *)self selectedColor];
-  v10 = v9;
-  if (v9)
+  selectedColor = [(PUPhotoEditToolbarButton *)self selectedColor];
+  v10 = selectedColor;
+  if (selectedColor)
   {
-    v11 = v9;
+    v11 = selectedColor;
   }
 
   else
@@ -212,14 +212,14 @@ LABEL_14:
   v12 = v11;
 
   v13 = MEMORY[0x1B8C6D660]();
-  v14 = [(PUPhotoEditToolbarButton *)self isEnabled];
+  isEnabled = [(PUPhotoEditToolbarButton *)self isEnabled];
   if (v13)
   {
-    if (v14 && [(PUPhotoEditToolbarButton *)self available])
+    if (isEnabled && [(PUPhotoEditToolbarButton *)self available])
     {
-      if (!a3)
+      if (!state)
       {
-        v15 = [MEMORY[0x1E69DC888] labelColor];
+        labelColor = [MEMORY[0x1E69DC888] labelColor];
         goto LABEL_20;
       }
 
@@ -229,26 +229,26 @@ LABEL_14:
     goto LABEL_19;
   }
 
-  if (!v14 || ![(PUPhotoEditToolbarButton *)self available])
+  if (!isEnabled || ![(PUPhotoEditToolbarButton *)self available])
   {
 LABEL_19:
-    v15 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    labelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
     goto LABEL_20;
   }
 
-  if (a3)
+  if (state)
   {
 LABEL_18:
-    v15 = v12;
+    labelColor = v12;
     goto LABEL_20;
   }
 
-  v15 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  labelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
 LABEL_20:
-  v16 = v15;
-  v17 = [(PUPhotoEditToolbarButton *)self usesHierarchicalColor];
+  v16 = labelColor;
+  usesHierarchicalColor = [(PUPhotoEditToolbarButton *)self usesHierarchicalColor];
   v18 = MEMORY[0x1E69DCAD8];
-  if (v17)
+  if (usesHierarchicalColor)
   {
     v19 = [MEMORY[0x1E69DCAD8] configurationWithHierarchicalColor:v16];
   }
@@ -268,20 +268,20 @@ LABEL_20:
 
 - (id)baseConfiguration
 {
-  v3 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-  [v3 setButtonSize:2];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBaseBackgroundColor:v4];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  [plainButtonConfiguration setButtonSize:2];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [plainButtonConfiguration setBaseBackgroundColor:clearColor];
 
-  [v3 setTitleLineBreakMode:4];
-  v5 = [v3 contentInsets];
+  [plainButtonConfiguration setTitleLineBreakMode:4];
+  contentInsets = [plainButtonConfiguration contentInsets];
   v7 = v6;
   v9 = v8;
   v10 = 0.0;
-  if ((MEMORY[0x1B8C6D660](v5) & 1) == 0)
+  if ((MEMORY[0x1B8C6D660](contentInsets) & 1) == 0)
   {
-    v11 = [(PUPhotoEditToolbarButton *)self photoEditSpec];
-    if ([v11 shouldUseCompactToolbarSpacing])
+    photoEditSpec = [(PUPhotoEditToolbarButton *)self photoEditSpec];
+    if ([photoEditSpec shouldUseCompactToolbarSpacing])
     {
       v10 = 3.0;
     }
@@ -292,56 +292,56 @@ LABEL_20:
     }
   }
 
-  [v3 setContentInsets:{v7, v10, v9, v10}];
-  v12 = [(PUPhotoEditToolbarButton *)self toolLabel];
+  [plainButtonConfiguration setContentInsets:{v7, v10, v9, v10}];
+  toolLabel = [(PUPhotoEditToolbarButton *)self toolLabel];
 
-  if (v12)
+  if (toolLabel)
   {
-    [v3 contentInsets];
-    [v3 setContentInsets:?];
+    [plainButtonConfiguration contentInsets];
+    [plainButtonConfiguration setContentInsets:?];
   }
 
-  return v3;
+  return plainButtonConfiguration;
 }
 
-+ (id)constraintsForSelectionIndicatorType:(int64_t)a3 buttonImageView:(id)a4 selectionIndicator:(id)a5
++ (id)constraintsForSelectionIndicatorType:(int64_t)type buttonImageView:(id)view selectionIndicator:(id)indicator
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  switch(a3)
+  viewCopy = view;
+  indicatorCopy = indicator;
+  v9 = indicatorCopy;
+  switch(type)
   {
     case 3:
-      v10 = [v8 centerYAnchor];
-      v11 = [v7 centerYAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11];
+      centerYAnchor = [indicatorCopy centerYAnchor];
+      centerYAnchor2 = [viewCopy centerYAnchor];
+      v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v19[0] = v12;
-      v13 = [v9 rightAnchor];
-      v14 = [v7 leftAnchor];
-      v15 = [v13 constraintEqualToAnchor:v14 constant:-4.0];
+      rightAnchor = [v9 rightAnchor];
+      leftAnchor = [viewCopy leftAnchor];
+      v15 = [rightAnchor constraintEqualToAnchor:leftAnchor constant:-4.0];
       v19[1] = v15;
       v16 = v19;
       goto LABEL_7;
     case 2:
-      v10 = [v8 centerYAnchor];
-      v11 = [v7 centerYAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11];
+      centerYAnchor = [indicatorCopy centerYAnchor];
+      centerYAnchor2 = [viewCopy centerYAnchor];
+      v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v20[0] = v12;
-      v13 = [v9 rightAnchor];
-      v14 = [v7 leftAnchor];
-      v15 = [v13 constraintEqualToAnchor:v14 constant:-4.0];
+      rightAnchor = [v9 rightAnchor];
+      leftAnchor = [viewCopy leftAnchor];
+      v15 = [rightAnchor constraintEqualToAnchor:leftAnchor constant:-4.0];
       v20[1] = v15;
       v16 = v20;
       goto LABEL_7;
     case 1:
-      v10 = [v8 centerXAnchor];
-      v11 = [v7 centerXAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11];
+      centerYAnchor = [indicatorCopy centerXAnchor];
+      centerYAnchor2 = [viewCopy centerXAnchor];
+      v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v21[0] = v12;
-      v13 = [v9 bottomAnchor];
-      v14 = [v7 topAnchor];
-      v15 = [v13 constraintEqualToAnchor:v14 constant:-5.0];
+      rightAnchor = [v9 bottomAnchor];
+      leftAnchor = [viewCopy topAnchor];
+      v15 = [rightAnchor constraintEqualToAnchor:leftAnchor constant:-5.0];
       v21[1] = v15;
       v16 = v21;
 LABEL_7:
@@ -356,31 +356,31 @@ LABEL_9:
   return v17;
 }
 
-+ (id)selectionIndicatorImageForType:(int64_t)a3
++ (id)selectionIndicatorImageForType:(int64_t)type
 {
-  if ((a3 - 1) > 2)
+  if ((type - 1) > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69DCAB8] pu_PhotosUIImageNamed:{off_1E7B751A8[a3 - 1], v3}];
+    v5 = [MEMORY[0x1E69DCAB8] pu_PhotosUIImageNamed:{off_1E7B751A8[type - 1], v3}];
   }
 
   return v5;
 }
 
-+ (id)buttonWithImageNamed:(id)a3 selectedImageNamed:(id)a4 accessibilityLabel:(id)a5 spec:(id)a6
++ (id)buttonWithImageNamed:(id)named selectedImageNamed:(id)imageNamed accessibilityLabel:(id)label spec:(id)spec
 {
-  v9 = a5;
+  labelCopy = label;
   v10 = MEMORY[0x1E69DC740];
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v10 plainButtonConfiguration];
-  v15 = [PUPhotoEditToolbarButton buttonWithConfiguration:v14 primaryAction:0];
-  [v15 setPhotoEditSpec:v11];
+  specCopy = spec;
+  imageNamedCopy = imageNamed;
+  namedCopy = named;
+  plainButtonConfiguration = [v10 plainButtonConfiguration];
+  v15 = [PUPhotoEditToolbarButton buttonWithConfiguration:plainButtonConfiguration primaryAction:0];
+  [v15 setPhotoEditSpec:specCopy];
 
   [v15 setIsTopToolbarButton:1];
   v16 = [MEMORY[0x1E69C3BF0] configurationWithCursorEffect:1];
@@ -389,14 +389,14 @@ LABEL_9:
   [v15 setAutomaticallyUpdatesConfiguration:0];
   [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v15 setAvailable:1];
-  [v15 setUnselectedGlyphName:v13];
+  [v15 setUnselectedGlyphName:namedCopy];
 
-  [v15 setSelectedGlyphName:v12];
+  [v15 setSelectedGlyphName:imageNamedCopy];
   [v15 setUsesHierarchicalColor:0];
   [v15 setPointerInteractionEnabled:1];
-  if ([v9 length])
+  if ([labelCopy length])
   {
-    [v15 setAccessibilityLabel:v9];
+    [v15 setAccessibilityLabel:labelCopy];
   }
 
   [v15 updateConfiguration];
@@ -405,54 +405,54 @@ LABEL_9:
   return v15;
 }
 
-+ (id)buttonForTool:(id)a3 showingLabel:(BOOL)a4 selectionIndicatorType:(int64_t)a5 spec:(id)a6
++ (id)buttonForTool:(id)tool showingLabel:(BOOL)label selectionIndicatorType:(int64_t)type spec:(id)spec
 {
-  v8 = a4;
+  labelCopy = label;
   v42[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a6;
+  toolCopy = tool;
+  specCopy = spec;
   v11 = +[PUInterfaceManager currentTheme];
-  v41 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
   v12 = [PUPhotoEditToolbarButton buttonWithConfiguration:"buttonWithConfiguration:primaryAction:" primaryAction:?];
-  [v12 setPhotoEditSpec:v10];
+  [v12 setPhotoEditSpec:specCopy];
 
   v13 = [MEMORY[0x1E69C3BF0] configurationWithCursorEffect:1];
   [v12 setPx_configuration:v13];
 
   [v12 setAutomaticallyUpdatesConfiguration:0];
   [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v14 = [v9 localizedName];
-  [v12 setTitle:v14];
+  localizedName = [toolCopy localizedName];
+  [v12 setTitle:localizedName];
 
-  [v12 setAvailable:{objc_msgSend(v9, "enabled")}];
-  v15 = [v9 toolbarIconGlyphName];
-  [v12 setUnselectedGlyphName:v15];
+  [v12 setAvailable:{objc_msgSend(toolCopy, "enabled")}];
+  toolbarIconGlyphName = [toolCopy toolbarIconGlyphName];
+  [v12 setUnselectedGlyphName:toolbarIconGlyphName];
 
-  v16 = [v9 selectedToolbarIconGlyphName];
-  [v12 setSelectedGlyphName:v16];
+  selectedToolbarIconGlyphName = [toolCopy selectedToolbarIconGlyphName];
+  [v12 setSelectedGlyphName:selectedToolbarIconGlyphName];
 
-  [v12 setUsesHierarchicalColor:{objc_msgSend(v9, "toolbarGlyphUsesHierarchicalColor")}];
-  [v12 setSelectionIndicatorType:a5];
-  v17 = [v9 localizedName];
-  [v12 setAccessibilityIdentifier:v17];
+  [v12 setUsesHierarchicalColor:{objc_msgSend(toolCopy, "toolbarGlyphUsesHierarchicalColor")}];
+  [v12 setSelectionIndicatorType:type];
+  localizedName2 = [toolCopy localizedName];
+  [v12 setAccessibilityIdentifier:localizedName2];
 
   [v12 setPointerInteractionEnabled:1];
-  v18 = [v9 toolbarIconAccessibilityLabel];
-  if (v18)
+  toolbarIconAccessibilityLabel = [toolCopy toolbarIconAccessibilityLabel];
+  if (toolbarIconAccessibilityLabel)
   {
-    v19 = v18;
-    v20 = [v9 toolbarIconAccessibilityLabel];
-    v21 = [v20 length];
+    v19 = toolbarIconAccessibilityLabel;
+    toolbarIconAccessibilityLabel2 = [toolCopy toolbarIconAccessibilityLabel];
+    v21 = [toolbarIconAccessibilityLabel2 length];
 
     if (v21)
     {
-      v22 = [v9 toolbarIconAccessibilityLabel];
-      [v12 setAccessibilityLabel:v22];
+      toolbarIconAccessibilityLabel3 = [toolCopy toolbarIconAccessibilityLabel];
+      [v12 setAccessibilityLabel:toolbarIconAccessibilityLabel3];
     }
   }
 
-  [v12 setTag:{objc_msgSend(v9, "toolControllerTag")}];
-  if (v8)
+  [v12 setTag:{objc_msgSend(toolCopy, "toolControllerTag")}];
+  if (labelCopy)
   {
     [v12 setShowsLargeContentViewer:1];
     v23 = objc_alloc_init(MEMORY[0x1E69DCC18]);
@@ -460,40 +460,40 @@ LABEL_9:
   }
 
   [v12 updateConfiguration];
-  if (a5)
+  if (type)
   {
-    v24 = [PUPhotoEditToolbarButton selectionIndicatorImageForType:a5];
+    v24 = [PUPhotoEditToolbarButton selectionIndicatorImageForType:type];
     v25 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v24];
     [v12 setSelectionIndicator:v25];
     [v25 setAlpha:0.0];
     [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v12 addSubview:v25];
-    v26 = [v12 imageView];
-    v27 = [PUPhotoEditToolbarButton constraintsForSelectionIndicatorType:a5 buttonImageView:v26 selectionIndicator:v25];
+    imageView = [v12 imageView];
+    v27 = [PUPhotoEditToolbarButton constraintsForSelectionIndicatorType:type buttonImageView:imageView selectionIndicator:v25];
     [v12 addConstraints:v27];
   }
 
   [v12 addTarget:v12 action:sel_buttonTouchUpAction_ forControlEvents:64];
-  if (v8)
+  if (labelCopy)
   {
     v28 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-    v29 = [v11 photoEditingToolbarButtonCompactFont];
-    [v28 setFont:v29];
+    photoEditingToolbarButtonCompactFont = [v11 photoEditingToolbarButtonCompactFont];
+    [v28 setFont:photoEditingToolbarButtonCompactFont];
 
-    v30 = [v9 localizedName];
-    [v28 setText:v30];
+    localizedName3 = [toolCopy localizedName];
+    [v28 setText:localizedName3];
 
     [v28 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v12 setToolLabel:v28];
     [v12 addSubview:v28];
-    v39 = [v28 firstBaselineAnchor];
-    v40 = [v12 imageView];
-    v31 = [v40 bottomAnchor];
-    v32 = [v39 constraintEqualToAnchor:v31 constant:12.0];
+    firstBaselineAnchor = [v28 firstBaselineAnchor];
+    imageView2 = [v12 imageView];
+    bottomAnchor = [imageView2 bottomAnchor];
+    v32 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:12.0];
     v42[0] = v32;
-    v33 = [v28 centerXAnchor];
-    v34 = [v12 centerXAnchor];
-    [v33 constraintEqualToAnchor:v34];
+    centerXAnchor = [v28 centerXAnchor];
+    centerXAnchor2 = [v12 centerXAnchor];
+    [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v36 = v35 = v11;
     v42[1] = v36;
     v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:2];

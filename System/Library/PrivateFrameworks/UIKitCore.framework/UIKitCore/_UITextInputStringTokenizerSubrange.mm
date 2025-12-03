@@ -1,5 +1,5 @@
 @interface _UITextInputStringTokenizerSubrange
-+ (id)subrangeWithSubstring:(id)a3 basePosition:(id)a4;
++ (id)subrangeWithSubstring:(id)substring basePosition:(id)position;
 - (_NSRange)relevantRange;
 @end
 
@@ -14,17 +14,17 @@
   return result;
 }
 
-+ (id)subrangeWithSubstring:(id)a3 basePosition:(id)a4
++ (id)subrangeWithSubstring:(id)substring basePosition:(id)position
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = objc_alloc_init(a1);
+  substringCopy = substring;
+  positionCopy = position;
+  v8 = objc_alloc_init(self);
   v9 = v8[1];
-  v8[1] = v6;
-  v10 = v6;
+  v8[1] = substringCopy;
+  v10 = substringCopy;
 
   v11 = v8[2];
-  v8[2] = v7;
+  v8[2] = positionCopy;
 
   *(v8 + 2) = xmmword_18A678470;
 

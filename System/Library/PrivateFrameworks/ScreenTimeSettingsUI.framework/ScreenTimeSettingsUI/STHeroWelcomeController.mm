@@ -1,29 +1,29 @@
 @interface STHeroWelcomeController
-- (STHeroWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6 topInset:(double)a7;
+- (STHeroWelcomeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout topInset:(double)inset;
 - (void)loadView;
-- (void)setView:(id)a3;
+- (void)setView:(id)view;
 @end
 
 @implementation STHeroWelcomeController
 
-- (STHeroWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6 topInset:(double)a7
+- (STHeroWelcomeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout topInset:(double)inset
 {
   v9.receiver = self;
   v9.super_class = STHeroWelcomeController;
-  result = [(STHeroWelcomeController *)&v9 initWithTitle:a3 detailText:a4 icon:a5 contentLayout:a6];
-  result->_topInset = a7;
+  result = [(STHeroWelcomeController *)&v9 initWithTitle:title detailText:text icon:icon contentLayout:layout];
+  result->_topInset = inset;
   return result;
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5.receiver = self;
     v5.super_class = STHeroWelcomeController;
-    [(STHeroWelcomeController *)&v5 setView:v4];
+    [(STHeroWelcomeController *)&v5 setView:viewCopy];
   }
 }
 

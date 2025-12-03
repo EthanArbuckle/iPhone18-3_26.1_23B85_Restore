@@ -1,8 +1,8 @@
 @interface TIDictationShortcutController
-+ (id)attributedTitleForDictationShortcutValue:(int64_t)a3;
++ (id)attributedTitleForDictationShortcutValue:(int64_t)value;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updatePreferenceForParent;
 @end
 
@@ -18,15 +18,15 @@
     v5 = [PSSpecifier groupSpecifierWithName:[[NSBundle bundleForClass:?]value:"localizedStringForKey:value:table:" table:@"DICTATION_SHORTCUT_EXPLANATION", &stru_49C80, @"Dictation"]];
     [v5 setProperty:&__kCFBooleanTrue forKey:PSIsRadioGroupKey];
     [v3 addObject:v5];
-    v6 = [(TIDictationShortcutController *)self specifier];
-    [v6 setProperty:&off_4DA48 forKey:PSDefaultValueKey];
+    specifier = [(TIDictationShortcutController *)self specifier];
+    [specifier setProperty:&off_4DA48 forKey:PSDefaultValueKey];
     v7 = [+[TIPreferencesController sharedPreferencesController](TIPreferencesController "sharedPreferencesController")];
     if (v7)
     {
       v8 = v7;
-      v9 = [(TIDictationShortcutController *)self specifier];
+      specifier2 = [(TIDictationShortcutController *)self specifier];
       v10 = PSValueKey;
-      [v9 setProperty:v8 forKey:PSValueKey];
+      [specifier2 setProperty:v8 forKey:PSValueKey];
     }
 
     else
@@ -53,18 +53,18 @@
   return v3;
 }
 
-+ (id)attributedTitleForDictationShortcutValue:(int64_t)a3
++ (id)attributedTitleForDictationShortcutValue:(int64_t)value
 {
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = @"noshortcut";
   v6 = @"NO_SHORTCUT";
-  if (a3 == 1)
+  if (value == 1)
   {
     v6 = @"Command";
     v5 = @"command";
   }
 
-  if (a3)
+  if (value)
   {
     v7 = v6;
   }
@@ -74,7 +74,7 @@
     v7 = @"Control";
   }
 
-  if (a3)
+  if (value)
   {
     v8 = v5;
   }
@@ -89,12 +89,12 @@
   return [TIKeyboardListController attributedTitleForSymbolName:v8 cellTitle:v9];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v14.receiver = self;
   v14.super_class = TIDictationShortcutController;
-  v6 = [(TIDictationShortcutController *)&v14 tableView:a3 cellForRowAtIndexPath:?];
-  v7 = [(TIDictationShortcutController *)self specifierAtIndexPath:a4];
+  v6 = [(TIDictationShortcutController *)&v14 tableView:view cellForRowAtIndexPath:?];
+  v7 = [(TIDictationShortcutController *)self specifierAtIndexPath:path];
   v8 = [v7 propertyForKey:PSTitleKey];
   if (v8)
   {
@@ -106,22 +106,22 @@
     [objc_msgSend(v6 "titleLabel")];
   }
 
-  v9 = [(TIDictationShortcutController *)self specifier];
+  specifier = [(TIDictationShortcutController *)self specifier];
   v10 = PSValueKey;
-  v11 = [v9 propertyForKey:PSValueKey];
+  v11 = [specifier propertyForKey:PSValueKey];
   if (!v11)
   {
-    v12 = [(TIDictationShortcutController *)self specifier];
-    v11 = [v12 propertyForKey:PSDefaultValueKey];
+    specifier2 = [(TIDictationShortcutController *)self specifier];
+    v11 = [specifier2 propertyForKey:PSDefaultValueKey];
   }
 
   [v6 setChecked:{objc_msgSend(objc_msgSend(v7, "propertyForKey:", v10), "isEqualToNumber:", v11)}];
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v7 = [(TIDictationShortcutController *)self specifierAtIndexPath:a4];
+  v7 = [(TIDictationShortcutController *)self specifierAtIndexPath:path];
   v8 = PSValueKey;
   v9 = [v7 propertyForKey:PSValueKey];
   [-[TIDictationShortcutController specifier](self "specifier")];
@@ -130,16 +130,16 @@
   [(TIDictationShortcutController *)self reloadSpecifiers];
   [(TIDictationShortcutController *)self updatePreferenceForParent];
 
-  [a3 deselectRowAtIndexPath:a4 animated:1];
+  [view deselectRowAtIndexPath:path animated:1];
 }
 
 - (void)updatePreferenceForParent
 {
-  v2 = [(TIDictationShortcutController *)self parentController];
+  parentController = [(TIDictationShortcutController *)self parentController];
   if (objc_opt_respondsToSelector())
   {
 
-    [v2 setNeedsReloadSpecifiers:1];
+    [parentController setNeedsReloadSpecifiers:1];
   }
 }
 

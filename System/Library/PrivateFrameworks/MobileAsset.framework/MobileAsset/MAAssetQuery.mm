@@ -1,15 +1,15 @@
 @interface MAAssetQuery
-- (BOOL)isCatalogFetchedWithinThePastFewDays:(int)a3;
-- (MAAssetQuery)initWithType:(id)a3 andPurpose:(id)a4;
+- (BOOL)isCatalogFetchedWithinThePastFewDays:(int)days;
+- (MAAssetQuery)initWithType:(id)type andPurpose:(id)purpose;
 - (id)description;
-- (int64_t)addKeyValueArray:(id)a3 with:(id)a4;
-- (int64_t)addKeyValueNull:(id)a3;
-- (int64_t)addKeyValuePair:(id)a3 with:(id)a4;
+- (int64_t)addKeyValueArray:(id)array with:(id)with;
+- (int64_t)addKeyValueNull:(id)null;
+- (int64_t)addKeyValuePair:(id)pair with:(id)with;
 - (int64_t)queryInstalledAssetIds;
 - (int64_t)queryMetaDataSync;
-- (void)getResultsFromMessage:(id)a3;
-- (void)queryMetaData:(id)a3;
-- (void)queryMetaDataWithError:(id)a3;
+- (void)getResultsFromMessage:(id)message;
+- (void)queryMetaData:(id)data;
+- (void)queryMetaDataWithError:(id)error;
 @end
 
 @implementation MAAssetQuery
@@ -24,15 +24,15 @@
   {
     v13 = 0;
     v8 = 0;
-    v5 = 0;
+    assetType = 0;
     v15 = 0;
     v16 = 6;
     goto LABEL_21;
   }
 
-  v5 = [(MAAssetQuery *)self assetType];
+  assetType = [(MAAssetQuery *)self assetType];
 
-  if (!v5)
+  if (!assetType)
   {
     v13 = 0;
     v8 = 0;
@@ -41,22 +41,22 @@
     goto LABEL_21;
   }
 
-  v5 = [(MAAssetQuery *)self queryParams];
+  assetType = [(MAAssetQuery *)self queryParams];
 
-  if (!v5)
+  if (!assetType)
   {
     goto LABEL_7;
   }
 
   v6 = MEMORY[0x1E696ACC8];
-  v7 = [(MAAssetQuery *)self queryParams];
+  queryParams = [(MAAssetQuery *)self queryParams];
   v21 = 0;
-  v5 = [v6 archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v21];
+  assetType = [v6 archivedDataWithRootObject:queryParams requiringSecureCoding:1 error:&v21];
   v8 = v21;
 
-  if (v5 && !v8)
+  if (assetType && !v8)
   {
-    xpc_dictionary_set_data(v4, [@"QueryParams" UTF8String], objc_msgSend(v5, "bytes"), objc_msgSend(v5, "length"));
+    xpc_dictionary_set_data(v4, [@"QueryParams" UTF8String], objc_msgSend(assetType, "bytes"), objc_msgSend(assetType, "length"));
 LABEL_7:
     if (self->_purpose)
     {
@@ -72,8 +72,8 @@ LABEL_7:
       xpc_dictionary_set_string(v4, "Purpose", [(NSString *)self->_purpose UTF8String]);
     }
 
-    v11 = [(MAAssetQuery *)self assetType];
-    xpc_dictionary_set_string(v4, "AssetType", [v11 UTF8String]);
+    assetType2 = [(MAAssetQuery *)self assetType];
+    xpc_dictionary_set_string(v4, "AssetType", [assetType2 UTF8String]);
 
     xpc_dictionary_set_uint64(v4, "messageAction", 1uLL);
     xpc_dictionary_set_uint64(v4, "returnAssetTypes", [(MAAssetQuery *)self returnTypes]);
@@ -120,10 +120,10 @@ LABEL_21:
   return v16;
 }
 
-- (MAAssetQuery)initWithType:(id)a3 andPurpose:(id)a4
+- (MAAssetQuery)initWithType:(id)type andPurpose:(id)purpose
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  purposeCopy = purpose;
   v18.receiver = self;
   v18.super_class = MAAssetQuery;
   v9 = [(MAAssetQuery *)&v18 init];
@@ -135,7 +135,7 @@ LABEL_21:
     queryParams = v10->_queryParams;
     v10->_queryParams = v11;
 
-    objc_storeStrong(&v10->_assetType, a3);
+    objc_storeStrong(&v10->_assetType, type);
     results = v10->_results;
     v10->_results = 0;
 
@@ -152,26 +152,26 @@ LABEL_21:
     v10->_assetIds = 0;
 
     v10->_doNotBlockBeforeFirstUnlock = 0;
-    objc_storeStrong(&v10->_purpose, a4);
+    objc_storeStrong(&v10->_purpose, purpose);
   }
 
   return v10;
 }
 
-- (int64_t)addKeyValueArray:(id)a3 with:(id)a4
+- (int64_t)addKeyValueArray:(id)array with:(id)with
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  arrayCopy = array;
+  withCopy = with;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v23 = self;
+    selfCopy = self;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v8 = v7;
+    v8 = withCopy;
     v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v9)
     {
@@ -188,9 +188,9 @@ LABEL_21:
           }
 
           v13 = *(*(&v25 + 1) + 8 * v12);
-          v14 = [MEMORY[0x1E695DFB0] null];
-          v15 = v14;
-          if (v13 == v14)
+          null = [MEMORY[0x1E695DFB0] null];
+          v15 = null;
+          if (v13 == null)
           {
           }
 
@@ -229,8 +229,8 @@ LABEL_21:
 
     v17 = objc_opt_new();
     [v17 setValue:v8 forKey:@"queryValue"];
-    [v17 setValue:v6 forKey:@"queryKey"];
-    [(NSMutableArray *)v23->_queryParams addObject:v17];
+    [v17 setValue:arrayCopy forKey:@"queryKey"];
+    [(NSMutableArray *)selfCopy->_queryParams addObject:v17];
     v18 = 0;
     v8 = v17;
 LABEL_19:
@@ -245,17 +245,17 @@ LABEL_19:
   return v18;
 }
 
-- (int64_t)addKeyValueNull:(id)a3
+- (int64_t)addKeyValueNull:(id)null
 {
-  v4 = a3;
+  nullCopy = null;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = objc_opt_new();
-    v6 = [MEMORY[0x1E695DFB0] null];
-    [v5 addObject:v6];
+    null = [MEMORY[0x1E695DFB0] null];
+    [v5 addObject:null];
 
-    v7 = [(MAAssetQuery *)self addKeyValueArray:v4 with:v5];
+    v7 = [(MAAssetQuery *)self addKeyValueArray:nullCopy with:v5];
   }
 
   else
@@ -266,16 +266,16 @@ LABEL_19:
   return v7;
 }
 
-- (int64_t)addKeyValuePair:(id)a3 with:(id)a4
+- (int64_t)addKeyValuePair:(id)pair with:(id)with
 {
-  v6 = a3;
-  v7 = a4;
+  pairCopy = pair;
+  withCopy = with;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     v8 = objc_opt_new();
-    [v8 addObject:v7];
-    v9 = [(MAAssetQuery *)self addKeyValueArray:v6 with:v8];
+    [v8 addObject:withCopy];
+    v9 = [(MAAssetQuery *)self addKeyValueArray:pairCopy with:v8];
   }
 
   else
@@ -286,11 +286,11 @@ LABEL_19:
   return v9;
 }
 
-- (void)getResultsFromMessage:(id)a3
+- (void)getResultsFromMessage:(id)message
 {
   v67 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  int64 = xpc_dictionary_get_int64(v4, "Result");
+  messageCopy = message;
+  int64 = xpc_dictionary_get_int64(messageCopy, "Result");
   results = self->_results;
   self->_resultCode = int64;
   self->_results = 0;
@@ -298,10 +298,10 @@ LABEL_19:
   v7 = _MAClientLog(@"V2");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(MAAssetQuery *)self assetType];
+    assetType = [(MAAssetQuery *)self assetType];
     resultCode = self->_resultCode;
     *buf = 138543618;
-    v64 = v8;
+    v64 = assetType;
     v65 = 2048;
     v66 = resultCode;
     _os_log_impl(&dword_197AD5000, v7, OS_LOG_TYPE_DEFAULT, "Got the query meta data reply for: %{public}@, response: %ld", buf, 0x16u);
@@ -309,7 +309,7 @@ LABEL_19:
 
   length = 0;
   v10 = objc_autoreleasePoolPush();
-  data = xpc_dictionary_get_data(v4, [@"xmlData" UTF8String], &length);
+  data = xpc_dictionary_get_data(messageCopy, [@"xmlData" UTF8String], &length);
   if (!data)
   {
     v22 = _MAClientLog(@"V2");
@@ -462,7 +462,7 @@ LABEL_9:
   {
     v34 = v33;
     v54 = v16;
-    v55 = v4;
+    v55 = messageCopy;
 
     objc_autoreleasePoolPop(v24);
     context = objc_autoreleasePoolPush();
@@ -491,8 +491,8 @@ LABEL_9:
           v43 = objc_autoreleasePoolPush();
           v44 = [[MAAsset alloc] initWithAttributes:v42];
           [v36 addObject:v44];
-          v45 = [(MAAsset *)v44 assetId];
-          [v35 addObject:v45];
+          assetId = [(MAAsset *)v44 assetId];
+          [v35 addObject:assetId];
 
           objc_autoreleasePoolPop(v43);
         }
@@ -513,7 +513,7 @@ LABEL_9:
     objc_storeStrong(&self->_results, v36);
 
     objc_autoreleasePoolPop(context);
-    v4 = v55;
+    messageCopy = v55;
   }
 
   else
@@ -533,15 +533,15 @@ LABEL_45:
   v51 = *MEMORY[0x1E69E9840];
 }
 
-- (void)queryMetaData:(id)a3
+- (void)queryMetaData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __30__MAAssetQuery_queryMetaData___block_invoke;
   v6[3] = &unk_1E74CA4A0;
-  v7 = v4;
-  v5 = v4;
+  v7 = dataCopy;
+  v5 = dataCopy;
   [(MAAssetQuery *)self queryMetaDataWithError:v6];
 }
 
@@ -556,9 +556,9 @@ uint64_t __30__MAAssetQuery_queryMetaData___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)queryMetaDataWithError:(id)a3
+- (void)queryMetaDataWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_autoreleasePoolPush();
   self->_isDone = 0;
   assetType = self->_assetType;
@@ -567,7 +567,7 @@ uint64_t __30__MAAssetQuery_queryMetaData___block_invoke(uint64_t a1)
   v8[2] = __39__MAAssetQuery_queryMetaDataWithError___block_invoke;
   v8[3] = &unk_1E74CA4F0;
   v8[4] = self;
-  v7 = v4;
+  v7 = errorCopy;
   v9 = v7;
   _MAsendQueryMetaData(assetType, self, v8);
 
@@ -614,12 +614,12 @@ LABEL_7:
   length = 0;
   if (v4)
   {
-    v5 = [(MAAssetQuery *)self assetType];
+    assetType = [(MAAssetQuery *)self assetType];
 
-    if (v5)
+    if (assetType)
     {
-      v6 = [(MAAssetQuery *)self assetType];
-      xpc_dictionary_set_string(v4, "AssetType", [v6 UTF8String]);
+      assetType2 = [(MAAssetQuery *)self assetType];
+      xpc_dictionary_set_string(v4, "AssetType", [assetType2 UTF8String]);
 
       xpc_dictionary_set_uint64(v4, "messageAction", 0x12uLL);
       v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", getprogname()];
@@ -757,17 +757,17 @@ LABEL_27:
   return v16;
 }
 
-- (BOOL)isCatalogFetchedWithinThePastFewDays:(int)a3
+- (BOOL)isCatalogFetchedWithinThePastFewDays:(int)days
 {
   v3 = 0;
-  if (a3 >= 1 && self->_lastFetchDate)
+  if (days >= 1 && self->_lastFetchDate)
   {
-    v6 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     lastFetchDate = self->_lastFetchDate;
-    v8 = [MEMORY[0x1E695DF00] date];
-    v9 = [v6 components:16 fromDate:lastFetchDate toDate:v8 options:0];
+    date = [MEMORY[0x1E695DF00] date];
+    v9 = [currentCalendar components:16 fromDate:lastFetchDate toDate:date options:0];
 
-    v3 = v9 && [v9 day] < a3 && objc_msgSend(v9, "day") > -a3;
+    v3 = v9 && [v9 day] < days && objc_msgSend(v9, "day") > -days;
   }
 
   return v3;
@@ -775,11 +775,11 @@ LABEL_27:
 
 - (id)description
 {
-  v3 = [(NSSet *)self->_assetIds anyObject];
-  v4 = v3;
-  if (v3)
+  anyObject = [(NSSet *)self->_assetIds anyObject];
+  v4 = anyObject;
+  if (anyObject)
   {
-    v5 = v3;
+    v5 = anyObject;
   }
 
   else

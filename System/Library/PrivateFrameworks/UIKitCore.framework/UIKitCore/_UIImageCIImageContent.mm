@@ -1,12 +1,12 @@
 @interface _UIImageCIImageContent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)sizeInPixels;
-- (_UIImageCIImageContent)initWithCIImage:(id)a3 scale:(double)a4;
-- (_UIImageCIImageContent)initWithScale:(double)a3;
+- (_UIImageCIImageContent)initWithCIImage:(id)image scale:(double)scale;
+- (_UIImageCIImageContent)initWithScale:(double)scale;
 - (id)imageRendererFormat;
 - (id)makeSDRVersion;
-- (void)_drawWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5 renditionContext:(id)a6;
-- (void)_prepareForDrawingWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5;
+- (void)_drawWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context renditionContext:(id)renditionContext;
+- (void)_prepareForDrawingWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context;
 @end
 
 @implementation _UIImageCIImageContent
@@ -21,51 +21,51 @@
   return result;
 }
 
-- (_UIImageCIImageContent)initWithCIImage:(id)a3 scale:(double)a4
+- (_UIImageCIImageContent)initWithCIImage:(id)image scale:(double)scale
 {
-  v8 = a3;
-  if (!v8)
+  imageCopy = image;
+  if (!imageCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:1242 description:@"Need a ciImage"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:1242 description:@"Need a ciImage"];
   }
 
   v13.receiver = self;
   v13.super_class = _UIImageCIImageContent;
-  v9 = [(_UIImageContent *)&v13 initWithScale:a4];
+  v9 = [(_UIImageContent *)&v13 initWithScale:scale];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_ciImage, a3);
+    objc_storeStrong(&v9->_ciImage, image);
     v10->_allowHDR = 0;
   }
 
   return v10;
 }
 
-- (_UIImageCIImageContent)initWithScale:(double)a3
+- (_UIImageCIImageContent)initWithScale:(double)scale
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:1257 description:@"You need to use -initWithCIImage:scale:"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:1257 description:@"You need to use -initWithCIImage:scale:"];
 
   return 0;
 }
 
 - (id)makeSDRVersion
 {
-  v2 = self;
-  if (v2->_allowHDR)
+  selfCopy = self;
+  if (selfCopy->_allowHDR)
   {
     v3 = [_UIImageCIImageContent alloc];
-    ciImage = v2->_ciImage;
-    [(_UIImageContent *)v2 scale];
+    ciImage = selfCopy->_ciImage;
+    [(_UIImageContent *)selfCopy scale];
     v5 = [(_UIImageCIImageContent *)v3 initWithCIImage:ciImage scale:?];
 
     *(v5 + 48) = 0;
-    v2 = v5;
+    selfCopy = v5;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)imageRendererFormat
@@ -82,14 +82,14 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = _UIImageCIImageContent;
-  if ([(_UIImageContent *)&v7 isEqual:v4])
+  if ([(_UIImageContent *)&v7 isEqual:equalCopy])
   {
-    v5 = self->_ciImage == v4[5];
+    v5 = self->_ciImage == equalCopy[5];
   }
 
   else
@@ -100,18 +100,18 @@
   return v5;
 }
 
-- (void)_prepareForDrawingWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5
+- (void)_prepareForDrawingWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context
 {
-  CGContextTranslateCTM(a5, 0.0, a3.height);
+  CGContextTranslateCTM(context, 0.0, size.height);
 
-  CGContextScaleCTM(a5, 1.0, -1.0);
+  CGContextScaleCTM(context, 1.0, -1.0);
 }
 
-- (void)_drawWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5 renditionContext:(id)a6
+- (void)_drawWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context renditionContext:(id)renditionContext
 {
-  height = a3.height;
-  width = a3.width;
-  [(CIImage *)self->_ciImage extent:a5];
+  height = size.height;
+  width = size.width;
+  [(CIImage *)self->_ciImage extent:context];
   x = v22.origin.x;
   y = v22.origin.y;
   v12 = v22.size.width;
@@ -137,7 +137,7 @@
     v23.origin.y = v17;
     v23.size.width = width;
     v23.size.height = height;
-    CGContextDrawImage(a5, v23, v19);
+    CGContextDrawImage(context, v23, v19);
     CGImageRelease(v19);
   }
 }

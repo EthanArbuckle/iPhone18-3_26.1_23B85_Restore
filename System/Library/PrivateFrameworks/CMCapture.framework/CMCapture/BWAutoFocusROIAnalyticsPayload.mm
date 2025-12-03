@@ -40,12 +40,12 @@
 
 - (id)eventDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   portType = self->_portType;
   if (portType)
   {
-    [v3 setObject:portType forKeyedSubscript:@"portType"];
+    [dictionary setObject:portType forKeyedSubscript:@"portType"];
   }
 
   [v4 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_focusRegionType), @"focusRegionType"}];

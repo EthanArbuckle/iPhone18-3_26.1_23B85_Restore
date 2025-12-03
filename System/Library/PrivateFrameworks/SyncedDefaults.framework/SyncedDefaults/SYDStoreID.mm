@@ -1,12 +1,12 @@
 @interface SYDStoreID
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CKContainerID)containerID;
-- (SYDStoreID)initWithCoder:(id)a3;
-- (SYDStoreID)initWithIdentifier:(id)a3 type:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SYDStoreID)initWithCoder:(id)coder;
+- (SYDStoreID)initWithIdentifier:(id)identifier type:(int64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SYDStoreID
@@ -32,32 +32,32 @@
   v3 = MEMORY[0x1E696AD60];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SYDStoreID *)self identifier];
+  identifier = [(SYDStoreID *)self identifier];
   v7 = SYDStringForStoreType([(SYDStoreID *)self type]);
-  v8 = [v3 stringWithFormat:@"<%@: %p identifier=%@ type=%@", v5, self, v6, v7];;
+  v8 = [v3 stringWithFormat:@"<%@: %p identifier=%@ type=%@", v5, self, identifier, v7];;
 
-  v9 = [(SYDStoreID *)self personaUniqueString];
+  personaUniqueString = [(SYDStoreID *)self personaUniqueString];
 
-  if (v9)
+  if (personaUniqueString)
   {
-    v10 = [(SYDStoreID *)self personaUniqueString];
-    [v8 appendFormat:@" persona=%@", v10];
+    personaUniqueString2 = [(SYDStoreID *)self personaUniqueString];
+    [v8 appendFormat:@" persona=%@", personaUniqueString2];
   }
 
-  v11 = [(SYDStoreID *)self containerID];
+  containerID = [(SYDStoreID *)self containerID];
 
-  if (v11)
+  if (containerID)
   {
-    v12 = [(SYDStoreID *)self containerID];
-    [v8 appendFormat:@" containerID=%@", v12];
+    containerID2 = [(SYDStoreID *)self containerID];
+    [v8 appendFormat:@" containerID=%@", containerID2];
   }
 
-  v13 = [(SYDStoreID *)self testConfiguration];
+  testConfiguration = [(SYDStoreID *)self testConfiguration];
 
-  if (v13)
+  if (testConfiguration)
   {
-    v14 = [(SYDStoreID *)self testConfiguration];
-    [v8 appendFormat:@" testConfiguration=%@", v14];
+    testConfiguration2 = [(SYDStoreID *)self testConfiguration];
+    [v8 appendFormat:@" testConfiguration=%@", testConfiguration2];
   }
 
   [v8 appendString:@">"];
@@ -67,35 +67,35 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SYDStoreID *)self identifier];
-  v4 = [v3 hash];
+  identifier = [(SYDStoreID *)self identifier];
+  v4 = [identifier hash];
   v5 = [(SYDStoreID *)self type]^ v4;
-  v6 = [(SYDStoreID *)self testConfiguration];
-  v7 = v5 ^ [v6 hash];
+  testConfiguration = [(SYDStoreID *)self testConfiguration];
+  v7 = v5 ^ [testConfiguration hash];
 
-  v8 = [(SYDStoreID *)self personaUniqueString];
+  personaUniqueString = [(SYDStoreID *)self personaUniqueString];
 
-  if (v8)
+  if (personaUniqueString)
   {
-    v9 = [(SYDStoreID *)self personaUniqueString];
-    v7 ^= [v9 hash];
+    personaUniqueString2 = [(SYDStoreID *)self personaUniqueString];
+    v7 ^= [personaUniqueString2 hash];
   }
 
-  v10 = [(SYDStoreID *)self containerID];
+  containerID = [(SYDStoreID *)self containerID];
 
-  if (v10)
+  if (containerID)
   {
-    v11 = [(SYDStoreID *)self containerID];
-    v7 ^= [v11 hash];
+    containerID2 = [(SYDStoreID *)self containerID];
+    v7 ^= [containerID2 hash];
   }
 
   return v7;
 }
 
-- (SYDStoreID)initWithIdentifier:(id)a3 type:(int64_t)a4
+- (SYDStoreID)initWithIdentifier:(id)identifier type:(int64_t)type
 {
-  v8 = a3;
-  if (!v8)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [SYDStoreID initWithIdentifier:a2 type:?];
   }
@@ -106,13 +106,13 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    v10->_type = a4;
+    objc_storeStrong(&v9->_identifier, identifier);
+    v10->_type = type;
     if (SYDIsDataSeparatedPersona())
     {
-      v11 = [MEMORY[0x1E69DF078] currentPersona];
-      v12 = [v11 userPersonaUniqueString];
-      v13 = [v12 copy];
+      currentPersona = [MEMORY[0x1E69DF078] currentPersona];
+      userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+      v13 = [userPersonaUniqueString copy];
       personaUniqueString = v10->_personaUniqueString;
       v10->_personaUniqueString = v13;
     }
@@ -121,34 +121,34 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [v5 type];
-    if (v6 != [(SYDStoreID *)self type])
+    v5 = equalCopy;
+    type = [v5 type];
+    if (type != [(SYDStoreID *)self type])
     {
       goto LABEL_12;
     }
 
-    v7 = [v5 identifier];
-    v8 = [(SYDStoreID *)self identifier];
-    v9 = [v7 isEqualToString:v8];
+    identifier = [v5 identifier];
+    identifier2 = [(SYDStoreID *)self identifier];
+    v9 = [identifier isEqualToString:identifier2];
 
     if (!v9)
     {
       goto LABEL_12;
     }
 
-    v10 = [(SYDStoreID *)self personaUniqueString];
-    if (v10)
+    personaUniqueString = [(SYDStoreID *)self personaUniqueString];
+    if (personaUniqueString)
     {
-      v11 = v10;
-      v12 = [(SYDStoreID *)self personaUniqueString];
-      v13 = [v5 personaUniqueString];
-      v14 = [v12 isEqualToString:v13];
+      v11 = personaUniqueString;
+      personaUniqueString2 = [(SYDStoreID *)self personaUniqueString];
+      personaUniqueString3 = [v5 personaUniqueString];
+      v14 = [personaUniqueString2 isEqualToString:personaUniqueString3];
 
       if (!v14)
       {
@@ -156,30 +156,30 @@
       }
     }
 
-    v15 = [(SYDStoreID *)self personaUniqueString];
-    if (v15)
+    personaUniqueString4 = [(SYDStoreID *)self personaUniqueString];
+    if (personaUniqueString4)
     {
     }
 
     else
     {
-      v22 = [v5 personaUniqueString];
+      personaUniqueString5 = [v5 personaUniqueString];
 
-      if (v22)
+      if (personaUniqueString5)
       {
         goto LABEL_12;
       }
     }
 
-    v16 = [(SYDStoreID *)self containerID];
-    v17 = [v5 containerID];
-    v18 = [v16 isEqual:v17];
+    containerID = [(SYDStoreID *)self containerID];
+    containerID2 = [v5 containerID];
+    v18 = [containerID isEqual:containerID2];
 
     if (v18)
     {
-      v19 = [(SYDStoreID *)self testConfiguration];
-      v20 = [v5 testConfiguration];
-      v21 = SYDObjectsAreBothNilOrEqual(v19, v20);
+      testConfiguration = [(SYDStoreID *)self testConfiguration];
+      testConfiguration2 = [v5 testConfiguration];
+      v21 = SYDObjectsAreBothNilOrEqual(testConfiguration, testConfiguration2);
 
 LABEL_13:
       goto LABEL_14;
@@ -196,51 +196,51 @@ LABEL_14:
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [SYDStoreID allocWithZone:a3];
-  v5 = [(SYDStoreID *)self identifier];
-  v6 = [(SYDStoreID *)v4 initWithIdentifier:v5 type:[(SYDStoreID *)self type]];
+  v4 = [SYDStoreID allocWithZone:zone];
+  identifier = [(SYDStoreID *)self identifier];
+  v6 = [(SYDStoreID *)v4 initWithIdentifier:identifier type:[(SYDStoreID *)self type]];
 
-  v7 = [(SYDStoreID *)self testConfiguration];
-  v8 = [v7 copy];
+  testConfiguration = [(SYDStoreID *)self testConfiguration];
+  v8 = [testConfiguration copy];
   [(SYDStoreID *)v6 setTestConfiguration:v8];
 
-  v9 = [(SYDStoreID *)self personaUniqueString];
-  v10 = [v9 copy];
+  personaUniqueString = [(SYDStoreID *)self personaUniqueString];
+  v10 = [personaUniqueString copy];
   [(SYDStoreID *)v6 setPersonaUniqueString:v10];
 
-  v11 = [(SYDStoreID *)self containerID];
-  v12 = [v11 copy];
+  containerID = [(SYDStoreID *)self containerID];
+  v12 = [containerID copy];
   [(SYDStoreID *)v6 setContainerID:v12];
 
   return v6;
 }
 
-- (SYDStoreID)initWithCoder:(id)a3
+- (SYDStoreID)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = SYDStoreID;
   v5 = [(SYDStoreID *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
     v8 = objc_opt_class();
     v9 = NSStringFromSelector(sel_testConfiguration);
-    v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+    v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
     testConfiguration = v5->_testConfiguration;
     v5->_testConfiguration = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"persona"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"persona"];
     personaUniqueString = v5->_personaUniqueString;
     v5->_personaUniqueString = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"container"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"container"];
     containerID = v5->_containerID;
     v5->_containerID = v14;
   }
@@ -248,18 +248,18 @@ LABEL_14:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v7 = a3;
-  [v7 encodeObject:identifier forKey:@"identifier"];
-  [v7 encodeInteger:self->_type forKey:@"type"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
   testConfiguration = self->_testConfiguration;
   v6 = NSStringFromSelector(sel_testConfiguration);
-  [v7 encodeObject:testConfiguration forKey:v6];
+  [coderCopy encodeObject:testConfiguration forKey:v6];
 
-  [v7 encodeObject:self->_personaUniqueString forKey:@"persona"];
-  [v7 encodeObject:self->_containerID forKey:@"container"];
+  [coderCopy encodeObject:self->_personaUniqueString forKey:@"persona"];
+  [coderCopy encodeObject:self->_containerID forKey:@"container"];
 }
 
 - (void)initWithIdentifier:(uint64_t)a1 type:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

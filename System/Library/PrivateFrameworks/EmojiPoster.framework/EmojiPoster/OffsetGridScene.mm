@@ -1,15 +1,15 @@
 @interface OffsetGridScene
 - (_TtC11EmojiPoster15OffsetGridScene)init;
-- (void)didMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
 @end
 
 @implementation OffsetGridScene
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_24A01B2C4(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_24A01B2C4(viewCopy);
 }
 
 - (_TtC11EmojiPoster15OffsetGridScene)init

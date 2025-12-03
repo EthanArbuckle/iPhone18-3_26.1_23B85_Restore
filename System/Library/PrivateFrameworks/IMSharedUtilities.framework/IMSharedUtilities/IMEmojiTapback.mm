@@ -1,15 +1,15 @@
 @interface IMEmojiTapback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (IMEmojiTapback)counterpart;
-- (IMEmojiTapback)initWithAssociatedMessageType:(int64_t)a3;
-- (IMEmojiTapback)initWithEmoji:(id)a3 isRemoved:(BOOL)a4;
-- (IMEmojiTapback)initWithIMRemoteObjectSerializedDictionary:(id)a3;
+- (IMEmojiTapback)initWithAssociatedMessageType:(int64_t)type;
+- (IMEmojiTapback)initWithEmoji:(id)emoji isRemoved:(BOOL)removed;
+- (IMEmojiTapback)initWithIMRemoteObjectSerializedDictionary:(id)dictionary;
 - (IMEmojiTapback)removedTapbackCounterpart;
 - (IMEmojiTapback)visibleTapbackCounterpart;
 - (NSString)associatedMessageEmoji;
 - (NSString)description;
-- (id)actionStringFormatWithAdaptiveImageGlyphAvailable:(BOOL)a3;
-- (id)reactionStringWithAdaptiveImageGlyph:(id)a3 isCommSafetySensitiveProvider:(id)a4;
+- (id)actionStringFormatWithAdaptiveImageGlyphAvailable:(BOOL)available;
+- (id)reactionStringWithAdaptiveImageGlyph:(id)glyph isCommSafetySensitiveProvider:(id)provider;
 @end
 
 @implementation IMEmojiTapback
@@ -24,57 +24,57 @@
 
 - (IMEmojiTapback)counterpart
 {
-  v2 = self;
-  v3 = [(IMTapback *)v2 isRemoved];
+  selfCopy = self;
+  isRemoved = [(IMTapback *)selfCopy isRemoved];
   v4 = &selRef_visibleTapbackCounterpart;
-  if (!v3)
+  if (!isRemoved)
   {
     v4 = &selRef_removedTapbackCounterpart;
   }
 
-  v5 = [v2 *v4];
+  v5 = [selfCopy *v4];
 
   return v5;
 }
 
 - (IMEmojiTapback)removedTapbackCounterpart
 {
-  v2 = self;
-  if (![(IMTapback *)v2 isRemoved])
+  selfCopy = self;
+  if (![(IMTapback *)selfCopy isRemoved])
   {
     v3 = objc_allocWithZone(IMEmojiTapback);
     v4 = sub_1A88C82A8();
     v5 = [v3 initWithEmoji:v4 isRemoved:1];
 
-    v2 = v5;
+    selfCopy = v5;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (IMEmojiTapback)visibleTapbackCounterpart
 {
-  v2 = self;
-  if ([(IMTapback *)v2 isRemoved])
+  selfCopy = self;
+  if ([(IMTapback *)selfCopy isRemoved])
   {
     v3 = objc_allocWithZone(IMEmojiTapback);
     v4 = sub_1A88C82A8();
     v5 = [v3 initWithEmoji:v4 isRemoved:0];
 
-    v2 = v5;
+    selfCopy = v5;
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (IMEmojiTapback)initWithEmoji:(id)a3 isRemoved:(BOOL)a4
+- (IMEmojiTapback)initWithEmoji:(id)emoji isRemoved:(BOOL)removed
 {
-  v4 = a4;
+  removedCopy = removed;
   v6 = sub_1A88C82E8();
   v7 = (self + OBJC_IVAR___IMEmojiTapback_emoji);
   *v7 = v6;
   v7[1] = v8;
-  if (v4)
+  if (removedCopy)
   {
     v9 = 3006;
   }
@@ -89,9 +89,9 @@
   return [(IMTapback *)&v11 initWithAssociatedMessageType:v9];
 }
 
-- (IMEmojiTapback)initWithIMRemoteObjectSerializedDictionary:(id)a3
+- (IMEmojiTapback)initWithIMRemoteObjectSerializedDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v3 = sub_1A88C81A8();
   }
@@ -104,32 +104,32 @@
   return IMEmojiTapback.init(imRemoteObjectSerializedDictionary:)(v3);
 }
 
-- (id)actionStringFormatWithAdaptiveImageGlyphAvailable:(BOOL)a3
+- (id)actionStringFormatWithAdaptiveImageGlyphAvailable:(BOOL)available
 {
-  v3 = self;
+  selfCopy = self;
   v4 = _sSo14IMEmojiTapbackC17IMSharedUtilitiesE18actionStringFormat31withAdaptiveImageGlyphAvailableSo022IMTapbackSummaryActionfG0CSgSb_tF_0();
 
   return v4;
 }
 
-- (id)reactionStringWithAdaptiveImageGlyph:(id)a3 isCommSafetySensitiveProvider:(id)a4
+- (id)reactionStringWithAdaptiveImageGlyph:(id)glyph isCommSafetySensitiveProvider:(id)provider
 {
-  v4 = self;
-  v5 = [(IMEmojiTapback *)v4 associatedMessageEmoji];
-  if (!v5)
+  selfCopy = self;
+  associatedMessageEmoji = [(IMEmojiTapback *)selfCopy associatedMessageEmoji];
+  if (!associatedMessageEmoji)
   {
     sub_1A88C82E8();
-    v5 = sub_1A88C82A8();
+    associatedMessageEmoji = sub_1A88C82A8();
   }
 
-  v6 = [objc_allocWithZone(MEMORY[0x1E696AAB0]) initWithString_];
+  initWithString_ = [objc_allocWithZone(MEMORY[0x1E696AAB0]) initWithString_];
 
-  return v6;
+  return initWithString_;
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   IMEmojiTapback.description.getter();
 
   v3 = sub_1A88C82A8();
@@ -137,11 +137,11 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1A88C8CB8();
     swift_unknownObjectRelease();
@@ -150,7 +150,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = IMEmojiTapback.isEqual(_:)(v8);
@@ -159,7 +159,7 @@
   return v6 & 1;
 }
 
-- (IMEmojiTapback)initWithAssociatedMessageType:(int64_t)a3
+- (IMEmojiTapback)initWithAssociatedMessageType:(int64_t)type
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

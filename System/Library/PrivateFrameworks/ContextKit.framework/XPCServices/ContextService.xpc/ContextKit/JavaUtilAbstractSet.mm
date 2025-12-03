@@ -1,38 +1,38 @@
 @interface JavaUtilAbstractSet
-- (BOOL)isEqual:(id)a3;
-- (BOOL)removeAllWithJavaUtilCollection:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)removeAllWithJavaUtilCollection:(id)collection;
 - (unint64_t)hash;
 @end
 
 @implementation JavaUtilAbstractSet
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
   }
 
   else
   {
-    v5 = [JavaUtilSet_class_() isInstance:a3];
+    v5 = [JavaUtilSet_class_() isInstance:equal];
     if (v5)
     {
       v6 = JavaUtilSet_class_();
-      if (a3 && ([v6 isInstance:a3] & 1) == 0)
+      if (equal && ([v6 isInstance:equal] & 1) == 0)
       {
         JreThrowClassCastException();
       }
 
       v7 = [(JavaUtilAbstractCollection *)self size];
-      if (!a3)
+      if (!equal)
       {
         JreThrowNullPointerException();
       }
 
-      if (v7 == [a3 size])
+      if (v7 == [equal size])
       {
-        LOBYTE(v5) = [(JavaUtilAbstractCollection *)self containsAllWithJavaUtilCollection:a3];
+        LOBYTE(v5) = [(JavaUtilAbstractCollection *)self containsAllWithJavaUtilCollection:equal];
       }
 
       else
@@ -47,14 +47,14 @@
 
 - (unint64_t)hash
 {
-  v2 = [(JavaUtilAbstractCollection *)self iterator];
-  if (!v2)
+  iterator = [(JavaUtilAbstractCollection *)self iterator];
+  if (!iterator)
   {
     JreThrowNullPointerException();
   }
 
-  v3 = v2;
-  if (![v2 hasNext])
+  v3 = iterator;
+  if (![iterator hasNext])
   {
     return 0;
   }
@@ -62,34 +62,34 @@
   v4 = 0;
   do
   {
-    v5 = [v3 next];
-    if (v5)
+    next = [v3 next];
+    if (next)
     {
-      LODWORD(v5) = [v5 hash];
+      LODWORD(next) = [next hash];
     }
 
-    v4 += v5;
+    v4 += next;
   }
 
   while (([v3 hasNext] & 1) != 0);
   return v4;
 }
 
-- (BOOL)removeAllWithJavaUtilCollection:(id)a3
+- (BOOL)removeAllWithJavaUtilCollection:(id)collection
 {
   v5 = [(JavaUtilAbstractCollection *)self size];
-  if (!a3)
+  if (!collection)
   {
     goto LABEL_17;
   }
 
-  if (v5 > [a3 size])
+  if (v5 > [collection size])
   {
-    v6 = [a3 iterator];
-    if (v6)
+    iterator = [collection iterator];
+    if (iterator)
     {
-      v7 = v6;
-      if ([v6 hasNext])
+      v7 = iterator;
+      if ([iterator hasNext])
       {
         v8 = 0;
         do
@@ -110,14 +110,14 @@ LABEL_17:
     JreThrowNullPointerException();
   }
 
-  v9 = [(JavaUtilAbstractCollection *)self iterator];
-  if (!v9)
+  iterator2 = [(JavaUtilAbstractCollection *)self iterator];
+  if (!iterator2)
   {
     goto LABEL_17;
   }
 
-  v10 = v9;
-  if (![v9 hasNext])
+  v10 = iterator2;
+  if (![iterator2 hasNext])
   {
     goto LABEL_15;
   }
@@ -125,7 +125,7 @@ LABEL_17:
   LOBYTE(v8) = 0;
   do
   {
-    if ([a3 containsWithId:{objc_msgSend(v10, "next")}])
+    if ([collection containsWithId:{objc_msgSend(v10, "next")}])
     {
       [v10 remove];
       LOBYTE(v8) = 1;

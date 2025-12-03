@@ -1,6 +1,6 @@
 @interface AMSGeneratePartialFDSTask
 - (ACAccount)account;
-- (AMSGeneratePartialFDSTask)initWithRequest:(id)a3 bag:(id)a4;
+- (AMSGeneratePartialFDSTask)initWithRequest:(id)request bag:(id)bag;
 - (NSNumber)purchaseIdentifier;
 - (NSString)logKey;
 - (id)runTask;
@@ -9,18 +9,18 @@
 
 @implementation AMSGeneratePartialFDSTask
 
-- (AMSGeneratePartialFDSTask)initWithRequest:(id)a3 bag:(id)a4
+- (AMSGeneratePartialFDSTask)initWithRequest:(id)request bag:(id)bag
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  bagCopy = bag;
   v12.receiver = self;
   v12.super_class = AMSGeneratePartialFDSTask;
   v9 = [(AMSTask *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bag, a4);
-    objc_storeStrong(&v10->_request, a3);
+    objc_storeStrong(&v9->_bag, bag);
+    objc_storeStrong(&v10->_request, request);
   }
 
   return v10;
@@ -28,35 +28,35 @@
 
 - (ACAccount)account
 {
-  v2 = [(AMSGeneratePartialFDSTask *)self request];
-  v3 = [v2 account];
+  request = [(AMSGeneratePartialFDSTask *)self request];
+  account = [request account];
 
-  return v3;
+  return account;
 }
 
 - (unint64_t)action
 {
-  v2 = [(AMSGeneratePartialFDSTask *)self request];
-  v3 = [v2 options];
-  v4 = [v3 action];
+  request = [(AMSGeneratePartialFDSTask *)self request];
+  options = [request options];
+  action = [options action];
 
-  return v4;
+  return action;
 }
 
 - (NSString)logKey
 {
-  v2 = [(AMSGeneratePartialFDSTask *)self request];
-  v3 = [v2 logKey];
+  request = [(AMSGeneratePartialFDSTask *)self request];
+  logKey = [request logKey];
 
-  return v3;
+  return logKey;
 }
 
 - (NSNumber)purchaseIdentifier
 {
-  v2 = [(AMSGeneratePartialFDSTask *)self request];
-  v3 = [v2 purchaseIdentifier];
+  request = [(AMSGeneratePartialFDSTask *)self request];
+  purchaseIdentifier = [request purchaseIdentifier];
 
-  return v3;
+  return purchaseIdentifier;
 }
 
 - (id)runTask

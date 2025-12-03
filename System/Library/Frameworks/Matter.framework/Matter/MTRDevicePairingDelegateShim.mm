@@ -1,34 +1,34 @@
 @interface MTRDevicePairingDelegateShim
-- (BOOL)respondsToSelector:(SEL)a3;
-- (MTRDevicePairingDelegateShim)initWithDelegate:(id)a3;
-- (void)controller:(id)a3 commissioningComplete:(id)a4;
-- (void)controller:(id)a3 commissioningSessionEstablishmentDone:(id)a4;
-- (void)controller:(id)a3 statusUpdate:(int64_t)a4;
-- (void)onPairingDeleted:(id)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (MTRDevicePairingDelegateShim)initWithDelegate:(id)delegate;
+- (void)controller:(id)controller commissioningComplete:(id)complete;
+- (void)controller:(id)controller commissioningSessionEstablishmentDone:(id)done;
+- (void)controller:(id)controller statusUpdate:(int64_t)update;
+- (void)onPairingDeleted:(id)deleted;
 @end
 
 @implementation MTRDevicePairingDelegateShim
 
-- (MTRDevicePairingDelegateShim)initWithDelegate:(id)a3
+- (MTRDevicePairingDelegateShim)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = MTRDevicePairingDelegateShim;
   v6 = [(MTRDevicePairingDelegateShim *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegate, a3);
+    objc_storeStrong(&v6->_delegate, delegate);
   }
 
   return v7;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  if (sel_controller_statusUpdate_ == a3 || sel_controller_commissioningSessionEstablishmentDone_ == a3 || sel_controller_commissioningComplete_ == a3)
+  if (sel_controller_statusUpdate_ == selector || sel_controller_commissioningSessionEstablishmentDone_ == selector || sel_controller_commissioningComplete_ == selector)
   {
-    v4 = [(MTRDevicePairingDelegateShim *)self delegate];
+    delegate = [(MTRDevicePairingDelegateShim *)self delegate];
     v3 = objc_opt_respondsToSelector();
   }
 
@@ -42,31 +42,31 @@
   return v3 & 1;
 }
 
-- (void)controller:(id)a3 statusUpdate:(int64_t)a4
+- (void)controller:(id)controller statusUpdate:(int64_t)update
 {
-  v5 = [(MTRDevicePairingDelegateShim *)self delegate];
-  [v5 onStatusUpdate:a4];
+  delegate = [(MTRDevicePairingDelegateShim *)self delegate];
+  [delegate onStatusUpdate:update];
 }
 
-- (void)controller:(id)a3 commissioningSessionEstablishmentDone:(id)a4
+- (void)controller:(id)controller commissioningSessionEstablishmentDone:(id)done
 {
-  v6 = a4;
-  v5 = [(MTRDevicePairingDelegateShim *)self delegate];
-  [v5 onPairingComplete:v6];
+  doneCopy = done;
+  delegate = [(MTRDevicePairingDelegateShim *)self delegate];
+  [delegate onPairingComplete:doneCopy];
 }
 
-- (void)controller:(id)a3 commissioningComplete:(id)a4
+- (void)controller:(id)controller commissioningComplete:(id)complete
 {
-  v6 = a4;
-  v5 = [(MTRDevicePairingDelegateShim *)self delegate];
-  [v5 onCommissioningComplete:v6];
+  completeCopy = complete;
+  delegate = [(MTRDevicePairingDelegateShim *)self delegate];
+  [delegate onCommissioningComplete:completeCopy];
 }
 
-- (void)onPairingDeleted:(id)a3
+- (void)onPairingDeleted:(id)deleted
 {
-  v5 = a3;
-  v4 = [(MTRDevicePairingDelegateShim *)self delegate];
-  [v4 onPairingDeleted:v5];
+  deletedCopy = deleted;
+  delegate = [(MTRDevicePairingDelegateShim *)self delegate];
+  [delegate onPairingDeleted:deletedCopy];
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface ICUserCredentialProvider
 + (ICUserCredentialProvider)sharedProvider;
 - (ICUserCredentialProvider)init;
-- (void)_handleCredentialRequestIdentityPropertiesForSession:(id)a3;
-- (void)_handleDelegationAccountUUIDsForSession:(id)a3;
-- (void)_handleIdentityProperties:(id)a3 forIdentity:(id)a4 loadingError:(id)a5 credentialRequest:(id)a6 session:(id)a7;
-- (void)_handlePendingDelegationRequestsForSession:(id)a3;
-- (void)_handleRequestIndependentPropertiesForSession:(id)a3;
-- (void)performCredentialRequest:(id)a3 withResponseHandler:(id)a4;
-- (void)performCredentialRequests:(id)a3 withResponseHandler:(id)a4;
+- (void)_handleCredentialRequestIdentityPropertiesForSession:(id)session;
+- (void)_handleDelegationAccountUUIDsForSession:(id)session;
+- (void)_handleIdentityProperties:(id)properties forIdentity:(id)identity loadingError:(id)error credentialRequest:(id)request session:(id)session;
+- (void)_handlePendingDelegationRequestsForSession:(id)session;
+- (void)_handleRequestIndependentPropertiesForSession:(id)session;
+- (void)performCredentialRequest:(id)request withResponseHandler:(id)handler;
+- (void)performCredentialRequests:(id)requests withResponseHandler:(id)handler;
 @end
 
 @implementation ICUserCredentialProvider
@@ -24,24 +24,24 @@
   return v3;
 }
 
-- (void)performCredentialRequests:(id)a3 withResponseHandler:(id)a4
+- (void)performCredentialRequests:(id)requests withResponseHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a3;
-  if (![v8 count])
+  handlerCopy = handler;
+  requestsCopy = requests;
+  if (![requestsCopy count])
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"ICUserCredentialProvider.m" lineNumber:272 description:{@"Invalid parameter not satisfying: %@", @"[credentialRequests count] > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICUserCredentialProvider.m" lineNumber:272 description:{@"Invalid parameter not satisfying: %@", @"[credentialRequests count] > 0"}];
   }
 
-  v9 = [[_ICUserCredentialProviderRequestSession alloc] initWithCredentialRequests:v8 responseHandler:v7];
+  v9 = [[_ICUserCredentialProviderRequestSession alloc] initWithCredentialRequests:requestsCopy responseHandler:handlerCopy];
 
   v10 = os_log_create("com.apple.amp.iTunesCloud", "Default_Oversize");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = v9;
     _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Created new credentials provider session %{public}@", buf, 0x16u);
@@ -50,19 +50,19 @@
   [(ICUserCredentialProvider *)self _handleRequestIndependentPropertiesForSession:v9];
 }
 
-- (void)_handleCredentialRequestIdentityPropertiesForSession:(id)a3
+- (void)_handleCredentialRequestIdentityPropertiesForSession:(id)session
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 credentialRequests];
-  v6 = [v5 mutableCopy];
-  [v4 setPendingPropertyLoadCredentialRequests:v6];
+  sessionCopy = session;
+  credentialRequests = [sessionCopy credentialRequests];
+  v6 = [credentialRequests mutableCopy];
+  [sessionCopy setPendingPropertyLoadCredentialRequests:v6];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v5;
+  obj = credentialRequests;
   v22 = [obj countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (v22)
   {
@@ -83,16 +83,16 @@
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v29 = self;
+          selfCopy2 = self;
           v30 = 2114;
           v31 = v10;
           _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Loading identity properties for request %{public}@", buf, 0x16u);
         }
 
-        v12 = [v10 identity];
-        v13 = [v10 identityStore];
+        identity = [v10 identity];
+        identityStore = [v10 identityStore];
         v23 = 0;
-        v14 = [v13 getPropertiesForUserIdentity:v12 error:&v23];
+        v14 = [identityStore getPropertiesForUserIdentity:identity error:&v23];
         v15 = v23;
 
         if (v15)
@@ -102,21 +102,21 @@
           {
             [v15 msv_description];
             v17 = v8;
-            v19 = v18 = v4;
+            v19 = v18 = sessionCopy;
             *buf = v20;
-            v29 = self;
+            selfCopy2 = self;
             v30 = 2114;
             v31 = v10;
             v32 = 2114;
             v33 = v19;
             _os_log_impl(&dword_1B4491000, v16, OS_LOG_TYPE_ERROR, "%{public}@ Failed to load identity properties for request: %{public}@ error=%{public}@", buf, 0x20u);
 
-            v4 = v18;
+            sessionCopy = v18;
             v8 = v17;
           }
         }
 
-        [(ICUserCredentialProvider *)self _handleIdentityProperties:v14 forIdentity:v12 loadingError:v15 credentialRequest:v10 session:v4, v20];
+        [(ICUserCredentialProvider *)self _handleIdentityProperties:v14 forIdentity:identity loadingError:v15 credentialRequest:v10 session:sessionCopy, v20];
       }
 
       v22 = [obj countByEnumeratingWithState:&v24 objects:v34 count:16];
@@ -126,28 +126,28 @@
   }
 }
 
-- (void)_handleIdentityProperties:(id)a3 forIdentity:(id)a4 loadingError:(id)a5 credentialRequest:(id)a6 session:(id)a7
+- (void)_handleIdentityProperties:(id)properties forIdentity:(id)identity loadingError:(id)error credentialRequest:(id)request session:(id)session
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v12)
+  propertiesCopy = properties;
+  identityCopy = identity;
+  errorCopy = error;
+  requestCopy = request;
+  sessionCopy = session;
+  if (propertiesCopy)
   {
-    v17 = v12;
-    v18 = [v17 DSID];
-    if (v18)
+    v17 = propertiesCopy;
+    dSID = [v17 DSID];
+    if (dSID)
     {
-      v19 = [ICUserIdentity specificAccountWithDSID:v18];
+      v19 = [ICUserIdentity specificAccountWithDSID:dSID];
     }
 
     else
     {
-      v21 = [v17 carrierBundleDeviceIdentifier];
-      if (v21)
+      carrierBundleDeviceIdentifier = [v17 carrierBundleDeviceIdentifier];
+      if (carrierBundleDeviceIdentifier)
       {
-        v19 = [ICUserIdentity carrierBundleWithDeviceIdentifier:v21];
+        v19 = [ICUserIdentity carrierBundleWithDeviceIdentifier:carrierBundleDeviceIdentifier];
       }
 
       else
@@ -156,7 +156,7 @@
       }
     }
 
-    v20 = [v19 identityAllowingDelegation:{objc_msgSend(v13, "allowsDelegation")}];
+    v20 = [v19 identityAllowingDelegation:{objc_msgSend(identityCopy, "allowsDelegation")}];
   }
 
   else
@@ -169,19 +169,19 @@
   block[1] = 3221225472;
   block[2] = __105__ICUserCredentialProvider__handleIdentityProperties_forIdentity_loadingError_credentialRequest_session___block_invoke;
   block[3] = &unk_1E7BFA2B8;
-  v30 = v16;
-  v31 = v15;
-  v32 = v12;
-  v33 = self;
-  v34 = v14;
-  v35 = v13;
+  v30 = sessionCopy;
+  v31 = requestCopy;
+  v32 = propertiesCopy;
+  selfCopy = self;
+  v34 = errorCopy;
+  v35 = identityCopy;
   v36 = v20;
   v23 = v20;
-  v24 = v13;
-  v25 = v14;
-  v26 = v12;
-  v27 = v15;
-  v28 = v16;
+  v24 = identityCopy;
+  v25 = errorCopy;
+  v26 = propertiesCopy;
+  v27 = requestCopy;
+  v28 = sessionCopy;
   dispatch_barrier_async(accessQueue, block);
 }
 
@@ -301,29 +301,29 @@ void __105__ICUserCredentialProvider__handleIdentityProperties_forIdentity_loadi
   }
 }
 
-- (void)_handlePendingDelegationRequestsForSession:(id)a3
+- (void)_handlePendingDelegationRequestsForSession:(id)session
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sessionCopy = session;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Default_Oversize");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v42 = self;
+    selfCopy = self;
     v43 = 2114;
-    v44 = v4;
+    v44 = sessionCopy;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Handling pending delegation requests for session %{public}@", buf, 0x16u);
   }
 
-  v30 = [v4 delegationCredentialRequestToIdentityProperties];
-  v31 = v4;
-  v6 = [v4 delegationCredentialRequestToSpecificUserIdentity];
+  delegationCredentialRequestToIdentityProperties = [sessionCopy delegationCredentialRequestToIdentityProperties];
+  v31 = sessionCopy;
+  delegationCredentialRequestToSpecificUserIdentity = [sessionCopy delegationCredentialRequestToSpecificUserIdentity];
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v8 = v6;
+  v8 = delegationCredentialRequestToSpecificUserIdentity;
   v9 = [v8 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v9)
   {
@@ -350,8 +350,8 @@ void __105__ICUserCredentialProvider__handleIdentityProperties_forIdentity_loadi
         if (!v11)
         {
           v17 = [ICStoreRequestContext alloc];
-          v18 = [v15 clientInfo];
-          v11 = [(ICRequestContext *)v17 initWithClientInfo:v18];
+          clientInfo = [v15 clientInfo];
+          v11 = [(ICRequestContext *)v17 initWithClientInfo:clientInfo];
         }
 
         [v15 timeoutInterval];
@@ -374,8 +374,8 @@ void __105__ICUserCredentialProvider__handleIdentityProperties_forIdentity_loadi
   }
 
   v20 = [ICDelegationConsumerServiceRequest alloc];
-  v21 = [v31 delegationUserIdentityToUUIDs];
-  v22 = [v21 copy];
+  delegationUserIdentityToUUIDs = [v31 delegationUserIdentityToUUIDs];
+  v22 = [delegationUserIdentityToUUIDs copy];
   v23 = [(ICDelegationConsumerServiceRequest *)v20 initWithUserIdentityDelegationAccountUUIDs:v22 requestContext:v11 timeoutInterval:v13];
 
   delegationConsumerService = self->_delegationConsumerService;
@@ -395,8 +395,8 @@ void __105__ICUserCredentialProvider__handleIdentityProperties_forIdentity_loadi
   v32[4] = self;
   v33 = v31;
   v34 = v8;
-  v35 = v30;
-  v27 = v30;
+  v35 = delegationCredentialRequestToIdentityProperties;
+  v27 = delegationCredentialRequestToIdentityProperties;
   v28 = v8;
   v29 = v31;
   [(ICDelegationConsumerService *)delegationConsumerService performRequest:v23 withResponseHandler:v32];
@@ -600,38 +600,38 @@ LABEL_14:
   }
 }
 
-- (void)_handleDelegationAccountUUIDsForSession:(id)a3
+- (void)_handleDelegationAccountUUIDsForSession:(id)session
 {
   v47 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  sessionCopy = session;
   v4 = os_log_create("com.apple.amp.iTunesCloud", "Default_Oversize");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v44 = self;
+    selfCopy = self;
     v45 = 2114;
-    v46 = v3;
+    v46 = sessionCopy;
     _os_log_impl(&dword_1B4491000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ Fetching delegation UUIDs for session %{public}@", buf, 0x16u);
   }
 
-  v5 = [v3 maximumQualityOfService];
+  maximumQualityOfService = [sessionCopy maximumQualityOfService];
   v6 = objc_alloc_init(MEMORY[0x1E696ADC8]);
-  qos_class = v5;
-  [v6 setQualityOfService:v5];
+  qos_class = maximumQualityOfService;
+  [v6 setQualityOfService:maximumQualityOfService];
   [v6 setMaxConcurrentOperationCount:3];
   [v6 setName:@"com.apple.iTunesCloud.ICUserCredentialProvider.delegationAccountUUIDOperationQueue"];
   v7 = dispatch_group_create();
-  v25 = [v3 identityStore];
+  identityStore = [sessionCopy identityStore];
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v24 = v3;
-  v9 = [v3 delegationCredentialRequestToSpecificUserIdentity];
-  v10 = [v9 objectEnumerator];
+  v24 = sessionCopy;
+  delegationCredentialRequestToSpecificUserIdentity = [sessionCopy delegationCredentialRequestToSpecificUserIdentity];
+  objectEnumerator = [delegationCredentialRequestToSpecificUserIdentity objectEnumerator];
 
-  v11 = [v10 countByEnumeratingWithState:&v38 objects:v42 count:16];
+  v11 = [objectEnumerator countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v11)
   {
     v12 = v11;
@@ -642,7 +642,7 @@ LABEL_14:
       {
         if (*v39 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v15 = *(*(&v38 + 1) + 8 * i);
@@ -652,16 +652,16 @@ LABEL_14:
         v32[1] = 3221225472;
         v32[2] = __68__ICUserCredentialProvider__handleDelegationAccountUUIDsForSession___block_invoke;
         v32[3] = &unk_1E7BFA1C8;
-        v33 = v25;
+        v33 = identityStore;
         v34 = v15;
-        v35 = self;
+        selfCopy2 = self;
         v36 = v8;
         v37 = v7;
         v17 = [(ICAsyncBlockOperation *)v16 initWithStartHandler:v32];
         [v6 addOperation:v17];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v38 objects:v42 count:16];
+      v12 = [objectEnumerator countByEnumeratingWithState:&v38 objects:v42 count:16];
     }
 
     while (v12);
@@ -674,7 +674,7 @@ LABEL_14:
   block[2] = __68__ICUserCredentialProvider__handleDelegationAccountUUIDsForSession___block_invoke_4;
   block[3] = &unk_1E7BFA1F0;
   v28 = v6;
-  v29 = self;
+  selfCopy3 = self;
   v30 = v24;
   v31 = v8;
   v20 = v8;
@@ -766,22 +766,22 @@ void __68__ICUserCredentialProvider__handleDelegationAccountUUIDsForSession___bl
   [*(a1 + 64) finishWithError:v6];
 }
 
-- (void)_handleRequestIndependentPropertiesForSession:(id)a3
+- (void)_handleRequestIndependentPropertiesForSession:(id)session
 {
-  v4 = a3;
-  v5 = [v4 maximumQualityOfService];
-  v6 = [MEMORY[0x1E696ADC8] ic_sharedRequestOperationQueueWithQualityOfService:v5];
-  v7 = [v4 identityStore];
+  sessionCopy = session;
+  maximumQualityOfService = [sessionCopy maximumQualityOfService];
+  v6 = [MEMORY[0x1E696ADC8] ic_sharedRequestOperationQueueWithQualityOfService:maximumQualityOfService];
+  identityStore = [sessionCopy identityStore];
   v8 = [ICAsyncBlockOperation alloc];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __74__ICUserCredentialProvider__handleRequestIndependentPropertiesForSession___block_invoke;
   v12[3] = &unk_1E7BFA150;
-  v13 = v7;
-  v14 = v4;
-  v15 = self;
-  v9 = v4;
-  v10 = v7;
+  v13 = identityStore;
+  v14 = sessionCopy;
+  selfCopy = self;
+  v9 = sessionCopy;
+  v10 = identityStore;
   v11 = [(ICAsyncBlockOperation *)v8 initWithStartHandler:v12];
   [v6 addOperation:v11];
 }
@@ -796,20 +796,20 @@ void __74__ICUserCredentialProvider__handleRequestIndependentPropertiesForSessio
   [v4 finish];
 }
 
-- (void)performCredentialRequest:(id)a3 withResponseHandler:(id)a4
+- (void)performCredentialRequest:(id)request withResponseHandler:(id)handler
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v13[0] = a3;
+  handlerCopy = handler;
+  v13[0] = request;
   v7 = MEMORY[0x1E695DEC8];
-  v8 = a3;
+  requestCopy = request;
   v9 = [v7 arrayWithObjects:v13 count:1];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __73__ICUserCredentialProvider_performCredentialRequest_withResponseHandler___block_invoke;
   v11[3] = &unk_1E7BFA128;
-  v12 = v6;
-  v10 = v6;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   [(ICUserCredentialProvider *)self performCredentialRequests:v9 withResponseHandler:v11];
 }
 

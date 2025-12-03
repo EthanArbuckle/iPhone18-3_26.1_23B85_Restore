@@ -1,7 +1,7 @@
 @interface CategoryKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -10,8 +10,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [(GEOSearchCategory *)self->_category styleAttributes];
-  v4 = [v3 hash];
+  styleAttributes = [(GEOSearchCategory *)self->_category styleAttributes];
+  v4 = [styleAttributes hash];
   v5 = [(NSString *)self->_prefix hash];
   scale = self->_scale;
   v7 = scale;
@@ -38,9 +38,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v4[8] = self->_transitMode;
   objc_storeStrong(v4 + 3, self->_prefix);
   objc_storeStrong(v4 + 2, self->_category);
@@ -52,16 +52,16 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_17;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v12 = 1;
     goto LABEL_21;
@@ -74,8 +74,8 @@
     v7 = v6;
     if (self->_scale == v6[4] && (self->_size.width == v6[5] ? (v8 = self->_size.height == v6[6]) : (v8 = 0), v8 && self->_transitMode == *(v6 + 8) && self->_isCarPlay == *(v6 + 9) && self->_isNightMode == *(v6 + 10) && self->_renderAsTemplate == *(v6 + 11) && ((prefix = self->_prefix, prefix == v7[3]) || [(NSString *)prefix isEqualToString:?])))
     {
-      v10 = [(GEOSearchCategory *)self->_category styleAttributes];
-      v11 = [v7[2] styleAttributes];
+      styleAttributes = [(GEOSearchCategory *)self->_category styleAttributes];
+      styleAttributes2 = [v7[2] styleAttributes];
       v12 = GeoCodecsFeatureStyleAttributesCompare() == 0;
     }
 
@@ -98,9 +98,9 @@ LABEL_21:
 
 - (id)description
 {
-  v3 = [(CategoryKey *)self category];
-  v4 = [v3 displayString];
-  v5 = [(CategoryKey *)self prefix];
+  category = [(CategoryKey *)self category];
+  displayString = [category displayString];
+  prefix = [(CategoryKey *)self prefix];
   if ([(CategoryKey *)self transitMode])
   {
     v6 = @"yes";
@@ -135,7 +135,7 @@ LABEL_21:
     v11 = @"no";
   }
 
-  v12 = [NSString stringWithFormat:@"CategoryKey: %@ <prefix:%@, transit:%@, size:%@, scale:%#.1f isCarplay=%@>, renderAsTemplate:%@", v4, v5, v6, v7, v9, v10, v11];
+  v12 = [NSString stringWithFormat:@"CategoryKey: %@ <prefix:%@, transit:%@, size:%@, scale:%#.1f isCarplay=%@>, renderAsTemplate:%@", displayString, prefix, v6, v7, v9, v10, v11];
 
   return v12;
 }

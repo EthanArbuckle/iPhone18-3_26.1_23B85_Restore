@@ -32,13 +32,13 @@
 - (id)mf_fileSystemString
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [a1 length];
-  result = a1;
+  v2 = [self length];
+  result = self;
   if (v2)
   {
     memset(__b, 170, sizeof(__b));
-    v4 = [a1 getFileSystemRepresentation:__b maxLength:1023];
-    result = a1;
+    v4 = [self getFileSystemRepresentation:__b maxLength:1023];
+    result = self;
     if (v4)
     {
       __b[1023] = 0;
@@ -48,7 +48,7 @@
 
   if (!result)
   {
-    result = a1;
+    result = self;
   }
 
   v5 = *MEMORY[0x1E69E9840];
@@ -57,7 +57,7 @@
 
 - (id)mf_stringWithNoExtraSpaces
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   if ([v1 length])
   {
     v2 = 0;
@@ -110,23 +110,23 @@
 - (void)mf_uniqueFilenameWithRespectToFilenames:()NSStringUtils
 {
   LODWORD(v5) = 0;
-  v6 = 0;
-  v7 = 0;
-  v8 = 0;
+  pathExtension = 0;
+  stringByDeletingPathExtension = 0;
+  selfCopy = 0;
   v23 = *MEMORY[0x1E69E9840];
   do
   {
     while (1)
     {
-      if (!v8)
+      if (!selfCopy)
       {
-        v8 = a1;
+        selfCopy = self;
         goto LABEL_12;
       }
 
-      if (v7)
+      if (stringByDeletingPathExtension)
       {
-        if (!v6)
+        if (!pathExtension)
         {
           goto LABEL_9;
         }
@@ -134,24 +134,24 @@
 
       else
       {
-        v7 = [a1 stringByDeletingPathExtension];
-        if (!v6)
+        stringByDeletingPathExtension = [self stringByDeletingPathExtension];
+        if (!pathExtension)
         {
 LABEL_9:
-          v6 = [a1 pathExtension];
+          pathExtension = [self pathExtension];
         }
       }
 
       v5 = (v5 + 1);
-      v9 = [v6 length] ? objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@-%d.%@", v7, v5, v6) : objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@-%d", v7, v5, v17);
-      v8 = v9;
+      v9 = [pathExtension length] ? objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@-%d.%@", stringByDeletingPathExtension, v5, pathExtension) : objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@-%d", stringByDeletingPathExtension, v5, v17);
+      selfCopy = v9;
 LABEL_12:
       v20 = 0u;
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
       v10 = [a3 countByEnumeratingWithState:&v18 objects:v22 count:16];
-      v11 = v8;
+      v11 = selfCopy;
       if (!v10)
       {
         break;
@@ -168,7 +168,7 @@ LABEL_14:
           objc_enumerationMutation(a3);
         }
 
-        if ([*(*(&v18 + 1) + 8 * v14) isEqualToString:v8])
+        if ([*(*(&v18 + 1) + 8 * v14) isEqualToString:selfCopy])
         {
           break;
         }
@@ -181,7 +181,7 @@ LABEL_14:
             goto LABEL_14;
           }
 
-          v11 = v8;
+          v11 = selfCopy;
           goto LABEL_21;
         }
       }
@@ -193,15 +193,15 @@ LABEL_21:
 
   while (!v11);
   v15 = *MEMORY[0x1E69E9840];
-  return v8;
+  return selfCopy;
 }
 
 - (__CFString)mf_stringByEscapingHTMLCodes
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AD60] string];
-  v15 = a1;
-  v3 = [a1 length];
+  string = [MEMORY[0x1E696AD60] string];
+  selfCopy = self;
+  v3 = [self length];
   if (v3)
   {
     v4 = v3;
@@ -211,7 +211,7 @@ LABEL_21:
     while (1)
     {
       v7 = v4 - v5 >= 0x1FF ? 511 : v4 - v5;
-      [v15 getCharacters:__b range:{v5, v7}];
+      [selfCopy getCharacters:__b range:{v5, v7}];
       if (v4 != v5)
       {
         break;
@@ -244,15 +244,15 @@ LABEL_7:
         switch(v10)
         {
           case '&':
-            v11 = v2;
+            v11 = string;
             v12 = @"&amp;";
             goto LABEL_28;
           case '>':
-            v11 = v2;
+            v11 = string;
             v12 = @"&gt;";
             goto LABEL_28;
           case '<':
-            v11 = v2;
+            v11 = string;
             v12 = @"&lt;";
 LABEL_28:
             [(__CFString *)v11 appendString:v12];
@@ -265,31 +265,31 @@ LABEL_28:
         switch(v10)
         {
           case 9u:
-            v11 = v2;
+            v11 = string;
             v12 = @"&nbsp;&nbsp;&nbsp;&nbsp;";
             goto LABEL_28;
           case 0xAu:
-            v11 = v2;
+            v11 = string;
             v12 = @"<br>";
             goto LABEL_28;
           case 0x20u:
             if (v6)
             {
-              [(__CFString *)v2 appendString:@"&nbsp;"];
+              [(__CFString *)string appendString:@"&nbsp;"];
               v6 = 1;
             }
 
             else
             {
               v6 = 1;
-              CFStringAppendCharacters(v2, v9, 1);
+              CFStringAppendCharacters(string, v9, 1);
             }
 
             goto LABEL_30;
         }
       }
 
-      CFStringAppendCharacters(v2, v9, 1);
+      CFStringAppendCharacters(string, v9, 1);
 LABEL_29:
       v6 = 0;
 LABEL_30:
@@ -303,7 +303,7 @@ LABEL_30:
 
 LABEL_33:
   v13 = *MEMORY[0x1E69E9840];
-  return v2;
+  return string;
 }
 
 + (uint64_t)mf_stringForMimeTypeFromFileName:()NSStringUtils
@@ -311,24 +311,24 @@ LABEL_33:
   v4 = objc_alloc_init(MEMORY[0x1E69AD778]);
   [v4 setPathExtension:{objc_msgSend(a3, "pathExtension")}];
   [v4 setFilename:a3];
-  v5 = [v4 mimeType];
+  mimeType = [v4 mimeType];
   if (MFGetTypeInfo())
   {
-    v5 = [v4 mimeType];
+    mimeType = [v4 mimeType];
   }
 
-  return v5;
+  return mimeType;
 }
 
 - (uint64_t)mf_prefixToString:()NSStringUtils
 {
-  v2 = [a1 rangeOfString:?];
+  v2 = [self rangeOfString:?];
   if (!v3)
   {
     return 0;
   }
 
-  return [a1 substringWithRange:{0, v2}];
+  return [self substringWithRange:{0, v2}];
 }
 
 @end

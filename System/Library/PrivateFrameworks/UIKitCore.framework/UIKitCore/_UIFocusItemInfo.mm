@@ -1,12 +1,12 @@
 @interface _UIFocusItemInfo
-+ (_UIFocusItemInfo)infoWithItem:(id)a3;
-+ (_UIFocusItemInfo)infoWithItem:(id)a3 useFallbackAncestorScroller:(BOOL)a4;
-- (CGRect)focusedRectInCoordinateSpace:(id)a3;
++ (_UIFocusItemInfo)infoWithItem:(id)item;
++ (_UIFocusItemInfo)infoWithItem:(id)item useFallbackAncestorScroller:(BOOL)scroller;
+- (CGRect)focusedRectInCoordinateSpace:(id)space;
 - (NSArray)ancestorEnvironmentScrollableContainers;
 - (UIFocusItem)item;
 - (_UIFocusRegion)focusedRegion;
 - (id)_createFocusedRegion;
-- (id)_initWithItem:(id)a3 useFallbackAncestorScroller:(BOOL)a4;
+- (id)_initWithItem:(id)item useFallbackAncestorScroller:(BOOL)scroller;
 - (id)description;
 - (id)shortDescription;
 - (int64_t)inheritedFocusMovementStyle;
@@ -34,9 +34,9 @@
 {
   if ((*&self->_flags & 1) == 0)
   {
-    v3 = [(_UIFocusItemInfo *)self _createFocusedRegion];
+    _createFocusedRegion = [(_UIFocusItemInfo *)self _createFocusedRegion];
     focusedRegion = self->_focusedRegion;
-    self->_focusedRegion = v3;
+    self->_focusedRegion = _createFocusedRegion;
 
     *&self->_flags |= 1u;
   }
@@ -57,26 +57,26 @@
     goto LABEL_18;
   }
 
-  v6 = [WeakRetained parentFocusEnvironment];
-  if (!v6)
+  parentFocusEnvironment = [WeakRetained parentFocusEnvironment];
+  if (!parentFocusEnvironment)
   {
     _UIIsPrivateMainBundle();
     if (dyld_program_sdk_at_least())
     {
-      v35 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v36 = MEMORY[0x1E696AEC0];
       v37 = v5;
       v38 = objc_opt_class();
       v39 = NSStringFromClass(v38);
       v40 = [v36 stringWithFormat:@"<%@: %p>", v39, v37];
 
-      [v35 handleFailureInMethod:a2 object:self file:@"_UIFocusItemInfo.m" lineNumber:127 description:@"Focus item %@ does not provide a parentFocusEnvironment.", v40];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusItemInfo.m" lineNumber:127 description:@"Focus item %@ does not provide a parentFocusEnvironment.", v40];
     }
 
     else if (os_variant_has_internal_diagnostics())
     {
-      v35 = __UIFaultDebugAssertLog();
-      if (!os_log_type_enabled(v35, OS_LOG_TYPE_FAULT))
+      currentHandler = __UIFaultDebugAssertLog();
+      if (!os_log_type_enabled(currentHandler, OS_LOG_TYPE_FAULT))
       {
         goto LABEL_29;
       }
@@ -89,7 +89,7 @@
 
       *buf = 138412290;
       v93 = v40;
-      _os_log_fault_impl(&dword_188A29000, v35, OS_LOG_TYPE_FAULT, "Focus item %@ does not provide a parentFocusEnvironment. This will become an assert in a future version.", buf, 0xCu);
+      _os_log_fault_impl(&dword_188A29000, currentHandler, OS_LOG_TYPE_FAULT, "Focus item %@ does not provide a parentFocusEnvironment. This will become an assert in a future version.", buf, 0xCu);
     }
 
     else
@@ -102,21 +102,21 @@
 
       v42 = MEMORY[0x1E696AEC0];
       v43 = v5;
-      v35 = v41;
+      currentHandler = v41;
       v44 = objc_opt_class();
       v45 = NSStringFromClass(v44);
       v40 = [v42 stringWithFormat:@"<%@: %p>", v45, v43];
 
       *buf = 138412290;
       v93 = v40;
-      _os_log_impl(&dword_188A29000, v35, OS_LOG_TYPE_ERROR, "Focus item %@ does not provide a parentFocusEnvironment. This will become an assert in a future version.", buf, 0xCu);
+      _os_log_impl(&dword_188A29000, currentHandler, OS_LOG_TYPE_ERROR, "Focus item %@ does not provide a parentFocusEnvironment. This will become an assert in a future version.", buf, 0xCu);
     }
 
 LABEL_29:
   }
 
 LABEL_3:
-  if (!_UIFocusEnvironmentIsViewOrViewControllerOrRespondsToSelector(v6) || !_UIFocusItemIsViewOrRespondsToSelector(v5))
+  if (!_UIFocusEnvironmentIsViewOrViewControllerOrRespondsToSelector(parentFocusEnvironment) || !_UIFocusItemIsViewOrRespondsToSelector(v5))
   {
 LABEL_11:
     if (os_variant_has_internal_diagnostics())
@@ -128,11 +128,11 @@ LABEL_11:
       }
 
       v28 = [v5 debugDescription];
-      v29 = [v5 parentFocusEnvironment];
-      v30 = [v29 debugDescription];
-      v31 = [v5 parentFocusEnvironment];
-      v32 = [v31 focusItemContainer];
-      v33 = [v32 debugDescription];
+      parentFocusEnvironment2 = [v5 parentFocusEnvironment];
+      v30 = [parentFocusEnvironment2 debugDescription];
+      parentFocusEnvironment3 = [v5 parentFocusEnvironment];
+      focusItemContainer = [parentFocusEnvironment3 focusItemContainer];
+      v33 = [focusItemContainer debugDescription];
       *buf = 138412802;
       v93 = v28;
       v94 = 2112;
@@ -154,11 +154,11 @@ LABEL_16:
 
       v27 = v26;
       v28 = [v5 debugDescription];
-      v29 = [v5 parentFocusEnvironment];
-      v30 = [v29 debugDescription];
-      v31 = [v5 parentFocusEnvironment];
-      v32 = [v31 focusItemContainer];
-      v33 = [v32 debugDescription];
+      parentFocusEnvironment2 = [v5 parentFocusEnvironment];
+      v30 = [parentFocusEnvironment2 debugDescription];
+      parentFocusEnvironment3 = [v5 parentFocusEnvironment];
+      focusItemContainer = [parentFocusEnvironment3 focusItemContainer];
+      v33 = [focusItemContainer debugDescription];
       *buf = 138412802;
       v93 = v28;
       v94 = 2112;
@@ -172,22 +172,22 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v7 = [v6 focusItemContainer];
-  v8 = v7;
-  if (!v7)
+  focusItemContainer2 = [parentFocusEnvironment focusItemContainer];
+  v8 = focusItemContainer2;
+  if (!focusItemContainer2)
   {
     _UIIsPrivateMainBundle();
     if (dyld_program_sdk_at_least())
     {
-      v46 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v47 = MEMORY[0x1E696AEC0];
       v48 = v5;
       v49 = objc_opt_class();
       v50 = NSStringFromClass(v49);
       v51 = [v47 stringWithFormat:@"<%@: %p>", v50, v48];
 
-      v52 = v6;
-      if (v6)
+      v52 = parentFocusEnvironment;
+      if (parentFocusEnvironment)
       {
         v53 = MEMORY[0x1E696AEC0];
         v54 = objc_opt_class();
@@ -200,14 +200,14 @@ LABEL_15:
         v56 = @"(nil)";
       }
 
-      [v46 handleFailureInMethod:a2 object:self file:@"_UIFocusItemInfo.m" lineNumber:132 description:@"Focus item %@ has a parent focus environment of %@ but this environment does not provide a container for focus items.", v51, v56];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIFocusItemInfo.m" lineNumber:132 description:@"Focus item %@ has a parent focus environment of %@ but this environment does not provide a container for focus items.", v51, v56];
       goto LABEL_47;
     }
 
     if (os_variant_has_internal_diagnostics())
     {
-      v46 = __UIFaultDebugAssertLog();
-      if (!os_log_type_enabled(v46, OS_LOG_TYPE_FAULT))
+      currentHandler2 = __UIFaultDebugAssertLog();
+      if (!os_log_type_enabled(currentHandler2, OS_LOG_TYPE_FAULT))
       {
         goto LABEL_47;
       }
@@ -219,8 +219,8 @@ LABEL_15:
       v83 = [v79 stringWithFormat:@"<%@: %p>", v82, v80];
 
       v62 = v83;
-      v84 = v6;
-      if (v6)
+      v84 = parentFocusEnvironment;
+      if (parentFocusEnvironment)
       {
         v89 = MEMORY[0x1E696AEC0];
         v90 = objc_opt_class();
@@ -237,13 +237,13 @@ LABEL_15:
       v93 = v62;
       v94 = 2112;
       v95 = v67;
-      _os_log_fault_impl(&dword_188A29000, v46, OS_LOG_TYPE_FAULT, "Focus item %@ has a parent focus environment of %@ but this environment does not provide a container for focus items. This will become an assert in a future version.", buf, 0x16u);
+      _os_log_fault_impl(&dword_188A29000, currentHandler2, OS_LOG_TYPE_FAULT, "Focus item %@ has a parent focus environment of %@ but this environment does not provide a container for focus items. This will become an assert in a future version.", buf, 0x16u);
     }
 
     else
     {
-      v46 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED49DCF0) + 8);
-      if (!os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
+      currentHandler2 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED49DCF0) + 8);
+      if (!os_log_type_enabled(currentHandler2, OS_LOG_TYPE_ERROR))
       {
 LABEL_47:
 
@@ -257,8 +257,8 @@ LABEL_47:
       v61 = [v57 stringWithFormat:@"<%@: %p>", v60, v58];
 
       v62 = v61;
-      v63 = v6;
-      if (v6)
+      v63 = parentFocusEnvironment;
+      if (parentFocusEnvironment)
       {
         v64 = MEMORY[0x1E696AEC0];
         v65 = objc_opt_class();
@@ -275,14 +275,14 @@ LABEL_47:
       v93 = v62;
       v94 = 2112;
       v95 = v67;
-      _os_log_impl(&dword_188A29000, v46, OS_LOG_TYPE_ERROR, "Focus item %@ has a parent focus environment of %@ but this environment does not provide a container for focus items. This will become an assert in a future version.", buf, 0x16u);
+      _os_log_impl(&dword_188A29000, currentHandler2, OS_LOG_TYPE_ERROR, "Focus item %@ has a parent focus environment of %@ but this environment does not provide a container for focus items. This will become an assert in a future version.", buf, 0x16u);
     }
 
     goto LABEL_47;
   }
 
-  v9 = [v7 coordinateSpace];
-  v10 = _UIFocusItemFrameInCoordinateSpace(v5, v9);
+  coordinateSpace = [focusItemContainer2 coordinateSpace];
+  v10 = _UIFocusItemFrameInCoordinateSpace(v5, coordinateSpace);
   _UIFocusRectWithMinimumSize(v10, v11, v12, v13);
   v15 = v14;
   v17 = v16;
@@ -347,8 +347,8 @@ LABEL_41:
 
 LABEL_10:
   v24 = [_UIFocusItemRegion alloc];
-  v25 = [v8 coordinateSpace];
-  v22 = [(_UIFocusItemRegion *)v24 initWithFrame:v25 coordinateSpace:v5 item:v23 focusSystem:v15, v17, v19, v21];
+  coordinateSpace2 = [v8 coordinateSpace];
+  v22 = [(_UIFocusItemRegion *)v24 initWithFrame:coordinateSpace2 coordinateSpace:v5 item:v23 focusSystem:v15, v17, v19, v21];
 
   if (!v22)
   {
@@ -362,36 +362,36 @@ LABEL_18:
   return v22;
 }
 
-+ (_UIFocusItemInfo)infoWithItem:(id)a3
++ (_UIFocusItemInfo)infoWithItem:(id)item
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithItem:v4 useFallbackAncestorScroller:0];
+  itemCopy = item;
+  v5 = [[self alloc] _initWithItem:itemCopy useFallbackAncestorScroller:0];
 
   return v5;
 }
 
-+ (_UIFocusItemInfo)infoWithItem:(id)a3 useFallbackAncestorScroller:(BOOL)a4
++ (_UIFocusItemInfo)infoWithItem:(id)item useFallbackAncestorScroller:(BOOL)scroller
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [[a1 alloc] _initWithItem:v6 useFallbackAncestorScroller:v4];
+  scrollerCopy = scroller;
+  itemCopy = item;
+  v7 = [[self alloc] _initWithItem:itemCopy useFallbackAncestorScroller:scrollerCopy];
 
   return v7;
 }
 
-- (id)_initWithItem:(id)a3 useFallbackAncestorScroller:(BOOL)a4
+- (id)_initWithItem:(id)item useFallbackAncestorScroller:(BOOL)scroller
 {
-  v4 = a4;
-  v6 = a3;
+  scrollerCopy = scroller;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = _UIFocusItemInfo;
   v7 = [(_UIFocusItemInfo *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_item, v6);
+    objc_storeWeak(&v7->_item, itemCopy);
     v8->_inheritedFocusMovementStyle = 0;
-    if (v4)
+    if (scrollerCopy)
     {
       v9 = 2;
     }
@@ -428,12 +428,12 @@ LABEL_18:
   result = self->_inheritedFocusMovementStyle;
   if (!result)
   {
-    v4 = [(_UIFocusItemInfo *)self item];
+    item = [(_UIFocusItemInfo *)self item];
 
-    if (v4)
+    if (item)
     {
-      v5 = [(_UIFocusItemInfo *)self item];
-      self->_inheritedFocusMovementStyle = _UIFocusEnvironmentInheritedFocusMovementStyle(v5);
+      item2 = [(_UIFocusItemInfo *)self item];
+      self->_inheritedFocusMovementStyle = _UIFocusEnvironmentInheritedFocusMovementStyle(item2);
 
       return self->_inheritedFocusMovementStyle;
     }
@@ -448,14 +448,14 @@ LABEL_18:
   return result;
 }
 
-- (CGRect)focusedRectInCoordinateSpace:(id)a3
+- (CGRect)focusedRectInCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(_UIFocusItemInfo *)self focusedRegion];
-  v6 = v5;
-  if (v4 && v5)
+  spaceCopy = space;
+  focusedRegion = [(_UIFocusItemInfo *)self focusedRegion];
+  v6 = focusedRegion;
+  if (spaceCopy && focusedRegion)
   {
-    [_UIFocusRegionEvaluator frameForRegion:v5 inCoordinateSpace:v4];
+    [_UIFocusRegionEvaluator frameForRegion:focusedRegion inCoordinateSpace:spaceCopy];
     _UIFocusRectWithMinimumSize(v7, v8, v9, v10);
     v12 = v11;
     v14 = v13;

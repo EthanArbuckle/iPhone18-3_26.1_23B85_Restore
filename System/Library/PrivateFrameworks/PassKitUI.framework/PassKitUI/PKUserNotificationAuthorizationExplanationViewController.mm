@@ -1,48 +1,48 @@
 @interface PKUserNotificationAuthorizationExplanationViewController
-- (PKUserNotificationAuthorizationExplanationViewController)initWithController:(id)a3 contentType:(unint64_t)a4 context:(int64_t)a5 dataProvider:(id)a6;
-- (id)_analyticsPartialEventDictionaryWithButtonTag:(id)a3 pageTag:(id)a4;
+- (PKUserNotificationAuthorizationExplanationViewController)initWithController:(id)controller contentType:(unint64_t)type context:(int64_t)context dataProvider:(id)provider;
+- (id)_analyticsPartialEventDictionaryWithButtonTag:(id)tag pageTag:(id)pageTag;
 - (unint64_t)_preflightStatus;
 - (void)_beginReportingIfNecessary;
 - (void)_endReportingIfNecessary;
 - (void)_loadContentFromMobileAssets;
 - (void)_reportContinueButtonTapped;
 - (void)_reportNotNowButtonTapped;
-- (void)_reportNotificationAuthorizationButtonTapped:(BOOL)a3;
+- (void)_reportNotificationAuthorizationButtonTapped:(BOOL)tapped;
 - (void)_reportNotificationPromptDidAppear;
 - (void)_reportViewDidAppear;
-- (void)_setPreflightStatus:(unint64_t)a3;
+- (void)_setPreflightStatus:(unint64_t)status;
 - (void)dealloc;
-- (void)explanationViewDidSelectContinue:(id)a3;
-- (void)explanationViewDidSelectSetupLater:(id)a3;
+- (void)explanationViewDidSelectContinue:(id)continue;
+- (void)explanationViewDidSelectSetupLater:(id)later;
 - (void)loadView;
-- (void)preflightWithCompletion:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)preflightWithCompletion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation PKUserNotificationAuthorizationExplanationViewController
 
-- (PKUserNotificationAuthorizationExplanationViewController)initWithController:(id)a3 contentType:(unint64_t)a4 context:(int64_t)a5 dataProvider:(id)a6
+- (PKUserNotificationAuthorizationExplanationViewController)initWithController:(id)controller contentType:(unint64_t)type context:(int64_t)context dataProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a6;
+  controllerCopy = controller;
+  providerCopy = provider;
   v19.receiver = self;
   v19.super_class = PKUserNotificationAuthorizationExplanationViewController;
-  v13 = [(PKExplanationViewController *)&v19 initWithContext:a5];
+  v13 = [(PKExplanationViewController *)&v19 initWithContext:context];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_controller, a3);
-    objc_storeStrong(&v14->_dataProvider, a6);
-    v14->_contentTypeToDisplay = a4;
-    if (a4 > 6)
+    objc_storeStrong(&v13->_controller, controller);
+    objc_storeStrong(&v14->_dataProvider, provider);
+    v14->_contentTypeToDisplay = type;
+    if (type > 6)
     {
       v15 = 0;
     }
 
     else
     {
-      v15 = **(&unk_1E801B9A8 + a4);
+      v15 = **(&unk_1E801B9A8 + type);
     }
 
     productType = v14->_productType;
@@ -52,7 +52,7 @@
     v14->_isPresentingNotificationAuthorizationPrompt = 0;
     v14->_contentLock._os_unfair_lock_opaque = 0;
     v14->_statusLock._os_unfair_lock_opaque = 0;
-    switch(a5)
+    switch(context)
     {
       case 0:
         v17 = MEMORY[0x1E69BAB50];
@@ -71,11 +71,11 @@ LABEL_11:
   return v14;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKUserNotificationAuthorizationExplanationViewController;
-  [(PKUserNotificationAuthorizationExplanationViewController *)&v4 viewDidAppear:a3];
+  [(PKUserNotificationAuthorizationExplanationViewController *)&v4 viewDidAppear:appear];
   [(PKUserNotificationAuthorizationExplanationViewController *)self _beginReportingIfNecessary];
   [(PKUserNotificationAuthorizationExplanationViewController *)self _reportViewDidAppear];
 }
@@ -110,42 +110,42 @@ LABEL_11:
   v10 = title;
   os_unfair_lock_unlock(&self->_contentLock);
   [(PKExplanationViewController *)self setShowCancelButton:0];
-  v11 = [(PKExplanationViewController *)self explanationView];
-  [v11 setTitleText:v10];
-  [v11 setBodyText:v22];
-  [v11 setShowPrivacyView:0];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setTitleText:v10];
+  [explanationView setBodyText:v22];
+  [explanationView setShowPrivacyView:0];
   v12 = PKProvisioningSecondaryBackgroundColor();
-  [v11 setTopBackgroundColor:v12];
+  [explanationView setTopBackgroundColor:v12];
 
-  [v11 setImageIgnoresTopSafeArea:1];
-  [v11 setForceShowSetupLaterButton:1];
+  [explanationView setImageIgnoresTopSafeArea:1];
+  [explanationView setForceShowSetupLaterButton:1];
   v13 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:cgExplanationImage];
-  [v11 setImage:v13];
-  v14 = [v11 imageView];
-  [v14 setContentMode:1];
+  [explanationView setImage:v13];
+  imageView = [explanationView imageView];
+  [imageView setContentMode:1];
 
-  v15 = [(PKUserNotificationAuthorizationExplanationViewController *)self view];
-  [v15 bounds];
+  view = [(PKUserNotificationAuthorizationExplanationViewController *)self view];
+  [view bounds];
   v16 = CGRectGetHeight(v27) * 0.5;
 
-  [v11 setMaxImageHeight:v16];
-  v17 = [v11 dockView];
-  v18 = [v17 primaryButton];
+  [explanationView setMaxImageHeight:v16];
+  dockView = [explanationView dockView];
+  primaryButton = [dockView primaryButton];
   v19 = v9;
-  [v18 setTitle:v9 forState:0];
+  [primaryButton setTitle:v9 forState:0];
 
-  v20 = [v17 footerView];
-  v21 = [v20 setUpLaterButton];
-  [v21 setTitle:v8 forState:0];
+  footerView = [dockView footerView];
+  setUpLaterButton = [footerView setUpLaterButton];
+  [setUpLaterButton setTitle:v8 forState:0];
 
   [(PKUserNotificationAuthorizationController *)self->_controller setPresentedNotificationAuthorizationPromptShown];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = PKUserNotificationAuthorizationExplanationViewController;
-  [(PKUserNotificationAuthorizationExplanationViewController *)&v6 viewDidDisappear:a3];
+  [(PKUserNotificationAuthorizationExplanationViewController *)&v6 viewDidDisappear:disappear];
   nextStepHandler = self->_nextStepHandler;
   if (nextStepHandler)
   {
@@ -163,15 +163,15 @@ LABEL_11:
   [(PKUserNotificationAuthorizationExplanationViewController *)&v3 dealloc];
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKUserNotificationAuthorizationExplanationViewController *)self _preflightStatus];
-  if (v5)
+  completionCopy = completion;
+  _preflightStatus = [(PKUserNotificationAuthorizationExplanationViewController *)self _preflightStatus];
+  if (_preflightStatus)
   {
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4, v5 == 1);
+      completionCopy[2](completionCopy, _preflightStatus == 1);
     }
   }
 
@@ -184,7 +184,7 @@ LABEL_11:
     v7[2] = __84__PKUserNotificationAuthorizationExplanationViewController_preflightWithCompletion___block_invoke;
     v7[3] = &unk_1E8010DD0;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(v6, v7);
   }
 }
@@ -322,8 +322,8 @@ LABEL_16:
 
 LABEL_17:
 LABEL_18:
-  v27 = [MEMORY[0x1E695DF58] currentLocale];
-  self->_cgExplanationImage = [v28 notificationAuthorizationImageForLocale:v27];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  self->_cgExplanationImage = [v28 notificationAuthorizationImageForLocale:currentLocale];
 
   os_unfair_lock_unlock(&self->_contentLock);
 }
@@ -336,15 +336,15 @@ LABEL_18:
   return preflightStatus;
 }
 
-- (void)_setPreflightStatus:(unint64_t)a3
+- (void)_setPreflightStatus:(unint64_t)status
 {
   os_unfair_lock_lock(&self->_statusLock);
-  self->_preflightStatus = a3;
+  self->_preflightStatus = status;
 
   os_unfair_lock_unlock(&self->_statusLock);
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
   [(PKUserNotificationAuthorizationExplanationViewController *)self _reportContinueButtonTapped];
   [(PKUserNotificationAuthorizationExplanationViewController *)self _reportNotificationPromptDidAppear];
@@ -388,7 +388,7 @@ uint64_t __93__PKUserNotificationAuthorizationExplanationViewController_explanat
   return result;
 }
 
-- (void)explanationViewDidSelectSetupLater:(id)a3
+- (void)explanationViewDidSelectSetupLater:(id)later
 {
   [(PKUserNotificationAuthorizationExplanationViewController *)self _reportNotNowButtonTapped];
 
@@ -452,10 +452,10 @@ uint64_t __93__PKUserNotificationAuthorizationExplanationViewController_explanat
   [MEMORY[0x1E69B8540] subject:*MEMORY[0x1E69BB718] sendEvent:v2];
 }
 
-- (void)_reportNotificationAuthorizationButtonTapped:(BOOL)a3
+- (void)_reportNotificationAuthorizationButtonTapped:(BOOL)tapped
 {
   v3 = MEMORY[0x1E69BA2E8];
-  if (!a3)
+  if (!tapped)
   {
     v3 = MEMORY[0x1E69BA618];
   }
@@ -464,16 +464,16 @@ uint64_t __93__PKUserNotificationAuthorizationExplanationViewController_explanat
   [MEMORY[0x1E69B8540] subject:*MEMORY[0x1E69BB718] sendEvent:v4];
 }
 
-- (id)_analyticsPartialEventDictionaryWithButtonTag:(id)a3 pageTag:(id)a4
+- (id)_analyticsPartialEventDictionaryWithButtonTag:(id)tag pageTag:(id)pageTag
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a4;
-  v7 = a3;
+  pageTagCopy = pageTag;
+  tagCopy = tag;
   v8 = objc_alloc_init(v5);
   [v8 setObject:*MEMORY[0x1E69BA6F0] forKeyedSubscript:*MEMORY[0x1E69BA680]];
-  [v8 setObject:v7 forKeyedSubscript:*MEMORY[0x1E69BA440]];
+  [v8 setObject:tagCopy forKeyedSubscript:*MEMORY[0x1E69BA440]];
 
-  [v8 setObject:v6 forKeyedSubscript:*MEMORY[0x1E69BABE8]];
+  [v8 setObject:pageTagCopy forKeyedSubscript:*MEMORY[0x1E69BABE8]];
   v9 = [v8 copy];
 
   return v9;

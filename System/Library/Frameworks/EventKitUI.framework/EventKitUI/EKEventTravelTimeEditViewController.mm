@@ -4,93 +4,93 @@
 + (id)_okLocalizedString;
 + (id)_startingLocationLocalizedString;
 + (id)_travelTimeLocalizedString;
-- (BOOL)editItemViewControllerSave:(id)a3;
-- (BOOL)setTravelTimeSelectedChoiceEstimatedRowAtIndex:(unint64_t)a3;
-- (EKEventTravelTimeEditViewController)initWithFrame:(CGRect)a3 calendarItem:(id)a4 eventStore:(id)a5;
+- (BOOL)editItemViewControllerSave:(id)save;
+- (BOOL)setTravelTimeSelectedChoiceEstimatedRowAtIndex:(unint64_t)index;
+- (EKEventTravelTimeEditViewController)initWithFrame:(CGRect)frame calendarItem:(id)item eventStore:(id)store;
 - (NSString)description;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (id)_errorStringForMapKitErrorCode:(unint64_t)a3;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (id)_errorStringForMapKitErrorCode:(unint64_t)code;
 - (id)_indexPathForSelectedTravelTime;
 - (id)_routeEstimationControler;
 - (id)_stringForOriginLocation;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)_cellStyleForIndexPath:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)_cellStyleForIndexPath:(id)path;
 - (int64_t)_numberOfEstimatedTravelTimeResultRows;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (unint64_t)_customTravelTimeSection;
 - (unint64_t)_estimatedTravelTimeSection;
 - (unint64_t)_externallySetValueTravelTimeSection;
 - (void)_autoselectFromAvailableChoices;
-- (void)_checkItemAtIndexPath:(id)a3;
-- (void)_contentCategorySizeChanged:(id)a3;
+- (void)_checkItemAtIndexPath:(id)path;
+- (void)_contentCategorySizeChanged:(id)changed;
 - (void)_handleEstimationControllerTravelTimeLookupErrors;
-- (void)_handleOriginLocationErrorsWithAlert:(BOOL)a3;
+- (void)_handleOriginLocationErrorsWithAlert:(BOOL)alert;
 - (void)_layoutShadowView;
 - (void)_locationsChanged;
 - (void)_originLocationButtonWasTapped;
-- (void)_setEstimationActive:(BOOL)a3;
+- (void)_setEstimationActive:(BOOL)active;
 - (void)_showRouteEstimationAlert;
-- (void)_travelTimeActivationSwitchChanged:(id)a3;
+- (void)_travelTimeActivationSwitchChanged:(id)changed;
 - (void)_updateTableView;
 - (void)_updateVisibleSections;
-- (void)editItemViewController:(id)a3 didCompleteWithAction:(int)a4;
+- (void)editItemViewController:(id)controller didCompleteWithAction:(int)action;
 - (void)loadView;
 - (void)resetBackgroundColor;
-- (void)routeEstimationControllerDidBeginTravelTimeLookup:(id)a3;
-- (void)routeEstimationControllerDidFinishOriginLocationLookup:(id)a3;
-- (void)routeEstimationControllerDidFinishTravelTimeLookup:(id)a3;
-- (void)setArrivalDate:(id)a3;
-- (void)setCell:(id)a3 checked:(BOOL)a4;
-- (void)setDestinationStructuredLocation:(id)a3;
-- (void)setOriginStructuredLocation:(id)a3;
-- (void)setTravelTimeSelectedChoice:(int64_t)a3;
+- (void)routeEstimationControllerDidBeginTravelTimeLookup:(id)lookup;
+- (void)routeEstimationControllerDidFinishOriginLocationLookup:(id)lookup;
+- (void)routeEstimationControllerDidFinishTravelTimeLookup:(id)lookup;
+- (void)setArrivalDate:(id)date;
+- (void)setCell:(id)cell checked:(BOOL)checked;
+- (void)setDestinationStructuredLocation:(id)location;
+- (void)setOriginStructuredLocation:(id)location;
+- (void)setTravelTimeSelectedChoice:(int64_t)choice;
 - (void)setTravelTimeSelectedChoiceToFirstValidEstimatedRow;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation EKEventTravelTimeEditViewController
 
-- (EKEventTravelTimeEditViewController)initWithFrame:(CGRect)a3 calendarItem:(id)a4 eventStore:(id)a5
+- (EKEventTravelTimeEditViewController)initWithFrame:(CGRect)frame calendarItem:(id)item eventStore:(id)store
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v26[1] = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
+  itemCopy = item;
+  storeCopy = store;
   v25.receiver = self;
   v25.super_class = EKEventTravelTimeEditViewController;
-  v14 = [(EKEditItemViewController *)&v25 initWithFrame:x, y, width, height];
-  v15 = v14;
-  if (v14)
+  height = [(EKEditItemViewController *)&v25 initWithFrame:x, y, width, height];
+  v15 = height;
+  if (height)
   {
-    v14->_initFrame.origin.x = x;
-    v14->_initFrame.origin.y = y;
-    v14->_initFrame.size.width = width;
-    v14->_initFrame.size.height = height;
-    objc_storeStrong(&v14->_eventStore, a5);
-    objc_storeStrong(&v15->_calendarItem, a4);
+    height->_initFrame.origin.x = x;
+    height->_initFrame.origin.y = y;
+    height->_initFrame.size.width = width;
+    height->_initFrame.size.height = height;
+    objc_storeStrong(&height->_eventStore, store);
+    objc_storeStrong(&v15->_calendarItem, item);
     v15->_isOriginSelectionVisible = 0;
     routeEstimationErrorMessage = v15->_routeEstimationErrorMessage;
     v15->_routeEstimationErrorMessage = 0;
 
     v15->_suppressErrors = 1;
-    v17 = [objc_opt_class() _travelTimeLocalizedString];
-    [(EKEventTravelTimeEditViewController *)v15 setTitle:v17];
+    _travelTimeLocalizedString = [objc_opt_class() _travelTimeLocalizedString];
+    [(EKEventTravelTimeEditViewController *)v15 setTitle:_travelTimeLocalizedString];
 
     v15->_travelTimeSelectedChoice = 7;
-    v18 = [(EKEventTravelTimeEditViewController *)v15 _routeEstimationControler];
+    _routeEstimationControler = [(EKEventTravelTimeEditViewController *)v15 _routeEstimationControler];
     objc_initWeak(&location, v15);
     v26[0] = objc_opt_class();
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
@@ -119,13 +119,13 @@ void __77__EKEventTravelTimeEditViewController_initWithFrame_calendarItem_eventS
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = [MEMORY[0x1E6992FD8] routeTypeStringForCalLocationRoutingMode:{-[EKEventTravelTimeEditViewController selectedRoutingMode](self, "selectedRoutingMode")}];
-  v6 = [(EKEventTravelTimeEditViewController *)self originStructuredLocation];
-  v7 = [v6 title];
-  v8 = [(EKEventTravelTimeEditViewController *)self destinationStructuredLocation];
-  v9 = [v8 title];
+  originStructuredLocation = [(EKEventTravelTimeEditViewController *)self originStructuredLocation];
+  title = [originStructuredLocation title];
+  destinationStructuredLocation = [(EKEventTravelTimeEditViewController *)self destinationStructuredLocation];
+  title2 = [destinationStructuredLocation title];
   [(EKEventTravelTimeEditViewController *)self selectedTravelTime];
   v10 = CUIKDisplayStringForTravelTimeUsingShortFormat();
-  v11 = [v3 stringWithFormat:@"%@ [%p] - %@ from %@ to %@, taking %@", v4, self, v5, v7, v9, v10];
+  v11 = [v3 stringWithFormat:@"%@ [%p] - %@ from %@ to %@, taking %@", v4, self, v5, title, title2, v10];
 
   return v11;
 }
@@ -164,9 +164,9 @@ void __77__EKEventTravelTimeEditViewController_initWithFrame_calendarItem_eventS
 
 - (void)resetBackgroundColor
 {
-  v3 = [(UIViewController *)self isPresentedInsidePopover];
+  isPresentedInsidePopover = [(UIViewController *)self isPresentedInsidePopover];
   table = self->_table;
-  if (v3)
+  if (isPresentedInsidePopover)
   {
     [MEMORY[0x1E69DC888] clearColor];
   }
@@ -188,13 +188,13 @@ void __77__EKEventTravelTimeEditViewController_initWithFrame_calendarItem_eventS
   [(EKEditItemViewController *)&v4 viewDidLoad];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = EKEventTravelTimeEditViewController;
-  [(EKEditItemViewController *)&v6 viewWillAppear:a3];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__contentCategorySizeChanged_ name:*MEMORY[0x1E69DDC48] object:0];
+  [(EKEditItemViewController *)&v6 viewWillAppear:appear];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__contentCategorySizeChanged_ name:*MEMORY[0x1E69DDC48] object:0];
   [(EKEventTravelTimeEditViewController *)self _updateVisibleSections];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -204,20 +204,20 @@ void __77__EKEventTravelTimeEditViewController_initWithFrame_calendarItem_eventS
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = EKEventTravelTimeEditViewController;
-  [(EKEventTravelTimeEditViewController *)&v3 viewDidAppear:a3];
+  [(EKEventTravelTimeEditViewController *)&v3 viewDidAppear:appear];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = EKEventTravelTimeEditViewController;
-  [(EKEditItemViewController *)&v5 viewWillDisappear:a3];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+  [(EKEditItemViewController *)&v5 viewWillDisappear:disappear];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
 }
 
 - (void)viewDidLayoutSubviews
@@ -228,7 +228,7 @@ void __77__EKEventTravelTimeEditViewController_initWithFrame_calendarItem_eventS
   [(EKEventTravelTimeEditViewController *)self _layoutShadowView];
 }
 
-- (void)_contentCategorySizeChanged:(id)a3
+- (void)_contentCategorySizeChanged:(id)changed
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -248,13 +248,13 @@ void __77__EKEventTravelTimeEditViewController_initWithFrame_calendarItem_eventS
 
 - (void)_layoutShadowView
 {
-  v3 = [(EKEventTravelTimeEditViewController *)self _numberOfEstimatedTravelTimeResultRows];
+  _numberOfEstimatedTravelTimeResultRows = [(EKEventTravelTimeEditViewController *)self _numberOfEstimatedTravelTimeResultRows];
   customTimesGroupIsShowing = self->_customTimesGroupIsShowing;
   table = self->_table;
   v6 = [MEMORY[0x1E696AC88] indexPathForRow:-[EKEventTravelTimeEditViewController _numberOfEstimatedTravelTimeResultRows](self inSection:{"_numberOfEstimatedTravelTimeResultRows") - 1, -[EKEventTravelTimeEditViewController _customTravelTimeSection](self, "_customTravelTimeSection")}];
   v24 = [(UITableView *)table cellForRowAtIndexPath:v6];
 
-  if (!customTimesGroupIsShowing || v3 == 0 || v24 == 0)
+  if (!customTimesGroupIsShowing || _numberOfEstimatedTravelTimeResultRows == 0 || v24 == 0)
   {
     [(UIView *)self->_shadowView removeFromSuperview];
   }
@@ -303,25 +303,25 @@ void __77__EKEventTravelTimeEditViewController_initWithFrame_calendarItem_eventS
   checkedItem = self->_checkedItem;
   self->_checkedItem = 0;
 
-  v4 = [(EKEventTravelTimeEditViewController *)self _showingOptions];
+  _showingOptions = [(EKEventTravelTimeEditViewController *)self _showingOptions];
   externallySetValueGroupIsShowing = self->_externallySetValueGroupIsShowing;
-  if (!v4)
+  if (!_showingOptions)
   {
     externallySetValueGroupIsShowing = 0;
   }
 
   self->_externallySetValueGroupIsShowing = externallySetValueGroupIsShowing;
-  self->_customTimesGroupIsShowing = v4;
-  self->_estimationGroupIsShowing &= v4;
-  v6 = [(EKEventTravelTimeEditViewController *)self originStructuredLocation];
-  if (!v6 || (v7 = v6, -[EKEventTravelTimeEditViewController originStructuredLocation](self, "originStructuredLocation"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isStructured], v8, v7, (v9 & 1) == 0))
+  self->_customTimesGroupIsShowing = _showingOptions;
+  self->_estimationGroupIsShowing &= _showingOptions;
+  originStructuredLocation = [(EKEventTravelTimeEditViewController *)self originStructuredLocation];
+  if (!originStructuredLocation || (v7 = originStructuredLocation, -[EKEventTravelTimeEditViewController originStructuredLocation](self, "originStructuredLocation"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isStructured], v8, v7, (v9 & 1) == 0))
   {
     routeEstimationControler = self->_routeEstimationControler;
-    v11 = [(EKEventTravelTimeEditViewController *)self arrivalDate];
-    [(EKTravelRouteEstimationController *)routeEstimationControler setArrivalDate:v11];
+    arrivalDate = [(EKEventTravelTimeEditViewController *)self arrivalDate];
+    [(EKTravelRouteEstimationController *)routeEstimationControler setArrivalDate:arrivalDate];
 
-    v12 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
-    [v12 beginOriginLocationEstimationLookup];
+    _routeEstimationControler = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
+    [_routeEstimationControler beginOriginLocationEstimationLookup];
   }
 
   [(EKEventTravelTimeEditViewController *)self _locationsChanged];
@@ -333,20 +333,20 @@ void __77__EKEventTravelTimeEditViewController_initWithFrame_calendarItem_eventS
   self->_externallySetValueGroupIsShowing = 0;
   if ([(EKEventTravelTimeEditViewController *)self _showingOptions])
   {
-    v3 = [(EKEventTravelTimeEditViewController *)self _indexPathForSelectedTravelTime];
-    v12 = v3;
-    if (v3)
+    _indexPathForSelectedTravelTime = [(EKEventTravelTimeEditViewController *)self _indexPathForSelectedTravelTime];
+    v12 = _indexPathForSelectedTravelTime;
+    if (_indexPathForSelectedTravelTime)
     {
       if (self->_estimationGroupIsShowing)
       {
-        v4 = [v3 section];
-        v5 = v4 == [(EKEventTravelTimeEditViewController *)self _customTravelTimeSection];
-        v3 = v12;
+        section = [_indexPathForSelectedTravelTime section];
+        v5 = section == [(EKEventTravelTimeEditViewController *)self _customTravelTimeSection];
+        _indexPathForSelectedTravelTime = v12;
         if (v5)
         {
           v6 = [v12 row];
           v7 = v6 < [(EKEventTravelTimeEditViewController *)self _numberOfEstimatedTravelTimeResultRows];
-          v3 = v12;
+          _indexPathForSelectedTravelTime = v12;
           if (v7)
           {
             self->_estimatedRowIsChecked = 1;
@@ -359,9 +359,9 @@ LABEL_17:
         }
       }
 
-      v8 = [v3 row];
+      v8 = [_indexPathForSelectedTravelTime row];
       v9 = v8 - [(EKEventTravelTimeEditViewController *)self _numberOfEstimatedTravelTimeResultRows];
-      v10 = self;
+      selfCopy3 = self;
     }
 
     else
@@ -369,19 +369,19 @@ LABEL_17:
       [(EKEventTravelTimeEditViewController *)self selectedTravelTime];
       if (v11 <= 0.0)
       {
-        v10 = self;
+        selfCopy3 = self;
         v9 = 2;
       }
 
       else
       {
         self->_externallySetValueGroupIsShowing = 1;
-        v10 = self;
+        selfCopy3 = self;
         v9 = 6;
       }
     }
 
-    [(EKEventTravelTimeEditViewController *)v10 setTravelTimeSelectedChoice:v9];
+    [(EKEventTravelTimeEditViewController *)selfCopy3 setTravelTimeSelectedChoice:v9];
     goto LABEL_17;
   }
 
@@ -404,28 +404,28 @@ LABEL_17:
   }
 }
 
-- (void)setArrivalDate:(id)a3
+- (void)setArrivalDate:(id)date
 {
-  objc_storeStrong(&self->_arrivalDate, a3);
-  v5 = a3;
-  v6 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
-  [v6 setArrivalDate:v5];
+  objc_storeStrong(&self->_arrivalDate, date);
+  dateCopy = date;
+  _routeEstimationControler = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
+  [_routeEstimationControler setArrivalDate:dateCopy];
 }
 
-- (void)setDestinationStructuredLocation:(id)a3
+- (void)setDestinationStructuredLocation:(id)location
 {
-  objc_storeStrong(&self->_destinationStructuredLocation, a3);
-  v5 = a3;
-  v6 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
-  [v6 setDestinationStructuredLocation:v5];
+  objc_storeStrong(&self->_destinationStructuredLocation, location);
+  locationCopy = location;
+  _routeEstimationControler = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
+  [_routeEstimationControler setDestinationStructuredLocation:locationCopy];
 }
 
-- (void)setOriginStructuredLocation:(id)a3
+- (void)setOriginStructuredLocation:(id)location
 {
-  objc_storeStrong(&self->_originStructuredLocation, a3);
-  v5 = a3;
-  v6 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
-  [v6 setOriginStructuredLocation:v5];
+  objc_storeStrong(&self->_originStructuredLocation, location);
+  locationCopy = location;
+  _routeEstimationControler = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
+  [_routeEstimationControler setOriginStructuredLocation:locationCopy];
 
   [(EKEventTravelTimeEditViewController *)self _updateTableView];
 }
@@ -440,25 +440,25 @@ LABEL_17:
 
 - (id)_stringForOriginLocation
 {
-  v2 = [(EKEventTravelTimeEditViewController *)self originStructuredLocation];
-  v3 = [v2 title];
-  v4 = [v3 length];
+  originStructuredLocation = [(EKEventTravelTimeEditViewController *)self originStructuredLocation];
+  title = [originStructuredLocation title];
+  v4 = [title length];
 
   if (v4)
   {
-    v5 = [v2 title];
+    title2 = [originStructuredLocation title];
   }
 
   else
   {
-    v6 = [v2 address];
-    v7 = [v6 length];
+    address = [originStructuredLocation address];
+    v7 = [address length];
 
     if (!v7)
     {
       v10 = EventKitUIBundle();
       v11 = v10;
-      if (v2)
+      if (originStructuredLocation)
       {
         v12 = @"Previous Location";
         v13 = &stru_1F4EF6790;
@@ -475,10 +475,10 @@ LABEL_17:
       goto LABEL_6;
     }
 
-    v5 = [v2 address];
+    title2 = [originStructuredLocation address];
   }
 
-  v8 = v5;
+  v8 = title2;
 LABEL_6:
 
   return v8;
@@ -488,55 +488,55 @@ LABEL_6:
 {
   v21 = [[EKLocationEditItemViewController alloc] initWithFrame:self->_calendarItem calendarItem:self->_eventStore eventStore:self->_initFrame.origin.x, self->_initFrame.origin.y, self->_initFrame.size.width, self->_initFrame.size.height];
   [(EKEditItemViewController *)v21 setEditDelegate:self];
-  v3 = [objc_opt_class() _startingLocationLocalizedString];
-  [(EKLocationEditItemViewController *)v21 setTitle:v3];
+  _startingLocationLocalizedString = [objc_opt_class() _startingLocationLocalizedString];
+  [(EKLocationEditItemViewController *)v21 setTitle:_startingLocationLocalizedString];
 
   [(EKEditItemViewController *)v21 setModal:1];
   [(EKEditItemViewController *)v21 setShowsDoneButton:0];
   [(EKLocationEditItemViewController *)v21 setSupportedSearchTypes:7];
   [(EKLocationEditItemViewController *)v21 setForceSingleTextField:1];
   v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:v21 action:sel_cancel];
-  v5 = [(EKLocationEditItemViewController *)v21 navigationItem];
-  [v5 setRightBarButtonItem:v4];
+  navigationItem = [(EKLocationEditItemViewController *)v21 navigationItem];
+  [navigationItem setRightBarButtonItem:v4];
 
-  v6 = [(EKEventTravelTimeEditViewController *)self originStructuredLocation];
+  originStructuredLocation = [(EKEventTravelTimeEditViewController *)self originStructuredLocation];
 
-  if (v6)
+  if (originStructuredLocation)
   {
     v7 = [EKUILocationRowModel alloc];
-    v8 = [(EKEventTravelTimeEditViewController *)self originStructuredLocation];
-    v9 = [(EKUILocationRowModel *)v7 initWithStructuredLocation:v8];
+    originStructuredLocation2 = [(EKEventTravelTimeEditViewController *)self originStructuredLocation];
+    v9 = [(EKUILocationRowModel *)v7 initWithStructuredLocation:originStructuredLocation2];
     [(EKLocationEditItemViewController *)v21 setLocationViewModel:v9];
   }
 
-  v10 = [(EKEventTravelTimeEditViewController *)self presentingViewController];
-  v11 = [v10 presentedViewController];
-  v12 = v11;
-  if (v11)
+  presentingViewController = [(EKEventTravelTimeEditViewController *)self presentingViewController];
+  presentedViewController = [presentingViewController presentedViewController];
+  v12 = presentedViewController;
+  if (presentedViewController)
   {
-    v13 = v11;
+    v13 = presentedViewController;
   }
 
   else
   {
-    v14 = [(EKEventTravelTimeEditViewController *)self presentingViewController];
-    v15 = v14;
-    if (v14)
+    presentingViewController2 = [(EKEventTravelTimeEditViewController *)self presentingViewController];
+    v15 = presentingViewController2;
+    if (presentingViewController2)
     {
-      v16 = v14;
+      selfCopy = presentingViewController2;
     }
 
     else
     {
-      v16 = self;
+      selfCopy = self;
     }
 
-    v13 = v16;
+    v13 = selfCopy;
   }
 
   v17 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v21];
-  v18 = [(EKEventTravelTimeEditViewController *)self view];
-  IsCompactInViewHierarchy = EKUICurrentWidthSizeClassIsCompactInViewHierarchy(v18);
+  view = [(EKEventTravelTimeEditViewController *)self view];
+  IsCompactInViewHierarchy = EKUICurrentWidthSizeClassIsCompactInViewHierarchy(view);
 
   if (IsCompactInViewHierarchy)
   {
@@ -556,8 +556,8 @@ LABEL_6:
 
 - (void)_locationsChanged
 {
-  v3 = [(EKStructuredLocation *)self->_destinationStructuredLocation geoLocation];
-  v4 = v3 != 0;
+  geoLocation = [(EKStructuredLocation *)self->_destinationStructuredLocation geoLocation];
+  v4 = geoLocation != 0;
 
   [(EKEventTravelTimeEditViewController *)self _setEstimationActive:v4];
   block[0] = MEMORY[0x1E69E9820];
@@ -568,13 +568,13 @@ LABEL_6:
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (BOOL)editItemViewControllerSave:(id)a3
+- (BOOL)editItemViewControllerSave:(id)save
 {
-  v4 = [a3 selectedLocation];
-  if ([v4 isStructured])
+  selectedLocation = [save selectedLocation];
+  if ([selectedLocation isStructured])
   {
-    v5 = [v4 duplicate];
-    [(EKEventTravelTimeEditViewController *)self setOriginStructuredLocation:v5];
+    duplicate = [selectedLocation duplicate];
+    [(EKEventTravelTimeEditViewController *)self setOriginStructuredLocation:duplicate];
 
     [(EKEventTravelTimeEditViewController *)self _handleOriginLocationErrorsWithAlert:1];
     [(EKEventTravelTimeEditViewController *)self _locationsChanged];
@@ -583,24 +583,24 @@ LABEL_6:
   return 1;
 }
 
-- (void)editItemViewController:(id)a3 didCompleteWithAction:(int)a4
+- (void)editItemViewController:(id)controller didCompleteWithAction:(int)action
 {
-  v5 = a3;
-  if ([v5 modal] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  controllerCopy = controller;
+  if ([controllerCopy modal] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v5 navigationController];
+    navigationController = [controllerCopy navigationController];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __84__EKEventTravelTimeEditViewController_editItemViewController_didCompleteWithAction___block_invoke;
     v9[3] = &unk_1E843EC60;
     v9[4] = self;
-    [v6 dismissViewControllerAnimated:1 completion:v9];
+    [navigationController dismissViewControllerAnimated:1 completion:v9];
   }
 
   else
   {
-    v7 = [(EKEventTravelTimeEditViewController *)self navigationController];
-    v8 = [v7 popViewControllerAnimated:1];
+    navigationController2 = [(EKEventTravelTimeEditViewController *)self navigationController];
+    v8 = [navigationController2 popViewControllerAnimated:1];
   }
 }
 
@@ -640,10 +640,10 @@ void __84__EKEventTravelTimeEditViewController_editItemViewController_didComplet
   }
 }
 
-- (void)routeEstimationControllerDidFinishOriginLocationLookup:(id)a3
+- (void)routeEstimationControllerDidFinishOriginLocationLookup:(id)lookup
 {
-  v4 = [a3 evaluatedOriginLocation];
-  [(EKEventTravelTimeEditViewController *)self setOriginStructuredLocation:v4];
+  evaluatedOriginLocation = [lookup evaluatedOriginLocation];
+  [(EKEventTravelTimeEditViewController *)self setOriginStructuredLocation:evaluatedOriginLocation];
 
   [(EKEventTravelTimeEditViewController *)self _locationsChanged];
 }
@@ -656,15 +656,15 @@ void __84__EKEventTravelTimeEditViewController_editItemViewController_didComplet
   return v3;
 }
 
-- (void)_handleOriginLocationErrorsWithAlert:(BOOL)a3
+- (void)_handleOriginLocationErrorsWithAlert:(BOOL)alert
 {
-  v5 = [(EKEventTravelTimeEditViewController *)self originStructuredLocation];
-  v6 = [v5 isEqualToLocation:self->_destinationStructuredLocation];
+  originStructuredLocation = [(EKEventTravelTimeEditViewController *)self originStructuredLocation];
+  v6 = [originStructuredLocation isEqualToLocation:self->_destinationStructuredLocation];
 
   if (v6)
   {
     [(EKEventTravelTimeEditViewController *)self setOriginStructuredLocation:0];
-    self->_needsShowOriginAlert = a3;
+    self->_needsShowOriginAlert = alert;
   }
 }
 
@@ -682,8 +682,8 @@ void __84__EKEventTravelTimeEditViewController_editItemViewController_didComplet
   if (!routeEstimationControler)
   {
     v4 = [EKTravelRouteEstimationController alloc];
-    v5 = [(EKEventTravelTimeEditViewController *)self destinationStructuredLocation];
-    v6 = [(EKTravelRouteEstimationController *)v4 initWithDestinationStructuredLocation:v5 eventStore:self->_eventStore];
+    destinationStructuredLocation = [(EKEventTravelTimeEditViewController *)self destinationStructuredLocation];
+    v6 = [(EKTravelRouteEstimationController *)v4 initWithDestinationStructuredLocation:destinationStructuredLocation eventStore:self->_eventStore];
     v7 = self->_routeEstimationControler;
     self->_routeEstimationControler = v6;
 
@@ -701,18 +701,18 @@ void __84__EKEventTravelTimeEditViewController_editItemViewController_didComplet
     if (!self->_isOriginSelectionVisible)
     {
       v3 = MEMORY[0x1E69DC650];
-      v4 = [objc_opt_class() _cannotProvideDirectionsLocalizedString];
-      v5 = [v3 alertControllerWithTitle:v4 message:self->_routeEstimationErrorMessage preferredStyle:1];
+      _cannotProvideDirectionsLocalizedString = [objc_opt_class() _cannotProvideDirectionsLocalizedString];
+      v5 = [v3 alertControllerWithTitle:_cannotProvideDirectionsLocalizedString message:self->_routeEstimationErrorMessage preferredStyle:1];
 
       objc_initWeak(&location, self);
       v6 = MEMORY[0x1E69DC648];
-      v7 = [objc_opt_class() _okLocalizedString];
+      _okLocalizedString = [objc_opt_class() _okLocalizedString];
       v9 = MEMORY[0x1E69E9820];
       v10 = 3221225472;
       v11 = __64__EKEventTravelTimeEditViewController__showRouteEstimationAlert__block_invoke;
       v12 = &unk_1E8440A70;
       objc_copyWeak(&v13, &location);
-      v8 = [v6 actionWithTitle:v7 style:1 handler:&v9];
+      v8 = [v6 actionWithTitle:_okLocalizedString style:1 handler:&v9];
       [v5 addAction:{v8, v9, v10, v11, v12}];
 
       [(EKEventTravelTimeEditViewController *)self presentViewController:v5 animated:1 completion:0];
@@ -736,48 +736,48 @@ void __64__EKEventTravelTimeEditViewController__showRouteEstimationAlert__block_
   }
 }
 
-- (void)_setEstimationActive:(BOOL)a3
+- (void)_setEstimationActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
-    v4 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
-    v5 = [(EKEventTravelTimeEditViewController *)self arrivalDate];
-    [v4 setArrivalDate:v5];
+    _routeEstimationControler = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
+    arrivalDate = [(EKEventTravelTimeEditViewController *)self arrivalDate];
+    [_routeEstimationControler setArrivalDate:arrivalDate];
 
-    v6 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
-    v7 = [(EKEventTravelTimeEditViewController *)self originStructuredLocation];
-    [v6 setOriginStructuredLocation:v7];
+    _routeEstimationControler2 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
+    originStructuredLocation = [(EKEventTravelTimeEditViewController *)self originStructuredLocation];
+    [_routeEstimationControler2 setOriginStructuredLocation:originStructuredLocation];
 
-    v8 = [(EKEventTravelTimeEditViewController *)self originStructuredLocation];
-    LODWORD(v7) = [v8 isStructured];
+    originStructuredLocation2 = [(EKEventTravelTimeEditViewController *)self originStructuredLocation];
+    LODWORD(originStructuredLocation) = [originStructuredLocation2 isStructured];
 
-    if (v7)
+    if (originStructuredLocation)
     {
-      v9 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
-      [v9 beginTravelTimeEstimationLookup];
+      _routeEstimationControler3 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
+      [_routeEstimationControler3 beginTravelTimeEstimationLookup];
     }
 
-    v10 = [(EKEventTravelTimeEditViewController *)self _showingOptions];
+    _showingOptions = [(EKEventTravelTimeEditViewController *)self _showingOptions];
   }
 
   else
   {
-    v10 = 0;
+    _showingOptions = 0;
   }
 
-  self->_estimationGroupIsShowing = v10;
+  self->_estimationGroupIsShowing = _showingOptions;
 }
 
-- (void)_travelTimeActivationSwitchChanged:(id)a3
+- (void)_travelTimeActivationSwitchChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __74__EKEventTravelTimeEditViewController__travelTimeActivationSwitchChanged___block_invoke;
   v6[3] = &unk_1E843EFB8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = changedCopy;
+  selfCopy = self;
+  v5 = changedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -795,7 +795,7 @@ uint64_t __74__EKEventTravelTimeEditViewController__travelTimeActivationSwitchCh
   return [v2 _autoselectFromAvailableChoices];
 }
 
-- (void)routeEstimationControllerDidBeginTravelTimeLookup:(id)a3
+- (void)routeEstimationControllerDidBeginTravelTimeLookup:(id)lookup
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -805,7 +805,7 @@ uint64_t __74__EKEventTravelTimeEditViewController__travelTimeActivationSwitchCh
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)routeEstimationControllerDidFinishTravelTimeLookup:(id)a3
+- (void)routeEstimationControllerDidFinishTravelTimeLookup:(id)lookup
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -837,8 +837,8 @@ uint64_t __90__EKEventTravelTimeEditViewController_routeEstimationControllerDidF
 
 - (void)_handleEstimationControllerTravelTimeLookupErrors
 {
-  v3 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
-  v6 = [v3 estimatedTravelTimeRowErrorAtRowIndex:0];
+  _routeEstimationControler = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
+  v6 = [_routeEstimationControler estimatedTravelTimeRowErrorAtRowIndex:0];
 
   v4 = v6;
   if (v6)
@@ -879,13 +879,13 @@ uint64_t __90__EKEventTravelTimeEditViewController_routeEstimationControllerDidF
   return v3;
 }
 
-- (id)_errorStringForMapKitErrorCode:(unint64_t)a3
+- (id)_errorStringForMapKitErrorCode:(unint64_t)code
 {
-  if (a3 <= 3)
+  if (code <= 3)
   {
-    if (a3 != 1)
+    if (code != 1)
     {
-      if (a3 == 2)
+      if (code == 2)
       {
         v3 = EventKitUIBundle();
         v4 = v3;
@@ -893,7 +893,7 @@ uint64_t __90__EKEventTravelTimeEditViewController_routeEstimationControllerDidF
         goto LABEL_14;
       }
 
-      if (a3 == 3)
+      if (code == 3)
       {
         v3 = EventKitUIBundle();
         v4 = v3;
@@ -914,11 +914,11 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  if (a3 != 4)
+  if (code != 4)
   {
-    if (a3 != 5)
+    if (code != 5)
     {
-      if (a3 == 1001)
+      if (code == 1001)
       {
         v3 = EventKitUIBundle();
         v4 = v3;
@@ -930,7 +930,7 @@ LABEL_12:
     }
 
 LABEL_10:
-    v6 = [objc_opt_class() _directionsCouldNotBeFoundLocalizedString];
+    _directionsCouldNotBeFoundLocalizedString = [objc_opt_class() _directionsCouldNotBeFoundLocalizedString];
     goto LABEL_16;
   }
 
@@ -939,19 +939,19 @@ LABEL_10:
   v5 = @"Travel lookup error - place not found";
   v7 = @"Directions could not be found.";
 LABEL_15:
-  v6 = [v3 localizedStringForKey:v5 value:v7 table:0];
+  _directionsCouldNotBeFoundLocalizedString = [v3 localizedStringForKey:v5 value:v7 table:0];
 
 LABEL_16:
 
-  return v6;
+  return _directionsCouldNotBeFoundLocalizedString;
 }
 
-- (void)_checkItemAtIndexPath:(id)a3
+- (void)_checkItemAtIndexPath:(id)path
 {
-  v5 = a3;
-  if (([(NSIndexPath *)self->_checkedItem isEqual:v5]& 1) == 0)
+  pathCopy = path;
+  if (([(NSIndexPath *)self->_checkedItem isEqual:pathCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_checkedItem, a3);
+    objc_storeStrong(&self->_checkedItem, path);
   }
 
   block[0] = MEMORY[0x1E69E9820];
@@ -964,10 +964,10 @@ LABEL_16:
 
 - (void)setTravelTimeSelectedChoiceToFirstValidEstimatedRow
 {
-  v3 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
-  v4 = [v3 numberOfOutputRows];
+  _routeEstimationControler = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
+  numberOfOutputRows = [_routeEstimationControler numberOfOutputRows];
 
-  if (v4)
+  if (numberOfOutputRows)
   {
     v5 = 0;
     do
@@ -978,45 +978,45 @@ LABEL_16:
       }
 
       ++v5;
-      v6 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
-      v7 = [v6 numberOfOutputRows];
+      _routeEstimationControler2 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
+      numberOfOutputRows2 = [_routeEstimationControler2 numberOfOutputRows];
     }
 
-    while (v5 < v7);
+    while (v5 < numberOfOutputRows2);
   }
 }
 
-- (BOOL)setTravelTimeSelectedChoiceEstimatedRowAtIndex:(unint64_t)a3
+- (BOOL)setTravelTimeSelectedChoiceEstimatedRowAtIndex:(unint64_t)index
 {
-  v5 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
-  v6 = [v5 estimatedTravelTimeRowHasErrorAtRowIndex:a3];
+  _routeEstimationControler = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
+  v6 = [_routeEstimationControler estimatedTravelTimeRowHasErrorAtRowIndex:index];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AC88] indexPathForRow:a3 inSection:{-[EKEventTravelTimeEditViewController _customTravelTimeSection](self, "_customTravelTimeSection")}];
+    v7 = [MEMORY[0x1E696AC88] indexPathForRow:index inSection:{-[EKEventTravelTimeEditViewController _customTravelTimeSection](self, "_customTravelTimeSection")}];
     [(EKEventTravelTimeEditViewController *)self _checkItemAtIndexPath:v7];
 
-    v8 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
-    [v8 estimatedTravelTimeValueAtRowIndex:a3];
+    _routeEstimationControler2 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
+    [_routeEstimationControler2 estimatedTravelTimeValueAtRowIndex:index];
     [(EKEventTravelTimeEditViewController *)self setSelectedTravelTime:?];
 
-    v9 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
-    self->_selectedRoutingMode = [v9 estimatedTravelTimeRoutingModeAtRowIndex:a3];
+    _routeEstimationControler3 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
+    self->_selectedRoutingMode = [_routeEstimationControler3 estimatedTravelTimeRoutingModeAtRowIndex:index];
   }
 
   return v6 ^ 1;
 }
 
-- (void)setTravelTimeSelectedChoice:(int64_t)a3
+- (void)setTravelTimeSelectedChoice:(int64_t)choice
 {
-  if (a3 == 6)
+  if (choice == 6)
   {
     if (self->_estimatedRowIsChecked)
     {
-      v9 = [(EKEventTravelTimeEditViewController *)self _indexPathForSelectedTravelTime];
-      [(EKEventTravelTimeEditViewController *)self _checkItemAtIndexPath:v9];
-      v5 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
-      [v5 estimatedTravelTimeValueAtRowIndex:{objc_msgSend(v9, "row")}];
+      _indexPathForSelectedTravelTime = [(EKEventTravelTimeEditViewController *)self _indexPathForSelectedTravelTime];
+      [(EKEventTravelTimeEditViewController *)self _checkItemAtIndexPath:_indexPathForSelectedTravelTime];
+      _routeEstimationControler = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
+      [_routeEstimationControler estimatedTravelTimeValueAtRowIndex:{objc_msgSend(_indexPathForSelectedTravelTime, "row")}];
       [(EKEventTravelTimeEditViewController *)self setSelectedTravelTime:?];
     }
 
@@ -1033,7 +1033,7 @@ LABEL_16:
 
   else
   {
-    if (a3 == 7)
+    if (choice == 7)
     {
       [(EKEventTravelTimeEditViewController *)self setSelectedTravelTime:0.0];
       [(EKEventTravelTimeEditViewController *)self _checkItemAtIndexPath:0];
@@ -1041,10 +1041,10 @@ LABEL_16:
 
     else
     {
-      v6 = [MEMORY[0x1E696AC88] indexPathForRow:-[EKEventTravelTimeEditViewController _numberOfEstimatedTravelTimeResultRows](self inSection:{"_numberOfEstimatedTravelTimeResultRows") + a3, -[EKEventTravelTimeEditViewController _customTravelTimeSection](self, "_customTravelTimeSection")}];
+      v6 = [MEMORY[0x1E696AC88] indexPathForRow:-[EKEventTravelTimeEditViewController _numberOfEstimatedTravelTimeResultRows](self inSection:{"_numberOfEstimatedTravelTimeResultRows") + choice, -[EKEventTravelTimeEditViewController _customTravelTimeSection](self, "_customTravelTimeSection")}];
       [(EKEventTravelTimeEditViewController *)self _checkItemAtIndexPath:v6];
 
-      [(EKEventTravelTimeEditViewController *)self setSelectedTravelTime:_travelTimeDurations[a3]];
+      [(EKEventTravelTimeEditViewController *)self setSelectedTravelTime:_travelTimeDurations[choice]];
     }
 
     self->_selectedRoutingMode = 0;
@@ -1064,17 +1064,17 @@ LABEL_16:
     {
       for (i = 0; [(EKEventTravelTimeEditViewController *)self _numberOfEstimatedTravelTimeResultRows]> i; ++i)
       {
-        v5 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
-        v6 = [v5 estimatedTravelTimeRowHasErrorAtRowIndex:i];
+        _routeEstimationControler = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
+        v6 = [_routeEstimationControler estimatedTravelTimeRowHasErrorAtRowIndex:i];
 
         if ((v6 & 1) == 0)
         {
-          v7 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
-          [v7 estimatedTravelTimeValueAtRowIndex:i];
+          _routeEstimationControler2 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
+          [_routeEstimationControler2 estimatedTravelTimeValueAtRowIndex:i];
           v9 = v8;
 
-          v10 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
-          v11 = [v10 estimatedTravelTimeRoutingModeAtRowIndex:i];
+          _routeEstimationControler3 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
+          v11 = [_routeEstimationControler3 estimatedTravelTimeRoutingModeAtRowIndex:i];
 
           v12 = [MEMORY[0x1E696AC88] indexPathForRow:i inSection:{-[EKEventTravelTimeEditViewController _customTravelTimeSection](self, "_customTravelTimeSection")}];
           v2 = v12;
@@ -1177,9 +1177,9 @@ LABEL_17:
   }
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  if ([(EKEventTravelTimeEditViewController *)self _toggleSwitchSection]== a4)
+  if ([(EKEventTravelTimeEditViewController *)self _toggleSwitchSection]== section)
   {
     if (![(UISwitch *)self->_switchControl isOn])
     {
@@ -1192,7 +1192,7 @@ LABEL_7:
     }
   }
 
-  else if (self->_estimationGroupIsShowing && [(EKEventTravelTimeEditViewController *)self _estimatedTravelTimeSection]== a4)
+  else if (self->_estimationGroupIsShowing && [(EKEventTravelTimeEditViewController *)self _estimatedTravelTimeSection]== section)
   {
     v6 = @"Select a starting location to automatically determine travel time, or select a time below.";
     goto LABEL_7;
@@ -1204,19 +1204,19 @@ LABEL_9:
   return v8;
 }
 
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section
 {
-  v9 = a3;
-  v6 = a4;
+  viewCopy = view;
+  footerViewCopy = footerView;
   if (EKUICatalyst())
   {
-    v7 = [v9 backgroundColor];
-    v8 = [v6 contentView];
-    [v8 setBackgroundColor:v7];
+    backgroundColor = [viewCopy backgroundColor];
+    contentView = [footerViewCopy contentView];
+    [contentView setBackgroundColor:backgroundColor];
   }
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
   v4 = EKUIUnscaledCatalyst();
   result = *MEMORY[0x1E69DE3D0];
@@ -1228,7 +1228,7 @@ LABEL_9:
   return result;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   v3 = 1;
   if (self->_estimationGroupIsShowing)
@@ -1246,20 +1246,20 @@ LABEL_9:
     return 0;
   }
 
-  v2 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
-  v3 = [v2 numberOfOutputRows];
+  _routeEstimationControler = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
+  numberOfOutputRows = [_routeEstimationControler numberOfOutputRows];
 
-  return v3;
+  return numberOfOutputRows;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if ([(EKEventTravelTimeEditViewController *)self _toggleSwitchSection]== a4 || self->_estimationGroupIsShowing && [(EKEventTravelTimeEditViewController *)self _estimatedTravelTimeSection]== a4 || self->_externallySetValueGroupIsShowing && [(EKEventTravelTimeEditViewController *)self _externallySetValueTravelTimeSection]== a4)
+  if ([(EKEventTravelTimeEditViewController *)self _toggleSwitchSection]== section || self->_estimationGroupIsShowing && [(EKEventTravelTimeEditViewController *)self _estimatedTravelTimeSection]== section || self->_externallySetValueGroupIsShowing && [(EKEventTravelTimeEditViewController *)self _externallySetValueTravelTimeSection]== section)
   {
     return 1;
   }
 
-  if ([(EKEventTravelTimeEditViewController *)self _customTravelTimeSection]!= a4)
+  if ([(EKEventTravelTimeEditViewController *)self _customTravelTimeSection]!= section)
   {
     return 0;
   }
@@ -1272,23 +1272,23 @@ LABEL_9:
   return 6;
 }
 
-- (void)setCell:(id)a3 checked:(BOOL)a4
+- (void)setCell:(id)cell checked:(BOOL)checked
 {
-  v4 = a4;
+  checkedCopy = checked;
   v5 = MEMORY[0x1E69DC888];
-  v6 = a3;
-  v8 = [v5 labelColor];
-  v7 = [v6 textLabel];
-  [v7 setTextColor:v8];
+  cellCopy = cell;
+  labelColor = [v5 labelColor];
+  textLabel = [cellCopy textLabel];
+  [textLabel setTextColor:labelColor];
 
-  [v6 setChecked:v4];
+  [cellCopy setChecked:checkedCopy];
 }
 
-- (int64_t)_cellStyleForIndexPath:(id)a3
+- (int64_t)_cellStyleForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_estimationGroupIsShowing && (v6 = [v4 section], v6 == -[EKEventTravelTimeEditViewController _estimatedTravelTimeSection](self, "_estimatedTravelTimeSection")))
+  pathCopy = path;
+  v5 = pathCopy;
+  if (self->_estimationGroupIsShowing && (v6 = [pathCopy section], v6 == -[EKEventTravelTimeEditViewController _estimatedTravelTimeSection](self, "_estimatedTravelTimeSection")))
   {
     v7 = 3;
   }
@@ -1301,19 +1301,19 @@ LABEL_9:
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EKEventTravelTimeEditViewController *)self _cellStyleForIndexPath:v7];
-  v9 = [v7 section];
-  if (v9 == [(EKEventTravelTimeEditViewController *)self _toggleSwitchSection])
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(EKEventTravelTimeEditViewController *)self _cellStyleForIndexPath:pathCopy];
+  section = [pathCopy section];
+  if (section == [(EKEventTravelTimeEditViewController *)self _toggleSwitchSection])
   {
     v10 = [[EKUITableViewCell alloc] initWithStyle:v8 reuseIdentifier:0];
     [(EKEventStandardTravelTimeCell *)v10 setSelectionStyle:0];
-    v11 = [objc_opt_class() _travelTimeLocalizedString];
-    v12 = [(EKEventStandardTravelTimeCell *)v10 textLabel];
-    [v12 setText:v11];
+    _travelTimeLocalizedString = [objc_opt_class() _travelTimeLocalizedString];
+    textLabel = [(EKEventStandardTravelTimeCell *)v10 textLabel];
+    [textLabel setText:_travelTimeLocalizedString];
 
     [(EKEventStandardTravelTimeCell *)v10 setAccessoryView:self->_switchControl];
     goto LABEL_19;
@@ -1321,50 +1321,50 @@ LABEL_9:
 
   if (self->_estimationGroupIsShowing)
   {
-    v13 = [v7 section];
-    if (v13 == [(EKEventTravelTimeEditViewController *)self _estimatedTravelTimeSection])
+    section2 = [pathCopy section];
+    if (section2 == [(EKEventTravelTimeEditViewController *)self _estimatedTravelTimeSection])
     {
       v10 = [[EKUITableViewCell alloc] initWithStyle:v8 reuseIdentifier:0];
-      v14 = [objc_opt_class() _startingLocationLocalizedString];
-      v15 = [(EKEventStandardTravelTimeCell *)v10 textLabel];
-      [v15 setText:v14];
+      _startingLocationLocalizedString = [objc_opt_class() _startingLocationLocalizedString];
+      textLabel2 = [(EKEventStandardTravelTimeCell *)v10 textLabel];
+      [textLabel2 setText:_startingLocationLocalizedString];
 
-      v16 = [(EKEventTravelTimeEditViewController *)self _stringForOriginLocation];
-      v17 = [(EKEventStandardTravelTimeCell *)v10 detailTextLabel];
-      [v17 setText:v16];
+      _stringForOriginLocation = [(EKEventTravelTimeEditViewController *)self _stringForOriginLocation];
+      detailTextLabel = [(EKEventStandardTravelTimeCell *)v10 detailTextLabel];
+      [detailTextLabel setText:_stringForOriginLocation];
 
       [(EKCalendarChooserCell *)v10 setAccessoryType:1];
       goto LABEL_19;
     }
   }
 
-  if (self->_externallySetValueGroupIsShowing && (v18 = [v7 section], v18 == -[EKEventTravelTimeEditViewController _externallySetValueTravelTimeSection](self, "_externallySetValueTravelTimeSection")))
+  if (self->_externallySetValueGroupIsShowing && (v18 = [pathCopy section], v18 == -[EKEventTravelTimeEditViewController _externallySetValueTravelTimeSection](self, "_externallySetValueTravelTimeSection")))
   {
     v10 = [(EKCalendarChooserCell *)[EKEventStandardTravelTimeCell alloc] initWithStyle:v8 reuseIdentifier:0];
     v19 = CUIKDisplayStringForTravelTimeUsingShortFormat();
-    v20 = [(EKEventStandardTravelTimeCell *)v10 textLabel];
-    [v20 setText:v19];
+    textLabel3 = [(EKEventStandardTravelTimeCell *)v10 textLabel];
+    [textLabel3 setText:v19];
   }
 
   else
   {
-    if (!self->_customTimesGroupIsShowing || (v21 = [v7 section], v21 != -[EKEventTravelTimeEditViewController _customTravelTimeSection](self, "_customTravelTimeSection")))
+    if (!self->_customTimesGroupIsShowing || (v21 = [pathCopy section], v21 != -[EKEventTravelTimeEditViewController _customTravelTimeSection](self, "_customTravelTimeSection")))
     {
       v10 = 0;
       goto LABEL_19;
     }
 
-    v22 = [(EKEventTravelTimeEditViewController *)self _numberOfEstimatedTravelTimeResultRows];
-    if (self->_estimationGroupIsShowing && [v7 row] < v22)
+    _numberOfEstimatedTravelTimeResultRows = [(EKEventTravelTimeEditViewController *)self _numberOfEstimatedTravelTimeResultRows];
+    if (self->_estimationGroupIsShowing && [pathCopy row] < _numberOfEstimatedTravelTimeResultRows)
     {
-      v23 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
-      v10 = [v23 estimatedTravelTimeTableViewCellWithRowIndex:objc_msgSend(v7 tableView:{"row"), v6}];
+      _routeEstimationControler = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
+      v10 = [_routeEstimationControler estimatedTravelTimeTableViewCellWithRowIndex:objc_msgSend(pathCopy tableView:{"row"), viewCopy}];
 
       v24 = [EKCalendarChooserCellLayoutManager sharedLayoutManagerForStyle:[(EKEventStandardTravelTimeCell *)v10 style]];
       [(EKEventStandardTravelTimeCell *)v10 setLayoutManager:v24];
 
-      v25 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
-      v26 = [v25 estimatedTravelTimeRowHasErrorAtRowIndex:{objc_msgSend(v7, "row")}];
+      _routeEstimationControler2 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
+      v26 = [_routeEstimationControler2 estimatedTravelTimeRowHasErrorAtRowIndex:{objc_msgSend(pathCopy, "row")}];
 
       if (v26)
       {
@@ -1375,19 +1375,19 @@ LABEL_9:
       goto LABEL_18;
     }
 
-    [v7 row];
+    [pathCopy row];
     v10 = [(EKCalendarChooserCell *)[EKEventStandardTravelTimeCell alloc] initWithStyle:0 reuseIdentifier:0];
     v19 = CUIKDisplayStringForTravelTimeUsingShortFormat();
     [(EKCalendarChooserCell *)v10 setTextLabelText:v19];
   }
 
 LABEL_18:
-  [(EKEventTravelTimeEditViewController *)self setCell:v10 checked:[(NSIndexPath *)self->_checkedItem isEqual:v7]];
+  [(EKEventTravelTimeEditViewController *)self setCell:v10 checked:[(NSIndexPath *)self->_checkedItem isEqual:pathCopy]];
 LABEL_19:
   if (EKUICatalyst())
   {
-    v27 = [v6 backgroundColor];
-    [(EKEventStandardTravelTimeCell *)v10 setBackgroundColor:v27];
+    backgroundColor = [viewCopy backgroundColor];
+    [(EKEventStandardTravelTimeCell *)v10 setBackgroundColor:backgroundColor];
   }
 
   if (self->_sampleSizingCell)
@@ -1416,10 +1416,10 @@ LABEL_26:
   return v29;
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   sampleSizingCell = self->_sampleSizingCell;
   if (sampleSizingCell)
   {
@@ -1428,22 +1428,22 @@ LABEL_26:
 
   else
   {
-    v9 = [(EKEventTravelTimeEditViewController *)self tableView:v6 cellForRowAtIndexPath:v7];
+    v9 = [(EKEventTravelTimeEditViewController *)self tableView:viewCopy cellForRowAtIndexPath:pathCopy];
   }
 
   v10 = v9;
-  v11 = [(EKEventTravelTimeEditViewController *)self _cellStyleForIndexPath:v7];
-  v12 = [(UITableViewCell *)v10 textLabel];
-  v13 = [v12 font];
+  v11 = [(EKEventTravelTimeEditViewController *)self _cellStyleForIndexPath:pathCopy];
+  textLabel = [(UITableViewCell *)v10 textLabel];
+  font = [textLabel font];
 
-  v14 = [(UITableViewCell *)v10 detailTextLabel];
-  v15 = [v14 font];
+  detailTextLabel = [(UITableViewCell *)v10 detailTextLabel];
+  font2 = [detailTextLabel font];
 
-  [v13 _scaledValueForValue:46.0];
+  [font _scaledValueForValue:46.0];
   v17 = v16;
   if (v11 == 3)
   {
-    [v15 _scaledValueForValue:15.0];
+    [font2 _scaledValueForValue:15.0];
     v17 = v17 + v18;
   }
 
@@ -1453,21 +1453,21 @@ LABEL_26:
   return v20;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  viewCopy = view;
+  pathCopy = path;
+  v8 = pathCopy;
   if (self->_estimationGroupIsShowing)
   {
-    v9 = [v7 section];
-    if (v9 == [(EKEventTravelTimeEditViewController *)self _customTravelTimeSection])
+    section = [pathCopy section];
+    if (section == [(EKEventTravelTimeEditViewController *)self _customTravelTimeSection])
     {
       v10 = [v8 row];
       if (v10 < [(EKEventTravelTimeEditViewController *)self _numberOfEstimatedTravelTimeResultRows])
       {
-        v11 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
-        if ([v11 estimatedTravelTimeRowHasErrorAtRowIndex:{objc_msgSend(v8, "row")}])
+        _routeEstimationControler = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
+        if ([_routeEstimationControler estimatedTravelTimeRowHasErrorAtRowIndex:{objc_msgSend(v8, "row")}])
         {
 
 LABEL_7:
@@ -1475,8 +1475,8 @@ LABEL_7:
           goto LABEL_9;
         }
 
-        v12 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
-        [v12 estimatedTravelTimeValueAtRowIndex:{objc_msgSend(v8, "row")}];
+        _routeEstimationControler2 = [(EKEventTravelTimeEditViewController *)self _routeEstimationControler];
+        [_routeEstimationControler2 estimatedTravelTimeValueAtRowIndex:{objc_msgSend(v8, "row")}];
         v14 = v13;
 
         if (v14 == 0.0)
@@ -1493,47 +1493,47 @@ LABEL_9:
   return v15;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v14 = a4;
-  v5 = [v14 section];
-  v6 = v5 == [(EKEventTravelTimeEditViewController *)self _toggleSwitchSection];
-  v7 = v14;
+  pathCopy = path;
+  section = [pathCopy section];
+  v6 = section == [(EKEventTravelTimeEditViewController *)self _toggleSwitchSection];
+  v7 = pathCopy;
   if (!v6)
   {
     if (self->_estimationGroupIsShowing)
     {
-      v8 = [v14 section];
-      if (v8 == [(EKEventTravelTimeEditViewController *)self _estimatedTravelTimeSection])
+      section2 = [pathCopy section];
+      if (section2 == [(EKEventTravelTimeEditViewController *)self _estimatedTravelTimeSection])
       {
         [(EKEventTravelTimeEditViewController *)self _originLocationButtonWasTapped];
 LABEL_13:
-        v7 = v14;
+        v7 = pathCopy;
         goto LABEL_14;
       }
     }
 
-    if (self->_externallySetValueGroupIsShowing && (v9 = [v14 section], v9 == -[EKEventTravelTimeEditViewController _externallySetValueTravelTimeSection](self, "_externallySetValueTravelTimeSection")))
+    if (self->_externallySetValueGroupIsShowing && (v9 = [pathCopy section], v9 == -[EKEventTravelTimeEditViewController _externallySetValueTravelTimeSection](self, "_externallySetValueTravelTimeSection")))
     {
-      v10 = self;
+      selfCopy2 = self;
       v11 = 6;
     }
 
     else
     {
-      v12 = [(EKEventTravelTimeEditViewController *)self _numberOfEstimatedTravelTimeResultRows];
-      v13 = [v14 row];
-      if (self->_estimationGroupIsShowing && [v14 row] < v12)
+      _numberOfEstimatedTravelTimeResultRows = [(EKEventTravelTimeEditViewController *)self _numberOfEstimatedTravelTimeResultRows];
+      v13 = [pathCopy row];
+      if (self->_estimationGroupIsShowing && [pathCopy row] < _numberOfEstimatedTravelTimeResultRows)
       {
-        -[EKEventTravelTimeEditViewController setTravelTimeSelectedChoiceEstimatedRowAtIndex:](self, "setTravelTimeSelectedChoiceEstimatedRowAtIndex:", [v14 row]);
+        -[EKEventTravelTimeEditViewController setTravelTimeSelectedChoiceEstimatedRowAtIndex:](self, "setTravelTimeSelectedChoiceEstimatedRowAtIndex:", [pathCopy row]);
         goto LABEL_13;
       }
 
-      v11 = v13 - v12;
-      v10 = self;
+      v11 = v13 - _numberOfEstimatedTravelTimeResultRows;
+      selfCopy2 = self;
     }
 
-    [(EKEventTravelTimeEditViewController *)v10 setTravelTimeSelectedChoice:v11];
+    [(EKEventTravelTimeEditViewController *)selfCopy2 setTravelTimeSelectedChoice:v11];
     goto LABEL_13;
   }
 

@@ -6,12 +6,12 @@
 
 - (double)hu_locationInGlobalCoordinateSpace
 {
-  v2 = [a1 view];
-  [a1 locationInView:v2];
+  view = [self view];
+  [self locationInView:view];
   v4 = v3;
   v6 = v5;
-  v7 = [a1 view];
-  v8 = HUConvertPointToGlobalCoordinateSpace(v7, v4, v6);
+  view2 = [self view];
+  v8 = HUConvertPointToGlobalCoordinateSpace(view2, v4, v6);
 
   return v8;
 }

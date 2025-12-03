@@ -1,12 +1,12 @@
 @interface NEKPBItemOccurrence
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NEKPBItemOccurrence
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = NEKPBItemOccurrence;
   v3 = [(NEKPBItemOccurrence *)&v7 description];
-  v4 = [(NEKPBItemOccurrence *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NEKPBItemOccurrence *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -53,77 +53,77 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_uuid)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_summary)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_calendar)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     date = self->_date;
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_uuid)
   {
-    [v4 setUuid:?];
-    v4 = v5;
+    [toCopy setUuid:?];
+    toCopy = v5;
   }
 
   if (self->_summary)
   {
     [v5 setSummary:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_calendar)
   {
     [v5 setCalendar:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_date;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = *&self->_date;
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uuid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uuid copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(NSString *)self->_summary copyWithZone:a3];
+  v8 = [(NSString *)self->_summary copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_calendar copyWithZone:a3];
+  v10 = [(NSString *)self->_calendar copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
@@ -136,16 +136,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 4))
+  if (uuid | *(equalCopy + 4))
   {
     if (![(NSString *)uuid isEqual:?])
     {
@@ -154,7 +154,7 @@
   }
 
   summary = self->_summary;
-  if (summary | *(v4 + 3))
+  if (summary | *(equalCopy + 3))
   {
     if (![(NSString *)summary isEqual:?])
     {
@@ -163,7 +163,7 @@
   }
 
   calendar = self->_calendar;
-  if (calendar | *(v4 + 2))
+  if (calendar | *(equalCopy + 2))
   {
     if (![(NSString *)calendar isEqual:?])
     {
@@ -171,10 +171,10 @@
     }
   }
 
-  v8 = (*(v4 + 40) & 1) == 0;
+  v8 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) != 0 && self->_date == *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) != 0 && self->_date == *(equalCopy + 1))
     {
       v8 = 1;
       goto LABEL_13;
@@ -230,31 +230,31 @@ LABEL_13:
   return v4 ^ v3 ^ v5 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(NEKPBItemOccurrence *)self setUuid:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NEKPBItemOccurrence *)self setSummary:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NEKPBItemOccurrence *)self setCalendar:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
-    self->_date = v4[1];
+    self->_date = fromCopy[1];
     *&self->_has |= 1u;
   }
 }

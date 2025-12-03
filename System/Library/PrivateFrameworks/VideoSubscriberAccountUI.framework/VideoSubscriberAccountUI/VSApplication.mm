@@ -1,24 +1,24 @@
 @interface VSApplication
 - (NSHTTPCookieStorage)cookieStorage;
 - (VSApplication)init;
-- (VSApplication)initWithBootURL:(id)a3;
+- (VSApplication)initWithBootURL:(id)l;
 - (VSApplicationDelegate)delegate;
 - (id)activeDocument;
 - (id)appIdentifier;
 - (id)appLaunchParams;
-- (id)sourceApplicationAuditTokenDataForContext:(id)a3;
-- (id)sourceApplicationBundleIdentifierForContext:(id)a3;
+- (id)sourceApplicationAuditTokenDataForContext:(id)context;
+- (id)sourceApplicationBundleIdentifierForContext:(id)context;
 - (id)viewElementRegistry;
-- (id)xhrSessionConfigurationForContext:(id)a3;
-- (void)appContext:(id)a3 didFailWithError:(id)a4;
-- (void)appContext:(id)a3 didStartWithOptions:(id)a4;
-- (void)appContext:(id)a3 didStopWithOptions:(id)a4;
-- (void)appContext:(id)a3 evaluateAppJavaScriptInContext:(id)a4;
-- (void)appDocumentForDocument:(id)a3 completionHandler:(id)a4;
+- (id)xhrSessionConfigurationForContext:(id)context;
+- (void)appContext:(id)context didFailWithError:(id)error;
+- (void)appContext:(id)context didStartWithOptions:(id)options;
+- (void)appContext:(id)context didStopWithOptions:(id)options;
+- (void)appContext:(id)context evaluateAppJavaScriptInContext:(id)inContext;
+- (void)appDocumentForDocument:(id)document completionHandler:(id)handler;
 - (void)dealloc;
-- (void)evaluate:(id)a3 completionHandler:(id)a4;
+- (void)evaluate:(id)evaluate completionHandler:(id)handler;
 - (void)release;
-- (void)sendErrorWithMessage:(id)a3;
+- (void)sendErrorWithMessage:(id)message;
 - (void)start;
 - (void)stop;
 - (void)transitionToInvalidState;
@@ -54,10 +54,10 @@
   return 0;
 }
 
-- (VSApplication)initWithBootURL:(id)a3
+- (VSApplication)initWithBootURL:(id)l
 {
-  v4 = a3;
-  if (!v4)
+  lCopy = l;
+  if (!lCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The bootURL parameter must not be nil."];
   }
@@ -71,7 +71,7 @@
     appDeviceConfig = v5->_appDeviceConfig;
     v5->_appDeviceConfig = v6;
 
-    v8 = [v4 copy];
+    v8 = [lCopy copy];
     bootURL = v5->_bootURL;
     v5->_bootURL = v8;
 
@@ -106,7 +106,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_270DD4000, v3, OS_LOG_TYPE_DEFAULT, "Deallocating application: %p", buf, 0xCu);
   }
 
@@ -147,51 +147,51 @@ void __39__VSApplication_transitionToReadyState__block_invoke(uint64_t a1)
 
 - (void)transitionToStoppingState
 {
-  v2 = [(VSApplication *)self appContext];
-  [v2 stop];
+  appContext = [(VSApplication *)self appContext];
+  [appContext stop];
 }
 
 - (void)transitionToInvalidState
 {
   [(VSApplication *)self setAppContext:0];
-  v3 = [(VSApplication *)self cookieStorage];
-  [v3 vs_saveCookies];
+  cookieStorage = [(VSApplication *)self cookieStorage];
+  [cookieStorage vs_saveCookies];
 
   CFRelease(self);
 }
 
 - (void)start
 {
-  v2 = [(VSApplication *)self stateMachine];
-  [v2 enqueueEvent:@"Start"];
+  stateMachine = [(VSApplication *)self stateMachine];
+  [stateMachine enqueueEvent:@"Start"];
 }
 
 - (void)stop
 {
-  v2 = [(VSApplication *)self stateMachine];
-  [v2 enqueueEvent:@"Stop"];
+  stateMachine = [(VSApplication *)self stateMachine];
+  [stateMachine enqueueEvent:@"Stop"];
 }
 
-- (void)evaluate:(id)a3 completionHandler:(id)a4
+- (void)evaluate:(id)evaluate completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(VSApplication *)self appContext];
-  [v8 evaluate:v7 completionBlock:v6];
+  handlerCopy = handler;
+  evaluateCopy = evaluate;
+  appContext = [(VSApplication *)self appContext];
+  [appContext evaluate:evaluateCopy completionBlock:handlerCopy];
 }
 
-- (void)sendErrorWithMessage:(id)a3
+- (void)sendErrorWithMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(VSApplication *)self appContext];
-  [v5 setException:0 withErrorMessage:v4];
+  messageCopy = message;
+  appContext = [(VSApplication *)self appContext];
+  [appContext setException:0 withErrorMessage:messageCopy];
 }
 
-- (void)appDocumentForDocument:(id)a3 completionHandler:(id)a4
+- (void)appDocumentForDocument:(id)document completionHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  documentCopy = document;
   v7 = VSDefaultLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -200,16 +200,16 @@ void __39__VSApplication_transitionToReadyState__block_invoke(uint64_t a1)
     _os_log_impl(&dword_270DD4000, v7, OS_LOG_TYPE_DEFAULT, "Entering %s", buf, 0xCu);
   }
 
-  v8 = [MEMORY[0x277D1B028] currentAppContext];
-  v9 = [v8 jsContext];
-  v10 = [v9 objectForKeyedSubscript:@"App"];
+  currentAppContext = [MEMORY[0x277D1B028] currentAppContext];
+  jsContext = [currentAppContext jsContext];
+  v10 = [jsContext objectForKeyedSubscript:@"App"];
 
   v11 = v10;
-  v12 = [objc_alloc(MEMORY[0x277D1B038]) initWithAppContext:v8 document:v6 owner:v11];
+  v12 = [objc_alloc(MEMORY[0x277D1B038]) initWithAppContext:currentAppContext document:documentCopy owner:v11];
 
   v13 = VSDefaultLogObject();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (handlerCopy)
   {
     if (v14)
     {
@@ -222,7 +222,7 @@ void __39__VSApplication_transitionToReadyState__block_invoke(uint64_t a1)
     v17[1] = 3221225472;
     v17[2] = __58__VSApplication_appDocumentForDocument_completionHandler___block_invoke;
     v17[3] = &unk_279E1A000;
-    v19 = v5;
+    v19 = handlerCopy;
     v18 = v12;
     __58__VSApplication_appDocumentForDocument_completionHandler___block_invoke(v17);
     v15 = VSDefaultLogObject();
@@ -246,61 +246,61 @@ void __39__VSApplication_transitionToReadyState__block_invoke(uint64_t a1)
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appContext:(id)a3 didStartWithOptions:(id)a4
+- (void)appContext:(id)context didStartWithOptions:(id)options
 {
-  v4 = [(VSApplication *)self stateMachine:a3];
+  v4 = [(VSApplication *)self stateMachine:context];
   [v4 enqueueEvent:@"Finished starting"];
 }
 
-- (void)appContext:(id)a3 didFailWithError:(id)a4
+- (void)appContext:(id)context didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = VSErrorLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [VSApplication appContext:v5 didFailWithError:v6];
+    [VSApplication appContext:errorCopy didFailWithError:v6];
   }
 
-  [(VSApplication *)self setFailureToStart:v5];
-  v7 = [(VSApplication *)self stateMachine];
-  [v7 enqueueEvent:@"Failed to start"];
+  [(VSApplication *)self setFailureToStart:errorCopy];
+  stateMachine = [(VSApplication *)self stateMachine];
+  [stateMachine enqueueEvent:@"Failed to start"];
 }
 
-- (void)appContext:(id)a3 didStopWithOptions:(id)a4
+- (void)appContext:(id)context didStopWithOptions:(id)options
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  optionsCopy = options;
   v6 = VSDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = optionsCopy;
     _os_log_impl(&dword_270DD4000, v6, OS_LOG_TYPE_DEFAULT, "App context did stop with options: %@.", &v9, 0xCu);
   }
 
-  v7 = [(VSApplication *)self stateMachine];
-  [v7 enqueueEvent:@"Finished stopping"];
+  stateMachine = [(VSApplication *)self stateMachine];
+  [stateMachine enqueueEvent:@"Finished stopping"];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appContext:(id)a3 evaluateAppJavaScriptInContext:(id)a4
+- (void)appContext:(id)context evaluateAppJavaScriptInContext:(id)inContext
 {
-  v5 = a4;
-  v6 = [(VSApplication *)self delegate];
-  [v6 application:self evaluateAppJavascriptInContext:v5];
+  inContextCopy = inContext;
+  delegate = [(VSApplication *)self delegate];
+  [delegate application:self evaluateAppJavascriptInContext:inContextCopy];
 }
 
-- (id)xhrSessionConfigurationForContext:(id)a3
+- (id)xhrSessionConfigurationForContext:(id)context
 {
-  v4 = [(VSApplication *)self cookieStorage];
-  if (v4)
+  cookieStorage = [(VSApplication *)self cookieStorage];
+  if (cookieStorage)
   {
     v5 = MEMORY[0x277CCAD38];
-    v6 = [(VSApplication *)self auditToken];
-    v7 = [v5 vs_defaultSessionConfigurationForSourceAppWithAuditToken:v6];
+    auditToken = [(VSApplication *)self auditToken];
+    v7 = [v5 vs_defaultSessionConfigurationForSourceAppWithAuditToken:auditToken];
 
-    [v7 setHTTPCookieStorage:v4];
+    [v7 setHTTPCookieStorage:cookieStorage];
   }
 
   else
@@ -311,42 +311,42 @@ void __39__VSApplication_transitionToReadyState__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)sourceApplicationBundleIdentifierForContext:(id)a3
+- (id)sourceApplicationBundleIdentifierForContext:(id)context
 {
-  v3 = [(VSApplication *)self auditToken];
-  v4 = [v3 bundleIdentifier];
+  auditToken = [(VSApplication *)self auditToken];
+  bundleIdentifier = [auditToken bundleIdentifier];
 
-  return v4;
+  return bundleIdentifier;
 }
 
-- (id)sourceApplicationAuditTokenDataForContext:(id)a3
+- (id)sourceApplicationAuditTokenDataForContext:(id)context
 {
-  v3 = [(VSApplication *)self auditToken];
-  v4 = [v3 tokenBytes];
+  auditToken = [(VSApplication *)self auditToken];
+  tokenBytes = [auditToken tokenBytes];
 
-  return v4;
+  return tokenBytes;
 }
 
 - (id)appIdentifier
 {
-  v2 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-  v3 = [v2 bundleIdentifier];
+  vs_frameworkBundle = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+  bundleIdentifier = [vs_frameworkBundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (id)appLaunchParams
 {
-  v3 = [(VSApplication *)self delegate];
-  v4 = [v3 launchParamsForApplication:self];
+  delegate = [(VSApplication *)self delegate];
+  v4 = [delegate launchParamsForApplication:self];
 
   return v4;
 }
 
 - (id)activeDocument
 {
-  v3 = [(VSApplication *)self delegate];
-  v4 = [v3 activeAppDocumentForApplication:self];
+  delegate = [(VSApplication *)self delegate];
+  v4 = [delegate activeAppDocumentForApplication:self];
 
   return v4;
 }
@@ -397,18 +397,18 @@ id __36__VSApplication_viewElementRegistry__block_invoke_2()
 
 - (NSHTTPCookieStorage)cookieStorage
 {
-  v2 = self->_cookieStorage;
-  if (!v2)
+  vs_sharedCookieStorage = self->_cookieStorage;
+  if (!vs_sharedCookieStorage)
   {
-    v2 = [MEMORY[0x277CCAA38] vs_sharedCookieStorage];
-    if (!v2)
+    vs_sharedCookieStorage = [MEMORY[0x277CCAA38] vs_sharedCookieStorage];
+    if (!vs_sharedCookieStorage)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The storage parameter must not be nil."];
-      v2 = 0;
+      vs_sharedCookieStorage = 0;
     }
   }
 
-  return v2;
+  return vs_sharedCookieStorage;
 }
 
 - (VSApplicationDelegate)delegate

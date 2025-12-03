@@ -1,16 +1,16 @@
 @interface BroadwayActivationStartViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BroadwayActivationStartViewController)initWithCoder:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BroadwayActivationStartViewController)initWithCoder:(id)coder;
 - (void)animationDidComplete;
 - (void)animationDidStart;
-- (void)handleActivateButton:(id)a3;
+- (void)handleActivateButton:(id)button;
 - (void)handleCompletedIfReady;
-- (void)handleDismissButton:(id)a3;
-- (void)handleTapOutsideView:(id)a3;
+- (void)handleDismissButton:(id)button;
+- (void)handleTapOutsideView:(id)view;
 - (void)prepareForRetry;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BroadwayActivationStartViewController
@@ -36,9 +36,9 @@
   }
 }
 
-- (void)handleTapOutsideView:(id)a3
+- (void)handleTapOutsideView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (dword_1001BEFE8 <= 30 && (dword_1001BEFE8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -75,9 +75,9 @@
   }
 }
 
-- (void)handleActivateButton:(id)a3
+- (void)handleActivateButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if ((BYTE1(self->_activationCode) & 1) == 0)
   {
     if (dword_1001BEFE8 <= 30 && (dword_1001BEFE8 != -1 || _LogCategory_Initialize()))
@@ -89,8 +89,8 @@
     [*(&self->_dismissButton + 1) setHidden:1];
     [*(&self->_activateButton + 1) setHidden:0];
     [*(&self->_activityLabel + 1) startAnimating];
-    v5 = [(SVSBaseViewController *)self containerView];
-    [v5 setSwipeDismissible:0];
+    containerView = [(SVSBaseViewController *)self containerView];
+    [containerView setSwipeDismissible:0];
 
     if (dword_1001BEFE8 <= 30 && (dword_1001BEFE8 != -1 || _LogCategory_Initialize()))
     {
@@ -105,31 +105,31 @@
       handler[2] = sub_100121238;
       handler[3] = &unk_100195A70;
       v12 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, &_dispatch_main_q);
-      v13 = self;
-      v6 = v12;
-      dispatch_source_set_event_handler(v6, handler);
+      selfCopy = self;
+      sharedInstance = v12;
+      dispatch_source_set_event_handler(sharedInstance, handler);
       SFDispatchTimerSet();
-      dispatch_resume(v6);
+      dispatch_resume(sharedInstance);
     }
 
     else
     {
-      v6 = [(objc_class *)off_1001BF058() sharedInstance];
-      v7 = [self->super._mainController physicalCard];
+      sharedInstance = [(objc_class *)off_1001BF058() sharedInstance];
+      physicalCard = [self->super._mainController physicalCard];
       v8 = *(&self->_activityIndicatorView + 1);
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_100121298;
       v10[3] = &unk_100195610;
       v10[4] = self;
-      [v6 activatePhysicalCard:v7 withActivationCode:v8 forFeatureIdentifier:2 completion:v10];
+      [sharedInstance activatePhysicalCard:physicalCard withActivationCode:v8 forFeatureIdentifier:2 completion:v10];
     }
   }
 }
 
-- (void)handleDismissButton:(id)a3
+- (void)handleDismissButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BEFE8 <= 30 && (dword_1001BEFE8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -138,24 +138,24 @@
   [self->super._mainController dismiss:5];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   if (BYTE1(self->_activationCode))
   {
     return 0;
   }
 
-  v6 = a3;
-  v7 = [a4 view];
-  v8 = [v6 view];
+  recognizerCopy = recognizer;
+  view = [touch view];
+  view2 = [recognizerCopy view];
 
-  v4 = v7 == v8;
+  v4 = view == view2;
   return v4;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BEFE8 <= 30 && (dword_1001BEFE8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -163,17 +163,17 @@
 
   v6.receiver = self;
   v6.super_class = BroadwayActivationStartViewController;
-  [(BroadwayActivationStartViewController *)&v6 viewDidDisappear:v3];
+  [(BroadwayActivationStartViewController *)&v6 viewDidDisappear:disappearCopy];
   [*(&self->_cardViewHeight + 1) removeAnimationObserver:self];
   v5 = *(&self->_cardViewHeight + 1);
   *(&self->_cardViewHeight + 1) = 0;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v14.receiver = self;
   v14.super_class = BroadwayActivationStartViewController;
-  [(SVSBaseViewController *)&v14 viewDidAppear:a3];
+  [(SVSBaseViewController *)&v14 viewDidAppear:appear];
   if (BYTE1(self->_activationResult) == 1)
   {
     [(BroadwayActivationStartViewController *)self handleActivateButton:0];
@@ -181,18 +181,18 @@
 
   else
   {
-    v4 = [self->super._mainController physicalCard];
-    v5 = [v4 nameOnCard];
-    v6 = [v5 length];
+    physicalCard = [self->super._mainController physicalCard];
+    nameOnCard = [physicalCard nameOnCard];
+    v6 = [nameOnCard length];
 
     if (v6)
     {
-      v7 = [self->super._mainController physicalCard];
-      v8 = [v7 nameOnCard];
-      v9 = v8;
-      if (v8)
+      physicalCard2 = [self->super._mainController physicalCard];
+      nameOnCard2 = [physicalCard2 nameOnCard];
+      v9 = nameOnCard2;
+      if (nameOnCard2)
       {
-        v10 = sub_1001218CC(v8);
+        v10 = sub_1001218CC(nameOnCard2);
       }
 
       else
@@ -218,9 +218,9 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BEFE8 <= 30 && (dword_1001BEFE8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -228,13 +228,13 @@
 
   v25.receiver = self;
   v25.super_class = BroadwayActivationStartViewController;
-  [(SVSBaseViewController *)&v25 viewWillAppear:v3];
+  [(SVSBaseViewController *)&v25 viewWillAppear:appearCopy];
   if ((self->_activationResult & 0x100) == 0)
   {
-    v5 = [self->super._mainController _remoteViewControllerProxy];
-    [v5 setStatusBarHidden:1 withDuration:0.0];
+    _remoteViewControllerProxy = [self->super._mainController _remoteViewControllerProxy];
+    [_remoteViewControllerProxy setStatusBarHidden:1 withDuration:0.0];
 
-    v6 = [self->super._mainController userInfo];
+    userInfo = [self->super._mainController userInfo];
     CFStringGetTypeID();
     v7 = CFDictionaryGetTypedValue();
     v8 = *(&self->_activityIndicatorView + 1);
@@ -244,22 +244,22 @@
     [v9 setDelegate:self];
     [v9 setNumberOfTapsRequired:1];
     [v9 setCancelsTouchesInView:0];
-    v10 = [(BroadwayActivationStartViewController *)self view];
-    [v10 addGestureRecognizer:v9];
+    view = [(BroadwayActivationStartViewController *)self view];
+    [view addGestureRecognizer:v9];
 
-    v11 = [(SVSBaseViewController *)self containerView];
-    [v11 setSwipeDismissible:1];
+    containerView = [(SVSBaseViewController *)self containerView];
+    [containerView setSwipeDismissible:1];
 
     v12 = SFFontForTextStyleWithAdditionalSymbolicTraits();
     [*(&self->_cardView + 1) setFont:v12];
 
     [*(&self->_cardView + 1) setAdjustsFontForContentSizeCategory:0];
     v13 = SFFontForTextStyleWithAdditionalSymbolicTraits();
-    v14 = [*(&self->_dismissButton + 1) titleLabel];
-    [v14 setFont:v13];
+    titleLabel = [*(&self->_dismissButton + 1) titleLabel];
+    [titleLabel setFont:v13];
 
-    v15 = [*(&self->_dismissButton + 1) titleLabel];
-    [v15 setAdjustsFontForContentSizeCategory:0];
+    titleLabel2 = [*(&self->_dismissButton + 1) titleLabel];
+    [titleLabel2 setAdjustsFontForContentSizeCategory:0];
 
     v16 = +[UIColor systemExtraLightGrayColor];
     [*(&self->_dismissButton + 1) setBackgroundColor:v16];
@@ -317,11 +317,11 @@
   BYTE2(self->_activationResult) = 0;
 }
 
-- (BroadwayActivationStartViewController)initWithCoder:(id)a3
+- (BroadwayActivationStartViewController)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = BroadwayActivationStartViewController;
-  result = [(BroadwayActivationStartViewController *)&v4 initWithCoder:a3];
+  result = [(BroadwayActivationStartViewController *)&v4 initWithCoder:coder];
   if (result)
   {
     *(&result->_activationStarted + 1) = 999;

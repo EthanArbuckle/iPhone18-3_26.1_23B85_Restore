@@ -1,17 +1,17 @@
 @interface PLConversation
-+ (id)albumWithConversationID:(id)a3 inLibrary:(id)a4;
-+ (id)albumsWithConversationIDs:(id)a3 inLibrary:(id)a4;
-+ (id)createOrUpdateObjectFromSearchableItem:(id)a3 library:(id)a4 fullIndexSyncStartDate:(id)a5 createIfNeeded:(BOOL)a6 didCreate:(BOOL *)a7 isSyndicatable:(BOOL *)a8 error:(id *)a9;
-+ (id)insertNewConversationAlbumWithConversationID:(id)a3 inManagedObjectContext:(id)a4;
-- (BOOL)_isAssetIncludedInConversationDates:(id)a3;
-- (BOOL)_isDateAfterEndDate:(id)a3;
-- (BOOL)_isDateBeforeStartDate:(id)a3;
++ (id)albumWithConversationID:(id)d inLibrary:(id)library;
++ (id)albumsWithConversationIDs:(id)ds inLibrary:(id)library;
++ (id)createOrUpdateObjectFromSearchableItem:(id)item library:(id)library fullIndexSyncStartDate:(id)date createIfNeeded:(BOOL)needed didCreate:(BOOL *)create isSyndicatable:(BOOL *)syndicatable error:(id *)error;
++ (id)insertNewConversationAlbumWithConversationID:(id)d inManagedObjectContext:(id)context;
+- (BOOL)_isAssetIncludedInConversationDates:(id)dates;
+- (BOOL)_isDateAfterEndDate:(id)date;
+- (BOOL)_isDateBeforeStartDate:(id)date;
 - (id)_orderedBatchedAssets;
 - (unint64_t)count;
-- (void)_updateAssetSyndicationState:(unsigned __int16)a3;
-- (void)_updateEndDate:(id)a3;
-- (void)_updateStartDate:(id)a3;
-- (void)updateConversationDatesFromAddedAsset:(id)a3;
+- (void)_updateAssetSyndicationState:(unsigned __int16)state;
+- (void)_updateEndDate:(id)date;
+- (void)_updateStartDate:(id)date;
+- (void)updateConversationDatesFromAddedAsset:(id)asset;
 - (void)willSave;
 @end
 
@@ -19,8 +19,8 @@
 
 - (unint64_t)count
 {
-  v2 = [(PLConversation *)self assets];
-  v3 = [v2 count];
+  assets = [(PLConversation *)self assets];
+  v3 = [assets count];
 
   return v3;
 }
@@ -30,12 +30,12 @@
   v6.receiver = self;
   v6.super_class = PLConversation;
   [(PLGenericAlbum *)&v6 willSave];
-  v3 = [(PLConversation *)self managedObjectContext];
+  managedObjectContext = [(PLConversation *)self managedObjectContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(PLConversation *)self changedValues];
-    v5 = [v4 objectForKey:@"syndicate"];
+    changedValues = [(PLConversation *)self changedValues];
+    v5 = [changedValues objectForKey:@"syndicate"];
 
     if (v5)
     {
@@ -44,16 +44,16 @@
   }
 }
 
-- (void)_updateAssetSyndicationState:(unsigned __int16)a3
+- (void)_updateAssetSyndicationState:(unsigned __int16)state
 {
-  v3 = a3;
+  stateCopy = state;
   v17 = *MEMORY[0x1E69E9840];
-  v4 = [(PLConversation *)self assets];
+  assets = [(PLConversation *)self assets];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [assets countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -64,33 +64,33 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(assets);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 syndicationState];
-        if (v3 == 1)
+        syndicationState = [v9 syndicationState];
+        if (stateCopy == 1)
         {
-          v11 = v10 & 0xFFFB;
+          v11 = syndicationState & 0xFFFB;
         }
 
-        else if (v3)
+        else if (stateCopy)
         {
           v11 = 0;
         }
 
         else
         {
-          v11 = v10 | 4;
+          v11 = syndicationState | 4;
         }
 
-        if (v10 != v11)
+        if (syndicationState != v11)
         {
           [v9 setSyndicationState:v11];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [assets countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -114,9 +114,9 @@
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
   [v5 setSortDescriptors:v8];
 
-  v9 = [(PLConversation *)self managedObjectContext];
+  managedObjectContext = [(PLConversation *)self managedObjectContext];
   v17 = 0;
-  v10 = [v9 executeFetchRequest:v5 error:&v17];
+  v10 = [managedObjectContext executeFetchRequest:v5 error:&v17];
   v11 = v17;
   if (!v10)
   {
@@ -133,25 +133,25 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     v14 = [v10 count];
-    v15 = [(PLManagedObject *)self shortObjectIDURI];
+    shortObjectIDURI = [(PLManagedObject *)self shortObjectIDURI];
     *buf = 134218242;
     v19 = v14;
     v20 = 2112;
-    v21 = v15;
+    v21 = shortObjectIDURI;
     _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEBUG, "Batch fetched %lu assets from conversation %@", buf, 0x16u);
   }
 
   return v10;
 }
 
-- (BOOL)_isDateAfterEndDate:(id)a3
+- (BOOL)_isDateAfterEndDate:(id)date
 {
-  v4 = a3;
-  v5 = [(PLConversation *)self endDate];
-  if (v5)
+  dateCopy = date;
+  endDate = [(PLConversation *)self endDate];
+  if (endDate)
   {
-    v6 = [(PLConversation *)self endDate];
-    v7 = [v6 compare:v4] == -1;
+    endDate2 = [(PLConversation *)self endDate];
+    v7 = [endDate2 compare:dateCopy] == -1;
   }
 
   else
@@ -162,14 +162,14 @@
   return v7;
 }
 
-- (BOOL)_isDateBeforeStartDate:(id)a3
+- (BOOL)_isDateBeforeStartDate:(id)date
 {
-  v4 = a3;
-  v5 = [(PLConversation *)self startDate];
-  if (v5)
+  dateCopy = date;
+  startDate = [(PLConversation *)self startDate];
+  if (startDate)
   {
-    v6 = [(PLConversation *)self startDate];
-    v7 = [v6 compare:v4] == 1;
+    startDate2 = [(PLConversation *)self startDate];
+    v7 = [startDate2 compare:dateCopy] == 1;
   }
 
   else
@@ -180,73 +180,73 @@
   return v7;
 }
 
-- (BOOL)_isAssetIncludedInConversationDates:(id)a3
+- (BOOL)_isAssetIncludedInConversationDates:(id)dates
 {
-  v3 = a3;
-  if ([v3 isInTrash])
+  datesCopy = dates;
+  if ([datesCopy isInTrash])
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = [v3 isDeleted] ^ 1;
+    v4 = [datesCopy isDeleted] ^ 1;
   }
 
   return v4;
 }
 
-- (void)updateConversationDatesFromAddedAsset:(id)a3
+- (void)updateConversationDatesFromAddedAsset:(id)asset
 {
-  v4 = a3;
-  v6 = [v4 addedDate];
-  v5 = [(PLConversation *)self _isAssetIncludedInConversationDates:v4];
+  assetCopy = asset;
+  addedDate = [assetCopy addedDate];
+  v5 = [(PLConversation *)self _isAssetIncludedInConversationDates:assetCopy];
 
   if (v5)
   {
-    if ([(PLConversation *)self _isDateBeforeStartDate:v6])
+    if ([(PLConversation *)self _isDateBeforeStartDate:addedDate])
     {
-      [(PLConversation *)self _updateStartDate:v6];
+      [(PLConversation *)self _updateStartDate:addedDate];
     }
 
-    if ([(PLConversation *)self _isDateAfterEndDate:v6])
+    if ([(PLConversation *)self _isDateAfterEndDate:addedDate])
     {
-      [(PLConversation *)self _updateEndDate:v6];
+      [(PLConversation *)self _updateEndDate:addedDate];
     }
   }
 }
 
-- (void)_updateEndDate:(id)a3
+- (void)_updateEndDate:(id)date
 {
-  v9 = a3;
-  v4 = [(PLConversation *)self endDate];
-  if (!v4 || (v5 = v4, -[PLConversation endDate](self, "endDate"), v6 = objc_claimAutoreleasedReturnValue(), [v6 timeIntervalSinceDate:v9], v8 = fabs(v7), v6, v5, v8 > 2.22044605e-16))
+  dateCopy = date;
+  endDate = [(PLConversation *)self endDate];
+  if (!endDate || (v5 = endDate, -[PLConversation endDate](self, "endDate"), v6 = objc_claimAutoreleasedReturnValue(), [v6 timeIntervalSinceDate:dateCopy], v8 = fabs(v7), v6, v5, v8 > 2.22044605e-16))
   {
-    [(PLConversation *)self setEndDate:v9];
+    [(PLConversation *)self setEndDate:dateCopy];
   }
 }
 
-- (void)_updateStartDate:(id)a3
+- (void)_updateStartDate:(id)date
 {
-  v9 = a3;
-  v4 = [(PLConversation *)self startDate];
-  if (!v4 || (v5 = v4, -[PLConversation startDate](self, "startDate"), v6 = objc_claimAutoreleasedReturnValue(), [v6 timeIntervalSinceDate:v9], v8 = fabs(v7), v6, v5, v8 > 2.22044605e-16))
+  dateCopy = date;
+  startDate = [(PLConversation *)self startDate];
+  if (!startDate || (v5 = startDate, -[PLConversation startDate](self, "startDate"), v6 = objc_claimAutoreleasedReturnValue(), [v6 timeIntervalSinceDate:dateCopy], v8 = fabs(v7), v6, v5, v8 > 2.22044605e-16))
   {
-    [(PLConversation *)self setStartDate:v9];
+    [(PLConversation *)self setStartDate:dateCopy];
   }
 }
 
-+ (id)createOrUpdateObjectFromSearchableItem:(id)a3 library:(id)a4 fullIndexSyncStartDate:(id)a5 createIfNeeded:(BOOL)a6 didCreate:(BOOL *)a7 isSyndicatable:(BOOL *)a8 error:(id *)a9
++ (id)createOrUpdateObjectFromSearchableItem:(id)item library:(id)library fullIndexSyncStartDate:(id)date createIfNeeded:(BOOL)needed didCreate:(BOOL *)create isSyndicatable:(BOOL *)syndicatable error:(id *)error
 {
-  v11 = a6;
+  neededCopy = needed;
   v32 = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v14 = a3;
-  IsChatAutoDonating = PLSearchableItemMessagesIsChatAutoDonating(v14);
-  v16 = [v14 uniqueIdentifier];
+  libraryCopy = library;
+  itemCopy = item;
+  IsChatAutoDonating = PLSearchableItemMessagesIsChatAutoDonating(itemCopy);
+  uniqueIdentifier = [itemCopy uniqueIdentifier];
 
-  v17 = [v13 managedObjectContext];
-  v18 = [PLConversation albumWithConversationID:v16 inLibrary:v13];
+  managedObjectContext = [libraryCopy managedObjectContext];
+  v18 = [PLConversation albumWithConversationID:uniqueIdentifier inLibrary:libraryCopy];
 
   if (v18)
   {
@@ -255,20 +255,20 @@
 
   else
   {
-    v19 = v11;
+    v19 = neededCopy;
   }
 
   if (v19)
   {
-    v18 = [PLConversation insertNewConversationAlbumWithConversationID:v16 inManagedObjectContext:v17];
+    v18 = [PLConversation insertNewConversationAlbumWithConversationID:uniqueIdentifier inManagedObjectContext:managedObjectContext];
     v20 = PLSyndicationGetLog();
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_14;
     }
 
-    v21 = [v18 uuid];
-    v22 = v21;
+    uuid = [v18 uuid];
+    v22 = uuid;
     v23 = @"not ";
     if (IsChatAutoDonating)
     {
@@ -276,7 +276,7 @@
     }
 
     *buf = 138543618;
-    v29 = v21;
+    v29 = uuid;
     v30 = 2114;
     v31 = v23;
     v24 = "[sync] created new PLConversation with UUID %{public}@ (%{public}@autoDonating) for syndication conversation";
@@ -290,8 +290,8 @@
       goto LABEL_14;
     }
 
-    v25 = [v18 uuid];
-    v22 = v25;
+    uuid2 = [v18 uuid];
+    v22 = uuid2;
     v26 = @"not ";
     if (IsChatAutoDonating)
     {
@@ -299,7 +299,7 @@
     }
 
     *buf = 138543618;
-    v29 = v25;
+    v29 = uuid2;
     v30 = 2114;
     v31 = v26;
     v24 = "[sync] found existing PLConversation with UUID %{public}@ (%{public}@autoDonating) for syndication conversation";
@@ -313,73 +313,73 @@ LABEL_14:
     [v18 setSyndicate:IsChatAutoDonating];
   }
 
-  if (a7)
+  if (create)
   {
-    *a7 = v19;
+    *create = v19;
   }
 
-  if (a8)
+  if (syndicatable)
   {
-    *a8 = 1;
+    *syndicatable = 1;
   }
 
-  if (a9)
+  if (error)
   {
-    *a9 = 0;
+    *error = 0;
   }
 
   return v18;
 }
 
-+ (id)albumWithConversationID:(id)a3 inLibrary:(id)a4
++ (id)albumWithConversationID:(id)d inLibrary:(id)library
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (d)
   {
-    v13 = a3;
+    dCopy = d;
     v6 = MEMORY[0x1E695DEC8];
-    v7 = a4;
-    v8 = a3;
-    v9 = [v6 arrayWithObjects:&v13 count:1];
+    libraryCopy = library;
+    dCopy2 = d;
+    v9 = [v6 arrayWithObjects:&dCopy count:1];
 
-    v10 = [a1 albumsWithConversationIDs:v9 inLibrary:{v7, v13, v14}];
+    v10 = [self albumsWithConversationIDs:v9 inLibrary:{libraryCopy, dCopy, v14}];
 
-    v11 = [v10 firstObject];
+    firstObject = [v10 firstObject];
   }
 
   else
   {
-    v11 = 0;
+    firstObject = 0;
   }
 
-  return v11;
+  return firstObject;
 }
 
-+ (id)albumsWithConversationIDs:(id)a3 inLibrary:(id)a4
++ (id)albumsWithConversationIDs:(id)ds inLibrary:(id)library
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  dsCopy = ds;
+  libraryCopy = library;
+  if ([dsCopy count])
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = [v6 managedObjectContext];
+    managedObjectContext = [libraryCopy managedObjectContext];
     v9 = MEMORY[0x1E695D5E0];
     v10 = +[PLConversation entityName];
     v11 = [v9 fetchRequestWithEntityName:v10];
 
-    v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"importSessionID", v5];
-    [v11 setPredicate:v12];
+    dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"importSessionID", dsCopy];
+    [v11 setPredicate:dsCopy];
 
-    [v11 setFetchLimit:{objc_msgSend(v5, "count")}];
+    [v11 setFetchLimit:{objc_msgSend(dsCopy, "count")}];
     [v11 setReturnsObjectsAsFaults:0];
-    if ([v5 count] >= 0x65)
+    if ([dsCopy count] >= 0x65)
     {
       [v11 setFetchBatchSize:100];
     }
 
     v17 = 0;
-    v13 = [v8 executeFetchRequest:v11 error:&v17];
+    v13 = [managedObjectContext executeFetchRequest:v11 error:&v17];
     v14 = v17;
     if (!v13)
     {
@@ -403,11 +403,11 @@ LABEL_14:
   return v13;
 }
 
-+ (id)insertNewConversationAlbumWithConversationID:(id)a3 inManagedObjectContext:(id)a4
++ (id)insertNewConversationAlbumWithConversationID:(id)d inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = [(PLManagedObject *)PLConversation insertInManagedObjectContext:a4];
-  [v6 setImportSessionID:v5];
+  dCopy = d;
+  v6 = [(PLManagedObject *)PLConversation insertInManagedObjectContext:context];
+  [v6 setImportSessionID:dCopy];
 
   [v6 setKindValue:1509];
 

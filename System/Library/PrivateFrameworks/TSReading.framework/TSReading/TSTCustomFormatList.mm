@@ -1,12 +1,12 @@
 @interface TSTCustomFormatList
-- (BOOL)supportsIDMapForType:(int)a3;
+- (BOOL)supportsIDMapForType:(int)type;
 - (TSTCustomFormatList)init;
-- (TSTCustomFormatList)initWithContext:(id)a3;
+- (TSTCustomFormatList)initWithContext:(id)context;
 - (id)allNumberKeys;
-- (id)customFormatWrapperForKey:(unsigned int)a3;
-- (id)newUniqueNameFromName:(id)a3 preserveSeed:(BOOL)a4;
-- (unsigned)addCustomFormat:(void *)a3 duringImport:(BOOL)a4;
-- (unsigned)addCustomFormat:(void *)a3 withOldKey:(unsigned int)a4;
+- (id)customFormatWrapperForKey:(unsigned int)key;
+- (id)newUniqueNameFromName:(id)name preserveSeed:(BOOL)seed;
+- (unsigned)addCustomFormat:(void *)format duringImport:(BOOL)import;
+- (unsigned)addCustomFormat:(void *)format withOldKey:(unsigned int)key;
 - (void)dealloc;
 - (void)p_setupNamesList;
 @end
@@ -15,17 +15,17 @@
 
 - (TSTCustomFormatList)init
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTCustomFormatList init]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCustomFormatList.mm"), 16, @"Don't use init for TSTCustomFormatList"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCustomFormatList.mm"), 16, @"Don't use init for TSTCustomFormatList"}];
   return 0;
 }
 
-- (TSTCustomFormatList)initWithContext:(id)a3
+- (TSTCustomFormatList)initWithContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = TSTCustomFormatList;
-  result = [(TSTTableDataList *)&v4 initWithType:6 context:a3];
+  result = [(TSTTableDataList *)&v4 initWithType:6 context:context];
   if (result)
   {
     result->mNamesList = 0;
@@ -41,9 +41,9 @@
   [(TSTTableDataList *)&v3 dealloc];
 }
 
-- (BOOL)supportsIDMapForType:(int)a3
+- (BOOL)supportsIDMapForType:(int)type
 {
-  if (a3 == 6)
+  if (type == 6)
   {
     return 1;
   }
@@ -55,10 +55,10 @@
   return [(TSTTableDataList *)&v6 supportsIDMapForType:?];
 }
 
-- (unsigned)addCustomFormat:(void *)a3 duringImport:(BOOL)a4
+- (unsigned)addCustomFormat:(void *)format duringImport:(BOOL)import
 {
-  v4 = a4;
-  KeyForCustomFormat = TSTTableDataListGetKeyForCustomFormat(&self->super, a3);
+  importCopy = import;
+  KeyForCustomFormat = TSTTableDataListGetKeyForCustomFormat(&self->super, format);
   if (KeyForCustomFormat)
   {
     v8 = KeyForCustomFormat;
@@ -67,9 +67,9 @@
 
   else
   {
-    v9 = [(TSTCustomFormatList *)self newUniqueNameFromName:TSUCustomFormat::formatName(a3) preserveSeed:v4];
-    TSUCustomFormat::setFormatName(a3, v9);
-    v10 = TSTTableDataListAddCustomFormat(&self->super, a3);
+    v9 = [(TSTCustomFormatList *)self newUniqueNameFromName:TSUCustomFormat::formatName(format) preserveSeed:importCopy];
+    TSUCustomFormat::setFormatName(format, v9);
+    v10 = TSTTableDataListAddCustomFormat(&self->super, format);
     v8 = v10;
     mNamesList = self->mNamesList;
     if (mNamesList)
@@ -91,20 +91,20 @@
   return v8;
 }
 
-- (unsigned)addCustomFormat:(void *)a3 withOldKey:(unsigned int)a4
+- (unsigned)addCustomFormat:(void *)format withOldKey:(unsigned int)key
 {
-  v7 = [(TSTCustomFormatList *)self customFormatForKey:*&a4];
-  if (v7 && (TSUCustomFormat::customFormatIsEqual(v7, a3) & 1) != 0)
+  v7 = [(TSTCustomFormatList *)self customFormatForKey:*&key];
+  if (v7 && (TSUCustomFormat::customFormatIsEqual(v7, format) & 1) != 0)
   {
-    return a4;
+    return key;
   }
 
-  return [(TSTCustomFormatList *)self addCustomFormat:a3 duringImport:0];
+  return [(TSTCustomFormatList *)self addCustomFormat:format duringImport:0];
 }
 
-- (id)customFormatWrapperForKey:(unsigned int)a3
+- (id)customFormatWrapperForKey:(unsigned int)key
 {
-  v3 = [objc_alloc(MEMORY[0x277D6C2B8]) initWithCustomFormat:TSTTableDataListGetCustomFormatForKey(self, *&a3)];
+  v3 = [objc_alloc(MEMORY[0x277D6C2B8]) initWithCustomFormat:TSTTableDataListGetCustomFormatForKey(self, *&key)];
 
   return v3;
 }
@@ -142,10 +142,10 @@
     {
       if ([(TSTCustomFormatList *)self count]>= 1)
       {
-        v5 = [(TSTTableDataList *)self nextID];
-        if ((v5 - 1) >= 1)
+        nextID = [(TSTTableDataList *)self nextID];
+        if ((nextID - 1) >= 1)
         {
-          LODWORD(v6) = v5;
+          LODWORD(v6) = nextID;
           do
           {
             v6 = (v6 - 1);
@@ -163,24 +163,24 @@
   }
 }
 
-- (id)newUniqueNameFromName:(id)a3 preserveSeed:(BOOL)a4
+- (id)newUniqueNameFromName:(id)name preserveSeed:(BOOL)seed
 {
-  if (!a3)
+  if (!name)
   {
-    a3 = [TSTBundle() localizedStringForKey:@"Custom Format" value:&stru_287D36338 table:@"TSTables"];
+    name = [TSTBundle() localizedStringForKey:@"Custom Format" value:&stru_287D36338 table:@"TSTables"];
   }
 
-  v16 = a3;
+  nameCopy = name;
   [(TSTCustomFormatList *)self p_setupNamesList];
-  if ([(NSMutableDictionary *)self->mNamesList objectForKey:v16])
+  if ([(NSMutableDictionary *)self->mNamesList objectForKey:nameCopy])
   {
-    v6 = v16;
+    v6 = nameCopy;
     do
     {
       v17 = v6;
       v7 = [v6 componentsSeparatedByString:@" "];
       v8 = [objc_msgSend(v7 objectAtIndex:{objc_msgSend(v7, "count") - 1), "integerValue"}];
-      if (!v8 || a4)
+      if (!v8 || seed)
       {
         v13 = v17;
         v12 = @" 1";
@@ -200,7 +200,7 @@
       v18 = [v13 stringByAppendingString:v12];
       v14 = [(NSMutableDictionary *)self->mNamesList objectForKey:v18];
       v6 = v18;
-      a4 = 0;
+      seed = 0;
     }
 
     while (v14);
@@ -208,7 +208,7 @@
 
   else
   {
-    v6 = v16;
+    v6 = nameCopy;
   }
 
   return v6;

@@ -1,22 +1,22 @@
 @interface SHMediaLibraryContext
-- (SHMediaLibraryContext)initWithSnapshot:(id)a3 startCondition:(id)a4;
+- (SHMediaLibraryContext)initWithSnapshot:(id)snapshot startCondition:(id)condition;
 - (SHMediaLibrarySyncDelegate)delegate;
 @end
 
 @implementation SHMediaLibraryContext
 
-- (SHMediaLibraryContext)initWithSnapshot:(id)a3 startCondition:(id)a4
+- (SHMediaLibraryContext)initWithSnapshot:(id)snapshot startCondition:(id)condition
 {
-  v7 = a3;
-  v8 = a4;
+  snapshotCopy = snapshot;
+  conditionCopy = condition;
   v12.receiver = self;
   v12.super_class = SHMediaLibraryContext;
   v9 = [(SHMediaLibraryContext *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_snapshot, a3);
-    objc_storeStrong(&v10->_startCondition, a4);
+    objc_storeStrong(&v9->_snapshot, snapshot);
+    objc_storeStrong(&v10->_startCondition, condition);
   }
 
   return v10;

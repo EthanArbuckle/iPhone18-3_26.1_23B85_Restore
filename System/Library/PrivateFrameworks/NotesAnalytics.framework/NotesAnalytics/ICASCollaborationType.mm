@@ -1,34 +1,34 @@
 @interface ICASCollaborationType
-- (ICASCollaborationType)initWithCollaborationType:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASCollaborationType)initWithCollaborationType:(int64_t)type;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASCollaborationType
 
-- (ICASCollaborationType)initWithCollaborationType:(int64_t)a3
+- (ICASCollaborationType)initWithCollaborationType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = ICASCollaborationType;
   result = [(ICASCollaborationType *)&v5 init];
   if (result)
   {
-    result->_collaborationType = a3;
+    result->_collaborationType = type;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASCollaborationType *)self collaborationType];
-  if ((v3 - 1) > 2)
+  collaborationType = [(ICASCollaborationType *)self collaborationType];
+  if ((collaborationType - 1) > 2)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799AF528[v3 - 1];
+    return off_2799AF528[collaborationType - 1];
   }
 }
 

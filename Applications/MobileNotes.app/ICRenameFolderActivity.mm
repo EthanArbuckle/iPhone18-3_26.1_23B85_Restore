@@ -1,25 +1,25 @@
 @interface ICRenameFolderActivity
-- (ICRenameFolderActivity)initWithFolder:(id)a3 presentingViewController:(id)a4;
+- (ICRenameFolderActivity)initWithFolder:(id)folder presentingViewController:(id)controller;
 - (UIViewController)presentingViewController;
 - (id)activityTitle;
-- (void)performActivityWithCompletion:(id)a3;
-- (void)textChanged:(id)a3;
+- (void)performActivityWithCompletion:(id)completion;
+- (void)textChanged:(id)changed;
 @end
 
 @implementation ICRenameFolderActivity
 
-- (ICRenameFolderActivity)initWithFolder:(id)a3 presentingViewController:(id)a4
+- (ICRenameFolderActivity)initWithFolder:(id)folder presentingViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  folderCopy = folder;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = ICRenameFolderActivity;
   v9 = [(ICRenameFolderActivity *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_folder, a3);
-    objc_storeWeak(&v10->_presentingViewController, v8);
+    objc_storeStrong(&v9->_folder, folder);
+    objc_storeWeak(&v10->_presentingViewController, controllerCopy);
   }
 
   return v10;
@@ -33,12 +33,12 @@
   return v3;
 }
 
-- (void)performActivityWithCompletion:(id)a3
+- (void)performActivityWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICRenameFolderActivity *)self presentingViewController];
+  completionCopy = completion;
+  presentingViewController = [(ICRenameFolderActivity *)self presentingViewController];
 
-  if (v5)
+  if (presentingViewController)
   {
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"Rename Folder" value:&stru_100661CF0 table:0];
@@ -57,7 +57,7 @@
     v22[2] = sub_1000F0914;
     v22[3] = &unk_100646960;
     v22[4] = self;
-    v11 = v4;
+    v11 = completionCopy;
     v23 = v11;
     v12 = [UIAlertAction actionWithTitle:v10 style:1 handler:v22];
 
@@ -73,38 +73,38 @@
     v15 = [UIAlertAction actionWithTitle:v14 style:0 handler:v20];
     [(ICRenameFolderActivity *)self setSaveAction:v15];
 
-    v16 = [(ICRenameFolderActivity *)self saveAction];
-    [v8 addAction:v16];
+    saveAction = [(ICRenameFolderActivity *)self saveAction];
+    [v8 addAction:saveAction];
 
-    v17 = [(ICRenameFolderActivity *)self presentingViewController];
+    presentingViewController2 = [(ICRenameFolderActivity *)self presentingViewController];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_1000F0CA4;
     v19[3] = &unk_100645E30;
     v19[4] = self;
-    [v17 presentViewController:v8 animated:1 completion:v19];
+    [presentingViewController2 presentViewController:v8 animated:1 completion:v19];
   }
 
   else
   {
     [(ICRenameFolderActivity *)self activityDidFinish:0];
-    if (v4)
+    if (completionCopy)
     {
-      v18 = [(ICRenameFolderActivity *)self activityType];
-      (*(v4 + 2))(v4, 0, v18);
+      activityType = [(ICRenameFolderActivity *)self activityType];
+      (*(completionCopy + 2))(completionCopy, 0, activityType);
     }
   }
 }
 
-- (void)textChanged:(id)a3
+- (void)textChanged:(id)changed
 {
-  v4 = [(ICRenameFolderActivity *)self textField];
-  v5 = [v4 text];
-  v6 = [v5 ic_trimmedString];
-  v7 = [v6 length] != 0;
+  textField = [(ICRenameFolderActivity *)self textField];
+  text = [textField text];
+  ic_trimmedString = [text ic_trimmedString];
+  v7 = [ic_trimmedString length] != 0;
 
-  v8 = [(ICRenameFolderActivity *)self saveAction];
-  [v8 setEnabled:v7];
+  saveAction = [(ICRenameFolderActivity *)self saveAction];
+  [saveAction setEnabled:v7];
 }
 
 - (UIViewController)presentingViewController

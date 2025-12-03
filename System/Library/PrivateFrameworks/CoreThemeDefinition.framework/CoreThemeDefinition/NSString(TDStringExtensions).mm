@@ -7,8 +7,8 @@
 - (uint64_t)td_stringByStandardizingPath
 {
   v44 = *MEMORY[0x277D85DE8];
-  v41 = [a1 length];
-  [objc_msgSend(a1 "stringByExpandingTildeInPath")];
+  v41 = [self length];
+  [objc_msgSend(self "stringByExpandingTildeInPath")];
   __CUITransmutePathSlashes(&v42, &v41);
   v2 = v41;
   if (v41 < 2)

@@ -1,9 +1,9 @@
 @interface CUTFileCopier
-- (CUTFileCopier)initWithInputURL:(id)a3 outputURL:(id)a4 identifier:(id)a5 operation:(unsigned int)a6 delegate:(id)a7;
+- (CUTFileCopier)initWithInputURL:(id)l outputURL:(id)rL identifier:(id)identifier operation:(unsigned int)operation delegate:(id)delegate;
 - (CUTFileCopierDelegate)delegate;
 - (id)_temporaryCopierPath;
 - (void)_fillOutputURLFromInputURL;
-- (void)_main_copierFinishedWithResult:(id)a3;
+- (void)_main_copierFinishedWithResult:(id)result;
 - (void)_worker_doCopy;
 - (void)cancel;
 - (void)cleanup;
@@ -13,33 +13,33 @@
 
 @implementation CUTFileCopier
 
-- (CUTFileCopier)initWithInputURL:(id)a3 outputURL:(id)a4 identifier:(id)a5 operation:(unsigned int)a6 delegate:(id)a7
+- (CUTFileCopier)initWithInputURL:(id)l outputURL:(id)rL identifier:(id)identifier operation:(unsigned int)operation delegate:(id)delegate
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  lCopy = l;
+  rLCopy = rL;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = CUTFileCopier;
   v16 = [(CUTFileCopier *)&v22 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [lCopy copy];
     inputURL = v16->_inputURL;
     v16->_inputURL = v17;
 
-    v19 = [v13 copy];
+    v19 = [rLCopy copy];
     outputURL = v16->_outputURL;
     v16->_outputURL = v19;
 
-    objc_storeStrong(&v16->_identifier, a5);
+    objc_storeStrong(&v16->_identifier, identifier);
     if (!v16->_outputURL)
     {
       [(CUTFileCopier *)v16 _fillOutputURLFromInputURL];
     }
 
-    v16->_operation = a6;
-    objc_storeWeak(&v16->_delegate, v15);
+    v16->_operation = operation;
+    objc_storeWeak(&v16->_delegate, delegateCopy);
   }
 
   return v16;
@@ -73,13 +73,13 @@
 
 - (void)_fillOutputURLFromInputURL
 {
-  v3 = [(CUTFileCopier *)self inputURL];
-  v4 = [v3 path];
-  v15 = [v4 lastPathComponent];
+  inputURL = [(CUTFileCopier *)self inputURL];
+  path = [inputURL path];
+  lastPathComponent = [path lastPathComponent];
 
-  if ([(__CFString *)v15 length])
+  if ([(__CFString *)lastPathComponent length])
   {
-    v5 = v15;
+    v5 = lastPathComponent;
   }
 
   else
@@ -90,17 +90,17 @@
 
   v16 = v5;
   v6 = [(__CFString *)v5 stringByAppendingPathExtension:@"zip"];
-  v7 = [(CUTFileCopier *)self _temporaryCopierPath];
-  v8 = [MEMORY[0x1E696AEC0] cutStringGUID];
-  v9 = [v7 stringByAppendingPathComponent:v8];
+  _temporaryCopierPath = [(CUTFileCopier *)self _temporaryCopierPath];
+  cutStringGUID = [MEMORY[0x1E696AEC0] cutStringGUID];
+  v9 = [_temporaryCopierPath stringByAppendingPathComponent:cutStringGUID];
 
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  LOBYTE(v8) = [v10 fileExistsAtPath:v9];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  LOBYTE(cutStringGUID) = [defaultManager fileExistsAtPath:v9];
 
-  if ((v8 & 1) == 0)
+  if ((cutStringGUID & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AC08] defaultManager];
-    [v11 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager2 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:0];
   }
 
   v12 = [v9 stringByAppendingPathComponent:v6];
@@ -114,8 +114,8 @@
 {
   if (!self->_inProgress)
   {
-    v4 = [(CUTFileCopier *)self delegate];
-    [v4 fileCopierDidStart:self];
+    delegate = [(CUTFileCopier *)self delegate];
+    [delegate fileCopierDidStart:self];
 
     self->_inProgress = 1;
     v5 = MEMORY[0x1E696AF00];
@@ -150,23 +150,23 @@
 
   else
   {
-    v6 = [(NSURL *)self->_outputURL path];
-    v3 = [(CUTFileCopier *)self _temporaryCopierPath];
-    v4 = [v6 hasPrefix:v3];
+    path = [(NSURL *)self->_outputURL path];
+    _temporaryCopierPath = [(CUTFileCopier *)self _temporaryCopierPath];
+    v4 = [path hasPrefix:_temporaryCopierPath];
 
     if (v4)
     {
-      v5 = [MEMORY[0x1E696AC08] defaultManager];
-      [v5 removeItemAtPath:v6 error:0];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager removeItemAtPath:path error:0];
     }
   }
 }
 
-- (void)_main_copierFinishedWithResult:(id)a3
+- (void)_main_copierFinishedWithResult:(id)result
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [result BOOLValue];
   shouldCancel = self->_shouldCancel;
-  if (!v4)
+  if (!bOOLValue)
   {
     *&self->_didErrorOccur = !shouldCancel;
     if (!shouldCancel)
@@ -185,8 +185,8 @@ LABEL_5:
   }
 
 LABEL_6:
-  v6 = [(CUTFileCopier *)self delegate];
-  [v6 fileCopierDidFinish:self];
+  delegate = [(CUTFileCopier *)self delegate];
+  [delegate fileCopierDidFinish:self];
 }
 
 - (void)_worker_doCopy
@@ -241,13 +241,13 @@ LABEL_9:
       goto LABEL_10;
   }
 
-  v17 = [(CUTFileCopier *)self inputURL];
-  v18 = [v17 path];
-  [v18 fileSystemRepresentation];
+  inputURL = [(CUTFileCopier *)self inputURL];
+  path = [inputURL path];
+  [path fileSystemRepresentation];
 
-  v19 = [(CUTFileCopier *)self outputURL];
-  v20 = [v19 path];
-  [v20 fileSystemRepresentation];
+  outputURL = [(CUTFileCopier *)self outputURL];
+  path2 = [outputURL path];
+  [path2 fileSystemRepresentation];
 
   v21 = self->_BOMCopier;
   v15 = BOMCopierCopyWithOptions() == 0;

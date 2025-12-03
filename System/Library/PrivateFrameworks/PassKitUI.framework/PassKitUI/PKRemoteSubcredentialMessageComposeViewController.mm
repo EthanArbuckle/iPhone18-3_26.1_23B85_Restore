@@ -1,29 +1,29 @@
 @interface PKRemoteSubcredentialMessageComposeViewController
 - (PKSubcredentialMessageComposeViewControllerDelegate)delegate;
-- (void)messageComposeViewControllerDidFinishWithResult:(BOOL)a3;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)messageComposeViewControllerDidFinishWithResult:(BOOL)result;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation PKRemoteSubcredentialMessageComposeViewController
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
   if (!self->_finished)
   {
     self->_finished = 1;
-    v4 = [(PKRemoteSubcredentialMessageComposeViewController *)self delegate];
-    [v4 messageComposeViewControllerDidFinishWithResult:0];
+    delegate = [(PKRemoteSubcredentialMessageComposeViewController *)self delegate];
+    [delegate messageComposeViewControllerDidFinishWithResult:0];
   }
 }
 
-- (void)messageComposeViewControllerDidFinishWithResult:(BOOL)a3
+- (void)messageComposeViewControllerDidFinishWithResult:(BOOL)result
 {
   if (!self->_finished)
   {
-    v4 = a3;
+    resultCopy = result;
     self->_finished = 1;
-    v5 = [(PKRemoteSubcredentialMessageComposeViewController *)self delegate];
-    [v5 messageComposeViewControllerDidFinishWithResult:v4];
+    delegate = [(PKRemoteSubcredentialMessageComposeViewController *)self delegate];
+    [delegate messageComposeViewControllerDidFinishWithResult:resultCopy];
   }
 }
 

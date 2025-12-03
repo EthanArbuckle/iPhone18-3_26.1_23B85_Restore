@@ -1,18 +1,18 @@
 @interface HMIVideoRetimerDelegateAdapter
-- (void)retimer:(id)a3 didRetimeSampleBuffer:(opaqueCMSampleBuffer *)a4;
+- (void)retimer:(id)retimer didRetimeSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 @end
 
 @implementation HMIVideoRetimerDelegateAdapter
 
-- (void)retimer:(id)a3 didRetimeSampleBuffer:(opaqueCMSampleBuffer *)a4
+- (void)retimer:(id)retimer didRetimeSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v8 = a3;
-  v6 = [(HMIVideoRetimerDelegateAdapter *)self retimerDidRetimeSampleBuffer];
+  retimerCopy = retimer;
+  retimerDidRetimeSampleBuffer = [(HMIVideoRetimerDelegateAdapter *)self retimerDidRetimeSampleBuffer];
 
-  if (v6)
+  if (retimerDidRetimeSampleBuffer)
   {
-    v7 = [(HMIVideoRetimerDelegateAdapter *)self retimerDidRetimeSampleBuffer];
-    (v7)[2](v7, v8, a4);
+    retimerDidRetimeSampleBuffer2 = [(HMIVideoRetimerDelegateAdapter *)self retimerDidRetimeSampleBuffer];
+    (retimerDidRetimeSampleBuffer2)[2](retimerDidRetimeSampleBuffer2, retimerCopy, buffer);
   }
 }
 

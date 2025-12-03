@@ -16,9 +16,9 @@
 - (DTAppClipSettings)init
 {
   v3 = sub_19E14();
-  v4 = [v3 principalClass];
+  principalClass = [v3 principalClass];
 
-  v5 = objc_alloc_init(v4);
+  v5 = objc_alloc_init(principalClass);
   return v5;
 }
 

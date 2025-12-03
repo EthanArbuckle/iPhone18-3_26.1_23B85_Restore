@@ -11,9 +11,9 @@
 
 - (NSString)displayName
 {
-  v3 = [MEMORY[0x277CBEAF8] currentLocale];
-  v4 = [(PGGraphNamedLocationNode *)self name];
-  v5 = [v3 localizedStringForCountryCode:v4];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  name = [(PGGraphNamedLocationNode *)self name];
+  v5 = [currentLocale localizedStringForCountryCode:name];
   v6 = v5;
   if (v5)
   {
@@ -22,7 +22,7 @@
 
   else
   {
-    v7 = v4;
+    v7 = name;
   }
 
   v8 = v7;
@@ -40,24 +40,24 @@
 + (id)languageOfCountry
 {
   v2 = +[PGGraphLanguageEdge filter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MARelation)momentInCountry
 {
   v14[3] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277D22C90];
-  v3 = [a1 filter];
-  v4 = [v3 relation];
+  filter = [self filter];
+  relation = [filter relation];
   v5 = +[PGGraphLocationEdge filter];
-  v6 = [v5 inRelation];
-  v7 = [v6 transitiveClosure];
-  v14[1] = v7;
+  inRelation = [v5 inRelation];
+  transitiveClosure = [inRelation transitiveClosure];
+  v14[1] = transitiveClosure;
   v8 = +[PGGraphMomentNode filter];
-  v9 = [v8 relation];
-  v14[2] = v9;
+  relation2 = [v8 relation];
+  v14[2] = relation2;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:3];
   v11 = [v2 chain:v10];
 
@@ -70,15 +70,15 @@
 {
   v14[3] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277D22C90];
-  v3 = [a1 filter];
-  v4 = [v3 relation];
+  filter = [self filter];
+  relation = [filter relation];
   v5 = +[PGGraphLocationEdge filter];
-  v6 = [v5 inRelation];
-  v7 = [v6 transitiveClosure];
-  v14[1] = v7;
+  inRelation = [v5 inRelation];
+  transitiveClosure = [inRelation transitiveClosure];
+  v14[1] = transitiveClosure;
   v8 = +[PGGraphAddressNode filter];
-  v9 = [v8 relation];
-  v14[2] = v9;
+  relation2 = [v8 relation];
+  v14[2] = relation2;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:3];
   v11 = [v2 chain:v10];
 

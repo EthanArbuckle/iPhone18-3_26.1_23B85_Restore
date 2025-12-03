@@ -4,10 +4,10 @@
 - (void)_extensionsChanged;
 - (void)beginObservingExtensions;
 - (void)dealloc;
-- (void)extensionsWithCompletionHandler:(id)a3;
-- (void)getLastUpdatedCallDirectoryInfoWithReply:(id)a3;
-- (void)setDelegate:(id)a3 queue:(id)a4;
-- (void)setPrioritizedExtensionIdentifiers:(id)a3 completionHandler:(id)a4;
+- (void)extensionsWithCompletionHandler:(id)handler;
+- (void)getLastUpdatedCallDirectoryInfoWithReply:(id)reply;
+- (void)setDelegate:(id)delegate queue:(id)queue;
+- (void)setPrioritizedExtensionIdentifiers:(id)identifiers completionHandler:(id)handler;
 @end
 
 @implementation CXCallDirectoryExtensionManager
@@ -39,21 +39,21 @@
   [(CXCallDirectoryExtensionManager *)&v3 dealloc];
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CXCallDirectoryExtensionManager *)self queue];
+  delegateCopy = delegate;
+  queueCopy = queue;
+  queue = [(CXCallDirectoryExtensionManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__CXCallDirectoryExtensionManager_setDelegate_queue___block_invoke;
   block[3] = &unk_1E7C06C80;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_barrier_async(v8, block);
+  v12 = delegateCopy;
+  v13 = queueCopy;
+  v9 = queueCopy;
+  v10 = delegateCopy;
+  dispatch_barrier_async(queue, block);
 }
 
 uint64_t __53__CXCallDirectoryExtensionManager_setDelegate_queue___block_invoke(uint64_t a1)
@@ -76,13 +76,13 @@ uint64_t __53__CXCallDirectoryExtensionManager_setDelegate_queue___block_invoke(
 
 - (void)beginObservingExtensions
 {
-  v3 = [(CXCallDirectoryExtensionManager *)self queue];
+  queue = [(CXCallDirectoryExtensionManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__CXCallDirectoryExtensionManager_beginObservingExtensions__block_invoke;
   block[3] = &unk_1E7C06CA8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __59__CXCallDirectoryExtensionManager_beginObservingExtensions__block_invoke(uint64_t a1)
@@ -107,18 +107,18 @@ void __59__CXCallDirectoryExtensionManager_beginObservingExtensions__block_invok
   [WeakRetained _extensionsChanged];
 }
 
-- (void)extensionsWithCompletionHandler:(id)a3
+- (void)extensionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CXCallDirectoryExtensionManager *)self queue];
+  handlerCopy = handler;
+  queue = [(CXCallDirectoryExtensionManager *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__CXCallDirectoryExtensionManager_extensionsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7C06CF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 void __67__CXCallDirectoryExtensionManager_extensionsWithCompletionHandler___block_invoke(uint64_t a1)
@@ -150,20 +150,20 @@ void __67__CXCallDirectoryExtensionManager_extensionsWithCompletionHandler___blo
 
 - (void)_extensionsChanged
 {
-  v3 = [(CXCallDirectoryExtensionManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CXCallDirectoryExtensionManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CXCallDirectoryExtensionManager *)self delegateQueue];
+  delegateQueue = [(CXCallDirectoryExtensionManager *)self delegateQueue];
 
-  if (v4)
+  if (delegateQueue)
   {
-    v5 = [(CXCallDirectoryExtensionManager *)self delegateQueue];
+    delegateQueue2 = [(CXCallDirectoryExtensionManager *)self delegateQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __53__CXCallDirectoryExtensionManager__extensionsChanged__block_invoke;
     block[3] = &unk_1E7C06CA8;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(delegateQueue2, block);
   }
 }
 
@@ -173,21 +173,21 @@ void __53__CXCallDirectoryExtensionManager__extensionsChanged__block_invoke(uint
   [v2 extensionsChangedForCallDirectoryExtensionManager:*(a1 + 32)];
 }
 
-- (void)setPrioritizedExtensionIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)setPrioritizedExtensionIdentifiers:(id)identifiers completionHandler:(id)handler
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = identifiersCopy;
     _os_log_impl(&dword_1B47F3000, v8, OS_LOG_TYPE_DEFAULT, "prioritizedExtensionIdentifiers: %@", &v11, 0xCu);
   }
 
-  v9 = [(CXCallDirectoryExtensionManager *)self manager];
-  [v9 setPrioritizedExtensionIdentifiers:v6 completionHandler:v7];
+  manager = [(CXCallDirectoryExtensionManager *)self manager];
+  [manager setPrioritizedExtensionIdentifiers:identifiersCopy completionHandler:handlerCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -211,9 +211,9 @@ void __70__CXCallDirectoryExtensionManager_setEnabled_forExtension_completion___
   }
 }
 
-- (void)getLastUpdatedCallDirectoryInfoWithReply:(id)a3
+- (void)getLastUpdatedCallDirectoryInfoWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -221,8 +221,8 @@ void __70__CXCallDirectoryExtensionManager_setEnabled_forExtension_completion___
     _os_log_impl(&dword_1B47F3000, v5, OS_LOG_TYPE_DEFAULT, "getLastUpdatedCallDirectoryInfoWithReply", v7, 2u);
   }
 
-  v6 = [(CXCallDirectoryExtensionManager *)self manager];
-  [v6 getLastUpdatedCallDirectoryInfoWithCompletionHandler:v4];
+  manager = [(CXCallDirectoryExtensionManager *)self manager];
+  [manager getLastUpdatedCallDirectoryInfoWithCompletionHandler:replyCopy];
 }
 
 - (CXCallDirectoryExtensionManagerDelegate)delegate

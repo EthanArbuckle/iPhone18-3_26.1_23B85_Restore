@@ -1,8 +1,8 @@
 @interface NEFilterAbsoluteVerdict
-- (NEFilterAbsoluteVerdict)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NEFilterAbsoluteVerdict)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)filterAction;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEFilterAbsoluteVerdict
@@ -28,11 +28,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NEFilterAbsoluteVerdict;
-  v4 = [(NEFilterVerdict *)&v6 copyWithZone:a3];
+  v4 = [(NEFilterVerdict *)&v6 copyWithZone:zone];
   [v4 setInboundPassOffset:{-[NEFilterAbsoluteVerdict inboundPassOffset](self, "inboundPassOffset")}];
   [v4 setInboundPeekOffset:{-[NEFilterAbsoluteVerdict inboundPeekOffset](self, "inboundPeekOffset")}];
   [v4 setOutboundPassOffset:{-[NEFilterAbsoluteVerdict outboundPassOffset](self, "outboundPassOffset")}];
@@ -41,32 +41,32 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = NEFilterAbsoluteVerdict;
-  v4 = a3;
-  [(NEFilterVerdict *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt64:-[NEFilterAbsoluteVerdict inboundPassOffset](self forKey:{"inboundPassOffset", v5.receiver, v5.super_class), @"Inbound pass offset"}];
-  [v4 encodeInt64:-[NEFilterAbsoluteVerdict inboundPeekOffset](self forKey:{"inboundPeekOffset"), @"Inbound peek offset"}];
-  [v4 encodeInt64:-[NEFilterAbsoluteVerdict outboundPassOffset](self forKey:{"outboundPassOffset"), @"Outbound pass offset"}];
-  [v4 encodeInt64:-[NEFilterAbsoluteVerdict outboundPeekOffset](self forKey:{"outboundPeekOffset"), @"Outbound peek offset"}];
-  [v4 encodeInt:-[NEFilterAbsoluteVerdict statisticsReportFrequency](self forKey:{"statisticsReportFrequency"), @"StatisticsReportFrequency"}];
+  coderCopy = coder;
+  [(NEFilterVerdict *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:-[NEFilterAbsoluteVerdict inboundPassOffset](self forKey:{"inboundPassOffset", v5.receiver, v5.super_class), @"Inbound pass offset"}];
+  [coderCopy encodeInt64:-[NEFilterAbsoluteVerdict inboundPeekOffset](self forKey:{"inboundPeekOffset"), @"Inbound peek offset"}];
+  [coderCopy encodeInt64:-[NEFilterAbsoluteVerdict outboundPassOffset](self forKey:{"outboundPassOffset"), @"Outbound pass offset"}];
+  [coderCopy encodeInt64:-[NEFilterAbsoluteVerdict outboundPeekOffset](self forKey:{"outboundPeekOffset"), @"Outbound peek offset"}];
+  [coderCopy encodeInt:-[NEFilterAbsoluteVerdict statisticsReportFrequency](self forKey:{"statisticsReportFrequency"), @"StatisticsReportFrequency"}];
 }
 
-- (NEFilterAbsoluteVerdict)initWithCoder:(id)a3
+- (NEFilterAbsoluteVerdict)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = NEFilterAbsoluteVerdict;
-  v5 = [(NEFilterVerdict *)&v7 initWithCoder:v4];
+  v5 = [(NEFilterVerdict *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_inboundPassOffset = [v4 decodeInt64ForKey:@"Inbound pass offset"];
-    v5->_inboundPeekOffset = [v4 decodeInt64ForKey:@"Inbound peek offset"];
-    v5->_outboundPassOffset = [v4 decodeInt64ForKey:@"Outbound pass offset"];
-    v5->_outboundPeekOffset = [v4 decodeInt64ForKey:@"Outbound peek offset"];
-    v5->_statisticsReportFrequency = [v4 decodeIntForKey:@"StatisticsReportFrequency"];
+    v5->_inboundPassOffset = [coderCopy decodeInt64ForKey:@"Inbound pass offset"];
+    v5->_inboundPeekOffset = [coderCopy decodeInt64ForKey:@"Inbound peek offset"];
+    v5->_outboundPassOffset = [coderCopy decodeInt64ForKey:@"Outbound pass offset"];
+    v5->_outboundPeekOffset = [coderCopy decodeInt64ForKey:@"Outbound peek offset"];
+    v5->_statisticsReportFrequency = [coderCopy decodeIntForKey:@"StatisticsReportFrequency"];
   }
 
   return v5;

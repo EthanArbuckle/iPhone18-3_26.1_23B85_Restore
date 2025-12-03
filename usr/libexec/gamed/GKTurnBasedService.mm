@@ -1,48 +1,48 @@
 @interface GKTurnBasedService
-- (id)_requestForTurnBasedSubmitValues:(id)a3 withServerLabel:(id)a4 sessionID:(id)a5;
+- (id)_requestForTurnBasedSubmitValues:(id)values withServerLabel:(id)label sessionID:(id)d;
 - (id)privateDatabase;
-- (id)turnsForParticipantIndexes:(id)a3 turnTimeout:(double)a4;
-- (void)_determineCompatibleBundleIDForAppID:(id)a3 bundleVersion:(id)a4 shortBundleVersion:(id)a5 platform:(id)a6 withCompletionHandler:(id)a7;
-- (void)_determineCompatibleGamesForMatches:(id)a3 dispatchGroup:(id)a4;
-- (void)_determineTurnBasedBadgeCountFromList:(id)a3 context:(id)a4 completionHandler:(id)a5;
-- (void)_updateGamesForTurnBasedMatches:(id)a3 dispatchGroup:(id)a4;
-- (void)_updatePlayersForMatches:(id)a3 group:(id)a4;
-- (void)acceptInviteForTurnBasedMatch:(id)a3 handler:(id)a4;
-- (void)cancelExchange:(id)a3 withMessage:(id)a4 match:(id)a5 handler:(id)a6;
-- (void)completeTurnBasedMatch:(id)a3 scores:(id)a4 achievements:(id)a5 handler:(id)a6;
-- (void)createTurnBasedGameForMatchRequest:(id)a3 individualMessages:(id)a4 handler:(id)a5;
-- (void)declineInviteForTurnBasedMatch:(id)a3 handler:(id)a4;
-- (void)fetchDetailsForTurnBasedMatchIDs:(id)a3 includeGameData:(BOOL)a4 responseKind:(int)a5 context:(id)a6 handler:(id)a7;
-- (void)fetchTurnBasedMatchesForGame:(id)a3 context:(id)a4 handler:(id)a5;
-- (void)getDetailsForTurnBasedMatchIDs:(id)a3 includeGameData:(BOOL)a4 prefetchOnly:(BOOL)a5 handler:(id)a6;
-- (void)getNextTurnBasedEventWithHandler:(id)a3;
-- (void)getTurnBasedMatchesAndCompatibleBundleID:(BOOL)a3 handler:(id)a4;
-- (void)loadDetailsForTurnBasedMatchIDs:(id)a3 includeGameData:(BOOL)a4 context:(id)a5 handler:(id)a6;
-- (void)loadTurnBasedMatchesForGame:(id)a3 loadDetails:(BOOL)a4 prefetchOnly:(BOOL)a5 context:(id)a6 handler:(id)a7;
-- (void)loadURLWithTBGMatch:(id)a3 player:(id)a4 matchRequest:(id)a5 handler:(id)a6;
-- (void)removeTurnBasedMatch:(id)a3 handler:(id)a4;
-- (void)replyToExchange:(id)a3 withMessage:(id)a4 data:(id)a5 match:(id)a6 handler:(id)a7;
-- (void)reserveShareParticipantSlots:(int64_t)a3 minPlayerCount:(int64_t)a4 maxPlayerCount:(int64_t)a5 andInvitePlayers:(id)a6 withMessage:(id)a7 forMatch:(id)a8 handler:(id)a9;
-- (void)resignFromTurnBasedGame:(id)a3 outcome:(unint64_t)a4 handler:(id)a5;
-- (void)saveDataForTurnBasedMatch:(id)a3 resolvedExchangeIDs:(id)a4 handler:(id)a5;
-- (void)saveRecord:(id)a3 withHandler:(id)a4;
-- (void)sendExchangeToParticipants:(id)a3 data:(id)a4 message:(id)a5 timeout:(double)a6 match:(id)a7 handler:(id)a8;
-- (void)sendReminderToParticipants:(id)a3 message:(id)a4 match:(id)a5 handler:(id)a6;
-- (void)sendRequest:(id)a3 forBagKey:(id)a4 exchange:(id)a5 matchID:(id)a6 responseHandler:(id)a7;
-- (void)submitTurnForTurnBasedMatch:(id)a3 nextParticipantIndexes:(id)a4 turnTimeout:(double)a5 handler:(id)a6;
+- (id)turnsForParticipantIndexes:(id)indexes turnTimeout:(double)timeout;
+- (void)_determineCompatibleBundleIDForAppID:(id)d bundleVersion:(id)version shortBundleVersion:(id)bundleVersion platform:(id)platform withCompletionHandler:(id)handler;
+- (void)_determineCompatibleGamesForMatches:(id)matches dispatchGroup:(id)group;
+- (void)_determineTurnBasedBadgeCountFromList:(id)list context:(id)context completionHandler:(id)handler;
+- (void)_updateGamesForTurnBasedMatches:(id)matches dispatchGroup:(id)group;
+- (void)_updatePlayersForMatches:(id)matches group:(id)group;
+- (void)acceptInviteForTurnBasedMatch:(id)match handler:(id)handler;
+- (void)cancelExchange:(id)exchange withMessage:(id)message match:(id)match handler:(id)handler;
+- (void)completeTurnBasedMatch:(id)match scores:(id)scores achievements:(id)achievements handler:(id)handler;
+- (void)createTurnBasedGameForMatchRequest:(id)request individualMessages:(id)messages handler:(id)handler;
+- (void)declineInviteForTurnBasedMatch:(id)match handler:(id)handler;
+- (void)fetchDetailsForTurnBasedMatchIDs:(id)ds includeGameData:(BOOL)data responseKind:(int)kind context:(id)context handler:(id)handler;
+- (void)fetchTurnBasedMatchesForGame:(id)game context:(id)context handler:(id)handler;
+- (void)getDetailsForTurnBasedMatchIDs:(id)ds includeGameData:(BOOL)data prefetchOnly:(BOOL)only handler:(id)handler;
+- (void)getNextTurnBasedEventWithHandler:(id)handler;
+- (void)getTurnBasedMatchesAndCompatibleBundleID:(BOOL)d handler:(id)handler;
+- (void)loadDetailsForTurnBasedMatchIDs:(id)ds includeGameData:(BOOL)data context:(id)context handler:(id)handler;
+- (void)loadTurnBasedMatchesForGame:(id)game loadDetails:(BOOL)details prefetchOnly:(BOOL)only context:(id)context handler:(id)handler;
+- (void)loadURLWithTBGMatch:(id)match player:(id)player matchRequest:(id)request handler:(id)handler;
+- (void)removeTurnBasedMatch:(id)match handler:(id)handler;
+- (void)replyToExchange:(id)exchange withMessage:(id)message data:(id)data match:(id)match handler:(id)handler;
+- (void)reserveShareParticipantSlots:(int64_t)slots minPlayerCount:(int64_t)count maxPlayerCount:(int64_t)playerCount andInvitePlayers:(id)players withMessage:(id)message forMatch:(id)match handler:(id)handler;
+- (void)resignFromTurnBasedGame:(id)game outcome:(unint64_t)outcome handler:(id)handler;
+- (void)saveDataForTurnBasedMatch:(id)match resolvedExchangeIDs:(id)ds handler:(id)handler;
+- (void)saveRecord:(id)record withHandler:(id)handler;
+- (void)sendExchangeToParticipants:(id)participants data:(id)data message:(id)message timeout:(double)timeout match:(id)match handler:(id)handler;
+- (void)sendReminderToParticipants:(id)participants message:(id)message match:(id)match handler:(id)handler;
+- (void)sendRequest:(id)request forBagKey:(id)key exchange:(id)exchange matchID:(id)d responseHandler:(id)handler;
+- (void)submitTurnForTurnBasedMatch:(id)match nextParticipantIndexes:(id)indexes turnTimeout:(double)timeout handler:(id)handler;
 @end
 
 @implementation GKTurnBasedService
 
-- (id)turnsForParticipantIndexes:(id)a3 turnTimeout:(double)a4
+- (id)turnsForParticipantIndexes:(id)indexes turnTimeout:(double)timeout
 {
-  v5 = a3;
-  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+  indexesCopy = indexes;
+  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [indexesCopy count]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = v5;
+  obj = indexesCopy;
   v7 = [obj countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v7)
   {
@@ -61,7 +61,7 @@
         v20[1] = @"turn-timeout";
         v21[0] = v11;
         v20[0] = @"next-turn-on-slot";
-        v12 = [NSNumber _gkServerTimeInterval:a4];
+        v12 = [NSNumber _gkServerTimeInterval:timeout];
         v21[1] = v12;
         v13 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:2];
         [v6 addObject:v13];
@@ -76,11 +76,11 @@
   return v6;
 }
 
-- (void)createTurnBasedGameForMatchRequest:(id)a3 individualMessages:(id)a4 handler:(id)a5
+- (void)createTurnBasedGameForMatchRequest:(id)request individualMessages:(id)messages handler:(id)handler
 {
-  v7 = a3;
-  v63 = a4;
-  v58 = a5;
+  requestCopy = request;
+  messagesCopy = messages;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -90,22 +90,22 @@
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v95 = v7;
+    v95 = requestCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "TBGame - createTurnBasedGameForMatchRequest, matchRequest = %@", buf, 0xCu);
   }
 
   v10 = +[NSMutableArray array];
-  v11 = [v7 recipients];
-  v12 = [v11 count];
+  recipients = [requestCopy recipients];
+  v12 = [recipients count];
 
-  v60 = v7;
+  v60 = requestCopy;
   if (v12)
   {
     v78 = 0uLL;
     v79 = 0uLL;
     v76 = 0uLL;
     v77 = 0uLL;
-    obj = [v7 recipients];
+    obj = [requestCopy recipients];
     v13 = [obj countByEnumeratingWithState:&v76 objects:v93 count:16];
     if (v13)
     {
@@ -130,8 +130,8 @@
           {
             v91[0] = v17;
             v20 = v19;
-            v21 = [v20 hostPlayerInternal];
-            [v21 playerID];
+            hostPlayerInternal = [v20 hostPlayerInternal];
+            [hostPlayerInternal playerID];
             v23 = v22 = v17;
             v92[0] = v23;
             v91[1] = @"guest-id";
@@ -151,21 +151,21 @@ LABEL_16:
             goto LABEL_17;
           }
 
-          v21 = [v19 playerID];
-          v28 = [v63 objectForKeyedSubscript:v21];
+          hostPlayerInternal = [v19 playerID];
+          v28 = [messagesCopy objectForKeyedSubscript:hostPlayerInternal];
           if (v28 || ([v60 inviteMessage], (v28 = objc_claimAutoreleasedReturnValue()) != 0))
           {
             v20 = v28;
             v89[0] = v17;
             v89[1] = @"invite-message";
-            v90[0] = v21;
+            v90[0] = hostPlayerInternal;
             v90[1] = v28;
             v27 = [NSDictionary dictionaryWithObjects:v90 forKeys:v89 count:2];
             goto LABEL_16;
           }
 
           v87 = v17;
-          v88 = v21;
+          v88 = hostPlayerInternal;
           v27 = [NSDictionary dictionaryWithObjects:&v88 forKeys:&v87 count:1];
 LABEL_17:
 
@@ -188,12 +188,12 @@ LABEL_17:
     v75 = 0uLL;
     v72 = 0uLL;
     v73 = 0uLL;
-    obj = [v7 recipientPlayerIDs];
+    obj = [requestCopy recipientPlayerIDs];
     v30 = [obj countByEnumeratingWithState:&v72 objects:v86 count:16];
     if (v30)
     {
       v31 = v30;
-      v32 = v7;
+      v32 = requestCopy;
       v33 = *v73;
       do
       {
@@ -206,7 +206,7 @@ LABEL_17:
           }
 
           v35 = *(*(&v72 + 1) + 8 * v34);
-          v36 = [v63 objectForKeyedSubscript:v35];
+          v36 = [messagesCopy objectForKeyedSubscript:v35];
           if (v36 || ([v32 inviteMessage], (v36 = objc_claimAutoreleasedReturnValue()) != 0))
           {
             v37 = v36;
@@ -248,10 +248,10 @@ LABEL_17:
   v42 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", [v60 maxPlayers]);
   v81[2] = v42;
   v80[3] = @"player-attributes";
-  v43 = [v60 playerAttributes];
-  if (v43)
+  playerAttributes = [v60 playerAttributes];
+  if (playerAttributes)
   {
-    v44 = v43;
+    v44 = playerAttributes;
   }
 
   else
@@ -274,56 +274,56 @@ LABEL_17:
   v48 = [NSString stringWithFormat:@"%s:%d %s", "GKTurnBasedService.m", 151, "[GKTurnBasedService createTurnBasedGameForMatchRequest:individualMessages:handler:]"];
   v49 = [(GKService *)self transactionGroupWithName:v48];
 
-  v50 = [(GKService *)self clientProxy];
-  v51 = [v50 replyQueue];
+  clientProxy = [(GKService *)self clientProxy];
+  replyQueue = [clientProxy replyQueue];
   v68[0] = _NSConcreteStackBlock;
   v68[1] = 3221225472;
   v68[2] = sub_1000DFB60;
   v68[3] = &unk_100360F00;
   v52 = v49;
   v69 = v52;
-  v70 = self;
+  selfCopy = self;
   v71 = v47;
   v53 = v47;
-  [v52 performOnQueue:v51 block:v68];
+  [v52 performOnQueue:replyQueue block:v68];
 
-  v54 = [(GKService *)self clientProxy];
-  v55 = [v54 replyQueue];
+  clientProxy2 = [(GKService *)self clientProxy];
+  replyQueue2 = [clientProxy2 replyQueue];
   v64[0] = _NSConcreteStackBlock;
   v64[1] = 3221225472;
   v64[2] = sub_1000DFECC;
   v64[3] = &unk_100360FC8;
   v65 = v52;
-  v66 = self;
-  v67 = v58;
-  v56 = v58;
+  selfCopy2 = self;
+  v67 = handlerCopy;
+  v56 = handlerCopy;
   v57 = v52;
-  [v57 notifyOnQueue:v55 block:v64];
+  [v57 notifyOnQueue:replyQueue2 block:v64];
 }
 
-- (void)_updateGamesForTurnBasedMatches:(id)a3 dispatchGroup:(id)a4
+- (void)_updateGamesForTurnBasedMatches:(id)matches dispatchGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  matchesCopy = matches;
+  groupCopy = group;
+  if ([matchesCopy count])
   {
-    [v6 _gkDistinctValuesForKeyPath:@"bundleID"];
+    [matchesCopy _gkDistinctValuesForKeyPath:@"bundleID"];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000E04D8;
     v9[3] = &unk_100360F00;
     v10 = v9[4] = self;
-    v11 = v6;
+    v11 = matchesCopy;
     v8 = v10;
-    [v7 perform:v9];
+    [groupCopy perform:v9];
   }
 }
 
-- (void)_determineCompatibleGamesForMatches:(id)a3 dispatchGroup:(id)a4
+- (void)_determineCompatibleGamesForMatches:(id)matches dispatchGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
+  matchesCopy = matches;
+  groupCopy = group;
+  v8 = [matchesCopy count];
   if (v8)
   {
     v9 = v8;
@@ -341,8 +341,8 @@ LABEL_17:
     v48 = v9;
     v15 = v13;
     v47 = v15;
-    v25 = v6;
-    [v6 enumerateObjectsUsingBlock:v45];
+    v25 = matchesCopy;
+    [matchesCopy enumerateObjectsUsingBlock:v45];
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
@@ -416,47 +416,47 @@ LABEL_17:
     v30[2] = sub_1000E1110;
     v30[3] = &unk_100361F90;
     v31 = v11;
-    v32 = self;
-    v6 = v25;
+    selfCopy = self;
+    matchesCopy = v25;
     v33 = v25;
-    v34 = v7;
+    v34 = groupCopy;
     v24 = v11;
     [v34 perform:v30];
   }
 }
 
-- (void)_determineCompatibleBundleIDForAppID:(id)a3 bundleVersion:(id)a4 shortBundleVersion:(id)a5 platform:(id)a6 withCompletionHandler:(id)a7
+- (void)_determineCompatibleBundleIDForAppID:(id)d bundleVersion:(id)version shortBundleVersion:(id)bundleVersion platform:(id)platform withCompletionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  versionCopy = version;
+  bundleVersionCopy = bundleVersion;
+  platformCopy = platform;
+  handlerCopy = handler;
   v17 = [NSString stringWithFormat:@"%s:%d %s", "GKTurnBasedService.m", 298, "[GKTurnBasedService _determineCompatibleBundleIDForAppID:bundleVersion:shortBundleVersion:platform:withCompletionHandler:]"];
   v18 = [GKDispatchGroup dispatchGroupWithName:v17];
 
-  [v18 setObject:v12 forKeyedSubscript:@"bundleID"];
-  [v18 setObject:v13 forKeyedSubscript:@"bundleVersion"];
-  [v18 setObject:v14 forKeyedSubscript:@"shortBundleVersion"];
-  [v18 setObject:v15 forKeyedSubscript:@"platform"];
-  if (v12 && v13 | v14)
+  [v18 setObject:dCopy forKeyedSubscript:@"bundleID"];
+  [v18 setObject:versionCopy forKeyedSubscript:@"bundleVersion"];
+  [v18 setObject:bundleVersionCopy forKeyedSubscript:@"shortBundleVersion"];
+  [v18 setObject:platformCopy forKeyedSubscript:@"platform"];
+  if (dCopy && versionCopy | bundleVersionCopy)
   {
     v33[0] = @"bundle-id";
     v33[1] = @"bundle-version";
-    v34[0] = v12;
-    v34[1] = v13;
+    v34[0] = dCopy;
+    v34[1] = versionCopy;
     v19 = [NSDictionary dictionaryWithObjects:v34 forKeys:v33 count:2];
     v20 = [NSMutableDictionary dictionaryWithDictionary:v19];
 
-    if (v14)
+    if (bundleVersionCopy)
     {
-      [v20 setObject:v14 forKeyedSubscript:@"short-bundle-version"];
+      [v20 setObject:bundleVersionCopy forKeyedSubscript:@"short-bundle-version"];
     }
 
-    v21 = [v15 integerValue];
-    if (v21)
+    integerValue = [platformCopy integerValue];
+    if (integerValue)
     {
-      v22 = [GKGameDescriptor stringForPlatform:v21];
+      v22 = [GKGameDescriptor stringForPlatform:integerValue];
       [v20 setObject:v22 forKeyedSubscript:@"platform"];
     }
 
@@ -466,202 +466,202 @@ LABEL_17:
     v29[3] = &unk_100361F90;
     v29[4] = self;
     v30 = v20;
-    v31 = v12;
+    v31 = dCopy;
     v32 = v18;
     v23 = v20;
     [v32 perform:v29];
   }
 
-  if (v16)
+  if (handlerCopy)
   {
-    v24 = [(GKService *)self clientProxy];
-    v25 = [v24 replyQueue];
+    clientProxy = [(GKService *)self clientProxy];
+    replyQueue = [clientProxy replyQueue];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_1000E1A6C;
     v26[3] = &unk_100360EB0;
-    v28 = v16;
+    v28 = handlerCopy;
     v27 = v18;
-    [v27 notifyOnQueue:v25 block:v26];
+    [v27 notifyOnQueue:replyQueue block:v26];
   }
 }
 
-- (void)_determineTurnBasedBadgeCountFromList:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)_determineTurnBasedBadgeCountFromList:(id)list context:(id)context completionHandler:(id)handler
 {
-  v8 = a3;
+  listCopy = list;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000E1C18;
   v12[3] = &unk_100360F78;
-  v13 = a4;
-  v14 = v8;
-  v15 = self;
-  v16 = a5;
-  v9 = v16;
-  v10 = v8;
-  v11 = v13;
+  contextCopy = context;
+  v14 = listCopy;
+  selfCopy = self;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  v10 = listCopy;
+  v11 = contextCopy;
   [v11 performBlock:v12];
 }
 
-- (void)loadTurnBasedMatchesForGame:(id)a3 loadDetails:(BOOL)a4 prefetchOnly:(BOOL)a5 context:(id)a6 handler:(id)a7
+- (void)loadTurnBasedMatchesForGame:(id)game loadDetails:(BOOL)details prefetchOnly:(BOOL)only context:(id)context handler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a7;
+  gameCopy = game;
+  contextCopy = context;
+  handlerCopy = handler;
   v13 = [NSString stringWithFormat:@"%s:%d %s", "GKTurnBasedService.m", 418, "[GKTurnBasedService loadTurnBasedMatchesForGame:loadDetails:prefetchOnly:context:handler:]"];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000E20D4;
   v17[3] = &unk_100360F78;
-  v18 = v11;
-  v19 = self;
-  v20 = v10;
-  v21 = v12;
-  v14 = v12;
-  v15 = v10;
-  v16 = v11;
+  v18 = contextCopy;
+  selfCopy = self;
+  v20 = gameCopy;
+  v21 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = gameCopy;
+  v16 = contextCopy;
   [GKActivity named:v13 execute:v17];
 }
 
-- (void)fetchTurnBasedMatchesForGame:(id)a3 context:(id)a4 handler:(id)a5
+- (void)fetchTurnBasedMatchesForGame:(id)game context:(id)context handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  gameCopy = game;
+  contextCopy = context;
+  handlerCopy = handler;
   v11 = [NSString stringWithFormat:@"%s:%d %s", "GKTurnBasedService.m", 472, "[GKTurnBasedService fetchTurnBasedMatchesForGame:context:handler:]"];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000E2A30;
   v15[3] = &unk_100360F78;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = contextCopy;
+  selfCopy = self;
+  v18 = gameCopy;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = gameCopy;
+  v14 = contextCopy;
   [GKActivity named:v11 execute:v15];
 }
 
-- (void)getTurnBasedMatchesAndCompatibleBundleID:(BOOL)a3 handler:(id)a4
+- (void)getTurnBasedMatchesAndCompatibleBundleID:(BOOL)d handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = [NSString stringWithFormat:@"%s:%d %s", "GKTurnBasedService.m", 505, "[GKTurnBasedService getTurnBasedMatchesAndCompatibleBundleID:handler:]"];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000E3038;
   v9[3] = &unk_1003660D8;
   v9[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = handlerCopy;
+  dCopy = d;
+  v8 = handlerCopy;
   [GKActivity named:v7 execute:v9];
 }
 
-- (void)_updatePlayersForMatches:(id)a3 group:(id)a4
+- (void)_updatePlayersForMatches:(id)matches group:(id)group
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000E3FE0;
   v7[3] = &unk_100360FF0;
-  v8 = a3;
-  v9 = self;
-  v6 = v8;
-  [a4 perform:v7];
+  matchesCopy = matches;
+  selfCopy = self;
+  v6 = matchesCopy;
+  [group perform:v7];
 }
 
-- (void)fetchDetailsForTurnBasedMatchIDs:(id)a3 includeGameData:(BOOL)a4 responseKind:(int)a5 context:(id)a6 handler:(id)a7
+- (void)fetchDetailsForTurnBasedMatchIDs:(id)ds includeGameData:(BOOL)data responseKind:(int)kind context:(id)context handler:(id)handler
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  dsCopy = ds;
+  contextCopy = context;
+  handlerCopy = handler;
   v15 = [NSString stringWithFormat:@"%s:%d %s", "GKTurnBasedService.m", 644, "[GKTurnBasedService fetchDetailsForTurnBasedMatchIDs:includeGameData:responseKind:context:handler:]"];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1000E48B0;
   v19[3] = &unk_1003661F0;
-  v20 = v13;
-  v21 = self;
-  v24 = a5;
-  v25 = a4;
-  v22 = v12;
-  v23 = v14;
-  v16 = v14;
-  v17 = v12;
-  v18 = v13;
+  v20 = contextCopy;
+  selfCopy = self;
+  kindCopy = kind;
+  dataCopy = data;
+  v22 = dsCopy;
+  v23 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = dsCopy;
+  v18 = contextCopy;
   [GKActivity named:v15 execute:v19];
 }
 
-- (void)loadDetailsForTurnBasedMatchIDs:(id)a3 includeGameData:(BOOL)a4 context:(id)a5 handler:(id)a6
+- (void)loadDetailsForTurnBasedMatchIDs:(id)ds includeGameData:(BOOL)data context:(id)context handler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dsCopy = ds;
+  contextCopy = context;
+  handlerCopy = handler;
   v13 = [NSString stringWithFormat:@"%s:%d %s", "GKTurnBasedService.m", 710, "[GKTurnBasedService loadDetailsForTurnBasedMatchIDs:includeGameData:context:handler:]"];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000E5164;
   v17[3] = &unk_100361C40;
-  v18 = v11;
-  v19 = self;
-  v22 = a4;
-  v20 = v10;
-  v21 = v12;
-  v14 = v12;
-  v15 = v10;
-  v16 = v11;
+  v18 = contextCopy;
+  selfCopy = self;
+  dataCopy = data;
+  v20 = dsCopy;
+  v21 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = dsCopy;
+  v16 = contextCopy;
   [GKActivity named:v13 execute:v17];
 }
 
-- (void)getDetailsForTurnBasedMatchIDs:(id)a3 includeGameData:(BOOL)a4 prefetchOnly:(BOOL)a5 handler:(id)a6
+- (void)getDetailsForTurnBasedMatchIDs:(id)ds includeGameData:(BOOL)data prefetchOnly:(BOOL)only handler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
+  dsCopy = ds;
+  handlerCopy = handler;
   v12 = [NSString stringWithFormat:@"%s:%d %s", "GKTurnBasedService.m", 776, "[GKTurnBasedService getDetailsForTurnBasedMatchIDs:includeGameData:prefetchOnly:handler:]"];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000E5BC4;
   v15[3] = &unk_100366378;
-  v16 = v10;
-  v17 = v11;
-  v18 = a5;
+  v16 = dsCopy;
+  v17 = handlerCopy;
+  onlyCopy = only;
   v15[4] = self;
-  v19 = a4;
-  v13 = v10;
-  v14 = v11;
+  dataCopy = data;
+  v13 = dsCopy;
+  v14 = handlerCopy;
   [GKActivity named:v12 execute:v15];
 }
 
-- (void)acceptInviteForTurnBasedMatch:(id)a3 handler:(id)a4
+- (void)acceptInviteForTurnBasedMatch:(id)match handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  matchCopy = match;
+  handlerCopy = handler;
   v8 = +[GKDataRequestManager sharedManager];
   v9 = [NSString stringWithFormat:@"%s:%d %s", "GKTurnBasedService.m", 838, "[GKTurnBasedService acceptInviteForTurnBasedMatch:handler:]"];
   v10 = [(GKService *)self transactionGroupWithName:v9];
 
-  v11 = [v6 matchID];
+  matchID = [matchCopy matchID];
   v12 = &off_1002C2000;
-  if (v11)
+  if (matchID)
   {
     v35 = v10;
-    v36 = v7;
+    v36 = handlerCopy;
     v13 = +[GKBulletinController sharedController];
-    [v13 clearTurnBasedBulletinsForMatchID:v11];
+    [v13 clearTurnBasedBulletinsForMatchID:matchID];
 
-    v37 = self;
-    v14 = [(GKService *)self transport];
-    v15 = [v14 credential];
-    v16 = [v15 playerInternal];
-    v17 = [v16 playerID];
+    selfCopy = self;
+    transport = [(GKService *)self transport];
+    credential = [transport credential];
+    playerInternal = [credential playerInternal];
+    playerID = [playerInternal playerID];
 
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v38 = v6;
-    v18 = [v6 participants];
-    v19 = [v18 countByEnumeratingWithState:&v50 objects:v54 count:16];
+    v38 = matchCopy;
+    participants = [matchCopy participants];
+    v19 = [participants countByEnumeratingWithState:&v50 objects:v54 count:16];
     if (v19)
     {
       v20 = v19;
@@ -672,20 +672,20 @@ LABEL_17:
         {
           if (*v51 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(participants);
           }
 
           v23 = *(*(&v50 + 1) + 8 * i);
-          v24 = [v23 playerID];
-          if ([v24 isEqualToString:v17])
+          playerID2 = [v23 playerID];
+          if ([playerID2 isEqualToString:playerID])
           {
-            v25 = [v23 status];
-            v26 = [v25 isEqualToString:@"Invited"];
+            status = [v23 status];
+            v26 = [status isEqualToString:@"Invited"];
 
             if (!v26)
             {
-              v6 = v38;
-              self = v37;
+              matchCopy = v38;
+              self = selfCopy;
               v10 = v35;
               goto LABEL_15;
             }
@@ -696,32 +696,32 @@ LABEL_17:
           }
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v50 objects:v54 count:16];
+        v20 = [participants countByEnumeratingWithState:&v50 objects:v54 count:16];
       }
 
       while (v20);
     }
 
-    self = v37;
-    v27 = [(GKService *)v37 clientProxy];
-    v28 = [v27 replyQueue];
+    self = selfCopy;
+    clientProxy = [(GKService *)selfCopy clientProxy];
+    replyQueue = [clientProxy replyQueue];
     v44[0] = _NSConcreteStackBlock;
     v44[1] = 3221225472;
     v44[2] = sub_1000E69A4;
     v44[3] = &unk_100361BF8;
     v10 = v35;
     v45 = v35;
-    v46 = v11;
-    v6 = v38;
+    v46 = matchID;
+    matchCopy = v38;
     v47 = v38;
     v48 = v8;
-    v49 = v37;
-    [v45 performOnQueue:v28 block:v44];
+    v49 = selfCopy;
+    [v45 performOnQueue:replyQueue block:v44];
 
-    v18 = v45;
+    participants = v45;
 LABEL_15:
 
-    v7 = v36;
+    handlerCopy = v36;
     v12 = &off_1002C2000;
   }
 
@@ -731,48 +731,48 @@ LABEL_15:
     [v10 setError:v29];
   }
 
-  v30 = [(GKService *)self clientProxy];
-  v31 = [v30 replyQueue];
+  clientProxy2 = [(GKService *)self clientProxy];
+  replyQueue2 = [clientProxy2 replyQueue];
   v39[0] = _NSConcreteStackBlock;
   v39[1] = *(v12 + 304);
   v39[2] = sub_1000E6DBC;
   v39[3] = &unk_100360F78;
-  v40 = v11;
+  v40 = matchID;
   v41 = v10;
-  v42 = self;
-  v43 = v7;
-  v32 = v7;
+  selfCopy2 = self;
+  v43 = handlerCopy;
+  v32 = handlerCopy;
   v33 = v10;
-  v34 = v11;
-  [v33 notifyOnQueue:v31 block:v39];
+  v34 = matchID;
+  [v33 notifyOnQueue:replyQueue2 block:v39];
 }
 
-- (void)declineInviteForTurnBasedMatch:(id)a3 handler:(id)a4
+- (void)declineInviteForTurnBasedMatch:(id)match handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  matchCopy = match;
+  handlerCopy = handler;
   v8 = +[GKDataRequestManager sharedManager];
   v9 = [NSString stringWithFormat:@"%s:%d %s", "GKTurnBasedService.m", 933, "[GKTurnBasedService declineInviteForTurnBasedMatch:handler:]"];
   v10 = [(GKService *)self transactionGroupWithName:v9];
 
-  v11 = [v6 matchID];
-  if (v11)
+  matchID = [matchCopy matchID];
+  if (matchID)
   {
     v12 = +[GKBulletinController sharedController];
-    [v12 clearTurnBasedBulletinsForMatchID:v11];
+    [v12 clearTurnBasedBulletinsForMatchID:matchID];
 
-    v13 = [(GKService *)self clientProxy];
-    v14 = [v13 replyQueue];
+    clientProxy = [(GKService *)self clientProxy];
+    replyQueue = [clientProxy replyQueue];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_1000E7764;
     v26[3] = &unk_100361BF8;
     v27 = v10;
-    v28 = v11;
-    v29 = v6;
+    v28 = matchID;
+    v29 = matchCopy;
     v30 = v8;
-    v31 = self;
-    [v27 performOnQueue:v14 block:v26];
+    selfCopy = self;
+    [v27 performOnQueue:replyQueue block:v26];
   }
 
   else
@@ -781,48 +781,48 @@ LABEL_15:
     [v10 setError:v15];
   }
 
-  v16 = [(GKService *)self clientProxy];
-  v17 = [v16 replyQueue];
+  clientProxy2 = [(GKService *)self clientProxy];
+  replyQueue2 = [clientProxy2 replyQueue];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1000E7BB0;
   v21[3] = &unk_100360F78;
-  v22 = v11;
+  v22 = matchID;
   v23 = v10;
-  v24 = self;
-  v25 = v7;
-  v18 = v7;
+  selfCopy2 = self;
+  v25 = handlerCopy;
+  v18 = handlerCopy;
   v19 = v10;
-  v20 = v11;
-  [v19 notifyOnQueue:v17 block:v21];
+  v20 = matchID;
+  [v19 notifyOnQueue:replyQueue2 block:v21];
 }
 
-- (void)removeTurnBasedMatch:(id)a3 handler:(id)a4
+- (void)removeTurnBasedMatch:(id)match handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  matchCopy = match;
   v8 = +[GKDataRequestManager sharedManager];
   v9 = [NSString stringWithFormat:@"%s:%d %s", "GKTurnBasedService.m", 997, "[GKTurnBasedService removeTurnBasedMatch:handler:]"];
   v10 = [(GKService *)self transactionGroupWithName:v9];
 
-  v11 = [v7 matchID];
+  matchID = [matchCopy matchID];
 
-  if (v11)
+  if (matchID)
   {
     v12 = +[GKBulletinController sharedController];
-    [v12 clearTurnBasedBulletinsForMatchID:v11];
+    [v12 clearTurnBasedBulletinsForMatchID:matchID];
 
-    v13 = [(GKService *)self clientProxy];
-    v14 = [v13 replyQueue];
+    clientProxy = [(GKService *)self clientProxy];
+    replyQueue = [clientProxy replyQueue];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_1000E8318;
     v26[3] = &unk_100361F90;
     v27 = v10;
-    v28 = v11;
+    v28 = matchID;
     v29 = v8;
-    v30 = self;
-    [v27 performOnQueue:v14 block:v26];
+    selfCopy = self;
+    [v27 performOnQueue:replyQueue block:v26];
   }
 
   else
@@ -831,53 +831,53 @@ LABEL_15:
     [v10 setError:v15];
   }
 
-  v16 = [(GKService *)self clientProxy];
-  v17 = [v16 replyQueue];
+  clientProxy2 = [(GKService *)self clientProxy];
+  replyQueue2 = [clientProxy2 replyQueue];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1000E86BC;
   v21[3] = &unk_100360F78;
-  v22 = v11;
+  v22 = matchID;
   v23 = v10;
-  v24 = self;
-  v25 = v6;
-  v18 = v6;
+  selfCopy2 = self;
+  v25 = handlerCopy;
+  v18 = handlerCopy;
   v19 = v10;
-  v20 = v11;
-  [v19 notifyOnQueue:v17 block:v21];
+  v20 = matchID;
+  [v19 notifyOnQueue:replyQueue2 block:v21];
 }
 
-- (void)submitTurnForTurnBasedMatch:(id)a3 nextParticipantIndexes:(id)a4 turnTimeout:(double)a5 handler:(id)a6
+- (void)submitTurnForTurnBasedMatch:(id)match nextParticipantIndexes:(id)indexes turnTimeout:(double)timeout handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  matchCopy = match;
+  indexesCopy = indexes;
+  handlerCopy = handler;
   v13 = +[GKDataRequestManager sharedManager];
   v14 = [NSString stringWithFormat:@"%s:%d %s", "GKTurnBasedService.m", 1051, "[GKTurnBasedService submitTurnForTurnBasedMatch:nextParticipantIndexes:turnTimeout:handler:]"];
   v15 = [(GKService *)self transactionGroupWithName:v14];
 
-  v16 = [v10 matchID];
+  matchID = [matchCopy matchID];
   v17 = &off_1002C2000;
-  if (v16)
+  if (matchID)
   {
     v18 = +[GKBulletinController sharedController];
-    [v18 clearTurnBasedBulletinsForMatchID:v16];
+    [v18 clearTurnBasedBulletinsForMatchID:matchID];
 
-    v19 = [(GKService *)self clientProxy];
-    v20 = [v19 replyQueue];
+    clientProxy = [(GKService *)self clientProxy];
+    replyQueue = [clientProxy replyQueue];
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
     v32[2] = sub_1000E8C00;
     v32[3] = &unk_100365840;
     v33 = v15;
-    v34 = v16;
-    v35 = v10;
-    v36 = self;
-    v37 = v11;
-    v39 = a5;
+    v34 = matchID;
+    v35 = matchCopy;
+    selfCopy = self;
+    v37 = indexesCopy;
+    timeoutCopy = timeout;
     v38 = v13;
     v17 = &off_1002C2000;
-    [v33 performOnQueue:v20 block:v32];
+    [v33 performOnQueue:replyQueue block:v32];
   }
 
   else
@@ -886,52 +886,52 @@ LABEL_15:
     [v15 setError:v21];
   }
 
-  v22 = [(GKService *)self clientProxy];
-  v23 = [v22 replyQueue];
+  clientProxy2 = [(GKService *)self clientProxy];
+  replyQueue2 = [clientProxy2 replyQueue];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = *(v17 + 304);
   v27[2] = sub_1000E9120;
   v27[3] = &unk_100360F78;
-  v28 = v16;
+  v28 = matchID;
   v29 = v15;
-  v30 = self;
-  v31 = v12;
-  v24 = v12;
+  selfCopy2 = self;
+  v31 = handlerCopy;
+  v24 = handlerCopy;
   v25 = v15;
-  v26 = v16;
-  [v25 notifyOnQueue:v23 block:v27];
+  v26 = matchID;
+  [v25 notifyOnQueue:replyQueue2 block:v27];
 }
 
-- (void)saveDataForTurnBasedMatch:(id)a3 resolvedExchangeIDs:(id)a4 handler:(id)a5
+- (void)saveDataForTurnBasedMatch:(id)match resolvedExchangeIDs:(id)ds handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  matchCopy = match;
+  dsCopy = ds;
+  handlerCopy = handler;
   v11 = +[GKDataRequestManager sharedManager];
   v12 = [NSString stringWithFormat:@"%s:%d %s", "GKTurnBasedService.m", 1127, "[GKTurnBasedService saveDataForTurnBasedMatch:resolvedExchangeIDs:handler:]"];
   v13 = [(GKService *)self transactionGroupWithName:v12];
 
-  v14 = [v8 matchID];
+  matchID = [matchCopy matchID];
   v15 = &off_1002C2000;
-  if (v14)
+  if (matchID)
   {
     v16 = +[GKBulletinController sharedController];
-    [v16 clearTurnBasedBulletinsForMatchID:v14];
+    [v16 clearTurnBasedBulletinsForMatchID:matchID];
 
-    v17 = [(GKService *)self clientProxy];
-    v18 = [v17 replyQueue];
+    clientProxy = [(GKService *)self clientProxy];
+    replyQueue = [clientProxy replyQueue];
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_1000E98B8;
     v30[3] = &unk_100362FC8;
     v31 = v13;
-    v32 = v14;
-    v33 = v8;
-    v34 = v9;
+    v32 = matchID;
+    v33 = matchCopy;
+    v34 = dsCopy;
     v35 = v11;
-    v36 = self;
+    selfCopy = self;
     v15 = &off_1002C2000;
-    [v31 performOnQueue:v18 block:v30];
+    [v31 performOnQueue:replyQueue block:v30];
   }
 
   else
@@ -940,46 +940,46 @@ LABEL_15:
     [v13 setError:v19];
   }
 
-  v20 = [(GKService *)self clientProxy];
-  v21 = [v20 replyQueue];
+  clientProxy2 = [(GKService *)self clientProxy];
+  replyQueue2 = [clientProxy2 replyQueue];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = *(v15 + 304);
   v25[2] = sub_1000E9D9C;
   v25[3] = &unk_100360F78;
-  v26 = v14;
+  v26 = matchID;
   v27 = v13;
-  v28 = self;
-  v29 = v10;
-  v22 = v10;
+  selfCopy2 = self;
+  v29 = handlerCopy;
+  v22 = handlerCopy;
   v23 = v13;
-  v24 = v14;
-  [v23 notifyOnQueue:v21 block:v25];
+  v24 = matchID;
+  [v23 notifyOnQueue:replyQueue2 block:v25];
 }
 
-- (void)resignFromTurnBasedGame:(id)a3 outcome:(unint64_t)a4 handler:(id)a5
+- (void)resignFromTurnBasedGame:(id)game outcome:(unint64_t)outcome handler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
+  handlerCopy = handler;
+  gameCopy = game;
   v10 = +[GKDataRequestManager sharedManager];
   v11 = [NSString stringWithFormat:@"%s:%d %s", "GKTurnBasedService.m", 1188, "[GKTurnBasedService resignFromTurnBasedGame:outcome:handler:]"];
   v12 = [(GKService *)self transactionGroupWithName:v11];
 
-  v13 = [v9 matchID];
+  matchID = [gameCopy matchID];
 
-  if (v13)
+  if (matchID)
   {
-    v14 = [(GKService *)self clientProxy];
-    v15 = [v14 replyQueue];
+    clientProxy = [(GKService *)self clientProxy];
+    replyQueue = [clientProxy replyQueue];
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = sub_1000EA3EC;
     v27[3] = &unk_100364F98;
     v28 = v12;
-    v29 = v13;
-    v31 = self;
-    v32 = a4;
+    v29 = matchID;
+    selfCopy = self;
+    outcomeCopy = outcome;
     v30 = v10;
-    [v28 performOnQueue:v15 block:v27];
+    [v28 performOnQueue:replyQueue block:v27];
   }
 
   else
@@ -988,33 +988,33 @@ LABEL_15:
     [v12 setError:v16];
   }
 
-  v17 = [(GKService *)self clientProxy];
-  v18 = [v17 replyQueue];
+  clientProxy2 = [(GKService *)self clientProxy];
+  replyQueue2 = [clientProxy2 replyQueue];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_1000EA79C;
   v22[3] = &unk_100360F78;
-  v23 = v13;
+  v23 = matchID;
   v24 = v12;
-  v25 = self;
-  v26 = v8;
-  v19 = v8;
+  selfCopy2 = self;
+  v26 = handlerCopy;
+  v19 = handlerCopy;
   v20 = v12;
-  v21 = v13;
-  [v20 notifyOnQueue:v18 block:v22];
+  v21 = matchID;
+  [v20 notifyOnQueue:replyQueue2 block:v22];
 }
 
-- (id)_requestForTurnBasedSubmitValues:(id)a3 withServerLabel:(id)a4 sessionID:(id)a5
+- (id)_requestForTurnBasedSubmitValues:(id)values withServerLabel:(id)label sessionID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  v25 = a5;
+  valuesCopy = values;
+  labelCopy = label;
+  dCopy = d;
   v9 = +[NSMutableDictionary dictionary];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v10 = v7;
+  v10 = valuesCopy;
   v11 = [v10 countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v11)
   {
@@ -1030,23 +1030,23 @@ LABEL_15:
         }
 
         v15 = *(*(&v26 + 1) + 8 * i);
-        v16 = [v15 playerID];
-        if (v16)
+        playerID = [v15 playerID];
+        if (playerID)
         {
-          v17 = [v9 objectForKeyedSubscript:v16];
+          v17 = [v9 objectForKeyedSubscript:playerID];
           if (!v17)
           {
             v17 = +[NSMutableDictionary dictionary];
-            [v17 setObject:v16 forKeyedSubscript:@"player-id"];
+            [v17 setObject:playerID forKeyedSubscript:@"player-id"];
             v18 = +[NSMutableArray array];
-            [v17 setObject:v18 forKeyedSubscript:v8];
+            [v17 setObject:v18 forKeyedSubscript:labelCopy];
 
-            [v9 setObject:v17 forKeyedSubscript:v16];
+            [v9 setObject:v17 forKeyedSubscript:playerID];
           }
 
-          v19 = [v17 objectForKeyedSubscript:v8];
-          v20 = [v15 serverRepresentation];
-          [v19 addObject:v20];
+          v19 = [v17 objectForKeyedSubscript:labelCopy];
+          serverRepresentation = [v15 serverRepresentation];
+          [v19 addObject:serverRepresentation];
         }
       }
 
@@ -1058,52 +1058,52 @@ LABEL_15:
 
   if ([v9 count])
   {
-    v21 = v25;
+    v21 = dCopy;
     v30[0] = @"session-id";
     v30[1] = @"players";
-    v31[0] = v25;
-    v22 = [v9 allValues];
-    v31[1] = v22;
+    v31[0] = dCopy;
+    allValues = [v9 allValues];
+    v31[1] = allValues;
     v23 = [NSDictionary dictionaryWithObjects:v31 forKeys:v30 count:2];
   }
 
   else
   {
     v23 = 0;
-    v21 = v25;
+    v21 = dCopy;
   }
 
   return v23;
 }
 
-- (void)completeTurnBasedMatch:(id)a3 scores:(id)a4 achievements:(id)a5 handler:(id)a6
+- (void)completeTurnBasedMatch:(id)match scores:(id)scores achievements:(id)achievements handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  matchCopy = match;
+  scoresCopy = scores;
+  achievementsCopy = achievements;
+  handlerCopy = handler;
   v28 = +[GKDataRequestManager sharedManager];
   v14 = [NSString stringWithFormat:@"%s:%d %s", "GKTurnBasedService.m", 1272, "[GKTurnBasedService completeTurnBasedMatch:scores:achievements:handler:]"];
   v15 = [(GKService *)self transactionGroupWithName:v14];
 
-  v16 = [v10 matchID];
-  if (v16)
+  matchID = [matchCopy matchID];
+  if (matchID)
   {
     v17 = +[GKBulletinController sharedController];
-    [v17 clearTurnBasedBulletinsForMatchID:v16];
+    [v17 clearTurnBasedBulletinsForMatchID:matchID];
 
-    v18 = [(GKService *)self clientProxy];
-    v19 = [v18 replyQueue];
+    clientProxy = [(GKService *)self clientProxy];
+    replyQueue = [clientProxy replyQueue];
     v36[0] = _NSConcreteStackBlock;
     v36[1] = 3221225472;
     v36[2] = sub_1000EB1E4;
     v36[3] = &unk_100361BF8;
     v37 = v15;
-    v38 = v16;
-    v39 = v10;
+    v38 = matchID;
+    v39 = matchCopy;
     v40 = v28;
-    v41 = self;
-    [v37 performOnQueue:v19 block:v36];
+    selfCopy = self;
+    [v37 performOnQueue:replyQueue block:v36];
   }
 
   else
@@ -1112,197 +1112,197 @@ LABEL_15:
     [v15 setError:v20];
   }
 
-  v21 = [(GKService *)self clientProxy];
-  v22 = [v21 replyQueue];
+  clientProxy2 = [(GKService *)self clientProxy];
+  replyQueue2 = [clientProxy2 replyQueue];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_1000EB6E8;
   v29[3] = &unk_100364590;
-  v30 = v16;
-  v31 = self;
+  v30 = matchID;
+  selfCopy2 = self;
   v32 = v15;
-  v33 = v11;
-  v34 = v12;
-  v35 = v13;
-  v23 = v13;
-  v24 = v12;
-  v25 = v11;
+  v33 = scoresCopy;
+  v34 = achievementsCopy;
+  v35 = handlerCopy;
+  v23 = handlerCopy;
+  v24 = achievementsCopy;
+  v25 = scoresCopy;
   v26 = v15;
-  v27 = v16;
-  [v26 notifyOnQueue:v22 block:v29];
+  v27 = matchID;
+  [v26 notifyOnQueue:replyQueue2 block:v29];
 }
 
-- (void)sendExchangeToParticipants:(id)a3 data:(id)a4 message:(id)a5 timeout:(double)a6 match:(id)a7 handler:(id)a8
+- (void)sendExchangeToParticipants:(id)participants data:(id)data message:(id)message timeout:(double)timeout match:(id)match handler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v38 = a8;
-  v18 = [v17 matchID];
+  participantsCopy = participants;
+  dataCopy = data;
+  messageCopy = message;
+  matchCopy = match;
+  handlerCopy = handler;
+  matchID = [matchCopy matchID];
   v19 = +[GKDataRequestManager sharedManager];
   v20 = [NSString stringWithFormat:@"%s:%d %s", "GKTurnBasedService.m", 1376, "[GKTurnBasedService sendExchangeToParticipants:data:message:timeout:match:handler:]"];
   v21 = [(GKService *)self transactionGroupWithName:v20];
 
-  v22 = [v21 context];
+  context = [v21 context];
   v53[0] = _NSConcreteStackBlock;
   v53[1] = 3221225472;
   v53[2] = sub_1000EC428;
   v53[3] = &unk_1003610B8;
-  v23 = v18;
+  v23 = matchID;
   v54 = v23;
   v24 = v21;
   v55 = v24;
-  [v22 performBlockAndWait:v53];
+  [context performBlockAndWait:v53];
 
-  v25 = [(GKService *)self clientProxy];
-  v26 = [v25 replyQueue];
+  clientProxy = [(GKService *)self clientProxy];
+  replyQueue = [clientProxy replyQueue];
   v44[0] = _NSConcreteStackBlock;
   v44[1] = 3221225472;
   v44[2] = sub_1000EC4D4;
   v44[3] = &unk_1003644A0;
-  v45 = v17;
-  v46 = v14;
-  v52 = a6;
-  v47 = v16;
-  v48 = v15;
+  v45 = matchCopy;
+  v46 = participantsCopy;
+  timeoutCopy = timeout;
+  v47 = messageCopy;
+  v48 = dataCopy;
   v49 = v19;
-  v50 = self;
+  selfCopy = self;
   v27 = v24;
   v51 = v27;
   v37 = v19;
-  v28 = v15;
-  v29 = v16;
-  v30 = v14;
-  v31 = v17;
-  [v27 performOnQueue:v26 block:v44];
+  v28 = dataCopy;
+  v29 = messageCopy;
+  v30 = participantsCopy;
+  v31 = matchCopy;
+  [v27 performOnQueue:replyQueue block:v44];
 
-  v32 = [(GKService *)self clientProxy];
-  v33 = [v32 replyQueue];
+  clientProxy2 = [(GKService *)self clientProxy];
+  replyQueue2 = [clientProxy2 replyQueue];
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
   v39[2] = sub_1000EC774;
   v39[3] = &unk_100360F78;
   v40 = v27;
   v41 = v23;
-  v42 = self;
-  v43 = v38;
-  v34 = v38;
+  selfCopy2 = self;
+  v43 = handlerCopy;
+  v34 = handlerCopy;
   v35 = v23;
   v36 = v27;
-  [v36 notifyOnQueue:v33 block:v39];
+  [v36 notifyOnQueue:replyQueue2 block:v39];
 }
 
-- (void)sendRequest:(id)a3 forBagKey:(id)a4 exchange:(id)a5 matchID:(id)a6 responseHandler:(id)a7
+- (void)sendRequest:(id)request forBagKey:(id)key exchange:(id)exchange matchID:(id)d responseHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  requestCopy = request;
+  keyCopy = key;
+  exchangeCopy = exchange;
+  dCopy = d;
+  handlerCopy = handler;
   v17 = +[GKDataRequestManager sharedManager];
   v18 = [NSString stringWithFormat:@"%s:%d %s", "GKTurnBasedService.m", 1433, "[GKTurnBasedService sendRequest:forBagKey:exchange:matchID:responseHandler:]"];
   v19 = [(GKService *)self transactionGroupWithName:v18];
 
-  if (v15)
+  if (dCopy)
   {
-    v20 = [(GKService *)self clientProxy];
-    [v20 replyQueue];
-    v31 = v14;
+    clientProxy = [(GKService *)self clientProxy];
+    [clientProxy replyQueue];
+    v31 = exchangeCopy;
     v21 = v17;
-    v22 = v13;
-    v24 = v23 = v12;
+    v22 = keyCopy;
+    v24 = v23 = requestCopy;
     v38[0] = _NSConcreteStackBlock;
     v38[1] = 3221225472;
     v38[2] = sub_1000ECF88;
     v38[3] = &unk_100362FC8;
     v39 = v19;
-    v40 = v15;
+    v40 = dCopy;
     v41 = v21;
     v42 = v23;
     v43 = v22;
-    v44 = self;
+    selfCopy = self;
     [v39 performOnQueue:v24 block:v38];
 
-    v12 = v23;
-    v13 = v22;
+    requestCopy = v23;
+    keyCopy = v22;
     v17 = v21;
-    v14 = v31;
+    exchangeCopy = v31;
   }
 
-  v25 = [(GKService *)self clientProxy];
-  v26 = [v25 replyQueue];
+  clientProxy2 = [(GKService *)self clientProxy];
+  replyQueue = [clientProxy2 replyQueue];
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_1000ED208;
   v32[3] = &unk_100360F28;
-  v33 = v15;
+  v33 = dCopy;
   v34 = v19;
-  v35 = self;
-  v36 = v14;
-  v37 = v16;
-  v27 = v16;
-  v28 = v14;
+  selfCopy2 = self;
+  v36 = exchangeCopy;
+  v37 = handlerCopy;
+  v27 = handlerCopy;
+  v28 = exchangeCopy;
   v29 = v19;
-  v30 = v15;
-  [v29 notifyOnQueue:v26 block:v32];
+  v30 = dCopy;
+  [v29 notifyOnQueue:replyQueue block:v32];
 }
 
-- (void)cancelExchange:(id)a3 withMessage:(id)a4 match:(id)a5 handler:(id)a6
+- (void)cancelExchange:(id)exchange withMessage:(id)message match:(id)match handler:(id)handler
 {
   v17[0] = @"session-id";
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v11 matchID];
-  v18[0] = v14;
-  v18[1] = v13;
+  handlerCopy = handler;
+  matchCopy = match;
+  messageCopy = message;
+  exchangeCopy = exchange;
+  matchID = [matchCopy matchID];
+  v18[0] = matchID;
+  v18[1] = exchangeCopy;
   v17[1] = @"request-id";
   v17[2] = @"notification-message";
-  v18[2] = v12;
+  v18[2] = messageCopy;
   v15 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:3];
 
-  v16 = [v11 matchID];
+  matchID2 = [matchCopy matchID];
 
-  [(GKTurnBasedService *)self sendRequest:v15 forBagKey:@"gk-tb-cancel-request" exchange:v13 matchID:v16 responseHandler:v10];
+  [(GKTurnBasedService *)self sendRequest:v15 forBagKey:@"gk-tb-cancel-request" exchange:exchangeCopy matchID:matchID2 responseHandler:handlerCopy];
 }
 
-- (void)replyToExchange:(id)a3 withMessage:(id)a4 data:(id)a5 match:(id)a6 handler:(id)a7
+- (void)replyToExchange:(id)exchange withMessage:(id)message data:(id)data match:(id)match handler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  exchangeCopy = exchange;
+  messageCopy = message;
+  dataCopy = data;
   v21[0] = @"session-id";
-  v15 = a7;
-  v16 = a6;
-  v17 = [v16 matchID];
-  v22[0] = v17;
-  v22[1] = v12;
+  handlerCopy = handler;
+  matchCopy = match;
+  matchID = [matchCopy matchID];
+  v22[0] = matchID;
+  v22[1] = exchangeCopy;
   v21[1] = @"request-id";
   v21[2] = @"notification-message";
-  v22[2] = v13;
+  v22[2] = messageCopy;
   v21[3] = @"data";
-  v18 = v14;
-  if (!v14)
+  v18 = dataCopy;
+  if (!dataCopy)
   {
     v18 = +[NSData data];
   }
 
   v22[3] = v18;
   v19 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:4];
-  if (!v14)
+  if (!dataCopy)
   {
   }
 
-  v20 = [v16 matchID];
+  matchID2 = [matchCopy matchID];
 
-  [(GKTurnBasedService *)self sendRequest:v19 forBagKey:@"gk-tb-send-reply" exchange:v12 matchID:v20 responseHandler:v15];
+  [(GKTurnBasedService *)self sendRequest:v19 forBagKey:@"gk-tb-send-reply" exchange:exchangeCopy matchID:matchID2 responseHandler:handlerCopy];
 }
 
-- (void)getNextTurnBasedEventWithHandler:(id)a3
+- (void)getNextTurnBasedEventWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -1315,31 +1315,31 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "getNextTurnBasedEventWithHandler called", &v21, 2u);
   }
 
-  v7 = [(GKService *)self clientProxy];
-  v8 = [v7 gameDescriptor];
+  clientProxy = [(GKService *)self clientProxy];
+  gameDescriptor = [clientProxy gameDescriptor];
 
   v9 = +[GKBulletinController sharedController];
-  v10 = [v9 acceptedInviteManager];
+  acceptedInviteManager = [v9 acceptedInviteManager];
 
-  v11 = [v10 turnBasedInviteForGame:v8];
+  v11 = [acceptedInviteManager turnBasedInviteForGame:gameDescriptor];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 matchID];
-    v14 = [v12 exchangeID];
+    matchID = [v11 matchID];
+    exchangeID = [v12 exchangeID];
   }
 
   else
   {
-    v14 = 0;
-    v13 = 0;
+    exchangeID = 0;
+    matchID = 0;
   }
 
-  v15 = [v12 pushCommand];
-  v16 = [v12 userTapped];
-  if (v4)
+  pushCommand = [v12 pushCommand];
+  userTapped = [v12 userTapped];
+  if (handlerCopy)
   {
-    v17 = v16;
+    v17 = userTapped;
     if (!os_log_GKGeneral)
     {
       v18 = GKOSLoggers();
@@ -1350,54 +1350,54 @@ LABEL_15:
     {
       v20 = @"NO";
       v21 = 138413058;
-      v22 = v13;
+      v22 = matchID;
       v23 = 2112;
       if (v17)
       {
         v20 = @"YES";
       }
 
-      v24 = v14;
+      v24 = exchangeID;
       v25 = 2048;
-      v26 = v15;
+      v26 = pushCommand;
       v27 = 2112;
       v28 = v20;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "getNextTurnBasedEventWithHandler matchID: %@ exchangeID:%@ command: %ld userTapped:%@", &v21, 0x2Au);
     }
 
-    (*(v4 + 2))(v4, v13, v14, v15, v17, 0);
+    (*(handlerCopy + 2))(handlerCopy, matchID, exchangeID, pushCommand, v17, 0);
   }
 }
 
-- (void)sendReminderToParticipants:(id)a3 message:(id)a4 match:(id)a5 handler:(id)a6
+- (void)sendReminderToParticipants:(id)participants message:(id)message match:(id)match handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
+  participantsCopy = participants;
+  messageCopy = message;
+  handlerCopy = handler;
+  matchCopy = match;
   v14 = [NSString stringWithFormat:@"%s:%d %s", "GKTurnBasedService.m", 1536, "[GKTurnBasedService sendReminderToParticipants:message:match:handler:]"];
   v15 = [(GKService *)self transactionGroupWithName:v14];
 
   v16 = +[GKDataRequestManager sharedManager];
   v34[0] = @"session-id";
-  v17 = [v13 matchID];
+  matchID = [matchCopy matchID];
 
-  v35[0] = v17;
-  v35[1] = v11;
+  v35[0] = matchID;
+  v35[1] = messageCopy;
   v34[1] = @"localized-message";
   v34[2] = @"participants";
-  v35[2] = v10;
+  v35[2] = participantsCopy;
   v34[3] = @"push-token";
-  v18 = [v16 pushToken];
-  v19 = v18;
-  if (!v18)
+  pushToken = [v16 pushToken];
+  v19 = pushToken;
+  if (!pushToken)
   {
     v19 = +[NSData data];
   }
 
   v35[3] = v19;
   v20 = [NSDictionary dictionaryWithObjects:v35 forKeys:v34 count:4];
-  if (!v18)
+  if (!pushToken)
   {
   }
 
@@ -1409,68 +1409,68 @@ LABEL_15:
   v30 = v21;
   v22 = v20;
   v31 = v22;
-  v32 = self;
+  selfCopy = self;
   v23 = v15;
   v33 = v23;
   [v23 perform:v29];
-  if (v12)
+  if (handlerCopy)
   {
-    v24 = [(GKService *)self clientProxy];
-    v25 = [v24 replyQueue];
+    clientProxy = [(GKService *)self clientProxy];
+    replyQueue = [clientProxy replyQueue];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_1000EE05C;
     v26[3] = &unk_100360EB0;
-    v28 = v12;
+    v28 = handlerCopy;
     v27 = v23;
-    [v27 notifyOnQueue:v25 block:v26];
+    [v27 notifyOnQueue:replyQueue block:v26];
   }
 }
 
-- (void)loadURLWithTBGMatch:(id)a3 player:(id)a4 matchRequest:(id)a5 handler:(id)a6
+- (void)loadURLWithTBGMatch:(id)match player:(id)player matchRequest:(id)request handler:(id)handler
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = a4;
+  matchCopy = match;
+  handlerCopy = handler;
+  playerCopy = player;
   v12 = objc_alloc_init(NSMutableDictionary);
   v13 = [GKDispatchGroup dispatchGroupWithName:@"loadRecordURL"];
-  v14 = [(GKService *)self clientProxy];
-  v15 = [v14 bundleIdentifier];
-  [v12 setObject:v15 forKey:@"bundle-id"];
+  clientProxy = [(GKService *)self clientProxy];
+  bundleIdentifier = [clientProxy bundleIdentifier];
+  [v12 setObject:bundleIdentifier forKey:@"bundle-id"];
 
-  v16 = [(GKService *)self clientProxy];
-  v17 = [v16 bundleVersion];
-  [v12 setObject:v17 forKey:@"bundle-version"];
+  clientProxy2 = [(GKService *)self clientProxy];
+  bundleVersion = [clientProxy2 bundleVersion];
+  [v12 setObject:bundleVersion forKey:@"bundle-version"];
 
-  v18 = [v11 playerID];
+  playerID = [playerCopy playerID];
 
-  [v12 setObject:v18 forKey:@"playerID"];
-  v19 = [(GKService *)self clientProxy];
-  v20 = [v19 bundleShortVersion];
+  [v12 setObject:playerID forKey:@"playerID"];
+  clientProxy3 = [(GKService *)self clientProxy];
+  bundleShortVersion = [clientProxy3 bundleShortVersion];
 
-  if (v20)
+  if (bundleShortVersion)
   {
-    v21 = [(GKService *)self clientProxy];
-    v22 = [v21 bundleShortVersion];
-    [v12 setObject:v22 forKey:@"short-bundle-version"];
+    clientProxy4 = [(GKService *)self clientProxy];
+    bundleShortVersion2 = [clientProxy4 bundleShortVersion];
+    [v12 setObject:bundleShortVersion2 forKey:@"short-bundle-version"];
   }
 
-  v23 = [(GKService *)self clientProxy];
-  v24 = [v23 adamID];
+  clientProxy5 = [(GKService *)self clientProxy];
+  adamID = [clientProxy5 adamID];
 
-  if (v24)
+  if (adamID)
   {
-    v25 = [(GKService *)self clientProxy];
-    v26 = [v25 adamID];
-    [v12 setObject:v26 forKey:@"adam-id"];
+    clientProxy6 = [(GKService *)self clientProxy];
+    adamID2 = [clientProxy6 adamID];
+    [v12 setObject:adamID2 forKey:@"adam-id"];
   }
 
-  v27 = [v9 matchID];
+  matchID = [matchCopy matchID];
 
-  if (v27)
+  if (matchID)
   {
-    v28 = [v9 matchID];
-    [v12 setObject:v28 forKey:@"session-id"];
+    matchID2 = [matchCopy matchID];
+    [v12 setObject:matchID2 forKey:@"session-id"];
   }
 
   v29 = [NSNumber numberWithInt:1];
@@ -1486,7 +1486,7 @@ LABEL_15:
   v40[2] = sub_1000EE4B4;
   v40[3] = &unk_100360F00;
   v41 = v32;
-  v42 = self;
+  selfCopy = self;
   v33 = v13;
   v43 = v33;
   v34 = v32;
@@ -1496,68 +1496,68 @@ LABEL_15:
   v37[2] = sub_1000EE700;
   v37[3] = &unk_100360EB0;
   v38 = v33;
-  v39 = v10;
+  v39 = handlerCopy;
   v35 = v33;
-  v36 = v10;
+  v36 = handlerCopy;
   [v35 notifyOnQueue:&_dispatch_main_q block:v37];
 }
 
-- (void)reserveShareParticipantSlots:(int64_t)a3 minPlayerCount:(int64_t)a4 maxPlayerCount:(int64_t)a5 andInvitePlayers:(id)a6 withMessage:(id)a7 forMatch:(id)a8 handler:(id)a9
+- (void)reserveShareParticipantSlots:(int64_t)slots minPlayerCount:(int64_t)count maxPlayerCount:(int64_t)playerCount andInvitePlayers:(id)players withMessage:(id)message forMatch:(id)match handler:(id)handler
 {
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
+  playersCopy = players;
+  messageCopy = message;
+  matchCopy = match;
+  handlerCopy = handler;
   v18 = [NSString stringWithFormat:@"%s:%d %s", "GKTurnBasedService.m", 1623, "[GKTurnBasedService reserveShareParticipantSlots:minPlayerCount:maxPlayerCount:andInvitePlayers:withMessage:forMatch:handler:]"];
   v19 = [(GKService *)self transactionGroupWithName:v18];
 
-  v20 = [(GKService *)self clientProxy];
-  v21 = [v20 replyQueue];
+  clientProxy = [(GKService *)self clientProxy];
+  replyQueue = [clientProxy replyQueue];
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = sub_1000EE9E8;
   v34[3] = &unk_100366408;
-  v40 = a3;
-  v41 = a4;
-  v42 = a5;
-  v35 = v16;
-  v36 = v14;
-  v37 = v15;
-  v38 = self;
+  slotsCopy = slots;
+  countCopy = count;
+  playerCountCopy = playerCount;
+  v35 = matchCopy;
+  v36 = playersCopy;
+  v37 = messageCopy;
+  selfCopy = self;
   v22 = v19;
   v39 = v22;
-  v23 = v15;
-  v24 = v14;
-  v25 = v16;
-  [v22 performOnQueue:v21 block:v34];
+  v23 = messageCopy;
+  v24 = playersCopy;
+  v25 = matchCopy;
+  [v22 performOnQueue:replyQueue block:v34];
 
-  v26 = [(GKService *)self clientProxy];
-  v27 = [v26 replyQueue];
+  clientProxy2 = [(GKService *)self clientProxy];
+  replyQueue2 = [clientProxy2 replyQueue];
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_1000EEDC0;
   v31[3] = &unk_100360EB0;
   v32 = v22;
-  v33 = v17;
+  v33 = handlerCopy;
   v28 = v22;
-  v29 = v17;
-  [v28 notifyOnQueue:v27 block:v31];
+  v29 = handlerCopy;
+  [v28 notifyOnQueue:replyQueue2 block:v31];
 }
 
 - (id)privateDatabase
 {
   v2 = [CKContainer containerWithIdentifier:@"com.apple.socialgaming.sessions"];
-  v3 = [v2 privateCloudDatabase];
+  privateCloudDatabase = [v2 privateCloudDatabase];
 
-  return v3;
+  return privateCloudDatabase;
 }
 
-- (void)saveRecord:(id)a3 withHandler:(id)a4
+- (void)saveRecord:(id)record withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  handlerCopy = handler;
   v8 = [CKModifyRecordsOperation alloc];
-  v19 = v6;
+  v19 = recordCopy;
   v9 = [NSArray arrayWithObjects:&v19 count:1];
   v10 = [v8 initWithRecordsToSave:v9 recordIDsToDelete:0];
 
@@ -1569,14 +1569,14 @@ LABEL_15:
   v15[1] = 3221225472;
   v15[2] = sub_1000EF020;
   v15[3] = &unk_100366430;
-  v16 = v6;
-  v17 = self;
-  v18 = v7;
-  v12 = v7;
-  v13 = v6;
+  v16 = recordCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = recordCopy;
   [v10 setModifyRecordsCompletionBlock:v15];
-  v14 = [(GKTurnBasedService *)self privateDatabase];
-  [v14 addOperation:v10];
+  privateDatabase = [(GKTurnBasedService *)self privateDatabase];
+  [privateDatabase addOperation:v10];
 }
 
 @end

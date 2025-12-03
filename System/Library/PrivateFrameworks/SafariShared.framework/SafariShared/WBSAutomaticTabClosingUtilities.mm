@@ -4,31 +4,31 @@
 + (unint64_t)automaticTabClosingInterval;
 + (void)clearMostDistantLastViewedTime;
 + (void)resetAutomaticTabClosingIntervalPreference;
-+ (void)setAutomaticTabClosingInterval:(unint64_t)a3;
-+ (void)setMostDistantLastViewedTime:(double)a3;
++ (void)setAutomaticTabClosingInterval:(unint64_t)interval;
++ (void)setMostDistantLastViewedTime:(double)time;
 @end
 
 @implementation WBSAutomaticTabClosingUtilities
 
 + (unint64_t)automaticTabClosingInterval
 {
-  v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v3 = [v2 integerForKey:@"CloseTabsAutomatically"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v3 = [safari_browserDefaults integerForKey:@"CloseTabsAutomatically"];
 
   return v3;
 }
 
 + (BOOL)shouldCloseTabsAutomaticallyWhenEnteringForeground
 {
-  v2 = [a1 automaticTabClosingInterval];
-  v3 = v2;
-  if (v2 < 5 && ((0x1Du >> v2) & 1) != 0)
+  automaticTabClosingInterval = [self automaticTabClosingInterval];
+  v3 = automaticTabClosingInterval;
+  if (automaticTabClosingInterval < 5 && ((0x1Du >> automaticTabClosingInterval) & 1) != 0)
   {
     return 0;
   }
 
-  v4 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  [v4 doubleForKey:@"mostDistantLastViewedTime"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  [safari_browserDefaults doubleForKey:@"mostDistantLastViewedTime"];
   v6 = v5;
 
   if (v6 <= 0.0)
@@ -44,41 +44,41 @@
 
 + (BOOL)userHasPreferenceForAutomaticTabClosingInterval
 {
-  v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v3 = [v2 objectForKey:@"CloseTabsAutomatically"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v3 = [safari_browserDefaults objectForKey:@"CloseTabsAutomatically"];
   v4 = v3 != 0;
 
   return v4;
 }
 
-+ (void)setAutomaticTabClosingInterval:(unint64_t)a3
++ (void)setAutomaticTabClosingInterval:(unint64_t)interval
 {
-  v4 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  [v4 setInteger:a3 forKey:@"CloseTabsAutomatically"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  [safari_browserDefaults setInteger:interval forKey:@"CloseTabsAutomatically"];
 }
 
 + (void)resetAutomaticTabClosingIntervalPreference
 {
-  v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  [v2 removeObjectForKey:@"CloseTabsAutomatically"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  [safari_browserDefaults removeObjectForKey:@"CloseTabsAutomatically"];
 }
 
-+ (void)setMostDistantLastViewedTime:(double)a3
++ (void)setMostDistantLastViewedTime:(double)time
 {
-  v7 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  [v7 floatForKey:@"mostDistantLastViewedTime"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  [safari_browserDefaults floatForKey:@"mostDistantLastViewedTime"];
   v5 = *&v4;
-  if (*&v4 <= 0.0 || v5 > a3)
+  if (*&v4 <= 0.0 || v5 > time)
   {
-    *&v4 = a3;
-    [v7 setFloat:@"mostDistantLastViewedTime" forKey:{v4, v5}];
+    *&v4 = time;
+    [safari_browserDefaults setFloat:@"mostDistantLastViewedTime" forKey:{v4, v5}];
   }
 }
 
 + (void)clearMostDistantLastViewedTime
 {
-  v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  [v2 removeObjectForKey:@"mostDistantLastViewedTime"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  [safari_browserDefaults removeObjectForKey:@"mostDistantLastViewedTime"];
 }
 
 @end

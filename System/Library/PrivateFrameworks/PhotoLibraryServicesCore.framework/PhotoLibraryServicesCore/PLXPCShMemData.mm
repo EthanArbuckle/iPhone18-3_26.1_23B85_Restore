@@ -1,6 +1,6 @@
 @interface PLXPCShMemData
-- (PLXPCShMemData)initWithXPCShmem:(id)a3;
-- (PLXPCShMemData)initWithXPCShmem:(id)a3 length:(int64_t)a4;
+- (PLXPCShMemData)initWithXPCShmem:(id)shmem;
+- (PLXPCShMemData)initWithXPCShmem:(id)shmem length:(int64_t)length;
 - (void)dealloc;
 @end
 
@@ -28,27 +28,27 @@
   [(PLXPCShMemData *)&v7 dealloc];
 }
 
-- (PLXPCShMemData)initWithXPCShmem:(id)a3 length:(int64_t)a4
+- (PLXPCShMemData)initWithXPCShmem:(id)shmem length:(int64_t)length
 {
-  result = [(PLXPCShMemData *)self initWithXPCShmem:a3];
+  result = [(PLXPCShMemData *)self initWithXPCShmem:shmem];
   if (result)
   {
-    result->_dataLength = a4;
+    result->_dataLength = length;
   }
 
   return result;
 }
 
-- (PLXPCShMemData)initWithXPCShmem:(id)a3
+- (PLXPCShMemData)initWithXPCShmem:(id)shmem
 {
-  v4 = a3;
+  shmemCopy = shmem;
   v10.receiver = self;
   v10.super_class = PLXPCShMemData;
   v5 = [(PLXPCShMemData *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    if (!v4 || (v7 = xpc_shmem_map(v4, &v5->_buffer), (v6->_bufferLength = v7) == 0))
+    if (!shmemCopy || (v7 = xpc_shmem_map(shmemCopy, &v5->_buffer), (v6->_bufferLength = v7) == 0))
     {
       v8 = 0;
       goto LABEL_7;

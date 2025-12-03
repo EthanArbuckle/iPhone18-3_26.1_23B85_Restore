@@ -1,14 +1,14 @@
 @interface OADQuadBezierControlPointPathElement
 - (OADAdjustPoint)controlPoint;
-- (OADQuadBezierControlPointPathElement)initWithControlPoint:(OADAdjustPoint)a3;
+- (OADQuadBezierControlPointPathElement)initWithControlPoint:(OADAdjustPoint)point;
 @end
 
 @implementation OADQuadBezierControlPointPathElement
 
-- (OADQuadBezierControlPointPathElement)initWithControlPoint:(OADAdjustPoint)a3
+- (OADQuadBezierControlPointPathElement)initWithControlPoint:(OADAdjustPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6.receiver = self;
   v6.super_class = OADQuadBezierControlPointPathElement;
   result = [(OADQuadBezierControlPointPathElement *)&v6 init];

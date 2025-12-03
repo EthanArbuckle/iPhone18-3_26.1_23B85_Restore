@@ -11,18 +11,18 @@
 - (id)_accessibilityCommonStylingRotors
 {
   v12[8] = *MEMORY[0x1E69E9840];
-  v2 = [a1 _accessibilityTextStylingCustomRotor:10];
-  v3 = [a1 _accessibilityTextStylingCustomRotor:11];
-  v4 = [a1 _accessibilityTextStylingCustomRotor:12];
-  v5 = [a1 _accessibilityMisspelledRotor];
-  v6 = [a1 _accessibilityTextStylingCustomRotor:UIAccessibilityCustomSystemRotorTypePlainText];
-  v7 = [a1 _accessibilityTextStylingCustomRotor:UIAccessibilityCustomSystemRotorTypeColorChange];
-  v8 = [a1 _accessibilityTextStylingCustomRotor:UIAccessibilityCustomSystemRotorTypeFontChange];
-  v9 = [a1 _accessibilityTextStylingCustomRotor:UIAccessibilityCustomSystemRotorTypeStyleChange];
+  v2 = [self _accessibilityTextStylingCustomRotor:10];
+  v3 = [self _accessibilityTextStylingCustomRotor:11];
+  v4 = [self _accessibilityTextStylingCustomRotor:12];
+  _accessibilityMisspelledRotor = [self _accessibilityMisspelledRotor];
+  v6 = [self _accessibilityTextStylingCustomRotor:UIAccessibilityCustomSystemRotorTypePlainText];
+  v7 = [self _accessibilityTextStylingCustomRotor:UIAccessibilityCustomSystemRotorTypeColorChange];
+  v8 = [self _accessibilityTextStylingCustomRotor:UIAccessibilityCustomSystemRotorTypeFontChange];
+  v9 = [self _accessibilityTextStylingCustomRotor:UIAccessibilityCustomSystemRotorTypeStyleChange];
   v12[0] = v2;
   v12[1] = v3;
   v12[2] = v4;
-  v12[3] = v5;
+  v12[3] = _accessibilityMisspelledRotor;
   v12[4] = v6;
   v12[5] = v7;
   v12[6] = v8;
@@ -37,27 +37,27 @@
   v5 = a3;
   v6 = a4;
   v7 = __UIAccessibilityCastAsProtocol();
-  v29 = [v5 currentItem];
-  v8 = [v29 targetRange];
+  currentItem = [v5 currentItem];
+  targetRange = [currentItem targetRange];
   v30 = v5;
-  v9 = [v5 searchDirection];
-  v10 = [v8 start];
-  v32 = v9 != 1;
-  v33 = [v7 textStylingAtPosition:v10 inDirection:v32];
+  searchDirection = [v5 searchDirection];
+  start = [targetRange start];
+  v32 = searchDirection != 1;
+  v33 = [v7 textStylingAtPosition:start inDirection:v32];
 
-  v11 = 0;
-  v12 = 0;
+  start2 = 0;
+  endOfDocument = 0;
   v13 = 0;
   for (i = v6; ; v6 = i)
   {
-    if (v9 == 1)
+    if (searchDirection == 1)
     {
-      [v8 end];
+      [targetRange end];
     }
 
     else
     {
-      [v8 start];
+      [targetRange start];
     }
     v14 = ;
     v15 = [v7 textStylingAtPosition:v14 inDirection:v32];
@@ -67,42 +67,42 @@
       break;
     }
 
-    if (v9 == 1 && !v11)
+    if (searchDirection == 1 && !start2)
     {
-      v11 = [v8 start];
+      start2 = [targetRange start];
       goto LABEL_13;
     }
 
-    if (v9 != 1 && !v12)
+    if (searchDirection != 1 && !endOfDocument)
     {
-      v12 = [v8 end];
+      endOfDocument = [targetRange end];
 LABEL_17:
-      v16 = [v8 start];
+      start3 = [targetRange start];
       v17 = v7;
-      v18 = v16;
+      v18 = start3;
       v19 = -1;
       goto LABEL_18;
     }
 
 LABEL_12:
-    if (v9 != 1)
+    if (searchDirection != 1)
     {
       goto LABEL_17;
     }
 
 LABEL_13:
-    v16 = [v8 end];
+    start3 = [targetRange end];
     v17 = v7;
-    v18 = v16;
+    v18 = start3;
     v19 = 1;
 LABEL_18:
     v20 = [v17 positionFromPosition:v18 offset:v19];
 
-    v21 = v8;
-    v8 = [v7 textRangeFromPosition:v20 toPosition:v20];
+    v21 = targetRange;
+    targetRange = [v7 textRangeFromPosition:v20 toPosition:v20];
 
-    v22 = [v8 start];
-    if (!v22 || (v23 = v22, [v8 end], v24 = objc_claimAutoreleasedReturnValue(), v24, v23, !v24))
+    start4 = [targetRange start];
+    if (!start4 || (v23 = start4, [targetRange end], v24 = objc_claimAutoreleasedReturnValue(), v24, v23, !v24))
     {
 
       v6 = i;
@@ -112,42 +112,42 @@ LABEL_18:
     v13 = v21;
   }
 
-  if (v11)
+  if (start2)
   {
     v25 = [v13 end];
 
     v21 = v13;
-    v12 = v25;
+    endOfDocument = v25;
     goto LABEL_24;
   }
 
-  if (!v12)
+  if (!endOfDocument)
   {
-    v11 = 0;
+    start2 = 0;
     goto LABEL_12;
   }
 
-  v11 = [v13 start];
+  start2 = [v13 start];
   v21 = v13;
 LABEL_24:
 
-  if (v12 || !v11)
+  if (endOfDocument || !start2)
   {
-    if (v12 && !v11)
+    if (endOfDocument && !start2)
     {
-      v11 = [v7 beginningOfDocument];
+      start2 = [v7 beginningOfDocument];
     }
   }
 
   else
   {
-    v12 = [v7 endOfDocument];
+    endOfDocument = [v7 endOfDocument];
   }
 
   v26 = 0;
-  if (v11 && v12)
+  if (start2 && endOfDocument)
   {
-    v26 = [v7 textRangeFromPosition:v11 toPosition:v12];
+    v26 = [v7 textRangeFromPosition:start2 toPosition:endOfDocument];
   }
 
   v27 = v26;
@@ -161,7 +161,7 @@ LABEL_24:
   block[1] = 3221225472;
   block[2] = __78__NSObject_UIAccessibilityTextAttributeRotor___accessibilityAttributeMatcher___block_invoke;
   block[3] = &unk_1E78AB028;
-  block[4] = a1;
+  block[4] = self;
   if (_accessibilityAttributeMatcher__onceToken != -1)
   {
     dispatch_once(&_accessibilityAttributeMatcher__onceToken, block);
@@ -177,10 +177,10 @@ LABEL_24:
 - (uint64_t)_accessibilityMisspelledWordIn:()UIAccessibilityTextAttributeRotor searchRange:next:
 {
   v10 = a3;
-  if ((objc_opt_respondsToSelector() & 1) == 0 || [a1 spellCheckingType] != 1)
+  if ((objc_opt_respondsToSelector() & 1) == 0 || [self spellCheckingType] != 1)
   {
-    v11 = [a1 _accessibilityTextChecker];
-    if (v11)
+    _accessibilityTextChecker = [self _accessibilityTextChecker];
+    if (_accessibilityTextChecker)
     {
       goto LABEL_8;
     }
@@ -190,9 +190,9 @@ LABEL_24:
     do
     {
       CFRunLoopRunInMode(v12, 0.2, 0);
-      v14 = [a1 _accessibilityTextChecker];
-      v11 = v14;
-      if (v14)
+      _accessibilityTextChecker2 = [self _accessibilityTextChecker];
+      _accessibilityTextChecker = _accessibilityTextChecker2;
+      if (_accessibilityTextChecker2)
       {
         break;
       }
@@ -201,19 +201,19 @@ LABEL_24:
     }
 
     while (v13 < 1.5);
-    if (v14)
+    if (_accessibilityTextChecker2)
     {
 LABEL_8:
-      v15 = [v10 string];
-      v16 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-      v17 = [v16 currentInputMode];
-      if (v17)
+      string = [v10 string];
+      mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+      currentInputMode = [mEMORY[0x1E69DCBF0] currentInputMode];
+      if (currentInputMode)
       {
         if (a6)
         {
 LABEL_10:
-          v18 = [v17 primaryLanguage];
-          v19 = [v11 rangeOfMisspelledWordInString:v15 range:a4 startingAt:a5 wrap:a4 language:{0, v18}];
+          primaryLanguage = [currentInputMode primaryLanguage];
+          v19 = [_accessibilityTextChecker rangeOfMisspelledWordInString:string range:a4 startingAt:a5 wrap:a4 language:{0, primaryLanguage}];
 
 LABEL_23:
           goto LABEL_24;
@@ -222,14 +222,14 @@ LABEL_23:
 
       else
       {
-        v17 = [v16 currentSystemInputMode];
+        currentInputMode = [mEMORY[0x1E69DCBF0] currentSystemInputMode];
         if (a6)
         {
           goto LABEL_10;
         }
       }
 
-      v28 = v16;
+      v28 = mEMORY[0x1E69DCBF0];
       v29 = v10;
       v20 = a4 + a5;
       if (a4 >= a4 + a5)
@@ -242,8 +242,8 @@ LABEL_23:
         v21 = 0x7FFFFFFFFFFFFFFFLL;
         do
         {
-          v22 = [v17 primaryLanguage];
-          v23 = [v11 rangeOfMisspelledWordInString:v15 range:a4 startingAt:a5 wrap:a4 language:{0, v22}];
+          primaryLanguage2 = [currentInputMode primaryLanguage];
+          v23 = [_accessibilityTextChecker rangeOfMisspelledWordInString:string range:a4 startingAt:a5 wrap:a4 language:{0, primaryLanguage2}];
           v25 = v24;
 
           if (v23 == 0x7FFFFFFFFFFFFFFFLL)
@@ -270,7 +270,7 @@ LABEL_23:
         v19 = v21;
       }
 
-      v16 = v28;
+      mEMORY[0x1E69DCBF0] = v28;
       v10 = v29;
       goto LABEL_23;
     }
@@ -284,10 +284,10 @@ LABEL_24:
 
 - (id)_accessibilityTextStylingCustomRotor:()UIAccessibilityTextAttributeRotor
 {
-  if ([a1 conformsToProtocol:&unk_1F1E10CA0])
+  if ([self conformsToProtocol:&unk_1F1E10CA0])
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UIAccessibilityCustomSystemRotorType-%d", a3];
-    v6 = [a1 _accessibilityValueForKey:v5];
+    v6 = [self _accessibilityValueForKey:v5];
     if (v6)
     {
       v7 = v6;
@@ -300,11 +300,11 @@ LABEL_24:
       v12[1] = 3221225472;
       v12[2] = __84__NSObject_UIAccessibilityTextAttributeRotor___accessibilityTextStylingCustomRotor___block_invoke;
       v12[3] = &unk_1E78ABA70;
-      v12[4] = a1;
+      v12[4] = self;
       v12[5] = a3;
       v10 = [v9 initWithSystemType:a3 itemSearchBlock:v12];
       [v10 setVisibleInTouchRotor:a3 == 13];
-      [a1 _accessibilitySetRetainedValue:v10 forKey:v5];
+      [self _accessibilitySetRetainedValue:v10 forKey:v5];
       v7 = v10;
     }
 

@@ -9,23 +9,23 @@
   v10 = a7;
   v11 = v10;
   v12 = 0;
-  if (a1 != 0.0 && a2 != 0.0)
+  if (self != 0.0 && a2 != 0.0)
   {
-    v13 = [v10 startAccessingSecurityScopedResource];
+    startAccessingSecurityScopedResource = [v10 startAccessingSecurityScopedResource];
     v14 = objc_alloc(MEMORY[0x1E69A8A00]);
     v15 = v14;
-    if (v13)
+    if (startAccessingSecurityScopedResource)
     {
       v16 = [v14 initWithURL:v11];
     }
 
     else
     {
-      v17 = [*MEMORY[0x1E6982DD0] identifier];
-      v16 = [v15 initWithType:v17];
+      identifier = [*MEMORY[0x1E6982DD0] identifier];
+      v16 = [v15 initWithType:identifier];
     }
 
-    v18 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:a1 scale:{a2, a3}];
+    v18 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:self scale:{a2, a3}];
     v19 = [v16 imageForDescriptor:v18];
     if ([v19 placeholder])
     {
@@ -38,12 +38,12 @@
     v21 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:{objc_msgSend(v19, "CGImage")}];
     v22 = objc_alloc_init(MEMORY[0x1E69DCA80]);
     [v22 setScale:a3];
-    v23 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:v22 format:{a1, a2}];
+    v23 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:v22 format:{self, a2}];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __84__DOCSBFolderManager_UI_Extensions__thumbnailImageForFolder_URL_size_scale_options___block_invoke;
     v26[3] = &unk_1E87835A8;
-    v28 = a1;
+    selfCopy = self;
     v29 = a2;
     v27 = v21;
     v30 = a3;

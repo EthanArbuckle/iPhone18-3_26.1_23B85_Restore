@@ -1,10 +1,10 @@
 @interface MFIMAPSimpleDownload
 - (unint64_t)bytesFetched;
-- (void)addCommandsToPipeline:(id)a3 withCache:(id)a4;
+- (void)addCommandsToPipeline:(id)pipeline withCache:(id)cache;
 - (void)dealloc;
-- (void)handleFetchResult:(id)a3;
+- (void)handleFetchResult:(id)result;
 - (void)processResults;
-- (void)setError:(id)a3;
+- (void)setError:(id)error;
 @end
 
 @implementation MFIMAPSimpleDownload
@@ -24,16 +24,16 @@
   [(MFIMAPDownload *)&v2 dealloc];
 }
 
-- (void)handleFetchResult:(id)a3
+- (void)handleFetchResult:(id)result
 {
-  v13 = a3;
-  v4 = [v13 type];
-  switch(v4)
+  resultCopy = result;
+  type = [resultCopy type];
+  switch(type)
   {
     case 7:
       section = self->_section;
-      v8 = [v13 section];
-      v9 = [(NSString *)section caseInsensitiveCompare:v8];
+      section = [resultCopy section];
+      v9 = [(NSString *)section caseInsensitiveCompare:section];
 
       if (v9)
       {
@@ -67,7 +67,7 @@ LABEL_9:
       pendingFetchResults = self->super._pendingFetchResults;
     }
 
-    [(NSMutableArray *)pendingFetchResults addObject:v13];
+    [(NSMutableArray *)pendingFetchResults addObject:resultCopy];
     [(MFIMAPSimpleDownload *)self mf_unlock];
   }
 
@@ -90,11 +90,11 @@ LABEL_12:
       }
 
       [(NSMutableArray *)self->super._pendingFetchResults removeObjectAtIndex:0];
-      v5 = [(MFIMAPSimpleDownload *)self bytesFetched];
+      bytesFetched = [(MFIMAPSimpleDownload *)self bytesFetched];
       v6 = *(self + 64);
-      v7 = (v6 & 2) == 0 && v5 != 0 ? 0 : 2;
+      v7 = (v6 & 2) == 0 && bytesFetched != 0 ? 0 : 2;
       *(self + 64) = v7 | v6 & 0xFD;
-      if ((v6 & 2) == 0 && v5 != 0 && (*(self + 64) & 1) != 0 && v5 < self->_length)
+      if ((v6 & 2) == 0 && bytesFetched != 0 && (*(self + 64) & 1) != 0 && bytesFetched < self->_length)
       {
         *(self + 64) = v6 & 0xFD;
       }
@@ -102,11 +102,11 @@ LABEL_12:
       else
       {
         *(self + 64) = v6 | 2;
-        v8 = [v3 error];
-        v9 = v8;
-        if (v8)
+        error = [v3 error];
+        v9 = error;
+        if (error)
         {
-          v10 = [v8 mf_shouldFailDownload] ? 0 : 2;
+          v10 = [error mf_shouldFailDownload] ? 0 : 2;
         }
 
         else
@@ -123,21 +123,21 @@ LABEL_12:
       self->_originalDataLength = [(MFIMAPSimpleDownload *)self bytesFetched];
     }
 
-    v11 = [(MFIMAPDownload *)self mainConsumer];
-    [v11 done];
+    mainConsumer = [(MFIMAPDownload *)self mainConsumer];
+    [mainConsumer done];
   }
 
   [(MFIMAPSimpleDownload *)self mf_unlock];
 }
 
-- (void)addCommandsToPipeline:(id)a3 withCache:(id)a4
+- (void)addCommandsToPipeline:(id)pipeline withCache:(id)cache
 {
-  v11 = a3;
+  pipelineCopy = pipeline;
   [(MFIMAPSimpleDownload *)self mf_lock];
-  if (([v11 isFull] & 1) == 0 && !-[MFIMAPSimpleDownload isComplete](self, "isComplete"))
+  if (([pipelineCopy isFull] & 1) == 0 && !-[MFIMAPSimpleDownload isComplete](self, "isComplete"))
   {
     v5 = objc_alloc_init(MEMORY[0x277CCAB68]);
-    v6 = [(MFIMAPSimpleDownload *)self bytesFetched];
+    bytesFetched = [(MFIMAPSimpleDownload *)self bytesFetched];
     [v5 appendString:@"BODY.PEEK["];
     if (self->_section)
     {
@@ -148,14 +148,14 @@ LABEL_12:
     length = self->_length;
     if (*(self + 64))
     {
-      length -= v6;
+      length -= bytesFetched;
       v8 = length;
-      if (v6 || (v8 = self->_range.length, v8 != 0x7FFFFFFFFFFFFFFFLL))
+      if (bytesFetched || (v8 = self->_range.length, v8 != 0x7FFFFFFFFFFFFFFFLL))
       {
         if (v8)
         {
           [v5 appendString:@"<"];
-          v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", self->_range.location + v6];
+          v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", self->_range.location + bytesFetched];
           [v5 appendString:v9];
 
           [v5 appendString:@"."];
@@ -167,19 +167,19 @@ LABEL_12:
       }
     }
 
-    [v11 addFetchCommandForUid:self->super._uid fetchItem:v5 expectedLength:length bodyDataConsumer:self->super._mainConsumer consumerSection:self->_section];
+    [pipelineCopy addFetchCommandForUid:self->super._uid fetchItem:v5 expectedLength:length bodyDataConsumer:self->super._mainConsumer consumerSection:self->_section];
   }
 
   [(MFIMAPSimpleDownload *)self mf_unlock];
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   [(MFIMAPSimpleDownload *)self mf_lock];
-  if (self->_error != v5)
+  if (self->_error != errorCopy)
   {
-    objc_storeStrong(&self->_error, a3);
+    objc_storeStrong(&self->_error, error);
   }
 
   [(MFIMAPSimpleDownload *)self mf_unlock];

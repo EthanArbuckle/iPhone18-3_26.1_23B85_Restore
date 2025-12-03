@@ -1,6 +1,6 @@
 @interface CaptureMTL4CommandAllocator
-- (BOOL)conformsToProtocol:(id)a3;
-- (CaptureMTL4CommandAllocator)initWithBaseObject:(id)a3 captureDevice:(id)a4;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (CaptureMTL4CommandAllocator)initWithBaseObject:(id)object captureDevice:(id)device;
 - (NSString)description;
 - (unint64_t)streamReference;
 - (void)dealloc;
@@ -37,10 +37,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTL4CommandAllocator *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTL4CommandAllocator *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -81,10 +81,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTL4CommandAllocator *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTL4CommandAllocator *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -103,13 +103,13 @@
   [(CaptureMTL4CommandAllocator *)&v13 dealloc];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTL4CommandAllocator *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTL4CommandAllocator *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -164,22 +164,22 @@
   }
 }
 
-- (CaptureMTL4CommandAllocator)initWithBaseObject:(id)a3 captureDevice:(id)a4
+- (CaptureMTL4CommandAllocator)initWithBaseObject:(id)object captureDevice:(id)device
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = CaptureMTL4CommandAllocator;
   v9 = [(CaptureMTL4CommandAllocator *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    objc_storeStrong(&v10->_captureDevice, a4);
-    v11 = [v8 traceContext];
-    v10->_traceContext = v11;
-    v12 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openStream(v11, v12, v10);
+    objc_storeStrong(&v9->_baseObject, object);
+    objc_storeStrong(&v10->_captureDevice, device);
+    traceContext = [deviceCopy traceContext];
+    v10->_traceContext = traceContext;
+    v12 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openStream(traceContext, v12, v10);
   }
 
   return v10;

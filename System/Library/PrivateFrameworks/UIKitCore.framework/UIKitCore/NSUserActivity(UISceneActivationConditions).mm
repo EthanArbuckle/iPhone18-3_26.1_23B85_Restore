@@ -8,24 +8,24 @@
 - (id)targetContentIdentifier
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [a1 _internalUserActivity];
+  _internalUserActivity = [self _internalUserActivity];
   v3 = objc_opt_respondsToSelector();
 
   if (v3)
   {
-    v4 = [a1 _internalUserActivity];
-    v5 = [v4 targetContentIdentifier];
+    _internalUserActivity2 = [self _internalUserActivity];
+    targetContentIdentifier = [_internalUserActivity2 targetContentIdentifier];
   }
 
   else
   {
-    v4 = [a1 _payloadForIdentifier:@"com.apple.UIKit.activationConditions.targetContentIdentifierPayload"];
-    if (v4)
+    _internalUserActivity2 = [self _payloadForIdentifier:@"com.apple.UIKit.activationConditions.targetContentIdentifierPayload"];
+    if (_internalUserActivity2)
     {
       v6 = MEMORY[0x1E696ACD0];
       v7 = objc_opt_self();
       v11 = 0;
-      v5 = [v6 unarchivedObjectOfClass:v7 fromData:v4 error:&v11];
+      targetContentIdentifier = [v6 unarchivedObjectOfClass:v7 fromData:_internalUserActivity2 error:&v11];
       v8 = v11;
 
       if (v8)
@@ -42,24 +42,24 @@
 
     else
     {
-      v5 = 0;
+      targetContentIdentifier = 0;
     }
   }
 
-  return v5;
+  return targetContentIdentifier;
 }
 
 - (void)setTargetContentIdentifier:()UISceneActivationConditions
 {
   v14 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 _internalUserActivity];
+  _internalUserActivity = [self _internalUserActivity];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [a1 _internalUserActivity];
-    [v7 setTargetContentIdentifier:v4];
+    _internalUserActivity2 = [self _internalUserActivity];
+    [_internalUserActivity2 setTargetContentIdentifier:v4];
   }
 
   else
@@ -80,7 +80,7 @@
 
     else
     {
-      [a1 _setPayload:v8 object:0 identifier:@"com.apple.UIKit.activationConditions.targetContentIdentifierPayload" dirty:0];
+      [self _setPayload:v8 object:0 identifier:@"com.apple.UIKit.activationConditions.targetContentIdentifierPayload" dirty:0];
     }
   }
 }

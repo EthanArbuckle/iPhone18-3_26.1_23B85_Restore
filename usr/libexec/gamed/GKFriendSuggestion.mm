@@ -1,62 +1,62 @@
 @interface GKFriendSuggestion
-- (GKFriendSuggestion)initWithContactID:(id)a3 handle:(id)a4 prefixedHandle:(id)a5 contactAssociationID:(id)a6;
-- (GKFriendSuggestion)initWithSuggestion:(id)a3;
+- (GKFriendSuggestion)initWithContactID:(id)d handle:(id)handle prefixedHandle:(id)prefixedHandle contactAssociationID:(id)iD;
+- (GKFriendSuggestion)initWithSuggestion:(id)suggestion;
 - (id)description;
 @end
 
 @implementation GKFriendSuggestion
 
-- (GKFriendSuggestion)initWithSuggestion:(id)a3
+- (GKFriendSuggestion)initWithSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [v4 recipients];
-  v6 = [v5 count];
+  suggestionCopy = suggestion;
+  recipients = [suggestionCopy recipients];
+  v6 = [recipients count];
 
   if (v6 <= 1)
   {
-    v8 = [v4 recipients];
-    v9 = [v8 firstObject];
+    recipients2 = [suggestionCopy recipients];
+    firstObject = [recipients2 firstObject];
 
-    if (v9)
+    if (firstObject)
     {
-      v10 = [v9 _gkPrefixedURIHandle];
-      v11 = [v9 identifier];
-      v12 = [v9 handle];
-      self = [(GKFriendSuggestion *)self initWithContactID:v11 handle:v12 prefixedHandle:v10 contactAssociationID:0];
+      _gkPrefixedURIHandle = [firstObject _gkPrefixedURIHandle];
+      identifier = [firstObject identifier];
+      handle = [firstObject handle];
+      self = [(GKFriendSuggestion *)self initWithContactID:identifier handle:handle prefixedHandle:_gkPrefixedURIHandle contactAssociationID:0];
 
-      v7 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v7 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (GKFriendSuggestion)initWithContactID:(id)a3 handle:(id)a4 prefixedHandle:(id)a5 contactAssociationID:(id)a6
+- (GKFriendSuggestion)initWithContactID:(id)d handle:(id)handle prefixedHandle:(id)prefixedHandle contactAssociationID:(id)iD
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  handleCopy = handle;
+  prefixedHandleCopy = prefixedHandle;
+  iDCopy = iD;
   v18.receiver = self;
   v18.super_class = GKFriendSuggestion;
   v15 = [(GKFriendSuggestion *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_contactID, a3);
-    objc_storeStrong(&v16->_handle, a4);
-    objc_storeStrong(&v16->_prefixedHandle, a5);
-    objc_storeStrong(&v16->_contactAssociationID, a6);
+    objc_storeStrong(&v15->_contactID, d);
+    objc_storeStrong(&v16->_handle, handle);
+    objc_storeStrong(&v16->_prefixedHandle, prefixedHandle);
+    objc_storeStrong(&v16->_contactAssociationID, iD);
   }
 
   return v16;
@@ -67,11 +67,11 @@
   if (os_log_is_debug_enabled(os_log_GKContacts))
   {
     v3 = objc_opt_class();
-    v4 = [(GKFriendSuggestion *)self contactID];
-    v5 = v4;
-    if (v4)
+    contactID = [(GKFriendSuggestion *)self contactID];
+    v5 = contactID;
+    if (contactID)
     {
-      v6 = v4;
+      v6 = contactID;
     }
 
     else
@@ -79,11 +79,11 @@
       v6 = @"nil";
     }
 
-    v7 = [(GKFriendSuggestion *)self prefixedHandle];
-    v8 = v7;
-    if (v7)
+    prefixedHandle = [(GKFriendSuggestion *)self prefixedHandle];
+    v8 = prefixedHandle;
+    if (prefixedHandle)
     {
-      v9 = v7;
+      v9 = prefixedHandle;
     }
 
     else
@@ -91,11 +91,11 @@
       v9 = @"nil";
     }
 
-    v10 = [(GKFriendSuggestion *)self contactAssociationID];
-    v11 = v10;
-    if (v10)
+    contactAssociationID = [(GKFriendSuggestion *)self contactAssociationID];
+    v11 = contactAssociationID;
+    if (contactAssociationID)
     {
-      v12 = v10;
+      v12 = contactAssociationID;
     }
 
     else

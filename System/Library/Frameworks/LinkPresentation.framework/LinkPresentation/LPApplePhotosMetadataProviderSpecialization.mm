@@ -1,25 +1,25 @@
 @interface LPApplePhotosMetadataProviderSpecialization
-+ (id)specializedMetadataProviderForURLWithContext:(id)a3;
++ (id)specializedMetadataProviderForURLWithContext:(id)context;
 - (void)cancel;
-- (void)completeWithMetadata:(id)a3;
+- (void)completeWithMetadata:(id)metadata;
 - (void)dealloc;
-- (void)didFetchAsset:(id)a3;
+- (void)didFetchAsset:(id)asset;
 - (void)fail;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue;
 - (void)start;
 @end
 
 @implementation LPApplePhotosMetadataProviderSpecialization
 
-+ (id)specializedMetadataProviderForURLWithContext:(id)a3
++ (id)specializedMetadataProviderForURLWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 postRedirectURL];
-  v5 = [LPPresentationSpecializations isiCloudPhotoShareURL:v4];
+  contextCopy = context;
+  postRedirectURL = [contextCopy postRedirectURL];
+  v5 = [LPPresentationSpecializations isiCloudPhotoShareURL:postRedirectURL];
 
   if (v5)
   {
-    v6 = [(LPMetadataProviderSpecialization *)[LPApplePhotosMetadataProviderSpecialization alloc] initWithContext:v3];
+    v6 = [(LPMetadataProviderSpecialization *)[LPApplePhotosMetadataProviderSpecialization alloc] initWithContext:contextCopy];
   }
 
   else
@@ -63,9 +63,9 @@
 
   if (!PhotosUICoreLibraryCore(char **)::frameworkLibrary)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"void *PhotosUICoreLibrary()"];
-    [v13 handleFailureInFunction:v14 file:@"LPApplePhotosMetadataProviderSpecialization.mm" lineNumber:29 description:{@"%s", v16}];
+    [currentHandler handleFailureInFunction:v14 file:@"LPApplePhotosMetadataProviderSpecialization.mm" lineNumber:29 description:{@"%s", v16}];
 
     __break(1u);
     goto LABEL_15;
@@ -96,12 +96,12 @@ LABEL_15:
 
   v5 = v4;
   _Block_object_dispose(&v22, 8);
-  v6 = [v4 sharedMomentSharePhotoLibrary];
+  sharedMomentSharePhotoLibrary = [v4 sharedMomentSharePhotoLibrary];
   photoLibrary = self->_photoLibrary;
-  self->_photoLibrary = v6;
+  self->_photoLibrary = sharedMomentSharePhotoLibrary;
 
   [(PHPhotoLibrary *)self->_photoLibrary px_registerChangeObserver:self];
-  v8 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   *&v22 = 0;
   *(&v22 + 1) = &v22;
   v23 = 0x2050000000;
@@ -120,14 +120,14 @@ LABEL_15:
 
   v10 = v9;
   _Block_object_dispose(&v22, 8);
-  v11 = [(LPMetadataProviderSpecialization *)self context];
-  v12 = [v11 postRedirectURL];
+  context = [(LPMetadataProviderSpecialization *)self context];
+  postRedirectURL = [context postRedirectURL];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __52__LPApplePhotosMetadataProviderSpecialization_start__block_invoke;
   v15[3] = &unk_1E7A36778;
   v15[4] = self;
-  [v9 fetchMomentShareFromShareURL:v12 options:v8 completionHandler:v15];
+  [v9 fetchMomentShareFromShareURL:postRedirectURL options:librarySpecificFetchOptions completionHandler:v15];
 }
 
 void __52__LPApplePhotosMetadataProviderSpecialization_start__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -238,8 +238,8 @@ LABEL_8:
   self->_cancelled = 1;
   if (self->_pendingImageRequest)
   {
-    v3 = [getPHImageManagerClass() defaultManager];
-    [v3 cancelImageRequest:self->_pendingImageRequest];
+    defaultManager = [getPHImageManagerClass() defaultManager];
+    [defaultManager cancelImageRequest:self->_pendingImageRequest];
   }
 }
 
@@ -260,10 +260,10 @@ void __51__LPApplePhotosMetadataProviderSpecialization_fail__block_invoke(uint64
   [v2 metadataProviderSpecializationDidFail:*(a1 + 32)];
 }
 
-- (void)completeWithMetadata:(id)a3
+- (void)completeWithMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(LPMetadataProviderSpecialization *)self createMetadataWithSpecialization:v4];
+  metadataCopy = metadata;
+  v5 = [(LPMetadataProviderSpecialization *)self createMetadataWithSpecialization:metadataCopy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__LPApplePhotosMetadataProviderSpecialization_completeWithMetadata___block_invoke;
@@ -280,9 +280,9 @@ void __68__LPApplePhotosMetadataProviderSpecialization_completeWithMetadata___bl
   [v2 metadataProviderSpecialization:*(a1 + 32) didCompleteWithMetadata:*(a1 + 40)];
 }
 
-- (void)didFetchAsset:(id)a3
+- (void)didFetchAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   keyAssetFetch = self->_keyAssetFetch;
   if (*&self->_keyAssetFetch != 0)
   {
@@ -311,13 +311,13 @@ void __68__LPApplePhotosMetadataProviderSpecialization_completeWithMetadata___bl
     _Block_object_dispose(&v13, 8);
     v9 = [[v7 alloc] init];
     [v9 setNetworkAccessAllowed:1];
-    v10 = [getPHImageManagerClass() defaultManager];
+    defaultManager = [getPHImageManagerClass() defaultManager];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __61__LPApplePhotosMetadataProviderSpecialization_didFetchAsset___block_invoke;
     v11[3] = &unk_1E7A367A0;
     v11[4] = self;
-    self->_pendingImageRequest = [v10 requestImageDataAndOrientationForAsset:v4 options:v9 resultHandler:v11];
+    self->_pendingImageRequest = [defaultManager requestImageDataAndOrientationForAsset:assetCopy options:v9 resultHandler:v11];
   }
 }
 
@@ -356,48 +356,48 @@ void __61__LPApplePhotosMetadataProviderSpecialization_didFetchAsset___block_inv
   }
 }
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue
 {
-  v4 = a3;
-  v15 = v4;
+  queueCopy = queue;
+  v15 = queueCopy;
   if (self->_keyAssetFetch)
   {
-    v5 = [v4 changeDetailsForFetchResult:?];
+    v5 = [queueCopy changeDetailsForFetchResult:?];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 fetchResultAfterChanges];
+      fetchResultAfterChanges = [v5 fetchResultAfterChanges];
       keyAssetFetch = self->_keyAssetFetch;
-      self->_keyAssetFetch = v7;
+      self->_keyAssetFetch = fetchResultAfterChanges;
 
-      v9 = [(PHFetchResult *)self->_keyAssetFetch firstObject];
-      if (v9)
+      firstObject = [(PHFetchResult *)self->_keyAssetFetch firstObject];
+      if (firstObject)
       {
-        [(LPApplePhotosMetadataProviderSpecialization *)self didFetchAsset:v9];
+        [(LPApplePhotosMetadataProviderSpecialization *)self didFetchAsset:firstObject];
       }
     }
 
-    v4 = v15;
+    queueCopy = v15;
   }
 
   if (self->_anyAssetFetch)
   {
-    v10 = [v4 changeDetailsForFetchResult:?];
+    v10 = [queueCopy changeDetailsForFetchResult:?];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 fetchResultAfterChanges];
+      fetchResultAfterChanges2 = [v10 fetchResultAfterChanges];
       anyAssetFetch = self->_anyAssetFetch;
-      self->_anyAssetFetch = v12;
+      self->_anyAssetFetch = fetchResultAfterChanges2;
 
-      v14 = [(PHFetchResult *)self->_anyAssetFetch firstObject];
-      if (v14)
+      firstObject2 = [(PHFetchResult *)self->_anyAssetFetch firstObject];
+      if (firstObject2)
       {
-        [(LPApplePhotosMetadataProviderSpecialization *)self didFetchAsset:v14];
+        [(LPApplePhotosMetadataProviderSpecialization *)self didFetchAsset:firstObject2];
       }
     }
 
-    v4 = v15;
+    queueCopy = v15;
   }
 }
 

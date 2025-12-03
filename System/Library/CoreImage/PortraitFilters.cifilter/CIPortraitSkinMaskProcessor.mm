@@ -1,29 +1,29 @@
 @interface CIPortraitSkinMaskProcessor
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect;
 @end
 
 @implementation CIPortraitSkinMaskProcessor
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"inputImageExtent", "CGRectValue"}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"inputImageExtent", "CGRectValue"}];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"faceROI", "CGRectValue"}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"faceROI", "CGRectValue"}];
   if ((CGRectIsIntegral() & 1) == 0)
   {
     sub_4B744();
   }
 
-  v17 = [objc_msgSend(a4 objectForKeyedSubscript:{@"useMetal", "BOOLValue"}];
-  v18 = [a4 objectForKeyedSubscript:@"faceLandmarks"];
+  v17 = [objc_msgSend(arguments objectForKeyedSubscript:{@"useMetal", "BOOLValue"}];
+  v18 = [arguments objectForKeyedSubscript:@"faceLandmarks"];
   v19 = objc_opt_self();
   v20 = sub_3C354(v19, v18);
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"inputImageTransformN1", "getBytes:length:", &v221, 48}];
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"inputImageTransform1N", "getBytes:length:", &v220, 48}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"inputImageTransformN1", "getBytes:length:", &v221, 48}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"inputImageTransform1N", "getBytes:length:", &v220, 48}];
   v163 = v221;
   v245.origin.x = v10;
   v245.origin.y = v12;
@@ -34,14 +34,14 @@
   y = v246.origin.y;
   height = v246.size.height;
   width = v246.size.width;
-  v23 = [a3 objectAtIndexedSubscript:0];
+  v23 = [inputs objectAtIndexedSubscript:0];
   [v23 region];
   v25 = v24;
   v27 = v26;
   v29 = v28;
   v162 = v16 + -1.0;
   v31 = v16 + -1.0 - v30 - v28;
-  [a5 region];
+  [output region];
   v145 = v16 + -1.0 - v32 - v34;
   v146 = v33;
   v251.origin.x = v33 + 1.0;
@@ -393,15 +393,15 @@
   if (v17)
   {
     v135 = [objc_msgSend(v23 "metalTexture")];
-    v136 = -[MetalFaceMask initForDevice:]([MetalFaceMask alloc], "initForDevice:", [objc_msgSend(a5 "metalTexture")]);
+    v136 = -[MetalFaceMask initForDevice:]([MetalFaceMask alloc], "initForDevice:", [objc_msgSend(output "metalTexture")]);
     [(CPUFaceMask *)v136 setLumaDilateRadius:1];
     [(CPUFaceMask *)v136 setLumaErodeRadius:1];
     [(CPUFaceMask *)v136 setChromaDilateRadius:5];
     [(CPUFaceMask *)v136 setChromaErodeRadius:1];
-    -[CPUFaceMask clearOutputTexture:CommandBuffer:](v136, "clearOutputTexture:CommandBuffer:", [a5 metalTexture], objc_msgSend(a5, "metalCommandBuffer"));
-    -[CPUFaceMask trainSkinMaskUsingInputTexture:InputRegion:QuadRegion:CommandBuffer:](v136, "trainSkinMaskUsingInputTexture:InputRegion:QuadRegion:CommandBuffer:", v135, v222, [a5 metalCommandBuffer], v155.origin.x, v155.origin.y, v155.size.width, v155.size.height);
-    -[CPUFaceMask findSkinMaskUsingInputTexture:InputRegion:OutputMaskTexture:OutputRegion:FaceBounds:SeedPoints:NumberOfSeedPoints:FillValue:CommandBuffer:](v136, "findSkinMaskUsingInputTexture:InputRegion:OutputMaskTexture:OutputRegion:FaceBounds:SeedPoints:NumberOfSeedPoints:FillValue:CommandBuffer:", v135, [a5 metalTexture], v239, 20, 255, objc_msgSend(a5, "metalCommandBuffer"), v155.origin.x, v155.origin.y, v155.size.width, v155.size.height, v146, v145, v149, v150, *&v144, *&v143, *&v147, *&v148);
-    -[CPUFaceMask drawEyeMaskUsingQuads:OutputMaskTexture:OutputRegion:FaceBounds:CommandBuffer:](v136, "drawEyeMaskUsingQuads:OutputMaskTexture:OutputRegion:FaceBounds:CommandBuffer:", &v163, [a5 metalTexture], objc_msgSend(a5, "metalCommandBuffer"), v146, v145, v149, v150, v144, v143, v147, v148);
+    -[CPUFaceMask clearOutputTexture:CommandBuffer:](v136, "clearOutputTexture:CommandBuffer:", [output metalTexture], objc_msgSend(output, "metalCommandBuffer"));
+    -[CPUFaceMask trainSkinMaskUsingInputTexture:InputRegion:QuadRegion:CommandBuffer:](v136, "trainSkinMaskUsingInputTexture:InputRegion:QuadRegion:CommandBuffer:", v135, v222, [output metalCommandBuffer], v155.origin.x, v155.origin.y, v155.size.width, v155.size.height);
+    -[CPUFaceMask findSkinMaskUsingInputTexture:InputRegion:OutputMaskTexture:OutputRegion:FaceBounds:SeedPoints:NumberOfSeedPoints:FillValue:CommandBuffer:](v136, "findSkinMaskUsingInputTexture:InputRegion:OutputMaskTexture:OutputRegion:FaceBounds:SeedPoints:NumberOfSeedPoints:FillValue:CommandBuffer:", v135, [output metalTexture], v239, 20, 255, objc_msgSend(output, "metalCommandBuffer"), v155.origin.x, v155.origin.y, v155.size.width, v155.size.height, v146, v145, v149, v150, *&v144, *&v143, *&v147, *&v148);
+    -[CPUFaceMask drawEyeMaskUsingQuads:OutputMaskTexture:OutputRegion:FaceBounds:CommandBuffer:](v136, "drawEyeMaskUsingQuads:OutputMaskTexture:OutputRegion:FaceBounds:CommandBuffer:", &v163, [output metalTexture], objc_msgSend(output, "metalCommandBuffer"), v146, v145, v149, v150, v144, v143, v147, v148);
   }
 
   else
@@ -411,24 +411,24 @@
     [(CPUFaceMask *)v136 setLumaErodeRadius:1];
     [(CPUFaceMask *)v136 setChromaDilateRadius:5];
     [(CPUFaceMask *)v136 setChromaErodeRadius:1];
-    -[CPUFaceMask clearOutputMask:WithBytesPerRow:OutputRegion:](v136, "clearOutputMask:WithBytesPerRow:OutputRegion:", [a5 baseAddress], objc_msgSend(a5, "bytesPerRow"), v146, v145, v149, v150);
+    -[CPUFaceMask clearOutputMask:WithBytesPerRow:OutputRegion:](v136, "clearOutputMask:WithBytesPerRow:OutputRegion:", [output baseAddress], objc_msgSend(output, "bytesPerRow"), v146, v145, v149, v150);
     -[CPUFaceMask trainSkinMaskUsingInputImage:InputBytesPerRow:InputRegion:QuadRegion:](v136, "trainSkinMaskUsingInputImage:InputBytesPerRow:InputRegion:QuadRegion:", [v23 baseAddress], objc_msgSend(v23, "bytesPerRow"), v222, v155.origin.x, v155.origin.y, v155.size.width, v155.size.height);
     LOBYTE(v138) = -1;
-    -[CPUFaceMask findSkinMaskUsingInputImage:InputBytesPerRow:InputRegion:OutputMask:OutputBytesPerRow:OutputRegion:FaceBounds:SeedPoints:NumberOfSeedPoints:FillValue:](v136, "findSkinMaskUsingInputImage:InputBytesPerRow:InputRegion:OutputMask:OutputBytesPerRow:OutputRegion:FaceBounds:SeedPoints:NumberOfSeedPoints:FillValue:", [v23 baseAddress], objc_msgSend(v23, "bytesPerRow"), objc_msgSend(a5, "baseAddress"), objc_msgSend(a5, "bytesPerRow"), v239, 20, v155.origin.x, v155.origin.y, v155.size.width, v155.size.height, v146, v145, v149, v150, *&v144, *&v143, *&v147, *&v148, v138);
-    -[CPUFaceMask drawEyeMaskUsingQuads:OutputMask:OutputBytesPerRow:OutputRegion:](v136, "drawEyeMaskUsingQuads:OutputMask:OutputBytesPerRow:OutputRegion:", &v163, [a5 baseAddress], objc_msgSend(a5, "bytesPerRow"), v146, v145, v149, v150);
+    -[CPUFaceMask findSkinMaskUsingInputImage:InputBytesPerRow:InputRegion:OutputMask:OutputBytesPerRow:OutputRegion:FaceBounds:SeedPoints:NumberOfSeedPoints:FillValue:](v136, "findSkinMaskUsingInputImage:InputBytesPerRow:InputRegion:OutputMask:OutputBytesPerRow:OutputRegion:FaceBounds:SeedPoints:NumberOfSeedPoints:FillValue:", [v23 baseAddress], objc_msgSend(v23, "bytesPerRow"), objc_msgSend(output, "baseAddress"), objc_msgSend(output, "bytesPerRow"), v239, 20, v155.origin.x, v155.origin.y, v155.size.width, v155.size.height, v146, v145, v149, v150, *&v144, *&v143, *&v147, *&v148, v138);
+    -[CPUFaceMask drawEyeMaskUsingQuads:OutputMask:OutputBytesPerRow:OutputRegion:](v136, "drawEyeMaskUsingQuads:OutputMask:OutputBytesPerRow:OutputRegion:", &v163, [output baseAddress], objc_msgSend(output, "bytesPerRow"), v146, v145, v149, v150);
   }
 
   return 1;
 }
 
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect
 {
-  if (a3)
+  if (input)
   {
     sub_4B928();
   }
 
-  v5 = [a4 objectForKeyedSubscript:{@"faceROI", a5.origin.x, a5.origin.y, a5.size.width, a5.size.height}];
+  v5 = [arguments objectForKeyedSubscript:{@"faceROI", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
 
   [v5 CGRectValue];
   result.size.height = v9;

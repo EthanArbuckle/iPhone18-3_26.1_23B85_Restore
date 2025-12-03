@@ -5,8 +5,8 @@
 - (id)specifiers;
 - (void)dealloc;
 - (void)loadView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AXSystemActionPickerController
@@ -68,8 +68,8 @@ void __38__AXSystemActionPickerController_init__block_invoke(uint64_t a1)
   if (!v4)
   {
     v5 = objc_alloc_init(NSMutableArray);
-    v6 = [(AssistiveTouchCustomizeBaseActionPickerController *)self iconSpecifiers];
-    [v5 addObjectsFromArray:v6];
+    iconSpecifiers = [(AssistiveTouchCustomizeBaseActionPickerController *)self iconSpecifiers];
+    [v5 addObjectsFromArray:iconSpecifiers];
 
     v7 = *&self->super.AXUISettingsBaseListController_opaque[v3];
     *&self->super.AXUISettingsBaseListController_opaque[v3] = v5;
@@ -127,39 +127,39 @@ id __42__AXSystemActionPickerController_loadView__block_invoke(uint64_t a1, void
   return v9;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(AXSystemActionPickerController *)self delegate];
+  appearCopy = appear;
+  delegate = [(AXSystemActionPickerController *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(AXSystemActionPickerController *)self delegate];
-    v7 = [v6 actionForActionPickerController:self];
+    delegate2 = [(AXSystemActionPickerController *)self delegate];
+    v7 = [delegate2 actionForActionPickerController:self];
     [(AssistiveTouchCustomizeBaseActionPickerController *)self setSelectedPopoverIcon:v7];
   }
 
   v8.receiver = self;
   v8.super_class = AXSystemActionPickerController;
-  [(AXSystemActionPickerController *)&v8 viewWillAppear:v3];
+  [(AXSystemActionPickerController *)&v8 viewWillAppear:appearCopy];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = AXSystemActionPickerController;
-  v6 = a4;
-  v7 = a3;
-  [(AXSystemActionPickerController *)&v11 tableView:v7 didSelectRowAtIndexPath:v6];
-  [(AssistiveTouchCustomizeBaseActionPickerController *)self astTableView:v7 didSelectRowAtIndexPath:v6, v11.receiver, v11.super_class];
+  pathCopy = path;
+  viewCopy = view;
+  [(AXSystemActionPickerController *)&v11 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  [(AssistiveTouchCustomizeBaseActionPickerController *)self astTableView:viewCopy didSelectRowAtIndexPath:pathCopy, v11.receiver, v11.super_class];
 
-  v8 = [(AssistiveTouchCustomizeBaseActionPickerController *)self selectedPopoverIcon];
-  v9 = [(AXSystemActionPickerController *)self delegate];
+  selectedPopoverIcon = [(AssistiveTouchCustomizeBaseActionPickerController *)self selectedPopoverIcon];
+  delegate = [(AXSystemActionPickerController *)self delegate];
 
-  if (v9)
+  if (delegate)
   {
-    v10 = [(AXSystemActionPickerController *)self delegate];
-    [v10 actionPickerController:self didSelectAction:v8];
+    delegate2 = [(AXSystemActionPickerController *)self delegate];
+    [delegate2 actionPickerController:self didSelectAction:selectedPopoverIcon];
   }
 }
 

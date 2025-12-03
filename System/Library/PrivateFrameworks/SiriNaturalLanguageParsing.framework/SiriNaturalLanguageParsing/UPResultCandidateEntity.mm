@@ -1,7 +1,7 @@
 @interface UPResultCandidateEntity
 - (NSString)higherLevelChildLabel;
 - (NSString)higherLevelParentLabel;
-- (UPResultCandidateEntity)initWithRange:(_NSRange)a3 label:(id)a4 text:(id)a5 groupId:(id)a6 semanticValue:(id)a7 sharedEntityGraph:(id)a8;
+- (UPResultCandidateEntity)initWithRange:(_NSRange)range label:(id)label text:(id)text groupId:(id)id semanticValue:(id)value sharedEntityGraph:(id)graph;
 - (UPResultLeafNode)leafNodeRepresentation;
 - (_NSRange)range;
 - (id)_indexedLabelRepresentation;
@@ -26,8 +26,8 @@
   [v3 appendString:@"["];
   [v3 appendString:self->_text];
   objc_msgSend(v3, "appendString:", @"](");
-  v4 = [(UPResultCandidateEntity *)self _indexedLabelRepresentation];
-  [v3 appendString:v4];
+  _indexedLabelRepresentation = [(UPResultCandidateEntity *)self _indexedLabelRepresentation];
+  [v3 appendString:_indexedLabelRepresentation];
 
   if (self->_semanticValue)
   {
@@ -45,16 +45,16 @@
   if (self->_groupId && [(UPResultCandidateEntity *)self isHigherLevelEntity])
   {
     v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
-    v4 = [(UPResultCandidateEntity *)self higherLevelParentLabel];
-    [(NSString *)v3 appendString:v4];
+    higherLevelParentLabel = [(UPResultCandidateEntity *)self higherLevelParentLabel];
+    [(NSString *)v3 appendString:higherLevelParentLabel];
 
     [(NSString *)v3 appendString:@"$"];
-    v5 = [(UPResultCandidateEntity *)self groupId];
-    -[NSString appendFormat:](v3, "appendFormat:", @"%lu", [v5 longValue]);
+    groupId = [(UPResultCandidateEntity *)self groupId];
+    -[NSString appendFormat:](v3, "appendFormat:", @"%lu", [groupId longValue]);
 
     [(NSString *)v3 appendString:@"."];
-    v6 = [(UPResultCandidateEntity *)self higherLevelChildLabel];
-    [(NSString *)v3 appendString:v6];
+    higherLevelChildLabel = [(UPResultCandidateEntity *)self higherLevelChildLabel];
+    [(NSString *)v3 appendString:higherLevelChildLabel];
   }
 
   else
@@ -89,15 +89,15 @@
   return v2;
 }
 
-- (UPResultCandidateEntity)initWithRange:(_NSRange)a3 label:(id)a4 text:(id)a5 groupId:(id)a6 semanticValue:(id)a7 sharedEntityGraph:(id)a8
+- (UPResultCandidateEntity)initWithRange:(_NSRange)range label:(id)label text:(id)text groupId:(id)id semanticValue:(id)value sharedEntityGraph:(id)graph
 {
-  length = a3.length;
-  location = a3.location;
-  v22 = a4;
-  v21 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
+  length = range.length;
+  location = range.location;
+  labelCopy = label;
+  textCopy = text;
+  idCopy = id;
+  valueCopy = value;
+  graphCopy = graph;
   v23.receiver = self;
   v23.super_class = UPResultCandidateEntity;
   v17 = [(UPResultCandidateEntity *)&v23 init];
@@ -106,11 +106,11 @@
   {
     v17->_range.location = location;
     v17->_range.length = length;
-    objc_storeStrong(&v17->_label, a4);
-    objc_storeStrong(&v18->_text, a5);
-    objc_storeStrong(&v18->_groupId, a6);
-    objc_storeStrong(&v18->_semanticValue, a7);
-    objc_storeStrong(&v18->_sharedEntityGraph, a8);
+    objc_storeStrong(&v17->_label, label);
+    objc_storeStrong(&v18->_text, text);
+    objc_storeStrong(&v18->_groupId, id);
+    objc_storeStrong(&v18->_semanticValue, value);
+    objc_storeStrong(&v18->_sharedEntityGraph, graph);
   }
 
   return v18;

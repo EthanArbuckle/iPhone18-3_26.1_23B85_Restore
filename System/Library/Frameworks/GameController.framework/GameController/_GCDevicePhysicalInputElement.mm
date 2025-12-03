@@ -1,40 +1,40 @@
 @interface _GCDevicePhysicalInputElement
 + (unsigned)updateContextSize;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToElement:(id)a3;
-- (BOOL)update:(void *)a3 forUsages:(unint64_t)a4 with:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToElement:(id)element;
+- (BOOL)update:(void *)update forUsages:(unint64_t)usages with:(id)with;
 - (NSString)localizedName;
 - (NSString)sfSymbolsName;
-- (_GCDevicePhysicalInputElement)initWithParameters:(id)a3;
-- (_GCDevicePhysicalInputElement)initWithTemplate:(id)a3 context:(id)a4;
+- (_GCDevicePhysicalInputElement)initWithParameters:(id)parameters;
+- (_GCDevicePhysicalInputElement)initWithTemplate:(id)template context:(id)context;
 - (id)symbol;
 - (uint64_t)_localizedName;
 - (uint64_t)_setLocalizedName:(uint64_t)result;
 - (uint64_t)_setSymbol:(uint64_t)result;
 - (uint64_t)_symbol;
-- (void)postCommit:(const void *)a3 sender:(id)a4;
-- (void)preCommit:(const void *)a3 sender:(id)a4;
+- (void)postCommit:(const void *)commit sender:(id)sender;
+- (void)preCommit:(const void *)commit sender:(id)sender;
 @end
 
 @implementation _GCDevicePhysicalInputElement
 
-- (_GCDevicePhysicalInputElement)initWithTemplate:(id)a3 context:(id)a4
+- (_GCDevicePhysicalInputElement)initWithTemplate:(id)template context:(id)context
 {
   v14.receiver = self;
   v14.super_class = _GCDevicePhysicalInputElement;
-  v5 = a4;
-  v6 = a3;
-  v7 = [(_GCDevicePhysicalInputView *)&v14 initWithTemplate:v6 context:v5];
-  v8 = [v6 identifier];
+  contextCopy = context;
+  templateCopy = template;
+  v7 = [(_GCDevicePhysicalInputView *)&v14 initWithTemplate:templateCopy context:contextCopy];
+  identifier = [templateCopy identifier];
   identifier = v7->_identifier;
-  v7->_identifier = v8;
+  v7->_identifier = identifier;
 
-  v10 = [v6 aliases];
+  aliases = [templateCopy aliases];
   aliases = v7->_aliases;
-  v7->_aliases = v10;
+  v7->_aliases = aliases;
 
-  v7->_localizedNameSlot = [v5 view:v7 allocateObjectSlot:1 withCopyOfValueFromView:v6 slot:v6[3]];
-  v12 = [v5 view:v7 allocateObjectSlot:1 withCopyOfValueFromView:v6 slot:v6[4]];
+  v7->_localizedNameSlot = [contextCopy view:v7 allocateObjectSlot:1 withCopyOfValueFromView:templateCopy slot:templateCopy[3]];
+  v12 = [contextCopy view:v7 allocateObjectSlot:1 withCopyOfValueFromView:templateCopy slot:templateCopy[4]];
 
   v7->_symbolSlot = v12;
   return v7;
@@ -42,14 +42,14 @@
 
 + (unsigned)updateContextSize
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS____GCDevicePhysicalInputElement;
   return objc_msgSendSuper2(&v3, sel_updateContextSize) + 1;
 }
 
-- (BOOL)update:(void *)a3 forUsages:(unint64_t)a4 with:(id)a5
+- (BOOL)update:(void *)update forUsages:(unint64_t)usages with:(id)with
 {
-  v6 = a4;
+  usagesCopy = usages;
   v17.receiver = self;
   v17.super_class = _GCDevicePhysicalInputElement;
   v9 = [_GCDevicePhysicalInputView update:sel_update_forUsages_with_ forUsages:? with:?];
@@ -58,21 +58,21 @@
   {
     v10 = +[_GCDevicePhysicalInputView updateContextSize];
     MyUpdateContext_Offset_11 = v10;
-    if ((v6 & 2) == 0)
+    if ((usagesCopy & 2) == 0)
     {
       return v9 & 1;
     }
   }
 
-  else if ((v6 & 2) == 0)
+  else if ((usagesCopy & 2) == 0)
   {
     return v9 & 1;
   }
 
-  v12 = [(_GCDevicePhysicalInputElement *)a5 _localizedName];
+  _localizedName = [(_GCDevicePhysicalInputElement *)with _localizedName];
   if (self)
   {
-    v13 = [(_GCDevicePhysicalInputView *)self _testAndSetObjectValue:v12 forSlot:&self->_localizedNameSlot policy:771];
+    v13 = [(_GCDevicePhysicalInputView *)self _testAndSetObjectValue:_localizedName forSlot:&self->_localizedNameSlot policy:771];
   }
 
   else
@@ -80,12 +80,12 @@
     v13 = 0;
   }
 
-  *(a3 + v10) = *(a3 + v10) & 0xFE | v13;
+  *(update + v10) = *(update + v10) & 0xFE | v13;
 
-  v14 = [(_GCDevicePhysicalInputElement *)a5 _symbol];
+  _symbol = [(_GCDevicePhysicalInputElement *)with _symbol];
   if (self)
   {
-    v15 = [(_GCDevicePhysicalInputView *)self _testAndSetObjectValue:v14 forSlot:&self->_symbolSlot policy:771];
+    v15 = [(_GCDevicePhysicalInputView *)self _testAndSetObjectValue:_symbol forSlot:&self->_symbolSlot policy:771];
     if (v15)
     {
       v16 = 2;
@@ -103,17 +103,17 @@
     v16 = 0;
   }
 
-  *(a3 + v10) = *(a3 + v10) & 0xFD | v16;
+  *(update + v10) = *(update + v10) & 0xFD | v16;
   v9 |= v13 | v15;
 
   return v9 & 1;
 }
 
-- (void)preCommit:(const void *)a3 sender:(id)a4
+- (void)preCommit:(const void *)commit sender:(id)sender
 {
   v8.receiver = self;
   v8.super_class = _GCDevicePhysicalInputElement;
-  [(_GCDevicePhysicalInputView *)&v8 preCommit:a3 sender:a4];
+  [(_GCDevicePhysicalInputView *)&v8 preCommit:commit sender:sender];
   v6 = MyUpdateContext_Offset_11;
   if (MyUpdateContext_Offset_11 == -1)
   {
@@ -121,11 +121,11 @@
     MyUpdateContext_Offset_11 = v6;
   }
 
-  v7 = *(a3 + v6);
+  v7 = *(commit + v6);
   if (v7)
   {
     [(_GCDevicePhysicalInputView *)self _willChangeValueForKey:?];
-    v7 = *(a3 + v6);
+    v7 = *(commit + v6);
   }
 
   if ((v7 & 2) != 0)
@@ -134,11 +134,11 @@
   }
 }
 
-- (void)postCommit:(const void *)a3 sender:(id)a4
+- (void)postCommit:(const void *)commit sender:(id)sender
 {
   v8.receiver = self;
   v8.super_class = _GCDevicePhysicalInputElement;
-  [(_GCDevicePhysicalInputView *)&v8 postCommit:a3 sender:a4];
+  [(_GCDevicePhysicalInputView *)&v8 postCommit:commit sender:sender];
   v6 = MyUpdateContext_Offset_11;
   if (MyUpdateContext_Offset_11 == -1)
   {
@@ -146,11 +146,11 @@
     MyUpdateContext_Offset_11 = v6;
   }
 
-  v7 = *(a3 + v6);
+  v7 = *(commit + v6);
   if (v7)
   {
     [(_GCDevicePhysicalInputView *)self _didChangeValueForKey:?];
-    v7 = *(a3 + v6);
+    v7 = *(commit + v6);
   }
 
   if ((v7 & 2) != 0)
@@ -159,15 +159,15 @@
   }
 }
 
-- (BOOL)isEqualToElement:(id)a3
+- (BOOL)isEqualToElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [(_GCDevicePhysicalInputElement *)a2 isEqualToElement:&v13];
     v11 = 0;
-    v7 = v13;
+    identifier = v13;
 LABEL_10:
 
     goto LABEL_11;
@@ -176,15 +176,15 @@ LABEL_10:
   v6 = objc_opt_class();
   if ([v6 isEqual:objc_opt_class()])
   {
-    v7 = [(_GCDevicePhysicalInputElement *)self identifier];
-    v8 = [v5 identifier];
-    if ([v7 isEqual:v8])
+    identifier = [(_GCDevicePhysicalInputElement *)self identifier];
+    identifier2 = [elementCopy identifier];
+    if ([identifier isEqual:identifier2])
     {
-      v9 = [(_GCDevicePhysicalInputElement *)self aliases];
-      v10 = [v5 aliases];
-      if ([v9 isEqual:v10])
+      aliases = [(_GCDevicePhysicalInputElement *)self aliases];
+      aliases2 = [elementCopy aliases];
+      if ([aliases isEqual:aliases2])
       {
-        [(_GCDevicePhysicalInputElement *)self isEqualToElement:v5, &v14];
+        [(_GCDevicePhysicalInputElement *)self isEqualToElement:elementCopy, &v14];
         v11 = v14;
       }
 
@@ -208,14 +208,14 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(_GCDevicePhysicalInputElement *)self identifier];
-    v6 = [v5 isEqualToString:v4];
+    identifier = [(_GCDevicePhysicalInputElement *)self identifier];
+    v6 = [identifier isEqualToString:equalCopy];
 LABEL_12:
 
     goto LABEL_13;
@@ -224,19 +224,19 @@ LABEL_12:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v7 = [(_GCDevicePhysicalInputView *)self physicalInput];
-    v8 = [(_GCDevicePhysicalInputView *)v5 physicalInput];
-    if (v7 | v8)
+    identifier = equalCopy;
+    physicalInput = [(_GCDevicePhysicalInputView *)self physicalInput];
+    physicalInput2 = [(_GCDevicePhysicalInputView *)identifier physicalInput];
+    if (physicalInput | physicalInput2)
     {
-      v9 = [v7 physicalInput];
-      v10 = [v8 physicalInput];
-      v11 = v10;
-      if (v7 == v8 || v9 == v10)
+      v7PhysicalInput = [physicalInput physicalInput];
+      v8PhysicalInput = [physicalInput2 physicalInput];
+      v11 = v8PhysicalInput;
+      if (physicalInput == physicalInput2 || v7PhysicalInput == v8PhysicalInput)
       {
-        v12 = [(_GCDevicePhysicalInputElement *)self identifier];
-        v13 = [v5 identifier];
-        v6 = [v12 isEqualToString:v13];
+        identifier2 = [(_GCDevicePhysicalInputElement *)self identifier];
+        v5Identifier = [identifier identifier];
+        v6 = [identifier2 isEqualToString:v5Identifier];
       }
 
       else
@@ -247,7 +247,7 @@ LABEL_12:
 
     else
     {
-      v6 = [(_GCDevicePhysicalInputElement *)self isEqualToElement:v5];
+      v6 = [(_GCDevicePhysicalInputElement *)self isEqualToElement:identifier];
     }
 
     goto LABEL_12;
@@ -259,14 +259,14 @@ LABEL_13:
   return v6;
 }
 
-- (_GCDevicePhysicalInputElement)initWithParameters:(id)a3
+- (_GCDevicePhysicalInputElement)initWithParameters:(id)parameters
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5 || !v5[1])
+  parametersCopy = parameters;
+  v6 = parametersCopy;
+  if (!parametersCopy || !parametersCopy[1])
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"_GCDevicePhysicalInputElement.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %s", "parameters.identifier != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_GCDevicePhysicalInputElement.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %s", "parameters.identifier != nil"}];
   }
 
   v20.receiver = self;
@@ -365,24 +365,24 @@ LABEL_13:
 
 - (NSString)localizedName
 {
-  v2 = [(_GCDevicePhysicalInputElement *)self _localizedName];
+  _localizedName = [(_GCDevicePhysicalInputElement *)self _localizedName];
 
-  return v2;
+  return _localizedName;
 }
 
 - (id)symbol
 {
-  v2 = [(_GCDevicePhysicalInputElement *)self _symbol];
+  _symbol = [(_GCDevicePhysicalInputElement *)self _symbol];
 
-  return v2;
+  return _symbol;
 }
 
 - (NSString)sfSymbolsName
 {
-  v2 = [(_GCDevicePhysicalInputElement *)self _symbol];
-  v3 = [v2 sfSymbolsName];
+  _symbol = [(_GCDevicePhysicalInputElement *)self _symbol];
+  sfSymbolsName = [_symbol sfSymbolsName];
 
-  return v3;
+  return sfSymbolsName;
 }
 
 - (uint64_t)isEqualToElement:(void *)a3 .cold.1(uint64_t a1, uint64_t a2, void *a3)

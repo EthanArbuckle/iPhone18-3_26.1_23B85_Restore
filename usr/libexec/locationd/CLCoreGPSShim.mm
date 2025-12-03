@@ -1,13 +1,13 @@
 @interface CLCoreGPSShim
-- (void)sendRequestWithBytes:(const char *)a3 size:(int64_t)a4;
+- (void)sendRequestWithBytes:(const char *)bytes size:(int64_t)size;
 @end
 
 @implementation CLCoreGPSShim
 
-- (void)sendRequestWithBytes:(const char *)a3 size:(int64_t)a4
+- (void)sendRequestWithBytes:(const char *)bytes size:(int64_t)size
 {
-  v6 = self;
-  sub_100134638(a3, a4);
+  selfCopy = self;
+  sub_100134638(bytes, size);
 }
 
 @end

@@ -9,11 +9,11 @@
 
 - (uint64_t)sbh_lastPointer
 {
-  result = [a1 count];
+  result = [self count];
   if (result)
   {
 
-    return [a1 pointerAtIndex:result - 1];
+    return [self pointerAtIndex:result - 1];
   }
 
   return result;
@@ -21,7 +21,7 @@
 
 - (uint64_t)sbh_removePointer:()SBHPointerArrayUtilities
 {
-  result = [a1 count];
+  result = [self count];
   if (result)
   {
     v6 = result;
@@ -29,14 +29,14 @@
     v8 = result - 1;
     do
     {
-      result = [a1 sbh_indexOfPointer:a3 inRange:{v7, v6}];
+      result = [self sbh_indexOfPointer:a3 inRange:{v7, v6}];
       if (result == 0x7FFFFFFFFFFFFFFFLL)
       {
         break;
       }
 
       v7 = result;
-      result = [a1 removePointerAtIndex:result];
+      result = [self removePointerAtIndex:result];
       v6 = v8 - v7;
       --v8;
     }
@@ -49,9 +49,9 @@
 
 - (uint64_t)sbh_indexOfPointer:()SBHPointerArrayUtilities
 {
-  v5 = [a1 count];
+  v5 = [self count];
 
-  return [a1 sbh_indexOfPointer:a3 inRange:{0, v5}];
+  return [self sbh_indexOfPointer:a3 inRange:{0, v5}];
 }
 
 - (uint64_t)sbh_indexOfPointer:()SBHPointerArrayUtilities inRange:
@@ -62,7 +62,7 @@
   }
 
   v5 = a5;
-  for (i = a4; [a1 pointerAtIndex:i] != a3; ++i)
+  for (i = a4; [self pointerAtIndex:i] != a3; ++i)
   {
     if (!--v5)
     {

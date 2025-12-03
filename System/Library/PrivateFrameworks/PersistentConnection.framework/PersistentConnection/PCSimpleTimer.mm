@@ -4,30 +4,30 @@
 - (BOOL)firingIsImminent;
 - (BOOL)isUserVisible;
 - (BOOL)isValid;
-- (PCSimpleTimer)initWithAbsoluteTime:(double)a3 serviceIdentifier:(id)a4 target:(id)a5 selector:(SEL)a6 userInfo:(id)a7 triggerOnGMTChange:(BOOL)a8;
-- (PCSimpleTimer)initWithFireDate:(id)a3 serviceIdentifier:(id)a4 target:(id)a5 selector:(SEL)a6 userInfo:(id)a7;
-- (PCSimpleTimer)initWithTimeInterval:(double)a3 serviceIdentifier:(id)a4 target:(id)a5 selector:(SEL)a6 userInfo:(id)a7;
+- (PCSimpleTimer)initWithAbsoluteTime:(double)time serviceIdentifier:(id)identifier target:(id)target selector:(SEL)selector userInfo:(id)info triggerOnGMTChange:(BOOL)change;
+- (PCSimpleTimer)initWithFireDate:(id)date serviceIdentifier:(id)identifier target:(id)target selector:(SEL)selector userInfo:(id)info;
+- (PCSimpleTimer)initWithTimeInterval:(double)interval serviceIdentifier:(id)identifier target:(id)target selector:(SEL)selector userInfo:(id)info;
 - (id)_getTimerMode;
 - (id)_getTimerRunLoop;
 - (id)debugDescription;
 - (id)userInfo;
 - (void)_fireTimerFired;
-- (void)_invalidateAllowAsync:(BOOL)a3;
-- (void)_performBlockOnQueue:(id)a3;
+- (void)_invalidateAllowAsync:(BOOL)async;
+- (void)_performBlockOnQueue:(id)queue;
 - (void)_powerNotificationSleepIsImminent;
 - (void)_powerNotificationSleepIsNotImminent;
 - (void)_preventSleepFired;
 - (void)_scheduleTimer;
-- (void)_setPowerMonitoringEnabled:(BOOL)a3;
-- (void)_setSignificantTimeChangeMonitoringEnabled:(BOOL)a3;
+- (void)_setPowerMonitoringEnabled:(BOOL)enabled;
+- (void)_setSignificantTimeChangeMonitoringEnabled:(BOOL)enabled;
 - (void)_significantTimeChange;
 - (void)_updateTimers;
 - (void)dealloc;
-- (void)scheduleInQueue:(id)a3;
-- (void)scheduleInRunLoop:(id)a3 inMode:(id)a4;
-- (void)setDisableSystemWaking:(BOOL)a3;
-- (void)setUserVisible:(BOOL)a3;
-- (void)updateFireTime:(double)a3 triggerOnGMTChange:(BOOL)a4;
+- (void)scheduleInQueue:(id)queue;
+- (void)scheduleInRunLoop:(id)loop inMode:(id)mode;
+- (void)setDisableSystemWaking:(BOOL)waking;
+- (void)setUserVisible:(BOOL)visible;
+- (void)updateFireTime:(double)time triggerOnGMTChange:(BOOL)change;
 @end
 
 @implementation PCSimpleTimer
@@ -47,14 +47,14 @@
       }
 
       preventSleepTimer = self->_preventSleepTimer;
-      v5 = [MEMORY[0x277CBEAA8] distantFuture];
-      [(PCDispatchTimer *)preventSleepTimer setFireDate:v5];
+      distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+      [(PCDispatchTimer *)preventSleepTimer setFireDate:distantFuture];
 
       fireTimer = self->_fireTimer;
-      v7 = [MEMORY[0x277CBEAA8] distantFuture];
+      distantFuture2 = [MEMORY[0x277CBEAA8] distantFuture];
 LABEL_7:
-      v8 = v7;
-      [(PCDispatchTimer *)fireTimer setFireDate:v7];
+      v8 = distantFuture2;
+      [(PCDispatchTimer *)fireTimer setFireDate:distantFuture2];
 LABEL_31:
 
       goto LABEL_32;
@@ -71,7 +71,7 @@ LABEL_31:
         v13 = PCStringFromDate(v12);
         v14 = self->_lastUpdateTime - v10;
         *buf = 138543618;
-        v35 = v13;
+        selfCopy2 = v13;
         v36 = 2048;
         v37 = v14;
         _os_log_impl(&dword_25E3EF000, v11, OS_LOG_TYPE_DEFAULT, "Firing simple timer that was scheduled to fire at [%{public}@] since time has moved backwards by at least %g seconds", buf, 0x16u);
@@ -79,7 +79,7 @@ LABEL_31:
 
       [(PCDispatchTimer *)self->_preventSleepTimer invalidate];
       fireTimer = self->_fireTimer;
-      v7 = [MEMORY[0x277CBEAA8] distantPast];
+      distantFuture2 = [MEMORY[0x277CBEAA8] distantPast];
       goto LABEL_7;
     }
 
@@ -96,16 +96,16 @@ LABEL_31:
     v8 = v17;
     if (self->_disableSystemWaking)
     {
-      v18 = [MEMORY[0x277CBEAA8] distantFuture];
+      distantFuture3 = [MEMORY[0x277CBEAA8] distantFuture];
     }
 
     else
     {
-      v18 = v17;
+      distantFuture3 = v17;
     }
 
-    v19 = v18;
-    [(PCDispatchTimer *)self->_preventSleepTimer setFireDate:v18];
+    v19 = distantFuture3;
+    [(PCDispatchTimer *)self->_preventSleepTimer setFireDate:distantFuture3];
     v20 = self->_fireTimer;
     v21 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:self->_fireTime];
     [(PCDispatchTimer *)v20 setFireDate:v21];
@@ -121,7 +121,7 @@ LABEL_31:
           PCStringFromDate(self->_scheduledWakeDate);
           v24 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
           *buf = 138543618;
-          v35 = self;
+          selfCopy2 = self;
           v36 = 2114;
           v37 = v24;
           _os_log_impl(&dword_25E3EF000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ Canceling system wake for simpletimer [%{public}@]", buf, 0x16u);
@@ -145,7 +145,7 @@ LABEL_29:
         v28 = PCStringFromDate(v8);
         earlyFireDelta = self->_earlyFireDelta;
         *buf = 138544130;
-        v35 = self;
+        selfCopy2 = self;
         v36 = 2114;
         v37 = v27;
         v38 = 2114;
@@ -178,27 +178,27 @@ LABEL_32:
 - (void)_scheduleTimer
 {
   v28 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  fireTimer = v2->_fireTimer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  fireTimer = selfCopy->_fireTimer;
   if (!fireTimer)
   {
     v4 = +[PCLog timer];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:v2->_fireTime];
+      v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:selfCopy->_fireTime];
       v6 = PCStringFromDate(v5);
       v20 = 138543618;
-      v21 = v2;
+      v21 = selfCopy;
       v22 = 2114;
       v23 = v6;
       _os_log_impl(&dword_25E3EF000, v4, OS_LOG_TYPE_DEFAULT, "Started simple timer %{public}@ with fire date [%{public}@]", &v20, 0x16u);
     }
 
     Current = CFAbsoluteTimeGetCurrent();
-    v2->_startTime = Current;
-    v2->_lastUpdateTime = Current;
-    queue = v2->_queue;
+    selfCopy->_startTime = Current;
+    selfCopy->_lastUpdateTime = Current;
+    queue = selfCopy->_queue;
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     if (queue)
     {
@@ -212,21 +212,21 @@ LABEL_32:
 
     v11 = v10;
 
-    v12 = [[PCDispatchTimer alloc] initWithQueue:v11 target:v2 selector:sel__preventSleepFired fireTime:-1];
-    preventSleepTimer = v2->_preventSleepTimer;
-    v2->_preventSleepTimer = v12;
+    v12 = [[PCDispatchTimer alloc] initWithQueue:v11 target:selfCopy selector:sel__preventSleepFired fireTime:-1];
+    preventSleepTimer = selfCopy->_preventSleepTimer;
+    selfCopy->_preventSleepTimer = v12;
 
-    v14 = [[PCDispatchTimer alloc] initWithQueue:v11 target:v2 selector:sel__fireTimerFired fireTime:-1];
-    v15 = v2->_fireTimer;
-    v2->_fireTimer = v14;
+    v14 = [[PCDispatchTimer alloc] initWithQueue:v11 target:selfCopy selector:sel__fireTimerFired fireTime:-1];
+    v15 = selfCopy->_fireTimer;
+    selfCopy->_fireTimer = v14;
 
     v16 = +[PCLog timer];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = v2->_preventSleepTimer;
-      v18 = v2->_fireTimer;
+      v17 = selfCopy->_preventSleepTimer;
+      v18 = selfCopy->_fireTimer;
       v20 = 138544130;
-      v21 = v2;
+      v21 = selfCopy;
       v22 = 2114;
       v23 = v17;
       v24 = 2114;
@@ -236,15 +236,15 @@ LABEL_32:
       _os_log_impl(&dword_25E3EF000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ created preventSleepTimer %{public}@ and fireTimer %{public}@ on queue %{public}@", &v20, 0x2Au);
     }
 
-    fireTimer = v2->_fireTimer;
+    fireTimer = selfCopy->_fireTimer;
   }
 
   [(PCDispatchTimer *)fireTimer start];
-  [(PCDispatchTimer *)v2->_preventSleepTimer start];
-  [(PCSimpleTimer *)v2 _setPowerMonitoringEnabled:1];
-  [(PCSimpleTimer *)v2 _setSignificantTimeChangeMonitoringEnabled:1];
-  [(PCSimpleTimer *)v2 _updateTimers];
-  objc_sync_exit(v2);
+  [(PCDispatchTimer *)selfCopy->_preventSleepTimer start];
+  [(PCSimpleTimer *)selfCopy _setPowerMonitoringEnabled:1];
+  [(PCSimpleTimer *)selfCopy _setSignificantTimeChangeMonitoringEnabled:1];
+  [(PCSimpleTimer *)selfCopy _updateTimers];
+  objc_sync_exit(selfCopy);
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -294,30 +294,30 @@ LABEL_32:
 
 - (BOOL)firingIsImminent
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_powerAssertionID != 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_powerAssertionID != 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (id)_getTimerRunLoop
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_timerRunLoop;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_timerRunLoop;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (id)_getTimerMode
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_timerMode;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_timerMode;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -334,35 +334,35 @@ LABEL_32:
 - (void)_fireTimerFired
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_target)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_target)
   {
-    if (!v2->_disableSystemWaking)
+    if (!selfCopy->_disableSystemWaking)
     {
-      [(PCSimpleTimer *)v2 _preventSleepFired];
+      [(PCSimpleTimer *)selfCopy _preventSleepFired];
     }
 
     v3 = +[PCLog timer];
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v17 = v2;
+      v17 = selfCopy;
       _os_log_impl(&dword_25E3EF000, v3, OS_LOG_TYPE_DEFAULT, "SimpleTimer %{public}@ has fired", buf, 0xCu);
     }
 
-    v4 = v2->_target;
-    v5 = v2->_timerMode;
-    v6 = v2->_timerRunLoop;
-    queue = v2->_queue;
+    v4 = selfCopy->_target;
+    v5 = selfCopy->_timerMode;
+    v6 = selfCopy->_timerRunLoop;
+    queue = selfCopy->_queue;
     if (queue)
     {
       v8 = queue;
     }
 
-    if (v2->_selector)
+    if (selfCopy->_selector)
     {
-      selector = v2->_selector;
+      selector = selfCopy->_selector;
     }
 
     else
@@ -370,7 +370,7 @@ LABEL_32:
       selector = 0;
     }
 
-    [(PCSimpleTimer *)v2 invalidate];
+    [(PCSimpleTimer *)selfCopy invalidate];
   }
 
   else
@@ -382,12 +382,12 @@ LABEL_32:
     v4 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (v6 && v5)
   {
     v10 = [MEMORY[0x277CBEA60] arrayWithObject:v5];
-    [(NSRunLoop *)v6 performSelector:selector target:v4 argument:v2 order:0 modes:v10];
+    [(NSRunLoop *)v6 performSelector:selector target:v4 argument:selfCopy order:0 modes:v10];
 
     CFRunLoopWakeUp([(NSRunLoop *)v6 getCFRunLoop]);
   }
@@ -398,7 +398,7 @@ LABEL_32:
     block[1] = 3221225472;
     block[2] = __32__PCSimpleTimer__fireTimerFired__block_invoke;
     block[3] = &unk_279A1A2E0;
-    v14 = v2;
+    v14 = selfCopy;
     v15 = selector;
     v13 = v4;
     dispatch_async(queue, block);
@@ -407,86 +407,86 @@ LABEL_32:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (PCSimpleTimer)initWithFireDate:(id)a3 serviceIdentifier:(id)a4 target:(id)a5 selector:(SEL)a6 userInfo:(id)a7
+- (PCSimpleTimer)initWithFireDate:(id)date serviceIdentifier:(id)identifier target:(id)target selector:(SEL)selector userInfo:(id)info
 {
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  [a3 timeIntervalSinceReferenceDate];
-  v15 = [(PCSimpleTimer *)self initWithAbsoluteTime:v14 serviceIdentifier:v13 target:a6 selector:v12 userInfo:0 triggerOnGMTChange:?];
+  infoCopy = info;
+  targetCopy = target;
+  identifierCopy = identifier;
+  [date timeIntervalSinceReferenceDate];
+  v15 = [(PCSimpleTimer *)self initWithAbsoluteTime:identifierCopy serviceIdentifier:targetCopy target:selector selector:infoCopy userInfo:0 triggerOnGMTChange:?];
 
   return v15;
 }
 
-- (PCSimpleTimer)initWithTimeInterval:(double)a3 serviceIdentifier:(id)a4 target:(id)a5 selector:(SEL)a6 userInfo:(id)a7
+- (PCSimpleTimer)initWithTimeInterval:(double)interval serviceIdentifier:(id)identifier target:(id)target selector:(SEL)selector userInfo:(id)info
 {
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = [(PCSimpleTimer *)self initWithAbsoluteTime:v14 serviceIdentifier:v13 target:a6 selector:v12 userInfo:1 triggerOnGMTChange:CFAbsoluteTimeGetCurrent() + a3];
+  infoCopy = info;
+  targetCopy = target;
+  identifierCopy = identifier;
+  interval = [(PCSimpleTimer *)self initWithAbsoluteTime:identifierCopy serviceIdentifier:targetCopy target:selector selector:infoCopy userInfo:1 triggerOnGMTChange:CFAbsoluteTimeGetCurrent() + interval];
 
-  return v15;
+  return interval;
 }
 
-- (PCSimpleTimer)initWithAbsoluteTime:(double)a3 serviceIdentifier:(id)a4 target:(id)a5 selector:(SEL)a6 userInfo:(id)a7 triggerOnGMTChange:(BOOL)a8
+- (PCSimpleTimer)initWithAbsoluteTime:(double)time serviceIdentifier:(id)identifier target:(id)target selector:(SEL)selector userInfo:(id)info triggerOnGMTChange:(BOOL)change
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
+  identifierCopy = identifier;
+  targetCopy = target;
+  infoCopy = info;
   v24.receiver = self;
   v24.super_class = PCSimpleTimer;
   v18 = [(PCSimpleTimer *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    if (!v16 || !a6)
+    if (!targetCopy || !selector)
     {
       [PCSimpleTimer initWithAbsoluteTime:v18 serviceIdentifier:a2 target:? selector:? userInfo:? triggerOnGMTChange:?];
     }
 
-    v19->_fireTime = a3;
-    v20 = [v15 copy];
+    v19->_fireTime = time;
+    v20 = [identifierCopy copy];
     serviceIdentifier = v19->_serviceIdentifier;
     v19->_serviceIdentifier = v20;
 
-    objc_storeStrong(&v19->_target, a5);
-    if (a6)
+    objc_storeStrong(&v19->_target, target);
+    if (selector)
     {
-      v22 = a6;
+      selectorCopy = selector;
     }
 
     else
     {
-      v22 = 0;
+      selectorCopy = 0;
     }
 
-    v19->_selector = v22;
-    objc_storeStrong(&v19->_userInfo, a7);
-    v19->_triggerOnGMTChange = a8;
+    v19->_selector = selectorCopy;
+    objc_storeStrong(&v19->_userInfo, info);
+    v19->_triggerOnGMTChange = change;
   }
 
   return v19;
 }
 
-- (void)updateFireTime:(double)a3 triggerOnGMTChange:(BOOL)a4
+- (void)updateFireTime:(double)time triggerOnGMTChange:(BOOL)change
 {
-  v4 = a4;
+  changeCopy = change;
   v33 = *MEMORY[0x277D85DE8];
-  v6 = self;
-  objc_sync_enter(v6);
-  fireTime = v6->_fireTime;
-  if (fireTime != a3 || v6->_triggerOnGMTChange != v4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  fireTime = selfCopy->_fireTime;
+  if (fireTime != time || selfCopy->_triggerOnGMTChange != changeCopy)
   {
-    earlyFireDelta = v6->_earlyFireDelta;
+    earlyFireDelta = selfCopy->_earlyFireDelta;
     v9 = +[PCLog timer];
-    v10 = fireTime + earlyFireDelta - a3;
+    v10 = fireTime + earlyFireDelta - time;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:v6->_fireTime];
-      v12 = v6->_earlyFireDelta;
-      v13 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:a3];
+      v11 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:selfCopy->_fireTime];
+      v12 = selfCopy->_earlyFireDelta;
+      v13 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:time];
       v14 = v13;
-      triggerOnGMTChange = v6->_triggerOnGMTChange;
+      triggerOnGMTChange = selfCopy->_triggerOnGMTChange;
       v16 = @"NO";
       v19 = 138544898;
       if (triggerOnGMTChange)
@@ -499,9 +499,9 @@ LABEL_32:
         v17 = @"NO";
       }
 
-      v20 = v6;
+      v20 = selfCopy;
       v21 = 2114;
-      if (v4)
+      if (changeCopy)
       {
         v16 = @"YES";
       }
@@ -520,91 +520,91 @@ LABEL_32:
       _os_log_impl(&dword_25E3EF000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ updateFireTime from %{public}@ + %g to %{public}@ + %g, trigger from %{public}@ to %{public}@", &v19, 0x48u);
     }
 
-    v6->_earlyFireDelta = v10;
-    v6->_fireTime = a3;
-    v6->_triggerOnGMTChange = v4;
-    [(PCSimpleTimer *)v6 _updateTimers];
+    selfCopy->_earlyFireDelta = v10;
+    selfCopy->_fireTime = time;
+    selfCopy->_triggerOnGMTChange = changeCopy;
+    [(PCSimpleTimer *)selfCopy _updateTimers];
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDisableSystemWaking:(BOOL)a3
+- (void)setDisableSystemWaking:(BOOL)waking
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_disableSystemWaking = a3;
+  obj->_disableSystemWaking = waking;
   [(PCSimpleTimer *)obj _updateTimers];
   objc_sync_exit(obj);
 }
 
-- (void)setUserVisible:(BOOL)a3
+- (void)setUserVisible:(BOOL)visible
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_userVisible = a3;
+  obj->_userVisible = visible;
   [(PCSimpleTimer *)obj _updateTimers];
   objc_sync_exit(obj);
 }
 
 - (BOOL)isUserVisible
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  userVisible = v2->_userVisible;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  userVisible = selfCopy->_userVisible;
+  objc_sync_exit(selfCopy);
 
   return userVisible;
 }
 
-- (void)scheduleInRunLoop:(id)a3 inMode:(id)a4
+- (void)scheduleInRunLoop:(id)loop inMode:(id)mode
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = self;
-  objc_sync_enter(v9);
-  if (!v8)
+  loopCopy = loop;
+  modeCopy = mode;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!modeCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:v9 file:@"PCSimpleTimer.m" lineNumber:178 description:{@"%@ run loop mode cannot be nil", objc_opt_class()}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"PCSimpleTimer.m" lineNumber:178 description:{@"%@ run loop mode cannot be nil", objc_opt_class()}];
   }
 
-  if (!v9->_target)
+  if (!selfCopy->_target)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:v9 file:@"PCSimpleTimer.m" lineNumber:179 description:{@"Cannot schedule invalidated %@", objc_opt_class()}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:@"PCSimpleTimer.m" lineNumber:179 description:{@"Cannot schedule invalidated %@", objc_opt_class()}];
   }
 
-  if (v9->_queue)
+  if (selfCopy->_queue)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:v9 file:@"PCSimpleTimer.m" lineNumber:180 description:{@"Cannot schedule on runloop when already scheduled on queue %@", objc_opt_class()}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:selfCopy file:@"PCSimpleTimer.m" lineNumber:180 description:{@"Cannot schedule on runloop when already scheduled on queue %@", objc_opt_class()}];
   }
 
-  if (v9->_timerRunLoop != v13)
+  if (selfCopy->_timerRunLoop != loopCopy)
   {
-    objc_storeStrong(&v9->_timerRunLoop, a3);
+    objc_storeStrong(&selfCopy->_timerRunLoop, loop);
   }
 
-  if (v9->_timerMode != v8)
+  if (selfCopy->_timerMode != modeCopy)
   {
-    objc_storeStrong(&v9->_timerMode, a4);
+    objc_storeStrong(&selfCopy->_timerMode, mode);
   }
 
-  [(PCSimpleTimer *)v9 _scheduleTimer];
-  objc_sync_exit(v9);
+  [(PCSimpleTimer *)selfCopy _scheduleTimer];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)scheduleInQueue:(id)a3
+- (void)scheduleInQueue:(id)queue
 {
-  v10 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  if (v6->_target)
+  queueCopy = queue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_target)
   {
-    if (v10)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -612,72 +612,72 @@ LABEL_32:
 
   else
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:v6 file:@"PCSimpleTimer.m" lineNumber:196 description:{@"Cannot schedule invalidated %@", objc_opt_class()}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"PCSimpleTimer.m" lineNumber:196 description:{@"Cannot schedule invalidated %@", objc_opt_class()}];
 
-    if (v10)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  [v8 handleFailureInMethod:a2 object:v6 file:@"PCSimpleTimer.m" lineNumber:197 description:{@"Cannot schedule on NULL queue %@", objc_opt_class()}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:@"PCSimpleTimer.m" lineNumber:197 description:{@"Cannot schedule on NULL queue %@", objc_opt_class()}];
 
 LABEL_3:
-  if (v6->_timerRunLoop)
+  if (selfCopy->_timerRunLoop)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:v6 file:@"PCSimpleTimer.m" lineNumber:198 description:{@"Cannot schedule on queue when already scheduled on runloop %@", objc_opt_class()}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:selfCopy file:@"PCSimpleTimer.m" lineNumber:198 description:{@"Cannot schedule on queue when already scheduled on runloop %@", objc_opt_class()}];
   }
 
-  if (v6->_queue != v10)
+  if (selfCopy->_queue != queueCopy)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&selfCopy->_queue, queue);
   }
 
-  [(PCSimpleTimer *)v6 _scheduleTimer];
-  objc_sync_exit(v6);
+  [(PCSimpleTimer *)selfCopy _scheduleTimer];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_invalidateAllowAsync:(BOOL)a3
+- (void)_invalidateAllowAsync:(BOOL)async
 {
-  v3 = a3;
+  asyncCopy = async;
   v25 = *MEMORY[0x277D85DE8];
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_target)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_target)
   {
     v5 = +[PCLog timer];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v24 = v4;
+      v24 = selfCopy;
       _os_log_impl(&dword_25E3EF000, v5, OS_LOG_TYPE_DEFAULT, "Invalidating simple timer %{public}@", buf, 0xCu);
     }
 
-    target = v4->_target;
-    v4->_target = 0;
+    target = selfCopy->_target;
+    selfCopy->_target = 0;
 
-    v4->_selector = 0;
-    timerRunLoop = v4->_timerRunLoop;
-    v4->_timerRunLoop = 0;
+    selfCopy->_selector = 0;
+    timerRunLoop = selfCopy->_timerRunLoop;
+    selfCopy->_timerRunLoop = 0;
 
-    timerMode = v4->_timerMode;
-    v4->_timerMode = 0;
+    timerMode = selfCopy->_timerMode;
+    selfCopy->_timerMode = 0;
 
-    queue = v4->_queue;
-    v4->_queue = 0;
+    queue = selfCopy->_queue;
+    selfCopy->_queue = 0;
 
-    [(PCDispatchTimer *)v4->_preventSleepTimer invalidate];
-    preventSleepTimer = v4->_preventSleepTimer;
-    v4->_preventSleepTimer = 0;
+    [(PCDispatchTimer *)selfCopy->_preventSleepTimer invalidate];
+    preventSleepTimer = selfCopy->_preventSleepTimer;
+    selfCopy->_preventSleepTimer = 0;
 
-    [(PCDispatchTimer *)v4->_fireTimer invalidate];
-    fireTimer = v4->_fireTimer;
-    v4->_fireTimer = 0;
+    [(PCDispatchTimer *)selfCopy->_fireTimer invalidate];
+    fireTimer = selfCopy->_fireTimer;
+    selfCopy->_fireTimer = 0;
 
-    scheduledWakeDate = v4->_scheduledWakeDate;
+    scheduledWakeDate = selfCopy->_scheduledWakeDate;
     if (scheduledWakeDate)
     {
       [(NSDate *)scheduledWakeDate timeIntervalSinceNow];
@@ -686,13 +686,13 @@ LABEL_3:
         v16 = +[PCLog timer];
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
-          v17 = PCStringFromDate(v4->_scheduledWakeDate);
+          v17 = PCStringFromDate(selfCopy->_scheduledWakeDate);
           *buf = 138543362;
           v24 = v17;
           _os_log_impl(&dword_25E3EF000, v16, OS_LOG_TYPE_DEFAULT, "Canceling system wake for simpletimer [%{public}@]", buf, 0xCu);
         }
 
-        [PCSystemWakeManager scheduleWake:0 wakeDate:v4->_scheduledWakeDate acceptableDelay:v4->_userVisible userVisible:v4->_serviceIdentifier serviceIdentifier:v4 uniqueIdentifier:0.0];
+        [PCSystemWakeManager scheduleWake:0 wakeDate:selfCopy->_scheduledWakeDate acceptableDelay:selfCopy->_userVisible userVisible:selfCopy->_serviceIdentifier serviceIdentifier:selfCopy uniqueIdentifier:0.0];
       }
 
       else
@@ -700,106 +700,106 @@ LABEL_3:
         v14 = +[PCLog timer];
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = PCStringFromDate(v4->_scheduledWakeDate);
+          v15 = PCStringFromDate(selfCopy->_scheduledWakeDate);
           *buf = 138543362;
           v24 = v15;
           _os_log_impl(&dword_25E3EF000, v14, OS_LOG_TYPE_DEFAULT, "Not canceling system wake for [%{public}@], which is in the past", buf, 0xCu);
         }
       }
 
-      v18 = v4->_scheduledWakeDate;
-      v4->_scheduledWakeDate = 0;
+      v18 = selfCopy->_scheduledWakeDate;
+      selfCopy->_scheduledWakeDate = 0;
     }
 
-    if (v4->_powerAssertionID)
+    if (selfCopy->_powerAssertionID)
     {
       v19 = +[PCLog timer];
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        powerAssertionID = v4->_powerAssertionID;
+        powerAssertionID = selfCopy->_powerAssertionID;
         *buf = 67109120;
         LODWORD(v24) = powerAssertionID;
         _os_log_impl(&dword_25E3EF000, v19, OS_LOG_TYPE_DEFAULT, "Releasing prevent sleep power assertion %i", buf, 8u);
       }
 
-      v21 = IOPMAssertionRelease(v4->_powerAssertionID);
+      v21 = IOPMAssertionRelease(selfCopy->_powerAssertionID);
       if (v21)
       {
-        NSLog(&cfstr_FailedToReleas.isa, v4->_powerAssertionID, v21);
+        NSLog(&cfstr_FailedToReleas.isa, selfCopy->_powerAssertionID, v21);
       }
 
-      v4->_powerAssertionID = 0;
+      selfCopy->_powerAssertionID = 0;
     }
 
-    if (v3)
+    if (asyncCopy)
     {
-      [(PCSimpleTimer *)v4 _setPowerMonitoringEnabled:0];
+      [(PCSimpleTimer *)selfCopy _setPowerMonitoringEnabled:0];
     }
 
-    [(PCSimpleTimer *)v4 _setSignificantTimeChangeMonitoringEnabled:0];
+    [(PCSimpleTimer *)selfCopy _setSignificantTimeChangeMonitoringEnabled:0];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)isValid
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_target != 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_target != 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (id)userInfo
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_userInfo;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_userInfo;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_performBlockOnQueue:(id)a3
+- (void)_performBlockOnQueue:(id)queue
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v4)
+  queueCopy = queue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (queueCopy)
   {
-    queue = v5->_queue;
+    queue = selfCopy->_queue;
     if (queue)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __38__PCSimpleTimer__performBlockOnQueue___block_invoke;
       block[3] = &unk_279A1A2B8;
-      v8 = v4;
+      v8 = queueCopy;
       dispatch_async(queue, block);
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_preventSleepFired
 {
   v4 = *MEMORY[0x277D85DE8];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_fault_impl(&dword_25E3EF000, a2, OS_LOG_TYPE_FAULT, "Unable to take power assertion. IOPMAssertionCreateWithDescription() returned %#x", v3, 8u);
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setPowerMonitoringEnabled:(BOOL)a3
+- (void)_setPowerMonitoringEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
-    v3 = self;
+    selfCopy2 = self;
     v4 = _GetPowerMonitoringQueue();
     block = MEMORY[0x277D85DD0];
     v8 = 3221225472;
@@ -808,7 +808,7 @@ LABEL_3:
 
   else
   {
-    v3 = self;
+    selfCopy2 = self;
     v4 = _GetPowerMonitoringQueue();
     block = MEMORY[0x277D85DD0];
     v8 = 3221225472;
@@ -817,8 +817,8 @@ LABEL_3:
 
   v9 = v5;
   v10 = &unk_279A19E50;
-  v11 = v3;
-  v6 = v3;
+  v11 = selfCopy2;
+  v6 = selfCopy2;
   dispatch_async(v4, &block);
 }
 
@@ -839,11 +839,11 @@ LABEL_3:
   objc_sync_exit(obj);
 }
 
-- (void)_setSignificantTimeChangeMonitoringEnabled:(BOOL)a3
+- (void)_setSignificantTimeChangeMonitoringEnabled:(BOOL)enabled
 {
   p_significantTimeChangeToken = &self->_significantTimeChangeToken;
   significantTimeChangeToken = self->_significantTimeChangeToken;
-  if (a3)
+  if (enabled)
   {
     if (significantTimeChangeToken == -1)
     {

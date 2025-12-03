@@ -1,32 +1,32 @@
 @interface ASTCustomizeCell
-- (ASTCustomizeCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (ASTCustomizeCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (ASTCustomizeCellDelegateProtocol)delegate;
 - (BOOL)_showsLargeContentViewer;
-- (id)_cellForTouches:(id)a3;
-- (id)_itemForCell:(id)a3;
+- (id)_cellForTouches:(id)touches;
+- (id)_itemForCell:(id)cell;
 - (id)_layoutIcons;
-- (id)_updateButton:(id)a3 withIcon:(id)a4 layout:(int64_t)a5 shouldUpdateLayoutViewIfNeeded:(BOOL)a6;
+- (id)_updateButton:(id)button withIcon:(id)icon layout:(int64_t)layout shouldUpdateLayoutViewIfNeeded:(BOOL)needed;
 - (id)accessibilityElements;
-- (void)_displayPickerForIcon:(id)a3 andLocation:(id)a4 cell:(id)a5;
+- (void)_displayPickerForIcon:(id)icon andLocation:(id)location cell:(id)cell;
 - (void)_hideLargeContentViewerIfNeeded;
 - (void)_rearrangeMap;
 - (void)_removeInvalidIconsIfNeeded;
-- (void)_updateLargeContentViewerForCell:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)_updateLargeContentViewerForCell:(id)cell;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation ASTCustomizeCell
 
-- (ASTCustomizeCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (ASTCustomizeCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v62.receiver = self;
   v62.super_class = ASTCustomizeCell;
-  v55 = a4;
-  v56 = a5;
-  v7 = [(ASTCustomizeCell *)&v62 initWithStyle:a3 reuseIdentifier:v55 specifier:?];
+  identifierCopy = identifier;
+  specifierCopy = specifier;
+  v7 = [(ASTCustomizeCell *)&v62 initWithStyle:style reuseIdentifier:identifierCopy specifier:?];
   if (v7)
   {
     v8 = AXSystemRootDirectory();
@@ -35,8 +35,8 @@
     astBundle = v7->_astBundle;
     v7->_astBundle = v10;
 
-    v12 = [(ASTCustomizeCell *)v7 subviews];
-    [v12 enumerateObjectsUsingBlock:&__block_literal_global_13];
+    subviews = [(ASTCustomizeCell *)v7 subviews];
+    [subviews enumerateObjectsUsingBlock:&__block_literal_global_13];
 
     [(ASTCustomizeCell *)v7 setAutoresizesSubviews:1];
     v13 = objc_alloc_init(NSMutableDictionary);
@@ -48,60 +48,60 @@
     v7->_layoutView = v15;
 
     [(AXAssistiveTouchLayoutView *)v7->_layoutView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v17 = [(ASTCustomizeCell *)v7 contentView];
-    [v17 addSubview:v7->_layoutView];
+    contentView = [(ASTCustomizeCell *)v7 contentView];
+    [contentView addSubview:v7->_layoutView];
 
     v18 = +[UIColor clearColor];
     [(ASTCustomizeCell *)v7 setBackgroundColor:v18];
 
-    v19 = [(ASTCustomizeCell *)v7 contentView];
-    [v19 setUserInteractionEnabled:0];
+    contentView2 = [(ASTCustomizeCell *)v7 contentView];
+    [contentView2 setUserInteractionEnabled:0];
 
-    v20 = [(ASTCustomizeCell *)v7 contentView];
-    [(ASTCustomizeCell *)v7 addSubview:v20];
+    contentView3 = [(ASTCustomizeCell *)v7 contentView];
+    [(ASTCustomizeCell *)v7 addSubview:contentView3];
 
-    v21 = [(AXAssistiveTouchLayoutView *)v7->_layoutView widthAnchor];
-    v22 = [(ASTCustomizeCell *)v7 contentView];
-    v23 = [v22 widthAnchor];
-    v58 = [v21 constraintEqualToAnchor:v23 multiplier:0.9];
+    widthAnchor = [(AXAssistiveTouchLayoutView *)v7->_layoutView widthAnchor];
+    contentView4 = [(ASTCustomizeCell *)v7 contentView];
+    widthAnchor2 = [contentView4 widthAnchor];
+    v58 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:0.9];
 
     LODWORD(v24) = 1131937792;
     [v58 setPriority:v24];
     [AXAssistiveTouchLayoutView layoutViewSideLengthScaledFromDefaultLength:389.0];
     v26 = v25;
-    v27 = [(AXAssistiveTouchLayoutView *)v7->_layoutView widthAnchor];
-    v57 = [v27 constraintLessThanOrEqualToConstant:v26];
+    widthAnchor3 = [(AXAssistiveTouchLayoutView *)v7->_layoutView widthAnchor];
+    v57 = [widthAnchor3 constraintLessThanOrEqualToConstant:v26];
 
     LODWORD(v28) = 1132003328;
     [v57 setPriority:v28];
-    v54 = [(ASTCustomizeCell *)v7 contentView];
-    v53 = [v54 centerXAnchor];
-    v52 = [(AXAssistiveTouchLayoutView *)v7->_layoutView centerXAnchor];
-    v51 = [v53 constraintEqualToAnchor:v52];
+    contentView5 = [(ASTCustomizeCell *)v7 contentView];
+    centerXAnchor = [contentView5 centerXAnchor];
+    centerXAnchor2 = [(AXAssistiveTouchLayoutView *)v7->_layoutView centerXAnchor];
+    v51 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v63[0] = v51;
-    v50 = [(ASTCustomizeCell *)v7 contentView];
-    v49 = [v50 topAnchor];
-    v48 = [(AXAssistiveTouchLayoutView *)v7->_layoutView topAnchor];
-    v47 = [v49 constraintEqualToAnchor:v48];
+    contentView6 = [(ASTCustomizeCell *)v7 contentView];
+    topAnchor = [contentView6 topAnchor];
+    topAnchor2 = [(AXAssistiveTouchLayoutView *)v7->_layoutView topAnchor];
+    v47 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v63[1] = v47;
-    v46 = [(ASTCustomizeCell *)v7 contentView];
-    v45 = [v46 bottomAnchor];
-    v44 = [(AXAssistiveTouchLayoutView *)v7->_layoutView bottomAnchor];
-    v43 = [v45 constraintGreaterThanOrEqualToAnchor:v44];
+    contentView7 = [(ASTCustomizeCell *)v7 contentView];
+    bottomAnchor = [contentView7 bottomAnchor];
+    bottomAnchor2 = [(AXAssistiveTouchLayoutView *)v7->_layoutView bottomAnchor];
+    v43 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
     v63[2] = v43;
     v63[3] = v58;
     v63[4] = v57;
-    v42 = [(AXAssistiveTouchLayoutView *)v7->_layoutView widthAnchor];
-    v29 = [v42 constraintGreaterThanOrEqualToConstant:320.0];
+    widthAnchor4 = [(AXAssistiveTouchLayoutView *)v7->_layoutView widthAnchor];
+    v29 = [widthAnchor4 constraintGreaterThanOrEqualToConstant:320.0];
     v63[5] = v29;
-    v30 = [(AXAssistiveTouchLayoutView *)v7->_layoutView heightAnchor];
-    v31 = [(AXAssistiveTouchLayoutView *)v7->_layoutView widthAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
+    heightAnchor = [(AXAssistiveTouchLayoutView *)v7->_layoutView heightAnchor];
+    widthAnchor5 = [(AXAssistiveTouchLayoutView *)v7->_layoutView widthAnchor];
+    v32 = [heightAnchor constraintEqualToAnchor:widthAnchor5];
     v63[6] = v32;
-    v33 = [(AXAssistiveTouchLayoutView *)v7->_layoutView widthAnchor];
-    v34 = [(ASTCustomizeCell *)v7 contentView];
-    v35 = [v34 widthAnchor];
-    v36 = [v33 constraintLessThanOrEqualToAnchor:v35];
+    widthAnchor6 = [(AXAssistiveTouchLayoutView *)v7->_layoutView widthAnchor];
+    contentView8 = [(ASTCustomizeCell *)v7 contentView];
+    widthAnchor7 = [contentView8 widthAnchor];
+    v36 = [widthAnchor6 constraintLessThanOrEqualToAnchor:widthAnchor7];
     v63[7] = v36;
     v37 = [NSArray arrayWithObjects:v63 count:8];
     [NSLayoutConstraint activateConstraints:v37];
@@ -119,7 +119,7 @@
     [v38 registerUpdateBlock:v59 forRetrieveSelector:"assistiveTouchMainScreenCustomization" withListener:v7];
 
     objc_destroyWeak(&v60);
-    v39 = [(ASTCustomizeCell *)v7 _layoutIcons];
+    _layoutIcons = [(ASTCustomizeCell *)v7 _layoutIcons];
     v40 = v7;
     objc_destroyWeak(&location);
   }
@@ -169,9 +169,9 @@ void __60__ASTCustomizeCell_initWithStyle_reuseIdentifier_specifier___block_invo
 - (void)_rearrangeMap
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchMainScreenCustomization];
+  assistiveTouchMainScreenCustomization = [v3 assistiveTouchMainScreenCustomization];
 
-  v5 = [v4 count];
+  v5 = [assistiveTouchMainScreenCustomization count];
   v6 = v5 > [(NSMutableDictionary *)self->_buttonCells count];
   v7 = +[NSMutableArray array];
   v8 = +[NSMutableArray array];
@@ -181,7 +181,7 @@ void __60__ASTCustomizeCell_initWithStyle_reuseIdentifier_specifier___block_invo
   v16[2] = __33__ASTCustomizeCell__rearrangeMap__block_invoke;
   v16[3] = &unk_256498;
   v16[4] = self;
-  v17 = v4;
+  v17 = assistiveTouchMainScreenCustomization;
   v21 = v6;
   v18 = v7;
   v19 = v8;
@@ -194,7 +194,7 @@ void __60__ASTCustomizeCell_initWithStyle_reuseIdentifier_specifier___block_invo
   v10 = v18;
   v11 = v9;
   v12 = v8;
-  v13 = v4;
+  v13 = assistiveTouchMainScreenCustomization;
   [UIView animateWithDuration:v16 animations:v14 completion:0.25];
 }
 
@@ -549,17 +549,17 @@ void __33__ASTCustomizeCell__rearrangeMap__block_invoke_4(uint64_t a1)
   }
 }
 
-- (id)_cellForTouches:(id)a3
+- (id)_cellForTouches:(id)touches
 {
-  v27 = a3;
+  touchesCopy = touches;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v4 = [(ASTCustomizeCell *)self contentView];
-  v5 = [v4 subviews];
+  contentView = [(ASTCustomizeCell *)self contentView];
+  subviews = [contentView subviews];
 
-  v6 = [v5 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  v6 = [subviews countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v6)
   {
     v7 = v6;
@@ -570,7 +570,7 @@ void __33__ASTCustomizeCell__rearrangeMap__block_invoke_4(uint64_t a1)
       {
         if (*v29 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
         v10 = *(*(&v28 + 1) + 8 * i);
@@ -578,15 +578,15 @@ void __33__ASTCustomizeCell__rearrangeMap__block_invoke_4(uint64_t a1)
         if (objc_opt_isKindOfClass())
         {
           v11 = v10;
-          v12 = [v11 borderView];
-          [v12 bounds];
+          borderView = [v11 borderView];
+          [borderView bounds];
           v14 = v13;
           v16 = v15;
           v18 = v17;
           v20 = v19;
-          v21 = [v27 anyObject];
-          v22 = [v11 borderView];
-          [v21 locationInView:v22];
+          anyObject = [touchesCopy anyObject];
+          borderView2 = [v11 borderView];
+          [anyObject locationInView:borderView2];
           v34.x = v23;
           v34.y = v24;
           v35.origin.x = v14;
@@ -602,7 +602,7 @@ void __33__ASTCustomizeCell__rearrangeMap__block_invoke_4(uint64_t a1)
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v7);
@@ -614,11 +614,11 @@ LABEL_12:
   return v11;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v5 = [(ASTCustomizeCell *)self _cellForTouches:a3, a4];
+  event = [(ASTCustomizeCell *)self _cellForTouches:began, event];
   downCell = self->_downCell;
-  self->_downCell = v5;
+  self->_downCell = event;
 
   if ([(ASTCustomizeCell *)self _showsLargeContentViewer])
   {
@@ -629,22 +629,22 @@ LABEL_12:
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v24 = a3;
-  v6 = a4;
+  movedCopy = moved;
+  eventCopy = event;
   downCell = self->_downCell;
   if (downCell)
   {
-    v8 = [(ASTButtonCell *)downCell borderView];
-    [v8 bounds];
+    borderView = [(ASTButtonCell *)downCell borderView];
+    [borderView bounds];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [v24 anyObject];
-    v18 = [(ASTButtonCell *)self->_downCell borderView];
-    [v17 locationInView:v18];
+    anyObject = [movedCopy anyObject];
+    borderView2 = [(ASTButtonCell *)self->_downCell borderView];
+    [anyObject locationInView:borderView2];
     v26.x = v19;
     v26.y = v20;
     v27.origin.x = v10;
@@ -662,24 +662,24 @@ LABEL_12:
 
   if ([(ASTCustomizeCell *)self _showsLargeContentViewer])
   {
-    v23 = [(ASTCustomizeCell *)self _cellForTouches:v24];
+    v23 = [(ASTCustomizeCell *)self _cellForTouches:movedCopy];
     [(ASTCustomizeCell *)self _updateLargeContentViewerForCell:v23];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v18 = a3;
-  v6 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   downCell = self->_downCell;
   if (downCell)
   {
-    v8 = [(ASTButtonCell *)downCell activateCellBlock];
+    activateCellBlock = [(ASTButtonCell *)downCell activateCellBlock];
 
-    if (v8)
+    if (activateCellBlock)
     {
-      v9 = [(ASTButtonCell *)self->_downCell activateCellBlock];
-      (v9)[2](v9, self->_downCell);
+      activateCellBlock2 = [(ASTButtonCell *)self->_downCell activateCellBlock];
+      (activateCellBlock2)[2](activateCellBlock2, self->_downCell);
 LABEL_8:
 
       goto LABEL_9;
@@ -688,19 +688,19 @@ LABEL_8:
 
   if ([(ASTCustomizeCell *)self _showsLargeContentViewer])
   {
-    v10 = [(ASTCustomizeCell *)self cellForPresentedHUDView];
-    if (v10)
+    cellForPresentedHUDView = [(ASTCustomizeCell *)self cellForPresentedHUDView];
+    if (cellForPresentedHUDView)
     {
-      v11 = v10;
-      v12 = [(ASTCustomizeCell *)self cellForPresentedHUDView];
-      v13 = [v12 activateCellBlock];
+      v11 = cellForPresentedHUDView;
+      cellForPresentedHUDView2 = [(ASTCustomizeCell *)self cellForPresentedHUDView];
+      activateCellBlock3 = [cellForPresentedHUDView2 activateCellBlock];
 
-      if (v13)
+      if (activateCellBlock3)
       {
-        v9 = [(ASTCustomizeCell *)self cellForPresentedHUDView];
-        v14 = [v9 activateCellBlock];
-        v15 = [(ASTCustomizeCell *)self cellForPresentedHUDView];
-        (v14)[2](v14, v15);
+        activateCellBlock2 = [(ASTCustomizeCell *)self cellForPresentedHUDView];
+        v9ActivateCellBlock = [activateCellBlock2 activateCellBlock];
+        cellForPresentedHUDView3 = [(ASTCustomizeCell *)self cellForPresentedHUDView];
+        (v9ActivateCellBlock)[2](v9ActivateCellBlock, cellForPresentedHUDView3);
 
         goto LABEL_8;
       }
@@ -714,12 +714,12 @@ LABEL_9:
   if ([(ASTCustomizeCell *)self _showsLargeContentViewer])
   {
     [(ASTCustomizeCell *)self _hideLargeContentViewerIfNeeded];
-    v17 = [(ASTCustomizeCell *)self _tableView];
-    [v17 setScrollEnabled:1];
+    _tableView = [(ASTCustomizeCell *)self _tableView];
+    [_tableView setScrollEnabled:1];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   downCell = self->_downCell;
   self->_downCell = 0;
@@ -727,41 +727,41 @@ LABEL_9:
   if ([(ASTCustomizeCell *)self _showsLargeContentViewer])
   {
     [(ASTCustomizeCell *)self _hideLargeContentViewerIfNeeded];
-    v6 = [(ASTCustomizeCell *)self _tableView];
-    [v6 setScrollEnabled:1];
+    _tableView = [(ASTCustomizeCell *)self _tableView];
+    [_tableView setScrollEnabled:1];
   }
 }
 
-- (void)_displayPickerForIcon:(id)a3 andLocation:(id)a4 cell:(id)a5
+- (void)_displayPickerForIcon:(id)icon andLocation:(id)location cell:(id)cell
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ASTCustomizeCell *)self delegate];
-  [v11 customCell:self wantsPickerDisplayedForIconKey:v10 andLocation:v9 cell:v8];
+  cellCopy = cell;
+  locationCopy = location;
+  iconCopy = icon;
+  delegate = [(ASTCustomizeCell *)self delegate];
+  [delegate customCell:self wantsPickerDisplayedForIconKey:iconCopy andLocation:locationCopy cell:cellCopy];
 }
 
-- (id)_updateButton:(id)a3 withIcon:(id)a4 layout:(int64_t)a5 shouldUpdateLayoutViewIfNeeded:(BOOL)a6
+- (id)_updateButton:(id)button withIcon:(id)icon layout:(int64_t)layout shouldUpdateLayoutViewIfNeeded:(BOOL)needed
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
-  v11 = [(NSMutableDictionary *)self->_buttonCells objectForKey:v9];
+  neededCopy = needed;
+  buttonCopy = button;
+  iconCopy = icon;
+  v11 = [(NSMutableDictionary *)self->_buttonCells objectForKey:buttonCopy];
   if (v11)
   {
     v12 = v11;
-    [(ASTButtonCell *)v11 setIconKey:v10];
+    [(ASTButtonCell *)v11 setIconKey:iconCopy];
     v13 = 0;
   }
 
   else
   {
-    v14 = [[ASTButtonCell alloc] initWithLocation:v9 iconKey:v10];
-    [(NSMutableDictionary *)self->_buttonCells setObject:v14 forKey:v9];
-    v15 = [(ASTCustomizeCell *)self contentView];
-    [v15 addSubview:v14];
+    v14 = [[ASTButtonCell alloc] initWithLocation:buttonCopy iconKey:iconCopy];
+    [(NSMutableDictionary *)self->_buttonCells setObject:v14 forKey:buttonCopy];
+    contentView = [(ASTCustomizeCell *)self contentView];
+    [contentView addSubview:v14];
 
-    if (v6)
+    if (neededCopy)
     {
       [(AXAssistiveTouchLayoutView *)self->_layoutView layoutItemsByLocation:self->_buttonCells hasBackButton:0];
     }
@@ -793,17 +793,17 @@ void __81__ASTCustomizeCell__updateButton_withIcon_layout_shouldUpdateLayoutView
 - (void)_removeInvalidIconsIfNeeded
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchMainScreenCustomization];
+  assistiveTouchMainScreenCustomization = [v2 assistiveTouchMainScreenCustomization];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [v3 allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  allKeys = [assistiveTouchMainScreenCustomization allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (!v5)
   {
-    v7 = v4;
+    v7 = allKeys;
     goto LABEL_16;
   }
 
@@ -812,26 +812,26 @@ void __81__ASTCustomizeCell__updateButton_withIcon_layout_shouldUpdateLayoutView
   v8 = *v22;
   v9 = AXAssistiveTouchIconTypeForceTap;
   v19 = AXAssistiveTouchIconTypeForceTap;
-  v20 = v4;
+  v20 = allKeys;
   do
   {
     for (i = 0; i != v6; i = i + 1)
     {
       if (*v22 != v8)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(allKeys);
       }
 
       v11 = *(*(&v21 + 1) + 8 * i);
-      v12 = [v3 objectForKey:v11];
+      v12 = [assistiveTouchMainScreenCustomization objectForKey:v11];
       if (!_AXSForceTouchEnabled() && [v12 isEqualToString:v9])
       {
         if (!v7)
         {
-          v7 = [v3 mutableCopy];
+          v7 = [assistiveTouchMainScreenCustomization mutableCopy];
         }
 
-        v13 = v3;
+        v13 = assistiveTouchMainScreenCustomization;
         v14 = +[NSUUID UUID];
         [v14 UUIDString];
         v16 = v15 = v7;
@@ -840,13 +840,13 @@ void __81__ASTCustomizeCell__updateButton_withIcon_layout_shouldUpdateLayoutView
         v7 = v15;
         [v15 setValue:v17 forKey:v11];
         v12 = v17;
-        v3 = v13;
+        assistiveTouchMainScreenCustomization = v13;
         v9 = v19;
-        v4 = v20;
+        allKeys = v20;
       }
     }
 
-    v6 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    v6 = [allKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
   }
 
   while (v6);
@@ -865,16 +865,16 @@ LABEL_16:
   v3 = +[NSMutableArray array];
   [(ASTCustomizeCell *)self _removeInvalidIconsIfNeeded];
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 assistiveTouchMainScreenCustomization];
+  assistiveTouchMainScreenCustomization = [v4 assistiveTouchMainScreenCustomization];
 
-  [v5 count];
+  [assistiveTouchMainScreenCustomization count];
   v6 = AXAssistiveTouchNamedLayout();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [v5 allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allKeys = [assistiveTouchMainScreenCustomization allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -885,11 +885,11 @@ LABEL_16:
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v5 objectForKey:v12];
+        v13 = [assistiveTouchMainScreenCustomization objectForKey:v12];
         v14 = [(ASTCustomizeCell *)self _updateButton:v12 withIcon:v13 layout:v6 shouldUpdateLayoutViewIfNeeded:0];
 
         if (v14)
@@ -898,7 +898,7 @@ LABEL_16:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
@@ -925,55 +925,55 @@ LABEL_16:
   return v3;
 }
 
-- (id)_itemForCell:(id)a3
+- (id)_itemForCell:(id)cell
 {
-  v3 = a3;
+  cellCopy = cell;
   v4 = [UIAccessibilityHUDItem alloc];
-  v5 = [v3 label];
-  v6 = [v5 text];
-  v7 = [v3 imageView];
+  label = [cellCopy label];
+  text = [label text];
+  imageView = [cellCopy imageView];
 
-  v8 = [v7 image];
-  v9 = [v4 initWithTitle:v6 image:v8 imageInsets:1 scaleImage:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
+  image = [imageView image];
+  v9 = [v4 initWithTitle:text image:image imageInsets:1 scaleImage:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
 
   return v9;
 }
 
-- (void)_updateLargeContentViewerForCell:(id)a3
+- (void)_updateLargeContentViewerForCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(ASTCustomizeCell *)self presentHUDViewTimer];
-  [v5 cancel];
+  cellCopy = cell;
+  presentHUDViewTimer = [(ASTCustomizeCell *)self presentHUDViewTimer];
+  [presentHUDViewTimer cancel];
 
-  if (v4)
+  if (cellCopy)
   {
-    v6 = [(ASTCustomizeCell *)self _itemForCell:v4];
+    v6 = [(ASTCustomizeCell *)self _itemForCell:cellCopy];
     if ([(ASTCustomizeCell *)self shouldDelayBeforePresentingHUDView])
     {
-      v7 = [(ASTCustomizeCell *)self presentHUDViewTimer];
+      presentHUDViewTimer2 = [(ASTCustomizeCell *)self presentHUDViewTimer];
 
-      if (!v7)
+      if (!presentHUDViewTimer2)
       {
         v8 = [[AXDispatchTimer alloc] initWithTargetSerialQueue:&_dispatch_main_q];
         [(ASTCustomizeCell *)self setPresentHUDViewTimer:v8];
       }
 
-      v9 = [(ASTCustomizeCell *)self presentHUDViewTimer];
+      presentHUDViewTimer3 = [(ASTCustomizeCell *)self presentHUDViewTimer];
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
       v11[2] = __53__ASTCustomizeCell__updateLargeContentViewerForCell___block_invoke;
       v11[3] = &unk_2561D8;
       v11[4] = self;
-      v12 = v4;
+      v12 = cellCopy;
       v13 = v6;
-      [v9 afterDelay:v11 processBlock:0.15];
+      [presentHUDViewTimer3 afterDelay:v11 processBlock:0.15];
     }
 
     else
     {
-      [(ASTCustomizeCell *)self setCellForPresentedHUDView:v4];
-      v10 = [(ASTCustomizeCell *)self delegate];
-      [v10 customCell:self wantsAccessibilityHUDShownForItem:v6];
+      [(ASTCustomizeCell *)self setCellForPresentedHUDView:cellCopy];
+      delegate = [(ASTCustomizeCell *)self delegate];
+      [delegate customCell:self wantsAccessibilityHUDShownForItem:v6];
     }
   }
 
@@ -996,12 +996,12 @@ void __53__ASTCustomizeCell__updateLargeContentViewerForCell___block_invoke(uint
 
 - (void)_hideLargeContentViewerIfNeeded
 {
-  v3 = [(ASTCustomizeCell *)self presentHUDViewTimer];
-  [v3 cancel];
+  presentHUDViewTimer = [(ASTCustomizeCell *)self presentHUDViewTimer];
+  [presentHUDViewTimer cancel];
 
   [(ASTCustomizeCell *)self setCellForPresentedHUDView:0];
-  v4 = [(ASTCustomizeCell *)self delegate];
-  [v4 wantsAccessibilityHUDDismissedForCustomCell:self];
+  delegate = [(ASTCustomizeCell *)self delegate];
+  [delegate wantsAccessibilityHUDDismissedForCustomCell:self];
 }
 
 - (ASTCustomizeCellDelegateProtocol)delegate

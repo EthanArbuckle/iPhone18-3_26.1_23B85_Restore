@@ -1,8 +1,8 @@
 @interface RPTCoordinateSpaceConverter
 + (RPTCoordinateSpaceConverter)identityConverter;
-+ (id)converterFromView:(id)a3;
-+ (id)converterFromWindow:(id)a3;
-+ (id)converterFromWindow:(id)a3 toScreen:(id)a4;
++ (id)converterFromView:(id)view;
++ (id)converterFromWindow:(id)window;
++ (id)converterFromWindow:(id)window toScreen:(id)screen;
 @end
 
 @implementation RPTCoordinateSpaceConverter
@@ -26,29 +26,29 @@ uint64_t __48__RPTCoordinateSpaceConverter_identityConverter__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)converterFromView:(id)a3
++ (id)converterFromView:(id)view
 {
-  v3 = a3;
-  v4 = [[RPTViewCoordinateSpaceConverter alloc] initFromView:v3];
+  viewCopy = view;
+  v4 = [[RPTViewCoordinateSpaceConverter alloc] initFromView:viewCopy];
 
   return v4;
 }
 
-+ (id)converterFromWindow:(id)a3
++ (id)converterFromWindow:(id)window
 {
-  v3 = a3;
+  windowCopy = window;
   v4 = [RPTWindowCoordinateSpaceConverter alloc];
-  v5 = [v3 screen];
-  v6 = [(RPTWindowCoordinateSpaceConverter *)v4 initFromWindow:v3 toScreen:v5];
+  screen = [windowCopy screen];
+  v6 = [(RPTWindowCoordinateSpaceConverter *)v4 initFromWindow:windowCopy toScreen:screen];
 
   return v6;
 }
 
-+ (id)converterFromWindow:(id)a3 toScreen:(id)a4
++ (id)converterFromWindow:(id)window toScreen:(id)screen
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[RPTWindowCoordinateSpaceConverter alloc] initFromWindow:v6 toScreen:v5];
+  screenCopy = screen;
+  windowCopy = window;
+  v7 = [[RPTWindowCoordinateSpaceConverter alloc] initFromWindow:windowCopy toScreen:screenCopy];
 
   return v7;
 }

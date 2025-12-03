@@ -1,15 +1,15 @@
 @interface CNiOSABDependentPropertiesUpdateContext
 + (id)os_log;
-- (BOOL)flushPendingImageChangesToPerson:(void *)a3 logger:(id)a4 error:(id *)a5;
-- (BOOL)logIfConditionFailed:(BOOL)a3 message:(id)a4 error:(__CFError *)a5;
-- (BOOL)setWatchChangesforThumbnailImageDataToPerson:(void *)a3 error:(id *)a4;
+- (BOOL)flushPendingImageChangesToPerson:(void *)person logger:(id)logger error:(id *)error;
+- (BOOL)logIfConditionFailed:(BOOL)failed message:(id)message error:(__CFError *)error;
+- (BOOL)setWatchChangesforThumbnailImageDataToPerson:(void *)person error:(id *)error;
 - (CGRect)pendingCropRect;
-- (void)generateBackgroundColorsForImageDataIfNeeded:(void *)a3;
+- (void)generateBackgroundColorsForImageDataIfNeeded:(void *)needed;
 - (void)resetAllData;
-- (void)setPendingCropRect:(CGRect)a3;
-- (void)setPendingImageData:(id)a3;
-- (void)setPendingSyncImageData:(id)a3;
-- (void)setPendingThumbnailImageData:(id)a3;
+- (void)setPendingCropRect:(CGRect)rect;
+- (void)setPendingImageData:(id)data;
+- (void)setPendingSyncImageData:(id)data;
+- (void)setPendingThumbnailImageData:(id)data;
 @end
 
 @implementation CNiOSABDependentPropertiesUpdateContext
@@ -35,11 +35,11 @@ uint64_t __49__CNiOSABDependentPropertiesUpdateContext_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (void)setPendingImageData:(id)a3
+- (void)setPendingImageData:(id)data
 {
-  if (self->_pendingImageData != a3)
+  if (self->_pendingImageData != data)
   {
-    v4 = [a3 copy];
+    v4 = [data copy];
     pendingImageData = self->_pendingImageData;
     self->_pendingImageData = v4;
   }
@@ -47,19 +47,19 @@ uint64_t __49__CNiOSABDependentPropertiesUpdateContext_os_log__block_invoke()
   [(CNiOSABDependentPropertiesUpdateContext *)self setHasPendingImageData:1];
 }
 
-- (void)setPendingCropRect:(CGRect)a3
+- (void)setPendingCropRect:(CGRect)rect
 {
-  self->_pendingCropRect = a3;
-  v4 = !CGRectEqualToRect(a3, *MEMORY[0x1E695F058]);
+  self->_pendingCropRect = rect;
+  v4 = !CGRectEqualToRect(rect, *MEMORY[0x1E695F058]);
 
   [(CNiOSABDependentPropertiesUpdateContext *)self setHasPendingCropRect:v4];
 }
 
-- (void)setPendingThumbnailImageData:(id)a3
+- (void)setPendingThumbnailImageData:(id)data
 {
-  if (self->_pendingThumbnailImageData != a3)
+  if (self->_pendingThumbnailImageData != data)
   {
-    v4 = [a3 copy];
+    v4 = [data copy];
     pendingThumbnailImageData = self->_pendingThumbnailImageData;
     self->_pendingThumbnailImageData = v4;
   }
@@ -67,11 +67,11 @@ uint64_t __49__CNiOSABDependentPropertiesUpdateContext_os_log__block_invoke()
   [(CNiOSABDependentPropertiesUpdateContext *)self setHasPendingThumbnailImageData:1];
 }
 
-- (void)setPendingSyncImageData:(id)a3
+- (void)setPendingSyncImageData:(id)data
 {
-  if (self->_pendingSyncImageData != a3)
+  if (self->_pendingSyncImageData != data)
   {
-    v4 = [a3 copy];
+    v4 = [data copy];
     pendingSyncImageData = self->_pendingSyncImageData;
     self->_pendingSyncImageData = v4;
   }
@@ -104,24 +104,24 @@ uint64_t __49__CNiOSABDependentPropertiesUpdateContext_os_log__block_invoke()
   [(CNiOSABDependentPropertiesUpdateContext *)self setUpdatingAvatarRecipeData:0];
 }
 
-- (BOOL)logIfConditionFailed:(BOOL)a3 message:(id)a4 error:(__CFError *)a5
+- (BOOL)logIfConditionFailed:(BOOL)failed message:(id)message error:(__CFError *)error
 {
-  v7 = a4;
-  if (!a3)
+  messageCopy = message;
+  if (!failed)
   {
-    v8 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
-      [CNiOSABDependentPropertiesUpdateContext logIfConditionFailed:v7 message:a5 error:v8];
+      [CNiOSABDependentPropertiesUpdateContext logIfConditionFailed:messageCopy message:error error:os_log];
     }
   }
 
   return 1;
 }
 
-- (BOOL)flushPendingImageChangesToPerson:(void *)a3 logger:(id)a4 error:(id *)a5
+- (BOOL)flushPendingImageChangesToPerson:(void *)person logger:(id)logger error:(id *)error
 {
-  v8 = a4;
+  loggerCopy = logger;
   if ([(CNiOSABDependentPropertiesUpdateContext *)self hasPendingImageData]|| [(CNiOSABDependentPropertiesUpdateContext *)self hasPendingThumbnailImageData])
   {
     v9 = 0;
@@ -139,23 +139,23 @@ uint64_t __49__CNiOSABDependentPropertiesUpdateContext_os_log__block_invoke()
 
   if ([(CNiOSABDependentPropertiesUpdateContext *)self hasPendingImageData]|| [(CNiOSABDependentPropertiesUpdateContext *)self hasPendingThumbnailImageData])
   {
-    [(CNiOSABDependentPropertiesUpdateContext *)self generateBackgroundColorsForImageDataIfNeeded:a3];
+    [(CNiOSABDependentPropertiesUpdateContext *)self generateBackgroundColorsForImageDataIfNeeded:person];
   }
 
-  v10 = [(CNiOSABDependentPropertiesUpdateContext *)self hasPendingImageData];
-  v11 = [(CNiOSABDependentPropertiesUpdateContext *)self hasPendingCropRect];
-  if (v10)
+  hasPendingImageData = [(CNiOSABDependentPropertiesUpdateContext *)self hasPendingImageData];
+  hasPendingCropRect = [(CNiOSABDependentPropertiesUpdateContext *)self hasPendingCropRect];
+  if (hasPendingImageData)
   {
-    if (v11)
+    if (hasPendingCropRect)
     {
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __89__CNiOSABDependentPropertiesUpdateContext_flushPendingImageChangesToPerson_logger_error___block_invoke_2;
       v29[3] = &unk_1E7416540;
       v29[4] = self;
-      v30 = v8;
-      v31 = a3;
-      v12 = CNBridgeBoolResultAndErrorFromBlock(a5, v29);
+      v30 = loggerCopy;
+      personCopy = person;
+      v12 = CNBridgeBoolResultAndErrorFromBlock(error, v29);
       v13 = v30;
     }
 
@@ -165,17 +165,17 @@ uint64_t __49__CNiOSABDependentPropertiesUpdateContext_os_log__block_invoke()
       v32[1] = 3221225472;
       v32[2] = __89__CNiOSABDependentPropertiesUpdateContext_flushPendingImageChangesToPerson_logger_error___block_invoke;
       v32[3] = &unk_1E7416540;
-      v33 = v8;
-      v34 = self;
-      v35 = a3;
-      v12 = CNBridgeBoolResultAndErrorFromBlock(a5, v32);
+      v33 = loggerCopy;
+      selfCopy = self;
+      personCopy2 = person;
+      v12 = CNBridgeBoolResultAndErrorFromBlock(error, v32);
       v13 = v33;
     }
 
     goto LABEL_23;
   }
 
-  if (v11)
+  if (hasPendingCropRect)
   {
     [(CNiOSABDependentPropertiesUpdateContext *)self pendingCropRect];
     if (CGRectEqualToRect(v36, *MEMORY[0x1E695F058]))
@@ -189,26 +189,26 @@ LABEL_16:
     v25[1] = 3221225472;
     v25[2] = __89__CNiOSABDependentPropertiesUpdateContext_flushPendingImageChangesToPerson_logger_error___block_invoke_3;
     v25[3] = &unk_1E7416540;
-    v28 = a3;
-    v26 = v8;
-    v27 = self;
-    v12 = CNBridgeBoolResultAndErrorFromBlock(a5, v25);
+    personCopy3 = person;
+    v26 = loggerCopy;
+    selfCopy2 = self;
+    v12 = CNBridgeBoolResultAndErrorFromBlock(error, v25);
     v13 = v26;
 LABEL_23:
 
     goto LABEL_24;
   }
 
-  v14 = [(CNiOSABDependentPropertiesUpdateContext *)self pendingFullscreenImageData];
+  pendingFullscreenImageData = [(CNiOSABDependentPropertiesUpdateContext *)self pendingFullscreenImageData];
 
-  if (!v14)
+  if (!pendingFullscreenImageData)
   {
     if ([(CNiOSABDependentPropertiesUpdateContext *)self hasPendingThumbnailImageData])
     {
-      v17 = [(CNiOSABDependentPropertiesUpdateContext *)self pendingThumbnailImageData];
-      [v8 setContactImageDataZeroCropRect:v17 format:"watch changes"];
+      pendingThumbnailImageData = [(CNiOSABDependentPropertiesUpdateContext *)self pendingThumbnailImageData];
+      [loggerCopy setContactImageDataZeroCropRect:pendingThumbnailImageData format:"watch changes"];
 
-      v12 = [(CNiOSABDependentPropertiesUpdateContext *)self setWatchChangesforThumbnailImageDataToPerson:a3 error:a5];
+      v12 = [(CNiOSABDependentPropertiesUpdateContext *)self setWatchChangesforThumbnailImageDataToPerson:person error:error];
       goto LABEL_24;
     }
 
@@ -221,10 +221,10 @@ LABEL_23:
     v19 = 3221225472;
     v20 = __89__CNiOSABDependentPropertiesUpdateContext_flushPendingImageChangesToPerson_logger_error___block_invoke_29;
     v21 = &unk_1E7416540;
-    v22 = v8;
-    v23 = self;
-    v24 = a3;
-    v12 = CNBridgeBoolResultAndErrorFromBlock(a5, &v18);
+    v22 = loggerCopy;
+    selfCopy3 = self;
+    personCopy4 = person;
+    v12 = CNBridgeBoolResultAndErrorFromBlock(error, &v18);
     v13 = v22;
     goto LABEL_23;
   }
@@ -235,7 +235,7 @@ LABEL_23:
     [CNiOSABDependentPropertiesUpdateContext flushPendingImageChangesToPerson:v15 logger:? error:?];
   }
 
-  CNSetError(a5, 1015, 0);
+  CNSetError(error, 1015, 0);
   [(CNiOSABDependentPropertiesUpdateContext *)self logIfConditionFailed:0 message:@"not permitted to set fullscreen image data" error:0];
   v12 = 0;
 LABEL_24:
@@ -359,7 +359,7 @@ uint64_t __89__CNiOSABDependentPropertiesUpdateContext_flushPendingImageChangesT
   return v5;
 }
 
-- (BOOL)setWatchChangesforThumbnailImageDataToPerson:(void *)a3 error:(id *)a4
+- (BOOL)setWatchChangesforThumbnailImageDataToPerson:(void *)person error:(id *)error
 {
   if (!+[CNiOSABDependentPropertiesUpdateContext shouldSetWatchChanges])
   {
@@ -371,8 +371,8 @@ uint64_t __89__CNiOSABDependentPropertiesUpdateContext_flushPendingImageChangesT
   v8[2] = __94__CNiOSABDependentPropertiesUpdateContext_setWatchChangesforThumbnailImageDataToPerson_error___block_invoke;
   v8[3] = &unk_1E7416568;
   v8[4] = self;
-  v8[5] = a3;
-  return CNBridgeBoolResultAndErrorFromBlock(a4, v8);
+  v8[5] = person;
+  return CNBridgeBoolResultAndErrorFromBlock(error, v8);
 }
 
 uint64_t __94__CNiOSABDependentPropertiesUpdateContext_setWatchChangesforThumbnailImageDataToPerson_error___block_invoke(uint64_t a1, CFErrorRef *a2)
@@ -399,13 +399,13 @@ uint64_t __94__CNiOSABDependentPropertiesUpdateContext_setWatchChangesforThumbna
   return v6;
 }
 
-- (void)generateBackgroundColorsForImageDataIfNeeded:(void *)a3
+- (void)generateBackgroundColorsForImageDataIfNeeded:(void *)needed
 {
-  v5 = [(CNiOSABDependentPropertiesUpdateContext *)self pendingImageData];
-  if (v5 || ([(CNiOSABDependentPropertiesUpdateContext *)self pendingThumbnailImageData], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  pendingImageData = [(CNiOSABDependentPropertiesUpdateContext *)self pendingImageData];
+  if (pendingImageData || ([(CNiOSABDependentPropertiesUpdateContext *)self pendingThumbnailImageData], (pendingImageData = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v10 = v5;
-    v6 = [MEMORY[0x1E695F658] imageWithData:v5];
+    v10 = pendingImageData;
+    v6 = [MEMORY[0x1E695F658] imageWithData:pendingImageData];
     if (v6)
     {
       v7 = objc_alloc_init(CNCoreImageDerivedColorGenerator);
@@ -413,7 +413,7 @@ uint64_t __94__CNiOSABDependentPropertiesUpdateContext_setWatchChangesforThumbna
       if ([v8 count])
       {
         v9 = [CNCoreImageDerivedColorGenerator encodedDataFromColors:v8];
-        ABRecordSetValue(a3, *MEMORY[0x1E698A3A0], v9, 0);
+        ABRecordSetValue(needed, *MEMORY[0x1E698A3A0], v9, 0);
       }
     }
   }

@@ -5,7 +5,7 @@
 - (id)attributeDescriptions;
 - (id)logIdentifier;
 - (unint64_t)currentUserPrivilege;
-- (void)setCurrentUserPrivilege:(unint64_t)a3;
+- (void)setCurrentUserPrivilege:(unint64_t)privilege;
 @end
 
 @implementation HMMTRAccessControl
@@ -19,17 +19,17 @@
 
 - (id)attributeDescriptions
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(HMMTRAccessControl *)self fabric];
-  v5 = [v4 fabricID];
+  array = [MEMORY[0x277CBEB18] array];
+  fabric = [(HMMTRAccessControl *)self fabric];
+  fabricID = [fabric fabricID];
 
-  if (v5)
+  if (fabricID)
   {
     v6 = objc_alloc(MEMORY[0x277D0F778]);
-    v7 = [(HMMTRAccessControl *)self fabric];
-    v8 = [v7 fabricID];
-    v9 = [v6 initWithName:@"Fabric ID" value:v8];
-    [v3 addObject:v9];
+    fabric2 = [(HMMTRAccessControl *)self fabric];
+    fabricID2 = [fabric2 fabricID];
+    v9 = [v6 initWithName:@"Fabric ID" value:fabricID2];
+    [array addObject:v9];
   }
 
   v10 = objc_alloc(MEMORY[0x277D0F778]);
@@ -45,9 +45,9 @@
   }
 
   v13 = [v10 initWithName:@"Current User Privilege" value:v12];
-  [v3 addObject:v13];
+  [array addObject:v13];
 
-  v14 = [v3 copy];
+  v14 = [array copy];
 
   return v14;
 }
@@ -55,9 +55,9 @@
 - (id)logIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMMTRAccessControl *)self fabric];
-  v4 = [v3 fabricID];
-  v5 = [v2 stringWithFormat:@"%@", v4];
+  fabric = [(HMMTRAccessControl *)self fabric];
+  fabricID = [fabric fabricID];
+  v5 = [v2 stringWithFormat:@"%@", fabricID];
 
   return v5;
 }
@@ -70,18 +70,18 @@
   os_unfair_lock_unlock(&self->_lock);
   if (!currentUserPrivilege)
   {
-    v4 = [(HMMTRAccessControl *)self privilegeGetter];
-    v5 = v4;
-    if (v4)
+    privilegeGetter = [(HMMTRAccessControl *)self privilegeGetter];
+    v5 = privilegeGetter;
+    if (privilegeGetter)
     {
-      currentUserPrivilege = (*(v4 + 16))(v4);
+      currentUserPrivilege = (*(privilegeGetter + 16))(privilegeGetter);
       os_unfair_lock_lock(&self->_lock);
       self->_currentUserPrivilege = currentUserPrivilege;
       os_unfair_lock_unlock(&self->_lock);
       if (currentUserPrivilege)
       {
         v6 = objc_autoreleasePoolPush();
-        v7 = self;
+        selfCopy = self;
         v8 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
         {
@@ -118,15 +118,15 @@
   return currentUserPrivilege;
 }
 
-- (void)setCurrentUserPrivilege:(unint64_t)a3
+- (void)setCurrentUserPrivilege:(unint64_t)privilege
 {
   v20 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
   currentUserPrivilege = self->_currentUserPrivilege;
-  self->_currentUserPrivilege = a3;
+  self->_currentUserPrivilege = privilege;
   os_unfair_lock_unlock(&self->_lock);
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -142,14 +142,14 @@
       v11 = off_2786EE340[currentUserPrivilege - 1];
     }
 
-    if (a3 - 1 > 2)
+    if (privilege - 1 > 2)
     {
       v12 = @"None";
     }
 
     else
     {
-      v12 = off_2786EE340[a3 - 1];
+      v12 = off_2786EE340[privilege - 1];
     }
 
     v14 = 138543874;

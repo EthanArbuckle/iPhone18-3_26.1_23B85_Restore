@@ -1,20 +1,20 @@
 @interface AVTSynchronousTransitionScheduler
-- (AVTSynchronousTransitionScheduler)initWithEventHandler:(id)a3;
+- (AVTSynchronousTransitionScheduler)initWithEventHandler:(id)handler;
 - (void)didCompleteEvent;
 - (void)scheduleEvent;
 @end
 
 @implementation AVTSynchronousTransitionScheduler
 
-- (AVTSynchronousTransitionScheduler)initWithEventHandler:(id)a3
+- (AVTSynchronousTransitionScheduler)initWithEventHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = AVTSynchronousTransitionScheduler;
   v5 = [(AVTSynchronousTransitionScheduler *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [handlerCopy copy];
     eventHandler = v5->_eventHandler;
     v5->_eventHandler = v6;
   }
@@ -27,8 +27,8 @@
   if (![(AVTSynchronousTransitionScheduler *)self isRunningEvent])
   {
     [(AVTSynchronousTransitionScheduler *)self setIsRunningEvent:1];
-    v3 = [(AVTSynchronousTransitionScheduler *)self eventHandler];
-    v3[2]();
+    eventHandler = [(AVTSynchronousTransitionScheduler *)self eventHandler];
+    eventHandler[2]();
   }
 }
 
@@ -36,8 +36,8 @@
 {
   if ([(AVTSynchronousTransitionScheduler *)self isRunningEvent])
   {
-    v3 = [(AVTSynchronousTransitionScheduler *)self eventHandler];
-    v3[2]();
+    eventHandler = [(AVTSynchronousTransitionScheduler *)self eventHandler];
+    eventHandler[2]();
   }
 }
 

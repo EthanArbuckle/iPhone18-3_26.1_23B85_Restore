@@ -1,6 +1,6 @@
 @interface PLDisplayState
 + (void)load;
-- (BOOL)updateWithEntry:(id)a3;
+- (BOOL)updateWithEntry:(id)entry;
 - (PLDisplayState)init;
 @end
 
@@ -8,7 +8,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLDisplayState;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -25,21 +25,21 @@
   return v3;
 }
 
-- (BOOL)updateWithEntry:(id)a3
+- (BOOL)updateWithEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"Block"];
+  entryCopy = entry;
+  v5 = [entryCopy objectForKeyedSubscript:@"Block"];
   v6 = +[PLDisplayState getDisplayBlock];
   v7 = [v5 isEqualToString:v6];
 
   if (v7)
   {
-    v8 = [v4 objectForKeyedSubscript:@"Active"];
+    v8 = [entryCopy objectForKeyedSubscript:@"Active"];
     v9 = [(PLState *)self updateWithValue:v8];
     if (v9)
     {
-      v10 = [v4 entryDate];
-      [(PLState *)self setStateChangeTime:v10];
+      entryDate = [entryCopy entryDate];
+      [(PLState *)self setStateChangeTime:entryDate];
     }
   }
 

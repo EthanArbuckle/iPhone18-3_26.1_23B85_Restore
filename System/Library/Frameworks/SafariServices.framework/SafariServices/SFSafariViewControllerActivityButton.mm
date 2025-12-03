@@ -1,34 +1,34 @@
 @interface SFSafariViewControllerActivityButton
 - (BOOL)_fieldsAreValid;
-- (SFSafariViewControllerActivityButton)initWithCoder:(id)a3;
+- (SFSafariViewControllerActivityButton)initWithCoder:(id)coder;
 - (SFSafariViewControllerActivityButton)initWithTemplateImage:(UIImage *)templateImage extensionIdentifier:(NSString *)extensionIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_fieldsAreValid;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFSafariViewControllerActivityButton
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = [(UIImage *)self->_templateImage copy];
   v6 = [(NSString *)self->_extensionIdentifier copy];
   v7 = [v4 initWithTemplateImage:v5 extensionIdentifier:v6];
 
-  v8 = [(SFSafariViewControllerActivityButton *)self accessibilityLabel];
-  v9 = [v8 copy];
+  accessibilityLabel = [(SFSafariViewControllerActivityButton *)self accessibilityLabel];
+  v9 = [accessibilityLabel copy];
   [v7 setAccessibilityLabel:v9];
 
   return v7;
 }
 
-- (SFSafariViewControllerActivityButton)initWithCoder:(id)a3
+- (SFSafariViewControllerActivityButton)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"templateImage"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityLabel"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensionIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"templateImage"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityLabel"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionIdentifier"];
 
   v8 = [(SFSafariViewControllerActivityButton *)self initWithTemplateImage:v5 extensionIdentifier:v7];
   [(SFSafariViewControllerActivityButton *)v8 setAccessibilityLabel:v6];
@@ -36,15 +36,15 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   templateImage = self->_templateImage;
-  v6 = a3;
-  [v6 encodeObject:templateImage forKey:@"templateImage"];
-  v5 = [(SFSafariViewControllerActivityButton *)self accessibilityLabel];
-  [v6 encodeObject:v5 forKey:@"accessibilityLabel"];
+  coderCopy = coder;
+  [coderCopy encodeObject:templateImage forKey:@"templateImage"];
+  accessibilityLabel = [(SFSafariViewControllerActivityButton *)self accessibilityLabel];
+  [coderCopy encodeObject:accessibilityLabel forKey:@"accessibilityLabel"];
 
-  [v6 encodeObject:self->_extensionIdentifier forKey:@"extensionIdentifier"];
+  [coderCopy encodeObject:self->_extensionIdentifier forKey:@"extensionIdentifier"];
 }
 
 - (SFSafariViewControllerActivityButton)initWithTemplateImage:(UIImage *)templateImage extensionIdentifier:(NSString *)extensionIdentifier
@@ -124,13 +124,13 @@ LABEL_12:
 - (void)_fieldsAreValid
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = a1;
+  selfCopy = self;
   v10.width = a2;
   v10.height = a3;
   v6 = NSStringFromCGSize(v10);
   v7 = 138543362;
   v8 = v6;
-  _os_log_error_impl(&dword_1D4644000, v5, OS_LOG_TYPE_ERROR, "Not showing activity button because templateImage has an invalid size: %{public}@", &v7, 0xCu);
+  _os_log_error_impl(&dword_1D4644000, selfCopy, OS_LOG_TYPE_ERROR, "Not showing activity button because templateImage has an invalid size: %{public}@", &v7, 0xCu);
 }
 
 @end

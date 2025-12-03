@@ -2,16 +2,16 @@
 + (HMDXPCMessageCountTracker)sharedTracker;
 + (id)logCategory;
 - (HMDXPCMessageCountTracker)init;
-- (HMDXPCMessageCountTracker)initWithLogEventSubmitter:(id)a3 submissionTimer:(id)a4;
+- (HMDXPCMessageCountTracker)initWithLogEventSubmitter:(id)submitter submissionTimer:(id)timer;
 - (NSDictionary)stateDump;
-- (id)countersOfType:(int64_t)a3;
-- (id)mutableCountersOfType:(int64_t)a3;
-- (id)sampleCountersAndReset:(BOOL)a3;
+- (id)countersOfType:(int64_t)type;
+- (id)mutableCountersOfType:(int64_t)type;
+- (id)sampleCountersAndReset:(BOOL)reset;
 - (void)_resetCounters;
 - (void)configure;
-- (void)incrementCounterOfType:(int64_t)a3 clientIdentifier:(id)a4 messageName:(id)a5;
+- (void)incrementCounterOfType:(int64_t)type clientIdentifier:(id)identifier messageName:(id)name;
 - (void)submitCounters;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDXPCMessageCountTracker
@@ -32,7 +32,7 @@
 {
   v45 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -43,7 +43,7 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  [(HMDXPCMessageCountTracker *)v4 sampleCountersAndReset:1];
+  [(HMDXPCMessageCountTracker *)selfCopy sampleCountersAndReset:1];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -77,8 +77,8 @@
           v35 = 0u;
           v36 = 0u;
           v31 = v12;
-          v30 = [v12 allKeys];
-          v13 = [v30 countByEnumeratingWithState:&v33 objects:v41 count:16];
+          allKeys = [v12 allKeys];
+          v13 = [allKeys countByEnumeratingWithState:&v33 objects:v41 count:16];
           if (v13)
           {
             v14 = v13;
@@ -89,20 +89,20 @@
               {
                 if (*v34 != v15)
                 {
-                  objc_enumerationMutation(v30);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v17 = *(*(&v33 + 1) + 8 * i);
                 v18 = [v31 hmf_numberForKey:v17];
                 v19 = [v17 componentsSeparatedByString:@"/"];
-                v20 = [v19 firstObject];
-                v21 = [v19 lastObject];
-                v22 = [HMDXPCMessageCountersLogEvent XPCMessageCountersLogEventWithType:v32 peerInformation:v20 messageName:v21 count:v18];
-                v23 = [(HMDXPCMessageCountTracker *)v4 logEventSubmitter];
-                [v23 submitLogEvent:v22];
+                firstObject = [v19 firstObject];
+                lastObject = [v19 lastObject];
+                v22 = [HMDXPCMessageCountersLogEvent XPCMessageCountersLogEventWithType:v32 peerInformation:firstObject messageName:lastObject count:v18];
+                logEventSubmitter = [(HMDXPCMessageCountTracker *)selfCopy logEventSubmitter];
+                [logEventSubmitter submitLogEvent:v22];
               }
 
-              v14 = [v30 countByEnumeratingWithState:&v33 objects:v41 count:16];
+              v14 = [allKeys countByEnumeratingWithState:&v33 objects:v41 count:16];
             }
 
             while (v14);
@@ -141,25 +141,25 @@
 - (void)_resetCounters
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  v3 = [(HMDXPCMessageCountTracker *)self acceptedRequests];
-  [v3 removeAllObjects];
+  acceptedRequests = [(HMDXPCMessageCountTracker *)self acceptedRequests];
+  [acceptedRequests removeAllObjects];
 
-  v4 = [(HMDXPCMessageCountTracker *)self erroredRequests];
-  [v4 removeAllObjects];
+  erroredRequests = [(HMDXPCMessageCountTracker *)self erroredRequests];
+  [erroredRequests removeAllObjects];
 
-  v5 = [(HMDXPCMessageCountTracker *)self sentNotifications];
-  [v5 removeAllObjects];
+  sentNotifications = [(HMDXPCMessageCountTracker *)self sentNotifications];
+  [sentNotifications removeAllObjects];
 
-  v6 = [MEMORY[0x277CBEAA8] date];
-  [(HMDXPCMessageCountTracker *)self setLastResetDate:v6];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(HMDXPCMessageCountTracker *)self setLastResetDate:date];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = [(HMDXPCMessageCountTracker *)self submissionTimer];
+  fireCopy = fire;
+  submissionTimer = [(HMDXPCMessageCountTracker *)self submissionTimer];
 
-  if (v5 == v4)
+  if (submissionTimer == fireCopy)
   {
 
     [(HMDXPCMessageCountTracker *)self submitCounters];
@@ -175,8 +175,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [v2 allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allKeys = [v2 allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -187,7 +187,7 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
@@ -196,7 +196,7 @@
         [v3 setObject:v10 forKeyedSubscript:v11];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -208,26 +208,26 @@
   return v12;
 }
 
-- (id)sampleCountersAndReset:(BOOL)a3
+- (id)sampleCountersAndReset:(BOOL)reset
 {
-  v3 = a3;
+  resetCopy = reset;
   v15[3] = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock_with_options();
   v14[0] = &unk_283E72A58;
-  v5 = [(HMDXPCMessageCountTracker *)self acceptedRequests];
-  v6 = [v5 copy];
+  acceptedRequests = [(HMDXPCMessageCountTracker *)self acceptedRequests];
+  v6 = [acceptedRequests copy];
   v15[0] = v6;
   v14[1] = &unk_283E72A70;
-  v7 = [(HMDXPCMessageCountTracker *)self erroredRequests];
-  v8 = [v7 copy];
+  erroredRequests = [(HMDXPCMessageCountTracker *)self erroredRequests];
+  v8 = [erroredRequests copy];
   v15[1] = v8;
   v14[2] = &unk_283E72A88;
-  v9 = [(HMDXPCMessageCountTracker *)self sentNotifications];
-  v10 = [v9 copy];
+  sentNotifications = [(HMDXPCMessageCountTracker *)self sentNotifications];
+  v10 = [sentNotifications copy];
   v15[2] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:3];
 
-  if (v3)
+  if (resetCopy)
   {
     [(HMDXPCMessageCountTracker *)self _resetCounters];
   }
@@ -238,28 +238,28 @@
   return v11;
 }
 
-- (void)incrementCounterOfType:(int64_t)a3 clientIdentifier:(id)a4 messageName:(id)a5
+- (void)incrementCounterOfType:(int64_t)type clientIdentifier:(id)identifier messageName:(id)name
 {
-  v15 = a4;
-  v8 = a5;
-  v9 = [v15 stringByAppendingFormat:@"/%@", v8];
-  v10 = [v9 hmf_stringWithSmallestEncoding];
+  identifierCopy = identifier;
+  nameCopy = name;
+  nameCopy = [identifierCopy stringByAppendingFormat:@"/%@", nameCopy];
+  hmf_stringWithSmallestEncoding = [nameCopy hmf_stringWithSmallestEncoding];
 
   os_unfair_lock_lock_with_options();
-  v11 = [(HMDXPCMessageCountTracker *)self mutableCountersOfType:a3];
-  v12 = [v11 hmf_numberForKey:v10];
-  v13 = [v12 unsignedLongValue];
+  v11 = [(HMDXPCMessageCountTracker *)self mutableCountersOfType:type];
+  v12 = [v11 hmf_numberForKey:hmf_stringWithSmallestEncoding];
+  unsignedLongValue = [v12 unsignedLongValue];
 
-  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v13 + 1];
-  [v11 setValue:v14 forKey:v10];
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:unsignedLongValue + 1];
+  [v11 setValue:v14 forKey:hmf_stringWithSmallestEncoding];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)countersOfType:(int64_t)a3
+- (id)countersOfType:(int64_t)type
 {
   os_unfair_lock_lock_with_options();
-  v5 = [(HMDXPCMessageCountTracker *)self mutableCountersOfType:a3];
+  v5 = [(HMDXPCMessageCountTracker *)self mutableCountersOfType:type];
   v6 = [v5 copy];
 
   os_unfair_lock_unlock(&self->_lock);
@@ -267,70 +267,70 @@
   return v6;
 }
 
-- (id)mutableCountersOfType:(int64_t)a3
+- (id)mutableCountersOfType:(int64_t)type
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  if (a3 == 2)
+  if (type == 2)
   {
-    v5 = [(HMDXPCMessageCountTracker *)self sentNotifications];
+    sentNotifications = [(HMDXPCMessageCountTracker *)self sentNotifications];
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
-    v5 = [(HMDXPCMessageCountTracker *)self erroredRequests];
+    sentNotifications = [(HMDXPCMessageCountTracker *)self erroredRequests];
   }
 
   else
   {
-    if (a3)
+    if (type)
     {
       v7 = _HMFPreconditionFailureWithFormat();
       [(HMDXPCMessageCountTracker *)v7 configure];
       return result;
     }
 
-    v5 = [(HMDXPCMessageCountTracker *)self acceptedRequests];
+    sentNotifications = [(HMDXPCMessageCountTracker *)self acceptedRequests];
   }
 
-  return v5;
+  return sentNotifications;
 }
 
 - (void)configure
 {
-  v3 = [(HMDXPCMessageCountTracker *)self submissionTimer];
-  [v3 setDelegate:self];
+  submissionTimer = [(HMDXPCMessageCountTracker *)self submissionTimer];
+  [submissionTimer setDelegate:self];
 
-  v4 = [(HMDXPCMessageCountTracker *)self submissionTimer];
-  [v4 resume];
+  submissionTimer2 = [(HMDXPCMessageCountTracker *)self submissionTimer];
+  [submissionTimer2 resume];
 }
 
-- (HMDXPCMessageCountTracker)initWithLogEventSubmitter:(id)a3 submissionTimer:(id)a4
+- (HMDXPCMessageCountTracker)initWithLogEventSubmitter:(id)submitter submissionTimer:(id)timer
 {
-  v7 = a3;
-  v8 = a4;
+  submitterCopy = submitter;
+  timerCopy = timer;
   v20.receiver = self;
   v20.super_class = HMDXPCMessageCountTracker;
   v9 = [(HMDXPCMessageCountTracker *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_logEventSubmitter, a3);
-    objc_storeStrong(&v10->_submissionTimer, a4);
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v9->_logEventSubmitter, submitter);
+    objc_storeStrong(&v10->_submissionTimer, timer);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     acceptedRequests = v10->_acceptedRequests;
-    v10->_acceptedRequests = v11;
+    v10->_acceptedRequests = dictionary;
 
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     erroredRequests = v10->_erroredRequests;
-    v10->_erroredRequests = v13;
+    v10->_erroredRequests = dictionary2;
 
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     sentNotifications = v10->_sentNotifications;
-    v10->_sentNotifications = v15;
+    v10->_sentNotifications = dictionary3;
 
-    v17 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     lastResetDate = v10->_lastResetDate;
-    v10->_lastResetDate = v17;
+    v10->_lastResetDate = date;
   }
 
   return v10;
@@ -338,12 +338,12 @@
 
 - (HMDXPCMessageCountTracker)init
 {
-  v3 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v4 = [v3 preferenceForKey:@"xpcMessageCountTrackerSubmissionTimeInterval"];
-  v5 = [v4 numberValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v4 = [mEMORY[0x277D0F8D0] preferenceForKey:@"xpcMessageCountTrackerSubmissionTimeInterval"];
+  numberValue = [v4 numberValue];
 
   v6 = objc_alloc(MEMORY[0x277D0F920]);
-  [v5 doubleValue];
+  [numberValue doubleValue];
   v7 = [v6 initWithTimeInterval:12 options:?];
   v8 = +[HMDMetricsManager sharedLogEventSubmitter];
   v9 = [(HMDXPCMessageCountTracker *)self initWithLogEventSubmitter:v8 submissionTimer:v7];

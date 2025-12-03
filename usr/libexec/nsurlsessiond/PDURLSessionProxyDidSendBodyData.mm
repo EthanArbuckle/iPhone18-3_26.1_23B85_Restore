@@ -1,24 +1,24 @@
 @interface PDURLSessionProxyDidSendBodyData
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTotalBytesExpectedToSend:(BOOL)a3;
-- (void)setHasTotalBytesSent:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasTotalBytesExpectedToSend:(BOOL)send;
+- (void)setHasTotalBytesSent:(BOOL)sent;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDURLSessionProxyDidSendBodyData
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   task = self->_task;
-  v6 = v4[4];
+  v6 = fromCopy[4];
   if (task)
   {
     if (!v6)
@@ -26,7 +26,7 @@
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     [(PDURLSessionProxyTaskMessage *)task mergeFrom:?];
   }
 
@@ -37,18 +37,18 @@
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     [(PDURLSessionProxyDidSendBodyData *)self setTask:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  v7 = *(v4 + 40);
+  v7 = *(fromCopy + 40);
   if (v7)
   {
-    self->_bytesSent = v4[1];
+    self->_bytesSent = fromCopy[1];
     *&self->_has |= 1u;
-    v7 = *(v4 + 40);
+    v7 = *(fromCopy + 40);
     if ((v7 & 4) == 0)
     {
 LABEL_9:
@@ -61,17 +61,17 @@ LABEL_9:
     }
   }
 
-  else if ((v4[5] & 4) == 0)
+  else if ((fromCopy[5] & 4) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_totalBytesSent = v4[3];
+  self->_totalBytesSent = fromCopy[3];
   *&self->_has |= 4u;
-  if ((v4[5] & 2) != 0)
+  if ((fromCopy[5] & 2) != 0)
   {
 LABEL_10:
-    self->_totalBytesExpectedToSend = v4[2];
+    self->_totalBytesExpectedToSend = fromCopy[2];
     *&self->_has |= 2u;
   }
 
@@ -119,16 +119,16 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   task = self->_task;
-  if (task | *(v4 + 4))
+  if (task | *(equalCopy + 4))
   {
     if (![(PDURLSessionProxyTaskMessage *)task isEqual:?])
     {
@@ -138,13 +138,13 @@ LABEL_4:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_bytesSent != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_bytesSent != *(equalCopy + 1))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_18:
     v6 = 0;
@@ -153,21 +153,21 @@ LABEL_18:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_totalBytesSent != *(v4 + 3))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_totalBytesSent != *(equalCopy + 3))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
     goto LABEL_18;
   }
 
-  v6 = (*(v4 + 40) & 2) == 0;
+  v6 = (*(equalCopy + 40) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_totalBytesExpectedToSend != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_totalBytesExpectedToSend != *(equalCopy + 2))
     {
       goto LABEL_18;
     }
@@ -180,10 +180,10 @@ LABEL_19:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PDURLSessionProxyTaskMessage *)self->_task copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PDURLSessionProxyTaskMessage *)self->_task copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
@@ -225,21 +225,21 @@ LABEL_4:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_task)
   {
-    v6 = v4;
-    [v4 setTask:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setTask:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = self->_bytesSent;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = self->_bytesSent;
+    *(toCopy + 40) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -258,26 +258,26 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 3) = self->_totalBytesSent;
-  *(v4 + 40) |= 4u;
+  *(toCopy + 3) = self->_totalBytesSent;
+  *(toCopy + 40) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
-    *(v4 + 2) = self->_totalBytesExpectedToSend;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 2) = self->_totalBytesExpectedToSend;
+    *(toCopy + 40) |= 2u;
   }
 
 LABEL_7:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_task)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -285,7 +285,7 @@ LABEL_7:
   {
     bytesSent = self->_bytesSent;
     PBDataWriterWriteUint64Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -306,28 +306,28 @@ LABEL_5:
 
   totalBytesSent = self->_totalBytesSent;
   PBDataWriterWriteUint64Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
     totalBytesExpectedToSend = self->_totalBytesExpectedToSend;
     PBDataWriterWriteUint64Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_7:
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     while (1)
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -336,18 +336,18 @@ LABEL_7:
       while (1)
       {
         LOBYTE(v38[0]) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:v38 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:v38 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v38[0] & 0x7F) << v6;
@@ -365,11 +365,11 @@ LABEL_7:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -389,18 +389,18 @@ LABEL_15:
           while (1)
           {
             LOBYTE(v38[0]) = 0;
-            v18 = [a3 position] + 1;
-            if (v18 >= [a3 position] && (v19 = objc_msgSend(a3, "position") + 1, v19 <= objc_msgSend(a3, "length")))
+            v18 = [from position] + 1;
+            if (v18 >= [from position] && (v19 = objc_msgSend(from, "position") + 1, v19 <= objc_msgSend(from, "length")))
             {
-              v20 = [a3 data];
-              [v20 getBytes:v38 range:{objc_msgSend(a3, "position"), 1}];
+              data2 = [from data];
+              [data2 getBytes:v38 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v17 |= (v38[0] & 0x7F) << v15;
@@ -418,7 +418,7 @@ LABEL_15:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v21 = 0;
           }
@@ -448,7 +448,7 @@ LABEL_40:
       objc_storeStrong(&self->_task, v28);
       v38[0] = 0;
       v38[1] = 0;
-      if (!PBReaderPlaceMark() || !sub_10006CE20(v28, a3))
+      if (!PBReaderPlaceMark() || !sub_10006CE20(v28, from))
       {
 
         return 0;
@@ -457,10 +457,10 @@ LABEL_40:
       PBReaderRecallMark();
 
 LABEL_67:
-      v36 = [a3 position];
-      if (v36 >= [a3 length])
+      position2 = [from position];
+      if (position2 >= [from length])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
     }
 
@@ -473,18 +473,18 @@ LABEL_67:
       while (1)
       {
         LOBYTE(v38[0]) = 0;
-        v32 = [a3 position] + 1;
-        if (v32 >= [a3 position] && (v33 = objc_msgSend(a3, "position") + 1, v33 <= objc_msgSend(a3, "length")))
+        v32 = [from position] + 1;
+        if (v32 >= [from position] && (v33 = objc_msgSend(from, "position") + 1, v33 <= objc_msgSend(from, "length")))
         {
-          v34 = [a3 data];
-          [v34 getBytes:v38 range:{objc_msgSend(a3, "position"), 1}];
+          data3 = [from data];
+          [data3 getBytes:v38 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v31 |= (v38[0] & 0x7F) << v29;
@@ -502,7 +502,7 @@ LABEL_67:
         }
       }
 
-      if ([a3 hasError])
+      if ([from hasError])
       {
         v21 = 0;
       }
@@ -526,18 +526,18 @@ LABEL_65:
       while (1)
       {
         LOBYTE(v38[0]) = 0;
-        v25 = [a3 position] + 1;
-        if (v25 >= [a3 position] && (v26 = objc_msgSend(a3, "position") + 1, v26 <= objc_msgSend(a3, "length")))
+        v25 = [from position] + 1;
+        if (v25 >= [from position] && (v26 = objc_msgSend(from, "position") + 1, v26 <= objc_msgSend(from, "length")))
         {
-          v27 = [a3 data];
-          [v27 getBytes:v38 range:{objc_msgSend(a3, "position"), 1}];
+          data4 = [from data];
+          [data4 getBytes:v38 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v24 |= (v38[0] & 0x7F) << v22;
@@ -555,7 +555,7 @@ LABEL_65:
         }
       }
 
-      if ([a3 hasError])
+      if ([from hasError])
       {
         v21 = 0;
       }
@@ -573,7 +573,7 @@ LABEL_61:
     goto LABEL_40;
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
@@ -582,8 +582,8 @@ LABEL_61:
   task = self->_task;
   if (task)
   {
-    v5 = [(PDURLSessionProxyTaskMessage *)task dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"task"];
+    dictionaryRepresentation = [(PDURLSessionProxyTaskMessage *)task dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"task"];
   }
 
   has = self->_has;
@@ -630,15 +630,15 @@ LABEL_7:
   v7.receiver = self;
   v7.super_class = PDURLSessionProxyDidSendBodyData;
   v3 = [(PDURLSessionProxyDidSendBodyData *)&v7 description];
-  v4 = [(PDURLSessionProxyDidSendBodyData *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDURLSessionProxyDidSendBodyData *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)setHasTotalBytesExpectedToSend:(BOOL)a3
+- (void)setHasTotalBytesExpectedToSend:(BOOL)send
 {
-  if (a3)
+  if (send)
   {
     v3 = 2;
   }
@@ -651,9 +651,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasTotalBytesSent:(BOOL)a3
+- (void)setHasTotalBytesSent:(BOOL)sent
 {
-  if (a3)
+  if (sent)
   {
     v3 = 4;
   }

@@ -7,8 +7,8 @@
 + (id)asParseRules;
 - (id)convertToDAOofParams;
 - (id)description;
-- (void)addOofMessages:(id)a3;
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8;
+- (void)addOofMessages:(id)messages;
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account;
 @end
 
 @implementation ASSettingsTaskOofGetResponse
@@ -22,7 +22,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_223 = v2;
     acceptsTopLevelLeaves___haveChecked_222 = 1;
   }
@@ -39,7 +39,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_225 = v2;
     parsingLeafNode___haveChecked_224 = 1;
   }
@@ -56,7 +56,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_227 = v2;
     parsingWithSubItems___haveChecked_226 = 1;
   }
@@ -73,7 +73,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_229 = v2;
     frontingBasicTypes___haveChecked_228 = 1;
   }
@@ -90,7 +90,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_231 = v2;
     notifyOfUnknownTokens___haveChecked_230 = 1;
   }
@@ -98,19 +98,19 @@
   return v2 & 1;
 }
 
-- (void)addOofMessages:(id)a3
+- (void)addOofMessages:(id)messages
 {
-  v4 = a3;
-  v5 = [(ASSettingsTaskOofGetResponse *)self mOofMessages];
+  messagesCopy = messages;
+  mOofMessages = [(ASSettingsTaskOofGetResponse *)self mOofMessages];
 
-  if (!v5)
+  if (!mOofMessages)
   {
     v6 = objc_opt_new();
     [(ASSettingsTaskOofGetResponse *)self setMOofMessages:v6];
   }
 
-  v7 = [(ASSettingsTaskOofGetResponse *)self mOofMessages];
-  [v7 addObject:v4];
+  mOofMessages2 = [(ASSettingsTaskOofGetResponse *)self mOofMessages];
+  [mOofMessages2 addObject:messagesCopy];
 }
 
 - (id)description
@@ -118,10 +118,10 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ASSettingsTaskOofGetResponse *)self oofState];
-  v7 = [(ASSettingsTaskOofGetResponse *)self startTime];
-  v8 = [(ASSettingsTaskOofGetResponse *)self endTime];
-  v9 = [v3 stringWithFormat:@"%@ %p: oofState: %@ startTime: %@ endTime %@", v5, self, v6, v7, v8];
+  oofState = [(ASSettingsTaskOofGetResponse *)self oofState];
+  startTime = [(ASSettingsTaskOofGetResponse *)self startTime];
+  endTime = [(ASSettingsTaskOofGetResponse *)self endTime];
+  v9 = [v3 stringWithFormat:@"%@ %p: oofState: %@ startTime: %@ endTime %@", v5, self, oofState, startTime, endTime];
 
   return v9;
 }
@@ -129,7 +129,7 @@
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -146,19 +146,19 @@
     v5 = [v6 dictionaryWithObjectsAndKeys:{v7, v8, v9, v10, v11, v12, v13, v14, 0}];
 
     v15 = +[ASItem parseRuleCache];
-    v16 = NSStringFromClass(a1);
+    v16 = NSStringFromClass(self);
     [v15 setObject:v5 forKey:v16];
   }
 
   return v5;
 }
 
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account
 {
   v16 = *MEMORY[0x277D85DE8];
   v13.receiver = self;
   v13.super_class = ASSettingsTaskOofGetResponse;
-  [(ASItem *)&v13 parseASParseContext:a3 root:a4 parent:a5 callbackDict:a6 streamCallbackDict:a7 account:a8];
+  [(ASItem *)&v13 parseASParseContext:context root:root parent:parent callbackDict:dict streamCallbackDict:callbackDict account:account];
   parsingState = self->super._parsingState;
   if (parsingState >= 2)
   {
@@ -174,7 +174,7 @@
       if (os_log_type_enabled(v10, v11))
       {
         *buf = 138412290;
-        v15 = self;
+        selfCopy = self;
         _os_log_impl(&dword_24A0AC000, v10, v11, "%@ Parsed its context.", buf, 0xCu);
       }
     }
@@ -187,12 +187,12 @@
 {
   v48 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(ASSettingsTaskOofGetResponse *)self oofState];
+  oofState = [(ASSettingsTaskOofGetResponse *)self oofState];
 
-  if (v4)
+  if (oofState)
   {
-    v5 = [(ASSettingsTaskOofGetResponse *)self oofState];
-    [v3 setOofState:{objc_msgSend(v5, "intValue")}];
+    oofState2 = [(ASSettingsTaskOofGetResponse *)self oofState];
+    [v3 setOofState:{objc_msgSend(oofState2, "intValue")}];
   }
 
   if (!convertToDAOofParams_dateFormatter)
@@ -209,23 +209,23 @@
     [v9 setTimeZone:v10];
   }
 
-  v11 = [(ASSettingsTaskOofGetResponse *)self startTime];
+  startTime = [(ASSettingsTaskOofGetResponse *)self startTime];
 
-  if (v11)
+  if (startTime)
   {
     v12 = convertToDAOofParams_dateFormatter;
-    v13 = [(ASSettingsTaskOofGetResponse *)self startTime];
-    v14 = [v12 dateFromString:v13];
+    startTime2 = [(ASSettingsTaskOofGetResponse *)self startTime];
+    v14 = [v12 dateFromString:startTime2];
     [v3 setStartTime:v14];
   }
 
-  v15 = [(ASSettingsTaskOofGetResponse *)self endTime];
+  endTime = [(ASSettingsTaskOofGetResponse *)self endTime];
 
-  if (v15)
+  if (endTime)
   {
     v16 = convertToDAOofParams_dateFormatter;
-    v17 = [(ASSettingsTaskOofGetResponse *)self endTime];
-    v18 = [v16 dateFromString:v17];
+    endTime2 = [(ASSettingsTaskOofGetResponse *)self endTime];
+    v18 = [v16 dateFromString:endTime2];
     [v3 setEndTime:v18];
   }
 
@@ -233,8 +233,8 @@
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v19 = [(ASSettingsTaskOofGetResponse *)self oofMessages];
-  v20 = [v19 countByEnumeratingWithState:&v43 objects:v47 count:16];
+  oofMessages = [(ASSettingsTaskOofGetResponse *)self oofMessages];
+  v20 = [oofMessages countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v20)
   {
     v21 = v20;
@@ -245,31 +245,31 @@
       {
         if (*v44 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(oofMessages);
         }
 
         v24 = *(*(&v43 + 1) + 8 * i);
-        v25 = [v24 audience];
+        audience = [v24 audience];
 
-        if (v25)
+        if (audience)
         {
-          v26 = [v24 audience];
-          v27 = [v26 intValue];
+          audience2 = [v24 audience];
+          intValue = [audience2 intValue];
 
-          switch(v27)
+          switch(intValue)
           {
             case 2:
-              v36 = [v24 replyMessage];
-              [v3 setExternalMessage:v36];
+              replyMessage = [v24 replyMessage];
+              [v3 setExternalMessage:replyMessage];
 
-              v37 = [v24 enabled];
-              if (v37)
+              enabled = [v24 enabled];
+              if (enabled)
               {
-                v38 = v37;
-                v39 = [v24 enabled];
-                v40 = [v39 intValue];
+                v38 = enabled;
+                enabled2 = [v24 enabled];
+                intValue2 = [enabled2 intValue];
 
-                if (v40 == 1)
+                if (intValue2 == 1)
                 {
                   v34 = v3;
                   v35 = 2;
@@ -279,17 +279,17 @@
 
               break;
             case 1:
-              v29 = [v24 replyMessage];
-              [v3 setExternalMessage:v29];
+              replyMessage2 = [v24 replyMessage];
+              [v3 setExternalMessage:replyMessage2];
 
-              v30 = [v24 enabled];
-              if (v30)
+              enabled3 = [v24 enabled];
+              if (enabled3)
               {
-                v31 = v30;
-                v32 = [v24 enabled];
-                v33 = [v32 intValue];
+                v31 = enabled3;
+                enabled4 = [v24 enabled];
+                intValue3 = [enabled4 intValue];
 
-                if (v33 == 1 && ![v3 externalState])
+                if (intValue3 == 1 && ![v3 externalState])
                 {
                   v34 = v3;
                   v35 = 1;
@@ -301,15 +301,15 @@ LABEL_26:
 
               break;
             case 0:
-              v28 = [v24 replyMessage];
-              [v3 setMessage:v28];
+              replyMessage3 = [v24 replyMessage];
+              [v3 setMessage:replyMessage3];
 
               break;
           }
         }
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v43 objects:v47 count:16];
+      v21 = [oofMessages countByEnumeratingWithState:&v43 objects:v47 count:16];
     }
 
     while (v21);

@@ -1,21 +1,21 @@
 @interface MONotificationCustomScheduleDaySelectorView
 + (id)notificationSettingsBundle;
-- (MONotificationCustomScheduleDaySelectorView)initWithFrame:(CGRect)a3;
+- (MONotificationCustomScheduleDaySelectorView)initWithFrame:(CGRect)frame;
 - (MONotificationCustomScheduleDaySelectorViewDelegate)delegate;
 - (id)_localizedDayOrder;
 - (id)getSelectedDays;
-- (void)setSelectedDays:(id)a3;
+- (void)setSelectedDays:(id)days;
 - (void)setUpStackView;
 - (void)updateDaySelectorDelegate;
 @end
 
 @implementation MONotificationCustomScheduleDaySelectorView
 
-- (MONotificationCustomScheduleDaySelectorView)initWithFrame:(CGRect)a3
+- (MONotificationCustomScheduleDaySelectorView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MONotificationCustomScheduleDaySelectorView;
-  v3 = [(MONotificationCustomScheduleDaySelectorView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MONotificationCustomScheduleDaySelectorView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -37,30 +37,30 @@
 - (void)setUpStackView
 {
   v3 = +[NSCalendar autoupdatingCurrentCalendar];
-  v4 = [(MONotificationCustomScheduleDaySelectorView *)self daysStackView];
-  [v4 setAxis:0];
+  daysStackView = [(MONotificationCustomScheduleDaySelectorView *)self daysStackView];
+  [daysStackView setAxis:0];
 
-  v5 = [(MONotificationCustomScheduleDaySelectorView *)self daysStackView];
-  [v5 setSpacing:5.0];
+  daysStackView2 = [(MONotificationCustomScheduleDaySelectorView *)self daysStackView];
+  [daysStackView2 setSpacing:5.0];
 
-  v6 = [(MONotificationCustomScheduleDaySelectorView *)self daysStackView];
-  [v6 setDistribution:3];
+  daysStackView3 = [(MONotificationCustomScheduleDaySelectorView *)self daysStackView];
+  [daysStackView3 setDistribution:3];
 
-  v7 = [(MONotificationCustomScheduleDaySelectorView *)self daysStackView];
-  [v7 setAlignment:3];
+  daysStackView4 = [(MONotificationCustomScheduleDaySelectorView *)self daysStackView];
+  [daysStackView4 setAlignment:3];
 
-  v8 = [(MONotificationCustomScheduleDaySelectorView *)self daysStackView];
-  [v8 setMaximumContentSizeCategory:UIContentSizeCategoryExtraExtraLarge];
+  daysStackView5 = [(MONotificationCustomScheduleDaySelectorView *)self daysStackView];
+  [daysStackView5 setMaximumContentSizeCategory:UIContentSizeCategoryExtraExtraLarge];
 
   v52 = +[MONotificationCustomScheduleDaySelectorView notificationSettingsBundle];
-  v51 = [v3 veryShortWeekdaySymbols];
+  veryShortWeekdaySymbols = [v3 veryShortWeekdaySymbols];
   v46 = v3;
-  v50 = [v3 weekdaySymbols];
+  weekdaySymbols = [v3 weekdaySymbols];
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v53 = self;
+  selfCopy = self;
   obj = [(MONotificationCustomScheduleDaySelectorView *)self _localizedDayOrder];
   v54 = [obj countByEnumeratingWithState:&v59 objects:v65 count:16];
   if (v54)
@@ -85,38 +85,38 @@
         v55[1] = 3221225472;
         v55[2] = __61__MONotificationCustomScheduleDaySelectorView_setUpStackView__block_invoke;
         v55[3] = &unk_C360;
-        v56 = v51;
+        v56 = veryShortWeekdaySymbols;
         v58 = v10;
         v57 = v52;
         [v11 setConfigurationUpdateHandler:v55];
         [v11 setAccessibilityTraits:v48];
-        v12 = [v50 objectAtIndexedSubscript:v10];
+        v12 = [weekdaySymbols objectAtIndexedSubscript:v10];
         [v11 setAccessibilityLabel:v12];
 
         [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v13 = [v11 widthAnchor];
-        v14 = [v13 constraintEqualToConstant:36.0];
+        widthAnchor = [v11 widthAnchor];
+        v14 = [widthAnchor constraintEqualToConstant:36.0];
 
         LODWORD(v15) = 1132068864;
         [v14 setPriority:v15];
-        v16 = [v11 heightAnchor];
-        v17 = [v16 constraintEqualToConstant:36.0];
+        heightAnchor = [v11 heightAnchor];
+        v17 = [heightAnchor constraintEqualToConstant:36.0];
 
         LODWORD(v18) = 1144750080;
         [v14 setPriority:v18];
-        v19 = [v11 widthAnchor];
-        v20 = [v19 constraintLessThanOrEqualToConstant:36.0];
+        widthAnchor2 = [v11 widthAnchor];
+        v20 = [widthAnchor2 constraintLessThanOrEqualToConstant:36.0];
 
         LODWORD(v21) = 1148846080;
         [v14 setPriority:v21];
-        v22 = [v11 heightAnchor];
-        v23 = [v22 constraintLessThanOrEqualToConstant:36.0];
+        heightAnchor2 = [v11 heightAnchor];
+        v23 = [heightAnchor2 constraintLessThanOrEqualToConstant:36.0];
 
         LODWORD(v24) = 1148846080;
         [v14 setPriority:v24];
-        v25 = [v11 heightAnchor];
-        v26 = [v11 widthAnchor];
-        v27 = [v25 constraintEqualToAnchor:v26 multiplier:1.0];
+        heightAnchor3 = [v11 heightAnchor];
+        widthAnchor3 = [v11 widthAnchor];
+        v27 = [heightAnchor3 constraintEqualToAnchor:widthAnchor3 multiplier:1.0];
 
         v64[0] = v14;
         v64[1] = v17;
@@ -126,8 +126,8 @@
         v28 = [NSArray arrayWithObjects:v64 count:5];
         [NSLayoutConstraint activateConstraints:v28];
 
-        [(UIStackView *)v53->_daysStackView addArrangedSubview:v11];
-        [v11 addTarget:v53 action:"updateDaySelectorDelegate" forControlEvents:0x2000];
+        [(UIStackView *)selfCopy->_daysStackView addArrangedSubview:v11];
+        [v11 addTarget:selfCopy action:"updateDaySelectorDelegate" forControlEvents:0x2000];
 
         v9 = v9 + 1;
       }
@@ -139,30 +139,30 @@
     while (v54);
   }
 
-  [(MONotificationCustomScheduleDaySelectorView *)v53 addSubview:v53->_daysStackView];
-  [(UIStackView *)v53->_daysStackView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v29 = [(UIStackView *)v53->_daysStackView leadingAnchor];
-  v30 = [(UIStackView *)v53->_daysStackView superview];
-  v31 = [v30 leadingAnchor];
-  v32 = [v29 constraintEqualToAnchor:v31];
+  [(MONotificationCustomScheduleDaySelectorView *)selfCopy addSubview:selfCopy->_daysStackView];
+  [(UIStackView *)selfCopy->_daysStackView setTranslatesAutoresizingMaskIntoConstraints:0];
+  leadingAnchor = [(UIStackView *)selfCopy->_daysStackView leadingAnchor];
+  superview = [(UIStackView *)selfCopy->_daysStackView superview];
+  leadingAnchor2 = [superview leadingAnchor];
+  v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
   [v32 setConstant:24.0];
-  v33 = [(UIStackView *)v53->_daysStackView trailingAnchor];
-  v34 = [(UIStackView *)v53->_daysStackView superview];
-  v35 = [v34 trailingAnchor];
-  v36 = [v33 constraintEqualToAnchor:v35];
+  trailingAnchor = [(UIStackView *)selfCopy->_daysStackView trailingAnchor];
+  superview2 = [(UIStackView *)selfCopy->_daysStackView superview];
+  trailingAnchor2 = [superview2 trailingAnchor];
+  v36 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
   [v36 setConstant:-24.0];
-  v37 = [(UIStackView *)v53->_daysStackView topAnchor];
-  v38 = [(UIStackView *)v53->_daysStackView superview];
-  v39 = [v38 topAnchor];
-  v40 = [v37 constraintEqualToAnchor:v39];
+  topAnchor = [(UIStackView *)selfCopy->_daysStackView topAnchor];
+  superview3 = [(UIStackView *)selfCopy->_daysStackView superview];
+  topAnchor2 = [superview3 topAnchor];
+  v40 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
   [v40 setConstant:4.0];
-  v41 = [(UIStackView *)v53->_daysStackView bottomAnchor];
-  v42 = [(UIStackView *)v53->_daysStackView superview];
-  v43 = [v42 bottomAnchor];
-  v44 = [v41 constraintEqualToAnchor:v43];
+  bottomAnchor = [(UIStackView *)selfCopy->_daysStackView bottomAnchor];
+  superview4 = [(UIStackView *)selfCopy->_daysStackView superview];
+  bottomAnchor2 = [superview4 bottomAnchor];
+  v44 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
   [v44 setConstant:-4.0];
   v63[0] = v32;
@@ -231,15 +231,15 @@ void __61__MONotificationCustomScheduleDaySelectorView_setUpStackView__block_inv
   [v11 setAccessibilityValue:v10];
 }
 
-- (void)setSelectedDays:(id)a3
+- (void)setSelectedDays:(id)days
 {
-  v4 = a3;
+  daysCopy = days;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(UIStackView *)self->_daysStackView arrangedSubviews];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  arrangedSubviews = [(UIStackView *)self->_daysStackView arrangedSubviews];
+  v6 = [arrangedSubviews countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -251,7 +251,7 @@ void __61__MONotificationCustomScheduleDaySelectorView_setUpStackView__block_inv
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
@@ -259,14 +259,14 @@ void __61__MONotificationCustomScheduleDaySelectorView_setUpStackView__block_inv
         {
           v11 = v10;
           v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v11 tag] + 1);
-          [v11 setSelected:{objc_msgSend(v4, "containsObject:", v12)}];
+          [v11 setSelected:{objc_msgSend(daysCopy, "containsObject:", v12)}];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [arrangedSubviews countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -280,8 +280,8 @@ void __61__MONotificationCustomScheduleDaySelectorView_setUpStackView__block_inv
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(UIStackView *)self->_daysStackView arrangedSubviews];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  arrangedSubviews = [(UIStackView *)self->_daysStackView arrangedSubviews];
+  v5 = [arrangedSubviews countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -292,7 +292,7 @@ void __61__MONotificationCustomScheduleDaySelectorView_setUpStackView__block_inv
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -304,7 +304,7 @@ void __61__MONotificationCustomScheduleDaySelectorView_setUpStackView__block_inv
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [arrangedSubviews countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -315,31 +315,31 @@ void __61__MONotificationCustomScheduleDaySelectorView_setUpStackView__block_inv
 
 - (void)updateDaySelectorDelegate
 {
-  v5 = [(MONotificationCustomScheduleDaySelectorView *)self delegate];
-  v3 = [(MONotificationCustomScheduleDaySelectorView *)self getSelectedDays];
-  v4 = [NSSet setWithArray:v3];
-  [v5 scheduleDaySelectorView:self didChangeDays:v4];
+  delegate = [(MONotificationCustomScheduleDaySelectorView *)self delegate];
+  getSelectedDays = [(MONotificationCustomScheduleDaySelectorView *)self getSelectedDays];
+  v4 = [NSSet setWithArray:getSelectedDays];
+  [delegate scheduleDaySelectorView:self didChangeDays:v4];
 }
 
 - (id)_localizedDayOrder
 {
   v2 = [NSMutableArray arrayWithCapacity:7];
   v3 = +[NSCalendar currentCalendar];
-  v4 = [v3 firstWeekday];
+  firstWeekday = [v3 firstWeekday];
 
   for (i = 8; i > 1; --i)
   {
-    v6 = [NSNumber numberWithUnsignedInteger:v4];
+    v6 = [NSNumber numberWithUnsignedInteger:firstWeekday];
     [v2 addObject:v6];
 
-    if ((v4 + 1) <= 7)
+    if ((firstWeekday + 1) <= 7)
     {
-      ++v4;
+      ++firstWeekday;
     }
 
     else
     {
-      v4 = (&dword_0 + 1);
+      firstWeekday = (&dword_0 + 1);
     }
   }
 

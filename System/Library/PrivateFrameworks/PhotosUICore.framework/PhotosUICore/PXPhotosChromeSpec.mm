@@ -1,6 +1,6 @@
 @interface PXPhotosChromeSpec
 + (CGSize)secondaryToolbarSize;
-+ (UIEdgeInsets)secondaryToolbarPaddingForSizeClass:(int64_t)a3 safeAreaInsets:(UIEdgeInsets)a4;
++ (UIEdgeInsets)secondaryToolbarPaddingForSizeClass:(int64_t)class safeAreaInsets:(UIEdgeInsets)insets;
 - (PXPhotosChromeSpec)init;
 @end
 
@@ -15,9 +15,9 @@
   return result;
 }
 
-+ (UIEdgeInsets)secondaryToolbarPaddingForSizeClass:(int64_t)a3 safeAreaInsets:(UIEdgeInsets)a4
++ (UIEdgeInsets)secondaryToolbarPaddingForSizeClass:(int64_t)class safeAreaInsets:(UIEdgeInsets)insets
 {
-  sub_1A3C7E7F0(a3, a4.bottom);
+  sub_1A3C7E7F0(class, insets.bottom);
   result.right = v7;
   result.bottom = v6;
   result.left = v5;

@@ -7,7 +7,7 @@
 - (CGImage)sbf_imageHashData
 {
   v7 = *MEMORY[0x1E69E9840];
-  DataProvider = [a1 CGImage];
+  DataProvider = [self CGImage];
   if (DataProvider)
   {
     DataProvider = CGImageGetDataProvider(DataProvider);

@@ -1,5 +1,5 @@
 @interface MSTrackListLinkCellConfiguration
-- (id)colorForLabelAtIndex:(unint64_t)a3 withModifiers:(unint64_t)a4;
+- (id)colorForLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers;
 - (void)reloadImages;
 - (void)reloadLayoutInformation;
 - (void)reloadStrings;
@@ -7,14 +7,14 @@
 
 @implementation MSTrackListLinkCellConfiguration
 
-- (id)colorForLabelAtIndex:(unint64_t)a3 withModifiers:(unint64_t)a4
+- (id)colorForLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers
 {
-  if ((a4 & 2) != 0)
+  if ((modifiers & 2) != 0)
   {
     return [MEMORY[0x277D75348] grayColor];
   }
 
-  if (a4)
+  if (modifiers)
   {
     return [MEMORY[0x277D75348] whiteColor];
   }
@@ -74,34 +74,34 @@
 - (void)reloadStrings
 {
   v3 = *MEMORY[0x277D7FEF0];
-  v4 = [*(&self->super.super.super.super.super.isa + v3) itemDisplayType];
+  itemDisplayType = [*(&self->super.super.super.super.super.isa + v3) itemDisplayType];
   v5 = *(&self->super.super.super.super.super.isa + v3);
-  if (v4 == 10000)
+  if (itemDisplayType == 10000)
   {
-    v6 = [v5 reviewStatistics];
-    v7 = [v6 numberOfUserRatingsString];
-    if ([v7 length])
+    reviewStatistics = [v5 reviewStatistics];
+    numberOfUserRatingsString = [reviewStatistics numberOfUserRatingsString];
+    if ([numberOfUserRatingsString length])
     {
       goto LABEL_6;
     }
 
-    [v6 numberOfUserRatings];
-    v8 = SUCopyLocalizedReviewsStringForCount();
+    [reviewStatistics numberOfUserRatings];
+    title = SUCopyLocalizedReviewsStringForCount();
   }
 
   else
   {
-    v8 = [v5 title];
+    title = [v5 title];
   }
 
-  v7 = v8;
+  numberOfUserRatingsString = title;
 LABEL_6:
   v9 = *MEMORY[0x277D7FED8];
 
-  v10 = [v7 length];
+  v10 = [numberOfUserRatingsString length];
   if (v10)
   {
-    v10 = v7;
+    v10 = numberOfUserRatingsString;
   }
 
   **(&self->super.super.super.super.super.isa + v9) = v10;

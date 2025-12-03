@@ -1,25 +1,25 @@
 @interface HandleInvalidReceiptTask
-- (HandleInvalidReceiptTask)initWithClient:(id)a3 pid:(int)a4;
-- (id)dialogRequestWithTitle:(id)a3 dialogMessage:(id)a4;
-- (id)productURLForAppWithID:(id)a3;
-- (void)_presentSystemDialogWithTitle:(id)a3 dialogMessage:(id)a4 actionURL:(id)a5;
+- (HandleInvalidReceiptTask)initWithClient:(id)client pid:(int)pid;
+- (id)dialogRequestWithTitle:(id)title dialogMessage:(id)message;
+- (id)productURLForAppWithID:(id)d;
+- (void)_presentSystemDialogWithTitle:(id)title dialogMessage:(id)message actionURL:(id)l;
 - (void)main;
 - (void)terminateClientApplication;
 @end
 
 @implementation HandleInvalidReceiptTask
 
-- (HandleInvalidReceiptTask)initWithClient:(id)a3 pid:(int)a4
+- (HandleInvalidReceiptTask)initWithClient:(id)client pid:(int)pid
 {
-  v7 = a3;
+  clientCopy = client;
   v11.receiver = self;
   v11.super_class = HandleInvalidReceiptTask;
   v8 = [(Task *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong((v8 + 50), a3);
-    *(v9 + 42) = a4;
+    objc_storeStrong((v8 + 50), client);
+    *(v9 + 42) = pid;
   }
 
   return v9;
@@ -28,34 +28,34 @@
 - (void)main
 {
   [(HandleInvalidReceiptTask *)self terminateClientApplication];
-  v3 = [(HandleInvalidReceiptTask *)self client];
-  v4 = [v3 callerBundleURL];
-  v24 = [ASFReceipt receiptFromBundleAtURL:v4];
+  client = [(HandleInvalidReceiptTask *)self client];
+  callerBundleURL = [client callerBundleURL];
+  v24 = [ASFReceipt receiptFromBundleAtURL:callerBundleURL];
 
-  v5 = [v24 expirationDate];
+  expirationDate = [v24 expirationDate];
   v6 = +[NSDate date];
-  v7 = [v5 compare:v6];
+  v7 = [expirationDate compare:v6];
 
-  v8 = [(HandleInvalidReceiptTask *)self client];
-  v9 = [v8 localizedName];
+  client2 = [(HandleInvalidReceiptTask *)self client];
+  localizedName = [client2 localizedName];
 
-  v10 = [(HandleInvalidReceiptTask *)self client];
-  v11 = [v10 vendorName];
+  client3 = [(HandleInvalidReceiptTask *)self client];
+  vendorName = [client3 vendorName];
 
-  v12 = [(HandleInvalidReceiptTask *)self client];
-  v13 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v12 storeItemID]);
-  v14 = [v13 stringValue];
+  client4 = [(HandleInvalidReceiptTask *)self client];
+  v13 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [client4 storeItemID]);
+  stringValue = [v13 stringValue];
 
-  v15 = [(HandleInvalidReceiptTask *)self client];
-  v16 = [v15 storeItemID];
+  client5 = [(HandleInvalidReceiptTask *)self client];
+  storeItemID = [client5 storeItemID];
 
   if ([v24 isVPPLicensed] && (objc_msgSend(v24, "isRevoked") & 1) != 0 || objc_msgSend(v24, "isVPPLicensed") && v7 == -1)
   {
     v17 = [NSBundle bundleWithIdentifier:@"com.apple.AppStoreDaemon"];
-    if (v9)
+    if (localizedName)
     {
       v18 = [v17 localizedStringForKey:@"RECEIPT_REVOKED_TITLE" value:&stru_10039AA00 table:0];
-      v19 = [NSString localizedStringWithFormat:v18, v9];
+      v19 = [NSString localizedStringWithFormat:v18, localizedName];
     }
 
     else
@@ -64,10 +64,10 @@
     }
 
     v20 = [NSBundle bundleWithIdentifier:@"com.apple.AppStoreDaemon"];
-    if (v11)
+    if (vendorName)
     {
       v21 = [v20 localizedStringForKey:@"RECEIPT_REVOKED_MESSAGE" value:&stru_10039AA00 table:0];
-      v22 = [NSString localizedStringWithFormat:v21, v11];
+      v22 = [NSString localizedStringWithFormat:v21, vendorName];
     }
 
     else
@@ -75,9 +75,9 @@
       v22 = [v20 localizedStringForKey:@"RECEIPT_REVOKED_FALLBACK_MESSAGE" value:&stru_10039AA00 table:0];
     }
 
-    if (v16)
+    if (storeItemID)
     {
-      [(HandleInvalidReceiptTask *)self productURLForAppWithID:v14];
+      [(HandleInvalidReceiptTask *)self productURLForAppWithID:stringValue];
     }
 
     else
@@ -94,9 +94,9 @@
   }
 }
 
-- (id)dialogRequestWithTitle:(id)a3 dialogMessage:(id)a4
+- (id)dialogRequestWithTitle:(id)title dialogMessage:(id)message
 {
-  v4 = [AMSDialogRequest requestWithTitle:a3 message:a4];
+  v4 = [AMSDialogRequest requestWithTitle:title message:message];
   v5 = [NSBundle bundleWithIdentifier:@"com.apple.AppStoreDaemon"];
   v6 = [v5 localizedStringForKey:@"VIEW_IN_APP_STORE" value:&stru_10039AA00 table:0];
   v7 = [AMSDialogAction actionWithTitle:v6 identifier:@"InvalidReceiptPromptOKAction"];
@@ -131,10 +131,10 @@
     if (os_log_type_enabled(qword_1003D4A20, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [(HandleInvalidReceiptTask *)self client];
-      v12 = [v11 callerBundleID];
+      client = [(HandleInvalidReceiptTask *)self client];
+      callerBundleID = [client callerBundleID];
       *buf = 138543362;
-      v16 = v12;
+      v16 = callerBundleID;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Terminated app with bundle identifier:%{public}@ for invalid receipt.", buf, 0xCu);
     }
   }
@@ -154,32 +154,32 @@
   }
 }
 
-- (id)productURLForAppWithID:(id)a3
+- (id)productURLForAppWithID:(id)d
 {
-  v3 = [NSString stringWithFormat:@"itms-apps:///app/%@", a3];
+  v3 = [NSString stringWithFormat:@"itms-apps:///app/%@", d];
   v4 = [NSURL URLWithString:v3];
 
   return v4;
 }
 
-- (void)_presentSystemDialogWithTitle:(id)a3 dialogMessage:(id)a4 actionURL:(id)a5
+- (void)_presentSystemDialogWithTitle:(id)title dialogMessage:(id)message actionURL:(id)l
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HandleInvalidReceiptTask *)self dialogRequestWithTitle:v8 dialogMessage:v9];
+  titleCopy = title;
+  messageCopy = message;
+  lCopy = l;
+  v11 = [(HandleInvalidReceiptTask *)self dialogRequestWithTitle:titleCopy dialogMessage:messageCopy];
   v12 = [[AMSSystemAlertDialogTask alloc] initWithRequest:v11];
   objc_initWeak(&location, self);
-  v13 = [v12 present];
+  present = [v12 present];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000768F0;
   v15[3] = &unk_100382FF8;
   objc_copyWeak(&v18, &location);
-  v14 = v10;
+  v14 = lCopy;
   v16 = v14;
-  v17 = self;
-  [v13 addFinishBlock:v15];
+  selfCopy = self;
+  [present addFinishBlock:v15];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);

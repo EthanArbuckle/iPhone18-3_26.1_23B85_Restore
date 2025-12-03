@@ -1,60 +1,60 @@
 @interface WBSPasswordBreachConfigurationBag
-- (WBSPasswordBreachConfigurationBag)initWithBagDictionary:(id)a3;
-- (WBSPasswordBreachConfigurationBag)initWithSnapshotData:(id)a3 error:(id *)a4;
-- (id)firstConfigurationForSupportedProtocolVersion:(unint64_t)a3 rampIdentifier:(unint64_t)a4 allowValuesForTesting:(BOOL)a5;
+- (WBSPasswordBreachConfigurationBag)initWithBagDictionary:(id)dictionary;
+- (WBSPasswordBreachConfigurationBag)initWithSnapshotData:(id)data error:(id *)error;
+- (id)firstConfigurationForSupportedProtocolVersion:(unint64_t)version rampIdentifier:(unint64_t)identifier allowValuesForTesting:(BOOL)testing;
 @end
 
 @implementation WBSPasswordBreachConfigurationBag
 
-- (WBSPasswordBreachConfigurationBag)initWithSnapshotData:(id)a3 error:(id *)a4
+- (WBSPasswordBreachConfigurationBag)initWithSnapshotData:(id)data error:(id *)error
 {
-  v6 = [MEMORY[0x1E695DF20] safari_dictionaryWithJSONOrPropertyListData:a3];
+  v6 = [MEMORY[0x1E695DF20] safari_dictionaryWithJSONOrPropertyListData:data];
   if (!v6)
   {
     v8 = WBS_LOG_CHANNEL_PREFIXPasswordBreachAwareness();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       [WBSPasswordBreachConfigurationBag initWithSnapshotData:v8 error:?];
-      if (a4)
+      if (error)
       {
         goto LABEL_5;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_5:
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:259 userInfo:0];
-      *a4 = v7 = 0;
+      *error = selfCopy = 0;
       goto LABEL_8;
     }
 
-    v7 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
   self = [(WBSPasswordBreachConfigurationBag *)self initWithBagDictionary:v6];
-  v7 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v7;
+  return selfCopy;
 }
 
-- (WBSPasswordBreachConfigurationBag)initWithBagDictionary:(id)a3
+- (WBSPasswordBreachConfigurationBag)initWithBagDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = WBSPasswordBreachConfigurationBag;
   v5 = [(WBSPasswordBreachConfigurationBag *)&v14 init];
   if (v5)
   {
-    v6 = [v4 safari_numberForKey:@"BagVersion"];
+    v6 = [dictionaryCopy safari_numberForKey:@"BagVersion"];
     v7 = v6;
     if (v6)
     {
       if ([v6 unsignedIntegerValue] < 2)
       {
-        v11 = [v4 copy];
+        v11 = [dictionaryCopy copy];
         bag = v5->_bag;
         v5->_bag = v11;
 
@@ -90,9 +90,9 @@ LABEL_12:
   return v9;
 }
 
-- (id)firstConfigurationForSupportedProtocolVersion:(unint64_t)a3 rampIdentifier:(unint64_t)a4 allowValuesForTesting:(BOOL)a5
+- (id)firstConfigurationForSupportedProtocolVersion:(unint64_t)version rampIdentifier:(unint64_t)identifier allowValuesForTesting:(BOOL)testing
 {
-  v25 = a5;
+  testingCopy = testing;
   v35 = *MEMORY[0x1E69E9840];
   v7 = [(NSDictionary *)self->_bag safari_arrayContainingObjectsOfClass:objc_opt_class() forKey:@"Configurations"];
   v8 = v7;
@@ -120,7 +120,7 @@ LABEL_12:
 
           v14 = *(*(&v29 + 1) + 8 * i);
           v15 = [objc_alloc(MEMORY[0x1E69C8908]) initWithDictionary:v14];
-          [v15 unsignedIntegerForKey:@"ProtocolVersion" minimumValue:1 maximumValue:a3];
+          [v15 unsignedIntegerForKey:@"ProtocolVersion" minimumValue:1 maximumValue:version];
           if ([v15 errorOccurred])
           {
             v16 = WBS_LOG_CHANNEL_PREFIXPasswordBreachAwareness();
@@ -132,7 +132,7 @@ LABEL_12:
 
           else
           {
-            [v15 unsignedIntegerForKey:@"MaximumRampIdentifier" minimumValue:a4 maximumValue:-1];
+            [v15 unsignedIntegerForKey:@"MaximumRampIdentifier" minimumValue:identifier maximumValue:-1];
             if ([v15 errorOccurred])
             {
               v17 = WBS_LOG_CHANNEL_PREFIXPasswordBreachAwareness();
@@ -145,7 +145,7 @@ LABEL_12:
             else
             {
               v18 = objc_alloc(MEMORY[0x1E69C8900]);
-              v19 = [v18 initWithDictionary:v14 protocolClasses:MEMORY[0x1E695E0F0] allowValuesForTesting:v25];
+              v19 = [v18 initWithDictionary:v14 protocolClasses:MEMORY[0x1E695E0F0] allowValuesForTesting:testingCopy];
               if (v19)
               {
                 v21 = v19;

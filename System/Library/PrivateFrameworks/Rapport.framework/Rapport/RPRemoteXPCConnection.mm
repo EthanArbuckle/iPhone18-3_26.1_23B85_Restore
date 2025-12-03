@@ -1,10 +1,10 @@
 @interface RPRemoteXPCConnection
 - (NSXPCConnection)xpcConnection;
 - (RPRemoteXPCConnection)init;
-- (void)_activateWithCompletion:(id)a3;
+- (void)_activateWithCompletion:(id)completion;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)invalidate;
 @end
 
@@ -27,42 +27,42 @@
 
 - (NSXPCConnection)xpcConnection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_xpcConnection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_xpcConnection;
   if (!v3)
   {
     v3 = objc_alloc_init(MEMORY[0x1E696B0B8]);
-    [(NSXPCConnection *)v3 _setQueue:v2->_dispatchQueue];
-    objc_storeStrong(&v2->_xpcConnection, v3);
+    [(NSXPCConnection *)v3 _setQueue:selfCopy->_dispatchQueue];
+    objc_storeStrong(&selfCopy->_xpcConnection, v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__RPRemoteXPCConnection_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E7C92E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
-  v3 = a3;
-  v5 = v3;
-  if (gLogCategory_RPRemoteXPC > 30 || gLogCategory_RPRemoteXPC == -1 && (v4 = _LogCategory_Initialize(), v3 = v5, !v4))
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (gLogCategory_RPRemoteXPC > 30 || gLogCategory_RPRemoteXPC == -1 && (v4 = _LogCategory_Initialize(), completionCopy = v5, !v4))
   {
-    if (!v3)
+    if (!completionCopy)
     {
       goto LABEL_6;
     }
@@ -71,12 +71,12 @@
   }
 
   [RPRemoteXPCConnection _activateWithCompletion:];
-  v3 = v5;
+  completionCopy = v5;
   if (v5)
   {
 LABEL_5:
-    v3[2](v3, 0);
-    v3 = v5;
+    completionCopy[2](completionCopy, 0);
+    completionCopy = v5;
   }
 
 LABEL_6:

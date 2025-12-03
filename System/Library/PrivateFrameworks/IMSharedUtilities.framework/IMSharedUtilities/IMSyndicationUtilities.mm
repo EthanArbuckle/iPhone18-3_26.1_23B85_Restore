@@ -1,14 +1,14 @@
 @interface IMSyndicationUtilities
 - (CKContainer)ckContainer;
 - (OS_dispatch_queue)attributionFetchQueue;
-- (id)UTITypeForURL:(id)a3;
-- (id)_URLSchemeForCollaborationApp:(unint64_t)a3;
-- (id)_bundleIDsForCollaborationApp:(unint64_t)a3;
-- (id)_fetchCKBundleIDsForURL:(id)a3 returnLocalBundlesOnly:(BOOL)a4;
-- (id)bundleIDsForCollaborationURL:(id)a3;
-- (id)bundleIDsForShareBearURL:(id)a3;
-- (unint64_t)_collaborationAppForURL:(id)a3;
-- (void)fetchAttributionsForHighlight:(id)a3 highlight:(id)a4 completionBlock:(id)a5;
+- (id)UTITypeForURL:(id)l;
+- (id)_URLSchemeForCollaborationApp:(unint64_t)app;
+- (id)_bundleIDsForCollaborationApp:(unint64_t)app;
+- (id)_fetchCKBundleIDsForURL:(id)l returnLocalBundlesOnly:(BOOL)only;
+- (id)bundleIDsForCollaborationURL:(id)l;
+- (id)bundleIDsForShareBearURL:(id)l;
+- (unint64_t)_collaborationAppForURL:(id)l;
+- (void)fetchAttributionsForHighlight:(id)highlight highlight:(id)a4 completionBlock:(id)block;
 @end
 
 @implementation IMSyndicationUtilities
@@ -25,52 +25,52 @@
   return v3;
 }
 
-- (id)bundleIDsForCollaborationURL:(id)a3
+- (id)bundleIDsForCollaborationURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = +[IMSharedWithYouManager sharedManager];
-  v6 = [v5 lsAppRecordForURL:v4 checkInstalledAppsOnly:0];
+  v6 = [v5 lsAppRecordForURL:lCopy checkInstalledAppsOnly:0];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 applicationIdentifier];
-    v9 = [v8 isEqualToString:@"com.apple.CloudKit.ShareBear"];
+    applicationIdentifier = [v6 applicationIdentifier];
+    v9 = [applicationIdentifier isEqualToString:@"com.apple.CloudKit.ShareBear"];
 
     if (v9)
     {
-      v10 = [(IMSyndicationUtilities *)self bundleIDsForShareBearURL:v4];
+      bundleIdentifier = [(IMSyndicationUtilities *)self bundleIDsForShareBearURL:lCopy];
     }
 
     else
     {
-      v10 = [v7 bundleIdentifier];
+      bundleIdentifier = [v7 bundleIdentifier];
 
-      if (v10)
+      if (bundleIdentifier)
       {
         v11 = MEMORY[0x1E695DEC8];
-        v12 = [v7 bundleIdentifier];
-        v10 = [v11 arrayWithObject:v12];
+        bundleIdentifier2 = [v7 bundleIdentifier];
+        bundleIdentifier = [v11 arrayWithObject:bundleIdentifier2];
       }
     }
   }
 
   else
   {
-    v10 = 0;
+    bundleIdentifier = 0;
   }
 
-  return v10;
+  return bundleIdentifier;
 }
 
-- (id)bundleIDsForShareBearURL:(id)a3
+- (id)bundleIDsForShareBearURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
-    v5 = [(IMSyndicationUtilities *)self _collaborationAppForURL:v4];
+    v5 = [(IMSyndicationUtilities *)self _collaborationAppForURL:lCopy];
     if ((v5 & 0xFFFFFFFFFFFFFFFDLL) == 5)
     {
-      [(IMSyndicationUtilities *)self _fetchCKBundleIDsForURL:v4 returnLocalBundlesOnly:0];
+      [(IMSyndicationUtilities *)self _fetchCKBundleIDsForURL:lCopy returnLocalBundlesOnly:0];
     }
 
     else
@@ -89,9 +89,9 @@
   return v6;
 }
 
-- (id)UTITypeForURL:(id)a3
+- (id)UTITypeForURL:(id)l
 {
-  v3 = [(IMSyndicationUtilities *)self _collaborationAppForURL:a3];
+  v3 = [(IMSyndicationUtilities *)self _collaborationAppForURL:l];
   if (v3 - 2 > 2)
   {
     return @"public.url";
@@ -103,37 +103,37 @@
   }
 }
 
-- (void)fetchAttributionsForHighlight:(id)a3 highlight:(id)a4 completionBlock:(id)a5
+- (void)fetchAttributionsForHighlight:(id)highlight highlight:(id)a4 completionBlock:(id)block
 {
-  v8 = a3;
+  highlightCopy = highlight;
   v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  blockCopy = block;
+  v11 = blockCopy;
+  if (highlightCopy)
   {
-    v12 = [(IMSyndicationUtilities *)self attributionFetchQueue];
+    attributionFetchQueue = [(IMSyndicationUtilities *)self attributionFetchQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1A86C3EFC;
     block[3] = &unk_1E78289A0;
-    v14 = v8;
+    v14 = highlightCopy;
     v15 = v9;
     v16 = v11;
-    dispatch_async(v12, block);
+    dispatch_async(attributionFetchQueue, block);
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 }
 
-- (id)_bundleIDsForCollaborationApp:(unint64_t)a3
+- (id)_bundleIDsForCollaborationApp:(unint64_t)app
 {
-  v4 = [MEMORY[0x1E695DEC8] array];
-  if (a3 > 2)
+  array = [MEMORY[0x1E695DEC8] array];
+  if (app > 2)
   {
-    switch(a3)
+    switch(app)
     {
       case 3uLL:
         [MEMORY[0x1E695DEC8] arrayWithObjects:{@"com.apple.Pages", @"com.apple.iWork.Pages", 0}];
@@ -149,16 +149,16 @@
     }
   }
 
-  else if (a3)
+  else if (app)
   {
-    if (a3 == 1)
+    if (app == 1)
     {
       [MEMORY[0x1E695DEC8] arrayWithObjects:{@"com.apple.reminders", 0, v7}];
     }
 
     else
     {
-      if (a3 != 2)
+      if (app != 2)
       {
         goto LABEL_15;
       }
@@ -173,34 +173,34 @@
   }
   v5 = ;
 
-  v4 = v5;
+  array = v5;
 LABEL_15:
 
-  return v4;
+  return array;
 }
 
-- (id)_URLSchemeForCollaborationApp:(unint64_t)a3
+- (id)_URLSchemeForCollaborationApp:(unint64_t)app
 {
-  v4 = [MEMORY[0x1E696AEC0] string];
-  if (a3 <= 6)
+  string = [MEMORY[0x1E696AEC0] string];
+  if (app <= 6)
   {
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:off_1E7829A70[a3]];
+    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:off_1E7829A70[app]];
 
-    v4 = v5;
+    string = v5;
   }
 
-  return v4;
+  return string;
 }
 
-- (unint64_t)_collaborationAppForURL:(id)a3
+- (unint64_t)_collaborationAppForURL:(id)l
 {
   v5 = 0;
   v6 = 7;
   do
   {
-    v7 = [a3 absoluteString];
+    absoluteString = [l absoluteString];
     v8 = [(IMSyndicationUtilities *)self _URLSchemeForCollaborationApp:v5];
-    v9 = [v7 containsString:v8];
+    v9 = [absoluteString containsString:v8];
 
     if (v9)
     {
@@ -231,26 +231,26 @@ LABEL_15:
   return ckContainer;
 }
 
-- (id)_fetchCKBundleIDsForURL:(id)a3 returnLocalBundlesOnly:(BOOL)a4
+- (id)_fetchCKBundleIDsForURL:(id)l returnLocalBundlesOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [v6 absoluteString];
+      absoluteString = [lCopy absoluteString];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = absoluteString;
       _os_log_impl(&dword_1A85E5000, v7, OS_LOG_TYPE_INFO, "Fetching BundleIDs for CK URL:%@", &buf, 0xCu);
     }
   }
 
-  v9 = [v6 CKShareURLSlugBasedApplicationName];
-  v10 = [v9 lowercaseString];
-  v11 = [v10 isEqualToString:@"share"];
+  cKShareURLSlugBasedApplicationName = [lCopy CKShareURLSlugBasedApplicationName];
+  lowercaseString = [cKShareURLSlugBasedApplicationName lowercaseString];
+  v11 = [lowercaseString isEqualToString:@"share"];
 
   if (v11 && IMOSLoggingEnabled())
   {
@@ -269,14 +269,14 @@ LABEL_15:
   v25 = sub_1A86021C8;
   v26 = 0;
   v13 = objc_alloc(MEMORY[0x1E695B980]);
-  v21 = v6;
+  v21 = lCopy;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
-  v15 = [v13 initWithShareURLs:v14 returnLocalBundlesOnly:v4];
+  v15 = [v13 initWithShareURLs:v14 returnLocalBundlesOnly:onlyCopy];
 
   if (IMIsRunningInMessagesUIProcess() && [MEMORY[0x1E696AF00] isMainThread])
   {
-    v16 = [v15 configuration];
-    [v16 setQualityOfService:33];
+    configuration = [v15 configuration];
+    [configuration setQualityOfService:33];
   }
 
   v20[0] = MEMORY[0x1E69E9820];
@@ -285,8 +285,8 @@ LABEL_15:
   v20[3] = &unk_1E7829A38;
   v20[4] = &buf;
   [v15 setPerShareURLBlock:v20];
-  v17 = [(IMSyndicationUtilities *)self ckContainer];
-  [v17 addOperation:v15];
+  ckContainer = [(IMSyndicationUtilities *)self ckContainer];
+  [ckContainer addOperation:v15];
 
   [v15 waitUntilFinished];
   v18 = *(*(&buf + 1) + 40);

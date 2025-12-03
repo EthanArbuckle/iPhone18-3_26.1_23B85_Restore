@@ -1,29 +1,29 @@
 @interface WFSendMessageActionUIKitUserInterface
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)finishWithError:(id)a3;
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4;
-- (void)showWithRecipients:(id)a3 content:(id)a4 attachments:(id)a5 completionHandler:(id)a6;
-- (void)showWithRecipients:(id)a3 content:(id)a4 files:(id)a5 completionHandler:(id)a6;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)finishWithError:(id)error;
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result;
+- (void)showWithRecipients:(id)recipients content:(id)content attachments:(id)attachments completionHandler:(id)handler;
+- (void)showWithRecipients:(id)recipients content:(id)content files:(id)files completionHandler:(id)handler;
 @end
 
 @implementation WFSendMessageActionUIKitUserInterface
 
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result
 {
-  v6 = a3;
-  if (a4 == 2)
+  controllerCopy = controller;
+  if (result == 2)
   {
-    v7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:5 userInfo:0];
+    userCancelledError = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:5 userInfo:0];
   }
 
-  else if (a4)
+  else if (result)
   {
-    v7 = 0;
+    userCancelledError = 0;
   }
 
   else
   {
-    v7 = [MEMORY[0x277CCA9B8] userCancelledError];
+    userCancelledError = [MEMORY[0x277CCA9B8] userCancelledError];
   }
 
   v9[0] = MEMORY[0x277D85DD0];
@@ -31,23 +31,23 @@
   v9[2] = __90__WFSendMessageActionUIKitUserInterface_messageComposeViewController_didFinishWithResult___block_invoke;
   v9[3] = &unk_278C375A0;
   v9[4] = self;
-  v10 = v7;
-  v8 = v7;
-  [v6 dismissViewControllerAnimated:1 completion:v9];
+  v10 = userCancelledError;
+  v8 = userCancelledError;
+  [controllerCopy dismissViewControllerAnimated:1 completion:v9];
 }
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __81__WFSendMessageActionUIKitUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C375C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFSendMessageActionUIKitUserInterface;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFEmbeddableActionUserInterface *)&v6 cancelPresentationWithCompletionHandler:v7];
 }
 
@@ -62,38 +62,38 @@ uint64_t __81__WFSendMessageActionUIKitUserInterface_cancelPresentationWithCompl
   return v4();
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(WFSendMessageActionUIKitUserInterface *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(WFSendMessageActionUIKitUserInterface *)self completionHandler];
 
-  if (v4)
+  if (completionHandler)
   {
-    v5 = [(WFSendMessageActionUIKitUserInterface *)self completionHandler];
-    (v5)[2](v5, 0, v6);
+    completionHandler2 = [(WFSendMessageActionUIKitUserInterface *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, 0, errorCopy);
   }
 
   [(WFSendMessageActionUIKitUserInterface *)self setCompletionHandler:0];
 }
 
-- (void)showWithRecipients:(id)a3 content:(id)a4 files:(id)a5 completionHandler:(id)a6
+- (void)showWithRecipients:(id)recipients content:(id)content files:(id)files completionHandler:(id)handler
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  recipientsCopy = recipients;
+  contentCopy = content;
+  filesCopy = files;
+  handlerCopy = handler;
   if ([MEMORY[0x277CD6888] canSendText])
   {
-    [(WFSendMessageActionUIKitUserInterface *)self setCompletionHandler:v13];
+    [(WFSendMessageActionUIKitUserInterface *)self setCompletionHandler:handlerCopy];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __92__WFSendMessageActionUIKitUserInterface_showWithRecipients_content_files_completionHandler___block_invoke;
     block[3] = &unk_278C37690;
-    v19 = v10;
-    v20 = v11;
-    v21 = self;
-    v22 = v12;
+    v19 = recipientsCopy;
+    v20 = contentCopy;
+    selfCopy = self;
+    v22 = filesCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
 
     v14 = v19;
@@ -107,7 +107,7 @@ uint64_t __81__WFSendMessageActionUIKitUserInterface_cancelPresentationWithCompl
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
 
     v16 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3328 userInfo:v14];
-    v13[2](v13, 0, v16);
+    handlerCopy[2](handlerCopy, 0, v16);
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -179,12 +179,12 @@ void __92__WFSendMessageActionUIKitUserInterface_showWithRecipients_content_file
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showWithRecipients:(id)a3 content:(id)a4 attachments:(id)a5 completionHandler:(id)a6
+- (void)showWithRecipients:(id)recipients content:(id)content attachments:(id)attachments completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  recipientsCopy = recipients;
+  contentCopy = content;
+  attachmentsCopy = attachments;
+  handlerCopy = handler;
   v14 = MEMORY[0x277CCAAC8];
   v15 = MEMORY[0x277CBEB98];
   v16 = objc_opt_class();
@@ -194,13 +194,13 @@ void __92__WFSendMessageActionUIKitUserInterface_showWithRecipients_content_file
   v22[2] = __98__WFSendMessageActionUIKitUserInterface_showWithRecipients_content_attachments_completionHandler___block_invoke;
   v22[3] = &unk_278C37398;
   v22[4] = self;
-  v23 = v10;
-  v24 = v11;
-  v25 = v13;
-  v18 = v13;
-  v19 = v11;
-  v20 = v10;
-  v21 = [v14 wf_securelyUnarchiveObjectWithData:v12 allowedClasses:v17 completionHandler:v22];
+  v23 = recipientsCopy;
+  v24 = contentCopy;
+  v25 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = contentCopy;
+  v20 = recipientsCopy;
+  v21 = [v14 wf_securelyUnarchiveObjectWithData:attachmentsCopy allowedClasses:v17 completionHandler:v22];
 }
 
 void __98__WFSendMessageActionUIKitUserInterface_showWithRecipients_content_attachments_completionHandler___block_invoke(uint64_t a1, void *a2)

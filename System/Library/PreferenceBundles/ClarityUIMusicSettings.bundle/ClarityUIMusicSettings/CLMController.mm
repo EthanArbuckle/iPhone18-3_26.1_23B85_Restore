@@ -2,12 +2,12 @@
 - (AXOnboardingContinueButtonEnablingDelegate)continueButtonEnablingDelegate;
 - (CLMController)init;
 - (id)_playlistsSpecifiers;
-- (id)_specifierForPlaylistEntry:(id)a3;
+- (id)_specifierForPlaylistEntry:(id)entry;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_loadPlaylists;
 - (void)_showPlaylistSelectionAlert;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -24,8 +24,8 @@
     [(CLMController *)v2 setInterfaceHelper:v3];
 
     v4 = +[CLFMusicSettings sharedInstance];
-    v5 = [v4 selectedPlaylists];
-    v6 = [v5 mutableCopy];
+    selectedPlaylists = [v4 selectedPlaylists];
+    v6 = [selectedPlaylists mutableCopy];
     playlistEntries = v2->_playlistEntries;
     v2->_playlistEntries = v6;
   }
@@ -40,8 +40,8 @@
   [(CLMController *)&v7 viewDidLoad];
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"MUSIC" value:&stru_10CA0 table:@"CLMMusicSettings"];
-  v5 = [(CLMController *)self navigationItem];
-  [v5 setTitle:v4];
+  navigationItem = [(CLMController *)self navigationItem];
+  [navigationItem setTitle:v4];
 
   [(CLMController *)self _loadPlaylists];
   v6 = +[NSNotificationCenter defaultCenter];
@@ -55,8 +55,8 @@
   if (!v4)
   {
     v5 = [(CLMController *)self loadSpecifiersFromPlistName:@"CLMController" target:self];
-    v6 = [(CLMController *)self _playlistsSpecifiers];
-    v7 = [(CLMController *)self specifiersWithPrivacyLinkSupport:v6];
+    _playlistsSpecifiers = [(CLMController *)self _playlistsSpecifiers];
+    v7 = [(CLMController *)self specifiersWithPrivacyLinkSupport:_playlistsSpecifiers];
     v8 = *&self->AXCLFBasePrivacyLinkController_opaque[v3];
     *&self->AXCLFBasePrivacyLinkController_opaque[v3] = v7;
 
@@ -66,14 +66,14 @@
   return v4;
 }
 
-- (id)_specifierForPlaylistEntry:(id)a3
+- (id)_specifierForPlaylistEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:0 cell:4 edit:0];
+  entryCopy = entry;
+  name = [entryCopy name];
+  v6 = [PSSpecifier preferenceSpecifierNamed:name target:self set:0 get:0 detail:0 cell:4 edit:0];
 
   [v6 setProperty:objc_opt_class() forKey:PSCellClassKey];
-  [v6 setProperty:v4 forKey:@"playlistEntry"];
+  [v6 setProperty:entryCopy forKey:@"playlistEntry"];
 
   return v6;
 }
@@ -90,10 +90,10 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = [(CLMController *)self interfaceHelper];
-  v8 = [v7 playlists];
+  interfaceHelper = [(CLMController *)self interfaceHelper];
+  playlists = [interfaceHelper playlists];
 
-  v9 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v9 = [playlists countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v9)
   {
     v10 = v9;
@@ -104,21 +104,21 @@
       {
         if (*v25 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(playlists);
         }
 
         v13 = [(CLMController *)self _specifierForPlaylistEntry:*(*(&v24 + 1) + 8 * i)];
         [v3 addObject:v13];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v10 = [playlists countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v10);
   }
 
-  v14 = [(CLMInterfaceHelper *)self->_interfaceHelper playlists];
-  v15 = [v14 count];
+  playlists2 = [(CLMInterfaceHelper *)self->_interfaceHelper playlists];
+  v15 = [playlists2 count];
   v16 = [NSBundle bundleForClass:objc_opt_class()];
   v17 = v16;
   if (v15)
@@ -136,11 +136,11 @@
   v20 = [PSSpecifier preferenceSpecifierNamed:v19 target:self set:0 get:0 detail:0 cell:13 edit:0];
   [(CLMController *)self setEditPlaylistSpecifier:v20];
 
-  v21 = [(CLMController *)self editPlaylistSpecifier];
-  [v21 setButtonAction:"_openMusicApp:"];
+  editPlaylistSpecifier = [(CLMController *)self editPlaylistSpecifier];
+  [editPlaylistSpecifier setButtonAction:"_openMusicApp:"];
 
-  v22 = [(CLMController *)self editPlaylistSpecifier];
-  [v3 addObject:v22];
+  editPlaylistSpecifier2 = [(CLMController *)self editPlaylistSpecifier];
+  [v3 addObject:editPlaylistSpecifier2];
 
   return v3;
 }
@@ -184,13 +184,13 @@
 
   v7 = v6;
   _Block_object_dispose(&v15, 8);
-  v8 = [v6 sharedGuard];
+  sharedGuard = [v6 sharedGuard];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_239C;
   v9[3] = &unk_10990;
   v9[4] = self;
-  [v8 authenticateForSubject:v5 completion:v9];
+  [sharedGuard authenticateForSubject:v5 completion:v9];
 }
 
 - (void)_showPlaylistSelectionAlert
@@ -207,17 +207,17 @@
   [(CLMController *)self presentViewController:v8 animated:1 completion:0];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v14.receiver = self;
   v14.super_class = CLMController;
-  v5 = [(CLMController *)&v14 tableView:a3 cellForRowAtIndexPath:a4];
-  v6 = [v5 specifier];
-  v7 = [(CLMController *)self editPlaylistSpecifier];
+  v5 = [(CLMController *)&v14 tableView:view cellForRowAtIndexPath:path];
+  specifier = [v5 specifier];
+  editPlaylistSpecifier = [(CLMController *)self editPlaylistSpecifier];
 
-  if (v6 != v7)
+  if (specifier != editPlaylistSpecifier)
   {
-    v8 = [CLMUtilities playlistEntryForSpecifier:v6];
+    v8 = [CLMUtilities playlistEntryForSpecifier:specifier];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -225,9 +225,9 @@
     }
 
     v9 = +[CLFMusicSettings sharedInstance];
-    v10 = [v9 selectedPlaylists];
-    v11 = [v8 musicItemID];
-    v12 = [v10 containsObject:v11];
+    selectedPlaylists = [v9 selectedPlaylists];
+    musicItemID = [v8 musicItemID];
+    v12 = [selectedPlaylists containsObject:musicItemID];
 
     if (v12)
     {
@@ -238,22 +238,22 @@
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v16.receiver = self;
   v16.super_class = CLMController;
-  [(CLMController *)&v16 tableView:v6 didSelectRowAtIndexPath:v7];
-  v8 = [(CLMController *)self specifierAtIndexPath:v7];
+  [(CLMController *)&v16 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [(CLMController *)self specifierAtIndexPath:pathCopy];
   v9 = [CLMUtilities playlistEntryForSpecifier:v8];
-  v10 = [(CLMController *)self editPlaylistSpecifier];
+  editPlaylistSpecifier = [(CLMController *)self editPlaylistSpecifier];
 
-  if (v8 != v10)
+  if (v8 != editPlaylistSpecifier)
   {
-    v11 = [v6 cellForRowAtIndexPath:v7];
-    v12 = [v9 musicItemID];
-    if ([(NSMutableArray *)self->_playlistEntries containsObject:v12])
+    v11 = [viewCopy cellForRowAtIndexPath:pathCopy];
+    musicItemID = [v9 musicItemID];
+    if ([(NSMutableArray *)self->_playlistEntries containsObject:musicItemID])
     {
       if ([(NSMutableArray *)self->_playlistEntries count]== &dword_0 + 1)
       {
@@ -263,14 +263,14 @@
       else
       {
         [v11 setAccessoryType:0];
-        [(NSMutableArray *)self->_playlistEntries removeObject:v12];
+        [(NSMutableArray *)self->_playlistEntries removeObject:musicItemID];
       }
     }
 
     else
     {
       [v11 setAccessoryType:3];
-      [(NSMutableArray *)self->_playlistEntries addObject:v12];
+      [(NSMutableArray *)self->_playlistEntries addObject:musicItemID];
     }
 
     [v11 invalidateIntrinsicContentSize];
@@ -278,8 +278,8 @@
     v14 = +[CLFMusicSettings sharedInstance];
     [v14 setSelectedPlaylists:playlistEntries];
 
-    v15 = [(CLMController *)self continueButtonEnablingDelegate];
-    [v15 didUpdateIsContinueButtonEnabledForController:self];
+    continueButtonEnablingDelegate = [(CLMController *)self continueButtonEnablingDelegate];
+    [continueButtonEnablingDelegate didUpdateIsContinueButtonEnabledForController:self];
   }
 }
 

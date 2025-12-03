@@ -1,6 +1,6 @@
 @interface PPEventRankerFeaturizer
-+ (id)scoreFeatureSchema:(id)a3;
-- (PPEventRankerFeaturizer)initWithTrialWrapper:(id)a3;
++ (id)scoreFeatureSchema:(id)schema;
+- (PPEventRankerFeaturizer)initWithTrialWrapper:(id)wrapper;
 - (id)featureSchema;
 @end
 
@@ -48,29 +48,29 @@ uint64_t __40__PPEventRankerFeaturizer_featureSchema__block_invoke()
   return [v2 setCountLimit:1];
 }
 
-- (PPEventRankerFeaturizer)initWithTrialWrapper:(id)a3
+- (PPEventRankerFeaturizer)initWithTrialWrapper:(id)wrapper
 {
-  v5 = a3;
+  wrapperCopy = wrapper;
   v9.receiver = self;
   v9.super_class = PPEventRankerFeaturizer;
   v6 = [(PPEventRankerFeaturizer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_trialWrapper, a3);
+    objc_storeStrong(&v6->_trialWrapper, wrapper);
   }
 
   return v7;
 }
 
-+ (id)scoreFeatureSchema:(id)a3
++ (id)scoreFeatureSchema:(id)schema
 {
   v45 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  schemaCopy = schema;
   v39 = objc_opt_new();
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 allKeys];
-  v6 = [v5 sortedArrayUsingSelector:?];
+  allKeys = [schemaCopy allKeys];
+  v6 = [allKeys sortedArrayUsingSelector:?];
 
   objc_autoreleasePoolPop(v4);
   v7 = 0;
@@ -86,9 +86,9 @@ uint64_t __40__PPEventRankerFeaturizer_featureSchema__block_invoke()
       v38 = v7;
       v11 = [v6 objectAtIndexedSubscript:v8];
       v12 = objc_autoreleasePoolPush();
-      v13 = [v3 objectForKeyedSubscript:v11];
-      v14 = [v13 allKeys];
-      v15 = [v14 sortedArrayUsingSelector:sel_compare_];
+      v13 = [schemaCopy objectForKeyedSubscript:v11];
+      allKeys2 = [v13 allKeys];
+      v15 = [allKeys2 sortedArrayUsingSelector:sel_compare_];
 
       objc_autoreleasePoolPop(v12);
       v42 = 0u;
@@ -112,11 +112,11 @@ uint64_t __40__PPEventRankerFeaturizer_featureSchema__block_invoke()
             }
 
             v22 = *(*(&v40 + 1) + 8 * i);
-            v23 = [v3 objectForKeyedSubscript:v11];
+            v23 = [schemaCopy objectForKeyedSubscript:v11];
             v24 = [v23 objectForKeyedSubscript:v22];
             v25 = [v24 objectForKeyedSubscript:@"Value"];
 
-            v26 = [v3 objectForKeyedSubscript:v11];
+            v26 = [schemaCopy objectForKeyedSubscript:v11];
             v27 = [v26 objectForKeyedSubscript:v22];
             v28 = [v27 objectForKeyedSubscript:@"Weight"];
 

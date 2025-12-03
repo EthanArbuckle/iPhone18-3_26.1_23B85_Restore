@@ -1,15 +1,15 @@
 @interface MRGetVoiceInputDevicesResponseMessage
-- (MRGetVoiceInputDevicesResponseMessage)initWithDeviceIDs:(id)a3 errorCode:(int64_t)a4;
+- (MRGetVoiceInputDevicesResponseMessage)initWithDeviceIDs:(id)ds errorCode:(int64_t)code;
 - (NSArray)deviceIDs;
 - (int64_t)errorCode;
 @end
 
 @implementation MRGetVoiceInputDevicesResponseMessage
 
-- (MRGetVoiceInputDevicesResponseMessage)initWithDeviceIDs:(id)a3 errorCode:(int64_t)a4
+- (MRGetVoiceInputDevicesResponseMessage)initWithDeviceIDs:(id)ds errorCode:(int64_t)code
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dsCopy = ds;
   v20.receiver = self;
   v20.super_class = MRGetVoiceInputDevicesResponseMessage;
   v7 = [(MRProtocolMessage *)&v20 init];
@@ -20,7 +20,7 @@
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = v6;
+    v9 = dsCopy;
     v10 = [v9 countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v10)
     {
@@ -46,7 +46,7 @@
       while (v11);
     }
 
-    [(_MRGetVoiceInputDevicesResponseMessageProtobuf *)v8 setErrorCode:a4];
+    [(_MRGetVoiceInputDevicesResponseMessageProtobuf *)v8 setErrorCode:code];
     [(MRProtocolMessage *)v7 setUnderlyingCodableMessage:v8];
   }
 
@@ -57,26 +57,26 @@
 - (NSArray)deviceIDs
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v5 = [v4 deviceIDsCount];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  deviceIDsCount = [underlyingCodableMessage deviceIDsCount];
 
-  if (v5)
+  if (deviceIDsCount)
   {
     v6 = 0;
     v7 = 1;
     do
     {
       v8 = MEMORY[0x1E696AD98];
-      v9 = [(MRProtocolMessage *)self underlyingCodableMessage];
-      v10 = [v8 numberWithUnsignedInt:{objc_msgSend(v9, "deviceIDsAtIndex:", v6)}];
+      underlyingCodableMessage2 = [(MRProtocolMessage *)self underlyingCodableMessage];
+      v10 = [v8 numberWithUnsignedInt:{objc_msgSend(underlyingCodableMessage2, "deviceIDsAtIndex:", v6)}];
       [v3 addObject:v10];
 
       v6 = v7;
-      v11 = [(MRProtocolMessage *)self underlyingCodableMessage];
-      v12 = [v11 deviceIDsCount];
+      underlyingCodableMessage3 = [(MRProtocolMessage *)self underlyingCodableMessage];
+      deviceIDsCount2 = [underlyingCodableMessage3 deviceIDsCount];
     }
 
-    while (v12 > v7++);
+    while (deviceIDsCount2 > v7++);
   }
 
   return v3;
@@ -84,10 +84,10 @@
 
 - (int64_t)errorCode
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 errorCode];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  errorCode = [underlyingCodableMessage errorCode];
 
-  return v3;
+  return errorCode;
 }
 
 @end

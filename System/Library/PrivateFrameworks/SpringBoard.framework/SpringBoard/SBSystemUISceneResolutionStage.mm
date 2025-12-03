@@ -1,29 +1,29 @@
 @interface SBSystemUISceneResolutionStage
 - (SBKeyboardFocusResolutionStageSceneProviding)sceneProvider;
 - (SBSystemUISceneResolutionStageDelegate)delegate;
-- (void)resolveKeyboardFocusPolicy:(id)a3 context:(id)a4 stop:(BOOL *)a5;
+- (void)resolveKeyboardFocusPolicy:(id)policy context:(id)context stop:(BOOL *)stop;
 @end
 
 @implementation SBSystemUISceneResolutionStage
 
-- (void)resolveKeyboardFocusPolicy:(id)a3 context:(id)a4 stop:(BOOL *)a5
+- (void)resolveKeyboardFocusPolicy:(id)policy context:(id)context stop:(BOOL *)stop
 {
-  v14 = a3;
+  policyCopy = policy;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = [v14 keyboardFocusTarget];
+  keyboardFocusTarget = [policyCopy keyboardFocusTarget];
   v9 = objc_loadWeakRetained(&self->_sceneProvider);
-  v10 = [v9 sceneForFocusTarget:v8];
+  v10 = [v9 sceneForFocusTarget:keyboardFocusTarget];
 
-  v11 = [v14 auditHistory];
-  [v11 addItemWithFormat:@"-- SBSystemUISceneResolutionStage --"];
+  auditHistory = [policyCopy auditHistory];
+  [auditHistory addItemWithFormat:@"-- SBSystemUISceneResolutionStage --"];
 
-  v12 = [WeakRetained systemUISceneRequestingFocus];
-  if (v12 && [v10 isEqual:v12])
+  systemUISceneRequestingFocus = [WeakRetained systemUISceneRequestingFocus];
+  if (systemUISceneRequestingFocus && [v10 isEqual:systemUISceneRequestingFocus])
   {
-    v13 = [v14 auditHistory];
-    [v13 addItemWithFormat:@"policy: high priority scene"];
+    auditHistory2 = [policyCopy auditHistory];
+    [auditHistory2 addItemWithFormat:@"policy: high priority scene"];
 
-    *a5 = 1;
+    *stop = 1;
   }
 }
 

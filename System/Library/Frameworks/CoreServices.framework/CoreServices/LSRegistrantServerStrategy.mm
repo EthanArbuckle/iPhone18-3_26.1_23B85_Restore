@@ -1,35 +1,35 @@
 @interface LSRegistrantServerStrategy
-- (id)preUnregistrationContextForBundleIdentifier:(id)a3;
-- (void)enumerateSystemEXExtensionPoints:(id)a3;
-- (void)runSyncBlockInWriteContext:(id)a3;
+- (id)preUnregistrationContextForBundleIdentifier:(id)identifier;
+- (void)enumerateSystemEXExtensionPoints:(id)points;
+- (void)runSyncBlockInWriteContext:(id)context;
 @end
 
 @implementation LSRegistrantServerStrategy
 
-- (id)preUnregistrationContextForBundleIdentifier:(id)a3
+- (id)preUnregistrationContextForBundleIdentifier:(id)identifier
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[_LSInstallProgressService sharedInstance];
-  v10[0] = v3;
+  v10[0] = identifierCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   v6 = [v4 _prepareApplicationProxiesForNotification:0 identifiers:v5 withPlugins:0];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
   v8 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return firstObject;
 }
 
-- (void)runSyncBlockInWriteContext:(id)a3
+- (void)runSyncBlockInWriteContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = +[LSDBExecutionContext sharedServerInstance];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __57__LSRegistrantServerStrategy_runSyncBlockInWriteContext___block_invoke;
   v6[3] = &unk_1E6A1A660;
-  v5 = v3;
+  v5 = contextCopy;
   v7 = v5;
   [(LSDBExecutionContext *)v4 syncWrite:v6];
 }
@@ -40,10 +40,10 @@ void __57__LSRegistrantServerStrategy_runSyncBlockInWriteContext___block_invoke(
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)enumerateSystemEXExtensionPoints:(id)a3
+- (void)enumerateSystemEXExtensionPoints:(id)points
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  pointsCopy = points;
   [getEXEnumeratorClass() extensionPointDefinitionEnumerator];
   v13 = 0u;
   v14 = 0u;
@@ -64,7 +64,7 @@ LABEL_3:
 
       v8 = *(*(&v11 + 1) + 8 * v7);
       v10 = 0;
-      v3[2](v3, v8, &v10);
+      pointsCopy[2](pointsCopy, v8, &v10);
       if (v10)
       {
         break;

@@ -4,9 +4,9 @@
 - (void)_createNewChargingViewIfNecessary;
 - (void)_updateChargingViewIfNecessary;
 - (void)_updateChargingViewLegibility;
-- (void)connectedDevicesDidChange:(id)a3;
+- (void)connectedDevicesDidChange:(id)change;
 - (void)dealloc;
-- (void)performChargingAnimation:(id)a3;
+- (void)performChargingAnimation:(id)animation;
 - (void)viewDidLoad;
 @end
 
@@ -50,17 +50,17 @@
   [(AMUIBatteryChargingViewController *)self _updateChargingViewIfNecessary];
 }
 
-- (void)performChargingAnimation:(id)a3
+- (void)performChargingAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   [(AMUIBatteryChargingViewController *)self _updateChargingViewLegibility];
-  [(AMUIBatteryChargingView *)self->_chargingView presentChargingViewWithCompletionHandler:v4];
+  [(AMUIBatteryChargingView *)self->_chargingView presentChargingViewWithCompletionHandler:animationCopy];
 }
 
 - (void)_updateChargingViewIfNecessary
 {
-  v3 = [(AMUIBatteryChargingViewController *)self _internalBattery];
-  [(AMUIBatteryChargingView *)self->_chargingView updateWithBattery:v3];
+  _internalBattery = [(AMUIBatteryChargingViewController *)self _internalBattery];
+  [(AMUIBatteryChargingView *)self->_chargingView updateWithBattery:_internalBattery];
 }
 
 - (void)_createNewChargingViewIfNecessary
@@ -69,8 +69,8 @@
   {
     v14 = +[AMUIBatteryChargingUIConfiguration defaultConfiguration];
     v3 = [AMUIBatteryChargingView batteryChargingRingViewWithConfiguration:v14];
-    v4 = [(AMUIBatteryChargingViewController *)self view];
-    [v4 bounds];
+    view = [(AMUIBatteryChargingViewController *)self view];
+    [view bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -139,15 +139,15 @@ LABEL_11:
   return v3;
 }
 
-- (void)connectedDevicesDidChange:(id)a3
+- (void)connectedDevicesDidChange:(id)change
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  changeCopy = change;
+  v5 = [changeCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -159,7 +159,7 @@ LABEL_11:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(changeCopy);
         }
 
         if ([*(*(&v10 + 1) + 8 * v8) isPowerSource])
@@ -173,7 +173,7 @@ LABEL_11:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [changeCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;

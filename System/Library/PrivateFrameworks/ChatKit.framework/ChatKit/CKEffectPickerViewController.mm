@@ -1,36 +1,36 @@
 @interface CKEffectPickerViewController
 - (CGPoint)balloonViewOrigin;
 - (CGRect)sendButtonFrame;
-- (CKEffectPickerViewController)initWithComposition:(id)a3 sendButtonFrame:(CGRect)a4 balloonViewOrigin:(CGPoint)a5 color:(char)a6 gradientReferenceView:(id)a7;
+- (CKEffectPickerViewController)initWithComposition:(id)composition sendButtonFrame:(CGRect)frame balloonViewOrigin:(CGPoint)origin color:(char)color gradientReferenceView:(id)view;
 - (CKEffectPickerViewControllerDelegate)delegate;
-- (void)effectPickerViewDidFinishAnimatingIn:(id)a3;
-- (void)effectSelectedWithIdentifier:(id)a3;
-- (void)handleTouchMoved:(CGPoint)a3;
-- (void)handleTouchUp:(CGPoint)a3;
+- (void)effectPickerViewDidFinishAnimatingIn:(id)in;
+- (void)effectSelectedWithIdentifier:(id)identifier;
+- (void)handleTouchMoved:(CGPoint)moved;
+- (void)handleTouchUp:(CGPoint)up;
 - (void)presentPicker;
-- (void)setCloseButtonYPosition:(double)a3;
-- (void)setSemanticContentAttribute:(id)a3 forceLTR:(BOOL)a4;
+- (void)setCloseButtonYPosition:(double)position;
+- (void)setSemanticContentAttribute:(id)attribute forceLTR:(BOOL)r;
 - (void)touchUpInsideCloseButton;
-- (void)updateColor:(char)a3;
-- (void)updateHintTransition:(double)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)updateColor:(char)color;
+- (void)updateHintTransition:(double)transition;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CKEffectPickerViewController
 
-- (CKEffectPickerViewController)initWithComposition:(id)a3 sendButtonFrame:(CGRect)a4 balloonViewOrigin:(CGPoint)a5 color:(char)a6 gradientReferenceView:(id)a7
+- (CKEffectPickerViewController)initWithComposition:(id)composition sendButtonFrame:(CGRect)frame balloonViewOrigin:(CGPoint)origin color:(char)color gradientReferenceView:(id)view
 {
-  v8 = a6;
-  y = a5.y;
-  x = a5.x;
-  height = a4.size.height;
-  width = a4.size.width;
-  v13 = a4.origin.y;
-  v14 = a4.origin.x;
-  v16 = a3;
-  v17 = a7;
+  colorCopy = color;
+  y = origin.y;
+  x = origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  v13 = frame.origin.y;
+  v14 = frame.origin.x;
+  compositionCopy = composition;
+  viewCopy = view;
   v65.receiver = self;
   v65.super_class = CKEffectPickerViewController;
   v18 = [(CKEffectPickerViewController *)&v65 init];
@@ -39,22 +39,22 @@
   {
     [(CKEffectPickerViewController *)v18 setSendButtonFrame:v14, v13, width, height];
     [(CKEffectPickerViewController *)v19 setBalloonViewOrigin:x, y];
-    v20 = [(CKEffectPickerViewController *)v19 view];
-    v21 = [v20 layer];
-    [v21 setAllowsGroupBlending:0];
+    view = [(CKEffectPickerViewController *)v19 view];
+    layer = [view layer];
+    [layer setAllowsGroupBlending:0];
 
     v22 = +[CKUIBehavior sharedBehaviors];
-    v23 = [v22 isAccessibilityPreferredContentSizeCategory];
+    isAccessibilityPreferredContentSizeCategory = [v22 isAccessibilityPreferredContentSizeCategory];
 
     v24 = off_1E72E4D68;
-    if (!v23)
+    if (!isAccessibilityPreferredContentSizeCategory)
     {
       v24 = off_1E72E4D70;
     }
 
     v25 = objc_alloc(*v24);
-    v26 = [(CKEffectPickerViewController *)v19 view];
-    [v26 bounds];
+    view2 = [(CKEffectPickerViewController *)v19 view];
+    [view2 bounds];
     v28 = v27;
     v30 = v29;
     v32 = v31;
@@ -65,21 +65,21 @@
     v40 = v39;
     v42 = v41;
     [(CKEffectPickerViewController *)v19 balloonViewOrigin];
-    v64 = v16;
-    v45 = [v25 initWithFrame:v16 sendButtonFrame:v8 balloonViewOrigin:v17 composition:v28 color:v30 gradientReferenceView:{v32, v34, v36, v38, v40, v42, v43, v44}];
+    v64 = compositionCopy;
+    v45 = [v25 initWithFrame:compositionCopy sendButtonFrame:colorCopy balloonViewOrigin:viewCopy composition:v28 color:v30 gradientReferenceView:{v32, v34, v36, v38, v40, v42, v43, v44}];
 
     [v45 setAutoresizingMask:18];
-    v46 = [(CKEffectPickerViewController *)v19 view];
-    [v46 bounds];
+    view3 = [(CKEffectPickerViewController *)v19 view];
+    [view3 bounds];
     [v45 setFrame:?];
 
     [v45 setAccessibilityIdentifier:@"EffectPickerView"];
     [v45 setDelegate:v19];
     [(CKEffectPickerViewController *)v19 setPickerView:v45];
-    [v20 addSubview:v45];
+    [view addSubview:v45];
     if ([*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1)
     {
-      [(CKEffectPickerViewController *)v19 setSemanticContentAttribute:v20 forceLTR:1];
+      [(CKEffectPickerViewController *)v19 setSemanticContentAttribute:view forceLTR:1];
     }
 
     v47 = CKFrameworkBundle();
@@ -106,26 +106,26 @@
     v62 = [v61 localizedStringForKey:@"IMPACT_PICKER_IMPACT_DESCRIPTION" value:&stru_1F04268F8 table:@"ChatKit"];
     [v45 addEffect:v60 withDescriptiveText:v62 withIdentifier:@"com.apple.MobileSMS.expressivesend.impact"];
 
-    v16 = v64;
+    compositionCopy = v64;
   }
 
   return v19;
 }
 
-- (void)setSemanticContentAttribute:(id)a3 forceLTR:(BOOL)a4
+- (void)setSemanticContentAttribute:(id)attribute forceLTR:(BOOL)r
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  obj = [a3 subviews];
+  obj = [attribute subviews];
   v6 = [obj countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v16;
-    v9 = !a4;
+    v9 = !r;
     do
     {
       v10 = 0;
@@ -162,100 +162,100 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CKEffectPickerViewController;
-  [(CKEffectPickerViewController *)&v5 viewWillAppear:a3];
-  v4 = [(CKEffectPickerViewController *)self pickerView];
-  [v4 _adjustMainLabelAndTypeSegmentedControlIfNecessary];
+  [(CKEffectPickerViewController *)&v5 viewWillAppear:appear];
+  pickerView = [(CKEffectPickerViewController *)self pickerView];
+  [pickerView _adjustMainLabelAndTypeSegmentedControlIfNecessary];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = CKEffectPickerViewController;
-  [(CKEffectPickerViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(CKEffectPickerViewController *)self pickerView];
-  [v4 invalidateAllAnimationTimers];
+  [(CKEffectPickerViewController *)&v5 viewWillDisappear:disappear];
+  pickerView = [(CKEffectPickerViewController *)self pickerView];
+  [pickerView invalidateAllAnimationTimers];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  v5 = [(CKEffectPickerViewController *)self delegate:a4];
+  v5 = [(CKEffectPickerViewController *)self delegate:coordinator];
   [v5 effectPickerViewControllerClose:self animated:0];
 }
 
 - (void)presentPicker
 {
-  v2 = [(CKEffectPickerViewController *)self pickerView];
-  [v2 _animateIn];
+  pickerView = [(CKEffectPickerViewController *)self pickerView];
+  [pickerView _animateIn];
 }
 
-- (void)updateHintTransition:(double)a3
+- (void)updateHintTransition:(double)transition
 {
-  v4 = [(CKEffectPickerViewController *)self pickerView];
-  [v4 updateHintTransition:a3];
+  pickerView = [(CKEffectPickerViewController *)self pickerView];
+  [pickerView updateHintTransition:transition];
 }
 
-- (void)updateColor:(char)a3
+- (void)updateColor:(char)color
 {
-  v3 = a3;
-  v4 = [(CKEffectPickerViewController *)self pickerView];
-  [v4 updateColor:v3];
+  colorCopy = color;
+  pickerView = [(CKEffectPickerViewController *)self pickerView];
+  [pickerView updateColor:colorCopy];
 }
 
-- (void)handleTouchUp:(CGPoint)a3
+- (void)handleTouchUp:(CGPoint)up
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CKEffectPickerViewController *)self pickerView];
-  v7 = [(CKEffectPickerViewController *)self pickerView];
-  [v6 convertPoint:v7 toView:{x, y}];
+  y = up.y;
+  x = up.x;
+  pickerView = [(CKEffectPickerViewController *)self pickerView];
+  pickerView2 = [(CKEffectPickerViewController *)self pickerView];
+  [pickerView convertPoint:pickerView2 toView:{x, y}];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CKEffectPickerViewController *)self pickerView];
-  [v12 handleTouchUp:{v9, v11}];
+  pickerView3 = [(CKEffectPickerViewController *)self pickerView];
+  [pickerView3 handleTouchUp:{v9, v11}];
 }
 
-- (void)handleTouchMoved:(CGPoint)a3
+- (void)handleTouchMoved:(CGPoint)moved
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CKEffectPickerViewController *)self pickerView];
-  v7 = [(CKEffectPickerViewController *)self pickerView];
-  [v6 convertPoint:v7 toView:{x, y}];
+  y = moved.y;
+  x = moved.x;
+  pickerView = [(CKEffectPickerViewController *)self pickerView];
+  pickerView2 = [(CKEffectPickerViewController *)self pickerView];
+  [pickerView convertPoint:pickerView2 toView:{x, y}];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CKEffectPickerViewController *)self pickerView];
-  [v12 handleTouchMoved:{v9, v11}];
+  pickerView3 = [(CKEffectPickerViewController *)self pickerView];
+  [pickerView3 handleTouchMoved:{v9, v11}];
 }
 
-- (void)setCloseButtonYPosition:(double)a3
+- (void)setCloseButtonYPosition:(double)position
 {
-  v4 = [(CKEffectPickerViewController *)self pickerView];
-  [v4 setCloseButtonYPosition:a3];
+  pickerView = [(CKEffectPickerViewController *)self pickerView];
+  [pickerView setCloseButtonYPosition:position];
 }
 
-- (void)effectPickerViewDidFinishAnimatingIn:(id)a3
+- (void)effectPickerViewDidFinishAnimatingIn:(id)in
 {
-  v3 = [(CKEffectPickerViewController *)self pickerView];
-  [v3 _startSwitcherAnimationIfNecessary];
+  pickerView = [(CKEffectPickerViewController *)self pickerView];
+  [pickerView _startSwitcherAnimationIfNecessary];
 }
 
 - (void)touchUpInsideCloseButton
 {
-  v3 = [(CKEffectPickerViewController *)self delegate];
-  [v3 effectPickerViewControllerClose:self animated:0];
+  delegate = [(CKEffectPickerViewController *)self delegate];
+  [delegate effectPickerViewControllerClose:self animated:0];
 }
 
-- (void)effectSelectedWithIdentifier:(id)a3
+- (void)effectSelectedWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CKEffectPickerViewController *)self delegate];
-  [v5 effectPickerViewController:self effectWithIdentifierSelected:v4];
+  identifierCopy = identifier;
+  delegate = [(CKEffectPickerViewController *)self delegate];
+  [delegate effectPickerViewController:self effectWithIdentifierSelected:identifierCopy];
 }
 
 - (CKEffectPickerViewControllerDelegate)delegate

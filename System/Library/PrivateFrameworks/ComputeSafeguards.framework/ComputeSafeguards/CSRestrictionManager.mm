@@ -1,71 +1,71 @@
 @interface CSRestrictionManager
-+ (id)sharedInstanceWithDataProvider:(id)a3;
-- (BOOL)applyDefaultRestrictionsToProcess:(id)a3;
-- (BOOL)applyPluggedInRestrictionsToProcess:(id)a3;
-- (BOOL)applyRestrictionsToProcess:(id)a3 forScenario:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)_initWithDataProvider:(id)a3;
-- (id)determineScenarioForProcess:(id)a3;
-- (id)getInfoForProcess:(id)a3;
-- (id)updateRestrictionsDataForScenarios:(id)a3;
-- (unint64_t)applyRestriction:(id)a3 withProcessIdentifier:(id)a4;
-- (void)checkScheduledIntensiveInNewProcesses:(id)a3;
-- (void)clearMitigationRecordsWithHandler:(id)a3;
-- (void)clearRestrictionsForProcess:(id)a3;
++ (id)sharedInstanceWithDataProvider:(id)provider;
+- (BOOL)applyDefaultRestrictionsToProcess:(id)process;
+- (BOOL)applyPluggedInRestrictionsToProcess:(id)process;
+- (BOOL)applyRestrictionsToProcess:(id)process forScenario:(id)scenario;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)_initWithDataProvider:(id)provider;
+- (id)determineScenarioForProcess:(id)process;
+- (id)getInfoForProcess:(id)process;
+- (id)updateRestrictionsDataForScenarios:(id)scenarios;
+- (unint64_t)applyRestriction:(id)restriction withProcessIdentifier:(id)identifier;
+- (void)checkScheduledIntensiveInNewProcesses:(id)processes;
+- (void)clearMitigationRecordsWithHandler:(id)handler;
+- (void)clearRestrictionsForProcess:(id)process;
 - (void)clearTargetProcess;
-- (void)currentActiveScenarios:(id)a3 previousActiveScenarios:(id)a4;
-- (void)determineAndApplyRestrictionsForProcess:(id)a3;
-- (void)forceCPUViolationForProcess:(id)a3 withHandler:(id)a4;
-- (void)forceDetectionWithStartTime:(id)a3 endTime:(id)a4 withHandler:(id)a5;
-- (void)forceDetectorViolationForProcess:(id)a3 withHandler:(id)a4;
-- (void)forceMidnightRoutineWithHandler:(id)a3;
-- (void)getActiveScenariosWithHandler:(id)a3;
-- (void)getCpuPercentageTriggerForWindowEndDate:(id)a3 windowStartDate:(id)a4 handler:(id)a5;
-- (void)getDefaultsWithHandler:(id)a3;
-- (void)getInfoForProcess:(id)a3 withHandler:(id)a4;
-- (void)getMaxRelaunchPollingIntervalWithHandler:(id)a3;
-- (void)getMitigationPolicyWithHandler:(id)a3;
-- (void)getMonitoredListWithHandler:(id)a3;
-- (void)getPenaltyListWithHandler:(id)a3;
-- (void)getPollingIntervalWithHandler:(id)a3;
-- (void)getProcessesAffectedByScenarioMapWithHandler:(id)a3;
-- (void)getRelaunchPollingIntervalWithHandler:(id)a3;
-- (void)getRestrictionsForProcess:(id)a3 forScenario:(id)a4 withHandler:(id)a5;
-- (void)getScenarioRefreshIntervalWithHandler:(id)a3;
-- (void)getScenariosWithHandler:(id)a3;
-- (void)getTargetProcessMitigationRecordsWithHandler:(id)a3;
-- (void)getTargetProcessWithHandler:(id)a3;
-- (void)getTriggerIntervalWithHandler:(id)a3;
-- (void)modifyContextForIdentifier:(id)a3 withState:(id)a4;
-- (void)modifyDefaults:(id)a3 withMaxNonFatal:(id)a4 withEnableMitigations:(id)a5 withEnablePenaltyBox:(id)a6 withPercentage:(id)a7 withSeconds:(id)a8 withPenaltyBoxDuration:(id)a9 withMitigationsPluggedIn:(id)a10 withMitigateXPCServices:(id)a11 withHandler:(id)a12;
-- (void)modifyMaxRelaunchPollingInterval:(id)a3;
-- (void)modifyPollingInterval:(id)a3;
-- (void)modifyProcessInfoFor:(id)a3 withFatalCount:(id)a4 withNonFatalCount:(id)a5 withExitCount:(id)a6 withPenaltyCount:(id)a7 withPolicyMask:(id)a8 withHandler:(id)a9;
-- (void)modifyRelaunchPollingInterval:(id)a3;
-- (void)modifyRestrictionsByProcessPerScenario:(id)a3 withHandler:(id)a4;
-- (void)modifyScenarioRefreshInterval:(id)a3;
-- (void)modifyTargetProcess:(id)a3 withPercentage:(id)a4 withSeconds:(id)a5 withPenaltyBoxDuration:(id)a6;
-- (void)modifyTargetProcessMitigationRecords:(id)a3 withHandler:(id)a4;
-- (void)observeNewRunningProcesses:(id)a3;
+- (void)currentActiveScenarios:(id)scenarios previousActiveScenarios:(id)activeScenarios;
+- (void)determineAndApplyRestrictionsForProcess:(id)process;
+- (void)forceCPUViolationForProcess:(id)process withHandler:(id)handler;
+- (void)forceDetectionWithStartTime:(id)time endTime:(id)endTime withHandler:(id)handler;
+- (void)forceDetectorViolationForProcess:(id)process withHandler:(id)handler;
+- (void)forceMidnightRoutineWithHandler:(id)handler;
+- (void)getActiveScenariosWithHandler:(id)handler;
+- (void)getCpuPercentageTriggerForWindowEndDate:(id)date windowStartDate:(id)startDate handler:(id)handler;
+- (void)getDefaultsWithHandler:(id)handler;
+- (void)getInfoForProcess:(id)process withHandler:(id)handler;
+- (void)getMaxRelaunchPollingIntervalWithHandler:(id)handler;
+- (void)getMitigationPolicyWithHandler:(id)handler;
+- (void)getMonitoredListWithHandler:(id)handler;
+- (void)getPenaltyListWithHandler:(id)handler;
+- (void)getPollingIntervalWithHandler:(id)handler;
+- (void)getProcessesAffectedByScenarioMapWithHandler:(id)handler;
+- (void)getRelaunchPollingIntervalWithHandler:(id)handler;
+- (void)getRestrictionsForProcess:(id)process forScenario:(id)scenario withHandler:(id)handler;
+- (void)getScenarioRefreshIntervalWithHandler:(id)handler;
+- (void)getScenariosWithHandler:(id)handler;
+- (void)getTargetProcessMitigationRecordsWithHandler:(id)handler;
+- (void)getTargetProcessWithHandler:(id)handler;
+- (void)getTriggerIntervalWithHandler:(id)handler;
+- (void)modifyContextForIdentifier:(id)identifier withState:(id)state;
+- (void)modifyDefaults:(id)defaults withMaxNonFatal:(id)fatal withEnableMitigations:(id)mitigations withEnablePenaltyBox:(id)box withPercentage:(id)percentage withSeconds:(id)seconds withPenaltyBoxDuration:(id)duration withMitigationsPluggedIn:(id)self0 withMitigateXPCServices:(id)self1 withHandler:(id)self2;
+- (void)modifyMaxRelaunchPollingInterval:(id)interval;
+- (void)modifyPollingInterval:(id)interval;
+- (void)modifyProcessInfoFor:(id)for withFatalCount:(id)count withNonFatalCount:(id)fatalCount withExitCount:(id)exitCount withPenaltyCount:(id)penaltyCount withPolicyMask:(id)mask withHandler:(id)handler;
+- (void)modifyRelaunchPollingInterval:(id)interval;
+- (void)modifyRestrictionsByProcessPerScenario:(id)scenario withHandler:(id)handler;
+- (void)modifyScenarioRefreshInterval:(id)interval;
+- (void)modifyTargetProcess:(id)process withPercentage:(id)percentage withSeconds:(id)seconds withPenaltyBoxDuration:(id)duration;
+- (void)modifyTargetProcessMitigationRecords:(id)records withHandler:(id)handler;
+- (void)observeNewRunningProcesses:(id)processes;
 - (void)populateScenarios;
-- (void)queueChangeForActivatedScenarios:(id)a3 deactivatedScenarios:(id)a4;
-- (void)reportScheduledIntensiveWorkByProcesses:(id)a3;
+- (void)queueChangeForActivatedScenarios:(id)scenarios deactivatedScenarios:(id)deactivatedScenarios;
+- (void)reportScheduledIntensiveWorkByProcesses:(id)processes;
 - (void)traverseRestrictionsData;
-- (void)updateScheduledIntensiveContext:(id)a3;
+- (void)updateScheduledIntensiveContext:(id)context;
 @end
 
 @implementation CSRestrictionManager
 
-+ (id)sharedInstanceWithDataProvider:(id)a3
++ (id)sharedInstanceWithDataProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__CSRestrictionManager_sharedInstanceWithDataProvider___block_invoke;
   block[3] = &unk_278DF5230;
-  v10 = v3;
+  v10 = providerCopy;
   v4 = sharedInstanceWithDataProvider__onceToken;
-  v5 = v3;
+  v5 = providerCopy;
   if (v4 != -1)
   {
     dispatch_once(&sharedInstanceWithDataProvider__onceToken, block);
@@ -84,9 +84,9 @@ uint64_t __55__CSRestrictionManager_sharedInstanceWithDataProvider___block_invok
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_initWithDataProvider:(id)a3
+- (id)_initWithDataProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v44.receiver = self;
   v44.super_class = CSRestrictionManager;
   v6 = [(CSRestrictionManager *)&v44 initWithMachServiceName:@"com.apple.computesafeguards.managing"];
@@ -97,16 +97,16 @@ uint64_t __55__CSRestrictionManager_sharedInstanceWithDataProvider___block_invok
     v6->_logger = v7;
 
     [(CSRestrictionManager *)v6 setDelegate:v6];
-    objc_storeStrong(&v6->_dataProvider, a3);
+    objc_storeStrong(&v6->_dataProvider, provider);
     v9 = +[CSScenarioManager sharedInstance];
     scenarioManager = v6->_scenarioManager;
     v6->_scenarioManager = v9;
 
-    v11 = [(CSRestrictionDataProviding *)v6->_dataProvider processesSet];
-    v12 = [(CSRestrictionDataProviding *)v6->_dataProvider processPolicyDict];
-    v13 = [(CSRestrictionDataProviding *)v6->_dataProvider band95ProcessesSet];
-    v14 = [(CSRestrictionDataProviding *)v6->_dataProvider band80ProcessesSet];
-    v15 = [CSProcessManager sharedInstanceWithEnrolledProcesses:v11 andProcessPolicies:v12 andBand95:v13 andBand80:v14];
+    processesSet = [(CSRestrictionDataProviding *)v6->_dataProvider processesSet];
+    processPolicyDict = [(CSRestrictionDataProviding *)v6->_dataProvider processPolicyDict];
+    band95ProcessesSet = [(CSRestrictionDataProviding *)v6->_dataProvider band95ProcessesSet];
+    band80ProcessesSet = [(CSRestrictionDataProviding *)v6->_dataProvider band80ProcessesSet];
+    v15 = [CSProcessManager sharedInstanceWithEnrolledProcesses:processesSet andProcessPolicies:processPolicyDict andBand95:band95ProcessesSet andBand80:band80ProcessesSet];
     processManager = v6->_processManager;
     v6->_processManager = v15;
 
@@ -122,21 +122,21 @@ uint64_t __55__CSRestrictionManager_sharedInstanceWithDataProvider___block_invok
     issueDetector = v6->_issueDetector;
     v6->_issueDetector = v21;
 
-    v23 = [(CSRestrictionDataProviding *)v6->_dataProvider restrictionsByProcessPerScenario];
+    restrictionsByProcessPerScenario = [(CSRestrictionDataProviding *)v6->_dataProvider restrictionsByProcessPerScenario];
     restrictionsByProcessPerScenario = v6->_restrictionsByProcessPerScenario;
-    v6->_restrictionsByProcessPerScenario = v23;
+    v6->_restrictionsByProcessPerScenario = restrictionsByProcessPerScenario;
 
-    v25 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     processesAffectedByScenarioMap = v6->_processesAffectedByScenarioMap;
-    v6->_processesAffectedByScenarioMap = v25;
+    v6->_processesAffectedByScenarioMap = dictionary;
 
     v27 = [MEMORY[0x277CBEB58] set];
     monitors = v6->_monitors;
     v6->_monitors = v27;
 
-    v29 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     currentRestrictionsByProcess = v6->_currentRestrictionsByProcess;
-    v6->_currentRestrictionsByProcess = v29;
+    v6->_currentRestrictionsByProcess = dictionary2;
 
     v31 = [MEMORY[0x277CBEB58] set];
     currentActiveScenarios = v6->_currentActiveScenarios;
@@ -146,18 +146,18 @@ uint64_t __55__CSRestrictionManager_sharedInstanceWithDataProvider___block_invok
     [(CSRestrictionManager *)v6 populateScenarios];
     [(CSRestrictionManager *)v6 observeProcessChanges];
     [(CSRestrictionManager *)v6 traverseRestrictionsData];
-    v33 = [MEMORY[0x277CBEB18] array];
-    v34 = [CSRestrictionFactory restrictionForClass:@"CPUTimeRestrictionBand" withProperties:&unk_28570AF98 errors:v33];
+    array = [MEMORY[0x277CBEB18] array];
+    v34 = [CSRestrictionFactory restrictionForClass:@"CPUTimeRestrictionBand" withProperties:&unk_28570AF98 errors:array];
     defaultRestriction = v6->_defaultRestriction;
     v6->_defaultRestriction = v34;
 
-    v36 = [MEMORY[0x277CBEB18] array];
-    v37 = [CSRestrictionFactory restrictionForClass:@"CPUTimeRestrictionBand" withProperties:&unk_28570AFC0 errors:v36];
+    array2 = [MEMORY[0x277CBEB18] array];
+    v37 = [CSRestrictionFactory restrictionForClass:@"CPUTimeRestrictionBand" withProperties:&unk_28570AFC0 errors:array2];
     band95Restriction = v6->_band95Restriction;
     v6->_band95Restriction = v37;
 
-    v39 = [MEMORY[0x277CBEB18] array];
-    v40 = [CSRestrictionFactory restrictionForClass:@"CPUTimeRestrictionBand" withProperties:&unk_28570AFE8 errors:v39];
+    array3 = [MEMORY[0x277CBEB18] array];
+    v40 = [CSRestrictionFactory restrictionForClass:@"CPUTimeRestrictionBand" withProperties:&unk_28570AFE8 errors:array3];
     band80Restriction = v6->_band80Restriction;
     v6->_band80Restriction = v40;
 
@@ -169,22 +169,22 @@ uint64_t __55__CSRestrictionManager_sharedInstanceWithDataProvider___block_invok
   return v6;
 }
 
-- (void)clearRestrictionsForProcess:(id)a3
+- (void)clearRestrictionsForProcess:(id)process
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  processCopy = process;
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
   {
-    [(CSRestrictionManager *)logger clearRestrictionsForProcess:v4];
+    [(CSRestrictionManager *)logger clearRestrictionsForProcess:processCopy];
   }
 
-  [v4 setNeedClearRestrictions:0];
-  [v4 setResetNonFatalCPUMonitor:0];
+  [processCopy setNeedClearRestrictions:0];
+  [processCopy setResetNonFatalCPUMonitor:0];
   v6 = 184;
   currentRestrictionsByProcess = self->_currentRestrictionsByProcess;
-  v8 = [v4 identifier];
-  v9 = [(NSMutableDictionary *)currentRestrictionsByProcess objectForKey:v8];
+  identifier = [processCopy identifier];
+  v9 = [(NSMutableDictionary *)currentRestrictionsByProcess objectForKey:identifier];
 
   if (v9)
   {
@@ -210,7 +210,7 @@ uint64_t __55__CSRestrictionManager_sharedInstanceWithDataProvider___block_invok
           }
 
           v15 = *(*(&v30 + 1) + 8 * i);
-          v16 = [v15 releaseForProcess:{v4, v27, v28}];
+          v16 = [v15 releaseForProcess:{processCopy, v27, v28}];
           if (v16)
           {
             v17 = v16;
@@ -218,13 +218,13 @@ uint64_t __55__CSRestrictionManager_sharedInstanceWithDataProvider___block_invok
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
             {
               log = v18;
-              v19 = [v4 identifier];
+              identifier2 = [processCopy identifier];
               *buf = 67109634;
               v35 = v17;
               v36 = 2112;
               v37 = v15;
               v38 = 2112;
-              v39 = v19;
+              v39 = identifier2;
               _os_log_debug_impl(&dword_243DC3000, log, OS_LOG_TYPE_DEBUG, "Failed %d to release restriction:%@ for processIdentifier:%@", buf, 0x1Cu);
             }
           }
@@ -242,12 +242,12 @@ uint64_t __55__CSRestrictionManager_sharedInstanceWithDataProvider___block_invok
 
   v20 = *(&self->super.super.isa + v6);
   v21 = [MEMORY[0x277CBEB58] set];
-  v22 = [v4 identifier];
-  [v20 setObject:v21 forKey:v22];
+  identifier3 = [processCopy identifier];
+  [v20 setObject:v21 forKey:identifier3];
 
   v23 = *(&self->super.super.isa + v6);
-  v24 = [v4 identifier];
-  v25 = [v23 objectForKey:v24];
+  identifier4 = [processCopy identifier];
+  v25 = [v23 objectForKey:identifier4];
 
   v26 = *MEMORY[0x277D85DE8];
 }
@@ -327,16 +327,16 @@ uint64_t __55__CSRestrictionManager_sharedInstanceWithDataProvider___block_invok
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)updateRestrictionsDataForScenarios:(id)a3
+- (id)updateRestrictionsDataForScenarios:(id)scenarios
 {
   v66 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  scenariosCopy = scenarios;
   v40 = [MEMORY[0x277CBEB58] set];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = v4;
+  obj = scenariosCopy;
   v42 = [obj countByEnumeratingWithState:&v55 objects:v65 count:16];
   if (v42)
   {
@@ -396,8 +396,8 @@ uint64_t __55__CSRestrictionManager_sharedInstanceWithDataProvider___block_invok
           v49 = 0u;
           v50 = 0u;
           v46 = v16;
-          v45 = [v16 allKeys];
-          v17 = [v45 countByEnumeratingWithState:&v47 objects:v63 count:16];
+          allKeys = [v16 allKeys];
+          v17 = [allKeys countByEnumeratingWithState:&v47 objects:v63 count:16];
           if (v17)
           {
             v18 = v17;
@@ -408,7 +408,7 @@ uint64_t __55__CSRestrictionManager_sharedInstanceWithDataProvider___block_invok
               {
                 if (*v48 != v19)
                 {
-                  objc_enumerationMutation(v45);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v21 = *(*(&v47 + 1) + 8 * k);
@@ -416,8 +416,8 @@ uint64_t __55__CSRestrictionManager_sharedInstanceWithDataProvider___block_invok
 
                 if (!v22)
                 {
-                  v23 = [MEMORY[0x277CBEB38] dictionary];
-                  [(NSMutableDictionary *)self->_restrictionsByProcessPerScenario setObject:v23 forKeyedSubscript:v21];
+                  dictionary = [MEMORY[0x277CBEB38] dictionary];
+                  [(NSMutableDictionary *)self->_restrictionsByProcessPerScenario setObject:dictionary forKeyedSubscript:v21];
                 }
 
                 v24 = [v46 objectForKeyedSubscript:v21];
@@ -449,7 +449,7 @@ uint64_t __55__CSRestrictionManager_sharedInstanceWithDataProvider___block_invok
                 }
               }
 
-              v18 = [v45 countByEnumeratingWithState:&v47 objects:v63 count:16];
+              v18 = [allKeys countByEnumeratingWithState:&v47 objects:v63 count:16];
             }
 
             while (v18);
@@ -484,12 +484,12 @@ uint64_t __55__CSRestrictionManager_sharedInstanceWithDataProvider___block_invok
 - (void)populateScenarios
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(CSRestrictionDataProviding *)self->_dataProvider scenariosDictionary];
+  scenariosDictionary = [(CSRestrictionDataProviding *)self->_dataProvider scenariosDictionary];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  v4 = [scenariosDictionary countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v4)
   {
     v6 = v4;
@@ -502,11 +502,11 @@ uint64_t __55__CSRestrictionManager_sharedInstanceWithDataProvider___block_invok
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(scenariosDictionary);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v3 objectForKey:{v9, v14}];
+        v10 = [scenariosDictionary objectForKey:{v9, v14}];
         if (v10)
         {
           v11 = [CSScenarioFactory scenarioForIdentifier:v9 withProperties:v10];
@@ -525,7 +525,7 @@ uint64_t __55__CSRestrictionManager_sharedInstanceWithDataProvider___block_invok
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v6 = [scenariosDictionary countByEnumeratingWithState:&v15 objects:v21 count:16];
     }
 
     while (v6);
@@ -537,33 +537,33 @@ uint64_t __55__CSRestrictionManager_sharedInstanceWithDataProvider___block_invok
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28570E0D0];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v5 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_INFO))
   {
     v8 = logger;
     v11[0] = 67109120;
-    v11[1] = [v5 processIdentifier];
+    v11[1] = [connectionCopy processIdentifier];
     _os_log_impl(&dword_243DC3000, v8, OS_LOG_TYPE_INFO, "Accepted new connection from pid %d", v11, 8u);
   }
 
-  [v5 resume];
+  [connectionCopy resume];
 
   v9 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-- (BOOL)applyPluggedInRestrictionsToProcess:(id)a3
+- (BOOL)applyPluggedInRestrictionsToProcess:(id)process
 {
-  v4 = a3;
-  v5 = [(CSProcessManager *)self->_processManager processForIdentifier:v4];
+  processCopy = process;
+  v5 = [(CSProcessManager *)self->_processManager processForIdentifier:processCopy];
   if (v5)
   {
     [(CSRestrictionManager *)self clearRestrictionsForProcess:v5];
@@ -577,20 +577,20 @@ uint64_t __55__CSRestrictionManager_sharedInstanceWithDataProvider___block_invok
   return v5 != 0;
 }
 
-- (unint64_t)applyRestriction:(id)a3 withProcessIdentifier:(id)a4
+- (unint64_t)applyRestriction:(id)restriction withProcessIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSProcessManager *)self->_processManager processForIdentifier:v7];
+  restrictionCopy = restriction;
+  identifierCopy = identifier;
+  v8 = [(CSProcessManager *)self->_processManager processForIdentifier:identifierCopy];
   if (v8)
   {
     v22 = 0;
     v23 = 0;
     v21 = 0;
-    v9 = [v6 cpuThreshold];
-    v10 = [v6 timeWindow];
-    v11 = [v8 trackedPIDs];
-    v12 = [v11 count];
+    cpuThreshold = [restrictionCopy cpuThreshold];
+    timeWindow = [restrictionCopy timeWindow];
+    trackedPIDs = [v8 trackedPIDs];
+    v12 = [trackedPIDs count];
 
     if (!v12)
     {
@@ -599,16 +599,16 @@ uint64_t __55__CSRestrictionManager_sharedInstanceWithDataProvider___block_invok
         [CSRestrictionManager applyRestriction:withProcessIdentifier:];
       }
 
-      v14 = 255;
+      mitigationType = 255;
       goto LABEL_30;
     }
 
     [(CSMitigationManager *)self->_mitigationManager policyMitigationsEnabled];
     if ([v8 policyBitMask])
     {
-      v15 = [v8 rootDaemon];
+      rootDaemon = [v8 rootDaemon];
       v16 = os_log_type_enabled(self->_logger, OS_LOG_TYPE_DEBUG);
-      if (v15)
+      if (rootDaemon)
       {
         if (v16)
         {
@@ -647,31 +647,31 @@ uint64_t __55__CSRestrictionManager_sharedInstanceWithDataProvider___block_invok
     [v8 setMitigationType:0];
     [v8 setMitigationReason:v13];
 LABEL_23:
-    [(CSMitigationManager *)self->_mitigationManager checkOverridesForProcess:v7 penaltyBoxDuration:&v23 cpuThreshold:&v22 timeWindow:&v21];
+    [(CSMitigationManager *)self->_mitigationManager checkOverridesForProcess:identifierCopy penaltyBoxDuration:&v23 cpuThreshold:&v22 timeWindow:&v21];
     if (v22)
     {
       v17 = [MEMORY[0x277CCABB0] numberWithLongLong:?];
 
-      v9 = v17;
+      cpuThreshold = v17;
     }
 
     if (v21)
     {
       v18 = [MEMORY[0x277CCABB0] numberWithLongLong:?];
 
-      v10 = v18;
+      timeWindow = v18;
     }
 
-    [v6 releaseForProcess:v8];
-    [v8 setCpuThreshold:v9];
-    [v8 setCpuTimeWindow:v10];
+    [restrictionCopy releaseForProcess:v8];
+    [v8 setCpuThreshold:cpuThreshold];
+    [v8 setCpuTimeWindow:timeWindow];
     logger = self->_logger;
     if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
     {
-      [(CSRestrictionManager *)logger applyRestriction:v8 withProcessIdentifier:v7];
+      [(CSRestrictionManager *)logger applyRestriction:v8 withProcessIdentifier:identifierCopy];
     }
 
-    v14 = [v8 mitigationType];
+    mitigationType = [v8 mitigationType];
 LABEL_30:
 
     goto LABEL_31;
@@ -682,18 +682,18 @@ LABEL_30:
     [CSRestrictionManager applyRestriction:withProcessIdentifier:];
   }
 
-  v14 = 255;
+  mitigationType = 255;
 LABEL_31:
 
-  return v14;
+  return mitigationType;
 }
 
-- (BOOL)applyRestrictionsToProcess:(id)a3 forScenario:(id)a4
+- (BOOL)applyRestrictionsToProcess:(id)process forScenario:(id)scenario
 {
   v65 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSProcessManager *)self->_processManager processForIdentifier:v6];
+  processCopy = process;
+  scenarioCopy = scenario;
+  v8 = [(CSProcessManager *)self->_processManager processForIdentifier:processCopy];
   v9 = os_log_type_enabled(self->_logger, OS_LOG_TYPE_DEBUG);
   if (v8)
   {
@@ -702,26 +702,26 @@ LABEL_31:
       [CSRestrictionManager applyRestrictionsToProcess:forScenario:];
     }
 
-    v10 = [(NSMutableDictionary *)self->_restrictionsByProcessPerScenario objectForKey:v6];
+    v10 = [(NSMutableDictionary *)self->_restrictionsByProcessPerScenario objectForKey:processCopy];
 
     if (v10)
     {
-      v11 = [(NSMutableDictionary *)self->_restrictionsByProcessPerScenario objectForKeyedSubscript:v6];
-      v12 = [v11 objectForKey:v7];
+      v11 = [(NSMutableDictionary *)self->_restrictionsByProcessPerScenario objectForKeyedSubscript:processCopy];
+      v12 = [v11 objectForKey:scenarioCopy];
 
       if (v12)
       {
-        v13 = [(NSMutableDictionary *)self->_restrictionsByProcessPerScenario objectForKeyedSubscript:v6];
-        v14 = [v13 objectForKeyedSubscript:v7];
-        v15 = [v14 restrictions];
+        v13 = [(NSMutableDictionary *)self->_restrictionsByProcessPerScenario objectForKeyedSubscript:processCopy];
+        v14 = [v13 objectForKeyedSubscript:scenarioCopy];
+        restrictions = [v14 restrictions];
 
-        v16 = [MEMORY[0x277CBEB98] setWithArray:v15];
+        v16 = [MEMORY[0x277CBEB98] setWithArray:restrictions];
         if (([v8 needClearRestrictions] & 1) != 0 || objc_msgSend(v8, "resetNonFatalCPUMonitor"))
         {
           [(CSRestrictionManager *)self clearRestrictionsForProcess:v8];
         }
 
-        v17 = [(NSMutableDictionary *)self->_currentRestrictionsByProcess objectForKey:v6];
+        v17 = [(NSMutableDictionary *)self->_currentRestrictionsByProcess objectForKey:processCopy];
         if (v17)
         {
           objc_opt_class();
@@ -732,9 +732,9 @@ LABEL_31:
             if (os_log_type_enabled(logger, OS_LOG_TYPE_INFO))
             {
               *buf = 138412546;
-              *v64 = v6;
+              *v64 = processCopy;
               *&v64[8] = 2112;
-              *&v64[10] = v7;
+              *&v64[10] = scenarioCopy;
               _os_log_impl(&dword_243DC3000, logger, OS_LOG_TYPE_INFO, "Restrictions are unchanged for processIdentifier:%@ for scenario:%@", buf, 0x16u);
             }
 
@@ -749,9 +749,9 @@ LABEL_61:
             *buf = 138412802;
             *v64 = v17;
             *&v64[8] = 2112;
-            *&v64[10] = v6;
+            *&v64[10] = processCopy;
             *&v64[18] = 2112;
-            *&v64[20] = v7;
+            *&v64[20] = scenarioCopy;
             _os_log_debug_impl(&dword_243DC3000, v20, OS_LOG_TYPE_DEBUG, "Clear current restrictions %@ for processIdentifier:%@ in scenario:%@", buf, 0x20u);
           }
 
@@ -765,9 +765,9 @@ LABEL_61:
           if (v22)
           {
             v23 = v22;
-            v48 = v7;
+            v48 = scenarioCopy;
             v50 = v16;
-            v46 = v15;
+            v46 = restrictions;
             v24 = *v58;
             while (2)
             {
@@ -791,7 +791,7 @@ LABEL_61:
                     *&v64[4] = 2112;
                     *&v64[6] = v26;
                     *&v64[14] = 2112;
-                    *&v64[16] = v6;
+                    *&v64[16] = processCopy;
                     _os_log_error_impl(&dword_243DC3000, v29, OS_LOG_TYPE_ERROR, "Failed %d to release restriction:%@ for processIdentifier:%@, skipping any further restrictions", buf, 0x1Cu);
                   }
 
@@ -811,8 +811,8 @@ LABEL_61:
 
             v45 = 1;
 LABEL_36:
-            v15 = v46;
-            v7 = v48;
+            restrictions = v46;
+            scenarioCopy = v48;
             v16 = v50;
           }
 
@@ -830,16 +830,16 @@ LABEL_36:
 
         currentRestrictionsByProcess = self->_currentRestrictionsByProcess;
         v31 = [MEMORY[0x277CBEB58] set];
-        [(NSMutableDictionary *)currentRestrictionsByProcess setObject:v31 forKey:v6];
+        [(NSMutableDictionary *)currentRestrictionsByProcess setObject:v31 forKey:processCopy];
 
-        v32 = [v7 isEqualToString:@"ScheduledIntensive"];
+        v32 = [scenarioCopy isEqualToString:@"ScheduledIntensive"];
         v33 = self->_logger;
         if (v32)
         {
           if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            *v64 = v6;
+            *v64 = processCopy;
             _os_log_impl(&dword_243DC3000, v33, OS_LOG_TYPE_DEFAULT, "Do not apply any restriction to processIdentifier:%@ while temporarily exempted", buf, 0xCu);
           }
 
@@ -866,8 +866,8 @@ LABEL_36:
           if (v35)
           {
             v36 = v35;
-            v47 = v15;
-            v49 = v7;
+            v47 = restrictions;
+            v49 = scenarioCopy;
             v37 = *v54;
             while (2)
             {
@@ -879,7 +879,7 @@ LABEL_36:
                 }
 
                 v39 = *(*(&v53 + 1) + 8 * j);
-                [(CSRestrictionManager *)self applyRestriction:v39 withProcessIdentifier:v6];
+                [(CSRestrictionManager *)self applyRestriction:v39 withProcessIdentifier:processCopy];
                 v40 = [v39 applyToProcess:v8];
                 v41 = self->_logger;
                 if (v40)
@@ -890,8 +890,8 @@ LABEL_36:
                   }
 
                   v19 = 0;
-                  v15 = v47;
-                  v7 = v49;
+                  restrictions = v47;
+                  scenarioCopy = v49;
                   v16 = v51;
                   v17 = v52;
                   goto LABEL_60;
@@ -902,11 +902,11 @@ LABEL_36:
                   *buf = 138412546;
                   *v64 = v39;
                   *&v64[8] = 2112;
-                  *&v64[10] = v6;
+                  *&v64[10] = processCopy;
                   _os_log_impl(&dword_243DC3000, v41, OS_LOG_TYPE_INFO, "Successfully applied restriction: %@ to processIdentifier: %@", buf, 0x16u);
                 }
 
-                v42 = [(NSMutableDictionary *)self->_currentRestrictionsByProcess objectForKeyedSubscript:v6];
+                v42 = [(NSMutableDictionary *)self->_currentRestrictionsByProcess objectForKeyedSubscript:processCopy];
                 [v42 addObject:v39];
               }
 
@@ -919,8 +919,8 @@ LABEL_36:
               break;
             }
 
-            v15 = v47;
-            v7 = v49;
+            restrictions = v47;
+            scenarioCopy = v49;
           }
 
           v16 = v51;
@@ -956,11 +956,11 @@ LABEL_62:
   return v19;
 }
 
-- (BOOL)applyDefaultRestrictionsToProcess:(id)a3
+- (BOOL)applyDefaultRestrictionsToProcess:(id)process
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CSProcessManager *)self->_processManager processForIdentifier:v4];
+  processCopy = process;
+  v5 = [(CSProcessManager *)self->_processManager processForIdentifier:processCopy];
   if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_DEBUG))
   {
     [CSRestrictionManager applyDefaultRestrictionsToProcess:];
@@ -972,12 +972,12 @@ LABEL_62:
   }
 
   v6 = 184;
-  v7 = [(NSMutableDictionary *)self->_currentRestrictionsByProcess objectForKey:v4];
+  v7 = [(NSMutableDictionary *)self->_currentRestrictionsByProcess objectForKey:processCopy];
   if (!v7)
   {
     currentRestrictionsByProcess = self->_currentRestrictionsByProcess;
     v8 = [MEMORY[0x277CBEB58] set];
-    [(NSMutableDictionary *)currentRestrictionsByProcess setObject:v8 forKey:v4];
+    [(NSMutableDictionary *)currentRestrictionsByProcess setObject:v8 forKey:processCopy];
 LABEL_23:
     v15 = 1;
     goto LABEL_24;
@@ -1025,7 +1025,7 @@ LABEL_23:
           v35 = 2112;
           v36 = v13;
           v37 = 2112;
-          v38 = v4;
+          v38 = processCopy;
           _os_log_error_impl(&dword_243DC3000, logger, OS_LOG_TYPE_ERROR, "applyDefaultRestrictionsToProcess: Failed %d to release restriction:%@ for processIdentifier:%@, skipping any further restrictions", buf, 0x1Cu);
         }
 
@@ -1056,16 +1056,16 @@ LABEL_24:
 
   else
   {
-    v20 = [v5 band80Mitigations];
+    band80Mitigations = [v5 band80Mitigations];
     v19 = &OBJC_IVAR___CSRestrictionManager__defaultRestriction;
-    if (v20)
+    if (band80Mitigations)
     {
       v19 = &OBJC_IVAR___CSRestrictionManager__band80Restriction;
     }
   }
 
   v21 = *(&self->super.super.isa + *v19);
-  [(CSRestrictionManager *)self applyRestriction:v21 withProcessIdentifier:v4];
+  [(CSRestrictionManager *)self applyRestriction:v21 withProcessIdentifier:processCopy];
   v22 = [v21 applyToProcess:v5];
   v23 = self->_logger;
   if (v22)
@@ -1083,23 +1083,23 @@ LABEL_24:
     [CSRestrictionManager applyDefaultRestrictionsToProcess:];
   }
 
-  v24 = [*(&self->super.super.isa + v6) objectForKeyedSubscript:v4];
+  v24 = [*(&self->super.super.isa + v6) objectForKeyedSubscript:processCopy];
   [v24 addObject:v21];
 
   v25 = *MEMORY[0x277D85DE8];
   return v15;
 }
 
-- (void)queueChangeForActivatedScenarios:(id)a3 deactivatedScenarios:(id)a4
+- (void)queueChangeForActivatedScenarios:(id)scenarios deactivatedScenarios:(id)deactivatedScenarios
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  scenariosCopy = scenarios;
+  deactivatedScenariosCopy = deactivatedScenarios;
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v6;
+    v19 = scenariosCopy;
     _os_log_impl(&dword_243DC3000, logger, OS_LOG_TYPE_INFO, "Queueing change for activated scenarios:%@ to be re-revaluated after some debounce", buf, 0xCu);
   }
 
@@ -1110,11 +1110,11 @@ LABEL_24:
   block[1] = 3221225472;
   block[2] = __78__CSRestrictionManager_queueChangeForActivatedScenarios_deactivatedScenarios___block_invoke;
   block[3] = &unk_278DF5258;
-  v15 = v6;
-  v11 = v6;
+  v15 = scenariosCopy;
+  v11 = scenariosCopy;
   objc_copyWeak(&v17, buf);
-  v16 = v7;
-  v12 = v7;
+  v16 = deactivatedScenariosCopy;
+  v12 = deactivatedScenariosCopy;
   dispatch_after(v9, v10, block);
 
   objc_destroyWeak(&v17);
@@ -1472,15 +1472,15 @@ void __78__CSRestrictionManager_queueChangeForActivatedScenarios_deactivatedScen
   v87 = *MEMORY[0x277D85DE8];
 }
 
-- (id)determineScenarioForProcess:(id)a3
+- (id)determineScenarioForProcess:(id)process
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  processCopy = process;
   v5 = MEMORY[0x277CBEB58];
-  v33 = v4;
+  v33 = processCopy;
   v6 = [(NSMutableDictionary *)self->_restrictionsByProcessPerScenario objectForKeyedSubscript:?];
-  v7 = [v6 allKeys];
-  v8 = [v5 setWithArray:v7];
+  allKeys = [v6 allKeys];
+  v8 = [v5 setWithArray:allKeys];
 
   [v8 intersectSet:self->_currentActiveScenarios];
   if ([v8 count])
@@ -1492,7 +1492,7 @@ void __78__CSRestrictionManager_queueChangeForActivatedScenarios_deactivatedScen
         [CSRestrictionManager determineScenarioForProcess:];
       }
 
-      v9 = [v8 anyObject];
+      anyObject = [v8 anyObject];
     }
 
     else
@@ -1507,7 +1507,7 @@ void __78__CSRestrictionManager_queueChangeForActivatedScenarios_deactivatedScen
       if (v30)
       {
         v10 = 0;
-        v9 = 0;
+        anyObject = 0;
         v29 = *v39;
 LABEL_11:
         v11 = 0;
@@ -1531,14 +1531,14 @@ LABEL_11:
           v37 = 0u;
           v34 = 0u;
           v35 = 0u;
-          v15 = [v14 restrictions];
-          v16 = [v15 countByEnumeratingWithState:&v34 objects:v46 count:16];
+          restrictions = [v14 restrictions];
+          v16 = [restrictions countByEnumeratingWithState:&v34 objects:v46 count:16];
           if (v16)
           {
             v17 = v16;
             v31 = v14;
             v32 = v11;
-            v18 = 0;
+            leniencyScore = 0;
             v19 = *v35;
             while (2)
             {
@@ -1546,7 +1546,7 @@ LABEL_11:
               {
                 if (*v35 != v19)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(restrictions);
                 }
 
                 v21 = *(*(&v34 + 1) + 8 * i);
@@ -1565,20 +1565,20 @@ LABEL_11:
                   v24 = v12;
 
                   v10 = 1;
-                  v9 = v24;
+                  anyObject = v24;
                   goto LABEL_29;
                 }
 
-                if (v18 < [v21 leniencyScore])
+                if (leniencyScore < [v21 leniencyScore])
                 {
                   v23 = v12;
 
-                  v18 = [v21 leniencyScore];
-                  v9 = v23;
+                  leniencyScore = [v21 leniencyScore];
+                  anyObject = v23;
                 }
               }
 
-              v17 = [v15 countByEnumeratingWithState:&v34 objects:v46 count:16];
+              v17 = [restrictions countByEnumeratingWithState:&v34 objects:v46 count:16];
               if (v17)
               {
                 continue;
@@ -1613,7 +1613,7 @@ LABEL_29:
 
       else
       {
-        v9 = 0;
+        anyObject = 0;
       }
 
       if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_DEBUG))
@@ -1632,27 +1632,27 @@ LABEL_29:
       [CSRestrictionManager determineScenarioForProcess:];
     }
 
-    v9 = 0;
+    anyObject = 0;
   }
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return anyObject;
 }
 
-- (void)currentActiveScenarios:(id)a3 previousActiveScenarios:(id)a4
+- (void)currentActiveScenarios:(id)scenarios previousActiveScenarios:(id)activeScenarios
 {
   v48 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_currentActiveScenarios, a3);
-  v9 = [MEMORY[0x277CBEB58] setWithSet:v7];
-  [v9 minusSet:v8];
-  v36 = [MEMORY[0x277CBEB58] setWithSet:v8];
-  [v36 minusSet:v7];
-  v35 = v7;
-  v10 = [MEMORY[0x277CBEB58] setWithSet:v7];
-  [v10 intersectSet:v8];
+  scenariosCopy = scenarios;
+  activeScenariosCopy = activeScenarios;
+  objc_storeStrong(&self->_currentActiveScenarios, scenarios);
+  v9 = [MEMORY[0x277CBEB58] setWithSet:scenariosCopy];
+  [v9 minusSet:activeScenariosCopy];
+  v36 = [MEMORY[0x277CBEB58] setWithSet:activeScenariosCopy];
+  [v36 minusSet:scenariosCopy];
+  v35 = scenariosCopy;
+  v10 = [MEMORY[0x277CBEB58] setWithSet:scenariosCopy];
+  [v10 intersectSet:activeScenariosCopy];
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
@@ -1756,8 +1756,8 @@ LABEL_13:
   }
 
   currentActiveScenariosWithRestrictions = self->_currentActiveScenariosWithRestrictions;
-  v33 = [v8 allObjects];
-  [(NSMutableDictionary *)currentActiveScenariosWithRestrictions removeObjectsForKeys:v33];
+  allObjects = [activeScenariosCopy allObjects];
+  [(NSMutableDictionary *)currentActiveScenariosWithRestrictions removeObjectsForKeys:allObjects];
 
   if ([v12 count] || objc_msgSend(v36, "count"))
   {
@@ -1767,16 +1767,16 @@ LABEL_13:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeNewRunningProcesses:(id)a3
+- (void)observeNewRunningProcesses:(id)processes
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(CSRestrictionManager *)self checkScheduledIntensiveInNewProcesses:v4];
+  processesCopy = processes;
+  [(CSRestrictionManager *)self checkScheduledIntensiveInNewProcesses:processesCopy];
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v4;
+  obj = processesCopy;
   v5 = [obj countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v5)
   {
@@ -1815,12 +1815,12 @@ LABEL_13:
             v18 = v12;
             v19 = v11;
             v20 = v10;
-            v21 = [(CSRestrictionManager *)self logger];
-            if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
+            logger = [(CSRestrictionManager *)self logger];
+            if (os_log_type_enabled(logger, OS_LOG_TYPE_INFO))
             {
               *buf = v23;
               v31 = v14;
-              _os_log_impl(&dword_243DC3000, v21, OS_LOG_TYPE_INFO, "No scenarios available for processIdentifier: %@. Proceeding to apply default policy.", buf, 0xCu);
+              _os_log_impl(&dword_243DC3000, logger, OS_LOG_TYPE_INFO, "No scenarios available for processIdentifier: %@. Proceeding to apply default policy.", buf, 0xCu);
             }
 
             [(CSRestrictionManager *)self applyDefaultRestrictionsToProcess:v14];
@@ -1856,12 +1856,12 @@ LABEL_13:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkScheduledIntensiveInNewProcesses:(id)a3
+- (void)checkScheduledIntensiveInNewProcesses:(id)processes
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_unknownScheduledIntensiveProcesses && [v4 count])
+  processesCopy = processes;
+  v5 = processesCopy;
+  if (processesCopy && self->_unknownScheduledIntensiveProcesses && [processesCopy count])
   {
     if ([v5 intersectsSet:self->_scheduledIntensiveProcesses])
     {
@@ -1975,43 +1975,43 @@ LABEL_15:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)determineAndApplyRestrictionsForProcess:(id)a3
+- (void)determineAndApplyRestrictionsForProcess:(id)process
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CSRestrictionManager *)self determineScenarioForProcess:v4];
+  processCopy = process;
+  v5 = [(CSRestrictionManager *)self determineScenarioForProcess:processCopy];
   if (gMitigationsWhilePluggedIn || ![(NSSet *)self->_currentActiveScenarios containsObject:@"Charging"])
   {
     if (v5)
     {
-      [(CSRestrictionManager *)self applyRestrictionsToProcess:v4 forScenario:v5];
+      [(CSRestrictionManager *)self applyRestrictionsToProcess:processCopy forScenario:v5];
     }
 
     else
     {
-      v6 = [(CSRestrictionManager *)self logger];
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+      logger = [(CSRestrictionManager *)self logger];
+      if (os_log_type_enabled(logger, OS_LOG_TYPE_INFO))
       {
         v8 = 138412290;
-        v9 = v4;
-        _os_log_impl(&dword_243DC3000, v6, OS_LOG_TYPE_INFO, "No scenarios available for process: %@. Proceeding to apply default policy.", &v8, 0xCu);
+        v9 = processCopy;
+        _os_log_impl(&dword_243DC3000, logger, OS_LOG_TYPE_INFO, "No scenarios available for process: %@. Proceeding to apply default policy.", &v8, 0xCu);
       }
 
-      [(CSRestrictionManager *)self applyDefaultRestrictionsToProcess:v4];
+      [(CSRestrictionManager *)self applyDefaultRestrictionsToProcess:processCopy];
     }
   }
 
   else
   {
-    [(CSRestrictionManager *)self applyPluggedInRestrictionsToProcess:v4];
+    [(CSRestrictionManager *)self applyPluggedInRestrictionsToProcess:processCopy];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportScheduledIntensiveWorkByProcesses:(id)a3
+- (void)reportScheduledIntensiveWorkByProcesses:(id)processes
 {
-  v4 = a3;
+  processesCopy = processes;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x2020000000;
@@ -2027,9 +2027,9 @@ LABEL_15:
   v8 = 3221225472;
   v9 = __64__CSRestrictionManager_reportScheduledIntensiveWorkByProcesses___block_invoke;
   v10 = &unk_278DF5280;
-  v6 = v4;
+  v6 = processesCopy;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v13 = &v15;
   v14 = v21;
   dispatch_sync(v5, &v7);
@@ -2100,16 +2100,16 @@ void __64__CSRestrictionManager_reportScheduledIntensiveWorkByProcesses___block_
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateScheduledIntensiveContext:(id)a3
+- (void)updateScheduledIntensiveContext:(id)context
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v26 = [MEMORY[0x277CBEB38] dictionary];
+  contextCopy = context;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v3;
+  obj = contextCopy;
   v4 = [obj countByEnumeratingWithState:&v27 objects:v33 count:16];
   if (v4)
   {
@@ -2134,15 +2134,15 @@ void __64__CSRestrictionManager_reportScheduledIntensiveWorkByProcesses___block_
         v32[2] = v9;
         v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:3];
 
-        v11 = [MEMORY[0x277CBEB18] array];
-        v12 = [CSRestrictionFactory restrictionForClass:@"CPUTimeRestriction" withProperties:v10 errors:v11];
+        array = [MEMORY[0x277CBEB18] array];
+        v12 = [CSRestrictionFactory restrictionForClass:@"CPUTimeRestriction" withProperties:v10 errors:array];
 
         if (v12)
         {
           v13 = [MEMORY[0x277CBEA60] arrayWithObject:v12];
           v14 = objc_alloc_init(CSScenarioRestrictionsAttributesTemplate);
           [(CSScenarioRestrictionsAttributesTemplate *)v14 setRestrictions:v13];
-          [v26 setObject:v14 forKeyedSubscript:v8];
+          [dictionary setObject:v14 forKeyedSubscript:v8];
         }
       }
 
@@ -2154,8 +2154,8 @@ void __64__CSRestrictionManager_reportScheduledIntensiveWorkByProcesses___block_
 
   v15 = [obj count] != 0;
   v16 = [MEMORY[0x277CCABB0] numberWithInt:v15];
-  v17 = [(CSRestrictionManager *)self logger];
-  if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+  logger = [(CSRestrictionManager *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
   {
     [CSRestrictionManager updateScheduledIntensiveContext:];
   }
@@ -2164,21 +2164,21 @@ void __64__CSRestrictionManager_reportScheduledIntensiveWorkByProcesses___block_
   if (safeguardsDaemon || (initComputeSafeguards(), v19 = objc_claimAutoreleasedReturnValue(), v20 = self->_safeguardsDaemon, self->_safeguardsDaemon = v19, v20, (safeguardsDaemon = self->_safeguardsDaemon) != 0))
   {
     v21 = [MEMORY[0x277CCABB0] numberWithInt:0];
-    v22 = [MEMORY[0x277CBEB38] dictionary];
-    [(CSDaemon *)safeguardsDaemon updateContextForIdentifier:@"ScheduledIntensiveActivities" withState:v21 withRestrictions:v22];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    [(CSDaemon *)safeguardsDaemon updateContextForIdentifier:@"ScheduledIntensiveActivities" withState:v21 withRestrictions:dictionary2];
 
     if ([obj count])
     {
-      [(CSDaemon *)self->_safeguardsDaemon updateContextForIdentifier:@"ScheduledIntensiveActivities" withState:v16 withRestrictions:v26];
+      [(CSDaemon *)self->_safeguardsDaemon updateContextForIdentifier:@"ScheduledIntensiveActivities" withState:v16 withRestrictions:dictionary];
     }
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getScenariosWithHandler:(id)a3
+- (void)getScenariosWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -2194,7 +2194,7 @@ void __64__CSRestrictionManager_reportScheduledIntensiveWorkByProcesses___block_
   v6[5] = &v7;
   dispatch_sync(v5, v6);
 
-  v4[2](v4, v8[5]);
+  handlerCopy[2](handlerCopy, v8[5]);
   _Block_object_dispose(&v7, 8);
 }
 
@@ -2208,9 +2208,9 @@ void __48__CSRestrictionManager_getScenariosWithHandler___block_invoke(uint64_t 
   *(v4 + 40) = v3;
 }
 
-- (void)getActiveScenariosWithHandler:(id)a3
+- (void)getActiveScenariosWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -2226,7 +2226,7 @@ void __48__CSRestrictionManager_getScenariosWithHandler___block_invoke(uint64_t 
   v6[5] = &v7;
   dispatch_sync(v5, v6);
 
-  v4[2](v4, v8[5]);
+  handlerCopy[2](handlerCopy, v8[5]);
   _Block_object_dispose(&v7, 8);
 }
 
@@ -2240,9 +2240,9 @@ uint64_t __54__CSRestrictionManager_getActiveScenariosWithHandler___block_invoke
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)getProcessesAffectedByScenarioMapWithHandler:(id)a3
+- (void)getProcessesAffectedByScenarioMapWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -2258,7 +2258,7 @@ uint64_t __54__CSRestrictionManager_getActiveScenariosWithHandler___block_invoke
   v6[5] = &v7;
   dispatch_sync(v5, v6);
 
-  v4[2](v4, v8[5]);
+  handlerCopy[2](handlerCopy, v8[5]);
   _Block_object_dispose(&v7, 8);
 }
 
@@ -2272,11 +2272,11 @@ uint64_t __69__CSRestrictionManager_getProcessesAffectedByScenarioMapWithHandler
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)getRestrictionsForProcess:(id)a3 forScenario:(id)a4 withHandler:(id)a5
+- (void)getRestrictionsForProcess:(id)process forScenario:(id)scenario withHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  processCopy = process;
+  scenarioCopy = scenario;
+  handlerCopy = handler;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -2289,11 +2289,11 @@ uint64_t __69__CSRestrictionManager_getProcessesAffectedByScenarioMapWithHandler
   block[2] = __74__CSRestrictionManager_getRestrictionsForProcess_forScenario_withHandler___block_invoke;
   block[3] = &unk_278DF52A8;
   block[4] = self;
-  v12 = v8;
+  v12 = processCopy;
   v16 = v12;
-  v13 = v10;
+  v13 = handlerCopy;
   v18 = v13;
-  v14 = v9;
+  v14 = scenarioCopy;
   v17 = v14;
   v19 = &v20;
   dispatch_sync(v11, block);
@@ -2418,41 +2418,41 @@ LABEL_27:
   v27();
 }
 
-- (void)getPollingIntervalWithHandler:(id)a3
+- (void)getPollingIntervalWithHandler:(id)handler
 {
   processManager = self->_processManager;
-  v5 = a3;
-  v6 = [(CSProcessManager *)processManager getPollingInterval];
-  (*(a3 + 2))(v5, v6);
+  handlerCopy = handler;
+  getPollingInterval = [(CSProcessManager *)processManager getPollingInterval];
+  (*(handler + 2))(handlerCopy, getPollingInterval);
 }
 
-- (void)getRelaunchPollingIntervalWithHandler:(id)a3
+- (void)getRelaunchPollingIntervalWithHandler:(id)handler
 {
   processManager = self->_processManager;
-  v5 = a3;
-  v6 = [(CSProcessManager *)processManager getRelaunchPollingInterval];
-  (*(a3 + 2))(v5, v6);
+  handlerCopy = handler;
+  getRelaunchPollingInterval = [(CSProcessManager *)processManager getRelaunchPollingInterval];
+  (*(handler + 2))(handlerCopy, getRelaunchPollingInterval);
 }
 
-- (void)getMaxRelaunchPollingIntervalWithHandler:(id)a3
+- (void)getMaxRelaunchPollingIntervalWithHandler:(id)handler
 {
   processManager = self->_processManager;
-  v5 = a3;
-  v6 = [(CSProcessManager *)processManager getMaxRelaunchPollingInterval];
-  (*(a3 + 2))(v5, v6);
+  handlerCopy = handler;
+  getMaxRelaunchPollingInterval = [(CSProcessManager *)processManager getMaxRelaunchPollingInterval];
+  (*(handler + 2))(handlerCopy, getMaxRelaunchPollingInterval);
 }
 
-- (void)getTriggerIntervalWithHandler:(id)a3
+- (void)getTriggerIntervalWithHandler:(id)handler
 {
   triggerManager = self->_triggerManager;
-  v5 = a3;
-  v6 = [(CSTriggerManager *)triggerManager getTriggerInterval];
-  (*(a3 + 2))(v5, v6);
+  handlerCopy = handler;
+  getTriggerInterval = [(CSTriggerManager *)triggerManager getTriggerInterval];
+  (*(handler + 2))(handlerCopy, getTriggerInterval);
 }
 
-- (void)getScenarioRefreshIntervalWithHandler:(id)a3
+- (void)getScenarioRefreshIntervalWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -2468,7 +2468,7 @@ LABEL_27:
   v6[5] = &v7;
   dispatch_sync(v5, v6);
 
-  v4[2](v4, v8[5]);
+  handlerCopy[2](handlerCopy, v8[5]);
   _Block_object_dispose(&v7, 8);
 }
 
@@ -2482,9 +2482,9 @@ uint64_t __62__CSRestrictionManager_getScenarioRefreshIntervalWithHandler___bloc
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)getTargetProcessWithHandler:(id)a3
+- (void)getTargetProcessWithHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v6 = 0;
   v7 = &v6;
   v8 = 0x3032000000;
@@ -2499,7 +2499,7 @@ uint64_t __62__CSRestrictionManager_getScenarioRefreshIntervalWithHandler___bloc
   block[4] = &v6;
   dispatch_sync(v4, block);
 
-  v3[2](v3, v7[5]);
+  handlerCopy[2](handlerCopy, v7[5]);
   _Block_object_dispose(&v6, 8);
 }
 
@@ -2550,86 +2550,86 @@ void __52__CSRestrictionManager_getTargetProcessWithHandler___block_invoke(uint6
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getInfoForProcess:(id)a3
+- (id)getInfoForProcess:(id)process
 {
   v86[28] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  processCopy = process;
   v5 = getMainQueue();
   dispatch_assert_queue_V2(v5);
 
-  if (v4)
+  if (processCopy)
   {
-    v68 = self;
+    selfCopy = self;
     CurrentTime = getCurrentTime();
-    v7 = [v4 penaltyBoxEndTime];
-    v8 = v7;
-    if (v7 <= CurrentTime || v7 == 0)
+    penaltyBoxEndTime = [processCopy penaltyBoxEndTime];
+    v8 = penaltyBoxEndTime;
+    if (penaltyBoxEndTime <= CurrentTime || penaltyBoxEndTime == 0)
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = v7 - CurrentTime;
+      v10 = penaltyBoxEndTime - CurrentTime;
     }
 
     v85[0] = @"currentTimeSecs";
     v70 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:CurrentTime];
     v86[0] = v70;
     v85[1] = @"uuid";
-    v67 = [v4 uuid];
-    v65 = [v67 UUIDString];
-    v86[1] = v65;
+    uuid = [processCopy uuid];
+    uUIDString = [uuid UUIDString];
+    v86[1] = uUIDString;
     v85[2] = @"identifier";
-    v64 = [v4 identifier];
-    v86[2] = v64;
+    identifier = [processCopy identifier];
+    v86[2] = identifier;
     v85[3] = @"processName";
-    v63 = [v4 processName];
-    v86[3] = v63;
+    processName = [processCopy processName];
+    v86[3] = processName;
     v85[4] = @"trackedPIDs/CoalitionID";
-    v62 = [v4 trackedPIDs];
-    v86[4] = v62;
+    trackedPIDs = [processCopy trackedPIDs];
+    v86[4] = trackedPIDs;
     v85[5] = @"trackedPIDkeys";
-    v61 = [v4 trackedPIDkeys];
-    v86[5] = v61;
+    trackedPIDkeys = [processCopy trackedPIDkeys];
+    v86[5] = trackedPIDkeys;
     v85[6] = @"previousPIDs/CoalitionID";
-    v60 = [v4 previousPIDs];
-    v86[6] = v60;
+    previousPIDs = [processCopy previousPIDs];
+    v86[6] = previousPIDs;
     v85[7] = @"previousPIDkeys";
-    v59 = [v4 previousPIDkeys];
-    v86[7] = v59;
+    previousPIDkeys = [processCopy previousPIDkeys];
+    v86[7] = previousPIDkeys;
     v85[8] = @"policyBitMask";
-    v58 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "policyBitMask")}];
+    v58 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(processCopy, "policyBitMask")}];
     v86[8] = v58;
     v85[9] = @"rootDaemon";
-    v57 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "rootDaemon")}];
+    v57 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(processCopy, "rootDaemon")}];
     v86[9] = v57;
     v85[10] = @"xpcService";
-    v56 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "xpcService")}];
+    v56 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(processCopy, "xpcService")}];
     v86[10] = v56;
     v85[11] = @"exitMonitorCount";
     v11 = MEMORY[0x277CCABB0];
-    v55 = [v4 exitMonitors];
-    v54 = [v11 numberWithUnsignedLong:{objc_msgSend(v55, "count")}];
+    exitMonitors = [processCopy exitMonitors];
+    v54 = [v11 numberWithUnsignedLong:{objc_msgSend(exitMonitors, "count")}];
     v86[11] = v54;
     v85[12] = @"cpuFatalCnt";
-    v53 = [MEMORY[0x277CCABB0] numberWithDouble:{objc_msgSend(v4, "cpuFatalCnt")}];
+    v53 = [MEMORY[0x277CCABB0] numberWithDouble:{objc_msgSend(processCopy, "cpuFatalCnt")}];
     v86[12] = v53;
     v85[13] = @"cpuNonFatalCnt";
-    v52 = [MEMORY[0x277CCABB0] numberWithDouble:{objc_msgSend(v4, "cpuNonFatalCnt")}];
+    v52 = [MEMORY[0x277CCABB0] numberWithDouble:{objc_msgSend(processCopy, "cpuNonFatalCnt")}];
     v86[13] = v52;
     v85[14] = @"exitsCnt";
-    v51 = [MEMORY[0x277CCABB0] numberWithDouble:{objc_msgSend(v4, "exitsCnt")}];
+    v51 = [MEMORY[0x277CCABB0] numberWithDouble:{objc_msgSend(processCopy, "exitsCnt")}];
     v86[14] = v51;
     v85[15] = @"penaltyBoxCnt";
-    v50 = [MEMORY[0x277CCABB0] numberWithDouble:{objc_msgSend(v4, "penaltyBoxCnt")}];
+    v50 = [MEMORY[0x277CCABB0] numberWithDouble:{objc_msgSend(processCopy, "penaltyBoxCnt")}];
     v86[15] = v50;
     v85[16] = @"cpuThreshold";
-    v12 = [v4 cpuThreshold];
-    v49 = v12;
-    if (v12)
+    cpuThreshold = [processCopy cpuThreshold];
+    v49 = cpuThreshold;
+    if (cpuThreshold)
     {
-      v13 = v12;
+      v13 = cpuThreshold;
     }
 
     else
@@ -2639,11 +2639,11 @@ void __52__CSRestrictionManager_getTargetProcessWithHandler___block_invoke(uint6
 
     v86[16] = v13;
     v85[17] = @"cpuTimeWindow";
-    v14 = [v4 cpuTimeWindow];
-    v48 = v14;
-    if (v14)
+    cpuTimeWindow = [processCopy cpuTimeWindow];
+    v48 = cpuTimeWindow;
+    if (cpuTimeWindow)
     {
-      v15 = v14;
+      v15 = cpuTimeWindow;
     }
 
     else
@@ -2653,16 +2653,16 @@ void __52__CSRestrictionManager_getTargetProcessWithHandler___block_invoke(uint6
 
     v86[17] = v15;
     v85[18] = @"cpuMonitored";
-    v47 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "cpuMonitored")}];
+    v47 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(processCopy, "cpuMonitored")}];
     v86[18] = v47;
     v85[19] = @"inPenaltyBox";
-    v46 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "inPenaltyBox")}];
+    v46 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(processCopy, "inPenaltyBox")}];
     v86[19] = v46;
     v85[20] = @"penaltyBoxPending";
-    v16 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "penaltyBoxPending")}];
+    v16 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(processCopy, "penaltyBoxPending")}];
     v86[20] = v16;
     v85[21] = @"penaltyBoxDurationMins";
-    v17 = [MEMORY[0x277CCABB0] numberWithLong:{objc_msgSend(v4, "penaltyBoxDurationMins")}];
+    v17 = [MEMORY[0x277CCABB0] numberWithLong:{objc_msgSend(processCopy, "penaltyBoxDurationMins")}];
     v86[21] = v17;
     v85[22] = @"penaltyBoxEndTime";
     v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v8];
@@ -2671,11 +2671,11 @@ void __52__CSRestrictionManager_getTargetProcessWithHandler___block_invoke(uint6
     v19 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v10];
     v86[23] = v19;
     v85[24] = @"penaltyBoxCoalitionIDs/timeStamp";
-    v20 = [v4 penaltyBoxCoalitionIDs];
-    v86[24] = v20;
+    penaltyBoxCoalitionIDs = [processCopy penaltyBoxCoalitionIDs];
+    v86[24] = penaltyBoxCoalitionIDs;
     v85[25] = @"issueType";
-    v69 = v4;
-    v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:{PEIssueTypeString(objc_msgSend(v4, "issueType"))}];
+    v69 = processCopy;
+    v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:{PEIssueTypeString(objc_msgSend(processCopy, "issueType"))}];
     v86[25] = v21;
     v85[26] = @"mitigationType";
     v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:{PEMitigationTypeString(objc_msgSend(v69, "mitigationType"))}];
@@ -2685,79 +2685,79 @@ void __52__CSRestrictionManager_getTargetProcessWithHandler___block_invoke(uint6
     v86[27] = v23;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v86 forKeys:v85 count:28];
 
-    v4 = v69;
+    processCopy = v69;
     v25 = v24;
     v72 = 0u;
     v73 = 0u;
     v74 = 0u;
     v75 = 0u;
-    v26 = [v69 trackedPIDs];
-    v27 = [v26 countByEnumeratingWithState:&v72 objects:v84 count:16];
+    trackedPIDs2 = [v69 trackedPIDs];
+    v27 = [trackedPIDs2 countByEnumeratingWithState:&v72 objects:v84 count:16];
     if (v27)
     {
       v28 = v27;
       v66 = v25;
       v29 = 0;
-      v30 = 0;
+      dictionary = 0;
       v31 = *v73;
-      v32 = v68;
+      v32 = selfCopy;
       do
       {
         for (i = 0; i != v28; ++i)
         {
           if (*v73 != v31)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(trackedPIDs2);
           }
 
           v34 = *(*(&v72 + 1) + 8 * i);
 
-          if (!v30)
+          if (!dictionary)
           {
-            v30 = [MEMORY[0x277CBEB38] dictionary];
+            dictionary = [MEMORY[0x277CBEB38] dictionary];
           }
 
           v29 = v34;
-          v35 = [v34 intValue];
+          intValue = [v34 intValue];
           *__error() = 0;
-          v36 = getpriority(9, v35);
+          v36 = getpriority(9, intValue);
           if (*__error())
           {
-            v37 = [(CSRestrictionManager *)v32 logger];
-            if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+            logger = [(CSRestrictionManager *)v32 logger];
+            if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
             {
               v71 = *__error();
               v38 = __error();
               v39 = strerror(*v38);
-              v40 = [v4 identifier];
+              identifier2 = [processCopy identifier];
               *buf = 67109890;
               v77 = v71;
               v78 = 2080;
               v79 = v39;
-              v32 = v68;
+              v32 = selfCopy;
               v80 = 2112;
-              v81 = v40;
+              v81 = identifier2;
               v82 = 1024;
-              v83 = v35;
-              _os_log_error_impl(&dword_243DC3000, v37, OS_LOG_TYPE_ERROR, "getInfoForProcess: getpriority(PRIO_DARWIN_RUNAWAY_MITIGATION) failed %d (%s) for process:%@ (%d)", buf, 0x22u);
+              v83 = intValue;
+              _os_log_error_impl(&dword_243DC3000, logger, OS_LOG_TYPE_ERROR, "getInfoForProcess: getpriority(PRIO_DARWIN_RUNAWAY_MITIGATION) failed %d (%s) for process:%@ (%d)", buf, 0x22u);
 
-              v4 = v69;
+              processCopy = v69;
             }
           }
 
           else
           {
-            v37 = [MEMORY[0x277CCABB0] numberWithInt:v36];
-            [v30 setObject:v37 forKey:v29];
+            logger = [MEMORY[0x277CCABB0] numberWithInt:v36];
+            [dictionary setObject:logger forKey:v29];
           }
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v72 objects:v84 count:16];
+        v28 = [trackedPIDs2 countByEnumeratingWithState:&v72 objects:v84 count:16];
       }
 
       while (v28);
 
-      if (!v30)
+      if (!dictionary)
       {
         v25 = v66;
         v41 = v66;
@@ -2766,25 +2766,25 @@ void __52__CSRestrictionManager_getTargetProcessWithHandler___block_invoke(uint6
 
       v25 = v66;
       v41 = [v66 mutableCopy];
-      [v41 setValue:v30 forKey:@"pid/priority"];
-      v26 = v66;
+      [v41 setValue:dictionary forKey:@"pid/priority"];
+      trackedPIDs2 = v66;
     }
 
     else
     {
-      v30 = 0;
+      dictionary = 0;
       v41 = v25;
     }
 
 LABEL_35:
-    v42 = v41;
+    logger2 = v41;
 
-    v43 = v42;
+    v43 = logger2;
     goto LABEL_36;
   }
 
-  v42 = [(CSRestrictionManager *)self logger];
-  if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
+  logger2 = [(CSRestrictionManager *)self logger];
+  if (os_log_type_enabled(logger2, OS_LOG_TYPE_ERROR))
   {
     [CSRestrictionManager getInfoForProcess:];
   }
@@ -2797,10 +2797,10 @@ LABEL_36:
   return v43;
 }
 
-- (void)getInfoForProcess:(id)a3 withHandler:(id)a4
+- (void)getInfoForProcess:(id)process withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  processCopy = process;
+  handlerCopy = handler;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -2819,7 +2819,7 @@ LABEL_36:
   block[2] = __54__CSRestrictionManager_getInfoForProcess_withHandler___block_invoke;
   block[3] = &unk_278DF52F8;
   block[4] = self;
-  v9 = v6;
+  v9 = processCopy;
   v15 = v9;
   v16 = &v17;
   dispatch_sync(v8, block);
@@ -2836,19 +2836,19 @@ LABEL_36:
     v13[6] = &v17;
     dispatch_sync(v10, v13);
 
-    v7[2](v7, v24[5], 0);
+    handlerCopy[2](handlerCopy, v24[5], 0);
   }
 
   else
   {
-    v11 = [(CSRestrictionManager *)self logger];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    logger = [(CSRestrictionManager *)self logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
     {
       [CSRestrictionManager getInfoForProcess:withHandler:];
     }
 
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CSRestrictionManagerErrorDomain" code:0 userInfo:0];
-    (v7)[2](v7, 0, v12);
+    (handlerCopy)[2](handlerCopy, 0, v12);
   }
 
   _Block_object_dispose(&v17, 8);
@@ -2879,10 +2879,10 @@ uint64_t __54__CSRestrictionManager_getInfoForProcess_withHandler___block_invoke
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)getDefaultsWithHandler:(id)a3
+- (void)getDefaultsWithHandler:(id)handler
 {
   v54[9] = *MEMORY[0x277D85DE8];
-  v15 = a3;
+  handlerCopy = handler;
   v49 = 0;
   v50 = &v49;
   v51 = 0x2020000000;
@@ -2964,7 +2964,7 @@ uint64_t __54__CSRestrictionManager_getInfoForProcess_withHandler___block_invoke
   v54[8] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v54 forKeys:v53 count:9];
 
-  v15[2](v15, v13, 0);
+  handlerCopy[2](handlerCopy, v13, 0);
   _Block_object_dispose(&v17, 8);
   _Block_object_dispose(&v21, 8);
   _Block_object_dispose(&v25, 8);
@@ -2992,9 +2992,9 @@ void *__47__CSRestrictionManager_getDefaultsWithHandler___block_invoke(void *res
   return result;
 }
 
-- (void)getMonitoredListWithHandler:(id)a3
+- (void)getMonitoredListWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -3012,7 +3012,7 @@ void *__47__CSRestrictionManager_getDefaultsWithHandler___block_invoke(void *res
 
   if (v16[5])
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v7 = getMainQueue();
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -3020,23 +3020,23 @@ void *__47__CSRestrictionManager_getDefaultsWithHandler___block_invoke(void *res
     v11[3] = &unk_278DF5370;
     v13 = &v15;
     v11[4] = self;
-    v8 = v6;
+    v8 = dictionary;
     v12 = v8;
     dispatch_sync(v7, v11);
 
-    v4[2](v4, v8, 0);
+    handlerCopy[2](handlerCopy, v8, 0);
   }
 
   else
   {
-    v9 = [(CSRestrictionManager *)self logger];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    logger = [(CSRestrictionManager *)self logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
     {
       [CSRestrictionManager getMonitoredListWithHandler:];
     }
 
     v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CSRestrictionManagerErrorDomain" code:4 userInfo:0];
-    (v4)[2](v4, 0, v10);
+    (handlerCopy)[2](handlerCopy, 0, v10);
 
     v8 = 0;
   }
@@ -3138,39 +3138,39 @@ void __52__CSRestrictionManager_getMonitoredListWithHandler___block_invoke_318(u
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getPenaltyListWithHandler:(id)a3
+- (void)getPenaltyListWithHandler:(id)handler
 {
   mitigationManager = self->_mitigationManager;
-  v5 = a3;
-  v6 = [(CSMitigationManager *)mitigationManager penaltyBoxProcesses];
-  if (v6)
+  handlerCopy = handler;
+  penaltyBoxProcesses = [(CSMitigationManager *)mitigationManager penaltyBoxProcesses];
+  if (penaltyBoxProcesses)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v8 = getMainQueue();
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __50__CSRestrictionManager_getPenaltyListWithHandler___block_invoke;
     block[3] = &unk_278DF5398;
-    v12 = v6;
-    v13 = self;
-    v14 = v7;
-    v9 = v7;
+    v12 = penaltyBoxProcesses;
+    selfCopy = self;
+    v14 = dictionary;
+    v9 = dictionary;
     dispatch_sync(v8, block);
 
-    v5[2](v5, v9, 0);
-    v5 = v12;
+    handlerCopy[2](handlerCopy, v9, 0);
+    handlerCopy = v12;
   }
 
   else
   {
-    v10 = [(CSRestrictionManager *)self logger];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    logger = [(CSRestrictionManager *)self logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
     {
       [CSRestrictionManager getPenaltyListWithHandler:];
     }
 
     v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CSRestrictionManagerErrorDomain" code:4 userInfo:0];
-    (v5)[2](v5, 0, v9);
+    (handlerCopy)[2](handlerCopy, 0, v9);
   }
 }
 
@@ -3257,11 +3257,11 @@ void __50__CSRestrictionManager_getPenaltyListWithHandler___block_invoke(uint64_
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getCpuPercentageTriggerForWindowEndDate:(id)a3 windowStartDate:(id)a4 handler:(id)a5
+- (void)getCpuPercentageTriggerForWindowEndDate:(id)date windowStartDate:(id)startDate handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  startDateCopy = startDate;
+  handlerCopy = handler;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -3277,14 +3277,14 @@ void __50__CSRestrictionManager_getPenaltyListWithHandler___block_invoke(uint64_
   block[3] = &unk_278DF53C0;
   v17 = &v23;
   block[4] = self;
-  v12 = v8;
+  v12 = dateCopy;
   v15 = v12;
-  v13 = v9;
+  v13 = startDateCopy;
   v16 = v13;
   v18 = &v19;
   dispatch_sync(v11, block);
 
-  (*(v10 + 2))(v10, *(v24 + 24), 0, v20[3]);
+  (*(handlerCopy + 2))(handlerCopy, *(v24 + 24), 0, v20[3]);
   _Block_object_dispose(&v19, 8);
   _Block_object_dispose(&v23, 8);
 }
@@ -3296,9 +3296,9 @@ uint64_t __88__CSRestrictionManager_getCpuPercentageTriggerForWindowEndDate_wind
   return result;
 }
 
-- (void)getTargetProcessMitigationRecordsWithHandler:(id)a3
+- (void)getTargetProcessMitigationRecordsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -3317,14 +3317,14 @@ uint64_t __88__CSRestrictionManager_getCpuPercentageTriggerForWindowEndDate_wind
   v6 = v11[5];
   if (!v6)
   {
-    v7 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     v8 = v11[5];
-    v11[5] = v7;
+    v11[5] = array;
 
     v6 = v11[5];
   }
 
-  v4[2](v4, v6, 0);
+  handlerCopy[2](handlerCopy, v6, 0);
   _Block_object_dispose(&v10, 8);
 }
 
@@ -3337,10 +3337,10 @@ void __69__CSRestrictionManager_getTargetProcessMitigationRecordsWithHandler___b
   *(v3 + 40) = v2;
 }
 
-- (void)modifyRestrictionsByProcessPerScenario:(id)a3 withHandler:(id)a4
+- (void)modifyRestrictionsByProcessPerScenario:(id)scenario withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  scenarioCopy = scenario;
+  handlerCopy = handler;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -3352,13 +3352,13 @@ void __69__CSRestrictionManager_getTargetProcessMitigationRecordsWithHandler___b
   block[1] = 3221225472;
   block[2] = __75__CSRestrictionManager_modifyRestrictionsByProcessPerScenario_withHandler___block_invoke;
   block[3] = &unk_278DF52F8;
-  v9 = v6;
+  v9 = scenarioCopy;
   v11 = v9;
-  v12 = self;
+  selfCopy = self;
   v13 = &v14;
   dispatch_sync(v8, block);
 
-  v7[2](v7, v15[5]);
+  handlerCopy[2](handlerCopy, v15[5]);
   _Block_object_dispose(&v14, 8);
 }
 
@@ -3499,59 +3499,59 @@ LABEL_24:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)modifyPollingInterval:(id)a3
+- (void)modifyPollingInterval:(id)interval
 {
-  v4 = a3;
+  intervalCopy = interval;
   v5 = getMainQueue();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__CSRestrictionManager_modifyPollingInterval___block_invoke;
   v7[3] = &unk_278DF51D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = intervalCopy;
+  v6 = intervalCopy;
   dispatch_sync(v5, v7);
 }
 
-- (void)modifyRelaunchPollingInterval:(id)a3
+- (void)modifyRelaunchPollingInterval:(id)interval
 {
-  v4 = a3;
+  intervalCopy = interval;
   v5 = getMainQueue();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__CSRestrictionManager_modifyRelaunchPollingInterval___block_invoke;
   v7[3] = &unk_278DF51D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = intervalCopy;
+  v6 = intervalCopy;
   dispatch_sync(v5, v7);
 }
 
-- (void)modifyMaxRelaunchPollingInterval:(id)a3
+- (void)modifyMaxRelaunchPollingInterval:(id)interval
 {
-  v4 = a3;
+  intervalCopy = interval;
   v5 = getMainQueue();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__CSRestrictionManager_modifyMaxRelaunchPollingInterval___block_invoke;
   v7[3] = &unk_278DF51D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = intervalCopy;
+  v6 = intervalCopy;
   dispatch_sync(v5, v7);
 }
 
-- (void)modifyScenarioRefreshInterval:(id)a3
+- (void)modifyScenarioRefreshInterval:(id)interval
 {
-  v4 = a3;
+  intervalCopy = interval;
   v5 = getMainQueue();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__CSRestrictionManager_modifyScenarioRefreshInterval___block_invoke;
   v7[3] = &unk_278DF51D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = intervalCopy;
+  v6 = intervalCopy;
   dispatch_sync(v5, v7);
 }
 
@@ -3562,25 +3562,25 @@ uint64_t __54__CSRestrictionManager_modifyScenarioRefreshInterval___block_invoke
   return result;
 }
 
-- (void)modifyTargetProcess:(id)a3 withPercentage:(id)a4 withSeconds:(id)a5 withPenaltyBoxDuration:(id)a6
+- (void)modifyTargetProcess:(id)process withPercentage:(id)percentage withSeconds:(id)seconds withPenaltyBoxDuration:(id)duration
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  processCopy = process;
+  percentageCopy = percentage;
+  secondsCopy = seconds;
+  durationCopy = duration;
   v13 = getMainQueue();
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __94__CSRestrictionManager_modifyTargetProcess_withPercentage_withSeconds_withPenaltyBoxDuration___block_invoke;
   v18[3] = &unk_278DF53E8;
-  v19 = v9;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  v17 = v9;
+  v19 = processCopy;
+  v20 = percentageCopy;
+  v21 = secondsCopy;
+  v22 = durationCopy;
+  v14 = durationCopy;
+  v15 = secondsCopy;
+  v16 = percentageCopy;
+  v17 = processCopy;
   dispatch_sync(v13, v18);
 }
 
@@ -3641,15 +3641,15 @@ void __42__CSRestrictionManager_clearTargetProcess__block_invoke(uint64_t a1)
   gTargetPenaltyBoxDurationMins = 0;
 }
 
-- (void)modifyProcessInfoFor:(id)a3 withFatalCount:(id)a4 withNonFatalCount:(id)a5 withExitCount:(id)a6 withPenaltyCount:(id)a7 withPolicyMask:(id)a8 withHandler:(id)a9
+- (void)modifyProcessInfoFor:(id)for withFatalCount:(id)count withNonFatalCount:(id)fatalCount withExitCount:(id)exitCount withPenaltyCount:(id)penaltyCount withPolicyMask:(id)mask withHandler:(id)handler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  forCopy = for;
+  countCopy = count;
+  fatalCountCopy = fatalCount;
+  exitCountCopy = exitCount;
+  penaltyCountCopy = penaltyCount;
+  maskCopy = mask;
+  handlerCopy = handler;
   v46[0] = 0;
   v46[1] = v46;
   v46[2] = 0x2020000000;
@@ -3666,7 +3666,7 @@ void __42__CSRestrictionManager_clearTargetProcess__block_invoke(uint64_t a1)
   block[2] = __136__CSRestrictionManager_modifyProcessInfoFor_withFatalCount_withNonFatalCount_withExitCount_withPenaltyCount_withPolicyMask_withHandler___block_invoke;
   block[3] = &unk_278DF52F8;
   block[4] = self;
-  v23 = v15;
+  v23 = forCopy;
   v38 = v23;
   v39 = &v40;
   dispatch_sync(v22, block);
@@ -3679,13 +3679,13 @@ void __42__CSRestrictionManager_clearTargetProcess__block_invoke(uint64_t a1)
     v28[2] = __136__CSRestrictionManager_modifyProcessInfoFor_withFatalCount_withNonFatalCount_withExitCount_withPenaltyCount_withPolicyMask_withHandler___block_invoke_320;
     v28[3] = &unk_278DF5410;
     v35 = v46;
-    v29 = v16;
+    v29 = countCopy;
     v36 = &v40;
-    v30 = v17;
-    v31 = v18;
-    v32 = v19;
-    v33 = v20;
-    v25 = v21;
+    v30 = fatalCountCopy;
+    v31 = exitCountCopy;
+    v32 = penaltyCountCopy;
+    v33 = maskCopy;
+    v25 = handlerCopy;
     v34 = v25;
     dispatch_sync(v24, v28);
 
@@ -3695,14 +3695,14 @@ void __42__CSRestrictionManager_clearTargetProcess__block_invoke(uint64_t a1)
 
   else
   {
-    v27 = [(CSRestrictionManager *)self logger];
-    if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+    logger = [(CSRestrictionManager *)self logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
     {
       [CSRestrictionManager modifyProcessInfoFor:withFatalCount:withNonFatalCount:withExitCount:withPenaltyCount:withPolicyMask:withHandler:];
     }
 
     v26 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CSRestrictionManagerErrorDomain" code:0 userInfo:0];
-    (*(v21 + 2))(v21, v26);
+    (*(handlerCopy + 2))(handlerCopy, v26);
   }
 
   _Block_object_dispose(&v40, 8);
@@ -3782,10 +3782,10 @@ uint64_t __136__CSRestrictionManager_modifyProcessInfoFor_withFatalCount_withNon
   return result;
 }
 
-- (void)modifyContextForIdentifier:(id)a3 withState:(id)a4
+- (void)modifyContextForIdentifier:(id)identifier withState:(id)state
 {
-  v10 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  stateCopy = state;
   safeguardsDaemon = self->_safeguardsDaemon;
   if (!safeguardsDaemon)
   {
@@ -3796,21 +3796,21 @@ uint64_t __136__CSRestrictionManager_modifyProcessInfoFor_withFatalCount_withNon
     safeguardsDaemon = self->_safeguardsDaemon;
   }
 
-  [(CSDaemon *)safeguardsDaemon updateContextForIdentifier:v10 withState:v6];
+  [(CSDaemon *)safeguardsDaemon updateContextForIdentifier:identifierCopy withState:stateCopy];
 }
 
-- (void)modifyDefaults:(id)a3 withMaxNonFatal:(id)a4 withEnableMitigations:(id)a5 withEnablePenaltyBox:(id)a6 withPercentage:(id)a7 withSeconds:(id)a8 withPenaltyBoxDuration:(id)a9 withMitigationsPluggedIn:(id)a10 withMitigateXPCServices:(id)a11 withHandler:(id)a12
+- (void)modifyDefaults:(id)defaults withMaxNonFatal:(id)fatal withEnableMitigations:(id)mitigations withEnablePenaltyBox:(id)box withPercentage:(id)percentage withSeconds:(id)seconds withPenaltyBoxDuration:(id)duration withMitigationsPluggedIn:(id)self0 withMitigateXPCServices:(id)self1 withHandler:(id)self2
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v32 = a7;
-  v33 = a8;
-  v34 = a9;
-  v35 = a10;
-  v36 = a11;
-  v21 = a12;
+  defaultsCopy = defaults;
+  fatalCopy = fatal;
+  mitigationsCopy = mitigations;
+  boxCopy = box;
+  percentageCopy = percentage;
+  secondsCopy = seconds;
+  durationCopy = duration;
+  inCopy = in;
+  servicesCopy = services;
+  handlerCopy = handler;
   v48[0] = 0;
   v48[1] = v48;
   v48[2] = 0x2020000000;
@@ -3821,27 +3821,27 @@ uint64_t __136__CSRestrictionManager_modifyProcessInfoFor_withFatalCount_withNon
   block[2] = __209__CSRestrictionManager_modifyDefaults_withMaxNonFatal_withEnableMitigations_withEnablePenaltyBox_withPercentage_withSeconds_withPenaltyBoxDuration_withMitigationsPluggedIn_withMitigateXPCServices_withHandler___block_invoke;
   block[3] = &unk_278DF5438;
   v47 = v48;
-  v31 = v17;
+  v31 = defaultsCopy;
   v38 = v31;
-  v23 = v18;
+  v23 = fatalCopy;
   v39 = v23;
-  v24 = v19;
+  v24 = mitigationsCopy;
   v40 = v24;
-  v25 = v20;
+  v25 = boxCopy;
   v41 = v25;
-  v26 = v32;
+  v26 = percentageCopy;
   v42 = v26;
-  v27 = v33;
+  v27 = secondsCopy;
   v43 = v27;
-  v28 = v34;
+  v28 = durationCopy;
   v44 = v28;
-  v29 = v35;
+  v29 = inCopy;
   v45 = v29;
-  v30 = v36;
+  v30 = servicesCopy;
   v46 = v30;
   dispatch_sync(v22, block);
 
-  v21[2](v21, 0);
+  handlerCopy[2](handlerCopy, 0);
   _Block_object_dispose(v48, 8);
 }
 
@@ -3905,10 +3905,10 @@ uint64_t __209__CSRestrictionManager_modifyDefaults_withMaxNonFatal_withEnableMi
   return result;
 }
 
-- (void)modifyTargetProcessMitigationRecords:(id)a3 withHandler:(id)a4
+- (void)modifyTargetProcessMitigationRecords:(id)records withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  recordsCopy = records;
+  handlerCopy = handler;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -3920,7 +3920,7 @@ uint64_t __209__CSRestrictionManager_modifyDefaults_withMaxNonFatal_withEnableMi
   block[3] = &unk_278DF5370;
   v13 = &v14;
   block[4] = self;
-  v9 = v6;
+  v9 = recordsCopy;
   v12 = v9;
   dispatch_sync(v8, block);
 
@@ -3934,7 +3934,7 @@ uint64_t __209__CSRestrictionManager_modifyDefaults_withMaxNonFatal_withEnableMi
     v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CSRestrictionManagerErrorDomain" code:5 userInfo:0];
   }
 
-  v7[2](v7, v10);
+  handlerCopy[2](handlerCopy, v10);
 
   _Block_object_dispose(&v14, 8);
 }
@@ -3946,9 +3946,9 @@ uint64_t __73__CSRestrictionManager_modifyTargetProcessMitigationRecords_withHan
   return result;
 }
 
-- (void)clearMitigationRecordsWithHandler:(id)a3
+- (void)clearMitigationRecordsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = getMainQueue();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -3957,14 +3957,14 @@ uint64_t __73__CSRestrictionManager_modifyTargetProcessMitigationRecords_withHan
   block[4] = self;
   dispatch_sync(v5, block);
 
-  v4[2](v4, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)forceMidnightRoutineWithHandler:(id)a3
+- (void)forceMidnightRoutineWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CSRestrictionManager *)self logger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  handlerCopy = handler;
+  logger = [(CSRestrictionManager *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
   {
     [CSRestrictionManager forceMidnightRoutineWithHandler:];
   }
@@ -3977,43 +3977,43 @@ uint64_t __73__CSRestrictionManager_modifyTargetProcessMitigationRecords_withHan
   block[4] = self;
   dispatch_sync(v6, block);
 
-  v4[2](v4, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)forceCPUViolationForProcess:(id)a3 withHandler:(id)a4
+- (void)forceCPUViolationForProcess:(id)process withHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSRestrictionManager *)self logger];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  handlerCopy = handler;
+  processCopy = process;
+  logger = [(CSRestrictionManager *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
   {
     [CSRestrictionManager forceCPUViolationForProcess:withHandler:];
   }
 
-  [(CSMitigationManager *)self->_mitigationManager forceCPUViolationForProcess:v7 withHandler:v6];
+  [(CSMitigationManager *)self->_mitigationManager forceCPUViolationForProcess:processCopy withHandler:handlerCopy];
 }
 
-- (void)forceDetectorViolationForProcess:(id)a3 withHandler:(id)a4
+- (void)forceDetectorViolationForProcess:(id)process withHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSRestrictionManager *)self logger];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  handlerCopy = handler;
+  processCopy = process;
+  logger = [(CSRestrictionManager *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
   {
     [CSRestrictionManager forceDetectorViolationForProcess:withHandler:];
   }
 
   v9 = +[CSIssueDetector sharedInstance];
-  [v9 forceDetectorViolationForProcess:v7 withHandler:v6];
+  [v9 forceDetectorViolationForProcess:processCopy withHandler:handlerCopy];
 }
 
-- (void)forceDetectionWithStartTime:(id)a3 endTime:(id)a4 withHandler:(id)a5
+- (void)forceDetectionWithStartTime:(id)time endTime:(id)endTime withHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CSRestrictionManager *)self logger];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+  timeCopy = time;
+  endTimeCopy = endTime;
+  handlerCopy = handler;
+  logger = [(CSRestrictionManager *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
   {
     [CSRestrictionManager forceDetectionWithStartTime:endTime:withHandler:];
   }
@@ -4023,13 +4023,13 @@ uint64_t __73__CSRestrictionManager_modifyTargetProcessMitigationRecords_withHan
   v15[1] = 3221225472;
   v15[2] = __72__CSRestrictionManager_forceDetectionWithStartTime_endTime_withHandler___block_invoke;
   v15[3] = &unk_278DF51D0;
-  v16 = v8;
-  v17 = v9;
-  v13 = v9;
-  v14 = v8;
+  v16 = timeCopy;
+  v17 = endTimeCopy;
+  v13 = endTimeCopy;
+  v14 = timeCopy;
   dispatch_sync(v12, v15);
 
-  v10[2](v10, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
 void __72__CSRestrictionManager_forceDetectionWithStartTime_endTime_withHandler___block_invoke(uint64_t a1)
@@ -4045,11 +4045,11 @@ void __72__CSRestrictionManager_forceDetectionWithStartTime_endTime_withHandler_
   [v7 detectIssuesFromStartTime:v3 endDate:v5 withRules:v6];
 }
 
-- (void)getMitigationPolicyWithHandler:(id)a3
+- (void)getMitigationPolicyWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CSRestrictionManager *)self logger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  handlerCopy = handler;
+  logger = [(CSRestrictionManager *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
   {
     [CSRestrictionManager getMitigationPolicyWithHandler:];
   }
@@ -4060,8 +4060,8 @@ void __72__CSRestrictionManager_forceDetectionWithStartTime_endTime_withHandler_
   v8[2] = __55__CSRestrictionManager_getMitigationPolicyWithHandler___block_invoke;
   v8[3] = &unk_278DF5460;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_sync(v6, v8);
 }
 

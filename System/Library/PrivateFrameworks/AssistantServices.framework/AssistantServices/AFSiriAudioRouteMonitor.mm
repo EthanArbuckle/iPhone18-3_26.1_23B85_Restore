@@ -1,37 +1,37 @@
 @interface AFSiriAudioRouteMonitor
 + (id)sharedMonitor;
 - (AFSiriAudioRoute)currentAudioRoute;
-- (BOOL)_updateAudioRouteAvailabilityAndBroadcast:(BOOL)a3;
+- (BOOL)_updateAudioRouteAvailabilityAndBroadcast:(BOOL)broadcast;
 - (id)_init;
-- (void)_broadcastRouteChangeFrom:(id)a3 to:(id)a4;
+- (void)_broadcastRouteChangeFrom:(id)from to:(id)to;
 - (void)_fetchInitialState;
-- (void)addDelegate:(id)a3;
-- (void)deviceRingerObserver:(id)a3 didChangeState:(int64_t)a4;
-- (void)initializeAVSystemControllerSubscriptions:(id)a3;
-- (void)removeDelegate:(id)a3;
-- (void)updateAudioRouteAvailability:(id)a3;
+- (void)addDelegate:(id)delegate;
+- (void)deviceRingerObserver:(id)observer didChangeState:(int64_t)state;
+- (void)initializeAVSystemControllerSubscriptions:(id)subscriptions;
+- (void)removeDelegate:(id)delegate;
+- (void)updateAudioRouteAvailability:(id)availability;
 @end
 
 @implementation AFSiriAudioRouteMonitor
 
-- (void)_broadcastRouteChangeFrom:(id)a3 to:(id)a4
+- (void)_broadcastRouteChangeFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  toCopy = to;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100134490;
   block[3] = &unk_10051DB68;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = fromCopy;
+  v13 = toCopy;
+  v9 = toCopy;
+  v10 = fromCopy;
   dispatch_async(queue, block);
 }
 
-- (void)deviceRingerObserver:(id)a3 didChangeState:(int64_t)a4
+- (void)deviceRingerObserver:(id)observer didChangeState:(int64_t)state
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
@@ -39,7 +39,7 @@
   v5[2] = sub_100134734;
   v5[3] = &unk_10051D770;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = state;
   dispatch_async(queue, v5);
 }
 
@@ -65,9 +65,9 @@
   return v3;
 }
 
-- (BOOL)_updateAudioRouteAvailabilityAndBroadcast:(BOOL)a3
+- (BOOL)_updateAudioRouteAvailabilityAndBroadcast:(BOOL)broadcast
 {
-  v3 = a3;
+  broadcastCopy = broadcast;
   v5 = self->_currentAudioRoute;
   v6 = sub_10001136C([(AFDeviceRingerSwitchObserver *)self->_ringerSwitchObserver state]);
   [(AFSiriAudioRouteMonitor *)self setCurrentAudioRoute:v6];
@@ -80,8 +80,8 @@
       btAddress = self->_btAddress;
       routeName = self->_routeName;
       v11 = v8;
-      v12 = [v6 name];
-      v13 = [v6 btAddress];
+      name = [v6 name];
+      btAddress = [v6 btAddress];
       v23 = 136316162;
       v24 = "[AFSiriAudioRouteMonitor _updateAudioRouteAvailabilityAndBroadcast:]";
       v25 = 2112;
@@ -89,9 +89,9 @@
       v27 = 2112;
       v28 = btAddress;
       v29 = 2112;
-      v30 = v12;
+      v30 = name;
       v31 = 2112;
-      v32 = v13;
+      v32 = btAddress;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s Route changed from %@(%@) to %@(%@)", &v23, 0x34u);
 
       v8 = AFSiriLogContextConnection;
@@ -100,21 +100,21 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v14 = v8;
-      v15 = [v6 avscRouteDescription];
+      avscRouteDescription = [v6 avscRouteDescription];
       v23 = 136315394;
       v24 = "[AFSiriAudioRouteMonitor _updateAudioRouteAvailabilityAndBroadcast:]";
       v25 = 2112;
-      v26 = v15;
+      v26 = avscRouteDescription;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s Currently picked - routeDescription %@", &v23, 0x16u);
     }
 
-    v16 = [v6 btAddress];
+    btAddress2 = [v6 btAddress];
     v17 = self->_btAddress;
-    self->_btAddress = v16;
+    self->_btAddress = btAddress2;
 
-    v18 = [v6 name];
+    name2 = [v6 name];
     v19 = self->_routeName;
-    self->_routeName = v18;
+    self->_routeName = name2;
 
     v20 = [v6 copy];
     v21 = AFSiriLogContextConnection;
@@ -127,7 +127,7 @@
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "%s Audio route changed to: %@", &v23, 0x16u);
     }
 
-    if (v3)
+    if (broadcastCopy)
     {
       [(AFSiriAudioRouteMonitor *)self _broadcastRouteChangeFrom:v5 to:v20];
     }
@@ -136,16 +136,16 @@
   return v7 ^ 1;
 }
 
-- (void)updateAudioRouteAvailability:(id)a3
+- (void)updateAudioRouteAvailability:(id)availability
 {
-  v4 = a3;
+  availabilityCopy = availability;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v9 = "[AFSiriAudioRouteMonitor updateAudioRouteAvailability:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = availabilityCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s Updating route availability due to: %@", buf, 0x16u);
   }
 
@@ -158,45 +158,45 @@
   dispatch_async(queue, block);
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001350F0;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100135194;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)initializeAVSystemControllerSubscriptions:(id)a3
+- (void)initializeAVSystemControllerSubscriptions:(id)subscriptions
 {
-  v4 = a3;
+  subscriptionsCopy = subscriptions;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100135238;
   v7[3] = &unk_10051E010;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = subscriptionsCopy;
+  selfCopy = self;
+  v6 = subscriptionsCopy;
   dispatch_async(queue, v7);
 }
 
@@ -296,7 +296,7 @@
   block[1] = 3221225472;
   block[2] = sub_100135D28;
   block[3] = &unk_10051E200;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100590260 != -1)
   {
     dispatch_once(&qword_100590260, block);

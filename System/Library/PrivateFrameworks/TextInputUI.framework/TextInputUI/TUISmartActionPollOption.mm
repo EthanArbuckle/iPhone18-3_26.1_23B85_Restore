@@ -1,8 +1,8 @@
 @interface TUISmartActionPollOption
-- (BOOL)isEqual:(id)a3;
-- (TUISmartActionPollOption)initWithCoder:(id)a3;
-- (TUISmartActionPollOption)initWithOption:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TUISmartActionPollOption)initWithCoder:(id)coder;
+- (TUISmartActionPollOption)initWithOption:(id)option;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -18,12 +18,12 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(NSString *)self->_option isEqualToString:v4[1]];
+    v5 = [(NSString *)self->_option isEqualToString:equalCopy[1]];
   }
 
   else
@@ -34,15 +34,15 @@
   return v5;
 }
 
-- (TUISmartActionPollOption)initWithCoder:(id)a3
+- (TUISmartActionPollOption)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = TUISmartActionPollOption;
   v5 = [(TUISmartActionPollOption *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"saPollOption"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"saPollOption"];
     v7 = v6;
     if (v6)
     {
@@ -60,23 +60,23 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   option = self->_option;
 
   return [v4 initWithOption:option];
 }
 
-- (TUISmartActionPollOption)initWithOption:(id)a3
+- (TUISmartActionPollOption)initWithOption:(id)option
 {
-  v4 = a3;
+  optionCopy = option;
   v9.receiver = self;
   v9.super_class = TUISmartActionPollOption;
   v5 = [(TUISmartActionPollOption *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [optionCopy copy];
     option = v5->_option;
     v5->_option = v6;
   }

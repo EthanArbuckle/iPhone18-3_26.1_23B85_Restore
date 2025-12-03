@@ -1,17 +1,17 @@
 @interface _UIFocusUpdateRequest
-+ (id)requestForRemovingFocusInFocusSystem:(id)a3;
-- (BOOL)canMergeWithRequest:(id)a3;
-- (BOOL)isValidInFocusSystem:(id)a3;
++ (id)requestForRemovingFocusInFocusSystem:(id)system;
+- (BOOL)canMergeWithRequest:(id)request;
+- (BOOL)isValidInFocusSystem:(id)system;
 - (UIFocusEnvironment)destinationEnvironment;
 - (UIFocusEnvironment)environment;
 - (UIFocusSystem)focusSystem;
 - (_UIFocusUpdateRequest)init;
-- (_UIFocusUpdateRequest)initWithEnvironment:(id)a3;
-- (_UIFocusUpdateRequest)initWithFocusSystem:(id)a3 environment:(id)a4;
-- (_UIFocusUpdateRequest)initWithFocusSystem:(id)a3 environment:(id)a4 destinationEnvironment:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)requestByMergingWithRequest:(id)a3;
-- (id)requestByRedirectingRequestToEnvironment:(id)a3;
+- (_UIFocusUpdateRequest)initWithEnvironment:(id)environment;
+- (_UIFocusUpdateRequest)initWithFocusSystem:(id)system environment:(id)environment;
+- (_UIFocusUpdateRequest)initWithFocusSystem:(id)system environment:(id)environment destinationEnvironment:(id)destinationEnvironment;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)requestByMergingWithRequest:(id)request;
+- (id)requestByRedirectingRequestToEnvironment:(id)environment;
 - (id)requestByRedirectingRequestToNextContainerEnvironment;
 - (void)cacheCurrentFocusSystem;
 @end
@@ -24,17 +24,17 @@
 
   if (!WeakRetained)
   {
-    v5 = [(_UIFocusUpdateRequest *)self focusSystem];
-    v7 = v5;
-    if (!v5)
+    focusSystem = [(_UIFocusUpdateRequest *)self focusSystem];
+    v7 = focusSystem;
+    if (!focusSystem)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"_UIFocusUpdateRequest.m" lineNumber:202 description:@"Unable to find focus system for request. Environment does not appear to be in a valid focus environment chain."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusUpdateRequest.m" lineNumber:202 description:@"Unable to find focus system for request. Environment does not appear to be in a valid focus environment chain."];
 
-      v5 = 0;
+      focusSystem = 0;
     }
 
-    objc_storeWeak(&self->_focusSystem, v5);
+    objc_storeWeak(&self->_focusSystem, focusSystem);
   }
 }
 
@@ -104,19 +104,19 @@
 
 - (_UIFocusUpdateRequest)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIFocusUpdateRequest.m" lineNumber:28 description:@"-init is not a valid initializer for this class."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusUpdateRequest.m" lineNumber:28 description:@"-init is not a valid initializer for this class."];
 
   return 0;
 }
 
-- (_UIFocusUpdateRequest)initWithEnvironment:(id)a3
+- (_UIFocusUpdateRequest)initWithEnvironment:(id)environment
 {
-  v5 = a3;
-  if (!v5)
+  environmentCopy = environment;
+  if (!environmentCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UIFocusUpdateRequest.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusUpdateRequest.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
   }
 
   v10.receiver = self;
@@ -126,8 +126,8 @@
   if (v6)
   {
     objc_storeWeak(&v6->_focusSystem, 0);
-    objc_storeWeak(&v7->_environment, v5);
-    objc_storeWeak(&v7->_destinationEnvironment, v5);
+    objc_storeWeak(&v7->_environment, environmentCopy);
+    objc_storeWeak(&v7->_destinationEnvironment, environmentCopy);
     v7->_allowsDeferral = 1;
     v7->_allowsOverridingPreferedFocusEnvironments = 1;
   }
@@ -135,14 +135,14 @@
   return v7;
 }
 
-- (_UIFocusUpdateRequest)initWithFocusSystem:(id)a3 environment:(id)a4
+- (_UIFocusUpdateRequest)initWithFocusSystem:(id)system environment:(id)environment
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  systemCopy = system;
+  environmentCopy = environment;
+  v9 = environmentCopy;
+  if (systemCopy)
   {
-    if (v8)
+    if (environmentCopy)
     {
       goto LABEL_3;
     }
@@ -150,8 +150,8 @@
 
   else
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_UIFocusUpdateRequest.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"focusSystem"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusUpdateRequest.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"focusSystem"}];
 
     if (v9)
     {
@@ -159,8 +159,8 @@
     }
   }
 
-  v14 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v14 handleFailureInMethod:a2 object:self file:@"_UIFocusUpdateRequest.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIFocusUpdateRequest.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
 
 LABEL_3:
   v15.receiver = self;
@@ -169,7 +169,7 @@ LABEL_3:
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_focusSystem, v7);
+    objc_storeWeak(&v10->_focusSystem, systemCopy);
     objc_storeWeak(&v11->_environment, v9);
     objc_storeWeak(&v11->_destinationEnvironment, v9);
     v11->_allowsDeferral = 1;
@@ -179,26 +179,26 @@ LABEL_3:
   return v11;
 }
 
-- (_UIFocusUpdateRequest)initWithFocusSystem:(id)a3 environment:(id)a4 destinationEnvironment:(id)a5
+- (_UIFocusUpdateRequest)initWithFocusSystem:(id)system environment:(id)environment destinationEnvironment:(id)destinationEnvironment
 {
   v52 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  systemCopy = system;
+  environmentCopy = environment;
+  destinationEnvironmentCopy = destinationEnvironment;
+  if (!destinationEnvironmentCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"_UIFocusUpdateRequest.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"destinationEnvironment"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusUpdateRequest.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"destinationEnvironment"}];
   }
 
-  if ((_UIFocusEnvironmentIsAncestorOfEnvironment(v10, v11) & 1) == 0)
+  if ((_UIFocusEnvironmentIsAncestorOfEnvironment(environmentCopy, destinationEnvironmentCopy) & 1) == 0)
   {
     _UIIsPrivateMainBundle();
     if (dyld_program_sdk_at_least())
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      v17 = v11;
-      if (v11)
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      v17 = destinationEnvironmentCopy;
+      if (destinationEnvironmentCopy)
       {
         v18 = MEMORY[0x1E696AEC0];
         v19 = objc_opt_class();
@@ -211,7 +211,7 @@ LABEL_3:
         v21 = @"(nil)";
       }
 
-      v28 = v10;
+      v28 = environmentCopy;
       if (v28)
       {
         v29 = MEMORY[0x1E696AEC0];
@@ -225,7 +225,7 @@ LABEL_3:
         v32 = @"(nil)";
       }
 
-      [v16 handleFailureInMethod:a2 object:self file:@"_UIFocusUpdateRequest.m" lineNumber:62 description:{@"Cannot request a focus update to destinationEnvironment %@ from non-ancestor environment %@", v21, v32}];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIFocusUpdateRequest.m" lineNumber:62 description:{@"Cannot request a focus update to destinationEnvironment %@ from non-ancestor environment %@", v21, v32}];
       goto LABEL_4;
     }
 
@@ -237,8 +237,8 @@ LABEL_3:
         goto LABEL_25;
       }
 
-      v39 = v11;
-      if (v11)
+      v39 = destinationEnvironmentCopy;
+      if (destinationEnvironmentCopy)
       {
         v41 = MEMORY[0x1E696AEC0];
         v42 = objc_opt_class();
@@ -252,7 +252,7 @@ LABEL_3:
       }
 
       v33 = v40;
-      v44 = v10;
+      v44 = environmentCopy;
       if (v44)
       {
         v45 = MEMORY[0x1E696AEC0];
@@ -283,8 +283,8 @@ LABEL_25:
         goto LABEL_4;
       }
 
-      v23 = v11;
-      if (v11)
+      v23 = destinationEnvironmentCopy;
+      if (destinationEnvironmentCopy)
       {
         v24 = MEMORY[0x1E696AEC0];
         v25 = objc_opt_class();
@@ -298,7 +298,7 @@ LABEL_25:
       }
 
       v33 = v27;
-      v34 = v10;
+      v34 = environmentCopy;
       if (v34)
       {
         v35 = MEMORY[0x1E696AEC0];
@@ -323,20 +323,20 @@ LABEL_25:
   }
 
 LABEL_4:
-  v12 = [(_UIFocusUpdateRequest *)self initWithFocusSystem:v9 environment:v10];
+  v12 = [(_UIFocusUpdateRequest *)self initWithFocusSystem:systemCopy environment:environmentCopy];
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_destinationEnvironment, v11);
+    objc_storeWeak(&v12->_destinationEnvironment, destinationEnvironmentCopy);
   }
 
   return v13;
 }
 
-+ (id)requestForRemovingFocusInFocusSystem:(id)a3
++ (id)requestForRemovingFocusInFocusSystem:(id)system
 {
-  v3 = a3;
-  v4 = [[_UIFocusUpdateRequest alloc] initWithFocusSystem:v3 environment:v3];
+  systemCopy = system;
+  v4 = [[_UIFocusUpdateRequest alloc] initWithFocusSystem:systemCopy environment:systemCopy];
 
   v4->_isFocusRemovalRequest = 1;
   v4->_allowsFocusingCurrentItem = 1;
@@ -344,12 +344,12 @@ LABEL_4:
   return v4;
 }
 
-- (id)requestByRedirectingRequestToEnvironment:(id)a3
+- (id)requestByRedirectingRequestToEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v5 = [(_UIFocusUpdateRequest *)self copy];
-  objc_storeWeak(v5 + 4, v4);
-  objc_storeWeak(v5 + 2, v4);
+  objc_storeWeak(v5 + 4, environmentCopy);
+  objc_storeWeak(v5 + 2, environmentCopy);
 
   objc_storeWeak(v5 + 3, 0);
 
@@ -388,7 +388,7 @@ LABEL_4:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   WeakRetained = objc_loadWeakRetained(&self->_environment);
@@ -410,15 +410,15 @@ LABEL_4:
   return v6;
 }
 
-- (BOOL)canMergeWithRequest:(id)a3
+- (BOOL)canMergeWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(_UIFocusUpdateRequest *)self focusSystem];
-  v6 = [v4 focusSystem];
-  v7 = v6;
-  if (v4)
+  requestCopy = request;
+  focusSystem = [(_UIFocusUpdateRequest *)self focusSystem];
+  focusSystem2 = [requestCopy focusSystem];
+  v7 = focusSystem2;
+  if (requestCopy)
   {
-    v8 = v5 == 0;
+    v8 = focusSystem == 0;
   }
 
   else
@@ -426,16 +426,16 @@ LABEL_4:
     v8 = 1;
   }
 
-  v10 = v8 || v5 == v6;
+  v10 = v8 || focusSystem == focusSystem2;
   WeakRetained = objc_loadWeakRetained(&self->_destinationEnvironment);
   if (WeakRetained)
   {
-    v12 = [v4 destinationEnvironment];
-    if (v12)
+    destinationEnvironment = [requestCopy destinationEnvironment];
+    if (destinationEnvironment)
     {
       v13 = objc_loadWeakRetained(&self->_destinationEnvironment);
-      v14 = [v4 destinationEnvironment];
-      v15 = v13 != v14;
+      destinationEnvironment2 = [requestCopy destinationEnvironment];
+      v15 = v13 != destinationEnvironment2;
     }
 
     else
@@ -452,8 +452,8 @@ LABEL_4:
   if (v10)
   {
     v16 = objc_loadWeakRetained(&self->_environment);
-    v17 = [v4 environment];
-    if (v16 != v17 || v15)
+    environment = [requestCopy environment];
+    if (v16 != environment || v15)
     {
       v18 = 0;
     }
@@ -461,7 +461,7 @@ LABEL_4:
     else
     {
       isFocusRemovalRequest = self->_isFocusRemovalRequest;
-      v18 = isFocusRemovalRequest == [v4 isFocusRemovalRequest];
+      v18 = isFocusRemovalRequest == [requestCopy isFocusRemovalRequest];
     }
   }
 
@@ -473,11 +473,11 @@ LABEL_4:
   return v18;
 }
 
-- (id)requestByMergingWithRequest:(id)a3
+- (id)requestByMergingWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  v6 = [(_UIFocusUpdateRequest *)self canMergeWithRequest:v4];
+  v6 = [(_UIFocusUpdateRequest *)self canMergeWithRequest:requestCopy];
   if (has_internal_diagnostics)
   {
     if (!v6)
@@ -513,7 +513,7 @@ LABEL_4:
 
   else
   {
-    v11 = objc_loadWeakRetained(v4 + 3);
+    v11 = objc_loadWeakRetained(requestCopy + 3);
     objc_storeWeak((v9 + 24), v11);
   }
 
@@ -525,84 +525,84 @@ LABEL_4:
 
   else
   {
-    v13 = objc_loadWeakRetained(v4 + 2);
+    v13 = objc_loadWeakRetained(requestCopy + 2);
     objc_storeWeak((v9 + 16), v13);
   }
 
   *(v9 + 10) = self->_isFocusRemovalRequest;
   if (self->_allowsDeferral)
   {
-    v14 = [v4 allowsDeferral];
+    allowsDeferral = [requestCopy allowsDeferral];
   }
 
   else
   {
-    v14 = 0;
+    allowsDeferral = 0;
   }
 
-  [v9 setAllowsDeferral:v14];
+  [v9 setAllowsDeferral:allowsDeferral];
   if (self->_scrollIfNecessary)
   {
-    v15 = 1;
+    shouldScrollIfNecessary = 1;
   }
 
   else
   {
-    v15 = [v4 shouldScrollIfNecessary];
+    shouldScrollIfNecessary = [requestCopy shouldScrollIfNecessary];
   }
 
-  [v9 setScrollIfNecessary:v15];
+  [v9 setScrollIfNecessary:shouldScrollIfNecessary];
   if (self->_shouldPlayFocusSound)
   {
-    v16 = 1;
+    shouldPlayFocusSound = 1;
   }
 
   else
   {
-    v16 = [v4 shouldPlayFocusSound];
+    shouldPlayFocusSound = [requestCopy shouldPlayFocusSound];
   }
 
-  [v9 setShouldPlayFocusSound:v16];
+  [v9 setShouldPlayFocusSound:shouldPlayFocusSound];
   if (self->_allowsFocusingCurrentItem)
   {
-    v17 = 1;
+    allowsFocusingCurrentItem = 1;
   }
 
   else
   {
-    v17 = [v4 allowsFocusingCurrentItem];
+    allowsFocusingCurrentItem = [requestCopy allowsFocusingCurrentItem];
   }
 
-  [v9 setAllowsFocusingCurrentItem:v17];
+  [v9 setAllowsFocusingCurrentItem:allowsFocusingCurrentItem];
   if (self->_resetsUpdateThrottle)
   {
-    v18 = 1;
+    resetsUpdateThrottle = 1;
   }
 
   else
   {
-    v18 = [v4 resetsUpdateThrottle];
+    resetsUpdateThrottle = [requestCopy resetsUpdateThrottle];
   }
 
-  [v9 setResetsUpdateThrottle:v18];
+  [v9 setResetsUpdateThrottle:resetsUpdateThrottle];
 
   return v9;
 }
 
-- (BOOL)isValidInFocusSystem:(id)a3
+- (BOOL)isValidInFocusSystem:(id)system
 {
-  v5 = a3;
-  if (!v5)
+  systemCopy = system;
+  if (!systemCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UIFocusUpdateRequest.m" lineNumber:208 description:{@"Invalid parameter not satisfying: %@", @"focusSystem"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusUpdateRequest.m" lineNumber:208 description:{@"Invalid parameter not satisfying: %@", @"focusSystem"}];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  if (WeakRetained && ([(_UIFocusUpdateRequest *)self focusSystem], v7 = objc_claimAutoreleasedReturnValue(), v7, v7 == v5))
+  if (WeakRetained && ([(_UIFocusUpdateRequest *)self focusSystem], v7 = objc_claimAutoreleasedReturnValue(), v7, v7 == systemCopy))
   {
     v9 = [UIFocusSystem focusSystemForEnvironment:WeakRetained];
-    v8 = v9 == v5;
+    v8 = v9 == systemCopy;
   }
 
   else

@@ -1,16 +1,16 @@
 @interface ACRemoteUtilities
-+ (id)localAccountMatchingRemoteAccount:(id)a3 inAccountStore:(id)a4;
++ (id)localAccountMatchingRemoteAccount:(id)account inAccountStore:(id)store;
 @end
 
 @implementation ACRemoteUtilities
 
-+ (id)localAccountMatchingRemoteAccount:(id)a3 inAccountStore:(id)a4
++ (id)localAccountMatchingRemoteAccount:(id)account inAccountStore:(id)store
 {
   v47 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 identifier];
-  v8 = [v6 accountWithIdentifier:v7];
+  accountCopy = account;
+  storeCopy = store;
+  identifier = [accountCopy identifier];
+  v8 = [storeCopy accountWithIdentifier:identifier];
 
   if (v8)
   {
@@ -24,16 +24,16 @@
     goto LABEL_33;
   }
 
-  v11 = [v5 accountType];
-  v12 = v11;
-  if (!v11 || ([v11 identifier], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
+  accountType = [accountCopy accountType];
+  v12 = accountType;
+  if (!accountType || ([accountType identifier], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
   {
     v10 = 0;
     goto LABEL_32;
   }
 
-  v14 = [v12 identifier];
-  v15 = [v6 accountTypeWithAccountTypeIdentifier:v14];
+  identifier2 = [v12 identifier];
+  v15 = [storeCopy accountTypeWithAccountTypeIdentifier:identifier2];
 
   if (!v15)
   {
@@ -41,7 +41,7 @@
     goto LABEL_31;
   }
 
-  [v6 accountsWithAccountType:v15];
+  [storeCopy accountsWithAccountType:v15];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -55,7 +55,7 @@
 
   v17 = v16;
   v38 = v15;
-  v39 = v6;
+  v39 = storeCopy;
   v18 = *v43;
   v19 = *MEMORY[0x277CB8D58];
   while (2)
@@ -68,13 +68,13 @@
       }
 
       v21 = *(*(&v42 + 1) + 8 * i);
-      v22 = [v12 identifier];
-      if ([v22 isEqualToString:v19])
+      identifier3 = [v12 identifier];
+      if ([identifier3 isEqualToString:v19])
       {
         v23 = [v21 objectForKeyedSubscript:@"dsid"];
-        [v5 objectForKeyedSubscript:@"dsid"];
+        [accountCopy objectForKeyedSubscript:@"dsid"];
         v24 = v21;
-        v25 = v5;
+        v25 = accountCopy;
         v26 = v17;
         v27 = v19;
         v28 = v18;
@@ -85,7 +85,7 @@
         v18 = v28;
         v19 = v27;
         v17 = v26;
-        v5 = v25;
+        accountCopy = v25;
         v21 = v24;
 
         if (v41)
@@ -100,7 +100,7 @@ LABEL_28:
           v15 = v38;
 
           v10 = v21;
-          v6 = v39;
+          storeCopy = v39;
           goto LABEL_29;
         }
       }
@@ -109,9 +109,9 @@ LABEL_28:
       {
       }
 
-      v31 = [v21 username];
-      v32 = [v5 username];
-      v33 = [v31 isEqualToString:v32];
+      username = [v21 username];
+      username2 = [accountCopy username];
+      v33 = [username isEqualToString:username2];
 
       if (v33)
       {
@@ -135,7 +135,7 @@ LABEL_28:
   }
 
   v10 = 0;
-  v6 = v39;
+  storeCopy = v39;
   v15 = v38;
 LABEL_29:
   v8 = 0;

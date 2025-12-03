@@ -1,22 +1,22 @@
 @interface TUIKTSingleAccountViewController
-- (TUIKTSingleAccountViewController)initWithOptions:(id)a3;
+- (TUIKTSingleAccountViewController)initWithOptions:(id)options;
 - (id)specifiers;
-- (void)specifierProvider:(id)a3 didFinishLoadingSpecifier:(id)a4;
-- (void)specifierProvider:(id)a3 showViewController:(id)a4;
-- (void)specifierProvider:(id)a3 willBeginLoadingSpecifier:(id)a4;
-- (void)validateDataclassAccessForProvider:(id)a3 specifier:(id)a4 completion:(id)a5;
+- (void)specifierProvider:(id)provider didFinishLoadingSpecifier:(id)specifier;
+- (void)specifierProvider:(id)provider showViewController:(id)controller;
+- (void)specifierProvider:(id)provider willBeginLoadingSpecifier:(id)specifier;
+- (void)validateDataclassAccessForProvider:(id)provider specifier:(id)specifier completion:(id)completion;
 @end
 
 @implementation TUIKTSingleAccountViewController
 
-- (TUIKTSingleAccountViewController)initWithOptions:(id)a3
+- (TUIKTSingleAccountViewController)initWithOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v6 = [(TUIKTSingleAccountViewController *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_options, a3);
+    objc_storeStrong(&v6->_options, options);
   }
 
   return v7;
@@ -28,7 +28,7 @@
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     accountKeySpecifierProvider = self->_accountKeySpecifierProvider;
     if (!accountKeySpecifierProvider)
     {
@@ -40,10 +40,10 @@
       accountKeySpecifierProvider = self->_accountKeySpecifierProvider;
     }
 
-    v9 = [(TUIAccountKeySpecifierProvider *)accountKeySpecifierProvider specifiers];
-    [v5 addObjectsFromArray:v9];
+    specifiers = [(TUIAccountKeySpecifierProvider *)accountKeySpecifierProvider specifiers];
+    [array addObjectsFromArray:specifiers];
 
-    v10 = [v5 copy];
+    v10 = [array copy];
     v11 = *(&self->super.super.super.super.super.isa + v3);
     *(&self->super.super.super.super.super.isa + v3) = v10;
 
@@ -53,27 +53,27 @@
   return v4;
 }
 
-- (void)specifierProvider:(id)a3 showViewController:(id)a4
+- (void)specifierProvider:(id)provider showViewController:(id)controller
 {
-  v7 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  controllerCopy = controller;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    [(TUIKTSingleAccountViewController *)self presentViewController:v6 animated:1 completion:0];
+    [(TUIKTSingleAccountViewController *)self presentViewController:controllerCopy animated:1 completion:0];
   }
 
   else
   {
-    [(TUIKTSingleAccountViewController *)self showViewController:v6 sender:v7];
+    [(TUIKTSingleAccountViewController *)self showViewController:controllerCopy sender:providerCopy];
   }
 }
 
-- (void)specifierProvider:(id)a3 willBeginLoadingSpecifier:(id)a4
+- (void)specifierProvider:(id)provider willBeginLoadingSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  specifierCopy = specifier;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_5 != -1)
   {
     [TUIKTSingleAccountViewController specifierProvider:willBeginLoadingSpecifier:];
@@ -94,10 +94,10 @@ uint64_t __80__TUIKTSingleAccountViewController_specifierProvider_willBeginLoadi
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)specifierProvider:(id)a3 didFinishLoadingSpecifier:(id)a4
+- (void)specifierProvider:(id)provider didFinishLoadingSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  specifierCopy = specifier;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_5 != -1)
   {
     [TUIKTSingleAccountViewController specifierProvider:didFinishLoadingSpecifier:];
@@ -125,11 +125,11 @@ uint64_t __87__TUIKTSingleAccountViewController_reloadSpecifiersForProvider_oldS
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)validateDataclassAccessForProvider:(id)a3 specifier:(id)a4 completion:(id)a5
+- (void)validateDataclassAccessForProvider:(id)provider specifier:(id)specifier completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  providerCopy = provider;
+  specifierCopy = specifier;
+  completionCopy = completion;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_5 != -1)
   {
     [TUIKTSingleAccountViewController validateDataclassAccessForProvider:specifier:completion:];

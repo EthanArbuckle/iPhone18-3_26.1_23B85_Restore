@@ -1,47 +1,47 @@
 @interface MFServerMessagePersistenceFactory_iOS
 - (MFMailMessageLibrary)library;
-- (MFServerMessagePersistenceFactory_iOS)initWithLibrary:(id)a3 database:(id)a4;
-- (int64_t)mailboxIDForMailboxURL:(id)a3 useNumericSearch:(BOOL *)a4 supportsLabels:(BOOL *)a5;
+- (MFServerMessagePersistenceFactory_iOS)initWithLibrary:(id)library database:(id)database;
+- (int64_t)mailboxIDForMailboxURL:(id)l useNumericSearch:(BOOL *)search supportsLabels:(BOOL *)labels;
 @end
 
 @implementation MFServerMessagePersistenceFactory_iOS
 
-- (MFServerMessagePersistenceFactory_iOS)initWithLibrary:(id)a3 database:(id)a4
+- (MFServerMessagePersistenceFactory_iOS)initWithLibrary:(id)library database:(id)database
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 persistence];
-  v9 = [v8 gmailLabelPersistence];
+  libraryCopy = library;
+  databaseCopy = database;
+  persistence = [libraryCopy persistence];
+  gmailLabelPersistence = [persistence gmailLabelPersistence];
   v12.receiver = self;
   v12.super_class = MFServerMessagePersistenceFactory_iOS;
-  v10 = [(EDServerMessagePersistenceFactory *)&v12 initWithDatabase:v7 gmailLabelPersistence:v9];
+  v10 = [(EDServerMessagePersistenceFactory *)&v12 initWithDatabase:databaseCopy gmailLabelPersistence:gmailLabelPersistence];
 
   if (v10)
   {
-    objc_storeWeak(&v10->_library, v6);
+    objc_storeWeak(&v10->_library, libraryCopy);
   }
 
   return v10;
 }
 
-- (int64_t)mailboxIDForMailboxURL:(id)a3 useNumericSearch:(BOOL *)a4 supportsLabels:(BOOL *)a5
+- (int64_t)mailboxIDForMailboxURL:(id)l useNumericSearch:(BOOL *)search supportsLabels:(BOOL *)labels
 {
-  v8 = a3;
-  v9 = v8;
-  if (a4)
+  lCopy = l;
+  v9 = lCopy;
+  if (search)
   {
-    v10 = [v8 scheme];
-    *a4 = [v10 isEqualToString:*MEMORY[0x1E699A698]];
+    scheme = [lCopy scheme];
+    *search = [scheme isEqualToString:*MEMORY[0x1E699A698]];
   }
 
-  if (a5)
+  if (labels)
   {
-    *a5 = 0;
+    *labels = 0;
   }
 
-  v11 = [(MFServerMessagePersistenceFactory_iOS *)self library];
-  v12 = [v9 absoluteString];
-  v13 = [v11 mailboxIDForURLString:v12 createIfNecessary:1];
+  library = [(MFServerMessagePersistenceFactory_iOS *)self library];
+  absoluteString = [v9 absoluteString];
+  v13 = [library mailboxIDForURLString:absoluteString createIfNecessary:1];
 
   return v13;
 }

@@ -1,26 +1,26 @@
 @interface PXStorageTipCollectionViewDataSectionManager
-- (PXStorageTipCollectionViewDataSectionManager)initWithPhotoLibrary:(id)a3;
+- (PXStorageTipCollectionViewDataSectionManager)initWithPhotoLibrary:(id)library;
 - (id)createDataSection;
 - (id)tipQueue_fetchCountsDictionary;
 - (id)tipQueue_fetchSizesDictionary;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue;
 - (void)tipQueue_createPendingDataSection;
 - (void)tipQueue_populateInitialFetches;
 @end
 
 @implementation PXStorageTipCollectionViewDataSectionManager
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   tipQueue = self->_tipQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __81__PXStorageTipCollectionViewDataSectionManager_photoLibraryDidChangeOnMainQueue___block_invoke;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = queueCopy;
+  v6 = queueCopy;
   dispatch_async(tipQueue, v7);
 }
 
@@ -89,13 +89,13 @@ void __81__PXStorageTipCollectionViewDataSectionManager_photoLibraryDidChangeOnM
           objc_enumerationMutation(obj);
         }
 
-        v7 = [*(*(&v17 + 1) + 8 * i) intValue];
+        intValue = [*(*(&v17 + 1) + 8 * i) intValue];
         v8 = MEMORY[0x1E696AD98];
-        v9 = [(PXStorageTipCollectionViewDataSectionManager *)self fetchResults];
-        v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
-        v11 = [v9 objectForKeyedSubscript:v10];
+        fetchResults = [(PXStorageTipCollectionViewDataSectionManager *)self fetchResults];
+        v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:intValue];
+        v11 = [fetchResults objectForKeyedSubscript:v10];
         v12 = [v8 numberWithUnsignedInteger:{objc_msgSend(v11, "count")}];
-        v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
+        v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:intValue];
         [v16 setObject:v12 forKeyedSubscript:v13];
       }
 
@@ -111,18 +111,18 @@ void __81__PXStorageTipCollectionViewDataSectionManager_photoLibraryDidChangeOnM
 - (id)tipQueue_fetchSizesDictionary
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [(PXStorageTipCollectionViewDataSectionManager *)self photoLibrary];
-  v4 = [v3 isCloudPhotoLibraryEnabled];
+  photoLibrary = [(PXStorageTipCollectionViewDataSectionManager *)self photoLibrary];
+  isCloudPhotoLibraryEnabled = [photoLibrary isCloudPhotoLibraryEnabled];
 
-  v5 = [(PXStorageTipCollectionViewDataSectionManager *)self photoLibrary];
-  v6 = v5;
-  if (v4)
+  photoLibrary2 = [(PXStorageTipCollectionViewDataSectionManager *)self photoLibrary];
+  v6 = photoLibrary2;
+  if (isCloudPhotoLibraryEnabled)
   {
     v30 = 0;
     v31 = 0;
     v7 = &v31;
     v8 = &v30;
-    v9 = [v5 cloudQuotaResourceBytesUsed:&v31 error:&v30];
+    v9 = [photoLibrary2 cloudQuotaResourceBytesUsed:&v31 error:&v30];
   }
 
   else
@@ -131,7 +131,7 @@ void __81__PXStorageTipCollectionViewDataSectionManager_photoLibraryDidChangeOnM
     v29 = 0;
     v7 = &v29;
     v8 = &v28;
-    v9 = [v5 localResourceBytesUsed:&v29 error:&v28];
+    v9 = [photoLibrary2 localResourceBytesUsed:&v29 error:&v28];
   }
 
   v10 = v9;
@@ -182,9 +182,9 @@ void __81__PXStorageTipCollectionViewDataSectionManager_photoLibraryDidChangeOnM
 - (void)tipQueue_createPendingDataSection
 {
   v3 = [PXStorageTipCollectionViewDataSection alloc];
-  v4 = [(PXStorageTipCollectionViewDataSectionManager *)self tipQueue_fetchSizesDictionary];
-  v5 = [(PXStorageTipCollectionViewDataSectionManager *)self tipQueue_fetchCountsDictionary];
-  v6 = [(PXStorageTipCollectionViewDataSection *)v3 initWithSizesDictionary:v4 countsDictionary:v5];
+  tipQueue_fetchSizesDictionary = [(PXStorageTipCollectionViewDataSectionManager *)self tipQueue_fetchSizesDictionary];
+  tipQueue_fetchCountsDictionary = [(PXStorageTipCollectionViewDataSectionManager *)self tipQueue_fetchCountsDictionary];
+  v6 = [(PXStorageTipCollectionViewDataSection *)v3 initWithSizesDictionary:tipQueue_fetchSizesDictionary countsDictionary:tipQueue_fetchCountsDictionary];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -206,36 +206,36 @@ void __81__PXStorageTipCollectionViewDataSectionManager_tipQueue_createPendingDa
 
 - (void)tipQueue_populateInitialFetches
 {
-  v9 = [(PXStorageTipCollectionViewDataSectionManager *)self photoLibrary];
+  photoLibrary = [(PXStorageTipCollectionViewDataSectionManager *)self photoLibrary];
   for (i = 0; i != 3; ++i)
   {
-    v4 = [PXStorageManagementUtility storageTipAssetFetchOptionsForType:i photoLibrary:v9];
-    v5 = [PXStorageManagementUtility storageTipAssetCollectionForType:i photoLibrary:v9];
+    v4 = [PXStorageManagementUtility storageTipAssetFetchOptionsForType:i photoLibrary:photoLibrary];
+    v5 = [PXStorageManagementUtility storageTipAssetCollectionForType:i photoLibrary:photoLibrary];
     v6 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v5 options:v4];
-    v7 = [(PXStorageTipCollectionViewDataSectionManager *)self fetchResults];
+    fetchResults = [(PXStorageTipCollectionViewDataSectionManager *)self fetchResults];
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:i];
-    [v7 setObject:v6 forKeyedSubscript:v8];
+    [fetchResults setObject:v6 forKeyedSubscript:v8];
   }
 }
 
 - (id)createDataSection
 {
-  v3 = [(PXStorageTipCollectionViewDataSectionManager *)self pendingDataSection];
+  pendingDataSection = [(PXStorageTipCollectionViewDataSectionManager *)self pendingDataSection];
   [(PXStorageTipCollectionViewDataSectionManager *)self setPendingDataSection:0];
 
-  return v3;
+  return pendingDataSection;
 }
 
-- (PXStorageTipCollectionViewDataSectionManager)initWithPhotoLibrary:(id)a3
+- (PXStorageTipCollectionViewDataSectionManager)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v19.receiver = self;
   v19.super_class = PXStorageTipCollectionViewDataSectionManager;
   v6 = [(PXDataSectionManager *)&v19 initWithChildDataSectionManagers:MEMORY[0x1E695E0F0]];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
+    objc_storeStrong(&v6->_photoLibrary, library);
     [(PHPhotoLibrary *)v7->_photoLibrary px_registerChangeObserver:v7];
     v8 = dispatch_queue_create("storageTipQueue", 0);
     tipQueue = v7->_tipQueue;
@@ -249,8 +249,8 @@ void __81__PXStorageTipCollectionViewDataSectionManager_tipQueue_createPendingDa
     pendingDataSection = v7->_pendingDataSection;
     v7->_pendingDataSection = v12;
 
-    v14 = [off_1E7721450 changeDetailsWithNoIncrementalChanges];
-    [(PXDataSectionManager *)v7 updateDataSectionWithChangeDetails:v14];
+    changeDetailsWithNoIncrementalChanges = [off_1E7721450 changeDetailsWithNoIncrementalChanges];
+    [(PXDataSectionManager *)v7 updateDataSectionWithChangeDetails:changeDetailsWithNoIncrementalChanges];
 
     v15 = v7->_tipQueue;
     block[0] = MEMORY[0x1E69E9820];

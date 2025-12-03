@@ -1,15 +1,15 @@
 @interface HMFOperationBudget
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 + (id)logCategory;
-- (BOOL)decrementByCount:(unint64_t)a3;
+- (BOOL)decrementByCount:(unint64_t)count;
 - (BOOL)isEmpty;
 - (BOOL)isFull;
 - (HMFOperationBudget)init;
-- (HMFOperationBudget)initWithLimit:(unint64_t)a3 rate:(_HMFRate)a4;
+- (HMFOperationBudget)initWithLimit:(unint64_t)limit rate:(_HMFRate)rate;
 - (_HMFRate)rate;
 - (unint64_t)value;
 - (void)reset;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMFOperationBudget
@@ -26,17 +26,17 @@
   return v3;
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"value"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"full"))
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"value"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"full"))
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"empty"] ^ 1;
+    v4 = [keyCopy isEqualToString:@"empty"] ^ 1;
   }
 
   return v4;
@@ -55,9 +55,9 @@
   objc_exception_throw(v7);
 }
 
-- (HMFOperationBudget)initWithLimit:(unint64_t)a3 rate:(_HMFRate)a4
+- (HMFOperationBudget)initWithLimit:(unint64_t)limit rate:(_HMFRate)rate
 {
-  if (!a3)
+  if (!limit)
   {
     v13 = MEMORY[0x277CBEAD8];
     v14 = *MEMORY[0x277CBE660];
@@ -65,8 +65,8 @@
     goto LABEL_9;
   }
 
-  value = a4.value;
-  if (!a4.value || (period = a4.period, v6 = a4.period, a4.period <= 0.0))
+  value = rate.value;
+  if (!rate.value || (period = rate.period, v6 = rate.period, rate.period <= 0.0))
   {
     v13 = MEMORY[0x277CBEAD8];
     v14 = *MEMORY[0x277CBE660];
@@ -82,8 +82,8 @@ LABEL_9:
   v9 = v8;
   if (v8)
   {
-    v8->_limit = a3;
-    v8->_value = a3;
+    v8->_limit = limit;
+    v8->_value = limit;
     v8->_rate.value = value;
     v8->_rate.period = period;
     v10 = [[HMFTimer alloc] initWithTimeInterval:5 options:v6];
@@ -132,29 +132,29 @@ LABEL_9:
   os_unfair_recursive_lock_unlock();
 }
 
-- (BOOL)decrementByCount:(unint64_t)a3
+- (BOOL)decrementByCount:(unint64_t)count
 {
   v30 = *MEMORY[0x277D85DE8];
   os_unfair_recursive_lock_lock_with_options();
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = HMFGetLogIdentifier(v6);
+    v8 = HMFGetLogIdentifier(selfCopy);
     v26 = 138543618;
     v27 = v8;
     v28 = 2048;
-    v29 = a3;
+    countCopy = count;
     _os_log_impl(&dword_22ADEC000, v7, OS_LOG_TYPE_DEBUG, "%{public}@Decrementing by %tu", &v26, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  value = v6->_value;
-  if (value < a3)
+  value = selfCopy->_value;
+  if (value < count)
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = v6;
+    v21 = selfCopy;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
@@ -169,12 +169,12 @@ LABEL_9:
 
   else
   {
-    v10 = [(HMFOperationBudget *)v6 isFull];
-    __updateValue(v6, v6->_value - a3);
-    if (v10)
+    isFull = [(HMFOperationBudget *)selfCopy isFull];
+    __updateValue(selfCopy, selfCopy->_value - count);
+    if (isFull)
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = v6;
+      v12 = selfCopy;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
@@ -189,16 +189,16 @@ LABEL_9:
     }
 
     v15 = objc_autoreleasePoolPush();
-    v16 = v6;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       v18 = HMFGetLogIdentifier(v16);
-      v19 = v6->_value;
+      v19 = selfCopy->_value;
       v26 = 138543618;
       v27 = v18;
       v28 = 2048;
-      v29 = v19;
+      countCopy = v19;
       _os_log_impl(&dword_22ADEC000, v17, OS_LOG_TYPE_DEBUG, "%{public}@Successfully decremented to: %tu", &v26, 0x16u);
     }
 
@@ -207,7 +207,7 @@ LABEL_9:
 
   os_unfair_recursive_lock_unlock();
   v24 = *MEMORY[0x277D85DE8];
-  return value >= a3;
+  return value >= count;
 }
 
 uint64_t __33__HMFOperationBudget_logCategory__block_invoke()
@@ -217,28 +217,28 @@ uint64_t __33__HMFOperationBudget_logCategory__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   os_unfair_recursive_lock_lock_with_options();
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = HMFGetLogIdentifier(v6);
+    v8 = HMFGetLogIdentifier(selfCopy);
     v20 = 138543362;
     v21 = v8;
     _os_log_impl(&dword_22ADEC000, v7, OS_LOG_TYPE_DEBUG, "%{public}@Incrementing", &v20, 0xCu);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = v6->_rate.value + v6->_value;
-  if (v9 >= v6->_limit)
+  v9 = selfCopy->_rate.value + selfCopy->_value;
+  if (v9 >= selfCopy->_limit)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = v6;
+    v11 = selfCopy;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
@@ -250,22 +250,22 @@ uint64_t __33__HMFOperationBudget_logCategory__block_invoke()
 
     objc_autoreleasePoolPop(v10);
     [v11[2] suspend];
-    __updateValue(v11, v6->_limit);
+    __updateValue(v11, selfCopy->_limit);
   }
 
   else
   {
-    __updateValue(v6, v9);
-    v6->_value += v6->_rate.value;
+    __updateValue(selfCopy, v9);
+    selfCopy->_value += selfCopy->_rate.value;
   }
 
   v14 = objc_autoreleasePoolPush();
-  v15 = v6;
+  v15 = selfCopy;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     v17 = HMFGetLogIdentifier(v15);
-    value = v6->_value;
+    value = selfCopy->_value;
     v20 = 138543618;
     v21 = v17;
     v22 = 2048;

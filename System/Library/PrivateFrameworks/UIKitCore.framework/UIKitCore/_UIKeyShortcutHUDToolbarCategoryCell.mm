@@ -1,24 +1,24 @@
 @interface _UIKeyShortcutHUDToolbarCategoryCell
-- (id)_defaultContentConfigurationWithCategory:(id)a3;
-- (void)configureForDisplayingInHUDWithCategory:(id)a3;
-- (void)configureForMetricsCalculationsWithCategory:(id)a3;
-- (void)updateConfigurationUsingState:(id)a3;
+- (id)_defaultContentConfigurationWithCategory:(id)category;
+- (void)configureForDisplayingInHUDWithCategory:(id)category;
+- (void)configureForMetricsCalculationsWithCategory:(id)category;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation _UIKeyShortcutHUDToolbarCategoryCell
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
   v11.receiver = self;
   v11.super_class = _UIKeyShortcutHUDToolbarCategoryCell;
-  v4 = a3;
-  [(_UIKeyShortcutHUDToolbarCell *)&v11 updateConfigurationUsingState:v4];
+  stateCopy = state;
+  [(_UIKeyShortcutHUDToolbarCell *)&v11 updateConfigurationUsingState:stateCopy];
   v5 = [(UICollectionViewCell *)self contentConfiguration:v11.receiver];
-  v6 = [v4 isCategoryVisible];
+  isCategoryVisible = [stateCopy isCategoryVisible];
 
   v7 = +[UIKeyShortcutHUDMetrics currentMetrics];
   v8 = v7;
-  if (v6)
+  if (isCategoryVisible)
   {
     [v7 toolbarCategoryVisibleFont];
   }
@@ -28,34 +28,34 @@
     [v7 toolbarCategoryRegularFont];
   }
   v9 = ;
-  v10 = [v5 textProperties];
-  [v10 setFont:v9];
+  textProperties = [v5 textProperties];
+  [textProperties setFont:v9];
 
   [(UICollectionViewCell *)self setContentConfiguration:v5];
 }
 
-- (id)_defaultContentConfigurationWithCategory:(id)a3
+- (id)_defaultContentConfigurationWithCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(_UIKeyShortcutHUDCell *)self defaultContentConfiguration];
-  v6 = [v4 title];
+  categoryCopy = category;
+  defaultContentConfiguration = [(_UIKeyShortcutHUDCell *)self defaultContentConfiguration];
+  title = [categoryCopy title];
 
-  [v5 setText:v6];
+  [defaultContentConfiguration setText:title];
 
-  return v5;
+  return defaultContentConfiguration;
 }
 
-- (void)configureForMetricsCalculationsWithCategory:(id)a3
+- (void)configureForMetricsCalculationsWithCategory:(id)category
 {
-  v4 = [(_UIKeyShortcutHUDToolbarCategoryCell *)self _defaultContentConfigurationWithCategory:a3];
+  v4 = [(_UIKeyShortcutHUDToolbarCategoryCell *)self _defaultContentConfigurationWithCategory:category];
   [(UICollectionViewCell *)self setContentConfiguration:v4];
 }
 
-- (void)configureForDisplayingInHUDWithCategory:(id)a3
+- (void)configureForDisplayingInHUDWithCategory:(id)category
 {
-  v5 = [(_UIKeyShortcutHUDToolbarCategoryCell *)self _defaultContentConfigurationWithCategory:a3];
-  v4 = [v5 textProperties];
-  [v4 setAlignment:1];
+  v5 = [(_UIKeyShortcutHUDToolbarCategoryCell *)self _defaultContentConfigurationWithCategory:category];
+  textProperties = [v5 textProperties];
+  [textProperties setAlignment:1];
 
   [(UICollectionViewCell *)self setContentConfiguration:v5];
 }

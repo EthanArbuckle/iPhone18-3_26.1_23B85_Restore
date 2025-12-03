@@ -1,6 +1,6 @@
 @interface MusicSongTransitionsSettingsController
 - (MusicSongTransitionsSettingsController)init;
-- (MusicSongTransitionsSettingsController)initWithCoder:(id)a3;
+- (MusicSongTransitionsSettingsController)initWithCoder:(id)coder;
 @end
 
 @implementation MusicSongTransitionsSettingsController
@@ -18,7 +18,7 @@
   return v2;
 }
 
-- (MusicSongTransitionsSettingsController)initWithCoder:(id)a3
+- (MusicSongTransitionsSettingsController)initWithCoder:(id)coder
 {
   result = sub_16E24();
   __break(1u);

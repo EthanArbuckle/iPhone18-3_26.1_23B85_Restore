@@ -1,20 +1,20 @@
 @interface PKSharedAccountCloudStoreZone
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSharedAccountCloudStoreZone:(id)a3;
-- (PKSharedAccountCloudStoreZone)initWithCoder:(id)a3;
-- (PKSharedAccountCloudStoreZone)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSharedAccountCloudStoreZone:(id)zone;
+- (PKSharedAccountCloudStoreZone)initWithCoder:(id)coder;
+- (PKSharedAccountCloudStoreZone)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (unint64_t)zoneType;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKSharedAccountCloudStoreZone
 
-- (PKSharedAccountCloudStoreZone)initWithDictionary:(id)a3
+- (PKSharedAccountCloudStoreZone)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = PKSharedAccountCloudStoreZone;
   v5 = [(PKSharedAccountCloudStoreZone *)&v37 init];
@@ -23,15 +23,15 @@
     goto LABEL_29;
   }
 
-  v6 = [v4 PKStringForKey:@"zoneName"];
+  v6 = [dictionaryCopy PKStringForKey:@"zoneName"];
   zoneName = v5->_zoneName;
   v5->_zoneName = v6;
 
-  v8 = [v4 PKStringForKey:@"accountIdentifier"];
+  v8 = [dictionaryCopy PKStringForKey:@"accountIdentifier"];
   accountIdentifier = v5->_accountIdentifier;
   v5->_accountIdentifier = v8;
 
-  v10 = [v4 PKStringForKey:@"featureIdentifier"];
+  v10 = [dictionaryCopy PKStringForKey:@"featureIdentifier"];
   v11 = v10;
   v13 = 1;
   if (v10 != @"ccs")
@@ -43,7 +43,7 @@
   }
 
   v5->_accountType = v13;
-  v14 = [v4 PKStringForKey:@"access"];
+  v14 = [dictionaryCopy PKStringForKey:@"access"];
   v15 = v14;
   if (v14 == @"private")
   {
@@ -86,7 +86,7 @@ LABEL_17:
 LABEL_18:
 
   v5->_access = v17;
-  v24 = [v4 PKStringForKey:@"mode"];
+  v24 = [dictionaryCopy PKStringForKey:@"mode"];
   v25 = v24;
   if (v24 != @"readwrite")
   {
@@ -116,11 +116,11 @@ LABEL_21:
 LABEL_26:
 
   v5->_mode = v27;
-  v31 = [v4 PKStringForKey:@"originatorAltDSID"];
+  v31 = [dictionaryCopy PKStringForKey:@"originatorAltDSID"];
   originatorAltDSID = v5->_originatorAltDSID;
   v5->_originatorAltDSID = v31;
 
-  v33 = [v4 PKArrayContaining:objc_opt_class() forKey:@"sharedUsersAltDSIDs"];
+  v33 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"sharedUsersAltDSIDs"];
   if ([v33 count])
   {
     v34 = [MEMORY[0x1E695DFD8] setWithArray:v33];
@@ -139,33 +139,33 @@ LABEL_29:
   return v3;
 }
 
-- (PKSharedAccountCloudStoreZone)initWithCoder:(id)a3
+- (PKSharedAccountCloudStoreZone)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = PKSharedAccountCloudStoreZone;
   v5 = [(PKSharedAccountCloudStoreZone *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"zoneName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"zoneName"];
     zoneName = v5->_zoneName;
     v5->_zoneName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v8;
 
-    v5->_accountType = [v4 decodeIntegerForKey:@"accountType"];
-    v5->_access = [v4 decodeIntegerForKey:@"access"];
-    v5->_mode = [v4 decodeIntegerForKey:@"mode"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originatorAltDSID"];
+    v5->_accountType = [coderCopy decodeIntegerForKey:@"accountType"];
+    v5->_access = [coderCopy decodeIntegerForKey:@"access"];
+    v5->_mode = [coderCopy decodeIntegerForKey:@"mode"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originatorAltDSID"];
     originatorAltDSID = v5->_originatorAltDSID;
     v5->_originatorAltDSID = v10;
 
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"sharedUsersAltDSIDs"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"sharedUsersAltDSIDs"];
     sharedUsersAltDSIDs = v5->_sharedUsersAltDSIDs;
     v5->_sharedUsersAltDSIDs = v15;
   }
@@ -173,40 +173,40 @@ LABEL_29:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   zoneName = self->_zoneName;
-  v5 = a3;
-  [v5 encodeObject:zoneName forKey:@"zoneName"];
-  [v5 encodeObject:self->_accountIdentifier forKey:@"accountIdentifier"];
-  [v5 encodeInteger:self->_accountType forKey:@"accountType"];
-  [v5 encodeInteger:self->_access forKey:@"access"];
-  [v5 encodeInteger:self->_mode forKey:@"mode"];
-  [v5 encodeObject:self->_originatorAltDSID forKey:@"originatorAltDSID"];
-  [v5 encodeObject:self->_sharedUsersAltDSIDs forKey:@"sharedUsersAltDSIDs"];
+  coderCopy = coder;
+  [coderCopy encodeObject:zoneName forKey:@"zoneName"];
+  [coderCopy encodeObject:self->_accountIdentifier forKey:@"accountIdentifier"];
+  [coderCopy encodeInteger:self->_accountType forKey:@"accountType"];
+  [coderCopy encodeInteger:self->_access forKey:@"access"];
+  [coderCopy encodeInteger:self->_mode forKey:@"mode"];
+  [coderCopy encodeObject:self->_originatorAltDSID forKey:@"originatorAltDSID"];
+  [coderCopy encodeObject:self->_sharedUsersAltDSIDs forKey:@"sharedUsersAltDSIDs"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKSharedAccountCloudStoreZone *)self isEqualToSharedAccountCloudStoreZone:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKSharedAccountCloudStoreZone *)self isEqualToSharedAccountCloudStoreZone:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToSharedAccountCloudStoreZone:(id)a3
+- (BOOL)isEqualToSharedAccountCloudStoreZone:(id)zone
 {
-  v4 = a3;
-  v5 = v4[1];
+  zoneCopy = zone;
+  v5 = zoneCopy[1];
   v6 = self->_zoneName;
   v7 = v5;
   v8 = v7;
@@ -239,7 +239,7 @@ LABEL_29:
     }
   }
 
-  v11 = v4[2];
+  v11 = zoneCopy[2];
   v6 = self->_accountIdentifier;
   v12 = v11;
   v8 = v12;
@@ -262,12 +262,12 @@ LABEL_29:
     }
   }
 
-  if (self->_accountType != v4[3] || self->_access != v4[4] || self->_mode != v4[5])
+  if (self->_accountType != zoneCopy[3] || self->_access != zoneCopy[4] || self->_mode != zoneCopy[5])
   {
     goto LABEL_24;
   }
 
-  v14 = v4[6];
+  v14 = zoneCopy[6];
   v6 = self->_originatorAltDSID;
   v15 = v14;
   v8 = v15;
@@ -294,7 +294,7 @@ LABEL_23:
 
 LABEL_27:
   sharedUsersAltDSIDs = self->_sharedUsersAltDSIDs;
-  v20 = v4[7];
+  v20 = zoneCopy[7];
   if (sharedUsersAltDSIDs && v20)
   {
     v17 = [(NSSet *)sharedUsersAltDSIDs isEqual:?];
@@ -325,22 +325,22 @@ LABEL_25:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKSharedAccountCloudStoreZone allocWithZone:](PKSharedAccountCloudStoreZone init];
-  v6 = [(NSString *)self->_zoneName copyWithZone:a3];
+  v6 = [(NSString *)self->_zoneName copyWithZone:zone];
   zoneName = v5->_zoneName;
   v5->_zoneName = v6;
 
-  v8 = [(NSString *)self->_accountIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_accountIdentifier copyWithZone:zone];
   accountIdentifier = v5->_accountIdentifier;
   v5->_accountIdentifier = v8;
 
-  v10 = [(NSString *)self->_originatorAltDSID copyWithZone:a3];
+  v10 = [(NSString *)self->_originatorAltDSID copyWithZone:zone];
   originatorAltDSID = v5->_originatorAltDSID;
   v5->_originatorAltDSID = v10;
 
-  v12 = [(NSSet *)self->_sharedUsersAltDSIDs copyWithZone:a3];
+  v12 = [(NSSet *)self->_sharedUsersAltDSIDs copyWithZone:zone];
   sharedUsersAltDSIDs = v5->_sharedUsersAltDSIDs;
   v5->_sharedUsersAltDSIDs = v12;
 

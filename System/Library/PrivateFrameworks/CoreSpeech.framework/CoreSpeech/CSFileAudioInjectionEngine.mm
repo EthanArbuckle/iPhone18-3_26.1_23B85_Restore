@@ -1,32 +1,32 @@
 @interface CSFileAudioInjectionEngine
 - (AudioStreamBasicDescription)_defaultOutASBD;
 - (AudioStreamBasicDescription)outASBD;
-- (BOOL)injectAudio:(id)a3 withScaleFactor:(float)a4 outASBD:(AudioStreamBasicDescription *)a5 playbackStarted:(id)a6 completion:(id)a7;
-- (BOOL)injectAudio:(id)a3 withScaleFactor:(float)a4 playbackStarted:(id)a5 completion:(id)a6;
+- (BOOL)injectAudio:(id)audio withScaleFactor:(float)factor outASBD:(AudioStreamBasicDescription *)d playbackStarted:(id)started completion:(id)completion;
+- (BOOL)injectAudio:(id)audio withScaleFactor:(float)factor playbackStarted:(id)started completion:(id)completion;
 - (BOOL)isRecording;
-- (BOOL)startAudioStreamWithOption:(id)a3 withOutError:(id *)a4;
-- (BOOL)stopAudioStreamWithOutError:(id *)a3;
+- (BOOL)startAudioStreamWithOption:(id)option withOutError:(id *)error;
+- (BOOL)stopAudioStreamWithOutError:(id *)error;
 - (CSAudioInjectionEngineDelegate)delegate;
-- (CSFileAudioInjectionEngine)initWithStreamHandleId:(unint64_t)a3;
-- (CSFileAudioInjectionEngine)initWithStreamHandleId:(unint64_t)a3 withInputRecordingNumberOfChannels:(unsigned int)a4;
-- (id)_compensateChannelDataIfNeeded:(id)a3 receivedNumChannels:(unsigned int)a4;
-- (id)_deinterleaveBufferIfNeeded:(AudioBufferList *)a3;
+- (CSFileAudioInjectionEngine)initWithStreamHandleId:(unint64_t)id;
+- (CSFileAudioInjectionEngine)initWithStreamHandleId:(unint64_t)id withInputRecordingNumberOfChannels:(unsigned int)channels;
+- (id)_compensateChannelDataIfNeeded:(id)needed receivedNumChannels:(unsigned int)channels;
+- (id)_deinterleaveBufferIfNeeded:(AudioBufferList *)needed;
 - (void)_createDeInterleaverIfNeeded;
 - (void)_readAudioBufferAndFeed;
 - (void)_startAudioFeedingTimer;
 - (void)dealloc;
-- (void)setOutASBD:(AudioStreamBasicDescription *)a3;
+- (void)setOutASBD:(AudioStreamBasicDescription *)d;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation CSFileAudioInjectionEngine
 
-- (void)setOutASBD:(AudioStreamBasicDescription *)a3
+- (void)setOutASBD:(AudioStreamBasicDescription *)d
 {
-  v3 = *&a3->mSampleRate;
-  v4 = *&a3->mBytesPerPacket;
-  *&self->_outASBD.mBitsPerChannel = *&a3->mBitsPerChannel;
+  v3 = *&d->mSampleRate;
+  v4 = *&d->mBytesPerPacket;
+  *&self->_outASBD.mBitsPerChannel = *&d->mBitsPerChannel;
   *&self->_outASBD.mSampleRate = v3;
   *&self->_outASBD.mBytesPerPacket = v4;
 }
@@ -65,18 +65,18 @@
   }
 }
 
-- (id)_compensateChannelDataIfNeeded:(id)a3 receivedNumChannels:(unsigned int)a4
+- (id)_compensateChannelDataIfNeeded:(id)needed receivedNumChannels:(unsigned int)channels
 {
-  v6 = a3;
-  v7 = v6;
-  if (self->_inputRecordingNumberOfChannels <= a4)
+  neededCopy = needed;
+  v7 = neededCopy;
+  if (self->_inputRecordingNumberOfChannels <= channels)
   {
-    v8 = v6;
+    v8 = neededCopy;
   }
 
   else
   {
-    v8 = [[NSMutableData alloc] initWithLength:{objc_msgSend(v6, "length") / a4 * self->_inputRecordingNumberOfChannels}];
+    v8 = [[NSMutableData alloc] initWithLength:{objc_msgSend(neededCopy, "length") / channels * self->_inputRecordingNumberOfChannels}];
     inputRecordingNumberOfChannels = self->_inputRecordingNumberOfChannels;
     v10 = qword_10029E5C8;
     if (!(v10 % +[CSUtils loggingHeartbeatRate]))
@@ -87,7 +87,7 @@
         v13 = 136315650;
         v14 = "[CSFileAudioInjectionEngine _compensateChannelDataIfNeeded:receivedNumChannels:]";
         v15 = 1026;
-        v16 = inputRecordingNumberOfChannels - a4;
+        v16 = inputRecordingNumberOfChannels - channels;
         v17 = 2050;
         v18 = qword_10029E5C8;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s Compensating %{public}u channel(s), heartbeat = %{public}lld", &v13, 0x1Cu);
@@ -101,28 +101,28 @@
   return v8;
 }
 
-- (id)_deinterleaveBufferIfNeeded:(AudioBufferList *)a3
+- (id)_deinterleaveBufferIfNeeded:(AudioBufferList *)needed
 {
-  if (self->_deinterleaver && a3->mBuffers[0].mNumberChannels >= 2)
+  if (self->_deinterleaver && needed->mBuffers[0].mNumberChannels >= 2)
   {
-    v5 = [[NSMutableData alloc] initWithLength:a3->mBuffers[0].mDataByteSize];
-    v6 = [v5 mutableBytes];
+    v5 = [[NSMutableData alloc] initWithLength:needed->mBuffers[0].mDataByteSize];
+    mutableBytes = [v5 mutableBytes];
     v7 = 0;
     v8 = 0;
-    v9 = a3->mBuffers[0].mDataByteSize / a3->mBuffers[0].mNumberChannels;
+    v9 = needed->mBuffers[0].mDataByteSize / needed->mBuffers[0].mNumberChannels;
     do
     {
       v10 = self->_pNonInterleavedABL + v7;
       *(v10 + 2) = 1;
       *(v10 + 3) = v9;
-      *(v10 + 2) = &v6[v9 * v8++];
+      *(v10 + 2) = &mutableBytes[v9 * v8++];
       v7 += 16;
     }
 
-    while (v8 < a3->mBuffers[0].mNumberChannels);
+    while (v8 < needed->mBuffers[0].mNumberChannels);
     deinterleaver = self->_deinterleaver;
     +[CSFAudioStreamBasicDescriptionFactory lpcmNonInterleavedASBD];
-    v12 = AudioConverterConvertComplexBuffer(deinterleaver, v9 / v16, a3, self->_pNonInterleavedABL);
+    v12 = AudioConverterConvertComplexBuffer(deinterleaver, v9 / v16, needed, self->_pNonInterleavedABL);
     if (v12)
     {
       v13 = v12;
@@ -140,13 +140,13 @@
 
   else
   {
-    v5 = [[NSData alloc] initWithBytes:a3->mBuffers[0].mData length:a3->mBuffers[0].mDataByteSize];
+    v5 = [[NSData alloc] initWithBytes:needed->mBuffers[0].mData length:needed->mBuffers[0].mDataByteSize];
   }
 
   return v5;
 }
 
-- (BOOL)stopAudioStreamWithOutError:(id *)a3
+- (BOOL)stopAudioStreamWithOutError:(id *)error
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -158,7 +158,7 @@
   return 1;
 }
 
-- (BOOL)startAudioStreamWithOption:(id)a3 withOutError:(id *)a4
+- (BOOL)startAudioStreamWithOption:(id)option withOutError:(id *)error
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -189,26 +189,26 @@
   return v3;
 }
 
-- (BOOL)injectAudio:(id)a3 withScaleFactor:(float)a4 outASBD:(AudioStreamBasicDescription *)a5 playbackStarted:(id)a6 completion:(id)a7
+- (BOOL)injectAudio:(id)audio withScaleFactor:(float)factor outASBD:(AudioStreamBasicDescription *)d playbackStarted:(id)started completion:(id)completion
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  audioCopy = audio;
+  startedCopy = started;
+  completionCopy = completion;
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
   v39[2] = sub_100160DB8;
   v39[3] = &unk_100253498;
-  v15 = v13;
+  v15 = startedCopy;
   v40 = v15;
   v16 = objc_retainBlock(v39);
   v37[0] = _NSConcreteStackBlock;
   v37[1] = 3221225472;
   v37[2] = sub_100160DD0;
   v37[3] = &unk_100253498;
-  v17 = v14;
+  v17 = completionCopy;
   v38 = v17;
   v18 = objc_retainBlock(v37);
-  if (!v12)
+  if (!audioCopy)
   {
     v28 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -222,8 +222,8 @@
   }
 
   v19 = +[NSFileManager defaultManager];
-  v20 = [v12 path];
-  v21 = [v19 fileExistsAtPath:v20];
+  path = [audioCopy path];
+  v21 = [v19 fileExistsAtPath:path];
 
   if ((v21 & 1) == 0)
   {
@@ -231,11 +231,11 @@
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
       v30 = v29;
-      v31 = [v12 path];
+      path2 = [audioCopy path];
       *buf = 136315394;
       *&buf[4] = "[CSFileAudioInjectionEngine injectAudio:withScaleFactor:outASBD:playbackStarted:completion:]";
       *&buf[12] = 2112;
-      *&buf[14] = v31;
+      *&buf[14] = path2;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%s Cannot speak since audio file does not exists : %@", buf, 0x16u);
     }
 
@@ -245,11 +245,11 @@ LABEL_8:
   }
 
   v22 = [CSAudioInjectionFileOption alloc];
-  v23 = *&a5->mBytesPerPacket;
-  *buf = *&a5->mSampleRate;
+  v23 = *&d->mBytesPerPacket;
+  *buf = *&d->mSampleRate;
   *&buf[16] = v23;
-  v42 = *&a5->mBitsPerChannel;
-  v24 = [(CSAudioInjectionFileOption *)v22 initWithAudioURL:v12 withScaleFactor:buf outASBD:COERCE_DOUBLE(__PAIR64__(*&buf[4], LODWORD(a4)))];
+  v42 = *&d->mBitsPerChannel;
+  v24 = [(CSAudioInjectionFileOption *)v22 initWithAudioURL:audioCopy withScaleFactor:buf outASBD:COERCE_DOUBLE(__PAIR64__(*&buf[4], LODWORD(factor)))];
   queue = self->_queue;
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
@@ -268,14 +268,14 @@ LABEL_9:
   return v27;
 }
 
-- (BOOL)injectAudio:(id)a3 withScaleFactor:(float)a4 playbackStarted:(id)a5 completion:(id)a6
+- (BOOL)injectAudio:(id)audio withScaleFactor:(float)factor playbackStarted:(id)started completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
+  completionCopy = completion;
+  startedCopy = started;
+  audioCopy = audio;
   [(CSFileAudioInjectionEngine *)self _defaultOutASBD];
-  *&v13 = a4;
-  LOBYTE(self) = [(CSFileAudioInjectionEngine *)self injectAudio:v12 withScaleFactor:v15 outASBD:v11 playbackStarted:v10 completion:v13];
+  *&v13 = factor;
+  LOBYTE(self) = [(CSFileAudioInjectionEngine *)self injectAudio:audioCopy withScaleFactor:v15 outASBD:startedCopy playbackStarted:completionCopy completion:v13];
 
   return self;
 }
@@ -294,8 +294,8 @@ LABEL_9:
 
       [(NSMutableArray *)self->_injectionAudioFileList removeObjectAtIndex:0];
       [(NSMutableArray *)self->_injectionStartNotifyBlocks removeObjectAtIndex:0];
-      v18 = [v16 audioURL];
-      v19 = ExtAudioFileOpenURL(v18, &outExtAudioFile);
+      audioURL = [v16 audioURL];
+      v19 = ExtAudioFileOpenURL(audioURL, &outExtAudioFile);
 
       if (v19)
       {
@@ -303,11 +303,11 @@ LABEL_9:
         if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
         {
           v61 = v20;
-          v62 = [v16 audioURL];
+          audioURL2 = [v16 audioURL];
           *inPropertyData = 136315650;
           *&inPropertyData[4] = "[CSFileAudioInjectionEngine _readAudioBufferAndFeed]";
           *&inPropertyData[12] = 2112;
-          *&inPropertyData[14] = v62;
+          *&inPropertyData[14] = audioURL2;
           *&inPropertyData[22] = 1024;
           *&inPropertyData[24] = v19;
           _os_log_error_impl(&_mh_execute_header, v61, OS_LOG_TYPE_ERROR, "%s Failed to open audio file %@, error : %d", inPropertyData, 0x1Cu);
@@ -549,7 +549,7 @@ LABEL_70:
 
     if (self->_scaleFactor < 1.0)
     {
-      v70 = [v69 bytes];
+      bytes = [v69 bytes];
       if (v48 >> 1 >= v50)
       {
         v51 = 0;
@@ -581,7 +581,7 @@ LABEL_70:
                 break;
               }
 
-              v70[v51 + v53 + i * v52] = (self->_scaleFactor * v70[v51 + v53 + i * v52]);
+              bytes[v51 + v53 + i * v52] = (self->_scaleFactor * bytes[v51 + v53 + i * v52]);
             }
 
             v57 = v53 >= 6;
@@ -611,9 +611,9 @@ LABEL_70:
 
 LABEL_65:
     v63 = mach_absolute_time();
-    v64 = [(CSFileAudioInjectionEngine *)self startInjectBlock];
+    startInjectBlock = [(CSFileAudioInjectionEngine *)self startInjectBlock];
 
-    if (v64)
+    if (startInjectBlock)
     {
       (*(self->_startInjectBlock + 2))();
       [(CSFileAudioInjectionEngine *)self setStartInjectBlock:0];
@@ -753,7 +753,7 @@ LABEL_71:
   [(CSFileAudioInjectionEngine *)&v5 dealloc];
 }
 
-- (CSFileAudioInjectionEngine)initWithStreamHandleId:(unint64_t)a3 withInputRecordingNumberOfChannels:(unsigned int)a4
+- (CSFileAudioInjectionEngine)initWithStreamHandleId:(unint64_t)id withInputRecordingNumberOfChannels:(unsigned int)channels
 {
   v19.receiver = self;
   v19.super_class = CSFileAudioInjectionEngine;
@@ -764,7 +764,7 @@ LABEL_71:
     queue = v6->_queue;
     v6->_queue = v7;
 
-    v6->_audioStreamHandleId = a3;
+    v6->_audioStreamHandleId = id;
     +[CSConfig inputRecordingBufferDuration];
     v6->_bufferDuration = v9;
     v10 = +[NSMutableArray array];
@@ -785,17 +785,17 @@ LABEL_71:
 
     v6->_didSetScaleFactor = 0;
     v6->_scaleFactor = 0.01;
-    v6->_inputRecordingNumberOfChannels = a4;
+    v6->_inputRecordingNumberOfChannels = channels;
   }
 
   return v6;
 }
 
-- (CSFileAudioInjectionEngine)initWithStreamHandleId:(unint64_t)a3
+- (CSFileAudioInjectionEngine)initWithStreamHandleId:(unint64_t)id
 {
   v5 = +[CSConfig inputRecordingNumberOfChannels];
 
-  return [(CSFileAudioInjectionEngine *)self initWithStreamHandleId:a3 withInputRecordingNumberOfChannels:v5];
+  return [(CSFileAudioInjectionEngine *)self initWithStreamHandleId:id withInputRecordingNumberOfChannels:v5];
 }
 
 @end

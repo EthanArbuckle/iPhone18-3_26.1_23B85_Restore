@@ -43,7 +43,7 @@
     a5 = +[NSAttributeDictionary emptyAttributeDictionary];
   }
 
-  _NSStringDrawingCore(a1, a5, 1, 0, a2, a3, 0.0, 0.0, 0.0, v10, 0);
+  _NSStringDrawingCore(self, a5, 1, 0, a2, a3, 0.0, 0.0, 0.0, v10, 0);
   MEMORY[0x193AD39D0](v9);
 
   JUMPOUT(0x193AD39E0);
@@ -58,7 +58,7 @@
       a7 = +[NSAttributeDictionary emptyAttributeDictionary];
     }
 
-    _NSStringDrawingCore(a1, a7, 1, 0, a2, a3, a4, a5, 0.0, a9, 0);
+    _NSStringDrawingCore(self, a7, 1, 0, a2, a3, a4, a5, 0.0, a9, 0);
   }
 }
 
@@ -66,7 +66,7 @@
 {
   v5 = MEMORY[0x193AD39D0](0.15);
   v6 = MEMORY[0x193AD39E0](0.0);
-  v7 = [a1 boundingRectWithSize:1 options:a3 attributes:0 context:{*MEMORY[0x1E696AA88], *(MEMORY[0x1E696AA88] + 8)}];
+  v7 = [self boundingRectWithSize:1 options:a3 attributes:0 context:{*MEMORY[0x1E696AA88], *(MEMORY[0x1E696AA88] + 8)}];
   v9 = v8;
   v10 = MEMORY[0x193AD39D0](v7, v5);
   MEMORY[0x193AD39E0](v10, v6);
@@ -187,11 +187,11 @@
 
 + (void)setHyphenationFactor:()NSStringDrawing
 {
-  if (a1 != 0.0)
+  if (self != 0.0)
   {
     [NSStringDrawingTextStorage _setHasCustomSettings:1];
     +[NSStringDrawingTextStorage _hasCustomSettings];
-    [NSStringDrawingTextStorageSettings threadSpecificStringDrawingTextStorageSettings:?]->_settings._hyphenationFactor = a1;
+    [NSStringDrawingTextStorageSettings threadSpecificStringDrawingTextStorageSettings:?]->_settings._hyphenationFactor = self;
   }
 }
 

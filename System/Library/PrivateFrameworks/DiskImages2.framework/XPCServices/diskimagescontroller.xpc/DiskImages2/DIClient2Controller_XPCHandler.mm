@@ -1,14 +1,14 @@
 @interface DIClient2Controller_XPCHandler
-- (BOOL)GUIAskForPassphraseWithEncryptionFrontend:(id)a3 usage:(int64_t)a4 error:(id *)a5;
-- (BOOL)connectWithError:(id *)a3;
-- (BOOL)createAndStoreInSystemKeychainWithCreator:(id)a3 account:(id)a4 error:(id *)a5;
-- (BOOL)keychainUnlockWithEncryptionUnlocker:(id)a3 error:(id *)a4;
-- (id)newAttachWithParams:(id)a3 error:(id *)a4;
+- (BOOL)GUIAskForPassphraseWithEncryptionFrontend:(id)frontend usage:(int64_t)usage error:(id *)error;
+- (BOOL)connectWithError:(id *)error;
+- (BOOL)createAndStoreInSystemKeychainWithCreator:(id)creator account:(id)account error:(id *)error;
+- (BOOL)keychainUnlockWithEncryptionUnlocker:(id)unlocker error:(id *)error;
+- (id)newAttachWithParams:(id)params error:(id *)error;
 @end
 
 @implementation DIClient2Controller_XPCHandler
 
-- (BOOL)connectWithError:(id *)a3
+- (BOOL)connectWithError:(id *)error
 {
   v7.receiver = self;
   v7.super_class = DIClient2Controller_XPCHandler;
@@ -17,7 +17,7 @@
   {
     if (sub_1000E044C())
     {
-      LOBYTE(v5) = [(DIBaseXPCHandler *)self dupStderrWithError:a3];
+      LOBYTE(v5) = [(DIBaseXPCHandler *)self dupStderrWithError:error];
     }
 
     else
@@ -29,104 +29,104 @@
   return v5;
 }
 
-- (id)newAttachWithParams:(id)a3 error:(id *)a4
+- (id)newAttachWithParams:(id)params error:(id *)error
 {
-  v6 = a3;
+  paramsCopy = params;
   objc_initWeak(&location, self);
   v7 = objc_alloc_init(DIController2ClientDelegate);
   v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___DIController2ClientProtocol];
-  v9 = [(DIBaseXPCHandler *)self connection];
-  [v9 setExportedInterface:v8];
+  connection = [(DIBaseXPCHandler *)self connection];
+  [connection setExportedInterface:v8];
 
-  v10 = [(DIBaseXPCHandler *)self connection];
-  [v10 setExportedObject:v7];
+  connection2 = [(DIBaseXPCHandler *)self connection];
+  [connection2 setExportedObject:v7];
 
-  v11 = [(DIBaseXPCHandler *)self remoteProxy];
+  remoteProxy = [(DIBaseXPCHandler *)self remoteProxy];
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_10009B574;
   v17 = &unk_100208458;
   objc_copyWeak(&v18, &location);
-  [v11 attachWithParams:v6 reply:&v14];
+  [remoteProxy attachWithParams:paramsCopy reply:&v14];
 
-  if ([(DIBaseXPCHandler *)self completeCommandWithError:a4, v14, v15, v16, v17])
+  if ([(DIBaseXPCHandler *)self completeCommandWithError:error, v14, v15, v16, v17])
   {
-    v12 = [(DIController2ClientDelegate *)v7 deviceHandle];
+    deviceHandle = [(DIController2ClientDelegate *)v7 deviceHandle];
   }
 
   else
   {
-    v12 = 0;
+    deviceHandle = 0;
   }
 
   objc_destroyWeak(&v18);
 
   objc_destroyWeak(&location);
-  return v12;
+  return deviceHandle;
 }
 
-- (BOOL)keychainUnlockWithEncryptionUnlocker:(id)a3 error:(id *)a4
+- (BOOL)keychainUnlockWithEncryptionUnlocker:(id)unlocker error:(id *)error
 {
-  v6 = a3;
+  unlockerCopy = unlocker;
   objc_initWeak(&location, self);
-  v7 = [(DIBaseXPCHandler *)self remoteProxy];
+  remoteProxy = [(DIBaseXPCHandler *)self remoteProxy];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10009B6F8;
   v10[3] = &unk_1002139B8;
   objc_copyWeak(&v12, &location);
-  v8 = v6;
+  v8 = unlockerCopy;
   v11 = v8;
-  [v7 keychainUnlockWithEncryptionUnlocker:v8 reply:v10];
+  [remoteProxy keychainUnlockWithEncryptionUnlocker:v8 reply:v10];
 
-  LOBYTE(a4) = [(DIBaseXPCHandler *)self completeCommandWithError:a4];
+  LOBYTE(error) = [(DIBaseXPCHandler *)self completeCommandWithError:error];
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
 
-  return a4;
+  return error;
 }
 
-- (BOOL)GUIAskForPassphraseWithEncryptionFrontend:(id)a3 usage:(int64_t)a4 error:(id *)a5
+- (BOOL)GUIAskForPassphraseWithEncryptionFrontend:(id)frontend usage:(int64_t)usage error:(id *)error
 {
-  v8 = a3;
+  frontendCopy = frontend;
   objc_initWeak(&location, self);
-  v9 = [(DIBaseXPCHandler *)self remoteProxy];
+  remoteProxy = [(DIBaseXPCHandler *)self remoteProxy];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10009B8B4;
   v12[3] = &unk_1002139B8;
   objc_copyWeak(&v14, &location);
-  v10 = v8;
+  v10 = frontendCopy;
   v13 = v10;
-  [v9 GUIAskForPassphraseWithEncryptionFrontend:v10 usage:a4 reply:v12];
+  [remoteProxy GUIAskForPassphraseWithEncryptionFrontend:v10 usage:usage reply:v12];
 
-  LOBYTE(a5) = [(DIBaseXPCHandler *)self completeCommandWithError:a5];
+  LOBYTE(error) = [(DIBaseXPCHandler *)self completeCommandWithError:error];
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 
-  return a5;
+  return error;
 }
 
-- (BOOL)createAndStoreInSystemKeychainWithCreator:(id)a3 account:(id)a4 error:(id *)a5
+- (BOOL)createAndStoreInSystemKeychainWithCreator:(id)creator account:(id)account error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  creatorCopy = creator;
+  accountCopy = account;
   objc_initWeak(&location, self);
-  v10 = [(DIBaseXPCHandler *)self remoteProxy];
+  remoteProxy = [(DIBaseXPCHandler *)self remoteProxy];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10009BA7C;
   v13[3] = &unk_1002139E0;
   objc_copyWeak(&v15, &location);
-  v11 = v8;
+  v11 = creatorCopy;
   v14 = v11;
-  [v10 createAndStoreInSystemKeychainWithCreator:v11 account:v9 reply:v13];
+  [remoteProxy createAndStoreInSystemKeychainWithCreator:v11 account:accountCopy reply:v13];
 
-  LOBYTE(a5) = [(DIBaseXPCHandler *)self completeCommandWithError:a5];
+  LOBYTE(error) = [(DIBaseXPCHandler *)self completeCommandWithError:error];
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
 
-  return a5;
+  return error;
 }
 
 @end

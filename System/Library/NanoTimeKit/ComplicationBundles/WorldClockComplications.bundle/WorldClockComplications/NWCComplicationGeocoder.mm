@@ -1,9 +1,9 @@
 @interface NWCComplicationGeocoder
 + (NWCComplicationGeocoder)sharedGeocoder;
 - (NWCComplicationGeocoder)init;
-- (id)cachedPlacemarkForLocation:(id)a3;
-- (void)_handlePlacemarks:(id)a3 fromLocation:(id)a4 error:(id)a5;
-- (void)placemarkForLocation:(id)a3 handler:(id)a4;
+- (id)cachedPlacemarkForLocation:(id)location;
+- (void)_handlePlacemarks:(id)placemarks fromLocation:(id)location error:(id)error;
+- (void)placemarkForLocation:(id)location handler:(id)handler;
 @end
 
 @implementation NWCComplicationGeocoder
@@ -31,19 +31,19 @@
     geocoder = v2->_geocoder;
     v2->_geocoder = v3;
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     handlers = v2->_handlers;
-    v2->_handlers = v5;
+    v2->_handlers = array;
   }
 
   return v2;
 }
 
-- (id)cachedPlacemarkForLocation:(id)a3
+- (id)cachedPlacemarkForLocation:(id)location
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_cachedLocation && self->_cachedPlacemark && [v4 isEqual:?])
+  locationCopy = location;
+  v5 = locationCopy;
+  if (self->_cachedLocation && self->_cachedPlacemark && [locationCopy isEqual:?])
   {
     v6 = self->_cachedPlacemark;
   }
@@ -56,19 +56,19 @@
   return v6;
 }
 
-- (void)placemarkForLocation:(id)a3 handler:(id)a4
+- (void)placemarkForLocation:(id)location handler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(NWCComplicationGeocoder *)self cachedPlacemarkForLocation:v7];
+  locationCopy = location;
+  handlerCopy = handler;
+  v9 = [(NWCComplicationGeocoder *)self cachedPlacemarkForLocation:locationCopy];
   if (v9)
   {
     v10 = NTALogForCategory(6uLL);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v29 = v7;
+      v29 = locationCopy;
       v30 = 2112;
       v31 = v9;
       _os_log_impl(&dword_23BDCF000, v10, OS_LOG_TYPE_DEFAULT, "Hitting cached placemark for location: %@ %@", buf, 0x16u);
@@ -78,23 +78,23 @@
     block[1] = 3221225472;
     block[2] = sub_23BDD483C;
     block[3] = &unk_278B99A48;
-    v27 = v8;
+    v27 = handlerCopy;
     v26 = v9;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
-  else if ([(CLLocation *)self->_cachedLocation isEqual:v7])
+  else if ([(CLLocation *)self->_cachedLocation isEqual:locationCopy])
   {
     v11 = NTALogForCategory(6uLL);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v29 = v7;
+      v29 = locationCopy;
       _os_log_impl(&dword_23BDCF000, v11, OS_LOG_TYPE_DEFAULT, "Requesting the placemark for the same location. %@", buf, 0xCu);
     }
 
     handlers = self->_handlers;
-    v13 = [v8 copy];
+    v13 = [handlerCopy copy];
     v14 = MEMORY[0x23EEBDCB0]();
     [(NSMutableArray *)handlers addObject:v14];
   }
@@ -107,17 +107,17 @@
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v29 = v7;
+        v29 = locationCopy;
         _os_log_impl(&dword_23BDCF000, v15, OS_LOG_TYPE_DEFAULT, "Canceling the previous geocode request. %@", buf, 0xCu);
       }
 
       [(CLGeocoder *)self->_geocoder cancelGeocode];
     }
 
-    objc_storeStrong(&self->_cachedLocation, a3);
+    objc_storeStrong(&self->_cachedLocation, location);
     [(NSMutableArray *)self->_handlers removeAllObjects];
     v16 = self->_handlers;
-    v17 = [v8 copy];
+    v17 = [handlerCopy copy];
     v18 = MEMORY[0x23EEBDCB0]();
     [(NSMutableArray *)v16 addObject:v18];
 
@@ -125,7 +125,7 @@
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v29 = v7;
+      v29 = locationCopy;
       _os_log_impl(&dword_23BDCF000, v19, OS_LOG_TYPE_DEFAULT, "Sending geocode request for location %@", buf, 0xCu);
     }
 
@@ -136,7 +136,7 @@
     v22[2] = sub_23BDD4854;
     v22[3] = &unk_278B99A70;
     objc_copyWeak(&v24, buf);
-    v23 = v7;
+    v23 = locationCopy;
     [(CLGeocoder *)geocoder reverseGeocodeLocation:v23 completionHandler:v22];
 
     objc_destroyWeak(&v24);
@@ -146,45 +146,45 @@
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handlePlacemarks:(id)a3 fromLocation:(id)a4 error:(id)a5
+- (void)_handlePlacemarks:(id)placemarks fromLocation:(id)location error:(id)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 code] != 10)
+  placemarksCopy = placemarks;
+  locationCopy = location;
+  errorCopy = error;
+  if ([errorCopy code] != 10)
   {
-    if (v10)
+    if (errorCopy)
     {
       v12 = NTALogForCategory(6uLL);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v22 = v9;
+        v22 = locationCopy;
         v23 = 2112;
-        v24 = v10;
+        v24 = errorCopy;
         _os_log_impl(&dword_23BDCF000, v12, OS_LOG_TYPE_DEFAULT, "Reverse geocide with error: %@ %@.", buf, 0x16u);
       }
 
-      v13 = 0;
+      firstObject = 0;
     }
 
     else
     {
-      v13 = [v8 firstObject];
-      if (!v13)
+      firstObject = [placemarksCopy firstObject];
+      if (!firstObject)
       {
         goto LABEL_9;
       }
 
-      objc_storeStrong(&self->_cachedPlacemark, v13);
+      objc_storeStrong(&self->_cachedPlacemark, firstObject);
       v12 = NTALogForCategory(6uLL);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v22 = v9;
+        v22 = locationCopy;
         v23 = 2112;
-        v24 = v13;
+        v24 = firstObject;
         _os_log_impl(&dword_23BDCF000, v12, OS_LOG_TYPE_DEFAULT, "Updated the cached placemark for location %@-%@.", buf, 0x16u);
       }
     }
@@ -196,9 +196,9 @@ LABEL_9:
     block[2] = sub_23BDD4B54;
     block[3] = &unk_278B99A98;
     v18 = v14;
-    v19 = v13;
-    v20 = v10;
-    v15 = v13;
+    v19 = firstObject;
+    v20 = errorCopy;
+    v15 = firstObject;
     v11 = v14;
     dispatch_async(MEMORY[0x277D85CD0], block);
     [(NSMutableArray *)self->_handlers removeAllObjects];
@@ -210,7 +210,7 @@ LABEL_9:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v9;
+    v22 = locationCopy;
     _os_log_impl(&dword_23BDCF000, v11, OS_LOG_TYPE_DEFAULT, "Reverse geocode request is cancelled. %@", buf, 0xCu);
   }
 

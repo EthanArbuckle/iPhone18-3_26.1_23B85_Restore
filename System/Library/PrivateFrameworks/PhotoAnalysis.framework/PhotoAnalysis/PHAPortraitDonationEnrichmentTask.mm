@@ -1,6 +1,6 @@
 @interface PHAPortraitDonationEnrichmentTask
 - (id)enrichmentProcessor;
-- (void)timeoutFatal:(BOOL)a3;
+- (void)timeoutFatal:(BOOL)fatal;
 @end
 
 @implementation PHAPortraitDonationEnrichmentTask
@@ -12,9 +12,9 @@
   return v2;
 }
 
-- (void)timeoutFatal:(BOOL)a3
+- (void)timeoutFatal:(BOOL)fatal
 {
-  if (a3)
+  if (fatal)
   {
     __assert_rtn("[PHAPortraitDonationEnrichmentTask timeoutFatal:]", "PHAPortraitDonationEnrichmentTask.m", 39, "NO");
   }

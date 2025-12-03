@@ -1,17 +1,17 @@
 @interface FeedPersonalizerFactory
 - (_TtC10NewsToday223FeedPersonalizerFactory)init;
-- (id)newFeedPersonalizerWithAggregateStore:(id)a3 appConfigurationManager:(id)a4 todayPrivateData:(id)a5;
+- (id)newFeedPersonalizerWithAggregateStore:(id)store appConfigurationManager:(id)manager todayPrivateData:(id)data;
 @end
 
 @implementation FeedPersonalizerFactory
 
-- (id)newFeedPersonalizerWithAggregateStore:(id)a3 appConfigurationManager:(id)a4 todayPrivateData:(id)a5
+- (id)newFeedPersonalizerWithAggregateStore:(id)store appConfigurationManager:(id)manager todayPrivateData:(id)data
 {
-  v6 = a3;
+  storeCopy = store;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_1000AF1FC(v6);
+  selfCopy = self;
+  v8 = sub_1000AF1FC(storeCopy);
 
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();

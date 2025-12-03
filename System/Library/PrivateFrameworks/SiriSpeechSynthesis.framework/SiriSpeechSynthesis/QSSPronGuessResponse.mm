@@ -5,8 +5,8 @@
 - (NSString)error_str;
 - (NSString)session_id;
 - (NSString)speech_id;
-- (Offset<siri::speech::schema_fb::PronGuessResponse>)addObjectToBuffer:(void *)a3;
-- (QSSPronGuessResponse)initWithFlatbuffData:(id)a3 root:(const PronGuessResponse *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::PronGuessResponse>)addObjectToBuffer:(void *)buffer;
+- (QSSPronGuessResponse)initWithFlatbuffData:(id)data root:(const PronGuessResponse *)root verify:(BOOL)verify;
 - (QSSVocToken)voc_token;
 - (id)flatbuffData;
 - (int)error_code;
@@ -43,59 +43,59 @@ flatbuffers::DetachedBuffer *__36__QSSPronGuessResponse_flatbuffData__block_invo
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::PronGuessResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::PronGuessResponse>)addObjectToBuffer:(void *)buffer
 {
   v63 = *MEMORY[0x277D85DE8];
-  v5 = [(QSSPronGuessResponse *)self speech_id];
-  v6 = v5;
-  if (!v5)
+  speech_id = [(QSSPronGuessResponse *)self speech_id];
+  v6 = speech_id;
+  if (!speech_id)
   {
-    v5 = &stru_2879AE8E0;
+    speech_id = &stru_2879AE8E0;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)speech_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v9 = [(QSSPronGuessResponse *)self session_id];
-  v10 = v9;
-  if (!v9)
+  session_id = [(QSSPronGuessResponse *)self session_id];
+  v10 = session_id;
+  if (!session_id)
   {
-    v9 = &stru_2879AE8E0;
+    session_id = &stru_2879AE8E0;
   }
 
-  v11 = [(__CFString *)v9 UTF8String];
-  v12 = strlen(v11);
-  v47 = flatbuffers::FlatBufferBuilder::CreateString(a3, v11, v12);
+  uTF8String2 = [(__CFString *)session_id UTF8String];
+  v12 = strlen(uTF8String2);
+  v47 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v12);
 
-  v46 = [(QSSPronGuessResponse *)self error_code];
-  v13 = [(QSSPronGuessResponse *)self error_str];
-  v14 = v13;
-  if (!v13)
+  error_code = [(QSSPronGuessResponse *)self error_code];
+  error_str = [(QSSPronGuessResponse *)self error_str];
+  v14 = error_str;
+  if (!error_str)
   {
-    v13 = &stru_2879AE8E0;
+    error_str = &stru_2879AE8E0;
   }
 
-  v15 = [(__CFString *)v13 UTF8String];
-  v16 = strlen(v15);
-  v45 = flatbuffers::FlatBufferBuilder::CreateString(a3, v15, v16);
+  uTF8String3 = [(__CFString *)error_str UTF8String];
+  v16 = strlen(uTF8String3);
+  v45 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String3, v16);
 
-  v17 = [(QSSPronGuessResponse *)self apg_id];
-  v18 = v17;
-  if (!v17)
+  apg_id = [(QSSPronGuessResponse *)self apg_id];
+  v18 = apg_id;
+  if (!apg_id)
   {
-    v17 = &stru_2879AE8E0;
+    apg_id = &stru_2879AE8E0;
   }
 
-  v19 = [(__CFString *)v17 UTF8String];
-  v20 = strlen(v19);
-  v44 = flatbuffers::FlatBufferBuilder::CreateString(a3, v19, v20);
+  uTF8String4 = [(__CFString *)apg_id UTF8String];
+  v20 = strlen(uTF8String4);
+  v44 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String4, v20);
 
-  v21 = [(QSSPronGuessResponse *)self voc_token];
-  v22 = [v21 addObjectToBuffer:a3];
+  voc_token = [(QSSPronGuessResponse *)self voc_token];
+  v22 = [voc_token addObjectToBuffer:buffer];
 
-  v23 = [(QSSPronGuessResponse *)self tts_pronunciations];
-  v24 = [v23 count];
+  tts_pronunciations = [(QSSPronGuessResponse *)self tts_pronunciations];
+  v24 = [tts_pronunciations count];
   if (v24)
   {
     if (!(v24 >> 62))
@@ -116,22 +116,22 @@ flatbuffers::DetachedBuffer *__36__QSSPronGuessResponse_flatbuffData__block_invo
   {
     *v58;
     *v58;
-    [**(&v57 + 1) addObjectToBuffer:a3];
+    [**(&v57 + 1) addObjectToBuffer:buffer];
     std::__allocate_at_least[abi:ne200100]<std::allocator<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>>(1uLL);
   }
 
-  flatbuffers::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v25 = flatbuffers::FlatBufferBuilder::EndVector(a3, 0);
+  flatbuffers::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v25 = flatbuffers::FlatBufferBuilder::EndVector(buffer, 0);
   memset(&v56, 0, sizeof(v56));
-  v26 = [(QSSPronGuessResponse *)self human_readable_prons];
-  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v56, [v26 count]);
+  human_readable_prons = [(QSSPronGuessResponse *)self human_readable_prons];
+  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v56, [human_readable_prons count]);
 
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v27 = [(QSSPronGuessResponse *)self human_readable_prons];
-  v28 = [v27 countByEnumeratingWithState:&v52 objects:v61 count:16];
+  human_readable_prons2 = [(QSSPronGuessResponse *)self human_readable_prons];
+  v28 = [human_readable_prons2 countByEnumeratingWithState:&v52 objects:v61 count:16];
   if (v28)
   {
     v29 = *v53;
@@ -141,16 +141,16 @@ flatbuffers::DetachedBuffer *__36__QSSPronGuessResponse_flatbuffData__block_invo
       {
         if (*v53 != v29)
         {
-          objc_enumerationMutation(v27);
+          objc_enumerationMutation(human_readable_prons2);
         }
 
-        v31 = [*(*(&v52 + 1) + 8 * i) UTF8String];
-        v32 = strlen(v31);
-        v51 = flatbuffers::FlatBufferBuilder::CreateString(a3, v31, v32);
+        uTF8String5 = [*(*(&v52 + 1) + 8 * i) UTF8String];
+        v32 = strlen(uTF8String5);
+        v51 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String5, v32);
         std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v56, &v51);
       }
 
-      v28 = [v27 countByEnumeratingWithState:&v52 objects:v61 count:16];
+      v28 = [human_readable_prons2 countByEnumeratingWithState:&v52 objects:v61 count:16];
     }
 
     while (v28);
@@ -167,31 +167,31 @@ flatbuffers::DetachedBuffer *__36__QSSPronGuessResponse_flatbuffData__block_invo
     v34 = v56.__begin_;
   }
 
-  v35 = flatbuffers::FlatBufferBuilder::CreateVector<flatbuffers::String>(a3, v34, v56.__end_ - v56.__begin_);
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v36 = *(a3 + 8);
-  v37 = *(a3 + 12);
-  v38 = *(a3 + 10);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 6, v47);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 8, v46);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 10, v45);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 12, v44);
+  v35 = flatbuffers::FlatBufferBuilder::CreateVector<flatbuffers::String>(buffer, v34, v56.__end_ - v56.__begin_);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v36 = *(buffer + 8);
+  v37 = *(buffer + 12);
+  v38 = *(buffer + 10);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 6, v47);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 8, error_code);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 10, v45);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 12, v44);
   if (v49)
   {
-    v39 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v49);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 14, v39);
+    v39 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v49);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 14, v39);
   }
 
   if (v25)
   {
-    v40 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v25);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 16, v40);
+    v40 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v25);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 16, v40);
   }
 
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 18, v35);
-  v41.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v36 - v37 + v38);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 18, v35);
+  v41.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v36 - v37 + v38);
   if (begin)
   {
     operator delete(begin);
@@ -203,10 +203,10 @@ flatbuffers::DetachedBuffer *__36__QSSPronGuessResponse_flatbuffData__block_invo
 
 - (NSArray)human_readable_prons
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"human_readable_prons"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"human_readable_prons"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 0x13u)
@@ -223,7 +223,7 @@ flatbuffers::DetachedBuffer *__36__QSSPronGuessResponse_flatbuffData__block_invo
           do
           {
             v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:&v10[*v10->var0 + 4] length:*v10[*v10->var0].var0 encoding:4];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -234,18 +234,18 @@ flatbuffers::DetachedBuffer *__36__QSSPronGuessResponse_flatbuffData__block_invo
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"human_readable_prons"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"human_readable_prons"];
   }
 
-  return v3;
+  return array;
 }
 
 - (NSArray)tts_pronunciations
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"tts_pronunciations"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"tts_pronunciations"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 0x11u)
@@ -262,7 +262,7 @@ flatbuffers::DetachedBuffer *__36__QSSPronGuessResponse_flatbuffData__block_invo
           do
           {
             v11 = [[QSSPronunciation alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -273,10 +273,10 @@ flatbuffers::DetachedBuffer *__36__QSSPronGuessResponse_flatbuffData__block_invo
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"tts_pronunciations"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"tts_pronunciations"];
   }
 
-  return v3;
+  return array;
 }
 
 - (QSSVocToken)voc_token
@@ -411,42 +411,42 @@ flatbuffers::DetachedBuffer *__36__QSSPronGuessResponse_flatbuffData__block_invo
   return v6;
 }
 
-- (QSSPronGuessResponse)initWithFlatbuffData:(id)a3 root:(const PronGuessResponse *)a4 verify:(BOOL)a5
+- (QSSPronGuessResponse)initWithFlatbuffData:(id)data root:(const PronGuessResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSPronGuessResponse;
   v10 = [(QSSPronGuessResponse *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -468,9 +468,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

@@ -1,39 +1,39 @@
 @interface CSDSandboxExtensionDirectory
 + (NSURL)recordingDirectoryURL;
 + (id)CSDApplicationGroup;
-- (BOOL)removeLinksForFilenamesNotInArray:(id)a3 error:(id *)a4;
+- (BOOL)removeLinksForFilenamesNotInArray:(id)array error:(id *)error;
 - (CSDSandboxExtensionDirectory)init;
-- (CSDSandboxExtensionDirectory)initWithName:(id)a3 error:(id *)a4;
-- (CSDSandboxExtensionDirectory)initWithName:(id)a3 fileManager:(id)a4 error:(id *)a5;
+- (CSDSandboxExtensionDirectory)initWithName:(id)name error:(id *)error;
+- (CSDSandboxExtensionDirectory)initWithName:(id)name fileManager:(id)manager error:(id *)error;
 - (NSString)name;
-- (id)createLinkIfNecessaryWithFilename:(id)a3 toURL:(id)a4 error:(id *)a5;
-- (id)urlForFilename:(id)a3;
+- (id)createLinkIfNecessaryWithFilename:(id)filename toURL:(id)l error:(id *)error;
+- (id)urlForFilename:(id)filename;
 @end
 
 @implementation CSDSandboxExtensionDirectory
 
-- (CSDSandboxExtensionDirectory)initWithName:(id)a3 fileManager:(id)a4 error:(id *)a5
+- (CSDSandboxExtensionDirectory)initWithName:(id)name fileManager:(id)manager error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = CSDSandboxExtensionDirectory;
   v10 = [(CSDSandboxExtensionDirectory *)&v19 init];
   if (v10)
   {
     p_isa = &v10->super.isa;
-    objc_storeStrong(&v10->_fileManager, a4);
-    v12 = [p_isa[2] URLForDirectory:5 inDomain:1 appropriateForURL:0 create:1 error:a5];
+    objc_storeStrong(&v10->_fileManager, manager);
+    v12 = [p_isa[2] URLForDirectory:5 inDomain:1 appropriateForURL:0 create:1 error:error];
     v13 = v12;
     if (v12)
     {
       v14 = [v12 URLByAppendingPathComponent:@"CallServices" isDirectory:1];
-      v15 = [v14 URLByAppendingPathComponent:v8 isDirectory:1];
-      v16 = [v15 URLByStandardizingPath];
+      v15 = [v14 URLByAppendingPathComponent:nameCopy isDirectory:1];
+      uRLByStandardizingPath = [v15 URLByStandardizingPath];
 
-      if (v16 && [p_isa[2] createDirectoryAtURL:v16 withIntermediateDirectories:1 attributes:0 error:a5])
+      if (uRLByStandardizingPath && [p_isa[2] createDirectoryAtURL:uRLByStandardizingPath withIntermediateDirectories:1 attributes:0 error:error])
       {
-        objc_storeStrong(p_isa + 1, v16);
+        objc_storeStrong(p_isa + 1, uRLByStandardizingPath);
       }
 
       else
@@ -61,11 +61,11 @@
   return v17;
 }
 
-- (CSDSandboxExtensionDirectory)initWithName:(id)a3 error:(id *)a4
+- (CSDSandboxExtensionDirectory)initWithName:(id)name error:(id *)error
 {
-  v6 = a3;
+  nameCopy = name;
   v7 = +[NSFileManager defaultManager];
-  v8 = [(CSDSandboxExtensionDirectory *)self initWithName:v6 fileManager:v7 error:a4];
+  v8 = [(CSDSandboxExtensionDirectory *)self initWithName:nameCopy fileManager:v7 error:error];
 
   return v8;
 }
@@ -81,18 +81,18 @@
 - (NSString)name
 {
   v2 = [(CSDSandboxExtensionDirectory *)self URL];
-  v3 = [v2 lastPathComponent];
+  lastPathComponent = [v2 lastPathComponent];
 
-  return v3;
+  return lastPathComponent;
 }
 
-- (id)createLinkIfNecessaryWithFilename:(id)a3 toURL:(id)a4 error:(id *)a5
+- (id)createLinkIfNecessaryWithFilename:(id)filename toURL:(id)l error:(id *)error
 {
-  v8 = a4;
-  v9 = [(CSDSandboxExtensionDirectory *)self urlForFilename:a3];
-  v10 = [(CSDSandboxExtensionDirectory *)self fileManager];
-  v11 = [v9 path];
-  v12 = [v10 fileExistsAtPath:v11];
+  lCopy = l;
+  v9 = [(CSDSandboxExtensionDirectory *)self urlForFilename:filename];
+  fileManager = [(CSDSandboxExtensionDirectory *)self fileManager];
+  path = [v9 path];
+  v12 = [fileManager fileExistsAtPath:path];
 
   if (!v12)
   {
@@ -100,7 +100,7 @@
   }
 
   v26 = 0;
-  v13 = [v8 getResourceValue:&v26 forKey:NSURLFileResourceIdentifierKey error:0];
+  v13 = [lCopy getResourceValue:&v26 forKey:NSURLFileResourceIdentifierKey error:0];
   v14 = v26;
   v15 = 0;
   if (v13 && (v25 = 0, v16 = [v9 getResourceValue:&v25 forKey:NSURLFileResourceIdentifierKey error:0], v15 = v25, v16))
@@ -117,13 +117,13 @@
   {
   }
 
-  v18 = [(CSDSandboxExtensionDirectory *)self fileManager];
-  v19 = [v18 removeItemAtURL:v9 error:a5];
+  fileManager2 = [(CSDSandboxExtensionDirectory *)self fileManager];
+  v19 = [fileManager2 removeItemAtURL:v9 error:error];
 
   if (!v19)
   {
     v21 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -132,19 +132,19 @@
   else
   {
 LABEL_8:
-    v20 = [(CSDSandboxExtensionDirectory *)self fileManager];
-    v21 = [v20 copyItemAtURL:v8 toURL:v9 error:a5];
+    fileManager3 = [(CSDSandboxExtensionDirectory *)self fileManager];
+    v21 = [fileManager3 copyItemAtURL:lCopy toURL:v9 error:error];
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_13;
     }
   }
 
-  if ((v21 & 1) == 0 && !*a5)
+  if ((v21 & 1) == 0 && !*error)
   {
     v22 = 0;
-    *a5 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
+    *error = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
     goto LABEL_17;
   }
 
@@ -163,15 +163,15 @@ LABEL_17:
   return v22;
 }
 
-- (BOOL)removeLinksForFilenamesNotInArray:(id)a3 error:(id *)a4
+- (BOOL)removeLinksForFilenamesNotInArray:(id)array error:(id *)error
 {
-  v5 = a3;
-  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+  arrayCopy = array;
+  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [arrayCopy count]);
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v7 = v5;
+  v7 = arrayCopy;
   v8 = [v7 countByEnumeratingWithState:&v48 objects:v56 count:16];
   if (v8)
   {
@@ -213,9 +213,9 @@ LABEL_17:
 
   v38 = v7;
 
-  v15 = [(CSDSandboxExtensionDirectory *)self fileManager];
+  fileManager = [(CSDSandboxExtensionDirectory *)self fileManager];
   v16 = [(CSDSandboxExtensionDirectory *)self URL];
-  v17 = [v15 contentsOfDirectoryAtURL:v16 includingPropertiesForKeys:&__NSArray0__struct options:0 error:a4];
+  v17 = [fileManager contentsOfDirectoryAtURL:v16 includingPropertiesForKeys:&__NSArray0__struct options:0 error:error];
 
   v18 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v17 count]);
   v44 = 0u;
@@ -238,10 +238,10 @@ LABEL_17:
         }
 
         v24 = *(*(&v44 + 1) + 8 * j);
-        v25 = [v24 URLByStandardizingPath];
-        if (v25)
+        uRLByStandardizingPath = [v24 URLByStandardizingPath];
+        if (uRLByStandardizingPath)
         {
-          [v18 addObject:v25];
+          [v18 addObject:uRLByStandardizingPath];
         }
 
         else
@@ -286,8 +286,8 @@ LABEL_27:
       }
 
       v34 = *(*(&v40 + 1) + 8 * v33);
-      v35 = [(CSDSandboxExtensionDirectory *)self fileManager];
-      v36 = [v35 removeItemAtURL:v34 error:a4];
+      fileManager2 = [(CSDSandboxExtensionDirectory *)self fileManager];
+      v36 = [fileManager2 removeItemAtURL:v34 error:error];
 
       if (!v36)
       {
@@ -316,15 +316,15 @@ LABEL_33:
   return v36;
 }
 
-- (id)urlForFilename:(id)a3
+- (id)urlForFilename:(id)filename
 {
-  v4 = a3;
+  filenameCopy = filename;
   v5 = [(CSDSandboxExtensionDirectory *)self URL];
-  v6 = [v5 URLByAppendingPathComponent:v4];
+  v6 = [v5 URLByAppendingPathComponent:filenameCopy];
 
-  v7 = [v6 URLByStandardizingPath];
+  uRLByStandardizingPath = [v6 URLByStandardizingPath];
 
-  return v7;
+  return uRLByStandardizingPath;
 }
 
 + (id)CSDApplicationGroup

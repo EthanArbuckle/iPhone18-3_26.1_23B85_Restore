@@ -1,8 +1,8 @@
 @interface OSLogEventSource
 - (NSDate)newestDate;
 - (NSDate)oldestDate;
-- (OSLogEventSource)initWithCollection:(id)a3 metadata:(id)a4 timesync:(_os_timesync_db_s *)a5;
-- (void)_enumerateIndexFiles:(id)a3;
+- (OSLogEventSource)initWithCollection:(id)collection metadata:(id)metadata timesync:(_os_timesync_db_s *)timesync;
+- (void)_enumerateIndexFiles:(id)files;
 - (void)dealloc;
 @end
 
@@ -15,9 +15,9 @@
   {
     tsdb = self->_tsdb;
     v5 = [(_OSLogEventStoreMetadata *)lesm end];
-    v6 = [v5 UUID];
+    uUID = [v5 UUID];
     v7 = [(_OSLogEventStoreMetadata *)self->_lesm end];
-    v8 = _timesync_continuous_to_wall_time(tsdb, v6, [v7 continuousTime], 0);
+    v8 = _timesync_continuous_to_wall_time(tsdb, uUID, [v7 continuousTime], 0);
 
     [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v8 / 1000000000.0];
   }
@@ -48,10 +48,10 @@
   return v4;
 }
 
-- (void)_enumerateIndexFiles:(id)a3
+- (void)_enumerateIndexFiles:(id)files
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  filesCopy = files;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -72,7 +72,7 @@
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v11 + 1) + 8 * v9++));
+        filesCopy[2](filesCopy, *(*(&v11 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);
@@ -94,27 +94,27 @@
   [(OSLogEventSource *)&v3 dealloc];
 }
 
-- (OSLogEventSource)initWithCollection:(id)a3 metadata:(id)a4 timesync:(_os_timesync_db_s *)a5
+- (OSLogEventSource)initWithCollection:(id)collection metadata:(id)metadata timesync:(_os_timesync_db_s *)timesync
 {
   v19 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  collectionCopy = collection;
+  metadataCopy = metadata;
   v18.receiver = self;
   v18.super_class = OSLogEventSource;
   v11 = [(OSLogEventSource *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_lcr, a3);
-    objc_storeStrong(&v12->_lesm, a4);
-    v12->_tsdb = a5;
-    v13 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v11->_lcr, collection);
+    objc_storeStrong(&v12->_lesm, metadata);
+    v12->_tsdb = timesync;
+    array = [MEMORY[0x277CBEB18] array];
     fileRefs = v12->_fileRefs;
-    v12->_fileRefs = v13;
+    v12->_fileRefs = array;
 
-    if (v10)
+    if (metadataCopy)
     {
-      v15 = v10;
+      v15 = metadataCopy;
       _timesync_range_create_impl();
     }
   }

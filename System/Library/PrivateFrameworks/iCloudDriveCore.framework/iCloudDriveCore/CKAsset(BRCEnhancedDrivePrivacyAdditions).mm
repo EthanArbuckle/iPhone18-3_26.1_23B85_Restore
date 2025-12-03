@@ -22,7 +22,7 @@
 {
   v6 = a4 != 0;
   v7 = a4;
-  v8 = [a1 br_assetWithFileURL:a3 useMMCSEncryptionV2:v6];
+  v8 = [self br_assetWithFileURL:a3 useMMCSEncryptionV2:v6];
   [v8 setBoundaryKey:v7];
 
   return v8;
@@ -34,7 +34,7 @@
   v7 = a3;
   v8 = [[v6 alloc] initWithFileURL:v7];
 
-  v9 = [a1 transferOptionsWithMMCSV2:a4];
+  v9 = [self transferOptionsWithMMCSV2:a4];
   [v8 setAssetTransferOptions:v9];
 
   return v8;
@@ -44,7 +44,7 @@
 {
   v10 = a6 != 0;
   v11 = a6;
-  v12 = [a1 br_assetWithDeviceID:a3 fileID:a4 generationID:a5 useMMCSEncryptionV2:v10];
+  v12 = [self br_assetWithDeviceID:a3 fileID:a4 generationID:a5 useMMCSEncryptionV2:v10];
   [v12 setBoundaryKey:v11];
 
   return v12;
@@ -58,7 +58,7 @@
   v13 = a3;
   v14 = [[v10 alloc] initWithDeviceID:v13 fileID:v12 generationID:v11];
 
-  v15 = [a1 transferOptionsWithMMCSV2:a6];
+  v15 = [self transferOptionsWithMMCSV2:a6];
   [v14 setAssetTransferOptions:v15];
 
   return v14;
@@ -70,7 +70,7 @@
   v6 = a3;
   v7 = a4;
   v8 = [objc_alloc(MEMORY[0x277CBC190]) initWithAssetReference:v6];
-  v9 = [a1 transferOptionsWithMMCSV2:v7 != 0];
+  v9 = [self transferOptionsWithMMCSV2:v7 != 0];
   [v8 setAssetTransferOptions:v9];
 
   [v8 setBoundaryKey:v7];

@@ -1,7 +1,7 @@
 @interface _DDUIArtificialPerson
 - (NSString)description;
 - (id)initGuestPairPerson;
-- (id)initSessionPairedPersonWithDevice:(id)a3;
+- (id)initSessionPairedPersonWithDevice:(id)device;
 @end
 
 @implementation _DDUIArtificialPerson
@@ -24,9 +24,9 @@
   return v3;
 }
 
-- (id)initSessionPairedPersonWithDevice:(id)a3
+- (id)initSessionPairedPersonWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v19.receiver = self;
   v19.super_class = _DDUIArtificialPerson;
   v5 = [(_DDUIArtificialPerson *)&v19 init];
@@ -39,18 +39,18 @@
     accountAltDSID = v6->_accountAltDSID;
     v6->_accountAltDSID = @"ddui@session.paired.identifier";
 
-    v9 = [v4 model];
-    v10 = [v9 copy];
+    model = [deviceCopy model];
+    v10 = [model copy];
     deviceModel = v6->_deviceModel;
     v6->_deviceModel = v10;
 
-    v12 = [v4 idsDeviceIdentifier];
-    v13 = [v12 copy];
+    idsDeviceIdentifier = [deviceCopy idsDeviceIdentifier];
+    v13 = [idsDeviceIdentifier copy];
     identifier = v6->_identifier;
     v6->_identifier = v13;
 
-    v15 = [v4 name];
-    v16 = [v15 copy];
+    name = [deviceCopy name];
+    v16 = [name copy];
     name = v6->_name;
     v6->_name = v16;
   }

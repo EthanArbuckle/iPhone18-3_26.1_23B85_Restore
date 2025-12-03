@@ -1,104 +1,104 @@
 @interface SXVideoPlayerVisibilityMonitor
 - (BOOL)appeared;
-- (SXVideoPlayerVisibilityMonitor)initWithVisibilityMonitor:(id)a3;
+- (SXVideoPlayerVisibilityMonitor)initWithVisibilityMonitor:(id)monitor;
 - (double)visiblePercentage;
 - (id)object;
 - (unint64_t)state;
-- (void)configureVisibilityMonitor:(id)a3;
-- (void)onDidAppear:(id)a3;
-- (void)onDidDisappear:(id)a3;
-- (void)onVisiblePercentageChange:(id)a3;
-- (void)onWillAppear:(id)a3;
-- (void)onWillDisappear:(id)a3;
-- (void)setVisibilityMonitor:(id)a3;
+- (void)configureVisibilityMonitor:(id)monitor;
+- (void)onDidAppear:(id)appear;
+- (void)onDidDisappear:(id)disappear;
+- (void)onVisiblePercentageChange:(id)change;
+- (void)onWillAppear:(id)appear;
+- (void)onWillDisappear:(id)disappear;
+- (void)setVisibilityMonitor:(id)monitor;
 @end
 
 @implementation SXVideoPlayerVisibilityMonitor
 
-- (SXVideoPlayerVisibilityMonitor)initWithVisibilityMonitor:(id)a3
+- (SXVideoPlayerVisibilityMonitor)initWithVisibilityMonitor:(id)monitor
 {
-  v5 = a3;
+  monitorCopy = monitor;
   v19.receiver = self;
   v19.super_class = SXVideoPlayerVisibilityMonitor;
   v6 = [(SXVideoPlayerVisibilityMonitor *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_visibilityMonitor, a3);
-    v8 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v6->_visibilityMonitor, monitor);
+    array = [MEMORY[0x1E695DF70] array];
     willAppearBlocks = v7->_willAppearBlocks;
-    v7->_willAppearBlocks = v8;
+    v7->_willAppearBlocks = array;
 
-    v10 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     didAppearBlocks = v7->_didAppearBlocks;
-    v7->_didAppearBlocks = v10;
+    v7->_didAppearBlocks = array2;
 
-    v12 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     visiblePercentageBlocks = v7->_visiblePercentageBlocks;
-    v7->_visiblePercentageBlocks = v12;
+    v7->_visiblePercentageBlocks = array3;
 
-    v14 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
     willDisappearBlocks = v7->_willDisappearBlocks;
-    v7->_willDisappearBlocks = v14;
+    v7->_willDisappearBlocks = array4;
 
-    v16 = [MEMORY[0x1E695DF70] array];
+    array5 = [MEMORY[0x1E695DF70] array];
     didDisappearBlocks = v7->_didDisappearBlocks;
-    v7->_didDisappearBlocks = v16;
+    v7->_didDisappearBlocks = array5;
 
-    [(SXVideoPlayerVisibilityMonitor *)v7 configureVisibilityMonitor:v5];
+    [(SXVideoPlayerVisibilityMonitor *)v7 configureVisibilityMonitor:monitorCopy];
   }
 
   return v7;
 }
 
-- (void)setVisibilityMonitor:(id)a3
+- (void)setVisibilityMonitor:(id)monitor
 {
-  v5 = a3;
+  monitorCopy = monitor;
   p_visibilityMonitor = &self->_visibilityMonitor;
-  if (self->_visibilityMonitor != v5)
+  if (self->_visibilityMonitor != monitorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_visibilityMonitor, a3);
+    v7 = monitorCopy;
+    objc_storeStrong(p_visibilityMonitor, monitor);
     p_visibilityMonitor = [(SXVideoPlayerVisibilityMonitor *)self configureVisibilityMonitor:v7];
   }
 
   MEMORY[0x1EEE66BE0](p_visibilityMonitor);
 }
 
-- (void)configureVisibilityMonitor:(id)a3
+- (void)configureVisibilityMonitor:(id)monitor
 {
-  v4 = a3;
+  monitorCopy = monitor;
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __61__SXVideoPlayerVisibilityMonitor_configureVisibilityMonitor___block_invoke;
   v13[3] = &unk_1E84FFB98;
   objc_copyWeak(&v14, &location);
-  [v4 onWillAppear:v13];
+  [monitorCopy onWillAppear:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __61__SXVideoPlayerVisibilityMonitor_configureVisibilityMonitor___block_invoke_2;
   v11[3] = &unk_1E84FFB98;
   objc_copyWeak(&v12, &location);
-  [v4 onDidAppear:v11];
+  [monitorCopy onDidAppear:v11];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__SXVideoPlayerVisibilityMonitor_configureVisibilityMonitor___block_invoke_3;
   v9[3] = &unk_1E84FFB98;
   objc_copyWeak(&v10, &location);
-  [v4 onWillDisappear:v9];
+  [monitorCopy onWillDisappear:v9];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__SXVideoPlayerVisibilityMonitor_configureVisibilityMonitor___block_invoke_4;
   v7[3] = &unk_1E84FFB98;
   objc_copyWeak(&v8, &location);
-  [v4 onDidDisappear:v7];
+  [monitorCopy onDidDisappear:v7];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __61__SXVideoPlayerVisibilityMonitor_configureVisibilityMonitor___block_invoke_5;
   v5[3] = &unk_1E84FFBC0;
   objc_copyWeak(&v6, &location);
-  [v4 onVisiblePercentageChange:v5];
+  [monitorCopy onVisiblePercentageChange:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&v8);
   objc_destroyWeak(&v10);
@@ -314,80 +314,80 @@ void __61__SXVideoPlayerVisibilityMonitor_configureVisibilityMonitor___block_inv
 
 - (unint64_t)state
 {
-  v2 = [(SXVideoPlayerVisibilityMonitor *)self visibilityMonitor];
-  v3 = [v2 state];
+  visibilityMonitor = [(SXVideoPlayerVisibilityMonitor *)self visibilityMonitor];
+  state = [visibilityMonitor state];
 
-  return v3;
+  return state;
 }
 
 - (BOOL)appeared
 {
-  v2 = [(SXVideoPlayerVisibilityMonitor *)self visibilityMonitor];
-  v3 = [v2 appeared];
+  visibilityMonitor = [(SXVideoPlayerVisibilityMonitor *)self visibilityMonitor];
+  appeared = [visibilityMonitor appeared];
 
-  return v3;
+  return appeared;
 }
 
 - (id)object
 {
-  v2 = [(SXVideoPlayerVisibilityMonitor *)self visibilityMonitor];
-  v3 = [v2 object];
+  visibilityMonitor = [(SXVideoPlayerVisibilityMonitor *)self visibilityMonitor];
+  object = [visibilityMonitor object];
 
-  return v3;
+  return object;
 }
 
 - (double)visiblePercentage
 {
-  v2 = [(SXVideoPlayerVisibilityMonitor *)self visibilityMonitor];
-  [v2 visiblePercentage];
+  visibilityMonitor = [(SXVideoPlayerVisibilityMonitor *)self visibilityMonitor];
+  [visibilityMonitor visiblePercentage];
   v4 = v3;
 
   return v4;
 }
 
-- (void)onWillAppear:(id)a3
+- (void)onWillAppear:(id)appear
 {
-  v4 = a3;
-  v6 = [(SXVideoPlayerVisibilityMonitor *)self willAppearBlocks];
-  v5 = MEMORY[0x1DA716BE0](v4);
+  appearCopy = appear;
+  willAppearBlocks = [(SXVideoPlayerVisibilityMonitor *)self willAppearBlocks];
+  v5 = MEMORY[0x1DA716BE0](appearCopy);
 
-  [v6 addObject:v5];
+  [willAppearBlocks addObject:v5];
 }
 
-- (void)onDidAppear:(id)a3
+- (void)onDidAppear:(id)appear
 {
-  v4 = a3;
-  v6 = [(SXVideoPlayerVisibilityMonitor *)self didAppearBlocks];
-  v5 = MEMORY[0x1DA716BE0](v4);
+  appearCopy = appear;
+  didAppearBlocks = [(SXVideoPlayerVisibilityMonitor *)self didAppearBlocks];
+  v5 = MEMORY[0x1DA716BE0](appearCopy);
 
-  [v6 addObject:v5];
+  [didAppearBlocks addObject:v5];
 }
 
-- (void)onVisiblePercentageChange:(id)a3
+- (void)onVisiblePercentageChange:(id)change
 {
-  v4 = a3;
-  v6 = [(SXVideoPlayerVisibilityMonitor *)self visiblePercentageBlocks];
-  v5 = MEMORY[0x1DA716BE0](v4);
+  changeCopy = change;
+  visiblePercentageBlocks = [(SXVideoPlayerVisibilityMonitor *)self visiblePercentageBlocks];
+  v5 = MEMORY[0x1DA716BE0](changeCopy);
 
-  [v6 addObject:v5];
+  [visiblePercentageBlocks addObject:v5];
 }
 
-- (void)onWillDisappear:(id)a3
+- (void)onWillDisappear:(id)disappear
 {
-  v4 = a3;
-  v6 = [(SXVideoPlayerVisibilityMonitor *)self willDisappearBlocks];
-  v5 = MEMORY[0x1DA716BE0](v4);
+  disappearCopy = disappear;
+  willDisappearBlocks = [(SXVideoPlayerVisibilityMonitor *)self willDisappearBlocks];
+  v5 = MEMORY[0x1DA716BE0](disappearCopy);
 
-  [v6 addObject:v5];
+  [willDisappearBlocks addObject:v5];
 }
 
-- (void)onDidDisappear:(id)a3
+- (void)onDidDisappear:(id)disappear
 {
-  v4 = a3;
-  v6 = [(SXVideoPlayerVisibilityMonitor *)self didDisappearBlocks];
-  v5 = MEMORY[0x1DA716BE0](v4);
+  disappearCopy = disappear;
+  didDisappearBlocks = [(SXVideoPlayerVisibilityMonitor *)self didDisappearBlocks];
+  v5 = MEMORY[0x1DA716BE0](disappearCopy);
 
-  [v6 addObject:v5];
+  [didDisappearBlocks addObject:v5];
 }
 
 @end

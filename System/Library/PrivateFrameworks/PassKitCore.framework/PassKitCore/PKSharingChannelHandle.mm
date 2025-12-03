@@ -1,43 +1,43 @@
 @interface PKSharingChannelHandle
-+ (void)bootstrapProximityChannelWithTemplateSession:(id)a3 group:(id)a4 completion:(id)a5;
-+ (void)bootstrapSetupAssistantProximityChannelWithTemplateSession:(id)a3 completion:(id)a4;
-+ (void)descriptorsForAccountDevices:(id)a3;
-+ (void)terminateProximityChannelForGroup:(id)a3;
++ (void)bootstrapProximityChannelWithTemplateSession:(id)session group:(id)group completion:(id)completion;
++ (void)bootstrapSetupAssistantProximityChannelWithTemplateSession:(id)session completion:(id)completion;
++ (void)descriptorsForAccountDevices:(id)devices;
++ (void)terminateProximityChannelForGroup:(id)group;
 + (void)terminateSetupAssistantProximityChannel;
-- (BOOL)_lock_isStatusValidForAction:(BOOL)a3;
+- (BOOL)_lock_isStatusValidForAction:(BOOL)action;
 - (BOOL)hasOutstandingMessage;
 - (BOOL)isInvalid;
-- (id)_initWithQueue:(id)a3;
-- (id)createActionAssertionAllowWhileTransferring:(BOOL)a3;
+- (id)_initWithQueue:(id)queue;
+- (id)createActionAssertionAllowWhileTransferring:(BOOL)transferring;
 - (void)_didReceiveMessage;
-- (void)attachAndFetchMessage:(id)a3;
+- (void)attachAndFetchMessage:(id)message;
 - (void)dealloc;
-- (void)detachHandleForTransfer:(id)a3;
+- (void)detachHandleForTransfer:(id)transfer;
 - (void)didInvalidate;
-- (void)didReceiveMessages:(id)a3;
-- (void)handleOutstandingMessage:(id)a3;
-- (void)invalidateWithRemoteWithCompletion:(id)a3;
-- (void)invalidateWithSource:(unint64_t)a3 completion:(id)a4;
-- (void)sendMessage:(id)a3 completion:(id)a4;
-- (void)sendMessageAndWaitForReply:(id)a3 timeout:(double)a4 messageHandler:(id)a5 invalidationHandler:(id)a6;
-- (void)setInvalidationHandler:(id)a3;
-- (void)setMessageReceivedHandler:(id)a3;
-- (void)startProximityDetectionForAdvertisement:(id)a3 completion:(id)a4;
-- (void)waitForMessageWithTimeout:(double)a3 messageHandler:(id)a4 invalidationHandler:(id)a5;
+- (void)didReceiveMessages:(id)messages;
+- (void)handleOutstandingMessage:(id)message;
+- (void)invalidateWithRemoteWithCompletion:(id)completion;
+- (void)invalidateWithSource:(unint64_t)source completion:(id)completion;
+- (void)sendMessage:(id)message completion:(id)completion;
+- (void)sendMessageAndWaitForReply:(id)reply timeout:(double)timeout messageHandler:(id)handler invalidationHandler:(id)invalidationHandler;
+- (void)setInvalidationHandler:(id)handler;
+- (void)setMessageReceivedHandler:(id)handler;
+- (void)startProximityDetectionForAdvertisement:(id)advertisement completion:(id)completion;
+- (void)waitForMessageWithTimeout:(double)timeout messageHandler:(id)handler invalidationHandler:(id)invalidationHandler;
 @end
 
 @implementation PKSharingChannelHandle
 
-- (id)_initWithQueue:(id)a3
+- (id)_initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = PKSharingChannelHandle;
   v6 = [(PKSharingChannelHandle *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_replyQueue, a3);
+    objc_storeStrong(&v6->_replyQueue, queue);
     v7->_lock._os_unfair_lock_opaque = 0;
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     outstandingMessages = v7->_outstandingMessages;
@@ -74,13 +74,13 @@
   return v3;
 }
 
-- (void)handleOutstandingMessage:(id)a3
+- (void)handleOutstandingMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(PKSharingChannelHandle *)self createActionAssertion];
-  if (!v5)
+  messageCopy = message;
+  createActionAssertion = [(PKSharingChannelHandle *)self createActionAssertion];
+  if (!createActionAssertion)
   {
-    v4[2](v4, 0, &__block_literal_global_197);
+    messageCopy[2](messageCopy, 0, &__block_literal_global_197);
 LABEL_8:
 
     return;
@@ -89,10 +89,10 @@ LABEL_8:
   os_unfair_lock_lock(&self->_lock);
   if (!self->_messageBeingHandled)
   {
-    v6 = [(NSMutableArray *)self->_outstandingMessages firstObject];
-    if (v6)
+    firstObject = [(NSMutableArray *)self->_outstandingMessages firstObject];
+    if (firstObject)
     {
-      objc_storeStrong(&self->_messageBeingHandled, v6);
+      objc_storeStrong(&self->_messageBeingHandled, firstObject);
       os_unfair_lock_unlock(&self->_lock);
       objc_initWeak(&location, self);
       aBlock[0] = MEMORY[0x1E69E9820];
@@ -100,9 +100,9 @@ LABEL_8:
       aBlock[2] = __51__PKSharingChannelHandle_handleOutstandingMessage___block_invoke_3;
       aBlock[3] = &unk_1E79DFFD8;
       objc_copyWeak(&v22, &location);
-      v7 = v6;
+      v7 = firstObject;
       v20 = v7;
-      v21 = v5;
+      v21 = createActionAssertion;
       v8 = _Block_copy(aBlock);
       v9 = [PKDeallocationGuard alloc];
       v17[0] = MEMORY[0x1E69E9820];
@@ -120,7 +120,7 @@ LABEL_8:
       v15 = v12;
       v13 = v10;
       v16 = v13;
-      (v4)[2](v4, v7, v14);
+      (messageCopy)[2](messageCopy, v7, v14);
 
       objc_destroyWeak(&v22);
       objc_destroyWeak(&location);
@@ -129,7 +129,7 @@ LABEL_8:
     else
     {
       os_unfair_lock_unlock(&self->_lock);
-      v4[2](v4, 0, &__block_literal_global_52_3);
+      messageCopy[2](messageCopy, 0, &__block_literal_global_52_3);
     }
 
     goto LABEL_8;
@@ -175,30 +175,30 @@ uint64_t __51__PKSharingChannelHandle_handleOutstandingMessage___block_invoke_5(
   return v2();
 }
 
-- (void)waitForMessageWithTimeout:(double)a3 messageHandler:(id)a4 invalidationHandler:(id)a5
+- (void)waitForMessageWithTimeout:(double)timeout messageHandler:(id)handler invalidationHandler:(id)invalidationHandler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[PKSharingChannelHandleMessageWaiter alloc] initWithTimeout:v9 messageHandler:v8 invalidationHandler:self->_replyQueue replyQueue:a3];
+  invalidationHandlerCopy = invalidationHandler;
+  handlerCopy = handler;
+  v10 = [[PKSharingChannelHandleMessageWaiter alloc] initWithTimeout:handlerCopy messageHandler:invalidationHandlerCopy invalidationHandler:self->_replyQueue replyQueue:timeout];
 
   [(PKSharingChannelHandleMessageWaiter *)v10 startForHandle:self];
 }
 
-- (void)sendMessageAndWaitForReply:(id)a3 timeout:(double)a4 messageHandler:(id)a5 invalidationHandler:(id)a6
+- (void)sendMessageAndWaitForReply:(id)reply timeout:(double)timeout messageHandler:(id)handler invalidationHandler:(id)invalidationHandler
 {
-  v10 = a5;
-  v11 = a6;
+  handlerCopy = handler;
+  invalidationHandlerCopy = invalidationHandler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __96__PKSharingChannelHandle_sendMessageAndWaitForReply_timeout_messageHandler_invalidationHandler___block_invoke;
   v14[3] = &unk_1E79E0000;
   v14[4] = self;
-  v15 = v11;
-  v17 = a4;
-  v16 = v10;
-  v12 = v10;
-  v13 = v11;
-  [(PKSharingChannelHandle *)self sendMessage:a3 completion:v14];
+  v15 = invalidationHandlerCopy;
+  timeoutCopy = timeout;
+  v16 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = invalidationHandlerCopy;
+  [(PKSharingChannelHandle *)self sendMessage:reply completion:v14];
 }
 
 void __96__PKSharingChannelHandle_sendMessageAndWaitForReply_timeout_messageHandler_invalidationHandler___block_invoke(uint64_t a1, char a2)
@@ -224,18 +224,18 @@ void __96__PKSharingChannelHandle_sendMessageAndWaitForReply_timeout_messageHand
   }
 }
 
-- (void)didReceiveMessages:(id)a3
+- (void)didReceiveMessages:(id)messages
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  messagesCopy = messages;
+  if ([messagesCopy count])
   {
     os_unfair_lock_lock(&self->_lock);
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = v4;
+    v5 = messagesCopy;
     v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
@@ -251,10 +251,10 @@ void __96__PKSharingChannelHandle_sendMessageAndWaitForReply_timeout_messageHand
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
-          v11 = [v10 identifier];
-          if (([(NSMutableSet *)self->_receivedMessageIdentifiers containsObject:v11]& 1) == 0)
+          identifier = [v10 identifier];
+          if (([(NSMutableSet *)self->_receivedMessageIdentifiers containsObject:identifier]& 1) == 0)
           {
-            [(NSMutableSet *)self->_receivedMessageIdentifiers addObject:v11];
+            [(NSMutableSet *)self->_receivedMessageIdentifiers addObject:identifier];
             [(NSMutableArray *)self->_outstandingMessages addObject:v10];
           }
         }
@@ -308,9 +308,9 @@ uint64_t __44__PKSharingChannelHandle__didReceiveMessage__block_invoke(uint64_t 
   return result;
 }
 
-- (void)setMessageReceivedHandler:(id)a3
+- (void)setMessageReceivedHandler:(id)handler
 {
-  aBlock = a3;
+  aBlock = handler;
   os_unfair_lock_lock(&self->_lock);
   if ([(NSMutableArray *)self->_outstandingMessages count])
   {
@@ -333,9 +333,9 @@ uint64_t __44__PKSharingChannelHandle__didReceiveMessage__block_invoke(uint64_t 
   }
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  aBlock = a3;
+  aBlock = handler;
   os_unfair_lock_lock(&self->_lock);
   if (self->_status > 1)
   {
@@ -356,16 +356,16 @@ uint64_t __44__PKSharingChannelHandle__didReceiveMessage__block_invoke(uint64_t 
   }
 }
 
-- (void)attachAndFetchMessage:(id)a3
+- (void)attachAndFetchMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__PKSharingChannelHandle_attachAndFetchMessage___block_invoke;
   v6[3] = &unk_1E79C4A68;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = messageCopy;
+  v5 = messageCopy;
   [(PKSharingChannelHandle *)self attachWithCompletion:v6];
 }
 
@@ -400,11 +400,11 @@ void __48__PKSharingChannelHandle_attachAndFetchMessage___block_invoke_2(uint64_
   (*(*(a1 + 32) + 16))();
 }
 
-- (BOOL)_lock_isStatusValidForAction:(BOOL)a3
+- (BOOL)_lock_isStatusValidForAction:(BOOL)action
 {
   status = self->_status;
   v4 = status - 2;
-  v5 = status == 1 && a3;
+  v5 = status == 1 && action;
   if (status)
   {
     v6 = v5;
@@ -418,10 +418,10 @@ void __48__PKSharingChannelHandle_attachAndFetchMessage___block_invoke_2(uint64_
   return v4 >= 2 && v6;
 }
 
-- (void)invalidateWithSource:(unint64_t)a3 completion:(id)a4
+- (void)invalidateWithSource:(unint64_t)source completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   if (self->_status <= 1)
   {
@@ -429,17 +429,17 @@ void __48__PKSharingChannelHandle_attachAndFetchMessage___block_invoke_2(uint64_
     v8 = PKLogFacilityTypeGetObject(0x23uLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(PKSharingChannelHandle *)self transportIdentifier];
-      v10 = PKSharingLoggableMailboxAddress(v9);
+      transportIdentifier = [(PKSharingChannelHandle *)self transportIdentifier];
+      v10 = PKSharingLoggableMailboxAddress(transportIdentifier);
       v11 = v10;
-      if (a3 > 4)
+      if (source > 4)
       {
         v12 = @"unknown";
       }
 
       else
       {
-        v12 = off_1E79E00E8[a3];
+        v12 = off_1E79E00E8[source];
       }
 
       *buf = 138412546;
@@ -473,7 +473,7 @@ void __48__PKSharingChannelHandle_attachAndFetchMessage___block_invoke_2(uint64_
     [(NSMutableArray *)v20 safelyAddObject:v21];
 
     v22 = self->_invalidationCompletions;
-    v23 = _Block_copy(v6);
+    v23 = _Block_copy(completionCopy);
     [(NSMutableArray *)v22 safelyAddObject:v23];
 
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -483,9 +483,9 @@ void __48__PKSharingChannelHandle_attachAndFetchMessage___block_invoke_2(uint64_
     aBlock[4] = self;
     v24 = _Block_copy(aBlock);
     v25 = v24;
-    if (a3 - 1 >= 3)
+    if (source - 1 >= 3)
     {
-      if (a3 == 4)
+      if (source == 4)
       {
         v30[0] = MEMORY[0x1E69E9820];
         v30[1] = 3221225472;
@@ -499,7 +499,7 @@ void __48__PKSharingChannelHandle_attachAndFetchMessage___block_invoke_2(uint64_
 
       else
       {
-        if (a3)
+        if (source)
         {
           v26 = 0;
           if (!actionAssertionCount)
@@ -558,7 +558,7 @@ LABEL_20:
   if ([(NSMutableArray *)self->_invalidationCompletions count]|| self->_didInvalidateReply)
   {
     v13 = self->_invalidationCompletions;
-    v14 = _Block_copy(v6);
+    v14 = _Block_copy(completionCopy);
     [(NSMutableArray *)v13 safelyAddObject:v14];
 
     os_unfair_lock_unlock(&self->_lock);
@@ -567,9 +567,9 @@ LABEL_20:
   else
   {
     os_unfair_lock_unlock(&self->_lock);
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -671,11 +671,11 @@ void __58__PKSharingChannelHandle_invalidateWithSource_completion___block_invoke
   return v3;
 }
 
-- (id)createActionAssertionAllowWhileTransferring:(BOOL)a3
+- (id)createActionAssertionAllowWhileTransferring:(BOOL)transferring
 {
-  v3 = a3;
+  transferringCopy = transferring;
   os_unfair_lock_lock(&self->_lock);
-  if ([(PKSharingChannelHandle *)self _lock_isStatusValidForAction:v3])
+  if ([(PKSharingChannelHandle *)self _lock_isStatusValidForAction:transferringCopy])
   {
     ++self->_actionAssertionCount;
     os_unfair_lock_unlock(&self->_lock);
@@ -761,34 +761,34 @@ void __70__PKSharingChannelHandle_createActionAssertionAllowWhileTransferring___
 LABEL_12:
 }
 
-- (void)sendMessage:(id)a3 completion:(id)a4
+- (void)sendMessage:(id)message completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   __break(1u);
 }
 
-- (void)invalidateWithRemoteWithCompletion:(id)a3
+- (void)invalidateWithRemoteWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)detachHandleForTransfer:(id)a3
+- (void)detachHandleForTransfer:(id)transfer
 {
-  v4 = a3;
+  transferCopy = transfer;
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __50__PKSharingChannelHandle_detachHandleForTransfer___block_invoke;
   v13 = &unk_1E79C4A40;
-  v14 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = transferCopy;
   v15 = v5;
   v6 = _Block_copy(&v10);
   os_unfair_lock_lock(&self->_lock);
-  if ([(PKSharingChannelHandle *)self _lock_isStatusValidForAction:0, v10, v11, v12, v13, v14])
+  if ([(PKSharingChannelHandle *)self _lock_isStatusValidForAction:0, v10, v11, v12, v13, selfCopy])
   {
     actionAssertionCount = self->_actionAssertionCount;
     self->_status = 1;
@@ -808,16 +808,16 @@ LABEL_12:
 LABEL_5:
 }
 
-- (void)startProximityDetectionForAdvertisement:(id)a3 completion:(id)a4
+- (void)startProximityDetectionForAdvertisement:(id)advertisement completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  advertisementCopy = advertisement;
+  completionCopy = completion;
   __break(1u);
 }
 
-+ (void)descriptorsForAccountDevices:(id)a3
++ (void)descriptorsForAccountDevices:(id)devices
 {
-  v3 = a3;
+  devicesCopy = devices;
   if (PKRunningInPassd())
   {
     __break(1u);
@@ -825,29 +825,29 @@ LABEL_5:
 
   else
   {
-    [PKSharingChannelHandle_Client descriptorsForAccountDevices:v3];
+    [PKSharingChannelHandle_Client descriptorsForAccountDevices:devicesCopy];
   }
 }
 
-+ (void)bootstrapSetupAssistantProximityChannelWithTemplateSession:(id)a3 completion:(id)a4
++ (void)bootstrapSetupAssistantProximityChannelWithTemplateSession:(id)session completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  sessionCopy = session;
   v8 = PKSharingProximityChannelDescriptorGroupToString(0);
-  [a1 bootstrapProximityChannelWithTemplateSession:v7 group:v8 completion:v6];
+  [self bootstrapProximityChannelWithTemplateSession:sessionCopy group:v8 completion:completionCopy];
 }
 
 + (void)terminateSetupAssistantProximityChannel
 {
   v3 = PKSharingProximityChannelDescriptorGroupToString(0);
-  [a1 terminateProximityChannelForGroup:v3];
+  [self terminateProximityChannelForGroup:v3];
 }
 
-+ (void)bootstrapProximityChannelWithTemplateSession:(id)a3 group:(id)a4 completion:(id)a5
++ (void)bootstrapProximityChannelWithTemplateSession:(id)session group:(id)group completion:(id)completion
 {
-  v9 = a3;
-  v7 = a4;
-  v8 = a5;
+  sessionCopy = session;
+  groupCopy = group;
+  completionCopy = completion;
   if (PKRunningInPassd())
   {
     __break(1u);
@@ -855,13 +855,13 @@ LABEL_5:
 
   else
   {
-    [PKSharingChannelHandle_Client bootstrapProximityChannelWithTemplateSession:v9 group:v7 completion:v8];
+    [PKSharingChannelHandle_Client bootstrapProximityChannelWithTemplateSession:sessionCopy group:groupCopy completion:completionCopy];
   }
 }
 
-+ (void)terminateProximityChannelForGroup:(id)a3
++ (void)terminateProximityChannelForGroup:(id)group
 {
-  v3 = a3;
+  groupCopy = group;
   if (PKRunningInPassd())
   {
     __break(1u);
@@ -869,7 +869,7 @@ LABEL_5:
 
   else
   {
-    [PKSharingChannelHandle_Client terminateProximityChannelForGroup:v3];
+    [PKSharingChannelHandle_Client terminateProximityChannelForGroup:groupCopy];
   }
 }
 

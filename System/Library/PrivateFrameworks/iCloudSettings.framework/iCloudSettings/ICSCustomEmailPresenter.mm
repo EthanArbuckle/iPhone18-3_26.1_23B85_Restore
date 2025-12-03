@@ -1,14 +1,14 @@
 @interface ICSCustomEmailPresenter
-- (ICSCustomEmailPresenter)initWithAccountManager:(id)a3 presenter:(id)a4;
+- (ICSCustomEmailPresenter)initWithAccountManager:(id)manager presenter:(id)presenter;
 - (void)showCustomEmailDomainView;
 @end
 
 @implementation ICSCustomEmailPresenter
 
-- (ICSCustomEmailPresenter)initWithAccountManager:(id)a3 presenter:(id)a4
+- (ICSCustomEmailPresenter)initWithAccountManager:(id)manager presenter:(id)presenter
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  presenterCopy = presenter;
   v15.receiver = self;
   v15.super_class = ICSCustomEmailPresenter;
   v8 = [(ICSCustomEmailPresenter *)&v15 init];
@@ -17,14 +17,14 @@
     v9 = LogSubsystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [ICSCustomEmailPresenter initWithAccountManager:v6 presenter:v9];
+      [ICSCustomEmailPresenter initWithAccountManager:managerCopy presenter:v9];
     }
 
     v10 = [MEMORY[0x277CCA8D8] ics_loadBundle:@"MailAccountSettings.bundle" atPath:@"System/Library/PreferenceBundles/AccountSettings"];
     v11 = NSClassFromString(&cfstr_Byodspecifierp_0.isa);
     if ([(objc_class *)v11 conformsToProtocol:&unk_2884BC2B8])
     {
-      v12 = [[v11 alloc] initWithAccountManager:v6 presenter:v7];
+      v12 = [[v11 alloc] initWithAccountManager:managerCopy presenter:presenterCopy];
       customEmailSpecifierProvider = v8->_customEmailSpecifierProvider;
       v8->_customEmailSpecifierProvider = v12;
     }
@@ -44,12 +44,12 @@
 
 - (void)showCustomEmailDomainView
 {
-  v2 = [(AAUISpecifierProvider *)self->_customEmailSpecifierProvider specifiers];
-  v3 = [v2 firstObject];
+  specifiers = [(AAUISpecifierProvider *)self->_customEmailSpecifierProvider specifiers];
+  firstObject = [specifiers firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    [v3 performControllerLoadAction];
+    [firstObject performControllerLoadAction];
   }
 
   else

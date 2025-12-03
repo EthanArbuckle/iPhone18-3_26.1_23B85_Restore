@@ -1,40 +1,40 @@
 @interface ASRSchemaASRStarted
-- (ASRSchemaASRStarted)initWithDictionary:(id)a3;
-- (ASRSchemaASRStarted)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASRStarted)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRStarted)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAtypicalSpeechEnabled:(BOOL)a3;
-- (void)setHasGeoLanguageModelLoaded:(BOOL)a3;
-- (void)setHasIsEmptyTextField:(BOOL)a3;
-- (void)setHasIsHighQualityAsset:(BOOL)a3;
-- (void)setHasModelLocale:(BOOL)a3;
-- (void)setHasSpeechProfileAgeInNs:(BOOL)a3;
-- (void)setHasStartState:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAtypicalSpeechEnabled:(BOOL)enabled;
+- (void)setHasGeoLanguageModelLoaded:(BOOL)loaded;
+- (void)setHasIsEmptyTextField:(BOOL)field;
+- (void)setHasIsHighQualityAsset:(BOOL)asset;
+- (void)setHasModelLocale:(BOOL)locale;
+- (void)setHasSpeechProfileAgeInNs:(BOOL)ns;
+- (void)setHasStartState:(BOOL)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRStarted
 
-- (ASRSchemaASRStarted)initWithDictionary:(id)a3
+- (ASRSchemaASRStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v31.receiver = self;
   v31.super_class = ASRSchemaASRStarted;
   v5 = [(ASRSchemaASRStarted *)&v31 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"task"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"task"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRStarted setTask:](v5, "setTask:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"modelLocale"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"modelLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -42,7 +42,7 @@
     }
 
     v29 = v7;
-    v8 = [v4 objectForKeyedSubscript:@"datapackVersion"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"datapackVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,14 +50,14 @@
       [(ASRSchemaASRStarted *)v5 setDatapackVersion:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isHighQualityAsset"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isHighQualityAsset"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRStarted setIsHighQualityAsset:](v5, "setIsHighQualityAsset:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"hammerVersion"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"hammerVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,7 +65,7 @@
       [(ASRSchemaASRStarted *)v5 setHammerVersion:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"geoLanguageModelRegion"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"geoLanguageModelRegion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
     }
 
     v27 = v13;
-    v15 = [v4 objectForKeyedSubscript:@"geoLanguageModelLoaded"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"geoLanguageModelLoaded"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,14 +82,14 @@
     }
 
     v30 = v6;
-    v16 = [v4 objectForKeyedSubscript:{@"speechProfileAgeInNs", v15}];
+    v16 = [dictionaryCopy objectForKeyedSubscript:{@"speechProfileAgeInNs", v15}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRStarted setSpeechProfileAgeInNs:](v5, "setSpeechProfileAgeInNs:", [v16 unsignedLongLongValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"dictationUiInteractionId"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"dictationUiInteractionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -97,7 +97,7 @@
       [(ASRSchemaASRStarted *)v5 setDictationUiInteractionId:v18];
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"portraitExperimentVariantName"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"portraitExperimentVariantName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -106,21 +106,21 @@
     }
 
     v28 = v8;
-    v21 = [v4 objectForKeyedSubscript:@"startState"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"startState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRStarted setStartState:](v5, "setStartState:", [v21 intValue]);
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"atypicalSpeechEnabled"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"atypicalSpeechEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRStarted setAtypicalSpeechEnabled:](v5, "setAtypicalSpeechEnabled:", [v22 BOOLValue]);
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"isEmptyTextField"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"isEmptyTextField"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -133,30 +133,30 @@
   return v5;
 }
 
-- (ASRSchemaASRStarted)initWithJSON:(id)a3
+- (ASRSchemaASRStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -169,54 +169,54 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*(&self->_isEmptyTextField + 1) & 0x40) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSchemaASRStarted atypicalSpeechEnabled](self, "atypicalSpeechEnabled")}];
-    [v3 setObject:v4 forKeyedSubscript:@"atypicalSpeechEnabled"];
+    [dictionary setObject:v4 forKeyedSubscript:@"atypicalSpeechEnabled"];
   }
 
   if (self->_datapackVersion)
   {
-    v5 = [(ASRSchemaASRStarted *)self datapackVersion];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"datapackVersion"];
+    datapackVersion = [(ASRSchemaASRStarted *)self datapackVersion];
+    v6 = [datapackVersion copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"datapackVersion"];
   }
 
   if (self->_dictationUiInteractionId)
   {
-    v7 = [(ASRSchemaASRStarted *)self dictationUiInteractionId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    dictationUiInteractionId = [(ASRSchemaASRStarted *)self dictationUiInteractionId];
+    dictionaryRepresentation = [dictationUiInteractionId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"dictationUiInteractionId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"dictationUiInteractionId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"dictationUiInteractionId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"dictationUiInteractionId"];
     }
   }
 
   if ((*(&self->_isEmptyTextField + 1) & 8) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSchemaASRStarted geoLanguageModelLoaded](self, "geoLanguageModelLoaded")}];
-    [v3 setObject:v10 forKeyedSubscript:@"geoLanguageModelLoaded"];
+    [dictionary setObject:v10 forKeyedSubscript:@"geoLanguageModelLoaded"];
   }
 
   if (self->_geoLanguageModelRegion)
   {
-    v11 = [(ASRSchemaASRStarted *)self geoLanguageModelRegion];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"geoLanguageModelRegion"];
+    geoLanguageModelRegion = [(ASRSchemaASRStarted *)self geoLanguageModelRegion];
+    v12 = [geoLanguageModelRegion copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"geoLanguageModelRegion"];
   }
 
   if (self->_hammerVersion)
   {
-    v13 = [(ASRSchemaASRStarted *)self hammerVersion];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"hammerVersion"];
+    hammerVersion = [(ASRSchemaASRStarted *)self hammerVersion];
+    v14 = [hammerVersion copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"hammerVersion"];
   }
 
   v15 = *(&self->_isEmptyTextField + 1);
@@ -231,14 +231,14 @@
   }
 
   v19 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSchemaASRStarted isEmptyTextField](self, "isEmptyTextField")}];
-  [v3 setObject:v19 forKeyedSubscript:@"isEmptyTextField"];
+  [dictionary setObject:v19 forKeyedSubscript:@"isEmptyTextField"];
 
   LOBYTE(v15) = *(&self->_isEmptyTextField + 1);
   if ((v15 & 4) != 0)
   {
 LABEL_18:
     v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSchemaASRStarted isHighQualityAsset](self, "isHighQualityAsset")}];
-    [v3 setObject:v16 forKeyedSubscript:@"isHighQualityAsset"];
+    [dictionary setObject:v16 forKeyedSubscript:@"isHighQualityAsset"];
 
     LOBYTE(v15) = *(&self->_isEmptyTextField + 1);
   }
@@ -257,14 +257,14 @@ LABEL_19:
       v18 = off_1E78D1F90[v17];
     }
 
-    [v3 setObject:v18 forKeyedSubscript:@"modelLocale"];
+    [dictionary setObject:v18 forKeyedSubscript:@"modelLocale"];
   }
 
   if (self->_portraitExperimentVariantName)
   {
-    v20 = [(ASRSchemaASRStarted *)self portraitExperimentVariantName];
-    v21 = [v20 copy];
-    [v3 setObject:v21 forKeyedSubscript:@"portraitExperimentVariantName"];
+    portraitExperimentVariantName = [(ASRSchemaASRStarted *)self portraitExperimentVariantName];
+    v21 = [portraitExperimentVariantName copy];
+    [dictionary setObject:v21 forKeyedSubscript:@"portraitExperimentVariantName"];
   }
 
   v22 = *(&self->_isEmptyTextField + 1);
@@ -287,7 +287,7 @@ LABEL_33:
       v25 = off_1E78D2180[v24];
     }
 
-    [v3 setObject:v25 forKeyedSubscript:@"startState"];
+    [dictionary setObject:v25 forKeyedSubscript:@"startState"];
     if (!*(&self->_isEmptyTextField + 1))
     {
       goto LABEL_41;
@@ -297,7 +297,7 @@ LABEL_33:
   }
 
   v23 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ASRSchemaASRStarted speechProfileAgeInNs](self, "speechProfileAgeInNs")}];
-  [v3 setObject:v23 forKeyedSubscript:@"speechProfileAgeInNs"];
+  [dictionary setObject:v23 forKeyedSubscript:@"speechProfileAgeInNs"];
 
   v22 = *(&self->_isEmptyTextField + 1);
   if ((v22 & 0x20) != 0)
@@ -320,13 +320,13 @@ LABEL_37:
       v27 = off_1E78D2198[v26];
     }
 
-    [v3 setObject:v27 forKeyedSubscript:@"task"];
+    [dictionary setObject:v27 forKeyedSubscript:@"task"];
   }
 
 LABEL_41:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -428,16 +428,16 @@ LABEL_17:
   return v16 ^ v17 ^ v5 ^ v4 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_44;
   }
 
   v5 = *(&self->_isEmptyTextField + 1);
-  v6 = v4[86];
+  v6 = equalCopy[86];
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_44;
@@ -446,13 +446,13 @@ LABEL_17:
   if (v5)
   {
     task = self->_task;
-    if (task != [v4 task])
+    if (task != [equalCopy task])
     {
       goto LABEL_44;
     }
 
     v5 = *(&self->_isEmptyTextField + 1);
-    v6 = v4[86];
+    v6 = equalCopy[86];
   }
 
   v8 = (v5 >> 1) & 1;
@@ -464,26 +464,26 @@ LABEL_17:
   if (v8)
   {
     modelLocale = self->_modelLocale;
-    if (modelLocale != [v4 modelLocale])
+    if (modelLocale != [equalCopy modelLocale])
     {
       goto LABEL_44;
     }
   }
 
-  v10 = [(ASRSchemaASRStarted *)self datapackVersion];
-  v11 = [v4 datapackVersion];
-  if ((v10 != 0) == (v11 == 0))
+  datapackVersion = [(ASRSchemaASRStarted *)self datapackVersion];
+  datapackVersion2 = [equalCopy datapackVersion];
+  if ((datapackVersion != 0) == (datapackVersion2 == 0))
   {
     goto LABEL_43;
   }
 
-  v12 = [(ASRSchemaASRStarted *)self datapackVersion];
-  if (v12)
+  datapackVersion3 = [(ASRSchemaASRStarted *)self datapackVersion];
+  if (datapackVersion3)
   {
-    v13 = v12;
-    v14 = [(ASRSchemaASRStarted *)self datapackVersion];
-    v15 = [v4 datapackVersion];
-    v16 = [v14 isEqual:v15];
+    v13 = datapackVersion3;
+    datapackVersion4 = [(ASRSchemaASRStarted *)self datapackVersion];
+    datapackVersion5 = [equalCopy datapackVersion];
+    v16 = [datapackVersion4 isEqual:datapackVersion5];
 
     if (!v16)
     {
@@ -496,7 +496,7 @@ LABEL_17:
   }
 
   v17 = (*(&self->_isEmptyTextField + 1) >> 2) & 1;
-  if (v17 != ((v4[86] >> 2) & 1))
+  if (v17 != ((equalCopy[86] >> 2) & 1))
   {
     goto LABEL_44;
   }
@@ -504,26 +504,26 @@ LABEL_17:
   if (v17)
   {
     isHighQualityAsset = self->_isHighQualityAsset;
-    if (isHighQualityAsset != [v4 isHighQualityAsset])
+    if (isHighQualityAsset != [equalCopy isHighQualityAsset])
     {
       goto LABEL_44;
     }
   }
 
-  v10 = [(ASRSchemaASRStarted *)self hammerVersion];
-  v11 = [v4 hammerVersion];
-  if ((v10 != 0) == (v11 == 0))
+  datapackVersion = [(ASRSchemaASRStarted *)self hammerVersion];
+  datapackVersion2 = [equalCopy hammerVersion];
+  if ((datapackVersion != 0) == (datapackVersion2 == 0))
   {
     goto LABEL_43;
   }
 
-  v19 = [(ASRSchemaASRStarted *)self hammerVersion];
-  if (v19)
+  hammerVersion = [(ASRSchemaASRStarted *)self hammerVersion];
+  if (hammerVersion)
   {
-    v20 = v19;
-    v21 = [(ASRSchemaASRStarted *)self hammerVersion];
-    v22 = [v4 hammerVersion];
-    v23 = [v21 isEqual:v22];
+    v20 = hammerVersion;
+    hammerVersion2 = [(ASRSchemaASRStarted *)self hammerVersion];
+    hammerVersion3 = [equalCopy hammerVersion];
+    v23 = [hammerVersion2 isEqual:hammerVersion3];
 
     if (!v23)
     {
@@ -535,20 +535,20 @@ LABEL_17:
   {
   }
 
-  v10 = [(ASRSchemaASRStarted *)self geoLanguageModelRegion];
-  v11 = [v4 geoLanguageModelRegion];
-  if ((v10 != 0) == (v11 == 0))
+  datapackVersion = [(ASRSchemaASRStarted *)self geoLanguageModelRegion];
+  datapackVersion2 = [equalCopy geoLanguageModelRegion];
+  if ((datapackVersion != 0) == (datapackVersion2 == 0))
   {
     goto LABEL_43;
   }
 
-  v24 = [(ASRSchemaASRStarted *)self geoLanguageModelRegion];
-  if (v24)
+  geoLanguageModelRegion = [(ASRSchemaASRStarted *)self geoLanguageModelRegion];
+  if (geoLanguageModelRegion)
   {
-    v25 = v24;
-    v26 = [(ASRSchemaASRStarted *)self geoLanguageModelRegion];
-    v27 = [v4 geoLanguageModelRegion];
-    v28 = [v26 isEqual:v27];
+    v25 = geoLanguageModelRegion;
+    geoLanguageModelRegion2 = [(ASRSchemaASRStarted *)self geoLanguageModelRegion];
+    geoLanguageModelRegion3 = [equalCopy geoLanguageModelRegion];
+    v28 = [geoLanguageModelRegion2 isEqual:geoLanguageModelRegion3];
 
     if (!v28)
     {
@@ -562,7 +562,7 @@ LABEL_17:
 
   v29 = *(&self->_isEmptyTextField + 1);
   v30 = (v29 >> 3) & 1;
-  v31 = v4[86];
+  v31 = equalCopy[86];
   if (v30 != ((v31 >> 3) & 1))
   {
     goto LABEL_44;
@@ -571,13 +571,13 @@ LABEL_17:
   if (v30)
   {
     geoLanguageModelLoaded = self->_geoLanguageModelLoaded;
-    if (geoLanguageModelLoaded != [v4 geoLanguageModelLoaded])
+    if (geoLanguageModelLoaded != [equalCopy geoLanguageModelLoaded])
     {
       goto LABEL_44;
     }
 
     v29 = *(&self->_isEmptyTextField + 1);
-    v31 = v4[86];
+    v31 = equalCopy[86];
   }
 
   v33 = (v29 >> 4) & 1;
@@ -589,26 +589,26 @@ LABEL_17:
   if (v33)
   {
     speechProfileAgeInNs = self->_speechProfileAgeInNs;
-    if (speechProfileAgeInNs != [v4 speechProfileAgeInNs])
+    if (speechProfileAgeInNs != [equalCopy speechProfileAgeInNs])
     {
       goto LABEL_44;
     }
   }
 
-  v10 = [(ASRSchemaASRStarted *)self dictationUiInteractionId];
-  v11 = [v4 dictationUiInteractionId];
-  if ((v10 != 0) == (v11 == 0))
+  datapackVersion = [(ASRSchemaASRStarted *)self dictationUiInteractionId];
+  datapackVersion2 = [equalCopy dictationUiInteractionId];
+  if ((datapackVersion != 0) == (datapackVersion2 == 0))
   {
     goto LABEL_43;
   }
 
-  v35 = [(ASRSchemaASRStarted *)self dictationUiInteractionId];
-  if (v35)
+  dictationUiInteractionId = [(ASRSchemaASRStarted *)self dictationUiInteractionId];
+  if (dictationUiInteractionId)
   {
-    v36 = v35;
-    v37 = [(ASRSchemaASRStarted *)self dictationUiInteractionId];
-    v38 = [v4 dictationUiInteractionId];
-    v39 = [v37 isEqual:v38];
+    v36 = dictationUiInteractionId;
+    dictationUiInteractionId2 = [(ASRSchemaASRStarted *)self dictationUiInteractionId];
+    dictationUiInteractionId3 = [equalCopy dictationUiInteractionId];
+    v39 = [dictationUiInteractionId2 isEqual:dictationUiInteractionId3];
 
     if (!v39)
     {
@@ -620,22 +620,22 @@ LABEL_17:
   {
   }
 
-  v10 = [(ASRSchemaASRStarted *)self portraitExperimentVariantName];
-  v11 = [v4 portraitExperimentVariantName];
-  if ((v10 != 0) == (v11 == 0))
+  datapackVersion = [(ASRSchemaASRStarted *)self portraitExperimentVariantName];
+  datapackVersion2 = [equalCopy portraitExperimentVariantName];
+  if ((datapackVersion != 0) == (datapackVersion2 == 0))
   {
 LABEL_43:
 
     goto LABEL_44;
   }
 
-  v40 = [(ASRSchemaASRStarted *)self portraitExperimentVariantName];
-  if (v40)
+  portraitExperimentVariantName = [(ASRSchemaASRStarted *)self portraitExperimentVariantName];
+  if (portraitExperimentVariantName)
   {
-    v41 = v40;
-    v42 = [(ASRSchemaASRStarted *)self portraitExperimentVariantName];
-    v43 = [v4 portraitExperimentVariantName];
-    v44 = [v42 isEqual:v43];
+    v41 = portraitExperimentVariantName;
+    portraitExperimentVariantName2 = [(ASRSchemaASRStarted *)self portraitExperimentVariantName];
+    portraitExperimentVariantName3 = [equalCopy portraitExperimentVariantName];
+    v44 = [portraitExperimentVariantName2 isEqual:portraitExperimentVariantName3];
 
     if (!v44)
     {
@@ -649,19 +649,19 @@ LABEL_43:
 
   v47 = *(&self->_isEmptyTextField + 1);
   v48 = (v47 >> 5) & 1;
-  v49 = v4[86];
+  v49 = equalCopy[86];
   if (v48 == ((v49 >> 5) & 1))
   {
     if (v48)
     {
       startState = self->_startState;
-      if (startState != [v4 startState])
+      if (startState != [equalCopy startState])
       {
         goto LABEL_44;
       }
 
       v47 = *(&self->_isEmptyTextField + 1);
-      v49 = v4[86];
+      v49 = equalCopy[86];
     }
 
     v51 = (v47 >> 6) & 1;
@@ -670,18 +670,18 @@ LABEL_43:
       if (v51)
       {
         atypicalSpeechEnabled = self->_atypicalSpeechEnabled;
-        if (atypicalSpeechEnabled != [v4 atypicalSpeechEnabled])
+        if (atypicalSpeechEnabled != [equalCopy atypicalSpeechEnabled])
         {
           goto LABEL_44;
         }
 
         v47 = *(&self->_isEmptyTextField + 1);
-        v49 = v4[86];
+        v49 = equalCopy[86];
       }
 
       if (((v49 ^ v47) & 0x80) == 0)
       {
-        if ((v47 & 0x80) == 0 || (isEmptyTextField = self->_isEmptyTextField, isEmptyTextField == [v4 isEmptyTextField]))
+        if ((v47 & 0x80) == 0 || (isEmptyTextField = self->_isEmptyTextField, isEmptyTextField == [equalCopy isEmptyTextField]))
         {
           v45 = 1;
           goto LABEL_45;
@@ -697,9 +697,9 @@ LABEL_45:
   return v45;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
+  toCopy = to;
   v4 = *(&self->_isEmptyTextField + 1);
   if (v4)
   {
@@ -712,9 +712,9 @@ LABEL_45:
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(ASRSchemaASRStarted *)self datapackVersion];
+  datapackVersion = [(ASRSchemaASRStarted *)self datapackVersion];
 
-  if (v5)
+  if (datapackVersion)
   {
     PBDataWriterWriteStringField();
   }
@@ -724,16 +724,16 @@ LABEL_45:
     PBDataWriterWriteBOOLField();
   }
 
-  v6 = [(ASRSchemaASRStarted *)self hammerVersion];
+  hammerVersion = [(ASRSchemaASRStarted *)self hammerVersion];
 
-  if (v6)
+  if (hammerVersion)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(ASRSchemaASRStarted *)self geoLanguageModelRegion];
+  geoLanguageModelRegion = [(ASRSchemaASRStarted *)self geoLanguageModelRegion];
 
-  if (v7)
+  if (geoLanguageModelRegion)
   {
     PBDataWriterWriteStringField();
   }
@@ -750,17 +750,17 @@ LABEL_45:
     PBDataWriterWriteUint64Field();
   }
 
-  v9 = [(ASRSchemaASRStarted *)self dictationUiInteractionId];
+  dictationUiInteractionId = [(ASRSchemaASRStarted *)self dictationUiInteractionId];
 
-  if (v9)
+  if (dictationUiInteractionId)
   {
-    v10 = [(ASRSchemaASRStarted *)self dictationUiInteractionId];
+    dictationUiInteractionId2 = [(ASRSchemaASRStarted *)self dictationUiInteractionId];
     PBDataWriterWriteSubmessage();
   }
 
-  v11 = [(ASRSchemaASRStarted *)self portraitExperimentVariantName];
+  portraitExperimentVariantName = [(ASRSchemaASRStarted *)self portraitExperimentVariantName];
 
-  if (v11)
+  if (portraitExperimentVariantName)
   {
     PBDataWriterWriteStringField();
   }
@@ -801,9 +801,9 @@ LABEL_29:
 LABEL_24:
 }
 
-- (void)setHasIsEmptyTextField:(BOOL)a3
+- (void)setHasIsEmptyTextField:(BOOL)field
 {
-  if (a3)
+  if (field)
   {
     v3 = 0x80;
   }
@@ -816,9 +816,9 @@ LABEL_24:
   *(&self->_isEmptyTextField + 1) = v3 & 0x80 | *(&self->_isEmptyTextField + 1) & 0x7F;
 }
 
-- (void)setHasAtypicalSpeechEnabled:(BOOL)a3
+- (void)setHasAtypicalSpeechEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 64;
   }
@@ -831,9 +831,9 @@ LABEL_24:
   *(&self->_isEmptyTextField + 1) = *(&self->_isEmptyTextField + 1) & 0xBF | v3;
 }
 
-- (void)setHasStartState:(BOOL)a3
+- (void)setHasStartState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 32;
   }
@@ -846,9 +846,9 @@ LABEL_24:
   *(&self->_isEmptyTextField + 1) = *(&self->_isEmptyTextField + 1) & 0xDF | v3;
 }
 
-- (void)setHasSpeechProfileAgeInNs:(BOOL)a3
+- (void)setHasSpeechProfileAgeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 16;
   }
@@ -861,9 +861,9 @@ LABEL_24:
   *(&self->_isEmptyTextField + 1) = *(&self->_isEmptyTextField + 1) & 0xEF | v3;
 }
 
-- (void)setHasGeoLanguageModelLoaded:(BOOL)a3
+- (void)setHasGeoLanguageModelLoaded:(BOOL)loaded
 {
-  if (a3)
+  if (loaded)
   {
     v3 = 8;
   }
@@ -876,9 +876,9 @@ LABEL_24:
   *(&self->_isEmptyTextField + 1) = *(&self->_isEmptyTextField + 1) & 0xF7 | v3;
 }
 
-- (void)setHasIsHighQualityAsset:(BOOL)a3
+- (void)setHasIsHighQualityAsset:(BOOL)asset
 {
-  if (a3)
+  if (asset)
   {
     v3 = 4;
   }
@@ -891,9 +891,9 @@ LABEL_24:
   *(&self->_isEmptyTextField + 1) = *(&self->_isEmptyTextField + 1) & 0xFB | v3;
 }
 
-- (void)setHasModelLocale:(BOOL)a3
+- (void)setHasModelLocale:(BOOL)locale
 {
-  if (a3)
+  if (locale)
   {
     v3 = 2;
   }
@@ -906,17 +906,17 @@ LABEL_24:
   *(&self->_isEmptyTextField + 1) = *(&self->_isEmptyTextField + 1) & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ASRSchemaASRStarted;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ASRSchemaASRStarted *)self dictationUiInteractionId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ASRSchemaASRStarted *)self deleteDictationUiInteractionId];
   }

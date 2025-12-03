@@ -1,55 +1,55 @@
 @interface AFPluginBundle
 - (AFPluginBundle)init;
-- (BOOL)supportsClassIdentifier:(id)a3 forDomainKey:(id)a4 groupIdentifier:(id)a5;
-- (void)registerClassIdentifier:(id)a3 forDomain:(id)a4 inGroup:(id)a5;
+- (BOOL)supportsClassIdentifier:(id)identifier forDomainKey:(id)key groupIdentifier:(id)groupIdentifier;
+- (void)registerClassIdentifier:(id)identifier forDomain:(id)domain inGroup:(id)group;
 @end
 
 @implementation AFPluginBundle
 
-- (BOOL)supportsClassIdentifier:(id)a3 forDomainKey:(id)a4 groupIdentifier:(id)a5
+- (BOOL)supportsClassIdentifier:(id)identifier forDomainKey:(id)key groupIdentifier:(id)groupIdentifier
 {
-  if (!a3 || !a4 || !a5)
+  if (!identifier || !key || !groupIdentifier)
   {
     return 0;
   }
 
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(AFPluginBundle *)self classIdentifiers];
-  v12 = [v11 objectForKeyedSubscript:v9];
+  groupIdentifierCopy = groupIdentifier;
+  keyCopy = key;
+  identifierCopy = identifier;
+  classIdentifiers = [(AFPluginBundle *)self classIdentifiers];
+  v12 = [classIdentifiers objectForKeyedSubscript:keyCopy];
 
-  v13 = [v12 objectForKeyedSubscript:v8];
+  v13 = [v12 objectForKeyedSubscript:groupIdentifierCopy];
 
-  LOBYTE(v8) = [v13 containsObject:v10];
-  return v8;
+  LOBYTE(groupIdentifierCopy) = [v13 containsObject:identifierCopy];
+  return groupIdentifierCopy;
 }
 
-- (void)registerClassIdentifier:(id)a3 forDomain:(id)a4 inGroup:(id)a5
+- (void)registerClassIdentifier:(id)identifier forDomain:(id)domain inGroup:(id)group
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v14 && v8 && v9)
+  identifierCopy = identifier;
+  domainCopy = domain;
+  groupCopy = group;
+  if (identifierCopy && domainCopy && groupCopy)
   {
-    v10 = [(AFPluginBundle *)self classIdentifiers];
-    v11 = [v10 objectForKeyedSubscript:v8];
+    classIdentifiers = [(AFPluginBundle *)self classIdentifiers];
+    dictionary = [classIdentifiers objectForKeyedSubscript:domainCopy];
 
-    if (!v11)
+    if (!dictionary)
     {
-      v11 = [MEMORY[0x1E695DF90] dictionary];
-      v12 = [(AFPluginBundle *)self classIdentifiers];
-      [v12 setObject:v11 forKeyedSubscript:v8];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      classIdentifiers2 = [(AFPluginBundle *)self classIdentifiers];
+      [classIdentifiers2 setObject:dictionary forKeyedSubscript:domainCopy];
     }
 
-    v13 = [v11 objectForKeyedSubscript:v9];
-    if (!v13)
+    array = [dictionary objectForKeyedSubscript:groupCopy];
+    if (!array)
     {
-      v13 = [MEMORY[0x1E695DF70] array];
-      [v11 setObject:v13 forKeyedSubscript:v9];
+      array = [MEMORY[0x1E695DF70] array];
+      [dictionary setObject:array forKeyedSubscript:groupCopy];
     }
 
-    [v13 addObject:v14];
+    [array addObject:identifierCopy];
   }
 }
 
@@ -60,9 +60,9 @@
   v2 = [(AFPluginBundle *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     classIdentifiers = v2->_classIdentifiers;
-    v2->_classIdentifiers = v3;
+    v2->_classIdentifiers = dictionary;
   }
 
   return v2;

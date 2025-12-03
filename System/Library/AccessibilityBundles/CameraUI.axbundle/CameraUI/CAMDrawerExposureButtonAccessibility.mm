@@ -1,18 +1,18 @@
 @interface CAMDrawerExposureButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (int64_t)_accessibilityExpandedStatus;
 @end
 
 @implementation CAMDrawerExposureButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateProtocol:@"CAMControlDrawerExpandableButton" hasMethod:@"isExpanded" isInstanceMethod:1 isRequired:1];
-  [v3 validateClass:@"CAMControlDrawerCustomButton" conformsToProtocol:@"CAMControlDrawerExpandableButton"];
-  [v3 validateClass:@"CAMDrawerExposureButton" isKindOfClass:@"CAMControlDrawerCustomButton"];
-  [v3 validateClass:@"CAMDrawerExposureButton" hasInstanceMethod:@"isOn" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateProtocol:@"CAMControlDrawerExpandableButton" hasMethod:@"isExpanded" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateClass:@"CAMControlDrawerCustomButton" conformsToProtocol:@"CAMControlDrawerExpandableButton"];
+  [validationsCopy validateClass:@"CAMDrawerExposureButton" isKindOfClass:@"CAMControlDrawerCustomButton"];
+  [validationsCopy validateClass:@"CAMDrawerExposureButton" hasInstanceMethod:@"isOn" withFullSignature:{"B", 0}];
 }
 
 - (int64_t)_accessibilityExpandedStatus
@@ -34,7 +34,7 @@
   {
     v6.receiver = self;
     v6.super_class = CAMDrawerExposureButtonAccessibility;
-    v3 = [(CAMDrawerExposureButtonAccessibility *)&v6 accessibilityValue];
+    accessibilityValue = [(CAMDrawerExposureButtonAccessibility *)&v6 accessibilityValue];
   }
 
   else
@@ -49,10 +49,10 @@
       v4 = @"off.state";
     }
 
-    v3 = accessibilityCameraUILocalizedString(v4);
+    accessibilityValue = accessibilityCameraUILocalizedString(v4);
   }
 
-  return v3;
+  return accessibilityValue;
 }
 
 @end

@@ -112,9 +112,9 @@
   v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:5];
   v45 = [v28 sectionWithRows:v37 title:@"Gestures"];
 
-  v38 = [MEMORY[0x277D431B0] restoreDefaultSettingsButton];
+  restoreDefaultSettingsButton = [MEMORY[0x277D431B0] restoreDefaultSettingsButton];
   v39 = MEMORY[0x277D43210];
-  v54 = v38;
+  v54 = restoreDefaultSettingsButton;
   v40 = [MEMORY[0x277CBEA60] arrayWithObjects:&v54 count:1];
   v41 = [v39 sectionWithRows:v40];
 

@@ -1,15 +1,15 @@
 @interface PDDPCollectionItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)addItemIds:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addItemIds:(id)ids;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPCollectionItem
@@ -27,20 +27,20 @@
   }
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_COLLECTION_ITEM_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_COLLECTION_ITEM_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"HANDOUT"])
+  else if ([typeCopy isEqualToString:@"HANDOUT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ATTACHMENT"])
+  else if ([typeCopy isEqualToString:@"ATTACHMENT"])
   {
     v4 = 2;
   }
@@ -53,22 +53,22 @@
   return v4;
 }
 
-- (void)addItemIds:(id)a3
+- (void)addItemIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   itemIds = self->_itemIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!itemIds)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_itemIds;
     self->_itemIds = v6;
 
-    v4 = v8;
+    idsCopy = v8;
     itemIds = self->_itemIds;
   }
 
-  [(NSMutableArray *)itemIds addObject:v4];
+  [(NSMutableArray *)itemIds addObject:idsCopy];
 }
 
 - (id)description
@@ -76,8 +76,8 @@
   v7.receiver = self;
   v7.super_class = PDDPCollectionItem;
   v3 = [(PDDPCollectionItem *)&v7 description];
-  v4 = [(PDDPCollectionItem *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPCollectionItem *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -122,23 +122,23 @@
   dateCreated = self->_dateCreated;
   if (dateCreated)
   {
-    v10 = [(PDDPDate *)dateCreated dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"date_created"];
+    dictionaryRepresentation = [(PDDPDate *)dateCreated dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"date_created"];
   }
 
   dateLastModified = self->_dateLastModified;
   if (dateLastModified)
   {
-    v12 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"date_last_modified"];
+    dictionaryRepresentation2 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"date_last_modified"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     type = self->_type;
@@ -198,19 +198,19 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[12] = self->_type;
-    *(v4 + 52) |= 1u;
+    toCopy[12] = self->_type;
+    *(toCopy + 52) |= 1u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if (self->_objectId)
   {
-    [v4 setObjectId:?];
+    [toCopy setObjectId:?];
   }
 
   if (self->_collectionId)
@@ -221,10 +221,10 @@
   if ([(PDDPCollectionItem *)self itemIdsCount])
   {
     [v10 clearItemIds];
-    v5 = [(PDDPCollectionItem *)self itemIdsCount];
-    if (v5)
+    itemIdsCount = [(PDDPCollectionItem *)self itemIdsCount];
+    if (itemIdsCount)
     {
-      v6 = v5;
+      v6 = itemIdsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(PDDPCollectionItem *)self itemIdsAtIndex:i];
@@ -246,9 +246,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -256,11 +256,11 @@
     *(v5 + 52) |= 1u;
   }
 
-  v7 = [(NSString *)self->_objectId copyWithZone:a3];
+  v7 = [(NSString *)self->_objectId copyWithZone:zone];
   v8 = v6[5];
   v6[5] = v7;
 
-  v9 = [(NSString *)self->_collectionId copyWithZone:a3];
+  v9 = [(NSString *)self->_collectionId copyWithZone:zone];
   v10 = v6[1];
   v6[1] = v9;
 
@@ -283,7 +283,7 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v22 + 1) + 8 * i) copyWithZone:{a3, v22}];
+        v16 = [*(*(&v22 + 1) + 8 * i) copyWithZone:{zone, v22}];
         [v6 addItemIds:v16];
       }
 
@@ -293,35 +293,35 @@
     while (v13);
   }
 
-  v17 = [(PDDPDate *)self->_dateCreated copyWithZone:a3];
+  v17 = [(PDDPDate *)self->_dateCreated copyWithZone:zone];
   v18 = v6[2];
   v6[2] = v17;
 
-  v19 = [(PDDPDate *)self->_dateLastModified copyWithZone:a3];
+  v19 = [(PDDPDate *)self->_dateLastModified copyWithZone:zone];
   v20 = v6[3];
   v6[3] = v19;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = *(v4 + 52);
+  v5 = *(equalCopy + 52);
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_type != *(v4 + 12))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_type != *(equalCopy + 12))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
 LABEL_17:
     v11 = 0;
@@ -329,13 +329,13 @@ LABEL_17:
   }
 
   objectId = self->_objectId;
-  if (objectId | *(v4 + 5) && ![(NSString *)objectId isEqual:?])
+  if (objectId | *(equalCopy + 5) && ![(NSString *)objectId isEqual:?])
   {
     goto LABEL_17;
   }
 
   collectionId = self->_collectionId;
-  if (collectionId | *(v4 + 1))
+  if (collectionId | *(equalCopy + 1))
   {
     if (![(NSString *)collectionId isEqual:?])
     {
@@ -344,7 +344,7 @@ LABEL_17:
   }
 
   itemIds = self->_itemIds;
-  if (itemIds | *(v4 + 4))
+  if (itemIds | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)itemIds isEqual:?])
     {
@@ -353,7 +353,7 @@ LABEL_17:
   }
 
   dateCreated = self->_dateCreated;
-  if (dateCreated | *(v4 + 2))
+  if (dateCreated | *(equalCopy + 2))
   {
     if (![(PDDPDate *)dateCreated isEqual:?])
     {
@@ -362,7 +362,7 @@ LABEL_17:
   }
 
   dateLastModified = self->_dateLastModified;
-  if (dateLastModified | *(v4 + 3))
+  if (dateLastModified | *(equalCopy + 3))
   {
     v11 = [(PDDPDate *)dateLastModified isEqual:?];
   }
@@ -396,17 +396,17 @@ LABEL_18:
   return v6 ^ v7 ^ [(PDDPDate *)self->_dateLastModified hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[13])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[13])
   {
-    self->_type = v4[12];
+    self->_type = fromCopy[12];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(PDDPCollectionItem *)self setObjectId:?];
   }

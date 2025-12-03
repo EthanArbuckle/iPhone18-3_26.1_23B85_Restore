@@ -1,21 +1,21 @@
 @interface CHTestUtilities
-+ (id)loadStrokeGroupsFromFile:(id)a3 outStrokeProvider:(id *)a4 outGroupTranscriptions:(id *)a5;
-+ (id)strokeGroupFromStrokeIndexes:(id)a3 offset:(int64_t)a4 strokeProvider:(id)a5 classification:(int64_t)a6;
++ (id)loadStrokeGroupsFromFile:(id)file outStrokeProvider:(id *)provider outGroupTranscriptions:(id *)transcriptions;
++ (id)strokeGroupFromStrokeIndexes:(id)indexes offset:(int64_t)offset strokeProvider:(id)provider classification:(int64_t)classification;
 @end
 
 @implementation CHTestUtilities
 
-+ (id)loadStrokeGroupsFromFile:(id)a3 outStrokeProvider:(id *)a4 outGroupTranscriptions:(id *)a5
++ (id)loadStrokeGroupsFromFile:(id)file outStrokeProvider:(id *)provider outGroupTranscriptions:(id *)transcriptions
 {
   v291[1] = *MEMORY[0x1E69E9840];
-  v254 = a3;
+  fileCopy = file;
   v258 = objc_msgSend_array(MEMORY[0x1E695DF70], v5, v6, v7, v8, v9);
   v256 = objc_msgSend_array(MEMORY[0x1E695DF70], v10, v11, v12, v13, v14);
   objc_msgSend_setStrokeIdentifierOffset_(CHClientStroke, v15, 0, v16, v17, v18);
   v19 = [CHClientStrokeProvider alloc];
-  v257 = objc_msgSend_initWithURL_version_keepTextOnly_(v19, v20, v254, 0, 0, v21);
+  v257 = objc_msgSend_initWithURL_version_keepTextOnly_(v19, v20, fileCopy, 0, 0, v21);
   v22 = MEMORY[0x1E695DEF0];
-  v28 = objc_msgSend_path(v254, v23, v24, v25, v26, v27);
+  v28 = objc_msgSend_path(fileCopy, v23, v24, v25, v26, v27);
   v33 = objc_msgSend_dataWithContentsOfFile_(v22, v29, v28, v30, v31, v32);
 
   v287 = 0;
@@ -34,7 +34,7 @@
     v48 = qword_1EA84DC50[0];
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
     {
-      v54 = objc_msgSend_path(v254, v49, v50, v51, v52, v53);
+      v54 = objc_msgSend_path(fileCopy, v49, v50, v51, v52, v53);
       v60 = objc_msgSend_debugDescription(v252, v55, v56, v57, v58, v59);
       *buf = 138412546;
       *&buf[4] = v54;
@@ -215,15 +215,15 @@ LABEL_29:
       while (v64);
     }
 
-    if (a4)
+    if (provider)
     {
       v247 = v257;
-      *a4 = v257;
+      *provider = v257;
     }
 
-    if (a5)
+    if (transcriptions)
     {
-      *a5 = objc_msgSend_copy(v256, v242, v243, v244, v245, v246);
+      *transcriptions = objc_msgSend_copy(v256, v242, v243, v244, v245, v246);
     }
 
     v61 = objc_msgSend_copy(v258, v242, v243, v244, v245, v246);
@@ -232,10 +232,10 @@ LABEL_29:
   return v61;
 }
 
-+ (id)strokeGroupFromStrokeIndexes:(id)a3 offset:(int64_t)a4 strokeProvider:(id)a5 classification:(int64_t)a6
++ (id)strokeGroupFromStrokeIndexes:(id)indexes offset:(int64_t)offset strokeProvider:(id)provider classification:(int64_t)classification
 {
-  v9 = a3;
-  v10 = a5;
+  indexesCopy = indexes;
+  providerCopy = provider;
   v16 = objc_msgSend_set(MEMORY[0x1E695DFA8], v11, v12, v13, v14, v15);
   v59 = 0;
   v60 = &v59;
@@ -266,7 +266,7 @@ LABEL_29:
   v43 = &unk_183A5AC72;
   v44 = *MEMORY[0x1E695EFF8];
   v18 = @"text-strategy";
-  if (a6 == 3)
+  if (classification == 3)
   {
     v18 = @"math-strategy";
   }
@@ -276,8 +276,8 @@ LABEL_29:
   v30[1] = 3221225472;
   v30[2] = sub_1839BCC6C;
   v30[3] = &unk_1E6DE0E20;
-  v37 = a4;
-  v20 = v10;
+  offsetCopy = offset;
+  v20 = providerCopy;
   v31 = v20;
   v21 = v16;
   v32 = v21;
@@ -285,9 +285,9 @@ LABEL_29:
   v34 = &v38;
   v35 = &v53;
   v36 = &v45;
-  objc_msgSend_enumerateIndexesUsingBlock_(v9, v22, v30, v23, v24, v25);
+  objc_msgSend_enumerateIndexesUsingBlock_(indexesCopy, v22, v30, v23, v24, v25);
   v26 = [CHStrokeGroup alloc];
-  StrokeIdentifier_lastStrokeIdentifier_bounds_classification_groupingConfidence_strategyIdentifier_firstStrokeOrigin = objc_msgSend_initWithStrokeIdentifiers_firstStrokeIdentifier_lastStrokeIdentifier_bounds_classification_groupingConfidence_strategyIdentifier_firstStrokeOrigin_(v26, v27, v21, v60[5], v54[5], a6, v19, v46[6], v46[7], v46[8], v46[9], 1.0, v39[6], v39[7]);
+  StrokeIdentifier_lastStrokeIdentifier_bounds_classification_groupingConfidence_strategyIdentifier_firstStrokeOrigin = objc_msgSend_initWithStrokeIdentifiers_firstStrokeIdentifier_lastStrokeIdentifier_bounds_classification_groupingConfidence_strategyIdentifier_firstStrokeOrigin_(v26, v27, v21, v60[5], v54[5], classification, v19, v46[6], v46[7], v46[8], v46[9], 1.0, v39[6], v39[7]);
 
   _Block_object_dispose(&v38, 8);
   _Block_object_dispose(&v45, 8);

@@ -1,38 +1,38 @@
 @interface WFWeatherDataServiceParserV1
 + (id)dateFormatter;
-- (BOOL)isProviderAttribution:(id)a3 stillValidWithMetadata:(id)a4;
-- (id)airQualityDictFromData:(id)a3 types:(unint64_t)a4;
-- (id)changeForecastDictFromData:(id)a3 types:(unint64_t)a4;
-- (id)currentObservationsDictFromData:(id)a3 types:(unint64_t)a4;
-- (id)dailyAlmanacDictFromData:(id)a3 types:(unint64_t)a4;
-- (id)dailyForecastDictFromData:(id)a3 types:(unint64_t)a4;
-- (id)dailyHistoryDictFromData:(id)a3 types:(unint64_t)a4;
-- (id)hourlyForecastDictFromData:(id)a3 types:(unint64_t)a4;
-- (id)hourlyHistoryDictFromData:(id)a3 types:(unint64_t)a4;
-- (id)nextHourPrecipitationEventDictFromData:(id)a3 types:(unint64_t)a4;
-- (id)nowLinksDictFromData:(id)a3 types:(unint64_t)a4;
-- (id)parseAQIScaleNamed:(id)a3 data:(id)a4 error:(id *)a5;
-- (id)parseAirQualityFromData:(id)a3 locale:(id)a4;
-- (id)parseAlmanacFromData:(id)a3 withUnit:(int)a4;
-- (id)parseChangeForecastFromData:(id)a3 withUnit:(int)a4;
-- (id)parseDailyForecastFromData:(id)a3 withUnit:(int)a4;
-- (id)parseDailyHistoryFromData:(id)a3 withUnit:(int)a4;
-- (id)parseForecastData:(id)a3 types:(unint64_t)a4 location:(id)a5 units:(int)a6 locale:(id)a7 date:(id)a8 error:(id *)a9 rules:(id)a10;
-- (id)parseForecastDataFromDict:(id)a3 types:(unint64_t)a4 location:(id)a5 units:(int)a6 locale:(id)a7 date:(id)a8 error:(id *)a9 rules:(id)a10;
-- (id)parseHourlyForecastFromData:(id)a3 withUnit:(int)a4;
-- (id)parseHourlyHistoryFromData:(id)a3 withUnit:(int)a4;
-- (id)parseMetaDataFromData:(id)a3;
-- (id)parseNextHourPrecipitationFromData:(id)a3 withUnit:(int)a4;
-- (id)parsePollenFromData:(id)a3;
-- (id)parsePollutants:(id)a3;
-- (id)parseSevereWeatherEventsFromData:(id)a3 withUnit:(int)a4;
-- (id)parseWeatherComponentsFromData:(id)a3 withUnit:(int)a4;
-- (id)parsedCategoryFromDictionary:(id)a3;
-- (id)parsedGradientStopFromDictionary:(id)a3;
-- (id)pollenDictFromData:(id)a3 types:(unint64_t)a4;
-- (id)severeWeatherEventDictFromData:(id)a3 types:(unint64_t)a4;
-- (void)parseNowLinksFromData:(id)a3 intoConditions:(id)a4;
-- (void)parseWeatherComponentsFromData:(id)a3 intoConditions:(id)a4 withUnit:(int)a5;
+- (BOOL)isProviderAttribution:(id)attribution stillValidWithMetadata:(id)metadata;
+- (id)airQualityDictFromData:(id)data types:(unint64_t)types;
+- (id)changeForecastDictFromData:(id)data types:(unint64_t)types;
+- (id)currentObservationsDictFromData:(id)data types:(unint64_t)types;
+- (id)dailyAlmanacDictFromData:(id)data types:(unint64_t)types;
+- (id)dailyForecastDictFromData:(id)data types:(unint64_t)types;
+- (id)dailyHistoryDictFromData:(id)data types:(unint64_t)types;
+- (id)hourlyForecastDictFromData:(id)data types:(unint64_t)types;
+- (id)hourlyHistoryDictFromData:(id)data types:(unint64_t)types;
+- (id)nextHourPrecipitationEventDictFromData:(id)data types:(unint64_t)types;
+- (id)nowLinksDictFromData:(id)data types:(unint64_t)types;
+- (id)parseAQIScaleNamed:(id)named data:(id)data error:(id *)error;
+- (id)parseAirQualityFromData:(id)data locale:(id)locale;
+- (id)parseAlmanacFromData:(id)data withUnit:(int)unit;
+- (id)parseChangeForecastFromData:(id)data withUnit:(int)unit;
+- (id)parseDailyForecastFromData:(id)data withUnit:(int)unit;
+- (id)parseDailyHistoryFromData:(id)data withUnit:(int)unit;
+- (id)parseForecastData:(id)data types:(unint64_t)types location:(id)location units:(int)units locale:(id)locale date:(id)date error:(id *)error rules:(id)self0;
+- (id)parseForecastDataFromDict:(id)dict types:(unint64_t)types location:(id)location units:(int)units locale:(id)locale date:(id)date error:(id *)error rules:(id)self0;
+- (id)parseHourlyForecastFromData:(id)data withUnit:(int)unit;
+- (id)parseHourlyHistoryFromData:(id)data withUnit:(int)unit;
+- (id)parseMetaDataFromData:(id)data;
+- (id)parseNextHourPrecipitationFromData:(id)data withUnit:(int)unit;
+- (id)parsePollenFromData:(id)data;
+- (id)parsePollutants:(id)pollutants;
+- (id)parseSevereWeatherEventsFromData:(id)data withUnit:(int)unit;
+- (id)parseWeatherComponentsFromData:(id)data withUnit:(int)unit;
+- (id)parsedCategoryFromDictionary:(id)dictionary;
+- (id)parsedGradientStopFromDictionary:(id)dictionary;
+- (id)pollenDictFromData:(id)data types:(unint64_t)types;
+- (id)severeWeatherEventDictFromData:(id)data types:(unint64_t)types;
+- (void)parseNowLinksFromData:(id)data intoConditions:(id)conditions;
+- (void)parseWeatherComponentsFromData:(id)data intoConditions:(id)conditions withUnit:(int)unit;
 @end
 
 @implementation WFWeatherDataServiceParserV1
@@ -44,13 +44,13 @@ uint64_t __60__WFWeatherDataServiceParserV1_ParseNextHour__dateFormatter__block_
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)parseNextHourPrecipitationFromData:(id)a3 withUnit:(int)a4
+- (id)parseNextHourPrecipitationFromData:(id)data withUnit:(int)unit
 {
   v113 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v81 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v76 = v4;
-  [v4 objectForKey:@"minutes"];
+  v76 = dataCopy;
+  [dataCopy objectForKey:@"minutes"];
   v105 = 0u;
   v106 = 0u;
   v107 = 0u;
@@ -147,7 +147,7 @@ uint64_t __60__WFWeatherDataServiceParserV1_ParseNextHour__dateFormatter__block_
   }
 
   v75 = v23;
-  v80 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   [v76 objectForKey:@"condition"];
   v101 = 0u;
   v102 = 0u;
@@ -192,7 +192,7 @@ uint64_t __60__WFWeatherDataServiceParserV1_ParseNextHour__dateFormatter__block_
           v87 = v34;
           v88 = v33;
           v91 = v32;
-          v40 = [MEMORY[0x277CBEB38] dictionary];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
           v97 = 0u;
           v98 = 0u;
           v99 = 0u;
@@ -218,7 +218,7 @@ uint64_t __60__WFWeatherDataServiceParserV1_ParseNextHour__dateFormatter__block_
                 v48 = MEMORY[0x277CBEAA8];
                 [v47 doubleValue];
                 v49 = [v48 dateWithTimeIntervalSince1970:?];
-                [v40 setValue:v49 forKey:v46];
+                [dictionary setValue:v49 forKey:v46];
               }
 
               v43 = [v41 countByEnumeratingWithState:&v97 objects:v110 count:16];
@@ -237,11 +237,11 @@ uint64_t __60__WFWeatherDataServiceParserV1_ParseNextHour__dateFormatter__block_
 
         else
         {
-          v40 = 0;
+          dictionary = 0;
         }
 
-        v50 = [[WFNextHourPrecipitationDescription alloc] initWithToken:v32 shortTemplate:v33 longTemplate:v34 parameters:v40 validUntil:v38];
-        [v80 addObject:v50];
+        v50 = [[WFNextHourPrecipitationDescription alloc] initWithToken:v32 shortTemplate:v33 longTemplate:v34 parameters:dictionary validUntil:v38];
+        [array addObject:v50];
       }
 
       v82 = [v77 countByEnumeratingWithState:&v101 objects:v111 count:16];
@@ -250,7 +250,7 @@ uint64_t __60__WFWeatherDataServiceParserV1_ParseNextHour__dateFormatter__block_
     while (v82);
   }
 
-  v92 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   [v76 objectForKey:@"summary"];
   v93 = 0u;
   v94 = 0u;
@@ -293,7 +293,7 @@ uint64_t __60__WFWeatherDataServiceParserV1_ParseNextHour__dateFormatter__block_
         v64 = v63;
         [v56 doubleValue];
         v66 = [(WFNextHourPrecipitationCondition *)v62 initWithType:v55 intensity:v61 probability:v64 validUntil:v65];
-        [v92 addObject:v66];
+        [array2 addObject:v66];
       }
 
       v52 = [v84 countByEnumeratingWithState:&v93 objects:v109 count:16];
@@ -302,17 +302,17 @@ uint64_t __60__WFWeatherDataServiceParserV1_ParseNextHour__dateFormatter__block_
     while (v52);
   }
 
-  v67 = [[WFNextHourPrecipitation alloc] initWithReadDate:v69 startDate:v71 expirationDate:v73 minutes:v81 conditions:v92 descriptions:v80];
+  v67 = [[WFNextHourPrecipitation alloc] initWithReadDate:v69 startDate:v71 expirationDate:v73 minutes:v81 conditions:array2 descriptions:array];
 
   return v67;
 }
 
-- (id)nextHourPrecipitationEventDictFromData:(id)a3 types:(unint64_t)a4
+- (id)nextHourPrecipitationEventDictFromData:(id)data types:(unint64_t)types
 {
-  v5 = a3;
-  if (WFForecastTypeIsRequestedInTypes(2048, a4))
+  dataCopy = data;
+  if (WFForecastTypeIsRequestedInTypes(2048, types))
   {
-    v6 = [v5 objectForKey:@"next_hour"];
+    v6 = [dataCopy objectForKey:@"next_hour"];
   }
 
   else
@@ -323,18 +323,18 @@ uint64_t __60__WFWeatherDataServiceParserV1_ParseNextHour__dateFormatter__block_
   return v6;
 }
 
-- (id)parseAlmanacFromData:(id)a3 withUnit:(int)a4
+- (id)parseAlmanacFromData:(id)data withUnit:(int)unit
 {
-  v4 = *&a4;
-  v5 = a3;
+  v4 = *&unit;
+  dataCopy = data;
   v6 = objc_opt_new();
-  v7 = [v5 numberForKey:@"precipitationAverage"];
+  v7 = [dataCopy numberForKey:@"precipitationAverage"];
   if (v7)
   {
     [v6 setObject:v7 forKeyedSubscript:@"WFWeatherPrecipitationAmountComponent"];
   }
 
-  v8 = [v5 numberForKey:@"temperatureAverageMax"];
+  v8 = [dataCopy numberForKey:@"temperatureAverageMax"];
   if (v8)
   {
     v9 = [WFTemperature alloc];
@@ -343,7 +343,7 @@ uint64_t __60__WFWeatherDataServiceParserV1_ParseNextHour__dateFormatter__block_
     [v6 setObject:v10 forKeyedSubscript:@"WFWeatherHighTemperatureComponent"];
   }
 
-  v11 = [v5 numberForKey:@"temperatureAverageMin"];
+  v11 = [dataCopy numberForKey:@"temperatureAverageMin"];
   if (v11)
   {
     v12 = [WFTemperature alloc];
@@ -355,12 +355,12 @@ uint64_t __60__WFWeatherDataServiceParserV1_ParseNextHour__dateFormatter__block_
   return v6;
 }
 
-- (id)dailyAlmanacDictFromData:(id)a3 types:(unint64_t)a4
+- (id)dailyAlmanacDictFromData:(id)data types:(unint64_t)types
 {
-  v5 = a3;
-  if (WFForecastTypeIsRequestedInTypes(128, a4))
+  dataCopy = data;
+  if (WFForecastTypeIsRequestedInTypes(128, types))
   {
-    v6 = [v5 dictionaryForKey:@"daily_almanac"];
+    v6 = [dataCopy dictionaryForKey:@"daily_almanac"];
   }
 
   else
@@ -371,13 +371,13 @@ uint64_t __60__WFWeatherDataServiceParserV1_ParseNextHour__dateFormatter__block_
   return v6;
 }
 
-- (id)parsePollenFromData:(id)a3
+- (id)parsePollenFromData:(id)data
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v35 = [v3 allKeys];
-  v4 = [v35 firstObject];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  dataCopy = data;
+  allKeys = [dataCopy allKeys];
+  firstObject = [allKeys firstObject];
+  v5 = [dataCopy objectForKeyedSubscript:firstObject];
   v6 = [v5 count];
 
   [MEMORY[0x277CBEB18] arrayWithCapacity:v6];
@@ -388,12 +388,12 @@ uint64_t __60__WFWeatherDataServiceParserV1_ParseNextHour__dateFormatter__block_
     v32 = @"treePollenIndex";
     do
     {
-      v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v35, "count", v32)}];
+      v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(allKeys, "count", v32)}];
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v9 = v35;
+      v9 = allKeys;
       v10 = [v9 countByEnumeratingWithState:&v36 objects:v40 count:16];
       if (v10)
       {
@@ -409,7 +409,7 @@ uint64_t __60__WFWeatherDataServiceParserV1_ParseNextHour__dateFormatter__block_
             }
 
             v14 = *(*(&v36 + 1) + 8 * i);
-            v15 = [v3 arrayForKey:v14];
+            v15 = [dataCopy arrayForKey:v14];
             v16 = [v15 objectAtIndexedSubscript:v7];
             [v8 setObject:v16 forKeyedSubscript:v14];
           }
@@ -472,12 +472,12 @@ uint64_t __60__WFWeatherDataServiceParserV1_ParseNextHour__dateFormatter__block_
   return v30;
 }
 
-- (id)pollenDictFromData:(id)a3 types:(unint64_t)a4
+- (id)pollenDictFromData:(id)data types:(unint64_t)types
 {
-  v5 = a3;
-  if (WFForecastTypeIsRequestedInTypes(16, a4))
+  dataCopy = data;
+  if (WFForecastTypeIsRequestedInTypes(16, types))
   {
-    v6 = [v5 dictionaryForKey:@"pollen"];
+    v6 = [dataCopy dictionaryForKey:@"pollen"];
   }
 
   else
@@ -488,19 +488,19 @@ uint64_t __60__WFWeatherDataServiceParserV1_ParseNextHour__dateFormatter__block_
   return v6;
 }
 
-- (id)parseHourlyForecastFromData:(id)a3 withUnit:(int)a4
+- (id)parseHourlyForecastFromData:(id)data withUnit:(int)unit
 {
-  v4 = *&a4;
+  v4 = *&unit;
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dataCopy = data;
   v7 = objc_opt_new();
-  v8 = [v6 dictionaryForKey:@"metadata"];
+  v8 = [dataCopy dictionaryForKey:@"metadata"];
   if (v8)
   {
     [(WFWeatherDataServiceParserV1 *)self parseMetaDataFromData:v8];
   }
 
-  v9 = [v6 arrayForKey:@"hours"];
+  v9 = [dataCopy arrayForKey:@"hours"];
   v10 = v9;
   if (v9)
   {
@@ -538,12 +538,12 @@ uint64_t __60__WFWeatherDataServiceParserV1_ParseNextHour__dateFormatter__block_
   return v16;
 }
 
-- (id)hourlyForecastDictFromData:(id)a3 types:(unint64_t)a4
+- (id)hourlyForecastDictFromData:(id)data types:(unint64_t)types
 {
-  v5 = a3;
-  if (WFForecastTypeIsRequestedInTypes(4, a4))
+  dataCopy = data;
+  if (WFForecastTypeIsRequestedInTypes(4, types))
   {
-    v6 = [v5 dictionaryForKey:@"hourly_forecast"];
+    v6 = [dataCopy dictionaryForKey:@"hourly_forecast"];
   }
 
   else
@@ -573,16 +573,16 @@ uint64_t __65__WFWeatherDataServiceParserV1_ParseSevereWeather__dateFormatter__b
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)parseSevereWeatherEventsFromData:(id)a3 withUnit:(int)a4
+- (id)parseSevereWeatherEventsFromData:(id)data withUnit:(int)unit
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v20 = [MEMORY[0x277CBEB18] array];
+  dataCopy = data;
+  array = [MEMORY[0x277CBEB18] array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v4;
+  obj = dataCopy;
   v21 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v21)
   {
@@ -607,7 +607,7 @@ uint64_t __65__WFWeatherDataServiceParserV1_ParseSevereWeather__dateFormatter__b
         v11 = v10;
         if (v10)
         {
-          v12 = [v10 BOOLValue];
+          bOOLValue = [v10 BOOLValue];
           if (v7)
           {
             goto LABEL_8;
@@ -616,12 +616,12 @@ uint64_t __65__WFWeatherDataServiceParserV1_ParseSevereWeather__dateFormatter__b
 
         else
         {
-          v12 = 0;
+          bOOLValue = 0;
           if (v7)
           {
 LABEL_8:
-            v13 = [objc_opt_class() dateFormatter];
-            v14 = [v13 dateFromString:v7];
+            dateFormatter = [objc_opt_class() dateFormatter];
+            v14 = [dateFormatter dateFromString:v7];
 
             goto LABEL_11;
           }
@@ -639,8 +639,8 @@ LABEL_11:
           v15 = 0;
         }
 
-        v16 = [[WFSevereWeatherEvent alloc] initWithIdentifier:v8 areaName:v24 eventDescription:v23 source:v22 expirationDate:v14 URL:v15 importance:v12];
-        [v20 addObject:v16];
+        v16 = [[WFSevereWeatherEvent alloc] initWithIdentifier:v8 areaName:v24 eventDescription:v23 source:v22 expirationDate:v14 URL:v15 importance:bOOLValue];
+        [array addObject:v16];
       }
 
       v21 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -649,15 +649,15 @@ LABEL_11:
     while (v21);
   }
 
-  return v20;
+  return array;
 }
 
-- (id)severeWeatherEventDictFromData:(id)a3 types:(unint64_t)a4
+- (id)severeWeatherEventDictFromData:(id)data types:(unint64_t)types
 {
-  v5 = a3;
-  if (WFForecastTypeIsRequestedInTypes(1024, a4))
+  dataCopy = data;
+  if (WFForecastTypeIsRequestedInTypes(1024, types))
   {
-    v6 = [v5 arrayForKey:@"severe_weather_events"];
+    v6 = [dataCopy arrayForKey:@"severe_weather_events"];
   }
 
   else
@@ -668,29 +668,29 @@ LABEL_11:
   return v6;
 }
 
-- (id)parseChangeForecastFromData:(id)a3 withUnit:(int)a4
+- (id)parseChangeForecastFromData:(id)data withUnit:(int)unit
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 array];
-  v7 = [v5 stringForKey:@"messageSameTimezone"];
-  v8 = [v5 stringForKey:@"messageDifferentTimezone"];
+  dataCopy = data;
+  array = [v4 array];
+  v7 = [dataCopy stringForKey:@"messageSameTimezone"];
+  v8 = [dataCopy stringForKey:@"messageDifferentTimezone"];
 
   v9 = [WFChangeForecast alloc];
-  v10 = [MEMORY[0x277CBEAA8] date];
-  v11 = [(WFChangeForecast *)v9 initWithDate:v10 descriptionSameTimeZone:v7 descriptionDifferentTimeZone:v8];
+  date = [MEMORY[0x277CBEAA8] date];
+  v11 = [(WFChangeForecast *)v9 initWithDate:date descriptionSameTimeZone:v7 descriptionDifferentTimeZone:v8];
 
-  [v6 addObject:v11];
+  [array addObject:v11];
 
-  return v6;
+  return array;
 }
 
-- (id)changeForecastDictFromData:(id)a3 types:(unint64_t)a4
+- (id)changeForecastDictFromData:(id)data types:(unint64_t)types
 {
-  v5 = a3;
-  if (WFForecastTypeIsRequestedInTypes(512, a4))
+  dataCopy = data;
+  if (WFForecastTypeIsRequestedInTypes(512, types))
   {
-    v6 = [v5 dictionaryForKey:@"change_forecast"];
+    v6 = [dataCopy dictionaryForKey:@"change_forecast"];
   }
 
   else
@@ -701,19 +701,19 @@ LABEL_11:
   return v6;
 }
 
-- (id)parseHourlyHistoryFromData:(id)a3 withUnit:(int)a4
+- (id)parseHourlyHistoryFromData:(id)data withUnit:(int)unit
 {
-  v4 = *&a4;
+  v4 = *&unit;
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dataCopy = data;
   v7 = objc_opt_new();
-  v8 = [v6 dictionaryForKey:@"metadata"];
+  v8 = [dataCopy dictionaryForKey:@"metadata"];
   if (v8)
   {
     [(WFWeatherDataServiceParserV1 *)self parseMetaDataFromData:v8];
   }
 
-  v9 = [v6 arrayForKey:@"hours"];
+  v9 = [dataCopy arrayForKey:@"hours"];
   v10 = v9;
   if (v9)
   {
@@ -751,12 +751,12 @@ LABEL_11:
   return v16;
 }
 
-- (id)hourlyHistoryDictFromData:(id)a3 types:(unint64_t)a4
+- (id)hourlyHistoryDictFromData:(id)data types:(unint64_t)types
 {
-  v5 = a3;
-  if (WFForecastTypeIsRequestedInTypes(32, a4))
+  dataCopy = data;
+  if (WFForecastTypeIsRequestedInTypes(32, types))
   {
-    v6 = [v5 dictionaryForKey:@"hourly_history"];
+    v6 = [dataCopy dictionaryForKey:@"hourly_history"];
   }
 
   else
@@ -767,18 +767,18 @@ LABEL_11:
   return v6;
 }
 
-- (id)parseForecastData:(id)a3 types:(unint64_t)a4 location:(id)a5 units:(int)a6 locale:(id)a7 date:(id)a8 error:(id *)a9 rules:(id)a10
+- (id)parseForecastData:(id)data types:(unint64_t)types location:(id)location units:(int)units locale:(id)locale date:(id)date error:(id *)error rules:(id)self0
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = a10;
-  if (v15)
+  dataCopy = data;
+  locationCopy = location;
+  localeCopy = locale;
+  dateCopy = date;
+  rulesCopy = rules;
+  if (dataCopy)
   {
     v27 = 0;
-    v20 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v15 options:0 error:&v27];
+    v20 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v27];
     v21 = v27;
     if (v21)
     {
@@ -793,7 +793,7 @@ LABEL_11:
 
   if ([v20 count])
   {
-    v22 = [(WFWeatherDataServiceParserV1 *)self parseForecastDataFromDict:v20 types:a4 location:v16 units:a6 locale:v17 date:v18 error:a9 rules:v19];
+    v22 = [(WFWeatherDataServiceParserV1 *)self parseForecastDataFromDict:v20 types:types location:locationCopy units:units locale:localeCopy date:dateCopy error:error rules:rulesCopy];
     goto LABEL_9;
   }
 
@@ -803,7 +803,7 @@ LABEL_8:
   v28 = *MEMORY[0x277CCA450];
   v29[0] = @"Failed to parse JSON forecast data";
   v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:&v28 count:1];
-  *a9 = [v23 wf_errorWithCode:1 encapsulatedError:v21 userInfo:v24];
+  *error = [v23 wf_errorWithCode:1 encapsulatedError:v21 userInfo:v24];
 
   v22 = 0;
 LABEL_9:
@@ -811,76 +811,76 @@ LABEL_9:
   return v22;
 }
 
-- (id)parseForecastDataFromDict:(id)a3 types:(unint64_t)a4 location:(id)a5 units:(int)a6 locale:(id)a7 date:(id)a8 error:(id *)a9 rules:(id)a10
+- (id)parseForecastDataFromDict:(id)dict types:(unint64_t)types location:(id)location units:(int)units locale:(id)locale date:(id)date error:(id *)error rules:(id)self0
 {
-  v16 = a3;
-  v61 = a5;
-  v17 = a7;
-  v18 = a8;
-  if (a6)
+  dictCopy = dict;
+  locationCopy = location;
+  localeCopy = locale;
+  dateCopy = date;
+  if (units)
   {
-    v19 = a6;
+    unitsCopy = units;
   }
 
   else
   {
-    v19 = 2;
+    unitsCopy = 2;
   }
 
   v20 = objc_alloc_init(WFParsedForecastData);
-  v21 = [(WFWeatherDataServiceParserV1 *)self currentObservationsDictFromData:v16 types:a4];
-  v62 = v19;
+  v21 = [(WFWeatherDataServiceParserV1 *)self currentObservationsDictFromData:dictCopy types:types];
+  v62 = unitsCopy;
   if (v21)
   {
     v22 = v21;
-    v23 = [(WFWeatherDataServiceParserV1 *)self parseCurrentObservationsFromData:v21 withUnit:v19];
+    v23 = [(WFWeatherDataServiceParserV1 *)self parseCurrentObservationsFromData:v21 withUnit:unitsCopy];
 LABEL_8:
     v25 = v23;
     [(WFParsedForecastData *)v20 setCurrentConditions:v23];
     goto LABEL_9;
   }
 
-  v24 = [(WFWeatherDataServiceParserV1 *)self dailyAlmanacDictFromData:v16 types:a4];
+  v24 = [(WFWeatherDataServiceParserV1 *)self dailyAlmanacDictFromData:dictCopy types:types];
   if (v24)
   {
     v22 = v24;
-    v23 = [(WFWeatherDataServiceParserV1 *)self parseAlmanacFromData:v24 withUnit:v19];
+    v23 = [(WFWeatherDataServiceParserV1 *)self parseAlmanacFromData:v24 withUnit:unitsCopy];
     goto LABEL_8;
   }
 
-  v54 = [(WFWeatherDataServiceParserV1 *)self dailyHistoryDictFromData:v16 types:a4];
+  v54 = [(WFWeatherDataServiceParserV1 *)self dailyHistoryDictFromData:dictCopy types:types];
   if (!v54)
   {
     goto LABEL_10;
   }
 
   v22 = v54;
-  v25 = [(WFWeatherDataServiceParserV1 *)self parseDailyHistoryFromData:v54 withUnit:v19];
-  v55 = [v25 firstObject];
-  [(WFParsedForecastData *)v20 setCurrentConditions:v55];
+  v25 = [(WFWeatherDataServiceParserV1 *)self parseDailyHistoryFromData:v54 withUnit:unitsCopy];
+  firstObject = [v25 firstObject];
+  [(WFParsedForecastData *)v20 setCurrentConditions:firstObject];
 
 LABEL_9:
 LABEL_10:
-  v26 = [(WFParsedForecastData *)v20 currentConditions];
+  currentConditions = [(WFParsedForecastData *)v20 currentConditions];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v28 = [(WFParsedForecastData *)v20 currentConditions];
-    [v28 setLocation:v61];
+    currentConditions2 = [(WFParsedForecastData *)v20 currentConditions];
+    [currentConditions2 setLocation:locationCopy];
 
-    v29 = [(WFParsedForecastData *)v20 currentConditions];
-    v30 = [v29 objectForKeyedSubscript:@"WFWeatherForecastDateComponent"];
+    currentConditions3 = [(WFParsedForecastData *)v20 currentConditions];
+    v30 = [currentConditions3 objectForKeyedSubscript:@"WFWeatherForecastDateComponent"];
 
     if (!v30)
     {
-      v31 = [(WFParsedForecastData *)v20 currentConditions];
-      [v31 setObject:v18 forKeyedSubscript:@"WFWeatherForecastDateComponent"];
+      currentConditions4 = [(WFParsedForecastData *)v20 currentConditions];
+      [currentConditions4 setObject:dateCopy forKeyedSubscript:@"WFWeatherForecastDateComponent"];
     }
   }
 
-  v32 = [(WFWeatherDataServiceParserV1 *)self hourlyHistoryDictFromData:v16 types:a4];
+  v32 = [(WFWeatherDataServiceParserV1 *)self hourlyHistoryDictFromData:dictCopy types:types];
   v33 = v62;
   if (v32)
   {
@@ -888,7 +888,7 @@ LABEL_10:
     [(WFParsedForecastData *)v20 setLastTwentyFourHoursOfObservations:v34];
   }
 
-  v35 = [(WFWeatherDataServiceParserV1 *)self dailyForecastDictFromData:v16 types:a4];
+  v35 = [(WFWeatherDataServiceParserV1 *)self dailyForecastDictFromData:dictCopy types:types];
   if (v35)
   {
     v36 = [(WFWeatherDataServiceParserV1 *)self parseDailyForecastFromData:v35 withUnit:v62];
@@ -897,7 +897,7 @@ LABEL_10:
 
   v57 = v35;
   v58 = v32;
-  v37 = [(WFWeatherDataServiceParserV1 *)self hourlyForecastDictFromData:v16 types:a4];
+  v37 = [(WFWeatherDataServiceParserV1 *)self hourlyForecastDictFromData:dictCopy types:types];
   if (v37)
   {
     v38 = [(WFWeatherDataServiceParserV1 *)self parseHourlyForecastFromData:v37 withUnit:v62];
@@ -905,43 +905,43 @@ LABEL_10:
   }
 
   v56 = v37;
-  v39 = [(WFWeatherDataServiceParserV1 *)self airQualityDictFromData:v16 types:a4];
+  v39 = [(WFWeatherDataServiceParserV1 *)self airQualityDictFromData:dictCopy types:types];
   if (v39)
   {
-    v40 = [(WFWeatherDataServiceParserV1 *)self parseAirQualityFromData:v39 locale:v17];
+    v40 = [(WFWeatherDataServiceParserV1 *)self parseAirQualityFromData:v39 locale:localeCopy];
     [(WFParsedForecastData *)v20 setAirQualityObservations:v40];
   }
 
-  v59 = v18;
-  v60 = v17;
-  v41 = [(WFWeatherDataServiceParserV1 *)self pollenDictFromData:v16 types:a4];
+  v59 = dateCopy;
+  v60 = localeCopy;
+  v41 = [(WFWeatherDataServiceParserV1 *)self pollenDictFromData:dictCopy types:types];
   if (v41)
   {
     v42 = [(WFWeatherDataServiceParserV1 *)self parsePollenFromData:v41];
     [(WFParsedForecastData *)v20 setPollenForecasts:v42];
   }
 
-  v43 = [(WFParsedForecastData *)v20 currentConditions];
-  if (v43)
+  currentConditions5 = [(WFParsedForecastData *)v20 currentConditions];
+  if (currentConditions5)
   {
-    v44 = v43;
-    v45 = [(WFWeatherDataServiceParserV1 *)self nowLinksDictFromData:v16 types:a4];
+    v44 = currentConditions5;
+    v45 = [(WFWeatherDataServiceParserV1 *)self nowLinksDictFromData:dictCopy types:types];
 
     if (v45)
     {
-      v46 = [(WFParsedForecastData *)v20 currentConditions];
-      [(WFWeatherDataServiceParserV1 *)self parseNowLinksFromData:v45 intoConditions:v46];
+      currentConditions6 = [(WFParsedForecastData *)v20 currentConditions];
+      [(WFWeatherDataServiceParserV1 *)self parseNowLinksFromData:v45 intoConditions:currentConditions6];
     }
   }
 
-  v47 = [(WFWeatherDataServiceParserV1 *)self changeForecastDictFromData:v16 types:a4];
+  v47 = [(WFWeatherDataServiceParserV1 *)self changeForecastDictFromData:dictCopy types:types];
   if (v47)
   {
     v48 = [(WFWeatherDataServiceParserV1 *)self parseChangeForecastFromData:v47 withUnit:v62];
     [(WFParsedForecastData *)v20 setChangeForecasts:v48];
   }
 
-  v49 = [(WFWeatherDataServiceParserV1 *)self severeWeatherEventDictFromData:v16 types:a4];
+  v49 = [(WFWeatherDataServiceParserV1 *)self severeWeatherEventDictFromData:dictCopy types:types];
   if (v49)
   {
     v50 = [(WFWeatherDataServiceParserV1 *)self parseSevereWeatherEventsFromData:v49 withUnit:v62];
@@ -950,7 +950,7 @@ LABEL_10:
     v33 = v62;
   }
 
-  v51 = [(WFWeatherDataServiceParserV1 *)self nextHourPrecipitationEventDictFromData:v16 types:a4];
+  v51 = [(WFWeatherDataServiceParserV1 *)self nextHourPrecipitationEventDictFromData:dictCopy types:types];
   if (v51)
   {
     v52 = [(WFWeatherDataServiceParserV1 *)self parseNextHourPrecipitationFromData:v51 withUnit:v33];
@@ -960,22 +960,22 @@ LABEL_10:
   return v20;
 }
 
-- (id)parseAQIScaleNamed:(id)a3 data:(id)a4 error:(id *)a5
+- (id)parseAQIScaleNamed:(id)named data:(id)data error:(id *)error
 {
   v120[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (v9)
+  namedCopy = named;
+  dataCopy = data;
+  if (dataCopy)
   {
     v92 = 0;
-    v10 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v9 options:0 error:&v92];
+    v10 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v92];
     v11 = v92;
     if (v11 || ![v10 count])
     {
       v117 = *MEMORY[0x277CCA450];
       v118 = @"Failed to parse JSON for remote AQI scale data";
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v118 forKeys:&v117 count:1];
-      *a5 = [MEMORY[0x277CCA9B8] wf_errorWithCode:1 encapsulatedError:v11 userInfo:v12];
+      *error = [MEMORY[0x277CCA9B8] wf_errorWithCode:1 encapsulatedError:v11 userInfo:v12];
 
       v13 = 0;
       v10 = v11;
@@ -985,10 +985,10 @@ LABEL_10:
     v15 = [v10 objectForKeyedSubscript:@"aqi"];
     if ([v15 count])
     {
-      if (v8)
+      if (namedCopy)
       {
         v16 = objc_alloc_init(WFAQIScale);
-        [(WFAQIScale *)v16 setIdentifier:v8];
+        [(WFAQIScale *)v16 setIdentifier:namedCopy];
         v17 = [v15 objectForKeyedSubscript:@"numerical"];
         v18 = v17;
         if (v17)
@@ -1017,9 +1017,9 @@ LABEL_10:
                   v24 = [v23 objectAtIndexedSubscript:0];
                   v25 = [v23 objectAtIndexedSubscript:1];
                   v75 = v24;
-                  v26 = [v24 unsignedIntegerValue];
+                  unsignedIntegerValue = [v24 unsignedIntegerValue];
                   v74 = v25;
-                  -[WFAQIScale setRange:](v16, "setRange:", v26, [v25 unsignedIntegerValue] - v26);
+                  -[WFAQIScale setRange:](v16, "setRange:", unsignedIntegerValue, [v25 unsignedIntegerValue] - unsignedIntegerValue);
                   v27 = [v15 objectForKeyedSubscript:@"categories"];
                   v28 = [v27 count];
                   v76 = v23;
@@ -1061,7 +1061,7 @@ LABEL_10:
                             v99 = @"Encountered a nil category property while parsing the categories";
                             v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v99 forKeys:&v98 count:1];
                             [MEMORY[0x277CCA9B8] wf_errorWithCode:3 encapsulatedError:0 userInfo:v35];
-                            *a5 = v13 = 0;
+                            *error = v13 = 0;
                             v15 = v71;
                             v20 = v77;
                             v53 = v82;
@@ -1124,7 +1124,7 @@ LABEL_10:
                               v93 = *MEMORY[0x277CCA450];
                               v94 = @"Encountered a nil gradient property while parsing the gradient";
                               v64 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v94 forKeys:&v93 count:1];
-                              *a5 = [MEMORY[0x277CCA9B8] wf_errorWithCode:3 userInfo:v64];
+                              *error = [MEMORY[0x277CCA9B8] wf_errorWithCode:3 userInfo:v64];
 
                               v13 = 0;
                               goto LABEL_67;
@@ -1175,7 +1175,7 @@ LABEL_67:
                       v97 = @"No gradient stops found";
                       v67 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v97 forKeys:&v96 count:1];
                       [MEMORY[0x277CCA9B8] wf_errorWithCode:3 userInfo:v67];
-                      *a5 = v13 = 0;
+                      *error = v13 = 0;
                       v65 = v67;
                       v53 = v82;
                     }
@@ -1198,7 +1198,7 @@ LABEL_72:
                     v102 = @"Encountered a nil categories property in AQI scale data";
                     v62 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v102 forKeys:&v101 count:1];
                     [MEMORY[0x277CCA9B8] wf_errorWithCode:3 userInfo:v62];
-                    *a5 = v13 = 0;
+                    *error = v13 = 0;
                     v20 = v77;
                     v53 = v82;
                     v59 = v75;
@@ -1219,7 +1219,7 @@ LABEL_72:
                   v104 = @"Encountered a nil range property in AQI scale data";
                   v58 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v104 forKeys:&v103 count:1];
                   [MEMORY[0x277CCA9B8] wf_errorWithCode:3 userInfo:v58];
-                  *a5 = v13 = 0;
+                  *error = v13 = 0;
                   v59 = v58;
                   v53 = v82;
                 }
@@ -1237,7 +1237,7 @@ LABEL_72:
                 v106 = @"Encountered a nil displayLabel property in AQI scale data";
                 v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v106 forKeys:&v105 count:1];
                 [MEMORY[0x277CCA9B8] wf_errorWithCode:3 userInfo:v23];
-                *a5 = v13 = 0;
+                *error = v13 = 0;
                 v53 = v82;
               }
 
@@ -1256,7 +1256,7 @@ LABEL_72:
               v108 = @"Encountered a nil displayName property in AQI scale data";
               v55 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v108 forKeys:&v107 count:1];
               [MEMORY[0x277CCA9B8] wf_errorWithCode:3 userInfo:v55];
-              *a5 = v13 = 0;
+              *error = v13 = 0;
               v53 = 0;
             }
 
@@ -1275,7 +1275,7 @@ LABEL_72:
             v110 = @"Encountered a nil ascending property in AQI scale data";
             v53 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v110 forKeys:&v109 count:1];
             [MEMORY[0x277CCA9B8] wf_errorWithCode:3 userInfo:v53];
-            *a5 = v13 = 0;
+            *error = v13 = 0;
           }
         }
 
@@ -1291,7 +1291,7 @@ LABEL_72:
           v112 = @"Encountered a nil nnumerical property in AQI scale data";
           v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v112 forKeys:&v111 count:1];
           [MEMORY[0x277CCA9B8] wf_errorWithCode:3 userInfo:v20];
-          *a5 = v13 = 0;
+          *error = v13 = 0;
         }
 
         goto LABEL_79;
@@ -1327,7 +1327,7 @@ LABEL_72:
 
     v16 = [v47 dictionaryWithObjects:v48 forKeys:v49 count:1];
     [MEMORY[0x277CCA9B8] wf_errorWithCode:3 userInfo:v16];
-    *a5 = v13 = 0;
+    *error = v13 = 0;
 LABEL_79:
 
     goto LABEL_80;
@@ -1343,29 +1343,29 @@ LABEL_79:
   v120[0] = @"The passed in data is nil";
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v120 forKeys:&v119 count:1];
   [MEMORY[0x277CCA9B8] wf_errorWithCode:3 userInfo:v10];
-  *a5 = v13 = 0;
+  *error = v13 = 0;
 LABEL_80:
 
   return v13;
 }
 
-- (id)parsedCategoryFromDictionary:(id)a3
+- (id)parsedCategoryFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  if ([v3 count])
+  dictionaryCopy = dictionary;
+  if ([dictionaryCopy count])
   {
     v4 = objc_alloc_init(WFAQIScaleCategory);
-    v5 = [v3 objectForKeyedSubscript:@"categoryName"];
+    v5 = [dictionaryCopy objectForKeyedSubscript:@"categoryName"];
     [(WFAQIScaleCategory *)v4 setCategoryName:v5];
-    v6 = [v3 objectForKeyedSubscript:@"categoryNumber"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"categoryNumber"];
     -[WFAQIScaleCategory setCategoryNumber:](v4, "setCategoryNumber:", [v6 unsignedIntegerValue]);
-    v7 = [v3 objectForKeyedSubscript:@"color"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"color"];
     [(WFAQIScaleCategory *)v4 setColor:v7];
-    v8 = [v3 objectForKeyedSubscript:@"glyph"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"glyph"];
     [(WFAQIScaleCategory *)v4 setGlyph:v8];
-    v9 = [v3 objectForKeyedSubscript:@"recommendation"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"recommendation"];
     [(WFAQIScaleCategory *)v4 setRecommendation:v9];
-    v10 = [v3 objectForKeyedSubscript:@"range"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"range"];
     if ([v10 count] == 2)
     {
       v21 = [v10 objectAtIndexedSubscript:0];
@@ -1374,9 +1374,9 @@ LABEL_80:
       v13 = v7;
       v14 = v6;
       v15 = v5;
-      v16 = [v21 unsignedIntegerValue];
-      v17 = [v11 unsignedIntegerValue] - v16;
-      v18 = v16;
+      unsignedIntegerValue = [v21 unsignedIntegerValue];
+      v17 = [v11 unsignedIntegerValue] - unsignedIntegerValue;
+      v18 = unsignedIntegerValue;
       v5 = v15;
       v6 = v14;
       v7 = v13;
@@ -1399,18 +1399,18 @@ LABEL_80:
   return v4;
 }
 
-- (id)parsedGradientStopFromDictionary:(id)a3
+- (id)parsedGradientStopFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  if ([v3 count])
+  dictionaryCopy = dictionary;
+  if ([dictionaryCopy count])
   {
-    v4 = [v3 objectForKeyedSubscript:@"location"];
+    v4 = [dictionaryCopy objectForKeyedSubscript:@"location"];
     v5 = v4;
     if (v4)
     {
       [v4 floatValue];
       v7 = v6;
-      v8 = [v3 objectForKeyedSubscript:@"color"];
+      v8 = [dictionaryCopy objectForKeyedSubscript:@"color"];
       if (v8)
       {
         v9 = [WFAQIScaleGradientStop alloc];
@@ -1453,12 +1453,12 @@ LABEL_15:
   return v11;
 }
 
-- (id)currentObservationsDictFromData:(id)a3 types:(unint64_t)a4
+- (id)currentObservationsDictFromData:(id)data types:(unint64_t)types
 {
-  v5 = a3;
-  if (WFForecastTypeIsRequestedInTypes(2, a4))
+  dataCopy = data;
+  if (WFForecastTypeIsRequestedInTypes(2, types))
   {
-    v6 = [v5 dictionaryForKey:@"current_observations"];
+    v6 = [dataCopy dictionaryForKey:@"current_observations"];
   }
 
   else
@@ -1469,11 +1469,11 @@ LABEL_15:
   return v6;
 }
 
-- (id)parseMetaDataFromData:(id)a3
+- (id)parseMetaDataFromData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_alloc_init(WFWeatherDataServiceParserMetadataV1);
-  v5 = [v3 numberForKey:@"reported_time"];
+  v5 = [dataCopy numberForKey:@"reported_time"];
   v6 = v5;
   if (v5)
   {
@@ -1483,7 +1483,7 @@ LABEL_15:
     [(WFWeatherDataServiceParserMetadataV1 *)v4 setReadDate:v8];
   }
 
-  v9 = [v3 numberForKey:@"expirationTimeUtc"];
+  v9 = [dataCopy numberForKey:@"expirationTimeUtc"];
   v10 = v9;
   if (v9)
   {
@@ -1493,35 +1493,35 @@ LABEL_15:
     [(WFWeatherDataServiceParserMetadataV1 *)v4 setExpireDate:v12];
   }
 
-  v13 = [v3 numberForKey:@"version"];
+  v13 = [dataCopy numberForKey:@"version"];
   v14 = v13;
   if (v13)
   {
     -[WFWeatherDataServiceParserMetadataV1 setVersion:](v4, "setVersion:", [v13 unsignedIntegerValue]);
   }
 
-  v15 = [v3 stringForKey:@"provider_name"];
+  v15 = [dataCopy stringForKey:@"provider_name"];
   [(WFWeatherDataServiceParserMetadataV1 *)v4 setProviderName:v15];
 
-  v16 = [v3 stringForKey:@"provider_logo"];
+  v16 = [dataCopy stringForKey:@"provider_logo"];
   if (v16)
   {
     v17 = [MEMORY[0x277CBEBC0] URLWithString:v16];
     [(WFWeatherDataServiceParserMetadataV1 *)v4 setProviderLogoURL:v17];
   }
 
-  v18 = [v3 numberForKey:@"data_source"];
+  v18 = [dataCopy numberForKey:@"data_source"];
   v19 = v18;
   if (v18)
   {
-    v20 = [v18 unsignedIntegerValue];
+    unsignedIntegerValue = [v18 unsignedIntegerValue];
     v21 = 0x7FFFFFFFFFFFFFFFLL;
-    if (v20 == 1)
+    if (unsignedIntegerValue == 1)
     {
       v21 = 1;
     }
 
-    if (v20)
+    if (unsignedIntegerValue)
     {
       v22 = v21;
     }
@@ -1534,10 +1534,10 @@ LABEL_15:
     [(WFWeatherDataServiceParserMetadataV1 *)v4 setDataOrigination:v22];
   }
 
-  v23 = [v3 numberForKey:@"latitude"];
+  v23 = [dataCopy numberForKey:@"latitude"];
   if (v23)
   {
-    v24 = [v3 numberForKey:@"longitude"];
+    v24 = [dataCopy numberForKey:@"longitude"];
     if (v24)
     {
       v25 = v24;
@@ -1560,7 +1560,7 @@ LABEL_15:
     }
   }
 
-  v32 = [v3 numberForKey:@"temporarily_unavailable"];
+  v32 = [dataCopy numberForKey:@"temporarily_unavailable"];
   v33 = v32;
   if (v32)
   {
@@ -1570,180 +1570,180 @@ LABEL_15:
   return v4;
 }
 
-- (id)parseWeatherComponentsFromData:(id)a3 withUnit:(int)a4
+- (id)parseWeatherComponentsFromData:(id)data withUnit:(int)unit
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&unit;
+  dataCopy = data;
   v7 = objc_alloc_init(WFWeatherConditions);
-  [(WFWeatherDataServiceParserV1 *)self parseWeatherComponentsFromData:v6 intoConditions:v7 withUnit:v4];
+  [(WFWeatherDataServiceParserV1 *)self parseWeatherComponentsFromData:dataCopy intoConditions:v7 withUnit:v4];
 
   return v7;
 }
 
-- (void)parseWeatherComponentsFromData:(id)a3 intoConditions:(id)a4 withUnit:(int)a5
+- (void)parseWeatherComponentsFromData:(id)data intoConditions:(id)conditions withUnit:(int)unit
 {
-  v5 = *&a5;
-  v50 = a3;
-  v8 = a4;
-  v9 = [v50 numberForKey:@"validTimeUtc"];
+  v5 = *&unit;
+  dataCopy = data;
+  conditionsCopy = conditions;
+  v9 = [dataCopy numberForKey:@"validTimeUtc"];
   v10 = v9;
   if (v9)
   {
     v11 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{objc_msgSend(v9, "unsignedIntegerValue")}];
-    [v8 setObject:v11 forKeyedSubscript:@"WFWeatherForecastDateComponent"];
+    [conditionsCopy setObject:v11 forKeyedSubscript:@"WFWeatherForecastDateComponent"];
   }
 
-  v12 = [v50 numberForKey:@"expirationTimeUtc"];
+  v12 = [dataCopy numberForKey:@"expirationTimeUtc"];
 
   if (v12)
   {
     v13 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{objc_msgSend(v12, "unsignedIntegerValue")}];
-    [v8 setObject:v13 forKeyedSubscript:@"WFWeatherForecastExpirationDateComponent"];
+    [conditionsCopy setObject:v13 forKeyedSubscript:@"WFWeatherForecastExpirationDateComponent"];
   }
 
-  v14 = [v50 dictionaryForKey:@"metadata"];
+  v14 = [dataCopy dictionaryForKey:@"metadata"];
   if (v14)
   {
     v15 = [(WFWeatherDataServiceParserV1 *)self parseMetaDataFromData:v14];
-    v16 = [v15 providerName];
-    [v8 setObject:v16 forKeyedSubscript:@"WFWeatherDataProviderName"];
+    providerName = [v15 providerName];
+    [conditionsCopy setObject:providerName forKeyedSubscript:@"WFWeatherDataProviderName"];
   }
 
-  v17 = [v50 numberForKey:@"iconCode"];
-  if (v17 || ([v50 numberForKey:@"iconCodeDay"], (v17 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v50, "numberForKey:", @"iconCodeNight"), (v17 = objc_claimAutoreleasedReturnValue()) != 0))
+  v17 = [dataCopy numberForKey:@"iconCode"];
+  if (v17 || ([dataCopy numberForKey:@"iconCodeDay"], (v17 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(dataCopy, "numberForKey:", @"iconCodeNight"), (v17 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v18 = v17;
-    [v8 setObject:v17 forKeyedSubscript:@"__THIS_WILL_BE_DEPRECATED__WFWeatherLegacyConditionComponent"];
+    [conditionsCopy setObject:v17 forKeyedSubscript:@"__THIS_WILL_BE_DEPRECATED__WFWeatherLegacyConditionComponent"];
     v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{WFConditionCodeFromLegacyWeatherConditionCode(objc_msgSend(v18, "unsignedIntegerValue"))}];
-    [v8 setObject:v19 forKeyedSubscript:@"WFWeatherConditionComponent"];
+    [conditionsCopy setObject:v19 forKeyedSubscript:@"WFWeatherConditionComponent"];
   }
 
-  v20 = [v50 numberForKey:@"relativeHumidity"];
+  v20 = [dataCopy numberForKey:@"relativeHumidity"];
   if (v20)
   {
-    [v8 setObject:v20 forKeyedSubscript:@"WFWeatherHumidityComponent"];
+    [conditionsCopy setObject:v20 forKeyedSubscript:@"WFWeatherHumidityComponent"];
   }
 
-  v21 = [v50 numberForKey:{@"precip1Hour", v20}];
-  if (v21 || ([v50 numberForKey:@"precip24Hour"], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
+  v21 = [dataCopy numberForKey:{@"precip1Hour", v20}];
+  if (v21 || ([dataCopy numberForKey:@"precip24Hour"], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v22 = v21;
-    [v8 setObject:v21 forKeyedSubscript:@"WFWeatherPrecipitationAmountComponent"];
+    [conditionsCopy setObject:v21 forKeyedSubscript:@"WFWeatherPrecipitationAmountComponent"];
   }
 
   v48 = v14;
   v49 = v12;
-  v23 = [v50 numberForKey:@"precipChance"];
+  v23 = [dataCopy numberForKey:@"precipChance"];
   if (v23)
   {
-    [v8 setObject:v23 forKeyedSubscript:@"WFWeatherPrecipitationChanceComponent"];
+    [conditionsCopy setObject:v23 forKeyedSubscript:@"WFWeatherPrecipitationChanceComponent"];
   }
 
-  v24 = [v50 stringForKey:@"precipType"];
+  v24 = [dataCopy stringForKey:@"precipType"];
   if (v24)
   {
-    [v8 setObject:v24 forKeyedSubscript:@"WFWeatherPrecipitationTypeComponent"];
+    [conditionsCopy setObject:v24 forKeyedSubscript:@"WFWeatherPrecipitationTypeComponent"];
   }
 
-  v25 = [v50 stringForKey:@"dayOrNight"];
+  v25 = [dataCopy stringForKey:@"dayOrNight"];
   if (v25)
   {
-    [v8 setNightForecast:{objc_msgSend(@"N", "isEqualToString:", v25)}];
+    [conditionsCopy setNightForecast:{objc_msgSend(@"N", "isEqualToString:", v25)}];
   }
 
-  v26 = [v50 numberForKey:@"temperature"];
+  v26 = [dataCopy numberForKey:@"temperature"];
   if (v26)
   {
     v27 = [WFTemperature alloc];
     [v26 doubleValue];
     v28 = [(WFTemperature *)v27 initWithTemperatureUnit:v5 value:?];
-    [v8 setObject:v28 forKeyedSubscript:@"WFWeatherTemperatureComponent"];
+    [conditionsCopy setObject:v28 forKeyedSubscript:@"WFWeatherTemperatureComponent"];
   }
 
-  v29 = [v50 numberForKey:@"temperatureMax24Hour"];
-  if (v29 || ([v50 numberForKey:@"temperatureMax"], (v29 = objc_claimAutoreleasedReturnValue()) != 0))
+  v29 = [dataCopy numberForKey:@"temperatureMax24Hour"];
+  if (v29 || ([dataCopy numberForKey:@"temperatureMax"], (v29 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v30 = v29;
     v31 = [WFTemperature alloc];
     [v30 doubleValue];
     v32 = [(WFTemperature *)v31 initWithTemperatureUnit:v5 value:?];
-    [v8 setObject:v32 forKeyedSubscript:@"WFWeatherHighTemperatureComponent"];
+    [conditionsCopy setObject:v32 forKeyedSubscript:@"WFWeatherHighTemperatureComponent"];
   }
 
-  v33 = [v50 numberForKey:@"temperatureMin24Hour"];
-  if (v33 || ([v50 numberForKey:@"temperatureMin"], (v33 = objc_claimAutoreleasedReturnValue()) != 0))
+  v33 = [dataCopy numberForKey:@"temperatureMin24Hour"];
+  if (v33 || ([dataCopy numberForKey:@"temperatureMin"], (v33 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v34 = v33;
     v35 = [WFTemperature alloc];
     [v34 doubleValue];
     v36 = [(WFTemperature *)v35 initWithTemperatureUnit:v5 value:?];
-    [v8 setObject:v36 forKeyedSubscript:@"WFWeatherLowTemperatureComponent"];
+    [conditionsCopy setObject:v36 forKeyedSubscript:@"WFWeatherLowTemperatureComponent"];
   }
 
-  v37 = [v50 numberForKey:@"temperatureFeelsLike"];
+  v37 = [dataCopy numberForKey:@"temperatureFeelsLike"];
 
   if (v37)
   {
     v38 = [WFTemperature alloc];
     [v37 doubleValue];
     v39 = [(WFTemperature *)v38 initWithTemperatureUnit:v5 value:?];
-    [v8 setObject:v39 forKeyedSubscript:@"WFWeatherFeelsLikeTemperatureComponent"];
+    [conditionsCopy setObject:v39 forKeyedSubscript:@"WFWeatherFeelsLikeTemperatureComponent"];
   }
 
-  v40 = [v50 numberForKey:@"uvIndex"];
+  v40 = [dataCopy numberForKey:@"uvIndex"];
   if (v40)
   {
-    [v8 setObject:v40 forKeyedSubscript:@"WFWeatherUVIndexComponent"];
+    [conditionsCopy setObject:v40 forKeyedSubscript:@"WFWeatherUVIndexComponent"];
   }
 
-  v41 = [v50 numberForKey:@"visibility"];
+  v41 = [dataCopy numberForKey:@"visibility"];
   if (v41)
   {
-    [v8 setObject:v41 forKeyedSubscript:@"WFWeatherVisibilityComponent"];
+    [conditionsCopy setObject:v41 forKeyedSubscript:@"WFWeatherVisibilityComponent"];
   }
 
-  v42 = [v50 numberForKey:@"windDirection"];
+  v42 = [dataCopy numberForKey:@"windDirection"];
   if (v42)
   {
-    [v8 setObject:v42 forKeyedSubscript:@"WFWeatherWindDirectionComponent"];
+    [conditionsCopy setObject:v42 forKeyedSubscript:@"WFWeatherWindDirectionComponent"];
   }
 
-  v43 = [v50 numberForKey:@"windSpeed"];
+  v43 = [dataCopy numberForKey:@"windSpeed"];
   if (v43)
   {
-    [v8 setObject:v43 forKeyedSubscript:@"WFWeatherWindSpeedComponent"];
+    [conditionsCopy setObject:v43 forKeyedSubscript:@"WFWeatherWindSpeedComponent"];
   }
 
-  v44 = [v50 numberForKey:@"pressureAltimeter"];
-  if (v44 || ([v50 numberForKey:@"pressureMeanSeaLevel"], (v44 = objc_claimAutoreleasedReturnValue()) != 0))
+  v44 = [dataCopy numberForKey:@"pressureAltimeter"];
+  if (v44 || ([dataCopy numberForKey:@"pressureMeanSeaLevel"], (v44 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v45 = v44;
-    [v8 setObject:v44 forKeyedSubscript:@"WFWeatherPressureComponent"];
+    [conditionsCopy setObject:v44 forKeyedSubscript:@"WFWeatherPressureComponent"];
   }
 
-  v46 = [v50 numberForKey:@"pressureTendencyCode"];
+  v46 = [dataCopy numberForKey:@"pressureTendencyCode"];
   if (v46)
   {
-    [v8 setObject:v46 forKeyedSubscript:@"WFWeatherPressureTrendComponent"];
+    [conditionsCopy setObject:v46 forKeyedSubscript:@"WFWeatherPressureTrendComponent"];
   }
 }
 
-- (id)parseAirQualityFromData:(id)a3 locale:(id)a4
+- (id)parseAirQualityFromData:(id)data locale:(id)locale
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  localeCopy = locale;
   v8 = objc_alloc_init(WFAirQualityConditions);
-  [v6 dictionaryForKey:@"metadata"];
-  v54 = v53 = v7;
+  [dataCopy dictionaryForKey:@"metadata"];
+  v54 = v53 = localeCopy;
   if (v54)
   {
     v9 = [(WFWeatherDataServiceParserV1 *)self parseMetaDataFromData:v54];
-    v10 = [v9 expireDate];
-    [(WFAirQualityConditions *)v8 setExpirationDate:v10];
+    expireDate = [v9 expireDate];
+    [(WFAirQualityConditions *)v8 setExpirationDate:expireDate];
 
-    v11 = [v9 readDate];
-    [(WFAirQualityConditions *)v8 setDate:v11];
+    readDate = [v9 readDate];
+    [(WFAirQualityConditions *)v8 setDate:readDate];
 
     if ([v9 dataOrigination])
     {
@@ -1753,24 +1753,24 @@ LABEL_15:
     else
     {
       v13 = [WFAirQualityProviderStation alloc];
-      v14 = [v9 location];
-      v15 = [v14 geoLocation];
-      v16 = [v9 readDate];
-      v12 = [(WFAirQualityProviderStation *)v13 initWithLocation:v15 lastReadDate:v16];
+      location = [v9 location];
+      geoLocation = [location geoLocation];
+      readDate2 = [v9 readDate];
+      v12 = [(WFAirQualityProviderStation *)v13 initWithLocation:geoLocation lastReadDate:readDate2];
     }
 
     v17 = +[WFAirQualityProviderAttributionManager sharedManager];
-    v18 = [v9 providerName];
-    v19 = [v17 cachedAttributionForProvider:v18];
+    providerName = [v9 providerName];
+    v19 = [v17 cachedAttributionForProvider:providerName];
 
     if (![(WFWeatherDataServiceParserV1 *)self isProviderAttribution:v19 stillValidWithMetadata:v9])
     {
       v20 = [WFAirQualityProviderAttribution alloc];
-      v21 = [v9 providerName];
-      v22 = [v9 providerLogoURL];
-      v23 = -[WFAirQualityProviderAttribution initWithName:logoURL:dataOrigination:station:](v20, "initWithName:logoURL:dataOrigination:station:", v21, v22, [v9 dataOrigination], v12);
+      providerName2 = [v9 providerName];
+      providerLogoURL = [v9 providerLogoURL];
+      v23 = -[WFAirQualityProviderAttribution initWithName:logoURL:dataOrigination:station:](v20, "initWithName:logoURL:dataOrigination:station:", providerName2, providerLogoURL, [v9 dataOrigination], v12);
 
-      v7 = v53;
+      localeCopy = v53;
       [v17 registerProviderAttribution:v23];
       v19 = v23;
     }
@@ -1779,14 +1779,14 @@ LABEL_15:
     -[WFAirQualityConditions setTemporarilyUnavailable:](v8, "setTemporarilyUnavailable:", [v9 temporarilyUnavailable]);
   }
 
-  [(WFAirQualityConditions *)v8 setLocale:v7];
-  v24 = [v6 stringForKey:@"source"];
+  [(WFAirQualityConditions *)v8 setLocale:localeCopy];
+  v24 = [dataCopy stringForKey:@"source"];
   [(WFAirQualityConditions *)v8 setProvider:v24];
 
-  v25 = [v6 stringForKey:@"disclaimer"];
+  v25 = [dataCopy stringForKey:@"disclaimer"];
   [(WFAirQualityConditions *)v8 setLocalizedDisclaimer:v25];
 
-  v26 = [v6 numberForKey:@"airQualityIndex"];
+  v26 = [dataCopy numberForKey:@"airQualityIndex"];
   v27 = v26;
   if (v26)
   {
@@ -1794,7 +1794,7 @@ LABEL_15:
     -[WFAirQualityConditions setAirQualityIndex:](v8, "setAirQualityIndex:", [v27 unsignedIntegerValue]);
   }
 
-  v28 = [v6 numberForKey:@"airQualityCategoryIndex"];
+  v28 = [dataCopy numberForKey:@"airQualityCategoryIndex"];
   v29 = v28;
   if (v28)
   {
@@ -1802,17 +1802,17 @@ LABEL_15:
     -[WFAirQualityConditions setCurrentCategoryIndex:](v8, "setCurrentCategoryIndex:", [v29 integerValue]);
   }
 
-  v30 = [v6 stringForKey:@"airQualityCategory"];
+  v30 = [dataCopy stringForKey:@"airQualityCategory"];
   [(WFAirQualityConditions *)v8 setLocalizedAirQualityCategory:v30];
 
-  v31 = [v6 stringForKey:@"airQualityScale"];
+  v31 = [dataCopy stringForKey:@"airQualityScale"];
   [(WFAirQualityConditions *)v8 setAirQualityScale:v31];
 
-  v32 = [v6 stringForKey:@"airQualityScale"];
+  v32 = [dataCopy stringForKey:@"airQualityScale"];
   [(WFAirQualityConditions *)v8 setScaleIdentifier:v32];
 
   [(WFAirQualityConditions *)v8 setSignificance:0];
-  v33 = [v6 numberForKey:@"isSignificant"];
+  v33 = [dataCopy numberForKey:@"isSignificant"];
   v34 = v33;
   if (v33)
   {
@@ -1829,7 +1829,7 @@ LABEL_15:
     [(WFAirQualityConditions *)v8 setSignificance:v35];
   }
 
-  v36 = [v6 stringForKey:@"learnMoreURL"];
+  v36 = [dataCopy stringForKey:@"learnMoreURL"];
   v37 = v36;
   if (v36)
   {
@@ -1838,13 +1838,13 @@ LABEL_15:
     [(WFAirQualityConditions *)v8 setLearnMoreURL:v39];
   }
 
-  v40 = [v6 dictionaryForKey:@"pollutants"];
+  v40 = [dataCopy dictionaryForKey:@"pollutants"];
   v41 = [(WFWeatherDataServiceParserV1 *)self parsePollutants:v40];
 
-  v42 = [v41 allValues];
-  [(WFAirQualityConditions *)v8 setPollutants:v42];
+  allValues = [v41 allValues];
+  [(WFAirQualityConditions *)v8 setPollutants:allValues];
 
-  v43 = [v6 stringForKey:@"primaryPollutant"];
+  v43 = [dataCopy stringForKey:@"primaryPollutant"];
   if (v43)
   {
     v44 = [v41 objectForKeyedSubscript:v43];
@@ -1858,10 +1858,10 @@ LABEL_15:
       v45 = WFLogForCategory(7uLL);
       if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
       {
-        v51 = [(WFAirQualityConditions *)v8 pollutants];
+        pollutants = [(WFAirQualityConditions *)v8 pollutants];
         log = v45;
         v50 = NSStringFromSelector(sel_localizedName);
-        v46 = [v51 valueForKeyPath:v50];
+        v46 = [pollutants valueForKeyPath:v50];
         v49 = [v46 componentsJoinedByString:{@", "}];
         *buf = 138543618;
         v56 = v43;
@@ -1883,20 +1883,20 @@ LABEL_15:
   return v8;
 }
 
-- (id)parsePollutants:(id)a3
+- (id)parsePollutants:(id)pollutants
 {
-  if (a3)
+  if (pollutants)
   {
     v3 = MEMORY[0x277CBEB38];
-    v4 = a3;
-    v5 = [v3 dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+    pollutantsCopy = pollutants;
+    v5 = [v3 dictionaryWithCapacity:{objc_msgSend(pollutantsCopy, "count")}];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __65__WFWeatherDataServiceParserV1_ParseAirQuality__parsePollutants___block_invoke;
     v9[3] = &unk_279E6F5C8;
     v10 = v5;
     v6 = v5;
-    [v4 enumerateKeysAndObjectsUsingBlock:v9];
+    [pollutantsCopy enumerateKeysAndObjectsUsingBlock:v9];
 
     v7 = [v6 copy];
   }
@@ -1939,12 +1939,12 @@ void __65__WFWeatherDataServiceParserV1_ParseAirQuality__parsePollutants___block
   [*(a1 + 32) setObject:v14 forKeyedSubscript:v6];
 }
 
-- (id)airQualityDictFromData:(id)a3 types:(unint64_t)a4
+- (id)airQualityDictFromData:(id)data types:(unint64_t)types
 {
-  v5 = a3;
-  if (WFForecastTypeIsRequestedInTypes(1, a4))
+  dataCopy = data;
+  if (WFForecastTypeIsRequestedInTypes(1, types))
   {
-    v6 = [v5 dictionaryForKey:@"air_quality"];
+    v6 = [dataCopy dictionaryForKey:@"air_quality"];
   }
 
   else
@@ -1955,22 +1955,22 @@ void __65__WFWeatherDataServiceParserV1_ParseAirQuality__parsePollutants___block
   return v6;
 }
 
-- (BOOL)isProviderAttribution:(id)a3 stillValidWithMetadata:(id)a4
+- (BOOL)isProviderAttribution:(id)attribution stillValidWithMetadata:(id)metadata
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  attributionCopy = attribution;
+  metadataCopy = metadata;
+  v7 = metadataCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (attributionCopy && metadataCopy)
   {
-    v9 = [v5 name];
-    v10 = [v7 providerName];
-    v11 = [v9 isEqualToString:v10];
+    name = [attributionCopy name];
+    providerName = [v7 providerName];
+    v11 = [name isEqualToString:providerName];
 
-    if (v11 && ([v5 logoURL], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "absoluteString"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "providerLogoURL"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "absoluteString"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v13, "isEqualToString:", v15), v15, v14, v13, v12, v16))
+    if (v11 && ([attributionCopy logoURL], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "absoluteString"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "providerLogoURL"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "absoluteString"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v13, "isEqualToString:", v15), v15, v14, v13, v12, v16))
     {
-      v17 = [v5 dataOrigination];
-      v8 = v17 == [v7 dataOrigination];
+      dataOrigination = [attributionCopy dataOrigination];
+      v8 = dataOrigination == [v7 dataOrigination];
     }
 
     else
@@ -1982,19 +1982,19 @@ void __65__WFWeatherDataServiceParserV1_ParseAirQuality__parsePollutants___block
   return v8;
 }
 
-- (id)parseDailyHistoryFromData:(id)a3 withUnit:(int)a4
+- (id)parseDailyHistoryFromData:(id)data withUnit:(int)unit
 {
-  v4 = *&a4;
+  v4 = *&unit;
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dataCopy = data;
   v7 = objc_opt_new();
-  v8 = [v6 dictionaryForKey:@"metadata"];
+  v8 = [dataCopy dictionaryForKey:@"metadata"];
   if (v8)
   {
     [(WFWeatherDataServiceParserV1 *)self parseMetaDataFromData:v8];
   }
 
-  v9 = [v6 arrayForKey:@"days"];
+  v9 = [dataCopy arrayForKey:@"days"];
   v10 = v9;
   if (v9)
   {
@@ -2032,12 +2032,12 @@ void __65__WFWeatherDataServiceParserV1_ParseAirQuality__parsePollutants___block
   return v16;
 }
 
-- (id)dailyHistoryDictFromData:(id)a3 types:(unint64_t)a4
+- (id)dailyHistoryDictFromData:(id)data types:(unint64_t)types
 {
-  v5 = a3;
-  if (WFForecastTypeIsRequestedInTypes(64, a4))
+  dataCopy = data;
+  if (WFForecastTypeIsRequestedInTypes(64, types))
   {
-    v6 = [v5 dictionaryForKey:@"daily_history"];
+    v6 = [dataCopy dictionaryForKey:@"daily_history"];
   }
 
   else
@@ -2048,14 +2048,14 @@ void __65__WFWeatherDataServiceParserV1_ParseAirQuality__parsePollutants___block
   return v6;
 }
 
-- (id)parseDailyForecastFromData:(id)a3 withUnit:(int)a4
+- (id)parseDailyForecastFromData:(id)data withUnit:(int)unit
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&unit;
+  dataCopy = data;
   v7 = objc_opt_new();
-  v8 = [v6 arrayForKey:@"days"];
-  v26 = v6;
-  v9 = [v6 arrayForKey:@"dayParts"];
+  v8 = [dataCopy arrayForKey:@"days"];
+  v26 = dataCopy;
+  v9 = [dataCopy arrayForKey:@"dayParts"];
   if ([v8 count])
   {
     v10 = 0;
@@ -2116,12 +2116,12 @@ void __65__WFWeatherDataServiceParserV1_ParseAirQuality__parsePollutants___block
   return v24;
 }
 
-- (id)dailyForecastDictFromData:(id)a3 types:(unint64_t)a4
+- (id)dailyForecastDictFromData:(id)data types:(unint64_t)types
 {
-  v5 = a3;
-  if (WFForecastTypeIsRequestedInTypes(8, a4))
+  dataCopy = data;
+  if (WFForecastTypeIsRequestedInTypes(8, types))
   {
-    v6 = [v5 dictionaryForKey:@"daily_forecast"];
+    v6 = [dataCopy dictionaryForKey:@"daily_forecast"];
   }
 
   else
@@ -2132,58 +2132,58 @@ void __65__WFWeatherDataServiceParserV1_ParseAirQuality__parsePollutants___block
   return v6;
 }
 
-- (void)parseNowLinksFromData:(id)a3 intoConditions:(id)a4
+- (void)parseNowLinksFromData:(id)data intoConditions:(id)conditions
 {
   v5 = MEMORY[0x277CBEBC0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 stringForKey:@"iosNow"];
+  conditionsCopy = conditions;
+  dataCopy = data;
+  v8 = [dataCopy stringForKey:@"iosNow"];
   v9 = [v5 URLWithString:v8];
-  [v6 setObject:v9 forKeyedSubscript:@"WFWeatherIOSLinkComponent"];
+  [conditionsCopy setObject:v9 forKeyedSubscript:@"WFWeatherIOSLinkComponent"];
 
   v10 = MEMORY[0x277CBEBC0];
-  v11 = [v7 stringForKey:@"web"];
+  v11 = [dataCopy stringForKey:@"web"];
   v12 = [v10 URLWithString:v11];
-  [v6 setObject:v12 forKeyedSubscript:@"WFWeatherMobileLinkComponent"];
+  [conditionsCopy setObject:v12 forKeyedSubscript:@"WFWeatherMobileLinkComponent"];
 
   v13 = MEMORY[0x277CBEBC0];
-  v14 = [v7 stringForKey:@"web"];
+  v14 = [dataCopy stringForKey:@"web"];
   v15 = [v13 URLWithString:v14];
-  [v6 setObject:v15 forKeyedSubscript:@"WFWeatherWebLinkComponent"];
+  [conditionsCopy setObject:v15 forKeyedSubscript:@"WFWeatherWebLinkComponent"];
 
   v16 = MEMORY[0x277CBEBC0];
-  v17 = [v7 stringForKey:@"webForecastHourly"];
+  v17 = [dataCopy stringForKey:@"webForecastHourly"];
   v18 = [v16 URLWithString:v17];
-  [v6 setObject:v18 forKeyedSubscript:@"WFWeatherWebForecastHourlyLinkComponent"];
+  [conditionsCopy setObject:v18 forKeyedSubscript:@"WFWeatherWebForecastHourlyLinkComponent"];
 
   v19 = MEMORY[0x277CBEBC0];
-  v20 = [v7 stringForKey:@"webForecastDaily10"];
+  v20 = [dataCopy stringForKey:@"webForecastDaily10"];
   v21 = [v19 URLWithString:v20];
-  [v6 setObject:v21 forKeyedSubscript:@"WFWeatherWebForecastDailyLinkComponent"];
+  [conditionsCopy setObject:v21 forKeyedSubscript:@"WFWeatherWebForecastDailyLinkComponent"];
 
   v22 = MEMORY[0x277CBEBC0];
-  v23 = [v7 stringForKey:@"webForecastMonthly"];
+  v23 = [dataCopy stringForKey:@"webForecastMonthly"];
   v24 = [v22 URLWithString:v23];
-  [v6 setObject:v24 forKeyedSubscript:@"WFWeatherWebForecastMonthlyLinkComponent"];
+  [conditionsCopy setObject:v24 forKeyedSubscript:@"WFWeatherWebForecastMonthlyLinkComponent"];
 
   v25 = MEMORY[0x277CBEBC0];
-  v26 = [v7 stringForKey:@"webRadar"];
+  v26 = [dataCopy stringForKey:@"webRadar"];
   v27 = [v25 URLWithString:v26];
-  [v6 setObject:v27 forKeyedSubscript:@"WFWeatherWebRadarLinkComponent"];
+  [conditionsCopy setObject:v27 forKeyedSubscript:@"WFWeatherWebRadarLinkComponent"];
 
   v28 = MEMORY[0x277CBEBC0];
-  v30 = [v7 stringForKey:@"webAllergy"];
+  v30 = [dataCopy stringForKey:@"webAllergy"];
 
   v29 = [v28 URLWithString:v30];
-  [v6 setObject:v29 forKeyedSubscript:@"WFWeatherWebAllergyLinkComponent"];
+  [conditionsCopy setObject:v29 forKeyedSubscript:@"WFWeatherWebAllergyLinkComponent"];
 }
 
-- (id)nowLinksDictFromData:(id)a3 types:(unint64_t)a4
+- (id)nowLinksDictFromData:(id)data types:(unint64_t)types
 {
-  v5 = a3;
-  if (WFForecastTypeIsRequestedInTypes(256, a4))
+  dataCopy = data;
+  if (WFForecastTypeIsRequestedInTypes(256, types))
   {
-    v6 = [v5 dictionaryForKey:@"now_links"];
+    v6 = [dataCopy dictionaryForKey:@"now_links"];
   }
 
   else

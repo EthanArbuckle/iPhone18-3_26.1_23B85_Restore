@@ -14,9 +14,9 @@
   v13 = 0u;
   v14 = 0u;
   v0 = +[Application sharedApplication];
-  v1 = [v0 browserControllers];
+  browserControllers = [v0 browserControllers];
 
-  v2 = [v1 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v2 = [browserControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v2)
   {
     v3 = v2;
@@ -28,15 +28,15 @@
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(browserControllers);
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
         if ([v7 isPrivateBrowsingEnabled])
         {
-          v8 = [v7 scene];
+          scene = [v7 scene];
 
-          if (v8)
+          if (scene)
           {
 
             v9 = 0;
@@ -47,7 +47,7 @@
         }
       }
 
-      v3 = [v1 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v3 = [browserControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v3)
       {
         continue;
@@ -69,14 +69,14 @@
 
   v9 = 2;
 LABEL_16:
-  v10 = [MEMORY[0x277D499B8] sharedLogger];
-  [v10 _sf_reportPrivateWindowStatus:v9];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] _sf_reportPrivateWindowStatus:v9];
 }
 
 - (void)_performAdvancedPrivacyProtectionPreferenceReport
 {
-  v0 = [MEMORY[0x277D499B8] sharedLogger];
-  [v0 reportAdvancedPrivacyProtectionPreference];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] reportAdvancedPrivacyProtectionPreference];
 }
 
 - (void)schedulePeriodicPrivateBrowsingReport
@@ -86,7 +86,7 @@ LABEL_16:
   block[1] = 3221225472;
   block[2] = __91__WBSAnalyticsLogger_PrivateBrowsingAnalyticsLogger__schedulePeriodicPrivateBrowsingReport__block_invoke;
   block[3] = &unk_2781D4D40;
-  block[4] = a1;
+  block[4] = self;
   dispatch_after(WeeklyAnalyticsReportForKey, MEMORY[0x277D85CD0], block);
 }
 

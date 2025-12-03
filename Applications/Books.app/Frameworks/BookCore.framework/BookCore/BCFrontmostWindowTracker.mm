@@ -1,7 +1,7 @@
 @interface BCFrontmostWindowTracker
 - (BCFrontmostWindowTracker)init;
 - (id)onFrontmostChanged;
-- (void)setOnFrontmostChanged:(id)a3;
+- (void)setOnFrontmostChanged:(id)changed;
 @end
 
 @implementation BCFrontmostWindowTracker
@@ -30,9 +30,9 @@
   return v4;
 }
 
-- (void)setOnFrontmostChanged:(id)a3
+- (void)setOnFrontmostChanged:(id)changed
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(changed);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -50,7 +50,7 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_19C408(v7);
 }
 

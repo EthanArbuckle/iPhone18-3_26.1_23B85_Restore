@@ -1,24 +1,24 @@
 @interface WFAQIScaleGradient
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToScaleGradient:(id)a3;
-- (WFAQIScaleGradient)initWithCoder:(id)a3;
-- (WFAQIScaleGradient)initWithStops:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToScaleGradient:(id)gradient;
+- (WFAQIScaleGradient)initWithCoder:(id)coder;
+- (WFAQIScaleGradient)initWithStops:(id)stops;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFAQIScaleGradient
 
-- (WFAQIScaleGradient)initWithStops:(id)a3
+- (WFAQIScaleGradient)initWithStops:(id)stops
 {
-  v4 = a3;
+  stopsCopy = stops;
   v9.receiver = self;
   v9.super_class = WFAQIScaleGradient;
   v5 = [(WFAQIScaleGradient *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [stopsCopy copy];
     stops = v5->_stops;
     v5->_stops = v6;
   }
@@ -26,10 +26,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -37,47 +37,47 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WFAQIScaleGradient *)self isEqualToScaleGradient:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WFAQIScaleGradient *)self isEqualToScaleGradient:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToScaleGradient:(id)a3
+- (BOOL)isEqualToScaleGradient:(id)gradient
 {
-  v4 = [a3 stops];
-  v5 = [(WFAQIScaleGradient *)self stops];
-  v6 = [v4 isEqualToArray:v5];
+  stops = [gradient stops];
+  stops2 = [(WFAQIScaleGradient *)self stops];
+  v6 = [stops isEqualToArray:stops2];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [WFAQIScaleGradient alloc];
-  v5 = [(WFAQIScaleGradient *)self stops];
-  v6 = [(WFAQIScaleGradient *)v4 initWithStops:v5];
+  stops = [(WFAQIScaleGradient *)self stops];
+  v6 = [(WFAQIScaleGradient *)v4 initWithStops:stops];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFAQIScaleGradient *)self stops];
-  [v4 encodeObject:v5 forKey:@"WFAQIScaleGradientStopsKey"];
+  coderCopy = coder;
+  stops = [(WFAQIScaleGradient *)self stops];
+  [coderCopy encodeObject:stops forKey:@"WFAQIScaleGradientStopsKey"];
 }
 
-- (WFAQIScaleGradient)initWithCoder:(id)a3
+- (WFAQIScaleGradient)initWithCoder:(id)coder
 {
   v4 = initWithCoder__onceToken_2;
-  v5 = a3;
+  coderCopy = coder;
   if (v4 != -1)
   {
     [WFAQIScaleGradient initWithCoder:];
   }
 
-  v6 = [v5 decodeObjectOfClasses:initWithCoder__classes_1 forKey:@"WFAQIScaleGradientStopsKey"];
+  v6 = [coderCopy decodeObjectOfClasses:initWithCoder__classes_1 forKey:@"WFAQIScaleGradientStopsKey"];
 
   v7 = [v6 copy];
   v8 = [(WFAQIScaleGradient *)self initWithStops:v7];
@@ -99,8 +99,8 @@ uint64_t __36__WFAQIScaleGradient_initWithCoder___block_invoke()
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(WFAQIScaleGradient *)self stops];
-  v4 = [v2 stringWithFormat:@"<WFAQIScaleGradient stops: %@", v3];
+  stops = [(WFAQIScaleGradient *)self stops];
+  v4 = [v2 stringWithFormat:@"<WFAQIScaleGradient stops: %@", stops];
 
   return v4;
 }

@@ -1,36 +1,36 @@
 @interface SearchUIScreenTimeRequestButton
-+ (BOOL)supportsRowModel:(id)a3;
++ (BOOL)supportsRowModel:(id)model;
 - (id)requestIdentifier;
 - (int)getRequestState;
 - (void)dealloc;
 - (void)setupSubscription;
-- (void)updateWithRowModel:(id)a3;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUIScreenTimeRequestButton
 
-+ (BOOL)supportsRowModel:(id)a3
++ (BOOL)supportsRowModel:(id)model
 {
-  v3 = a3;
-  v4 = [v3 buttonItems];
-  if ([v4 count] == 1 && objc_msgSend(v3, "buttonItemsAreTrailing"))
+  modelCopy = model;
+  buttonItems = [modelCopy buttonItems];
+  if ([buttonItems count] == 1 && objc_msgSend(modelCopy, "buttonItemsAreTrailing"))
   {
-    v5 = [v4 firstObject];
+    firstObject = [buttonItems firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 command];
+      command = [firstObject command];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [v6 punchout];
-        v8 = [v7 label];
-        if (v8)
+        punchout = [command punchout];
+        label = [punchout label];
+        if (label)
         {
-          v9 = [v7 urls];
-          v10 = [v9 firstObject];
-          v11 = [v10 scheme];
-          v12 = [v11 isEqualToString:@"prefs"];
+          urls = [punchout urls];
+          firstObject2 = [urls firstObject];
+          scheme = [firstObject2 scheme];
+          v12 = [scheme isEqualToString:@"prefs"];
         }
 
         else
@@ -61,29 +61,29 @@
 
 - (id)requestIdentifier
 {
-  v2 = [(SearchUIRequestButton *)self command];
+  command = [(SearchUIRequestButton *)self command];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 punchout];
-    v4 = [v3 label];
+    punchout = [command punchout];
+    label = [punchout label];
   }
 
   else
   {
-    v4 = 0;
+    label = 0;
   }
 
-  return v4;
+  return label;
 }
 
 - (int)getRequestState
 {
-  v2 = [(SearchUIScreenTimeRequestButton *)self requestIdentifier];
-  if (v2)
+  requestIdentifier = [(SearchUIScreenTimeRequestButton *)self requestIdentifier];
+  if (requestIdentifier)
   {
     v3 = +[SearchUIScreenTimeRequestStatusManager sharedManager];
-    v4 = [v3 statusForRequestID:v2];
+    v4 = [v3 statusForRequestID:requestIdentifier];
 
     if (v4 == 2)
     {
@@ -114,24 +114,24 @@
   return v6;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
   v13.receiver = self;
   v13.super_class = SearchUIScreenTimeRequestButton;
-  v4 = a3;
-  [(SearchUIAccessoryViewController *)&v13 updateWithRowModel:v4];
-  v5 = [v4 buttonItems];
-  v6 = [v5 firstObject];
+  modelCopy = model;
+  [(SearchUIAccessoryViewController *)&v13 updateWithRowModel:modelCopy];
+  buttonItems = [modelCopy buttonItems];
+  firstObject = [buttonItems firstObject];
 
-  v7 = [v6 command];
-  [(SearchUIRequestButton *)self setCommand:v7];
-  v8 = [v6 title];
-  v9 = [(SearchUIRequestButton *)self viewButton];
-  [v9 setTitle:v8];
+  command = [firstObject command];
+  [(SearchUIRequestButton *)self setCommand:command];
+  title = [firstObject title];
+  viewButton = [(SearchUIRequestButton *)self viewButton];
+  [viewButton setTitle:title];
 
-  v10 = [v4 useCompactVersionOfUI];
-  v11 = [(SearchUIRequestButton *)self viewButton];
-  [v11 setUseCompactMode:v10];
+  useCompactVersionOfUI = [modelCopy useCompactVersionOfUI];
+  viewButton2 = [(SearchUIRequestButton *)self viewButton];
+  [viewButton2 setUseCompactMode:useCompactVersionOfUI];
 
   [(SearchUIScreenTimeRequestButton *)self setupSubscription];
   v12.receiver = self;
@@ -141,9 +141,9 @@
 
 - (void)setupSubscription
 {
-  v3 = [(SearchUIScreenTimeRequestButton *)self screentimeRequestStatusObserver];
+  screentimeRequestStatusObserver = [(SearchUIScreenTimeRequestButton *)self screentimeRequestStatusObserver];
 
-  if (!v3)
+  if (!screentimeRequestStatusObserver)
   {
     v4 = +[SearchUIScreenTimeRequestStatusManager sharedManager];
     v6[0] = MEMORY[0x1E69E9820];
@@ -177,8 +177,8 @@ id __52__SearchUIScreenTimeRequestButton_setupSubscription__block_invoke_2(uint6
 - (void)dealloc
 {
   v3 = +[SearchUIScreenTimeRequestStatusManager sharedManager];
-  v4 = [(SearchUIScreenTimeRequestButton *)self screentimeRequestStatusObserver];
-  [v3 removeObserver:v4];
+  screentimeRequestStatusObserver = [(SearchUIScreenTimeRequestButton *)self screentimeRequestStatusObserver];
+  [v3 removeObserver:screentimeRequestStatusObserver];
 
   screentimeRequestStatusObserver = self->_screentimeRequestStatusObserver;
   self->_screentimeRequestStatusObserver = 0;

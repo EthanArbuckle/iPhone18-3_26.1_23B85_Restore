@@ -1,16 +1,16 @@
 @interface CKObjCClass
-+ (id)classForHandle:(Class)a3;
-+ (id)classForObject:(id)a3;
-- (CKObjCClass)initWithHandle:(Class)a3;
++ (id)classForHandle:(Class)handle;
++ (id)classForObject:(id)object;
+- (CKObjCClass)initWithHandle:(Class)handle;
 - (id)description;
-- (id)propertyForName:(id)a3;
+- (id)propertyForName:(id)name;
 @end
 
 @implementation CKObjCClass
 
-+ (id)classForHandle:(Class)a3
++ (id)classForHandle:(Class)handle
 {
-  v4 = NSStringFromClass(a3);
+  v4 = NSStringFromClass(handle);
   if (qword_1ED4B6298 != -1)
   {
     dispatch_once(&qword_1ED4B6298, &unk_1EFA2F4A8);
@@ -22,7 +22,7 @@
   if (!v7)
   {
     v8 = [CKObjCClass alloc];
-    v7 = objc_msgSend_initWithHandle_(v8, v9, a3);
+    v7 = objc_msgSend_initWithHandle_(v8, v9, handle);
     objc_msgSend_setObject_forKey_(qword_1ED4B62A0, v10, v7, v4);
   }
 
@@ -31,25 +31,25 @@
   return v7;
 }
 
-+ (id)classForObject:(id)a3
++ (id)classForObject:(id)object
 {
   v4 = objc_opt_class();
 
   return objc_msgSend_classForHandle_(CKObjCClass, v3, v4);
 }
 
-- (CKObjCClass)initWithHandle:(Class)a3
+- (CKObjCClass)initWithHandle:(Class)handle
 {
-  v5 = NSStringFromClass(a3);
+  v5 = NSStringFromClass(handle);
   outCount = 0;
-  v6 = class_copyPropertyList(a3, &outCount);
+  v6 = class_copyPropertyList(handle, &outCount);
   v7 = objc_alloc(MEMORY[0x1E695DF70]);
   v9 = objc_msgSend_initWithCapacity_(v7, v8, outCount);
   if (outCount)
   {
     for (i = 0; i < outCount; ++i)
     {
-      v11 = sub_1885B0468([CKObjCProperty alloc], a3, v6[i]);
+      v11 = sub_1885B0468([CKObjCProperty alloc], handle, v6[i]);
       objc_msgSend_addObject_(v9, v12, v11);
     }
   }
@@ -61,7 +61,7 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_handle, a3);
+    objc_storeStrong(&v13->_handle, handle);
     objc_storeStrong(&v14->_name, v5);
     v17 = objc_msgSend_copy(v9, v15, v16);
     properties = v14->_properties;
@@ -80,16 +80,16 @@
   return v7;
 }
 
-- (id)propertyForName:(id)a3
+- (id)propertyForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v7 = objc_msgSend_properties(self, v5, v6);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = sub_1885B03C4;
   v12[3] = &unk_1E70BEA70;
-  v13 = v4;
-  v8 = v4;
+  v13 = nameCopy;
+  v8 = nameCopy;
   v10 = objc_msgSend_CKFirstObjectPassingTest_(v7, v9, v12);
 
   return v10;

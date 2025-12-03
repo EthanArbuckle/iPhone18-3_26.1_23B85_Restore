@@ -14,9 +14,9 @@
   v2 = [(SBSystemApertureTestRecipe *)&v11 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     elementAssertions = v2->_elementAssertions;
-    v2->_elementAssertions = v3;
+    v2->_elementAssertions = array;
 
     v5 = objc_opt_self();
     v12[0] = v5;
@@ -35,9 +35,9 @@
 - (void)handleVolumeIncrease
 {
   v3 = [(NSArray *)self->_prototypeElementClasses objectAtIndex:self->_elementClassToInsertIndex];
-  v4 = [SBApp systemApertureControllerForMainDisplay];
+  systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
   v5 = objc_alloc_init(v3);
-  v6 = [v4 registerElement:v5];
+  v6 = [systemApertureControllerForMainDisplay registerElement:v5];
 
   objc_initWeak(&location, self);
   v8 = MEMORY[0x277D85DD0];
@@ -77,17 +77,17 @@ void __50__SBSystemApertureTestRecipe_handleVolumeIncrease__block_invoke(uint64_
 
 - (void)handleVolumeDecrease
 {
-  v3 = [(NSMutableArray *)self->_elementAssertions lastObject];
-  v6 = v3;
-  if (v3)
+  lastObject = [(NSMutableArray *)self->_elementAssertions lastObject];
+  v6 = lastObject;
+  if (lastObject)
   {
-    [(NSMutableArray *)self->_elementAssertions removeObject:v3];
+    [(NSMutableArray *)self->_elementAssertions removeObject:lastObject];
     v4 = objc_opt_respondsToSelector();
-    v3 = v6;
+    lastObject = v6;
     if (v4)
     {
       [v6 invalidateWithReason:@"volume decrease"];
-      v3 = v6;
+      lastObject = v6;
     }
   }
 
@@ -95,7 +95,7 @@ void __50__SBSystemApertureTestRecipe_handleVolumeIncrease__block_invoke(uint64_
   if (elementClassToInsertIndex <= 0)
   {
     elementClassToInsertIndex = [(NSArray *)self->_prototypeElementClasses count];
-    v3 = v6;
+    lastObject = v6;
   }
 
   self->_elementClassToInsertIndex = elementClassToInsertIndex - 1;

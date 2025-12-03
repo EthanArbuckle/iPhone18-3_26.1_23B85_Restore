@@ -1,19 +1,19 @@
 @interface SBTransientOverlayWallpaperEffectView
 - (CATransform3D)_currentWallpaperTransform;
-- (SBTransientOverlayWallpaperEffectView)initWithFrame:(CGRect)a3 wallpaperVariant:(int64_t)a4;
+- (SBTransientOverlayWallpaperEffectView)initWithFrame:(CGRect)frame wallpaperVariant:(int64_t)variant;
 - (void)_updateWallpaperGeometry;
 - (void)layoutSubviews;
-- (void)setContainerOrientation:(int64_t)a3;
-- (void)setTransitionState:(id *)a3;
+- (void)setContainerOrientation:(int64_t)orientation;
+- (void)setTransitionState:(id *)state;
 @end
 
 @implementation SBTransientOverlayWallpaperEffectView
 
-- (SBTransientOverlayWallpaperEffectView)initWithFrame:(CGRect)a3 wallpaperVariant:(int64_t)a4
+- (SBTransientOverlayWallpaperEffectView)initWithFrame:(CGRect)frame wallpaperVariant:(int64_t)variant
 {
   v12.receiver = self;
   v12.super_class = SBTransientOverlayWallpaperEffectView;
-  v5 = [(SBTransientOverlayWallpaperEffectView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(SBTransientOverlayWallpaperEffectView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277D75EC0]);
@@ -24,7 +24,7 @@
 
     [(_UIDirectionalRotationView *)v5->_wallpaperRotationView setCounterTransformView:1];
     [(SBTransientOverlayWallpaperEffectView *)v5 addSubview:v5->_wallpaperRotationView];
-    v9 = [[SBWallpaperEffectView alloc] initWithWallpaperVariant:a4 transformOptions:1];
+    v9 = [[SBWallpaperEffectView alloc] initWithWallpaperVariant:variant transformOptions:1];
     wallpaperEffectView = v5->_wallpaperEffectView;
     v5->_wallpaperEffectView = v9;
 
@@ -46,19 +46,19 @@
   [(SBTransientOverlayWallpaperEffectView *)self _updateWallpaperGeometry];
 }
 
-- (void)setContainerOrientation:(int64_t)a3
+- (void)setContainerOrientation:(int64_t)orientation
 {
-  if (self->_containerOrientation != a3)
+  if (self->_containerOrientation != orientation)
   {
-    self->_containerOrientation = a3;
+    self->_containerOrientation = orientation;
     [(SBTransientOverlayWallpaperEffectView *)self _updateWallpaperGeometry];
   }
 }
 
-- (void)setTransitionState:(id *)a3
+- (void)setTransitionState:(id *)state
 {
   wallpaperEffectView = self->_wallpaperEffectView;
-  v4 = *a3;
+  v4 = *state;
   [(PBUIWallpaperEffectViewBase *)wallpaperEffectView setTransitionState:&v4];
 }
 
@@ -104,10 +104,10 @@
   v18 = 0u;
   v19 = 0u;
   [(SBTransientOverlayWallpaperEffectView *)self _currentWallpaperTransform];
-  v11 = [(SBTransientOverlayWallpaperEffectView *)self containerOrientation];
+  containerOrientation = [(SBTransientOverlayWallpaperEffectView *)self containerOrientation];
   Height = v8;
   Width = v10;
-  if ((v11 - 3) <= 1)
+  if ((containerOrientation - 3) <= 1)
   {
     v26.origin.x = v4;
     v26.origin.y = v6;

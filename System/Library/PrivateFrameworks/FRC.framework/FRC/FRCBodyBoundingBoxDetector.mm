@@ -1,19 +1,19 @@
 @interface FRCBodyBoundingBoxDetector
-- (id)createBodyRectanglesWithObservation:(id)a3 frameAspectRatio:(float)a4;
+- (id)createBodyRectanglesWithObservation:(id)observation frameAspectRatio:(float)ratio;
 @end
 
 @implementation FRCBodyBoundingBoxDetector
 
-- (id)createBodyRectanglesWithObservation:(id)a3 frameAspectRatio:(float)a4
+- (id)createBodyRectanglesWithObservation:(id)observation frameAspectRatio:(float)ratio
 {
-  v5 = a3;
+  observationCopy = observation;
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if (v6)
   {
     v7 = *MEMORY[0x277CE3068];
     v65 = 0;
-    v61 = v5;
-    v8 = [v5 recognizedPointsForGroupKey:v7 error:&v65];
+    v61 = observationCopy;
+    v8 = [observationCopy recognizedPointsForGroupKey:v7 error:&v65];
     v9 = objc_alloc_init(BodyPoint);
     v64 = objc_alloc_init(BodyPoint);
     v10 = objc_alloc_init(BodyPoint);
@@ -109,7 +109,7 @@
       v25 = v24;
       v27 = v26;
       [(BodyPoint *)v10 location];
-      *&v28 = a4;
+      *&v28 = ratio;
       v31 = [FRCFaceHandLegRectangle bodyRectangleWithCenter:2 tip:v25 category:v27 frameAspectRatio:v29, v30, v28];
       [v6 addObject:v31];
     }
@@ -121,7 +121,7 @@
       v34 = v33;
       v36 = v35;
       [(BodyPoint *)v11 location];
-      *&v37 = a4;
+      *&v37 = ratio;
       v40 = [FRCFaceHandLegRectangle bodyRectangleWithCenter:2 tip:v34 category:v36 frameAspectRatio:v38, v39, v37];
       [v6 addObject:v40];
     }
@@ -133,7 +133,7 @@
       v43 = v42;
       v45 = v44;
       [(BodyPoint *)v63 location];
-      *&v46 = a4;
+      *&v46 = ratio;
       v49 = [FRCFaceHandLegRectangle bodyRectangleWithCenter:3 tip:v43 category:v45 frameAspectRatio:v47, v48, v46];
       [v6 addObject:v49];
     }
@@ -145,14 +145,14 @@
       v52 = v51;
       v54 = v53;
       [(BodyPoint *)v62 location];
-      *&v55 = a4;
+      *&v55 = ratio;
       v58 = [FRCFaceHandLegRectangle bodyRectangleWithCenter:3 tip:v52 category:v54 frameAspectRatio:v56, v57, v55];
       [v6 addObject:v58];
     }
 
     v59 = v6;
 
-    v5 = v61;
+    observationCopy = v61;
   }
 
   return v6;

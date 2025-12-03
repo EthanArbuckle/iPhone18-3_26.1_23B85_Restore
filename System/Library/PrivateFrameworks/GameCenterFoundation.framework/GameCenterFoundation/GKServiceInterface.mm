@@ -8,11 +8,11 @@
 
 + (id)interface
 {
-  v3 = [a1 interfaceProtocol];
-  if (v3)
+  interfaceProtocol = [self interfaceProtocol];
+  if (interfaceProtocol)
   {
-    v4 = [MEMORY[0x277CCAE90] interfaceWithProtocol:v3];
-    [a1 configureInterface:v4];
+    v4 = [MEMORY[0x277CCAE90] interfaceWithProtocol:interfaceProtocol];
+    [self configureInterface:v4];
   }
 
   else
@@ -56,8 +56,8 @@ uint64_t __34__GKServiceInterface_plistClasses__block_invoke()
   v2 = MEMORY[0x277CCACA8];
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Concrete subclasses must override +[GKServer interfaceProtocol]."];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterFoundation/gamed/GKServiceInterface.m"];
-  v5 = [v4 lastPathComponent];
-  v6 = [v2 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v3, "+[GKServiceInterface interfaceProtocol]", objc_msgSend(v5, "UTF8String"), 48];
+  lastPathComponent = [v4 lastPathComponent];
+  v6 = [v2 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v3, "+[GKServiceInterface interfaceProtocol]", objc_msgSend(lastPathComponent, "UTF8String"), 48];
 
   [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v6}];
   return 0;

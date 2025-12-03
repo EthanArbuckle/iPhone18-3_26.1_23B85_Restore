@@ -1,16 +1,16 @@
 @interface EARSentencePieceModule
-- (EARSentencePieceModule)initWithModelPath:(id)a3;
+- (EARSentencePieceModule)initWithModelPath:(id)path;
 - (id).cxx_construct;
-- (id)encodeUtterance:(id)a3;
-- (int64_t)setEncodeOptions:(id)a3;
+- (id)encodeUtterance:(id)utterance;
+- (int64_t)setEncodeOptions:(id)options;
 - (void)dealloc;
 @end
 
 @implementation EARSentencePieceModule
 
-- (EARSentencePieceModule)initWithModelPath:(id)a3
+- (EARSentencePieceModule)initWithModelPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v7.receiver = self;
   v7.super_class = EARSentencePieceModule;
   if ([(EARSentencePieceModule *)&v7 init])
@@ -41,13 +41,13 @@
   [(EARSentencePieceModule *)&v4 dealloc];
 }
 
-- (int64_t)setEncodeOptions:(id)a3
+- (int64_t)setEncodeOptions:(id)options
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  optionsCopy = options;
+  v5 = optionsCopy;
+  if (optionsCopy)
   {
-    [v4 ear_toString];
+    [optionsCopy ear_toString];
   }
 
   else
@@ -68,13 +68,13 @@
   return v6;
 }
 
-- (id)encodeUtterance:(id)a3
+- (id)encodeUtterance:(id)utterance
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  utteranceCopy = utterance;
+  v5 = utteranceCopy;
+  if (utteranceCopy)
   {
-    [v4 ear_toString];
+    [utteranceCopy ear_toString];
   }
 
   else
@@ -89,7 +89,7 @@
   v14 = 0;
   (*(*self->_processor.__ptr_ + 112))(&v11);
   sentencepiece::util::Status::~Status(&v11);
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v7 = __p;
   v8 = v13;
   if (__p != v13)
@@ -97,7 +97,7 @@
     do
     {
       v9 = [MEMORY[0x1E696AD98] numberWithInt:*v7];
-      [v6 addObject:v9];
+      [array addObject:v9];
 
       ++v7;
     }
@@ -116,7 +116,7 @@
     operator delete(v15);
   }
 
-  return v6;
+  return array;
 }
 
 - (id).cxx_construct

@@ -1,19 +1,19 @@
 @interface TNBaseCompatibilityDelegate
-- (BOOL)isSageDocumentType:(id)a3;
-- (BOOL)isTextOnlyType:(id)a3;
+- (BOOL)isSageDocumentType:(id)type;
+- (BOOL)isTextOnlyType:(id)type;
 - (Class)exportOptionsControllerClass;
-- (Class)exporterClassForType:(id)a3 options:(id)a4;
-- (id)backwardsCompatibleTypeForType:(id)a3;
+- (Class)exporterClassForType:(id)type options:(id)options;
+- (id)backwardsCompatibleTypeForType:(id)type;
 - (id)exportableTypes;
 @end
 
 @implementation TNBaseCompatibilityDelegate
 
-- (Class)exporterClassForType:(id)a3 options:(id)a4
+- (Class)exporterClassForType:(id)type options:(id)options
 {
-  v5 = a3;
-  v8 = a4;
-  if (v5 && (objc_msgSend_identifier(*MEMORY[0x277CE1E08], v6, v7), v9 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend_tsu_conformsToUTI_(v5, v10, v9), v9, v11))
+  typeCopy = type;
+  optionsCopy = options;
+  if (typeCopy && (objc_msgSend_identifier(*MEMORY[0x277CE1E08], v6, v7), v9 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend_tsu_conformsToUTI_(typeCopy, v10, v9), v9, v11))
   {
     v12 = objc_opt_class();
   }
@@ -65,35 +65,35 @@
   return qword_280A3DF98;
 }
 
-- (BOOL)isSageDocumentType:(id)a3
+- (BOOL)isSageDocumentType:(id)type
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v9[0] = @"com.apple.iwork.numbers.numbers";
   v9[1] = @"com.apple.iwork.numbers.sffnumbers";
   v3 = MEMORY[0x277CBEA60];
-  v4 = a3;
+  typeCopy = type;
   v6 = objc_msgSend_arrayWithObjects_count_(v3, v5, v9, 2);
-  LOBYTE(v3) = objc_msgSend_tsu_conformsToAnyUTI_(v4, v7, v6);
+  LOBYTE(v3) = objc_msgSend_tsu_conformsToAnyUTI_(typeCopy, v7, v6);
 
   return v3;
 }
 
-- (BOOL)isTextOnlyType:(id)a3
+- (BOOL)isTextOnlyType:(id)type
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v9[0] = @"public.comma-separated-values-text";
   v9[1] = @"public.tab-separated-values-text";
   v3 = MEMORY[0x277CBEA60];
-  v4 = a3;
+  typeCopy = type;
   v6 = objc_msgSend_arrayWithObjects_count_(v3, v5, v9, 2);
-  LOBYTE(v3) = objc_msgSend_tsu_conformsToAnyUTI_(v4, v7, v6);
+  LOBYTE(v3) = objc_msgSend_tsu_conformsToAnyUTI_(typeCopy, v7, v6);
 
   return v3;
 }
 
-- (id)backwardsCompatibleTypeForType:(id)a3
+- (id)backwardsCompatibleTypeForType:(id)type
 {
-  if (objc_msgSend_isEqualToString_(a3, a2, @"org.openxmlformats.spreadsheetml.sheet"))
+  if (objc_msgSend_isEqualToString_(type, a2, @"org.openxmlformats.spreadsheetml.sheet"))
   {
     v3 = @"com.microsoft.excel.xls";
   }

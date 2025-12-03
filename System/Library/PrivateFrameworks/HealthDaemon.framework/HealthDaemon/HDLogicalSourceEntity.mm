@@ -1,29 +1,29 @@
 @interface HDLogicalSourceEntity
-+ (BOOL)deleteLogicalSourceEntitiesIfNecessaryWithTransaction:(id)a3 error:(id *)a4;
-+ (id)bundleIDForLogicalSourceID:(int64_t)a3 transaction:(id)a4 error:(id *)a5;
-+ (id)logicalSourceIDForBundleIdentifier:(id)a3 transaction:(id)a4 error:(id *)a5;
-+ (id)lookUpOrCreateLogicalSourceWithBundleIdentifier:(id)a3 owningAppBundleIdentifier:(id)a4 transaction:(id)a5 error:(id *)a6;
-+ (id)ownerBundleIDForLogicalSourceID:(int64_t)a3 transaction:(id)a4 error:(id *)a5;
++ (BOOL)deleteLogicalSourceEntitiesIfNecessaryWithTransaction:(id)transaction error:(id *)error;
++ (id)bundleIDForLogicalSourceID:(int64_t)d transaction:(id)transaction error:(id *)error;
++ (id)logicalSourceIDForBundleIdentifier:(id)identifier transaction:(id)transaction error:(id *)error;
++ (id)lookUpOrCreateLogicalSourceWithBundleIdentifier:(id)identifier owningAppBundleIdentifier:(id)bundleIdentifier transaction:(id)transaction error:(id *)error;
++ (id)ownerBundleIDForLogicalSourceID:(int64_t)d transaction:(id)transaction error:(id *)error;
 @end
 
 @implementation HDLogicalSourceEntity
 
-+ (id)bundleIDForLogicalSourceID:(int64_t)a3 transaction:(id)a4 error:(id *)a5
++ (id)bundleIDForLogicalSourceID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
-  v8 = a4;
-  v9 = [v8 databaseForEntityClass:a1];
+  transactionCopy = transaction;
+  v9 = [transactionCopy databaseForEntityClass:self];
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__38;
   v20 = __Block_byref_object_dispose__38;
   v21 = 0;
-  v14[4] = a3;
+  v14[4] = d;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __70__HDLogicalSourceEntity_bundleIDForLogicalSourceID_transaction_error___block_invoke;
   v15[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v15[4] = a1;
+  v15[4] = self;
   v13[4] = &v16;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -33,7 +33,7 @@
   v13[1] = 3221225472;
   v13[2] = __70__HDLogicalSourceEntity_bundleIDForLogicalSourceID_transaction_error___block_invoke_3;
   v13[3] = &unk_278614620;
-  if ([v9 executeCachedStatementForKey:&bundleIDForLogicalSourceID_transaction_error__lookupKey error:a5 SQLGenerator:v15 bindingHandler:v14 enumerationHandler:v13])
+  if ([v9 executeCachedStatementForKey:&bundleIDForLogicalSourceID_transaction_error__lookupKey error:error SQLGenerator:v15 bindingHandler:v14 enumerationHandler:v13])
   {
     v10 = v17[5];
   }
@@ -68,11 +68,11 @@ uint64_t __70__HDLogicalSourceEntity_bundleIDForLogicalSourceID_transaction_erro
   return 1;
 }
 
-+ (id)logicalSourceIDForBundleIdentifier:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)logicalSourceIDForBundleIdentifier:(id)identifier transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 databaseForEntityClass:a1];
+  identifierCopy = identifier;
+  transactionCopy = transaction;
+  v10 = [transactionCopy databaseForEntityClass:self];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -83,19 +83,19 @@ uint64_t __70__HDLogicalSourceEntity_bundleIDForLogicalSourceID_transaction_erro
   v18[1] = 3221225472;
   v18[2] = __78__HDLogicalSourceEntity_logicalSourceIDForBundleIdentifier_transaction_error___block_invoke;
   v18[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v18[4] = a1;
+  v18[4] = self;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __78__HDLogicalSourceEntity_logicalSourceIDForBundleIdentifier_transaction_error___block_invoke_2;
   v16[3] = &unk_278614860;
-  v11 = v8;
+  v11 = identifierCopy;
   v17 = v11;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __78__HDLogicalSourceEntity_logicalSourceIDForBundleIdentifier_transaction_error___block_invoke_3;
   v15[3] = &unk_278614620;
   v15[4] = &v19;
-  if ([v10 executeCachedStatementForKey:&logicalSourceIDForBundleIdentifier_transaction_error__lookupKey error:a5 SQLGenerator:v18 bindingHandler:v16 enumerationHandler:v15])
+  if ([v10 executeCachedStatementForKey:&logicalSourceIDForBundleIdentifier_transaction_error__lookupKey error:error SQLGenerator:v18 bindingHandler:v16 enumerationHandler:v15])
   {
     v12 = v20[5];
   }
@@ -132,22 +132,22 @@ uint64_t __78__HDLogicalSourceEntity_logicalSourceIDForBundleIdentifier_transact
   return 1;
 }
 
-+ (id)ownerBundleIDForLogicalSourceID:(int64_t)a3 transaction:(id)a4 error:(id *)a5
++ (id)ownerBundleIDForLogicalSourceID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
-  v8 = a4;
-  v9 = [v8 databaseForEntityClass:a1];
+  transactionCopy = transaction;
+  v9 = [transactionCopy databaseForEntityClass:self];
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__38;
   v20 = __Block_byref_object_dispose__38;
   v21 = 0;
-  v14[4] = a3;
+  v14[4] = d;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __75__HDLogicalSourceEntity_ownerBundleIDForLogicalSourceID_transaction_error___block_invoke;
   v15[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v15[4] = a1;
+  v15[4] = self;
   v13[4] = &v16;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -157,7 +157,7 @@ uint64_t __78__HDLogicalSourceEntity_logicalSourceIDForBundleIdentifier_transact
   v13[1] = 3221225472;
   v13[2] = __75__HDLogicalSourceEntity_ownerBundleIDForLogicalSourceID_transaction_error___block_invoke_3;
   v13[3] = &unk_278614620;
-  if ([v9 executeCachedStatementForKey:&ownerBundleIDForLogicalSourceID_transaction_error__lookupKey error:a5 SQLGenerator:v15 bindingHandler:v14 enumerationHandler:v13])
+  if ([v9 executeCachedStatementForKey:&ownerBundleIDForLogicalSourceID_transaction_error__lookupKey error:error SQLGenerator:v15 bindingHandler:v14 enumerationHandler:v13])
   {
     v10 = v17[5];
   }
@@ -192,27 +192,27 @@ uint64_t __75__HDLogicalSourceEntity_ownerBundleIDForLogicalSourceID_transaction
   return 1;
 }
 
-+ (id)lookUpOrCreateLogicalSourceWithBundleIdentifier:(id)a3 owningAppBundleIdentifier:(id)a4 transaction:(id)a5 error:(id *)a6
++ (id)lookUpOrCreateLogicalSourceWithBundleIdentifier:(id)identifier owningAppBundleIdentifier:(id)bundleIdentifier transaction:(id)transaction error:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v11)
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  transactionCopy = transaction;
+  if (!identifierCopy)
   {
-    v29 = [MEMORY[0x277CCA890] currentHandler];
-    [v29 handleFailureInMethod:a2 object:a1 file:@"HDLogicalSourceEntity.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDLogicalSourceEntity.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier != nil"}];
   }
 
-  if ([MEMORY[0x277CCDA00] _isPlaceholderBundleIdentifier:v11])
+  if ([MEMORY[0x277CCDA00] _isPlaceholderBundleIdentifier:identifierCopy])
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a6 code:3 format:{@"Invalid bundle identifier '%@'", v11}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{@"Invalid bundle identifier '%@'", identifierCopy}];
     v14 = 0;
   }
 
   else
   {
-    v15 = [v13 databaseForEntityClass:a1];
+    v15 = [transactionCopy databaseForEntityClass:self];
     v41 = 0;
     v42 = &v41;
     v43 = 0x3032000000;
@@ -223,13 +223,13 @@ uint64_t __75__HDLogicalSourceEntity_ownerBundleIDForLogicalSourceID_transaction
     v38[1] = 3221225472;
     v38[2] = __117__HDLogicalSourceEntity_lookUpOrCreateLogicalSourceWithBundleIdentifier_owningAppBundleIdentifier_transaction_error___block_invoke;
     v38[3] = &unk_278618EF0;
-    v39 = v12;
-    v40 = a1;
+    v39 = bundleIdentifierCopy;
+    selfCopy = self;
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __117__HDLogicalSourceEntity_lookUpOrCreateLogicalSourceWithBundleIdentifier_owningAppBundleIdentifier_transaction_error___block_invoke_2;
     v35[3] = &unk_278613038;
-    v16 = v11;
+    v16 = identifierCopy;
     v36 = v16;
     v17 = v39;
     v37 = v17;
@@ -238,7 +238,7 @@ uint64_t __75__HDLogicalSourceEntity_ownerBundleIDForLogicalSourceID_transaction
     v34[2] = __117__HDLogicalSourceEntity_lookUpOrCreateLogicalSourceWithBundleIdentifier_owningAppBundleIdentifier_transaction_error___block_invoke_3;
     v34[3] = &unk_278614620;
     v34[4] = &v41;
-    if ([v15 executeCachedStatementForKey:&lookUpOrCreateLogicalSourceWithBundleIdentifier_owningAppBundleIdentifier_transaction_error__key error:a6 SQLGenerator:v38 bindingHandler:v35 enumerationHandler:v34])
+    if ([v15 executeCachedStatementForKey:&lookUpOrCreateLogicalSourceWithBundleIdentifier_owningAppBundleIdentifier_transaction_error__key error:error SQLGenerator:v38 bindingHandler:v35 enumerationHandler:v34])
     {
       if (v42[5])
       {
@@ -247,26 +247,26 @@ uint64_t __75__HDLogicalSourceEntity_ownerBundleIDForLogicalSourceID_transaction
 
       else
       {
-        v20 = [v13 databaseForEntityClass:a1];
+        v20 = [transactionCopy databaseForEntityClass:self];
         v33[0] = MEMORY[0x277D85DD0];
         v33[1] = 3221225472;
         v33[2] = __117__HDLogicalSourceEntity_lookUpOrCreateLogicalSourceWithBundleIdentifier_owningAppBundleIdentifier_transaction_error___block_invoke_349;
         v33[3] = &__block_descriptor_40_e15___NSString_8__0l;
-        v33[4] = a1;
+        v33[4] = self;
         v30[0] = MEMORY[0x277D85DD0];
         v30[1] = 3221225472;
         v30[2] = __117__HDLogicalSourceEntity_lookUpOrCreateLogicalSourceWithBundleIdentifier_owningAppBundleIdentifier_transaction_error___block_invoke_2_353;
         v30[3] = &unk_278613038;
         v31 = v16;
         v32 = v17;
-        v21 = [v20 executeCachedStatementForKey:&lookUpOrCreateLogicalSourceWithBundleIdentifier_owningAppBundleIdentifier_transaction_error__insertKey error:a6 SQLGenerator:v33 bindingHandler:v30 enumerationHandler:0];
+        v21 = [v20 executeCachedStatementForKey:&lookUpOrCreateLogicalSourceWithBundleIdentifier_owningAppBundleIdentifier_transaction_error__insertKey error:error SQLGenerator:v33 bindingHandler:v30 enumerationHandler:0];
 
         if (v21)
         {
-          v22 = [v13 unprotectedDatabase];
-          v23 = [v22 lastInsertRowID];
+          unprotectedDatabase = [transactionCopy unprotectedDatabase];
+          lastInsertRowID = [unprotectedDatabase lastInsertRowID];
           v24 = v42[5];
-          v42[5] = v23;
+          v42[5] = lastInsertRowID;
 
           v14 = [(HDSQLiteEntity *)HDLogicalSourceEntity entityWithPersistentID:v42[5]];
         }
@@ -277,9 +277,9 @@ uint64_t __75__HDLogicalSourceEntity_ownerBundleIDForLogicalSourceID_transaction
           v25 = *MEMORY[0x277CCC2A0];
           if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_INFO))
           {
-            if (a6)
+            if (error)
             {
-              v26 = *a6;
+              v26 = *error;
             }
 
             else
@@ -303,9 +303,9 @@ uint64_t __75__HDLogicalSourceEntity_ownerBundleIDForLogicalSourceID_transaction
       v18 = *MEMORY[0x277CCC2A0];
       if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_INFO))
       {
-        if (a6)
+        if (error)
         {
-          v19 = *a6;
+          v19 = *error;
         }
 
         else
@@ -400,17 +400,17 @@ uint64_t __117__HDLogicalSourceEntity_lookUpOrCreateLogicalSourceWithBundleIdent
   }
 }
 
-+ (BOOL)deleteLogicalSourceEntitiesIfNecessaryWithTransaction:(id)a3 error:(id *)a4
++ (BOOL)deleteLogicalSourceEntitiesIfNecessaryWithTransaction:(id)transaction error:(id *)error
 {
-  v6 = [a3 databaseForEntityClass:a1];
+  v6 = [transaction databaseForEntityClass:self];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __85__HDLogicalSourceEntity_deleteLogicalSourceEntitiesIfNecessaryWithTransaction_error___block_invoke;
   v8[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v8[4] = a1;
-  LOBYTE(a4) = [v6 executeCachedStatementForKey:&deleteLogicalSourceEntitiesIfNecessaryWithTransaction_error__lookupKey error:a4 SQLGenerator:v8 bindingHandler:0 enumerationHandler:0];
+  v8[4] = self;
+  LOBYTE(error) = [v6 executeCachedStatementForKey:&deleteLogicalSourceEntitiesIfNecessaryWithTransaction_error__lookupKey error:error SQLGenerator:v8 bindingHandler:0 enumerationHandler:0];
 
-  return a4;
+  return error;
 }
 
 id __85__HDLogicalSourceEntity_deleteLogicalSourceEntitiesIfNecessaryWithTransaction_error___block_invoke(uint64_t a1)

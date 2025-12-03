@@ -1,26 +1,26 @@
 @interface CSDRelayCallDelegate
-- (BOOL)_anyOtherCallHasAnEndpointElsewhere:(id)a3;
+- (BOOL)_anyOtherCallHasAnEndpointElsewhere:(id)elsewhere;
 - (CSDCallController)callController;
 - (CSDCallStateController)callStateController;
 - (CSDRelayCallDelegate)init;
 - (CSDRelayMessagingController)relayMessagingController;
-- (id)localProviderWithIdentifier:(id)a3;
-- (void)_handleJoinConversationResponse:(BOOL)a3 sessionAvailable:(BOOL)a4 forRelayCall:(id)a5;
-- (void)_setAllCallsToHeldExceptCall:(id)a3;
-- (void)relayCall:(id)a3 didAnswerWithRequest:(id)a4;
-- (void)relayCall:(id)a3 didGroupWithOtherCall:(id)a4;
-- (void)relayCallConferenceDidStartSuccessfullyForIncomingAnsweredCall:(id)a3;
-- (void)relayCallConferenceDidStartSuccessfullyForPulledCall:(id)a3;
-- (void)relayCallConferenceDidStop:(id)a3 cleanly:(BOOL)a4 error:(id)a5;
-- (void)relayCallConferenceFailedToStart:(id)a3;
-- (void)relayCallDidBecomeEndpointForPull:(id)a3;
-- (void)relayCallDidDial:(id)a3;
-- (void)relayCallDidDisconnect:(id)a3;
-- (void)relayCallDidHold:(id)a3;
-- (void)relayCallDidJoin:(id)a3;
-- (void)relayCallDidSendHardPauseDigits:(id)a3;
-- (void)relayCallDidUngroup:(id)a3;
-- (void)relayCallDidUnhold:(id)a3;
+- (id)localProviderWithIdentifier:(id)identifier;
+- (void)_handleJoinConversationResponse:(BOOL)response sessionAvailable:(BOOL)available forRelayCall:(id)call;
+- (void)_setAllCallsToHeldExceptCall:(id)call;
+- (void)relayCall:(id)call didAnswerWithRequest:(id)request;
+- (void)relayCall:(id)call didGroupWithOtherCall:(id)otherCall;
+- (void)relayCallConferenceDidStartSuccessfullyForIncomingAnsweredCall:(id)call;
+- (void)relayCallConferenceDidStartSuccessfullyForPulledCall:(id)call;
+- (void)relayCallConferenceDidStop:(id)stop cleanly:(BOOL)cleanly error:(id)error;
+- (void)relayCallConferenceFailedToStart:(id)start;
+- (void)relayCallDidBecomeEndpointForPull:(id)pull;
+- (void)relayCallDidDial:(id)dial;
+- (void)relayCallDidDisconnect:(id)disconnect;
+- (void)relayCallDidHold:(id)hold;
+- (void)relayCallDidJoin:(id)join;
+- (void)relayCallDidSendHardPauseDigits:(id)digits;
+- (void)relayCallDidUngroup:(id)ungroup;
+- (void)relayCallDidUnhold:(id)unhold;
 @end
 
 @implementation CSDRelayCallDelegate
@@ -42,32 +42,32 @@
 
 - (CSDRelayMessagingController)relayMessagingController
 {
-  v2 = [(CSDRelayCallDelegate *)self callStateController];
-  v3 = [v2 relayMessagingController];
+  callStateController = [(CSDRelayCallDelegate *)self callStateController];
+  relayMessagingController = [callStateController relayMessagingController];
 
-  return v3;
+  return relayMessagingController;
 }
 
 - (CSDCallController)callController
 {
-  v2 = [(CSDRelayCallDelegate *)self callStateController];
-  v3 = [v2 callController];
+  callStateController = [(CSDRelayCallDelegate *)self callStateController];
+  callController = [callStateController callController];
 
-  return v3;
+  return callController;
 }
 
-- (void)_setAllCallsToHeldExceptCall:(id)a3
+- (void)_setAllCallsToHeldExceptCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(CSDRelayCallDelegate *)self callController];
-  v6 = [v5 callContainer];
-  v7 = [v6 callsHostedElsewhere];
+  callController = [(CSDRelayCallDelegate *)self callController];
+  callContainer = [callController callContainer];
+  callsHostedElsewhere = [callContainer callsHostedElsewhere];
 
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v8 = [callsHostedElsewhere countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -79,11 +79,11 @@
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(callsHostedElsewhere);
         }
 
         v12 = *(*(&v13 + 1) + 8 * v11);
-        if (v12 != v4)
+        if (v12 != callCopy)
         {
           [v12 setCallStatus:2];
         }
@@ -92,25 +92,25 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [callsHostedElsewhere countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
   }
 }
 
-- (BOOL)_anyOtherCallHasAnEndpointElsewhere:(id)a3
+- (BOOL)_anyOtherCallHasAnEndpointElsewhere:(id)elsewhere
 {
-  v4 = a3;
+  elsewhereCopy = elsewhere;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(CSDRelayCallDelegate *)self callController];
-  v6 = [v5 callContainer];
-  v7 = [v6 callsHostedElsewhere];
+  callController = [(CSDRelayCallDelegate *)self callController];
+  callContainer = [callController callContainer];
+  callsHostedElsewhere = [callContainer callsHostedElsewhere];
 
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [callsHostedElsewhere countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -122,11 +122,11 @@
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(callsHostedElsewhere);
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
-        if (v13 != v4)
+        if (v13 != elsewhereCopy)
         {
           [*(*(&v15 + 1) + 8 * i) setCallStatus:2];
           if (v10)
@@ -141,7 +141,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [callsHostedElsewhere countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
@@ -155,11 +155,11 @@
   return v10 & 1;
 }
 
-- (void)_handleJoinConversationResponse:(BOOL)a3 sessionAvailable:(BOOL)a4 forRelayCall:(id)a5
+- (void)_handleJoinConversationResponse:(BOOL)response sessionAvailable:(BOOL)available forRelayCall:(id)call
 {
-  v8 = a5;
-  v9 = v8;
-  if (!a3)
+  callCopy = call;
+  v9 = callCopy;
+  if (!response)
   {
     v12 = sub_100004778();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -172,7 +172,7 @@
     goto LABEL_11;
   }
 
-  if (!a4)
+  if (!available)
   {
     v15 = sub_100004778();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -187,50 +187,50 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v8 isEndpointOnCurrentDevice])
+  if ([callCopy isEndpointOnCurrentDevice])
   {
-    v10 = [(CSDRelayCallDelegate *)self relayMessagingController];
+    relayMessagingController = [(CSDRelayCallDelegate *)self relayMessagingController];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1002219A0;
     v16[3] = &unk_10061EE88;
     v17 = v9;
-    v11 = [v17 uniqueProxyIdentifier];
-    [v10 performBlockOnTransportAvailability:v16 forIdentifier:v11];
+    uniqueProxyIdentifier = [v17 uniqueProxyIdentifier];
+    [relayMessagingController performBlockOnTransportAvailability:v16 forIdentifier:uniqueProxyIdentifier];
   }
 
 LABEL_12:
 }
 
-- (id)localProviderWithIdentifier:(id)a3
+- (id)localProviderWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CSDRelayCallDelegate *)self callStateController];
-  v6 = [v5 callProviderManager];
-  v7 = [v6 localProvidersByIdentifierForRemoteClients:0];
+  identifierCopy = identifier;
+  callStateController = [(CSDRelayCallDelegate *)self callStateController];
+  callProviderManager = [callStateController callProviderManager];
+  v7 = [callProviderManager localProvidersByIdentifierForRemoteClients:0];
 
-  v8 = [v7 objectForKeyedSubscript:v4];
+  v8 = [v7 objectForKeyedSubscript:identifierCopy];
 
   return v8;
 }
 
-- (void)relayCallDidJoin:(id)a3
+- (void)relayCallDidJoin:(id)join
 {
-  v4 = a3;
-  v5 = [v4 hasRelaySupport:2];
-  v6 = [(CSDRelayCallDelegate *)self _anyOtherCallHasAnEndpointElsewhere:v4];
+  joinCopy = join;
+  v5 = [joinCopy hasRelaySupport:2];
+  v6 = [(CSDRelayCallDelegate *)self _anyOtherCallHasAnEndpointElsewhere:joinCopy];
   v7 = v6;
-  if (!v5 || v6 && ([v4 isSOS] & 1) == 0)
+  if (!v5 || v6 && ([joinCopy isSOS] & 1) == 0)
   {
-    [v4 setEndpointOnCurrentDevice:0];
+    [joinCopy setEndpointOnCurrentDevice:0];
   }
 
   v8 = sub_100004778();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v4 isEndpointOnCurrentDevice];
+    isEndpointOnCurrentDevice = [joinCopy isEndpointOnCurrentDevice];
     v10 = @"NO";
-    if (v9)
+    if (isEndpointOnCurrentDevice)
     {
       v11 = @"YES";
     }
@@ -264,28 +264,28 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Determined if endpoint should be on current device: %@; hasRelaySupport: %@, anyOtherCallHasAnEndpointElsewhere: %@", buf, 0x20u);
   }
 
-  v13 = [v4 joinConversationRequest];
+  joinConversationRequest = [joinCopy joinConversationRequest];
 
-  if (v13)
+  if (joinConversationRequest)
   {
-    v14 = [(CSDRelayCallDelegate *)self relayMessagingController];
+    relayMessagingController = [(CSDRelayCallDelegate *)self relayMessagingController];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100221D10;
     v15[3] = &unk_10061EEB0;
     v15[4] = self;
-    v16 = v4;
-    [v14 sendJoinConversationMessageToHostForCall:v16 completionHandler:v15];
+    v16 = joinCopy;
+    [relayMessagingController sendJoinConversationMessageToHostForCall:v16 completionHandler:v15];
   }
 }
 
-- (void)relayCallDidDial:(id)a3
+- (void)relayCallDidDial:(id)dial
 {
-  v4 = a3;
-  v5 = [v4 hasRelaySupport:2];
-  v6 = [(CSDRelayCallDelegate *)self _anyOtherCallHasAnEndpointElsewhere:v4];
+  dialCopy = dial;
+  v5 = [dialCopy hasRelaySupport:2];
+  v6 = [(CSDRelayCallDelegate *)self _anyOtherCallHasAnEndpointElsewhere:dialCopy];
   v7 = v6;
-  if (!v5 || v6 && ([v4 isSOS] & 1) == 0)
+  if (!v5 || v6 && ([dialCopy isSOS] & 1) == 0)
   {
     v8 = sub_100004778();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -294,13 +294,13 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Decided to override endpoint to the host device", buf, 2u);
     }
 
-    [v4 setEndpointOnCurrentDevice:0];
+    [dialCopy setEndpointOnCurrentDevice:0];
   }
 
   v9 = sub_100004778();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    if ([v4 isEndpointOnCurrentDevice])
+    if ([dialCopy isEndpointOnCurrentDevice])
     {
       v10 = @"YES";
     }
@@ -330,9 +330,9 @@ LABEL_12:
       v12 = @"NO";
     }
 
-    v13 = [v4 isSOS];
+    isSOS = [dialCopy isSOS];
     *buf = 138413058;
-    if (v13)
+    if (isSOS)
     {
       v14 = @"YES";
     }
@@ -352,27 +352,27 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Determined if endpoint should be on current device: %@; hasRelaySupport: %@, anyOtherCallHasAnEndpointElsewhere: %@, relayCall.isSOS: %@", buf, 0x2Au);
   }
 
-  v15 = [v4 dialRequest];
+  dialRequest = [dialCopy dialRequest];
 
-  if (v15)
+  if (dialRequest)
   {
-    v16 = [(CSDRelayCallDelegate *)self relayMessagingController];
+    relayMessagingController = [(CSDRelayCallDelegate *)self relayMessagingController];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100221F58;
     v17[3] = &unk_10061EEB0;
-    v18 = v4;
-    v19 = self;
-    [v16 sendDialCallMessageToHostForCall:v18 completionHandler:v17];
+    v18 = dialCopy;
+    selfCopy = self;
+    [relayMessagingController sendDialCallMessageToHostForCall:v18 completionHandler:v17];
   }
 }
 
-- (void)relayCall:(id)a3 didAnswerWithRequest:(id)a4
+- (void)relayCall:(id)call didAnswerWithRequest:(id)request
 {
-  v6 = a3;
-  if ([v6 canBeAnsweredWithAudioOrVideoRelayWithRequest:a4])
+  callCopy = call;
+  if ([callCopy canBeAnsweredWithAudioOrVideoRelayWithRequest:request])
   {
-    [v6 setLocallyConnecting];
+    [callCopy setLocallyConnecting];
   }
 
   else
@@ -381,15 +381,15 @@ LABEL_12:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v6;
+      v14 = callCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Setting endpoint elsewhere for call because it can't be answered with audio or video relay: %@", buf, 0xCu);
     }
 
-    [v6 setEndpointOnCurrentDevice:0];
-    [v6 setLocallyConnected];
+    [callCopy setEndpointOnCurrentDevice:0];
+    [callCopy setLocallyConnected];
   }
 
-  if ([v6 isScreening])
+  if ([callCopy isScreening])
   {
     v8 = sub_100004778();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -401,87 +401,87 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  if ([v6 isEndpointOnCurrentDevice])
+  if ([callCopy isEndpointOnCurrentDevice])
   {
-    v9 = [(CSDRelayCallDelegate *)self relayMessagingController];
+    relayMessagingController = [(CSDRelayCallDelegate *)self relayMessagingController];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10022236C;
     v11[3] = &unk_10061EE88;
-    v12 = v6;
-    v10 = [v12 uniqueProxyIdentifier];
-    [v9 performBlockOnTransportAvailability:v11 forIdentifier:v10];
+    v12 = callCopy;
+    uniqueProxyIdentifier = [v12 uniqueProxyIdentifier];
+    [relayMessagingController performBlockOnTransportAvailability:v11 forIdentifier:uniqueProxyIdentifier];
 
     v8 = v12;
 LABEL_11:
   }
 }
 
-- (void)relayCallDidDisconnect:(id)a3
+- (void)relayCallDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = [(CSDRelayCallDelegate *)self relayMessagingController];
-  [v5 sendDisconnectCallMessageToHostForCall:v4];
+  disconnectCopy = disconnect;
+  relayMessagingController = [(CSDRelayCallDelegate *)self relayMessagingController];
+  [relayMessagingController sendDisconnectCallMessageToHostForCall:disconnectCopy];
 }
 
-- (void)relayCallDidHold:(id)a3
+- (void)relayCallDidHold:(id)hold
 {
-  v4 = a3;
-  v5 = [(CSDRelayCallDelegate *)self relayMessagingController];
-  [v5 sendHoldCallMessageToHostForCall:v4];
+  holdCopy = hold;
+  relayMessagingController = [(CSDRelayCallDelegate *)self relayMessagingController];
+  [relayMessagingController sendHoldCallMessageToHostForCall:holdCopy];
 }
 
-- (void)relayCallDidUnhold:(id)a3
+- (void)relayCallDidUnhold:(id)unhold
 {
-  v4 = a3;
-  v5 = [(CSDRelayCallDelegate *)self relayMessagingController];
-  [v5 sendUnholdCallMessageToHostForCall:v4];
+  unholdCopy = unhold;
+  relayMessagingController = [(CSDRelayCallDelegate *)self relayMessagingController];
+  [relayMessagingController sendUnholdCallMessageToHostForCall:unholdCopy];
 }
 
-- (void)relayCall:(id)a3 didGroupWithOtherCall:(id)a4
+- (void)relayCall:(id)call didGroupWithOtherCall:(id)otherCall
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDRelayCallDelegate *)self relayMessagingController];
-  [v8 sendGroupCallMessageToHostForCall:v7 otherCall:v6];
+  otherCallCopy = otherCall;
+  callCopy = call;
+  relayMessagingController = [(CSDRelayCallDelegate *)self relayMessagingController];
+  [relayMessagingController sendGroupCallMessageToHostForCall:callCopy otherCall:otherCallCopy];
 }
 
-- (void)relayCallDidUngroup:(id)a3
+- (void)relayCallDidUngroup:(id)ungroup
 {
-  v4 = a3;
-  v5 = [(CSDRelayCallDelegate *)self relayMessagingController];
-  [v5 sendUngroupCallMessageToHostForCall:v4];
+  ungroupCopy = ungroup;
+  relayMessagingController = [(CSDRelayCallDelegate *)self relayMessagingController];
+  [relayMessagingController sendUngroupCallMessageToHostForCall:ungroupCopy];
 }
 
-- (void)relayCallDidSendHardPauseDigits:(id)a3
+- (void)relayCallDidSendHardPauseDigits:(id)digits
 {
-  v4 = a3;
-  v5 = [(CSDRelayCallDelegate *)self relayMessagingController];
-  [v5 sendSendHardPauseDigitsMessageToHostForCall:v4];
+  digitsCopy = digits;
+  relayMessagingController = [(CSDRelayCallDelegate *)self relayMessagingController];
+  [relayMessagingController sendSendHardPauseDigitsMessageToHostForCall:digitsCopy];
 }
 
-- (void)relayCallDidBecomeEndpointForPull:(id)a3
+- (void)relayCallDidBecomeEndpointForPull:(id)pull
 {
-  v4 = a3;
-  v5 = [(CSDRelayCallDelegate *)self relayMessagingController];
+  pullCopy = pull;
+  relayMessagingController = [(CSDRelayCallDelegate *)self relayMessagingController];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100222790;
   v8[3] = &unk_10061EE88;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v6 uniqueProxyIdentifier];
-  [v5 performBlockOnTransportAvailability:v8 forIdentifier:v7];
+  v9 = pullCopy;
+  v6 = pullCopy;
+  uniqueProxyIdentifier = [v6 uniqueProxyIdentifier];
+  [relayMessagingController performBlockOnTransportAvailability:v8 forIdentifier:uniqueProxyIdentifier];
 }
 
-- (void)relayCallConferenceDidStartSuccessfullyForIncomingAnsweredCall:(id)a3
+- (void)relayCallConferenceDidStartSuccessfullyForIncomingAnsweredCall:(id)call
 {
-  v4 = a3;
-  [(CSDRelayCallDelegate *)self _setAllCallsToHeldExceptCall:v4];
-  [v4 setLocallyConnected];
+  callCopy = call;
+  [(CSDRelayCallDelegate *)self _setAllCallsToHeldExceptCall:callCopy];
+  [callCopy setLocallyConnected];
 }
 
-- (void)relayCallConferenceDidStartSuccessfullyForPulledCall:(id)a3
+- (void)relayCallConferenceDidStartSuccessfullyForPulledCall:(id)call
 {
   v3 = +[NSURL faceTimeShowInCallUIURL];
   v4 = sub_100004778();
@@ -495,20 +495,20 @@ LABEL_11:
   TUOpenURL();
 }
 
-- (void)relayCallConferenceFailedToStart:(id)a3
+- (void)relayCallConferenceFailedToStart:(id)start
 {
-  v3 = a3;
-  v4 = [v3 isEndpointOnCurrentDevice];
+  startCopy = start;
+  isEndpointOnCurrentDevice = [startCopy isEndpointOnCurrentDevice];
   v5 = sub_100004778();
   v6 = v5;
-  if (v4)
+  if (isEndpointOnCurrentDevice)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       sub_10047D0B4();
     }
 
-    [v3 setLocallyDisconnectedWithReasonIfNone:8];
+    [startCopy setLocallyDisconnectedWithReasonIfNone:8];
   }
 
   else
@@ -516,19 +516,19 @@ LABEL_11:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v3;
+      v8 = startCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Not disconnecting call for failed conference start because it is not an endpoint here: %@", &v7, 0xCu);
     }
   }
 }
 
-- (void)relayCallConferenceDidStop:(id)a3 cleanly:(BOOL)a4 error:(id)a5
+- (void)relayCallConferenceDidStop:(id)stop cleanly:(BOOL)cleanly error:(id)error
 {
-  v7 = a3;
-  v8 = a5;
-  if ([v7 isEndpointOnCurrentDevice])
+  stopCopy = stop;
+  errorCopy = error;
+  if ([stopCopy isEndpointOnCurrentDevice])
   {
-    if (v8 || !a4)
+    if (errorCopy || !cleanly)
     {
       v11 = sub_100004778();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -544,7 +544,7 @@ LABEL_11:
       v9 = 0;
     }
 
-    [v7 setLocallyDisconnectedWithReasonIfNone:v9];
+    [stopCopy setLocallyDisconnectedWithReasonIfNone:v9];
   }
 
   else
@@ -553,7 +553,7 @@ LABEL_11:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = v7;
+      v13 = stopCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Not disconnecting call for conference didStop because it is not an endpoint here: %@", &v12, 0xCu);
     }
   }

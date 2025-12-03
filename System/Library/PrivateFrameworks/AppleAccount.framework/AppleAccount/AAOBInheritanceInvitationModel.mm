@@ -1,40 +1,40 @@
 @interface AAOBInheritanceInvitationModel
-- (AAOBInheritanceInvitationModel)initWithAcceptedViewForBenefactorInfo:(id)a3;
-- (AAOBInheritanceInvitationModel)initWithBenefactorInfo:(id)a3;
-- (AAOBInheritanceInvitationModel)initWithCoder:(id)a3;
-- (AAOBInheritanceInvitationModel)initWithModel:(id)a3;
+- (AAOBInheritanceInvitationModel)initWithAcceptedViewForBenefactorInfo:(id)info;
+- (AAOBInheritanceInvitationModel)initWithBenefactorInfo:(id)info;
+- (AAOBInheritanceInvitationModel)initWithCoder:(id)coder;
+- (AAOBInheritanceInvitationModel)initWithModel:(id)model;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AAOBInheritanceInvitationModel
 
-- (AAOBInheritanceInvitationModel)initWithBenefactorInfo:(id)a3
+- (AAOBInheritanceInvitationModel)initWithBenefactorInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v54.receiver = self;
   v54.super_class = AAOBInheritanceInvitationModel;
   v6 = [(AAOBInheritanceInvitationModel *)&v54 init];
   if (v6)
   {
-    if (v5)
+    if (infoCopy)
     {
-      v7 = [v5 status];
+      status = [infoCopy status];
     }
 
     else
     {
-      v7 = 2;
+      status = 2;
     }
 
-    v8 = [v5 ownerHandle];
+    ownerHandle = [infoCopy ownerHandle];
     ownerHandle = v6->_ownerHandle;
-    v6->_ownerHandle = v8;
+    v6->_ownerHandle = ownerHandle;
 
     v10 = [AAOBModelHelper contactInfoForHandle:v6->_ownerHandle];
-    v53 = [v10 displayName];
-    v11 = [v10 firstNameOrHandleForDisplay];
+    displayName = [v10 displayName];
+    firstNameOrHandleForDisplay = [v10 firstNameOrHandleForDisplay];
     v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
     v13 = [v12 localizedStringForKey:@"INHERITANCE_BENEFICIARY_ADDED_CONFIRM_BUTTON" value:0 table:@"Localizable"];
     primaryButton = v6->_primaryButton;
@@ -45,8 +45,8 @@
     secondaryButton = v6->_secondaryButton;
     v6->_secondaryButton = v16;
 
-    v52 = v11;
-    if (v7 == 1)
+    v52 = firstNameOrHandleForDisplay;
+    if (status == 1)
     {
       v18 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
       v19 = [v18 localizedStringForKey:@"INHERITANCE_BENEFICIARY_INVITED_TITLE" value:0 table:@"Localizable"];
@@ -56,7 +56,7 @@
       v21 = MEMORY[0x1E696AEC0];
       v22 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
       v23 = [v22 localizedStringForKey:@"INHERITANCE_BENEFICIARY_INVITED_DETAIL_TEXT" value:0 table:@"Localizable"];
-      v24 = v11;
+      v24 = firstNameOrHandleForDisplay;
       v25 = v23;
       v26 = [v21 stringWithFormat:v23, v24];
       detailText = v6->_detailText;
@@ -75,7 +75,7 @@
 
     else
     {
-      if ((v7 & 0xFFFFFFFFFFFFFFFELL) == 4)
+      if ((status & 0xFFFFFFFFFFFFFFFELL) == 4)
       {
         v34 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
         v35 = [v34 localizedStringForKey:@"BENEFICIARY_DECLINED_INVITE_TITLE" value:0 table:@"Localizable"];
@@ -85,12 +85,12 @@
         v37 = MEMORY[0x1E696AEC0];
         v31 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
         v33 = [v31 localizedStringForKey:@"BENEFICIARY_DECLINED_INVITE_DETAIL_TEXT" value:0 table:@"Localizable"];
-        v38 = v53;
+        v38 = displayName;
       }
 
       else
       {
-        if (v7 != 2)
+        if (status != 2)
         {
 LABEL_13:
           objc_storeStrong(&v6->_imageName, 0);
@@ -104,7 +104,7 @@ LABEL_13:
           helpLinkURL = v6->_helpLinkURL;
           v6->_helpLinkURL = v48;
 
-          objc_storeStrong(&v6->_custodianshipInfo, a3);
+          objc_storeStrong(&v6->_custodianshipInfo, info);
           recipientHandle = v6->_recipientHandle;
           v6->_recipientHandle = 0;
 
@@ -119,7 +119,7 @@ LABEL_13:
         v37 = MEMORY[0x1E696AEC0];
         v31 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
         v33 = [v31 localizedStringForKey:@"INHERITANCE_BENEFICIARY_ADDED_DETAIL_TEXT" value:0 table:@"Localizable"];
-        v38 = v11;
+        v38 = firstNameOrHandleForDisplay;
       }
 
       v42 = [v37 stringWithFormat:v33, v38];
@@ -135,20 +135,20 @@ LABEL_14:
   return v6;
 }
 
-- (AAOBInheritanceInvitationModel)initWithAcceptedViewForBenefactorInfo:(id)a3
+- (AAOBInheritanceInvitationModel)initWithAcceptedViewForBenefactorInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v33.receiver = self;
   v33.super_class = AAOBInheritanceInvitationModel;
   v6 = [(AAOBInheritanceInvitationModel *)&v33 init];
   if (v6)
   {
-    v7 = [v5 ownerHandle];
+    ownerHandle = [infoCopy ownerHandle];
     ownerHandle = v6->_ownerHandle;
-    v6->_ownerHandle = v7;
+    v6->_ownerHandle = ownerHandle;
 
     v32 = [AAOBModelHelper contactInfoForHandle:v6->_ownerHandle];
-    v9 = [v32 displayName];
+    displayName = [v32 displayName];
     v10 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
     v11 = [v10 localizedStringForKey:@"INHERITANCE_BENEFICIARY_ADDED_CONFIRM_BUTTON" value:0 table:@"Localizable"];
     primaryButton = v6->_primaryButton;
@@ -167,7 +167,7 @@ LABEL_14:
     v19 = MEMORY[0x1E696AEC0];
     v20 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
     v21 = [v20 localizedStringForKey:@"BENEFICIARY_ACCEPTED_INVITE_DETAIL_TEXT" value:0 table:@"Localizable"];
-    v22 = [v19 stringWithFormat:v21, v9];
+    v22 = [v19 stringWithFormat:v21, displayName];
     detailText = v6->_detailText;
     v6->_detailText = v22;
 
@@ -182,7 +182,7 @@ LABEL_14:
     helpLinkURL = v6->_helpLinkURL;
     v6->_helpLinkURL = v28;
 
-    objc_storeStrong(&v6->_custodianshipInfo, a3);
+    objc_storeStrong(&v6->_custodianshipInfo, info);
     recipientHandle = v6->_recipientHandle;
     v6->_recipientHandle = 0;
   }
@@ -190,114 +190,114 @@ LABEL_14:
   return v6;
 }
 
-- (AAOBInheritanceInvitationModel)initWithModel:(id)a3
+- (AAOBInheritanceInvitationModel)initWithModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v27.receiver = self;
   v27.super_class = AAOBInheritanceInvitationModel;
   v5 = [(AAOBInheritanceInvitationModel *)&v27 init];
   if (v5)
   {
-    v6 = [v4 imageName];
+    imageName = [modelCopy imageName];
     imageName = v5->_imageName;
-    v5->_imageName = v6;
+    v5->_imageName = imageName;
 
-    v8 = [v4 title];
+    title = [modelCopy title];
     title = v5->_title;
-    v5->_title = v8;
+    v5->_title = title;
 
-    v10 = [v4 detailText];
+    detailText = [modelCopy detailText];
     detailText = v5->_detailText;
-    v5->_detailText = v10;
+    v5->_detailText = detailText;
 
-    v12 = [v4 primaryButton];
+    primaryButton = [modelCopy primaryButton];
     primaryButton = v5->_primaryButton;
-    v5->_primaryButton = v12;
+    v5->_primaryButton = primaryButton;
 
-    v14 = [v4 secondaryButton];
+    secondaryButton = [modelCopy secondaryButton];
     secondaryButton = v5->_secondaryButton;
-    v5->_secondaryButton = v14;
+    v5->_secondaryButton = secondaryButton;
 
-    v16 = [v4 helpLinkTitle];
+    helpLinkTitle = [modelCopy helpLinkTitle];
     helpLinkTitle = v5->_helpLinkTitle;
-    v5->_helpLinkTitle = v16;
+    v5->_helpLinkTitle = helpLinkTitle;
 
-    v18 = [v4 helpLinkURL];
+    helpLinkURL = [modelCopy helpLinkURL];
     helpLinkURL = v5->_helpLinkURL;
-    v5->_helpLinkURL = v18;
+    v5->_helpLinkURL = helpLinkURL;
 
-    v20 = [v4 ownerHandle];
+    ownerHandle = [modelCopy ownerHandle];
     ownerHandle = v5->_ownerHandle;
-    v5->_ownerHandle = v20;
+    v5->_ownerHandle = ownerHandle;
 
-    v22 = [v4 custodianshipInfo];
+    custodianshipInfo = [modelCopy custodianshipInfo];
     custodianshipInfo = v5->_custodianshipInfo;
-    v5->_custodianshipInfo = v22;
+    v5->_custodianshipInfo = custodianshipInfo;
 
-    v24 = [v4 recipientHandle];
+    recipientHandle = [modelCopy recipientHandle];
     recipientHandle = v5->_recipientHandle;
-    v5->_recipientHandle = v24;
+    v5->_recipientHandle = recipientHandle;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   imageName = self->_imageName;
-  v5 = a3;
-  [v5 encodeObject:imageName forKey:@"_imageName"];
-  [v5 encodeObject:self->_title forKey:@"_title"];
-  [v5 encodeObject:self->_detailText forKey:@"_detailText"];
-  [v5 encodeObject:self->_primaryButton forKey:@" _primaryButton"];
-  [v5 encodeObject:self->_secondaryButton forKey:@"_secondaryButton"];
-  [v5 encodeObject:self->_helpLinkTitle forKey:@"_helpLinkTitle"];
-  [v5 encodeObject:self->_helpLinkURL forKey:@"_helpLinkURL"];
-  [v5 encodeObject:self->_ownerHandle forKey:@"_ownerHandle"];
-  [v5 encodeObject:self->_custodianshipInfo forKey:@"_custodianshipInfo"];
+  coderCopy = coder;
+  [coderCopy encodeObject:imageName forKey:@"_imageName"];
+  [coderCopy encodeObject:self->_title forKey:@"_title"];
+  [coderCopy encodeObject:self->_detailText forKey:@"_detailText"];
+  [coderCopy encodeObject:self->_primaryButton forKey:@" _primaryButton"];
+  [coderCopy encodeObject:self->_secondaryButton forKey:@"_secondaryButton"];
+  [coderCopy encodeObject:self->_helpLinkTitle forKey:@"_helpLinkTitle"];
+  [coderCopy encodeObject:self->_helpLinkURL forKey:@"_helpLinkURL"];
+  [coderCopy encodeObject:self->_ownerHandle forKey:@"_ownerHandle"];
+  [coderCopy encodeObject:self->_custodianshipInfo forKey:@"_custodianshipInfo"];
 }
 
-- (AAOBInheritanceInvitationModel)initWithCoder:(id)a3
+- (AAOBInheritanceInvitationModel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = AAOBInheritanceInvitationModel;
   v5 = [(AAOBInheritanceInvitationModel *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_imageName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_imageName"];
     imageName = v5->_imageName;
     v5->_imageName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_title"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_title"];
     title = v5->_title;
     v5->_title = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_detailText"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_detailText"];
     detailText = v5->_detailText;
     v5->_detailText = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@" _primaryButton"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@" _primaryButton"];
     primaryButton = v5->_primaryButton;
     v5->_primaryButton = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_secondaryButton"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_secondaryButton"];
     secondaryButton = v5->_secondaryButton;
     v5->_secondaryButton = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_helpLinkTitle"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_helpLinkTitle"];
     helpLinkTitle = v5->_helpLinkTitle;
     v5->_helpLinkTitle = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_helpLinkURL"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_helpLinkURL"];
     helpLinkURL = v5->_helpLinkURL;
     v5->_helpLinkURL = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_ownerHandle"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_ownerHandle"];
     ownerHandle = v5->_ownerHandle;
     v5->_ownerHandle = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_custodianshipInfo"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_custodianshipInfo"];
     custodianshipInfo = v5->_custodianshipInfo;
     v5->_custodianshipInfo = v22;
   }
@@ -305,7 +305,7 @@ LABEL_14:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(AAOBInheritanceInvitationModel);
   v5 = [(NSString *)self->_imageName copy];
@@ -350,16 +350,16 @@ LABEL_14:
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AAOBInheritanceInvitationModel *)self imageName];
-  v5 = [(AAOBInheritanceInvitationModel *)self title];
-  v6 = [(AAOBInheritanceInvitationModel *)self detailText];
-  v7 = [(AAOBInheritanceInvitationModel *)self primaryButton];
-  v8 = [(AAOBInheritanceInvitationModel *)self secondaryButton];
-  v9 = [(AAOBInheritanceInvitationModel *)self helpLinkTitle];
-  v10 = [(AAOBInheritanceInvitationModel *)self helpLinkURL];
-  v11 = [(AAOBInheritanceInvitationModel *)self ownerHandle];
-  v12 = [(AAOBInheritanceInvitationModel *)self custodianshipInfo];
-  v13 = [v3 stringWithFormat:@"imageName: %@\title: %@\ndetailText: %@\nprimaryButton: %@\nsecondaryButton: %@\nhelpLinkTitle: %@\nhelpLinkURL: %@\nownerHandle: %@\ncustodianshipInfo: %@\n", v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  imageName = [(AAOBInheritanceInvitationModel *)self imageName];
+  title = [(AAOBInheritanceInvitationModel *)self title];
+  detailText = [(AAOBInheritanceInvitationModel *)self detailText];
+  primaryButton = [(AAOBInheritanceInvitationModel *)self primaryButton];
+  secondaryButton = [(AAOBInheritanceInvitationModel *)self secondaryButton];
+  helpLinkTitle = [(AAOBInheritanceInvitationModel *)self helpLinkTitle];
+  helpLinkURL = [(AAOBInheritanceInvitationModel *)self helpLinkURL];
+  ownerHandle = [(AAOBInheritanceInvitationModel *)self ownerHandle];
+  custodianshipInfo = [(AAOBInheritanceInvitationModel *)self custodianshipInfo];
+  v13 = [v3 stringWithFormat:@"imageName: %@\title: %@\ndetailText: %@\nprimaryButton: %@\nsecondaryButton: %@\nhelpLinkTitle: %@\nhelpLinkURL: %@\nownerHandle: %@\ncustodianshipInfo: %@\n", imageName, title, detailText, primaryButton, secondaryButton, helpLinkTitle, helpLinkURL, ownerHandle, custodianshipInfo];
 
   return v13;
 }

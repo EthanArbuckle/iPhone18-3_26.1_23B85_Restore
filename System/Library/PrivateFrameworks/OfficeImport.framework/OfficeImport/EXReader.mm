@@ -8,31 +8,31 @@
 {
   v3 = objc_autoreleasePoolPush();
   [(OCDEncryptedReader *)self useUnencryptedDocument];
-  v4 = [(OCXReader *)self zipPackage];
+  zipPackage = [(OCXReader *)self zipPackage];
 
-  if (!v4)
+  if (!zipPackage)
   {
     [(OCXReader *)self verifyFileFormat];
   }
 
-  v5 = [(OCXReader *)self zipPackage];
-  v6 = [v5 mainDocumentPart];
+  zipPackage2 = [(OCXReader *)self zipPackage];
+  mainDocumentPart = [zipPackage2 mainDocumentPart];
 
-  if (!v6)
+  if (!mainDocumentPart)
   {
     [TCMessageException raise:TCInvalidFileFormatMessage];
   }
 
   v7 = [EXReadState alloc];
-  v8 = [(OCDReader *)self cancelDelegate];
-  v9 = [(EXReadState *)v7 initWithWorkbookPart:v6 cancelDelegate:v8];
+  cancelDelegate = [(OCDReader *)self cancelDelegate];
+  v9 = [(EXReadState *)v7 initWithWorkbookPart:mainDocumentPart cancelDelegate:cancelDelegate];
 
-  v10 = [(OCXReader *)self zipPackage];
-  v11 = [(OCDReader *)self fileName];
-  v12 = [(EXReader *)self temporaryDirectory];
-  v13 = [(OCDReader *)self delegate];
+  zipPackage3 = [(OCXReader *)self zipPackage];
+  fileName = [(OCDReader *)self fileName];
+  temporaryDirectory = [(EXReader *)self temporaryDirectory];
+  delegate = [(OCDReader *)self delegate];
   LOBYTE(v15) = [(OCDReader *)self isThumbnail];
-  v16 = [EXWorkbook edWorkbookFromState:v9 package:v10 reader:self fileName:v11 temporaryDirectory:v12 delegate:v13 forThumbnail:v15];
+  v16 = [EXWorkbook edWorkbookFromState:v9 package:zipPackage3 reader:self fileName:fileName temporaryDirectory:temporaryDirectory delegate:delegate forThumbnail:v15];
 
   objc_autoreleasePoolPop(v3);
 

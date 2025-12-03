@@ -1,6 +1,6 @@
 @interface MICapabilitiesManager
 + (id)defaultManager;
-- (id)checkCapabilities:(id)a3 withOptions:(id)a4 error:(id *)a5;
+- (id)checkCapabilities:(id)capabilities withOptions:(id)options error:(id *)error;
 @end
 
 @implementation MICapabilitiesManager
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __39__MICapabilitiesManager_defaultManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultManager_onceToken_0 != -1)
   {
     dispatch_once(&defaultManager_onceToken_0, block);
@@ -29,17 +29,17 @@ uint64_t __39__MICapabilitiesManager_defaultManager__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)checkCapabilities:(id)a3 withOptions:(id)a4 error:(id *)a5
+- (id)checkCapabilities:(id)capabilities withOptions:(id)options error:(id *)error
 {
   v47[3] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  capabilitiesCopy = capabilities;
+  optionsCopy = options;
   v9 = objc_opt_new();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v41 = v7;
-    v10 = 0;
+    allKeys = capabilitiesCopy;
+    allValues = 0;
   }
 
   else
@@ -49,9 +49,9 @@ uint64_t __39__MICapabilitiesManager_defaultManager__block_invoke()
     {
       v29 = _CreateAndLogError("[MICapabilitiesManager checkCapabilities:withOptions:error:]", 65, @"MIInstallerErrorDomain", 66, 0, 0, @"UIRequiredDeviceCapabilties in Info.plist does not have an array or dictionary value.", v11, v36);
       v24 = 0;
-      v10 = 0;
-      v41 = 0;
-      if (!a5)
+      allValues = 0;
+      allKeys = 0;
+      if (!error)
       {
         goto LABEL_47;
       }
@@ -59,16 +59,16 @@ uint64_t __39__MICapabilitiesManager_defaultManager__block_invoke()
       goto LABEL_45;
     }
 
-    v41 = [v7 allKeys];
-    v10 = [v7 allValues];
+    allKeys = [capabilitiesCopy allKeys];
+    allValues = [capabilitiesCopy allValues];
   }
 
-  v39 = v7;
-  v38 = a5;
+  v39 = capabilitiesCopy;
+  errorCopy = error;
   v40 = v9;
-  if (v8)
+  if (optionsCopy)
   {
-    v12 = [v8 objectForKeyedSubscript:*MEMORY[0x1E695E4F0]];
+    v12 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E695E4F0]];
     if (v12 && (+[MIDaemonConfiguration sharedInstance](MIDaemonConfiguration, "sharedInstance"), v13 = objc_claimAutoreleasedReturnValue(), [v13 installationBlacklist], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "containsObject:", v12), v14, v13, v15))
     {
       if (!gLogHandle || *(gLogHandle + 44) >= 5)
@@ -91,7 +91,7 @@ uint64_t __39__MICapabilitiesManager_defaultManager__block_invoke()
     v16 = 0;
   }
 
-  v17 = [v41 count];
+  v17 = [allKeys count];
   if (!v17)
   {
 LABEL_34:
@@ -106,9 +106,9 @@ LABEL_34:
       v47[2] = MEMORY[0x1E695E118];
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:v46 count:3];
       v29 = 0;
-      v7 = v39;
-      a5 = v38;
-      if (!v38)
+      capabilitiesCopy = v39;
+      error = errorCopy;
+      if (!errorCopy)
       {
         goto LABEL_47;
       }
@@ -117,7 +117,7 @@ LABEL_34:
     else
     {
       v9 = v40;
-      a5 = v38;
+      error = errorCopy;
       if ([v40 count])
       {
         v44[0] = @"CapabilitiesMatch";
@@ -142,8 +142,8 @@ LABEL_34:
 
       v24 = [v30 dictionaryWithObjects:v31 forKeys:v32 count:v33];
       v29 = 0;
-      v7 = v39;
-      if (!v38)
+      capabilitiesCopy = v39;
+      if (!errorCopy)
       {
         goto LABEL_47;
       }
@@ -158,7 +158,7 @@ LABEL_34:
   v21 = *MEMORY[0x1E695E4C0];
   while (1)
   {
-    v22 = [v41 objectAtIndexedSubscript:v19];
+    v22 = [allKeys objectAtIndexedSubscript:v19];
     objc_opt_class();
     v23 = v22;
     if (objc_opt_isKindOfClass())
@@ -172,9 +172,9 @@ LABEL_34:
     }
 
     v26 = v20;
-    if (v10)
+    if (allValues)
     {
-      v26 = [v10 objectAtIndexedSubscript:v19];
+      v26 = [allValues objectAtIndexedSubscript:v19];
     }
 
     if (!v24)
@@ -221,16 +221,16 @@ LABEL_34:
   }
 
   v29 = _CreateAndLogError("[MICapabilitiesManager checkCapabilities:withOptions:error:]", 92, @"MIInstallerErrorDomain", 66, 0, 0, @"UIRequiredDeviceCapabilties in Info.plist has a key that is not a string", v25, v37);
-  v7 = v39;
-  a5 = v38;
+  capabilitiesCopy = v39;
+  error = errorCopy;
   v9 = v40;
-  if (v38)
+  if (errorCopy)
   {
 LABEL_45:
     if (!v24)
     {
       v34 = v29;
-      *a5 = v29;
+      *error = v29;
     }
   }
 

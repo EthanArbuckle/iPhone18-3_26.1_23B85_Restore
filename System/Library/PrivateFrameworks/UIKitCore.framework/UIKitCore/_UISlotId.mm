@@ -1,6 +1,6 @@
 @interface _UISlotId
 + (id)snapshotContext;
-- (_UISlotId)initWithSize:(CGSize)a3;
+- (_UISlotId)initWithSize:(CGSize)size;
 - (id)object;
 - (void)dealloc;
 @end
@@ -47,10 +47,10 @@
   [(_UISlotId *)&v4 dealloc];
 }
 
-- (_UISlotId)initWithSize:(CGSize)a3
+- (_UISlotId)initWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = _UISlotId;
   v5 = [(_UISlotId *)&v8 init];

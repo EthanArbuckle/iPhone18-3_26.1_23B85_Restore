@@ -6,16 +6,16 @@
 - (CGVector)targetVelocity;
 - (CGVector)velocity;
 - (_DUIVisibleDroppedItem)init;
-- (_DUIVisibleDroppedItem)initWithCoder:(id)a3;
+- (_DUIVisibleDroppedItem)initWithCoder:(id)coder;
 - (id)createSnapshotView;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAppliedTransform:(CGAffineTransform *)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setTargetVelocity3D:(id)a3;
-- (void)setTargetVelocity:(CGVector)a3;
-- (void)setVelocity3D:(id)a3;
-- (void)setVelocity:(CGVector)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAppliedTransform:(CGAffineTransform *)transform;
+- (void)setCenter:(CGPoint)center;
+- (void)setTargetVelocity3D:(id)d;
+- (void)setTargetVelocity:(CGVector)velocity;
+- (void)setVelocity3D:(id)d;
+- (void)setVelocity:(CGVector)velocity;
 @end
 
 @implementation _DUIVisibleDroppedItem
@@ -37,29 +37,29 @@
   return result;
 }
 
-- (_DUIVisibleDroppedItem)initWithCoder:(id)a3
+- (_DUIVisibleDroppedItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = _DUIVisibleDroppedItem;
   v5 = [(_DUIVisibleDroppedItem *)&v18 init];
   if (v5)
   {
-    *(v5 + 13) = [v4 decodeIntegerForKey:@"itemIndex"];
-    [v4 ui_decodeCAPoint3DForKey:@"center"];
+    *(v5 + 13) = [coderCopy decodeIntegerForKey:@"itemIndex"];
+    [coderCopy ui_decodeCAPoint3DForKey:@"center"];
     *(v5 + 1) = v6;
     *(v5 + 2) = v7;
     *(v5 + 3) = v8;
-    if (v4)
+    if (coderCopy)
     {
-      [v4 decodeCGAffineTransformForKey:@"appliedTransform"];
+      [coderCopy decodeCGAffineTransformForKey:@"appliedTransform"];
       *(v5 + 136) = v15;
       *(v5 + 152) = v16;
       *(v5 + 168) = v17;
-      [v4 _uikit_decodeSPVector3DForKey:@"velocity"];
+      [coderCopy _uikit_decodeSPVector3DForKey:@"velocity"];
       *(v5 + 2) = v15;
       *(v5 + 3) = v16;
-      [v4 _uikit_decodeSPVector3DForKey:@"targetVelocity"];
+      [coderCopy _uikit_decodeSPVector3DForKey:@"targetVelocity"];
     }
 
     else
@@ -75,16 +75,16 @@
 
     *(v5 + 4) = v15;
     *(v5 + 5) = v16;
-    v5[96] = [v4 decodeBoolForKey:{@"constrainSize", v15, v16}];
-    v5[97] = [v4 decodeBoolForKey:@"flipped"];
-    v5[98] = [v4 decodeBoolForKey:@"precisionMode"];
-    [v4 decodeDoubleForKey:@"rotation"];
+    v5[96] = [coderCopy decodeBoolForKey:{@"constrainSize", v15, v16}];
+    v5[97] = [coderCopy decodeBoolForKey:@"flipped"];
+    v5[98] = [coderCopy decodeBoolForKey:@"precisionMode"];
+    [coderCopy decodeDoubleForKey:@"rotation"];
     *(v5 + 16) = v9;
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preview"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preview"];
     v11 = *(v5 + 15);
     *(v5 + 15) = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageComponent"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageComponent"];
     v13 = *(v5 + 14);
     *(v5 + 14) = v12;
   }
@@ -92,31 +92,31 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   itemIndex = self->_itemIndex;
-  v5 = a3;
-  [v5 encodeInteger:itemIndex forKey:@"itemIndex"];
-  [v5 encodeObject:self->_imageComponent forKey:@"imageComponent"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:itemIndex forKey:@"itemIndex"];
+  [coderCopy encodeObject:self->_imageComponent forKey:@"imageComponent"];
   v6 = *&self->_appliedTransform.c;
   v9 = *&self->_appliedTransform.a;
   v10 = v6;
   v11 = *&self->_appliedTransform.tx;
-  [v5 encodeCGAffineTransform:&v9 forKey:@"appliedTransform"];
-  [v5 ui_encodeCAPoint3D:@"center" forKey:{self->_center.x, self->_center.y, self->_center.z}];
+  [coderCopy encodeCGAffineTransform:&v9 forKey:@"appliedTransform"];
+  [coderCopy ui_encodeCAPoint3D:@"center" forKey:{self->_center.x, self->_center.y, self->_center.z}];
   v7 = *&self->_velocity3D.var0.z;
   v9 = *&self->_velocity3D.var0.x;
   v10 = v7;
-  [v5 _uikit_encodeSPVector3D:&v9 forKey:@"velocity"];
+  [coderCopy _uikit_encodeSPVector3D:&v9 forKey:@"velocity"];
   v8 = *&self->_targetVelocity3D.var0.z;
   v9 = *&self->_targetVelocity3D.var0.x;
   v10 = v8;
-  [v5 _uikit_encodeSPVector3D:&v9 forKey:@"targetVelocity"];
-  [v5 encodeBool:self->_constrainSize forKey:@"constrainSize"];
-  [v5 encodeBool:self->_flipped forKey:@"flipped"];
-  [v5 encodeBool:self->_precisionMode forKey:@"precisionMode"];
-  [v5 encodeDouble:@"rotation" forKey:self->_rotation];
-  [v5 encodeObject:self->_preview forKey:@"preview"];
+  [coderCopy _uikit_encodeSPVector3D:&v9 forKey:@"targetVelocity"];
+  [coderCopy encodeBool:self->_constrainSize forKey:@"constrainSize"];
+  [coderCopy encodeBool:self->_flipped forKey:@"flipped"];
+  [coderCopy encodeBool:self->_precisionMode forKey:@"precisionMode"];
+  [coderCopy encodeDouble:@"rotation" forKey:self->_rotation];
+  [coderCopy encodeObject:self->_preview forKey:@"preview"];
 }
 
 - (CGVector)velocity
@@ -128,10 +128,10 @@
   return result;
 }
 
-- (void)setVelocity:(CGVector)a3
+- (void)setVelocity:(CGVector)velocity
 {
-  self->_velocity3D.var0.x = a3.dx;
-  *&self->_velocity3D.var0.y = *&a3.dy;
+  self->_velocity3D.var0.x = velocity.dx;
+  *&self->_velocity3D.var0.y = *&velocity.dy;
   self->_velocity3D.var0._padding = 0.0;
 }
 
@@ -144,10 +144,10 @@
   return result;
 }
 
-- (void)setTargetVelocity:(CGVector)a3
+- (void)setTargetVelocity:(CGVector)velocity
 {
-  self->_targetVelocity3D.var0.x = a3.dx;
-  *&self->_targetVelocity3D.var0.y = *&a3.dy;
+  self->_targetVelocity3D.var0.x = velocity.dx;
+  *&self->_targetVelocity3D.var0.y = *&velocity.dy;
   self->_targetVelocity3D.var0._padding = 0.0;
 }
 
@@ -160,10 +160,10 @@
   return result;
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  self->_center.x = a3.x;
-  self->_center.y = a3.y;
+  self->_center.x = center.x;
+  self->_center.y = center.y;
   self->_center.z = 0.0;
 }
 
@@ -182,11 +182,11 @@
 
 - (id)createSnapshotView
 {
-  v3 = [(_DUIVisibleDroppedItem *)self imageComponent];
-  if (v3)
+  imageComponent = [(_DUIVisibleDroppedItem *)self imageComponent];
+  if (imageComponent)
   {
-    v4 = [(_DUIVisibleDroppedItem *)self preview];
-    v5 = [v3 createSnapshotViewForPreview:v4];
+    preview = [(_DUIVisibleDroppedItem *)self preview];
+    v5 = [imageComponent createSnapshotViewForPreview:preview];
   }
 
   else
@@ -206,11 +206,11 @@
   return self;
 }
 
-- (void)setAppliedTransform:(CGAffineTransform *)a3
+- (void)setAppliedTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_appliedTransform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_appliedTransform.tx = *&transform->tx;
   *&self->_appliedTransform.c = v4;
   *&self->_appliedTransform.a = v3;
 }
@@ -226,7 +226,7 @@
   return result;
 }
 
-- (void)setVelocity3D:(id)a3
+- (void)setVelocity3D:(id)d
 {
   v4 = v3[1];
   *&self->_velocity3D.var0.x = *v3;
@@ -244,7 +244,7 @@
   return result;
 }
 
-- (void)setTargetVelocity3D:(id)a3
+- (void)setTargetVelocity3D:(id)d
 {
   v4 = v3[1];
   *&self->_targetVelocity3D.var0.x = *v3;

@@ -1,15 +1,15 @@
 @interface TSTravelModeIntroViewController
 - (TSSIMSetupFlowDelegate)delegate;
 - (TSTravelModeIntroViewController)init;
-- (TSTravelModeIntroViewController)initWithOptions:(unint64_t)a3 extractionSource:(id)a4 reduceEducation:(unint64_t)a5 arrivalCountry:(id)a6;
+- (TSTravelModeIntroViewController)initWithOptions:(unint64_t)options extractionSource:(id)source reduceEducation:(unint64_t)education arrivalCountry:(id)country;
 - (id)_getCarrierNameForDefaultDataSub;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
 - (void)_continueButtonTapped;
 - (void)_setUpButtons;
 - (void)_setUpTableView;
-- (void)_skipButtonTapped:(id)a3;
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5;
+- (void)_skipButtonTapped:(id)tapped;
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section;
 - (void)viewDidLoad;
 @end
 
@@ -18,9 +18,9 @@
 - (TSTravelModeIntroViewController)init
 {
   self->_showBackButton = 1;
-  v3 = [(TSTravelModeIntroViewController *)self _getCarrierNameForDefaultDataSub];
+  _getCarrierNameForDefaultDataSub = [(TSTravelModeIntroViewController *)self _getCarrierNameForDefaultDataSub];
   dataSubCarrierName = self->_dataSubCarrierName;
-  self->_dataSubCarrierName = v3;
+  self->_dataSubCarrierName = _getCarrierNameForDefaultDataSub;
 
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"TRAVEL_MODE_PRE_DEPARTURE_TITLE" value:&stru_28753DF48 table:@"Localizable"];
@@ -41,26 +41,26 @@
   return v9;
 }
 
-- (TSTravelModeIntroViewController)initWithOptions:(unint64_t)a3 extractionSource:(id)a4 reduceEducation:(unint64_t)a5 arrivalCountry:(id)a6
+- (TSTravelModeIntroViewController)initWithOptions:(unint64_t)options extractionSource:(id)source reduceEducation:(unint64_t)education arrivalCountry:(id)country
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = [(TSTravelModeIntroViewController *)self _getCarrierNameForDefaultDataSub];
+  sourceCopy = source;
+  countryCopy = country;
+  _getCarrierNameForDefaultDataSub = [(TSTravelModeIntroViewController *)self _getCarrierNameForDefaultDataSub];
   dataSubCarrierName = self->_dataSubCarrierName;
-  self->_dataSubCarrierName = v12;
+  self->_dataSubCarrierName = _getCarrierNameForDefaultDataSub;
 
-  self->_isUserAbroad = a3 != 0;
-  self->_reduceEducation = a5 != 0;
-  *&self->_isSourceThirdParty = [v10 isEqualToString:@"Siri"];
+  self->_isUserAbroad = options != 0;
+  self->_reduceEducation = education != 0;
+  *&self->_isSourceThirdParty = [sourceCopy isEqualToString:@"Siri"];
   if (!self->_isUserAbroad)
   {
-    if (![v10 length])
+    if (![sourceCopy length])
     {
       v17 = 0;
       goto LABEL_27;
     }
 
-    v18 = [v11 length];
+    v18 = [countryCopy length];
     isSourceThirdParty = self->_isSourceThirdParty;
     reduceEducation = self->_reduceEducation;
     if (v18)
@@ -81,7 +81,7 @@
         }
 
         v28 = [v22 localizedStringForKey:v23 value:&stru_28753DF48 table:@"Localizable"];
-        [v21 stringWithFormat:v28, v11, v36];
+        [v21 stringWithFormat:v28, countryCopy, v36];
       }
 
       else
@@ -97,7 +97,7 @@
         }
 
         v28 = [v22 localizedStringForKey:v24 value:&stru_28753DF48 table:@"Localizable"];
-        [v21 stringWithFormat:v28, v10, v11];
+        [v21 stringWithFormat:v28, sourceCopy, countryCopy];
       }
     }
 
@@ -134,7 +134,7 @@
       }
 
       v28 = [v26 localizedStringForKey:v27 value:&stru_28753DF48 table:@"Localizable"];
-      [v25 stringWithFormat:v28, v10, v36];
+      [v25 stringWithFormat:v28, sourceCopy, v36];
     }
     v17 = ;
 
@@ -157,7 +157,7 @@ LABEL_27:
 
   if (v31)
   {
-    v31->_options = a3;
+    v31->_options = options;
     v32 = objc_alloc(MEMORY[0x277CC37B0]);
     v33 = [v32 initWithQueue:MEMORY[0x277D85CD0]];
     client = v31->_client;
@@ -174,15 +174,15 @@ LABEL_27:
   [(TSOBTableWelcomeController *)&v4 viewDidLoad];
   if (!self->_showBackButton)
   {
-    v3 = [(OBBaseWelcomeController *)self navigationItem];
-    [v3 setHidesBackButton:1 animated:0];
+    navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem setHidesBackButton:1 animated:0];
   }
 
   [(TSTravelModeIntroViewController *)self _setUpButtons];
   [(TSTravelModeIntroViewController *)self _setUpTableView];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (self->_reduceEducation)
   {
@@ -195,15 +195,15 @@ LABEL_27:
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:3 reuseIdentifier:@"identifier"];
   [v6 setSelectionStyle:0];
-  v7 = [v6 defaultContentConfiguration];
-  if ([v5 section])
+  defaultContentConfiguration = [v6 defaultContentConfiguration];
+  if ([pathCopy section])
   {
-    if ([v5 section] != 1)
+    if ([pathCopy section] != 1)
     {
       goto LABEL_14;
     }
@@ -222,11 +222,11 @@ LABEL_27:
     }
 
     v12 = [v9 localizedStringForKey:v11 value:&stru_28753DF48 table:@"Localizable"];
-    [v7 setText:v12];
+    [defaultContentConfiguration setText:v12];
 
     v13 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
-    v14 = [v7 textProperties];
-    [v14 setFont:v13];
+    textProperties = [defaultContentConfiguration textProperties];
+    [textProperties setFont:v13];
 
     LOBYTE(v13) = +[TSUtilities isGreenTeaCapable];
     v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -250,19 +250,19 @@ LABEL_27:
       v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v20 = [v19 localizedStringForKey:@"TRAVEL_MODE_DATA_ROAMING_LABEL_%@" value:&stru_28753DF48 table:@"Localizable"];
       v21 = [v18 stringWithFormat:v20, self->_dataSubCarrierName];
-      [v7 setText:v21];
+      [defaultContentConfiguration setText:v21];
     }
 
     else
     {
       v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v20 = [v19 localizedStringForKey:@"TRAVEL_MODE_DATA_ROAMING_LABEL" value:&stru_28753DF48 table:@"Localizable"];
-      [v7 setText:v20];
+      [defaultContentConfiguration setText:v20];
     }
 
     v22 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
-    v23 = [v7 textProperties];
-    [v23 setFont:v22];
+    textProperties2 = [defaultContentConfiguration textProperties];
+    [textProperties2 setFont:v22];
 
     v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v16 = v15;
@@ -270,31 +270,31 @@ LABEL_27:
   }
 
   v24 = [v15 localizedStringForKey:v17 value:&stru_28753DF48 table:@"Localizable"];
-  [v7 setSecondaryText:v24];
+  [defaultContentConfiguration setSecondaryText:v24];
 
 LABEL_14:
-  [v6 setContentConfiguration:v7];
-  v25 = [v6 contentView];
-  v26 = [v25 layer];
-  [v26 setCornerRadius:10.0];
+  [v6 setContentConfiguration:defaultContentConfiguration];
+  contentView = [v6 contentView];
+  layer = [contentView layer];
+  [layer setCornerRadius:10.0];
 
-  v27 = [v6 contentView];
-  v28 = [v27 layer];
-  [v28 setMasksToBounds:1];
+  contentView2 = [v6 contentView];
+  layer2 = [contentView2 layer];
+  [layer2 setMasksToBounds:1];
 
   return v6;
 }
 
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section
 {
-  v5 = a4;
-  v6 = [v5 textLabel];
-  [v6 setText:@"header.textLable"];
+  headerViewCopy = headerView;
+  textLabel = [headerViewCopy textLabel];
+  [textLabel setText:@"header.textLable"];
 
-  v8 = [v5 textLabel];
+  textLabel2 = [headerViewCopy textLabel];
 
-  v7 = [MEMORY[0x277D75348] systemGrayColor];
-  [v8 setTextColor:v7];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  [textLabel2 setTextColor:systemGrayColor];
 }
 
 - (void)_setUpButtons
@@ -312,15 +312,15 @@ LABEL_14:
     [(SSOBBoldTrayButton *)v5 setTitle:v7 forState:0];
 
     [(OBBoldTrayButton *)self->_continueButton setEnabled:1];
-    v8 = [(TSTravelModeIntroViewController *)self buttonTray];
-    [v8 addButton:self->_continueButton];
+    buttonTray = [(TSTravelModeIntroViewController *)self buttonTray];
+    [buttonTray addButton:self->_continueButton];
   }
 
   if (!self->_showBackButton)
   {
-    v9 = [MEMORY[0x277D37650] linkButton];
+    linkButton = [MEMORY[0x277D37650] linkButton];
     skipButton = self->_skipButton;
-    self->_skipButton = v9;
+    self->_skipButton = linkButton;
 
     v11 = self->_skipButton;
     v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -328,12 +328,12 @@ LABEL_14:
     [(OBLinkTrayButton *)v11 setTitle:v13 forState:0];
 
     [(OBLinkTrayButton *)self->_skipButton addTarget:self action:sel__skipButtonTapped_ forControlEvents:64];
-    v14 = [(TSTravelModeIntroViewController *)self buttonTray];
-    [v14 addButton:self->_skipButton];
+    buttonTray2 = [(TSTravelModeIntroViewController *)self buttonTray];
+    [buttonTray2 addButton:self->_skipButton];
   }
 
-  v15 = [(TSTravelModeIntroViewController *)self buttonTray];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  buttonTray3 = [(TSTravelModeIntroViewController *)self buttonTray];
+  [buttonTray3 setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (void)_setUpTableView
@@ -342,42 +342,42 @@ LABEL_14:
   v4 = [v3 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v4];
 
-  v5 = [(OBTableWelcomeController *)self tableView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(OBTableWelcomeController *)self tableView];
-  [v6 setRowHeight:*MEMORY[0x277D76F30]];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setRowHeight:*MEMORY[0x277D76F30]];
 
-  v7 = [(OBTableWelcomeController *)self tableView];
-  [v7 setEstimatedRowHeight:1.0];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  [tableView3 setEstimatedRowHeight:1.0];
 
-  v8 = [(OBTableWelcomeController *)self tableView];
-  [v8 setAllowsMultipleSelection:0];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  [tableView4 setAllowsMultipleSelection:0];
 
-  v9 = [(OBTableWelcomeController *)self tableView];
-  [v9 setScrollEnabled:1];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  [tableView5 setScrollEnabled:1];
 
-  v10 = [(OBTableWelcomeController *)self tableView];
-  [v10 setShowsVerticalScrollIndicator:0];
+  tableView6 = [(OBTableWelcomeController *)self tableView];
+  [tableView6 setShowsVerticalScrollIndicator:0];
 
-  v11 = [(OBTableWelcomeController *)self tableView];
-  v12 = [MEMORY[0x277D75348] clearColor];
-  [v11 setBackgroundColor:v12];
+  tableView7 = [(OBTableWelcomeController *)self tableView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [tableView7 setBackgroundColor:clearColor];
 
-  v13 = [(OBTableWelcomeController *)self tableView];
-  [v13 setSeparatorStyle:0];
+  tableView8 = [(OBTableWelcomeController *)self tableView];
+  [tableView8 setSeparatorStyle:0];
 
-  v14 = [(OBTableWelcomeController *)self tableView];
-  [v14 setSectionHeaderHeight:0.0];
+  tableView9 = [(OBTableWelcomeController *)self tableView];
+  [tableView9 setSectionHeaderHeight:0.0];
 
-  v15 = [(OBTableWelcomeController *)self tableView];
-  [v15 setSectionFooterHeight:10.0];
+  tableView10 = [(OBTableWelcomeController *)self tableView];
+  [tableView10 setSectionFooterHeight:10.0];
 
-  v16 = [(OBTableWelcomeController *)self tableView];
-  [v16 setDataSource:self];
+  tableView11 = [(OBTableWelcomeController *)self tableView];
+  [tableView11 setDataSource:self];
 
-  v17 = [(OBTableWelcomeController *)self tableView];
-  [v17 reloadData];
+  tableView12 = [(OBTableWelcomeController *)self tableView];
+  [tableView12 reloadData];
 }
 
 - (void)_continueButtonTapped
@@ -389,7 +389,7 @@ LABEL_14:
   v1 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_skipButtonTapped:(id)a3
+- (void)_skipButtonTapped:(id)tapped
 {
   v4 = objc_opt_new();
   v5 = v4;
@@ -434,8 +434,8 @@ LABEL_14:
 - (id)_getCarrierNameForDefaultDataSub
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CF96D8] sharedManager];
-  v3 = [v2 planItemsShouldUpdate:0];
+  mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+  v3 = [mEMORY[0x277CF96D8] planItemsShouldUpdate:0];
 
   v15 = 0u;
   v16 = 0u;
@@ -447,7 +447,7 @@ LABEL_14:
   {
     v6 = v5;
     v7 = *v14;
-    v8 = &stru_28753DF48;
+    carrierName = &stru_28753DF48;
     while (2)
     {
       for (i = 0; i != v6; ++i)
@@ -460,7 +460,7 @@ LABEL_14:
         v10 = *(*(&v13 + 1) + 8 * i);
         if ([v10 isActiveDataPlan])
         {
-          v8 = [v10 carrierName];
+          carrierName = [v10 carrierName];
           goto LABEL_12;
         }
       }
@@ -477,14 +477,14 @@ LABEL_14:
 
   else
   {
-    v8 = &stru_28753DF48;
+    carrierName = &stru_28753DF48;
   }
 
 LABEL_12:
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return carrierName;
 }
 
 - (TSSIMSetupFlowDelegate)delegate

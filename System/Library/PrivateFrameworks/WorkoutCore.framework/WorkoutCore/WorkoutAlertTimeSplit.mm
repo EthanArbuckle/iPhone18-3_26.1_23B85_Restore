@@ -1,17 +1,17 @@
 @interface WorkoutAlertTimeSplit
 - (_TtC11WorkoutCore21WorkoutAlertTimeSplit)init;
-- (id)localizedProgressDescriptionWithUnitStyle:(unint64_t)a3 formattingManager:(id)a4;
-- (id)spokenDescriptionWithFormattingManager:(id)a3;
-- (id)spokenUserDataWithFormattingManager:(id)a3;
+- (id)localizedProgressDescriptionWithUnitStyle:(unint64_t)style formattingManager:(id)manager;
+- (id)spokenDescriptionWithFormattingManager:(id)manager;
+- (id)spokenUserDataWithFormattingManager:(id)manager;
 @end
 
 @implementation WorkoutAlertTimeSplit
 
-- (id)localizedProgressDescriptionWithUnitStyle:(unint64_t)a3 formattingManager:(id)a4
+- (id)localizedProgressDescriptionWithUnitStyle:(unint64_t)style formattingManager:(id)manager
 {
-  v5 = a4;
-  v6 = self;
-  specialized WorkoutAlertTimeSplit.localizedProgressDescription(with:formattingManager:)(v5);
+  managerCopy = manager;
+  selfCopy = self;
+  specialized WorkoutAlertTimeSplit.localizedProgressDescription(with:formattingManager:)(managerCopy);
 
   type metadata accessor for NLWorkoutAlertUnitAnnotatedString();
   v7.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -19,12 +19,12 @@
   return v7.super.isa;
 }
 
-- (id)spokenDescriptionWithFormattingManager:(id)a3
+- (id)spokenDescriptionWithFormattingManager:(id)manager
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC11WorkoutCore21WorkoutAlertTimeSplit_elapsedTime);
-  v5 = a3;
-  v6 = self;
-  v7 = [v5 stringWithDuration:6 durationFormat:v4];
+  managerCopy = manager;
+  selfCopy = self;
+  v7 = [managerCopy stringWithDuration:6 durationFormat:v4];
   if (v7)
   {
     v8 = v7;
@@ -46,7 +46,7 @@
   return v15;
 }
 
-- (id)spokenUserDataWithFormattingManager:(id)a3
+- (id)spokenUserDataWithFormattingManager:(id)manager
 {
   v4 = type metadata accessor for TimeSplitModel();
   v5 = *(v4 - 8);
@@ -54,7 +54,7 @@
   MEMORY[0x28223BE20](v4);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   v9 = *(&self->super.super.isa + OBJC_IVAR____TtC11WorkoutCore21WorkoutAlertTimeSplit_elapsedTime);
-  v10 = self;
+  selfCopy = self;
   TimeSplitModel.init(duration:)();
   specialized VoiceFeedbackAlerting.toDictionary()();
 

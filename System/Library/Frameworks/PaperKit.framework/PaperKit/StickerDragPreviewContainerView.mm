@@ -1,15 +1,15 @@
 @interface StickerDragPreviewContainerView
-- (_TtC8PaperKit31StickerDragPreviewContainerView)initWithCoder:(id)a3;
-- (_TtC8PaperKit31StickerDragPreviewContainerView)initWithFrame:(CGRect)a3;
-- (void)_animateDropAlongsideAnimator:(id)a3 completion:(id)a4;
-- (void)_animateLiftAlongsideAnimator:(id)a3 completion:(id)a4;
-- (void)_animateLiftCancellationAlongsideAnimator:(id)a3 completion:(id)a4;
-- (void)_preparePreviewContainerWithPreview:(id)a3 source:(id)a4 initialTransform:(CGAffineTransform *)a5;
+- (_TtC8PaperKit31StickerDragPreviewContainerView)initWithCoder:(id)coder;
+- (_TtC8PaperKit31StickerDragPreviewContainerView)initWithFrame:(CGRect)frame;
+- (void)_animateDropAlongsideAnimator:(id)animator completion:(id)completion;
+- (void)_animateLiftAlongsideAnimator:(id)animator completion:(id)completion;
+- (void)_animateLiftCancellationAlongsideAnimator:(id)animator completion:(id)completion;
+- (void)_preparePreviewContainerWithPreview:(id)preview source:(id)source initialTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation StickerDragPreviewContainerView
 
-- (_TtC8PaperKit31StickerDragPreviewContainerView)initWithCoder:(id)a3
+- (_TtC8PaperKit31StickerDragPreviewContainerView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8PaperKit31StickerDragPreviewContainerView_isLifted) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8PaperKit31StickerDragPreviewContainerView_meshView) = 0;
@@ -21,17 +21,17 @@
   return result;
 }
 
-- (void)_preparePreviewContainerWithPreview:(id)a3 source:(id)a4 initialTransform:(CGAffineTransform *)a5
+- (void)_preparePreviewContainerWithPreview:(id)preview source:(id)source initialTransform:(CGAffineTransform *)transform
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  specialized StickerDragPreviewContainerView._preparePreviewContainer(preview:source:initialTransform:)(v7, v8);
+  previewCopy = preview;
+  sourceCopy = source;
+  selfCopy = self;
+  specialized StickerDragPreviewContainerView._preparePreviewContainer(preview:source:initialTransform:)(previewCopy, sourceCopy);
 }
 
-- (void)_animateLiftAlongsideAnimator:(id)a3 completion:(id)a4
+- (void)_animateLiftAlongsideAnimator:(id)animator completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = swift_allocObject();
@@ -45,18 +45,18 @@
   v11[2] = thunk for @escaping @callee_guaranteed @Sendable () -> ();
   v11[3] = &block_descriptor_64;
   v9 = _Block_copy(v11);
-  v10 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
 
-  [a3 addAnimations_];
+  [animator addAnimations_];
   swift_unknownObjectRelease();
 
   _Block_release(v9);
 }
 
-- (void)_animateLiftCancellationAlongsideAnimator:(id)a3 completion:(id)a4
+- (void)_animateLiftCancellationAlongsideAnimator:(id)animator completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = swift_allocObject();
@@ -70,27 +70,27 @@
   v11[2] = thunk for @escaping @callee_guaranteed @Sendable () -> ();
   v11[3] = &block_descriptor_42;
   v9 = _Block_copy(v11);
-  v10 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
 
-  [a3 addAnimations_];
+  [animator addAnimations_];
   swift_unknownObjectRelease();
 
   _Block_release(v9);
 }
 
-- (void)_animateDropAlongsideAnimator:(id)a3 completion:(id)a4
+- (void)_animateDropAlongsideAnimator:(id)animator completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy = self;
   specialized StickerDragPreviewContainerView._animateDrop(alongside:completion:)(partial apply for thunk for @escaping @callee_unowned @convention(block) () -> (), v6);
   swift_unknownObjectRelease();
 }
 
-- (_TtC8PaperKit31StickerDragPreviewContainerView)initWithFrame:(CGRect)a3
+- (_TtC8PaperKit31StickerDragPreviewContainerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,13 +1,13 @@
 @interface WKBokehImageArbiter
-+ (id)imageForZ:(double)a1;
++ (id)imageForZ:(double)z;
 @end
 
 @implementation WKBokehImageArbiter
 
-+ (id)imageForZ:(double)a1
++ (id)imageForZ:(double)z
 {
   objc_opt_self();
-  v2 = (a1 + 1.5) / 1.2;
+  v2 = (z + 1.5) / 1.2;
   if (v2 < 0.0)
   {
     v2 = 0.0;

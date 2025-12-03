@@ -16,12 +16,12 @@
     v4 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDCF8] design:*MEMORY[0x1E69DB8D8] weight:*MEMORY[0x1E69DB980]];
     [(PKBadgeLabel *)v3 setFont:v4];
 
-    v5 = [MEMORY[0x1E69DC888] _pk_betaLabelTextColor];
-    [(PKBadgeLabel *)v3 setTextColor:v5];
+    _pk_betaLabelTextColor = [MEMORY[0x1E69DC888] _pk_betaLabelTextColor];
+    [(PKBadgeLabel *)v3 setTextColor:_pk_betaLabelTextColor];
 
     v6 = objc_alloc_init(MEMORY[0x1E69DC5D8]);
-    v7 = [MEMORY[0x1E69DC888] _pk_betaLabelTextEncapsulationColor];
-    [v6 setColor:v7];
+    _pk_betaLabelTextEncapsulationColor = [MEMORY[0x1E69DC888] _pk_betaLabelTextEncapsulationColor];
+    [v6 setColor:_pk_betaLabelTextEncapsulationColor];
 
     [v6 setScale:1];
     [v6 setStyle:1];

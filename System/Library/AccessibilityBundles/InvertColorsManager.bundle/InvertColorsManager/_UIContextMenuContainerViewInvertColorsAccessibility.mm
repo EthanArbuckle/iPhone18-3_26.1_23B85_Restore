@@ -1,26 +1,26 @@
 @interface _UIContextMenuContainerViewInvertColorsAccessibility
-- (void)addSubview:(id)a3;
+- (void)addSubview:(id)subview;
 @end
 
 @implementation _UIContextMenuContainerViewInvertColorsAccessibility
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   v7.receiver = self;
   v7.super_class = _UIContextMenuContainerViewInvertColorsAccessibility;
-  [(_UIContextMenuContainerViewInvertColorsAccessibility *)&v7 addSubview:v4];
+  [(_UIContextMenuContainerViewInvertColorsAccessibility *)&v7 addSubview:subviewCopy];
   if (UIAccessibilityIsInvertColorsEnabled())
   {
-    v5 = [(_UIContextMenuContainerViewInvertColorsAccessibility *)self traitCollection];
-    v6 = [v5 userInterfaceStyle];
+    traitCollection = [(_UIContextMenuContainerViewInvertColorsAccessibility *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v6 == &dword_0 + 1)
+    if (userInterfaceStyle == &dword_0 + 1)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v4 setAccessibilityVisualEffectHandleBackdrop:1];
+        [subviewCopy setAccessibilityVisualEffectHandleBackdrop:1];
       }
     }
   }

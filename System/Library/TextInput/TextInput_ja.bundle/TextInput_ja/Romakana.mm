@@ -1,34 +1,34 @@
 @interface Romakana
-+ ($9AC8AD2FEA0B9A5F24CD76D172BBF93B)splitRomaji:(id)a3 at:(unint64_t)a4;
-+ (id)hiraganaString:(id)a3 mappingArray:(id)a4;
-+ (id)kanaSymbol:(id)a3;
-+ (id)romajiString:(id)a3;
-- (id)adjustIncompleteRomaji:(id)a3;
-- (id)hiraganaFromRomaji:(id)a3 stripIncompleteRomajiAtEnd:(BOOL)a4 strippedLength:(unint64_t *)a5;
++ ($9AC8AD2FEA0B9A5F24CD76D172BBF93B)splitRomaji:(id)romaji at:(unint64_t)at;
++ (id)hiraganaString:(id)string mappingArray:(id)array;
++ (id)kanaSymbol:(id)symbol;
++ (id)romajiString:(id)string;
+- (id)adjustIncompleteRomaji:(id)romaji;
+- (id)hiraganaFromRomaji:(id)romaji stripIncompleteRomajiAtEnd:(BOOL)end strippedLength:(unint64_t *)length;
 @end
 
 @implementation Romakana
 
-+ (id)romajiString:(id)a3
++ (id)romajiString:(id)string
 {
   v3 = MecabraReverseConvertedRomajiCreateFromKanaString();
 
   return v3;
 }
 
-+ (id)hiraganaString:(id)a3 mappingArray:(id)a4
++ (id)hiraganaString:(id)string mappingArray:(id)array
 {
-  v4 = a4;
+  arrayCopy = array;
   MecabraConvertedKanaCreateFromRomajiString();
   v5 = MecabraConvertedKanaGetKana();
   v6 = MecabraConvertedKanaGetAlignment();
-  v7 = [v6 allKeys];
-  v21 = [v7 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [v6 allKeys];
+  v21 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v22 = v5;
   if ([v5 length])
   {
-    v8 = 0;
+    integerValue3 = 0;
     v20 = MEMORY[0x29EDCA5F8];
     do
     {
@@ -36,30 +36,30 @@
       v23[1] = 3221225472;
       v23[2] = __40__Romakana_hiraganaString_mappingArray___block_invoke;
       v23[3] = &__block_descriptor_40_e35_B24__0__NSNumber_8__NSDictionary_16l;
-      v23[4] = v8;
+      v23[4] = integerValue3;
       v9 = [MEMORY[0x29EDBA0A8] predicateWithBlock:v23];
       v10 = [v21 filteredArrayUsingPredicate:v9];
-      v11 = [v10 firstObject];
+      firstObject = [v10 firstObject];
 
-      v12 = [MEMORY[0x29EDBA070] numberWithInteger:v8];
+      v12 = [MEMORY[0x29EDBA070] numberWithInteger:integerValue3];
       v13 = [v6 objectForKeyedSubscript:v12];
-      v14 = [v13 integerValue];
+      integerValue = [v13 integerValue];
 
-      v15 = [v6 objectForKeyedSubscript:v11];
-      v16 = [v15 integerValue];
+      v15 = [v6 objectForKeyedSubscript:firstObject];
+      integerValue2 = [v15 integerValue];
 
-      v17 = [MEMORY[0x29EDBA070] numberWithInteger:v16 - v14];
-      [v4 addObject:v17];
+      v17 = [MEMORY[0x29EDBA070] numberWithInteger:integerValue2 - integerValue];
+      [arrayCopy addObject:v17];
 
-      for (i = v8 + 1; i < [v11 integerValue]; ++i)
+      for (i = integerValue3 + 1; i < [firstObject integerValue]; ++i)
       {
-        [v4 addObject:&unk_2A2529570];
+        [arrayCopy addObject:&unk_2A2529570];
       }
 
-      v8 = [v11 integerValue];
+      integerValue3 = [firstObject integerValue];
     }
 
-    while (v8 < [v22 length]);
+    while (integerValue3 < [v22 length]);
   }
 
   MecabraConvertedKanaRelease();
@@ -67,17 +67,17 @@
   return v22;
 }
 
-+ (id)kanaSymbol:(id)a3
++ (id)kanaSymbol:(id)symbol
 {
-  v3 = a3;
-  v4 = [v3 UTF8String];
-  v5 = [v3 lengthOfBytesUsingEncoding:4];
+  symbolCopy = symbol;
+  uTF8String = [symbolCopy UTF8String];
+  v5 = [symbolCopy lengthOfBytesUsingEncoding:4];
   if (v5)
   {
     v6 = v5;
     v7 = "-";
     v8 = off_29F378C10;
-    while (strncmp(v4, v7, v6))
+    while (strncmp(uTF8String, v7, v6))
     {
       v9 = *v8;
       v8 += 2;
@@ -94,7 +94,7 @@
   else
   {
 LABEL_5:
-    v10 = v3;
+    v10 = symbolCopy;
   }
 
   v11 = v10;
@@ -102,13 +102,13 @@ LABEL_5:
   return v11;
 }
 
-+ ($9AC8AD2FEA0B9A5F24CD76D172BBF93B)splitRomaji:(id)a3 at:(unint64_t)a4
++ ($9AC8AD2FEA0B9A5F24CD76D172BBF93B)splitRomaji:(id)romaji at:(unint64_t)at
 {
   v62 = *MEMORY[0x29EDCA608];
-  v5 = a3;
+  romajiCopy = romaji;
   v6 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:10];
-  v56 = v5;
-  v7 = [Romakana hiraganaString:v5 mappingArray:v6];
+  v56 = romajiCopy;
+  v7 = [Romakana hiraganaString:romajiCopy mappingArray:v6];
   v8 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:{objc_msgSend(v7, "length")}];
   v9 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:0];
   [v8 addObject:v9];
@@ -144,37 +144,37 @@ LABEL_5:
     while (v12);
   }
 
-  if ([v8 count] > a4)
+  if ([v8 count] > at)
   {
-    v17 = [v8 objectAtIndexedSubscript:a4];
-    v18 = [v17 unsignedIntegerValue];
+    v17 = [v8 objectAtIndexedSubscript:at];
+    unsignedIntegerValue = [v17 unsignedIntegerValue];
 
     v19 = v56;
-    if (!a4)
+    if (!at)
     {
       goto LABEL_25;
     }
 
-    if ([v8 count] > a4 + 1)
+    if ([v8 count] > at + 1)
     {
-      v20 = [v8 objectAtIndexedSubscript:a4 + 1];
-      v21 = v18;
-      v22 = [v20 unsignedIntValue];
-      v23 = [v8 objectAtIndexedSubscript:a4];
-      v24 = [v23 unsignedIntValue];
+      v20 = [v8 objectAtIndexedSubscript:at + 1];
+      v21 = unsignedIntegerValue;
+      unsignedIntValue = [v20 unsignedIntValue];
+      v23 = [v8 objectAtIndexedSubscript:at];
+      unsignedIntValue2 = [v23 unsignedIntValue];
 
-      v25 = v22 == v24;
-      v18 = v21;
-      v26 = a4 + 1;
+      v25 = unsignedIntValue == unsignedIntValue2;
+      unsignedIntegerValue = v21;
+      v26 = at + 1;
       if (v25)
       {
-        v27 = [v8 objectAtIndexedSubscript:a4 - 1];
+        v27 = [v8 objectAtIndexedSubscript:at - 1];
         v54 = [v56 substringToIndex:{objc_msgSend(v27, "unsignedIntValue")}];
 
-        v28 = [v7 substringWithRange:{a4 - 1, 1}];
+        v28 = [v7 substringWithRange:{at - 1, 1}];
         v29 = [Romakana romajiString:v28];
 
-        v30 = [v7 substringWithRange:{a4, 1}];
+        v30 = [v7 substringWithRange:{at, 1}];
         v31 = [Romakana romajiString:v30];
 
         v32 = [v8 objectAtIndexedSubscript:v26];
@@ -189,30 +189,30 @@ LABEL_17:
       }
     }
 
-    v37 = a4 - 1;
-    v38 = [v7 substringWithRange:{a4 - 1, 1}];
+    v37 = at - 1;
+    v38 = [v7 substringWithRange:{at - 1, 1}];
     v39 = [v38 isEqualToString:@"ん"];
 
     if (v39)
     {
-      v40 = [v8 objectAtIndexedSubscript:a4 - 1];
+      v40 = [v8 objectAtIndexedSubscript:at - 1];
       v34 = [v56 substringToIndex:{objc_msgSend(v40, "unsignedIntValue")}];
 
       v41 = [v7 substringWithRange:{v37, 1}];
       v29 = [Romakana romajiString:v41];
 
-      v36 = [v56 substringFromIndex:v18];
+      v36 = [v56 substringFromIndex:unsignedIntegerValue];
       v35 = [v34 stringByAppendingString:v29];
       goto LABEL_17;
     }
 
-    v42 = [v7 substringWithRange:{a4 - 1, 1}];
+    v42 = [v7 substringWithRange:{at - 1, 1}];
     v43 = [v42 isEqualToString:@"っ"];
 
     if (v43)
     {
-      v55 = v18;
-      v35 = [MEMORY[0x29EDBA050] stringWithCapacity:v18];
+      v55 = unsignedIntegerValue;
+      v35 = [MEMORY[0x29EDBA050] stringWithCapacity:unsignedIntegerValue];
       v44 = 0;
       do
       {
@@ -234,7 +234,7 @@ LABEL_17:
         ++v44;
       }
 
-      while (a4 != v44);
+      while (at != v44);
       v49 = v56;
       v50 = v55;
     }
@@ -242,9 +242,9 @@ LABEL_17:
     else
     {
 LABEL_25:
-      v35 = [v56 substringToIndex:v18];
+      v35 = [v56 substringToIndex:unsignedIntegerValue];
       v49 = v56;
-      v50 = v18;
+      v50 = unsignedIntegerValue;
     }
 
     v36 = [v49 substringFromIndex:v50];
@@ -264,10 +264,10 @@ LABEL_27:
   return result;
 }
 
-- (id)hiraganaFromRomaji:(id)a3 stripIncompleteRomajiAtEnd:(BOOL)a4 strippedLength:(unint64_t *)a5
+- (id)hiraganaFromRomaji:(id)romaji stripIncompleteRomajiAtEnd:(BOOL)end strippedLength:(unint64_t *)length
 {
-  v6 = a4;
-  v7 = a3;
+  endCopy = end;
+  romajiCopy = romaji;
   MecabraConvertedKanaCreateFromRomajiString();
   v8 = [MecabraConvertedKanaGetKana() mutableCopy];
   v9 = MecabraConvertedKanaGetAlignment();
@@ -276,23 +276,23 @@ LABEL_27:
   if (v10 - 1 < 0)
   {
     v12 = 0;
-    if (a5)
+    if (length)
     {
 LABEL_7:
-      *a5 = v12;
+      *length = v12;
     }
   }
 
   else
   {
     v21 = v10;
-    v22 = v6;
+    v22 = endCopy;
     v12 = 0;
     while (1)
     {
       v13 = [v8 characterAtIndex:{v11, v21}];
-      v14 = [MEMORY[0x29EDB9F50] alphabetCharacterSet];
-      LODWORD(v13) = [v14 characterIsMember:v13];
+      alphabetCharacterSet = [MEMORY[0x29EDB9F50] alphabetCharacterSet];
+      LODWORD(v13) = [alphabetCharacterSet characterIsMember:v13];
 
       if (!v13)
       {
@@ -301,7 +301,7 @@ LABEL_7:
 
       v15 = [MEMORY[0x29EDBA070] numberWithInteger:v11];
       v16 = [v9 objectForKey:v15];
-      v17 = [v7 substringWithRange:{objc_msgSend(v16, "integerValue"), 1}];
+      v17 = [romajiCopy substringWithRange:{objc_msgSend(v16, "integerValue"), 1}];
 
       [v8 replaceCharactersInRange:v11 withString:{1, v17}];
       ++v12;
@@ -313,15 +313,15 @@ LABEL_7:
       }
     }
 
-    v6 = v22;
-    if (a5)
+    endCopy = v22;
+    if (length)
     {
       goto LABEL_7;
     }
   }
 
   MecabraConvertedKanaRelease();
-  if (v6)
+  if (endCopy)
   {
     v18 = [v8 substringToIndex:{objc_msgSend(v8, "length") - v12}];
   }
@@ -336,11 +336,11 @@ LABEL_7:
   return v19;
 }
 
-- (id)adjustIncompleteRomaji:(id)a3
+- (id)adjustIncompleteRomaji:(id)romaji
 {
-  v4 = a3;
+  romajiCopy = romaji;
   v16 = 0;
-  v5 = [(Romakana *)self hiraganaFromRomaji:v4 stripIncompleteRomajiAtEnd:0 strippedLength:&v16];
+  v5 = [(Romakana *)self hiraganaFromRomaji:romajiCopy stripIncompleteRomajiAtEnd:0 strippedLength:&v16];
   v6 = v5;
   if (v16 == 1)
   {
@@ -348,7 +348,7 @@ LABEL_7:
     v8 = [v6 substringFromIndex:v7 - v16];
     if ([v8 isEqualToString:@"n"])
     {
-      v9 = [v4 stringByAppendingString:@"n"];
+      v9 = [romajiCopy stringByAppendingString:@"n"];
     }
 
     else
@@ -369,16 +369,16 @@ LABEL_7:
         goto LABEL_9;
       }
 
-      v9 = [v4 stringByReplacingCharactersInRange:objc_msgSend(v4 withString:{"length") - 1, 1, @"xtu"}];
+      v9 = [romajiCopy stringByReplacingCharactersInRange:objc_msgSend(romajiCopy withString:{"length") - 1, 1, @"xtu"}];
     }
 
     v14 = v9;
 
-    v4 = v14;
+    romajiCopy = v14;
 LABEL_9:
   }
 
-  return v4;
+  return romajiCopy;
 }
 
 @end

@@ -1,86 +1,86 @@
 @interface ARMeshGeometry
-- (ARMeshGeometry)initWithCoder:(id)a3;
-- (ARMeshGeometry)initWithVertices:(id)a3 faces:(id)a4;
-- (ARMeshGeometry)initWithVertices:(id)a3 normals:(id)a4 faces:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (ARMeshGeometry)initWithCoder:(id)coder;
+- (ARMeshGeometry)initWithVertices:(id)vertices faces:(id)faces;
+- (ARMeshGeometry)initWithVertices:(id)vertices normals:(id)normals faces:(id)faces;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARMeshGeometry
 
-- (ARMeshGeometry)initWithVertices:(id)a3 normals:(id)a4 faces:(id)a5
+- (ARMeshGeometry)initWithVertices:(id)vertices normals:(id)normals faces:(id)faces
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  verticesCopy = vertices;
+  normalsCopy = normals;
+  facesCopy = faces;
   v15.receiver = self;
   v15.super_class = ARMeshGeometry;
   v12 = [(ARMeshGeometry *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_vertices, a3);
-    objc_storeStrong(&v13->_normals, a4);
-    objc_storeStrong(&v13->_faces, a5);
+    objc_storeStrong(&v12->_vertices, vertices);
+    objc_storeStrong(&v13->_normals, normals);
+    objc_storeStrong(&v13->_faces, faces);
   }
 
   return v13;
 }
 
-- (ARMeshGeometry)initWithVertices:(id)a3 faces:(id)a4
+- (ARMeshGeometry)initWithVertices:(id)vertices faces:(id)faces
 {
-  v7 = a3;
-  v8 = a4;
+  verticesCopy = vertices;
+  facesCopy = faces;
   v12.receiver = self;
   v12.super_class = ARMeshGeometry;
   v9 = [(ARMeshGeometry *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_vertices, a3);
-    objc_storeStrong(&v10->_faces, a4);
+    objc_storeStrong(&v9->_vertices, vertices);
+    objc_storeStrong(&v10->_faces, faces);
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   vertices = self->_vertices;
-  v5 = a3;
-  [v5 encodeObject:vertices forKey:@"vertices"];
-  [v5 encodeObject:self->_normals forKey:@"normals"];
-  [v5 encodeObject:self->_faces forKey:@"faces"];
-  [v5 encodeObject:self->_classification forKey:@"classification"];
-  [v5 encodeObject:self->_colors forKey:@"colors"];
+  coderCopy = coder;
+  [coderCopy encodeObject:vertices forKey:@"vertices"];
+  [coderCopy encodeObject:self->_normals forKey:@"normals"];
+  [coderCopy encodeObject:self->_faces forKey:@"faces"];
+  [coderCopy encodeObject:self->_classification forKey:@"classification"];
+  [coderCopy encodeObject:self->_colors forKey:@"colors"];
 }
 
-- (ARMeshGeometry)initWithCoder:(id)a3
+- (ARMeshGeometry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = ARMeshGeometry;
   v5 = [(ARMeshGeometry *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vertices"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vertices"];
     vertices = v5->_vertices;
     v5->_vertices = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"normals"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"normals"];
     normals = v5->_normals;
     v5->_normals = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"faces"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"faces"];
     faces = v5->_faces;
     v5->_faces = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"classification"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"classification"];
     classification = v5->_classification;
     v5->_classification = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"colors"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"colors"];
     colors = v5->_colors;
     v5->_colors = v14;
   }
@@ -88,10 +88,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -101,14 +101,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
       vertices = self->_vertices;
-      v8 = [(ARMeshGeometry *)v6 vertices];
-      if (vertices != v8)
+      vertices = [(ARMeshGeometry *)v6 vertices];
+      if (vertices != vertices)
       {
         v9 = self->_vertices;
-        v3 = [(ARMeshGeometry *)v6 vertices];
-        if (![(ARGeometrySource *)v9 isEqual:v3])
+        vertices2 = [(ARMeshGeometry *)v6 vertices];
+        if (![(ARGeometrySource *)v9 isEqual:vertices2])
         {
           v10 = 0;
           goto LABEL_32;
@@ -116,18 +116,18 @@
       }
 
       normals = self->_normals;
-      v12 = [(ARMeshGeometry *)v6 normals];
-      if (normals != v12)
+      normals = [(ARMeshGeometry *)v6 normals];
+      if (normals != normals)
       {
         v13 = self->_normals;
-        v14 = [(ARMeshGeometry *)v6 normals];
-        if (![(ARGeometrySource *)v13 isEqual:v14])
+        normals2 = [(ARMeshGeometry *)v6 normals];
+        if (![(ARGeometrySource *)v13 isEqual:normals2])
         {
           v10 = 0;
 LABEL_30:
 
 LABEL_31:
-          if (vertices == v8)
+          if (vertices == vertices)
           {
 LABEL_33:
 
@@ -139,13 +139,13 @@ LABEL_32:
           goto LABEL_33;
         }
 
-        v35 = v14;
+        v35 = normals2;
       }
 
       faces = self->_faces;
-      v16 = [(ARMeshGeometry *)v6 faces];
+      faces = [(ARMeshGeometry *)v6 faces];
       v36 = faces;
-      if (faces == v16)
+      if (faces == faces)
       {
         v33 = normals;
         v34 = vertices;
@@ -154,15 +154,15 @@ LABEL_32:
       else
       {
         v17 = self->_faces;
-        v32 = [(ARMeshGeometry *)v6 faces];
+        faces2 = [(ARMeshGeometry *)v6 faces];
         if (![(ARGeometryElement *)v17 isEqual:?])
         {
           v10 = 0;
 LABEL_28:
 
 LABEL_29:
-          v14 = v35;
-          if (normals == v12)
+          normals2 = v35;
+          if (normals == normals)
           {
             goto LABEL_31;
           }
@@ -175,32 +175,32 @@ LABEL_29:
       }
 
       classification = self->_classification;
-      v19 = [(ARMeshGeometry *)v6 classification];
-      if (classification == v19)
+      classification = [(ARMeshGeometry *)v6 classification];
+      if (classification == classification)
       {
-        v31 = v3;
+        v31 = vertices2;
       }
 
       else
       {
         v20 = self->_classification;
-        v21 = [(ARMeshGeometry *)v6 classification];
+        classification2 = [(ARMeshGeometry *)v6 classification];
         v22 = v20;
-        v23 = v21;
-        if (![(ARGeometrySource *)v22 isEqual:v21])
+        v23 = classification2;
+        if (![(ARGeometrySource *)v22 isEqual:classification2])
         {
           v10 = 0;
           goto LABEL_26;
         }
 
         v30 = v23;
-        v31 = v3;
+        v31 = vertices2;
       }
 
       colors = self->_colors;
-      v25 = [(ARMeshGeometry *)v6 colors];
-      v26 = v25;
-      if (colors == v25)
+      colors = [(ARMeshGeometry *)v6 colors];
+      v26 = colors;
+      if (colors == colors)
       {
 
         v10 = 1;
@@ -209,19 +209,19 @@ LABEL_29:
       else
       {
         v27 = self->_colors;
-        v28 = [(ARMeshGeometry *)v6 colors];
-        v10 = [(ARGeometrySource *)v27 isEqual:v28];
+        colors2 = [(ARMeshGeometry *)v6 colors];
+        v10 = [(ARGeometrySource *)v27 isEqual:colors2];
       }
 
       v23 = v30;
-      v3 = v31;
-      if (classification == v19)
+      vertices2 = v31;
+      if (classification == classification)
       {
 LABEL_27:
 
         normals = v33;
         vertices = v34;
-        if (v36 == v16)
+        if (v36 == faces)
         {
           goto LABEL_29;
         }
@@ -249,29 +249,29 @@ LABEL_34:
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@: %p", v5, self];
 
-  v7 = [(ARMeshGeometry *)self vertices];
-  [v6 appendFormat:@" vertices=%@", v7];
+  vertices = [(ARMeshGeometry *)self vertices];
+  [v6 appendFormat:@" vertices=%@", vertices];
 
-  v8 = [(ARMeshGeometry *)self normals];
-  [v6 appendFormat:@" normals=%@", v8];
+  normals = [(ARMeshGeometry *)self normals];
+  [v6 appendFormat:@" normals=%@", normals];
 
-  v9 = [(ARMeshGeometry *)self faces];
-  [v6 appendFormat:@" faces=%@", v9];
+  faces = [(ARMeshGeometry *)self faces];
+  [v6 appendFormat:@" faces=%@", faces];
 
-  v10 = [(ARMeshGeometry *)self classification];
+  classification = [(ARMeshGeometry *)self classification];
 
-  if (v10)
+  if (classification)
   {
-    v11 = [(ARMeshGeometry *)self classification];
-    [v6 appendFormat:@" classification=%@", v11];
+    classification2 = [(ARMeshGeometry *)self classification];
+    [v6 appendFormat:@" classification=%@", classification2];
   }
 
-  v12 = [(ARMeshGeometry *)self colors];
+  colors = [(ARMeshGeometry *)self colors];
 
-  if (v12)
+  if (colors)
   {
-    v13 = [(ARMeshGeometry *)self colors];
-    [v6 appendFormat:@" colors=%@", v13];
+    colors2 = [(ARMeshGeometry *)self colors];
+    [v6 appendFormat:@" colors=%@", colors2];
   }
 
   [v6 appendString:@">"];

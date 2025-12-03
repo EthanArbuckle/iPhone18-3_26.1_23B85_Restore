@@ -1,22 +1,22 @@
 @interface AMSPSD2EventTask
-+ (BOOL)sendInitialPSD2EventWithAction:(id)a3 bag:(id)a4 originalResponse:(id)a5;
++ (BOOL)sendInitialPSD2EventWithAction:(id)action bag:(id)bag originalResponse:(id)response;
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
 + (id)createBagForSubProfile;
-+ (void)sendCUIBootstrapEventWithURL:(id)a3 error:(id)a4;
-+ (void)sendCUIBootstrapInitiatedEventWithURL:(id)a3;
-+ (void)sendCUICallbackEventWithResolveData:(id)a3;
-+ (void)sendRetryResultPSD2EventWithAction:(id)a3 result:(id)a4 error:(id)a5 bag:(id)a6;
++ (void)sendCUIBootstrapEventWithURL:(id)l error:(id)error;
++ (void)sendCUIBootstrapInitiatedEventWithURL:(id)l;
++ (void)sendCUICallbackEventWithResolveData:(id)data;
++ (void)sendRetryResultPSD2EventWithAction:(id)action result:(id)result error:(id)error bag:(id)bag;
 @end
 
 @implementation AMSPSD2EventTask
 
-+ (void)sendCUIBootstrapEventWithURL:(id)a3 error:(id)a4
++ (void)sendCUIBootstrapEventWithURL:(id)l error:(id)error
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAE144B0);
   MEMORY[0x1EEE9AC00](v6 - 8, v7);
   v9 = &v13 - v8;
-  if (a3)
+  if (l)
   {
     sub_192F959AC();
     v10 = sub_192F95A8C();
@@ -31,18 +31,18 @@
 
   __swift_storeEnumTagSinglePayload(v9, v11, 1, v10);
   swift_getObjCClassMetadata();
-  v12 = a4;
+  errorCopy = error;
   sub_192C40170();
 
   sub_1928FC07C(v9, &unk_1EAE144B0);
 }
 
-+ (void)sendCUIBootstrapInitiatedEventWithURL:(id)a3
++ (void)sendCUIBootstrapInitiatedEventWithURL:(id)l
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAE144B0);
   MEMORY[0x1EEE9AC00](v4 - 8, v5);
   v7 = &v10 - v6;
-  if (a3)
+  if (l)
   {
     sub_192F959AC();
     v8 = sub_192F95A8C();
@@ -61,9 +61,9 @@
   sub_1928FC07C(v7, &unk_1EAE144B0);
 }
 
-+ (void)sendCUICallbackEventWithResolveData:(id)a3
++ (void)sendCUICallbackEventWithResolveData:(id)data
 {
-  if (a3)
+  if (data)
   {
     sub_192F9669C();
   }
@@ -72,25 +72,25 @@
   sub_192C41DE4();
 }
 
-+ (BOOL)sendInitialPSD2EventWithAction:(id)a3 bag:(id)a4 originalResponse:(id)a5
++ (BOOL)sendInitialPSD2EventWithAction:(id)action bag:(id)bag originalResponse:(id)response
 {
   swift_getObjCClassMetadata();
-  v7 = a3;
+  actionCopy = action;
   swift_unknownObjectRetain();
-  v8 = a5;
+  responseCopy = response;
   static AMSPSD2EventTask.sendInitialPSD2Event(action:bag:originalResponse:)();
-  LOBYTE(a5) = v9;
+  LOBYTE(response) = v9;
 
   swift_unknownObjectRelease();
-  return a5 & 1;
+  return response & 1;
 }
 
-+ (void)sendRetryResultPSD2EventWithAction:(id)a3 result:(id)a4 error:(id)a5 bag:(id)a6
++ (void)sendRetryResultPSD2EventWithAction:(id)action result:(id)result error:(id)error bag:(id)bag
 {
   swift_getObjCClassMetadata();
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  actionCopy = action;
+  resultCopy = result;
+  errorCopy = error;
   swift_unknownObjectRetain();
   static AMSPSD2EventTask.sendRetryResultPSD2Event(action:result:error:bag:)();
 

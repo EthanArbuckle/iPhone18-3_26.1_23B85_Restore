@@ -1,22 +1,22 @@
 @interface TSSIMUnlockListTableFooterView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (TSSIMUnlockListTableFooterView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (TSSIMUnlockListTableFooterView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation TSSIMUnlockListTableFooterView
 
-- (TSSIMUnlockListTableFooterView)initWithFrame:(CGRect)a3
+- (TSSIMUnlockListTableFooterView)initWithFrame:(CGRect)frame
 {
   v25.receiver = self;
   v25.super_class = TSSIMUnlockListTableFooterView;
-  v5 = [(TSSIMUnlockListTableFooterView *)&v25 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(TSSIMUnlockListTableFooterView *)&v25 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
     v6 = [UIImageView alloc];
     v7 = +[UIDevice currentDevice];
-    v8 = [v7 userInterfaceIdiom];
-    if (v8)
+    userInterfaceIdiom = [v7 userInterfaceIdiom];
+    if (userInterfaceIdiom)
     {
       v9 = 0;
       v10 = @"guide";
@@ -53,7 +53,7 @@
     {
     }
 
-    if (!v8)
+    if (!userInterfaceIdiom)
     {
     }
 
@@ -114,8 +114,8 @@
     else
     {
       v12 = +[BSPlatform sharedInstance];
-      v13 = [v12 homeButtonType];
-      if (v13 == 2)
+      homeButtonType = [v12 homeButtonType];
+      if (homeButtonType == 2)
       {
         v10 = 240.0;
       }
@@ -125,7 +125,7 @@
         v10 = 219.0;
       }
 
-      v9 = *(&unk_100013F90 + (v13 == 2));
+      v9 = *(&unk_100013F90 + (homeButtonType == 2));
     }
   }
 
@@ -148,8 +148,8 @@
     else
     {
       v17 = +[BSPlatform sharedInstance];
-      v18 = [v17 homeButtonType];
-      if (v18 == 2)
+      homeButtonType2 = [v17 homeButtonType];
+      if (homeButtonType2 == 2)
       {
         v8 = 240.0;
       }
@@ -159,13 +159,13 @@
         v8 = 219.0;
       }
 
-      v15 = *(&unk_100013FA0 + (v18 == 2));
+      v15 = *(&unk_100013FA0 + (homeButtonType2 == 2));
     }
   }
 
-  v19 = [(UIImageView *)self->_imageView image];
+  image = [(UIImageView *)self->_imageView image];
 
-  if (v19)
+  if (image)
   {
     [(UIImageView *)self->_imageView sizeThatFits:v4, v6];
     v21 = v20;
@@ -175,8 +175,8 @@
     v54.size.height = v21;
     v22 = v8;
     Width = CGRectGetWidth(v54);
-    v24 = [(UIImageView *)self->_imageView image];
-    [v24 size];
+    image2 = [(UIImageView *)self->_imageView image];
+    [image2 size];
     v49 = v4;
     v26 = v25;
 
@@ -226,10 +226,10 @@
   [(TSSIMUnlockCalloutLabel *)self->_slotTwoLabel setFrame:x, y, v42, height];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(UIImageView *)self->_imageView sizeThatFits:a3.width, a3.height];
+  width = fits.width;
+  [(UIImageView *)self->_imageView sizeThatFits:fits.width, fits.height];
   v5 = width;
   result.height = v4;
   result.width = v5;

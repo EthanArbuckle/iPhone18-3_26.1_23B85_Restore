@@ -1,41 +1,41 @@
 @interface LiveFSUSBLocalStorageClient
-- (id)getConnectionForVolume:(id)a3 withError:(id *)a4;
-- (id)getVolumeName:(id)a3 withError:(id *)a4;
-- (id)loadVolumes:(id)a3 ofType:(id)a4 withError:(id *)a5;
+- (id)getConnectionForVolume:(id)volume withError:(id *)error;
+- (id)getVolumeName:(id)name withError:(id *)error;
+- (id)loadVolumes:(id)volumes ofType:(id)type withError:(id *)error;
 - (id)removeAllVirtualDisks;
-- (void)loadVolume:(id)a3 ofType:(id)a4 withReply:(id)a5;
+- (void)loadVolume:(id)volume ofType:(id)type withReply:(id)reply;
 @end
 
 @implementation LiveFSUSBLocalStorageClient
 
-- (id)getConnectionForVolume:(id)a3 withError:(id *)a4
+- (id)getConnectionForVolume:(id)volume withError:(id *)error
 {
-  v6 = a3;
-  if (a4)
+  volumeCopy = volume;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v15 = 0;
-  v7 = [(LiveFSClient *)self listenerForVolume:v6 error:&v15];
+  v7 = [(LiveFSClient *)self listenerForVolume:volumeCopy error:&v15];
   v8 = v15;
   if (v8)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       [LiveFSUSBLocalStorageClient getConnectionForVolume:withError:];
-      if (a4)
+      if (error)
       {
         goto LABEL_6;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_6:
       v9 = v8;
       v10 = 0;
-      *a4 = v8;
+      *error = v8;
       goto LABEL_10;
     }
 
@@ -45,11 +45,11 @@ LABEL_6:
   else
   {
     v10 = [objc_alloc(MEMORY[0x277CCAE80]) initWithListenerEndpoint:v7];
-    v11 = [MEMORY[0x277D23D78] interfaceForListeners];
-    [v10 setRemoteObjectInterface:v11];
+    interfaceForListeners = [MEMORY[0x277D23D78] interfaceForListeners];
+    [v10 setRemoteObjectInterface:interfaceForListeners];
 
-    v12 = [MEMORY[0x277D23DC0] exportedClientInterface];
-    [v10 setExportedInterface:v12];
+    exportedClientInterface = [MEMORY[0x277D23DC0] exportedClientInterface];
+    [v10 setExportedInterface:exportedClientInterface];
 
     v13 = objc_opt_new();
     [v10 setExportedObject:v13];
@@ -62,10 +62,10 @@ LABEL_10:
   return v10;
 }
 
-- (id)getVolumeName:(id)a3 withError:(id *)a4
+- (id)getVolumeName:(id)name withError:(id *)error
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
@@ -90,7 +90,7 @@ LABEL_10:
   v30[2] = __55__LiveFSUSBLocalStorageClient_getVolumeName_withError___block_invoke;
   v30[3] = &unk_279E0D048;
   v30[4] = &v43;
-  v6 = [v4 remoteObjectProxyWithErrorHandler:v30];
+  v6 = [nameCopy remoteObjectProxyWithErrorHandler:v30];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __55__LiveFSUSBLocalStorageClient_getVolumeName_withError___block_invoke_4;
@@ -258,11 +258,11 @@ LABEL_10:
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)loadVolumes:(id)a3 ofType:(id)a4 withError:(id *)a5
+- (id)loadVolumes:(id)volumes ofType:(id)type withError:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  volumesCopy = volumes;
+  typeCopy = type;
   v29 = 0;
   v30[0] = &v29;
   v30[1] = 0x3032000000;
@@ -294,8 +294,8 @@ LABEL_10:
   v21[3] = &unk_279E0D0C0;
   v21[4] = &v29;
   v21[5] = &v23;
-  [v12 addDisk:v8 fileSystemType:v9 reply:v21];
-  if (a5 && *(v30[0] + 40))
+  [v12 addDisk:volumesCopy fileSystemType:typeCopy reply:v21];
+  if (error && *(v30[0] + 40))
   {
     v13 = livefs_std_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -303,7 +303,7 @@ LABEL_10:
       [LiveFSUSBLocalStorageClient loadVolumes:v30 ofType:? withError:?];
     }
 
-    *a5 = *(v30[0] + 40);
+    *error = *(v30[0] + 40);
     v14 = v24[5];
     v24[5] = 0;
   }
@@ -316,7 +316,7 @@ LABEL_10:
       [LiveFSUSBLocalStorageClient loadVolumes:ofType:withError:];
     }
 
-    *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:2 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:2 userInfo:0];
   }
 
   v16 = livefs_std_log();
@@ -326,9 +326,9 @@ LABEL_10:
     *buf = 136315906;
     v33 = "[LiveFSUSBLocalStorageClient loadVolumes:ofType:withError:]";
     v34 = 2112;
-    v35 = v8;
+    v35 = volumesCopy;
     v36 = 2112;
-    v37 = v9;
+    v37 = typeCopy;
     v38 = 2112;
     v39 = v20;
     _os_log_debug_impl(&dword_270A2D000, v16, OS_LOG_TYPE_DEBUG, "%s:finish:%@:%@:%@", buf, 0x2Au);
@@ -357,20 +357,20 @@ void __60__LiveFSUSBLocalStorageClient_loadVolumes_ofType_withError___block_invo
   *(v9 + 40) = v6;
 }
 
-- (void)loadVolume:(id)a3 ofType:(id)a4 withReply:(id)a5
+- (void)loadVolume:(id)volume ofType:(id)type withReply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   v9 = *(&self->super.super.isa + *MEMORY[0x277D23DC8]);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __59__LiveFSUSBLocalStorageClient_loadVolume_ofType_withReply___block_invoke;
   v14[3] = &unk_279E0D0E8;
-  v15 = v8;
-  v10 = v8;
-  v11 = a4;
-  v12 = a3;
+  v15 = replyCopy;
+  v10 = replyCopy;
+  typeCopy = type;
+  volumeCopy = volume;
   v13 = [v9 remoteObjectProxyWithErrorHandler:v14];
-  [v13 addDisk:v12 fileSystemType:v11 reply:v10];
+  [v13 addDisk:volumeCopy fileSystemType:typeCopy reply:v10];
 }
 
 - (id)removeAllVirtualDisks

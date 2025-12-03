@@ -1,17 +1,17 @@
 @interface TransitPayFeatureDiscoverySource
-- (BOOL)_hasPaymentAndSuggestionsData:(id)a3 error:(id)a4;
+- (BOOL)_hasPaymentAndSuggestionsData:(id)data error:(id)error;
 - (GEOObserverHashTable)observers;
 - (TransitPayActionDelegate)transitPayActionDelegate;
-- (TransitPayFeatureDiscoverySource)initWithInsights:(id)a3 paymentPolygonFetcher:(id)a4 locationUpdater:(id)a5 isActive:(BOOL)a6;
+- (TransitPayFeatureDiscoverySource)initWithInsights:(id)insights paymentPolygonFetcher:(id)fetcher locationUpdater:(id)updater isActive:(BOOL)active;
 - (id)transitPayDiscoveryModel;
-- (void)_fetchInsightsWithCompletion:(id)a3;
+- (void)_fetchInsightsWithCompletion:(id)completion;
 - (void)_notifyObservers;
 - (void)dealloc;
-- (void)didUpdateLocation:(id)a3;
-- (void)fetchTransitMessageFromPassManagerUsingPolygon:(id)a3;
-- (void)paymentSetupViewController:(id)a3 didFinishAddingPaymentPasses:(id)a4 error:(id)a5;
-- (void)transitPassManagerDidChange:(id)a3;
-- (void)transitPayTipDismissedInRoutePlanning:(id)a3;
+- (void)didUpdateLocation:(id)location;
+- (void)fetchTransitMessageFromPassManagerUsingPolygon:(id)polygon;
+- (void)paymentSetupViewController:(id)controller didFinishAddingPaymentPasses:(id)passes error:(id)error;
+- (void)transitPassManagerDidChange:(id)change;
+- (void)transitPayTipDismissedInRoutePlanning:(id)planning;
 - (void)updateFeatureEligibility;
 @end
 
@@ -22,13 +22,13 @@
   observers = self->_observers;
   if (!observers)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v5 = [[GEOObserverHashTable alloc] initWithProtocol:&OBJC_PROTOCOL___HomeDataProvidingObserver queue:0];
     v6 = self->_observers;
     self->_observers = v5;
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
     observers = self->_observers;
   }
 
@@ -40,9 +40,9 @@
   if (self->_active)
   {
     v4 = +[UIDevice currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-    if (v5)
+    if (userInterfaceIdiom)
     {
       v6 = sub_10003D020();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -90,17 +90,17 @@
   return WeakRetained;
 }
 
-- (void)paymentSetupViewController:(id)a3 didFinishAddingPaymentPasses:(id)a4 error:(id)a5
+- (void)paymentSetupViewController:(id)controller didFinishAddingPaymentPasses:(id)passes error:(id)error
 {
-  v6 = a5;
-  if (v6)
+  errorCopy = error;
+  if (errorCopy)
   {
     v7 = sub_10003D020();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [v6 localizedDescription];
+      localizedDescription = [errorCopy localizedDescription];
       *buf = 138412290;
-      v12 = v8;
+      v12 = localizedDescription;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Maps Home - Failed to provision transit card: %@", buf, 0xCu);
     }
 
@@ -121,37 +121,37 @@
   }
 }
 
-- (void)fetchTransitMessageFromPassManagerUsingPolygon:(id)a3
+- (void)fetchTransitMessageFromPassManagerUsingPolygon:(id)polygon
 {
-  v4 = a3;
-  v5 = [v4 transitPaymentMethodSuggestions];
-  v6 = [v5 firstObject];
-  self->_currentMarketMUID = [v6 marketMUID];
+  polygonCopy = polygon;
+  transitPaymentMethodSuggestions = [polygonCopy transitPaymentMethodSuggestions];
+  firstObject = [transitPaymentMethodSuggestions firstObject];
+  self->_currentMarketMUID = [firstObject marketMUID];
 
   passManager = self->_passManager;
-  v8 = [v4 supportedTransitPaymentMethods];
-  v9 = [v4 transitPaymentMethodSuggestions];
+  supportedTransitPaymentMethods = [polygonCopy supportedTransitPaymentMethods];
+  transitPaymentMethodSuggestions2 = [polygonCopy transitPaymentMethodSuggestions];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100640E70;
   v10[3] = &unk_101624930;
   v10[4] = self;
-  [(TransitPassManager *)passManager fetchTransitMessageForRoute:0 paymentMethods:v8 suggestions:v9 completion:v10];
+  [(TransitPassManager *)passManager fetchTransitMessageForRoute:0 paymentMethods:supportedTransitPaymentMethods suggestions:transitPaymentMethodSuggestions2 completion:v10];
 }
 
-- (void)transitPayTipDismissedInRoutePlanning:(id)a3
+- (void)transitPayTipDismissedInRoutePlanning:(id)planning
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"TransitPayTipDismissedInRoutePlanningNotificationMarketMUIDKey"];
+  userInfo = [planning userInfo];
+  v5 = [userInfo objectForKey:@"TransitPayTipDismissedInRoutePlanningNotificationMarketMUIDKey"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
     currentMarketMUID = self->_currentMarketMUID;
     v9 = sub_10003D020();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-    if (currentMarketMUID == v7)
+    if (currentMarketMUID == unsignedLongLongValue)
     {
       if (v10)
       {
@@ -191,17 +191,17 @@
   }
 }
 
-- (void)didUpdateLocation:(id)a3
+- (void)didUpdateLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = sub_10003D020();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 latLng];
-    [v6 lat];
+    latLng = [locationCopy latLng];
+    [latLng lat];
     v8 = v7;
-    v9 = [v4 latLng];
-    [v9 lng];
+    latLng2 = [locationCopy latLng];
+    [latLng2 lng];
     *buf = 134283777;
     v18 = v8;
     v19 = 2049;
@@ -219,28 +219,28 @@
   v14[2] = sub_100641488;
   v14[3] = &unk_101661340;
   objc_copyWeak(&v16, buf);
-  v15 = v4;
-  v13 = v4;
+  v15 = locationCopy;
+  v13 = locationCopy;
   dispatch_async(queue, v14);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
 }
 
-- (BOOL)_hasPaymentAndSuggestionsData:(id)a3 error:(id)a4
+- (BOOL)_hasPaymentAndSuggestionsData:(id)data error:(id)error
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6 && [v5 count])
+  dataCopy = data;
+  errorCopy = error;
+  if (!errorCopy && [dataCopy count])
   {
-    v7 = [v5 firstObject];
-    v9 = [v7 supportedTransitPaymentMethods];
-    v10 = v9;
-    if (v9 && [v9 count])
+    firstObject = [dataCopy firstObject];
+    supportedTransitPaymentMethods = [firstObject supportedTransitPaymentMethods];
+    v10 = supportedTransitPaymentMethods;
+    if (supportedTransitPaymentMethods && [supportedTransitPaymentMethods count])
     {
-      v11 = [v7 transitPaymentMethodSuggestions];
-      v12 = v11;
-      if (v11 && [v11 count])
+      transitPaymentMethodSuggestions = [firstObject transitPaymentMethodSuggestions];
+      v12 = transitPaymentMethodSuggestions;
+      if (transitPaymentMethodSuggestions && [transitPaymentMethodSuggestions count])
       {
         v8 = 1;
 LABEL_17:
@@ -252,7 +252,7 @@ LABEL_17:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         v15 = 138412290;
-        v16 = v7;
+        v16 = firstObject;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "GEOMapItem %@ does not contain any transit payment method suggestions", &v15, 0xCu);
       }
     }
@@ -271,12 +271,12 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v7 = sub_10003D020();
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+  firstObject = sub_10003D020();
+  if (os_log_type_enabled(firstObject, OS_LOG_TYPE_INFO))
   {
     v15 = 138412290;
-    v16 = v6;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Unable to get GEOMapItems (either error or 0 were returned). Error: %@", &v15, 0xCu);
+    v16 = errorCopy;
+    _os_log_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_INFO, "Unable to get GEOMapItems (either error or 0 were returned). Error: %@", &v15, 0xCu);
   }
 
   v8 = 0;
@@ -293,9 +293,9 @@ LABEL_18:
   }
 }
 
-- (void)_fetchInsightsWithCompletion:(id)a3
+- (void)_fetchInsightsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x2020000000;
@@ -316,8 +316,8 @@ LABEL_18:
   v12 = v18;
   v13 = v16;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = completionCopy;
+  v7 = completionCopy;
   v8 = v5;
   dispatch_async(queue, v9);
 
@@ -327,7 +327,7 @@ LABEL_18:
   _Block_object_dispose(v18, 8);
 }
 
-- (void)transitPassManagerDidChange:(id)a3
+- (void)transitPassManagerDidChange:(id)change
 {
   objc_initWeak(&location, self);
   v3[0] = _NSConcreteStackBlock;
@@ -346,10 +346,10 @@ LABEL_18:
   {
     objc_initWeak(location, self);
     v3 = [FeatureDiscoveryModel alloc];
-    v4 = [(TransitPayModelData *)self->_modelData image];
-    v5 = [(TransitPayModelData *)self->_modelData title];
-    v6 = [(TransitPayModelData *)self->_modelData subtitle];
-    v7 = [(TransitPayModelData *)self->_modelData actionTitle];
+    image = [(TransitPayModelData *)self->_modelData image];
+    title = [(TransitPayModelData *)self->_modelData title];
+    subtitle = [(TransitPayModelData *)self->_modelData subtitle];
+    actionTitle = [(TransitPayModelData *)self->_modelData actionTitle];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1006426A8;
@@ -369,7 +369,7 @@ LABEL_18:
     v14[4] = self;
     objc_copyWeak(&v15, location);
     LOBYTE(v13) = 1;
-    v8 = [(FeatureDiscoveryModel *)v3 initWithImage:v4 title:v5 subtitle:v6 actionTitle:v7 actionHandler:v18 bodyTapHandler:0 displayedHandler:v16 dismissHandler:v14 disableAffordanceAfterAction:v13];
+    v8 = [(FeatureDiscoveryModel *)v3 initWithImage:image title:title subtitle:subtitle actionTitle:actionTitle actionHandler:v18 bodyTapHandler:0 displayedHandler:v16 dismissHandler:v14 disableAffordanceAfterAction:v13];
     model = self->_model;
     self->_model = v8;
 
@@ -406,11 +406,11 @@ LABEL_18:
   [(TransitPayFeatureDiscoverySource *)&v4 dealloc];
 }
 
-- (TransitPayFeatureDiscoverySource)initWithInsights:(id)a3 paymentPolygonFetcher:(id)a4 locationUpdater:(id)a5 isActive:(BOOL)a6
+- (TransitPayFeatureDiscoverySource)initWithInsights:(id)insights paymentPolygonFetcher:(id)fetcher locationUpdater:(id)updater isActive:(BOOL)active
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  insightsCopy = insights;
+  fetcherCopy = fetcher;
+  updaterCopy = updater;
   v22.receiver = self;
   v22.super_class = TransitPayFeatureDiscoverySource;
   v14 = [(TransitPayFeatureDiscoverySource *)&v22 init];
@@ -421,10 +421,10 @@ LABEL_18:
     queue = v14->_queue;
     v14->_queue = v16;
 
-    objc_storeStrong(&v14->_msgInsights, a3);
-    objc_storeStrong(&v14->_paymentPolygonFetcher, a4);
-    objc_storeStrong(&v14->_locationUpdater, a5);
-    v14->_active = a6;
+    objc_storeStrong(&v14->_msgInsights, insights);
+    objc_storeStrong(&v14->_paymentPolygonFetcher, fetcher);
+    objc_storeStrong(&v14->_locationUpdater, updater);
+    v14->_active = active;
     v14->_showFeature = 0;
     v18 = objc_alloc_init(PaymentPolygonCache);
     polygonCache = v14->_polygonCache;

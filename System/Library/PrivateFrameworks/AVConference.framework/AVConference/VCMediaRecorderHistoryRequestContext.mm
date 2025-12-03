@@ -1,5 +1,5 @@
 @interface VCMediaRecorderHistoryRequestContext
-- (VCMediaRecorderHistoryRequestContext)initWithSerializedRequest:(id)a3;
+- (VCMediaRecorderHistoryRequestContext)initWithSerializedRequest:(id)request;
 - (id)description;
 - (id)deserializeDirectoryURL;
 - (id)directoryURLDescription;
@@ -8,7 +8,7 @@
 
 @implementation VCMediaRecorderHistoryRequestContext
 
-- (VCMediaRecorderHistoryRequestContext)initWithSerializedRequest:(id)a3
+- (VCMediaRecorderHistoryRequestContext)initWithSerializedRequest:(id)request
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -16,20 +16,20 @@
   v4 = [(VCMediaRecorderHistoryRequestContext *)&v9 init];
   if (v4)
   {
-    v4[24] = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMomentsMediaType", "intValue"}];
-    *(v4 + 4) = [a3 objectForKeyedSubscript:@"vcMomentsTransactionID"];
-    *(v4 + 7) = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMomentsRequestTimestamp", "integerValue"}];
+    v4[24] = [objc_msgSend(request objectForKeyedSubscript:{@"vcMomentsMediaType", "intValue"}];
+    *(v4 + 4) = [request objectForKeyedSubscript:@"vcMomentsTransactionID"];
+    *(v4 + 7) = [objc_msgSend(request objectForKeyedSubscript:{@"vcMomentsRequestTimestamp", "integerValue"}];
     v5 = MEMORY[0x1E6960C70];
     *(v4 + 40) = *MEMORY[0x1E6960C70];
     *(v4 + 7) = *(v5 + 16);
-    v6 = [a3 objectForKeyedSubscript:@"vcMediaRecorderMovieFragmentInterval"];
+    v6 = [request objectForKeyedSubscript:@"vcMediaRecorderMovieFragmentInterval"];
     if (v6)
     {
       CMTimeMakeFromDictionary(&v8, v6);
       *(v4 + 40) = v8;
     }
 
-    *(v4 + 1) = [a3 objectForKeyedSubscript:@"vcMediaRecorderDirectoryURL"];
+    *(v4 + 1) = [request objectForKeyedSubscript:@"vcMediaRecorderDirectoryURL"];
   }
 
   else
@@ -57,9 +57,9 @@
     return [MEMORY[0x1E696AEC0] stringWithFormat:@"directoryURL=%@", self->_directoryURL];
   }
 
-  v4 = [(VCMediaRecorderHistoryRequestContext *)self hasDirectoryURL];
+  hasDirectoryURL = [(VCMediaRecorderHistoryRequestContext *)self hasDirectoryURL];
   v5 = "NO";
-  if (v4)
+  if (hasDirectoryURL)
   {
     v5 = "YES";
   }

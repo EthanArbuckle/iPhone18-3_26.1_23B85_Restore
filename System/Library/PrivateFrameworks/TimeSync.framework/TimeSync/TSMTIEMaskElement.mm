@@ -1,34 +1,34 @@
 @interface TSMTIEMaskElement
-- (TSMTIEMaskElement)initWithCoefficient:(double)a3 offset:(double)a4 lowerLimit:(double)a5 upperLimit:(double)a6;
-- (TSMTIEMaskElement)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSMTIEMaskElement)initWithCoefficient:(double)coefficient offset:(double)offset lowerLimit:(double)limit upperLimit:(double)upperLimit;
+- (TSMTIEMaskElement)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TSMTIEMaskElement
 
-- (TSMTIEMaskElement)initWithCoefficient:(double)a3 offset:(double)a4 lowerLimit:(double)a5 upperLimit:(double)a6
+- (TSMTIEMaskElement)initWithCoefficient:(double)coefficient offset:(double)offset lowerLimit:(double)limit upperLimit:(double)upperLimit
 {
   v11.receiver = self;
   v11.super_class = TSMTIEMaskElement;
   result = [(TSMTIEMaskElement *)&v11 init];
   if (result)
   {
-    result->_a = a3;
-    result->_b = a4;
-    result->_lowerLimit = a5;
-    result->_upperLimit = a6;
+    result->_a = coefficient;
+    result->_b = offset;
+    result->_lowerLimit = limit;
+    result->_upperLimit = upperLimit;
   }
 
   return result;
 }
 
-- (TSMTIEMaskElement)initWithDictionary:(id)a3
+- (TSMTIEMaskElement)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"coefficient"];
-  v6 = [v4 objectForKeyedSubscript:@"offset"];
-  v7 = [v4 objectForKeyedSubscript:@"lowerLimit"];
-  v8 = [v4 objectForKeyedSubscript:@"upperLimit"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"coefficient"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"offset"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"lowerLimit"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"upperLimit"];
 
   if (v7)
   {
@@ -81,7 +81,7 @@ LABEL_12:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   [(TSMTIEMaskElement *)self a];

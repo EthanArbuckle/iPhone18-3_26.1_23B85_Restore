@@ -41,52 +41,52 @@
   v38.super_class = CARThemePanel;
   [(CARSettingsPanel *)&v38 viewDidLoad];
   v3 = [_TtC15CarPlaySettings30CARThemeSelectorViewController alloc];
-  v4 = [(CARSettingsPanel *)self panelController];
-  v5 = [(CARThemeSelectorViewController *)v3 initWithPanelController:v4];
+  panelController = [(CARSettingsPanel *)self panelController];
+  v5 = [(CARThemeSelectorViewController *)v3 initWithPanelController:panelController];
   [(CARThemePanel *)self setSelectorViewController:v5];
 
-  v6 = [(CARThemePanel *)self selectorViewController];
-  [v6 willMoveToParentViewController:self];
+  selectorViewController = [(CARThemePanel *)self selectorViewController];
+  [selectorViewController willMoveToParentViewController:self];
 
-  v7 = [(CARThemePanel *)self selectorViewController];
-  [(CARThemePanel *)self addChildViewController:v7];
+  selectorViewController2 = [(CARThemePanel *)self selectorViewController];
+  [(CARThemePanel *)self addChildViewController:selectorViewController2];
 
-  v8 = [(CARThemePanel *)self view];
-  v9 = [(CARThemePanel *)self selectorViewController];
-  v10 = [v9 view];
-  [v8 addSubview:v10];
+  view = [(CARThemePanel *)self view];
+  selectorViewController3 = [(CARThemePanel *)self selectorViewController];
+  view2 = [selectorViewController3 view];
+  [view addSubview:view2];
 
-  v11 = [(CARThemePanel *)self selectorViewController];
-  v12 = [v11 view];
-  [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+  selectorViewController4 = [(CARThemePanel *)self selectorViewController];
+  view3 = [selectorViewController4 view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v37 = [(CARThemePanel *)self selectorViewController];
-  v36 = [v37 view];
-  v34 = [v36 leadingAnchor];
-  v35 = [(CARThemePanel *)self view];
-  v33 = [v35 leadingAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  selectorViewController5 = [(CARThemePanel *)self selectorViewController];
+  view4 = [selectorViewController5 view];
+  leadingAnchor = [view4 leadingAnchor];
+  view5 = [(CARThemePanel *)self view];
+  leadingAnchor2 = [view5 leadingAnchor];
+  v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v39[0] = v32;
-  v31 = [(CARThemePanel *)self selectorViewController];
-  v30 = [v31 view];
-  v28 = [v30 trailingAnchor];
-  v29 = [(CARThemePanel *)self view];
-  v27 = [v29 trailingAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  selectorViewController6 = [(CARThemePanel *)self selectorViewController];
+  view6 = [selectorViewController6 view];
+  trailingAnchor = [view6 trailingAnchor];
+  view7 = [(CARThemePanel *)self view];
+  trailingAnchor2 = [view7 trailingAnchor];
+  v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v39[1] = v26;
-  v25 = [(CARThemePanel *)self selectorViewController];
-  v24 = [v25 view];
-  v23 = [v24 topAnchor];
-  v13 = [(CARThemePanel *)self view];
-  v14 = [v13 topAnchor];
-  v15 = [v23 constraintEqualToAnchor:v14];
+  selectorViewController7 = [(CARThemePanel *)self selectorViewController];
+  view8 = [selectorViewController7 view];
+  topAnchor = [view8 topAnchor];
+  view9 = [(CARThemePanel *)self view];
+  topAnchor2 = [view9 topAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v39[2] = v15;
-  v16 = [(CARThemePanel *)self selectorViewController];
-  v17 = [v16 view];
-  v18 = [v17 bottomAnchor];
-  v19 = [(CARThemePanel *)self view];
-  v20 = [v19 bottomAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  selectorViewController8 = [(CARThemePanel *)self selectorViewController];
+  view10 = [selectorViewController8 view];
+  bottomAnchor = [view10 bottomAnchor];
+  view11 = [(CARThemePanel *)self view];
+  bottomAnchor2 = [view11 bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v39[3] = v21;
   v22 = [NSArray arrayWithObjects:v39 count:4];
   [NSLayoutConstraint activateConstraints:v22];
@@ -94,8 +94,8 @@
 
 - (void)invalidate
 {
-  v3 = [(CARThemePanel *)self selectorViewController];
-  [v3 invalidate];
+  selectorViewController = [(CARThemePanel *)self selectorViewController];
+  [selectorViewController invalidate];
 
   v4.receiver = self;
   v4.super_class = CARThemePanel;

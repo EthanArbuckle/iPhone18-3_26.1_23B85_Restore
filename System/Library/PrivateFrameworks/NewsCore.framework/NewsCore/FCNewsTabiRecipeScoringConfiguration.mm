@@ -1,5 +1,5 @@
 @interface FCNewsTabiRecipeScoringConfiguration
-- (FCNewsTabiRecipeScoringConfiguration)initWithDictionary:(id)a3;
+- (FCNewsTabiRecipeScoringConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -8,49 +8,49 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCNewsTabiRecipeScoringConfiguration *)self bundleOutputConfiguration];
-  v5 = [v4 indentedDescription];
-  [v3 appendFormat:@"\n\tbundleOutputConfiguration: %@", v5];
+  bundleOutputConfiguration = [(FCNewsTabiRecipeScoringConfiguration *)self bundleOutputConfiguration];
+  indentedDescription = [bundleOutputConfiguration indentedDescription];
+  [v3 appendFormat:@"\n\tbundleOutputConfiguration: %@", indentedDescription];
 
-  v6 = [(FCNewsTabiRecipeScoringConfiguration *)self nonBundleOutputConfiguration];
-  v7 = [v6 indentedDescription];
-  [v3 appendFormat:@"\n\tnonBundleOutputConfiguration: %@", v7];
+  nonBundleOutputConfiguration = [(FCNewsTabiRecipeScoringConfiguration *)self nonBundleOutputConfiguration];
+  indentedDescription2 = [nonBundleOutputConfiguration indentedDescription];
+  [v3 appendFormat:@"\n\tnonBundleOutputConfiguration: %@", indentedDescription2];
 
-  v8 = [(FCNewsTabiRecipeScoringConfiguration *)self eventAggregationConfiguration];
-  v9 = [v8 indentedDescription];
-  [v3 appendFormat:@"\n\teventAggregationConfiguration: %@;", v9];
+  eventAggregationConfiguration = [(FCNewsTabiRecipeScoringConfiguration *)self eventAggregationConfiguration];
+  indentedDescription3 = [eventAggregationConfiguration indentedDescription];
+  [v3 appendFormat:@"\n\teventAggregationConfiguration: %@;", indentedDescription3];
 
-  v10 = [(FCNewsTabiRecipeScoringConfiguration *)self bundleInputConfiguration];
-  v11 = [v10 indentedDescription];
-  [v3 appendFormat:@"\n\tbundleInputConfiguration: %@", v11];
+  bundleInputConfiguration = [(FCNewsTabiRecipeScoringConfiguration *)self bundleInputConfiguration];
+  indentedDescription4 = [bundleInputConfiguration indentedDescription];
+  [v3 appendFormat:@"\n\tbundleInputConfiguration: %@", indentedDescription4];
 
-  v12 = [(FCNewsTabiRecipeScoringConfiguration *)self nonBundleInputConfiguration];
-  v13 = [v12 indentedDescription];
-  [v3 appendFormat:@"\n\tnonBundleInputConfiguration: %@", v13];
+  nonBundleInputConfiguration = [(FCNewsTabiRecipeScoringConfiguration *)self nonBundleInputConfiguration];
+  indentedDescription5 = [nonBundleInputConfiguration indentedDescription];
+  [v3 appendFormat:@"\n\tnonBundleInputConfiguration: %@", indentedDescription5];
 
   [v3 appendString:@"\n>"];
 
   return v3;
 }
 
-- (FCNewsTabiRecipeScoringConfiguration)initWithDictionary:(id)a3
+- (FCNewsTabiRecipeScoringConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [FCNewsTabiRecipeScoringOutputConfiguration alloc];
-  v6 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"bundleOutputConfiguration", 0);
+  v6 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"bundleOutputConfiguration", 0);
   v7 = [(FCNewsTabiRecipeScoringOutputConfiguration *)v5 initWithDictionary:v6];
 
   if (v7)
   {
     v8 = v7;
     v9 = [FCNewsTabiRecipeScoringOutputConfiguration alloc];
-    v10 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"nonBundleOutputConfiguration", 0);
+    v10 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"nonBundleOutputConfiguration", 0);
     v11 = [(FCNewsTabiRecipeScoringOutputConfiguration *)v9 initWithDictionary:v10];
 
     if (v11)
     {
       v12 = v11;
-      v13 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"eventAggregationConfiguration", 0);
+      v13 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"eventAggregationConfiguration", 0);
       v14 = v13;
       if (v13)
       {
@@ -62,7 +62,7 @@
           v36 = v16;
           v35 = v16;
           v18 = [FCNewsTabiRecipeScoringInputConfiguration alloc];
-          v19 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"bundleInputConfiguration", 0);
+          v19 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"bundleInputConfiguration", 0);
           v20 = [(FCNewsTabiRecipeScoringInputConfiguration *)v18 initWithDictionary:v19];
 
           obj = v20;
@@ -70,7 +70,7 @@
           {
             v34 = v20;
             v21 = [FCNewsTabiRecipeScoringInputConfiguration alloc];
-            v22 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"nonBundleInputConfiguration", 0);
+            v22 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"nonBundleInputConfiguration", 0);
             v23 = [(FCNewsTabiRecipeScoringInputConfiguration *)v21 initWithDictionary:v22];
 
             v33 = v23;
@@ -93,7 +93,7 @@
               }
 
               self = p_isa;
-              v27 = self;
+              selfCopy = self;
               v28 = v32;
             }
 
@@ -103,8 +103,8 @@
               v39[1] = 3221225472;
               v39[2] = __59__FCNewsTabiRecipeScoringConfiguration_initWithDictionary___block_invoke_20;
               v39[3] = &unk_1E7C36F98;
-              v40 = v4;
-              v27 = __59__FCNewsTabiRecipeScoringConfiguration_initWithDictionary___block_invoke_20(v39);
+              v40 = dictionaryCopy;
+              selfCopy = __59__FCNewsTabiRecipeScoringConfiguration_initWithDictionary___block_invoke_20(v39);
               v28 = v40;
               v17 = v36;
             }
@@ -118,8 +118,8 @@
             v41[1] = 3221225472;
             v41[2] = __59__FCNewsTabiRecipeScoringConfiguration_initWithDictionary___block_invoke_19;
             v41[3] = &unk_1E7C36F98;
-            v42 = v4;
-            v27 = __59__FCNewsTabiRecipeScoringConfiguration_initWithDictionary___block_invoke_19(v41);
+            v42 = dictionaryCopy;
+            selfCopy = __59__FCNewsTabiRecipeScoringConfiguration_initWithDictionary___block_invoke_19(v41);
             v30 = v42;
             v17 = v36;
           }
@@ -134,7 +134,7 @@
           v43[2] = __59__FCNewsTabiRecipeScoringConfiguration_initWithDictionary___block_invoke_17;
           v43[3] = &unk_1E7C36F98;
           v44 = v15;
-          v27 = __59__FCNewsTabiRecipeScoringConfiguration_initWithDictionary___block_invoke_17(v43);
+          selfCopy = __59__FCNewsTabiRecipeScoringConfiguration_initWithDictionary___block_invoke_17(v43);
           v29 = v44;
         }
       }
@@ -145,8 +145,8 @@
         v45[1] = 3221225472;
         v45[2] = __59__FCNewsTabiRecipeScoringConfiguration_initWithDictionary___block_invoke_15;
         v45[3] = &unk_1E7C36F98;
-        v46 = v4;
-        v27 = __59__FCNewsTabiRecipeScoringConfiguration_initWithDictionary___block_invoke_15(v45);
+        v46 = dictionaryCopy;
+        selfCopy = __59__FCNewsTabiRecipeScoringConfiguration_initWithDictionary___block_invoke_15(v45);
         v15 = v46;
       }
     }
@@ -157,8 +157,8 @@
       v47[1] = 3221225472;
       v47[2] = __59__FCNewsTabiRecipeScoringConfiguration_initWithDictionary___block_invoke_14;
       v47[3] = &unk_1E7C36F98;
-      v48 = v4;
-      v27 = __59__FCNewsTabiRecipeScoringConfiguration_initWithDictionary___block_invoke_14(v47);
+      v48 = dictionaryCopy;
+      selfCopy = __59__FCNewsTabiRecipeScoringConfiguration_initWithDictionary___block_invoke_14(v47);
       v12 = v48;
     }
   }
@@ -169,12 +169,12 @@
     v49[1] = 3221225472;
     v49[2] = __59__FCNewsTabiRecipeScoringConfiguration_initWithDictionary___block_invoke;
     v49[3] = &unk_1E7C36F98;
-    v50 = v4;
-    v27 = __59__FCNewsTabiRecipeScoringConfiguration_initWithDictionary___block_invoke(v49);
+    v50 = dictionaryCopy;
+    selfCopy = __59__FCNewsTabiRecipeScoringConfiguration_initWithDictionary___block_invoke(v49);
     v8 = v50;
   }
 
-  return v27;
+  return selfCopy;
 }
 
 uint64_t __59__FCNewsTabiRecipeScoringConfiguration_initWithDictionary___block_invoke(uint64_t a1)

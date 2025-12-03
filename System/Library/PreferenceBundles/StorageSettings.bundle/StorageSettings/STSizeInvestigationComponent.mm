@@ -1,24 +1,24 @@
 @interface STSizeInvestigationComponent
-- (STSizeInvestigationComponent)initWithPaths:(id)a3;
+- (STSizeInvestigationComponent)initWithPaths:(id)paths;
 - (id)calculatedString;
 - (id)reportedString;
-- (id)sizeFormatter:(id)a3 withSign:(BOOL)a4;
+- (id)sizeFormatter:(id)formatter withSign:(BOOL)sign;
 - (id)specifier;
 - (void)fetchSize;
 @end
 
 @implementation STSizeInvestigationComponent
 
-- (STSizeInvestigationComponent)initWithPaths:(id)a3
+- (STSizeInvestigationComponent)initWithPaths:(id)paths
 {
-  v5 = a3;
+  pathsCopy = paths;
   v9.receiver = self;
   v9.super_class = STSizeInvestigationComponent;
   v6 = [(STSizeInvestigationComponent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_filePaths, a3);
+    objc_storeStrong(&v6->_filePaths, paths);
     *&v7->_isFetched = 0;
     v7->_hasPathSizingError = 0;
   }
@@ -26,20 +26,20 @@
   return v7;
 }
 
-- (id)sizeFormatter:(id)a3 withSign:(BOOL)a4
+- (id)sizeFormatter:(id)formatter withSign:(BOOL)sign
 {
-  v4 = a4;
-  v5 = a3;
-  [v5 longLongValue];
+  signCopy = sign;
+  formatterCopy = formatter;
+  [formatterCopy longLongValue];
   v6 = STFormattedSize();
-  if ([v5 longLongValue] >= 1 && v4)
+  if ([formatterCopy longLongValue] >= 1 && signCopy)
   {
     v7 = [NSString stringWithFormat:@"+%@", v6];
 
     v6 = v7;
   }
 
-  if (![v5 longLongValue])
+  if (![formatterCopy longLongValue])
   {
 
     v6 = @"0B";
@@ -50,8 +50,8 @@
 
 - (void)fetchSize
 {
-  v3 = [(STStorageApp *)self->_app appSize];
-  v4 = [v3 fixed];
+  appSize = [(STStorageApp *)self->_app appSize];
+  fixed = [appSize fixed];
 
   v17 = 0u;
   v18 = 0u;
@@ -82,14 +82,14 @@
     while (v7);
   }
 
-  self->_realSize.used_space = v4;
+  self->_realSize.used_space = fixed;
   self->_realSize.num_files = 0;
   self->_realSize.purgeable_space = 0;
   self->_realSize.num_clones = 0;
   self->_realSize.hasSizingError = 0;
   *(&self->_realSize.hasSizingError + 1) = 0;
   *(&self->_realSize.hasSizingError + 1) = 0;
-  v11 = [NSNumber numberWithLongLong:v4];
+  v11 = [NSNumber numberWithLongLong:fixed];
   realSizeComputed = self->_realSizeComputed;
   self->_realSizeComputed = v11;
 

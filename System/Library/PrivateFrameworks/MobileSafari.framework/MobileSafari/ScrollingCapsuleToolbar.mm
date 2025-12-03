@@ -1,5 +1,5 @@
 @interface ScrollingCapsuleToolbar
-- (_TtC12MobileSafari23ScrollingCapsuleToolbar)initWithFrame:(CGRect)a3;
+- (_TtC12MobileSafari23ScrollingCapsuleToolbar)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -16,7 +16,7 @@
   sub_18BAD0F40();
 }
 
-- (_TtC12MobileSafari23ScrollingCapsuleToolbar)initWithFrame:(CGRect)a3
+- (_TtC12MobileSafari23ScrollingCapsuleToolbar)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

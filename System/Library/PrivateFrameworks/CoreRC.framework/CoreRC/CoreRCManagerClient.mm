@@ -1,495 +1,495 @@
 @interface CoreRCManagerClient
-- (BOOL)sendCommand:(unint64_t)a3 fromDevice:(id)a4 toDevice:(id)a5 withDuration:(unint64_t)a6 error:(id *)a7;
-- (BOOL)sendHIDEvent:(id)a3 fromDevice:(id)a4 toDevice:(id)a5 error:(id *)a6;
-- (BOOL)setExtendedProperty:(id)a3 forKey:(id)a4 ofDevice:(id)a5 error:(id *)a6;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 ofBus:(id)a5 error:(id *)a6;
+- (BOOL)sendCommand:(unint64_t)command fromDevice:(id)device toDevice:(id)toDevice withDuration:(unint64_t)duration error:(id *)error;
+- (BOOL)sendHIDEvent:(id)event fromDevice:(id)device toDevice:(id)toDevice error:(id *)error;
+- (BOOL)setExtendedProperty:(id)property forKey:(id)key ofDevice:(id)device error:(id *)error;
+- (BOOL)setProperty:(id)property forKey:(id)key ofBus:(id)bus error:(id *)error;
 - (id)buses;
 - (id)connection;
-- (id)extendedPropertyForKey:(id)a3 ofDevice:(id)a4 error:(id *)a5;
-- (id)propertyForKey:(id)a3 ofBus:(id)a4 error:(id *)a5;
-- (void)addDeviceOnBusAsync:(id)a3 withType:(unint64_t)a4 matching:(id)a5 reply:(id)a6;
-- (void)addDeviceOnBusAsync:(id)a3 withType:(unint64_t)a4 matching:(id)a5 withSessionOwningDevice:(id)a6 reply:(id)a7;
-- (void)bus:(id)a3 deviceHasBeenAdded:(id)a4;
-- (void)bus:(id)a3 deviceHasBeenRemoved:(id)a4;
-- (void)bus:(id)a3 deviceHasBeenUpdated:(id)a4;
-- (void)busHasBeenAdded:(id)a3;
-- (void)busHasBeenRemoved:(id)a3;
-- (void)busHasBeenUpdated:(id)a3;
-- (void)cecBus:(id)a3 activeSourceHasChangedTo:(id)a4 fromDevice:(id)a5;
-- (void)cecBus:(id)a3 rxMessageReceived:(id)a4;
-- (void)cecBus:(id)a3 txMessageSent:(id)a4 error:(id)a5;
-- (void)cecDevice:(id)a3 activeSourceStatusHasChanged:(BOOL)a4;
-- (void)cecDevice:(id)a3 audioStatusReceived:(unint64_t)a4 muteStatus:(BOOL)a5;
-- (void)cecDevice:(id)a3 deckControlCommandHasBeenReceived:(unint64_t)a4 fromDevice:(id)a5;
-- (void)cecDevice:(id)a3 deckControlPlayHasBeenReceived:(unint64_t)a4 fromDevice:(id)a5;
-- (void)cecDevice:(id)a3 deckControlStatusHasBeenUpdated:(unint64_t)a4 fromDevice:(id)a5;
-- (void)cecDevice:(id)a3 featureAbort:(id)a4;
-- (void)cecDevice:(id)a3 receivedRequestAudioReturnChannelStatusChangeTo:(unint64_t)a4 fromDevice:(id)a5;
-- (void)cecDevice:(id)a3 receivedRequestSystemAudioModeStatusChangeTo:(unint64_t)a4 fromDevice:(id)a5;
-- (void)cecDevice:(id)a3 requestAudioReturnChannelStatusChangeTo:(unint64_t)a4 didFinishWithResult:(BOOL)a5 error:(id)a6;
-- (void)cecDevice:(id)a3 requestSystemAudioModeStatusChangeTo:(unint64_t)a4 didFinishWithResult:(BOOL)a5 error:(id)a6;
-- (void)cecDevice:(id)a3 standbyRequestHasBeenReceived:(id)a4;
-- (void)cecDeviceShouldAssertActiveSource:(id)a3;
-- (void)clearAllStoredCommandsFromDeviceAsync:(id)a3 reply:(id)a4;
+- (id)extendedPropertyForKey:(id)key ofDevice:(id)device error:(id *)error;
+- (id)propertyForKey:(id)key ofBus:(id)bus error:(id *)error;
+- (void)addDeviceOnBusAsync:(id)async withType:(unint64_t)type matching:(id)matching reply:(id)reply;
+- (void)addDeviceOnBusAsync:(id)async withType:(unint64_t)type matching:(id)matching withSessionOwningDevice:(id)device reply:(id)reply;
+- (void)bus:(id)bus deviceHasBeenAdded:(id)added;
+- (void)bus:(id)bus deviceHasBeenRemoved:(id)removed;
+- (void)bus:(id)bus deviceHasBeenUpdated:(id)updated;
+- (void)busHasBeenAdded:(id)added;
+- (void)busHasBeenRemoved:(id)removed;
+- (void)busHasBeenUpdated:(id)updated;
+- (void)cecBus:(id)bus activeSourceHasChangedTo:(id)to fromDevice:(id)device;
+- (void)cecBus:(id)bus rxMessageReceived:(id)received;
+- (void)cecBus:(id)bus txMessageSent:(id)sent error:(id)error;
+- (void)cecDevice:(id)device activeSourceStatusHasChanged:(BOOL)changed;
+- (void)cecDevice:(id)device audioStatusReceived:(unint64_t)received muteStatus:(BOOL)status;
+- (void)cecDevice:(id)device deckControlCommandHasBeenReceived:(unint64_t)received fromDevice:(id)fromDevice;
+- (void)cecDevice:(id)device deckControlPlayHasBeenReceived:(unint64_t)received fromDevice:(id)fromDevice;
+- (void)cecDevice:(id)device deckControlStatusHasBeenUpdated:(unint64_t)updated fromDevice:(id)fromDevice;
+- (void)cecDevice:(id)device featureAbort:(id)abort;
+- (void)cecDevice:(id)device receivedRequestAudioReturnChannelStatusChangeTo:(unint64_t)to fromDevice:(id)fromDevice;
+- (void)cecDevice:(id)device receivedRequestSystemAudioModeStatusChangeTo:(unint64_t)to fromDevice:(id)fromDevice;
+- (void)cecDevice:(id)device requestAudioReturnChannelStatusChangeTo:(unint64_t)to didFinishWithResult:(BOOL)result error:(id)error;
+- (void)cecDevice:(id)device requestSystemAudioModeStatusChangeTo:(unint64_t)to didFinishWithResult:(BOOL)result error:(id)error;
+- (void)cecDevice:(id)device standbyRequestHasBeenReceived:(id)received;
+- (void)cecDeviceShouldAssertActiveSource:(id)source;
+- (void)clearAllStoredCommandsFromDeviceAsync:(id)async reply:(id)reply;
 - (void)connectionInterrupted;
 - (void)dealloc;
-- (void)deleteDeviceAsync:(id)a3 fromBus:(id)a4 reply:(id)a5;
-- (void)device:(id)a3 receivedHIDEvent:(id)a4 fromDevice:(id)a5;
-- (void)endLearningWithDeviceAsync:(id)a3 reply:(id)a4;
-- (void)fakeRemoveCECBusAsync:(id)a3 reply:(id)a4;
-- (void)fakeRemoveCECDeviceAsync:(id)a3 reply:(id)a4;
-- (void)getExtendedPropertyAsyncForKey:(id)a3 ofDevice:(id)a4 reply:(id)a5;
-- (void)getPropertyAsyncForKey:(id)a3 ofBus:(id)a4 reply:(id)a5;
-- (void)injectRXMessageAsync:(id)a3 forBus:(id)a4 reply:(id)a5;
-- (void)injectTXMessageAsync:(id)a3 forBus:(id)a4 reply:(id)a5;
+- (void)deleteDeviceAsync:(id)async fromBus:(id)bus reply:(id)reply;
+- (void)device:(id)device receivedHIDEvent:(id)event fromDevice:(id)fromDevice;
+- (void)endLearningWithDeviceAsync:(id)async reply:(id)reply;
+- (void)fakeRemoveCECBusAsync:(id)async reply:(id)reply;
+- (void)fakeRemoveCECDeviceAsync:(id)async reply:(id)reply;
+- (void)getExtendedPropertyAsyncForKey:(id)key ofDevice:(id)device reply:(id)reply;
+- (void)getPropertyAsyncForKey:(id)key ofBus:(id)bus reply:(id)reply;
+- (void)injectRXMessageAsync:(id)async forBus:(id)bus reply:(id)reply;
+- (void)injectTXMessageAsync:(id)async forBus:(id)bus reply:(id)reply;
 - (void)invalidate;
-- (void)learningSessionForDevice:(id)a3 commandProgress:(id)a4;
-- (void)learningSessionForDevice:(id)a3 duplicateCommand:(unint64_t)a4 target:(id)a5;
-- (void)learningSessionForDevice:(id)a3 status:(unint64_t)a4;
-- (void)learningSessionForDeviceCommandDone:(id)a3;
-- (void)mergeBus:(id)a3;
-- (void)performDeckControlCommandAsync:(id)a3 controlMode:(unint64_t)a4 targetDevice:(id)a5 reply:(id)a6;
-- (void)performDeckControlPlayAsync:(id)a3 playMode:(unint64_t)a4 targetDevice:(id)a5 reply:(id)a6;
-- (void)performDeckControlRefreshStatusAsync:(id)a3 targetDevice:(id)a4 requestType:(unint64_t)a5 reply:(id)a6;
-- (void)performDeckControlSetDeckStatusAsync:(unint64_t)a3 forDevice:(id)a4 reply:(id)a5;
-- (void)performInactiveSourceAsync:(id)a3 reply:(id)a4;
-- (void)performRefreshDevicesAsync:(id)a3 reply:(id)a4;
-- (void)performRefreshProperties:(id)a3 ofDevice:(id)a4 withDeviceAsync:(id)a5 reply:(id)a6;
-- (void)performRemoveDeviceWithTypeAsync:(unint64_t)a3 bus:(id)a4 reply:(id)a5;
-- (void)performRemoveFromBus:(id)a3 reply:(id)a4;
-- (void)performRequestActiveSourceAsync:(id)a3 reply:(id)a4;
-- (void)performRequestAudioReturnChannelStatusChangeTo:(unint64_t)a3 withDeviceAsync:(id)a4 reply:(id)a5;
-- (void)performRequestAudioStatusAsync:(id)a3 reply:(id)a4;
-- (void)performRequestSystemAudioModeStatusChangeTo:(unint64_t)a3 withDeviceAsync:(id)a4 reply:(id)a5;
-- (void)performSetAudioVolumeStatus:(unint64_t)a3 withDeviceAsync:(id)a4 reply:(id)a5;
-- (void)performSetPowerStatus:(unint64_t)a3 withDeviceAsync:(id)a4 reply:(id)a5;
-- (void)performSetSupportedAudioFormats:(id)a3 withDeviceAsync:(id)a4 reply:(id)a5;
-- (void)performStandbyAsync:(id)a3 targetDevice:(id)a4 reply:(id)a5;
-- (void)performSystemAudioModeRequestAsync:(id)a3 withDesiredState:(unint64_t)a4 reply:(id)a5;
-- (void)queryBusesAsync:(id)a3;
-- (void)queryLocalInstanceAsync:(id)a3 bus:(id)a4 reply:(id)a5;
-- (void)queryLoggingAsync:(id)a3;
-- (void)sendCommandAsync:(id)a3 fromDevice:(id)a4 reply:(id)a5;
-- (void)sendCommandAsync:(unint64_t)a3 fromDevice:(id)a4 toDevice:(id)a5 withDuration:(unint64_t)a6 reply:(id)a7;
-- (void)sendHIDEventAsync:(id)a3 fromDevice:(id)a4 toDevice:(id)a5 reply:(id)a6;
-- (void)setCommandAsync:(unint64_t)a3 target:(id)a4 source:(id)a5 forButtonCombination:(id)a6 delay:(double)a7 reply:(id)a8;
-- (void)setDelegate:(id)a3;
-- (void)setExtendedPropertyAsync:(id)a3 forKey:(id)a4 ofDevice:(id)a5 reply:(id)a6;
-- (void)setLogging:(id)a3;
-- (void)setLoggingAsync:(id)a3 reply:(id)a4;
-- (void)setOSDNameAsync:(id)a3 forDevice:(id)a4 reply:(id)a5;
-- (void)setOsdNameAsync:(id)a3 forBus:(id)a4 reply:(id)a5;
-- (void)setPropertyAsync:(id)a3 forKey:(id)a4 ofBus:(id)a5 reply:(id)a6;
-- (void)setTvLanguageCodeAsync:(id)a3 forBus:(id)a4 reply:(id)a5;
-- (void)startLearningCommandAsync:(unint64_t)a3 withDevice:(id)a4 reply:(id)a5;
-- (void)startLearningSessionWithDeviceAsync:(id)a3 forReason:(id)a4 reply:(id)a5;
-- (void)synchBuses:(id)a3;
-- (void)updateMappingWithSessionOwningDeviceAsync:(id)a3 forTargetDevice:(id)a4 reply:(id)a5;
+- (void)learningSessionForDevice:(id)device commandProgress:(id)progress;
+- (void)learningSessionForDevice:(id)device duplicateCommand:(unint64_t)command target:(id)target;
+- (void)learningSessionForDevice:(id)device status:(unint64_t)status;
+- (void)learningSessionForDeviceCommandDone:(id)done;
+- (void)mergeBus:(id)bus;
+- (void)performDeckControlCommandAsync:(id)async controlMode:(unint64_t)mode targetDevice:(id)device reply:(id)reply;
+- (void)performDeckControlPlayAsync:(id)async playMode:(unint64_t)mode targetDevice:(id)device reply:(id)reply;
+- (void)performDeckControlRefreshStatusAsync:(id)async targetDevice:(id)device requestType:(unint64_t)type reply:(id)reply;
+- (void)performDeckControlSetDeckStatusAsync:(unint64_t)async forDevice:(id)device reply:(id)reply;
+- (void)performInactiveSourceAsync:(id)async reply:(id)reply;
+- (void)performRefreshDevicesAsync:(id)async reply:(id)reply;
+- (void)performRefreshProperties:(id)properties ofDevice:(id)device withDeviceAsync:(id)async reply:(id)reply;
+- (void)performRemoveDeviceWithTypeAsync:(unint64_t)async bus:(id)bus reply:(id)reply;
+- (void)performRemoveFromBus:(id)bus reply:(id)reply;
+- (void)performRequestActiveSourceAsync:(id)async reply:(id)reply;
+- (void)performRequestAudioReturnChannelStatusChangeTo:(unint64_t)to withDeviceAsync:(id)async reply:(id)reply;
+- (void)performRequestAudioStatusAsync:(id)async reply:(id)reply;
+- (void)performRequestSystemAudioModeStatusChangeTo:(unint64_t)to withDeviceAsync:(id)async reply:(id)reply;
+- (void)performSetAudioVolumeStatus:(unint64_t)status withDeviceAsync:(id)async reply:(id)reply;
+- (void)performSetPowerStatus:(unint64_t)status withDeviceAsync:(id)async reply:(id)reply;
+- (void)performSetSupportedAudioFormats:(id)formats withDeviceAsync:(id)async reply:(id)reply;
+- (void)performStandbyAsync:(id)async targetDevice:(id)device reply:(id)reply;
+- (void)performSystemAudioModeRequestAsync:(id)async withDesiredState:(unint64_t)state reply:(id)reply;
+- (void)queryBusesAsync:(id)async;
+- (void)queryLocalInstanceAsync:(id)async bus:(id)bus reply:(id)reply;
+- (void)queryLoggingAsync:(id)async;
+- (void)sendCommandAsync:(id)async fromDevice:(id)device reply:(id)reply;
+- (void)sendCommandAsync:(unint64_t)async fromDevice:(id)device toDevice:(id)toDevice withDuration:(unint64_t)duration reply:(id)reply;
+- (void)sendHIDEventAsync:(id)async fromDevice:(id)device toDevice:(id)toDevice reply:(id)reply;
+- (void)setCommandAsync:(unint64_t)async target:(id)target source:(id)source forButtonCombination:(id)combination delay:(double)delay reply:(id)reply;
+- (void)setDelegate:(id)delegate;
+- (void)setExtendedPropertyAsync:(id)async forKey:(id)key ofDevice:(id)device reply:(id)reply;
+- (void)setLogging:(id)logging;
+- (void)setLoggingAsync:(id)async reply:(id)reply;
+- (void)setOSDNameAsync:(id)async forDevice:(id)device reply:(id)reply;
+- (void)setOsdNameAsync:(id)async forBus:(id)bus reply:(id)reply;
+- (void)setPropertyAsync:(id)async forKey:(id)key ofBus:(id)bus reply:(id)reply;
+- (void)setTvLanguageCodeAsync:(id)async forBus:(id)bus reply:(id)reply;
+- (void)startLearningCommandAsync:(unint64_t)async withDevice:(id)device reply:(id)reply;
+- (void)startLearningSessionWithDeviceAsync:(id)async forReason:(id)reason reply:(id)reply;
+- (void)synchBuses:(id)buses;
+- (void)updateMappingWithSessionOwningDeviceAsync:(id)async forTargetDevice:(id)device reply:(id)reply;
 @end
 
 @implementation CoreRCManagerClient
 
-- (void)performDeckControlSetDeckStatusAsync:(unint64_t)a3 forDevice:(id)a4 reply:(id)a5
+- (void)performDeckControlSetDeckStatusAsync:(unint64_t)async forDevice:(id)device reply:(id)reply
 {
   v8 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v8 performDeckControlSetDeckStatusAsync:a3 forDevice:a4 reply:a5];
+  [v8 performDeckControlSetDeckStatusAsync:async forDevice:device reply:reply];
 }
 
-- (void)performDeckControlCommandAsync:(id)a3 controlMode:(unint64_t)a4 targetDevice:(id)a5 reply:(id)a6
+- (void)performDeckControlCommandAsync:(id)async controlMode:(unint64_t)mode targetDevice:(id)device reply:(id)reply
 {
   v10 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v10 performDeckControlCommandAsync:a3 controlMode:a4 targetDevice:a5 reply:a6];
+  [v10 performDeckControlCommandAsync:async controlMode:mode targetDevice:device reply:reply];
 }
 
-- (void)performDeckControlPlayAsync:(id)a3 playMode:(unint64_t)a4 targetDevice:(id)a5 reply:(id)a6
+- (void)performDeckControlPlayAsync:(id)async playMode:(unint64_t)mode targetDevice:(id)device reply:(id)reply
 {
   v10 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v10 performDeckControlPlayAsync:a3 playMode:a4 targetDevice:a5 reply:a6];
+  [v10 performDeckControlPlayAsync:async playMode:mode targetDevice:device reply:reply];
 }
 
-- (void)performDeckControlRefreshStatusAsync:(id)a3 targetDevice:(id)a4 requestType:(unint64_t)a5 reply:(id)a6
+- (void)performDeckControlRefreshStatusAsync:(id)async targetDevice:(id)device requestType:(unint64_t)type reply:(id)reply
 {
   v10 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v10 performDeckControlRefreshStatusAsync:a3 targetDevice:a4 requestType:a5 reply:a6];
+  [v10 performDeckControlRefreshStatusAsync:async targetDevice:device requestType:type reply:reply];
 }
 
-- (void)performInactiveSourceAsync:(id)a3 reply:(id)a4
+- (void)performInactiveSourceAsync:(id)async reply:(id)reply
 {
   v6 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v6 performInactiveSourceAsync:a3 reply:a4];
+  [v6 performInactiveSourceAsync:async reply:reply];
 }
 
-- (void)performRefreshDevicesAsync:(id)a3 reply:(id)a4
+- (void)performRefreshDevicesAsync:(id)async reply:(id)reply
 {
   v6 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v6 performRefreshDevicesAsync:a3 reply:a4];
+  [v6 performRefreshDevicesAsync:async reply:reply];
 }
 
-- (void)performRefreshProperties:(id)a3 ofDevice:(id)a4 withDeviceAsync:(id)a5 reply:(id)a6
+- (void)performRefreshProperties:(id)properties ofDevice:(id)device withDeviceAsync:(id)async reply:(id)reply
 {
   v10 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v10 performRefreshProperties:a3 ofDevice:a4 withDeviceAsync:a5 reply:a6];
+  [v10 performRefreshProperties:properties ofDevice:device withDeviceAsync:async reply:reply];
 }
 
-- (void)performRequestActiveSourceAsync:(id)a3 reply:(id)a4
+- (void)performRequestActiveSourceAsync:(id)async reply:(id)reply
 {
   v6 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v6 performRequestActiveSourceAsync:a3 reply:a4];
+  [v6 performRequestActiveSourceAsync:async reply:reply];
 }
 
-- (void)performSystemAudioModeRequestAsync:(id)a3 withDesiredState:(unint64_t)a4 reply:(id)a5
+- (void)performSystemAudioModeRequestAsync:(id)async withDesiredState:(unint64_t)state reply:(id)reply
 {
   v8 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v8 performSystemAudioModeRequestAsync:a3 withDesiredState:a4 reply:a5];
+  [v8 performSystemAudioModeRequestAsync:async withDesiredState:state reply:reply];
 }
 
-- (void)performRequestAudioReturnChannelStatusChangeTo:(unint64_t)a3 withDeviceAsync:(id)a4 reply:(id)a5
+- (void)performRequestAudioReturnChannelStatusChangeTo:(unint64_t)to withDeviceAsync:(id)async reply:(id)reply
 {
   v8 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v8 performRequestAudioReturnChannelStatusChangeTo:a3 withDeviceAsync:a4 reply:a5];
+  [v8 performRequestAudioReturnChannelStatusChangeTo:to withDeviceAsync:async reply:reply];
 }
 
-- (void)performSetAudioVolumeStatus:(unint64_t)a3 withDeviceAsync:(id)a4 reply:(id)a5
+- (void)performSetAudioVolumeStatus:(unint64_t)status withDeviceAsync:(id)async reply:(id)reply
 {
   v8 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v8 performSetAudioVolumeStatus:a3 withDeviceAsync:a4 reply:a5];
+  [v8 performSetAudioVolumeStatus:status withDeviceAsync:async reply:reply];
 }
 
-- (void)performSetSupportedAudioFormats:(id)a3 withDeviceAsync:(id)a4 reply:(id)a5
+- (void)performSetSupportedAudioFormats:(id)formats withDeviceAsync:(id)async reply:(id)reply
 {
   v8 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v8 performSetSupportedAudioFormats:a3 withDeviceAsync:a4 reply:a5];
+  [v8 performSetSupportedAudioFormats:formats withDeviceAsync:async reply:reply];
 }
 
-- (void)performRequestAudioStatusAsync:(id)a3 reply:(id)a4
+- (void)performRequestAudioStatusAsync:(id)async reply:(id)reply
 {
   v6 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v6 performRequestAudioStatusAsync:a3 reply:a4];
+  [v6 performRequestAudioStatusAsync:async reply:reply];
 }
 
-- (void)performRequestSystemAudioModeStatusChangeTo:(unint64_t)a3 withDeviceAsync:(id)a4 reply:(id)a5
+- (void)performRequestSystemAudioModeStatusChangeTo:(unint64_t)to withDeviceAsync:(id)async reply:(id)reply
 {
   v8 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v8 performRequestSystemAudioModeStatusChangeTo:a3 withDeviceAsync:a4 reply:a5];
+  [v8 performRequestSystemAudioModeStatusChangeTo:to withDeviceAsync:async reply:reply];
 }
 
-- (void)performSetPowerStatus:(unint64_t)a3 withDeviceAsync:(id)a4 reply:(id)a5
+- (void)performSetPowerStatus:(unint64_t)status withDeviceAsync:(id)async reply:(id)reply
 {
   v8 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v8 performSetPowerStatus:a3 withDeviceAsync:a4 reply:a5];
+  [v8 performSetPowerStatus:status withDeviceAsync:async reply:reply];
 }
 
-- (void)performRemoveFromBus:(id)a3 reply:(id)a4
+- (void)performRemoveFromBus:(id)bus reply:(id)reply
 {
   v6 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v6 performRemoveFromBus:a3 reply:a4];
+  [v6 performRemoveFromBus:bus reply:reply];
 }
 
-- (void)performStandbyAsync:(id)a3 targetDevice:(id)a4 reply:(id)a5
+- (void)performStandbyAsync:(id)async targetDevice:(id)device reply:(id)reply
 {
   v8 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v8 performStandbyAsync:a3 targetDevice:a4 reply:a5];
+  [v8 performStandbyAsync:async targetDevice:device reply:reply];
 }
 
-- (void)queryLocalInstanceAsync:(id)a3 bus:(id)a4 reply:(id)a5
+- (void)queryLocalInstanceAsync:(id)async bus:(id)bus reply:(id)reply
 {
-  v8 = [(CoreRCManagerClient *)self connection];
+  connection = [(CoreRCManagerClient *)self connection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __62__CoreRCManagerClient_CEC__queryLocalInstanceAsync_bus_reply___block_invoke;
   v9[3] = &unk_278EA2960;
-  v9[4] = a5;
-  [objc_msgSend(v8 remoteObjectProxyWithErrorHandler:{v9), "queryLocalInstanceAsync:bus:reply:", a3, a4, a5}];
+  v9[4] = reply;
+  [objc_msgSend(connection remoteObjectProxyWithErrorHandler:{v9), "queryLocalInstanceAsync:bus:reply:", async, bus, reply}];
 }
 
-- (void)performRemoveDeviceWithTypeAsync:(unint64_t)a3 bus:(id)a4 reply:(id)a5
+- (void)performRemoveDeviceWithTypeAsync:(unint64_t)async bus:(id)bus reply:(id)reply
 {
   v8 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v8 performRemoveDeviceWithTypeAsync:a3 bus:a4 reply:a5];
+  [v8 performRemoveDeviceWithTypeAsync:async bus:bus reply:reply];
 }
 
-- (void)setOsdNameAsync:(id)a3 forBus:(id)a4 reply:(id)a5
+- (void)setOsdNameAsync:(id)async forBus:(id)bus reply:(id)reply
 {
   v8 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v8 setOsdNameAsync:a3 forBus:a4 reply:a5];
+  [v8 setOsdNameAsync:async forBus:bus reply:reply];
 }
 
-- (void)setTvLanguageCodeAsync:(id)a3 forBus:(id)a4 reply:(id)a5
+- (void)setTvLanguageCodeAsync:(id)async forBus:(id)bus reply:(id)reply
 {
   v8 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v8 setTvLanguageCodeAsync:a3 forBus:a4 reply:a5];
+  [v8 setTvLanguageCodeAsync:async forBus:bus reply:reply];
 }
 
-- (void)injectRXMessageAsync:(id)a3 forBus:(id)a4 reply:(id)a5
+- (void)injectRXMessageAsync:(id)async forBus:(id)bus reply:(id)reply
 {
   v8 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v8 injectRXMessageAsync:a3 forBus:a4 reply:a5];
+  [v8 injectRXMessageAsync:async forBus:bus reply:reply];
 }
 
-- (void)injectTXMessageAsync:(id)a3 forBus:(id)a4 reply:(id)a5
+- (void)injectTXMessageAsync:(id)async forBus:(id)bus reply:(id)reply
 {
   v8 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v8 injectTXMessageAsync:a3 forBus:a4 reply:a5];
+  [v8 injectTXMessageAsync:async forBus:bus reply:reply];
 }
 
-- (void)cecBus:(id)a3 activeSourceHasChangedTo:(id)a4 fromDevice:(id)a5
+- (void)cecBus:(id)bus activeSourceHasChangedTo:(id)to fromDevice:(id)device
 {
-  v9 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __71__CoreRCManagerClient_CEC__cecBus_activeSourceHasChangedTo_fromDevice___block_invoke;
   v10[3] = &unk_278EA2988;
-  v10[4] = a3;
-  v10[5] = a4;
-  v10[6] = a5;
+  v10[4] = bus;
+  v10[5] = to;
+  v10[6] = device;
   v10[7] = self;
-  dispatch_async(v9, v10);
+  dispatch_async(serialQueue, v10);
 }
 
-- (void)cecBus:(id)a3 rxMessageReceived:(id)a4
+- (void)cecBus:(id)bus rxMessageReceived:(id)received
 {
-  v7 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__CoreRCManagerClient_CEC__cecBus_rxMessageReceived___block_invoke;
   block[3] = &unk_278EA29B0;
-  block[4] = a3;
+  block[4] = bus;
   block[5] = self;
-  block[6] = a4;
-  dispatch_async(v7, block);
+  block[6] = received;
+  dispatch_async(serialQueue, block);
 }
 
-- (void)cecBus:(id)a3 txMessageSent:(id)a4 error:(id)a5
+- (void)cecBus:(id)bus txMessageSent:(id)sent error:(id)error
 {
-  v9 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __55__CoreRCManagerClient_CEC__cecBus_txMessageSent_error___block_invoke;
   v10[3] = &unk_278EA2988;
-  v10[4] = a3;
+  v10[4] = bus;
   v10[5] = self;
-  v10[6] = a4;
-  v10[7] = a5;
-  dispatch_async(v9, v10);
+  v10[6] = sent;
+  v10[7] = error;
+  dispatch_async(serialQueue, v10);
 }
 
-- (void)cecDeviceShouldAssertActiveSource:(id)a3
+- (void)cecDeviceShouldAssertActiveSource:(id)source
 {
-  v5 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__CoreRCManagerClient_CEC__cecDeviceShouldAssertActiveSource___block_invoke;
   v6[3] = &unk_278EA29D8;
-  v6[4] = a3;
+  v6[4] = source;
   v6[5] = self;
-  dispatch_async(v5, v6);
+  dispatch_async(serialQueue, v6);
 }
 
-- (void)cecDevice:(id)a3 activeSourceStatusHasChanged:(BOOL)a4
+- (void)cecDevice:(id)device activeSourceStatusHasChanged:(BOOL)changed
 {
-  v7 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__CoreRCManagerClient_CEC__cecDevice_activeSourceStatusHasChanged___block_invoke;
   block[3] = &unk_278EA2A00;
-  v9 = a4;
-  block[4] = a3;
+  changedCopy = changed;
+  block[4] = device;
   block[5] = self;
-  dispatch_async(v7, block);
+  dispatch_async(serialQueue, block);
 }
 
-- (void)cecDevice:(id)a3 deckControlPlayHasBeenReceived:(unint64_t)a4 fromDevice:(id)a5
+- (void)cecDevice:(id)device deckControlPlayHasBeenReceived:(unint64_t)received fromDevice:(id)fromDevice
 {
-  v9 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __80__CoreRCManagerClient_CEC__cecDevice_deckControlPlayHasBeenReceived_fromDevice___block_invoke;
   v10[3] = &unk_278EA2A28;
-  v10[4] = a3;
-  v10[5] = a5;
+  v10[4] = device;
+  v10[5] = fromDevice;
   v10[6] = self;
-  v10[7] = a4;
-  dispatch_async(v9, v10);
+  v10[7] = received;
+  dispatch_async(serialQueue, v10);
 }
 
-- (void)cecDevice:(id)a3 deckControlCommandHasBeenReceived:(unint64_t)a4 fromDevice:(id)a5
+- (void)cecDevice:(id)device deckControlCommandHasBeenReceived:(unint64_t)received fromDevice:(id)fromDevice
 {
-  v9 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __83__CoreRCManagerClient_CEC__cecDevice_deckControlCommandHasBeenReceived_fromDevice___block_invoke;
   v10[3] = &unk_278EA2A28;
-  v10[4] = a3;
-  v10[5] = a5;
+  v10[4] = device;
+  v10[5] = fromDevice;
   v10[6] = self;
-  v10[7] = a4;
-  dispatch_async(v9, v10);
+  v10[7] = received;
+  dispatch_async(serialQueue, v10);
 }
 
-- (void)cecDevice:(id)a3 deckControlStatusHasBeenUpdated:(unint64_t)a4 fromDevice:(id)a5
+- (void)cecDevice:(id)device deckControlStatusHasBeenUpdated:(unint64_t)updated fromDevice:(id)fromDevice
 {
-  v9 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __81__CoreRCManagerClient_CEC__cecDevice_deckControlStatusHasBeenUpdated_fromDevice___block_invoke;
   v10[3] = &unk_278EA2A28;
-  v10[4] = a3;
-  v10[5] = a5;
+  v10[4] = device;
+  v10[5] = fromDevice;
   v10[6] = self;
-  v10[7] = a4;
-  dispatch_async(v9, v10);
+  v10[7] = updated;
+  dispatch_async(serialQueue, v10);
 }
 
-- (void)cecDevice:(id)a3 featureAbort:(id)a4
+- (void)cecDevice:(id)device featureAbort:(id)abort
 {
-  v7 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__CoreRCManagerClient_CEC__cecDevice_featureAbort___block_invoke;
   block[3] = &unk_278EA29B0;
-  block[4] = a3;
-  block[5] = a4;
+  block[4] = device;
+  block[5] = abort;
   block[6] = self;
-  dispatch_async(v7, block);
+  dispatch_async(serialQueue, block);
 }
 
-- (void)cecDevice:(id)a3 standbyRequestHasBeenReceived:(id)a4
+- (void)cecDevice:(id)device standbyRequestHasBeenReceived:(id)received
 {
-  v7 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__CoreRCManagerClient_CEC__cecDevice_standbyRequestHasBeenReceived___block_invoke;
   block[3] = &unk_278EA29B0;
-  block[4] = a3;
-  block[5] = a4;
+  block[4] = device;
+  block[5] = received;
   block[6] = self;
-  dispatch_async(v7, block);
+  dispatch_async(serialQueue, block);
 }
 
-- (void)cecDevice:(id)a3 receivedRequestAudioReturnChannelStatusChangeTo:(unint64_t)a4 fromDevice:(id)a5
+- (void)cecDevice:(id)device receivedRequestAudioReturnChannelStatusChangeTo:(unint64_t)to fromDevice:(id)fromDevice
 {
-  v9 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __97__CoreRCManagerClient_CEC__cecDevice_receivedRequestAudioReturnChannelStatusChangeTo_fromDevice___block_invoke;
   v10[3] = &unk_278EA2A28;
-  v10[4] = a3;
-  v10[5] = a5;
+  v10[4] = device;
+  v10[5] = fromDevice;
   v10[6] = self;
-  v10[7] = a4;
-  dispatch_async(v9, v10);
+  v10[7] = to;
+  dispatch_async(serialQueue, v10);
 }
 
-- (void)cecDevice:(id)a3 requestAudioReturnChannelStatusChangeTo:(unint64_t)a4 didFinishWithResult:(BOOL)a5 error:(id)a6
+- (void)cecDevice:(id)device requestAudioReturnChannelStatusChangeTo:(unint64_t)to didFinishWithResult:(BOOL)result error:(id)error
 {
-  v11 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __104__CoreRCManagerClient_CEC__cecDevice_requestAudioReturnChannelStatusChangeTo_didFinishWithResult_error___block_invoke;
   block[3] = &unk_278EA2A50;
-  v13 = a5;
-  block[4] = a3;
-  block[5] = a6;
+  resultCopy = result;
+  block[4] = device;
+  block[5] = error;
   block[6] = self;
-  block[7] = a4;
-  dispatch_async(v11, block);
+  block[7] = to;
+  dispatch_async(serialQueue, block);
 }
 
-- (void)cecDevice:(id)a3 receivedRequestSystemAudioModeStatusChangeTo:(unint64_t)a4 fromDevice:(id)a5
+- (void)cecDevice:(id)device receivedRequestSystemAudioModeStatusChangeTo:(unint64_t)to fromDevice:(id)fromDevice
 {
-  v9 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __94__CoreRCManagerClient_CEC__cecDevice_receivedRequestSystemAudioModeStatusChangeTo_fromDevice___block_invoke;
   v10[3] = &unk_278EA2A28;
-  v10[4] = a3;
-  v10[5] = a5;
+  v10[4] = device;
+  v10[5] = fromDevice;
   v10[6] = self;
-  v10[7] = a4;
-  dispatch_async(v9, v10);
+  v10[7] = to;
+  dispatch_async(serialQueue, v10);
 }
 
-- (void)cecDevice:(id)a3 requestSystemAudioModeStatusChangeTo:(unint64_t)a4 didFinishWithResult:(BOOL)a5 error:(id)a6
+- (void)cecDevice:(id)device requestSystemAudioModeStatusChangeTo:(unint64_t)to didFinishWithResult:(BOOL)result error:(id)error
 {
-  v11 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __101__CoreRCManagerClient_CEC__cecDevice_requestSystemAudioModeStatusChangeTo_didFinishWithResult_error___block_invoke;
   block[3] = &unk_278EA2A50;
-  v13 = a5;
-  block[4] = a3;
-  block[5] = a6;
+  resultCopy = result;
+  block[4] = device;
+  block[5] = error;
   block[6] = self;
-  block[7] = a4;
-  dispatch_async(v11, block);
+  block[7] = to;
+  dispatch_async(serialQueue, block);
 }
 
-- (void)cecDevice:(id)a3 audioStatusReceived:(unint64_t)a4 muteStatus:(BOOL)a5
+- (void)cecDevice:(id)device audioStatusReceived:(unint64_t)received muteStatus:(BOOL)status
 {
-  v9 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __69__CoreRCManagerClient_CEC__cecDevice_audioStatusReceived_muteStatus___block_invoke;
   v10[3] = &unk_278EA2A78;
-  v10[4] = a3;
+  v10[4] = device;
   v10[5] = self;
-  v10[6] = a4;
-  v11 = a5;
-  dispatch_async(v9, v10);
+  v10[6] = received;
+  statusCopy = status;
+  dispatch_async(serialQueue, v10);
 }
 
-- (void)queryLoggingAsync:(id)a3
+- (void)queryLoggingAsync:(id)async
 {
-  v4 = [(CoreRCManagerClient *)self connection];
+  connection = [(CoreRCManagerClient *)self connection];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __50__CoreRCManagerClient_Private__queryLoggingAsync___block_invoke;
   v5[3] = &unk_278EA2960;
-  v5[4] = a3;
-  [objc_msgSend(v4 remoteObjectProxyWithErrorHandler:{v5), "queryLoggingAsync:", a3}];
+  v5[4] = async;
+  [objc_msgSend(connection remoteObjectProxyWithErrorHandler:{v5), "queryLoggingAsync:", async}];
 }
 
-- (void)setLoggingAsync:(id)a3 reply:(id)a4
+- (void)setLoggingAsync:(id)async reply:(id)reply
 {
   v6 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v6 setLoggingAsync:a3 reply:a4];
+  [v6 setLoggingAsync:async reply:reply];
 }
 
-- (void)fakeRemoveCECBusAsync:(id)a3 reply:(id)a4
+- (void)fakeRemoveCECBusAsync:(id)async reply:(id)reply
 {
   v6 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v6 fakeRemoveCECBusAsync:a3 reply:a4];
+  [v6 fakeRemoveCECBusAsync:async reply:reply];
 }
 
-- (void)fakeRemoveCECDeviceAsync:(id)a3 reply:(id)a4
+- (void)fakeRemoveCECDeviceAsync:(id)async reply:(id)reply
 {
   v6 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v6 fakeRemoveCECDeviceAsync:a3 reply:a4];
+  [v6 fakeRemoveCECDeviceAsync:async reply:reply];
 }
 
 - (void)dealloc
@@ -531,20 +531,20 @@ void __33__CoreRCManagerClient_connection__block_invoke(uint64_t a1)
   self->_connection = 0;
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 ofBus:(id)a5 error:(id *)a6
+- (BOOL)setProperty:(id)property forKey:(id)key ofBus:(id)bus error:(id *)error
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__CoreRCManagerClient_setProperty_forKey_ofBus_error___block_invoke;
   v7[3] = &unk_278EA3428;
   v7[4] = self;
-  v7[5] = a3;
-  v7[6] = a4;
-  v7[7] = a5;
-  return CoreRCWaitForAsyncOperation(a6, v7);
+  v7[5] = property;
+  v7[6] = key;
+  v7[7] = bus;
+  return CoreRCWaitForAsyncOperation(error, v7);
 }
 
-- (id)propertyForKey:(id)a3 ofBus:(id)a4 error:(id *)a5
+- (id)propertyForKey:(id)key ofBus:(id)bus error:(id *)error
 {
   v9 = 0;
   v10 = &v9;
@@ -557,10 +557,10 @@ void __33__CoreRCManagerClient_connection__block_invoke(uint64_t a1)
   v8[2] = __50__CoreRCManagerClient_propertyForKey_ofBus_error___block_invoke;
   v8[3] = &unk_278EA3478;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
+  v8[5] = key;
+  v8[6] = bus;
   v8[7] = &v9;
-  if (CoreRCWaitForAsyncOperation(a5, v8))
+  if (CoreRCWaitForAsyncOperation(error, v8))
   {
     v5 = v10[5];
   }
@@ -597,20 +597,20 @@ uint64_t __50__CoreRCManagerClient_propertyForKey_ofBus_error___block_invoke_2(u
   return v4();
 }
 
-- (BOOL)setExtendedProperty:(id)a3 forKey:(id)a4 ofDevice:(id)a5 error:(id *)a6
+- (BOOL)setExtendedProperty:(id)property forKey:(id)key ofDevice:(id)device error:(id *)error
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__CoreRCManagerClient_setExtendedProperty_forKey_ofDevice_error___block_invoke;
   v7[3] = &unk_278EA3428;
   v7[4] = self;
-  v7[5] = a3;
-  v7[6] = a4;
-  v7[7] = a5;
-  return CoreRCWaitForAsyncOperation(a6, v7);
+  v7[5] = property;
+  v7[6] = key;
+  v7[7] = device;
+  return CoreRCWaitForAsyncOperation(error, v7);
 }
 
-- (id)extendedPropertyForKey:(id)a3 ofDevice:(id)a4 error:(id *)a5
+- (id)extendedPropertyForKey:(id)key ofDevice:(id)device error:(id *)error
 {
   v9 = 0;
   v10 = &v9;
@@ -623,10 +623,10 @@ uint64_t __50__CoreRCManagerClient_propertyForKey_ofBus_error___block_invoke_2(u
   v8[2] = __61__CoreRCManagerClient_extendedPropertyForKey_ofDevice_error___block_invoke;
   v8[3] = &unk_278EA3478;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
+  v8[5] = key;
+  v8[6] = device;
   v8[7] = &v9;
-  if (CoreRCWaitForAsyncOperation(a5, v8))
+  if (CoreRCWaitForAsyncOperation(error, v8))
   {
     v5 = v10[5];
   }
@@ -663,11 +663,11 @@ uint64_t __61__CoreRCManagerClient_extendedPropertyForKey_ofDevice_error___block
   return v4();
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v4.receiver = self;
   v4.super_class = CoreRCManagerClient;
-  [(CoreRCManager *)&v4 setDelegate:a3];
+  [(CoreRCManager *)&v4 setDelegate:delegate];
   [(CoreRCManagerClient *)self buses];
 }
 
@@ -711,9 +711,9 @@ uint64_t __61__CoreRCManagerClient_extendedPropertyForKey_ofDevice_error___block
 LABEL_8:
   v7.receiver = self;
   v7.super_class = CoreRCManagerClient;
-  v4 = [(CoreRCManager *)&v7 buses];
+  buses = [(CoreRCManager *)&v7 buses];
   _Block_object_dispose(&v9, 8);
-  return v4;
+  return buses;
 }
 
 uint64_t __28__CoreRCManagerClient_buses__block_invoke(uint64_t a1, uint64_t a2)
@@ -749,10 +749,10 @@ uint64_t __28__CoreRCManagerClient_buses__block_invoke_2(uint64_t a1, void *a2, 
   return v4();
 }
 
-- (void)mergeBus:(id)a3
+- (void)mergeBus:(id)bus
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!bus)
   {
     [CoreRCManagerClient mergeBus:];
   }
@@ -760,30 +760,30 @@ uint64_t __28__CoreRCManagerClient_buses__block_invoke_2(uint64_t a1, void *a2, 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = a3;
+    busCopy = bus;
     _os_log_impl(&dword_247384000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "[CoreRC] manager: %@ mergeBus: %@", &v7, 0x16u);
   }
 
-  v5 = [(CoreRCManager *)self managedBusEquivalentTo:a3];
+  v5 = [(CoreRCManager *)self managedBusEquivalentTo:bus];
   if (v5)
   {
-    [v5 mergePropertiesFromBus:a3];
+    [v5 mergePropertiesFromBus:bus];
   }
 
   else
   {
-    [(CoreRCManager *)self addBus:a3];
+    [(CoreRCManager *)self addBus:bus];
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)synchBuses:(id)a3
+- (void)synchBuses:(id)buses
 {
   v31 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!buses)
   {
     [CoreRCManagerClient synchBuses:];
   }
@@ -791,20 +791,20 @@ uint64_t __28__CoreRCManagerClient_buses__block_invoke_2(uint64_t a1, void *a2, 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v28 = self;
+    selfCopy = self;
     v29 = 2112;
-    v30 = a3;
+    busesCopy = buses;
     _os_log_impl(&dword_247384000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "[CoreRC] manager: %@ synchBuses: %@", buf, 0x16u);
   }
 
-  v5 = [(CoreRCManager *)self busesInternal];
+  busesInternal = [(CoreRCManager *)self busesInternal];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __34__CoreRCManagerClient_synchBuses___block_invoke;
   v24[3] = &unk_278EA34F0;
-  v24[4] = a3;
+  v24[4] = buses;
   v24[5] = self;
-  v6 = [(NSMutableSet *)v5 objectsPassingTest:v24];
+  v6 = [(NSMutableSet *)busesInternal objectsPassingTest:v24];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -832,12 +832,12 @@ uint64_t __28__CoreRCManagerClient_buses__block_invoke_2(uint64_t a1, void *a2, 
     while (v8);
   }
 
-  [(NSMutableSet *)[(CoreRCManager *)self busesInternal] intersectSet:a3];
+  [(NSMutableSet *)[(CoreRCManager *)self busesInternal] intersectSet:buses];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v11 = [a3 countByEnumeratingWithState:&v16 objects:v25 count:16];
+  v11 = [buses countByEnumeratingWithState:&v16 objects:v25 count:16];
   if (v11)
   {
     v12 = v11;
@@ -848,13 +848,13 @@ uint64_t __28__CoreRCManagerClient_buses__block_invoke_2(uint64_t a1, void *a2, 
       {
         if (*v17 != v13)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(buses);
         }
 
         [(CoreRCManagerClient *)self mergeBus:*(*(&v16 + 1) + 8 * j)];
       }
 
-      v12 = [a3 countByEnumeratingWithState:&v16 objects:v25 count:16];
+      v12 = [buses countByEnumeratingWithState:&v16 objects:v25 count:16];
     }
 
     while (v12);
@@ -863,7 +863,7 @@ uint64_t __28__CoreRCManagerClient_buses__block_invoke_2(uint64_t a1, void *a2, 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)sendHIDEvent:(id)a3 fromDevice:(id)a4 toDevice:(id)a5 error:(id *)a6
+- (BOOL)sendHIDEvent:(id)event fromDevice:(id)device toDevice:(id)toDevice error:(id *)error
 {
   if (gLogCategory_CoreRCDevice <= 10 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
@@ -875,13 +875,13 @@ uint64_t __28__CoreRCManagerClient_buses__block_invoke_2(uint64_t a1, void *a2, 
   v12[2] = __62__CoreRCManagerClient_sendHIDEvent_fromDevice_toDevice_error___block_invoke;
   v12[3] = &unk_278EA3428;
   v12[4] = self;
-  v12[5] = a3;
-  v12[6] = a4;
-  v12[7] = a5;
-  return CoreRCWaitForAsyncOperation(a6, v12);
+  v12[5] = event;
+  v12[6] = device;
+  v12[7] = toDevice;
+  return CoreRCWaitForAsyncOperation(error, v12);
 }
 
-- (BOOL)sendCommand:(unint64_t)a3 fromDevice:(id)a4 toDevice:(id)a5 withDuration:(unint64_t)a6 error:(id *)a7
+- (BOOL)sendCommand:(unint64_t)command fromDevice:(id)device toDevice:(id)toDevice withDuration:(unint64_t)duration error:(id *)error
 {
   if (gLogCategory_CoreRCDevice <= 10 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
@@ -893,78 +893,78 @@ uint64_t __28__CoreRCManagerClient_buses__block_invoke_2(uint64_t a1, void *a2, 
   v14[2] = __74__CoreRCManagerClient_sendCommand_fromDevice_toDevice_withDuration_error___block_invoke;
   v14[3] = &unk_278EA3518;
   v14[4] = self;
-  v14[5] = a4;
-  v14[6] = a5;
-  v14[7] = a3;
-  v14[8] = a6;
-  return CoreRCWaitForAsyncOperation(a7, v14);
+  v14[5] = device;
+  v14[6] = toDevice;
+  v14[7] = command;
+  v14[8] = duration;
+  return CoreRCWaitForAsyncOperation(error, v14);
 }
 
-- (void)queryBusesAsync:(id)a3
+- (void)queryBusesAsync:(id)async
 {
-  v4 = [(CoreRCManagerClient *)self connection];
+  connection = [(CoreRCManagerClient *)self connection];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __39__CoreRCManagerClient_queryBusesAsync___block_invoke;
   v5[3] = &unk_278EA2960;
-  v5[4] = a3;
-  [objc_msgSend(v4 remoteObjectProxyWithErrorHandler:{v5), "queryBusesAsync:", a3}];
+  v5[4] = async;
+  [objc_msgSend(connection remoteObjectProxyWithErrorHandler:{v5), "queryBusesAsync:", async}];
 }
 
-- (void)sendHIDEventAsync:(id)a3 fromDevice:(id)a4 toDevice:(id)a5 reply:(id)a6
+- (void)sendHIDEventAsync:(id)async fromDevice:(id)device toDevice:(id)toDevice reply:(id)reply
 {
   v10 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v10 sendHIDEventAsync:a3 fromDevice:a4 toDevice:a5 reply:a6];
+  [v10 sendHIDEventAsync:async fromDevice:device toDevice:toDevice reply:reply];
 }
 
-- (void)sendCommandAsync:(unint64_t)a3 fromDevice:(id)a4 toDevice:(id)a5 withDuration:(unint64_t)a6 reply:(id)a7
+- (void)sendCommandAsync:(unint64_t)async fromDevice:(id)device toDevice:(id)toDevice withDuration:(unint64_t)duration reply:(id)reply
 {
   v12 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v12 sendCommandAsync:a3 fromDevice:a4 toDevice:a5 withDuration:a6 reply:a7];
+  [v12 sendCommandAsync:async fromDevice:device toDevice:toDevice withDuration:duration reply:reply];
 }
 
-- (void)setPropertyAsync:(id)a3 forKey:(id)a4 ofBus:(id)a5 reply:(id)a6
+- (void)setPropertyAsync:(id)async forKey:(id)key ofBus:(id)bus reply:(id)reply
 {
   v10 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v10 setPropertyAsync:a3 forKey:a4 ofBus:a5 reply:a6];
+  [v10 setPropertyAsync:async forKey:key ofBus:bus reply:reply];
 }
 
-- (void)getPropertyAsyncForKey:(id)a3 ofBus:(id)a4 reply:(id)a5
+- (void)getPropertyAsyncForKey:(id)key ofBus:(id)bus reply:(id)reply
 {
-  v8 = [(CoreRCManagerClient *)self connection];
+  connection = [(CoreRCManagerClient *)self connection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __58__CoreRCManagerClient_getPropertyAsyncForKey_ofBus_reply___block_invoke;
   v9[3] = &unk_278EA2960;
-  v9[4] = a5;
-  [objc_msgSend(v8 remoteObjectProxyWithErrorHandler:{v9), "getPropertyAsyncForKey:ofBus:reply:", a3, a4, a5}];
+  v9[4] = reply;
+  [objc_msgSend(connection remoteObjectProxyWithErrorHandler:{v9), "getPropertyAsyncForKey:ofBus:reply:", key, bus, reply}];
 }
 
-- (void)setExtendedPropertyAsync:(id)a3 forKey:(id)a4 ofDevice:(id)a5 reply:(id)a6
+- (void)setExtendedPropertyAsync:(id)async forKey:(id)key ofDevice:(id)device reply:(id)reply
 {
   v10 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v10 setExtendedPropertyAsync:a3 forKey:a4 ofDevice:a5 reply:a6];
+  [v10 setExtendedPropertyAsync:async forKey:key ofDevice:device reply:reply];
 }
 
-- (void)getExtendedPropertyAsyncForKey:(id)a3 ofDevice:(id)a4 reply:(id)a5
+- (void)getExtendedPropertyAsyncForKey:(id)key ofDevice:(id)device reply:(id)reply
 {
-  v8 = [(CoreRCManagerClient *)self connection];
+  connection = [(CoreRCManagerClient *)self connection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__CoreRCManagerClient_getExtendedPropertyAsyncForKey_ofDevice_reply___block_invoke;
   v9[3] = &unk_278EA2960;
-  v9[4] = a5;
-  [objc_msgSend(v8 remoteObjectProxyWithErrorHandler:{v9), "getExtendedPropertyAsyncForKey:ofDevice:reply:", a3, a4, a5}];
+  v9[4] = reply;
+  [objc_msgSend(connection remoteObjectProxyWithErrorHandler:{v9), "getExtendedPropertyAsyncForKey:ofDevice:reply:", key, device, reply}];
 }
 
-- (void)busHasBeenAdded:(id)a3
+- (void)busHasBeenAdded:(id)added
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!added)
   {
     [CoreRCManagerClient busHasBeenAdded:];
   }
@@ -973,22 +973,22 @@ uint64_t __28__CoreRCManagerClient_buses__block_invoke_2(uint64_t a1, void *a2, 
   {
     connection = self->_connection;
     *buf = 138412802;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = a3;
+    addedCopy = added;
     v13 = 2112;
     v14 = connection;
     _os_log_impl(&dword_247384000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "[CoreRC] manager: %@ busHasBeenAdded: %@ connection: %@", buf, 0x20u);
   }
 
-  v6 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __39__CoreRCManagerClient_busHasBeenAdded___block_invoke;
   v8[3] = &unk_278EA29D8;
   v8[4] = self;
-  v8[5] = a3;
-  dispatch_async(v6, v8);
+  v8[5] = added;
+  dispatch_async(serialQueue, v8);
   v7 = *MEMORY[0x277D85DE8];
 }
 
@@ -1005,10 +1005,10 @@ uint64_t __39__CoreRCManagerClient_busHasBeenAdded___block_invoke(uint64_t a1)
   return [v2 mergeBus:v3];
 }
 
-- (void)busHasBeenRemoved:(id)a3
+- (void)busHasBeenRemoved:(id)removed
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!removed)
   {
     [CoreRCManagerClient busHasBeenRemoved:];
   }
@@ -1017,22 +1017,22 @@ uint64_t __39__CoreRCManagerClient_busHasBeenAdded___block_invoke(uint64_t a1)
   {
     connection = self->_connection;
     *buf = 138412802;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = a3;
+    removedCopy = removed;
     v13 = 2112;
     v14 = connection;
     _os_log_impl(&dword_247384000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "[CoreRC] manager: %@ busHasBeenRemoved: %@ connection: %@", buf, 0x20u);
   }
 
-  v6 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __41__CoreRCManagerClient_busHasBeenRemoved___block_invoke;
   v8[3] = &unk_278EA29D8;
   v8[4] = self;
-  v8[5] = a3;
-  dispatch_async(v6, v8);
+  v8[5] = removed;
+  dispatch_async(serialQueue, v8);
   v7 = *MEMORY[0x277D85DE8];
 }
 
@@ -1049,10 +1049,10 @@ uint64_t __41__CoreRCManagerClient_busHasBeenRemoved___block_invoke(uint64_t a1)
   return [v2 removeBus:v3];
 }
 
-- (void)busHasBeenUpdated:(id)a3
+- (void)busHasBeenUpdated:(id)updated
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!updated)
   {
     [CoreRCManagerClient busHasBeenUpdated:];
   }
@@ -1061,22 +1061,22 @@ uint64_t __41__CoreRCManagerClient_busHasBeenRemoved___block_invoke(uint64_t a1)
   {
     connection = self->_connection;
     *buf = 138412802;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = a3;
+    updatedCopy = updated;
     v13 = 2112;
     v14 = connection;
     _os_log_impl(&dword_247384000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "[CoreRC] manager: %@ busHasBeenUpdated: %@ connection: %@", buf, 0x20u);
   }
 
-  v6 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __41__CoreRCManagerClient_busHasBeenUpdated___block_invoke;
   v8[3] = &unk_278EA29D8;
   v8[4] = self;
-  v8[5] = a3;
-  dispatch_async(v6, v8);
+  v8[5] = updated;
+  dispatch_async(serialQueue, v8);
   v7 = *MEMORY[0x277D85DE8];
 }
 
@@ -1093,9 +1093,9 @@ uint64_t __41__CoreRCManagerClient_busHasBeenUpdated___block_invoke(uint64_t a1)
   return [v2 mergeBus:v3];
 }
 
-- (void)setLogging:(id)a3
+- (void)setLogging:(id)logging
 {
-  [a3 UTF8String];
+  [logging UTF8String];
   LogControl();
   if (gLogCategory_CoreRCXPC <= 10 && (gLogCategory_CoreRCXPC != -1 || _LogCategory_Initialize()))
   {
@@ -1103,218 +1103,218 @@ uint64_t __41__CoreRCManagerClient_busHasBeenUpdated___block_invoke(uint64_t a1)
   }
 }
 
-- (void)bus:(id)a3 deviceHasBeenAdded:(id)a4
+- (void)bus:(id)bus deviceHasBeenAdded:(id)added
 {
-  v7 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__CoreRCManagerClient_bus_deviceHasBeenAdded___block_invoke;
   block[3] = &unk_278EA29B0;
-  block[4] = a3;
-  block[5] = a4;
+  block[4] = bus;
+  block[5] = added;
   block[6] = self;
-  dispatch_async(v7, block);
+  dispatch_async(serialQueue, block);
 }
 
-- (void)bus:(id)a3 deviceHasBeenRemoved:(id)a4
+- (void)bus:(id)bus deviceHasBeenRemoved:(id)removed
 {
-  v7 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__CoreRCManagerClient_bus_deviceHasBeenRemoved___block_invoke;
   block[3] = &unk_278EA29B0;
-  block[4] = a3;
-  block[5] = a4;
+  block[4] = bus;
+  block[5] = removed;
   block[6] = self;
-  dispatch_async(v7, block);
+  dispatch_async(serialQueue, block);
 }
 
-- (void)bus:(id)a3 deviceHasBeenUpdated:(id)a4
+- (void)bus:(id)bus deviceHasBeenUpdated:(id)updated
 {
-  v7 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__CoreRCManagerClient_bus_deviceHasBeenUpdated___block_invoke;
   block[3] = &unk_278EA29B0;
-  block[4] = a3;
-  block[5] = a4;
+  block[4] = bus;
+  block[5] = updated;
   block[6] = self;
-  dispatch_async(v7, block);
+  dispatch_async(serialQueue, block);
 }
 
-- (void)device:(id)a3 receivedHIDEvent:(id)a4 fromDevice:(id)a5
+- (void)device:(id)device receivedHIDEvent:(id)event fromDevice:(id)fromDevice
 {
-  v9 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __58__CoreRCManagerClient_device_receivedHIDEvent_fromDevice___block_invoke;
   v10[3] = &unk_278EA2988;
-  v10[4] = a3;
-  v10[5] = a4;
-  v10[6] = a5;
+  v10[4] = device;
+  v10[5] = event;
+  v10[6] = fromDevice;
   v10[7] = self;
-  dispatch_async(v9, v10);
+  dispatch_async(serialQueue, v10);
 }
 
-- (void)setOSDNameAsync:(id)a3 forDevice:(id)a4 reply:(id)a5
+- (void)setOSDNameAsync:(id)async forDevice:(id)device reply:(id)reply
 {
   v8 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v8 setOSDNameAsync:a3 forDevice:a4 reply:a5];
+  [v8 setOSDNameAsync:async forDevice:device reply:reply];
 }
 
-- (void)startLearningCommandAsync:(unint64_t)a3 withDevice:(id)a4 reply:(id)a5
+- (void)startLearningCommandAsync:(unint64_t)async withDevice:(id)device reply:(id)reply
 {
-  v8 = [(CoreRCManagerClient *)self connection];
+  connection = [(CoreRCManagerClient *)self connection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__CoreRCManagerClient_IR__startLearningCommandAsync_withDevice_reply___block_invoke;
   v9[3] = &unk_278EA2960;
-  v9[4] = a5;
-  [objc_msgSend(v8 remoteObjectProxyWithErrorHandler:{v9), "startLearningCommandAsync:withDevice:reply:", a3, a4, a5}];
+  v9[4] = reply;
+  [objc_msgSend(connection remoteObjectProxyWithErrorHandler:{v9), "startLearningCommandAsync:withDevice:reply:", async, device, reply}];
 }
 
-- (void)endLearningWithDeviceAsync:(id)a3 reply:(id)a4
+- (void)endLearningWithDeviceAsync:(id)async reply:(id)reply
 {
   v6 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v6 endLearningWithDeviceAsync:a3 reply:a4];
+  [v6 endLearningWithDeviceAsync:async reply:reply];
 }
 
-- (void)addDeviceOnBusAsync:(id)a3 withType:(unint64_t)a4 matching:(id)a5 reply:(id)a6
+- (void)addDeviceOnBusAsync:(id)async withType:(unint64_t)type matching:(id)matching reply:(id)reply
 {
-  v10 = [(CoreRCManagerClient *)self connection];
+  connection = [(CoreRCManagerClient *)self connection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __71__CoreRCManagerClient_IR__addDeviceOnBusAsync_withType_matching_reply___block_invoke;
   v11[3] = &unk_278EA2960;
-  v11[4] = a6;
-  [objc_msgSend(v10 remoteObjectProxyWithErrorHandler:{v11), "addDeviceOnBusAsync:withType:matching:reply:", a3, a4, a5, a6}];
+  v11[4] = reply;
+  [objc_msgSend(connection remoteObjectProxyWithErrorHandler:{v11), "addDeviceOnBusAsync:withType:matching:reply:", async, type, matching, reply}];
 }
 
-- (void)updateMappingWithSessionOwningDeviceAsync:(id)a3 forTargetDevice:(id)a4 reply:(id)a5
+- (void)updateMappingWithSessionOwningDeviceAsync:(id)async forTargetDevice:(id)device reply:(id)reply
 {
-  v8 = [(CoreRCManagerClient *)self connection];
+  connection = [(CoreRCManagerClient *)self connection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __91__CoreRCManagerClient_IR__updateMappingWithSessionOwningDeviceAsync_forTargetDevice_reply___block_invoke;
   v9[3] = &unk_278EA2960;
-  v9[4] = a5;
-  [objc_msgSend(v8 remoteObjectProxyWithErrorHandler:{v9), "updateMappingWithSessionOwningDeviceAsync:forTargetDevice:reply:", a3, a4, a5}];
+  v9[4] = reply;
+  [objc_msgSend(connection remoteObjectProxyWithErrorHandler:{v9), "updateMappingWithSessionOwningDeviceAsync:forTargetDevice:reply:", async, device, reply}];
 }
 
-- (void)startLearningSessionWithDeviceAsync:(id)a3 forReason:(id)a4 reply:(id)a5
+- (void)startLearningSessionWithDeviceAsync:(id)async forReason:(id)reason reply:(id)reply
 {
-  v8 = [(CoreRCManagerClient *)self connection];
+  connection = [(CoreRCManagerClient *)self connection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __79__CoreRCManagerClient_IR__startLearningSessionWithDeviceAsync_forReason_reply___block_invoke;
   v9[3] = &unk_278EA2960;
-  v9[4] = a5;
-  [objc_msgSend(v8 remoteObjectProxyWithErrorHandler:{v9), "startLearningSessionWithDeviceAsync:forReason:reply:", a3, a4, a5}];
+  v9[4] = reply;
+  [objc_msgSend(connection remoteObjectProxyWithErrorHandler:{v9), "startLearningSessionWithDeviceAsync:forReason:reply:", async, reason, reply}];
 }
 
-- (void)addDeviceOnBusAsync:(id)a3 withType:(unint64_t)a4 matching:(id)a5 withSessionOwningDevice:(id)a6 reply:(id)a7
+- (void)addDeviceOnBusAsync:(id)async withType:(unint64_t)type matching:(id)matching withSessionOwningDevice:(id)device reply:(id)reply
 {
-  v12 = [(CoreRCManagerClient *)self connection];
+  connection = [(CoreRCManagerClient *)self connection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __95__CoreRCManagerClient_IR__addDeviceOnBusAsync_withType_matching_withSessionOwningDevice_reply___block_invoke;
   v13[3] = &unk_278EA2960;
-  v13[4] = a7;
-  [objc_msgSend(v12 remoteObjectProxyWithErrorHandler:{v13), "addDeviceOnBusAsync:withType:matching:withSessionOwningDevice:reply:", a3, a4, a5, a6, a7}];
+  v13[4] = reply;
+  [objc_msgSend(connection remoteObjectProxyWithErrorHandler:{v13), "addDeviceOnBusAsync:withType:matching:withSessionOwningDevice:reply:", async, type, matching, device, reply}];
 }
 
-- (void)deleteDeviceAsync:(id)a3 fromBus:(id)a4 reply:(id)a5
+- (void)deleteDeviceAsync:(id)async fromBus:(id)bus reply:(id)reply
 {
-  v8 = [(CoreRCManagerClient *)self connection];
+  connection = [(CoreRCManagerClient *)self connection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__CoreRCManagerClient_IR__deleteDeviceAsync_fromBus_reply___block_invoke;
   v9[3] = &unk_278EA2960;
-  v9[4] = a5;
-  [objc_msgSend(v8 remoteObjectProxyWithErrorHandler:{v9), "deleteDeviceAsync:fromBus:reply:", a3, a4, a5}];
+  v9[4] = reply;
+  [objc_msgSend(connection remoteObjectProxyWithErrorHandler:{v9), "deleteDeviceAsync:fromBus:reply:", async, bus, reply}];
 }
 
-- (void)sendCommandAsync:(id)a3 fromDevice:(id)a4 reply:(id)a5
+- (void)sendCommandAsync:(id)async fromDevice:(id)device reply:(id)reply
 {
   v8 = [-[CoreRCManagerClient connection](self "connection")];
 
-  [v8 sendCommandAsync:a3 fromDevice:a4 reply:a5];
+  [v8 sendCommandAsync:async fromDevice:device reply:reply];
 }
 
-- (void)clearAllStoredCommandsFromDeviceAsync:(id)a3 reply:(id)a4
+- (void)clearAllStoredCommandsFromDeviceAsync:(id)async reply:(id)reply
 {
-  v6 = [(CoreRCManagerClient *)self connection];
+  connection = [(CoreRCManagerClient *)self connection];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__CoreRCManagerClient_IR__clearAllStoredCommandsFromDeviceAsync_reply___block_invoke;
   v7[3] = &unk_278EA2960;
-  v7[4] = a4;
-  [objc_msgSend(v6 remoteObjectProxyWithErrorHandler:{v7), "clearAllStoredCommandsFromDeviceAsync:reply:", a3, a4}];
+  v7[4] = reply;
+  [objc_msgSend(connection remoteObjectProxyWithErrorHandler:{v7), "clearAllStoredCommandsFromDeviceAsync:reply:", async, reply}];
 }
 
-- (void)setCommandAsync:(unint64_t)a3 target:(id)a4 source:(id)a5 forButtonCombination:(id)a6 delay:(double)a7 reply:(id)a8
+- (void)setCommandAsync:(unint64_t)async target:(id)target source:(id)source forButtonCombination:(id)combination delay:(double)delay reply:(id)reply
 {
-  v14 = [(CoreRCManagerClient *)self connection];
+  connection = [(CoreRCManagerClient *)self connection];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __90__CoreRCManagerClient_IR__setCommandAsync_target_source_forButtonCombination_delay_reply___block_invoke;
   v15[3] = &unk_278EA2960;
-  v15[4] = a8;
-  [objc_msgSend(v14 remoteObjectProxyWithErrorHandler:{v15), "setCommandAsync:target:source:forButtonCombination:delay:reply:", a3, a4, a5, a6, a8, a7}];
+  v15[4] = reply;
+  [objc_msgSend(connection remoteObjectProxyWithErrorHandler:{v15), "setCommandAsync:target:source:forButtonCombination:delay:reply:", async, target, source, combination, reply, delay}];
 }
 
-- (void)learningSessionForDevice:(id)a3 commandProgress:(id)a4
+- (void)learningSessionForDevice:(id)device commandProgress:(id)progress
 {
-  v7 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__CoreRCManagerClient_IR__learningSessionForDevice_commandProgress___block_invoke;
   block[3] = &unk_278EA29B0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
-  dispatch_async(v7, block);
+  block[5] = device;
+  block[6] = progress;
+  dispatch_async(serialQueue, block);
 }
 
-- (void)learningSessionForDevice:(id)a3 status:(unint64_t)a4
+- (void)learningSessionForDevice:(id)device status:(unint64_t)status
 {
-  v7 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__CoreRCManagerClient_IR__learningSessionForDevice_status___block_invoke;
   block[3] = &unk_278EA4220;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
-  dispatch_async(v7, block);
+  block[5] = device;
+  block[6] = status;
+  dispatch_async(serialQueue, block);
 }
 
-- (void)learningSessionForDevice:(id)a3 duplicateCommand:(unint64_t)a4 target:(id)a5
+- (void)learningSessionForDevice:(id)device duplicateCommand:(unint64_t)command target:(id)target
 {
-  v9 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __76__CoreRCManagerClient_IR__learningSessionForDevice_duplicateCommand_target___block_invoke;
   v10[3] = &unk_278EA2A28;
-  v10[4] = a5;
+  v10[4] = target;
   v10[5] = self;
-  v10[6] = a3;
-  v10[7] = a4;
-  dispatch_async(v9, v10);
+  v10[6] = device;
+  v10[7] = command;
+  dispatch_async(serialQueue, v10);
 }
 
-- (void)learningSessionForDeviceCommandDone:(id)a3
+- (void)learningSessionForDeviceCommandDone:(id)done
 {
-  v5 = [(CoreRCManager *)self serialQueue];
+  serialQueue = [(CoreRCManager *)self serialQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __63__CoreRCManagerClient_IR__learningSessionForDeviceCommandDone___block_invoke;
   v6[3] = &unk_278EA29D8;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = done;
+  dispatch_async(serialQueue, v6);
 }
 
 void *__71__CoreRCManagerClient_CEC__cecBus_activeSourceHasChangedTo_fromDevice___block_invoke(uint64_t a1)

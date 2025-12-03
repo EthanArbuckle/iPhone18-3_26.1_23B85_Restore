@@ -3,41 +3,41 @@
 - (ACActivityProminenceListener)prominenceListener;
 - (NSMutableDictionary)prominenceAssertionByActivityIdentifier;
 - (SBActivityManager)init;
-- (id)_activityLifecyclePayloadWithContentUpdate:(id)a3;
-- (id)lastRedisplayableActivityForBundleId:(id)a3;
-- (void)_activityBlocked:(BOOL)a3 item:(id)a4;
-- (void)_activityDismissedWithContentUpdate:(id)a3;
-- (void)_activityFinishedWithContentUpdate:(id)a3;
-- (void)_activityStartedOrUpdatedWithContentUpdate:(id)a3;
-- (void)_addAppActivitiesRecordForBundleId:(id)a3 item:(id)a4;
-- (void)_dismissActivityAlert:(id)a3;
-- (void)_handleActivityExceedingReducedPushBudgetWithIdentifier:(id)a3;
-- (void)_handleActivityWithContentUpdate:(id)a3;
-- (void)_hideAllActivities:(BOOL)a3;
+- (id)_activityLifecyclePayloadWithContentUpdate:(id)update;
+- (id)lastRedisplayableActivityForBundleId:(id)id;
+- (void)_activityBlocked:(BOOL)blocked item:(id)item;
+- (void)_activityDismissedWithContentUpdate:(id)update;
+- (void)_activityFinishedWithContentUpdate:(id)update;
+- (void)_activityStartedOrUpdatedWithContentUpdate:(id)update;
+- (void)_addAppActivitiesRecordForBundleId:(id)id item:(id)item;
+- (void)_dismissActivityAlert:(id)alert;
+- (void)_handleActivityExceedingReducedPushBudgetWithIdentifier:(id)identifier;
+- (void)_handleActivityWithContentUpdate:(id)update;
+- (void)_hideAllActivities:(BOOL)activities;
 - (void)_invalidateAllProminenceAssertion;
-- (void)_invalidateProminenceAssertionForActivityIdenfier:(id)a3;
-- (void)_presentActivityAlert:(id)a3;
-- (void)_publishProminenceUpdate:(BOOL)a3 item:(id)a4;
-- (void)_queue_invalidateProminenceAssertionForActivityIdenfier:(id)a3;
+- (void)_invalidateProminenceAssertionForActivityIdenfier:(id)idenfier;
+- (void)_presentActivityAlert:(id)alert;
+- (void)_publishProminenceUpdate:(BOOL)update item:(id)item;
+- (void)_queue_invalidateProminenceAssertionForActivityIdenfier:(id)idenfier;
 - (void)_removeAllObservers;
-- (void)_removeAppActivitiesRecordForBundleId:(id)a3 item:(id)a4;
-- (void)_sendAnalyticsLifecycleEventIfNecessaryWithContentUpdate:(id)a3;
-- (void)_stopActiveAlertForActivityIdentifier:(id)a3;
+- (void)_removeAppActivitiesRecordForBundleId:(id)id item:(id)item;
+- (void)_sendAnalyticsLifecycleEventIfNecessaryWithContentUpdate:(id)update;
+- (void)_stopActiveAlertForActivityIdentifier:(id)identifier;
 - (void)_updateAllApplicationMonitoringPolicies;
-- (void)_updateForScreenTimeLimitForBundleId:(id)a3 policy:(id)a4;
-- (void)activityAlertClient:(id)a3 dismissAlertProvider:(id)a4;
-- (void)activityAlertClient:(id)a3 presentAlertProvider:(id)a4 completion:(id)a5;
-- (void)addObserver:(id)a3;
-- (void)alertPresentationFailed:(id)a3;
+- (void)_updateForScreenTimeLimitForBundleId:(id)id policy:(id)policy;
+- (void)activityAlertClient:(id)client dismissAlertProvider:(id)provider;
+- (void)activityAlertClient:(id)client presentAlertProvider:(id)provider completion:(id)completion;
+- (void)addObserver:(id)observer;
+- (void)alertPresentationFailed:(id)failed;
 - (void)cancelObservingActivityUpdates;
 - (void)dealloc;
-- (void)preventPresentableFromRevoke:(BOOL)a3 forBundleId:(id)a4;
-- (void)redisplayActivity:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setEnvironment:(int64_t)a3;
-- (void)setProminenceAssertionByActivityIdentifier:(id)a3;
-- (void)setProminenceListener:(id)a3;
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4;
+- (void)preventPresentableFromRevoke:(BOOL)revoke forBundleId:(id)id;
+- (void)redisplayActivity:(id)activity;
+- (void)removeObserver:(id)observer;
+- (void)setEnvironment:(int64_t)environment;
+- (void)setProminenceAssertionByActivityIdentifier:(id)identifier;
+- (void)setProminenceListener:(id)listener;
+- (void)settings:(id)settings changedValueForKeyPath:(id)path;
 - (void)startObservingActivityUpdates;
 @end
 
@@ -79,9 +79,9 @@ void __50__SBActivityManager_startObservingActivityUpdates__block_invoke_2(uint6
     activityAlertClient = v2->_activityAlertClient;
     v2->_activityAlertClient = v5;
 
-    v7 = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
     bannerPresentableByActivityIdentifier = v2->_bannerPresentableByActivityIdentifier;
-    v2->_bannerPresentableByActivityIdentifier = v7;
+    v2->_bannerPresentableByActivityIdentifier = weakToWeakObjectsMapTable;
 
     v9 = objc_opt_new();
     itemByActivityIdentifier = v2->_itemByActivityIdentifier;
@@ -272,23 +272,23 @@ void __50__SBActivityManager_startObservingActivityUpdates__block_invoke_3(uint6
     self->_activityAlertSubscription = 0;
 
     [(SBActivityManager *)self _invalidateAllProminenceAssertion];
-    v8 = [(SBActivityManager *)self prominenceAssertionByActivityIdentifier];
-    [v8 removeAllObjects];
+    prominenceAssertionByActivityIdentifier = [(SBActivityManager *)self prominenceAssertionByActivityIdentifier];
+    [prominenceAssertionByActivityIdentifier removeAllObjects];
 
     [(SBActivityManager *)self _removeAllObservers];
   }
 }
 
-- (void)setEnvironment:(int64_t)a3
+- (void)setEnvironment:(int64_t)environment
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (self->_environment != a3)
+  if (self->_environment != environment)
   {
     v5 = SBLogActivity();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"ambient";
-      if (!a3)
+      if (!environment)
       {
         v6 = @"none";
       }
@@ -298,13 +298,13 @@ void __50__SBActivityManager_startObservingActivityUpdates__block_invoke_3(uint6
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Activity environment changed: %@", buf, 0xCu);
     }
 
-    self->_environment = a3;
+    self->_environment = environment;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __36__SBActivityManager_setEnvironment___block_invoke;
     v7[3] = &unk_2783A8BC8;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = environment;
     dispatch_async(MEMORY[0x277D85CD0], v7);
   }
 }
@@ -387,17 +387,17 @@ void __36__SBActivityManager_setEnvironment___block_invoke(uint64_t a1)
   }
 }
 
-- (void)alertPresentationFailed:(id)a3
+- (void)alertPresentationFailed:(id)failed
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  failedCopy = failed;
   v5 = SBLogActivity();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 item];
-    v7 = [v6 identifier];
+    item = [failedCopy item];
+    identifier = [item identifier];
     *buf = 138543362;
-    v20 = v7;
+    v20 = identifier;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] alert presentation failed for original destination. Looking for fallback destination.", buf, 0xCu);
   }
 
@@ -424,7 +424,7 @@ void __36__SBActivityManager_setEnvironment___block_invoke(uint64_t a1)
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 presentFallbackAlert:v4];
+          [v13 presentFallbackAlert:failedCopy];
         }
 
         ++v12;
@@ -438,44 +438,44 @@ void __36__SBActivityManager_setEnvironment___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_handleActivityWithContentUpdate:(id)a3
+- (void)_handleActivityWithContentUpdate:(id)update
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   BSDispatchQueueAssertMain();
-  [(SBActivityManager *)self _sendAnalyticsLifecycleEventIfNecessaryWithContentUpdate:v4];
-  v5 = [v4 state];
-  if (v5 == 2)
+  [(SBActivityManager *)self _sendAnalyticsLifecycleEventIfNecessaryWithContentUpdate:updateCopy];
+  state = [updateCopy state];
+  if (state == 2)
   {
-    [(SBActivityManager *)self _activityDismissedWithContentUpdate:v4];
+    [(SBActivityManager *)self _activityDismissedWithContentUpdate:updateCopy];
   }
 
-  else if (v5 == 1)
+  else if (state == 1)
   {
-    [(SBActivityManager *)self _activityFinishedWithContentUpdate:v4];
+    [(SBActivityManager *)self _activityFinishedWithContentUpdate:updateCopy];
   }
 
-  else if (v5)
+  else if (state)
   {
     v6 = SBLogActivity();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 134217984;
-      v8 = [v4 state];
+      state2 = [updateCopy state];
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Unhandled activity state: %ld", &v7, 0xCu);
     }
   }
 
   else
   {
-    [(SBActivityManager *)self _activityStartedOrUpdatedWithContentUpdate:v4];
+    [(SBActivityManager *)self _activityStartedOrUpdatedWithContentUpdate:updateCopy];
   }
 }
 
-- (void)_handleActivityExceedingReducedPushBudgetWithIdentifier:(id)a3
+- (void)_handleActivityExceedingReducedPushBudgetWithIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   BSDispatchQueueAssertMain();
   v14 = 0u;
   v15 = 0u;
@@ -498,7 +498,7 @@ void __36__SBActivityManager_setEnvironment___block_invoke(uint64_t a1)
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
-        v11 = [(NSMutableDictionary *)self->_itemByActivityIdentifier objectForKey:v4];
+        v11 = [(NSMutableDictionary *)self->_itemByActivityIdentifier objectForKey:identifierCopy];
         if ([v10 shouldHandleActivityItem:v11] && (objc_opt_respondsToSelector() & 1) != 0)
         {
           [v10 activityDidExceedReducedPushBudget:v11];
@@ -515,13 +515,13 @@ void __36__SBActivityManager_setEnvironment___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_activityStartedOrUpdatedWithContentUpdate:(id)a3
+- (void)_activityStartedOrUpdatedWithContentUpdate:(id)update
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   BSDispatchQueueAssertMain();
-  v5 = [v4 identifier];
-  v6 = [(NSMutableDictionary *)self->_itemByActivityIdentifier objectForKey:v5];
+  identifier = [updateCopy identifier];
+  v6 = [(NSMutableDictionary *)self->_itemByActivityIdentifier objectForKey:identifier];
   v28 = v6;
   if (v6)
   {
@@ -530,13 +530,13 @@ void __36__SBActivityManager_setEnvironment___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v43 = v5;
+      v43 = identifier;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Activity did update", buf, 0xCu);
     }
 
-    v9 = v5;
+    v9 = identifier;
 
-    [(SBActivityItem *)v7 setContentUpdate:v4];
+    [(SBActivityItem *)v7 setContentUpdate:updateCopy];
     v38 = 0u;
     v39 = 0u;
     v37 = 0u;
@@ -572,17 +572,17 @@ void __36__SBActivityManager_setEnvironment___block_invoke(uint64_t a1)
 
   else
   {
-    v16 = [[SBActivityItem alloc] initWithContentUpdate:v4];
+    v16 = [[SBActivityItem alloc] initWithContentUpdate:updateCopy];
     v17 = SBLogActivity();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v43 = v5;
+      v43 = identifier;
       _os_log_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Activity started", buf, 0xCu);
     }
 
-    v27 = v5;
-    [(NSMutableDictionary *)self->_itemByActivityIdentifier setObject:v16 forKey:v5];
+    v27 = identifier;
+    [(NSMutableDictionary *)self->_itemByActivityIdentifier setObject:v16 forKey:identifier];
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
@@ -605,10 +605,10 @@ void __36__SBActivityManager_setEnvironment___block_invoke(uint64_t a1)
           v23 = *(*(&v32 + 1) + 8 * j);
           if ([v23 shouldHandleActivityItem:v16] && (objc_opt_respondsToSelector() & 1) != 0)
           {
-            v24 = [v4 descriptor];
+            descriptor = [updateCopy descriptor];
             [v23 activityDidStart:v16];
-            v25 = [v24 platterTargetBundleIdentifier];
-            [(SBActivityManager *)self _addAppActivitiesRecordForBundleId:v25 item:v16];
+            platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
+            [(SBActivityManager *)self _addAppActivitiesRecordForBundleId:platterTargetBundleIdentifier item:v16];
           }
         }
 
@@ -685,18 +685,18 @@ void __64__SBActivityManager__activityStartedOrUpdatedWithContentUpdate___block_
   [WeakRetained _publishProminenceUpdate:*(a1 + 48) item:*(a1 + 32)];
 }
 
-- (void)_activityFinishedWithContentUpdate:(id)a3
+- (void)_activityFinishedWithContentUpdate:(id)update
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   BSDispatchQueueAssertMain();
-  v14 = v4;
-  v5 = [v4 identifier];
+  v14 = updateCopy;
+  identifier = [updateCopy identifier];
   v6 = SBLogActivity();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v21 = v5;
+    v21 = identifier;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] ended", buf, 0xCu);
   }
 
@@ -721,7 +721,7 @@ void __64__SBActivityManager__activityStartedOrUpdatedWithContentUpdate___block_
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
-        v13 = [(NSMutableDictionary *)self->_itemByActivityIdentifier objectForKey:v5];
+        v13 = [(NSMutableDictionary *)self->_itemByActivityIdentifier objectForKey:identifier];
         if ([v12 shouldHandleActivityItem:v13] && (objc_opt_respondsToSelector() & 1) != 0)
         {
           [v12 activityDidEnd:v13];
@@ -737,22 +737,22 @@ void __64__SBActivityManager__activityStartedOrUpdatedWithContentUpdate___block_
     while (v9);
   }
 
-  [(SBActivityManager *)self _invalidateProminenceAssertionForActivityIdenfier:v5];
-  [(SBActivityManager *)self _stopActiveAlertForActivityIdentifier:v5];
+  [(SBActivityManager *)self _invalidateProminenceAssertionForActivityIdenfier:identifier];
+  [(SBActivityManager *)self _stopActiveAlertForActivityIdentifier:identifier];
 }
 
-- (void)_activityDismissedWithContentUpdate:(id)a3
+- (void)_activityDismissedWithContentUpdate:(id)update
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   BSDispatchQueueAssertMain();
-  v16 = v4;
-  v5 = [v4 identifier];
+  v16 = updateCopy;
+  identifier = [updateCopy identifier];
   v6 = SBLogActivity();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v23 = v5;
+    v23 = identifier;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] dismissed", buf, 0xCu);
   }
 
@@ -777,13 +777,13 @@ void __64__SBActivityManager__activityStartedOrUpdatedWithContentUpdate___block_
         }
 
         v12 = *(*(&v17 + 1) + 8 * v11);
-        v13 = [(NSMutableDictionary *)self->_itemByActivityIdentifier objectForKey:v5];
+        v13 = [(NSMutableDictionary *)self->_itemByActivityIdentifier objectForKey:identifier];
         if ([v12 shouldHandleActivityItem:v13] && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          v14 = [v13 descriptor];
+          descriptor = [v13 descriptor];
           [v12 activityDidDismiss:v13];
-          v15 = [v14 platterTargetBundleIdentifier];
-          [(SBActivityManager *)self _removeAppActivitiesRecordForBundleId:v15 item:v13];
+          platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
+          [(SBActivityManager *)self _removeAppActivitiesRecordForBundleId:platterTargetBundleIdentifier item:v13];
         }
 
         ++v11;
@@ -796,21 +796,21 @@ void __64__SBActivityManager__activityStartedOrUpdatedWithContentUpdate___block_
     while (v9);
   }
 
-  [(SBActivityManager *)self _invalidateProminenceAssertionForActivityIdenfier:v5];
-  [(NSMutableDictionary *)self->_itemByActivityIdentifier removeObjectForKey:v5];
-  [(SBActivityManager *)self _stopActiveAlertForActivityIdentifier:v5];
+  [(SBActivityManager *)self _invalidateProminenceAssertionForActivityIdenfier:identifier];
+  [(NSMutableDictionary *)self->_itemByActivityIdentifier removeObjectForKey:identifier];
+  [(SBActivityManager *)self _stopActiveAlertForActivityIdentifier:identifier];
 }
 
-- (void)_stopActiveAlertForActivityIdentifier:(id)a3
+- (void)_stopActiveAlertForActivityIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   activeAlert = self->_activeAlert;
   if (activeAlert)
   {
-    v6 = [(SBActivityAlert *)activeAlert item];
-    v7 = [v6 identifier];
-    v8 = [v7 isEqualToString:v4];
+    item = [(SBActivityAlert *)activeAlert item];
+    identifier = [item identifier];
+    v8 = [identifier isEqualToString:identifierCopy];
 
     if (v8)
     {
@@ -818,7 +818,7 @@ void __64__SBActivityManager__activityStartedOrUpdatedWithContentUpdate___block_
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138543362;
-        v12 = v4;
+        v12 = identifierCopy;
         _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Stopping active alert", &v11, 0xCu);
       }
 
@@ -829,25 +829,25 @@ void __64__SBActivityManager__activityStartedOrUpdatedWithContentUpdate___block_
   }
 }
 
-- (void)_publishProminenceUpdate:(BOOL)a3 item:(id)a4
+- (void)_publishProminenceUpdate:(BOOL)update item:(id)item
 {
-  v4 = a3;
+  updateCopy = update;
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  itemCopy = item;
   BSDispatchQueueAssertMain();
-  v7 = [v6 identifier];
-  v8 = [(NSMutableDictionary *)self->_prominenceStateByActivityIdentifier objectForKeyedSubscript:v7];
-  v9 = [v8 BOOLValue];
-  if (v9 == v4)
+  identifier = [itemCopy identifier];
+  v8 = [(NSMutableDictionary *)self->_prominenceStateByActivityIdentifier objectForKeyedSubscript:identifier];
+  bOOLValue = [v8 BOOLValue];
+  if (bOOLValue == updateCopy)
   {
-    v17 = v9;
+    v17 = bOOLValue;
     v11 = SBLogActivity();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v25 = v7;
+      v25 = identifier;
       v26 = 1024;
-      v27 = v4;
+      v27 = updateCopy;
       v28 = 1024;
       v29 = v17;
       _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Not publishing prominence state update: %{BOOL}u, current prominence state: %{BOOL}u", buf, 0x18u);
@@ -856,8 +856,8 @@ void __64__SBActivityManager__activityStartedOrUpdatedWithContentUpdate___block_
 
   else
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithBool:v4];
-    [(NSMutableDictionary *)self->_prominenceStateByActivityIdentifier setObject:v10 forKeyedSubscript:v7];
+    v10 = [MEMORY[0x277CCABB0] numberWithBool:updateCopy];
+    [(NSMutableDictionary *)self->_prominenceStateByActivityIdentifier setObject:v10 forKeyedSubscript:identifier];
 
     v21 = 0u;
     v22 = 0u;
@@ -880,9 +880,9 @@ void __64__SBActivityManager__activityStartedOrUpdatedWithContentUpdate___block_
           }
 
           v16 = *(*(&v19 + 1) + 8 * i);
-          if ([v16 shouldHandleActivityItem:v6] && (objc_opt_respondsToSelector() & 1) != 0)
+          if ([v16 shouldHandleActivityItem:itemCopy] && (objc_opt_respondsToSelector() & 1) != 0)
           {
-            [v16 activityProminenceChanged:v4 item:v6];
+            [v16 activityProminenceChanged:updateCopy item:itemCopy];
           }
         }
 
@@ -895,9 +895,9 @@ void __64__SBActivityManager__activityStartedOrUpdatedWithContentUpdate___block_
   }
 }
 
-- (void)_invalidateProminenceAssertionForActivityIdenfier:(id)a3
+- (void)_invalidateProminenceAssertionForActivityIdenfier:(id)idenfier
 {
-  v4 = a3;
+  idenfierCopy = idenfier;
   BSDispatchQueueAssertMain();
   objc_initWeak(&location, self);
   activityProminenceQueue = self->_activityProminenceQueue;
@@ -906,7 +906,7 @@ void __64__SBActivityManager__activityStartedOrUpdatedWithContentUpdate___block_
   block[2] = __71__SBActivityManager__invalidateProminenceAssertionForActivityIdenfier___block_invoke;
   block[3] = &unk_2783A9CE8;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = idenfierCopy;
   v8 = v6;
   dispatch_async(activityProminenceQueue, block);
   [(NSMutableDictionary *)self->_prominenceStateByActivityIdentifier removeObjectForKey:v6];
@@ -926,21 +926,21 @@ void __71__SBActivityManager__invalidateProminenceAssertionForActivityIdenfier__
   }
 }
 
-- (void)_queue_invalidateProminenceAssertionForActivityIdenfier:(id)a3
+- (void)_queue_invalidateProminenceAssertionForActivityIdenfier:(id)idenfier
 {
-  v6 = a3;
+  idenfierCopy = idenfier;
   v4 = [(NSMutableDictionary *)self->_queue_prominenceAssertionByActivityIdentifier objectForKeyedSubscript:?];
   v5 = v4;
   if (v4)
   {
     [v4 invalidate];
-    [(NSMutableDictionary *)self->_queue_prominenceAssertionByActivityIdentifier removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_queue_prominenceAssertionByActivityIdentifier removeObjectForKey:idenfierCopy];
   }
 }
 
-- (void)setProminenceListener:(id)a3
+- (void)setProminenceListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   BSDispatchQueueAssertMain();
   activityProminenceQueue = self->_activityProminenceQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -948,8 +948,8 @@ void __71__SBActivityManager__invalidateProminenceAssertionForActivityIdenfier__
   v7[2] = __43__SBActivityManager_setProminenceListener___block_invoke;
   v7[3] = &unk_2783A92D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = listenerCopy;
+  v6 = listenerCopy;
   dispatch_sync(activityProminenceQueue, v7);
 }
 
@@ -988,9 +988,9 @@ void __43__SBActivityManager_setProminenceListener___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setProminenceAssertionByActivityIdentifier:(id)a3
+- (void)setProminenceAssertionByActivityIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   BSDispatchQueueAssertMain();
   activityProminenceQueue = self->_activityProminenceQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -998,8 +998,8 @@ void __43__SBActivityManager_setProminenceListener___block_invoke(uint64_t a1)
   v7[2] = __64__SBActivityManager_setProminenceAssertionByActivityIdentifier___block_invoke;
   v7[3] = &unk_2783A92D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_sync(activityProminenceQueue, v7);
 }
 
@@ -1052,10 +1052,10 @@ void __60__SBActivityManager_prominenceAssertionByActivityIdentifier__block_invo
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(SBActivityManager *)self prominenceAssertionByActivityIdentifier];
-  v3 = [v2 allValues];
+  prominenceAssertionByActivityIdentifier = [(SBActivityManager *)self prominenceAssertionByActivityIdentifier];
+  allValues = [prominenceAssertionByActivityIdentifier allValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1067,47 +1067,47 @@ void __60__SBActivityManager_prominenceAssertionByActivityIdentifier__block_invo
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) invalidate];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_presentActivityAlert:(id)a3
+- (void)_presentActivityAlert:(id)alert
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  alertCopy = alert;
   BSDispatchQueueAssertMain();
-  if (v5)
+  if (alertCopy)
   {
-    v6 = [v5 item];
-    v7 = [v6 identifier];
-    v8 = [v5 payloadIdentifier];
+    item = [alertCopy item];
+    identifier = [item identifier];
+    payloadIdentifier = [alertCopy payloadIdentifier];
     v9 = SBLogActivity();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v31 = v7;
+      v31 = identifier;
       v32 = 2114;
-      v33 = v8;
+      v33 = payloadIdentifier;
       _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] presents an alert with payload: %{public}@", buf, 0x16u);
     }
 
-    v23 = v7;
+    v23 = identifier;
 
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v24 = self;
+    selfCopy = self;
     v10 = [(NSHashTable *)self->_observers copy];
     v11 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v11)
@@ -1124,9 +1124,9 @@ void __60__SBActivityManager_prominenceAssertionByActivityIdentifier__block_invo
           }
 
           v15 = *(*(&v25 + 1) + 8 * i);
-          if ([v15 shouldHandleActivityItem:v6] && (objc_opt_respondsToSelector() & 1) != 0)
+          if ([v15 shouldHandleActivityItem:item] && (objc_opt_respondsToSelector() & 1) != 0)
           {
-            [v15 presentAlert:v5];
+            [v15 presentAlert:alertCopy];
           }
         }
 
@@ -1136,42 +1136,42 @@ void __60__SBActivityManager_prominenceAssertionByActivityIdentifier__block_invo
       while (v12);
     }
 
-    objc_storeStrong(&v24->_activeAlert, a3);
+    objc_storeStrong(&selfCopy->_activeAlert, alert);
   }
 
   else
   {
-    v6 = SBLogActivity();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    item = SBLogActivity();
+    if (os_log_type_enabled(item, OS_LOG_TYPE_ERROR))
     {
-      [(SBActivityManager *)v6 _presentActivityAlert:v16, v17, v18, v19, v20, v21, v22];
+      [(SBActivityManager *)item _presentActivityAlert:v16, v17, v18, v19, v20, v21, v22];
     }
   }
 }
 
-- (void)_dismissActivityAlert:(id)a3
+- (void)_dismissActivityAlert:(id)alert
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  alertCopy = alert;
   BSDispatchQueueAssertMain();
-  if (v4)
+  if (alertCopy)
   {
-    v5 = [v4 item];
-    v6 = [v5 identifier];
+    item = [alertCopy item];
+    identifier = [item identifier];
     v7 = SBLogActivity();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v28 = v6;
+      v28 = identifier;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] dismisses the alert", buf, 0xCu);
     }
 
-    [v4 stopAlerting];
+    [alertCopy stopAlerting];
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v21 = self;
+    selfCopy = self;
     v8 = [(NSHashTable *)self->_observers copy];
     v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v9)
@@ -1188,9 +1188,9 @@ void __60__SBActivityManager_prominenceAssertionByActivityIdentifier__block_invo
           }
 
           v13 = *(*(&v22 + 1) + 8 * i);
-          if ([v13 shouldHandleActivityItem:v5] && (objc_opt_respondsToSelector() & 1) != 0)
+          if ([v13 shouldHandleActivityItem:item] && (objc_opt_respondsToSelector() & 1) != 0)
           {
-            [v13 dismissAlert:v4];
+            [v13 dismissAlert:alertCopy];
           }
         }
 
@@ -1200,15 +1200,15 @@ void __60__SBActivityManager_prominenceAssertionByActivityIdentifier__block_invo
       while (v10);
     }
 
-    [(SBActivityManager *)v21 _stopActiveAlertForActivityIdentifier:v6];
+    [(SBActivityManager *)selfCopy _stopActiveAlertForActivityIdentifier:identifier];
   }
 
   else
   {
-    v5 = SBLogActivity();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    item = SBLogActivity();
+    if (os_log_type_enabled(item, OS_LOG_TYPE_ERROR))
     {
-      [(SBActivityManager *)v5 _dismissActivityAlert:v14, v15, v16, v17, v18, v19, v20];
+      [(SBActivityManager *)item _dismissActivityAlert:v14, v15, v16, v17, v18, v19, v20];
     }
   }
 }
@@ -1225,17 +1225,17 @@ void __60__SBActivityManager_prominenceAssertionByActivityIdentifier__block_invo
   [(NSHashTable *)self->_observers removeAllObjects];
 }
 
-- (void)_addAppActivitiesRecordForBundleId:(id)a3 item:(id)a4
+- (void)_addAppActivitiesRecordForBundleId:(id)id item:(id)item
 {
-  v14 = a3;
-  v6 = a4;
+  idCopy = id;
+  itemCopy = item;
   BSDispatchQueueAssertMain();
-  v7 = [(NSMutableDictionary *)self->_itemsByBundleIdentifier allKeys];
-  v8 = [v7 containsObject:v14];
+  allKeys = [(NSMutableDictionary *)self->_itemsByBundleIdentifier allKeys];
+  v8 = [allKeys containsObject:idCopy];
 
   if (v8)
   {
-    v9 = [(NSMutableDictionary *)self->_itemsByBundleIdentifier objectForKey:v14];
+    v9 = [(NSMutableDictionary *)self->_itemsByBundleIdentifier objectForKey:idCopy];
   }
 
   else
@@ -1244,57 +1244,57 @@ void __60__SBActivityManager_prominenceAssertionByActivityIdentifier__block_invo
   }
 
   v10 = v9;
-  [v9 addObject:v6];
+  [v9 addObject:itemCopy];
 
   itemsByBundleIdentifier = self->_itemsByBundleIdentifier;
   if (!itemsByBundleIdentifier)
   {
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v13 = self->_itemsByBundleIdentifier;
-    self->_itemsByBundleIdentifier = v12;
+    self->_itemsByBundleIdentifier = dictionary;
 
     itemsByBundleIdentifier = self->_itemsByBundleIdentifier;
   }
 
-  [(NSMutableDictionary *)itemsByBundleIdentifier setObject:v10 forKey:v14];
+  [(NSMutableDictionary *)itemsByBundleIdentifier setObject:v10 forKey:idCopy];
 }
 
-- (void)_removeAppActivitiesRecordForBundleId:(id)a3 item:(id)a4
+- (void)_removeAppActivitiesRecordForBundleId:(id)id item:(id)item
 {
-  v9 = a3;
-  v6 = a4;
+  idCopy = id;
+  itemCopy = item;
   BSDispatchQueueAssertMain();
-  v7 = [(NSMutableDictionary *)self->_itemsByBundleIdentifier objectForKey:v9];
+  v7 = [(NSMutableDictionary *)self->_itemsByBundleIdentifier objectForKey:idCopy];
 
   if (v7)
   {
-    v8 = [(NSMutableDictionary *)self->_itemsByBundleIdentifier objectForKey:v9];
-    if ([v8 containsObject:v6])
+    v8 = [(NSMutableDictionary *)self->_itemsByBundleIdentifier objectForKey:idCopy];
+    if ([v8 containsObject:itemCopy])
     {
-      [v8 removeObject:v6];
-      [(NSMutableDictionary *)self->_itemsByBundleIdentifier setObject:v8 forKey:v9];
+      [v8 removeObject:itemCopy];
+      [(NSMutableDictionary *)self->_itemsByBundleIdentifier setObject:v8 forKey:idCopy];
     }
   }
 }
 
-- (id)lastRedisplayableActivityForBundleId:(id)a3
+- (id)lastRedisplayableActivityForBundleId:(id)id
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idCopy = id;
   BSDispatchQueueAssertMain();
-  [(NSMutableDictionary *)self->_itemsByBundleIdentifier objectForKey:v4];
+  [(NSMutableDictionary *)self->_itemsByBundleIdentifier objectForKey:idCopy];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v22 = v30 = 0u;
-  v5 = [v22 reverseObjectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  reverseObjectEnumerator = [v22 reverseObjectEnumerator];
+  v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v28;
-    v20 = self;
-    v21 = v4;
+    selfCopy = self;
+    v21 = idCopy;
     v19 = *v28;
     do
     {
@@ -1302,7 +1302,7 @@ void __60__SBActivityManager_prominenceAssertionByActivityIdentifier__block_invo
       {
         if (*v28 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v10 = *(*(&v27 + 1) + 8 * i);
@@ -1330,7 +1330,7 @@ void __60__SBActivityManager_prominenceAssertionByActivityIdentifier__block_invo
               {
                 v17 = v10;
 
-                v4 = v21;
+                idCopy = v21;
                 goto LABEL_20;
               }
             }
@@ -1346,12 +1346,12 @@ void __60__SBActivityManager_prominenceAssertionByActivityIdentifier__block_invo
         }
 
         v8 = v19;
-        self = v20;
+        self = selfCopy;
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v27 objects:v32 count:16];
       v17 = 0;
-      v4 = v21;
+      idCopy = v21;
     }
 
     while (v7);
@@ -1367,10 +1367,10 @@ LABEL_20:
   return v17;
 }
 
-- (void)redisplayActivity:(id)a3
+- (void)redisplayActivity:(id)activity
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activityCopy = activity;
   BSDispatchQueueAssertMain();
   v13 = 0u;
   v14 = 0u;
@@ -1395,7 +1395,7 @@ LABEL_20:
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 redisplayActivity:v4];
+          [v10 redisplayActivity:activityCopy];
         }
 
         ++v9;
@@ -1409,11 +1409,11 @@ LABEL_20:
   }
 }
 
-- (void)preventPresentableFromRevoke:(BOOL)a3 forBundleId:(id)a4
+- (void)preventPresentableFromRevoke:(BOOL)revoke forBundleId:(id)id
 {
-  v4 = a3;
+  revokeCopy = revoke;
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  idCopy = id;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1437,7 +1437,7 @@ LABEL_20:
         v12 = *(*(&v13 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 activityForBundleId:v6 shouldPreventFromRevoke:v4];
+          [v12 activityForBundleId:idCopy shouldPreventFromRevoke:revokeCopy];
         }
 
         ++v11;
@@ -1454,14 +1454,14 @@ LABEL_20:
 - (void)_updateAllApplicationMonitoringPolicies
 {
   BSDispatchQueueAssertMain();
-  v3 = [(SBActivityManager *)self applicationPolicyMonitor];
-  v4 = [(NSMutableDictionary *)self->_itemsByBundleIdentifier allKeys];
+  applicationPolicyMonitor = [(SBActivityManager *)self applicationPolicyMonitor];
+  allKeys = [(NSMutableDictionary *)self->_itemsByBundleIdentifier allKeys];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __60__SBActivityManager__updateAllApplicationMonitoringPolicies__block_invoke;
   v5[3] = &unk_2783AF2C8;
   v5[4] = self;
-  [v3 requestPoliciesForBundleIdentifiers:v4 completionHandler:v5];
+  [applicationPolicyMonitor requestPoliciesForBundleIdentifiers:allKeys completionHandler:v5];
 }
 
 void __60__SBActivityManager__updateAllApplicationMonitoringPolicies__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1492,22 +1492,22 @@ void __60__SBActivityManager__updateAllApplicationMonitoringPolicies__block_invo
   }
 }
 
-- (void)_updateForScreenTimeLimitForBundleId:(id)a3 policy:(id)a4
+- (void)_updateForScreenTimeLimitForBundleId:(id)id policy:(id)policy
 {
-  v6 = a4;
-  v7 = a3;
+  policyCopy = policy;
+  idCopy = id;
   BSDispatchQueueAssertMain();
-  v8 = [(NSMutableDictionary *)self->_itemsByBundleIdentifier objectForKey:v7];
+  v8 = [(NSMutableDictionary *)self->_itemsByBundleIdentifier objectForKey:idCopy];
 
   v9 = [v8 copy];
-  v10 = [v6 integerValue];
+  integerValue = [policyCopy integerValue];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __65__SBActivityManager__updateForScreenTimeLimitForBundleId_policy___block_invoke;
   v11[3] = &unk_2783B12D0;
   v11[4] = self;
-  v12 = v10 != 0;
+  v12 = integerValue != 0;
   [v9 enumerateObjectsUsingBlock:v11];
 }
 
@@ -1523,11 +1523,11 @@ void __65__SBActivityManager__updateForScreenTimeLimitForBundleId_policy___block
   }
 }
 
-- (void)_activityBlocked:(BOOL)a3 item:(id)a4
+- (void)_activityBlocked:(BOOL)blocked item:(id)item
 {
-  v4 = a3;
+  blockedCopy = blocked;
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  itemCopy = item;
   BSDispatchQueueAssertMain();
   v20 = 0u;
   v21 = 0u;
@@ -1550,22 +1550,22 @@ void __65__SBActivityManager__updateForScreenTimeLimitForBundleId_policy___block
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        if (v4)
+        if (blockedCopy)
         {
           if (objc_opt_respondsToSelector())
           {
             v13 = SBLogActivity();
             if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
             {
-              v14 = [v6 identifier];
+              identifier = [itemCopy identifier];
               *buf = 138543362;
-              v23 = v14;
+              v23 = identifier;
               _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] hides activity content", buf, 0xCu);
 
               v7 = v17;
             }
 
-            [v12 activityWasBlocked:v6];
+            [v12 activityWasBlocked:itemCopy];
           }
         }
 
@@ -1574,15 +1574,15 @@ void __65__SBActivityManager__updateForScreenTimeLimitForBundleId_policy___block
           v15 = SBLogActivity();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
-            v16 = [v6 identifier];
+            identifier2 = [itemCopy identifier];
             *buf = 138543362;
-            v23 = v16;
+            v23 = identifier2;
             _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] unhides activity content", buf, 0xCu);
 
             v7 = v17;
           }
 
-          [v12 activityWasUnblocked:v6];
+          [v12 activityWasUnblocked:itemCopy];
         }
       }
 
@@ -1593,13 +1593,13 @@ void __65__SBActivityManager__updateForScreenTimeLimitForBundleId_policy___block
   }
 }
 
-- (void)_sendAnalyticsLifecycleEventIfNecessaryWithContentUpdate:(id)a3
+- (void)_sendAnalyticsLifecycleEventIfNecessaryWithContentUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(NSMutableDictionary *)self->_itemByActivityIdentifier objectForKeyedSubscript:v5];
+  updateCopy = update;
+  identifier = [updateCopy identifier];
+  v6 = [(NSMutableDictionary *)self->_itemByActivityIdentifier objectForKeyedSubscript:identifier];
 
-  if ([v4 state] || !v6)
+  if ([updateCopy state] || !v6)
   {
     objc_initWeak(&location, self);
     v7[0] = MEMORY[0x277D85DD0];
@@ -1607,7 +1607,7 @@ void __65__SBActivityManager__updateForScreenTimeLimitForBundleId_policy___block
     v7[2] = __78__SBActivityManager__sendAnalyticsLifecycleEventIfNecessaryWithContentUpdate___block_invoke;
     v7[3] = &unk_2783B12F8;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
+    v8 = updateCopy;
     [(SBActivityManager *)self _sendAnalyticsEventWithPayloadBuilder:v7];
 
     objc_destroyWeak(&v9);
@@ -1623,37 +1623,37 @@ id __78__SBActivityManager__sendAnalyticsLifecycleEventIfNecessaryWithContentUpd
   return v3;
 }
 
-- (id)_activityLifecyclePayloadWithContentUpdate:(id)a3
+- (id)_activityLifecyclePayloadWithContentUpdate:(id)update
 {
   v21[4] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 identifier];
-  v5 = [v3 descriptor];
-  v6 = [v5 platterTargetBundleIdentifier];
+  updateCopy = update;
+  identifier = [updateCopy identifier];
+  descriptor = [updateCopy descriptor];
+  platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
 
   v7 = [MEMORY[0x277CCABB0] numberWithInt:0];
-  v8 = [v3 state];
-  if (v8 <= 1)
+  state = [updateCopy state];
+  if (state <= 1)
   {
     v9 = @"Start";
     v10 = @"End";
-    if (v8 != 1)
+    if (state != 1)
     {
       v10 = 0;
     }
 
-    v11 = v8 == 0;
+    v11 = state == 0;
   }
 
   else
   {
-    if (v8 == 2)
+    if (state == 2)
     {
-      v14 = [v3 descriptor];
-      v15 = [v14 createdDate];
+      descriptor2 = [updateCopy descriptor];
+      createdDate = [descriptor2 createdDate];
 
       v16 = [MEMORY[0x277CBEAA8] now];
-      [v16 timeIntervalSinceDate:v15];
+      [v16 timeIntervalSinceDate:createdDate];
       v18 = v17;
 
       v19 = [MEMORY[0x277CCABB0] numberWithDouble:v18 / 60.0];
@@ -1665,12 +1665,12 @@ id __78__SBActivityManager__sendAnalyticsLifecycleEventIfNecessaryWithContentUpd
 
     v9 = @"Stale";
     v10 = @"Pending";
-    if (v8 != 4)
+    if (state != 4)
     {
       v10 = 0;
     }
 
-    v11 = v8 == 3;
+    v11 = state == 3;
   }
 
   if (!v11)
@@ -1681,8 +1681,8 @@ id __78__SBActivityManager__sendAnalyticsLifecycleEventIfNecessaryWithContentUpd
 LABEL_11:
   v20[0] = @"activityId";
   v20[1] = @"bundleId";
-  v21[0] = v4;
-  v21[1] = v6;
+  v21[0] = identifier;
+  v21[1] = platterTargetBundleIdentifier;
   v20[2] = @"eventType";
   v20[3] = @"duration";
   v21[2] = v9;
@@ -1692,20 +1692,20 @@ LABEL_11:
   return v12;
 }
 
-- (void)_hideAllActivities:(BOOL)a3
+- (void)_hideAllActivities:(BOOL)activities
 {
-  v3 = a3;
+  activitiesCopy = activities;
   v20 = *MEMORY[0x277D85DE8];
   v5 = SBLogActivity();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67240192;
-    v19 = v3;
+    v19 = activitiesCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "All activities hidden: %{public}d", buf, 8u);
   }
 
-  v6 = [(NSMutableDictionary *)self->_itemByActivityIdentifier allValues];
-  v7 = [v6 copy];
+  allValues = [(NSMutableDictionary *)self->_itemByActivityIdentifier allValues];
+  v7 = [allValues copy];
 
   v15 = 0u;
   v16 = 0u;
@@ -1727,7 +1727,7 @@ LABEL_11:
           objc_enumerationMutation(v8);
         }
 
-        [(SBActivityManager *)self _activityBlocked:v3 item:*(*(&v13 + 1) + 8 * v12++), v13];
+        [(SBActivityManager *)self _activityBlocked:activitiesCopy item:*(*(&v13 + 1) + 8 * v12++), v13];
       }
 
       while (v10 != v12);
@@ -1738,14 +1738,14 @@ LABEL_11:
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v9 = v4;
-    v5 = [(NSHashTable *)self->_observers containsObject:v4];
-    v4 = v9;
+    v9 = observerCopy;
+    v5 = [(NSHashTable *)self->_observers containsObject:observerCopy];
+    observerCopy = v9;
     if (!v5)
     {
       observers = self->_observers;
@@ -1759,32 +1759,32 @@ LABEL_11:
       }
 
       [(NSHashTable *)observers addObject:v9];
-      v4 = v9;
+      observerCopy = v9;
     }
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
   }
 }
 
-- (void)activityAlertClient:(id)a3 presentAlertProvider:(id)a4 completion:(id)a5
+- (void)activityAlertClient:(id)client presentAlertProvider:(id)provider completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  providerCopy = provider;
+  completionCopy = completion;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__SBActivityManager_activityAlertClient_presentAlertProvider_completion___block_invoke;
   block[3] = &unk_2783B1320;
-  v13 = self;
-  v14 = v8;
-  v12 = v7;
-  v9 = v8;
-  v10 = v7;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = providerCopy;
+  v9 = completionCopy;
+  v10 = providerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1992,16 +1992,16 @@ LABEL_28:
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)activityAlertClient:(id)a3 dismissAlertProvider:(id)a4
+- (void)activityAlertClient:(id)client dismissAlertProvider:(id)provider
 {
-  v5 = a4;
+  providerCopy = provider;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__SBActivityManager_activityAlertClient_dismissAlertProvider___block_invoke;
   v7[3] = &unk_2783A92D8;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = providerCopy;
+  selfCopy = self;
+  v6 = providerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -2020,16 +2020,16 @@ void __62__SBActivityManager_activityAlertClient_dismissAlertProvider___block_in
   [*(a1 + 40) _stopActiveAlertForActivityIdentifier:v5];
 }
 
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4
+- (void)settings:(id)settings changedValueForKeyPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__SBActivityManager_settings_changedValueForKeyPath___block_invoke;
   v7[3] = &unk_2783A92D8;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = pathCopy;
+  selfCopy = self;
+  v6 = pathCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 

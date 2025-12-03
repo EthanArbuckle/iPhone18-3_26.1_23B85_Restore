@@ -1,15 +1,15 @@
 @interface MapsSuggestionsTravelFlightImprover
-- (BOOL)improveEntry:(id)a3;
+- (BOOL)improveEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsTravelFlightImprover
 
-- (BOOL)improveEntry:(id)a3
+- (BOOL)improveEntry:(id)entry
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  entryCopy = entry;
+  v5 = entryCopy;
+  if (!entryCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -28,7 +28,7 @@
     goto LABEL_9;
   }
 
-  if ([v4 type] != 15)
+  if ([entryCopy type] != 15)
   {
 LABEL_9:
     v13 = 0;

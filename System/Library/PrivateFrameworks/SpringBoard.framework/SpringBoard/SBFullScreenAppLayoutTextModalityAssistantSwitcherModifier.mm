@@ -1,58 +1,58 @@
 @interface SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier
 - (BOOL)_assistantIsEffectivelyPresentedAndWantsDeemphasizedBackdropInPortrait;
-- (BOOL)_isAppLayoutAtIndex:(unint64_t)a3;
+- (BOOL)_isAppLayoutAtIndex:(unint64_t)index;
 - (BOOL)isContainerStatusBarVisible;
-- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)a3;
+- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)index;
 - (BOOL)isHomeScreenContentRequired;
-- (BOOL)isResizeGrabberVisibleForAppLayout:(id)a3;
+- (BOOL)isResizeGrabberVisibleForAppLayout:(id)layout;
 - (BOOL)isWallpaperRequiredForSwitcher;
-- (BOOL)shouldAllowContentViewTouchesForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier)initWithAppLayout:(id)a3 interfaceOrientation:(int64_t)a4 multitaskingModifier:(id)a5;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
-- (double)backgroundOpacityForIndex:(unint64_t)a3;
+- (BOOL)shouldAllowContentViewTouchesForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier)initWithAppLayout:(id)layout interfaceOrientation:(int64_t)orientation multitaskingModifier:(id)modifier;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
+- (double)backgroundOpacityForIndex:(unint64_t)index;
 - (double)homeScreenAlpha;
 - (double)homeScreenBackdropBlurProgress;
 - (double)homeScreenDimmingAlpha;
 - (double)homeScreenScale;
-- (double)scaleForIndex:(unint64_t)a3;
-- (double)shadowOffsetForIndex:(unint64_t)a3;
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4;
+- (double)scaleForIndex:(unint64_t)index;
+- (double)shadowOffsetForIndex:(unint64_t)index;
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index;
 - (double)wallpaperScale;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleAssistantPresentationChangedEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleAssistantPresentationChangedEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
 - (id)visibleHomeAffordanceLayoutElements;
 - (int64_t)homeScreenBackdropBlurType;
-- (int64_t)shadowStyleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (int64_t)shadowStyleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (int64_t)wallpaperStyle;
-- (unint64_t)maskedCornersForIndex:(unint64_t)a3;
+- (unint64_t)maskedCornersForIndex:(unint64_t)index;
 @end
 
 @implementation SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier
 
-- (SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier)initWithAppLayout:(id)a3 interfaceOrientation:(int64_t)a4 multitaskingModifier:(id)a5
+- (SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier)initWithAppLayout:(id)layout interfaceOrientation:(int64_t)orientation multitaskingModifier:(id)modifier
 {
-  v9 = a3;
-  v10 = a5;
+  layoutCopy = layout;
+  modifierCopy = modifier;
   v14.receiver = self;
   v14.super_class = SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier;
   v11 = [(SBSwitcherModifier *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_appLayout, a3);
-    v12->_interfaceOrientation = a4;
-    objc_storeStrong(&v12->_multitaskingModifier, a5);
+    objc_storeStrong(&v11->_appLayout, layout);
+    v12->_interfaceOrientation = orientation;
+    objc_storeStrong(&v12->_multitaskingModifier, modifier);
   }
 
   return v12;
 }
 
-- (id)handleAssistantPresentationChangedEvent:(id)a3
+- (id)handleAssistantPresentationChangedEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier;
-  v4 = [(SBSwitcherModifier *)&v10 handleAssistantPresentationChangedEvent:a3];
+  v4 = [(SBSwitcherModifier *)&v10 handleAssistantPresentationChangedEvent:event];
   if ([(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)self _assistantIsEffectivelyPresentedAndWantsDeemphasizedBackdropInPortrait])
   {
     v5 = [SBUpdateLayoutSwitcherEventResponse alloc];
@@ -63,9 +63,9 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)self assistantPresentationState];
+  assistantPresentationState = [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)self assistantPresentationState];
   v5 = [SBUpdateLayoutSwitcherEventResponse alloc];
-  if (v6)
+  if (assistantPresentationState)
   {
     goto LABEL_4;
   }
@@ -79,25 +79,25 @@ LABEL_5:
   return v8;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v10.receiver = self;
   v10.super_class = SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v10 handleTransitionEvent:v4];
-  v6 = [v4 fromInterfaceOrientation];
-  v7 = [v4 toInterfaceOrientation];
-  if (v7 != v6)
+  v5 = [(SBSwitcherModifier *)&v10 handleTransitionEvent:eventCopy];
+  fromInterfaceOrientation = [eventCopy fromInterfaceOrientation];
+  toInterfaceOrientation = [eventCopy toInterfaceOrientation];
+  if (toInterfaceOrientation != fromInterfaceOrientation)
   {
-    v8 = v7;
-    if ((v7 - 3) <= 1)
+    v8 = toInterfaceOrientation;
+    if ((toInterfaceOrientation - 3) <= 1)
     {
-      if ([v4 phase] == 2)
+      if ([eventCopy phase] == 2)
       {
         self->_interfaceOrientation = v8;
       }
 
-      else if ([v4 phase] == 3)
+      else if ([eventCopy phase] == 3)
       {
         [(SBChainableModifier *)self setState:1];
       }
@@ -107,36 +107,36 @@ LABEL_5:
   return v5;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
-  v4 = a3;
-  if ([v4 switcherLayoutElementType] || !objc_msgSend(v4, "isEqual:", self->_appLayout))
+  elementCopy = element;
+  if ([elementCopy switcherLayoutElementType] || !objc_msgSend(elementCopy, "isEqual:", self->_appLayout))
   {
     v10.receiver = self;
     v10.super_class = SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier;
-    v5 = [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)&v10 animationAttributesForLayoutElement:v4];
+    v5 = [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)&v10 animationAttributesForLayoutElement:elementCopy];
   }
 
   else
   {
     v5 = objc_alloc_init(SBMutableSwitcherAnimationAttributes);
     [(SBSwitcherAnimationAttributes *)v5 setUpdateMode:3];
-    v6 = [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)self siriSettings];
-    v7 = [v6 systemAssistantExperienceSettings];
-    v8 = [v7 typeToSiriPushInAnimationSettings];
-    [(SBSwitcherAnimationAttributes *)v5 setScaleSettings:v8];
+    siriSettings = [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)self siriSettings];
+    systemAssistantExperienceSettings = [siriSettings systemAssistantExperienceSettings];
+    typeToSiriPushInAnimationSettings = [systemAssistantExperienceSettings typeToSiriPushInAnimationSettings];
+    [(SBSwitcherAnimationAttributes *)v5 setScaleSettings:typeToSiriPushInAnimationSettings];
   }
 
   return v5;
 }
 
-- (double)backgroundOpacityForIndex:(unint64_t)a3
+- (double)backgroundOpacityForIndex:(unint64_t)index
 {
   if (![(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)self _isAppLayoutAtIndex:?]|| (v6 = [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)self _assistantIsEffectivelyPresentedAndWantsDeemphasizedBackdropInPortrait], result = 0.0, !v6))
   {
     v7.receiver = self;
     v7.super_class = SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier;
-    [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)&v7 backgroundOpacityForIndex:a3, result];
+    [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)&v7 backgroundOpacityForIndex:index, result];
   }
 
   return result;
@@ -154,7 +154,7 @@ LABEL_5:
   return [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)&v4 isContainerStatusBarVisible];
 }
 
-- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)a3
+- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)index
 {
   if ([(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)self _isAppLayoutAtIndex:?]&& ([(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)self _assistantIsEffectivelyPresentedAndWantsDeemphasizedBackdropInPortrait]|| (self->_interfaceOrientation - 3) < 2))
   {
@@ -163,10 +163,10 @@ LABEL_5:
 
   v6.receiver = self;
   v6.super_class = SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier;
-  return [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)&v6 isContentStatusBarVisibleForIndex:a3];
+  return [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)&v6 isContentStatusBarVisibleForIndex:index];
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
   if ([(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)self _isAppLayoutAtIndex:?])
   {
@@ -179,7 +179,7 @@ LABEL_5:
   {
     v9.receiver = self;
     v9.super_class = SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier;
-    [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)&v9 cornerRadiiForIndex:a3];
+    [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)&v9 cornerRadiiForIndex:index];
   }
 
   result.topRight = v8;
@@ -345,10 +345,10 @@ uint64_t __89__SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier_isHome
   return result;
 }
 
-- (BOOL)isResizeGrabberVisibleForAppLayout:(id)a3
+- (BOOL)isResizeGrabberVisibleForAppLayout:(id)layout
 {
-  v4 = a3;
-  if ([v4 isEqual:self->_appLayout] && -[SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier _assistantIsEffectivelyPresentedAndWantsDeemphasizedBackdropInPortrait](self, "_assistantIsEffectivelyPresentedAndWantsDeemphasizedBackdropInPortrait"))
+  layoutCopy = layout;
+  if ([layoutCopy isEqual:self->_appLayout] && -[SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier _assistantIsEffectivelyPresentedAndWantsDeemphasizedBackdropInPortrait](self, "_assistantIsEffectivelyPresentedAndWantsDeemphasizedBackdropInPortrait"))
   {
     v5 = 0;
   }
@@ -357,7 +357,7 @@ uint64_t __89__SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier_isHome
   {
     v7.receiver = self;
     v7.super_class = SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier;
-    v5 = [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)&v7 isResizeGrabberVisibleForAppLayout:v4];
+    v5 = [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)&v7 isResizeGrabberVisibleForAppLayout:layoutCopy];
   }
 
   return v5;
@@ -389,7 +389,7 @@ uint64_t __92__SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier_isWall
   return result;
 }
 
-- (unint64_t)maskedCornersForIndex:(unint64_t)a3
+- (unint64_t)maskedCornersForIndex:(unint64_t)index
 {
   if ([(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)self _isAppLayoutAtIndex:?])
   {
@@ -398,13 +398,13 @@ uint64_t __92__SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier_isWall
 
   v6.receiver = self;
   v6.super_class = SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier;
-  return [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)&v6 maskedCornersForIndex:a3];
+  return [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)&v6 maskedCornersForIndex:index];
 }
 
-- (BOOL)shouldAllowContentViewTouchesForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)shouldAllowContentViewTouchesForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  if ([v6 isEqual:self->_appLayout])
+  layoutCopy = layout;
+  if ([layoutCopy isEqual:self->_appLayout])
   {
     v7 = 0;
   }
@@ -413,19 +413,19 @@ uint64_t __92__SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier_isWall
   {
     v9.receiver = self;
     v9.super_class = SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier;
-    v7 = [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)&v9 shouldAllowContentViewTouchesForLayoutRole:a3 inAppLayout:v6];
+    v7 = [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)&v9 shouldAllowContentViewTouchesForLayoutRole:role inAppLayout:layoutCopy];
   }
 
   return v7;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
   if ([(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)self _isAppLayoutAtIndex:?]&& [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)self _assistantIsEffectivelyPresentedAndWantsDeemphasizedBackdropInPortrait])
   {
-    v5 = [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)self siriSettings];
-    v6 = [v5 systemAssistantExperienceSettings];
-    [v6 typeToSiriPushInScale];
+    siriSettings = [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)self siriSettings];
+    systemAssistantExperienceSettings = [siriSettings systemAssistantExperienceSettings];
+    [systemAssistantExperienceSettings typeToSiriPushInScale];
     v8 = v7;
 
     return v8;
@@ -435,13 +435,13 @@ uint64_t __92__SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier_isWall
   {
     v10.receiver = self;
     v10.super_class = SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier;
-    [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)&v10 scaleForIndex:a3];
+    [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)&v10 scaleForIndex:index];
   }
 
   return result;
 }
 
-- (double)shadowOffsetForIndex:(unint64_t)a3
+- (double)shadowOffsetForIndex:(unint64_t)index
 {
   v7 = 0;
   v8 = &v7;
@@ -454,7 +454,7 @@ uint64_t __92__SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier_isWall
   v6[3] = &unk_2783AA618;
   v6[4] = self;
   v6[5] = &v7;
-  v6[6] = a3;
+  v6[6] = index;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:multitaskingModifier usingBlock:v6];
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -468,7 +468,7 @@ uint64_t __83__SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier_shadow
   return result;
 }
 
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index
 {
   v8 = 0;
   v9 = &v8;
@@ -481,8 +481,8 @@ uint64_t __83__SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier_shadow
   v7[3] = &unk_2783AA6B8;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[6] = role;
+  v7[7] = index;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:multitaskingModifier usingBlock:v7];
   v5 = v9[3];
   _Block_object_dispose(&v8, 8);
@@ -496,9 +496,9 @@ uint64_t __97__SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier_shadow
   return result;
 }
 
-- (int64_t)shadowStyleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (int64_t)shadowStyleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -509,9 +509,9 @@ uint64_t __97__SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier_shadow
   v11[2] = __99__SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier_shadowStyleForLayoutRole_inAppLayout___block_invoke;
   v11[3] = &unk_2783AA668;
   v13 = &v15;
-  v14 = a3;
+  roleCopy = role;
   v11[4] = self;
-  v8 = v6;
+  v8 = layoutCopy;
   v12 = v8;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:multitaskingModifier usingBlock:v11];
   v9 = v16[3];
@@ -531,17 +531,17 @@ uint64_t __99__SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier_shadow
 {
   if ([(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)self _assistantIsEffectivelyPresentedAndWantsDeemphasizedBackdropInPortrait])
   {
-    v3 = [MEMORY[0x277CBEB98] set];
+    visibleHomeAffordanceLayoutElements = [MEMORY[0x277CBEB98] set];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier;
-    v3 = [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)&v5 visibleHomeAffordanceLayoutElements];
+    visibleHomeAffordanceLayoutElements = [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)&v5 visibleHomeAffordanceLayoutElements];
   }
 
-  return v3;
+  return visibleHomeAffordanceLayoutElements;
 }
 
 - (double)wallpaperScale
@@ -596,25 +596,25 @@ uint64_t __76__SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier_wallpa
   return result;
 }
 
-- (BOOL)_isAppLayoutAtIndex:(unint64_t)a3
+- (BOOL)_isAppLayoutAtIndex:(unint64_t)index
 {
-  v4 = self;
-  v5 = [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
-  LOBYTE(v4) = [v6 isEqual:v4->_appLayout];
+  selfCopy = self;
+  appLayouts = [(SBFullScreenAppLayoutTextModalityAssistantSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
+  LOBYTE(selfCopy) = [v6 isEqual:selfCopy->_appLayout];
 
-  return v4;
+  return selfCopy;
 }
 
 - (BOOL)_assistantIsEffectivelyPresentedAndWantsDeemphasizedBackdropInPortrait
 {
-  v3 = [(SBSwitcherModifier *)self assistantIsEffectivelyPresentedAndWantsDeemphasizedBackdrop];
-  if (v3)
+  assistantIsEffectivelyPresentedAndWantsDeemphasizedBackdrop = [(SBSwitcherModifier *)self assistantIsEffectivelyPresentedAndWantsDeemphasizedBackdrop];
+  if (assistantIsEffectivelyPresentedAndWantsDeemphasizedBackdrop)
   {
-    LOBYTE(v3) = (self->_interfaceOrientation - 1) < 2;
+    LOBYTE(assistantIsEffectivelyPresentedAndWantsDeemphasizedBackdrop) = (self->_interfaceOrientation - 1) < 2;
   }
 
-  return v3;
+  return assistantIsEffectivelyPresentedAndWantsDeemphasizedBackdrop;
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface WFAutomationEmptyStateCell
-- (WFAutomationEmptyStateCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)configureForAutomationType:(unint64_t)a3 buttonTarget:(id)a4 action:(SEL)a5;
+- (WFAutomationEmptyStateCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)configureForAutomationType:(unint64_t)type buttonTarget:(id)target action:(SEL)action;
 - (void)prepareForReuse;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateLayoutConstraints;
 @end
 
 @implementation WFAutomationEmptyStateCell
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = WFAutomationEmptyStateCell;
-  v4 = a3;
-  [(WFAutomationEmptyStateCell *)&v8 traitCollectionDidChange:v4];
-  v5 = [v4 horizontalSizeClass];
+  changeCopy = change;
+  [(WFAutomationEmptyStateCell *)&v8 traitCollectionDidChange:changeCopy];
+  horizontalSizeClass = [changeCopy horizontalSizeClass];
 
-  v6 = [MEMORY[0x277D75C80] currentTraitCollection];
-  v7 = [v6 horizontalSizeClass];
+  currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+  horizontalSizeClass2 = [currentTraitCollection horizontalSizeClass];
 
-  if (v5 != v7)
+  if (horizontalSizeClass != horizontalSizeClass2)
   {
     [(WFAutomationEmptyStateCell *)self updateLayoutConstraints];
   }
@@ -28,25 +28,25 @@
 - (void)updateLayoutConstraints
 {
   v3 = MEMORY[0x277CCAAD0];
-  v4 = [(WFAutomationEmptyStateCell *)self currentConstraints];
-  [v3 deactivateConstraints:v4];
+  currentConstraints = [(WFAutomationEmptyStateCell *)self currentConstraints];
+  [v3 deactivateConstraints:currentConstraints];
 
-  v5 = [MEMORY[0x277D75C80] currentTraitCollection];
-  v6 = [v5 horizontalSizeClass];
+  currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+  horizontalSizeClass = [currentTraitCollection horizontalSizeClass];
 
-  v11 = [(WFAutomationEmptyStateCell *)self automationTypeView];
-  v7 = [(WFAutomationEmptyStateCell *)self contentView];
-  v8 = v7;
-  if (v6 == 1)
+  automationTypeView = [(WFAutomationEmptyStateCell *)self automationTypeView];
+  contentView = [(WFAutomationEmptyStateCell *)self contentView];
+  v8 = contentView;
+  if (horizontalSizeClass == 1)
   {
-    v9 = [v11 wf_addConstraintsToFillSuperview:v7 insets:{0.0, 0.0, 24.0, 0.0}];
-    [(WFAutomationEmptyStateCell *)self setCurrentConstraints:v9];
+    readableContentGuide = [automationTypeView wf_addConstraintsToFillSuperview:contentView insets:{0.0, 0.0, 24.0, 0.0}];
+    [(WFAutomationEmptyStateCell *)self setCurrentConstraints:readableContentGuide];
   }
 
   else
   {
-    v9 = [v7 readableContentGuide];
-    v10 = [v11 wf_addConstraintsToFillLayoutGuide:v9];
+    readableContentGuide = [contentView readableContentGuide];
+    v10 = [automationTypeView wf_addConstraintsToFillLayoutGuide:readableContentGuide];
     [(WFAutomationEmptyStateCell *)self setCurrentConstraints:v10];
   }
 }
@@ -56,39 +56,39 @@
   v4.receiver = self;
   v4.super_class = WFAutomationEmptyStateCell;
   [(WFAutomationEmptyStateCell *)&v4 prepareForReuse];
-  v3 = [(WFAutomationEmptyStateCell *)self automationTypeView];
-  [v3 prepareForReuse];
+  automationTypeView = [(WFAutomationEmptyStateCell *)self automationTypeView];
+  [automationTypeView prepareForReuse];
 }
 
-- (void)configureForAutomationType:(unint64_t)a3 buttonTarget:(id)a4 action:(SEL)a5
+- (void)configureForAutomationType:(unint64_t)type buttonTarget:(id)target action:(SEL)action
 {
-  v8 = a4;
-  v9 = [(WFAutomationEmptyStateCell *)self automationTypeView];
-  [v9 configureForAutomationType:a3];
+  targetCopy = target;
+  automationTypeView = [(WFAutomationEmptyStateCell *)self automationTypeView];
+  [automationTypeView configureForAutomationType:type];
 
-  v10 = [(WFAutomationEmptyStateCell *)self automationTypeView];
-  [v10 setButtonTarget:v8 action:a5];
+  automationTypeView2 = [(WFAutomationEmptyStateCell *)self automationTypeView];
+  [automationTypeView2 setButtonTarget:targetCopy action:action];
 }
 
-- (WFAutomationEmptyStateCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WFAutomationEmptyStateCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v13.receiver = self;
   v13.super_class = WFAutomationEmptyStateCell;
-  v4 = [(WFAutomationEmptyStateCell *)&v13 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(WFAutomationEmptyStateCell *)&v13 initWithStyle:0 reuseIdentifier:identifier];
   if (v4)
   {
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(WFAutomationEmptyStateCell *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(WFAutomationEmptyStateCell *)v4 setBackgroundColor:clearColor];
 
-    v6 = [MEMORY[0x277D75348] clearColor];
-    v7 = [(WFAutomationEmptyStateCell *)v4 contentView];
-    [v7 setBackgroundColor:v6];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    contentView = [(WFAutomationEmptyStateCell *)v4 contentView];
+    [contentView setBackgroundColor:clearColor2];
 
     [(WFAutomationEmptyStateCell *)v4 setSelectionStyle:0];
     v8 = objc_opt_new();
     [(WFAutomationTypeExplanationPlatterView *)v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [(WFAutomationEmptyStateCell *)v4 contentView];
-    [v9 addSubview:v8];
+    contentView2 = [(WFAutomationEmptyStateCell *)v4 contentView];
+    [contentView2 addSubview:v8];
 
     automationTypeView = v4->_automationTypeView;
     v4->_automationTypeView = v8;

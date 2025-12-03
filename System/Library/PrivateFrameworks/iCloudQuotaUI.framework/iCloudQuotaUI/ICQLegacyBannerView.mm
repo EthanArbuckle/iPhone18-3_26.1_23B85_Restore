@@ -1,13 +1,13 @@
 @interface ICQLegacyBannerView
-+ (id)replaceWordsIn:(id)a3 with:(id)a4;
-- (BOOL)_performActionWithICQLink:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (ICQLegacyBannerView)initWithFrame:(CGRect)a3;
-- (ICQLegacyBannerView)initWithOffer:(id)a3;
++ (id)replaceWordsIn:(id)in with:(id)with;
+- (BOOL)_performActionWithICQLink:(id)link;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (ICQLegacyBannerView)initWithFrame:(CGRect)frame;
+- (ICQLegacyBannerView)initWithOffer:(id)offer;
 - (ICQLegacyBannerViewDelegate)delegate;
 - (NSDirectionalEdgeInsets)textMargins;
 - (id)_getOffer;
-- (id)_initWithFrame:(CGRect)a3 offer:(id)a4;
+- (id)_initWithFrame:(CGRect)frame offer:(id)offer;
 - (id)attributedText;
 - (id)detailAttributedText;
 - (id)detailMessageAttributes;
@@ -15,47 +15,47 @@
 - (id)messageAttributes;
 - (id)textParagraphStyle;
 - (id)textParagraphStyleAttributes;
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5;
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action;
 - (id)titleAttributes;
 - (int64_t)semanticContentAttribute;
 - (int64_t)userInterfaceLayoutDirection;
 - (void)_applyTextParagraphAttributes;
 - (void)_applyTextStorageAttributes;
-- (void)_configureManageStorageButtonWithICQLink:(id)a3;
+- (void)_configureManageStorageButtonWithICQLink:(id)link;
 - (void)_updateBannerViewConstraints;
-- (void)setFont:(id)a3;
-- (void)setLinkTextColor:(id)a3;
-- (void)setLinkTextFont:(id)a3;
-- (void)setOffer:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTextLineSpacing:(double)a3;
-- (void)setTextMargins:(NSDirectionalEdgeInsets)a3;
-- (void)textViewDidChangeSelection:(id)a3;
+- (void)setFont:(id)font;
+- (void)setLinkTextColor:(id)color;
+- (void)setLinkTextFont:(id)font;
+- (void)setOffer:(id)offer;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setTextColor:(id)color;
+- (void)setTextLineSpacing:(double)spacing;
+- (void)setTextMargins:(NSDirectionalEdgeInsets)margins;
+- (void)textViewDidChangeSelection:(id)selection;
 - (void)updateBannerView;
 - (void)updateConstraints;
 @end
 
 @implementation ICQLegacyBannerView
 
-- (ICQLegacyBannerView)initWithFrame:(CGRect)a3
+- (ICQLegacyBannerView)initWithFrame:(CGRect)frame
 {
-  v3 = [(ICQLegacyBannerView *)self _initWithFrame:0 offer:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICQLegacyBannerView *)self _initWithFrame:0 offer:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(ICQLegacyBannerView *)v3 _getOffer];
-    [(ICQLegacyBannerView *)v4 setOffer:v5];
+    _getOffer = [(ICQLegacyBannerView *)v3 _getOffer];
+    [(ICQLegacyBannerView *)v4 setOffer:_getOffer];
   }
 
   return v4;
 }
 
-- (ICQLegacyBannerView)initWithOffer:(id)a3
+- (ICQLegacyBannerView)initWithOffer:(id)offer
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICQLegacyBannerView *)self _initWithFrame:v4 offer:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+  offerCopy = offer;
+  v5 = [(ICQLegacyBannerView *)self _initWithFrame:offerCopy offer:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v5)
   {
     v6 = _ICQGetLogSystem();
@@ -65,32 +65,32 @@
       _os_log_impl(&dword_275623000, v6, OS_LOG_TYPE_DEFAULT, "initializing Freshmint Banner View", buf, 2u);
     }
 
-    [v5 setOffer:v4];
-    v7 = [v5 offer];
-    v8 = [v7 bannerSpecification];
+    [v5 setOffer:offerCopy];
+    offer = [v5 offer];
+    bannerSpecification = [offer bannerSpecification];
 
-    if ([v8 isDetailBannerInfoAvailable])
+    if ([bannerSpecification isDetailBannerInfoAvailable])
     {
-      v9 = [v5 offer];
-      v10 = [v9 bundleIdentifier];
-      v11 = [v10 isEqualToString:@"com.apple.mobileslideshow"];
+      offer2 = [v5 offer];
+      bundleIdentifier = [offer2 bundleIdentifier];
+      v11 = [bundleIdentifier isEqualToString:@"com.apple.mobileslideshow"];
 
       if (v11)
       {
-        v12 = [v5 layer];
-        [v12 setCornerRadius:14.0];
+        layer = [v5 layer];
+        [layer setCornerRadius:14.0];
 
-        v13 = [MEMORY[0x277D75348] labelColor];
+        labelColor = [MEMORY[0x277D75348] labelColor];
         v14 = *(v5 + 58);
-        *(v5 + 58) = v13;
+        *(v5 + 58) = labelColor;
 
-        v15 = [MEMORY[0x277D75348] secondaryLabelColor];
+        secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
         v16 = *(v5 + 59);
-        *(v5 + 59) = v15;
+        *(v5 + 59) = secondaryLabelColor;
 
-        v17 = [MEMORY[0x277D75348] systemBlueColor];
+        systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
         v18 = *(v5 + 65);
-        *(v5 + 65) = v17;
+        *(v5 + 65) = systemBlueColor;
 
         v19 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D769D0]];
         v47 = *MEMORY[0x277D74380];
@@ -104,18 +104,18 @@
 
         v24 = [MEMORY[0x277D74300] fontWithDescriptor:v19 size:0.0];
         v25 = [MEMORY[0x277D74300] fontWithDescriptor:v23 size:0.0];
-        v26 = [MEMORY[0x277D75520] defaultMetrics];
-        v27 = [v26 scaledFontForFont:v25];
+        defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
+        v27 = [defaultMetrics scaledFontForFont:v25];
         v28 = *(v5 + 55);
         *(v5 + 55) = v27;
 
-        v29 = [MEMORY[0x277D75520] defaultMetrics];
-        v30 = [v29 scaledFontForFont:v24];
+        defaultMetrics2 = [MEMORY[0x277D75520] defaultMetrics];
+        v30 = [defaultMetrics2 scaledFontForFont:v24];
         v31 = *(v5 + 56);
         *(v5 + 56) = v30;
 
-        v32 = [MEMORY[0x277D75520] defaultMetrics];
-        v33 = [v32 scaledFontForFont:v24];
+        defaultMetrics3 = [MEMORY[0x277D75520] defaultMetrics];
+        v33 = [defaultMetrics3 scaledFontForFont:v24];
         v34 = *(v5 + 57);
         *(v5 + 57) = v33;
 
@@ -151,64 +151,64 @@
   return v5;
 }
 
-- (id)_initWithFrame:(CGRect)a3 offer:(id)a4
+- (id)_initWithFrame:(CGRect)frame offer:(id)offer
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  offerCopy = offer;
   v44.receiver = self;
   v44.super_class = ICQLegacyBannerView;
-  v10 = [(ICQLegacyBannerView *)&v44 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(ICQLegacyBannerView *)&v44 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v11 = [MEMORY[0x277D75348] clearColor];
-    [(ICQLegacyBannerView *)v10 setBackgroundColor:v11];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(ICQLegacyBannerView *)height setBackgroundColor:clearColor];
 
     v12 = *MEMORY[0x277D74418];
     v13 = [MEMORY[0x277D74300] systemFontOfSize:12.0 weight:*MEMORY[0x277D74418]];
-    font = v10->_font;
-    v10->_font = v13;
+    font = height->_font;
+    height->_font = v13;
 
-    v15 = [MEMORY[0x277D75520] defaultMetrics];
+    defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
     v16 = [MEMORY[0x277D74300] systemFontOfSize:15.0 weight:*MEMORY[0x277D74410]];
-    v17 = [v15 scaledFontForFont:v16];
-    titleFont = v10->_titleFont;
-    v10->_titleFont = v17;
+    v17 = [defaultMetrics scaledFontForFont:v16];
+    titleFont = height->_titleFont;
+    height->_titleFont = v17;
 
-    v19 = [MEMORY[0x277D75520] defaultMetrics];
+    defaultMetrics2 = [MEMORY[0x277D75520] defaultMetrics];
     v20 = [MEMORY[0x277D74300] systemFontOfSize:12.0 weight:v12];
-    v21 = [v19 scaledFontForFont:v20];
-    detailMessageFont = v10->_detailMessageFont;
-    v10->_detailMessageFont = v21;
+    v21 = [defaultMetrics2 scaledFontForFont:v20];
+    detailMessageFont = height->_detailMessageFont;
+    height->_detailMessageFont = v21;
 
-    v23 = [MEMORY[0x277D75520] defaultMetrics];
+    defaultMetrics3 = [MEMORY[0x277D75520] defaultMetrics];
     v24 = [MEMORY[0x277D74300] systemFontOfSize:12.0 weight:v12];
-    v25 = [v23 scaledFontForFont:v24];
-    linkMessageFont = v10->_linkMessageFont;
-    v10->_linkMessageFont = v25;
+    v25 = [defaultMetrics3 scaledFontForFont:v24];
+    linkMessageFont = height->_linkMessageFont;
+    height->_linkMessageFont = v25;
 
-    v27 = [MEMORY[0x277D75348] systemRedColor];
-    titleColor = v10->_titleColor;
-    v10->_titleColor = v27;
+    systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+    titleColor = height->_titleColor;
+    height->_titleColor = systemRedColor;
 
-    v29 = [MEMORY[0x277D75348] labelColor];
-    detailMessageColor = v10->_detailMessageColor;
-    v10->_detailMessageColor = v29;
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    detailMessageColor = height->_detailMessageColor;
+    height->_detailMessageColor = labelColor;
 
-    v31 = [MEMORY[0x277D75348] labelColor];
-    linkMessageColor = v10->_linkMessageColor;
-    v10->_linkMessageColor = v31;
+    labelColor2 = [MEMORY[0x277D75348] labelColor];
+    linkMessageColor = height->_linkMessageColor;
+    height->_linkMessageColor = labelColor2;
 
-    v33 = [MEMORY[0x277D75348] labelColor];
-    textColor = v10->_textColor;
-    v10->_textColor = v33;
+    labelColor3 = [MEMORY[0x277D75348] labelColor];
+    textColor = height->_textColor;
+    height->_textColor = labelColor3;
 
-    v10->_textAlignment = 1;
-    v10->_textLineSpacing = 1.5;
-    v35 = [v9 bundleIdentifier];
-    v36 = [v35 isEqualToString:@"com.apple.mobileslideshow"];
+    height->_textAlignment = 1;
+    height->_textLineSpacing = 1.5;
+    bundleIdentifier = [offerCopy bundleIdentifier];
+    v36 = [bundleIdentifier isEqualToString:@"com.apple.mobileslideshow"];
 
     v37 = 10.0;
     if (v36)
@@ -222,49 +222,49 @@
       v38 = 12.0;
     }
 
-    v10->_textMargins.top = v38;
-    v10->_textMargins.leading = 25.0;
-    v10->_textMargins.bottom = v37;
-    v10->_textMargins.trailing = 25.0;
+    height->_textMargins.top = v38;
+    height->_textMargins.leading = 25.0;
+    height->_textMargins.bottom = v37;
+    height->_textMargins.trailing = 25.0;
     v39 = [_ICQTextView alloc];
     v40 = [(_ICQTextView *)v39 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-    textView = v10->_textView;
-    v10->_textView = v40;
+    textView = height->_textView;
+    height->_textView = v40;
 
-    [(_ICQTextView *)v10->_textView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v42 = [MEMORY[0x277D75348] clearColor];
-    [(_ICQTextView *)v10->_textView setBackgroundColor:v42];
+    [(_ICQTextView *)height->_textView setTranslatesAutoresizingMaskIntoConstraints:0];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(_ICQTextView *)height->_textView setBackgroundColor:clearColor2];
 
-    [(_ICQTextView *)v10->_textView setTextContainerInset:0.0, 0.0, 0.0, 0.0];
-    [(_ICQTextView *)v10->_textView setDelegate:v10];
-    [(ICQLegacyBannerView *)v10 addSubview:v10->_textView];
-    [(ICQLegacyBannerView *)v10 _updateBannerViewConstraints];
+    [(_ICQTextView *)height->_textView setTextContainerInset:0.0, 0.0, 0.0, 0.0];
+    [(_ICQTextView *)height->_textView setDelegate:height];
+    [(ICQLegacyBannerView *)height addSubview:height->_textView];
+    [(ICQLegacyBannerView *)height _updateBannerViewConstraints];
   }
 
-  return v10;
+  return height;
 }
 
 - (id)_getOffer
 {
-  v2 = [MEMORY[0x277D7F390] sharedOfferManager];
-  v3 = [v2 currentOffer];
+  mEMORY[0x277D7F390] = [MEMORY[0x277D7F390] sharedOfferManager];
+  currentOffer = [mEMORY[0x277D7F390] currentOffer];
 
-  return v3;
+  return currentOffer;
 }
 
 - (int64_t)semanticContentAttribute
 {
-  v2 = [(ICQLegacyBannerView *)self textView];
-  v3 = [v2 semanticContentAttribute];
+  textView = [(ICQLegacyBannerView *)self textView];
+  semanticContentAttribute = [textView semanticContentAttribute];
 
-  return v3;
+  return semanticContentAttribute;
 }
 
 - (int64_t)userInterfaceLayoutDirection
 {
   v3 = objc_opt_class();
-  v4 = [(ICQLegacyBannerView *)self textView];
-  v5 = [v3 userInterfaceLayoutDirectionForSemanticContentAttribute:{objc_msgSend(v4, "semanticContentAttribute")}];
+  textView = [(ICQLegacyBannerView *)self textView];
+  v5 = [v3 userInterfaceLayoutDirectionForSemanticContentAttribute:{objc_msgSend(textView, "semanticContentAttribute")}];
 
   return v5;
 }
@@ -280,28 +280,28 @@
 - (void)_updateBannerViewConstraints
 {
   [MEMORY[0x277CCAAD0] deactivateConstraints:self->_activeConstraints];
-  v17 = [MEMORY[0x277CBEB18] array];
-  v3 = [(_ICQTextView *)self->_textView topAnchor];
-  v4 = [(ICQLegacyBannerView *)self topAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4 constant:self->_textMargins.top];
-  [v17 addObject:v5];
+  array = [MEMORY[0x277CBEB18] array];
+  topAnchor = [(_ICQTextView *)self->_textView topAnchor];
+  topAnchor2 = [(ICQLegacyBannerView *)self topAnchor];
+  v5 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:self->_textMargins.top];
+  [array addObject:v5];
 
-  v6 = [(_ICQTextView *)self->_textView leadingAnchor];
-  v7 = [(ICQLegacyBannerView *)self leadingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7 constant:self->_textMargins.leading];
-  [v17 addObject:v8];
+  leadingAnchor = [(_ICQTextView *)self->_textView leadingAnchor];
+  leadingAnchor2 = [(ICQLegacyBannerView *)self leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:self->_textMargins.leading];
+  [array addObject:v8];
 
-  v9 = [(_ICQTextView *)self->_textView trailingAnchor];
-  v10 = [(ICQLegacyBannerView *)self trailingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:-self->_textMargins.trailing];
-  [v17 addObject:v11];
+  trailingAnchor = [(_ICQTextView *)self->_textView trailingAnchor];
+  trailingAnchor2 = [(ICQLegacyBannerView *)self trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-self->_textMargins.trailing];
+  [array addObject:v11];
 
-  v12 = [(ICQLegacyBannerView *)self bottomAnchor];
-  v13 = [(_ICQTextView *)self->_textView bottomAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13 constant:self->_textMargins.bottom];
-  [v17 addObject:v14];
+  bottomAnchor = [(ICQLegacyBannerView *)self bottomAnchor];
+  bottomAnchor2 = [(_ICQTextView *)self->_textView bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:self->_textMargins.bottom];
+  [array addObject:v14];
 
-  v15 = [v17 copy];
+  v15 = [array copy];
   activeConstraints = self->_activeConstraints;
   self->_activeConstraints = v15;
 
@@ -310,14 +310,14 @@
 
 - (id)textParagraphStyle
 {
-  v3 = [MEMORY[0x277D74248] defaultParagraphStyle];
-  v4 = [v3 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
+  v4 = [defaultParagraphStyle mutableCopy];
 
   [v4 setAlignment:{-[ICQLegacyBannerView textAlignment](self, "textAlignment")}];
-  v5 = [MEMORY[0x277CBEAF8] currentLocale];
-  v6 = [v5 languageCode];
-  v7 = [v6 lowercaseString];
-  v8 = [v7 isEqualToString:@"th"];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  languageCode = [currentLocale languageCode];
+  lowercaseString = [languageCode lowercaseString];
+  v8 = [lowercaseString isEqualToString:@"th"];
 
   if (v8)
   {
@@ -339,8 +339,8 @@
 {
   v6[1] = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D74118];
-  v2 = [(ICQLegacyBannerView *)self textParagraphStyle];
-  v6[0] = v2;
+  textParagraphStyle = [(ICQLegacyBannerView *)self textParagraphStyle];
+  v6[0] = textParagraphStyle;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v6 forKeys:&v5 count:1];
 
   return v3;
@@ -350,11 +350,11 @@
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = *MEMORY[0x277D740A8];
-  v3 = [(ICQLegacyBannerView *)self font];
-  v8[0] = v3;
+  font = [(ICQLegacyBannerView *)self font];
+  v8[0] = font;
   v7[1] = *MEMORY[0x277D740C0];
-  v4 = [(ICQLegacyBannerView *)self textColor];
-  v8[1] = v4;
+  textColor = [(ICQLegacyBannerView *)self textColor];
+  v8[1] = textColor;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   return v5;
@@ -364,11 +364,11 @@
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = *MEMORY[0x277D740A8];
-  v3 = [(ICQLegacyBannerView *)self titleFont];
-  v8[0] = v3;
+  titleFont = [(ICQLegacyBannerView *)self titleFont];
+  v8[0] = titleFont;
   v7[1] = *MEMORY[0x277D740C0];
-  v4 = [(ICQLegacyBannerView *)self titleColor];
-  v8[1] = v4;
+  titleColor = [(ICQLegacyBannerView *)self titleColor];
+  v8[1] = titleColor;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   return v5;
@@ -378,11 +378,11 @@
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = *MEMORY[0x277D740A8];
-  v3 = [(ICQLegacyBannerView *)self detailMessageFont];
-  v8[0] = v3;
+  detailMessageFont = [(ICQLegacyBannerView *)self detailMessageFont];
+  v8[0] = detailMessageFont;
   v7[1] = *MEMORY[0x277D740C0];
-  v4 = [(ICQLegacyBannerView *)self detailMessageColor];
-  v8[1] = v4;
+  detailMessageColor = [(ICQLegacyBannerView *)self detailMessageColor];
+  v8[1] = detailMessageColor;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   return v5;
@@ -392,11 +392,11 @@
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = *MEMORY[0x277D740A8];
-  v3 = [(ICQLegacyBannerView *)self linkMessageFont];
-  v8[0] = v3;
+  linkMessageFont = [(ICQLegacyBannerView *)self linkMessageFont];
+  v8[0] = linkMessageFont;
   v7[1] = *MEMORY[0x277D740C0];
-  v4 = [(ICQLegacyBannerView *)self linkMessageFont];
-  v8[1] = v4;
+  linkMessageFont2 = [(ICQLegacyBannerView *)self linkMessageFont];
+  v8[1] = linkMessageFont2;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   return v5;
@@ -404,47 +404,47 @@
 
 - (void)_applyTextParagraphAttributes
 {
-  v3 = [(_ICQTextView *)self->_textView textStorage];
-  [v3 beginEditing];
+  textStorage = [(_ICQTextView *)self->_textView textStorage];
+  [textStorage beginEditing];
 
-  v4 = [(_ICQTextView *)self->_textView textStorage];
-  v5 = [(ICQLegacyBannerView *)self textParagraphStyleAttributes];
-  v6 = [(_ICQTextView *)self->_textView textStorage];
-  [v4 addAttributes:v5 range:{0, objc_msgSend(v6, "length")}];
+  textStorage2 = [(_ICQTextView *)self->_textView textStorage];
+  textParagraphStyleAttributes = [(ICQLegacyBannerView *)self textParagraphStyleAttributes];
+  textStorage3 = [(_ICQTextView *)self->_textView textStorage];
+  [textStorage2 addAttributes:textParagraphStyleAttributes range:{0, objc_msgSend(textStorage3, "length")}];
 
-  v7 = [(_ICQTextView *)self->_textView textStorage];
-  [v7 endEditing];
+  textStorage4 = [(_ICQTextView *)self->_textView textStorage];
+  [textStorage4 endEditing];
 }
 
 - (void)_applyTextStorageAttributes
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ICQLegacyBannerView *)self offer];
-  v4 = [v3 bannerSpecification];
-  v5 = [v4 isDetailBannerInfoAvailable];
+  offer = [(ICQLegacyBannerView *)self offer];
+  bannerSpecification = [offer bannerSpecification];
+  isDetailBannerInfoAvailable = [bannerSpecification isDetailBannerInfoAvailable];
 
-  if ((v5 & 1) == 0)
+  if ((isDetailBannerInfoAvailable & 1) == 0)
   {
-    v6 = [(_ICQTextView *)self->_textView textStorage];
-    [v6 beginEditing];
+    textStorage = [(_ICQTextView *)self->_textView textStorage];
+    [textStorage beginEditing];
 
-    v7 = [(_ICQTextView *)self->_textView textStorage];
-    v8 = [v7 length];
+    textStorage2 = [(_ICQTextView *)self->_textView textStorage];
+    v8 = [textStorage2 length];
 
-    v9 = [(_ICQTextView *)self->_textView textStorage];
-    v10 = [(ICQLegacyBannerView *)self messageAttributes];
-    [v9 addAttributes:v10 range:{0, v8}];
+    textStorage3 = [(_ICQTextView *)self->_textView textStorage];
+    messageAttributes = [(ICQLegacyBannerView *)self messageAttributes];
+    [textStorage3 addAttributes:messageAttributes range:{0, v8}];
 
-    v11 = [(ICQLegacyBannerView *)self linkTextFont];
+    linkTextFont = [(ICQLegacyBannerView *)self linkTextFont];
 
-    if (v11)
+    if (linkTextFont)
     {
       v20 = *MEMORY[0x277D740A8];
-      v12 = [(ICQLegacyBannerView *)self linkTextFont];
-      v21[0] = v12;
+      linkTextFont2 = [(ICQLegacyBannerView *)self linkTextFont];
+      v21[0] = linkTextFont2;
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
 
-      v14 = [(_ICQTextView *)self->_textView textStorage];
+      textStorage4 = [(_ICQTextView *)self->_textView textStorage];
       v15 = *MEMORY[0x277D740E8];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
@@ -453,11 +453,11 @@
       v18[4] = self;
       v19 = v13;
       v16 = v13;
-      [v14 enumerateAttribute:v15 inRange:0 options:v8 usingBlock:{0, v18}];
+      [textStorage4 enumerateAttribute:v15 inRange:0 options:v8 usingBlock:{0, v18}];
     }
 
-    v17 = [(_ICQTextView *)self->_textView textStorage];
-    [v17 endEditing];
+    textStorage5 = [(_ICQTextView *)self->_textView textStorage];
+    [textStorage5 endEditing];
   }
 }
 
@@ -473,30 +473,30 @@ void __50__ICQLegacyBannerView__applyTextStorageAttributes__block_invoke(uint64_
 - (id)attributedText
 {
   v3 = objc_opt_new();
-  v4 = [(ICQLegacyBannerView *)self offer];
-  v5 = [v4 bannerSpecification];
+  offer = [(ICQLegacyBannerView *)self offer];
+  bannerSpecification = [offer bannerSpecification];
 
-  v6 = [v5 linksFormat];
-  v7 = [v6 length];
+  linksFormat = [bannerSpecification linksFormat];
+  v7 = [linksFormat length];
 
   if (v7)
   {
     v8 = MEMORY[0x277CCA898];
-    v9 = [v5 linksFormat];
-    v10 = [(ICQLegacyBannerView *)self messageAttributes];
-    v11 = [v5 links];
-    v12 = [v8 attributedStringWithFormat:v9 attributes:v10 links:v11];
+    linksFormat2 = [bannerSpecification linksFormat];
+    messageAttributes = [(ICQLegacyBannerView *)self messageAttributes];
+    links = [bannerSpecification links];
+    v12 = [v8 attributedStringWithFormat:linksFormat2 attributes:messageAttributes links:links];
 
     [v3 appendAttributedString:v12];
     goto LABEL_10;
   }
 
-  v13 = [(ICQLegacyBannerView *)self offer];
-  v14 = [v13 level];
+  offer2 = [(ICQLegacyBannerView *)self offer];
+  level = [offer2 level];
 
   v15 = _ICQGetLogSystem();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-  if (v14)
+  if (level)
   {
     if (v16)
     {
@@ -522,16 +522,16 @@ LABEL_10:
   return v19;
 }
 
-+ (id)replaceWordsIn:(id)a3 with:(id)a4
++ (id)replaceWordsIn:(id)in with:(id)with
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  inCopy = in;
+  withCopy = with;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [withCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -539,76 +539,76 @@ LABEL_10:
     do
     {
       v10 = 0;
-      v11 = v5;
+      v11 = inCopy;
       do
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(withCopy);
         }
 
         v12 = *(*(&v15 + 1) + 8 * v10);
-        v13 = [v6 objectForKey:v12];
-        v5 = [v11 stringByReplacingOccurrencesOfString:v12 withString:v13];
+        v13 = [withCopy objectForKey:v12];
+        inCopy = [v11 stringByReplacingOccurrencesOfString:v12 withString:v13];
 
         ++v10;
-        v11 = v5;
+        v11 = inCopy;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [withCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  return v5;
+  return inCopy;
 }
 
 - (id)detailAttributedText
 {
   v3 = objc_opt_new();
-  v4 = [(ICQLegacyBannerView *)self offer];
-  v5 = [v4 bannerSpecification];
+  offer = [(ICQLegacyBannerView *)self offer];
+  bannerSpecification = [offer bannerSpecification];
 
-  if (([v5 isDetailBannerInfoAvailable] & 1) == 0)
+  if (([bannerSpecification isDetailBannerInfoAvailable] & 1) == 0)
   {
-    v39 = [(ICQLegacyBannerView *)self attributedText];
+    attributedText = [(ICQLegacyBannerView *)self attributedText];
     goto LABEL_19;
   }
 
-  v6 = [(ICQLegacyBannerView *)self offer];
-  v7 = [v6 deviceInfo];
+  offer2 = [(ICQLegacyBannerView *)self offer];
+  deviceInfo = [offer2 deviceInfo];
 
-  v8 = [v7 key];
-  v9 = [v5 titleWithKey:v8];
+  v8 = [deviceInfo key];
+  v9 = [bannerSpecification titleWithKey:v8];
 
-  v10 = [v7 key];
-  v11 = [v5 messageWithKey:v10];
+  v10 = [deviceInfo key];
+  v11 = [bannerSpecification messageWithKey:v10];
 
   if ([v9 length])
   {
     v12 = objc_opt_class();
-    v49 = v7;
-    v13 = [v7 wordsToReplace];
-    v14 = [v12 replaceWordsIn:v9 with:v13];
+    v49 = deviceInfo;
+    wordsToReplace = [deviceInfo wordsToReplace];
+    v14 = [v12 replaceWordsIn:v9 with:wordsToReplace];
 
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n", v14];
 
     v15 = MEMORY[0x277CCA898];
-    v16 = [(ICQLegacyBannerView *)self titleAttributes];
-    v17 = [v15 attributedStringWithFormat:v9 attributes:v16 links:0];
+    titleAttributes = [(ICQLegacyBannerView *)self titleAttributes];
+    v17 = [v15 attributedStringWithFormat:v9 attributes:titleAttributes links:0];
 
-    v18 = [(ICQLegacyBannerView *)self offer];
-    v19 = [v18 bundleIdentifier];
-    v20 = [v19 isEqualToString:@"com.apple.mobileslideshow"];
+    offer3 = [(ICQLegacyBannerView *)self offer];
+    bundleIdentifier = [offer3 bundleIdentifier];
+    v20 = [bundleIdentifier isEqualToString:@"com.apple.mobileslideshow"];
 
     if (v20)
     {
       v48 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D769D0]];
       v47 = [MEMORY[0x277D755B8] systemImageNamed:@"exclamationmark.triangle" withConfiguration:v48];
-      v21 = [MEMORY[0x277D75348] systemOrangeColor];
-      v22 = [v47 imageWithTintColor:v21];
+      systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+      v22 = [v47 imageWithTintColor:systemOrangeColor];
 
       v23 = [objc_alloc(MEMORY[0x277D74270]) initWithData:0 ofType:0];
       [v23 setImage:v22];
@@ -620,35 +620,35 @@ LABEL_10:
 
     [v3 appendAttributedString:v17];
 
-    v7 = v49;
+    deviceInfo = v49;
   }
 
   if ([v11 length])
   {
     v26 = objc_opt_class();
-    v27 = [v7 wordsToReplace];
-    v28 = [v26 replaceWordsIn:v11 with:v27];
+    wordsToReplace2 = [deviceInfo wordsToReplace];
+    v28 = [v26 replaceWordsIn:v11 with:wordsToReplace2];
 
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n", v28];
 
     v29 = MEMORY[0x277CCA898];
-    v30 = [(ICQLegacyBannerView *)self detailMessageAttributes];
-    v31 = [v29 attributedStringWithFormat:v11 attributes:v30 links:0];
+    detailMessageAttributes = [(ICQLegacyBannerView *)self detailMessageAttributes];
+    v31 = [v29 attributedStringWithFormat:v11 attributes:detailMessageAttributes links:0];
 
     [v3 appendAttributedString:v31];
   }
 
-  v32 = [v5 linksFormat];
-  v33 = [v32 length];
+  linksFormat = [bannerSpecification linksFormat];
+  v33 = [linksFormat length];
 
   if (!v33)
   {
-    v40 = [(ICQLegacyBannerView *)self offer];
-    v41 = [v40 level];
+    offer4 = [(ICQLegacyBannerView *)self offer];
+    level = [offer4 level];
 
     v42 = _ICQGetLogSystem();
     v43 = os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT);
-    if (v41)
+    if (level)
     {
       if (v43)
       {
@@ -672,32 +672,32 @@ LABEL_16:
   }
 
   v34 = MEMORY[0x277CCA898];
-  v35 = [v5 linksFormat];
-  v36 = [(ICQLegacyBannerView *)self linkAttributes];
-  v37 = [v5 links];
-  v38 = [v34 attributedStringWithFormat:v35 attributes:v36 links:v37];
+  linksFormat2 = [bannerSpecification linksFormat];
+  linkAttributes = [(ICQLegacyBannerView *)self linkAttributes];
+  links = [bannerSpecification links];
+  v38 = [v34 attributedStringWithFormat:linksFormat2 attributes:linkAttributes links:links];
 
   [v3 appendAttributedString:v38];
 LABEL_18:
-  v39 = [v3 copy];
+  attributedText = [v3 copy];
 
 LABEL_19:
 
-  return v39;
+  return attributedText;
 }
 
-- (void)setOffer:(id)a3
+- (void)setOffer:(id)offer
 {
-  v9 = a3;
-  objc_storeStrong(&self->_offer, a3);
-  v5 = [(ICQLegacyBannerView *)self detailAttributedText];
-  [(_ICQTextView *)self->_textView setAttributedText:v5];
+  offerCopy = offer;
+  objc_storeStrong(&self->_offer, offer);
+  detailAttributedText = [(ICQLegacyBannerView *)self detailAttributedText];
+  [(_ICQTextView *)self->_textView setAttributedText:detailAttributedText];
   [(ICQLegacyBannerView *)self _applyTextStorageAttributes];
   [(ICQLegacyBannerView *)self _applyTextParagraphAttributes];
-  if (v5)
+  if (detailAttributedText)
   {
-    v6 = [v5 string];
-    v7 = [v6 length];
+    string = [detailAttributedText string];
+    v7 = [string length];
 
     if (v7)
     {
@@ -708,80 +708,80 @@ LABEL_19:
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v4 = a3;
-  if (!v4)
+  fontCopy = font;
+  if (!fontCopy)
   {
-    v4 = [MEMORY[0x277D74300] systemFontOfSize:12.0 weight:*MEMORY[0x277D74418]];
+    fontCopy = [MEMORY[0x277D74300] systemFontOfSize:12.0 weight:*MEMORY[0x277D74418]];
   }
 
-  if (self->_font != v4)
+  if (self->_font != fontCopy)
   {
-    v5 = v4;
-    objc_storeStrong(&self->_font, v4);
+    v5 = fontCopy;
+    objc_storeStrong(&self->_font, fontCopy);
     [(ICQLegacyBannerView *)self _applyTextStorageAttributes];
-    v4 = v5;
+    fontCopy = v5;
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = a3;
-  if (!v4)
+  colorCopy = color;
+  if (!colorCopy)
   {
-    v4 = [MEMORY[0x277D75348] labelColor];
+    colorCopy = [MEMORY[0x277D75348] labelColor];
   }
 
-  if (self->_textColor != v4)
+  if (self->_textColor != colorCopy)
   {
-    v5 = v4;
-    objc_storeStrong(&self->_textColor, v4);
+    v5 = colorCopy;
+    objc_storeStrong(&self->_textColor, colorCopy);
     [(ICQLegacyBannerView *)self _applyTextStorageAttributes];
-    v4 = v5;
+    colorCopy = v5;
   }
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  if (self->_textAlignment != a3)
+  if (self->_textAlignment != alignment)
   {
-    self->_textAlignment = a3;
+    self->_textAlignment = alignment;
     [(ICQLegacyBannerView *)self _applyTextParagraphAttributes];
   }
 }
 
-- (void)setTextLineSpacing:(double)a3
+- (void)setTextLineSpacing:(double)spacing
 {
-  if (self->_textLineSpacing != a3)
+  if (self->_textLineSpacing != spacing)
   {
-    self->_textLineSpacing = a3;
+    self->_textLineSpacing = spacing;
     [(ICQLegacyBannerView *)self _applyTextParagraphAttributes];
   }
 }
 
-- (void)setTextMargins:(NSDirectionalEdgeInsets)a3
+- (void)setTextMargins:(NSDirectionalEdgeInsets)margins
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.leading;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.trailing;
+  v3.f64[0] = margins.top;
+  v3.f64[1] = margins.leading;
+  v4.f64[0] = margins.bottom;
+  v4.f64[1] = margins.trailing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_textMargins.top, v3), vceqq_f64(*&self->_textMargins.bottom, v4)))) & 1) == 0)
   {
-    self->_textMargins = a3;
+    self->_textMargins = margins;
     [(ICQLegacyBannerView *)self setNeedsUpdateConstraints];
   }
 }
 
-- (void)setLinkTextFont:(id)a3
+- (void)setLinkTextFont:(id)font
 {
-  v4 = a3;
+  fontCopy = font;
   linkTextFont = self->_linkTextFont;
-  if (linkTextFont != v4)
+  if (linkTextFont != fontCopy)
   {
-    v9 = v4;
-    v6 = [(UIFont *)linkTextFont isEqual:v4];
-    v4 = v9;
+    v9 = fontCopy;
+    v6 = [(UIFont *)linkTextFont isEqual:fontCopy];
+    fontCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(UIFont *)v9 copy];
@@ -789,25 +789,25 @@ LABEL_19:
       self->_linkTextFont = v7;
 
       [(ICQLegacyBannerView *)self _applyTextStorageAttributes];
-      v4 = v9;
+      fontCopy = v9;
     }
   }
 }
 
-- (void)setLinkTextColor:(id)a3
+- (void)setLinkTextColor:(id)color
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICQLegacyBannerView *)self offer];
-  v6 = [v5 bannerSpecification];
-  v7 = [v6 isDetailBannerInfoAvailable];
+  colorCopy = color;
+  offer = [(ICQLegacyBannerView *)self offer];
+  bannerSpecification = [offer bannerSpecification];
+  isDetailBannerInfoAvailable = [bannerSpecification isDetailBannerInfoAvailable];
 
-  if ((v7 & 1) == 0)
+  if ((isDetailBannerInfoAvailable & 1) == 0)
   {
     linkTextColor = self->_linkTextColor;
-    if (linkTextColor != v4 && ([(UIColor *)linkTextColor isEqual:v4]& 1) == 0)
+    if (linkTextColor != colorCopy && ([(UIColor *)linkTextColor isEqual:colorCopy]& 1) == 0)
     {
-      v9 = [(UIColor *)v4 copy];
+      v9 = [(UIColor *)colorCopy copy];
       v10 = self->_linkTextColor;
       self->_linkTextColor = v9;
 
@@ -828,11 +828,11 @@ LABEL_19:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   p_textMargins = &self->_textMargins;
-  [(_ICQTextView *)self->_textView sizeThatFits:a3.width - self->_textMargins.leading - self->_textMargins.trailing, 1.79769313e308];
+  [(_ICQTextView *)self->_textView sizeThatFits:fits.width - self->_textMargins.leading - self->_textMargins.trailing, 1.79769313e308];
   v6 = v5 + p_textMargins->top + p_textMargins->bottom;
   v7 = width;
   result.height = v6;
@@ -840,25 +840,25 @@ LABEL_19:
   return result;
 }
 
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = [a4 link];
-  v7 = [v6 icqIndex];
-  if (v7 <= 0x7FFFFFFFFFFFFFFELL)
+  link = [item link];
+  icqIndex = [link icqIndex];
+  if (icqIndex <= 0x7FFFFFFFFFFFFFFELL)
   {
-    v8 = v7;
-    v9 = [(ICQLegacyBannerView *)self offer];
-    v10 = [v9 bannerSpecification];
-    v11 = [v10 links];
-    v12 = [v11 count];
+    v8 = icqIndex;
+    offer = [(ICQLegacyBannerView *)self offer];
+    bannerSpecification = [offer bannerSpecification];
+    links = [bannerSpecification links];
+    v12 = [links count];
 
     if (v8 < v12)
     {
-      v13 = [(ICQLegacyBannerView *)self offer];
-      v14 = [v13 bannerSpecification];
-      v15 = [v14 links];
-      v16 = [v15 objectAtIndexedSubscript:v8];
+      offer2 = [(ICQLegacyBannerView *)self offer];
+      bannerSpecification2 = [offer2 bannerSpecification];
+      links2 = [bannerSpecification2 links];
+      v16 = [links2 objectAtIndexedSubscript:v8];
 
       if (![(ICQLegacyBannerView *)self _performActionWithICQLink:v16])
       {
@@ -881,34 +881,34 @@ LABEL_19:
   return 0;
 }
 
-- (void)textViewDidChangeSelection:(id)a3
+- (void)textViewDidChangeSelection:(id)selection
 {
-  v5 = a3;
-  v3 = [v5 selectedRange];
-  if (v3 | v4)
+  selectionCopy = selection;
+  selectedRange = [selectionCopy selectedRange];
+  if (selectedRange | v4)
   {
-    [v5 setSelectedRange:{0, 0}];
+    [selectionCopy setSelectedRange:{0, 0}];
   }
 }
 
-- (void)_configureManageStorageButtonWithICQLink:(id)a3
+- (void)_configureManageStorageButtonWithICQLink:(id)link
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (manageStorageButton = self->_manageStorageButton) != 0)
+  linkCopy = link;
+  v5 = linkCopy;
+  if (linkCopy && (manageStorageButton = self->_manageStorageButton) != 0)
   {
-    v7 = [v4 text];
-    [(UIButton *)manageStorageButton setTitle:v7 forState:0];
+    text = [linkCopy text];
+    [(UIButton *)manageStorageButton setTitle:text forState:0];
 
     v8 = MEMORY[0x277D750C8];
     v11 = MEMORY[0x277D85DD0];
     v12 = 3221225472;
     v13 = __64__ICQLegacyBannerView__configureManageStorageButtonWithICQLink___block_invoke;
     v14 = &unk_27A65BC18;
-    v15 = self;
+    selfCopy = self;
     v16 = v5;
     v9 = [v8 actionWithTitle:&stru_28844FC60 image:0 identifier:@"MANAGE_STORAGE" handler:&v11];
-    [(UIButton *)self->_manageStorageButton addAction:v9 forControlEvents:64, v11, v12, v13, v14, v15];
+    [(UIButton *)self->_manageStorageButton addAction:v9 forControlEvents:64, v11, v12, v13, v14, selfCopy];
   }
 
   else
@@ -934,42 +934,42 @@ void __64__ICQLegacyBannerView__configureManageStorageButtonWithICQLink___block_
   }
 }
 
-- (BOOL)_performActionWithICQLink:(id)a3
+- (BOOL)_performActionWithICQLink:(id)link
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  linkCopy = link;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = linkCopy;
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "Performing banner view action with icqLink: %@", &v9, 0xCu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [WeakRetained performActionWith:v4];
+  v7 = [WeakRetained performActionWith:linkCopy];
 
   return v7;
 }
 
 - (void)updateBannerView
 {
-  v3 = [MEMORY[0x277D75348] quaternarySystemFillColor];
-  [(ICQLegacyBannerView *)self setBackgroundColor:v3];
+  quaternarySystemFillColor = [MEMORY[0x277D75348] quaternarySystemFillColor];
+  [(ICQLegacyBannerView *)self setBackgroundColor:quaternarySystemFillColor];
 
   textView = self->_textView;
-  v5 = [(ICQLegacyBannerView *)self detailAttributedText];
-  [(_ICQTextView *)textView setAttributedText:v5];
+  detailAttributedText = [(ICQLegacyBannerView *)self detailAttributedText];
+  [(_ICQTextView *)textView setAttributedText:detailAttributedText];
 
   [(ICQLegacyBannerView *)self _applyTextStorageAttributes];
   [(ICQLegacyBannerView *)self _applyTextParagraphAttributes];
   [(ICQLegacyBannerView *)self sizeToFit];
-  v6 = [(ICQLegacyBannerView *)self superview];
-  [v6 sizeToFit];
+  superview = [(ICQLegacyBannerView *)self superview];
+  [superview sizeToFit];
 
-  v8 = [(ICQLegacyBannerView *)self superview];
-  v7 = [v8 superview];
-  [v7 sizeToFit];
+  superview2 = [(ICQLegacyBannerView *)self superview];
+  v8Superview = [superview2 superview];
+  [v8Superview sizeToFit];
 }
 
 - (ICQLegacyBannerViewDelegate)delegate

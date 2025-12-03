@@ -1,76 +1,76 @@
 @interface AVTUsageTrackingSession
-+ (id)allowListAppNameFromBundleID:(id)a3;
-+ (id)colorPresetDescriptionForAvatarConfiguration:(id)a3;
-+ (id)configurationDistanceClassifierWithMetric:(id)a3;
-+ (id)defaultRecordTransformerForCoreModel:(id)a3;
-+ (id)keyBasePrefixForBundleIdentifier:(id)a3;
-+ (id)makeDPKey:(id)a3;
-+ (id)payloadForAvatarRecord:(id)a3;
-+ (id)payloadForAvatarRecordIdentifier:(id)a3;
-+ (void)getPresetDescription:(id *)a3 usedCategoriesDescription:(id *)a4 forAvatarConfiguration:(id)a5 defaultConfiguration:(id)a6;
-- (AVTUsageTrackingSession)initWithCoreAnalyticsClient:(id)a3 dpRecorder:(id)a4 serialQueueProvider:(id)a5 recordTransformer:(id)a6 avatarRecord:(id)a7 defaultConfiguration:(id)a8 timeProvider:(id)a9 configurationMetric:(id)a10 logger:(id)a11 keyBasePrefix:(id)a12 bundleAppName:(id)a13;
-- (AVTUsageTrackingSession)initWithSerialQueueProvider:(id)a3 recordTransformer:(id)a4 logger:(id)a5;
-- (id)makeCrossAppEventKeyForAction:(id)a3;
-- (id)makeEventKeyForAction:(id)a3;
++ (id)allowListAppNameFromBundleID:(id)d;
++ (id)colorPresetDescriptionForAvatarConfiguration:(id)configuration;
++ (id)configurationDistanceClassifierWithMetric:(id)metric;
++ (id)defaultRecordTransformerForCoreModel:(id)model;
++ (id)keyBasePrefixForBundleIdentifier:(id)identifier;
++ (id)makeDPKey:(id)key;
++ (id)payloadForAvatarRecord:(id)record;
++ (id)payloadForAvatarRecordIdentifier:(id)identifier;
++ (void)getPresetDescription:(id *)description usedCategoriesDescription:(id *)categoriesDescription forAvatarConfiguration:(id)configuration defaultConfiguration:(id)defaultConfiguration;
+- (AVTUsageTrackingSession)initWithCoreAnalyticsClient:(id)client dpRecorder:(id)recorder serialQueueProvider:(id)provider recordTransformer:(id)transformer avatarRecord:(id)record defaultConfiguration:(id)configuration timeProvider:(id)timeProvider configurationMetric:(id)self0 logger:(id)self1 keyBasePrefix:(id)self2 bundleAppName:(id)self3;
+- (AVTUsageTrackingSession)initWithSerialQueueProvider:(id)provider recordTransformer:(id)transformer logger:(id)logger;
+- (id)makeCrossAppEventKeyForAction:(id)action;
+- (id)makeEventKeyForAction:(id)action;
 - (id)payloadForCrossAppEvent;
-- (void)beginWithStore:(id)a3;
-- (void)didChangeCurrentAvatarInCarousel:(id)a3;
-- (void)didChangeCurrentAvatarInStickers:(id)a3;
-- (void)didCreateAvatar:(id)a3;
-- (void)didDeleteAvatar:(id)a3;
-- (void)didDiscardVideoWithDuration:(double)a3;
-- (void)didDuplicateAvatar:(id)a3;
-- (void)didEditAvatar:(id)a3;
+- (void)beginWithStore:(id)store;
+- (void)didChangeCurrentAvatarInCarousel:(id)carousel;
+- (void)didChangeCurrentAvatarInStickers:(id)stickers;
+- (void)didCreateAvatar:(id)avatar;
+- (void)didDeleteAvatar:(id)avatar;
+- (void)didDiscardVideoWithDuration:(double)duration;
+- (void)didDuplicateAvatar:(id)avatar;
+- (void)didEditAvatar:(id)avatar;
 - (void)didEnterEditor;
 - (void)didLeaveEditor;
 - (void)didPauseFaceTracking;
 - (void)didRecordVideo;
 - (void)didResumeFaceTracking;
-- (void)didSelectStickerFromStickersApp:(id)a3 withAvatar:(id)a4;
-- (void)didSelectStickerFromStickersApp:(id)a3 withAvatar:(id)a4 bundleIdentifier:(id)a5;
-- (void)didSendImageWithAvatar:(id)a3;
-- (void)didSendStickerWithAvatar:(id)a3;
-- (void)didSendVideoWithAvatar:(id)a3 duration:(double)a4;
+- (void)didSelectStickerFromStickersApp:(id)app withAvatar:(id)avatar;
+- (void)didSelectStickerFromStickersApp:(id)app withAvatar:(id)avatar bundleIdentifier:(id)identifier;
+- (void)didSendImageWithAvatar:(id)avatar;
+- (void)didSendStickerWithAvatar:(id)avatar;
+- (void)didSendVideoWithAvatar:(id)avatar duration:(double)duration;
 - (void)didShowExpandedMode;
-- (void)didStartFaceTrackingInCarouselWithAvatar:(id)a3;
+- (void)didStartFaceTrackingInCarouselWithAvatar:(id)avatar;
 - (void)didStopFaceTrackingInCarousel;
-- (void)didTapStickerFromRecents:(id)a3 withAvatarIdentifier:(id)a4;
+- (void)didTapStickerFromRecents:(id)recents withAvatarIdentifier:(id)identifier;
 - (void)end;
 - (void)nts_loadDefaultConfigurationIfNeeded;
-- (void)nts_reportAvatarComplexity:(id)a3 withClient:(id)a4;
-- (void)nts_reportAvatarCountWithClient:(id)a3;
-- (void)nts_reportAvatarDescription:(id)a3 dpRecorder:(id)a4;
-- (void)nts_reportAvatarLikenessClustersWithClient:(id)a3;
-- (void)nts_reportEditorTimeWithExitTime:(id)a3 client:(id)a4;
-- (void)nts_reportExpandedModeWithClient:(id)a3;
-- (void)nts_reportFaceTrackingTimeWithEndTime:(id)a3 client:(id)a4;
-- (void)performClientWork:(id)a3;
-- (void)sendCrossAppsEventForAction:(id)a3;
-- (void)sendEventForAction:(id)a3;
-- (void)sentStickerFromStickersApp:(id)a3 withAvatarRecord:(id)a4 action:(id)a5 appName:(id)a6;
+- (void)nts_reportAvatarComplexity:(id)complexity withClient:(id)client;
+- (void)nts_reportAvatarCountWithClient:(id)client;
+- (void)nts_reportAvatarDescription:(id)description dpRecorder:(id)recorder;
+- (void)nts_reportAvatarLikenessClustersWithClient:(id)client;
+- (void)nts_reportEditorTimeWithExitTime:(id)time client:(id)client;
+- (void)nts_reportExpandedModeWithClient:(id)client;
+- (void)nts_reportFaceTrackingTimeWithEndTime:(id)time client:(id)client;
+- (void)performClientWork:(id)work;
+- (void)sendCrossAppsEventForAction:(id)action;
+- (void)sendEventForAction:(id)action;
+- (void)sentStickerFromStickersApp:(id)app withAvatarRecord:(id)record action:(id)action appName:(id)name;
 @end
 
 @implementation AVTUsageTrackingSession
 
-+ (id)defaultRecordTransformerForCoreModel:(id)a3
++ (id)defaultRecordTransformerForCoreModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__AVTUsageTrackingSession_defaultRecordTransformerForCoreModel___block_invoke;
   v7[3] = &unk_1E7F3C410;
-  v8 = v3;
-  v4 = v3;
+  v8 = modelCopy;
+  v4 = modelCopy;
   v5 = MEMORY[0x1BFB0DE80](v7);
 
   return v5;
 }
 
-+ (id)payloadForAvatarRecord:(id)a3
++ (id)payloadForAvatarRecord:(id)record
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 isEditable])
+  recordCopy = record;
+  if ([recordCopy isEditable])
   {
     v9 = @"recordType";
     v10[0] = @"memoji";
@@ -82,27 +82,27 @@
     v7[0] = @"recordType";
     v7[1] = @"animojiName";
     v8[0] = @"animoji";
-    v5 = [v3 identifier];
-    v8[1] = v5;
+    identifier = [recordCopy identifier];
+    v8[1] = identifier;
     v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:2];
   }
 
   return v4;
 }
 
-+ (id)payloadForAvatarRecordIdentifier:(id)a3
++ (id)payloadForAvatarRecordIdentifier:(id)identifier
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E698E278] animojiNames];
-  v5 = [v4 containsObject:v3];
+  identifierCopy = identifier;
+  animojiNames = [MEMORY[0x1E698E278] animojiNames];
+  v5 = [animojiNames containsObject:identifierCopy];
 
   if (v5)
   {
     v12[0] = @"recordType";
     v12[1] = @"animojiName";
     v13[0] = @"animoji";
-    v13[1] = v3;
+    v13[1] = identifierCopy;
     v6 = MEMORY[0x1E695DF20];
     v7 = v13;
     v8 = v12;
@@ -124,30 +124,30 @@
   return v10;
 }
 
-+ (void)getPresetDescription:(id *)a3 usedCategoriesDescription:(id *)a4 forAvatarConfiguration:(id)a5 defaultConfiguration:(id)a6
++ (void)getPresetDescription:(id *)description usedCategoriesDescription:(id *)categoriesDescription forAvatarConfiguration:(id)configuration defaultConfiguration:(id)defaultConfiguration
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = [MEMORY[0x1E695DF90] dictionary];
+  configurationCopy = configuration;
+  defaultConfigurationCopy = defaultConfiguration;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  v12 = [v9 presetConfigurationPresets];
+  presetConfigurationPresets = [configurationCopy presetConfigurationPresets];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __118__AVTUsageTrackingSession_getPresetDescription_usedCategoriesDescription_forAvatarConfiguration_defaultConfiguration___block_invoke;
   v18 = &unk_1E7F3C458;
-  v13 = v10;
+  v13 = defaultConfigurationCopy;
   v22 = &v23;
   v19 = v13;
   v20 = &unk_1F39A5D48;
-  v14 = v11;
+  v14 = dictionary;
   v21 = v14;
-  [v12 enumerateObjectsUsingBlock:&v15];
+  [presetConfigurationPresets enumerateObjectsUsingBlock:&v15];
 
-  *a3 = [v14 copy];
-  *a4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v24[3]];
+  *description = [v14 copy];
+  *categoriesDescription = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v24[3]];
 
   _Block_object_dispose(&v23, 8);
 }
@@ -215,20 +215,20 @@ LABEL_6:
   }
 }
 
-+ (id)colorPresetDescriptionForAvatarConfiguration:(id)a3
++ (id)colorPresetDescriptionForAvatarConfiguration:(id)configuration
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
-  v5 = [v3 dictionary];
-  v6 = [v4 colorConfigurationPresets];
+  configurationCopy = configuration;
+  dictionary = [v3 dictionary];
+  colorConfigurationPresets = [configurationCopy colorConfigurationPresets];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __72__AVTUsageTrackingSession_colorPresetDescriptionForAvatarConfiguration___block_invoke;
   v10[3] = &unk_1E7F3C480;
-  v11 = v5;
-  v7 = v5;
-  [v6 enumerateObjectsUsingBlock:v10];
+  v11 = dictionary;
+  v7 = dictionary;
+  [colorConfigurationPresets enumerateObjectsUsingBlock:v10];
 
   v8 = [v7 copy];
 
@@ -290,20 +290,20 @@ void __72__AVTUsageTrackingSession_colorPresetDescriptionForAvatarConfiguration_
 LABEL_11:
 }
 
-+ (id)keyBasePrefixForBundleIdentifier:(id)a3
++ (id)keyBasePrefixForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.Jellyfish.Animoji"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"com.apple.Jellyfish.Animoji"])
   {
     v4 = @"com.apple.Animoji.Analytics.AnimojiApp.";
   }
 
-  else if ([v3 isEqualToString:@"com.apple.Animoji.StickersApp.MessagesExtension"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.Stickers.UserGenerated.MessagesExtension") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.iMessageAppsViewService"))
+  else if ([identifierCopy isEqualToString:@"com.apple.Animoji.StickersApp.MessagesExtension"] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"com.apple.Stickers.UserGenerated.MessagesExtension") & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"com.apple.iMessageAppsViewService"))
   {
     v4 = @"com.apple.Animoji.Analytics.StickersApp.";
   }
 
-  else if ([v3 isEqualToString:@"com.apple.camera.CameraMessagesApp"])
+  else if ([identifierCopy isEqualToString:@"com.apple.camera.CameraMessagesApp"])
   {
     v4 = @"com.apple.Animoji.Analytics.FunCamApp.";
   }
@@ -316,15 +316,15 @@ LABEL_11:
   return v4;
 }
 
-+ (id)allowListAppNameFromBundleID:(id)a3
++ (id)allowListAppNameFromBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (allowListAppNameFromBundleID__onceToken != -1)
   {
     +[AVTUsageTrackingSession allowListAppNameFromBundleID:];
   }
 
-  v4 = [allowListAppNameFromBundleID__bundleIDMapping objectForKeyedSubscript:v3];
+  v4 = [allowListAppNameFromBundleID__bundleIDMapping objectForKeyedSubscript:dCopy];
   v5 = v4;
   if (v4)
   {
@@ -347,24 +347,24 @@ void __56__AVTUsageTrackingSession_allowListAppNameFromBundleID___block_invoke()
   allowListAppNameFromBundleID__bundleIDMapping = &unk_1F39A5DB8;
 }
 
-+ (id)makeDPKey:(id)a3
++ (id)makeDPKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 dpKeyBasePrefix];
-  v6 = [v5 stringByAppendingString:v4];
+  keyCopy = key;
+  dpKeyBasePrefix = [self dpKeyBasePrefix];
+  v6 = [dpKeyBasePrefix stringByAppendingString:keyCopy];
 
   return v6;
 }
 
-+ (id)configurationDistanceClassifierWithMetric:(id)a3
++ (id)configurationDistanceClassifierWithMetric:(id)metric
 {
-  v3 = a3;
+  metricCopy = metric;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__AVTUsageTrackingSession_configurationDistanceClassifierWithMetric___block_invoke;
   v7[3] = &unk_1E7F3C4A8;
-  v8 = v3;
-  v4 = v3;
+  v8 = metricCopy;
+  v4 = metricCopy;
   v5 = MEMORY[0x1BFB0DE80](v7);
 
   return v5;
@@ -379,83 +379,83 @@ uint64_t __69__AVTUsageTrackingSession_configurationDistanceClassifierWithMetric
   return [v5 numberWithInteger:v6];
 }
 
-- (AVTUsageTrackingSession)initWithSerialQueueProvider:(id)a3 recordTransformer:(id)a4 logger:(id)a5
+- (AVTUsageTrackingSession)initWithSerialQueueProvider:(id)provider recordTransformer:(id)transformer logger:(id)logger
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  loggerCopy = logger;
+  transformerCopy = transformer;
+  providerCopy = provider;
   v11 = objc_alloc_init(AVTCoreAnalyticsClient);
   v21 = objc_alloc_init(AVTDifferentialPrivacyRecorder);
-  v20 = [MEMORY[0x1E698E320] defaultAvatarRecord];
+  defaultAvatarRecord = [MEMORY[0x1E698E320] defaultAvatarRecord];
   v18 = +[AVTAvatarConfigurationMetric defaultMetric];
-  v12 = [MEMORY[0x1E696AAE8] mainBundle];
-  v13 = [v12 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  v14 = [objc_opt_class() keyBasePrefixForBundleIdentifier:v13];
-  v15 = [objc_opt_class() allowListAppNameFromBundleID:v13];
-  v16 = [objc_opt_class() defaultTimeProvider];
-  v19 = [(AVTUsageTrackingSession *)self initWithCoreAnalyticsClient:v11 dpRecorder:v21 serialQueueProvider:v10 recordTransformer:v9 avatarRecord:v20 defaultConfiguration:0 timeProvider:v16 configurationMetric:v18 logger:v8 keyBasePrefix:v14 bundleAppName:v15];
+  v14 = [objc_opt_class() keyBasePrefixForBundleIdentifier:bundleIdentifier];
+  v15 = [objc_opt_class() allowListAppNameFromBundleID:bundleIdentifier];
+  defaultTimeProvider = [objc_opt_class() defaultTimeProvider];
+  v19 = [(AVTUsageTrackingSession *)self initWithCoreAnalyticsClient:v11 dpRecorder:v21 serialQueueProvider:providerCopy recordTransformer:transformerCopy avatarRecord:defaultAvatarRecord defaultConfiguration:0 timeProvider:defaultTimeProvider configurationMetric:v18 logger:loggerCopy keyBasePrefix:v14 bundleAppName:v15];
 
   return v19;
 }
 
-- (AVTUsageTrackingSession)initWithCoreAnalyticsClient:(id)a3 dpRecorder:(id)a4 serialQueueProvider:(id)a5 recordTransformer:(id)a6 avatarRecord:(id)a7 defaultConfiguration:(id)a8 timeProvider:(id)a9 configurationMetric:(id)a10 logger:(id)a11 keyBasePrefix:(id)a12 bundleAppName:(id)a13
+- (AVTUsageTrackingSession)initWithCoreAnalyticsClient:(id)client dpRecorder:(id)recorder serialQueueProvider:(id)provider recordTransformer:(id)transformer avatarRecord:(id)record defaultConfiguration:(id)configuration timeProvider:(id)timeProvider configurationMetric:(id)self0 logger:(id)self1 keyBasePrefix:(id)self2 bundleAppName:(id)self3
 {
-  v39 = a3;
-  v34 = a4;
-  v38 = a4;
-  v18 = a5;
-  v40 = a6;
-  v19 = a8;
-  v37 = a7;
-  v36 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = a12;
-  v24 = a13;
+  clientCopy = client;
+  recorderCopy = recorder;
+  recorderCopy2 = recorder;
+  providerCopy = provider;
+  transformerCopy = transformer;
+  configurationCopy = configuration;
+  recordCopy = record;
+  configurationCopy2 = configuration;
+  timeProviderCopy = timeProvider;
+  metricCopy = metric;
+  loggerCopy = logger;
+  prefixCopy = prefix;
+  nameCopy = name;
   v41.receiver = self;
   v41.super_class = AVTUsageTrackingSession;
   v25 = [(AVTUsageTrackingSession *)&v41 init];
   if (v25)
   {
-    v26 = v18[2](v18, "com.apple.AvatarUI.AVTUsageTrackingSession.workQueue");
+    v26 = providerCopy[2](providerCopy, "com.apple.AvatarUI.AVTUsageTrackingSession.workQueue");
     workQueue = v25->_workQueue;
     v25->_workQueue = v26;
 
-    objc_storeStrong(&v25->_ntsCAClient, a3);
-    objc_storeStrong(&v25->_ntsDPRecorder, v34);
-    v28 = [v40 copy];
+    objc_storeStrong(&v25->_ntsCAClient, client);
+    objc_storeStrong(&v25->_ntsDPRecorder, recorderCopy);
+    v28 = [transformerCopy copy];
     recordTransformer = v25->_recordTransformer;
     v25->_recordTransformer = v28;
 
-    v30 = [v20 copy];
+    v30 = [timeProviderCopy copy];
     timeProvider = v25->_timeProvider;
     v25->_timeProvider = v30;
 
-    objc_storeStrong(&v25->_defaultConfiguration, v19);
-    objc_storeStrong(&v25->_avatarRecord, a7);
-    objc_storeStrong(&v25->_metric, a10);
-    objc_storeStrong(&v25->_logger, a11);
-    objc_storeStrong(&v25->_keyBasePrefix, a12);
-    objc_storeStrong(&v25->_bundleAppName, a13);
+    objc_storeStrong(&v25->_defaultConfiguration, configurationCopy);
+    objc_storeStrong(&v25->_avatarRecord, record);
+    objc_storeStrong(&v25->_metric, metric);
+    objc_storeStrong(&v25->_logger, logger);
+    objc_storeStrong(&v25->_keyBasePrefix, prefix);
+    objc_storeStrong(&v25->_bundleAppName, name);
   }
 
   return v25;
 }
 
-- (void)performClientWork:(id)a3
+- (void)performClientWork:(id)work
 {
-  v4 = a3;
-  v5 = [(AVTUsageTrackingSession *)self workQueue];
+  workCopy = work;
+  workQueue = [(AVTUsageTrackingSession *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__AVTUsageTrackingSession_performClientWork___block_invoke;
   v7[3] = &unk_1E7F3A8A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = workCopy;
+  v6 = workCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __45__AVTUsageTrackingSession_performClientWork___block_invoke(uint64_t a1)
@@ -466,28 +466,28 @@ void __45__AVTUsageTrackingSession_performClientWork___block_invoke(uint64_t a1)
   (*(v2 + 16))(v2, v4, v3);
 }
 
-- (id)makeEventKeyForAction:(id)a3
+- (id)makeEventKeyForAction:(id)action
 {
-  v4 = a3;
-  v5 = [(AVTUsageTrackingSession *)self keyBasePrefix];
-  v6 = [v5 stringByAppendingString:v4];
+  actionCopy = action;
+  keyBasePrefix = [(AVTUsageTrackingSession *)self keyBasePrefix];
+  v6 = [keyBasePrefix stringByAppendingString:actionCopy];
 
   v7 = [objc_opt_class() makeKeyAnalyticsCompliant:v6];
 
   return v7;
 }
 
-- (id)makeCrossAppEventKeyForAction:(id)a3
+- (id)makeCrossAppEventKeyForAction:(id)action
 {
-  v3 = [@"com.apple.Animoji.Analytics.AnyApp." stringByAppendingString:a3];
+  v3 = [@"com.apple.Animoji.Analytics.AnyApp." stringByAppendingString:action];
   v4 = [objc_opt_class() makeKeyAnalyticsCompliant:v3];
 
   return v4;
 }
 
-- (void)sendEventForAction:(id)a3
+- (void)sendEventForAction:(id)action
 {
-  v4 = [(AVTUsageTrackingSession *)self makeEventKeyForAction:a3];
+  v4 = [(AVTUsageTrackingSession *)self makeEventKeyForAction:action];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__AVTUsageTrackingSession_sendEventForAction___block_invoke;
@@ -501,22 +501,22 @@ void __45__AVTUsageTrackingSession_performClientWork___block_invoke(uint64_t a1)
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v5 = @"appName";
-  v2 = [(AVTUsageTrackingSession *)self bundleAppName];
-  v6[0] = v2;
+  bundleAppName = [(AVTUsageTrackingSession *)self bundleAppName];
+  v6[0] = bundleAppName;
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v6 forKeys:&v5 count:1];
 
   return v3;
 }
 
-- (void)sendCrossAppsEventForAction:(id)a3
+- (void)sendCrossAppsEventForAction:(id)action
 {
-  v4 = [(AVTUsageTrackingSession *)self makeCrossAppEventKeyForAction:a3];
+  v4 = [(AVTUsageTrackingSession *)self makeCrossAppEventKeyForAction:action];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__AVTUsageTrackingSession_sendCrossAppsEventForAction___block_invoke;
   v6[3] = &unk_1E7F3C518;
   v7 = v4;
-  v8 = self;
+  selfCopy = self;
   v5 = v4;
   [(AVTUsageTrackingSession *)self performClientWork:v6];
 }
@@ -530,17 +530,17 @@ void __55__AVTUsageTrackingSession_sendCrossAppsEventForAction___block_invoke(ui
   [v4 sendEventForKey:v2 payload:v5];
 }
 
-- (void)didSendVideoWithAvatar:(id)a3 duration:(double)a4
+- (void)didSendVideoWithAvatar:(id)avatar duration:(double)duration
 {
-  v6 = a3;
+  avatarCopy = avatar;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59__AVTUsageTrackingSession_didSendVideoWithAvatar_duration___block_invoke;
   v8[3] = &unk_1E7F3C540;
   v8[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = avatarCopy;
+  durationCopy = duration;
+  v7 = avatarCopy;
   [(AVTUsageTrackingSession *)self performClientWork:v8];
   [(AVTUsageTrackingSession *)self didResumeFaceTracking];
 }
@@ -565,14 +565,14 @@ void __59__AVTUsageTrackingSession_didSendVideoWithAvatar_duration___block_invok
   }
 }
 
-- (void)didDiscardVideoWithDuration:(double)a3
+- (void)didDiscardVideoWithDuration:(double)duration
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __55__AVTUsageTrackingSession_didDiscardVideoWithDuration___block_invoke;
   v4[3] = &unk_1E7F3C568;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = duration;
   [(AVTUsageTrackingSession *)self performClientWork:v4];
   [(AVTUsageTrackingSession *)self didResumeFaceTracking];
 }
@@ -591,16 +591,16 @@ void __55__AVTUsageTrackingSession_didDiscardVideoWithDuration___block_invoke(ui
   [v4 sendEventForKey:v5 payload:v7];
 }
 
-- (void)didSendImageWithAvatar:(id)a3
+- (void)didSendImageWithAvatar:(id)avatar
 {
-  v4 = a3;
+  avatarCopy = avatar;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__AVTUsageTrackingSession_didSendImageWithAvatar___block_invoke;
   v6[3] = &unk_1E7F3C518;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = avatarCopy;
+  v5 = avatarCopy;
   [(AVTUsageTrackingSession *)self performClientWork:v6];
 }
 
@@ -622,16 +622,16 @@ void __50__AVTUsageTrackingSession_didSendImageWithAvatar___block_invoke(uint64_
   }
 }
 
-- (void)didSendStickerWithAvatar:(id)a3
+- (void)didSendStickerWithAvatar:(id)avatar
 {
-  v4 = a3;
+  avatarCopy = avatar;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__AVTUsageTrackingSession_didSendStickerWithAvatar___block_invoke;
   v6[3] = &unk_1E7F3C518;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = avatarCopy;
+  v5 = avatarCopy;
   [(AVTUsageTrackingSession *)self performClientWork:v6];
 }
 
@@ -653,9 +653,9 @@ void __52__AVTUsageTrackingSession_didSendStickerWithAvatar___block_invoke(uint6
   }
 }
 
-- (void)didDeleteAvatar:(id)a3
+- (void)didDeleteAvatar:(id)avatar
 {
-  if ([a3 isEditable])
+  if ([avatar isEditable])
   {
     [(AVTUsageTrackingSession *)self sendCrossAppsEventForAction:@"MemojiDeleted"];
     v4[0] = MEMORY[0x1E69E9820];
@@ -667,19 +667,19 @@ void __52__AVTUsageTrackingSession_didSendStickerWithAvatar___block_invoke(uint6
   }
 }
 
-- (void)didCreateAvatar:(id)a3
+- (void)didCreateAvatar:(id)avatar
 {
-  v4 = a3;
-  if ([v4 isEditable])
+  avatarCopy = avatar;
+  if ([avatarCopy isEditable])
   {
     [(AVTUsageTrackingSession *)self sendCrossAppsEventForAction:@"MemojiCreated"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", v4}];
+      [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", avatarCopy}];
     }
 
-    v5 = v4;
+    v5 = avatarCopy;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __43__AVTUsageTrackingSession_didCreateAvatar___block_invoke;
@@ -700,19 +700,19 @@ void __43__AVTUsageTrackingSession_didCreateAvatar___block_invoke(uint64_t a1, v
   [*(a1 + 32) nts_reportAvatarLikenessClustersWithClient:v7];
 }
 
-- (void)didEditAvatar:(id)a3
+- (void)didEditAvatar:(id)avatar
 {
-  v4 = a3;
-  if ([v4 isEditable])
+  avatarCopy = avatar;
+  if ([avatarCopy isEditable])
   {
     [(AVTUsageTrackingSession *)self sendCrossAppsEventForAction:@"MemojiEdited"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", v4}];
+      [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", avatarCopy}];
     }
 
-    v5 = v4;
+    v5 = avatarCopy;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __41__AVTUsageTrackingSession_didEditAvatar___block_invoke;
@@ -733,9 +733,9 @@ void __41__AVTUsageTrackingSession_didEditAvatar___block_invoke(uint64_t a1, voi
   [*(a1 + 32) nts_reportAvatarLikenessClustersWithClient:v7];
 }
 
-- (void)didDuplicateAvatar:(id)a3
+- (void)didDuplicateAvatar:(id)avatar
 {
-  if ([a3 isEditable])
+  if ([avatar isEditable])
   {
 
     [(AVTUsageTrackingSession *)self sendCrossAppsEventForAction:@"MemojiDuplicated"];
@@ -765,8 +765,8 @@ void __41__AVTUsageTrackingSession_didEditAvatar___block_invoke(uint64_t a1, voi
 
 - (void)didEnterEditor
 {
-  v3 = [(AVTUsageTrackingSession *)self timeProvider];
-  v4 = v3[2]();
+  timeProvider = [(AVTUsageTrackingSession *)self timeProvider];
+  v4 = timeProvider[2]();
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -780,8 +780,8 @@ void __41__AVTUsageTrackingSession_didEditAvatar___block_invoke(uint64_t a1, voi
 
 - (void)didLeaveEditor
 {
-  v3 = [(AVTUsageTrackingSession *)self timeProvider];
-  v4 = v3[2]();
+  timeProvider = [(AVTUsageTrackingSession *)self timeProvider];
+  v4 = timeProvider[2]();
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -804,13 +804,13 @@ void __41__AVTUsageTrackingSession_didLeaveEditor__block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)didStartFaceTrackingInCarouselWithAvatar:(id)a3
+- (void)didStartFaceTrackingInCarouselWithAvatar:(id)avatar
 {
-  v4 = a3;
+  avatarCopy = avatar;
   v5 = [AVTUsageTrackingRecordTimedEvent alloc];
-  v6 = [(AVTUsageTrackingSession *)self timeProvider];
-  v7 = v6[2]();
-  v8 = [(AVTUsageTrackingRecordTimedEvent *)v5 initWithStartTime:v7 record:v4];
+  timeProvider = [(AVTUsageTrackingSession *)self timeProvider];
+  v7 = timeProvider[2]();
+  v8 = [(AVTUsageTrackingRecordTimedEvent *)v5 initWithStartTime:v7 record:avatarCopy];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -822,13 +822,13 @@ void __41__AVTUsageTrackingSession_didLeaveEditor__block_invoke(uint64_t a1, voi
   [(AVTUsageTrackingSession *)self performClientWork:v10];
 }
 
-- (void)didChangeCurrentAvatarInCarousel:(id)a3
+- (void)didChangeCurrentAvatarInCarousel:(id)carousel
 {
-  v4 = a3;
-  v5 = [(AVTUsageTrackingSession *)self timeProvider];
-  v6 = v5[2]();
+  carouselCopy = carousel;
+  timeProvider = [(AVTUsageTrackingSession *)self timeProvider];
+  v6 = timeProvider[2]();
 
-  v7 = [[AVTUsageTrackingRecordTimedEvent alloc] initWithStartTime:v6 record:v4];
+  v7 = [[AVTUsageTrackingRecordTimedEvent alloc] initWithStartTime:v6 record:carouselCopy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __60__AVTUsageTrackingSession_didChangeCurrentAvatarInCarousel___block_invoke;
@@ -866,8 +866,8 @@ void __60__AVTUsageTrackingSession_didChangeCurrentAvatarInCarousel___block_invo
 
 - (void)didStopFaceTrackingInCarousel
 {
-  v3 = [(AVTUsageTrackingSession *)self timeProvider];
-  v4 = v3[2]();
+  timeProvider = [(AVTUsageTrackingSession *)self timeProvider];
+  v4 = timeProvider[2]();
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -892,8 +892,8 @@ void __56__AVTUsageTrackingSession_didStopFaceTrackingInCarousel__block_invoke(u
 
 - (void)didPauseFaceTracking
 {
-  v3 = [(AVTUsageTrackingSession *)self timeProvider];
-  v4 = v3[2]();
+  timeProvider = [(AVTUsageTrackingSession *)self timeProvider];
+  v4 = timeProvider[2]();
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -918,8 +918,8 @@ void __47__AVTUsageTrackingSession_didPauseFaceTracking__block_invoke(uint64_t a
 
 - (void)didResumeFaceTracking
 {
-  v3 = [(AVTUsageTrackingSession *)self timeProvider];
-  v4 = v3[2]();
+  timeProvider = [(AVTUsageTrackingSession *)self timeProvider];
+  v4 = timeProvider[2]();
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -942,28 +942,28 @@ void __48__AVTUsageTrackingSession_didResumeFaceTracking__block_invoke(uint64_t 
   }
 }
 
-- (void)didSelectStickerFromStickersApp:(id)a3 withAvatar:(id)a4
+- (void)didSelectStickerFromStickersApp:(id)app withAvatar:(id)avatar
 {
   v6 = MEMORY[0x1E696AAE8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 mainBundle];
-  v10 = [v9 bundleIdentifier];
+  avatarCopy = avatar;
+  appCopy = app;
+  mainBundle = [v6 mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  [(AVTUsageTrackingSession *)self didSelectStickerFromStickersApp:v8 withAvatar:v7 bundleIdentifier:v10];
+  [(AVTUsageTrackingSession *)self didSelectStickerFromStickersApp:appCopy withAvatar:avatarCopy bundleIdentifier:bundleIdentifier];
 }
 
-- (void)didSelectStickerFromStickersApp:(id)a3 withAvatar:(id)a4 bundleIdentifier:(id)a5
+- (void)didSelectStickerFromStickersApp:(id)app withAvatar:(id)avatar bundleIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_opt_class() allowListAppNameFromBundleID:v8];
+  identifierCopy = identifier;
+  avatarCopy = avatar;
+  appCopy = app;
+  v11 = [objc_opt_class() allowListAppNameFromBundleID:identifierCopy];
 
-  [(AVTUsageTrackingSession *)self sentStickerFromStickersApp:v10 withAvatarRecord:v9 action:@"StickerSent" appName:v11];
+  [(AVTUsageTrackingSession *)self sentStickerFromStickersApp:appCopy withAvatarRecord:avatarCopy action:@"StickerSent" appName:v11];
 }
 
-- (void)didChangeCurrentAvatarInStickers:(id)a3
+- (void)didChangeCurrentAvatarInStickers:(id)stickers
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -981,19 +981,19 @@ void __60__AVTUsageTrackingSession_didChangeCurrentAvatarInStickers___block_invo
   [v3 sendEventForKey:v4 payload:0];
 }
 
-- (void)didTapStickerFromRecents:(id)a3 withAvatarIdentifier:(id)a4
+- (void)didTapStickerFromRecents:(id)recents withAvatarIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  recentsCopy = recents;
+  identifierCopy = identifier;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __73__AVTUsageTrackingSession_didTapStickerFromRecents_withAvatarIdentifier___block_invoke;
   v10[3] = &unk_1E7F3C590;
   v10[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = identifierCopy;
+  v12 = recentsCopy;
+  v8 = recentsCopy;
+  v9 = identifierCopy;
   [(AVTUsageTrackingSession *)self performClientWork:v10];
 }
 
@@ -1009,25 +1009,25 @@ void __73__AVTUsageTrackingSession_didTapStickerFromRecents_withAvatarIdentifier
   [v4 sendEventForKey:v7 payload:v6];
 }
 
-- (void)sentStickerFromStickersApp:(id)a3 withAvatarRecord:(id)a4 action:(id)a5 appName:(id)a6
+- (void)sentStickerFromStickersApp:(id)app withAvatarRecord:(id)record action:(id)action appName:(id)name
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  appCopy = app;
+  recordCopy = record;
+  actionCopy = action;
+  nameCopy = name;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __86__AVTUsageTrackingSession_sentStickerFromStickersApp_withAvatarRecord_action_appName___block_invoke;
   v18[3] = &unk_1E7F3C5B8;
   v18[4] = self;
-  v19 = v12;
-  v20 = v11;
-  v21 = v10;
-  v22 = v13;
-  v14 = v13;
-  v15 = v10;
-  v16 = v11;
-  v17 = v12;
+  v19 = actionCopy;
+  v20 = recordCopy;
+  v21 = appCopy;
+  v22 = nameCopy;
+  v14 = nameCopy;
+  v15 = appCopy;
+  v16 = recordCopy;
+  v17 = actionCopy;
   [(AVTUsageTrackingSession *)self performClientWork:v18];
 }
 
@@ -1051,16 +1051,16 @@ void __86__AVTUsageTrackingSession_sentStickerFromStickersApp_withAvatarRecord_a
   }
 }
 
-- (void)beginWithStore:(id)a3
+- (void)beginWithStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__AVTUsageTrackingSession_beginWithStore___block_invoke;
   v6[3] = &unk_1E7F3C518;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = storeCopy;
+  selfCopy = self;
+  v5 = storeCopy;
   [(AVTUsageTrackingSession *)self performClientWork:v6];
 }
 
@@ -1079,8 +1079,8 @@ uint64_t __42__AVTUsageTrackingSession_beginWithStore___block_invoke(uint64_t a1
 
 - (void)end
 {
-  v3 = [(AVTUsageTrackingSession *)self timeProvider];
-  v4 = v3[2]();
+  timeProvider = [(AVTUsageTrackingSession *)self timeProvider];
+  v4 = timeProvider[2]();
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -1125,16 +1125,16 @@ void __30__AVTUsageTrackingSession_end__block_invoke(uint64_t a1, void *a2)
   avatarRecord = [(AVTUsageTrackingSession *)self defaultConfiguration];
   if (!avatarRecord)
   {
-    v4 = [(AVTUsageTrackingSession *)self avatarRecord];
+    avatarRecord = [(AVTUsageTrackingSession *)self avatarRecord];
 
-    if (!v4)
+    if (!avatarRecord)
     {
       return;
     }
 
-    v5 = [(AVTUsageTrackingSession *)self recordTransformer];
-    v6 = [(AVTUsageTrackingSession *)self avatarRecord];
-    v7 = (v5)[2](v5, v6);
+    recordTransformer = [(AVTUsageTrackingSession *)self recordTransformer];
+    avatarRecord2 = [(AVTUsageTrackingSession *)self avatarRecord];
+    v7 = (recordTransformer)[2](recordTransformer, avatarRecord2);
     defaultConfiguration = self->_defaultConfiguration;
     self->_defaultConfiguration = v7;
 
@@ -1143,97 +1143,97 @@ void __30__AVTUsageTrackingSession_end__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)nts_reportEditorTimeWithExitTime:(id)a3 client:(id)a4
+- (void)nts_reportEditorTimeWithExitTime:(id)time client:(id)client
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AVTUsageTrackingSession *)self editorEnterDate];
-  [v7 timeIntervalSinceDate:v8];
+  clientCopy = client;
+  timeCopy = time;
+  editorEnterDate = [(AVTUsageTrackingSession *)self editorEnterDate];
+  [timeCopy timeIntervalSinceDate:editorEnterDate];
   v10 = v9;
 
   [(AVTUsageTrackingSession *)self setEditorEnterDate:0];
   v14 = [(AVTUsageTrackingSession *)self makeCrossAppEventKeyForAction:@"EditorTime"];
-  v11 = [(AVTUsageTrackingSession *)self payloadForCrossAppEvent];
-  v12 = [v11 mutableCopy];
+  payloadForCrossAppEvent = [(AVTUsageTrackingSession *)self payloadForCrossAppEvent];
+  v12 = [payloadForCrossAppEvent mutableCopy];
 
   v13 = [MEMORY[0x1E696AD98] numberWithDouble:v10];
   [v12 setObject:v13 forKeyedSubscript:@"time"];
 
-  [v6 sendEventForKey:v14 payload:v12];
+  [clientCopy sendEventForKey:v14 payload:v12];
 }
 
-- (void)nts_reportFaceTrackingTimeWithEndTime:(id)a3 client:(id)a4
+- (void)nts_reportFaceTrackingTimeWithEndTime:(id)time client:(id)client
 {
-  v18 = a4;
-  v6 = a3;
-  v7 = [(AVTUsageTrackingSession *)self faceTrackingEvent];
-  [v7 totalElapsedTimeAtTime:v6];
+  clientCopy = client;
+  timeCopy = time;
+  faceTrackingEvent = [(AVTUsageTrackingSession *)self faceTrackingEvent];
+  [faceTrackingEvent totalElapsedTimeAtTime:timeCopy];
   v9 = v8;
 
-  v10 = [(AVTUsageTrackingSession *)self faceTrackingEvent];
-  v11 = [v10 record];
+  faceTrackingEvent2 = [(AVTUsageTrackingSession *)self faceTrackingEvent];
+  record = [faceTrackingEvent2 record];
 
   [(AVTUsageTrackingSession *)self setFaceTrackingEvent:0];
   v12 = [(AVTUsageTrackingSession *)self makeEventKeyForAction:@"FaceTrackingTime"];
-  v13 = [objc_opt_class() payloadForAvatarRecord:v11];
+  v13 = [objc_opt_class() payloadForAvatarRecord:record];
   v14 = [v13 mutableCopy];
 
   v15 = [MEMORY[0x1E696AD98] numberWithDouble:v9];
   [v14 setObject:v15 forKeyedSubscript:@"time"];
 
-  [v18 sendEventForKey:v12 payload:v14];
+  [clientCopy sendEventForKey:v12 payload:v14];
   if (v9 > 30.0)
   {
     v16 = [(AVTUsageTrackingSession *)self makeEventKeyForAction:@"FaceTrackingMoreThan30s"];
-    v17 = [objc_opt_class() payloadForAvatarRecord:v11];
-    [v18 sendEventForKey:v16 payload:v17];
+    v17 = [objc_opt_class() payloadForAvatarRecord:record];
+    [clientCopy sendEventForKey:v16 payload:v17];
   }
 }
 
-- (void)nts_reportAvatarCountWithClient:(id)a3
+- (void)nts_reportAvatarCountWithClient:(id)client
 {
-  v13 = a3;
-  v4 = [(AVTUsageTrackingSession *)self avatarStore];
-  v5 = [MEMORY[0x1E698E310] requestForCustomAvatars];
-  v6 = [v4 avatarsForFetchRequest:v5 error:0];
+  clientCopy = client;
+  avatarStore = [(AVTUsageTrackingSession *)self avatarStore];
+  requestForCustomAvatars = [MEMORY[0x1E698E310] requestForCustomAvatars];
+  v6 = [avatarStore avatarsForFetchRequest:requestForCustomAvatars error:0];
 
   if (v6)
   {
     v7 = [v6 count];
-    v8 = [(AVTUsageTrackingSession *)self logger];
-    [v8 logUsageTrackingRecordCount:v7];
+    logger = [(AVTUsageTrackingSession *)self logger];
+    [logger logUsageTrackingRecordCount:v7];
 
     v9 = [(AVTUsageTrackingSession *)self makeCrossAppEventKeyForAction:@"MemojiCount"];
-    v10 = [(AVTUsageTrackingSession *)self payloadForCrossAppEvent];
-    v11 = [v10 mutableCopy];
+    payloadForCrossAppEvent = [(AVTUsageTrackingSession *)self payloadForCrossAppEvent];
+    v11 = [payloadForCrossAppEvent mutableCopy];
 
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
     [v11 setObject:v12 forKeyedSubscript:@"memojiCount"];
 
-    [v13 sendEventForKey:v9 payload:v11];
+    [clientCopy sendEventForKey:v9 payload:v11];
   }
 }
 
-- (void)nts_reportAvatarDescription:(id)a3 dpRecorder:(id)a4
+- (void)nts_reportAvatarDescription:(id)description dpRecorder:(id)recorder
 {
-  v6 = a3;
-  v7 = a4;
+  descriptionCopy = description;
+  recorderCopy = recorder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", v6}];
+    [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", descriptionCopy}];
   }
 
-  v8 = v6;
-  v9 = [(AVTUsageTrackingSession *)self recordTransformer];
-  v10 = (v9)[2](v9, v8);
+  v8 = descriptionCopy;
+  recordTransformer = [(AVTUsageTrackingSession *)self recordTransformer];
+  v10 = (recordTransformer)[2](recordTransformer, v8);
 
   [(AVTUsageTrackingSession *)self nts_loadDefaultConfigurationIfNeeded];
   v11 = objc_opt_class();
   v21 = 0;
   v22 = 0;
-  v12 = [(AVTUsageTrackingSession *)self defaultConfiguration];
-  [v11 getPresetDescription:&v22 usedCategoriesDescription:&v21 forAvatarConfiguration:v10 defaultConfiguration:v12];
+  defaultConfiguration = [(AVTUsageTrackingSession *)self defaultConfiguration];
+  [v11 getPresetDescription:&v22 usedCategoriesDescription:&v21 forAvatarConfiguration:v10 defaultConfiguration:defaultConfiguration];
   v13 = v22;
   v14 = v21;
   v15 = v13;
@@ -1243,12 +1243,12 @@ void __30__AVTUsageTrackingSession_end__block_invoke(uint64_t a1, void *a2)
   v19[2] = __66__AVTUsageTrackingSession_nts_reportAvatarDescription_dpRecorder___block_invoke;
   v19[3] = &unk_1E7F3C5E0;
   v19[4] = self;
-  v20 = v7;
-  v16 = v7;
+  v20 = recorderCopy;
+  v16 = recorderCopy;
   [v15 enumerateKeysAndObjectsUsingBlock:v19];
-  v17 = [v14 stringValue];
+  stringValue = [v14 stringValue];
   v18 = [objc_opt_class() makeDPKey:@"MemojiCategoryUsed"];
-  [v16 recordString:v17 forKey:v18];
+  [v16 recordString:stringValue forKey:v18];
 }
 
 void __66__AVTUsageTrackingSession_nts_reportAvatarDescription_dpRecorder___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1263,19 +1263,19 @@ void __66__AVTUsageTrackingSession_nts_reportAvatarDescription_dpRecorder___bloc
   [*(a1 + 40) recordString:v5 forKey:v9];
 }
 
-- (void)nts_reportAvatarLikenessClustersWithClient:(id)a3
+- (void)nts_reportAvatarLikenessClustersWithClient:(id)client
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  v6 = [(AVTUsageTrackingSession *)self avatarStore];
-  v7 = [MEMORY[0x1E698E310] requestForCustomAvatars];
-  v8 = [v6 avatarsForFetchRequest:v7 error:0];
+  clientCopy = client;
+  selfCopy = self;
+  avatarStore = [(AVTUsageTrackingSession *)self avatarStore];
+  requestForCustomAvatars = [MEMORY[0x1E698E310] requestForCustomAvatars];
+  v8 = [avatarStore avatarsForFetchRequest:requestForCustomAvatars error:0];
 
   if ([v8 count])
   {
-    v37 = v4;
-    v9 = [MEMORY[0x1E695DF70] array];
+    v37 = clientCopy;
+    array = [MEMORY[0x1E695DF70] array];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
@@ -1305,10 +1305,10 @@ void __66__AVTUsageTrackingSession_nts_reportAvatarDescription_dpRecorder___bloc
           }
 
           v16 = v14;
-          v17 = [(AVTUsageTrackingSession *)v5 recordTransformer];
-          v18 = (v17)[2](v17, v16);
+          recordTransformer = [(AVTUsageTrackingSession *)selfCopy recordTransformer];
+          v18 = (recordTransformer)[2](recordTransformer, v16);
 
-          [v9 addObject:v18];
+          [array addObject:v18];
           objc_autoreleasePoolPop(v15);
         }
 
@@ -1318,31 +1318,31 @@ void __66__AVTUsageTrackingSession_nts_reportAvatarDescription_dpRecorder___bloc
       while (v11);
     }
 
-    v19 = v5;
+    v19 = selfCopy;
     v20 = objc_opt_class();
-    v21 = [(AVTUsageTrackingSession *)v5 metric];
-    v22 = [v20 configurationDistanceClassifierWithMetric:v21];
+    metric = [(AVTUsageTrackingSession *)selfCopy metric];
+    v22 = [v20 configurationDistanceClassifierWithMetric:metric];
 
-    v23 = [objc_opt_class() likenessComparator];
+    likenessComparator = [objc_opt_class() likenessComparator];
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
     v39[2] = __70__AVTUsageTrackingSession_nts_reportAvatarLikenessClustersWithClient___block_invoke;
     v39[3] = &unk_1E7F3C608;
     v40 = obj;
     v24 = MEMORY[0x1BFB0DE80](v39);
-    v25 = [AVTArrayPairClassification clustersForObjectsInArray:v9 withClassifier:v22 likenessThreshold:&unk_1F39A5B78 likenessComparator:v23];
-    v26 = [AVTArrayPairClassification clustersForObjectsInArray:v9 withClassifier:v22 likenessThreshold:&unk_1F39A5B90 likenessComparator:v23];
-    v27 = [(AVTUsageTrackingSession *)v19 logger];
-    [v27 logUsageTrackingSmallDifferencesClusterCount:{objc_msgSend(v25, "count")}];
+    v25 = [AVTArrayPairClassification clustersForObjectsInArray:array withClassifier:v22 likenessThreshold:&unk_1F39A5B78 likenessComparator:likenessComparator];
+    v26 = [AVTArrayPairClassification clustersForObjectsInArray:array withClassifier:v22 likenessThreshold:&unk_1F39A5B90 likenessComparator:likenessComparator];
+    logger = [(AVTUsageTrackingSession *)v19 logger];
+    [logger logUsageTrackingSmallDifferencesClusterCount:{objc_msgSend(v25, "count")}];
 
-    v28 = [(AVTUsageTrackingSession *)v19 logger];
-    [v28 logUsageTrackingBigDifferencesClusterCount:{objc_msgSend(v26, "count")}];
+    logger2 = [(AVTUsageTrackingSession *)v19 logger];
+    [logger2 logUsageTrackingBigDifferencesClusterCount:{objc_msgSend(v26, "count")}];
 
     v29 = (v24)[2](v24, v25);
     v30 = (v24)[2](v24, v26);
     v31 = [(AVTUsageTrackingSession *)v19 makeCrossAppEventKeyForAction:@"MemojiDifferences"];
-    v32 = [(AVTUsageTrackingSession *)v19 payloadForCrossAppEvent];
-    v33 = [v32 mutableCopy];
+    payloadForCrossAppEvent = [(AVTUsageTrackingSession *)v19 payloadForCrossAppEvent];
+    v33 = [payloadForCrossAppEvent mutableCopy];
 
     v34 = [MEMORY[0x1E696AD98] numberWithDouble:v29];
     [v33 setObject:v34 forKeyedSubscript:@"smallDifferenceRatio"];
@@ -1350,7 +1350,7 @@ void __66__AVTUsageTrackingSession_nts_reportAvatarDescription_dpRecorder___bloc
     v35 = [MEMORY[0x1E696AD98] numberWithDouble:v30];
     [v33 setObject:v35 forKeyedSubscript:@"bigDifferenceRatio"];
 
-    v4 = v37;
+    clientCopy = v37;
     [v37 sendEventForKey:v31 payload:v33];
 
     v8 = v36;
@@ -1371,41 +1371,41 @@ double __70__AVTUsageTrackingSession_nts_reportAvatarLikenessClustersWithClient_
   return v5;
 }
 
-- (void)nts_reportAvatarComplexity:(id)a3 withClient:(id)a4
+- (void)nts_reportAvatarComplexity:(id)complexity withClient:(id)client
 {
-  v6 = a4;
-  v7 = a3;
+  clientCopy = client;
+  complexityCopy = complexity;
   [(AVTUsageTrackingSession *)self nts_loadDefaultConfigurationIfNeeded];
-  v8 = [(AVTUsageTrackingSession *)self recordTransformer];
-  v18 = (v8)[2](v8, v7);
+  recordTransformer = [(AVTUsageTrackingSession *)self recordTransformer];
+  v18 = (recordTransformer)[2](recordTransformer, complexityCopy);
 
-  v9 = [(AVTUsageTrackingSession *)self metric];
-  v10 = [(AVTUsageTrackingSession *)self defaultConfiguration];
-  v11 = [v9 distanceFromConfiguration:v10 toConfiguration:v18];
+  metric = [(AVTUsageTrackingSession *)self metric];
+  defaultConfiguration = [(AVTUsageTrackingSession *)self defaultConfiguration];
+  v11 = [metric distanceFromConfiguration:defaultConfiguration toConfiguration:v18];
 
-  v12 = [(AVTUsageTrackingSession *)self metric];
-  v13 = [v12 differenceCountFromDistance:v11];
+  metric2 = [(AVTUsageTrackingSession *)self metric];
+  v13 = [metric2 differenceCountFromDistance:v11];
 
   v14 = [(AVTUsageTrackingSession *)self makeCrossAppEventKeyForAction:@"MemojiComplexity"];
-  v15 = [(AVTUsageTrackingSession *)self payloadForCrossAppEvent];
-  v16 = [v15 mutableCopy];
+  payloadForCrossAppEvent = [(AVTUsageTrackingSession *)self payloadForCrossAppEvent];
+  v16 = [payloadForCrossAppEvent mutableCopy];
 
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v13];
   [v16 setObject:v17 forKeyedSubscript:@"complexity"];
 
-  [v6 sendEventForKey:v14 payload:v16];
+  [clientCopy sendEventForKey:v14 payload:v16];
 }
 
-- (void)nts_reportExpandedModeWithClient:(id)a3
+- (void)nts_reportExpandedModeWithClient:(id)client
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  clientCopy = client;
   v5 = [(AVTUsageTrackingSession *)self makeEventKeyForAction:@"SessionEnded"];
   v8 = @"expandedUsed";
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[AVTUsageTrackingSession expandedMode](self, "expandedMode")}];
   v9[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  [v4 sendEventForKey:v5 payload:v7];
+  [clientCopy sendEventForKey:v5 payload:v7];
 }
 
 @end

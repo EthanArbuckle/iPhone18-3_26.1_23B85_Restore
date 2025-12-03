@@ -2,7 +2,7 @@
 - (ATXModeAppLaunchFeaturizer)init;
 - (ATXModeFeaturizerDelegate)delegate;
 - (id)_latestAppLaunchBundleIds;
-- (id)_provideFeaturesWithBundleIds:(id)a3;
+- (id)_provideFeaturesWithBundleIds:(id)ids;
 - (id)additionalAllowedBundleIds;
 - (id)provideFeatures;
 - (id)registrationId;
@@ -10,7 +10,7 @@
 - (unint64_t)expectedGenreId;
 - (void)_actuallyEndMode;
 - (void)_actuallyStartMode;
-- (void)_processActiveApps:(id)a3;
+- (void)_processActiveApps:(id)apps;
 - (void)beginListening;
 - (void)stopListening;
 @end
@@ -82,9 +82,9 @@ LABEL_10:
   if (v2)
   {
     v2->_cooldownTimerIsEnabled = 1;
-    v4 = [MEMORY[0x277D42590] isInternalBuild];
+    isInternalBuild = [MEMORY[0x277D42590] isInternalBuild];
     v5 = MEMORY[0x277CEBD00];
-    if (v4)
+    if (isInternalBuild)
     {
       keyExistsAndHasValidFormat = 0;
       if (CFPreferencesGetAppBooleanValue(@"RemoveModeSwitchCooldown", *MEMORY[0x277CEBD00], &keyExistsAndHasValidFormat))
@@ -123,15 +123,15 @@ LABEL_10:
   v16 = objc_opt_new();
   v2 = BiomeLibrary();
   v3 = [v2 App];
-  v4 = [v3 InFocus];
-  v5 = [v4 atx_publisherFromStartDate:0];
-  v6 = [v5 last];
+  inFocus = [v3 InFocus];
+  v5 = [inFocus atx_publisherFromStartDate:0];
+  last = [v5 last];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __55__ATXModeAppLaunchFeaturizer__latestAppLaunchBundleIds__block_invoke_13;
   v10[3] = &unk_279AB7CD0;
   v10[4] = &v11;
-  v7 = [v6 sinkWithCompletion:&__block_literal_global_3 receiveInput:v10];
+  v7 = [last sinkWithCompletion:&__block_literal_global_3 receiveInput:v10];
 
   v8 = v12[5];
   _Block_object_dispose(&v11, 8);
@@ -192,25 +192,25 @@ LABEL_5:
 
 - (id)provideFeatures
 {
-  v3 = [(ATXModeAppLaunchFeaturizer *)self _latestAppLaunchBundleIds];
-  v4 = [(ATXModeAppLaunchFeaturizer *)self _provideFeaturesWithBundleIds:v3];
+  _latestAppLaunchBundleIds = [(ATXModeAppLaunchFeaturizer *)self _latestAppLaunchBundleIds];
+  v4 = [(ATXModeAppLaunchFeaturizer *)self _provideFeaturesWithBundleIds:_latestAppLaunchBundleIds];
 
   return v4;
 }
 
-- (id)_provideFeaturesWithBundleIds:(id)a3
+- (id)_provideFeaturesWithBundleIds:(id)ids
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idsCopy = ids;
   v5 = objc_alloc_init(ATXModeFeatureSet);
-  v6 = [(ATXModeAppLaunchFeaturizer *)self state];
-  if (v6 == 4 || v6 == 3)
+  state = [(ATXModeAppLaunchFeaturizer *)self state];
+  if (state == 4 || state == 3)
   {
     v9 = 0;
     v10 = 1;
   }
 
-  else if (v6)
+  else if (state)
   {
     v10 = 0;
     v9 = 0;
@@ -218,9 +218,9 @@ LABEL_5:
 
   else
   {
-    v7 = [(ATXModeAppLaunchFeaturizer *)self expectedGenreId];
-    v8 = [(ATXModeAppLaunchFeaturizer *)self additionalAllowedBundleIds];
-    v9 = activeBundleForBundleIds(v4, v7, v8);
+    expectedGenreId = [(ATXModeAppLaunchFeaturizer *)self expectedGenreId];
+    additionalAllowedBundleIds = [(ATXModeAppLaunchFeaturizer *)self additionalAllowedBundleIds];
+    v9 = activeBundleForBundleIds(idsCopy, expectedGenreId, additionalAllowedBundleIds);
 
     v10 = v9 != 0;
     if (v9)
@@ -238,7 +238,7 @@ LABEL_5:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 134217984;
-      v16 = [(ATXModeAppLaunchFeaturizer *)self state];
+      state2 = [(ATXModeAppLaunchFeaturizer *)self state];
       _os_log_impl(&dword_260C9F000, v12, OS_LOG_TYPE_DEFAULT, "ATXModeAppLaunchFeaturizer: Initial state: %ld", &v15, 0xCu);
     }
   }
@@ -271,10 +271,10 @@ LABEL_5:
       _os_log_impl(&dword_260C9F000, v3, OS_LOG_TYPE_DEFAULT, "ATXModeAppLaunchFeaturizer: State after cooldown: not active", v7, 2u);
     }
 
-    v4 = [(ATXModeAppLaunchFeaturizer *)self delegate];
+    delegate = [(ATXModeAppLaunchFeaturizer *)self delegate];
     v5 = objc_opt_new();
     v6 = [(ATXModeAppLaunchFeaturizer *)self _provideFeaturesWithBundleIds:v5];
-    [v4 featurizer:self didUpdateFeatures:v6];
+    [delegate featurizer:self didUpdateFeatures:v6];
   }
 }
 
@@ -290,10 +290,10 @@ LABEL_5:
       _os_log_impl(&dword_260C9F000, v3, OS_LOG_TYPE_DEFAULT, "ATXModeAppLaunchFeaturizer: State after ease-in: active", v7, 2u);
     }
 
-    v4 = [(ATXModeAppLaunchFeaturizer *)self delegate];
-    v5 = [(ATXModeAppLaunchFeaturizer *)self _latestAppLaunchBundleIds];
-    v6 = [(ATXModeAppLaunchFeaturizer *)self _provideFeaturesWithBundleIds:v5];
-    [v4 featurizer:self didUpdateFeatures:v6];
+    delegate = [(ATXModeAppLaunchFeaturizer *)self delegate];
+    _latestAppLaunchBundleIds = [(ATXModeAppLaunchFeaturizer *)self _latestAppLaunchBundleIds];
+    v6 = [(ATXModeAppLaunchFeaturizer *)self _provideFeaturesWithBundleIds:_latestAppLaunchBundleIds];
+    [delegate featurizer:self didUpdateFeatures:v6];
   }
 }
 
@@ -315,21 +315,21 @@ LABEL_5:
   objc_exception_throw(v2);
 }
 
-- (void)_processActiveApps:(id)a3
+- (void)_processActiveApps:(id)apps
 {
-  v4 = a3;
+  appsCopy = apps;
   v5 = __atxlog_handle_modes();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ATXModeAppLaunchFeaturizer _processActiveApps:];
   }
 
-  v6 = [(ATXModeAppLaunchFeaturizer *)self state];
-  if ([v4 count])
+  state = [(ATXModeAppLaunchFeaturizer *)self state];
+  if ([appsCopy count])
   {
-    v7 = [(ATXModeAppLaunchFeaturizer *)self expectedGenreId];
-    v8 = [(ATXModeAppLaunchFeaturizer *)self additionalAllowedBundleIds];
-    v9 = activeBundleForBundleIds(v4, v7, v8);
+    expectedGenreId = [(ATXModeAppLaunchFeaturizer *)self expectedGenreId];
+    additionalAllowedBundleIds = [(ATXModeAppLaunchFeaturizer *)self additionalAllowedBundleIds];
+    v9 = activeBundleForBundleIds(appsCopy, expectedGenreId, additionalAllowedBundleIds);
     if (v9)
     {
       v10 = 3;
@@ -346,16 +346,16 @@ LABEL_5:
     v10 = 1;
   }
 
-  if (v6 != v10)
+  if (state != v10)
   {
-    if (v6 <= 1)
+    if (state <= 1)
     {
-      if (!v6)
+      if (!state)
       {
         goto LABEL_45;
       }
 
-      if (v6 != 1 || v10 != 3)
+      if (state != 1 || v10 != 3)
       {
         goto LABEL_34;
       }
@@ -374,7 +374,7 @@ LABEL_5:
 
     else
     {
-      if (v6 == 2)
+      if (state == 2)
       {
         v11 = __atxlog_handle_modes();
         v17 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -405,9 +405,9 @@ LABEL_44:
         goto LABEL_45;
       }
 
-      if (v6 != 3)
+      if (state != 3)
       {
-        if (v6 == 4)
+        if (state == 4)
         {
           v11 = __atxlog_handle_modes();
           v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -522,16 +522,16 @@ LABEL_45:
   }
 
   v16 = objc_alloc(MEMORY[0x277CF1918]);
-  v17 = [(ATXModeAppLaunchFeaturizer *)self registrationId];
-  v18 = [v16 initWithIdentifier:v17 targetQueue:self->_queue];
+  registrationId = [(ATXModeAppLaunchFeaturizer *)self registrationId];
+  v18 = [v16 initWithIdentifier:registrationId targetQueue:self->_queue];
   scheduler = self->_scheduler;
   self->_scheduler = v18;
 
   v20 = BiomeLibrary();
   v21 = [v20 App];
-  v22 = [v21 InFocus];
-  v23 = [v22 atx_DSLPublisher];
-  v24 = [v23 subscribeOn:self->_scheduler];
+  inFocus = [v21 InFocus];
+  atx_DSLPublisher = [inFocus atx_DSLPublisher];
+  v24 = [atx_DSLPublisher subscribeOn:self->_scheduler];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __44__ATXModeAppLaunchFeaturizer_beginListening__block_invoke_32;

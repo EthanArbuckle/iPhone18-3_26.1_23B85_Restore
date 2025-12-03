@@ -1,35 +1,35 @@
 @interface RoutePickerTransitioningDelegate
 - (_TtC13MediaControls32RoutePickerTransitioningDelegate)init;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
 @end
 
 @implementation RoutePickerTransitioningDelegate
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_1A225D1D4(v8, a4);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  sourceViewControllerCopy = sourceViewController;
+  selfCopy = self;
+  v12 = sub_1A225D1D4(controllerCopy, viewController);
 
   return v12;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   type metadata accessor for RoutePickerPresentationAnimationController();
-  v6 = sub_1A22C45DC(0, a3);
+  v6 = sub_1A22C45DC(0, controller);
 
   return v6;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   type metadata accessor for RoutePickerPresentationAnimationController();
-  v4 = sub_1A22C45DC(1, a3);
+  v4 = sub_1A22C45DC(1, controller);
 
   return v4;
 }

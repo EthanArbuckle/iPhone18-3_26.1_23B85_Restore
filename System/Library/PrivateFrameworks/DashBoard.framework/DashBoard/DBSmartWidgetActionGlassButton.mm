@@ -1,23 +1,23 @@
 @interface DBSmartWidgetActionGlassButton
 - (_TtC9DashBoard30DBSmartWidgetActionGlassButton)init;
-- (_TtC9DashBoard30DBSmartWidgetActionGlassButton)initWithSymbolName:(id)a3;
+- (_TtC9DashBoard30DBSmartWidgetActionGlassButton)initWithSymbolName:(id)name;
 @end
 
 @implementation DBSmartWidgetActionGlassButton
 
-- (_TtC9DashBoard30DBSmartWidgetActionGlassButton)initWithSymbolName:(id)a3
+- (_TtC9DashBoard30DBSmartWidgetActionGlassButton)initWithSymbolName:(id)name
 {
   v10.receiver = self;
   v10.super_class = type metadata accessor for DBSmartWidgetActionGlassButton();
-  v4 = a3;
+  nameCopy = name;
   v5 = [(DBSmartWidgetEffectCoordinatingButton *)&v10 init];
   v6 = objc_opt_self();
   v7 = v5;
-  v8 = [v6 systemImageNamed_];
+  systemImageNamed_ = [v6 systemImageNamed_];
 
-  if (v8)
+  if (systemImageNamed_)
   {
-    (*((*MEMORY[0x277D85000] & v7->super.super.super.super.super.super.super.isa) + 0xF0))(v8);
+    (*((*MEMORY[0x277D85000] & v7->super.super.super.super.super.super.super.isa) + 0xF0))(systemImageNamed_);
   }
 
   return v7;

@@ -1,8 +1,8 @@
 @interface PXDisplayAssetCombinedOverlayView
 - (CGSize)viewportSize;
-- (PXDisplayAssetCombinedOverlayView)initWithCoder:(id)a3;
-- (PXDisplayAssetCombinedOverlayView)initWithFrame:(CGRect)a3;
-- (PXDisplayAssetCombinedOverlayView)initWithViewModel:(id)a3;
+- (PXDisplayAssetCombinedOverlayView)initWithCoder:(id)coder;
+- (PXDisplayAssetCombinedOverlayView)initWithFrame:(CGRect)frame;
+- (PXDisplayAssetCombinedOverlayView)initWithViewModel:(id)model;
 - (void)_ensureImageAnalysisOverlayView;
 - (void)_ensureLivePhotoBadgeView;
 - (void)_ensureLoadingFailureBadgeView;
@@ -21,10 +21,10 @@
 - (void)_updateLoadingFailureBadgeView;
 - (void)_updateLoadingProgressBadgeView;
 - (void)layoutSubviews;
-- (void)livePhotoBadgeView:(id)a3 wantsPlayback:(BOOL)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setCanShowLoadingProgress:(BOOL)a3;
-- (void)setViewportSize:(CGSize)a3;
+- (void)livePhotoBadgeView:(id)view wantsPlayback:(BOOL)playback;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setCanShowLoadingProgress:(BOOL)progress;
+- (void)setViewportSize:(CGSize)size;
 @end
 
 @implementation PXDisplayAssetCombinedOverlayView
@@ -38,54 +38,54 @@
   return result;
 }
 
-- (void)livePhotoBadgeView:(id)a3 wantsPlayback:(BOOL)a4
+- (void)livePhotoBadgeView:(id)view wantsPlayback:(BOOL)playback
 {
-  v5 = [(PXDisplayAssetCombinedOverlayView *)self viewModel];
+  viewModel = [(PXDisplayAssetCombinedOverlayView *)self viewModel];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70__PXDisplayAssetCombinedOverlayView_livePhotoBadgeView_wantsPlayback___block_invoke;
   v6[3] = &__block_descriptor_33_e42_v16__0___PXMutableDisplayAssetViewModel__8l;
-  v7 = a4;
-  [v5 performChanges:v6];
+  playbackCopy = playback;
+  [viewModel performChanges:v6];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v10 = a3;
-  if (ViewModelObservationContext_108440 != a5)
+  observableCopy = observable;
+  if (ViewModelObservationContext_108440 != context)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetCombinedOverlayView.m" lineNumber:323 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXDisplayAssetCombinedOverlayView.m" lineNumber:323 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (a4)
+  if (change)
   {
     [(PXDisplayAssetCombinedOverlayView *)self _invalidateCanShowLoadingProgress];
   }
 
-  if ((a4 & 0xC) != 0)
+  if ((change & 0xC) != 0)
   {
     [(PXDisplayAssetCombinedOverlayView *)self _invalidateLayout];
   }
 
-  if ((a4 & 2) != 0)
+  if ((change & 2) != 0)
   {
     [(PXDisplayAssetCombinedOverlayView *)self _invalidateLivePhotoBadge];
   }
 
-  if ((a4 & 0x400) != 0)
+  if ((change & 0x400) != 0)
   {
     [(PXDisplayAssetCombinedOverlayView *)self _invalidateLoadingFailureBadgeView];
   }
 
-  if ((a4 & 0x602) != 0)
+  if ((change & 0x602) != 0)
   {
     [(PXDisplayAssetCombinedOverlayView *)self _invalidateLoadingProgressBadgeView];
   }
 
-  if ([PXDisplayAssetImageAnalysisOverlayView changedImageAnalysisOverlayNeededForViewModelChange:a4])
+  if ([PXDisplayAssetImageAnalysisOverlayView changedImageAnalysisOverlayNeededForViewModelChange:change])
   {
     [(PXDisplayAssetCombinedOverlayView *)self _invalidateImageAnalysisOverlay];
   }
@@ -93,12 +93,12 @@
 
 - (void)_updateLayout
 {
-  v3 = [(PXDisplayAssetCombinedOverlayView *)self viewModel];
+  viewModel = [(PXDisplayAssetCombinedOverlayView *)self viewModel];
   [(PXDisplayAssetCombinedOverlayView *)self bounds];
   if (!CGRectIsEmpty(v4))
   {
-    [v3 assetAspectRatio];
-    if ([v3 contentMode] == 1)
+    [viewModel assetAspectRatio];
+    if ([viewModel contentMode] == 1)
     {
       PXRectWithAspectRatioFittingRect();
     }
@@ -187,51 +187,51 @@ void __50__PXDisplayAssetCombinedOverlayView__updateLayout__block_invoke_3(uint6
 
 - (void)_invalidateLayout
 {
-  v2 = [(PXDisplayAssetCombinedOverlayView *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateLayout];
+  updater = [(PXDisplayAssetCombinedOverlayView *)self updater];
+  [updater setNeedsUpdateOf:sel__updateLayout];
 }
 
 - (void)_updateImageAnalysisOverlay
 {
-  v3 = [(PXDisplayAssetCombinedOverlayView *)self viewModel];
-  v4 = [PXDisplayAssetImageAnalysisOverlayView isImageAnalysisOverlayNeededForViewModel:v3];
+  viewModel = [(PXDisplayAssetCombinedOverlayView *)self viewModel];
+  v4 = [PXDisplayAssetImageAnalysisOverlayView isImageAnalysisOverlayNeededForViewModel:viewModel];
 
   if (v4)
   {
     [(PXDisplayAssetCombinedOverlayView *)self _ensureImageAnalysisOverlayView];
   }
 
-  v5 = [(PXDisplayAssetCombinedOverlayView *)self imageAnalysisOverlayView];
-  [v5 setHidden:!v4];
+  imageAnalysisOverlayView = [(PXDisplayAssetCombinedOverlayView *)self imageAnalysisOverlayView];
+  [imageAnalysisOverlayView setHidden:!v4];
 }
 
 - (void)_invalidateImageAnalysisOverlay
 {
-  v2 = [(PXDisplayAssetCombinedOverlayView *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateImageAnalysisOverlay];
+  updater = [(PXDisplayAssetCombinedOverlayView *)self updater];
+  [updater setNeedsUpdateOf:sel__updateImageAnalysisOverlay];
 }
 
 - (void)_updateLoadingProgressBadgeView
 {
-  v3 = [(PXDisplayAssetCombinedOverlayView *)self viewModel];
-  v4 = [v3 asset];
-  [v3 loadingProgress];
+  viewModel = [(PXDisplayAssetCombinedOverlayView *)self viewModel];
+  asset = [viewModel asset];
+  [viewModel loadingProgress];
   v6 = v5;
   if (v5 > 0.0 && v5 <= 1.0)
   {
-    v8 = [v3 loadingError];
-    if (v8)
+    loadingError = [viewModel loadingError];
+    if (loadingError)
     {
     }
 
     else
     {
-      v9 = [(PXDisplayAssetCombinedOverlayView *)self canShowLoadingProgress];
-      if (v6 == 1.0 && v9)
+      canShowLoadingProgress = [(PXDisplayAssetCombinedOverlayView *)self canShowLoadingProgress];
+      if (v6 == 1.0 && canShowLoadingProgress)
       {
-        v10 = [(PXDisplayAssetCombinedOverlayView *)self loadingProgressBadgeView];
-        v11 = v10;
-        if (v10 && ([v10 isHidden] & 1) == 0)
+        loadingProgressBadgeView = [(PXDisplayAssetCombinedOverlayView *)self loadingProgressBadgeView];
+        v11 = loadingProgressBadgeView;
+        if (loadingProgressBadgeView && ([loadingProgressBadgeView isHidden] & 1) == 0)
         {
           LODWORD(v12) = 1.0;
           [v11 setProgress:v12];
@@ -252,7 +252,7 @@ void __50__PXDisplayAssetCombinedOverlayView__updateLayout__block_invoke_3(uint6
         }
       }
 
-      else if (v9)
+      else if (canShowLoadingProgress)
       {
         [(PXDisplayAssetCombinedOverlayView *)self _ensureLoadingProgressBadgeView];
         v15 = 0;
@@ -264,17 +264,17 @@ void __50__PXDisplayAssetCombinedOverlayView__updateLayout__block_invoke_3(uint6
   v15 = 1;
 LABEL_16:
   v16 = [(PXDisplayAssetCombinedOverlayView *)self loadingProgressBadgeView:v20];
-  v17 = [(PXDisplayAssetCombinedOverlayView *)self loadingAsset];
+  loadingAsset = [(PXDisplayAssetCombinedOverlayView *)self loadingAsset];
 
-  if (v4 != v17)
+  if (asset != loadingAsset)
   {
     [v16 prepareForReuse];
-    [(PXDisplayAssetCombinedOverlayView *)self setLoadingAsset:v4];
+    [(PXDisplayAssetCombinedOverlayView *)self setLoadingAsset:asset];
   }
 
   *&v18 = v6;
   [v16 setProgress:v18];
-  if ([v3 playbackStyle] == 3)
+  if ([viewModel playbackStyle] == 3)
   {
     v19 = 3;
   }
@@ -291,52 +291,52 @@ LABEL_16:
 
 - (void)_invalidateLoadingProgressBadgeView
 {
-  v2 = [(PXDisplayAssetCombinedOverlayView *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateLoadingProgressBadgeView];
+  updater = [(PXDisplayAssetCombinedOverlayView *)self updater];
+  [updater setNeedsUpdateOf:sel__updateLoadingProgressBadgeView];
 }
 
 - (void)_updateLoadingFailureBadgeView
 {
-  v3 = [(PXDisplayAssetCombinedOverlayView *)self viewModel];
-  v5 = [v3 loadingError];
+  viewModel = [(PXDisplayAssetCombinedOverlayView *)self viewModel];
+  loadingError = [viewModel loadingError];
 
-  if (v5)
+  if (loadingError)
   {
     [(PXDisplayAssetCombinedOverlayView *)self _ensureLoadingFailureBadgeView];
   }
 
-  v4 = [(PXDisplayAssetCombinedOverlayView *)self loadingFailureBadgeView];
-  [v4 setError:v5];
-  [v4 setHidden:v5 == 0];
+  loadingFailureBadgeView = [(PXDisplayAssetCombinedOverlayView *)self loadingFailureBadgeView];
+  [loadingFailureBadgeView setError:loadingError];
+  [loadingFailureBadgeView setHidden:loadingError == 0];
   [(PXDisplayAssetCombinedOverlayView *)self _invalidateLayout];
 }
 
 - (void)_invalidateLoadingFailureBadgeView
 {
-  v2 = [(PXDisplayAssetCombinedOverlayView *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateLoadingFailureBadgeView];
+  updater = [(PXDisplayAssetCombinedOverlayView *)self updater];
+  [updater setNeedsUpdateOf:sel__updateLoadingFailureBadgeView];
 }
 
 - (void)_updateLivePhotoBadge
 {
-  v3 = [(PXDisplayAssetCombinedOverlayView *)self viewModel];
-  v4 = [v3 playbackStyle];
+  viewModel = [(PXDisplayAssetCombinedOverlayView *)self viewModel];
+  playbackStyle = [viewModel playbackStyle];
 
-  if (v4 == 3)
+  if (playbackStyle == 3)
   {
     [(PXDisplayAssetCombinedOverlayView *)self _ensureLivePhotoBadgeView];
   }
 
-  v5 = [(PXDisplayAssetCombinedOverlayView *)self livePhotoBadgeView];
-  [v5 setHidden:v4 != 3];
+  livePhotoBadgeView = [(PXDisplayAssetCombinedOverlayView *)self livePhotoBadgeView];
+  [livePhotoBadgeView setHidden:playbackStyle != 3];
 
   [(PXDisplayAssetCombinedOverlayView *)self _invalidateLayout];
 }
 
 - (void)_invalidateLivePhotoBadge
 {
-  v2 = [(PXDisplayAssetCombinedOverlayView *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateLivePhotoBadge];
+  updater = [(PXDisplayAssetCombinedOverlayView *)self updater];
+  [updater setNeedsUpdateOf:sel__updateLivePhotoBadge];
 }
 
 - (void)_updateCanShowLoadingProgress
@@ -344,10 +344,10 @@ LABEL_16:
   v6[1] = *MEMORY[0x1E69E9840];
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__loadingProgressDelayElapsed object:0];
   [(PXDisplayAssetCombinedOverlayView *)self setCanShowLoadingProgress:0];
-  v3 = [(PXDisplayAssetCombinedOverlayView *)self viewModel];
-  v4 = [v3 asset];
+  viewModel = [(PXDisplayAssetCombinedOverlayView *)self viewModel];
+  asset = [viewModel asset];
 
-  if (v4)
+  if (asset)
   {
     v6[0] = *MEMORY[0x1E695DA28];
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
@@ -357,8 +357,8 @@ LABEL_16:
 
 - (void)_invalidateCanShowLoadingProgress
 {
-  v2 = [(PXDisplayAssetCombinedOverlayView *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCanShowLoadingProgress];
+  updater = [(PXDisplayAssetCombinedOverlayView *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCanShowLoadingProgress];
 }
 
 - (void)_setNeedsUpdate
@@ -376,15 +376,15 @@ LABEL_16:
   [(PXDisplayAssetCombinedOverlayView *)&v8 layoutSubviews];
   if (self->_isPerformingLayout)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetCombinedOverlayView.m" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"!_isPerformingLayout"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXDisplayAssetCombinedOverlayView.m" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"!_isPerformingLayout"}];
   }
 
   self->_isPerformingLayout = 1;
   [(PXDisplayAssetCombinedOverlayView *)self bounds];
   [(PXDisplayAssetCombinedOverlayView *)self setViewportSize:v4, v5];
-  v6 = [(PXDisplayAssetCombinedOverlayView *)self updater];
-  [v6 updateIfNeeded];
+  updater = [(PXDisplayAssetCombinedOverlayView *)self updater];
+  [updater updateIfNeeded];
 
   self->_isPerformingLayout = 0;
 }
@@ -394,8 +394,8 @@ LABEL_16:
   if (!self->_imageAnalysisOverlayView)
   {
     v3 = [PXDisplayAssetImageAnalysisOverlayView alloc];
-    v4 = [(PXDisplayAssetCombinedOverlayView *)self viewModel];
-    v5 = [(PXDisplayAssetImageAnalysisOverlayView *)v3 initWithViewModel:v4];
+    viewModel = [(PXDisplayAssetCombinedOverlayView *)self viewModel];
+    v5 = [(PXDisplayAssetImageAnalysisOverlayView *)v3 initWithViewModel:viewModel];
     imageAnalysisOverlayView = self->_imageAnalysisOverlayView;
     self->_imageAnalysisOverlayView = v5;
 
@@ -440,27 +440,27 @@ LABEL_16:
   }
 }
 
-- (void)setCanShowLoadingProgress:(BOOL)a3
+- (void)setCanShowLoadingProgress:(BOOL)progress
 {
-  if (self->_canShowLoadingProgress != a3)
+  if (self->_canShowLoadingProgress != progress)
   {
-    self->_canShowLoadingProgress = a3;
+    self->_canShowLoadingProgress = progress;
     [(PXDisplayAssetCombinedOverlayView *)self _invalidateLoadingProgressBadgeView];
   }
 }
 
-- (void)setViewportSize:(CGSize)a3
+- (void)setViewportSize:(CGSize)size
 {
-  if (a3.width != self->_viewportSize.width || a3.height != self->_viewportSize.height)
+  if (size.width != self->_viewportSize.width || size.height != self->_viewportSize.height)
   {
-    self->_viewportSize = a3;
+    self->_viewportSize = size;
     [(PXDisplayAssetCombinedOverlayView *)self _invalidateLayout];
   }
 }
 
-- (PXDisplayAssetCombinedOverlayView)initWithViewModel:(id)a3
+- (PXDisplayAssetCombinedOverlayView)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v10.receiver = self;
   v10.super_class = PXDisplayAssetCombinedOverlayView;
   v6 = [(PXDisplayAssetCombinedOverlayView *)&v10 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -476,7 +476,7 @@ LABEL_16:
     [(PXUpdater *)v6->_updater addUpdateSelector:sel__updateLoadingProgressBadgeView];
     [(PXUpdater *)v6->_updater addUpdateSelector:sel__updateImageAnalysisOverlay];
     [(PXUpdater *)v6->_updater addUpdateSelector:sel__updateLayout];
-    objc_storeStrong(&v6->_viewModel, a3);
+    objc_storeStrong(&v6->_viewModel, model);
     [(PXDisplayAssetViewModel *)v6->_viewModel registerChangeObserver:v6 context:ViewModelObservationContext_108440];
     [(PXDisplayAssetCombinedOverlayView *)v6 _invalidateCanShowLoadingProgress];
     [(PXDisplayAssetCombinedOverlayView *)v6 _invalidateLivePhotoBadge];
@@ -489,19 +489,19 @@ LABEL_16:
   return v6;
 }
 
-- (PXDisplayAssetCombinedOverlayView)initWithCoder:(id)a3
+- (PXDisplayAssetCombinedOverlayView)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetCombinedOverlayView.m" lineNumber:47 description:{@"%s is not available as initializer", "-[PXDisplayAssetCombinedOverlayView initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXDisplayAssetCombinedOverlayView.m" lineNumber:47 description:{@"%s is not available as initializer", "-[PXDisplayAssetCombinedOverlayView initWithCoder:]"}];
 
   abort();
 }
 
-- (PXDisplayAssetCombinedOverlayView)initWithFrame:(CGRect)a3
+- (PXDisplayAssetCombinedOverlayView)initWithFrame:(CGRect)frame
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetCombinedOverlayView.m" lineNumber:43 description:{@"%s is not available as initializer", "-[PXDisplayAssetCombinedOverlayView initWithFrame:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXDisplayAssetCombinedOverlayView.m" lineNumber:43 description:{@"%s is not available as initializer", "-[PXDisplayAssetCombinedOverlayView initWithFrame:]"}];
 
   abort();
 }

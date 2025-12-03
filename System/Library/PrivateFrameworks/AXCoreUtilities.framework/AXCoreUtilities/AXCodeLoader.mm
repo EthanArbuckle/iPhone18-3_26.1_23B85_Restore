@@ -1,42 +1,42 @@
 @interface AXCodeLoader
 + (id)defaultLoader;
 - (AXCodeLoader)init;
-- (AXCodeLoader)initWithImageMonitor:(id)a3;
+- (AXCodeLoader)initWithImageMonitor:(id)monitor;
 - (id)_accessibilityBundleMapURLs;
-- (id)_accessibilityCodeItemMatchingName:(id)a3 type:(int64_t)a4 path:(id)a5;
-- (id)_createAccessibilityCodeItemsFromBundleMapURLs:(id)a3;
-- (id)_platformKeyForPlatform:(unsigned int)a3;
-- (id)_queue_loadedCodeItemsUsingTrackedItemsIfAvailable:(BOOL)a3;
-- (id)_stateDescForItem:(id)a3;
+- (id)_accessibilityCodeItemMatchingName:(id)name type:(int64_t)type path:(id)path;
+- (id)_createAccessibilityCodeItemsFromBundleMapURLs:(id)ls;
+- (id)_platformKeyForPlatform:(unsigned int)platform;
+- (id)_queue_loadedCodeItemsUsingTrackedItemsIfAvailable:(BOOL)available;
+- (id)_stateDescForItem:(id)item;
 - (id)_validDidLoadAccessibilityCodeItemBlock;
 - (id)_validLoadEventDidOccurBlock;
 - (id)_validLoadEventWillOccurBlock;
 - (id)_validShouldLoadAccessibilityCodeItemBlock;
 - (id)accessibilityCodeItemDefinitions;
-- (id)codeItemForBundle:(id)a3;
-- (id)loadedCodeItemPathsUsingTrackedItemsIfAvailable:(BOOL)a3;
-- (id)loadedCodeItemsUsingTrackedItemsIfAvailable:(BOOL)a3;
+- (id)codeItemForBundle:(id)bundle;
+- (id)loadedCodeItemPathsUsingTrackedItemsIfAvailable:(BOOL)available;
+- (id)loadedCodeItemsUsingTrackedItemsIfAvailable:(BOOL)available;
 - (id)recomputedCodeItemsForAllFrameworks;
 - (id)recomputedCodeItemsForLoadedAccessibilityBundles;
 - (id)rogueAccessibilityCodeItems;
 - (id)trackedCodeItems;
-- (void)_addTrackedCodeItem:(id)a3;
-- (void)_associateAccessibilityCodeItemWithLoadedCodeItem:(id)a3;
+- (void)_addTrackedCodeItem:(id)item;
+- (void)_associateAccessibilityCodeItemWithLoadedCodeItem:(id)item;
 - (void)_associateAccessibilityCodeItemsWithAllTrackedCodeItems;
 - (void)_cancelDyldImageActivityTimer;
 - (void)_consumeBeginTrackingCompletionHandlerIfNeeded;
 - (void)_initializeCodeItemMappings;
 - (void)_loadAccessibilityCodeItems;
 - (void)_reconcileTrackedCodeItemsWithAccessibilityCodeItemDefinitions;
-- (void)_scheduleDyldImageActivityTimerWithDelay:(double)a3;
+- (void)_scheduleDyldImageActivityTimerWithDelay:(double)delay;
 - (void)_updateAccessibilityCodeItemDefinitionsIfNeeded;
-- (void)beginTrackingLoadedCodeItemsWithMode:(int64_t)a3 completion:(id)a4 targetQueue:(id)a5;
-- (void)endTrackingLoadedCodeItemsWithCompletion:(id)a3 targetQueue:(id)a4;
-- (void)imageMonitor:(id)a3 didAddImage:(id)a4;
-- (void)iterateInitialImageListForImageMonitor:(id)a3;
+- (void)beginTrackingLoadedCodeItemsWithMode:(int64_t)mode completion:(id)completion targetQueue:(id)queue;
+- (void)endTrackingLoadedCodeItemsWithCompletion:(id)completion targetQueue:(id)queue;
+- (void)imageMonitor:(id)monitor didAddImage:(id)image;
+- (void)iterateInitialImageListForImageMonitor:(id)monitor;
 - (void)logLoaderState;
-- (void)prewarmAccessibilityCodeItemDefinitionsWithCompletion:(id)a3 targetQueue:(id)a4;
-- (void)queryAccessibilityBundleIsLoadedWithName:(id)a3 completion:(id)a4;
+- (void)prewarmAccessibilityCodeItemDefinitionsWithCompletion:(id)completion targetQueue:(id)queue;
+- (void)queryAccessibilityBundleIsLoadedWithName:(id)name completion:(id)completion;
 @end
 
 @implementation AXCodeLoader
@@ -62,9 +62,9 @@ void __29__AXCodeLoader_defaultLoader__block_invoke()
   defaultLoader__DefaultLoader = v1;
 }
 
-- (AXCodeLoader)initWithImageMonitor:(id)a3
+- (AXCodeLoader)initWithImageMonitor:(id)monitor
 {
-  v5 = a3;
+  monitorCopy = monitor;
   v22.receiver = self;
   v22.super_class = AXCodeLoader;
   v6 = [(AXCodeLoader *)&v22 init];
@@ -80,7 +80,7 @@ void __29__AXCodeLoader_defaultLoader__block_invoke()
       _AXAssert(0, "/Library/Caches/com.apple.xbs/Sources/AccessibilityLibraries/Source/AXCoreUtilities/source/Swizzling/Loading/AXCodeLoader.m", 0x56, "[AXCodeLoader initWithImageMonitor:]", @"Unknown platform", v10, v11, v12, v19[0]);
     }
 
-    objc_storeStrong(&v7->_imageMonitor, a3);
+    objc_storeStrong(&v7->_imageMonitor, monitor);
     v13 = dispatch_queue_create("AXCodeLoader", 0);
     queue = v7->_queue;
     v7->_queue = v13;
@@ -120,18 +120,18 @@ void __37__AXCodeLoader_initWithImageMonitor___block_invoke(uint64_t a1)
 
 - (id)_validShouldLoadAccessibilityCodeItemBlock
 {
-  v3 = [(AXCodeLoader *)self shouldLoadAccessibilityCodeItemBlock];
-  if (v3)
+  shouldLoadAccessibilityCodeItemBlock = [(AXCodeLoader *)self shouldLoadAccessibilityCodeItemBlock];
+  if (shouldLoadAccessibilityCodeItemBlock)
   {
-    v4 = [(AXCodeLoader *)self shouldLoadAccessibilityCodeItemBlock];
-    v5 = _Block_copy(v4);
+    shouldLoadAccessibilityCodeItemBlock2 = [(AXCodeLoader *)self shouldLoadAccessibilityCodeItemBlock];
+    v5 = _Block_copy(shouldLoadAccessibilityCodeItemBlock2);
     v6 = _Block_copy(v5);
   }
 
   else
   {
-    v4 = [&__block_literal_global_14 copy];
-    v6 = _Block_copy(v4);
+    shouldLoadAccessibilityCodeItemBlock2 = [&__block_literal_global_14 copy];
+    v6 = _Block_copy(shouldLoadAccessibilityCodeItemBlock2);
   }
 
   return v6;
@@ -139,18 +139,18 @@ void __37__AXCodeLoader_initWithImageMonitor___block_invoke(uint64_t a1)
 
 - (id)_validDidLoadAccessibilityCodeItemBlock
 {
-  v3 = [(AXCodeLoader *)self didLoadAccessibilityCodeItemBlock];
-  if (v3)
+  didLoadAccessibilityCodeItemBlock = [(AXCodeLoader *)self didLoadAccessibilityCodeItemBlock];
+  if (didLoadAccessibilityCodeItemBlock)
   {
-    v4 = [(AXCodeLoader *)self didLoadAccessibilityCodeItemBlock];
-    v5 = _Block_copy(v4);
+    didLoadAccessibilityCodeItemBlock2 = [(AXCodeLoader *)self didLoadAccessibilityCodeItemBlock];
+    v5 = _Block_copy(didLoadAccessibilityCodeItemBlock2);
     v6 = _Block_copy(v5);
   }
 
   else
   {
-    v4 = [&__block_literal_global_17 copy];
-    v6 = _Block_copy(v4);
+    didLoadAccessibilityCodeItemBlock2 = [&__block_literal_global_17 copy];
+    v6 = _Block_copy(didLoadAccessibilityCodeItemBlock2);
   }
 
   return v6;
@@ -158,18 +158,18 @@ void __37__AXCodeLoader_initWithImageMonitor___block_invoke(uint64_t a1)
 
 - (id)_validLoadEventWillOccurBlock
 {
-  v3 = [(AXCodeLoader *)self loadEventWillOccurBlock];
-  if (v3)
+  loadEventWillOccurBlock = [(AXCodeLoader *)self loadEventWillOccurBlock];
+  if (loadEventWillOccurBlock)
   {
-    v4 = [(AXCodeLoader *)self loadEventWillOccurBlock];
-    v5 = _Block_copy(v4);
+    loadEventWillOccurBlock2 = [(AXCodeLoader *)self loadEventWillOccurBlock];
+    v5 = _Block_copy(loadEventWillOccurBlock2);
     v6 = _Block_copy(v5);
   }
 
   else
   {
-    v4 = [&__block_literal_global_20 copy];
-    v6 = _Block_copy(v4);
+    loadEventWillOccurBlock2 = [&__block_literal_global_20 copy];
+    v6 = _Block_copy(loadEventWillOccurBlock2);
   }
 
   return v6;
@@ -177,28 +177,28 @@ void __37__AXCodeLoader_initWithImageMonitor___block_invoke(uint64_t a1)
 
 - (id)_validLoadEventDidOccurBlock
 {
-  v3 = [(AXCodeLoader *)self loadEventDidOccurBlock];
-  if (v3)
+  loadEventDidOccurBlock = [(AXCodeLoader *)self loadEventDidOccurBlock];
+  if (loadEventDidOccurBlock)
   {
-    v4 = [(AXCodeLoader *)self loadEventDidOccurBlock];
-    v5 = _Block_copy(v4);
+    loadEventDidOccurBlock2 = [(AXCodeLoader *)self loadEventDidOccurBlock];
+    v5 = _Block_copy(loadEventDidOccurBlock2);
     v6 = _Block_copy(v5);
   }
 
   else
   {
-    v4 = [&__block_literal_global_23 copy];
-    v6 = _Block_copy(v4);
+    loadEventDidOccurBlock2 = [&__block_literal_global_23 copy];
+    v6 = _Block_copy(loadEventDidOccurBlock2);
   }
 
   return v6;
 }
 
-- (void)beginTrackingLoadedCodeItemsWithMode:(int64_t)a3 completion:(id)a4 targetQueue:(id)a5
+- (void)beginTrackingLoadedCodeItemsWithMode:(int64_t)mode completion:(id)completion targetQueue:(id)queue
 {
-  v8 = a4;
-  v9 = a5;
-  if (!a3)
+  completionCopy = completion;
+  queueCopy = queue;
+  if (!mode)
   {
     v10 = AXLogLoading();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -212,12 +212,12 @@ void __37__AXCodeLoader_initWithImageMonitor___block_invoke(uint64_t a1)
   v14[1] = 3221225472;
   v14[2] = __76__AXCodeLoader_beginTrackingLoadedCodeItemsWithMode_completion_targetQueue___block_invoke;
   v14[3] = &unk_1E735B8B8;
-  v16 = v8;
-  v17 = a3;
+  v16 = completionCopy;
+  modeCopy = mode;
   v14[4] = self;
-  v15 = v9;
-  v12 = v9;
-  v13 = v8;
+  v15 = queueCopy;
+  v12 = queueCopy;
+  v13 = completionCopy;
   dispatch_async(queue, v14);
 }
 
@@ -250,20 +250,20 @@ void __76__AXCodeLoader_beginTrackingLoadedCodeItemsWithMode_completion_targetQu
   }
 }
 
-- (void)endTrackingLoadedCodeItemsWithCompletion:(id)a3 targetQueue:(id)a4
+- (void)endTrackingLoadedCodeItemsWithCompletion:(id)completion targetQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  queueCopy = queue;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__AXCodeLoader_endTrackingLoadedCodeItemsWithCompletion_targetQueue___block_invoke;
   block[3] = &unk_1E735B6B8;
-  v12 = v7;
-  v13 = v6;
+  v12 = queueCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v7;
-  v10 = v6;
+  v9 = queueCopy;
+  v10 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -303,14 +303,14 @@ void __69__AXCodeLoader_endTrackingLoadedCodeItemsWithCompletion_targetQueue___b
   }
 }
 
-- (void)_addTrackedCodeItem:(id)a3
+- (void)_addTrackedCodeItem:(id)item
 {
   v7[0] = 0;
   v7[1] = v7;
   v7[2] = 0x3032000000;
   v7[3] = __Block_byref_object_copy__2;
   v7[4] = __Block_byref_object_dispose__2;
-  v8 = a3;
+  itemCopy = item;
   queue = self->_queue;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -318,7 +318,7 @@ void __69__AXCodeLoader_endTrackingLoadedCodeItemsWithCompletion_targetQueue___b
   v6[3] = &unk_1E735B908;
   v6[4] = self;
   v6[5] = v7;
-  v5 = v8;
+  v5 = itemCopy;
   dispatch_async(queue, v6);
   _Block_object_dispose(v7, 8);
 }
@@ -367,7 +367,7 @@ LABEL_12:
 LABEL_13:
 }
 
-- (id)loadedCodeItemPathsUsingTrackedItemsIfAvailable:(BOOL)a3
+- (id)loadedCodeItemPathsUsingTrackedItemsIfAvailable:(BOOL)available
 {
   v10 = 0;
   v11 = &v10;
@@ -375,7 +375,7 @@ LABEL_13:
   v13 = __Block_byref_object_copy__2;
   v14 = __Block_byref_object_dispose__2;
   v15 = 0;
-  if (!a3)
+  if (!available)
   {
     goto LABEL_4;
   }
@@ -391,16 +391,16 @@ LABEL_13:
   v5 = v11[5];
   if (v5)
   {
-    v6 = v5;
+    loadedImagePaths = v5;
   }
 
   else
   {
 LABEL_4:
-    v6 = [(AXImageMonitor *)self->_imageMonitor loadedImagePaths];
+    loadedImagePaths = [(AXImageMonitor *)self->_imageMonitor loadedImagePaths];
   }
 
-  v7 = v6;
+  v7 = loadedImagePaths;
   _Block_object_dispose(&v10, 8);
 
   return v7;
@@ -454,9 +454,9 @@ void __64__AXCodeLoader_loadedCodeItemPathsUsingTrackedItemsIfAvailable___block_
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_queue_loadedCodeItemsUsingTrackedItemsIfAvailable:(BOOL)a3
+- (id)_queue_loadedCodeItemsUsingTrackedItemsIfAvailable:(BOOL)available
 {
-  if (!a3 || ![(AXCodeLoader *)self isTrackingLoadedCodeItems]|| (v4 = self->_trackedCodeItems) == 0)
+  if (!available || ![(AXCodeLoader *)self isTrackingLoadedCodeItems]|| (v4 = self->_trackedCodeItems) == 0)
   {
     v5 = [MEMORY[0x1E695DFA8] set];
     imageMonitor = self->_imageMonitor;
@@ -481,7 +481,7 @@ void __67__AXCodeLoader__queue_loadedCodeItemsUsingTrackedItemsIfAvailable___blo
   [v2 addObject:v4];
 }
 
-- (id)loadedCodeItemsUsingTrackedItemsIfAvailable:(BOOL)a3
+- (id)loadedCodeItemsUsingTrackedItemsIfAvailable:(BOOL)available
 {
   v8 = 0;
   v9 = &v8;
@@ -496,7 +496,7 @@ void __67__AXCodeLoader__queue_loadedCodeItemsUsingTrackedItemsIfAvailable___blo
   block[3] = &unk_1E735B930;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  availableCopy = available;
   dispatch_sync(queue, block);
   v4 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -513,9 +513,9 @@ void __60__AXCodeLoader_loadedCodeItemsUsingTrackedItemsIfAvailable___block_invo
   *(v3 + 40) = v2;
 }
 
-- (id)codeItemForBundle:(id)a3
+- (id)codeItemForBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -528,9 +528,9 @@ void __60__AXCodeLoader_loadedCodeItemsUsingTrackedItemsIfAvailable___block_invo
   block[2] = __34__AXCodeLoader_codeItemForBundle___block_invoke;
   block[3] = &unk_1E735B958;
   block[4] = self;
-  v10 = v4;
+  v10 = bundleCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = bundleCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -591,7 +591,7 @@ LABEL_11:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_scheduleDyldImageActivityTimerWithDelay:(double)a3
+- (void)_scheduleDyldImageActivityTimerWithDelay:(double)delay
 {
   if (!self->_dyldImageActivityCoalesceTimer)
   {
@@ -613,7 +613,7 @@ LABEL_11:
     objc_destroyWeak(&location);
   }
 
-  v8 = dispatch_time(0, (a3 * 1000000000.0));
+  v8 = dispatch_time(0, (delay * 1000000000.0));
   dispatch_source_set_timer(self->_dyldImageActivityCoalesceTimer, v8, 0xFFFFFFFFFFFFFFFFLL, 0);
 }
 
@@ -670,20 +670,20 @@ void __57__AXCodeLoader__scheduleDyldImageActivityTimerWithDelay___block_invoke(
   }
 }
 
-- (void)prewarmAccessibilityCodeItemDefinitionsWithCompletion:(id)a3 targetQueue:(id)a4
+- (void)prewarmAccessibilityCodeItemDefinitionsWithCompletion:(id)completion targetQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  queueCopy = queue;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82__AXCodeLoader_prewarmAccessibilityCodeItemDefinitionsWithCompletion_targetQueue___block_invoke;
   block[3] = &unk_1E735B6B8;
-  v12 = v7;
-  v13 = v6;
+  v12 = queueCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v7;
-  v10 = v6;
+  v9 = queueCopy;
+  v10 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -727,8 +727,8 @@ void __82__AXCodeLoader_prewarmAccessibilityCodeItemDefinitionsWithCompletion_ta
       _os_signpost_emit_with_name_impl(&dword_19159B000, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "UpdateAXCodeItemDefs", &unk_19167EAFE, buf, 2u);
     }
 
-    v6 = [(AXCodeLoader *)self _accessibilityBundleMapURLs];
-    v7 = [(AXCodeLoader *)self _createAccessibilityCodeItemsFromBundleMapURLs:v6];
+    _accessibilityBundleMapURLs = [(AXCodeLoader *)self _accessibilityBundleMapURLs];
+    v7 = [(AXCodeLoader *)self _createAccessibilityCodeItemsFromBundleMapURLs:_accessibilityBundleMapURLs];
     accessibilityCodeItems = self->_accessibilityCodeItems;
     self->_accessibilityCodeItems = v7;
 
@@ -773,11 +773,11 @@ void __82__AXCodeLoader_prewarmAccessibilityCodeItemDefinitionsWithCompletion_ta
         if (self->_currentPlatformKey)
         {
           v9 = *(*(&v17 + 1) + 8 * i);
-          v10 = [v9 platformToTarget];
-          v11 = [v10 objectForKeyedSubscript:self->_currentPlatformKey];
+          platformToTarget = [v9 platformToTarget];
+          v11 = [platformToTarget objectForKeyedSubscript:self->_currentPlatformKey];
           v12 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v9, "targetType")}];
-          v13 = [v12 stringValue];
-          v14 = [v11 stringByAppendingString:v13];
+          stringValue = [v12 stringValue];
+          v14 = [v11 stringByAppendingString:stringValue];
 
           if (v14)
           {
@@ -826,10 +826,10 @@ void __78__AXCodeLoader__reconcileTrackedCodeItemsWithAccessibilityCodeItemDefin
   [v7 setLoadOrder:v6];
 }
 
-- (id)_platformKeyForPlatform:(unsigned int)a3
+- (id)_platformKeyForPlatform:(unsigned int)platform
 {
-  HIDWORD(v4) = a3 - 2;
-  LODWORD(v4) = a3 - 2;
+  HIDWORD(v4) = platform - 2;
+  LODWORD(v4) = platform - 2;
   v3 = v4 >> 1;
   if (v3 > 7)
   {
@@ -844,13 +844,13 @@ void __78__AXCodeLoader__reconcileTrackedCodeItemsWithAccessibilityCodeItemDefin
   return *v5;
 }
 
-- (id)_accessibilityCodeItemMatchingName:(id)a3 type:(int64_t)a4 path:(id)a5
+- (id)_accessibilityCodeItemMatchingName:(id)name type:(int64_t)type path:(id)path
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  v9 = [v8 stringValue];
-  v10 = [v7 stringByAppendingString:v9];
+  nameCopy = name;
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  stringValue = [v8 stringValue];
+  v10 = [nameCopy stringByAppendingString:stringValue];
 
   v11 = [(NSMutableDictionary *)self->_codeItemsByNameType objectForKeyedSubscript:v10];
   if (!v11)
@@ -879,13 +879,13 @@ void __78__AXCodeLoader__reconcileTrackedCodeItemsWithAccessibilityCodeItemDefin
 
           v12 = *(*(&v23 + 1) + 8 * v14);
 
-          v16 = [(NSMutableSet *)v12 platformToTarget];
-          v17 = [v16 objectForKeyedSubscript:self->_currentPlatformKey];
-          if ([v17 isEqualToString:v7])
+          platformToTarget = [(NSMutableSet *)v12 platformToTarget];
+          v17 = [platformToTarget objectForKeyedSubscript:self->_currentPlatformKey];
+          if ([v17 isEqualToString:nameCopy])
           {
-            v18 = [(NSMutableSet *)v12 targetType];
+            targetType = [(NSMutableSet *)v12 targetType];
 
-            if (v18 == a4)
+            if (targetType == type)
             {
               v11 = v12;
               v12 = obj;
@@ -918,10 +918,10 @@ LABEL_13:
   return v11;
 }
 
-- (void)_associateAccessibilityCodeItemWithLoadedCodeItem:(id)a3
+- (void)_associateAccessibilityCodeItemWithLoadedCodeItem:(id)item
 {
-  v4 = a3;
-  if ([v4 isAccessibilityBundle])
+  itemCopy = item;
+  if ([itemCopy isAccessibilityBundle])
   {
     v5 = AXLogLoading();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -932,13 +932,13 @@ LABEL_13:
 
   else
   {
-    v6 = [v4 name];
-    v7 = [v4 type];
-    v8 = [v4 path];
-    v5 = [(AXCodeLoader *)self _accessibilityCodeItemMatchingName:v6 type:v7 path:v8];
+    name = [itemCopy name];
+    type = [itemCopy type];
+    path = [itemCopy path];
+    v5 = [(AXCodeLoader *)self _accessibilityCodeItemMatchingName:name type:type path:path];
 
-    [v4 setAssociatedAccessibilityCodeItem:v5];
-    [v5 setTargetCodeItem:v4];
+    [itemCopy setAssociatedAccessibilityCodeItem:v5];
+    [v5 setTargetCodeItem:itemCopy];
   }
 }
 
@@ -1015,17 +1015,17 @@ void __43__AXCodeLoader__accessibilityBundleMapURLs__block_invoke()
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_createAccessibilityCodeItemsFromBundleMapURLs:(id)a3
+- (id)_createAccessibilityCodeItemsFromBundleMapURLs:(id)ls
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lsCopy = ls;
   v21 = [MEMORY[0x1E695DFA8] set];
   v23 = objc_alloc_init(_AXCodeItemDecoder);
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v3;
+  obj = lsCopy;
   v25 = [obj countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v25)
   {
@@ -1041,22 +1041,22 @@ void __43__AXCodeLoader__accessibilityBundleMapURLs__block_invoke()
         }
 
         v5 = *(*(&v32 + 1) + 8 * v4);
-        v6 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v24 = v5;
-        v7 = [(_AXCodeItemDecoder *)v23 decodedCodeItemsFromURL:v5 decodingErrors:v6];
-        if ([v6 count])
+        v7 = [(_AXCodeItemDecoder *)v23 decodedCodeItemsFromURL:v5 decodingErrors:array];
+        if ([array count])
         {
           v8 = AXLogLoading();
           if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
           {
-            [(AXCodeLoader *)v39 _createAccessibilityCodeItemsFromBundleMapURLs:v6];
+            [(AXCodeLoader *)v39 _createAccessibilityCodeItemsFromBundleMapURLs:array];
           }
 
           v30 = 0u;
           v31 = 0u;
           v28 = 0u;
           v29 = 0u;
-          v9 = v6;
+          v9 = array;
           v10 = [v9 countByEnumeratingWithState:&v28 objects:v38 count:16];
           if (v10)
           {
@@ -1140,7 +1140,7 @@ void __63__AXCodeLoader__createAccessibilityCodeItemsFromBundleMapURLs___block_i
 
 - (void)_loadAccessibilityCodeItems
 {
-  v2 = self;
+  selfCopy = self;
   v63 = *MEMORY[0x1E69E9840];
   v3 = 1;
   if (!self->_initialLoadHasOccurred)
@@ -1149,9 +1149,9 @@ void __63__AXCodeLoader__createAccessibilityCodeItemsFromBundleMapURLs___block_i
     v3 = 0;
   }
 
-  v38 = [(AXCodeLoader *)self _validLoadEventWillOccurBlock];
-  v38[2](v38, v3);
-  dispatch_suspend(v2[3]);
+  _validLoadEventWillOccurBlock = [(AXCodeLoader *)self _validLoadEventWillOccurBlock];
+  _validLoadEventWillOccurBlock[2](_validLoadEventWillOccurBlock, v3);
+  dispatch_suspend(selfCopy[3]);
   if (AXShouldLogValidationErrors())
   {
     v4 = AXLogLoading();
@@ -1163,15 +1163,15 @@ void __63__AXCodeLoader__createAccessibilityCodeItemsFromBundleMapURLs___block_i
   }
 
   v37 = v3;
-  [(dispatch_object_t *)v2 _updateAccessibilityCodeItemDefinitionsIfNeeded];
-  v5 = [(dispatch_object_t *)v2 _validShouldLoadAccessibilityCodeItemBlock];
-  v6 = [(dispatch_object_t *)v2 _queue_loadedCodeItemsUsingTrackedItemsIfAvailable:1];
+  [(dispatch_object_t *)selfCopy _updateAccessibilityCodeItemDefinitionsIfNeeded];
+  _validShouldLoadAccessibilityCodeItemBlock = [(dispatch_object_t *)selfCopy _validShouldLoadAccessibilityCodeItemBlock];
+  v6 = [(dispatch_object_t *)selfCopy _queue_loadedCodeItemsUsingTrackedItemsIfAvailable:1];
   v57[0] = MEMORY[0x1E69E9820];
   v57[1] = 3221225472;
   v57[2] = __43__AXCodeLoader__loadAccessibilityCodeItems__block_invoke;
   v57[3] = &unk_1E735B9F0;
-  v57[4] = v2;
-  v36 = v5;
+  v57[4] = selfCopy;
+  v36 = _validShouldLoadAccessibilityCodeItemBlock;
   v58 = v36;
   v7 = [v6 ax_filteredSetUsingBlock:v57];
 
@@ -1181,7 +1181,7 @@ void __63__AXCodeLoader__createAccessibilityCodeItemsFromBundleMapURLs___block_i
   v10 = [v8 orderedSetWithSet:v9];
 
   [v10 sortUsingComparator:&__block_literal_global_57_1];
-  v39 = v2;
+  v39 = selfCopy;
   if (AXShouldLogValidationErrors())
   {
     v11 = AXLogLoading();
@@ -1233,12 +1233,12 @@ void __63__AXCodeLoader__createAccessibilityCodeItemsFromBundleMapURLs___block_i
         while (v17);
       }
 
-      v2 = v39;
+      selfCopy = v39;
     }
   }
 
   v22 = dispatch_group_create();
-  v23 = [(dispatch_object_t *)v2 _validDidLoadAccessibilityCodeItemBlock];
+  _validDidLoadAccessibilityCodeItemBlock = [(dispatch_object_t *)selfCopy _validDidLoadAccessibilityCodeItemBlock];
   v24 = dispatch_queue_create("AXBundleLoadQueue", 0);
   v49 = 0u;
   v50 = 0u;
@@ -1265,7 +1265,7 @@ void __63__AXCodeLoader__createAccessibilityCodeItemsFromBundleMapURLs___block_i
         v46[1] = 3221225472;
         v46[2] = __43__AXCodeLoader__loadAccessibilityCodeItems__block_invoke_59;
         v46[3] = &unk_1E735BA80;
-        v48 = v23;
+        v48 = _validDidLoadAccessibilityCodeItemBlock;
         v47 = v22;
         [v29 loadWithStrategy:0 onQueue:v24 completion:v46];
       }
@@ -1276,18 +1276,18 @@ void __63__AXCodeLoader__createAccessibilityCodeItemsFromBundleMapURLs___block_i
     while (v26);
   }
 
-  v30 = [(dispatch_object_t *)v39 _validLoadEventDidOccurBlock];
+  _validLoadEventDidOccurBlock = [(dispatch_object_t *)v39 _validLoadEventDidOccurBlock];
   v31 = v39[2];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__AXCodeLoader__loadAccessibilityCodeItems__block_invoke_62;
   block[3] = &unk_1E735BAD0;
-  v44 = v30;
+  v44 = _validLoadEventDidOccurBlock;
   v45 = v37;
   v42 = obj;
   v43 = v39;
   v32 = obj;
-  v33 = v30;
+  v33 = _validLoadEventDidOccurBlock;
   dispatch_group_notify(v22, v31, block);
 
   v34 = *MEMORY[0x1E69E9840];
@@ -1425,20 +1425,20 @@ void __43__AXCodeLoader__loadAccessibilityCodeItems__block_invoke_2_63(uint64_t 
   dispatch_resume(*(*(a1 + 32) + 24));
 }
 
-- (void)queryAccessibilityBundleIsLoadedWithName:(id)a3 completion:(id)a4
+- (void)queryAccessibilityBundleIsLoadedWithName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__AXCodeLoader_queryAccessibilityBundleIsLoadedWithName_completion___block_invoke;
   block[3] = &unk_1E735BAF8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = nameCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = nameCopy;
   dispatch_async(queue, block);
 }
 
@@ -1491,10 +1491,10 @@ LABEL_11:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)imageMonitor:(id)a3 didAddImage:(id)a4
+- (void)imageMonitor:(id)monitor didAddImage:(id)image
 {
-  v5 = a4;
-  v6 = [[AXCodeItem alloc] initWithPath:v5 isDyldOpened:1];
+  imageCopy = image;
+  v6 = [[AXCodeItem alloc] initWithPath:imageCopy isDyldOpened:1];
 
   if (![(AXCodeItem *)v6 isAccessibilityBundle])
   {
@@ -1505,7 +1505,7 @@ LABEL_11:
   [(AXCodeLoader *)self _scheduleDyldImageActivityTimerWithDelay:0.3];
 }
 
-- (void)iterateInitialImageListForImageMonitor:(id)a3
+- (void)iterateInitialImageListForImageMonitor:(id)monitor
 {
   v4 = [(AXCodeLoader *)self loadedCodeItemsUsingTrackedItemsIfAvailable:0];
   queue = self->_queue;
@@ -1531,8 +1531,8 @@ uint64_t __55__AXCodeLoader_iterateInitialImageListForImageMonitor___block_invok
 - (id)recomputedCodeItemsForAllFrameworks
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [MEMORY[0x1E696AAE8] allFrameworks];
-  v4 = [v2 setWithArray:v3];
+  allFrameworks = [MEMORY[0x1E696AAE8] allFrameworks];
+  v4 = [v2 setWithArray:allFrameworks];
 
   v5 = [v4 ax_filteredSetUsingBlock:&__block_literal_global_219];
   v6 = [v5 ax_flatMappedSetUsingBlock:&__block_literal_global_222];
@@ -1600,11 +1600,11 @@ uint64_t __66__AXCodeLoader_ExtendedCodeInfo__accessibilityCodeItemDefinitions__
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_stateDescForItem:(id)a3
+- (id)_stateDescForItem:(id)item
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
-  if ([v4 isAccessibilityBundle])
+  itemCopy = item;
+  if ([itemCopy isAccessibilityBundle])
   {
     v5 = @"AX-BUNDLE ";
   }
@@ -1614,16 +1614,16 @@ uint64_t __66__AXCodeLoader_ExtendedCodeInfo__accessibilityCodeItemDefinitions__
     v5 = &stru_1F0579798;
   }
 
-  v6 = [v4 name];
-  v7 = [v4 debugCodeTypeDescription];
-  v8 = [v4 isLoaded];
+  name = [itemCopy name];
+  debugCodeTypeDescription = [itemCopy debugCodeTypeDescription];
+  isLoaded = [itemCopy isLoaded];
   v9 = @"[LOADED]";
-  if (!v8)
+  if (!isLoaded)
   {
     v9 = &stru_1F0579798;
   }
 
-  v10 = [v3 stringWithFormat:@"%@%@.%@ <%p> %@", v5, v6, v7, v4, v9];
+  v10 = [v3 stringWithFormat:@"%@%@.%@ <%p> %@", v5, name, debugCodeTypeDescription, itemCopy, v9];
 
   return v10;
 }

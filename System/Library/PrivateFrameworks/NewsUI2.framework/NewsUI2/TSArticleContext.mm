@@ -3,8 +3,8 @@
 - (NSURL)url;
 - (TSAnalyticsReferral)referral;
 - (TSArticleContext)init;
-- (TSArticleContext)initWithUrl:(id)a3 title:(id)a4 sourceApplication:(id)a5 previousArticleID:(id)a6 previousArticleVersion:(id)a7 adPreviewSessionID:(id)a8 adPreviewID:(id)a9 adQToken:(id)a10 maximumAdRequestsForCurrentAdPreviewID:(int64_t)a11 userActionDate:(id)a12 presentationReason:(int64_t)a13 notificationID:(id)a14 notificationSenderChannelID:(id)a15 referral:(id)a16 shouldAutoPlayVideo:(BOOL)a17;
-- (void)setReferral:(id)a3;
+- (TSArticleContext)initWithUrl:(id)url title:(id)title sourceApplication:(id)application previousArticleID:(id)d previousArticleVersion:(id)version adPreviewSessionID:(id)iD adPreviewID:(id)previewID adQToken:(id)self0 maximumAdRequestsForCurrentAdPreviewID:(int64_t)self1 userActionDate:(id)self2 presentationReason:(int64_t)self3 notificationID:(id)self4 notificationSenderChannelID:(id)self5 referral:(id)self6 shouldAutoPlayVideo:(BOOL)self7;
+- (void)setReferral:(id)referral;
 @end
 
 @implementation TSArticleContext
@@ -58,25 +58,25 @@
   return *(self + v3);
 }
 
-- (void)setReferral:(id)a3
+- (void)setReferral:(id)referral
 {
   v5 = OBJC_IVAR___TSArticleContext_referral;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = referral;
+  referralCopy = referral;
 }
 
-- (TSArticleContext)initWithUrl:(id)a3 title:(id)a4 sourceApplication:(id)a5 previousArticleID:(id)a6 previousArticleVersion:(id)a7 adPreviewSessionID:(id)a8 adPreviewID:(id)a9 adQToken:(id)a10 maximumAdRequestsForCurrentAdPreviewID:(int64_t)a11 userActionDate:(id)a12 presentationReason:(int64_t)a13 notificationID:(id)a14 notificationSenderChannelID:(id)a15 referral:(id)a16 shouldAutoPlayVideo:(BOOL)a17
+- (TSArticleContext)initWithUrl:(id)url title:(id)title sourceApplication:(id)application previousArticleID:(id)d previousArticleVersion:(id)version adPreviewSessionID:(id)iD adPreviewID:(id)previewID adQToken:(id)self0 maximumAdRequestsForCurrentAdPreviewID:(int64_t)self1 userActionDate:(id)self2 presentationReason:(int64_t)self3 notificationID:(id)self4 notificationSenderChannelID:(id)self5 referral:(id)self6 shouldAutoPlayVideo:(BOOL)self7
 {
-  v79 = self;
+  selfCopy = self;
   sub_2186E578C(0, &qword_280EE9C40, MEMORY[0x277CC9578]);
   MEMORY[0x28223BE20](v23 - 8);
-  v84 = &v66 - v24;
+  v84 = &notificationIDCopy - v24;
   sub_2186E578C(0, &unk_280EE9D00, MEMORY[0x277CC9260]);
   MEMORY[0x28223BE20](v25 - 8);
-  v27 = &v66 - v26;
-  if (a3)
+  v27 = &notificationIDCopy - v26;
+  if (url)
   {
     sub_219BDB8B4();
     v28 = sub_219BDB954();
@@ -89,17 +89,17 @@
     (*(*(v29 - 8) + 56))(v27, 1, 1, v29);
   }
 
-  v82 = a12;
-  v83 = a15;
-  v80 = a9;
-  v81 = a10;
-  if (a4)
+  dateCopy = date;
+  channelIDCopy = channelID;
+  previewIDCopy = previewID;
+  tokenCopy = token;
+  if (title)
   {
     v30 = sub_219BF5414();
     v76 = v31;
     v77 = v30;
     v78 = v27;
-    if (a5)
+    if (application)
     {
 LABEL_6:
       v32 = sub_219BF5414();
@@ -114,7 +114,7 @@ LABEL_6:
     v76 = 0;
     v77 = 0;
     v78 = v27;
-    if (a5)
+    if (application)
     {
       goto LABEL_6;
     }
@@ -123,24 +123,24 @@ LABEL_6:
   v74 = 0;
   v75 = 0;
 LABEL_9:
-  v34 = a6;
-  v35 = a7;
-  v69 = a8;
-  v36 = a8;
-  v37 = v80;
-  v38 = v81;
-  v39 = v82;
-  v66 = a14;
-  v40 = a14;
-  v70 = v83;
-  v71 = a16;
-  if (v34)
+  dCopy = d;
+  versionCopy = version;
+  iDCopy = iD;
+  iDCopy2 = iD;
+  v37 = previewIDCopy;
+  v38 = tokenCopy;
+  v39 = dateCopy;
+  notificationIDCopy = notificationID;
+  notificationIDCopy2 = notificationID;
+  v70 = channelIDCopy;
+  referralCopy = referral;
+  if (dCopy)
   {
     v41 = sub_219BF5414();
     v72 = v42;
     v73 = v41;
 
-    if (v35)
+    if (versionCopy)
     {
       goto LABEL_11;
     }
@@ -150,14 +150,14 @@ LABEL_9:
   {
     v72 = 0;
     v73 = 0;
-    if (v35)
+    if (versionCopy)
     {
 LABEL_11:
       v43 = sub_219BF5414();
       v45 = v44;
 
       v46 = v84;
-      if (v36)
+      if (iDCopy2)
       {
         goto LABEL_12;
       }
@@ -169,12 +169,12 @@ LABEL_11:
   v43 = 0;
   v45 = 0;
   v46 = v84;
-  if (v36)
+  if (iDCopy2)
   {
 LABEL_12:
     v47 = sub_219BF5414();
     v68 = v48;
-    v69 = v47;
+    iDCopy = v47;
 
     if (v37)
     {
@@ -186,11 +186,11 @@ LABEL_12:
 
 LABEL_18:
   v68 = 0;
-  v69 = 0;
+  iDCopy = 0;
   if (v37)
   {
 LABEL_13:
-    v80 = sub_219BF5414();
+    previewIDCopy = sub_219BF5414();
     v67 = v49;
 
     if (v38)
@@ -200,7 +200,7 @@ LABEL_13:
 
 LABEL_20:
     v50 = 0;
-    v81 = 0;
+    tokenCopy = 0;
     if (v39)
     {
       goto LABEL_15;
@@ -210,7 +210,7 @@ LABEL_20:
   }
 
 LABEL_19:
-  v80 = 0;
+  previewIDCopy = 0;
   v67 = 0;
   if (!v38)
   {
@@ -219,7 +219,7 @@ LABEL_19:
 
 LABEL_14:
   v50 = sub_219BF5414();
-  v81 = v51;
+  tokenCopy = v51;
 
   if (v39)
   {
@@ -235,7 +235,7 @@ LABEL_21:
 LABEL_22:
   v53 = sub_219BDBD34();
   (*(*(v53 - 8) + 56))(v46, v52, 1, v53);
-  if (v40)
+  if (notificationIDCopy2)
   {
     v54 = sub_219BF5414();
     v56 = v55;
@@ -249,7 +249,7 @@ LABEL_22:
 
   if (v70)
   {
-    v82 = v56;
+    dateCopy = v56;
     v57 = v54;
     v58 = v50;
     v59 = v45;
@@ -262,7 +262,7 @@ LABEL_22:
     v45 = v59;
     v50 = v58;
     v54 = v57;
-    v56 = v82;
+    v56 = dateCopy;
   }
 
   else
@@ -271,7 +271,7 @@ LABEL_22:
     v64 = 0;
   }
 
-  return ArticleContext.init(url:title:sourceApplication:previousArticleID:previousArticleVersion:adPreviewSessionID:adPreviewID:adQToken:maximumAdRequestsForCurrentAdPreviewID:userActionDate:presentationReason:notificationID:notificationSenderChannelID:referral:shouldAutoPlayVideo:)(v78, v77, v76, v75, v74, v73, v72, v43, v45, v69, v68, v80, v67, v50, v81, a11, v84, a13, v54, v56, v62, v64, v71, a17);
+  return ArticleContext.init(url:title:sourceApplication:previousArticleID:previousArticleVersion:adPreviewSessionID:adPreviewID:adQToken:maximumAdRequestsForCurrentAdPreviewID:userActionDate:presentationReason:notificationID:notificationSenderChannelID:referral:shouldAutoPlayVideo:)(v78, v77, v76, v75, v74, v73, v72, v43, v45, iDCopy, v68, previewIDCopy, v67, v50, tokenCopy, adPreviewID, v84, reason, v54, v56, v62, v64, referralCopy, video);
 }
 
 - (TSArticleContext)init

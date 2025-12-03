@@ -1,35 +1,35 @@
 @interface DBGImage
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withImageData:(id)a3 type:(__CFString *)a4 metadata:(id)a5;
-- (DBGImage)initWithImageData:(id)a3 type:(__CFString *)a4 metadata:(id)a5;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withImageData:(id)data type:(__CFString *)type metadata:(id)metadata;
+- (DBGImage)initWithImageData:(id)data type:(__CFString *)type metadata:(id)metadata;
 - (NSString)debugDescription;
 - (NSString)description;
 @end
 
 @implementation DBGImage
 
-+ (id)withImageData:(id)a3 type:(__CFString *)a4 metadata:(id)a5
++ (id)withImageData:(id)data type:(__CFString *)type metadata:(id)metadata
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithImageData:v9 type:a4 metadata:v8];
+  metadataCopy = metadata;
+  dataCopy = data;
+  v10 = [[self alloc] initWithImageData:dataCopy type:type metadata:metadataCopy];
 
   return v10;
 }
 
-- (DBGImage)initWithImageData:(id)a3 type:(__CFString *)a4 metadata:(id)a5
+- (DBGImage)initWithImageData:(id)data type:(__CFString *)type metadata:(id)metadata
 {
-  v9 = a3;
-  v10 = a5;
+  dataCopy = data;
+  metadataCopy = metadata;
   v14.receiver = self;
   v14.super_class = DBGImage;
   v11 = [(DBGImage *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_imageData, a3);
-    v12->_imageType = a4;
-    objc_storeStrong(&v12->_metadata, a5);
+    objc_storeStrong(&v11->_imageData, data);
+    v12->_imageType = type;
+    objc_storeStrong(&v12->_metadata, metadata);
   }
 
   return v12;
@@ -37,8 +37,8 @@
 
 - (NSString)description
 {
-  v2 = [(DBGImage *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGImage *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -53,34 +53,34 @@
   return v6;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  valueCopy = value;
+  formatCopy = format;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [UTTypePNG identifier];
-    if ([v9 isEqualToString:v10])
+    identifier = [UTTypePNG identifier];
+    if ([formatCopy isEqualToString:identifier])
     {
 LABEL_5:
 
 LABEL_6:
-      v12 = [v8 dbgDataValue];
-      v13 = [a1 withImageData:v12 type:v9 metadata:0];
+      dbgDataValue = [valueCopy dbgDataValue];
+      v13 = [self withImageData:dbgDataValue type:formatCopy metadata:0];
 
       goto LABEL_19;
     }
 
-    v11 = [UTTypeTIFF identifier];
-    if ([v9 isEqualToString:v11])
+    identifier2 = [UTTypeTIFF identifier];
+    if ([formatCopy isEqualToString:identifier2])
     {
 
       goto LABEL_5;
     }
 
-    v14 = [UTTypeJPEG identifier];
-    v15 = [v9 isEqualToString:v14];
+    identifier3 = [UTTypeJPEG identifier];
+    v15 = [formatCopy isEqualToString:identifier3];
 
     if (v15)
     {
@@ -89,18 +89,18 @@ LABEL_6:
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 isEqualToString:@"image"])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [formatCopy isEqualToString:@"image"])
   {
     v16 = DBGDecodeValueFromJSONCompatibleValue();
     v17 = 0;
     v18 = v17;
     if (v17)
     {
-      if (a5)
+      if (error)
       {
         v19 = v17;
         v13 = 0;
-        *a5 = v18;
+        *error = v18;
       }
 
       else
@@ -113,18 +113,18 @@ LABEL_6:
     {
       v20 = [v16 objectForKeyedSubscript:@"imageData"];
       v21 = [v16 objectForKeyedSubscript:@"metadata"];
-      v22 = [UTTypePNG identifier];
-      v13 = [a1 withImageData:v20 type:v22 metadata:v21];
+      identifier4 = [UTTypePNG identifier];
+      v13 = [self withImageData:v20 type:identifier4 metadata:v21];
     }
   }
 
   else
   {
     v13 = 0;
-    if (!v8 && a5)
+    if (!valueCopy && error)
     {
       v13 = 0;
-      *a5 = 0;
+      *error = 0;
     }
   }
 

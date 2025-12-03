@@ -1,25 +1,25 @@
 @interface CNPropertyIDSRequest
 + (id)sharedWorkQueue;
 - (BOOL)cancelled;
-- (CNPropertyIDSRequest)initWithPropertyItems:(id)a3 service:(id)a4 postToMainQueue:(BOOL)a5 resultBlock:(id)a6;
-- (void)_requestStatusOnMainQueue:(BOOL)a3;
+- (CNPropertyIDSRequest)initWithPropertyItems:(id)items service:(id)service postToMainQueue:(BOOL)queue resultBlock:(id)block;
+- (void)_requestStatusOnMainQueue:(BOOL)queue;
 - (void)cancel;
 - (void)cleanupDelegate;
-- (void)idStatusUpdatedForDestinations:(id)a3 service:(id)a4;
+- (void)idStatusUpdatedForDestinations:(id)destinations service:(id)service;
 @end
 
 @implementation CNPropertyIDSRequest
 
-- (void)_requestStatusOnMainQueue:(BOOL)a3
+- (void)_requestStatusOnMainQueue:(BOOL)queue
 {
   v73 = *MEMORY[0x1E69E9840];
-  v54 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v61 = 0u;
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v3 = [(CNPropertyIDSRequest *)self propertyItems];
-  v4 = [v3 countByEnumeratingWithState:&v59 objects:v72 count:16];
+  propertyItems = [(CNPropertyIDSRequest *)self propertyItems];
+  v4 = [propertyItems countByEnumeratingWithState:&v59 objects:v72 count:16];
   if (v4)
   {
     v5 = *v60;
@@ -29,21 +29,21 @@
       {
         if (*v60 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(propertyItems);
         }
 
         v7 = *(*(&v59 + 1) + 8 * i);
-        v8 = [v7 labeledValue];
-        v9 = [v8 value];
+        labeledValue = [v7 labeledValue];
+        value = [labeledValue value];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = v9;
-          v11 = [v10 digits];
-          v12 = [v10 countryCode];
-          v13 = v11;
-          v14 = v12;
+          v10 = value;
+          digits = [v10 digits];
+          countryCode = [v10 countryCode];
+          v13 = digits;
+          v14 = countryCode;
           v68 = 0;
           v69 = &v68;
           v70 = 0x2020000000;
@@ -66,17 +66,17 @@
           _Block_object_dispose(&v68, 8);
           if (!v15)
           {
-            v47 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
             v48 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"NSString *CNUISoftLinkIDSCopyIDForPhoneNumberWithOptions(NSString *__strong, NSString *__strong, BOOL)"}];
-            [v47 handleFailureInFunction:v48 file:@"CNUIIDS_SoftLink.h" lineNumber:30 description:{@"%s", dlerror()}];
+            [currentHandler handleFailureInFunction:v48 file:@"CNUIIDS_SoftLink.h" lineNumber:30 description:{@"%s", dlerror()}];
 
             while (1)
             {
               __break(1u);
 LABEL_28:
-              v49 = [MEMORY[0x1E696AAA8] currentHandler];
+              currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
               v50 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *CNUISoftLinkIDSCopyIDForEmailAddress(NSString *__strong)"];
-              [v49 handleFailureInFunction:v50 file:@"CNUIIDS_SoftLink.h" lineNumber:34 description:{@"%s", dlerror()}];
+              [currentHandler2 handleFailureInFunction:v50 file:@"CNUIIDS_SoftLink.h" lineNumber:34 description:{@"%s", dlerror()}];
             }
           }
 
@@ -86,12 +86,12 @@ LABEL_28:
         else
         {
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) == 0 || ![v9 _appearsToBeEmail])
+          if ((objc_opt_isKindOfClass() & 1) == 0 || ![value _appearsToBeEmail])
           {
             goto LABEL_19;
           }
 
-          v19 = v9;
+          v19 = value;
           v68 = 0;
           v69 = &v68;
           v70 = 0x2020000000;
@@ -122,22 +122,22 @@ LABEL_28:
 
         if (v18)
         {
-          [v54 setObject:v7 forKeyedSubscript:v18];
+          [dictionary setObject:v7 forKeyedSubscript:v18];
         }
 
 LABEL_19:
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v59 objects:v72 count:16];
+      v4 = [propertyItems countByEnumeratingWithState:&v59 objects:v72 count:16];
     }
 
     while (v4);
   }
 
-  if ([v54 count])
+  if ([dictionary count])
   {
-    v23 = [v54 allKeys];
-    v24 = [v23 componentsJoinedByString:{@", "}];
+    allKeys = [dictionary allKeys];
+    v24 = [allKeys componentsJoinedByString:{@", "}];
     _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNPropertyIDSRequest.m", 126, 6, @"Querying IDS for handles: [%@]", v25, v26, v27, v28, v24);
 
     objc_initWeak(&location, self);
@@ -146,21 +146,21 @@ LABEL_19:
     v55[2] = __50__CNPropertyIDSRequest__requestStatusOnMainQueue___block_invoke;
     v55[3] = &unk_1E74E32B8;
     objc_copyWeak(&v57, &location);
-    v29 = v54;
+    v29 = dictionary;
     v56 = v29;
-    v58 = a3;
+    queueCopy = queue;
     [(CNPropertyIDSRequest *)self setIdQueryResultHandler:v55];
-    v30 = [v29 allKeys];
-    v31 = [v30 componentsJoinedByString:{@", "}];
+    allKeys2 = [v29 allKeys];
+    v31 = [allKeys2 componentsJoinedByString:{@", "}];
     _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNPropertyIDSRequest.m", 193, 6, @"Querying IDS for handles: [%@]", v32, v33, v34, v35, v31);
 
-    v36 = [getIDSIDQueryControllerClass_23071() sharedInstance];
-    v37 = [v29 allKeys];
-    v38 = [(CNPropertyIDSRequest *)self service];
-    v39 = [(CNPropertyIDSRequest *)self listenerID];
-    v40 = [objc_opt_class() sharedWorkQueue];
-    v41 = [(CNPropertyIDSRequest *)self idQueryResultHandler];
-    v42 = [v36 refreshIDStatusForDestinations:v37 service:v38 listenerID:v39 queue:v40 completionBlock:v41];
+    sharedInstance = [getIDSIDQueryControllerClass_23071() sharedInstance];
+    allKeys3 = [v29 allKeys];
+    service = [(CNPropertyIDSRequest *)self service];
+    listenerID = [(CNPropertyIDSRequest *)self listenerID];
+    sharedWorkQueue = [objc_opt_class() sharedWorkQueue];
+    idQueryResultHandler = [(CNPropertyIDSRequest *)self idQueryResultHandler];
+    v42 = [sharedInstance refreshIDStatusForDestinations:allKeys3 service:service listenerID:listenerID queue:sharedWorkQueue completionBlock:idQueryResultHandler];
 
     if ((v42 & 1) == 0)
     {
@@ -293,41 +293,41 @@ uint64_t __50__CNPropertyIDSRequest__requestStatusOnMainQueue___block_invoke_2(u
   return MEMORY[0x1EEE66C30]();
 }
 
-- (void)idStatusUpdatedForDestinations:(id)a3 service:(id)a4
+- (void)idStatusUpdatedForDestinations:(id)destinations service:(id)service
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(CNPropertyIDSRequest *)self service];
-  v8 = [v6 isEqualToString:v7];
+  destinationsCopy = destinations;
+  serviceCopy = service;
+  service = [(CNPropertyIDSRequest *)self service];
+  v8 = [serviceCopy isEqualToString:service];
 
   if (v8)
   {
-    v9 = [(CNPropertyIDSRequest *)self idQueryResultHandler];
-    v10 = v9;
-    if (v9)
+    idQueryResultHandler = [(CNPropertyIDSRequest *)self idQueryResultHandler];
+    v10 = idQueryResultHandler;
+    if (idQueryResultHandler)
     {
-      (*(v9 + 16))(v9, v11);
+      (*(idQueryResultHandler + 16))(idQueryResultHandler, destinationsCopy);
     }
   }
 }
 
 - (BOOL)cancelled
 {
-  v2 = [(CNPropertyIDSRequest *)self requestResultBlock];
-  v3 = v2 == 0;
+  requestResultBlock = [(CNPropertyIDSRequest *)self requestResultBlock];
+  v3 = requestResultBlock == 0;
 
   return v3;
 }
 
 - (void)cancel
 {
-  v3 = [objc_opt_class() sharedWorkQueue];
+  sharedWorkQueue = [objc_opt_class() sharedWorkQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __30__CNPropertyIDSRequest_cancel__block_invoke;
   block[3] = &unk_1E74E6A88;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(sharedWorkQueue, block);
 
   [(CNPropertyIDSRequest *)self setRequestResultBlock:0];
   [(CNPropertyIDSRequest *)self setIdQueryResultHandler:0];
@@ -335,37 +335,37 @@ uint64_t __50__CNPropertyIDSRequest__requestStatusOnMainQueue___block_invoke_2(u
 
 - (void)cleanupDelegate
 {
-  v5 = [getIDSIDQueryControllerClass_23071() sharedInstance];
-  v3 = [(CNPropertyIDSRequest *)self service];
-  v4 = [(CNPropertyIDSRequest *)self listenerID];
-  [v5 removeDelegate:self forService:v3 listenerID:v4];
+  sharedInstance = [getIDSIDQueryControllerClass_23071() sharedInstance];
+  service = [(CNPropertyIDSRequest *)self service];
+  listenerID = [(CNPropertyIDSRequest *)self listenerID];
+  [sharedInstance removeDelegate:self forService:service listenerID:listenerID];
 }
 
-- (CNPropertyIDSRequest)initWithPropertyItems:(id)a3 service:(id)a4 postToMainQueue:(BOOL)a5 resultBlock:(id)a6
+- (CNPropertyIDSRequest)initWithPropertyItems:(id)items service:(id)service postToMainQueue:(BOOL)queue resultBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  itemsCopy = items;
+  serviceCopy = service;
+  blockCopy = block;
   v21.receiver = self;
   v21.super_class = CNPropertyIDSRequest;
   v13 = [(CNPropertyIDSRequest *)&v21 init];
   v14 = v13;
   if (v13)
   {
-    [(CNPropertyIDSRequest *)v13 setPropertyItems:v10];
+    [(CNPropertyIDSRequest *)v13 setPropertyItems:itemsCopy];
     v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CNPropertyIDSRequestListenerID_%lx", v14];
     [(CNPropertyIDSRequest *)v14 setListenerID:v15];
 
-    [(CNPropertyIDSRequest *)v14 setService:v11];
-    [(CNPropertyIDSRequest *)v14 setRequestResultBlock:v12];
-    v16 = [objc_opt_class() sharedWorkQueue];
+    [(CNPropertyIDSRequest *)v14 setService:serviceCopy];
+    [(CNPropertyIDSRequest *)v14 setRequestResultBlock:blockCopy];
+    sharedWorkQueue = [objc_opt_class() sharedWorkQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __82__CNPropertyIDSRequest_initWithPropertyItems_service_postToMainQueue_resultBlock___block_invoke;
     block[3] = &unk_1E74E4768;
     v19 = v14;
-    v20 = a5;
-    dispatch_async(v16, block);
+    queueCopy = queue;
+    dispatch_async(sharedWorkQueue, block);
   }
 
   return v14;

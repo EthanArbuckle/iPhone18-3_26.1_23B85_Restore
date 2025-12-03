@@ -1,6 +1,6 @@
 @interface CSTipTriangleView
 - (CSTipTriangleView)init;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation CSTipTriangleView
@@ -19,20 +19,20 @@
   return v3;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v5 = a3.origin.x + a3.size.width * 0.5;
-  v6 = a3.origin.y + a3.size.height;
-  v7 = a3.origin.x + a3.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v5 = rect.origin.x + rect.size.width * 0.5;
+  v6 = rect.origin.y + rect.size.height;
+  v7 = rect.origin.x + rect.size.width;
   v9 = objc_alloc_init(MEMORY[0x277D75200]);
   [v9 moveToPoint:{x, y}];
   [v9 addLineToPoint:{v5, v6}];
   [v9 addLineToPoint:{v7, y}];
   [v9 closePath];
-  v8 = [MEMORY[0x277D75340] systemBlueColor];
-  [v8 setFill];
+  systemBlueColor = [MEMORY[0x277D75340] systemBlueColor];
+  [systemBlueColor setFill];
 
   [v9 fill];
 }

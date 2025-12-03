@@ -1,13 +1,13 @@
 @interface HMDResidentDeviceManagerFactory
-+ (id)createManagerForHomeUUID:(id)a3;
++ (id)createManagerForHomeUUID:(id)d;
 @end
 
 @implementation HMDResidentDeviceManagerFactory
 
-+ (id)createManagerForHomeUUID:(id)a3
++ (id)createManagerForHomeUUID:(id)d
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   v4 = objc_autoreleasePoolPush();
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))

@@ -1,22 +1,22 @@
 @interface SUUICarouselCollectionViewLayout
 - (CGPoint)_collectionViewBoundsCenter;
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (void)_panGestureRecognized:(id)a3;
-- (void)prepareForTransitionToLayout:(id)a3;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (void)_panGestureRecognized:(id)recognized;
+- (void)prepareForTransitionToLayout:(id)layout;
 - (void)prepareLayout;
 @end
 
 @implementation SUUICarouselCollectionViewLayout
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v19 = *MEMORY[0x277D85DE8];
   v17.receiver = self;
   v17.super_class = SUUICarouselCollectionViewLayout;
-  v4 = [(UICollectionViewFlowLayout *)&v17 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v5 = [(SUUICarouselCollectionViewLayout *)self collectionView];
-  v6 = [v5 delegate];
+  v4 = [(UICollectionViewFlowLayout *)&v17 layoutAttributesForElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
+  collectionView = [(SUUICarouselCollectionViewLayout *)self collectionView];
+  delegate = [collectionView delegate];
   if (objc_opt_respondsToSelector())
   {
     v15 = 0u;
@@ -38,7 +38,7 @@
             objc_enumerationMutation(v7);
           }
 
-          [v6 collectionView:v5 carouselLayout:self willApplyLayoutAttributes:{*(*(&v13 + 1) + 8 * i), v13}];
+          [delegate collectionView:collectionView carouselLayout:self willApplyLayoutAttributes:{*(*(&v13 + 1) + 8 * i), v13}];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
@@ -56,45 +56,45 @@
   v7.receiver = self;
   v7.super_class = SUUICarouselCollectionViewLayout;
   [(UICollectionViewFlowLayout *)&v7 prepareLayout];
-  v3 = [(SUUICarouselCollectionViewLayout *)self collectionView];
-  v4 = [v3 panGestureRecognizer];
-  [v4 removeTarget:self action:0];
+  collectionView = [(SUUICarouselCollectionViewLayout *)self collectionView];
+  panGestureRecognizer = [collectionView panGestureRecognizer];
+  [panGestureRecognizer removeTarget:self action:0];
 
-  v5 = [(SUUICarouselCollectionViewLayout *)self collectionView];
-  v6 = [v5 panGestureRecognizer];
-  [v6 addTarget:self action:sel__panGestureRecognized_];
+  collectionView2 = [(SUUICarouselCollectionViewLayout *)self collectionView];
+  panGestureRecognizer2 = [collectionView2 panGestureRecognizer];
+  [panGestureRecognizer2 addTarget:self action:sel__panGestureRecognized_];
 }
 
-- (void)prepareForTransitionToLayout:(id)a3
+- (void)prepareForTransitionToLayout:(id)layout
 {
   v6.receiver = self;
   v6.super_class = SUUICarouselCollectionViewLayout;
-  [(SUUICarouselCollectionViewLayout *)&v6 prepareForTransitionToLayout:a3];
-  v4 = [(SUUICarouselCollectionViewLayout *)self collectionView];
-  v5 = [v4 panGestureRecognizer];
-  [v5 removeTarget:self action:0];
+  [(SUUICarouselCollectionViewLayout *)&v6 prepareForTransitionToLayout:layout];
+  collectionView = [(SUUICarouselCollectionViewLayout *)self collectionView];
+  panGestureRecognizer = [collectionView panGestureRecognizer];
+  [panGestureRecognizer removeTarget:self action:0];
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity
 {
-  x = a4.x;
+  x = velocity.x;
   v42.receiver = self;
   v42.super_class = SUUICarouselCollectionViewLayout;
-  [(SUUICarouselCollectionViewLayout *)&v42 targetContentOffsetForProposedContentOffset:a3.x withScrollingVelocity:a3.y, a4.x, a4.y];
+  [(SUUICarouselCollectionViewLayout *)&v42 targetContentOffsetForProposedContentOffset:offset.x withScrollingVelocity:offset.y, velocity.x, velocity.y];
   v7 = v6;
-  v8 = [(SUUICarouselCollectionViewLayout *)self collectionView];
-  [v8 bounds];
+  collectionView = [(SUUICarouselCollectionViewLayout *)self collectionView];
+  [collectionView bounds];
   v10 = v9;
   [(UICollectionViewFlowLayout *)self itemSize];
   v12 = v11;
   [(UICollectionViewFlowLayout *)self minimumInteritemSpacing];
   v14 = v12 + v13;
-  v15 = [(SUUICarouselCollectionViewLayout *)self startScrollingIndexPath];
+  startScrollingIndexPath = [(SUUICarouselCollectionViewLayout *)self startScrollingIndexPath];
   [(SUUICarouselCollectionViewLayout *)self _collectionViewBoundsCenter];
   v17 = v16;
   v19 = v18;
-  v20 = [(SUUICarouselCollectionViewLayout *)self collectionView];
-  v21 = [v20 indexPathForItemAtPoint:{v17, v19}];
+  collectionView2 = [(SUUICarouselCollectionViewLayout *)self collectionView];
+  v21 = [collectionView2 indexPathForItemAtPoint:{v17, v19}];
 
   v22 = (v10 - v14) * 0.5;
   v23 = floorf(v22);
@@ -112,7 +112,7 @@
 
   if (v26)
   {
-    v27 = [v15 item] - 1;
+    item2 = [startScrollingIndexPath item] - 1;
   }
 
   else
@@ -129,15 +129,15 @@
 
     if (v28)
     {
-      v27 = [v15 item] + 1;
+      item2 = [startScrollingIndexPath item] + 1;
     }
 
     else
     {
-      v29 = [v21 item];
-      if (v29 == [v15 item])
+      item = [v21 item];
+      if (item == [startScrollingIndexPath item])
       {
-        v30 = v15;
+        v30 = startScrollingIndexPath;
       }
 
       else
@@ -145,24 +145,24 @@
         v30 = v21;
       }
 
-      v27 = [v30 item];
+      item2 = [v30 item];
     }
   }
 
-  v31 = -(v23 - v27 * v14);
+  v31 = -(v23 - item2 * v14);
   if (v25)
   {
-    [v8 contentSize];
+    [collectionView contentSize];
     v33 = v32;
-    [v8 bounds];
+    [collectionView bounds];
     v31 = v33 - CGRectGetWidth(v44) - v31;
   }
 
-  [v8 contentSize];
+  [collectionView contentSize];
   v35 = v34;
-  [v8 contentInset];
+  [collectionView contentInset];
   v37 = v35 + v36;
-  [v8 bounds];
+  [collectionView bounds];
   if (v31 >= v37 - v38)
   {
     v39 = v37 - v38;
@@ -182,8 +182,8 @@
 
 - (CGPoint)_collectionViewBoundsCenter
 {
-  v2 = [(SUUICarouselCollectionViewLayout *)self collectionView];
-  [v2 bounds];
+  collectionView = [(SUUICarouselCollectionViewLayout *)self collectionView];
+  [collectionView bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -205,15 +205,15 @@
   return result;
 }
 
-- (void)_panGestureRecognized:(id)a3
+- (void)_panGestureRecognized:(id)recognized
 {
-  if ([a3 state] == 1)
+  if ([recognized state] == 1)
   {
     [(SUUICarouselCollectionViewLayout *)self _collectionViewBoundsCenter];
     v5 = v4;
     v7 = v6;
-    v8 = [(SUUICarouselCollectionViewLayout *)self collectionView];
-    v9 = [v8 indexPathForItemAtPoint:{v5, v7}];
+    collectionView = [(SUUICarouselCollectionViewLayout *)self collectionView];
+    v9 = [collectionView indexPathForItemAtPoint:{v5, v7}];
 
     [(SUUICarouselCollectionViewLayout *)self setStartScrollingIndexPath:v9];
   }

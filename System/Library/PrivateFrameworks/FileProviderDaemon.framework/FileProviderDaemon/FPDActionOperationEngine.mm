@@ -1,8 +1,8 @@
 @interface FPDActionOperationEngine
 - (FPDActionOperationEngine)init;
-- (FPDActionOperationEngine)initWithServer:(id)a3;
-- (void)dumpStateTo:(id)a3;
-- (void)scheduleActionOperationWithInfo:(id)a3 request:(id)a4 completionHandler:(id)a5;
+- (FPDActionOperationEngine)initWithServer:(id)server;
+- (void)dumpStateTo:(id)to;
+- (void)scheduleActionOperationWithInfo:(id)info request:(id)request completionHandler:(id)handler;
 @end
 
 @implementation FPDActionOperationEngine
@@ -22,16 +22,16 @@
   __assert_rtn("-[FPDActionOperationEngine init]", "/Library/Caches/com.apple.xbs/Sources/FileProviderTools/fileproviderd/action operation engine/FPDActionOperationEngine.m", 62, [v2 UTF8String]);
 }
 
-- (FPDActionOperationEngine)initWithServer:(id)a3
+- (FPDActionOperationEngine)initWithServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   v13.receiver = self;
   v13.super_class = FPDActionOperationEngine;
   v5 = [(FPDActionOperationEngine *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_server, v4);
+    objc_storeWeak(&v5->_server, serverCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("FileProvider.action-operation-engine", v7);
     queue = v6->_queue;
@@ -47,23 +47,23 @@
   return v6;
 }
 
-- (void)scheduleActionOperationWithInfo:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)scheduleActionOperationWithInfo:(id)info request:(id)request completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  requestCopy = request;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __86__FPDActionOperationEngine_scheduleActionOperationWithInfo_request_completionHandler___block_invoke;
   v15[3] = &unk_1E83BE3B0;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = infoCopy;
+  v17 = requestCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = requestCopy;
+  v14 = infoCopy;
   dispatch_sync(queue, v15);
 }
 
@@ -110,17 +110,17 @@ void __86__FPDActionOperationEngine_scheduleActionOperationWithInfo_request_comp
   }
 }
 
-- (void)dumpStateTo:(id)a3
+- (void)dumpStateTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__FPDActionOperationEngine_dumpStateTo___block_invoke;
   v7[3] = &unk_1E83BE158;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = toCopy;
+  selfCopy = self;
+  v6 = toCopy;
   dispatch_sync(queue, v7);
 }
 

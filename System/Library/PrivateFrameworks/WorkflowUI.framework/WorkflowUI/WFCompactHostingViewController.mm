@@ -1,28 +1,28 @@
 @interface WFCompactHostingViewController
-- (WFCompactHostingViewController)initWithScreenLocked:(BOOL)a3 delegate:(id)a4;
+- (WFCompactHostingViewController)initWithScreenLocked:(BOOL)locked delegate:(id)delegate;
 - (WFCompactHostingViewControllerDelegate)delegate;
-- (id)presentationAnchorForActionUserInterface:(id)a3;
-- (void)actionUserInterface:(id)a3 showViewControllerInPlatter:(id)a4;
+- (id)presentationAnchorForActionUserInterface:(id)interface;
+- (void)actionUserInterface:(id)interface showViewControllerInPlatter:(id)platter;
 - (void)cancelAndDismiss;
 - (void)clearStatusViewTimer;
 - (void)dealloc;
-- (void)dialogViewController:(id)a3 didFinishWithResponse:(id)a4 waitForFollowUpRequest:(BOOL)a5;
-- (void)dismissPersistentChromeWithSuccess:(BOOL)a3 customAttribution:(id)a4 completionHandler:(id)a5;
-- (void)dismissPlatterViewControllerAndUpdateChromeAnimated:(BOOL)a3 completionHandler:(id)a4;
-- (void)dismissPlatterViewControllerIfNecessaryAnimated:(BOOL)a3 completionHandler:(id)a4;
-- (void)dismissPresentedContentWithCompletionHandler:(id)a3;
+- (void)dialogViewController:(id)controller didFinishWithResponse:(id)response waitForFollowUpRequest:(BOOL)request;
+- (void)dismissPersistentChromeWithSuccess:(BOOL)success customAttribution:(id)attribution completionHandler:(id)handler;
+- (void)dismissPlatterViewControllerAndUpdateChromeAnimated:(BOOL)animated completionHandler:(id)handler;
+- (void)dismissPlatterViewControllerIfNecessaryAnimated:(BOOL)animated completionHandler:(id)handler;
+- (void)dismissPresentedContentWithCompletionHandler:(id)handler;
 - (void)handlePendingRequest;
-- (void)handleRequest:(id)a3 completionHandler:(id)a4;
-- (void)handleTapGesture:(id)a3;
+- (void)handleRequest:(id)request completionHandler:(id)handler;
+- (void)handleTapGesture:(id)gesture;
 - (void)loadView;
-- (void)preparePersistentChromeWithContext:(id)a3 attribution:(id)a4;
+- (void)preparePersistentChromeWithContext:(id)context attribution:(id)attribution;
 - (void)presentChromeIfPossible;
 - (void)presentStatusViewController;
 - (void)scheduleStatusViewToAppear;
-- (void)setProgress:(id)a3;
-- (void)setTouchPassthrough:(BOOL)a3;
-- (void)updateChromeVisibilityWithCompletionHandler:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setProgress:(id)progress;
+- (void)setTouchPassthrough:(BOOL)passthrough;
+- (void)updateChromeVisibilityWithCompletionHandler:(id)handler;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -35,53 +35,53 @@
   return WeakRetained;
 }
 
-- (void)actionUserInterface:(id)a3 showViewControllerInPlatter:(id)a4
+- (void)actionUserInterface:(id)interface showViewControllerInPlatter:(id)platter
 {
-  v6 = a4;
-  v7 = a3;
+  platterCopy = platter;
+  interfaceCopy = interface;
   v12 = objc_alloc_init(WFCompactPlatterViewController);
-  v8 = [(WFCompactPlatterViewController *)v12 platterView];
-  v9 = [v7 attribution];
+  platterView = [(WFCompactPlatterViewController *)v12 platterView];
+  attribution = [interfaceCopy attribution];
 
-  [v8 setAttribution:v9];
-  v10 = [(WFCompactPlatterViewController *)v12 platterView];
-  v11 = [MEMORY[0x277D7D530] defaultConfiguration];
-  [v10 applyStylingWithConfiguration:v11];
+  [platterView setAttribution:attribution];
+  platterView2 = [(WFCompactPlatterViewController *)v12 platterView];
+  defaultConfiguration = [MEMORY[0x277D7D530] defaultConfiguration];
+  [platterView2 applyStylingWithConfiguration:defaultConfiguration];
 
-  [(WFCompactPlatterViewController *)v12 setContentViewController:v6];
+  [(WFCompactPlatterViewController *)v12 setContentViewController:platterCopy];
   [(WFCompactHostingViewController *)self presentViewController:v12 animated:1 completion:0];
 }
 
-- (id)presentationAnchorForActionUserInterface:(id)a3
+- (id)presentationAnchorForActionUserInterface:(id)interface
 {
-  v3 = [(WFCompactHostingViewController *)self view];
-  v4 = [v3 window];
+  view = [(WFCompactHostingViewController *)self view];
+  window = [view window];
 
-  return v4;
+  return window;
 }
 
-- (void)dismissPersistentChromeWithSuccess:(BOOL)a3 customAttribution:(id)a4 completionHandler:(id)a5
+- (void)dismissPersistentChromeWithSuccess:(BOOL)success customAttribution:(id)attribution completionHandler:(id)handler
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  successCopy = success;
+  attributionCopy = attribution;
+  handlerCopy = handler;
   [(WFCompactHostingViewController *)self clearStatusViewTimer];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __105__WFCompactHostingViewController_dismissPersistentChromeWithSuccess_customAttribution_completionHandler___block_invoke;
   aBlock[3] = &unk_279EE8B18;
   aBlock[4] = self;
-  v10 = v9;
+  v10 = handlerCopy;
   v25 = v10;
   v11 = _Block_copy(aBlock);
   v12 = v11;
-  if (v6)
+  if (successCopy)
   {
-    v13 = [(WFCompactHostingViewController *)self presentedViewController];
-    if (v13 && (v14 = v13, [(WFCompactHostingViewController *)self presentedViewController], v15 = objc_claimAutoreleasedReturnValue(), [(WFCompactHostingViewController *)self statusViewController], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v14, v15 == v16))
+    presentedViewController = [(WFCompactHostingViewController *)self presentedViewController];
+    if (presentedViewController && (v14 = presentedViewController, [(WFCompactHostingViewController *)self presentedViewController], v15 = objc_claimAutoreleasedReturnValue(), [(WFCompactHostingViewController *)self statusViewController], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v14, v15 == v16))
     {
-      v20 = [(WFCompactHostingViewController *)self statusViewController];
-      [v20 transitionToCompleted:1 animated:1];
+      statusViewController = [(WFCompactHostingViewController *)self statusViewController];
+      [statusViewController transitionToCompleted:1 animated:1];
 
       v21 = dispatch_time(0, 750000000);
       dispatch_after(v21, MEMORY[0x277D85CD0], v12);
@@ -91,15 +91,15 @@
     {
       v17 = objc_alloc_init(WFCompactStatusViewController);
       v18 = v17;
-      if (v8)
+      if (attributionCopy)
       {
-        [(WFCompactStatusViewController *)v17 setAttribution:v8];
+        [(WFCompactStatusViewController *)v17 setAttribution:attributionCopy];
       }
 
       else
       {
-        v19 = [(WFCompactHostingViewController *)self runningAttribution];
-        [(WFCompactStatusViewController *)v18 setAttribution:v19];
+        runningAttribution = [(WFCompactHostingViewController *)self runningAttribution];
+        [(WFCompactStatusViewController *)v18 setAttribution:runningAttribution];
       }
 
       [(WFCompactStatusViewController *)v18 transitionToCompleted:1 animated:1];
@@ -137,10 +137,10 @@ void __105__WFCompactHostingViewController_dismissPersistentChromeWithSuccess_cu
   dispatch_after(v2, v4, v3);
 }
 
-- (void)dismissPlatterViewControllerAndUpdateChromeAnimated:(BOOL)a3 completionHandler:(id)a4
+- (void)dismissPlatterViewControllerAndUpdateChromeAnimated:(BOOL)animated completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  handlerCopy = handler;
   v7 = dispatch_group_create();
   dispatch_group_enter(v7);
   v15[0] = MEMORY[0x277D85DD0];
@@ -149,7 +149,7 @@ void __105__WFCompactHostingViewController_dismissPersistentChromeWithSuccess_cu
   v15[3] = &unk_279EE8A78;
   v8 = v7;
   v16 = v8;
-  [(WFCompactHostingViewController *)self dismissPlatterViewControllerIfNecessaryAnimated:v4 completionHandler:v15];
+  [(WFCompactHostingViewController *)self dismissPlatterViewControllerIfNecessaryAnimated:animatedCopy completionHandler:v15];
   dispatch_group_enter(v8);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -162,8 +162,8 @@ void __105__WFCompactHostingViewController_dismissPersistentChromeWithSuccess_cu
   block[1] = 3221225472;
   block[2] = __104__WFCompactHostingViewController_dismissPlatterViewControllerAndUpdateChromeAnimated_completionHandler___block_invoke_3;
   block[3] = &unk_279EE8A50;
-  v12 = v6;
-  v10 = v6;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   dispatch_group_notify(v9, MEMORY[0x277D85CD0], block);
 }
 
@@ -178,10 +178,10 @@ uint64_t __104__WFCompactHostingViewController_dismissPlatterViewControllerAndUp
   return result;
 }
 
-- (void)dismissPlatterViewControllerIfNecessaryAnimated:(BOOL)a3 completionHandler:(id)a4
+- (void)dismissPlatterViewControllerIfNecessaryAnimated:(BOOL)animated completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(WFCompactHostingViewController *)self presentedViewController];
+  handlerCopy = handler;
+  presentedViewController = [(WFCompactHostingViewController *)self presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -192,33 +192,33 @@ uint64_t __104__WFCompactHostingViewController_dismissPlatterViewControllerAndUp
     block[2] = __100__WFCompactHostingViewController_dismissPlatterViewControllerIfNecessaryAnimated_completionHandler___block_invoke;
     block[3] = &unk_279EE8478;
     block[4] = self;
-    v11 = a3;
-    v10 = v6;
+    animatedCopy = animated;
+    v10 = handlerCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
-  else if (v6)
+  else if (handlerCopy)
   {
-    v6[2](v6);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)dismissPresentedContentWithCompletionHandler:(id)a3
+- (void)dismissPresentedContentWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __79__WFCompactHostingViewController_dismissPresentedContentWithCompletionHandler___block_invoke;
   aBlock[3] = &unk_279EE8B18;
   aBlock[4] = self;
-  v5 = v4;
+  v5 = handlerCopy;
   v12 = v5;
   v6 = _Block_copy(aBlock);
   [(WFCompactHostingViewController *)self setHandlingRequest:0];
   [(WFCompactHostingViewController *)self setPreparingToPresentDialog:0];
   [(WFCompactHostingViewController *)self setAllowedInterfaceOrientations:30];
-  v7 = [(WFCompactHostingViewController *)self presentedViewController];
-  if (!v7 || ([(WFCompactHostingViewController *)self statusViewController], v8 = objc_claimAutoreleasedReturnValue(), v8, v7 == v8))
+  presentedViewController = [(WFCompactHostingViewController *)self presentedViewController];
+  if (!presentedViewController || ([(WFCompactHostingViewController *)self statusViewController], v8 = objc_claimAutoreleasedReturnValue(), v8, presentedViewController == v8))
   {
     v6[2](v6);
   }
@@ -258,23 +258,23 @@ uint64_t __79__WFCompactHostingViewController_dismissPresentedContentWithComplet
   return v2();
 }
 
-- (void)dialogViewController:(id)a3 didFinishWithResponse:(id)a4 waitForFollowUpRequest:(BOOL)a5
+- (void)dialogViewController:(id)controller didFinishWithResponse:(id)response waitForFollowUpRequest:(BOOL)request
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  requestCopy = request;
+  controllerCopy = controller;
+  responseCopy = response;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __100__WFCompactHostingViewController_dialogViewController_didFinishWithResponse_waitForFollowUpRequest___block_invoke;
   aBlock[3] = &unk_279EE8CA8;
-  v10 = v8;
+  v10 = controllerCopy;
   v17 = v10;
-  v18 = self;
-  v11 = v9;
+  selfCopy = self;
+  v11 = responseCopy;
   v19 = v11;
   v12 = _Block_copy(aBlock);
   v13 = v12;
-  if (v5)
+  if (requestCopy)
   {
     (*(v12 + 2))(v12);
   }
@@ -325,21 +325,21 @@ uint64_t __100__WFCompactHostingViewController_dialogViewController_didFinishWit
 {
   v20 = *MEMORY[0x277D85DE8];
   [(WFCompactHostingViewController *)self clearStatusViewTimer];
-  v3 = [(WFCompactHostingViewController *)self pendingRequest];
+  pendingRequest = [(WFCompactHostingViewController *)self pendingRequest];
   [(WFCompactHostingViewController *)self setHandlingRequest:1];
   [(WFCompactHostingViewController *)self setPendingRequest:0];
-  v4 = [(WFCompactHostingViewController *)self presentedViewController];
-  if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  presentedViewController = [(WFCompactHostingViewController *)self presentedViewController];
+  if (!presentedViewController || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
-    v4 = 0;
+    presentedViewController = 0;
 LABEL_8:
     v10 = MEMORY[0x277D85DD0];
     v11 = 3221225472;
     v12 = __54__WFCompactHostingViewController_handlePendingRequest__block_invoke;
     v13 = &unk_279EE8C58;
-    v14 = v3;
-    v15 = self;
+    v14 = pendingRequest;
+    selfCopy = self;
     v8 = _Block_copy(&v10);
     v9 = [(WFCompactHostingViewController *)self presentedViewController:v10];
 
@@ -357,7 +357,7 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  v5 = [v4 canHandleFollowUpRequest:v3];
+  v5 = [presentedViewController canHandleFollowUpRequest:pendingRequest];
   v6 = getWFDialogLogObject();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
   if (!v5)
@@ -367,7 +367,7 @@ LABEL_8:
       *buf = 136315394;
       v17 = "[WFCompactHostingViewController handlePendingRequest]";
       v18 = 2112;
-      v19 = v4;
+      v19 = presentedViewController;
       _os_log_impl(&dword_274719000, v6, OS_LOG_TYPE_DEFAULT, "%s Currently presented platter could not handle the follow up, dismissing: %@", buf, 0x16u);
     }
 
@@ -381,7 +381,7 @@ LABEL_8:
     _os_log_impl(&dword_274719000, v6, OS_LOG_TYPE_DEFAULT, "%s Currently presented platter can handle follow up request", buf, 0xCu);
   }
 
-  [v4 handleFollowUpRequest:v3];
+  [presentedViewController handleFollowUpRequest:pendingRequest];
 LABEL_12:
 }
 
@@ -579,15 +579,15 @@ uint64_t __54__WFCompactHostingViewController_handlePendingRequest__block_invoke
   return [v5 scheduleStatusViewToAppear];
 }
 
-- (void)handleRequest:(id)a3 completionHandler:(id)a4
+- (void)handleRequest:(id)request completionHandler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  requestCopy = request;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (requestCopy)
   {
-    if (v8)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -595,8 +595,8 @@ uint64_t __54__WFCompactHostingViewController_handlePendingRequest__block_invoke
 
   else
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFCompactHostingViewController.m" lineNumber:322 description:{@"Invalid parameter not satisfying: %@", @"request"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCompactHostingViewController.m" lineNumber:322 description:{@"Invalid parameter not satisfying: %@", @"request"}];
 
     if (v9)
     {
@@ -604,8 +604,8 @@ uint64_t __54__WFCompactHostingViewController_handlePendingRequest__block_invoke
     }
   }
 
-  v13 = [MEMORY[0x277CCA890] currentHandler];
-  [v13 handleFailureInMethod:a2 object:self file:@"WFCompactHostingViewController.m" lineNumber:323 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFCompactHostingViewController.m" lineNumber:323 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
   v10 = getWFDialogLogObject();
@@ -614,40 +614,40 @@ LABEL_3:
     *buf = 136315394;
     v15 = "[WFCompactHostingViewController handleRequest:completionHandler:]";
     v16 = 2114;
-    v17 = v7;
+    v17 = requestCopy;
     _os_log_impl(&dword_274719000, v10, OS_LOG_TYPE_DEFAULT, "%s Received request: %{public}@", buf, 0x16u);
   }
 
-  [(WFCompactHostingViewController *)self setPendingRequest:v7];
+  [(WFCompactHostingViewController *)self setPendingRequest:requestCopy];
   v11 = [v9 copy];
   [(WFCompactHostingViewController *)self setRequestCompletionHandler:v11];
 
   [(WFCompactHostingViewController *)self presentChromeIfPossible];
 }
 
-- (void)setTouchPassthrough:(BOOL)a3
+- (void)setTouchPassthrough:(BOOL)passthrough
 {
-  v3 = a3;
-  v5 = [(WFCompactHostingViewController *)self dimmingView];
-  [v5 setHidden:v3];
+  passthroughCopy = passthrough;
+  dimmingView = [(WFCompactHostingViewController *)self dimmingView];
+  [dimmingView setHidden:passthroughCopy];
 
-  v6 = [(WFCompactHostingViewController *)self materialView];
-  [v6 setHidden:v3];
+  materialView = [(WFCompactHostingViewController *)self materialView];
+  [materialView setHidden:passthroughCopy];
 }
 
 - (void)clearStatusViewTimer
 {
-  v3 = [(WFCompactHostingViewController *)self statusViewTimer];
-  [v3 invalidate];
+  statusViewTimer = [(WFCompactHostingViewController *)self statusViewTimer];
+  [statusViewTimer invalidate];
 
   [(WFCompactHostingViewController *)self setStatusViewTimer:0];
 }
 
 - (void)scheduleStatusViewToAppear
 {
-  v3 = [(WFCompactHostingViewController *)self runningContext];
+  runningContext = [(WFCompactHostingViewController *)self runningContext];
 
-  if (v3)
+  if (runningContext)
   {
     v4 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel_presentStatusViewController selector:0 userInfo:0 repeats:0.5];
     [(WFCompactHostingViewController *)self setStatusViewTimer:v4];
@@ -657,9 +657,9 @@ LABEL_3:
 - (void)presentStatusViewController
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(WFCompactHostingViewController *)self runningContext];
+  runningContext = [(WFCompactHostingViewController *)self runningContext];
 
-  if (v3)
+  if (runningContext)
   {
     [(WFCompactHostingViewController *)self clearStatusViewTimer];
     v4 = getWFDialogLogObject();
@@ -670,26 +670,26 @@ LABEL_3:
       _os_log_impl(&dword_274719000, v4, OS_LOG_TYPE_DEFAULT, "%s Presenting status view", &v8, 0xCu);
     }
 
-    v5 = [(WFCompactHostingViewController *)self statusViewController];
-    if (!v5)
+    statusViewController = [(WFCompactHostingViewController *)self statusViewController];
+    if (!statusViewController)
     {
-      v5 = objc_alloc_init(WFCompactStatusViewController);
-      v6 = [(WFCompactHostingViewController *)self progress];
-      [(WFCompactStatusViewController *)v5 setProgress:v6];
+      statusViewController = objc_alloc_init(WFCompactStatusViewController);
+      progress = [(WFCompactHostingViewController *)self progress];
+      [(WFCompactStatusViewController *)statusViewController setProgress:progress];
 
-      v7 = [(WFCompactHostingViewController *)self runningAttribution];
-      [(WFCompactStatusViewController *)v5 setAttribution:v7];
+      runningAttribution = [(WFCompactHostingViewController *)self runningAttribution];
+      [(WFCompactStatusViewController *)statusViewController setAttribution:runningAttribution];
 
-      [(WFCompactHostingViewController *)self setStatusViewController:v5];
+      [(WFCompactHostingViewController *)self setStatusViewController:statusViewController];
     }
 
-    [(WFCompactHostingViewController *)self presentViewController:v5 animated:1 completion:0];
+    [(WFCompactHostingViewController *)self presentViewController:statusViewController animated:1 completion:0];
   }
 }
 
-- (void)updateChromeVisibilityWithCompletionHandler:(id)a3
+- (void)updateChromeVisibilityWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(WFCompactHostingViewController *)self handlingRequest])
   {
     v5 = 1;
@@ -697,8 +697,8 @@ LABEL_3:
 
   else
   {
-    v6 = [(WFCompactHostingViewController *)self runningContext];
-    v5 = v6 != 0;
+    runningContext = [(WFCompactHostingViewController *)self runningContext];
+    v5 = runningContext != 0;
   }
 
   if ([(WFCompactHostingViewController *)self screenIsLocked])
@@ -708,13 +708,13 @@ LABEL_3:
 
   else
   {
-    v8 = [(WFCompactHostingViewController *)self presentedViewController];
-    if (v8)
+    presentedViewController = [(WFCompactHostingViewController *)self presentedViewController];
+    if (presentedViewController)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = v8;
+        v9 = presentedViewController;
       }
 
       else
@@ -730,22 +730,22 @@ LABEL_3:
 
     v10 = v9;
 
-    v11 = [v10 viewIfLoaded];
+    viewIfLoaded = [v10 viewIfLoaded];
 
-    LODWORD(v10) = [v11 wf_containsFirstResponder];
-    v12 = [MEMORY[0x277D7BDB0] sharedKeyboard];
-    v13 = [v12 isVisible] & v10;
+    LODWORD(v10) = [viewIfLoaded wf_containsFirstResponder];
+    mEMORY[0x277D7BDB0] = [MEMORY[0x277D7BDB0] sharedKeyboard];
+    v13 = [mEMORY[0x277D7BDB0] isVisible] & v10;
 
     v7 = v5 & (v13 ^ 1);
     LOBYTE(v5) = v13;
   }
 
-  v14 = [(WFCompactHostingViewController *)self materialView];
-  [v14 weighting];
+  materialView = [(WFCompactHostingViewController *)self materialView];
+  [materialView weighting];
   v16 = v15;
 
-  v17 = [(WFCompactHostingViewController *)self dimmingView];
-  [v17 alpha];
+  dimmingView = [(WFCompactHostingViewController *)self dimmingView];
+  [dimmingView alpha];
   v19 = v18;
 
   if (v5 == v16 <= 0.0 || ((v7 ^ (v19 <= 0.0)) & 1) == 0)
@@ -762,13 +762,13 @@ LABEL_3:
     v21[1] = 3221225472;
     v21[2] = __78__WFCompactHostingViewController_updateChromeVisibilityWithCompletionHandler___block_invoke_2;
     v21[3] = &unk_279EE8450;
-    v22 = v4;
+    v22 = handlerCopy;
     [v20 animateWithDuration:4 delay:v23 options:v21 animations:0.300000012 completion:0.100000001];
   }
 
-  else if (v4)
+  else if (handlerCopy)
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -812,30 +812,30 @@ uint64_t __78__WFCompactHostingViewController_updateChromeVisibilityWithCompleti
   return result;
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
-  objc_storeStrong(&self->_progress, a3);
-  v5 = a3;
-  v6 = [(WFCompactHostingViewController *)self statusViewController];
-  [v6 setProgress:v5];
+  objc_storeStrong(&self->_progress, progress);
+  progressCopy = progress;
+  statusViewController = [(WFCompactHostingViewController *)self statusViewController];
+  [statusViewController setProgress:progressCopy];
 }
 
 - (void)presentChromeIfPossible
 {
   if ([(WFCompactHostingViewController *)self hasViewAppeared])
   {
-    v3 = [(WFCompactHostingViewController *)self pendingRequest];
+    pendingRequest = [(WFCompactHostingViewController *)self pendingRequest];
 
-    if (v3)
+    if (pendingRequest)
     {
-      v4 = [(WFCompactHostingViewController *)self pendingRequest];
+      pendingRequest2 = [(WFCompactHostingViewController *)self pendingRequest];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v7 = [(WFCompactHostingViewController *)self singleStepShortcutCompletionDialogDebouncer];
-        [v7 poke];
+        singleStepShortcutCompletionDialogDebouncer = [(WFCompactHostingViewController *)self singleStepShortcutCompletionDialogDebouncer];
+        [singleStepShortcutCompletionDialogDebouncer poke];
       }
 
       else
@@ -847,9 +847,9 @@ uint64_t __78__WFCompactHostingViewController_updateChromeVisibilityWithCompleti
 
     else
     {
-      v6 = [(WFCompactHostingViewController *)self runningContext];
+      runningContext = [(WFCompactHostingViewController *)self runningContext];
 
-      if (v6)
+      if (runningContext)
       {
         [(WFCompactHostingViewController *)self updateChromeVisibilityWithCompletionHandler:0];
 
@@ -859,14 +859,14 @@ uint64_t __78__WFCompactHostingViewController_updateChromeVisibilityWithCompleti
   }
 }
 
-- (void)preparePersistentChromeWithContext:(id)a3 attribution:(id)a4
+- (void)preparePersistentChromeWithContext:(id)context attribution:(id)attribution
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  contextCopy = context;
+  attributionCopy = attribution;
+  if (!contextCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFCompactHostingViewController.m" lineNumber:194 description:{@"Invalid parameter not satisfying: %@", @"runningContext"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCompactHostingViewController.m" lineNumber:194 description:{@"Invalid parameter not satisfying: %@", @"runningContext"}];
   }
 
   runningContext = self->_runningContext;
@@ -875,8 +875,8 @@ uint64_t __78__WFCompactHostingViewController_updateChromeVisibilityWithCompleti
     [(WFWorkflowRunningContext *)runningContext removeProgressSubscriber:?];
   }
 
-  objc_storeStrong(&self->_runningContext, a3);
-  objc_storeStrong(&self->_runningAttribution, a4);
+  objc_storeStrong(&self->_runningContext, context);
+  objc_storeStrong(&self->_runningAttribution, attribution);
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -884,7 +884,7 @@ uint64_t __78__WFCompactHostingViewController_updateChromeVisibilityWithCompleti
   aBlock[3] = &unk_279EE8400;
   objc_copyWeak(&v15, &location);
   v11 = _Block_copy(aBlock);
-  v12 = [v8 addProgressSubscriberUsingPublishingHandler:v11];
+  v12 = [contextCopy addProgressSubscriberUsingPublishingHandler:v11];
   [(WFCompactHostingViewController *)self setProgressSubscriber:v12];
 
   [(WFCompactHostingViewController *)self presentChromeIfPossible];
@@ -921,29 +921,29 @@ void __81__WFCompactHostingViewController_preparePersistentChromeWithContext_att
   v6.receiver = self;
   v6.super_class = WFCompactHostingViewController;
   [(WFCompactHostingViewController *)&v6 viewWillLayoutSubviews];
-  v3 = [(WFCompactHostingViewController *)self pendingRequest];
+  pendingRequest = [(WFCompactHostingViewController *)self pendingRequest];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(WFCompactHostingViewController *)self singleStepShortcutCompletionDialogDebouncer];
-    [v5 poke];
+    singleStepShortcutCompletionDialogDebouncer = [(WFCompactHostingViewController *)self singleStepShortcutCompletionDialogDebouncer];
+    [singleStepShortcutCompletionDialogDebouncer poke];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = WFCompactHostingViewController;
-  [(WFCompactHostingViewController *)&v7 viewDidAppear:a3];
+  [(WFCompactHostingViewController *)&v7 viewDidAppear:appear];
   if (![(WFCompactHostingViewController *)self hasViewAppeared])
   {
     [(WFCompactHostingViewController *)self setHasViewAppeared:1];
-    v4 = [(WFCompactHostingViewController *)self view];
-    v5 = [v4 window];
-    v6 = [v5 _rootSheetPresentationController];
-    [v6 _setShouldScaleDownBehindDescendantSheets:0];
+    view = [(WFCompactHostingViewController *)self view];
+    window = [view window];
+    _rootSheetPresentationController = [window _rootSheetPresentationController];
+    [_rootSheetPresentationController _setShouldScaleDownBehindDescendantSheets:0];
 
     [(WFCompactHostingViewController *)self presentChromeIfPossible];
   }
@@ -954,9 +954,9 @@ void __81__WFCompactHostingViewController_preparePersistentChromeWithContext_att
   v16 = *MEMORY[0x277D85DE8];
   if (![(WFCompactHostingViewController *)self preparingToPresentDialog])
   {
-    v3 = [(WFCompactHostingViewController *)self progress];
+    progress = [(WFCompactHostingViewController *)self progress];
 
-    if (v3)
+    if (progress)
     {
       v4 = getWFDialogLogObject();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -966,17 +966,17 @@ void __81__WFCompactHostingViewController_preparePersistentChromeWithContext_att
         _os_log_impl(&dword_274719000, v4, OS_LOG_TYPE_DEFAULT, "%s Cancelling NSProgress", buf, 0xCu);
       }
 
-      v5 = [(WFCompactHostingViewController *)self progress];
-      [v5 cancel];
+      progress2 = [(WFCompactHostingViewController *)self progress];
+      [progress2 cancel];
     }
 
     else
     {
-      v6 = [(WFCompactHostingViewController *)self requestCompletionHandler];
+      requestCompletionHandler = [(WFCompactHostingViewController *)self requestCompletionHandler];
 
       v7 = getWFDialogLogObject();
       v8 = v7;
-      if (v6)
+      if (requestCompletionHandler)
       {
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
@@ -985,15 +985,15 @@ void __81__WFCompactHostingViewController_preparePersistentChromeWithContext_att
           _os_log_impl(&dword_274719000, v8, OS_LOG_TYPE_DEFAULT, "%s Cancelling request", buf, 0xCu);
         }
 
-        v9 = [(WFCompactHostingViewController *)self requestCompletionHandler];
+        requestCompletionHandler2 = [(WFCompactHostingViewController *)self requestCompletionHandler];
         [(WFCompactHostingViewController *)self setRequestCompletionHandler:0];
         [(WFCompactHostingViewController *)self setHandlingRequest:0];
         v12[0] = MEMORY[0x277D85DD0];
         v12[1] = 3221225472;
         v12[2] = __50__WFCompactHostingViewController_cancelAndDismiss__block_invoke;
         v12[3] = &unk_279EE8A50;
-        v13 = v9;
-        v10 = v9;
+        v13 = requestCompletionHandler2;
+        v10 = requestCompletionHandler2;
         [(WFCompactHostingViewController *)self dismissPlatterViewControllerAndUpdateChromeAnimated:1 completionHandler:v12];
       }
 
@@ -1050,12 +1050,12 @@ void __50__WFCompactHostingViewController_cancelAndDismiss__block_invoke_188(uin
   }
 }
 
-- (void)handleTapGesture:(id)a3
+- (void)handleTapGesture:(id)gesture
 {
-  if ([a3 state] == 3)
+  if ([gesture state] == 3)
   {
-    v4 = [(WFCompactHostingViewController *)self materialView];
-    [v4 weighting];
+    materialView = [(WFCompactHostingViewController *)self materialView];
+    [materialView weighting];
     v6 = v5;
 
     if (v6 < 1.0 || -[WFCompactHostingViewController screenIsLocked](self, "screenIsLocked") && ([MEMORY[0x277D7BDB0] sharedKeyboard], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isVisible"), v7, (v8 & 1) == 0))
@@ -1066,9 +1066,9 @@ void __50__WFCompactHostingViewController_cancelAndDismiss__block_invoke_188(uin
 
     else
     {
-      v10 = [(WFCompactHostingViewController *)self view];
-      v9 = [v10 window];
-      [v9 endEditing:1];
+      view = [(WFCompactHostingViewController *)self view];
+      window = [view window];
+      [window endEditing:1];
     }
   }
 }
@@ -1080,27 +1080,27 @@ void __50__WFCompactHostingViewController_cancelAndDismiss__block_invoke_188(uin
   [(WFCompactHostingViewController *)&v11 loadView];
   v3 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v3 setAlpha:0.0];
-  v4 = [(WFCompactHostingViewController *)self view];
-  [v4 bounds];
+  view = [(WFCompactHostingViewController *)self view];
+  [view bounds];
   [v3 setFrame:?];
 
   v5 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.200000003];
   [v3 setBackgroundColor:v5];
 
   [v3 setAutoresizingMask:18];
-  v6 = [(WFCompactHostingViewController *)self view];
-  [v6 addSubview:v3];
+  view2 = [(WFCompactHostingViewController *)self view];
+  [view2 addSubview:v3];
 
   [(WFCompactHostingViewController *)self setDimmingView:v3];
   v7 = [MEMORY[0x277D26718] materialViewWithRecipe:6 options:0 initialWeighting:0.0];
   [v7 setUserInteractionEnabled:1];
-  v8 = [(WFCompactHostingViewController *)self view];
-  [v8 bounds];
+  view3 = [(WFCompactHostingViewController *)self view];
+  [view3 bounds];
   [v7 setFrame:?];
 
   [v7 setAutoresizingMask:18];
-  v9 = [(WFCompactHostingViewController *)self view];
-  [v9 addSubview:v7];
+  view4 = [(WFCompactHostingViewController *)self view];
+  [view4 addSubview:v7];
 
   [(WFCompactHostingViewController *)self setMaterialView:v7];
   v10 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_handleTapGesture_];
@@ -1109,25 +1109,25 @@ void __50__WFCompactHostingViewController_cancelAndDismiss__block_invoke_188(uin
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D7BE00] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D7BE00] object:0];
 
   v4.receiver = self;
   v4.super_class = WFCompactHostingViewController;
   [(WFCompactHostingViewController *)&v4 dealloc];
 }
 
-- (WFCompactHostingViewController)initWithScreenLocked:(BOOL)a3 delegate:(id)a4
+- (WFCompactHostingViewController)initWithScreenLocked:(BOOL)locked delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = WFCompactHostingViewController;
   v7 = [(WFCompactHostingViewController *)&v20 init];
   v8 = v7;
   if (v7)
   {
-    v7->_screenIsLocked = a3;
-    objc_storeWeak(&v7->_delegate, v6);
+    v7->_screenIsLocked = locked;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     v9 = objc_opt_new();
     unlockService = v8->_unlockService;
     v8->_unlockService = v9;
@@ -1145,14 +1145,14 @@ void __50__WFCompactHostingViewController_cancelAndDismiss__block_invoke_188(uin
     singleStepShortcutCompletionDialogDebouncer = v8->_singleStepShortcutCompletionDialogDebouncer;
     v8->_singleStepShortcutCompletionDialogDebouncer = v14;
 
-    v16 = [(WFCompactHostingViewController *)v8 singleStepShortcutCompletionDialogDebouncer];
-    [v16 addTarget:v8 action:sel_handlePendingRequest];
+    singleStepShortcutCompletionDialogDebouncer = [(WFCompactHostingViewController *)v8 singleStepShortcutCompletionDialogDebouncer];
+    [singleStepShortcutCompletionDialogDebouncer addTarget:v8 action:sel_handlePendingRequest];
 
     [(WFCompactHostingViewController *)v8 setModalPresentationStyle:6];
     [(WFCompactHostingViewController *)v8 setModalTransitionStyle:2];
     [MEMORY[0x277D7BDB0] beginObservingKeyboardNotifications];
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v8 selector:sel_keyboardWillChange name:*MEMORY[0x277D7BE00] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel_keyboardWillChange name:*MEMORY[0x277D7BE00] object:0];
 
     v18 = v8;
   }

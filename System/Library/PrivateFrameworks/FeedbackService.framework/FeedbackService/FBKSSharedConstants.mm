@@ -2,34 +2,34 @@
 + (NSString)overrideGeoCountryCode;
 + (NSUserDefaults)sharedUserDefaults;
 + (id)appleSeedURL;
-+ (id)appleSeedURLFromDefaults:(id)a3 withEnvironment:(signed __int16)a4;
++ (id)appleSeedURLFromDefaults:(id)defaults withEnvironment:(signed __int16)environment;
 + (id)productVersion;
 + (id)swTrain;
 + (id)swVers;
 + (signed)environment;
 + (void)_deriveSystemVersion;
 + (void)initialize;
-+ (void)overrideEnvironment:(signed __int16)a3 host:(id)a4;
++ (void)overrideEnvironment:(signed __int16)environment host:(id)host;
 @end
 
 @implementation FBKSSharedConstants
 
 + (void)initialize
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 addSuiteNamed:@"group.com.apple.feedback"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults addSuiteNamed:@"group.com.apple.feedback"];
 
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  [v4 setObject:@"production" forKey:@"environment"];
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v3 registerDefaults:v4];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:@"production" forKey:@"environment"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults2 registerDefaults:dictionary];
 }
 
-+ (id)appleSeedURLFromDefaults:(id)a3 withEnvironment:(signed __int16)a4
++ (id)appleSeedURLFromDefaults:(id)defaults withEnvironment:(signed __int16)environment
 {
-  v4 = a4;
-  v5 = a3;
-  if ((v4 - 1) > 3)
+  environmentCopy = environment;
+  defaultsCopy = defaults;
+  if ((environmentCopy - 1) > 3)
   {
     v6 = @"https://fba.apple.com/";
   }
@@ -43,8 +43,8 @@
 
     else
     {
-      v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v6 = [v7 stringForKey:@"developmentHost"];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v6 = [standardUserDefaults stringForKey:@"developmentHost"];
     }
 
     v8 = FBKSLog();
@@ -68,8 +68,8 @@
 
 + (id)appleSeedURL
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [a1 appleSeedURLFromDefaults:v3 withEnvironment:{objc_msgSend(a1, "environment")}];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [self appleSeedURLFromDefaults:standardUserDefaults withEnvironment:{objc_msgSend(self, "environment")}];
 
   return v4;
 }
@@ -79,8 +79,8 @@
   v2 = _cachedEnvironment;
   if (_cachedEnvironment < 0)
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v4 = [v3 stringForKey:@"environment"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v4 = [standardUserDefaults stringForKey:@"environment"];
 
     _cachedEnvironment = FBKSEnvironmentFromString(v4);
     return _cachedEnvironment;
@@ -89,20 +89,20 @@
   return v2;
 }
 
-+ (void)overrideEnvironment:(signed __int16)a3 host:(id)a4
++ (void)overrideEnvironment:(signed __int16)environment host:(id)host
 {
-  v5 = a3;
+  environmentCopy = environment;
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  _cachedEnvironment = v5;
-  objc_storeStrong(&_overrideHostString, a4);
+  hostCopy = host;
+  _cachedEnvironment = environmentCopy;
+  objc_storeStrong(&_overrideHostString, host);
   v7 = FBKSLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136446978;
     v10 = "+[FBKSSharedConstants overrideEnvironment:host:]";
     v11 = 1024;
-    v12 = v5;
+    v12 = environmentCopy;
     v13 = 1024;
     v14 = _cachedEnvironment;
     v15 = 2114;
@@ -180,8 +180,8 @@ uint64_t __41__FBKSSharedConstants_sharedUserDefaults__block_invoke()
   v2 = _swVers;
   _swVers = &stru_1F25DB460;
 
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 valueForKey:@"BuildOverride"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults valueForKey:@"BuildOverride"];
 
   v5 = _CFCopySystemVersionDictionary();
   if (v4 && [v4 length])
@@ -215,15 +215,15 @@ LABEL_10:
   if (_swVers)
   {
     v11 = [MEMORY[0x1E696AE88] scannerWithString:?];
-    v12 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    [v11 setCharactersToBeSkipped:v12];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    [v11 setCharactersToBeSkipped:whitespaceAndNewlineCharacterSet];
 
     v19 = 0;
     if ([v11 scanInteger:&v19])
     {
-      v13 = [MEMORY[0x1E696AB08] uppercaseLetterCharacterSet];
+      uppercaseLetterCharacterSet = [MEMORY[0x1E696AB08] uppercaseLetterCharacterSet];
       v18 = 0;
-      v14 = [v11 scanCharactersFromSet:v13 intoString:&v18];
+      v14 = [v11 scanCharactersFromSet:uppercaseLetterCharacterSet intoString:&v18];
       v15 = v18;
       if (v14)
       {
@@ -237,15 +237,15 @@ LABEL_10:
 
 + (id)swVers
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 valueForKey:@"BuildOverride"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults valueForKey:@"BuildOverride"];
 
   if (!v4 || (v5 = [v4 length], v6 = v4, !v5))
   {
     v6 = _swVers;
     if (!_swVers)
     {
-      [a1 _deriveSystemVersion];
+      [self _deriveSystemVersion];
       v6 = _swVers;
     }
   }
@@ -260,7 +260,7 @@ LABEL_10:
   v2 = _swTrain;
   if (!_swTrain)
   {
-    [a1 _deriveSystemVersion];
+    [self _deriveSystemVersion];
     v2 = _swTrain;
   }
 
@@ -274,7 +274,7 @@ LABEL_10:
   v2 = _productVersion;
   if (!_productVersion)
   {
-    [a1 _deriveSystemVersion];
+    [self _deriveSystemVersion];
     v2 = _productVersion;
   }
 

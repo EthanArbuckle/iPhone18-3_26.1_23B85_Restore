@@ -1,13 +1,13 @@
 @interface _SBSSystemNotesCreateActionSettingsDescriptionProvider
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 @end
 
 @implementation _SBSSystemNotesCreateActionSettingsDescriptionProvider
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (!a3)
+  if (!setting)
   {
     return @"createReason";
   }
@@ -16,11 +16,11 @@
   return 0;
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v6 = a4;
-  v7 = v6;
-  if (a5)
+  objectCopy = object;
+  v7 = objectCopy;
+  if (setting)
   {
     [_SBSSystemNotesCreateActionSettingsDescriptionProvider valueDescriptionForFlag:object:ofSetting:];
     v8 = @"-count-";
@@ -28,7 +28,7 @@
 
   else
   {
-    v8 = SBSSystemNotesCreateReasonDescription([v6 integerValue]);
+    v8 = SBSSystemNotesCreateReasonDescription([objectCopy integerValue]);
   }
 
   return v8;

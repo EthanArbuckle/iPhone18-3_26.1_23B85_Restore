@@ -1,22 +1,22 @@
 @interface HDDispatchSemaphore
-- (HDDispatchSemaphore)initWithCount:(unint64_t)a3 options:(unint64_t)a4 debugIdentifier:(id)a5;
-- (void)waitWithPriority:(int64_t)a3;
+- (HDDispatchSemaphore)initWithCount:(unint64_t)count options:(unint64_t)options debugIdentifier:(id)identifier;
+- (void)waitWithPriority:(int64_t)priority;
 @end
 
 @implementation HDDispatchSemaphore
 
-- (HDDispatchSemaphore)initWithCount:(unint64_t)a3 options:(unint64_t)a4 debugIdentifier:(id)a5
+- (HDDispatchSemaphore)initWithCount:(unint64_t)count options:(unint64_t)options debugIdentifier:(id)identifier
 {
-  v9 = a5;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = HDDispatchSemaphore;
   v10 = [(HDDispatchSemaphore *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    v10->_options = a4;
-    objc_storeStrong(&v10->_debugIdentifier, a5);
-    v12 = dispatch_semaphore_create(a3);
+    v10->_options = options;
+    objc_storeStrong(&v10->_debugIdentifier, identifier);
+    v12 = dispatch_semaphore_create(count);
     semaphore = v11->_semaphore;
     v11->_semaphore = v12;
 
@@ -29,7 +29,7 @@
   return v11;
 }
 
-- (void)waitWithPriority:(int64_t)a3
+- (void)waitWithPriority:(int64_t)priority
 {
   v21 = *MEMORY[0x277D85DE8];
   if (self->_options)

@@ -1,5 +1,5 @@
 @interface BatteryHealthUIController
-+ (double)getMaxChargeCapacityPercentage:(int)a3;
++ (double)getMaxChargeCapacityPercentage:(int)percentage;
 + (id)getHealthStateString;
 + (id)unknownString;
 - (BatteryHealthUIController)init;
@@ -7,7 +7,7 @@
 - (id)batteryInfoGroupSpecifier;
 - (id)bhuiDateFormatter;
 - (id)chargeCapacityGroupSpecifier;
-- (id)chargeCapacityRemainingDemo:(id)a3;
+- (id)chargeCapacityRemainingDemo:(id)demo;
 - (id)cleanEnergyChargingGroupSpecifier;
 - (id)cycleCountGroupSpecifier;
 - (id)getChargeCapacityRemaining;
@@ -18,7 +18,7 @@
 - (id)getDateOfManufacture;
 - (id)getManualChargingSwitchState;
 - (id)getSmartChargingSwitchState;
-- (id)getStringFromDate:(id)a3;
+- (id)getStringFromDate:(id)date;
 - (id)headerSpecifiers;
 - (id)healthStateGroupSpecifier;
 - (id)manualChargingGroupSpecifier;
@@ -26,7 +26,7 @@
 - (id)peakPowerCapacityGroupSpecifier;
 - (id)recalibrationHeaderSpecifier;
 - (id)serviceHeaderSpecifier;
-- (id)setChargingMode:(id)a3 specifier:(id)a4;
+- (id)setChargingMode:(id)mode specifier:(id)specifier;
 - (id)setUpChargingOptionsSpecifiers;
 - (id)smartChargingGroupSpecifier;
 - (id)specifiers;
@@ -36,25 +36,25 @@
 - (void)clearSpinner;
 - (void)didTapABW;
 - (void)getBatteryInformation;
-- (void)handleNonGenuineBatteryTap:(id)a3;
-- (void)handleRecalibrationTap:(id)a3;
-- (void)handleServiceBatteryTap:(id)a3;
-- (void)handleServiceBatteryTapUsingAppleCareSupport:(id)a3;
+- (void)handleNonGenuineBatteryTap:(id)tap;
+- (void)handleRecalibrationTap:(id)tap;
+- (void)handleServiceBatteryTap:(id)tap;
+- (void)handleServiceBatteryTapUsingAppleCareSupport:(id)support;
 - (void)logBatteryStatusAndStates;
 - (void)reloadSpecifiersFromSpinner;
 - (void)setAboutBatteriesLink;
 - (void)setAboutCleanEnergyChargingLink;
 - (void)setBatteryServiceLink;
-- (void)setCleanChargingSwitchState:(id)a3;
+- (void)setCleanChargingSwitchState:(id)state;
 - (void)setCycleCountLink;
 - (void)setKMLink;
 - (void)setLearnMoreLink;
-- (void)setManualChargingSwitchState:(id)a3;
+- (void)setManualChargingSwitchState:(id)state;
 - (void)setPerformanceManagementAlert;
-- (void)setSmartChargingSwitchState:(id)a3;
+- (void)setSmartChargingSwitchState:(id)state;
 - (void)showLimitToFullAlert;
-- (void)startSpinnerInCell:(id)a3;
-- (void)stopSpinnerInCell:(id)a3;
+- (void)startSpinnerInCell:(id)cell;
+- (void)stopSpinnerInCell:(id)cell;
 - (void)updateBatteryHealthServiceFlag;
 - (void)updateBatteryHealthServiceState;
 - (void)updateCleanEnergyChargingState;
@@ -185,16 +185,16 @@
 {
   if (!+[PLBatteryUIBackendModel shouldShowModifiedHealthController])
   {
-    v3 = [(BatteryHealthUIController *)self smartChargingClient];
+    smartChargingClient = [(BatteryHealthUIController *)self smartChargingClient];
     v8 = 0;
-    v4 = [v3 isSmartChargingCurrentlyEnabled:&v8];
+    v4 = [smartChargingClient isSmartChargingCurrentlyEnabled:&v8];
     v5 = v8;
 
-    v6 = [(BatteryHealthUIController *)self BHUILog];
-    v7 = v6;
+    bHUILog = [(BatteryHealthUIController *)self BHUILog];
+    v7 = bHUILog;
     if (v5)
     {
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(bHUILog, OS_LOG_TYPE_ERROR))
       {
         sub_10FCEC();
       }
@@ -205,7 +205,7 @@
 
     else
     {
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(bHUILog, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
         v10 = v4;
@@ -222,16 +222,16 @@
 
 - (void)updateCleanEnergyChargingState
 {
-  v3 = [(BatteryHealthUIController *)self smartChargingClient];
+  smartChargingClient = [(BatteryHealthUIController *)self smartChargingClient];
   v8 = 0;
-  v4 = [v3 isCECCurrentlyEnabled:&v8];
+  v4 = [smartChargingClient isCECCurrentlyEnabled:&v8];
   v5 = v8;
 
-  v6 = [(BatteryHealthUIController *)self BHUILog];
-  v7 = v6;
+  bHUILog = [(BatteryHealthUIController *)self BHUILog];
+  v7 = bHUILog;
   if (v5)
   {
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(bHUILog, OS_LOG_TYPE_ERROR))
     {
       sub_1113D4();
     }
@@ -241,7 +241,7 @@
 
   else
   {
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(bHUILog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
       v10 = v4;
@@ -262,8 +262,8 @@
   [(BatteryHealthUIController *)self logBatteryStatusAndStates];
   [(BatteryHealthUIController *)self getBatteryInformation];
   [(BatteryHealthUIController *)self updateSmartChargingState];
-  v3 = [(BatteryHealthUIController *)self smartChargingClient];
-  if ([v3 isCECSupported])
+  smartChargingClient = [(BatteryHealthUIController *)self smartChargingClient];
+  if ([smartChargingClient isCECSupported])
   {
     if (os_log_type_enabled(self->_BHUILog, OS_LOG_TYPE_DEBUG))
     {
@@ -394,12 +394,12 @@ LABEL_11:
   [v9 openURL:v8 options:&__NSDictionary0__struct completionHandler:&stru_164358];
 }
 
-- (void)handleNonGenuineBatteryTap:(id)a3
+- (void)handleNonGenuineBatteryTap:(id)tap
 {
   v3 = FLFollowUpSingleItemKey;
-  v4 = a3;
-  v7 = [v4 propertyForKey:v3];
-  v5 = [v4 propertyForKey:FLFollowUpSingleActionKey];
+  tapCopy = tap;
+  v7 = [tapCopy propertyForKey:v3];
+  v5 = [tapCopy propertyForKey:FLFollowUpSingleActionKey];
 
   v6 = [FLFollowUpActionHandler handlerWithItem:v7];
   [v6 handleAction:v5 completion:&stru_1643B8];
@@ -509,9 +509,9 @@ LABEL_13:
   return v7;
 }
 
-+ (double)getMaxChargeCapacityPercentage:(int)a3
++ (double)getMaxChargeCapacityPercentage:(int)percentage
 {
-  result = fmin(a3 / 100.0, 1.0);
+  result = fmin(percentage / 100.0, 1.0);
   if (result < 0.0)
   {
     return 0.0;
@@ -520,9 +520,9 @@ LABEL_13:
   return result;
 }
 
-- (id)chargeCapacityRemainingDemo:(id)a3
+- (id)chargeCapacityRemainingDemo:(id)demo
 {
-  if (!+[BatteryUIResourceClass inDemoMode](BatteryUIResourceClass, "inDemoMode", a3) || (+[BatteryUIResourceClass containerPath], (v3 = _CFPreferencesCopyValueWithContainer()) == 0))
+  if (!+[BatteryUIResourceClass inDemoMode](BatteryUIResourceClass, "inDemoMode", demo) || (+[BatteryUIResourceClass containerPath], (v3 = _CFPreferencesCopyValueWithContainer()) == 0))
   {
     v3 = BatteryUILocalization(@"CHARGE_CAPACITY");
   }
@@ -649,10 +649,10 @@ LABEL_12:
 
   v11 = objc_alloc_init(FLFollowUpItem);
   v12 = +[PLBatteryUIBackendModel shouldShowChargingController];
-  v13 = [v3 + 752 inDemoMode];
+  inDemoMode = [v3 + 752 inDemoMode];
   if (v12)
   {
-    if (v13)
+    if (inDemoMode)
     {
       [v3 + 752 containerPath];
       v14 = @"BATTERY_HEALTH_TITLE";
@@ -665,7 +665,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (!v13)
+  if (!inDemoMode)
   {
     v14 = @"NONGENUINE_BATTERY_TITLE";
     goto LABEL_26;
@@ -696,8 +696,8 @@ LABEL_27:
   v18 = [NSArray arrayWithObject:v41];
   [v11 setActions:v18];
 
-  v19 = [v11 uniqueIdentifier];
-  v20 = [PSSpecifier groupSpecifierWithID:v19];
+  uniqueIdentifier = [v11 uniqueIdentifier];
+  v20 = [PSSpecifier groupSpecifierWithID:uniqueIdentifier];
 
   [v42 addObject:v20];
   v21 = [PSSpecifier preferenceSpecifierNamed:&stru_16CDB8 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
@@ -706,7 +706,7 @@ LABEL_27:
   [v21 setProperty:v11 forKey:FLFollowUpSingleItemKey];
   if (+[PLBatteryUIBackendModel shouldShowChargingController])
   {
-    v23 = self;
+    selfCopy = self;
     v24 = [NSAttributedString alloc];
     if (![v3 + 752 inDemoMode] || (objc_msgSend(v3 + 752, "containerPath"), (v25 = _CFPreferencesCopyValueWithContainer()) == 0))
     {
@@ -716,13 +716,13 @@ LABEL_27:
     v26 = [v24 initWithString:v25];
     [v21 setObject:v26 forKeyedSubscript:@"PLBatteryUIFollowUpHeaderInformationAttributedStringKey"];
 
-    self = v23;
+    self = selfCopy;
   }
 
   [v42 addObject:v21];
-  v27 = [v41 label];
-  v28 = self;
-  v29 = [PSSpecifier preferenceSpecifierNamed:v27 target:self set:0 get:0 detail:0 cell:13 edit:0];
+  label = [v41 label];
+  selfCopy2 = self;
+  v29 = [PSSpecifier preferenceSpecifierNamed:label target:self set:0 get:0 detail:0 cell:13 edit:0];
 
   [v29 setProperty:v41 forKey:FLFollowUpSingleActionKey];
   [v29 setProperty:v11 forKey:v22];
@@ -757,14 +757,14 @@ LABEL_27:
     v36 = NSStringFromRange(v44);
     [v20 setProperty:v36 forKey:PSFooterHyperlinkViewLinkRangeKey];
 
-    v37 = [NSValue valueWithNonretainedObject:v28];
+    v37 = [NSValue valueWithNonretainedObject:selfCopy2];
     [v20 setProperty:v37 forKey:PSFooterHyperlinkViewTargetKey];
 
     [v20 setProperty:@"didTapABW" forKey:PSFooterHyperlinkViewActionKey];
     [v20 setObject:v32 forKeyedSubscript:PSFooterTextGroupKey];
   }
 
-  if (os_log_type_enabled(v28->_BHUILog, OS_LOG_TYPE_DEBUG))
+  if (os_log_type_enabled(selfCopy2->_BHUILog, OS_LOG_TYPE_DEBUG))
   {
     sub_111680();
   }
@@ -772,40 +772,40 @@ LABEL_27:
   return v42;
 }
 
-- (void)startSpinnerInCell:(id)a3
+- (void)startSpinnerInCell:(id)cell
 {
-  if (a3)
+  if (cell)
   {
-    v3 = a3;
+    cellCopy = cell;
     v4 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
     [v4 startAnimating];
-    [v3 setAccessoryView:v4];
+    [cellCopy setAccessoryView:v4];
   }
 }
 
-- (void)stopSpinnerInCell:(id)a3
+- (void)stopSpinnerInCell:(id)cell
 {
-  if (a3)
+  if (cell)
   {
-    [a3 setAccessoryView:0];
+    [cell setAccessoryView:0];
   }
 }
 
-- (void)handleServiceBatteryTap:(id)a3
+- (void)handleServiceBatteryTap:(id)tap
 {
   v3 = FLFollowUpSingleItemKey;
-  v4 = a3;
-  v7 = [v4 propertyForKey:v3];
-  v5 = [v4 propertyForKey:FLFollowUpSingleActionKey];
+  tapCopy = tap;
+  v7 = [tapCopy propertyForKey:v3];
+  v5 = [tapCopy propertyForKey:FLFollowUpSingleActionKey];
 
   v6 = [FLFollowUpActionHandler handlerWithItem:v7];
   [v6 handleAction:v5 completion:&stru_164458];
 }
 
-- (void)handleServiceBatteryTapUsingAppleCareSupport:(id)a3
+- (void)handleServiceBatteryTapUsingAppleCareSupport:(id)support
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:PSTableCellKey];
+  supportCopy = support;
+  v5 = [supportCopy propertyForKey:PSTableCellKey];
   objc_initWeak(&location, v5);
 
   v15[0] = 0;
@@ -822,7 +822,7 @@ LABEL_27:
   objc_copyWeak(&v14, &location);
   dispatch_after(v6, &_dispatch_main_q, block);
   v7 = objc_initWeak(&from, self);
-  v8 = [(BatteryHealthUIController *)self batteryServiceBookingCoordinator];
+  batteryServiceBookingCoordinator = [(BatteryHealthUIController *)self batteryServiceBookingCoordinator];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1A440;
@@ -830,7 +830,7 @@ LABEL_27:
   v9[4] = v15;
   objc_copyWeak(&v10, &from);
   objc_copyWeak(&v11, &location);
-  [v8 launchBatteryServiceBookingFlowWithCompletionHandler:v9];
+  [batteryServiceBookingCoordinator launchBatteryServiceBookingFlowWithCompletionHandler:v9];
 
   ADClientAddValueForScalarKey();
   AnalyticsSendEventLazy();
@@ -908,8 +908,8 @@ LABEL_18:
   v14 = [NSArray arrayWithObject:v6];
   [v7 setActions:v14];
 
-  v15 = [v7 uniqueIdentifier];
-  v16 = [PSSpecifier groupSpecifierWithID:v15];
+  uniqueIdentifier = [v7 uniqueIdentifier];
+  v16 = [PSSpecifier groupSpecifierWithID:uniqueIdentifier];
 
   [v8 addObject:v16];
   v17 = [PSSpecifier preferenceSpecifierNamed:&stru_16CDB8 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
@@ -929,12 +929,12 @@ LABEL_18:
 
   [v8 addObject:v17];
   v40 = v6;
-  v20 = [v6 label];
-  v21 = [PSSpecifier preferenceSpecifierNamed:v20 target:self set:0 get:0 detail:0 cell:13 edit:0];
+  label = [v6 label];
+  v21 = [PSSpecifier preferenceSpecifierNamed:label target:self set:0 get:0 detail:0 cell:13 edit:0];
 
-  v22 = [(BatteryHealthUIController *)self isImprovedServiceHandoffEnabled];
+  isImprovedServiceHandoffEnabled = [(BatteryHealthUIController *)self isImprovedServiceHandoffEnabled];
   v23 = &selRef_handleServiceBatteryTapUsingAppleCareSupport_;
-  if (!v22)
+  if (!isImprovedServiceHandoffEnabled)
   {
     v23 = &selRef_handleServiceBatteryTap_;
   }
@@ -1008,12 +1008,12 @@ LABEL_18:
   return v8;
 }
 
-- (void)handleRecalibrationTap:(id)a3
+- (void)handleRecalibrationTap:(id)tap
 {
   v3 = FLFollowUpSingleItemKey;
-  v4 = a3;
-  v7 = [v4 propertyForKey:v3];
-  v5 = [v4 propertyForKey:FLFollowUpSingleActionKey];
+  tapCopy = tap;
+  v7 = [tapCopy propertyForKey:v3];
+  v5 = [tapCopy propertyForKey:FLFollowUpSingleActionKey];
 
   v6 = [FLFollowUpActionHandler handlerWithItem:v7];
   [v6 handleAction:v5 completion:&stru_164530];
@@ -1097,8 +1097,8 @@ LABEL_30:
   v17 = [NSArray arrayWithObject:v7];
   [v8 setActions:v17];
 
-  v18 = [v8 uniqueIdentifier];
-  v19 = [PSSpecifier groupSpecifierWithID:v18];
+  uniqueIdentifier = [v8 uniqueIdentifier];
+  v19 = [PSSpecifier groupSpecifierWithID:uniqueIdentifier];
 
   [v3 addObject:v19];
   v20 = [PSSpecifier preferenceSpecifierNamed:&stru_16CDB8 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
@@ -1106,8 +1106,8 @@ LABEL_30:
   v21 = FLFollowUpSingleItemKey;
   [v20 setProperty:v8 forKey:FLFollowUpSingleItemKey];
   [v3 addObject:v20];
-  v22 = [v7 label];
-  v23 = [PSSpecifier preferenceSpecifierNamed:v22 target:self set:0 get:0 detail:0 cell:13 edit:0];
+  label = [v7 label];
+  v23 = [PSSpecifier preferenceSpecifierNamed:label target:self set:0 get:0 detail:0 cell:13 edit:0];
 
   [v23 setProperty:v7 forKey:FLFollowUpSingleActionKey];
   [v23 setProperty:v8 forKey:v21];
@@ -1126,12 +1126,12 @@ LABEL_30:
 {
   if ([(BatteryHealthUIController *)self genuineBatteryStatus])
   {
-    v3 = [(BatteryHealthUIController *)self nonGenuineBatteryGroupSpecifier];
+    nonGenuineBatteryGroupSpecifier = [(BatteryHealthUIController *)self nonGenuineBatteryGroupSpecifier];
   }
 
   else
   {
-    v3 = +[NSMutableArray array];
+    nonGenuineBatteryGroupSpecifier = +[NSMutableArray array];
     if (!+[BatteryUIResourceClass inDemoMode](BatteryUIResourceClass, "inDemoMode") || (+[BatteryUIResourceClass containerPath], (v4 = _CFPreferencesCopyValueWithContainer()) == 0))
     {
       v4 = BatteryUILocalization(@"SERVICE_RECOMMENDED_URL");
@@ -1164,30 +1164,30 @@ LABEL_30:
     v11 = [NSArray arrayWithObject:v7];
     [v8 setActions:v11];
 
-    v12 = [v8 uniqueIdentifier];
-    v13 = [PSSpecifier groupSpecifierWithID:v12];
+    uniqueIdentifier = [v8 uniqueIdentifier];
+    v13 = [PSSpecifier groupSpecifierWithID:uniqueIdentifier];
 
-    [v3 addObject:v13];
+    [nonGenuineBatteryGroupSpecifier addObject:v13];
     v14 = [PSSpecifier preferenceSpecifierNamed:&stru_16CDB8 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
     [v14 setProperty:objc_opt_class() forKey:PSCellClassKey];
     v15 = FLFollowUpSingleItemKey;
     [v14 setProperty:v8 forKey:FLFollowUpSingleItemKey];
-    [v3 addObject:v14];
-    v16 = [v7 label];
-    v17 = [PSSpecifier preferenceSpecifierNamed:v16 target:self set:0 get:0 detail:0 cell:13 edit:0];
+    [nonGenuineBatteryGroupSpecifier addObject:v14];
+    label = [v7 label];
+    v17 = [PSSpecifier preferenceSpecifierNamed:label target:self set:0 get:0 detail:0 cell:13 edit:0];
 
     [v17 setProperty:v7 forKey:FLFollowUpSingleActionKey];
     [v17 setProperty:v8 forKey:v15];
     [v17 setButtonAction:"handleServiceBatteryTap:"];
     [v17 setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
-    [v3 addObject:v17];
+    [nonGenuineBatteryGroupSpecifier addObject:v17];
     if (os_log_type_enabled(self->_BHUILog, OS_LOG_TYPE_DEBUG))
     {
       sub_11178C();
     }
   }
 
-  return v3;
+  return nonGenuineBatteryGroupSpecifier;
 }
 
 - (id)headerSpecifiers
@@ -1196,14 +1196,14 @@ LABEL_30:
   {
     [(BatteryHealthUIController *)self clearSpinner];
 LABEL_3:
-    v3 = [(BatteryHealthUIController *)self nonGenuineBatteryGroupSpecifier];
+    nonGenuineBatteryGroupSpecifier = [(BatteryHealthUIController *)self nonGenuineBatteryGroupSpecifier];
 LABEL_4:
-    v4 = v3;
+    v4 = nonGenuineBatteryGroupSpecifier;
     goto LABEL_5;
   }
 
-  v6 = [(BatteryHealthUIController *)self genuineBatteryStatus];
-  switch(v6)
+  genuineBatteryStatus = [(BatteryHealthUIController *)self genuineBatteryStatus];
+  switch(genuineBatteryStatus)
   {
     case 2u:
       goto LABEL_3;
@@ -1212,16 +1212,16 @@ LABEL_4:
       break;
     case 0xFFFFFFFF:
 LABEL_11:
-      v7 = [(BatteryHealthUIController *)self startSpinner];
+      startSpinner = [(BatteryHealthUIController *)self startSpinner];
       goto LABEL_12;
   }
 
-  v9 = [(BatteryHealthUIController *)self batteryHealthServiceState];
-  if (v9 > 5)
+  batteryHealthServiceState = [(BatteryHealthUIController *)self batteryHealthServiceState];
+  if (batteryHealthServiceState > 5)
   {
-    if (v9 > 8)
+    if (batteryHealthServiceState > 8)
     {
-      if ((v9 - 9) < 3)
+      if ((batteryHealthServiceState - 9) < 3)
       {
         BHUILog = self->_BHUILog;
         if (os_log_type_enabled(BHUILog, OS_LOG_TYPE_DEBUG))
@@ -1229,11 +1229,11 @@ LABEL_11:
           sub_1117C0(BHUILog);
         }
 
-        v3 = [(BatteryHealthUIController *)self recalibrationHeaderSpecifier];
+        nonGenuineBatteryGroupSpecifier = [(BatteryHealthUIController *)self recalibrationHeaderSpecifier];
         goto LABEL_4;
       }
 
-      if (v9 == 12)
+      if (batteryHealthServiceState == 12)
       {
         goto LABEL_3;
       }
@@ -1241,12 +1241,12 @@ LABEL_11:
       goto LABEL_35;
     }
 
-    if (v9 == 6)
+    if (batteryHealthServiceState == 6)
     {
       goto LABEL_16;
     }
 
-    if (v9 != 7)
+    if (batteryHealthServiceState != 7)
     {
       v12 = self->_BHUILog;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1260,7 +1260,7 @@ LABEL_11:
 
   else
   {
-    if ((v9 - 1) < 4)
+    if ((batteryHealthServiceState - 1) < 4)
     {
 LABEL_16:
       v10 = self->_BHUILog;
@@ -1269,15 +1269,15 @@ LABEL_16:
         sub_1117C0(v10);
       }
 
-      v3 = [(BatteryHealthUIController *)self serviceHeaderSpecifier];
+      nonGenuineBatteryGroupSpecifier = [(BatteryHealthUIController *)self serviceHeaderSpecifier];
       goto LABEL_4;
     }
 
-    if ((v9 + 1) >= 2)
+    if ((batteryHealthServiceState + 1) >= 2)
     {
-      if (v9 == 5)
+      if (batteryHealthServiceState == 5)
       {
-        v3 = [(BatteryHealthUIController *)self unknownHeaderSpeciifer];
+        nonGenuineBatteryGroupSpecifier = [(BatteryHealthUIController *)self unknownHeaderSpeciifer];
         goto LABEL_4;
       }
 
@@ -1294,14 +1294,14 @@ LABEL_35:
 
   if (+[PLBatteryUIBackendModel shouldShowChargingController](PLBatteryUIBackendModel, "shouldShowChargingController") || +[PLBatteryUIBackendModel shouldShowModifiedHealthController])
   {
-    v3 = [(BatteryHealthUIController *)self healthStateGroupSpecifier];
+    nonGenuineBatteryGroupSpecifier = [(BatteryHealthUIController *)self healthStateGroupSpecifier];
     goto LABEL_4;
   }
 
-  v7 = [(BatteryHealthUIController *)self aboutBatteriesGroupSpecifier];
+  startSpinner = [(BatteryHealthUIController *)self aboutBatteriesGroupSpecifier];
 LABEL_12:
-  v8 = v7;
-  v4 = [NSArray arrayWithObject:v7];
+  v8 = startSpinner;
+  v4 = [NSArray arrayWithObject:startSpinner];
 
 LABEL_5:
 
@@ -1645,24 +1645,24 @@ LABEL_29:
   v4 = [v2 initWithTitle:v3 detailText:0 symbolName:0 contentLayout:2];
 
   v121 = v4;
-  v5 = [v4 headerView];
-  v6 = [v5 subviews];
-  v7 = [v6 firstObject];
+  headerView = [v4 headerView];
+  subviews = [headerView subviews];
+  firstObject = [subviews firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [v7 font];
-    [v8 pointSize];
+    font = [firstObject font];
+    [font pointSize];
     v10 = v9;
 
     if (v10 < 45.0)
     {
-      [v7 setAdjustsFontSizeToFitWidth:1];
-      [v7 setNumberOfLines:1];
+      [firstObject setAdjustsFontSizeToFitWidth:1];
+      [firstObject setNumberOfLines:1];
     }
   }
 
-  v113 = v7;
+  v113 = firstObject;
   [v121 setAccessibilityIdentifier:@"BATTERY_WARRANTY_TITLE"];
   v11 = objc_alloc_init(UITextView);
   v12 = [NSMutableAttributedString alloc];
@@ -1740,11 +1740,11 @@ LABEL_29:
   v36 = +[UIColor labelColor];
   [v119 setTextColor:v36];
 
-  v37 = [v121 contentView];
-  [v37 setUserInteractionEnabled:1];
-  [v37 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v37 addSubview:v11];
-  [v37 addSubview:v119];
+  contentView = [v121 contentView];
+  [contentView setUserInteractionEnabled:1];
+  [contentView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [contentView addSubview:v11];
+  [contentView addSubview:v119];
   [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v119 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v11 setAdjustsFontForContentSizeCategory:1];
@@ -1791,7 +1791,7 @@ LABEL_29:
     v50 = +[UIColor labelColor];
     [v115 setTextColor:v50];
 
-    [v37 addSubview:v115];
+    [contentView addSubview:v115];
     [v115 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v115 setAdjustsFontForContentSizeCategory:1];
 
@@ -1800,41 +1800,41 @@ LABEL_29:
   }
 
   v51 = +[PLBatteryUIBackendModel shouldShowModifiedHealthController];
-  v52 = [v11 topAnchor];
-  v53 = [v37 topAnchor];
-  v54 = [v52 constraintEqualToAnchor:v53];
+  topAnchor = [v11 topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v54 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v55 = v54;
   if (v51)
   {
     v125[0] = v54;
-    v56 = [v11 leftAnchor];
-    v108 = [v37 leftAnchor];
-    v107 = [v56 constraintEqualToAnchor:8.0 constant:?];
+    leftAnchor = [v11 leftAnchor];
+    leftAnchor2 = [contentView leftAnchor];
+    v107 = [leftAnchor constraintEqualToAnchor:8.0 constant:?];
     v125[1] = v107;
-    v57 = [v11 rightAnchor];
-    v105 = [v37 rightAnchor];
-    v106 = v57;
-    v104 = [v57 constraintEqualToAnchor:-8.0 constant:?];
+    rightAnchor = [v11 rightAnchor];
+    rightAnchor2 = [contentView rightAnchor];
+    v106 = rightAnchor;
+    v104 = [rightAnchor constraintEqualToAnchor:-8.0 constant:?];
     v125[2] = v104;
-    v58 = [v34 topAnchor];
-    v102 = [v11 bottomAnchor];
-    v103 = v58;
-    v59 = [v58 constraintEqualToAnchor:10.0 constant:?];
+    topAnchor3 = [v34 topAnchor];
+    bottomAnchor = [v11 bottomAnchor];
+    v103 = topAnchor3;
+    v59 = [topAnchor3 constraintEqualToAnchor:10.0 constant:?];
     v125[3] = v59;
-    v60 = [v34 leftAnchor];
-    v100 = [v37 leftAnchor];
-    v101 = v60;
-    v99 = [v60 constraintEqualToAnchor:?];
+    leftAnchor3 = [v34 leftAnchor];
+    leftAnchor4 = [contentView leftAnchor];
+    v101 = leftAnchor3;
+    v99 = [leftAnchor3 constraintEqualToAnchor:?];
     v125[4] = v99;
-    v61 = [v34 rightAnchor];
-    v97 = [v37 rightAnchor];
-    v98 = v61;
-    v96 = [v61 constraintEqualToAnchor:?];
+    rightAnchor3 = [v34 rightAnchor];
+    rightAnchor4 = [contentView rightAnchor];
+    v98 = rightAnchor3;
+    v96 = [rightAnchor3 constraintEqualToAnchor:?];
     v125[5] = v96;
-    v62 = [v34 bottomAnchor];
-    v94 = [v37 bottomAnchor];
-    v95 = v62;
-    v93 = [v62 constraintEqualToAnchor:?];
+    bottomAnchor2 = [v34 bottomAnchor];
+    bottomAnchor3 = [contentView bottomAnchor];
+    v95 = bottomAnchor2;
+    v93 = [bottomAnchor2 constraintEqualToAnchor:?];
     v125[6] = v93;
     v92 = [NSArray arrayWithObjects:v125 count:7];
     [NSLayoutConstraint activateConstraints:?];
@@ -1845,64 +1845,64 @@ LABEL_29:
   else
   {
     v124[0] = v54;
-    v89 = [v11 leftAnchor];
-    v108 = [v37 leftAnchor];
-    v107 = [v89 constraintEqualToAnchor:8.0 constant:?];
+    leftAnchor5 = [v11 leftAnchor];
+    leftAnchor2 = [contentView leftAnchor];
+    v107 = [leftAnchor5 constraintEqualToAnchor:8.0 constant:?];
     v124[1] = v107;
-    v65 = [v11 rightAnchor];
-    v105 = [v37 rightAnchor];
-    v106 = v65;
-    v104 = [v65 constraintEqualToAnchor:-8.0 constant:?];
+    rightAnchor5 = [v11 rightAnchor];
+    rightAnchor2 = [contentView rightAnchor];
+    v106 = rightAnchor5;
+    v104 = [rightAnchor5 constraintEqualToAnchor:-8.0 constant:?];
     v124[2] = v104;
-    v66 = [v34 topAnchor];
-    v102 = [v11 bottomAnchor];
-    v103 = v66;
-    v88 = [v66 constraintEqualToAnchor:10.0 constant:?];
+    topAnchor4 = [v34 topAnchor];
+    bottomAnchor = [v11 bottomAnchor];
+    v103 = topAnchor4;
+    v88 = [topAnchor4 constraintEqualToAnchor:10.0 constant:?];
     v124[3] = v88;
-    v67 = [v34 leftAnchor];
-    v100 = [v37 leftAnchor];
-    v101 = v67;
-    v99 = [v67 constraintEqualToAnchor:?];
+    leftAnchor6 = [v34 leftAnchor];
+    leftAnchor4 = [contentView leftAnchor];
+    v101 = leftAnchor6;
+    v99 = [leftAnchor6 constraintEqualToAnchor:?];
     v124[4] = v99;
-    v68 = [v34 rightAnchor];
-    v97 = [v37 rightAnchor];
-    v98 = v68;
-    v96 = [v68 constraintEqualToAnchor:?];
+    rightAnchor6 = [v34 rightAnchor];
+    rightAnchor4 = [contentView rightAnchor];
+    v98 = rightAnchor6;
+    v96 = [rightAnchor6 constraintEqualToAnchor:?];
     v124[5] = v96;
-    v69 = [v115 topAnchor];
-    v94 = [v34 bottomAnchor];
-    v95 = v69;
-    v93 = [v69 constraintEqualToAnchor:10.0 constant:?];
+    topAnchor5 = [v115 topAnchor];
+    bottomAnchor3 = [v34 bottomAnchor];
+    v95 = topAnchor5;
+    v93 = [topAnchor5 constraintEqualToAnchor:10.0 constant:?];
     v124[6] = v93;
-    v70 = [v115 leftAnchor];
-    v87 = [v34 leftAnchor];
-    v92 = v70;
-    v86 = [v70 constraintEqualToAnchor:v87];
+    leftAnchor7 = [v115 leftAnchor];
+    leftAnchor8 = [v34 leftAnchor];
+    v92 = leftAnchor7;
+    v86 = [leftAnchor7 constraintEqualToAnchor:leftAnchor8];
     v124[7] = v86;
-    v85 = [v115 rightAnchor];
-    v71 = [v34 rightAnchor];
-    [v85 constraintEqualToAnchor:v71];
-    v72 = v91 = v52;
+    rightAnchor7 = [v115 rightAnchor];
+    rightAnchor8 = [v34 rightAnchor];
+    [rightAnchor7 constraintEqualToAnchor:rightAnchor8];
+    v72 = v91 = topAnchor;
     v124[8] = v72;
     [v115 bottomAnchor];
-    v73 = v90 = v53;
-    [v37 bottomAnchor];
+    v73 = v90 = topAnchor2;
+    [contentView bottomAnchor];
     v74 = v55;
-    v76 = v75 = v37;
+    v76 = v75 = contentView;
     v77 = [v73 constraintEqualToAnchor:v76];
     v124[9] = v77;
     v78 = [NSArray arrayWithObjects:v124 count:10];
     [NSLayoutConstraint activateConstraints:v78];
 
     v64 = v115;
-    v56 = v89;
+    leftAnchor = leftAnchor5;
 
-    v37 = v75;
+    contentView = v75;
     v55 = v74;
     v59 = v88;
 
-    v53 = v90;
-    v52 = v91;
+    topAnchor2 = v90;
+    topAnchor = v91;
 
     v11 = v120;
     v63 = v111;
@@ -1918,8 +1918,8 @@ LABEL_29:
   v81 = [UIAction actionWithHandler:v122];
   v82 = [v79 initWithBarButtonSystemItem:0 primaryAction:v81];
 
-  v83 = [v80 navigationItem];
-  [v83 setRightBarButtonItem:v82];
+  navigationItem = [v80 navigationItem];
+  [navigationItem setRightBarButtonItem:v82];
 
   v84 = [[UINavigationController alloc] initWithRootViewController:v80];
   [(BatteryHealthUIController *)self presentModalViewController:v84 withTransition:3];
@@ -1997,12 +1997,12 @@ LABEL_29:
 
 - (id)getCycleCount
 {
-  v3 = [(BatteryHealthUIController *)self batteryCycleCount];
+  batteryCycleCount = [(BatteryHealthUIController *)self batteryCycleCount];
 
-  if (v3)
+  if (batteryCycleCount)
   {
-    v4 = [(BatteryHealthUIController *)self batteryCycleCount];
-    v5 = [NSNumberFormatter localizedStringFromNumber:v4 numberStyle:0];
+    batteryCycleCount2 = [(BatteryHealthUIController *)self batteryCycleCount];
+    v5 = [NSNumberFormatter localizedStringFromNumber:batteryCycleCount2 numberStyle:0];
   }
 
   else
@@ -2144,27 +2144,27 @@ LABEL_29:
 
 - (id)getDateOfManufacture
 {
-  v3 = [(BatteryHealthUIController *)self batteryDateOfManufacture];
-  v4 = [(BatteryHealthUIController *)self getStringFromDate:v3];
+  batteryDateOfManufacture = [(BatteryHealthUIController *)self batteryDateOfManufacture];
+  v4 = [(BatteryHealthUIController *)self getStringFromDate:batteryDateOfManufacture];
 
   return v4;
 }
 
 - (id)getDateOfFirstUse
 {
-  v3 = [(BatteryHealthUIController *)self batteryDateOfFirstUse];
-  v4 = [(BatteryHealthUIController *)self getStringFromDate:v3];
+  batteryDateOfFirstUse = [(BatteryHealthUIController *)self batteryDateOfFirstUse];
+  v4 = [(BatteryHealthUIController *)self getStringFromDate:batteryDateOfFirstUse];
 
   return v4;
 }
 
-- (id)getStringFromDate:(id)a3
+- (id)getStringFromDate:(id)date
 {
-  v4 = a3;
-  if (v4)
+  dateCopy = date;
+  if (dateCopy)
   {
-    v5 = [(BatteryHealthUIController *)self bhuiDateFormatter];
-    v6 = [v5 stringFromDate:v4];
+    bhuiDateFormatter = [(BatteryHealthUIController *)self bhuiDateFormatter];
+    v6 = [bhuiDateFormatter stringFromDate:dateCopy];
   }
 
   else
@@ -2177,16 +2177,16 @@ LABEL_29:
 
 - (id)manualChargingGroupSpecifier
 {
-  v3 = [(BatteryHealthUIController *)self BHUILog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+  bHUILog = [(BatteryHealthUIController *)self BHUILog];
+  if (os_log_type_enabled(bHUILog, OS_LOG_TYPE_DEBUG))
   {
     sub_111C90();
   }
 
   if (!+[PLBatteryUIBackendModel supportsChargingFixedLimit])
   {
-    v11 = [(BatteryHealthUIController *)self BHUILog];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+    bHUILog2 = [(BatteryHealthUIController *)self BHUILog];
+    if (os_log_type_enabled(bHUILog2, OS_LOG_TYPE_FAULT))
     {
       sub_111CC4();
     }
@@ -2196,8 +2196,8 @@ LABEL_29:
 
   if (!+[PLBatteryUIBackendModel shouldShowModifiedHealthController])
   {
-    v11 = [(BatteryHealthUIController *)self BHUILog];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+    bHUILog2 = [(BatteryHealthUIController *)self BHUILog];
+    if (os_log_type_enabled(bHUILog2, OS_LOG_TYPE_FAULT))
     {
       sub_111D04();
     }
@@ -2235,15 +2235,15 @@ LABEL_14:
 
 - (id)getManualChargingSwitchState
 {
-  v3 = [(BatteryHealthUIController *)self BHUILog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+  bHUILog = [(BatteryHealthUIController *)self BHUILog];
+  if (os_log_type_enabled(bHUILog, OS_LOG_TYPE_DEBUG))
   {
     sub_111D44();
   }
 
-  v4 = [(BatteryHealthUIController *)self smartChargingClient];
+  smartChargingClient = [(BatteryHealthUIController *)self smartChargingClient];
   v26 = 0;
-  v5 = [v4 isMCLCurrentlyEnabled:&v26];
+  v5 = [smartChargingClient isMCLCurrentlyEnabled:&v26];
 
   v6 = [(BatteryHealthUIController *)self specifierForID:@"MANUAL_CHARGE_LIMIT_TOGGLE_GROUP_IDENTIFIER"];
   if (!+[BatteryUIResourceClass inDemoMode](BatteryUIResourceClass, "inDemoMode") || (+[UIDevice modelSpecificLocalizedStringKeyForKey:](UIDevice, "modelSpecificLocalizedStringKeyForKey:", @"FIXED_FOOTER"), +[BatteryUIResourceClass containerPath], (v7 = _CFPreferencesCopyValueWithContainer()) == 0))
@@ -2322,40 +2322,40 @@ LABEL_14:
   return v23;
 }
 
-- (void)setManualChargingSwitchState:(id)a3
+- (void)setManualChargingSwitchState:(id)state
 {
-  v4 = a3;
-  v5 = [(BatteryHealthUIController *)self BHUILog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  stateCopy = state;
+  bHUILog = [(BatteryHealthUIController *)self BHUILog];
+  if (os_log_type_enabled(bHUILog, OS_LOG_TYPE_DEBUG))
   {
     sub_111D78();
   }
 
-  v6 = [v4 BOOLValue];
-  if (v6)
+  bOOLValue = [stateCopy BOOLValue];
+  if (bOOLValue)
   {
-    v7 = [(BatteryHealthUIController *)self BHUILog];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    bHUILog2 = [(BatteryHealthUIController *)self BHUILog];
+    if (os_log_type_enabled(bHUILog2, OS_LOG_TYPE_DEBUG))
     {
       sub_111DAC();
     }
 
-    v8 = [(BatteryHealthUIController *)self smartChargingClient];
+    smartChargingClient = [(BatteryHealthUIController *)self smartChargingClient];
     v13 = 0;
-    v9 = [v8 enableMCL:&v13];
+    v9 = [smartChargingClient enableMCL:&v13];
     v10 = v13;
 
-    v11 = [(BatteryHealthUIController *)self BHUILog];
-    v12 = v11;
+    bHUILog3 = [(BatteryHealthUIController *)self BHUILog];
+    v12 = bHUILog3;
     if (!v9 || v10)
     {
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(bHUILog3, OS_LOG_TYPE_ERROR))
       {
         sub_111DE0();
       }
     }
 
-    else if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+    else if (os_log_type_enabled(bHUILog3, OS_LOG_TYPE_DEBUG))
     {
       sub_111E50();
     }
@@ -2458,10 +2458,10 @@ LABEL_14:
   spinnerGroup = self->_spinnerGroup;
   if (!spinnerGroup)
   {
-    v4 = [(BatteryHealthUIController *)self isAuthSpinner];
-    v5 = [(BatteryHealthUIController *)self BHUILog];
-    v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
-    if (v4)
+    isAuthSpinner = [(BatteryHealthUIController *)self isAuthSpinner];
+    bHUILog = [(BatteryHealthUIController *)self BHUILog];
+    v6 = os_log_type_enabled(bHUILog, OS_LOG_TYPE_DEBUG);
+    if (isAuthSpinner)
     {
       if (v6)
       {
@@ -2512,9 +2512,9 @@ LABEL_14:
   }
 
   dispatch_activate(spinnerTimer);
-  v7 = [(BatteryHealthUIController *)self spinnerSpecifierGroup];
+  spinnerSpecifierGroup = [(BatteryHealthUIController *)self spinnerSpecifierGroup];
 
-  return v7;
+  return spinnerSpecifierGroup;
 }
 
 - (void)clearSpinner
@@ -2524,10 +2524,10 @@ LABEL_14:
   {
     self->_spinnerGroup = 0;
 
-    v4 = [(BatteryHealthUIController *)self isAuthSpinner];
-    v5 = [(BatteryHealthUIController *)self BHUILog];
-    v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
-    if (v4)
+    isAuthSpinner = [(BatteryHealthUIController *)self isAuthSpinner];
+    bHUILog = [(BatteryHealthUIController *)self BHUILog];
+    v6 = os_log_type_enabled(bHUILog, OS_LOG_TYPE_DEBUG);
+    if (isAuthSpinner)
     {
       if (v6)
       {
@@ -2560,8 +2560,8 @@ LABEL_14:
 
   else
   {
-    v3 = [(BatteryHealthUIController *)self BHUILog];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+    bHUILog = [(BatteryHealthUIController *)self BHUILog];
+    if (os_log_type_enabled(bHUILog, OS_LOG_TYPE_DEBUG))
     {
       sub_1120C0();
     }
@@ -2588,8 +2588,8 @@ LABEL_14:
 - (id)specifiers
 {
   self->__batteryHealthUILoadStartTime = mach_absolute_time();
-  v3 = [(BatteryHealthUIController *)self BHUILog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+  bHUILog = [(BatteryHealthUIController *)self BHUILog];
+  if (os_log_type_enabled(bHUILog, OS_LOG_TYPE_DEBUG))
   {
     sub_1120F4();
   }
@@ -2603,8 +2603,8 @@ LABEL_14:
     v6 = +[NSMutableArray array];
     if (+[BatteryUIResourceClass batteryDataUnavailable])
     {
-      v7 = [(BatteryHealthUIController *)self startSpinner];
-      [v6 addObject:v7];
+      startSpinner = [(BatteryHealthUIController *)self startSpinner];
+      [v6 addObject:startSpinner];
     }
 
     else
@@ -2612,58 +2612,58 @@ LABEL_14:
       [(BatteryHealthUIController *)self clearSpinner];
       if (+[PLBatteryUIBackendModel shouldShowChargingController](PLBatteryUIBackendModel, "shouldShowChargingController") || +[PLBatteryUIBackendModel shouldShowModifiedHealthController])
       {
-        v8 = [(BatteryHealthUIController *)self BHUILog];
-        if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+        bHUILog2 = [(BatteryHealthUIController *)self BHUILog];
+        if (os_log_type_enabled(bHUILog2, OS_LOG_TYPE_DEBUG))
         {
           sub_11215C();
         }
 
-        v9 = [(BatteryHealthUIController *)self headerSpecifiers];
-        [v6 addObjectsFromArray:v9];
+        headerSpecifiers = [(BatteryHealthUIController *)self headerSpecifiers];
+        [v6 addObjectsFromArray:headerSpecifiers];
 
-        v10 = [(BatteryHealthUIController *)self chargeCapacityGroupSpecifier];
-        [v6 addObjectsFromArray:v10];
+        chargeCapacityGroupSpecifier = [(BatteryHealthUIController *)self chargeCapacityGroupSpecifier];
+        [v6 addObjectsFromArray:chargeCapacityGroupSpecifier];
 
-        v11 = [(BatteryHealthUIController *)self cycleCountGroupSpecifier];
-        [v6 addObjectsFromArray:v11];
+        cycleCountGroupSpecifier = [(BatteryHealthUIController *)self cycleCountGroupSpecifier];
+        [v6 addObjectsFromArray:cycleCountGroupSpecifier];
 
-        v12 = [(BatteryHealthUIController *)self manualChargingGroupSpecifier];
-        [v6 addObjectsFromArray:v12];
+        manualChargingGroupSpecifier = [(BatteryHealthUIController *)self manualChargingGroupSpecifier];
+        [v6 addObjectsFromArray:manualChargingGroupSpecifier];
 
-        v13 = [(BatteryHealthUIController *)self batteryInfoGroupSpecifier];
+        batteryInfoGroupSpecifier = [(BatteryHealthUIController *)self batteryInfoGroupSpecifier];
       }
 
       else
       {
-        v14 = [(BatteryHealthUIController *)self BHUILog];
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+        bHUILog3 = [(BatteryHealthUIController *)self BHUILog];
+        if (os_log_type_enabled(bHUILog3, OS_LOG_TYPE_DEBUG))
         {
           sub_112128();
         }
 
-        v15 = [(BatteryHealthUIController *)self headerSpecifiers];
-        [v6 addObjectsFromArray:v15];
+        headerSpecifiers2 = [(BatteryHealthUIController *)self headerSpecifiers];
+        [v6 addObjectsFromArray:headerSpecifiers2];
 
-        v16 = [(BatteryHealthUIController *)self chargeCapacityGroupSpecifier];
-        [v6 addObjectsFromArray:v16];
+        chargeCapacityGroupSpecifier2 = [(BatteryHealthUIController *)self chargeCapacityGroupSpecifier];
+        [v6 addObjectsFromArray:chargeCapacityGroupSpecifier2];
 
-        v13 = [(BatteryHealthUIController *)self peakPowerCapacityGroupSpecifier];
+        batteryInfoGroupSpecifier = [(BatteryHealthUIController *)self peakPowerCapacityGroupSpecifier];
       }
 
-      v7 = v13;
-      [v6 addObjectsFromArray:v13];
+      startSpinner = batteryInfoGroupSpecifier;
+      [v6 addObjectsFromArray:batteryInfoGroupSpecifier];
     }
 
     if (!+[PLBatteryUIBackendModel shouldShowChargingController](PLBatteryUIBackendModel, "shouldShowChargingController") && !+[PLBatteryUIBackendModel shouldShowModifiedHealthController])
     {
-      v17 = [(BatteryHealthUIController *)self setUpChargingOptionsSpecifiers];
-      [v6 addObjectsFromArray:v17];
+      setUpChargingOptionsSpecifiers = [(BatteryHealthUIController *)self setUpChargingOptionsSpecifiers];
+      [v6 addObjectsFromArray:setUpChargingOptionsSpecifiers];
     }
 
     if (!+[PLBatteryUIBackendModel shouldShowChargingController])
     {
-      v18 = [(BatteryHealthUIController *)self cleanEnergyChargingGroupSpecifier];
-      [v6 addObjectsFromArray:v18];
+      cleanEnergyChargingGroupSpecifier = [(BatteryHealthUIController *)self cleanEnergyChargingGroupSpecifier];
+      [v6 addObjectsFromArray:cleanEnergyChargingGroupSpecifier];
     }
 
     v19 = *&self->PSListController_opaque[v4];
@@ -2712,33 +2712,33 @@ LABEL_14:
 
 - (id)getChargingMode
 {
-  v3 = [(BatteryHealthUIController *)self BHUILog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+  bHUILog = [(BatteryHealthUIController *)self BHUILog];
+  if (os_log_type_enabled(bHUILog, OS_LOG_TYPE_DEBUG))
   {
     sub_1122A4();
   }
 
   if (+[PLBatteryUIBackendModel supportsChargingFixedLimit])
   {
-    v4 = [(BatteryHealthUIController *)self smartChargingClient];
+    smartChargingClient = [(BatteryHealthUIController *)self smartChargingClient];
     v16 = 0;
-    v5 = [v4 isMCLCurrentlyEnabled:&v16];
-    v6 = v16;
+    v5 = [smartChargingClient isMCLCurrentlyEnabled:&v16];
+    bHUILog4 = v16;
 
-    v7 = [(BatteryHealthUIController *)self smartChargingClient];
+    smartChargingClient2 = [(BatteryHealthUIController *)self smartChargingClient];
     v15 = 0;
-    v8 = [v7 isSmartChargingCurrentlyEnabled:&v15];
+    v8 = [smartChargingClient2 isSmartChargingCurrentlyEnabled:&v15];
 
-    v9 = [(BatteryHealthUIController *)self BHUILog];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    bHUILog2 = [(BatteryHealthUIController *)self BHUILog];
+    if (os_log_type_enabled(bHUILog2, OS_LOG_TYPE_DEBUG))
     {
       sub_11230C();
     }
 
     if (v5)
     {
-      v10 = [(BatteryHealthUIController *)self BHUILog];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+      bHUILog3 = [(BatteryHealthUIController *)self BHUILog];
+      if (os_log_type_enabled(bHUILog3, OS_LOG_TYPE_DEBUG))
       {
         sub_112388();
       }
@@ -2748,8 +2748,8 @@ LABEL_14:
 
     else
     {
-      v10 = [(BatteryHealthUIController *)self BHUILog];
-      v13 = os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG);
+      bHUILog3 = [(BatteryHealthUIController *)self BHUILog];
+      v13 = os_log_type_enabled(bHUILog3, OS_LOG_TYPE_DEBUG);
       if (v8 == &dword_0 + 1)
       {
         if (v13)
@@ -2776,8 +2776,8 @@ LABEL_14:
 
   else
   {
-    v6 = [(BatteryHealthUIController *)self BHUILog];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+    bHUILog4 = [(BatteryHealthUIController *)self BHUILog];
+    if (os_log_type_enabled(bHUILog4, OS_LOG_TYPE_DEBUG))
     {
       sub_1122D8();
     }
@@ -2788,39 +2788,39 @@ LABEL_14:
   return v12;
 }
 
-- (id)setChargingMode:(id)a3 specifier:(id)a4
+- (id)setChargingMode:(id)mode specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(BatteryHealthUIController *)self BHUILog];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  modeCopy = mode;
+  bHUILog = [(BatteryHealthUIController *)self BHUILog];
+  if (os_log_type_enabled(bHUILog, OS_LOG_TYPE_DEBUG))
   {
     sub_112424();
   }
 
   if (+[PLBatteryUIBackendModel supportsChargingFixedLimit])
   {
-    if ([v5 intValue])
+    if ([modeCopy intValue])
     {
-      if ([v5 intValue] != 1)
+      if ([modeCopy intValue] != 1)
       {
 LABEL_14:
         v13 = [NSNumber numberWithInt:[(BatteryHealthUIController *)self curChargingMode]];
         goto LABEL_15;
       }
 
-      v7 = [(BatteryHealthUIController *)self smartChargingClient];
+      smartChargingClient = [(BatteryHealthUIController *)self smartChargingClient];
       v19 = 0;
-      [v7 disableDEoC:&v19];
+      [smartChargingClient disableDEoC:&v19];
       v8 = v19;
 
-      v9 = [(BatteryHealthUIController *)self smartChargingClient];
+      smartChargingClient2 = [(BatteryHealthUIController *)self smartChargingClient];
       v18 = v8;
-      [v9 enableMCL:&v18];
+      [smartChargingClient2 enableMCL:&v18];
       v10 = v18;
 
       [(BatteryHealthUIController *)self setCurChargingMode:1];
-      v11 = [(BatteryHealthUIController *)self BHUILog];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+      bHUILog2 = [(BatteryHealthUIController *)self BHUILog];
+      if (os_log_type_enabled(bHUILog2, OS_LOG_TYPE_DEBUG))
       {
         sub_112494(self);
       }
@@ -2828,19 +2828,19 @@ LABEL_14:
 
     else
     {
-      v14 = [(BatteryHealthUIController *)self smartChargingClient];
+      smartChargingClient3 = [(BatteryHealthUIController *)self smartChargingClient];
       v21 = 0;
-      [v14 enableSmartCharging:&v21];
+      [smartChargingClient3 enableSmartCharging:&v21];
       v15 = v21;
 
-      v16 = [(BatteryHealthUIController *)self smartChargingClient];
+      smartChargingClient4 = [(BatteryHealthUIController *)self smartChargingClient];
       v20 = v15;
-      [v16 disableMCL:&v20];
+      [smartChargingClient4 disableMCL:&v20];
       v10 = v20;
 
       [(BatteryHealthUIController *)self setCurChargingMode:0];
-      v11 = [(BatteryHealthUIController *)self BHUILog];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+      bHUILog2 = [(BatteryHealthUIController *)self BHUILog];
+      if (os_log_type_enabled(bHUILog2, OS_LOG_TYPE_DEBUG))
       {
         sub_112494(self);
       }
@@ -2849,8 +2849,8 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v12 = [(BatteryHealthUIController *)self BHUILog];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+  bHUILog3 = [(BatteryHealthUIController *)self BHUILog];
+  if (os_log_type_enabled(bHUILog3, OS_LOG_TYPE_DEBUG))
   {
     sub_1122D8();
   }
@@ -2864,8 +2864,8 @@ LABEL_15:
 - (id)setUpChargingOptionsSpecifiers
 {
   v3 = +[PLBatteryUIBackendModel supportsChargingFixedLimit];
-  v4 = [(BatteryHealthUIController *)self BHUILog];
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
+  bHUILog = [(BatteryHealthUIController *)self BHUILog];
+  v5 = os_log_type_enabled(bHUILog, OS_LOG_TYPE_DEBUG);
   if (v3)
   {
     if (v5)
@@ -2938,7 +2938,7 @@ LABEL_15:
 
     [v7 setIdentifier:@"CHARGING_OPTIMIZATION"];
     [v7 setValues:v25 titles:v16 shortTitles:v21];
-    v22 = v27;
+    smartChargingGroupSpecifier = v27;
     [v27 addObject:v26];
     [v27 addObject:v7];
   }
@@ -2950,10 +2950,10 @@ LABEL_15:
       sub_1122D8();
     }
 
-    v22 = [(BatteryHealthUIController *)self smartChargingGroupSpecifier];
+    smartChargingGroupSpecifier = [(BatteryHealthUIController *)self smartChargingGroupSpecifier];
   }
 
-  return v22;
+  return smartChargingGroupSpecifier;
 }
 
 + (id)getHealthStateString
@@ -3079,29 +3079,29 @@ LABEL_12:
   }
 }
 
-- (void)setSmartChargingSwitchState:(id)a3
+- (void)setSmartChargingSwitchState:(id)state
 {
-  v4 = [a3 BOOLValue];
-  v5 = [(BatteryHealthUIController *)self BHUILog];
-  v6 = v5;
-  if (v4)
+  bOOLValue = [state BOOLValue];
+  bHUILog = [(BatteryHealthUIController *)self BHUILog];
+  v6 = bHUILog;
+  if (bOOLValue)
   {
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(bHUILog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "User enabled smart charging", buf, 2u);
     }
 
-    v7 = [(BatteryHealthUIController *)self smartChargingClient];
+    smartChargingClient = [(BatteryHealthUIController *)self smartChargingClient];
     v36 = 0;
-    v8 = [v7 enableSmartCharging:&v36];
+    v8 = [smartChargingClient enableSmartCharging:&v36];
     v9 = v36;
 
-    v10 = [(BatteryHealthUIController *)self BHUILog];
-    v11 = v10;
+    bHUILog2 = [(BatteryHealthUIController *)self BHUILog];
+    v11 = bHUILog2;
     if (!v8 || v9)
     {
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(bHUILog2, OS_LOG_TYPE_ERROR))
       {
         sub_10FE80();
       }
@@ -3111,7 +3111,7 @@ LABEL_12:
 
     else
     {
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(bHUILog2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "Smart charging enabled", buf, 2u);
@@ -3127,7 +3127,7 @@ LABEL_12:
 
   else
   {
-    v12 = [(BatteryHealthUIController *)self smartChargingClient];
+    smartChargingClient2 = [(BatteryHealthUIController *)self smartChargingClient];
     if (!+[BatteryUIResourceClass inDemoMode](BatteryUIResourceClass, "inDemoMode") || (+[BatteryUIResourceClass containerPath], (v13 = _CFPreferencesCopyValueWithContainer()) == 0))
     {
       v13 = BatteryUILocalization(@"SC_ALERT_TITLE");
@@ -3146,9 +3146,9 @@ LABEL_12:
     v32[3] = &unk_164298;
     v15 = v6;
     v33 = v15;
-    v16 = v12;
+    v16 = smartChargingClient2;
     v34 = v16;
-    v35 = self;
+    selfCopy = self;
     v17 = [UIAlertAction actionWithTitle:v14 style:0 handler:v32];
 
     if (!+[BatteryUIResourceClass inDemoMode](BatteryUIResourceClass, "inDemoMode") || (+[BatteryUIResourceClass containerPath], (v18 = _CFPreferencesCopyValueWithContainer()) == 0))
@@ -3162,7 +3162,7 @@ LABEL_12:
     v29[3] = &unk_164190;
     v19 = v15;
     v30 = v19;
-    v31 = self;
+    selfCopy2 = self;
     v20 = [UIAlertAction actionWithTitle:v18 style:0 handler:v29];
 
     if (!+[BatteryUIResourceClass inDemoMode](BatteryUIResourceClass, "inDemoMode") || (+[BatteryUIResourceClass containerPath], (v21 = _CFPreferencesCopyValueWithContainer()) == 0))
@@ -3176,7 +3176,7 @@ LABEL_12:
     v25[3] = &unk_164298;
     v26 = v19;
     v27 = v16;
-    v28 = self;
+    selfCopy3 = self;
     v22 = v16;
     v23 = v19;
     v24 = [UIAlertAction actionWithTitle:v21 style:0 handler:v25];
@@ -3196,8 +3196,8 @@ LABEL_12:
   v4 = +[NSMutableArray array];
   if ((v3 & 1) == 0)
   {
-    v5 = [(BatteryHealthUIController *)self smartChargingClient];
-    if ([v5 isCECSupported])
+    smartChargingClient = [(BatteryHealthUIController *)self smartChargingClient];
+    if ([smartChargingClient isCECSupported])
     {
       v6 = [PSSpecifier groupSpecifierWithID:0];
       [v4 addObject:v6];
@@ -3219,11 +3219,11 @@ LABEL_12:
         v10 = BatteryUILocalization(@"CLEAN_ENERGY_FOOTER");
       }
 
-      v11 = [(BatteryHealthUIController *)self cleanChargingState];
+      cleanChargingState = [(BatteryHealthUIController *)self cleanChargingState];
       v12 = &_s7SwiftUI24ButtonStyleConfigurationV9isPressedSbvg_ptr;
-      if (v11 == 3)
+      if (cleanChargingState == 3)
       {
-        v33 = v5;
+        v33 = smartChargingClient;
         v13 = +[NSCalendar currentCalendar];
         v14 = objc_alloc_init(NSDateFormatter);
         v15 = +[NSLocale currentLocale];
@@ -3256,7 +3256,7 @@ LABEL_12:
 
         v10 = v21;
         v12 = &_s7SwiftUI24ButtonStyleConfigurationV9isPressedSbvg_ptr;
-        v5 = v33;
+        smartChargingClient = v33;
       }
 
       v22 = v12[459];
@@ -3327,35 +3327,35 @@ LABEL_12:
   }
 }
 
-- (void)setCleanChargingSwitchState:(id)a3
+- (void)setCleanChargingSwitchState:(id)state
 {
-  v4 = [a3 BOOLValue];
-  v5 = [(BatteryHealthUIController *)self BHUILog];
-  v6 = v5;
-  if (v4)
+  bOOLValue = [state BOOLValue];
+  bHUILog = [(BatteryHealthUIController *)self BHUILog];
+  v6 = bHUILog;
+  if (bOOLValue)
   {
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(bHUILog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "User enabled clean energy charging", buf, 2u);
     }
 
-    v7 = [(BatteryHealthUIController *)self smartChargingClient];
+    smartChargingClient = [(BatteryHealthUIController *)self smartChargingClient];
     v36 = 0;
-    v8 = [v7 enableCEC:&v36];
+    v8 = [smartChargingClient enableCEC:&v36];
     v9 = v36;
 
-    v10 = [(BatteryHealthUIController *)self BHUILog];
-    v11 = v10;
+    bHUILog2 = [(BatteryHealthUIController *)self BHUILog];
+    v11 = bHUILog2;
     if (!v8 || v9)
     {
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(bHUILog2, OS_LOG_TYPE_ERROR))
       {
         sub_1125E4();
       }
     }
 
-    else if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    else if (os_log_type_enabled(bHUILog2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "Clean energy charging enabled", buf, 2u);
@@ -3366,7 +3366,7 @@ LABEL_12:
 
   else
   {
-    v12 = [(BatteryHealthUIController *)self smartChargingClient];
+    smartChargingClient2 = [(BatteryHealthUIController *)self smartChargingClient];
     if (!+[BatteryUIResourceClass inDemoMode](BatteryUIResourceClass, "inDemoMode") || (+[BatteryUIResourceClass containerPath], (v13 = _CFPreferencesCopyValueWithContainer()) == 0))
     {
       v13 = BatteryUILocalization(@"CEC_ALERT_TITLE");
@@ -3385,9 +3385,9 @@ LABEL_12:
     v32[3] = &unk_164298;
     v15 = v6;
     v33 = v15;
-    v16 = v12;
+    v16 = smartChargingClient2;
     v34 = v16;
-    v35 = self;
+    selfCopy = self;
     v17 = [UIAlertAction actionWithTitle:v14 style:0 handler:v32];
 
     if (!+[BatteryUIResourceClass inDemoMode](BatteryUIResourceClass, "inDemoMode") || (+[BatteryUIResourceClass containerPath], (v18 = _CFPreferencesCopyValueWithContainer()) == 0))
@@ -3401,7 +3401,7 @@ LABEL_12:
     v29[3] = &unk_164190;
     v19 = v15;
     v30 = v19;
-    v31 = self;
+    selfCopy2 = self;
     v20 = [UIAlertAction actionWithTitle:v18 style:0 handler:v29];
 
     if (!+[BatteryUIResourceClass inDemoMode](BatteryUIResourceClass, "inDemoMode") || (+[BatteryUIResourceClass containerPath], (v21 = _CFPreferencesCopyValueWithContainer()) == 0))
@@ -3415,7 +3415,7 @@ LABEL_12:
     v25[3] = &unk_164298;
     v26 = v19;
     v27 = v16;
-    v28 = self;
+    selfCopy3 = self;
     v22 = v16;
     v23 = v19;
     v24 = [UIAlertAction actionWithTitle:v21 style:0 handler:v25];

@@ -1,17 +1,17 @@
 @interface VCPMADVisualSearchAssetProcessingTask
-- (BOOL)shouldProcessAsset:(id)a3;
-- (VCPMADVisualSearchAssetProcessingTask)initWithLocalIdentifiers:(id)a3 fromPhotoLibraryWithURL:(id)a4 cancelBlock:(id)a5 progressHandler:(id)a6 completionHandler:(id)a7;
-- (id)batchWithAnalysisDatabase:(id)a3 allowDownload:(BOOL)a4 cancelBlock:(id)a5;
+- (BOOL)shouldProcessAsset:(id)asset;
+- (VCPMADVisualSearchAssetProcessingTask)initWithLocalIdentifiers:(id)identifiers fromPhotoLibraryWithURL:(id)l cancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)batchWithAnalysisDatabase:(id)database allowDownload:(BOOL)download cancelBlock:(id)block;
 - (void)dealloc;
 @end
 
 @implementation VCPMADVisualSearchAssetProcessingTask
 
-- (VCPMADVisualSearchAssetProcessingTask)initWithLocalIdentifiers:(id)a3 fromPhotoLibraryWithURL:(id)a4 cancelBlock:(id)a5 progressHandler:(id)a6 completionHandler:(id)a7
+- (VCPMADVisualSearchAssetProcessingTask)initWithLocalIdentifiers:(id)identifiers fromPhotoLibraryWithURL:(id)l cancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler
 {
   v13.receiver = self;
   v13.super_class = VCPMADVisualSearchAssetProcessingTask;
-  v7 = [(VCPMADPhotoAssetProcessingTask *)&v13 initWithLocalIdentifiers:a3 fromPhotoLibraryWithURL:a4 cancelBlock:a5 progressHandler:a6 completionHandler:a7];
+  v7 = [(VCPMADPhotoAssetProcessingTask *)&v13 initWithLocalIdentifiers:identifiers fromPhotoLibraryWithURL:l cancelBlock:block progressHandler:handler completionHandler:completionHandler];
   if (v7)
   {
     v8 = [VCPObjectPool objectPoolWithAllocator:&stru_100282DC8];
@@ -36,25 +36,25 @@
   [(VCPMADVisualSearchAssetProcessingTask *)&v4 dealloc];
 }
 
-- (BOOL)shouldProcessAsset:(id)a3
+- (BOOL)shouldProcessAsset:(id)asset
 {
-  v3 = a3;
-  if ([v3 vcp_needsVisualSearchProcessing])
+  assetCopy = asset;
+  if ([assetCopy vcp_needsVisualSearchProcessing])
   {
-    v4 = 1;
+    vcp_needsStickerGatingProcessing = 1;
   }
 
   else
   {
-    v4 = [v3 vcp_needsStickerGatingProcessing];
+    vcp_needsStickerGatingProcessing = [assetCopy vcp_needsStickerGatingProcessing];
   }
 
-  return v4;
+  return vcp_needsStickerGatingProcessing;
 }
 
-- (id)batchWithAnalysisDatabase:(id)a3 allowDownload:(BOOL)a4 cancelBlock:(id)a5
+- (id)batchWithAnalysisDatabase:(id)database allowDownload:(BOOL)download cancelBlock:(id)block
 {
-  v5 = [VCPMADVisualSearchAssetBatch batchWithServicePool:*(&self->super._progressHandler + 4) visionSession:*(&self->_servicePool + 4) analysisDatabase:a3 cancelBlock:a5];
+  v5 = [VCPMADVisualSearchAssetBatch batchWithServicePool:*(&self->super._progressHandler + 4) visionSession:*(&self->_servicePool + 4) analysisDatabase:database cancelBlock:block];
   [v5 setAllowBeforeMigration:{objc_msgSend(objc_opt_class(), "allowBeforeMigration")}];
 
   return v5;

@@ -1,31 +1,31 @@
 @interface FLOWSchemaFLOWHomeAutomationCommand
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWHomeAutomationCommand)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWHomeAutomationCommand)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWHomeAutomationCommand)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWHomeAutomationCommand)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addHomeAutomationRequests:(id)a3;
-- (void)setHasCommandDuration:(BOOL)a3;
-- (void)setHasCommandErrorReason:(BOOL)a3;
-- (void)setHasCommandOutcome:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addHomeAutomationRequests:(id)requests;
+- (void)setHasCommandDuration:(BOOL)duration;
+- (void)setHasCommandErrorReason:(BOOL)reason;
+- (void)setHasCommandOutcome:(BOOL)outcome;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWHomeAutomationCommand
 
-- (FLOWSchemaFLOWHomeAutomationCommand)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWHomeAutomationCommand)initWithDictionary:(id)dictionary
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v30.receiver = self;
   v30.super_class = FLOWSchemaFLOWHomeAutomationCommand;
   v5 = [(FLOWSchemaFLOWHomeAutomationCommand *)&v30 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"commandId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"commandId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,35 +33,35 @@
       [(FLOWSchemaFLOWHomeAutomationCommand *)v5 setCommandId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"commandType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"commandType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWHomeAutomationCommand setCommandType:](v5, "setCommandType:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"commandOutcome"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"commandOutcome"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWHomeAutomationCommand setCommandOutcome:](v5, "setCommandOutcome:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"commandErrorReason"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"commandErrorReason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWHomeAutomationCommand setCommandErrorReason:](v5, "setCommandErrorReason:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"commandDuration"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"commandDuration"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWHomeAutomationCommand setCommandDuration:](v5, "setCommandDuration:", [v11 unsignedIntValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"homeAutomationRequests"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"homeAutomationRequests"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -115,30 +115,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWHomeAutomationCommand)initWithJSON:(id)a3
+- (FLOWSchemaFLOWHomeAutomationCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWHomeAutomationCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWHomeAutomationCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWHomeAutomationCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -152,12 +152,12 @@
 - (id)dictionaryRepresentation
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[FLOWSchemaFLOWHomeAutomationCommand commandDuration](self, "commandDuration")}];
-    [v3 setObject:v5 forKeyedSubscript:@"commandDuration"];
+    [dictionary setObject:v5 forKeyedSubscript:@"commandDuration"];
 
     has = self->_has;
   }
@@ -175,22 +175,22 @@
       v7 = off_1E78D50F8[v6];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"commandErrorReason"];
+    [dictionary setObject:v7 forKeyedSubscript:@"commandErrorReason"];
   }
 
   if (self->_commandId)
   {
-    v8 = [(FLOWSchemaFLOWHomeAutomationCommand *)self commandId];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    commandId = [(FLOWSchemaFLOWHomeAutomationCommand *)self commandId];
+    dictionaryRepresentation = [commandId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"commandId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"commandId"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"commandId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"commandId"];
     }
   }
 
@@ -208,7 +208,7 @@
       v13 = off_1E78D5148[v12];
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"commandOutcome"];
+    [dictionary setObject:v13 forKeyedSubscript:@"commandOutcome"];
     v11 = self->_has;
   }
 
@@ -225,12 +225,12 @@
       v15 = off_1E78D5160[v14];
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"commandType"];
+    [dictionary setObject:v15 forKeyedSubscript:@"commandType"];
   }
 
   if ([(NSArray *)self->_homeAutomationRequests count])
   {
-    v16 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -250,16 +250,16 @@
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
-          if (v22)
+          dictionaryRepresentation2 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v16 addObject:v22];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v23 = [MEMORY[0x1E695DFB0] null];
-            [v16 addObject:v23];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -269,12 +269,12 @@
       while (v19);
     }
 
-    [v3 setObject:v16 forKeyedSubscript:@"homeAutomationRequests"];
+    [dictionary setObject:array forKeyedSubscript:@"homeAutomationRequests"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v25];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v25];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -332,28 +332,28 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ [(NSArray *)self->_homeAutomationRequests hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(FLOWSchemaFLOWHomeAutomationCommand *)self commandId];
-  v6 = [v4 commandId];
-  if ((v5 != 0) == (v6 == 0))
+  commandId = [(FLOWSchemaFLOWHomeAutomationCommand *)self commandId];
+  commandId2 = [equalCopy commandId];
+  if ((commandId != 0) == (commandId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(FLOWSchemaFLOWHomeAutomationCommand *)self commandId];
-  if (v7)
+  commandId3 = [(FLOWSchemaFLOWHomeAutomationCommand *)self commandId];
+  if (commandId3)
   {
-    v8 = v7;
-    v9 = [(FLOWSchemaFLOWHomeAutomationCommand *)self commandId];
-    v10 = [v4 commandId];
-    v11 = [v9 isEqual:v10];
+    v8 = commandId3;
+    commandId4 = [(FLOWSchemaFLOWHomeAutomationCommand *)self commandId];
+    commandId5 = [equalCopy commandId];
+    v11 = [commandId4 isEqual:commandId5];
 
     if (!v11)
     {
@@ -366,7 +366,7 @@ LABEL_5:
   }
 
   has = self->_has;
-  v13 = v4[40];
+  v13 = equalCopy[40];
   if ((*&has & 1) != (v13 & 1))
   {
     goto LABEL_27;
@@ -375,13 +375,13 @@ LABEL_5:
   if (*&has)
   {
     commandType = self->_commandType;
-    if (commandType != [v4 commandType])
+    if (commandType != [equalCopy commandType])
     {
       goto LABEL_27;
     }
 
     has = self->_has;
-    v13 = v4[40];
+    v13 = equalCopy[40];
   }
 
   v15 = (*&has >> 1) & 1;
@@ -393,13 +393,13 @@ LABEL_5:
   if (v15)
   {
     commandOutcome = self->_commandOutcome;
-    if (commandOutcome != [v4 commandOutcome])
+    if (commandOutcome != [equalCopy commandOutcome])
     {
       goto LABEL_27;
     }
 
     has = self->_has;
-    v13 = v4[40];
+    v13 = equalCopy[40];
   }
 
   v17 = (*&has >> 2) & 1;
@@ -411,13 +411,13 @@ LABEL_5:
   if (v17)
   {
     commandErrorReason = self->_commandErrorReason;
-    if (commandErrorReason != [v4 commandErrorReason])
+    if (commandErrorReason != [equalCopy commandErrorReason])
     {
       goto LABEL_27;
     }
 
     has = self->_has;
-    v13 = v4[40];
+    v13 = equalCopy[40];
   }
 
   v19 = (*&has >> 3) & 1;
@@ -429,23 +429,23 @@ LABEL_5:
   if (v19)
   {
     commandDuration = self->_commandDuration;
-    if (commandDuration != [v4 commandDuration])
+    if (commandDuration != [equalCopy commandDuration])
     {
       goto LABEL_27;
     }
   }
 
-  v5 = [(FLOWSchemaFLOWHomeAutomationCommand *)self homeAutomationRequests];
-  v6 = [v4 homeAutomationRequests];
-  if ((v5 != 0) == (v6 == 0))
+  commandId = [(FLOWSchemaFLOWHomeAutomationCommand *)self homeAutomationRequests];
+  commandId2 = [equalCopy homeAutomationRequests];
+  if ((commandId != 0) == (commandId2 == 0))
   {
 LABEL_26:
 
     goto LABEL_27;
   }
 
-  v21 = [(FLOWSchemaFLOWHomeAutomationCommand *)self homeAutomationRequests];
-  if (!v21)
+  homeAutomationRequests = [(FLOWSchemaFLOWHomeAutomationCommand *)self homeAutomationRequests];
+  if (!homeAutomationRequests)
   {
 
 LABEL_30:
@@ -453,10 +453,10 @@ LABEL_30:
     goto LABEL_28;
   }
 
-  v22 = v21;
-  v23 = [(FLOWSchemaFLOWHomeAutomationCommand *)self homeAutomationRequests];
-  v24 = [v4 homeAutomationRequests];
-  v25 = [v23 isEqual:v24];
+  v22 = homeAutomationRequests;
+  homeAutomationRequests2 = [(FLOWSchemaFLOWHomeAutomationCommand *)self homeAutomationRequests];
+  homeAutomationRequests3 = [equalCopy homeAutomationRequests];
+  v25 = [homeAutomationRequests2 isEqual:homeAutomationRequests3];
 
   if (v25)
   {
@@ -470,15 +470,15 @@ LABEL_28:
   return v26;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FLOWSchemaFLOWHomeAutomationCommand *)self commandId];
+  toCopy = to;
+  commandId = [(FLOWSchemaFLOWHomeAutomationCommand *)self commandId];
 
-  if (v5)
+  if (commandId)
   {
-    v6 = [(FLOWSchemaFLOWHomeAutomationCommand *)self commandId];
+    commandId2 = [(FLOWSchemaFLOWHomeAutomationCommand *)self commandId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -555,27 +555,27 @@ LABEL_8:
   }
 }
 
-- (void)addHomeAutomationRequests:(id)a3
+- (void)addHomeAutomationRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   homeAutomationRequests = self->_homeAutomationRequests;
-  v8 = v4;
+  v8 = requestsCopy;
   if (!homeAutomationRequests)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_homeAutomationRequests;
-    self->_homeAutomationRequests = v6;
+    self->_homeAutomationRequests = array;
 
-    v4 = v8;
+    requestsCopy = v8;
     homeAutomationRequests = self->_homeAutomationRequests;
   }
 
-  [(NSArray *)homeAutomationRequests addObject:v4];
+  [(NSArray *)homeAutomationRequests addObject:requestsCopy];
 }
 
-- (void)setHasCommandDuration:(BOOL)a3
+- (void)setHasCommandDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 8;
   }
@@ -588,9 +588,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasCommandErrorReason:(BOOL)a3
+- (void)setHasCommandErrorReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 4;
   }
@@ -603,9 +603,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasCommandOutcome:(BOOL)a3
+- (void)setHasCommandOutcome:(BOOL)outcome
 {
-  if (a3)
+  if (outcome)
   {
     v3 = 2;
   }
@@ -618,23 +618,23 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v12.receiver = self;
   v12.super_class = FLOWSchemaFLOWHomeAutomationCommand;
-  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:v4];
-  v6 = [(FLOWSchemaFLOWHomeAutomationCommand *)self commandId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:policyCopy];
+  commandId = [(FLOWSchemaFLOWHomeAutomationCommand *)self commandId];
+  v7 = [commandId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(FLOWSchemaFLOWHomeAutomationCommand *)self deleteCommandId];
   }
 
-  v9 = [(FLOWSchemaFLOWHomeAutomationCommand *)self homeAutomationRequests];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  homeAutomationRequests = [(FLOWSchemaFLOWHomeAutomationCommand *)self homeAutomationRequests];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:homeAutomationRequests underConditions:policyCopy];
   [(FLOWSchemaFLOWHomeAutomationCommand *)self setHomeAutomationRequests:v10];
 
   return v5;

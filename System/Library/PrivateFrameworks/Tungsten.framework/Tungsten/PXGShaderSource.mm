@@ -1,7 +1,7 @@
 @interface PXGShaderSource
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PXGShaderSource)init;
-- (PXGShaderSource)initWithSource:(id)a3;
+- (PXGShaderSource)initWithSource:(id)source;
 - (int64_t)length;
 - (unint64_t)hash;
 - (void)_parseShader;
@@ -12,7 +12,7 @@
 - (void)_parseShader
 {
   v17 = +[PXGShaderFunction shaderFunctionByName];
-  v4 = [(PXGShaderSource *)self source];
+  source = [(PXGShaderSource *)self source];
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v7 = objc_alloc_init(MEMORY[0x277CCAB68]);
@@ -68,11 +68,11 @@
   v21 = v10;
   v11 = v7;
   v22 = v11;
-  [v4 enumerateLinesUsingBlock:v18];
+  [source enumerateLinesUsingBlock:v18];
   if (v39[3])
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXGShaderSource.m" lineNumber:214 description:{@"Incorrect parsing of:%@", v4}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGShaderSource.m" lineNumber:214 description:{@"Incorrect parsing of:%@", source}];
   }
 
   v12 = [v9 copy];
@@ -355,29 +355,29 @@ LABEL_38:
 
 - (int64_t)length
 {
-  v2 = [(PXGShaderSource *)self source];
-  v3 = [v2 length];
+  source = [(PXGShaderSource *)self source];
+  v3 = [source length];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PXGShaderSource *)self source];
-    v7 = [v5 source];
-    if (v6 == v7)
+    v5 = equalCopy;
+    source = [(PXGShaderSource *)self source];
+    source2 = [v5 source];
+    if (source == source2)
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = [v6 isEqual:v7];
+      v8 = [source isEqual:source2];
     }
   }
 
@@ -391,27 +391,27 @@ LABEL_38:
 
 - (unint64_t)hash
 {
-  v2 = [(PXGShaderSource *)self source];
-  v3 = [v2 hash];
+  source = [(PXGShaderSource *)self source];
+  v3 = [source hash];
 
   return v3;
 }
 
 - (PXGShaderSource)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGShaderSource.m" lineNumber:55 description:{@"%s is not available as initializer", "-[PXGShaderSource init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGShaderSource.m" lineNumber:55 description:{@"%s is not available as initializer", "-[PXGShaderSource init]"}];
 
   abort();
 }
 
-- (PXGShaderSource)initWithSource:(id)a3
+- (PXGShaderSource)initWithSource:(id)source
 {
-  v6 = a3;
-  if (!v6)
+  sourceCopy = source;
+  if (!sourceCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXGShaderSource.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"source != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGShaderSource.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"source != nil"}];
   }
 
   v20.receiver = self;
@@ -420,7 +420,7 @@ LABEL_38:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_source, a3);
+    objc_storeStrong(&v7->_source, source);
     [(PXGShaderSource *)v8 _parseShader];
     v16 = 0;
     v17 = &v16;

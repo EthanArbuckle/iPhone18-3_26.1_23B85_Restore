@@ -1,10 +1,10 @@
 @interface _UIViewWindowRotationNotificationObserver
-- (void)windowWillAnimateRotation:(id)a3;
+- (void)windowWillAnimateRotation:(id)rotation;
 @end
 
 @implementation _UIViewWindowRotationNotificationObserver
 
-- (void)windowWillAnimateRotation:(id)a3
+- (void)windowWillAnimateRotation:(id)rotation
 {
   WeakRetained = objc_loadWeakRetained(&self->_target);
   memset(v4, 0, sizeof(v4));

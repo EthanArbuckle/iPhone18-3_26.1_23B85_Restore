@@ -1,22 +1,22 @@
 @interface CSRemoteContentSessionManager
 - (CSRemoteContentSessionHostDelegate)forwardingHostDelegate;
-- (CSRemoteContentSessionManager)initWithAuthenticationStatusProvider:(id)a3;
-- (id)_queue_createSessionWithDefinition:(id)a3;
+- (CSRemoteContentSessionManager)initWithAuthenticationStatusProvider:(id)provider;
+- (id)_queue_createSessionWithDefinition:(id)definition;
 - (id)_queue_existingSessions;
-- (id)_queue_existingSessionsWithDefinition:(id)a3;
-- (id)createSessionWithDefinition:(id)a3;
+- (id)_queue_existingSessionsWithDefinition:(id)definition;
+- (id)createSessionWithDefinition:(id)definition;
 - (id)existingSessions;
-- (id)existingSessionsWithDefinition:(id)a3;
-- (id)preferencesForRemoteContentSession:(id)a3;
-- (void)didInvalidateSessionWithSessionID:(id)a3;
-- (void)remoteContentSession:(id)a3 didUpdateWithPreferences:(id)a4;
+- (id)existingSessionsWithDefinition:(id)definition;
+- (id)preferencesForRemoteContentSession:(id)session;
+- (void)didInvalidateSessionWithSessionID:(id)d;
+- (void)remoteContentSession:(id)session didUpdateWithPreferences:(id)preferences;
 @end
 
 @implementation CSRemoteContentSessionManager
 
-- (CSRemoteContentSessionManager)initWithAuthenticationStatusProvider:(id)a3
+- (CSRemoteContentSessionManager)initWithAuthenticationStatusProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = CSRemoteContentSessionManager;
   v6 = [(CSRemoteContentSessionManager *)&v11 init];
@@ -27,7 +27,7 @@
     accessSerialQueue = v6->_accessSerialQueue;
     v6->_accessSerialQueue = v8;
 
-    objc_storeStrong(&v6->_authenticationStatusProvider, a3);
+    objc_storeStrong(&v6->_authenticationStatusProvider, provider);
   }
 
   return v6;
@@ -65,9 +65,9 @@ uint64_t __49__CSRemoteContentSessionManager_existingSessions__block_invoke(uint
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (id)existingSessionsWithDefinition:(id)a3
+- (id)existingSessionsWithDefinition:(id)definition
 {
-  v4 = a3;
+  definitionCopy = definition;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -79,10 +79,10 @@ uint64_t __49__CSRemoteContentSessionManager_existingSessions__block_invoke(uint
   block[1] = 3221225472;
   block[2] = __64__CSRemoteContentSessionManager_existingSessionsWithDefinition___block_invoke;
   block[3] = &unk_27838DBE0;
-  v10 = v4;
+  v10 = definitionCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = definitionCopy;
   dispatch_sync(accessSerialQueue, block);
   v7 = v13[5];
 
@@ -101,9 +101,9 @@ uint64_t __64__CSRemoteContentSessionManager_existingSessionsWithDefinition___bl
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (id)createSessionWithDefinition:(id)a3
+- (id)createSessionWithDefinition:(id)definition
 {
-  v4 = a3;
+  definitionCopy = definition;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -115,10 +115,10 @@ uint64_t __64__CSRemoteContentSessionManager_existingSessionsWithDefinition___bl
   block[1] = 3221225472;
   block[2] = __61__CSRemoteContentSessionManager_createSessionWithDefinition___block_invoke;
   block[3] = &unk_27838DBE0;
-  v10 = v4;
+  v10 = definitionCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = definitionCopy;
   dispatch_sync(accessSerialQueue, block);
   v7 = v13[5];
 
@@ -137,15 +137,15 @@ uint64_t __61__CSRemoteContentSessionManager_createSessionWithDefinition___block
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)didInvalidateSessionWithSessionID:(id)a3
+- (void)didInvalidateSessionWithSessionID:(id)d
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = SBLogDashBoard();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v11 = v4;
+    v11 = dCopy;
     _os_log_impl(&dword_21EB05000, v5, OS_LOG_TYPE_DEFAULT, "[RemoteContent] Remove session %{public}@", buf, 0xCu);
   }
 
@@ -155,28 +155,28 @@ uint64_t __61__CSRemoteContentSessionManager_createSessionWithDefinition___block
   v8[2] = __67__CSRemoteContentSessionManager_didInvalidateSessionWithSessionID___block_invoke;
   v8[3] = &unk_27838B838;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = dCopy;
+  v7 = dCopy;
   dispatch_sync(accessSerialQueue, v8);
 }
 
-- (id)_queue_createSessionWithDefinition:(id)a3
+- (id)_queue_createSessionWithDefinition:(id)definition
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  definitionCopy = definition;
   dispatch_assert_queue_V2(self->_accessSerialQueue);
-  v5 = [[CSRemoteContentSession alloc] initWithDefinition:v4 authenticationStatusProvider:self->_authenticationStatusProvider];
-  v6 = [(CSRemoteContentSession *)v5 sessionID];
+  v5 = [[CSRemoteContentSession alloc] initWithDefinition:definitionCopy authenticationStatusProvider:self->_authenticationStatusProvider];
+  sessionID = [(CSRemoteContentSession *)v5 sessionID];
   WeakRetained = objc_loadWeakRetained(&self->_forwardingHostDelegate);
   [(CSRemoteContentSession *)v5 setHostDelegate:WeakRetained];
 
   [(CSRemoteContentSession *)v5 setPreferencesProvider:self];
   if (self->_sessionIDToSession)
   {
-    v24 = v6;
+    v24 = sessionID;
     v25 = v5;
-    v8 = v4;
-    v9 = [(CSRemoteContentSessionManager *)self _queue_existingSessionsWithDefinition:v4];
+    v8 = definitionCopy;
+    v9 = [(CSRemoteContentSessionManager *)self _queue_existingSessionsWithDefinition:definitionCopy];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -199,17 +199,17 @@ uint64_t __61__CSRemoteContentSessionManager_createSessionWithDefinition___block
           v15 = SBLogDashBoard();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
-            v16 = [v14 sessionID];
+            sessionID2 = [v14 sessionID];
             *buf = 138543618;
-            v31 = v16;
+            v31 = sessionID2;
             v32 = 2114;
             v33 = v8;
             _os_log_impl(&dword_21EB05000, v15, OS_LOG_TYPE_DEFAULT, "[RemoteContent] Removing stale session %{public}@ that matches incoming definition: %{public}@", buf, 0x16u);
           }
 
           sessionIDToSession = self->_sessionIDToSession;
-          v18 = [v14 sessionID];
-          [(NSMutableDictionary *)sessionIDToSession removeObjectForKey:v18];
+          sessionID3 = [v14 sessionID];
+          [(NSMutableDictionary *)sessionIDToSession removeObjectForKey:sessionID3];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v26 objects:v34 count:16];
@@ -218,8 +218,8 @@ uint64_t __61__CSRemoteContentSessionManager_createSessionWithDefinition___block
       while (v11);
     }
 
-    v4 = v8;
-    v6 = v24;
+    definitionCopy = v8;
+    sessionID = v24;
     v5 = v25;
   }
 
@@ -230,15 +230,15 @@ uint64_t __61__CSRemoteContentSessionManager_createSessionWithDefinition___block
     self->_sessionIDToSession = v19;
   }
 
-  [(NSMutableDictionary *)self->_sessionIDToSession setObject:v5 forKey:v6];
+  [(NSMutableDictionary *)self->_sessionIDToSession setObject:v5 forKey:sessionID];
   v21 = SBLogDashBoard();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [(CSRemoteContentSession *)v5 sessionID];
+    sessionID4 = [(CSRemoteContentSession *)v5 sessionID];
     *buf = 138543618;
-    v31 = v22;
+    v31 = sessionID4;
     v32 = 2114;
-    v33 = v4;
+    v33 = definitionCopy;
     _os_log_impl(&dword_21EB05000, v21, OS_LOG_TYPE_DEFAULT, "[RemoteContent] Created session %{public}@ for definition: %{public}@", buf, 0x16u);
   }
 
@@ -253,8 +253,8 @@ uint64_t __61__CSRemoteContentSessionManager_createSessionWithDefinition___block
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSMutableDictionary *)self->_sessionIDToSession objectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_sessionIDToSession objectEnumerator];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -266,7 +266,7 @@ uint64_t __61__CSRemoteContentSessionManager_createSessionWithDefinition___block
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -278,7 +278,7 @@ uint64_t __61__CSRemoteContentSessionManager_createSessionWithDefinition___block
         [v6 addObject:v9];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -292,10 +292,10 @@ uint64_t __61__CSRemoteContentSessionManager_createSessionWithDefinition___block
   return v6;
 }
 
-- (id)_queue_existingSessionsWithDefinition:(id)a3
+- (id)_queue_existingSessionsWithDefinition:(id)definition
 {
   v27 = *MEMORY[0x277D85DE8];
-  v21 = a3;
+  definitionCopy = definition;
   dispatch_assert_queue_V2(self->_accessSerialQueue);
   v24 = 0u;
   v25 = 0u;
@@ -318,16 +318,16 @@ uint64_t __61__CSRemoteContentSessionManager_createSessionWithDefinition___block
         }
 
         v9 = *(*(&v22 + 1) + 8 * i);
-        v10 = [v9 definition];
-        v11 = v21;
-        v12 = [v10 serviceName];
-        v13 = [v11 serviceName];
-        v14 = [v12 isEqualToString:v13];
+        definition = [v9 definition];
+        v11 = definitionCopy;
+        serviceName = [definition serviceName];
+        serviceName2 = [v11 serviceName];
+        v14 = [serviceName isEqualToString:serviceName2];
 
-        v15 = [v10 viewControllerClassName];
-        v16 = [v11 viewControllerClassName];
+        viewControllerClassName = [definition viewControllerClassName];
+        viewControllerClassName2 = [v11 viewControllerClassName];
 
-        v17 = [v15 isEqualToString:v16];
+        v17 = [viewControllerClassName isEqualToString:viewControllerClassName2];
         if (v14)
         {
           v18 = v17 == 0;
@@ -363,9 +363,9 @@ uint64_t __61__CSRemoteContentSessionManager_createSessionWithDefinition___block
   return v6;
 }
 
-- (id)preferencesForRemoteContentSession:(id)a3
+- (id)preferencesForRemoteContentSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -377,10 +377,10 @@ uint64_t __61__CSRemoteContentSessionManager_createSessionWithDefinition___block
   block[1] = 3221225472;
   block[2] = __68__CSRemoteContentSessionManager_preferencesForRemoteContentSession___block_invoke;
   block[3] = &unk_27838DBE0;
-  v10 = v4;
+  v10 = sessionCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = sessionCopy;
   dispatch_sync(accessSerialQueue, block);
   v7 = v13[5];
 
@@ -400,20 +400,20 @@ void __68__CSRemoteContentSessionManager_preferencesForRemoteContentSession___bl
   *(v5 + 40) = v4;
 }
 
-- (void)remoteContentSession:(id)a3 didUpdateWithPreferences:(id)a4
+- (void)remoteContentSession:(id)session didUpdateWithPreferences:(id)preferences
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  preferencesCopy = preferences;
   accessSerialQueue = self->_accessSerialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__CSRemoteContentSessionManager_remoteContentSession_didUpdateWithPreferences___block_invoke;
   block[3] = &unk_27838B7C0;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = preferencesCopy;
+  selfCopy = self;
+  v14 = sessionCopy;
+  v9 = sessionCopy;
+  v10 = preferencesCopy;
   dispatch_sync(accessSerialQueue, block);
 }
 

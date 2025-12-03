@@ -1,16 +1,16 @@
 @interface T8eR4ZNlOH8wZjTp
-- (unint64_t)beginSignpost:(_eipjLVDiD7LNwlPc *)a3;
-- (void)compute:(_KUwyEjpVZR65eUyl *)a3 UtPlzRffoEpw7Ue1:(_eipjLVDiD7LNwlPc *)a4 SFkZRA5Ek9YzhDRs:(unsigned int)a5 jAVr67FQ6j4EzsgV:(id)a6 i4KDOQicW9Xd5WBz:(id)a7 TWWnmIjkBlMfHmma:(id)a8 withCompletion:(id)a9;
-- (void)computeHash:(_KUwyEjpVZR65eUyl *)a3 jAVr67FQ6j4EzsgV:(id)a4 i4KDOQicW9Xd5WBz:(id)a5 TWWnmIjkBlMfHmma:(id)a6 withCompletion:(id)a7;
-- (void)endSignpost:(_eipjLVDiD7LNwlPc *)a3 signpostId:(unint64_t)a4;
+- (unint64_t)beginSignpost:(_eipjLVDiD7LNwlPc *)signpost;
+- (void)compute:(_KUwyEjpVZR65eUyl *)compute UtPlzRffoEpw7Ue1:(_eipjLVDiD7LNwlPc *)ue1 SFkZRA5Ek9YzhDRs:(unsigned int)rs jAVr67FQ6j4EzsgV:(id)v i4KDOQicW9Xd5WBz:(id)bz TWWnmIjkBlMfHmma:(id)hmma withCompletion:(id)completion;
+- (void)computeHash:(_KUwyEjpVZR65eUyl *)hash jAVr67FQ6j4EzsgV:(id)v i4KDOQicW9Xd5WBz:(id)bz TWWnmIjkBlMfHmma:(id)hmma withCompletion:(id)completion;
+- (void)endSignpost:(_eipjLVDiD7LNwlPc *)signpost signpostId:(unint64_t)id;
 @end
 
 @implementation T8eR4ZNlOH8wZjTp
 
-- (void)compute:(_KUwyEjpVZR65eUyl *)a3 UtPlzRffoEpw7Ue1:(_eipjLVDiD7LNwlPc *)a4 SFkZRA5Ek9YzhDRs:(unsigned int)a5 jAVr67FQ6j4EzsgV:(id)a6 i4KDOQicW9Xd5WBz:(id)a7 TWWnmIjkBlMfHmma:(id)a8 withCompletion:(id)a9
+- (void)compute:(_KUwyEjpVZR65eUyl *)compute UtPlzRffoEpw7Ue1:(_eipjLVDiD7LNwlPc *)ue1 SFkZRA5Ek9YzhDRs:(unsigned int)rs jAVr67FQ6j4EzsgV:(id)v i4KDOQicW9Xd5WBz:(id)bz TWWnmIjkBlMfHmma:(id)hmma withCompletion:(id)completion
 {
   v10 = qword_1006DF780;
-  v11 = a9;
+  completionCopy = completion;
   v12 = os_signpost_id_generate(v10);
   v13 = qword_1006DF780;
   v14 = v13;
@@ -20,14 +20,14 @@
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "sp", "enableTelemetry=YES", buf, 2u);
   }
 
-  v15 = [NSDate dateWithTimeIntervalSince1970:a4->evaluationStartDate * 0.001];
-  v16 = [NSDate dateWithTimeIntervalSince1970:a4->profileParsedDate * 0.001];
+  v15 = [NSDate dateWithTimeIntervalSince1970:ue1->evaluationStartDate * 0.001];
+  v16 = [NSDate dateWithTimeIntervalSince1970:ue1->profileParsedDate * 0.001];
   v17 = qword_1006DF780;
   v18 = v17;
   if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
   {
-    profileIDPrefix = a4->profileIDPrefix;
-    dataframeIndex = a4->dataframeIndex;
+    profileIDPrefix = ue1->profileIDPrefix;
+    dataframeIndex = ue1->dataframeIndex;
     *buf = 67240448;
     v29 = profileIDPrefix;
     v30 = 1026;
@@ -44,26 +44,26 @@
   v27 = v22;
   v23 = [NSArray arrayWithObjects:&v27 count:1];
   v24 = [(kjAS9HuCdR1m5txL *)v21 initWithGyF0atX3JpCKc9pK:v23 qfSDGTGvqd3Hruzg:0];
-  v11[2](v11, v24);
+  completionCopy[2](completionCopy, v24);
 }
 
-- (void)computeHash:(_KUwyEjpVZR65eUyl *)a3 jAVr67FQ6j4EzsgV:(id)a4 i4KDOQicW9Xd5WBz:(id)a5 TWWnmIjkBlMfHmma:(id)a6 withCompletion:(id)a7
+- (void)computeHash:(_KUwyEjpVZR65eUyl *)hash jAVr67FQ6j4EzsgV:(id)v i4KDOQicW9Xd5WBz:(id)bz TWWnmIjkBlMfHmma:(id)hmma withCompletion:(id)completion
 {
-  v7 = a7;
+  completionCopy = completion;
   v8 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:0];
   [v8 encodeInt64:0xE4D9562B46050BFFLL forKey:@"0x5563"];
-  v7[2](v7, [Yp00msaYdVlZesvU cv2QAcQ2CDdiHuN6:v8]);
+  completionCopy[2](completionCopy, [Yp00msaYdVlZesvU cv2QAcQ2CDdiHuN6:v8]);
 }
 
-- (unint64_t)beginSignpost:(_eipjLVDiD7LNwlPc *)a3
+- (unint64_t)beginSignpost:(_eipjLVDiD7LNwlPc *)signpost
 {
   v4 = os_signpost_id_generate(qword_1006DF788);
   v5 = qword_1006DF788;
   v6 = v5;
   if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
-    profileIDPrefix = a3->profileIDPrefix;
-    dataframeIndex = a3->dataframeIndex;
+    profileIDPrefix = signpost->profileIDPrefix;
+    dataframeIndex = signpost->dataframeIndex;
     v10[0] = 67240448;
     v10[1] = profileIDPrefix;
     v11 = 1026;
@@ -74,19 +74,19 @@
   return v4;
 }
 
-- (void)endSignpost:(_eipjLVDiD7LNwlPc *)a3 signpostId:(unint64_t)a4
+- (void)endSignpost:(_eipjLVDiD7LNwlPc *)signpost signpostId:(unint64_t)id
 {
   v6 = qword_1006DF788;
   v7 = v6;
-  if (a4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
+  if (id - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
   {
-    profileIDPrefix = a3->profileIDPrefix;
-    dataframeIndex = a3->dataframeIndex;
+    profileIDPrefix = signpost->profileIDPrefix;
+    dataframeIndex = signpost->dataframeIndex;
     v10[0] = 67240448;
     v10[1] = profileIDPrefix;
     v11 = 1026;
     v12 = dataframeIndex;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v7, OS_SIGNPOST_INTERVAL_END, a4, "sp", "p=%{public,signpost.telemetry:number1}d,i=%{public,signpost.telemetry:number2}d", v10, 0xEu);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v7, OS_SIGNPOST_INTERVAL_END, id, "sp", "p=%{public,signpost.telemetry:number1}d,i=%{public,signpost.telemetry:number2}d", v10, 0xEu);
   }
 }
 

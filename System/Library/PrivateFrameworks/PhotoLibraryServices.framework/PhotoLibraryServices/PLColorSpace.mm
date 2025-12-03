@@ -1,26 +1,26 @@
 @interface PLColorSpace
-+ (id)colorSpaceFromName:(id)a3;
++ (id)colorSpaceFromName:(id)name;
 + (id)commonColorSpace_displaySpace;
-- (BOOL)isEqual:(id)a3;
-- (PLColorSpace)initWithName:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PLColorSpace)initWithName:(id)name;
 @end
 
 @implementation PLColorSpace
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     colorSpaceName = self->_colorSpaceName;
-    v7 = [(PLColorSpace *)v5 colorSpaceName];
-    v8 = [(NSString *)colorSpaceName isEqualToString:v7];
+    colorSpaceName = [(PLColorSpace *)v5 colorSpaceName];
+    v8 = [(NSString *)colorSpaceName isEqualToString:colorSpaceName];
   }
 
   else
@@ -31,21 +31,21 @@
   return v8;
 }
 
-- (PLColorSpace)initWithName:(id)a3
+- (PLColorSpace)initWithName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = PLColorSpace;
   v7 = [(PLColorSpace *)&v10 init];
   if (v7)
   {
-    if (!v6)
+    if (!nameCopy)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:v7 file:@"PLColorSpace.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"colorSpaceName"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v7 file:@"PLColorSpace.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"colorSpaceName"}];
     }
 
-    objc_storeStrong(&v7->_colorSpaceName, a3);
+    objc_storeStrong(&v7->_colorSpaceName, name);
   }
 
   return v7;
@@ -60,7 +60,7 @@
 
   v3 = commonColorSpace_displaySpace_s_colorSpaceName;
 
-  return [a1 colorSpaceFromName:v3];
+  return [self colorSpaceFromName:v3];
 }
 
 void __45__PLColorSpace_commonColorSpace_displaySpace__block_invoke()
@@ -71,10 +71,10 @@ void __45__PLColorSpace_commonColorSpace_displaySpace__block_invoke()
   CGColorSpaceRelease(DeviceRGB);
 }
 
-+ (id)colorSpaceFromName:(id)a3
++ (id)colorSpaceFromName:(id)name
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithName:v3];
+  nameCopy = name;
+  v4 = [objc_alloc(objc_opt_class()) initWithName:nameCopy];
 
   return v4;
 }

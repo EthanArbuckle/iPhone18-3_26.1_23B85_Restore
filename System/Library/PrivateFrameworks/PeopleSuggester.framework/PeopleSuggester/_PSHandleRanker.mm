@@ -1,6 +1,6 @@
 @interface _PSHandleRanker
 - (_PSHandleRanker)init;
-- (id)rankedHandlesFromCandidateHandles:(id)a3;
+- (id)rankedHandlesFromCandidateHandles:(id)handles;
 - (void)dealloc;
 @end
 
@@ -35,9 +35,9 @@
   [(_PSHandleRanker *)&v3 dealloc];
 }
 
-- (id)rankedHandlesFromCandidateHandles:(id)a3
+- (id)rankedHandlesFromCandidateHandles:(id)handles
 {
-  v4 = a3;
+  handlesCopy = handles;
   connection = self->_connection;
   if (connection)
   {
@@ -53,7 +53,7 @@
     v9[2] = __53___PSHandleRanker_rankedHandlesFromCandidateHandles___block_invoke_4;
     v9[3] = &unk_1E7C25420;
     v9[4] = &v10;
-    [v6 rankedHandlesFromCandidateHandles:v4 reply:v9];
+    [v6 rankedHandlesFromCandidateHandles:handlesCopy reply:v9];
     v7 = v11[5];
 
     _Block_object_dispose(&v10, 8);

@@ -1,20 +1,20 @@
 @interface SUUIReportAConcernDetailsViewController
-- (SUUIReportAConcernDetailsViewController)initWithCoder:(id)a3;
-- (SUUIReportAConcernDetailsViewController)initWithConfiguration:(id)a3;
-- (SUUIReportAConcernDetailsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SUUIReportAConcernDetailsViewController)initWithCoder:(id)coder;
+- (SUUIReportAConcernDetailsViewController)initWithConfiguration:(id)configuration;
+- (SUUIReportAConcernDetailsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (double)_detailsCellHeight;
 - (id)_detailsText;
-- (void)_keyboardWillHide:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
+- (void)_keyboardWillHide:(id)hide;
+- (void)_keyboardWillShow:(id)show;
 - (void)dealloc;
-- (void)submitPressed:(id)a3;
+- (void)submitPressed:(id)pressed;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation SUUIReportAConcernDetailsViewController
 
-- (SUUIReportAConcernDetailsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SUUIReportAConcernDetailsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5 = objc_alloc_init(SUUIReportAConcernConfiguration);
   v6 = [(SUUIReportAConcernDetailsViewController *)self initWithConfiguration:v5];
@@ -22,7 +22,7 @@
   return v6;
 }
 
-- (SUUIReportAConcernDetailsViewController)initWithCoder:(id)a3
+- (SUUIReportAConcernDetailsViewController)initWithCoder:(id)coder
 {
   v4 = objc_alloc_init(SUUIReportAConcernConfiguration);
   v5 = [(SUUIReportAConcernDetailsViewController *)self initWithConfiguration:v4];
@@ -30,19 +30,19 @@
   return v5;
 }
 
-- (SUUIReportAConcernDetailsViewController)initWithConfiguration:(id)a3
+- (SUUIReportAConcernDetailsViewController)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v10.receiver = self;
   v10.super_class = SUUIReportAConcernDetailsViewController;
   v6 = [(SUUIReportAConcernDetailsViewController *)&v10 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v7 selector:sel__keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
-    [v8 addObserver:v7 selector:sel__keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
+    objc_storeStrong(&v6->_configuration, configuration);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
+    [defaultCenter addObserver:v7 selector:sel__keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
   }
 
   return v7;
@@ -50,9 +50,9 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C60] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C60] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C50] object:0];
 
   v4.receiver = self;
   v4.super_class = SUUIReportAConcernDetailsViewController;
@@ -72,31 +72,31 @@
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"SUBMIT" value:&stru_286AECDE0 table:0];
   v8 = [v5 initWithTitle:v7 style:2 target:self action:sel_submitPressed_];
-  v9 = [(SUUIReportAConcernDetailsViewController *)self navigationItem];
-  [v9 setRightBarButtonItem:v8];
+  navigationItem = [(SUUIReportAConcernDetailsViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v8];
 
   v10 = objc_alloc(MEMORY[0x277D75B40]);
   v11 = [v10 initWithFrame:1 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v11 setAllowsSelection:0];
   [v11 setDelegate:self];
   v12 = [[SUUIReportAConcernDetailsDataSource alloc] initWithTableView:v11];
-  v13 = [(SUUIReportAConcernDetailsViewController *)self configuration];
-  v14 = [v13 reportConcernExplanation];
-  [(SUUIReportAConcernDetailsDataSource *)v12 setPlaceholder:v14];
+  configuration = [(SUUIReportAConcernDetailsViewController *)self configuration];
+  reportConcernExplanation = [configuration reportConcernExplanation];
+  [(SUUIReportAConcernDetailsDataSource *)v12 setPlaceholder:reportConcernExplanation];
 
-  v15 = [(SUUIReportAConcernDetailsViewController *)self metadata];
-  v16 = [v15 selectedReason];
-  v17 = [v16 uppercaseName];
-  [(SUUIReportAConcernDetailsDataSource *)v12 setSelectedReason:v17];
+  metadata = [(SUUIReportAConcernDetailsViewController *)self metadata];
+  selectedReason = [metadata selectedReason];
+  uppercaseName = [selectedReason uppercaseName];
+  [(SUUIReportAConcernDetailsDataSource *)v12 setSelectedReason:uppercaseName];
 
-  v18 = [(SUUIReportAConcernDetailsViewController *)self configuration];
-  v19 = [v18 privacyNote];
-  [(SUUIReportAConcernDetailsDataSource *)v12 setPrivacyNote:v19];
+  configuration2 = [(SUUIReportAConcernDetailsViewController *)self configuration];
+  privacyNote = [configuration2 privacyNote];
+  [(SUUIReportAConcernDetailsDataSource *)v12 setPrivacyNote:privacyNote];
 
   [v11 setDataSource:v12];
   [(SUUIReportAConcernDetailsViewController *)self setDataSource:v12];
-  v20 = [(SUUIReportAConcernDetailsViewController *)self view];
-  [v20 addSubview:v11];
+  view = [(SUUIReportAConcernDetailsViewController *)self view];
+  [view addSubview:v11];
 
   [(SUUIReportAConcernDetailsViewController *)self setTableView:v11];
 }
@@ -106,29 +106,29 @@
   v13.receiver = self;
   v13.super_class = SUUIReportAConcernDetailsViewController;
   [(SUUIReportAConcernDetailsViewController *)&v13 viewWillLayoutSubviews];
-  v3 = [(SUUIReportAConcernDetailsViewController *)self view];
-  [v3 bounds];
+  view = [(SUUIReportAConcernDetailsViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(SUUIReportAConcernDetailsViewController *)self tableView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  tableView = [(SUUIReportAConcernDetailsViewController *)self tableView];
+  [tableView setFrame:{v5, v7, v9, v11}];
 }
 
-- (void)submitPressed:(id)a3
+- (void)submitPressed:(id)pressed
 {
-  v4 = a3;
-  [v4 setEnabled:0];
-  v5 = [(SUUIReportAConcernDetailsViewController *)self _detailsText];
-  v6 = [(SUUIReportAConcernDetailsViewController *)self metadata];
-  [v6 setDetails:v5];
+  pressedCopy = pressed;
+  [pressedCopy setEnabled:0];
+  _detailsText = [(SUUIReportAConcernDetailsViewController *)self _detailsText];
+  metadata = [(SUUIReportAConcernDetailsViewController *)self metadata];
+  [metadata setDetails:_detailsText];
 
-  v7 = [MEMORY[0x277D75128] sharedApplication];
-  [v7 sendAction:sel_resignFirstResponder to:0 from:0 forEvent:0];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] sendAction:sel_resignFirstResponder to:0 from:0 forEvent:0];
 
   v8 = *MEMORY[0x277D767B0];
-  v9 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
   v31[0] = MEMORY[0x277D85DD0];
@@ -136,14 +136,14 @@
   v31[2] = __57__SUUIReportAConcernDetailsViewController_submitPressed___block_invoke;
   v31[3] = &__block_descriptor_40_e5_v8__0l;
   v31[4] = v8;
-  v12 = [v9 beginBackgroundTaskWithName:v11 expirationHandler:v31];
+  v12 = [mEMORY[0x277D75128]2 beginBackgroundTaskWithName:v11 expirationHandler:v31];
 
-  v13 = [(SUUIReportAConcernDetailsViewController *)self view];
-  v14 = [v13 window];
+  view = [(SUUIReportAConcernDetailsViewController *)self view];
+  window = [view window];
 
   v15 = [SUUIReportAConcernOperation alloc];
-  v16 = [(SUUIReportAConcernDetailsViewController *)self metadata];
-  v17 = [(SUUIReportAConcernOperation *)v15 initWithMetadata:v16];
+  metadata2 = [(SUUIReportAConcernDetailsViewController *)self metadata];
+  v17 = [(SUUIReportAConcernOperation *)v15 initWithMetadata:metadata2];
 
   objc_initWeak(&location, v17);
   objc_initWeak(&from, self);
@@ -152,15 +152,15 @@
   v23 = __57__SUUIReportAConcernDetailsViewController_submitPressed___block_invoke_2;
   v24 = &unk_2798FDDB0;
   objc_copyWeak(&v27, &location);
-  v18 = v14;
+  v18 = window;
   v25 = v18;
   objc_copyWeak(v28, &from);
-  v19 = v4;
+  v19 = pressedCopy;
   v26 = v19;
   v28[1] = v12;
   [(SUUIReportAConcernOperation *)v17 setCompletionBlock:&v21];
-  v20 = [MEMORY[0x277D7FD20] mainQueue];
-  [v20 addOperation:v17];
+  mainQueue = [MEMORY[0x277D7FD20] mainQueue];
+  [mainQueue addOperation:v17];
 
   objc_destroyWeak(v28);
   objc_destroyWeak(&v27);
@@ -309,22 +309,22 @@ LABEL_22:
 
 - (id)_detailsText
 {
-  v2 = [(SUUIReportAConcernDetailsViewController *)self tableView];
+  tableView = [(SUUIReportAConcernDetailsViewController *)self tableView];
   v3 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:0];
-  v4 = [v2 cellForRowAtIndexPath:v3];
+  v4 = [tableView cellForRowAtIndexPath:v3];
 
-  v5 = [v4 text];
+  text = [v4 text];
 
-  return v5;
+  return text;
 }
 
 - (double)_detailsCellHeight
 {
-  v3 = [(SUUIReportAConcernDetailsViewController *)self view];
-  [v3 bounds];
+  view = [(SUUIReportAConcernDetailsViewController *)self view];
+  [view bounds];
   Height = CGRectGetHeight(v11);
-  v5 = [(SUUIReportAConcernDetailsViewController *)self topLayoutGuide];
-  [v5 length];
+  topLayoutGuide = [(SUUIReportAConcernDetailsViewController *)self topLayoutGuide];
+  [topLayoutGuide length];
   v7 = Height - v6;
   [(SUUIReportAConcernDetailsViewController *)self keyboardHeight];
   v9 = v7 - v8;
@@ -332,21 +332,21 @@ LABEL_22:
   return fmin(v9, 250.0);
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277D76BB8]];
+  userInfo = [show userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
   [v5 CGRectValue];
   [(SUUIReportAConcernDetailsViewController *)self setKeyboardHeight:v6];
-  v7 = [v4 objectForKey:*MEMORY[0x277D76B78]];
+  v7 = [userInfo objectForKey:*MEMORY[0x277D76B78]];
   [v7 floatValue];
   v9 = v8;
 
-  v10 = [v4 objectForKey:*MEMORY[0x277D76B70]];
-  v11 = [v10 integerValue];
+  v10 = [userInfo objectForKey:*MEMORY[0x277D76B70]];
+  integerValue = [v10 integerValue];
 
-  v12 = [(SUUIReportAConcernDetailsViewController *)self tableView];
-  [v12 contentInset];
+  tableView = [(SUUIReportAConcernDetailsViewController *)self tableView];
+  [tableView contentInset];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -361,7 +361,7 @@ LABEL_22:
   v21[6] = v16;
   v21[7] = v18;
   v21[8] = v20;
-  [MEMORY[0x277D75D18] animateWithDuration:v11 delay:v21 options:&__block_literal_global_62 animations:v9 completion:0.0];
+  [MEMORY[0x277D75D18] animateWithDuration:integerValue delay:v21 options:&__block_literal_global_62 animations:v9 completion:0.0];
 }
 
 void __61__SUUIReportAConcernDetailsViewController__keyboardWillShow___block_invoke(uint64_t a1)
@@ -395,18 +395,18 @@ void __61__SUUIReportAConcernDetailsViewController__keyboardWillShow___block_inv
   [v16 layoutIfNeeded];
 }
 
-- (void)_keyboardWillHide:(id)a3
+- (void)_keyboardWillHide:(id)hide
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277D76B78]];
+  userInfo = [hide userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277D76B78]];
   [v5 floatValue];
   v7 = v6;
 
-  v8 = [v4 objectForKey:*MEMORY[0x277D76B70]];
-  v9 = [v8 integerValue];
+  v8 = [userInfo objectForKey:*MEMORY[0x277D76B70]];
+  integerValue = [v8 integerValue];
 
-  v10 = [(SUUIReportAConcernDetailsViewController *)self tableView];
-  [v10 contentInset];
+  tableView = [(SUUIReportAConcernDetailsViewController *)self tableView];
+  [tableView contentInset];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -422,7 +422,7 @@ void __61__SUUIReportAConcernDetailsViewController__keyboardWillShow___block_inv
   v19[6] = v14;
   v19[7] = v16;
   v19[8] = v18;
-  [MEMORY[0x277D75D18] animateWithDuration:v9 delay:v19 options:0 animations:v7 completion:0.0];
+  [MEMORY[0x277D75D18] animateWithDuration:integerValue delay:v19 options:0 animations:v7 completion:0.0];
 }
 
 void __61__SUUIReportAConcernDetailsViewController__keyboardWillHide___block_invoke(uint64_t a1)

@@ -1,8 +1,8 @@
 @interface SLSheetContentView
 - (CGSize)intrinsicContentSize;
-- (SLSheetContentView)initWithFrame:(CGRect)a3;
-- (double)_previewMarginForContentSize:(CGSize)a3;
-- (double)_textTopMarginForContentSize:(CGSize)a3;
+- (SLSheetContentView)initWithFrame:(CGRect)frame;
+- (double)_previewMarginForContentSize:(CGSize)size;
+- (double)_textTopMarginForContentSize:(CGSize)size;
 - (void)_resetAccessoryView;
 - (void)_setConstraints;
 - (void)_setupConstraints;
@@ -11,12 +11,12 @@
 - (void)beginAutoCompletionMode;
 - (void)endAutoCompletionMode;
 - (void)layoutSubviews;
-- (void)preflightAutoCompletionModeWithApparentHeight:(double)a3;
+- (void)preflightAutoCompletionModeWithApparentHeight:(double)height;
 - (void)resetPreview;
-- (void)setAccessoryView:(id)a3;
-- (void)setIntrinsicSize:(CGSize)a3 forVerticalSizeClass:(int64_t)a4;
-- (void)setPreviewView:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAccessoryView:(id)view;
+- (void)setIntrinsicSize:(CGSize)size forVerticalSizeClass:(int64_t)class;
+- (void)setPreviewView:(id)view;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateConstraints;
 - (void)updatePreviewMargin;
 - (void)updateTextViewMargin;
@@ -24,11 +24,11 @@
 
 @implementation SLSheetContentView
 
-- (SLSheetContentView)initWithFrame:(CGRect)a3
+- (SLSheetContentView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SLSheetContentView;
-  v3 = [(SLSheetContentView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SLSheetContentView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -47,8 +47,8 @@
 - (void)_setupView
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SLSheetContentView *)self layer];
-  [v3 setMasksToBounds:1];
+  layer = [(SLSheetContentView *)self layer];
+  [layer setMasksToBounds:1];
 
   v4 = objc_alloc_init(SLSheetTextComposeView);
   textComposeView = self->_textComposeView;
@@ -70,8 +70,8 @@
   bottomSeparator = self->_bottomSeparator;
   self->_bottomSeparator = v10;
 
-  v12 = [MEMORY[0x1E69DC888] opaqueSeparatorColor];
-  [(UIView *)self->_bottomSeparator setBackgroundColor:v12];
+  opaqueSeparatorColor = [MEMORY[0x1E69DC888] opaqueSeparatorColor];
+  [(UIView *)self->_bottomSeparator setBackgroundColor:opaqueSeparatorColor];
 
   [(UIView *)self->_bottomSeparator setTranslatesAutoresizingMaskIntoConstraints:0];
   [(SLSheetContentView *)self addSubview:self->_bottomSeparator];
@@ -113,8 +113,8 @@
 {
   intrinsicSizes = self->_intrinsicSizes;
   v5 = MEMORY[0x1E696AD98];
-  v6 = [(SLSheetContentView *)self traitCollection];
-  v7 = [v5 numberWithInteger:{objc_msgSend(v6, "verticalSizeClass")}];
+  traitCollection = [(SLSheetContentView *)self traitCollection];
+  v7 = [v5 numberWithInteger:{objc_msgSend(traitCollection, "verticalSizeClass")}];
   v8 = [(NSMutableDictionary *)intrinsicSizes objectForKeyedSubscript:v7];
 
   if (!v8)
@@ -123,8 +123,8 @@
   }
 
   v9 = MEMORY[0x1E696AD98];
-  v10 = [(SLSheetContentView *)self traitCollection];
-  v17 = [v9 numberWithInteger:{objc_msgSend(v10, "verticalSizeClass")}];
+  traitCollection2 = [(SLSheetContentView *)self traitCollection];
+  v17 = [v9 numberWithInteger:{objc_msgSend(traitCollection2, "verticalSizeClass")}];
   _SLLog(v2, 7, @"SLSheetContentView intrinsicContentSize for self.traitCollection.verticalSizeClass %@ using sizeValue %@");
 
   if (v8)
@@ -181,13 +181,13 @@
   [(NSMutableArray *)v5 addObjectsFromArray:v9];
 
   autoCompletionMode = self->_autoCompletionMode;
-  v11 = [(SLSheetContentView *)self accessoryView];
+  accessoryView = [(SLSheetContentView *)self accessoryView];
 
   v12 = self->_constraints;
   v13 = MEMORY[0x1E696ACD8];
   if (autoCompletionMode)
   {
-    if (v11)
+    if (accessoryView)
     {
       v81[0] = @"sheetMargin";
       v14 = [MEMORY[0x1E696AD98] numberWithDouble:self->_textViewTopMargin];
@@ -206,8 +206,8 @@
       v20 = self->_constraints;
       v21 = MEMORY[0x1E696ACD8];
       v77 = @"accessoryView";
-      v22 = [(SLSheetContentView *)self accessoryView];
-      v78 = v22;
+      accessoryView2 = [(SLSheetContentView *)self accessoryView];
+      v78 = accessoryView2;
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v78 forKeys:&v77 count:1];
       v24 = [v21 constraintsWithVisualFormat:@"V:[accessoryView]-(accessoryBottomMargin)-|" options:0 metrics:&unk_1F4202C38 views:v23];
       [(NSMutableArray *)v20 addObjectsFromArray:v24];
@@ -215,8 +215,8 @@
       v25 = self->_constraints;
       v26 = MEMORY[0x1E696ACD8];
       v75 = @"accessoryView";
-      v27 = [(SLSheetContentView *)self accessoryView];
-      v76 = v27;
+      accessoryView3 = [(SLSheetContentView *)self accessoryView];
+      v76 = accessoryView3;
       v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v76 forKeys:&v75 count:1];
       v29 = [v26 constraintsWithVisualFormat:@"|-(sheetMargin)-[accessoryView]|" options:0 metrics:&unk_1F4202C60 views:v28];
       [(NSMutableArray *)v25 addObjectsFromArray:v29];
@@ -225,9 +225,9 @@
     else
     {
       v73[0] = @"sheetMargin";
-      v27 = [MEMORY[0x1E696AD98] numberWithDouble:self->_textViewTopMargin];
+      accessoryView3 = [MEMORY[0x1E696AD98] numberWithDouble:self->_textViewTopMargin];
       v73[1] = @"autoCompletionTextViewHeight";
-      v74[0] = v27;
+      v74[0] = accessoryView3;
       v28 = [MEMORY[0x1E696AD98] numberWithDouble:self->_autoCompletionTextViewHeight];
       v74[1] = v28;
       v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v74 forKeys:v73 count:2];
@@ -242,8 +242,8 @@
     v44 = self->_constraints;
     v45 = MEMORY[0x1E696ACD8];
     v69 = @"separatorHeight";
-    v38 = [MEMORY[0x1E696AD98] numberWithDouble:0.5];
-    v70 = v38;
+    accessoryView5 = [MEMORY[0x1E696AD98] numberWithDouble:0.5];
+    v70 = accessoryView5;
     v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v70 forKeys:&v69 count:1];
     v46 = self->_textComposeView;
     v67[0] = @"textComposeView";
@@ -256,7 +256,7 @@
     [(NSMutableArray *)v44 addObjectsFromArray:v48];
   }
 
-  else if (v11)
+  else if (accessoryView)
   {
     v91[0] = @"sheetMargin";
     v30 = [MEMORY[0x1E696AD98] numberWithDouble:self->_textViewTopMargin];
@@ -268,8 +268,8 @@
     v89[0] = @"textComposeView";
     v89[1] = @"accessoryView";
     v90[0] = v32;
-    v33 = [(SLSheetContentView *)self accessoryView];
-    v90[1] = v33;
+    accessoryView4 = [(SLSheetContentView *)self accessoryView];
+    v90[1] = accessoryView4;
     v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v90 forKeys:v89 count:2];
     v35 = [v13 constraintsWithVisualFormat:@"V:|-(sheetMargin)-[textComposeView][accessoryView]-(accessoryBottomMargin)-|" options:0 metrics:v31 views:v34];
     [(NSMutableArray *)v12 addObjectsFromArray:v35];
@@ -277,8 +277,8 @@
     v36 = self->_constraints;
     v37 = MEMORY[0x1E696ACD8];
     v87 = @"accessoryView";
-    v38 = [(SLSheetContentView *)self accessoryView];
-    v88 = v38;
+    accessoryView5 = [(SLSheetContentView *)self accessoryView];
+    v88 = accessoryView5;
     v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v88 forKeys:&v87 count:1];
     v40 = [v37 constraintsWithVisualFormat:@"|-(sheetMargin)-[accessoryView]|" options:0 metrics:&unk_1F4202C10 views:v39];
     [(NSMutableArray *)v36 addObjectsFromArray:v40];
@@ -287,8 +287,8 @@
   else
   {
     v85 = @"sheetMargin";
-    v38 = [MEMORY[0x1E696AD98] numberWithDouble:self->_textViewTopMargin];
-    v86 = v38;
+    accessoryView5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_textViewTopMargin];
+    v86 = accessoryView5;
     v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v86 forKeys:&v85 count:1];
     v49 = self->_textComposeView;
     v83 = @"textComposeView";
@@ -298,20 +298,20 @@
     [(NSMutableArray *)v12 addObjectsFromArray:v50];
   }
 
-  v51 = [(SLSheetContentView *)self previewView];
+  previewView = [(SLSheetContentView *)self previewView];
 
-  if (v51)
+  if (previewView)
   {
     v52 = self->_constraints;
     v53 = MEMORY[0x1E696ACD8];
-    v54 = [(SLSheetContentView *)self previewView];
-    v55 = [v53 constraintWithItem:v54 attribute:6 relatedBy:0 toItem:self attribute:6 multiplier:1.0 constant:-15.0];
+    previewView2 = [(SLSheetContentView *)self previewView];
+    v55 = [v53 constraintWithItem:previewView2 attribute:6 relatedBy:0 toItem:self attribute:6 multiplier:1.0 constant:-15.0];
     [(NSMutableArray *)v52 addObject:v55];
 
     v56 = self->_constraints;
     v57 = MEMORY[0x1E696ACD8];
-    v58 = [(SLSheetContentView *)self previewView];
-    v59 = [v57 constraintWithItem:v58 attribute:3 relatedBy:0 toItem:self attribute:3 multiplier:1.0 constant:self->_previewTopMargin];
+    previewView3 = [(SLSheetContentView *)self previewView];
+    v59 = [v57 constraintWithItem:previewView3 attribute:3 relatedBy:0 toItem:self attribute:3 multiplier:1.0 constant:self->_previewTopMargin];
     [(NSMutableArray *)v56 addObject:v59];
   }
 
@@ -330,44 +330,44 @@
   [(SLSheetContentView *)self addConstraints:self->_constraints];
 }
 
-- (void)setIntrinsicSize:(CGSize)a3 forVerticalSizeClass:(int64_t)a4
+- (void)setIntrinsicSize:(CGSize)size forVerticalSizeClass:(int64_t)class
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9 = [MEMORY[0x1E696B098] valueWithCGSize:?];
-  v15 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v15 = [MEMORY[0x1E696AD98] numberWithInteger:class];
   _SLLog(v4, 7, @"SLSheetContentView setIntrinsicSize: %@ forVerticalSizeClass: %@");
 
   v10 = [MEMORY[0x1E696B098] valueWithCGSize:{width, height, v9, v15}];
   intrinsicSizes = self->_intrinsicSizes;
-  v12 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v12 = [MEMORY[0x1E696AD98] numberWithInteger:class];
   [(NSMutableDictionary *)intrinsicSizes setObject:v10 forKeyedSubscript:v12];
 
-  v13 = [(SLSheetContentView *)self traitCollection];
-  v14 = [v13 verticalSizeClass];
+  traitCollection = [(SLSheetContentView *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
 
-  if (v14 == a4)
+  if (verticalSizeClass == class)
   {
 
     [(SLSheetContentView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   v11.receiver = self;
   v11.super_class = SLSheetContentView;
-  [(SLSheetContentView *)&v11 traitCollectionDidChange:v5];
-  v6 = [(SLSheetContentView *)self traitCollection];
-  v7 = [v6 verticalSizeClass];
-  if (v7 == [v5 verticalSizeClass])
+  [(SLSheetContentView *)&v11 traitCollectionDidChange:changeCopy];
+  traitCollection = [(SLSheetContentView *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
+  if (verticalSizeClass == [changeCopy verticalSizeClass])
   {
-    v8 = [(SLSheetContentView *)self traitCollection];
-    v9 = [v8 horizontalSizeClass];
-    v10 = [v5 horizontalSizeClass];
+    traitCollection2 = [(SLSheetContentView *)self traitCollection];
+    horizontalSizeClass = [traitCollection2 horizontalSizeClass];
+    horizontalSizeClass2 = [changeCopy horizontalSizeClass];
 
-    if (v9 == v10)
+    if (horizontalSizeClass == horizontalSizeClass2)
     {
       goto LABEL_6;
     }
@@ -382,13 +382,13 @@
 LABEL_6:
 }
 
-- (void)setAccessoryView:(id)a3
+- (void)setAccessoryView:(id)view
 {
-  v5 = a3;
-  if (self->_accessoryView != v5)
+  viewCopy = view;
+  if (self->_accessoryView != viewCopy)
   {
     [(SLSheetContentView *)self _resetAccessoryView];
-    objc_storeStrong(&self->_accessoryView, a3);
+    objc_storeStrong(&self->_accessoryView, view);
     [(UIView *)self->_accessoryView setTranslatesAutoresizingMaskIntoConstraints:0];
     if (self->_accessoryView)
     {
@@ -406,13 +406,13 @@ LABEL_6:
   [(SLSheetContentView *)self setNeedsUpdateConstraints];
 }
 
-- (void)setPreviewView:(id)a3
+- (void)setPreviewView:(id)view
 {
-  v5 = a3;
-  if (self->_previewView != v5)
+  viewCopy = view;
+  if (self->_previewView != viewCopy)
   {
     [(SLSheetContentView *)self resetPreview];
-    objc_storeStrong(&self->_previewView, a3);
+    objc_storeStrong(&self->_previewView, view);
     [(UIView *)self->_previewView setTranslatesAutoresizingMaskIntoConstraints:0];
     if (self->_previewView)
     {
@@ -430,16 +430,16 @@ LABEL_6:
   [(SLSheetContentView *)self setNeedsUpdateConstraints];
 }
 
-- (double)_previewMarginForContentSize:(CGSize)a3
+- (double)_previewMarginForContentSize:(CGSize)size
 {
-  height = a3.height;
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
+  height = size.height;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [MEMORY[0x1E69DC938] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-    v7 = v6 == 0;
+    v7 = userInterfaceIdiom == 0;
   }
 
   else
@@ -456,16 +456,16 @@ LABEL_6:
   return result;
 }
 
-- (double)_textTopMarginForContentSize:(CGSize)a3
+- (double)_textTopMarginForContentSize:(CGSize)size
 {
-  height = a3.height;
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
+  height = size.height;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [MEMORY[0x1E69DC938] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-    v7 = v6 == 0;
+    v7 = userInterfaceIdiom == 0;
   }
 
   else
@@ -511,9 +511,9 @@ LABEL_6:
   v4.receiver = self;
   v4.super_class = SLSheetContentView;
   [(SLSheetContentView *)&v4 layoutSubviews];
-  v3 = [(SLSheetContentView *)self previewView];
+  previewView = [(SLSheetContentView *)self previewView];
 
-  if (v3)
+  if (previewView)
   {
     [(SLSheetContentView *)self updatePreviewMargin];
     [(SLSheetContentView *)self updateTextViewMargin];
@@ -528,11 +528,11 @@ LABEL_6:
 
 - (void)adjustComposeViewForPreview
 {
-  v3 = [(SLSheetTextComposeView *)self->_textComposeView _shouldReverseLayoutDirection];
-  v4 = [(SLSheetContentView *)self previewView];
-  [v4 frame];
+  _shouldReverseLayoutDirection = [(SLSheetTextComposeView *)self->_textComposeView _shouldReverseLayoutDirection];
+  previewView = [(SLSheetContentView *)self previewView];
+  [previewView frame];
   v9 = v5;
-  if (v3)
+  if (_shouldReverseLayoutDirection)
   {
     MaxX = CGRectGetMaxX(*&v5);
   }
@@ -551,17 +551,17 @@ LABEL_6:
   [(SLSheetTextComposeView *)textComposeView setTextRightInset:MaxX];
 }
 
-- (void)preflightAutoCompletionModeWithApparentHeight:(double)a3
+- (void)preflightAutoCompletionModeWithApparentHeight:(double)height
 {
-  self->_autoCompletionTextViewHeight = a3 - self->_textViewTopMargin + -1.0;
+  self->_autoCompletionTextViewHeight = height - self->_textViewTopMargin + -1.0;
   if (!self->_autoCompletionModeSeparator)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
     autoCompletionModeSeparator = self->_autoCompletionModeSeparator;
     self->_autoCompletionModeSeparator = v4;
 
-    v6 = [MEMORY[0x1E69DC888] opaqueSeparatorColor];
-    [(UIView *)self->_autoCompletionModeSeparator setBackgroundColor:v6];
+    opaqueSeparatorColor = [MEMORY[0x1E69DC888] opaqueSeparatorColor];
+    [(UIView *)self->_autoCompletionModeSeparator setBackgroundColor:opaqueSeparatorColor];
 
     [(UIView *)self->_autoCompletionModeSeparator setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)self->_autoCompletionModeSeparator setAlpha:0.0];
@@ -583,10 +583,10 @@ LABEL_6:
   self->_autoCompletionMode = 1;
   [(SLSheetContentView *)self _setConstraints];
   [(SLSheetContentView *)self layoutIfNeeded];
-  v6 = [(SLSheetContentView *)self textView];
-  v3 = [(SLSheetContentView *)self textView];
-  v4 = [v3 selectedRange];
-  [v6 scrollRangeToVisible:{v4, v5}];
+  textView = [(SLSheetContentView *)self textView];
+  textView2 = [(SLSheetContentView *)self textView];
+  selectedRange = [textView2 selectedRange];
+  [textView scrollRangeToVisible:{selectedRange, v5}];
 }
 
 - (void)endAutoCompletionMode

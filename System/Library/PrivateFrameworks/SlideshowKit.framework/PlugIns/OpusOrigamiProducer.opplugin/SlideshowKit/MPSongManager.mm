@@ -2,9 +2,9 @@
 + (id)sharedManager;
 + (void)releaseSharedManager;
 - (MPSongManager)init;
-- (MPSongManager)initWithPaths:(id)a3;
-- (id)beatsForSongAtPath:(id)a3 progressCallback:(void *)a4 context:(void *)a5;
-- (id)songMetadataForPath:(id)a3;
+- (MPSongManager)initWithPaths:(id)paths;
+- (id)beatsForSongAtPath:(id)path progressCallback:(void *)callback context:(void *)context;
+- (id)songMetadataForPath:(id)path;
 - (void)dealloc;
 @end
 
@@ -15,13 +15,13 @@
   result = qword_1EF2C0;
   if (!qword_1EF2C0)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!qword_1EF2C0)
     {
       qword_1EF2C0 = [[MPSongManager alloc] initWithPaths:0];
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     return qword_1EF2C0;
   }
 
@@ -32,11 +32,11 @@
 {
   if (qword_1EF2C0)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
 
     qword_1EF2C0 = 0;
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
   }
 }
 
@@ -111,11 +111,11 @@
   [(MPSongManager *)&v3 dealloc];
 }
 
-- (id)beatsForSongAtPath:(id)a3 progressCallback:(void *)a4 context:(void *)a5
+- (id)beatsForSongAtPath:(id)path progressCallback:(void *)callback context:(void *)context
 {
-  if (a3)
+  if (path)
   {
-    return [(NSMutableDictionary *)self->mSongBeats objectForKey:a3, a4, a5];
+    return [(NSMutableDictionary *)self->mSongBeats objectForKey:path, callback, context];
   }
 
   else
@@ -124,15 +124,15 @@
   }
 }
 
-- (id)songMetadataForPath:(id)a3
+- (id)songMetadataForPath:(id)path
 {
-  v4 = [a3 lastPathComponent];
+  lastPathComponent = [path lastPathComponent];
   mSongMetaData = self->mSongMetaData;
 
-  return [(NSMutableDictionary *)mSongMetaData objectForKey:v4];
+  return [(NSMutableDictionary *)mSongMetaData objectForKey:lastPathComponent];
 }
 
-- (MPSongManager)initWithPaths:(id)a3
+- (MPSongManager)initWithPaths:(id)paths
 {
   v4 = [(MPSongManager *)self init];
   if (v4)
@@ -140,9 +140,9 @@
     v4->mSongMetaData = objc_alloc_init(NSMutableDictionary);
     v5 = +[NSMutableArray array];
     v6 = v5;
-    if (a3)
+    if (paths)
     {
-      [v5 addObjectsFromArray:a3];
+      [v5 addObjectsFromArray:paths];
     }
 
     else

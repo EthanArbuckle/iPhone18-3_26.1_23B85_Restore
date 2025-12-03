@@ -1,36 +1,36 @@
 @interface SIRINLUEXTERNALUsoEntityIdentifier
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsSourceComponent:(id)a3;
+- (int)StringAsSourceComponent:(id)component;
 - (int)sourceComponent;
 - (unint64_t)hash;
 - (unsigned)groupIndex;
 - (unsigned)interpretationGroup;
 - (unsigned)nodeIndex;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasInterpretationGroup:(BOOL)a3;
-- (void)setHasNodeIndex:(BOOL)a3;
-- (void)setHasSourceComponent:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasInterpretationGroup:(BOOL)group;
+- (void)setHasNodeIndex:(BOOL)index;
+- (void)setHasSourceComponent:(BOOL)component;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALUsoEntityIdentifier
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((v4[16] & 4) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[16] & 4) != 0)
   {
-    self->_nodeIndex = v4[8];
+    self->_nodeIndex = fromCopy[8];
     *&self->_has |= 4u;
   }
 
-  v11 = v4;
-  if (*(v4 + 1))
+  v11 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(SIRINLUEXTERNALUsoEntityIdentifier *)self setBackingAppBundleId:?];
     v5 = v11;
@@ -181,24 +181,24 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
-  v5 = *(v4 + 64);
+  v5 = *(equalCopy + 64);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 64) & 4) == 0 || self->_nodeIndex != *(v4 + 8))
+    if ((*(equalCopy + 64) & 4) == 0 || self->_nodeIndex != *(equalCopy + 8))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 64) & 4) != 0)
+  else if ((*(equalCopy + 64) & 4) != 0)
   {
 LABEL_29:
     v10 = 0;
@@ -206,13 +206,13 @@ LABEL_29:
   }
 
   backingAppBundleId = self->_backingAppBundleId;
-  if (backingAppBundleId | *(v4 + 1) && ![(NSString *)backingAppBundleId isEqual:?])
+  if (backingAppBundleId | *(equalCopy + 1) && ![(NSString *)backingAppBundleId isEqual:?])
   {
     goto LABEL_29;
   }
 
   value = self->_value;
-  if (value | *(v4 + 7))
+  if (value | *(equalCopy + 7))
   {
     if (![(NSString *)value isEqual:?])
     {
@@ -221,7 +221,7 @@ LABEL_29:
   }
 
   namespaceA = self->_namespaceA;
-  if (namespaceA | *(v4 + 3))
+  if (namespaceA | *(equalCopy + 3))
   {
     if (![(SIRICOMMONStringValue *)namespaceA isEqual:?])
     {
@@ -230,7 +230,7 @@ LABEL_29:
   }
 
   probability = self->_probability;
-  if (probability | *(v4 + 5))
+  if (probability | *(equalCopy + 5))
   {
     if (![(SIRICOMMONDoubleValue *)probability isEqual:?])
     {
@@ -240,34 +240,34 @@ LABEL_29:
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 64) & 8) == 0 || self->_sourceComponent != *(v4 + 12))
+    if ((*(equalCopy + 64) & 8) == 0 || self->_sourceComponent != *(equalCopy + 12))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 64) & 8) != 0)
+  else if ((*(equalCopy + 64) & 8) != 0)
   {
     goto LABEL_29;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_groupIndex != *(v4 + 4))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_groupIndex != *(equalCopy + 4))
     {
       goto LABEL_29;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_29;
   }
 
-  v10 = (*(v4 + 64) & 2) == 0;
+  v10 = (*(equalCopy + 64) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_interpretationGroup != *(v4 + 5))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_interpretationGroup != *(equalCopy + 5))
     {
       goto LABEL_29;
     }
@@ -280,9 +280,9 @@ LABEL_30:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -290,19 +290,19 @@ LABEL_30:
     *(v5 + 64) |= 4u;
   }
 
-  v7 = [(NSString *)self->_backingAppBundleId copyWithZone:a3];
+  v7 = [(NSString *)self->_backingAppBundleId copyWithZone:zone];
   v8 = *(v6 + 8);
   *(v6 + 8) = v7;
 
-  v9 = [(NSString *)self->_value copyWithZone:a3];
+  v9 = [(NSString *)self->_value copyWithZone:zone];
   v10 = *(v6 + 56);
   *(v6 + 56) = v9;
 
-  v11 = [(SIRICOMMONStringValue *)self->_namespaceA copyWithZone:a3];
+  v11 = [(SIRICOMMONStringValue *)self->_namespaceA copyWithZone:zone];
   v12 = *(v6 + 24);
   *(v6 + 24) = v11;
 
-  v13 = [(SIRICOMMONDoubleValue *)self->_probability copyWithZone:a3];
+  v13 = [(SIRICOMMONDoubleValue *)self->_probability copyWithZone:zone];
   v14 = *(v6 + 40);
   *(v6 + 40) = v13;
 
@@ -344,45 +344,45 @@ LABEL_6:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[8] = self->_nodeIndex;
-    *(v4 + 64) |= 4u;
+    toCopy[8] = self->_nodeIndex;
+    *(toCopy + 64) |= 4u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_backingAppBundleId)
   {
-    [v4 setBackingAppBundleId:?];
-    v4 = v6;
+    [toCopy setBackingAppBundleId:?];
+    toCopy = v6;
   }
 
   if (self->_value)
   {
     [v6 setValue:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_namespaceA)
   {
     [v6 setNamespaceA:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_probability)
   {
     [v6 setProbability:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[12] = self->_sourceComponent;
-    *(v4 + 64) |= 8u;
+    toCopy[12] = self->_sourceComponent;
+    *(toCopy + 64) |= 8u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -401,21 +401,21 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v4[4] = self->_groupIndex;
-  *(v4 + 64) |= 1u;
+  toCopy[4] = self->_groupIndex;
+  *(toCopy + 64) |= 1u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_14:
-    v4[5] = self->_interpretationGroup;
-    *(v4 + 64) |= 2u;
+    toCopy[5] = self->_interpretationGroup;
+    *(toCopy + 64) |= 2u;
   }
 
 LABEL_15:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
     nodeIndex = self->_nodeIndex;
@@ -479,37 +479,37 @@ LABEL_15:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 4) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_nodeIndex];
-    [v3 setObject:v4 forKey:@"node_index"];
+    [dictionary setObject:v4 forKey:@"node_index"];
   }
 
   backingAppBundleId = self->_backingAppBundleId;
   if (backingAppBundleId)
   {
-    [v3 setObject:backingAppBundleId forKey:@"backing_app_bundle_id"];
+    [dictionary setObject:backingAppBundleId forKey:@"backing_app_bundle_id"];
   }
 
   value = self->_value;
   if (value)
   {
-    [v3 setObject:value forKey:@"value"];
+    [dictionary setObject:value forKey:@"value"];
   }
 
   namespaceA = self->_namespaceA;
   if (namespaceA)
   {
-    v8 = [(SIRICOMMONStringValue *)namespaceA dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"namespace_a"];
+    dictionaryRepresentation = [(SIRICOMMONStringValue *)namespaceA dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"namespace_a"];
   }
 
   probability = self->_probability;
   if (probability)
   {
-    v10 = [(SIRICOMMONDoubleValue *)probability dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"probability"];
+    dictionaryRepresentation2 = [(SIRICOMMONDoubleValue *)probability dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"probability"];
   }
 
   has = self->_has;
@@ -526,7 +526,7 @@ LABEL_15:
       v15 = off_1E8328120[sourceComponent];
     }
 
-    [v3 setObject:v15 forKey:@"source_component"];
+    [dictionary setObject:v15 forKey:@"source_component"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -547,18 +547,18 @@ LABEL_13:
   }
 
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_groupIndex];
-  [v3 setObject:v16 forKey:@"group_index"];
+  [dictionary setObject:v16 forKey:@"group_index"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_14:
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_interpretationGroup];
-    [v3 setObject:v12 forKey:@"interpretation_group"];
+    [dictionary setObject:v12 forKey:@"interpretation_group"];
   }
 
 LABEL_15:
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -567,15 +567,15 @@ LABEL_15:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALUsoEntityIdentifier;
   v4 = [(SIRINLUEXTERNALUsoEntityIdentifier *)&v8 description];
-  v5 = [(SIRINLUEXTERNALUsoEntityIdentifier *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALUsoEntityIdentifier *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasInterpretationGroup:(BOOL)a3
+- (void)setHasInterpretationGroup:(BOOL)group
 {
-  if (a3)
+  if (group)
   {
     v3 = 2;
   }
@@ -614,40 +614,40 @@ LABEL_15:
   }
 }
 
-- (int)StringAsSourceComponent:(id)a3
+- (int)StringAsSourceComponent:(id)component
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NLU_COMPONENT_UNKNOWN"])
+  componentCopy = component;
+  if ([componentCopy isEqualToString:@"NLU_COMPONENT_UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NLU_COMPONENT_SPAN_MATCH_SIRI_VOCAB"])
+  else if ([componentCopy isEqualToString:@"NLU_COMPONENT_SPAN_MATCH_SIRI_VOCAB"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"NLU_COMPONENT_SPAN_MATCH_VOC_FILE"])
+  else if ([componentCopy isEqualToString:@"NLU_COMPONENT_SPAN_MATCH_VOC_FILE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"NLU_COMPONENT_SPAN_MATCH_MENTION_RESOLVER"])
+  else if ([componentCopy isEqualToString:@"NLU_COMPONENT_SPAN_MATCH_MENTION_RESOLVER"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"NLU_COMPONENT_SPAN_MATCH_CONTEXTUAL_SPAN_MATCHER"])
+  else if ([componentCopy isEqualToString:@"NLU_COMPONENT_SPAN_MATCH_CONTEXTUAL_SPAN_MATCHER"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"NLU_COMPONENT_PARSER_CATI"])
+  else if ([componentCopy isEqualToString:@"NLU_COMPONENT_PARSER_CATI"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"NLU_COMPONENT_PARSER_SSU"])
+  else if ([componentCopy isEqualToString:@"NLU_COMPONENT_PARSER_SSU"])
   {
     v4 = 6;
   }
@@ -660,9 +660,9 @@ LABEL_15:
   return v4;
 }
 
-- (void)setHasSourceComponent:(BOOL)a3
+- (void)setHasSourceComponent:(BOOL)component
 {
-  if (a3)
+  if (component)
   {
     v3 = 8;
   }
@@ -688,9 +688,9 @@ LABEL_15:
   }
 }
 
-- (void)setHasNodeIndex:(BOOL)a3
+- (void)setHasNodeIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 4;
   }

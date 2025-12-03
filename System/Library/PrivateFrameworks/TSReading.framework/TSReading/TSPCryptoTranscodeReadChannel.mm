@@ -1,16 +1,16 @@
 @interface TSPCryptoTranscodeReadChannel
-- (TSPCryptoTranscodeReadChannel)initWithReadChannel:(id)a3 decryptionKey:(id)a4 encryptionKey:(id)a5;
+- (TSPCryptoTranscodeReadChannel)initWithReadChannel:(id)channel decryptionKey:(id)key encryptionKey:(id)encryptionKey;
 - (void)close;
-- (void)readWithQueue:(id)a3 handler:(id)a4;
+- (void)readWithQueue:(id)queue handler:(id)handler;
 @end
 
 @implementation TSPCryptoTranscodeReadChannel
 
-- (TSPCryptoTranscodeReadChannel)initWithReadChannel:(id)a3 decryptionKey:(id)a4 encryptionKey:(id)a5
+- (TSPCryptoTranscodeReadChannel)initWithReadChannel:(id)channel decryptionKey:(id)key encryptionKey:(id)encryptionKey
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  channelCopy = channel;
+  keyCopy = key;
+  encryptionKeyCopy = encryptionKey;
   v17.receiver = self;
   v17.super_class = TSPCryptoTranscodeReadChannel;
   v11 = [(TSPCryptoTranscodeReadChannel *)&v17 init];
@@ -20,20 +20,20 @@
     readQueue = v11->_readQueue;
     v11->_readQueue = v12;
 
-    if (v9)
+    if (keyCopy)
     {
-      v14 = [[TSPCryptoReadChannel alloc] initWithReadChannel:v8 decryptionKey:v9];
+      v14 = [[TSPCryptoReadChannel alloc] initWithReadChannel:channelCopy decryptionKey:keyCopy];
     }
 
     else
     {
-      v14 = v8;
+      v14 = channelCopy;
     }
 
     readChannel = v11->_readChannel;
     v11->_readChannel = v14;
 
-    objc_storeStrong(&v11->_encryptionKey, a5);
+    objc_storeStrong(&v11->_encryptionKey, encryptionKey);
     if (!v11->_readChannel)
     {
 
@@ -44,13 +44,13 @@
   return v11;
 }
 
-- (void)readWithQueue:(id)a3 handler:(id)a4
+- (void)readWithQueue:(id)queue handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   if (self->_encryptionKey)
   {
-    v8 = [[TSPIOHandlerWriteChannelAdapter alloc] initWithQueue:v6 handler:v7];
+    v8 = [[TSPIOHandlerWriteChannelAdapter alloc] initWithQueue:queueCopy handler:handlerCopy];
     v9 = [[TSPCryptoComponentWriteChannel alloc] initWithWriteChannel:v8 encryptionKey:self->_encryptionKey];
     v23[0] = 0;
     v23[1] = v23;
@@ -80,8 +80,8 @@
     v16[1] = 3221225472;
     v16[2] = __55__TSPCryptoTranscodeReadChannel_readWithQueue_handler___block_invoke_2;
     v16[3] = &unk_279D474B8;
-    v17 = v6;
-    v18 = v7;
+    v17 = queueCopy;
+    v18 = handlerCopy;
     [(TSUStreamReadChannel *)v14 readWithQueue:v15 handler:v16];
 
     v12 = v17;

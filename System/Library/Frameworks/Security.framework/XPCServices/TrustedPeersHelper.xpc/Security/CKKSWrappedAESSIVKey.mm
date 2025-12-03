@@ -1,26 +1,26 @@
 @interface CKKSWrappedAESSIVKey
 + (id)zeroedKey;
 - (CKKSWrappedAESSIVKey)init;
-- (CKKSWrappedAESSIVKey)initWithBase64:(id)a3;
-- (CKKSWrappedAESSIVKey)initWithBytes:(char *)a3 len:(unint64_t)a4;
-- (CKKSWrappedAESSIVKey)initWithCoder:(id)a3;
-- (CKKSWrappedAESSIVKey)initWithData:(id)a3;
+- (CKKSWrappedAESSIVKey)initWithBase64:(id)base64;
+- (CKKSWrappedAESSIVKey)initWithBytes:(char *)bytes len:(unint64_t)len;
+- (CKKSWrappedAESSIVKey)initWithCoder:(id)coder;
+- (CKKSWrappedAESSIVKey)initWithData:(id)data;
 - (id)base64WrappedKey;
 - (id)wrappedData;
 @end
 
 @implementation CKKSWrappedAESSIVKey
 
-- (CKKSWrappedAESSIVKey)initWithCoder:(id)a3
+- (CKKSWrappedAESSIVKey)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CKKSWrappedAESSIVKey;
   v5 = [(CKKSBaseAESSIVKey *)&v10 init];
   if (v5)
   {
     v9 = 0;
-    v6 = [v4 decodeBytesForKey:@"wrappedkey" returnedLength:&v9];
+    v6 = [coderCopy decodeBytesForKey:@"wrappedkey" returnedLength:&v9];
     if (v6)
     {
       if (v9 >= 0x50)
@@ -42,8 +42,8 @@
 
 - (id)base64WrappedKey
 {
-  v2 = [(CKKSWrappedAESSIVKey *)self wrappedData];
-  v3 = [v2 base64EncodedStringWithOptions:0];
+  wrappedData = [(CKKSWrappedAESSIVKey *)self wrappedData];
+  v3 = [wrappedData base64EncodedStringWithOptions:0];
 
   return v3;
 }
@@ -55,12 +55,12 @@
   return v2;
 }
 
-- (CKKSWrappedAESSIVKey)initWithData:(id)a3
+- (CKKSWrappedAESSIVKey)initWithData:(id)data
 {
-  v4 = a3;
-  if ([v4 length] != 80)
+  dataCopy = data;
+  if ([dataCopy length] != 80)
   {
-    v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"length (%lu) was not %d", [v4 length], 80);
+    v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"length (%lu) was not %d", [dataCopy length], 80);
     v8 = [NSException exceptionWithName:@"WrongKeySizeException" reason:v7 userInfo:0];
     v9 = v8;
 
@@ -69,17 +69,17 @@
 
   v10.receiver = self;
   v10.super_class = CKKSWrappedAESSIVKey;
-  v5 = -[CKKSBaseAESSIVKey initWithBytes:len:](&v10, "initWithBytes:len:", [v4 bytes], objc_msgSend(v4, "length"));
+  v5 = -[CKKSBaseAESSIVKey initWithBytes:len:](&v10, "initWithBytes:len:", [dataCopy bytes], objc_msgSend(dataCopy, "length"));
 
   return v5;
 }
 
-- (CKKSWrappedAESSIVKey)initWithBase64:(id)a3
+- (CKKSWrappedAESSIVKey)initWithBase64:(id)base64
 {
-  v4 = a3;
+  base64Copy = base64;
   v11.receiver = self;
   v11.super_class = CKKSWrappedAESSIVKey;
-  v5 = [(CKKSBaseAESSIVKey *)&v11 initWithBase64:v4];
+  v5 = [(CKKSBaseAESSIVKey *)&v11 initWithBase64:base64Copy];
   v6 = v5;
   if (v5 && v5->super.size != 80)
   {
@@ -93,11 +93,11 @@
   return v6;
 }
 
-- (CKKSWrappedAESSIVKey)initWithBytes:(char *)a3 len:(unint64_t)a4
+- (CKKSWrappedAESSIVKey)initWithBytes:(char *)bytes len:(unint64_t)len
 {
-  if (a4 != 80)
+  if (len != 80)
   {
-    v5 = [NSString stringWithFormat:@"length (%lu) was not %d", a4, 80];
+    v5 = [NSString stringWithFormat:@"length (%lu) was not %d", len, 80];
     v6 = [NSException exceptionWithName:@"WrongKeySizeException" reason:v5 userInfo:0];
     v7 = v6;
 
@@ -106,7 +106,7 @@
 
   v8.receiver = self;
   v8.super_class = CKKSWrappedAESSIVKey;
-  return [(CKKSBaseAESSIVKey *)&v8 initWithBytes:a3 len:?];
+  return [(CKKSBaseAESSIVKey *)&v8 initWithBytes:bytes len:?];
 }
 
 - (CKKSWrappedAESSIVKey)init

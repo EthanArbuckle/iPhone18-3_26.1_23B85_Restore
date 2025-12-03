@@ -1,11 +1,11 @@
 @interface DMCJobQueue
 - (DMCJobQueue)init;
-- (DMCJobQueue)initWithExecutionQueue:(id)a3;
+- (DMCJobQueue)initWithExecutionQueue:(id)queue;
 - (void)dealloc;
-- (void)fromFunction:(const char *)a3 enqueueJob:(id)a4;
-- (void)jobDidFinishFromFunction:(const char *)a3 jobBlockDescription:(id)a4;
-- (void)queueBlock:(id)a3;
-- (void)waitForEnqueuedJobsToCompleteCompletionBlock:(id)a3;
+- (void)fromFunction:(const char *)function enqueueJob:(id)job;
+- (void)jobDidFinishFromFunction:(const char *)function jobBlockDescription:(id)description;
+- (void)queueBlock:(id)block;
+- (void)waitForEnqueuedJobsToCompleteCompletionBlock:(id)block;
 @end
 
 @implementation DMCJobQueue
@@ -18,9 +18,9 @@
   return v4;
 }
 
-- (DMCJobQueue)initWithExecutionQueue:(id)a3
+- (DMCJobQueue)initWithExecutionQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = DMCJobQueue;
   v6 = [(DMCJobQueue *)&v14 init];
@@ -37,7 +37,7 @@
     jobQueue = v6->_jobQueue;
     v6->_jobQueue = v11;
 
-    objc_storeStrong(&v6->_executionQueue, a3);
+    objc_storeStrong(&v6->_executionQueue, queue);
     v6->_nextJobSequenceNumber = 0;
   }
 
@@ -64,10 +64,10 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fromFunction:(const char *)a3 enqueueJob:(id)a4
+- (void)fromFunction:(const char *)function enqueueJob:(id)job
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  jobCopy = job;
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%u", self->_nextJobSequenceNumber];
   ++self->_nextJobSequenceNumber;
   v8 = *DMCLogObjects();
@@ -79,22 +79,22 @@
     v20 = 2114;
     v21 = v7;
     v22 = 2082;
-    v23 = a3;
+    functionCopy = function;
     _os_log_impl(&dword_1B1630000, v8, OS_LOG_TYPE_DEFAULT, "DMCJQ %{public}@ Enqueueing jobBlock %{public}@, calling function %{public}s", buf, 0x20u);
   }
 
-  v10 = [(DMCJobQueue *)self jobQueue];
+  jobQueue = [(DMCJobQueue *)self jobQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __39__DMCJobQueue_fromFunction_enqueueJob___block_invoke;
   block[3] = &unk_1E7ADCBB8;
   block[4] = self;
   v15 = v7;
-  v16 = v6;
-  v17 = a3;
-  v11 = v6;
+  v16 = jobCopy;
+  functionCopy2 = function;
+  v11 = jobCopy;
   v12 = v7;
-  dispatch_async(v10, block);
+  dispatch_async(jobQueue, block);
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -169,10 +169,10 @@ void __39__DMCJobQueue_fromFunction_enqueueJob___block_invoke_11(void *a1)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)jobDidFinishFromFunction:(const char *)a3 jobBlockDescription:(id)a4
+- (void)jobDidFinishFromFunction:(const char *)function jobBlockDescription:(id)description
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  descriptionCopy = description;
   v7 = *DMCLogObjects();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -180,9 +180,9 @@ void __39__DMCJobQueue_fromFunction_enqueueJob___block_invoke_11(void *a1)
     v10 = 138543874;
     v11 = queueID;
     v12 = 2114;
-    v13 = v6;
+    v13 = descriptionCopy;
     v14 = 2082;
-    v15 = a3;
+    functionCopy = function;
     _os_log_impl(&dword_1B1630000, v7, OS_LOG_TYPE_DEFAULT, "DMCJQ %{public}@ JobBlock %{public}@ finished, calling function %{public}s", &v10, 0x20u);
   }
 
@@ -191,25 +191,25 @@ void __39__DMCJobQueue_fromFunction_enqueueJob___block_invoke_11(void *a1)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)queueBlock:(id)a3
+- (void)queueBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(DMCJobQueue *)self executionQueue];
-  [v5 queueBlock:v4];
+  blockCopy = block;
+  executionQueue = [(DMCJobQueue *)self executionQueue];
+  [executionQueue queueBlock:blockCopy];
 }
 
-- (void)waitForEnqueuedJobsToCompleteCompletionBlock:(id)a3
+- (void)waitForEnqueuedJobsToCompleteCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(DMCJobQueue *)self jobQueue];
+  blockCopy = block;
+  jobQueue = [(DMCJobQueue *)self jobQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__DMCJobQueue_waitForEnqueuedJobsToCompleteCompletionBlock___block_invoke;
   v7[3] = &unk_1E7ADC950;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(jobQueue, v7);
 }
 
 void __60__DMCJobQueue_waitForEnqueuedJobsToCompleteCompletionBlock___block_invoke(uint64_t a1)

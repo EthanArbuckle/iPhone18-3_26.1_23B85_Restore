@@ -2,9 +2,9 @@
 + (id)loadNetworkProfilesData;
 + (void)loadNetworkProfilesData;
 - (SlowNetworkUtil)init;
-- (id)readInProfile:(id)a3;
-- (void)extractProfileSetting:(id)a3;
-- (void)loadProfile:(id)a3;
+- (id)readInProfile:(id)profile;
+- (void)extractProfileSetting:(id)setting;
+- (void)loadProfile:(id)profile;
 - (void)startNLC;
 - (void)stopNLC;
 @end
@@ -72,14 +72,14 @@
   return v5;
 }
 
-- (id)readInProfile:(id)a3
+- (id)readInProfile:(id)profile
 {
-  v3 = a3;
+  profileCopy = profile;
   v4 = +[SlowNetworkUtil loadNetworkProfilesData];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 objectForKey:v3];
+    v6 = [v4 objectForKey:profileCopy];
     v7 = v6;
     if (v6)
     {
@@ -105,7 +105,7 @@
   return v7;
 }
 
-- (void)loadProfile:(id)a3
+- (void)loadProfile:(id)profile
 {
   v30 = *MEMORY[0x277D85DE8];
   *&self->nlcCommand.version = 0u;
@@ -122,19 +122,19 @@
   *&self->nlcCommand.nlc_conditions[0].net_config.ifname[12] = 0u;
   *&self->nlcCommand.nlc_conditions[0].net_config.exclude_loopback = 0u;
   self->nlcCommand.version = 21;
-  [(SlowNetworkUtil *)self extractProfileSetting:a3];
+  [(SlowNetworkUtil *)self extractProfileSetting:profile];
   v29 = 0uLL;
   v27 = 0uLL;
   v28 = 0;
   downlinkDelay = self->downlinkDelay;
   if (downlinkDelay)
   {
-    v5 = [(NSNumber *)downlinkDelay unsignedLongValue];
+    unsignedLongValue = [(NSNumber *)downlinkDelay unsignedLongValue];
   }
 
   else
   {
-    v5 = 0;
+    unsignedLongValue = 0;
   }
 
   downlinkPacketLossRatio = self->downlinkPacketLossRatio;
@@ -172,7 +172,7 @@
     v12 = 0;
   }
 
-  if (v8 == 0.0 && !v5)
+  if (v8 == 0.0 && !unsignedLongValue)
   {
     v13 = 0;
     v12 = 0;
@@ -189,12 +189,12 @@ LABEL_17:
   uplinkDelay = self->uplinkDelay;
   if (uplinkDelay)
   {
-    v15 = [(NSNumber *)uplinkDelay unsignedLongValue];
+    unsignedLongValue2 = [(NSNumber *)uplinkDelay unsignedLongValue];
   }
 
   else
   {
-    v15 = 0;
+    unsignedLongValue2 = 0;
   }
 
   uplinkPacketLossRatio = self->uplinkPacketLossRatio;
@@ -215,7 +215,7 @@ LABEL_17:
     [(NSNumber *)uplinkBandwidth floatValue];
   }
 
-  v20 = v18 == 0.0 && v15 == 0;
+  v20 = v18 == 0.0 && unsignedLongValue2 == 0;
   if (v20)
   {
     v18 = 0.0;
@@ -228,7 +228,7 @@ LABEL_17:
 
   if (v20)
   {
-    v15 = 0;
+    unsignedLongValue2 = 0;
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -245,34 +245,34 @@ LABEL_17:
     *&self->nlcCommand.nlc_conditions[1].uplink_config.bandwidth = 0;
     self->nlcCommand.nlc_conditions[1].flags = v13;
     self->nlcCommand.nlc_conditions[1].uplink_config.plr = v18;
-    self->nlcCommand.nlc_conditions[1].uplink_config.latency = v15;
+    self->nlcCommand.nlc_conditions[1].uplink_config.latency = unsignedLongValue2;
     *&self->nlcCommand.nlc_conditions[1].uplink_config.qsize = v21;
     self->nlcCommand.nlc_conditions[1].uplink_config.src_port = 0;
     self->nlcCommand.nlc_conditions[1].downlink_config.bandwidth = v12;
     self->nlcCommand.nlc_conditions[1].downlink_config.bw_unit = v11;
     self->nlcCommand.nlc_conditions[1].downlink_config.plr = v8;
-    self->nlcCommand.nlc_conditions[1].downlink_config.latency = v5;
+    self->nlcCommand.nlc_conditions[1].downlink_config.latency = unsignedLongValue;
     *&self->nlcCommand.nlc_conditions[1].downlink_config.qsize = v27;
     self->nlcCommand.nlc_conditions[1].downlink_config.src_port = v28;
   }
 
   if ([(NSNumber *)self->dnsDelayValue intValue]>= 1)
   {
-    v22 = [(NSNumber *)self->dnsDelayValue unsignedLongValue];
-    v23 = [(NSNumber *)self->excludeLoopback unsignedLongValue];
-    if (v22)
+    unsignedLongValue3 = [(NSNumber *)self->dnsDelayValue unsignedLongValue];
+    unsignedLongValue4 = [(NSNumber *)self->excludeLoopback unsignedLongValue];
+    if (unsignedLongValue3)
     {
       v27 = 0uLL;
       v28 = 0;
       v29 = 0uLL;
       LODWORD(v24) = 0;
-      HIDWORD(v24) = v23;
+      HIDWORD(v24) = unsignedLongValue4;
       self->nlcCommand.nlc_conditions[0].flags = 6;
       *&self->nlcCommand.nlc_conditions[0].net_config.family = v24;
       *self->nlcCommand.nlc_conditions[0].net_config.ifname = v29;
       *&self->nlcCommand.nlc_conditions[0].uplink_config.bw_unit = 0;
       self->nlcCommand.nlc_conditions[0].uplink_config.bandwidth = 0;
-      self->nlcCommand.nlc_conditions[0].uplink_config.latency = v22;
+      self->nlcCommand.nlc_conditions[0].uplink_config.latency = unsignedLongValue3;
       *&self->nlcCommand.nlc_conditions[0].uplink_config.qsize = 0;
       *&self->nlcCommand.nlc_conditions[0].uplink_config.protocol = 0x3500000011;
       *&self->nlcCommand.nlc_conditions[0].downlink_config.bandwidth = 0;
@@ -292,13 +292,13 @@ LABEL_17:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)extractProfileSetting:(id)a3
+- (void)extractProfileSetting:(id)setting
 {
-  v4 = a3;
-  if (v4)
+  settingCopy = setting;
+  if (settingCopy)
   {
-    v37 = v4;
-    v5 = [v4 objectForKey:@"UplinkBandwidthUnit"];
+    v37 = settingCopy;
+    v5 = [settingCopy objectForKey:@"UplinkBandwidthUnit"];
 
     v6 = [v37 objectForKey:@"DownlinkBandwidthUnit"];
 
@@ -341,9 +341,9 @@ LABEL_17:
     if (v5)
     {
       v25 = [v37 valueForKey:@"UplinkBandwidthUnit"];
-      v26 = [v25 intValue];
+      intValue = [v25 intValue];
 
-      if (!v26)
+      if (!intValue)
       {
         v27 = MEMORY[0x277CCABB0];
         [(NSNumber *)self->uplinkBandwidth doubleValue];
@@ -353,14 +353,14 @@ LABEL_17:
       }
     }
 
-    v4 = v37;
+    settingCopy = v37;
     if (v6)
     {
       v31 = [v37 valueForKey:@"DownlinkBandwidthUnit"];
-      v32 = [v31 intValue];
+      intValue2 = [v31 intValue];
 
-      v4 = v37;
-      if (!v32)
+      settingCopy = v37;
+      if (!intValue2)
       {
         v33 = MEMORY[0x277CCABB0];
         [(NSNumber *)self->downlinkBandwidth doubleValue];
@@ -368,7 +368,7 @@ LABEL_17:
         v36 = self->downlinkBandwidth;
         self->downlinkBandwidth = v35;
 
-        v4 = v37;
+        settingCopy = v37;
       }
     }
   }

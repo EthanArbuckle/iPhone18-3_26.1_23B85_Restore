@@ -1,17 +1,17 @@
 @interface FAFamilySharingFeaturesView
-+ (id)rowForIcon:(id)a3 andLabel:(id)a4;
-- (FAFamilySharingFeaturesView)initWithContext:(int64_t)a3 hideLocationSharing:(BOOL)a4;
-- (id)_contextSensitiveLocalizedStringWithKey:(id)a3;
-- (id)_imageViewWithIconNamed:(id)a3 addBorder:(BOOL)a4;
-- (id)_labelWithStringAtKey:(id)a3;
-- (void)_learnMoreButtonTapped:(id)a3;
++ (id)rowForIcon:(id)icon andLabel:(id)label;
+- (FAFamilySharingFeaturesView)initWithContext:(int64_t)context hideLocationSharing:(BOOL)sharing;
+- (id)_contextSensitiveLocalizedStringWithKey:(id)key;
+- (id)_imageViewWithIconNamed:(id)named addBorder:(BOOL)border;
+- (id)_labelWithStringAtKey:(id)key;
+- (void)_learnMoreButtonTapped:(id)tapped;
 - (void)_updateFonts;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation FAFamilySharingFeaturesView
 
-- (FAFamilySharingFeaturesView)initWithContext:(int64_t)a3 hideLocationSharing:(BOOL)a4
+- (FAFamilySharingFeaturesView)initWithContext:(int64_t)context hideLocationSharing:(BOOL)sharing
 {
   v57[1] = *MEMORY[0x277D85DE8];
   v55.receiver = self;
@@ -20,8 +20,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_context = a3;
-    v6->_shouldHideLocationSharing = a4;
+    v6->_context = context;
+    v6->_shouldHideLocationSharing = sharing;
     v8 = objc_opt_new();
     stack = v7->_stack;
     v7->_stack = v8;
@@ -80,16 +80,16 @@
     v38 = [v37 localizedStringForKey:@"FAMILY_SHARING_LEARN_MORE_BUTTON" value:&stru_282D9AA68 table:@"Localizable"];
     [(UIButton *)v36 setTitle:v38 forState:0];
 
-    v39 = [(UIButton *)v7->_learnMoreButton titleLabel];
-    [v39 setTextAlignment:1];
+    titleLabel = [(UIButton *)v7->_learnMoreButton titleLabel];
+    [titleLabel setTextAlignment:1];
 
     [(UIButton *)v7->_learnMoreButton addTarget:v7 action:sel__learnMoreButtonTapped_ forControlEvents:64];
-    v40 = [(UIButton *)v7->_learnMoreButton titleLabel];
+    titleLabel2 = [(UIButton *)v7->_learnMoreButton titleLabel];
     v41 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
-    [v40 setFont:v41];
+    [titleLabel2 setFont:v41];
 
-    v42 = [(UIButton *)v7->_learnMoreButton titleLabel];
-    [v42 setNumberOfLines:0];
+    titleLabel3 = [(UIButton *)v7->_learnMoreButton titleLabel];
+    [titleLabel3 setNumberOfLines:0];
 
     [(UIButton *)v7->_learnMoreButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(FAFamilySharingFeaturesView *)v7 addSubview:v7->_learnMoreButton];
@@ -117,80 +117,80 @@
   return v7;
 }
 
-+ (id)rowForIcon:(id)a3 andLabel:(id)a4
++ (id)rowForIcon:(id)icon andLabel:(id)label
 {
-  v5 = a4;
-  v6 = a3;
+  labelCopy = label;
+  iconCopy = icon;
   v7 = objc_opt_new();
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v7 addSubview:v6];
-  [v7 addSubview:v5];
-  v8 = _NSDictionaryOfVariableBindings(&cfstr_ImageText.isa, v6, v5, 0);
-  v9 = [MEMORY[0x277CBEB18] array];
+  [iconCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  [labelCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  [v7 addSubview:iconCopy];
+  [v7 addSubview:labelCopy];
+  v8 = _NSDictionaryOfVariableBindings(&cfstr_ImageText.isa, iconCopy, labelCopy, 0);
+  array = [MEMORY[0x277CBEB18] array];
   v10 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|[image(iconSize)]-(iconToLabelSpace)-[text]|" options:0 metrics:&unk_282DC0740 views:v8];
-  [v9 addObjectsFromArray:v10];
+  [array addObjectsFromArray:v10];
 
   v11 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|-(>=0)-[image(iconSize)]" options:0 metrics:&unk_282DC0740 views:v8];
-  [v9 addObjectsFromArray:v11];
+  [array addObjectsFromArray:v11];
 
   v12 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|[text]|" options:0 metrics:&unk_282DC0740 views:v8];
-  [v9 addObjectsFromArray:v12];
+  [array addObjectsFromArray:v12];
 
-  v13 = [MEMORY[0x277CCAAD0] constraintWithItem:v7 attribute:10 relatedBy:0 toItem:v6 attribute:10 multiplier:1.0 constant:0.0];
-  [v9 addObject:v13];
+  v13 = [MEMORY[0x277CCAAD0] constraintWithItem:v7 attribute:10 relatedBy:0 toItem:iconCopy attribute:10 multiplier:1.0 constant:0.0];
+  [array addObject:v13];
 
-  v14 = [MEMORY[0x277CCAAD0] constraintWithItem:v5 attribute:10 relatedBy:0 toItem:v6 attribute:10 multiplier:1.0 constant:0.0];
+  v14 = [MEMORY[0x277CCAAD0] constraintWithItem:labelCopy attribute:10 relatedBy:0 toItem:iconCopy attribute:10 multiplier:1.0 constant:0.0];
 
-  [v9 addObject:v14];
-  [MEMORY[0x277CCAAD0] activateConstraints:v9];
+  [array addObject:v14];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
 
   return v7;
 }
 
-- (id)_labelWithStringAtKey:(id)a3
+- (id)_labelWithStringAtKey:(id)key
 {
-  v3 = [(FAFamilySharingFeaturesView *)self _contextSensitiveLocalizedStringWithKey:a3];
+  v3 = [(FAFamilySharingFeaturesView *)self _contextSensitiveLocalizedStringWithKey:key];
   v4 = objc_alloc(MEMORY[0x277D756B8]);
   v5 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v5 setText:v3];
   [v5 setNumberOfLines:0];
-  v6 = [MEMORY[0x277D74300] aa_fontForPrimaryInformationLabel];
-  [v5 setFont:v6];
+  aa_fontForPrimaryInformationLabel = [MEMORY[0x277D74300] aa_fontForPrimaryInformationLabel];
+  [v5 setFont:aa_fontForPrimaryInformationLabel];
 
   return v5;
 }
 
-- (id)_imageViewWithIconNamed:(id)a3 addBorder:(BOOL)a4
+- (id)_imageViewWithIconNamed:(id)named addBorder:(BOOL)border
 {
-  v4 = a4;
+  borderCopy = border;
   v5 = MEMORY[0x277D755B8];
   v6 = MEMORY[0x277CCA8D8];
-  v7 = a3;
+  namedCopy = named;
   v8 = [v6 bundleForClass:objc_opt_class()];
-  v9 = [v5 imageNamed:v7 inBundle:v8];
+  v9 = [v5 imageNamed:namedCopy inBundle:v8];
 
   v10 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v9];
   v11 = v10;
-  if (v4)
+  if (borderCopy)
   {
-    v12 = [v10 layer];
-    v13 = [MEMORY[0x277D75348] systemMidGrayColor];
-    [v12 setBorderColor:{objc_msgSend(v13, "CGColor")}];
+    layer = [v10 layer];
+    systemMidGrayColor = [MEMORY[0x277D75348] systemMidGrayColor];
+    [layer setBorderColor:{objc_msgSend(systemMidGrayColor, "CGColor")}];
 
-    v14 = [v11 layer];
+    layer2 = [v11 layer];
     PSRoundToPixel();
-    [v14 setBorderWidth:?];
+    [layer2 setBorderWidth:?];
 
-    v15 = [v11 layer];
-    [v15 setCornerRadius:8.0];
+    layer3 = [v11 layer];
+    [layer3 setCornerRadius:8.0];
   }
 
   return v11;
 }
 
-- (void)_learnMoreButtonTapped:(id)a3
+- (void)_learnMoreButtonTapped:(id)tapped
 {
   v3 = objc_opt_new();
   [v3 fetchAAURLConfigurationWithCompletion:&__block_literal_global_19];
@@ -209,26 +209,26 @@ void __54__FAFamilySharingFeaturesView__learnMoreButtonTapped___block_invoke(uin
   }
 }
 
-- (id)_contextSensitiveLocalizedStringWithKey:(id)a3
+- (id)_contextSensitiveLocalizedStringWithKey:(id)key
 {
   if (self->_context == 1)
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = a3;
-    v5 = [v3 stringWithFormat:@"%@_INVITE_CONTEXT", v4];
+    keyCopy = key;
+    keyCopy = [v3 stringWithFormat:@"%@_INVITE_CONTEXT", keyCopy];
 
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v7 = v6;
-    v8 = v5;
+    keyCopy2 = v6;
+    v8 = keyCopy;
   }
 
   else
   {
     v9 = MEMORY[0x277CCA8D8];
-    v7 = a3;
+    keyCopy2 = key;
     v6 = [v9 bundleForClass:objc_opt_class()];
-    v5 = v6;
-    v8 = v7;
+    keyCopy = v6;
+    v8 = keyCopy2;
   }
 
   v10 = [v6 localizedStringForKey:v8 value:&stru_282D9AA68 table:@"Localizable"];
@@ -243,8 +243,8 @@ void __54__FAFamilySharingFeaturesView__learnMoreButtonTapped___block_invoke(uin
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(UIStackView *)self->_stack arrangedSubviews];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  arrangedSubviews = [(UIStackView *)self->_stack arrangedSubviews];
+  v4 = [arrangedSubviews countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -256,48 +256,48 @@ void __54__FAFamilySharingFeaturesView__learnMoreButtonTapped___block_invoke(uin
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
-        v8 = [*(*(&v14 + 1) + 8 * v7) subviews];
-        v9 = [v8 lastObject];
+        subviews = [*(*(&v14 + 1) + 8 * v7) subviews];
+        lastObject = [subviews lastObject];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [MEMORY[0x277D74300] aa_fontForPrimaryInformationLabel];
-          [v9 setFont:v10];
+          aa_fontForPrimaryInformationLabel = [MEMORY[0x277D74300] aa_fontForPrimaryInformationLabel];
+          [lastObject setFont:aa_fontForPrimaryInformationLabel];
         }
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [arrangedSubviews countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
   }
 
-  v11 = [(UIButton *)self->_learnMoreButton titleLabel];
+  titleLabel = [(UIButton *)self->_learnMoreButton titleLabel];
   v12 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
-  [v11 setFont:v12];
+  [titleLabel setFont:v12];
 
   [(FAFamilySharingFeaturesView *)self setNeedsLayout];
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = FAFamilySharingFeaturesView;
-  v4 = a3;
-  [(FAFamilySharingFeaturesView *)&v9 traitCollectionDidChange:v4];
-  v5 = [v4 preferredContentSizeCategory];
+  changeCopy = change;
+  [(FAFamilySharingFeaturesView *)&v9 traitCollectionDidChange:changeCopy];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
 
-  v6 = [(FAFamilySharingFeaturesView *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
-  v8 = [v5 isEqualToString:v7];
+  traitCollection = [(FAFamilySharingFeaturesView *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
+  v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
   if ((v8 & 1) == 0)
   {

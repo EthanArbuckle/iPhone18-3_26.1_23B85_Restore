@@ -1,17 +1,17 @@
 @interface AXMTPointerMovementMapper
-- (AXMTPointerMovementMapper)initWithScreenBounds:(CGRect)a3;
+- (AXMTPointerMovementMapper)initWithScreenBounds:(CGRect)bounds;
 - (CGRect)screenBounds;
-- (id)processPointInNormalizedTrackingSpace:(CGPoint)a3;
+- (id)processPointInNormalizedTrackingSpace:(CGPoint)space;
 @end
 
 @implementation AXMTPointerMovementMapper
 
-- (AXMTPointerMovementMapper)initWithScreenBounds:(CGRect)a3
+- (AXMTPointerMovementMapper)initWithScreenBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v10.receiver = self;
   v10.super_class = AXMTPointerMovementMapper;
   v7 = [(AXMTPointerMovementMapper *)&v10 init];
@@ -28,7 +28,7 @@
   return v8;
 }
 
-- (id)processPointInNormalizedTrackingSpace:(CGPoint)a3
+- (id)processPointInNormalizedTrackingSpace:(CGPoint)space
 {
   v3 = NSStringFromSelector(a2);
   [NSException raise:NSInternalInconsistencyException format:@"You must override %@ in a subclass", v3];

@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __67__UISDisplaySingleRectShape_SpringBoard__sb_thisDeviceDisplayShape__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sb_thisDeviceDisplayShape_onceToken != -1)
   {
     dispatch_once(&sb_thisDeviceDisplayShape_onceToken, block);

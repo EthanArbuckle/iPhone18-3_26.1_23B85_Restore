@@ -1,17 +1,17 @@
 @interface PUSlideshowSettingsViewModel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)propertyDictionary;
-- (PUSlideshowSettingsViewModel)initWithPropertyDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PUSlideshowSettingsViewModel)initWithPropertyDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)currentChange;
 - (unint64_t)hash;
-- (void)registerChangeObserver:(id)a3;
-- (void)setMediaItem:(id)a3;
-- (void)setMusicOn:(BOOL)a3;
-- (void)setPreset:(id)a3;
-- (void)setShouldRepeat:(BOOL)a3;
-- (void)setStepDuration:(double)a3;
-- (void)unregisterChangeObserver:(id)a3;
+- (void)registerChangeObserver:(id)observer;
+- (void)setMediaItem:(id)item;
+- (void)setMusicOn:(BOOL)on;
+- (void)setPreset:(id)preset;
+- (void)setShouldRepeat:(BOOL)repeat;
+- (void)setStepDuration:(double)duration;
+- (void)unregisterChangeObserver:(id)observer;
 @end
 
 @implementation PUSlideshowSettingsViewModel
@@ -41,7 +41,7 @@
   return v6 - v8 + 32 * v8 + 28629151;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PUSlideshowSettingsViewModel);
   v8[0] = MEMORY[0x1E69E9820];
@@ -50,7 +50,7 @@
   v8[3] = &unk_1E7B80C38;
   v5 = v4;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   [(PUViewModel *)v5 performChanges:v8];
   v6 = v5;
 
@@ -69,10 +69,10 @@ uint64_t __45__PUSlideshowSettingsViewModel_copyWithZone___block_invoke(uint64_t
   return [v2 setMusicOn:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v17 = 1;
   }
@@ -82,27 +82,27 @@ uint64_t __45__PUSlideshowSettingsViewModel_copyWithZone___block_invoke(uint64_t
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PUSlideshowSettingsViewModel *)v5 preset];
-      v7 = [(OKProducerPreset *)self->_preset isEqual:v6];
-      v8 = [(PUSlideshowSettingsViewModel *)v5 mediaItem];
+      v5 = equalCopy;
+      preset = [(PUSlideshowSettingsViewModel *)v5 preset];
+      v7 = [(OKProducerPreset *)self->_preset isEqual:preset];
+      mediaItem = [(PUSlideshowSettingsViewModel *)v5 mediaItem];
       if (v7)
       {
-        v9 = [(PUSlideshowMediaItem *)self->_mediaItem isEqual:v8];
-        v10 = [(PUSlideshowSettingsViewModel *)v5 shouldRepeat];
+        v9 = [(PUSlideshowMediaItem *)self->_mediaItem isEqual:mediaItem];
+        shouldRepeat = [(PUSlideshowSettingsViewModel *)v5 shouldRepeat];
         if (v9)
         {
-          v11 = v10;
+          v11 = shouldRepeat;
           shouldRepeat = self->_shouldRepeat;
           [(PUSlideshowSettingsViewModel *)v5 stepDuration];
           if (shouldRepeat == v11)
           {
             v14 = v13;
             stepDuration = self->_stepDuration;
-            v16 = [(PUSlideshowSettingsViewModel *)v5 isMusicOn];
+            isMusicOn = [(PUSlideshowSettingsViewModel *)v5 isMusicOn];
             if (stepDuration == v14)
             {
-              v17 = self->_musicOn == v16;
+              v17 = self->_musicOn == isMusicOn;
 LABEL_14:
 
               goto LABEL_15;
@@ -136,92 +136,92 @@ LABEL_15:
   return v17;
 }
 
-- (void)setMusicOn:(BOOL)a3
+- (void)setMusicOn:(BOOL)on
 {
-  if (self->_musicOn != a3)
+  if (self->_musicOn != on)
   {
-    self->_musicOn = a3;
-    v4 = [(PUSlideshowSettingsViewModel *)self currentChange];
-    [v4 _setMusicOnDidChange:1];
+    self->_musicOn = on;
+    currentChange = [(PUSlideshowSettingsViewModel *)self currentChange];
+    [currentChange _setMusicOnDidChange:1];
   }
 }
 
-- (void)setStepDuration:(double)a3
+- (void)setStepDuration:(double)duration
 {
-  if (self->_stepDuration != a3)
+  if (self->_stepDuration != duration)
   {
-    self->_stepDuration = a3;
-    v4 = [(PUSlideshowSettingsViewModel *)self currentChange];
-    [v4 _setStepDurationDidChange:1];
+    self->_stepDuration = duration;
+    currentChange = [(PUSlideshowSettingsViewModel *)self currentChange];
+    [currentChange _setStepDurationDidChange:1];
   }
 }
 
-- (void)setShouldRepeat:(BOOL)a3
+- (void)setShouldRepeat:(BOOL)repeat
 {
-  if (self->_shouldRepeat != a3)
+  if (self->_shouldRepeat != repeat)
   {
-    self->_shouldRepeat = a3;
-    v4 = [(PUSlideshowSettingsViewModel *)self currentChange];
-    [v4 _setRepeatDidChange:1];
+    self->_shouldRepeat = repeat;
+    currentChange = [(PUSlideshowSettingsViewModel *)self currentChange];
+    [currentChange _setRepeatDidChange:1];
   }
 }
 
-- (void)setMediaItem:(id)a3
+- (void)setMediaItem:(id)item
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_mediaItem != v5)
+  itemCopy = item;
+  v6 = itemCopy;
+  if (self->_mediaItem != itemCopy)
   {
-    v8 = v5;
-    v5 = [(PUSlideshowMediaItem *)v5 isEqual:?];
+    v8 = itemCopy;
+    itemCopy = [(PUSlideshowMediaItem *)itemCopy isEqual:?];
     v6 = v8;
-    if ((v5 & 1) == 0)
+    if ((itemCopy & 1) == 0)
     {
-      objc_storeStrong(&self->_mediaItem, a3);
-      v7 = [(PUSlideshowSettingsViewModel *)self currentChange];
-      [v7 _setMediaItemDidChange:1];
+      objc_storeStrong(&self->_mediaItem, item);
+      currentChange = [(PUSlideshowSettingsViewModel *)self currentChange];
+      [currentChange _setMediaItemDidChange:1];
 
       v6 = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](itemCopy, v6);
 }
 
-- (void)setPreset:(id)a3
+- (void)setPreset:(id)preset
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_preset != v5)
+  presetCopy = preset;
+  v6 = presetCopy;
+  if (self->_preset != presetCopy)
   {
-    v8 = v5;
-    v5 = [v5 isEqual:?];
+    v8 = presetCopy;
+    presetCopy = [presetCopy isEqual:?];
     v6 = v8;
-    if ((v5 & 1) == 0)
+    if ((presetCopy & 1) == 0)
     {
-      objc_storeStrong(&self->_preset, a3);
-      v7 = [(PUSlideshowSettingsViewModel *)self currentChange];
-      [v7 _setPresetDidChange:1];
+      objc_storeStrong(&self->_preset, preset);
+      currentChange = [(PUSlideshowSettingsViewModel *)self currentChange];
+      [currentChange _setPresetDidChange:1];
 
       v6 = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](presetCopy, v6);
 }
 
 - (NSDictionary)propertyDictionary
 {
   v13[6] = *MEMORY[0x1E69E9840];
-  v3 = [(OKProducerPreset *)self->_preset uniqueIdentifier];
-  v4 = [(PUSlideshowMediaItem *)self->_mediaItem uniqueIdentifier];
-  v5 = [(PUSlideshowMediaItem *)self->_mediaItem type];
+  uniqueIdentifier = [(OKProducerPreset *)self->_preset uniqueIdentifier];
+  uniqueIdentifier2 = [(PUSlideshowMediaItem *)self->_mediaItem uniqueIdentifier];
+  type = [(PUSlideshowMediaItem *)self->_mediaItem type];
   v12[0] = @"presetUniqueIdentifier";
   v12[1] = @"mediaUniqueIdentifier";
-  v13[0] = v3;
-  v13[1] = v4;
+  v13[0] = uniqueIdentifier;
+  v13[1] = uniqueIdentifier2;
   v12[2] = @"mediaType";
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v13[2] = v6;
   v12[3] = @"shouldRepeat";
   v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_shouldRepeat];
@@ -237,9 +237,9 @@ LABEL_15:
   return v10;
 }
 
-- (PUSlideshowSettingsViewModel)initWithPropertyDictionary:(id)a3
+- (PUSlideshowSettingsViewModel)initWithPropertyDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v44.receiver = self;
   v44.super_class = PUSlideshowSettingsViewModel;
   v6 = [(PUViewModel *)&v44 init];
@@ -250,15 +250,15 @@ LABEL_35:
     return v6;
   }
 
-  v7 = [v5 objectForKeyedSubscript:@"presetUniqueIdentifier"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"presetUniqueIdentifier"];
   if (v7)
   {
     goto LABEL_13;
   }
 
-  v8 = [MEMORY[0x1E69DC668] sharedApplication];
-  v9 = [v8 px_firstKeyWindow];
-  [v9 px_peripheryInsets];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  px_firstKeyWindow = [mEMORY[0x1E69DC668] px_firstKeyWindow];
+  [px_firstKeyWindow px_peripheryInsets];
   v13 = v12;
   if (v14 != *(MEMORY[0x1E69DDCE0] + 8) || v10 != *MEMORY[0x1E69DDCE0] || v11 != *(MEMORY[0x1E69DDCE0] + 24))
   {
@@ -266,8 +266,8 @@ LABEL_35:
 LABEL_12:
     v7 = @"com.apple.mobileslideshow@phone-com.apple.opus.producer.marimba.origami-Origami";
 LABEL_13:
-    v18 = [getOKProducerPresetsManagerClass_81894() defaultManager];
-    v19 = [v18 presetForUniqueIdentifier:v7];
+    defaultManager = [getOKProducerPresetsManagerClass_81894() defaultManager];
+    v19 = [defaultManager presetForUniqueIdentifier:v7];
     preset = v6->_preset;
     v6->_preset = v19;
 
@@ -286,22 +286,22 @@ LABEL_14:
   if (v6->_preset)
   {
 LABEL_20:
-    v28 = [v5 objectForKeyedSubscript:@"mediaUniqueIdentifier"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"mediaUniqueIdentifier"];
     if (v28)
     {
-      v29 = [v5 objectForKeyedSubscript:@"mediaType"];
-      v30 = [v29 integerValue];
+      v29 = [dictionaryCopy objectForKeyedSubscript:@"mediaType"];
+      integerValue = [v29 integerValue];
 
-      v31 = v28;
+      uniqueIdentifier = v28;
     }
 
     else
     {
-      v31 = [(OKProducerPreset *)v6->_preset uniqueIdentifier];
-      v30 = 2;
+      uniqueIdentifier = [(OKProducerPreset *)v6->_preset uniqueIdentifier];
+      integerValue = 2;
     }
 
-    v32 = [PUSlideshowMediaItem mediaItemForType:v30 uniqueIdentifier:v31];
+    v32 = [PUSlideshowMediaItem mediaItemForType:integerValue uniqueIdentifier:uniqueIdentifier];
     mediaItem = v6->_mediaItem;
     v6->_mediaItem = v32;
 
@@ -309,10 +309,10 @@ LABEL_20:
     {
     }
 
-    v34 = [v5 objectForKeyedSubscript:@"shouldRepeat"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"shouldRepeat"];
     if (v34)
     {
-      v35 = [v5 objectForKeyedSubscript:@"shouldRepeat"];
+      v35 = [dictionaryCopy objectForKeyedSubscript:@"shouldRepeat"];
       v6->_shouldRepeat = [v35 BOOLValue];
     }
 
@@ -321,10 +321,10 @@ LABEL_20:
       v6->_shouldRepeat = 0;
     }
 
-    v36 = [v5 objectForKeyedSubscript:@"stepDuration"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"stepDuration"];
     if (v36)
     {
-      v37 = [v5 objectForKeyedSubscript:@"stepDuration"];
+      v37 = [dictionaryCopy objectForKeyedSubscript:@"stepDuration"];
       v6->_stepDuration = [v37 integerValue];
     }
 
@@ -333,10 +333,10 @@ LABEL_20:
       v6->_stepDuration = 6.0;
     }
 
-    v38 = [v5 objectForKeyedSubscript:@"musicOn"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"musicOn"];
     if (v38)
     {
-      v39 = [v5 objectForKeyedSubscript:@"musicOn"];
+      v39 = [dictionaryCopy objectForKeyedSubscript:@"musicOn"];
       v6->_musicOn = [v39 BOOLValue];
     }
 
@@ -348,7 +348,7 @@ LABEL_20:
     goto LABEL_35;
   }
 
-  v21 = [getOKProducerPresetsManagerClass_81894() defaultManager];
+  defaultManager2 = [getOKProducerPresetsManagerClass_81894() defaultManager];
   v50 = 0;
   v51 = &v50;
   v52 = 0x2020000000;
@@ -372,48 +372,48 @@ LABEL_20:
   if (v22)
   {
     v25 = *v22;
-    v26 = [v21 defaultPresetsForFamily:v25];
+    v26 = [defaultManager2 defaultPresetsForFamily:v25];
     v27 = v6->_preset;
     v6->_preset = v26;
 
     if (!v6->_preset)
     {
-      v41 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v41 handleFailureInMethod:a2 object:v6 file:@"PUSlideshowSettingsViewModel.m" lineNumber:88 description:@"preset is invalid"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v6 file:@"PUSlideshowSettingsViewModel.m" lineNumber:88 description:@"preset is invalid"];
     }
 
     goto LABEL_20;
   }
 
-  v42 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
   v43 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkOKProducerPresetsFamilyPhotosPhone(void)"];
-  [v42 handleFailureInFunction:v43 file:@"PUSlideshowSettingsViewModel.m" lineNumber:23 description:{@"%s", dlerror()}];
+  [currentHandler2 handleFailureInFunction:v43 file:@"PUSlideshowSettingsViewModel.m" lineNumber:23 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;
 }
 
-- (void)unregisterChangeObserver:(id)a3
+- (void)unregisterChangeObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = PUSlideshowSettingsViewModel;
-  [(PUViewModel *)&v3 unregisterChangeObserver:a3];
+  [(PUViewModel *)&v3 unregisterChangeObserver:observer];
 }
 
-- (void)registerChangeObserver:(id)a3
+- (void)registerChangeObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = PUSlideshowSettingsViewModel;
-  [(PUViewModel *)&v3 registerChangeObserver:a3];
+  [(PUViewModel *)&v3 registerChangeObserver:observer];
 }
 
 - (id)currentChange
 {
   v4.receiver = self;
   v4.super_class = PUSlideshowSettingsViewModel;
-  v2 = [(PUViewModel *)&v4 currentChange];
+  currentChange = [(PUViewModel *)&v4 currentChange];
 
-  return v2;
+  return currentChange;
 }
 
 @end

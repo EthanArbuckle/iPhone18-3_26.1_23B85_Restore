@@ -1,19 +1,19 @@
 @interface INListRideOptionsIntentResponse
-+ (int)_errorCodeFromCode:(int64_t)a3;
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
-- (INListRideOptionsIntentResponse)initWithBackingStore:(id)a3;
++ (int)_errorCodeFromCode:(int64_t)code;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
+- (INListRideOptionsIntentResponse)initWithBackingStore:(id)store;
 - (INListRideOptionsIntentResponse)initWithCode:(INListRideOptionsIntentResponseCode)code userActivity:(NSUserActivity *)userActivity;
-- (INListRideOptionsIntentResponse)initWithCoder:(id)a3;
+- (INListRideOptionsIntentResponse)initWithCoder:(id)coder;
 - (INListRideOptionsIntentResponseCode)code;
 - (NSArray)paymentMethods;
 - (NSArray)rideOptions;
 - (NSDate)expirationDate;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (int64_t)_codeWithName:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setExpirationDate:(NSDate *)expirationDate;
 - (void)setPaymentMethods:(NSArray *)paymentMethods;
 - (void)setRideOptions:(NSArray *)rideOptions;
@@ -25,58 +25,58 @@
 {
   v17[4] = *MEMORY[0x1E69E9840];
   v16[0] = @"code";
-  v3 = [(INListRideOptionsIntentResponse *)self code];
-  v4 = v3;
-  if (v3 < (INListRideOptionsIntentResponseCodeFailurePreviousRideNeedsFeedback|INListRideOptionsIntentResponseCodeReady))
+  code = [(INListRideOptionsIntentResponse *)self code];
+  v4 = code;
+  if (code < (INListRideOptionsIntentResponseCodeFailurePreviousRideNeedsFeedback|INListRideOptionsIntentResponseCodeReady))
   {
-    v5 = off_1E72801F0[v3];
-    v6 = v5;
+    null = off_1E72801F0[code];
+    v6 = null;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v6 = 0;
   }
 
-  v17[0] = v5;
+  v17[0] = null;
   v16[1] = @"rideOptions";
-  v7 = [(INListRideOptionsIntentResponse *)self rideOptions];
-  v8 = v7;
-  if (!v7)
+  rideOptions = [(INListRideOptionsIntentResponse *)self rideOptions];
+  null2 = rideOptions;
+  if (!rideOptions)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[1] = v8;
+  v17[1] = null2;
   v16[2] = @"paymentMethods";
-  v9 = [(INListRideOptionsIntentResponse *)self paymentMethods];
-  v10 = v9;
-  if (!v9)
+  paymentMethods = [(INListRideOptionsIntentResponse *)self paymentMethods];
+  null3 = paymentMethods;
+  if (!paymentMethods)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[2] = v10;
+  v17[2] = null3;
   v16[3] = @"expirationDate";
-  v11 = [(INListRideOptionsIntentResponse *)self expirationDate];
-  v12 = v11;
-  if (!v11)
+  expirationDate = [(INListRideOptionsIntentResponse *)self expirationDate];
+  null4 = expirationDate;
+  if (!expirationDate)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[3] = v12;
+  v17[3] = null4;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:4];
-  if (!v11)
+  if (!expirationDate)
   {
   }
 
-  if (!v9)
+  if (!paymentMethods)
   {
   }
 
-  if (!v7)
+  if (!rideOptions)
   {
   }
 
@@ -92,107 +92,107 @@
 - (void)setExpirationDate:(NSDate *)expirationDate
 {
   v4 = expirationDate;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToTimestamp(v4);
 
-  [v5 setExpirationDate:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setExpirationDate:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setPaymentMethods:(NSArray *)paymentMethods
 {
   v4 = paymentMethods;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToPaymentMethodValues(v4);
 
-  [v5 setPaymentMethods:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setPaymentMethods:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setRideOptions:(NSArray *)rideOptions
 {
   v4 = rideOptions;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToRideOptions(v4);
 
-  [v5 setRideOptions:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setRideOptions:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (NSDate)expirationDate
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 expirationDate];
-  v4 = INIntentSlotValueTransformFromTimestamp(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  expirationDate = [_responseMessagePBRepresentation expirationDate];
+  v4 = INIntentSlotValueTransformFromTimestamp(expirationDate);
 
   return v4;
 }
 
 - (NSArray)paymentMethods
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 paymentMethods];
-  v4 = INIntentSlotValueTransformFromPaymentMethodValues(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  paymentMethods = [_responseMessagePBRepresentation paymentMethods];
+  v4 = INIntentSlotValueTransformFromPaymentMethodValues(paymentMethods);
 
   return v4;
 }
 
 - (NSArray)rideOptions
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 rideOptions];
-  v4 = INIntentSlotValueTransformFromRideOptions(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  rideOptions = [_responseMessagePBRepresentation rideOptions];
+  v4 = INIntentSlotValueTransformFromRideOptions(rideOptions);
 
   return v4;
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INListRideOptionsIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INListRideOptionsIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INListRideOptionsIntentResponseCodeInProgress"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INListRideOptionsIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INListRideOptionsIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INListRideOptionsIntentResponseCodeInProgress"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INListRideOptionsIntentResponseCodeSuccess"])
+  if ([nameCopy isEqualToString:@"INListRideOptionsIntentResponseCodeSuccess"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INListRideOptionsIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INListRideOptionsIntentResponseCodeFailure"])
   {
     v4 = 4;
   }
 
-  if ([v3 isEqualToString:@"INListRideOptionsIntentResponseCodeFailureRequiringAppLaunch"])
+  if ([nameCopy isEqualToString:@"INListRideOptionsIntentResponseCodeFailureRequiringAppLaunch"])
   {
     v4 = 5;
   }
 
-  if ([v3 isEqualToString:@"INListRideOptionsIntentResponseCodeFailureRequiringAppLaunchMustVerifyCredentials"])
+  if ([nameCopy isEqualToString:@"INListRideOptionsIntentResponseCodeFailureRequiringAppLaunchMustVerifyCredentials"])
   {
     v4 = 6;
   }
 
-  if ([v3 isEqualToString:@"INListRideOptionsIntentResponseCodeFailureRequiringAppLaunchNoServiceInArea"])
+  if ([nameCopy isEqualToString:@"INListRideOptionsIntentResponseCodeFailureRequiringAppLaunchNoServiceInArea"])
   {
     v4 = 7;
   }
 
-  if ([v3 isEqualToString:@"INListRideOptionsIntentResponseCodeFailureRequiringAppLaunchServiceTemporarilyUnavailable"])
+  if ([nameCopy isEqualToString:@"INListRideOptionsIntentResponseCodeFailureRequiringAppLaunchServiceTemporarilyUnavailable"])
   {
     v4 = 8;
   }
 
-  if ([v3 isEqualToString:@"INListRideOptionsIntentResponseCodeFailureRequiringAppLaunchPreviousRideNeedsCompletion"])
+  if ([nameCopy isEqualToString:@"INListRideOptionsIntentResponseCodeFailureRequiringAppLaunchPreviousRideNeedsCompletion"])
   {
     v5 = 9;
   }
@@ -202,7 +202,7 @@
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INListRideOptionsIntentResponseCodeFailurePreviousRideNeedsFeedback"];
+  v6 = [nameCopy isEqualToString:@"INListRideOptionsIntentResponseCodeFailurePreviousRideNeedsFeedback"];
 
   if (v6)
   {
@@ -217,30 +217,30 @@
 
 - (int64_t)_intentResponseCode
 {
-  v2 = [(INListRideOptionsIntentResponse *)self code];
-  if ((v2 - 1) > 9)
+  code = [(INListRideOptionsIntentResponse *)self code];
+  if ((code - 1) > 9)
   {
     return 0;
   }
 
   else
   {
-    return qword_18EE5E900[v2 - 1];
+    return qword_18EE5E900[code - 1];
   }
 }
 
-- (INListRideOptionsIntentResponse)initWithCoder:(id)a3
+- (INListRideOptionsIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INListRideOptionsIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INListRideOptionsIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
 - (INListRideOptionsIntentResponseCode)code
@@ -250,18 +250,18 @@
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INListRideOptionsIntentResponse)initWithBackingStore:(id)a3
+- (INListRideOptionsIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INListRideOptionsIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INListRideOptionsIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
 - (INListRideOptionsIntentResponse)initWithCode:(INListRideOptionsIntentResponseCode)code userActivity:(NSUserActivity *)userActivity
@@ -302,11 +302,11 @@
   return v11;
 }
 
-+ (int)_errorCodeFromCode:(int64_t)a3
++ (int)_errorCodeFromCode:(int64_t)code
 {
-  if ((a3 - 6) < 5)
+  if ((code - 6) < 5)
   {
-    return a3 - 5;
+    return code - 5;
   }
 
   else
@@ -315,55 +315,55 @@
   }
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
-  if ((a3 - 1) > 9)
+  if ((code - 1) > 9)
   {
     return 3;
   }
 
   else
   {
-    return dword_18EE5F720[a3 - 1];
+    return dword_18EE5F720[code - 1];
   }
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
   v5 = 2;
-  if (a3 != 2)
+  if (type != 2)
   {
-    v5 = a3 == 5;
+    v5 = type == 5;
   }
 
   v6 = 3;
   v7 = 4;
-  if (a5)
+  if (requested)
   {
     v7 = 5;
   }
 
-  if ((a4 - 1) >= 5)
+  if ((code - 1) >= 5)
   {
     v8 = v7;
   }
 
   else
   {
-    v8 = (a4 + 5);
+    v8 = (code + 5);
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v8 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     v6 = v8;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
     return v6;
   }

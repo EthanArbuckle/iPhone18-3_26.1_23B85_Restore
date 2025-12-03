@@ -6,9 +6,9 @@
 
 - (id)allCommandInfos
 {
-  v2 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{-[NSMapTable count](a1, "count")}];
+  v2 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{-[NSMapTable count](self, "count")}];
   memset(&enumerator, 0, sizeof(enumerator));
-  NSEnumerateMapTable(&enumerator, a1);
+  NSEnumerateMapTable(&enumerator, self);
   value = 0;
     ;
   }

@@ -1,6 +1,6 @@
 @interface JSBundleObject
 - (NSDictionary)manifest;
-- (id)loadResource:(id)a3;
+- (id)loadResource:(id)resource;
 @end
 
 @implementation JSBundleObject
@@ -13,10 +13,10 @@
   return v2;
 }
 
-- (id)loadResource:(id)a3
+- (id)loadResource:(id)resource
 {
   sub_21700E514();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_216C38F88();
 
   return v5;

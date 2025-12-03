@@ -1,7 +1,7 @@
 @interface UIView.Spacer
 + (Class)layerClass;
-- (_TtCE16MusicApplicationCSo6UIView6Spacer)initWithCoder:(id)a3;
-- (_TtCE16MusicApplicationCSo6UIView6Spacer)initWithFrame:(CGRect)a3;
+- (_TtCE16MusicApplicationCSo6UIView6Spacer)initWithCoder:(id)coder;
+- (_TtCE16MusicApplicationCSo6UIView6Spacer)initWithFrame:(CGRect)frame;
 @end
 
 @implementation UIView.Spacer
@@ -14,12 +14,12 @@
   return [ObjCClassFromMetadata layerClass];
 }
 
-- (_TtCE16MusicApplicationCSo6UIView6Spacer)initWithFrame:(CGRect)a3
+- (_TtCE16MusicApplicationCSo6UIView6Spacer)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = (&self->super.super.super.isa + OBJC_IVAR____TtCE16MusicApplicationCSo6UIView6Spacer_debugName);
   v9 = _s6SpacerCMa();
   *v8 = 0;
@@ -29,15 +29,15 @@
   return [(UIView.Spacer *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtCE16MusicApplicationCSo6UIView6Spacer)initWithCoder:(id)a3
+- (_TtCE16MusicApplicationCSo6UIView6Spacer)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.isa + OBJC_IVAR____TtCE16MusicApplicationCSo6UIView6Spacer_debugName);
   *v4 = 0;
   v4[1] = 0;
   v8.receiver = self;
   v8.super_class = _s6SpacerCMa();
-  v5 = a3;
-  v6 = [(UIView.Spacer *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(UIView.Spacer *)&v8 initWithCoder:coderCopy];
 
   return v6;
 }

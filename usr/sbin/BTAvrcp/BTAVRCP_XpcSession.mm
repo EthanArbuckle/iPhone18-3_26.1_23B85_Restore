@@ -1,37 +1,37 @@
 @interface BTAVRCP_XpcSession
-- (id)attributeIDsFromArgs:(id)a3;
+- (id)attributeIDsFromArgs:(id)args;
 - (id)library;
 - (id)nowPlayingInfo;
-- (unsigned)getNowPlayingAttributeIDs:(id)a3 reply:(id)a4;
+- (unsigned)getNowPlayingAttributeIDs:(id)ds reply:(id)reply;
 - (void)dealloc;
-- (void)getMediaPlayersFromStart:(unint64_t)a3 toEnd:(unint64_t)a4 replyBlock:(id)a5;
-- (void)handleChangePathMsg:(id)a3 replyBlock:(id)a4;
-- (void)handleGetElementAttributesMsg:(id)a3 replyBlock:(id)a4;
-- (void)handleGetFolderItemsMsg:(id)a3 replyBlock:(id)a4;
-- (void)handleGetImageMsg:(id)a3 replyBlock:(id)a4;
-- (void)handleGetImagePropertiesMsg:(id)a3 replyBlock:(id)a4;
-- (void)handleGetItemAttributesMsg:(id)a3 replyBlock:(id)a4;
-- (void)handleGetPlayStatusMsg:(id)a3 replyBlock:(id)a4;
-- (void)handleGetSettingsMsg:(id)a3 replyBlock:(id)a4;
-- (void)handleGetTotalNumberOfItemsMsg:(id)a3 replyBlock:(id)a4;
-- (void)handleMsg:(id)a3;
-- (void)handlePlayItemMsg:(id)a3 replyBlock:(id)a4;
-- (void)handleRegisterForChangesMsg:(id)a3 replyBlock:(id)a4;
-- (void)handleRegisterForPlaybackStateChangesMsg:(id)a3 replyBlock:(id)a4;
-- (void)handleRegisterForPlayerChangesMsg:(id)a3 replyBlock:(id)a4;
-- (void)handleRegisterForSettingsChangesMsg:(id)a3 replyBlock:(id)a4;
-- (void)handleRegisterForTrackChangesMsg:(id)a3 replyBlock:(id)a4;
-- (void)handleSearchMsg:(id)a3 replyBlock:(id)a4;
-- (void)handleSendCommandMsg:(id)a3 replyBlock:(id)a4;
-- (void)handleSetAddressedPlayerMsg:(id)a3 replyBlock:(id)a4;
-- (void)handleSetBrowsedPlayerMsg:(id)a3 replyBlock:(id)a4;
-- (void)handleSetSettingsMsg:(id)a3 replyBlock:(id)a4;
+- (void)getMediaPlayersFromStart:(unint64_t)start toEnd:(unint64_t)end replyBlock:(id)block;
+- (void)handleChangePathMsg:(id)msg replyBlock:(id)block;
+- (void)handleGetElementAttributesMsg:(id)msg replyBlock:(id)block;
+- (void)handleGetFolderItemsMsg:(id)msg replyBlock:(id)block;
+- (void)handleGetImageMsg:(id)msg replyBlock:(id)block;
+- (void)handleGetImagePropertiesMsg:(id)msg replyBlock:(id)block;
+- (void)handleGetItemAttributesMsg:(id)msg replyBlock:(id)block;
+- (void)handleGetPlayStatusMsg:(id)msg replyBlock:(id)block;
+- (void)handleGetSettingsMsg:(id)msg replyBlock:(id)block;
+- (void)handleGetTotalNumberOfItemsMsg:(id)msg replyBlock:(id)block;
+- (void)handleMsg:(id)msg;
+- (void)handlePlayItemMsg:(id)msg replyBlock:(id)block;
+- (void)handleRegisterForChangesMsg:(id)msg replyBlock:(id)block;
+- (void)handleRegisterForPlaybackStateChangesMsg:(id)msg replyBlock:(id)block;
+- (void)handleRegisterForPlayerChangesMsg:(id)msg replyBlock:(id)block;
+- (void)handleRegisterForSettingsChangesMsg:(id)msg replyBlock:(id)block;
+- (void)handleRegisterForTrackChangesMsg:(id)msg replyBlock:(id)block;
+- (void)handleSearchMsg:(id)msg replyBlock:(id)block;
+- (void)handleSendCommandMsg:(id)msg replyBlock:(id)block;
+- (void)handleSetAddressedPlayerMsg:(id)msg replyBlock:(id)block;
+- (void)handleSetBrowsedPlayerMsg:(id)msg replyBlock:(id)block;
+- (void)handleSetSettingsMsg:(id)msg replyBlock:(id)block;
 - (void)libraryDidChange;
-- (void)playbackStateDidChange:(int64_t)a3;
-- (void)sendMsg:(id)a3 args:(id)a4;
-- (void)sendReplyToMsg:(id)a3 status:(unsigned __int8)a4 args:(id)a5;
-- (void)settingsDidChange:(id)a3;
-- (void)trackDidChange:(unint64_t)a3;
+- (void)playbackStateDidChange:(int64_t)change;
+- (void)sendMsg:(id)msg args:(id)args;
+- (void)sendReplyToMsg:(id)msg status:(unsigned __int8)status args:(id)args;
+- (void)settingsDidChange:(id)change;
+- (void)trackDidChange:(unint64_t)change;
 @end
 
 @implementation BTAVRCP_XpcSession
@@ -55,15 +55,15 @@
 
 - (id)nowPlayingInfo
 {
-  v3 = [(BTAVRCP_XpcSession *)self lazyNowPlayingInfo];
+  lazyNowPlayingInfo = [(BTAVRCP_XpcSession *)self lazyNowPlayingInfo];
 
-  if (!v3)
+  if (!lazyNowPlayingInfo)
   {
     v4 = objc_alloc_init(BTAVRCP_NowPlayingInfo);
     [(BTAVRCP_XpcSession *)self setLazyNowPlayingInfo:v4];
 
-    v5 = [(BTAVRCP_XpcSession *)self lazyNowPlayingInfo];
-    [v5 setDelegate:self];
+    lazyNowPlayingInfo2 = [(BTAVRCP_XpcSession *)self lazyNowPlayingInfo];
+    [lazyNowPlayingInfo2 setDelegate:self];
   }
 
   return [(BTAVRCP_XpcSession *)self lazyNowPlayingInfo];
@@ -71,26 +71,26 @@
 
 - (id)library
 {
-  v3 = [(BTAVRCP_XpcSession *)self lazyLibrary];
+  lazyLibrary = [(BTAVRCP_XpcSession *)self lazyLibrary];
 
-  if (!v3)
+  if (!lazyLibrary)
   {
     v4 = objc_alloc_init(BTAVRCP_Library);
     [(BTAVRCP_XpcSession *)self setLazyLibrary:v4];
 
-    v5 = [(BTAVRCP_XpcSession *)self lazyLibrary];
-    [v5 setDelegate:self];
+    lazyLibrary2 = [(BTAVRCP_XpcSession *)self lazyLibrary];
+    [lazyLibrary2 setDelegate:self];
   }
 
   return [(BTAVRCP_XpcSession *)self lazyLibrary];
 }
 
-- (void)handleSendCommandMsg:(id)a3 replyBlock:(id)a4
+- (void)handleSendCommandMsg:(id)msg replyBlock:(id)block
 {
-  v17 = a4;
-  v6 = a3;
-  int64 = xpc_dictionary_get_int64(v6, "kCommand");
-  string = xpc_dictionary_get_string(v6, "kSource");
+  blockCopy = block;
+  msgCopy = msg;
+  int64 = xpc_dictionary_get_int64(msgCopy, "kCommand");
+  string = xpc_dictionary_get_string(msgCopy, "kSource");
 
   v9 = objc_alloc_init(NSMutableDictionary);
   [v9 setObject:@"com.apple.AVRCP" forKey:kMRMediaRemoteOptionRemoteControlInterfaceIdentifier];
@@ -104,7 +104,7 @@
   {
     if (int64 == 10)
     {
-      v13 = self;
+      selfCopy2 = self;
       v14 = 1;
     }
 
@@ -115,18 +115,18 @@
         goto LABEL_14;
       }
 
-      v13 = self;
+      selfCopy2 = self;
       v14 = 0;
     }
 
-    [(BTAVRCP_XpcSession *)v13 setIsRewinding:v14];
+    [(BTAVRCP_XpcSession *)selfCopy2 setIsRewinding:v14];
   }
 
   else
   {
     if (int64 == 8)
     {
-      v11 = self;
+      selfCopy4 = self;
       v12 = 1;
     }
 
@@ -137,31 +137,31 @@
         goto LABEL_14;
       }
 
-      v11 = self;
+      selfCopy4 = self;
       v12 = 0;
     }
 
-    [(BTAVRCP_XpcSession *)v11 setIsForwarding:v12];
+    [(BTAVRCP_XpcSession *)selfCopy4 setIsForwarding:v12];
   }
 
 LABEL_14:
-  v15 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  v16 = [v15 isLocalOrigin];
+  nowPlayingInfo = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  isLocalOrigin = [nowPlayingInfo isLocalOrigin];
 
-  if (v16)
+  if (isLocalOrigin)
   {
     MRMediaRemoteSendCommand();
   }
 
-  v17[2](v17, 4, 0);
+  blockCopy[2](blockCopy, 4, 0);
 }
 
-- (void)handleSetSettingsMsg:(id)a3 replyBlock:(id)a4
+- (void)handleSetSettingsMsg:(id)msg replyBlock:(id)block
 {
-  v8 = a4;
-  v5 = a3;
-  int64 = xpc_dictionary_get_int64(v5, "kRepeatMode");
-  v7 = xpc_dictionary_get_int64(v5, "kShuffleMode");
+  blockCopy = block;
+  msgCopy = msg;
+  int64 = xpc_dictionary_get_int64(msgCopy, "kRepeatMode");
+  v7 = xpc_dictionary_get_int64(msgCopy, "kShuffleMode");
 
   if (int64 != -1)
   {
@@ -173,217 +173,217 @@ LABEL_14:
     MRMediaRemoteSetShuffleMode();
   }
 
-  v8[2](v8, 4, 0);
+  blockCopy[2](blockCopy, 4, 0);
 }
 
-- (void)handleGetSettingsMsg:(id)a3 replyBlock:(id)a4
+- (void)handleGetSettingsMsg:(id)msg replyBlock:(id)block
 {
-  v5 = a4;
-  v6 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  v7 = [v6 settings];
+  blockCopy = block;
+  nowPlayingInfo = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  settings = [nowPlayingInfo settings];
 
   v11[0] = @"kRepeatMode";
-  v8 = [NSNumber numberWithInt:v7];
+  v8 = [NSNumber numberWithInt:settings];
   v11[1] = @"kShuffleMode";
   v12[0] = v8;
-  v9 = [NSNumber numberWithInt:HIDWORD(v7)];
+  v9 = [NSNumber numberWithInt:HIDWORD(settings)];
   v12[1] = v9;
   v10 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:2];
-  v5[2](v5, 4, v10);
+  blockCopy[2](blockCopy, 4, v10);
 }
 
-- (void)handleGetPlayStatusMsg:(id)a3 replyBlock:(id)a4
+- (void)handleGetPlayStatusMsg:(id)msg replyBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v12 = +[NSMutableDictionary dictionary];
-  v6 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  v7 = [v6 trackDuration];
-  [v12 setValue:v7 forKey:@"kTrackDuration"];
+  nowPlayingInfo = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  trackDuration = [nowPlayingInfo trackDuration];
+  [v12 setValue:trackDuration forKey:@"kTrackDuration"];
 
-  v8 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  v9 = [v8 trackPosition];
-  [v12 setValue:v9 forKey:@"kTrackPosition"];
+  nowPlayingInfo2 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  trackPosition = [nowPlayingInfo2 trackPosition];
+  [v12 setValue:trackPosition forKey:@"kTrackPosition"];
 
-  v10 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v10 playbackState]);
+  nowPlayingInfo3 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [nowPlayingInfo3 playbackState]);
   [v12 setValue:v11 forKey:@"kPlaybackState"];
 
-  v5[2](v5, 4, v12);
+  blockCopy[2](blockCopy, 4, v12);
 }
 
-- (void)handleGetElementAttributesMsg:(id)a3 replyBlock:(id)a4
+- (void)handleGetElementAttributesMsg:(id)msg replyBlock:(id)block
 {
-  v22 = a4;
+  blockCopy = block;
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  v7 = [v6 trackTitle];
+  nowPlayingInfo = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  trackTitle = [nowPlayingInfo trackTitle];
 
-  if (v7)
+  if (trackTitle)
   {
-    [v5 setValue:v7 forKey:@"kTitle"];
+    [v5 setValue:trackTitle forKey:@"kTitle"];
   }
 
-  v8 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  v9 = [v8 trackAlbum];
+  nowPlayingInfo2 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  trackAlbum = [nowPlayingInfo2 trackAlbum];
 
-  if (v9)
+  if (trackAlbum)
   {
-    [v5 setValue:v9 forKey:@"kAlbum"];
+    [v5 setValue:trackAlbum forKey:@"kAlbum"];
   }
 
-  v10 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  v11 = [v10 trackArtist];
+  nowPlayingInfo3 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  trackArtist = [nowPlayingInfo3 trackArtist];
 
-  if (v11)
+  if (trackArtist)
   {
-    [v5 setValue:v11 forKey:@"kArtist"];
+    [v5 setValue:trackArtist forKey:@"kArtist"];
   }
 
-  v12 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  v13 = [v12 trackGenre];
+  nowPlayingInfo4 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  trackGenre = [nowPlayingInfo4 trackGenre];
 
-  if (v13)
+  if (trackGenre)
   {
-    [v5 setValue:v13 forKey:@"kGenre"];
+    [v5 setValue:trackGenre forKey:@"kGenre"];
   }
 
-  v14 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  v15 = [v14 trackQueueIndex];
+  nowPlayingInfo5 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  trackQueueIndex = [nowPlayingInfo5 trackQueueIndex];
 
-  if (v15)
+  if (trackQueueIndex)
   {
-    [v5 setValue:v15 forKey:@"kQueueIndex"];
+    [v5 setValue:trackQueueIndex forKey:@"kQueueIndex"];
   }
 
-  v16 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  v17 = [v16 trackQueueCount];
+  nowPlayingInfo6 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  trackQueueCount = [nowPlayingInfo6 trackQueueCount];
 
-  if (v17)
+  if (trackQueueCount)
   {
-    [v5 setValue:v17 forKey:@"kQueueCount"];
+    [v5 setValue:trackQueueCount forKey:@"kQueueCount"];
   }
 
-  v18 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  v19 = [v18 trackDuration];
+  nowPlayingInfo7 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  trackDuration = [nowPlayingInfo7 trackDuration];
 
-  if (v19)
+  if (trackDuration)
   {
-    [v5 setValue:v19 forKey:@"kDuration"];
+    [v5 setValue:trackDuration forKey:@"kDuration"];
   }
 
-  v20 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  v21 = [v20 trackImageHandle];
+  nowPlayingInfo8 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  trackImageHandle = [nowPlayingInfo8 trackImageHandle];
 
-  if (v21)
+  if (trackImageHandle)
   {
-    [v5 setValue:v21 forKey:@"kImageHandle"];
+    [v5 setValue:trackImageHandle forKey:@"kImageHandle"];
   }
 
-  v22[2](v22, 4, v5);
+  blockCopy[2](blockCopy, 4, v5);
 }
 
-- (void)handleRegisterForChangesMsg:(id)a3 replyBlock:(id)a4
+- (void)handleRegisterForChangesMsg:(id)msg replyBlock:(id)block
 {
-  v6 = a4;
-  v5 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  v6[2](v6, 4, 0);
+  blockCopy = block;
+  nowPlayingInfo = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  blockCopy[2](blockCopy, 4, 0);
 }
 
-- (void)handleRegisterForPlayerChangesMsg:(id)a3 replyBlock:(id)a4
+- (void)handleRegisterForPlayerChangesMsg:(id)msg replyBlock:(id)block
 {
   v10 = @"kPlayerId";
-  v6 = a4;
-  v7 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  v8 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v7 playerId]);
+  blockCopy = block;
+  nowPlayingInfo = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  v8 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [nowPlayingInfo playerId]);
   v11 = v8;
   v9 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-  (*(a4 + 2))(v6, 4, v9);
+  (*(block + 2))(blockCopy, 4, v9);
 }
 
-- (void)handleRegisterForPlaybackStateChangesMsg:(id)a3 replyBlock:(id)a4
+- (void)handleRegisterForPlaybackStateChangesMsg:(id)msg replyBlock:(id)block
 {
   v10 = @"kPlaybackState";
-  v6 = a4;
-  v7 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v7 playbackState]);
+  blockCopy = block;
+  nowPlayingInfo = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [nowPlayingInfo playbackState]);
   v11 = v8;
   v9 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-  (*(a4 + 2))(v6, 4, v9);
+  (*(block + 2))(blockCopy, 4, v9);
 }
 
-- (void)handleRegisterForTrackChangesMsg:(id)a3 replyBlock:(id)a4
+- (void)handleRegisterForTrackChangesMsg:(id)msg replyBlock:(id)block
 {
   v10 = @"kUid";
-  v6 = a4;
-  v7 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  v8 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v7 trackId]);
+  blockCopy = block;
+  nowPlayingInfo = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  v8 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [nowPlayingInfo trackId]);
   v11 = v8;
   v9 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-  (*(a4 + 2))(v6, 4, v9);
+  (*(block + 2))(blockCopy, 4, v9);
 }
 
-- (void)handleRegisterForSettingsChangesMsg:(id)a3 replyBlock:(id)a4
+- (void)handleRegisterForSettingsChangesMsg:(id)msg replyBlock:(id)block
 {
-  v5 = a4;
-  v6 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  v7 = [v6 settings];
+  blockCopy = block;
+  nowPlayingInfo = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  settings = [nowPlayingInfo settings];
 
   v11[0] = @"kRepeatMode";
-  v8 = [NSNumber numberWithInt:v7];
+  v8 = [NSNumber numberWithInt:settings];
   v11[1] = @"kShuffleMode";
   v12[0] = v8;
-  v9 = [NSNumber numberWithInt:HIDWORD(v7)];
+  v9 = [NSNumber numberWithInt:HIDWORD(settings)];
   v12[1] = v9;
   v10 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:2];
-  v5[2](v5, 4, v10);
+  blockCopy[2](blockCopy, 4, v10);
 }
 
-- (void)handleSetAddressedPlayerMsg:(id)a3 replyBlock:(id)a4
+- (void)handleSetAddressedPlayerMsg:(id)msg replyBlock:(id)block
 {
-  v7 = a4;
-  xpc_dictionary_get_int64(a3, "kPlayerId");
-  v6 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  [v6 playerId];
+  blockCopy = block;
+  xpc_dictionary_get_int64(msg, "kPlayerId");
+  nowPlayingInfo = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  [nowPlayingInfo playerId];
 
-  v7[2]();
+  blockCopy[2]();
 }
 
-- (void)handleSetBrowsedPlayerMsg:(id)a3 replyBlock:(id)a4
+- (void)handleSetBrowsedPlayerMsg:(id)msg replyBlock:(id)block
 {
-  v12 = a4;
-  LODWORD(a3) = xpc_dictionary_get_int64(a3, "kPlayerId");
-  v6 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  v7 = [v6 playerId];
+  blockCopy = block;
+  LODWORD(msg) = xpc_dictionary_get_int64(msg, "kPlayerId");
+  nowPlayingInfo = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  playerId = [nowPlayingInfo playerId];
 
-  if (v7 == a3)
+  if (playerId == msg)
   {
-    v8 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-    v9 = [v8 isBrowsablePlayer];
+    nowPlayingInfo2 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+    isBrowsablePlayer = [nowPlayingInfo2 isBrowsablePlayer];
 
-    if (v9)
+    if (isBrowsablePlayer)
     {
-      v10 = [(BTAVRCP_XpcSession *)self library];
-      [v10 getCurrentPath:v12];
+      library = [(BTAVRCP_XpcSession *)self library];
+      [library getCurrentPath:blockCopy];
 
       goto LABEL_7;
     }
 
-    v11 = v12[2];
+    v11 = blockCopy[2];
   }
 
   else
   {
-    v11 = v12[2];
+    v11 = blockCopy[2];
   }
 
   v11();
 LABEL_7:
 }
 
-- (void)handleChangePathMsg:(id)a3 replyBlock:(id)a4
+- (void)handleChangePathMsg:(id)msg replyBlock:(id)block
 {
-  xdict = a3;
-  v6 = a4;
+  xdict = msg;
+  blockCopy = block;
   int64 = xpc_dictionary_get_int64(xdict, "kUidCounter");
   if (xpc_dictionary_get_BOOL(xdict, "kDotDot"))
   {
@@ -397,24 +397,24 @@ LABEL_7:
 
   if (int64)
   {
-    v6[2](v6, 5, 0);
+    blockCopy[2](blockCopy, 5, 0);
   }
 
   else
   {
-    v9 = [(BTAVRCP_XpcSession *)self library];
-    [v9 changePath:v8 replyBlock:v6];
+    library = [(BTAVRCP_XpcSession *)self library];
+    [library changePath:v8 replyBlock:blockCopy];
   }
 }
 
-- (void)handleGetFolderItemsMsg:(id)a3 replyBlock:(id)a4
+- (void)handleGetFolderItemsMsg:(id)msg replyBlock:(id)block
 {
-  v17 = a4;
-  v6 = a3;
-  int64 = xpc_dictionary_get_int64(v6, "kScope");
-  v8 = xpc_dictionary_get_int64(v6, "kStartItem");
-  LODWORD(v9) = xpc_dictionary_get_int64(v6, "kEndItem");
-  v10 = [(BTAVRCP_XpcSession *)self attributeIDsFromArgs:v6];
+  blockCopy = block;
+  msgCopy = msg;
+  int64 = xpc_dictionary_get_int64(msgCopy, "kScope");
+  v8 = xpc_dictionary_get_int64(msgCopy, "kStartItem");
+  LODWORD(v9) = xpc_dictionary_get_int64(msgCopy, "kEndItem");
+  v10 = [(BTAVRCP_XpcSession *)self attributeIDsFromArgs:msgCopy];
 
   if (v8 > v9)
   {
@@ -443,30 +443,30 @@ LABEL_7:
 
   if (int64 > 1u)
   {
-    v13 = v17;
+    v13 = blockCopy;
     if (int64 == 2)
     {
-      v14 = [(BTAVRCP_XpcSession *)self library];
-      [v14 getSearchItemsFromStart:v8 toEnd:v9 attributeIDs:v12 replyBlock:v17];
+      library = [(BTAVRCP_XpcSession *)self library];
+      [library getSearchItemsFromStart:v8 toEnd:v9 attributeIDs:v12 replyBlock:blockCopy];
       goto LABEL_21;
     }
 
     if (int64 == 3)
     {
-      v15 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-      v16 = [v15 isMusicApp];
+      nowPlayingInfo = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+      isMusicApp = [nowPlayingInfo isMusicApp];
 
-      if (!v16)
+      if (!isMusicApp)
       {
 LABEL_2:
-        v11 = v17[2];
+        v11 = blockCopy[2];
 LABEL_3:
         v11();
         goto LABEL_22;
       }
 
-      v14 = [(BTAVRCP_XpcSession *)self library];
-      [v14 getNowPlayingItemsFromStart:v8 toEnd:v9 attributeIDs:v12 replyBlock:v17];
+      library = [(BTAVRCP_XpcSession *)self library];
+      [library getNowPlayingItemsFromStart:v8 toEnd:v9 attributeIDs:v12 replyBlock:blockCopy];
       goto LABEL_21;
     }
 
@@ -475,10 +475,10 @@ LABEL_18:
     goto LABEL_3;
   }
 
-  v13 = v17;
+  v13 = blockCopy;
   if (!int64)
   {
-    [(BTAVRCP_XpcSession *)self getMediaPlayersFromStart:v8 toEnd:v9 replyBlock:v17];
+    [(BTAVRCP_XpcSession *)self getMediaPlayersFromStart:v8 toEnd:v9 replyBlock:blockCopy];
     goto LABEL_22;
   }
 
@@ -487,22 +487,22 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v14 = [(BTAVRCP_XpcSession *)self library];
-  [v14 getVFSItemsFromStart:v8 toEnd:v9 attributeIDs:v12 replyBlock:v17];
+  library = [(BTAVRCP_XpcSession *)self library];
+  [library getVFSItemsFromStart:v8 toEnd:v9 attributeIDs:v12 replyBlock:blockCopy];
 LABEL_21:
 
 LABEL_22:
 }
 
-- (void)handleGetItemAttributesMsg:(id)a3 replyBlock:(id)a4
+- (void)handleGetItemAttributesMsg:(id)msg replyBlock:(id)block
 {
-  v19 = a4;
-  v6 = a3;
+  blockCopy = block;
+  msgCopy = msg;
   v7 = +[NSMutableDictionary dictionary];
-  int64 = xpc_dictionary_get_int64(v6, "kScope");
-  v9 = xpc_dictionary_get_int64(v6, "kUid");
-  v10 = xpc_dictionary_get_int64(v6, "kUidCounter");
-  v11 = [(BTAVRCP_XpcSession *)self attributeIDsFromArgs:v6];
+  int64 = xpc_dictionary_get_int64(msgCopy, "kScope");
+  v9 = xpc_dictionary_get_int64(msgCopy, "kUid");
+  v10 = xpc_dictionary_get_int64(msgCopy, "kUidCounter");
+  v11 = [(BTAVRCP_XpcSession *)self attributeIDsFromArgs:msgCopy];
 
   if (v10)
   {
@@ -520,13 +520,13 @@ LABEL_22:
 
       else if (v9 && (-[BTAVRCP_XpcSession nowPlayingInfo](self, "nowPlayingInfo"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 trackId], v15, v9 != v16))
       {
-        v17 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-        v18 = [v17 isMusicApp];
+        nowPlayingInfo = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+        isMusicApp = [nowPlayingInfo isMusicApp];
 
-        if (v18)
+        if (isMusicApp)
         {
-          v13 = [(BTAVRCP_XpcSession *)self library];
-          v14 = [v13 getNowPlayingItemWithUid:v9 attributeIDs:v11 reply:v7];
+          library = [(BTAVRCP_XpcSession *)self library];
+          v14 = [library getNowPlayingItemWithUid:v9 attributeIDs:v11 reply:v7];
           goto LABEL_8;
         }
 
@@ -540,12 +540,12 @@ LABEL_22:
 
       break;
     case 2:
-      v13 = [(BTAVRCP_XpcSession *)self library];
-      v14 = [v13 getSearchItemWithUid:v9 attributeIDs:v11 reply:v7];
+      library = [(BTAVRCP_XpcSession *)self library];
+      v14 = [library getSearchItemWithUid:v9 attributeIDs:v11 reply:v7];
       goto LABEL_8;
     case 1:
-      v13 = [(BTAVRCP_XpcSession *)self library];
-      v14 = [v13 getVFSItemWithUid:v9 attributeIDs:v11 reply:v7];
+      library = [(BTAVRCP_XpcSession *)self library];
+      v14 = [library getVFSItemWithUid:v9 attributeIDs:v11 reply:v7];
 LABEL_8:
       v12 = v14;
 
@@ -556,45 +556,45 @@ LABEL_8:
   }
 
 LABEL_15:
-  v19[2](v19, v12, v7);
+  blockCopy[2](blockCopy, v12, v7);
 }
 
-- (void)handleSearchMsg:(id)a3 replyBlock:(id)a4
+- (void)handleSearchMsg:(id)msg replyBlock:(id)block
 {
-  v6 = a4;
-  string = xpc_dictionary_get_string(a3, "kSearchString");
-  v9 = [(BTAVRCP_XpcSession *)self library];
+  blockCopy = block;
+  string = xpc_dictionary_get_string(msg, "kSearchString");
+  library = [(BTAVRCP_XpcSession *)self library];
   v8 = [NSString stringWithUTF8String:string];
-  [v9 search:v8 replyBlock:v6];
+  [library search:v8 replyBlock:blockCopy];
 }
 
-- (void)handleGetTotalNumberOfItemsMsg:(id)a3 replyBlock:(id)a4
+- (void)handleGetTotalNumberOfItemsMsg:(id)msg replyBlock:(id)block
 {
-  v6 = a4;
-  int64 = xpc_dictionary_get_int64(a3, "kScope");
+  blockCopy = block;
+  int64 = xpc_dictionary_get_int64(msg, "kScope");
   v8 = 0;
   if (int64 > 1u)
   {
     if (int64 == 2)
     {
-      v9 = [(BTAVRCP_XpcSession *)self library];
-      v10 = [v9 getSearchItemsCount];
+      library = [(BTAVRCP_XpcSession *)self library];
+      getSearchItemsCount = [library getSearchItemsCount];
       goto LABEL_11;
     }
 
     if (int64 == 3)
     {
-      v11 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-      v12 = [v11 isMusicApp];
+      nowPlayingInfo = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+      isMusicApp = [nowPlayingInfo isMusicApp];
 
-      if (!v12)
+      if (!isMusicApp)
       {
         v8 = 0;
         goto LABEL_12;
       }
 
-      v9 = [(BTAVRCP_XpcSession *)self library];
-      v10 = [v9 getNowPlayingItemsCount];
+      library = [(BTAVRCP_XpcSession *)self library];
+      getSearchItemsCount = [library getNowPlayingItemsCount];
       goto LABEL_11;
     }
   }
@@ -603,10 +603,10 @@ LABEL_15:
   {
     if (int64 == 1)
     {
-      v9 = [(BTAVRCP_XpcSession *)self library];
-      v10 = [v9 getVFSItemsCount];
+      library = [(BTAVRCP_XpcSession *)self library];
+      getSearchItemsCount = [library getVFSItemsCount];
 LABEL_11:
-      v8 = v10;
+      v8 = getSearchItemsCount;
     }
   }
 
@@ -620,16 +620,16 @@ LABEL_12:
   v13 = [NSNumber numberWithUnsignedInteger:v8];
   v16 = v13;
   v14 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-  v6[2](v6, 4, v14);
+  blockCopy[2](blockCopy, 4, v14);
 }
 
-- (void)handlePlayItemMsg:(id)a3 replyBlock:(id)a4
+- (void)handlePlayItemMsg:(id)msg replyBlock:(id)block
 {
-  v15 = a4;
-  v6 = a3;
-  int64 = xpc_dictionary_get_int64(v6, "kScope");
-  v8 = xpc_dictionary_get_int64(v6, "kUid");
-  v9 = xpc_dictionary_get_int64(v6, "kUidCounter");
+  blockCopy = block;
+  msgCopy = msg;
+  int64 = xpc_dictionary_get_int64(msgCopy, "kScope");
+  v8 = xpc_dictionary_get_int64(msgCopy, "kUid");
+  v9 = xpc_dictionary_get_int64(msgCopy, "kUidCounter");
 
   if (v9)
   {
@@ -640,25 +640,25 @@ LABEL_12:
   switch(int64)
   {
     case 3:
-      v13 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-      v14 = [v13 isMusicApp];
+      nowPlayingInfo = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+      isMusicApp = [nowPlayingInfo isMusicApp];
 
-      if (v14)
+      if (isMusicApp)
       {
-        v11 = [(BTAVRCP_XpcSession *)self library];
-        v12 = [v11 playNowPlayingItemWithUid:v8];
+        library = [(BTAVRCP_XpcSession *)self library];
+        v12 = [library playNowPlayingItemWithUid:v8];
         goto LABEL_10;
       }
 
       v10 = 9;
       break;
     case 2:
-      v11 = [(BTAVRCP_XpcSession *)self library];
-      v12 = [v11 playSearchItemWithUid:v8];
+      library = [(BTAVRCP_XpcSession *)self library];
+      v12 = [library playSearchItemWithUid:v8];
       goto LABEL_10;
     case 1:
-      v11 = [(BTAVRCP_XpcSession *)self library];
-      v12 = [v11 playVFSItemWithUid:v8];
+      library = [(BTAVRCP_XpcSession *)self library];
+      v12 = [library playVFSItemWithUid:v8];
 LABEL_10:
       v10 = v12;
 
@@ -669,50 +669,50 @@ LABEL_10:
   }
 
 LABEL_13:
-  v15[2](v15, v10, 0);
+  blockCopy[2](blockCopy, v10, 0);
 }
 
-- (void)handleGetImagePropertiesMsg:(id)a3 replyBlock:(id)a4
+- (void)handleGetImagePropertiesMsg:(id)msg replyBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v12 = +[NSMutableDictionary dictionary];
-  v6 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  v7 = [v6 encodings];
-  [v12 setValue:v7 forKey:@"kEncodings"];
+  nowPlayingInfo = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  encodings = [nowPlayingInfo encodings];
+  [v12 setValue:encodings forKey:@"kEncodings"];
 
-  v8 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  v9 = [v8 widths];
-  [v12 setValue:v9 forKey:@"kWidths"];
+  nowPlayingInfo2 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  widths = [nowPlayingInfo2 widths];
+  [v12 setValue:widths forKey:@"kWidths"];
 
-  v10 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  v11 = [v10 heights];
-  [v12 setValue:v11 forKey:@"kHeights"];
+  nowPlayingInfo3 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  heights = [nowPlayingInfo3 heights];
+  [v12 setValue:heights forKey:@"kHeights"];
 
-  v5[2](v5, 0, v12);
+  blockCopy[2](blockCopy, 0, v12);
 }
 
-- (void)handleGetImageMsg:(id)a3 replyBlock:(id)a4
+- (void)handleGetImageMsg:(id)msg replyBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  int64 = xpc_dictionary_get_int64(v7, "kWidth");
-  v9 = xpc_dictionary_get_int64(v7, "kHeight");
+  blockCopy = block;
+  msgCopy = msg;
+  int64 = xpc_dictionary_get_int64(msgCopy, "kWidth");
+  v9 = xpc_dictionary_get_int64(msgCopy, "kHeight");
 
-  v10 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  v11 = [v10 widths];
+  nowPlayingInfo = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  widths = [nowPlayingInfo widths];
   v12 = [NSNumber numberWithUnsignedLongLong:int64];
-  [v11 indexOfObject:v12];
+  [widths indexOfObject:v12];
 
-  v13 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  v14 = [v13 heights];
+  nowPlayingInfo2 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  heights = [nowPlayingInfo2 heights];
   v15 = [NSNumber numberWithUnsignedLongLong:v9];
-  [v14 indexOfObject:v15];
+  [heights indexOfObject:v15];
 
   v16 = MRPlaybackQueueRequestCreate();
   MRMediaRemoteGetLocalOrigin();
   v17 = MRNowPlayingPlayerPathCreate();
   MRPlaybackQueueRequestSetIncludeArtwork();
-  v18 = v6;
+  v18 = blockCopy;
   MRMediaRemoteRequestNowPlayingPlaybackQueueForPlayerSync();
   if (v16)
   {
@@ -725,46 +725,46 @@ LABEL_13:
   }
 }
 
-- (void)handleMsg:(id)a3
+- (void)handleMsg:(id)msg
 {
-  v4 = a3;
-  string = xpc_dictionary_get_string(v4, "kMsgId");
-  v6 = xpc_dictionary_get_value(v4, "kMsgArgs");
+  msgCopy = msg;
+  string = xpc_dictionary_get_string(msgCopy, "kMsgId");
+  v6 = xpc_dictionary_get_value(msgCopy, "kMsgArgs");
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100005934;
   v11[3] = &unk_100018AA0;
   v11[4] = self;
-  v12 = v4;
-  v7 = v4;
+  v12 = msgCopy;
+  v7 = msgCopy;
   v8 = objc_retainBlock(v11);
-  v9 = [NSString stringWithFormat:@"handle%sMsg:replyBlock:", string];
-  v10 = NSSelectorFromString(v9);
+  string = [NSString stringWithFormat:@"handle%sMsg:replyBlock:", string];
+  v10 = NSSelectorFromString(string);
 
   [self v10];
 }
 
-- (void)sendReplyToMsg:(id)a3 status:(unsigned __int8)a4 args:(id)a5
+- (void)sendReplyToMsg:(id)msg status:(unsigned __int8)status args:(id)args
 {
-  v5 = a4;
-  v8 = a5;
-  xdict = xpc_dictionary_create_reply(a3);
-  xpc_dictionary_set_int64(xdict, "kMsgStatus", v5);
+  statusCopy = status;
+  argsCopy = args;
+  xdict = xpc_dictionary_create_reply(msg);
+  xpc_dictionary_set_int64(xdict, "kMsgStatus", statusCopy);
   v9 = _CFXPCCreateXPCObjectFromCFObject();
 
   xpc_dictionary_set_value(xdict, "kMsgArgs", v9);
   [(BTXpcSession *)self sendReply:xdict];
 }
 
-- (void)sendMsg:(id)a3 args:(id)a4
+- (void)sendMsg:(id)msg args:(id)args
 {
-  v10 = a4;
-  v6 = a3;
+  argsCopy = args;
+  msgCopy = msg;
   v7 = xpc_dictionary_create(0, 0, 0);
-  v8 = [v6 cStringUsingEncoding:4];
+  v8 = [msgCopy cStringUsingEncoding:4];
 
   xpc_dictionary_set_string(v7, "kMsgId", v8);
-  if (v10)
+  if (argsCopy)
   {
     v9 = _CFXPCCreateXPCObjectFromCFObject();
     xpc_dictionary_set_value(v7, "kMsgArgs", v9);
@@ -773,27 +773,27 @@ LABEL_13:
   [(BTXpcSession *)self sendMsg:v7];
 }
 
-- (void)playbackStateDidChange:(int64_t)a3
+- (void)playbackStateDidChange:(int64_t)change
 {
   v6 = @"kPlaybackState";
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:change];
   v7 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
   [(BTAVRCP_XpcSession *)self sendMsg:@"PlaybackStateDidChange" args:v5];
 }
 
-- (void)trackDidChange:(unint64_t)a3
+- (void)trackDidChange:(unint64_t)change
 {
   v6 = @"kUid";
-  v4 = [NSNumber numberWithUnsignedLongLong:a3];
+  v4 = [NSNumber numberWithUnsignedLongLong:change];
   v7 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
   [(BTAVRCP_XpcSession *)self sendMsg:@"TrackDidChange" args:v5];
 }
 
-- (void)settingsDidChange:(id)a3
+- (void)settingsDidChange:(id)change
 {
-  var1 = a3.var1;
+  var1 = change.var1;
   v8[0] = @"kRepeatMode";
   v5 = [NSNumber numberWithInt:?];
   v8[1] = @"kShuffleMode";
@@ -807,13 +807,13 @@ LABEL_13:
 - (void)libraryDidChange
 {
   [(BTAVRCP_XpcSession *)self sendMsg:@"LibraryDidChange" args:0];
-  v3 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-  -[BTAVRCP_XpcSession trackDidChange:](self, "trackDidChange:", [v3 trackId]);
+  nowPlayingInfo = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+  -[BTAVRCP_XpcSession trackDidChange:](self, "trackDidChange:", [nowPlayingInfo trackId]);
 }
 
-- (id)attributeIDsFromArgs:(id)a3
+- (id)attributeIDsFromArgs:(id)args
 {
-  v3 = xpc_dictionary_get_value(a3, "kAttributeIDs");
+  v3 = xpc_dictionary_get_value(args, "kAttributeIDs");
   if (v3)
   {
     v4 = _CFXPCCreateCFObjectFromXPCObject();
@@ -827,55 +827,55 @@ LABEL_13:
   return v4;
 }
 
-- (void)getMediaPlayersFromStart:(unint64_t)a3 toEnd:(unint64_t)a4 replyBlock:(id)a5
+- (void)getMediaPlayersFromStart:(unint64_t)start toEnd:(unint64_t)end replyBlock:(id)block
 {
-  if (a3)
+  if (start)
   {
-    v5 = *(a5 + 2);
-    v6 = a5;
+    v5 = *(block + 2);
+    blockCopy = block;
     v5();
   }
 
   else
   {
     v22[0] = @"kPlayerId";
-    v8 = a5;
-    v9 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-    v10 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v9 playerId]);
+    blockCopy2 = block;
+    nowPlayingInfo = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+    v10 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [nowPlayingInfo playerId]);
     v23[0] = v10;
     v22[1] = @"kPlaybackState";
-    v11 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-    v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v11 playbackState]);
+    nowPlayingInfo2 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+    v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [nowPlayingInfo2 playbackState]);
     v23[1] = v12;
     v22[2] = @"kIsBrowsable";
-    v13 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-    v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v13 isBrowsablePlayer]);
+    nowPlayingInfo3 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+    v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [nowPlayingInfo3 isBrowsablePlayer]);
     v23[2] = v14;
     v22[3] = @"kName";
-    v15 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
-    v16 = [v15 playerName];
-    v23[3] = v16;
-    v6 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:4];
+    nowPlayingInfo4 = [(BTAVRCP_XpcSession *)self nowPlayingInfo];
+    playerName = [nowPlayingInfo4 playerName];
+    v23[3] = playerName;
+    blockCopy = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:4];
 
-    v19 = v6;
+    v19 = blockCopy;
     v20 = @"kItems";
     v17 = [NSArray arrayWithObjects:&v19 count:1];
     v21 = v17;
     v18 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-    v8[2](v8, 4, v18);
+    blockCopy2[2](blockCopy2, 4, v18);
   }
 }
 
-- (unsigned)getNowPlayingAttributeIDs:(id)a3 reply:(id)a4
+- (unsigned)getNowPlayingAttributeIDs:(id)ds reply:(id)reply
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100006198;
   v7[3] = &unk_100018AC8;
   v7[4] = self;
-  v8 = a4;
-  v5 = v8;
-  [a3 enumerateAttributeIDs:v7];
+  replyCopy = reply;
+  v5 = replyCopy;
+  [ds enumerateAttributeIDs:v7];
 
   return 4;
 }

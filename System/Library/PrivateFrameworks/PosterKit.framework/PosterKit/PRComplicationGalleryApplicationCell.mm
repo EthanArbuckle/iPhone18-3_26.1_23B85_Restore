@@ -1,43 +1,43 @@
 @interface PRComplicationGalleryApplicationCell
-- (PRComplicationGalleryApplicationCell)initWithFrame:(CGRect)a3;
-- (void)setSeparatorVisible:(BOOL)a3;
+- (PRComplicationGalleryApplicationCell)initWithFrame:(CGRect)frame;
+- (void)setSeparatorVisible:(BOOL)visible;
 @end
 
 @implementation PRComplicationGalleryApplicationCell
 
-- (PRComplicationGalleryApplicationCell)initWithFrame:(CGRect)a3
+- (PRComplicationGalleryApplicationCell)initWithFrame:(CGRect)frame
 {
   v47[4] = *MEMORY[0x1E69E9840];
   v45.receiver = self;
   v45.super_class = PRComplicationGalleryApplicationCell;
-  v3 = [(PRComplicationGalleryApplicationCell *)&v45 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PRComplicationGalleryApplicationCell *)&v45 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PRComplicationGalleryApplicationCell *)v3 contentView];
+    contentView = [(PRComplicationGalleryApplicationCell *)v3 contentView];
     v6 = objc_alloc_init(PRComplicationGalleryApplicationTitleView);
     titleView = v4->_titleView;
     v4->_titleView = v6;
 
-    [v5 addSubview:v4->_titleView];
+    [contentView addSubview:v4->_titleView];
     [(PRComplicationGalleryApplicationTitleView *)v4->_titleView setTranslatesAutoresizingMaskIntoConstraints:0];
     v33 = MEMORY[0x1E696ACD8];
-    v42 = [(PRComplicationGalleryApplicationTitleView *)v4->_titleView leadingAnchor];
-    v40 = [v5 leadingAnchor];
-    v38 = [v42 constraintEqualToAnchor:v40];
+    leadingAnchor = [(PRComplicationGalleryApplicationTitleView *)v4->_titleView leadingAnchor];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v38 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v47[0] = v38;
-    v36 = [(PRComplicationGalleryApplicationTitleView *)v4->_titleView trailingAnchor];
-    v34 = [v5 trailingAnchor];
-    v8 = [v36 constraintEqualToAnchor:v34];
+    trailingAnchor = [(PRComplicationGalleryApplicationTitleView *)v4->_titleView trailingAnchor];
+    trailingAnchor2 = [contentView trailingAnchor];
+    v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v47[1] = v8;
-    v9 = [(PRComplicationGalleryApplicationTitleView *)v4->_titleView topAnchor];
-    v44 = v5;
-    v10 = [v5 topAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    topAnchor = [(PRComplicationGalleryApplicationTitleView *)v4->_titleView topAnchor];
+    v44 = contentView;
+    topAnchor2 = [contentView topAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v47[2] = v11;
-    v12 = [(PRComplicationGalleryApplicationTitleView *)v4->_titleView bottomAnchor];
-    v13 = [v5 bottomAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    bottomAnchor = [(PRComplicationGalleryApplicationTitleView *)v4->_titleView bottomAnchor];
+    bottomAnchor2 = [contentView bottomAnchor];
+    v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v47[3] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:4];
     [v33 activateConstraints:v15];
@@ -55,29 +55,29 @@
     [(PRComplicationGalleryApplicationCell *)v4 setSeparatorVisible:1];
     [v44 addSubview:v4->_separatorView];
     v35 = MEMORY[0x1E696ACD8];
-    v43 = [(UIView *)v4->_separatorView leadingAnchor];
-    v41 = [(PRComplicationGalleryApplicationTitleView *)v4->_titleView titleLabelLeadingAnchor];
-    v39 = [v43 constraintEqualToAnchor:v41];
+    leadingAnchor3 = [(UIView *)v4->_separatorView leadingAnchor];
+    titleLabelLeadingAnchor = [(PRComplicationGalleryApplicationTitleView *)v4->_titleView titleLabelLeadingAnchor];
+    v39 = [leadingAnchor3 constraintEqualToAnchor:titleLabelLeadingAnchor];
     v46[0] = v39;
-    v37 = [(UIView *)v4->_separatorView trailingAnchor];
-    v20 = [v44 trailingAnchor];
-    v21 = [v37 constraintEqualToAnchor:v20];
+    trailingAnchor3 = [(UIView *)v4->_separatorView trailingAnchor];
+    trailingAnchor4 = [v44 trailingAnchor];
+    v21 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v46[1] = v21;
-    v22 = [(UIView *)v4->_separatorView bottomAnchor];
-    v23 = [v44 bottomAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    bottomAnchor3 = [(UIView *)v4->_separatorView bottomAnchor];
+    bottomAnchor4 = [v44 bottomAnchor];
+    v24 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v46[2] = v24;
-    v25 = [(UIView *)v4->_separatorView heightAnchor];
-    v26 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v26 scale];
-    v28 = [v25 constraintEqualToConstant:1.0 / v27];
+    heightAnchor = [(UIView *)v4->_separatorView heightAnchor];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
+    v28 = [heightAnchor constraintEqualToConstant:1.0 / v27];
     v46[3] = v28;
     v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:4];
     [v35 activateConstraints:v29];
 
     v30 = objc_alloc_init(MEMORY[0x1E69DD250]);
-    v31 = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
-    [v30 setBackgroundColor:v31];
+    tertiarySystemFillColor = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
+    [v30 setBackgroundColor:tertiarySystemFillColor];
 
     [(PRComplicationGalleryApplicationCell *)v4 setSelectedBackgroundView:v30];
   }
@@ -85,12 +85,12 @@
   return v4;
 }
 
-- (void)setSeparatorVisible:(BOOL)a3
+- (void)setSeparatorVisible:(BOOL)visible
 {
-  if (self->_separatorVisible != a3)
+  if (self->_separatorVisible != visible)
   {
-    self->_separatorVisible = a3;
-    [(UIView *)self->_separatorView setHidden:!a3];
+    self->_separatorVisible = visible;
+    [(UIView *)self->_separatorView setHidden:!visible];
   }
 }
 

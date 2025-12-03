@@ -1,37 +1,37 @@
 @interface VCPImageHumanPoseAnalyzerTopDown
-- (VCPImageHumanPoseAnalyzerTopDown)initWithMaxNumRegions:(int)a3 forceCPU:(BOOL)a4 sharedModel:(BOOL)a5 inputConfig:(id)a6;
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 flags:(unint64_t *)a4 results:(id *)a5 cancel:(id)a6;
-- (int)preferredInputFormat:(int *)a3 height:(int *)a4 format:(unsigned int *)a5;
-- (int)updateInputWidth:(int)a3 Height:(int)a4;
-- (int)updateMaxNumPersons:(id)a3;
+- (VCPImageHumanPoseAnalyzerTopDown)initWithMaxNumRegions:(int)regions forceCPU:(BOOL)u sharedModel:(BOOL)model inputConfig:(id)config;
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer flags:(unint64_t *)flags results:(id *)results cancel:(id)cancel;
+- (int)preferredInputFormat:(int *)format height:(int *)height format:(unsigned int *)a5;
+- (int)updateInputWidth:(int)width Height:(int)height;
+- (int)updateMaxNumPersons:(id)persons;
 @end
 
 @implementation VCPImageHumanPoseAnalyzerTopDown
 
-- (VCPImageHumanPoseAnalyzerTopDown)initWithMaxNumRegions:(int)a3 forceCPU:(BOOL)a4 sharedModel:(BOOL)a5 inputConfig:(id)a6
+- (VCPImageHumanPoseAnalyzerTopDown)initWithMaxNumRegions:(int)regions forceCPU:(BOOL)u sharedModel:(BOOL)model inputConfig:(id)config
 {
-  v6 = a5;
-  v7 = a4;
+  modelCopy = model;
+  uCopy = u;
   v22.receiver = self;
   v22.super_class = VCPImageHumanPoseAnalyzerTopDown;
-  v9 = [(VCPImageHumanPoseAnalyzerTopDown *)&v22 init:*&a3];
+  v9 = [(VCPImageHumanPoseAnalyzerTopDown *)&v22 init:*&regions];
   v10 = v9;
   if (v9)
   {
-    v9->_maxNumRegions = fmax(a3, 1.0);
+    v9->_maxNumRegions = fmax(regions, 1.0);
     v11 = [VCPANSTHandsBodyDetector alloc];
     LODWORD(v12) = 1068149419;
     v13 = [(VCPANSTHandsBodyDetector *)v11 initWithHandExtendRatio:v10->_maxNumRegions inputRatio:0.0 maxNumPersonRegions:v12];
     ANSTPersonDetector = v10->_ANSTPersonDetector;
     v10->_ANSTPersonDetector = v13;
 
-    v15 = [[VCPCNNPersonKeypointsDetector alloc] initWithForceCPU:v7 sharedModel:v6];
+    v15 = [[VCPCNNPersonKeypointsDetector alloc] initWithForceCPU:uCopy sharedModel:modelCopy];
     personKeypointsDetector = v10->_personKeypointsDetector;
     v10->_personKeypointsDetector = v15;
 
-    v17 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     results = v10->_results;
-    v10->_results = v17;
+    v10->_results = array;
 
     v10->_inputWidth = 640;
     v10->_inputHeight = 640;
@@ -60,57 +60,57 @@
   return v20;
 }
 
-- (int)updateInputWidth:(int)a3 Height:(int)a4
+- (int)updateInputWidth:(int)width Height:(int)height
 {
-  self->_inputWidth = a3;
-  self->_inputHeight = a4;
+  self->_inputWidth = width;
+  self->_inputHeight = height;
   return 0;
 }
 
-- (int)updateMaxNumPersons:(id)a3
+- (int)updateMaxNumPersons:(id)persons
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  personsCopy = persons;
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = personsCopy;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "ImageHumanPoseAnalyzerTopDown: maxNumPersons from options = %@", &v6, 0xCu);
   }
 
-  if (v4)
+  if (personsCopy)
   {
-    self->_maxNumRegions = fmax([v4 intValue], 1.0);
+    self->_maxNumRegions = fmax([personsCopy intValue], 1.0);
     [(VCPANSTHandsBodyDetector *)self->_ANSTPersonDetector updateMaxNumPersonRegions:?];
   }
 
   return 0;
 }
 
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 flags:(unint64_t *)a4 results:(id *)a5 cancel:(id)a6
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer flags:(unint64_t *)flags results:(id *)results cancel:(id)cancel
 {
   v102 = *MEMORY[0x1E69E9840];
-  v79 = a6;
-  v80 = [MEMORY[0x1E695DF70] array];
+  cancelCopy = cancel;
+  array = [MEMORY[0x1E695DF70] array];
   v90 = 0;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
   [(NSMutableArray *)self->_results removeAllObjects];
-  v10 = [(VCPANSTHandsBodyDetector *)self->_ANSTPersonDetector anstDetection:a3 rotationInDegrees:0 detectingFullbody:1 detectingHands:0 handsRegions:0 personRegions:v80 cancel:v79];
+  v10 = [(VCPANSTHandsBodyDetector *)self->_ANSTPersonDetector anstDetection:buffer rotationInDegrees:0 detectingFullbody:1 detectingHands:0 handsRegions:0 personRegions:array cancel:cancelCopy];
   if (!v10)
   {
-    v73 = a3;
+    bufferCopy = buffer;
     v88 = 0u;
     v89 = 0u;
     v86 = 0u;
     v87 = 0u;
-    obj = v80;
+    obj = array;
     v70 = [obj countByEnumeratingWithState:&v86 objects:v101 count:16];
     if (v70)
     {
       v71 = (Height * 0.75) / Width;
       v72 = *v87;
-      v69 = self;
+      selfCopy = self;
       while (2)
       {
         for (i = 0; i != v70; ++i)
@@ -121,15 +121,15 @@
           }
 
           v11 = *(*(&v86 + 1) + 8 * i);
-          v78 = [MEMORY[0x1E695DF70] array];
-          v10 = [VCPCNNPersonKeypointsDetector analyzeFrame:"analyzeFrame:withBox:keypoints:padX:padY:" withBox:v73 keypoints:v11 padX:? padY:?];
+          array2 = [MEMORY[0x1E695DF70] array];
+          v10 = [VCPCNNPersonKeypointsDetector analyzeFrame:"analyzeFrame:withBox:keypoints:padX:padY:" withBox:bufferCopy keypoints:v11 padX:? padY:?];
           if (v10)
           {
             goto LABEL_31;
           }
 
-          v12 = [MEMORY[0x1E695DF70] array];
-          v77 = [MEMORY[0x1E695DF90] dictionary];
+          array3 = [MEMORY[0x1E695DF70] array];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
           [v11 minX];
           v14 = v13;
           [v11 minY];
@@ -171,7 +171,7 @@
             v29 = v71 * v30;
           }
 
-          if ([v78 count] != 17)
+          if ([array2 count] != 17)
           {
 LABEL_30:
 
@@ -185,7 +185,7 @@ LABEL_31:
           v85 = 0u;
           v82 = 0u;
           v83 = 0u;
-          v81 = v78;
+          v81 = array2;
           v31 = [v81 countByEnumeratingWithState:&v82 objects:v96 count:16];
           v63 = v16;
           v64 = v14;
@@ -237,7 +237,7 @@ LABEL_31:
                 v54 = [MEMORY[0x1E696AD98] numberWithFloat:v53];
                 v95[2] = v54;
                 v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:v95 count:3];
-                [v12 addObject:v55];
+                [array3 addObject:v55];
 
                 v33 = v33 + v44;
               }
@@ -257,25 +257,25 @@ LABEL_31:
             v33 = 0.0;
           }
 
-          [v77 setObject:v12 forKeyedSubscript:@"humanKeypoints"];
+          [dictionary setObject:array3 forKeyedSubscript:@"humanKeypoints"];
           v103.origin.x = v64;
           v103.origin.y = v63;
           v103.size.width = (v68 - v67);
           v103.size.height = (v66 - v65);
           v56 = NSStringFromRect(v103);
-          [v77 setObject:v56 forKeyedSubscript:@"humanBounds"];
+          [dictionary setObject:v56 forKeyedSubscript:@"humanBounds"];
 
           *&v57 = v33 / 17.0;
           v58 = [MEMORY[0x1E696AD98] numberWithFloat:v57];
-          [v77 setObject:v58 forKeyedSubscript:@"humanConfidence"];
+          [dictionary setObject:v58 forKeyedSubscript:@"humanConfidence"];
 
-          results = v69->_results;
+          results = selfCopy->_results;
           v93 = @"attributes";
-          v94 = v77;
+          v94 = dictionary;
           v60 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v94 forKeys:&v93 count:1];
           [(NSMutableArray *)results addObject:v60];
 
-          self = v69;
+          self = selfCopy;
         }
 
         v70 = [obj countByEnumeratingWithState:&v86 objects:v101 count:16];
@@ -294,7 +294,7 @@ LABEL_31:
       v91 = @"HumanPoseResults";
       v92 = v61;
       [MEMORY[0x1E695DF20] dictionaryWithObjects:&v92 forKeys:&v91 count:1];
-      *a5 = v10 = 0;
+      *results = v10 = 0;
     }
 
     else
@@ -308,16 +308,16 @@ LABEL_32:
   return v10;
 }
 
-- (int)preferredInputFormat:(int *)a3 height:(int *)a4 format:(unsigned int *)a5
+- (int)preferredInputFormat:(int *)format height:(int *)height format:(unsigned int *)a5
 {
   result = -50;
-  if (a3 && a4)
+  if (format && height)
   {
     if (a5)
     {
       result = 0;
-      *a3 = self->_inputWidth;
-      *a4 = self->_inputHeight;
+      *format = self->_inputWidth;
+      *height = self->_inputHeight;
       *a5 = 1111970369;
     }
   }

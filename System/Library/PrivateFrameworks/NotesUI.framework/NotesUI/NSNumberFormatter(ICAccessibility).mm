@@ -10,7 +10,7 @@
 + (id)icaxLocalizedUnsignedInteger:()ICAccessibility
 {
   v2 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
-  v3 = [a1 icaxLocalizedNumber:v2 maximumNumberOfDigitsAfterDecimalSeparator:0];
+  v3 = [self icaxLocalizedNumber:v2 maximumNumberOfDigitsAfterDecimalSeparator:0];
 
   return v3;
 }
@@ -18,7 +18,7 @@
 + (id)icaxLocalizedDouble:()ICAccessibility maximumNumberOfDigitsAfterDecimalSeparator:
 {
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-  v6 = [a1 icaxLocalizedNumber:v5 maximumNumberOfDigitsAfterDecimalSeparator:a3];
+  v6 = [self icaxLocalizedNumber:v5 maximumNumberOfDigitsAfterDecimalSeparator:a3];
 
   return v6;
 }
@@ -26,7 +26,7 @@
 + (id)icaxLocalizedPercentage:()ICAccessibility maximumNumberOfDigitsAfterDecimalSeparator:
 {
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-  v6 = [a1 icaxLocalizedNumber:v5 numberStyle:3 maximumNumberOfDigitsAfterDecimalSeparator:a3];
+  v6 = [self icaxLocalizedNumber:v5 numberStyle:3 maximumNumberOfDigitsAfterDecimalSeparator:a3];
 
   return v6;
 }

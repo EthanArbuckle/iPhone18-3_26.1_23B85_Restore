@@ -5,20 +5,20 @@
 - (void)_acquireAlwaysOnDisplayAssertion;
 - (void)_acquireAppSwitcherAssertion;
 - (void)_acquireLockScreenAssertion;
-- (void)_forceTerminateShieldIfApplicableWithBundleID:(id)a3 completion:(id)a4 completionTimeoutInSec:(unint64_t)a5;
+- (void)_forceTerminateShieldIfApplicableWithBundleID:(id)d completion:(id)completion completionTimeoutInSec:(unint64_t)sec;
 - (void)_launchShieldUIProcess;
 - (void)_releaseAlwaysOnDisplayAssertion;
 - (void)_releaseAppSwitcherAssertion;
 - (void)_releaseLockScreenAssertion;
-- (void)_setSystemStatusAttributionStatus:(id)a3;
-- (void)assertionTargetProcessDidExit:(id)a3;
+- (void)_setSystemStatusAttributionStatus:(id)status;
+- (void)assertionTargetProcessDidExit:(id)exit;
 - (void)bringShieldUIProcessToForegroundIfApplicable;
 - (void)dealloc;
 - (void)forceShieldUITerminationIfApplicable;
-- (void)launchShieldForDeviceIdentifier:(id)a3 name:(id)a4 model:(int64_t)a5 skipPlacementStep:(BOOL)a6 isDedicated:(BOOL)a7 micOnly:(BOOL)a8 statusHandler:(id)a9;
-- (void)notifyShieldStatus:(int64_t)a3;
-- (void)prepareForPullConversation:(id)a3;
-- (void)shieldDidConnect:(id *)a3;
+- (void)launchShieldForDeviceIdentifier:(id)identifier name:(id)name model:(int64_t)model skipPlacementStep:(BOOL)step isDedicated:(BOOL)dedicated micOnly:(BOOL)only statusHandler:(id)handler;
+- (void)notifyShieldStatus:(int64_t)status;
+- (void)prepareForPullConversation:(id)conversation;
+- (void)shieldDidConnect:(id *)connect;
 - (void)shieldDidDisconnect;
 - (void)tearDownShield;
 @end
@@ -75,58 +75,58 @@
 
 - (CCDShieldUISession)activeSession
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_activeSession;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_activeSession;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)assertionTargetProcessDidExit:(id)a3
+- (void)assertionTargetProcessDidExit:(id)exit
 {
-  v3 = a3;
+  exitCopy = exit;
   v4 = CMContinuityCaptureLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136315394;
     v6 = "[CCDShieldUILifeCycleManager assertionTargetProcessDidExit:]";
     v7 = 2112;
-    v8 = v3;
+    v8 = exitCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s assertion %@ ", &v5, 0x16u);
   }
 }
 
-- (void)_setSystemStatusAttributionStatus:(id)a3
+- (void)_setSystemStatusAttributionStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v5 = CMContinuityCaptureLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412802;
-    v7 = self;
+    selfCopy = self;
     v8 = 2080;
     v9 = "[CCDShieldUILifeCycleManager _setSystemStatusAttributionStatus:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = statusCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ %s %@", &v6, 0x20u);
   }
 
-  [STDynamicActivityAttributionPublisher setCurrentAttributionKey:0 andApp:v4];
+  [STDynamicActivityAttributionPublisher setCurrentAttributionKey:0 andApp:statusCopy];
 }
 
-- (void)shieldDidConnect:(id *)a3
+- (void)shieldDidConnect:(id *)connect
 {
   v4 = CMContinuityCaptureLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(CCDShieldUILifeCycleManager *)self activeSession];
+    activeSession = [(CCDShieldUILifeCycleManager *)self activeSession];
     *buf = 138543874;
-    v10 = self;
+    selfCopy = self;
     v11 = 2080;
     v12 = "[CCDShieldUILifeCycleManager shieldDidConnect:]";
     v13 = 2114;
-    v14 = v5;
+    v14 = activeSession;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ %s activeSession %{public}@", buf, 0x20u);
   }
 
@@ -148,7 +148,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138543618;
-    v5 = self;
+    selfCopy = self;
     v6 = 2080;
     v7 = "[CCDShieldUILifeCycleManager shieldDidDisconnect]";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ %s", &v4, 0x16u);
@@ -157,14 +157,14 @@
   [(CCDShieldUILifeCycleManager *)self forceShieldUITerminationIfApplicable];
 }
 
-- (void)prepareForPullConversation:(id)a3
+- (void)prepareForPullConversation:(id)conversation
 {
-  v4 = a3;
+  conversationCopy = conversation;
   v5 = CMContinuityCaptureLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2080;
     v13 = "[CCDShieldUILifeCycleManager prepareForPullConversation:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ %s", buf, 0x16u);
@@ -176,70 +176,70 @@
   v8[2] = sub_100002970;
   v8[3] = &unk_10001C770;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = conversationCopy;
+  v7 = conversationCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)notifyShieldStatus:(int64_t)a3
+- (void)notifyShieldStatus:(int64_t)status
 {
   v5 = CMContinuityCaptureLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CCDShieldUILifeCycleManager *)self activeSession];
+    activeSession = [(CCDShieldUILifeCycleManager *)self activeSession];
     v10 = 138544130;
-    v11 = self;
+    selfCopy = self;
     v12 = 2080;
     v13 = "[CCDShieldUILifeCycleManager notifyShieldStatus:]";
     v14 = 1024;
-    v15 = a3;
+    statusCopy = status;
     v16 = 2114;
-    v17 = v6;
+    v17 = activeSession;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ %s error %d for session %{public}@", &v10, 0x26u);
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = objc_retainBlock(v7->_statusHandler);
-  objc_sync_exit(v7);
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  v8 = objc_retainBlock(selfCopy2->_statusHandler);
+  objc_sync_exit(selfCopy2);
 
   if (v8)
   {
-    v9 = [(CCDShieldUILifeCycleManager *)v7 activeSession];
-    v8[2](v8, v9, a3);
+    activeSession2 = [(CCDShieldUILifeCycleManager *)selfCopy2 activeSession];
+    v8[2](v8, activeSession2, status);
   }
 }
 
-- (void)launchShieldForDeviceIdentifier:(id)a3 name:(id)a4 model:(int64_t)a5 skipPlacementStep:(BOOL)a6 isDedicated:(BOOL)a7 micOnly:(BOOL)a8 statusHandler:(id)a9
+- (void)launchShieldForDeviceIdentifier:(id)identifier name:(id)name model:(int64_t)model skipPlacementStep:(BOOL)step isDedicated:(BOOL)dedicated micOnly:(BOOL)only statusHandler:(id)handler
 {
-  v9 = a8;
-  v10 = a7;
-  v11 = a6;
-  v15 = a3;
-  v16 = a4;
-  v17 = a9;
+  onlyCopy = only;
+  dedicatedCopy = dedicated;
+  stepCopy = step;
+  identifierCopy = identifier;
+  nameCopy = name;
+  handlerCopy = handler;
   v18 = CMContinuityCaptureLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [(CCDShieldUILifeCycleManager *)self activeSession];
+    activeSession = [(CCDShieldUILifeCycleManager *)self activeSession];
     *buf = 138545410;
-    v33 = self;
+    selfCopy = self;
     v34 = 2080;
     v35 = "[CCDShieldUILifeCycleManager launchShieldForDeviceIdentifier:name:model:skipPlacementStep:isDedicated:micOnly:statusHandler:]";
     v36 = 1024;
-    v37 = v11;
+    v37 = stepCopy;
     v38 = 1024;
-    v39 = v10;
+    v39 = dedicatedCopy;
     v40 = 1024;
-    v41 = v9;
+    v41 = onlyCopy;
     v42 = 2114;
-    v43 = v15;
+    v43 = identifierCopy;
     v44 = 2114;
-    v45 = v16;
+    v45 = nameCopy;
     v46 = 1024;
-    v47 = a5;
+    modelCopy = model;
     v48 = 2114;
-    v49 = v19;
+    v49 = activeSession;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ %s skipPlacementStep:%d isDedicated:%d micOnly:%d identifier:%{public}@ name:%{public}@ model:%d activeSession:%{public}@", buf, 0x4Cu);
   }
 
@@ -249,16 +249,16 @@
   v24[2] = sub_100002CCC;
   v24[3] = &unk_10001C798;
   v24[4] = self;
-  v25 = v15;
-  v27 = v17;
-  v28 = a5;
-  v29 = v11;
-  v30 = v10;
-  v31 = v9;
-  v26 = v16;
-  v21 = v17;
-  v22 = v16;
-  v23 = v15;
+  v25 = identifierCopy;
+  v27 = handlerCopy;
+  modelCopy2 = model;
+  v29 = stepCopy;
+  v30 = dedicatedCopy;
+  v31 = onlyCopy;
+  v26 = nameCopy;
+  v21 = handlerCopy;
+  v22 = nameCopy;
+  v23 = identifierCopy;
   dispatch_async(queue, v24);
 }
 
@@ -272,9 +272,9 @@
   [v3 setObject:&__kCFBooleanTrue forKey:FBSOpenApplicationOptionKeyUnlockDevice];
   if (!self->_shieldConnected)
   {
-    v4 = [(CCDShieldUILifeCycleManager *)self activeSession];
-    v5 = [v4 bundleIdentifier];
-    v6 = [v5 isEqual:@"com.apple.ContinuitySingShieldUI"];
+    activeSession = [(CCDShieldUILifeCycleManager *)self activeSession];
+    bundleIdentifier = [activeSession bundleIdentifier];
+    v6 = [bundleIdentifier isEqual:@"com.apple.ContinuitySingShieldUI"];
 
     v7 = @"ContinuityCaptureShieldUILaunch";
     if (v6)
@@ -285,11 +285,11 @@
     v8 = [NSString stringWithFormat:@"%@://", v7];
     v9 = [NSURL URLWithString:v8];
 
-    v10 = [(CCDShieldUILifeCycleManager *)self activeSession];
-    v11 = [v10 configuration];
+    activeSession2 = [(CCDShieldUILifeCycleManager *)self activeSession];
+    configuration = [activeSession2 configuration];
 
     v26 = 0;
-    v12 = [NSKeyedArchiver archivedDataWithRootObject:v11 requiringSecureCoding:1 error:&v26];
+    v12 = [NSKeyedArchiver archivedDataWithRootObject:configuration requiringSecureCoding:1 error:&v26];
     v13 = v26;
     if (v13 || !v12)
     {
@@ -314,15 +314,15 @@
   v16 = [FBSOpenApplicationOptions optionsWithDictionary:v15];
 
   v17 = SBSCreateOpenApplicationService();
-  v18 = [(CCDShieldUILifeCycleManager *)self activeSession];
-  v19 = [v18 bundleIdentifier];
+  activeSession3 = [(CCDShieldUILifeCycleManager *)self activeSession];
+  bundleIdentifier2 = [activeSession3 bundleIdentifier];
 
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1000035F4;
   v21[3] = &unk_10001C7E0;
   objc_copyWeak(&v23, &location);
-  v20 = v19;
+  v20 = bundleIdentifier2;
   v22 = v20;
   [v17 openApplication:v20 withOptions:v16 completion:v21];
 
@@ -336,7 +336,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2080;
     v9 = "[CCDShieldUILifeCycleManager bringShieldUIProcessToForegroundIfApplicable]";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ %s", buf, 0x16u);
@@ -351,19 +351,19 @@
   dispatch_async(queue, block);
 }
 
-- (void)_forceTerminateShieldIfApplicableWithBundleID:(id)a3 completion:(id)a4 completionTimeoutInSec:(unint64_t)a5
+- (void)_forceTerminateShieldIfApplicableWithBundleID:(id)d completion:(id)completion completionTimeoutInSec:(unint64_t)sec
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  completionCopy = completion;
   objc_initWeak(location, self);
   v46[0] = 0;
   v46[1] = v46;
   v46[2] = 0x2020000000;
   v47 = 0;
   v10 = @"com.apple.ContinuityCaptureShieldUI";
-  if (v8)
+  if (dCopy)
   {
-    v10 = v8;
+    v10 = dCopy;
   }
 
   v11 = v10;
@@ -373,7 +373,7 @@
   v14 = v45;
   if (v13)
   {
-    v25 = a5;
+    secCopy = sec;
     v15 = dispatch_queue_create("com.apple.forceTerminateShield", 0);
     v40[0] = _NSConcreteStackBlock;
     v40[1] = 3221225472;
@@ -383,8 +383,8 @@
     v16 = v15;
     v41 = v16;
     v43 = v46;
-    v26 = v9;
-    v17 = v9;
+    v26 = completionCopy;
+    v17 = completionCopy;
     v42 = v17;
     [v13 monitorForDeath:v40];
     v24 = v11;
@@ -408,7 +408,7 @@
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%s request %@ error %{public}@ status %d", buf, 0x26u);
     }
 
-    v23 = dispatch_time(0, 1000000000 * v25);
+    v23 = dispatch_time(0, 1000000000 * secCopy);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100003D20;
@@ -422,13 +422,13 @@
     objc_destroyWeak(&v44);
 
     v14 = v21;
-    v9 = v26;
+    completionCopy = v26;
     v11 = v24;
   }
 
   else
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 
   _Block_object_dispose(v46, 8);
@@ -441,7 +441,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2080;
     v9 = "[CCDShieldUILifeCycleManager forceShieldUITerminationIfApplicable]";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ %s", buf, 0x16u);
@@ -463,7 +463,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2080;
     v9 = "[CCDShieldUILifeCycleManager tearDownShield]";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ %s", buf, 0x16u);
@@ -502,9 +502,9 @@
     }
 
     objc_initWeak(buf, self);
-    v6 = [(CCDShieldUILifeCycleManager *)self activeSession];
-    v7 = [v6 bundleIdentifier];
-    v8 = [v7 isEqual:@"com.apple.ContinuitySingShieldUI"];
+    activeSession = [(CCDShieldUILifeCycleManager *)self activeSession];
+    bundleIdentifier = [activeSession bundleIdentifier];
+    v8 = [bundleIdentifier isEqual:@"com.apple.ContinuitySingShieldUI"];
 
     if (v8)
     {
@@ -582,8 +582,8 @@
     appSwitcherAssertionCompletion = self->_appSwitcherAssertionCompletion;
     self->_appSwitcherAssertionCompletion = v6;
 
-    v8 = [(CCDShieldUILifeCycleManager *)self activeSession];
-    v9 = [v8 bundleIdentifier];
+    activeSession = [(CCDShieldUILifeCycleManager *)self activeSession];
+    bundleIdentifier = [activeSession bundleIdentifier];
     objc_copyWeak(&v10, buf);
     SBSRequestAppSwitcherAppearanceForHiddenApplication();
 

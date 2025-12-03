@@ -1,26 +1,26 @@
 @interface UIAlertControllerVisualStyleAlertTV
-- (BOOL)hideCancelAction:(id)a3 inAlertController:(id)a4;
-- (UIEdgeInsets)contentInsetsForContainerView:(id)a3;
+- (BOOL)hideCancelAction:(id)action inAlertController:(id)controller;
+- (UIEdgeInsets)contentInsetsForContainerView:(id)view;
 - (UIEdgeInsets)textFieldContentInset;
-- (double)actionWidthForMinimumActionWidth:(double)a3 availableWidth:(double)a4;
+- (double)actionWidthForMinimumActionWidth:(double)width availableWidth:(double)availableWidth;
 - (double)marginAboveMessageLabelFirstBaseline;
 - (double)maximumWidth;
-- (double)transitionDurationForPresentation:(BOOL)a3 ofAlertController:(id)a4;
-- (id)dimmingViewForAlertController:(id)a3;
-- (id)preferredActionForActions:(id)a3 suggestedPreferredAction:(id)a4;
-- (id)textFieldContainingViewWithTextField:(id)a3 position:(int64_t)a4;
+- (double)transitionDurationForPresentation:(BOOL)presentation ofAlertController:(id)controller;
+- (id)dimmingViewForAlertController:(id)controller;
+- (id)preferredActionForActions:(id)actions suggestedPreferredAction:(id)action;
+- (id)textFieldContainingViewWithTextField:(id)field position:(int64_t)position;
 - (int64_t)_effectStyle;
-- (void)animateAlertControllerView:(id)a3 ofAlertController:(id)a4 forPresentation:(BOOL)a5 inContainerView:(id)a6 descendantOfContainerView:(id)a7 duration:(double)a8 completionBlock:(id)a9;
+- (void)animateAlertControllerView:(id)view ofAlertController:(id)controller forPresentation:(BOOL)presentation inContainerView:(id)containerView descendantOfContainerView:(id)ofContainerView duration:(double)duration completionBlock:(id)block;
 @end
 
 @implementation UIAlertControllerVisualStyleAlertTV
 
 - (double)marginAboveMessageLabelFirstBaseline
 {
-  v3 = [(UIAlertControllerVisualStyle *)self descriptor];
-  v4 = [v3 hasTitle];
+  descriptor = [(UIAlertControllerVisualStyle *)self descriptor];
+  hasTitle = [descriptor hasTitle];
 
-  if (v4)
+  if (hasTitle)
   {
     return 60.0;
   }
@@ -39,11 +39,11 @@
   return v7 + v6 + 70.0;
 }
 
-- (double)actionWidthForMinimumActionWidth:(double)a3 availableWidth:(double)a4
+- (double)actionWidthForMinimumActionWidth:(double)width availableWidth:(double)availableWidth
 {
   [objc_msgSend(objc_opt_class() "associatedAlertBackgroundViewClass")];
   v7 = v6 + v6;
-  v8 = a3 - (v6 + v6);
+  v8 = width - (v6 + v6);
   [(UIAlertControllerVisualStyleAlertTV *)self _maximumContentWidth];
   v10 = v9;
   [(UIAlertControllerVisualStyleAlertTV *)self _minimumButtonWidth];
@@ -60,7 +60,7 @@
   return v7 + v11;
 }
 
-- (UIEdgeInsets)contentInsetsForContainerView:(id)a3
+- (UIEdgeInsets)contentInsetsForContainerView:(id)view
 {
   v3 = 120.0;
   v4 = 80.0;
@@ -73,14 +73,14 @@
   return result;
 }
 
-- (id)textFieldContainingViewWithTextField:(id)a3 position:(int64_t)a4
+- (id)textFieldContainingViewWithTextField:(id)field position:(int64_t)position
 {
-  v4 = a3;
+  fieldCopy = field;
   v5 = [UIView alloc];
   v6 = [(UIView *)v5 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(UIView *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(UIView *)v6 addSubview:v4];
-  v7 = _NSDictionaryOfVariableBindings(&cfstr_Textfield.isa, v4, 0);
+  [(UIView *)v6 addSubview:fieldCopy];
+  v7 = _NSDictionaryOfVariableBindings(&cfstr_Textfield.isa, fieldCopy, 0);
 
   v8 = [MEMORY[0x1E69977A0] constraintsWithVisualFormat:@"H:|-(horizontalInset)-[textField]-(horizontalInset)-|" options:0 metrics:&unk_1EFE344F0 views:v7];
   [(UIView *)v6 addConstraints:v8];
@@ -91,15 +91,15 @@
   return v6;
 }
 
-- (BOOL)hideCancelAction:(id)a3 inAlertController:(id)a4
+- (BOOL)hideCancelAction:(id)action inAlertController:(id)controller
 {
-  v4 = [a3 title];
-  v5 = v4 == 0;
+  title = [action title];
+  v5 = title == 0;
 
   return v5;
 }
 
-- (id)dimmingViewForAlertController:(id)a3
+- (id)dimmingViewForAlertController:(id)controller
 {
   v4 = [UIVisualEffectView alloc];
   v5 = [UIBlurEffect effectWithStyle:[(UIAlertControllerVisualStyleAlertTV *)self _effectStyle]];
@@ -108,10 +108,10 @@
   return v6;
 }
 
-- (double)transitionDurationForPresentation:(BOOL)a3 ofAlertController:(id)a4
+- (double)transitionDurationForPresentation:(BOOL)presentation ofAlertController:(id)controller
 {
   result = 0.7;
-  if (!a3)
+  if (!presentation)
   {
     return 0.5;
   }
@@ -119,14 +119,14 @@
   return result;
 }
 
-- (void)animateAlertControllerView:(id)a3 ofAlertController:(id)a4 forPresentation:(BOOL)a5 inContainerView:(id)a6 descendantOfContainerView:(id)a7 duration:(double)a8 completionBlock:(id)a9
+- (void)animateAlertControllerView:(id)view ofAlertController:(id)controller forPresentation:(BOOL)presentation inContainerView:(id)containerView descendantOfContainerView:(id)ofContainerView duration:(double)duration completionBlock:(id)block
 {
-  v13 = a5;
-  v16 = a3;
-  v17 = a4;
-  v46 = a6;
-  v45 = a7;
-  v42 = a9;
+  presentationCopy = presentation;
+  viewCopy = view;
+  controllerCopy = controller;
+  containerViewCopy = containerView;
+  ofContainerViewCopy = ofContainerView;
+  blockCopy = block;
   v18 = *MEMORY[0x1E695EFD0];
   v19 = *(MEMORY[0x1E695EFD0] + 32);
   v70 = *(MEMORY[0x1E695EFD0] + 16);
@@ -135,18 +135,18 @@
   v67 = v70;
   v68 = v19;
   v69 = v18;
-  v44 = v13;
+  v44 = presentationCopy;
   v20 = &v66;
-  if (v13)
+  if (presentationCopy)
   {
     v20 = &v69;
   }
 
   CGAffineTransformMakeScale(v20, 0.9, 0.9);
-  v47 = v17;
-  v21 = [v17 _dimmingView];
+  v47 = controllerCopy;
+  _dimmingView = [controllerCopy _dimmingView];
   v22 = [UIBlurEffect effectWithStyle:[(UIAlertControllerVisualStyleAlertTV *)self _effectStyle]];
-  if (v13)
+  if (presentationCopy)
   {
     v23 = 0.0;
   }
@@ -156,7 +156,7 @@
     v23 = 0.3;
   }
 
-  if (v13)
+  if (presentationCopy)
   {
     v24 = 0.3;
   }
@@ -166,7 +166,7 @@
     v24 = 0.0;
   }
 
-  if (v13)
+  if (presentationCopy)
   {
     v25 = 0.523809524;
   }
@@ -176,7 +176,7 @@
     v25 = 0.0;
   }
 
-  if (v13)
+  if (presentationCopy)
   {
     v26 = 0.476190476;
   }
@@ -186,7 +186,7 @@
     v26 = 0.5;
   }
 
-  if (v13)
+  if (presentationCopy)
   {
     v27 = 0.357142857;
   }
@@ -196,7 +196,7 @@
     v27 = 0.5;
   }
 
-  if (v13)
+  if (presentationCopy)
   {
     v28 = 1.0;
   }
@@ -207,7 +207,7 @@
   }
 
   v43 = v28;
-  if (v13)
+  if (presentationCopy)
   {
     v29 = 0.0;
   }
@@ -217,7 +217,7 @@
     v29 = 1.0;
   }
 
-  if (v13)
+  if (presentationCopy)
   {
     v30 = v22;
   }
@@ -227,7 +227,7 @@
     v30 = 0;
   }
 
-  if (v13)
+  if (presentationCopy)
   {
     v31 = 0;
   }
@@ -241,18 +241,18 @@
   v65[0] = v69;
   v65[1] = v70;
   v65[2] = v71;
-  [v16 setTransform:v65];
-  [v16 setAlpha:v29];
-  [v21 setBackgroundColor:v32];
-  v41 = [v16 _preferredActionView];
+  [viewCopy setTransform:v65];
+  [viewCopy setAlpha:v29];
+  [_dimmingView setBackgroundColor:v32];
+  _preferredActionView = [viewCopy _preferredActionView];
   v33 = [[_UIAlertControllerVisualStyleAlertTVCustomCurveFactory alloc] initWithCustomCurve:0];
   v34 = [[_UIAlertControllerVisualStyleAlertTVCustomCurveFactory alloc] initWithCustomCurve:1];
-  [v21 setEffect:v31];
+  [_dimmingView setEffect:v31];
   v60[0] = MEMORY[0x1E69E9820];
   v60[1] = 3221225472;
   v60[2] = __167__UIAlertControllerVisualStyleAlertTV_animateAlertControllerView_ofAlertController_forPresentation_inContainerView_descendantOfContainerView_duration_completionBlock___block_invoke;
   v60[3] = &unk_1E7107CE8;
-  v35 = v21;
+  v35 = _dimmingView;
   v61 = v35;
   v36 = v30;
   v62 = v36;
@@ -263,19 +263,19 @@
   v58[1] = 3221225472;
   v58[2] = __167__UIAlertControllerVisualStyleAlertTV_animateAlertControllerView_ofAlertController_forPresentation_inContainerView_descendantOfContainerView_duration_completionBlock___block_invoke_2;
   v58[3] = &unk_1E70F3608;
-  v38 = v42;
+  v38 = blockCopy;
   v59 = v38;
-  [UIView _animateWithDuration:393216 delay:v33 options:v60 factory:v58 animations:a8 completion:0.0];
+  [UIView _animateWithDuration:393216 delay:v33 options:v60 factory:v58 animations:duration completion:0.0];
   v53[0] = MEMORY[0x1E69E9820];
   v53[1] = 3221225472;
   v53[2] = __167__UIAlertControllerVisualStyleAlertTV_animateAlertControllerView_ofAlertController_forPresentation_inContainerView_descendantOfContainerView_duration_completionBlock___block_invoke_3;
   v53[3] = &unk_1E70F3DC8;
-  v39 = v16;
+  v39 = viewCopy;
   v54 = v39;
   v55 = v66;
   v56 = v67;
   v57 = v68;
-  [UIView _animateWithDuration:393216 delay:v34 options:v53 factory:0 animations:v26 * a8 completion:v25 * a8];
+  [UIView _animateWithDuration:393216 delay:v34 options:v53 factory:0 animations:v26 * duration completion:v25 * duration];
   v50[0] = MEMORY[0x1E69E9820];
   v50[1] = 3221225472;
   v50[2] = __167__UIAlertControllerVisualStyleAlertTV_animateAlertControllerView_ofAlertController_forPresentation_inContainerView_descendantOfContainerView_duration_completionBlock___block_invoke_4;
@@ -283,15 +283,15 @@
   v40 = v39;
   v51 = v40;
   v52 = v43;
-  [UIView _animateWithDuration:393216 delay:v33 options:v50 factory:0 animations:v27 * a8 completion:v25 * a8];
+  [UIView _animateWithDuration:393216 delay:v33 options:v50 factory:0 animations:v27 * duration completion:v25 * duration];
   if (v44)
   {
     v48[0] = MEMORY[0x1E69E9820];
     v48[1] = 3221225472;
     v48[2] = __167__UIAlertControllerVisualStyleAlertTV_animateAlertControllerView_ofAlertController_forPresentation_inContainerView_descendantOfContainerView_duration_completionBlock___block_invoke_5;
     v48[3] = &unk_1E70F3590;
-    v49 = v41;
-    [UIView _animateWithDuration:393216 delay:v33 options:v48 factory:0 animations:a8 * 0.357142857 completion:v25 * a8 + 0.119047619];
+    v49 = _preferredActionView;
+    [UIView _animateWithDuration:393216 delay:v33 options:v48 factory:0 animations:duration * 0.357142857 completion:v25 * duration + 0.119047619];
   }
 }
 
@@ -326,19 +326,19 @@ uint64_t __167__UIAlertControllerVisualStyleAlertTV_animateAlertControllerView_o
   return result;
 }
 
-- (id)preferredActionForActions:(id)a3 suggestedPreferredAction:(id)a4
+- (id)preferredActionForActions:(id)actions suggestedPreferredAction:(id)action
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 firstObject];
-  if ([v7 style] == 2 || objc_msgSend(v7, "style") == 1)
+  actionsCopy = actions;
+  actionCopy = action;
+  firstObject = [actionsCopy firstObject];
+  if ([firstObject style] == 2 || objc_msgSend(firstObject, "style") == 1)
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = v5;
+    v8 = actionsCopy;
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
@@ -404,7 +404,7 @@ uint64_t __167__UIAlertControllerVisualStyleAlertTV_animateAlertControllerView_o
 
   else
   {
-    v16 = v7;
+    v16 = firstObject;
   }
 
   v15 = v16;

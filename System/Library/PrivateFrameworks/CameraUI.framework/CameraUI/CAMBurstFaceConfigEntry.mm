@@ -1,14 +1,14 @@
 @interface CAMBurstFaceConfigEntry
-- (CAMBurstFaceConfigEntry)initWithRect:(CGRect)a3 withFaceId:(int)a4;
+- (CAMBurstFaceConfigEntry)initWithRect:(CGRect)rect withFaceId:(int)id;
 - (CGRect)faceRect;
 @end
 
 @implementation CAMBurstFaceConfigEntry
 
-- (CAMBurstFaceConfigEntry)initWithRect:(CGRect)a3 withFaceId:(int)a4
+- (CAMBurstFaceConfigEntry)initWithRect:(CGRect)rect withFaceId:(int)id
 {
-  self->faceRect = a3;
-  self->faceId = a4;
+  self->faceRect = rect;
+  self->faceId = id;
   self->framesSinceLast = 0;
   return self;
 }

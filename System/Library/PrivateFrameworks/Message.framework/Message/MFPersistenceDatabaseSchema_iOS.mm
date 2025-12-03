@@ -1,12 +1,12 @@
 @interface MFPersistenceDatabaseSchema_iOS
-+ (id)_messagesTableSchemaAndForeignKeysToResolve:(uint64_t)a3 associationsToResolve:;
++ (id)_messagesTableSchemaAndForeignKeysToResolve:(uint64_t)resolve associationsToResolve:;
 + (id)accountsTableSchema;
 + (id)additionalSchemaProviders;
 + (id)mailboxesTableSchema;
 + (id)messageDataDeletedTableSchema;
 + (id)messageDataTableSchema;
 + (id)popUIDsTableSchema;
-+ (id)tablesAndForeignKeysToResolve:(id *)a3 associationsToResolve:(id *)a4;
++ (id)tablesAndForeignKeysToResolve:(id *)resolve associationsToResolve:(id *)toResolve;
 @end
 
 @implementation MFPersistenceDatabaseSchema_iOS
@@ -16,21 +16,21 @@
   v6[3] = *MEMORY[0x1E69E9840];
   v6[0] = objc_opt_class();
   v6[1] = objc_opt_class();
-  v6[2] = a1;
+  v6[2] = self;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:3];
   v4 = *MEMORY[0x1E69E9840];
 
   return v3;
 }
 
-+ (id)tablesAndForeignKeysToResolve:(id *)a3 associationsToResolve:(id *)a4
++ (id)tablesAndForeignKeysToResolve:(id *)resolve associationsToResolve:(id *)toResolve
 {
   v34[9] = *MEMORY[0x1E69E9840];
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v32 = 0;
   v33 = 0;
-  v27 = [(MFPersistenceDatabaseSchema_iOS *)a1 _messagesTableSchemaAndForeignKeysToResolve:&v32 associationsToResolve:?];
+  v27 = [(MFPersistenceDatabaseSchema_iOS *)self _messagesTableSchemaAndForeignKeysToResolve:&v32 associationsToResolve:?];
   v9 = v33;
   v10 = v32;
   [v7 addObjectsFromArray:v9];
@@ -49,9 +49,9 @@
 
   [v8 addObjectsFromArray:v24];
   v13 = v7;
-  *a3 = v7;
+  *resolve = v7;
   v14 = v8;
-  *a4 = v8;
+  *toResolve = v8;
   v34[0] = v27;
   v34[1] = v26;
   v34[2] = v12;
@@ -65,7 +65,7 @@
   v34[6] = v18;
   v19 = +[MFPersistenceDatabaseSchema_iOS accountsTableSchema];
   v34[7] = v19;
-  v28.receiver = a1;
+  v28.receiver = self;
   v28.super_class = &OBJC_METACLASS___MFPersistenceDatabaseSchema_iOS;
   v20 = objc_msgSendSuper2(&v28, sel_propertiesTableSchema);
   v34[8] = v20;
@@ -76,11 +76,11 @@
   return v21;
 }
 
-+ (id)_messagesTableSchemaAndForeignKeysToResolve:(uint64_t)a3 associationsToResolve:
++ (id)_messagesTableSchemaAndForeignKeysToResolve:(uint64_t)resolve associationsToResolve:
 {
   v57[4] = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  v5 = [MEMORY[0x1E699B5C0] partialMessagesTableSchemaAndForeignKeysToResolve:a2 associationsToResolve:a3];
+  v5 = [MEMORY[0x1E699B5C0] partialMessagesTableSchemaAndForeignKeysToResolve:a2 associationsToResolve:resolve];
   v6 = [MEMORY[0x1E699B8D0] integerColumnWithName:@"original_mailbox" nullable:1];
   [v5 addColumn:v6];
 
@@ -119,8 +119,8 @@
   [v55 addObject:v18];
 
   v19 = objc_alloc(MEMORY[0x1E699B900]);
-  v20 = [v5 name];
-  v21 = [v19 initWithTableName:v20 indexedColumns:v55];
+  name = [v5 name];
+  v21 = [v19 initWithTableName:name indexedColumns:v55];
   [v5 addIndex:v21];
 
   [v5 addIndexForColumns:&unk_1F2775520];
@@ -154,8 +154,8 @@
   v29 = [v27 initWithExpressions:v28];
 
   v30 = objc_alloc(MEMORY[0x1E699B900]);
-  v31 = [v5 name];
-  v32 = [v30 initWithTableName:v31 columnNames:&unk_1F2775610 where:v29 unique:0];
+  name2 = [v5 name];
+  v32 = [v30 initWithTableName:name2 columnNames:&unk_1F2775610 where:v29 unique:0];
 
   [v5 addIndex:v32];
   v33 = [MEMORY[0x1E699B8C8] column:@"journaled"];
@@ -168,23 +168,23 @@
   v37 = [v35 initWithExpressions:v36];
 
   v38 = objc_alloc(MEMORY[0x1E699B900]);
-  v39 = [v5 name];
-  v40 = [v38 initWithTableName:v39 columnNames:&unk_1F2775628 where:v37 unique:0];
+  name3 = [v5 name];
+  v40 = [v38 initWithTableName:name3 columnNames:&unk_1F2775628 where:v37 unique:0];
 
   [v5 addIndex:v40];
   v41 = objc_alloc(MEMORY[0x1E699B900]);
-  v42 = [v5 name];
-  v43 = [v41 initWithTableName:v42 columnNames:&unk_1F2775640 where:v24 unique:0];
+  name4 = [v5 name];
+  v43 = [v41 initWithTableName:name4 columnNames:&unk_1F2775640 where:v24 unique:0];
 
   [v5 addIndex:v43];
   v44 = objc_alloc(MEMORY[0x1E699B900]);
-  v45 = [v5 name];
-  v46 = [v44 initWithTableName:v45 columnNames:&unk_1F2775658 where:v24 unique:0];
+  name5 = [v5 name];
+  v46 = [v44 initWithTableName:name5 columnNames:&unk_1F2775658 where:v24 unique:0];
 
   [v5 addIndex:v46];
   v47 = objc_alloc(MEMORY[0x1E699B900]);
-  v48 = [v5 name];
-  v49 = [v47 initWithTableName:v48 columnNames:&unk_1F2775670 where:v24 unique:0];
+  name6 = [v5 name];
+  v49 = [v47 initWithTableName:name6 columnNames:&unk_1F2775670 where:v24 unique:0];
 
   [v5 addIndex:v49];
   v50 = *MEMORY[0x1E69E9840];

@@ -1,38 +1,38 @@
 @interface PLImageView
 + (CGSize)badgeOffset;
-+ (id)textBadgeForString:(id)a3 photoSize:(CGSize)a4;
++ (id)textBadgeForString:(id)string photoSize:(CGSize)size;
 + (void)initialize;
 - (CGAffineTransform)_transformForFullSizeImageTiledLayer;
 - (CGRect)_bottomRightAccessoryViewFrame;
 - (CGRect)_leftAccessoryViewFrame;
 - (CGSize)leftAccessoryViewOffset;
 - (CGSize)placeholderSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 allowRounding:(BOOL)a4;
-- (PLImageView)initWithFrame:(CGRect)a3;
-- (void)_setShadowEnabled:(BOOL)a3 force:(BOOL)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits allowRounding:(BOOL)rounding;
+- (PLImageView)initWithFrame:(CGRect)frame;
+- (void)_setShadowEnabled:(BOOL)enabled force:(BOOL)force;
 - (void)_updatePlaceholderAlpha;
 - (void)_updatePlaceholderLayout;
 - (void)_updateShadowPath;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)renderSnapshotInContext:(CGContext *)a3;
-- (void)setAccessoryViewsAlpha:(double)a3;
-- (void)setBorderAndAccessoriesAlpha:(float)a3 forced:(BOOL)a4;
-- (void)setBorderAndAccessoriesVisible:(BOOL)a3;
-- (void)setBottomRightAccessoryView:(id)a3 animated:(BOOL)a4;
-- (void)setDimmed:(BOOL)a3;
-- (void)setDrawsBorder:(BOOL)a3;
-- (void)setEdgeAntialiasingEnabled:(BOOL)a3;
-- (void)setFullSizeImageJPEGData:(id)a3 size:(CGSize)a4 orientation:(int64_t)a5;
-- (void)setImage:(id)a3;
-- (void)setLeftAccessoryView:(id)a3 animated:(BOOL)a4;
-- (void)setLeftAccessoryViewOffset:(CGSize)a3;
-- (void)setPlaceholderScale:(double)a3;
-- (void)setShowsPlaceholder:(BOOL)a3;
-- (void)setTextBadgeString:(id)a3;
-- (void)setTransitionProgress:(double)a3;
-- (void)setVideoView:(id)a3;
+- (void)renderSnapshotInContext:(CGContext *)context;
+- (void)setAccessoryViewsAlpha:(double)alpha;
+- (void)setBorderAndAccessoriesAlpha:(float)alpha forced:(BOOL)forced;
+- (void)setBorderAndAccessoriesVisible:(BOOL)visible;
+- (void)setBottomRightAccessoryView:(id)view animated:(BOOL)animated;
+- (void)setDimmed:(BOOL)dimmed;
+- (void)setDrawsBorder:(BOOL)border;
+- (void)setEdgeAntialiasingEnabled:(BOOL)enabled;
+- (void)setFullSizeImageJPEGData:(id)data size:(CGSize)size orientation:(int64_t)orientation;
+- (void)setImage:(id)image;
+- (void)setLeftAccessoryView:(id)view animated:(BOOL)animated;
+- (void)setLeftAccessoryViewOffset:(CGSize)offset;
+- (void)setPlaceholderScale:(double)scale;
+- (void)setShowsPlaceholder:(BOOL)placeholder;
+- (void)setTextBadgeString:(id)string;
+- (void)setTransitionProgress:(double)progress;
+- (void)setVideoView:(id)view;
 - (void)updateFullSizeImageVisibleArea;
 @end
 
@@ -47,21 +47,21 @@
   return result;
 }
 
-- (void)setVideoView:(id)a3
+- (void)setVideoView:(id)view
 {
   videoView = self->_videoView;
-  if (videoView != a3)
+  if (videoView != view)
   {
     if ([(PLVideoView *)videoView superview]== self)
     {
       [(PLVideoView *)self->_videoView removeFromSuperview];
     }
 
-    v6 = a3;
-    self->_videoView = v6;
-    if (v6)
+    viewCopy = view;
+    self->_videoView = viewCopy;
+    if (viewCopy)
     {
-      [(PLVideoView *)v6 setAlpha:1.0];
+      [(PLVideoView *)viewCopy setAlpha:1.0];
       v7 = self->_videoView;
       if (self->_borderView)
       {
@@ -78,31 +78,31 @@
   }
 }
 
-- (void)setAccessoryViewsAlpha:(double)a3
+- (void)setAccessoryViewsAlpha:(double)alpha
 {
-  if (self->_accessoryViewsAlpha != a3)
+  if (self->_accessoryViewsAlpha != alpha)
   {
-    self->_accessoryViewsAlpha = a3;
-    [(UIView *)self->_leftAccessoryView setAlpha:a3];
+    self->_accessoryViewsAlpha = alpha;
+    [(UIView *)self->_leftAccessoryView setAlpha:alpha];
     bottomRightAccessoryView = self->_bottomRightAccessoryView;
 
-    [(UIView *)bottomRightAccessoryView setAlpha:a3];
+    [(UIView *)bottomRightAccessoryView setAlpha:alpha];
   }
 }
 
-- (void)setBottomRightAccessoryView:(id)a3 animated:(BOOL)a4
+- (void)setBottomRightAccessoryView:(id)view animated:(BOOL)animated
 {
   bottomRightAccessoryView = self->_bottomRightAccessoryView;
-  if (bottomRightAccessoryView != a3)
+  if (bottomRightAccessoryView != view)
   {
-    v5 = a4;
+    animatedCopy = animated;
     v8 = bottomRightAccessoryView;
 
-    v9 = a3;
-    self->_bottomRightAccessoryView = v9;
+    viewCopy = view;
+    self->_bottomRightAccessoryView = viewCopy;
     if (v8)
     {
-      if (v5)
+      if (animatedCopy)
       {
         v12[0] = MEMORY[0x277D85DD0];
         v12[1] = 3221225472;
@@ -129,7 +129,7 @@
       }
     }
 
-    else if (!v9)
+    else if (!viewCopy)
     {
 LABEL_11:
       [(PLImageView *)self setNeedsLayout];
@@ -140,7 +140,7 @@ LABEL_11:
     [(PLImageView *)self _bottomRightAccessoryViewFrame];
     [(UIView *)self->_bottomRightAccessoryView setFrame:?];
     [(UIView *)self->_bottomRightAccessoryView setAlpha:self->_accessoryViewsAlpha];
-    if (v5)
+    if (animatedCopy)
     {
       [(UIView *)self->_bottomRightAccessoryView setAlpha:0.0];
       v10[0] = MEMORY[0x277D85DD0];
@@ -168,33 +168,33 @@ uint64_t __52__PLImageView_setBottomRightAccessoryView_animated___block_invoke_2
   return result;
 }
 
-- (void)setLeftAccessoryViewOffset:(CGSize)a3
+- (void)setLeftAccessoryViewOffset:(CGSize)offset
 {
-  if (a3.width != self->_leftAccessoryViewOffset.width || a3.height != self->_leftAccessoryViewOffset.height)
+  if (offset.width != self->_leftAccessoryViewOffset.width || offset.height != self->_leftAccessoryViewOffset.height)
   {
-    self->_leftAccessoryViewOffset = a3;
+    self->_leftAccessoryViewOffset = offset;
     [(PLImageView *)self setNeedsLayout];
   }
 }
 
-- (void)setLeftAccessoryView:(id)a3 animated:(BOOL)a4
+- (void)setLeftAccessoryView:(id)view animated:(BOOL)animated
 {
   leftAccessoryView = self->_leftAccessoryView;
-  if (leftAccessoryView != a3)
+  if (leftAccessoryView != view)
   {
-    v5 = a4;
+    animatedCopy = animated;
     v8 = leftAccessoryView;
 
-    v9 = a3;
-    self->_leftAccessoryView = v9;
-    if (v9)
+    viewCopy = view;
+    self->_leftAccessoryView = viewCopy;
+    if (viewCopy)
     {
-      [(UIView *)self->_borderView addSubview:v9];
+      [(UIView *)self->_borderView addSubview:viewCopy];
       [(CALayer *)[(UIView *)self->_borderView layer] setAllowsGroupOpacity:1];
       [(PLImageView *)self _leftAccessoryViewFrame];
       [(UIView *)self->_leftAccessoryView setFrame:?];
       [(UIView *)self->_leftAccessoryView setAlpha:self->_accessoryViewsAlpha];
-      if (v5)
+      if (animatedCopy)
       {
         [(UIView *)self->_leftAccessoryView setAlpha:0.0];
         [(UIView *)self->_leftAccessoryView bounds];
@@ -221,7 +221,7 @@ uint64_t __52__PLImageView_setBottomRightAccessoryView_animated___block_invoke_2
 
     else
     {
-      if (v5)
+      if (animatedCopy)
       {
         v13[0] = MEMORY[0x277D85DD0];
         v13[1] = 3221225472;
@@ -273,7 +273,7 @@ uint64_t __45__PLImageView_setLeftAccessoryView_animated___block_invoke_3(uint64
   return result;
 }
 
-- (void)setTextBadgeString:(id)a3
+- (void)setTextBadgeString:(id)string
 {
   textBadge = self->_textBadge;
   if (textBadge)
@@ -283,11 +283,11 @@ uint64_t __45__PLImageView_setLeftAccessoryView_animated___block_invoke_3(uint64
     self->_textBadge = 0;
   }
 
-  if (a3)
+  if (string)
   {
     v6 = objc_opt_class();
     [(PLImageView *)self bounds];
-    v9 = [v6 textBadgeForString:a3 photoSize:{v7, v8}];
+    v9 = [v6 textBadgeForString:string photoSize:{v7, v8}];
     self->_textBadge = v9;
     v10 = v9;
     v11 = self->_textBadge;
@@ -338,23 +338,23 @@ uint64_t __45__PLImageView_setLeftAccessoryView_animated___block_invoke_3(uint64
   return result;
 }
 
-- (void)setPlaceholderScale:(double)a3
+- (void)setPlaceholderScale:(double)scale
 {
-  if (self->_placeholderScale != a3)
+  if (self->_placeholderScale != scale)
   {
-    self->_placeholderScale = a3;
+    self->_placeholderScale = scale;
     [(PLImageView *)self _updatePlaceholderLayout];
   }
 }
 
-- (void)setShowsPlaceholder:(BOOL)a3
+- (void)setShowsPlaceholder:(BOOL)placeholder
 {
-  v4 = self->_showsPlaceholder != a3 || !a3;
+  v4 = self->_showsPlaceholder != placeholder || !placeholder;
   if (v4 || !self->_placeholderView)
   {
-    self->_showsPlaceholder = a3;
+    self->_showsPlaceholder = placeholder;
     placeholderView = self->_placeholderView;
-    if (a3)
+    if (placeholder)
     {
 
       v6 = [PLPhotoTilePlaceholderView alloc];
@@ -387,14 +387,14 @@ uint64_t __45__PLImageView_setLeftAccessoryView_animated___block_invoke_3(uint64
   }
 }
 
-- (void)setEdgeAntialiasingEnabled:(BOOL)a3
+- (void)setEdgeAntialiasingEnabled:(BOOL)enabled
 {
-  if (self->_edgeAntialiasingEnabled != a3)
+  if (self->_edgeAntialiasingEnabled != enabled)
   {
     v10 = v4;
     v11 = v3;
-    self->_edgeAntialiasingEnabled = a3;
-    if (a3)
+    self->_edgeAntialiasingEnabled = enabled;
+    if (enabled)
     {
       v8 = 15;
     }
@@ -405,31 +405,31 @@ uint64_t __45__PLImageView_setLeftAccessoryView_animated___block_invoke_3(uint64
     }
 
     [-[PLImageView layer](self layer];
-    v9 = [(UIView *)self->_borderView layer];
+    layer = [(UIView *)self->_borderView layer];
 
-    [(CALayer *)v9 setEdgeAntialiasingMask:v8];
+    [(CALayer *)layer setEdgeAntialiasingMask:v8];
   }
 }
 
-- (void)setDimmed:(BOOL)a3
+- (void)setDimmed:(BOOL)dimmed
 {
-  v3 = a3;
-  v4 = [(PLImageView *)self layer];
+  dimmedCopy = dimmed;
+  layer = [(PLImageView *)self layer];
   LODWORD(v5) = 1.0;
-  if (v3)
+  if (dimmedCopy)
   {
     *&v5 = 0.5;
   }
 
-  [v4 setOpacity:v5];
+  [layer setOpacity:v5];
 }
 
-- (void)setDrawsBorder:(BOOL)a3
+- (void)setDrawsBorder:(BOOL)border
 {
   v3 = *(self + 584);
-  if (((((v3 & 8) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 8) == 0) ^ border) & 1) == 0)
   {
-    if (a3)
+    if (border)
     {
       v5 = 8;
     }
@@ -440,8 +440,8 @@ uint64_t __45__PLImageView_setLeftAccessoryView_animated___block_invoke_3(uint64
     }
 
     *(self + 584) = v3 & 0xF7 | v5;
-    v6 = [(UIView *)self->_borderView layer];
-    v7 = v6;
+    layer = [(UIView *)self->_borderView layer];
+    v7 = layer;
     if ((*(self + 584) & 8) != 0)
     {
       pl_dispatch_once();
@@ -455,35 +455,35 @@ uint64_t __45__PLImageView_setLeftAccessoryView_animated___block_invoke_3(uint64
     else
     {
 
-      [(CALayer *)v6 setContents:0];
+      [(CALayer *)layer setContents:0];
     }
   }
 }
 
-- (void)setBorderAndAccessoriesAlpha:(float)a3 forced:(BOOL)a4
+- (void)setBorderAndAccessoriesAlpha:(float)alpha forced:(BOOL)forced
 {
-  v4 = a4;
+  forcedCopy = forced;
   if ((*(self + 584) & 4) == 0)
   {
     [(PLImageView *)self setBorderAndAccessoriesVisible:1];
   }
 
   Current = CFAbsoluteTimeGetCurrent();
-  if (a3 == 1.0 || a3 == 0.0 || v4 || ([(UIView *)self->_borderView alpha], *&v8 = v8, vabds_f32(*&v8, a3) >= 0.035) || Current - self->_lastBorderAlphaTime >= 0.0333333333)
+  if (alpha == 1.0 || alpha == 0.0 || forcedCopy || ([(UIView *)self->_borderView alpha], *&v8 = v8, vabds_f32(*&v8, alpha) >= 0.035) || Current - self->_lastBorderAlphaTime >= 0.0333333333)
   {
     self->_lastBorderAlphaTime = Current;
-    [(UIView *)self->_borderView setAlpha:a3];
+    [(UIView *)self->_borderView setAlpha:alpha];
 
     [(PLImageView *)self _updatePlaceholderAlpha];
   }
 }
 
-- (void)setBorderAndAccessoriesVisible:(BOOL)a3
+- (void)setBorderAndAccessoriesVisible:(BOOL)visible
 {
   v3 = *(self + 584);
-  if (((((v3 & 4) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 4) == 0) ^ visible) & 1) == 0)
   {
-    if (a3)
+    if (visible)
     {
       v4 = 4;
     }
@@ -494,20 +494,20 @@ uint64_t __45__PLImageView_setLeftAccessoryView_animated___block_invoke_3(uint64
     }
 
     *(self + 584) = v3 & 0xFB | v4;
-    [(UIView *)self->_borderView setHidden:!a3];
+    [(UIView *)self->_borderView setHidden:!visible];
   }
 }
 
-- (void)_setShadowEnabled:(BOOL)a3 force:(BOOL)a4
+- (void)_setShadowEnabled:(BOOL)enabled force:(BOOL)force
 {
-  v4 = a3;
-  if ((*(self + 584) & 1) != a3 || a4)
+  enabledCopy = enabled;
+  if ((*(self + 584) & 1) != enabled || force)
   {
-    v7 = [(PLImageView *)self layer];
-    v8 = v7;
-    if (v4 && self->_transitionProgress < 1.0)
+    layer = [(PLImageView *)self layer];
+    v8 = layer;
+    if (enabledCopy && self->_transitionProgress < 1.0)
     {
-      [v7 setShadowColor:{objc_msgSend(__shadowColor, "CGColor")}];
+      [layer setShadowColor:{objc_msgSend(__shadowColor, "CGColor")}];
       LODWORD(v9) = 1060320051;
       [v8 setShadowOpacity:v9];
       PLPhysicalScreenScale();
@@ -524,24 +524,24 @@ uint64_t __45__PLImageView_setLeftAccessoryView_animated___block_invoke_3(uint64
 
     else
     {
-      [v7 setShadowColor:0];
+      [layer setShadowColor:0];
       [v8 setShadowOpacity:0.0];
     }
   }
 
-  *(self + 584) = *(self + 584) & 0xFE | v4;
+  *(self + 584) = *(self + 584) & 0xFE | enabledCopy;
 }
 
-- (void)setTransitionProgress:(double)a3
+- (void)setTransitionProgress:(double)progress
 {
   transitionProgress = self->_transitionProgress;
-  v6 = a3 < 1.0;
+  v6 = progress < 1.0;
   if (transitionProgress < 1.0)
   {
     v6 = 0;
   }
 
-  v8 = a3 >= 1.0 && transitionProgress < 1.0 || v6;
+  v8 = progress >= 1.0 && transitionProgress < 1.0 || v6;
   if (transitionProgress >= 1.0)
   {
     if (*(self + 584))
@@ -568,7 +568,7 @@ uint64_t __45__PLImageView_setLeftAccessoryView_animated___block_invoke_3(uint64
     *(self + 584) &= ~2u;
     if (*(self + 584))
     {
-      v10 = [(PLImageView *)self layer];
+      layer = [(PLImageView *)self layer];
       Current = CFAbsoluteTimeGetCurrent();
       if (self->_transitionProgress * -3.0 + 1.0 >= 0.0)
       {
@@ -580,26 +580,26 @@ uint64_t __45__PLImageView_setLeftAccessoryView_animated___block_invoke_3(uint64
         v12 = 0.0;
       }
 
-      [v10 shadowOpacity];
+      [layer shadowOpacity];
       v14 = v13 - v12;
       v15 = fabsf(v14);
       if (v15 > 0.035 || (v15 = Current - self->_lastShadowAlphaTime, v15 > 0.0333333333))
       {
         self->_lastShadowAlphaTime = Current;
         *&v15 = v12;
-        [v10 setShadowOpacity:v15];
+        [layer setShadowOpacity:v15];
       }
     }
   }
 
-  self->_transitionProgress = a3;
+  self->_transitionProgress = progress;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v4.receiver = self;
   v4.super_class = PLImageView;
-  [(PLImageView *)&v4 setImage:a3];
+  [(PLImageView *)&v4 setImage:image];
   if (*(self + 584))
   {
     [(PLImageView *)self _updateShadowPath];
@@ -669,7 +669,7 @@ uint64_t __45__PLImageView_setLeftAccessoryView_animated___block_invoke_3(uint64
 
 - (void)updateFullSizeImageVisibleArea
 {
-  v3 = self;
+  selfCopy = self;
   while (1)
   {
     objc_opt_class();
@@ -678,19 +678,19 @@ uint64_t __45__PLImageView_setLeftAccessoryView_animated___block_invoke_3(uint64
       break;
     }
 
-    v3 = [(PLImageView *)v3 superview];
-    if (!v3)
+    selfCopy = [(PLImageView *)selfCopy superview];
+    if (!selfCopy)
     {
       return;
     }
   }
 
-  [(PLImageView *)v3 bounds];
+  [(PLImageView *)selfCopy bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [(PLTiledLayer *)self->_fullSizeImageTiledLayer convertRect:[(PLImageView *)v3 layer] fromLayer:v4, v6, v8, v10];
+  [(PLTiledLayer *)self->_fullSizeImageTiledLayer convertRect:[(PLImageView *)selfCopy layer] fromLayer:v4, v6, v8, v10];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -711,27 +711,27 @@ uint64_t __45__PLImageView_setLeftAccessoryView_animated___block_invoke_3(uint64
   [(PLTiledLayer *)fullSizeImageTiledLayer setVisibleRectangle:v13 zoomScale:v15, v17, v19, v21 * v22];
 }
 
-- (void)setFullSizeImageJPEGData:(id)a3 size:(CGSize)a4 orientation:(int64_t)a5
+- (void)setFullSizeImageJPEGData:(id)data size:(CGSize)size orientation:(int64_t)orientation
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   PLPhysicalScreenScale();
   v11 = v10;
-  v12 = [(PLImageView *)self window];
-  if (!v12)
+  window = [(PLImageView *)self window];
+  if (!window)
   {
-    v12 = [objc_msgSend(MEMORY[0x277D75128] "sharedApplication")];
+    window = [objc_msgSend(MEMORY[0x277D75128] "sharedApplication")];
   }
 
-  [objc_msgSend(v12 "screen")];
+  [objc_msgSend(window "screen")];
   v14 = v11 * v13;
   v16 = v11 * v15;
   [(PLTiledLayer *)self->_fullSizeImageTiledLayer removeFromSuperlayer];
 
-  v17 = [[PLTiledLayer alloc] initWithJPEGData:a3 placeholderImage:0 screenSize:v14, v16];
+  v17 = [[PLTiledLayer alloc] initWithJPEGData:data placeholderImage:0 screenSize:v14, v16];
   self->_fullSizeImageTiledLayer = v17;
   [(PLTiledLayer *)v17 setFrame:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), width, height];
-  self->_fullSizeImageOrientation = a5;
+  self->_fullSizeImageOrientation = orientation;
   [-[PLImageView layer](self "layer")];
 
   [(PLImageView *)self setNeedsLayout];
@@ -739,11 +739,11 @@ uint64_t __45__PLImageView_setLeftAccessoryView_animated___block_invoke_3(uint64
 
 - (void)_updateShadowPath
 {
-  v3 = [(PLImageView *)self layer];
+  layer = [(PLImageView *)self layer];
   if (*(self + 584))
   {
-    v4 = v3;
-    [v3 bounds];
+    v4 = layer;
+    [layer bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -888,7 +888,7 @@ uint64_t __45__PLImageView_setLeftAccessoryView_animated___block_invoke_3(uint64
   }
 }
 
-- (void)renderSnapshotInContext:(CGContext *)a3
+- (void)renderSnapshotInContext:(CGContext *)context
 {
   edgeAntialiasingEnabled = self->_edgeAntialiasingEnabled;
   if (!edgeAntialiasingEnabled)
@@ -896,10 +896,10 @@ uint64_t __45__PLImageView_setLeftAccessoryView_animated___block_invoke_3(uint64
     [(PLImageView *)self setEdgeAntialiasingEnabled:1];
   }
 
-  v6 = [(PLImageView *)self layer];
+  layer = [(PLImageView *)self layer];
   if (*(self + 584))
   {
-    CGContextGetCTM(&t1, a3);
+    CGContextGetCTM(&t1, context);
     CGContextGetBaseCTM();
     CGAffineTransformInvert(&v13, &v15);
     CGAffineTransformConcat(&v15, &t1, &v13);
@@ -908,32 +908,32 @@ uint64_t __45__PLImageView_setLeftAccessoryView_animated___block_invoke_3(uint64
     c = v15.c;
     d = v15.d;
     PLPhysicalScreenScale();
-    [v6 setShadowRadius:sqrt((d * 0.0 + b * (v11 * 4.0)) * (d * 0.0 + b * (v11 * 4.0)) + (c * 0.0 + a * (v11 * 4.0)) * (c * 0.0 + a * (v11 * 4.0)))];
+    [layer setShadowRadius:sqrt((d * 0.0 + b * (v11 * 4.0)) * (d * 0.0 + b * (v11 * 4.0)) + (c * 0.0 + a * (v11 * 4.0)) * (c * 0.0 + a * (v11 * 4.0)))];
   }
 
-  [v6 renderInContext:a3];
+  [layer renderInContext:context];
   if (*(self + 584))
   {
     PLPhysicalScreenScale();
-    [v6 setShadowRadius:v12 * 4.0];
+    [layer setShadowRadius:v12 * 4.0];
   }
 
   [(PLImageView *)self setEdgeAntialiasingEnabled:edgeAntialiasingEnabled];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PLImageView *)self sizeThatFits:1 allowRounding:a3.width, a3.height];
+  [(PLImageView *)self sizeThatFits:1 allowRounding:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 allowRounding:(BOOL)a4
+- (CGSize)sizeThatFits:(CGSize)fits allowRounding:(BOOL)rounding
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  roundingCopy = rounding;
+  height = fits.height;
+  width = fits.width;
   [-[PLImageView image](self "image")];
   v9 = v8 == *(MEMORY[0x277CBF3A8] + 8) && v7 == *MEMORY[0x277CBF3A8];
   v10 = v7 / v8;
@@ -945,7 +945,7 @@ uint64_t __45__PLImageView_setLeftAccessoryView_animated___block_invoke_3(uint64
   if (v10 > 1.0)
   {
     height = width / v10;
-    if (!v4)
+    if (!roundingCopy)
     {
       goto LABEL_11;
     }
@@ -954,7 +954,7 @@ uint64_t __45__PLImageView_setLeftAccessoryView_animated___block_invoke_3(uint64
   }
 
   width = height * v10;
-  if (v4)
+  if (roundingCopy)
   {
 LABEL_10:
     PLPhysicalScreenScale();
@@ -981,11 +981,11 @@ LABEL_11:
   [(PLImageView *)&v3 dealloc];
 }
 
-- (PLImageView)initWithFrame:(CGRect)a3
+- (PLImageView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = PLImageView;
-  v3 = [(PLImageView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PLImageView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -997,10 +997,10 @@ LABEL_11:
       v5 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v10.origin.x, v10.origin.y, v10.size.width, v10.size.height}];
       v4->_borderView = v5;
       [(UIView *)v5 setAutoresizingMask:18];
-      v6 = [(UIView *)v4->_borderView layer];
+      layer = [(UIView *)v4->_borderView layer];
       [(PLImageView *)v4 setDrawsBorder:1];
-      [(CALayer *)v6 setEdgeAntialiasingMask:0];
-      [(CALayer *)v6 setAllowsEdgeAntialiasing:1];
+      [(CALayer *)layer setEdgeAntialiasingMask:0];
+      [(CALayer *)layer setAllowsEdgeAntialiasing:1];
       [(PLImageView *)v4 addSubview:v4->_borderView];
       [(UIView *)v4->_borderView setHidden:1];
     }
@@ -1016,16 +1016,16 @@ LABEL_11:
   return v4;
 }
 
-+ (id)textBadgeForString:(id)a3 photoSize:(CGSize)a4
++ (id)textBadgeForString:(id)string photoSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   if (!__textBadgeTextColor)
   {
     __textBadgeTextColor = [objc_alloc(MEMORY[0x277D75348]) initWithWhite:1.0 alpha:1.0];
     __textBadgeShadowColor = [objc_alloc(MEMORY[0x277D75348]) initWithWhite:0.25 alpha:1.0];
     __textBadgeBackgroundColor = [objc_alloc(MEMORY[0x277D75348]) initWithWhite:0.1 alpha:0.5];
-    if (a3)
+    if (string)
     {
       goto LABEL_3;
     }
@@ -1035,7 +1035,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!a3)
+  if (!string)
   {
     goto LABEL_7;
   }
@@ -1053,7 +1053,7 @@ LABEL_3:
   [v7 setMinimumScaleFactor:0.7];
   [objc_msgSend(v7 "layer")];
   [v7 setAutoresizingMask:13];
-  [v7 setText:a3];
+  [v7 setText:string];
   [v7 sizeToFit];
   [v7 frame];
   v9 = v8;
@@ -1087,7 +1087,7 @@ LABEL_8:
 {
   if (MGGetBoolAnswer())
   {
-    if (objc_opt_class() == a1)
+    if (objc_opt_class() == self)
     {
       __shadowColor = [MEMORY[0x277D75348] blackColor];
     }

@@ -1,22 +1,22 @@
 @interface CSUCaptionRuntimeExcludeGenderTrigger
-- (CSUCaptionRuntimeExcludeGenderTrigger)initWithDictionary:(id)a3;
+- (CSUCaptionRuntimeExcludeGenderTrigger)initWithDictionary:(id)dictionary;
 @end
 
 @implementation CSUCaptionRuntimeExcludeGenderTrigger
 
-- (CSUCaptionRuntimeExcludeGenderTrigger)initWithDictionary:(id)a3
+- (CSUCaptionRuntimeExcludeGenderTrigger)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = CSUCaptionRuntimeExcludeGenderTrigger;
   v8 = [(CSUCaptionRuntimeExcludeGenderTrigger *)&v16 init];
   if (v8)
   {
-    v9 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"triggerTokens", v6, v7);
+    v9 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v5, @"triggerTokens", v6, v7);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = objc_msgSend_objectForKeyedSubscript_(v4, v10, @"triggerTokens", v11, v12);
+      v13 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v10, @"triggerTokens", v11, v12);
     }
 
     else

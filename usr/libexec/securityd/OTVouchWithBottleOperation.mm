@@ -1,76 +1,76 @@
 @interface OTVouchWithBottleOperation
-- (OTVouchWithBottleOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5 bottleID:(id)a6 entropy:(id)a7 bottleSalt:(id)a8 saveVoucher:(BOOL)a9;
+- (OTVouchWithBottleOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState bottleID:(id)d entropy:(id)entropy bottleSalt:(id)salt saveVoucher:(BOOL)voucher;
 - (void)groupStart;
-- (void)proceedWithFilteredTLKShares:(id)a3 vouchWithBottleEvent:(id)a4;
-- (void)proceedWithPeerID:(id)a3 refetchWasNeeded:(BOOL)a4 vouchWithBottleEvent:(id)a5;
+- (void)proceedWithFilteredTLKShares:(id)shares vouchWithBottleEvent:(id)event;
+- (void)proceedWithPeerID:(id)d refetchWasNeeded:(BOOL)needed vouchWithBottleEvent:(id)event;
 @end
 
 @implementation OTVouchWithBottleOperation
 
-- (void)proceedWithFilteredTLKShares:(id)a3 vouchWithBottleEvent:(id)a4
+- (void)proceedWithFilteredTLKShares:(id)shares vouchWithBottleEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  sharesCopy = shares;
+  eventCopy = event;
   objc_initWeak(location, self);
-  v8 = [(OTVouchWithBottleOperation *)self deps];
-  v24 = [v8 cuttlefishXPCWrapper];
-  v9 = [(OTVouchWithBottleOperation *)self deps];
-  v23 = [v9 activeAccount];
-  v22 = [(OTVouchWithBottleOperation *)self bottleID];
-  v21 = [(OTVouchWithBottleOperation *)self entropy];
-  v20 = [(OTVouchWithBottleOperation *)self bottleSalt];
-  v10 = [(OTVouchWithBottleOperation *)self deps];
-  v27 = [v10 activeAccount];
-  v19 = [v27 altDSID];
-  v26 = [(OTVouchWithBottleOperation *)self deps];
-  v11 = [v26 flowID];
-  v25 = [(OTVouchWithBottleOperation *)self deps];
-  v12 = [v25 deviceSessionID];
-  v13 = [(OTVouchWithBottleOperation *)self deps];
-  v14 = [v13 permittedToSendMetrics];
-  v18 = v8;
+  deps = [(OTVouchWithBottleOperation *)self deps];
+  cuttlefishXPCWrapper = [deps cuttlefishXPCWrapper];
+  deps2 = [(OTVouchWithBottleOperation *)self deps];
+  activeAccount = [deps2 activeAccount];
+  bottleID = [(OTVouchWithBottleOperation *)self bottleID];
+  entropy = [(OTVouchWithBottleOperation *)self entropy];
+  bottleSalt = [(OTVouchWithBottleOperation *)self bottleSalt];
+  deps3 = [(OTVouchWithBottleOperation *)self deps];
+  activeAccount2 = [deps3 activeAccount];
+  altDSID = [activeAccount2 altDSID];
+  deps4 = [(OTVouchWithBottleOperation *)self deps];
+  flowID = [deps4 flowID];
+  deps5 = [(OTVouchWithBottleOperation *)self deps];
+  deviceSessionID = [deps5 deviceSessionID];
+  deps6 = [(OTVouchWithBottleOperation *)self deps];
+  permittedToSendMetrics = [deps6 permittedToSendMetrics];
+  v18 = deps;
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_1000E07CC;
   v28[3] = &unk_100336C28;
   objc_copyWeak(&v31, location);
-  v17 = v7;
+  v17 = eventCopy;
   v29 = v17;
-  v15 = v6;
+  v15 = sharesCopy;
   v30 = v15;
-  LOBYTE(v16) = v14;
-  [v24 vouchWithBottleWithSpecificUser:v23 bottleID:v22 entropy:v21 bottleSalt:v20 tlkShares:v15 altDSID:v19 flowID:v11 deviceSessionID:v12 canSendMetrics:v16 reply:v28];
+  LOBYTE(v16) = permittedToSendMetrics;
+  [cuttlefishXPCWrapper vouchWithBottleWithSpecificUser:activeAccount bottleID:bottleID entropy:entropy bottleSalt:bottleSalt tlkShares:v15 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID canSendMetrics:v16 reply:v28];
 
   objc_destroyWeak(&v31);
   objc_destroyWeak(location);
 }
 
-- (void)proceedWithPeerID:(id)a3 refetchWasNeeded:(BOOL)a4 vouchWithBottleEvent:(id)a5
+- (void)proceedWithPeerID:(id)d refetchWasNeeded:(BOOL)needed vouchWithBottleEvent:(id)event
 {
-  v21 = a3;
-  v20 = a5;
+  dCopy = d;
+  eventCopy = event;
   objc_initWeak(&location, self);
-  v7 = [(OTVouchWithBottleOperation *)self deps];
-  v8 = [v7 cuttlefishXPCWrapper];
-  v9 = [(OTVouchWithBottleOperation *)self deps];
-  v19 = [v9 activeAccount];
-  v10 = [(OTVouchWithBottleOperation *)self deps];
-  v22 = [v10 activeAccount];
-  v18 = [v22 altDSID];
-  v11 = [(OTVouchWithBottleOperation *)self deps];
-  v17 = [v11 flowID];
-  v12 = [(OTVouchWithBottleOperation *)self deps];
-  v13 = [v12 deviceSessionID];
-  v14 = [(OTVouchWithBottleOperation *)self deps];
-  v15 = [v14 permittedToSendMetrics];
+  deps = [(OTVouchWithBottleOperation *)self deps];
+  cuttlefishXPCWrapper = [deps cuttlefishXPCWrapper];
+  deps2 = [(OTVouchWithBottleOperation *)self deps];
+  activeAccount = [deps2 activeAccount];
+  deps3 = [(OTVouchWithBottleOperation *)self deps];
+  activeAccount2 = [deps3 activeAccount];
+  altDSID = [activeAccount2 altDSID];
+  deps4 = [(OTVouchWithBottleOperation *)self deps];
+  flowID = [deps4 flowID];
+  deps5 = [(OTVouchWithBottleOperation *)self deps];
+  deviceSessionID = [deps5 deviceSessionID];
+  deps6 = [(OTVouchWithBottleOperation *)self deps];
+  permittedToSendMetrics = [deps6 permittedToSendMetrics];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_1000E0F14;
   v23[3] = &unk_100336C00;
   objc_copyWeak(&v25, &location);
-  v16 = v20;
+  v16 = eventCopy;
   v24 = v16;
-  [v8 fetchRecoverableTLKSharesWithSpecificUser:v19 peerID:v21 altDSID:v18 flowID:v17 deviceSessionID:v13 canSendMetrics:v15 reply:v23];
+  [cuttlefishXPCWrapper fetchRecoverableTLKSharesWithSpecificUser:activeAccount peerID:dCopy altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID canSendMetrics:permittedToSendMetrics reply:v23];
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(&location);
@@ -81,78 +81,78 @@
   v3 = sub_100006274("octagon");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(OTVouchWithBottleOperation *)self bottleID];
+    bottleID = [(OTVouchWithBottleOperation *)self bottleID];
     *buf = 138412290;
-    v47 = v4;
+    v47 = bottleID;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "creating voucher using a bottle with escrow record id: %@", buf, 0xCu);
   }
 
   v5 = [AAFAnalyticsEventSecurity alloc];
-  v6 = [(OTVouchWithBottleOperation *)self deps];
-  v7 = [v6 activeAccount];
-  v8 = [v7 altDSID];
-  v9 = [(OTVouchWithBottleOperation *)self deps];
-  v10 = [v9 flowID];
-  v11 = [(OTVouchWithBottleOperation *)self deps];
-  v12 = [v11 deviceSessionID];
-  v13 = [(OTVouchWithBottleOperation *)self deps];
-  LOBYTE(v37) = [v13 permittedToSendMetrics];
-  v42 = [v5 initWithKeychainCircleMetrics:0 altDSID:v8 flowID:v10 deviceSessionID:v12 eventName:kSecurityRTCEventNameVouchWithBottle testsAreEnabled:0 canSendMetrics:v37 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
+  deps = [(OTVouchWithBottleOperation *)self deps];
+  activeAccount = [deps activeAccount];
+  altDSID = [activeAccount altDSID];
+  deps2 = [(OTVouchWithBottleOperation *)self deps];
+  flowID = [deps2 flowID];
+  deps3 = [(OTVouchWithBottleOperation *)self deps];
+  deviceSessionID = [deps3 deviceSessionID];
+  deps4 = [(OTVouchWithBottleOperation *)self deps];
+  LOBYTE(v37) = [deps4 permittedToSendMetrics];
+  v42 = [v5 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:kSecurityRTCEventNameVouchWithBottle testsAreEnabled:0 canSendMetrics:v37 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
 
   v14 = objc_alloc_init(NSOperation);
   [(OTVouchWithBottleOperation *)self setFinishedOp:v14];
 
-  v15 = [(OTVouchWithBottleOperation *)self finishedOp];
-  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:v15];
+  finishedOp = [(OTVouchWithBottleOperation *)self finishedOp];
+  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:finishedOp];
 
-  v16 = [(OTVouchWithBottleOperation *)self bottleSalt];
-  LOBYTE(v15) = v16 == 0;
+  bottleSalt = [(OTVouchWithBottleOperation *)self bottleSalt];
+  LOBYTE(finishedOp) = bottleSalt == 0;
 
-  if ((v15 & 1) == 0)
+  if ((finishedOp & 1) == 0)
   {
-    v17 = sub_100006274("octagon");
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    altDSID2 = sub_100006274("octagon");
+    if (os_log_type_enabled(altDSID2, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(OTVouchWithBottleOperation *)self bottleSalt];
+      bottleSalt2 = [(OTVouchWithBottleOperation *)self bottleSalt];
       *buf = 138412290;
-      v47 = v18;
-      _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "using passed in altdsid, altdsid is: %@", buf, 0xCu);
+      v47 = bottleSalt2;
+      _os_log_impl(&_mh_execute_header, altDSID2, OS_LOG_TYPE_DEFAULT, "using passed in altdsid, altdsid is: %@", buf, 0xCu);
     }
 
     goto LABEL_8;
   }
 
-  v19 = [(OTVouchWithBottleOperation *)self deps];
-  v20 = [v19 activeAccount];
-  v17 = [v20 altDSID];
+  deps5 = [(OTVouchWithBottleOperation *)self deps];
+  activeAccount2 = [deps5 activeAccount];
+  altDSID2 = [activeAccount2 altDSID];
 
-  if (v17)
+  if (altDSID2)
   {
-    [(OTVouchWithBottleOperation *)self setBottleSalt:v17];
+    [(OTVouchWithBottleOperation *)self setBottleSalt:altDSID2];
 LABEL_8:
 
     objc_initWeak(buf, self);
-    v21 = [(OTVouchWithBottleOperation *)self deps];
-    v40 = [v21 cuttlefishXPCWrapper];
-    v41 = [(OTVouchWithBottleOperation *)self deps];
-    v39 = [v41 activeAccount];
-    v38 = [(OTVouchWithBottleOperation *)self bottleID];
-    v22 = [(OTVouchWithBottleOperation *)self deps];
-    v23 = [v22 activeAccount];
-    v24 = [v23 altDSID];
-    v25 = [(OTVouchWithBottleOperation *)self deps];
-    v26 = [v25 flowID];
-    v27 = [(OTVouchWithBottleOperation *)self deps];
-    v28 = [v27 deviceSessionID];
-    v29 = [(OTVouchWithBottleOperation *)self deps];
-    v30 = [v29 permittedToSendMetrics];
+    deps6 = [(OTVouchWithBottleOperation *)self deps];
+    cuttlefishXPCWrapper = [deps6 cuttlefishXPCWrapper];
+    deps7 = [(OTVouchWithBottleOperation *)self deps];
+    activeAccount3 = [deps7 activeAccount];
+    bottleID2 = [(OTVouchWithBottleOperation *)self bottleID];
+    deps8 = [(OTVouchWithBottleOperation *)self deps];
+    activeAccount4 = [deps8 activeAccount];
+    altDSID3 = [activeAccount4 altDSID];
+    deps9 = [(OTVouchWithBottleOperation *)self deps];
+    flowID2 = [deps9 flowID];
+    deps10 = [(OTVouchWithBottleOperation *)self deps];
+    deviceSessionID2 = [deps10 deviceSessionID];
+    deps11 = [(OTVouchWithBottleOperation *)self deps];
+    permittedToSendMetrics = [deps11 permittedToSendMetrics];
     v43[0] = _NSConcreteStackBlock;
     v43[1] = 3221225472;
     v43[2] = sub_1000E1770;
     v43[3] = &unk_100336BD8;
     objc_copyWeak(&v45, buf);
     v44 = v42;
-    [v40 preflightVouchWithBottleWithSpecificUser:v39 bottleID:v38 altDSID:v24 flowID:v26 deviceSessionID:v28 canSendMetrics:v30 reply:v43];
+    [cuttlefishXPCWrapper preflightVouchWithBottleWithSpecificUser:activeAccount3 bottleID:bottleID2 altDSID:altDSID3 flowID:flowID2 deviceSessionID:deviceSessionID2 canSendMetrics:permittedToSendMetrics reply:v43];
 
     objc_destroyWeak(&v45);
     objc_destroyWeak(buf);
@@ -162,46 +162,46 @@ LABEL_8:
   v31 = sub_100006274("authkit");
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
-    v32 = [(OTVouchWithBottleOperation *)self deps];
-    v33 = [v32 activeAccount];
+    deps12 = [(OTVouchWithBottleOperation *)self deps];
+    activeAccount5 = [deps12 activeAccount];
     *buf = 138412290;
-    v47 = v33;
+    v47 = activeAccount5;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "No configured altDSID: %@", buf, 0xCu);
   }
 
   v34 = [NSError errorWithDomain:@"com.apple.security.octagon" code:59 description:@"No altDSID configured"];
   [(CKKSResultOperation *)self setError:v34];
 
-  v35 = [(OTVouchWithBottleOperation *)self finishedOp];
-  [(CKKSGroupOperation *)self runBeforeGroupFinished:v35];
+  finishedOp2 = [(OTVouchWithBottleOperation *)self finishedOp];
+  [(CKKSGroupOperation *)self runBeforeGroupFinished:finishedOp2];
 
-  v36 = [(CKKSResultOperation *)self error];
-  [v42 sendMetricWithResult:0 error:v36];
+  error = [(CKKSResultOperation *)self error];
+  [v42 sendMetricWithResult:0 error:error];
 
 LABEL_9:
 }
 
-- (OTVouchWithBottleOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5 bottleID:(id)a6 entropy:(id)a7 bottleSalt:(id)a8 saveVoucher:(BOOL)a9
+- (OTVouchWithBottleOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState bottleID:(id)d entropy:(id)entropy bottleSalt:(id)salt saveVoucher:(BOOL)voucher
 {
-  v16 = a3;
-  v24 = a4;
-  v23 = a5;
-  v22 = a6;
-  v17 = a7;
-  v18 = a8;
+  dependenciesCopy = dependencies;
+  stateCopy = state;
+  errorStateCopy = errorState;
+  dCopy = d;
+  entropyCopy = entropy;
+  saltCopy = salt;
   v25.receiver = self;
   v25.super_class = OTVouchWithBottleOperation;
   v19 = [(CKKSGroupOperation *)&v25 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong((v19 + 190), a3);
-    objc_storeStrong((v20 + 134), a4);
-    objc_storeStrong((v20 + 142), a5);
-    objc_storeStrong((v20 + 150), a6);
-    objc_storeStrong((v20 + 158), a7);
-    objc_storeStrong((v20 + 166), a8);
-    v20[128] = a9;
+    objc_storeStrong((v19 + 190), dependencies);
+    objc_storeStrong((v20 + 134), state);
+    objc_storeStrong((v20 + 142), errorState);
+    objc_storeStrong((v20 + 150), d);
+    objc_storeStrong((v20 + 158), entropy);
+    objc_storeStrong((v20 + 166), salt);
+    v20[128] = voucher;
   }
 
   return v20;

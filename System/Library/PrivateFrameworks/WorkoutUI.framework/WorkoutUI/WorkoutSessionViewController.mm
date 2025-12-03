@@ -1,15 +1,15 @@
 @interface WorkoutSessionViewController
-- (_TtC9WorkoutUI28WorkoutSessionViewController)initWithCoder:(id)a3;
-- (_TtC9WorkoutUI28WorkoutSessionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC9WorkoutUI28WorkoutSessionViewController)initWithCoder:(id)coder;
+- (_TtC9WorkoutUI28WorkoutSessionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation WorkoutSessionViewController
 
-- (_TtC9WorkoutUI28WorkoutSessionViewController)initWithCoder:(id)a3
+- (_TtC9WorkoutUI28WorkoutSessionViewController)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC9WorkoutUI28WorkoutSessionViewController_summaryViewControllerCompletion);
   *v3 = 0;
@@ -24,31 +24,31 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   WorkoutSessionViewController.viewDidLoad()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  WorkoutSessionViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  WorkoutSessionViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v4 = self;
+  disappearCopy = disappear;
+  selfCopy = self;
 
   ScreenAssertionManager.releaseAssertion()();
 
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for WorkoutSessionViewController();
-  [(WorkoutSessionViewController *)&v5 viewDidDisappear:v3];
+  [(WorkoutSessionViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -61,12 +61,12 @@
     v7 = 0;
   }
 
-  v8 = self;
-  WorkoutSessionViewController.dismiss(animated:completion:)(a3, v6, v7);
+  selfCopy = self;
+  WorkoutSessionViewController.dismiss(animated:completion:)(animated, v6, v7);
   sub_20C6861E4(v6);
 }
 
-- (_TtC9WorkoutUI28WorkoutSessionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9WorkoutUI28WorkoutSessionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

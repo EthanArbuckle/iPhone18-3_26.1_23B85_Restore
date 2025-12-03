@@ -1,12 +1,12 @@
 @interface FBKEvaluationController
 - (_TtC8Feedback23FBKEvaluationController)init;
-- (void)feedbackDraftViewController:(id)a3 didCompleteWithResponseType:(int64_t)a4 responseID:(id)a5;
-- (void)feedbackDraftViewController:(id)a3 didFailToAttachURL:(id)a4 error:(int64_t)a5;
-- (void)feedbackDraftViewController:(id)a3 didFailToStartWithError:(int64_t)a4;
-- (void)feedbackDraftViewController:(id)a3 didFailToSubmitFeedback:(id)a4;
-- (void)feedbackDraftViewControllerDidCancel:(id)a3;
-- (void)feedbackDraftViewControllerDidLoadForm:(id)a3;
-- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(id)a3;
+- (void)feedbackDraftViewController:(id)controller didCompleteWithResponseType:(int64_t)type responseID:(id)d;
+- (void)feedbackDraftViewController:(id)controller didFailToAttachURL:(id)l error:(int64_t)error;
+- (void)feedbackDraftViewController:(id)controller didFailToStartWithError:(int64_t)error;
+- (void)feedbackDraftViewController:(id)controller didFailToSubmitFeedback:(id)feedback;
+- (void)feedbackDraftViewControllerDidCancel:(id)cancel;
+- (void)feedbackDraftViewControllerDidLoadForm:(id)form;
+- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(id)identifier;
 @end
 
 @implementation FBKEvaluationController
@@ -18,23 +18,23 @@
   return result;
 }
 
-- (void)feedbackDraftViewController:(id)a3 didCompleteWithResponseType:(int64_t)a4 responseID:(id)a5
+- (void)feedbackDraftViewController:(id)controller didCompleteWithResponseType:(int64_t)type responseID:(id)d
 {
   v7 = sub_1B8C25128();
   v9 = v8;
-  v10 = a3;
-  v11 = self;
-  sub_1B8BFB408(v10, v7, v9);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1B8BFB408(controllerCopy, v7, v9);
 }
 
-- (void)feedbackDraftViewController:(id)a3 didFailToStartWithError:(int64_t)a4
+- (void)feedbackDraftViewController:(id)controller didFailToStartWithError:(int64_t)error
 {
-  v5 = a3;
-  v6 = self;
-  _s8Feedback23FBKEvaluationControllerC017feedbackDraftViewC0_23didFailToStartWithErroryAA011FBKFeedbackefC0C_AA08FBKDraftL0OtF_0(v5);
+  controllerCopy = controller;
+  selfCopy = self;
+  _s8Feedback23FBKEvaluationControllerC017feedbackDraftViewC0_23didFailToStartWithErroryAA011FBKFeedbackefC0C_AA08FBKDraftL0OtF_0(controllerCopy);
 }
 
-- (void)feedbackDraftViewController:(id)a3 didFailToAttachURL:(id)a4 error:(int64_t)a5
+- (void)feedbackDraftViewController:(id)controller didFailToAttachURL:(id)l error:(int64_t)error
 {
   v7 = sub_1B8C23498();
   v8 = *(v7 - 8);
@@ -42,40 +42,40 @@
   MEMORY[0x1EEE9AC00](v7);
   v11 = &v14 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1B8C23448();
-  v12 = a3;
-  v13 = self;
-  _s8Feedback23FBKEvaluationControllerC017feedbackDraftViewC0_18didFailToAttachURL5erroryAA011FBKFeedbackefC0C_10Foundation0K0VAA18FBKAttachmentErrorOtF_0(v12, v11);
+  controllerCopy = controller;
+  selfCopy = self;
+  _s8Feedback23FBKEvaluationControllerC017feedbackDraftViewC0_18didFailToAttachURL5erroryAA011FBKFeedbackefC0C_10Foundation0K0VAA18FBKAttachmentErrorOtF_0(controllerCopy, v11);
 
   (*(v8 + 8))(v11, v7);
 }
 
-- (void)feedbackDraftViewControllerDidCancel:(id)a3
+- (void)feedbackDraftViewControllerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
-  FBKEvaluationController.feedbackDraftViewControllerDidCancel(_:)(v4);
+  cancelCopy = cancel;
+  selfCopy = self;
+  FBKEvaluationController.feedbackDraftViewControllerDidCancel(_:)(cancelCopy);
 }
 
-- (void)feedbackDraftViewController:(id)a3 didFailToSubmitFeedback:(id)a4
+- (void)feedbackDraftViewController:(id)controller didFailToSubmitFeedback:(id)feedback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  FBKEvaluationController.feedbackDraftViewController(_:didFailToSubmitFeedback:)(v6, v7);
+  controllerCopy = controller;
+  feedbackCopy = feedback;
+  selfCopy = self;
+  FBKEvaluationController.feedbackDraftViewController(_:didFailToSubmitFeedback:)(controllerCopy, feedbackCopy);
 }
 
-- (void)feedbackDraftViewControllerDidLoadForm:(id)a3
+- (void)feedbackDraftViewControllerDidLoadForm:(id)form
 {
-  v4 = a3;
-  v5 = self;
-  _s8Feedback23FBKEvaluationControllerC017feedbackDraftViewC11DidLoadFormyyAA011FBKFeedbackefC0CF_0(v4);
+  formCopy = form;
+  selfCopy = self;
+  _s8Feedback23FBKEvaluationControllerC017feedbackDraftViewC11DidLoadFormyyAA011FBKFeedbackefC0CF_0(formCopy);
 }
 
-- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(id)a3
+- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  FBKEvaluationController.sheetPresentationControllerDidChangeSelectedDetentIdentifier(_:)(v4);
+  identifierCopy = identifier;
+  selfCopy = self;
+  FBKEvaluationController.sheetPresentationControllerDidChangeSelectedDetentIdentifier(_:)(identifierCopy);
 }
 
 @end

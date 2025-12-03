@@ -1,38 +1,38 @@
 @interface CPLPushToTransportScopeTask
-- (BOOL)_shouldNotTrustCloudCacheAfterError:(id)a3;
-- (BOOL)_shouldUploadBatchesWithDropReason:(id *)a3 shouldQuarantineRecords:(BOOL *)a4 inTransaction:(id)a5;
-- (BOOL)checkScopeIsValidInTransaction:(id)a3;
-- (BOOL)task:(id)a3 shouldRetryImmediatelyInTransaction:(id)a4;
-- (CPLPushToTransportScopeTask)initWithEngineLibrary:(id)a3 session:(id)a4 clientCacheIdentifier:(id)a5 scope:(id)a6 transportScope:(id)a7;
+- (BOOL)_shouldNotTrustCloudCacheAfterError:(id)error;
+- (BOOL)_shouldUploadBatchesWithDropReason:(id *)reason shouldQuarantineRecords:(BOOL *)records inTransaction:(id)transaction;
+- (BOOL)checkScopeIsValidInTransaction:(id)transaction;
+- (BOOL)task:(id)task shouldRetryImmediatelyInTransaction:(id)transaction;
+- (CPLPushToTransportScopeTask)initWithEngineLibrary:(id)library session:(id)session clientCacheIdentifier:(id)identifier scope:(id)scope transportScope:(id)transportScope;
 - (CPLUploadPushedChangesTask)currentSubtask;
-- (id)_contributorsUpdatesInTransaction:(id)a3;
+- (id)_contributorsUpdatesInTransaction:(id)transaction;
 - (id)phaseDescription;
-- (id)phaseDescriptionLastChangeDate:(id *)a3;
+- (id)phaseDescriptionLastChangeDate:(id *)date;
 - (id)scopesForTask;
 - (id)taskIdentifier;
-- (void)_acknowledgeContributorUpdatesAndContinue:(id)a3;
-- (void)_didStartTaskWithKey:(id)a3 recordCount:(unint64_t)a4;
+- (void)_acknowledgeContributorUpdatesAndContinue:(id)continue;
+- (void)_didStartTaskWithKey:(id)key recordCount:(unint64_t)count;
 - (void)_discardCurrentSubtask;
 - (void)_excludeScopeFromMingling;
 - (void)_includeScopeInMingling;
 - (void)_launch;
-- (void)_launchSubTask:(id)a3 subIdentifier:(id)a4;
-- (void)_noteSuccessfulUpdateInTransaction:(id)a3;
+- (void)_launchSubTask:(id)task subIdentifier:(id)identifier;
+- (void)_noteSuccessfulUpdateInTransaction:(id)transaction;
 - (void)_prepareTransportGroupForOneBatch;
-- (void)_pushTaskDidFinishWithError:(id)a3;
+- (void)_pushTaskDidFinishWithError:(id)error;
 - (void)_resetPriority;
-- (void)_updateContributors:(id)a3;
-- (void)_updateQuotaStrategyAfterSuccessInTransaction:(id)a3;
-- (void)_uploadChangesWithPriority:(unint64_t)a3 maxBatchSize:(unint64_t)a4;
-- (void)_uploadTask:(id)a3 didFinishWithError:(id)a4;
-- (void)cancel:(BOOL)a3;
+- (void)_updateContributors:(id)contributors;
+- (void)_updateQuotaStrategyAfterSuccessInTransaction:(id)transaction;
+- (void)_uploadChangesWithPriority:(unint64_t)priority maxBatchSize:(unint64_t)size;
+- (void)_uploadTask:(id)task didFinishWithError:(id)error;
+- (void)cancel:(BOOL)cancel;
 - (void)launch;
-- (void)task:(id)a3 didFinishWithError:(id)a4;
+- (void)task:(id)task didFinishWithError:(id)error;
 @end
 
 @implementation CPLPushToTransportScopeTask
 
-- (BOOL)task:(id)a3 shouldRetryImmediatelyInTransaction:(id)a4
+- (BOOL)task:(id)task shouldRetryImmediatelyInTransaction:(id)transaction
 {
   if (self->_retryImmediately)
   {
@@ -41,45 +41,45 @@
 
   pushRepository = self->_pushRepository;
   scopeIdentifier = self->_scopeIdentifier;
-  v7 = a3;
+  taskCopy = task;
   v8 = [(CPLEnginePushRepository *)pushRepository minimumPriorityForChangesInScopeWithIdentifier:scopeIdentifier];
-  v9 = [v7 pushRepositoryPriority];
+  pushRepositoryPriority = [taskCopy pushRepositoryPriority];
 
-  return v8 < v9;
+  return v8 < pushRepositoryPriority;
 }
 
-- (void)task:(id)a3 didFinishWithError:(id)a4
+- (void)task:(id)task didFinishWithError:(id)error
 {
-  v11 = a3;
-  v7 = a4;
+  taskCopy = task;
+  errorCopy = error;
   v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"finishing subtask %@", objc_opt_class()];
   [(CPLEngineSyncTask *)self setPhaseDescription:v8];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLPushToTransportTask.m"];
-    [v9 handleFailureInMethod:a2 object:self file:v10 lineNumber:893 description:{@"Received completion for unknown %@", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v10 lineNumber:893 description:{@"Received completion for unknown %@", taskCopy}];
 
     abort();
   }
 
-  [(CPLPushToTransportScopeTask *)self _uploadTask:v11 didFinishWithError:v7];
+  [(CPLPushToTransportScopeTask *)self _uploadTask:taskCopy didFinishWithError:errorCopy];
 }
 
-- (void)_uploadTask:(id)a3 didFinishWithError:(id)a4
+- (void)_uploadTask:(id)task didFinishWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  errorCopy = error;
   lock = self->_lock;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __62__CPLPushToTransportScopeTask__uploadTask_didFinishWithError___block_invoke;
   v14[3] = &unk_1E861B1C8;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
+  v15 = taskCopy;
+  v16 = errorCopy;
   v9 = v14;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -87,8 +87,8 @@
   block[3] = &unk_1E861B4E0;
   v18 = v9;
   v10 = lock;
-  v11 = v7;
-  v12 = v6;
+  v11 = errorCopy;
+  v12 = taskCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v13);
 }
@@ -502,30 +502,30 @@ uint64_t __62__CPLPushToTransportScopeTask__uploadTask_didFinishWithError___bloc
 
 - (id)phaseDescription
 {
-  v3 = [(CPLPushToTransportScopeTask *)self currentSubtask];
-  v4 = [v3 phaseDescription];
-  v5 = v4;
-  if (v4)
+  currentSubtask = [(CPLPushToTransportScopeTask *)self currentSubtask];
+  phaseDescription = [currentSubtask phaseDescription];
+  v5 = phaseDescription;
+  if (phaseDescription)
   {
-    v6 = v4;
+    phaseDescription2 = phaseDescription;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = CPLPushToTransportScopeTask;
-    v6 = [(CPLEngineSyncTask *)&v9 phaseDescription];
+    phaseDescription2 = [(CPLEngineSyncTask *)&v9 phaseDescription];
   }
 
-  v7 = v6;
+  v7 = phaseDescription2;
 
   return v7;
 }
 
-- (id)phaseDescriptionLastChangeDate:(id *)a3
+- (id)phaseDescriptionLastChangeDate:(id *)date
 {
-  v5 = [(CPLPushToTransportScopeTask *)self currentSubtask];
-  v6 = [v5 phaseDescriptionLastChangeDate:a3];
+  currentSubtask = [(CPLPushToTransportScopeTask *)self currentSubtask];
+  v6 = [currentSubtask phaseDescriptionLastChangeDate:date];
   v7 = v6;
   if (v6)
   {
@@ -536,7 +536,7 @@ uint64_t __62__CPLPushToTransportScopeTask__uploadTask_didFinishWithError___bloc
   {
     v11.receiver = self;
     v11.super_class = CPLPushToTransportScopeTask;
-    v8 = [(CPLEngineSyncTask *)&v11 phaseDescriptionLastChangeDate:a3];
+    v8 = [(CPLEngineSyncTask *)&v11 phaseDescriptionLastChangeDate:date];
   }
 
   v9 = v8;
@@ -544,10 +544,10 @@ uint64_t __62__CPLPushToTransportScopeTask__uploadTask_didFinishWithError___bloc
   return v9;
 }
 
-- (void)_pushTaskDidFinishWithError:(id)a3
+- (void)_pushTaskDidFinishWithError:(id)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   [(CPLEngineSyncTask *)self setPhaseDescription:@"cleaning"];
   [(CPLPushToTransportScopeTask *)self hash];
   kdebug_trace();
@@ -557,18 +557,18 @@ uint64_t __62__CPLPushToTransportScopeTask__uploadTask_didFinishWithError___bloc
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v4;
+      *(&buf + 4) = errorCopy;
       _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_DEBUG, "Push to transport finished (error: %@)", &buf, 0xCu);
     }
   }
 
-  v6 = [(CPLEngineScopedTask *)self store];
+  store = [(CPLEngineScopedTask *)self store];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__11582;
   v19 = __Block_byref_object_dispose__11583;
-  v20 = v4;
+  v20 = errorCopy;
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x2020000000;
@@ -588,7 +588,7 @@ uint64_t __62__CPLPushToTransportScopeTask__uploadTask_didFinishWithError___bloc
   v10[4] = self;
   v10[5] = &buf;
   v10[6] = v14;
-  v8 = [v6 performWriteTransactionWithBlock:v11 completionHandler:v10];
+  v8 = [store performWriteTransactionWithBlock:v11 completionHandler:v10];
 
   _Block_object_dispose(v14, 8);
   _Block_object_dispose(&buf, 8);
@@ -836,14 +836,14 @@ uint64_t __59__CPLPushToTransportScopeTask__pushTaskDidFinishWithError___block_i
   return [v10 storeBusyState:v11 forScope:? error:?];
 }
 
-- (void)_updateQuotaStrategyAfterSuccessInTransaction:(id)a3
+- (void)_updateQuotaStrategyAfterSuccessInTransaction:(id)transaction
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __77__CPLPushToTransportScopeTask__updateQuotaStrategyAfterSuccessInTransaction___block_invoke;
   v3[3] = &unk_1E8620478;
   v3[4] = self;
-  [a3 do:v3];
+  [transaction do:v3];
 }
 
 uint64_t __77__CPLPushToTransportScopeTask__updateQuotaStrategyAfterSuccessInTransaction___block_invoke(uint64_t a1, uint64_t a2)
@@ -883,13 +883,13 @@ uint64_t __77__CPLPushToTransportScopeTask__updateQuotaStrategyAfterSuccessInTra
   return v13;
 }
 
-- (BOOL)_shouldNotTrustCloudCacheAfterError:(id)a3
+- (BOOL)_shouldNotTrustCloudCacheAfterError:(id)error
 {
-  v3 = a3;
-  if ([v3 isCPLError])
+  errorCopy = error;
+  if ([errorCopy isCPLError])
   {
-    v4 = [v3 code];
-    v6 = v4 == 25 || v4 == 80;
+    code = [errorCopy code];
+    v6 = code == 25 || code == 80;
   }
 
   else
@@ -902,31 +902,31 @@ uint64_t __77__CPLPushToTransportScopeTask__updateQuotaStrategyAfterSuccessInTra
 
 - (void)_includeScopeInMingling
 {
-  v3 = [(CPLEngineSyncTask *)self session];
-  [v3 includeScopeIdentifierInMingling:self->_scopeIdentifier];
+  session = [(CPLEngineSyncTask *)self session];
+  [session includeScopeIdentifierInMingling:self->_scopeIdentifier];
 
   if (self->_sharedScope)
   {
-    v5 = [(CPLEngineSyncTask *)self session];
-    v4 = [(CPLEngineScope *)self->_sharedScope scopeIdentifier];
-    [v5 includeScopeIdentifierInMingling:v4];
+    session2 = [(CPLEngineSyncTask *)self session];
+    scopeIdentifier = [(CPLEngineScope *)self->_sharedScope scopeIdentifier];
+    [session2 includeScopeIdentifierInMingling:scopeIdentifier];
   }
 }
 
 - (void)_excludeScopeFromMingling
 {
-  v3 = [(CPLEngineSyncTask *)self session];
-  [v3 excludeScopeIdentifierFromMingling:self->_scopeIdentifier];
+  session = [(CPLEngineSyncTask *)self session];
+  [session excludeScopeIdentifierFromMingling:self->_scopeIdentifier];
 
   if (self->_sharedScope)
   {
-    v5 = [(CPLEngineSyncTask *)self session];
-    v4 = [(CPLEngineScope *)self->_sharedScope scopeIdentifier];
-    [v5 excludeScopeIdentifierFromMingling:v4];
+    session2 = [(CPLEngineSyncTask *)self session];
+    scopeIdentifier = [(CPLEngineScope *)self->_sharedScope scopeIdentifier];
+    [session2 excludeScopeIdentifierFromMingling:scopeIdentifier];
   }
 }
 
-- (void)cancel:(BOOL)a3
+- (void)cancel:(BOOL)cancel
 {
   v11.receiver = self;
   v11.super_class = CPLPushToTransportScopeTask;
@@ -937,7 +937,7 @@ uint64_t __77__CPLPushToTransportScopeTask__updateQuotaStrategyAfterSuccessInTra
   v9[2] = __38__CPLPushToTransportScopeTask_cancel___block_invoke;
   v9[3] = &unk_1E861F7F0;
   v9[4] = self;
-  v10 = a3;
+  cancelCopy = cancel;
   v6 = v9;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1391,26 +1391,26 @@ uint64_t __38__CPLPushToTransportScopeTask__launch__block_invoke_91(void *a1, ui
   return 1;
 }
 
-- (id)_contributorsUpdatesInTransaction:(id)a3
+- (id)_contributorsUpdatesInTransaction:(id)transaction
 {
   v24 = *MEMORY[0x1E69E9840];
   v19 = 0;
   v18 = 0;
-  v4 = [(CPLPushToTransportScopeTask *)self _shouldUploadBatchesWithDropReason:&v18 shouldQuarantineRecords:&v19 inTransaction:a3];
+  v4 = [(CPLPushToTransportScopeTask *)self _shouldUploadBatchesWithDropReason:&v18 shouldQuarantineRecords:&v19 inTransaction:transaction];
   v5 = v18;
   if (v4)
   {
-    v6 = [(CPLEngineScopedTask *)self scope];
-    v7 = [v6 scopeIdentifier];
+    scope = [(CPLEngineScopedTask *)self scope];
+    scopeIdentifier = [scope scopeIdentifier];
 
-    v8 = [(CPLEnginePushRepository *)self->_pushRepository contributorsUpdatesForScopeWithIdentifier:v7 maxCount:+[CPLBatchExtractionStrategy maximumRecordCountPerBatch]];
+    v8 = [(CPLEnginePushRepository *)self->_pushRepository contributorsUpdatesForScopeWithIdentifier:scopeIdentifier maxCount:+[CPLBatchExtractionStrategy maximumRecordCountPerBatch]];
     if (![v8 count])
     {
       pushRepository = self->_pushRepository;
       v15 = MEMORY[0x1E69E9820];
-      v7 = v7;
-      v16 = v7;
-      v17 = self;
+      scopeIdentifier = scopeIdentifier;
+      v16 = scopeIdentifier;
+      selfCopy = self;
       v10 = [(CPLPushToTransportScopeTask *)self taskIdentifier:v15];
       [(CPLEnginePushRepository *)pushRepository addPushObserver:&v15 withIdentifier:v10];
     }
@@ -1422,16 +1422,16 @@ LABEL_8:
 
   if ((_CPLSilentLogging & 1) == 0)
   {
-    v7 = __CPLTaskOSLogDomain_11528();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    scopeIdentifier = __CPLTaskOSLogDomain_11528();
+    if (os_log_type_enabled(scopeIdentifier, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(CPLEngineScopedTask *)self scope];
-      v12 = [v11 scopeIdentifier];
+      scope2 = [(CPLEngineScopedTask *)self scope];
+      scopeIdentifier2 = [scope2 scopeIdentifier];
       *buf = 138543618;
-      v21 = v12;
+      v21 = scopeIdentifier2;
       v22 = 2112;
       v23 = v5;
-      _os_log_impl(&dword_1DC05A000, v7, OS_LOG_TYPE_DEFAULT, "Won't try to update contributors because %{public}@ is read-only: %@", buf, 0x16u);
+      _os_log_impl(&dword_1DC05A000, scopeIdentifier, OS_LOG_TYPE_DEFAULT, "Won't try to update contributors because %{public}@ is read-only: %@", buf, 0x16u);
     }
 
     v8 = 0;
@@ -1477,12 +1477,12 @@ void __65__CPLPushToTransportScopeTask__contributorsUpdatesInTransaction___block
   }
 }
 
-- (void)_acknowledgeContributorUpdatesAndContinue:(id)a3
+- (void)_acknowledgeContributorUpdatesAndContinue:(id)continue
 {
-  v4 = a3;
+  continueCopy = continue;
   dispatch_assert_queue_V2(self->_lock);
-  v5 = [(CPLEngineSyncTask *)self engineLibrary];
-  v6 = [v5 store];
+  engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+  store = [engineLibrary store];
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x3032000000;
@@ -1502,7 +1502,7 @@ void __65__CPLPushToTransportScopeTask__contributorsUpdatesInTransaction___block
   v10[2] = __73__CPLPushToTransportScopeTask__acknowledgeContributorUpdatesAndContinue___block_invoke;
   v10[3] = &unk_1E861D388;
   v10[4] = self;
-  v7 = v4;
+  v7 = continueCopy;
   v11 = v7;
   v12 = v18;
   v13 = v16;
@@ -1515,7 +1515,7 @@ void __65__CPLPushToTransportScopeTask__contributorsUpdatesInTransaction___block
   v9[5] = v18;
   v9[6] = v16;
   v9[7] = v15;
-  v8 = [v6 performWriteTransactionWithBlock:v10 completionHandler:v9];
+  v8 = [store performWriteTransactionWithBlock:v10 completionHandler:v9];
 
   _Block_object_dispose(v15, 8);
   _Block_object_dispose(v16, 8);
@@ -1672,13 +1672,13 @@ uint64_t __73__CPLPushToTransportScopeTask__acknowledgeContributorUpdatesAndCont
   return v3;
 }
 
-- (void)_updateContributors:(id)a3
+- (void)_updateContributors:(id)contributors
 {
-  v4 = a3;
+  contributorsCopy = contributors;
   dispatch_assert_queue_V2(self->_lock);
   [(CPLEngineSyncTask *)self setPhaseDescription:@"updating contributors"];
   [(CPLPushToTransportScopeTask *)self _prepareTransportGroupForOneBatch];
-  -[CPLPushToTransportScopeTask _didStartTaskWithKey:recordCount:](self, "_didStartTaskWithKey:recordCount:", @"update-contributors", [v4 count]);
+  -[CPLPushToTransportScopeTask _didStartTaskWithKey:recordCount:](self, "_didStartTaskWithKey:recordCount:", @"update-contributors", [contributorsCopy count]);
   transport = self->_transport;
   sharedScope = self->_sharedScope;
   transportScopeMapping = self->_transportScopeMapping;
@@ -1686,8 +1686,8 @@ uint64_t __73__CPLPushToTransportScopeTask__acknowledgeContributorUpdatesAndCont
   v12 = 3221225472;
   v13 = __51__CPLPushToTransportScopeTask__updateContributors___block_invoke;
   v14 = &unk_1E86204A0;
-  v15 = self;
-  v8 = v4;
+  selfCopy = self;
+  v8 = contributorsCopy;
   v16 = v8;
   v9 = [(CPLEngineTransport *)transport updateContributorsTaskWithSharedScope:sharedScope contributorsUpdates:v8 transportScopeMapping:transportScopeMapping completionHandler:&v11];
   updateContributorsTask = self->_updateContributorsTask;
@@ -1695,10 +1695,10 @@ uint64_t __73__CPLPushToTransportScopeTask__acknowledgeContributorUpdatesAndCont
 
   if (self->_highPriority)
   {
-    [(CPLEngineTransportUpdateContributorsTask *)self->_updateContributorsTask setHighPriorityBackground:1, v11, v12, v13, v14, v15];
+    [(CPLEngineTransportUpdateContributorsTask *)self->_updateContributorsTask setHighPriorityBackground:1, v11, v12, v13, v14, selfCopy];
   }
 
-  [(CPLEngineSyncTask *)self launchTransportTask:self->_updateContributorsTask withTransportGroup:self->_transportGroup, v11, v12, v13, v14, v15];
+  [(CPLEngineSyncTask *)self launchTransportTask:self->_updateContributorsTask withTransportGroup:self->_transportGroup, v11, v12, v13, v14, selfCopy];
 }
 
 void __51__CPLPushToTransportScopeTask__updateContributors___block_invoke(uint64_t a1, void *a2)
@@ -1855,7 +1855,7 @@ void __51__CPLPushToTransportScopeTask__updateContributors___block_invoke_70(uin
 
 - (void)_resetPriority
 {
-  v3 = [(CPLEngineScopedTask *)self store];
+  store = [(CPLEngineScopedTask *)self store];
   v8[0] = 0;
   v8[1] = v8;
   v8[2] = 0x2020000000;
@@ -1878,7 +1878,7 @@ void __51__CPLPushToTransportScopeTask__updateContributors___block_invoke_70(uin
   v5[4] = self;
   v5[5] = v8;
   v5[6] = v7;
-  v4 = [v3 performWriteTransactionWithBlock:v6 completionHandler:v5];
+  v4 = [store performWriteTransactionWithBlock:v6 completionHandler:v5];
   _Block_object_dispose(v7, 8);
   _Block_object_dispose(v8, 8);
 }
@@ -1966,11 +1966,11 @@ uint64_t __45__CPLPushToTransportScopeTask__resetPriority__block_invoke_2(void *
   return v3;
 }
 
-- (void)_uploadChangesWithPriority:(unint64_t)a3 maxBatchSize:(unint64_t)a4
+- (void)_uploadChangesWithPriority:(unint64_t)priority maxBatchSize:(unint64_t)size
 {
-  if (!a4)
+  if (!size)
   {
-    a4 = +[CPLBatchExtractionStrategy maximumRecordCountPerBatch];
+    size = +[CPLBatchExtractionStrategy maximumRecordCountPerBatch];
   }
 
   lock = self->_lock;
@@ -1979,8 +1979,8 @@ uint64_t __45__CPLPushToTransportScopeTask__resetPriority__block_invoke_2(void *
   v10[2] = __71__CPLPushToTransportScopeTask__uploadChangesWithPriority_maxBatchSize___block_invoke;
   v10[3] = &unk_1E861FEE8;
   v10[4] = self;
-  v10[5] = a4;
-  v10[6] = a3;
+  v10[5] = size;
+  v10[6] = priority;
   v7 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -2015,20 +2015,20 @@ void __71__CPLPushToTransportScopeTask__uploadChangesWithPriority_maxBatchSize__
   [v14 _launchSubTask:v18 subIdentifier:v15];
 }
 
-- (void)_noteSuccessfulUpdateInTransaction:(id)a3
+- (void)_noteSuccessfulUpdateInTransaction:(id)transaction
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  transactionCopy = transaction;
   if (self->_wasBusy)
   {
-    v5 = [(CPLEngineScopedTask *)self scope];
+    scope = [(CPLEngineScopedTask *)self scope];
     if ((_CPLSilentLogging & 1) == 0)
     {
       v6 = __CPLTaskOSLogDomain_11528();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v12 = v5;
+        v12 = scope;
         _os_log_impl(&dword_1DC05A000, v6, OS_LOG_TYPE_DEFAULT, "It seems like %@ is not busy any more", buf, 0xCu);
       }
     }
@@ -2038,9 +2038,9 @@ void __71__CPLPushToTransportScopeTask__uploadChangesWithPriority_maxBatchSize__
     v9[2] = __66__CPLPushToTransportScopeTask__noteSuccessfulUpdateInTransaction___block_invoke;
     v9[3] = &unk_1E8620940;
     v9[4] = self;
-    v10 = v5;
-    v7 = v5;
-    [v4 do:v9];
+    v10 = scope;
+    v7 = scope;
+    [transactionCopy do:v9];
   }
 
   v8 = *MEMORY[0x1E69E9840];
@@ -2076,34 +2076,34 @@ uint64_t __66__CPLPushToTransportScopeTask__noteSuccessfulUpdateInTransaction___
   storedTransportGroup = self->_storedTransportGroup;
   if (storedTransportGroup)
   {
-    v4 = storedTransportGroup;
+    createGroupForChangeUpload = storedTransportGroup;
   }
 
   else
   {
-    v4 = [(CPLEngineTransport *)self->_transport createGroupForChangeUpload];
+    createGroupForChangeUpload = [(CPLEngineTransport *)self->_transport createGroupForChangeUpload];
   }
 
   transportGroup = self->_transportGroup;
-  self->_transportGroup = v4;
+  self->_transportGroup = createGroupForChangeUpload;
 
-  MEMORY[0x1EEE66BB8](v4, transportGroup);
+  MEMORY[0x1EEE66BB8](createGroupForChangeUpload, transportGroup);
 }
 
-- (BOOL)_shouldUploadBatchesWithDropReason:(id *)a3 shouldQuarantineRecords:(BOOL *)a4 inTransaction:(id)a5
+- (BOOL)_shouldUploadBatchesWithDropReason:(id *)reason shouldQuarantineRecords:(BOOL *)records inTransaction:(id)transaction
 {
-  v5 = a4;
+  recordsCopy = records;
   scopes = self->_scopes;
-  v8 = [(CPLEngineScopedTask *)self scope:a3];
-  LOBYTE(v5) = [(CPLEngineScopeStorage *)scopes shouldDropAllUploadsForScope:v8 dropReason:a3 shouldQuarantineRecords:v5];
+  v8 = [(CPLEngineScopedTask *)self scope:reason];
+  LOBYTE(recordsCopy) = [(CPLEngineScopeStorage *)scopes shouldDropAllUploadsForScope:v8 dropReason:reason shouldQuarantineRecords:recordsCopy];
 
-  return v5 ^ 1;
+  return recordsCopy ^ 1;
 }
 
-- (void)_didStartTaskWithKey:(id)a3 recordCount:(unint64_t)a4
+- (void)_didStartTaskWithKey:(id)key recordCount:(unint64_t)count
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  keyCopy = key;
   if (self->_currentTaskKey)
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -2118,38 +2118,38 @@ uint64_t __66__CPLPushToTransportScopeTask__noteSuccessfulUpdateInTransaction___
       }
     }
 
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLPushToTransportTask.m"];
     v16 = NSStringFromSelector(a2);
-    [v14 handleFailureInMethod:a2 object:self file:v15 lineNumber:285 description:{@"%@ called too many times", v16}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v15 lineNumber:285 description:{@"%@ called too many times", v16}];
 
     abort();
   }
 
-  self->_currentTaskKey = v7;
-  v8 = v7;
-  v9 = [MEMORY[0x1E695DF00] date];
+  self->_currentTaskKey = keyCopy;
+  v8 = keyCopy;
+  date = [MEMORY[0x1E695DF00] date];
   taskStartDate = self->_taskStartDate;
-  self->_taskStartDate = v9;
+  self->_taskStartDate = date;
 
-  self->_recordCount = a4;
+  self->_recordCount = count;
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)checkScopeIsValidInTransaction:(id)a3
+- (BOOL)checkScopeIsValidInTransaction:(id)transaction
 {
   v23 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = CPLPushToTransportScopeTask;
-  v4 = [(CPLEngineScopedTask *)&v18 checkScopeIsValidInTransaction:a3];
+  v4 = [(CPLEngineScopedTask *)&v18 checkScopeIsValidInTransaction:transaction];
   if (v4)
   {
     if (self->_sharedScope)
     {
-      v5 = [(CPLEngineScopedTask *)self store];
-      v6 = [v5 scopes];
-      v7 = [v6 validLocalScopeIndexes];
-      v8 = [v7 containsIndex:{-[CPLEngineScope localIndex](self->_sharedScope, "localIndex")}];
+      store = [(CPLEngineScopedTask *)self store];
+      scopes = [store scopes];
+      validLocalScopeIndexes = [scopes validLocalScopeIndexes];
+      v8 = [validLocalScopeIndexes containsIndex:{-[CPLEngineScope localIndex](self->_sharedScope, "localIndex")}];
 
       if ((v8 & 1) == 0)
       {
@@ -2178,11 +2178,11 @@ LABEL_13:
       }
     }
 
-    v9 = [(CPLEngineScopedTask *)self store];
-    v10 = [v9 cleanupTasks];
-    v11 = [v10 hasCleanupTasks];
+    store2 = [(CPLEngineScopedTask *)self store];
+    cleanupTasks = [store2 cleanupTasks];
+    hasCleanupTasks = [cleanupTasks hasCleanupTasks];
 
-    if (v11)
+    if (hasCleanupTasks)
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
@@ -2215,18 +2215,18 @@ LABEL_14:
   {
     v7.receiver = self;
     v7.super_class = CPLPushToTransportScopeTask;
-    v3 = [(CPLEngineScopedTask *)&v7 scopesForTask];
-    v4 = [v3 arrayByAddingObject:self->_sharedScope];
+    scopesForTask = [(CPLEngineScopedTask *)&v7 scopesForTask];
+    scopesForTask2 = [scopesForTask arrayByAddingObject:self->_sharedScope];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = CPLPushToTransportScopeTask;
-    v4 = [(CPLEngineScopedTask *)&v6 scopesForTask];
+    scopesForTask2 = [(CPLEngineScopedTask *)&v6 scopesForTask];
   }
 
-  return v4;
+  return scopesForTask2;
 }
 
 - (void)_discardCurrentSubtask
@@ -2235,7 +2235,7 @@ LABEL_14:
   v4[1] = 3221225472;
   v5 = __53__CPLPushToTransportScopeTask__discardCurrentSubtask__block_invoke;
   v6 = &unk_1E861A940;
-  v7 = self;
+  selfCopy = self;
   v3 = v4;
   os_unfair_lock_lock(&self->_currentSubtaskLock);
   v5(v3);
@@ -2249,10 +2249,10 @@ void __53__CPLPushToTransportScopeTask__discardCurrentSubtask__block_invoke(uint
   *(v1 + 264) = 0;
 }
 
-- (void)_launchSubTask:(id)a3 subIdentifier:(id)a4
+- (void)_launchSubTask:(id)task subIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_lock);
   v23[0] = 0;
   v23[1] = v23;
@@ -2265,15 +2265,15 @@ void __53__CPLPushToTransportScopeTask__discardCurrentSubtask__block_invoke(uint
   v20[2] = __60__CPLPushToTransportScopeTask__launchSubTask_subIdentifier___block_invoke;
   v20[3] = &unk_1E861E240;
   v22 = v23;
-  v8 = v7;
+  v8 = identifierCopy;
   v21 = v8;
   [(CPLEngineSyncTask *)self withThroughputReporter:v20];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __60__CPLPushToTransportScopeTask__launchSubTask_subIdentifier___block_invoke_2;
   v16 = &unk_1E861F868;
-  v17 = self;
-  v9 = v6;
+  selfCopy = self;
+  v9 = taskCopy;
   v18 = v9;
   v19 = v23;
   v10 = &v13;
@@ -2330,7 +2330,7 @@ uint64_t __60__CPLPushToTransportScopeTask__launchSubTask_subIdentifier___block_
   v6[1] = 3221225472;
   v7 = __45__CPLPushToTransportScopeTask_currentSubtask__block_invoke;
   v8 = &unk_1E861A850;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_currentSubtaskLock);
@@ -2343,13 +2343,13 @@ uint64_t __60__CPLPushToTransportScopeTask__launchSubTask_subIdentifier___block_
   return v4;
 }
 
-- (CPLPushToTransportScopeTask)initWithEngineLibrary:(id)a3 session:(id)a4 clientCacheIdentifier:(id)a5 scope:(id)a6 transportScope:(id)a7
+- (CPLPushToTransportScopeTask)initWithEngineLibrary:(id)library session:(id)session clientCacheIdentifier:(id)identifier scope:(id)scope transportScope:(id)transportScope
 {
-  v12 = a3;
-  v13 = a6;
+  libraryCopy = library;
+  scopeCopy = scope;
   v34.receiver = self;
   v34.super_class = CPLPushToTransportScopeTask;
-  v14 = [(CPLEngineScopedTask *)&v34 initWithEngineLibrary:v12 session:a4 clientCacheIdentifier:a5 scope:v13 transportScope:a7];
+  v14 = [(CPLEngineScopedTask *)&v34 initWithEngineLibrary:libraryCopy session:session clientCacheIdentifier:identifier scope:scopeCopy transportScope:transportScope];
   if (v14)
   {
     v15 = CPLCopyDefaultSerialQueueAttributes();
@@ -2358,31 +2358,31 @@ uint64_t __60__CPLPushToTransportScopeTask__launchSubTask_subIdentifier___block_
     v14->_lock = v16;
 
     v14->_currentSubtaskLock._os_unfair_lock_opaque = 0;
-    v18 = [(CPLEngineSyncTask *)v14 engineLibrary];
-    v19 = [v18 transport];
+    engineLibrary = [(CPLEngineSyncTask *)v14 engineLibrary];
+    transport = [engineLibrary transport];
     transport = v14->_transport;
-    v14->_transport = v19;
+    v14->_transport = transport;
 
-    v21 = [(CPLEngineSyncTask *)v14 engineLibrary];
-    v22 = [v21 store];
-    v23 = [v22 pushRepository];
+    engineLibrary2 = [(CPLEngineSyncTask *)v14 engineLibrary];
+    store = [engineLibrary2 store];
+    pushRepository = [store pushRepository];
     pushRepository = v14->_pushRepository;
-    v14->_pushRepository = v23;
+    v14->_pushRepository = pushRepository;
 
-    v25 = [(CPLEngineSyncTask *)v14 engineLibrary];
-    v26 = [v25 store];
-    v27 = [v26 scopes];
+    engineLibrary3 = [(CPLEngineSyncTask *)v14 engineLibrary];
+    store2 = [engineLibrary3 store];
+    scopes = [store2 scopes];
     scopes = v14->_scopes;
-    v14->_scopes = v27;
+    v14->_scopes = scopes;
 
-    v29 = [v12 scheduler];
+    scheduler = [libraryCopy scheduler];
     scheduler = v14->_scheduler;
-    v14->_scheduler = v29;
+    v14->_scheduler = scheduler;
 
     v14->_taskItem = -1;
-    v31 = [v13 scopeIdentifier];
+    scopeIdentifier = [scopeCopy scopeIdentifier];
     scopeIdentifier = v14->_scopeIdentifier;
-    v14->_scopeIdentifier = v31;
+    v14->_scopeIdentifier = scopeIdentifier;
   }
 
   return v14;

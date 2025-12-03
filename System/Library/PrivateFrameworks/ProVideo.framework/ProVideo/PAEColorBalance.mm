@@ -1,18 +1,18 @@
 @interface PAEColorBalance
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (PAEColorBalance)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAEColorBalance)initWithAPIManager:(id)manager;
 - (id)properties;
 @end
 
 @implementation PAEColorBalance
 
-- (PAEColorBalance)initWithAPIManager:(id)a3
+- (PAEColorBalance)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEColorBalance;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -61,10 +61,10 @@ uint64_t __29__PAEColorBalance_properties__block_invoke()
   v6 = v5;
   if (v5)
   {
-    v7 = [v4 versionAtCreation];
+    versionAtCreation = [v4 versionAtCreation];
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v9 = v8;
-    if (v7)
+    if (versionAtCreation)
     {
       [v3 addColorParameterWithName:objc_msgSend(v8 parmId:"localizedStringForKey:value:table:" defaultRed:@"ColorBalance::ShadowWhitePoint" defaultGreen:0 defaultBlue:0) parmFlags:{10, 1024, 0.5, 0.5, 0.5}];
       [v3 addColorParameterWithName:objc_msgSend(v9 parmId:"localizedStringForKey:value:table:" defaultRed:@"ColorBalance::MidWhitePoint" defaultGreen:0 defaultBlue:0) parmFlags:{11, 1024, 0.5, 0.5, 0.5}];
@@ -92,7 +92,7 @@ uint64_t __29__PAEColorBalance_properties__block_invoke()
   return v6;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v64[1] = *MEMORY[0x277D85DE8];
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
@@ -115,11 +115,11 @@ uint64_t __29__PAEColorBalance_properties__block_invoke()
   v56 = 1.0;
   v55 = 0;
   v54 = 0;
-  v12 = [v10 versionAtCreation];
-  if (v12)
+  versionAtCreation = [v10 versionAtCreation];
+  if (versionAtCreation)
   {
-    [v9 getRedValue:&v62 greenValue:&v63 blueValue:v64 fromParm:10 atFxTime:a5->var0.var1];
-    [v9 getRedValue:&v60 greenValue:&v60.f64[1] blueValue:&v61 fromParm:11 atFxTime:a5->var0.var1];
+    [v9 getRedValue:&v62 greenValue:&v63 blueValue:v64 fromParm:10 atFxTime:info->var0.var1];
+    [v9 getRedValue:&v60 greenValue:&v60.f64[1] blueValue:&v61 fromParm:11 atFxTime:info->var0.var1];
     v13 = vcvt_f32_f64(v60);
     __asm { FMOV            V2.2S, #1.0 }
 
@@ -139,10 +139,10 @@ uint64_t __29__PAEColorBalance_properties__block_invoke()
     }
 
     v61 = v20;
-    [v9 getRedValue:&v57 greenValue:&v58 blueValue:&v59 fromParm:12 atFxTime:a5->var0.var1];
-    [v9 getIntValue:&v54 fromParm:13 atFxTime:a5->var0.var1];
-    [v9 getFloatValue:&v56 fromParm:14 atFxTime:a5->var0.var1];
-    [v9 getBoolValue:&v55 fromParm:15 atFxTime:a5->var0.var1];
+    [v9 getRedValue:&v57 greenValue:&v58 blueValue:&v59 fromParm:12 atFxTime:info->var0.var1];
+    [v9 getIntValue:&v54 fromParm:13 atFxTime:info->var0.var1];
+    [v9 getFloatValue:&v56 fromParm:14 atFxTime:info->var0.var1];
+    [v9 getBoolValue:&v55 fromParm:15 atFxTime:info->var0.var1];
     v21 = 0.0;
     v22 = 0.5;
     v43 = 1.0;
@@ -156,15 +156,15 @@ uint64_t __29__PAEColorBalance_properties__block_invoke()
 
   else
   {
-    [v9 getFloatValue:&v62 fromParm:1 atFxTime:a5->var0.var1];
-    [v9 getFloatValue:&v63 fromParm:2 atFxTime:a5->var0.var1];
-    [v9 getFloatValue:v64 fromParm:3 atFxTime:a5->var0.var1];
-    [v9 getFloatValue:&v60 fromParm:4 atFxTime:a5->var0.var1];
-    [v9 getFloatValue:&v60.f64[1] fromParm:5 atFxTime:a5->var0.var1];
-    [v9 getFloatValue:&v61 fromParm:6 atFxTime:a5->var0.var1];
-    [v9 getFloatValue:&v57 fromParm:7 atFxTime:a5->var0.var1];
-    [v9 getFloatValue:&v58 fromParm:8 atFxTime:a5->var0.var1];
-    [v9 getFloatValue:&v59 fromParm:9 atFxTime:a5->var0.var1];
+    [v9 getFloatValue:&v62 fromParm:1 atFxTime:info->var0.var1];
+    [v9 getFloatValue:&v63 fromParm:2 atFxTime:info->var0.var1];
+    [v9 getFloatValue:v64 fromParm:3 atFxTime:info->var0.var1];
+    [v9 getFloatValue:&v60 fromParm:4 atFxTime:info->var0.var1];
+    [v9 getFloatValue:&v60.f64[1] fromParm:5 atFxTime:info->var0.var1];
+    [v9 getFloatValue:&v61 fromParm:6 atFxTime:info->var0.var1];
+    [v9 getFloatValue:&v57 fromParm:7 atFxTime:info->var0.var1];
+    [v9 getFloatValue:&v58 fromParm:8 atFxTime:info->var0.var1];
+    [v9 getFloatValue:&v59 fromParm:9 atFxTime:info->var0.var1];
     v28 = v62;
     v27 = v63;
     v21 = v64[0];
@@ -177,23 +177,23 @@ uint64_t __29__PAEColorBalance_properties__block_invoke()
     v24 = v59 + 1.0;
   }
 
-  [v9 mixAmountAtTime:a5->var0.var1];
+  [v9 mixAmountAtTime:info->var0.var1];
   v44 = v30;
-  v31 = [(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1];
+  v31 = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1];
   if (v31)
   {
-    if ([a4 imageType] == 3)
+    if ([input imageType] == 3)
     {
-      if (a4)
+      if (input)
       {
-        [a4 heliumRef];
-        if (v12)
+        [input heliumRef];
+        if (versionAtCreation)
         {
 LABEL_16:
           v32 = v54;
           v56 = v56 + 1.0;
           v52 = 0;
-          [v9 getBoolValue:&v52 fromParm:16 atFxTime:a5->var0.var1];
+          [v9 getBoolValue:&v52 fromParm:16 atFxTime:info->var0.var1];
           v33 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_287359A98];
           if (v33)
           {
@@ -297,7 +297,7 @@ LABEL_16:
             }
           }
 
-          [a3 setHeliumRef:{&v47, v40}];
+          [output setHeliumRef:{&v47, v40}];
           if (v47)
           {
             (*(*v47 + 24))(v47);
@@ -317,7 +317,7 @@ LABEL_52:
       else
       {
         v53 = 0;
-        if (v12)
+        if (versionAtCreation)
         {
           goto LABEL_16;
         }
@@ -332,7 +332,7 @@ LABEL_52:
       v36 = v44;
       (*(*v35 + 96))(v35, 3, v36, v36, v36, v36);
       (*(*v35 + 120))(v35, 0, v53);
-      [a3 setHeliumRef:&v50];
+      [output setHeliumRef:&v50];
       if (v50)
       {
         (*(*v50 + 24))(v50);
@@ -348,15 +348,15 @@ LABEL_23:
   return v31;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

@@ -1,13 +1,13 @@
 @interface MAMultiStepRelation
-+ (id)scanRelationWithScanner:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (MAMultiStepRelation)initWithBase:(id)a3 minNumberOfSteps:(unint64_t)a4 maxNumberOfSteps:(unint64_t)a5;
-- (id)adjacencyByJoiningWithAdjacency:(id)a3 graph:(id)a4;
-- (id)adjacencyWithStartNodeIdentifiers:(id)a3 graph:(id)a4;
++ (id)scanRelationWithScanner:(id)scanner;
+- (BOOL)isEqual:(id)equal;
+- (MAMultiStepRelation)initWithBase:(id)base minNumberOfSteps:(unint64_t)steps maxNumberOfSteps:(unint64_t)ofSteps;
+- (id)adjacencyByJoiningWithAdjacency:(id)adjacency graph:(id)graph;
+- (id)adjacencyWithStartNodeIdentifiers:(id)identifiers graph:(id)graph;
 - (id)inverse;
 - (id)visualString;
 - (unint64_t)hash;
-- (void)unionAdjacencySetFromSourceNodeIdentifiers:(id)a3 toTargetNodeIdentifiers:(id)a4 graph:(id)a5;
+- (void)unionAdjacencySetFromSourceNodeIdentifiers:(id)identifiers toTargetNodeIdentifiers:(id)nodeIdentifiers graph:(id)graph;
 @end
 
 @implementation MAMultiStepRelation
@@ -19,10 +19,10 @@
   return (self->_maxNumberOfSteps + (v4 << 6) + (v4 >> 2) + 2654435769u) ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -32,13 +32,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       minNumberOfSteps = self->_minNumberOfSteps;
       if (minNumberOfSteps == [(MAMultiStepRelation *)v5 minNumberOfSteps]&& (maxNumberOfSteps = self->_maxNumberOfSteps, maxNumberOfSteps == [(MAMultiStepRelation *)v5 maxNumberOfSteps]))
       {
         base = self->_base;
-        v9 = [(MAMultiStepRelation *)v5 base];
-        v10 = [(MARelation *)base isEqual:v9];
+        base = [(MAMultiStepRelation *)v5 base];
+        v10 = [(MARelation *)base isEqual:base];
       }
 
       else
@@ -59,8 +59,8 @@
 - (id)visualString
 {
   v3 = [@"-{" mutableCopy];
-  v4 = [(MARelation *)self->_base visualString];
-  [v3 appendString:v4];
+  visualString = [(MARelation *)self->_base visualString];
+  [v3 appendString:visualString];
 
   [v3 appendString:@"}*"];
   [v3 appendFormat:@"%lu", self->_minNumberOfSteps];
@@ -72,11 +72,11 @@
   return v3;
 }
 
-- (id)adjacencyByJoiningWithAdjacency:(id)a3 graph:(id)a4
+- (id)adjacencyByJoiningWithAdjacency:(id)adjacency graph:(id)graph
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  adjacencyCopy = adjacency;
+  graphCopy = graph;
+  v8 = adjacencyCopy;
   v9 = v8;
   v10 = 0;
   if (self->_minNumberOfSteps)
@@ -84,7 +84,7 @@
     v11 = v8;
     do
     {
-      v12 = [(MARelation *)self->_base adjacencyByJoiningWithAdjacency:v11 graph:v7];
+      v12 = [(MARelation *)self->_base adjacencyByJoiningWithAdjacency:v11 graph:graphCopy];
 
       ++v10;
       v11 = v12;
@@ -100,28 +100,28 @@
 
   for (i = [v12 mutableCopy]; v10 < self->_maxNumberOfSteps; ++v10)
   {
-    v14 = [(MARelation *)self->_base adjacencyByJoiningWithAdjacency:i graph:v7];
+    v14 = [(MARelation *)self->_base adjacencyByJoiningWithAdjacency:i graph:graphCopy];
     [i formUnionWith:v14];
   }
 
   return i;
 }
 
-- (id)adjacencyWithStartNodeIdentifiers:(id)a3 graph:(id)a4
+- (id)adjacencyWithStartNodeIdentifiers:(id)identifiers graph:(id)graph
 {
-  v6 = a4;
-  v7 = [KGDirectedBinaryAdjacency identityWith:a3];
-  v8 = [(MAMultiStepRelation *)self adjacencyByJoiningWithAdjacency:v7 graph:v6];
+  graphCopy = graph;
+  v7 = [KGDirectedBinaryAdjacency identityWith:identifiers];
+  v8 = [(MAMultiStepRelation *)self adjacencyByJoiningWithAdjacency:v7 graph:graphCopy];
 
   return v8;
 }
 
-- (void)unionAdjacencySetFromSourceNodeIdentifiers:(id)a3 toTargetNodeIdentifiers:(id)a4 graph:(id)a5
+- (void)unionAdjacencySetFromSourceNodeIdentifiers:(id)identifiers toTargetNodeIdentifiers:(id)nodeIdentifiers graph:(id)graph
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v8;
+  identifiersCopy = identifiers;
+  nodeIdentifiersCopy = nodeIdentifiers;
+  graphCopy = graph;
+  v11 = identifiersCopy;
   v22 = v11;
   if (self->_minNumberOfSteps)
   {
@@ -132,7 +132,7 @@
       v14 = v13;
       v15 = objc_autoreleasePoolPush();
       v13 = objc_alloc_init(KGMutableElementIdentifierSet);
-      [(MARelation *)self->_base unionAdjacencySetFromSourceNodeIdentifiers:v14 toTargetNodeIdentifiers:v13 graph:v10];
+      [(MARelation *)self->_base unionAdjacencySetFromSourceNodeIdentifiers:v14 toTargetNodeIdentifiers:v13 graph:graphCopy];
 
       objc_autoreleasePoolPop(v15);
       v16 = v12 + 1;
@@ -150,17 +150,17 @@
     v13 = v11;
   }
 
-  [v9 unionWithIdentifierSet:v13];
+  [nodeIdentifiersCopy unionWithIdentifierSet:v13];
   if (v18 <= self->_maxNumberOfSteps)
   {
     do
     {
       v20 = objc_autoreleasePoolPush();
       v21 = objc_alloc_init(KGMutableElementIdentifierSet);
-      [(MARelation *)self->_base unionAdjacencySetFromSourceNodeIdentifiers:v13 toTargetNodeIdentifiers:v21 graph:v10];
+      [(MARelation *)self->_base unionAdjacencySetFromSourceNodeIdentifiers:v13 toTargetNodeIdentifiers:v21 graph:graphCopy];
       v19 = v21;
 
-      [v9 unionWithIdentifierSet:v19];
+      [nodeIdentifiersCopy unionWithIdentifierSet:v19];
       objc_autoreleasePoolPop(v20);
       ++v18;
       v13 = v19;
@@ -178,42 +178,42 @@
 - (id)inverse
 {
   v3 = [MAMultiStepRelation alloc];
-  v4 = [(MARelation *)self->_base inverse];
-  v5 = [(MAMultiStepRelation *)v3 initWithBase:v4 minNumberOfSteps:self->_minNumberOfSteps maxNumberOfSteps:self->_maxNumberOfSteps];
+  inverse = [(MARelation *)self->_base inverse];
+  v5 = [(MAMultiStepRelation *)v3 initWithBase:inverse minNumberOfSteps:self->_minNumberOfSteps maxNumberOfSteps:self->_maxNumberOfSteps];
 
   return v5;
 }
 
-- (MAMultiStepRelation)initWithBase:(id)a3 minNumberOfSteps:(unint64_t)a4 maxNumberOfSteps:(unint64_t)a5
+- (MAMultiStepRelation)initWithBase:(id)base minNumberOfSteps:(unint64_t)steps maxNumberOfSteps:(unint64_t)ofSteps
 {
-  v9 = a3;
+  baseCopy = base;
   v13.receiver = self;
   v13.super_class = MAMultiStepRelation;
-  v10 = [(MARelation *)&v13 initForSubclassing];
-  v11 = v10;
-  if (v10)
+  initForSubclassing = [(MARelation *)&v13 initForSubclassing];
+  v11 = initForSubclassing;
+  if (initForSubclassing)
   {
-    objc_storeStrong(v10 + 1, a3);
-    v11->_minNumberOfSteps = a4;
-    v11->_maxNumberOfSteps = a5;
+    objc_storeStrong(initForSubclassing + 1, base);
+    v11->_minNumberOfSteps = steps;
+    v11->_maxNumberOfSteps = ofSteps;
   }
 
   return v11;
 }
 
-+ (id)scanRelationWithScanner:(id)a3
++ (id)scanRelationWithScanner:(id)scanner
 {
-  v3 = a3;
-  v4 = [v3 scanLocation];
-  if ([v3 scanString:@"-{" intoString:0])
+  scannerCopy = scanner;
+  scanLocation = [scannerCopy scanLocation];
+  if ([scannerCopy scanString:@"-{" intoString:0])
   {
-    v5 = [MARelation scanRelationWithScanner:v3];
-    if (v5 && ([v3 scanString:@"}*" intoString:0] & 1) != 0 && (v10 = 0, (objc_msgSend(v3, "scanInteger:", &v10) & 1) != 0))
+    v5 = [MARelation scanRelationWithScanner:scannerCopy];
+    if (v5 && ([scannerCopy scanString:@"}*" intoString:0] & 1) != 0 && (v10 = 0, (objc_msgSend(scannerCopy, "scanInteger:", &v10) & 1) != 0))
     {
       v9 = v10;
-      if ([v3 scanString:@".." intoString:0] && (objc_msgSend(v3, "scanInteger:", &v9) & 1) == 0)
+      if ([scannerCopy scanString:@".." intoString:0] && (objc_msgSend(scannerCopy, "scanInteger:", &v9) & 1) == 0)
       {
-        [v3 setScanLocation:v4];
+        [scannerCopy setScanLocation:scanLocation];
       }
 
       v6 = [MAMultiStepRelation alloc];
@@ -222,14 +222,14 @@
 
     else
     {
-      [v3 setScanLocation:v4];
+      [scannerCopy setScanLocation:scanLocation];
       v7 = 0;
     }
   }
 
   else
   {
-    [v3 setScanLocation:v4];
+    [scannerCopy setScanLocation:scanLocation];
     v7 = 0;
   }
 

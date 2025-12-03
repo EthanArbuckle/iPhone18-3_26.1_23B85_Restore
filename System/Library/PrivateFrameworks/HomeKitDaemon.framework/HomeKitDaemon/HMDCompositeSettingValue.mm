@@ -1,14 +1,14 @@
 @interface HMDCompositeSettingValue
-+ (id)compositeSettingValueFromImmutableSettingsValue:(id)a3;
-- (BOOL)isEqualValue:(id)a3;
++ (id)compositeSettingValueFromImmutableSettingsValue:(id)value;
+- (BOOL)isEqualValue:(id)value;
 - (HMDCompositeSettingValue)init;
 @end
 
 @implementation HMDCompositeSettingValue
 
-- (BOOL)isEqualValue:(id)a3
+- (BOOL)isEqualValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -27,14 +27,14 @@
   return [(HMDCompositeSettingValue *)&v3 init];
 }
 
-+ (id)compositeSettingValueFromImmutableSettingsValue:(id)a3
++ (id)compositeSettingValueFromImmutableSettingsValue:(id)value
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = valueCopy;
   }
 
   else
@@ -49,7 +49,7 @@
     goto LABEL_30;
   }
 
-  v8 = v4;
+  v8 = valueCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -82,8 +82,8 @@
     if (v15)
     {
       v16 = [HMDCompositeSettingStringValue alloc];
-      v17 = [v15 stringValue];
-      v7 = [(HMDCompositeSettingStringValue *)v16 initWithValue:v17];
+      stringValue = [v15 stringValue];
+      v7 = [(HMDCompositeSettingStringValue *)v16 initWithValue:stringValue];
 
 LABEL_28:
       goto LABEL_29;
@@ -106,11 +106,11 @@ LABEL_28:
     if (v20)
     {
       v21 = [HMDCompositeSettingLanguageValue alloc];
-      v22 = [v20 inputLanguageCode];
-      v23 = [v20 outputVoiceLanguageCode];
-      v24 = [v20 outputVoiceGenderCode];
-      v25 = [v20 voiceName];
-      v7 = [(HMDCompositeSettingLanguageValue *)v21 initWithInputLanguage:v22 outputVoiceLanguageCode:v23 outputVoiceGenderCode:v24 voiceName:v25];
+      inputLanguageCode = [v20 inputLanguageCode];
+      outputVoiceLanguageCode = [v20 outputVoiceLanguageCode];
+      outputVoiceGenderCode = [v20 outputVoiceGenderCode];
+      voiceName = [v20 voiceName];
+      v7 = [(HMDCompositeSettingLanguageValue *)v21 initWithInputLanguage:inputLanguageCode outputVoiceLanguageCode:outputVoiceLanguageCode outputVoiceGenderCode:outputVoiceGenderCode voiceName:voiceName];
     }
 
     else
@@ -127,12 +127,12 @@ LABEL_28:
         v27 = 0;
       }
 
-      v22 = v27;
+      inputLanguageCode = v27;
 
-      if (!v22)
+      if (!inputLanguageCode)
       {
         v31 = objc_autoreleasePoolPush();
-        v32 = a1;
+        selfCopy = self;
         v33 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
@@ -153,8 +153,8 @@ LABEL_28:
       }
 
       v28 = [HMDCompositeSettingVersionValue alloc];
-      v23 = [v22 version];
-      v7 = -[HMDCompositeSettingVersionValue initWithVersion:type:](v28, "initWithVersion:type:", v23, [v22 type]);
+      outputVoiceLanguageCode = [inputLanguageCode version];
+      v7 = -[HMDCompositeSettingVersionValue initWithVersion:type:](v28, "initWithVersion:type:", outputVoiceLanguageCode, [inputLanguageCode type]);
     }
 
 LABEL_27:

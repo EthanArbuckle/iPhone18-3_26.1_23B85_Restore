@@ -1,30 +1,30 @@
 @interface CRKCreateASMClassOperation
-- (BOOL)applyProperties:(id)a3 toClass:(id)a4 error:(id *)a5;
-- (BOOL)location:(id)a3 hasMatchInLocations:(id)a4;
-- (CRKCreateASMClassOperation)initWithProperties:(id)a3 requirements:(id)a4;
-- (void)constructClassWithInstructor:(id)a3;
+- (BOOL)applyProperties:(id)properties toClass:(id)class error:(id *)error;
+- (BOOL)location:(id)location hasMatchInLocations:(id)locations;
+- (CRKCreateASMClassOperation)initWithProperties:(id)properties requirements:(id)requirements;
+- (void)constructClassWithInstructor:(id)instructor;
 - (void)fetchInstructor;
 - (void)main;
-- (void)validateDesiredLocationExistsForInstructor:(id)a3;
+- (void)validateDesiredLocationExistsForInstructor:(id)instructor;
 - (void)validateParameters;
 @end
 
 @implementation CRKCreateASMClassOperation
 
-- (CRKCreateASMClassOperation)initWithProperties:(id)a3 requirements:(id)a4
+- (CRKCreateASMClassOperation)initWithProperties:(id)properties requirements:(id)requirements
 {
-  v6 = a3;
-  v7 = a4;
+  propertiesCopy = properties;
+  requirementsCopy = requirements;
   v12.receiver = self;
   v12.super_class = CRKCreateASMClassOperation;
   v8 = [(CRKCreateASMClassOperation *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [propertiesCopy copy];
     properties = v8->_properties;
     v8->_properties = v9;
 
-    objc_storeStrong(&v8->_requirements, a4);
+    objc_storeStrong(&v8->_requirements, requirements);
   }
 
   return v8;
@@ -42,22 +42,22 @@
 
 - (void)validateParameters
 {
-  v3 = [(CRKCreateASMClassOperation *)self properties];
-  v4 = [v3 location];
+  properties = [(CRKCreateASMClassOperation *)self properties];
+  location = [properties location];
 
-  if (v4)
+  if (location)
   {
-    v5 = [(CRKCreateASMClassOperation *)self properties];
-    v6 = [v5 location];
-    v7 = [v6 identifier];
+    properties2 = [(CRKCreateASMClassOperation *)self properties];
+    location2 = [properties2 location];
+    identifier = [location2 identifier];
 
-    if (v7)
+    if (identifier)
     {
-      v8 = [(CRKCreateASMClassOperation *)self properties];
-      v9 = [v8 updateProperties];
-      v10 = [v9 name];
+      properties3 = [(CRKCreateASMClassOperation *)self properties];
+      updateProperties = [properties3 updateProperties];
+      name = [updateProperties name];
 
-      if (v10)
+      if (name)
       {
 
         [(CRKCreateASMClassOperation *)self fetchInstructor];
@@ -84,13 +84,13 @@
 
 - (void)fetchInstructor
 {
-  v3 = [(CRKCreateASMClassOperation *)self requirements];
+  requirements = [(CRKCreateASMClassOperation *)self requirements];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __45__CRKCreateASMClassOperation_fetchInstructor__block_invoke;
   v4[3] = &unk_278DC2128;
   v4[4] = self;
-  [v3 currentUserWithCompletion:v4];
+  [requirements currentUserWithCompletion:v4];
 }
 
 void __45__CRKCreateASMClassOperation_fetchInstructor__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -137,19 +137,19 @@ void __45__CRKCreateASMClassOperation_fetchInstructor__block_invoke_2(uint64_t a
   }
 }
 
-- (void)validateDesiredLocationExistsForInstructor:(id)a3
+- (void)validateDesiredLocationExistsForInstructor:(id)instructor
 {
-  v4 = a3;
-  v5 = [(CRKCreateASMClassOperation *)self requirements];
-  v6 = [v4 objectID];
+  instructorCopy = instructor;
+  requirements = [(CRKCreateASMClassOperation *)self requirements];
+  objectID = [instructorCopy objectID];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __73__CRKCreateASMClassOperation_validateDesiredLocationExistsForInstructor___block_invoke;
   v8[3] = &unk_278DC32D8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v5 locationsWithManagePermissionsForUserWithObjectID:v6 completion:v8];
+  v9 = instructorCopy;
+  v7 = instructorCopy;
+  [requirements locationsWithManagePermissionsForUserWithObjectID:objectID completion:v8];
 }
 
 void __73__CRKCreateASMClassOperation_validateDesiredLocationExistsForInstructor___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -201,39 +201,39 @@ void __73__CRKCreateASMClassOperation_validateDesiredLocationExistsForInstructor
   }
 }
 
-- (void)constructClassWithInstructor:(id)a3
+- (void)constructClassWithInstructor:(id)instructor
 {
-  v4 = a3;
-  v5 = [(CRKCreateASMClassOperation *)self properties];
-  v6 = [v5 location];
-  v7 = [v6 identifier];
+  instructorCopy = instructor;
+  properties = [(CRKCreateASMClassOperation *)self properties];
+  location = [properties location];
+  identifier = [location identifier];
 
-  v8 = [(CRKCreateASMClassOperation *)self properties];
-  v9 = [v8 updateProperties];
-  v10 = [v9 name];
+  properties2 = [(CRKCreateASMClassOperation *)self properties];
+  updateProperties = [properties2 updateProperties];
+  name = [updateProperties name];
 
-  v11 = [(CRKCreateASMClassOperation *)self requirements];
-  v12 = [v11 makeClassWithLocationID:v7 name:v10];
+  requirements = [(CRKCreateASMClassOperation *)self requirements];
+  v12 = [requirements makeClassWithLocationID:identifier name:name];
 
-  v13 = [(CRKCreateASMClassOperation *)self requirements];
-  [v13 addPerson:v4 toClass:v12];
+  requirements2 = [(CRKCreateASMClassOperation *)self requirements];
+  [requirements2 addPerson:instructorCopy toClass:v12];
 
-  v14 = [(CRKCreateASMClassOperation *)self properties];
-  v15 = [v14 updateProperties];
+  properties3 = [(CRKCreateASMClassOperation *)self properties];
+  updateProperties2 = [properties3 updateProperties];
   v21 = 0;
-  v16 = [(CRKCreateASMClassOperation *)self applyProperties:v15 toClass:v12 error:&v21];
+  v16 = [(CRKCreateASMClassOperation *)self applyProperties:updateProperties2 toClass:v12 error:&v21];
   v17 = v21;
 
   if (v16)
   {
-    v18 = [(CRKCreateASMClassOperation *)self requirements];
+    requirements3 = [(CRKCreateASMClassOperation *)self requirements];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __59__CRKCreateASMClassOperation_constructClassWithInstructor___block_invoke;
     v19[3] = &unk_278DC2448;
     v19[4] = self;
     v20 = v12;
-    [v18 saveClass:v20 completion:v19];
+    [requirements3 saveClass:v20 completion:v19];
   }
 
   else
@@ -275,19 +275,19 @@ void __59__CRKCreateASMClassOperation_constructClassWithInstructor___block_invok
   }
 }
 
-- (BOOL)location:(id)a3 hasMatchInLocations:(id)a4
+- (BOOL)location:(id)location hasMatchInLocations:(id)locations
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  locationCopy = location;
+  locationsCopy = locations;
+  v7 = locationsCopy;
+  if (locationCopy)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = v6;
+    v8 = locationsCopy;
     v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
@@ -301,9 +301,9 @@ void __59__CRKCreateASMClassOperation_constructClassWithInstructor___block_invok
             objc_enumerationMutation(v8);
           }
 
-          v12 = [*(*(&v16 + 1) + 8 * i) objectID];
-          v13 = [v5 identifier];
-          v14 = [v12 isEqualToString:v13];
+          objectID = [*(*(&v16 + 1) + 8 * i) objectID];
+          identifier = [locationCopy identifier];
+          v14 = [objectID isEqualToString:identifier];
 
           if (v14)
           {
@@ -333,15 +333,15 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)applyProperties:(id)a3 toClass:(id)a4 error:(id *)a5
+- (BOOL)applyProperties:(id)properties toClass:(id)class error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  classCopy = class;
+  propertiesCopy = properties;
   v10 = [CRKClassKitClassPropertyApplicator alloc];
-  v11 = [(CRKCreateASMClassOperation *)self requirements];
-  v12 = [(CRKClassKitClassPropertyApplicator *)v10 initWithRequirements:v11];
+  requirements = [(CRKCreateASMClassOperation *)self requirements];
+  v12 = [(CRKClassKitClassPropertyApplicator *)v10 initWithRequirements:requirements];
 
-  v13 = [(CRKClassKitClassPropertyApplicator *)v12 applyProperties:v9 toClass:v8 error:a5];
+  v13 = [(CRKClassKitClassPropertyApplicator *)v12 applyProperties:propertiesCopy toClass:classCopy error:error];
 
   return v13 != 0;
 }

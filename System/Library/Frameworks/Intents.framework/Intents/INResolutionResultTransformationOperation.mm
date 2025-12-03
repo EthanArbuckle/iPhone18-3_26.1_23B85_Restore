@@ -1,5 +1,5 @@
 @interface INResolutionResultTransformationOperation
-- (INResolutionResultTransformationOperation)initWithResult:(id)a3 intent:(id)a4 intentSlotDescription:(id)a5 optionsProvider:(id)a6;
+- (INResolutionResultTransformationOperation)initWithResult:(id)result intent:(id)intent intentSlotDescription:(id)description optionsProvider:(id)provider;
 - (void)start;
 @end
 
@@ -8,16 +8,16 @@
 - (void)start
 {
   self->_executing = 1;
-  v3 = [(INResolutionResultTransformationOperation *)self result];
-  v4 = [(INResolutionResultTransformationOperation *)self intent];
-  v5 = [(INResolutionResultTransformationOperation *)self intentSlotDescription];
-  v6 = [(INResolutionResultTransformationOperation *)self optionsProvider];
+  result = [(INResolutionResultTransformationOperation *)self result];
+  intent = [(INResolutionResultTransformationOperation *)self intent];
+  intentSlotDescription = [(INResolutionResultTransformationOperation *)self intentSlotDescription];
+  optionsProvider = [(INResolutionResultTransformationOperation *)self optionsProvider];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__INResolutionResultTransformationOperation_start__block_invoke;
   v7[3] = &unk_1E7284088;
   v7[4] = self;
-  [v3 transformResolutionResultForIntent:v4 intentSlotDescription:v5 withOptionsProvider:v6 completion:v7];
+  [result transformResolutionResultForIntent:intent intentSlotDescription:intentSlotDescription withOptionsProvider:optionsProvider completion:v7];
 }
 
 void __50__INResolutionResultTransformationOperation_start__block_invoke(uint64_t a1, void *a2)
@@ -46,22 +46,22 @@ void __50__INResolutionResultTransformationOperation_start__block_invoke(uint64_
   }
 }
 
-- (INResolutionResultTransformationOperation)initWithResult:(id)a3 intent:(id)a4 intentSlotDescription:(id)a5 optionsProvider:(id)a6
+- (INResolutionResultTransformationOperation)initWithResult:(id)result intent:(id)intent intentSlotDescription:(id)description optionsProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  resultCopy = result;
+  intentCopy = intent;
+  descriptionCopy = description;
+  providerCopy = provider;
   v18.receiver = self;
   v18.super_class = INResolutionResultTransformationOperation;
   v15 = [(INResolutionResultTransformationOperation *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_result, a3);
-    objc_storeStrong(&v16->_intent, a4);
-    objc_storeStrong(&v16->_intentSlotDescription, a5);
-    objc_storeStrong(&v16->_optionsProvider, a6);
+    objc_storeStrong(&v15->_result, result);
+    objc_storeStrong(&v16->_intent, intent);
+    objc_storeStrong(&v16->_intentSlotDescription, description);
+    objc_storeStrong(&v16->_optionsProvider, provider);
   }
 
   return v16;

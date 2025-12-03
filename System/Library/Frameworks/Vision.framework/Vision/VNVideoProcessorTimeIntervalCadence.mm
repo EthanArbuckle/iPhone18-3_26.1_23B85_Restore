@@ -1,28 +1,28 @@
 @interface VNVideoProcessorTimeIntervalCadence
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VNVideoProcessorTimeIntervalCadence)initWithTimeInterval:(CFTimeInterval)timeInterval;
 - (unint64_t)hash;
-- (void)populateVCPVideoProcessorRequestConfiguration:(id)a3;
+- (void)populateVCPVideoProcessorRequestConfiguration:(id)configuration;
 @end
 
 @implementation VNVideoProcessorTimeIntervalCadence
 
-- (void)populateVCPVideoProcessorRequestConfiguration:(id)a3
+- (void)populateVCPVideoProcessorRequestConfiguration:(id)configuration
 {
   v7.receiver = self;
   v7.super_class = VNVideoProcessorTimeIntervalCadence;
-  v4 = a3;
-  [(VNVideoProcessorCadence *)&v7 populateVCPVideoProcessorRequestConfiguration:v4];
+  configurationCopy = configuration;
+  [(VNVideoProcessorCadence *)&v7 populateVCPVideoProcessorRequestConfiguration:configurationCopy];
   v5 = MEMORY[0x1E696AD98];
   [(VNVideoProcessorTimeIntervalCadence *)self timeInterval:v7.receiver];
   v6 = [v5 numberWithDouble:?];
-  [v4 setObject:v6 forKeyedSubscript:@"VNVideoProcessingOptionTimeInterval"];
+  [configurationCopy setObject:v6 forKeyedSubscript:@"VNVideoProcessingOptionTimeInterval"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -32,7 +32,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(VNVideoProcessorTimeIntervalCadence *)self timeInterval];
       v7 = v6;
       [(VNVideoProcessorTimeIntervalCadence *)v5 timeInterval];

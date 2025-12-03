@@ -1,19 +1,19 @@
 @interface PFStoryRecipeSongAssetFactory
-+ (id)createAssetWithCategory:(int64_t)a3 subcategory:(int64_t)a4 catalog:(id)a5 songID:(id)a6 title:(id)a7 subtitle:(id)a8 colorGradeCategory:(id)a9;
++ (id)createAssetWithCategory:(int64_t)category subcategory:(int64_t)subcategory catalog:(id)catalog songID:(id)d title:(id)title subtitle:(id)subtitle colorGradeCategory:(id)gradeCategory;
 @end
 
 @implementation PFStoryRecipeSongAssetFactory
 
-+ (id)createAssetWithCategory:(int64_t)a3 subcategory:(int64_t)a4 catalog:(id)a5 songID:(id)a6 title:(id)a7 subtitle:(id)a8 colorGradeCategory:(id)a9
++ (id)createAssetWithCategory:(int64_t)category subcategory:(int64_t)subcategory catalog:(id)catalog songID:(id)d title:(id)title subtitle:(id)subtitle colorGradeCategory:(id)gradeCategory
 {
-  v15 = a9;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = [[PFStoryConcreteRecipeSongAsset alloc] initWithIdentifier:0 category:a3 subcategory:a4 catalog:v19 songID:v18 title:v17 subtitle:v16];
+  gradeCategoryCopy = gradeCategory;
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  dCopy = d;
+  catalogCopy = catalog;
+  v20 = [[PFStoryConcreteRecipeSongAsset alloc] initWithIdentifier:0 category:category subcategory:subcategory catalog:catalogCopy songID:dCopy title:titleCopy subtitle:subtitleCopy];
 
-  [(PFStoryConcreteRecipeSongAsset *)v20 setColorGradeCategory:v15];
+  [(PFStoryConcreteRecipeSongAsset *)v20 setColorGradeCategory:gradeCategoryCopy];
 
   return v20;
 }

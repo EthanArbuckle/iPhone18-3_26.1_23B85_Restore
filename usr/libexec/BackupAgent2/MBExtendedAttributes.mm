@@ -1,25 +1,25 @@
 @interface MBExtendedAttributes
-+ (BOOL)hasAttributesForPath:(id)a3 error:(id *)a4;
-+ (BOOL)removeAttributeForKey:(id)a3 forFD:(int)a4 error:(id *)a5;
-+ (BOOL)removeAttributeForKey:(id)a3 forPathFSR:(const char *)a4 error:(id *)a5;
-+ (BOOL)setAttributes:(id)a3 forPathFSR:(const char *)a4 error:(id *)a5;
-+ (BOOL)setValue:(id)a3 forKey:(id)a4 forFD:(int)a5 error:(id *)a6;
-+ (BOOL)setValue:(id)a3 forKey:(id)a4 forPathFSR:(const char *)a5 error:(id *)a6;
-+ (id)attributesForPathFSR:(const char *)a3 error:(id *)a4;
-+ (id)keysForFD:(int)a3 error:(id *)a4;
-+ (id)keysForPathFSR:(const char *)a3 error:(id *)a4;
-+ (id)valueForKey:(id)a3 forPathFSR:(const char *)a4 error:(id *)a5;
-+ (int)xattrOptionsForFD:(int)a3;
-+ (int)xattrOptionsForPathFSR:(const char *)a3;
-+ (unint64_t)sizeOfAttributes:(id)a3;
++ (BOOL)hasAttributesForPath:(id)path error:(id *)error;
++ (BOOL)removeAttributeForKey:(id)key forFD:(int)d error:(id *)error;
++ (BOOL)removeAttributeForKey:(id)key forPathFSR:(const char *)r error:(id *)error;
++ (BOOL)setAttributes:(id)attributes forPathFSR:(const char *)r error:(id *)error;
++ (BOOL)setValue:(id)value forKey:(id)key forFD:(int)d error:(id *)error;
++ (BOOL)setValue:(id)value forKey:(id)key forPathFSR:(const char *)r error:(id *)error;
++ (id)attributesForPathFSR:(const char *)r error:(id *)error;
++ (id)keysForFD:(int)d error:(id *)error;
++ (id)keysForPathFSR:(const char *)r error:(id *)error;
++ (id)valueForKey:(id)key forPathFSR:(const char *)r error:(id *)error;
++ (int)xattrOptionsForFD:(int)d;
++ (int)xattrOptionsForPathFSR:(const char *)r;
++ (unint64_t)sizeOfAttributes:(id)attributes;
 @end
 
 @implementation MBExtendedAttributes
 
-+ (int)xattrOptionsForPathFSR:(const char *)a3
++ (int)xattrOptionsForPathFSR:(const char *)r
 {
   memset(&v12, 0, sizeof(v12));
-  if (lstat(a3, &v12))
+  if (lstat(r, &v12))
   {
     v4 = *__error();
     v5 = MBGetDefaultLog();
@@ -30,7 +30,7 @@
       {
         v7 = *__error();
         *buf = 136315394;
-        v14 = a3;
+        rCopy2 = r;
         v15 = 1024;
         v16 = v7;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "Failed to lstat %s: %{errno}d", buf, 0x12u);
@@ -44,7 +44,7 @@ LABEL_10:
     {
       v9 = *__error();
       *buf = 136315394;
-      v14 = a3;
+      rCopy2 = r;
       v15 = 1024;
       v16 = v9;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "Failed to lstat %s: %{errno}d", buf, 0x12u);
@@ -66,10 +66,10 @@ LABEL_10:
   }
 }
 
-+ (int)xattrOptionsForFD:(int)a3
++ (int)xattrOptionsForFD:(int)d
 {
   memset(&v8, 0, sizeof(v8));
-  if (!fstat(a3, &v8))
+  if (!fstat(d, &v8))
   {
     return (v8.st_flags >> 25) & 0x20;
   }
@@ -79,7 +79,7 @@ LABEL_10:
   {
     v5 = *__error();
     *buf = 67109376;
-    v10 = a3;
+    dCopy = d;
     v11 = 1024;
     v12 = v5;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_ERROR, "Failed to stat fd %d: %{errno}d", buf, 0xEu);
@@ -90,16 +90,16 @@ LABEL_10:
   return 0;
 }
 
-+ (BOOL)hasAttributesForPath:(id)a3 error:(id *)a4
++ (BOOL)hasAttributesForPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  v7 = listxattr([v6 fileSystemRepresentation], 0, 0, objc_msgSend(a1, "xattrOptionsForPathFSR:", objc_msgSend(v6, "fileSystemRepresentation")));
+  pathCopy = path;
+  v7 = listxattr([pathCopy fileSystemRepresentation], 0, 0, objc_msgSend(self, "xattrOptionsForPathFSR:", objc_msgSend(pathCopy, "fileSystemRepresentation")));
   if (v7 < 0 && *__error() != 2)
   {
-    if (a4)
+    if (error)
     {
-      [MBError posixErrorWithPath:v6 format:@"listxattr error"];
-      *a4 = v8 = 0;
+      [MBError posixErrorWithPath:pathCopy format:@"listxattr error"];
+      *error = v8 = 0;
     }
 
     else
@@ -110,9 +110,9 @@ LABEL_10:
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = 0;
+      *error = 0;
     }
 
     v8 = v7 > 0;
@@ -121,22 +121,22 @@ LABEL_10:
   return v8;
 }
 
-+ (id)keysForPathFSR:(const char *)a3 error:(id *)a4
++ (id)keysForPathFSR:(const char *)r error:(id *)error
 {
-  v6 = [a1 xattrOptionsForPathFSR:?];
-  v7 = listxattr(a3, 0, 0, v6);
+  v6 = [self xattrOptionsForPathFSR:?];
+  v7 = listxattr(r, 0, 0, v6);
   v8 = v7;
   if (v7 >= 1)
   {
     v9 = [NSMutableArray arrayWithCapacity:0];
     v10 = [NSMutableData dataWithLength:v8];
-    v11 = listxattr(a3, [v10 mutableBytes], v8, v6);
+    v11 = listxattr(r, [v10 mutableBytes], v8, v6);
     if (v11 < 0)
     {
-      if (a4)
+      if (error)
       {
-        v17 = [NSString mb_stringWithFileSystemRepresentation:a3];
-        *a4 = [MBError posixErrorWithPath:v17 format:@"listxattr error"];
+        v17 = [NSString mb_stringWithFileSystemRepresentation:r];
+        *error = [MBError posixErrorWithPath:v17 format:@"listxattr error"];
       }
 
       v16 = 0;
@@ -151,10 +151,10 @@ LABEL_10:
         v13 = 0;
         do
         {
-          v14 = [v10 bytes];
-          v15 = [NSString stringWithUTF8String:&v14[v13]];
+          bytes = [v10 bytes];
+          v15 = [NSString stringWithUTF8String:&bytes[v13]];
           [v9 addObject:v15];
-          v13 += strlen(&v14[v13]) + 1;
+          v13 += strlen(&bytes[v13]) + 1;
         }
 
         while (v13 < v12);
@@ -172,11 +172,11 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  if (a4)
+  if (error)
   {
-    v9 = [NSString mb_stringWithFileSystemRepresentation:a3];
+    v9 = [NSString mb_stringWithFileSystemRepresentation:r];
     [MBError posixErrorWithPath:v9 format:@"listxattr error"];
-    *a4 = v16 = 0;
+    *error = v16 = 0;
 LABEL_13:
 
     goto LABEL_14;
@@ -188,19 +188,19 @@ LABEL_14:
   return v16;
 }
 
-+ (id)keysForFD:(int)a3 error:(id *)a4
++ (id)keysForFD:(int)d error:(id *)error
 {
-  v6 = [a1 xattrOptionsForFD:?];
-  v7 = flistxattr(a3, 0, 0, v6);
+  v6 = [self xattrOptionsForFD:?];
+  v7 = flistxattr(d, 0, 0, v6);
   v8 = v7;
   if (v7 < 1)
   {
     if (v7 < 0)
     {
-      if (a4)
+      if (error)
       {
         [MBError posixErrorWithFormat:@"flistxattr error"];
-        *a4 = v16 = 0;
+        *error = v16 = 0;
       }
 
       else
@@ -219,13 +219,13 @@ LABEL_14:
   {
     v9 = [NSMutableArray arrayWithCapacity:0];
     v10 = [NSMutableData dataWithLength:v8];
-    v11 = flistxattr(a3, [v10 mutableBytes], v8, v6);
+    v11 = flistxattr(d, [v10 mutableBytes], v8, v6);
     if (v11 < 0)
     {
-      if (a4)
+      if (error)
       {
         [MBError posixErrorWithFormat:@"flistxattr error"];
-        *a4 = v16 = 0;
+        *error = v16 = 0;
       }
 
       else
@@ -243,10 +243,10 @@ LABEL_14:
         v13 = 0;
         do
         {
-          v14 = [v10 bytes];
-          v15 = [NSString stringWithUTF8String:&v14[v13]];
+          bytes = [v10 bytes];
+          v15 = [NSString stringWithUTF8String:&bytes[v13]];
           [v9 addObject:v15];
-          v13 += strlen(&v14[v13]) + 1;
+          v13 += strlen(&bytes[v13]) + 1;
         }
 
         while (v13 < v12);
@@ -259,23 +259,23 @@ LABEL_14:
   return v16;
 }
 
-+ (id)valueForKey:(id)a3 forPathFSR:(const char *)a4 error:(id *)a5
++ (id)valueForKey:(id)key forPathFSR:(const char *)r error:(id *)error
 {
-  v9 = a3;
-  v10 = [a3 UTF8String];
-  v11 = [a1 xattrOptionsForPathFSR:a4];
-  v12 = getxattr(a4, v10, 0, 0, 0, v11);
+  keyCopy = key;
+  uTF8String = [key UTF8String];
+  v11 = [self xattrOptionsForPathFSR:r];
+  v12 = getxattr(r, uTF8String, 0, 0, 0, v11);
   if ((v12 & 0x8000000000000000) == 0)
   {
     v13 = v12;
     v14 = [NSMutableData dataWithLength:v12];
-    v15 = getxattr(a4, v10, [v14 mutableBytes], v13, 0, v11);
+    v15 = getxattr(r, uTF8String, [v14 mutableBytes], v13, 0, v11);
     if (v15 < 0)
     {
-      if (a5)
+      if (error)
       {
-        v17 = [NSString mb_stringWithFileSystemRepresentation:a4];
-        *a5 = [MBError posixErrorWithPath:v17 format:@"getxattr error"];
+        v17 = [NSString mb_stringWithFileSystemRepresentation:r];
+        *error = [MBError posixErrorWithPath:v17 format:@"getxattr error"];
       }
 
       v16 = 0;
@@ -291,11 +291,11 @@ LABEL_14:
     goto LABEL_9;
   }
 
-  if (a5)
+  if (error)
   {
-    v14 = [NSString mb_stringWithFileSystemRepresentation:a4];
+    v14 = [NSString mb_stringWithFileSystemRepresentation:r];
     [MBError posixErrorWithPath:v14 format:@"getxattr error"];
-    *a5 = v16 = 0;
+    *error = v16 = 0;
 LABEL_9:
 
     goto LABEL_10;
@@ -307,7 +307,7 @@ LABEL_10:
   return v16;
 }
 
-+ (id)attributesForPathFSR:(const char *)a3 error:(id *)a4
++ (id)attributesForPathFSR:(const char *)r error:(id *)error
 {
   v6 = [MBExtendedAttributes keysForPathFSR:"keysForPathFSR:error:" error:?];
   v7 = v6;
@@ -315,7 +315,7 @@ LABEL_10:
   {
     if ([v6 count])
     {
-      v24 = a4;
+      errorCopy = error;
       v8 = [NSMutableDictionary dictionaryWithCapacity:0];
       v27 = 0u;
       v28 = 0u;
@@ -340,7 +340,7 @@ LABEL_5:
 
           v15 = *(*(&v27 + 1) + 8 * v14);
           v26 = 0;
-          v16 = [p_info + 261 valueForKey:v15 forPathFSR:a3 error:{&v26, v22, v23}];
+          v16 = [p_info + 261 valueForKey:v15 forPathFSR:r error:{&v26, v22, rCopy4}];
           v17 = v26;
           if (!v16)
           {
@@ -376,20 +376,20 @@ LABEL_17:
           *buf = 138412546;
           v32 = v15;
           v33 = 2080;
-          v34 = a3;
+          rCopy3 = r;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Extended attribute %@ removed while getting all attributes of %s", buf, 0x16u);
           v22 = v15;
-          v23 = a3;
+          rCopy4 = r;
         }
 
         else
         {
           if (![MBError isError:v17 withCode:24])
           {
-            if (v24)
+            if (errorCopy)
             {
               v20 = v17;
-              *v24 = v17;
+              *errorCopy = v17;
             }
 
             v19 = 0;
@@ -405,10 +405,10 @@ LABEL_17:
           *buf = 138412546;
           v32 = v15;
           v33 = 2080;
-          v34 = a3;
+          rCopy3 = r;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Skipping -- unable to read extended attribute %@ of %s", buf, 0x16u);
           v22 = v15;
-          v23 = a3;
+          rCopy4 = r;
         }
 
         _MBLog();
@@ -436,55 +436,55 @@ LABEL_26:
   return v19;
 }
 
-+ (BOOL)setValue:(id)a3 forKey:(id)a4 forPathFSR:(const char *)a5 error:(id *)a6
++ (BOOL)setValue:(id)value forKey:(id)key forPathFSR:(const char *)r error:(id *)error
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [a4 UTF8String];
-  v13 = [v11 bytes];
-  v14 = [v11 length];
+  keyCopy = key;
+  valueCopy = value;
+  uTF8String = [key UTF8String];
+  bytes = [valueCopy bytes];
+  v14 = [valueCopy length];
 
-  v15 = setxattr(a5, v12, v13, v14, 0, 1);
+  v15 = setxattr(r, uTF8String, bytes, v14, 0, 1);
   v16 = v15;
-  if (a6 && v15)
+  if (error && v15)
   {
-    v17 = [NSString mb_stringWithFileSystemRepresentation:a5];
-    *a6 = [MBError posixErrorWithPath:v17 format:@"setxattr error"];
+    v17 = [NSString mb_stringWithFileSystemRepresentation:r];
+    *error = [MBError posixErrorWithPath:v17 format:@"setxattr error"];
   }
 
   return v16 == 0;
 }
 
-+ (BOOL)setValue:(id)a3 forKey:(id)a4 forFD:(int)a5 error:(id *)a6
++ (BOOL)setValue:(id)value forKey:(id)key forFD:(int)d error:(id *)error
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [a4 UTF8String];
-  v13 = [v11 bytes];
-  v14 = [v11 length];
+  keyCopy = key;
+  valueCopy = value;
+  uTF8String = [key UTF8String];
+  bytes = [valueCopy bytes];
+  v14 = [valueCopy length];
 
-  v15 = fsetxattr(a5, v12, v13, v14, 0, 0);
+  v15 = fsetxattr(d, uTF8String, bytes, v14, 0, 0);
   v16 = v15;
-  if (a6 && v15)
+  if (error && v15)
   {
-    *a6 = [MBError posixErrorWithFormat:@"fsetxattr error"];
+    *error = [MBError posixErrorWithFormat:@"fsetxattr error"];
   }
 
   return v16 == 0;
 }
 
-+ (BOOL)setAttributes:(id)a3 forPathFSR:(const char *)a4 error:(id *)a5
++ (BOOL)setAttributes:(id)attributes forPathFSR:(const char *)r error:(id *)error
 {
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = a3;
-  v8 = [v7 countByEnumeratingWithState:&v26 objects:v38 count:16];
+  attributesCopy = attributes;
+  v8 = [attributesCopy countByEnumeratingWithState:&v26 objects:v38 count:16];
   if (v8)
   {
     v9 = v8;
-    v25 = a5;
+    errorCopy = error;
     v10 = *v27;
     while (2)
     {
@@ -492,36 +492,36 @@ LABEL_26:
       {
         if (*v27 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(attributesCopy);
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
-        v13 = [v7 objectForKeyedSubscript:{v12, v21, v22, v23, v24}];
+        v13 = [attributesCopy objectForKeyedSubscript:{v12, rCopy4, rCopy2, v23, v24}];
         v14 = MBGetDefaultLog();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
           v15 = [v13 length];
           *buf = 138412802;
-          v31 = v12;
+          rCopy3 = v12;
           v32 = 2080;
-          v33 = a4;
+          rCopy = r;
           v34 = 2048;
           v35 = v15;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Setting %@ xattr at %s (%ld)", buf, 0x20u);
-          v22 = a4;
+          rCopy2 = r;
           v23 = [v13 length];
-          v21 = v12;
+          rCopy4 = v12;
           _MBLog();
         }
 
-        if (setxattr(a4, [v12 UTF8String], objc_msgSend(v13, "bytes"), objc_msgSend(v13, "length"), 0, 1))
+        if (setxattr(r, [v12 UTF8String], objc_msgSend(v13, "bytes"), objc_msgSend(v13, "length"), 0, 1))
         {
           if (*__error() != 1 || ![v12 isEqualToString:@"com.apple.FinderInfo"])
           {
-            if (v25)
+            if (errorCopy)
             {
-              v19 = [NSString mb_stringWithFileSystemRepresentation:a4];
-              *v25 = [MBError posixErrorWithPath:v19 format:@"setxattr error"];
+              v19 = [NSString mb_stringWithFileSystemRepresentation:r];
+              *errorCopy = [MBError posixErrorWithPath:v19 format:@"setxattr error"];
             }
 
             v18 = 0;
@@ -533,9 +533,9 @@ LABEL_26:
           {
             v17 = *__error();
             *buf = 136315906;
-            v31 = a4;
+            rCopy3 = r;
             v32 = 2112;
-            v33 = v12;
+            rCopy = v12;
             v34 = 2112;
             v35 = v13;
             v36 = 1024;
@@ -543,14 +543,14 @@ LABEL_26:
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "setxattr(%s, %@, %@) error: %{errno}d", buf, 0x26u);
             v23 = v13;
             v24 = *__error();
-            v21 = a4;
-            v22 = v12;
+            rCopy4 = r;
+            rCopy2 = v12;
             _MBLog();
           }
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v26 objects:v38 count:16];
+      v9 = [attributesCopy countByEnumeratingWithState:&v26 objects:v38 count:16];
       if (v9)
       {
         continue;
@@ -566,39 +566,39 @@ LABEL_20:
   return v18;
 }
 
-+ (BOOL)removeAttributeForKey:(id)a3 forPathFSR:(const char *)a4 error:(id *)a5
++ (BOOL)removeAttributeForKey:(id)key forPathFSR:(const char *)r error:(id *)error
 {
-  v7 = removexattr(a4, [a3 UTF8String], 1);
+  v7 = removexattr(r, [key UTF8String], 1);
   v8 = v7;
-  if (a5 && v7)
+  if (error && v7)
   {
-    v9 = [NSString mb_stringWithFileSystemRepresentation:a4];
-    *a5 = [MBError posixErrorWithPath:v9 format:@"removexattr error"];
+    v9 = [NSString mb_stringWithFileSystemRepresentation:r];
+    *error = [MBError posixErrorWithPath:v9 format:@"removexattr error"];
   }
 
   return v8 == 0;
 }
 
-+ (BOOL)removeAttributeForKey:(id)a3 forFD:(int)a4 error:(id *)a5
++ (BOOL)removeAttributeForKey:(id)key forFD:(int)d error:(id *)error
 {
-  v6 = fremovexattr(a4, [a3 UTF8String], 0);
+  v6 = fremovexattr(d, [key UTF8String], 0);
   v7 = v6;
-  if (a5 && v6)
+  if (error && v6)
   {
-    *a5 = [MBError posixErrorWithFormat:@"fremovexattr error"];
+    *error = [MBError posixErrorWithFormat:@"fremovexattr error"];
   }
 
   return v7 == 0;
 }
 
-+ (unint64_t)sizeOfAttributes:(id)a3
++ (unint64_t)sizeOfAttributes:(id)attributes
 {
-  v3 = a3;
+  attributesCopy = attributes;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [attributesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -610,16 +610,16 @@ LABEL_20:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(attributesCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
         v10 = &v6[[v9 lengthOfBytesUsingEncoding:4]];
-        v11 = [v3 objectForKeyedSubscript:v9];
+        v11 = [attributesCopy objectForKeyedSubscript:v9];
         v6 = [v11 length] + v10;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [attributesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);

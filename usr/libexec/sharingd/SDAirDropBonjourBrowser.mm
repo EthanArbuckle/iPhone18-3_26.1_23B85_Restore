@@ -1,11 +1,11 @@
 @interface SDAirDropBonjourBrowser
 - (_TtC16DaemoniOSLibrary23SDAirDropBonjourBrowser)init;
-- (void)wirelessBluetoothStateChangedWithNotification:(id)a3;
+- (void)wirelessBluetoothStateChangedWithNotification:(id)notification;
 @end
 
 @implementation SDAirDropBonjourBrowser
 
-- (void)wirelessBluetoothStateChangedWithNotification:(id)a3
+- (void)wirelessBluetoothStateChangedWithNotification:(id)notification
 {
   v4 = sub_10028088C(&qword_100976160, &qword_1007F8770);
   v5 = *(*(v4 - 8) + 64);
@@ -20,7 +20,7 @@
   v13 = type metadata accessor for TaskPriority();
   (*(*(v13 - 8) + 56))(v7, 1, 1, v13);
   v14 = qword_1009735E0;
-  v15 = self;
+  selfCopy = self;
   if (v14 != -1)
   {
     swift_once();
@@ -31,7 +31,7 @@
   v18 = swift_allocObject();
   v18[2] = v16;
   v18[3] = v17;
-  v18[4] = v15;
+  v18[4] = selfCopy;
 
   sub_1002B3098(0, 0, v7, &unk_100806EE8, v18);
 

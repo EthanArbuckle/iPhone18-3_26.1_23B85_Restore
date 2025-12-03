@@ -25,31 +25,31 @@
 - (int64_t)spellCheckingType;
 - (void)_createControllerOutputIfNecessary;
 - (void)_didPerformOutputOperation;
-- (void)_handleInputViewControllerState:(id)a3;
-- (void)_setHasDictation:(BOOL)a3;
-- (void)_setInputModeList:(int64_t)a3 touchBegan:(double)a4 fromLocation:(CGPoint)a5 updatePoint:(CGPoint)a6;
-- (void)_setPrimaryLanguage:(id)a3;
+- (void)_handleInputViewControllerState:(id)state;
+- (void)_setHasDictation:(BOOL)dictation;
+- (void)_setInputModeList:(int64_t)list touchBegan:(double)began fromLocation:(CGPoint)location updatePoint:(CGPoint)point;
+- (void)_setPrimaryLanguage:(id)language;
 - (void)_setProceedShouldReturnIfPossibleForASP;
 - (void)_setShouldAdvanceInputMode;
 - (void)_setShouldDismiss;
-- (void)adjustTextPositionByCharacterOffset:(int64_t)a3;
+- (void)adjustTextPositionByCharacterOffset:(int64_t)offset;
 - (void)deleteBackward;
-- (void)insertText:(id)a3;
-- (void)setForwardingInterface:(id)a3;
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4;
+- (void)insertText:(id)text;
+- (void)setForwardingInterface:(id)interface;
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range;
 - (void)unmarkText;
 @end
 
 @implementation _UITextDocumentInterface
 
-- (void)setForwardingInterface:(id)a3
+- (void)setForwardingInterface:(id)interface
 {
   v6.receiver = self;
   v6.super_class = _UITextDocumentInterface;
-  [(UIInputViewControllerInterface *)&v6 setForwardingInterface:a3];
-  v4 = [(UIInputViewControllerInterface *)self forwardingInterface];
-  v5 = [(_UITextDocumentInterface *)self _controllerState];
-  [v4 _handleInputViewControllerState:v5];
+  [(UIInputViewControllerInterface *)&v6 setForwardingInterface:interface];
+  forwardingInterface = [(UIInputViewControllerInterface *)self forwardingInterface];
+  _controllerState = [(_UITextDocumentInterface *)self _controllerState];
+  [forwardingInterface _handleInputViewControllerState:_controllerState];
 }
 
 - (_UIInputViewControllerState)_controllerState
@@ -94,89 +94,89 @@
 
 - (TIDocumentState)_documentState
 {
-  v2 = [(_UITextDocumentInterface *)self _controllerState];
-  v3 = [v2 documentState];
+  _controllerState = [(_UITextDocumentInterface *)self _controllerState];
+  documentState = [_controllerState documentState];
 
-  return v3;
+  return documentState;
 }
 
 - (TITextInputTraits)_textInputTraits
 {
-  v2 = [(_UITextDocumentInterface *)self _controllerState];
-  v3 = [v2 textInputTraits];
+  _controllerState = [(_UITextDocumentInterface *)self _controllerState];
+  textInputTraits = [_controllerState textInputTraits];
 
-  return v3;
+  return textInputTraits;
 }
 
 - (int64_t)autocapitalizationType
 {
-  v2 = [(_UITextDocumentInterface *)self _textInputTraits];
-  v3 = [v2 autocapitalizationType];
+  _textInputTraits = [(_UITextDocumentInterface *)self _textInputTraits];
+  autocapitalizationType = [_textInputTraits autocapitalizationType];
 
-  return v3;
+  return autocapitalizationType;
 }
 
 - (int64_t)autocorrectionType
 {
-  v2 = [(_UITextDocumentInterface *)self _textInputTraits];
-  v3 = [v2 autocorrectionType];
+  _textInputTraits = [(_UITextDocumentInterface *)self _textInputTraits];
+  autocorrectionType = [_textInputTraits autocorrectionType];
 
-  return v3;
+  return autocorrectionType;
 }
 
 - (int64_t)spellCheckingType
 {
-  v2 = [(_UITextDocumentInterface *)self _textInputTraits];
-  v3 = [v2 spellCheckingType];
+  _textInputTraits = [(_UITextDocumentInterface *)self _textInputTraits];
+  spellCheckingType = [_textInputTraits spellCheckingType];
 
-  return v3;
+  return spellCheckingType;
 }
 
 - (int64_t)keyboardType
 {
   v2 = MEMORY[0x1E69D96E0];
-  v3 = [(_UITextDocumentInterface *)self _textInputTraits];
-  v4 = [v2 translateToPublicKeyboardType:{objc_msgSend(v3, "keyboardType")}];
+  _textInputTraits = [(_UITextDocumentInterface *)self _textInputTraits];
+  v4 = [v2 translateToPublicKeyboardType:{objc_msgSend(_textInputTraits, "keyboardType")}];
 
   return v4;
 }
 
 - (int64_t)keyboardAppearance
 {
-  v2 = [(_UITextDocumentInterface *)self _textInputTraits];
-  v3 = +[UITextInputTraits translateToPublicUIKeyboardAppearance:](UITextInputTraits, "translateToPublicUIKeyboardAppearance:", [v2 keyboardAppearance]);
+  _textInputTraits = [(_UITextDocumentInterface *)self _textInputTraits];
+  v3 = +[UITextInputTraits translateToPublicUIKeyboardAppearance:](UITextInputTraits, "translateToPublicUIKeyboardAppearance:", [_textInputTraits keyboardAppearance]);
 
   return v3;
 }
 
 - (int64_t)returnKeyType
 {
-  v2 = [(_UITextDocumentInterface *)self _textInputTraits];
-  v3 = [v2 returnKeyType];
+  _textInputTraits = [(_UITextDocumentInterface *)self _textInputTraits];
+  returnKeyType = [_textInputTraits returnKeyType];
 
-  return v3;
+  return returnKeyType;
 }
 
 - (BOOL)enablesReturnKeyAutomatically
 {
-  v2 = [(_UITextDocumentInterface *)self _textInputTraits];
-  v3 = [v2 enablesReturnKeyAutomatically];
+  _textInputTraits = [(_UITextDocumentInterface *)self _textInputTraits];
+  enablesReturnKeyAutomatically = [_textInputTraits enablesReturnKeyAutomatically];
 
-  return v3;
+  return enablesReturnKeyAutomatically;
 }
 
 - (NSString)textContentType
 {
-  v2 = [(_UITextDocumentInterface *)self _textInputTraits];
-  v3 = [v2 textContentType];
+  _textInputTraits = [(_UITextDocumentInterface *)self _textInputTraits];
+  textContentType = [_textInputTraits textContentType];
 
-  return v3;
+  return textContentType;
 }
 
 - (int64_t)smartQuotesType
 {
-  v2 = [(_UITextDocumentInterface *)self _textInputTraits];
-  if ([v2 smartQuotesEnabled])
+  _textInputTraits = [(_UITextDocumentInterface *)self _textInputTraits];
+  if ([_textInputTraits smartQuotesEnabled])
   {
     v3 = 2;
   }
@@ -191,8 +191,8 @@
 
 - (int64_t)smartDashesType
 {
-  v2 = [(_UITextDocumentInterface *)self _textInputTraits];
-  if ([v2 smartDashesEnabled])
+  _textInputTraits = [(_UITextDocumentInterface *)self _textInputTraits];
+  if ([_textInputTraits smartDashesEnabled])
   {
     v3 = 2;
   }
@@ -207,8 +207,8 @@
 
 - (int64_t)smartInsertDeleteType
 {
-  v2 = [(_UITextDocumentInterface *)self _textInputTraits];
-  if ([v2 smartInsertDeleteEnabled])
+  _textInputTraits = [(_UITextDocumentInterface *)self _textInputTraits];
+  if ([_textInputTraits smartInsertDeleteEnabled])
   {
     v3 = 2;
   }
@@ -223,23 +223,23 @@
 
 - (BOOL)hasText
 {
-  v2 = [(_UITextDocumentInterface *)self _documentState];
-  v3 = [v2 documentIsEmpty];
+  _documentState = [(_UITextDocumentInterface *)self _documentState];
+  documentIsEmpty = [_documentState documentIsEmpty];
 
-  return v3 ^ 1;
+  return documentIsEmpty ^ 1;
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   [(_UITextDocumentInterface *)self _willPerformOutputOperation];
-  v5 = [(_UITextDocumentInterface *)self _documentState];
-  v6 = [v5 documentStateAfterInsertingText:v4];
-  v7 = [(_UITextDocumentInterface *)self _controllerState];
-  [v7 setDocumentState:v6];
+  _documentState = [(_UITextDocumentInterface *)self _documentState];
+  v6 = [_documentState documentStateAfterInsertingText:textCopy];
+  _controllerState = [(_UITextDocumentInterface *)self _controllerState];
+  [_controllerState setDocumentState:v6];
 
-  v8 = [(_UITextDocumentInterface *)self _controllerOutput];
-  [v8 insertText:v4];
+  _controllerOutput = [(_UITextDocumentInterface *)self _controllerOutput];
+  [_controllerOutput insertText:textCopy];
 
   [(_UITextDocumentInterface *)self _didPerformOutputOperation];
 }
@@ -247,36 +247,36 @@
 - (void)deleteBackward
 {
   [(_UITextDocumentInterface *)self _willPerformOutputOperation];
-  v3 = [(_UITextDocumentInterface *)self _documentState];
-  v4 = [v3 documentStateAfterDeletingBackward];
-  v5 = [(_UITextDocumentInterface *)self _controllerState];
-  [v5 setDocumentState:v4];
+  _documentState = [(_UITextDocumentInterface *)self _documentState];
+  documentStateAfterDeletingBackward = [_documentState documentStateAfterDeletingBackward];
+  _controllerState = [(_UITextDocumentInterface *)self _controllerState];
+  [_controllerState setDocumentState:documentStateAfterDeletingBackward];
 
-  v6 = [(_UITextDocumentInterface *)self _controllerOutput];
-  [v6 deleteBackward];
+  _controllerOutput = [(_UITextDocumentInterface *)self _controllerOutput];
+  [_controllerOutput deleteBackward];
 
   [(_UITextDocumentInterface *)self _didPerformOutputOperation];
 }
 
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
   [(_UITextDocumentInterface *)self _willPerformOutputOperation];
-  v8 = [(_UITextDocumentInterface *)self _documentState];
-  v9 = [v8 documentStateAfterSettingMarkedText:v7 selectedRange:{location, length}];
-  v10 = [(_UITextDocumentInterface *)self _controllerState];
-  [v10 setDocumentState:v9];
+  _documentState = [(_UITextDocumentInterface *)self _documentState];
+  v9 = [_documentState documentStateAfterSettingMarkedText:textCopy selectedRange:{location, length}];
+  _controllerState = [(_UITextDocumentInterface *)self _controllerState];
+  [_controllerState setDocumentState:v9];
 
-  v11 = [(_UITextDocumentInterface *)self _controllerOutput];
-  [v11 setSetMarkedText:1];
+  _controllerOutput = [(_UITextDocumentInterface *)self _controllerOutput];
+  [_controllerOutput setSetMarkedText:1];
 
-  v12 = [(_UITextDocumentInterface *)self _controllerOutput];
-  [v12 setMarkedText:v7];
+  _controllerOutput2 = [(_UITextDocumentInterface *)self _controllerOutput];
+  [_controllerOutput2 setMarkedText:textCopy];
 
-  v13 = [(_UITextDocumentInterface *)self _controllerOutput];
-  [v13 setSelectedRange:{location, length}];
+  _controllerOutput3 = [(_UITextDocumentInterface *)self _controllerOutput];
+  [_controllerOutput3 setSelectedRange:{location, length}];
 
   [(_UITextDocumentInterface *)self _didPerformOutputOperation];
 }
@@ -284,120 +284,120 @@
 - (void)unmarkText
 {
   [(_UITextDocumentInterface *)self _willPerformOutputOperation];
-  v3 = [(_UITextDocumentInterface *)self _controllerState];
-  v4 = [v3 documentState];
-  v5 = [v4 documentStateAfterUnmarkingText];
-  v6 = [(_UITextDocumentInterface *)self _controllerState];
-  [v6 setDocumentState:v5];
+  _controllerState = [(_UITextDocumentInterface *)self _controllerState];
+  documentState = [_controllerState documentState];
+  documentStateAfterUnmarkingText = [documentState documentStateAfterUnmarkingText];
+  _controllerState2 = [(_UITextDocumentInterface *)self _controllerState];
+  [_controllerState2 setDocumentState:documentStateAfterUnmarkingText];
 
-  v7 = [(_UITextDocumentInterface *)self _controllerOutput];
-  [v7 setUnmarkText:1];
+  _controllerOutput = [(_UITextDocumentInterface *)self _controllerOutput];
+  [_controllerOutput setUnmarkText:1];
 
   [(_UITextDocumentInterface *)self _didPerformOutputOperation];
 }
 
 - (NSString)documentContextBeforeInput
 {
-  v3 = [(_UITextDocumentInterface *)self _documentState];
-  v4 = [v3 contextBeforeInput];
-  if ([v4 length])
+  _documentState = [(_UITextDocumentInterface *)self _documentState];
+  contextBeforeInput = [_documentState contextBeforeInput];
+  if ([contextBeforeInput length])
   {
-    v5 = [(_UITextDocumentInterface *)self _documentState];
-    v6 = [v5 contextBeforeInput];
+    _documentState2 = [(_UITextDocumentInterface *)self _documentState];
+    contextBeforeInput2 = [_documentState2 contextBeforeInput];
   }
 
   else
   {
-    v6 = 0;
+    contextBeforeInput2 = 0;
   }
 
-  return v6;
+  return contextBeforeInput2;
 }
 
 - (NSString)documentContextAfterInput
 {
-  v3 = [(_UITextDocumentInterface *)self _documentState];
-  v4 = [v3 contextAfterInput];
-  if ([v4 length])
+  _documentState = [(_UITextDocumentInterface *)self _documentState];
+  contextAfterInput = [_documentState contextAfterInput];
+  if ([contextAfterInput length])
   {
-    v5 = [(_UITextDocumentInterface *)self _documentState];
-    v6 = [v5 contextAfterInput];
+    _documentState2 = [(_UITextDocumentInterface *)self _documentState];
+    contextAfterInput2 = [_documentState2 contextAfterInput];
   }
 
   else
   {
-    v6 = 0;
+    contextAfterInput2 = 0;
   }
 
-  return v6;
+  return contextAfterInput2;
 }
 
 - (UITextInputMode)documentInputMode
 {
-  v2 = [(_UITextDocumentInterface *)self _controllerState];
-  v3 = [v2 documentInputMode];
+  _controllerState = [(_UITextDocumentInterface *)self _controllerState];
+  documentInputMode = [_controllerState documentInputMode];
 
-  return v3;
+  return documentInputMode;
 }
 
 - (NSString)selectedText
 {
-  v2 = [(_UITextDocumentInterface *)self _documentState];
-  v3 = [v2 selectedText];
+  _documentState = [(_UITextDocumentInterface *)self _documentState];
+  selectedText = [_documentState selectedText];
 
-  return v3;
+  return selectedText;
 }
 
 - (NSString)markedText
 {
-  v2 = [(_UITextDocumentInterface *)self _documentState];
-  v3 = [v2 markedText];
+  _documentState = [(_UITextDocumentInterface *)self _documentState];
+  markedText = [_documentState markedText];
 
-  return v3;
+  return markedText;
 }
 
 - (NSUUID)documentIdentifier
 {
-  v2 = [(_UITextDocumentInterface *)self _controllerState];
-  v3 = [v2 documentIdentifier];
+  _controllerState = [(_UITextDocumentInterface *)self _controllerState];
+  documentIdentifier = [_controllerState documentIdentifier];
 
-  return v3;
+  return documentIdentifier;
 }
 
 - (BOOL)needsInputModeSwitchKey
 {
-  v2 = [(_UITextDocumentInterface *)self _controllerState];
-  v3 = [v2 needsInputModeSwitchKey];
+  _controllerState = [(_UITextDocumentInterface *)self _controllerState];
+  needsInputModeSwitchKey = [_controllerState needsInputModeSwitchKey];
 
-  return v3;
+  return needsInputModeSwitchKey;
 }
 
-- (void)adjustTextPositionByCharacterOffset:(int64_t)a3
+- (void)adjustTextPositionByCharacterOffset:(int64_t)offset
 {
   [(_UITextDocumentInterface *)self _willPerformOutputOperation];
-  if (a3)
+  if (offset)
   {
-    v5 = [(_UITextDocumentInterface *)self _documentState];
-    v6 = [v5 documentStateAfterCursorAdjustment:a3];
-    v7 = [(_UITextDocumentInterface *)self _controllerState];
-    [v7 setDocumentState:v6];
+    _documentState = [(_UITextDocumentInterface *)self _documentState];
+    v6 = [_documentState documentStateAfterCursorAdjustment:offset];
+    _controllerState = [(_UITextDocumentInterface *)self _controllerState];
+    [_controllerState setDocumentState:v6];
 
-    v8 = [(_UITextDocumentInterface *)self _controllerOutput];
-    [v8 adjustTextPositionByCharacterOffset:a3];
+    _controllerOutput = [(_UITextDocumentInterface *)self _controllerOutput];
+    [_controllerOutput adjustTextPositionByCharacterOffset:offset];
   }
 
   [(_UITextDocumentInterface *)self _didPerformOutputOperation];
 }
 
-- (void)_handleInputViewControllerState:(id)a3
+- (void)_handleInputViewControllerState:(id)state
 {
-  v4 = a3;
-  v5 = [(_UITextDocumentInterface *)self _delegate];
-  [v5 _willResetDocumentState];
+  stateCopy = state;
+  _delegate = [(_UITextDocumentInterface *)self _delegate];
+  [_delegate _willResetDocumentState];
 
-  [(_UITextDocumentInterface *)self setControllerState:v4];
-  v6 = [(_UITextDocumentInterface *)self _delegate];
-  [v6 _didResetDocumentState];
+  [(_UITextDocumentInterface *)self setControllerState:stateCopy];
+  _delegate2 = [(_UITextDocumentInterface *)self _delegate];
+  [_delegate2 _didResetDocumentState];
 }
 
 - (void)_didPerformOutputOperation
@@ -410,12 +410,12 @@
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_setPrimaryLanguage:(id)a3
+- (void)_setPrimaryLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   [(_UITextDocumentInterface *)self _willPerformOutputOperation];
-  v5 = [(_UITextDocumentInterface *)self _controllerOutput];
-  [v5 setPrimaryLanguage:v4];
+  _controllerOutput = [(_UITextDocumentInterface *)self _controllerOutput];
+  [_controllerOutput setPrimaryLanguage:languageCopy];
 
   [(_UITextDocumentInterface *)self _didPerformOutputOperation];
 }
@@ -423,8 +423,8 @@
 - (void)_setShouldDismiss
 {
   [(_UITextDocumentInterface *)self _willPerformOutputOperation];
-  v3 = [(_UITextDocumentInterface *)self _controllerOutput];
-  [v3 setShouldDismiss:1];
+  _controllerOutput = [(_UITextDocumentInterface *)self _controllerOutput];
+  [_controllerOutput setShouldDismiss:1];
 
   [(_UITextDocumentInterface *)self _didPerformOutputOperation];
 }
@@ -432,8 +432,8 @@
 - (void)_setProceedShouldReturnIfPossibleForASP
 {
   [(_UITextDocumentInterface *)self _willPerformOutputOperation];
-  v3 = [(_UITextDocumentInterface *)self _controllerOutput];
-  [v3 setProceedShouldReturn:1];
+  _controllerOutput = [(_UITextDocumentInterface *)self _controllerOutput];
+  [_controllerOutput setProceedShouldReturn:1];
 
   [(_UITextDocumentInterface *)self _didPerformOutputOperation];
 }
@@ -441,41 +441,41 @@
 - (void)_setShouldAdvanceInputMode
 {
   [(_UITextDocumentInterface *)self _willPerformOutputOperation];
-  v3 = [(_UITextDocumentInterface *)self _controllerOutput];
-  [v3 setShouldAdvanceInputMode:1];
+  _controllerOutput = [(_UITextDocumentInterface *)self _controllerOutput];
+  [_controllerOutput setShouldAdvanceInputMode:1];
 
   [(_UITextDocumentInterface *)self _didPerformOutputOperation];
 }
 
-- (void)_setHasDictation:(BOOL)a3
+- (void)_setHasDictation:(BOOL)dictation
 {
-  v3 = a3;
+  dictationCopy = dictation;
   [(_UITextDocumentInterface *)self _willPerformOutputOperation];
-  v5 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  v6 = [(_UITextDocumentInterface *)self _controllerOutput];
-  [v6 setHasDictation:v5];
+  v5 = [MEMORY[0x1E696AD98] numberWithBool:dictationCopy];
+  _controllerOutput = [(_UITextDocumentInterface *)self _controllerOutput];
+  [_controllerOutput setHasDictation:v5];
 
   [(_UITextDocumentInterface *)self _didPerformOutputOperation];
 }
 
-- (void)_setInputModeList:(int64_t)a3 touchBegan:(double)a4 fromLocation:(CGPoint)a5 updatePoint:(CGPoint)a6
+- (void)_setInputModeList:(int64_t)list touchBegan:(double)began fromLocation:(CGPoint)location updatePoint:(CGPoint)point
 {
-  y = a6.y;
-  x = a6.x;
-  v8 = a5.y;
-  v9 = a5.x;
+  y = point.y;
+  x = point.x;
+  v8 = location.y;
+  v9 = location.x;
   [(_UITextDocumentInterface *)self _willPerformOutputOperation];
-  v13 = [(_UITextDocumentInterface *)self _controllerOutput];
-  [v13 setInputModeListTouchPhase:a3];
+  _controllerOutput = [(_UITextDocumentInterface *)self _controllerOutput];
+  [_controllerOutput setInputModeListTouchPhase:list];
 
-  v14 = [(_UITextDocumentInterface *)self _controllerOutput];
-  [v14 setInputModeListTouchBegan:a4];
+  _controllerOutput2 = [(_UITextDocumentInterface *)self _controllerOutput];
+  [_controllerOutput2 setInputModeListTouchBegan:began];
 
-  v15 = [(_UITextDocumentInterface *)self _controllerOutput];
-  [v15 setInputModeListFromLocation:{v9, v8}];
+  _controllerOutput3 = [(_UITextDocumentInterface *)self _controllerOutput];
+  [_controllerOutput3 setInputModeListFromLocation:{v9, v8}];
 
-  v16 = [(_UITextDocumentInterface *)self _controllerOutput];
-  [v16 setInputModeListUpdatePoint:{x, y}];
+  _controllerOutput4 = [(_UITextDocumentInterface *)self _controllerOutput];
+  [_controllerOutput4 setInputModeListUpdatePoint:{x, y}];
 
   [(_UITextDocumentInterface *)self _didPerformOutputOperation];
 }

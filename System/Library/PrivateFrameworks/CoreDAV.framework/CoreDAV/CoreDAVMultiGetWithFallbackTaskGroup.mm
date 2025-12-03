@@ -1,10 +1,10 @@
 @interface CoreDAVMultiGetWithFallbackTaskGroup
-- (CoreDAVMultiGetWithFallbackTaskGroup)initWithURLs:(id)a3 multiGetBlock:(id)a4 getBlock:(id)a5 accountInfoProvider:(id)a6 taskManager:(id)a7;
+- (CoreDAVMultiGetWithFallbackTaskGroup)initWithURLs:(id)ls multiGetBlock:(id)block getBlock:(id)getBlock accountInfoProvider:(id)provider taskManager:(id)manager;
 - (NSError)error;
 - (NSSet)deletedURLs;
 - (NSSet)missingURLs;
 - (NSSet)parsedContents;
-- (void)_configureAndSubmitTask:(id)a3;
+- (void)_configureAndSubmitTask:(id)task;
 - (void)_fetchOneItem;
 - (void)_switchToSingleGetMode;
 - (void)startTaskGroup;
@@ -12,25 +12,25 @@
 
 @implementation CoreDAVMultiGetWithFallbackTaskGroup
 
-- (CoreDAVMultiGetWithFallbackTaskGroup)initWithURLs:(id)a3 multiGetBlock:(id)a4 getBlock:(id)a5 accountInfoProvider:(id)a6 taskManager:(id)a7
+- (CoreDAVMultiGetWithFallbackTaskGroup)initWithURLs:(id)ls multiGetBlock:(id)block getBlock:(id)getBlock accountInfoProvider:(id)provider taskManager:(id)manager
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  lsCopy = ls;
+  blockCopy = block;
+  getBlockCopy = getBlock;
   v23.receiver = self;
   v23.super_class = CoreDAVMultiGetWithFallbackTaskGroup;
-  v15 = [(CoreDAVTaskGroup *)&v23 initWithAccountInfoProvider:a6 taskManager:a7];
+  v15 = [(CoreDAVTaskGroup *)&v23 initWithAccountInfoProvider:provider taskManager:manager];
   if (v15)
   {
-    v16 = v13[2](v13, v12);
+    v16 = blockCopy[2](blockCopy, lsCopy);
     multiGetTask = v15->_multiGetTask;
     v15->_multiGetTask = v16;
 
-    v18 = [v12 mutableCopy];
+    v18 = [lsCopy mutableCopy];
     urls = v15->_urls;
     v15->_urls = v18;
 
-    v20 = [v14 copy];
+    v20 = [getBlockCopy copy];
     getBlock = v15->_getBlock;
     v15->_getBlock = v20;
 
@@ -40,17 +40,17 @@
   return v15;
 }
 
-- (void)_configureAndSubmitTask:(id)a3
+- (void)_configureAndSubmitTask:(id)task
 {
-  v4 = a3;
-  v5 = [(CoreDAVTaskGroup *)self accountInfoProvider];
-  [v4 setAccountInfoProvider:v5];
+  taskCopy = task;
+  accountInfoProvider = [(CoreDAVTaskGroup *)self accountInfoProvider];
+  [taskCopy setAccountInfoProvider:accountInfoProvider];
 
   [(CoreDAVTaskGroup *)self timeoutInterval];
-  [v4 setTimeoutInterval:?];
-  [(NSMutableSet *)self->super._outstandingTasks addObject:v4];
-  v6 = [(CoreDAVTaskGroup *)self taskManager];
-  [v4 submitWithTaskManager:v6];
+  [taskCopy setTimeoutInterval:?];
+  [(NSMutableSet *)self->super._outstandingTasks addObject:taskCopy];
+  taskManager = [(CoreDAVTaskGroup *)self taskManager];
+  [taskCopy submitWithTaskManager:taskManager];
 }
 
 - (void)_switchToSingleGetMode
@@ -64,21 +64,21 @@
 
 - (void)_fetchOneItem
 {
-  v3 = [(NSMutableSet *)self->_urls anyObject];
-  if (v3)
+  anyObject = [(NSMutableSet *)self->_urls anyObject];
+  if (anyObject)
   {
-    [(NSMutableSet *)self->_urls removeObject:v3];
-    v4 = (*(self->_getBlock + 2))();
-    objc_initWeak(&location, v4);
+    [(NSMutableSet *)self->_urls removeObject:anyObject];
+    error = (*(self->_getBlock + 2))();
+    objc_initWeak(&location, error);
     v5 = MEMORY[0x277D85DD0];
     v6 = 3221225472;
     v7 = __53__CoreDAVMultiGetWithFallbackTaskGroup__fetchOneItem__block_invoke;
     v8 = &unk_278E31008;
     objc_copyWeak(&v11, &location);
-    v9 = self;
-    v10 = v3;
-    [v4 setCompletionBlock:&v5];
-    [(CoreDAVMultiGetWithFallbackTaskGroup *)self _configureAndSubmitTask:v4, v5, v6, v7, v8, v9];
+    selfCopy = self;
+    v10 = anyObject;
+    [error setCompletionBlock:&v5];
+    [(CoreDAVMultiGetWithFallbackTaskGroup *)self _configureAndSubmitTask:error, v5, v6, v7, v8, selfCopy];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -86,8 +86,8 @@
 
   else
   {
-    v4 = [(CoreDAVMultiGetWithFallbackTaskGroup *)self error];
-    [(CoreDAVTaskGroup *)self finishCoreDAVTaskGroupWithError:v4 delegateCallbackBlock:0];
+    error = [(CoreDAVMultiGetWithFallbackTaskGroup *)self error];
+    [(CoreDAVTaskGroup *)self finishCoreDAVTaskGroupWithError:error delegateCallbackBlock:0];
   }
 }
 
@@ -225,13 +225,13 @@ LABEL_7:
 
 - (NSError)error
 {
-  v2 = [(CoreDAVTask *)self->_multiGetTask error];
-  v3 = [v2 domain];
-  v4 = [v3 isEqualToString:@"CoreDAVHTTPStatusErrorDomain"];
+  error = [(CoreDAVTask *)self->_multiGetTask error];
+  domain = [error domain];
+  v4 = [domain isEqualToString:@"CoreDAVHTTPStatusErrorDomain"];
 
-  if (v4 && [v2 code] >= 500 && objc_msgSend(v2, "code") <= 599)
+  if (v4 && [error code] >= 500 && objc_msgSend(error, "code") <= 599)
   {
-    v5 = v2;
+    v5 = error;
   }
 
   else
@@ -244,51 +244,51 @@ LABEL_7:
 
 - (NSSet)missingURLs
 {
-  v3 = [(CoreDAVMultiGetWithFallbackTaskGroup *)self error];
+  error = [(CoreDAVMultiGetWithFallbackTaskGroup *)self error];
 
-  if (v3)
+  if (error)
   {
-    v4 = 0;
+    missingURLs = 0;
   }
 
   else
   {
-    v4 = [(CoreDAVContainerMultiGetTask *)self->_multiGetTask missingURLs];
+    missingURLs = [(CoreDAVContainerMultiGetTask *)self->_multiGetTask missingURLs];
   }
 
-  return v4;
+  return missingURLs;
 }
 
 - (NSSet)deletedURLs
 {
-  v3 = [(CoreDAVMultiGetWithFallbackTaskGroup *)self error];
+  error = [(CoreDAVMultiGetWithFallbackTaskGroup *)self error];
 
-  if (v3)
+  if (error)
   {
-    v4 = 0;
+    deletedURLs = 0;
   }
 
   else
   {
-    v4 = [(CoreDAVContainerMultiGetTask *)self->_multiGetTask deletedURLs];
+    deletedURLs = [(CoreDAVContainerMultiGetTask *)self->_multiGetTask deletedURLs];
   }
 
-  return v4;
+  return deletedURLs;
 }
 
 - (NSSet)parsedContents
 {
   if (self->_usingMultiGet)
   {
-    v2 = [(CoreDAVContainerMultiGetTask *)self->_multiGetTask parsedContents];
+    parsedContents = [(CoreDAVContainerMultiGetTask *)self->_multiGetTask parsedContents];
   }
 
   else
   {
-    v2 = self->_parsedContents;
+    parsedContents = self->_parsedContents;
   }
 
-  return v2;
+  return parsedContents;
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface BCSSMSTODataParser
-+ (id)parseString:(id)a3;
++ (id)parseString:(id)string;
 @end
 
 @implementation BCSSMSTODataParser
 
-+ (id)parseString:(id)a3
++ (id)parseString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
   if (v4)
   {
     [(BCSSMSTODataParser *)v4 parseString:v5, v6, v7, v8, v9, v10, v11];
   }
 
-  if ([v3 length] > 5)
+  if ([stringCopy length] > 5)
   {
-    v21 = [v3 substringToIndex:6];
-    v22 = [v21 lowercaseString];
+    v21 = [stringCopy substringToIndex:6];
+    lowercaseString = [v21 lowercaseString];
 
-    if ([v22 isEqualToString:@"smsto:"])
+    if ([lowercaseString isEqualToString:@"smsto:"])
     {
-      v23 = [v3 substringFromIndex:6];
+      v23 = [stringCopy substringFromIndex:6];
       v24 = [v23 rangeOfString:@":"];
       if (v24 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -36,19 +36,19 @@
         v23 = v35;
       }
 
-      v36 = [v23 _bcs_trimmedString];
+      _bcs_trimmedString = [v23 _bcs_trimmedString];
 
       v37 = [v25 length];
       v38 = MEMORY[0x277CCACA8];
       if (v37)
       {
-        v39 = [v25 _bcs_urlEncodedQueryValue];
-        v40 = [v38 stringWithFormat:@"sms:%@&body=%@", v36, v39];
+        _bcs_urlEncodedQueryValue = [v25 _bcs_urlEncodedQueryValue];
+        v40 = [v38 stringWithFormat:@"sms:%@&body=%@", _bcs_trimmedString, _bcs_urlEncodedQueryValue];
       }
 
       else
       {
-        v40 = [MEMORY[0x277CCACA8] stringWithFormat:@"sms:%@", v36];
+        v40 = [MEMORY[0x277CCACA8] stringWithFormat:@"sms:%@", _bcs_trimmedString];
       }
 
       v41 = [BCSParsedURLData alloc];

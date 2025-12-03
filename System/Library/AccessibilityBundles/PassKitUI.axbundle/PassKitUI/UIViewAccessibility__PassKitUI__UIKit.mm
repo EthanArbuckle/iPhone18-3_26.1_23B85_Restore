@@ -8,8 +8,8 @@
 
 - (BOOL)_accessibilityUseAccessibilityFrameForHittest
 {
-  v3 = [(UIViewAccessibility__PassKitUI__UIKit *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:kAXPriceViewIdentifier];
+  accessibilityIdentifier = [(UIViewAccessibility__PassKitUI__UIKit *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:kAXPriceViewIdentifier];
 
   if (v4)
   {
@@ -23,8 +23,8 @@
 
 - (BOOL)_accessibilityOverridesInvalidFrames
 {
-  v3 = [(UIViewAccessibility__PassKitUI__UIKit *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:kAXPriceViewIdentifier];
+  accessibilityIdentifier = [(UIViewAccessibility__PassKitUI__UIKit *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:kAXPriceViewIdentifier];
 
   if (v4)
   {
@@ -38,8 +38,8 @@
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(UIViewAccessibility__PassKitUI__UIKit *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:kAXPriceViewIdentifier];
+  accessibilityIdentifier = [(UIViewAccessibility__PassKitUI__UIKit *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:kAXPriceViewIdentifier];
 
   if (v4 && ([(UIViewAccessibility__PassKitUI__UIKit *)self _accessibilityFindSubviewDescendant:&__block_literal_global_8], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {

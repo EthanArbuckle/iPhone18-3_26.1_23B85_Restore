@@ -1,19 +1,19 @@
 @interface SCNCommonProfileProgramGeneratorGL
 - (SCNCommonProfileProgramGeneratorGL)init;
-- (SCNCommonProfileProgramGeneratorGL)initWithProfile:(int)a3;
-- (__C3DFXProgram)_newProgramWithHashCode:(__C3DProgramHashCode *)a3 engineContext:(__C3DEngineContext *)a4 introspectionDataPtr:(void *)a5;
+- (SCNCommonProfileProgramGeneratorGL)initWithProfile:(int)profile;
+- (__C3DFXProgram)_newProgramWithHashCode:(__C3DProgramHashCode *)code engineContext:(__C3DEngineContext *)context introspectionDataPtr:(void *)ptr;
 @end
 
 @implementation SCNCommonProfileProgramGeneratorGL
 
-- (SCNCommonProfileProgramGeneratorGL)initWithProfile:(int)a3
+- (SCNCommonProfileProgramGeneratorGL)initWithProfile:(int)profile
 {
   v5.receiver = self;
   v5.super_class = SCNCommonProfileProgramGeneratorGL;
   result = [(SCNCommonProfileProgramGenerator *)&v5 init];
   if (result)
   {
-    result->_profile = a3;
+    result->_profile = profile;
   }
 
   return result;
@@ -26,17 +26,17 @@
   return [(SCNCommonProfileProgramGenerator *)&v3 init];
 }
 
-- (__C3DFXProgram)_newProgramWithHashCode:(__C3DProgramHashCode *)a3 engineContext:(__C3DEngineContext *)a4 introspectionDataPtr:(void *)a5
+- (__C3DFXProgram)_newProgramWithHashCode:(__C3DProgramHashCode *)code engineContext:(__C3DEngineContext *)context introspectionDataPtr:(void *)ptr
 {
   *(&v177[2] + 4) = *MEMORY[0x277D85DE8];
   alloc = *MEMORY[0x277CBECE8];
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 100, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
-  CommonProfileHashCode = C3DProgramHashCodeGetCommonProfileHashCode(a3);
-  NodeHashCode = C3DProgramHashCodeGetNodeHashCode(a3);
-  HasTexture = C3DProgramHashCodeGetEffectPropertyHasTexture(a3, 7u);
-  v134 = C3DProgramHashCodeGetEffectPropertyHasTexture(a3, 4u);
-  IsOpaque = C3DProgramHashCodeIsOpaque(a3);
-  v138 = C3DProgramHashCodeGetEffectPropertyHasTexture(a3, 5u);
+  CommonProfileHashCode = C3DProgramHashCodeGetCommonProfileHashCode(code);
+  NodeHashCode = C3DProgramHashCodeGetNodeHashCode(code);
+  HasTexture = C3DProgramHashCodeGetEffectPropertyHasTexture(code, 7u);
+  v134 = C3DProgramHashCodeGetEffectPropertyHasTexture(code, 4u);
+  IsOpaque = C3DProgramHashCodeIsOpaque(code);
+  v138 = C3DProgramHashCodeGetEffectPropertyHasTexture(code, 5u);
   v9 = CommonProfileHashCode & 0xF;
   if (v9 == 5)
   {
@@ -50,17 +50,17 @@
   }
 
   v149 = v9;
-  EffectPropertyHashCode = C3DProgramHashCodeGetEffectPropertyHashCode(a3, 2u);
-  IsOne = C3DProgramHashCodeGlobalAlphaIsOne(a3);
-  HasConstantAlpha = C3DProgramHashCodeHasConstantAlpha(a3);
+  EffectPropertyHashCode = C3DProgramHashCodeGetEffectPropertyHashCode(code, 2u);
+  IsOne = C3DProgramHashCodeGlobalAlphaIsOne(code);
+  HasConstantAlpha = C3DProgramHashCodeHasConstantAlpha(code);
   memset(v175, 0, sizeof(v175));
-  v12 = C3DProgramHashCodeCopyShaderModifiersForEntryPoint(a3, 0, 1, v175, 32);
+  v12 = C3DProgramHashCodeCopyShaderModifiersForEntryPoint(code, 0, 1, v175, 32);
   memset(v174, 0, sizeof(v174));
-  v151 = C3DProgramHashCodeCopyShaderModifiersForEntryPoint(a3, 1, 1, v174, 32);
+  v151 = C3DProgramHashCodeCopyShaderModifiersForEntryPoint(code, 1, 1, v174, 32);
   memset(v173, 0, sizeof(v173));
-  v143 = C3DProgramHashCodeCopyShaderModifiersForEntryPoint(a3, 2, 1, v173, 32);
+  v143 = C3DProgramHashCodeCopyShaderModifiersForEntryPoint(code, 2, 1, v173, 32);
   v170 = 0;
-  v13 = C3DProgramHashCodeCopyShaderModifiersForEntryPoint(a3, 3, 1, &v170, 1);
+  v13 = C3DProgramHashCodeCopyShaderModifiersForEntryPoint(code, 3, 1, &v170, 1);
   if (v13 >= 2)
   {
     v14 = scn_default_log();
@@ -79,11 +79,11 @@
   __AppendModifierDefines(Mutable, &v170, v13);
   ModifierFlag = __GetModifierFlag(v173, v143);
   v125 = __GetModifierFlag(v174, v151);
-  LightsCount = C3DProgramHashCodeGetLightsCount(a3);
+  LightsCount = C3DProgramHashCodeGetLightsCount(code);
   theDict = Mutable;
   if ((v149 & 0xFFFFFFFB) != 0)
   {
-    LightingEnabled = C3DProgramHashCodeGetLightingEnabled(a3);
+    LightingEnabled = C3DProgramHashCodeGetLightingEnabled(code);
   }
 
   else
@@ -96,7 +96,7 @@
   v152 = LightingEnabled;
   if (LightingEnabled && (v149 & 0xE) == 2)
   {
-    IsEnabled = C3DProgramHashCodeGetEffectPropertyIsEnabled(a3, 3u);
+    IsEnabled = C3DProgramHashCodeGetEffectPropertyIsEnabled(code, 3u);
   }
 
   v18 = IsEnabled | CheckDefineUsageInModifiers(v174, v151, @"USE_SPECULAR");
@@ -119,7 +119,7 @@
     }
   }
 
-  AmbientLightingEnabled = C3DProgramHashCodeGetAmbientLightingEnabled(a3);
+  AmbientLightingEnabled = C3DProgramHashCodeGetAmbientLightingEnabled(code);
   v161 = CFStringCreateMutable(alloc, 0);
   theString = CFStringCreateMutable(alloc, 0);
   v144 = CFDictionaryCreateMutable(alloc, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
@@ -161,7 +161,7 @@ LABEL_91:
   do
   {
     v28 = v170;
-    LightHashCode = C3DProgramHashCodeGetLightHashCode(a3, v24);
+    LightHashCode = C3DProgramHashCodeGetLightHashCode(code, v24);
     v30 = LightHashCode;
     v31 = LightHashCode & 7;
     if ((LightHashCode & 7) == 0)
@@ -391,7 +391,7 @@ LABEL_70:
     }
 
 LABEL_76:
-    v43 = C3DProgramHashCodeGetCommonProfileHashCode(a3) & 0xF;
+    v43 = C3DProgramHashCodeGetCommonProfileHashCode(code) & 0xF;
     if (v43 == 5)
     {
       v44 = scn_default_log();
@@ -459,13 +459,13 @@ LABEL_87:
   v21 = v145;
 LABEL_98:
   v47 = (v21 & 0x280) != 0 && v149 == 4;
-  if (C3DProgramHashCodeHasFog(a3))
+  if (C3DProgramHashCodeHasFog(code))
   {
     CFDictionaryAddValue(v20, @"USE_FOG", &stru_282DCC058);
     CFDictionaryAddValue(v20, @"USE_POSITION", @"2");
   }
 
-  if (C3DProgramHashCodeGetEffectPropertyIsEnabled(a3, 0x13u) && C3DProgramHashCodeGetEffectPropertyIsEnabled(a3, 0x14u) && C3DProgramHashCodeGetEffectPropertyIsEnabled(a3, 4u))
+  if (C3DProgramHashCodeGetEffectPropertyIsEnabled(code, 0x13u) && C3DProgramHashCodeGetEffectPropertyIsEnabled(code, 0x14u) && C3DProgramHashCodeGetEffectPropertyIsEnabled(code, 4u))
   {
     CFDictionaryAddValue(v20, @"USE_FRESNEL", &stru_282DCC058);
     CFDictionaryAddValue(v20, @"USE_VIEW", @"2");
@@ -528,7 +528,7 @@ LABEL_124:
     CFDictionaryAddValue(v20, @"USE_VERTEX_COLOR", &stru_282DCC058);
   }
 
-  v168 = a3;
+  codeCopy = code;
   v169 = 0;
   v162 = v20;
   v164 = CFStringCreateMutable(alloc, 0);
@@ -537,7 +537,7 @@ LABEL_124:
   v167 = CFStringCreateMutable(alloc, 0);
   v50 = C3DGetTextResourceWithNameAllowingHotReload(@"SCNShaderSurfaceDecl.glsl");
   MutableCopy = CFStringCreateMutableCopy(alloc, 0, v50);
-  if (C3DProgramHashCodeGetEffectPropertyHasTexture(a3, 8u))
+  if (C3DProgramHashCodeGetEffectPropertyHasTexture(code, 8u))
   {
     __AddTextureProperty(&v162, 8u, 1, AmbientLightingEnabled);
     CFDictionaryAddValue(v20, @"USE_AMBIENT_AS_AMBIENTOCCLUSION", &stru_282DCC058);
@@ -550,7 +550,7 @@ LABEL_124:
 
   __AddTextureProperty(&v162, 2u, 2, 1);
   __AddTextureProperty(&v162, 3u, 3, (appendedString | v134) & 1);
-  if (C3DProgramHashCodeGetEffectPropertyIsEnabled(a3, 9u))
+  if (C3DProgramHashCodeGetEffectPropertyIsEnabled(code, 9u))
   {
     __AddTextureProperty(&v162, 9u, 0, 1);
     CFDictionaryAddValue(v20, @"USE_EMISSION_AS_SELFILLUMINATION", &stru_282DCC058);
@@ -578,9 +578,9 @@ LABEL_124:
     CFDictionarySetValue(v20, @"USE_POSITION", @"2");
   }
 
-  if (C3DProgramHashCodeGetEffectPropertyIsEnabled(a3, 2u))
+  if (C3DProgramHashCodeGetEffectPropertyIsEnabled(code, 2u))
   {
-    v52 = C3DProgramHashCodeGetEffectPropertyHashCode(a3, 2u);
+    v52 = C3DProgramHashCodeGetEffectPropertyHashCode(code, 2u);
     if (v52)
     {
       v53 = (v52 >> 5) & 1;
@@ -613,7 +613,7 @@ LABEL_124:
   }
 
   __AddTextureProperty(&v162, 5u, 5, v54 & 1);
-  CustomSlotCount = C3DProgramHashCodeGetCustomSlotCount(a3);
+  CustomSlotCount = C3DProgramHashCodeGetCustomSlotCount(code);
   if (CustomSlotCount >= 1)
   {
     v56 = CustomSlotCount;
@@ -622,8 +622,8 @@ LABEL_124:
     v59 = v167;
     do
     {
-      CustomSlotSortedName = C3DProgramHashCodeGetCustomSlotSortedName(a3, v57);
-      CustomSlotUVSet = C3DProgramHashCodeGetCustomSlotUVSet(a3, v57);
+      CustomSlotSortedName = C3DProgramHashCodeGetCustomSlotSortedName(code, v57);
+      CustomSlotUVSet = C3DProgramHashCodeGetCustomSlotUVSet(code, v57);
       if (CustomSlotUVSet != -1)
       {
         v62 = CustomSlotUVSet;
@@ -646,7 +646,7 @@ LABEL_124:
 
   appendedStringa = MutableCopy;
   CFStringAppend(MutableCopy, @"\n} _surface;\n");
-  UVSetsCount = C3DProgramHashCodeGetUVSetsCount(a3);
+  UVSetsCount = C3DProgramHashCodeGetUVSetsCount(code);
   v65 = UVSetsCount;
   v66 = v161;
   v155 = UVSetsCount;
@@ -666,7 +666,7 @@ LABEL_124:
       v71 = v166;
       do
       {
-        UVSetInfo = C3DProgramHashCodeGetUVSetInfo(a3, v67);
+        UVSetInfo = C3DProgramHashCodeGetUVSetInfo(code, v67);
         CFStringAppendFormat(v69, 0, @"varying vec2 v_texcoord%d;\n", v67);
         if (HIBYTE(UVSetInfo) == 255)
         {
@@ -678,7 +678,7 @@ LABEL_124:
         {
           if (UVSetInfo >> 8 > 20)
           {
-            v73 = C3DProgramHashCodeGetCustomSlotSortedName(a3, (HIBYTE(UVSetInfo) - 27));
+            v73 = C3DProgramHashCodeGetCustomSlotSortedName(code, (HIBYTE(UVSetInfo) - 27));
           }
 
           else

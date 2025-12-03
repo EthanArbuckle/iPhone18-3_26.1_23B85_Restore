@@ -1,7 +1,7 @@
 @interface NSSQLKeypathTriggerAttributeExtension
-- (BOOL)isEqualToExtension:(id)a3;
-- (BOOL)validate:(id *)a3;
-- (NSSQLKeypathTriggerAttributeExtension)initWithObjectFromUserInfo:(id)a3 onAttributeNamed:(id)a4 onEntity:(id)a5;
+- (BOOL)isEqualToExtension:(id)extension;
+- (BOOL)validate:(id *)validate;
+- (NSSQLKeypathTriggerAttributeExtension)initWithObjectFromUserInfo:(id)info onAttributeNamed:(id)named onEntity:(id)entity;
 - (NSString)description;
 - (uint64_t)validateKeypath:(uint64_t)result;
 - (void)dealloc;
@@ -9,17 +9,17 @@
 
 @implementation NSSQLKeypathTriggerAttributeExtension
 
-- (NSSQLKeypathTriggerAttributeExtension)initWithObjectFromUserInfo:(id)a3 onAttributeNamed:(id)a4 onEntity:(id)a5
+- (NSSQLKeypathTriggerAttributeExtension)initWithObjectFromUserInfo:(id)info onAttributeNamed:(id)named onEntity:(id)entity
 {
   v11.receiver = self;
   v11.super_class = NSSQLKeypathTriggerAttributeExtension;
   v8 = [(NSSQLKeypathTriggerAttributeExtension *)&v11 init];
   if (v8)
   {
-    v8->_objectFromUserInfo = a3;
-    if (a5)
+    v8->_objectFromUserInfo = info;
+    if (entity)
     {
-      v9 = [*(a5 + 5) objectForKey:a4];
+      v9 = [*(entity + 5) objectForKey:named];
     }
 
     else
@@ -28,7 +28,7 @@
     }
 
     v8->_attribute = v9;
-    v8->_entity = a5;
+    v8->_entity = entity;
     v8->_insertSQLStrings = objc_alloc_init(MEMORY[0x1E695DEC8]);
     v8->_dropSQLStrings = objc_alloc_init(MEMORY[0x1E695DEC8]);
     v8->_bulkUpdateSQLStrings = objc_alloc_init(MEMORY[0x1E695DEC8]);
@@ -65,7 +65,7 @@
   return v4;
 }
 
-- (BOOL)validate:(id *)a3
+- (BOOL)validate:(id *)validate
 {
   v72[1] = *MEMORY[0x1E69E9840];
   v50 = 0;
@@ -86,8 +86,8 @@
             v9 = [v8 minimalFormInContext:v6];
             if ([v9 expressionType] == 4)
             {
-              v10 = [v9 selector];
-              if (v10 == NSSelectorFromString(@"count:"))
+              selector = [v9 selector];
+              if (selector == NSSelectorFromString(@"count:"))
               {
                 if ([objc_msgSend(objc_msgSend(v9 "arguments")] == 3)
                 {
@@ -248,11 +248,11 @@ LABEL_52:
           v25 = MEMORY[0x1E696ABC0];
           v59 = *MEMORY[0x1E696A588];
           v26 = MEMORY[0x1E696AEC0];
-          v27 = [(NSSQLEntity *)self->_entity name];
-          v28 = [(NSSQLProperty *)self->_attribute name];
+          name = [(NSSQLEntity *)self->_entity name];
+          name2 = [(NSSQLProperty *)self->_attribute name];
           v29 = self->_objectFromUserInfo;
           v30 = objc_opt_class();
-          v60 = [v26 stringWithFormat:@"The trigger on %@.%@ is not valid: could not turn '%@' in to an instance of %@", v27, v28, v29, NSStringFromClass(v30)];
+          v60 = [v26 stringWithFormat:@"The trigger on %@.%@ is not valid: could not turn '%@' in to an instance of %@", name, name2, v29, NSStringFromClass(v30)];
           v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
           v32 = [v25 errorWithDomain:*MEMORY[0x1E696A250] code:134060 userInfo:v31];
         }
@@ -274,10 +274,10 @@ LABEL_52:
       v16 = MEMORY[0x1E696ABC0];
       v53 = *MEMORY[0x1E696A588];
       v17 = MEMORY[0x1E696AEC0];
-      v18 = [(NSSQLEntity *)self->_entity name];
-      v19 = [(NSSQLProperty *)self->_attribute name];
+      name3 = [(NSSQLEntity *)self->_entity name];
+      name4 = [(NSSQLProperty *)self->_attribute name];
       v20 = objc_opt_class();
-      v54 = [v17 stringWithFormat:@"The trigger on %@.%@ is not valid: must be an instance of %@.", v18, v19, NSStringFromClass(v20)];
+      v54 = [v17 stringWithFormat:@"The trigger on %@.%@ is not valid: must be an instance of %@.", name3, name4, NSStringFromClass(v20)];
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
       v15 = [v16 errorWithDomain:*MEMORY[0x1E696A250] code:134060 userInfo:v21];
     }
@@ -320,7 +320,7 @@ LABEL_30:
   }
 
 LABEL_13:
-  if (!a3)
+  if (!validate)
   {
 LABEL_34:
     v24 = 0;
@@ -328,7 +328,7 @@ LABEL_34:
   }
 
   v24 = 0;
-  *a3 = v15;
+  *validate = v15;
 LABEL_35:
   v43 = *MEMORY[0x1E69E9840];
   return v24;
@@ -380,10 +380,10 @@ LABEL_35:
           v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
           v82 = objc_alloc_init(MEMORY[0x1E695DF70]);
           v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-          v11 = [*(v3 + 56) columnName];
-          v12 = [*(v3 + 48) tableName];
-          v77 = v11;
-          v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ZT_%@_%@_%@", v12, v11, objc_msgSend(*(v3 + 64), "name")];
+          columnName = [*(v3 + 56) columnName];
+          tableName = [*(v3 + 48) tableName];
+          v77 = columnName;
+          v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ZT_%@_%@_%@", tableName, columnName, objc_msgSend(*(v3 + 64), "name")];
           v14 = *(v3 + 48);
           if (v14)
           {
@@ -395,7 +395,7 @@ LABEL_35:
             v15 = 0;
           }
 
-          v16 = [v15 columnName];
+          columnName2 = [v15 columnName];
           v17 = *(v3 + 48);
           if (v17)
           {
@@ -407,27 +407,27 @@ LABEL_35:
             v18 = 0;
           }
 
-          v81 = [v18 columnName];
+          columnName3 = [v18 columnName];
           v19 = *(v3 + 64);
           if (v19 && *(v19 + 24) == 9)
           {
-            v20 = [*(v3 + 64) correlationTableName];
+            correlationTableName = [*(v3 + 64) correlationTableName];
             v79 = v13;
-            v71 = [v19 columnName];
-            v75 = [(NSSQLManyToMany *)v19 inverseColumnName];
+            columnName4 = [v19 columnName];
+            inverseColumnName = [(NSSQLManyToMany *)v19 inverseColumnName];
             v21 = objc_alloc_init(MEMORY[0x1E696AD60]);
             v72 = v7;
             v22 = v9;
             v78 = v9;
-            v23 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@_%@_INSERT_INCREMENT", v13, v20];
+            v23 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@_%@_INSERT_INCREMENT", v13, correlationTableName];
             v73 = v10;
             v24 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"DROP TRIGGER IF EXISTS %@", v23];
-            [v21 appendFormat:@"CREATE TRIGGER IF NOT EXISTS %@ AFTER INSERT ON %@ FOR EACH ROW", v23, v20];
+            [v21 appendFormat:@"CREATE TRIGGER IF NOT EXISTS %@ AFTER INSERT ON %@ FOR EACH ROW", v23, correlationTableName];
             [v21 appendString:@" BEGIN"];
             v25 = v77;
-            [v21 appendFormat:@" UPDATE %@ SET %@ = IFNULL(%@, 0) + 1", v12, v77, v77];
-            [v21 appendFormat:@" WHERE NEW.%@ = %@;", v71, v16];
-            [v21 appendFormat:@" SELECT NSCoreDataTriggerUpdateAffectedObjectValue('%@', %@, %@, '%@', %@) FROM %@ WHERE %@ = NEW.%@;", v12, v81, v16, v25, v25, v12, v16, v71];
+            [v21 appendFormat:@" UPDATE %@ SET %@ = IFNULL(%@, 0) + 1", tableName, v77, v77];
+            [v21 appendFormat:@" WHERE NEW.%@ = %@;", columnName4, columnName2];
+            [v21 appendFormat:@" SELECT NSCoreDataTriggerUpdateAffectedObjectValue('%@', %@, %@, '%@', %@) FROM %@ WHERE %@ = NEW.%@;", tableName, columnName3, columnName2, v25, v25, tableName, columnName2, columnName4];
             [v21 appendFormat:@" END"];
             [v82 addObject:v24];
 
@@ -436,14 +436,14 @@ LABEL_35:
             [v26 addObject:v21];
 
             v27 = objc_alloc_init(MEMORY[0x1E696AD60]);
-            v28 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@_%@_DELETE_DECREMENT", v79, v20];
+            v28 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@_%@_DELETE_DECREMENT", v79, correlationTableName];
             v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"DROP TRIGGER IF EXISTS %@", v28];
-            [v27 appendFormat:@"CREATE TRIGGER IF NOT EXISTS %@ AFTER DELETE ON %@ FOR EACH ROW", v28, v20];
+            [v27 appendFormat:@"CREATE TRIGGER IF NOT EXISTS %@ AFTER DELETE ON %@ FOR EACH ROW", v28, correlationTableName];
             [v27 appendFormat:@" BEGIN"];
-            [v27 appendFormat:@" UPDATE %@ SET %@ = MAX(0, IFNULL(%@, 0) - 1)", v12, v25, v25];
-            [v27 appendFormat:@" WHERE OLD.%@ = %@;", v71, v16];
-            v30 = v16;
-            [v27 appendFormat:@" SELECT NSCoreDataTriggerUpdateAffectedObjectValue('%@', %@, %@, '%@', %@) FROM %@ WHERE %@ = OLD.%@;", v12, v81, v16, v77, v77, v12, v16, v71];
+            [v27 appendFormat:@" UPDATE %@ SET %@ = MAX(0, IFNULL(%@, 0) - 1)", tableName, v25, v25];
+            [v27 appendFormat:@" WHERE OLD.%@ = %@;", columnName4, columnName2];
+            v30 = columnName2;
+            [v27 appendFormat:@" SELECT NSCoreDataTriggerUpdateAffectedObjectValue('%@', %@, %@, '%@', %@) FROM %@ WHERE %@ = OLD.%@;", tableName, columnName3, columnName2, v77, v77, tableName, columnName2, columnName4];
             [v27 appendFormat:@" END"];
             [v78 addObject:v27];
             [v82 addObject:v29];
@@ -451,15 +451,15 @@ LABEL_35:
             v10 = v73;
             v31 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"COUNT_%@", v79];
             v32 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"CREATE TEMP TABLE %@ AS", v31];
-            [v32 appendFormat:@" SELECT %@, COUNT(DISTINCT(%@.%@)) AS COUNT", v71, v20, v75];
-            [v32 appendFormat:@" FROM %@", v20];
-            [v32 appendFormat:@" GROUP BY %@;", v71];
+            [v32 appendFormat:@" SELECT %@, COUNT(DISTINCT(%@.%@)) AS COUNT", columnName4, correlationTableName, inverseColumnName];
+            [v32 appendFormat:@" FROM %@", correlationTableName];
+            [v32 appendFormat:@" GROUP BY %@;", columnName4];
             [v73 addObject:v32];
 
-            v33 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@" CREATE INDEX %@_INDEX ON %@(%@, COUNT);", v31, v31, v71];
+            v33 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@" CREATE INDEX %@_INDEX ON %@(%@, COUNT);", v31, v31, columnName4];
             [v73 addObject:v33];
 
-            v34 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@" UPDATE %@ SET %@ = IFNULL((SELECT COUNT FROM %@ WHERE %@ = %@), 0);", v12, v77, v31, v30, v71];
+            v34 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@" UPDATE %@ SET %@ = IFNULL((SELECT COUNT FROM %@ WHERE %@ = %@), 0);", tableName, v77, v31, v30, columnName4];
           }
 
           else
@@ -478,8 +478,8 @@ LABEL_32:
 
             v43 = *(v3 + 64);
             v74 = v10;
-            v70 = v16;
-            v44 = v12;
+            v70 = columnName2;
+            v44 = tableName;
             if (v43)
             {
               v45 = *(v43 + 56);
@@ -490,7 +490,7 @@ LABEL_32:
               v45 = 0;
             }
 
-            v46 = [v45 columnName];
+            columnName5 = [v45 columnName];
             v47 = objc_alloc_init(MEMORY[0x1E696AD60]);
             v80 = v13;
             v48 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@_INSERT_INCREMENT", v13];
@@ -502,8 +502,8 @@ LABEL_32:
             v50 = v77;
             [v47 appendFormat:@" UPDATE %@ SET %@ = IFNULL(%@, 0) + 1", v44, v77, v77];
             v51 = v70;
-            [v47 appendFormat:@" WHERE NEW.%@ = %@;", v46, v70];
-            [v47 appendFormat:@" SELECT NSCoreDataTriggerUpdateAffectedObjectValue('%@', %@, %@, '%@', %@) FROM %@ WHERE %@ = NEW.%@;", v44, v81, v51, v50, v50, v44, v51, v46];
+            [v47 appendFormat:@" WHERE NEW.%@ = %@;", columnName5, v70];
+            [v47 appendFormat:@" SELECT NSCoreDataTriggerUpdateAffectedObjectValue('%@', %@, %@, '%@', %@) FROM %@ WHERE %@ = NEW.%@;", v44, columnName3, v51, v50, v50, v44, v51, columnName5];
             [v47 appendFormat:@" END"];
             [v9 addObject:v47];
             [v82 addObject:v49];
@@ -514,8 +514,8 @@ LABEL_32:
             [v52 appendFormat:@"CREATE TRIGGER IF NOT EXISTS %@", v53];
             [v52 appendFormat:@" AFTER DELETE ON %@", v76];
             [v52 appendFormat:@" BEGIN"];
-            [v52 appendFormat:@" UPDATE %@ SET %@ = MAX(0, IFNULL(%@, 0) - 1) WHERE OLD.%@ = %@;", v44, v50, v50, v46, v70];
-            [v52 appendFormat:@" SELECT NSCoreDataTriggerUpdateAffectedObjectValue('%@', %@, %@, '%@', %@) FROM %@ WHERE %@ = OLD.%@;", v44, v81, v51, v50, v50, v44, v51, v46];
+            [v52 appendFormat:@" UPDATE %@ SET %@ = MAX(0, IFNULL(%@, 0) - 1) WHERE OLD.%@ = %@;", v44, v50, v50, columnName5, v70];
+            [v52 appendFormat:@" SELECT NSCoreDataTriggerUpdateAffectedObjectValue('%@', %@, %@, '%@', %@) FROM %@ WHERE %@ = OLD.%@;", v44, columnName3, v51, v50, v50, v44, v51, columnName5];
             [v52 appendFormat:@" END"];
             [v9 addObject:v52];
             [v82 addObject:v54];
@@ -526,52 +526,52 @@ LABEL_32:
             [v55 appendFormat:@"CREATE TRIGGER IF NOT EXISTS %@", v56];
             [v55 appendFormat:@" AFTER INSERT ON %@ FOR EACH ROW", v44];
             [v55 appendFormat:@" BEGIN"];
-            [v55 appendFormat:@" UPDATE %@ SET %@ = (SELECT COUNT(%@) FROM %@ WHERE (%@ = NEW.%@)) WHERE %@ = NEW.%@;", v44, v77, v51, v76, v46, v51, v51, v51];
-            [v55 appendFormat:@" SELECT NSCoreDataTriggerUpdateAffectedObjectValue('%@', %@, %@, '%@', %@) FROM %@ WHERE %@ = NEW.%@;", v44, v81, v51, v50, v50, v44, v51, v51];
+            [v55 appendFormat:@" UPDATE %@ SET %@ = (SELECT COUNT(%@) FROM %@ WHERE (%@ = NEW.%@)) WHERE %@ = NEW.%@;", v44, v77, v51, v76, columnName5, v51, v51, v51];
+            [v55 appendFormat:@" SELECT NSCoreDataTriggerUpdateAffectedObjectValue('%@', %@, %@, '%@', %@) FROM %@ WHERE %@ = NEW.%@;", v44, columnName3, v51, v50, v50, v44, v51, v51];
             [v55 appendFormat:@" END"];
             [v9 addObject:v55];
             [v82 addObject:v57];
 
             v58 = objc_alloc_init(MEMORY[0x1E696AD60]);
-            v59 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@_%@_UPDATE_INCREMENT", v80, v46];
+            v59 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@_%@_UPDATE_INCREMENT", v80, columnName5];
             v60 = v9;
             v78 = v9;
             v61 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"DROP TRIGGER IF EXISTS %@", v59];
             [v58 appendFormat:@"CREATE TRIGGER IF NOT EXISTS %@", v59];
-            [v58 appendFormat:@" AFTER UPDATE OF %@ ON %@ WHEN", v46, v76];
-            [v58 appendFormat:@" ((NEW.%@ IS NOT NULL AND OLD.%@ IS NULL) OR (NEW.%@ != OLD.%@))", v46, v46, v46, v46];
+            [v58 appendFormat:@" AFTER UPDATE OF %@ ON %@ WHEN", columnName5, v76];
+            [v58 appendFormat:@" ((NEW.%@ IS NOT NULL AND OLD.%@ IS NULL) OR (NEW.%@ != OLD.%@))", columnName5, columnName5, columnName5, columnName5];
             [v58 appendFormat:@" BEGIN"];
-            [v58 appendFormat:@" UPDATE %@ SET %@ = IFNULL(%@, 0) + 1 WHERE %@ = NEW.%@;", v44, v50, v50, v70, v46];
-            [v58 appendFormat:@" SELECT NSCoreDataTriggerUpdateAffectedObjectValue('%@', %@, %@, '%@', %@) FROM %@ WHERE %@ = NEW.%@;", v44, v81, v51, v50, v50, v44, v51, v46];
+            [v58 appendFormat:@" UPDATE %@ SET %@ = IFNULL(%@, 0) + 1 WHERE %@ = NEW.%@;", v44, v50, v50, v70, columnName5];
+            [v58 appendFormat:@" SELECT NSCoreDataTriggerUpdateAffectedObjectValue('%@', %@, %@, '%@', %@) FROM %@ WHERE %@ = NEW.%@;", v44, columnName3, v51, v50, v50, v44, v51, columnName5];
             [v58 appendFormat:@" END"];
             [v60 addObject:v58];
             [v82 addObject:v61];
 
             v62 = objc_alloc_init(MEMORY[0x1E696AD60]);
-            v63 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@_%@_UPDATE_DECREMENT", v80, v46];
+            v63 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@_%@_UPDATE_DECREMENT", v80, columnName5];
             v64 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"DROP TRIGGER IF EXISTS %@", v63];
             [v62 appendFormat:@"CREATE TRIGGER IF NOT EXISTS %@", v63];
-            [v62 appendFormat:@" AFTER UPDATE OF %@ ON %@ WHEN", v46, v76];
-            [v62 appendFormat:@" ((OLD.%@ IS NOT NULL AND NEW.%@ IS NULL) OR (NEW.%@ != OLD.%@))", v46, v46, v46, v46];
+            [v62 appendFormat:@" AFTER UPDATE OF %@ ON %@ WHEN", columnName5, v76];
+            [v62 appendFormat:@" ((OLD.%@ IS NOT NULL AND NEW.%@ IS NULL) OR (NEW.%@ != OLD.%@))", columnName5, columnName5, columnName5, columnName5];
             [v62 appendFormat:@" BEGIN"];
-            [v62 appendFormat:@" UPDATE %@ SET %@ = MAX(0, IFNULL(%@, 0) - 1) WHERE %@ = OLD.%@;", v44, v50, v50, v70, v46];
-            [v62 appendFormat:@" SELECT NSCoreDataTriggerUpdateAffectedObjectValue('%@', %@, %@, '%@', %@) FROM %@ WHERE %@ = OLD.%@;", v44, v81, v51, v50, v50, v44, v51, v46];
+            [v62 appendFormat:@" UPDATE %@ SET %@ = MAX(0, IFNULL(%@, 0) - 1) WHERE %@ = OLD.%@;", v44, v50, v50, v70, columnName5];
+            [v62 appendFormat:@" SELECT NSCoreDataTriggerUpdateAffectedObjectValue('%@', %@, %@, '%@', %@) FROM %@ WHERE %@ = OLD.%@;", v44, columnName3, v51, v50, v50, v44, v51, columnName5];
             [v62 appendFormat:@" END"];
             [v78 addObject:v62];
             [v82 addObject:v64];
 
             v31 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"COUNT_%@", v80];
             v65 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"CREATE TEMP TABLE %@ AS", v31];
-            [v65 appendFormat:@" SELECT %@, COUNT(DISTINCT(%@.%@)) AS COUNT", v46, v76, v70];
+            [v65 appendFormat:@" SELECT %@, COUNT(DISTINCT(%@.%@)) AS COUNT", columnName5, v76, v70];
             [v65 appendFormat:@" FROM %@", v76];
-            [v65 appendFormat:@" GROUP BY %@;", v46];
+            [v65 appendFormat:@" GROUP BY %@;", columnName5];
             v10 = v74;
             [v74 addObject:v65];
 
-            v66 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@" CREATE INDEX %@_INDEX ON %@(%@, COUNT);", v31, v31, v46];
+            v66 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@" CREATE INDEX %@_INDEX ON %@(%@, COUNT);", v31, v31, columnName5];
             [v74 addObject:v66];
 
-            v34 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@" UPDATE %@ SET %@ = IFNULL((SELECT COUNT FROM %@ WHERE %@ = %@), 0);", v44, v77, v31, v70, v46];
+            v34 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@" UPDATE %@ SET %@ = IFNULL((SELECT COUNT FROM %@ WHERE %@ = %@), 0);", v44, v77, v31, v70, columnName5];
           }
 
           v67 = v34;
@@ -649,15 +649,15 @@ LABEL_33:
   return result;
 }
 
-- (BOOL)isEqualToExtension:(id)a3
+- (BOOL)isEqualToExtension:(id)extension
 {
   v13.receiver = self;
   v13.super_class = NSSQLKeypathTriggerAttributeExtension;
   if (([(NSSQLKeypathTriggerAttributeExtension *)&v13 isEqual:?]& 1) != 0)
   {
 LABEL_2:
-    LOBYTE(v5) = 1;
-    return v5;
+    LOBYTE(isNSString) = 1;
+    return isNSString;
   }
 
   objc_opt_class();
@@ -670,9 +670,9 @@ LABEL_2:
   if (!keypath)
   {
     objectFromUserInfo = self->_objectFromUserInfo;
-    if (a3)
+    if (extension)
     {
-      v9 = *(a3 + 1);
+      v9 = *(extension + 1);
     }
 
     else
@@ -685,46 +685,46 @@ LABEL_2:
       goto LABEL_2;
     }
 
-    v5 = [objectFromUserInfo isNSString];
-    if (!v5)
+    isNSString = [objectFromUserInfo isNSString];
+    if (!isNSString)
     {
-      return v5;
+      return isNSString;
     }
 
-    if (a3)
+    if (extension)
     {
-      v5 = [*(a3 + 1) isNSString];
-      if (!v5)
+      isNSString = [*(extension + 1) isNSString];
+      if (!isNSString)
       {
-        return v5;
+        return isNSString;
       }
 
-      v10 = *(a3 + 1);
+      v10 = *(extension + 1);
       goto LABEL_15;
     }
 
-    v11 = [0 isNSString];
+    isNSString2 = [0 isNSString];
     v10 = 0;
-    if (v11)
+    if (isNSString2)
     {
 LABEL_15:
-      v5 = [self->_objectFromUserInfo isEqualToString:v10];
-      if (!v5)
+      isNSString = [self->_objectFromUserInfo isEqualToString:v10];
+      if (!isNSString)
       {
-        return v5;
+        return isNSString;
       }
 
       goto LABEL_2;
     }
 
 LABEL_20:
-    LOBYTE(v5) = 0;
-    return v5;
+    LOBYTE(isNSString) = 0;
+    return isNSString;
   }
 
-  if (a3)
+  if (extension)
   {
-    v7 = *(a3 + 2);
+    v7 = *(extension + 2);
   }
 
   else
@@ -732,8 +732,8 @@ LABEL_20:
     v7 = 0;
   }
 
-  LOBYTE(v5) = [(NSString *)keypath isEqualToString:v7];
-  return v5;
+  LOBYTE(isNSString) = [(NSString *)keypath isEqualToString:v7];
+  return isNSString;
 }
 
 @end

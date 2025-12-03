@@ -1,24 +1,24 @@
 @interface HKMedicationAnalyticsGenericFieldsProvider
-- (HKMedicationAnalyticsGenericFieldsProvider)initWithDataSource:(id)a3;
+- (HKMedicationAnalyticsGenericFieldsProvider)initWithDataSource:(id)source;
 - (id)activePairedWatchProductType;
 - (id)biologicalSex;
-- (id)bucketedUserAgeForCurrentDate:(id)a3;
-- (id)userAgeForCurrentDate:(id)a3;
+- (id)bucketedUserAgeForCurrentDate:(id)date;
+- (id)userAgeForCurrentDate:(id)date;
 - (void)biologicalSex;
 @end
 
 @implementation HKMedicationAnalyticsGenericFieldsProvider
 
-- (HKMedicationAnalyticsGenericFieldsProvider)initWithDataSource:(id)a3
+- (HKMedicationAnalyticsGenericFieldsProvider)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = HKMedicationAnalyticsGenericFieldsProvider;
   v6 = [(HKMedicationAnalyticsGenericFieldsProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
   }
 
   return v7;
@@ -26,10 +26,10 @@
 
 - (id)activePairedWatchProductType
 {
-  v2 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v3 = [v2 getActivePairedDevice];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
 
-  v4 = [v3 valueForProperty:*MEMORY[0x277D2BBC0]];
+  v4 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BBC0]];
 
   return v4;
 }
@@ -52,25 +52,25 @@
     goto LABEL_7;
   }
 
-  v6 = [v3 biologicalSex];
-  if (v6 > 3)
+  biologicalSex = [v3 biologicalSex];
+  if (biologicalSex > 3)
   {
 LABEL_7:
     v7 = 0;
     goto LABEL_8;
   }
 
-  v7 = off_2796CABD8[v6];
+  v7 = off_2796CABD8[biologicalSex];
 LABEL_8:
 
   return v7;
 }
 
-- (id)userAgeForCurrentDate:(id)a3
+- (id)userAgeForCurrentDate:(id)date
 {
   dataSource = self->_dataSource;
   v9 = 0;
-  v4 = [(HKAnalyticsHealthDataSource *)dataSource ageWithCurrentDate:a3 error:&v9];
+  v4 = [(HKAnalyticsHealthDataSource *)dataSource ageWithCurrentDate:date error:&v9];
   v5 = v9;
   if (v5)
   {
@@ -92,9 +92,9 @@ LABEL_8:
   return v7;
 }
 
-- (id)bucketedUserAgeForCurrentDate:(id)a3
+- (id)bucketedUserAgeForCurrentDate:(id)date
 {
-  v3 = [(HKMedicationAnalyticsGenericFieldsProvider *)self userAgeForCurrentDate:a3];
+  v3 = [(HKMedicationAnalyticsGenericFieldsProvider *)self userAgeForCurrentDate:date];
   if (v3)
   {
     v4 = v3;

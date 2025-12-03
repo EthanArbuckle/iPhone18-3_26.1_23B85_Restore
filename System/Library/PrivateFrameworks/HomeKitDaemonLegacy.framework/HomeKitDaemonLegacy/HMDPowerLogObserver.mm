@@ -1,10 +1,10 @@
 @interface HMDPowerLogObserver
 + (id)supportedEventClasses;
-- (HMDPowerLogObserver)initWithContext:(id)a3;
-- (HMDPowerLogObserver)initWithLogEventDispatcher:(id)a3;
-- (void)_reportCameraSettingsConfiguration:(id)a3;
-- (void)_reportConfiguration:(id)a3;
-- (void)observeEvent:(id)a3;
+- (HMDPowerLogObserver)initWithContext:(id)context;
+- (HMDPowerLogObserver)initWithLogEventDispatcher:(id)dispatcher;
+- (void)_reportCameraSettingsConfiguration:(id)configuration;
+- (void)_reportConfiguration:(id)configuration;
+- (void)observeEvent:(id)event;
 - (void)start;
 - (void)stop;
 @end
@@ -15,7 +15,7 @@
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -26,9 +26,9 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDPowerLogObserver *)v4 context];
-  v8 = [v7 logEventDispatcher];
-  [v8 removeObserver:v4];
+  context = [(HMDPowerLogObserver *)selfCopy context];
+  logEventDispatcher = [context logEventDispatcher];
+  [logEventDispatcher removeObserver:selfCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -37,7 +37,7 @@
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -48,27 +48,27 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDPowerLogObserver *)v4 context];
-  v8 = [v7 logEventDispatcher];
-  v9 = [objc_opt_class() supportedEventClasses];
-  [v8 addObserver:v4 forEventClasses:v9];
+  context = [(HMDPowerLogObserver *)selfCopy context];
+  logEventDispatcher = [context logEventDispatcher];
+  supportedEventClasses = [objc_opt_class() supportedEventClasses];
+  [logEventDispatcher addObserver:selfCopy forEventClasses:supportedEventClasses];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportCameraSettingsConfiguration:(id)a3
+- (void)_reportCameraSettingsConfiguration:(id)configuration
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v42 = [MEMORY[0x277CBEB38] dictionary];
+  configurationCopy = configuration;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = [v4 homeSettingsConfigurations];
+  obj = [configurationCopy homeSettingsConfigurations];
   v46 = [obj countByEnumeratingWithState:&v53 objects:v58 count:16];
-  v43 = v4;
-  v41 = self;
+  v43 = configurationCopy;
+  selfCopy = self;
   v5 = 0;
   v6 = 0;
   v7 = 0;
@@ -94,8 +94,8 @@
         v50 = 0u;
         v51 = 0u;
         v52 = 0u;
-        v12 = [v11 cameraSettings];
-        v13 = [v12 countByEnumeratingWithState:&v49 objects:v57 count:16];
+        cameraSettings = [v11 cameraSettings];
+        v13 = [cameraSettings countByEnumeratingWithState:&v49 objects:v57 count:16];
         if (v13)
         {
           v14 = v13;
@@ -106,7 +106,7 @@
             {
               if (*v50 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(cameraSettings);
               }
 
               v17 = *(*(&v49 + 1) + 8 * i);
@@ -121,7 +121,7 @@
             }
 
             v48 += v14;
-            v14 = [v12 countByEnumeratingWithState:&v49 objects:v57 count:16];
+            v14 = [cameraSettings countByEnumeratingWithState:&v49 objects:v57 count:16];
           }
 
           while (v14);
@@ -142,101 +142,101 @@
     v48 = 0;
   }
 
-  [v42 setObject:@"HomeKit Camera Configuration" forKeyedSubscript:*MEMORY[0x277D0F1E0]];
-  v18 = [(HMDPowerLogObserver *)v41 context];
-  v19 = [v18 cameraConfigurationEventHistogram];
-  v20 = [v19 intervalIndexForValue:v48];
-  [v42 setObject:v20 forKeyedSubscript:@"numCameras"];
+  [dictionary setObject:@"HomeKit Camera Configuration" forKeyedSubscript:*MEMORY[0x277D0F1E0]];
+  context = [(HMDPowerLogObserver *)selfCopy context];
+  cameraConfigurationEventHistogram = [context cameraConfigurationEventHistogram];
+  v20 = [cameraConfigurationEventHistogram intervalIndexForValue:v48];
+  [dictionary setObject:v20 forKeyedSubscript:@"numCameras"];
 
-  v21 = [(HMDPowerLogObserver *)v41 context];
-  v22 = [v21 cameraConfigurationEventHistogram];
-  v23 = [v22 intervalIndexForValue:v9];
-  [v42 setObject:v23 forKeyedSubscript:@"numCamerasRecordingEnabled"];
+  context2 = [(HMDPowerLogObserver *)selfCopy context];
+  cameraConfigurationEventHistogram2 = [context2 cameraConfigurationEventHistogram];
+  v23 = [cameraConfigurationEventHistogram2 intervalIndexForValue:v9];
+  [dictionary setObject:v23 forKeyedSubscript:@"numCamerasRecordingEnabled"];
 
-  v24 = [(HMDPowerLogObserver *)v41 context];
-  v25 = [v24 cameraConfigurationEventHistogram];
-  v26 = [v25 intervalIndexForValue:v5];
-  [v42 setObject:v26 forKeyedSubscript:@"numCamerasSmartBulletinNotificationEnabled"];
+  context3 = [(HMDPowerLogObserver *)selfCopy context];
+  cameraConfigurationEventHistogram3 = [context3 cameraConfigurationEventHistogram];
+  v26 = [cameraConfigurationEventHistogram3 intervalIndexForValue:v5];
+  [dictionary setObject:v26 forKeyedSubscript:@"numCamerasSmartBulletinNotificationEnabled"];
 
-  v27 = [(HMDPowerLogObserver *)v41 context];
-  v28 = [v27 cameraConfigurationEventHistogram];
-  v29 = [v28 intervalIndexForValue:v6];
-  [v42 setObject:v29 forKeyedSubscript:@"numCamerasReachabilityNotificationEnabled"];
+  context4 = [(HMDPowerLogObserver *)selfCopy context];
+  cameraConfigurationEventHistogram4 = [context4 cameraConfigurationEventHistogram];
+  v29 = [cameraConfigurationEventHistogram4 intervalIndexForValue:v6];
+  [dictionary setObject:v29 forKeyedSubscript:@"numCamerasReachabilityNotificationEnabled"];
 
-  v30 = [(HMDPowerLogObserver *)v41 context];
-  v31 = [v30 cameraConfigurationEventHistogram];
-  v32 = [v31 intervalIndexForValue:v7];
-  [v42 setObject:v32 forKeyedSubscript:@"numCamerasAnyMotionEventEnabled"];
+  context5 = [(HMDPowerLogObserver *)selfCopy context];
+  cameraConfigurationEventHistogram5 = [context5 cameraConfigurationEventHistogram];
+  v32 = [cameraConfigurationEventHistogram5 intervalIndexForValue:v7];
+  [dictionary setObject:v32 forKeyedSubscript:@"numCamerasAnyMotionEventEnabled"];
 
-  v33 = [(HMDPowerLogObserver *)v41 context];
-  v34 = [v33 cameraConfigurationEventHistogram];
-  v35 = [v34 intervalIndexForValue:v8];
-  [v42 setObject:v35 forKeyedSubscript:@"numCamerasHSVMotionEventEnabled"];
+  context6 = [(HMDPowerLogObserver *)selfCopy context];
+  cameraConfigurationEventHistogram6 = [context6 cameraConfigurationEventHistogram];
+  v35 = [cameraConfigurationEventHistogram6 intervalIndexForValue:v8];
+  [dictionary setObject:v35 forKeyedSubscript:@"numCamerasHSVMotionEventEnabled"];
 
-  v36 = [(HMDPowerLogObserver *)v41 context];
-  v37 = [v36 powerLogger];
+  context7 = [(HMDPowerLogObserver *)selfCopy context];
+  powerLogger = [context7 powerLogger];
   v38 = *MEMORY[0x277D0F1E8];
-  v39 = [v42 copy];
-  [v37 reportToPowerLogDestinationTable:v38 withEventDictionary:v39];
+  v39 = [dictionary copy];
+  [powerLogger reportToPowerLogDestinationTable:v38 withEventDictionary:v39];
 
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportConfiguration:(id)a3
+- (void)_reportConfiguration:(id)configuration
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
-  v29 = [v4 dictionary];
-  [v29 setObject:@"HomeKit Home Configuration" forKeyedSubscript:*MEMORY[0x277D0F1E0]];
-  v6 = [(HMDPowerLogObserver *)self context];
-  v7 = [v6 homeConfigurationEventHistogram];
-  v8 = [v7 intervalIndexForValue:{objc_msgSend(v5, "totalHomes")}];
-  [v29 setObject:v8 forKeyedSubscript:@"numHomes"];
+  configurationCopy = configuration;
+  dictionary = [v4 dictionary];
+  [dictionary setObject:@"HomeKit Home Configuration" forKeyedSubscript:*MEMORY[0x277D0F1E0]];
+  context = [(HMDPowerLogObserver *)self context];
+  homeConfigurationEventHistogram = [context homeConfigurationEventHistogram];
+  v8 = [homeConfigurationEventHistogram intervalIndexForValue:{objc_msgSend(configurationCopy, "totalHomes")}];
+  [dictionary setObject:v8 forKeyedSubscript:@"numHomes"];
 
-  v9 = [(HMDPowerLogObserver *)self context];
-  v10 = [v9 homeConfigurationEventHistogram];
-  v11 = [v10 intervalIndexForValue:{objc_msgSend(v5, "totalNonEmptyHomes")}];
-  [v29 setObject:v11 forKeyedSubscript:@"numNonEmptyHomes"];
+  context2 = [(HMDPowerLogObserver *)self context];
+  homeConfigurationEventHistogram2 = [context2 homeConfigurationEventHistogram];
+  v11 = [homeConfigurationEventHistogram2 intervalIndexForValue:{objc_msgSend(configurationCopy, "totalNonEmptyHomes")}];
+  [dictionary setObject:v11 forKeyedSubscript:@"numNonEmptyHomes"];
 
-  v12 = [(HMDPowerLogObserver *)self context];
-  v13 = [v12 homeConfigurationEventHistogram];
-  v14 = [v13 intervalIndexForValue:{objc_msgSend(v5, "totalUsers")}];
-  [v29 setObject:v14 forKeyedSubscript:@"numUsers"];
+  context3 = [(HMDPowerLogObserver *)self context];
+  homeConfigurationEventHistogram3 = [context3 homeConfigurationEventHistogram];
+  v14 = [homeConfigurationEventHistogram3 intervalIndexForValue:{objc_msgSend(configurationCopy, "totalUsers")}];
+  [dictionary setObject:v14 forKeyedSubscript:@"numUsers"];
 
-  v15 = [(HMDPowerLogObserver *)self context];
-  v16 = [v15 homeConfigurationEventHistogram];
-  v17 = [v16 intervalIndexForValue:{objc_msgSend(v5, "totalHAPAccessories")}];
-  [v29 setObject:v17 forKeyedSubscript:@"numHAPAccessories"];
+  context4 = [(HMDPowerLogObserver *)self context];
+  homeConfigurationEventHistogram4 = [context4 homeConfigurationEventHistogram];
+  v17 = [homeConfigurationEventHistogram4 intervalIndexForValue:{objc_msgSend(configurationCopy, "totalHAPAccessories")}];
+  [dictionary setObject:v17 forKeyedSubscript:@"numHAPAccessories"];
 
-  v18 = [(HMDPowerLogObserver *)self context];
-  v19 = [v18 homeConfigurationEventHistogram];
-  v20 = [v19 intervalIndexForValue:{objc_msgSend(v5, "totalEnabledResidents")}];
-  [v29 setObject:v20 forKeyedSubscript:@"numEnabledResidents"];
+  context5 = [(HMDPowerLogObserver *)self context];
+  homeConfigurationEventHistogram5 = [context5 homeConfigurationEventHistogram];
+  v20 = [homeConfigurationEventHistogram5 intervalIndexForValue:{objc_msgSend(configurationCopy, "totalEnabledResidents")}];
+  [dictionary setObject:v20 forKeyedSubscript:@"numEnabledResidents"];
 
-  v21 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v5, "isResidentEnabled")}];
-  [v29 setObject:v21 forKeyedSubscript:@"isCurrentDeviceResidentEnabled"];
+  v21 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(configurationCopy, "isResidentEnabled")}];
+  [dictionary setObject:v21 forKeyedSubscript:@"isCurrentDeviceResidentEnabled"];
 
   v22 = MEMORY[0x277CCABB0];
-  v23 = [v5 isPrimaryResidentForSomeHome];
+  isPrimaryResidentForSomeHome = [configurationCopy isPrimaryResidentForSomeHome];
 
-  v24 = [v22 numberWithBool:v23];
-  [v29 setObject:v24 forKeyedSubscript:@"isCurrentDevicePrimaryResident"];
+  v24 = [v22 numberWithBool:isPrimaryResidentForSomeHome];
+  [dictionary setObject:v24 forKeyedSubscript:@"isCurrentDevicePrimaryResident"];
 
-  [v29 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"isCurrentDeviceHH2Enabled"];
-  v25 = [(HMDPowerLogObserver *)self context];
-  v26 = [v25 powerLogger];
+  [dictionary setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"isCurrentDeviceHH2Enabled"];
+  context6 = [(HMDPowerLogObserver *)self context];
+  powerLogger = [context6 powerLogger];
   v27 = *MEMORY[0x277D0F1F0];
-  v28 = [v29 copy];
-  [v26 reportToPowerLogDestinationTable:v27 withEventDictionary:v28];
+  v28 = [dictionary copy];
+  [powerLogger reportToPowerLogDestinationTable:v27 withEventDictionary:v28];
 }
 
-- (void)observeEvent:(id)a3
+- (void)observeEvent:(id)event
 {
-  v9 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v9;
+    v4 = eventCopy;
   }
 
   else
@@ -252,7 +252,7 @@
 
   else
   {
-    v6 = v9;
+    v6 = eventCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -277,27 +277,27 @@
 LABEL_12:
 }
 
-- (HMDPowerLogObserver)initWithContext:(id)a3
+- (HMDPowerLogObserver)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = HMDPowerLogObserver;
   v6 = [(HMDPowerLogObserver *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;
 }
 
-- (HMDPowerLogObserver)initWithLogEventDispatcher:(id)a3
+- (HMDPowerLogObserver)initWithLogEventDispatcher:(id)dispatcher
 {
-  v4 = a3;
+  dispatcherCopy = dispatcher;
   v5 = [HMDPowerLogObserverContext alloc];
-  v6 = [MEMORY[0x277D0F8C0] sharedPowerLogger];
-  v7 = [(HMDPowerLogObserverContext *)v5 initWithLogEventDispatcher:v4 powerLogger:v6];
+  mEMORY[0x277D0F8C0] = [MEMORY[0x277D0F8C0] sharedPowerLogger];
+  v7 = [(HMDPowerLogObserverContext *)v5 initWithLogEventDispatcher:dispatcherCopy powerLogger:mEMORY[0x277D0F8C0]];
 
   v8 = [(HMDPowerLogObserver *)self initWithContext:v7];
   return v8;

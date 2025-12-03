@@ -1,42 +1,42 @@
 @interface PKDashboardSectionDataSourcePassTiles
-- (BOOL)supportsPaymentPassAction:(id)a3;
+- (BOOL)supportsPaymentPassAction:(id)action;
 - (PKDashboardSectionDataSourceDelegate)delegate;
-- (PKDashboardSectionDataSourcePassTiles)initWithPass:(id)a3 forContext:(int64_t)a4 tileGroupID:(id)a5 passStateProvider:(id)a6 overridesMaximumRows:(BOOL)a7;
-- (id)footerTextItemForSectionIdentifier:(id)a3;
-- (id)itemForSectionIdentifier:(id)a3 atIndex:(unint64_t)a4;
-- (id)titleForSectionIdentifier:(id)a3;
-- (unint64_t)numberOfItemsInSection:(id)a3;
-- (void)_reloadTiles:(id)a3 passUniqueIdentifier:(id)a4;
-- (void)_updateWithTiles:(id)a3;
+- (PKDashboardSectionDataSourcePassTiles)initWithPass:(id)pass forContext:(int64_t)context tileGroupID:(id)d passStateProvider:(id)provider overridesMaximumRows:(BOOL)rows;
+- (id)footerTextItemForSectionIdentifier:(id)identifier;
+- (id)itemForSectionIdentifier:(id)identifier atIndex:(unint64_t)index;
+- (id)titleForSectionIdentifier:(id)identifier;
+- (unint64_t)numberOfItemsInSection:(id)section;
+- (void)_reloadTiles:(id)tiles passUniqueIdentifier:(id)identifier;
+- (void)_updateWithTiles:(id)tiles;
 - (void)dealloc;
-- (void)handlePaymentPassAction:(id)a3;
-- (void)passStateProvider:(id)a3 didUpdatePassState:(id)a4;
-- (void)passWithUniqueIdentifier:(id)a3 didUpdateTiles:(id)a4 forContext:(int64_t)a5;
+- (void)handlePaymentPassAction:(id)action;
+- (void)passStateProvider:(id)provider didUpdatePassState:(id)state;
+- (void)passWithUniqueIdentifier:(id)identifier didUpdateTiles:(id)tiles forContext:(int64_t)context;
 - (void)reloadTiles;
 @end
 
 @implementation PKDashboardSectionDataSourcePassTiles
 
-- (PKDashboardSectionDataSourcePassTiles)initWithPass:(id)a3 forContext:(int64_t)a4 tileGroupID:(id)a5 passStateProvider:(id)a6 overridesMaximumRows:(BOOL)a7
+- (PKDashboardSectionDataSourcePassTiles)initWithPass:(id)pass forContext:(int64_t)context tileGroupID:(id)d passStateProvider:(id)provider overridesMaximumRows:(BOOL)rows
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  passCopy = pass;
+  dCopy = d;
+  providerCopy = provider;
   v21.receiver = self;
   v21.super_class = PKDashboardSectionDataSourcePassTiles;
   v16 = [(PKDashboardSectionDataSourcePassTiles *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_pass, a3);
-    v17->_context = a4;
-    objc_storeStrong(&v17->_tileGroupID, a5);
-    v17->_overridesMaximumRows = a7;
-    objc_storeStrong(&v17->_passStateProvider, a6);
-    [v15 addPassStateObserver:v17];
-    v18 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+    objc_storeStrong(&v16->_pass, pass);
+    v17->_context = context;
+    objc_storeStrong(&v17->_tileGroupID, d);
+    v17->_overridesMaximumRows = rows;
+    objc_storeStrong(&v17->_passStateProvider, provider);
+    [providerCopy addPassStateObserver:v17];
+    defaultDataProvider = [MEMORY[0x1E69B8BD8] defaultDataProvider];
     paymentDataProvider = v17->_paymentDataProvider;
-    v17->_paymentDataProvider = v18;
+    v17->_paymentDataProvider = defaultDataProvider;
 
     [(PKPaymentDefaultDataProvider *)v17->_paymentDataProvider addDelegate:v17];
     [(PKDashboardSectionDataSourcePassTiles *)v17 reloadTiles];
@@ -56,7 +56,7 @@
 
 - (void)reloadTiles
 {
-  v3 = [(PKPass *)self->_pass uniqueID];
+  uniqueID = [(PKPass *)self->_pass uniqueID];
   objc_initWeak(&location, self);
   paymentDataProvider = self->_paymentDataProvider;
   context = self->_context;
@@ -65,8 +65,8 @@
   v6[2] = __52__PKDashboardSectionDataSourcePassTiles_reloadTiles__block_invoke;
   v6[3] = &unk_1E8011850;
   objc_copyWeak(&v7, &location);
-  v6[4] = v3;
-  [(PKPaymentDefaultDataProvider *)paymentDataProvider tilesForPassWithUniqueIdentifier:v3 context:context completion:v6];
+  v6[4] = uniqueID;
+  [(PKPaymentDefaultDataProvider *)paymentDataProvider tilesForPassWithUniqueIdentifier:uniqueID context:context completion:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
@@ -99,48 +99,48 @@ void __52__PKDashboardSectionDataSourcePassTiles_reloadTiles__block_invoke_2(uin
   }
 }
 
-- (void)_reloadTiles:(id)a3 passUniqueIdentifier:(id)a4
+- (void)_reloadTiles:(id)tiles passUniqueIdentifier:(id)identifier
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(PKPass *)self->_pass uniqueID];
-  v8 = v6;
+  tilesCopy = tiles;
+  identifierCopy = identifier;
+  uniqueID = [(PKPass *)self->_pass uniqueID];
+  v8 = identifierCopy;
   v9 = v8;
-  if (v7 == v8)
+  if (uniqueID == v8)
   {
 
     goto LABEL_7;
   }
 
-  if (!v8 || !v7)
+  if (!v8 || !uniqueID)
   {
 
     goto LABEL_9;
   }
 
-  v10 = [v7 isEqualToString:v8];
+  v10 = [uniqueID isEqualToString:v8];
 
   if (v10)
   {
 LABEL_7:
-    [(PKDashboardSectionDataSourcePassTiles *)self _updateWithTiles:v11];
+    [(PKDashboardSectionDataSourcePassTiles *)self _updateWithTiles:tilesCopy];
   }
 
 LABEL_9:
 }
 
-- (void)_updateWithTiles:(id)a3
+- (void)_updateWithTiles:(id)tiles
 {
-  v4 = a3;
+  tilesCopy = tiles;
   v5 = self->_tileGroups;
-  if ([v4 count])
+  if ([tilesCopy count])
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __58__PKDashboardSectionDataSourcePassTiles__updateWithTiles___block_invoke;
     v14[3] = &unk_1E8011878;
     v14[4] = self;
-    v6 = [v4 pk_objectsPassingTest:v14];
+    v6 = [tilesCopy pk_objectsPassingTest:v14];
   }
 
   else
@@ -263,7 +263,7 @@ id __58__PKDashboardSectionDataSourcePassTiles__updateWithTiles___block_invoke_5
   return v6;
 }
 
-- (void)passStateProvider:(id)a3 didUpdatePassState:(id)a4
+- (void)passStateProvider:(id)provider didUpdatePassState:(id)state
 {
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
@@ -343,11 +343,11 @@ id __78__PKDashboardSectionDataSourcePassTiles_passStateProvider_didUpdatePassSt
   return v6;
 }
 
-- (void)passWithUniqueIdentifier:(id)a3 didUpdateTiles:(id)a4 forContext:(int64_t)a5
+- (void)passWithUniqueIdentifier:(id)identifier didUpdateTiles:(id)tiles forContext:(int64_t)context
 {
-  v8 = a3;
-  v9 = a4;
-  if (self->_context == a5)
+  identifierCopy = identifier;
+  tilesCopy = tiles;
+  if (self->_context == context)
   {
     objc_initWeak(&location, self);
     v10[0] = MEMORY[0x1E69E9820];
@@ -355,8 +355,8 @@ id __78__PKDashboardSectionDataSourcePassTiles_passStateProvider_didUpdatePassSt
     v10[2] = __92__PKDashboardSectionDataSourcePassTiles_passWithUniqueIdentifier_didUpdateTiles_forContext___block_invoke;
     v10[3] = &unk_1E8011828;
     objc_copyWeak(&v13, &location);
-    v11 = v9;
-    v12 = v8;
+    v11 = tilesCopy;
+    v12 = identifierCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v10);
 
     objc_destroyWeak(&v13);
@@ -375,21 +375,21 @@ void __92__PKDashboardSectionDataSourcePassTiles_passWithUniqueIdentifier_didUpd
   }
 }
 
-- (id)itemForSectionIdentifier:(id)a3 atIndex:(unint64_t)a4
+- (id)itemForSectionIdentifier:(id)identifier atIndex:(unint64_t)index
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(PKDashboardPassTilesItem);
   [(PKDashboardPassTilesItem *)v6 setPass:self->_pass];
-  v7 = [(PKPassDynamicStateProviding *)self->_passStateProvider passState];
-  [(PKDashboardPassTilesItem *)v6 setPassState:v7];
+  passState = [(PKPassDynamicStateProviding *)self->_passStateProvider passState];
+  [(PKDashboardPassTilesItem *)v6 setPassState:passState];
 
   tileGroups = self->_tileGroups;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = ___groupForSectionIdentifier_block_invoke;
   v12[3] = &unk_1E8011998;
-  v13 = v5;
-  v9 = v5;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
   v10 = [(NSArray *)tileGroups pk_firstObjectPassingTest:v12];
 
   [(PKDashboardPassTilesItem *)v6 setGroupTile:v10];
@@ -401,16 +401,16 @@ void __92__PKDashboardSectionDataSourcePassTiles_passWithUniqueIdentifier_didUpd
   return v6;
 }
 
-- (unint64_t)numberOfItemsInSection:(id)a3
+- (unint64_t)numberOfItemsInSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   tileGroups = self->_tileGroups;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = ___groupForSectionIdentifier_block_invoke;
   v10[3] = &unk_1E8011998;
-  v11 = v4;
-  v6 = v4;
+  v11 = sectionCopy;
+  v6 = sectionCopy;
   v7 = [(NSArray *)tileGroups pk_firstObjectPassingTest:v10];
 
   if (v7)
@@ -434,11 +434,11 @@ id __59__PKDashboardSectionDataSourcePassTiles_sectionIdentifiers__block_invoke(
   return v3;
 }
 
-- (id)titleForSectionIdentifier:(id)a3
+- (id)titleForSectionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   tileGroups = self->_tileGroups;
-  v6 = v4;
+  v6 = identifierCopy;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = ___groupForSectionIdentifier_block_invoke;
@@ -446,16 +446,16 @@ id __59__PKDashboardSectionDataSourcePassTiles_sectionIdentifiers__block_invoke(
   v25 = v6;
   v7 = [(NSArray *)tileGroups pk_firstObjectPassingTest:v24];
 
-  v8 = [v7 tiles];
-  v9 = [v8 count];
+  tiles = [v7 tiles];
+  v9 = [tiles count];
 
   if (v9)
   {
-    v10 = [v7 state];
-    v11 = [v10 stateTypeGroup];
-    v12 = [v11 header];
+    state = [v7 state];
+    stateTypeGroup = [state stateTypeGroup];
+    header = [stateTypeGroup header];
 
-    v13 = v12;
+    v13 = header;
     v14 = v13;
     if (v13)
     {
@@ -463,11 +463,11 @@ id __59__PKDashboardSectionDataSourcePassTiles_sectionIdentifiers__block_invoke(
 
       if (v9)
       {
-        v15 = [v7 metadata];
-        v16 = [v15 metadataTypeHorizontalFlowGroup];
-        v17 = [v16 groupStyle];
+        metadata = [v7 metadata];
+        metadataTypeHorizontalFlowGroup = [metadata metadataTypeHorizontalFlowGroup];
+        groupStyle = [metadataTypeHorizontalFlowGroup groupStyle];
 
-        if (v17)
+        if (groupStyle)
         {
           v18 = 3;
         }
@@ -478,15 +478,15 @@ id __59__PKDashboardSectionDataSourcePassTiles_sectionIdentifiers__block_invoke(
         }
 
         v9 = [PKDashboardHeaderTextItem itemWithHeaderText:v14 style:v18];
-        v19 = [v7 state];
-        v20 = [v19 stateTypeGroup];
-        v21 = [v20 headerActionTitle];
+        state2 = [v7 state];
+        stateTypeGroup2 = [state2 stateTypeGroup];
+        headerActionTitle = [stateTypeGroup2 headerActionTitle];
 
-        if (v21)
+        if (headerActionTitle)
         {
-          [v9 setActionTitle:v21];
-          v22 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-          [v9 setActionColor:v22];
+          [v9 setActionTitle:headerActionTitle];
+          secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+          [v9 setActionColor:secondaryLabelColor];
 
           [v9 setActionStyle:1];
         }
@@ -502,11 +502,11 @@ id __59__PKDashboardSectionDataSourcePassTiles_sectionIdentifiers__block_invoke(
   return v9;
 }
 
-- (id)footerTextItemForSectionIdentifier:(id)a3
+- (id)footerTextItemForSectionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   tileGroups = self->_tileGroups;
-  v6 = v4;
+  v6 = identifierCopy;
   location[0] = MEMORY[0x1E69E9820];
   location[1] = 3221225472;
   location[2] = ___groupForSectionIdentifier_block_invoke;
@@ -515,24 +515,24 @@ id __59__PKDashboardSectionDataSourcePassTiles_sectionIdentifiers__block_invoke(
   v7 = v6;
   v8 = [(NSArray *)tileGroups pk_firstObjectPassingTest:location];
 
-  v9 = [v8 tiles];
-  v10 = [v9 count];
+  tiles = [v8 tiles];
+  v10 = [tiles count];
 
   if (v10)
   {
-    v11 = [v8 state];
-    v12 = [v11 stateTypeGroup];
+    state = [v8 state];
+    stateTypeGroup = [state stateTypeGroup];
 
-    v13 = [v12 footer];
-    v14 = v13;
-    if (v13)
+    footer = [stateTypeGroup footer];
+    v14 = footer;
+    if (footer)
     {
-      v15 = [v13 length];
+      v15 = [footer length];
 
       if (v15)
       {
         v15 = [PKDashboardFooterTextItem itemWithFooterText:v14];
-        v16 = [v12 footerActions];
+        footerActions = [stateTypeGroup footerActions];
         objc_initWeak(location, self);
         v19[0] = MEMORY[0x1E69E9820];
         v19[1] = 3221225472;
@@ -540,7 +540,7 @@ id __59__PKDashboardSectionDataSourcePassTiles_sectionIdentifiers__block_invoke(
         v19[3] = &unk_1E8011970;
         v19[4] = self;
         objc_copyWeak(&v20, location);
-        v17 = [v16 pk_createArrayBySafelyApplyingBlock:v19];
+        v17 = [footerActions pk_createArrayBySafelyApplyingBlock:v19];
         [v15 setSources:v17];
 
         objc_destroyWeak(&v20);
@@ -599,23 +599,23 @@ void __76__PKDashboardSectionDataSourcePassTiles_footerTextItemForSectionIdentif
   }
 }
 
-- (BOOL)supportsPaymentPassAction:(id)a3
+- (BOOL)supportsPaymentPassAction:(id)action
 {
-  v3 = a3;
-  v4 = v3;
-  v5 = v3 && [v3 isActionAvailable] && objc_msgSend(v4, "type") == 3;
+  actionCopy = action;
+  v4 = actionCopy;
+  v5 = actionCopy && [actionCopy isActionAvailable] && objc_msgSend(v4, "type") == 3;
 
   return v5;
 }
 
-- (void)handlePaymentPassAction:(id)a3
+- (void)handlePaymentPassAction:(id)action
 {
-  v6 = a3;
-  if (-[PKDashboardSectionDataSourcePassTiles supportsPaymentPassAction:](self, "supportsPaymentPassAction:") && [v6 type] == 3)
+  actionCopy = action;
+  if (-[PKDashboardSectionDataSourcePassTiles supportsPaymentPassAction:](self, "supportsPaymentPassAction:") && [actionCopy type] == 3)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v5 = [WeakRetained presentationWindowForSectionDataSource:self];
-    PKPaymentPassActionPerformOpenExternalURL(v6, v5);
+    PKPaymentPassActionPerformOpenExternalURL(actionCopy, v5);
   }
 }
 

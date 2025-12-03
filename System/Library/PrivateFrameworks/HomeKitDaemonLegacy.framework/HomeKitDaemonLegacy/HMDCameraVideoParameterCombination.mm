@@ -1,15 +1,15 @@
 @interface HMDCameraVideoParameterCombination
-- (BOOL)isEqual:(id)a3;
-- (HMDCameraVideoParameterCombination)initWithProfile:(id)a3 level:(id)a4 videoTier:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (HMDCameraVideoParameterCombination)initWithProfile:(id)profile level:(id)level videoTier:(id)tier;
 - (id)description;
 @end
 
 @implementation HMDCameraVideoParameterCombination
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -19,18 +19,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HMDCameraVideoParameterCombination *)self profile];
-      v7 = [(HMDCameraVideoParameterCombination *)v5 profile];
-      if ([v6 isEqual:v7])
+      v5 = equalCopy;
+      profile = [(HMDCameraVideoParameterCombination *)self profile];
+      profile2 = [(HMDCameraVideoParameterCombination *)v5 profile];
+      if ([profile isEqual:profile2])
       {
-        v8 = [(HMDCameraVideoParameterCombination *)self level];
-        v9 = [(HMDCameraVideoParameterCombination *)v5 level];
-        if ([v8 isEqual:v9])
+        level = [(HMDCameraVideoParameterCombination *)self level];
+        level2 = [(HMDCameraVideoParameterCombination *)v5 level];
+        if ([level isEqual:level2])
         {
-          v10 = [(HMDCameraVideoParameterCombination *)self videoTier];
-          v11 = [(HMDCameraVideoParameterCombination *)v5 videoTier];
-          v12 = [v10 isEqual:v11];
+          videoTier = [(HMDCameraVideoParameterCombination *)self videoTier];
+          videoTier2 = [(HMDCameraVideoParameterCombination *)v5 videoTier];
+          v12 = [videoTier isEqual:videoTier2];
         }
 
         else
@@ -57,28 +57,28 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDCameraVideoParameterCombination *)self profile];
-  v5 = [(HMDCameraVideoParameterCombination *)self level];
-  v6 = [(HMDCameraVideoParameterCombination *)self videoTier];
-  v7 = [v3 stringWithFormat:@"<profile = %@, level = %@, tier = %@>", v4, v5, v6];
+  profile = [(HMDCameraVideoParameterCombination *)self profile];
+  level = [(HMDCameraVideoParameterCombination *)self level];
+  videoTier = [(HMDCameraVideoParameterCombination *)self videoTier];
+  v7 = [v3 stringWithFormat:@"<profile = %@, level = %@, tier = %@>", profile, level, videoTier];
 
   return v7;
 }
 
-- (HMDCameraVideoParameterCombination)initWithProfile:(id)a3 level:(id)a4 videoTier:(id)a5
+- (HMDCameraVideoParameterCombination)initWithProfile:(id)profile level:(id)level videoTier:(id)tier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  profileCopy = profile;
+  levelCopy = level;
+  tierCopy = tier;
   v15.receiver = self;
   v15.super_class = HMDCameraVideoParameterCombination;
   v12 = [(HMDCameraVideoParameterCombination *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_profile, a3);
-    objc_storeStrong(&v13->_level, a4);
-    objc_storeStrong(&v13->_videoTier, a5);
+    objc_storeStrong(&v12->_profile, profile);
+    objc_storeStrong(&v13->_level, level);
+    objc_storeStrong(&v13->_videoTier, tier);
   }
 
   return v13;

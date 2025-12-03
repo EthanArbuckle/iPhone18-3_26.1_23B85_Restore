@@ -1,38 +1,38 @@
 @interface PUTilingView
 - (BOOL)isAnyTileControllerAnimating;
 - (PUTileAnimator)tileAnimator;
-- (PUTilingView)initWithCoder:(id)a3;
-- (PUTilingView)initWithFrame:(CGRect)a3 layout:(id)a4;
+- (PUTilingView)initWithCoder:(id)coder;
+- (PUTilingView)initWithFrame:(CGRect)frame layout:(id)layout;
 - (PUTilingViewScrollDelegate)scrollDelegate;
 - (PUTilingViewTileSource)tileSource;
 - (PUTilingViewTileTransitionDelegate)tileTransitionDelegate;
 - (PUTilingViewTileUseDelegate)tileUseDelegate;
 - (UIEdgeInsets)loadingInsets;
-- (id)_createTileControllerWithIndexPath:(id)a3 kind:(id)a4 dataSource:(id)a5 tileSource:(id)a6;
-- (id)_dataSourceWithIdentifier:(id)a3;
-- (id)dequeueTileControllerWithReuseIdentifier:(id)a3;
-- (id)freezeTileController:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)presentedTileControllerWithIndexPath:(id)a3 kind:(id)a4 dataSourceIdentifier:(id)a5;
-- (id)tileControllerWithIndexPath:(id)a3 kind:(id)a4 dataSourceIdentifier:(id)a5;
+- (id)_createTileControllerWithIndexPath:(id)path kind:(id)kind dataSource:(id)source tileSource:(id)tileSource;
+- (id)_dataSourceWithIdentifier:(id)identifier;
+- (id)dequeueTileControllerWithReuseIdentifier:(id)identifier;
+- (id)freezeTileController:(id)controller;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)presentedTileControllerWithIndexPath:(id)path kind:(id)kind dataSourceIdentifier:(id)identifier;
+- (id)tileControllerWithIndexPath:(id)path kind:(id)kind dataSourceIdentifier:(id)identifier;
 - (void)_adjustScrollViewPagingDeceleration;
 - (void)_applyPendingUpdates;
-- (void)_enumerateActiveTileControllersUsingBlock:(id)a3;
-- (void)_enumerateAllTileControllersUsingBlock:(id)a3;
-- (void)_handleChangeFromBounds:(CGRect)a3 fromFrame:(CGRect)a4;
+- (void)_enumerateActiveTileControllersUsingBlock:(id)block;
+- (void)_enumerateAllTileControllersUsingBlock:(id)block;
+- (void)_handleChangeFromBounds:(CGRect)bounds fromFrame:(CGRect)frame;
 - (void)_invalidateLayout;
-- (void)_invalidateLayoutCoordinateSystemWithReason:(int64_t)a3;
+- (void)_invalidateLayoutCoordinateSystemWithReason:(int64_t)reason;
 - (void)_invalidateLayoutVisibleRect;
 - (void)_invalidateReferencedCoordinateSystems;
 - (void)_invalidateReferencedDataSources;
 - (void)_invalidateScrollViewProperties;
 - (void)_invalidateTileControllers;
 - (void)_invalidateTileControllersVisibleRect;
-- (void)_invalidateTileControllersWithTileTransitionCoordinator:(id)a3;
-- (void)_registerDataSource:(id)a3;
+- (void)_invalidateTileControllersWithTileTransitionCoordinator:(id)coordinator;
+- (void)_registerDataSource:(id)source;
 - (void)_runPostLayoutBlocks;
 - (void)_startHeadroomMonitoringIfPossible;
-- (void)_transferTileControllersToDataSource:(id)a3 usingDataSourceConverter:(id)a4;
+- (void)_transferTileControllersToDataSource:(id)source usingDataSourceConverter:(id)converter;
 - (void)_updateIfNeeded;
 - (void)_updateLayoutCoordinateSystemIfNeeded;
 - (void)_updateLayoutIfNeeded;
@@ -40,36 +40,36 @@
 - (void)_updateReferencedCoordinateSystemsIfNeeded;
 - (void)_updateReferencedDataSourcesIfNeeded;
 - (void)_updateScrollViewPropertiesIfNeeded;
-- (void)_updateScrollViewPropertiesWithLayout:(id)a3;
+- (void)_updateScrollViewPropertiesWithLayout:(id)layout;
 - (void)_updateTileControllersIfNeeded;
 - (void)_updateTileControllersVisibleRectIfNeeded;
-- (void)_updateTileControllersWithLayout:(id)a3 reactivatability:(id)a4 appearanceHandler:(id)a5 updateHandler:(id)a6 disappearanceHandler:(id)a7 heartBeatHandler:(id)a8;
-- (void)_updateTileControllersWithLayout:(id)a3 tileTransitionCoordinator:(id)a4;
+- (void)_updateTileControllersWithLayout:(id)layout reactivatability:(id)reactivatability appearanceHandler:(id)handler updateHandler:(id)updateHandler disappearanceHandler:(id)disappearanceHandler heartBeatHandler:(id)beatHandler;
+- (void)_updateTileControllersWithLayout:(id)layout tileTransitionCoordinator:(id)coordinator;
 - (void)configureDynamicRangeProperties;
-- (void)deleteItemAtIndexPath:(id)a3 dataSource:(id)a4;
-- (void)detachTileControllers:(id)a3;
+- (void)deleteItemAtIndexPath:(id)path dataSource:(id)source;
+- (void)detachTileControllers:(id)controllers;
 - (void)didMoveToWindow;
-- (void)enqueueTileControllerForReuse:(id)a3;
-- (void)enumerateAllTileControllersUsingBlock:(id)a3;
-- (void)enumeratePresentedTileControllersInRect:(CGRect)a3 usingBlock:(id)a4;
-- (void)insertItemAtIndexPath:(id)a3 dataSource:(id)a4;
-- (void)invalidateLayout:(id)a3 withContext:(id)a4;
-- (void)layoutSublayersOfLayer:(id)a3;
-- (void)moveItemFromIndexPath:(id)a3 toIndexPath:(id)a4 dataSource:(id)a5;
-- (void)performBatchUpdates:(id)a3;
-- (void)reattachTileControllers:(id)a3 withContext:(id)a4;
-- (void)registerPostLayoutBlock:(id)a3 forIdentifier:(id)a4;
-- (void)registerTileControllerClass:(Class)a3 forReuseIdentifier:(id)a4;
-- (void)reloadItemAtIndexPath:(id)a3 dataSource:(id)a4;
-- (void)setAllowEDRHeadroomMonitoring:(BOOL)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setLoadingInsets:(UIEdgeInsets)a3;
-- (void)setScrollDelegate:(id)a3;
-- (void)setTileTransitionDelegate:(id)a3;
-- (void)setTileUseDelegate:(id)a3;
-- (void)tileControllerDidEndAnimating:(id)a3;
-- (void)transitionToLayout:(id)a3 withContext:(id)a4 animationSetupCompletionHandler:(id)a5;
+- (void)enqueueTileControllerForReuse:(id)reuse;
+- (void)enumerateAllTileControllersUsingBlock:(id)block;
+- (void)enumeratePresentedTileControllersInRect:(CGRect)rect usingBlock:(id)block;
+- (void)insertItemAtIndexPath:(id)path dataSource:(id)source;
+- (void)invalidateLayout:(id)layout withContext:(id)context;
+- (void)layoutSublayersOfLayer:(id)layer;
+- (void)moveItemFromIndexPath:(id)path toIndexPath:(id)indexPath dataSource:(id)source;
+- (void)performBatchUpdates:(id)updates;
+- (void)reattachTileControllers:(id)controllers withContext:(id)context;
+- (void)registerPostLayoutBlock:(id)block forIdentifier:(id)identifier;
+- (void)registerTileControllerClass:(Class)class forReuseIdentifier:(id)identifier;
+- (void)reloadItemAtIndexPath:(id)path dataSource:(id)source;
+- (void)setAllowEDRHeadroomMonitoring:(BOOL)monitoring;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setLoadingInsets:(UIEdgeInsets)insets;
+- (void)setScrollDelegate:(id)delegate;
+- (void)setTileTransitionDelegate:(id)delegate;
+- (void)setTileUseDelegate:(id)delegate;
+- (void)tileControllerDidEndAnimating:(id)animating;
+- (void)transitionToLayout:(id)layout withContext:(id)context animationSetupCompletionHandler:(id)handler;
 @end
 
 @implementation PUTilingView
@@ -122,38 +122,38 @@
   return WeakRetained;
 }
 
-- (void)_transferTileControllersToDataSource:(id)a3 usingDataSourceConverter:(id)a4
+- (void)_transferTileControllersToDataSource:(id)source usingDataSourceConverter:(id)converter
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  sourceCopy = source;
+  converterCopy = converter;
+  if (!converterCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:1392 description:{@"Invalid parameter not satisfying: %@", @"dataSourceConverter != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:1392 description:{@"Invalid parameter not satisfying: %@", @"dataSourceConverter != nil"}];
   }
 
-  [(PUTilingView *)self _registerDataSource:v7];
-  v9 = [v7 identifier];
+  [(PUTilingView *)self _registerDataSource:sourceCopy];
+  identifier = [sourceCopy identifier];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __78__PUTilingView__transferTileControllersToDataSource_usingDataSourceConverter___block_invoke;
   aBlock[3] = &unk_1E7B7EFA8;
   aBlock[4] = self;
-  v19 = v8;
-  v20 = v7;
-  v21 = v9;
-  v10 = v9;
-  v11 = v7;
-  v12 = v8;
+  v19 = converterCopy;
+  v20 = sourceCopy;
+  v21 = identifier;
+  v10 = identifier;
+  v11 = sourceCopy;
+  v12 = converterCopy;
   v13 = _Block_copy(aBlock);
-  v14 = [(PUTilingView *)self _activeTileControllers];
-  v13[2](v13, v14);
+  _activeTileControllers = [(PUTilingView *)self _activeTileControllers];
+  v13[2](v13, _activeTileControllers);
 
-  v15 = [(PUTilingView *)self _inactiveTileControllers];
-  v13[2](v13, v15);
+  _inactiveTileControllers = [(PUTilingView *)self _inactiveTileControllers];
+  v13[2](v13, _inactiveTileControllers);
 
-  v16 = [(PUTilingView *)self _detachedTileControllers];
-  v13[2](v13, v16);
+  _detachedTileControllers = [(PUTilingView *)self _detachedTileControllers];
+  v13[2](v13, _detachedTileControllers);
 }
 
 void __78__PUTilingView__transferTileControllersToDataSource_usingDataSourceConverter___block_invoke(uint64_t a1, void *a2)
@@ -230,47 +230,47 @@ void __78__PUTilingView__transferTileControllersToDataSource_usingDataSourceConv
   }
 }
 
-- (id)_dataSourceWithIdentifier:(id)a3
+- (id)_dataSourceWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PUTilingView *)self _referencedDataSourcesByIdentifiers];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  _referencedDataSourcesByIdentifiers = [(PUTilingView *)self _referencedDataSourcesByIdentifiers];
+  v6 = [_referencedDataSourcesByIdentifiers objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }
 
-- (void)_registerDataSource:(id)a3
+- (void)_registerDataSource:(id)source
 {
-  v4 = a3;
-  v6 = [v4 identifier];
-  v5 = [(PUTilingView *)self _referencedDataSourcesByIdentifiers];
-  [v5 setObject:v4 forKeyedSubscript:v6];
+  sourceCopy = source;
+  identifier = [sourceCopy identifier];
+  _referencedDataSourcesByIdentifiers = [(PUTilingView *)self _referencedDataSourcesByIdentifiers];
+  [_referencedDataSourcesByIdentifiers setObject:sourceCopy forKeyedSubscript:identifier];
 }
 
-- (void)registerPostLayoutBlock:(id)a3 forIdentifier:(id)a4
+- (void)registerPostLayoutBlock:(id)block forIdentifier:(id)identifier
 {
-  v11 = a3;
-  v7 = a4;
-  if (!v7)
+  blockCopy = block;
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:1374 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:1374 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
-  v8 = [(PUTilingView *)self _postLayoutBlocks];
-  v9 = [v11 copy];
-  [v8 setObject:v9 forKeyedSubscript:v7];
+  _postLayoutBlocks = [(PUTilingView *)self _postLayoutBlocks];
+  v9 = [blockCopy copy];
+  [_postLayoutBlocks setObject:v9 forKeyedSubscript:identifierCopy];
 }
 
 - (void)_runPostLayoutBlocks
 {
-  v3 = [(PUTilingView *)self _postLayoutBlocks];
+  _postLayoutBlocks = [(PUTilingView *)self _postLayoutBlocks];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __36__PUTilingView__runPostLayoutBlocks__block_invoke;
   v4[3] = &unk_1E7B7EF58;
   v4[4] = self;
-  [v3 enumerateKeysAndObjectsUsingBlock:v4];
+  [_postLayoutBlocks enumerateKeysAndObjectsUsingBlock:v4];
 }
 
 - (void)_updateReferencedCoordinateSystemsIfNeeded
@@ -279,8 +279,8 @@ void __78__PUTilingView__transferTileControllersToDataSource_usingDataSourceConv
   {
     [(PUTilingView *)self _setNeedsUpdateReferencedCoordinateSystems:0];
     v3 = [MEMORY[0x1E695DFA8] set];
-    v4 = [(PUTilingView *)self layout];
-    [v3 addObject:v4];
+    layout = [(PUTilingView *)self layout];
+    [v3 addObject:layout];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -289,14 +289,14 @@ void __78__PUTilingView__transferTileControllersToDataSource_usingDataSourceConv
     v11 = v3;
     v5 = v3;
     v6 = _Block_copy(aBlock);
-    v7 = [(PUTilingView *)self _inactiveTileControllers];
-    v6[2](v6, v7);
+    _inactiveTileControllers = [(PUTilingView *)self _inactiveTileControllers];
+    v6[2](v6, _inactiveTileControllers);
 
-    v8 = [(PUTilingView *)self _detachedTileControllers];
-    v6[2](v6, v8);
+    _detachedTileControllers = [(PUTilingView *)self _detachedTileControllers];
+    v6[2](v6, _detachedTileControllers);
 
-    v9 = [(PUTilingView *)self _referencedCoordinateSystems];
-    [v9 setSet:v5];
+    _referencedCoordinateSystems = [(PUTilingView *)self _referencedCoordinateSystems];
+    [_referencedCoordinateSystems setSet:v5];
   }
 }
 
@@ -326,18 +326,18 @@ void __58__PUTilingView__updateReferencedCoordinateSystemsIfNeeded__block_invoke
   if ([(PUTilingView *)self _needsUpdateReferencedDataSources])
   {
     [(PUTilingView *)self _setNeedsUpdateReferencedDataSources:0];
-    v3 = [(PUTilingView *)self _referencedDataSourcesByIdentifiers];
+    _referencedDataSourcesByIdentifiers = [(PUTilingView *)self _referencedDataSourcesByIdentifiers];
     v4 = MEMORY[0x1E695DFA8];
-    v5 = [v3 allKeys];
-    v6 = [v4 setWithArray:v5];
+    allKeys = [_referencedDataSourcesByIdentifiers allKeys];
+    v6 = [v4 setWithArray:allKeys];
 
-    v7 = [(PUTilingView *)self layout];
-    v8 = [v7 dataSource];
-    v9 = [v8 identifier];
+    layout = [(PUTilingView *)self layout];
+    dataSource = [layout dataSource];
+    identifier = [dataSource identifier];
 
-    if (v9)
+    if (identifier)
     {
-      [v6 removeObject:v9];
+      [v6 removeObject:identifier];
     }
 
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -347,11 +347,11 @@ void __58__PUTilingView__updateReferencedCoordinateSystemsIfNeeded__block_invoke
     v10 = v6;
     v24 = v10;
     v11 = _Block_copy(aBlock);
-    v12 = [(PUTilingView *)self _inactiveTileControllers];
-    v11[2](v11, v12);
+    _inactiveTileControllers = [(PUTilingView *)self _inactiveTileControllers];
+    v11[2](v11, _inactiveTileControllers);
 
-    v13 = [(PUTilingView *)self _detachedTileControllers];
-    v11[2](v11, v13);
+    _detachedTileControllers = [(PUTilingView *)self _detachedTileControllers];
+    v11[2](v11, _detachedTileControllers);
 
     v21 = 0u;
     v22 = 0u;
@@ -373,7 +373,7 @@ void __58__PUTilingView__updateReferencedCoordinateSystemsIfNeeded__block_invoke
             objc_enumerationMutation(v14);
           }
 
-          [v3 removeObjectForKey:{*(*(&v19 + 1) + 8 * v18++), v19}];
+          [_referencedDataSourcesByIdentifiers removeObjectForKey:{*(*(&v19 + 1) + 8 * v18++), v19}];
         }
 
         while (v16 != v18);
@@ -402,28 +402,28 @@ void __52__PUTilingView__updateReferencedDataSourcesIfNeeded__block_invoke_2(uin
   [v3 removeObject:v4];
 }
 
-- (void)_updateTileControllersWithLayout:(id)a3 reactivatability:(id)a4 appearanceHandler:(id)a5 updateHandler:(id)a6 disappearanceHandler:(id)a7 heartBeatHandler:(id)a8
+- (void)_updateTileControllersWithLayout:(id)layout reactivatability:(id)reactivatability appearanceHandler:(id)handler updateHandler:(id)updateHandler disappearanceHandler:(id)disappearanceHandler heartBeatHandler:(id)beatHandler
 {
   v98 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v69 = a6;
-  v17 = a7;
-  v18 = a8;
+  layoutCopy = layout;
+  reactivatabilityCopy = reactivatability;
+  handlerCopy = handler;
+  updateHandlerCopy = updateHandler;
+  disappearanceHandlerCopy = disappearanceHandler;
+  beatHandlerCopy = beatHandler;
   [(PUTilingView *)self bounds];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v27 = +[PUTilingViewSettings sharedInstance];
-  LODWORD(a7) = [v27 allowPreheating];
+  LODWORD(disappearanceHandler) = [v27 allowPreheating];
 
-  v66 = v15;
-  v67 = v18;
-  v63 = v17;
-  v64 = v16;
-  if (a7)
+  v66 = reactivatabilityCopy;
+  v67 = beatHandlerCopy;
+  v63 = disappearanceHandlerCopy;
+  v64 = handlerCopy;
+  if (disappearanceHandler)
   {
     [(PUTilingView *)self loadingInsets];
     v20 = v20 + v28;
@@ -432,22 +432,22 @@ void __52__PUTilingView__updateReferencedDataSourcesIfNeeded__block_invoke_2(uin
     v26 = v26 - (v29 + v31);
   }
 
-  v32 = [(PUTilingView *)self contentCoordinateSystem];
-  v33 = [v14 coordinateSystem];
-  v34 = PUConvertPointFromCoordinateSystemToCoordinateSystem(v32, v33, v20, v22);
+  contentCoordinateSystem = [(PUTilingView *)self contentCoordinateSystem];
+  coordinateSystem = [layoutCopy coordinateSystem];
+  v34 = PUConvertPointFromCoordinateSystemToCoordinateSystem(contentCoordinateSystem, coordinateSystem, v20, v22);
   v36 = v35;
 
-  v37 = [v14 layoutInfosForTilesInRect:{v34, v36, v24, v26}];
-  v68 = v14;
-  v62 = [v14 dataSource];
-  v38 = [(PUTilingView *)self _activeTileControllers];
-  v61 = [(PUTilingView *)self _inactiveTileControllers];
+  v37 = [layoutCopy layoutInfosForTilesInRect:{v34, v36, v24, v26}];
+  v68 = layoutCopy;
+  dataSource = [layoutCopy dataSource];
+  _activeTileControllers = [(PUTilingView *)self _activeTileControllers];
+  _inactiveTileControllers = [(PUTilingView *)self _inactiveTileControllers];
   v70 = [[PUTileTree alloc] initUsingUniqueLeafs:1];
-  v72 = v38;
-  v39 = [v38 copy];
-  v65 = self;
-  v40 = [(PUTilingView *)self _detachedTileControllers];
-  v75 = [v40 copy];
+  v72 = _activeTileControllers;
+  v39 = [_activeTileControllers copy];
+  selfCopy = self;
+  _detachedTileControllers = [(PUTilingView *)self _detachedTileControllers];
+  v75 = [_detachedTileControllers copy];
   v93 = 0u;
   v94 = 0u;
   v95 = 0u;
@@ -468,21 +468,21 @@ void __52__PUTilingView__updateReferencedDataSourcesIfNeeded__block_invoke_2(uin
         }
 
         v45 = *(*(&v93 + 1) + 8 * i);
-        v46 = [v45 tileIdentifier];
-        v47 = [v40 objectWithTileIdentifier:v46];
+        tileIdentifier = [v45 tileIdentifier];
+        v47 = [_detachedTileControllers objectWithTileIdentifier:tileIdentifier];
         if (v47)
         {
-          [v75 removeObject:v47 withTileIdentifier:v46];
+          [v75 removeObject:v47 withTileIdentifier:tileIdentifier];
 LABEL_10:
-          [v39 removeObjectWithTileIdentifier:v46];
+          [v39 removeObjectWithTileIdentifier:tileIdentifier];
           goto LABEL_14;
         }
 
-        v48 = [v72 objectWithTileIdentifier:v46];
+        v48 = [v72 objectWithTileIdentifier:tileIdentifier];
         if (v48)
         {
           v49 = v48;
-          v50 = v69[2](v69, v48, v45);
+          v50 = updateHandlerCopy[2](updateHandlerCopy, v48, v45);
 
           if (v50)
           {
@@ -490,7 +490,7 @@ LABEL_10:
           }
         }
 
-        [v70 addObject:v45 withTileIdentifier:v46];
+        [v70 addObject:v45 withTileIdentifier:tileIdentifier];
 LABEL_14:
       }
 
@@ -515,7 +515,7 @@ LABEL_14:
   v86[3] = &unk_1E7B7EE90;
   v52 = v72;
   v87 = v52;
-  v53 = v61;
+  v53 = _inactiveTileControllers;
   v88 = v53;
   v89 = v63;
   v73 = v63;
@@ -524,19 +524,19 @@ LABEL_14:
   v78[1] = 3221225472;
   v78[2] = __136__PUTilingView__updateTileControllersWithLayout_reactivatability_appearanceHandler_updateHandler_disappearanceHandler_heartBeatHandler___block_invoke_3;
   v78[3] = &unk_1E7B7EEE0;
-  v79 = v40;
-  v80 = v65;
+  v79 = _detachedTileControllers;
+  v80 = selfCopy;
   v81 = v53;
-  v82 = v62;
+  v82 = dataSource;
   v83 = v52;
   v84 = v66;
   v85 = v64;
   v54 = v64;
   v55 = v52;
-  v56 = v62;
+  v56 = dataSource;
   v57 = v66;
   v58 = v53;
-  v59 = v40;
+  v59 = _detachedTileControllers;
   [v51 enumerateObjectsUsingBlock:v78];
   v76[0] = MEMORY[0x1E69E9820];
   v76[1] = 3221225472;
@@ -621,15 +621,15 @@ void __136__PUTilingView__updateTileControllersWithLayout_reactivatability_appea
   }
 }
 
-- (void)_updateTileControllersWithLayout:(id)a3 tileTransitionCoordinator:(id)a4
+- (void)_updateTileControllersWithLayout:(id)layout tileTransitionCoordinator:(id)coordinator
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(PUTilingView *)self tileAnimator];
-  if (!v9)
+  layoutCopy = layout;
+  coordinatorCopy = coordinator;
+  tileAnimator = [(PUTilingView *)self tileAnimator];
+  if (!tileAnimator)
   {
 
-    v8 = 0;
+    coordinatorCopy = 0;
   }
 
   v27[0] = MEMORY[0x1E69E9820];
@@ -638,7 +638,7 @@ void __136__PUTilingView__updateTileControllersWithLayout_reactivatability_appea
   v27[3] = &unk_1E7B7EDA0;
   v29 = a2;
   v27[4] = self;
-  v28 = v8;
+  v28 = coordinatorCopy;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __75__PUTilingView__updateTileControllersWithLayout_tileTransitionCoordinator___block_invoke_2;
@@ -646,7 +646,7 @@ void __136__PUTilingView__updateTileControllersWithLayout_reactivatability_appea
   v26 = a2;
   v23[4] = self;
   v24 = v28;
-  v25 = v9;
+  v25 = tileAnimator;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __75__PUTilingView__updateTileControllersWithLayout_tileTransitionCoordinator___block_invoke_4;
@@ -672,7 +672,7 @@ void __136__PUTilingView__updateTileControllersWithLayout_reactivatability_appea
   v12[4] = self;
   v10 = v17;
   v11 = v20;
-  [(PUTilingView *)self _updateTileControllersWithLayout:v7 reactivatability:v27 appearanceHandler:v23 updateHandler:v19 disappearanceHandler:v15 heartBeatHandler:v12];
+  [(PUTilingView *)self _updateTileControllersWithLayout:layoutCopy reactivatability:v27 appearanceHandler:v23 updateHandler:v19 disappearanceHandler:v15 heartBeatHandler:v12];
 }
 
 uint64_t __75__PUTilingView__updateTileControllersWithLayout_tileTransitionCoordinator___block_invoke(void *a1, void *a2, void *a3)
@@ -972,51 +972,51 @@ void __75__PUTilingView__updateTileControllersWithLayout_tileTransitionCoordinat
   if ([(PUTilingView *)self _needsUpdateTileControllers])
   {
     [(PUTilingView *)self _setNeedsUpdateTileControllers:0];
-    v3 = [(PUTilingView *)self window];
+    window = [(PUTilingView *)self window];
 
-    if (v3)
+    if (window)
     {
-      v3 = [(PUTilingView *)self _tileTransitionCoordinatorForNextLayout];
+      window = [(PUTilingView *)self _tileTransitionCoordinatorForNextLayout];
     }
 
     [(PUTilingView *)self _setTileTransitionCoordinatorForNextLayout:0];
-    v4 = [(PUTilingView *)self layout];
+    layout = [(PUTilingView *)self layout];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __46__PUTilingView__updateTileControllersIfNeeded__block_invoke;
     v10[3] = &unk_1E7B809F0;
     v10[4] = self;
-    v11 = v4;
-    v12 = v3;
-    v5 = v3;
-    v6 = v4;
+    v11 = layout;
+    v12 = window;
+    v5 = window;
+    v6 = layout;
     v7 = [PUAnimationGroup animationGroupWithAnimations:v10];
-    v8 = [(PUTilingView *)self onNextTileControllersUpdateBlock];
-    if (v8)
+    onNextTileControllersUpdateBlock = [(PUTilingView *)self onNextTileControllersUpdateBlock];
+    if (onNextTileControllersUpdateBlock)
     {
       [(PUTilingView *)self setOnNextTileControllersUpdateBlock:0];
-      (v8)[2](v8, v7);
+      (onNextTileControllersUpdateBlock)[2](onNextTileControllersUpdateBlock, v7);
     }
 
     if (self->_tileUseDelegateFlags.respondsToDidUpdateTileControllers)
     {
-      v9 = [(PUTilingView *)self tileUseDelegate];
-      [v9 tilingViewDidUpdateTileControllers:self];
+      tileUseDelegate = [(PUTilingView *)self tileUseDelegate];
+      [tileUseDelegate tilingViewDidUpdateTileControllers:self];
     }
   }
 }
 
-- (void)_updateScrollViewPropertiesWithLayout:(id)a3
+- (void)_updateScrollViewPropertiesWithLayout:(id)layout
 {
-  v36 = a3;
-  [v36 contentBounds];
+  layoutCopy = layout;
+  [layoutCopy contentBounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [v36 coordinateSystem];
-  v13 = [(PUTilingView *)self contentCoordinateSystem];
-  v14 = PUConvertPointFromCoordinateSystemToCoordinateSystem(v12, v13, v5, v7);
+  coordinateSystem = [layoutCopy coordinateSystem];
+  contentCoordinateSystem = [(PUTilingView *)self contentCoordinateSystem];
+  v14 = PUConvertPointFromCoordinateSystemToCoordinateSystem(coordinateSystem, contentCoordinateSystem, v5, v7);
   v16 = v15;
 
   v38.origin.x = v14;
@@ -1040,23 +1040,23 @@ void __75__PUTilingView__updateTileControllersWithLayout_tileTransitionCoordinat
   v41.size.width = v9;
   v41.size.height = v11;
   MinY = CGRectGetMinY(v41);
-  if (!self->_scrollDelegateFlags.respondsToScrollInfoWithLayout || (-[PUTilingView scrollDelegate](self, "scrollDelegate"), v20 = objc_claimAutoreleasedReturnValue(), [v20 tilingView:self scrollInfoWithLayout:v36], v21 = objc_claimAutoreleasedReturnValue(), v20, !v21))
+  if (!self->_scrollDelegateFlags.respondsToScrollInfoWithLayout || (-[PUTilingView scrollDelegate](self, "scrollDelegate"), v20 = objc_claimAutoreleasedReturnValue(), [v20 tilingView:self scrollInfoWithLayout:layoutCopy], preferredScrollInfo = objc_claimAutoreleasedReturnValue(), v20, !preferredScrollInfo))
   {
-    v21 = [v36 preferredScrollInfo];
+    preferredScrollInfo = [layoutCopy preferredScrollInfo];
   }
 
   v22 = *(v17 + 16);
   v23 = *(v17 + 24);
-  v24 = [v21 scrollDirections];
-  v25 = [v21 shouldEnablePaging];
-  [v21 interpageSpacing];
+  scrollDirections = [preferredScrollInfo scrollDirections];
+  shouldEnablePaging = [preferredScrollInfo shouldEnablePaging];
+  [preferredScrollInfo interpageSpacing];
   v27 = v26;
   v29 = v28;
   v30 = +[PUTilingViewSettings sharedInstance];
-  v31 = [v30 allowPaging];
+  allowPaging = [v30 allowPaging];
 
-  v32 = v24 & 2;
-  v33 = v24 & 4;
+  v32 = scrollDirections & 2;
+  v33 = scrollDirections & 4;
   if ([(PUTilingView *)self alwaysBounceHorizontal]!= v32 >> 1 || [(PUTilingView *)self alwaysBounceVertical]!= v33 >> 2)
   {
     [(PUTilingView *)self contentOffset];
@@ -1067,12 +1067,12 @@ void __75__PUTilingView__updateTileControllersWithLayout_tileTransitionCoordinat
   [(PUTilingView *)self setContentInset:-MinY, -MinX, v22, v23];
   [(PUTilingView *)self setAlwaysBounceHorizontal:v32 != 0];
   [(PUTilingView *)self setAlwaysBounceVertical:v33 != 0];
-  [(PUTilingView *)self setPagingEnabled:v31 & v25];
+  [(PUTilingView *)self setPagingEnabled:allowPaging & shouldEnablePaging];
   [(PUTilingView *)self _setInterpageSpacing:v27, v29];
   [(PUTilingView *)self _setPagingOrigin:MinX, MinY];
-  [v21 pagingSpringPullAdjustment];
+  [preferredScrollInfo pagingSpringPullAdjustment];
   [(PUTilingView *)self _setPagingSpringPullAdjustment:?];
-  [v21 pagingFrictionAdjustment];
+  [preferredScrollInfo pagingFrictionAdjustment];
   [(PUTilingView *)self _setPagingFrictionAdjustment:?];
   [(PUTilingView *)self _adjustScrollViewPagingDeceleration];
 }
@@ -1082,8 +1082,8 @@ void __75__PUTilingView__updateTileControllersWithLayout_tileTransitionCoordinat
   if ([(PUTilingView *)self _needsUpdateScrollViewProperties])
   {
     [(PUTilingView *)self _setNeedsUpdateScrollViewProperties:0];
-    v3 = [(PUTilingView *)self layout];
-    [(PUTilingView *)self _updateScrollViewPropertiesWithLayout:v3];
+    layout = [(PUTilingView *)self layout];
+    [(PUTilingView *)self _updateScrollViewPropertiesWithLayout:layout];
   }
 }
 
@@ -1111,32 +1111,32 @@ void __57__PUTilingView__updateTileControllersVisibleRectIfNeeded__block_invoke(
   if ([(PUTilingView *)self _needsUpdateLayoutVisibleRect])
   {
     [(PUTilingView *)self _setNeedsUpdateLayoutVisibleRect:0];
-    v3 = [(PUTilingView *)self _pendingLayout];
-    v4 = v3;
-    if (v3)
+    _pendingLayout = [(PUTilingView *)self _pendingLayout];
+    v4 = _pendingLayout;
+    if (_pendingLayout)
     {
-      v5 = v3;
+      layout = _pendingLayout;
     }
 
     else
     {
-      v5 = [(PUTilingView *)self layout];
+      layout = [(PUTilingView *)self layout];
     }
 
-    v18 = v5;
+    v18 = layout;
 
     [(PUTilingView *)self bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [v18 parentCoordinateSystem];
+    parentCoordinateSystem = [v18 parentCoordinateSystem];
 
-    if (v14)
+    if (parentCoordinateSystem)
     {
-      v15 = [(PUTilingView *)self contentCoordinateSystem];
-      v16 = [v18 coordinateSystem];
-      v7 = PUConvertPointFromCoordinateSystemToCoordinateSystem(v15, v16, v7, v9);
+      contentCoordinateSystem = [(PUTilingView *)self contentCoordinateSystem];
+      coordinateSystem = [v18 coordinateSystem];
+      v7 = PUConvertPointFromCoordinateSystemToCoordinateSystem(contentCoordinateSystem, coordinateSystem, v7, v9);
       v9 = v17;
     }
 
@@ -1150,28 +1150,28 @@ void __57__PUTilingView__updateTileControllersVisibleRectIfNeeded__block_invoke(
   if ([(PUTilingView *)self _needsUpdateLayoutCoordinateSystem])
   {
     [(PUTilingView *)self _setNeedsUpdateLayoutCoordinateSystem:0];
-    v4 = [(PUTilingView *)self _reasonForNextLayoutCoordinateSystemUpdate];
+    _reasonForNextLayoutCoordinateSystemUpdate = [(PUTilingView *)self _reasonForNextLayoutCoordinateSystemUpdate];
     [(PUTilingView *)self _setReasonForNextLayoutCoordinateSystemUpdate:0];
-    v5 = [(PUTilingView *)self layout];
-    v6 = [v5 parentCoordinateSystem];
+    layout = [(PUTilingView *)self layout];
+    parentCoordinateSystem = [layout parentCoordinateSystem];
 
-    v7 = [MEMORY[0x1E695DF70] array];
-    v8 = [v5 parentCoordinateSystem];
+    array = [MEMORY[0x1E695DF70] array];
+    parentCoordinateSystem2 = [layout parentCoordinateSystem];
 
-    if (v8)
+    if (parentCoordinateSystem2)
     {
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __53__PUTilingView__updateLayoutCoordinateSystemIfNeeded__block_invoke;
       v43[3] = &unk_1E7B7ED58;
-      v44 = v5;
-      v45 = self;
-      v46 = v7;
+      v44 = layout;
+      selfCopy = self;
+      v46 = array;
       [(PUTilingView *)self _enumerateAllTileControllersUsingBlock:v43];
     }
 
-    v9 = [(PUTilingView *)self contentCoordinateSystem];
-    [v5 setParentCoordinateSystem:v9];
+    contentCoordinateSystem = [(PUTilingView *)self contentCoordinateSystem];
+    [layout setParentCoordinateSystem:contentCoordinateSystem];
 
     if ([(PUTilingView *)self isDecelerating]&& [(PUTilingView *)self isPagingEnabled])
     {
@@ -1187,17 +1187,17 @@ void __57__PUTilingView__updateTileControllersVisibleRectIfNeeded__block_invoke(
     v13 = v11;
     v15 = *MEMORY[0x1E695EFF8];
     v14 = *(MEMORY[0x1E695EFF8] + 8);
-    if ((v4 - 2) < 2)
+    if ((_reasonForNextLayoutCoordinateSystemUpdate - 2) < 2)
     {
-      v17 = [(PUTilingView *)self fixedCoordinateSystem];
-      v18 = [v5 coordinateSystem];
-      v15 = PUConvertPointFromCoordinateSystemToCoordinateSystem(v17, v18, v15, v14);
+      fixedCoordinateSystem = [(PUTilingView *)self fixedCoordinateSystem];
+      coordinateSystem = [layout coordinateSystem];
+      v15 = PUConvertPointFromCoordinateSystemToCoordinateSystem(fixedCoordinateSystem, coordinateSystem, v15, v14);
       v14 = v19;
 
       if (self->_scrollDelegateFlags.respondsToTargetVisibleOriginForProposedVisibleOrigin)
       {
-        v20 = [(PUTilingView *)self scrollDelegate];
-        [v20 tilingView:self targetVisibleOriginForProposedVisibleOrigin:v5 withLayout:{v15, v14}];
+        scrollDelegate = [(PUTilingView *)self scrollDelegate];
+        [scrollDelegate tilingView:self targetVisibleOriginForProposedVisibleOrigin:layout withLayout:{v15, v14}];
         v22 = v21;
         v24 = v23;
 
@@ -1207,7 +1207,7 @@ void __57__PUTilingView__updateTileControllersVisibleRectIfNeeded__block_invoke(
           v25 = 1;
         }
 
-        if (!v6)
+        if (!parentCoordinateSystem)
         {
           v25 = 1;
         }
@@ -1219,37 +1219,37 @@ void __57__PUTilingView__updateTileControllersVisibleRectIfNeeded__block_invoke(
 
       else
       {
-        v38 = v6 == 0;
+        v38 = parentCoordinateSystem == 0;
       }
     }
 
     else
     {
-      v38 = v6 == 0;
-      if (v4 == 1)
+      v38 = parentCoordinateSystem == 0;
+      if (_reasonForNextLayoutCoordinateSystemUpdate == 1)
       {
         if (self->_scrollDelegateFlags.respondsToInitialVisibleOriginWithLayout)
         {
-          v26 = [(PUTilingView *)self scrollDelegate];
-          [v26 tilingView:self initialVisibleOriginWithLayout:v5];
+          scrollDelegate2 = [(PUTilingView *)self scrollDelegate];
+          [scrollDelegate2 tilingView:self initialVisibleOriginWithLayout:layout];
           v15 = v27;
           v14 = v28;
         }
       }
 
-      else if (!v4)
+      else if (!_reasonForNextLayoutCoordinateSystemUpdate)
       {
-        v16 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v16 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:940 description:@"no valid reason to update coordinate system"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:940 description:@"no valid reason to update coordinate system"];
       }
     }
 
-    [v5 setCoordinateSystemOrigin:{v12 - v15, v13 - v14}];
+    [layout setCoordinateSystemOrigin:{v12 - v15, v13 - v14}];
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v29 = v7;
+    v29 = array;
     v30 = [v29 countByEnumeratingWithState:&v39 objects:v47 count:16];
     if (v30)
     {
@@ -1265,9 +1265,9 @@ void __57__PUTilingView__updateTileControllersVisibleRectIfNeeded__block_invoke(
           }
 
           v34 = *(*(&v39 + 1) + 8 * i);
-          v35 = [v34 layoutInfo];
-          v36 = [v5 coordinateSystem];
-          v37 = [v35 layoutInfoWithCoordinateSystem:v36];
+          layoutInfo = [v34 layoutInfo];
+          coordinateSystem2 = [layout coordinateSystem];
+          v37 = [layoutInfo layoutInfoWithCoordinateSystem:coordinateSystem2];
 
           [v34 setLayoutInfo:v37];
         }
@@ -1311,22 +1311,22 @@ void __53__PUTilingView__updateLayoutCoordinateSystemIfNeeded__block_invoke(id *
   if ([(PUTilingView *)self _needsUpdateLayout])
   {
     [(PUTilingView *)self _setNeedsUpdateLayout:0];
-    v10 = [(PUTilingView *)self _pendingLayout];
-    if (v10)
+    _pendingLayout = [(PUTilingView *)self _pendingLayout];
+    if (_pendingLayout)
     {
-      v3 = [(PUTilingView *)self layout];
+      layout = [(PUTilingView *)self layout];
       [(PUTilingView *)self _setPendingLayout:0];
-      [(PUTilingView *)self _setLayout:v10];
-      [v10 setTilingView:self];
-      v4 = [v3 dataSource];
-      v5 = [v10 dataSource];
-      v6 = v5;
-      if (v5 != v4 && ([v5 isEqual:v4] & 1) == 0)
+      [(PUTilingView *)self _setLayout:_pendingLayout];
+      [_pendingLayout setTilingView:self];
+      dataSource = [layout dataSource];
+      dataSource2 = [_pendingLayout dataSource];
+      v6 = dataSource2;
+      if (dataSource2 != dataSource && ([dataSource2 isEqual:dataSource] & 1) == 0)
       {
         if (self->_tileTransitionDelegateFlags.respondsToDataSourceConverterForTransitionFromLayoutToLayout)
         {
-          v7 = [(PUTilingView *)self tileTransitionDelegate];
-          v8 = [v7 tilingView:self dataSourceConverterForTransitionFromLayout:v3 toLayout:v10];
+          tileTransitionDelegate = [(PUTilingView *)self tileTransitionDelegate];
+          v8 = [tileTransitionDelegate tilingView:self dataSourceConverterForTransitionFromLayout:layout toLayout:_pendingLayout];
         }
 
         else
@@ -1338,8 +1338,8 @@ void __53__PUTilingView__updateLayoutCoordinateSystemIfNeeded__block_invoke(id *
       }
     }
 
-    v9 = [(PUTilingView *)self layout];
-    [v9 prepareLayout];
+    layout2 = [(PUTilingView *)self layout];
+    [layout2 prepareLayout];
   }
 }
 
@@ -1357,9 +1357,9 @@ void __53__PUTilingView__updateLayoutCoordinateSystemIfNeeded__block_invoke(id *
   [(PUTilingView *)self _runPostLayoutBlocks];
 }
 
-- (void)_invalidateTileControllersWithTileTransitionCoordinator:(id)a3
+- (void)_invalidateTileControllersWithTileTransitionCoordinator:(id)coordinator
 {
-  [(PUTilingView *)self _setTileTransitionCoordinatorForNextLayout:a3];
+  [(PUTilingView *)self _setTileTransitionCoordinatorForNextLayout:coordinator];
   [(PUTilingView *)self _setNeedsUpdateTileControllers:1];
 
   [(PUTilingView *)self _setNeedsUpdate];
@@ -1400,10 +1400,10 @@ void __53__PUTilingView__updateLayoutCoordinateSystemIfNeeded__block_invoke(id *
   [(PUTilingView *)self _setNeedsUpdate];
 }
 
-- (void)_invalidateLayoutCoordinateSystemWithReason:(int64_t)a3
+- (void)_invalidateLayoutCoordinateSystemWithReason:(int64_t)reason
 {
   [(PUTilingView *)self _setNeedsUpdateLayoutCoordinateSystem:1];
-  [(PUTilingView *)self _setReasonForNextLayoutCoordinateSystemUpdate:a3];
+  [(PUTilingView *)self _setReasonForNextLayoutCoordinateSystemUpdate:reason];
 
   [(PUTilingView *)self _setNeedsUpdate];
 }
@@ -1423,13 +1423,13 @@ void __53__PUTilingView__updateLayoutCoordinateSystemIfNeeded__block_invoke(id *
   [(PUTilingView *)self _setNeedsUpdate];
 }
 
-- (void)invalidateLayout:(id)a3 withContext:(id)a4
+- (void)invalidateLayout:(id)layout withContext:(id)context
 {
-  v13 = a3;
-  v7 = a4;
-  if (v13)
+  layoutCopy = layout;
+  contextCopy = context;
+  if (layoutCopy)
   {
-    if (v7)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -1437,32 +1437,32 @@ void __53__PUTilingView__updateLayoutCoordinateSystemIfNeeded__block_invoke(id *
 
   else
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:782 description:{@"Invalid parameter not satisfying: %@", @"layout != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:782 description:{@"Invalid parameter not satisfying: %@", @"layout != nil"}];
 
-    if (v7)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v12 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v12 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:783 description:{@"Invalid parameter not satisfying: %@", @"invalidationContext != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:783 description:{@"Invalid parameter not satisfying: %@", @"invalidationContext != nil"}];
 
 LABEL_3:
-  v8 = [(PUTilingView *)self layout];
+  layout = [(PUTilingView *)self layout];
 
-  if (v8 == v13)
+  if (layout == layoutCopy)
   {
     [(PUTilingView *)self _invalidateLayout];
-    if ([v7 invalidatedContentBounds])
+    if ([contextCopy invalidatedContentBounds])
     {
       [(PUTilingView *)self _invalidateScrollViewProperties];
     }
 
-    if ([v7 invalidatedAnyTile])
+    if ([contextCopy invalidatedAnyTile])
     {
-      if (self->_tileTransitionDelegateFlags.respondsToTileTransitionCoordinatorForLayoutInvalidationContext && (-[PUTilingView tileTransitionDelegate](self, "tileTransitionDelegate"), v9 = objc_claimAutoreleasedReturnValue(), [v9 tilingView:self tileTransitionCoordinatorForLayoutInvalidationContext:v7], v10 = objc_claimAutoreleasedReturnValue(), v9, v10))
+      if (self->_tileTransitionDelegateFlags.respondsToTileTransitionCoordinatorForLayoutInvalidationContext && (-[PUTilingView tileTransitionDelegate](self, "tileTransitionDelegate"), v9 = objc_claimAutoreleasedReturnValue(), [v9 tilingView:self tileTransitionCoordinatorForLayoutInvalidationContext:contextCopy], v10 = objc_claimAutoreleasedReturnValue(), v9, v10))
       {
         [(PUTilingView *)self _invalidateTileControllersWithTileTransitionCoordinator:v10];
       }
@@ -1504,50 +1504,50 @@ uint64_t __44__PUTilingView_isAnyTileControllerAnimating__block_invoke(uint64_t 
   return result;
 }
 
-- (id)_createTileControllerWithIndexPath:(id)a3 kind:(id)a4 dataSource:(id)a5 tileSource:(id)a6
+- (id)_createTileControllerWithIndexPath:(id)path kind:(id)kind dataSource:(id)source tileSource:(id)tileSource
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v14)
+  pathCopy = path;
+  kindCopy = kind;
+  sourceCopy = source;
+  tileSourceCopy = tileSource;
+  if (!tileSourceCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:762 description:{@"Invalid parameter not satisfying: %@", @"tileSource != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:762 description:{@"Invalid parameter not satisfying: %@", @"tileSource != nil"}];
   }
 
-  v15 = [v14 tilingView:self tileControllerWithIndexPath:v11 kind:v12 dataSource:v13];
+  v15 = [tileSourceCopy tilingView:self tileControllerWithIndexPath:pathCopy kind:kindCopy dataSource:sourceCopy];
   if (!v15)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:764 description:{@"no tile controller returned for {%@, %@}", v11, v12}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:764 description:{@"no tile controller returned for {%@, %@}", pathCopy, kindCopy}];
   }
 
   return v15;
 }
 
-- (void)_enumerateActiveTileControllersUsingBlock:(id)a3
+- (void)_enumerateActiveTileControllersUsingBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:750 description:{@"Invalid parameter not satisfying: %@", @"enumerationBlock != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:750 description:{@"Invalid parameter not satisfying: %@", @"enumerationBlock != NULL"}];
   }
 
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x2020000000;
   v13 = 0;
-  v6 = [(PUTilingView *)self _activeTileControllers];
+  _activeTileControllers = [(PUTilingView *)self _activeTileControllers];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__PUTilingView__enumerateActiveTileControllersUsingBlock___block_invoke;
   v9[3] = &unk_1E7B7ECE0;
-  v7 = v5;
+  v7 = blockCopy;
   v10 = v7;
   v11 = v12;
-  [v6 enumerateObjectsUsingBlock:v9];
+  [_activeTileControllers enumerateObjectsUsingBlock:v9];
 
   _Block_object_dispose(v12, 8);
 }
@@ -1563,13 +1563,13 @@ uint64_t __58__PUTilingView__enumerateActiveTileControllersUsingBlock___block_in
   return result;
 }
 
-- (void)_enumerateAllTileControllersUsingBlock:(id)a3
+- (void)_enumerateAllTileControllersUsingBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:730 description:{@"Invalid parameter not satisfying: %@", @"enumerationBlock != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:730 description:{@"Invalid parameter not satisfying: %@", @"enumerationBlock != NULL"}];
   }
 
   v15[0] = 0;
@@ -1581,17 +1581,17 @@ uint64_t __58__PUTilingView__enumerateActiveTileControllersUsingBlock___block_in
   aBlock[2] = __55__PUTilingView__enumerateAllTileControllersUsingBlock___block_invoke;
   aBlock[3] = &unk_1E7B7ED08;
   v14 = v15;
-  v6 = v5;
+  v6 = blockCopy;
   v13 = v6;
   v7 = _Block_copy(aBlock);
-  v8 = [(PUTilingView *)self _activeTileControllers];
-  v7[2](v7, v8);
+  _activeTileControllers = [(PUTilingView *)self _activeTileControllers];
+  v7[2](v7, _activeTileControllers);
 
-  v9 = [(PUTilingView *)self _inactiveTileControllers];
-  v7[2](v7, v9);
+  _inactiveTileControllers = [(PUTilingView *)self _inactiveTileControllers];
+  v7[2](v7, _inactiveTileControllers);
 
-  v10 = [(PUTilingView *)self _detachedTileControllers];
-  v7[2](v7, v10);
+  _detachedTileControllers = [(PUTilingView *)self _detachedTileControllers];
+  v7[2](v7, _detachedTileControllers);
 
   _Block_object_dispose(v15, 8);
 }
@@ -1623,40 +1623,40 @@ uint64_t __55__PUTilingView__enumerateAllTileControllersUsingBlock___block_invok
   return result;
 }
 
-- (void)enumerateAllTileControllersUsingBlock:(id)a3
+- (void)enumerateAllTileControllersUsingBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:722 description:{@"Invalid parameter not satisfying: %@", @"enumerationBlock != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:722 description:{@"Invalid parameter not satisfying: %@", @"enumerationBlock != NULL"}];
   }
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__PUTilingView_enumerateAllTileControllersUsingBlock___block_invoke;
   v8[3] = &unk_1E7B7ECB8;
-  v9 = v5;
-  v6 = v5;
+  v9 = blockCopy;
+  v6 = blockCopy;
   [(PUTilingView *)self _enumerateAllTileControllersUsingBlock:v8];
 }
 
-- (id)tileControllerWithIndexPath:(id)a3 kind:(id)a4 dataSourceIdentifier:(id)a5
+- (id)tileControllerWithIndexPath:(id)path kind:(id)kind dataSourceIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  kindCopy = kind;
+  identifierCopy = identifier;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
   v37 = __Block_byref_object_copy__87409;
   v38 = __Block_byref_object_dispose__87410;
-  v39 = [(PUTilingView *)self presentedTileControllerWithIndexPath:v8 kind:v9 dataSourceIdentifier:v10];
+  v39 = [(PUTilingView *)self presentedTileControllerWithIndexPath:pathCopy kind:kindCopy dataSourceIdentifier:identifierCopy];
   v11 = v35[5];
   if (!v11)
   {
-    v12 = [(PUTilingView *)self layout];
-    v13 = [v12 layoutInfoForTileWithIndexPath:v8 kind:v9];
+    layout = [(PUTilingView *)self layout];
+    v13 = [layout layoutInfoForTileWithIndexPath:pathCopy kind:kindCopy];
 
     if (v13)
     {
@@ -1666,33 +1666,33 @@ uint64_t __55__PUTilingView__enumerateAllTileControllersUsingBlock___block_invok
       v31 = __Block_byref_object_copy__87409;
       v32 = __Block_byref_object_dispose__87410;
       v33 = 0;
-      v14 = [(PUTilingView *)self _inactiveTileControllers];
-      v15 = [v13 tileIdentifier];
+      _inactiveTileControllers = [(PUTilingView *)self _inactiveTileControllers];
+      tileIdentifier = [v13 tileIdentifier];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __70__PUTilingView_tileControllerWithIndexPath_kind_dataSourceIdentifier___block_invoke;
       v27[3] = &unk_1E7B7EC90;
       v27[4] = &v34;
       v27[5] = &v28;
-      [v14 enumerateObjectsWithTileIdentifier:v15 usingBlock:v27];
+      [_inactiveTileControllers enumerateObjectsWithTileIdentifier:tileIdentifier usingBlock:v27];
 
       if (!v35[5])
       {
         v16 = v29[5];
         if (!v16 || (objc_storeStrong(v35 + 5, v16), !v35[5]))
         {
-          v17 = [v13 dataSourceIdentifier];
-          v18 = [(PUTilingView *)self _dataSourceWithIdentifier:v17];
+          dataSourceIdentifier = [v13 dataSourceIdentifier];
+          v18 = [(PUTilingView *)self _dataSourceWithIdentifier:dataSourceIdentifier];
 
-          v19 = [(PUTilingView *)self tileSource];
-          v20 = [(PUTilingView *)self _createTileControllerWithIndexPath:v8 kind:v9 dataSource:v18 tileSource:v19];
+          tileSource = [(PUTilingView *)self tileSource];
+          v20 = [(PUTilingView *)self _createTileControllerWithIndexPath:pathCopy kind:kindCopy dataSource:v18 tileSource:tileSource];
           v21 = v35[5];
           v35[5] = v20;
 
-          v22 = [(PUTilingView *)self _inactiveTileControllers];
+          _inactiveTileControllers2 = [(PUTilingView *)self _inactiveTileControllers];
           v23 = v35[5];
-          v24 = [v13 tileIdentifier];
-          [v22 addObject:v23 withTileIdentifier:v24];
+          tileIdentifier2 = [v13 tileIdentifier];
+          [_inactiveTileControllers2 addObject:v23 withTileIdentifier:tileIdentifier2];
         }
       }
 
@@ -1722,21 +1722,21 @@ void __70__PUTilingView_tileControllerWithIndexPath_kind_dataSourceIdentifier___
   *(v7 + 40) = v6;
 }
 
-- (void)enumeratePresentedTileControllersInRect:(CGRect)a3 usingBlock:(id)a4
+- (void)enumeratePresentedTileControllersInRect:(CGRect)rect usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v35 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  if (!v10)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:648 description:{@"Invalid parameter not satisfying: %@", @"enumerationBlock != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:648 description:{@"Invalid parameter not satisfying: %@", @"enumerationBlock != NULL"}];
   }
 
-  v11 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __67__PUTilingView_enumeratePresentedTileControllersInRect_usingBlock___block_invoke;
@@ -1746,11 +1746,11 @@ void __70__PUTilingView_tileControllerWithIndexPath_kind_dataSourceIdentifier___
   v31 = y;
   v32 = width;
   v33 = height;
-  v12 = v11;
+  v12 = dictionary;
   v29 = v12;
   [(PUTilingView *)self _enumerateAllTileControllersUsingBlock:v28];
-  v13 = [v12 allKeys];
-  v14 = [v13 sortedArrayUsingComparator:&__block_literal_global_87488];
+  allKeys = [v12 allKeys];
+  v14 = [allKeys sortedArrayUsingComparator:&__block_literal_global_87488];
 
   v26 = 0u;
   v27 = 0u;
@@ -1774,7 +1774,7 @@ LABEL_5:
       v20 = *(*(&v24 + 1) + 8 * v19);
       v21 = [v12 objectForKeyedSubscript:v20];
       v23 = 0;
-      v10[2](v10, v21, v20, &v23);
+      blockCopy[2](blockCopy, v21, v20, &v23);
       LOBYTE(v20) = v23;
 
       if (v20)
@@ -1845,23 +1845,23 @@ uint64_t __67__PUTilingView_enumeratePresentedTileControllersInRect_usingBlock__
   return MEMORY[0x1EEE2DD18](v9, v10);
 }
 
-- (id)presentedTileControllerWithIndexPath:(id)a3 kind:(id)a4 dataSourceIdentifier:(id)a5
+- (id)presentedTileControllerWithIndexPath:(id)path kind:(id)kind dataSourceIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8 && v9 && v10)
+  pathCopy = path;
+  kindCopy = kind;
+  identifierCopy = identifier;
+  v11 = identifierCopy;
+  if (pathCopy && kindCopy && identifierCopy)
   {
-    v12 = [[PUTileIdentifier alloc] initWithIndexPath:v8 tileKind:v9 dataSourceIdentifier:v10];
-    v13 = [(PUTilingView *)self _activeTileControllers];
-    v14 = [v13 objectWithTileIdentifier:v12];
+    v12 = [[PUTileIdentifier alloc] initWithIndexPath:pathCopy tileKind:kindCopy dataSourceIdentifier:identifierCopy];
+    _activeTileControllers = [(PUTilingView *)self _activeTileControllers];
+    v14 = [_activeTileControllers objectWithTileIdentifier:v12];
 
     if (!v14)
     {
-      v15 = [(PUTilingView *)self _detachedTileControllers];
-      v14 = [v15 objectWithTileIdentifier:v12];
+      _detachedTileControllers = [(PUTilingView *)self _detachedTileControllers];
+      v14 = [_detachedTileControllers objectWithTileIdentifier:v12];
     }
   }
 
@@ -1871,9 +1871,9 @@ uint64_t __67__PUTilingView_enumeratePresentedTileControllersInRect_usingBlock__
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       v18 = 138412802;
-      v19 = v8;
+      v19 = pathCopy;
       v20 = 2112;
-      v21 = v9;
+      v21 = kindCopy;
       v22 = 2112;
       v23 = v11;
       _os_log_impl(&dword_1B36F3000, v16, OS_LOG_TYPE_DEBUG, "presentedTileControllerWithIndexPath invoked with indexPath %@ tileKind %@ dataSourceIdentifier %@", &v18, 0x20u);
@@ -1885,16 +1885,16 @@ uint64_t __67__PUTilingView_enumeratePresentedTileControllersInRect_usingBlock__
   return v14;
 }
 
-- (void)reattachTileControllers:(id)a3 withContext:(id)a4
+- (void)reattachTileControllers:(id)controllers withContext:(id)context
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllersCopy = controllers;
+  contextCopy = context;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v8 = [controllersCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1905,7 +1905,7 @@ uint64_t __67__PUTilingView_enumeratePresentedTileControllersInRect_usingBlock__
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(controllersCopy);
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
@@ -1913,21 +1913,21 @@ uint64_t __67__PUTilingView_enumeratePresentedTileControllersInRect_usingBlock__
         {
           if (([v12 isActive] & 1) == 0)
           {
-            v16 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v16 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:608 description:{@"Invalid parameter not satisfying: %@", @"[tileController isActive] == YES"}];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:608 description:{@"Invalid parameter not satisfying: %@", @"[tileController isActive] == YES"}];
           }
 
-          v13 = [v12 presentationLayoutInfo];
-          v14 = [(PUTilingView *)self _detachedTileControllers];
-          v15 = [v13 tileIdentifier];
-          [v14 removeObject:v12 withTileIdentifier:v15];
+          presentationLayoutInfo = [v12 presentationLayoutInfo];
+          _detachedTileControllers = [(PUTilingView *)self _detachedTileControllers];
+          tileIdentifier = [presentationLayoutInfo tileIdentifier];
+          [_detachedTileControllers removeObject:v12 withTileIdentifier:tileIdentifier];
 
           [v12 setDetached:0];
-          [v12 setLayoutInfo:v13];
+          [v12 setLayoutInfo:presentationLayoutInfo];
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [controllersCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v9);
@@ -1935,8 +1935,8 @@ uint64_t __67__PUTilingView_enumeratePresentedTileControllersInRect_usingBlock__
 
   if (self->_tileTransitionDelegateFlags.respondsToTileTransitionCoordinatorForReattachedTileControllers)
   {
-    v17 = [(PUTilingView *)self tileTransitionDelegate];
-    v18 = [v17 tilingView:self tileTransitionCoordinatorForReattachedTileControllers:v6 context:v7];
+    tileTransitionDelegate = [(PUTilingView *)self tileTransitionDelegate];
+    v18 = [tileTransitionDelegate tilingView:self tileTransitionCoordinatorForReattachedTileControllers:controllersCopy context:contextCopy];
   }
 
   else
@@ -1950,42 +1950,42 @@ uint64_t __67__PUTilingView_enumeratePresentedTileControllersInRect_usingBlock__
   [(PUTilingView *)self _updateIfNeeded];
 }
 
-- (id)freezeTileController:(id)a3
+- (id)freezeTileController:(id)controller
 {
-  v5 = a3;
-  v6 = [v5 tilingView];
+  controllerCopy = controller;
+  tilingView = [controllerCopy tilingView];
 
-  if (v6 != self)
+  if (tilingView != self)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:595 description:{@"Invalid parameter not satisfying: %@", @"[tileController tilingView] == self"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:595 description:{@"Invalid parameter not satisfying: %@", @"[tileController tilingView] == self"}];
   }
 
-  v7 = [(PUTilingView *)self tileAnimator];
-  v8 = v7;
-  if (v7)
+  tileAnimator = [(PUTilingView *)self tileAnimator];
+  v8 = tileAnimator;
+  if (tileAnimator)
   {
-    [v7 freezeTileController:v5];
+    [tileAnimator freezeTileController:controllerCopy];
   }
 
   else
   {
-    [v5 freeze];
+    [controllerCopy freeze];
   }
   v9 = ;
 
   return v9;
 }
 
-- (void)detachTileControllers:(id)a3
+- (void)detachTileControllers:(id)controllers
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  controllersCopy = controllers;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  v6 = [controllersCopy countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1996,26 +1996,26 @@ uint64_t __67__PUTilingView_enumeratePresentedTileControllersInRect_usingBlock__
       {
         if (*v27 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(controllersCopy);
         }
 
         v10 = *(*(&v26 + 1) + 8 * i);
         if (([v10 isDetached] & 1) == 0)
         {
-          v11 = [v10 layoutInfo];
-          if (!v11)
+          layoutInfo = [v10 layoutInfo];
+          if (!layoutInfo)
           {
-            v14 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v14 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:581 description:{@"Invalid parameter not satisfying: %@", @"layoutInfo != nil"}];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:581 description:{@"Invalid parameter not satisfying: %@", @"layoutInfo != nil"}];
           }
 
-          v12 = [(PUTilingView *)self _detachedTileControllers];
-          v13 = [v11 tileIdentifier];
-          [v12 addObject:v10 withTileIdentifier:v13];
+          _detachedTileControllers = [(PUTilingView *)self _detachedTileControllers];
+          tileIdentifier = [layoutInfo tileIdentifier];
+          [_detachedTileControllers addObject:v10 withTileIdentifier:tileIdentifier];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v7 = [controllersCopy countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v7);
@@ -2027,7 +2027,7 @@ uint64_t __67__PUTilingView_enumeratePresentedTileControllersInRect_usingBlock__
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v15 = v5;
+  v15 = controllersCopy;
   v16 = [v15 countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v16)
   {
@@ -2045,8 +2045,8 @@ uint64_t __67__PUTilingView_enumeratePresentedTileControllersInRect_usingBlock__
         v20 = *(*(&v22 + 1) + 8 * j);
         if (([v20 isActive] & 1) == 0)
         {
-          v21 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v21 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:589 description:{@"Invalid parameter not satisfying: %@", @"[tileController isActive] == YES"}];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:589 description:{@"Invalid parameter not satisfying: %@", @"[tileController isActive] == YES"}];
         }
 
         [v20 setDetached:1];
@@ -2061,32 +2061,32 @@ uint64_t __67__PUTilingView_enumeratePresentedTileControllersInRect_usingBlock__
 
 - (void)_applyPendingUpdates
 {
-  v3 = [(PUTilingView *)self _pendingUpdateItems];
-  v4 = [(PUTilingView *)self layout];
-  [v4 invalidateLayoutForUpdateWithItems:v3];
+  _pendingUpdateItems = [(PUTilingView *)self _pendingUpdateItems];
+  layout = [(PUTilingView *)self layout];
+  [layout invalidateLayoutForUpdateWithItems:_pendingUpdateItems];
   [(PUTilingView *)self _invalidateLayoutCoordinateSystemWithReason:3];
   [(PUTilingView *)self _invalidateLayout];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __36__PUTilingView__applyPendingUpdates__block_invoke;
   v15 = &unk_1E7B7EC20;
-  v16 = self;
-  v5 = v3;
+  selfCopy = self;
+  v5 = _pendingUpdateItems;
   v17 = v5;
   v6 = _Block_copy(&v12);
   v7 = [(PUTilingView *)self _activeTileControllers:v12];
   v6[2](v6, v7);
 
-  v8 = [(PUTilingView *)self _inactiveTileControllers];
-  v6[2](v6, v8);
+  _inactiveTileControllers = [(PUTilingView *)self _inactiveTileControllers];
+  v6[2](v6, _inactiveTileControllers);
 
-  v9 = [(PUTilingView *)self _detachedTileControllers];
-  v6[2](v6, v9);
+  _detachedTileControllers = [(PUTilingView *)self _detachedTileControllers];
+  v6[2](v6, _detachedTileControllers);
 
   if (self->_tileTransitionDelegateFlags.respondsToTileTransitionCoordinatorForUpdateWithItems)
   {
-    v10 = [(PUTilingView *)self tileTransitionDelegate];
-    v11 = [v10 tilingView:self tileTransitionCoordinatorForUpdateWithItems:v5];
+    tileTransitionDelegate = [(PUTilingView *)self tileTransitionDelegate];
+    v11 = [tileTransitionDelegate tilingView:self tileTransitionCoordinatorForUpdateWithItems:v5];
   }
 
   else
@@ -2212,19 +2212,19 @@ LABEL_3:
   [*(a1 + 56) addObject:v5 withTileIdentifier:v30];
 }
 
-- (void)reloadItemAtIndexPath:(id)a3 dataSource:(id)a4
+- (void)reloadItemAtIndexPath:(id)path dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  sourceCopy = source;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __49__PUTilingView_reloadItemAtIndexPath_dataSource___block_invoke;
   v10[3] = &unk_1E7B809F0;
-  v11 = v6;
-  v12 = v7;
-  v13 = self;
-  v8 = v7;
-  v9 = v6;
+  v11 = pathCopy;
+  v12 = sourceCopy;
+  selfCopy = self;
+  v8 = sourceCopy;
+  v9 = pathCopy;
   [(PUTilingView *)self performBatchUpdates:v10];
 }
 
@@ -2235,22 +2235,22 @@ void __49__PUTilingView_reloadItemAtIndexPath_dataSource___block_invoke(uint64_t
   [v2 addObject:v3];
 }
 
-- (void)moveItemFromIndexPath:(id)a3 toIndexPath:(id)a4 dataSource:(id)a5
+- (void)moveItemFromIndexPath:(id)path toIndexPath:(id)indexPath dataSource:(id)source
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  sourceCopy = source;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __61__PUTilingView_moveItemFromIndexPath_toIndexPath_dataSource___block_invoke;
   v14[3] = &unk_1E7B7F1D0;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v18 = self;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = pathCopy;
+  v16 = indexPathCopy;
+  v17 = sourceCopy;
+  selfCopy = self;
+  v11 = sourceCopy;
+  v12 = indexPathCopy;
+  v13 = pathCopy;
   [(PUTilingView *)self performBatchUpdates:v14];
 }
 
@@ -2261,19 +2261,19 @@ void __61__PUTilingView_moveItemFromIndexPath_toIndexPath_dataSource___block_inv
   [v2 addObject:v3];
 }
 
-- (void)deleteItemAtIndexPath:(id)a3 dataSource:(id)a4
+- (void)deleteItemAtIndexPath:(id)path dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  sourceCopy = source;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __49__PUTilingView_deleteItemAtIndexPath_dataSource___block_invoke;
   v10[3] = &unk_1E7B809F0;
-  v11 = v6;
-  v12 = v7;
-  v13 = self;
-  v8 = v7;
-  v9 = v6;
+  v11 = pathCopy;
+  v12 = sourceCopy;
+  selfCopy = self;
+  v8 = sourceCopy;
+  v9 = pathCopy;
   [(PUTilingView *)self performBatchUpdates:v10];
 }
 
@@ -2284,19 +2284,19 @@ void __49__PUTilingView_deleteItemAtIndexPath_dataSource___block_invoke(uint64_t
   [v2 addObject:v3];
 }
 
-- (void)insertItemAtIndexPath:(id)a3 dataSource:(id)a4
+- (void)insertItemAtIndexPath:(id)path dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  sourceCopy = source;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __49__PUTilingView_insertItemAtIndexPath_dataSource___block_invoke;
   v10[3] = &unk_1E7B809F0;
-  v11 = v6;
-  v12 = v7;
-  v13 = self;
-  v8 = v7;
-  v9 = v6;
+  v11 = pathCopy;
+  v12 = sourceCopy;
+  selfCopy = self;
+  v8 = sourceCopy;
+  v9 = pathCopy;
   [(PUTilingView *)self performBatchUpdates:v10];
 }
 
@@ -2307,41 +2307,41 @@ void __49__PUTilingView_insertItemAtIndexPath_dataSource___block_invoke(uint64_t
   [v2 addObject:v3];
 }
 
-- (void)performBatchUpdates:(id)a3
+- (void)performBatchUpdates:(id)updates
 {
-  v7 = a3;
-  if (!v7)
+  updatesCopy = updates;
+  if (!updatesCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:470 description:{@"Invalid parameter not satisfying: %@", @"updates != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:470 description:{@"Invalid parameter not satisfying: %@", @"updates != NULL"}];
   }
 
-  v5 = [(PUTilingView *)self _isPerformingBatchUpdates];
+  _isPerformingBatchUpdates = [(PUTilingView *)self _isPerformingBatchUpdates];
   [(PUTilingView *)self _setPerformingBatchUpdates:1];
-  v7[2]();
-  [(PUTilingView *)self _setPerformingBatchUpdates:v5];
-  if (!v5)
+  updatesCopy[2]();
+  [(PUTilingView *)self _setPerformingBatchUpdates:_isPerformingBatchUpdates];
+  if (!_isPerformingBatchUpdates)
   {
     [(PUTilingView *)self _applyPendingUpdates];
   }
 }
 
-- (void)transitionToLayout:(id)a3 withContext:(id)a4 animationSetupCompletionHandler:(id)a5
+- (void)transitionToLayout:(id)layout withContext:(id)context animationSetupCompletionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  layoutCopy = layout;
+  contextCopy = context;
+  handlerCopy = handler;
+  if (!layoutCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:431 description:{@"Invalid parameter not satisfying: %@", @"layout != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:431 description:{@"Invalid parameter not satisfying: %@", @"layout != nil"}];
   }
 
   [(PUTilingView *)self _setPendingLayout:0];
-  v12 = [(PUTilingView *)self layout];
-  if (v12 != v9)
+  layout = [(PUTilingView *)self layout];
+  if (layout != layoutCopy)
   {
-    [(PUTilingView *)self _setPendingLayout:v9];
+    [(PUTilingView *)self _setPendingLayout:layoutCopy];
     [(PUTilingView *)self _invalidateLayout];
     [(PUTilingView *)self _invalidateReferencedDataSources];
     [(PUTilingView *)self _invalidateReferencedCoordinateSystems];
@@ -2350,10 +2350,10 @@ void __49__PUTilingView_insertItemAtIndexPath_dataSource___block_invoke(uint64_t
     [(PUTilingView *)self _invalidateScrollViewProperties];
     if (self->_tileTransitionDelegateFlags.respondsToTileTransitionCoordinatorForTransitionFromLayoutWithContext)
     {
-      v13 = [(PUTilingView *)self tileTransitionDelegate];
-      v14 = [v13 tilingView:self tileTransitionCoordinatorForTransitionFromLayout:v12 toLayout:v9 withContext:v10];
+      tileTransitionDelegate = [(PUTilingView *)self tileTransitionDelegate];
+      v14 = [tileTransitionDelegate tilingView:self tileTransitionCoordinatorForTransitionFromLayout:layout toLayout:layoutCopy withContext:contextCopy];
 
-      if (!v11)
+      if (!handlerCopy)
       {
         goto LABEL_11;
       }
@@ -2362,7 +2362,7 @@ void __49__PUTilingView_insertItemAtIndexPath_dataSource___block_invoke(uint64_t
     else
     {
       v14 = 0;
-      if (!v11)
+      if (!handlerCopy)
       {
 LABEL_11:
         [(PUTilingView *)self _invalidateTileControllersWithTileTransitionCoordinator:v14];
@@ -2371,22 +2371,22 @@ LABEL_11:
       }
     }
 
-    v15 = [(PUTilingView *)self onNextTileControllersUpdateBlock];
+    onNextTileControllersUpdateBlock = [(PUTilingView *)self onNextTileControllersUpdateBlock];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __79__PUTilingView_transitionToLayout_withContext_animationSetupCompletionHandler___block_invoke;
     v18[3] = &unk_1E7B7EBD0;
-    v19 = v15;
-    v20 = v11;
-    v16 = v15;
+    v19 = onNextTileControllersUpdateBlock;
+    v20 = handlerCopy;
+    v16 = onNextTileControllersUpdateBlock;
     [(PUTilingView *)self setOnNextTileControllersUpdateBlock:v18];
 
     goto LABEL_11;
   }
 
-  if (v11)
+  if (handlerCopy)
   {
-    (*(v11 + 2))(v11, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
 LABEL_12:
@@ -2405,48 +2405,48 @@ void __79__PUTilingView_transitionToLayout_withContext_animationSetupCompletionH
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)tileControllerDidEndAnimating:(id)a3
+- (void)tileControllerDidEndAnimating:(id)animating
 {
   if (self->_tileUseDelegateFlags.respondsToDidEndAnimatingTileControllers && ![(PUTilingView *)self isAnyTileControllerAnimating])
   {
-    v4 = [(PUTilingView *)self tileUseDelegate];
-    [v4 tilingViewDidEndAnimatingTileControllers:self];
+    tileUseDelegate = [(PUTilingView *)self tileUseDelegate];
+    [tileUseDelegate tilingViewDidEndAnimatingTileControllers:self];
   }
 }
 
-- (void)enqueueTileControllerForReuse:(id)a3
+- (void)enqueueTileControllerForReuse:(id)reuse
 {
-  v20 = a3;
-  [v20 becomeReusable];
-  v5 = [v20 layoutInfo];
-  if (!v5)
+  reuseCopy = reuse;
+  [reuseCopy becomeReusable];
+  layoutInfo = [reuseCopy layoutInfo];
+  if (!layoutInfo)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:395 description:{@"Invalid parameter not satisfying: %@", @"layoutInfo != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:395 description:{@"Invalid parameter not satisfying: %@", @"layoutInfo != nil"}];
   }
 
-  v6 = [(PUTilingView *)self _inactiveTileControllers];
-  v7 = [v5 tileIdentifier];
-  [v6 removeObject:v20 withTileIdentifier:v7];
+  _inactiveTileControllers = [(PUTilingView *)self _inactiveTileControllers];
+  tileIdentifier = [layoutInfo tileIdentifier];
+  [_inactiveTileControllers removeObject:reuseCopy withTileIdentifier:tileIdentifier];
 
-  v8 = [v20 reuseIdentifier];
-  v9 = [(PUTilingView *)self _tileControllerReuseQueue];
-  [v9 enqueueObjectForReuse:v20 withReuseIdentifier:v8];
+  reuseIdentifier = [reuseCopy reuseIdentifier];
+  _tileControllerReuseQueue = [(PUTilingView *)self _tileControllerReuseQueue];
+  [_tileControllerReuseQueue enqueueObjectForReuse:reuseCopy withReuseIdentifier:reuseIdentifier];
 
-  v10 = [(PUTilingView *)self layout];
-  v11 = [v5 dataSourceIdentifier];
-  v12 = [v10 dataSource];
-  v13 = [v12 identifier];
-  v14 = [v11 isEqualToString:v13];
+  layout = [(PUTilingView *)self layout];
+  dataSourceIdentifier = [layoutInfo dataSourceIdentifier];
+  dataSource = [layout dataSource];
+  identifier = [dataSource identifier];
+  v14 = [dataSourceIdentifier isEqualToString:identifier];
 
   if ((v14 & 1) == 0)
   {
     [(PUTilingView *)self _invalidateReferencedDataSources];
   }
 
-  v15 = [v5 coordinateSystem];
-  v16 = [v10 coordinateSystem];
-  v17 = [v15 isEqual:v16];
+  coordinateSystem = [layoutInfo coordinateSystem];
+  coordinateSystem2 = [layout coordinateSystem];
+  v17 = [coordinateSystem isEqual:coordinateSystem2];
 
   if ((v17 & 1) == 0)
   {
@@ -2455,33 +2455,33 @@ void __79__PUTilingView_transitionToLayout_withContext_animationSetupCompletionH
 
   if (self->_tileUseDelegateFlags.respondsToDidStopUsingTileController)
   {
-    v18 = [(PUTilingView *)self tileUseDelegate];
-    [v18 tilingView:self didStopUsingTileController:v20];
+    tileUseDelegate = [(PUTilingView *)self tileUseDelegate];
+    [tileUseDelegate tilingView:self didStopUsingTileController:reuseCopy];
   }
 }
 
-- (id)dequeueTileControllerWithReuseIdentifier:(id)a3
+- (id)dequeueTileControllerWithReuseIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v13 = 0;
-  v6 = [(PUTilingView *)self _tileControllerReuseQueue];
-  v7 = [v6 dequeueObjectWithReuseIdentifier:v5 isReused:&v13];
+  _tileControllerReuseQueue = [(PUTilingView *)self _tileControllerReuseQueue];
+  v7 = [_tileControllerReuseQueue dequeueObjectWithReuseIdentifier:identifierCopy isReused:&v13];
 
   if (!v7)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:374 description:{@"No tile controller class has been registered for reuse identifier '%@'.", v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:374 description:{@"No tile controller class has been registered for reuse identifier '%@'.", identifierCopy}];
   }
 
   if (v13)
   {
     [v7 prepareForReuse];
-    v8 = [v7 tilingView];
+    tilingView = [v7 tilingView];
 
-    if (v8 != self)
+    if (tilingView != self)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:381 description:{@"Invalid parameter not satisfying: %@", @"[tileController tilingView] == self"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:381 description:{@"Invalid parameter not satisfying: %@", @"[tileController tilingView] == self"}];
     }
   }
 
@@ -2493,31 +2493,31 @@ void __79__PUTilingView_transitionToLayout_withContext_animationSetupCompletionH
 
   if (self->_tileUseDelegateFlags.respondsToWillStartUsingTileController)
   {
-    v10 = [(PUTilingView *)self tileUseDelegate];
-    [v10 tilingView:self willStartUsingTileController:v7];
+    tileUseDelegate = [(PUTilingView *)self tileUseDelegate];
+    [tileUseDelegate tilingView:self willStartUsingTileController:v7];
   }
 
   return v7;
 }
 
-- (void)registerTileControllerClass:(Class)a3 forReuseIdentifier:(id)a4
+- (void)registerTileControllerClass:(Class)class forReuseIdentifier:(id)identifier
 {
-  v7 = a4;
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  identifierCopy = identifier;
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:357 description:{@"Invalid parameter not satisfying: %@", @"[tileControllerClass isSubclassOfClass:[PUTileController class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:357 description:{@"Invalid parameter not satisfying: %@", @"[tileControllerClass isSubclassOfClass:[PUTileController class]]"}];
   }
 
-  v8 = [(PUTilingView *)self _tileControllerReuseQueue];
+  _tileControllerReuseQueue = [(PUTilingView *)self _tileControllerReuseQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __63__PUTilingView_registerTileControllerClass_forReuseIdentifier___block_invoke;
   v11[3] = &unk_1E7B7EBA8;
-  v12 = v7;
-  v13 = a3;
-  v9 = v7;
-  [v8 registerObjectCreationBlock:v11 withReuseIdentifier:v9];
+  v12 = identifierCopy;
+  classCopy = class;
+  v9 = identifierCopy;
+  [_tileControllerReuseQueue registerObjectCreationBlock:v11 withReuseIdentifier:v9];
 }
 
 id __63__PUTilingView_registerTileControllerClass_forReuseIdentifier___block_invoke(uint64_t a1)
@@ -2544,8 +2544,8 @@ id __63__PUTilingView_registerTileControllerClass_forReuseIdentifier___block_inv
     [(PUTilingView *)self setShouldDisplayHDR:v3];
     if (v3)
     {
-      v4 = [MEMORY[0x1E69C35F8] sharedInstance];
-      -[PUTilingView setAllowEDRHeadroomMonitoring:](self, "setAllowEDRHeadroomMonitoring:", [v4 enableHeadroomMonitoring]);
+      mEMORY[0x1E69C35F8] = [MEMORY[0x1E69C35F8] sharedInstance];
+      -[PUTilingView setAllowEDRHeadroomMonitoring:](self, "setAllowEDRHeadroomMonitoring:", [mEMORY[0x1E69C35F8] enableHeadroomMonitoring]);
 
       return;
     }
@@ -2561,9 +2561,9 @@ id __63__PUTilingView_registerTileControllerClass_forReuseIdentifier___block_inv
 
 - (void)_startHeadroomMonitoringIfPossible
 {
-  v3 = [(PUTilingView *)self window];
+  window = [(PUTilingView *)self window];
 
-  if (v3)
+  if (window)
   {
     objc_initWeak(&location, self);
     screenDynamicRangeMonitor = self->_screenDynamicRangeMonitor;
@@ -2598,13 +2598,13 @@ id __50__PUTilingView__startHeadroomMonitoringIfPossible__block_invoke(uint64_t 
   return v4;
 }
 
-- (void)setAllowEDRHeadroomMonitoring:(BOOL)a3
+- (void)setAllowEDRHeadroomMonitoring:(BOOL)monitoring
 {
-  if (self->_allowEDRHeadroomMonitoring != a3)
+  if (self->_allowEDRHeadroomMonitoring != monitoring)
   {
-    self->_allowEDRHeadroomMonitoring = a3;
+    self->_allowEDRHeadroomMonitoring = monitoring;
     screenDynamicRangeMonitor = self->_screenDynamicRangeMonitor;
-    if (a3)
+    if (monitoring)
     {
       if (!screenDynamicRangeMonitor)
       {
@@ -2625,15 +2625,15 @@ id __50__PUTilingView__startHeadroomMonitoringIfPossible__block_invoke(uint64_t 
   }
 }
 
-- (void)setLoadingInsets:(UIEdgeInsets)a3
+- (void)setLoadingInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_loadingInsets.top, v3), vceqq_f64(*&self->_loadingInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_loadingInsets = a3;
+    self->_loadingInsets = insets;
     [(PUTilingView *)self _invalidateLayoutVisibleRect];
 
     [(PUTilingView *)self _invalidateTileControllers];
@@ -2659,13 +2659,13 @@ id __50__PUTilingView__startHeadroomMonitoringIfPossible__block_invoke(uint64_t 
   [(UIScrollView *)self pu_configurePagingWithSpringPull:v8 friction:v10];
 }
 
-- (void)_handleChangeFromBounds:(CGRect)a3 fromFrame:(CGRect)a4
+- (void)_handleChangeFromBounds:(CGRect)bounds fromFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  [(PUTilingView *)self _invalidateLayoutVisibleRect:a3.origin.x];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  [(PUTilingView *)self _invalidateLayoutVisibleRect:bounds.origin.x];
   [(PUTilingView *)self _invalidateTileControllers];
   [(PUTilingView *)self frame];
   if (width != v11 || height != v12)
@@ -2684,8 +2684,8 @@ id __50__PUTilingView__startHeadroomMonitoringIfPossible__block_invoke(uint64_t 
 
     if (self->_tileTransitionDelegateFlags.respondsToTileTransitionCoordinatorForChangeFromFrame)
     {
-      v20 = [(PUTilingView *)self tileTransitionDelegate];
-      v21 = [v20 tilingView:self tileTransitionCoordinatorForChangeFromFrame:x toFrame:v22 duration:{width, height, v14, v15, v16, v17, v18}];
+      tileTransitionDelegate = [(PUTilingView *)self tileTransitionDelegate];
+      v21 = [tileTransitionDelegate tilingView:self tileTransitionCoordinatorForChangeFromFrame:x toFrame:v22 duration:{width, height, v14, v15, v16, v17, v18}];
     }
 
     else
@@ -2701,11 +2701,11 @@ id __50__PUTilingView__startHeadroomMonitoringIfPossible__block_invoke(uint64_t 
   [(PUTilingView *)self _adjustScrollViewPagingDeceleration];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if ([(PUTilingView *)self isUserInteractionEnabled])
   {
     v23 = 0;
@@ -2714,7 +2714,7 @@ id __50__PUTilingView__startHeadroomMonitoringIfPossible__block_invoke(uint64_t 
     v26 = __Block_byref_object_copy__87409;
     v27 = __Block_byref_object_dispose__87410;
     v28 = 0;
-    if ([(PUTilingView *)self pointInside:v7 withEvent:x, y])
+    if ([(PUTilingView *)self pointInside:eventCopy withEvent:x, y])
     {
       objc_storeStrong(v24 + 5, self);
       [(PUTilingView *)self bounds];
@@ -2729,7 +2729,7 @@ id __50__PUTilingView__startHeadroomMonitoringIfPossible__block_invoke(uint64_t 
       v21 = x;
       v22 = y;
       v18[4] = self;
-      v19 = v7;
+      v19 = eventCopy;
       v20 = &v23;
       [(PUTilingView *)self enumeratePresentedTileControllersInRect:v18 usingBlock:v9, v11, v13, v15];
     }
@@ -2774,20 +2774,20 @@ uint64_t __34__PUTilingView_hitTest_withEvent___block_invoke(uint64_t a1, void *
   return MEMORY[0x1EEE66BB8](isKindOfClass, v7);
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
   v4.receiver = self;
   v4.super_class = PUTilingView;
-  [(PUTilingView *)&v4 layoutSublayersOfLayer:a3];
+  [(PUTilingView *)&v4 layoutSublayersOfLayer:layer];
   [(PUTilingView *)self _updateIfNeeded];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(PUTilingView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -2815,12 +2815,12 @@ uint64_t __34__PUTilingView_hitTest_withEvent___block_invoke(uint64_t a1, void *
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(PUTilingView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -2848,9 +2848,9 @@ uint64_t __34__PUTilingView_hitTest_withEvent___block_invoke(uint64_t a1, void *
   }
 }
 
-- (void)setTileUseDelegate:(id)a3
+- (void)setTileUseDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_tileUseDelegate);
 
   if (WeakRetained != obj)
@@ -2864,9 +2864,9 @@ uint64_t __34__PUTilingView_hitTest_withEvent___block_invoke(uint64_t a1, void *
   }
 }
 
-- (void)setScrollDelegate:(id)a3
+- (void)setScrollDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_scrollDelegate);
 
   if (WeakRetained != obj)
@@ -2879,9 +2879,9 @@ uint64_t __34__PUTilingView_hitTest_withEvent___block_invoke(uint64_t a1, void *
   }
 }
 
-- (void)setTileTransitionDelegate:(id)a3
+- (void)setTileTransitionDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_tileTransitionDelegate);
 
   if (WeakRetained != obj)
@@ -2898,10 +2898,10 @@ uint64_t __34__PUTilingView_hitTest_withEvent___block_invoke(uint64_t a1, void *
   }
 }
 
-- (PUTilingView)initWithCoder:(id)a3
+- (PUTilingView)initWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:164 description:@"unsupported initializer"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:164 description:@"unsupported initializer"];
 
   v6 = *MEMORY[0x1E695F058];
   v7 = *(MEMORY[0x1E695F058] + 8);
@@ -2911,26 +2911,26 @@ uint64_t __34__PUTilingView_hitTest_withEvent___block_invoke(uint64_t a1, void *
   return [(PUTilingView *)self initWithFrame:0 layout:v6, v7, v8, v9];
 }
 
-- (PUTilingView)initWithFrame:(CGRect)a3 layout:(id)a4
+- (PUTilingView)initWithFrame:(CGRect)frame layout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  if (!v11)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layoutCopy = layout;
+  if (!layoutCopy)
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v38 handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:121 description:{@"Invalid parameter not satisfying: %@", @"layout != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingView.m" lineNumber:121 description:{@"Invalid parameter not satisfying: %@", @"layout != nil"}];
   }
 
   v39.receiver = self;
   v39.super_class = PUTilingView;
-  v12 = [(PUTilingView *)&v39 initWithFrame:x, y, width, height];
-  v13 = v12;
-  if (v12)
+  height = [(PUTilingView *)&v39 initWithFrame:x, y, width, height];
+  v13 = height;
+  if (height)
   {
-    objc_storeStrong(&v12->_layout, a4);
+    objc_storeStrong(&height->_layout, layout);
     [(PUTilingLayout *)v13->_layout setTilingView:v13];
     v13->__reasonForNextLayoutCoordinateSystemUpdate = 1;
     v14 = [(PUTilingViewCoordinateSystem *)[PUTilingViewContentCoordinateSystem alloc] initWithTilingView:v13];
@@ -2961,9 +2961,9 @@ uint64_t __34__PUTilingView_hitTest_withEvent___block_invoke(uint64_t a1, void *
     detachedTileControllers = v13->__detachedTileControllers;
     v13->__detachedTileControllers = v26;
 
-    v28 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     referencedDataSourcesByIdentifiers = v13->__referencedDataSourcesByIdentifiers;
-    v13->__referencedDataSourcesByIdentifiers = v28;
+    v13->__referencedDataSourcesByIdentifiers = dictionary;
 
     v30 = [MEMORY[0x1E695DFA8] set];
     referencedCoordinateSystems = v13->__referencedCoordinateSystems;
@@ -2976,12 +2976,12 @@ uint64_t __34__PUTilingView_hitTest_withEvent___block_invoke(uint64_t a1, void *
     v13->__needsUpdateTileControllers = 1;
     v13->__needsUpdateReferencedDataSources = 1;
     v13->__needsUpdateReferencedCoordinateSystems = 1;
-    v32 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     pendingUpdateItems = v13->__pendingUpdateItems;
-    v13->__pendingUpdateItems = v32;
+    v13->__pendingUpdateItems = array;
 
-    v34 = [v11 dataSource];
-    [(PUTilingView *)v13 _registerDataSource:v34];
+    dataSource = [layoutCopy dataSource];
+    [(PUTilingView *)v13 _registerDataSource:dataSource];
 
     [(PUTilingView *)v13 _adjustScrollViewPagingDeceleration];
     v35 = objc_alloc_init(MEMORY[0x1E695DF90]);

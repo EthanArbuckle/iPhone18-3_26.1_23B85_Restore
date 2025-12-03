@@ -1,48 +1,48 @@
 @interface URTAlertServiceDelegateProxy
 - (URTAlertService)service;
-- (URTAlertServiceDelegateProxy)initWithService:(id)a3;
-- (void)dismissAlert:(id)a3;
-- (void)presentAlert:(id)a3 preferringPresentationStyle:(id)a4;
+- (URTAlertServiceDelegateProxy)initWithService:(id)service;
+- (void)dismissAlert:(id)alert;
+- (void)presentAlert:(id)alert preferringPresentationStyle:(id)style;
 @end
 
 @implementation URTAlertServiceDelegateProxy
 
-- (URTAlertServiceDelegateProxy)initWithService:(id)a3
+- (URTAlertServiceDelegateProxy)initWithService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v8.receiver = self;
   v8.super_class = URTAlertServiceDelegateProxy;
   v5 = [(URTAlertServiceDelegateProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_service, v4);
+    objc_storeWeak(&v5->_service, serviceCopy);
   }
 
   return v6;
 }
 
-- (void)presentAlert:(id)a3 preferringPresentationStyle:(id)a4
+- (void)presentAlert:(id)alert preferringPresentationStyle:(id)style
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(URTAlertServiceDelegateProxy *)self service];
-  if (v7)
+  alertCopy = alert;
+  styleCopy = style;
+  service = [(URTAlertServiceDelegateProxy *)self service];
+  if (service)
   {
-    v8 = [v6 unsignedIntegerValue];
-    v9 = [MEMORY[0x277CF3280] currentContext];
-    [v7 _connectionQueue_presentAlert:v10 preferringPresentationStyle:v8 forConnection:v9];
+    unsignedIntegerValue = [styleCopy unsignedIntegerValue];
+    currentContext = [MEMORY[0x277CF3280] currentContext];
+    [service _connectionQueue_presentAlert:alertCopy preferringPresentationStyle:unsignedIntegerValue forConnection:currentContext];
   }
 }
 
-- (void)dismissAlert:(id)a3
+- (void)dismissAlert:(id)alert
 {
-  v6 = a3;
-  v4 = [(URTAlertServiceDelegateProxy *)self service];
-  if (v4)
+  alertCopy = alert;
+  service = [(URTAlertServiceDelegateProxy *)self service];
+  if (service)
   {
-    v5 = [MEMORY[0x277CF3280] currentContext];
-    [v4 _connectionQueue_dismissAlert:v6 forConnection:v5];
+    currentContext = [MEMORY[0x277CF3280] currentContext];
+    [service _connectionQueue_dismissAlert:alertCopy forConnection:currentContext];
   }
 }
 

@@ -1,24 +1,24 @@
 @interface HMDCameraConfigurationsLogEvent
-- (HMDCameraConfigurationsLogEvent)initWithHomes:(id)a3;
+- (HMDCameraConfigurationsLogEvent)initWithHomes:(id)homes;
 @end
 
 @implementation HMDCameraConfigurationsLogEvent
 
-- (HMDCameraConfigurationsLogEvent)initWithHomes:(id)a3
+- (HMDCameraConfigurationsLogEvent)initWithHomes:(id)homes
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homesCopy = homes;
   v23.receiver = self;
   v23.super_class = HMDCameraConfigurationsLogEvent;
   v5 = [(HMMLogEvent *)&v23 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = v4;
+    v7 = homesCopy;
     v8 = [v7 countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v8)
     {
@@ -37,7 +37,7 @@
           v12 = *(*(&v19 + 1) + 8 * v11);
           v13 = [HMDCameraHomeSettingsConfiguration alloc];
           v14 = [(HMDCameraHomeSettingsConfiguration *)v13 initWithHome:v12, v19];
-          [v6 addObject:v14];
+          [array addObject:v14];
 
           ++v11;
         }
@@ -49,7 +49,7 @@
       while (v9);
     }
 
-    v15 = [MEMORY[0x277CBEA60] arrayWithArray:v6];
+    v15 = [MEMORY[0x277CBEA60] arrayWithArray:array];
     homeSettingsConfigurations = v5->_homeSettingsConfigurations;
     v5->_homeSettingsConfigurations = v15;
   }

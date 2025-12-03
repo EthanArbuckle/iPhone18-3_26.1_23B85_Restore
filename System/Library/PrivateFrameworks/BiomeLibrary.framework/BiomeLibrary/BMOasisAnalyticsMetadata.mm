@@ -1,38 +1,38 @@
 @interface BMOasisAnalyticsMetadata
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMOasisAnalyticsMetadata)initWithBootSessionId:(id)a3 timestampSinceBootInNanosecond:(id)a4;
-- (BMOasisAnalyticsMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMOasisAnalyticsMetadata)initWithBootSessionId:(id)id timestampSinceBootInNanosecond:(id)nanosecond;
+- (BMOasisAnalyticsMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMOasisAnalyticsMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMOasisAnalyticsMetadata *)self bootSessionId];
-    v7 = [v5 bootSessionId];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    bootSessionId = [(BMOasisAnalyticsMetadata *)self bootSessionId];
+    bootSessionId2 = [v5 bootSessionId];
+    v8 = bootSessionId2;
+    if (bootSessionId == bootSessionId2)
     {
     }
 
     else
     {
-      v9 = [(BMOasisAnalyticsMetadata *)self bootSessionId];
-      v10 = [v5 bootSessionId];
-      v11 = [v9 isEqual:v10];
+      bootSessionId3 = [(BMOasisAnalyticsMetadata *)self bootSessionId];
+      bootSessionId4 = [v5 bootSessionId];
+      v11 = [bootSessionId3 isEqual:bootSessionId4];
 
       if (!v11)
       {
@@ -48,8 +48,8 @@
 
     if (-[BMOasisAnalyticsMetadata hasTimestampSinceBootInNanosecond](self, "hasTimestampSinceBootInNanosecond") && [v5 hasTimestampSinceBootInNanosecond])
     {
-      v13 = [(BMOasisAnalyticsMetadata *)self timestampSinceBootInNanosecond];
-      v12 = v13 == [v5 timestampSinceBootInNanosecond];
+      timestampSinceBootInNanosecond = [(BMOasisAnalyticsMetadata *)self timestampSinceBootInNanosecond];
+      v12 = timestampSinceBootInNanosecond == [v5 timestampSinceBootInNanosecond];
 LABEL_13:
 
       goto LABEL_14;
@@ -69,8 +69,8 @@ LABEL_14:
 - (id)jsonDictionary
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v3 = [(BMOasisAnalyticsMetadata *)self bootSessionId];
-  v4 = [v3 jsonDictionary];
+  bootSessionId = [(BMOasisAnalyticsMetadata *)self bootSessionId];
+  jsonDictionary = [bootSessionId jsonDictionary];
 
   if ([(BMOasisAnalyticsMetadata *)self hasTimestampSinceBootInNanosecond])
   {
@@ -83,25 +83,25 @@ LABEL_14:
   }
 
   v11[0] = @"bootSessionId";
-  v6 = v4;
-  if (!v4)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v11[1] = @"timestampSinceBootInNanosecond";
-  v12[0] = v6;
-  v7 = v5;
+  v12[0] = null;
+  null2 = v5;
   if (!v5)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v12[1] = v7;
+  v12[1] = null2;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
   if (v5)
   {
-    if (v4)
+    if (jsonDictionary)
     {
       goto LABEL_10;
     }
@@ -110,7 +110,7 @@ LABEL_14:
   else
   {
 
-    if (v4)
+    if (jsonDictionary)
     {
       goto LABEL_10;
     }
@@ -122,11 +122,11 @@ LABEL_10:
   return v8;
 }
 
-- (BMOasisAnalyticsMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMOasisAnalyticsMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"bootSessionId"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"bootSessionId"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
@@ -142,24 +142,24 @@ LABEL_10:
     v14 = v22;
     if (v14)
     {
-      if (a4)
+      if (error)
       {
         v14 = v14;
-        *a4 = v14;
+        *error = v14;
       }
 
-      v11 = 0;
+      selfCopy = 0;
       goto LABEL_9;
     }
 
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"timestampSinceBootInNanosecond"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"timestampSinceBootInNanosecond"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v18 = objc_alloc(MEMORY[0x1E696ABC0]);
           v19 = *MEMORY[0x1E698F240];
@@ -167,11 +167,11 @@ LABEL_4:
           v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"timestampSinceBootInNanosecond"];
           v24 = v20;
           v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-          *a4 = [v18 initWithDomain:v19 code:2 userInfo:v21];
+          *error = [v18 initWithDomain:v19 code:2 userInfo:v21];
         }
 
         v10 = 0;
-        v11 = 0;
+        selfCopy = 0;
         goto LABEL_8;
       }
 
@@ -184,15 +184,15 @@ LABEL_4:
     }
 
     self = [(BMOasisAnalyticsMetadata *)self initWithBootSessionId:v8 timestampSinceBootInNanosecond:v10];
-    v11 = self;
+    selfCopy = self;
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  if (!a4)
+  if (!error)
   {
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
@@ -203,31 +203,31 @@ LABEL_8:
   v26[0] = v8;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
   v17 = [v15 initWithDomain:v16 code:2 userInfo:v10];
-  v11 = 0;
-  *a4 = v17;
+  selfCopy = 0;
+  *error = v17;
 LABEL_9:
 
 LABEL_10:
   v12 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMOasisAnalyticsMetadata *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_bootSessionId)
   {
     PBDataWriterPlaceMark();
-    [(BMOasisAnalyticsUUID128 *)self->_bootSessionId writeTo:v4];
+    [(BMOasisAnalyticsUUID128 *)self->_bootSessionId writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -238,9 +238,9 @@ LABEL_10:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v27.receiver = self;
   v27.super_class = BMOasisAnalyticsMetadata;
   v5 = [(BMEventBase *)&v27 init];
@@ -249,12 +249,12 @@ LABEL_10:
     goto LABEL_41;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -265,18 +265,18 @@ LABEL_10:
       while (1)
       {
         LOBYTE(v28[0]) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:v28 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v28 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v28[0] & 0x7F) << v7;
@@ -294,9 +294,9 @@ LABEL_10:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -310,18 +310,18 @@ LABEL_16:
         while (1)
         {
           LOBYTE(v28[0]) = 0;
-          v20 = [v4 position] + 1;
-          if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 1, v21 <= objc_msgSend(v4, "length")))
+          v20 = [fromCopy position] + 1;
+          if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 1, v21 <= objc_msgSend(fromCopy, "length")))
           {
-            v22 = [v4 data];
-            [v22 getBytes:v28 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:v28 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v19 |= (v28[0] & 0x7F) << v17;
@@ -339,7 +339,7 @@ LABEL_16:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v23 = 0;
         }
@@ -362,7 +362,7 @@ LABEL_37:
           goto LABEL_40;
         }
 
-        v15 = [[BMOasisAnalyticsUUID128 alloc] initByReadFrom:v4];
+        v15 = [[BMOasisAnalyticsUUID128 alloc] initByReadFrom:fromCopy];
         if (!v15)
         {
           goto LABEL_40;
@@ -379,13 +379,13 @@ LABEL_37:
         goto LABEL_40;
       }
 
-      v24 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v24 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_40:
     v25 = 0;
@@ -403,37 +403,37 @@ LABEL_41:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMOasisAnalyticsMetadata *)self bootSessionId];
+  bootSessionId = [(BMOasisAnalyticsMetadata *)self bootSessionId];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[BMOasisAnalyticsMetadata timestampSinceBootInNanosecond](self, "timestampSinceBootInNanosecond")}];
-  v6 = [v3 initWithFormat:@"BMOasisAnalyticsMetadata with bootSessionId: %@, timestampSinceBootInNanosecond: %@", v4, v5];
+  v6 = [v3 initWithFormat:@"BMOasisAnalyticsMetadata with bootSessionId: %@, timestampSinceBootInNanosecond: %@", bootSessionId, v5];
 
   return v6;
 }
 
-- (BMOasisAnalyticsMetadata)initWithBootSessionId:(id)a3 timestampSinceBootInNanosecond:(id)a4
+- (BMOasisAnalyticsMetadata)initWithBootSessionId:(id)id timestampSinceBootInNanosecond:(id)nanosecond
 {
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  nanosecondCopy = nanosecond;
   v12.receiver = self;
   v12.super_class = BMOasisAnalyticsMetadata;
   v9 = [(BMEventBase *)&v12 init];
   if (v9)
   {
     v9->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v9->_bootSessionId, a3);
-    if (v8)
+    objc_storeStrong(&v9->_bootSessionId, id);
+    if (nanosecondCopy)
     {
       v9->_hasTimestampSinceBootInNanosecond = 1;
-      v10 = [v8 unsignedLongLongValue];
+      unsignedLongLongValue = [nanosecondCopy unsignedLongLongValue];
     }
 
     else
     {
-      v10 = 0;
+      unsignedLongLongValue = 0;
       v9->_hasTimestampSinceBootInNanosecond = 0;
     }
 
-    v9->_timestampSinceBootInNanosecond = v10;
+    v9->_timestampSinceBootInNanosecond = unsignedLongLongValue;
   }
 
   return v9;
@@ -477,9 +477,9 @@ id __35__BMOasisAnalyticsMetadata_columns__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -487,8 +487,8 @@ id __35__BMOasisAnalyticsMetadata_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMOasisAnalyticsMetadata alloc] initByReadFrom:v7];
     v4 = v8;

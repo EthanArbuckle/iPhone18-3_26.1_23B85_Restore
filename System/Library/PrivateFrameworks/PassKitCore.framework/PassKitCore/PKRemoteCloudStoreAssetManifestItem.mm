@@ -1,35 +1,35 @@
 @interface PKRemoteCloudStoreAssetManifestItem
 - (NSString)recordName;
-- (void)downloadAssetWithCloudStoreCoordinatorDelegate:(id)a3 tryCount:(unint64_t)a4 completion:(id)a5;
+- (void)downloadAssetWithCloudStoreCoordinatorDelegate:(id)delegate tryCount:(unint64_t)count completion:(id)completion;
 @end
 
 @implementation PKRemoteCloudStoreAssetManifestItem
 
 - (NSString)recordName
 {
-  v2 = [(PKRemoteAssetManifestItem *)self remoteURL];
-  v3 = [v2 resourceSpecifier];
+  remoteURL = [(PKRemoteAssetManifestItem *)self remoteURL];
+  resourceSpecifier = [remoteURL resourceSpecifier];
 
-  return v3;
+  return resourceSpecifier;
 }
 
-- (void)downloadAssetWithCloudStoreCoordinatorDelegate:(id)a3 tryCount:(unint64_t)a4 completion:(id)a5
+- (void)downloadAssetWithCloudStoreCoordinatorDelegate:(id)delegate tryCount:(unint64_t)count completion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  delegateCopy = delegate;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v8)
+    if (!delegateCopy)
     {
       if (PKRunningInPassd())
       {
-        v8 = 0;
+        delegateCopy = 0;
       }
 
       else
       {
-        v8 = +[PKCloudStoreService sharedInstance];
+        delegateCopy = +[PKCloudStoreService sharedInstance];
       }
     }
 
@@ -39,34 +39,34 @@
     v33 = __Block_byref_object_copy__80;
     v34 = __Block_byref_object_dispose__80;
     v35 = 0;
-    if (v8)
+    if (delegateCopy)
     {
       v10 = PKLogFacilityTypeGetObject(0);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(PKRemoteCloudStoreAssetManifestItem *)self recordName];
+        recordName = [(PKRemoteCloudStoreAssetManifestItem *)self recordName];
         *buf = 138412290;
-        v37 = v11;
+        v37 = recordName;
         _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "Downloading recordName from cloudkit %@", buf, 0xCu);
       }
 
-      v12 = [(PKRemoteCloudStoreAssetManifestItem *)self recordName];
+      recordName2 = [(PKRemoteCloudStoreAssetManifestItem *)self recordName];
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __106__PKRemoteCloudStoreAssetManifestItem_downloadAssetWithCloudStoreCoordinatorDelegate_tryCount_completion___block_invoke;
       v25[3] = &unk_1E79E2220;
       v28 = &v30;
-      v29 = a4;
+      countCopy = count;
       v25[4] = self;
-      v26 = v8;
-      v27 = v9;
-      [v26 itemOfItemType:4 recordName:v12 qualityOfService:25 completion:v25];
+      v26 = delegateCopy;
+      v27 = completionCopy;
+      [v26 itemOfItemType:4 recordName:recordName2 qualityOfService:25 completion:v25];
     }
 
     else
     {
-      v13 = [(PKRemoteCloudStoreAssetManifestItem *)self recordName];
-      v21 = PKValidationErrorWithReason(@"A cloudStoreCoordinatorDelegate is not set on the PKRemoteCloudStoreAssetManifestItem with recordName %@. Cannot download remote cloud asset.", v14, v15, v16, v17, v18, v19, v20, v13);
+      recordName3 = [(PKRemoteCloudStoreAssetManifestItem *)self recordName];
+      v21 = PKValidationErrorWithReason(@"A cloudStoreCoordinatorDelegate is not set on the PKRemoteCloudStoreAssetManifestItem with recordName %@. Cannot download remote cloud asset.", v14, v15, v16, v17, v18, v19, v20, recordName3);
       v22 = v31[5];
       v31[5] = v21;
 
@@ -79,7 +79,7 @@
         _os_log_impl(&dword_1AD337000, v23, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
       }
 
-      (*(v9 + 2))(v9, 0, 0, v31[5]);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v31[5]);
     }
 
     _Block_object_dispose(&v30, 8);

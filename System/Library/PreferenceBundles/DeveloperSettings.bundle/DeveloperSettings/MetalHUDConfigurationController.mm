@@ -1,14 +1,14 @@
 @interface MetalHUDConfigurationController
 - (MetalHUDConfigurationController)init;
-- (id)_sliderIconImageWithSymbolName:(id)a3 scale:(int64_t)a4;
-- (id)getOpacity:(id)a3;
-- (id)getScale:(id)a3;
-- (id)isElementEnabled:(id)a3;
+- (id)_sliderIconImageWithSymbolName:(id)name scale:(int64_t)scale;
+- (id)getOpacity:(id)opacity;
+- (id)getScale:(id)scale;
+- (id)isElementEnabled:(id)enabled;
 - (id)specifiers;
-- (void)setElementEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setOpacity:(id)a3 forSpecifier:(id)a4;
-- (void)setScale:(id)a3 forSpecifier:(id)a4;
-- (void)setToDefault:(id)a3;
+- (void)setElementEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setOpacity:(id)opacity forSpecifier:(id)specifier;
+- (void)setScale:(id)scale forSpecifier:(id)specifier;
+- (void)setToDefault:(id)default;
 @end
 
 @implementation MetalHUDConfigurationController
@@ -38,11 +38,11 @@
   return v2;
 }
 
-- (id)_sliderIconImageWithSymbolName:(id)a3 scale:(int64_t)a4
+- (id)_sliderIconImageWithSymbolName:(id)name scale:(int64_t)scale
 {
-  v4 = [UIImage systemImageNamed:a3, a4];
+  scale = [UIImage systemImageNamed:name, scale];
   v5 = +[UIColor secondaryLabelColor];
-  v6 = [v4 imageWithTintColor:v5 renderingMode:1];
+  v6 = [scale imageWithTintColor:v5 renderingMode:1];
 
   [v6 size];
   v8 = 24.0 / v7;
@@ -205,7 +205,7 @@
   return v3;
 }
 
-- (void)setToDefault:(id)a3
+- (void)setToDefault:(id)default
 {
   [(MetalHUDElementListPreferences *)self->_elementList setToDefault];
   [(MetalHUDNumberPreferences *)self->_scale setToDefault];
@@ -214,16 +214,16 @@
   [(MetalHUDConfigurationController *)self reloadSpecifiers];
 }
 
-- (id)isElementEnabled:(id)a3
+- (id)isElementEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
+  enabledCopy = enabled;
+  userInfo = [enabledCopy userInfo];
 
-  if (v5)
+  if (userInfo)
   {
     elementList = self->_elementList;
-    v7 = [v4 userInfo];
-    v8 = [NSNumber numberWithBool:[(MetalHUDElementListPreferences *)elementList isElementEnabled:v7]];
+    userInfo2 = [enabledCopy userInfo];
+    v8 = [NSNumber numberWithBool:[(MetalHUDElementListPreferences *)elementList isElementEnabled:userInfo2]];
   }
 
   else
@@ -234,59 +234,59 @@
   return v8;
 }
 
-- (void)setElementEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setElementEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v6 userInfo];
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  userInfo = [specifierCopy userInfo];
 
-  if (v7)
+  if (userInfo)
   {
     elementList = self->_elementList;
-    v9 = [v6 userInfo];
-    -[MetalHUDElementListPreferences setElementEnabled:enabled:](elementList, "setElementEnabled:enabled:", v9, [v10 BOOLValue]);
+    userInfo2 = [specifierCopy userInfo];
+    -[MetalHUDElementListPreferences setElementEnabled:enabled:](elementList, "setElementEnabled:enabled:", userInfo2, [enabledCopy BOOLValue]);
   }
 }
 
-- (void)setOpacity:(id)a3 forSpecifier:(id)a4
+- (void)setOpacity:(id)opacity forSpecifier:(id)specifier
 {
-  v5 = a3;
-  [v5 floatValue];
+  opacityCopy = opacity;
+  [opacityCopy floatValue];
   v6 = [NSNumber numberWithFloat:?];
   [(MetalHUDNumberPreferences *)self->_opacity setValue:v6];
 
   v7 = __stderrp;
-  [v5 floatValue];
+  [opacityCopy floatValue];
   v9 = v8;
 
   fprintf(v7, "%.2f", v9);
 }
 
-- (id)getOpacity:(id)a3
+- (id)getOpacity:(id)opacity
 {
   v4 = __stderrp;
-  v5 = [(MetalHUDNumberPreferences *)self->_opacity value];
-  [v5 floatValue];
+  value = [(MetalHUDNumberPreferences *)self->_opacity value];
+  [value floatValue];
   fprintf(v4, "%.2f", v6);
 
-  v7 = [(MetalHUDNumberPreferences *)self->_opacity value];
-  [v7 floatValue];
+  value2 = [(MetalHUDNumberPreferences *)self->_opacity value];
+  [value2 floatValue];
   v8 = [NSNumber numberWithFloat:?];
 
   return v8;
 }
 
-- (void)setScale:(id)a3 forSpecifier:(id)a4
+- (void)setScale:(id)scale forSpecifier:(id)specifier
 {
-  [a3 floatValue];
+  [scale floatValue];
   v5 = [NSNumber numberWithFloat:?];
   [(MetalHUDNumberPreferences *)self->_scale setValue:v5];
 }
 
-- (id)getScale:(id)a3
+- (id)getScale:(id)scale
 {
-  v3 = [(MetalHUDNumberPreferences *)self->_scale value];
-  [v3 floatValue];
+  value = [(MetalHUDNumberPreferences *)self->_scale value];
+  [value floatValue];
   v4 = [NSNumber numberWithFloat:?];
 
   return v4;

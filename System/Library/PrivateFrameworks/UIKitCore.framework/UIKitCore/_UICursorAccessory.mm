@@ -1,24 +1,24 @@
 @interface _UICursorAccessory
-- (BOOL)isEqual:(id)a3;
-- (_UICursorAccessory)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_UICursorAccessory)initWithCoder:(id)coder;
 - (id)description;
 - (id)descriptionBuilder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UICursorAccessory
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   style = self->_style;
-  v5 = a3;
-  [v5 encodeInteger:style forKey:@"style"];
-  [v5 encodeBool:self->_interactive forKey:@"interactive"];
-  [v5 encodeBool:self->_large forKey:@"large"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
-  [v5 encodeDouble:@"preferredWidth" forKey:self->_preferredWidth];
-  [v5 encodeObject:self->_groupIdentifier forKey:@"groupIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:style forKey:@"style"];
+  [coderCopy encodeBool:self->_interactive forKey:@"interactive"];
+  [coderCopy encodeBool:self->_large forKey:@"large"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeDouble:@"preferredWidth" forKey:self->_preferredWidth];
+  [coderCopy encodeObject:self->_groupIdentifier forKey:@"groupIdentifier"];
 }
 
 - (unint64_t)hash
@@ -28,25 +28,25 @@
   return v4 ^ [(NSString *)self->_groupIdentifier hash]^ preferredWidth;
 }
 
-- (_UICursorAccessory)initWithCoder:(id)a3
+- (_UICursorAccessory)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_UICursorAccessory *)self init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"preferredWidth"];
+    [coderCopy decodeDoubleForKey:@"preferredWidth"];
     v5->_preferredWidth = v6;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupIdentifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupIdentifier"];
     groupIdentifier = v5->_groupIdentifier;
     v5->_groupIdentifier = v9;
 
-    v5->_interactive = [v4 decodeBoolForKey:@"interactive"];
-    v5->_large = [v4 decodeBoolForKey:@"large"];
-    v5->_style = [v4 decodeIntegerForKey:@"style"];
+    v5->_interactive = [coderCopy decodeBoolForKey:@"interactive"];
+    v5->_large = [coderCopy decodeBoolForKey:@"large"];
+    v5->_style = [coderCopy decodeIntegerForKey:@"style"];
   }
 
   return v5;
@@ -71,10 +71,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -84,9 +84,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(_UICursorAccessory *)v5 style];
-      if (v6 == [(_UICursorAccessory *)self style])
+      v5 = equalCopy;
+      style = [(_UICursorAccessory *)v5 style];
+      if (style == [(_UICursorAccessory *)self style])
       {
         v7 = [(_UICursorAccessory *)self hash];
         v8 = v7 == [(_UICursorAccessory *)v5 hash];
@@ -109,10 +109,10 @@
 
 - (id)description
 {
-  v2 = [(_UICursorAccessory *)self descriptionBuilder];
-  v3 = [v2 build];
+  descriptionBuilder = [(_UICursorAccessory *)self descriptionBuilder];
+  build = [descriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 @end

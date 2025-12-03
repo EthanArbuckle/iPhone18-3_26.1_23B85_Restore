@@ -1,71 +1,71 @@
 @interface CHFriendListViewController
-- (BOOL)_isCompetitionSection:(unint64_t)a3;
-- (CHFriendListViewController)initWithFriendListManager:(id)a3 andWithFriendManager:(id)a4 achievementsDataProvider:(id)a5 workoutsDataProvider:(id)a6 workoutFormattingManager:(id)a7 formattingManager:(id)a8 badgeImageFactory:(id)a9 healthStore:(id)a10 fitnessAppContext:(id)a11;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_makeFriendDetailViewControllerForSection:(id)a3 row:(id)a4;
+- (BOOL)_isCompetitionSection:(unint64_t)section;
+- (CHFriendListViewController)initWithFriendListManager:(id)manager andWithFriendManager:(id)friendManager achievementsDataProvider:(id)provider workoutsDataProvider:(id)dataProvider workoutFormattingManager:(id)formattingManager formattingManager:(id)a8 badgeImageFactory:(id)factory healthStore:(id)self0 fitnessAppContext:(id)self1;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_makeFriendDetailViewControllerForSection:(id)section row:(id)row;
 - (id)_sortMenu;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_animateOnscreenCellsToNewValues;
-- (void)_contentSizeCategoryDidChangeNotification:(id)a3;
+- (void)_contentSizeCategoryDidChangeNotification:(id)notification;
 - (void)_executeBlockWaitingOnFriendsDataIfNeeded;
-- (void)_friendDataWasUpdated:(id)a3;
+- (void)_friendDataWasUpdated:(id)updated;
 - (void)_layoutPrivacyLinkIfNecessary;
-- (void)_logFriendListDisplayMode:(int64_t)a3;
-- (void)_performAfterFriendDataIsAvailable:(id)a3;
-- (void)_pushDetailViewControllerForSection:(id)a3 row:(id)a4;
+- (void)_logFriendListDisplayMode:(int64_t)mode;
+- (void)_performAfterFriendDataIsAvailable:(id)available;
+- (void)_pushDetailViewControllerForSection:(id)section row:(id)row;
 - (void)_refreshControlValueChanged;
-- (void)_showDetailForFriend:(id)a3 date:(id)a4;
+- (void)_showDetailForFriend:(id)friend date:(id)date;
 - (void)_updateSectionsForCurrentDisplayContext;
 - (void)dealloc;
-- (void)didTapInboxBarButtonView:(id)a3;
+- (void)didTapInboxBarButtonView:(id)view;
 - (void)loadView;
 - (void)scrollToTop;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)showDetailForFriendWithUUID:(id)a3 date:(id)a4;
-- (void)showDetailForMeOnDate:(id)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)showDetailForFriendWithUUID:(id)d date:(id)date;
+- (void)showDetailForMeOnDate:(id)date;
 - (void)showInbox;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation CHFriendListViewController
 
-- (CHFriendListViewController)initWithFriendListManager:(id)a3 andWithFriendManager:(id)a4 achievementsDataProvider:(id)a5 workoutsDataProvider:(id)a6 workoutFormattingManager:(id)a7 formattingManager:(id)a8 badgeImageFactory:(id)a9 healthStore:(id)a10 fitnessAppContext:(id)a11
+- (CHFriendListViewController)initWithFriendListManager:(id)manager andWithFriendManager:(id)friendManager achievementsDataProvider:(id)provider workoutsDataProvider:(id)dataProvider workoutFormattingManager:(id)formattingManager formattingManager:(id)a8 badgeImageFactory:(id)factory healthStore:(id)self0 fitnessAppContext:(id)self1
 {
-  v17 = a3;
-  v40 = a4;
-  v39 = a5;
-  v38 = a6;
-  v37 = a7;
+  managerCopy = manager;
+  friendManagerCopy = friendManager;
+  providerCopy = provider;
+  dataProviderCopy = dataProvider;
+  formattingManagerCopy = formattingManager;
   v36 = a8;
-  v35 = a9;
-  v18 = a10;
-  v19 = a11;
+  factoryCopy = factory;
+  storeCopy = store;
+  contextCopy = context;
   v41.receiver = self;
   v41.super_class = CHFriendListViewController;
   v20 = [(CHFriendListViewController *)&v41 initWithStyle:0];
   v21 = v20;
   if (v20)
   {
-    v33 = v17;
-    objc_storeStrong(&v20->_friendListManager, a3);
-    objc_storeStrong(&v21->_friendManager, a4);
-    objc_storeStrong(&v21->_achievementsDataProvider, a5);
-    objc_storeStrong(&v21->_workoutsDataProvider, a6);
-    objc_storeStrong(&v21->_workoutFormattingManager, a7);
+    v33 = managerCopy;
+    objc_storeStrong(&v20->_friendListManager, manager);
+    objc_storeStrong(&v21->_friendManager, friendManager);
+    objc_storeStrong(&v21->_achievementsDataProvider, provider);
+    objc_storeStrong(&v21->_workoutsDataProvider, dataProvider);
+    objc_storeStrong(&v21->_workoutFormattingManager, formattingManager);
     objc_storeStrong(&v21->_formattingManager, a8);
-    objc_storeStrong(&v21->_imageFactory, a9);
+    objc_storeStrong(&v21->_imageFactory, factory);
     v21->_hasAnyFriends = [(ASFriendListSectionManager *)v21->_friendListManager hasAnyFriendsSetup];
     v22 = objc_opt_new();
     friendListDisplayContext = v21->_friendListDisplayContext;
@@ -77,15 +77,15 @@
 
     if (v25 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v26 = [v25 integerValue];
+      integerValue = [v25 integerValue];
     }
 
     else
     {
-      v26 = 0;
+      integerValue = 0;
     }
 
-    [(ASFriendListDisplayContext *)v21->_friendListDisplayContext setDisplayMode:v26];
+    [(ASFriendListDisplayContext *)v21->_friendListDisplayContext setDisplayMode:integerValue];
     v27 = +[NSMutableDictionary dictionary];
     cellHeightCache = v21->_cellHeightCache;
     v21->_cellHeightCache = v27;
@@ -94,12 +94,12 @@
     competitionScoreConfiguration = v21->_competitionScoreConfiguration;
     v21->_competitionScoreConfiguration = v29;
 
-    objc_storeStrong(&v21->_healthStore, a10);
-    objc_storeStrong(&v21->_fitnessAppContext, a11);
+    objc_storeStrong(&v21->_healthStore, store);
+    objc_storeStrong(&v21->_fitnessAppContext, context);
     v31 = +[NSNotificationCenter defaultCenter];
     [v31 addObserver:v21 selector:"_contentSizeCategoryDidChangeNotification:" name:UIContentSizeCategoryDidChangeNotification object:0];
 
-    v17 = v33;
+    managerCopy = v33;
   }
 
   return v21;
@@ -120,17 +120,17 @@
   v11.receiver = self;
   v11.super_class = CHFriendListViewController;
   [(CHFriendListViewController *)&v11 loadView];
-  v3 = [(CHFriendListViewController *)self tableView];
+  tableView = [(CHFriendListViewController *)self tableView];
   v4 = objc_opt_class();
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v3 registerClass:v4 forCellReuseIdentifier:v6];
+  [tableView registerClass:v4 forCellReuseIdentifier:v6];
 
-  v7 = [(CHFriendListViewController *)self tableView];
+  tableView2 = [(CHFriendListViewController *)self tableView];
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  [v7 registerClass:v8 forCellReuseIdentifier:v10];
+  [tableView2 registerClass:v8 forCellReuseIdentifier:v10];
 }
 
 - (void)viewDidLoad
@@ -140,28 +140,28 @@
   [(CHFriendListViewController *)&v30 viewDidLoad];
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"SHARING" value:&stru_1008680E8 table:@"Localizable"];
-  v5 = [(CHFriendListViewController *)self navigationItem];
-  [v5 setTitle:v4];
+  navigationItem = [(CHFriendListViewController *)self navigationItem];
+  [navigationItem setTitle:v4];
 
   v6 = +[UIColor systemBackgroundColor];
-  v7 = [(CHFriendListViewController *)self tableView];
-  [v7 setBackgroundColor:v6];
+  tableView = [(CHFriendListViewController *)self tableView];
+  [tableView setBackgroundColor:v6];
 
-  v8 = [(CHFriendListViewController *)self tableView];
-  [v8 setSectionHeaderTopPadding:0.0];
+  tableView2 = [(CHFriendListViewController *)self tableView];
+  [tableView2 setSectionHeaderTopPadding:0.0];
 
   v9 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-  v10 = [(CHFriendListViewController *)self tableView];
-  [v10 setTableFooterView:v9];
+  tableView3 = [(CHFriendListViewController *)self tableView];
+  [tableView3 setTableFooterView:v9];
 
-  v11 = [(CHFriendListViewController *)self navigationItem];
-  [v11 setLargeTitleDisplayMode:1];
+  navigationItem2 = [(CHFriendListViewController *)self navigationItem];
+  [navigationItem2 setLargeTitleDisplayMode:1];
 
-  v12 = [(CHFriendListViewController *)self _sortMenu];
+  _sortMenu = [(CHFriendListViewController *)self _sortMenu];
   v13 = [UIBarButtonItem alloc];
   v14 = +[NSBundle mainBundle];
   v15 = [v14 localizedStringForKey:@"SORT" value:&stru_1008680E8 table:@"Localizable"];
-  v16 = [v13 initWithTitle:v15 menu:v12];
+  v16 = [v13 initWithTitle:v15 menu:_sortMenu];
   sortBarButtonItem = self->_sortBarButtonItem;
   self->_sortBarButtonItem = v16;
 
@@ -174,22 +174,22 @@
   inboxBarButtonItem = self->_inboxBarButtonItem;
   self->_inboxBarButtonItem = v20;
 
-  v22 = [(CHFriendListViewController *)self tableView];
-  [v22 setSeparatorStyle:0];
+  tableView4 = [(CHFriendListViewController *)self tableView];
+  [tableView4 setSeparatorStyle:0];
 
-  v23 = [(CHFriendListViewController *)self tableView];
-  [v23 setIndicatorStyle:2];
+  tableView5 = [(CHFriendListViewController *)self tableView];
+  [tableView5 setIndicatorStyle:2];
 
-  v24 = [(CHFriendListViewController *)self navigationItem];
-  [v24 setBackButtonDisplayMode:2];
+  navigationItem3 = [(CHFriendListViewController *)self navigationItem];
+  [navigationItem3 setBackButtonDisplayMode:2];
 
   v25 = objc_alloc_init(UIRefreshControl);
-  v26 = [(CHFriendListViewController *)self tableView];
-  [v26 setRefreshControl:v25];
+  tableView6 = [(CHFriendListViewController *)self tableView];
+  [tableView6 setRefreshControl:v25];
 
-  v27 = [(CHFriendListViewController *)self tableView];
-  v28 = [v27 refreshControl];
-  [v28 addTarget:self action:"_refreshControlValueChanged" forEvents:4096];
+  tableView7 = [(CHFriendListViewController *)self tableView];
+  refreshControl = [tableView7 refreshControl];
+  [refreshControl addTarget:self action:"_refreshControlValueChanged" forEvents:4096];
 
   self->_cellsNeedUpdate = 0;
   v29 = +[NSNotificationCenter defaultCenter];
@@ -197,19 +197,19 @@
   [(CHFriendListViewController *)self _updateSectionsForCurrentDisplayContext];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CHFriendListViewController;
-  [(CHFriendListViewController *)&v5 viewDidAppear:a3];
+  [(CHFriendListViewController *)&v5 viewDidAppear:appear];
   if (!self->_haveLoggedInitialDisplayContext)
   {
     [(CHFriendListViewController *)self _logFriendListDisplayMode:[(ASFriendListDisplayContext *)self->_friendListDisplayContext displayMode]];
     self->_haveLoggedInitialDisplayContext = 1;
   }
 
-  v4 = [(CHFriendListViewController *)self tableView];
-  [v4 flashScrollIndicators];
+  tableView = [(CHFriendListViewController *)self tableView];
+  [tableView flashScrollIndicators];
 }
 
 - (void)viewDidLayoutSubviews
@@ -224,64 +224,64 @@
 {
   if (self->_privacyLink)
   {
-    v3 = [(CHFriendListViewController *)self view];
-    [v3 bounds];
+    view = [(CHFriendListViewController *)self view];
+    [view bounds];
     v5 = v4;
     v7 = v6;
 
-    v8 = [(OBPrivacyLinkController *)self->_privacyLink view];
+    view2 = [(OBPrivacyLinkController *)self->_privacyLink view];
     LODWORD(v9) = 1148846080;
     LODWORD(v10) = 1112014848;
-    [v8 systemLayoutSizeFittingSize:v5 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v9, v10}];
+    [view2 systemLayoutSizeFittingSize:v5 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v9, v10}];
     v12 = v11;
 
-    v13 = [(CHFriendListViewController *)self tabBarController];
-    v14 = [v13 tabBar];
-    [v14 frame];
+    tabBarController = [(CHFriendListViewController *)self tabBarController];
+    tabBar = [tabBarController tabBar];
+    [tabBar frame];
     Height = CGRectGetHeight(v27);
 
-    v16 = [(CHFriendListViewController *)self navigationController];
-    v17 = [v16 navigationBar];
-    [v17 frame];
+    navigationController = [(CHFriendListViewController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar frame];
     v18 = CGRectGetHeight(v28);
 
     v19 = +[UIApplication sharedApplication];
-    v20 = [v19 windows];
-    v21 = [v20 firstObject];
-    v22 = [v21 windowScene];
-    v23 = [v22 statusBarManager];
-    [v23 statusBarFrame];
+    windows = [v19 windows];
+    firstObject = [windows firstObject];
+    windowScene = [firstObject windowScene];
+    statusBarManager = [windowScene statusBarManager];
+    [statusBarManager statusBarFrame];
     v24 = CGRectGetHeight(v29);
 
-    v25 = [(OBPrivacyLinkController *)self->_privacyLink view];
-    [v25 setFrame:{0.0, v7 - v12 + -10.0 - Height - v18 - v24, v5, v12}];
+    view3 = [(OBPrivacyLinkController *)self->_privacyLink view];
+    [view3 setFrame:{0.0, v7 - v12 + -10.0 - Height - v18 - v24, v5, v12}];
   }
 }
 
-- (void)showDetailForMeOnDate:(id)a3
+- (void)showDetailForMeOnDate:(id)date
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100137AC4;
   v4[3] = &unk_10083A970;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(CHFriendListViewController *)v5 _performAfterFriendDataIsAvailable:v4];
+  selfCopy = self;
+  dateCopy = date;
+  v3 = dateCopy;
+  [(CHFriendListViewController *)selfCopy _performAfterFriendDataIsAvailable:v4];
 }
 
-- (void)showDetailForFriendWithUUID:(id)a3 date:(id)a4
+- (void)showDetailForFriendWithUUID:(id)d date:(id)date
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100137BE8;
   v7[3] = &unk_10083BC20;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(CHFriendListViewController *)v8 _performAfterFriendDataIsAvailable:v7];
+  selfCopy = self;
+  dCopy = d;
+  dateCopy = date;
+  v5 = dateCopy;
+  v6 = dCopy;
+  [(CHFriendListViewController *)selfCopy _performAfterFriendDataIsAvailable:v7];
 }
 
 - (void)showInbox
@@ -296,54 +296,54 @@
 
 - (void)scrollToTop
 {
-  v6 = [(CHFriendListViewController *)self tableView];
-  if ([v6 numberOfSections] >= 1)
+  tableView = [(CHFriendListViewController *)self tableView];
+  if ([tableView numberOfSections] >= 1)
   {
-    v3 = [(CHFriendListViewController *)self tableView];
-    v4 = [v3 numberOfRowsInSection:0];
+    tableView2 = [(CHFriendListViewController *)self tableView];
+    v4 = [tableView2 numberOfRowsInSection:0];
 
     if (v4 < 1)
     {
       return;
     }
 
-    v6 = [NSIndexPath indexPathForRow:0 inSection:0];
-    v5 = [(CHFriendListViewController *)self tableView];
-    [v5 scrollToRowAtIndexPath:v6 atScrollPosition:1 animated:1];
+    tableView = [NSIndexPath indexPathForRow:0 inSection:0];
+    tableView3 = [(CHFriendListViewController *)self tableView];
+    [tableView3 scrollToRowAtIndexPath:tableView atScrollPosition:1 animated:1];
   }
 }
 
-- (id)_makeFriendDetailViewControllerForSection:(id)a3 row:(id)a4
+- (id)_makeFriendDetailViewControllerForSection:(id)section row:(id)row
 {
-  v6 = a4;
-  v7 = a3;
+  rowCopy = row;
+  sectionCopy = section;
   v8 = [CHFriendDetailCollectionViewController alloc];
   friendListManager = self->_friendListManager;
   friendManager = self->_friendManager;
-  v11 = [v6 friend];
-  v12 = [v6 snapshot];
+  friend = [rowCopy friend];
+  snapshot = [rowCopy snapshot];
 
-  v13 = [v7 endDate];
+  endDate = [sectionCopy endDate];
 
-  v14 = [(CHFriendDetailCollectionViewController *)v8 initWithFriendListManager:friendListManager friendManager:friendManager friend:v11 snapshot:v12 snapshotDate:v13 achievementsDataProvider:self->_achievementsDataProvider workoutDataProvider:self->_workoutsDataProvider workoutFormattingManager:self->_workoutFormattingManager formattingManager:self->_formattingManager badgeImageFactory:self->_imageFactory healthStore:self->_healthStore fitnessAppContext:self->_fitnessAppContext];
+  v14 = [(CHFriendDetailCollectionViewController *)v8 initWithFriendListManager:friendListManager friendManager:friendManager friend:friend snapshot:snapshot snapshotDate:endDate achievementsDataProvider:self->_achievementsDataProvider workoutDataProvider:self->_workoutsDataProvider workoutFormattingManager:self->_workoutFormattingManager formattingManager:self->_formattingManager badgeImageFactory:self->_imageFactory healthStore:self->_healthStore fitnessAppContext:self->_fitnessAppContext];
 
   return v14;
 }
 
-- (void)_pushDetailViewControllerForSection:(id)a3 row:(id)a4
+- (void)_pushDetailViewControllerForSection:(id)section row:(id)row
 {
-  v6 = [(CHFriendListViewController *)self _makeFriendDetailViewControllerForSection:a3 row:a4];
-  v5 = [(CHFriendListViewController *)self navigationController];
-  [v5 pushViewController:v6 animated:1];
+  v6 = [(CHFriendListViewController *)self _makeFriendDetailViewControllerForSection:section row:row];
+  navigationController = [(CHFriendListViewController *)self navigationController];
+  [navigationController pushViewController:v6 animated:1];
 }
 
-- (void)_showDetailForFriend:(id)a3 date:(id)a4
+- (void)_showDetailForFriend:(id)friend date:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  friendCopy = friend;
+  dateCopy = date;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v8 = self->_friendListSections;
-  v9 = v7;
+  v9 = dateCopy;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -365,12 +365,12 @@
         v14 = *(*(&v42 + 1) + 8 * i);
         [v9 timeIntervalSinceReferenceDate];
         v16 = v15;
-        v17 = [v14 startDate];
-        [v17 timeIntervalSinceReferenceDate];
+        startDate = [v14 startDate];
+        [startDate timeIntervalSinceReferenceDate];
         v19 = v18;
 
-        v20 = [v14 endDate];
-        [v20 timeIntervalSinceReferenceDate];
+        endDate = [v14 endDate];
+        [endDate timeIntervalSinceReferenceDate];
         v22 = v21;
 
         if (v16 >= v19 && v16 < v22)
@@ -395,7 +395,7 @@ LABEL_14:
 
   if (v24)
   {
-    v25 = v6;
+    v25 = friendCopy;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
@@ -405,8 +405,8 @@ LABEL_14:
     if (v26)
     {
       v38 = v24;
-      v39 = self;
-      v40 = v6;
+      selfCopy = self;
+      v40 = friendCopy;
       v27 = *v43;
       while (2)
       {
@@ -420,10 +420,10 @@ LABEL_14:
           v29 = *(*(&v42 + 1) + 8 * j);
           if (![v25 isMe] || (objc_msgSend(v29, "friend"), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "isMe"), v30, (v31 & 1) == 0))
           {
-            v32 = [v25 UUID];
-            v33 = [v29 friend];
-            v34 = [v33 UUID];
-            v35 = [v32 isEqual:v34];
+            uUID = [v25 UUID];
+            friend = [v29 friend];
+            uUID2 = [friend UUID];
+            v35 = [uUID isEqual:uUID2];
 
             if ((v35 & 1) == 0)
             {
@@ -445,8 +445,8 @@ LABEL_14:
       }
 
 LABEL_27:
-      self = v39;
-      v6 = v40;
+      self = selfCopy;
+      friendCopy = v40;
       v24 = v38;
     }
 
@@ -477,13 +477,13 @@ LABEL_27:
   }
 }
 
-- (void)_performAfterFriendDataIsAvailable:(id)a3
+- (void)_performAfterFriendDataIsAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   if (self->_friendListSections)
   {
-    v4[2](v4);
+    availableCopy[2](availableCopy);
   }
 
   else
@@ -496,7 +496,7 @@ LABEL_27:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Waiting for friend data", v8, 2u);
     }
 
-    v6 = [v4 copy];
+    v6 = [availableCopy copy];
     blockWaitingOnFriendData = self->_blockWaitingOnFriendData;
     self->_blockWaitingOnFriendData = v6;
   }
@@ -506,18 +506,18 @@ LABEL_27:
 {
   objc_initWeak(&location, self);
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(ASFriendListDisplayContext *)self->_friendListDisplayContext displayMode];
+  displayMode = [(ASFriendListDisplayContext *)self->_friendListDisplayContext displayMode];
   friendListManager = self->_friendListManager;
-  v6 = [(ASFriendListDisplayContext *)self->_friendListDisplayContext displayFilter];
+  displayFilter = [(ASFriendListDisplayContext *)self->_friendListDisplayContext displayFilter];
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
   v12 = sub_100138504;
   v13 = &unk_10083D2D8;
-  v15[1] = v4;
+  v15[1] = displayMode;
   objc_copyWeak(v15, &location);
   v7 = v3;
   v14 = v7;
-  [(ASFriendListSectionManager *)friendListManager enumerateValidDisplayModesForFilter:v6 usingBlock:&v10];
+  [(ASFriendListSectionManager *)friendListManager enumerateValidDisplayModesForFilter:displayFilter usingBlock:&v10];
   v8 = [UIMenu menuWithChildren:v7, v10, v11, v12, v13];
 
   objc_destroyWeak(v15);
@@ -526,7 +526,7 @@ LABEL_27:
   return v8;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (self->_hasAnyFriends)
   {
@@ -539,44 +539,44 @@ LABEL_27:
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_friendListSections objectAtIndexedSubscript:a4];
-  v5 = [v4 rows];
-  v6 = [v5 count];
+  v4 = [(NSArray *)self->_friendListSections objectAtIndexedSubscript:section];
+  rows = [v4 rows];
+  v6 = [rows count];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   friendListSections = self->_friendListSections;
-  v8 = a3;
-  v9 = -[NSArray objectAtIndexedSubscript:](friendListSections, "objectAtIndexedSubscript:", [v6 section]);
-  v10 = [v9 rows];
-  v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+  viewCopy = view;
+  v9 = -[NSArray objectAtIndexedSubscript:](friendListSections, "objectAtIndexedSubscript:", [pathCopy section]);
+  rows = [v9 rows];
+  v11 = [rows objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-  if (-[CHFriendListViewController _isCompetitionSection:](self, "_isCompetitionSection:", [v6 section]))
+  if (-[CHFriendListViewController _isCompetitionSection:](self, "_isCompetitionSection:", [pathCopy section]))
   {
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    v14 = [v8 dequeueReusableCellWithIdentifier:v13 forIndexPath:v6];
+    v14 = [viewCopy dequeueReusableCellWithIdentifier:v13 forIndexPath:pathCopy];
 
-    v15 = [v11 friend];
-    [v14 setFriend:v15];
+    friend = [v11 friend];
+    [v14 setFriend:friend];
   }
 
   else
   {
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
-    v14 = [v8 dequeueReusableCellWithIdentifier:v17 forIndexPath:v6];
+    v14 = [viewCopy dequeueReusableCellWithIdentifier:v17 forIndexPath:pathCopy];
 
     [v14 setDisplayMode:{-[ASFriendListDisplayContext displayMode](self->_friendListDisplayContext, "displayMode")}];
-    v15 = [v11 friend];
-    v18 = [v11 snapshot];
-    [v14 setFriend:v15 snapshot:v18 formattingManager:self->_formattingManager animated:0];
+    friend = [v11 friend];
+    snapshot = [v11 snapshot];
+    [v14 setFriend:friend snapshot:snapshot formattingManager:self->_formattingManager animated:0];
   }
 
   [v14 setSelectionStyle:0];
@@ -584,31 +584,31 @@ LABEL_27:
   return v14;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   friendListSections = self->_friendListSections;
-  v7 = a4;
-  v8 = a3;
-  v11 = -[NSArray objectAtIndexedSubscript:](friendListSections, "objectAtIndexedSubscript:", [v7 section]);
-  v9 = [v11 rows];
-  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+  pathCopy = path;
+  viewCopy = view;
+  v11 = -[NSArray objectAtIndexedSubscript:](friendListSections, "objectAtIndexedSubscript:", [pathCopy section]);
+  rows = [v11 rows];
+  v10 = [rows objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   [(CHFriendListViewController *)self _pushDetailViewControllerForSection:v11 row:v10];
-  [v8 deselectRowAtIndexPath:v7 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if (-[CHFriendListViewController _isCompetitionSection:](self, "_isCompetitionSection:", [v5 section]))
+  pathCopy = path;
+  if (-[CHFriendListViewController _isCompetitionSection:](self, "_isCompetitionSection:", [pathCopy section]))
   {
-    v6 = -[NSArray objectAtIndexedSubscript:](self->_friendListSections, "objectAtIndexedSubscript:", [v5 section]);
-    v7 = [v6 rows];
-    v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+    v6 = -[NSArray objectAtIndexedSubscript:](self->_friendListSections, "objectAtIndexedSubscript:", [pathCopy section]);
+    rows = [v6 rows];
+    v8 = [rows objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
     competitionScoreConfiguration = self->_competitionScoreConfiguration;
-    v10 = [v8 friend];
-    [CHFriendListCompetitionTableViewCell preferredHeightForConfiguration:competitionScoreConfiguration friend:v10];
+    friend = [v8 friend];
+    [CHFriendListCompetitionTableViewCell preferredHeightForConfiguration:competitionScoreConfiguration friend:friend];
     v12 = v11;
   }
 
@@ -621,19 +621,19 @@ LABEL_27:
   return v12;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(ASFriendListDisplayContext *)self->_friendListDisplayContext displayMode];
-  if (-[CHFriendListViewController _isCompetitionSection:](self, "_isCompetitionSection:", [v5 section]))
+  pathCopy = path;
+  displayMode = [(ASFriendListDisplayContext *)self->_friendListDisplayContext displayMode];
+  if (-[CHFriendListViewController _isCompetitionSection:](self, "_isCompetitionSection:", [pathCopy section]))
   {
-    v7 = -[NSArray objectAtIndexedSubscript:](self->_friendListSections, "objectAtIndexedSubscript:", [v5 section]);
-    v8 = [v7 rows];
-    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+    v7 = -[NSArray objectAtIndexedSubscript:](self->_friendListSections, "objectAtIndexedSubscript:", [pathCopy section]);
+    rows = [v7 rows];
+    v9 = [rows objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
     competitionScoreConfiguration = self->_competitionScoreConfiguration;
-    v11 = [v9 friend];
-    [CHFriendListCompetitionTableViewCell preferredHeightForConfiguration:competitionScoreConfiguration friend:v11];
+    friend = [v9 friend];
+    [CHFriendListCompetitionTableViewCell preferredHeightForConfiguration:competitionScoreConfiguration friend:friend];
     v13 = v12;
 
 LABEL_6:
@@ -641,16 +641,16 @@ LABEL_6:
   }
 
   cellHeightCache = self->_cellHeightCache;
-  v15 = [NSNumber numberWithInteger:v6];
+  v15 = [NSNumber numberWithInteger:displayMode];
   v7 = [(NSMutableDictionary *)cellHeightCache objectForKeyedSubscript:v15];
 
   if (!v7)
   {
-    [CHFriendListTableViewCell measuredHeightWithDisplayMode:v6 formattingManager:self->_formattingManager];
+    [CHFriendListTableViewCell measuredHeightWithDisplayMode:displayMode formattingManager:self->_formattingManager];
     v13 = v17;
     v9 = [NSNumber numberWithDouble:?];
     v18 = self->_cellHeightCache;
-    v19 = [NSNumber numberWithInteger:v6];
+    v19 = [NSNumber numberWithInteger:displayMode];
     [(NSMutableDictionary *)v18 setObject:v9 forKeyedSubscript:v19];
 
     goto LABEL_6;
@@ -663,10 +663,10 @@ LABEL_7:
   return v13;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  [v6 rectForHeaderInSection:a4];
+  viewCopy = view;
+  [viewCopy rectForHeaderInSection:section];
   Height = CGRectGetHeight(v26);
   v8 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   v9 = +[UIColor blackColor];
@@ -674,11 +674,11 @@ LABEL_7:
 
   v10 = +[UIListContentConfiguration extraProminentInsetGroupedHeaderConfiguration];
   v11 = [UILabel alloc];
-  [v6 separatorInset];
+  [viewCopy separatorInset];
   v13 = v12;
-  [v6 bounds];
+  [viewCopy bounds];
   Width = CGRectGetWidth(v27);
-  [v6 separatorInset];
+  [viewCopy separatorInset];
   v16 = v15;
 
   v17 = [v11 initWithFrame:{v13, 1.0, Width + v16 * -2.0, Height}];
@@ -687,22 +687,22 @@ LABEL_7:
 
   [v10 directionalLayoutMargins];
   [v17 setDirectionalLayoutMargins:?];
-  v19 = [v10 textProperties];
-  v20 = [v19 font];
-  [v17 setFont:v20];
+  textProperties = [v10 textProperties];
+  font = [textProperties font];
+  [v17 setFont:font];
 
-  if ([(CHFriendListViewController *)self _isCompetitionSection:a4])
+  if ([(CHFriendListViewController *)self _isCompetitionSection:section])
   {
     v21 = ActivitySharingBundle();
-    v22 = [v21 localizedStringForKey:@"FRIEND_LIST_COMPETITION_SECTION_HEADER" value:&stru_1008680E8 table:@"Localizable"];
-    [v17 setText:v22];
+    startDate = [v21 localizedStringForKey:@"FRIEND_LIST_COMPETITION_SECTION_HEADER" value:&stru_1008680E8 table:@"Localizable"];
+    [v17 setText:startDate];
   }
 
   else
   {
-    v21 = [(NSArray *)self->_friendListSections objectAtIndexedSubscript:a4];
-    v22 = [v21 startDate];
-    v23 = [FIUIDateFormattingUtilities stringWithEitherTodayOrLongStyleDateFromDate:v22];
+    v21 = [(NSArray *)self->_friendListSections objectAtIndexedSubscript:section];
+    startDate = [v21 startDate];
+    v23 = [FIUIDateFormattingUtilities stringWithEitherTodayOrLongStyleDateFromDate:startDate];
     [v17 setText:v23];
   }
 
@@ -711,11 +711,11 @@ LABEL_7:
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v5 = [a3 numberOfSections];
+  numberOfSections = [view numberOfSections];
   result = 14.0;
-  if (v5 - 1 == a4)
+  if (numberOfSections - 1 == section)
   {
     return 0.0;
   }
@@ -723,22 +723,22 @@ LABEL_7:
   return result;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   v4 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
 
   return v4;
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
   friendListSections = self->_friendListSections;
-  v7 = a4;
-  v8 = -[NSArray objectAtIndexedSubscript:](friendListSections, "objectAtIndexedSubscript:", [v7 section]);
-  v9 = [v8 rows];
-  v10 = [v7 row];
+  pathCopy = path;
+  v8 = -[NSArray objectAtIndexedSubscript:](friendListSections, "objectAtIndexedSubscript:", [pathCopy section]);
+  rows = [v8 rows];
+  v10 = [pathCopy row];
 
-  v11 = [v9 objectAtIndexedSubscript:v10];
+  v11 = [rows objectAtIndexedSubscript:v10];
 
   [(CHFriendListViewController *)self _makeFriendDetailViewControllerForSection:v8 row:v11];
   v15[0] = _NSConcreteStackBlock;
@@ -751,23 +751,23 @@ LABEL_7:
   return v13;
 }
 
-- (void)tableView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)tableView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = a5;
-  [v6 previewViewController];
+  animatorCopy = animator;
+  [animatorCopy previewViewController];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001391F8;
   v8[3] = &unk_10083A970;
   v9 = v8[4] = self;
   v7 = v9;
-  [v6 addCompletion:v8];
+  [animatorCopy addCompletion:v8];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v6 = a3;
-  if (!a4 && self->_cellsNeedUpdate)
+  draggingCopy = dragging;
+  if (!decelerate && self->_cellsNeedUpdate)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -778,7 +778,7 @@ LABEL_7:
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   if (self->_cellsNeedUpdate)
   {
@@ -795,14 +795,14 @@ LABEL_7:
 
 - (void)_animateOnscreenCellsToNewValues
 {
-  v3 = [(CHFriendListViewController *)self tableView];
-  v4 = [v3 indexPathsForVisibleRows];
+  tableView = [(CHFriendListViewController *)self tableView];
+  indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = v4;
+  obj = indexPathsForVisibleRows;
   v5 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
@@ -819,16 +819,16 @@ LABEL_7:
         }
 
         v9 = *(*(&v18 + 1) + 8 * v8);
-        v10 = [(CHFriendListViewController *)self tableView];
-        v11 = [v10 cellForRowAtIndexPath:v9];
+        tableView2 = [(CHFriendListViewController *)self tableView];
+        v11 = [tableView2 cellForRowAtIndexPath:v9];
 
         v12 = -[NSArray objectAtIndexedSubscript:](self->_friendListSections, "objectAtIndexedSubscript:", [v9 section]);
-        v13 = [v12 rows];
-        v14 = [v13 objectAtIndexedSubscript:{objc_msgSend(v9, "row")}];
+        rows = [v12 rows];
+        v14 = [rows objectAtIndexedSubscript:{objc_msgSend(v9, "row")}];
 
-        v15 = [v14 friend];
-        v16 = [v14 snapshot];
-        [v11 setFriend:v15 snapshot:v16 formattingManager:self->_formattingManager animated:1];
+        friend = [v14 friend];
+        snapshot = [v14 snapshot];
+        [v11 setFriend:friend snapshot:snapshot formattingManager:self->_formattingManager animated:1];
 
         v8 = v8 + 1;
       }
@@ -848,12 +848,12 @@ LABEL_7:
   friendListSections = self->_friendListSections;
   self->_friendListSections = &__NSArray0__struct;
 
-  v4 = [(ASFriendListSectionManager *)self->_friendListManager sectionForFriendsCompetingWithMe];
+  sectionForFriendsCompetingWithMe = [(ASFriendListSectionManager *)self->_friendListManager sectionForFriendsCompetingWithMe];
   competitionSection = self->_competitionSection;
-  self->_competitionSection = v4;
+  self->_competitionSection = sectionForFriendsCompetingWithMe;
 
-  v6 = [(ASFriendListSection *)self->_competitionSection rows];
-  v7 = [v6 count];
+  rows = [(ASFriendListSection *)self->_competitionSection rows];
+  v7 = [rows count];
 
   if (v7)
   {
@@ -868,15 +868,15 @@ LABEL_7:
   self->_friendListSections = v11;
 
   self->_pendingRequestCount = [(ASFriendListSectionManager *)self->_friendListManager totalNumberOfPendingRequests];
-  v13 = [(ASFriendListSectionManager *)self->_friendListManager sectionForFriendsHidingDataFromMe];
-  v14 = [v13 rows];
-  self->_hiddenFriends = [v14 count];
+  sectionForFriendsHidingDataFromMe = [(ASFriendListSectionManager *)self->_friendListManager sectionForFriendsHidingDataFromMe];
+  rows2 = [sectionForFriendsHidingDataFromMe rows];
+  self->_hiddenFriends = [rows2 count];
 
   self->_hasAnyFriends = [(ASFriendListSectionManager *)self->_friendListManager hasAnyFriendsSetup];
   inboxBarButtonItem = self->_inboxBarButtonItem;
   v15 = [NSArray arrayWithObjects:&inboxBarButtonItem count:1];
-  v16 = [(CHFriendListViewController *)self navigationItem];
-  [v16 setRightBarButtonItems:v15];
+  navigationItem = [(CHFriendListViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItems:v15];
 
   if (self->_pendingRequestCount)
   {
@@ -892,12 +892,12 @@ LABEL_7:
 
   if (![(NSArray *)self->_friendListSections count])
   {
-    v27 = [(CHFriendListViewController *)self navigationItem];
-    [v27 setLeftBarButtonItem:0];
+    navigationItem2 = [(CHFriendListViewController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:0];
 
-    v28 = [(ASFriendListSectionManager *)self->_friendListManager sectionForFriendsInvitedByMe];
-    v29 = [v28 rows];
-    v30 = [v29 count];
+    sectionForFriendsInvitedByMe = [(ASFriendListSectionManager *)self->_friendListManager sectionForFriendsInvitedByMe];
+    rows3 = [sectionForFriendsInvitedByMe rows];
+    v30 = [rows3 count];
 
     emptyListView = self->_emptyListView;
     if (emptyListView)
@@ -912,12 +912,12 @@ LABEL_7:
       self->_emptyListView = v32;
 
       v34 = self->_emptyListView;
-      v35 = [(CHFriendListViewController *)self tableView];
-      [v35 setBackgroundView:v34];
+      tableView = [(CHFriendListViewController *)self tableView];
+      [tableView setBackgroundView:v34];
     }
 
-    v36 = [(CHFriendListViewController *)self tableView];
-    [v36 setScrollEnabled:0];
+    tableView2 = [(CHFriendListViewController *)self tableView];
+    [tableView2 setScrollEnabled:0];
 
     if (!self->_privacyLink)
     {
@@ -928,27 +928,27 @@ LABEL_7:
       [(OBPrivacyLinkController *)self->_privacyLink setPresentedViewControllerShouldUseDarkMode:1];
       [(OBPrivacyLinkController *)self->_privacyLink setDisplayIcon:0];
       [(CHFriendListViewController *)self addChildViewController:self->_privacyLink];
-      v39 = [(CHFriendListViewController *)self view];
-      v40 = [(OBPrivacyLinkController *)self->_privacyLink view];
-      [v39 addSubview:v40];
+      view = [(CHFriendListViewController *)self view];
+      view2 = [(OBPrivacyLinkController *)self->_privacyLink view];
+      [view addSubview:view2];
 
       [(OBPrivacyLinkController *)self->_privacyLink didMoveToParentViewController:self];
     }
 
-    v26 = [(CHFriendListViewController *)self view];
-    [v26 setNeedsLayout];
+    view3 = [(CHFriendListViewController *)self view];
+    [view3 setNeedsLayout];
     goto LABEL_17;
   }
 
-  v19 = [(CHFriendListViewController *)self tableView];
-  [v19 setBackgroundView:0];
+  tableView3 = [(CHFriendListViewController *)self tableView];
+  [tableView3 setBackgroundView:0];
 
-  v20 = [(CHFriendListViewController *)self tableView];
-  [v20 setScrollEnabled:1];
+  tableView4 = [(CHFriendListViewController *)self tableView];
+  [tableView4 setScrollEnabled:1];
 
   sortBarButtonItem = self->_sortBarButtonItem;
-  v22 = [(CHFriendListViewController *)self navigationItem];
-  [v22 setLeftBarButtonItem:sortBarButtonItem];
+  navigationItem3 = [(CHFriendListViewController *)self navigationItem];
+  [navigationItem3 setLeftBarButtonItem:sortBarButtonItem];
 
   v23 = self->_emptyListView;
   if (v23)
@@ -959,12 +959,12 @@ LABEL_7:
   v24 = self->_privacyLink;
   if (v24)
   {
-    v25 = [(OBPrivacyLinkController *)v24 view];
-    [v25 removeFromSuperview];
+    view4 = [(OBPrivacyLinkController *)v24 view];
+    [view4 removeFromSuperview];
 
     [(OBPrivacyLinkController *)self->_privacyLink willMoveToParentViewController:0];
     [(OBPrivacyLinkController *)self->_privacyLink removeFromParentViewController];
-    v26 = self->_privacyLink;
+    view3 = self->_privacyLink;
     self->_privacyLink = 0;
 LABEL_17:
   }
@@ -972,7 +972,7 @@ LABEL_17:
   [(CHFriendListViewController *)self _executeBlockWaitingOnFriendsDataIfNeeded];
 }
 
-- (void)_friendDataWasUpdated:(id)a3
+- (void)_friendDataWasUpdated:(id)updated
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1000,15 +1000,15 @@ LABEL_17:
   }
 }
 
-- (BOOL)_isCompetitionSection:(unint64_t)a3
+- (BOOL)_isCompetitionSection:(unint64_t)section
 {
-  if (a3)
+  if (section)
   {
     return 0;
   }
 
-  v4 = [(ASFriendListSection *)self->_competitionSection rows];
-  v3 = [v4 count] != 0;
+  rows = [(ASFriendListSection *)self->_competitionSection rows];
+  v3 = [rows count] != 0;
 
   return v3;
 }
@@ -1024,14 +1024,14 @@ LABEL_17:
   [(ASFriendListSectionManager *)friendListManager fetchActivitySharingDataIfTimeSinceLastFetchIsGreaterThan:180 completion:v3];
 }
 
-- (void)didTapInboxBarButtonView:(id)a3
+- (void)didTapInboxBarButtonView:(id)view
 {
   v5 = [[CHFriendInboxTableViewController alloc] initWithFriendListManager:self->_friendListManager friendManager:self->_friendManager achievementsDataProvider:self->_achievementsDataProvider workoutsDataProvider:self->_workoutsDataProvider workoutFormattingManager:self->_workoutFormattingManager formattingManager:self->_formattingManager badgeImageFactory:self->_imageFactory healthStore:self->_healthStore fitnessAppContext:self->_fitnessAppContext makeFriendDetailViewControllerBlock:0];
   v4 = [[UINavigationController alloc] initWithRootViewController:v5];
   [(CHFriendListViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)_contentSizeCategoryDidChangeNotification:(id)a3
+- (void)_contentSizeCategoryDidChangeNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1041,9 +1041,9 @@ LABEL_17:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_logFriendListDisplayMode:(int64_t)a3
+- (void)_logFriendListDisplayMode:(int64_t)mode
 {
-  if (a3 <= 4)
+  if (mode <= 4)
   {
     FIActivityAnalyticsSubmission();
   }

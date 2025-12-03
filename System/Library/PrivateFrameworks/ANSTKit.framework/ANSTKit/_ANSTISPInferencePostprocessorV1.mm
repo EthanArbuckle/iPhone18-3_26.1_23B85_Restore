@@ -1,37 +1,37 @@
 @interface _ANSTISPInferencePostprocessorV1
 + (id)_semanticCategories;
-+ (id)_semanticSegmentationMaskDescriptorsForInferenceDescriptor:(id)a3 maskPixelFormatType:(unsigned int)a4;
-- (BOOL)_destroyRTCVWithError:(id *)a3;
-- (BOOL)_getInputImageAcOrientation:(int *)a3 withError:(id *)a4;
-- (BOOL)_initializeRTCVWithError:(id *)a3;
-- (BOOL)_populateAcANSTNetOutput:(int)a3 intoSegmanticSegmentationMask:(id)a4 withError:(id *)a5;
-- (BOOL)processWithError:(id *)a3;
-- (BOOL)resetWithError:(id *)a3;
-- (_ANSTISPInferencePostprocessorV1)initWithInferenceDescriptor:(id)a3 error:(id *)a4;
-- (_ANSTISPInferencePostprocessorV1)initWithInferenceInputDescriptors:(id)a3 inferenceOutputDescriptors:(id)a4 processedOutputDescriptors:(id)a5 error:(id *)a6;
++ (id)_semanticSegmentationMaskDescriptorsForInferenceDescriptor:(id)descriptor maskPixelFormatType:(unsigned int)type;
+- (BOOL)_destroyRTCVWithError:(id *)error;
+- (BOOL)_getInputImageAcOrientation:(int *)orientation withError:(id *)error;
+- (BOOL)_initializeRTCVWithError:(id *)error;
+- (BOOL)_populateAcANSTNetOutput:(int)output intoSegmanticSegmentationMask:(id)mask withError:(id *)error;
+- (BOOL)processWithError:(id *)error;
+- (BOOL)resetWithError:(id *)error;
+- (_ANSTISPInferencePostprocessorV1)initWithInferenceDescriptor:(id)descriptor error:(id *)error;
+- (_ANSTISPInferencePostprocessorV1)initWithInferenceInputDescriptors:(id)descriptors inferenceOutputDescriptors:(id)outputDescriptors processedOutputDescriptors:(id)processedOutputDescriptors error:(id *)error;
 - (float)smudgeConfidence;
-- (id)semanticSegmentationMaskDescriptorOfCategory:(id)a3;
-- (id)trackedObjectsOfCategory:(id)a3;
+- (id)semanticSegmentationMaskDescriptorOfCategory:(id)category;
+- (id)trackedObjectsOfCategory:(id)category;
 - (void)dealloc;
 @end
 
 @implementation _ANSTISPInferencePostprocessorV1
 
-- (_ANSTISPInferencePostprocessorV1)initWithInferenceInputDescriptors:(id)a3 inferenceOutputDescriptors:(id)a4 processedOutputDescriptors:(id)a5 error:(id *)a6
+- (_ANSTISPInferencePostprocessorV1)initWithInferenceInputDescriptors:(id)descriptors inferenceOutputDescriptors:(id)outputDescriptors processedOutputDescriptors:(id)processedOutputDescriptors error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  descriptorsCopy = descriptors;
+  outputDescriptorsCopy = outputDescriptors;
+  processedOutputDescriptorsCopy = processedOutputDescriptors;
   result = objc_msgSend_doesNotRecognizeSelector_(self, v13, a2);
   __break(1u);
   return result;
 }
 
-- (_ANSTISPInferencePostprocessorV1)initWithInferenceDescriptor:(id)a3 error:(id *)a4
+- (_ANSTISPInferencePostprocessorV1)initWithInferenceDescriptor:(id)descriptor error:(id *)error
 {
   v66[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v9 = objc_msgSend_configuration(v6, v7, v8);
+  descriptorCopy = descriptor;
+  v9 = objc_msgSend_configuration(descriptorCopy, v7, v8);
   if (objc_msgSend_useE5(v9, v10, v11))
   {
     v12 = 1278226536;
@@ -42,50 +42,50 @@
     v12 = 1278226488;
   }
 
-  v15 = objc_msgSend_inputImageDescriptor(v6, v13, v14);
+  v15 = objc_msgSend_inputImageDescriptor(descriptorCopy, v13, v14);
   v66[0] = v15;
   v17 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v16, v66, 1);
-  v20 = objc_msgSend_outputDescriptors(v6, v18, v19);
+  v20 = objc_msgSend_outputDescriptors(descriptorCopy, v18, v19);
   v21 = objc_opt_class();
-  v23 = objc_msgSend__semanticSegmentationMaskDescriptorsForInferenceDescriptor_maskPixelFormatType_(v21, v22, v6, v12);
+  v23 = objc_msgSend__semanticSegmentationMaskDescriptorsForInferenceDescriptor_maskPixelFormatType_(v21, v22, descriptorCopy, v12);
   v65.receiver = self;
   v65.super_class = _ANSTISPInferencePostprocessorV1;
-  v24 = [(ANSTISPInferencePostprocessor *)&v65 initWithInferenceInputDescriptors:v17 inferenceOutputDescriptors:v20 processedOutputDescriptors:v23 error:a4];
+  v24 = [(ANSTISPInferencePostprocessor *)&v65 initWithInferenceInputDescriptors:v17 inferenceOutputDescriptors:v20 processedOutputDescriptors:v23 error:error];
 
   if (!v24)
   {
     goto LABEL_7;
   }
 
-  v27 = objc_msgSend_configuration(v6, v25, v26);
+  v27 = objc_msgSend_configuration(descriptorCopy, v25, v26);
   v30 = objc_msgSend_copy(v27, v28, v29);
   configuration = v24->_configuration;
   v24->_configuration = v30;
 
-  v34 = objc_msgSend_inputImageDescriptor(v6, v32, v33);
+  v34 = objc_msgSend_inputImageDescriptor(descriptorCopy, v32, v33);
   v37 = objc_msgSend_name(v34, v35, v36);
   inferenceInputImageDescriptorName = v24->_inferenceInputImageDescriptorName;
   v24->_inferenceInputImageDescriptorName = v37;
 
-  v41 = objc_msgSend_inputImageDescriptor(v6, v39, v40);
+  v41 = objc_msgSend_inputImageDescriptor(descriptorCopy, v39, v40);
   v24->_inferenceInputImageWidth = objc_msgSend_width(v41, v42, v43);
 
-  v46 = objc_msgSend_inputImageDescriptor(v6, v44, v45);
+  v46 = objc_msgSend_inputImageDescriptor(descriptorCopy, v44, v45);
   v24->_inferenceInputImageHeight = objc_msgSend_height(v46, v47, v48);
 
-  v51 = objc_msgSend_outputDescriptors(v6, v49, v50);
+  v51 = objc_msgSend_outputDescriptors(descriptorCopy, v49, v50);
   v52 = NSStringFromSelector(sel_name);
   v54 = objc_msgSend_valueForKey_(v51, v53, v52);
   inferenceOutputTensorDescriptorNames = v24->_inferenceOutputTensorDescriptorNames;
   v24->_inferenceOutputTensorDescriptorNames = v54;
 
-  if (!objc_msgSend__initializeRTCVWithError_(v24, v56, a4))
+  if (!objc_msgSend__initializeRTCVWithError_(v24, v56, error))
   {
     goto LABEL_8;
   }
 
-  v59 = objc_msgSend_outputDescriptors(v6, v57, v58);
-  v61 = objc_msgSend_prewarmBmBuffersForANSTOutputDescriptors_error_(v24, v60, v59, a4);
+  v59 = objc_msgSend_outputDescriptors(descriptorCopy, v57, v58);
+  v61 = objc_msgSend_prewarmBmBuffersForANSTOutputDescriptors_error_(v24, v60, v59, error);
 
   if (v61)
   {
@@ -111,7 +111,7 @@ LABEL_8:
   [(ANSTISPInferencePostprocessor *)&v3 dealloc];
 }
 
-- (BOOL)_initializeRTCVWithError:(id *)a3
+- (BOOL)_initializeRTCVWithError:(id *)error
 {
   v23[2] = *MEMORY[0x277D85DE8];
   v21 = 0;
@@ -129,7 +129,7 @@ LABEL_8:
   if (v5 || (v5 = AcANSTGetParams(self->_det, self->_detState.data, &v17, &self->_detParams), v5) || (v5 = AcANSTUseLowThresholds(self->_det), v5) || (v5 = AcANSTSetRunSaliency(self->_det, 1), v5) || (v5 = AcANSTSetRunSaliencyObjectDetection(self->_det, 1), v5) || (det = self->_det, v8 = 1, v5 = AcANSTSetRunViSeg(det), v5))
   {
 LABEL_8:
-    if (a3)
+    if (error)
     {
       v9 = MEMORY[0x277CCA9B8];
       v10 = *MEMORY[0x277CCA068];
@@ -139,7 +139,7 @@ LABEL_8:
       v11 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v6, v5, v17, v18, v19, v20);
       v23[1] = v11;
       v13 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v12, v23, v22, 2);
-      *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v9, v14, @"ANSTErrorDomain", 3, v13);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v9, v14, @"ANSTErrorDomain", 3, v13);
     }
 
     v8 = 0;
@@ -149,7 +149,7 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)_destroyRTCVWithError:(id *)a3
+- (BOOL)_destroyRTCVWithError:(id *)error
 {
   det = self->_det;
   if (det)
@@ -161,37 +161,37 @@ LABEL_8:
   return 1;
 }
 
-- (BOOL)_getInputImageAcOrientation:(int *)a3 withError:(id *)a4
+- (BOOL)_getInputImageAcOrientation:(int *)orientation withError:(id *)error
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v8 = objc_msgSend_inputPixelBufferForDescriptorNamed_(self, a2, self->_inferenceInputImageDescriptorName);
   if (v8)
   {
     v9 = objc_opt_class();
-    LOBYTE(a4) = objc_msgSend_getInputImageAcOrientation_fromPixelBuffer_withError_(v9, v10, a3, v8, a4);
+    LOBYTE(error) = objc_msgSend_getInputImageAcOrientation_fromPixelBuffer_withError_(v9, v10, orientation, v8, error);
   }
 
-  else if (a4)
+  else if (error)
   {
     v11 = MEMORY[0x277CCA9B8];
     inferenceInputImageDescriptorName = self->_inferenceInputImageDescriptorName;
     v13 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v7, @"Missing input pixel buffer for descriptor named: %@", inferenceInputImageDescriptorName, *MEMORY[0x277CCA068]);
     v20[0] = v13;
     v15 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v14, v20, &v19, 1);
-    *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v11, v16, @"ANSTErrorDomain", 15, v15);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v11, v16, @"ANSTErrorDomain", 15, v15);
 
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
   }
 
   v17 = *MEMORY[0x277D85DE8];
-  return a4;
+  return error;
 }
 
-- (BOOL)_populateAcANSTNetOutput:(int)a3 intoSegmanticSegmentationMask:(id)a4 withError:(id *)a5
+- (BOOL)_populateAcANSTNetOutput:(int)output intoSegmanticSegmentationMask:(id)mask withError:(id *)error
 {
   v79[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v10 = objc_msgSend_objectAtIndex_(self->_inferenceOutputTensorDescriptorNames, v9, a3);
+  maskCopy = mask;
+  v10 = objc_msgSend_objectAtIndex_(self->_inferenceOutputTensorDescriptorNames, v9, output);
   v12 = objc_msgSend_inputTensorDataForDescriptorNamed_(self, v11, v10);
   v15 = v12;
   if (v12)
@@ -257,7 +257,7 @@ LABEL_21:
           v48 = 1278226488;
         }
 
-        v49 = objc_msgSend_pixelBuffer(v8, v46, v47);
+        v49 = objc_msgSend_pixelBuffer(maskCopy, v46, v47);
         if (v41 == CVPixelBufferGetHeight(v49) && v43 == CVPixelBufferGetWidth(v49) && v48 == CVPixelBufferGetPixelFormatType(v49))
         {
           if (!CVPixelBufferLockBaseAddress(v49, 0))
@@ -272,12 +272,12 @@ LABEL_21:
             v68[6] = v49;
             v68[7] = v41;
             v68[8] = v43;
-            LOBYTE(a5) = objc_msgSend_performDataAccessWithOptions_usingBlock_error_(v15, v52, 0, v68, a5);
+            LOBYTE(error) = objc_msgSend_performDataAccessWithOptions_usingBlock_error_(v15, v52, 0, v68, error);
             CVPixelBufferUnlockBaseAddress(v49, 0);
             goto LABEL_36;
           }
 
-          if (a5)
+          if (error)
           {
             v53 = MEMORY[0x277CCA9B8];
             v70 = *MEMORY[0x277CCA068];
@@ -292,7 +292,7 @@ LABEL_36:
           goto LABEL_37;
         }
 
-        if (!a5)
+        if (!error)
         {
           goto LABEL_36;
         }
@@ -309,7 +309,7 @@ LABEL_36:
       else
       {
 LABEL_30:
-        if (!a5)
+        if (!error)
         {
           goto LABEL_36;
         }
@@ -323,19 +323,19 @@ LABEL_30:
         objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v60, &v75, &v74, 1);
       }
       v64 = ;
-      *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v55, v65, @"ANSTErrorDomain", 11, v64);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v55, v65, @"ANSTErrorDomain", 11, v64);
 
       goto LABEL_35;
     }
 
-    if (a5)
+    if (error)
     {
       v37 = MEMORY[0x277CCA9B8];
       v76 = *MEMORY[0x277CCA068];
       v35 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v26, @"Invalid tensor data type for descriptor named: %@", v10);
       v77 = v35;
       v39 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v38, &v77, &v76, 1);
-      *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v37, v40, @"ANSTErrorDomain", 11, v39);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v37, v40, @"ANSTErrorDomain", 11, v39);
 
       goto LABEL_19;
     }
@@ -343,7 +343,7 @@ LABEL_30:
     goto LABEL_36;
   }
 
-  if (a5)
+  if (error)
   {
     v33 = MEMORY[0x277CCA9B8];
     v78 = *MEMORY[0x277CCA068];
@@ -351,26 +351,26 @@ LABEL_30:
     v79[0] = v16;
     v35 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v34, v79, &v78, 1);
     objc_msgSend_errorWithDomain_code_userInfo_(v33, v36, @"ANSTErrorDomain", 15, v35);
-    *a5 = LABEL_16:;
+    *error = LABEL_16:;
 LABEL_19:
 
 LABEL_35:
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_36;
   }
 
 LABEL_37:
 
   v66 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
-- (BOOL)processWithError:(id *)a3
+- (BOOL)processWithError:(id *)error
 {
   v82[3] = *MEMORY[0x277D85DE8];
   v76 = 0u;
   memset(v77, 0, sizeof(v77));
-  objc_msgSend_originalImageSize(self, a2, a3);
+  objc_msgSend_originalImageSize(self, a2, error);
   if (v8 == *MEMORY[0x277CBF3A8] && v7 == *(MEMORY[0x277CBF3A8] + 8))
   {
     inferenceInputImageWidth = self->_inferenceInputImageWidth;
@@ -391,7 +391,7 @@ LABEL_37:
 
   *(&v76 + 4) = __PAIR64__(inferenceInputImageWidth, v14);
   HIDWORD(v76) = inferenceInputImageHeight;
-  InputImageAcOrientation_withError = objc_msgSend__getInputImageAcOrientation_withError_(self, v5, v77, a3);
+  InputImageAcOrientation_withError = objc_msgSend__getInputImageAcOrientation_withError_(self, v5, v77, error);
   if (!InputImageAcOrientation_withError)
   {
     goto LABEL_31;
@@ -429,7 +429,7 @@ LABEL_37:
     v28 = *(v73 + 6);
     if (v28 || v67[5])
     {
-      if (a3)
+      if (error)
       {
         v29 = MEMORY[0x277CCA9B8];
         v30 = *MEMORY[0x277CCA068];
@@ -442,7 +442,7 @@ LABEL_37:
         v82[1] = v31;
         v82[2] = v32;
         v34 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v33, v82, v81, 3);
-        *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v29, v35, @"ANSTErrorDomain", 18, v34);
+        *error = objc_msgSend_errorWithDomain_code_userInfo_(v29, v35, @"ANSTErrorDomain", 18, v34);
       }
 
       _Block_object_dispose(&v66, 8);
@@ -498,7 +498,7 @@ LABEL_30:
             {
               v49 = objc_msgSend_objectForKeyedSubscript_(v37, v47, v42);
               v52 = objc_msgSend_intValue(v49, v50, v51);
-              v54 = objc_msgSend__populateAcANSTNetOutput_intoSegmanticSegmentationMask_withError_(self, v53, v52, v48, a3);
+              v54 = objc_msgSend__populateAcANSTNetOutput_intoSegmanticSegmentationMask_withError_(self, v53, v52, v48, error);
 
               if (!v54)
               {
@@ -526,13 +526,13 @@ LABEL_31:
   return InputImageAcOrientation_withError;
 }
 
-- (BOOL)resetWithError:(id *)a3
+- (BOOL)resetWithError:(id *)error
 {
-  v5 = objc_msgSend__destroyRTCVWithError_(self, a2, a3);
+  v5 = objc_msgSend__destroyRTCVWithError_(self, a2, error);
   if (v5)
   {
 
-    LOBYTE(v5) = objc_msgSend__initializeRTCVWithError_(self, v6, a3);
+    LOBYTE(v5) = objc_msgSend__initializeRTCVWithError_(self, v6, error);
   }
 
   return v5;
@@ -555,13 +555,13 @@ LABEL_31:
   return v7 / 1000.0;
 }
 
-- (id)trackedObjectsOfCategory:(id)a3
+- (id)trackedObjectsOfCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   if (objc_msgSend_isObjectTrackingEnabled(self->_configuration, v5, v6))
   {
     v9 = objc_msgSend_acResult(self, v7, v8);
-    v11 = objc_msgSend_detectedObjectsForCategory_fromAcResult_(ANSTISPAlgorithmResult, v10, v4, v9);
+    v11 = objc_msgSend_detectedObjectsForCategory_fromAcResult_(ANSTISPAlgorithmResult, v10, categoryCopy, v9);
   }
 
   else
@@ -572,12 +572,12 @@ LABEL_31:
   return v11;
 }
 
-- (id)semanticSegmentationMaskDescriptorOfCategory:(id)a3
+- (id)semanticSegmentationMaskDescriptorOfCategory:(id)category
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  categoryCopy = category;
   v5 = objc_opt_class();
-  v7 = objc_msgSend__semanticSegmentationMaskDescriptorNameOfCategory_(v5, v6, v4);
+  v7 = objc_msgSend__semanticSegmentationMaskDescriptorNameOfCategory_(v5, v6, categoryCopy);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -624,27 +624,27 @@ LABEL_11:
   return v14;
 }
 
-+ (id)_semanticSegmentationMaskDescriptorsForInferenceDescriptor:(id)a3 maskPixelFormatType:(unsigned int)a4
++ (id)_semanticSegmentationMaskDescriptorsForInferenceDescriptor:(id)descriptor maskPixelFormatType:(unsigned int)type
 {
   v61[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v8 = objc_msgSend_configuration(v5, v6, v7);
+  descriptorCopy = descriptor;
+  v8 = objc_msgSend_configuration(descriptorCopy, v6, v7);
   isSegmentationEnabled = objc_msgSend_isSegmentationEnabled(v8, v9, v10);
 
   if (isSegmentationEnabled)
   {
-    v14 = objc_msgSend_inputImageDescriptor(v5, v12, v13);
+    v14 = objc_msgSend_inputImageDescriptor(descriptorCopy, v12, v13);
     v17 = objc_msgSend_width(v14, v15, v16);
 
-    v52 = v5;
-    v20 = objc_msgSend_inputImageDescriptor(v5, v18, v19);
+    v52 = descriptorCopy;
+    v20 = objc_msgSend_inputImageDescriptor(descriptorCopy, v18, v19);
     v23 = objc_msgSend_height(v20, v21, v22);
 
     v60 = *MEMORY[0x277CC4DE8];
     v61[0] = MEMORY[0x277CBEC10];
     v25 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v24, v61, &v60, 1);
     v26 = objc_alloc(MEMORY[0x277CBEB18]);
-    v29 = objc_msgSend__semanticCategories(a1, v27, v28);
+    v29 = objc_msgSend__semanticCategories(self, v27, v28);
     v32 = objc_msgSend_count(v29, v30, v31);
     v34 = objc_msgSend_initWithCapacity_(v26, v33, v32);
 
@@ -652,7 +652,7 @@ LABEL_11:
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    obj = objc_msgSend__semanticCategories(a1, v35, v36);
+    obj = objc_msgSend__semanticCategories(self, v35, v36);
     v38 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v37, &v55, v59, 16);
     if (v38)
     {
@@ -669,9 +669,9 @@ LABEL_11:
             objc_enumerationMutation(obj);
           }
 
-          v45 = objc_msgSend__semanticSegmentationMaskDescriptorNameOfCategory_(a1, v39, *(*(&v55 + 1) + 8 * i));
+          v45 = objc_msgSend__semanticSegmentationMaskDescriptorNameOfCategory_(self, v39, *(*(&v55 + 1) + 8 * i));
           v46 = [ANSTPixelBufferDescriptor alloc];
-          v48 = objc_msgSend_initWithName_width_height_pixelFormatType_pixelBufferAttributes_error_(v46, v47, v45, v41, v42, a4, v25, 0);
+          v48 = objc_msgSend_initWithName_width_height_pixelFormatType_pixelBufferAttributes_error_(v46, v47, v45, v41, v42, type, v25, 0);
           objc_msgSend_addObject_(v34, v49, v48);
         }
 
@@ -681,7 +681,7 @@ LABEL_11:
       while (v40);
     }
 
-    v5 = v52;
+    descriptorCopy = v52;
   }
 
   else

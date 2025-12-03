@@ -1,13 +1,13 @@
 @interface SyntheticLongPlist
-- (int)readBandData:(id)a3;
-- (int)readPlist:(id)a3;
+- (int)readBandData:(id)data;
+- (int)readPlist:(id)plist;
 @end
 
 @implementation SyntheticLongPlist
 
-- (int)readBandData:(id)a3
+- (int)readBandData:(id)data
 {
-  v5 = objc_msgSend_valueForKey_(a3, a2, @"Bands", v3);
+  v5 = objc_msgSend_valueForKey_(data, a2, @"Bands", v3);
   if (!v5)
   {
     sub_2958AE794(v93);
@@ -141,10 +141,10 @@ LABEL_26:
   return v84;
 }
 
-- (int)readPlist:(id)a3
+- (int)readPlist:(id)plist
 {
-  v4 = a3;
-  BandData = objc_msgSend_readBandData_(self, v5, v4, v6);
+  plistCopy = plist;
+  BandData = objc_msgSend_readBandData_(self, v5, plistCopy, v6);
   if (BandData)
   {
     sub_2958AE830(BandData, &v76);
@@ -153,37 +153,37 @@ LABEL_26:
   }
 
   v8 = [GainValueArray alloc];
-  v11 = objc_msgSend_objectForKeyedSubscript_(v4, v9, @"ShadowThreshold", v10);
+  v11 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v9, @"ShadowThreshold", v10);
   v14 = objc_msgSend_initWithArray_(v8, v12, v11, v13);
   shadowThreshold = self->shadowThreshold;
   self->shadowThreshold = v14;
 
   v16 = [GainValueArray alloc];
-  v19 = objc_msgSend_objectForKeyedSubscript_(v4, v17, @"BlackFusionBoost", v18);
+  v19 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v17, @"BlackFusionBoost", v18);
   v22 = objc_msgSend_initWithArray_(v16, v20, v19, v21);
   blackFusionBoost = self->blackFusionBoost;
   self->blackFusionBoost = v22;
 
   v24 = [GainValueArray alloc];
-  v27 = objc_msgSend_objectForKeyedSubscript_(v4, v25, @"SigmaFactorR", v26);
+  v27 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v25, @"SigmaFactorR", v26);
   v30 = objc_msgSend_initWithArray_(v24, v28, v27, v29);
   sigmaFactorR = self->sigmaFactorR;
   self->sigmaFactorR = v30;
 
   v32 = [GainValueArray alloc];
-  v35 = objc_msgSend_objectForKeyedSubscript_(v4, v33, @"SigmaFactorG", v34);
+  v35 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v33, @"SigmaFactorG", v34);
   v38 = objc_msgSend_initWithArray_(v32, v36, v35, v37);
   sigmaFactorG = self->sigmaFactorG;
   self->sigmaFactorG = v38;
 
   v40 = [GainValueArray alloc];
-  v43 = objc_msgSend_objectForKeyedSubscript_(v4, v41, @"SigmaFactorB", v42);
+  v43 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v41, @"SigmaFactorB", v42);
   v46 = objc_msgSend_initWithArray_(v40, v44, v43, v45);
   sigmaFactorB = self->sigmaFactorB;
   self->sigmaFactorB = v46;
 
   v48 = [GainValueArray alloc];
-  v51 = objc_msgSend_objectForKeyedSubscript_(v4, v49, @"DecayRate", v50);
+  v51 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v49, @"DecayRate", v50);
   v54 = objc_msgSend_initWithArray_(v48, v52, v51, v53);
   sharpness = self->sharpness;
   self->sharpness = v54;

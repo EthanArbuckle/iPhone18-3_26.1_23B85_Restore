@@ -10,21 +10,21 @@
 {
   v4 = a3;
   v5 = MEMORY[0x277CCAAB0];
-  v6 = [a1 version];
+  version = [self version];
   v15 = 0;
-  v7 = [v5 archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v15];
+  v7 = [v5 archivedDataWithRootObject:version requiringSecureCoding:1 error:&v15];
 
-  v8 = [a1 fileIdentifier];
+  fileIdentifier = [self fileIdentifier];
   v9 = [v4 prepareStatement:{"INSERT INTO provider_files (fileProviderId, itemId, version) VALUES (?, ?, ?)"}];
   if (v9)
   {
-    v10 = [v8 itemID];
-    v11 = [v10 providerDomainID];
-    [v4 bindObject:v11 atIndex:1 inStatement:v9];
+    itemID = [fileIdentifier itemID];
+    providerDomainID = [itemID providerDomainID];
+    [v4 bindObject:providerDomainID atIndex:1 inStatement:v9];
 
-    v12 = [v8 itemID];
-    v13 = [v12 identifier];
-    [v4 bindObject:v13 atIndex:2 inStatement:v9];
+    itemID2 = [fileIdentifier itemID];
+    identifier = [itemID2 identifier];
+    [v4 bindObject:identifier atIndex:2 inStatement:v9];
 
     [v4 bindObject:v7 atIndex:3 inStatement:v9];
   }
@@ -36,21 +36,21 @@
 {
   v6 = a4;
   v7 = MEMORY[0x277CCAAB0];
-  v8 = [a1 version];
+  version = [self version];
   v17 = 0;
-  v9 = [v7 archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v17];
+  v9 = [v7 archivedDataWithRootObject:version requiringSecureCoding:1 error:&v17];
 
-  v10 = [a1 fileIdentifier];
+  fileIdentifier = [self fileIdentifier];
   v11 = [v6 prepareStatement:{"UPDATE provider_files SET fileProviderId=?, itemId=?, version=? WHERE rowid=?"}];
   if (v11)
   {
-    v12 = [v10 itemID];
-    v13 = [v12 providerDomainID];
-    [v6 bindObject:v13 atIndex:1 inStatement:v11];
+    itemID = [fileIdentifier itemID];
+    providerDomainID = [itemID providerDomainID];
+    [v6 bindObject:providerDomainID atIndex:1 inStatement:v11];
 
-    v14 = [v10 itemID];
-    v15 = [v14 identifier];
-    [v6 bindObject:v15 atIndex:2 inStatement:v11];
+    itemID2 = [fileIdentifier itemID];
+    identifier = [itemID2 identifier];
+    [v6 bindObject:identifier atIndex:2 inStatement:v11];
 
     [v6 bindObject:v9 atIndex:3 inStatement:v11];
     [v6 bindUnsignedLongLong:a3 atIndex:4 inStatement:v11];
@@ -63,11 +63,11 @@
 {
   v6 = MEMORY[0x277CDAA90];
   v7 = a4;
-  v8 = [v6 knownFileProviderIdentifiersSoFar];
-  v9 = [v7 newStringFromColumn:1 inStatement:a3 uniqueInStringTable:v8];
+  knownFileProviderIdentifiersSoFar = [v6 knownFileProviderIdentifiersSoFar];
+  v9 = [v7 newStringFromColumn:1 inStatement:a3 uniqueInStringTable:knownFileProviderIdentifiersSoFar];
 
-  v10 = [MEMORY[0x277CDAA90] knownFileProviderIdentifiersSoFar];
-  v11 = [v7 newStringFromColumn:2 inStatement:a3 uniqueInStringTable:v10];
+  knownFileProviderIdentifiersSoFar2 = [MEMORY[0x277CDAA90] knownFileProviderIdentifiersSoFar];
+  v11 = [v7 newStringFromColumn:2 inStatement:a3 uniqueInStringTable:knownFileProviderIdentifiersSoFar2];
 
   v12 = [v7 newDataFromColumn:3 inStatement:a3 copyBytes:0];
   v21 = 0;
@@ -85,7 +85,7 @@
   v16 = objc_alloc(MEMORY[0x277CDAA90]);
   v17 = [objc_alloc(MEMORY[0x277CC6400]) initWithProviderDomainID:v9 itemIdentifier:v11];
   v18 = [v16 initWithItemID:v17];
-  v19 = [a1 initWithFileIdentifier:v18 version:v13];
+  v19 = [self initWithFileIdentifier:v18 version:v13];
 
   return v19;
 }

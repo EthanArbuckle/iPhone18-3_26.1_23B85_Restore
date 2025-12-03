@@ -1,21 +1,21 @@
 @interface DeploymentMetricHandler
-- (BOOL)appendBssAnalyticsToMetric:(id)a3 bssMo:(id)a4 maxAgeInDays:(unint64_t)a5;
-- (BOOL)appendNetworkAnalyticsToMetric:(id)a3 ssid:(id)a4 deploymentUuid:(id)a5 maxAgeInDays:(unint64_t)a6;
-- (BOOL)metricNeedsSubmission:(id)a3 deploymentUuid:(id)a4 interval:(unint64_t)a5;
-- (DeploymentMetricHandler)initWithAnalyticsStore:(id)a3;
-- (id)leavesSummary:(id)a3 bssid:(id)a4 maxAgeInDays:(unint64_t)a5;
-- (id)roamsSummary:(id)a3 bssid:(id)a4 maxAgeInDays:(unint64_t)a5;
-- (void)appendJoinsSummaryToMetric:(id)a3 ssid:(id)a4 maxAgeInDays:(unint64_t)a5;
-- (void)networkDeploymentMetricCheckAndSubmit:(id)a3 interval:(unint64_t)a4;
-- (void)submitBssAnalyticsMetrics:(id)a3 deploymentUuid:(id)a4 stitchIndex:(int64_t)a5;
+- (BOOL)appendBssAnalyticsToMetric:(id)metric bssMo:(id)mo maxAgeInDays:(unint64_t)days;
+- (BOOL)appendNetworkAnalyticsToMetric:(id)metric ssid:(id)ssid deploymentUuid:(id)uuid maxAgeInDays:(unint64_t)days;
+- (BOOL)metricNeedsSubmission:(id)submission deploymentUuid:(id)uuid interval:(unint64_t)interval;
+- (DeploymentMetricHandler)initWithAnalyticsStore:(id)store;
+- (id)leavesSummary:(id)summary bssid:(id)bssid maxAgeInDays:(unint64_t)days;
+- (id)roamsSummary:(id)summary bssid:(id)bssid maxAgeInDays:(unint64_t)days;
+- (void)appendJoinsSummaryToMetric:(id)metric ssid:(id)ssid maxAgeInDays:(unint64_t)days;
+- (void)networkDeploymentMetricCheckAndSubmit:(id)submit interval:(unint64_t)interval;
+- (void)submitBssAnalyticsMetrics:(id)metrics deploymentUuid:(id)uuid stitchIndex:(int64_t)index;
 @end
 
 @implementation DeploymentMetricHandler
 
-- (DeploymentMetricHandler)initWithAnalyticsStore:(id)a3
+- (DeploymentMetricHandler)initWithAnalyticsStore:(id)store
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = DeploymentMetricHandler;
   v6 = [(DeploymentMetricHandler *)&v12 init];
@@ -27,7 +27,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  objc_storeStrong(&v6->_storeMOHandler, a3);
+  objc_storeStrong(&v6->_storeMOHandler, store);
   if (!v7->_storeMOHandler)
   {
     v9 = WALogCategoryDeviceStoreHandle();
@@ -51,13 +51,13 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)metricNeedsSubmission:(id)a3 deploymentUuid:(id)a4 interval:(unint64_t)a5
+- (BOOL)metricNeedsSubmission:(id)submission deploymentUuid:(id)uuid interval:(unint64_t)interval
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  submissionCopy = submission;
+  uuidCopy = uuid;
+  v10 = uuidCopy;
+  if (!submissionCopy)
   {
     v34 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -77,7 +77,7 @@ LABEL_34:
     goto LABEL_28;
   }
 
-  if (!v9)
+  if (!uuidCopy)
   {
     v34 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -94,8 +94,8 @@ LABEL_34:
   }
 
   v11 = objc_autoreleasePoolPush();
-  v12 = [MEMORY[0x1E695DF00] date];
-  v13 = [NetworkMO networkManagedObjectPropertyValue:v8 forKey:@"DeploymentMetricInfo"];
+  date = [MEMORY[0x1E695DF00] date];
+  v13 = [NetworkMO networkManagedObjectPropertyValue:submissionCopy forKey:@"DeploymentMetricInfo"];
   v14 = v13;
   if (v13)
   {
@@ -147,10 +147,10 @@ LABEL_11:
   }
 
 LABEL_13:
-  v22 = [v8 ssid];
-  v23 = [(DeploymentMetricHandler *)self storeMOHandler];
-  v24 = [v23 managedObjectContext];
-  v17 = [WADeviceAnalyticsJoinRecord earliestJoinDate:v22 moc:v24];
+  ssid = [submissionCopy ssid];
+  storeMOHandler = [(DeploymentMetricHandler *)self storeMOHandler];
+  managedObjectContext = [storeMOHandler managedObjectContext];
+  v17 = [WADeviceAnalyticsJoinRecord earliestJoinDate:ssid moc:managedObjectContext];
 
   v25 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -181,11 +181,11 @@ LABEL_13:
   }
 
 LABEL_16:
-  [v12 timeIntervalSinceDate:v17];
+  [date timeIntervalSinceDate:v17];
   v27 = (v26 / 86400.0);
-  if (a5)
+  if (interval)
   {
-    v28 = v27 <= a5;
+    v28 = v27 <= interval;
   }
 
   else
@@ -214,7 +214,7 @@ LABEL_16:
     v37 = 2048;
     v38 = v27;
     v39 = 2048;
-    v40 = a5;
+    intervalCopy = interval;
     _os_log_impl(&dword_1C8460000, v30, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Needs submisssion: %s (Previous metric from %@, diffDays:%ld interval:%ld) ", v36, 0x3Au);
   }
 
@@ -226,29 +226,29 @@ LABEL_28:
   return v29;
 }
 
-- (void)networkDeploymentMetricCheckAndSubmit:(id)a3 interval:(unint64_t)a4
+- (void)networkDeploymentMetricCheckAndSubmit:(id)submit interval:(unint64_t)interval
 {
   v55 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  submitCopy = submit;
+  if (submitCopy)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = [v6 apid];
-    v9 = v8;
-    if (!v8 || ([v8 UUIDString], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10) || (objc_msgSend(v9, "UUIDString"), (v11 = objc_claimAutoreleasedReturnValue()) == 0))
+    apid = [submitCopy apid];
+    v9 = apid;
+    if (!apid || ([apid UUIDString], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10) || (objc_msgSend(v9, "UUIDString"), (v11 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v15 = WALogCategoryDeviceStoreHandle();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+      dictionary = WALogCategoryDeviceStoreHandle();
+      if (os_log_type_enabled(dictionary, OS_LOG_TYPE_DEBUG))
       {
-        v30 = [v6 network];
-        v31 = [v30 ssid];
+        network = [submitCopy network];
+        ssid = [network ssid];
         *buf = 136446722;
         v46 = "[DeploymentMetricHandler networkDeploymentMetricCheckAndSubmit:interval:]";
         v47 = 1024;
         v48 = 168;
         v49 = 2112;
-        v50 = v31;
-        _os_log_impl(&dword_1C8460000, v15, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Deployment uuid not set for %@", buf, 0x1Cu);
+        v50 = ssid;
+        _os_log_impl(&dword_1C8460000, dictionary, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Deployment uuid not set for %@", buf, 0x1Cu);
       }
 
       v12 = 0;
@@ -256,8 +256,8 @@ LABEL_28:
     }
 
     v12 = v11;
-    v13 = [v6 network];
-    v14 = [(DeploymentMetricHandler *)self metricNeedsSubmission:v13 deploymentUuid:v12 interval:a4];
+    network2 = [submitCopy network];
+    v14 = [(DeploymentMetricHandler *)self metricNeedsSubmission:network2 deploymentUuid:v12 interval:interval];
 
     if (!v14)
     {
@@ -267,10 +267,10 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v15 = [MEMORY[0x1E695DF90] dictionary];
-    v16 = [v6 network];
-    v17 = [v16 ssid];
-    v18 = [(DeploymentMetricHandler *)self appendNetworkAnalyticsToMetric:v15 ssid:v17 deploymentUuid:v12 maxAgeInDays:14];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    network3 = [submitCopy network];
+    ssid2 = [network3 ssid];
+    v18 = [(DeploymentMetricHandler *)self appendNetworkAnalyticsToMetric:dictionary ssid:ssid2 deploymentUuid:v12 maxAgeInDays:14];
 
     if (!v18)
     {
@@ -282,9 +282,9 @@ LABEL_13:
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v20 = llround(v19);
     v21 = [MEMORY[0x1E696AD98] numberWithInteger:v20];
-    [v15 setObject:v21 forKeyedSubscript:@"MetricStitchIndex"];
+    [dictionary setObject:v21 forKeyedSubscript:@"MetricStitchIndex"];
 
-    v15 = v15;
+    dictionary = dictionary;
     v22 = AnalyticsSendEventLazy();
     v23 = WALogCategoryDeviceStoreHandle();
     v24 = v23;
@@ -292,18 +292,18 @@ LABEL_13:
     {
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
       {
-        v25 = [v6 network];
-        v26 = [v25 ssid];
+        network4 = [submitCopy network];
+        ssid3 = [network4 ssid];
         *buf = 136447234;
         v46 = "[DeploymentMetricHandler networkDeploymentMetricCheckAndSubmit:interval:]";
         v47 = 1024;
         v48 = 189;
         v49 = 2112;
-        v50 = v26;
+        v50 = ssid3;
         v51 = 2112;
         v52 = v12;
         v53 = 2048;
-        v54 = [v15 count];
+        v54 = [dictionary count];
         v27 = "%{public}s::%d:Sending DeploymentMetric for ssid: %@ (deploymentUuid: %@) with fieldCount: %lu";
         v28 = v24;
         v29 = OS_LOG_TYPE_DEBUG;
@@ -314,30 +314,30 @@ LABEL_18:
 
     else if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v25 = [v6 network];
-      v26 = [v25 ssid];
+      network4 = [submitCopy network];
+      ssid3 = [network4 ssid];
       *buf = 136447234;
       v46 = "[DeploymentMetricHandler networkDeploymentMetricCheckAndSubmit:interval:]";
       v47 = 1024;
       v48 = 187;
       v49 = 2112;
-      v50 = v26;
+      v50 = ssid3;
       v51 = 2112;
       v52 = v12;
       v53 = 2048;
-      v54 = [v15 count];
+      v54 = [dictionary count];
       v27 = "%{public}s::%d:Failed sending DeploymentMetric for ssid: %@ (deploymentUuid: %@) with fieldCount: %lu";
       v28 = v24;
       v29 = OS_LOG_TYPE_ERROR;
       goto LABEL_18;
     }
 
-    v33 = [v6 network];
-    v34 = [v33 ssid];
-    [(DeploymentMetricHandler *)self submitBssAnalyticsMetrics:v34 deploymentUuid:v12 stitchIndex:v20];
+    network5 = [submitCopy network];
+    ssid4 = [network5 ssid];
+    [(DeploymentMetricHandler *)self submitBssAnalyticsMetrics:ssid4 deploymentUuid:v12 stitchIndex:v20];
 
-    v35 = [MEMORY[0x1E695DF00] date];
-    v36 = [MEMORY[0x1E695DF90] dictionary];
+    date = [MEMORY[0x1E695DF00] date];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v37 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
     {
@@ -346,31 +346,31 @@ LABEL_18:
       v47 = 1024;
       v48 = 197;
       v49 = 2112;
-      v50 = v35;
+      v50 = date;
       _os_log_impl(&dword_1C8460000, v37, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Metric updated date: %@", buf, 0x1Cu);
     }
 
-    v44 = v35;
-    [v36 setObject:v35 forKey:@"DeploymentMetricLastSubmissionDate"];
-    v38 = [v6 network];
-    v39 = [NetworkMO networkManagedObjectPropertyValue:v38 forKey:@"DeploymentMetricInfo"];
+    v44 = date;
+    [dictionary2 setObject:date forKey:@"DeploymentMetricLastSubmissionDate"];
+    network6 = [submitCopy network];
+    v39 = [NetworkMO networkManagedObjectPropertyValue:network6 forKey:@"DeploymentMetricInfo"];
 
     if (v39)
     {
       [v39 removeObjectForKey:v12];
-      [v39 setObject:v36 forKey:v12];
-      v40 = v39;
+      [v39 setObject:dictionary2 forKey:v12];
+      dictionary3 = v39;
     }
 
     else
     {
-      v40 = [MEMORY[0x1E695DF90] dictionary];
-      [v40 setObject:v36 forKey:v12];
+      dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+      [dictionary3 setObject:dictionary2 forKey:v12];
     }
 
-    v41 = [(DeploymentMetricHandler *)self storeMOHandler];
-    v42 = [v6 network];
-    [v41 setNetworkManagedObjectPropertyValueForKeyWithoutSave:v42 forKey:@"DeploymentMetricInfo" withValue:v40];
+    storeMOHandler = [(DeploymentMetricHandler *)self storeMOHandler];
+    network7 = [submitCopy network];
+    [storeMOHandler setNetworkManagedObjectPropertyValueForKeyWithoutSave:network7 forKey:@"DeploymentMetricInfo" withValue:dictionary3];
 
     goto LABEL_13;
   }
@@ -389,13 +389,13 @@ LABEL_15:
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (void)submitBssAnalyticsMetrics:(id)a3 deploymentUuid:(id)a4 stitchIndex:(int64_t)a5
+- (void)submitBssAnalyticsMetrics:(id)metrics deploymentUuid:(id)uuid stitchIndex:(int64_t)index
 {
   v78 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  metricsCopy = metrics;
+  uuidCopy = uuid;
   v9 = objc_autoreleasePoolPush();
-  if (!v7)
+  if (!metricsCopy)
   {
     v14 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -416,9 +416,9 @@ LABEL_44:
     goto LABEL_40;
   }
 
-  v10 = [(DeploymentMetricHandler *)self storeMOHandler];
-  v11 = [v10 managedObjectContext];
-  v12 = [BSSMO copyBssidsForDeployment:v7 deploymentUuid:v8 moc:v11];
+  storeMOHandler = [(DeploymentMetricHandler *)self storeMOHandler];
+  managedObjectContext = [storeMOHandler managedObjectContext];
+  v12 = [BSSMO copyBssidsForDeployment:metricsCopy deploymentUuid:uuidCopy moc:managedObjectContext];
 
   if (!v12)
   {
@@ -455,10 +455,10 @@ LABEL_44:
   if (v59)
   {
     v57 = v9;
-    v58 = v7;
-    v60 = v8;
+    v58 = metricsCopy;
+    v60 = uuidCopy;
     v13 = 0;
-    v64 = self;
+    selfCopy = self;
     v65 = v12;
     while (1)
     {
@@ -473,19 +473,19 @@ LABEL_38:
       if (++v13 == v59)
       {
         v9 = v57;
-        v7 = v58;
-        v8 = v60;
+        metricsCopy = v58;
+        uuidCopy = v60;
         goto LABEL_40;
       }
     }
 
-    v15 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
-    v16 = [v15 bssForBssid:v14 prefetchProperties:&unk_1F483E590 withError:0];
+    persistentContainer = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+    v16 = [persistentContainer bssForBssid:v14 prefetchProperties:&unk_1F483E590 withError:0];
 
     if (!v16)
     {
       v55 = WALogCategoryDeviceStoreHandle();
-      v7 = v58;
+      metricsCopy = v58;
       if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
       {
         *buf = 136446978;
@@ -499,38 +499,38 @@ LABEL_38:
         _os_log_impl(&dword_1C8460000, v55, OS_LOG_TYPE_ERROR, "%{public}s::%d:bssMo nil for %@[%@]", buf, 0x26u);
       }
 
-      v8 = v60;
+      uuidCopy = v60;
       v9 = v57;
       goto LABEL_44;
     }
 
-    v17 = [v16 bssid];
-    v18 = [v12 indexOfObject:v17];
+    bssid = [v16 bssid];
+    v18 = [v12 indexOfObject:bssid];
 
     v19 = [BSSMO bssManagedObjectPropertyValue:v16 forKey:@"NeighborInfo"];
     v20 = objc_autoreleasePoolPush();
-    v21 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v61 = v14;
-    if (![(DeploymentMetricHandler *)self appendBssAnalyticsToMetric:v21 bssMo:v16 maxAgeInDays:14]|| v18 == 0x7FFFFFFFFFFFFFFFLL)
+    if (![(DeploymentMetricHandler *)self appendBssAnalyticsToMetric:dictionary bssMo:v16 maxAgeInDays:14]|| v18 == 0x7FFFFFFFFFFFFFFFLL)
     {
 
       objc_autoreleasePoolPop(v20);
 LABEL_37:
 
-      self = v64;
+      self = selfCopy;
       v12 = v65;
       v14 = v61;
       goto LABEL_38;
     }
 
-    v22 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
-    [v21 setObject:v22 forKeyedSubscript:@"MetricStitchIndex"];
+    v22 = [MEMORY[0x1E696AD98] numberWithInteger:index];
+    [dictionary setObject:v22 forKeyedSubscript:@"MetricStitchIndex"];
 
     if (v19)
     {
       v23 = [v19 count];
       v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v23];
-      [v21 setObject:v24 forKeyedSubscript:@"NeighborsCount"];
+      [dictionary setObject:v24 forKeyedSubscript:@"NeighborsCount"];
     }
 
     else
@@ -540,9 +540,9 @@ LABEL_37:
 
     v62 = v18;
     v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v18 + 1];
-    [v21 setObject:v25 forKeyedSubscript:@"BssIndex"];
+    [dictionary setObject:v25 forKeyedSubscript:@"BssIndex"];
 
-    v26 = v21;
+    v26 = dictionary;
     v27 = AnalyticsSendEventLazy();
     v28 = WALogCategoryDeviceStoreHandle();
     v29 = v28;
@@ -608,7 +608,7 @@ LABEL_20:
           v44 = WALogCategoryDeviceStoreHandle();
           if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
           {
-            v52 = [v16 bssid];
+            bssid2 = [v16 bssid];
             *buf = 136446978;
             v67 = "[DeploymentMetricHandler submitBssAnalyticsMetrics:deploymentUuid:stitchIndex:]";
             v68 = 1024;
@@ -616,36 +616,36 @@ LABEL_20:
             v70 = 2048;
             v71 = v35;
             v72 = 2112;
-            v73 = v52;
+            v73 = bssid2;
             _os_log_impl(&dword_1C8460000, v44, OS_LOG_TYPE_ERROR, "%{public}s::%d:No neighbor data at index %lu for bssid:%@", buf, 0x26u);
           }
 
           goto LABEL_36;
         }
 
-        v38 = [MEMORY[0x1E695DF90] dictionary];
-        [v38 addEntriesFromDictionary:v37];
+        dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+        [dictionary2 addEntriesFromDictionary:v37];
         v39 = [v37 valueForKey:@"NeighborBssid"];
         v40 = [v65 indexOfObject:v39];
 
         if (v40 != 0x7FFFFFFFFFFFFFFFLL)
         {
           v41 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v40 + 1];
-          [v38 setObject:v41 forKeyedSubscript:@"NeighborBssIndex"];
+          [dictionary2 setObject:v41 forKeyedSubscript:@"NeighborBssIndex"];
         }
 
-        if (![(DeploymentMetricHandler *)v64 isInternalInstall])
+        if (![(DeploymentMetricHandler *)selfCopy isInternalInstall])
         {
-          [v38 removeObjectForKey:@"NeighborBssid"];
+          [dictionary2 removeObjectForKey:@"NeighborBssid"];
         }
 
-        v42 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
-        [v38 setObject:v42 forKeyedSubscript:@"MetricStitchIndex"];
+        v42 = [MEMORY[0x1E696AD98] numberWithInteger:index];
+        [dictionary2 setObject:v42 forKeyedSubscript:@"MetricStitchIndex"];
 
         v43 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v62 + 1];
-        [v38 setObject:v43 forKeyedSubscript:@"BssIndex"];
+        [dictionary2 setObject:v43 forKeyedSubscript:@"BssIndex"];
 
-        v44 = v38;
+        v44 = dictionary2;
         LODWORD(v43) = AnalyticsSendEventLazy();
         v45 = WALogCategoryDeviceStoreHandle();
         v46 = v45;
@@ -716,13 +716,13 @@ LABEL_40:
   v54 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)appendNetworkAnalyticsToMetric:(id)a3 ssid:(id)a4 deploymentUuid:(id)a5 maxAgeInDays:(unint64_t)a6
+- (BOOL)appendNetworkAnalyticsToMetric:(id)metric ssid:(id)ssid deploymentUuid:(id)uuid maxAgeInDays:(unint64_t)days
 {
   v56 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v11)
+  metricCopy = metric;
+  ssidCopy = ssid;
+  uuidCopy = uuid;
+  if (!ssidCopy)
   {
     v43 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -742,7 +742,7 @@ LABEL_18:
     goto LABEL_12;
   }
 
-  if (!v10)
+  if (!metricCopy)
   {
     v43 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -759,77 +759,77 @@ LABEL_18:
   }
 
   v13 = objc_autoreleasePoolPush();
-  v14 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
-  v15 = [v14 networkForSSID:v11 prefetchProperties:&unk_1F483E5A8 withError:0];
+  persistentContainer = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+  v15 = [persistentContainer networkForSSID:ssidCopy prefetchProperties:&unk_1F483E5A8 withError:0];
 
   v16 = v15 != 0;
   if (v15)
   {
-    v47 = a6;
+    daysCopy = days;
     v48 = v13;
-    v49 = v12;
-    v17 = [(DeploymentMetricHandler *)self storeMOHandler];
-    v18 = [v17 managedObjectContext];
-    v46 = [RoamMO dwellTimeInBand:v11 bandIs24:1 bssid:0 maxAgeInDays:0 moc:v18];
+    v49 = uuidCopy;
+    storeMOHandler = [(DeploymentMetricHandler *)self storeMOHandler];
+    managedObjectContext = [storeMOHandler managedObjectContext];
+    v46 = [RoamMO dwellTimeInBand:ssidCopy bandIs24:1 bssid:0 maxAgeInDays:0 moc:managedObjectContext];
 
-    v19 = [(DeploymentMetricHandler *)self storeMOHandler];
-    v20 = [v19 managedObjectContext];
-    v21 = [RoamMO dwellTimeInBand:v11 bandIs24:0 bssid:0 maxAgeInDays:0 moc:v20];
+    storeMOHandler2 = [(DeploymentMetricHandler *)self storeMOHandler];
+    managedObjectContext2 = [storeMOHandler2 managedObjectContext];
+    v21 = [RoamMO dwellTimeInBand:ssidCopy bandIs24:0 bssid:0 maxAgeInDays:0 moc:managedObjectContext2];
 
-    v22 = [(DeploymentMetricHandler *)self storeMOHandler];
-    v23 = [v22 managedObjectContext];
-    v24 = [BSSMO numBssInBand:v11 bandIs24:1 moc:v23];
+    storeMOHandler3 = [(DeploymentMetricHandler *)self storeMOHandler];
+    managedObjectContext3 = [storeMOHandler3 managedObjectContext];
+    v24 = [BSSMO numBssInBand:ssidCopy bandIs24:1 moc:managedObjectContext3];
 
-    v25 = [(DeploymentMetricHandler *)self storeMOHandler];
-    v26 = [v25 managedObjectContext];
-    v27 = [BSSMO numBssInBand:v11 bandIs24:0 moc:v26];
+    storeMOHandler4 = [(DeploymentMetricHandler *)self storeMOHandler];
+    managedObjectContext4 = [storeMOHandler4 managedObjectContext];
+    v27 = [BSSMO numBssInBand:ssidCopy bandIs24:0 moc:managedObjectContext4];
 
     v28 = [NetworkMO networkManagedObjectPropertyValue:v15 forKey:@"NetworkSummaryNetworkFlags"];
     if ([(DeploymentMetricHandler *)self isInternalInstall])
     {
-      v29 = [v15 ssid];
-      [v10 setObject:v29 forKeyedSubscript:@"Ssid"];
+      ssid = [v15 ssid];
+      [metricCopy setObject:ssid forKeyedSubscript:@"Ssid"];
     }
 
-    [v10 setObject:v28 forKeyedSubscript:@"AuthFlags"];
+    [metricCopy setObject:v28 forKeyedSubscript:@"AuthFlags"];
     v30 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v15, "bssCount")}];
-    [v10 setObject:v30 forKeyedSubscript:@"NumBss"];
+    [metricCopy setObject:v30 forKeyedSubscript:@"NumBss"];
 
     v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v46];
-    [v10 setObject:v31 forKeyedSubscript:@"DwellTimePct_24GHZ"];
+    [metricCopy setObject:v31 forKeyedSubscript:@"DwellTimePct_24GHZ"];
 
     v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v21];
-    [v10 setObject:v32 forKeyedSubscript:@"DwellTimePct_5GHZ"];
+    [metricCopy setObject:v32 forKeyedSubscript:@"DwellTimePct_5GHZ"];
 
     v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v24];
-    [v10 setObject:v33 forKeyedSubscript:@"NumBss_24GHZ"];
+    [metricCopy setObject:v33 forKeyedSubscript:@"NumBss_24GHZ"];
 
     v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v27];
-    [v10 setObject:v34 forKeyedSubscript:@"NumBss_5GHZ"];
+    [metricCopy setObject:v34 forKeyedSubscript:@"NumBss_5GHZ"];
 
-    [(DeploymentMetricHandler *)self appendJoinsSummaryToMetric:v10 ssid:v11 maxAgeInDays:v47];
+    [(DeploymentMetricHandler *)self appendJoinsSummaryToMetric:metricCopy ssid:ssidCopy maxAgeInDays:daysCopy];
     v35 = objc_autoreleasePoolPush();
-    v36 = [(DeploymentMetricHandler *)self roamsSummary:v11 bssid:0 maxAgeInDays:v47];
+    v36 = [(DeploymentMetricHandler *)self roamsSummary:ssidCopy bssid:0 maxAgeInDays:daysCopy];
     if (v36)
     {
       v37 = v36;
-      [v10 addEntriesFromDictionary:v36];
+      [metricCopy addEntriesFromDictionary:v36];
     }
 
     objc_autoreleasePoolPop(v35);
     v38 = objc_autoreleasePoolPush();
-    v39 = [(DeploymentMetricHandler *)self leavesSummary:v11 bssid:0 maxAgeInDays:v47];
+    v39 = [(DeploymentMetricHandler *)self leavesSummary:ssidCopy bssid:0 maxAgeInDays:daysCopy];
     v16 = v15 != 0;
     v13 = v48;
     if (v39)
     {
       v40 = v39;
-      [v10 addEntriesFromDictionary:v39];
+      [metricCopy addEntriesFromDictionary:v39];
     }
 
     objc_autoreleasePoolPop(v38);
 
-    v12 = v49;
+    uuidCopy = v49;
   }
 
   else
@@ -842,7 +842,7 @@ LABEL_18:
       v52 = 1024;
       v53 = 341;
       v54 = 2112;
-      v55 = v11;
+      v55 = ssidCopy;
       _os_log_impl(&dword_1C8460000, v45, OS_LOG_TYPE_ERROR, "%{public}s::%d:networkMo nil for ssid %@", buf, 0x1Cu);
     }
   }
@@ -854,27 +854,27 @@ LABEL_12:
   return v16;
 }
 
-- (id)roamsSummary:(id)a3 bssid:(id)a4 maxAgeInDays:(unint64_t)a5
+- (id)roamsSummary:(id)summary bssid:(id)bssid maxAgeInDays:(unint64_t)days
 {
   v94 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  summaryCopy = summary;
+  bssidCopy = bssid;
+  if (summaryCopy)
   {
     context = objc_autoreleasePoolPush();
     v10 = MEMORY[0x1E696AB28];
-    v74 = v8;
-    v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"source.network.ssid == %@", v8];
-    v12 = v11;
-    v73 = v9;
-    if (v9)
+    v74 = summaryCopy;
+    summaryCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"source.network.ssid == %@", summaryCopy];
+    v12 = summaryCopy;
+    v73 = bssidCopy;
+    if (bssidCopy)
     {
-      v89[0] = v11;
-      v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"source.bssid == %@", v9];
-      v89[1] = v13;
-      v14 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+      v89[0] = summaryCopy;
+      bssidCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"source.bssid == %@", bssidCopy];
+      v89[1] = bssidCopy;
+      persistentContainer = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
       v15 = +[RoamMO entity];
-      v16 = [v14 predicateForEntity:v15 newerThan:0 withError:(86400 * a5)];
+      v16 = [persistentContainer predicateForEntity:v15 newerThan:0 withError:(86400 * days)];
       v89[2] = v16;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v89 count:3];
       v18 = [v10 andPredicateWithSubpredicates:v17];
@@ -882,10 +882,10 @@ LABEL_12:
 
     else
     {
-      v88[0] = v11;
-      v13 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
-      v14 = +[RoamMO entity];
-      v15 = [v13 predicateForEntity:v14 newerThan:0 withError:(86400 * a5)];
+      v88[0] = summaryCopy;
+      bssidCopy = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+      persistentContainer = +[RoamMO entity];
+      v15 = [bssidCopy predicateForEntity:persistentContainer newerThan:0 withError:(86400 * days)];
       v88[1] = v15;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v88 count:2];
       v18 = [v10 andPredicateWithSubpredicates:v16];
@@ -908,59 +908,59 @@ LABEL_12:
 
     v26 = MEMORY[0x1E696AB28];
     v85[0] = v21;
-    v27 = [MEMORY[0x1E696AE18] predicateWithFormat:@"status == %d", 3766617089];
-    v85[1] = v27;
+    3766617089 = [MEMORY[0x1E696AE18] predicateWithFormat:@"status == %d", 3766617089];
+    v85[1] = 3766617089;
     v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v85 count:2];
     v77 = [v26 andPredicateWithSubpredicates:v28];
 
     v29 = MEMORY[0x1E696AB28];
     v84[0] = v21;
-    v30 = [MEMORY[0x1E696AE18] predicateWithFormat:@"status == %d", 3766617092];
-    v84[1] = v30;
+    3766617092 = [MEMORY[0x1E696AE18] predicateWithFormat:@"status == %d", 3766617092];
+    v84[1] = 3766617092;
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v84 count:2];
     v79 = [v29 andPredicateWithSubpredicates:v31];
 
     v32 = MEMORY[0x1E696AB28];
     v83[0] = v21;
-    v33 = [MEMORY[0x1E696AE18] predicateWithFormat:@"status == %d", 3766617091];
-    v83[1] = v33;
+    3766617091 = [MEMORY[0x1E696AE18] predicateWithFormat:@"status == %d", 3766617091];
+    v83[1] = 3766617091;
     v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v83 count:2];
     v78 = [v32 andPredicateWithSubpredicates:v34];
 
     v35 = MEMORY[0x1E696AB28];
     v82[0] = v21;
-    v36 = [MEMORY[0x1E696AE18] predicateWithFormat:@"status == %d", 3766617163];
-    v82[1] = v36;
+    3766617163 = [MEMORY[0x1E696AE18] predicateWithFormat:@"status == %d", 3766617163];
+    v82[1] = 3766617163;
     v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v82 count:2];
     v70 = [v35 andPredicateWithSubpredicates:v37];
 
-    v38 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+    persistentContainer2 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
     v39 = +[RoamMO entity];
-    v71 = [v38 countObjects:v39 withPredicate:v21 withError:0];
+    v71 = [persistentContainer2 countObjects:v39 withPredicate:v21 withError:0];
 
-    v40 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+    persistentContainer3 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
     v41 = +[RoamMO entity];
-    v42 = [v40 countObjects:v41 withPredicate:v75 withError:0];
+    v42 = [persistentContainer3 countObjects:v41 withPredicate:v75 withError:0];
 
-    v43 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+    persistentContainer4 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
     v44 = +[RoamMO entity];
-    v45 = [v43 countObjects:v44 withPredicate:v76 withError:0];
+    v45 = [persistentContainer4 countObjects:v44 withPredicate:v76 withError:0];
 
-    v46 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+    persistentContainer5 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
     v47 = +[RoamMO entity];
-    v48 = [v46 countObjects:v47 withPredicate:v77 withError:0];
+    v48 = [persistentContainer5 countObjects:v47 withPredicate:v77 withError:0];
 
-    v49 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+    persistentContainer6 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
     v50 = +[RoamMO entity];
-    v51 = [v49 countObjects:v50 withPredicate:v79 withError:0];
+    v51 = [persistentContainer6 countObjects:v50 withPredicate:v79 withError:0];
 
-    v52 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+    persistentContainer7 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
     v53 = +[RoamMO entity];
-    v54 = [v52 countObjects:v53 withPredicate:v78 withError:0];
+    v54 = [persistentContainer7 countObjects:v53 withPredicate:v78 withError:0];
 
-    v55 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+    persistentContainer8 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
     v56 = +[RoamMO entity];
-    v57 = [v55 countObjects:v56 withPredicate:v70 withError:0];
+    v57 = [persistentContainer8 countObjects:v56 withPredicate:v70 withError:0];
 
     v80[0] = @"RoamsAttempted";
     v58 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v71];
@@ -987,8 +987,8 @@ LABEL_12:
 
     v66 = [v65 copy];
     objc_autoreleasePoolPop(context);
-    v9 = v73;
-    v8 = v74;
+    bssidCopy = v73;
+    summaryCopy = v74;
   }
 
   else
@@ -1011,25 +1011,25 @@ LABEL_12:
   return v66;
 }
 
-- (id)leavesSummary:(id)a3 bssid:(id)a4 maxAgeInDays:(unint64_t)a5
+- (id)leavesSummary:(id)summary bssid:(id)bssid maxAgeInDays:(unint64_t)days
 {
   v112 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  summaryCopy = summary;
+  bssidCopy = bssid;
+  if (summaryCopy)
   {
     context = objc_autoreleasePoolPush();
     v10 = MEMORY[0x1E696AB28];
-    v90 = v8;
-    v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.network.ssid == %@", v8];
-    v12 = v11;
-    v89 = v9;
-    if (v9)
+    v90 = summaryCopy;
+    summaryCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.network.ssid == %@", summaryCopy];
+    v12 = summaryCopy;
+    v89 = bssidCopy;
+    if (bssidCopy)
     {
-      v107[0] = v11;
-      v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.bssid == %@", v9];
-      v107[1] = v13;
-      v14 = [WAPersistentContainer predicateForRecordsNewerThan:(86400 * a5)];
+      v107[0] = summaryCopy;
+      bssidCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.bssid == %@", bssidCopy];
+      v107[1] = bssidCopy;
+      v14 = [WAPersistentContainer predicateForRecordsNewerThan:(86400 * days)];
       v107[2] = v14;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v107 count:3];
       v16 = [v10 andPredicateWithSubpredicates:v15];
@@ -1037,9 +1037,9 @@ LABEL_12:
 
     else
     {
-      v106[0] = v11;
-      v13 = [WAPersistentContainer predicateForRecordsNewerThan:(86400 * a5)];
-      v106[1] = v13;
+      v106[0] = summaryCopy;
+      bssidCopy = [WAPersistentContainer predicateForRecordsNewerThan:(86400 * days)];
+      v106[1] = bssidCopy;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v106 count:2];
       v16 = [v10 andPredicateWithSubpredicates:v14];
     }
@@ -1074,107 +1074,107 @@ LABEL_12:
 
     v29 = MEMORY[0x1E696AB28];
     v101[0] = v16;
-    v30 = [MEMORY[0x1E696AE18] predicateWithFormat:@"reason == %d", 1000];
-    v101[1] = v30;
+    1000 = [MEMORY[0x1E696AE18] predicateWithFormat:@"reason == %d", 1000];
+    v101[1] = 1000;
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v101 count:2];
     v87 = [v29 andPredicateWithSubpredicates:v31];
 
     v32 = MEMORY[0x1E696AB28];
     v100[0] = v16;
-    v33 = [MEMORY[0x1E696AE18] predicateWithFormat:@"reason == %d", 1006];
-    v100[1] = v33;
+    1006 = [MEMORY[0x1E696AE18] predicateWithFormat:@"reason == %d", 1006];
+    v100[1] = 1006;
     v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v100 count:2];
     v92 = [v32 andPredicateWithSubpredicates:v34];
 
     v35 = MEMORY[0x1E696AB28];
     v99[0] = v16;
-    v36 = [MEMORY[0x1E696AE18] predicateWithFormat:@"reason == %d", 1011];
-    v99[1] = v36;
+    1011 = [MEMORY[0x1E696AE18] predicateWithFormat:@"reason == %d", 1011];
+    v99[1] = 1011;
     v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v99 count:2];
     v91 = [v35 andPredicateWithSubpredicates:v37];
 
     v38 = MEMORY[0x1E696AB28];
     v98[0] = v16;
-    v39 = [MEMORY[0x1E696AE18] predicateWithFormat:@"reason == %d", 1013];
-    v98[1] = v39;
+    1013 = [MEMORY[0x1E696AE18] predicateWithFormat:@"reason == %d", 1013];
+    v98[1] = 1013;
     v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v98 count:2];
     v86 = [v38 andPredicateWithSubpredicates:v40];
 
     v41 = MEMORY[0x1E696AB28];
     v97[0] = v16;
-    v42 = [MEMORY[0x1E696AE18] predicateWithFormat:@"reason == %d", 1007];
-    v97[1] = v42;
+    1007 = [MEMORY[0x1E696AE18] predicateWithFormat:@"reason == %d", 1007];
+    v97[1] = 1007;
     v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:v97 count:2];
     v44 = [v41 andPredicateWithSubpredicates:v43];
 
-    v45 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+    persistentContainer = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
     v46 = +[WADeviceAnalyticsLeaveRecord entity];
-    v85 = [v45 countObjects:v46 withPredicate:v96 withError:0];
+    v85 = [persistentContainer countObjects:v46 withPredicate:v96 withError:0];
 
-    v47 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+    persistentContainer2 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
     v48 = +[WADeviceAnalyticsLeaveRecord entity];
-    v84 = [v47 countObjects:v48 withPredicate:v95 withError:0];
+    v84 = [persistentContainer2 countObjects:v48 withPredicate:v95 withError:0];
 
-    v49 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+    persistentContainer3 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
     v50 = +[WADeviceAnalyticsLeaveRecord entity];
-    v83 = [v49 countObjects:v50 withPredicate:v93 withError:0];
+    v83 = [persistentContainer3 countObjects:v50 withPredicate:v93 withError:0];
 
-    v51 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+    persistentContainer4 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
     v52 = +[WADeviceAnalyticsLeaveRecord entity];
-    v82 = [v51 countObjects:v52 withPredicate:v94 withError:0];
+    v82 = [persistentContainer4 countObjects:v52 withPredicate:v94 withError:0];
 
-    v53 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+    persistentContainer5 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
     v54 = +[WADeviceAnalyticsLeaveRecord entity];
-    v55 = [v53 countObjects:v54 withPredicate:v87 withError:0];
+    v55 = [persistentContainer5 countObjects:v54 withPredicate:v87 withError:0];
 
-    v56 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+    persistentContainer6 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
     v57 = +[WADeviceAnalyticsLeaveRecord entity];
-    v58 = [v56 countObjects:v57 withPredicate:v92 withError:0];
+    v58 = [persistentContainer6 countObjects:v57 withPredicate:v92 withError:0];
 
-    v59 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+    persistentContainer7 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
     v60 = +[WADeviceAnalyticsLeaveRecord entity];
-    v81 = [v59 countObjects:v60 withPredicate:v91 withError:0];
+    v81 = [persistentContainer7 countObjects:v60 withPredicate:v91 withError:0];
 
-    v61 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+    persistentContainer8 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
     v62 = +[WADeviceAnalyticsLeaveRecord entity];
-    v63 = [v61 countObjects:v62 withPredicate:v86 withError:0];
+    v63 = [persistentContainer8 countObjects:v62 withPredicate:v86 withError:0];
 
-    v64 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+    persistentContainer9 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
     v65 = +[WADeviceAnalyticsLeaveRecord entity];
-    v66 = [v64 countObjects:v65 withPredicate:v44 withError:0];
+    v66 = [persistentContainer9 countObjects:v65 withPredicate:v44 withError:0];
 
-    v67 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v68 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v85];
-    [v67 setObject:v68 forKeyedSubscript:@"LinkDownReasonUnknown"];
+    [dictionary setObject:v68 forKeyedSubscript:@"LinkDownReasonUnknown"];
 
     v69 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v84];
-    [v67 setObject:v69 forKeyedSubscript:@"LinkDownReasonDeauth"];
+    [dictionary setObject:v69 forKeyedSubscript:@"LinkDownReasonDeauth"];
 
     v70 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v83];
-    [v67 setObject:v70 forKeyedSubscript:@"LinkDownReasonBeaconLoss"];
+    [dictionary setObject:v70 forKeyedSubscript:@"LinkDownReasonBeaconLoss"];
 
     v71 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v82];
-    [v67 setObject:v71 forKeyedSubscript:@"LinkDownReasonSystemSleep"];
+    [dictionary setObject:v71 forKeyedSubscript:@"LinkDownReasonSystemSleep"];
 
     v72 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v55];
-    [v67 setObject:v72 forKeyedSubscript:@"LinkDownReasonTrigDisc"];
+    [dictionary setObject:v72 forKeyedSubscript:@"LinkDownReasonTrigDisc"];
 
     v73 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v58];
-    [v67 setObject:v73 forKeyedSubscript:@"LinkDownReasonThermal"];
+    [dictionary setObject:v73 forKeyedSubscript:@"LinkDownReasonThermal"];
 
     v74 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v81];
-    [v67 setObject:v74 forKeyedSubscript:@"LinkDownReasonControlCenter"];
+    [dictionary setObject:v74 forKeyedSubscript:@"LinkDownReasonControlCenter"];
 
     v75 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v63];
-    [v67 setObject:v75 forKeyedSubscript:@"LinkDownReasonNetworkTrans"];
+    [dictionary setObject:v75 forKeyedSubscript:@"LinkDownReasonNetworkTrans"];
 
     v76 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v66];
-    [v67 setObject:v76 forKeyedSubscript:@"LinkDownReasonInternetSharing"];
+    [dictionary setObject:v76 forKeyedSubscript:@"LinkDownReasonInternetSharing"];
 
-    v77 = [v67 copy];
+    v77 = [dictionary copy];
     objc_autoreleasePoolPop(context);
-    v9 = v89;
-    v8 = v90;
+    bssidCopy = v89;
+    summaryCopy = v90;
   }
 
   else
@@ -1197,12 +1197,12 @@ LABEL_12:
   return v77;
 }
 
-- (void)appendJoinsSummaryToMetric:(id)a3 ssid:(id)a4 maxAgeInDays:(unint64_t)a5
+- (void)appendJoinsSummaryToMetric:(id)metric ssid:(id)ssid maxAgeInDays:(unint64_t)days
 {
   v84 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  metricCopy = metric;
+  ssidCopy = ssid;
+  if (!ssidCopy)
   {
     v57 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
@@ -1221,7 +1221,7 @@ LABEL_10:
     goto LABEL_4;
   }
 
-  if (!v8)
+  if (!metricCopy)
   {
     v57 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
@@ -1239,13 +1239,13 @@ LABEL_10:
 
   context = objc_autoreleasePoolPush();
   v10 = MEMORY[0x1E696AB28];
-  [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.network.ssid == %@", v9];
-  v11 = v69 = v9;
+  [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.network.ssid == %@", ssidCopy];
+  v11 = v69 = ssidCopy;
   v79[0] = v11;
-  v12 = [WAPersistentContainer predicateForRecordsNewerThan:(86400 * a5)];
+  v12 = [WAPersistentContainer predicateForRecordsNewerThan:(86400 * days)];
   v79[1] = v12;
   [MEMORY[0x1E695DEC8] arrayWithObjects:v79 count:2];
-  v13 = v67 = v8;
+  v13 = v67 = metricCopy;
   v14 = [v10 andPredicateWithSubpredicates:v13];
 
   v66 = [MEMORY[0x1E696AE18] predicateWithFormat:@"reason == %d", 1];
@@ -1299,31 +1299,31 @@ LABEL_10:
   v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v73 count:3];
   v33 = [v31 andPredicateWithSubpredicates:v32];
 
-  v34 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+  persistentContainer = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
   v35 = +[WADeviceAnalyticsJoinRecord entity];
-  v61 = [v34 countObjects:v35 withPredicate:v70 withError:0];
+  v61 = [persistentContainer countObjects:v35 withPredicate:v70 withError:0];
 
-  v36 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+  persistentContainer2 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
   v37 = +[WADeviceAnalyticsJoinRecord entity];
-  v60 = [v36 countObjects:v37 withPredicate:v71 withError:0];
+  v60 = [persistentContainer2 countObjects:v37 withPredicate:v71 withError:0];
 
-  v38 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+  persistentContainer3 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
   v39 = +[WADeviceAnalyticsJoinRecord entity];
-  v59 = [v38 countObjects:v39 withPredicate:v64 withError:0];
+  v59 = [persistentContainer3 countObjects:v39 withPredicate:v64 withError:0];
 
-  v40 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+  persistentContainer4 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
   v41 = +[WADeviceAnalyticsJoinRecord entity];
-  v42 = [v40 countObjects:v41 withPredicate:v62 withError:0];
+  v42 = [persistentContainer4 countObjects:v41 withPredicate:v62 withError:0];
 
-  v43 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+  persistentContainer5 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
   v44 = +[WADeviceAnalyticsJoinRecord entity];
-  v45 = [v43 countObjects:v44 withPredicate:v63 withError:0];
+  v45 = [persistentContainer5 countObjects:v44 withPredicate:v63 withError:0];
 
-  v46 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
+  persistentContainer6 = [(AnalyticsStoreMOHandler *)self->_storeMOHandler persistentContainer];
   v47 = +[WADeviceAnalyticsJoinRecord entity];
-  v48 = [v46 countObjects:v47 withPredicate:v33 withError:0];
+  v48 = [persistentContainer6 countObjects:v47 withPredicate:v33 withError:0];
 
-  v8 = v67;
+  metricCopy = v67;
   v49 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v61];
   [v67 setObject:v49 forKeyedSubscript:@"ManualJoinsAttempted"];
 
@@ -1337,7 +1337,7 @@ LABEL_10:
   [v67 setObject:v52 forKeyedSubscript:@"AutoJoinsAttempted"];
 
   v53 = v45;
-  v9 = v69;
+  ssidCopy = v69;
   v54 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v53];
   [v67 setObject:v54 forKeyedSubscript:@"AutoJoinsFailed"];
 
@@ -1350,13 +1350,13 @@ LABEL_4:
   v56 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)appendBssAnalyticsToMetric:(id)a3 bssMo:(id)a4 maxAgeInDays:(unint64_t)a5
+- (BOOL)appendBssAnalyticsToMetric:(id)metric bssMo:(id)mo maxAgeInDays:(unint64_t)days
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  metricCopy = metric;
+  moCopy = mo;
+  v10 = moCopy;
+  if (!metricCopy)
   {
     v30 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -1376,7 +1376,7 @@ LABEL_12:
     goto LABEL_6;
   }
 
-  if (!v9)
+  if (!moCopy)
   {
     v30 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -1393,46 +1393,46 @@ LABEL_12:
   }
 
   context = objc_autoreleasePoolPush();
-  v11 = [v10 network];
-  v12 = [v11 ssid];
+  network = [v10 network];
+  ssid = [network ssid];
 
-  v13 = [v10 bssid];
-  v33 = [(DeploymentMetricHandler *)self leavesSummary:v12 bssid:v13 maxAgeInDays:a5];
+  bssid = [v10 bssid];
+  v33 = [(DeploymentMetricHandler *)self leavesSummary:ssid bssid:bssid maxAgeInDays:days];
 
-  v14 = [v10 bssid];
-  v32 = [(DeploymentMetricHandler *)self roamsSummary:v12 bssid:v14 maxAgeInDays:a5];
+  bssid2 = [v10 bssid];
+  v32 = [(DeploymentMetricHandler *)self roamsSummary:ssid bssid:bssid2 maxAgeInDays:days];
 
   v15 = [v10 mostRecentBand] == 0;
-  v16 = [v10 bssid];
-  v17 = [(DeploymentMetricHandler *)self storeMOHandler];
-  v18 = [v17 managedObjectContext];
-  v19 = [RoamMO dwellTimeInBand:v12 bandIs24:v15 bssid:v16 maxAgeInDays:a5 moc:v18];
+  bssid3 = [v10 bssid];
+  storeMOHandler = [(DeploymentMetricHandler *)self storeMOHandler];
+  managedObjectContext = [storeMOHandler managedObjectContext];
+  v19 = [RoamMO dwellTimeInBand:ssid bandIs24:v15 bssid:bssid3 maxAgeInDays:days moc:managedObjectContext];
 
-  v20 = [v10 parsedBeacon];
+  parsedBeacon = [v10 parsedBeacon];
   if ([(DeploymentMetricHandler *)self isInternalInstall])
   {
-    v21 = [v10 bssid];
-    [v8 setObject:v21 forKeyedSubscript:@"Bssid"];
+    bssid4 = [v10 bssid];
+    [metricCopy setObject:bssid4 forKeyedSubscript:@"Bssid"];
   }
 
   v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v10, "isEdgeForJoin")}];
-  [v8 setObject:v22 forKeyedSubscript:@"IsEdgeForJoin"];
+  [metricCopy setObject:v22 forKeyedSubscript:@"IsEdgeForJoin"];
 
   v23 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v10, "isEdgeForLeave")}];
-  [v8 setObject:v23 forKeyedSubscript:@"IsEdgeForLeave"];
+  [metricCopy setObject:v23 forKeyedSubscript:@"IsEdgeForLeave"];
 
   v24 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v10, "roamTriggerRssi")}];
-  [v8 setObject:v24 forKeyedSubscript:@"RoamTriggerRssi"];
+  [metricCopy setObject:v24 forKeyedSubscript:@"RoamTriggerRssi"];
 
   v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v19];
-  [v8 setObject:v25 forKeyedSubscript:@"DwellTime"];
+  [metricCopy setObject:v25 forKeyedSubscript:@"DwellTime"];
 
   v26 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v10, "mostRecentBand")}];
-  [v8 setObject:v26 forKeyedSubscript:@"Band"];
+  [metricCopy setObject:v26 forKeyedSubscript:@"Band"];
 
-  [v8 addEntriesFromDictionary:v33];
-  [v8 addEntriesFromDictionary:v32];
-  [v8 addEntriesFromDictionary:v20];
+  [metricCopy addEntriesFromDictionary:v33];
+  [metricCopy addEntriesFromDictionary:v32];
+  [metricCopy addEntriesFromDictionary:parsedBeacon];
 
   objc_autoreleasePoolPop(context);
   v27 = 1;

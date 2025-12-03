@@ -1,38 +1,38 @@
 @interface EKUITextAndHeaderItem
-+ (EKUITextAndHeaderItem)itemWithText:(id)a3 andHeader:(id)a4;
-- (EKUITextAndHeaderItem)initWithDictionary:(id)a3;
++ (EKUITextAndHeaderItem)itemWithText:(id)text andHeader:(id)header;
+- (EKUITextAndHeaderItem)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionaryRepresentation;
 - (id)description;
 @end
 
 @implementation EKUITextAndHeaderItem
 
-- (EKUITextAndHeaderItem)initWithDictionary:(id)a3
+- (EKUITextAndHeaderItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = EKUITextAndHeaderItem;
   v5 = [(EKUITextAndHeaderItem *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"text"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"text"];
     text = v5->_text;
     v5->_text = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"header"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"header"];
     header = v5->_header;
     v5->_header = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"lines"];
-    v11 = [v10 integerValue];
-    if (v11 <= 1)
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"lines"];
+    integerValue = [v10 integerValue];
+    if (integerValue <= 1)
     {
       v12 = 1;
     }
 
     else
     {
-      v12 = v11;
+      v12 = integerValue;
     }
 
     v5->_lines = v12;
@@ -41,14 +41,14 @@
   return v5;
 }
 
-+ (EKUITextAndHeaderItem)itemWithText:(id)a3 andHeader:(id)a4
++ (EKUITextAndHeaderItem)itemWithText:(id)text andHeader:(id)header
 {
-  v5 = a4;
-  v6 = a3;
+  headerCopy = header;
+  textCopy = text;
   v7 = objc_opt_new();
-  [v7 setText:v6];
+  [v7 setText:textCopy];
 
-  [v7 setHeader:v5];
+  [v7 setHeader:headerCopy];
   [v7 setLines:1];
 
   return v7;

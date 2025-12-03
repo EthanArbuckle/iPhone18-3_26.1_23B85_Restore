@@ -1,17 +1,17 @@
 @interface HKAttachmentStore
 + (id)serverInterface;
-- (BOOL)_validateInputWithObject:(id)a3 contentType:(id)a4 URL:(id)a5 error:(id *)a6;
+- (BOOL)_validateInputWithObject:(id)object contentType:(id)type URL:(id)l error:(id *)error;
 - (HKAttachmentStore)initWithHealthStore:(HKHealthStore *)healthStore;
 - (NSProgress)getDataForAttachment:(HKAttachment *)attachment completion:(void *)completion;
 - (NSProgress)streamDataForAttachment:(HKAttachment *)attachment dataHandler:(void *)dataHandler;
 - (void)addAttachmentToObject:(HKObject *)object name:(NSString *)name contentType:(UTType *)contentType URL:(NSURL *)URL metadata:(NSDictionary *)metadata completion:(void *)completion;
-- (void)addAttachmentWithName:(id)a3 contentType:(id)a4 URL:(id)a5 toObjectWithIdentifier:(id)a6 schemaIdentifier:(id)a7 attachmentMetadata:(id)a8 referenceMetadata:(id)a9 completion:(id)a10;
-- (void)addReferenceWithAttachment:(id)a3 toObjectWithIdentifier:(id)a4 schemaIdentifier:(id)a5 metadata:(id)a6 completion:(id)a7;
-- (void)attachmentReferencesForObjectIdentifier:(id)a3 schemaIdentifier:(id)a4 completion:(id)a5;
+- (void)addAttachmentWithName:(id)name contentType:(id)type URL:(id)l toObjectWithIdentifier:(id)identifier schemaIdentifier:(id)schemaIdentifier attachmentMetadata:(id)metadata referenceMetadata:(id)referenceMetadata completion:(id)self0;
+- (void)addReferenceWithAttachment:(id)attachment toObjectWithIdentifier:(id)identifier schemaIdentifier:(id)schemaIdentifier metadata:(id)metadata completion:(id)completion;
+- (void)attachmentReferencesForObjectIdentifier:(id)identifier schemaIdentifier:(id)schemaIdentifier completion:(id)completion;
 - (void)getAttachmentsForObject:(HKObject *)object completion:(void *)completion;
-- (void)getDataChunkForAttachment:(id)a3 chunkSize:(unint64_t)a4 offset:(unint64_t)a5 completion:(id)a6;
+- (void)getDataChunkForAttachment:(id)attachment chunkSize:(unint64_t)size offset:(unint64_t)offset completion:(id)completion;
 - (void)removeAttachment:(HKAttachment *)attachment fromObject:(HKObject *)object completion:(void *)completion;
-- (void)removeReference:(id)a3 schemaIdentifier:(id)a4 completion:(id)a5;
+- (void)removeReference:(id)reference schemaIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation HKAttachmentStore
@@ -28,8 +28,8 @@
   {
     objc_storeStrong(&v6->_healthStore, healthStore);
     v8 = [HKTaskServerProxyProvider alloc];
-    v9 = [MEMORY[0x1E696AFB0] UUID];
-    v10 = [(HKTaskServerProxyProvider *)v8 initWithHealthStore:v5 taskIdentifier:@"HKAttachmentStoreServerIdentifier" exportedObject:v7 taskUUID:v9];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v10 = [(HKTaskServerProxyProvider *)v8 initWithHealthStore:v5 taskIdentifier:@"HKAttachmentStoreServerIdentifier" exportedObject:v7 taskUUID:uUID];
     proxyProvider = v7->_proxyProvider;
     v7->_proxyProvider = v10;
 
@@ -82,14 +82,14 @@
   v21 = v26;
   if (v20)
   {
-    v22 = [(HKObject *)v14 attachmentObjectIdentifier];
-    v23 = [(HKObject *)v14 attachmentSchemaIdentifier];
+    attachmentObjectIdentifier = [(HKObject *)v14 attachmentObjectIdentifier];
+    attachmentSchemaIdentifier = [(HKObject *)v14 attachmentSchemaIdentifier];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __84__HKAttachmentStore_addAttachmentToObject_name_contentType_URL_metadata_completion___block_invoke;
     v24[3] = &unk_1E7380240;
     v25 = v19;
-    [(HKAttachmentStore *)self addAttachmentWithName:v15 contentType:v16 URL:v17 toObjectWithIdentifier:v22 schemaIdentifier:v23 attachmentMetadata:v18 referenceMetadata:0 completion:v24];
+    [(HKAttachmentStore *)self addAttachmentWithName:v15 contentType:v16 URL:v17 toObjectWithIdentifier:attachmentObjectIdentifier schemaIdentifier:attachmentSchemaIdentifier attachmentMetadata:v18 referenceMetadata:0 completion:v24];
   }
 
   else
@@ -144,8 +144,8 @@ void __60__HKAttachmentStore_removeAttachment_fromObject_completion___block_invo
 {
   v6 = completion;
   v7 = object;
-  v8 = [(HKObject *)v7 attachmentObjectIdentifier];
-  v9 = [(HKObject *)v7 attachmentSchemaIdentifier];
+  attachmentObjectIdentifier = [(HKObject *)v7 attachmentObjectIdentifier];
+  attachmentSchemaIdentifier = [(HKObject *)v7 attachmentSchemaIdentifier];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -153,7 +153,7 @@ void __60__HKAttachmentStore_removeAttachment_fromObject_completion___block_invo
   v11[3] = &unk_1E737F3D0;
   v12 = v6;
   v10 = v6;
-  [(HKAttachmentStore *)self attachmentReferencesForObjectIdentifier:v8 schemaIdentifier:v9 completion:v11];
+  [(HKAttachmentStore *)self attachmentReferencesForObjectIdentifier:attachmentObjectIdentifier schemaIdentifier:attachmentSchemaIdentifier completion:v11];
 }
 
 void __56__HKAttachmentStore_getAttachmentsForObject_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -168,14 +168,14 @@ void __56__HKAttachmentStore_getAttachmentsForObject_completion___block_invoke(u
   proxyProvider = self->_proxyProvider;
   v7 = attachment;
   v8 = [(HKProxyProvider *)proxyProvider clientQueueObjectHandlerWithCompletion:completion];
-  v9 = [MEMORY[0x1E695DF88] data];
+  data = [MEMORY[0x1E695DF88] data];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __53__HKAttachmentStore_getDataForAttachment_completion___block_invoke;
   v14[3] = &unk_1E73802B0;
-  v15 = v9;
+  v15 = data;
   v16 = v8;
-  v10 = v9;
+  v10 = data;
   v11 = v8;
   v12 = [(HKAttachmentStore *)self streamDataForAttachment:v7 dataHandler:v14];
 
@@ -218,12 +218,12 @@ void __53__HKAttachmentStore_getDataForAttachment_completion___block_invoke(uint
   os_unfair_lock_lock(&self->_lock);
   v10 = _Block_copy(v8);
   attachmentDataHandlersByIdentifier = self->_attachmentDataHandlersByIdentifier;
-  v12 = [(HKAttachment *)v6 identifier];
-  [(NSMutableDictionary *)attachmentDataHandlersByIdentifier setObject:v10 forKeyedSubscript:v12];
+  identifier = [(HKAttachment *)v6 identifier];
+  [(NSMutableDictionary *)attachmentDataHandlersByIdentifier setObject:v10 forKeyedSubscript:identifier];
 
   dataStreamProgressByIdentifier = self->_dataStreamProgressByIdentifier;
-  v14 = [(HKAttachment *)v6 identifier];
-  [(NSMutableDictionary *)dataStreamProgressByIdentifier setObject:v9 forKeyedSubscript:v14];
+  identifier2 = [(HKAttachment *)v6 identifier];
+  [(NSMutableDictionary *)dataStreamProgressByIdentifier setObject:v9 forKeyedSubscript:identifier2];
 
   os_unfair_lock_unlock(&self->_lock);
   proxyProvider = self->_proxyProvider;
@@ -293,22 +293,22 @@ void __57__HKAttachmentStore_streamDataForAttachment_dataHandler___block_invoke_
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)addReferenceWithAttachment:(id)a3 toObjectWithIdentifier:(id)a4 schemaIdentifier:(id)a5 metadata:(id)a6 completion:(id)a7
+- (void)addReferenceWithAttachment:(id)attachment toObjectWithIdentifier:(id)identifier schemaIdentifier:(id)schemaIdentifier metadata:(id)metadata completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a7];
+  attachmentCopy = attachment;
+  identifierCopy = identifier;
+  schemaIdentifierCopy = schemaIdentifier;
+  metadataCopy = metadata;
+  v16 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __108__HKAttachmentStore_addReferenceWithAttachment_toObjectWithIdentifier_schemaIdentifier_metadata_completion___block_invoke;
   v25[3] = &unk_1E7380328;
-  v26 = v12;
-  v27 = v13;
-  v28 = v14;
-  v29 = v15;
+  v26 = attachmentCopy;
+  v27 = identifierCopy;
+  v28 = schemaIdentifierCopy;
+  v29 = metadataCopy;
   v30 = v16;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
@@ -316,25 +316,25 @@ void __57__HKAttachmentStore_streamDataForAttachment_dataHandler___block_invoke_
   v23[3] = &unk_1E7376960;
   v24 = v30;
   v18 = v30;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
+  v19 = metadataCopy;
+  v20 = schemaIdentifierCopy;
+  v21 = identifierCopy;
+  v22 = attachmentCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v25 errorHandler:v23];
 }
 
-- (void)removeReference:(id)a3 schemaIdentifier:(id)a4 completion:(id)a5
+- (void)removeReference:(id)reference schemaIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a5];
+  referenceCopy = reference;
+  identifierCopy = identifier;
+  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __65__HKAttachmentStore_removeReference_schemaIdentifier_completion___block_invoke;
   v17[3] = &unk_1E7380268;
-  v18 = v8;
-  v19 = v9;
+  v18 = referenceCopy;
+  v19 = identifierCopy;
   v20 = v10;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -342,8 +342,8 @@ void __57__HKAttachmentStore_streamDataForAttachment_dataHandler___block_invoke_
   v15[3] = &unk_1E7376960;
   v16 = v20;
   v12 = v20;
-  v13 = v9;
-  v14 = v8;
+  v13 = identifierCopy;
+  v14 = referenceCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v17 errorHandler:v15];
 }
 
@@ -357,19 +357,19 @@ void __65__HKAttachmentStore_removeReference_schemaIdentifier_completion___block
   [v4 remote_removeAllReferencesWithAttachmentIdentifier:v5 objectIdentifier:v6 schemaIdentifier:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)addAttachmentWithName:(id)a3 contentType:(id)a4 URL:(id)a5 toObjectWithIdentifier:(id)a6 schemaIdentifier:(id)a7 attachmentMetadata:(id)a8 referenceMetadata:(id)a9 completion:(id)a10
+- (void)addAttachmentWithName:(id)name contentType:(id)type URL:(id)l toObjectWithIdentifier:(id)identifier schemaIdentifier:(id)schemaIdentifier attachmentMetadata:(id)metadata referenceMetadata:(id)referenceMetadata completion:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  nameCopy = name;
+  typeCopy = type;
+  identifierCopy = identifier;
+  schemaIdentifierCopy = schemaIdentifier;
+  metadataCopy = metadata;
+  referenceMetadataCopy = referenceMetadata;
   proxyProvider = self->_proxyProvider;
-  v23 = a5;
-  v24 = [(HKProxyProvider *)proxyProvider clientQueueObjectHandlerWithCompletion:a10];
+  lCopy = l;
+  v24 = [(HKProxyProvider *)proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   v49[0] = 0;
-  v25 = [MEMORY[0x1E696AC00] fileHandleForReadingFromURL:v23 error:v49];
+  v25 = [MEMORY[0x1E696AC00] fileHandleForReadingFromURL:lCopy error:v49];
 
   v26 = v49[0];
   if (!v25)
@@ -383,13 +383,13 @@ void __65__HKAttachmentStore_removeReference_schemaIdentifier_completion___block
   v40[1] = 3221225472;
   v40[2] = __147__HKAttachmentStore_addAttachmentWithName_contentType_URL_toObjectWithIdentifier_schemaIdentifier_attachmentMetadata_referenceMetadata_completion___block_invoke;
   v40[3] = &unk_1E7380350;
-  v41 = v16;
-  v42 = v17;
+  v41 = nameCopy;
+  v42 = typeCopy;
   v43 = v25;
-  v44 = v18;
-  v45 = v19;
-  v46 = v20;
-  v47 = v21;
+  v44 = identifierCopy;
+  v45 = schemaIdentifierCopy;
+  v46 = metadataCopy;
+  v47 = referenceMetadataCopy;
   v48 = v24;
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
@@ -399,12 +399,12 @@ void __65__HKAttachmentStore_removeReference_schemaIdentifier_completion___block
   v39 = v48;
   v28 = v48;
   v29 = v43;
-  v30 = v21;
-  v31 = v20;
-  v32 = v19;
-  v33 = v18;
-  v34 = v17;
-  v35 = v16;
+  v30 = referenceMetadataCopy;
+  v31 = metadataCopy;
+  v32 = schemaIdentifierCopy;
+  v33 = identifierCopy;
+  v34 = typeCopy;
+  v35 = nameCopy;
   [(HKProxyProvider *)v27 fetchProxyWithHandler:v40 errorHandler:v37];
 }
 
@@ -425,18 +425,18 @@ void __147__HKAttachmentStore_addAttachmentWithName_contentType_URL_toObjectWith
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)attachmentReferencesForObjectIdentifier:(id)a3 schemaIdentifier:(id)a4 completion:(id)a5
+- (void)attachmentReferencesForObjectIdentifier:(id)identifier schemaIdentifier:(id)schemaIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a5];
+  identifierCopy = identifier;
+  schemaIdentifierCopy = schemaIdentifier;
+  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __89__HKAttachmentStore_attachmentReferencesForObjectIdentifier_schemaIdentifier_completion___block_invoke;
   v17[3] = &unk_1E7380268;
-  v18 = v8;
-  v19 = v9;
+  v18 = identifierCopy;
+  v19 = schemaIdentifierCopy;
   v20 = v10;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -444,23 +444,23 @@ void __147__HKAttachmentStore_addAttachmentWithName_contentType_URL_toObjectWith
   v15[3] = &unk_1E7376960;
   v16 = v20;
   v12 = v20;
-  v13 = v9;
-  v14 = v8;
+  v13 = schemaIdentifierCopy;
+  v14 = identifierCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v17 errorHandler:v15];
 }
 
-- (void)getDataChunkForAttachment:(id)a3 chunkSize:(unint64_t)a4 offset:(unint64_t)a5 completion:(id)a6
+- (void)getDataChunkForAttachment:(id)attachment chunkSize:(unint64_t)size offset:(unint64_t)offset completion:(id)completion
 {
-  v10 = a3;
-  v11 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a6];
+  attachmentCopy = attachment;
+  v11 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __75__HKAttachmentStore_getDataChunkForAttachment_chunkSize_offset_completion___block_invoke;
   v17[3] = &unk_1E7380378;
-  v18 = v10;
-  v20 = a4;
-  v21 = a5;
+  v18 = attachmentCopy;
+  sizeCopy = size;
+  offsetCopy = offset;
   v19 = v11;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -468,40 +468,40 @@ void __147__HKAttachmentStore_addAttachmentWithName_contentType_URL_toObjectWith
   v15[3] = &unk_1E7376960;
   v16 = v19;
   v13 = v19;
-  v14 = v10;
+  v14 = attachmentCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v17 errorHandler:v15];
 }
 
-- (BOOL)_validateInputWithObject:(id)a3 contentType:(id)a4 URL:(id)a5 error:(id *)a6
+- (BOOL)_validateInputWithObject:(id)object contentType:(id)type URL:(id)l error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  objectCopy = object;
+  typeCopy = type;
+  lCopy = l;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v9;
-    v13 = [v12 sampleType];
-    v14 = [v13 supportsAttachments];
+    v12 = objectCopy;
+    sampleType = [v12 sampleType];
+    supportsAttachments = [sampleType supportsAttachments];
 
-    if (v14)
+    if (supportsAttachments)
     {
-      if ([v11 isFileURL])
+      if ([lCopy isFileURL])
       {
         v15 = MEMORY[0x1E6982C40];
-        v16 = [v11 pathExtension];
-        v17 = [v15 typeWithFilenameExtension:v16];
+        pathExtension = [lCopy pathExtension];
+        v17 = [v15 typeWithFilenameExtension:pathExtension];
 
-        if (v17 && ([v10 conformsToType:v17] & 1) == 0)
+        if (v17 && ([typeCopy conformsToType:v17] & 1) == 0)
         {
           v33 = [MEMORY[0x1E696ABC0] hk_error:3 format:@"Content Type is not equal to URL extension type"];
           v34 = v33;
           if (v33)
           {
-            if (a6)
+            if (error)
             {
               v35 = v33;
-              *a6 = v34;
+              *error = v34;
             }
 
             else
@@ -515,17 +515,17 @@ void __147__HKAttachmentStore_addAttachmentWithName_contentType_URL_toObjectWith
         }
 
         v18 = objc_alloc_init(MEMORY[0x1E696AC08]);
-        v19 = [v11 path];
+        path = [lCopy path];
         v39 = v18;
         v40 = 0;
-        v20 = [v18 attributesOfItemAtPath:v19 error:&v40];
+        v20 = [v18 attributesOfItemAtPath:path error:&v40];
         v21 = v40;
 
         if (v20)
         {
-          v22 = [v20 fileSize];
-          v23 = [v12 sampleType];
-          v24 = [v23 canAttachFileOfType:v10 size:v22 error:a6];
+          fileSize = [v20 fileSize];
+          sampleType2 = [v12 sampleType];
+          v24 = [sampleType2 canAttachFileOfType:typeCopy size:fileSize error:error];
 LABEL_30:
 
 LABEL_31:
@@ -535,14 +535,14 @@ LABEL_32:
         }
 
         v36 = v21;
-        v23 = v36;
+        sampleType2 = v36;
         if (v36)
         {
-          if (a6)
+          if (error)
           {
             v37 = v36;
             v24 = 0;
-            *a6 = v23;
+            *error = sampleType2;
             goto LABEL_30;
           }
 
@@ -567,10 +567,10 @@ LABEL_32:
     v31 = v30;
     if (v30)
     {
-      if (a6)
+      if (error)
       {
         v32 = v30;
-        *a6 = v31;
+        *error = v31;
       }
 
       else
@@ -587,10 +587,10 @@ LABEL_32:
   v26 = v25;
   if (v25)
   {
-    if (a6)
+    if (error)
     {
       v27 = v25;
-      *a6 = v26;
+      *error = v26;
     }
 
     else

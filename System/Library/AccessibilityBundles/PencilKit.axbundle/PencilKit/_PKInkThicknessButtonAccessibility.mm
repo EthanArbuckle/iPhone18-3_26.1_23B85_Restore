@@ -1,22 +1,22 @@
 @interface _PKInkThicknessButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)_axPKPaletteErasingAttributesView;
 @end
 
 @implementation _PKInkThicknessButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPaletteErasingAttributesView"];
-  [v3 validateClass:@"PKPaletteErasingAttributesView" hasInstanceMethod:@"eraserType" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPaletteErasingAttributesView"];
+  [validationsCopy validateClass:@"PKPaletteErasingAttributesView" hasInstanceMethod:@"eraserType" withFullSignature:{"q", 0}];
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(_PKInkThicknessButtonAccessibility *)self _axPKPaletteErasingAttributesView];
-  v3 = [v2 safeIntegerForKey:@"eraserType"] == 0;
+  _axPKPaletteErasingAttributesView = [(_PKInkThicknessButtonAccessibility *)self _axPKPaletteErasingAttributesView];
+  v3 = [_axPKPaletteErasingAttributesView safeIntegerForKey:@"eraserType"] == 0;
 
   return v3;
 }

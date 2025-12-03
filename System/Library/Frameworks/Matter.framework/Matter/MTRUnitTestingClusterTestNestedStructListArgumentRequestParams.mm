@@ -1,8 +1,8 @@
 @interface MTRUnitTestingClusterTestNestedStructListArgumentRequestParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRUnitTestingClusterTestNestedStructListArgumentRequestParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -29,17 +29,17 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams);
-  v5 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
-  [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)v4 setArg1:v5];
+  arg1 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
+  [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)v4 setArg1:arg1];
 
-  v6 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self timedInvokeTimeoutMs];
-  [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)v4 setTimedInvokeTimeoutMs:v6];
+  timedInvokeTimeoutMs = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self timedInvokeTimeoutMs];
+  [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v7 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self serverSideProcessingTimeout];
-  [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)v4 setServerSideProcessingTimeout:v7];
+  serverSideProcessingTimeout = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self serverSideProcessingTimeout];
+  [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -54,18 +54,18 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v86 = *MEMORY[0x277D85DE8];
   *v68 = 0;
   v69 = 0;
-  v70 = 0;
+  unsignedCharValue = 0;
   v74 = 0;
   v75 = 0;
   LOBYTE(v76) = 0;
   v71 = 0u;
   v72 = 0u;
-  v73 = 0;
+  unsignedCharValue2 = 0;
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
@@ -73,76 +73,76 @@
   v67[0] = 0;
   v67[1] = 0;
   v66 = v67;
-  v4 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
-  v5 = [v4 a];
+  arg1 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
+  v5 = [arg1 a];
   v68[0] = [v5 unsignedCharValue];
 
-  v6 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
-  v7 = [v6 b];
+  arg12 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
+  v7 = [arg12 b];
   v68[1] = [v7 BOOLValue];
 
-  v8 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
-  v9 = [v8 c];
+  arg13 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
+  v9 = [arg13 c];
   v10 = [v9 a];
   LOBYTE(v69) = [v10 unsignedCharValue];
 
-  v11 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
-  v12 = [v11 c];
+  arg14 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
+  v12 = [arg14 c];
   v13 = [v12 b];
   HIBYTE(v69) = [v13 BOOLValue];
 
-  v14 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
-  v15 = [v14 c];
-  v16 = [v15 c];
-  v70 = [v16 unsignedCharValue];
+  arg15 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
+  v15 = [arg15 c];
+  v15C = [v15 c];
+  unsignedCharValue = [v15C unsignedCharValue];
 
-  v17 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
-  v18 = [v17 c];
+  arg16 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
+  v18 = [arg16 c];
   v19 = [v18 d];
   v20 = v19;
   sub_238DB6950(buf, [v19 bytes], objc_msgSend(v19, "length"));
 
   v71 = *buf;
-  v21 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
-  v22 = [v21 c];
+  arg17 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
+  v22 = [arg17 c];
   v23 = [v22 e];
   v24 = v23;
   sub_238DB9BD8(buf, [v23 UTF8String], objc_msgSend(v23, "lengthOfBytesUsingEncoding:", 4));
 
   v72 = *buf;
-  v25 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
-  v26 = [v25 c];
+  arg18 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
+  v26 = [arg18 c];
   v27 = [v26 f];
-  v73 = [v27 unsignedCharValue];
+  unsignedCharValue2 = [v27 unsignedCharValue];
 
-  v28 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
-  v29 = [v28 c];
+  arg19 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
+  v29 = [arg19 c];
   v30 = [v29 g];
   [v30 floatValue];
   v74 = v31;
 
-  v32 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
-  v33 = [v32 c];
+  arg110 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
+  v33 = [arg110 c];
   v34 = [v33 h];
   [v34 doubleValue];
   v75 = v35;
 
-  v36 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
-  v37 = [v36 c];
+  arg111 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
+  v37 = [arg111 c];
   v38 = [v37 i];
   v39 = v38 == 0;
 
   if (!v39)
   {
     v76 = 1;
-    v40 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
-    v41 = [v40 c];
+    arg112 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
+    v41 = [arg112 c];
     v42 = [v41 i];
     HIBYTE(v76) = [v42 unsignedCharValue];
   }
 
-  v43 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
-  v44 = [v43 d];
+  arg113 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
+  v44 = [arg113 d];
   v45 = [v44 count] == 0;
 
   if (!v45)
@@ -151,8 +151,8 @@
   }
 
   v77 = 0uLL;
-  v46 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
-  v47 = [v46 e];
+  arg114 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
+  v47 = [arg114 e];
   v48 = [v47 count] == 0;
 
   if (!v48)
@@ -161,8 +161,8 @@
   }
 
   v78 = 0uLL;
-  v49 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
-  v50 = [v49 f];
+  arg115 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
+  v50 = [arg115 f];
   v51 = [v50 count] == 0;
 
   if (!v51)
@@ -171,8 +171,8 @@
   }
 
   v79 = 0uLL;
-  v52 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
-  v53 = [v52 g];
+  arg116 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self arg1];
+  v53 = [arg116 g];
   v54 = [v53 count] == 0;
 
   if (!v54)
@@ -200,8 +200,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v65);
-      v55 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v65);
+      v55 = sub_2393C7114(reader, 21, 256);
       v58 = v63;
       v57 = v55;
     }
@@ -230,19 +230,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRUnitTestingClusterTestNestedStructListArgumentRequestParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -253,7 +253,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0xB7B600000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

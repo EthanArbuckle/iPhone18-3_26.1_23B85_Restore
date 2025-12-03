@@ -1,37 +1,37 @@
 @interface UIKeyboardGlobeKeyIntroductionView
-- (UIKeyboardGlobeKeyIntroductionView)initWithFrame:(CGRect)a3 completion:(id)a4;
+- (UIKeyboardGlobeKeyIntroductionView)initWithFrame:(CGRect)frame completion:(id)completion;
 - (void)continueButtonTapped;
 - (void)layoutSubviews;
 @end
 
 @implementation UIKeyboardGlobeKeyIntroductionView
 
-- (UIKeyboardGlobeKeyIntroductionView)initWithFrame:(CGRect)a3 completion:(id)a4
+- (UIKeyboardGlobeKeyIntroductionView)initWithFrame:(CGRect)frame completion:(id)completion
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  completionCopy = completion;
   v46.receiver = self;
   v46.super_class = UIKeyboardGlobeKeyIntroductionView;
-  v10 = [(UIView *)&v46 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(UIView *)&v46 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(UIKeyboardGlobeKeyIntroductionView *)v10 setCompletionBlock:v9];
+    [(UIKeyboardGlobeKeyIntroductionView *)height setCompletionBlock:completionCopy];
     [(UIView *)v11 setUserInteractionEnabled:1];
     [(UIView *)v11 setAutoresizingMask:18];
-    v12 = [(UIView *)v11 _inheritedRenderConfig];
-    v13 = -[_UIBackdropView initWithStyle:]([_UIBackdropView alloc], "initWithStyle:", [v12 backdropStyle]);
+    _inheritedRenderConfig = [(UIView *)v11 _inheritedRenderConfig];
+    v13 = -[_UIBackdropView initWithStyle:]([_UIBackdropView alloc], "initWithStyle:", [_inheritedRenderConfig backdropStyle]);
     [(UIKeyboardGlobeKeyIntroductionView *)v11 setBackdropView:v13];
 
-    v14 = [(UIKeyboardGlobeKeyIntroductionView *)v11 backdropView];
-    [(UIView *)v11 addSubview:v14];
+    backdropView = [(UIKeyboardGlobeKeyIntroductionView *)v11 backdropView];
+    [(UIView *)v11 addSubview:backdropView];
 
     v15 = _UILocalizedStringInSystemLanguage(@"Quickly Change Keyboards", @"Quickly Change Keyboards");
     v16 = _UILocalizedStringInSystemLanguage(@"Continue", @"Continue");
-    if ([v12 lightKeyboard])
+    if ([_inheritedRenderConfig lightKeyboard])
     {
       +[UIColor blackColor];
     }
@@ -49,62 +49,62 @@
     v23 = [(UILabel *)v18 initWithFrame:*MEMORY[0x1E695F058], v20, v21, v22];
     [(UIKeyboardGlobeKeyIntroductionView *)v11 setTitleLabel:v23];
 
-    v24 = [(UIKeyboardGlobeKeyIntroductionView *)v11 titleLabel];
-    [v24 setTextColor:v17];
+    titleLabel = [(UIKeyboardGlobeKeyIntroductionView *)v11 titleLabel];
+    [titleLabel setTextColor:v17];
 
-    v25 = [(UIKeyboardGlobeKeyIntroductionView *)v11 titleLabel];
-    [v25 setTextAlignment:1];
+    titleLabel2 = [(UIKeyboardGlobeKeyIntroductionView *)v11 titleLabel];
+    [titleLabel2 setTextAlignment:1];
 
-    v26 = [(UIKeyboardGlobeKeyIntroductionView *)v11 titleLabel];
-    [v26 setText:v15];
+    titleLabel3 = [(UIKeyboardGlobeKeyIntroductionView *)v11 titleLabel];
+    [titleLabel3 setText:v15];
 
-    v27 = [(UIKeyboardGlobeKeyIntroductionView *)v11 titleLabel];
-    [(UIView *)v11 addSubview:v27];
+    titleLabel4 = [(UIKeyboardGlobeKeyIntroductionView *)v11 titleLabel];
+    [(UIView *)v11 addSubview:titleLabel4];
 
     v28 = [[UITextView alloc] initWithFrame:v19, v20, v21, v22];
     [(UIKeyboardGlobeKeyIntroductionView *)v11 setDescriptionLabel:v28];
 
-    v29 = [(UIKeyboardGlobeKeyIntroductionView *)v11 descriptionLabel];
-    [v29 setTextColor:v17];
+    descriptionLabel = [(UIKeyboardGlobeKeyIntroductionView *)v11 descriptionLabel];
+    [descriptionLabel setTextColor:v17];
 
     v30 = +[UIColor clearColor];
-    v31 = [(UIKeyboardGlobeKeyIntroductionView *)v11 descriptionLabel];
-    [v31 setBackgroundColor:v30];
+    descriptionLabel2 = [(UIKeyboardGlobeKeyIntroductionView *)v11 descriptionLabel];
+    [descriptionLabel2 setBackgroundColor:v30];
 
-    v32 = [(UIKeyboardGlobeKeyIntroductionView *)v11 descriptionLabel];
-    [v32 setEditable:0];
+    descriptionLabel3 = [(UIKeyboardGlobeKeyIntroductionView *)v11 descriptionLabel];
+    [descriptionLabel3 setEditable:0];
 
-    v33 = [(UIKeyboardGlobeKeyIntroductionView *)v11 descriptionLabel];
-    [v33 setTextAlignment:1];
+    descriptionLabel4 = [(UIKeyboardGlobeKeyIntroductionView *)v11 descriptionLabel];
+    [descriptionLabel4 setTextAlignment:1];
 
-    v34 = [(UIKeyboardGlobeKeyIntroductionView *)v11 descriptionLabel];
-    [v34 setUserInteractionEnabled:0];
+    descriptionLabel5 = [(UIKeyboardGlobeKeyIntroductionView *)v11 descriptionLabel];
+    [descriptionLabel5 setUserInteractionEnabled:0];
 
-    v35 = [(UIKeyboardGlobeKeyIntroductionView *)v11 descriptionLabel];
-    [(UIView *)v11 addSubview:v35];
+    descriptionLabel6 = [(UIKeyboardGlobeKeyIntroductionView *)v11 descriptionLabel];
+    [(UIView *)v11 addSubview:descriptionLabel6];
 
     v36 = [[UIButton alloc] initWithFrame:v19, v20, v21, v22];
     [(UIKeyboardGlobeKeyIntroductionView *)v11 setContinueButton:v36];
 
-    v37 = [(UIKeyboardGlobeKeyIntroductionView *)v11 continueButton];
-    [v37 setTitle:v16 forState:0];
+    continueButton = [(UIKeyboardGlobeKeyIntroductionView *)v11 continueButton];
+    [continueButton setTitle:v16 forState:0];
 
-    v38 = [(UIKeyboardGlobeKeyIntroductionView *)v11 continueButton];
+    continueButton2 = [(UIKeyboardGlobeKeyIntroductionView *)v11 continueButton];
     v39 = +[UIColor linkColor];
-    [v38 setTitleColor:v39 forState:0];
+    [continueButton2 setTitleColor:v39 forState:0];
 
-    v40 = [(UIKeyboardGlobeKeyIntroductionView *)v11 continueButton];
+    continueButton3 = [(UIKeyboardGlobeKeyIntroductionView *)v11 continueButton];
     v41 = +[UIColor linkColor];
-    [v40 setTitleColor:v41 forState:0];
+    [continueButton3 setTitleColor:v41 forState:0];
 
-    v42 = [(UIKeyboardGlobeKeyIntroductionView *)v11 continueButton];
-    [v42 addTarget:v11 action:sel_continueButtonTapped forControlEvents:64];
+    continueButton4 = [(UIKeyboardGlobeKeyIntroductionView *)v11 continueButton];
+    [continueButton4 addTarget:v11 action:sel_continueButtonTapped forControlEvents:64];
 
-    v43 = [(UIKeyboardGlobeKeyIntroductionView *)v11 continueButton];
-    [(UIView *)v11 addSubview:v43];
+    continueButton5 = [(UIKeyboardGlobeKeyIntroductionView *)v11 continueButton];
+    [(UIView *)v11 addSubview:continueButton5];
 
-    v44 = [MEMORY[0x1E695DF00] date];
-    [(UIKeyboardGlobeKeyIntroductionView *)v11 setStartDate:v44];
+    date = [MEMORY[0x1E695DF00] date];
+    [(UIKeyboardGlobeKeyIntroductionView *)v11 setStartDate:date];
   }
 
   return v11;
@@ -124,8 +124,8 @@
   v106[1] = @"UICTFontTextStyleSubhead";
   v106[2] = @"UICTFontTextStyleFootnote";
   v100 = [MEMORY[0x1E695DEC8] arrayWithObjects:v106 count:3];
-  v4 = [(UIView *)self _inheritedRenderConfig];
-  if ([v4 lightKeyboard])
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  if ([_inheritedRenderConfig lightKeyboard])
   {
     +[UIColor blackColor];
   }
@@ -145,8 +145,8 @@
   v98 = v9;
   [v9 setImage:v11];
 
-  v12 = [off_1E70ECB88 defaultParagraphStyle];
-  v13 = [v12 mutableCopy];
+  defaultParagraphStyle = [off_1E70ECB88 defaultParagraphStyle];
+  v13 = [defaultParagraphStyle mutableCopy];
 
   v97 = v13;
   [v13 setAlignment:1];
@@ -165,8 +165,8 @@
     v102 = [v3 objectAtIndexedSubscript:v14];
     v101 = [off_1E70ECC20 preferredFontDescriptorWithTextStyle:? addingSymbolicTraits:? options:?];
     v17 = [off_1E70ECC18 fontWithDescriptor:0.0 size:?];
-    v18 = [(UIKeyboardGlobeKeyIntroductionView *)self titleLabel];
-    [v18 setFont:v17];
+    titleLabel = [(UIKeyboardGlobeKeyIntroductionView *)self titleLabel];
+    [titleLabel setFont:v17];
 
     v19 = [v100 objectAtIndexedSubscript:v14];
     v20 = [off_1E70ECC18 preferredFontForTextStyle:v19];
@@ -184,16 +184,16 @@
 
     [v24 addAttribute:v92 value:v5 range:{0, objc_msgSend(v24, "length")}];
     [v24 addAttribute:v91 value:v97 range:{0, objc_msgSend(v24, "length")}];
-    v25 = [(UIKeyboardGlobeKeyIntroductionView *)self descriptionLabel];
-    [v25 setAttributedText:v24];
+    descriptionLabel = [(UIKeyboardGlobeKeyIntroductionView *)self descriptionLabel];
+    [descriptionLabel setAttributedText:v24];
 
     [(UIView *)self bounds];
     v27 = v26;
     v29 = v28;
     v31 = v30;
     v33 = v32;
-    v34 = [(UIView *)self window];
-    [v34 safeAreaInsets];
+    window = [(UIView *)self window];
+    [window safeAreaInsets];
     v36 = v35;
     v38 = v37;
     v40 = v39;
@@ -257,9 +257,9 @@
     v48 = v29 + v46;
     v49 = v31 - (v40 + v36);
     v50 = v33 - (v43 + v46);
-    v51 = [(UIKeyboardGlobeKeyIntroductionView *)self titleLabel];
-    v52 = [v51 font];
-    [v52 lineHeight];
+    titleLabel2 = [(UIKeyboardGlobeKeyIntroductionView *)self titleLabel];
+    font = [titleLabel2 font];
+    [font lineHeight];
     v54 = ceil(v53);
 
     v108.origin.x = v47;
@@ -284,8 +284,8 @@
     v110.size.width = v49;
     v110.size.height = v50;
     Width = CGRectGetWidth(v110);
-    v60 = [(UIKeyboardGlobeKeyIntroductionView *)self titleLabel];
-    [v60 setFrame:{MinX, v58, Width, v54}];
+    titleLabel3 = [(UIKeyboardGlobeKeyIntroductionView *)self titleLabel];
+    [titleLabel3 setFrame:{MinX, v58, Width, v54}];
 
     v111.origin.x = v47;
     v111.origin.y = v48;
@@ -302,36 +302,36 @@
     v113.size.width = v49;
     v113.size.height = v50;
     v63 = CGRectGetWidth(v113);
-    v64 = [(UIKeyboardGlobeKeyIntroductionView *)self continueButton];
-    [v64 setFrame:{v61, v62, v63, v54}];
+    continueButton = [(UIKeyboardGlobeKeyIntroductionView *)self continueButton];
+    [continueButton setFrame:{v61, v62, v63, v54}];
 
     v114.origin.x = v47;
     v114.origin.y = v48;
     v114.size.width = v49;
     v114.size.height = v50;
     v65 = CGRectGetMinX(v114);
-    v66 = [(UIKeyboardGlobeKeyIntroductionView *)self titleLabel];
-    [v66 frame];
+    titleLabel4 = [(UIKeyboardGlobeKeyIntroductionView *)self titleLabel];
+    [titleLabel4 frame];
     v67 = CGRectGetMaxY(v115) + 18.0;
     v116.origin.x = v47;
     v116.origin.y = v48;
     v116.size.width = v49;
     v116.size.height = v50;
     v68 = CGRectGetWidth(v116);
-    v69 = [(UIKeyboardGlobeKeyIntroductionView *)self continueButton];
-    [v69 frame];
+    continueButton2 = [(UIKeyboardGlobeKeyIntroductionView *)self continueButton];
+    [continueButton2 frame];
     v70 = CGRectGetMinY(v117);
-    v71 = [(UIKeyboardGlobeKeyIntroductionView *)self titleLabel];
-    [v71 frame];
+    titleLabel5 = [(UIKeyboardGlobeKeyIntroductionView *)self titleLabel];
+    [titleLabel5 frame];
     v72 = v70 - CGRectGetMaxY(v118) + -18.0;
-    v73 = [(UIKeyboardGlobeKeyIntroductionView *)self descriptionLabel];
-    [v73 setFrame:{v65, v67, v68, v72}];
+    descriptionLabel2 = [(UIKeyboardGlobeKeyIntroductionView *)self descriptionLabel];
+    [descriptionLabel2 setFrame:{v65, v67, v68, v72}];
 
-    v74 = [(UIKeyboardGlobeKeyIntroductionView *)self descriptionLabel];
-    [v74 contentSize];
+    descriptionLabel3 = [(UIKeyboardGlobeKeyIntroductionView *)self descriptionLabel];
+    [descriptionLabel3 contentSize];
     v76 = v75;
-    v77 = [(UIKeyboardGlobeKeyIntroductionView *)self descriptionLabel];
-    [v77 frame];
+    descriptionLabel4 = [(UIKeyboardGlobeKeyIntroductionView *)self descriptionLabel];
+    [descriptionLabel4 frame];
     v79 = v78;
 
     if (v76 <= v79)
@@ -347,8 +347,8 @@
     v83 = v82;
     v85 = v84;
     v87 = v86;
-    v88 = [(UIKeyboardGlobeKeyIntroductionView *)self backdropView];
-    [v88 setFrame:{v81, v83, v85, v87}];
+    backdropView = [(UIKeyboardGlobeKeyIntroductionView *)self backdropView];
+    [backdropView setFrame:{v81, v83, v85, v87}];
 
     ++v14;
     v5 = v95;
@@ -362,18 +362,18 @@
 
 - (void)continueButtonTapped
 {
-  v3 = [(UIKeyboardGlobeKeyIntroductionView *)self completionBlock];
+  completionBlock = [(UIKeyboardGlobeKeyIntroductionView *)self completionBlock];
 
-  if (v3)
+  if (completionBlock)
   {
-    v4 = [MEMORY[0x1E695DF00] date];
-    v5 = [(UIKeyboardGlobeKeyIntroductionView *)self startDate];
-    [v4 timeIntervalSinceDate:v5];
+    date = [MEMORY[0x1E695DF00] date];
+    startDate = [(UIKeyboardGlobeKeyIntroductionView *)self startDate];
+    [date timeIntervalSinceDate:startDate];
     v7 = v6;
 
     [UIKBAnalyticsDispatcher globeKeyEducationShown:v7];
-    v8 = [(UIKeyboardGlobeKeyIntroductionView *)self completionBlock];
-    v8[2]();
+    completionBlock2 = [(UIKeyboardGlobeKeyIntroductionView *)self completionBlock];
+    completionBlock2[2]();
   }
 }
 

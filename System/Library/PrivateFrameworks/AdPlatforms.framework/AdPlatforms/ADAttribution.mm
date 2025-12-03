@@ -1,9 +1,9 @@
 @interface ADAttribution
 + (id)sharedInstance;
 - (ADAttribution)init;
-- (void)initiateRequestOnConnection:(id)a3 withBlock:(id)a4;
-- (void)requestAttributionDetailsWithBlock:(id)a3;
-- (void)setServerToTest:(int64_t)a3;
+- (void)initiateRequestOnConnection:(id)connection withBlock:(id)block;
+- (void)requestAttributionDetailsWithBlock:(id)block;
+- (void)setServerToTest:(int64_t)test;
 @end
 
 @implementation ADAttribution
@@ -40,21 +40,21 @@ uint64_t __31__ADAttribution_sharedInstance__block_invoke()
   return result;
 }
 
-- (void)initiateRequestOnConnection:(id)a3 withBlock:(id)a4
+- (void)initiateRequestOnConnection:(id)connection withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 remoteObjectProxy];
+  connectionCopy = connection;
+  blockCopy = block;
+  remoteObjectProxy = [connectionCopy remoteObjectProxy];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __55__ADAttribution_initiateRequestOnConnection_withBlock___block_invoke;
   v11[3] = &unk_278C59E88;
-  v12 = v6;
-  v13 = v7;
+  v12 = connectionCopy;
+  v13 = blockCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
-  [v8 requestAttributionDetailsWithBlock:v11];
+  v9 = connectionCopy;
+  v10 = blockCopy;
+  [remoteObjectProxy requestAttributionDetailsWithBlock:v11];
 }
 
 void __55__ADAttribution_initiateRequestOnConnection_withBlock___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -75,9 +75,9 @@ void __55__ADAttribution_initiateRequestOnConnection_withBlock___block_invoke(ui
   [*(a1 + 40) invalidate];
 }
 
-- (void)requestAttributionDetailsWithBlock:(id)a3
+- (void)requestAttributionDetailsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.ap.adprivacyd.attribution" options:4096];
   v6 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28510DC58];
   [v5 setRemoteObjectInterface:v6];
@@ -88,8 +88,8 @@ void __55__ADAttribution_initiateRequestOnConnection_withBlock___block_invoke(ui
   v10[3] = &unk_278C59EB0;
   v10[4] = self;
   v11 = v5;
-  v12 = v4;
-  v7 = v4;
+  v12 = blockCopy;
+  v7 = blockCopy;
   v8 = v5;
   v9 = MEMORY[0x23EF10F90](v10);
   [v8 setInvalidationHandler:v9];
@@ -134,20 +134,20 @@ void __52__ADAttribution_requestAttributionDetailsWithBlock___block_invoke(uint6
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setServerToTest:(int64_t)a3
+- (void)setServerToTest:(int64_t)test
 {
   v6 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.ap.adprivacyd.attribution" options:4096];
   v4 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28510DC58];
   [v6 setRemoteObjectInterface:v4];
 
   [v6 resume];
-  if ((a3 - 1) >= 5)
+  if ((test - 1) >= 5)
   {
-    a3 = 0;
+    test = 0;
   }
 
   v5 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_30];
-  [v5 setServerToTest:a3];
+  [v5 setServerToTest:test];
 
   [v6 invalidate];
 }

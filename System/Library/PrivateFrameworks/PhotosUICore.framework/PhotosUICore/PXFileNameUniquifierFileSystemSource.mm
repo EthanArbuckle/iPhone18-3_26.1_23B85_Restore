@@ -1,15 +1,15 @@
 @interface PXFileNameUniquifierFileSystemSource
-- (BOOL)fileExistsAtPath:(id)a3;
+- (BOOL)fileExistsAtPath:(id)path;
 - (PXFileNameUniquifierFileSystemSource)init;
 @end
 
 @implementation PXFileNameUniquifierFileSystemSource
 
-- (BOOL)fileExistsAtPath:(id)a3
+- (BOOL)fileExistsAtPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PXFileNameUniquifierFileSystemSource *)self fileManager];
-  v6 = [v5 fileExistsAtPath:v4];
+  pathCopy = path;
+  fileManager = [(PXFileNameUniquifierFileSystemSource *)self fileManager];
+  v6 = [fileManager fileExistsAtPath:pathCopy];
 
   return v6;
 }

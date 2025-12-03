@@ -8,13 +8,13 @@
 - (id)dataAccessGroupSpecifiers;
 - (id)dataAccessSpecifiers;
 - (id)headerSpecifiers;
-- (id)isRecordActivityEnabled:(id)a3;
+- (id)isRecordActivityEnabled:(id)enabled;
 - (id)mostContactedDomainsGroupSpecifiers;
 - (id)saveAppActivityFooterText;
 - (id)specifiers;
 - (id)specifiersForAppPrivacyReport;
 - (id)specifiersForRecordAppActivity;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)websiteNetworkActivityGroupSpecifiers;
 - (unint64_t)controllerMode;
 - (void)dataDidChange;
@@ -22,12 +22,12 @@
 - (void)didTapSave;
 - (void)presentAboutController;
 - (void)provideNavigationDonations;
-- (void)reloadAppAccessHasDataWithCompletion:(id)a3;
+- (void)reloadAppAccessHasDataWithCompletion:(id)completion;
 - (void)reloadAppAndTrackingData;
-- (void)reloadAppNetworkActivitySpecifiersWithCompletion:(id)a3;
-- (void)reloadMostContactedDomainsSpecifiersWithCompletion:(id)a3;
-- (void)reloadWebsiteNetworkActivitySpecifiersWithCompletion:(id)a3;
-- (void)setRecordActivityEnabled:(id)a3 specifier:(id)a4;
+- (void)reloadAppNetworkActivitySpecifiersWithCompletion:(id)completion;
+- (void)reloadMostContactedDomainsSpecifiersWithCompletion:(id)completion;
+- (void)reloadWebsiteNetworkActivitySpecifiersWithCompletion:(id)completion;
+- (void)setRecordActivityEnabled:(id)enabled specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -46,14 +46,14 @@
     v4 = objc_opt_new();
     [(PUIReportController *)v2 setSensorManager:v4];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel_didBecomeActive name:*MEMORY[0x277D76648] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_didBecomeActive name:*MEMORY[0x277D76648] object:0];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v2 selector:sel_dataDidChange name:@"PSUITrackingReportDataHasChanged" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_dataDidChange name:@"PSUITrackingReportDataHasChanged" object:0];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v2 selector:sel_dataDidChange name:@"PUIReportSensorManagerDataHasChangedNotification" object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel_dataDidChange name:@"PUIReportSensorManagerDataHasChangedNotification" object:0];
 
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
@@ -65,8 +65,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PUIReportController;
@@ -77,15 +77,15 @@
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v4 = [v3 bundleURL];
+  bundleURL = [v3 bundleURL];
 
   v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
-  v7 = [v5 initWithKey:@"APP_PRIVACY_REPORT" table:@"Privacy" locale:v6 bundleURL:v4];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v7 = [v5 initWithKey:@"APP_PRIVACY_REPORT" table:@"Privacy" locale:currentLocale bundleURL:bundleURL];
 
   v8 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v9 = [MEMORY[0x277CBEAF8] currentLocale];
-  v10 = [v8 initWithKey:@"PRIVACY" table:@"Privacy" locale:v9 bundleURL:v4];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+  v10 = [v8 initWithKey:@"PRIVACY" table:@"Privacy" locale:currentLocale2 bundleURL:bundleURL];
 
   v14[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
@@ -141,8 +141,8 @@
   if ([(PUIReportController *)self reportEnabled])
   {
     v10 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"SAVE_APP_ACTIVITY_GROUP"];
-    v11 = [(PUIReportController *)self saveAppActivityFooterText];
-    [v10 setObject:v11 forKeyedSubscript:v6];
+    saveAppActivityFooterText = [(PUIReportController *)self saveAppActivityFooterText];
+    [v10 setObject:saveAppActivityFooterText forKeyedSubscript:v6];
 
     [v3 addObject:v10];
     v12 = MEMORY[0x277D3FAD8];
@@ -383,8 +383,8 @@ LABEL_11:
   v10 = [v8 actionWithHandler:v14];
   v11 = [v7 initWithBarButtonSystemItem:0 primaryAction:v10];
 
-  v12 = [v9 navigationItem];
-  [v12 setRightBarButtonItem:v11];
+  navigationItem = [v9 navigationItem];
+  [navigationItem setRightBarButtonItem:v11];
 
   v13 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v9];
   [(PUIReportController *)self presentModalViewController:v13 withTransition:3];
@@ -400,13 +400,13 @@ void __45__PUIReportController_presentAboutController__block_invoke(uint64_t a1)
 {
   v3 = objc_opt_new();
   [(PUIReportController *)self setCurrentControllerMode:[(PUIReportController *)self controllerMode]];
-  v4 = [(PUIReportController *)self controllerMode];
+  controllerMode = [(PUIReportController *)self controllerMode];
   v5 = MEMORY[0x277D3FD78];
   v6 = MEMORY[0x277D3FD80];
-  if (!v4)
+  if (!controllerMode)
   {
-    v12 = [(PUIReportController *)self navigationItem];
-    [v12 setRightBarButtonItem:0];
+    navigationItem = [(PUIReportController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:0];
 
     v11 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:self set:0 get:0 detail:0 cell:-1 edit:0];
     [v11 setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
@@ -417,13 +417,13 @@ void __45__PUIReportController_presentAboutController__block_invoke(uint64_t a1)
     [v3 addObject:v11];
     v14 = MEMORY[0x277D3FAD8];
     v15 = PUI_LocalizedStringForAppReport(@"ENABLE_REPORT");
-    v16 = [v14 preferenceSpecifierNamed:v15 target:self set:0 get:0 detail:0 cell:13 edit:0];
+    mostContactedDomainsGroupSpecifiers = [v14 preferenceSpecifierNamed:v15 target:self set:0 get:0 detail:0 cell:13 edit:0];
 
-    [v16 setIdentifier:@"ENABLE_REPORT"];
-    [v16 setButtonAction:sel_didTapTurnOnAppPrivacyReport];
-    [v16 setObject:&unk_28772B420 forKeyedSubscript:*v5];
-    [v16 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*v6];
-    [v3 addObject:v16];
+    [mostContactedDomainsGroupSpecifiers setIdentifier:@"ENABLE_REPORT"];
+    [mostContactedDomainsGroupSpecifiers setButtonAction:sel_didTapTurnOnAppPrivacyReport];
+    [mostContactedDomainsGroupSpecifiers setObject:&unk_28772B420 forKeyedSubscript:*v5];
+    [mostContactedDomainsGroupSpecifiers setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*v6];
+    [v3 addObject:mostContactedDomainsGroupSpecifiers];
 LABEL_7:
 
     goto LABEL_8;
@@ -437,37 +437,37 @@ LABEL_7:
     }
 
     v11 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:9 target:self action:sel_didTapSave];
-    v17 = [(PUIReportController *)self navigationItem];
-    [v17 setRightBarButtonItem:v11];
+    navigationItem2 = [(PUIReportController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:v11];
 
-    v18 = [(PUIReportController *)self headerSpecifiers];
-    [(PUIReportController *)self setLearnMoreHeader:v18];
+    headerSpecifiers = [(PUIReportController *)self headerSpecifiers];
+    [(PUIReportController *)self setLearnMoreHeader:headerSpecifiers];
 
-    v19 = [(PUIReportController *)self learnMoreHeader];
-    [v3 addObjectsFromArray:v19];
+    learnMoreHeader = [(PUIReportController *)self learnMoreHeader];
+    [v3 addObjectsFromArray:learnMoreHeader];
 
-    v20 = [(PUIReportController *)self dataAccessGroupSpecifiers];
-    [(PUIReportController *)self setSensorActivityHeader:v20];
+    dataAccessGroupSpecifiers = [(PUIReportController *)self dataAccessGroupSpecifiers];
+    [(PUIReportController *)self setSensorActivityHeader:dataAccessGroupSpecifiers];
 
-    v21 = [(PUIReportController *)self appNetworkActivityGroupSpecifiers];
-    [(PUIReportController *)self setAppNetworkActivityHeader:v21];
+    appNetworkActivityGroupSpecifiers = [(PUIReportController *)self appNetworkActivityGroupSpecifiers];
+    [(PUIReportController *)self setAppNetworkActivityHeader:appNetworkActivityGroupSpecifiers];
 
-    v22 = [(PUIReportController *)self websiteNetworkActivityGroupSpecifiers];
-    [(PUIReportController *)self setWebsiteNetworkActivityHeader:v22];
+    websiteNetworkActivityGroupSpecifiers = [(PUIReportController *)self websiteNetworkActivityGroupSpecifiers];
+    [(PUIReportController *)self setWebsiteNetworkActivityHeader:websiteNetworkActivityGroupSpecifiers];
 
-    v16 = [(PUIReportController *)self mostContactedDomainsGroupSpecifiers];
-    [(PUIReportController *)self setDomainNetworkActivityHeader:v16];
+    mostContactedDomainsGroupSpecifiers = [(PUIReportController *)self mostContactedDomainsGroupSpecifiers];
+    [(PUIReportController *)self setDomainNetworkActivityHeader:mostContactedDomainsGroupSpecifiers];
     goto LABEL_7;
   }
 
-  v7 = [(PUIReportController *)self navigationItem];
-  [v7 setRightBarButtonItem:0];
+  navigationItem3 = [(PUIReportController *)self navigationItem];
+  [navigationItem3 setRightBarButtonItem:0];
 
-  v8 = [(PUIReportController *)self headerSpecifiers];
-  [(PUIReportController *)self setLearnMoreHeader:v8];
+  headerSpecifiers2 = [(PUIReportController *)self headerSpecifiers];
+  [(PUIReportController *)self setLearnMoreHeader:headerSpecifiers2];
 
-  v9 = [(PUIReportController *)self learnMoreHeader];
-  [v3 addObjectsFromArray:v9];
+  learnMoreHeader2 = [(PUIReportController *)self learnMoreHeader];
+  [v3 addObjectsFromArray:learnMoreHeader2];
 
   v10 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"NO_DATA_HEADER"];
   [v3 addObject:v10];
@@ -539,8 +539,8 @@ LABEL_9:
 
 - (id)dataAccessSpecifiers
 {
-  v3 = [(PUIReportController *)self sensorManager];
-  v4 = [PUIReportSensorListController appSpecifiersFromManager:v3];
+  sensorManager = [(PUIReportController *)self sensorManager];
+  v4 = [PUIReportSensorListController appSpecifiersFromManager:sensorManager];
   v5 = [v4 mutableCopy];
 
   v6 = [v5 count];
@@ -565,8 +565,8 @@ LABEL_9:
     v13 = [v11 preferenceSpecifierNamed:v12 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
     [v13 setIdentifier:@"SHOW_ALL_SENSOR"];
-    v14 = [(PUIReportController *)self sensorManager];
-    [v13 setObject:v14 forKeyedSubscript:@"PUIReportSensorManagerKey"];
+    sensorManager2 = [(PUIReportController *)self sensorManager];
+    [v13 setObject:sensorManager2 forKeyedSubscript:@"PUIReportSensorManagerKey"];
 
     [v10 addObject:v13];
   }
@@ -589,16 +589,16 @@ LABEL_9:
   return v2;
 }
 
-- (void)reloadAppNetworkActivitySpecifiersWithCompletion:(id)a3
+- (void)reloadAppNetworkActivitySpecifiersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __72__PUIReportController_reloadAppNetworkActivitySpecifiersWithCompletion___block_invoke;
   v6[3] = &unk_279BA2060;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [PUIReportAppListController appSpecifiersWithLimit:6 completion:v6];
 }
 
@@ -658,16 +658,16 @@ void __72__PUIReportController_reloadAppNetworkActivitySpecifiersWithCompletion_
   return v2;
 }
 
-- (void)reloadWebsiteNetworkActivitySpecifiersWithCompletion:(id)a3
+- (void)reloadWebsiteNetworkActivitySpecifiersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __76__PUIReportController_reloadWebsiteNetworkActivitySpecifiersWithCompletion___block_invoke;
   v6[3] = &unk_279BA2060;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [PUIReportWebsiteListController websiteSpecifiersWithLimit:6 showDetail:0 completion:v6];
 }
 
@@ -726,16 +726,16 @@ void __76__PUIReportController_reloadWebsiteNetworkActivitySpecifiersWithComplet
   return v2;
 }
 
-- (void)reloadMostContactedDomainsSpecifiersWithCompletion:(id)a3
+- (void)reloadMostContactedDomainsSpecifiersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __74__PUIReportController_reloadMostContactedDomainsSpecifiersWithCompletion___block_invoke;
   v6[3] = &unk_279BA2060;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [PUIReportDomainListController domainSpecifiersWithLimit:6 showDates:0 showAppAndWebsiteCounts:1 showIPAddresses:0 completion:v6];
 }
 
@@ -781,10 +781,10 @@ void __74__PUIReportController_reloadMostContactedDomainsSpecifiersWithCompletio
 
 - (unint64_t)controllerMode
 {
-  v3 = [(PUIReportController *)self reportManager];
-  v4 = [v3 trackingReportEnabled];
+  reportManager = [(PUIReportController *)self reportManager];
+  trackingReportEnabled = [reportManager trackingReportEnabled];
 
-  if (!v4)
+  if (!trackingReportEnabled)
   {
     return 0;
   }
@@ -820,7 +820,7 @@ void __74__PUIReportController_reloadMostContactedDomainsSpecifiersWithCompletio
   }
 
   v8 = dispatch_group_create();
-  v9 = [(PUIReportController *)self reportManager];
+  reportManager = [(PUIReportController *)self reportManager];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __47__PUIReportController_reloadAppAndTrackingData__block_invoke;
@@ -829,7 +829,7 @@ void __74__PUIReportController_reloadMostContactedDomainsSpecifiersWithCompletio
   v13 = v8;
   v14 = v5;
   v10 = v8;
-  [v9 reloadEnabledWithCompletion:v12];
+  [reportManager reloadEnabledWithCompletion:v12];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -924,14 +924,14 @@ void __47__PUIReportController_reloadAppAndTrackingData__block_invoke_7(uint64_t
     goto LABEL_6;
   }
 
-  v3 = [(PUIReportController *)self reportManager];
-  v4 = [v3 enabledDate];
+  reportManager = [(PUIReportController *)self reportManager];
+  enabledDate = [reportManager enabledDate];
 
-  if (v4)
+  if (enabledDate)
   {
-    v5 = [(PUIReportController *)self reportManager];
-    v6 = [v5 enabledDate];
-    [v6 timeIntervalSinceNow];
+    reportManager2 = [(PUIReportController *)self reportManager];
+    enabledDate2 = [reportManager2 enabledDate];
+    [enabledDate2 timeIntervalSinceNow];
     v8 = fabs(v7);
 
     if (v8 > 604800.0)
@@ -968,30 +968,30 @@ LABEL_9:
 
 - (BOOL)eitherSourceHasData
 {
-  v3 = [(PUIReportController *)self reportManager];
-  v4 = ([v3 hadDataInLastQuery] & 1) != 0 || -[PUIReportController appAccessHasData](self, "appAccessHasData");
+  reportManager = [(PUIReportController *)self reportManager];
+  v4 = ([reportManager hadDataInLastQuery] & 1) != 0 || -[PUIReportController appAccessHasData](self, "appAccessHasData");
 
   return v4;
 }
 
 - (BOOL)appAccessHasData
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PUIReportAppAccessHasData"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PUIReportAppAccessHasData"];
 
   return v3;
 }
 
-- (void)reloadAppAccessHasDataWithCompletion:(id)a3
+- (void)reloadAppAccessHasDataWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = dispatch_get_global_queue(25, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__PUIReportController_reloadAppAccessHasDataWithCompletion___block_invoke;
   block[3] = &unk_279BA1038;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(v4, block);
 }
 
@@ -1077,56 +1077,56 @@ LABEL_7:
   v2 = objc_opt_new();
   if ([v2 trackingReportEnabled])
   {
-    v3 = [getPAAccessReaderClass() sharedInstance];
-    v4 = [v3 loggingEnabled];
+    sharedInstance = [getPAAccessReaderClass() sharedInstance];
+    loggingEnabled = [sharedInstance loggingEnabled];
   }
 
   else
   {
-    v4 = 0;
+    loggingEnabled = 0;
   }
 
-  return v4;
+  return loggingEnabled;
 }
 
 - (BOOL)isRecordActivityEnabled
 {
-  v2 = [(PUIReportController *)self reportManager];
-  if ([v2 trackingReportEnabled])
+  reportManager = [(PUIReportController *)self reportManager];
+  if ([reportManager trackingReportEnabled])
   {
-    v3 = [getPAAccessReaderClass() sharedInstance];
-    v4 = [v3 loggingEnabled];
+    sharedInstance = [getPAAccessReaderClass() sharedInstance];
+    loggingEnabled = [sharedInstance loggingEnabled];
   }
 
   else
   {
-    v4 = 0;
+    loggingEnabled = 0;
   }
 
-  return v4;
+  return loggingEnabled;
 }
 
-- (id)isRecordActivityEnabled:(id)a3
+- (id)isRecordActivityEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(PUIReportController *)self isRecordActivityEnabled];
+  isRecordActivityEnabled = [(PUIReportController *)self isRecordActivityEnabled];
 
-  return [v3 numberWithBool:v4];
+  return [v3 numberWithBool:isRecordActivityEnabled];
 }
 
-- (void)setRecordActivityEnabled:(id)a3 specifier:(id)a4
+- (void)setRecordActivityEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __58__PUIReportController_setRecordActivityEnabled_specifier___block_invoke;
   aBlock[3] = &unk_279BA1878;
   aBlock[4] = self;
   v8 = _Block_copy(aBlock);
-  if ([v6 BOOLValue])
+  if ([enabledCopy BOOLValue])
   {
-    v8[2](v8, [v6 BOOLValue]);
+    v8[2](v8, [enabledCopy BOOLValue]);
   }
 
   else
@@ -1143,7 +1143,7 @@ LABEL_7:
     v22[2] = __58__PUIReportController_setRecordActivityEnabled_specifier___block_invoke_2;
     v22[3] = &unk_279BA1178;
     v22[4] = self;
-    v23 = v7;
+    v23 = specifierCopy;
     v15 = [v13 actionWithTitle:v14 style:1 handler:v22];
     [v12 addAction:v15];
 
@@ -1154,7 +1154,7 @@ LABEL_7:
     v19[2] = __58__PUIReportController_setRecordActivityEnabled_specifier___block_invoke_3;
     v19[3] = &unk_279BA2120;
     v21 = v8;
-    v20 = v6;
+    v20 = enabledCopy;
     v18 = [v16 actionWithTitle:v17 style:0 handler:v19];
     [v12 addAction:v18];
 
@@ -1193,23 +1193,23 @@ uint64_t __58__PUIReportController_setRecordActivityEnabled_specifier___block_in
 - (void)didTapSave
 {
   [MEMORY[0x277D4D8F0] trackingAppActivitySaved];
-  v3 = [(PUIReportController *)self saveAppActivitySpecifier];
-  [v3 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"PUIActivityButtonCellIsActive"];
+  saveAppActivitySpecifier = [(PUIReportController *)self saveAppActivitySpecifier];
+  [saveAppActivitySpecifier setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"PUIActivityButtonCellIsActive"];
 
   v4 = PUI_LocalizedStringForTrackers(@"SAVING");
-  v5 = [(PUIReportController *)self saveAppActivitySpecifier];
-  [v5 setName:v4];
+  saveAppActivitySpecifier2 = [(PUIReportController *)self saveAppActivitySpecifier];
+  [saveAppActivitySpecifier2 setName:v4];
 
-  v6 = [(PUIReportController *)self saveAppActivitySpecifier];
-  [(PUIReportController *)self reloadSpecifier:v6];
+  saveAppActivitySpecifier3 = [(PUIReportController *)self saveAppActivitySpecifier];
+  [(PUIReportController *)self reloadSpecifier:saveAppActivitySpecifier3];
 
-  v7 = [(PUIReportController *)self reportManager];
+  reportManager = [(PUIReportController *)self reportManager];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __33__PUIReportController_didTapSave__block_invoke;
   v8[3] = &unk_279BA0B28;
   v8[4] = self;
-  [v7 reloadDataWithCompletion:v8];
+  [reportManager reloadDataWithCompletion:v8];
 }
 
 void __33__PUIReportController_didTapSave__block_invoke(uint64_t a1)
@@ -1377,13 +1377,13 @@ void __33__PUIReportController_didTapSave__block_invoke_2(uint64_t a1)
   [v5 reloadSpecifier:v6];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v20.receiver = self;
   v20.super_class = PUIReportController;
-  v6 = a4;
-  v7 = [(PUIReportController *)&v20 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(PUIReportController *)self specifierAtIndexPath:v6, v20.receiver, v20.super_class];
+  pathCopy = path;
+  v7 = [(PUIReportController *)&v20 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(PUIReportController *)self specifierAtIndexPath:pathCopy, v20.receiver, v20.super_class];
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -1398,9 +1398,9 @@ void __33__PUIReportController_didTapSave__block_invoke_2(uint64_t a1)
       v13 = v7;
       if ([v13 type] == 13)
       {
-        v14 = [MEMORY[0x277D75348] systemRedColor];
-        v15 = [v13 textLabel];
-        [v15 setTextColor:v14];
+        systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+        textLabel = [v13 textLabel];
+        [textLabel setTextColor:systemRedColor];
 
         goto LABEL_9;
       }

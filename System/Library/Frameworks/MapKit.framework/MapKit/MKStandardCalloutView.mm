@@ -1,52 +1,52 @@
 @interface MKStandardCalloutView
-- (CGPoint)_originForScale:(double)a3;
+- (CGPoint)_originForScale:(double)scale;
 - (CGPoint)anchorPoint;
 - (CGPoint)offset;
-- (MKStandardCalloutView)initWithAnnotationView:(id)a3;
-- (int64_t)_calculateAnchorPosition:(CGPoint *)a3 visibleRect:(CGRect *)a4;
+- (MKStandardCalloutView)initWithAnnotationView:(id)view;
+- (int64_t)_calculateAnchorPosition:(CGPoint *)position visibleRect:(CGRect *)rect;
 - (void)_adaptToUserInterfaceStyle;
-- (void)_addAccessoryTargetForView:(id)a3;
-- (void)_calculateActualAnchorPoint:(CGPoint *)a3 frame:(CGRect *)a4 forDesiredAnchorPoint:(CGPoint)a5 boundaryRect:(CGRect)a6;
-- (void)_calloutAccessoryControlTapped:(id)a3;
+- (void)_addAccessoryTargetForView:(id)view;
+- (void)_calculateActualAnchorPoint:(CGPoint *)point frame:(CGRect *)frame forDesiredAnchorPoint:(CGPoint)anchorPoint boundaryRect:(CGRect)rect;
+- (void)_calloutAccessoryControlTapped:(id)tapped;
 - (void)_frameDidChange;
-- (void)_layoutSubviews:(BOOL)a3;
+- (void)_layoutSubviews:(BOOL)subviews;
 - (void)_markDidMoveCalled;
-- (void)_removeAccessoryTargetForView:(id)a3;
-- (void)_runBounceAnimationWithCompletionBlock:(id)a3;
+- (void)_removeAccessoryTargetForView:(id)view;
+- (void)_runBounceAnimationWithCompletionBlock:(id)block;
 - (void)_setNeedsCalloutUpdate;
-- (void)_setOriginForScale:(double)a3;
-- (void)_showFromAnchorPoint:(CGPoint)a3 boundaryRect:(CGRect)a4 animate:(BOOL)a5 completionBlock:(id)a6;
-- (void)_startObservingAnnotationView:(id)a3;
-- (void)_stopObservingAnnotationView:(id)a3;
-- (void)_updateCalloutAnimated:(BOOL)a3;
-- (void)animationDidStop:(id)a3 finished:(id)a4 context:(void *)a5;
+- (void)_setOriginForScale:(double)scale;
+- (void)_showFromAnchorPoint:(CGPoint)point boundaryRect:(CGRect)rect animate:(BOOL)animate completionBlock:(id)block;
+- (void)_startObservingAnnotationView:(id)view;
+- (void)_stopObservingAnnotationView:(id)view;
+- (void)_updateCalloutAnimated:(BOOL)animated;
+- (void)animationDidStop:(id)stop finished:(id)finished context:(void *)context;
 - (void)annotationViewFrameDidChange;
 - (void)completeBounceAnimation;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)dismissAnimated:(BOOL)a3 completionBlock:(id)a4;
-- (void)forceAnchorPosition:(int64_t)a3;
-- (void)motionEffectDidUpdate:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setDetailView:(id)a3 animated:(BOOL)a4;
-- (void)setFrame:(CGRect)a3;
-- (void)setLeftView:(id)a3 backgroundColor:(id)a4 animated:(BOOL)a5;
-- (void)setRightView:(id)a3 animated:(BOOL)a4;
-- (void)showAnimated:(BOOL)a3 completionBlock:(id)a4;
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
+- (void)dismissAnimated:(BOOL)animated completionBlock:(id)block;
+- (void)forceAnchorPosition:(int64_t)position;
+- (void)motionEffectDidUpdate:(id)update;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setDetailView:(id)view animated:(BOOL)animated;
+- (void)setFrame:(CGRect)frame;
+- (void)setLeftView:(id)view backgroundColor:(id)color animated:(BOOL)animated;
+- (void)setRightView:(id)view animated:(BOOL)animated;
+- (void)showAnimated:(BOOL)animated completionBlock:(id)block;
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
 - (void)updateConstraints;
 @end
 
 @implementation MKStandardCalloutView
 
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [(MKStandardCalloutView *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
-  v8 = [v5 userInterfaceStyle];
+  collectionCopy = collection;
+  traitCollection = [(MKStandardCalloutView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  userInterfaceStyle2 = [collectionCopy userInterfaceStyle];
 
-  if (v7 != v8)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
 
     [(MKStandardCalloutView *)self _adaptToUserInterfaceStyle];
@@ -62,12 +62,12 @@
     [(UIVisualEffectView *)self->_backdropView setEffect:v9];
 
     [(UIVisualEffectView *)self->_backdropView setBackgroundColor:0];
-    v10 = [(MKStandardCalloutView *)self traitCollection];
-    v11 = [v10 userInterfaceStyle];
+    traitCollection = [(MKStandardCalloutView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    v7 = [(MKStandardCalloutView *)self layer];
-    v12 = v7;
-    if (v11 == 2)
+    layer = [(MKStandardCalloutView *)self layer];
+    v12 = layer;
+    if (userInterfaceStyle == 2)
     {
       LODWORD(v8) = 1050253722;
     }
@@ -89,12 +89,12 @@
     [(UIVisualEffectView *)self->_backdropView setEffect:v4];
 
     [(UIVisualEffectView *)self->_backdropView setBackgroundColor:0];
-    v5 = [(MKStandardCalloutView *)self traitCollection];
-    v6 = [v5 userInterfaceStyle];
+    traitCollection2 = [(MKStandardCalloutView *)self traitCollection];
+    userInterfaceStyle2 = [traitCollection2 userInterfaceStyle];
 
-    v7 = [(MKStandardCalloutView *)self layer];
-    v12 = v7;
-    if (v6 == 2)
+    layer = [(MKStandardCalloutView *)self layer];
+    v12 = layer;
+    if (userInterfaceStyle2 == 2)
     {
       LODWORD(v8) = 1051931443;
     }
@@ -105,28 +105,28 @@
     }
   }
 
-  [v7 setShadowOpacity:v8];
+  [layer setShadowOpacity:v8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v13 = *MEMORY[0x1E696A500];
-  v14 = [v12 objectForKeyedSubscript:*MEMORY[0x1E696A500]];
-  v15 = [v12 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+  v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A500]];
+  v15 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
 
   if (v14 != v15)
   {
-    if (([v10 isEqualToString:@"annotation.title"] & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"annotation.subtitle") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"detailCalloutAccessoryView") & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"calloutOffset"))
+    if (([pathCopy isEqualToString:@"annotation.title"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"annotation.subtitle") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"detailCalloutAccessoryView") & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"calloutOffset"))
     {
       [(MKStandardCalloutView *)self _setNeedsCalloutUpdate];
     }
 
-    else if (([v10 isEqualToString:@"leftCalloutAccessoryView"] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"rightCalloutAccessoryView"))
+    else if (([pathCopy isEqualToString:@"leftCalloutAccessoryView"] & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"rightCalloutAccessoryView"))
     {
-      v16 = [v12 objectForKey:v13];
+      v16 = [changeCopy objectForKey:v13];
       [(MKStandardCalloutView *)self _removeAccessoryTargetForView:v16];
       [(MKStandardCalloutView *)self _setNeedsCalloutUpdate];
     }
@@ -135,45 +135,45 @@
     {
       v17.receiver = self;
       v17.super_class = MKStandardCalloutView;
-      [(MKStandardCalloutView *)&v17 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+      [(MKStandardCalloutView *)&v17 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     }
   }
 }
 
-- (void)_stopObservingAnnotationView:(id)a3
+- (void)_stopObservingAnnotationView:(id)view
 {
   if ((*&self->_flags & 0x10) != 0)
   {
-    v4 = a3;
-    [v4 removeObserver:self forKeyPath:@"annotation.title"];
-    [v4 removeObserver:self forKeyPath:@"annotation.subtitle"];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 removeObserver:self name:@"MKAnnotationCalloutInfoDidChangeNotification" object:0];
+    viewCopy = view;
+    [viewCopy removeObserver:self forKeyPath:@"annotation.title"];
+    [viewCopy removeObserver:self forKeyPath:@"annotation.subtitle"];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"MKAnnotationCalloutInfoDidChangeNotification" object:0];
 
-    [v4 removeObserver:self forKeyPath:@"leftCalloutAccessoryView"];
-    [v4 removeObserver:self forKeyPath:@"rightCalloutAccessoryView"];
-    [v4 removeObserver:self forKeyPath:@"detailCalloutAccessoryView"];
-    [v4 removeObserver:self forKeyPath:@"calloutOffset"];
+    [viewCopy removeObserver:self forKeyPath:@"leftCalloutAccessoryView"];
+    [viewCopy removeObserver:self forKeyPath:@"rightCalloutAccessoryView"];
+    [viewCopy removeObserver:self forKeyPath:@"detailCalloutAccessoryView"];
+    [viewCopy removeObserver:self forKeyPath:@"calloutOffset"];
 
     *&self->_flags &= ~0x10u;
   }
 }
 
-- (void)_startObservingAnnotationView:(id)a3
+- (void)_startObservingAnnotationView:(id)view
 {
   if ((*&self->_flags & 0x10) == 0)
   {
-    v4 = a3;
-    [v4 addObserver:self forKeyPath:@"annotation.title" options:3 context:0];
-    [v4 addObserver:self forKeyPath:@"annotation.subtitle" options:3 context:0];
-    [v4 addObserver:self forKeyPath:@"leftCalloutAccessoryView" options:3 context:0];
-    [v4 addObserver:self forKeyPath:@"rightCalloutAccessoryView" options:3 context:0];
-    [v4 addObserver:self forKeyPath:@"detailCalloutAccessoryView" options:3 context:0];
-    [v4 addObserver:self forKeyPath:@"calloutOffset" options:0 context:0];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    v6 = [v4 annotation];
+    viewCopy = view;
+    [viewCopy addObserver:self forKeyPath:@"annotation.title" options:3 context:0];
+    [viewCopy addObserver:self forKeyPath:@"annotation.subtitle" options:3 context:0];
+    [viewCopy addObserver:self forKeyPath:@"leftCalloutAccessoryView" options:3 context:0];
+    [viewCopy addObserver:self forKeyPath:@"rightCalloutAccessoryView" options:3 context:0];
+    [viewCopy addObserver:self forKeyPath:@"detailCalloutAccessoryView" options:3 context:0];
+    [viewCopy addObserver:self forKeyPath:@"calloutOffset" options:0 context:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    annotation = [viewCopy annotation];
 
-    [v5 addObserver:self selector:sel__updateCallout name:@"MKAnnotationCalloutInfoDidChangeNotification" object:v6];
+    [defaultCenter addObserver:self selector:sel__updateCallout name:@"MKAnnotationCalloutInfoDidChangeNotification" object:annotation];
     *&self->_flags |= 0x10u;
   }
 }
@@ -204,30 +204,30 @@ _BYTE *__47__MKStandardCalloutView__setNeedsCalloutUpdate__block_invoke(uint64_t
   return result;
 }
 
-- (void)_updateCalloutAnimated:(BOOL)a3
+- (void)_updateCalloutAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(MKCalloutView *)self annotationView];
+  animatedCopy = animated;
+  annotationView = [(MKCalloutView *)self annotationView];
   *&self->_flags &= ~8u;
-  v17 = v5;
-  if (v3)
+  v17 = annotationView;
+  if (animatedCopy)
   {
     [(UIView *)self _mapkit_layoutBelowIfNeeded];
-    v5 = v17;
+    annotationView = v17;
   }
 
-  v6 = [v5 annotation];
-  v7 = [(MKStandardCalloutView *)self hideTitle];
+  annotation = [annotationView annotation];
+  hideTitle = [(MKStandardCalloutView *)self hideTitle];
   if ([(MKStandardCalloutView *)self hideTitle])
   {
-    v8 = !v7;
+    v8 = !hideTitle;
     [(MKStandardCalloutView *)self setTitle:0];
   }
 
-  else if ((objc_opt_respondsToSelector() & 1) != 0 && ([v6 title], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "length"), v9, v10))
+  else if ((objc_opt_respondsToSelector() & 1) != 0 && ([annotation title], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "length"), v9, v10))
   {
-    v11 = [v6 title];
-    [(MKStandardCalloutView *)self setTitle:v11];
+    title = [annotation title];
+    [(MKStandardCalloutView *)self setTitle:title];
 
     v8 = 1;
   }
@@ -240,76 +240,76 @@ _BYTE *__47__MKStandardCalloutView__setNeedsCalloutUpdate__block_invoke(uint64_t
 
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v6 subtitle];
+    subtitle = [annotation subtitle];
   }
 
   else
   {
-    v12 = 0;
+    subtitle = 0;
   }
 
-  v13 = [v17 leftCalloutAccessoryView];
-  v14 = [v17 rightCalloutAccessoryView];
-  [(MKStandardCalloutView *)self setLeftView:v13 backgroundColor:0 animated:v3];
-  [(MKStandardCalloutView *)self setRightView:v14 animated:v3];
-  v15 = [v17 detailCalloutAccessoryView];
+  leftCalloutAccessoryView = [v17 leftCalloutAccessoryView];
+  rightCalloutAccessoryView = [v17 rightCalloutAccessoryView];
+  [(MKStandardCalloutView *)self setLeftView:leftCalloutAccessoryView backgroundColor:0 animated:animatedCopy];
+  [(MKStandardCalloutView *)self setRightView:rightCalloutAccessoryView animated:animatedCopy];
+  detailCalloutAccessoryView = [v17 detailCalloutAccessoryView];
 
-  if (v15)
+  if (detailCalloutAccessoryView)
   {
-    v16 = [v17 detailCalloutAccessoryView];
-    [(MKStandardCalloutView *)self setDetailView:v16 animated:v3];
+    detailCalloutAccessoryView2 = [v17 detailCalloutAccessoryView];
+    [(MKStandardCalloutView *)self setDetailView:detailCalloutAccessoryView2 animated:animatedCopy];
   }
 
   else if (v8)
   {
-    [(MKStandardCalloutView *)self setDetailView:0 animated:v3];
-    [(MKStandardCalloutView *)self setSubtitle:v12 animated:v3];
+    [(MKStandardCalloutView *)self setDetailView:0 animated:animatedCopy];
+    [(MKStandardCalloutView *)self setSubtitle:subtitle animated:animatedCopy];
   }
 
-  [(MKStandardCalloutView *)self _addAccessoryTargetForView:v13];
-  [(MKStandardCalloutView *)self _addAccessoryTargetForView:v14];
-  if (v3)
+  [(MKStandardCalloutView *)self _addAccessoryTargetForView:leftCalloutAccessoryView];
+  [(MKStandardCalloutView *)self _addAccessoryTargetForView:rightCalloutAccessoryView];
+  if (animatedCopy)
   {
     [(MKStandardCalloutView *)self _layoutSubviews:1];
   }
 }
 
-- (void)_removeAccessoryTargetForView:(id)a3
+- (void)_removeAccessoryTargetForView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 removeTarget:self action:sel__calloutAccessoryControlTapped_ forControlEvents:64];
+    [viewCopy removeTarget:self action:sel__calloutAccessoryControlTapped_ forControlEvents:64];
   }
 }
 
-- (void)_addAccessoryTargetForView:(id)a3
+- (void)_addAccessoryTargetForView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 addTarget:self action:sel__calloutAccessoryControlTapped_ forControlEvents:64];
+    [viewCopy addTarget:self action:sel__calloutAccessoryControlTapped_ forControlEvents:64];
   }
 }
 
-- (void)_calloutAccessoryControlTapped:(id)a3
+- (void)_calloutAccessoryControlTapped:(id)tapped
 {
-  v4 = a3;
-  v7 = [(MKCalloutView *)self annotationView];
-  v5 = [v7 _mapView];
-  v6 = [v7 _containerView];
-  [v5 annotationContainer:v6 annotationView:v7 calloutAccessoryControlTapped:v4];
+  tappedCopy = tapped;
+  annotationView = [(MKCalloutView *)self annotationView];
+  _mapView = [annotationView _mapView];
+  _containerView = [annotationView _containerView];
+  [_mapView annotationContainer:_containerView annotationView:annotationView calloutAccessoryControlTapped:tappedCopy];
 }
 
-- (void)dismissAnimated:(BOOL)a3 completionBlock:(id)a4
+- (void)dismissAnimated:(BOOL)animated completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(MKCalloutView *)self annotationView];
-  [(MKStandardCalloutView *)self _stopObservingAnnotationView:v7];
+  blockCopy = block;
+  annotationView = [(MKCalloutView *)self annotationView];
+  [(MKStandardCalloutView *)self _stopObservingAnnotationView:annotationView];
   self->_dismissed = 1;
-  if (a3)
+  if (animated)
   {
     v8 = MEMORY[0x1E69DD250];
     UIAnimationDragCoefficient();
@@ -323,10 +323,10 @@ _BYTE *__47__MKStandardCalloutView__setNeedsCalloutUpdate__block_invoke(uint64_t
     v14 = 3221225472;
     v15 = __57__MKStandardCalloutView_dismissAnimated_completionBlock___block_invoke_2;
     v16 = &unk_1E76C9DD8;
-    v17 = v6;
+    v17 = blockCopy;
     [v8 _mapkit_animateWithDuration:v18 animations:&v13 completion:v10];
 
-    if (!v7)
+    if (!annotationView)
     {
       goto LABEL_6;
     }
@@ -335,25 +335,25 @@ _BYTE *__47__MKStandardCalloutView__setNeedsCalloutUpdate__block_invoke(uint64_t
   }
 
   [(MKStandardCalloutView *)self setAlpha:0.0];
-  v6[2](v6);
-  if (v7)
+  blockCopy[2](blockCopy);
+  if (annotationView)
   {
 LABEL_5:
-    v11 = [v7 leftCalloutAccessoryView];
-    [(MKStandardCalloutView *)self _removeAccessoryTargetForView:v11];
+    leftCalloutAccessoryView = [annotationView leftCalloutAccessoryView];
+    [(MKStandardCalloutView *)self _removeAccessoryTargetForView:leftCalloutAccessoryView];
 
-    v12 = [v7 rightCalloutAccessoryView];
-    [(MKStandardCalloutView *)self _removeAccessoryTargetForView:v12];
+    rightCalloutAccessoryView = [annotationView rightCalloutAccessoryView];
+    [(MKStandardCalloutView *)self _removeAccessoryTargetForView:rightCalloutAccessoryView];
   }
 
 LABEL_6:
 }
 
-- (void)showAnimated:(BOOL)a3 completionBlock:(id)a4
+- (void)showAnimated:(BOOL)animated completionBlock:(id)block
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(MKCalloutView *)self annotationView];
+  animatedCopy = animated;
+  blockCopy = block;
+  annotationView = [(MKCalloutView *)self annotationView];
   self->_dismissed = 0;
   self->_animatingMapToShow = 0;
   [(MKStandardCalloutView *)self _updateCalloutAnimated:0];
@@ -374,13 +374,13 @@ LABEL_6:
   v83 = CGRectOffset(v75, v78.f64[0] - *&v76, v78.f64[1] - *(&v76 + 1));
   v79 = CGRectUnion(v77, v83);
   CGRectIntegral(v79);
-  [v7 frame];
-  if (!v4)
+  [annotationView frame];
+  if (!animatedCopy)
   {
     v78 = vrndaq_f64(v78);
-    v28 = self;
+    selfCopy2 = self;
     v29 = 0;
-    v30 = v6;
+    v30 = blockCopy;
     goto LABEL_26;
   }
 
@@ -491,17 +491,17 @@ LABEL_11:
     v40 = CGRectGetMaxX(v39) - v21;
   }
 
-  v41 = [(MKCalloutView *)self annotationView];
-  v42 = [(MKCalloutView *)self annotationView];
-  v43 = [v42 superview];
-  [v41 convertPoint:v43 toView:{v19, v69}];
+  annotationView2 = [(MKCalloutView *)self annotationView];
+  annotationView3 = [(MKCalloutView *)self annotationView];
+  superview = [annotationView3 superview];
+  [annotationView2 convertPoint:superview toView:{v19, v69}];
   v45 = v44;
   v47 = v46;
 
-  v48 = [(MKCalloutView *)self annotationView];
-  v49 = [(MKCalloutView *)self annotationView];
-  v50 = [v49 superview];
-  [v48 convertPoint:v50 toView:{v40, v37}];
+  annotationView4 = [(MKCalloutView *)self annotationView];
+  annotationView5 = [(MKCalloutView *)self annotationView];
+  superview2 = [annotationView5 superview];
+  [annotationView4 convertPoint:superview2 toView:{v40, v37}];
   v52 = v51;
   v54 = v53;
 
@@ -509,13 +509,13 @@ LABEL_11:
   if (vabdd_f64(v45, v52) >= 1.0 || vabdd_f64(v47, v54) >= 1.0)
   {
     self->_animatingMapToShow = 1;
-    v55 = [v7 _mapView];
-    v56 = [v7 _containerView];
+    _mapView = [annotationView _mapView];
+    _containerView = [annotationView _containerView];
     v57 = round(v45 - v52);
     v58 = round(v47 - v54);
-    v59 = [(MKCalloutView *)self annotationView];
-    v60 = [v59 annotation];
-    [v60 coordinate];
+    annotationView6 = [(MKCalloutView *)self annotationView];
+    annotation = [annotationView6 annotation];
+    [annotation coordinate];
     v62 = v61;
     v64 = v63;
     v70[0] = MEMORY[0x1E69E9820];
@@ -523,22 +523,22 @@ LABEL_11:
     v70[2] = __54__MKStandardCalloutView_showAnimated_completionBlock___block_invoke;
     v70[3] = &unk_1E76C6D48;
     v70[4] = self;
-    v71 = v7;
+    v71 = annotationView;
     v73 = v78;
-    v74 = v4;
-    v72 = v6;
-    [v55 annotationContainer:v56 scrollToRevealCalloutWithOffset:v70 annotationCoordinate:v57 completionHandler:{v58, v62, v64}];
+    v74 = animatedCopy;
+    v72 = blockCopy;
+    [_mapView annotationContainer:_containerView scrollToRevealCalloutWithOffset:v70 annotationCoordinate:v57 completionHandler:{v58, v62, v64}];
 
     goto LABEL_28;
   }
 
-  v28 = self;
-  v30 = v6;
+  selfCopy2 = self;
+  v30 = blockCopy;
   v29 = 1;
 LABEL_26:
-  [MKStandardCalloutView _showFromAnchorPoint:v28 boundaryRect:"_showFromAnchorPoint:boundaryRect:animate:completionBlock:" animate:v29 completionBlock:v30];
+  [MKStandardCalloutView _showFromAnchorPoint:selfCopy2 boundaryRect:"_showFromAnchorPoint:boundaryRect:animate:completionBlock:" animate:v29 completionBlock:v30];
 LABEL_28:
-  [(MKStandardCalloutView *)self _startObservingAnnotationView:v7];
+  [(MKStandardCalloutView *)self _startObservingAnnotationView:annotationView];
 }
 
 void __54__MKStandardCalloutView_showAnimated_completionBlock___block_invoke(uint64_t a1)
@@ -569,32 +569,32 @@ void __54__MKStandardCalloutView_showAnimated_completionBlock___block_invoke(uin
   }
 }
 
-- (int64_t)_calculateAnchorPosition:(CGPoint *)a3 visibleRect:(CGRect *)a4
+- (int64_t)_calculateAnchorPosition:(CGPoint *)position visibleRect:(CGRect *)rect
 {
-  v6 = [(MKCalloutView *)self annotationView];
-  v7 = [v6 _containerView];
-  [v7 _visibleCenteringRectInView:v6];
+  annotationView = [(MKCalloutView *)self annotationView];
+  _containerView = [annotationView _containerView];
+  [_containerView _visibleCenteringRectInView:annotationView];
   v89 = v8;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [v6 _allowedCalloutEdges];
-  v16 = [v6 _allowedCalloutEdges];
-  v17 = v16 & 2 | (v15 & 1);
-  v18 = [v6 _allowedCalloutEdges];
-  v19 = v18;
-  v20 = (v18 >> 3) & 1;
-  v21 = [v6 _allowedCalloutEdges];
+  _allowedCalloutEdges = [annotationView _allowedCalloutEdges];
+  _allowedCalloutEdges2 = [annotationView _allowedCalloutEdges];
+  v17 = _allowedCalloutEdges2 & 2 | (_allowedCalloutEdges & 1);
+  _allowedCalloutEdges3 = [annotationView _allowedCalloutEdges];
+  v19 = _allowedCalloutEdges3;
+  v20 = (_allowedCalloutEdges3 >> 3) & 1;
+  _allowedCalloutEdges4 = [annotationView _allowedCalloutEdges];
   if (!v17 && (v20 & 1) == 0)
   {
-    if ((v21 & 4) != 0)
+    if ((_allowedCalloutEdges4 & 4) != 0)
     {
       goto LABEL_4;
     }
 
 LABEL_12:
-    v67 = v6;
+    v67 = annotationView;
     [v67 bounds];
     y = v97.origin.y;
     MidX = CGRectGetMidX(v97);
@@ -607,30 +607,30 @@ LABEL_12:
     [v67 frame];
     v45 = v14 - CGRectGetHeight(v98);
     v66 = 2;
-    if (!a3)
+    if (!position)
     {
       goto LABEL_19;
     }
 
 LABEL_18:
-    a3->x = v63;
-    a3->y = v64;
+    position->x = v63;
+    position->y = v64;
     goto LABEL_19;
   }
 
-  if (((v17 != 0) & v15) == 1)
+  if (((v17 != 0) & _allowedCalloutEdges) == 1)
   {
     goto LABEL_12;
   }
 
 LABEL_4:
-  v22 = v6;
+  v22 = annotationView;
   [v22 bounds];
   v27 = v23;
   v28 = v24;
   v29 = v25;
   v30 = v26;
-  if ((v20 | (v16 >> 1)))
+  if ((v20 | (_allowedCalloutEdges2 >> 1)))
   {
     MinX = CGRectGetMinX(*&v23);
     v90.origin.x = v27;
@@ -676,7 +676,7 @@ LABEL_4:
     v54 = v50;
     v55 = v51;
     v56 = v52;
-    if ((v16 & 2) != 0 && v47)
+    if ((_allowedCalloutEdges2 & 2) != 0 && v47)
     {
       v57 = CGRectGetMinX(*&v49);
       v95.origin.x = v53;
@@ -717,7 +717,7 @@ LABEL_4:
     }
 
     v12 = v87 - v65;
-    if (!a3)
+    if (!position)
     {
       goto LABEL_19;
     }
@@ -742,26 +742,26 @@ LABEL_4:
   [v22 frame];
   v45 = v14 - CGRectGetHeight(v101);
   v66 = 1;
-  if (a3)
+  if (position)
   {
     goto LABEL_18;
   }
 
 LABEL_19:
-  if (a4)
+  if (rect)
   {
-    a4->origin.x = v89;
-    a4->origin.y = v10;
-    a4->size.width = v12;
-    a4->size.height = v45;
+    rect->origin.x = v89;
+    rect->origin.y = v10;
+    rect->size.width = v12;
+    rect->size.height = v45;
   }
 
   return v66;
 }
 
-- (void)motionEffectDidUpdate:(id)a3
+- (void)motionEffectDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   [(MKSmallCalloutView *)self->_calloutView bounds];
   if (v5 <= v6)
   {
@@ -794,9 +794,9 @@ LABEL_19:
 
   v12 = fmin(fmax(v8 * -0.25 + 0.119999997, 0.0250000004), 1.20000005);
   v13 = fmin(fmax(v8 * 30.0 + 6.0, 0.0), 10.0);
-  if (v4)
+  if (updateCopy)
   {
-    [v4 transformWithTranslationScale:v13 rotationScale:{v13, v12, v12}];
+    [updateCopy transformWithTranslationScale:v13 rotationScale:{v13, v12, v12}];
   }
 
   else
@@ -811,7 +811,7 @@ LABEL_19:
     v44 = 0u;
   }
 
-  v14 = [(UIView *)self->_contentView layer];
+  layer = [(UIView *)self->_contentView layer];
   v39 = v47;
   v40 = v48;
   v41 = v49;
@@ -820,11 +820,11 @@ LABEL_19:
   v36 = v44;
   v37 = v45;
   v38 = v46;
-  [v14 setTransform:&v35];
+  [layer setTransform:&v35];
 
-  if (v4)
+  if (updateCopy)
   {
-    [v4 transformWithTranslationScale:v13 / -3.0 rotationScale:{v13 / -3.0, v12 / -3.0, v12 / -3.0}];
+    [updateCopy transformWithTranslationScale:v13 / -3.0 rotationScale:{v13 / -3.0, v12 / -3.0, v12 / -3.0}];
   }
 
   else
@@ -840,7 +840,7 @@ LABEL_19:
   }
 
   v15 = [(MKSmallCalloutView *)self->_calloutView titlesContainerView:v19];
-  v16 = [v15 layer];
+  layer2 = [v15 layer];
   v39 = v28;
   v40 = v30;
   v41 = v32;
@@ -849,9 +849,9 @@ LABEL_19:
   v36 = v22;
   v37 = v24;
   v38 = v26;
-  [v16 setTransform:&v35];
+  [layer2 setTransform:&v35];
 
-  [v4 offsetWithScale:{v13, 0.0}];
+  [updateCopy offsetWithScale:{v13, 0.0}];
   v18 = v17;
   [(_MKCalloutLayer *)self->_maskLayer setArrowOffset:?];
   [(_MKCalloutLayer *)self->_contentStrokeLayer setArrowOffset:v18];
@@ -862,15 +862,15 @@ LABEL_19:
   p_frame = &self->_frame;
   if (!CGRectIsEmpty(self->_frame))
   {
-    v4 = [(MKStandardCalloutView *)self layer];
-    [v4 removeAllAnimations];
+    layer = [(MKStandardCalloutView *)self layer];
+    [layer removeAllAnimations];
 
-    v5 = [(MKStandardCalloutView *)self layer];
+    layer2 = [(MKStandardCalloutView *)self layer];
     v6 = *(MEMORY[0x1E695EFD0] + 16);
     v7[0] = *MEMORY[0x1E695EFD0];
     v7[1] = v6;
     v7[2] = *(MEMORY[0x1E695EFD0] + 32);
-    [v5 setAffineTransform:v7];
+    [layer2 setAffineTransform:v7];
 
     [(MKStandardCalloutView *)self setFrame:p_frame->origin.x, p_frame->origin.y, p_frame->size.width, p_frame->size.height];
     if ((*&self->_flags & 2) == 0)
@@ -894,32 +894,32 @@ LABEL_19:
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(id)a4 context:(void *)a5
+- (void)animationDidStop:(id)stop finished:(id)finished context:(void *)context
 {
-  if ([a4 BOOLValue])
+  if ([finished BOOLValue])
   {
-    if (a3 != @"MKCalloutViewBubbleAnimation")
+    if (stop != @"MKCalloutViewBubbleAnimation")
     {
       return;
     }
 
-    v7 = [(MKStandardCalloutView *)self layer];
+    layer = [(MKStandardCalloutView *)self layer];
     v8 = *(MEMORY[0x1E695EFD0] + 16);
     v13 = *MEMORY[0x1E695EFD0];
     v14 = v8;
     v15 = *(MEMORY[0x1E695EFD0] + 32);
-    [v7 setAffineTransform:&v13];
+    [layer setAffineTransform:&v13];
   }
 
   else
   {
     [(MKStandardCalloutView *)self setAlpha:1.0];
-    if (a3 != @"MKCalloutViewBubbleAnimation")
+    if (stop != @"MKCalloutViewBubbleAnimation")
     {
       return;
     }
 
-    v7 = [(MKStandardCalloutView *)self layer];
+    layer = [(MKStandardCalloutView *)self layer];
     v9 = *(MEMORY[0x1E69792E8] + 80);
     v17 = *(MEMORY[0x1E69792E8] + 64);
     v18 = v9;
@@ -932,7 +932,7 @@ LABEL_19:
     v12 = *(MEMORY[0x1E69792E8] + 48);
     v15 = *(MEMORY[0x1E69792E8] + 32);
     v16 = v12;
-    [v7 setTransform:&v13];
+    [layer setTransform:&v13];
   }
 
   [(MKStandardCalloutView *)self setFrame:self->_frame.origin.x, self->_frame.origin.y, self->_frame.size.width, self->_frame.size.height];
@@ -942,16 +942,16 @@ LABEL_19:
   }
 }
 
-- (void)_showFromAnchorPoint:(CGPoint)a3 boundaryRect:(CGRect)a4 animate:(BOOL)a5 completionBlock:(id)a6
+- (void)_showFromAnchorPoint:(CGPoint)point boundaryRect:(CGRect)rect animate:(BOOL)animate completionBlock:(id)block
 {
-  v6 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3.y;
-  v12 = a3.x;
-  v14 = a6;
+  animateCopy = animate;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v11 = point.y;
+  v12 = point.x;
+  blockCopy = block;
   [(MKStandardCalloutView *)self completeBounceAnimation];
   self->_anchor.desiredPoint.x = v12;
   self->_anchor.desiredPoint.y = v11;
@@ -959,29 +959,29 @@ LABEL_19:
   self->_anchor.desiredBounds.origin.y = y;
   self->_anchor.desiredBounds.size.width = width;
   self->_anchor.desiredBounds.size.height = height;
-  self->_flags = (*&self->_flags & 0xFFFFFFFC | v6);
-  v15 = [(MKCalloutView *)self annotationView];
-  [v15 addSubview:self];
+  self->_flags = (*&self->_flags & 0xFFFFFFFC | animateCopy);
+  annotationView = [(MKCalloutView *)self annotationView];
+  [annotationView addSubview:self];
 
   [(MKStandardCalloutView *)self _layoutSubviews:0];
   [(UIView *)self->_calloutView _mapkit_layoutIfNeeded];
   [(UIView *)self _mapKit_setNeedsDisplay];
   [(MKStandardCalloutView *)self setAlpha:1.0];
-  if (v6)
+  if (animateCopy)
   {
     [(UIView *)self _mapkit_layoutIfNeeded];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __83__MKStandardCalloutView__showFromAnchorPoint_boundaryRect_animate_completionBlock___block_invoke;
     v16[3] = &unk_1E76CD4D0;
-    v17 = v14;
+    v17 = blockCopy;
     [(MKStandardCalloutView *)self _runBounceAnimationWithCompletionBlock:v16];
   }
 
   else if ((*&self->_flags & 2) == 0)
   {
     [(MKStandardCalloutView *)self _markDidMoveCalled];
-    v14[2](v14);
+    blockCopy[2](blockCopy);
   }
 }
 
@@ -998,10 +998,10 @@ uint64_t __83__MKStandardCalloutView__showFromAnchorPoint_boundaryRect_animate_c
 
 - (void)annotationViewFrameDidChange
 {
-  v3 = [(MKCalloutView *)self annotationView];
-  v4 = [v3 _shouldKeepCalloutVisible];
+  annotationView = [(MKCalloutView *)self annotationView];
+  _shouldKeepCalloutVisible = [annotationView _shouldKeepCalloutVisible];
 
-  if (v4)
+  if (_shouldKeepCalloutVisible)
   {
     if ((self->_anchor.position - 1) <= 1)
     {
@@ -1036,13 +1036,13 @@ uint64_t __53__MKStandardCalloutView_annotationViewFrameDidChange__block_invoke(
   return [*(*(a1 + 32) + 584) _mapkit_layoutIfNeeded];
 }
 
-- (void)_runBounceAnimationWithCompletionBlock:(id)a3
+- (void)_runBounceAnimationWithCompletionBlock:(id)block
 {
   v37[6] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E6979308] animation];
-  [v5 setRemovedOnCompletion:1];
-  [v5 setDuration:0.300000012];
+  blockCopy = block;
+  animation = [MEMORY[0x1E6979308] animation];
+  [animation setRemovedOnCompletion:1];
+  [animation setDuration:0.300000012];
   CATransform3DMakeScale(&v36, 0.120481931, 0.120481931, 1.0);
   CATransform3DMakeScale(&v35, 1.11244977, 1.11244977, 1.0);
   [(MKStandardCalloutView *)self _originForScale:0.120481931];
@@ -1092,17 +1092,17 @@ uint64_t __53__MKStandardCalloutView_annotationViewFrameDidChange__block_invoke(
   v37[4] = v26;
   v37[5] = v27;
   v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:6];
-  [v5 setAnimations:v28];
+  [animation setAnimations:v28];
 
-  v29 = [(MKStandardCalloutView *)self layer];
+  layer = [(MKStandardCalloutView *)self layer];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __64__MKStandardCalloutView__runBounceAnimationWithCompletionBlock___block_invoke;
   v31[3] = &unk_1E76C9B20;
   v31[4] = self;
-  v32 = v4;
-  v30 = v4;
-  [v29 _mapkit_addAnimation:v5 forKey:@"MKCalloutViewBubbleAnimation" completion:v31];
+  v32 = blockCopy;
+  v30 = blockCopy;
+  [layer _mapkit_addAnimation:animation forKey:@"MKCalloutViewBubbleAnimation" completion:v31];
 }
 
 uint64_t __64__MKStandardCalloutView__runBounceAnimationWithCompletionBlock___block_invoke(uint64_t a1, uint64_t a2)
@@ -1116,11 +1116,11 @@ uint64_t __64__MKStandardCalloutView__runBounceAnimationWithCompletionBlock___bl
   return v5();
 }
 
-- (void)_layoutSubviews:(BOOL)a3
+- (void)_layoutSubviews:(BOOL)subviews
 {
-  v3 = a3;
+  subviewsCopy = subviews;
   flags = self->_flags;
-  if ((*&flags & 2) != 0 || !a3)
+  if ((*&flags & 2) != 0 || !subviews)
   {
     [(MKStandardCalloutView *)self updateConstraints];
     desiredPoint = self->_anchor.desiredPoint;
@@ -1131,7 +1131,7 @@ uint64_t __64__MKStandardCalloutView__runBounceAnimationWithCompletionBlock___bl
     MinY = CGRectGetMinY(self->_frame);
     self->_anchor.origin.x = v7;
     self->_anchor.origin.y = y - MinY;
-    if (v3)
+    if (subviewsCopy)
     {
       v10 = MEMORY[0x1E69DD250];
       UIAnimationDragCoefficient();
@@ -1166,26 +1166,26 @@ uint64_t __41__MKStandardCalloutView__layoutSubviews___block_invoke(uint64_t a1)
 
 - (void)updateConstraints
 {
-  v3 = [(MKCalloutView *)self annotationView];
-  v4 = [v3 _containerView];
-  [v4 _visibleCenteringRectInView:v3];
+  annotationView = [(MKCalloutView *)self annotationView];
+  _containerView = [annotationView _containerView];
+  [_containerView _visibleCenteringRectInView:annotationView];
   v6 = v5;
 
   v7 = v6 + self->_metrics.margin * -2.0;
   if (([(MKStandardCalloutView *)self anchorPosition]- 3) <= 1)
   {
-    if (-[MKStandardCalloutView anchorPosition](self, "anchorPosition") == 4 && ([v3 leftCalloutOffset], v8 < 0.0))
+    if (-[MKStandardCalloutView anchorPosition](self, "anchorPosition") == 4 && ([annotationView leftCalloutOffset], v8 < 0.0))
     {
-      [v3 leftCalloutOffset];
+      [annotationView leftCalloutOffset];
       v7 = v7 + v9;
     }
 
     else if ([(MKStandardCalloutView *)self anchorPosition]== 3)
     {
-      [v3 rightCalloutOffset];
+      [annotationView rightCalloutOffset];
       if (v10 > 0.0)
       {
-        [v3 rightCalloutOffset];
+        [annotationView rightCalloutOffset];
         v7 = v7 - v11;
       }
     }
@@ -1210,48 +1210,48 @@ uint64_t __41__MKStandardCalloutView__layoutSubviews___block_invoke(uint64_t a1)
   v14.receiver = self;
   v14.super_class = MKStandardCalloutView;
   [(MKStandardCalloutView *)&v14 didMoveToWindow];
-  v3 = [(MKStandardCalloutView *)self window];
-  v4 = [v3 screen];
+  window = [(MKStandardCalloutView *)self window];
+  screen = [window screen];
 
-  if (v4)
+  if (screen)
   {
-    v5 = [(MKStandardCalloutView *)self window];
-    v6 = [v5 screen];
-    [v6 scale];
+    window2 = [(MKStandardCalloutView *)self window];
+    screen2 = [window2 screen];
+    [screen2 scale];
     v8 = v7;
-    v9 = [(UIView *)self->_contentView layer];
-    [v9 setContentsScale:v8];
+    layer = [(UIView *)self->_contentView layer];
+    [layer setContentsScale:v8];
 
-    v10 = [(MKStandardCalloutView *)self window];
-    v11 = [v10 screen];
-    [v11 scale];
+    window3 = [(MKStandardCalloutView *)self window];
+    screen3 = [window3 screen];
+    [screen3 scale];
     [(_MKCalloutLayer *)self->_maskLayer setContentsScale:?];
 
-    v12 = [(MKStandardCalloutView *)self window];
-    v13 = [v12 screen];
-    [v13 scale];
+    window4 = [(MKStandardCalloutView *)self window];
+    screen4 = [window4 screen];
+    [screen4 scale];
     [(_MKCalloutLayer *)self->_contentStrokeLayer setContentsScale:?];
   }
 }
 
-- (void)forceAnchorPosition:(int64_t)a3
+- (void)forceAnchorPosition:(int64_t)position
 {
-  if (self->_anchor.position == a3)
+  if (self->_anchor.position == position)
   {
     return;
   }
 
   v12 = v3;
-  self->_anchor.position = a3;
+  self->_anchor.position = position;
   arrowHeight = 0.0;
-  if (a3 <= 2)
+  if (position <= 2)
   {
-    if (a3 == 1)
+    if (position == 1)
     {
       arrowHeight = self->_metrics.arrowHeight;
     }
 
-    else if (a3 == 2)
+    else if (position == 2)
     {
       v9 = self->_metrics.arrowHeight;
       v10 = 0.0;
@@ -1263,13 +1263,13 @@ LABEL_13:
     goto LABEL_10;
   }
 
-  if (a3 == 4)
+  if (position == 4)
   {
     v10 = self->_metrics.arrowHeight;
     goto LABEL_12;
   }
 
-  if (a3 != 3)
+  if (position != 3)
   {
 LABEL_10:
     v10 = 0.0;
@@ -1305,12 +1305,12 @@ LABEL_14:
   [(_MKCalloutLayer *)contentStrokeLayer setArrowOffset:?];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(MKStandardCalloutView *)self frame];
   v10.origin.x = x;
   v10.origin.y = y;
@@ -1325,37 +1325,37 @@ LABEL_14:
   }
 }
 
-- (void)_setOriginForScale:(double)a3
+- (void)_setOriginForScale:(double)scale
 {
-  [(MKStandardCalloutView *)self _originForScale:a3];
+  [(MKStandardCalloutView *)self _originForScale:scale];
   v5 = v4;
   v7 = v6;
-  v8 = [(MKStandardCalloutView *)self layer];
-  [v8 setPosition:{v5, v7}];
+  layer = [(MKStandardCalloutView *)self layer];
+  [layer setPosition:{v5, v7}];
 }
 
-- (CGPoint)_originForScale:(double)a3
+- (CGPoint)_originForScale:(double)scale
 {
   p_frame = &self->_frame;
   MidX = CGRectGetMidX(self->_frame);
   MidY = CGRectGetMidY(*p_frame);
   v8 = MidX - CGRectGetMinX(*p_frame);
   v9 = MidY - CGRectGetMinY(*p_frame);
-  v10 = round(MidX - (a3 + -1.0) * (self->_anchor.origin.x - v8));
-  v11 = round(MidY - (a3 + -1.0) * (self->_anchor.origin.y - v9));
+  v10 = round(MidX - (scale + -1.0) * (self->_anchor.origin.x - v8));
+  v11 = round(MidY - (scale + -1.0) * (self->_anchor.origin.y - v9));
   result.y = v11;
   result.x = v10;
   return result;
 }
 
-- (void)_calculateActualAnchorPoint:(CGPoint *)a3 frame:(CGRect *)a4 forDesiredAnchorPoint:(CGPoint)a5 boundaryRect:(CGRect)a6
+- (void)_calculateActualAnchorPoint:(CGPoint *)point frame:(CGRect *)frame forDesiredAnchorPoint:(CGPoint)anchorPoint boundaryRect:(CGRect)rect
 {
-  rect_24 = a6.origin.y;
-  height = a6.size.height;
-  width = a6.size.width;
-  rect_16 = a6.origin.x;
-  y = a5.y;
-  x = a5.x;
+  rect_24 = rect.origin.y;
+  height = rect.size.height;
+  width = rect.size.width;
+  rect_16 = rect.origin.x;
+  y = anchorPoint.y;
+  x = anchorPoint.x;
   [(MKStandardCalloutView *)self frame];
   v13 = v12;
   v15 = v14;
@@ -1523,7 +1523,7 @@ LABEL_22:
       v35 = v34 < CGRectGetMinX(v68);
       v36 = rect_24;
       v24 = v43;
-      v33 = rect;
+      rectCopy2 = rect;
       if (!v35)
       {
         goto LABEL_34;
@@ -1553,7 +1553,7 @@ LABEL_22:
       v65.size.height = v20;
       v30 = MaxX - (CGRectGetMaxX(v65) + p_metrics->margin);
       v24 = v43;
-      v33 = rect;
+      rectCopy2 = rect;
     }
 
     if (v30 > 0.0)
@@ -1575,9 +1575,9 @@ LABEL_34:
     }
 
 LABEL_36:
-    v13 = v33 + v41;
+    v13 = rectCopy2 + v41;
     v20 = rect_8a;
-    if (!a3)
+    if (!point)
     {
       goto LABEL_38;
     }
@@ -1590,38 +1590,38 @@ LABEL_36:
   v66.size.width = v19;
   v66.size.height = v20;
   v15 = round(v50 + CGRectGetHeight(v66) * -0.5);
-  if (a3)
+  if (point)
   {
 LABEL_37:
-    a3->x = v24;
-    a3->y = v50;
+    point->x = v24;
+    point->y = v50;
   }
 
 LABEL_38:
-  if (a4)
+  if (frame)
   {
-    a4->origin.x = v13;
-    a4->origin.y = v15;
-    a4->size.width = v19;
-    a4->size.height = v20;
+    frame->origin.x = v13;
+    frame->origin.y = v15;
+    frame->size.width = v19;
+    frame->size.height = v20;
   }
 }
 
 - (CGPoint)anchorPoint
 {
-  v2 = self;
+  selfCopy = self;
   [(MKStandardCalloutView *)self frame];
   x = v11.origin.x;
   y = v11.origin.y;
   width = v11.size.width;
   height = v11.size.height;
-  v2 += 53;
-  v7 = CGRectGetMinX(v11) + *v2;
+  selfCopy += 53;
+  v7 = CGRectGetMinX(v11) + *selfCopy;
   v12.origin.x = x;
   v12.origin.y = y;
   v12.size.width = width;
   v12.size.height = height;
-  v8 = CGRectGetMinY(v12) + v2[1];
+  v8 = CGRectGetMinY(v12) + selfCopy[1];
   v9 = v7;
   result.y = v8;
   result.x = v9;
@@ -1637,24 +1637,24 @@ LABEL_38:
   return result;
 }
 
-- (MKStandardCalloutView)initWithAnnotationView:(id)a3
+- (MKStandardCalloutView)initWithAnnotationView:(id)view
 {
   v92[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v89.receiver = self;
   v89.super_class = MKStandardCalloutView;
-  v5 = [(MKCalloutView *)&v89 initWithAnnotationView:v4];
+  v5 = [(MKCalloutView *)&v89 initWithAnnotationView:viewCopy];
   v6 = v5;
   if (v5)
   {
     [(MKStandardCalloutView *)v5 setAutoresizesSubviews:1];
-    if (v4)
+    if (viewCopy)
     {
-      v7 = [v4 _calloutStyle];
+      _calloutStyle = [viewCopy _calloutStyle];
       p_style = &v6->_style;
-      v6->_style = v7;
+      v6->_style = _calloutStyle;
       p_metrics = &v6->_metrics;
-      if (v7 == 2)
+      if (_calloutStyle == 2)
       {
         v10 = 0;
         v11 = xmmword_1A30F6E50;
@@ -1702,9 +1702,9 @@ LABEL_7:
     maskView = v6->_maskView;
     v6->_maskView = v22;
 
-    v24 = [(_MKStandardCalloutMaskView *)v6->_maskView layer];
+    layer = [(_MKStandardCalloutMaskView *)v6->_maskView layer];
     maskLayer = v6->_maskLayer;
-    v6->_maskLayer = v24;
+    v6->_maskLayer = layer;
 
     v26 = *&p_metrics->arrowBase;
     v81 = *&p_metrics->margin;
@@ -1724,17 +1724,17 @@ LABEL_7:
     v75 = v81;
     v76 = v82;
     [(_MKCalloutLayer *)v30 setMetrics:&v75];
-    v31 = [(MKStandardCalloutView *)v6 layer];
-    [v31 sizeSublayerToBounds:v6->_maskLayer];
+    layer2 = [(MKStandardCalloutView *)v6 layer];
+    [layer2 sizeSublayerToBounds:v6->_maskLayer];
 
-    v32 = [MEMORY[0x1E69DC888] clearColor];
-    [(MKStandardCalloutView *)v6 setBackgroundColor:v32];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(MKStandardCalloutView *)v6 setBackgroundColor:clearColor];
 
     [(MKStandardCalloutView *)v6 setClipsToBounds:0];
-    v33 = [MEMORY[0x1E69DC888] blackColor];
-    v34 = [v33 CGColor];
-    v35 = [(MKStandardCalloutView *)v6 layer];
-    [v35 setShadowColor:v34];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    cGColor = [blackColor CGColor];
+    layer3 = [(MKStandardCalloutView *)v6 layer];
+    [layer3 setShadowColor:cGColor];
 
     if (*p_style == 2)
     {
@@ -1762,9 +1762,9 @@ LABEL_12:
         [(UIVisualEffectView *)v6->_backdropView _setUseLiveMasking:1];
         [(MKStandardCalloutView *)v6 addSubview:v6->_backdropView];
         [(UIVisualEffectView *)v6->_backdropView setMaskView:v6->_maskView];
-        v55 = [(UIVisualEffectView *)v6->_backdropView contentView];
+        contentView = [(UIVisualEffectView *)v6->_backdropView contentView];
         contentView = v6->_contentView;
-        v6->_contentView = v55;
+        v6->_contentView = contentView;
 
         v57 = [MKSmallCalloutView alloc];
         [(UIView *)v6->_contentView bounds];
@@ -1786,15 +1786,15 @@ LABEL_12:
         [(MKSmallCalloutView *)v6->_calloutView setInsetsLayoutMarginsFromSafeArea:0];
         [(MKSmallCalloutView *)v6->_calloutView setPreservesSuperviewLayoutMargins:0];
         [(UIView *)v6->_contentView addSubview:v6->_calloutView];
-        v64 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         [(MKStandardCalloutView *)v6 _adaptToUserInterfaceStyle];
         v65 = [(UIView *)v6 _mapkit_constraintsPinningSubviewToBounds:v6->_backdropView];
-        [v64 addObjectsFromArray:v65];
+        [array addObjectsFromArray:v65];
 
         v66 = [(UIView *)v6->_contentView _mapkit_constraintsPinningSubviewToBounds:v6->_calloutView];
-        [v64 addObjectsFromArray:v66];
+        [array addObjectsFromArray:v66];
 
-        [MEMORY[0x1E696ACD8] activateConstraints:v64];
+        [MEMORY[0x1E696ACD8] activateConstraints:array];
         v6->_anchor.offset = *MEMORY[0x1E695EFF8];
         v6->_anchor.position = 0;
         [(MKStandardCalloutView *)v6 _updateCalloutAnimated:0];
@@ -1827,32 +1827,32 @@ LABEL_12:
       [(_MKCalloutLayer *)v6->_contentStrokeLayer setStrokeColor:v39];
 
       v91 = @"transform";
-      v40 = [MEMORY[0x1E695DFB0] null];
-      v92[0] = v40;
+      null = [MEMORY[0x1E695DFB0] null];
+      v92[0] = null;
       v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v92 forKeys:&v91 count:1];
       [(_MKCalloutLayer *)v6->_contentStrokeLayer setActions:v41];
 
-      v42 = [(MKStandardCalloutView *)v6 layer];
-      [v42 addSublayer:v6->_contentStrokeLayer];
+      layer4 = [(MKStandardCalloutView *)v6 layer];
+      [layer4 addSublayer:v6->_contentStrokeLayer];
 
       [(_MKCalloutLayer *)v6->_contentStrokeLayer setZPosition:10000.0];
-      v43 = [(MKStandardCalloutView *)v6 layer];
-      [v43 sizeSublayerToBounds:v6->_contentStrokeLayer];
+      layer5 = [(MKStandardCalloutView *)v6 layer];
+      [layer5 sizeSublayerToBounds:v6->_contentStrokeLayer];
 
       v44 = 4.0;
       v45 = 6.0;
       v46 = 1036831949;
     }
 
-    v47 = [(MKStandardCalloutView *)v6 layer];
-    [v47 setShadowOffset:{0.0, v44}];
+    layer6 = [(MKStandardCalloutView *)v6 layer];
+    [layer6 setShadowOffset:{0.0, v44}];
 
-    v48 = [(MKStandardCalloutView *)v6 layer];
-    [v48 setShadowRadius:v45];
+    layer7 = [(MKStandardCalloutView *)v6 layer];
+    [layer7 setShadowRadius:v45];
 
-    v49 = [(MKStandardCalloutView *)v6 layer];
+    layer8 = [(MKStandardCalloutView *)v6 layer];
     LODWORD(v50) = v46;
-    [v49 setShadowOpacity:v50];
+    [layer8 setShadowOpacity:v50];
 
     goto LABEL_12;
   }
@@ -1862,52 +1862,52 @@ LABEL_13:
   return v6;
 }
 
-- (void)setDetailView:(id)a3 animated:(BOOL)a4
+- (void)setDetailView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v8 = a3;
-  v6 = [(MKSmallCalloutView *)self->_calloutView detailView];
+  animatedCopy = animated;
+  viewCopy = view;
+  detailView = [(MKSmallCalloutView *)self->_calloutView detailView];
 
-  v7 = v8;
-  if (v6 != v8)
+  v7 = viewCopy;
+  if (detailView != viewCopy)
   {
-    [(MKSmallCalloutView *)self->_calloutView setDetailView:v8 animated:v4];
-    v7 = v8;
+    [(MKSmallCalloutView *)self->_calloutView setDetailView:viewCopy animated:animatedCopy];
+    v7 = viewCopy;
   }
 }
 
-- (void)setRightView:(id)a3 animated:(BOOL)a4
+- (void)setRightView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v8 = a3;
-  v6 = [(MKSmallCalloutView *)self->_calloutView rightView];
+  animatedCopy = animated;
+  viewCopy = view;
+  rightView = [(MKSmallCalloutView *)self->_calloutView rightView];
 
-  v7 = v8;
-  if (v6 != v8)
+  v7 = viewCopy;
+  if (rightView != viewCopy)
   {
-    [(MKSmallCalloutView *)self->_calloutView setRightView:v8 animated:v4];
-    v7 = v8;
+    [(MKSmallCalloutView *)self->_calloutView setRightView:viewCopy animated:animatedCopy];
+    v7 = viewCopy;
   }
 }
 
-- (void)setLeftView:(id)a3 backgroundColor:(id)a4 animated:(BOOL)a5
+- (void)setLeftView:(id)view backgroundColor:(id)color animated:(BOOL)animated
 {
-  v5 = a5;
-  v9 = a3;
-  v7 = [(MKSmallCalloutView *)self->_calloutView leftView];
+  animatedCopy = animated;
+  viewCopy = view;
+  leftView = [(MKSmallCalloutView *)self->_calloutView leftView];
 
-  v8 = v9;
-  if (v7 != v9)
+  v8 = viewCopy;
+  if (leftView != viewCopy)
   {
-    [(MKSmallCalloutView *)self->_calloutView setLeftView:v9 animated:v5];
-    v8 = v9;
+    [(MKSmallCalloutView *)self->_calloutView setLeftView:viewCopy animated:animatedCopy];
+    v8 = viewCopy;
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(MKCalloutView *)self annotationView];
-  [(MKStandardCalloutView *)self _stopObservingAnnotationView:v3];
+  annotationView = [(MKCalloutView *)self annotationView];
+  [(MKStandardCalloutView *)self _stopObservingAnnotationView:annotationView];
 
   v4.receiver = self;
   v4.super_class = MKStandardCalloutView;

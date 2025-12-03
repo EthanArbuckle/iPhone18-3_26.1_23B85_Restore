@@ -1,28 +1,28 @@
 @interface PRSControl
-- (BOOL)isEqual:(id)a3;
-- (PRSControl)initWithBSXPCCoder:(id)a3;
-- (PRSControl)initWithCoder:(id)a3;
-- (PRSControl)initWithUniqueIdentifier:(id)a3 kind:(id)a4 extensionBundleIdentifier:(id)a5 containerBundleIdentifier:(id)a6 controlType:(unint64_t)a7 intent:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (PRSControl)initWithBSXPCCoder:(id)coder;
+- (PRSControl)initWithCoder:(id)coder;
+- (PRSControl)initWithUniqueIdentifier:(id)identifier kind:(id)kind extensionBundleIdentifier:(id)bundleIdentifier containerBundleIdentifier:(id)containerBundleIdentifier controlType:(unint64_t)type intent:(id)intent;
 - (id)controlIdentity;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRSControl
 
-- (PRSControl)initWithUniqueIdentifier:(id)a3 kind:(id)a4 extensionBundleIdentifier:(id)a5 containerBundleIdentifier:(id)a6 controlType:(unint64_t)a7 intent:(id)a8
+- (PRSControl)initWithUniqueIdentifier:(id)identifier kind:(id)kind extensionBundleIdentifier:(id)bundleIdentifier containerBundleIdentifier:(id)containerBundleIdentifier controlType:(unint64_t)type intent:(id)intent
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
-  if (v15)
+  identifierCopy = identifier;
+  kindCopy = kind;
+  bundleIdentifierCopy = bundleIdentifier;
+  containerBundleIdentifierCopy = containerBundleIdentifier;
+  intentCopy = intent;
+  if (identifierCopy)
   {
-    if (v16)
+    if (kindCopy)
     {
       goto LABEL_3;
     }
@@ -31,7 +31,7 @@
   else
   {
     [PRSControl initWithUniqueIdentifier:a2 kind:self extensionBundleIdentifier:? containerBundleIdentifier:? controlType:? intent:?];
-    if (v16)
+    if (kindCopy)
     {
       goto LABEL_3;
     }
@@ -41,11 +41,11 @@
 LABEL_3:
   v23.receiver = self;
   v23.super_class = PRSControl;
-  v20 = [(PRSGadget *)&v23 initWithUniqueIdentifier:v15 kind:v16 extensionBundleIdentifier:v17 containerBundleIdentifier:v18 intent:v19];
+  v20 = [(PRSGadget *)&v23 initWithUniqueIdentifier:identifierCopy kind:kindCopy extensionBundleIdentifier:bundleIdentifierCopy containerBundleIdentifier:containerBundleIdentifierCopy intent:intentCopy];
   v21 = v20;
   if (v20)
   {
-    v20->_controlType = a7;
+    v20->_controlType = type;
   }
 
   return v21;
@@ -54,26 +54,26 @@ LABEL_3:
 - (id)controlIdentity
 {
   v3 = objc_alloc(MEMORY[0x1E6994290]);
-  v4 = [(PRSGadget *)self extensionBundleIdentifier];
-  v5 = [(PRSGadget *)self containerBundleIdentifier];
-  v6 = [v3 initWithExtensionBundleIdentifier:v4 containerBundleIdentifier:v5 deviceIdentifier:0];
+  extensionBundleIdentifier = [(PRSGadget *)self extensionBundleIdentifier];
+  containerBundleIdentifier = [(PRSGadget *)self containerBundleIdentifier];
+  v6 = [v3 initWithExtensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier deviceIdentifier:0];
 
   v7 = objc_alloc(MEMORY[0x1E6994260]);
-  v8 = [(PRSGadget *)self kind];
-  v9 = [(PRSGadget *)self intent];
-  v10 = [v7 initWithExtensionIdentity:v6 kind:v8 intent:v9];
+  kind = [(PRSGadget *)self kind];
+  intent = [(PRSGadget *)self intent];
+  v10 = [v7 initWithExtensionIdentity:v6 kind:kind intent:intent];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = PRSControl;
-  if ([(PRSGadget *)&v7 isEqual:v4])
+  if ([(PRSGadget *)&v7 isEqual:equalCopy])
   {
-    v5 = [v4 controlType] == self->_controlType;
+    v5 = [equalCopy controlType] == self->_controlType;
   }
 
   else
@@ -91,66 +91,66 @@ LABEL_3:
   return [(PRSGadget *)&v3 hash]+ self->_controlType;
 }
 
-- (PRSControl)initWithCoder:(id)a3
+- (PRSControl)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PRSControl;
-  v5 = [(PRSGadget *)&v7 initWithCoder:v4];
+  v5 = [(PRSGadget *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_controlType = [v4 decodeIntegerForKey:@"controlType"];
+    v5->_controlType = [coderCopy decodeIntegerForKey:@"controlType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PRSControl;
-  v4 = a3;
-  [(PRSGadget *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_controlType forKey:{@"controlType", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PRSGadget *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_controlType forKey:{@"controlType", v5.receiver, v5.super_class}];
 }
 
-- (PRSControl)initWithBSXPCCoder:(id)a3
+- (PRSControl)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PRSControl;
-  v5 = [(PRSGadget *)&v7 initWithBSXPCCoder:v4];
+  v5 = [(PRSGadget *)&v7 initWithBSXPCCoder:coderCopy];
   if (v5)
   {
-    v5->_controlType = [v4 decodeUInt64ForKey:@"controlType"];
+    v5->_controlType = [coderCopy decodeUInt64ForKey:@"controlType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PRSControl;
-  v4 = a3;
-  [(PRSGadget *)&v5 encodeWithBSXPCCoder:v4];
-  [v4 encodeUInt64:-[PRSControl controlType](self forKey:{"controlType", v5.receiver, v5.super_class), @"controlType"}];
+  coderCopy = coder;
+  [(PRSGadget *)&v5 encodeWithBSXPCCoder:coderCopy];
+  [coderCopy encodeUInt64:-[PRSControl controlType](self forKey:{"controlType", v5.receiver, v5.super_class), @"controlType"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PRSControl;
-  v4 = [(PRSGadget *)&v6 copyWithZone:a3];
+  v4 = [(PRSGadget *)&v6 copyWithZone:zone];
   [v4 setControlType:self->_controlType];
   return v4;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v7.receiver = self;
   v7.super_class = PRSControl;
-  v4 = [(PRSGadget *)&v7 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(PRSGadget *)&v7 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = [v4 appendInteger:self->_controlType withName:@"controlType"];
 
   return v4;

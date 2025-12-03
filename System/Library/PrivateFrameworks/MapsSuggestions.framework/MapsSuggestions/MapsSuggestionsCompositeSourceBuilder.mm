@@ -1,14 +1,14 @@
 @interface MapsSuggestionsCompositeSourceBuilder
-+ (id)buildCompositeSourceFromResourceDepot:(id)a3;
++ (id)buildCompositeSourceFromResourceDepot:(id)depot;
 @end
 
 @implementation MapsSuggestionsCompositeSourceBuilder
 
-+ (id)buildCompositeSourceFromResourceDepot:(id)a3
++ (id)buildCompositeSourceFromResourceDepot:(id)depot
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  depotCopy = depot;
+  v4 = depotCopy;
+  if (!depotCopy)
   {
     v7 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -31,9 +31,9 @@ LABEL_11:
     goto LABEL_42;
   }
 
-  v5 = [v3 oneSourceDelegate];
+  oneSourceDelegate = [depotCopy oneSourceDelegate];
 
-  if (!v5)
+  if (!oneSourceDelegate)
   {
     v7 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -171,9 +171,9 @@ LABEL_11:
   v21 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    v22 = [v6 children];
+    children = [v6 children];
     v24 = 138412290;
-    v25 = v22;
+    v25 = children;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "Instantiating compositeSource with childSources: %@", &v24, 0xCu);
   }
 

@@ -1,35 +1,35 @@
 @interface PKPaymentTransactionDetailAmountLineItemRewards
-- (PKPaymentTransactionDetailAmountLineItemRewards)initWithRewardsValueUnit:(unint64_t)a3 eligibleValue:(id)a4 isEligible:(BOOL)a5 totalAmount:(id)a6 hasPromotionalReward:(BOOL)a7 promotionName:(id)a8;
+- (PKPaymentTransactionDetailAmountLineItemRewards)initWithRewardsValueUnit:(unint64_t)unit eligibleValue:(id)value isEligible:(BOOL)eligible totalAmount:(id)amount hasPromotionalReward:(BOOL)reward promotionName:(id)name;
 @end
 
 @implementation PKPaymentTransactionDetailAmountLineItemRewards
 
-- (PKPaymentTransactionDetailAmountLineItemRewards)initWithRewardsValueUnit:(unint64_t)a3 eligibleValue:(id)a4 isEligible:(BOOL)a5 totalAmount:(id)a6 hasPromotionalReward:(BOOL)a7 promotionName:(id)a8
+- (PKPaymentTransactionDetailAmountLineItemRewards)initWithRewardsValueUnit:(unint64_t)unit eligibleValue:(id)value isEligible:(BOOL)eligible totalAmount:(id)amount hasPromotionalReward:(BOOL)reward promotionName:(id)name
 {
-  v10 = a5;
-  v13 = a4;
-  v14 = a6;
-  v15 = a8;
+  eligibleCopy = eligible;
+  valueCopy = value;
+  amountCopy = amount;
+  nameCopy = name;
   v26.receiver = self;
   v26.super_class = PKPaymentTransactionDetailAmountLineItemRewards;
   v16 = [(PKPaymentTransactionDetailAmountLineItemRewards *)&v26 init];
   if (v16)
   {
-    if (a3 && a3 != 2)
+    if (unit && unit != 2)
     {
-      if (a3 != 1)
+      if (unit != 1)
       {
         v20 = 0;
         goto LABEL_17;
       }
 
       v17 = PKFormattedStringMinimalFractionDigitsFromNumber();
-      if (v10)
+      if (eligibleCopy)
       {
         v20 = PKLocalizedFeatureString();
 
 LABEL_17:
-        v19 = 0;
+        formattedStringValue = 0;
         goto LABEL_18;
       }
 
@@ -37,30 +37,30 @@ LABEL_17:
       v20 = PKLocalizedFeatureString();
 
 LABEL_16:
-      v19 = [v14 formattedStringValue];
+      formattedStringValue = [amountCopy formattedStringValue];
 LABEL_18:
       label = v16->_label;
       v16->_label = v20;
       v22 = v20;
 
       value = v16->_value;
-      v16->_value = v19;
+      v16->_value = formattedStringValue;
 
       goto LABEL_19;
     }
 
-    if (v10)
+    if (eligibleCopy)
     {
-      if (v15)
+      if (nameCopy)
       {
         goto LABEL_11;
       }
     }
 
-    else if (v15)
+    else if (nameCopy)
     {
 LABEL_11:
-      v25 = v15;
+      v25 = nameCopy;
       v18 = PKLocalizedFeatureString();
 LABEL_15:
       v20 = v18;

@@ -6,7 +6,7 @@
 
 - (void)onSwipeUp
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3C9C260();
 }
 

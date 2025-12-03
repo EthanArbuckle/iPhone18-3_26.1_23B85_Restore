@@ -1,15 +1,15 @@
 @interface NCWidgetMetrics
 + (double)defaultWidgetRowHeight;
-+ (double)scaledValueForValue:(double)a3;
++ (double)scaledValueForValue:(double)value;
 + (double)widgetRowHeight;
 @end
 
 @implementation NCWidgetMetrics
 
-+ (double)scaledValueForValue:(double)a3
++ (double)scaledValueForValue:(double)value
 {
-  v4 = [MEMORY[0x277D75DA0] keyWindow];
-  if (v4)
+  keyWindow = [MEMORY[0x277D75DA0] keyWindow];
+  if (keyWindow)
   {
     [MEMORY[0x277D75DA0] keyWindow];
   }
@@ -19,21 +19,21 @@
     [MEMORY[0x277D759A0] mainScreen];
   }
   v5 = ;
-  v6 = [v5 traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
+  traitCollection = [v5 traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  if (v7 && ((v8 = *MEMORY[0x277D76800], UIContentSizeCategoryCompareToCategory(v7, *MEMORY[0x277D76800]) == NSOrderedAscending) || (v9 = v8, v7, (v7 = v9) != 0)))
+  if (preferredContentSizeCategory && ((v8 = *MEMORY[0x277D76800], UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x277D76800]) == NSOrderedAscending) || (v9 = v8, preferredContentSizeCategory, (preferredContentSizeCategory = v9) != 0)))
   {
-    v10 = [MEMORY[0x277D75520] defaultMetrics];
-    v11 = [MEMORY[0x277D75C80] traitCollectionWithPreferredContentSizeCategory:v7];
-    [v10 scaledValueForValue:v11 compatibleWithTraitCollection:a3];
+    defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
+    v11 = [MEMORY[0x277D75C80] traitCollectionWithPreferredContentSizeCategory:preferredContentSizeCategory];
+    [defaultMetrics scaledValueForValue:v11 compatibleWithTraitCollection:value];
     v13 = v12;
   }
 
   else
   {
-    v7 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-    [v7 _scaledValueForValue:a3];
+    preferredContentSizeCategory = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
+    [preferredContentSizeCategory _scaledValueForValue:value];
     v13 = v14;
   }
 
@@ -63,7 +63,7 @@ double __41__NCWidgetMetrics_defaultWidgetRowHeight__block_invoke()
   block[1] = 3221225472;
   block[2] = __34__NCWidgetMetrics_widgetRowHeight__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (widgetRowHeight_onceToken != -1)
   {
     dispatch_once(&widgetRowHeight_onceToken, block);
@@ -72,9 +72,9 @@ double __41__NCWidgetMetrics_defaultWidgetRowHeight__block_invoke()
   result = *&__rowHeightForContentSizeCategory;
   if (*&__rowHeightForContentSizeCategory == 0.0)
   {
-    [a1 defaultWidgetRowHeight];
-    [a1 scaledValueForValue:?];
-    v4 = [MEMORY[0x277D759A0] mainScreen];
+    [self defaultWidgetRowHeight];
+    [self scaledValueForValue:?];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
     UIRoundToScreenScale();
     __rowHeightForContentSizeCategory = v5;
 

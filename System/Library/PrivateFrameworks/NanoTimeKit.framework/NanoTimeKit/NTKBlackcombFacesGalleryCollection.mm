@@ -1,25 +1,25 @@
 @interface NTKBlackcombFacesGalleryCollection
 + (id)activityComplicationTypesBySlot;
 + (id)complicationTypesBySlot;
-- (id)_galleryEditOptionsForDevice:(id)a3;
-- (id)_galleryPigmentsForDevice:(id)a3;
-- (id)facesForDevice:(id)a3;
+- (id)_galleryEditOptionsForDevice:(id)device;
+- (id)_galleryPigmentsForDevice:(id)device;
+- (id)facesForDevice:(id)device;
 @end
 
 @implementation NTKBlackcombFacesGalleryCollection
 
-- (id)facesForDevice:(id)a3
+- (id)facesForDevice:(id)device
 {
   v43[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  if (([v4 isRunningNapiliGMOrLater] & 1) == 0)
+  deviceCopy = device;
+  array = [MEMORY[0x277CBEB18] array];
+  if (([deviceCopy isRunningNapiliGMOrLater] & 1) == 0)
   {
-    v9 = v5;
+    v9 = array;
     v11 = 0;
     while (1)
     {
-      v12 = [NTKFace defaultFaceOfStyle:40 forDevice:v4];
+      v12 = [NTKFace defaultFaceOfStyle:40 forDevice:deviceCopy];
       if (v11 <= 2)
       {
         if (v11)
@@ -48,7 +48,7 @@
             v41[2] = &unk_28418A090;
             v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:v40 count:3];
             [v12 _setFaceGalleryComplicationTypesForSlots:v21];
-            if ([v4 supportsWidgetMigration])
+            if ([deviceCopy supportsWidgetMigration])
             {
               v22 = [objc_alloc(MEMORY[0x277CBBBD0]) initWithExtensionBundleIdentifier:@"com.apple.weather.watchapp.widgets" containerBundleIdentifier:@"com.apple.weather.watchapp" kind:@"com.apple.weather.widget.rain" intent:0];
               v23 = [NTKWidgetComplication complicationWithDescriptor:v22];
@@ -69,7 +69,7 @@
 
         v13 = +[NTKBlackcombFacesGalleryCollection complicationTypesBySlot];
         v17 = 0;
-        v16 = 200;
+        integerValue = 200;
         v18 = 1;
       }
 
@@ -122,24 +122,24 @@ LABEL_22:
 
 LABEL_25:
           v18 = 0;
-          v16 = 200;
+          integerValue = 200;
           goto LABEL_26;
         }
 
         v13 = +[NTKBlackcombFacesGalleryCollection complicationTypesBySlot];
-        v14 = [NTKFaceColorEditOption standardColorValuesForDevice:v4];
+        v14 = [NTKFaceColorEditOption standardColorValuesForDevice:deviceCopy];
         v15 = [v14 objectAtIndexedSubscript:v11 - 4];
-        v16 = [v15 integerValue];
+        integerValue = [v15 integerValue];
 
         v17 = 0;
         v18 = 0;
       }
 
 LABEL_26:
-      v31 = [NTKBlackcombDialColorEditOption optionWithBlackcombDialColor:v18 forDevice:v4];
+      v31 = [NTKBlackcombDialColorEditOption optionWithBlackcombDialColor:v18 forDevice:deviceCopy];
       [v12 selectOption:v31 forCustomEditMode:15 slot:0];
 
-      v32 = [(NTKFaceColorEditOption *)NTKFaceColorMonochromeEditOption optionWithFaceColor:v16 forDevice:v4];
+      v32 = [(NTKFaceColorEditOption *)NTKFaceColorMonochromeEditOption optionWithFaceColor:integerValue forDevice:deviceCopy];
       [v12 selectOption:v32 forCustomEditMode:10 slot:0];
 
       if (v13)
@@ -159,17 +159,17 @@ LABEL_26:
     }
   }
 
-  v6 = [(NTKBlackcombFacesGalleryCollection *)self _galleryEditOptionsForDevice:v4];
+  v6 = [(NTKBlackcombFacesGalleryCollection *)self _galleryEditOptionsForDevice:deviceCopy];
   v7 = [v6 objectForKeyedSubscript:&unk_284181FC0];
-  v8 = [(NTKBlackcombFacesGalleryCollection *)self _galleryPigmentsForDevice:v4];
+  v8 = [(NTKBlackcombFacesGalleryCollection *)self _galleryPigmentsForDevice:deviceCopy];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __53__NTKBlackcombFacesGalleryCollection_facesForDevice___block_invoke;
   v34[3] = &unk_27877FAD0;
-  v35 = v4;
+  v35 = deviceCopy;
   v36 = v7;
-  v9 = v5;
-  v37 = v5;
+  v9 = array;
+  v37 = array;
   v10 = v7;
   [v8 enumerateObjectsUsingBlock:v34];
 
@@ -286,10 +286,10 @@ LABEL_18:
 LABEL_20:
 }
 
-- (id)_galleryEditOptionsForDevice:(id)a3
+- (id)_galleryEditOptionsForDevice:(id)device
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v5 = &unk_284181FC0;
     v6[0] = &unk_28418A150;
@@ -304,48 +304,48 @@ LABEL_20:
   return v3;
 }
 
-- (id)_galleryPigmentsForDevice:(id)a3
+- (id)_galleryPigmentsForDevice:(id)device
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  if ([v3 isRunningNapiliGMOrLater])
+  deviceCopy = device;
+  array = [MEMORY[0x277CBEB18] array];
+  if ([deviceCopy isRunningNapiliGMOrLater])
   {
     v18[0] = @"special.multicolor";
     v18[1] = @"special.multicolor";
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
-    [v4 addObjectsFromArray:v5];
+    [array addObjectsFromArray:v5];
 
-    v6 = [NTKFace defaultFaceOfStyle:40 forDevice:v3];
+    v6 = [NTKFace defaultFaceOfStyle:40 forDevice:deviceCopy];
     v7 = [v6 defaultOptionForCustomEditMode:10 slot:0];
-    v8 = [v7 fullname];
-    v9 = [v8 isEqualToString:@"special.multicolor"];
+    fullname = [v7 fullname];
+    v9 = [fullname isEqualToString:@"special.multicolor"];
 
     if (v9)
     {
       v17[0] = @"seasons.fall2024.blueCloud";
       v17[1] = @"seasons.spring2021.pistachio";
-      v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
-      [v4 addObjectsFromArray:v10];
+      fullname2 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
+      [array addObjectsFromArray:fullname2];
     }
 
     else
     {
-      v10 = [v7 fullname];
-      v16[0] = v10;
-      v11 = [v7 fullname];
-      v16[1] = v11;
+      fullname2 = [v7 fullname];
+      v16[0] = fullname2;
+      fullname3 = [v7 fullname];
+      v16[1] = fullname3;
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
-      [v4 addObjectsFromArray:v12];
+      [array addObjectsFromArray:v12];
     }
 
     v15[0] = @"special.multicolor";
     v15[1] = @"special.multicolor";
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
-    [v4 addObjectsFromArray:v13];
+    [array addObjectsFromArray:v13];
   }
 
-  return v4;
+  return array;
 }
 
 + (id)complicationTypesBySlot

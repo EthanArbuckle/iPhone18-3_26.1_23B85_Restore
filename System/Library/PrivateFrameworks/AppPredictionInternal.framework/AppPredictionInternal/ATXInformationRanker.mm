@@ -1,20 +1,20 @@
 @interface ATXInformationRanker
-- (id)sortFeaturizedSuggestions:(id)a3 withFeatureWeights:(id)a4;
+- (id)sortFeaturizedSuggestions:(id)suggestions withFeatureWeights:(id)weights;
 @end
 
 @implementation ATXInformationRanker
 
-- (id)sortFeaturizedSuggestions:(id)a3 withFeatureWeights:(id)a4
+- (id)sortFeaturizedSuggestions:(id)suggestions withFeatureWeights:(id)weights
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  suggestionsCopy = suggestions;
+  weightsCopy = weights;
   v7 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = v5;
+  v8 = suggestionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
@@ -30,12 +30,12 @@
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        [v13 scoreWithFeatureWeights:{v6, v23}];
+        [v13 scoreWithFeatureWeights:{weightsCopy, v23}];
         v15 = v14;
         v16 = [ATXScoredInfoSuggestion alloc];
-        v17 = [v13 suggestion];
-        v18 = [v13 featureSet];
-        v19 = [(ATXScoredInfoSuggestion *)v16 initWithSuggestion:v17 featureSet:v18 score:v15];
+        suggestion = [v13 suggestion];
+        featureSet = [v13 featureSet];
+        v19 = [(ATXScoredInfoSuggestion *)v16 initWithSuggestion:suggestion featureSet:featureSet score:v15];
         [v7 addObject:v19];
       }
 

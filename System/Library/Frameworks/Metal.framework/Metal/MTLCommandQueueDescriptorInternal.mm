@@ -1,10 +1,10 @@
 @interface MTLCommandQueueDescriptorInternal
 - (MTLCommandQueueDescriptorInternal)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 - (void)dealloc;
-- (void)setCommitQueue:(id)a3;
-- (void)setCompletionQueue:(id)a3;
+- (void)setCommitQueue:(id)queue;
+- (void)setCompletionQueue:(id)queue;
 @end
 
 @implementation MTLCommandQueueDescriptorInternal
@@ -51,9 +51,9 @@
   [(MTLCommandQueueDescriptorInternal *)&v5 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -77,40 +77,40 @@
   return v5;
 }
 
-- (void)setCommitQueue:(id)a3
+- (void)setCommitQueue:(id)queue
 {
-  if (a3)
+  if (queue)
   {
-    dispatch_retain(a3);
+    dispatch_retain(queue);
   }
 
   if (self->_commitQueue)
   {
-    dispatch_release(a3);
+    dispatch_release(queue);
   }
 
-  self->_commitQueue = a3;
+  self->_commitQueue = queue;
 }
 
-- (void)setCompletionQueue:(id)a3
+- (void)setCompletionQueue:(id)queue
 {
-  if (a3)
+  if (queue)
   {
-    dispatch_retain(a3);
+    dispatch_retain(queue);
   }
 
   if (self->_completionQueue)
   {
-    dispatch_release(a3);
+    dispatch_release(queue);
   }
 
-  self->_completionQueue = a3;
+  self->_completionQueue = queue;
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v12[22] = *MEMORY[0x1E69E9840];
-  v4 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v4 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v12[0] = v4;
   v12[1] = @"maxCommandBufferCount =";
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_maxCommandBufferCount];

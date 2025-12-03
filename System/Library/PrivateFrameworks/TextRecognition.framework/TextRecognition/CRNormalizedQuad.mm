@@ -1,6 +1,6 @@
 @interface CRNormalizedQuad
-- (BOOL)isEqual:(id)a3;
-- (BOOL)overlapsNormalizedQuad:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)overlapsNormalizedQuad:(id)quad;
 - (CGPoint)bottomLeft;
 - (CGPoint)bottomRight;
 - (CGPoint)midPoint;
@@ -9,35 +9,35 @@
 - (CGRect)boundingBox;
 - (CGSize)normalizationSize;
 - (CGSize)size;
-- (CRNormalizedQuad)initWithCRCodableDataRepresentation:(id)a3;
-- (CRNormalizedQuad)initWithCoder:(id)a3;
-- (CRNormalizedQuad)initWithDenormalizedQuad:(id)a3 size:(CGSize)a4;
-- (CRNormalizedQuad)initWithNormalizedBoundingBox:(CGRect)a3 size:(CGSize)a4;
-- (CRNormalizedQuad)initWithNormalizedTopLeft:(CGPoint)a3 topRight:(CGPoint)a4 bottomRight:(CGPoint)a5 bottomLeft:(CGPoint)a6 size:(CGSize)a7;
+- (CRNormalizedQuad)initWithCRCodableDataRepresentation:(id)representation;
+- (CRNormalizedQuad)initWithCoder:(id)coder;
+- (CRNormalizedQuad)initWithDenormalizedQuad:(id)quad size:(CGSize)size;
+- (CRNormalizedQuad)initWithNormalizedBoundingBox:(CGRect)box size:(CGSize)size;
+- (CRNormalizedQuad)initWithNormalizedTopLeft:(CGPoint)left topRight:(CGPoint)right bottomRight:(CGPoint)bottomRight bottomLeft:(CGPoint)bottomLeft size:(CGSize)size;
 - (NSString)description;
 - (double)area;
-- (double)boundingBoxClippedIOUWithQuad:(id)a3;
-- (double)boundingBoxIOUWithQuad:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)boundingBoxClippedIOUWithQuad:(id)quad;
+- (double)boundingBoxIOUWithQuad:(id)quad;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)crCodableDataRepresentation;
 - (id)rotated180;
-- (id)rotatedAroundDenormalizedPoint:(CGPoint)a3 angle:(float)a4;
-- (id)scaledBy:(CGPoint)a3 normalizedOffset:(CGPoint)a4;
-- (id)unionWithNormalizedQuad:(id)a3 baselineAngle:(float)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)rotatedAroundDenormalizedPoint:(CGPoint)point angle:(float)angle;
+- (id)scaledBy:(CGPoint)by normalizedOffset:(CGPoint)offset;
+- (id)unionWithNormalizedQuad:(id)quad baselineAngle:(float)angle;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRNormalizedQuad
 
-- (double)boundingBoxIOUWithQuad:(id)a3
+- (double)boundingBoxIOUWithQuad:(id)quad
 {
-  v4 = a3;
+  quadCopy = quad;
   [(CRNormalizedQuad *)self boundingBox];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v4 boundingBox];
+  [quadCopy boundingBox];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -66,9 +66,9 @@
   return v26.size.width * v26.size.height / (width * height + 1.0e-23);
 }
 
-- (double)boundingBoxClippedIOUWithQuad:(id)a3
+- (double)boundingBoxClippedIOUWithQuad:(id)quad
 {
-  v4 = a3;
+  quadCopy = quad;
   [(CRNormalizedQuad *)self boundingBox];
   v34.origin.x = v5;
   v34.origin.y = v6;
@@ -83,7 +83,7 @@
   y = v29.origin.y;
   width = v29.size.width;
   height = v29.size.height;
-  [v4 boundingBox];
+  [quadCopy boundingBox];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -125,36 +125,36 @@
   return v33.size.width * v33.size.height / (v27 * v26 + 1.0e-23);
 }
 
-- (CRNormalizedQuad)initWithNormalizedTopLeft:(CGPoint)a3 topRight:(CGPoint)a4 bottomRight:(CGPoint)a5 bottomLeft:(CGPoint)a6 size:(CGSize)a7
+- (CRNormalizedQuad)initWithNormalizedTopLeft:(CGPoint)left topRight:(CGPoint)right bottomRight:(CGPoint)bottomRight bottomLeft:(CGPoint)bottomLeft size:(CGSize)size
 {
-  v8 = [[CRImageSpaceQuad alloc] initWithTopLeft:a3.x * v11 topRight:a3.y * v12 bottomRight:a4.x * v11 bottomLeft:a4.y * v12, a5.x * v11, a5.y * v12, a6.x * v11, a6.y * v12];
+  v8 = [[CRImageSpaceQuad alloc] initWithTopLeft:left.x * v11 topRight:left.y * v12 bottomRight:right.x * v11 bottomLeft:right.y * v12, bottomRight.x * v11, bottomRight.y * v12, bottomLeft.x * v11, bottomLeft.y * v12];
   v9 = [(CRNormalizedQuad *)self initWithDenormalizedQuad:v8 size:v11, v12];
 
   return v9;
 }
 
-- (CRNormalizedQuad)initWithNormalizedBoundingBox:(CGRect)a3 size:(CGSize)a4
+- (CRNormalizedQuad)initWithNormalizedBoundingBox:(CGRect)box size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = [[CRImageSpaceQuad alloc] initWithBoundingBox:a3.origin.x * width, a3.origin.y * height, a3.size.width * width, a3.size.height * height];
-  v8 = [(CRNormalizedQuad *)self initWithDenormalizedQuad:v7 size:width, height];
+  height = size.height;
+  width = size.width;
+  height = [[CRImageSpaceQuad alloc] initWithBoundingBox:box.origin.x * width, box.origin.y * height, box.size.width * width, box.size.height * height];
+  height2 = [(CRNormalizedQuad *)self initWithDenormalizedQuad:height size:width, height];
 
-  return v8;
+  return height2;
 }
 
-- (CRNormalizedQuad)initWithDenormalizedQuad:(id)a3 size:(CGSize)a4
+- (CRNormalizedQuad)initWithDenormalizedQuad:(id)quad size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  height = size.height;
+  width = size.width;
+  quadCopy = quad;
   v12.receiver = self;
   v12.super_class = CRNormalizedQuad;
   v9 = [(CRNormalizedQuad *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_denormalizedQuad, a3);
+    objc_storeStrong(&v9->_denormalizedQuad, quad);
     v10->_normalizationSize.width = width;
     v10->_normalizationSize.height = height;
   }
@@ -302,42 +302,42 @@
 - (id)rotated180
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [(CRImageSpaceQuad *)self->_denormalizedQuad rotated180];
-  v5 = [v3 initWithDenormalizedQuad:v4 size:{self->_normalizationSize.width, self->_normalizationSize.height}];
+  rotated180 = [(CRImageSpaceQuad *)self->_denormalizedQuad rotated180];
+  v5 = [v3 initWithDenormalizedQuad:rotated180 size:{self->_normalizationSize.width, self->_normalizationSize.height}];
 
   return v5;
 }
 
-- (BOOL)overlapsNormalizedQuad:(id)a3
+- (BOOL)overlapsNormalizedQuad:(id)quad
 {
-  v4 = [a3 denormalizedQuad];
-  LOBYTE(self) = [(CRNormalizedQuad *)self overlapsDenormalizedQuad:v4];
+  denormalizedQuad = [quad denormalizedQuad];
+  LOBYTE(self) = [(CRNormalizedQuad *)self overlapsDenormalizedQuad:denormalizedQuad];
 
   return self;
 }
 
-- (id)rotatedAroundDenormalizedPoint:(CGPoint)a3 angle:(float)a4
+- (id)rotatedAroundDenormalizedPoint:(CGPoint)point angle:(float)angle
 {
-  v5 = [(CRImageSpaceQuad *)self->_denormalizedQuad rotatedAroundPoint:a3.x angle:a3.y];
+  v5 = [(CRImageSpaceQuad *)self->_denormalizedQuad rotatedAroundPoint:point.x angle:point.y];
   v6 = [v5 normalizedQuadForImageSize:{self->_normalizationSize.width, self->_normalizationSize.height}];
 
   return v6;
 }
 
-- (id)scaledBy:(CGPoint)a3 normalizedOffset:(CGPoint)a4
+- (id)scaledBy:(CGPoint)by normalizedOffset:(CGPoint)offset
 {
-  v5 = [(CRImageSpaceQuad *)self->_denormalizedQuad scaledBy:a3.x offset:a3.y, a4.x * self->_normalizationSize.width, a4.y * self->_normalizationSize.height];
+  v5 = [(CRImageSpaceQuad *)self->_denormalizedQuad scaledBy:by.x offset:by.y, offset.x * self->_normalizationSize.width, offset.y * self->_normalizationSize.height];
   v6 = [v5 normalizedQuadForImageSize:{self->_normalizationSize.width, self->_normalizationSize.height}];
 
   return v6;
 }
 
-- (id)unionWithNormalizedQuad:(id)a3 baselineAngle:(float)a4
+- (id)unionWithNormalizedQuad:(id)quad baselineAngle:(float)angle
 {
   denormalizedQuad = self->_denormalizedQuad;
-  v7 = [a3 denormalizedQuad];
-  *&v8 = a4;
-  v9 = [(CRImageSpaceQuad *)denormalizedQuad unionWithQuad:v7 baselineAngle:v8];
+  denormalizedQuad = [quad denormalizedQuad];
+  *&v8 = angle;
+  v9 = [(CRImageSpaceQuad *)denormalizedQuad unionWithQuad:denormalizedQuad baselineAngle:v8];
   v10 = [v9 normalizedQuadForImageSize:{self->_normalizationSize.width, self->_normalizationSize.height}];
 
   return v10;
@@ -352,10 +352,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -365,13 +365,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(CRNormalizedQuad *)v5 normalizationSize];
       if (self->_normalizationSize.width == v7 && self->_normalizationSize.height == v6)
       {
         denormalizedQuad = self->_denormalizedQuad;
-        v11 = [(CRNormalizedQuad *)v5 denormalizedQuad];
-        v9 = [(CRImageSpaceQuad *)denormalizedQuad isEqual:v11];
+        denormalizedQuad = [(CRNormalizedQuad *)v5 denormalizedQuad];
+        v9 = [(CRImageSpaceQuad *)denormalizedQuad isEqual:denormalizedQuad];
       }
 
       else
@@ -389,11 +389,11 @@
   return v9;
 }
 
-- (CRNormalizedQuad)initWithCoder:(id)a3
+- (CRNormalizedQuad)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CRQuadData"];
-  v6 = [v4 decodeIntegerForKey:@"CRQuadUncompressedDataSize"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CRQuadData"];
+  v6 = [coderCopy decodeIntegerForKey:@"CRQuadUncompressedDataSize"];
 
   v7 = uncompressDataOfSize(v5, v6);
   v8 = [(CRNormalizedQuad *)self initWithCRCodableDataRepresentation:v7];
@@ -401,13 +401,13 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(CRNormalizedQuad *)self crCodableDataRepresentation];
-  v5 = compressData(v6);
-  [v4 encodeObject:v5 forKey:@"CRQuadData"];
-  [v4 encodeInteger:objc_msgSend(v6 forKey:{"length"), @"CRQuadUncompressedDataSize"}];
+  coderCopy = coder;
+  crCodableDataRepresentation = [(CRNormalizedQuad *)self crCodableDataRepresentation];
+  v5 = compressData(crCodableDataRepresentation);
+  [coderCopy encodeObject:v5 forKey:@"CRQuadData"];
+  [coderCopy encodeInteger:objc_msgSend(crCodableDataRepresentation forKey:{"length"), @"CRQuadUncompressedDataSize"}];
 }
 
 - (id)crCodableDataRepresentation
@@ -420,33 +420,33 @@
   return v3;
 }
 
-- (CRNormalizedQuad)initWithCRCodableDataRepresentation:(id)a3
+- (CRNormalizedQuad)initWithCRCodableDataRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v10 = 0;
-  if ([CRCodingUtilities integerFromEncodingData:v4 offset:&v10]== 1)
+  if ([CRCodingUtilities integerFromEncodingData:representationCopy offset:&v10]== 1)
   {
     v5 = [CRImageSpaceQuad alloc];
-    v6 = [CRCodingUtilities objectDataFromEncodingData:v4 offset:&v10];
+    v6 = [CRCodingUtilities objectDataFromEncodingData:representationCopy offset:&v10];
     v7 = [(CRImageSpaceQuad *)v5 initWithCRCodableDataRepresentation:v6];
 
-    [CRCodingUtilities sizeFromEncodingData:v4 offset:&v10];
+    [CRCodingUtilities sizeFromEncodingData:representationCopy offset:&v10];
     self = [(CRNormalizedQuad *)self initWithDenormalizedQuad:v7 size:?];
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CRNormalizedQuad allocWithZone:a3];
+  v4 = [CRNormalizedQuad allocWithZone:zone];
   v5 = [(CRImageSpaceQuad *)self->_denormalizedQuad copy];
   v6 = [(CRNormalizedQuad *)v4 initWithDenormalizedQuad:v5 size:self->_normalizationSize.width, self->_normalizationSize.height];
 

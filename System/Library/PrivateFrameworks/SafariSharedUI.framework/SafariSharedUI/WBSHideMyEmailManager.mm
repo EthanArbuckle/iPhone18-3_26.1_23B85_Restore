@@ -1,7 +1,7 @@
 @interface WBSHideMyEmailManager
 + (WBSHideMyEmailManager)sharedManager;
 - (WBSHideMyEmailManager)init;
-- (void)_performOperation:(unint64_t)a3 withURL:(id)a4 completionHandler:(id)a5;
+- (void)_performOperation:(unint64_t)operation withURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation WBSHideMyEmailManager
@@ -17,9 +17,9 @@
     accountObserver = v2->_accountObserver;
     v2->_accountObserver = v3;
 
-    v5 = [MEMORY[0x1E69C8EF0] provisionNewHideMyEmailAvailabilityObserver];
+    provisionNewHideMyEmailAvailabilityObserver = [MEMORY[0x1E69C8EF0] provisionNewHideMyEmailAvailabilityObserver];
     provisionNewHideMyEmailAvailabilityObserver = v2->_provisionNewHideMyEmailAvailabilityObserver;
-    v2->_provisionNewHideMyEmailAvailabilityObserver = v5;
+    v2->_provisionNewHideMyEmailAvailabilityObserver = provisionNewHideMyEmailAvailabilityObserver;
 
     v7 = objc_alloc_init(MEMORY[0x1E698DDC0]);
     privateEmailController = v2->_privateEmailController;
@@ -31,10 +31,10 @@
   return v2;
 }
 
-- (void)_performOperation:(unint64_t)a3 withURL:(id)a4 completionHandler:(id)a5
+- (void)_performOperation:(unint64_t)operation withURL:(id)l completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [a4 host];
+  handlerCopy = handler;
+  host = [l host];
   v10 = WBS_LOG_CHANNEL_PREFIXHideMyEmail();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -46,12 +46,12 @@
   v21[1] = 3221225472;
   v21[2] = __69__WBSHideMyEmailManager__performOperation_withURL_completionHandler___block_invoke;
   v21[3] = &unk_1E8285628;
-  v24 = v8;
-  v25 = a3;
-  v22 = v9;
-  v23 = self;
-  v19 = v8;
-  v20 = v9;
+  v24 = handlerCopy;
+  operationCopy = operation;
+  v22 = host;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v20 = host;
   [(WBSPrimaryAppleAccountObserver *)accountObserver getPrimaryAppleAccountAltDSIDWithCompletionHandler:v21];
 }
 

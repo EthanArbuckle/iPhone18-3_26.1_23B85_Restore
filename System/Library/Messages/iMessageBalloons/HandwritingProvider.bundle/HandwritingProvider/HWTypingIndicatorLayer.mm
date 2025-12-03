@@ -1,12 +1,12 @@
 @interface HWTypingIndicatorLayer
-- (Class)CAMLParser:(id)a3 didFailToFindClassWithName:(id)a4;
+- (Class)CAMLParser:(id)parser didFailToFindClassWithName:(id)name;
 - (HWTypingIndicatorLayer)init;
 - (id)_loadTypingIndicatorFile;
-- (void)_setupLayerAndStateControllerWithStateName:(id)a3;
-- (void)setTraitCollection:(id)a3;
-- (void)startGrowAnimationWithCompletionBlock:(id)a3;
-- (void)startShrinkAnimationWithCompletionBlock:(id)a3;
-- (void)stateController:(id)a3 transitionDidStop:(id)a4 completed:(BOOL)a5;
+- (void)_setupLayerAndStateControllerWithStateName:(id)name;
+- (void)setTraitCollection:(id)collection;
+- (void)startGrowAnimationWithCompletionBlock:(id)block;
+- (void)startShrinkAnimationWithCompletionBlock:(id)block;
+- (void)stateController:(id)controller transitionDidStop:(id)stop completed:(BOOL)completed;
 - (void)stopAnimation;
 @end
 
@@ -36,12 +36,12 @@
   return v2;
 }
 
-- (void)_setupLayerAndStateControllerWithStateName:(id)a3
+- (void)_setupLayerAndStateControllerWithStateName:(id)name
 {
-  v4 = a3;
-  v5 = [(HWTypingIndicatorLayer *)self _loadTypingIndicatorFile];
+  nameCopy = name;
+  _loadTypingIndicatorFile = [(HWTypingIndicatorLayer *)self _loadTypingIndicatorFile];
   rootAnimationLayer = self->_rootAnimationLayer;
-  self->_rootAnimationLayer = v5;
+  self->_rootAnimationLayer = _loadTypingIndicatorFile;
 
   v7 = [[CAStateController alloc] initWithLayer:self->_rootAnimationLayer];
   stateController = self->_stateController;
@@ -51,7 +51,7 @@
   [(CALayer *)self->_rootAnimationLayer position];
   [(CALayer *)self->_rootAnimationLayer setPosition:58.0, -76.0];
   [(HWTypingIndicatorLayer *)self addSublayer:self->_rootAnimationLayer];
-  v9 = [(CALayer *)self->_rootAnimationLayer stateWithName:v4];
+  v9 = [(CALayer *)self->_rootAnimationLayer stateWithName:nameCopy];
 
   [(CAStateController *)self->_stateController setState:v9 ofLayer:self->_rootAnimationLayer];
 }
@@ -60,23 +60,23 @@
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [[NSDataAsset alloc] initWithName:@"TypingIndicator" bundle:v3];
-  v5 = [v4 data];
+  data = [v4 data];
   v6 = objc_alloc_init(CAMLParser);
   [v6 setDelegate:self];
-  [v6 parseData:v5];
-  v7 = [v6 result];
+  [v6 parseData:data];
+  result = [v6 result];
 
-  return v7;
+  return result;
 }
 
-- (void)setTraitCollection:(id)a3
+- (void)setTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = v4;
+  collectionCopy = collection;
+  v5 = collectionCopy;
   if (self->_rootAnimationLayer)
   {
     rootAnimationLayerUserInterfaceStyle = self->_rootAnimationLayerUserInterfaceStyle;
-    if (rootAnimationLayerUserInterfaceStyle == [v4 userInterfaceStyle])
+    if (rootAnimationLayerUserInterfaceStyle == [collectionCopy userInterfaceStyle])
     {
       goto LABEL_9;
     }
@@ -90,11 +90,11 @@
   }
 
   v8 = [(CAStateController *)self->_stateController stateOfLayer:rootAnimationLayer];
-  v9 = [v8 name];
+  name = [v8 name];
 
-  if (v9)
+  if (name)
   {
-    v10 = v9;
+    v10 = name;
   }
 
   else
@@ -116,34 +116,34 @@
 LABEL_9:
 }
 
-- (void)startGrowAnimationWithCompletionBlock:(id)a3
+- (void)startGrowAnimationWithCompletionBlock:(id)block
 {
   rootAnimationLayer = self->_rootAnimationLayer;
-  v5 = a3;
+  blockCopy = block;
   v7 = [(CALayer *)rootAnimationLayer stateWithName:@"Thinking"];
   LODWORD(v6) = 1.0;
   [(CAStateController *)self->_stateController setState:v7 ofLayer:self->_rootAnimationLayer transitionSpeed:v6];
-  [(HWTypingIndicatorLayer *)self setCompletionBlock:v5];
+  [(HWTypingIndicatorLayer *)self setCompletionBlock:blockCopy];
 }
 
-- (void)startShrinkAnimationWithCompletionBlock:(id)a3
+- (void)startShrinkAnimationWithCompletionBlock:(id)block
 {
   rootAnimationLayer = self->_rootAnimationLayer;
-  v5 = a3;
+  blockCopy = block;
   v7 = [(CALayer *)rootAnimationLayer stateWithName:@"State 1"];
   LODWORD(v6) = 1.0;
   [(CAStateController *)self->_stateController setState:v7 ofLayer:self->_rootAnimationLayer transitionSpeed:v6];
-  [(HWTypingIndicatorLayer *)self setCompletionBlock:v5];
+  [(HWTypingIndicatorLayer *)self setCompletionBlock:blockCopy];
 }
 
-- (void)stateController:(id)a3 transitionDidStop:(id)a4 completed:(BOOL)a5
+- (void)stateController:(id)controller transitionDidStop:(id)stop completed:(BOOL)completed
 {
-  v6 = [(HWTypingIndicatorLayer *)self completionBlock:a3];
+  v6 = [(HWTypingIndicatorLayer *)self completionBlock:controller];
 
   if (v6)
   {
-    v7 = [(HWTypingIndicatorLayer *)self completionBlock];
-    v7[2]();
+    completionBlock = [(HWTypingIndicatorLayer *)self completionBlock];
+    completionBlock[2]();
 
     [(HWTypingIndicatorLayer *)self setCompletionBlock:0];
   }
@@ -155,10 +155,10 @@ LABEL_9:
   [(CAStateController *)self->_stateController setState:v3 ofLayer:self->_rootAnimationLayer];
 }
 
-- (Class)CAMLParser:(id)a3 didFailToFindClassWithName:(id)a4
+- (Class)CAMLParser:(id)parser didFailToFindClassWithName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  parserCopy = parser;
+  nameCopy = name;
   v7 = qword_32280;
   if (!qword_32280)
   {
@@ -180,10 +180,10 @@ LABEL_9:
     v7 = qword_32280;
   }
 
-  v17 = [v7 objectForKey:v6];
+  v17 = [v7 objectForKey:nameCopy];
   if (!v17)
   {
-    NSLog(@"%s %@ substitution: %@", "[HWTypingIndicatorLayer CAMLParser:didFailToFindClassWithName:]", v6, 0);
+    NSLog(@"%s %@ substitution: %@", "[HWTypingIndicatorLayer CAMLParser:didFailToFindClassWithName:]", nameCopy, 0);
   }
 
   v18 = v17;

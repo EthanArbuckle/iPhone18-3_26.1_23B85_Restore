@@ -1,16 +1,16 @@
 @interface SKUIPropertyPredicateViewElement
-- (SKUIPropertyPredicateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SKUIPropertyPredicateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 - (id)entityValuePredicate;
 @end
 
 @implementation SKUIPropertyPredicateViewElement
 
-- (SKUIPropertyPredicateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIPropertyPredicateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIPropertyPredicateViewElement initWithDOMElement:parent:elementFactory:];
@@ -18,10 +18,10 @@
 
   v22.receiver = self;
   v22.super_class = SKUIPropertyPredicateViewElement;
-  v11 = [(SKUIViewElement *)&v22 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v22 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"property"];
+    v12 = [elementCopy getAttribute:@"property"];
     if ([v12 length])
     {
       v13 = [v12 copy];
@@ -29,7 +29,7 @@
       v11->_property = v13;
     }
 
-    v15 = [v8 getAttribute:@"value"];
+    v15 = [elementCopy getAttribute:@"value"];
     if ([v15 length])
     {
       v16 = [v15 copy];
@@ -37,7 +37,7 @@
       v11->_value = v16;
     }
 
-    v18 = [v8 getAttribute:@"comparisonType"];
+    v18 = [elementCopy getAttribute:@"comparisonType"];
     if ([v18 length])
     {
       v19 = v18;
@@ -78,23 +78,23 @@
   return v11;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v14.receiver = self;
   v14.super_class = SKUIPropertyPredicateViewElement;
-  v5 = [(SKUIViewElement *)&v14 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v14 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self && v5 == self)
+  if (elementCopy != self && v5 == self)
   {
-    self->_comparisonType = [(SKUIPropertyPredicateViewElement *)v4 comparisonType];
-    v7 = [(SKUIPropertyPredicateViewElement *)v4 property];
-    v8 = [v7 copy];
+    self->_comparisonType = [(SKUIPropertyPredicateViewElement *)elementCopy comparisonType];
+    property = [(SKUIPropertyPredicateViewElement *)elementCopy property];
+    v8 = [property copy];
     property = self->_property;
     self->_property = v8;
 
-    v10 = [(SKUIPropertyPredicateViewElement *)v4 value];
-    v11 = [v10 copy];
+    value = [(SKUIPropertyPredicateViewElement *)elementCopy value];
+    v11 = [value copy];
     value = self->_value;
     self->_value = v11;
   }

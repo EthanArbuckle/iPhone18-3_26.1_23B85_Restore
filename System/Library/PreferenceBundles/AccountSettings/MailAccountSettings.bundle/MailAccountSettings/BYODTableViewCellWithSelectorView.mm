@@ -1,15 +1,15 @@
 @interface BYODTableViewCellWithSelectorView
-- (BYODTableViewCellWithSelectorView)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BYODTableViewCellWithSelectorView)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)awakeFromNib;
 @end
 
 @implementation BYODTableViewCellWithSelectorView
 
-- (BYODTableViewCellWithSelectorView)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (BYODTableViewCellWithSelectorView)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v39.receiver = self;
   v39.super_class = BYODTableViewCellWithSelectorView;
-  v4 = [(BYODTableViewCellWithSelectorView *)&v39 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(BYODTableViewCellWithSelectorView *)&v39 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [UIImageSymbolConfiguration configurationWithPointSize:23.0];
@@ -36,40 +36,40 @@
 
     [(UILabel *)v4->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIButton *)v4->_selectButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v16 = [(BYODTableViewCellWithSelectorView *)v4 contentView];
-    [v16 addSubview:v4->_titleLabel];
+    contentView = [(BYODTableViewCellWithSelectorView *)v4 contentView];
+    [contentView addSubview:v4->_titleLabel];
 
-    v17 = [(BYODTableViewCellWithSelectorView *)v4 contentView];
-    [v17 addSubview:v4->_selectButton];
+    contentView2 = [(BYODTableViewCellWithSelectorView *)v4 contentView];
+    [contentView2 addSubview:v4->_selectButton];
 
-    v18 = [(UILabel *)v4->_titleLabel leadingAnchor];
-    v19 = [(BYODTableViewCellWithSelectorView *)v4 contentView];
-    v20 = [v19 leadingAnchor];
-    v21 = [v18 constraintEqualToAnchor:v20 constant:20.0];
+    leadingAnchor = [(UILabel *)v4->_titleLabel leadingAnchor];
+    contentView3 = [(BYODTableViewCellWithSelectorView *)v4 contentView];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
     [v21 setActive:1];
 
-    v22 = [(UILabel *)v4->_titleLabel topAnchor];
-    v23 = [(BYODTableViewCellWithSelectorView *)v4 contentView];
-    v24 = [v23 topAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24 constant:0.0];
+    topAnchor = [(UILabel *)v4->_titleLabel topAnchor];
+    contentView4 = [(BYODTableViewCellWithSelectorView *)v4 contentView];
+    topAnchor2 = [contentView4 topAnchor];
+    v25 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
     [v25 setActive:1];
 
-    v26 = [(UILabel *)v4->_titleLabel bottomAnchor];
-    v27 = [(BYODTableViewCellWithSelectorView *)v4 contentView];
-    v28 = [v27 bottomAnchor];
-    v29 = [v26 constraintEqualToAnchor:v28 constant:0.0];
+    bottomAnchor = [(UILabel *)v4->_titleLabel bottomAnchor];
+    contentView5 = [(BYODTableViewCellWithSelectorView *)v4 contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
+    v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
     [v29 setActive:1];
 
-    v30 = [(UIButton *)v4->_selectButton trailingAnchor];
-    v31 = [(BYODTableViewCellWithSelectorView *)v4 contentView];
-    v32 = [v31 trailingAnchor];
-    v33 = [v30 constraintEqualToAnchor:v32 constant:-10.0];
+    trailingAnchor = [(UIButton *)v4->_selectButton trailingAnchor];
+    contentView6 = [(BYODTableViewCellWithSelectorView *)v4 contentView];
+    trailingAnchor2 = [contentView6 trailingAnchor];
+    v33 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
     [v33 setActive:1];
 
-    v34 = [(UIButton *)v4->_selectButton centerYAnchor];
-    v35 = [(BYODTableViewCellWithSelectorView *)v4 contentView];
-    v36 = [v35 centerYAnchor];
-    v37 = [v34 constraintEqualToAnchor:v36 constant:0.0];
+    centerYAnchor = [(UIButton *)v4->_selectButton centerYAnchor];
+    contentView7 = [(BYODTableViewCellWithSelectorView *)v4 contentView];
+    centerYAnchor2 = [contentView7 centerYAnchor];
+    v37 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:0.0];
     [v37 setActive:1];
   }
 

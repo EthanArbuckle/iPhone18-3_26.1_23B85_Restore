@@ -1,83 +1,83 @@
 @interface MTLToolsSharedEvent
 - (BOOL)supportsRollback;
-- (BOOL)waitUntilSignaledValue:(unint64_t)a3 timeoutMS:(unint64_t)a4;
+- (BOOL)waitUntilSignaledValue:(unint64_t)value timeoutMS:(unint64_t)s;
 - (IOSurfaceSharedEvent)IOSurfaceSharedEvent;
 - (NSString)label;
 - (id)newSharedEventHandle;
 - (unint64_t)signaledValue;
-- (void)notifyListener:(id)a3 atValue:(unint64_t)a4 block:(id)a5;
-- (void)setLabel:(id)a3;
-- (void)setSignaledValue:(unint64_t)a3;
+- (void)notifyListener:(id)listener atValue:(unint64_t)value block:(id)block;
+- (void)setLabel:(id)label;
+- (void)setSignaledValue:(unint64_t)value;
 @end
 
 @implementation MTLToolsSharedEvent
 
-- (void)notifyListener:(id)a3 atValue:(unint64_t)a4 block:(id)a5
+- (void)notifyListener:(id)listener atValue:(unint64_t)value block:(id)block
 {
-  v9 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __52__MTLToolsSharedEvent_notifyListener_atValue_block___block_invoke;
   v10[3] = &unk_2787B3D88;
   v10[4] = self;
-  v10[5] = a5;
-  [v9 notifyListener:a3 atValue:a4 block:v10];
+  v10[5] = block;
+  [baseObject notifyListener:listener atValue:value block:v10];
 }
 
 - (id)newSharedEventHandle
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 newSharedEventHandle];
+  return [baseObject newSharedEventHandle];
 }
 
 - (unint64_t)signaledValue
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 signaledValue];
+  return [baseObject signaledValue];
 }
 
-- (void)setSignaledValue:(unint64_t)a3
+- (void)setSignaledValue:(unint64_t)value
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setSignaledValue:a3];
+  [baseObject setSignaledValue:value];
 }
 
 - (NSString)label
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 label];
+  return [baseObject label];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setLabel:a3];
+  [baseObject setLabel:label];
 }
 
-- (BOOL)waitUntilSignaledValue:(unint64_t)a3 timeoutMS:(unint64_t)a4
+- (BOOL)waitUntilSignaledValue:(unint64_t)value timeoutMS:(unint64_t)s
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v6 waitUntilSignaledValue:a3 timeoutMS:a4];
+  return [baseObject waitUntilSignaledValue:value timeoutMS:s];
 }
 
 - (IOSurfaceSharedEvent)IOSurfaceSharedEvent
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 IOSurfaceSharedEvent];
+  return [baseObject IOSurfaceSharedEvent];
 }
 
 - (BOOL)supportsRollback
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 supportsRollback];
+  return [baseObject supportsRollback];
 }
 
 @end

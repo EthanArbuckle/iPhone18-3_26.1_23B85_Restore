@@ -1,33 +1,33 @@
 @interface SBAppSwitcherScrollViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (CGPoint)_ax_adjustedContentOffsetForDifferentialScrollingToShowFocusItemWithInfo:(id)a3 proposedContentOffset:(CGPoint)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (CGPoint)_ax_adjustedContentOffsetForDifferentialScrollingToShowFocusItemWithInfo:(id)info proposedContentOffset:(CGPoint)offset;
 @end
 
 @implementation SBAppSwitcherScrollViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBFluidSwitcherItemContainer"];
-  [v3 validateClass:@"SBFluidSwitcherItemContainer" hasInstanceMethod:@"appLayout" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBAppSwitcherScrollView" isKindOfClass:@"UIScrollView"];
-  [v3 validateClass:@"UIScrollView" hasInstanceMethod:@"_adjustFocusContentOffset:toShowFocusItemWithInfo:" withFullSignature:{"{CGPoint=dd}", "@", 0}];
-  [v3 validateClass:@"_UIFocusItemInfo" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBAppSwitcherScrollView" isKindOfClass:@"BSUIScrollView"];
-  [v3 validateClass:@"BSUIScrollView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"appLayouts" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"personality" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherPersonality" hasInstanceMethod:@"rootModifier" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"SBSwitcherMultitaskingQueryProviding" hasRequiredInstanceMethod:@"contentOffsetForIndex:alignment:"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBFluidSwitcherItemContainer"];
+  [validationsCopy validateClass:@"SBFluidSwitcherItemContainer" hasInstanceMethod:@"appLayout" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBAppSwitcherScrollView" isKindOfClass:@"UIScrollView"];
+  [validationsCopy validateClass:@"UIScrollView" hasInstanceMethod:@"_adjustFocusContentOffset:toShowFocusItemWithInfo:" withFullSignature:{"{CGPoint=dd}", "@", 0}];
+  [validationsCopy validateClass:@"_UIFocusItemInfo" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBAppSwitcherScrollView" isKindOfClass:@"BSUIScrollView"];
+  [validationsCopy validateClass:@"BSUIScrollView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"appLayouts" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"personality" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherPersonality" hasInstanceMethod:@"rootModifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"SBSwitcherMultitaskingQueryProviding" hasRequiredInstanceMethod:@"contentOffsetForIndex:alignment:"];
 }
 
-- (CGPoint)_ax_adjustedContentOffsetForDifferentialScrollingToShowFocusItemWithInfo:(id)a3 proposedContentOffset:(CGPoint)a4
+- (CGPoint)_ax_adjustedContentOffsetForDifferentialScrollingToShowFocusItemWithInfo:(id)info proposedContentOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = offset.y;
+  x = offset.x;
+  infoCopy = info;
   v8 = [(SBAppSwitcherScrollViewAccessibility *)self safeValueForKey:@"delegate"];
-  v9 = [v7 safeValueForKey:@"item"];
+  v9 = [infoCopy safeValueForKey:@"item"];
   v10 = [v8 safeArrayForKey:@"appLayouts"];
   v11 = [v9 safeValueForKey:@"appLayout"];
   v12 = [v10 indexOfObject:v11];

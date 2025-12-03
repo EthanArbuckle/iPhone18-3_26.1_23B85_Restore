@@ -1,6 +1,6 @@
 @interface HDBackgroundObservationServerExtensionManager
 - (HDBackgroundObservationServerExtensionManager)init;
-- (id)extensionForBundleIdentifier:(id)a3 error:(id *)a4;
+- (id)extensionForBundleIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation HDBackgroundObservationServerExtensionManager
@@ -22,12 +22,12 @@
   return v3;
 }
 
-- (id)extensionForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)extensionForBundleIdentifier:(id)identifier error:(id *)error
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v7 = v6;
+  v7 = identifierCopy;
   v8 = v7;
   if (!self)
   {
@@ -44,7 +44,7 @@ LABEL_17:
   v26 = *MEMORY[0x277CCA0F8];
   v27[0] = @"com.apple.healthkit.background-observation";
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:&v26 count:1];
-  [MEMORY[0x277CCA9C8] extensionsWithMatchingAttributes:v9 error:a4];
+  [MEMORY[0x277CCA9C8] extensionsWithMatchingAttributes:v9 error:error];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -63,8 +63,8 @@ LABEL_17:
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = [v14 hd_extensionContainerBundleIdentifier];
-        if ([v15 isEqualToString:v8])
+        hd_extensionContainerBundleIdentifier = [v14 hd_extensionContainerBundleIdentifier];
+        if ([hd_extensionContainerBundleIdentifier isEqualToString:v8])
         {
           v11 = v14;
 

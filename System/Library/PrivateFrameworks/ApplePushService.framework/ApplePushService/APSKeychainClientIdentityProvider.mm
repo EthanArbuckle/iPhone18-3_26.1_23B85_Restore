@@ -1,20 +1,20 @@
 @interface APSKeychainClientIdentityProvider
 - (APSKeychainClientIdentityProvider)init;
-- (BOOL)generateNonceAndSignatureWithPublicKey:(__SecKey *)a3 privateKey:(__SecKey *)a4 dataToSign:(id)a5 time:(id)a6 useIDSNonceVersion:(BOOL)a7 nonceOut:(id *)a8 signatureOut:(id *)a9;
+- (BOOL)generateNonceAndSignatureWithPublicKey:(__SecKey *)key privateKey:(__SecKey *)privateKey dataToSign:(id)sign time:(id)time useIDSNonceVersion:(BOOL)version nonceOut:(id *)out signatureOut:(id *)signatureOut;
 - (BOOL)hasUnderlyingIdentityChanged;
 - (BOOL)isReadyToFetchIdentity;
 - (__SecIdentity)clientIdentity;
-- (id)fetchVMHostCertsAndSignData:(id)a3 error:(id *)a4;
-- (void)_copyClientIdentityFromKeychain:(__SecIdentity *)a3;
+- (id)fetchVMHostCertsAndSignData:(id)data error:(id *)error;
+- (void)_copyClientIdentityFromKeychain:(__SecIdentity *)keychain;
 - (void)_processPotentialIdentityChanged;
-- (void)checkIdentityIsAvailable:(id)a3 hasExistingToken:(BOOL)a4;
+- (void)checkIdentityIsAvailable:(id)available hasExistingToken:(BOOL)token;
 - (void)dealloc;
 - (void)debugForceIdentitySwap;
-- (void)fetchClientIdentityWithReason:(unint64_t)a3 hasExistingToken:(BOOL)a4 completionHandler:(id)a5;
-- (void)forceIdentityRefresh:(id)a3;
+- (void)fetchClientIdentityWithReason:(unint64_t)reason hasExistingToken:(BOOL)token completionHandler:(id)handler;
+- (void)forceIdentityRefresh:(id)refresh;
 - (void)noteInvalidServerPresence;
 - (void)noteValidServerPresence;
-- (void)preloadIdentity:(id)a3;
+- (void)preloadIdentity:(id)identity;
 @end
 
 @implementation APSKeychainClientIdentityProvider
@@ -129,9 +129,9 @@ LABEL_7:
     CFDictionaryAddValue(Mutable, kSecValueRef, *p_cachedClientIdentity);
     CFDictionaryAddValue(Mutable, kSecReturnPersistentRef, kCFBooleanTrue);
     v15 = +[APSMultiUserMode sharedInstance];
-    v16 = [v15 isMultiUser];
+    isMultiUser = [v15 isMultiUser];
 
-    if (v16)
+    if (isMultiUser)
     {
       CFDictionaryAddValue(Mutable, kSecUseSystemKeychain, kCFBooleanTrue);
     }
@@ -189,7 +189,7 @@ LABEL_29:
   return *p_cachedClientIdentity;
 }
 
-- (void)_copyClientIdentityFromKeychain:(__SecIdentity *)a3
+- (void)_copyClientIdentityFromKeychain:(__SecIdentity *)keychain
 {
   Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   CFDictionaryAddValue(Mutable, kSecAttrAccessGroup, APSBundleIdentifier);
@@ -197,14 +197,14 @@ LABEL_29:
   CFDictionaryAddValue(Mutable, kSecClass, kSecClassIdentity);
   CFDictionaryAddValue(Mutable, kSecReturnRef, kCFBooleanTrue);
   v5 = +[APSMultiUserMode sharedInstance];
-  v6 = [v5 isMultiUser];
+  isMultiUser = [v5 isMultiUser];
 
-  if (v6)
+  if (isMultiUser)
   {
     CFDictionaryAddValue(Mutable, kSecUseSystemKeychain, kCFBooleanTrue);
   }
 
-  v7 = SecItemCopyMatching(Mutable, a3);
+  v7 = SecItemCopyMatching(Mutable, keychain);
   if (v7 != -25300)
   {
     v8 = v7;
@@ -225,38 +225,38 @@ LABEL_29:
 {
   if ([(APSKeychainClientIdentityProvider *)self hasUnderlyingIdentityChanged])
   {
-    v3 = [(APSKeychainClientIdentityProvider *)self identityAvailabilityDidChangeBlock];
+    identityAvailabilityDidChangeBlock = [(APSKeychainClientIdentityProvider *)self identityAvailabilityDidChangeBlock];
 
-    if (v3)
+    if (identityAvailabilityDidChangeBlock)
     {
-      v4 = [(APSKeychainClientIdentityProvider *)self identityAvailabilityDidChangeBlock];
-      v4[2](v4, [(APSKeychainClientIdentityProvider *)self isReadyToFetchIdentity]);
+      identityAvailabilityDidChangeBlock2 = [(APSKeychainClientIdentityProvider *)self identityAvailabilityDidChangeBlock];
+      identityAvailabilityDidChangeBlock2[2](identityAvailabilityDidChangeBlock2, [(APSKeychainClientIdentityProvider *)self isReadyToFetchIdentity]);
     }
   }
 }
 
-- (void)preloadIdentity:(id)a3
+- (void)preloadIdentity:(id)identity
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100080B00;
   v5[3] = &unk_100187FD0;
-  v6 = a3;
-  v4 = v6;
+  identityCopy = identity;
+  v4 = identityCopy;
   [(APSKeychainClientIdentityProvider *)self fetchClientIdentityWithReason:2 hasExistingToken:1 completionHandler:v5];
 }
 
-- (void)forceIdentityRefresh:(id)a3
+- (void)forceIdentityRefresh:(id)refresh
 {
-  v4 = a3;
+  refreshCopy = refresh;
   Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   CFDictionaryAddValue(Mutable, kSecAttrAccessGroup, APSBundleIdentifier);
   CFDictionaryAddValue(Mutable, kSecAttrLabel, @"APSClientIdentity");
   CFDictionaryAddValue(Mutable, kSecClass, kSecClassIdentity);
   v6 = +[APSMultiUserMode sharedInstance];
-  v7 = [v6 isMultiUser];
+  isMultiUser = [v6 isMultiUser];
 
-  if (v7)
+  if (isMultiUser)
   {
     CFDictionaryAddValue(Mutable, kSecUseSystemKeychain, kCFBooleanTrue);
   }
@@ -282,8 +282,8 @@ LABEL_29:
   v11[1] = 3221225472;
   v11[2] = sub_100080D60;
   v11[3] = &unk_100188048;
-  v12 = v4;
-  v10 = v4;
+  v12 = refreshCopy;
+  v10 = refreshCopy;
   [(APSKeychainClientIdentityProvider *)self preloadIdentity:v11];
 }
 
@@ -311,46 +311,46 @@ LABEL_29:
   return v4;
 }
 
-- (void)checkIdentityIsAvailable:(id)a3 hasExistingToken:(BOOL)a4
+- (void)checkIdentityIsAvailable:(id)available hasExistingToken:(BOOL)token
 {
-  v6 = a3;
-  (*(a3 + 2))(v6, [(APSKeychainClientIdentityProvider *)self isReadyToFetchIdentity]);
+  availableCopy = available;
+  (*(available + 2))(availableCopy, [(APSKeychainClientIdentityProvider *)self isReadyToFetchIdentity]);
 }
 
-- (void)fetchClientIdentityWithReason:(unint64_t)a3 hasExistingToken:(BOOL)a4 completionHandler:(id)a5
+- (void)fetchClientIdentityWithReason:(unint64_t)reason hasExistingToken:(BOOL)token completionHandler:(id)handler
 {
-  v6 = a5;
-  v7 = [(APSKeychainClientIdentityProvider *)self clientIdentity];
+  handlerCopy = handler;
+  clientIdentity = [(APSKeychainClientIdentityProvider *)self clientIdentity];
   certificate = 0;
   privateKeyRef = 0;
   v8 = +[NSMutableArray array];
-  if (!v7)
+  if (!clientIdentity)
   {
     goto LABEL_13;
   }
 
-  if (SecIdentityCopyPrivateKey(v7, &privateKeyRef))
+  if (SecIdentityCopyPrivateKey(clientIdentity, &privateKeyRef))
   {
     v9 = +[APSLog courier];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v24 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@ could not copy private key!", buf, 0xCu);
     }
   }
 
-  v10 = SecIdentityCopyCertificate(v7, &certificate);
-  v11 = [(APSKeychainClientIdentityProvider *)self debugOverrides];
-  v12 = [v11 forceInvalidAlbertCert];
+  v10 = SecIdentityCopyCertificate(clientIdentity, &certificate);
+  debugOverrides = [(APSKeychainClientIdentityProvider *)self debugOverrides];
+  forceInvalidAlbertCert = [debugOverrides forceInvalidAlbertCert];
 
-  if (v12)
+  if (forceInvalidAlbertCert)
   {
     v13 = +[APSLog courier];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v24 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%@ default set, forcing invalid albert cert", buf, 0xCu);
     }
 
@@ -376,16 +376,16 @@ LABEL_13:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = self;
+    selfCopy3 = self;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%@ could not copy device certificate!", buf, 0xCu);
   }
 
   v15 = [NSError errorWithDomain:@"APSClientIdentityProviderErrorDomain" code:-10008 userInfo:0];
 LABEL_17:
   v18 = privateKeyRef;
-  if (v6)
+  if (handlerCopy)
   {
-    v6[2](v6, privateKeyRef, v8, v15);
+    handlerCopy[2](handlerCopy, privateKeyRef, v8, v15);
     v18 = privateKeyRef;
   }
 
@@ -400,14 +400,14 @@ LABEL_17:
   }
 }
 
-- (BOOL)generateNonceAndSignatureWithPublicKey:(__SecKey *)a3 privateKey:(__SecKey *)a4 dataToSign:(id)a5 time:(id)a6 useIDSNonceVersion:(BOOL)a7 nonceOut:(id *)a8 signatureOut:(id *)a9
+- (BOOL)generateNonceAndSignatureWithPublicKey:(__SecKey *)key privateKey:(__SecKey *)privateKey dataToSign:(id)sign time:(id)time useIDSNonceVersion:(BOOL)version nonceOut:(id *)out signatureOut:(id *)signatureOut
 {
-  v10 = a7;
-  v15 = a6;
-  v16 = a5;
-  LOBYTE(a8) = sub_10001BDD8(a3, a4, v16, v15, v10, [(APSKeychainClientIdentityProvider *)self signatureTypeForSigning], a8, a9);
+  versionCopy = version;
+  timeCopy = time;
+  signCopy = sign;
+  LOBYTE(out) = sub_10001BDD8(key, privateKey, signCopy, timeCopy, versionCopy, [(APSKeychainClientIdentityProvider *)self signatureTypeForSigning], out, signatureOut);
 
-  return a8;
+  return out;
 }
 
 - (BOOL)hasUnderlyingIdentityChanged
@@ -439,7 +439,7 @@ LABEL_15:
 
       v10 = self->_cachedClientIdentity;
       *buf = 138412802;
-      v13 = self;
+      selfCopy2 = self;
       v14 = 2112;
       v15 = v3;
       v16 = 2112;
@@ -456,7 +456,7 @@ LABEL_15:
       }
 
       *buf = 138412802;
-      v13 = self;
+      selfCopy2 = self;
       v14 = 2112;
       v15 = v3;
       v16 = 2112;
@@ -493,13 +493,13 @@ LABEL_17:
   return v5;
 }
 
-- (id)fetchVMHostCertsAndSignData:(id)a3 error:(id *)a4
+- (id)fetchVMHostCertsAndSignData:(id)data error:(id *)error
 {
-  v5 = [APSLog courier:a3];
+  v5 = [APSLog courier:data];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ can't fetch host VM identity with an albert identity provider!", &v7, 0xCu);
   }
 
@@ -512,7 +512,7 @@ LABEL_17:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ informed of a valid server presence. Ignoring.", &v4, 0xCu);
   }
 }
@@ -523,7 +523,7 @@ LABEL_17:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ informed of an invalid server presence. Not doing anything, the next presence will use the same identity.", &v4, 0xCu);
   }
 }
@@ -534,7 +534,7 @@ LABEL_17:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ swapping identity providers not supported, not using a multi identity provider", &v4, 0xCu);
   }
 }

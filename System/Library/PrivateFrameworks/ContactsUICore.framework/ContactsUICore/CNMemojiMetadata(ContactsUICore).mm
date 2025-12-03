@@ -8,11 +8,11 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 alloc];
-  v9 = [v7 avatarRecord];
-  v10 = [v7 poseConfiguration];
+  v8 = [self alloc];
+  avatarRecord = [v7 avatarRecord];
+  poseConfiguration = [v7 poseConfiguration];
 
-  v11 = [v8 initWithAvatarRecord:v9 poseConfiguration:v10 backgroundColorDescription:v6];
+  v11 = [v8 initWithAvatarRecord:avatarRecord poseConfiguration:poseConfiguration backgroundColorDescription:v6];
 
   return v11;
 }

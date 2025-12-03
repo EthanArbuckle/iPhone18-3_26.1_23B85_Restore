@@ -1,7 +1,7 @@
 @interface SecurityApplicator
 + (id)supportedConfigurationTypes;
 - (_TtC18SecuritySubscriber18SecurityApplicator)init;
-- (_TtC18SecuritySubscriber18SecurityApplicator)initWithAdapter:(id)a3 inPlaceUpdates:(BOOL)a4;
+- (_TtC18SecuritySubscriber18SecurityApplicator)initWithAdapter:(id)adapter inPlaceUpdates:(BOOL)updates;
 @end
 
 @implementation SecurityApplicator
@@ -24,7 +24,7 @@
   return v2.super.isa;
 }
 
-- (_TtC18SecuritySubscriber18SecurityApplicator)initWithAdapter:(id)a3 inPlaceUpdates:(BOOL)a4
+- (_TtC18SecuritySubscriber18SecurityApplicator)initWithAdapter:(id)adapter inPlaceUpdates:(BOOL)updates
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

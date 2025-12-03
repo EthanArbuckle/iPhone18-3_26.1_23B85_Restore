@@ -4,27 +4,27 @@
 - (_TtC12GameCenterUI16DynamicTypeLabel)accessibilityProfileEditLabel;
 - (void)didTap;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ProfileAvatarView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E014600();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E014A68(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_24E014A68(change);
 }
 
 - (void)didTap
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E014B2C();
 }
 

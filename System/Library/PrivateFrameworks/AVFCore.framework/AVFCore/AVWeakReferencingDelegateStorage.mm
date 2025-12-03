@@ -3,8 +3,8 @@
 - (OS_dispatch_queue)delegateQueue;
 - (id)delegate;
 - (void)dealloc;
-- (void)getRetainedDelegate:(id *)a3 retainedDelegateQueue:(id *)a4;
-- (void)setDelegate:(id)a3 queue:(id)a4;
+- (void)getRetainedDelegate:(id *)delegate retainedDelegateQueue:(id *)queue;
+- (void)setDelegate:(id)delegate queue:(id)queue;
 @end
 
 @implementation AVWeakReferencingDelegateStorage
@@ -66,7 +66,7 @@
   return result;
 }
 
-- (void)getRetainedDelegate:(id *)a3 retainedDelegateQueue:(id *)a4
+- (void)getRetainedDelegate:(id *)delegate retainedDelegateQueue:(id *)queue
 {
   v16 = 0;
   v17 = &v16;
@@ -89,12 +89,12 @@
   block[5] = &v16;
   block[6] = &v10;
   dispatch_sync(ivarAccessQueue, block);
-  if (a3)
+  if (delegate)
   {
-    *a3 = v17[5];
+    *delegate = v17[5];
   }
 
-  if (a4)
+  if (queue)
   {
     v7 = v11[5];
     if (v7)
@@ -102,7 +102,7 @@
       dispatch_retain(v11[5]);
     }
 
-    *a4 = v7;
+    *queue = v7;
   }
 
   v8 = v11[5];
@@ -128,11 +128,11 @@ void __78__AVWeakReferencingDelegateStorage_getRetainedDelegate_retainedDelegate
   *(*(a1[6] + 8) + 40) = v3;
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  if (!a3 && a4)
+  if (!delegate && queue)
   {
-    v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", a4, v4, v5, v6, v7, "newDelegateQueue == NULL"), 0}];
+    v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", queue, v4, v5, v6, v7, "newDelegateQueue == NULL"), 0}];
     objc_exception_throw(v9);
   }
 
@@ -142,8 +142,8 @@ void __78__AVWeakReferencingDelegateStorage_getRetainedDelegate_retainedDelegate
   block[2] = __54__AVWeakReferencingDelegateStorage_setDelegate_queue___block_invoke;
   block[3] = &unk_1E7460E90;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = delegate;
+  block[6] = queue;
   dispatch_sync(ivarAccessQueue, block);
 }
 

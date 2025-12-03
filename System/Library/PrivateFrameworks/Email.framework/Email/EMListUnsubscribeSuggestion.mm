@@ -1,28 +1,28 @@
 @interface EMListUnsubscribeSuggestion
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)unsubscribeMessageAlertString;
 - (SGSuggestionDelegate)suggestionDelegate;
 - (SGSuggestionPresenter)suggestionPresenter;
-- (id)suggestionCategoryLocalizedCountOfItems:(id)a3;
-- (id)suggestionCategoryTitleForItems:(id)a3;
+- (id)suggestionCategoryLocalizedCountOfItems:(id)items;
+- (id)suggestionCategoryTitleForItems:(id)items;
 - (id)suggestionComparator;
 - (unint64_t)hash;
-- (void)_sendAnalyticsForUnsubscribe:(int64_t)a3;
+- (void)_sendAnalyticsForUnsubscribe:(int64_t)unsubscribe;
 - (void)ignore;
 - (void)unsubscribe;
 @end
 
 @implementation EMListUnsubscribeSuggestion
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(EMListUnsubscribeSuggestion *)self listUnsubscribeCommand];
-    v6 = [v4 listUnsubscribeCommand];
-    v7 = [v5 isEqual:v6];
+    listUnsubscribeCommand = [(EMListUnsubscribeSuggestion *)self listUnsubscribeCommand];
+    listUnsubscribeCommand2 = [equalCopy listUnsubscribeCommand];
+    v7 = [listUnsubscribeCommand isEqual:listUnsubscribeCommand2];
   }
 
   else
@@ -35,19 +35,19 @@
 
 - (unint64_t)hash
 {
-  v2 = [(EMListUnsubscribeSuggestion *)self listUnsubscribeCommand];
-  v3 = [v2 hash];
+  listUnsubscribeCommand = [(EMListUnsubscribeSuggestion *)self listUnsubscribeCommand];
+  v3 = [listUnsubscribeCommand hash];
 
   return v3;
 }
 
 - (NSString)unsubscribeMessageAlertString
 {
-  v3 = [(EMListUnsubscribeSuggestion *)self shouldShowICloudUnsubscribe];
-  v4 = [(EMListUnsubscribeSuggestion *)self listUnsubscribeCommand];
-  [v4 isMailtoOperation];
+  shouldShowICloudUnsubscribe = [(EMListUnsubscribeSuggestion *)self shouldShowICloudUnsubscribe];
+  listUnsubscribeCommand = [(EMListUnsubscribeSuggestion *)self listUnsubscribeCommand];
+  [listUnsubscribeCommand isMailtoOperation];
 
-  if (v3)
+  if (shouldShowICloudUnsubscribe)
   {
     _EFLocalizedStringFromTable();
   }
@@ -61,10 +61,10 @@
   return v5;
 }
 
-- (id)suggestionCategoryLocalizedCountOfItems:(id)a3
+- (id)suggestionCategoryLocalizedCountOfItems:(id)items
 {
-  v3 = a3;
-  v4 = [v3 count];
+  itemsCopy = items;
+  v4 = [itemsCopy count];
   v5 = MEMORY[0x1E696AEC0];
   v6 = _EFLocalizedString();
   v7 = [MEMORY[0x1E696ADA0] ef_formatInteger:v4 withGrouping:0];
@@ -73,11 +73,11 @@
   return v8;
 }
 
-- (id)suggestionCategoryTitleForItems:(id)a3
+- (id)suggestionCategoryTitleForItems:(id)items
 {
-  v3 = [(EMListUnsubscribeSuggestion *)self suggestionTitle];
+  suggestionTitle = [(EMListUnsubscribeSuggestion *)self suggestionTitle];
 
-  return v3;
+  return suggestionTitle;
 }
 
 - (id)suggestionComparator
@@ -89,18 +89,18 @@
 
 - (void)unsubscribe
 {
-  v3 = [(EMListUnsubscribeSuggestion *)self suggestionPresenter];
-  v4 = [(EMListUnsubscribeSuggestion *)self suggestion];
-  [v3 removeSuggestion:v4];
+  suggestionPresenter = [(EMListUnsubscribeSuggestion *)self suggestionPresenter];
+  suggestion = [(EMListUnsubscribeSuggestion *)self suggestion];
+  [suggestionPresenter removeSuggestion:suggestion];
 
   [(EMListUnsubscribeSuggestion *)self _sendAnalyticsForUnsubscribe:1];
 }
 
 - (void)ignore
 {
-  v3 = [(EMListUnsubscribeSuggestion *)self suggestionPresenter];
-  v4 = [(EMListUnsubscribeSuggestion *)self suggestion];
-  [v3 removeSuggestion:v4];
+  suggestionPresenter = [(EMListUnsubscribeSuggestion *)self suggestionPresenter];
+  suggestion = [(EMListUnsubscribeSuggestion *)self suggestion];
+  [suggestionPresenter removeSuggestion:suggestion];
 
   [(EMListUnsubscribeSuggestion *)self _sendAnalyticsForUnsubscribe:0];
 }
@@ -126,10 +126,10 @@ uint64_t __62__EMListUnsubscribeSuggestion_unsubscribeSuggestionComparator__bloc
   return v8;
 }
 
-- (void)_sendAnalyticsForUnsubscribe:(int64_t)a3
+- (void)_sendAnalyticsForUnsubscribe:(int64_t)unsubscribe
 {
-  v3 = [(EMListUnsubscribeSuggestion *)self listUnsubscribeCommand];
-  [v3 headerUnsubscribeTypes];
+  listUnsubscribeCommand = [(EMListUnsubscribeSuggestion *)self listUnsubscribeCommand];
+  [listUnsubscribeCommand headerUnsubscribeTypes];
 
   AnalyticsSendEventLazy();
 }

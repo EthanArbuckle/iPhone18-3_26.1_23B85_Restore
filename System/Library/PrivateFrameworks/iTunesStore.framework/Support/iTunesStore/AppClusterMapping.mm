@@ -1,35 +1,35 @@
 @interface AppClusterMapping
-- (AppClusterMapping)initWithItemID:(id)a3 bundleID:(id)a4 clusterVersionID:(id)a5 dictionary:(id)a6;
+- (AppClusterMapping)initWithItemID:(id)d bundleID:(id)iD clusterVersionID:(id)versionID dictionary:(id)dictionary;
 - (id)description;
-- (void)_updateWithDictionary:(id)a3;
+- (void)_updateWithDictionary:(id)dictionary;
 @end
 
 @implementation AppClusterMapping
 
-- (AppClusterMapping)initWithItemID:(id)a3 bundleID:(id)a4 clusterVersionID:(id)a5 dictionary:(id)a6
+- (AppClusterMapping)initWithItemID:(id)d bundleID:(id)iD clusterVersionID:(id)versionID dictionary:(id)dictionary
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  versionIDCopy = versionID;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = AppClusterMapping;
   v14 = [(AppClusterMapping *)&v22 init];
   if (v14)
   {
-    v15 = [v11 copy];
+    v15 = [iDCopy copy];
     bundleID = v14->_bundleID;
     v14->_bundleID = v15;
 
-    v17 = [v12 copy];
+    v17 = [versionIDCopy copy];
     clusterVersionID = v14->_clusterVersionID;
     v14->_clusterVersionID = v17;
 
-    v19 = [v10 copy];
+    v19 = [dCopy copy];
     itemID = v14->_itemID;
     v14->_itemID = v19;
 
-    [(AppClusterMapping *)v14 _updateWithDictionary:v13];
+    [(AppClusterMapping *)v14 _updateWithDictionary:dictionaryCopy];
   }
 
   return v14;
@@ -37,28 +37,28 @@
 
 - (id)description
 {
-  v3 = [(AppClusterMapping *)self itemID];
-  v4 = [(AppClusterMapping *)self clusterID];
-  v5 = [(AppClusterMapping *)self clusterVersionID];
-  v6 = [(AppClusterMapping *)self foregroundUsageWeight];
-  v7 = [(AppClusterMapping *)self launchWeight];
-  v8 = [NSString stringWithFormat:@"{ itemID: %@ clusterID: %@  clusterVersion: %@ forgroundUsageWeight: %@ launchWeight: %@ }", v3, v4, v5, v6, v7];
+  itemID = [(AppClusterMapping *)self itemID];
+  clusterID = [(AppClusterMapping *)self clusterID];
+  clusterVersionID = [(AppClusterMapping *)self clusterVersionID];
+  foregroundUsageWeight = [(AppClusterMapping *)self foregroundUsageWeight];
+  launchWeight = [(AppClusterMapping *)self launchWeight];
+  v8 = [NSString stringWithFormat:@"{ itemID: %@ clusterID: %@  clusterVersion: %@ forgroundUsageWeight: %@ launchWeight: %@ }", itemID, clusterID, clusterVersionID, foregroundUsageWeight, launchWeight];
 
   return v8;
 }
 
-- (void)_updateWithDictionary:(id)a3
+- (void)_updateWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"clusterId"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"clusterId"];
   clusterID = self->_clusterID;
   self->_clusterID = v5;
 
-  v7 = [v4 objectForKeyedSubscript:@"usageDurationWeight"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"usageDurationWeight"];
   foregroundUsageWeight = self->_foregroundUsageWeight;
   self->_foregroundUsageWeight = v7;
 
-  v9 = [v4 objectForKeyedSubscript:@"launchCountWeight"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"launchCountWeight"];
 
   launchWeight = self->_launchWeight;
   self->_launchWeight = v9;

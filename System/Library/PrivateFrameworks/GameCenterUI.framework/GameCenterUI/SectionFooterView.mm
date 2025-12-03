@@ -1,18 +1,18 @@
 @interface SectionFooterView
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (UIEdgeInsets)layoutMargins;
 - (_TtC12GameCenterUI16DynamicTypeLabel)accessibilityFooterLabel;
-- (void)handleTapWithGestureRecognizer:(id)a3;
+- (void)handleTapWithGestureRecognizer:(id)recognizer;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setLayoutMargins:(UIEdgeInsets)a3;
+- (void)setLayoutMargins:(UIEdgeInsets)margins;
 @end
 
 @implementation SectionFooterView
 
 - (UIEdgeInsets)layoutMargins
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E2B07EC();
   v4 = v3;
   v6 = v5;
@@ -30,17 +30,17 @@
   return result;
 }
 
-- (void)setLayoutMargins:(UIEdgeInsets)a3
+- (void)setLayoutMargins:(UIEdgeInsets)margins
 {
-  v3 = self;
+  selfCopy = self;
   sub_24E2B089C();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = sub_24E2B096C(a4);
+  selfCopy = self;
+  v7 = sub_24E2B096C(in);
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -59,20 +59,20 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E2B0C34();
 }
 
-- (void)handleTapWithGestureRecognizer:(id)a3
+- (void)handleTapWithGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E2B1084(v4);
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  sub_24E2B1084(recognizerCopy);
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E2B11F0();
 }
 

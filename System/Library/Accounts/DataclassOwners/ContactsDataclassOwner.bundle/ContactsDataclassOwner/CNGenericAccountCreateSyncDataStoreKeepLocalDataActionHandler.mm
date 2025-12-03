@@ -6,12 +6,12 @@
 
 - (BOOL)perform
 {
-  v2 = self;
-  v3 = [(CNDataclassActionHandler *)self account];
-  v4 = [(CNDataclassActionHandler *)v2 childAccounts];
-  LOBYTE(v2) = [(CNDataclassActionHandler *)v2 createContactsAccountForACAccount:v3 withChildren:v4];
+  selfCopy = self;
+  account = [(CNDataclassActionHandler *)self account];
+  childAccounts = [(CNDataclassActionHandler *)selfCopy childAccounts];
+  LOBYTE(selfCopy) = [(CNDataclassActionHandler *)selfCopy createContactsAccountForACAccount:account withChildren:childAccounts];
 
-  return v2;
+  return selfCopy;
 }
 
 @end

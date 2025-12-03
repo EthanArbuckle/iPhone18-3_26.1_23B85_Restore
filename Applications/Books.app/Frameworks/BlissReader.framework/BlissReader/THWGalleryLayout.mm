@@ -1,5 +1,5 @@
 @interface THWGalleryLayout
-- (BOOL)expandedHasContentForPanel:(int)a3;
+- (BOOL)expandedHasContentForPanel:(int)panel;
 - (BOOL)isCompactFlowPresentation;
 - (BOOL)isExpanded;
 - (BOOL)isReflowablePresentation;
@@ -11,57 +11,57 @@
 - (CGRect)pageControlFrame;
 - (CGRect)stageFrame;
 - (CGRect)thumbnailTrackFrame;
-- (CGSize)p_idealForMaxSize:(CGSize)a3;
+- (CGSize)p_idealForMaxSize:(CGSize)size;
 - (CGSize)p_thumbnailSize;
-- (CGSize)thumbnailTrackSizeWithPanelWidth:(double)a3;
-- (CGSize)zoomableCanvasSizeForItem:(id)a3;
+- (CGSize)thumbnailTrackSizeWithPanelWidth:(double)width;
+- (CGSize)zoomableCanvasSizeForItem:(id)item;
 - (__CTFont)createFontFromCaption;
 - (double)expandedLeftRightInsetForCaption;
 - (double)galleryCaptionWidth;
 - (double)p_margin;
 - (double)p_widgetWidth;
-- (double)widgetStack:(id)a3 stackedControlContainer:(id)a4 minHeightForLayout:(id)a5;
-- (double)zoomableItemMinimumViewScaleForItem:(id)a3;
+- (double)widgetStack:(id)stack stackedControlContainer:(id)container minHeightForLayout:(id)layout;
+- (double)zoomableItemMinimumViewScaleForItem:(id)item;
 - (id)childrenForLayout;
 - (id)colorFromCaption;
 - (id)colorFromTitle;
 - (id)computeLayoutGeometry;
-- (id)controlContainerAdditionalChildLayouts:(id)a3;
+- (id)controlContainerAdditionalChildLayouts:(id)layouts;
 - (id)currentCaptionStorage;
 - (id)dependentLayouts;
-- (id)infosForStagePages:(_NSRange)a3;
-- (id)infosForThumbnailTrackPages:(_NSRange)a3;
-- (id)layoutGeometryForLayout:(id)a3;
+- (id)infosForStagePages:(_NSRange)pages;
+- (id)infosForThumbnailTrackPages:(_NSRange)pages;
+- (id)layoutGeometryForLayout:(id)layout;
 - (id)layoutGeometryFromProvider;
-- (id)p_captionStorageForItemIndex:(unint64_t)a3;
-- (id)p_itemAtIndex:(unint64_t)a3;
-- (id)p_itemFromChildLayout:(id)a3;
+- (id)p_captionStorageForItemIndex:(unint64_t)index;
+- (id)p_itemAtIndex:(unint64_t)index;
+- (id)p_itemFromChildLayout:(id)layout;
 - (id)p_nonEmptyCaptionStorage;
 - (id)p_sharedCaptionStorage;
-- (id)pageIndexesFromStageReps:(id)a3;
+- (id)pageIndexesFromStageReps:(id)reps;
 - (id)sharedCaptionStorage;
 - (id)thumbnailBorderColor;
-- (id)thumbnailTrackAdditionalLayoutsInExpandedPanel:(int)a3;
-- (id)widgetStack:(id)a3 layoutGeometryForLayout:(id)a4;
-- (id)widgetStackCaptionChildren:(id)a3;
-- (id)widgetStackTitleChildren:(id)a3;
-- (id)zoomableCanvasControlLayoutForItemIndex:(unint64_t)a3;
+- (id)thumbnailTrackAdditionalLayoutsInExpandedPanel:(int)panel;
+- (id)widgetStack:(id)stack layoutGeometryForLayout:(id)layout;
+- (id)widgetStackCaptionChildren:(id)children;
+- (id)widgetStackTitleChildren:(id)children;
+- (id)zoomableCanvasControlLayoutForItemIndex:(unint64_t)index;
 - (unint64_t)numberOfStagePages;
-- (unint64_t)p_indexForItem:(id)a3;
+- (unint64_t)p_indexForItem:(id)item;
 - (unint64_t)p_maxNumberOfThumbnailsPerPage;
-- (unint64_t)p_numberOfThumbnailPagesAndThumbnailsPerPage:(unint64_t *)a3;
-- (unint64_t)p_thumbnailCountForThumbnailPageIndex:(unint64_t)a3;
-- (unint64_t)p_thumbnailPageIndexForItemIndex:(unint64_t)a3;
-- (unint64_t)thumbnailPageIndexForItemIndex:(unint64_t)a3;
+- (unint64_t)p_numberOfThumbnailPagesAndThumbnailsPerPage:(unint64_t *)page;
+- (unint64_t)p_thumbnailCountForThumbnailPageIndex:(unint64_t)index;
+- (unint64_t)p_thumbnailPageIndexForItemIndex:(unint64_t)index;
+- (unint64_t)thumbnailPageIndexForItemIndex:(unint64_t)index;
 - (void)dealloc;
 - (void)p_invalidateExternal;
 - (void)p_updateCaption;
 - (void)p_updatePagesAndThumbnailLayouts;
-- (void)pagedCanvasControlLayoutDidValidate:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)pagedCanvasControlLayoutDidValidate:(id)validate;
+- (void)setDelegate:(id)delegate;
 - (void)updateChildrenFromInfo;
-- (void)updateCurrentItemIndex:(unint64_t)a3;
-- (void)wasAddedToLayoutController:(id)a3;
+- (void)updateCurrentItemIndex:(unint64_t)index;
+- (void)wasAddedToLayoutController:(id)controller;
 @end
 
 @implementation THWGalleryLayout
@@ -80,20 +80,20 @@
   [(THWGalleryLayout *)self invalidateChildren];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  if (self->_delegate != a3)
+  if (self->_delegate != delegate)
   {
-    self->_delegate = a3;
+    self->_delegate = delegate;
     [(THWGalleryLayout *)self p_invalidateExternal];
   }
 }
 
-- (void)wasAddedToLayoutController:(id)a3
+- (void)wasAddedToLayoutController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = THWGalleryLayout;
-  [(THWGalleryLayout *)&v4 wasAddedToLayoutController:a3];
+  [(THWGalleryLayout *)&v4 wasAddedToLayoutController:controller];
   [(THWGalleryLayout *)self p_invalidateExternal];
 }
 
@@ -110,19 +110,19 @@
 
 - (BOOL)isCompactFlowPresentation
 {
-  v3 = [(THWGalleryLayout *)self delegate];
+  delegate = [(THWGalleryLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsCompactFlow:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsCompactFlow:self];
 }
 
 - (BOOL)isReflowablePresentation
 {
-  v3 = [(THWGalleryLayout *)self delegate];
+  delegate = [(THWGalleryLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsReflowablePresentation:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsReflowablePresentation:self];
 }
 
-- (CGSize)p_idealForMaxSize:(CGSize)a3
+- (CGSize)p_idealForMaxSize:(CGSize)size
 {
   [objc_msgSend(-[THWGalleryLayout info](self "info")];
   [(THWGalleryLayout *)self p_margin];
@@ -136,9 +136,9 @@
   return result;
 }
 
-- (double)widgetStack:(id)a3 stackedControlContainer:(id)a4 minHeightForLayout:(id)a5
+- (double)widgetStack:(id)stack stackedControlContainer:(id)container minHeightForLayout:(id)layout
 {
-  [a5 frame];
+  [layout frame];
   v8 = v7;
   v10 = v9;
   objc_opt_class();
@@ -167,8 +167,8 @@
               objc_enumerationMutation(v13);
             }
 
-            v18 = [*(*(&v33 + 1) + 8 * i) captionStorage];
-            if (v18 == [v12 info])
+            captionStorage = [*(*(&v33 + 1) + 8 * i) captionStorage];
+            if (captionStorage == [v12 info])
             {
               if (objc_opt_respondsToSelector())
               {
@@ -176,8 +176,8 @@
                 v32 = 0u;
                 v29 = 0u;
                 v30 = 0u;
-                v19 = [-[THWGalleryLayout info](self info];
-                v20 = [v19 countByEnumeratingWithState:&v29 objects:v37 count:16];
+                info = [-[THWGalleryLayout info](self info];
+                v20 = [info countByEnumeratingWithState:&v29 objects:v37 count:16];
                 if (v20)
                 {
                   v21 = v20;
@@ -188,12 +188,12 @@
                     {
                       if (*v30 != v22)
                       {
-                        objc_enumerationMutation(v19);
+                        objc_enumerationMutation(info);
                       }
 
-                      v24 = [*(*(&v29 + 1) + 8 * j) captionStorage];
-                      v25 = [[TSWPStorageMeasurer alloc] initWithStorage:v24];
-                      [v25 measuredSizeWithFlags:3 maxSize:a4 layoutParent:objc_msgSend(a4 styleProvider:{"styleProviderForStorage:", v24), v8, 4294967300.0}];
+                      captionStorage2 = [*(*(&v29 + 1) + 8 * j) captionStorage];
+                      v25 = [[TSWPStorageMeasurer alloc] initWithStorage:captionStorage2];
+                      [v25 measuredSizeWithFlags:3 maxSize:container layoutParent:objc_msgSend(container styleProvider:{"styleProviderForStorage:", captionStorage2), v8, 4294967300.0}];
                       v27 = v26;
 
                       if (v10 < v27)
@@ -202,7 +202,7 @@
                       }
                     }
 
-                    v21 = [v19 countByEnumeratingWithState:&v29 objects:v37 count:16];
+                    v21 = [info countByEnumeratingWithState:&v29 objects:v37 count:16];
                   }
 
                   while (v21);
@@ -228,14 +228,14 @@
   return v10;
 }
 
-- (id)widgetStackTitleChildren:(id)a3
+- (id)widgetStackTitleChildren:(id)children
 {
   v4 = +[NSMutableArray array];
   v5 = [-[THWGalleryLayout info](self "info")];
-  v6 = [v5 layoutMode];
-  if (v6 <= 1)
+  layoutMode = [v5 layoutMode];
+  if (layoutMode <= 1)
   {
-    v7 = v6;
+    v7 = layoutMode;
     if ([v5 titleStorage])
     {
       [v4 addObject:{objc_msgSend(v5, "titleStorage")}];
@@ -250,14 +250,14 @@
   return v4;
 }
 
-- (id)widgetStackCaptionChildren:(id)a3
+- (id)widgetStackCaptionChildren:(id)children
 {
   v4 = +[NSMutableArray array];
   v5 = [-[THWGalleryLayout info](self "info")];
-  v6 = [v5 layoutMode];
-  if (v6)
+  layoutMode = [v5 layoutMode];
+  if (layoutMode)
   {
-    if (v6 != 2)
+    if (layoutMode != 2)
     {
       goto LABEL_7;
     }
@@ -301,23 +301,23 @@ LABEL_12:
   return v4;
 }
 
-- (id)widgetStack:(id)a3 layoutGeometryForLayout:(id)a4
+- (id)widgetStack:(id)stack layoutGeometryForLayout:(id)layout
 {
-  if (self->_thumbnailPageControl == a4 || self->_pageControl == a4)
+  if (self->_thumbnailPageControl == layout || self->_pageControl == layout)
   {
     v7 = [TSDLayoutGeometry alloc];
-    [a3 widgetStackWidth];
+    [stack widgetStackWidth];
   }
 
   else
   {
-    if (self->_thumbnailTrackCanvasLayout != a4)
+    if (self->_thumbnailTrackCanvasLayout != layout)
     {
       return 0;
     }
 
     v7 = [TSDLayoutGeometry alloc];
-    [a3 widgetStackWidth];
+    [stack widgetStackWidth];
     [(THWGalleryLayout *)self p_thumbnailSize];
   }
 
@@ -329,9 +329,9 @@ LABEL_12:
 
 - (CGSize)p_thumbnailSize
 {
-  v2 = [(THWGalleryLayout *)self isExpanded];
+  isExpanded = [(THWGalleryLayout *)self isExpanded];
   v3 = 50.0;
-  if (v2)
+  if (isExpanded)
   {
     v3 = 60.0;
   }
@@ -346,13 +346,13 @@ LABEL_12:
 {
   [-[THWGalleryLayout info](self "info")];
   v4 = v3;
-  v5 = [(THWGalleryLayout *)self isExpanded];
+  isExpanded = [(THWGalleryLayout *)self isExpanded];
   result = 10.0;
-  if ((v5 & 1) == 0)
+  if ((isExpanded & 1) == 0)
   {
-    v7 = [(THWGalleryLayout *)self isCompactFlowPresentation];
+    isCompactFlowPresentation = [(THWGalleryLayout *)self isCompactFlowPresentation];
     result = 0.0;
-    if (!v7)
+    if (!isCompactFlowPresentation)
     {
       return v4;
     }
@@ -361,21 +361,21 @@ LABEL_12:
   return result;
 }
 
-- (id)p_itemFromChildLayout:(id)a3
+- (id)p_itemFromChildLayout:(id)layout
 {
-  v4 = [a3 info];
-  if (!v4)
+  info = [layout info];
+  if (!info)
   {
     return 0;
   }
 
-  v5 = v4;
+  v5 = info;
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [-[THWGalleryLayout info](self info];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  info2 = [-[THWGalleryLayout info](self info];
+  v7 = [info2 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (!v7)
   {
     return 0;
@@ -389,7 +389,7 @@ LABEL_4:
   {
     if (*v14 != v9)
     {
-      objc_enumerationMutation(v6);
+      objc_enumerationMutation(info2);
     }
 
     v11 = *(*(&v13 + 1) + 8 * v10);
@@ -400,7 +400,7 @@ LABEL_4:
 
     if (v8 == ++v10)
     {
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [info2 countByEnumeratingWithState:&v13 objects:v17 count:16];
       v11 = 0;
       if (v8)
       {
@@ -412,23 +412,23 @@ LABEL_4:
   }
 }
 
-- (unint64_t)p_indexForItem:(id)a3
+- (unint64_t)p_indexForItem:(id)item
 {
-  if (!a3)
+  if (!item)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   v4 = [-[THWGalleryLayout info](self "info")];
 
-  return [v4 indexOfObjectIdenticalTo:a3];
+  return [v4 indexOfObjectIdenticalTo:item];
 }
 
 - (BOOL)p_thumbnailsVisible
 {
-  v2 = [(THWGalleryLayout *)self info];
+  info = [(THWGalleryLayout *)self info];
 
-  return [v2 thumbnailsVisible];
+  return [info thumbnailsVisible];
 }
 
 - (BOOL)p_thumbnailsVisibleInPanel
@@ -445,7 +445,7 @@ LABEL_4:
 
 - (BOOL)p_thumbnailsVisibleOnMainCanvas
 {
-  v3 = [(THWGalleryLayout *)self p_thumbnailsVisible];
+  p_thumbnailsVisible = [(THWGalleryLayout *)self p_thumbnailsVisible];
   if (self->_delegate)
   {
     v4 = 1;
@@ -453,15 +453,15 @@ LABEL_4:
 
   else
   {
-    v4 = !v3;
+    v4 = !p_thumbnailsVisible;
   }
 
   if (!v4)
   {
-    LOBYTE(v3) = [0 widgetLayoutMode:self] != 1;
+    LOBYTE(p_thumbnailsVisible) = [0 widgetLayoutMode:self] != 1;
   }
 
-  return v3;
+  return p_thumbnailsVisible;
 }
 
 - (double)p_widgetWidth
@@ -499,14 +499,14 @@ LABEL_5:
   return result;
 }
 
-- (unint64_t)p_numberOfThumbnailPagesAndThumbnailsPerPage:(unint64_t *)a3
+- (unint64_t)p_numberOfThumbnailPagesAndThumbnailsPerPage:(unint64_t *)page
 {
   if ([(THWGalleryLayout *)self p_thumbnailsVisible])
   {
     v5 = [objc_msgSend(-[THWGalleryLayout info](self "info")];
-    v6 = [(THWGalleryLayout *)self p_maxNumberOfThumbnailsPerPage];
-    v7 = fmaxf(ceilf(v5 / v6), 1.0);
-    if (!a3)
+    p_maxNumberOfThumbnailsPerPage = [(THWGalleryLayout *)self p_maxNumberOfThumbnailsPerPage];
+    v7 = fmaxf(ceilf(v5 / p_maxNumberOfThumbnailsPerPage), 1.0);
+    if (!page)
     {
       return v7;
     }
@@ -514,12 +514,12 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v6 = 0;
+  p_maxNumberOfThumbnailsPerPage = 0;
   v7 = 0;
-  if (a3)
+  if (page)
   {
 LABEL_5:
-    *a3 = v6;
+    *page = p_maxNumberOfThumbnailsPerPage;
   }
 
   return v7;
@@ -543,13 +543,13 @@ LABEL_5:
   }
 }
 
-- (unint64_t)p_thumbnailPageIndexForItemIndex:(unint64_t)a3
+- (unint64_t)p_thumbnailPageIndexForItemIndex:(unint64_t)index
 {
   v5 = 0;
   [(THWGalleryLayout *)self p_numberOfThumbnailPagesAndThumbnailsPerPage:&v5];
   if (v5)
   {
-    return a3 / v5;
+    return index / v5;
   }
 
   else
@@ -558,11 +558,11 @@ LABEL_5:
   }
 }
 
-- (unint64_t)p_thumbnailCountForThumbnailPageIndex:(unint64_t)a3
+- (unint64_t)p_thumbnailCountForThumbnailPageIndex:(unint64_t)index
 {
   v9 = 0;
   [(THWGalleryLayout *)self p_numberOfThumbnailPagesAndThumbnailsPerPage:&v9];
-  v5 = v9 * a3;
+  v5 = v9 * index;
   v6 = [objc_msgSend(-[THWGalleryLayout info](self "info")];
   v7 = (v9 + v5);
   if (v6 < v9 + v5)
@@ -573,28 +573,28 @@ LABEL_5:
   return v7 - v5;
 }
 
-- (id)p_itemAtIndex:(unint64_t)a3
+- (id)p_itemAtIndex:(unint64_t)index
 {
   v4 = [-[THWGalleryLayout info](self "info")];
-  if ([v4 count] <= a3)
+  if ([v4 count] <= index)
   {
     return 0;
   }
 
-  return [v4 objectAtIndex:a3];
+  return [v4 objectAtIndex:index];
 }
 
-- (id)p_captionStorageForItemIndex:(unint64_t)a3
+- (id)p_captionStorageForItemIndex:(unint64_t)index
 {
-  v4 = [(THWGalleryLayout *)self p_itemAtIndex:a3];
-  if (!v4 || (v5 = [v4 captionStorage]) == 0)
+  v4 = [(THWGalleryLayout *)self p_itemAtIndex:index];
+  if (!v4 || (p_sharedCaptionStorage = [v4 captionStorage]) == 0)
   {
-    v5 = [(THWGalleryLayout *)self p_sharedCaptionStorage];
+    p_sharedCaptionStorage = [(THWGalleryLayout *)self p_sharedCaptionStorage];
   }
 
-  if ([v5 length])
+  if ([p_sharedCaptionStorage length])
   {
-    return v5;
+    return p_sharedCaptionStorage;
   }
 
   else
@@ -633,10 +633,10 @@ LABEL_5:
   }
 }
 
-- (void)updateCurrentItemIndex:(unint64_t)a3
+- (void)updateCurrentItemIndex:(unint64_t)index
 {
   [(THWGalleryCaptionLayout *)self->_captionLayout captionStorageUpdated];
-  [(THWPageControlLayout *)self->_pageControl setCurrentPage:a3];
+  [(THWPageControlLayout *)self->_pageControl setCurrentPage:index];
   if ([(THWWidgetLayoutDelegate *)self->_delegate widgetLayoutMode:self]== 3)
   {
     v5 = [-[THWGalleryLayout layoutController](self "layoutController")];
@@ -645,11 +645,11 @@ LABEL_5:
   }
 }
 
-- (CGSize)zoomableCanvasSizeForItem:(id)a3
+- (CGSize)zoomableCanvasSizeForItem:(id)item
 {
-  if (a3)
+  if (item)
   {
-    [objc_msgSend(a3 "imageInfo")];
+    [objc_msgSend(item "imageInfo")];
   }
 
   else
@@ -663,14 +663,14 @@ LABEL_5:
   return result;
 }
 
-- (double)zoomableItemMinimumViewScaleForItem:(id)a3
+- (double)zoomableItemMinimumViewScaleForItem:(id)item
 {
-  if (!a3)
+  if (!item)
   {
     return 1.0;
   }
 
-  [objc_msgSend(a3 "imageInfo")];
+  [objc_msgSend(item "imageInfo")];
   if (v4 <= 0.0)
   {
     v4 = 1.0;
@@ -698,9 +698,9 @@ LABEL_5:
 
 - (id)currentCaptionStorage
 {
-  v3 = [(THWPageControlLayout *)self->_pageControl currentPage];
+  currentPage = [(THWPageControlLayout *)self->_pageControl currentPage];
 
-  return [(THWGalleryLayout *)self p_captionStorageForItemIndex:v3];
+  return [(THWGalleryLayout *)self p_captionStorageForItemIndex:currentPage];
 }
 
 - (id)sharedCaptionStorage
@@ -718,16 +718,16 @@ LABEL_5:
 
 - (double)expandedLeftRightInsetForCaption
 {
-  v3 = [(THWGalleryLayout *)self p_maxNumberOfThumbnailsPerPage];
+  p_maxNumberOfThumbnailsPerPage = [(THWGalleryLayout *)self p_maxNumberOfThumbnailsPerPage];
   [(THWGalleryLayout *)self p_thumbnailSize];
   v5 = v4;
   [(THWGalleryLayout *)self p_widgetWidth];
-  return (v6 - v5 * v3 - (10 * v3 - 10)) * 0.5 + -8.0;
+  return (v6 - v5 * p_maxNumberOfThumbnailsPerPage - (10 * p_maxNumberOfThumbnailsPerPage - 10)) * 0.5 + -8.0;
 }
 
-- (BOOL)expandedHasContentForPanel:(int)a3
+- (BOOL)expandedHasContentForPanel:(int)panel
 {
-  if (a3 == 2)
+  if (panel == 2)
   {
 
     return [(THWGalleryLayout *)self thumbnailsVisibleInPanel];
@@ -735,37 +735,37 @@ LABEL_5:
 
   else
   {
-    if (a3 == 1)
+    if (panel == 1)
     {
       if ([(THWGalleryLayout *)self individualCaptions])
       {
         return 1;
       }
 
-      v4 = [(THWGalleryLayout *)self sharedCaptionStorage];
+      sharedCaptionStorage = [(THWGalleryLayout *)self sharedCaptionStorage];
     }
 
     else
     {
-      if (a3)
+      if (panel)
       {
         return 0;
       }
 
-      v4 = [objc_msgSend(-[THWGalleryLayout info](self "info")];
+      sharedCaptionStorage = [objc_msgSend(-[THWGalleryLayout info](self "info")];
     }
 
-    return v4 != 0;
+    return sharedCaptionStorage != 0;
   }
 }
 
-- (unint64_t)thumbnailPageIndexForItemIndex:(unint64_t)a3
+- (unint64_t)thumbnailPageIndexForItemIndex:(unint64_t)index
 {
   v5 = 0;
   [(THWGalleryLayout *)self p_numberOfThumbnailPagesAndThumbnailsPerPage:&v5];
   if (v5)
   {
-    return a3 / v5;
+    return index / v5;
   }
 
   else
@@ -774,20 +774,20 @@ LABEL_5:
   }
 }
 
-- (CGSize)thumbnailTrackSizeWithPanelWidth:(double)a3
+- (CGSize)thumbnailTrackSizeWithPanelWidth:(double)width
 {
   [(THWGalleryLayout *)self p_thumbnailSize];
-  v5 = a3;
+  widthCopy = width;
   result.height = v4;
-  result.width = v5;
+  result.width = widthCopy;
   return result;
 }
 
-- (id)thumbnailTrackAdditionalLayoutsInExpandedPanel:(int)a3
+- (id)thumbnailTrackAdditionalLayoutsInExpandedPanel:(int)panel
 {
   [(THWGalleryLayout *)self p_updatePagesAndThumbnailLayouts];
   [(THWGalleryLayout *)self p_updateCaption];
-  if (a3 == 2)
+  if (panel == 2)
   {
     if (self->_thumbnailTrackCanvasLayout)
     {
@@ -809,7 +809,7 @@ LABEL_5:
 
   else
   {
-    if (a3 == 1 && self->_captionLayout)
+    if (panel == 1 && self->_captionLayout)
     {
       captionLayout = self->_captionLayout;
       return [NSArray arrayWithObjects:&captionLayout count:1];
@@ -821,16 +821,16 @@ LABEL_5:
   return v6;
 }
 
-- (id)zoomableCanvasControlLayoutForItemIndex:(unint64_t)a3
+- (id)zoomableCanvasControlLayoutForItemIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_zoomableCanvasControls count]<= a3)
+  if ([(NSArray *)self->_zoomableCanvasControls count]<= index)
   {
     return 0;
   }
 
   zoomableCanvasControls = self->_zoomableCanvasControls;
 
-  return [(NSArray *)zoomableCanvasControls objectAtIndex:a3];
+  return [(NSArray *)zoomableCanvasControls objectAtIndex:index];
 }
 
 - (id)layoutGeometryFromProvider
@@ -855,16 +855,16 @@ LABEL_5:
 {
   v30.receiver = self;
   v30.super_class = THWGalleryLayout;
-  v3 = [(THWGalleryLayout *)&v30 computeLayoutGeometry];
+  computeLayoutGeometry = [(THWGalleryLayout *)&v30 computeLayoutGeometry];
   [(THWGalleryLayout *)self p_margin];
   v5 = v4;
   v6 = [(THWWidgetLayoutDelegate *)self->_delegate widgetLayoutMode:self];
   if (v6 == 3)
   {
-    [v3 size];
+    [computeLayoutGeometry size];
     [(THWGalleryLayout *)self p_idealForMaxSize:?];
     TSDRectWithSize();
-    [v3 size];
+    [computeLayoutGeometry size];
     TSDRectWithSize();
     TSDCenterRectOverRect();
     self->_stageFrame.origin.x = v12;
@@ -900,7 +900,7 @@ LABEL_7:
   [(THWGalleryLayout *)self p_thumbnailSize];
   v23 = v22;
   y = CGPointZero.y;
-  [v3 size];
+  [computeLayoutGeometry size];
   v26 = v25;
   v28 = v27;
   if ([(THWGalleryLayout *)self p_thumbnailsVisibleOnMainCanvas])
@@ -930,7 +930,7 @@ LABEL_7:
   self->_pageControlFrame.origin.y = v34.origin.y + v34.size.height + -15.0;
   self->_pageControlFrame.size.height = 25.0;
   [(THWGalleryLayout *)self p_updatePagesAndThumbnailLayouts];
-  return v3;
+  return computeLayoutGeometry;
 }
 
 - (void)updateChildrenFromInfo
@@ -974,8 +974,8 @@ LABEL_7:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [-[THWGalleryLayout info](self info];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  info = [-[THWGalleryLayout info](self info];
+  v3 = [info countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -987,7 +987,7 @@ LABEL_7:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(info);
         }
 
         if ([objc_msgSend(*(*(&v8 + 1) + 8 * v6) "captionStorage")])
@@ -1000,7 +1000,7 @@ LABEL_7:
       }
 
       while (v4 != v6);
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [info countByEnumeratingWithState:&v8 objects:v12 count:16];
       v4 = v3;
       if (v3)
       {
@@ -1016,9 +1016,9 @@ LABEL_7:
 
 - (void)p_updateCaption
 {
-  v3 = [(THWGalleryLayout *)self p_hasIndividualCaptions];
+  p_hasIndividualCaptions = [(THWGalleryLayout *)self p_hasIndividualCaptions];
   captionLayout = self->_captionLayout;
-  if (v3)
+  if (p_hasIndividualCaptions)
   {
     if (captionLayout)
     {
@@ -1130,16 +1130,16 @@ LABEL_7:
   [(THWGalleryLayout *)self setStageInfos:zoomableCanvasPages];
   if ([(THWGalleryLayout *)self p_thumbnailsVisible])
   {
-    v18 = [(THWPageControlLayout *)self->_thumbnailPageControl numberOfPages];
+    numberOfPages = [(THWPageControlLayout *)self->_thumbnailPageControl numberOfPages];
     v19 = [(NSArray *)self->_thumbnailControlPages count];
-    if (v19 != v18)
+    if (v19 != numberOfPages)
     {
 
       self->_thumbnailControlPages = 0;
-      if (v18)
+      if (numberOfPages)
       {
-        v20 = [[NSMutableArray alloc] initWithCapacity:v18];
-        for (k = 0; k != v18; ++k)
+        v20 = [[NSMutableArray alloc] initWithCapacity:numberOfPages];
+        for (k = 0; k != numberOfPages; ++k)
         {
           v22 = [[THWControlContainer alloc] initWithDelegate:self];
           [(THWControlContainer *)v22 setTag:2];
@@ -1152,7 +1152,7 @@ LABEL_7:
     }
 
     v23 = [objc_msgSend(-[THWGalleryLayout info](self "info")];
-    if (v19 != v18 || v23 != [(NSArray *)self->_thumbnailButtons count])
+    if (v19 != numberOfPages || v23 != [(NSArray *)self->_thumbnailButtons count])
     {
 
       self->_thumbnailButtons = 0;
@@ -1203,7 +1203,7 @@ LABEL_7:
   return v3;
 }
 
-- (id)layoutGeometryForLayout:(id)a3
+- (id)layoutGeometryForLayout:(id)layout
 {
   v5 = [(THWGalleryLayout *)self p_itemFromChildLayout:?];
   v6 = [(THWGalleryLayout *)self p_indexForItem:v5];
@@ -1215,11 +1215,11 @@ LABEL_7:
       return result;
     }
 
-    v12 = [v5 imageInfo];
-    if (v12 != [a3 info])
+    imageInfo = [v5 imageInfo];
+    if (imageInfo != [layout info])
     {
       v13 = [objc_msgSend(v5 "imageInfo")];
-      if (v13 != [a3 info])
+      if (v13 != [layout info])
       {
         return 0;
       }
@@ -1233,8 +1233,8 @@ LABEL_7:
       TSDShrinkSizeToFitInSize();
       v15 = v70;
       v17 = v71;
-      v72 = [v5 imageInfo];
-      if (v72 == [a3 info])
+      imageInfo2 = [v5 imageInfo];
+      if (imageInfo2 == [layout info])
       {
         v75 = (width - v15) * 0.5;
         v76 = width * v6;
@@ -1248,7 +1248,7 @@ LABEL_7:
       else
       {
         v73 = [objc_msgSend(v5 "imageInfo")];
-        if (v73 != [a3 info])
+        if (v73 != [layout info])
         {
           return 0;
         }
@@ -1316,8 +1316,8 @@ LABEL_7:
         v89.size.width = v50;
         v89.size.height = v51;
         v58 = v43 * (v57 / CGRectGetHeight(v89));
-        v59 = [v5 imageInfo];
-        if (v59 == [a3 info])
+        imageInfo3 = [v5 imageInfo];
+        if (imageInfo3 == [layout info])
         {
           v29 = v82 * (v53 / v54);
           v74 = -(v56 - v6 * p_stageFrame->size.width);
@@ -1331,7 +1331,7 @@ LABEL_50:
         }
 
         v60 = [objc_msgSend(v5 "imageInfo")];
-        if (v60 == [a3 info])
+        if (v60 == [layout info])
         {
           v61 = p_stageFrame->size.width;
           v62 = p_stageFrame->size.height;
@@ -1349,11 +1349,11 @@ LABEL_50:
       [objc_msgSend(v5 "imageInfo")];
       v15 = v14;
       v17 = v16;
-      v18 = [v5 imageInfo];
-      if (v18 != [a3 info])
+      imageInfo4 = [v5 imageInfo];
+      if (imageInfo4 != [layout info])
       {
         v19 = [objc_msgSend(v5 "imageInfo")];
-        if (v19 != [a3 info])
+        if (v19 != [layout info])
         {
           return 0;
         }
@@ -1456,8 +1456,8 @@ LABEL_43:
     }
 
     v63 = (self->_thumbnailTrackFrame.size.width - v31 * v34 - (10 * v34 - 10)) * 0.5 + 0.0;
-    v64 = [v8 index];
-    v65 = v63 + (v64 % v84) * (v31 + 10.0);
+    index = [v8 index];
+    v65 = v63 + (index % v84) * (v31 + 10.0);
     v66 = floorf(v65);
     [(THWGalleryLayout *)self thumbnailTrackVerticalPadding];
     return [[TSDLayoutGeometry alloc] initWithFrame:{v66, v67, v31, v33}];
@@ -1566,10 +1566,10 @@ LABEL_19:
   return [v2 count];
 }
 
-- (id)infosForThumbnailTrackPages:(_NSRange)a3
+- (id)infosForThumbnailTrackPages:(_NSRange)pages
 {
-  length = a3.length;
-  location = a3.location;
+  length = pages.length;
+  location = pages.location;
   if (![(THWGalleryLayout *)self p_thumbnailsVisible]|| location + length > [(NSArray *)self->_thumbnailControlPages count])
   {
     return 0;
@@ -1580,11 +1580,11 @@ LABEL_19:
   return [(NSArray *)thumbnailControlPages subarrayWithRange:location, length];
 }
 
-- (id)infosForStagePages:(_NSRange)a3
+- (id)infosForStagePages:(_NSRange)pages
 {
-  length = a3.length;
-  location = a3.location;
-  if (a3.location + a3.length > [(NSArray *)self->_stageInfos count])
+  length = pages.length;
+  location = pages.location;
+  if (pages.location + pages.length > [(NSArray *)self->_stageInfos count])
   {
     return 0;
   }
@@ -1594,14 +1594,14 @@ LABEL_19:
   return [(NSArray *)stageInfos subarrayWithRange:location, length];
 }
 
-- (id)pageIndexesFromStageReps:(id)a3
+- (id)pageIndexesFromStageReps:(id)reps
 {
   v5 = +[NSMutableIndexSet indexSet];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [reps countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1612,14 +1612,14 @@ LABEL_19:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(reps);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) info];
+        info = [*(*(&v15 + 1) + 8 * i) info];
         stageInfos = self->_stageInfos;
         if (stageInfos)
         {
-          v12 = v10 == 0;
+          v12 = info == 0;
         }
 
         else
@@ -1637,7 +1637,7 @@ LABEL_19:
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [reps countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -1658,10 +1658,10 @@ LABEL_19:
       v5 = [v4 objectAtIndex:0];
     }
 
-    v6 = [v5 captionStorage];
-    if ([v6 length])
+    captionStorage = [v5 captionStorage];
+    if ([captionStorage length])
     {
-      return v6;
+      return captionStorage;
     }
 
     else
@@ -1710,19 +1710,19 @@ LABEL_19:
   return [v2 titleColor];
 }
 
-- (id)controlContainerAdditionalChildLayouts:(id)a3
+- (id)controlContainerAdditionalChildLayouts:(id)layouts
 {
-  if ([a3 tag] == &dword_0 + 2)
+  if ([layouts tag] == &dword_0 + 2)
   {
-    v5 = [a3 index];
+    index = [layouts index];
     v14 = 0;
     [(THWGalleryLayout *)self p_numberOfThumbnailPagesAndThumbnailsPerPage:&v14];
     v6 = [objc_msgSend(-[THWGalleryLayout info](self "info")];
     v7 = v6;
     v8 = v14;
-    if (v6 >= v8 + v8 * v5)
+    if (v6 >= v8 + v8 * index)
     {
-      v9 = (v14 + v14 * v5);
+      v9 = (v14 + v14 * index);
     }
 
     else
@@ -1734,9 +1734,9 @@ LABEL_19:
     result = 0;
     if (v9 <= v10)
     {
-      if (v7 >= v8 * v5)
+      if (v7 >= v8 * index)
       {
-        v12 = v8 * v5;
+        v12 = v8 * index;
       }
 
       else
@@ -1748,7 +1748,7 @@ LABEL_19:
     }
   }
 
-  else if ([a3 tag] == &dword_4 + 2 && (v13 = objc_msgSend(a3, "index"), v13 < -[NSArray count](self->_zoomableCanvasControls, "count")))
+  else if ([layouts tag] == &dword_4 + 2 && (v13 = objc_msgSend(layouts, "index"), v13 < -[NSArray count](self->_zoomableCanvasControls, "count")))
   {
     result = [(NSArray *)self->_zoomableCanvasControls objectAtIndex:v13];
     if (result)
@@ -1766,11 +1766,11 @@ LABEL_19:
   return result;
 }
 
-- (void)pagedCanvasControlLayoutDidValidate:(id)a3
+- (void)pagedCanvasControlLayoutDidValidate:(id)validate
 {
-  if (self->_thumbnailTrackCanvasLayout == a3 && [(THWGalleryLayout *)self p_thumbnailsVisibleInPanel])
+  if (self->_thumbnailTrackCanvasLayout == validate && [(THWGalleryLayout *)self p_thumbnailsVisibleInPanel])
   {
-    [objc_msgSend(a3 "geometry")];
+    [objc_msgSend(validate "geometry")];
     self->_thumbnailTrackFrame.origin = CGPointZero;
     self->_thumbnailTrackFrame.size.width = v5;
     self->_thumbnailTrackFrame.size.height = v6;
@@ -1781,9 +1781,9 @@ LABEL_19:
 
 - (CGPoint)galleryCaptionPosition
 {
-  v2 = [(THWGalleryLayout *)self info];
+  info = [(THWGalleryLayout *)self info];
 
-  [v2 captionPosition];
+  [info captionPosition];
   result.y = v4;
   result.x = v3;
   return result;
@@ -1799,9 +1799,9 @@ LABEL_19:
 
   else
   {
-    v5 = [(THWGalleryLayout *)self geometry];
+    geometry = [(THWGalleryLayout *)self geometry];
 
-    [v5 size];
+    [geometry size];
   }
 
   return result;

@@ -1,31 +1,31 @@
 @interface MTLDebugLibrary
-- (MTLDebugLibrary)initWithLibrary:(id)a3 parent:(id)a4 type:(unint64_t)a5 code:(id)a6 options:(id)a7;
-- (id)copyConstantValues:(id)a3;
-- (id)newFunctionWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newFunctionWithName:(id)a3;
-- (id)newFunctionWithName:(id)a3 constantValues:(id)a4 error:(id *)a5;
-- (id)newIntersectionFunctionWithDescriptor:(id)a3 error:(id *)a4;
+- (MTLDebugLibrary)initWithLibrary:(id)library parent:(id)parent type:(unint64_t)type code:(id)code options:(id)options;
+- (id)copyConstantValues:(id)values;
+- (id)newFunctionWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newFunctionWithName:(id)name;
+- (id)newFunctionWithName:(id)name constantValues:(id)values error:(id *)error;
+- (id)newIntersectionFunctionWithDescriptor:(id)descriptor error:(id *)error;
 - (void)dealloc;
-- (void)newFunctionWithDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)newFunctionWithName:(id)a3 constantValues:(id)a4 completionHandler:(id)a5;
-- (void)newIntersectionFunctionWithDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)setImageFilterFunctions:(id)a3 imageFilterFunctionInfo:(id *)a4;
-- (void)validateDescriptor:(id)a3 expectedClass:(Class)a4;
+- (void)newFunctionWithDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)newFunctionWithName:(id)name constantValues:(id)values completionHandler:(id)handler;
+- (void)newIntersectionFunctionWithDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)setImageFilterFunctions:(id)functions imageFilterFunctionInfo:(id *)info;
+- (void)validateDescriptor:(id)descriptor expectedClass:(Class)class;
 @end
 
 @implementation MTLDebugLibrary
 
-- (MTLDebugLibrary)initWithLibrary:(id)a3 parent:(id)a4 type:(unint64_t)a5 code:(id)a6 options:(id)a7
+- (MTLDebugLibrary)initWithLibrary:(id)library parent:(id)parent type:(unint64_t)type code:(id)code options:(id)options
 {
   v13.receiver = self;
   v13.super_class = MTLDebugLibrary;
-  v10 = [(MTLToolsObject *)&v13 initWithBaseObject:a3 parent:a4];
+  v10 = [(MTLToolsObject *)&v13 initWithBaseObject:library parent:parent];
   v11 = v10;
   if (v10)
   {
-    v10->_debugType = a5;
-    v10->_code = [a6 copy];
-    v11->_compileOptions = [a7 copy];
+    v10->_debugType = type;
+    v10->_code = [code copy];
+    v11->_compileOptions = [options copy];
   }
 
   return v11;
@@ -59,9 +59,9 @@
   [(MTLToolsLibrary *)&v5 dealloc];
 }
 
-- (id)newFunctionWithName:(id)a3
+- (id)newFunctionWithName:(id)name
 {
-  if (a3)
+  if (name)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -87,9 +87,9 @@
   return result;
 }
 
-- (id)newFunctionWithName:(id)a3 constantValues:(id)a4 error:(id *)a5
+- (id)newFunctionWithName:(id)name constantValues:(id)values error:(id *)error
 {
-  validateNewFunctionWithConstantArguments(a3, a4);
+  validateNewFunctionWithConstantArguments(name, values);
   v9 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (!v9)
   {
@@ -99,25 +99,25 @@
   v10 = v9;
   v11 = [(MTLToolsDevice *)self->super.super._device getFunctionForBaseObject:v9 library:self];
 
-  v12 = [a4 copy];
+  v12 = [values copy];
   [v11 setConstantValues:v12];
 
   return v11;
 }
 
-- (void)newFunctionWithName:(id)a3 constantValues:(id)a4 completionHandler:(id)a5
+- (void)newFunctionWithName:(id)name constantValues:(id)values completionHandler:(id)handler
 {
-  validateNewFunctionWithConstantArguments(a3, a4);
-  v9 = [a4 copy];
-  v10 = [(MTLToolsObject *)self baseObject];
+  validateNewFunctionWithConstantArguments(name, values);
+  v9 = [values copy];
+  baseObject = [(MTLToolsObject *)self baseObject];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __72__MTLDebugLibrary_newFunctionWithName_constantValues_completionHandler___block_invoke;
   v11[3] = &unk_2787B4F28;
   v11[4] = self;
   v11[5] = v9;
-  v11[6] = a5;
-  [v10 newFunctionWithName:a3 constantValues:v9 completionHandler:v11];
+  v11[6] = handler;
+  [baseObject newFunctionWithName:name constantValues:v9 completionHandler:v11];
 }
 
 void __72__MTLDebugLibrary_newFunctionWithName_constantValues_completionHandler___block_invoke(void *a1, uint64_t a2)
@@ -129,21 +129,21 @@ void __72__MTLDebugLibrary_newFunctionWithName_constantValues_completionHandler_
   v4 = a1[5];
 }
 
-- (void)validateDescriptor:(id)a3 expectedClass:(Class)a4
+- (void)validateDescriptor:(id)descriptor expectedClass:(Class)class
 {
-  if (a3)
+  if (descriptor)
   {
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [MTLDebugLibrary validateDescriptor:a4 expectedClass:?];
+      [MTLDebugLibrary validateDescriptor:class expectedClass:?];
     }
 
-    if (([a3 options] & 1) != 0 && (-[MTLDevice supportsFunctionPointers](-[MTLToolsLibrary device](self, "device"), "supportsFunctionPointers") & 1) == 0)
+    if (([descriptor options] & 1) != 0 && (-[MTLDevice supportsFunctionPointers](-[MTLToolsLibrary device](self, "device"), "supportsFunctionPointers") & 1) == 0)
     {
       [MTLDebugLibrary validateDescriptor:expectedClass:];
     }
 
-    if (([a3 options] & 8) != 0 && (objc_msgSend(a3, "options") & 1) == 0)
+    if (([descriptor options] & 8) != 0 && (objc_msgSend(descriptor, "options") & 1) == 0)
     {
       [MTLDebugLibrary validateDescriptor:expectedClass:];
     }
@@ -155,13 +155,13 @@ void __72__MTLDebugLibrary_newFunctionWithName_constantValues_completionHandler_
   }
 }
 
-- (id)copyConstantValues:(id)a3
+- (id)copyConstantValues:(id)values
 {
-  v3 = [a3 constantValues];
-  if (v3)
+  constantValues = [values constantValues];
+  if (constantValues)
   {
 
-    return [v3 copy];
+    return [constantValues copy];
   }
 
   else
@@ -172,14 +172,14 @@ void __72__MTLDebugLibrary_newFunctionWithName_constantValues_completionHandler_
   }
 }
 
-- (void)newFunctionWithDescriptor:(id)a3 completionHandler:(id)a4
+- (void)newFunctionWithDescriptor:(id)descriptor completionHandler:(id)handler
 {
-  [(MTLDebugLibrary *)self validateDescriptor:a3 expectedClass:objc_opt_class()];
-  v7 = [(MTLDevice *)[(MTLToolsLibrary *)self device] unwrapMTLFunctionDescriptor:a3];
+  [(MTLDebugLibrary *)self validateDescriptor:descriptor expectedClass:objc_opt_class()];
+  v7 = [(MTLDevice *)[(MTLToolsLibrary *)self device] unwrapMTLFunctionDescriptor:descriptor];
   v8 = [(MTLDebugLibrary *)self copyConstantValues:v7];
   validateNewFunctionWithConstantArguments([(MTLFunctionDescriptor *)v7 name], v8);
   validateLinkedFunctionsHaveUniqueNames(v7);
-  v9 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __63__MTLDebugLibrary_newFunctionWithDescriptor_completionHandler___block_invoke;
@@ -187,8 +187,8 @@ void __72__MTLDebugLibrary_newFunctionWithName_constantValues_completionHandler_
   v10[4] = self;
   v10[5] = v8;
   v10[6] = v7;
-  v10[7] = a4;
-  [v9 newFunctionWithDescriptor:v7 completionHandler:v10];
+  v10[7] = handler;
+  [baseObject newFunctionWithDescriptor:v7 completionHandler:v10];
 }
 
 void __63__MTLDebugLibrary_newFunctionWithDescriptor_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -200,10 +200,10 @@ void __63__MTLDebugLibrary_newFunctionWithDescriptor_completionHandler___block_i
   v4 = *(a1 + 48);
 }
 
-- (id)newFunctionWithDescriptor:(id)a3 error:(id *)a4
+- (id)newFunctionWithDescriptor:(id)descriptor error:(id *)error
 {
-  [(MTLDebugLibrary *)self validateDescriptor:a3 expectedClass:objc_opt_class()];
-  v7 = [(MTLDevice *)[(MTLToolsLibrary *)self device] unwrapMTLFunctionDescriptor:a3];
+  [(MTLDebugLibrary *)self validateDescriptor:descriptor expectedClass:objc_opt_class()];
+  v7 = [(MTLDevice *)[(MTLToolsLibrary *)self device] unwrapMTLFunctionDescriptor:descriptor];
   v8 = [(MTLDebugLibrary *)self copyConstantValues:v7];
   validateNewFunctionWithConstantArguments([(MTLFunctionDescriptor *)v7 name], v8);
   validateLinkedFunctionsHaveUniqueNames(v7);
@@ -224,20 +224,20 @@ void __63__MTLDebugLibrary_newFunctionWithDescriptor_completionHandler___block_i
   return v11;
 }
 
-- (void)newIntersectionFunctionWithDescriptor:(id)a3 completionHandler:(id)a4
+- (void)newIntersectionFunctionWithDescriptor:(id)descriptor completionHandler:(id)handler
 {
-  [(MTLDebugLibrary *)self validateDescriptor:a3 expectedClass:objc_opt_class()];
-  v7 = [(MTLDebugLibrary *)self copyConstantValues:a3];
-  validateNewFunctionWithConstantArguments([a3 name], v7);
-  v8 = [(MTLToolsObject *)self baseObject];
+  [(MTLDebugLibrary *)self validateDescriptor:descriptor expectedClass:objc_opt_class()];
+  v7 = [(MTLDebugLibrary *)self copyConstantValues:descriptor];
+  validateNewFunctionWithConstantArguments([descriptor name], v7);
+  baseObject = [(MTLToolsObject *)self baseObject];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __75__MTLDebugLibrary_newIntersectionFunctionWithDescriptor_completionHandler___block_invoke;
   v9[3] = &unk_2787B4F28;
   v9[4] = self;
   v9[5] = v7;
-  v9[6] = a4;
-  [v8 newIntersectionFunctionWithDescriptor:a3 completionHandler:v9];
+  v9[6] = handler;
+  [baseObject newIntersectionFunctionWithDescriptor:descriptor completionHandler:v9];
 }
 
 void __75__MTLDebugLibrary_newIntersectionFunctionWithDescriptor_completionHandler___block_invoke(void *a1, uint64_t a2)
@@ -249,11 +249,11 @@ void __75__MTLDebugLibrary_newIntersectionFunctionWithDescriptor_completionHandl
   v4 = a1[5];
 }
 
-- (id)newIntersectionFunctionWithDescriptor:(id)a3 error:(id *)a4
+- (id)newIntersectionFunctionWithDescriptor:(id)descriptor error:(id *)error
 {
-  [(MTLDebugLibrary *)self validateDescriptor:a3 expectedClass:objc_opt_class()];
-  v7 = [(MTLDebugLibrary *)self copyConstantValues:a3];
-  validateNewFunctionWithConstantArguments([a3 name], v7);
+  [(MTLDebugLibrary *)self validateDescriptor:descriptor expectedClass:objc_opt_class()];
+  v7 = [(MTLDebugLibrary *)self copyConstantValues:descriptor];
+  validateNewFunctionWithConstantArguments([descriptor name], v7);
   v8 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v8)
   {
@@ -271,7 +271,7 @@ void __75__MTLDebugLibrary_newIntersectionFunctionWithDescriptor_completionHandl
   return v10;
 }
 
-- (void)setImageFilterFunctions:(id)a3 imageFilterFunctionInfo:(id *)a4
+- (void)setImageFilterFunctions:(id)functions imageFilterFunctionInfo:(id *)info
 {
   if (self->_imageFilterFunctionInfo)
   {
@@ -293,13 +293,13 @@ void __75__MTLDebugLibrary_newIntersectionFunctionWithDescriptor_completionHandl
   }
 
   imageFilterFunctions = self->_imageFilterFunctions;
-  if (imageFilterFunctions != a3)
+  if (imageFilterFunctions != functions)
   {
     if (imageFilterFunctions)
     {
     }
 
-    imageFilterFunctions = [a3 copy];
+    imageFilterFunctions = [functions copy];
     self->_imageFilterFunctions = imageFilterFunctions;
   }
 
@@ -308,7 +308,7 @@ void __75__MTLDebugLibrary_newIntersectionFunctionWithDescriptor_completionHandl
   {
     v10 = 0;
     v11 = 0;
-    p_var2 = &a4->var2;
+    p_var2 = &info->var2;
     do
     {
       v13 = &self->_imageFilterFunctionInfo[v10];

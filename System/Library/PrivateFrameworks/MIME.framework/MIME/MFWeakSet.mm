@@ -1,46 +1,46 @@
 @interface MFWeakSet
-+ (MFWeakSet)setWithArray:(id)a3;
-+ (MFWeakSet)setWithCapacity:(unint64_t)a3;
-+ (MFWeakSet)setWithObjects:(const void *)a3 count:(unint64_t)a4;
-+ (MFWeakSet)setWithObjects:(id)a3;
-+ (MFWeakSet)setWithSet:(id)a3;
++ (MFWeakSet)setWithArray:(id)array;
++ (MFWeakSet)setWithCapacity:(unint64_t)capacity;
++ (MFWeakSet)setWithObjects:(const void *)objects count:(unint64_t)count;
++ (MFWeakSet)setWithObjects:(id)objects;
++ (MFWeakSet)setWithSet:(id)set;
 + (id)set;
-- (BOOL)intersectsSet:(id)a3;
-- (BOOL)isEqualToSet:(id)a3;
-- (BOOL)isSubsetOfSet:(id)a3;
+- (BOOL)intersectsSet:(id)set;
+- (BOOL)isEqualToSet:(id)set;
+- (BOOL)isSubsetOfSet:(id)set;
 - (MFWeakSet)init;
-- (MFWeakSet)initWithArray:(id)a3;
-- (MFWeakSet)initWithCapacity:(unint64_t)a3;
-- (MFWeakSet)initWithCoder:(id)a3;
-- (MFWeakSet)initWithObjects:(const void *)a3 count:(unint64_t)a4;
-- (MFWeakSet)initWithObjects:(id)a3;
-- (MFWeakSet)initWithSet:(id)a3 copyItems:(BOOL)a4;
+- (MFWeakSet)initWithArray:(id)array;
+- (MFWeakSet)initWithCapacity:(unint64_t)capacity;
+- (MFWeakSet)initWithCoder:(id)coder;
+- (MFWeakSet)initWithObjects:(const void *)objects count:(unint64_t)count;
+- (MFWeakSet)initWithObjects:(id)objects;
+- (MFWeakSet)initWithSet:(id)set copyItems:(BOOL)items;
 - (id)_copyAllItems;
 - (id)allObjects;
 - (id)anyObject;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithLocale:(id)a3;
-- (id)member:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithLocale:(id)locale;
+- (id)member:(id)member;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)objectEnumerator;
-- (id)objectsWithOptions:(unint64_t)a3 passingTest:(id)a4;
-- (id)setByAddingObject:(id)a3;
-- (id)setByAddingObjectsFromArray:(id)a3;
-- (id)setByAddingObjectsFromSet:(id)a3;
+- (id)objectsWithOptions:(unint64_t)options passingTest:(id)test;
+- (id)setByAddingObject:(id)object;
+- (id)setByAddingObjectsFromArray:(id)array;
+- (id)setByAddingObjectsFromSet:(id)set;
 - (unint64_t)count;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)addObject:(id)a3;
-- (void)addObjectsFromArray:(id)a3;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)addObject:(id)object;
+- (void)addObjectsFromArray:(id)array;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)intersectSet:(id)a3;
-- (void)makeObjectsPerformSelector:(SEL)a3 withObject:(id)a4;
-- (void)minusSet:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateObjectsWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)intersectSet:(id)set;
+- (void)makeObjectsPerformSelector:(SEL)selector withObject:(id)object;
+- (void)minusSet:(id)set;
 - (void)removeAllObjects;
-- (void)removeObject:(id)a3;
-- (void)setSet:(id)a3;
-- (void)unionSet:(id)a3;
+- (void)removeObject:(id)object;
+- (void)setSet:(id)set;
+- (void)unionSet:(id)set;
 @end
 
 @implementation MFWeakSet
@@ -67,73 +67,73 @@
   return Count;
 }
 
-- (id)member:(id)a3
+- (id)member:(id)member
 {
   [(NSLock *)self->_lock lock];
-  Value = CFDictionaryGetValue(self->_objects, a3);
+  Value = CFDictionaryGetValue(self->_objects, member);
   if (Value)
   {
-    v6 = [Value retainedReference];
-    if (!v6)
+    retainedReference = [Value retainedReference];
+    if (!retainedReference)
     {
-      CFDictionaryRemoveValue(self->_objects, a3);
+      CFDictionaryRemoveValue(self->_objects, member);
     }
   }
 
   else
   {
-    v6 = 0;
+    retainedReference = 0;
   }
 
   [(NSLock *)self->_lock unlock];
 
-  return v6;
+  return retainedReference;
 }
 
 - (id)objectEnumerator
 {
-  v2 = [(MFWeakSet *)self allObjects];
+  allObjects = [(MFWeakSet *)self allObjects];
 
-  return [v2 objectEnumerator];
+  return [allObjects objectEnumerator];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  if (!a3->var0)
+  if (!state->var0)
   {
-    v9 = [(MFWeakSet *)self allObjects];
-    v10 = [v9 count];
+    allObjects = [(MFWeakSet *)self allObjects];
+    v10 = [allObjects count];
     if (v10)
     {
-      a3->var2 = &self->_gen;
-      a3->var3[0] = v10;
-      a3->var3[1] = v9;
+      state->var2 = &self->_gen;
+      state->var3[0] = v10;
+      state->var3[1] = allObjects;
     }
   }
 
-  v11 = a3->var3[0];
-  v12 = v11 > a3->var0;
-  v13 = v11 - a3->var0;
+  v11 = state->var3[0];
+  v12 = v11 > state->var0;
+  v13 = v11 - state->var0;
   if (!v12)
   {
     return 0;
   }
 
-  if (v13 < a5)
+  if (v13 < count)
   {
-    a5 = v13;
+    count = v13;
   }
 
-  if (a5)
+  if (count)
   {
-    v15.length = a5;
-    v15.location = a3->var0;
-    CFArrayGetValues(a3->var3[1], v15, a4);
-    a3->var0 += a5;
-    a3->var1 = a4;
+    v15.length = count;
+    v15.location = state->var0;
+    CFArrayGetValues(state->var3[1], v15, objects);
+    state->var0 += count;
+    state->var1 = objects;
   }
 
-  return a5;
+  return count;
 }
 
 - (id)_copyAllItems
@@ -148,11 +148,11 @@
     CFDictionaryGetKeysAndValues(self->_objects, v5, v6);
     for (i = 0; i != Count; ++i)
     {
-      v8 = [v6[i] retainedReference];
-      if (v8)
+      retainedReference = [v6[i] retainedReference];
+      if (retainedReference)
       {
-        v9 = v8;
-        [v4 addObject:v8];
+        v9 = retainedReference;
+        [v4 addObject:retainedReference];
       }
 
       else
@@ -171,21 +171,21 @@
 
 - (id)allObjects
 {
-  v2 = [(MFWeakSet *)self _copyAllItems];
+  _copyAllItems = [(MFWeakSet *)self _copyAllItems];
 
-  return v2;
+  return _copyAllItems;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithSet:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithSet:self];
 }
@@ -203,8 +203,8 @@
     CFDictionaryGetKeysAndValues(self->_objects, v6, v7);
     for (i = 0; i != v4; ++i)
     {
-      v9 = [v7[i] retainedReference];
-      if (v9)
+      retainedReference = [v7[i] retainedReference];
+      if (retainedReference)
       {
         break;
       }
@@ -218,53 +218,53 @@
 
   else
   {
-    v9 = 0;
+    retainedReference = 0;
   }
 
   [(NSLock *)self->_lock unlock];
 
-  return v9;
+  return retainedReference;
 }
 
-- (id)descriptionWithLocale:(id)a3
+- (id)descriptionWithLocale:(id)locale
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
   return [v4 stringWithFormat:@"<%@> %p", NSStringFromClass(v5), self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = [(MFWeakSet *)self _copyAllItems];
-  if ([a3 allowsKeyedCoding])
+  _copyAllItems = [(MFWeakSet *)self _copyAllItems];
+  if ([coder allowsKeyedCoding])
   {
-    [a3 encodeObject:v4 forKey:@"objects"];
+    [coder encodeObject:_copyAllItems forKey:@"objects"];
   }
 
   else
   {
-    [a3 encodeObject:v4];
+    [coder encodeObject:_copyAllItems];
   }
 }
 
-- (MFWeakSet)initWithCoder:(id)a3
+- (MFWeakSet)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = MFWeakSet;
   v4 = [(MFWeakSet *)&v10 initWithCoder:?];
   if (v4)
   {
-    if ([a3 allowsKeyedCoding])
+    if ([coder allowsKeyedCoding])
     {
-      v5 = [a3 decodeObjectForKey:@"objects"];
+      decodeObject = [coder decodeObjectForKey:@"objects"];
     }
 
     else
     {
-      v5 = [a3 decodeObject];
+      decodeObject = [coder decodeObject];
     }
 
-    v6 = v5;
+    v6 = decodeObject;
     v4->_lock = objc_alloc_init(MEMORY[0x1E696AD10]);
     v7 = *MEMORY[0x1E695E480];
     v8 = [v6 count];
@@ -275,17 +275,17 @@
   return v4;
 }
 
-- (BOOL)intersectsSet:(id)a3
+- (BOOL)intersectsSet:(id)set
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a3 == self)
+  if (set == self)
   {
 LABEL_12:
     LOBYTE(v5) = 1;
     goto LABEL_13;
   }
 
-  v5 = [a3 count];
+  v5 = [set count];
   if (v5)
   {
     v13 = 0u;
@@ -306,7 +306,7 @@ LABEL_5:
           objc_enumerationMutation(self);
         }
 
-        if ([a3 containsObject:*(*(&v11 + 1) + 8 * v8)])
+        if ([set containsObject:*(*(&v11 + 1) + 8 * v8)])
         {
           goto LABEL_12;
         }
@@ -331,10 +331,10 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)isEqualToSet:(id)a3
+- (BOOL)isEqualToSet:(id)set
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a3 == self)
+  if (set == self)
   {
     LOBYTE(v6) = 1;
   }
@@ -342,7 +342,7 @@ LABEL_13:
   else
   {
     v5 = [(MFWeakSet *)self count];
-    if (v5 == [a3 count])
+    if (v5 == [set count])
     {
       v14 = 0u;
       v15 = 0u;
@@ -362,7 +362,7 @@ LABEL_5:
             objc_enumerationMutation(self);
           }
 
-          LODWORD(v6) = [a3 containsObject:*(*(&v12 + 1) + 8 * v9)];
+          LODWORD(v6) = [set containsObject:*(*(&v12 + 1) + 8 * v9)];
           if (!v6)
           {
             break;
@@ -393,10 +393,10 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)isSubsetOfSet:(id)a3
+- (BOOL)isSubsetOfSet:(id)set
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a3 == self || (v14 = 0u, v15 = 0u, v12 = 0u, v13 = 0u, (v5 = [(MFWeakSet *)self countByEnumeratingWithState:&v12 objects:v16 count:16]) == 0))
+  if (set == self || (v14 = 0u, v15 = 0u, v12 = 0u, v13 = 0u, (v5 = [(MFWeakSet *)self countByEnumeratingWithState:&v12 objects:v16 count:16]) == 0))
   {
     LOBYTE(v9) = 1;
   }
@@ -414,7 +414,7 @@ LABEL_4:
         objc_enumerationMutation(self);
       }
 
-      v9 = [a3 containsObject:*(*(&v12 + 1) + 8 * v8)];
+      v9 = [set containsObject:*(*(&v12 + 1) + 8 * v8)];
       if (!v9)
       {
         break;
@@ -438,7 +438,7 @@ LABEL_4:
   return v9;
 }
 
-- (void)makeObjectsPerformSelector:(SEL)a3 withObject:(id)a4
+- (void)makeObjectsPerformSelector:(SEL)selector withObject:(id)object
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
@@ -460,7 +460,7 @@ LABEL_4:
           objc_enumerationMutation(self);
         }
 
-        [*(*(&v12 + 1) + 8 * v10++) a3];
+        [*(*(&v12 + 1) + 8 * v10++) selector];
       }
 
       while (v8 != v10);
@@ -473,39 +473,39 @@ LABEL_4:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)setByAddingObject:(id)a3
+- (id)setByAddingObject:(id)object
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v5[0] = a3;
+  v5[0] = object;
   result = -[MFWeakSet setByAddingObjectsFromArray:](self, "setByAddingObjectsFromArray:", [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1]);
   v4 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (id)setByAddingObjectsFromSet:(id)a3
+- (id)setByAddingObjectsFromSet:(id)set
 {
-  v4 = [a3 allObjects];
+  allObjects = [set allObjects];
 
-  return [(MFWeakSet *)self setByAddingObjectsFromArray:v4];
+  return [(MFWeakSet *)self setByAddingObjectsFromArray:allObjects];
 }
 
-- (id)setByAddingObjectsFromArray:(id)a3
+- (id)setByAddingObjectsFromArray:(id)array
 {
-  v4 = [(MFWeakSet *)self _copyAllItems];
-  v5 = [objc_alloc(objc_opt_class()) initWithArray:{objc_msgSend(v4, "arrayByAddingObjectsFromArray:", a3)}];
+  _copyAllItems = [(MFWeakSet *)self _copyAllItems];
+  v5 = [objc_alloc(objc_opt_class()) initWithArray:{objc_msgSend(_copyAllItems, "arrayByAddingObjectsFromArray:", array)}];
 
   return v5;
 }
 
-- (void)enumerateObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateObjectsWithOptions:(unint64_t)options usingBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [(MFWeakSet *)self _copyAllItems];
+  _copyAllItems = [(MFWeakSet *)self _copyAllItems];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [_copyAllItems countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -516,12 +516,12 @@ LABEL_3:
     {
       if (*v14 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(_copyAllItems);
       }
 
       v10 = *(*(&v13 + 1) + 8 * v9);
       v12 = 0;
-      (*(a4 + 2))(a4, v10, &v12);
+      (*(block + 2))(block, v10, &v12);
       if (v12)
       {
         break;
@@ -529,7 +529,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [_copyAllItems countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -543,16 +543,16 @@ LABEL_3:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)objectsWithOptions:(unint64_t)a3 passingTest:(id)a4
+- (id)objectsWithOptions:(unint64_t)options passingTest:(id)test
 {
   v21 = *MEMORY[0x1E69E9840];
   v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v7 = [(MFWeakSet *)self _copyAllItems];
+  _copyAllItems = [(MFWeakSet *)self _copyAllItems];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v8 = [_copyAllItems countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -563,12 +563,12 @@ LABEL_3:
     {
       if (*v17 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(_copyAllItems);
       }
 
       v12 = *(*(&v16 + 1) + 8 * v11);
       v15 = 0;
-      if ((*(a4 + 2))(a4, v12, &v15))
+      if ((*(test + 2))(test, v12, &v15))
       {
         [v6 addObject:v12];
       }
@@ -580,7 +580,7 @@ LABEL_3:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v9 = [_copyAllItems countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -598,23 +598,23 @@ LABEL_3:
 
 + (id)set
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (MFWeakSet)setWithObjects:(const void *)a3 count:(unint64_t)a4
++ (MFWeakSet)setWithObjects:(const void *)objects count:(unint64_t)count
 {
-  v4 = [[a1 alloc] initWithObjects:a3 count:a4];
+  v4 = [[self alloc] initWithObjects:objects count:count];
 
   return v4;
 }
 
-+ (MFWeakSet)setWithObjects:(id)a3
++ (MFWeakSet)setWithObjects:(id)objects
 {
-  if (!a3)
+  if (!objects)
   {
-    return [a1 set];
+    return [self set];
   }
 
   LODWORD(v5) = 0;
@@ -628,12 +628,12 @@ LABEL_3:
   while (*v6);
   if (!v5)
   {
-    return [a1 set];
+    return [self set];
   }
 
   v7 = malloc_type_malloc(8 * v5, 0x80040B8603338uLL);
   v8 = v7;
-  *v7 = a3;
+  *v7 = objects;
   v15 = &v16;
   if (v5 != 1)
   {
@@ -649,43 +649,43 @@ LABEL_3:
     while (v10);
   }
 
-  v12 = [objc_allocWithZone(a1) initWithObjects:v7 count:v5];
+  v12 = [objc_allocWithZone(self) initWithObjects:v7 count:v5];
   free(v8);
   return v12;
 }
 
-+ (MFWeakSet)setWithSet:(id)a3
++ (MFWeakSet)setWithSet:(id)set
 {
-  v3 = [[a1 alloc] initWithSet:a3];
+  v3 = [[self alloc] initWithSet:set];
 
   return v3;
 }
 
-+ (MFWeakSet)setWithArray:(id)a3
++ (MFWeakSet)setWithArray:(id)array
 {
-  v3 = [[a1 alloc] initWithArray:a3];
+  v3 = [[self alloc] initWithArray:array];
 
   return v3;
 }
 
-+ (MFWeakSet)setWithCapacity:(unint64_t)a3
++ (MFWeakSet)setWithCapacity:(unint64_t)capacity
 {
-  v3 = [[a1 alloc] initWithCapacity:a3];
+  v3 = [[self alloc] initWithCapacity:capacity];
 
   return v3;
 }
 
-- (MFWeakSet)initWithObjects:(const void *)a3 count:(unint64_t)a4
+- (MFWeakSet)initWithObjects:(const void *)objects count:(unint64_t)count
 {
-  v5 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:a3 count:a4];
+  v5 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:objects count:count];
   v6 = [(MFWeakSet *)self initWithArray:v5];
 
   return v6;
 }
 
-- (MFWeakSet)initWithObjects:(id)a3
+- (MFWeakSet)initWithObjects:(id)objects
 {
-  if (!a3)
+  if (!objects)
   {
     return [(MFWeakSet *)self init];
   }
@@ -706,7 +706,7 @@ LABEL_3:
 
   v7 = malloc_type_malloc(8 * v5, 0x80040B8603338uLL);
   v8 = v7;
-  *v7 = a3;
+  *v7 = objects;
   v15 = &v16;
   if (v5 != 1)
   {
@@ -727,18 +727,18 @@ LABEL_3:
   return v12;
 }
 
-- (MFWeakSet)initWithSet:(id)a3 copyItems:(BOOL)a4
+- (MFWeakSet)initWithSet:(id)set copyItems:(BOOL)items
 {
-  v6 = [a3 allObjects];
-  v7 = v6;
-  if (a4)
+  allObjects = [set allObjects];
+  v7 = allObjects;
+  if (items)
   {
-    v7 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v6 copyItems:1];
+    v7 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:allObjects copyItems:1];
   }
 
   else
   {
-    v8 = v6;
+    v8 = allObjects;
   }
 
   v9 = [(MFWeakSet *)self initWithArray:v7];
@@ -746,19 +746,19 @@ LABEL_3:
   return v9;
 }
 
-- (MFWeakSet)initWithArray:(id)a3
+- (MFWeakSet)initWithArray:(id)array
 {
-  v4 = -[MFWeakSet initWithCapacity:](self, "initWithCapacity:", [a3 count]);
+  v4 = -[MFWeakSet initWithCapacity:](self, "initWithCapacity:", [array count]);
   v5 = v4;
   if (v4)
   {
-    [(MFWeakSet *)v4 addObjectsFromArray:a3];
+    [(MFWeakSet *)v4 addObjectsFromArray:array];
   }
 
   return v5;
 }
 
-- (MFWeakSet)initWithCapacity:(unint64_t)a3
+- (MFWeakSet)initWithCapacity:(unint64_t)capacity
 {
   v6.receiver = self;
   v6.super_class = MFWeakSet;
@@ -766,7 +766,7 @@ LABEL_3:
   if (v4)
   {
     v4->_lock = objc_alloc_init(MEMORY[0x1E696AD10]);
-    v4->_objects = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], a3, 0, MEMORY[0x1E695E9E8]);
+    v4->_objects = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], capacity, 0, MEMORY[0x1E695E9E8]);
   }
 
   return v4;
@@ -785,27 +785,27 @@ LABEL_3:
   [(MFWeakSet *)&v4 dealloc];
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
   [(NSLock *)self->_lock lock];
-  CFDictionaryAddValue(self->_objects, a3, [MFWeakReferenceHolder weakReferenceWithObject:a3]);
+  CFDictionaryAddValue(self->_objects, object, [MFWeakReferenceHolder weakReferenceWithObject:object]);
   ++self->_gen;
   lock = self->_lock;
 
   [(NSLock *)lock unlock];
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
   [(NSLock *)self->_lock lock];
-  CFDictionaryRemoveValue(self->_objects, a3);
+  CFDictionaryRemoveValue(self->_objects, object);
   ++self->_gen;
   lock = self->_lock;
 
   [(NSLock *)lock unlock];
 }
 
-- (void)addObjectsFromArray:(id)a3
+- (void)addObjectsFromArray:(id)array
 {
   v15 = *MEMORY[0x1E69E9840];
   [(NSLock *)self->_lock lock];
@@ -813,7 +813,7 @@ LABEL_3:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [array countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -825,7 +825,7 @@ LABEL_3:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(array);
         }
 
         CFDictionaryAddValue(self->_objects, *(*(&v10 + 1) + 8 * v8), [MFWeakReferenceHolder weakReferenceWithObject:*(*(&v10 + 1) + 8 * v8)]);
@@ -833,7 +833,7 @@ LABEL_3:
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [array countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -844,17 +844,17 @@ LABEL_3:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)intersectSet:(id)a3
+- (void)intersectSet:(id)set
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a3 != self)
+  if (set != self)
   {
-    v5 = [(MFWeakSet *)self _copyAllItems];
+    _copyAllItems = [(MFWeakSet *)self _copyAllItems];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v6 = [_copyAllItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -865,17 +865,17 @@ LABEL_3:
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_copyAllItems);
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
-          if (([a3 containsObject:v10] & 1) == 0)
+          if (([set containsObject:v10] & 1) == 0)
           {
             [(MFWeakSet *)self removeObject:v10];
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [_copyAllItems countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v7);
@@ -885,10 +885,10 @@ LABEL_3:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)minusSet:(id)a3
+- (void)minusSet:(id)set
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a3 == self)
+  if (set == self)
   {
     v10 = *MEMORY[0x1E69E9840];
 
@@ -901,7 +901,7 @@ LABEL_3:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v5 = [set countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -913,14 +913,14 @@ LABEL_3:
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(set);
           }
 
           [(MFWeakSet *)self removeObject:*(*(&v11 + 1) + 8 * v8++)];
         }
 
         while (v6 != v8);
-        v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [set countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v6);
@@ -940,16 +940,16 @@ LABEL_3:
   [(NSLock *)lock unlock];
 }
 
-- (void)unionSet:(id)a3
+- (void)unionSet:(id)set
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3 != self)
+  if (set != self)
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    v5 = [set countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -961,14 +961,14 @@ LABEL_3:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(set);
           }
 
           [(MFWeakSet *)self addObject:*(*(&v10 + 1) + 8 * v8++)];
         }
 
         while (v6 != v8);
-        v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [set countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -978,17 +978,17 @@ LABEL_3:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSet:(id)a3
+- (void)setSet:(id)set
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3 != self)
+  if (set != self)
   {
     [(MFWeakSet *)self removeAllObjects];
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    v5 = [set countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1000,14 +1000,14 @@ LABEL_3:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(set);
           }
 
           [(MFWeakSet *)self addObject:*(*(&v10 + 1) + 8 * v8++)];
         }
 
         while (v6 != v8);
-        v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [set countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);

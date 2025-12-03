@@ -1,21 +1,21 @@
 @interface VCPVideoCNNHighlightTimeRangePredictor
-- ($AFC8CF76A46F37F9FB23C20884F4FD99)timeRangeAtTime:(SEL)a3;
-- (BOOL)needsAnalysisResultsAtTime:(id *)a3;
-- (VCPVideoCNNHighlightTimeRangePredictor)initWithHightlightEnabled:(BOOL)a3 postInference:(BOOL)a4 minProcessingInterval:(float)a5 startTime:(id *)a6;
-- (void)updateForTime:(id *)a3;
+- ($AFC8CF76A46F37F9FB23C20884F4FD99)timeRangeAtTime:(SEL)time;
+- (BOOL)needsAnalysisResultsAtTime:(id *)time;
+- (VCPVideoCNNHighlightTimeRangePredictor)initWithHightlightEnabled:(BOOL)enabled postInference:(BOOL)inference minProcessingInterval:(float)interval startTime:(id *)time;
+- (void)updateForTime:(id *)time;
 @end
 
 @implementation VCPVideoCNNHighlightTimeRangePredictor
 
-- (VCPVideoCNNHighlightTimeRangePredictor)initWithHightlightEnabled:(BOOL)a3 postInference:(BOOL)a4 minProcessingInterval:(float)a5 startTime:(id *)a6
+- (VCPVideoCNNHighlightTimeRangePredictor)initWithHightlightEnabled:(BOOL)enabled postInference:(BOOL)inference minProcessingInterval:(float)interval startTime:(id *)time
 {
   v14.receiver = self;
   v14.super_class = VCPVideoCNNHighlightTimeRangePredictor;
   result = [(VCPVideoCNNHighlightTimeRangePredictor *)&v14 init];
   if (result)
   {
-    result->_enableHighlight = a3;
-    result->_postInference = a4;
+    result->_enableHighlight = enabled;
+    result->_postInference = inference;
     result->_enoughFrames = 0;
     result->_validFrames = 0;
     v11 = *(MEMORY[0x1E6960C80] + 16);
@@ -24,16 +24,16 @@
     v12 = MEMORY[0x1E6960C70];
     *&result->_timeLastDetection.value = *MEMORY[0x1E6960C70];
     result->_timeLastDetection.epoch = *(v12 + 16);
-    var3 = a6->var3;
-    *&result->_timeStart.value = *&a6->var0;
+    var3 = time->var3;
+    *&result->_timeStart.value = *&time->var0;
     result->_timeStart.epoch = var3;
-    result->_minProcessingInterval = a5;
+    result->_minProcessingInterval = interval;
   }
 
   return result;
 }
 
-- (BOOL)needsAnalysisResultsAtTime:(id *)a3
+- (BOOL)needsAnalysisResultsAtTime:(id *)time
 {
   if (!self->_enableHighlight)
   {
@@ -42,7 +42,7 @@
 
   v10 = v3;
   v11 = v4;
-  if (self->_validFrames >= 15 && (v9 = *a3, rhs = self->_timeLastProcess, CMTimeSubtract(&time, &v9, &rhs), CMTimeGetSeconds(&time) >= 0.125))
+  if (self->_validFrames >= 15 && (v9 = *time, rhs = self->_timeLastProcess, CMTimeSubtract(&time, &v9, &rhs), CMTimeGetSeconds(&time) >= 0.125))
   {
     return self->_timeLastDetection.flags & 1;
   }
@@ -53,7 +53,7 @@
   }
 }
 
-- ($AFC8CF76A46F37F9FB23C20884F4FD99)timeRangeAtTime:(SEL)a3
+- ($AFC8CF76A46F37F9FB23C20884F4FD99)timeRangeAtTime:(SEL)time
 {
   start = *a4;
   result = [(VCPVideoCNNHighlightTimeRangePredictor *)self needsAnalysisResultsAtTime:&start];
@@ -76,12 +76,12 @@
   return result;
 }
 
-- (void)updateForTime:(id *)a3
+- (void)updateForTime:(id *)time
 {
-  lhs = *a3;
+  lhs = *time;
   rhs = self->_timeLastProcess;
   CMTimeSubtract(&time, &lhs, &rhs);
-  if (CMTimeGetSeconds(&time) < self->_minProcessingInterval || (lhs = *a3, rhs = self->_timeStart, CMTimeCompare(&lhs, &rhs) < 0))
+  if (CMTimeGetSeconds(&time) < self->_minProcessingInterval || (lhs = *time, rhs = self->_timeStart, CMTimeCompare(&lhs, &rhs) < 0))
   {
     v5 = 0;
   }
@@ -93,8 +93,8 @@
 
   if ((self->_timeLastDetection.flags & 1) == 0)
   {
-    v6 = *&a3->var0;
-    self->_timeLastDetection.epoch = a3->var3;
+    v6 = *&time->var0;
+    self->_timeLastDetection.epoch = time->var3;
     *&self->_timeLastDetection.value = v6;
   }
 
@@ -109,14 +109,14 @@
       {
         self->_enoughFrames = 0;
         self->_validFrames = 0;
-        v8 = *&a3->var0;
-        self->_timeLastDetection.epoch = a3->var3;
+        v8 = *&time->var0;
+        self->_timeLastDetection.epoch = time->var3;
         *&self->_timeLastDetection.value = v8;
       }
     }
 
-    v9 = *&a3->var0;
-    self->_timeLastProcess.epoch = a3->var3;
+    v9 = *&time->var0;
+    self->_timeLastProcess.epoch = time->var3;
     *&self->_timeLastProcess.value = v9;
   }
 }

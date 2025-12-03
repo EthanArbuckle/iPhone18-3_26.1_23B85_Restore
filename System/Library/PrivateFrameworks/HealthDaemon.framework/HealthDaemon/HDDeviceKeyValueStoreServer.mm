@@ -1,30 +1,30 @@
 @interface HDDeviceKeyValueStoreServer
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5;
-- (HDDeviceKeyValueStoreServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
-- (id)_storageGroupForGroup:(uint64_t)a1;
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error;
+- (HDDeviceKeyValueStoreServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
+- (id)_storageGroupForGroup:(uint64_t)group;
 - (void)connectionInvalidated;
 - (void)dealloc;
-- (void)deviceKeyValueStoreDidUpdateForStorageGroup:(id)a3 domain:(id)a4;
-- (void)remote_fetchEntriesForDomain:(id)a3 key:(id)a4 protectionCategory:(int64_t)a5 completion:(id)a6;
-- (void)remote_mostRecentEntryForDomain:(id)a3 key:(id)a4 protectionCategory:(int64_t)a5 completion:(id)a6;
-- (void)remote_setData:(id)a3 forKey:(id)a4 domainName:(id)a5 protectionCategory:(int64_t)a6 completion:(id)a7;
-- (void)remote_setDate:(id)a3 forKey:(id)a4 domainName:(id)a5 protectionCategory:(int64_t)a6 completion:(id)a7;
-- (void)remote_setNumber:(id)a3 forKey:(id)a4 domainName:(id)a5 protectionCategory:(int64_t)a6 completion:(id)a7;
-- (void)remote_setString:(id)a3 forKey:(id)a4 domainName:(id)a5 protectionCategory:(int64_t)a6 completion:(id)a7;
-- (void)remote_startObservingDeviceKeyValueStoreWithCompletion:(id)a3;
+- (void)deviceKeyValueStoreDidUpdateForStorageGroup:(id)group domain:(id)domain;
+- (void)remote_fetchEntriesForDomain:(id)domain key:(id)key protectionCategory:(int64_t)category completion:(id)completion;
+- (void)remote_mostRecentEntryForDomain:(id)domain key:(id)key protectionCategory:(int64_t)category completion:(id)completion;
+- (void)remote_setData:(id)data forKey:(id)key domainName:(id)name protectionCategory:(int64_t)category completion:(id)completion;
+- (void)remote_setDate:(id)date forKey:(id)key domainName:(id)name protectionCategory:(int64_t)category completion:(id)completion;
+- (void)remote_setNumber:(id)number forKey:(id)key domainName:(id)name protectionCategory:(int64_t)category completion:(id)completion;
+- (void)remote_setString:(id)string forKey:(id)key domainName:(id)name protectionCategory:(int64_t)category completion:(id)completion;
+- (void)remote_startObservingDeviceKeyValueStoreWithCompletion:(id)completion;
 @end
 
 @implementation HDDeviceKeyValueStoreServer
 
-- (HDDeviceKeyValueStoreServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDDeviceKeyValueStoreServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = HDDeviceKeyValueStoreServer;
-  v11 = [(HDStandardTaskServer *)&v15 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+  v11 = [(HDStandardTaskServer *)&v15 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [configurationCopy copy];
     configuration = v11->_configuration;
     v11->_configuration = v12;
   }
@@ -34,48 +34,48 @@
 
 - (void)dealloc
 {
-  v3 = [(HDStandardTaskServer *)self profile];
-  v4 = [v3 deviceKeyValueStoreManager];
-  [v4 unregisterObserver:self];
+  profile = [(HDStandardTaskServer *)self profile];
+  deviceKeyValueStoreManager = [profile deviceKeyValueStoreManager];
+  [deviceKeyValueStoreManager unregisterObserver:self];
 
   v5.receiver = self;
   v5.super_class = HDDeviceKeyValueStoreServer;
   [(HDDeviceKeyValueStoreServer *)&v5 dealloc];
 }
 
-- (void)remote_fetchEntriesForDomain:(id)a3 key:(id)a4 protectionCategory:(int64_t)a5 completion:(id)a6
+- (void)remote_fetchEntriesForDomain:(id)domain key:(id)key protectionCategory:(int64_t)category completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(HDStandardTaskServer *)self profile];
-  v14 = [v13 deviceKeyValueStoreManager];
+  completionCopy = completion;
+  keyCopy = key;
+  domainCopy = domain;
+  profile = [(HDStandardTaskServer *)self profile];
+  deviceKeyValueStoreManager = [profile deviceKeyValueStoreManager];
   v18 = 0;
-  v15 = [v14 fetchEntriesForDomain:v12 key:v11 protectionCategory:a5 error:&v18];
+  v15 = [deviceKeyValueStoreManager fetchEntriesForDomain:domainCopy key:keyCopy protectionCategory:category error:&v18];
 
   v16 = v18;
   if (v15)
   {
     v17 = [(HDDeviceKeyValueStoreServer *)self _storageGroupForGroup:v15];
-    v10[2](v10, v17, 0);
+    completionCopy[2](completionCopy, v17, 0);
   }
 
   else
   {
-    (v10)[2](v10, 0, v16);
+    (completionCopy)[2](completionCopy, 0, v16);
   }
 }
 
-- (id)_storageGroupForGroup:(uint64_t)a1
+- (id)_storageGroupForGroup:(uint64_t)group
 {
   v3 = 0;
-  if (a1 && a2)
+  if (group && a2)
   {
     var28[0] = MEMORY[0x277D85DD0];
     var28[1] = 3221225472;
     var28[2] = __53__HDDeviceKeyValueStoreServer__storageGroupForGroup___block_invoke;
     var28[3] = &unk_27862E608;
-    var28[4] = a1;
+    var28[4] = group;
     v3 = [a2 hk_map:var28];
     v2 = var28[6];
   }
@@ -83,16 +83,16 @@
   return v3;
 }
 
-- (void)remote_mostRecentEntryForDomain:(id)a3 key:(id)a4 protectionCategory:(int64_t)a5 completion:(id)a6
+- (void)remote_mostRecentEntryForDomain:(id)domain key:(id)key protectionCategory:(int64_t)category completion:(id)completion
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(HDStandardTaskServer *)self profile];
-  v14 = [v13 deviceKeyValueStoreManager];
+  completionCopy = completion;
+  keyCopy = key;
+  domainCopy = domain;
+  profile = [(HDStandardTaskServer *)self profile];
+  deviceKeyValueStoreManager = [profile deviceKeyValueStoreManager];
   v21 = 0;
-  v15 = [v14 mostRecentEntryForDomain:v12 key:v11 protectionCategory:a5 error:&v21];
+  v15 = [deviceKeyValueStoreManager mostRecentEntryForDomain:domainCopy key:keyCopy protectionCategory:category error:&v21];
 
   v16 = v21;
   if (v15)
@@ -100,86 +100,86 @@
     v22[0] = v15;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
     v18 = [(HDDeviceKeyValueStoreServer *)self _storageGroupForGroup:v17];
-    v19 = [v18 firstObject];
-    v10[2](v10, v19, 0);
+    firstObject = [v18 firstObject];
+    completionCopy[2](completionCopy, firstObject, 0);
   }
 
   else
   {
-    (v10)[2](v10, 0, v16);
+    (completionCopy)[2](completionCopy, 0, v16);
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_setNumber:(id)a3 forKey:(id)a4 domainName:(id)a5 protectionCategory:(int64_t)a6 completion:(id)a7
+- (void)remote_setNumber:(id)number forKey:(id)key domainName:(id)name protectionCategory:(int64_t)category completion:(id)completion
 {
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(HDStandardTaskServer *)self profile];
-  v17 = [v16 deviceKeyValueStoreManager];
+  completionCopy = completion;
+  nameCopy = name;
+  keyCopy = key;
+  numberCopy = number;
+  profile = [(HDStandardTaskServer *)self profile];
+  deviceKeyValueStoreManager = [profile deviceKeyValueStoreManager];
   v20 = 0;
-  v18 = [v17 setNumber:v15 forKey:v14 domainName:v13 protectionCategory:a6 error:&v20];
+  v18 = [deviceKeyValueStoreManager setNumber:numberCopy forKey:keyCopy domainName:nameCopy protectionCategory:category error:&v20];
 
   v19 = v20;
-  v12[2](v12, v18, v19);
+  completionCopy[2](completionCopy, v18, v19);
 }
 
-- (void)remote_setData:(id)a3 forKey:(id)a4 domainName:(id)a5 protectionCategory:(int64_t)a6 completion:(id)a7
+- (void)remote_setData:(id)data forKey:(id)key domainName:(id)name protectionCategory:(int64_t)category completion:(id)completion
 {
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(HDStandardTaskServer *)self profile];
-  v17 = [v16 deviceKeyValueStoreManager];
+  completionCopy = completion;
+  nameCopy = name;
+  keyCopy = key;
+  dataCopy = data;
+  profile = [(HDStandardTaskServer *)self profile];
+  deviceKeyValueStoreManager = [profile deviceKeyValueStoreManager];
   v20 = 0;
-  v18 = [v17 setData:v15 forKey:v14 domainName:v13 protectionCategory:a6 error:&v20];
+  v18 = [deviceKeyValueStoreManager setData:dataCopy forKey:keyCopy domainName:nameCopy protectionCategory:category error:&v20];
 
   v19 = v20;
-  v12[2](v12, v18, v19);
+  completionCopy[2](completionCopy, v18, v19);
 }
 
-- (void)remote_setDate:(id)a3 forKey:(id)a4 domainName:(id)a5 protectionCategory:(int64_t)a6 completion:(id)a7
+- (void)remote_setDate:(id)date forKey:(id)key domainName:(id)name protectionCategory:(int64_t)category completion:(id)completion
 {
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(HDStandardTaskServer *)self profile];
-  v17 = [v16 deviceKeyValueStoreManager];
+  completionCopy = completion;
+  nameCopy = name;
+  keyCopy = key;
+  dateCopy = date;
+  profile = [(HDStandardTaskServer *)self profile];
+  deviceKeyValueStoreManager = [profile deviceKeyValueStoreManager];
   v20 = 0;
-  v18 = [v17 setDate:v15 forKey:v14 domainName:v13 protectionCategory:a6 error:&v20];
+  v18 = [deviceKeyValueStoreManager setDate:dateCopy forKey:keyCopy domainName:nameCopy protectionCategory:category error:&v20];
 
   v19 = v20;
-  v12[2](v12, v18, v19);
+  completionCopy[2](completionCopy, v18, v19);
 }
 
-- (void)remote_setString:(id)a3 forKey:(id)a4 domainName:(id)a5 protectionCategory:(int64_t)a6 completion:(id)a7
+- (void)remote_setString:(id)string forKey:(id)key domainName:(id)name protectionCategory:(int64_t)category completion:(id)completion
 {
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(HDStandardTaskServer *)self profile];
-  v17 = [v16 deviceKeyValueStoreManager];
+  completionCopy = completion;
+  nameCopy = name;
+  keyCopy = key;
+  stringCopy = string;
+  profile = [(HDStandardTaskServer *)self profile];
+  deviceKeyValueStoreManager = [profile deviceKeyValueStoreManager];
   v20 = 0;
-  v18 = [v17 setString:v15 forKey:v14 domainName:v13 protectionCategory:a6 error:&v20];
+  v18 = [deviceKeyValueStoreManager setString:stringCopy forKey:keyCopy domainName:nameCopy protectionCategory:category error:&v20];
 
   v19 = v20;
-  v12[2](v12, v18, v19);
+  completionCopy[2](completionCopy, v18, v19);
 }
 
-- (void)remote_startObservingDeviceKeyValueStoreWithCompletion:(id)a3
+- (void)remote_startObservingDeviceKeyValueStoreWithCompletion:(id)completion
 {
-  v6 = a3;
-  v4 = [(HDStandardTaskServer *)self profile];
-  v5 = [v4 deviceKeyValueStoreManager];
-  [v5 registerObserver:self];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  deviceKeyValueStoreManager = [profile deviceKeyValueStoreManager];
+  [deviceKeyValueStoreManager registerObserver:self];
 
-  v6[2](v6, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 }
 
 id __53__HDDeviceKeyValueStoreServer__storageGroupForGroup___block_invoke(uint64_t a1, void *a2)
@@ -240,42 +240,42 @@ id __53__HDDeviceKeyValueStoreServer__storageGroupForGroup___block_invoke_2(uint
   return v9;
 }
 
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error
 {
-  v6 = [a3 domain];
+  domain = [configuration domain];
 
-  if (!v6)
+  if (!domain)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 format:@"Missing domain for the Key Value Store"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"Missing domain for the Key Value Store"];
   }
 
-  return v6 != 0;
+  return domain != 0;
 }
 
 - (void)connectionInvalidated
 {
-  v4 = [(HDStandardTaskServer *)self profile];
-  v3 = [v4 deviceKeyValueStoreManager];
-  [v3 unregisterObserver:self];
+  profile = [(HDStandardTaskServer *)self profile];
+  deviceKeyValueStoreManager = [profile deviceKeyValueStoreManager];
+  [deviceKeyValueStoreManager unregisterObserver:self];
 }
 
-- (void)deviceKeyValueStoreDidUpdateForStorageGroup:(id)a3 domain:(id)a4
+- (void)deviceKeyValueStoreDidUpdateForStorageGroup:(id)group domain:(id)domain
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  domainCopy = domain;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __82__HDDeviceKeyValueStoreServer_deviceKeyValueStoreDidUpdateForStorageGroup_domain___block_invoke;
   v16[3] = &unk_27862E630;
   v16[4] = self;
-  v8 = v6;
+  v8 = groupCopy;
   v17 = v8;
-  v9 = v7;
+  v9 = domainCopy;
   v18 = v9;
   v10 = [(HDStandardTaskServer *)self remoteObjectProxyWithErrorHandler:v16];
-  v11 = [(HKDeviceKeyValueStoreTaskConfiguration *)self->_configuration domain];
-  v12 = [v11 isEqual:v9];
+  domain = [(HKDeviceKeyValueStoreTaskConfiguration *)self->_configuration domain];
+  v12 = [domain isEqual:v9];
 
   if (v12)
   {
@@ -284,7 +284,7 @@ id __53__HDDeviceKeyValueStoreServer__storageGroupForGroup___block_invoke_2(uint
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_INFO))
     {
       *buf = 138543874;
-      v20 = self;
+      selfCopy = self;
       v21 = 2114;
       v22 = v9;
       v23 = 2114;

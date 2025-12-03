@@ -1,19 +1,19 @@
 @interface UIInputWindowControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)resetBackdropHeight;
-- (void)updateInputAssistantViewForInputViewSet:(id)a3;
+- (void)updateInputAssistantViewForInputViewSet:(id)set;
 @end
 
 @implementation UIInputWindowControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v7 = location;
   v6 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = "@";
   [location[0] validateClass:@"UIKeyboardImpl" hasInstanceMethod:@"candidateController" withFullSignature:0];
   [location[0] validateClass:@"UIKeyboardCandidateController" hasInstanceMethod:@"isExtended" withFullSignature:{"B", 0}];
@@ -27,16 +27,16 @@
 
 - (void)resetBackdropHeight
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v6 = 0;
   v4 = 0;
   v2 = 0;
   if (UIAccessibilityIsSwitchControlRunning())
   {
-    v7 = [MEMORY[0x29EDC7B08] sharedInstance];
+    mEMORY[0x29EDC7B08] = [MEMORY[0x29EDC7B08] sharedInstance];
     v6 = 1;
-    v5 = [v7 safeValueForKey:@"candidateController"];
+    v5 = [mEMORY[0x29EDC7B08] safeValueForKey:@"candidateController"];
     v4 = 1;
     v2 = [v5 safeBoolForKey:@"isExtended"];
   }
@@ -48,24 +48,24 @@
 
   if (v6)
   {
-    MEMORY[0x29EDC9740](v7);
+    MEMORY[0x29EDC9740](mEMORY[0x29EDC7B08]);
   }
 
   if ((v2 & 1) == 0)
   {
-    v3.receiver = v9;
+    v3.receiver = selfCopy;
     v3.super_class = UIInputWindowControllerAccessibility;
     [(UIInputWindowControllerAccessibility *)&v3 resetBackdropHeight];
   }
 }
 
-- (void)updateInputAssistantViewForInputViewSet:(id)a3
+- (void)updateInputAssistantViewForInputViewSet:(id)set
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6.receiver = v8;
+  objc_storeStrong(location, set);
+  v6.receiver = selfCopy;
   v6.super_class = UIInputWindowControllerAccessibility;
   [(UIInputWindowControllerAccessibility *)&v6 updateInputAssistantViewForInputViewSet:location[0]];
   v5 = [location[0] safeValueForKey:@"inputView"];

@@ -1,79 +1,79 @@
 @interface VCPMovieHighlightAnalyzer
-- ($AFC8CF76A46F37F9FB23C20884F4FD99)computeActionFaceTrimFor:(SEL)a3;
-- ($AFC8CF76A46F37F9FB23C20884F4FD99)computeQualityTrimFor:(SEL)a3 withKeyFrame:(id *)a4;
-- ($AFC8CF76A46F37F9FB23C20884F4FD99)computeSteadyTranslationTrimFor:(SEL)a3;
-- ($AFC8CF76A46F37F9FB23C20884F4FD99)computeTrimWithHighlightScoreFor:(SEL)a3;
-- ($AFC8CF76A46F37F9FB23C20884F4FD99)findBestTrim:(SEL)a3;
-- (BOOL)addSegment:(id)a3;
-- (BOOL)checkCameraZoom:(id *)a3;
-- (BOOL)isGoodQuality:(id *)a3;
-- (BOOL)updateCropHeatMap:(float *)a3 withResults:(id)a4 timeRange:(id *)a5 resultsKey:(id)a6;
-- (CGRect)computeBestPlaybackCrop:(id *)a3;
-- (VCPMovieHighlightAnalyzer)initWithAnalysisType:(unint64_t)a3 isLivePhoto:(BOOL)a4 photoOffset:(float)a5 hadFlash:(BOOL)a6 hadZoom:(BOOL)a7 settlingHadZoom:(BOOL)a8 isTimelapse:(BOOL)a9 preferredTimeRange:(id *)a10 asset:(id)a11;
-- (VCPMovieHighlightAnalyzer)initWithPostProcessOptions:(id)a3 asset:(id)a4;
-- (float)actionScoreForTimerange:(id *)a3;
-- (float)analyzeOverallQuality:(id *)a3 isSettlingEffect:(BOOL)a4 isAnimatedSticker:(BOOL)a5;
-- (float)cameraMotionScoreForTimerange:(id *)a3;
-- (float)computeActionScoreInTimerange:(id *)a3;
-- (float)computeExpressionScoreInTimerange:(id *)a3;
-- (float)computeHighlightScoreOfRange:(id *)a3;
-- (float)computeHumanActionScoreInTimerange:(id *)a3;
-- (float)computeHumanPoseScoreInTimerange:(id *)a3;
-- (float)computeMLHighlightScoreForTimerange:(id *)a3;
-- (float)computeMLQualityScoreForTimerange:(id *)a3;
-- (float)computeSubtleMotionScoreInTimerange:(id *)a3;
-- (float)computeVoiceScoreInTimeRange:(id *)a3;
-- (float)expressionScoreForTimerange:(id *)a3;
-- (float)highlightScoreForTimeRange:(id *)a3 average:(BOOL)a4;
-- (float)junkScoreForTimerange:(id *)a3 lengthScale:(BOOL)a4;
-- (float)qualityScoreForTimerange:(id *)a3;
+- ($AFC8CF76A46F37F9FB23C20884F4FD99)computeActionFaceTrimFor:(SEL)for;
+- ($AFC8CF76A46F37F9FB23C20884F4FD99)computeQualityTrimFor:(SEL)for withKeyFrame:(id *)frame;
+- ($AFC8CF76A46F37F9FB23C20884F4FD99)computeSteadyTranslationTrimFor:(SEL)for;
+- ($AFC8CF76A46F37F9FB23C20884F4FD99)computeTrimWithHighlightScoreFor:(SEL)for;
+- ($AFC8CF76A46F37F9FB23C20884F4FD99)findBestTrim:(SEL)trim;
+- (BOOL)addSegment:(id)segment;
+- (BOOL)checkCameraZoom:(id *)zoom;
+- (BOOL)isGoodQuality:(id *)quality;
+- (BOOL)updateCropHeatMap:(float *)map withResults:(id)results timeRange:(id *)range resultsKey:(id)key;
+- (CGRect)computeBestPlaybackCrop:(id *)crop;
+- (VCPMovieHighlightAnalyzer)initWithAnalysisType:(unint64_t)type isLivePhoto:(BOOL)photo photoOffset:(float)offset hadFlash:(BOOL)flash hadZoom:(BOOL)zoom settlingHadZoom:(BOOL)hadZoom isTimelapse:(BOOL)timelapse preferredTimeRange:(id *)self0 asset:(id)self1;
+- (VCPMovieHighlightAnalyzer)initWithPostProcessOptions:(id)options asset:(id)asset;
+- (float)actionScoreForTimerange:(id *)timerange;
+- (float)analyzeOverallQuality:(id *)quality isSettlingEffect:(BOOL)effect isAnimatedSticker:(BOOL)sticker;
+- (float)cameraMotionScoreForTimerange:(id *)timerange;
+- (float)computeActionScoreInTimerange:(id *)timerange;
+- (float)computeExpressionScoreInTimerange:(id *)timerange;
+- (float)computeHighlightScoreOfRange:(id *)range;
+- (float)computeHumanActionScoreInTimerange:(id *)timerange;
+- (float)computeHumanPoseScoreInTimerange:(id *)timerange;
+- (float)computeMLHighlightScoreForTimerange:(id *)timerange;
+- (float)computeMLQualityScoreForTimerange:(id *)timerange;
+- (float)computeSubtleMotionScoreInTimerange:(id *)timerange;
+- (float)computeVoiceScoreInTimeRange:(id *)range;
+- (float)expressionScoreForTimerange:(id *)timerange;
+- (float)highlightScoreForTimeRange:(id *)range average:(BOOL)average;
+- (float)junkScoreForTimerange:(id *)timerange lengthScale:(BOOL)scale;
+- (float)qualityScoreForTimerange:(id *)timerange;
 - (float)rankingLevel;
-- (float)settlingExposureChangeScore:(id *)a3;
-- (float)settlingMotionScore:(id *)a3;
-- (float)settlingSharpnessScore:(id *)a3;
-- (float)settlingSubjectScore:(id *)a3;
-- (float)stickerScaledScore:(float)a3 highPrecisionThreshold:(float)a4 highRecallThreshold:(float)a5;
-- (float)subtleMotionScoreForTimerange:(id *)a3;
-- (float)visualPleasingScoreForTimerange:(id *)a3;
-- (float)voiceScoreForTimerange:(id *)a3;
-- (id)adjustHighlightWithContext:(id)a3;
-- (id)audioQualityScore:(id *)a3;
-- (id)findBestHighlightSegment:(id *)a3 targetTrim:(BOOL)a4;
-- (id)getHighlightAttributes:(id)a3 withHighlightResults:(id)a4;
-- (id)maxTrimMovieHighlight:(id)a3;
+- (float)settlingExposureChangeScore:(id *)score;
+- (float)settlingMotionScore:(id *)score;
+- (float)settlingSharpnessScore:(id *)score;
+- (float)settlingSubjectScore:(id *)score;
+- (float)stickerScaledScore:(float)score highPrecisionThreshold:(float)threshold highRecallThreshold:(float)recallThreshold;
+- (float)subtleMotionScoreForTimerange:(id *)timerange;
+- (float)visualPleasingScoreForTimerange:(id *)timerange;
+- (float)voiceScoreForTimerange:(id *)timerange;
+- (id)adjustHighlightWithContext:(id)context;
+- (id)audioQualityScore:(id *)score;
+- (id)findBestHighlightSegment:(id *)segment targetTrim:(BOOL)trim;
+- (id)getHighlightAttributes:(id)attributes withHighlightResults:(id)results;
+- (id)maxTrimMovieHighlight:(id)highlight;
 - (id)movieSummary;
-- (id)pickKeyFramesInRange:(id *)a3;
-- (id)postProcessMovieHighlight:(id)a3 frameSize:(CGSize)a4;
+- (id)pickKeyFramesInRange:(id *)range;
+- (id)postProcessMovieHighlight:(id)highlight frameSize:(CGSize)size;
 - (id)settlingEffects;
-- (id)targetExtendRange:(id *)a3 maxRange:(id *)a4;
-- (id)targetMovieHighlight:(id)a3 mergedRange:(id *)a4 maxRange:(id *)a5;
-- (id)targetProcessRange:(id *)a3 maxRange:(id *)a4;
-- (id)targetTrimRange:(id *)a3 searchRange:(id *)a4;
-- (int)analyzeMotionStability:()array<float motionParamDiff:(6UL> *)a3;
-- (int)analyzeRankingScores:(float)a3 subtleMotion:(float)a4 humanAction:(float)a5;
+- (id)targetExtendRange:(id *)range maxRange:(id *)maxRange;
+- (id)targetMovieHighlight:(id)highlight mergedRange:(id *)range maxRange:(id *)maxRange;
+- (id)targetProcessRange:(id *)range maxRange:(id *)maxRange;
+- (id)targetTrimRange:(id *)range searchRange:(id *)searchRange;
+- (int)analyzeMotionStability:()array<float motionParamDiff:(6UL> *)diff;
+- (int)analyzeRankingScores:(float)scores subtleMotion:(float)motion humanAction:(float)action;
 - (int)combineMLHighlightScore;
 - (int)computeColorNormalization;
 - (int)computeHighlightScoreResults;
-- (int)evaluateSegment:(id)a3;
+- (int)evaluateSegment:(id)segment;
 - (int)generateHighlights;
-- (int)pickHighlightsFrom:(id)a3;
+- (int)pickHighlightsFrom:(id)from;
 - (int)postProcessMLHighlightScore;
-- (int)prepareRequiredQualityResult:(id)a3 junkDetectionResult:(id)a4 descriptorResult:(id)a5 faceResult:(id)a6 petsResult:(id)a7 saliencyResult:(id)a8 actionResult:(id)a9 subtleMotionResult:(id)a10 voiceResult:(id)a11 keyFrameResult:(id)a12 sceneResults:(id)a13 humanActionResults:(id)a14 humanPoseResults:(id)a15 cameraMotionResults:(id)a16 orientationResults:(id)a17 mlHighlightScoreResults:(id)a18 mlQualityResults:(id)a19 frameSize:(CGSize)a20 resultTypes:(unint64_t)a21;
+- (int)prepareRequiredQualityResult:(id)result junkDetectionResult:(id)detectionResult descriptorResult:(id)descriptorResult faceResult:(id)faceResult petsResult:(id)petsResult saliencyResult:(id)saliencyResult actionResult:(id)actionResult subtleMotionResult:(id)self0 voiceResult:(id)self1 keyFrameResult:(id)self2 sceneResults:(id)self3 humanActionResults:(id)self4 humanPoseResults:(id)self5 cameraMotionResults:(id)self6 orientationResults:(id)self7 mlHighlightScoreResults:(id)self8 mlQualityResults:(id)self9 frameSize:(CGSize)size resultTypes:(unint64_t)types;
 - (int)selectHighlights;
 - (int)selectHighlightsForTimelapse;
-- (void)SetKeyFramesForSegments:(id)a3;
+- (void)SetKeyFramesForSegments:(id)segments;
 - (void)adjustHighlightScoreWithContext;
-- (void)computeHighlightScoreOfSegment:(id)a3;
-- (void)generateExpressionSegments:(id *)a3;
-- (void)loadHighlightScoreResults:(id)a3;
-- (void)searchFeatureVectorOfSegment:(id)a3;
+- (void)computeHighlightScoreOfSegment:(id)segment;
+- (void)generateExpressionSegments:(id *)segments;
+- (void)loadHighlightScoreResults:(id)results;
+- (void)searchFeatureVectorOfSegment:(id)segment;
 @end
 
 @implementation VCPMovieHighlightAnalyzer
 
-- (VCPMovieHighlightAnalyzer)initWithAnalysisType:(unint64_t)a3 isLivePhoto:(BOOL)a4 photoOffset:(float)a5 hadFlash:(BOOL)a6 hadZoom:(BOOL)a7 settlingHadZoom:(BOOL)a8 isTimelapse:(BOOL)a9 preferredTimeRange:(id *)a10 asset:(id)a11
+- (VCPMovieHighlightAnalyzer)initWithAnalysisType:(unint64_t)type isLivePhoto:(BOOL)photo photoOffset:(float)offset hadFlash:(BOOL)flash hadZoom:(BOOL)zoom settlingHadZoom:(BOOL)hadZoom isTimelapse:(BOOL)timelapse preferredTimeRange:(id *)self0 asset:(id)self1
 {
-  v19 = a11;
+  assetCopy = asset;
   v63.receiver = self;
   v63.super_class = VCPMovieHighlightAnalyzer;
   v20 = [(VCPMovieHighlightAnalyzer *)&v63 init];
@@ -88,8 +88,8 @@ LABEL_12:
   v20->_maxDurationInSeconds = 10.0;
   +[VCPMovieHighlightAnalyzer getMinimumHighlightInSec];
   v21->_minDurationInSeconds = v22;
-  v21->_analysisTypes = a3;
-  if ((~a3 & 0x880) != 0 || (a3 & 0xC) == 0)
+  v21->_analysisTypes = type;
+  if ((~type & 0x880) != 0 || (type & 0xC) == 0)
   {
     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
@@ -162,21 +162,21 @@ LABEL_12:
 
   *v21->_sumScores = 0;
   *&v21->_sumScores[2] = 0;
-  v42 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   expressionSegments = v21->_expressionSegments;
-  v21->_expressionSegments = v42;
+  v21->_expressionSegments = array;
 
-  v44 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   internalResults = v21->_internalResults;
-  v21->_internalResults = v44;
+  v21->_internalResults = array2;
 
-  v46 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   highlightResults = v21->_highlightResults;
-  v21->_highlightResults = v46;
+  v21->_highlightResults = array3;
 
-  v48 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
   internalConstraintResults = v21->_internalConstraintResults;
-  v21->_internalConstraintResults = v48;
+  v21->_internalConstraintResults = array4;
 
   v50 = v21->_expressionSegments;
   if (v50)
@@ -187,16 +187,16 @@ LABEL_12:
       v50 = v21->_internalConstraintResults;
       if (v50)
       {
-        v21->_isLivePhoto = a4;
-        v21->_photoOffset = a5;
+        v21->_isLivePhoto = photo;
+        v21->_photoOffset = offset;
         v21->_verbose = 0;
-        v21->_hadFlash = a6;
-        v21->_hadZoom = a7;
-        v21->_settlingHadZoom = a8;
-        v21->_isTimelapse = a9;
-        v51 = *&a10->var0.var0;
-        v52 = *&a10->var1.var1;
-        *&v21->_preferredTimeRange.start.epoch = *&a10->var0.var3;
+        v21->_hadFlash = flash;
+        v21->_hadZoom = zoom;
+        v21->_settlingHadZoom = hadZoom;
+        v21->_isTimelapse = timelapse;
+        v51 = *&range->var0.var0;
+        v52 = *&range->var1.var1;
+        *&v21->_preferredTimeRange.start.epoch = *&range->var0.var3;
         *&v21->_preferredTimeRange.duration.timescale = v52;
         *&v21->_preferredTimeRange.start.value = v51;
         *&v21->_isMaxTrim = 0;
@@ -204,7 +204,7 @@ LABEL_12:
         colorNormalizationAnalyzer = v21->_colorNormalizationAnalyzer;
         v21->_colorNormalizationAnalyzer = v53;
 
-        v55 = [MEMORY[0x1E6987E68] assetImageGeneratorWithAsset:v19];
+        v55 = [MEMORY[0x1E6987E68] assetImageGeneratorWithAsset:assetCopy];
         imageGenerator = v21->_imageGenerator;
         v21->_imageGenerator = v55;
 
@@ -243,19 +243,19 @@ LABEL_15:
   return v59;
 }
 
-- (VCPMovieHighlightAnalyzer)initWithPostProcessOptions:(id)a3 asset:(id)a4
+- (VCPMovieHighlightAnalyzer)initWithPostProcessOptions:(id)options asset:(id)asset
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  assetCopy = asset;
   v51.receiver = self;
   v51.super_class = VCPMovieHighlightAnalyzer;
   v8 = [(VCPMovieHighlightAnalyzer *)&v51 init];
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"HighlightFullResult"];
+    v9 = [optionsCopy objectForKeyedSubscript:@"HighlightFullResult"];
     if (v9)
     {
-      v10 = [v6 objectForKeyedSubscript:@"HighlightFullResult"];
+      v10 = [optionsCopy objectForKeyedSubscript:@"HighlightFullResult"];
       v8[278] = [v10 BOOLValue];
     }
 
@@ -264,36 +264,36 @@ LABEL_15:
       v8[278] = 1;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"HighlightContexts"];
+    v12 = [optionsCopy objectForKeyedSubscript:@"HighlightContexts"];
     v13 = *(v8 + 36);
     *(v8 + 36) = v12;
 
     *(v8 + 70) = 0;
-    v14 = [v6 objectForKeyedSubscript:@"HighlightSpeedGuide"];
+    v14 = [optionsCopy objectForKeyedSubscript:@"HighlightSpeedGuide"];
 
     if (v14)
     {
-      v15 = [v6 objectForKeyedSubscript:@"HighlightSpeedGuide"];
+      v15 = [optionsCopy objectForKeyedSubscript:@"HighlightSpeedGuide"];
       [v15 floatValue];
       *(v8 + 70) = v16;
     }
 
     v17 = [*(v8 + 36) count];
-    if (v7 && v17)
+    if (assetCopy && v17)
     {
-      v18 = [VCPPhotosAsset assetWithPHAsset:v7];
+      v18 = [VCPPhotosAsset assetWithPHAsset:assetCopy];
       v8[316] = [v18 isTimelapse];
-      v19 = [v18 isLivePhoto];
-      v8[304] = v19;
-      if ((v19 & 1) == 0)
+      isLivePhoto = [v18 isLivePhoto];
+      v8[304] = isLivePhoto;
+      if ((isLivePhoto & 1) == 0)
       {
         v20 = objc_alloc_init(VCPColorNormalizationAnalyzer);
         v21 = *(v8 + 60);
         *(v8 + 60) = v20;
 
         v22 = MEMORY[0x1E6987E68];
-        v23 = [v18 movie];
-        v24 = [v22 assetImageGeneratorWithAsset:v23];
+        movie = [v18 movie];
+        v24 = [v22 assetImageGeneratorWithAsset:movie];
         v25 = *(v8 + 46);
         *(v8 + 46) = v24;
 
@@ -319,19 +319,19 @@ LABEL_29:
       }
     }
 
-    v28 = [v6 objectForKeyedSubscript:@"HighlightMaxDuration"];
+    v28 = [optionsCopy objectForKeyedSubscript:@"HighlightMaxDuration"];
 
     if (v28)
     {
       v8[276] = 1;
-      v29 = [v6 objectForKeyedSubscript:@"HighlightMaxDuration"];
+      v29 = [optionsCopy objectForKeyedSubscript:@"HighlightMaxDuration"];
       [v29 floatValue];
       *(v8 + 52) = v30;
 
-      v31 = [v6 objectForKeyedSubscript:@"HighlightBestTrim"];
+      v31 = [optionsCopy objectForKeyedSubscript:@"HighlightBestTrim"];
       if (v31)
       {
-        v32 = [v6 objectForKeyedSubscript:@"HighlightBestTrim"];
+        v32 = [optionsCopy objectForKeyedSubscript:@"HighlightBestTrim"];
         v8[277] = [v32 BOOLValue];
       }
 
@@ -340,32 +340,32 @@ LABEL_29:
         v8[277] = 0;
       }
 
-      v38 = [v6 objectForKeyedSubscript:@"HighlightIndex"];
+      v38 = [optionsCopy objectForKeyedSubscript:@"HighlightIndex"];
       if (!v38)
       {
         *(v8 + 56) = -1;
         goto LABEL_25;
       }
 
-      v39 = [v6 objectForKeyedSubscript:@"HighlightIndex"];
+      v39 = [optionsCopy objectForKeyedSubscript:@"HighlightIndex"];
       *(v8 + 56) = [v39 intValue];
     }
 
     else
     {
       v8[276] = 0;
-      v33 = [v6 objectForKeyedSubscript:@"HighlightTargetDuration"];
+      v33 = [optionsCopy objectForKeyedSubscript:@"HighlightTargetDuration"];
       [v33 floatValue];
       *(v8 + 54) = v34;
 
-      v35 = [v6 objectForKeyedSubscript:@"HighlightTolerance"];
+      v35 = [optionsCopy objectForKeyedSubscript:@"HighlightTolerance"];
       [v35 floatValue];
       *(v8 + 55) = v36;
 
-      v37 = [v6 objectForKeyedSubscript:@"HighlightIndex"];
+      v37 = [optionsCopy objectForKeyedSubscript:@"HighlightIndex"];
       *(v8 + 56) = [v37 intValue];
 
-      v38 = [v6 objectForKeyedSubscript:@"HighlightStartRange"];
+      v38 = [optionsCopy objectForKeyedSubscript:@"HighlightStartRange"];
       if (!v38)
       {
         v41 = *(MEMORY[0x1E6960C98] + 16);
@@ -379,7 +379,7 @@ LABEL_29:
         goto LABEL_25;
       }
 
-      v39 = [v6 objectForKeyedSubscript:@"HighlightStartRange"];
+      v39 = [optionsCopy objectForKeyedSubscript:@"HighlightStartRange"];
       CMTimeRangeMakeFromDictionary(&v50, v39);
       v40 = *&v50.start.epoch;
       *(v8 + 228) = *&v50.start.value;
@@ -388,13 +388,13 @@ LABEL_29:
     }
 
 LABEL_25:
-    v43 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v44 = *(v8 + 21);
-    *(v8 + 21) = v43;
+    *(v8 + 21) = array;
 
-    v45 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v46 = *(v8 + 23);
-    *(v8 + 23) = v45;
+    *(v8 + 23) = array2;
 
     +[VCPMovieHighlightAnalyzer getMinimumHighlightInSec];
     *(v8 + 53) = v47;
@@ -418,47 +418,47 @@ LABEL_30:
   return v11;
 }
 
-- (int)prepareRequiredQualityResult:(id)a3 junkDetectionResult:(id)a4 descriptorResult:(id)a5 faceResult:(id)a6 petsResult:(id)a7 saliencyResult:(id)a8 actionResult:(id)a9 subtleMotionResult:(id)a10 voiceResult:(id)a11 keyFrameResult:(id)a12 sceneResults:(id)a13 humanActionResults:(id)a14 humanPoseResults:(id)a15 cameraMotionResults:(id)a16 orientationResults:(id)a17 mlHighlightScoreResults:(id)a18 mlQualityResults:(id)a19 frameSize:(CGSize)a20 resultTypes:(unint64_t)a21
+- (int)prepareRequiredQualityResult:(id)result junkDetectionResult:(id)detectionResult descriptorResult:(id)descriptorResult faceResult:(id)faceResult petsResult:(id)petsResult saliencyResult:(id)saliencyResult actionResult:(id)actionResult subtleMotionResult:(id)self0 voiceResult:(id)self1 keyFrameResult:(id)self2 sceneResults:(id)self3 humanActionResults:(id)self4 humanPoseResults:(id)self5 cameraMotionResults:(id)self6 orientationResults:(id)self7 mlHighlightScoreResults:(id)self8 mlQualityResults:(id)self9 frameSize:(CGSize)size resultTypes:(unint64_t)types
 {
-  height = a20.height;
-  width = a20.width;
-  v49 = a3;
-  v34 = a4;
-  v48 = a4;
-  v47 = a5;
-  v46 = a6;
-  v45 = a7;
-  v44 = a8;
-  v43 = a9;
-  v42 = a10;
-  v41 = a11;
-  v40 = a12;
-  v39 = a13;
-  v38 = a14;
-  v37 = a15;
-  v36 = a16;
-  v35 = a17;
-  v29 = a18;
-  v30 = a19;
-  if ((a21 & 0x10) != 0)
+  height = size.height;
+  width = size.width;
+  resultCopy = result;
+  detectionResultCopy = detectionResult;
+  detectionResultCopy2 = detectionResult;
+  descriptorResultCopy = descriptorResult;
+  faceResultCopy = faceResult;
+  petsResultCopy = petsResult;
+  saliencyResultCopy = saliencyResult;
+  actionResultCopy = actionResult;
+  motionResultCopy = motionResult;
+  voiceResultCopy = voiceResult;
+  frameResultCopy = frameResult;
+  resultsCopy = results;
+  actionResultsCopy = actionResults;
+  poseResultsCopy = poseResults;
+  motionResultsCopy = motionResults;
+  orientationResultsCopy = orientationResults;
+  scoreResultsCopy = scoreResults;
+  qualityResultsCopy = qualityResults;
+  if ((types & 0x10) != 0)
   {
-    objc_storeStrong(&self->_qualityResults, a3);
-    objc_storeStrong(&self->_junkResults, v34);
-    objc_storeStrong(&self->_featureResults, a5);
-    objc_storeStrong(&self->_faceResults, a6);
-    objc_storeStrong(&self->_petsResults, a7);
-    objc_storeStrong(&self->_saliencyResults, a8);
-    objc_storeStrong(&self->_actionResults, a9);
-    objc_storeStrong(&self->_subtleMotionResults, a10);
-    objc_storeStrong(&self->_voiceResults, a11);
-    objc_storeStrong(&self->_keyFrameResults, a12);
-    objc_storeStrong(&self->_sceneResults, a13);
-    objc_storeStrong(&self->_humanActionResults, a14);
-    objc_storeStrong(&self->_humanPoseResults, a15);
-    objc_storeStrong(&self->_cameraMotionResults, a16);
-    objc_storeStrong(&self->_orientationResults, a17);
-    objc_storeStrong(&self->_mlHighlightScoreResults, a18);
-    objc_storeStrong(&self->_mlQualityResults, a19);
+    objc_storeStrong(&self->_qualityResults, result);
+    objc_storeStrong(&self->_junkResults, detectionResultCopy);
+    objc_storeStrong(&self->_featureResults, descriptorResult);
+    objc_storeStrong(&self->_faceResults, faceResult);
+    objc_storeStrong(&self->_petsResults, petsResult);
+    objc_storeStrong(&self->_saliencyResults, saliencyResult);
+    objc_storeStrong(&self->_actionResults, actionResult);
+    objc_storeStrong(&self->_subtleMotionResults, motionResult);
+    objc_storeStrong(&self->_voiceResults, voiceResult);
+    objc_storeStrong(&self->_keyFrameResults, frameResult);
+    objc_storeStrong(&self->_sceneResults, results);
+    objc_storeStrong(&self->_humanActionResults, actionResults);
+    objc_storeStrong(&self->_humanPoseResults, poseResults);
+    objc_storeStrong(&self->_cameraMotionResults, motionResults);
+    objc_storeStrong(&self->_orientationResults, orientationResults);
+    objc_storeStrong(&self->_mlHighlightScoreResults, scoreResults);
+    objc_storeStrong(&self->_mlQualityResults, qualityResults);
     v31 = 0;
     self->_frameSize.width = width;
     self->_frameSize.height = height;
@@ -481,40 +481,40 @@ LABEL_30:
 - (int)generateHighlights
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(VCPMovieHighlightAnalyzer *)self computeHighlightScoreResults];
-  if (v3)
+  computeHighlightScoreResults = [(VCPMovieHighlightAnalyzer *)self computeHighlightScoreResults];
+  if (computeHighlightScoreResults)
   {
-    return v3;
+    return computeHighlightScoreResults;
   }
 
-  v3 = [(VCPMovieHighlightAnalyzer *)self postProcessMLHighlightScore];
-  if (v3)
+  computeHighlightScoreResults = [(VCPMovieHighlightAnalyzer *)self postProcessMLHighlightScore];
+  if (computeHighlightScoreResults)
   {
-    return v3;
+    return computeHighlightScoreResults;
   }
 
-  v3 = [(VCPMovieHighlightAnalyzer *)self combineMLHighlightScore];
-  if (v3)
+  computeHighlightScoreResults = [(VCPMovieHighlightAnalyzer *)self combineMLHighlightScore];
+  if (computeHighlightScoreResults)
   {
-    return v3;
+    return computeHighlightScoreResults;
   }
 
   *&self->_maxHighlightScore = 0x3E19999A3E4CCCCDLL;
   if (self->_isTimelapse)
   {
-    v3 = [(VCPMovieHighlightAnalyzer *)self selectHighlightsForTimelapse];
-    if (!v3)
+    computeHighlightScoreResults = [(VCPMovieHighlightAnalyzer *)self selectHighlightsForTimelapse];
+    if (!computeHighlightScoreResults)
     {
       goto LABEL_10;
     }
 
-    return v3;
+    return computeHighlightScoreResults;
   }
 
-  v3 = [(VCPMovieHighlightAnalyzer *)self selectHighlights];
-  if (v3)
+  computeHighlightScoreResults = [(VCPMovieHighlightAnalyzer *)self selectHighlights];
+  if (computeHighlightScoreResults)
   {
-    return v3;
+    return computeHighlightScoreResults;
   }
 
 LABEL_10:
@@ -545,12 +545,12 @@ LABEL_10:
 
         v11 = *(*(&v13 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
-        v4 = [(VCPMovieHighlightAnalyzer *)self evaluateSegment:v11, v13];
+        computeColorNormalization = [(VCPMovieHighlightAnalyzer *)self evaluateSegment:v11, v13];
         objc_autoreleasePoolPop(v12);
-        if (v4)
+        if (computeColorNormalization)
         {
 
-          return v4;
+          return computeColorNormalization;
         }
       }
 
@@ -569,19 +569,19 @@ LABEL_10:
     return 0;
   }
 
-  v4 = [(VCPMovieHighlightAnalyzer *)self computeColorNormalization];
-  if (!v4)
+  computeColorNormalization = [(VCPMovieHighlightAnalyzer *)self computeColorNormalization];
+  if (!computeColorNormalization)
   {
     return 0;
   }
 
-  return v4;
+  return computeColorNormalization;
 }
 
-- (BOOL)isGoodQuality:(id *)a3
+- (BOOL)isGoodQuality:(id *)quality
 {
   v25 = *MEMORY[0x1E69E9840];
-  time1.start = a3->var1;
+  time1.start = quality->var1;
   v5 = MEMORY[0x1E6960CC0];
   *&time2.start.value = *MEMORY[0x1E6960CC0];
   time2.start.epoch = *(MEMORY[0x1E6960CC0] + 16);
@@ -591,10 +591,10 @@ LABEL_10:
   }
 
   memset(&v23, 0, sizeof(v23));
-  v6 = *&a3->var0.var3;
-  *&time1.start.value = *&a3->var0.var0;
+  v6 = *&quality->var0.var3;
+  *&time1.start.value = *&quality->var0.var0;
   *&time1.start.epoch = v6;
-  *&time1.duration.timescale = *&a3->var1.var1;
+  *&time1.duration.timescale = *&quality->var1.var1;
   CMTimeRangeGetEnd(&v23, &time1);
   v18 = 0u;
   v19 = 0u;
@@ -647,10 +647,10 @@ LABEL_10:
             memset(&time2, 0, sizeof(time2));
           }
 
-          v13 = *&a3->var0.var3;
-          *&v16.start.value = *&a3->var0.var0;
+          v13 = *&quality->var0.var3;
+          *&v16.start.value = *&quality->var0.var0;
           *&v16.start.epoch = v13;
-          *&v16.duration.timescale = *&a3->var1.var1;
+          *&v16.duration.timescale = *&quality->var1.var1;
           CMTimeRangeGetIntersection(&time1, &time2, &v16);
           if ((time1.start.flags & 1) == 0 || (time1.duration.flags & 1) == 0 || time1.duration.epoch || time1.duration.value < 0 || (time2.start = time1.duration, *&v16.start.value = *v5, v16.start.epoch = *(v5 + 16), CMTimeCompare(&time2.start, &v16.start)))
           {
@@ -682,33 +682,33 @@ LABEL_26:
   return v14;
 }
 
-- (id)postProcessMovieHighlight:(id)a3 frameSize:(CGSize)a4
+- (id)postProcessMovieHighlight:(id)highlight frameSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v176 = *MEMORY[0x1E69E9840];
-  v127 = a3;
-  v6 = [v127 objectForKeyedSubscript:?];
-  v7 = [v127 objectForKeyedSubscript:?];
+  highlightCopy = highlight;
+  v6 = [highlightCopy objectForKeyedSubscript:?];
+  v7 = [highlightCopy objectForKeyedSubscript:?];
   [(VCPMovieHighlightAnalyzer *)self loadHighlightScoreResults:v7];
 
   if ([(NSArray *)self->_contextResults count])
   {
-    v8 = [v127 objectForKeyedSubscript:@"SceneResults"];
+    v8 = [highlightCopy objectForKeyedSubscript:@"SceneResults"];
     sceneResults = self->_sceneResults;
     self->_sceneResults = v8;
 
-    v10 = [v127 objectForKeyedSubscript:@"QualityResults"];
+    v10 = [highlightCopy objectForKeyedSubscript:@"QualityResults"];
     qualityResults = self->_qualityResults;
     self->_qualityResults = v10;
 
     v125 = v6;
-    v132 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v162 = 0u;
     v163 = 0u;
     v160 = 0u;
     v161 = 0u;
-    obj = [v127 objectForKeyedSubscript:@"KeyFrameResults"];
+    obj = [highlightCopy objectForKeyedSubscript:@"KeyFrameResults"];
     v12 = [obj countByEnumeratingWithState:&v160 objects:v175 count:16];
     if (v12)
     {
@@ -736,7 +736,7 @@ LABEL_26:
             range.start.epoch = start.start.epoch;
             [(VCPVideoKeyFrame *)v16 loadKeyFrameResult:v15 timestamp:&range];
             [(VCPVideoKeyFrame *)v16 computeCurationScore];
-            [v132 addObject:v16];
+            [array addObject:v16];
           }
         }
 
@@ -746,38 +746,38 @@ LABEL_26:
       while (v12);
     }
 
-    objc_storeStrong(&self->_keyFrameResults, v132);
-    v20 = [v127 objectForKeyedSubscript:@"OrientationResults"];
+    objc_storeStrong(&self->_keyFrameResults, array);
+    v20 = [highlightCopy objectForKeyedSubscript:@"OrientationResults"];
     orientationResults = self->_orientationResults;
     self->_orientationResults = v20;
 
-    v22 = [v127 objectForKeyedSubscript:@"FeatureVectorResults"];
+    v22 = [highlightCopy objectForKeyedSubscript:@"FeatureVectorResults"];
     featureResults = self->_featureResults;
     self->_featureResults = v22;
 
-    v24 = [v127 objectForKeyedSubscript:@"FaceResults"];
+    v24 = [highlightCopy objectForKeyedSubscript:@"FaceResults"];
     faceResults = self->_faceResults;
     self->_faceResults = v24;
 
-    v26 = [v127 objectForKeyedSubscript:@"PetsResults"];
+    v26 = [highlightCopy objectForKeyedSubscript:@"PetsResults"];
     petsResults = self->_petsResults;
     self->_petsResults = v26;
 
-    v28 = [v127 objectForKeyedSubscript:@"SaliencyResults"];
+    v28 = [highlightCopy objectForKeyedSubscript:@"SaliencyResults"];
     saliencyResults = self->_saliencyResults;
     self->_saliencyResults = v28;
 
-    v30 = [v127 objectForKeyedSubscript:@"HumanPoseResults"];
+    v30 = [highlightCopy objectForKeyedSubscript:@"HumanPoseResults"];
     humanPoseResults = self->_humanPoseResults;
     self->_humanPoseResults = v30;
 
-    v32 = [v127 objectForKeyedSubscript:@"AudioQualityResults"];
+    v32 = [highlightCopy objectForKeyedSubscript:@"AudioQualityResults"];
     audioQualityResults = self->_audioQualityResults;
     self->_audioQualityResults = v32;
 
-    v34 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     highlightResults = self->_highlightResults;
-    self->_highlightResults = v34;
+    self->_highlightResults = array2;
 
     self->_frameSize.width = width;
     self->_frameSize.height = height;
@@ -910,12 +910,12 @@ LABEL_40:
 
       *&v154.start.value = *&range.start.value;
       v154.start.epoch = range.start.epoch;
-      v119 = [(NSMutableArray *)self->_internalResults lastObject];
+      lastObject = [(NSMutableArray *)self->_internalResults lastObject];
 
       memset(&v146, 0, 24);
-      if (v119)
+      if (lastObject)
       {
-        [v119 timerange];
+        [lastObject timerange];
       }
 
       else
@@ -980,8 +980,8 @@ LABEL_40:
     epoch = start.start.epoch;
 
     memset(&v147, 0, sizeof(v147));
-    v77 = [v6 lastObject];
-    CMTimeRangeMakeFromDictionary(&start, v77);
+    lastObject2 = [v6 lastObject];
+    CMTimeRangeMakeFromDictionary(&start, lastObject2);
     CMTimeRangeGetEnd(&v147, &start);
 
     memset(&v146, 0, sizeof(v146));
@@ -989,7 +989,7 @@ LABEL_40:
     start.start.epoch = epoch;
     end.start = v147;
     CMTimeRangeFromTimeToTime(&v146, &start.start, &end.start);
-    v78 = self;
+    selfCopy2 = self;
     v142 = 0u;
     v143 = 0u;
     v144 = 0u;
@@ -1018,7 +1018,7 @@ LABEL_40:
           end.start.epoch = start.start.epoch;
           rhs.start = v141;
           CMTimeSubtract(&time.start, &end.start, &rhs.start);
-          if (CMTimeGetSeconds(&time.start) < 0.200000003 && (end = v154, CMTimeRangeGetEnd(&rhs.start, &end), *&time.start.value = *&start.start.value, time.start.epoch = start.start.epoch, CMTimeRangeFromTimeToTime(&end, &rhs.start, &time.start), [(VCPMovieHighlightAnalyzer *)v78 isGoodQuality:&end]))
+          if (CMTimeGetSeconds(&time.start) < 0.200000003 && (end = v154, CMTimeRangeGetEnd(&rhs.start, &end), *&time.start.value = *&start.start.value, time.start.epoch = start.start.epoch, CMTimeRangeFromTimeToTime(&end, &rhs.start, &time.start), [(VCPMovieHighlightAnalyzer *)selfCopy2 isGoodQuality:&end]))
           {
             rhs = v154;
             time = start;
@@ -1040,7 +1040,7 @@ LABEL_40:
           *&end.start.epoch = *&v154.start.epoch;
           *&end.duration.timescale = v85;
           rhs = v146;
-          v86 = [(VCPMovieHighlightAnalyzer *)v78 targetMovieHighlight:v84 mergedRange:&end maxRange:&rhs];
+          v86 = [(VCPMovieHighlightAnalyzer *)selfCopy2 targetMovieHighlight:v84 mergedRange:&end maxRange:&rhs];
           v87 = v86;
           if (v86)
           {
@@ -1054,7 +1054,7 @@ LABEL_40:
             }
           }
 
-          v78 = self;
+          selfCopy2 = self;
         }
 
         v80 = [v79 countByEnumeratingWithState:&v142 objects:v172 count:16];
@@ -1076,7 +1076,7 @@ LABEL_40:
     goto LABEL_82;
   }
 
-  v40 = self;
+  selfCopy5 = self;
   if (*&self->_isMaxTrim != 0.0)
   {
     v41 = [v6 objectAtIndexedSubscript:self->_targetHighlightIndex];
@@ -1132,7 +1132,7 @@ LABEL_40:
       while (v46);
 
       v6 = v126;
-      v40 = self;
+      selfCopy5 = self;
       if (v47)
       {
         v59 = self->_internalConstraintResults;
@@ -1143,11 +1143,11 @@ LABEL_40:
     else
     {
 
-      v40 = self;
+      selfCopy5 = self;
     }
   }
 
-  v94 = [v6 objectAtIndexedSubscript:v40->_targetHighlightIndex];
+  v94 = [v6 objectAtIndexedSubscript:selfCopy5->_targetHighlightIndex];
   v95 = *(MEMORY[0x1E6960CA8] + 16);
   *&start.start.value = *MEMORY[0x1E6960CA8];
   *&start.start.epoch = v95;
@@ -1156,7 +1156,7 @@ LABEL_40:
   *&range.start.value = *MEMORY[0x1E6960C98];
   *&range.start.epoch = v96;
   *&range.duration.timescale = *(MEMORY[0x1E6960C98] + 32);
-  v47 = [(VCPMovieHighlightAnalyzer *)v40 targetMovieHighlight:v94 mergedRange:&start maxRange:&range];
+  v47 = [(VCPMovieHighlightAnalyzer *)selfCopy5 targetMovieHighlight:v94 mergedRange:&start maxRange:&range];
 
   v59 = self->_internalConstraintResults;
   if (!v47)
@@ -1177,7 +1177,7 @@ LABEL_81:
 LABEL_82:
   if ((self->_startRange.duration.epoch & 0x1000000000000) != 0)
   {
-    v133 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v136 = 0u;
     v137 = 0u;
     v134 = 0u;
@@ -1232,7 +1232,7 @@ LABEL_82:
           v104 = [v103 numberWithFloat:?];
           v168[2] = v104;
           v105 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v168 forKeys:v167 count:3];
-          [v133 addObject:v105];
+          [array3 addObject:v105];
         }
 
         v98 = [(NSMutableArray *)v128 countByEnumeratingWithState:&v134 objects:v169 count:16];
@@ -1242,8 +1242,8 @@ LABEL_82:
     }
 
     v106 = 0;
-    v107 = self;
-    while (v106 < [(NSMutableArray *)v107->_internalConstraintResults count])
+    selfCopy7 = self;
+    while (v106 < [(NSMutableArray *)selfCopy7->_internalConstraintResults count])
     {
       v108 = objc_autoreleasePoolPush();
       v109 = [(NSMutableArray *)self->_internalConstraintResults objectAtIndexedSubscript:v106];
@@ -1263,15 +1263,15 @@ LABEL_82:
       }
 
       objc_autoreleasePoolPop(v108);
-      v107 = self;
+      selfCopy7 = self;
       ++v106;
     }
 
-    v115 = v107->_internalConstraintResults;
+    v115 = selfCopy7->_internalConstraintResults;
     v165[0] = @"MovieHighlightResults";
     v165[1] = @"MovieHighlightScoreResults";
     v166[0] = v115;
-    v166[1] = v133;
+    v166[1] = array3;
     v60 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v166 forKeys:v165 count:2];
 
     v6 = v126;
@@ -1289,56 +1289,56 @@ LABEL_103:
   return v60;
 }
 
-- (id)targetMovieHighlight:(id)a3 mergedRange:(id *)a4 maxRange:(id *)a5
+- (id)targetMovieHighlight:(id)highlight mergedRange:(id *)range maxRange:(id *)maxRange
 {
-  v8 = a3;
+  highlightCopy = highlight;
   memset(&v24, 0, sizeof(v24));
-  CMTimeRangeMakeFromDictionary(&v24, v8);
+  CMTimeRangeMakeFromDictionary(&v24, highlightCopy);
   time.start = v24.duration;
   Seconds = CMTimeGetSeconds(&time.start);
   targetDurationInSeconds = self->_targetDurationInSeconds;
   if ((targetDurationInSeconds - self->_toleranceInSeconds) > Seconds)
   {
-    if ((a4->var0.var2 & 1) == 0 || (a4->var1.var2 & 1) == 0 || a4->var1.var3 || a4->var1.var0 < 0 || (*&time.start.value = *&a4->var1.var0, time.start.epoch = a4->var1.var3, CMTimeGetSeconds(&time.start) < (self->_targetDurationInSeconds - self->_toleranceInSeconds)))
+    if ((range->var0.var2 & 1) == 0 || (range->var1.var2 & 1) == 0 || range->var1.var3 || range->var1.var0 < 0 || (*&time.start.value = *&range->var1.var0, time.start.epoch = range->var1.var3, CMTimeGetSeconds(&time.start) < (self->_targetDurationInSeconds - self->_toleranceInSeconds)))
     {
-      if ((a5->var0.var2 & 1) == 0 || (a5->var1.var2 & 1) == 0 || a5->var1.var3 || a5->var1.var0 < 0)
+      if ((maxRange->var0.var2 & 1) == 0 || (maxRange->var1.var2 & 1) == 0 || maxRange->var1.var3 || maxRange->var1.var0 < 0)
       {
         v11 = 0;
         goto LABEL_13;
       }
 
       time.start = v24.duration;
-      *&v22.start.value = *&a4->var1.var0;
-      v22.start.epoch = a4->var1.var3;
+      *&v22.start.value = *&range->var1.var0;
+      v22.start.epoch = range->var1.var3;
       v18 = CMTimeCompare(&time.start, &v22.start);
       p_var0 = &v24;
       if (v18 <= 0)
       {
-        p_var0 = &a4->var0.var0;
+        p_var0 = &range->var0.var0;
       }
 
       v20 = p_var0[1];
       *&time.start.value = *p_var0;
       *&time.start.epoch = v20;
       *&time.duration.timescale = p_var0[2];
-      v21 = *&a5->var0.var3;
-      *&v22.start.value = *&a5->var0.var0;
+      v21 = *&maxRange->var0.var3;
+      *&v22.start.value = *&maxRange->var0.var0;
       *&v22.start.epoch = v21;
-      *&v22.duration.timescale = *&a5->var1.var1;
+      *&v22.duration.timescale = *&maxRange->var1.var1;
       v12 = [(VCPMovieHighlightAnalyzer *)self targetExtendRange:&time maxRange:&v22];
     }
 
     else
     {
-      v15 = *&a4->var0.var3;
-      *&time.start.value = *&a4->var0.var0;
+      v15 = *&range->var0.var3;
+      *&time.start.value = *&range->var0.var0;
       *&time.start.epoch = v15;
-      v17 = *&a4->var0.var0;
-      v16 = *&a4->var0.var3;
-      *&time.duration.timescale = *&a4->var1.var1;
+      v17 = *&range->var0.var0;
+      v16 = *&range->var0.var3;
+      *&time.duration.timescale = *&range->var1.var1;
       *&v22.start.value = v17;
       *&v22.start.epoch = v16;
-      *&v22.duration.timescale = *&a4->var1.var1;
+      *&v22.duration.timescale = *&range->var1.var1;
       v12 = [(VCPMovieHighlightAnalyzer *)self targetTrimRange:&time searchRange:&v22];
     }
 
@@ -1358,7 +1358,7 @@ LABEL_11:
   v11 = objc_alloc_init(VCPMovieHighlight);
   time = v24;
   [(VCPMovieHighlight *)v11 setTimerange:&time];
-  v13 = [(__CFDictionary *)v8 objectForKeyedSubscript:@"quality"];
+  v13 = [(__CFDictionary *)highlightCopy objectForKeyedSubscript:@"quality"];
   [v13 floatValue];
   [(VCPMovieHighlight *)v11 setScore:?];
 
@@ -1367,64 +1367,64 @@ LABEL_13:
   return v11;
 }
 
-- (id)targetProcessRange:(id *)a3 maxRange:(id *)a4
+- (id)targetProcessRange:(id *)range maxRange:(id *)maxRange
 {
-  *time = a3->var1;
+  *time = range->var1;
   if (CMTimeGetSeconds(time) > (self->_targetDurationInSeconds + self->_toleranceInSeconds))
   {
-    v7 = *&a3->var0.var3;
-    *time = *&a3->var0.var0;
+    v7 = *&range->var0.var3;
+    *time = *&range->var0.var0;
     *&time[16] = v7;
-    v9 = *&a3->var0.var0;
-    v8 = *&a3->var0.var3;
-    v20 = *&a3->var1.var1;
+    v9 = *&range->var0.var0;
+    v8 = *&range->var0.var3;
+    v20 = *&range->var1.var1;
     v16 = v9;
     v17 = v8;
-    v18 = *&a3->var1.var1;
+    v18 = *&range->var1.var1;
     v10 = [(VCPMovieHighlightAnalyzer *)self targetTrimRange:time searchRange:&v16];
 LABEL_5:
     v13 = v10;
     goto LABEL_7;
   }
 
-  *time = *&a3->var1.var0;
-  *&time[16] = a3->var1.var3;
+  *time = *&range->var1.var0;
+  *&time[16] = range->var1.var3;
   if (CMTimeGetSeconds(time) < (self->_targetDurationInSeconds - self->_toleranceInSeconds))
   {
-    v11 = *&a3->var0.var3;
-    *time = *&a3->var0.var0;
+    v11 = *&range->var0.var3;
+    *time = *&range->var0.var0;
     *&time[16] = v11;
-    v20 = *&a3->var1.var1;
-    v12 = *&a4->var0.var3;
-    v16 = *&a4->var0.var0;
+    v20 = *&range->var1.var1;
+    v12 = *&maxRange->var0.var3;
+    v16 = *&maxRange->var0.var0;
     v17 = v12;
-    v18 = *&a4->var1.var1;
+    v18 = *&maxRange->var1.var1;
     v10 = [(VCPMovieHighlightAnalyzer *)self targetExtendRange:time maxRange:&v16];
     goto LABEL_5;
   }
 
   v13 = objc_alloc_init(VCPMovieHighlight);
-  v14 = *&a3->var0.var3;
-  *time = *&a3->var0.var0;
+  v14 = *&range->var0.var3;
+  *time = *&range->var0.var0;
   *&time[16] = v14;
-  v20 = *&a3->var1.var1;
+  v20 = *&range->var1.var1;
   [(VCPMovieHighlight *)v13 setTimerange:time];
 LABEL_7:
 
   return v13;
 }
 
-- (id)targetExtendRange:(id *)a3 maxRange:(id *)a4
+- (id)targetExtendRange:(id *)range maxRange:(id *)maxRange
 {
   memset(&v20, 0, sizeof(v20));
   CMTimeMake(&v15.start, ((self->_targetDurationInSeconds - self->_toleranceInSeconds) * 600.0), 600);
   *&lhs.start.value = *&v15.start.value;
   lhs.start.epoch = v15.start.epoch;
-  rhs.start = a3->var1;
+  rhs.start = range->var1;
   CMTimeSubtract(&v20, &lhs.start, &rhs.start);
   memset(&v19, 0, sizeof(v19));
-  *&lhs.start.value = *&a3->var0.var0;
-  lhs.start.epoch = a3->var0.var3;
+  *&lhs.start.value = *&range->var0.var0;
+  lhs.start.epoch = range->var0.var3;
   rhs.start = v20;
   if (CMTimeCompare(&lhs.start, &rhs.start) < 1)
   {
@@ -1433,45 +1433,45 @@ LABEL_7:
 
   else
   {
-    *&lhs.start.value = *&a3->var0.var0;
-    lhs.start.epoch = a3->var0.var3;
+    *&lhs.start.value = *&range->var0.var0;
+    lhs.start.epoch = range->var0.var3;
     rhs.start = v20;
     CMTimeSubtract(&v19, &lhs.start, &rhs.start);
   }
 
   memset(&lhs, 0, sizeof(lhs));
   start.start = v19;
-  v7 = *&a3->var0.var3;
-  *&rhs.start.value = *&a3->var0.var0;
+  v7 = *&range->var0.var3;
+  *&rhs.start.value = *&range->var0.var0;
   *&rhs.start.epoch = v7;
-  *&rhs.duration.timescale = *&a3->var1.var1;
+  *&rhs.duration.timescale = *&range->var1.var1;
   CMTimeRangeGetEnd(&v17, &rhs);
   rhs.start = v17;
   v15.start = v20;
   CMTimeAdd(&v13.start, &rhs.start, &v15.start);
   CMTimeRangeFromTimeToTime(&lhs, &start.start, &v13.start);
-  v8 = *&a4->var0.var3;
-  *&rhs.start.value = *&a4->var0.var0;
+  v8 = *&maxRange->var0.var3;
+  *&rhs.start.value = *&maxRange->var0.var0;
   *&rhs.start.epoch = v8;
-  v10 = *&a4->var0.var0;
-  v9 = *&a4->var0.var3;
-  *&rhs.duration.timescale = *&a4->var1.var1;
+  v10 = *&maxRange->var0.var0;
+  v9 = *&maxRange->var0.var3;
+  *&rhs.duration.timescale = *&maxRange->var1.var1;
   start = lhs;
   *&v13.start.value = v10;
   *&v13.start.epoch = v9;
-  *&v13.duration.timescale = *&a4->var1.var1;
+  *&v13.duration.timescale = *&maxRange->var1.var1;
   CMTimeRangeGetIntersection(&v15, &start, &v13);
   v11 = [(VCPMovieHighlightAnalyzer *)self targetTrimRange:&rhs searchRange:&v15];
 
   return v11;
 }
 
-- (id)targetTrimRange:(id *)a3 searchRange:(id *)a4
+- (id)targetTrimRange:(id *)range searchRange:(id *)searchRange
 {
-  v6 = *&a4->var0.var3;
-  *&range.start.value = *&a4->var0.var0;
+  v6 = *&searchRange->var0.var3;
+  *&range.start.value = *&searchRange->var0.var0;
   *&range.start.epoch = v6;
-  *&range.duration.timescale = *&a4->var1.var1;
+  *&range.duration.timescale = *&searchRange->var1.var1;
   v7 = [(VCPMovieHighlightAnalyzer *)self findBestHighlightSegment:&range targetTrim:1];
   v8 = v7;
   if (v7)
@@ -1533,10 +1533,10 @@ LABEL_12:
       }
     }
 
-    memset(&v36, 0, sizeof(v36));
+    memset(&rangeCopy, 0, sizeof(rangeCopy));
 LABEL_15:
-    *&time.start.value = *&v36.start.value;
-    time.start.epoch = v36.start.epoch;
+    *&time.start.value = *&rangeCopy.start.value;
+    time.start.epoch = rangeCopy.start.epoch;
     if (!CMTimeRangeContainsTime(&range, &time.start))
     {
       goto LABEL_20;
@@ -1568,9 +1568,9 @@ LABEL_9:
     }
 
 LABEL_18:
-    memset(&v36, 0, sizeof(v36));
+    memset(&rangeCopy, 0, sizeof(rangeCopy));
 LABEL_19:
-    CMTimeRangeGetEnd(&time.start, &v36);
+    CMTimeRangeGetEnd(&time.start, &rangeCopy);
     if (CMTimeRangeContainsTime(&range, &time.start))
     {
       break;
@@ -1596,8 +1596,8 @@ LABEL_23:
     memset(&range, 0, sizeof(range));
   }
 
-  v36.start = range.duration;
-  v18 = (targetDurationInSeconds + toleranceInSeconds) - CMTimeGetSeconds(&v36.start);
+  rangeCopy.start = range.duration;
+  v18 = (targetDurationInSeconds + toleranceInSeconds) - CMTimeGetSeconds(&rangeCopy.start);
   if (v10)
   {
     [v10 score];
@@ -1606,16 +1606,16 @@ LABEL_23:
     if (v20 >= v21 && v18 > 0.0)
     {
       memset(&range, 0, sizeof(range));
-      v22 = *&a3->var0.var3;
-      *&v36.start.value = *&a3->var0.var0;
-      *&v36.start.epoch = v22;
-      *&v36.duration.timescale = *&a3->var1.var1;
+      v22 = *&range->var0.var3;
+      *&rangeCopy.start.value = *&range->var0.var0;
+      *&rangeCopy.start.epoch = v22;
+      *&rangeCopy.duration.timescale = *&range->var1.var1;
       [v10 timerange];
-      CMTimeRangeGetIntersection(&range, &v36, &time);
-      v36.start = start;
+      CMTimeRangeGetIntersection(&range, &rangeCopy, &time);
+      rangeCopy.start = start;
       *&time.start.value = *&range.start.value;
       time.start.epoch = range.start.epoch;
-      CMTimeSubtract(&v34, &v36.start, &time.start);
+      CMTimeSubtract(&v34, &rangeCopy.start, &time.start);
       Seconds = CMTimeGetSeconds(&v34);
       if (v18 >= Seconds)
       {
@@ -1628,9 +1628,9 @@ LABEL_23:
       }
 
       CMTimeMake(&v33, (v24 * 600.0), 600);
-      v36.start = start;
+      rangeCopy.start = start;
       time.start = v33;
-      CMTimeSubtract(&v34, &v36.start, &time.start);
+      CMTimeSubtract(&v34, &rangeCopy.start, &time.start);
       start = v34;
       v18 = v18 - v24;
     }
@@ -1644,17 +1644,17 @@ LABEL_23:
     if (v26 >= v27 && v18 > 0.0)
     {
       memset(&range, 0, sizeof(range));
-      v28 = *&a3->var0.var3;
-      *&v36.start.value = *&a3->var0.var0;
-      *&v36.start.epoch = v28;
-      *&v36.duration.timescale = *&a3->var1.var1;
+      v28 = *&range->var0.var3;
+      *&rangeCopy.start.value = *&range->var0.var0;
+      *&rangeCopy.start.epoch = v28;
+      *&rangeCopy.duration.timescale = *&range->var1.var1;
       [v15 timerange];
-      CMTimeRangeGetIntersection(&range, &v36, &time);
-      v36 = range;
-      CMTimeRangeGetEnd(&v33, &v36);
-      v36.start = v33;
+      CMTimeRangeGetIntersection(&range, &rangeCopy, &time);
+      rangeCopy = range;
+      CMTimeRangeGetEnd(&v33, &rangeCopy);
+      rangeCopy.start = v33;
       time.start = v37;
-      CMTimeSubtract(&v34, &v36.start, &time.start);
+      CMTimeSubtract(&v34, &rangeCopy.start, &time.start);
       v29 = CMTimeGetSeconds(&v34);
       if (v18 < v29)
       {
@@ -1662,16 +1662,16 @@ LABEL_23:
       }
 
       CMTimeMake(&v33, (v29 * 600.0), 600);
-      v36.start = v37;
+      rangeCopy.start = v37;
       time.start = v33;
-      CMTimeAdd(&v34, &v36.start, &time.start);
+      CMTimeAdd(&v34, &rangeCopy.start, &time.start);
       v37 = v34;
     }
   }
 
   range.start = start;
-  v36.start = v37;
-  CMTimeRangeFromTimeToTime(&v32, &range.start, &v36.start);
+  rangeCopy.start = v37;
+  CMTimeRangeFromTimeToTime(&v32, &range.start, &rangeCopy.start);
   range = v32;
   [v8 setTimerange:&range];
   v30 = v8;
@@ -1679,13 +1679,13 @@ LABEL_23:
   return v30;
 }
 
-- (id)maxTrimMovieHighlight:(id)a3
+- (id)maxTrimMovieHighlight:(id)highlight
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  highlightCopy = highlight;
+  v5 = [highlightCopy mutableCopy];
   memset(&v31, 0, sizeof(v31));
-  CMTimeRangeMakeFromDictionary(&v31, v4);
+  CMTimeRangeMakeFromDictionary(&v31, highlightCopy);
   time.start = v31.duration;
   if (CMTimeGetSeconds(&time.start) < self->_minDurationInSeconds)
   {
@@ -1802,21 +1802,21 @@ LABEL_17:
 LABEL_18:
   if (BYTE5(self->_startRange.duration.epoch) == 1)
   {
-    v16 = [v4 objectForKeyedSubscript:@"start"];
+    v16 = [highlightCopy objectForKeyedSubscript:@"start"];
     if (v16)
     {
-      v17 = [v4 objectForKeyedSubscript:@"duration"];
+      v17 = [highlightCopy objectForKeyedSubscript:@"duration"];
       v18 = v17 == 0;
 
       if (!v18)
       {
-        v19 = [v4 objectForKeyedSubscript:@"attributes"];
+        v19 = [highlightCopy objectForKeyedSubscript:@"attributes"];
         v20 = [v19 mutableCopy];
 
-        v21 = [v4 objectForKeyedSubscript:@"start"];
+        v21 = [highlightCopy objectForKeyedSubscript:@"start"];
         [v20 setObject:v21 forKeyedSubscript:@"maxHighlightStart"];
 
-        v22 = [v4 objectForKeyedSubscript:@"duration"];
+        v22 = [highlightCopy objectForKeyedSubscript:@"duration"];
         [v20 setObject:v22 forKeyedSubscript:@"maxHighlightDuration"];
 
         [v5 setObject:v20 forKeyedSubscript:@"attributes"];
@@ -1830,16 +1830,16 @@ LABEL_23:
   return v6;
 }
 
-- (void)loadHighlightScoreResults:(id)a3
+- (void)loadHighlightScoreResults:(id)results
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultsCopy = results;
   [(NSMutableArray *)self->_internalResults removeAllObjects];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v4;
+  v5 = resultsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -1874,27 +1874,27 @@ LABEL_23:
   }
 }
 
-- (id)getHighlightAttributes:(id)a3 withHighlightResults:(id)a4
+- (id)getHighlightAttributes:(id)attributes withHighlightResults:(id)results
 {
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v40 = a4;
-  v41 = [MEMORY[0x1E695DF90] dictionary];
+  attributesCopy = attributes;
+  resultsCopy = results;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   isLivePhoto = self->_isLivePhoto;
-  [v6 bestPlaybackCrop];
+  [attributesCopy bestPlaybackCrop];
   v8 = NSStringFromRect(v54);
-  [v41 setObject:v8 forKeyedSubscript:@"bestPlaybackCrop"];
+  [dictionary setObject:v8 forKeyedSubscript:@"bestPlaybackCrop"];
 
-  v9 = [v6 keyFrame];
+  keyFrame = [attributesCopy keyFrame];
 
-  if (v9)
+  if (keyFrame)
   {
     memset(&v44, 0, 24);
-    v10 = [v6 keyFrame];
-    v11 = v10;
-    if (v10)
+    keyFrame2 = [attributesCopy keyFrame];
+    v11 = keyFrame2;
+    if (keyFrame2)
     {
-      [v10 timestamp];
+      [keyFrame2 timestamp];
     }
 
     else
@@ -1902,18 +1902,18 @@ LABEL_23:
       memset(&v44, 0, 24);
     }
 
-    v12 = [v6 keyFrame];
-    [v12 score];
+    keyFrame3 = [attributesCopy keyFrame];
+    [keyFrame3 score];
     v14 = v13;
 
     *&time.start.value = *&v44.start.value;
     time.start.epoch = v44.start.epoch;
     v15 = CMTimeCopyAsDictionary(&time.start, 0);
-    [v41 setObject:v15 forKeyedSubscript:@"keyFrameTime"];
+    [dictionary setObject:v15 forKeyedSubscript:@"keyFrameTime"];
 
     LODWORD(v16) = v14;
     v17 = [MEMORY[0x1E696AD98] numberWithFloat:v16];
-    [v41 setObject:v17 forKeyedSubscript:@"keyFrameScore"];
+    [dictionary setObject:v17 forKeyedSubscript:@"keyFrameScore"];
   }
 
   v18 = !isLivePhoto;
@@ -1923,13 +1923,13 @@ LABEL_23:
     goto LABEL_16;
   }
 
-  v20 = [v6 colorNormalization];
+  colorNormalization = [attributesCopy colorNormalization];
   v21 = !isLivePhoto;
-  if (!v20)
+  if (!colorNormalization)
   {
-    [v41 setObject:0 forKeyedSubscript:@"colorNormalizationData"];
+    [dictionary setObject:0 forKeyedSubscript:@"colorNormalizationData"];
     v21 = 0;
-    if (v6)
+    if (attributesCopy)
     {
       goto LABEL_10;
     }
@@ -1940,24 +1940,24 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!v6)
+  if (!attributesCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_10:
   v19 = v21;
-  [v6 timerange];
+  [attributesCopy timerange];
 LABEL_13:
   v22 = [(VCPMovieHighlightAnalyzer *)self audioQualityScore:&time];
   if (v22)
   {
-    [v41 setObject:v22 forKeyedSubscript:@"audioQuality"];
+    [dictionary setObject:v22 forKeyedSubscript:@"audioQuality"];
     v18 = 0;
   }
 
 LABEL_16:
-  if (!v9 || v19 || v18)
+  if (!keyFrame || v19 || v18)
   {
     v23 = *MEMORY[0x1E6960CC0];
     duration.epoch = *(MEMORY[0x1E6960CC0] + 16);
@@ -1966,7 +1966,7 @@ LABEL_16:
     v47 = 0u;
     v48 = 0u;
     *&duration.value = v23;
-    v24 = v40;
+    v24 = resultsCopy;
     v25 = [v24 countByEnumeratingWithState:&v45 objects:v51 count:16];
     if (v25)
     {
@@ -1986,9 +1986,9 @@ LABEL_16:
           memset(&time, 0, sizeof(time));
           CMTimeRangeMakeFromDictionary(&time, v29);
           memset(&v44, 0, sizeof(v44));
-          if (v6)
+          if (attributesCopy)
           {
-            [v6 timerange];
+            [attributesCopy timerange];
           }
 
           else
@@ -2019,22 +2019,22 @@ LABEL_16:
         goto LABEL_40;
       }
 
-      if (!v9)
+      if (!keyFrame)
       {
         v31 = [(__CFDictionary *)v26 objectForKeyedSubscript:@"attributes"];
         v32 = [v31 objectForKeyedSubscript:@"keyFrameTime"];
-        [v41 setObject:v32 forKeyedSubscript:@"keyFrameTime"];
+        [dictionary setObject:v32 forKeyedSubscript:@"keyFrameTime"];
 
         v33 = [(__CFDictionary *)v26 objectForKeyedSubscript:@"attributes"];
         v34 = [v33 objectForKeyedSubscript:@"keyFrameScore"];
-        [v41 setObject:v34 forKeyedSubscript:@"keyFrameScore"];
+        [dictionary setObject:v34 forKeyedSubscript:@"keyFrameScore"];
       }
 
       if (v39)
       {
         v35 = [(__CFDictionary *)v26 objectForKeyedSubscript:@"attributes"];
         v36 = [v35 objectForKeyedSubscript:@"colorNormalizationData"];
-        [v41 setObject:v36 forKeyedSubscript:@"colorNormalizationData"];
+        [dictionary setObject:v36 forKeyedSubscript:@"colorNormalizationData"];
       }
 
       if (!v18)
@@ -2044,7 +2044,7 @@ LABEL_16:
 
       v24 = [(__CFDictionary *)v26 objectForKeyedSubscript:@"attributes"];
       v37 = [v24 objectForKeyedSubscript:@"audioQuality"];
-      [v41 setObject:v37 forKeyedSubscript:@"audioQuality"];
+      [dictionary setObject:v37 forKeyedSubscript:@"audioQuality"];
     }
 
     else
@@ -2055,10 +2055,10 @@ LABEL_16:
 LABEL_40:
   }
 
-  return v41;
+  return dictionary;
 }
 
-- (id)audioQualityScore:(id *)a3
+- (id)audioQualityScore:(id *)score
 {
   v30 = *MEMORY[0x1E69E9840];
   v5 = [(NSArray *)self->_audioQualityResults count];
@@ -2103,10 +2103,10 @@ LABEL_20:
 
       range = v24;
       memset(&v23, 0, sizeof(v23));
-      v17 = *&a3->var0.var3;
-      *&v21.start.value = *&a3->var0.var0;
+      v17 = *&score->var0.var3;
+      *&v21.start.value = *&score->var0.var0;
       *&v21.start.epoch = v17;
-      *&v21.duration.timescale = *&a3->var1.var1;
+      *&v21.duration.timescale = *&score->var1.var1;
       CMTimeRangeGetIntersection(&v23, &range, &v21);
       if ((v23.start.flags & 1) != 0 && (v23.duration.flags & 1) != 0 && !v23.duration.epoch && (v23.duration.value & 0x8000000000000000) == 0)
       {
@@ -2147,25 +2147,25 @@ LABEL_21:
   return v5;
 }
 
-- (id)adjustHighlightWithContext:(id)a3
+- (id)adjustHighlightWithContext:(id)context
 {
   v63 = *MEMORY[0x1E69E9840];
-  v36 = a3;
-  v37 = [MEMORY[0x1E695DF70] array];
+  contextCopy = context;
+  array = [MEMORY[0x1E695DF70] array];
   *&self->_maxHighlightScore = 0x3E19999A3E4CCCCDLL;
   if ([(NSArray *)self->_sceneResults count]&& [(NSArray *)self->_qualityResults count])
   {
     if (self->_isTimelapse)
     {
-      v4 = [(VCPMovieHighlightAnalyzer *)self selectHighlightsForTimelapse];
+      selectHighlightsForTimelapse = [(VCPMovieHighlightAnalyzer *)self selectHighlightsForTimelapse];
     }
 
     else
     {
-      v4 = [(VCPMovieHighlightAnalyzer *)self selectHighlights];
+      selectHighlightsForTimelapse = [(VCPMovieHighlightAnalyzer *)self selectHighlights];
     }
 
-    if (v4)
+    if (selectHighlightsForTimelapse)
     {
       goto LABEL_11;
     }
@@ -2233,7 +2233,7 @@ LABEL_11:
       if (v13)
       {
         v39 = *v51;
-        v38 = self;
+        selfCopy = self;
         do
         {
           v14 = 0;
@@ -2311,7 +2311,7 @@ LABEL_32:
               }
             }
 
-            self = v38;
+            self = selfCopy;
             if ((v16 & 1) == 0 || (flags & 1) == 0 || epoch || value < 0 || (buf.start.value = value, buf.start.timescale = timescale, buf.start.flags = flags, buf.start.epoch = 0, *&v44.start.value = *MEMORY[0x1E6960CC0], v44.start.epoch = *(MEMORY[0x1E6960CC0] + 16), CMTimeCompare(&buf.start, &v44.start)))
             {
               if (v15)
@@ -2331,7 +2331,7 @@ LABEL_32:
               range.start = buf.duration;
               [v15 score];
               v27 = v26;
-              v28 = [(VCPMovieHighlightAnalyzer *)v38 getHighlightAttributes:v15 withHighlightResults:v36];
+              v28 = [(VCPMovieHighlightAnalyzer *)selfCopy getHighlightAttributes:v15 withHighlightResults:contextCopy];
               v58[0] = @"start";
               *&buf.start.value = *&v44.start.value;
               buf.start.epoch = v44.start.epoch;
@@ -2349,7 +2349,7 @@ LABEL_32:
               v59[2] = v32;
               v59[3] = v28;
               v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v59 forKeys:v58 count:4];
-              [v37 addObject:v33];
+              [array addObject:v33];
             }
 
             v14 = v41 + 1;
@@ -2362,7 +2362,7 @@ LABEL_32:
         while (v13);
       }
 
-      v6 = v37;
+      v6 = array;
 LABEL_54:
     }
 
@@ -2585,7 +2585,7 @@ LABEL_54:
   return 0;
 }
 
-- ($AFC8CF76A46F37F9FB23C20884F4FD99)computeTrimWithHighlightScoreFor:(SEL)a3
+- ($AFC8CF76A46F37F9FB23C20884F4FD99)computeTrimWithHighlightScoreFor:(SEL)for
 {
   v7 = *&a4->var0.var3;
   v31 = *&a4->var0.var0;
@@ -3019,9 +3019,9 @@ LABEL_23:
   return v9;
 }
 
-- (float)highlightScoreForTimeRange:(id *)a3 average:(BOOL)a4
+- (float)highlightScoreForTimeRange:(id *)range average:(BOOL)average
 {
-  v4 = a4;
+  averageCopy = average;
   v33 = *MEMORY[0x1E69E9840];
   {
     CMTimeMake(&[VCPMovieHighlightAnalyzer highlightScoreForTimeRange:average:]::kMeaningfulLength, 600, 600);
@@ -3061,10 +3061,10 @@ LABEL_23:
           memset(&range, 0, sizeof(range));
         }
 
-        v16 = *&a3->var0.var3;
-        *&v25.start.value = *&a3->var0.var0;
+        v16 = *&range->var0.var3;
+        *&v25.start.value = *&range->var0.var0;
         *&v25.start.epoch = v16;
-        *&v25.duration.timescale = *&a3->var1.var1;
+        *&v25.duration.timescale = *&range->var1.var1;
         CMTimeRangeGetIntersection(&v27, &range, &v25);
         if ((v27.start.flags & 1) != 0 && (v27.duration.flags & 1) != 0 && !v27.duration.epoch && (v27.duration.value & 0x8000000000000000) == 0)
         {
@@ -3118,7 +3118,7 @@ LABEL_23:
     result = 0.0;
   }
 
-  if (v12 > result && !v4)
+  if (v12 > result && !averageCopy)
   {
     return (v12 + result) * 0.5;
   }
@@ -3126,14 +3126,14 @@ LABEL_23:
   return result;
 }
 
-- (id)findBestHighlightSegment:(id *)a3 targetTrim:(BOOL)a4
+- (id)findBestHighlightSegment:(id *)segment targetTrim:(BOOL)trim
 {
-  v4 = a4;
+  trimCopy = trim;
   {
     CMTimeMake([VCPMovieHighlightAnalyzer findBestHighlightSegment:targetTrim:]::kHalfSecond, 300, 600);
   }
 
-  if (v4)
+  if (trimCopy)
   {
     minDurationInSeconds = self->_targetDurationInSeconds - self->_toleranceInSeconds;
   }
@@ -3145,7 +3145,7 @@ LABEL_23:
 
   memset(&v27, 0, sizeof(v27));
   CMTimeMake(&v27, (minDurationInSeconds * 600.0), 600);
-  if (v4)
+  if (trimCopy)
   {
     maxDurationInSeconds = self->_targetDurationInSeconds - self->_toleranceInSeconds;
   }
@@ -3157,13 +3157,13 @@ LABEL_23:
 
   memset(&v26, 0, sizeof(v26));
   CMTimeMake(&v26, (maxDurationInSeconds * 600.0), 600);
-  v22 = *&a3->var0.var0;
-  var3 = a3->var0.var3;
+  v22 = *&segment->var0.var0;
+  var3 = segment->var0.var3;
   memset(&v25, 0, sizeof(v25));
-  *&lhs.start.value = *&a3->var0.var0;
-  lhs.start.epoch = a3->var0.var3;
-  *&rhs.start.value = *&a3->var1.var0;
-  rhs.start.epoch = a3->var1.var3;
+  *&lhs.start.value = *&segment->var0.var0;
+  lhs.start.epoch = segment->var0.var3;
+  *&rhs.start.value = *&segment->var1.var0;
+  rhs.start.epoch = segment->var1.var3;
   CMTimeAdd(&v25, &lhs.start, &rhs.start);
   v9 = [VCPMovieHighlight alloc];
   v10 = *(MEMORY[0x1E6960CA8] + 16);
@@ -3206,7 +3206,7 @@ LABEL_23:
     rhs.start.epoch = var3;
     v19.start = v21;
     CMTimeRangeMake(&lhs, &rhs.start, &v19.start);
-    if (BYTE5(self->_startRange.duration.epoch) == 1 && !v4)
+    if (BYTE5(self->_startRange.duration.epoch) == 1 && !trimCopy)
     {
       v19 = lhs;
       [(VCPMovieHighlightAnalyzer *)self findBestTrim:&v19];
@@ -3266,7 +3266,7 @@ LABEL_23:
   return v11;
 }
 
-- ($AFC8CF76A46F37F9FB23C20884F4FD99)findBestTrim:(SEL)a3
+- ($AFC8CF76A46F37F9FB23C20884F4FD99)findBestTrim:(SEL)trim
 {
   v59 = *MEMORY[0x1E69E9840];
   time.start = a4->var1;
@@ -3289,7 +3289,7 @@ LABEL_23:
   v55 = 0u;
   v8 = self->_internalResults;
   v9 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v54 objects:v58 count:16];
-  v43 = self;
+  selfCopy = self;
   v10 = MEMORY[0x1E6960CC0];
   if (v9)
   {
@@ -3376,12 +3376,12 @@ LABEL_23:
   start = var0;
   v47 = v49;
   v23 = fminf((v13 + v12) * 0.5, 0.4);
-  if ([(NSMutableArray *)v43->_internalResults count])
+  if ([(NSMutableArray *)selfCopy->_internalResults count])
   {
     v24 = 0;
     while (1)
     {
-      v25 = [(NSMutableArray *)v43->_internalResults objectAtIndexedSubscript:v24];
+      v25 = [(NSMutableArray *)selfCopy->_internalResults objectAtIndexedSubscript:v24];
       v26 = v25;
       if (v25)
       {
@@ -3427,7 +3427,7 @@ LABEL_23:
         }
       }
 
-      if (++v24 >= [(NSMutableArray *)v43->_internalResults count])
+      if (++v24 >= [(NSMutableArray *)selfCopy->_internalResults count])
       {
         goto LABEL_42;
       }
@@ -3443,7 +3443,7 @@ LABEL_42:
     v24 = -1;
   }
 
-  v29 = [(NSMutableArray *)v43->_internalResults count];
+  v29 = [(NSMutableArray *)selfCopy->_internalResults count];
   if (v29 - 1 < 0)
   {
 LABEL_61:
@@ -3454,7 +3454,7 @@ LABEL_61:
   {
     while (1)
     {
-      v30 = [(NSMutableArray *)v43->_internalResults objectAtIndexedSubscript:--v29];
+      v30 = [(NSMutableArray *)selfCopy->_internalResults objectAtIndexedSubscript:--v29];
       v31 = v30;
       if (v30)
       {
@@ -3526,17 +3526,17 @@ LABEL_69:
     goto LABEL_70;
   }
 
-  v34 = [(NSMutableArray *)v43->_internalResults objectAtIndexedSubscript:v24];
+  v34 = [(NSMutableArray *)selfCopy->_internalResults objectAtIndexedSubscript:v24];
   if (v29 < 0)
   {
     goto LABEL_69;
   }
 
 LABEL_67:
-  v35 = [(NSMutableArray *)v43->_internalResults objectAtIndexedSubscript:v29];
+  v35 = [(NSMutableArray *)selfCopy->_internalResults objectAtIndexedSubscript:v29];
 LABEL_70:
   memset(&otherRange, 0, 24);
-  CMTimeMake(&otherRange.start, (v43->_minDurationInSeconds * 600.0), 600);
+  CMTimeMake(&otherRange.start, (selfCopy->_minDurationInSeconds * 600.0), 600);
   while (1)
   {
     time.start = v47;
@@ -3590,14 +3590,14 @@ LABEL_70:
       range.start = v49;
       if (CMTimeCompare(&time.start, &range.start) < 0)
       {
-        if (v29 + 1 >= [(NSMutableArray *)v43->_internalResults count])
+        if (v29 + 1 >= [(NSMutableArray *)selfCopy->_internalResults count])
         {
           v39 = 0;
         }
 
         else
         {
-          v39 = [(NSMutableArray *)v43->_internalResults objectAtIndexedSubscript:v29 + 1];
+          v39 = [(NSMutableArray *)selfCopy->_internalResults objectAtIndexedSubscript:v29 + 1];
           ++v29;
         }
       }
@@ -3661,7 +3661,7 @@ LABEL_85:
 
       else
       {
-        v42 = [(NSMutableArray *)v43->_internalResults objectAtIndexedSubscript:v24 - 1];
+        v42 = [(NSMutableArray *)selfCopy->_internalResults objectAtIndexedSubscript:v24 - 1];
         --v24;
       }
 
@@ -3800,8 +3800,8 @@ LABEL_85:
     v15 = [(VCPMovieHighlightAnalyzer *)self pickKeyFramesInRange:&time1];
     [(VCPMovieHighlight *)v4 setKeyFrame:v15];
 
-    v16 = [(VCPMovieHighlight *)v4 keyFrame];
-    LOBYTE(v15) = v16 == 0;
+    keyFrame = [(VCPMovieHighlight *)v4 keyFrame];
+    LOBYTE(v15) = keyFrame == 0;
 
     if (v15)
     {
@@ -3919,7 +3919,7 @@ LABEL_32:
   return v14;
 }
 
-- (float)settlingMotionScore:(id *)a3
+- (float)settlingMotionScore:(id *)score
 {
   v4 = 0;
   v16 = *MEMORY[0x1E69E9840];
@@ -3964,7 +3964,7 @@ LABEL_32:
   return result;
 }
 
-- (float)settlingSubjectScore:(id *)a3
+- (float)settlingSubjectScore:(id *)score
 {
   v101 = *MEMORY[0x1E69E9840];
   memset(&v98, 0, sizeof(v98));
@@ -4005,10 +4005,10 @@ LABEL_32:
         v102 = NSRectFromString(v8);
         width = v102.size.width;
         height = v102.size.height;
-        *&v102.origin.y = *&a3->var0.var3;
-        *&start.start.value = *&a3->var0.var0;
+        *&v102.origin.y = *&score->var0.var3;
+        *&start.start.value = *&score->var0.var0;
         *&start.start.epoch = *&v102.origin.y;
-        *&start.duration.timescale = *&a3->var1.var1;
+        *&start.duration.timescale = *&score->var1.var1;
         duration.start = v93;
         if (!CMTimeRangeContainsTime(&start, &duration.start))
         {
@@ -4016,14 +4016,14 @@ LABEL_32:
           goto LABEL_25;
         }
 
-        v13 = *&a3->var0.var0;
-        v14 = *&a3->var1.var1;
-        *&duration.start.epoch = *&a3->var0.var3;
+        v13 = *&score->var0.var0;
+        v14 = *&score->var1.var1;
+        *&duration.start.epoch = *&score->var0.var3;
         *&duration.duration.timescale = v14;
         otherRange = v91;
         *&duration.start.value = v13;
         CMTimeRangeGetIntersection(&start, &duration, &otherRange);
-        if ((start.start.flags & 1) == 0 || (v15 = *&a3->var0.var0, v16 = *&a3->var1.var1, *&duration.start.epoch = *&a3->var0.var3, *&duration.duration.timescale = v16, otherRange = v91, *&duration.start.value = v15, CMTimeRangeGetIntersection(&v87, &duration, &otherRange), (v87.duration.flags & 1) == 0) || (v17 = *&a3->var0.var0, v18 = *&a3->var1.var1, *&duration.start.epoch = *&a3->var0.var3, *&duration.duration.timescale = v18, otherRange = v91, *&duration.start.value = v17, CMTimeRangeGetIntersection(&v86, &duration, &otherRange), v86.duration.epoch) || (v20 = *&a3->var0.var0, v21 = *&a3->var1.var1, *&duration.start.epoch = *&a3->var0.var3, *&duration.duration.timescale = v21, otherRange = v91, *&duration.start.value = v20, CMTimeRangeGetIntersection(&v85, &duration, &otherRange), v85.duration.value < 0) || (v22 = *&a3->var0.var0, v23 = *&a3->var1.var1, *&duration.start.epoch = *&a3->var0.var3, *&duration.duration.timescale = v23, otherRange = v91, *&duration.start.value = v22, CMTimeRangeGetIntersection(&v84, &duration, &otherRange), duration.start = v84.duration, *&otherRange.start.value = *MEMORY[0x1E6960CC0], otherRange.start.epoch = *(MEMORY[0x1E6960CC0] + 16), CMTimeCompare(&duration.start, &otherRange.start)))
+        if ((start.start.flags & 1) == 0 || (v15 = *&score->var0.var0, v16 = *&score->var1.var1, *&duration.start.epoch = *&score->var0.var3, *&duration.duration.timescale = v16, otherRange = v91, *&duration.start.value = v15, CMTimeRangeGetIntersection(&v87, &duration, &otherRange), (v87.duration.flags & 1) == 0) || (v17 = *&score->var0.var0, v18 = *&score->var1.var1, *&duration.start.epoch = *&score->var0.var3, *&duration.duration.timescale = v18, otherRange = v91, *&duration.start.value = v17, CMTimeRangeGetIntersection(&v86, &duration, &otherRange), v86.duration.epoch) || (v20 = *&score->var0.var0, v21 = *&score->var1.var1, *&duration.start.epoch = *&score->var0.var3, *&duration.duration.timescale = v21, otherRange = v91, *&duration.start.value = v20, CMTimeRangeGetIntersection(&v85, &duration, &otherRange), v85.duration.value < 0) || (v22 = *&score->var0.var0, v23 = *&score->var1.var1, *&duration.start.epoch = *&score->var0.var3, *&duration.duration.timescale = v23, otherRange = v91, *&duration.start.value = v22, CMTimeRangeGetIntersection(&v84, &duration, &otherRange), duration.start = v84.duration, *&otherRange.start.value = *MEMORY[0x1E6960CC0], otherRange.start.epoch = *(MEMORY[0x1E6960CC0] + 16), CMTimeCompare(&duration.start, &otherRange.start)))
         {
           v98 = v93;
           start.start = v93;
@@ -4076,7 +4076,7 @@ LABEL_25:
   if (v25)
   {
     v76 = *v81;
-    v72 = a3;
+    scoreCopy = score;
     do
     {
       v78 = v25;
@@ -4103,14 +4103,14 @@ LABEL_25:
         v103 = NSRectFromString(v29);
         v32 = v103.size.width;
         v33 = v103.size.height;
-        v103.origin = *&a3->var0.var0;
-        v103.size = *&a3->var1.var1;
-        *&duration.start.epoch = *&a3->var0.var3;
+        v103.origin = *&score->var0.var0;
+        v103.size = *&score->var1.var1;
+        *&duration.start.epoch = *&score->var0.var3;
         *&duration.duration.timescale = v103.size;
         otherRange = v91;
         *&duration.start.value = v103.origin;
         CMTimeRangeGetIntersection(&start, &duration, &otherRange);
-        if ((start.start.flags & 1) == 0 || (v34 = *&a3->var0.var0, v35 = *&a3->var1.var1, *&duration.start.epoch = *&a3->var0.var3, *&duration.duration.timescale = v35, otherRange = v91, *&duration.start.value = v34, CMTimeRangeGetIntersection(&v87, &duration, &otherRange), (v87.duration.flags & 1) == 0) || (v36 = *&a3->var0.var0, v37 = *&a3->var1.var1, *&duration.start.epoch = *&a3->var0.var3, *&duration.duration.timescale = v37, otherRange = v91, *&duration.start.value = v36, CMTimeRangeGetIntersection(&v86, &duration, &otherRange), v86.duration.epoch) || (v38 = *&a3->var0.var0, v39 = *&a3->var1.var1, *&duration.start.epoch = *&a3->var0.var3, *&duration.duration.timescale = v39, otherRange = v91, *&duration.start.value = v38, CMTimeRangeGetIntersection(&v85, &duration, &otherRange), v85.duration.value < 0) || (v40 = *&a3->var0.var0, v41 = *&a3->var1.var1, *&duration.start.epoch = *&a3->var0.var3, *&duration.duration.timescale = v41, otherRange = v91, *&duration.start.value = v40, CMTimeRangeGetIntersection(&v84, &duration, &otherRange), duration.start = v84.duration, *&otherRange.start.value = *MEMORY[0x1E6960CC0], otherRange.start.epoch = *(MEMORY[0x1E6960CC0] + 16), CMTimeCompare(&duration.start, &otherRange.start)))
+        if ((start.start.flags & 1) == 0 || (v34 = *&score->var0.var0, v35 = *&score->var1.var1, *&duration.start.epoch = *&score->var0.var3, *&duration.duration.timescale = v35, otherRange = v91, *&duration.start.value = v34, CMTimeRangeGetIntersection(&v87, &duration, &otherRange), (v87.duration.flags & 1) == 0) || (v36 = *&score->var0.var0, v37 = *&score->var1.var1, *&duration.start.epoch = *&score->var0.var3, *&duration.duration.timescale = v37, otherRange = v91, *&duration.start.value = v36, CMTimeRangeGetIntersection(&v86, &duration, &otherRange), v86.duration.epoch) || (v38 = *&score->var0.var0, v39 = *&score->var1.var1, *&duration.start.epoch = *&score->var0.var3, *&duration.duration.timescale = v39, otherRange = v91, *&duration.start.value = v38, CMTimeRangeGetIntersection(&v85, &duration, &otherRange), v85.duration.value < 0) || (v40 = *&score->var0.var0, v41 = *&score->var1.var1, *&duration.start.epoch = *&score->var0.var3, *&duration.duration.timescale = v41, otherRange = v91, *&duration.start.value = v40, CMTimeRangeGetIntersection(&v84, &duration, &otherRange), duration.start = v84.duration, *&otherRange.start.value = *MEMORY[0x1E6960CC0], otherRange.start.epoch = *(MEMORY[0x1E6960CC0] + 16), CMTimeCompare(&duration.start, &otherRange.start)))
         {
           if (v32 * v33 > 0.00749999983)
           {
@@ -4165,7 +4165,7 @@ LABEL_25:
                 operator delete(value);
               }
 
-              a3 = v72;
+              score = scoreCopy;
             }
 
             else
@@ -4287,14 +4287,14 @@ LABEL_71:
   return result;
 }
 
-- (float)settlingExposureChangeScore:(id *)a3
+- (float)settlingExposureChangeScore:(id *)score
 {
   v28 = *MEMORY[0x1E69E9840];
   memset(&v26, 0, sizeof(v26));
-  v5 = *&a3->var0.var3;
-  *&range.start.value = *&a3->var0.var0;
+  v5 = *&score->var0.var3;
+  *&range.start.value = *&score->var0.var0;
   *&range.start.epoch = v5;
-  *&range.duration.timescale = *&a3->var1.var1;
+  *&range.duration.timescale = *&score->var1.var1;
   CMTimeRangeGetEnd(&v26, &range);
   v21 = 0u;
   v22 = 0u;
@@ -4328,16 +4328,16 @@ LABEL_3:
 
       time2 = range;
       memset(&time1, 0, sizeof(time1));
-      v12 = *&a3->var0.var3;
-      *&v18.start.value = *&a3->var0.var0;
+      v12 = *&score->var0.var3;
+      *&v18.start.value = *&score->var0.var0;
       *&v18.start.epoch = v12;
-      *&v18.duration.timescale = *&a3->var1.var1;
+      *&v18.duration.timescale = *&score->var1.var1;
       CMTimeRangeGetIntersection(&time1, &time2, &v18);
       if ((time1.start.flags & 1) == 0 || (time1.duration.flags & 1) == 0 || time1.duration.epoch || time1.duration.value < 0 || (time2.start = time1.duration, *&v18.start.value = *MEMORY[0x1E6960CC0], v18.start.epoch = *(MEMORY[0x1E6960CC0] + 16), CMTimeCompare(&time2.start, &v18.start)))
       {
         v13 = [(__CFDictionary *)v11 objectForKey:@"flags"];
-        v14 = [v13 integerValue];
-        v15 = (v14 & 0x2FFC0) != 0 && (v14 & 0x1FFC0) == 98304;
+        integerValue = [v13 integerValue];
+        v15 = (integerValue & 0x2FFC0) != 0 && (integerValue & 0x1FFC0) == 98304;
         v16 = !v15;
 
         if (!v16)
@@ -4363,7 +4363,7 @@ LABEL_3:
   return v8;
 }
 
-- (float)settlingSharpnessScore:(id *)a3
+- (float)settlingSharpnessScore:(id *)score
 {
   v22 = *MEMORY[0x1E69E9840];
   v17 = 0u;
@@ -4386,10 +4386,10 @@ LABEL_3:
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = *&a3->var0.var3;
-        *&range.start.value = *&a3->var0.var0;
+        v10 = *&score->var0.var3;
+        *&range.start.value = *&score->var0.var0;
         *&range.start.epoch = v10;
-        *&range.duration.timescale = *&a3->var1.var1;
+        *&range.duration.timescale = *&score->var1.var1;
         if (v9)
         {
           [v9 timestamp];
@@ -4434,36 +4434,36 @@ LABEL_3:
   return v13;
 }
 
-- (int)analyzeRankingScores:(float)a3 subtleMotion:(float)a4 humanAction:(float)a5
+- (int)analyzeRankingScores:(float)scores subtleMotion:(float)motion humanAction:(float)action
 {
   __asm { FMOV            V1.2S, #10.0 }
 
-  v11 = vdiv_f32(*&a3, _D1);
+  v11 = vdiv_f32(*&scores, _D1);
   __asm { FMOV            V3.2S, #1.0 }
 
   *self->_sumScores = vadd_f32(vbic_s8(vbsl_s8(vcge_f32(v11, _D3), _D3, v11), vclez_f32(v11)), *self->_sumScores);
   frameCount = self->_frameCount;
   if (frameCount >= 7)
   {
-    v14 = 1.0;
-    if (a5 < 1.0)
+    actionCopy = 1.0;
+    if (action < 1.0)
     {
-      v14 = a5;
+      actionCopy = action;
     }
 
-    if (a5 <= 0.0)
+    if (action <= 0.0)
     {
-      v14 = 0.0;
+      actionCopy = 0.0;
     }
 
-    self->_sumScores[2] = v14 + self->_sumScores[2];
+    self->_sumScores[2] = actionCopy + self->_sumScores[2];
   }
 
   self->_frameCount = frameCount + 1;
   return 0;
 }
 
-- (int)analyzeMotionStability:()array<float motionParamDiff:(6UL> *)a3
+- (int)analyzeMotionStability:()array<float motionParamDiff:(6UL> *)diff
 {
   v4 = 0;
   p_diffFlipCount = &self->_diffFlipCount;
@@ -4477,7 +4477,7 @@ LABEL_3:
     }
 
     p_diffFlipCount[-2].__elems_[0] = v6;
-    p_diffFlipCount[-1].__elems_[0] = p_diffFlipCount[-1].__elems_[0] + fabsf(a3->__elems_[v4++]);
+    p_diffFlipCount[-1].__elems_[0] = p_diffFlipCount[-1].__elems_[0] + fabsf(diff->__elems_[v4++]);
     p_diffFlipCount = (p_diffFlipCount + 4);
   }
 
@@ -4492,14 +4492,14 @@ LABEL_3:
   v2 = 0.0;
   if (self->_frameCount >= 8)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v6 = 0;
     v7 = MEMORY[0x1E696AD98];
     do
     {
       *&v5 = self->_sumScores[v6] / self->_frameCount;
       v8 = [v7 numberWithFloat:v5];
-      [v4 addObject:v8];
+      [array addObject:v8];
 
       v7 = MEMORY[0x1E696AD98];
       ++v6;
@@ -4508,14 +4508,14 @@ LABEL_3:
     while (v6 != 2);
     *&v5 = self->_sumScores[2] / (self->_frameCount - 7);
     v9 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
-    [v4 addObject:v9];
+    [array addObject:v9];
 
     v10 = 0;
     v21 = 0.0;
     v20 = 0;
     do
     {
-      v11 = [v4 objectAtIndexedSubscript:v10];
+      v11 = [array objectAtIndexedSubscript:v10];
       [v11 floatValue];
       v13 = v12;
 
@@ -4629,16 +4629,16 @@ LABEL_3:
   return v3;
 }
 
-- (BOOL)updateCropHeatMap:(float *)a3 withResults:(id)a4 timeRange:(id *)a5 resultsKey:(id)a6
+- (BOOL)updateCropHeatMap:(float *)map withResults:(id)results timeRange:(id *)range resultsKey:(id)key
 {
   v53 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a6;
+  resultsCopy = results;
+  keyCopy = key;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = v8;
+  obj = resultsCopy;
   v10 = 0;
   v11 = [obj countByEnumeratingWithState:&v48 objects:v52 count:16];
   if (v11)
@@ -4659,10 +4659,10 @@ LABEL_3:
         CMTimeRangeMakeFromDictionary(&v47, v15);
         range = v47;
         memset(&v46, 0, sizeof(v46));
-        v16 = *&a5->var0.var3;
-        *&r2[1] = *&a5->var0.var0;
+        v16 = *&range->var0.var3;
+        *&r2[1] = *&range->var0.var0;
         *&r2[3] = v16;
-        *&r2[5] = *&a5->var1.var1;
+        *&r2[5] = *&range->var1.var1;
         CMTimeRangeGetIntersection(&v46, &range, &r2[1]);
         if ((v46.start.flags & 1) != 0 && (v46.duration.flags & 1) != 0 && !v46.duration.epoch && (v46.duration.value & 0x8000000000000000) == 0)
         {
@@ -4680,7 +4680,7 @@ LABEL_3:
         {
           v17 = [(__CFDictionary *)v15 objectForKeyedSubscript:@"attributes"];
           v18 = v17;
-          if (@"FaceResults" == v9)
+          if (@"FaceResults" == keyCopy)
           {
             v25 = [v17 objectForKeyedSubscript:@"faceBounds"];
             v55 = NSRectFromString(v25);
@@ -4698,7 +4698,7 @@ LABEL_3:
             v43 = v26;
           }
 
-          else if (@"PetsResults" == v9)
+          else if (@"PetsResults" == keyCopy)
           {
             v27 = [v17 objectForKeyedSubscript:@"petsBounds"];
             v56 = NSRectFromString(v27);
@@ -4714,7 +4714,7 @@ LABEL_3:
 
           else
           {
-            if (@"SaliencyResults" == v9)
+            if (@"SaliencyResults" == keyCopy)
             {
               v30 = [v17 objectForKeyedSubscript:@"saliencyBounds"];
               v57 = NSRectFromString(v30);
@@ -4743,7 +4743,7 @@ LABEL_3:
           }
 
           v31 = 0;
-          v32 = a3;
+          mapCopy = map;
           do
           {
             v33 = 0;
@@ -4765,12 +4765,12 @@ LABEL_3:
               {
                 range.start = v46.duration;
                 Seconds = CMTimeGetSeconds(&range.start);
-                *&range.start.value = *&a5->var1.var0;
-                range.start.epoch = a5->var1.var3;
+                *&range.start.value = *&range->var1.var0;
+                range.start.epoch = range->var1.var3;
                 v38 = CMTimeGetSeconds(&range.start);
                 v39 = v35 * v36 * 10.0 * 10.0;
                 *&v38 = Seconds / v38;
-                v32[v33] = v32[v33] + ((v39 * *&v38) * v43);
+                mapCopy[v33] = mapCopy[v33] + ((v39 * *&v38) * v43);
                 v13 = 10.0;
               }
 
@@ -4779,7 +4779,7 @@ LABEL_3:
 
             while (v33 != 10);
             ++v31;
-            v32 += 10;
+            mapCopy += 10;
           }
 
           while (v31 != 10);
@@ -4797,7 +4797,7 @@ LABEL_3:
   return v10 & 1;
 }
 
-- (CGRect)computeBestPlaybackCrop:(id *)a3
+- (CGRect)computeBestPlaybackCrop:(id *)crop
 {
   v65 = *MEMORY[0x1E69E9840];
   v5 = self->_frameSize.width == *MEMORY[0x1E695F060];
@@ -4822,28 +4822,28 @@ LABEL_3:
   else
   {
     faceResults = self->_faceResults;
-    v11 = *&a3->var0.var3;
-    v58 = *&a3->var0.var0;
+    v11 = *&crop->var0.var3;
+    v58 = *&crop->var0.var0;
     v59 = v11;
-    v60 = *&a3->var1.var1;
+    v60 = *&crop->var1.var1;
     v12 = [(VCPMovieHighlightAnalyzer *)self updateCropHeatMap:v64 withResults:faceResults timeRange:&v58 resultsKey:@"FaceResults"];
     petsResults = self->_petsResults;
-    v14 = *&a3->var0.var3;
-    v58 = *&a3->var0.var0;
+    v14 = *&crop->var0.var3;
+    v58 = *&crop->var0.var0;
     v59 = v14;
-    v60 = *&a3->var1.var1;
+    v60 = *&crop->var1.var1;
     v15 = [(VCPMovieHighlightAnalyzer *)self updateCropHeatMap:v63 withResults:petsResults timeRange:&v58 resultsKey:@"PetsResults"];
     saliencyResults = self->_saliencyResults;
-    v17 = *&a3->var0.var3;
-    v58 = *&a3->var0.var0;
+    v17 = *&crop->var0.var3;
+    v58 = *&crop->var0.var0;
     v59 = v17;
-    v60 = *&a3->var1.var1;
+    v60 = *&crop->var1.var1;
     v18 = [(VCPMovieHighlightAnalyzer *)self updateCropHeatMap:v62 withResults:saliencyResults timeRange:&v58 resultsKey:@"SaliencyResults"];
     humanPoseResults = self->_humanPoseResults;
-    v20 = *&a3->var0.var3;
-    v58 = *&a3->var0.var0;
+    v20 = *&crop->var0.var3;
+    v58 = *&crop->var0.var0;
     v59 = v20;
-    v60 = *&a3->var1.var1;
+    v60 = *&crop->var1.var1;
     v21 = (((v18 * 0.2) + (v12 * 0.5)) + ([(VCPMovieHighlightAnalyzer *)self updateCropHeatMap:v61 withResults:humanPoseResults timeRange:&v58 resultsKey:@"HumanPoseResults"]* 0.3)) + (v15 * 0.25);
     v22 = 5.5;
     if (v21 == 0.0)
@@ -5035,15 +5035,15 @@ LABEL_3:
   return result;
 }
 
-- (void)generateExpressionSegments:(id *)a3
+- (void)generateExpressionSegments:(id *)segments
 {
   v49 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v6 = objc_alloc_init(VCPExpressionSegment);
-  v7 = *&a3->var0.var3;
-  *&v47.start.value = *&a3->var0.var0;
+  v7 = *&segments->var0.var3;
+  *&v47.start.value = *&segments->var0.var0;
   *&v47.start.epoch = v7;
-  *&v47.duration.timescale = *&a3->var1.var1;
+  *&v47.duration.timescale = *&segments->var1.var1;
   v25 = v6;
   [(VCPExpressionSegment *)v6 setTimeRange:&v47];
   [(VCPExpressionSegment *)v6 setScore:0.0];
@@ -5178,29 +5178,29 @@ LABEL_3:
             [v19 setScore:v22];
             if (!v20 || ([(VCPExpressionSegment *)v20 timeRange], (range.start.flags & 1) == 0) || ([(VCPExpressionSegment *)v20 timeRange], (otherRange.duration.flags & 1) == 0) || ([(VCPExpressionSegment *)v20 timeRange], v37) || ([(VCPExpressionSegment *)v20 timeRange], v35 < 0) || ([(VCPExpressionSegment *)v20 timeRange], time1 = v33, time2 = *v9, CMTimeCompare(&time1, &time2)))
             {
-              [v5 addObject:v20];
+              [array addObject:v20];
             }
 
-            [v5 addObject:v19];
+            [array addObject:v19];
             if (!v21 || ([(VCPExpressionSegment *)v21 timeRange], (range.start.flags & 1) == 0) || ([(VCPExpressionSegment *)v21 timeRange], (otherRange.duration.flags & 1) == 0) || ([(VCPExpressionSegment *)v21 timeRange], v37) || ([(VCPExpressionSegment *)v21 timeRange], v35 < 0) || ([(VCPExpressionSegment *)v21 timeRange], time1 = v33, time2 = *v9, CMTimeCompare(&time1, &time2)))
             {
-              [v5 addObject:v21];
+              [array addObject:v21];
             }
           }
 
           else
           {
-            [v5 addObject:v19];
+            [array addObject:v19];
           }
 
           ++v13;
         }
 
-        v23 = [v5 mutableCopy];
+        v23 = [array mutableCopy];
         expressionSegments = self->_expressionSegments;
         self->_expressionSegments = v23;
 
-        [v5 removeAllObjects];
+        [array removeAllObjects];
       }
 
       v8 = [(NSArray *)obj countByEnumeratingWithState:&v43 objects:v48 count:16];
@@ -5210,16 +5210,16 @@ LABEL_3:
   }
 }
 
-- ($AFC8CF76A46F37F9FB23C20884F4FD99)computeQualityTrimFor:(SEL)a3 withKeyFrame:(id *)a4
+- ($AFC8CF76A46F37F9FB23C20884F4FD99)computeQualityTrimFor:(SEL)for withKeyFrame:(id *)frame
 {
   v45 = a5;
   v63 = *MEMORY[0x1E69E9840];
-  v8 = *&a4->var0.var3;
-  v60 = *&a4->var0.var0;
-  v9 = *&a4->var1.var1;
-  *&range.start.value = *&a4->var0.var0;
+  v8 = *&frame->var0.var3;
+  v60 = *&frame->var0.var0;
+  v9 = *&frame->var1.var1;
+  *&range.start.value = *&frame->var0.var0;
   *&range.start.epoch = v8;
-  var3 = a4->var0.var3;
+  var3 = frame->var0.var3;
   memset(&v59, 0, sizeof(v59));
   *&range.duration.timescale = v9;
   CMTimeRangeGetEnd(&v59, &range);
@@ -5246,10 +5246,10 @@ LABEL_3:
 
       time2 = range;
       memset(&time1, 0, sizeof(time1));
-      v13 = *&a4->var0.var3;
-      *&otherRange.start.value = *&a4->var0.var0;
+      v13 = *&frame->var0.var3;
+      *&otherRange.start.value = *&frame->var0.var0;
       *&otherRange.start.epoch = v13;
-      *&otherRange.duration.timescale = *&a4->var1.var1;
+      *&otherRange.duration.timescale = *&frame->var1.var1;
       CMTimeRangeGetIntersection(&time1, &time2, &otherRange);
       if ((time1.start.flags & 1) == 0 || (time1.duration.flags & 1) == 0 || time1.duration.epoch || time1.duration.value < 0 || (time2.start = time1.duration, *&otherRange.start.value = *v10, otherRange.start.epoch = *(v10 + 16), CMTimeCompare(&time2.start, &otherRange.start)))
       {
@@ -5294,10 +5294,10 @@ LABEL_14:
 
       time2 = range;
       memset(&time1, 0, sizeof(time1));
-      v19 = *&a4->var0.var3;
-      *&otherRange.start.value = *&a4->var0.var0;
+      v19 = *&frame->var0.var3;
+      *&otherRange.start.value = *&frame->var0.var0;
       *&otherRange.start.epoch = v19;
-      *&otherRange.duration.timescale = *&a4->var1.var1;
+      *&otherRange.duration.timescale = *&frame->var1.var1;
       CMTimeRangeGetIntersection(&time1, &time2, &otherRange);
       if ((time1.start.flags & 1) == 0 || (time1.duration.flags & 1) == 0 || time1.duration.epoch || time1.duration.value < 0 || (time2.start = time1.duration, *&otherRange.start.value = *v10, otherRange.start.epoch = *(v10 + 16), CMTimeCompare(&time2.start, &otherRange.start)))
       {
@@ -5515,7 +5515,7 @@ LABEL_46:
   return result;
 }
 
-- ($AFC8CF76A46F37F9FB23C20884F4FD99)computeActionFaceTrimFor:(SEL)a3
+- ($AFC8CF76A46F37F9FB23C20884F4FD99)computeActionFaceTrimFor:(SEL)for
 {
   v130 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E6960C70];
@@ -5921,8 +5921,8 @@ LABEL_92:
               if ((time2.start.flags & 1) == 0 || (time2.duration.flags & 1) == 0 || time2.duration.epoch || time2.duration.value < 0 || (time1.start = time2.duration, *&v92.start.value = *MEMORY[0x1E6960CC0], v92.start.epoch = *(MEMORY[0x1E6960CC0] + 16), CMTimeCompare(&time1.start, &v92.start)))
               {
                 v65 = [(__CFDictionary *)v64 objectForKey:@"flags"];
-                v66 = [v65 integerValue];
-                if ((v66 & 0x2FFC0) != 0 && (v66 & 0x40) == 0x40)
+                integerValue = [v65 integerValue];
+                if ((integerValue & 0x2FFC0) != 0 && (integerValue & 0x40) == 0x40)
                 {
                   v92 = otherRange;
                   v87 = time2;
@@ -6033,7 +6033,7 @@ LABEL_92:
   return result;
 }
 
-- ($AFC8CF76A46F37F9FB23C20884F4FD99)computeSteadyTranslationTrimFor:(SEL)a3
+- ($AFC8CF76A46F37F9FB23C20884F4FD99)computeSteadyTranslationTrimFor:(SEL)for
 {
   v56 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E6960C70];
@@ -6133,8 +6133,8 @@ LABEL_15:
               if ((time2.start.flags & 1) == 0 || (time2.duration.flags & 1) == 0 || time2.duration.epoch || time2.duration.value < 0 || (time1.start = time2.duration, *&otherRange.start.value = *MEMORY[0x1E6960CC0], otherRange.start.epoch = *(MEMORY[0x1E6960CC0] + 16), CMTimeCompare(&time1.start, &otherRange.start)))
               {
                 v21 = [(__CFDictionary *)v20 objectForKey:@"flags"];
-                v22 = [v21 integerValue];
-                if ((v22 & 0x2FFC0) != 0 && __clz(__rbit32(v22 & 0x2FFC0)) - 7 <= 1)
+                integerValue = [v21 integerValue];
+                if ((integerValue & 0x2FFC0) != 0 && __clz(__rbit32(integerValue & 0x2FFC0)) - 7 <= 1)
                 {
                   if ((BYTE12(v50) & 1) == 0 || (*&time1.start.value = v50, time1.start.epoch = epoch, Seconds = CMTimeGetSeconds(&time1.start), *&time1.start.value = *&time2.start.value, time1.start.epoch = time2.start.epoch, Seconds > CMTimeGetSeconds(&time1.start)))
                   {
@@ -6231,14 +6231,14 @@ LABEL_15:
   return result;
 }
 
-- (BOOL)checkCameraZoom:(id *)a3
+- (BOOL)checkCameraZoom:(id *)zoom
 {
   v29 = *MEMORY[0x1E69E9840];
   memset(&v27, 0, sizeof(v27));
-  v5 = *&a3->var0.var3;
-  *&range.start.value = *&a3->var0.var0;
+  v5 = *&zoom->var0.var3;
+  *&range.start.value = *&zoom->var0.var0;
   *&range.start.epoch = v5;
-  *&range.duration.timescale = *&a3->var1.var1;
+  *&range.duration.timescale = *&zoom->var1.var1;
   CMTimeRangeGetEnd(&v27, &range);
   v22 = 0u;
   v23 = 0u;
@@ -6271,16 +6271,16 @@ LABEL_3:
 
       time2 = range;
       memset(&time1, 0, sizeof(time1));
-      v11 = *&a3->var0.var3;
-      *&v19.start.value = *&a3->var0.var0;
+      v11 = *&zoom->var0.var3;
+      *&v19.start.value = *&zoom->var0.var0;
       *&v19.start.epoch = v11;
-      *&v19.duration.timescale = *&a3->var1.var1;
+      *&v19.duration.timescale = *&zoom->var1.var1;
       CMTimeRangeGetIntersection(&time1, &time2, &v19);
       if ((time1.start.flags & 1) == 0 || (time1.duration.flags & 1) == 0 || time1.duration.epoch || time1.duration.value < 0 || (time2.start = time1.duration, *&v19.start.value = *MEMORY[0x1E6960CC0], v19.start.epoch = *(MEMORY[0x1E6960CC0] + 16), CMTimeCompare(&time2.start, &v19.start)))
       {
         v12 = [(__CFDictionary *)v10 objectForKey:@"flags"];
-        v13 = [v12 integerValue];
-        v15 = !(v14 | ((v13 & 0x2FFC0) == 0)) && (v13 & 0x1FC0) == 4096;
+        integerValue = [v12 integerValue];
+        v15 = !(v14 | ((integerValue & 0x2FFC0) == 0)) && (integerValue & 0x1FC0) == 4096;
         v16 = v15;
 
         if (v16)
@@ -6310,25 +6310,25 @@ LABEL_24:
   return v17;
 }
 
-- (float)computeHighlightScoreOfRange:(id *)a3
+- (float)computeHighlightScoreOfRange:(id *)range
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = *&a3->var0.var3;
-  *time = *&a3->var0.var0;
+  v5 = *&range->var0.var3;
+  *time = *&range->var0.var0;
   *&time[16] = v5;
-  *v23 = *&a3->var1.var1;
+  *v23 = *&range->var1.var1;
   [(VCPMovieHighlightAnalyzer *)self computeExpressionScoreInTimerange:time];
   v7 = v6;
-  v8 = *&a3->var0.var3;
-  *time = *&a3->var0.var0;
+  v8 = *&range->var0.var3;
+  *time = *&range->var0.var0;
   *&time[16] = v8;
-  *v23 = *&a3->var1.var1;
+  *v23 = *&range->var1.var1;
   [(VCPMovieHighlightAnalyzer *)self computeActionScoreInTimerange:time];
   v10 = v9;
-  v11 = *&a3->var0.var3;
-  *time = *&a3->var0.var0;
+  v11 = *&range->var0.var3;
+  *time = *&range->var0.var0;
   *&time[16] = v11;
-  *v23 = *&a3->var1.var1;
+  *v23 = *&range->var1.var1;
   [(VCPMovieHighlightAnalyzer *)self computeVoiceScoreInTimeRange:time];
   v13 = v12;
   v14 = (((v7 * 0.4) + 0.0) + (v10 * 0.4)) + (v12 * 0.2);
@@ -6350,13 +6350,13 @@ LABEL_24:
 
   if (self->_verbose && MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    *time = *&a3->var0.var0;
-    *&time[16] = a3->var0.var3;
+    *time = *&range->var0.var0;
+    *&time[16] = range->var0.var3;
     Seconds = CMTimeGetSeconds(time);
-    v18 = *&a3->var0.var3;
-    *time = *&a3->var0.var0;
+    v18 = *&range->var0.var3;
+    *time = *&range->var0.var0;
     *&time[16] = v18;
-    *v23 = *&a3->var1.var1;
+    *v23 = *&range->var1.var1;
     CMTimeRangeGetEnd(&v21, time);
     v19 = CMTimeGetSeconds(&v21);
     *time = 134219264;
@@ -6377,14 +6377,14 @@ LABEL_24:
   return v16;
 }
 
-- (void)SetKeyFramesForSegments:(id)a3
+- (void)SetKeyFramesForSegments:(id)segments
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __53__VCPMovieHighlightAnalyzer_SetKeyFramesForSegments___block_invoke;
   v3[3] = &unk_1E834E098;
   v3[4] = self;
-  [a3 enumerateObjectsUsingBlock:v3];
+  [segments enumerateObjectsUsingBlock:v3];
 }
 
 void __53__VCPMovieHighlightAnalyzer_SetKeyFramesForSegments___block_invoke(uint64_t a1, void *a2)
@@ -6406,7 +6406,7 @@ void __53__VCPMovieHighlightAnalyzer_SetKeyFramesForSegments___block_invoke(uint
   [v4 setKeyFrame:v6];
 }
 
-- (id)pickKeyFramesInRange:(id *)a3
+- (id)pickKeyFramesInRange:(id *)range
 {
   v23 = *MEMORY[0x1E69E9840];
   v18 = 0u;
@@ -6430,10 +6430,10 @@ void __53__VCPMovieHighlightAnalyzer_SetKeyFramesForSegments___block_invoke(uint
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = *&a3->var0.var3;
-        *&range.start.value = *&a3->var0.var0;
+        v11 = *&range->var0.var3;
+        *&range.start.value = *&range->var0.var0;
         *&range.start.epoch = v11;
-        *&range.duration.timescale = *&a3->var1.var1;
+        *&range.duration.timescale = *&range->var1.var1;
         if (v10)
         {
           [v10 timestamp];
@@ -6618,22 +6618,22 @@ void __53__VCPMovieHighlightAnalyzer_SetKeyFramesForSegments___block_invoke(uint
   return 0;
 }
 
-- (int)pickHighlightsFrom:(id)a3
+- (int)pickHighlightsFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   {
     CMTimeMake([VCPMovieHighlightAnalyzer pickHighlightsFrom:]::kHalfSecond, 300, 600);
   }
 
   memset(&v20, 0, sizeof(v20));
   CMTimeMake(&v20, (self->_maxDurationInSeconds * 600.0), 600);
-  if (v4)
+  if (fromCopy)
   {
-    [v4 timerange];
+    [fromCopy timerange];
     *&time1[48] = *time1;
     memset(&v18, 0, sizeof(v18));
-    [v4 timerange];
-    [v4 timerange];
+    [fromCopy timerange];
+    [fromCopy timerange];
   }
 
   else
@@ -6690,7 +6690,7 @@ void __53__VCPMovieHighlightAnalyzer_SetKeyFramesForSegments___block_invoke(uint
     v6 = [VCPMovieHighlight alloc];
     *&time2[0].value = *time1;
     v7 = [(VCPMovieHighlight *)v6 initWithTimeRange:time2];
-    [(VCPMovieHighlight *)v7 copyScoresFrom:v4];
+    [(VCPMovieHighlight *)v7 copyScoresFrom:fromCopy];
     *&time2[0].value = *time1;
     v8 = [(VCPMovieHighlightAnalyzer *)self pickKeyFramesInRange:time2];
     [(VCPMovieHighlight *)v7 setKeyFrame:v8];
@@ -6711,27 +6711,27 @@ void __53__VCPMovieHighlightAnalyzer_SetKeyFramesForSegments___block_invoke(uint
     CMTimeAdd(time1, time2, &lhs);
   }
 
-  [(VCPMovieHighlightAnalyzer *)self searchFeatureVectorOfSegment:v4];
-  v13 = [v4 descriptor];
-  [(VCPMovieHighlight *)v5 setDescriptor:v13];
+  [(VCPMovieHighlightAnalyzer *)self searchFeatureVectorOfSegment:fromCopy];
+  descriptor = [fromCopy descriptor];
+  [(VCPMovieHighlight *)v5 setDescriptor:descriptor];
 
-  [(VCPMovieHighlightAnalyzer *)self computeHighlightScoreOfSegment:v4];
-  [v4 score];
+  [(VCPMovieHighlightAnalyzer *)self computeHighlightScoreOfSegment:fromCopy];
+  [fromCopy score];
   [(VCPMovieHighlight *)v5 setScore:?];
   v14 = [(VCPMovieHighlightAnalyzer *)self evaluateSegment:v5];
 
   return v14;
 }
 
-- (void)searchFeatureVectorOfSegment:(id)a3
+- (void)searchFeatureVectorOfSegment:(id)segment
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v17 = v4;
-  if (v4)
+  segmentCopy = segment;
+  v17 = segmentCopy;
+  if (segmentCopy)
   {
-    v5 = v4;
-    [v4 timerange];
+    v5 = segmentCopy;
+    [segmentCopy timerange];
     start = range.start;
     memset(&v24, 0, sizeof(v24));
     [v5 timerange];
@@ -6825,19 +6825,19 @@ LABEL_19:
   }
 }
 
-- (int)evaluateSegment:(id)a3
+- (int)evaluateSegment:(id)segment
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 score];
+  segmentCopy = segment;
+  [segmentCopy score];
   if (v5 < self->_minHighlightScore)
   {
     goto LABEL_8;
   }
 
-  if (v4)
+  if (segmentCopy)
   {
-    [v4 timerange];
+    [segmentCopy timerange];
   }
 
   else
@@ -6853,14 +6853,14 @@ LABEL_19:
 
   if (self->_isLivePhoto)
   {
-    [(VCPMovieHighlightAnalyzer *)self addSegment:v4];
+    [(VCPMovieHighlightAnalyzer *)self addSegment:segmentCopy];
 LABEL_8:
     v6 = 0;
     goto LABEL_9;
   }
 
-  v8 = [v4 descriptor];
-  v9 = v8 == 0;
+  descriptor = [segmentCopy descriptor];
+  v9 = descriptor == 0;
 
   if (v9)
   {
@@ -6895,9 +6895,9 @@ LABEL_8:
       }
 
       v14 = *(*(&v31 + 1) + 8 * i);
-      if (v4)
+      if (segmentCopy)
       {
-        [v4 timerange];
+        [segmentCopy timerange];
         if (v14)
         {
           goto LABEL_18;
@@ -6929,15 +6929,15 @@ LABEL_21:
         goto LABEL_32;
       }
 
-      v15 = [v14 descriptor];
-      v16 = v15 == 0;
+      descriptor2 = [v14 descriptor];
+      v16 = descriptor2 == 0;
 
       if (!v16)
       {
         LODWORD(v35.start.value) = 0;
-        v17 = [v14 descriptor];
-        v18 = [v4 descriptor];
-        v6 = [v17 computeDistance:&v35 toDescriptor:v18];
+        descriptor3 = [v14 descriptor];
+        descriptor4 = [segmentCopy descriptor];
+        v6 = [descriptor3 computeDistance:&v35 toDescriptor:descriptor4];
 
         if (v6)
         {
@@ -6968,9 +6968,9 @@ LABEL_21:
   if (v12 < 0.1)
   {
 LABEL_32:
-    if (v4)
+    if (segmentCopy)
     {
-      [v4 timerange];
+      [segmentCopy timerange];
     }
 
     else
@@ -6997,9 +6997,9 @@ LABEL_32:
       goto LABEL_50;
     }
 
-    if (v4)
+    if (segmentCopy)
     {
-      [v4 timerange];
+      [segmentCopy timerange];
     }
 
     else
@@ -7026,8 +7026,8 @@ LABEL_32:
 LABEL_50:
       [v27 score];
       v24 = v23;
-      [v4 score];
-      if (v24 >= v25 || ![(VCPMovieHighlightAnalyzer *)self addSegment:v4])
+      [segmentCopy score];
+      if (v24 >= v25 || ![(VCPMovieHighlightAnalyzer *)self addSegment:segmentCopy])
       {
         goto LABEL_53;
       }
@@ -7035,7 +7035,7 @@ LABEL_50:
 
     else
     {
-      [(NSMutableArray *)self->_internalConstraintResults addObject:v4];
+      [(NSMutableArray *)self->_internalConstraintResults addObject:segmentCopy];
     }
 
     [(NSMutableArray *)self->_internalConstraintResults removeObject:v27];
@@ -7043,7 +7043,7 @@ LABEL_50:
   }
 
 LABEL_35:
-  [(VCPMovieHighlightAnalyzer *)self addSegment:v4];
+  [(VCPMovieHighlightAnalyzer *)self addSegment:segmentCopy];
 LABEL_53:
   v6 = 0;
 LABEL_54:
@@ -7054,20 +7054,20 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)addSegment:(id)a3
+- (BOOL)addSegment:(id)segment
 {
-  v4 = a3;
-  v5 = [(NSMutableArray *)self->_internalConstraintResults lastObject];
-  [v5 score];
+  segmentCopy = segment;
+  lastObject = [(NSMutableArray *)self->_internalConstraintResults lastObject];
+  [lastObject score];
   v7 = v6;
-  [v4 score];
+  [segmentCopy score];
   v9 = v8;
-  if (!v4)
+  if (!segmentCopy)
   {
     v21 = 0u;
     v22 = 0u;
     v20 = 0u;
-    if (v5)
+    if (lastObject)
     {
       goto LABEL_3;
     }
@@ -7078,15 +7078,15 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  [v4 timerange];
-  if (!v5)
+  [segmentCopy timerange];
+  if (!lastObject)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  [v5 timerange];
-  [v5 timerange];
+  [lastObject timerange];
+  [lastObject timerange];
 LABEL_6:
   lhs = *&v18[32];
   rhs = *&v18[8];
@@ -7101,9 +7101,9 @@ LABEL_6:
     v11 = Seconds;
     if (v11 < 0.2)
     {
-      [v4 score];
+      [segmentCopy score];
       v13 = v12;
-      [v5 score];
+      [lastObject score];
       if (v13 <= v14)
       {
         v15 = 0;
@@ -7114,21 +7114,21 @@ LABEL_6:
     }
   }
 
-  [(NSMutableArray *)self->_internalConstraintResults addObject:v4, v17, *v18];
+  [(NSMutableArray *)self->_internalConstraintResults addObject:segmentCopy, v17, *v18];
   v15 = 1;
 LABEL_12:
 
   return v15;
 }
 
-- (void)computeHighlightScoreOfSegment:(id)a3
+- (void)computeHighlightScoreOfSegment:(id)segment
 {
   v81 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  segmentCopy = segment;
+  v5 = segmentCopy;
+  if (segmentCopy)
   {
-    [v4 timerange];
+    [segmentCopy timerange];
   }
 
   else
@@ -7416,8 +7416,8 @@ LABEL_12:
 
       CMTimeRangeGetEnd(&time, &otherRange);
       v63 = CMTimeGetSeconds(&time);
-      v49 = [v5 keyFrame];
-      [v49 score];
+      keyFrame = [v5 keyFrame];
+      [keyFrame score];
       v51 = v50;
       [v5 expressionScore];
       v53 = v52;
@@ -7457,7 +7457,7 @@ LABEL_12:
   }
 }
 
-- (float)computeExpressionScoreInTimerange:(id *)a3
+- (float)computeExpressionScoreInTimerange:(id *)timerange
 {
   v36 = *MEMORY[0x1E69E9840];
   v31 = 0u;
@@ -7489,10 +7489,10 @@ LABEL_12:
       CMTimeRangeMakeFromDictionary(&v30, v9);
       range = v30;
       memset(&v29, 0, sizeof(v29));
-      v10 = *&a3->var0.var3;
-      *&otherRange.start.value = *&a3->var0.var0;
+      v10 = *&timerange->var0.var3;
+      *&otherRange.start.value = *&timerange->var0.var0;
       *&otherRange.start.epoch = v10;
-      *&otherRange.duration.timescale = *&a3->var1.var1;
+      *&otherRange.duration.timescale = *&timerange->var1.var1;
       CMTimeRangeGetIntersection(&v29, &range, &otherRange);
       if ((v29.start.flags & 1) != 0 && (v29.duration.flags & 1) != 0 && !v29.duration.epoch && (v29.duration.value & 0x8000000000000000) == 0)
       {
@@ -7508,14 +7508,14 @@ LABEL_12:
       v11 = [(__CFDictionary *)v9 objectForKey:@"attributes"];
       v12 = [v11 objectForKey:@"faceBounds"];
       v13 = [(__CFDictionary *)v9 objectForKey:@"flags"];
-      v14 = [v13 intValue];
+      intValue = [v13 intValue];
       v37 = NSRectFromString(v12);
       v15 = v37.size.width * v37.size.height + -0.170000002;
       v16 = [VCPMovieHighlightAnalyzer computeExpressionScoreInTimerange:]::kAreaSigma[v15 > 0.0];
       range.start = v29.duration;
       Seconds = CMTimeGetSeconds(&range.start);
       v18 = expf(-(v15 * v15) / v16);
-      if ((v14 & 2) != 0)
+      if ((intValue & 2) != 0)
       {
         v19 = 0.3;
       }
@@ -7576,7 +7576,7 @@ LABEL_12:
   return result;
 }
 
-- (float)expressionScoreForTimerange:(id *)a3
+- (float)expressionScoreForTimerange:(id *)timerange
 {
   v26 = *MEMORY[0x1E69E9840];
   v21 = 0u;
@@ -7604,10 +7604,10 @@ LABEL_12:
       }
 
       v10 = *(*(&v21 + 1) + 8 * i);
-      v11 = *&a3->var0.var3;
-      *&range.start.value = *&a3->var0.var0;
+      v11 = *&timerange->var0.var3;
+      *&range.start.value = *&timerange->var0.var0;
       *&range.start.epoch = v11;
-      *&range.duration.timescale = *&a3->var1.var1;
+      *&range.duration.timescale = *&timerange->var1.var1;
       if (v10)
       {
         [v10 timestamp];
@@ -7655,14 +7655,14 @@ LABEL_12:
   return result;
 }
 
-- (float)computeSubtleMotionScoreInTimerange:(id *)a3
+- (float)computeSubtleMotionScoreInTimerange:(id *)timerange
 {
   v34 = *MEMORY[0x1E69E9840];
   memset(&v32, 0, sizeof(v32));
-  v5 = *&a3->var0.var3;
-  *&range.start.value = *&a3->var0.var0;
+  v5 = *&timerange->var0.var3;
+  *&range.start.value = *&timerange->var0.var0;
   *&range.start.epoch = v5;
-  *&range.duration.timescale = *&a3->var1.var1;
+  *&range.duration.timescale = *&timerange->var1.var1;
   CMTimeRangeGetEnd(&v32, &range);
   v27 = 0u;
   v28 = 0u;
@@ -7699,10 +7699,10 @@ LABEL_3:
 
       time2 = range;
       memset(&time1, 0, sizeof(time1));
-      v15 = *&a3->var0.var3;
-      *&v24.start.value = *&a3->var0.var0;
+      v15 = *&timerange->var0.var3;
+      *&v24.start.value = *&timerange->var0.var0;
       *&v24.start.epoch = v15;
-      *&v24.duration.timescale = *&a3->var1.var1;
+      *&v24.duration.timescale = *&timerange->var1.var1;
       CMTimeRangeGetIntersection(&time1, &time2, &v24);
       if ((time1.start.flags & 1) == 0 || (time1.duration.flags & 1) == 0 || time1.duration.epoch || time1.duration.value < 0 || (time2.start = time1.duration, *&v24.start.value = *v10, v24.start.epoch = *(v10 + 16), CMTimeCompare(&time2.start, &v24.start)))
       {
@@ -7734,8 +7734,8 @@ LABEL_3:
 
     if (v11 != 0.0)
     {
-      *&range.start.value = *&a3->var1.var0;
-      range.start.epoch = a3->var1.var3;
+      *&range.start.value = *&timerange->var1.var0;
+      range.start.epoch = timerange->var1.var3;
       v12 = v12 / CMTimeGetSeconds(&range.start);
     }
   }
@@ -7764,14 +7764,14 @@ LABEL_3:
   return result;
 }
 
-- (float)computeActionScoreInTimerange:(id *)a3
+- (float)computeActionScoreInTimerange:(id *)timerange
 {
   v34 = *MEMORY[0x1E69E9840];
   memset(&v32, 0, sizeof(v32));
-  v5 = *&a3->var0.var3;
-  *&range.start.value = *&a3->var0.var0;
+  v5 = *&timerange->var0.var3;
+  *&range.start.value = *&timerange->var0.var0;
   *&range.start.epoch = v5;
-  *&range.duration.timescale = *&a3->var1.var1;
+  *&range.duration.timescale = *&timerange->var1.var1;
   CMTimeRangeGetEnd(&v32, &range);
   v27 = 0u;
   v28 = 0u;
@@ -7808,10 +7808,10 @@ LABEL_3:
 
       time2 = range;
       memset(&time1, 0, sizeof(time1));
-      v15 = *&a3->var0.var3;
-      *&v24.start.value = *&a3->var0.var0;
+      v15 = *&timerange->var0.var3;
+      *&v24.start.value = *&timerange->var0.var0;
       *&v24.start.epoch = v15;
-      *&v24.duration.timescale = *&a3->var1.var1;
+      *&v24.duration.timescale = *&timerange->var1.var1;
       CMTimeRangeGetIntersection(&time1, &time2, &v24);
       if ((time1.start.flags & 1) == 0 || (time1.duration.flags & 1) == 0 || time1.duration.epoch || time1.duration.value < 0 || (time2.start = time1.duration, *&v24.start.value = *v10, v24.start.epoch = *(v10 + 16), CMTimeCompare(&time2.start, &v24.start)))
       {
@@ -7843,8 +7843,8 @@ LABEL_3:
 
     if (v11 != 0.0)
     {
-      *&range.start.value = *&a3->var1.var0;
-      range.start.epoch = a3->var1.var3;
+      *&range.start.value = *&timerange->var1.var0;
+      range.start.epoch = timerange->var1.var3;
       v12 = v12 / CMTimeGetSeconds(&range.start);
     }
   }
@@ -7873,14 +7873,14 @@ LABEL_3:
   return result;
 }
 
-- (float)computeHumanActionScoreInTimerange:(id *)a3
+- (float)computeHumanActionScoreInTimerange:(id *)timerange
 {
   v47 = *MEMORY[0x1E69E9840];
   memset(&v44, 0, sizeof(v44));
-  v5 = *&a3->var0.var3;
-  *&range.start.value = *&a3->var0.var0;
+  v5 = *&timerange->var0.var3;
+  *&range.start.value = *&timerange->var0.var0;
   *&range.start.epoch = v5;
-  *&range.duration.timescale = *&a3->var1.var1;
+  *&range.duration.timescale = *&timerange->var1.var1;
   CMTimeRangeGetEnd(&v44, &range);
   v39 = 0u;
   v40 = 0u;
@@ -7915,17 +7915,17 @@ LABEL_3:
 
       time2 = range;
       memset(&time1, 0, sizeof(time1));
-      v13 = *&a3->var0.var3;
-      *&otherRange.start.value = *&a3->var0.var0;
+      v13 = *&timerange->var0.var3;
+      *&otherRange.start.value = *&timerange->var0.var0;
       *&otherRange.start.epoch = v13;
-      *&otherRange.duration.timescale = *&a3->var1.var1;
+      *&otherRange.duration.timescale = *&timerange->var1.var1;
       CMTimeRangeGetIntersection(&time1, &time2, &otherRange);
       if ((time1.start.flags & 1) == 0 || (time1.duration.flags & 1) == 0 || time1.duration.epoch || time1.duration.value < 0 || (time2.start = time1.duration, *&otherRange.start.value = *MEMORY[0x1E6960CC0], otherRange.start.epoch = *(MEMORY[0x1E6960CC0] + 16), CMTimeCompare(&time2.start, &otherRange.start)))
       {
         v14 = [(__CFDictionary *)v12 objectForKeyedSubscript:@"flags"];
-        v15 = [v14 unsignedIntegerValue];
+        unsignedIntegerValue = [v14 unsignedIntegerValue];
 
-        if ((v15 & 0x40) != 0)
+        if ((unsignedIntegerValue & 0x40) != 0)
         {
           time2.start = time1.duration;
           v10 = CMTimeGetSeconds(&time2.start) + v10;
@@ -7994,10 +7994,10 @@ LABEL_23:
 
       time2 = range;
       memset(&time1, 0, sizeof(time1));
-      v25 = *&a3->var0.var3;
-      *&otherRange.start.value = *&a3->var0.var0;
+      v25 = *&timerange->var0.var3;
+      *&otherRange.start.value = *&timerange->var0.var0;
       *&otherRange.start.epoch = v25;
-      *&otherRange.duration.timescale = *&a3->var1.var1;
+      *&otherRange.duration.timescale = *&timerange->var1.var1;
       CMTimeRangeGetIntersection(&time1, &time2, &otherRange);
       if ((time1.start.flags & 1) == 0 || (time1.duration.flags & 1) == 0 || time1.duration.epoch || time1.duration.value < 0 || (time2.start = time1.duration, *&otherRange.start.value = *MEMORY[0x1E6960CC0], otherRange.start.epoch = *(MEMORY[0x1E6960CC0] + 16), CMTimeCompare(&time2.start, &otherRange.start)))
       {
@@ -8039,8 +8039,8 @@ LABEL_23:
 
     if (v21 != 0.0)
     {
-      *&range.start.value = *&a3->var1.var0;
-      range.start.epoch = a3->var1.var3;
+      *&range.start.value = *&timerange->var1.var0;
+      range.start.epoch = timerange->var1.var3;
       v22 = v22 / CMTimeGetSeconds(&range.start);
     }
   }
@@ -8055,14 +8055,14 @@ LABEL_23:
   return (v20 + v22) * 0.5;
 }
 
-- (float)computeHumanPoseScoreInTimerange:(id *)a3
+- (float)computeHumanPoseScoreInTimerange:(id *)timerange
 {
   v34 = *MEMORY[0x1E69E9840];
   memset(&v32, 0, sizeof(v32));
-  v5 = *&a3->var0.var3;
-  *&range.start.value = *&a3->var0.var0;
+  v5 = *&timerange->var0.var3;
+  *&range.start.value = *&timerange->var0.var0;
   *&range.start.epoch = v5;
-  *&range.duration.timescale = *&a3->var1.var1;
+  *&range.duration.timescale = *&timerange->var1.var1;
   CMTimeRangeGetEnd(&v32, &range);
   v27 = 0u;
   v28 = 0u;
@@ -8098,10 +8098,10 @@ LABEL_3:
 
       time2 = range;
       memset(&time1, 0, sizeof(time1));
-      v14 = *&a3->var0.var3;
-      *&v24.start.value = *&a3->var0.var0;
+      v14 = *&timerange->var0.var3;
+      *&v24.start.value = *&timerange->var0.var0;
       *&v24.start.epoch = v14;
-      *&v24.duration.timescale = *&a3->var1.var1;
+      *&v24.duration.timescale = *&timerange->var1.var1;
       CMTimeRangeGetIntersection(&time1, &time2, &v24);
       if ((time1.start.flags & 1) == 0 || (time1.duration.flags & 1) == 0 || time1.duration.epoch || time1.duration.value < 0 || (time2.start = time1.duration, *&v24.start.value = *MEMORY[0x1E6960CC0], v24.start.epoch = *(MEMORY[0x1E6960CC0] + 16), CMTimeCompare(&time2.start, &v24.start)))
       {
@@ -8134,8 +8134,8 @@ LABEL_3:
 
     if (v10 != 0.0)
     {
-      *&range.start.value = *&a3->var1.var0;
-      range.start.epoch = a3->var1.var3;
+      *&range.start.value = *&timerange->var1.var0;
+      range.start.epoch = timerange->var1.var3;
       v11 = v11 / CMTimeGetSeconds(&range.start);
     }
   }
@@ -8164,16 +8164,16 @@ LABEL_3:
   return result;
 }
 
-- (float)computeVoiceScoreInTimeRange:(id *)a3
+- (float)computeVoiceScoreInTimeRange:(id *)range
 {
   v29 = *MEMORY[0x1E69E9840];
-  time.start = a3->var1;
+  time.start = range->var1;
   Seconds = CMTimeGetSeconds(&time.start);
   memset(&v27, 0, sizeof(v27));
-  v6 = *&a3->var0.var3;
-  *&time.start.value = *&a3->var0.var0;
+  v6 = *&range->var0.var3;
+  *&time.start.value = *&range->var0.var0;
   *&time.start.epoch = v6;
-  *&time.duration.timescale = *&a3->var1.var1;
+  *&time.duration.timescale = *&range->var1.var1;
   CMTimeRangeGetEnd(&v27, &time);
   v22 = 0u;
   v23 = 0u;
@@ -8208,10 +8208,10 @@ LABEL_3:
 
       time2 = time;
       memset(&time1, 0, sizeof(time1));
-      v14 = *&a3->var0.var3;
-      *&v19.start.value = *&a3->var0.var0;
+      v14 = *&range->var0.var3;
+      *&v19.start.value = *&range->var0.var0;
       *&v19.start.epoch = v14;
-      *&v19.duration.timescale = *&a3->var1.var1;
+      *&v19.duration.timescale = *&range->var1.var1;
       CMTimeRangeGetIntersection(&time1, &time2, &v19);
       if ((time1.start.flags & 1) == 0 || (time1.duration.flags & 1) == 0 || time1.duration.epoch || time1.duration.value < 0 || (time2.start = time1.duration, *&v19.start.value = *v11, v19.start.epoch = *(v11 + 16), CMTimeCompare(&time2.start, &v19.start)))
       {
@@ -8257,8 +8257,8 @@ LABEL_3:
   v36 = 0u;
   v37 = 0u;
   v3 = self->_mlHighlightScoreResults;
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v34 objects:v39 count:16];
-  if (!v4)
+  array = [(NSArray *)v3 countByEnumeratingWithState:&v34 objects:v39 count:16];
+  if (!array)
   {
 LABEL_25:
 
@@ -8270,7 +8270,7 @@ LABEL_25:
   v7 = 1.0;
   do
   {
-    for (i = 0; i != v4; i = (i + 1))
+    for (i = 0; i != array; i = (i + 1))
     {
       if (*v35 != v5)
       {
@@ -8293,14 +8293,14 @@ LABEL_25:
       }
     }
 
-    v4 = [(NSArray *)v3 countByEnumeratingWithState:&v34 objects:v39 count:16];
+    array = [(NSArray *)v3 countByEnumeratingWithState:&v34 objects:v39 count:16];
   }
 
-  while (v4);
+  while (array);
 
   if (v6 > 0.0 && v6 > v7)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     maxHighlightScore = self->_maxHighlightScore;
     v30 = 0u;
     v31 = 0u;
@@ -8333,7 +8333,7 @@ LABEL_25:
           v27 = [MEMORY[0x1E696AD98] numberWithFloat:v26];
           [v22 setObject:v27 forKeyedSubscript:@"quality"];
 
-          [(NSArray *)v4 addObject:v22];
+          [(NSArray *)array addObject:v22];
           ++v20;
         }
 
@@ -8347,10 +8347,10 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v4 = 0;
+  array = 0;
 LABEL_26:
   mlHighlightScoreResults = self->_mlHighlightScoreResults;
-  self->_mlHighlightScoreResults = v4;
+  self->_mlHighlightScoreResults = array;
 
   return 0;
 }
@@ -8434,14 +8434,14 @@ LABEL_26:
   return 0;
 }
 
-- (float)computeMLHighlightScoreForTimerange:(id *)a3
+- (float)computeMLHighlightScoreForTimerange:(id *)timerange
 {
   v38 = *MEMORY[0x1E69E9840];
   memset(&v35, 0, sizeof(v35));
-  v5 = *&a3->var0.var3;
-  *&range.start.value = *&a3->var0.var0;
+  v5 = *&timerange->var0.var3;
+  *&range.start.value = *&timerange->var0.var0;
   *&range.start.epoch = v5;
-  *&range.duration.timescale = *&a3->var1.var1;
+  *&range.duration.timescale = *&timerange->var1.var1;
   CMTimeRangeGetEnd(&v35, &range);
   v6 = MEMORY[0x1E6960CC0];
   v7 = *MEMORY[0x1E6960CC0];
@@ -8479,10 +8479,10 @@ LABEL_3:
 
       time2 = range;
       memset(&time1, 0, sizeof(time1));
-      v14 = *&a3->var0.var3;
-      *&v25.start.value = *&a3->var0.var0;
+      v14 = *&timerange->var0.var3;
+      *&v25.start.value = *&timerange->var0.var0;
       *&v25.start.epoch = v14;
-      *&v25.duration.timescale = *&a3->var1.var1;
+      *&v25.duration.timescale = *&timerange->var1.var1;
       CMTimeRangeGetIntersection(&time1, &time2, &v25);
       if ((time1.start.flags & 1) == 0 || (time1.duration.flags & 1) == 0 || time1.duration.epoch || time1.duration.value < 0 || (time2.start = time1.duration, *&v25.start.value = *v6, v25.start.epoch = *(v6 + 16), CMTimeCompare(&time2.start, &v25.start)))
       {
@@ -8522,8 +8522,8 @@ LABEL_3:
 
   *&range.start.value = v32;
   range.start.epoch = epoch;
-  *&time1.start.value = *&a3->var1.var0;
-  time1.start.epoch = a3->var1.var3;
+  *&time1.start.value = *&timerange->var1.var0;
+  time1.start.epoch = timerange->var1.var3;
   v20 = CMTimeCompare(&range.start, &time1.start);
   result = -1.0;
   if (!v20)
@@ -8548,14 +8548,14 @@ LABEL_3:
   return result;
 }
 
-- (float)computeMLQualityScoreForTimerange:(id *)a3
+- (float)computeMLQualityScoreForTimerange:(id *)timerange
 {
   v33 = *MEMORY[0x1E69E9840];
   memset(&v31, 0, sizeof(v31));
-  v5 = *&a3->var0.var3;
-  *&range.start.value = *&a3->var0.var0;
+  v5 = *&timerange->var0.var3;
+  *&range.start.value = *&timerange->var0.var0;
   *&range.start.epoch = v5;
-  *&range.duration.timescale = *&a3->var1.var1;
+  *&range.duration.timescale = *&timerange->var1.var1;
   CMTimeRangeGetEnd(&v31, &range);
   v26 = 0u;
   v27 = 0u;
@@ -8591,10 +8591,10 @@ LABEL_3:
 
       time2 = range;
       memset(&time1, 0, sizeof(time1));
-      v14 = *&a3->var0.var3;
-      *&v23.start.value = *&a3->var0.var0;
+      v14 = *&timerange->var0.var3;
+      *&v23.start.value = *&timerange->var0.var0;
       *&v23.start.epoch = v14;
-      *&v23.duration.timescale = *&a3->var1.var1;
+      *&v23.duration.timescale = *&timerange->var1.var1;
       CMTimeRangeGetIntersection(&time1, &time2, &v23);
       if ((time1.start.flags & 1) == 0 || (time1.duration.flags & 1) == 0 || time1.duration.epoch || time1.duration.value < 0 || (time2.start = time1.duration, *&v23.start.value = *v10, v23.start.epoch = *(v10 + 16), CMTimeCompare(&time2.start, &v23.start)))
       {
@@ -8649,19 +8649,19 @@ LABEL_3:
   return result;
 }
 
-- (float)stickerScaledScore:(float)a3 highPrecisionThreshold:(float)a4 highRecallThreshold:(float)a5
+- (float)stickerScaledScore:(float)score highPrecisionThreshold:(float)threshold highRecallThreshold:(float)recallThreshold
 {
-  if (a3 > a4)
+  if (score > threshold)
   {
-    v5 = ((a3 - a4) * 0.1) / (1.0 - a4);
+    v5 = ((score - threshold) * 0.1) / (1.0 - threshold);
     v6 = 0.9;
     return v5 + v6;
   }
 
   v7 = 0.0;
-  if (a3 > a5)
+  if (score > recallThreshold)
   {
-    v5 = ((a3 - a5) * 0.1) / (1.0 - a5);
+    v5 = ((score - recallThreshold) * 0.1) / (1.0 - recallThreshold);
     v6 = 0.2;
     return v5 + v6;
   }
@@ -8669,75 +8669,75 @@ LABEL_3:
   return v7;
 }
 
-- (float)analyzeOverallQuality:(id *)a3 isSettlingEffect:(BOOL)a4 isAnimatedSticker:(BOOL)a5
+- (float)analyzeOverallQuality:(id *)quality isSettlingEffect:(BOOL)effect isAnimatedSticker:(BOOL)sticker
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = *&a3->var0.var3;
-  *time = *&a3->var0.var0;
+  stickerCopy = sticker;
+  effectCopy = effect;
+  v9 = *&quality->var0.var3;
+  *time = *&quality->var0.var0;
   *&time[16] = v9;
-  v73 = *&a3->var1.var1;
+  v73 = *&quality->var1.var1;
   [(VCPMovieHighlightAnalyzer *)self qualityScoreForTimerange:time];
   v11 = v10;
-  v12 = *&a3->var0.var3;
-  *time = *&a3->var0.var0;
+  v12 = *&quality->var0.var3;
+  *time = *&quality->var0.var0;
   *&time[16] = v12;
-  v73 = *&a3->var1.var1;
+  v73 = *&quality->var1.var1;
   [(VCPMovieHighlightAnalyzer *)self actionScoreForTimerange:time];
   v14 = v13;
-  v15 = *&a3->var0.var3;
-  *time = *&a3->var0.var0;
+  v15 = *&quality->var0.var3;
+  *time = *&quality->var0.var0;
   *&time[16] = v15;
-  v73 = *&a3->var1.var1;
+  v73 = *&quality->var1.var1;
   [(VCPMovieHighlightAnalyzer *)self subtleMotionScoreForTimerange:time];
   v17 = v16;
-  v18 = *&a3->var0.var3;
-  *time = *&a3->var0.var0;
+  v18 = *&quality->var0.var3;
+  *time = *&quality->var0.var0;
   *&time[16] = v18;
-  v73 = *&a3->var1.var1;
+  v73 = *&quality->var1.var1;
   [(VCPMovieHighlightAnalyzer *)self expressionScoreForTimerange:time];
   v20 = v19;
   v21 = 0.5;
-  if (!v6)
+  if (!effectCopy)
   {
-    v22 = *&a3->var0.var3;
-    *time = *&a3->var0.var0;
+    v22 = *&quality->var0.var3;
+    *time = *&quality->var0.var0;
     *&time[16] = v22;
-    v73 = *&a3->var1.var1;
+    v73 = *&quality->var1.var1;
     [(VCPMovieHighlightAnalyzer *)self voiceScoreForTimerange:time];
     v21 = v23;
   }
 
-  v24 = *&a3->var0.var3;
-  *time = *&a3->var0.var0;
+  v24 = *&quality->var0.var3;
+  *time = *&quality->var0.var0;
   *&time[16] = v24;
-  v73 = *&a3->var1.var1;
-  [(VCPMovieHighlightAnalyzer *)self junkScoreForTimerange:time lengthScale:!v6];
+  v73 = *&quality->var1.var1;
+  [(VCPMovieHighlightAnalyzer *)self junkScoreForTimerange:time lengthScale:!effectCopy];
   v71 = v25;
-  v26 = *&a3->var0.var3;
-  *time = *&a3->var0.var0;
+  v26 = *&quality->var0.var3;
+  *time = *&quality->var0.var0;
   *&time[16] = v26;
-  v73 = *&a3->var1.var1;
+  v73 = *&quality->var1.var1;
   [(VCPMovieHighlightAnalyzer *)self cameraMotionScoreForTimerange:time];
   v28 = v27;
-  v29 = *&a3->var0.var3;
-  *time = *&a3->var0.var0;
+  v29 = *&quality->var0.var3;
+  *time = *&quality->var0.var0;
   *&time[16] = v29;
-  v73 = *&a3->var1.var1;
+  v73 = *&quality->var1.var1;
   [(VCPMovieHighlightAnalyzer *)self visualPleasingScoreForTimerange:time];
   v31 = v30;
-  v32 = *&a3->var0.var3;
-  *time = *&a3->var0.var0;
+  v32 = *&quality->var0.var3;
+  *time = *&quality->var0.var0;
   *&time[16] = v32;
-  v73 = *&a3->var1.var1;
+  v73 = *&quality->var1.var1;
   [(VCPMovieHighlightAnalyzer *)self computeHumanActionScoreInTimerange:time];
   v34 = v33;
-  v35 = *&a3->var0.var3;
-  *time = *&a3->var0.var0;
+  v35 = *&quality->var0.var3;
+  *time = *&quality->var0.var0;
   *&time[16] = v35;
-  v73 = *&a3->var1.var1;
+  v73 = *&quality->var1.var1;
   [(VCPMovieHighlightAnalyzer *)self computeHumanPoseScoreInTimerange:time];
-  if (v5)
+  if (stickerCopy)
   {
     LODWORD(v37) = 1062165545;
     *&v36 = v14;
@@ -8758,7 +8758,7 @@ LABEL_3:
   else
   {
     v50 = v17 * 1.1;
-    if (!v6)
+    if (!effectCopy)
     {
       v50 = v17;
     }
@@ -8845,14 +8845,14 @@ LABEL_3:
     }
 
     v65 = 1.0;
-    if (!v6)
+    if (!effectCopy)
     {
-      *time = *&a3->var1.var0;
-      *&time[16] = a3->var1.var3;
+      *time = *&quality->var1.var0;
+      *&time[16] = quality->var1.var3;
       v66 = (CMTimeGetSeconds(time) + -3.0) / 424.26001;
       v67 = erff(v66);
-      *time = *&a3->var1.var0;
-      *&time[16] = a3->var1.var3;
+      *time = *&quality->var1.var0;
+      *&time[16] = quality->var1.var3;
       if (CMTimeGetSeconds(time) <= 10.0)
       {
         v65 = v67 + 1.0;
@@ -8860,8 +8860,8 @@ LABEL_3:
 
       else
       {
-        *time = *&a3->var1.var0;
-        *&time[16] = a3->var1.var3;
+        *time = *&quality->var1.var0;
+        *&time[16] = quality->var1.var3;
         v68 = (10.0 - CMTimeGetSeconds(time)) / 424.26001;
         v65 = erff(v68) + 1.0;
       }
@@ -8890,7 +8890,7 @@ LABEL_3:
   }
 }
 
-- (float)qualityScoreForTimerange:(id *)a3
+- (float)qualityScoreForTimerange:(id *)timerange
 {
   if (![(NSArray *)self->_qualityResults count])
   {
@@ -8910,10 +8910,10 @@ LABEL_3:
     v12 = [(NSArray *)self->_qualityResults objectAtIndex:v5];
     memset(&v35, 0, sizeof(v35));
     CMTimeRangeMakeFromDictionary(&v35, v12);
-    v13 = *&a3->var0.var3;
-    *&range.start.value = *&a3->var0.var0;
+    v13 = *&timerange->var0.var3;
+    *&range.start.value = *&timerange->var0.var0;
     *&range.start.epoch = v13;
-    *&range.duration.timescale = *&a3->var1.var1;
+    *&range.duration.timescale = *&timerange->var1.var1;
     memset(&v34, 0, sizeof(v34));
     otherRange = v35;
     CMTimeRangeGetIntersection(&v34, &range, &otherRange);
@@ -8999,14 +8999,14 @@ LABEL_3:
   return result;
 }
 
-- (float)actionScoreForTimerange:(id *)a3
+- (float)actionScoreForTimerange:(id *)timerange
 {
   v55 = *MEMORY[0x1E69E9840];
   memset(&v52, 0, sizeof(v52));
-  v4 = *&a3->var0.var3;
-  *&range.start.value = *&a3->var0.var0;
+  v4 = *&timerange->var0.var3;
+  *&range.start.value = *&timerange->var0.var0;
   *&range.start.epoch = v4;
-  *&range.duration.timescale = *&a3->var1.var1;
+  *&range.duration.timescale = *&timerange->var1.var1;
   CMTimeRangeGetEnd(&v52, &range);
   v47 = 0u;
   v48 = 0u;
@@ -9043,10 +9043,10 @@ LABEL_3:
 
       time2 = range;
       memset(&time1, 0, sizeof(time1));
-      v11 = *&a3->var0.var3;
-      *&otherRange.start.value = *&a3->var0.var0;
+      v11 = *&timerange->var0.var3;
+      *&otherRange.start.value = *&timerange->var0.var0;
       *&otherRange.start.epoch = v11;
-      *&otherRange.duration.timescale = *&a3->var1.var1;
+      *&otherRange.duration.timescale = *&timerange->var1.var1;
       CMTimeRangeGetIntersection(&time1, &time2, &otherRange);
       if ((time1.start.flags & 1) == 0 || (time1.duration.flags & 1) == 0 || time1.duration.epoch || time1.duration.value < 0 || (time2.start = time1.duration, *&otherRange.start.value = *v7, otherRange.start.epoch = *(v7 + 16), CMTimeCompare(&time2.start, &otherRange.start)))
       {
@@ -9180,12 +9180,12 @@ LABEL_14:
   return result;
 }
 
-- (float)voiceScoreForTimerange:(id *)a3
+- (float)voiceScoreForTimerange:(id *)timerange
 {
-  v3 = *&a3->var0.var3;
-  v9[0] = *&a3->var0.var0;
+  v3 = *&timerange->var0.var3;
+  v9[0] = *&timerange->var0.var0;
   v9[1] = v3;
-  v9[2] = *&a3->var1.var1;
+  v9[2] = *&timerange->var1.var1;
   [(VCPMovieHighlightAnalyzer *)self computeVoiceScoreInTimeRange:v9];
   v5 = expf(((1.0 - v4) * (1.0 - v4)) * -4.0);
   if (v5 < 1.0)
@@ -9208,7 +9208,7 @@ LABEL_14:
   return result;
 }
 
-- (float)visualPleasingScoreForTimerange:(id *)a3
+- (float)visualPleasingScoreForTimerange:(id *)timerange
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
@@ -9232,10 +9232,10 @@ LABEL_14:
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = *&a3->var0.var3;
-        *&range.start.value = *&a3->var0.var0;
+        v11 = *&timerange->var0.var3;
+        *&range.start.value = *&timerange->var0.var0;
         *&range.start.epoch = v11;
-        *&range.duration.timescale = *&a3->var1.var1;
+        *&range.duration.timescale = *&timerange->var1.var1;
         if (v10)
         {
           [v10 timestamp];
@@ -9272,7 +9272,7 @@ LABEL_14:
   return -1.0;
 }
 
-- (float)cameraMotionScoreForTimerange:(id *)a3
+- (float)cameraMotionScoreForTimerange:(id *)timerange
 {
   v55 = *MEMORY[0x1E69E9840];
   v49 = 0u;
@@ -9303,10 +9303,10 @@ LABEL_3:
       memset(&v47, 0, sizeof(v47));
       range = v48;
       CMTimeRangeGetEnd(&v47, &range);
-      v8 = *&a3->var0.var3;
-      *&range.start.value = *&a3->var0.var0;
+      v8 = *&timerange->var0.var3;
+      *&range.start.value = *&timerange->var0.var0;
       *&range.start.epoch = v8;
-      *&range.duration.timescale = *&a3->var1.var1;
+      *&range.duration.timescale = *&timerange->var1.var1;
       CMTimeRangeGetEnd(&time1.start, &range);
       *&range.start.value = *&v48.start.value;
       range.start.epoch = v48.start.epoch;
@@ -9318,10 +9318,10 @@ LABEL_3:
       }
 
       time2 = v48;
-      v9 = *&a3->var0.var3;
-      *&time1.start.value = *&a3->var0.var0;
+      v9 = *&timerange->var0.var3;
+      *&time1.start.value = *&timerange->var0.var0;
       *&time1.start.epoch = v9;
-      *&time1.duration.timescale = *&a3->var1.var1;
+      *&time1.duration.timescale = *&timerange->var1.var1;
       CMTimeRangeGetIntersection(&range, &time2, &time1);
       v48 = range;
       if ((range.start.flags & 1) == 0 || (v48.duration.flags & 1) == 0 || v48.duration.epoch || v48.duration.value < 0 || (range.start = v48.duration, *&time2.start.value = *MEMORY[0x1E6960CC0], time2.start.epoch = *(MEMORY[0x1E6960CC0] + 16), CMTimeCompare(&range.start, &time2.start)))
@@ -9362,10 +9362,10 @@ LABEL_14:
             if ((time2.start.flags & 1) == 0 || (time2.duration.flags & 1) == 0 || time2.duration.epoch || time2.duration.value < 0 || (time1.start = time2.duration, *&otherRange.start.value = *MEMORY[0x1E6960CC0], otherRange.start.epoch = *(MEMORY[0x1E6960CC0] + 16), CMTimeCompare(&time1.start, &otherRange.start)))
             {
               v15 = [(__CFDictionary *)v14 objectForKey:@"flags"];
-              v16 = [v15 integerValue];
-              v17 = v16 & 0x3FFC0;
-              v18 = __clz(__rbit32(v16 & 0x2FFC0));
-              if (v19 | ((v16 & 0x2FFC0) == 0))
+              integerValue = [v15 integerValue];
+              v17 = integerValue & 0x3FFC0;
+              v18 = __clz(__rbit32(integerValue & 0x2FFC0));
+              if (v19 | ((integerValue & 0x2FFC0) == 0))
               {
                 v20 = 0;
               }
@@ -9449,8 +9449,8 @@ LABEL_37:
     v29 = 0.0;
     if (v4 >= 0.5 && v5 != 0.0)
     {
-      *&v48.start.value = *&a3->var1.var0;
-      v48.start.epoch = a3->var1.var3;
+      *&v48.start.value = *&timerange->var1.var0;
+      v48.start.epoch = timerange->var1.var3;
       v29 = v6 / CMTimeGetSeconds(&v48.start);
     }
   }
@@ -9477,14 +9477,14 @@ LABEL_37:
   return result;
 }
 
-- (float)subtleMotionScoreForTimerange:(id *)a3
+- (float)subtleMotionScoreForTimerange:(id *)timerange
 {
   v72 = *MEMORY[0x1E69E9840];
   memset(&v68, 0, sizeof(v68));
-  v3 = *&a3->var0.var3;
-  *&range.start.value = *&a3->var0.var0;
+  v3 = *&timerange->var0.var3;
+  *&range.start.value = *&timerange->var0.var0;
   *&range.start.epoch = v3;
-  *&range.duration.timescale = *&a3->var1.var1;
+  *&range.duration.timescale = *&timerange->var1.var1;
   CMTimeRangeGetEnd(&v68, &range);
   v63 = 0u;
   v64 = 0u;
@@ -9521,10 +9521,10 @@ LABEL_3:
 
       time2 = range;
       memset(&time1, 0, sizeof(time1));
-      v9 = *&a3->var0.var3;
-      *&otherRange.start.value = *&a3->var0.var0;
+      v9 = *&timerange->var0.var3;
+      *&otherRange.start.value = *&timerange->var0.var0;
       *&otherRange.start.epoch = v9;
-      *&otherRange.duration.timescale = *&a3->var1.var1;
+      *&otherRange.duration.timescale = *&timerange->var1.var1;
       CMTimeRangeGetIntersection(&time1, &time2, &otherRange);
       if ((time1.start.flags & 1) == 0 || (time1.duration.flags & 1) == 0 || time1.duration.epoch || time1.duration.value < 0 || (time2.start = time1.duration, *&otherRange.start.value = *v5, otherRange.start.epoch = *(v5 + 16), CMTimeCompare(&time2.start, &otherRange.start)))
       {
@@ -9647,17 +9647,17 @@ LABEL_32:
                 if ((otherRange.start.flags & 1) == 0 || (otherRange.duration.flags & 1) == 0 || otherRange.duration.epoch || otherRange.duration.value < 0 || (time.start = otherRange.duration, *&v54.start.value = *v5, v54.start.epoch = *(v5 + 16), CMTimeCompare(&time.start, &v54.start)))
                 {
                   v32 = [(__CFDictionary *)v31 objectForKey:@"flags"];
-                  v33 = [v32 integerValue];
+                  integerValue = [v32 integerValue];
                   time.start = otherRange.duration;
                   v34 = CMTimeGetSeconds(&time.start);
-                  if (v35 | ((v33 & 0x2FFC0) == 0))
+                  if (v35 | ((integerValue & 0x2FFC0) == 0))
                   {
                     v36 = 0;
                   }
 
                   else
                   {
-                    v36 = (v33 & 0x40) == 64;
+                    v36 = (integerValue & 0x40) == 64;
                   }
 
                   v37 = v36;
@@ -9745,9 +9745,9 @@ LABEL_32:
   return result;
 }
 
-- (float)junkScoreForTimerange:(id *)a3 lengthScale:(BOOL)a4
+- (float)junkScoreForTimerange:(id *)timerange lengthScale:(BOOL)scale
 {
-  v4 = a4;
+  scaleCopy = scale;
   v33 = *MEMORY[0x1E69E9840];
   v28 = 0u;
   v29 = 0u;
@@ -9780,10 +9780,10 @@ LABEL_14:
       CMTimeRangeMakeFromDictionary(&v27, v12);
       range = v27;
       memset(&v26, 0, sizeof(v26));
-      v13 = *&a3->var0.var3;
-      *&v24.start.value = *&a3->var0.var0;
+      v13 = *&timerange->var0.var3;
+      *&v24.start.value = *&timerange->var0.var0;
       *&v24.start.epoch = v13;
-      *&v24.duration.timescale = *&a3->var1.var1;
+      *&v24.duration.timescale = *&timerange->var1.var1;
       CMTimeRangeGetIntersection(&v26, &range, &v24);
       range.start = v26.duration;
       Seconds = CMTimeGetSeconds(&range.start);
@@ -9807,7 +9807,7 @@ LABEL_14:
   }
 
   v19 = v10 / v9;
-  if (v4)
+  if (scaleCopy)
   {
     v20 = (v19 * (erff((v9 * 3.0) + -2.0) + 1.0)) * 0.5;
     if (v20 >= *&[VCPMovieHighlightAnalyzer junkScoreForTimerange:lengthScale:]::kThreshold[4 * (v9 > 2.0)])

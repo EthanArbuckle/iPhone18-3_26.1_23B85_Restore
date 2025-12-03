@@ -1,35 +1,35 @@
 @interface ACCiAP2ShimServerClient
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (ACCiAP2ShimServerClient)initWithCapabilities:(unsigned int)a3 auditToken:(id *)a4 xpcConnection:(id)a5 eaProtocols:(id)a6 andBundleId:(id)a7;
-- (BOOL)canSendConnectionEventForAccessory:(id)a3;
-- (id)_applicationInfoForBundleIDSync:(id)a3;
+- (ACCiAP2ShimServerClient)initWithCapabilities:(unsigned int)capabilities auditToken:(id *)token xpcConnection:(id)connection eaProtocols:(id)protocols andBundleId:(id)id;
+- (BOOL)canSendConnectionEventForAccessory:(id)accessory;
+- (id)_applicationInfoForBundleIDSync:(id)sync;
 - (int)processId;
 - (void)dealloc;
 - (void)releaseProcessAssertion;
-- (void)takeProcessAssertion:(id)a3;
+- (void)takeProcessAssertion:(id)assertion;
 @end
 
 @implementation ACCiAP2ShimServerClient
 
-- (ACCiAP2ShimServerClient)initWithCapabilities:(unsigned int)a3 auditToken:(id *)a4 xpcConnection:(id)a5 eaProtocols:(id)a6 andBundleId:(id)a7
+- (ACCiAP2ShimServerClient)initWithCapabilities:(unsigned int)capabilities auditToken:(id *)token xpcConnection:(id)connection eaProtocols:(id)protocols andBundleId:(id)id
 {
   v52 = *MEMORY[0x277D85DE8];
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  connectionCopy = connection;
+  protocolsCopy = protocols;
+  idCopy = id;
   v50.receiver = self;
   v50.super_class = ACCiAP2ShimServerClient;
   v16 = [(ACCiAP2ShimServerClient *)&v50 init];
   v17 = v16;
   if (v16)
   {
-    v16->_capabilities = a3;
+    v16->_capabilities = capabilities;
     v16->_iapSessionRefCount = 0;
-    v18 = *&a4->var0[4];
-    *v16->_auditToken.val = *a4->var0;
+    v18 = *&token->var0[4];
+    *v16->_auditToken.val = *token->var0;
     *&v16->_auditToken.val[4] = v18;
-    objc_storeStrong(&v16->_xpcConnection, a5);
-    v19 = [v15 copy];
+    objc_storeStrong(&v16->_xpcConnection, connection);
+    v19 = [idCopy copy];
     bundleId = v17->_bundleId;
     v17->_bundleId = v19;
 
@@ -42,12 +42,12 @@
     v17->_entitlementForAllAccessories = 0;
     v17->_processAssertion = 0;
     v17->_processAssertionStartTime = 0;
-    v23 = [v14 copy];
+    v23 = [protocolsCopy copy];
     clientEAProtocols = v17->_clientEAProtocols;
     v17->_clientEAProtocols = v23;
 
-    v25 = *&a4->var0[4];
-    *buf = *a4->var0;
+    v25 = *&token->var0[4];
+    *buf = *token->var0;
     *&buf[16] = v25;
     v17->_entitlementForAllAccessories = __hasEntitlementForAuditToken(@"com.apple.private.externalaccessory.showallaccessories", buf);
     if (gLogObjects && gNumLogObjects >= 1)
@@ -69,7 +69,7 @@
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
       *buf = 67109120;
-      *&buf[4] = a3;
+      *&buf[4] = capabilities;
       _os_log_impl(&dword_23DC47000, v26, OS_LOG_TYPE_INFO, "[#ServerClient] INIT - capability=0x%x", buf, 8u);
     }
 
@@ -92,13 +92,13 @@
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
       v30 = "YES";
-      if ((a3 & 0x10) == 0)
+      if ((capabilities & 0x10) == 0)
       {
         v30 = "NO";
       }
 
       *buf = 138412546;
-      *&buf[4] = v15;
+      *&buf[4] = idCopy;
       *&buf[12] = 2080;
       *&buf[14] = v30;
       _os_log_impl(&dword_23DC47000, v28, OS_LOG_TYPE_INFO, "[#ServerClient] %@ supports EA while suspended = %s", buf, 0x16u);
@@ -123,13 +123,13 @@
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
       v33 = "YES";
-      if ((a3 & 0x20) == 0)
+      if ((capabilities & 0x20) == 0)
       {
         v33 = "NO";
       }
 
       *buf = 138412546;
-      *&buf[4] = v15;
+      *&buf[4] = idCopy;
       *&buf[12] = 2080;
       *&buf[14] = v33;
       _os_log_impl(&dword_23DC47000, v31, OS_LOG_TYPE_INFO, "[#ServerClient] %@ supports EA while backgrounded = %s", buf, 0x16u);
@@ -154,13 +154,13 @@
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
     {
       v36 = "YES";
-      if ((a3 & 0x8000) == 0)
+      if ((capabilities & 0x8000) == 0)
       {
         v36 = "NO";
       }
 
       *buf = 138412546;
-      *&buf[4] = v15;
+      *&buf[4] = idCopy;
       *&buf[12] = 2080;
       *&buf[14] = v36;
       _os_log_impl(&dword_23DC47000, v34, OS_LOG_TYPE_INFO, "[#ServerClient] %@ supports Application state = %s", buf, 0x16u);
@@ -207,8 +207,8 @@
     v45 = 0;
     if ((v17->_capabilities & 2) != 0)
     {
-      v44 = *&a4->var0[4];
-      *buf = *a4->var0;
+      v44 = *&token->var0[4];
+      *buf = *token->var0;
       *&buf[16] = v44;
       if (__hasEntitlementForAuditToken(@"com.apple.iapd.accessibility", buf))
       {
@@ -358,10 +358,10 @@ void __34__ACCiAP2ShimServerClient_dealloc__block_invoke(uint64_t a1)
   }
 }
 
-- (void)takeProcessAssertion:(id)a3
+- (void)takeProcessAssertion:(id)assertion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assertionCopy = assertion;
   if (!self->_processAssertion)
   {
 LABEL_7:
@@ -495,16 +495,16 @@ LABEL_35:
   }
 }
 
-- (BOOL)canSendConnectionEventForAccessory:(id)a3
+- (BOOL)canSendConnectionEventForAccessory:(id)accessory
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACCiAP2ShimServerClient *)self capabilities];
-  v6 = [(ACCiAP2ShimServerClient *)self capabilities];
-  v7 = [(ACCiAP2ShimServerClient *)self capabilities];
-  v8 = [(ACCiAP2ShimServerClient *)self applicationState];
-  v28 = [(ACCiAP2ShimServerClient *)self applicationState];
-  v9 = [v4 objectForKey:*MEMORY[0x277D18450]];
+  accessoryCopy = accessory;
+  capabilities = [(ACCiAP2ShimServerClient *)self capabilities];
+  capabilities2 = [(ACCiAP2ShimServerClient *)self capabilities];
+  capabilities3 = [(ACCiAP2ShimServerClient *)self capabilities];
+  applicationState = [(ACCiAP2ShimServerClient *)self applicationState];
+  applicationState2 = [(ACCiAP2ShimServerClient *)self applicationState];
+  v9 = [accessoryCopy objectForKey:*MEMORY[0x277D18450]];
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -548,14 +548,14 @@ LABEL_35:
 
   if ((v31[3] & 1) != 0 || self->_entitlementForAllAccessories)
   {
-    v13 = v6 & 0x20;
-    v14 = v7 & 0x8000;
+    v13 = capabilities2 & 0x20;
+    v14 = capabilities3 & 0x8000;
     v15 = 1;
-    v16 = v5 & 0x10;
-    if ((v5 & 0x10) == 0 && v7 < 0)
+    v16 = capabilities & 0x10;
+    if ((capabilities & 0x10) == 0 && capabilities3 < 0)
     {
-      v17 = v8 == 4;
-      if (v28 > 4)
+      v17 = applicationState == 4;
+      if (applicationState2 > 4)
       {
         v17 = 1;
       }
@@ -565,7 +565,7 @@ LABEL_35:
         v17 = 0;
       }
 
-      v15 = v28 > 4 || v17;
+      v15 = applicationState2 > 4 || v17;
     }
 
     if (gLogObjects && gNumLogObjects >= 1)
@@ -587,11 +587,11 @@ LABEL_35:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v26 = v9;
-      v27 = v4;
+      v27 = accessoryCopy;
       v20 = self->_bundleId;
       entitlementForAllAccessories = self->_entitlementForAllAccessories;
       v22 = *(v31 + 24);
-      v23 = [(ACCiAP2ShimServerClient *)self applicationState];
+      applicationState3 = [(ACCiAP2ShimServerClient *)self applicationState];
       *buf = 138414594;
       v35 = v20;
       v36 = 1024;
@@ -599,9 +599,9 @@ LABEL_35:
       v38 = 1024;
       v39 = v13 >> 5;
       v40 = 1024;
-      v41 = v8 == 4;
+      v41 = applicationState == 4;
       v42 = 1024;
-      v43 = v28 > 4;
+      v43 = applicationState2 > 4;
       v44 = 1024;
       v45 = v14 >> 15;
       v46 = 1024;
@@ -609,12 +609,12 @@ LABEL_35:
       v48 = 1024;
       v49 = v22;
       v50 = 1024;
-      v51 = v23;
+      v51 = applicationState3;
       v52 = 1024;
       v53 = v15;
       _os_log_impl(&dword_23DC47000, v18, OS_LOG_TYPE_INFO, "[#ServerClient] bundleID %@ supportsEAWhenSuspended = %d, supportsEAInBackground = %d, clientAppStateInBackground = %d, clientAppStateInForeground = %d, clientLinksUIApplication = %d, _entitlementForAllAccessories = %d, anyProtocolFound = %d, self.applicationState = 0x%X, canSendConnectionEvent = %d", buf, 0x42u);
       v9 = v26;
-      v4 = v27;
+      accessoryCopy = v27;
     }
   }
 
@@ -671,11 +671,11 @@ void __62__ACCiAP2ShimServerClient_canSendConnectionEventForAccessory___block_in
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_applicationInfoForBundleIDSync:(id)a3
+- (id)_applicationInfoForBundleIDSync:(id)sync
 {
-  v3 = a3;
+  syncCopy = sync;
   v4 = _getApplicationStateMonitor();
-  v5 = [v4 applicationInfoForApplication:v3];
+  v5 = [v4 applicationInfoForApplication:syncCopy];
 
   return v5;
 }
@@ -690,9 +690,9 @@ void __62__ACCiAP2ShimServerClient_canSendConnectionEventForAccessory___block_in
     {
       v4 = [(ACCiAP2ShimServerClient *)self _applicationInfoForBundleIDSync:?];
       v5 = [v4 valueForKey:*MEMORY[0x277CEEE80]];
-      v6 = [v5 unsignedIntegerValue];
+      unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-      self->_processId = v6;
+      self->_processId = unsignedIntegerValue;
       return self->_processId;
     }
 

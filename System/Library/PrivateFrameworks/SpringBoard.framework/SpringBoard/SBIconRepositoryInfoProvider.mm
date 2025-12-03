@@ -3,11 +3,11 @@
 - (NSArray)applicationPlaceholders;
 - (NSArray)applications;
 - (SBIconRepositoryInfoProvider)init;
-- (SBIconRepositoryInfoProvider)initWithApplicationController:(id)a3 applicationPlaceholderController:(id)a4;
-- (void)addApplicationInfoProviderObserver:(id)a3;
+- (SBIconRepositoryInfoProvider)initWithApplicationController:(id)controller applicationPlaceholderController:(id)placeholderController;
+- (void)addApplicationInfoProviderObserver:(id)observer;
 - (void)dealloc;
-- (void)installedAppPlaceholdersDidChange:(id)a3;
-- (void)installedAppsDidChange:(id)a3;
+- (void)installedAppPlaceholdersDidChange:(id)change;
+- (void)installedAppsDidChange:(id)change;
 @end
 
 @implementation SBIconRepositoryInfoProvider
@@ -31,28 +31,28 @@ void __46__SBIconRepositoryInfoProvider_sharedInstance__block_invoke()
   sharedInstance_sharedInstance_6 = v0;
 }
 
-- (SBIconRepositoryInfoProvider)initWithApplicationController:(id)a3 applicationPlaceholderController:(id)a4
+- (SBIconRepositoryInfoProvider)initWithApplicationController:(id)controller applicationPlaceholderController:(id)placeholderController
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  placeholderControllerCopy = placeholderController;
   v17.receiver = self;
   v17.super_class = SBIconRepositoryInfoProvider;
   v9 = [(SBIconRepositoryInfoProvider *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_applicationController, a3);
-    objc_storeStrong(&v10->_applicationPlaceholderController, a4);
-    v11 = [v7 allApplications];
-    v12 = [v11 copy];
+    objc_storeStrong(&v9->_applicationController, controller);
+    objc_storeStrong(&v10->_applicationPlaceholderController, placeholderController);
+    allApplications = [controllerCopy allApplications];
+    v12 = [allApplications copy];
     cachedApplications = v10->_cachedApplications;
     v10->_cachedApplications = v12;
 
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v10 selector:sel_installedAppsDidChange_ name:@"SBInstalledApplicationsDidChangeNotification" object:v7];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel_installedAppsDidChange_ name:@"SBInstalledApplicationsDidChangeNotification" object:controllerCopy];
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v10 selector:sel_installedAppPlaceholdersDidChange_ name:@"SBApplicationPlaceholdersDidChangeNotification" object:v8];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v10 selector:sel_installedAppPlaceholdersDidChange_ name:@"SBApplicationPlaceholdersDidChangeNotification" object:placeholderControllerCopy];
   }
 
   return v10;
@@ -69,8 +69,8 @@ void __46__SBIconRepositoryInfoProvider_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBIconRepositoryInfoProvider;
@@ -79,61 +79,61 @@ void __46__SBIconRepositoryInfoProvider_sharedInstance__block_invoke()
 
 - (NSArray)applications
 {
-  v2 = [(SBIconRepositoryInfoProvider *)self applicationController];
-  v3 = [v2 allApplications];
+  applicationController = [(SBIconRepositoryInfoProvider *)self applicationController];
+  allApplications = [applicationController allApplications];
 
-  return v3;
+  return allApplications;
 }
 
 - (NSArray)applicationPlaceholders
 {
-  v2 = [(SBIconRepositoryInfoProvider *)self applicationPlaceholderController];
-  v3 = [v2 placeholdersByDisplayID];
-  v4 = [v3 allValues];
+  applicationPlaceholderController = [(SBIconRepositoryInfoProvider *)self applicationPlaceholderController];
+  placeholdersByDisplayID = [applicationPlaceholderController placeholdersByDisplayID];
+  allValues = [placeholdersByDisplayID allValues];
 
-  return v4;
+  return allValues;
 }
 
-- (void)addApplicationInfoProviderObserver:(id)a3
+- (void)addApplicationInfoProviderObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)installedAppsDidChange:(id)a3
+- (void)installedAppsDidChange:(id)change
 {
   v74 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBIconRepositoryInfoProvider *)self applicationController];
-  v45 = v4;
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKey:@"SBInstalledApplicationsAddedBundleIDs"];
-  v50 = [v6 objectForKey:@"SBInstalledApplicationsReplacedBundleIDs"];
-  v49 = [v6 objectForKey:@"SBInstalledApplicationsUpdatedBundleIDs"];
-  v44 = v6;
-  v48 = [v6 objectForKey:@"SBInstalledApplicationsRemovedBundleIDs"];
-  v41 = [(SBIconRepositoryInfoProvider *)self cachedApplications];
+  changeCopy = change;
+  applicationController = [(SBIconRepositoryInfoProvider *)self applicationController];
+  v45 = changeCopy;
+  userInfo = [changeCopy userInfo];
+  v7 = [userInfo objectForKey:@"SBInstalledApplicationsAddedBundleIDs"];
+  v50 = [userInfo objectForKey:@"SBInstalledApplicationsReplacedBundleIDs"];
+  v49 = [userInfo objectForKey:@"SBInstalledApplicationsUpdatedBundleIDs"];
+  v44 = userInfo;
+  v48 = [userInfo objectForKey:@"SBInstalledApplicationsRemovedBundleIDs"];
+  cachedApplications = [(SBIconRepositoryInfoProvider *)self cachedApplications];
   v43 = v7;
-  v8 = [v7 allObjects];
+  allObjects = [v7 allObjects];
   v69[0] = MEMORY[0x277D85DD0];
   v69[1] = 3221225472;
   v69[2] = __55__SBIconRepositoryInfoProvider_installedAppsDidChange___block_invoke;
   v69[3] = &unk_2783BC368;
-  v9 = v5;
+  v9 = applicationController;
   v70 = v9;
-  v10 = [v8 bs_compactMap:v69];
+  v10 = [allObjects bs_compactMap:v69];
 
   if ([v10 count])
   {
@@ -170,23 +170,23 @@ void __46__SBIconRepositoryInfoProvider_sharedInstance__block_invoke()
     }
   }
 
-  v17 = [v49 allObjects];
+  allObjects2 = [v49 allObjects];
   v63[0] = MEMORY[0x277D85DD0];
   v63[1] = 3221225472;
   v63[2] = __55__SBIconRepositoryInfoProvider_installedAppsDidChange___block_invoke_2;
   v63[3] = &unk_2783BC368;
   v18 = v9;
   v64 = v18;
-  v19 = [v17 bs_compactMap:v63];
+  v19 = [allObjects2 bs_compactMap:v63];
 
-  v20 = [v50 allObjects];
+  allObjects3 = [v50 allObjects];
   v61[0] = MEMORY[0x277D85DD0];
   v61[1] = 3221225472;
   v61[2] = __55__SBIconRepositoryInfoProvider_installedAppsDidChange___block_invoke_3;
   v61[3] = &unk_2783BC368;
   v40 = v18;
   v62 = v40;
-  v21 = [v20 bs_compactMap:v61];
+  v21 = [allObjects3 bs_compactMap:v61];
 
   v46 = v21;
   v47 = v19;
@@ -239,14 +239,14 @@ void __46__SBIconRepositoryInfoProvider_sharedInstance__block_invoke()
     v19 = v47;
   }
 
-  v30 = [v48 allObjects];
+  allObjects4 = [v48 allObjects];
   v55[0] = MEMORY[0x277D85DD0];
   v55[1] = 3221225472;
   v55[2] = __55__SBIconRepositoryInfoProvider_installedAppsDidChange___block_invoke_4;
   v55[3] = &unk_2783BC368;
-  v31 = v41;
+  v31 = cachedApplications;
   v56 = v31;
-  v32 = [v30 bs_compactMap:v55];
+  v32 = [allObjects4 bs_compactMap:v55];
 
   if ([v32 count])
   {
@@ -288,8 +288,8 @@ void __46__SBIconRepositoryInfoProvider_sharedInstance__block_invoke()
     v31 = v42;
   }
 
-  v39 = [v40 allApplications];
-  [(SBIconRepositoryInfoProvider *)self setCachedApplications:v39];
+  allApplications = [v40 allApplications];
+  [(SBIconRepositoryInfoProvider *)self setCachedApplications:allApplications];
 }
 
 id __55__SBIconRepositoryInfoProvider_installedAppsDidChange___block_invoke_4(uint64_t a1, void *a2)
@@ -315,14 +315,14 @@ uint64_t __55__SBIconRepositoryInfoProvider_installedAppsDidChange___block_invok
   return v4;
 }
 
-- (void)installedAppPlaceholdersDidChange:(id)a3
+- (void)installedAppPlaceholdersDidChange:(id)change
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"__placeholdersAdded"];
-  v6 = [v4 objectForKey:@"__placeholdersModified"];
-  v26 = v4;
-  v7 = [v4 objectForKey:@"__placeholdersRemoved"];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKey:@"__placeholdersAdded"];
+  v6 = [userInfo objectForKey:@"__placeholdersModified"];
+  v26 = userInfo;
+  v7 = [userInfo objectForKey:@"__placeholdersRemoved"];
   if ([v5 count])
   {
     v37 = 0u;

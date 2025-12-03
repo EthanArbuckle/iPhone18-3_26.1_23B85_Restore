@@ -1,25 +1,25 @@
 @interface PXPhotosUIViewController
-+ (id)_roundedButtonConfigurationWithSymbolName:(id)a3 useOriginalSymbolAppearance:(BOOL)a4 inset:(double)a5 fontSize:(double)a6 weight:(int64_t)a7 groupName:(id)a8;
-+ (void)_configureOpacityOfSecondaryToolbarController:(id)a3 withViewModel:(id)a4 secondaryToolbarAlpha:(double)a5;
-- (BOOL)assetsSharingHelper:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5;
++ (id)_roundedButtonConfigurationWithSymbolName:(id)name useOriginalSymbolAppearance:(BOOL)appearance inset:(double)inset fontSize:(double)size weight:(int64_t)weight groupName:(id)groupName;
++ (void)_configureOpacityOfSecondaryToolbarController:(id)controller withViewModel:(id)model secondaryToolbarAlpha:(double)alpha;
+- (BOOL)assetsSharingHelper:(id)helper dismissViewController:(id)controller completionHandler:(id)handler;
 - (BOOL)canBecomeFirstResponder;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)canResetToInitialState;
 - (BOOL)hidesNavbar;
 - (BOOL)hidesToolbar;
 - (BOOL)isScrolledToTop;
-- (BOOL)photosContentController:(id)a3 canPlayAssetInline:(id)a4;
-- (BOOL)photosContentController:(id)a3 isDisplayAssetEligibleForAutoPlayback:(id)a4;
-- (BOOL)photosContentController:(id)a3 isDisplayAssetEligibleForPlaybackWithSettlingEffect:(id)a4;
-- (BOOL)photosContentController:(id)a3 pushViewController:(id)a4;
+- (BOOL)photosContentController:(id)controller canPlayAssetInline:(id)inline;
+- (BOOL)photosContentController:(id)controller isDisplayAssetEligibleForAutoPlayback:(id)playback;
+- (BOOL)photosContentController:(id)controller isDisplayAssetEligibleForPlaybackWithSettlingEffect:(id)effect;
+- (BOOL)photosContentController:(id)controller pushViewController:(id)viewController;
 - (BOOL)prefersHomeIndicatorAutoHidden;
 - (BOOL)pu_shouldOptOutFromChromelessBars;
-- (BOOL)px_scrollToInitialPositionAnimated:(BOOL)a3;
+- (BOOL)px_scrollToInitialPositionAnimated:(BOOL)animated;
 - (BOOL)resetToInitialStateIfPossible;
-- (BOOL)scrollToBottomAnimated:(BOOL)a3;
+- (BOOL)scrollToBottomAnimated:(BOOL)animated;
 - (BOOL)shouldAlwaysRespectToolbarActionPlacementPreference;
-- (BOOL)shouldBeginScrollingContentWithPanAtLocation:(CGPoint)a3 inCoordinateSpace:(id)a4 velocity:(CGPoint)a5;
-- (CGRect)layout:(id)a3 visibleRectForRequestedVisibleRect:(CGRect)a4;
+- (BOOL)shouldBeginScrollingContentWithPanAtLocation:(CGPoint)location inCoordinateSpace:(id)space velocity:(CGPoint)velocity;
+- (CGRect)layout:(id)layout visibleRectForRequestedVisibleRect:(CGRect)rect;
 - (NSArray)visibleUUIDs;
 - (NSSet)hiddenAssetReferences;
 - (NSString)authenticationTitle;
@@ -34,9 +34,9 @@
 - (PXPhotosContentController)contentController;
 - (PXPhotosFilterToggleButtonController)filterButtonController;
 - (PXPhotosStatusToggleButtonController)statusButtonController;
-- (PXPhotosUIViewController)initWithCoder:(id)a3;
-- (PXPhotosUIViewController)initWithConfiguration:(id)a3;
-- (PXPhotosUIViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PXPhotosUIViewController)initWithCoder:(id)coder;
+- (PXPhotosUIViewController)initWithConfiguration:(id)configuration;
+- (PXPhotosUIViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (PXPhotosViewEventTracker)eventTracker;
 - (PXPhotosViewModel)viewModel;
 - (PXPhotosViewModel)viewModelIfLoaded;
@@ -45,61 +45,61 @@
 - (PXSplitViewController)observedSplitViewController;
 - (UIActivityItemsConfigurationReading)activityItemsConfiguration;
 - (UIContextMenuInteraction)contextMenuInteraction;
-- (UIEdgeInsets)maskPaddingForContentController:(id)a3;
+- (UIEdgeInsets)maskPaddingForContentController:(id)controller;
 - (UIEdgeInsets)px_layoutMargins;
 - (UIViewController)containerViewController;
 - (UIViewControllerInteractiveTransitioning)edgeSwipeDismissalInteraction;
 - (double)collapsibleFooterHeight;
 - (double)secondaryToolbarHeight;
-- (id)_createButtonForScrollingToNeighboringSectionInDirection:(unint64_t)a3;
+- (id)_createButtonForScrollingToNeighboringSectionInDirection:(unint64_t)direction;
 - (id)_defaultPresentationEnvironment;
-- (id)_popoverPresentationEnvironmentWithSourceItem:(id)a3;
+- (id)_popoverPresentationEnvironmentWithSourceItem:(id)item;
 - (id)_viewControllerForPresentationEnvironment;
-- (id)adjustHiddenAssetReferences:(id)a3;
-- (id)adjustOneUpAssetReferenceToScrollToVisible:(id)a3;
-- (id)barsControllerActionsForSelectionContextMenu:(id)a3;
-- (id)contentScrollViewForEdge:(unint64_t)a3;
+- (id)adjustHiddenAssetReferences:(id)references;
+- (id)adjustOneUpAssetReferenceToScrollToVisible:(id)visible;
+- (id)barsControllerActionsForSelectionContextMenu:(id)menu;
+- (id)contentScrollViewForEdge:(unint64_t)edge;
 - (id)createSearchOverlayController;
 - (id)currentDataSource;
-- (id)customRegionOfInterestForAssetReference:(id)a3;
+- (id)customRegionOfInterestForAssetReference:(id)reference;
 - (id)menuForPXAssetCollectionActionTypeTTRForLemonadeCollections;
-- (id)placementInContext:(id)a3 forItemReference:(id)a4;
-- (id)popoverPresentationEnvironmentForPhotosCloseButtonController:(id)a3;
-- (id)popoverPresentationEnvironmentForPhotosStatusToggleButtonController:(id)a3;
+- (id)placementInContext:(id)context forItemReference:(id)reference;
+- (id)popoverPresentationEnvironmentForPhotosCloseButtonController:(id)controller;
+- (id)popoverPresentationEnvironmentForPhotosStatusToggleButtonController:(id)controller;
 - (id)ppt_navigateToBottom;
-- (id)ppt_scrollToPreviousAssetOfAsset:(id)a3 completion:(id)a4;
+- (id)ppt_scrollToPreviousAssetOfAsset:(id)asset completion:(id)completion;
 - (id)preferredFocusEnvironments;
-- (id)presentationEnvironmentForActionPerformer:(id)a3;
-- (id)presentationEnvironmentForPhotosBarsController:(id)a3 withSourceItem:(id)a4;
+- (id)presentationEnvironmentForActionPerformer:(id)performer;
+- (id)presentationEnvironmentForPhotosBarsController:(id)controller withSourceItem:(id)item;
 - (id)pu_debugCurrentlySelectedAssets;
-- (id)px_diagnosticsItemProvidersForPoint:(CGPoint)a3 inCoordinateSpace:(id)a4;
+- (id)px_diagnosticsItemProvidersForPoint:(CGPoint)point inCoordinateSpace:(id)space;
 - (id)px_navigationDestination;
-- (id)regionOfInterestForActionPerformer:(id)a3;
-- (id)regionOfInterestForAssetReference:(id)a3 image:(CGImage *)a4 shouldSnapshotPlaceholder:(BOOL)a5;
+- (id)regionOfInterestForActionPerformer:(id)performer;
+- (id)regionOfInterestForAssetReference:(id)reference image:(CGImage *)image shouldSnapshotPlaceholder:(BOOL)placeholder;
 - (id)scrollView;
-- (id)targetForAction:(SEL)a3 withSender:(id)a4;
-- (id)windowForProgressPresentationInAssetsSharingHelper:(id)a3;
-- (unint64_t)photosContentControllerFilterSortedRecordsStrategy:(id)a3;
-- (unint64_t)routingOptionsForDestination:(id)a3;
-- (void)_completeNavigationToDestination:(id)a3 result:(int64_t)a4 error:(id)a5;
+- (id)targetForAction:(SEL)action withSender:(id)sender;
+- (id)windowForProgressPresentationInAssetsSharingHelper:(id)helper;
+- (unint64_t)photosContentControllerFilterSortedRecordsStrategy:(id)strategy;
+- (unint64_t)routingOptionsForDestination:(id)destination;
+- (void)_completeNavigationToDestination:(id)destination result:(int64_t)result error:(id)error;
 - (void)_configureDismissalInteractionController;
-- (void)_dismiss:(id)a3 completion:(id)a4;
+- (void)_dismiss:(id)_dismiss completion:(id)completion;
 - (void)_dismissOnInternalRequest;
-- (void)_handleDidEndScrolling:(id)a3;
+- (void)_handleDidEndScrolling:(id)scrolling;
 - (void)_invalidateObservedSplitViewController;
 - (void)_invalidateOneUpPresentationInteraction;
 - (void)_invalidateSidebarVisibilityDependentProperties;
-- (void)_modalDismiss:(id)a3 completion:(id)a4;
-- (void)_presentOneUpForSingleSelectedAssetWithActivity:(unint64_t)a3;
-- (void)_requestFocusUpdateWithAssetReference:(id)a3;
-- (void)_scrollToInitialPositionAnimated:(BOOL)a3;
+- (void)_modalDismiss:(id)dismiss completion:(id)completion;
+- (void)_presentOneUpForSingleSelectedAssetWithActivity:(unint64_t)activity;
+- (void)_requestFocusUpdateWithAssetReference:(id)reference;
+- (void)_scrollToInitialPositionAnimated:(BOOL)animated;
 - (void)_scrollToInitialPositionIfNecessary;
 - (void)_setNeedsUpdate;
 - (void)_showSearch;
 - (void)_updateBackButtonBehavior;
 - (void)_updateBackgroundColor;
 - (void)_updateBackgroundColorOverride;
-- (void)_updateContentUnavailableConfigurationUsingState:(id)a3;
+- (void)_updateContentUnavailableConfigurationUsingState:(id)state;
 - (void)_updateDismissalInteractionControllerProperties;
 - (void)_updateDrawerButtonVisibility;
 - (void)_updateEmptyBehaviorIfNeeded;
@@ -114,154 +114,154 @@
 - (void)_updateSidebarVisibilityDependentProperties;
 - (void)_updateSubviewsOrdering;
 - (void)_updateUIFromViewModelPrivacyState;
-- (void)_waitForAvailabilityOfAsset:(id)a3 completionHandler:(id)a4;
-- (void)_waitUntilOneUpPresentationCanStartAnimated:(BOOL)a3 completionHandler:(id)a4;
-- (void)addAssetsToAlbum:(id)a3;
-- (void)cancelSelectMode:(id)a3;
-- (void)containerView:(id)a3 willMoveToWindow:(id)a4;
+- (void)_waitForAvailabilityOfAsset:(id)asset completionHandler:(id)handler;
+- (void)_waitUntilOneUpPresentationCanStartAnimated:(BOOL)animated completionHandler:(id)handler;
+- (void)addAssetsToAlbum:(id)album;
+- (void)cancelSelectMode:(id)mode;
+- (void)containerView:(id)view willMoveToWindow:(id)window;
 - (void)dealloc;
-- (void)deselectAll:(id)a3;
+- (void)deselectAll:(id)all;
 - (void)ensureSwipeDismissalInteraction;
 - (void)invalidateHeaderView;
 - (void)loadView;
-- (void)navigateToAsset:(id)a3 inAssetContainer:(id)a4 revealInOneUp:(BOOL)a5 animated:(BOOL)a6 completionHandler:(id)a7;
-- (void)navigateToAssetReference:(id)a3;
-- (void)navigateToDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)needsUpdateForContentController:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)paste:(id)a3;
-- (void)photosBarsController:(id)a3 didRequestDismissWithSender:(id)a4;
-- (void)photosBarsController:(id)a3 didRequestSearchWithSender:(id)a4;
-- (void)photosBarsControllerDidUpdateBars:(id)a3 animated:(BOOL)a4;
-- (void)photosBarsControllerDidUpdateNavigationItemAppearance:(id)a3;
-- (void)photosCloseButtonControllerHandleAction:(id)a3;
+- (void)navigateToAsset:(id)asset inAssetContainer:(id)container revealInOneUp:(BOOL)up animated:(BOOL)animated completionHandler:(id)handler;
+- (void)navigateToAssetReference:(id)reference;
+- (void)navigateToDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler;
+- (void)needsUpdateForContentController:(id)controller;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)paste:(id)paste;
+- (void)photosBarsController:(id)controller didRequestDismissWithSender:(id)sender;
+- (void)photosBarsController:(id)controller didRequestSearchWithSender:(id)sender;
+- (void)photosBarsControllerDidUpdateBars:(id)bars animated:(BOOL)animated;
+- (void)photosBarsControllerDidUpdateNavigationItemAppearance:(id)appearance;
+- (void)photosCloseButtonControllerHandleAction:(id)action;
 - (void)playCollectionAsMemory;
-- (void)ppt_navigateToAssetReference:(id)a3 revealInOneUp:(BOOL)a4 completionHandler:(id)a5;
+- (void)ppt_navigateToAssetReference:(id)reference revealInOneUp:(BOOL)up completionHandler:(id)handler;
 - (void)preferencesDidChange;
 - (void)prepareForDismissal;
 - (void)px_containedViewControllerModalStateChanged;
 - (void)px_didTransitionBars;
 - (void)px_willTransitionBars;
-- (void)scrollToCenterAssetReference:(id)a3 completion:(id)a4;
-- (void)scrollToRevealAssetReference:(id)a3 completion:(id)a4;
-- (void)scrollViewControllerDidEndScrolling:(id)a3;
-- (void)scrollViewControllerDidScroll:(id)a3;
-- (void)scrollViewControllerWillBeginScrolling:(id)a3;
-- (void)scrollViewControllerWillEndScrolling:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5 currentContentOffset:(CGPoint)a6;
-- (void)selectAll:(id)a3;
-- (void)setAlternateContentView:(id)a3;
-- (void)setHiddenAssetReferences:(id)a3 animationType:(int64_t)a4;
-- (void)setHidesNavbar:(BOOL)a3;
-- (void)setHidesToolbar:(BOOL)a3;
-- (void)setObservedSplitViewController:(id)a3;
-- (void)setOneUpEnabled:(BOOL)a3;
-- (void)setPlacementOverride:(id)a3;
-- (void)setPlacementOverride:(id)a3 forItemReference:(id)a4;
-- (void)setSecondaryToolbarAlpha:(double)a3;
-- (void)setShouldAlwaysRespectToolbarActionPlacementPreference:(BOOL)a3;
-- (void)setShowingInitialLoadPlaceholder:(BOOL)a3;
-- (void)setTitle:(id)a3;
+- (void)scrollToCenterAssetReference:(id)reference completion:(id)completion;
+- (void)scrollToRevealAssetReference:(id)reference completion:(id)completion;
+- (void)scrollViewControllerDidEndScrolling:(id)scrolling;
+- (void)scrollViewControllerDidScroll:(id)scroll;
+- (void)scrollViewControllerWillBeginScrolling:(id)scrolling;
+- (void)scrollViewControllerWillEndScrolling:(id)scrolling withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset currentContentOffset:(CGPoint)contentOffset;
+- (void)selectAll:(id)all;
+- (void)setAlternateContentView:(id)view;
+- (void)setHiddenAssetReferences:(id)references animationType:(int64_t)type;
+- (void)setHidesNavbar:(BOOL)navbar;
+- (void)setHidesToolbar:(BOOL)toolbar;
+- (void)setObservedSplitViewController:(id)controller;
+- (void)setOneUpEnabled:(BOOL)enabled;
+- (void)setPlacementOverride:(id)override;
+- (void)setPlacementOverride:(id)override forItemReference:(id)reference;
+- (void)setSecondaryToolbarAlpha:(double)alpha;
+- (void)setShouldAlwaysRespectToolbarActionPlacementPreference:(BOOL)preference;
+- (void)setShowingInitialLoadPlaceholder:(BOOL)placeholder;
+- (void)setTitle:(id)title;
 - (void)showPlayer;
-- (void)swift_configureDismissalInteractionController:(id)a3;
-- (void)swift_handleViewModelChange:(unint64_t)a3;
-- (void)swift_initWithConfiguration:(id)a3;
-- (void)swift_scrollViewControllerDidScroll:(id)a3;
-- (void)toggleEditMode:(id)a3;
-- (void)toggleFilter:(id)a3;
-- (void)toggleSortOrder:(id)a3;
-- (void)toggleViewMode:(id)a3;
-- (void)uiInteractionDidExtendSelection:(id)a3;
-- (void)validateCommand:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)swift_configureDismissalInteractionController:(id)controller;
+- (void)swift_handleViewModelChange:(unint64_t)change;
+- (void)swift_initWithConfiguration:(id)configuration;
+- (void)swift_scrollViewControllerDidScroll:(id)scroll;
+- (void)toggleEditMode:(id)mode;
+- (void)toggleFilter:(id)filter;
+- (void)toggleSortOrder:(id)order;
+- (void)toggleViewMode:(id)mode;
+- (void)uiInteractionDidExtendSelection:(id)selection;
+- (void)validateCommand:(id)command;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewLayoutMarginsDidChange;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)willMoveToParentViewController:(id)a3;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
-- (void)zoomIn:(id)a3;
-- (void)zoomOut:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
+- (void)zoomIn:(id)in;
+- (void)zoomOut:(id)out;
 @end
 
 @implementation PXPhotosUIViewController
 
-- (void)swift_initWithConfiguration:(id)a3
+- (void)swift_initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   self;
-  sub_1A484F358(v4);
+  sub_1A484F358(configurationCopy);
 }
 
-- (void)swift_configureDismissalInteractionController:(id)a3
+- (void)swift_configureDismissalInteractionController:(id)controller
 {
-  v5 = *((*MEMORY[0x1E69E7D40] & *a3) + 0x178);
-  v7 = self;
-  v6 = a3;
+  v5 = *((*MEMORY[0x1E69E7D40] & *controller) + 0x178);
+  selfCopy = self;
+  controllerCopy = controller;
   v5(self, &off_1F1728F50);
 }
 
-- (void)swift_handleViewModelChange:(unint64_t)a3
+- (void)swift_handleViewModelChange:(unint64_t)change
 {
-  v4 = self;
-  sub_1A484FC0C(a3);
+  selfCopy = self;
+  sub_1A484FC0C(change);
 }
 
-- (void)swift_scrollViewControllerDidScroll:(id)a3
+- (void)swift_scrollViewControllerDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A485046C(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_1A485046C(scrollCopy);
 }
 
-- (id)customRegionOfInterestForAssetReference:(id)a3
+- (id)customRegionOfInterestForAssetReference:(id)reference
 {
-  v4 = a3;
-  v5 = self;
+  referenceCopy = reference;
+  selfCopy = self;
   sub_1A4850BD8();
 }
 
-- (id)adjustOneUpAssetReferenceToScrollToVisible:(id)a3
+- (id)adjustOneUpAssetReferenceToScrollToVisible:(id)visible
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(PXPhotosUIViewController *)v5 customRegionOfInterestForAssetReference:v4];
+  visibleCopy = visible;
+  selfCopy = self;
+  v6 = [(PXPhotosUIViewController *)selfCopy customRegionOfInterestForAssetReference:visibleCopy];
   if (v6)
   {
 
-    v7 = [(PXPhotosUIViewController *)v5 viewModel];
-    v8 = [(PXPhotosViewModel *)v7 currentDataSource];
+    viewModel = [(PXPhotosUIViewController *)selfCopy viewModel];
+    currentDataSource = [(PXPhotosViewModel *)viewModel currentDataSource];
 
-    v9 = [v8 firstAssetReference];
-    v4 = v9;
+    firstAssetReference = [currentDataSource firstAssetReference];
+    visibleCopy = firstAssetReference;
   }
 
-  return v4;
+  return visibleCopy;
 }
 
-- (id)adjustHiddenAssetReferences:(id)a3
+- (id)adjustHiddenAssetReferences:(id)references
 {
   sub_1A3C52C70(0, &qword_1EB126B50);
   sub_1A3C3A220(&qword_1EB126B48, &qword_1EB126B50);
   sub_1A524CF44();
-  v4 = self;
+  selfCopy = self;
   sub_1A4850E08();
 }
 
 - (void)showPlayer
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A4851278();
 }
 
-- (BOOL)shouldBeginScrollingContentWithPanAtLocation:(CGPoint)a3 inCoordinateSpace:(id)a4 velocity:(CGPoint)a5
+- (BOOL)shouldBeginScrollingContentWithPanAtLocation:(CGPoint)location inCoordinateSpace:(id)space velocity:(CGPoint)velocity
 {
-  y = a5.y;
+  y = velocity.y;
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = [(PXPhotosUIViewController *)v7 viewModel];
-  v9 = [(PXPhotosViewModel *)v8 isScrollDisabledForAxis:1];
+  selfCopy = self;
+  viewModel = [(PXPhotosUIViewController *)selfCopy viewModel];
+  v9 = [(PXPhotosViewModel *)viewModel isScrollDisabledForAxis:1];
 
   if (v9)
   {
@@ -274,8 +274,8 @@
   {
     if (y > 0.0)
     {
-      v11 = [(PXPhotosUIViewController *)v7 presentingViewController];
-      if (v11)
+      presentingViewController = [(PXPhotosUIViewController *)selfCopy presentingViewController];
+      if (presentingViewController)
       {
 
         sub_1A4852D2C();
@@ -290,7 +290,7 @@
 
 - (id)createSearchOverlayController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A4853F94();
 
   return v3;
@@ -317,73 +317,73 @@
   return WeakRetained;
 }
 
-- (id)_popoverPresentationEnvironmentWithSourceItem:(id)a3
+- (id)_popoverPresentationEnvironmentWithSourceItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PXPhotosUIViewController *)self _viewControllerForPresentationEnvironment];
-  v6 = [off_1E7721960 popoverPresenterWithViewController:v5 sourceItem:v4];
+  itemCopy = item;
+  _viewControllerForPresentationEnvironment = [(PXPhotosUIViewController *)self _viewControllerForPresentationEnvironment];
+  v6 = [off_1E7721960 popoverPresenterWithViewController:_viewControllerForPresentationEnvironment sourceItem:itemCopy];
 
   return v6;
 }
 
 - (id)_defaultPresentationEnvironment
 {
-  v2 = [(PXPhotosUIViewController *)self _viewControllerForPresentationEnvironment];
-  v3 = [off_1E7721960 defaultPresenterWithViewController:v2];
+  _viewControllerForPresentationEnvironment = [(PXPhotosUIViewController *)self _viewControllerForPresentationEnvironment];
+  v3 = [off_1E7721960 defaultPresenterWithViewController:_viewControllerForPresentationEnvironment];
 
   return v3;
 }
 
 - (id)_viewControllerForPresentationEnvironment
 {
-  v2 = self;
-  v3 = [(PXPhotosUIViewController *)self containerViewController];
-  v4 = v3;
-  if (v3)
+  selfCopy = self;
+  containerViewController = [(PXPhotosUIViewController *)self containerViewController];
+  v4 = containerViewController;
+  if (containerViewController)
   {
-    v2 = v3;
+    selfCopy = containerViewController;
   }
 
-  v5 = v2;
+  v5 = selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
-- (id)popoverPresentationEnvironmentForPhotosCloseButtonController:(id)a3
+- (id)popoverPresentationEnvironmentForPhotosCloseButtonController:(id)controller
 {
-  v4 = [a3 button];
-  v5 = [(PXPhotosUIViewController *)self _popoverPresentationEnvironmentWithSourceItem:v4];
+  button = [controller button];
+  v5 = [(PXPhotosUIViewController *)self _popoverPresentationEnvironmentWithSourceItem:button];
 
   return v5;
 }
 
-- (void)photosCloseButtonControllerHandleAction:(id)a3
+- (void)photosCloseButtonControllerHandleAction:(id)action
 {
-  v6 = a3;
-  v4 = [(PXPhotosUIViewController *)self viewModel];
-  v5 = [v4 viewDelegate];
+  actionCopy = action;
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  viewDelegate = [viewModel viewDelegate];
 
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v5 photosViewControllerDismiss:self] & 1) == 0)
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([viewDelegate photosViewControllerDismiss:self] & 1) == 0)
   {
-    [(PXPhotosUIViewController *)self modalDismiss:v6];
+    [(PXPhotosUIViewController *)self modalDismiss:actionCopy];
   }
 }
 
-- (id)popoverPresentationEnvironmentForPhotosStatusToggleButtonController:(id)a3
+- (id)popoverPresentationEnvironmentForPhotosStatusToggleButtonController:(id)controller
 {
-  v4 = [a3 button];
-  v5 = [(PXPhotosUIViewController *)self _popoverPresentationEnvironmentWithSourceItem:v4];
+  button = [controller button];
+  v5 = [(PXPhotosUIViewController *)self _popoverPresentationEnvironmentWithSourceItem:button];
 
   return v5;
 }
 
 - (void)preferencesDidChange
 {
-  v3 = [(PXPhotosUIViewController *)self viewModel];
-  v4 = [v3 currentDataSource];
-  v5 = [v4 containerCollection];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  currentDataSource = [viewModel currentDataSource];
+  containerCollection = [currentDataSource containerCollection];
 
-  if ([v5 px_isHiddenSmartAlbum])
+  if ([containerCollection px_isHiddenSmartAlbum])
   {
     keyExistsAndHasValidFormat = 0;
     AppBooleanValue = CFPreferencesGetAppBooleanValue(@"HiddenAlbumVisible", @"com.apple.mobileslideshow", &keyExistsAndHasValidFormat);
@@ -406,7 +406,7 @@
     v7 = 0;
   }
 
-  if (([v5 px_isRecentlyViewedCollection] & 1) != 0 || objc_msgSend(v5, "px_isRecentlySharedCollection"))
+  if (([containerCollection px_isRecentlyViewedCollection] & 1) != 0 || objc_msgSend(containerCollection, "px_isRecentlySharedCollection"))
   {
     v18 = 0;
     v9 = CFPreferencesGetAppBooleanValue(@"RecentlyViewedAndSharedAlbumVisible", @"com.apple.mobileslideshow", &v18);
@@ -429,32 +429,32 @@
   if (v7)
   {
 LABEL_16:
-    v11 = [(PXPhotosUIViewController *)self px_isVisible];
-    v12 = [(UIViewController *)self px_oneUpPresentation];
-    [v12 stopAnimated:v11];
+    px_isVisible = [(PXPhotosUIViewController *)self px_isVisible];
+    px_oneUpPresentation = [(UIViewController *)self px_oneUpPresentation];
+    [px_oneUpPresentation stopAnimated:px_isVisible];
 
-    v13 = [(PXPhotosUIViewController *)self navigationController];
-    v14 = [v13 px_popToViewControllerPrecedingViewController:self animated:v11];
+    navigationController = [(PXPhotosUIViewController *)self navigationController];
+    v14 = [navigationController px_popToViewControllerPrecedingViewController:self animated:px_isVisible];
   }
 }
 
 - (void)prepareForDismissal
 {
-  v2 = [(UIViewController *)self px_oneUpPresentation];
-  [v2 stopAnimated:0];
+  px_oneUpPresentation = [(UIViewController *)self px_oneUpPresentation];
+  [px_oneUpPresentation stopAnimated:0];
 }
 
-- (void)uiInteractionDidExtendSelection:(id)a3
+- (void)uiInteractionDidExtendSelection:(id)selection
 {
-  v4 = [(PXPhotosUIViewController *)self viewModel];
-  v5 = [v4 selectionManager];
-  v6 = [v5 selectionSnapshot];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  selectionManager = [viewModel selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
 
   v11 = 0u;
   v12 = 0u;
-  if (v6)
+  if (selectionSnapshot)
   {
-    [v6 cursorIndexPath];
+    [selectionSnapshot cursorIndexPath];
     v7 = v11;
   }
 
@@ -465,10 +465,10 @@ LABEL_16:
 
   if (v7 != *off_1E7721F68)
   {
-    v8 = [v6 dataSource];
+    dataSource = [selectionSnapshot dataSource];
     v10[0] = v11;
     v10[1] = v12;
-    v9 = [v8 objectReferenceAtIndexPath:v10];
+    v9 = [dataSource objectReferenceAtIndexPath:v10];
 
     [(PXPhotosUIViewController *)self _requestFocusUpdateWithAssetReference:v9];
   }
@@ -476,125 +476,125 @@ LABEL_16:
 
 - (UIActivityItemsConfigurationReading)activityItemsConfiguration
 {
-  v3 = [(PXPhotosUIViewController *)self viewModel];
-  v4 = [v3 contentPrivacyState];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  contentPrivacyState = [viewModel contentPrivacyState];
 
-  v5 = [(PXPhotosUIViewController *)self viewModel];
-  v6 = [v5 allowsShareAction];
+  viewModel2 = [(PXPhotosUIViewController *)self viewModel];
+  allowsShareAction = [viewModel2 allowsShareAction];
 
-  v7 = 0;
-  if (v6 && !v4)
+  boopableItemsProvider4 = 0;
+  if (allowsShareAction && !contentPrivacyState)
   {
-    v8 = [(PXPhotosUIViewController *)self boopableItemsProvider];
+    boopableItemsProvider = [(PXPhotosUIViewController *)self boopableItemsProvider];
 
-    if (!v8)
+    if (!boopableItemsProvider)
     {
       v9 = objc_alloc_init(PXBoopableItemsProvider);
       [(PXPhotosUIViewController *)self setBoopableItemsProvider:v9];
 
-      v10 = [(PXPhotosUIViewController *)self viewModel];
-      v11 = [v10 selectionManager];
-      v12 = [(PXPhotosUIViewController *)self boopableItemsProvider];
-      [v12 setSelectionManager:v11];
+      viewModel3 = [(PXPhotosUIViewController *)self viewModel];
+      selectionManager = [viewModel3 selectionManager];
+      boopableItemsProvider2 = [(PXPhotosUIViewController *)self boopableItemsProvider];
+      [boopableItemsProvider2 setSelectionManager:selectionManager];
 
-      v13 = [(PXPhotosUIViewController *)self viewModel];
-      v14 = [v13 mediaProvider];
-      v15 = [(PXPhotosUIViewController *)self boopableItemsProvider];
-      [v15 setImagePreviewMediaProvider:v14];
+      viewModel4 = [(PXPhotosUIViewController *)self viewModel];
+      mediaProvider = [viewModel4 mediaProvider];
+      boopableItemsProvider3 = [(PXPhotosUIViewController *)self boopableItemsProvider];
+      [boopableItemsProvider3 setImagePreviewMediaProvider:mediaProvider];
     }
 
-    v7 = [(PXPhotosUIViewController *)self boopableItemsProvider];
+    boopableItemsProvider4 = [(PXPhotosUIViewController *)self boopableItemsProvider];
   }
 
-  return v7;
+  return boopableItemsProvider4;
 }
 
 - (PXSelectionContainer)selectionContainer
 {
-  v3 = [(PXPhotosUIViewController *)self viewModel];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
   v4 = [PXSelectionContainer alloc];
-  v5 = [v3 selectionManager];
-  v6 = [v5 selectionSnapshot];
-  v7 = [(PXPhotosUIViewController *)self undoManager];
-  v8 = -[PXSelectionContainer initWithSelectionSnapshot:undoManager:context:](v4, "initWithSelectionSnapshot:undoManager:context:", v6, v7, [v3 selectionContext]);
+  selectionManager = [viewModel selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
+  undoManager = [(PXPhotosUIViewController *)self undoManager];
+  v8 = -[PXSelectionContainer initWithSelectionSnapshot:undoManager:context:](v4, "initWithSelectionSnapshot:undoManager:context:", selectionSnapshot, undoManager, [viewModel selectionContext]);
 
   return v8;
 }
 
-- (id)windowForProgressPresentationInAssetsSharingHelper:(id)a3
+- (id)windowForProgressPresentationInAssetsSharingHelper:(id)helper
 {
-  v3 = [(PXPhotosUIViewController *)self view];
-  v4 = [v3 window];
+  view = [(PXPhotosUIViewController *)self view];
+  window = [view window];
 
-  return v4;
+  return window;
 }
 
-- (BOOL)assetsSharingHelper:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5
+- (BOOL)assetsSharingHelper:(id)helper dismissViewController:(id)controller completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(PXPhotosUIViewController *)self presentedViewController];
+  handlerCopy = handler;
+  controllerCopy = controller;
+  presentedViewController = [(PXPhotosUIViewController *)self presentedViewController];
 
-  if (v9 == v8)
+  if (presentedViewController == controllerCopy)
   {
-    [(PXPhotosUIViewController *)self dismissViewControllerAnimated:1 completion:v7];
+    [(PXPhotosUIViewController *)self dismissViewControllerAnimated:1 completion:handlerCopy];
   }
 
-  return v9 == v8;
+  return presentedViewController == controllerCopy;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(PXPhotosUIViewController *)self view];
-  [v5 setAccessibilityLabel:v4];
+  titleCopy = title;
+  view = [(PXPhotosUIViewController *)self view];
+  [view setAccessibilityLabel:titleCopy];
 
   v6.receiver = self;
   v6.super_class = PXPhotosUIViewController;
-  [(PXPhotosUIViewController *)&v6 setTitle:v4];
+  [(PXPhotosUIViewController *)&v6 setTitle:titleCopy];
 }
 
-- (id)px_diagnosticsItemProvidersForPoint:(CGPoint)a3 inCoordinateSpace:(id)a4
+- (id)px_diagnosticsItemProvidersForPoint:(CGPoint)point inCoordinateSpace:(id)space
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(PXPhotosUIViewController *)self viewModel];
-  v9 = [v8 dataSourceManager];
-  v10 = [v9 dataSource];
+  y = point.y;
+  x = point.x;
+  spaceCopy = space;
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  dataSourceManager = [viewModel dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
 
   v11 = objc_alloc_init(PXDiagnosticsItemProvider);
-  v12 = [v10 containerCollection];
-  if ([v12 conformsToProtocol:&unk_1F198AE70])
+  containerCollection = [dataSource containerCollection];
+  if ([containerCollection conformsToProtocol:&unk_1F198AE70])
   {
-    [(PXDiagnosticsItemProvider *)v11 registerItem:v12 forIdentifier:@"PXDiagnosticsItemIdentifierAssetCollection"];
+    [(PXDiagnosticsItemProvider *)v11 registerItem:containerCollection forIdentifier:@"PXDiagnosticsItemIdentifierAssetCollection"];
   }
 
   v13 = [MEMORY[0x1E695DF70] arrayWithObject:v11];
   v16.receiver = self;
   v16.super_class = PXPhotosUIViewController;
-  v14 = [(UIViewController *)&v16 px_diagnosticsItemProvidersForPoint:v7 inCoordinateSpace:x, y];
+  v14 = [(UIViewController *)&v16 px_diagnosticsItemProvidersForPoint:spaceCopy inCoordinateSpace:x, y];
 
   [v13 addObjectsFromArray:v14];
 
   return v13;
 }
 
-- (CGRect)layout:(id)a3 visibleRectForRequestedVisibleRect:(CGRect)a4
+- (CGRect)layout:(id)layout visibleRectForRequestedVisibleRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [(PXPhotosUIViewController *)self scrollBehavior];
-  if (v10)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  layoutCopy = layout;
+  scrollBehavior = [(PXPhotosUIViewController *)self scrollBehavior];
+  if (scrollBehavior)
   {
-    v11 = [v9 activeAnchor];
+    activeAnchor = [layoutCopy activeAnchor];
 
-    if (v11)
+    if (activeAnchor)
     {
-      [v10 adjustedScrollTargetContentOffsetForProposedTargetContentOffset:0 velocity:x currentContentOffset:y decelerationRate:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), x, y}];
+      [scrollBehavior adjustedScrollTargetContentOffsetForProposedTargetContentOffset:0 velocity:x currentContentOffset:y decelerationRate:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), x, y}];
       x = v12;
       y = v13;
     }
@@ -611,38 +611,38 @@ LABEL_16:
   return result;
 }
 
-- (void)scrollViewControllerWillEndScrolling:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5 currentContentOffset:(CGPoint)a6
+- (void)scrollViewControllerWillEndScrolling:(id)scrolling withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset currentContentOffset:(CGPoint)contentOffset
 {
-  y = a6.y;
-  x = a6.x;
-  v9 = a4.y;
-  v10 = a4.x;
-  v12 = a3;
-  v13 = [(PXPhotosUIViewController *)self scrollBehavior];
-  if (!v13)
+  y = contentOffset.y;
+  x = contentOffset.x;
+  v9 = velocity.y;
+  v10 = velocity.x;
+  scrollingCopy = scrolling;
+  scrollBehavior = [(PXPhotosUIViewController *)self scrollBehavior];
+  if (!scrollBehavior)
   {
-    *&v39 = COERCE_DOUBLE([v12 decelerationRate]);
-    v26 = [(PXPhotosUIViewController *)self contentController];
-    v27 = [v26 layout];
+    *&v39 = COERCE_DOUBLE([scrollingCopy decelerationRate]);
+    contentController = [(PXPhotosUIViewController *)self contentController];
+    layout = [contentController layout];
 
-    v28 = [v27 rootLayout];
-    [v28 convertRect:v27 toDescendantLayout:{a5->x, a5->y, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+    rootLayout = [layout rootLayout];
+    [rootLayout convertRect:layout toDescendantLayout:{offset->x, offset->y, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
     v30 = v29;
     v32 = v31;
 
-    [v27 adjustedTargetVisibleOriginForProposedTargetVisibleOrigin:&v39 scrollingVelocity:v30 decelerationRate:{v32, v10, v9}];
-    [v27 lastScrollDirection];
-    [v12 visibleRect];
-    [v27 topCollapsibleArea];
+    [layout adjustedTargetVisibleOriginForProposedTargetVisibleOrigin:&v39 scrollingVelocity:v30 decelerationRate:{v32, v10, v9}];
+    [layout lastScrollDirection];
+    [scrollingCopy visibleRect];
+    [layout topCollapsibleArea];
     PXScrollViewContentOffsetSnappedToRange();
   }
 
-  v14 = a5->x;
-  v15 = a5->y;
+  v14 = offset->x;
+  v15 = offset->y;
   v40 = 0.0;
   v41 = 0;
   *&v39 = 0.0;
-  v16 = [v12 isInterruptingScrollWithDirection:&v39];
+  v16 = [scrollingCopy isInterruptingScrollWithDirection:&v39];
   if (v16)
   {
     v17 = *&v39;
@@ -658,112 +658,112 @@ LABEL_16:
     v9 = v40;
   }
 
-  [v13 adjustedScrollTargetContentOffsetForProposedTargetContentOffset:&v41 velocity:v14 currentContentOffset:v15 decelerationRate:{v17, v9, x, y}];
+  [scrollBehavior adjustedScrollTargetContentOffsetForProposedTargetContentOffset:&v41 velocity:v14 currentContentOffset:v15 decelerationRate:{v17, v9, x, y}];
   v19 = v18;
   v21 = v20;
-  v22 = [v13 detentAtContentOffset:v20];
-  v23 = [(PXPhotosUIViewController *)self viewModel];
+  v22 = [scrollBehavior detentAtContentOffset:v20];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __119__PXPhotosUIViewController_scrollViewControllerWillEndScrolling_withVelocity_targetContentOffset_currentContentOffset___block_invoke;
   v37[3] = &unk_1E7748CB8;
   v24 = v22;
   v38 = v24;
-  [v23 performChanges:v37];
+  [viewModel performChanges:v37];
 
-  [v12 setDecelerationRate:v41];
+  [scrollingCopy setDecelerationRate:v41];
   if (v21 != v15)
   {
-    v25 = [(PXPhotosUIViewController *)self contentController];
-    [v25 setShouldEnablePlaybackDuringAnimatedScroll:1];
+    contentController2 = [(PXPhotosUIViewController *)self contentController];
+    [contentController2 setShouldEnablePlaybackDuringAnimatedScroll:1];
   }
 
   if (v9 >= 0.0 || v21 <= y)
   {
-    a5->x = v19;
-    a5->y = v21;
+    offset->x = v19;
+    offset->y = v21;
   }
 
   else
   {
-    a5->x = v14;
-    a5->y = v15;
+    offset->x = v14;
+    offset->y = v15;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __119__PXPhotosUIViewController_scrollViewControllerWillEndScrolling_withVelocity_targetContentOffset_currentContentOffset___block_invoke_2;
     block[3] = &unk_1E7745A10;
-    v34 = v12;
+    v34 = scrollingCopy;
     v35 = v19;
     v36 = v21;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
 
-- (void)_handleDidEndScrolling:(id)a3
+- (void)_handleDidEndScrolling:(id)scrolling
 {
-  v4 = a3;
-  v5 = [(PXPhotosUIViewController *)self scrollBehavior];
-  if (v5)
+  scrollingCopy = scrolling;
+  scrollBehavior = [(PXPhotosUIViewController *)self scrollBehavior];
+  if (scrollBehavior)
   {
-    [v4 visibleRect];
-    [v5 axis];
+    [scrollingCopy visibleRect];
+    [scrollBehavior axis];
     PXPointValueForAxis();
   }
 }
 
-- (void)scrollViewControllerDidEndScrolling:(id)a3
+- (void)scrollViewControllerDidEndScrolling:(id)scrolling
 {
-  [(PXPhotosUIViewController *)self _handleDidEndScrolling:a3];
-  v4 = [(PXPhotosUIViewController *)self scrollBehavior];
+  [(PXPhotosUIViewController *)self _handleDidEndScrolling:scrolling];
+  scrollBehavior = [(PXPhotosUIViewController *)self scrollBehavior];
 
-  if (v4)
+  if (scrollBehavior)
   {
-    v5 = [(PXPhotosUIViewController *)self contentController];
-    [v5 setShouldEnablePlaybackDuringAnimatedScroll:0];
+    contentController = [(PXPhotosUIViewController *)self contentController];
+    [contentController setShouldEnablePlaybackDuringAnimatedScroll:0];
   }
 }
 
-- (void)scrollViewControllerDidScroll:(id)a3
+- (void)scrollViewControllerDidScroll:(id)scroll
 {
-  v12 = a3;
-  v4 = [(PXPhotosUIViewController *)self viewModel];
-  v5 = [v4 _shouldMimicSystemChromelessUsingManualScrollEdgeAppearance];
+  scrollCopy = scroll;
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  _shouldMimicSystemChromelessUsingManualScrollEdgeAppearance = [viewModel _shouldMimicSystemChromelessUsingManualScrollEdgeAppearance];
 
-  if (v5)
+  if (_shouldMimicSystemChromelessUsingManualScrollEdgeAppearance)
   {
-    [v12 visibleOrigin];
+    [scrollCopy visibleOrigin];
     v7 = v6;
-    v8 = [(PXPhotosUIViewController *)self view];
-    [v8 safeAreaInsets];
+    view = [(PXPhotosUIViewController *)self view];
+    [view safeAreaInsets];
     v10 = floor(v7 + v9);
 
-    v11 = [(PXPhotosUIViewController *)self navigationItem];
-    [v11 _setManualScrollEdgeAppearanceProgress:{fmax(fmin(v10, 16.0), 0.0) * 0.0625}];
+    navigationItem = [(PXPhotosUIViewController *)self navigationItem];
+    [navigationItem _setManualScrollEdgeAppearanceProgress:{fmax(fmin(v10, 16.0), 0.0) * 0.0625}];
   }
 
-  [(PXPhotosUIViewController *)self swift_scrollViewControllerDidScroll:v12];
+  [(PXPhotosUIViewController *)self swift_scrollViewControllerDidScroll:scrollCopy];
 }
 
-- (void)scrollViewControllerWillBeginScrolling:(id)a3
+- (void)scrollViewControllerWillBeginScrolling:(id)scrolling
 {
-  v8 = a3;
-  v4 = [(PXPhotosUIViewController *)self viewModel];
-  v5 = [v4 viewDelegateRespondsTo:0x20000];
+  scrollingCopy = scrolling;
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  v5 = [viewModel viewDelegateRespondsTo:0x20000];
 
   if (v5)
   {
-    v6 = [(PXPhotosUIViewController *)self viewModel];
-    v7 = [v6 viewDelegate];
-    [v7 photosViewController:self scrollViewControllerWillBeginScrolling:v8];
+    viewModel2 = [(PXPhotosUIViewController *)self viewModel];
+    viewDelegate = [viewModel2 viewDelegate];
+    [viewDelegate photosViewController:self scrollViewControllerWillBeginScrolling:scrollingCopy];
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v8 = a3;
-  if (ViewModelObserverContext_170727 != a5)
+  observableCopy = observable;
+  if (ViewModelObserverContext_170727 != context)
   {
-    if ((a4 & 1) != 0 && SpecManagerObserverContext == a5)
+    if ((change & 1) != 0 && SpecManagerObserverContext == context)
     {
       [(PXPhotosUIViewController *)self _updateScrollViewController];
       [(PXPhotosUIViewController *)self swift_specDidChange];
@@ -772,35 +772,35 @@ LABEL_16:
     goto LABEL_44;
   }
 
-  if ((a4 & 0x8000000000000) != 0)
+  if ((change & 0x8000000000000) != 0)
   {
     [(PXPhotosUIViewController *)self setFallbackPlaceholderStatusController:0];
   }
 
-  if ((a4 & 0x8000200000001) != 0)
+  if ((change & 0x8000200000001) != 0)
   {
     [(PXPhotosUIViewController *)self _updateEmptyBehaviorIfNeeded];
   }
 
-  if ((a4 & 4) != 0)
+  if ((change & 4) != 0)
   {
-    v9 = [(PXPhotosUIViewController *)self contentController];
-    v10 = [v9 layout];
-    [v10 clearLastVisibleAreaAnchoringInformation];
+    contentController = [(PXPhotosUIViewController *)self contentController];
+    layout = [contentController layout];
+    [layout clearLastVisibleAreaAnchoringInformation];
 
     [(PXPhotosUIViewController *)self invalidateBoopableItemsProvider];
     [(PXPhotosUIViewController *)self _updateFirstResponderIfNeeded];
-    if ((a4 & 0x4000) == 0)
+    if ((change & 0x4000) == 0)
     {
 LABEL_11:
-      if ((a4 & 0x2000000000000) == 0)
+      if ((change & 0x2000000000000) == 0)
       {
         goto LABEL_12;
       }
 
 LABEL_16:
       [(PXPhotosUIViewController *)self _showSearch];
-      if ((a4 & 2) == 0)
+      if ((change & 2) == 0)
       {
         goto LABEL_19;
       }
@@ -809,61 +809,61 @@ LABEL_16:
     }
   }
 
-  else if ((a4 & 0x4000) == 0)
+  else if ((change & 0x4000) == 0)
   {
     goto LABEL_11;
   }
 
-  v11 = [(PXPhotosUIViewController *)self viewModel];
-  v12 = [v11 singleSelectedAssetReference];
-  [(PXPhotosUIViewController *)self _requestFocusUpdateWithAssetReference:v12];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  singleSelectedAssetReference = [viewModel singleSelectedAssetReference];
+  [(PXPhotosUIViewController *)self _requestFocusUpdateWithAssetReference:singleSelectedAssetReference];
 
-  if ((a4 & 0x2000000000000) != 0)
+  if ((change & 0x2000000000000) != 0)
   {
     goto LABEL_16;
   }
 
 LABEL_12:
-  if ((a4 & 2) == 0)
+  if ((change & 2) == 0)
   {
     goto LABEL_19;
   }
 
 LABEL_17:
-  v13 = [(PXPhotosUIViewController *)self viewModel];
-  v14 = [v13 selectionSnapshot];
-  v15 = [v14 isEmptySelectionAvoided];
+  viewModel2 = [(PXPhotosUIViewController *)self viewModel];
+  selectionSnapshot = [viewModel2 selectionSnapshot];
+  isEmptySelectionAvoided = [selectionSnapshot isEmptySelectionAvoided];
 
-  if (v15)
+  if (isEmptySelectionAvoided)
   {
-    v16 = [(PXPhotosUIViewController *)self viewModel];
-    v17 = [v16 singleSelectedAssetReference];
-    [(PXPhotosUIViewController *)self _requestFocusUpdateWithAssetReference:v17];
+    viewModel3 = [(PXPhotosUIViewController *)self viewModel];
+    singleSelectedAssetReference2 = [viewModel3 singleSelectedAssetReference];
+    [(PXPhotosUIViewController *)self _requestFocusUpdateWithAssetReference:singleSelectedAssetReference2];
   }
 
 LABEL_19:
-  if ((a4 & 0x40000000) != 0)
+  if ((change & 0x40000000) != 0)
   {
-    v18 = [(PXPhotosUIViewController *)self viewModel];
-    v19 = [v18 dismissRequested];
+    viewModel4 = [(PXPhotosUIViewController *)self viewModel];
+    dismissRequested = [viewModel4 dismissRequested];
 
-    if (v19)
+    if (dismissRequested)
     {
       [(PXPhotosUIViewController *)self _dismissOnInternalRequest];
     }
   }
 
-  if ((a4 & 0x400000000) != 0)
+  if ((change & 0x400000000) != 0)
   {
     [(PXPhotosUIViewController *)self _updateUIFromViewModelPrivacyState];
-    v20 = [(PXPhotosUIViewController *)self viewModel];
-    v21 = [v20 contentPrivacyState];
+    viewModel5 = [(PXPhotosUIViewController *)self viewModel];
+    contentPrivacyState = [viewModel5 contentPrivacyState];
 
-    if (v21 == 1)
+    if (contentPrivacyState == 1)
     {
-      v22 = [(PXPhotosUIViewController *)self gridView];
-      v23 = [v22 scrollViewController];
-      v24 = [v23 isScrolledAtEdge:3 tolerance:100.0];
+      gridView = [(PXPhotosUIViewController *)self gridView];
+      scrollViewController = [gridView scrollViewController];
+      v24 = [scrollViewController isScrolledAtEdge:3 tolerance:100.0];
 
       [(PXPhotosUIViewController *)self setShouldScrollToInitialPositionAfterUnlock:v24];
     }
@@ -884,23 +884,23 @@ LABEL_19:
     [(PXPhotosUIViewController *)self invalidateBoopableItemsProvider];
   }
 
-  if ((a4 & 0x30000000000) != 0)
+  if ((change & 0x30000000000) != 0)
   {
     [(PXPhotosUIViewController *)self _setNeedsUpdateContentUnavailableConfiguration];
   }
 
-  if ((a4 & 0x80000000000) != 0)
+  if ((change & 0x80000000000) != 0)
   {
     [(PXPhotosUIViewController *)self _invalidateSecondaryToolbarController];
   }
 
-  if ([objc_opt_class() shouldReconfigureOpacityOfSecondaryToolbarControllerForViewModelChange:a4])
+  if ([objc_opt_class() shouldReconfigureOpacityOfSecondaryToolbarControllerForViewModelChange:change])
   {
     [(PXPhotosUIViewController *)self _invalidateSecondaryToolbarOpacity];
-    if ((a4 & 0x1000000000000000) == 0)
+    if ((change & 0x1000000000000000) == 0)
     {
 LABEL_36:
-      if ((a4 & 4) == 0)
+      if ((change & 4) == 0)
       {
         goto LABEL_37;
       }
@@ -909,23 +909,23 @@ LABEL_36:
     }
   }
 
-  else if ((a4 & 0x1000000000000000) == 0)
+  else if ((change & 0x1000000000000000) == 0)
   {
     goto LABEL_36;
   }
 
   [(PXPhotosUIViewController *)self _invalidateIsModalInPresentation];
-  if ((a4 & 4) == 0)
+  if ((change & 4) == 0)
   {
 LABEL_37:
-    if ((a4 & 0x100000000000) == 0)
+    if ((change & 0x100000000000) == 0)
     {
       goto LABEL_38;
     }
 
 LABEL_48:
     [(PXPhotosUIViewController *)self _invalidateOneUpPresentationInteraction];
-    if ((a4 & 0x20) == 0)
+    if ((change & 0x20) == 0)
     {
       goto LABEL_40;
     }
@@ -935,13 +935,13 @@ LABEL_48:
 
 LABEL_47:
   [(PXPhotosUIViewController *)self _invalidateSecondaryToolbarController];
-  if ((a4 & 0x100000000000) != 0)
+  if ((change & 0x100000000000) != 0)
   {
     goto LABEL_48;
   }
 
 LABEL_38:
-  if ((a4 & 0x20) != 0)
+  if ((change & 0x20) != 0)
   {
 LABEL_39:
     [(PXPhotosUIViewController *)self _invalidateDismissalInteractionControllerProperties];
@@ -949,8 +949,8 @@ LABEL_39:
   }
 
 LABEL_40:
-  [(PXPhotosUIViewController *)self swift_handleViewModelChange:a4];
-  if ((a4 & 0x400000000001) != 0)
+  [(PXPhotosUIViewController *)self swift_handleViewModelChange:change];
+  if ((change & 0x400000000001) != 0)
   {
     [(PXPhotosUIViewController *)self _updateScrollViewController];
     block[0] = MEMORY[0x1E69E9820];
@@ -961,7 +961,7 @@ LABEL_40:
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
-  if ((a4 & 0x800000000000) != 0)
+  if ((change & 0x800000000000) != 0)
   {
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
@@ -974,32 +974,32 @@ LABEL_40:
 LABEL_44:
 }
 
-- (void)setPlacementOverride:(id)a3 forItemReference:(id)a4
+- (void)setPlacementOverride:(id)override forItemReference:(id)reference
 {
-  v6 = a4;
-  v7 = a3;
-  [(PXPhotosUIViewController *)self setPlacementOverride:v7];
-  v8 = [(PXPhotosUIViewController *)self contentController];
-  [v8 setPlacementOverride:v7 forItemReference:v6];
+  referenceCopy = reference;
+  overrideCopy = override;
+  [(PXPhotosUIViewController *)self setPlacementOverride:overrideCopy];
+  contentController = [(PXPhotosUIViewController *)self contentController];
+  [contentController setPlacementOverride:overrideCopy forItemReference:referenceCopy];
 }
 
-- (id)placementInContext:(id)a3 forItemReference:(id)a4
+- (id)placementInContext:(id)context forItemReference:(id)reference
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXPhotosUIViewController *)self contentController];
-  v9 = [v8 placementInContext:v7 forItemReference:v6];
+  referenceCopy = reference;
+  contextCopy = context;
+  contentController = [(PXPhotosUIViewController *)self contentController];
+  v9 = [contentController placementInContext:contextCopy forItemReference:referenceCopy];
 
   return v9;
 }
 
-- (unint64_t)photosContentControllerFilterSortedRecordsStrategy:(id)a3
+- (unint64_t)photosContentControllerFilterSortedRecordsStrategy:(id)strategy
 {
-  v4 = [(PXPhotosUIViewController *)self viewModel];
-  if ([v4 viewDelegateRespondsTo:0x4000])
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  if ([viewModel viewDelegateRespondsTo:0x4000])
   {
-    v5 = [v4 viewDelegate];
-    v6 = [v5 photosViewControllerFilterSortedRecordsStrategy:self];
+    viewDelegate = [viewModel viewDelegate];
+    v6 = [viewDelegate photosViewControllerFilterSortedRecordsStrategy:self];
   }
 
   else
@@ -1010,14 +1010,14 @@ LABEL_44:
   return v6;
 }
 
-- (BOOL)photosContentController:(id)a3 isDisplayAssetEligibleForPlaybackWithSettlingEffect:(id)a4
+- (BOOL)photosContentController:(id)controller isDisplayAssetEligibleForPlaybackWithSettlingEffect:(id)effect
 {
-  v5 = a4;
-  v6 = [(PXPhotosUIViewController *)self viewModel];
-  if ([v6 viewDelegateRespondsTo:0x10000])
+  effectCopy = effect;
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  if ([viewModel viewDelegateRespondsTo:0x10000])
   {
-    v7 = [v6 viewDelegate];
-    v8 = [v7 photosViewController:self isAssetEligibleForPlaybackWithSettlingEffect:v5];
+    viewDelegate = [viewModel viewDelegate];
+    v8 = [viewDelegate photosViewController:self isAssetEligibleForPlaybackWithSettlingEffect:effectCopy];
   }
 
   else
@@ -1028,14 +1028,14 @@ LABEL_44:
   return v8;
 }
 
-- (BOOL)photosContentController:(id)a3 isDisplayAssetEligibleForAutoPlayback:(id)a4
+- (BOOL)photosContentController:(id)controller isDisplayAssetEligibleForAutoPlayback:(id)playback
 {
-  v5 = a4;
-  v6 = [(PXPhotosUIViewController *)self viewModel];
-  if ([v6 viewDelegateRespondsTo:0x2000])
+  playbackCopy = playback;
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  if ([viewModel viewDelegateRespondsTo:0x2000])
   {
-    v7 = [v6 viewDelegate];
-    v8 = [v7 photosViewController:self isAssetEligibleForAutoPlayback:v5];
+    viewDelegate = [viewModel viewDelegate];
+    v8 = [viewDelegate photosViewController:self isAssetEligibleForAutoPlayback:playbackCopy];
   }
 
   else
@@ -1046,14 +1046,14 @@ LABEL_44:
   return v8;
 }
 
-- (BOOL)photosContentController:(id)a3 canPlayAssetInline:(id)a4
+- (BOOL)photosContentController:(id)controller canPlayAssetInline:(id)inline
 {
-  v5 = a4;
-  v6 = [(PXPhotosUIViewController *)self viewModel];
-  if ([v6 viewDelegateRespondsTo:4096])
+  inlineCopy = inline;
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  if ([viewModel viewDelegateRespondsTo:4096])
   {
-    v7 = [v6 viewDelegate];
-    v8 = [v7 photosViewController:self canPlayAssetInline:v5];
+    viewDelegate = [viewModel viewDelegate];
+    v8 = [viewDelegate photosViewController:self canPlayAssetInline:inlineCopy];
   }
 
   else
@@ -1064,16 +1064,16 @@ LABEL_44:
   return v8;
 }
 
-- (id)regionOfInterestForActionPerformer:(id)a3
+- (id)regionOfInterestForActionPerformer:(id)performer
 {
-  v4 = [a3 actionType];
-  v5 = v4;
-  if (v4 == *off_1E7721BE8 || [v4 isEqualToString:?])
+  actionType = [performer actionType];
+  v5 = actionType;
+  if (actionType == *off_1E7721BE8 || [actionType isEqualToString:?])
   {
-    v6 = [(PXPhotosUIViewController *)self interaction];
-    v7 = [v6 navigatedAssetReference];
+    interaction = [(PXPhotosUIViewController *)self interaction];
+    navigatedAssetReference = [interaction navigatedAssetReference];
 
-    v8 = [(PXPhotosUIViewController *)self regionOfInterestForAssetReference:v7];
+    v8 = [(PXPhotosUIViewController *)self regionOfInterestForAssetReference:navigatedAssetReference];
   }
 
   else
@@ -1084,16 +1084,16 @@ LABEL_44:
   return v8;
 }
 
-- (id)presentationEnvironmentForActionPerformer:(id)a3
+- (id)presentationEnvironmentForActionPerformer:(id)performer
 {
-  v5 = a3;
-  v6 = [v5 sender];
-  v7 = [v6 conformsToProtocol:&unk_1F1915FF0];
+  performerCopy = performer;
+  sender = [performerCopy sender];
+  v7 = [sender conformsToProtocol:&unk_1F1915FF0];
 
   if (v7)
   {
-    v8 = [v5 sender];
-    v9 = [off_1E7721960 popoverPresenterWithViewController:self sourceItem:v8];
+    sender2 = [performerCopy sender];
+    v9 = [off_1E7721960 popoverPresenterWithViewController:self sourceItem:sender2];
 
     if (v9)
     {
@@ -1109,30 +1109,30 @@ LABEL_44:
     goto LABEL_10;
   }
 
-  v10 = [v5 selectionSnapshot];
+  selectionSnapshot = [performerCopy selectionSnapshot];
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
   v29 = __Block_byref_object_copy__170729;
   v30 = __Block_byref_object_dispose__170730;
   v31 = 0;
-  v11 = [v10 selectedIndexPaths];
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __70__PXPhotosUIViewController_presentationEnvironmentForActionPerformer___block_invoke;
   v21 = &unk_1E7748C90;
   v24 = &v26;
-  v12 = v10;
+  v12 = selectionSnapshot;
   v25 = a2;
   v22 = v12;
-  v23 = self;
-  [v11 enumerateItemIndexPathsUsingBlock:&v18];
+  selfCopy = self;
+  [selectedIndexPaths enumerateItemIndexPathsUsingBlock:&v18];
 
   if (v27[5] && ([(PXPhotosUIViewController *)self regionOfInterestForAssetReference:v18, v19, v20, v21], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v14 = [(PXPhotosUIViewController *)self gridView];
-    [v13 rectInCoordinateSpace:v14];
-    v9 = [off_1E7721960 popoverPresenterWithViewController:self sourceView:v14 sourceRect:?];
+    gridView = [(PXPhotosUIViewController *)self gridView];
+    [v13 rectInCoordinateSpace:gridView];
+    v9 = [off_1E7721960 popoverPresenterWithViewController:self sourceView:gridView sourceRect:?];
   }
 
   else
@@ -1206,7 +1206,7 @@ LABEL_5:
   *(v11 + 40) = v10;
 }
 
-- (UIEdgeInsets)maskPaddingForContentController:(id)a3
+- (UIEdgeInsets)maskPaddingForContentController:(id)controller
 {
   secondaryToolbarController = self->_secondaryToolbarController;
   if (secondaryToolbarController)
@@ -1229,31 +1229,31 @@ LABEL_5:
   return result;
 }
 
-- (void)needsUpdateForContentController:(id)a3
+- (void)needsUpdateForContentController:(id)controller
 {
-  v3 = [(PXPhotosUIViewController *)self viewIfLoaded];
-  [v3 setNeedsLayout];
+  viewIfLoaded = [(PXPhotosUIViewController *)self viewIfLoaded];
+  [viewIfLoaded setNeedsLayout];
 }
 
-- (BOOL)photosContentController:(id)a3 pushViewController:(id)a4
+- (BOOL)photosContentController:(id)controller pushViewController:(id)viewController
 {
-  v5 = a4;
-  v6 = [(PXPhotosUIViewController *)self navigationController];
+  viewControllerCopy = viewController;
+  navigationController = [(PXPhotosUIViewController *)self navigationController];
 
-  if (v6)
+  if (navigationController)
   {
-    v7 = [(PXPhotosUIViewController *)self navigationController];
-    [v7 pushViewController:v5 animated:1];
+    navigationController2 = [(PXPhotosUIViewController *)self navigationController];
+    [navigationController2 pushViewController:viewControllerCopy animated:1];
   }
 
-  return v6 != 0;
+  return navigationController != 0;
 }
 
-- (id)presentationEnvironmentForPhotosBarsController:(id)a3 withSourceItem:(id)a4
+- (id)presentationEnvironmentForPhotosBarsController:(id)controller withSourceItem:(id)item
 {
-  if (a4)
+  if (item)
   {
-    [(PXPhotosUIViewController *)self _popoverPresentationEnvironmentWithSourceItem:a4];
+    [(PXPhotosUIViewController *)self _popoverPresentationEnvironmentWithSourceItem:item];
   }
 
   else
@@ -1268,15 +1268,15 @@ LABEL_5:
 - (void)_showSearch
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PXPhotosUIViewController *)self createSearchOverlayController];
-  if (!v3)
+  createSearchOverlayController = [(PXPhotosUIViewController *)self createSearchOverlayController];
+  if (!createSearchOverlayController)
   {
     v4 = PLUIGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      v11 = [(PXPhotosUIViewController *)self currentDataSource];
+      currentDataSource = [(PXPhotosUIViewController *)self currentDataSource];
       v14 = 138412290;
-      v15 = v11;
+      v15 = currentDataSource;
       _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_ERROR, "Can't get a search overlay view controller (data source: %@).", &v14, 0xCu);
     }
 
@@ -1286,108 +1286,108 @@ LABEL_5:
   if (MEMORY[0x1A590D320]())
   {
     v4 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithNavigationBarClass:objc_opt_class() toolbarClass:0];
-    v16[0] = v3;
+    v16[0] = createSearchOverlayController;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
     [v4 setViewControllers:v5];
 
-    v6 = [v4 navigationBar];
-    [v6 setPrefersLargeTitles:1];
+    navigationBar = [v4 navigationBar];
+    [navigationBar setPrefersLargeTitles:1];
 
     [v4 setModalPresentationStyle:5];
-    v7 = [MEMORY[0x1E69DD260] crossDissolveTransition];
-    [v4 setPreferredTransition:v7];
+    crossDissolveTransition = [MEMORY[0x1E69DD260] crossDissolveTransition];
+    [v4 setPreferredTransition:crossDissolveTransition];
 
-    v8 = self;
+    selfCopy2 = self;
     v9 = v4;
     v10 = 1;
 LABEL_9:
-    [(PXPhotosUIViewController *)v8 presentViewController:v9 animated:v10 completion:0];
+    [(PXPhotosUIViewController *)selfCopy2 presentViewController:v9 animated:v10 completion:0];
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v12 = [(PXPhotosUIViewController *)self traitCollection];
-  v13 = [v12 userInterfaceIdiom];
+  traitCollection = [(PXPhotosUIViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (!v13)
+  if (!userInterfaceIdiom)
   {
-    v4 = [v3 px_createViewControllerWithHiddenStatusBarForMainViewController:v3];
+    v4 = [createSearchOverlayController px_createViewControllerWithHiddenStatusBarForMainViewController:createSearchOverlayController];
     [v4 setModalPresentationStyle:5];
     [v4 setModalPresentationCapturesStatusBarAppearance:1];
-    v8 = self;
+    selfCopy2 = self;
     v9 = v4;
     v10 = 0;
     goto LABEL_9;
   }
 
-  [v3 setModalPresentationStyle:5];
-  [(PXPhotosUIViewController *)self presentViewController:v3 animated:0 completion:0];
+  [createSearchOverlayController setModalPresentationStyle:5];
+  [(PXPhotosUIViewController *)self presentViewController:createSearchOverlayController animated:0 completion:0];
 LABEL_11:
   [MEMORY[0x1E6991F28] sendEvent:@"com.apple.photos.CPAnalytics.search.session" withPayload:MEMORY[0x1E695E0F8]];
 }
 
-- (void)photosBarsController:(id)a3 didRequestSearchWithSender:(id)a4
+- (void)photosBarsController:(id)controller didRequestSearchWithSender:(id)sender
 {
-  v4 = [(PXPhotosUIViewController *)self viewModel:a3];
+  v4 = [(PXPhotosUIViewController *)self viewModel:controller];
   [v4 performChanges:&__block_literal_global_992];
 }
 
-- (void)_dismiss:(id)a3 completion:(id)a4
+- (void)_dismiss:(id)_dismiss completion:(id)completion
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(PXPhotosUIViewController *)self configuration];
-  v8 = [v7 customDismissHandler];
+  _dismissCopy = _dismiss;
+  completionCopy = completion;
+  configuration = [(PXPhotosUIViewController *)self configuration];
+  customDismissHandler = [configuration customDismissHandler];
 
-  if (v8)
+  if (customDismissHandler)
   {
-    v9 = [(PXPhotosUIViewController *)self configuration];
-    v10 = [v9 customDismissHandler];
-    v10[2]();
+    configuration2 = [(PXPhotosUIViewController *)self configuration];
+    customDismissHandler2 = [configuration2 customDismissHandler];
+    customDismissHandler2[2]();
 
     goto LABEL_3;
   }
 
-  v11 = [(PXPhotosUIViewController *)self presentingViewController];
+  presentingViewController = [(PXPhotosUIViewController *)self presentingViewController];
 
-  if (!v11)
+  if (!presentingViewController)
   {
-    v12 = [(PXPhotosUIViewController *)self navigationController];
+    navigationController = [(PXPhotosUIViewController *)self navigationController];
 
-    if (!v12)
+    if (!navigationController)
     {
       goto LABEL_4;
     }
 
-    v9 = [(PXPhotosUIViewController *)self navigationController];
-    v13 = [v9 popViewControllerAnimated:1];
+    configuration2 = [(PXPhotosUIViewController *)self navigationController];
+    v13 = [configuration2 popViewControllerAnimated:1];
 LABEL_3:
 
 LABEL_4:
-    v6[2](v6);
+    completionCopy[2](completionCopy);
     goto LABEL_7;
   }
 
-  [(PXPhotosUIViewController *)self _modalDismiss:v14 completion:v6];
+  [(PXPhotosUIViewController *)self _modalDismiss:_dismissCopy completion:completionCopy];
 LABEL_7:
 }
 
-- (void)photosBarsController:(id)a3 didRequestDismissWithSender:(id)a4
+- (void)photosBarsController:(id)controller didRequestDismissWithSender:(id)sender
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  senderCopy = sender;
   objc_initWeak(&location, self);
   v8 = [off_1E7721960 defaultPresenterWithViewController:self];
-  v9 = [(PXPhotosUIViewController *)self viewModel];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __77__PXPhotosUIViewController_photosBarsController_didRequestDismissWithSender___block_invoke;
   v11[3] = &unk_1E773F928;
   objc_copyWeak(&v13, &location);
-  v10 = v7;
+  v10 = senderCopy;
   v12 = v10;
-  [v9 requestCloseFromPresentationEnvironment:v8 handler:v11];
+  [viewModel requestCloseFromPresentationEnvironment:v8 handler:v11];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -1409,29 +1409,29 @@ void __77__PXPhotosUIViewController_photosBarsController_didRequestDismissWithSe
   }
 }
 
-- (void)photosBarsControllerDidUpdateNavigationItemAppearance:(id)a3
+- (void)photosBarsControllerDidUpdateNavigationItemAppearance:(id)appearance
 {
-  v4 = [(PXPhotosUIViewController *)self gridPresentationBarsUpdateDelegate];
+  gridPresentationBarsUpdateDelegate = [(PXPhotosUIViewController *)self gridPresentationBarsUpdateDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(PXPhotosUIViewController *)self gridPresentationBarsUpdateDelegate];
-    [v6 viewControllerDidUpdateNavigationItemAppearance:self];
+    gridPresentationBarsUpdateDelegate2 = [(PXPhotosUIViewController *)self gridPresentationBarsUpdateDelegate];
+    [gridPresentationBarsUpdateDelegate2 viewControllerDidUpdateNavigationItemAppearance:self];
   }
 }
 
-- (void)photosBarsControllerDidUpdateBars:(id)a3 animated:(BOOL)a4
+- (void)photosBarsControllerDidUpdateBars:(id)bars animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(PXPhotosUIViewController *)self gridPresentationBarsUpdateDelegate];
+  animatedCopy = animated;
+  gridPresentationBarsUpdateDelegate = [(PXPhotosUIViewController *)self gridPresentationBarsUpdateDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v9 = [(PXPhotosUIViewController *)self gridPresentationBarsUpdateDelegate];
-    v8 = [(PXPhotosUIViewController *)self viewModel];
-    [v9 viewController:self didUpdateBarsAnimated:v4 isSelecting:{objc_msgSend(v8, "isInSelectMode")}];
+    gridPresentationBarsUpdateDelegate2 = [(PXPhotosUIViewController *)self gridPresentationBarsUpdateDelegate];
+    viewModel = [(PXPhotosUIViewController *)self viewModel];
+    [gridPresentationBarsUpdateDelegate2 viewController:self didUpdateBarsAnimated:animatedCopy isSelecting:{objc_msgSend(viewModel, "isInSelectMode")}];
   }
 }
 
@@ -1439,26 +1439,26 @@ void __77__PXPhotosUIViewController_photosBarsController_didRequestDismissWithSe
 {
   if (PFOSVariantHasInternalUI())
   {
-    v3 = [(PXPhotosUIViewController *)self viewModel];
-    v4 = [v3 selectionSnapshot];
-    if ([v4 isAnyItemSelected])
+    viewModel = [(PXPhotosUIViewController *)self viewModel];
+    selectionSnapshot = [viewModel selectionSnapshot];
+    if ([selectionSnapshot isAnyItemSelected])
     {
       v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v6 = [v3 selectionSnapshot];
+      selectionSnapshot2 = [viewModel selectionSnapshot];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __87__PXPhotosUIViewController_menuForPXAssetCollectionActionTypeTTRForLemonadeCollections__block_invoke;
       v17[3] = &unk_1E773F900;
       v18 = v5;
       v7 = v5;
-      [v6 enumerateSelectedObjectsUsingBlock:v17];
+      [selectionSnapshot2 enumerateSelectedObjectsUsingBlock:v17];
 
-      v8 = [(PXPhotosUIViewController *)self interaction];
-      v9 = [v8 navigatedAssetReference];
-      v10 = [v9 assetCollection];
-      v11 = [v10 localizedTitle];
+      interaction = [(PXPhotosUIViewController *)self interaction];
+      navigatedAssetReference = [interaction navigatedAssetReference];
+      assetCollection = [navigatedAssetReference assetCollection];
+      localizedTitle = [assetCollection localizedTitle];
 
-      v12 = [MEMORY[0x1E6978650] transientAssetCollectionWithAssets:v7 title:v11];
+      v12 = [MEMORY[0x1E6978650] transientAssetCollectionWithAssets:v7 title:localizedTitle];
       v13 = [[PXPhotoKitAssetCollectionActionManager alloc] initWithAssetCollection:v12 displayTitleInfo:0];
       selectedAssetsAssetCollectionActionManager = self->_selectedAssetsAssetCollectionActionManager;
       self->_selectedAssetsAssetCollectionActionManager = v13;
@@ -1491,50 +1491,50 @@ void __87__PXPhotosUIViewController_menuForPXAssetCollectionActionTypeTTRForLemo
   }
 }
 
-- (id)barsControllerActionsForSelectionContextMenu:(id)a3
+- (id)barsControllerActionsForSelectionContextMenu:(id)menu
 {
   v25[3] = *MEMORY[0x1E69E9840];
-  v4 = [(PXPhotosUIViewController *)self viewModel];
-  v5 = [v4 selectionSnapshot];
-  v6 = [v4 currentDataSource];
-  v7 = [v6 containerCollection];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  selectionSnapshot = [viewModel selectionSnapshot];
+  currentDataSource = [viewModel currentDataSource];
+  containerCollection = [currentDataSource containerCollection];
 
-  v8 = [v7 px_isRecentlyDeletedSmartAlbum];
-  v9 = [v7 px_isRecoveredSmartAlbum];
-  v10 = [v5 isAnyItemSelected];
-  if (((v10 & 1) != 0 || (v8 & 1) != 0 || v9) && [v4 allowsMultiSelectMenu])
+  px_isRecentlyDeletedSmartAlbum = [containerCollection px_isRecentlyDeletedSmartAlbum];
+  px_isRecoveredSmartAlbum = [containerCollection px_isRecoveredSmartAlbum];
+  isAnyItemSelected = [selectionSnapshot isAnyItemSelected];
+  if (((isAnyItemSelected & 1) != 0 || (px_isRecentlyDeletedSmartAlbum & 1) != 0 || px_isRecoveredSmartAlbum) && [viewModel allowsMultiSelectMenu])
   {
-    if (v10)
+    if (isAnyItemSelected)
     {
       v23 = 0u;
       v24 = 0u;
-      if (v5)
+      if (selectionSnapshot)
       {
-        [v5 firstSelectedIndexPath];
+        [selectionSnapshot firstSelectedIndexPath];
       }
 
-      v11 = [v5 dataSource];
+      dataSource = [selectionSnapshot dataSource];
       v22[0] = v23;
       v22[1] = v24;
-      v12 = [v11 objectReferenceAtIndexPath:v22];
-      v13 = [(PXPhotosUIViewController *)self interaction];
-      [v13 setNavigatedAssetReference:v12];
+      v12 = [dataSource objectReferenceAtIndexPath:v22];
+      interaction = [(PXPhotosUIViewController *)self interaction];
+      [interaction setNavigatedAssetReference:v12];
     }
 
     v14 = MEMORY[0x1E695DF70];
-    v15 = [(PXPhotosUIViewController *)self assetActionManager];
+    assetActionManager = [(PXPhotosUIViewController *)self assetActionManager];
     v16 = *off_1E7721BE8;
     v25[0] = *off_1E7721B88;
     v25[1] = v16;
     v25[2] = *off_1E7721B80;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:3];
-    v18 = [off_1E7721468 menuElementsForActionManager:v15 excludedActionTypes:v17];
+    v18 = [off_1E7721468 menuElementsForActionManager:assetActionManager excludedActionTypes:v17];
     v19 = [v14 arrayWithArray:v18];
 
-    v20 = [(PXPhotosUIViewController *)self menuForPXAssetCollectionActionTypeTTRForLemonadeCollections];
-    if (v20)
+    menuForPXAssetCollectionActionTypeTTRForLemonadeCollections = [(PXPhotosUIViewController *)self menuForPXAssetCollectionActionTypeTTRForLemonadeCollections];
+    if (menuForPXAssetCollectionActionTypeTTRForLemonadeCollections)
     {
-      [v19 insertObject:v20 atIndex:0];
+      [v19 insertObject:menuForPXAssetCollectionActionTypeTTRForLemonadeCollections atIndex:0];
     }
   }
 
@@ -1549,23 +1549,23 @@ void __87__PXPhotosUIViewController_menuForPXAssetCollectionActionTypeTTRForLemo
 - (NSString)passcodeAuthenticationReason
 {
   v3 = PXLocalizedStringFromTable(@"PXContentPrivacyAuthenticationPasscodeReason_Generic", @"PhotosUICore");
-  v4 = [(PXPhotosUIViewController *)self viewModel];
-  v5 = [v4 dataSourceManager];
-  v6 = [v5 dataSource];
-  v7 = [v6 containerCollection];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  dataSourceManager = [viewModel dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
+  containerCollection = [dataSource containerCollection];
 
-  v8 = [v7 px_isHiddenSmartAlbum];
-  v9 = [v7 px_isRecentlyDeletedSmartAlbum];
-  v10 = [v7 px_isRecoveredSmartAlbum];
-  if ((v8 & 1) != 0 || (v9 & 1) != 0 || v10)
+  px_isHiddenSmartAlbum = [containerCollection px_isHiddenSmartAlbum];
+  px_isRecentlyDeletedSmartAlbum = [containerCollection px_isRecentlyDeletedSmartAlbum];
+  px_isRecoveredSmartAlbum = [containerCollection px_isRecoveredSmartAlbum];
+  if ((px_isHiddenSmartAlbum & 1) != 0 || (px_isRecentlyDeletedSmartAlbum & 1) != 0 || px_isRecoveredSmartAlbum)
   {
     v11 = @"PXContentPrivacyAuthenticationPasscodeReason_Recovered";
-    if (v9)
+    if (px_isRecentlyDeletedSmartAlbum)
     {
       v11 = @"PXContentPrivacyAuthenticationPasscodeReason_RecentlyDeleted";
     }
 
-    if (v8)
+    if (px_isHiddenSmartAlbum)
     {
       v12 = @"PXContentPrivacyAuthenticationPasscodeReason_Hidden";
     }
@@ -1585,26 +1585,26 @@ void __87__PXPhotosUIViewController_menuForPXAssetCollectionActionTypeTTRForLemo
 
 - (NSString)authenticationTitle
 {
-  v2 = [(PXPhotosUIViewController *)self viewModel];
-  v3 = [v2 dataSourceManager];
-  v4 = [v3 dataSource];
-  v5 = [v4 containerCollection];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  dataSourceManager = [viewModel dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
+  containerCollection = [dataSource containerCollection];
 
-  v6 = [v5 px_isHiddenSmartAlbum];
-  v7 = [v5 px_isRecentlyDeletedSmartAlbum];
-  v8 = [v5 px_isRecoveredSmartAlbum];
+  px_isHiddenSmartAlbum = [containerCollection px_isHiddenSmartAlbum];
+  px_isRecentlyDeletedSmartAlbum = [containerCollection px_isRecentlyDeletedSmartAlbum];
+  px_isRecoveredSmartAlbum = [containerCollection px_isRecoveredSmartAlbum];
   v9 = @"PXContentPrivacyAuthenticationTouchIDTitle_Generic";
-  if (v8)
+  if (px_isRecoveredSmartAlbum)
   {
     v9 = @"PXContentPrivacyAuthenticationTouchIDTitle_Recovered";
   }
 
-  if (v7)
+  if (px_isRecentlyDeletedSmartAlbum)
   {
     v9 = @"PXContentPrivacyAuthenticationTouchIDTitle_RecentlyDeleted";
   }
 
-  if (v6)
+  if (px_isHiddenSmartAlbum)
   {
     v10 = @"PXContentPrivacyAuthenticationTouchIDTitle_Hidden";
   }
@@ -1619,18 +1619,18 @@ void __87__PXPhotosUIViewController_menuForPXAssetCollectionActionTypeTTRForLemo
   return v11;
 }
 
-- (void)_waitUntilOneUpPresentationCanStartAnimated:(BOOL)a3 completionHandler:(id)a4
+- (void)_waitUntilOneUpPresentationCanStartAnimated:(BOOL)animated completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIViewController *)self px_oneUpPresentation];
-  [v7 waitUntilPresentationCanStartAnimated:v4 completionHandler:v6];
+  animatedCopy = animated;
+  handlerCopy = handler;
+  px_oneUpPresentation = [(UIViewController *)self px_oneUpPresentation];
+  [px_oneUpPresentation waitUntilPresentationCanStartAnimated:animatedCopy completionHandler:handlerCopy];
 }
 
-- (void)navigateToAsset:(id)a3 inAssetContainer:(id)a4 revealInOneUp:(BOOL)a5 animated:(BOOL)a6 completionHandler:(id)a7
+- (void)navigateToAsset:(id)asset inAssetContainer:(id)container revealInOneUp:(BOOL)up animated:(BOOL)animated completionHandler:(id)handler
 {
-  v7 = a6;
-  if (a5)
+  animatedCopy = animated;
+  if (up)
   {
     v11 = 1;
   }
@@ -1640,12 +1640,12 @@ void __87__PXPhotosUIViewController_menuForPXAssetCollectionActionTypeTTRForLemo
     v11 = 2;
   }
 
-  v12 = a7;
-  v13 = a4;
-  v14 = a3;
-  v16 = [[PXProgrammaticNavigationDestination alloc] initWithType:7 revealMode:v11 asset:v14 assetCollection:v13];
+  handlerCopy = handler;
+  containerCopy = container;
+  assetCopy = asset;
+  v16 = [[PXProgrammaticNavigationDestination alloc] initWithType:7 revealMode:v11 asset:assetCopy assetCollection:containerCopy];
 
-  if (v7)
+  if (animatedCopy)
   {
     v15 = 2;
   }
@@ -1655,51 +1655,51 @@ void __87__PXPhotosUIViewController_menuForPXAssetCollectionActionTypeTTRForLemo
     v15 = 0;
   }
 
-  [(PXPhotosUIViewController *)self navigateToDestination:v16 options:v15 completionHandler:v12];
+  [(PXPhotosUIViewController *)self navigateToDestination:v16 options:v15 completionHandler:handlerCopy];
 }
 
-- (void)navigateToAssetReference:(id)a3
+- (void)navigateToAssetReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   v5 = [PXProgrammaticNavigationDestination alloc];
-  v6 = [v4 asset];
-  v7 = [v4 assetCollection];
+  asset = [referenceCopy asset];
+  assetCollection = [referenceCopy assetCollection];
 
-  v8 = [(PXProgrammaticNavigationDestination *)v5 initWithType:7 revealMode:2 asset:v6 assetCollection:v7];
+  v8 = [(PXProgrammaticNavigationDestination *)v5 initWithType:7 revealMode:2 asset:asset assetCollection:assetCollection];
   [(PXPhotosUIViewController *)self navigateToDestination:v8 options:0 completionHandler:&__block_literal_global_956];
 }
 
-- (void)_waitForAvailabilityOfAsset:(id)a3 completionHandler:(id)a4
+- (void)_waitForAvailabilityOfAsset:(id)asset completionHandler:(id)handler
 {
-  v13 = a3;
-  if (v13)
+  assetCopy = asset;
+  if (assetCopy)
   {
-    v6 = a4;
+    handlerCopy = handler;
     v7 = +[PXApplicationSettings sharedInstance];
     [v7 defaultNavigationTimeoutDuration];
     v9 = v8;
 
-    v10 = [(PXPhotosUIViewController *)self viewModel];
-    v11 = [v10 dataSourceManager];
-    [v11 waitForAvailabilityOfAsset:v13 timeout:v6 completionHandler:v9];
+    handlerCopy2 = [(PXPhotosUIViewController *)self viewModel];
+    dataSourceManager = [handlerCopy2 dataSourceManager];
+    [dataSourceManager waitForAvailabilityOfAsset:assetCopy timeout:handlerCopy completionHandler:v9];
   }
 
   else
   {
-    v12 = *(a4 + 2);
-    v10 = a4;
+    v12 = *(handler + 2);
+    handlerCopy2 = handler;
     v12();
   }
 }
 
 - (id)px_navigationDestination
 {
-  v2 = [(PXPhotosUIViewController *)self currentDataSource];
-  v3 = [v2 container];
+  currentDataSource = [(PXPhotosUIViewController *)self currentDataSource];
+  container = [currentDataSource container];
 
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v4 = v3;
+    v4 = container;
 
     if (v4)
     {
@@ -1720,22 +1720,22 @@ LABEL_7:
   return v5;
 }
 
-- (void)_completeNavigationToDestination:(id)a3 result:(int64_t)a4 error:(id)a5
+- (void)_completeNavigationToDestination:(id)destination result:(int64_t)result error:(id)error
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if ([v8 type] == 8 && objc_msgSend(v8, "assetCollectionSubtype") == 218)
+  destinationCopy = destination;
+  errorCopy = error;
+  if ([destinationCopy type] == 8 && objc_msgSend(destinationCopy, "assetCollectionSubtype") == 218)
   {
-    if ([v8 renderAlbumAssetsWithDeferredProcessing])
+    if ([destinationCopy renderAlbumAssetsWithDeferredProcessing])
     {
-      v10 = [(PXPhotosUIViewController *)self currentDataSource];
-      v11 = [v10 containerCollection];
-      v12 = [v11 px_isCinematicSmartAlbum];
+      currentDataSource = [(PXPhotosUIViewController *)self currentDataSource];
+      containerCollection = [currentDataSource containerCollection];
+      px_isCinematicSmartAlbum = [containerCollection px_isCinematicSmartAlbum];
 
-      if (v12)
+      if (px_isCinematicSmartAlbum)
       {
-        if (a4 == 1)
+        if (result == 1)
         {
           v13 = MEMORY[0x1E6991F28];
           v25 = *MEMORY[0x1E6991E20];
@@ -1745,14 +1745,14 @@ LABEL_7:
           v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
           [v13 sendEvent:@"com.apple.photos.CPAnalytics.navigateToCinematicAlbumWithRender" withPayload:v16];
 
-          v17 = [(PXPhotosUIViewController *)self viewModel];
-          v18 = [v17 dataSourceManager];
-          v19 = [v18 dataSource];
-          v20 = [v19 containerCollection];
+          viewModel = [(PXPhotosUIViewController *)self viewModel];
+          dataSourceManager = [viewModel dataSourceManager];
+          dataSource = [dataSourceManager dataSource];
+          containerCollection2 = [dataSource containerCollection];
 
-          if ([v20 conformsToProtocol:&unk_1F198AE70])
+          if ([containerCollection2 conformsToProtocol:&unk_1F198AE70])
           {
-            v21 = v20;
+            v21 = containerCollection2;
             v22 = PXCreateDefaultAssetSharingHelper(self);
             [v22 ensureRenderingForAssetsWithDeferredProcessingInCollection:v21 completion:&__block_literal_global_951];
           }
@@ -1770,12 +1770,12 @@ LABEL_7:
 
         else
         {
-          v20 = PLGridZeroGetLog();
-          if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+          containerCollection2 = PLGridZeroGetLog();
+          if (os_log_type_enabled(containerCollection2, OS_LOG_TYPE_ERROR))
           {
             v23 = 138412290;
-            v24 = v9;
-            _os_log_impl(&dword_1A3C1C000, v20, OS_LOG_TYPE_ERROR, "PXPhotosUIViewController: Navigation to cinematic album failed. with error %@", &v23, 0xCu);
+            v24 = errorCopy;
+            _os_log_impl(&dword_1A3C1C000, containerCollection2, OS_LOG_TYPE_ERROR, "PXPhotosUIViewController: Navigation to cinematic album failed. with error %@", &v23, 0xCu);
           }
         }
       }
@@ -1796,20 +1796,20 @@ void __74__PXPhotosUIViewController__completeNavigationToDestination_result_erro
   }
 }
 
-- (void)navigateToDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)navigateToDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler
 {
   v56 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  destinationCopy = destination;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __76__PXPhotosUIViewController_navigateToDestination_options_completionHandler___block_invoke;
   aBlock[3] = &unk_1E773F7F0;
   objc_copyWeak(&v53, &location);
-  v10 = v8;
+  v10 = destinationCopy;
   v51 = v10;
-  v11 = v9;
+  v11 = handlerCopy;
   v52 = v11;
   v12 = _Block_copy(aBlock);
   if (![(PXPhotosUIViewController *)self isViewLoaded])
@@ -1817,46 +1817,46 @@ void __74__PXPhotosUIViewController__completeNavigationToDestination_result_erro
     goto LABEL_9;
   }
 
-  v13 = [(PXPhotosUIViewController *)self viewModel];
-  if ([v13 appearState])
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  if ([viewModel appearState])
   {
 
     goto LABEL_5;
   }
 
-  v14 = [(PXPhotosUIViewController *)self hasScrolledToInitialPosition];
+  hasScrolledToInitialPosition = [(PXPhotosUIViewController *)self hasScrolledToInitialPosition];
 
-  if (!v14)
+  if (!hasScrolledToInitialPosition)
   {
 LABEL_9:
-    v25 = [(PXPhotosUIViewController *)self pendingInitialNavigationRequest];
-    [v25 cancel];
+    pendingInitialNavigationRequest = [(PXPhotosUIViewController *)self pendingInitialNavigationRequest];
+    [pendingInitialNavigationRequest cancel];
 
-    v26 = [[PXProgrammaticNavigationRequest alloc] initWithDestination:v10 options:a4 completionHandler:v12];
+    v26 = [[PXProgrammaticNavigationRequest alloc] initWithDestination:v10 options:options completionHandler:v12];
     [(PXPhotosUIViewController *)self setPendingInitialNavigationRequest:v26];
 
     goto LABEL_34;
   }
 
 LABEL_5:
-  v15 = [v10 sidebarBackNavigationRootDestination];
-  v16 = [v15 collection];
-  v17 = [(PXPhotosUIViewController *)self currentDataSource];
-  v18 = [v17 containerCollection];
-  v19 = [v16 isEqual:v18];
+  sidebarBackNavigationRootDestination = [v10 sidebarBackNavigationRootDestination];
+  collection = [sidebarBackNavigationRootDestination collection];
+  currentDataSource = [(PXPhotosUIViewController *)self currentDataSource];
+  containerCollection = [currentDataSource containerCollection];
+  v19 = [collection isEqual:containerCollection];
 
   if (v19)
   {
-    v20 = [(PXPhotosUIViewController *)self navigationItem];
-    [v20 px_setHidesBackButtonInRegularWidth:1];
-    v21 = [(PXPhotosUIViewController *)self traitCollection];
-    [v20 px_updateBackButtonVisibilityForTraitCollection:v21];
+    navigationItem = [(PXPhotosUIViewController *)self navigationItem];
+    [navigationItem px_setHidesBackButtonInRegularWidth:1];
+    traitCollection = [(PXPhotosUIViewController *)self traitCollection];
+    [navigationItem px_updateBackButtonVisibilityForTraitCollection:traitCollection];
 
     [(PXPhotosUIViewController *)self _updateBackButtonBehavior];
   }
 
-  v22 = [(PXPhotosUIViewController *)self viewModel];
-  [v22 performChanges:&__block_literal_global_554];
+  viewModel2 = [(PXPhotosUIViewController *)self viewModel];
+  [viewModel2 performChanges:&__block_literal_global_554];
 
   v49[0] = MEMORY[0x1E69E9820];
   v49[1] = 3221225472;
@@ -1864,7 +1864,7 @@ LABEL_5:
   v49[3] = &unk_1E773F818;
   v49[4] = self;
   v42 = _Block_copy(v49);
-  v23 = [v10 asset];
+  asset = [v10 asset];
   v24 = [v10 type] == 7 && objc_msgSend(v10, "revealMode") != 2;
   if ([v10 type] == 19)
   {
@@ -1886,20 +1886,20 @@ LABEL_5:
 
   if ([v10 type] == 6 && objc_msgSend(v10, "revealMode") == 1)
   {
-    v28 = [(PXPhotosUIViewController *)self viewModel];
-    v29 = [v28 viewOptionsModel];
-    v30 = [v29 sortOrderState];
+    viewModel3 = [(PXPhotosUIViewController *)self viewModel];
+    viewOptionsModel = [viewModel3 viewOptionsModel];
+    sortOrderState = [viewOptionsModel sortOrderState];
 
-    if (v30 && [v30 sortOrder] != 2)
+    if (sortOrderState && [sortOrderState sortOrder] != 2)
     {
-      [v30 performChanges:&__block_literal_global_560_170781];
+      [sortOrderState performChanges:&__block_literal_global_560_170781];
     }
 
-    v31 = [(PXPhotosUIViewController *)self currentDataSource];
-    v32 = v31;
+    currentDataSource2 = [(PXPhotosUIViewController *)self currentDataSource];
+    v32 = currentDataSource2;
     v47 = 0u;
     v48 = 0u;
-    if (!v31 || ([v31 lastItemIndexPath], v47 == *off_1E7721F68) || v48 == 0x7FFFFFFFFFFFFFFFLL || *(&v48 + 1) != 0x7FFFFFFFFFFFFFFFLL)
+    if (!currentDataSource2 || ([currentDataSource2 lastItemIndexPath], v47 == *off_1E7721F68) || v48 == 0x7FFFFFFFFFFFFFFFLL || *(&v48 + 1) != 0x7FFFFFFFFFFFFFFFLL)
     {
       PXAssertGetLog();
     }
@@ -1908,7 +1908,7 @@ LABEL_5:
     buf[1] = v48;
     v33 = [v32 assetAtItemIndexPath:buf];
 
-    v23 = v33;
+    asset = v33;
     goto LABEL_26;
   }
 
@@ -1921,24 +1921,24 @@ LABEL_26:
     v46[2] = __76__PXPhotosUIViewController_navigateToDestination_options_completionHandler___block_invoke_561;
     v46[3] = &unk_1E773F8B0;
     v46[7] = v42;
-    v35 = v23;
+    v35 = asset;
     v46[4] = v35;
     v46[5] = self;
     v46[6] = v10;
-    v46[10] = a4;
+    v46[10] = options;
     v46[8] = v11;
     v46[9] = v12;
     [(PXPhotosUIViewController *)self _waitForAvailabilityOfAsset:v35 completionHandler:v46];
 LABEL_27:
     v36 = (v34 + 7);
 
-    v37 = v34[4];
+    contentController = v34[4];
 LABEL_28:
 
     goto LABEL_29;
   }
 
-  if (v23)
+  if (asset)
   {
     v34 = v45;
     v45[0] = MEMORY[0x1E69E9820];
@@ -1946,11 +1946,11 @@ LABEL_28:
     v45[2] = __76__PXPhotosUIViewController_navigateToDestination_options_completionHandler___block_invoke_4_574;
     v45[3] = &unk_1E773F8B0;
     v45[7] = v42;
-    v35 = v23;
+    v35 = asset;
     v45[4] = v35;
     v45[5] = self;
     v45[6] = v10;
-    v45[10] = a4;
+    v45[10] = options;
     v45[8] = v11;
     v45[9] = v12;
     [(PXPhotosUIViewController *)self _waitForAvailabilityOfAsset:v35 completionHandler:v45];
@@ -1959,13 +1959,13 @@ LABEL_28:
 
   if ([v10 revealMode] == 3)
   {
-    v37 = [(PXPhotosUIViewController *)self contentController];
+    contentController = [(PXPhotosUIViewController *)self contentController];
     v43[0] = MEMORY[0x1E69E9820];
     v43[1] = 3221225472;
     v43[2] = __76__PXPhotosUIViewController_navigateToDestination_options_completionHandler___block_invoke_2_579;
     v43[3] = &unk_1E77464C0;
     v44 = v12;
-    [v37 scrollToInitialPositionAnimated:(a4 >> 1) & 1 withCompletionHandler:v43];
+    [contentController scrollToInitialPositionAnimated:(options >> 1) & 1 withCompletionHandler:v43];
     v35 = 0;
     v36 = &v44;
     goto LABEL_28;
@@ -1978,14 +1978,14 @@ LABEL_29:
   {
     if ([v10 displayAlbumOptions])
     {
-      v38 = [(PXPhotosUIViewController *)self interaction];
+      interaction = [(PXPhotosUIViewController *)self interaction];
       v39 = *off_1E77220B8;
-      v40 = [v38 canPerformActionType:*off_1E77220B8];
+      v40 = [interaction canPerformActionType:*off_1E77220B8];
 
       if (v40)
       {
-        v41 = [(PXPhotosUIViewController *)self interaction];
-        [v41 performActionWithType:v39];
+        interaction2 = [(PXPhotosUIViewController *)self interaction];
+        [interaction2 performActionWithType:v39];
       }
     }
   }
@@ -2246,82 +2246,82 @@ void *__76__PXPhotosUIViewController_navigateToDestination_options_completionHan
   return result;
 }
 
-- (unint64_t)routingOptionsForDestination:(id)a3
+- (unint64_t)routingOptionsForDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [(PXPhotosUIViewController *)self currentDataSource];
-  v6 = [v5 containerCollection];
-  v7 = [v4 type];
-  if ((v7 - 5) < 2)
+  destinationCopy = destination;
+  currentDataSource = [(PXPhotosUIViewController *)self currentDataSource];
+  containerCollection = [currentDataSource containerCollection];
+  type = [destinationCopy type];
+  if ((type - 5) < 2)
   {
-    v13 = [v6 px_isAllPhotosSmartAlbum];
+    px_isAllPhotosSmartAlbum = [containerCollection px_isAllPhotosSmartAlbum];
   }
 
-  else if ((v7 - 7) >= 2)
+  else if ((type - 7) >= 2)
   {
-    v13 = v7 == 19 && [v4 revealMode] == 1;
+    px_isAllPhotosSmartAlbum = type == 19 && [destinationCopy revealMode] == 1;
   }
 
   else
   {
-    v8 = [v4 assetCollection];
-    if (v8)
+    assetCollection = [destinationCopy assetCollection];
+    if (assetCollection)
     {
       v9 = [off_1E7721488 alloc];
       v10 = *(off_1E7722228 + 1);
       v18[0] = *off_1E7722228;
       v18[1] = v10;
-      v11 = [v9 initWithAssetCollection:v8 keyAssetReference:0 indexPath:v18];
-      if (([v8 isEqual:v6] & 1) != 0 || (!v5 ? (v12 = 0) : (objc_msgSend(v5, "indexPathForAssetCollectionReference:", v11), v12 = *&v18[0]), v12 != *off_1E7721F68 || objc_msgSend(v8, "px_isRecentsSmartAlbum") && objc_msgSend(v6, "px_isAllPhotosSmartAlbum") && (-[PXPhotosUIViewController viewModel](self, "viewModel"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "viewOptionsModel"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "sortOrderState"), v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v14, v16)))
+      v11 = [v9 initWithAssetCollection:assetCollection keyAssetReference:0 indexPath:v18];
+      if (([assetCollection isEqual:containerCollection] & 1) != 0 || (!currentDataSource ? (v12 = 0) : (objc_msgSend(currentDataSource, "indexPathForAssetCollectionReference:", v11), v12 = *&v18[0]), v12 != *off_1E7721F68 || objc_msgSend(assetCollection, "px_isRecentsSmartAlbum") && objc_msgSend(containerCollection, "px_isAllPhotosSmartAlbum") && (-[PXPhotosUIViewController viewModel](self, "viewModel"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "viewOptionsModel"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "sortOrderState"), v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v14, v16)))
       {
-        v13 = 1;
+        px_isAllPhotosSmartAlbum = 1;
       }
 
-      else if ([v8 px_isFeaturedPhotosCollection])
+      else if ([assetCollection px_isFeaturedPhotosCollection])
       {
-        v13 = [v6 px_isFeaturedPhotosCollection];
+        px_isAllPhotosSmartAlbum = [containerCollection px_isFeaturedPhotosCollection];
       }
 
       else
       {
-        v13 = 0;
+        px_isAllPhotosSmartAlbum = 0;
       }
     }
 
-    else if ([v4 type] == 7)
+    else if ([destinationCopy type] == 7)
     {
-      v13 = [v6 px_isAllPhotosSmartAlbum];
+      px_isAllPhotosSmartAlbum = [containerCollection px_isAllPhotosSmartAlbum];
     }
 
     else
     {
-      v13 = 0;
+      px_isAllPhotosSmartAlbum = 0;
     }
   }
 
-  return v13;
+  return px_isAllPhotosSmartAlbum;
 }
 
 - (PXActionManager)assetActionManager
 {
-  v2 = [(PXPhotosUIViewController *)self viewModel];
-  v3 = [v2 assetActionManager];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  assetActionManager = [viewModel assetActionManager];
 
-  return v3;
+  return assetActionManager;
 }
 
 - (BOOL)resetToInitialStateIfPossible
 {
-  v3 = [(PXPhotosUIViewController *)self canResetToInitialState];
-  if (v3)
+  canResetToInitialState = [(PXPhotosUIViewController *)self canResetToInitialState];
+  if (canResetToInitialState)
   {
-    v4 = [(PXPhotosUIViewController *)self viewModel];
-    [v4 performChanges:&__block_literal_global_551_170806];
+    viewModel = [(PXPhotosUIViewController *)self viewModel];
+    [viewModel performChanges:&__block_literal_global_551_170806];
 
     [(PXPhotosUIViewController *)self resetScrollPositionAnimated:0];
   }
 
-  return v3;
+  return canResetToInitialState;
 }
 
 void __57__PXPhotosUIViewController_resetToInitialStateIfPossible__block_invoke(uint64_t a1, void *a2)
@@ -2339,40 +2339,40 @@ void __57__PXPhotosUIViewController_resetToInitialStateIfPossible__block_invoke(
 
 - (BOOL)canResetToInitialState
 {
-  v3 = [(PXPhotosUIViewController *)self viewModel];
-  if (!-[PXPhotosUIViewController isViewLoaded](self, "isViewLoaded") || ([v3 selectionSnapshot], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isAnyItemSelected"), v4, (v5 & 1) != 0) || (-[PXPhotosUIViewController px_containsViewControllerModalInPresentation](self, "px_containsViewControllerModalInPresentation") & 1) != 0 || (-[UIViewController px_oneUpPresentation](self, "px_oneUpPresentation"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "state"), v6, v7))
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  if (!-[PXPhotosUIViewController isViewLoaded](self, "isViewLoaded") || ([viewModel selectionSnapshot], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isAnyItemSelected"), v4, (v5 & 1) != 0) || (-[PXPhotosUIViewController px_containsViewControllerModalInPresentation](self, "px_containsViewControllerModalInPresentation") & 1) != 0 || (-[UIViewController px_oneUpPresentation](self, "px_oneUpPresentation"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "state"), v6, v7))
   {
     v8 = 0;
   }
 
   else
   {
-    v10 = [(PXPhotosUIViewController *)self presentedViewController];
-    v8 = v10 == 0;
+    presentedViewController = [(PXPhotosUIViewController *)self presentedViewController];
+    v8 = presentedViewController == 0;
   }
 
   return v8;
 }
 
-- (BOOL)scrollToBottomAnimated:(BOOL)a3
+- (BOOL)scrollToBottomAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v15[1] = *MEMORY[0x1E69E9840];
   if (![(PXPhotosUIViewController *)self isViewLoaded])
   {
     return 0;
   }
 
-  v5 = [(PXPhotosUIViewController *)self scrollView];
-  v6 = [v5 px_isScrolledAtEdge:3];
+  scrollView = [(PXPhotosUIViewController *)self scrollView];
+  v6 = [scrollView px_isScrolledAtEdge:3];
 
   if (v6)
   {
     return 0;
   }
 
-  v8 = [(PXPhotosUIViewController *)self scrollView];
-  [v8 px_scrollToEdge:3 animated:v3];
+  scrollView2 = [(PXPhotosUIViewController *)self scrollView];
+  [scrollView2 px_scrollToEdge:3 animated:animatedCopy];
 
   v9 = MEMORY[0x1E6991F28];
   v14 = *MEMORY[0x1E6991E20];
@@ -2386,65 +2386,65 @@ void __57__PXPhotosUIViewController_resetToInitialStateIfPossible__block_invoke(
   return v7;
 }
 
-- (BOOL)px_scrollToInitialPositionAnimated:(BOOL)a3
+- (BOOL)px_scrollToInitialPositionAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PXPhotosUIViewController *)self isViewLoaded];
-  if (v5)
+  animatedCopy = animated;
+  isViewLoaded = [(PXPhotosUIViewController *)self isViewLoaded];
+  if (isViewLoaded)
   {
-    v6 = [(PXPhotosUIViewController *)self contentController];
-    [v6 scrollToInitialPositionAnimated:v3 withCompletionHandler:0];
+    contentController = [(PXPhotosUIViewController *)self contentController];
+    [contentController scrollToInitialPositionAnimated:animatedCopy withCompletionHandler:0];
   }
 
-  return v5;
+  return isViewLoaded;
 }
 
 - (NSArray)visibleUUIDs
 {
-  v2 = [(PXPhotosUIViewController *)self contentController];
-  v3 = [v2 visibleAssetUUIDs];
+  contentController = [(PXPhotosUIViewController *)self contentController];
+  visibleAssetUUIDs = [contentController visibleAssetUUIDs];
 
-  return v3;
+  return visibleAssetUUIDs;
 }
 
 - (id)pu_debugCurrentlySelectedAssets
 {
-  v2 = [(PXPhotosUIViewController *)self viewModel];
-  v3 = [v2 selectionManager];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  selectionManager = [viewModel selectionManager];
 
-  v4 = [v3 selectionSnapshot];
-  v5 = [v4 allItemsEnumerator];
+  selectionSnapshot = [selectionManager selectionSnapshot];
+  allItemsEnumerator = [selectionSnapshot allItemsEnumerator];
 
-  return v5;
+  return allItemsEnumerator;
 }
 
 - (BOOL)pu_shouldOptOutFromChromelessBars
 {
-  v3 = [(PXPhotosUIViewController *)self viewModel];
-  if ([v3 navBarStyle])
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  if ([viewModel navBarStyle])
   {
-    v4 = 0;
+    shouldOptOutOfChromelessBars = 0;
   }
 
   else
   {
-    v5 = [(PXPhotosUIViewController *)self viewModel];
-    v4 = [v5 shouldOptOutOfChromelessBars];
+    viewModel2 = [(PXPhotosUIViewController *)self viewModel];
+    shouldOptOutOfChromelessBars = [viewModel2 shouldOptOutOfChromelessBars];
   }
 
-  return v4;
+  return shouldOptOutOfChromelessBars;
 }
 
 - (id)preferredFocusEnvironments
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(PXPhotosUIViewController *)self contentController];
-  v4 = [v3 layout];
+  contentController = [(PXPhotosUIViewController *)self contentController];
+  layout = [contentController layout];
 
-  v5 = [(PXPhotosUIViewController *)self preferredFocusAssetReference];
-  if (v5)
+  preferredFocusAssetReference = [(PXPhotosUIViewController *)self preferredFocusAssetReference];
+  if (preferredFocusAssetReference)
   {
-    v6 = [v4 axLeafForObjectReference:v5];
+    v6 = [layout axLeafForObjectReference:preferredFocusAssetReference];
   }
 
   else
@@ -2452,12 +2452,12 @@ void __57__PXPhotosUIViewController_resetToInitialStateIfPossible__block_invoke(
     v6 = 0;
   }
 
-  v7 = [v4 axGroup];
-  v8 = v7;
+  axGroup = [layout axGroup];
+  v8 = axGroup;
   if (v6)
   {
     v15 = v6;
-    v16 = v7;
+    v16 = axGroup;
     v9 = MEMORY[0x1E695DEC8];
     v10 = &v15;
     v11 = 2;
@@ -2465,7 +2465,7 @@ void __57__PXPhotosUIViewController_resetToInitialStateIfPossible__block_invoke(
 
   else
   {
-    v14 = v7;
+    v14 = axGroup;
     v9 = MEMORY[0x1E695DEC8];
     v10 = &v14;
     v11 = 1;
@@ -2478,43 +2478,43 @@ void __57__PXPhotosUIViewController_resetToInitialStateIfPossible__block_invoke(
 
 - (void)playCollectionAsMemory
 {
-  v2 = [(PXPhotosUIViewController *)self viewModel];
-  v3 = [v2 assetCollectionActionManager];
-  v4 = [v3 actionPerformerForActionType:*off_1E7721D68];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  assetCollectionActionManager = [viewModel assetCollectionActionManager];
+  v4 = [assetCollectionActionManager actionPerformerForActionType:*off_1E7721D68];
 
   [v4 performActionWithCompletionHandler:0];
 }
 
-- (void)_modalDismiss:(id)a3 completion:(id)a4
+- (void)_modalDismiss:(id)dismiss completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(PXPhotosUIViewController *)self presentingViewController];
-  if (!v6)
+  completionCopy = completion;
+  presentingViewController = [(PXPhotosUIViewController *)self presentingViewController];
+  if (!presentingViewController)
   {
     PXAssertGetLog();
   }
 
-  [v6 dismissViewControllerAnimated:1 completion:v5];
+  [presentingViewController dismissViewControllerAnimated:1 completion:completionCopy];
 }
 
-- (void)cancelSelectMode:(id)a3
+- (void)cancelSelectMode:(id)mode
 {
-  v3 = [(PXPhotosUIViewController *)self viewModel];
-  [v3 performChanges:&__block_literal_global_547_170809];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  [viewModel performChanges:&__block_literal_global_547_170809];
 }
 
-- (void)deselectAll:(id)a3
+- (void)deselectAll:(id)all
 {
-  v3 = [(PXPhotosUIViewController *)self viewModel];
-  [v3 performChanges:&__block_literal_global_545];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  [viewModel performChanges:&__block_literal_global_545];
 }
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
-  v3 = [(PXPhotosUIViewController *)self viewModel];
-  if ([v3 allowsSelectAllAction])
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  if ([viewModel allowsSelectAllAction])
   {
-    [v3 performChanges:&__block_literal_global_543];
+    [viewModel performChanges:&__block_literal_global_543];
   }
 }
 
@@ -2527,74 +2527,74 @@ void __38__PXPhotosUIViewController_selectAll___block_invoke(uint64_t a1, void *
   }
 }
 
-- (void)addAssetsToAlbum:(id)a3
+- (void)addAssetsToAlbum:(id)album
 {
-  v3 = [(PXPhotosUIViewController *)self viewModel];
-  v4 = [v3 assetCollectionActionManager];
-  v5 = [v4 actionPerformerForActionType:*off_1E7721C30];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  assetCollectionActionManager = [viewModel assetCollectionActionManager];
+  v5 = [assetCollectionActionManager actionPerformerForActionType:*off_1E7721C30];
 
   [v5 performActionWithCompletionHandler:0];
 }
 
-- (void)toggleSortOrder:(id)a3
+- (void)toggleSortOrder:(id)order
 {
-  v4 = PXNumberPropertyFromCommand(a3);
+  v4 = PXNumberPropertyFromCommand(order);
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
-    v6 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v7 = [(PXPhotosUIViewController *)self viewModelIfLoaded];
-  [v7 performSortOrderMenuActionForItemAtIndex:v6];
+  viewModelIfLoaded = [(PXPhotosUIViewController *)self viewModelIfLoaded];
+  [viewModelIfLoaded performSortOrderMenuActionForItemAtIndex:integerValue];
 }
 
-- (void)toggleFilter:(id)a3
+- (void)toggleFilter:(id)filter
 {
-  v4 = PXNumberPropertyFromCommand(a3);
+  v4 = PXNumberPropertyFromCommand(filter);
   v6 = PXPhotosGridFilterActionIdentifierFromNumber(v4);
 
-  v5 = [(PXPhotosUIViewController *)self interaction];
-  [v5 performActionWithType:v6];
+  interaction = [(PXPhotosUIViewController *)self interaction];
+  [interaction performActionWithType:v6];
 }
 
-- (void)toggleViewMode:(id)a3
+- (void)toggleViewMode:(id)mode
 {
-  v3 = [(PXPhotosUIViewController *)self interaction];
-  [v3 performActionWithType:*off_1E7722108];
+  interaction = [(PXPhotosUIViewController *)self interaction];
+  [interaction performActionWithType:*off_1E7722108];
 }
 
-- (void)toggleEditMode:(id)a3
+- (void)toggleEditMode:(id)mode
 {
-  v3 = [(PXPhotosUIViewController *)self interaction];
-  [v3 toggleSelectMode];
+  interaction = [(PXPhotosUIViewController *)self interaction];
+  [interaction toggleSelectMode];
 }
 
-- (void)zoomOut:(id)a3
+- (void)zoomOut:(id)out
 {
-  v3 = [(PXPhotosUIViewController *)self interaction];
-  [v3 performActionWithType:*off_1E77221B0];
+  interaction = [(PXPhotosUIViewController *)self interaction];
+  [interaction performActionWithType:*off_1E77221B0];
 }
 
-- (void)zoomIn:(id)a3
+- (void)zoomIn:(id)in
 {
-  v3 = [(PXPhotosUIViewController *)self interaction];
-  [v3 performActionWithType:*off_1E77221A8];
+  interaction = [(PXPhotosUIViewController *)self interaction];
+  [interaction performActionWithType:*off_1E77221A8];
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
-  v3 = [(PXPhotosUIViewController *)self viewModel];
-  v4 = [v3 currentDataSource];
-  v5 = v4;
-  if (v4)
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  currentDataSource = [viewModel currentDataSource];
+  v5 = currentDataSource;
+  if (currentDataSource)
   {
-    [v4 firstSectionIndexPath];
+    [currentDataSource firstSectionIndexPath];
   }
 
   else
@@ -2603,8 +2603,8 @@ void __38__PXPhotosUIViewController_selectAll___block_invoke(uint64_t a1, void *
   }
 
   v6 = [v5 assetCollectionReferenceAtSectionIndexPath:v10];
-  v7 = [v3 assetCollectionActionManager];
-  v8 = [v7 actionPerformerForActionType:*off_1E7721D50 assetCollectionReference:v6];
+  assetCollectionActionManager = [viewModel assetCollectionActionManager];
+  v8 = [assetCollectionActionManager actionPerformerForActionType:*off_1E7721D50 assetCollectionReference:v6];
 
   if (v8)
   {
@@ -2638,13 +2638,13 @@ void __34__PXPhotosUIViewController_paste___block_invoke(uint64_t a1, char a2, v
   }
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v16 = a3;
-  if ([v16 action] == sel_toggleEditMode_)
+  commandCopy = command;
+  if ([commandCopy action] == sel_toggleEditMode_)
   {
-    v4 = [(PXPhotosUIViewController *)self viewModel];
-    if ([v4 isInSelectMode])
+    viewModel = [(PXPhotosUIViewController *)self viewModel];
+    if ([viewModel isInSelectMode])
     {
       v8 = @"PXPhotosGridCancel";
     }
@@ -2654,134 +2654,134 @@ void __34__PXPhotosUIViewController_paste___block_invoke(uint64_t a1, char a2, v
       v8 = @"PXPhotosGridSelect";
     }
 
-    v5 = PXLocalizedStringFromTable(v8, @"PhotosUICore");
-    [v16 setTitle:v5];
+    interaction2 = PXLocalizedStringFromTable(v8, @"PhotosUICore");
+    [commandCopy setTitle:interaction2];
     goto LABEL_22;
   }
 
-  if ([v16 action] == sel_toggleViewMode_)
+  if ([commandCopy action] == sel_toggleViewMode_)
   {
-    v9 = [(PXPhotosUIViewController *)self interaction];
+    interaction = [(PXPhotosUIViewController *)self interaction];
     v10 = *off_1E7722108;
-    v11 = [v9 menuTitleForActionType:*off_1E7722108];
-    [v16 setTitle:v11];
+    v11 = [interaction menuTitleForActionType:*off_1E7722108];
+    [commandCopy setTitle:v11];
 
-    v4 = [(PXPhotosUIViewController *)self interaction];
-    v5 = [v4 menuImageForActionType:v10];
-    [v16 setImage:v5];
+    viewModel = [(PXPhotosUIViewController *)self interaction];
+    interaction2 = [viewModel menuImageForActionType:v10];
+    [commandCopy setImage:interaction2];
 LABEL_22:
 
     goto LABEL_23;
   }
 
-  if ([v16 action] == sel_toggleFilter_)
+  if ([commandCopy action] == sel_toggleFilter_)
   {
-    v12 = PXNumberPropertyFromCommand(v16);
-    v4 = PXPhotosGridFilterActionIdentifierFromNumber(v12);
+    v12 = PXNumberPropertyFromCommand(commandCopy);
+    viewModel = PXPhotosGridFilterActionIdentifierFromNumber(v12);
 
-    v5 = [(PXPhotosUIViewController *)self interaction];
-    v6 = [v5 menuTitleForActionType:v4];
-    [v16 setTitle:v6];
+    interaction2 = [(PXPhotosUIViewController *)self interaction];
+    v6 = [interaction2 menuTitleForActionType:viewModel];
+    [commandCopy setTitle:v6];
 LABEL_14:
 
     goto LABEL_22;
   }
 
-  if ([v16 action] == sel_toggleSortOrder_)
+  if ([commandCopy action] == sel_toggleSortOrder_)
   {
-    v4 = [(PXPhotosUIViewController *)self viewModelIfLoaded];
-    v13 = PXNumberPropertyFromCommand(v16);
+    viewModel = [(PXPhotosUIViewController *)self viewModelIfLoaded];
+    v13 = PXNumberPropertyFromCommand(commandCopy);
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 integerValue];
+      integerValue = [v13 integerValue];
     }
 
     else
     {
-      v15 = 0x7FFFFFFFFFFFFFFFLL;
+      integerValue = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v5 = [v4 sortOrderMenuActionTitleForItemIndex:v15];
-    if (v5)
+    interaction2 = [viewModel sortOrderMenuActionTitleForItemIndex:integerValue];
+    if (interaction2)
     {
-      [v16 setTitle:v5];
-      [v4 sortOrderMenuActionStateForItemIndex:v15];
+      [commandCopy setTitle:interaction2];
+      [viewModel sortOrderMenuActionStateForItemIndex:integerValue];
       UIMenuElementStateFromPXMenuActionState();
     }
 
-    [v16 setAttributes:{objc_msgSend(v16, "attributes") | 4}];
+    [commandCopy setAttributes:{objc_msgSend(commandCopy, "attributes") | 4}];
     goto LABEL_22;
   }
 
-  if ([v16 action] != sel_addAssetsToAlbum_)
+  if ([commandCopy action] != sel_addAssetsToAlbum_)
   {
-    if ([v16 action] != sel_addAssetsToLastUsedAlbum_)
+    if ([commandCopy action] != sel_addAssetsToLastUsedAlbum_)
     {
       goto LABEL_24;
     }
 
-    v4 = [(PXPhotosUIViewController *)self viewModel];
-    v5 = [v4 assetActionManager];
-    v6 = [v5 actionPerformerForActionType:*off_1E7721A20];
+    viewModel = [(PXPhotosUIViewController *)self viewModel];
+    interaction2 = [viewModel assetActionManager];
+    v6 = [interaction2 actionPerformerForActionType:*off_1E7721A20];
     v7 = [v6 localizedTitleForUseCase:1];
-    [v16 setTitle:v7];
+    [commandCopy setTitle:v7];
 
     goto LABEL_14;
   }
 
-  v4 = PXLocalizedStringFromTable(@"PXPhotosGridAddPhotosActionMenuTitle", @"PhotosUICore");
-  [v16 setTitle:v4];
+  viewModel = PXLocalizedStringFromTable(@"PXPhotosGridAddPhotosActionMenuTitle", @"PhotosUICore");
+  [commandCopy setTitle:viewModel];
 LABEL_23:
 
 LABEL_24:
 }
 
-- (id)targetForAction:(SEL)a3 withSender:(id)a4
+- (id)targetForAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = [(PXPhotosUIViewController *)self interaction];
-  v8 = [v7 targetForKeyCommands];
+  senderCopy = sender;
+  interaction = [(PXPhotosUIViewController *)self interaction];
+  targetForKeyCommands = [interaction targetForKeyCommands];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(PXPhotosUIViewController *)self interaction];
-    v11 = [v10 targetForKeyCommands];
+    interaction2 = [(PXPhotosUIViewController *)self interaction];
+    targetForKeyCommands2 = [interaction2 targetForKeyCommands];
   }
 
   else
   {
-    v12 = [(PXPhotosUIViewController *)self assetActionManager];
+    assetActionManager = [(PXPhotosUIViewController *)self assetActionManager];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v14 = [(PXPhotosUIViewController *)self assetActionManager];
+      assetActionManager2 = [(PXPhotosUIViewController *)self assetActionManager];
     }
 
     else
     {
       v16.receiver = self;
       v16.super_class = PXPhotosUIViewController;
-      v14 = [(PXPhotosUIViewController *)&v16 targetForAction:a3 withSender:v6];
+      assetActionManager2 = [(PXPhotosUIViewController *)&v16 targetForAction:action withSender:senderCopy];
     }
 
-    v11 = v14;
+    targetForKeyCommands2 = assetActionManager2;
   }
 
-  return v11;
+  return targetForKeyCommands2;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = [(PXPhotosUIViewController *)self viewModel];
-  v8 = v7;
-  if (sel_paste_ == a3)
+  senderCopy = sender;
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  v8 = viewModel;
+  if (sel_paste_ == action)
   {
-    v11 = [v7 currentDataSource];
-    if ([v11 numberOfSections] != 1)
+    currentDataSource = [viewModel currentDataSource];
+    if ([currentDataSource numberOfSections] != 1)
     {
       v10 = 0;
 LABEL_35:
@@ -2789,9 +2789,9 @@ LABEL_35:
       goto LABEL_36;
     }
 
-    if (v11)
+    if (currentDataSource)
     {
-      [v11 firstSectionIndexPath];
+      [currentDataSource firstSectionIndexPath];
     }
 
     else
@@ -2799,117 +2799,117 @@ LABEL_35:
       memset(v24, 0, sizeof(v24));
     }
 
-    v17 = [v11 assetCollectionReferenceAtSectionIndexPath:v24];
-    v18 = [v8 assetCollectionActionManager];
-    v19 = [v18 canPerformActionType:*off_1E7721D50 assetCollectionReference:v17];
+    v17 = [currentDataSource assetCollectionReferenceAtSectionIndexPath:v24];
+    assetCollectionActionManager = [v8 assetCollectionActionManager];
+    v19 = [assetCollectionActionManager canPerformActionType:*off_1E7721D50 assetCollectionReference:v17];
 LABEL_29:
     v10 = v19;
 
     goto LABEL_35;
   }
 
-  if (sel_addAssetsToAlbum_ == a3)
+  if (sel_addAssetsToAlbum_ == action)
   {
-    v12 = [v7 assetCollectionActionManager];
-    v11 = v12;
+    assetCollectionActionManager2 = [viewModel assetCollectionActionManager];
+    currentDataSource = assetCollectionActionManager2;
     v13 = off_1E7721C30;
     goto LABEL_33;
   }
 
-  if (sel_openSelectionWithCommandDownArrow_ != a3 && sel_toggleViewer_ != a3)
+  if (sel_openSelectionWithCommandDownArrow_ != action && sel_toggleViewer_ != action)
   {
-    if (sel_zoomIn_ == a3)
+    if (sel_zoomIn_ == action)
     {
-      v12 = [(PXPhotosUIViewController *)self interaction];
-      v11 = v12;
+      assetCollectionActionManager2 = [(PXPhotosUIViewController *)self interaction];
+      currentDataSource = assetCollectionActionManager2;
       v13 = off_1E77221A8;
     }
 
-    else if (sel_zoomOut_ == a3)
+    else if (sel_zoomOut_ == action)
     {
-      v12 = [(PXPhotosUIViewController *)self interaction];
-      v11 = v12;
+      assetCollectionActionManager2 = [(PXPhotosUIViewController *)self interaction];
+      currentDataSource = assetCollectionActionManager2;
       v13 = off_1E77221B0;
     }
 
     else
     {
-      if (sel_toggleViewMode_ != a3)
+      if (sel_toggleViewMode_ != action)
       {
-        if (sel_toggleFilter_ != a3)
+        if (sel_toggleFilter_ != action)
         {
-          if (sel_toggleEditMode_ == a3)
+          if (sel_toggleEditMode_ == action)
           {
-            v11 = [(PXPhotosUIViewController *)self interaction];
-            v16 = [v11 canToggleSelectMode];
+            currentDataSource = [(PXPhotosUIViewController *)self interaction];
+            canToggleSelectMode = [currentDataSource canToggleSelectMode];
             goto LABEL_34;
           }
 
-          if (sel_cancelSelectMode_ == a3)
+          if (sel_cancelSelectMode_ == action)
           {
-            v22 = [v7 canExitSelectMode];
+            canExitSelectMode = [viewModel canExitSelectMode];
             goto LABEL_44;
           }
 
-          if (sel_selectAll_ != a3)
+          if (sel_selectAll_ != action)
           {
-            if (sel_deselectAll_ == a3)
+            if (sel_deselectAll_ == action)
             {
-              v11 = [v7 selectionSnapshot];
-              v16 = [v11 isAnyItemSelected];
+              currentDataSource = [viewModel selectionSnapshot];
+              canToggleSelectMode = [currentDataSource isAnyItemSelected];
               goto LABEL_34;
             }
 
-            v14 = [(PXPhotosUIViewController *)self assetActionManager];
+            assetActionManager = [(PXPhotosUIViewController *)self assetActionManager];
             v15 = objc_opt_respondsToSelector();
 
             if (v15)
             {
-              v11 = [(PXPhotosUIViewController *)self assetActionManager];
-              v16 = [v11 canPerformAction:a3 withSender:v6];
+              currentDataSource = [(PXPhotosUIViewController *)self assetActionManager];
+              canToggleSelectMode = [currentDataSource canPerformAction:action withSender:senderCopy];
 LABEL_34:
-              v10 = v16;
+              v10 = canToggleSelectMode;
               goto LABEL_35;
             }
 
             v23.receiver = self;
             v23.super_class = PXPhotosUIViewController;
-            v22 = [(PXPhotosUIViewController *)&v23 canPerformAction:a3 withSender:v6];
+            canExitSelectMode = [(PXPhotosUIViewController *)&v23 canPerformAction:action withSender:senderCopy];
 LABEL_44:
-            v10 = v22;
+            v10 = canExitSelectMode;
             goto LABEL_36;
           }
 
-          if ([v7 canEnterSelectMode])
+          if ([viewModel canEnterSelectMode])
           {
-            v22 = [v8 allowsSelectAllAction];
+            canExitSelectMode = [v8 allowsSelectAllAction];
             goto LABEL_44;
           }
 
           goto LABEL_10;
         }
 
-        v11 = [(PXPhotosUIViewController *)self interaction];
-        v17 = PXNumberPropertyFromCommand(v6);
-        v18 = PXPhotosGridFilterActionIdentifierFromNumber(v17);
-        v19 = [v11 canPerformActionType:v18];
+        currentDataSource = [(PXPhotosUIViewController *)self interaction];
+        v17 = PXNumberPropertyFromCommand(senderCopy);
+        assetCollectionActionManager = PXPhotosGridFilterActionIdentifierFromNumber(v17);
+        v19 = [currentDataSource canPerformActionType:assetCollectionActionManager];
         goto LABEL_29;
       }
 
-      v12 = [(PXPhotosUIViewController *)self interaction];
-      v11 = v12;
+      assetCollectionActionManager2 = [(PXPhotosUIViewController *)self interaction];
+      currentDataSource = assetCollectionActionManager2;
       v13 = off_1E7722108;
     }
 
 LABEL_33:
-    v16 = [v12 canPerformActionType:*v13];
+    canToggleSelectMode = [assetCollectionActionManager2 canPerformActionType:*v13];
     goto LABEL_34;
   }
 
-  if ([v7 canPresentOneUp] && (objc_msgSend(v8, "isInSelectMode") & 1) == 0)
+  if ([viewModel canPresentOneUp] && (objc_msgSend(v8, "isInSelectMode") & 1) == 0)
   {
-    v20 = [v8 singleSelectedAssetReference];
-    v10 = v20 != 0;
+    singleSelectedAssetReference = [v8 singleSelectedAssetReference];
+    v10 = singleSelectedAssetReference != 0;
 
     goto LABEL_36;
   }
@@ -2923,13 +2923,13 @@ LABEL_36:
 
 - (BOOL)canBecomeFirstResponder
 {
-  v2 = [(PXPhotosUIViewController *)self navigationController];
-  v3 = [v2 firstResponder];
+  navigationController = [(PXPhotosUIViewController *)self navigationController];
+  firstResponder = [navigationController firstResponder];
 
-  if (v3)
+  if (firstResponder)
   {
-    v4 = [v2 firstResponder];
-    v5 = [v4 _containsResponder:v2];
+    firstResponder2 = [navigationController firstResponder];
+    v5 = [firstResponder2 _containsResponder:navigationController];
   }
 
   else
@@ -2945,8 +2945,8 @@ LABEL_36:
   v4.receiver = self;
   v4.super_class = PXPhotosUIViewController;
   [(PXPhotosUIViewController *)&v4 px_containedViewControllerModalStateChanged];
-  v3 = [(PXPhotosUIViewController *)self dismissalInteractionController];
-  [v3 containedViewControllerModalStateChanged];
+  dismissalInteractionController = [(PXPhotosUIViewController *)self dismissalInteractionController];
+  [dismissalInteractionController containedViewControllerModalStateChanged];
 }
 
 - (UIEdgeInsets)px_layoutMargins
@@ -2983,25 +2983,25 @@ LABEL_36:
 
 - (void)px_didTransitionBars
 {
-  v2 = [(PXPhotosUIViewController *)self gridView];
-  [v2 setShouldWorkaround18475431:0];
+  gridView = [(PXPhotosUIViewController *)self gridView];
+  [gridView setShouldWorkaround18475431:0];
 }
 
 - (void)px_willTransitionBars
 {
-  v2 = [(PXPhotosUIViewController *)self gridView];
-  [v2 setShouldWorkaround18475431:1];
+  gridView = [(PXPhotosUIViewController *)self gridView];
+  [gridView setShouldWorkaround18475431:1];
 }
 
 - (BOOL)prefersHomeIndicatorAutoHidden
 {
-  v3 = [(PXPhotosUIViewController *)self contentControllerIfLoaded];
-  v4 = [v3 viewModel];
+  contentControllerIfLoaded = [(PXPhotosUIViewController *)self contentControllerIfLoaded];
+  viewModel = [contentControllerIfLoaded viewModel];
 
-  if (v4)
+  if (viewModel)
   {
-    v5 = [(PXPhotosUIViewController *)self viewModel];
-    v6 = ([v5 allowedChromeItems] & 0x400) == 0;
+    viewModel2 = [(PXPhotosUIViewController *)self viewModel];
+    v6 = ([viewModel2 allowedChromeItems] & 0x400) == 0;
   }
 
   else
@@ -3012,9 +3012,9 @@ LABEL_36:
   return v6;
 }
 
-- (void)setObservedSplitViewController:(id)a3
+- (void)setObservedSplitViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_observedSplitViewController);
 
   if (WeakRetained != obj)
@@ -3039,28 +3039,28 @@ LABEL_36:
 
 - (void)_invalidateSidebarVisibilityDependentProperties
 {
-  v2 = [(PXPhotosUIViewController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateSidebarVisibilityDependentProperties];
+  updater = [(PXPhotosUIViewController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateSidebarVisibilityDependentProperties];
 }
 
 - (void)_updateObservedSplitViewController
 {
-  v3 = [(UIViewController *)self px_splitViewController];
-  [(PXPhotosUIViewController *)self setObservedSplitViewController:v3];
+  px_splitViewController = [(UIViewController *)self px_splitViewController];
+  [(PXPhotosUIViewController *)self setObservedSplitViewController:px_splitViewController];
 }
 
 - (void)_invalidateObservedSplitViewController
 {
-  v2 = [(PXPhotosUIViewController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateObservedSplitViewController];
+  updater = [(PXPhotosUIViewController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateObservedSplitViewController];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = PXPhotosUIViewController;
   [(PXPhotosUIViewController *)&v5 willMoveToParentViewController:?];
-  if (a3)
+  if (controller)
   {
     [(PXPhotosUIViewController *)self _invalidateObservedSplitViewController];
   }
@@ -3071,12 +3071,12 @@ LABEL_36:
   }
 }
 
-- (id)contentScrollViewForEdge:(unint64_t)a3
+- (id)contentScrollViewForEdge:(unint64_t)edge
 {
-  v5 = [(PXPhotosUIViewController *)self configuration];
-  v6 = [v5 titleMode];
+  configuration = [(PXPhotosUIViewController *)self configuration];
+  titleMode = [configuration titleMode];
 
-  if (a3 == 1 && v6 == 2)
+  if (edge == 1 && titleMode == 2)
   {
     v7 = 0;
   }
@@ -3085,7 +3085,7 @@ LABEL_36:
   {
     v9.receiver = self;
     v9.super_class = PXPhotosUIViewController;
-    v7 = [(PXPhotosUIViewController *)&v9 contentScrollViewForEdge:a3];
+    v7 = [(PXPhotosUIViewController *)&v9 contentScrollViewForEdge:edge];
   }
 
   return v7;
@@ -3096,84 +3096,84 @@ LABEL_36:
   v4.receiver = self;
   v4.super_class = PXPhotosUIViewController;
   [(PXPhotosUIViewController *)&v4 viewLayoutMarginsDidChange];
-  v3 = [(PXPhotosUIViewController *)self secondaryToolbarController];
-  [v3 updateIfNeeded];
+  secondaryToolbarController = [(PXPhotosUIViewController *)self secondaryToolbarController];
+  [secondaryToolbarController updateIfNeeded];
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
   v8.receiver = self;
   v8.super_class = PXPhotosUIViewController;
-  v6 = a4;
-  [(PXPhotosUIViewController *)&v8 willTransitionToTraitCollection:a3 withTransitionCoordinator:v6];
+  coordinatorCopy = coordinator;
+  [(PXPhotosUIViewController *)&v8 willTransitionToTraitCollection:collection withTransitionCoordinator:coordinatorCopy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __86__PXPhotosUIViewController_willTransitionToTraitCollection_withTransitionCoordinator___block_invoke;
   v7[3] = &unk_1E774BC60;
   v7[4] = self;
-  [v6 animateAlongsideTransition:0 completion:v7];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v7];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v11.receiver = self;
   v11.super_class = PXPhotosUIViewController;
   [(PXPhotosUIViewController *)&v11 viewDidDisappear:?];
-  v5 = [(PXPhotosUIViewController *)self viewModel];
-  [v5 performChanges:&__block_literal_global_488_170842];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  [viewModel performChanges:&__block_literal_global_488_170842];
 
-  v6 = [(PXPhotosUIViewController *)self eventTracker];
-  [v6 logViewControllerDidDisappear:self];
+  eventTracker = [(PXPhotosUIViewController *)self eventTracker];
+  [eventTracker logViewControllerDidDisappear:self];
 
-  v7 = [(PXPhotosUIViewController *)self userActivityController];
-  [v7 setActive:0];
+  userActivityController = [(PXPhotosUIViewController *)self userActivityController];
+  [userActivityController setActive:0];
 
   v8 = PXContentPrivacyNavigationStateFromViewController(self);
-  v9 = [(PXPhotosUIViewController *)self privacyController];
-  [v9 viewDidDisappearForAuthenticationContext:self withNavigationState:v8];
+  privacyController = [(PXPhotosUIViewController *)self privacyController];
+  [privacyController viewDidDisappearForAuthenticationContext:self withNavigationState:v8];
 
-  v10 = [(PXPhotosUIViewController *)self contentController];
-  [v10 contentViewDidDisappear:v3];
+  contentController = [(PXPhotosUIViewController *)self contentController];
+  [contentController contentViewDidDisappear:disappearCopy];
 
-  [(PXPhotosUIViewController *)self swift_viewDidDisappear:v3];
+  [(PXPhotosUIViewController *)self swift_viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PXPhotosUIViewController;
-  [(PXPhotosUIViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(PXPhotosUIViewController *)self viewModel];
-  [v4 performChanges:&__block_literal_global_484];
+  [(PXPhotosUIViewController *)&v5 viewWillDisappear:disappear];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  [viewModel performChanges:&__block_literal_global_484];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v11.receiver = self;
   v11.super_class = PXPhotosUIViewController;
   [(PXPhotosUIViewController *)&v11 viewDidAppear:?];
-  v5 = [(PXPhotosUIViewController *)self viewModel];
-  [v5 performChanges:&__block_literal_global_480_170846];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  [viewModel performChanges:&__block_literal_global_480_170846];
 
-  v6 = [(PXPhotosUIViewController *)self contentController];
-  [v6 stopForceIncludingAllAssetsInDataSource];
+  contentController = [(PXPhotosUIViewController *)self contentController];
+  [contentController stopForceIncludingAllAssetsInDataSource];
 
-  v7 = [(PXPhotosUIViewController *)self eventTracker];
-  [v7 logViewControllerDidAppear:self];
+  eventTracker = [(PXPhotosUIViewController *)self eventTracker];
+  [eventTracker logViewControllerDidAppear:self];
 
-  v8 = [(PXPhotosUIViewController *)self contentController];
-  [v8 contentViewDidAppear:v3];
+  contentController2 = [(PXPhotosUIViewController *)self contentController];
+  [contentController2 contentViewDidAppear:appearCopy];
 
-  v9 = [(PXPhotosUIViewController *)self userActivityController];
-  [v9 setActive:1];
+  userActivityController = [(PXPhotosUIViewController *)self userActivityController];
+  [userActivityController setActive:1];
 
-  v10 = [(PXPhotosUIViewController *)self privacyController];
-  [v10 viewDidAppearForAuthenticationContext:self];
+  privacyController = [(PXPhotosUIViewController *)self privacyController];
+  [privacyController viewDidAppearForAuthenticationContext:self];
 
   [(PXPhotosUIViewController *)self _updateBackButtonBehavior];
-  [(PXPhotosUIViewController *)self swift_viewDidAppear:v3];
+  [(PXPhotosUIViewController *)self swift_viewDidAppear:appearCopy];
 }
 
 - (void)viewWillLayoutSubviews
@@ -3181,73 +3181,73 @@ LABEL_36:
   v17.receiver = self;
   v17.super_class = PXPhotosUIViewController;
   [(PXPhotosUIViewController *)&v17 viewWillLayoutSubviews];
-  v3 = [(PXPhotosUIViewController *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXPhotosUIViewController *)self updater];
+  [updater updateIfNeeded];
 
-  v4 = [(PXPhotosUIViewController *)self contentController];
-  [v4 updateIfNeeded];
+  contentController = [(PXPhotosUIViewController *)self contentController];
+  [contentController updateIfNeeded];
 
-  v5 = [(PXPhotosUIViewController *)self secondaryToolbarController];
-  [v5 updateIfNeeded];
+  secondaryToolbarController = [(PXPhotosUIViewController *)self secondaryToolbarController];
+  [secondaryToolbarController updateIfNeeded];
 
-  v6 = [(PXPhotosUIViewController *)self dismissalInteractionController];
-  [v6 viewControllerViewWillLayoutSubviews];
+  dismissalInteractionController = [(PXPhotosUIViewController *)self dismissalInteractionController];
+  [dismissalInteractionController viewControllerViewWillLayoutSubviews];
 
-  v7 = [(PXPhotosUIViewController *)self view];
-  [v7 bounds];
+  view = [(PXPhotosUIViewController *)self view];
+  [view bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(PXPhotosUIViewController *)self fullscreenOverlay];
-  [v16 setFrame:{v9, v11, v13, v15}];
+  fullscreenOverlay = [(PXPhotosUIViewController *)self fullscreenOverlay];
+  [fullscreenOverlay setFrame:{v9, v11, v13, v15}];
 }
 
-- (void)containerView:(id)a3 willMoveToWindow:(id)a4
+- (void)containerView:(id)view willMoveToWindow:(id)window
 {
-  if (a4)
+  if (window)
   {
-    v5 = [a4 windowScene];
-    v6 = [v5 statusBarManager];
-    [v6 statusBarFrame];
+    windowScene = [window windowScene];
+    statusBarManager = [windowScene statusBarManager];
+    [statusBarManager statusBarFrame];
     v8 = v7;
 
-    v10 = [(PXPhotosUIViewController *)self contentController];
-    v9 = [v10 layout];
-    [v9 setStatusBarHeight:v8];
+    contentController = [(PXPhotosUIViewController *)self contentController];
+    layout = [contentController layout];
+    [layout setStatusBarHeight:v8];
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   v8.receiver = self;
   v8.super_class = PXPhotosUIViewController;
   [(PXPhotosUIViewController *)&v8 viewIsAppearing:?];
-  v5 = [(PXPhotosUIViewController *)self viewModel];
-  [v5 performChanges:&__block_literal_global_474];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  [viewModel performChanges:&__block_literal_global_474];
 
-  v6 = [(PXPhotosUIViewController *)self barsController];
-  [v6 updateIfNeeded];
+  barsController = [(PXPhotosUIViewController *)self barsController];
+  [barsController updateIfNeeded];
 
-  v7 = [(PXPhotosUIViewController *)self contentController];
-  [v7 contentViewWillAppear:v3];
+  contentController = [(PXPhotosUIViewController *)self contentController];
+  [contentController contentViewWillAppear:appearingCopy];
 
   [(PXPhotosUIViewController *)self _scrollToInitialPositionIfNecessary];
   [(PXPhotosUIViewController *)self _updateBackButtonBehavior];
   [(PXPhotosUIViewController *)self _updateDrawerButtonVisibility];
 }
 
-- (void)_scrollToInitialPositionAnimated:(BOOL)a3
+- (void)_scrollToInitialPositionAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PXPhotosUIViewController *)self contentController];
+  animatedCopy = animated;
+  contentController = [(PXPhotosUIViewController *)self contentController];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __61__PXPhotosUIViewController__scrollToInitialPositionAnimated___block_invoke;
   v6[3] = &unk_1E774B308;
   v6[4] = self;
-  [v5 scrollToInitialPositionAnimated:v3 withCompletionHandler:v6];
+  [contentController scrollToInitialPositionAnimated:animatedCopy withCompletionHandler:v6];
 }
 
 void __61__PXPhotosUIViewController__scrollToInitialPositionAnimated___block_invoke(uint64_t a1, int a2)
@@ -3264,22 +3264,22 @@ void __61__PXPhotosUIViewController__scrollToInitialPositionAnimated___block_inv
 {
   if (![(PXPhotosUIViewController *)self hasScrolledToInitialPosition])
   {
-    v3 = [(PXPhotosUIViewController *)self pendingInitialNavigationRequest];
-    if (v3)
+    pendingInitialNavigationRequest = [(PXPhotosUIViewController *)self pendingInitialNavigationRequest];
+    if (pendingInitialNavigationRequest)
     {
       [(PXPhotosUIViewController *)self setPendingInitialNavigationRequest:0];
-      v4 = [v3 destination];
+      destination = [pendingInitialNavigationRequest destination];
       v5 = [PXProgrammaticNavigationRequest alloc];
-      v6 = [v3 options];
+      options = [pendingInitialNavigationRequest options];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __63__PXPhotosUIViewController__scrollToInitialPositionIfNecessary__block_invoke;
       v9[3] = &unk_1E773F7C0;
-      v10 = v4;
-      v11 = self;
-      v12 = v3;
-      v7 = v4;
-      v8 = [(PXProgrammaticNavigationRequest *)v5 initWithDestination:v7 options:v6 completionHandler:v9];
+      v10 = destination;
+      selfCopy = self;
+      v12 = pendingInitialNavigationRequest;
+      v7 = destination;
+      v8 = [(PXProgrammaticNavigationRequest *)v5 initWithDestination:v7 options:options completionHandler:v9];
       PXProgrammaticNavigationRequestExecute(v8, self);
     }
 
@@ -3320,19 +3320,19 @@ void __63__PXPhotosUIViewController__scrollToInitialPositionIfNecessary__block_i
   [v1 contentViewDidScrollToInitialPosition];
 }
 
-- (id)_createButtonForScrollingToNeighboringSectionInDirection:(unint64_t)a3
+- (id)_createButtonForScrollingToNeighboringSectionInDirection:(unint64_t)direction
 {
-  if (a3 == 1)
+  if (direction == 1)
   {
     v5 = @"chevron.up";
   }
 
   else
   {
-    if (a3 != 2)
+    if (direction != 2)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:self file:@"PXPhotosUIViewController.m" lineNumber:1199 description:@"unsupported direction"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosUIViewController.m" lineNumber:1199 description:@"unsupported direction"];
 
       abort();
     }
@@ -3342,8 +3342,8 @@ void __63__PXPhotosUIViewController__scrollToInitialPositionIfNecessary__block_i
 
   objc_initWeak(&location, self);
   v6 = objc_opt_class();
-  v7 = [(PXPhotosUIViewController *)self toolbarBackdropGroupName];
-  v8 = [v6 _roundedButtonConfigurationWithSymbolName:v5 inset:7 fontSize:v7 weight:10.0 groupName:12.0];
+  toolbarBackdropGroupName = [(PXPhotosUIViewController *)self toolbarBackdropGroupName];
+  v8 = [v6 _roundedButtonConfigurationWithSymbolName:v5 inset:7 fontSize:toolbarBackdropGroupName weight:10.0 groupName:12.0];
 
   v9 = MEMORY[0x1E69DC738];
   v10 = MEMORY[0x1E69DC628];
@@ -3352,7 +3352,7 @@ void __63__PXPhotosUIViewController__scrollToInitialPositionIfNecessary__block_i
   v16[2] = __85__PXPhotosUIViewController__createButtonForScrollingToNeighboringSectionInDirection___block_invoke;
   v16[3] = &unk_1E773F798;
   objc_copyWeak(v17, &location);
-  v17[1] = a3;
+  v17[1] = direction;
   v11 = [v10 actionWithHandler:v16];
   v12 = [v9 buttonWithConfiguration:v8 primaryAction:v11];
 
@@ -3371,73 +3371,73 @@ void __85__PXPhotosUIViewController__createButtonForScrollingToNeighboringSectio
 
 - (void)_updateSecondaryToolbarAccessoryViews
 {
-  v3 = [(PXPhotosUIViewController *)self viewModel];
-  v4 = [v3 viewOptionsModel];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  viewOptionsModel = [viewModel viewOptionsModel];
 
-  if (v4)
+  if (viewOptionsModel)
   {
-    v5 = [(PXPhotosUIViewController *)self filterButtonController];
-    [v5 invalidateButton];
-    v9 = [v5 button];
-    v6 = [(PXPhotosUIViewController *)self statusButtonController];
-    v4 = [v6 button];
+    filterButtonController = [(PXPhotosUIViewController *)self filterButtonController];
+    [filterButtonController invalidateButton];
+    button = [filterButtonController button];
+    statusButtonController = [(PXPhotosUIViewController *)self statusButtonController];
+    viewOptionsModel = [statusButtonController button];
   }
 
   else
   {
-    v9 = 0;
+    button = 0;
   }
 
-  v7 = [(PXPhotosUIViewController *)self secondaryToolbarController];
-  [v7 setLeadingAccessoryView:v9];
+  secondaryToolbarController = [(PXPhotosUIViewController *)self secondaryToolbarController];
+  [secondaryToolbarController setLeadingAccessoryView:button];
 
-  v8 = [(PXPhotosUIViewController *)self secondaryToolbarController];
-  [v8 setTrailingAccessoryView:v4];
+  secondaryToolbarController2 = [(PXPhotosUIViewController *)self secondaryToolbarController];
+  [secondaryToolbarController2 setTrailingAccessoryView:viewOptionsModel];
 }
 
 - (void)_updateOneUpPresentationInteraction
 {
-  v4 = [(UIViewController *)self px_oneUpPresentation];
-  v3 = [(PXPhotosUIViewController *)self interaction];
-  [v3 setOneUpPresentation:v4];
+  px_oneUpPresentation = [(UIViewController *)self px_oneUpPresentation];
+  interaction = [(PXPhotosUIViewController *)self interaction];
+  [interaction setOneUpPresentation:px_oneUpPresentation];
 }
 
 - (void)_invalidateOneUpPresentationInteraction
 {
-  v3 = [(PXPhotosUIViewController *)self interaction];
-  [v3 setOneUpPresentation:0];
+  interaction = [(PXPhotosUIViewController *)self interaction];
+  [interaction setOneUpPresentation:0];
 
   [(PXPhotosUIViewController *)self _updateOneUpPresentationInteraction];
 }
 
-- (void)setOneUpEnabled:(BOOL)a3
+- (void)setOneUpEnabled:(BOOL)enabled
 {
   if (self->_contentController)
   {
-    v3 = a3;
-    v5 = [(PXPhotosUIViewController *)self interaction];
-    v4 = [v5 oneUpPresentation];
-    [v4 setEnabled:v3];
+    enabledCopy = enabled;
+    interaction = [(PXPhotosUIViewController *)self interaction];
+    oneUpPresentation = [interaction oneUpPresentation];
+    [oneUpPresentation setEnabled:enabledCopy];
   }
 }
 
 - (void)_updateSecondaryToolbarOpacity
 {
   v3 = objc_opt_class();
-  v5 = [(PXPhotosUIViewController *)self secondaryToolbarController];
-  v4 = [(PXPhotosUIViewController *)self viewModel];
+  secondaryToolbarController = [(PXPhotosUIViewController *)self secondaryToolbarController];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
   [(PXPhotosUIViewController *)self secondaryToolbarAlpha];
-  [v3 _configureOpacityOfSecondaryToolbarController:v5 withViewModel:v4 secondaryToolbarAlpha:?];
+  [v3 _configureOpacityOfSecondaryToolbarController:secondaryToolbarController withViewModel:viewModel secondaryToolbarAlpha:?];
 }
 
 - (void)_updateSecondaryToolbarController
 {
-  v27 = [(PXPhotosUIViewController *)self secondaryToolbarController];
-  v3 = [(PXPhotosUIViewController *)self viewModel];
-  v4 = [v3 viewOptionsModel];
-  if (v4 && ([v3 isInSelectMode] & 1) == 0)
+  secondaryToolbarController = [(PXPhotosUIViewController *)self secondaryToolbarController];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  viewOptionsModel = [viewModel viewOptionsModel];
+  if (viewOptionsModel && ([viewModel isInSelectMode] & 1) == 0)
   {
-    v5 = [v3 hidesViewOptionsToolbar] ^ 1;
+    v5 = [viewModel hidesViewOptionsToolbar] ^ 1;
   }
 
   else
@@ -3452,59 +3452,59 @@ void __85__PXPhotosUIViewController__createButtonForScrollingToNeighboringSectio
     if (v5)
     {
       v8 = [PXPhotosViewOptionsToolbarController alloc];
-      v9 = [(PXPhotosUIViewController *)self view];
-      v7 = [(PXPhotosViewOptionsToolbarController *)v8 initWithModel:v4 containerView:v9];
+      view = [(PXPhotosUIViewController *)self view];
+      gridView2 = [(PXPhotosViewOptionsToolbarController *)v8 initWithModel:viewOptionsModel containerView:view];
 
-      [(PXPhotosViewOptionsToolbarController *)v7 setShouldHideAccessoryViewsOnScroll:1];
-      [(PXSecondaryToolbarController *)v7 setLegibilityGradientEnabled:1];
-      v10 = [(PXPhotosUIViewController *)self gridView];
-      v11 = [v10 scrollViewController];
-      [(PXSecondaryToolbarController *)v7 setContentScrollViewController:v11];
+      [(PXPhotosViewOptionsToolbarController *)gridView2 setShouldHideAccessoryViewsOnScroll:1];
+      [(PXSecondaryToolbarController *)gridView2 setLegibilityGradientEnabled:1];
+      gridView = [(PXPhotosUIViewController *)self gridView];
+      scrollViewController = [gridView scrollViewController];
+      [(PXSecondaryToolbarController *)gridView2 setContentScrollViewController:scrollViewController];
     }
 
     else
     {
-      v7 = 0;
+      gridView2 = 0;
     }
   }
 
   else
   {
-    v7 = v27;
+    gridView2 = secondaryToolbarController;
   }
 
-  v12 = [v3 wantsLensControlVisible];
-  v13 = v12 & (v5 ^ 1);
+  wantsLensControlVisible = [viewModel wantsLensControlVisible];
+  v13 = wantsLensControlVisible & (v5 ^ 1);
   objc_opt_class();
   v14 = objc_opt_isKindOfClass();
   if (v13 == 1 && (v14 & 1) != 0)
   {
-    v15 = v27;
+    v15 = secondaryToolbarController;
 LABEL_16:
 
-    v7 = v15;
+    gridView2 = v15;
     goto LABEL_17;
   }
 
   if (v13)
   {
     v16 = [PXPhotosLensToolbarController alloc];
-    v17 = [(PXPhotosUIViewController *)self view];
-    v15 = [(PXPhotosLensToolbarController *)v16 initWithViewModel:v3 containerView:v17];
+    view2 = [(PXPhotosUIViewController *)self view];
+    v15 = [(PXPhotosLensToolbarController *)v16 initWithViewModel:viewModel containerView:view2];
 
-    v7 = v17;
+    gridView2 = view2;
     goto LABEL_16;
   }
 
 LABEL_17:
-  v18 = [(PXPhotosUIViewController *)self configuration];
-  v19 = [v18 wantsExternallyRenderedSecondaryToolbar] & ((v5 | v12) ^ 1);
+  configuration = [(PXPhotosUIViewController *)self configuration];
+  v19 = [configuration wantsExternallyRenderedSecondaryToolbar] & ((v5 | wantsLensControlVisible) ^ 1);
 
   objc_opt_class();
   v20 = objc_opt_isKindOfClass();
   if (v19 == 1 && (v20 & 1) != 0)
   {
-    v21 = v27;
+    v21 = secondaryToolbarController;
   }
 
   else
@@ -3512,31 +3512,31 @@ LABEL_17:
     if (v19)
     {
       v22 = [PXPhotosExternalSecondaryToolbarController alloc];
-      v23 = [(PXPhotosUIViewController *)self view];
-      v21 = [(PXPhotosExternalSecondaryToolbarController *)v22 initWithContainerView:v23];
+      view3 = [(PXPhotosUIViewController *)self view];
+      v21 = [(PXPhotosExternalSecondaryToolbarController *)v22 initWithContainerView:view3];
     }
 
     else
     {
-      v21 = v7;
+      v21 = gridView2;
     }
 
-    if (v21 == v27)
+    if (v21 == secondaryToolbarController)
     {
       goto LABEL_30;
     }
 
-    v7 = [(PXPhotosUIViewController *)self gridView];
-    if (v27)
+    gridView2 = [(PXPhotosUIViewController *)self gridView];
+    if (secondaryToolbarController)
     {
-      [(PXSecondaryToolbarController *)v27 setActionHandler:0];
-      [(PXSecondaryToolbarController *)v27 removeFromContainerView];
-      v24 = [(PXPhotosViewOptionsToolbarController *)v7 scrollViewController];
-      [v24 unregisterObserver:v27];
+      [(PXSecondaryToolbarController *)secondaryToolbarController setActionHandler:0];
+      [(PXSecondaryToolbarController *)secondaryToolbarController removeFromContainerView];
+      scrollViewController2 = [(PXPhotosViewOptionsToolbarController *)gridView2 scrollViewController];
+      [scrollViewController2 unregisterObserver:secondaryToolbarController];
     }
 
-    v25 = [(PXPhotosUIViewController *)self toolbarBackdropGroupName];
-    [(PXSecondaryToolbarController *)v21 setBackdropGroupName:v25];
+    toolbarBackdropGroupName = [(PXPhotosUIViewController *)self toolbarBackdropGroupName];
+    [(PXSecondaryToolbarController *)v21 setBackdropGroupName:toolbarBackdropGroupName];
 
     [(PXPhotosUIViewController *)self setSecondaryToolbarController:v21];
     if (v21)
@@ -3544,16 +3544,16 @@ LABEL_17:
       [(PXSecondaryToolbarController *)v21 setActionHandler:self];
       [(PXSecondaryToolbarController *)v21 updateIfNeeded];
       [(PXSecondaryToolbarController *)v21 containerViewAdditionalEdgeInsets];
-      [(PXPhotosViewOptionsToolbarController *)v7 setAdditionalSafeAreaInsets:?];
-      v26 = [(PXPhotosViewOptionsToolbarController *)v7 scrollViewController];
-      [v26 registerObserver:v21];
+      [(PXPhotosViewOptionsToolbarController *)gridView2 setAdditionalSafeAreaInsets:?];
+      scrollViewController3 = [(PXPhotosViewOptionsToolbarController *)gridView2 scrollViewController];
+      [scrollViewController3 registerObserver:v21];
 
       [(PXPhotosUIViewController *)self _updateSecondaryToolbarAccessoryViews];
     }
 
     else
     {
-      [(PXPhotosViewOptionsToolbarController *)v7 setAdditionalSafeAreaInsets:*off_1E7721FA8, *(off_1E7721FA8 + 1), *(off_1E7721FA8 + 2), *(off_1E7721FA8 + 3)];
+      [(PXPhotosViewOptionsToolbarController *)gridView2 setAdditionalSafeAreaInsets:*off_1E7721FA8, *(off_1E7721FA8 + 1), *(off_1E7721FA8 + 2), *(off_1E7721FA8 + 3)];
     }
   }
 
@@ -3563,18 +3563,18 @@ LABEL_30:
 
 - (void)_updateIsModalInPresentation
 {
-  v3 = [(PXPhotosUIViewController *)self viewModel];
-  -[PXPhotosUIViewController px_setModalInPresentation:](self, "px_setModalInPresentation:", [v3 isModalInPresentation]);
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  -[PXPhotosUIViewController px_setModalInPresentation:](self, "px_setModalInPresentation:", [viewModel isModalInPresentation]);
 }
 
 - (void)_updateDismissalInteractionControllerProperties
 {
-  v4 = [(PXPhotosUIViewController *)self dismissalInteractionController];
-  v3 = [(PXPhotosUIViewController *)self allowedInteractiveDismissBehaviors];
-  [v4 setSwipeDownAllowed:v3 & 1];
-  [v4 setSwipeUpAllowed:(v3 >> 1) & 1];
-  [v4 setScreenEdgeSwipeAllowed:(v3 >> 2) & 1];
-  [v4 setWantsChromeVisible:0];
+  dismissalInteractionController = [(PXPhotosUIViewController *)self dismissalInteractionController];
+  allowedInteractiveDismissBehaviors = [(PXPhotosUIViewController *)self allowedInteractiveDismissBehaviors];
+  [dismissalInteractionController setSwipeDownAllowed:allowedInteractiveDismissBehaviors & 1];
+  [dismissalInteractionController setSwipeUpAllowed:(allowedInteractiveDismissBehaviors >> 1) & 1];
+  [dismissalInteractionController setScreenEdgeSwipeAllowed:(allowedInteractiveDismissBehaviors >> 2) & 1];
+  [dismissalInteractionController setWantsChromeVisible:0];
 }
 
 - (void)_configureDismissalInteractionController
@@ -3594,26 +3594,26 @@ LABEL_30:
 
 - (void)_updateBackgroundColor
 {
-  v15 = [(PXPhotosUIViewController *)self view];
-  v3 = [(PXPhotosUIViewController *)self contentController];
-  v4 = [v3 gridView];
+  view = [(PXPhotosUIViewController *)self view];
+  contentController = [(PXPhotosUIViewController *)self contentController];
+  gridView = [contentController gridView];
 
-  v5 = [(PXPhotosUIViewController *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  traitCollection = [(PXPhotosUIViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  v7 = [(PXPhotosUIViewController *)self configuration];
-  v8 = v7;
-  if (v6 == 2)
+  configuration = [(PXPhotosUIViewController *)self configuration];
+  v8 = configuration;
+  if (userInterfaceStyle == 2)
   {
-    v9 = [v7 darkModeBackgroundStyle];
+    darkModeBackgroundStyle = [configuration darkModeBackgroundStyle];
   }
 
   else
   {
-    v9 = [v7 lightModeBackgroundStyle];
+    darkModeBackgroundStyle = [configuration lightModeBackgroundStyle];
   }
 
-  v10 = v9;
+  v10 = darkModeBackgroundStyle;
 
   if ((v10 - 1) >= 2)
   {
@@ -3622,30 +3622,30 @@ LABEL_30:
       goto LABEL_9;
     }
 
-    v13 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [v15 setBackgroundColor:v13];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [view setBackgroundColor:systemBackgroundColor];
 
-    v12 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    systemBackgroundColor2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E69DC888] clearColor];
-    [v15 setBackgroundColor:v11];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [view setBackgroundColor:clearColor];
 
-    v12 = [MEMORY[0x1E69DC888] clearColor];
+    systemBackgroundColor2 = [MEMORY[0x1E69DC888] clearColor];
   }
 
-  v14 = v12;
-  [v4 setBackgroundColor:v12];
+  v14 = systemBackgroundColor2;
+  [gridView setBackgroundColor:systemBackgroundColor2];
 
 LABEL_9:
 }
 
 - (void)_setNeedsUpdate
 {
-  v2 = [(PXPhotosUIViewController *)self viewIfLoaded];
-  [v2 setNeedsLayout];
+  viewIfLoaded = [(PXPhotosUIViewController *)self viewIfLoaded];
+  [viewIfLoaded setNeedsLayout];
 }
 
 - (void)viewDidLoad
@@ -3654,9 +3654,9 @@ LABEL_9:
   v89.receiver = self;
   v89.super_class = PXPhotosUIViewController;
   [(PXPhotosUIViewController *)&v89 viewDidLoad];
-  v74 = [(PXPhotosUIViewController *)self view];
-  v3 = [(PXPhotosUIViewController *)self containerViewController];
-  v4 = v3 == 0;
+  view = [(PXPhotosUIViewController *)self view];
+  containerViewController = [(PXPhotosUIViewController *)self containerViewController];
+  v4 = containerViewController == 0;
 
   if (v4)
   {
@@ -3665,24 +3665,24 @@ LABEL_9:
 
   else
   {
-    v5 = [(PXPhotosUIViewController *)self containerViewController];
-    [(UIViewController *)self px_enableOneUpPresentationFromViewController:v5];
+    containerViewController2 = [(PXPhotosUIViewController *)self containerViewController];
+    [(UIViewController *)self px_enableOneUpPresentationFromViewController:containerViewController2];
   }
 
   [(PXPhotosUIViewController *)self px_enableExtendedTraitCollection];
-  v72 = [(PXPhotosUIViewController *)self px_extendedTraitCollection];
+  px_extendedTraitCollection = [(PXPhotosUIViewController *)self px_extendedTraitCollection];
   v6 = [off_1E77217E8 alloc];
-  v7 = [(PXPhotosUIViewController *)self configuration];
-  v8 = [v6 initWithConfiguration:v7 traitCollection:v72];
+  configuration = [(PXPhotosUIViewController *)self configuration];
+  v8 = [v6 initWithConfiguration:configuration traitCollection:px_extendedTraitCollection];
   contentController = self->_contentController;
   self->_contentController = v8;
 
   [(PXPhotosContentController *)self->_contentController setDelegate:self];
-  v10 = [(PXPhotosUIViewController *)self configuration];
-  v11 = [v10 photosAppConfiguration];
-  v12 = [v11 privacyController];
+  configuration2 = [(PXPhotosUIViewController *)self configuration];
+  photosAppConfiguration = [configuration2 photosAppConfiguration];
+  privacyController = [photosAppConfiguration privacyController];
   privacyController = self->_privacyController;
-  self->_privacyController = v12;
+  self->_privacyController = privacyController;
 
   v14 = self->_privacyController;
   if (v14 && [(PXContentPrivacyController *)v14 isLocked])
@@ -3697,32 +3697,32 @@ LABEL_9:
 
   else
   {
-    v15 = [(PXPhotosUIViewController *)self configuration];
-    self->_allowedInteractiveDismissBehaviors = [v15 allowedInteractiveDismissBehaviors];
+    configuration3 = [(PXPhotosUIViewController *)self configuration];
+    self->_allowedInteractiveDismissBehaviors = [configuration3 allowedInteractiveDismissBehaviors];
   }
 
   [(PXPhotosUIViewController *)self _updateOneUpPresentationInteraction];
-  v16 = [(PXPhotosUIViewController *)self interaction];
-  [v16 setUiInteractionDelegate:self];
+  interaction = [(PXPhotosUIViewController *)self interaction];
+  [interaction setUiInteractionDelegate:self];
 
-  v17 = [(PXPhotosUIViewController *)self viewModel];
-  [v17 registerChangeObserver:self context:ViewModelObserverContext_170727];
-  v18 = [v17 currentDataSource];
-  v73 = [v18 containerCollection];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  [viewModel registerChangeObserver:self context:ViewModelObserverContext_170727];
+  currentDataSource = [viewModel currentDataSource];
+  containerCollection = [currentDataSource containerCollection];
 
-  if ([v73 px_isHiddenSmartAlbum])
+  if ([containerCollection px_isHiddenSmartAlbum])
   {
     PXRegisterPreferencesObserver(self);
   }
 
-  if ([v73 px_isRecentlyDeletedSmartAlbum])
+  if ([containerCollection px_isRecentlyDeletedSmartAlbum])
   {
     [PXTipsAppDonation donateSignalForEvent:1];
   }
 
-  if ([v73 px_isRecoveredSmartAlbum])
+  if ([containerCollection px_isRecoveredSmartAlbum])
   {
-    v19 = v73;
+    v19 = containerCollection;
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v20 = v19;
@@ -3733,23 +3733,23 @@ LABEL_9:
       v20 = 0;
     }
 
-    v21 = [v20 photoLibrary];
-    v22 = [v21 px_assetsRecoveryCountsManager];
+    photoLibrary = [v20 photoLibrary];
+    px_assetsRecoveryCountsManager = [photoLibrary px_assetsRecoveryCountsManager];
 
-    [v22 markAsRead];
+    [px_assetsRecoveryCountsManager markAsRead];
   }
 
-  v23 = [v17 specManager];
-  [v23 registerChangeObserver:self context:SpecManagerObserverContext];
+  specManager = [viewModel specManager];
+  [specManager registerChangeObserver:self context:SpecManagerObserverContext];
 
-  if ([v17 decorationViewClass])
+  if ([viewModel decorationViewClass])
   {
-    [v17 performChanges:&__block_literal_global_416_170868];
+    [viewModel performChanges:&__block_literal_global_416_170868];
   }
 
-  [v17 performChanges:&__block_literal_global_418];
-  v24 = [(PXPhotosUIViewController *)self configuration];
-  if ([v24 allowedBehaviors])
+  [viewModel performChanges:&__block_literal_global_418];
+  configuration4 = [(PXPhotosUIViewController *)self configuration];
+  if ([configuration4 allowedBehaviors])
   {
     [(UIViewController *)self px_enableBarAppearance];
     v25 = [[PXPhotosBarsController alloc] initWithPhotosContentController:self->_contentController];
@@ -3760,59 +3760,59 @@ LABEL_9:
     [(PXBarsController *)self->_barsController setViewController:self];
   }
 
-  if ([v17 allowsSelectionUserActivityBehavior])
+  if ([viewModel allowsSelectionUserActivityBehavior])
   {
     v27 = [PXAssetSelectionUserActivityController alloc];
-    v28 = [v17 selectionManager];
-    v29 = [(PXAssetSelectionUserActivityController *)v27 initWithSelectionManager:v28];
+    selectionManager = [viewModel selectionManager];
+    v29 = [(PXAssetSelectionUserActivityController *)v27 initWithSelectionManager:selectionManager];
     userActivityController = self->_userActivityController;
     self->_userActivityController = v29;
   }
 
-  v31 = [(PXPhotosContentController *)self->_contentController gridView];
-  v32 = [v31 scrollViewController];
-  v33 = [v32 scrollView];
+  gridView = [(PXPhotosContentController *)self->_contentController gridView];
+  scrollViewController = [gridView scrollViewController];
+  scrollView = [scrollViewController scrollView];
 
-  v34 = [v24 scrollViewAccessibilityIdentifier];
-  [v33 setAccessibilityIdentifier:v34];
+  scrollViewAccessibilityIdentifier = [configuration4 scrollViewAccessibilityIdentifier];
+  [scrollView setAccessibilityIdentifier:scrollViewAccessibilityIdentifier];
 
-  [v74 bounds];
-  [v31 setFrame:?];
-  [v31 setAutoresizingMask:18];
-  if ([v24 backgroundStyle] == 1)
+  [view bounds];
+  [gridView setFrame:?];
+  [gridView setAutoresizingMask:18];
+  if ([configuration4 backgroundStyle] == 1)
   {
     v35 = [MEMORY[0x1E69DC730] effectWithStyle:10];
     v36 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v35];
-    [v74 bounds];
+    [view bounds];
     [v36 setFrame:?];
-    v37 = [v17 specManager];
-    v38 = [v37 spec];
-    v39 = [v38 visualEffectViewGroupName];
-    [v36 _setGroupName:v39];
+    specManager2 = [viewModel specManager];
+    spec = [specManager2 spec];
+    visualEffectViewGroupName = [spec visualEffectViewGroupName];
+    [v36 _setGroupName:visualEffectViewGroupName];
 
     [v36 setAutoresizingMask:18];
-    [v74 addSubview:v36];
+    [view addSubview:v36];
   }
 
-  [v31 setEnableUnderlaySupport:{objc_msgSend(v24, "enableSupportForTungstenUnderlay")}];
+  [gridView setEnableUnderlaySupport:{objc_msgSend(configuration4, "enableSupportForTungstenUnderlay")}];
   v40 = +[PXSolariumSettings sharedInstance];
-  v41 = [v40 enableAdaptiveDarkBiasInGrid];
+  enableAdaptiveDarkBiasInGrid = [v40 enableAdaptiveDarkBiasInGrid];
 
-  if (v41)
+  if (enableAdaptiveDarkBiasInGrid)
   {
-    [v33 px_setPocketPreferredUserInterfaceStyleForAllEdges:2];
+    [scrollView px_setPocketPreferredUserInterfaceStyleForAllEdges:2];
   }
 
-  [v74 addSubview:v31];
-  [(PXPhotosUIViewController *)self setContentScrollView:v33 forEdge:5];
+  [view addSubview:gridView];
+  [(PXPhotosUIViewController *)self setContentScrollView:scrollView forEdge:5];
   [(PXPhotosUIViewController *)self _setNeedsUpdateContentUnavailableConfiguration];
-  v42 = [v31 scrollViewController];
-  [v42 registerObserver:self];
+  scrollViewController2 = [gridView scrollViewController];
+  [scrollViewController2 registerObserver:self];
 
   [(PXPhotosUIViewController *)self _configureDismissalInteractionController];
   [(PXPhotosUIViewController *)self invalidateHeaderView];
-  v43 = [v24 bannerProvider];
-  [v43 setPresentationDelegate:self];
+  bannerProvider = [configuration4 bannerProvider];
+  [bannerProvider setPresentationDelegate:self];
 
   [(PXPhotosUIViewController *)self _updateSecondaryToolbarController];
   [(PXPhotosUIViewController *)self _updateSecondaryToolbarAccessoryViews];
@@ -3828,8 +3828,8 @@ LABEL_9:
   objc_copyWeak(&v87, &location);
   v45 = [(PXPhotosUIViewController *)self registerForTraitChanges:v44 withHandler:v86];
 
-  v46 = [v17 assetCollectionActionManager];
-  [v46 setTraitEnvironment:self];
+  assetCollectionActionManager = [viewModel assetCollectionActionManager];
+  [assetCollectionActionManager setTraitEnvironment:self];
 
   v47 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:*MEMORY[0x1E69DDE90] modifierFlags:0x100000 action:sel_openSelectionWithCommandDownArrow_];
   [(PXPhotosUIViewController *)self addKeyCommand:v47];
@@ -3841,10 +3841,10 @@ LABEL_9:
   v85 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v49 = [(PXPhotosUIViewController *)self interaction];
-  v50 = [v49 keyCommandsForSelectionExtension];
+  interaction2 = [(PXPhotosUIViewController *)self interaction];
+  keyCommandsForSelectionExtension = [interaction2 keyCommandsForSelectionExtension];
 
-  v51 = [v50 countByEnumeratingWithState:&v82 objects:v91 count:16];
+  v51 = [keyCommandsForSelectionExtension countByEnumeratingWithState:&v82 objects:v91 count:16];
   if (v51)
   {
     v52 = *v83;
@@ -3854,13 +3854,13 @@ LABEL_9:
       {
         if (*v83 != v52)
         {
-          objc_enumerationMutation(v50);
+          objc_enumerationMutation(keyCommandsForSelectionExtension);
         }
 
         [(PXPhotosUIViewController *)self addKeyCommand:*(*(&v82 + 1) + 8 * i)];
       }
 
-      v51 = [v50 countByEnumeratingWithState:&v82 objects:v91 count:16];
+      v51 = [keyCommandsForSelectionExtension countByEnumeratingWithState:&v82 objects:v91 count:16];
     }
 
     while (v51);
@@ -3870,10 +3870,10 @@ LABEL_9:
   v81 = 0u;
   v78 = 0u;
   v79 = 0u;
-  v54 = [(PXPhotosUIViewController *)self assetActionManager];
-  v55 = [v54 actionKeyCommands];
+  assetActionManager = [(PXPhotosUIViewController *)self assetActionManager];
+  actionKeyCommands = [assetActionManager actionKeyCommands];
 
-  v56 = [v55 countByEnumeratingWithState:&v78 objects:v90 count:16];
+  v56 = [actionKeyCommands countByEnumeratingWithState:&v78 objects:v90 count:16];
   if (v56)
   {
     v57 = *v79;
@@ -3883,19 +3883,19 @@ LABEL_9:
       {
         if (*v79 != v57)
         {
-          objc_enumerationMutation(v55);
+          objc_enumerationMutation(actionKeyCommands);
         }
 
         [(PXPhotosUIViewController *)self addKeyCommand:*(*(&v78 + 1) + 8 * j)];
       }
 
-      v56 = [v55 countByEnumeratingWithState:&v78 objects:v90 count:16];
+      v56 = [actionKeyCommands countByEnumeratingWithState:&v78 objects:v90 count:16];
     }
 
     while (v56);
   }
 
-  if ([v17 dismissAffordance])
+  if ([viewModel dismissAffordance])
   {
     v59 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:*MEMORY[0x1E69DDF30] modifierFlags:0x100000 action:sel_modalDismiss_];
     [(PXPhotosUIViewController *)self addKeyCommand:v59];
@@ -3904,17 +3904,17 @@ LABEL_9:
     [(PXPhotosUIViewController *)self addKeyCommand:v60];
   }
 
-  v61 = [v24 fullscreenOverlayControllers];
-  v62 = [PXFullscreenOverlayViewControllerFactory makeViewControllerWithOverlayControllers:v61];
+  fullscreenOverlayControllers = [configuration4 fullscreenOverlayControllers];
+  v62 = [PXFullscreenOverlayViewControllerFactory makeViewControllerWithOverlayControllers:fullscreenOverlayControllers];
 
   if (v62)
   {
     [(PXPhotosUIViewController *)self addChildViewController:v62];
-    v63 = [v62 view];
+    view2 = [v62 view];
     fullscreenOverlay = self->_fullscreenOverlay;
-    self->_fullscreenOverlay = v63;
+    self->_fullscreenOverlay = view2;
 
-    [v74 addSubview:self->_fullscreenOverlay];
+    [view addSubview:self->_fullscreenOverlay];
     [v62 didMoveToParentViewController:self];
   }
 
@@ -3925,20 +3925,20 @@ LABEL_9:
   [(PXUpdater *)self->_updater addUpdateSelector:sel__updateObservedSplitViewController needsUpdate:1];
   [(PXUpdater *)self->_updater addUpdateSelector:sel__updateSidebarVisibilityDependentProperties];
   objc_initWeak(&from, self);
-  v67 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v75[0] = MEMORY[0x1E69E9820];
   v75[1] = 3221225472;
   v75[2] = __39__PXPhotosUIViewController_viewDidLoad__block_invoke_4;
   v75[3] = &unk_1E7747200;
   objc_copyWeak(&v76, &from);
-  v68 = [v67 addObserverForName:@"PXPhotosResetViewNotificationName" object:0 queue:0 usingBlock:v75];
+  v68 = [defaultCenter addObserverForName:@"PXPhotosResetViewNotificationName" object:0 queue:0 usingBlock:v75];
   filterTimeoutObserver = self->_filterTimeoutObserver;
   self->_filterTimeoutObserver = v68;
 
   [(PXPhotosUIViewController *)self swift_viewDidLoad];
   v70 = MEMORY[0x1E696AF00];
-  v71 = [off_1E7721810 sharedInstance];
-  [v71 simulatedLoadDelay];
+  sharedInstance = [off_1E7721810 sharedInstance];
+  [sharedInstance simulatedLoadDelay];
   [v70 sleepForTimeInterval:?];
 
   objc_destroyWeak(&v76);
@@ -3983,276 +3983,276 @@ void __39__PXPhotosUIViewController_viewDidLoad__block_invoke_2(uint64_t a1, voi
 
 - (void)_updateBackgroundColorOverride
 {
-  v11 = [(PXPhotosUIViewController *)self placementOverride];
-  v3 = [(PXPhotosUIViewController *)self backgroundColorBeforeOverride];
-  v4 = v11;
-  if (v11 && !v3)
+  placementOverride = [(PXPhotosUIViewController *)self placementOverride];
+  backgroundColorBeforeOverride = [(PXPhotosUIViewController *)self backgroundColorBeforeOverride];
+  v4 = placementOverride;
+  if (placementOverride && !backgroundColorBeforeOverride)
   {
-    v5 = [(PXPhotosUIViewController *)self gridView];
-    v3 = [v5 backgroundColor];
+    gridView = [(PXPhotosUIViewController *)self gridView];
+    backgroundColorBeforeOverride = [gridView backgroundColor];
 
-    [(PXPhotosUIViewController *)self setBackgroundColorBeforeOverride:v3];
-    v4 = v11;
+    [(PXPhotosUIViewController *)self setBackgroundColorBeforeOverride:backgroundColorBeforeOverride];
+    v4 = placementOverride;
 LABEL_5:
     [v4 chromeAlpha];
-    v6 = [v3 colorWithAlphaComponent:?];
-    v7 = [MEMORY[0x1E69DC888] clearColor];
+    backgroundColor = [backgroundColorBeforeOverride colorWithAlphaComponent:?];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
     goto LABEL_6;
   }
 
-  if (v11)
+  if (placementOverride)
   {
     goto LABEL_5;
   }
 
-  if (v3)
+  if (backgroundColorBeforeOverride)
   {
-    v6 = v3;
+    backgroundColor = backgroundColorBeforeOverride;
     [(PXPhotosUIViewController *)self setBackgroundColorBeforeOverride:0];
-    v3 = v6;
+    backgroundColorBeforeOverride = backgroundColor;
   }
 
   else
   {
-    v10 = [(PXPhotosUIViewController *)self view];
-    v6 = [v10 backgroundColor];
+    view = [(PXPhotosUIViewController *)self view];
+    backgroundColor = [view backgroundColor];
 
-    v3 = 0;
+    backgroundColorBeforeOverride = 0;
   }
 
-  v7 = v6;
+  clearColor = backgroundColor;
 LABEL_6:
-  v8 = [(PXPhotosUIViewController *)self view];
-  [v8 setBackgroundColor:v7];
+  view2 = [(PXPhotosUIViewController *)self view];
+  [view2 setBackgroundColor:clearColor];
 
-  if (v11)
+  if (placementOverride)
   {
   }
 
-  v9 = [(PXPhotosUIViewController *)self gridView];
-  [v9 setBackgroundColor:v6];
+  gridView2 = [(PXPhotosUIViewController *)self gridView];
+  [gridView2 setBackgroundColor:backgroundColor];
 }
 
-- (void)setPlacementOverride:(id)a3
+- (void)setPlacementOverride:(id)override
 {
-  v5 = a3;
-  if (self->_placementOverride != v5)
+  overrideCopy = override;
+  if (self->_placementOverride != overrideCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_placementOverride, a3);
+    v6 = overrideCopy;
+    objc_storeStrong(&self->_placementOverride, override);
     [(PXPhotosUIViewController *)self _updateBackgroundColorOverride];
-    v5 = v6;
+    overrideCopy = v6;
   }
 }
 
 - (UIViewControllerInteractiveTransitioning)edgeSwipeDismissalInteraction
 {
-  v2 = [(PXPhotosUIViewController *)self interaction];
-  v3 = [v2 edgeSwipeDismissalInteraction];
+  interaction = [(PXPhotosUIViewController *)self interaction];
+  edgeSwipeDismissalInteraction = [interaction edgeSwipeDismissalInteraction];
 
-  return v3;
+  return edgeSwipeDismissalInteraction;
 }
 
 - (void)ensureSwipeDismissalInteraction
 {
-  v2 = [(PXPhotosUIViewController *)self interaction];
-  [v2 ensureSwipeDismissalInteraction];
+  interaction = [(PXPhotosUIViewController *)self interaction];
+  [interaction ensureSwipeDismissalInteraction];
 }
 
 - (UIContextMenuInteraction)contextMenuInteraction
 {
-  v2 = [(PXPhotosUIViewController *)self interaction];
-  v3 = [v2 contextMenuInteraction];
+  interaction = [(PXPhotosUIViewController *)self interaction];
+  contextMenuInteraction = [interaction contextMenuInteraction];
 
-  return v3;
+  return contextMenuInteraction;
 }
 
 - (PXAssetReference)assetReferenceForCurrentScrollPosition
 {
-  v2 = [(PXPhotosUIViewController *)self contentController];
-  v3 = [v2 assetReferenceForCurrentScrollPosition];
+  contentController = [(PXPhotosUIViewController *)self contentController];
+  assetReferenceForCurrentScrollPosition = [contentController assetReferenceForCurrentScrollPosition];
 
-  return v3;
+  return assetReferenceForCurrentScrollPosition;
 }
 
 - (BOOL)isScrolledToTop
 {
-  v2 = [(PXPhotosUIViewController *)self viewModel];
-  v3 = [v2 isScrolledToTop];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  isScrolledToTop = [viewModel isScrolledToTop];
 
-  return v3;
+  return isScrolledToTop;
 }
 
 - (BOOL)shouldAlwaysRespectToolbarActionPlacementPreference
 {
-  v2 = [(PXPhotosUIViewController *)self viewModel];
-  v3 = [v2 shouldAlwaysRespectToolbarActionPlacementPreference];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  shouldAlwaysRespectToolbarActionPlacementPreference = [viewModel shouldAlwaysRespectToolbarActionPlacementPreference];
 
-  return v3;
+  return shouldAlwaysRespectToolbarActionPlacementPreference;
 }
 
-- (void)setShouldAlwaysRespectToolbarActionPlacementPreference:(BOOL)a3
+- (void)setShouldAlwaysRespectToolbarActionPlacementPreference:(BOOL)preference
 {
-  v3 = a3;
-  v4 = [(PXPhotosUIViewController *)self viewModel];
-  if ([v4 shouldAlwaysRespectToolbarActionPlacementPreference] != v3)
+  preferenceCopy = preference;
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  if ([viewModel shouldAlwaysRespectToolbarActionPlacementPreference] != preferenceCopy)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __83__PXPhotosUIViewController_setShouldAlwaysRespectToolbarActionPlacementPreference___block_invoke;
     v5[3] = &__block_descriptor_33_e53_v16__0__PXPhotosViewModel_PXMutablePhotosViewModel__8l;
-    v6 = v3;
-    [v4 performChanges:v5];
+    v6 = preferenceCopy;
+    [viewModel performChanges:v5];
   }
 }
 
 - (BOOL)hidesToolbar
 {
-  v2 = [(PXPhotosUIViewController *)self viewModel];
-  v3 = [v2 hidesToolbar];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  hidesToolbar = [viewModel hidesToolbar];
 
-  return v3;
+  return hidesToolbar;
 }
 
-- (void)setHidesToolbar:(BOOL)a3
+- (void)setHidesToolbar:(BOOL)toolbar
 {
-  v3 = a3;
-  v4 = [(PXPhotosUIViewController *)self viewModel];
-  if ([v4 hidesToolbar] != v3)
+  toolbarCopy = toolbar;
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  if ([viewModel hidesToolbar] != toolbarCopy)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __44__PXPhotosUIViewController_setHidesToolbar___block_invoke;
     v5[3] = &__block_descriptor_33_e53_v16__0__PXPhotosViewModel_PXMutablePhotosViewModel__8l;
-    v6 = v3;
-    [v4 performChanges:v5];
+    v6 = toolbarCopy;
+    [viewModel performChanges:v5];
   }
 }
 
 - (BOOL)hidesNavbar
 {
-  v2 = [(PXPhotosUIViewController *)self viewModel];
-  v3 = [v2 hidesNavbar];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  hidesNavbar = [viewModel hidesNavbar];
 
-  return v3;
+  return hidesNavbar;
 }
 
-- (void)setHidesNavbar:(BOOL)a3
+- (void)setHidesNavbar:(BOOL)navbar
 {
-  v3 = a3;
-  v4 = [(PXPhotosUIViewController *)self viewModel];
-  if ([v4 hidesNavbar] != v3)
+  navbarCopy = navbar;
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  if ([viewModel hidesNavbar] != navbarCopy)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __43__PXPhotosUIViewController_setHidesNavbar___block_invoke;
     v5[3] = &__block_descriptor_33_e53_v16__0__PXPhotosViewModel_PXMutablePhotosViewModel__8l;
-    v6 = v3;
-    [v4 performChanges:v5];
+    v6 = navbarCopy;
+    [viewModel performChanges:v5];
   }
 }
 
 - (NSSet)hiddenAssetReferences
 {
-  v2 = [(PXPhotosUIViewController *)self interaction];
-  v3 = [v2 hiddenAssetReferences];
+  interaction = [(PXPhotosUIViewController *)self interaction];
+  hiddenAssetReferences = [interaction hiddenAssetReferences];
 
-  return v3;
+  return hiddenAssetReferences;
 }
 
-- (void)setHiddenAssetReferences:(id)a3 animationType:(int64_t)a4
+- (void)setHiddenAssetReferences:(id)references animationType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(PXPhotosUIViewController *)self contentController];
-  v8 = [v7 layout];
-  [v8 setPendingHideAnimationType:a4];
+  referencesCopy = references;
+  contentController = [(PXPhotosUIViewController *)self contentController];
+  layout = [contentController layout];
+  [layout setPendingHideAnimationType:type];
 
-  v9 = [(PXPhotosUIViewController *)self interaction];
-  [v9 setHiddenAssetReferences:v6];
+  interaction = [(PXPhotosUIViewController *)self interaction];
+  [interaction setHiddenAssetReferences:referencesCopy];
 }
 
-- (void)scrollToCenterAssetReference:(id)a3 completion:(id)a4
+- (void)scrollToCenterAssetReference:(id)reference completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXPhotosUIViewController *)self contentController];
-  [v8 scrollToRevealAssetReference:v7 scrollPosition:18 padding:v6 completionHandler:{*off_1E7721FA8, *(off_1E7721FA8 + 1), *(off_1E7721FA8 + 2), *(off_1E7721FA8 + 3)}];
+  completionCopy = completion;
+  referenceCopy = reference;
+  contentController = [(PXPhotosUIViewController *)self contentController];
+  [contentController scrollToRevealAssetReference:referenceCopy scrollPosition:18 padding:completionCopy completionHandler:{*off_1E7721FA8, *(off_1E7721FA8 + 1), *(off_1E7721FA8 + 2), *(off_1E7721FA8 + 3)}];
 }
 
-- (void)scrollToRevealAssetReference:(id)a3 completion:(id)a4
+- (void)scrollToRevealAssetReference:(id)reference completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXPhotosUIViewController *)self contentController];
-  [v8 scrollToRevealAssetReference:v7 completionHandler:v6];
+  completionCopy = completion;
+  referenceCopy = reference;
+  contentController = [(PXPhotosUIViewController *)self contentController];
+  [contentController scrollToRevealAssetReference:referenceCopy completionHandler:completionCopy];
 }
 
-- (id)regionOfInterestForAssetReference:(id)a3 image:(CGImage *)a4 shouldSnapshotPlaceholder:(BOOL)a5
+- (id)regionOfInterestForAssetReference:(id)reference image:(CGImage *)image shouldSnapshotPlaceholder:(BOOL)placeholder
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(PXPhotosUIViewController *)self interaction];
-  v10 = [v9 regionOfInterestForAssetReference:v8 image:a4 fallbackMediaProvider:0 shouldSnapshot:v5];
+  placeholderCopy = placeholder;
+  referenceCopy = reference;
+  interaction = [(PXPhotosUIViewController *)self interaction];
+  v10 = [interaction regionOfInterestForAssetReference:referenceCopy image:image fallbackMediaProvider:0 shouldSnapshot:placeholderCopy];
 
   return v10;
 }
 
 - (void)_dismissOnInternalRequest
 {
-  v3 = [(PXPhotosUIViewController *)self viewModel];
-  v4 = [v3 dismissRequested];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  dismissRequested = [viewModel dismissRequested];
 
-  if ((v4 & 1) == 0)
+  if ((dismissRequested & 1) == 0)
   {
     PXAssertGetLog();
   }
 
-  v5 = [(PXPhotosUIViewController *)self viewModel];
-  v6 = [v5 dataSourceManager];
-  [v6 performChanges:&__block_literal_global_170896];
+  viewModel2 = [(PXPhotosUIViewController *)self viewModel];
+  dataSourceManager = [viewModel2 dataSourceManager];
+  [dataSourceManager performChanges:&__block_literal_global_170896];
 
-  v7 = [(PXPhotosUIViewController *)self navigationController];
-  v8 = [v7 px_popToViewControllerPrecedingViewController:self animated:1];
+  navigationController = [(PXPhotosUIViewController *)self navigationController];
+  v8 = [navigationController px_popToViewControllerPrecedingViewController:self animated:1];
 
-  v9 = [(PXPhotosUIViewController *)self viewModel];
-  [v9 performChanges:&__block_literal_global_407_170897];
+  viewModel3 = [(PXPhotosUIViewController *)self viewModel];
+  [viewModel3 performChanges:&__block_literal_global_407_170897];
 }
 
-- (void)_presentOneUpForSingleSelectedAssetWithActivity:(unint64_t)a3
+- (void)_presentOneUpForSingleSelectedAssetWithActivity:(unint64_t)activity
 {
-  v5 = [(PXPhotosUIViewController *)self viewModel];
-  if (([v5 isInSelectMode] & 1) == 0)
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  if (([viewModel isInSelectMode] & 1) == 0)
   {
-    v6 = [v5 singleSelectedAssetReference];
-    if (v6)
+    singleSelectedAssetReference = [viewModel singleSelectedAssetReference];
+    if (singleSelectedAssetReference)
     {
-      v7 = [(PXPhotosUIViewController *)self interaction];
+      interaction = [(PXPhotosUIViewController *)self interaction];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __76__PXPhotosUIViewController__presentOneUpForSingleSelectedAssetWithActivity___block_invoke;
       v8[3] = &__block_descriptor_40_e44_v16__0___PXOneUpPresentationConfiguration__8l;
-      v8[4] = a3;
-      [v7 presentOneUpForAssetReference:v6 configurationHandler:v8];
+      v8[4] = activity;
+      [interaction presentOneUpForAssetReference:singleSelectedAssetReference configurationHandler:v8];
     }
   }
 }
 
-- (void)setSecondaryToolbarAlpha:(double)a3
+- (void)setSecondaryToolbarAlpha:(double)alpha
 {
-  if (self->_secondaryToolbarAlpha != a3)
+  if (self->_secondaryToolbarAlpha != alpha)
   {
-    self->_secondaryToolbarAlpha = a3;
+    self->_secondaryToolbarAlpha = alpha;
     [(PXPhotosUIViewController *)self _invalidateSecondaryToolbarOpacity];
   }
 }
 
 - (double)secondaryToolbarHeight
 {
-  v2 = [(PXPhotosUIViewController *)self secondaryToolbarController];
+  secondaryToolbarController = [(PXPhotosUIViewController *)self secondaryToolbarController];
   v3 = 0.0;
-  if ([v2 isSecondaryToolbarVisible])
+  if ([secondaryToolbarController isSecondaryToolbarVisible])
   {
-    [v2 containerViewAdditionalEdgeInsets];
+    [secondaryToolbarController containerViewAdditionalEdgeInsets];
     v3 = v4;
   }
 
@@ -4261,8 +4261,8 @@ LABEL_6:
 
 - (double)collapsibleFooterHeight
 {
-  v2 = [(PXPhotosUIViewController *)self contentController];
-  [v2 collapsibleFooterHeight];
+  contentController = [(PXPhotosUIViewController *)self contentController];
+  [contentController collapsibleFooterHeight];
   v4 = v3;
 
   return v4;
@@ -4270,28 +4270,28 @@ LABEL_6:
 
 - (void)invalidateHeaderView
 {
-  v11 = [(PXPhotosUIViewController *)self viewModel];
-  if ([v11 viewDelegateRespondsTo:2])
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  if ([viewModel viewDelegateRespondsTo:2])
   {
-    v3 = [(PXPhotosUIViewController *)self contentController];
-    v4 = [v3 headerView];
+    contentController = [(PXPhotosUIViewController *)self contentController];
+    headerView = [contentController headerView];
 
-    v5 = [(PXPhotosUIViewController *)self _contentUnavailableConfiguration];
-    if (v5)
+    _contentUnavailableConfiguration = [(PXPhotosUIViewController *)self _contentUnavailableConfiguration];
+    if (_contentUnavailableConfiguration)
     {
       v6 = 0;
     }
 
     else
     {
-      v7 = [v11 viewDelegate];
-      v6 = [v7 headerViewForPhotosViewController:self];
+      viewDelegate = [viewModel viewDelegate];
+      v6 = [viewDelegate headerViewForPhotosViewController:self];
     }
 
-    if ([v11 viewDelegateRespondsTo:0x8000])
+    if ([viewModel viewDelegateRespondsTo:0x8000])
     {
-      v8 = [v11 viewDelegate];
-      v9 = [v8 shouldAnimateFromHeaderView:v4 toHeaderView:v6];
+      viewDelegate2 = [viewModel viewDelegate];
+      v9 = [viewDelegate2 shouldAnimateFromHeaderView:headerView toHeaderView:v6];
     }
 
     else
@@ -4299,8 +4299,8 @@ LABEL_6:
       v9 = 0;
     }
 
-    v10 = [(PXPhotosUIViewController *)self contentController];
-    [v10 setHeaderView:v6 animated:v9];
+    contentController2 = [(PXPhotosUIViewController *)self contentController];
+    [contentController2 setHeaderView:v6 animated:v9];
 
     [(PXPhotosUIViewController *)self contentController];
     [objc_claimAutoreleasedReturnValue() headerView];
@@ -4309,12 +4309,12 @@ LABEL_6:
   }
 }
 
-- (void)setShowingInitialLoadPlaceholder:(BOOL)a3
+- (void)setShowingInitialLoadPlaceholder:(BOOL)placeholder
 {
-  if (self->_showingInitialLoadPlaceholder != a3)
+  if (self->_showingInitialLoadPlaceholder != placeholder)
   {
-    self->_showingInitialLoadPlaceholder = a3;
-    if (!a3)
+    self->_showingInitialLoadPlaceholder = placeholder;
+    if (!placeholder)
     {
       [(PXPhotosUIViewController *)self setHasScrolledToInitialPosition:0];
 
@@ -4325,25 +4325,25 @@ LABEL_6:
 
 - (void)_updateFooterLayout
 {
-  v3 = [(PXPhotosUIViewController *)self contentController];
-  v2 = [v3 layout];
-  [v2 invalidateFooterSize];
+  contentController = [(PXPhotosUIViewController *)self contentController];
+  layout = [contentController layout];
+  [layout invalidateFooterSize];
 }
 
 - (void)_updateDrawerButtonVisibility
 {
-  v10 = [(UIViewController *)self px_splitViewController];
-  v3 = [(PXPhotosUIViewController *)self viewModelIfLoaded];
-  v4 = [v3 gridStyle];
-  v5 = [(PXPhotosUIViewController *)self viewModel];
-  v6 = [v5 specManager];
+  px_splitViewController = [(UIViewController *)self px_splitViewController];
+  viewModelIfLoaded = [(PXPhotosUIViewController *)self viewModelIfLoaded];
+  gridStyle = [viewModelIfLoaded gridStyle];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  specManager = [viewModel specManager];
 
   v7 = 1;
-  if (v10 && (v4 - 6) >= 0xFFFFFFFFFFFFFFFDLL)
+  if (px_splitViewController && (gridStyle - 6) >= 0xFFFFFFFFFFFFFFFDLL)
   {
-    if (([v10 displayMode] & 0xFFFFFFFFFFFFFFFDLL) == 1)
+    if (([px_splitViewController displayMode] & 0xFFFFFFFFFFFFFFFDLL) == 1)
     {
-      v7 = [v10 isCollapsed] ^ 1;
+      v7 = [px_splitViewController isCollapsed] ^ 1;
     }
 
     else
@@ -4351,59 +4351,59 @@ LABEL_6:
       v7 = 0;
     }
 
-    v8 = [(PXPhotosUIViewController *)self navigationController];
-    v9 = v8 == 0;
+    navigationController = [(PXPhotosUIViewController *)self navigationController];
+    v9 = navigationController == 0;
 
-    [v6 setWantsToggleSidebarButton:v9 & v7];
+    [specManager setWantsToggleSidebarButton:v9 & v7];
   }
 
-  [v6 setShouldMakeSpaceForLeadingChrome:v7];
+  [specManager setShouldMakeSpaceForLeadingChrome:v7];
 }
 
 - (void)_updateBackButtonBehavior
 {
-  v22 = [(UIViewController *)self px_splitViewController];
-  v3 = [(PXPhotosUIViewController *)self navigationController];
-  v4 = [v3 viewControllers];
-  v5 = [v4 firstObject];
-  if (v5 == self)
+  px_splitViewController = [(UIViewController *)self px_splitViewController];
+  navigationController = [(PXPhotosUIViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  firstObject = [viewControllers firstObject];
+  if (firstObject == self)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [(PXPhotosUIViewController *)self navigationItem];
-    v7 = [v6 hidesBackButton] ^ 1;
+    navigationItem = [(PXPhotosUIViewController *)self navigationItem];
+    v7 = [navigationItem hidesBackButton] ^ 1;
   }
 
-  if ([v22 isSidebarVisible])
+  if ([px_splitViewController isSidebarVisible])
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [v22 splitBehavior] == 1 || objc_msgSend(v22, "splitBehavior") == 2;
+    v8 = [px_splitViewController splitBehavior] == 1 || objc_msgSend(px_splitViewController, "splitBehavior") == 2;
   }
 
-  v9 = [v22 displayMode];
-  v10 = [(PXPhotosUIViewController *)self navigationItem];
-  v11 = [v10 leftBarButtonItems];
-  v12 = [v11 count];
+  displayMode = [px_splitViewController displayMode];
+  navigationItem2 = [(PXPhotosUIViewController *)self navigationItem];
+  leftBarButtonItems = [navigationItem2 leftBarButtonItems];
+  v12 = [leftBarButtonItems count];
 
-  v13 = [(PXPhotosUIViewController *)self contentControllerIfLoaded];
-  v14 = [v13 layout];
+  contentControllerIfLoaded = [(PXPhotosUIViewController *)self contentControllerIfLoaded];
+  layout = [contentControllerIfLoaded layout];
 
-  v16 = v9 != 3 && v12 == 0;
+  v16 = displayMode != 3 && v12 == 0;
   v17 = ((v7 | v8) & 1) == 0 && v16;
-  [v14 setWantsHeaderInSafeArea:v17];
-  v18 = [v22 splitBehavior];
-  v19 = v9 == 3 || v8;
+  [layout setWantsHeaderInSafeArea:v17];
+  splitBehavior = [px_splitViewController splitBehavior];
+  v19 = displayMode == 3 || v8;
   if (v19 == 1)
   {
-    v20 = (v18 == 2) & (v7 ^ 1);
-    if ([v22 splitBehavior] == 1)
+    v20 = (splitBehavior == 2) & (v7 ^ 1);
+    if ([px_splitViewController splitBehavior] == 1)
     {
       v21 = 1;
     }
@@ -4419,30 +4419,30 @@ LABEL_6:
     v21 = 0;
   }
 
-  [v14 setAlignsHeaderTitleWithLayoutMargins:v21];
+  [layout setAlignsHeaderTitleWithLayoutMargins:v21];
 }
 
 - (void)_updateSubviewsOrdering
 {
-  v5 = [(PXPhotosUIViewController *)self view];
-  v3 = [(PXPhotosUIViewController *)self gridView];
-  [v5 sendSubviewToBack:v3];
+  view = [(PXPhotosUIViewController *)self view];
+  gridView = [(PXPhotosUIViewController *)self gridView];
+  [view sendSubviewToBack:gridView];
 
-  v4 = [(PXPhotosUIViewController *)self alternateContentView];
-  [v5 bringSubviewToFront:v4];
+  alternateContentView = [(PXPhotosUIViewController *)self alternateContentView];
+  [view bringSubviewToFront:alternateContentView];
 }
 
 - (void)_updateUIFromViewModelPrivacyState
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(PXPhotosUIViewController *)self viewModel];
-  v4 = [v3 contentPrivacyState];
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  contentPrivacyState = [viewModel contentPrivacyState];
 
   v5 = PLContentPrivacyUIGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = @"NO";
-    if (v4)
+    if (contentPrivacyState)
     {
       v6 = @"YES";
     }
@@ -4453,77 +4453,77 @@ LABEL_6:
     _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_INFO, "View Controller: Content should be obscured: %{public}@", &v12, 0xCu);
   }
 
-  v8 = [(PXPhotosUIViewController *)self gridView];
-  [v8 setContentShouldBeObscured:v4 != 0];
-  v9 = [(UIViewController *)self px_oneUpPresentation];
-  v10 = v9;
-  if (v4 && [v9 isContextMenuInteractionActive])
+  gridView = [(PXPhotosUIViewController *)self gridView];
+  [gridView setContentShouldBeObscured:contentPrivacyState != 0];
+  px_oneUpPresentation = [(UIViewController *)self px_oneUpPresentation];
+  v10 = px_oneUpPresentation;
+  if (contentPrivacyState && [px_oneUpPresentation isContextMenuInteractionActive])
   {
-    v11 = [v10 contextMenuInteraction];
-    [v11 dismissMenu];
+    contextMenuInteraction = [v10 contextMenuInteraction];
+    [contextMenuInteraction dismissMenu];
   }
 
   [(PXPhotosUIViewController *)self _setNeedsUpdateContentUnavailableConfiguration];
 }
 
-- (void)_updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)_updateContentUnavailableConfigurationUsingState:(id)state
 {
-  v4 = a3;
-  v5 = [(PXPhotosUIViewController *)self viewModel];
-  if (!-[PXPhotosUIViewController isViewLoaded](self, "isViewLoaded") || ![v5 allowsEmptyPlaceholderBehavior])
+  stateCopy = state;
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  if (!-[PXPhotosUIViewController isViewLoaded](self, "isViewLoaded") || ![viewModel allowsEmptyPlaceholderBehavior])
   {
     goto LABEL_28;
   }
 
-  v6 = [v5 emptyPlaceholderState];
-  v7 = [v5 dataSourceManager];
-  switch(v6)
+  emptyPlaceholderState = [viewModel emptyPlaceholderState];
+  dataSourceManager = [viewModel dataSourceManager];
+  switch(emptyPlaceholderState)
   {
     case 3:
-      v15 = [v5 emptyPlaceholderStatusViewModel];
+      emptyPlaceholderStatusViewModel = [viewModel emptyPlaceholderStatusViewModel];
 
-      if (v15)
+      if (emptyPlaceholderStatusViewModel)
       {
-        v16 = [(PXPhotosUIViewController *)self placeholderStatusController];
-        v17 = [(PXPhotosUIViewController *)self placeholderStatusController];
+        placeholderStatusController = [(PXPhotosUIViewController *)self placeholderStatusController];
+        placeholderStatusController2 = [(PXPhotosUIViewController *)self placeholderStatusController];
 
-        if (!v17)
+        if (!placeholderStatusController2)
         {
           v18 = objc_alloc_init(off_1E77218E0);
 
-          v19 = [v5 emptyPlaceholderStatusViewModel];
-          [v18 setViewModel:v19];
+          emptyPlaceholderStatusViewModel2 = [viewModel emptyPlaceholderStatusViewModel];
+          [v18 setViewModel:emptyPlaceholderStatusViewModel2];
 
           [v18 setDelegate:self];
           [(PXPhotosUIViewController *)self setPlaceholderStatusController:v18];
-          v16 = v18;
+          placeholderStatusController = v18;
         }
 
-        v12 = [v16 configuration];
+        configuration = [placeholderStatusController configuration];
       }
 
       else
       {
-        v16 = [(PXPhotosUIViewController *)self fallbackPlaceholderStatusController];
-        if (!v16)
+        placeholderStatusController = [(PXPhotosUIViewController *)self fallbackPlaceholderStatusController];
+        if (!placeholderStatusController)
         {
-          v16 = _FallbackPlaceholderStatusControllerForViewModel(v5);
-          [(PXPhotosUIViewController *)self setFallbackPlaceholderStatusController:v16];
-          v22 = [v16 statusController];
-          [v22 setDelegate:self];
+          placeholderStatusController = _FallbackPlaceholderStatusControllerForViewModel(viewModel);
+          [(PXPhotosUIViewController *)self setFallbackPlaceholderStatusController:placeholderStatusController];
+          statusController = [placeholderStatusController statusController];
+          [statusController setDelegate:self];
         }
 
-        v23 = [v16 statusController];
-        v12 = [v23 configuration];
+        statusController2 = [placeholderStatusController statusController];
+        configuration = [statusController2 configuration];
       }
 
       break;
     case 2:
-      v12 = [MEMORY[0x1E69DC8C8] loadingConfiguration];
-      v13 = [v7 localizedLoadingInitialDataSourceMessage];
-      [v12 setText:v13];
+      configuration = [MEMORY[0x1E69DC8C8] loadingConfiguration];
+      localizedLoadingInitialDataSourceMessage = [dataSourceManager localizedLoadingInitialDataSourceMessage];
+      [configuration setText:localizedLoadingInitialDataSourceMessage];
 
-      v14 = [v7 isLoadingInitialDataSource];
+      isLoadingInitialDataSource = [dataSourceManager isLoadingInitialDataSource];
       goto LABEL_18;
     case 1:
       objc_initWeak(&location, self);
@@ -4534,10 +4534,10 @@ LABEL_6:
       v64[3] = &unk_1E774BB08;
       objc_copyWeak(&v65, &location);
       v9 = [v8 actionWithHandler:v64];
-      v10 = [(PXPhotosUIViewController *)self privacyController];
-      v11 = [v10 authenticationType];
+      privacyController = [(PXPhotosUIViewController *)self privacyController];
+      authenticationType = [privacyController authenticationType];
 
-      v12 = PXContentLockedPlaceholderConfiguration(1, v11, [v5 wantsContentUnavailableUnlockButtonVisible], v9);
+      configuration = PXContentLockedPlaceholderConfiguration(1, authenticationType, [viewModel wantsContentUnavailableUnlockButtonVisible], v9);
 
       objc_destroyWeak(&v65);
       objc_destroyWeak(&location);
@@ -4549,102 +4549,102 @@ LABEL_6:
       fallbackPlaceholderStatusController = self->_fallbackPlaceholderStatusController;
       self->_fallbackPlaceholderStatusController = 0;
 
-      v14 = 0;
-      v12 = 0;
+      isLoadingInitialDataSource = 0;
+      configuration = 0;
       goto LABEL_18;
   }
 
-  v14 = 0;
+  isLoadingInitialDataSource = 0;
 LABEL_18:
-  [(PXPhotosUIViewController *)self setShowingInitialLoadPlaceholder:v14];
+  [(PXPhotosUIViewController *)self setShowingInitialLoadPlaceholder:isLoadingInitialDataSource];
 
-  if (!v12)
+  if (!configuration)
   {
 LABEL_28:
-    v62 = [0 updatedConfigurationForState:v4];
+    v62 = [0 updatedConfigurationForState:stateCopy];
     [(PXPhotosUIViewController *)self setContentUnavailableConfiguration:v62];
 
     [(PXPhotosUIViewController *)self invalidateHeaderView];
-    v12 = 0;
+    configuration = 0;
 LABEL_29:
     emptyPlaceholderDragController = self->_emptyPlaceholderDragController;
     self->_emptyPlaceholderDragController = 0;
     goto LABEL_30;
   }
 
-  v24 = [v5 specManager];
-  v25 = [v24 spec];
+  specManager = [viewModel specManager];
+  spec = [specManager spec];
 
-  v26 = [v25 placeholderFont];
+  placeholderFont = [spec placeholderFont];
 
-  if (v26)
+  if (placeholderFont)
   {
-    v27 = [v25 placeholderFont];
-    v28 = [v12 textProperties];
-    [v28 setFont:v27];
+    placeholderFont2 = [spec placeholderFont];
+    textProperties = [configuration textProperties];
+    [textProperties setFont:placeholderFont2];
   }
 
-  v29 = [v25 placeholderFontColor];
+  placeholderFontColor = [spec placeholderFontColor];
 
-  if (v29)
+  if (placeholderFontColor)
   {
-    v30 = [v25 placeholderFontColor];
-    v31 = [v12 textProperties];
-    [v31 setColor:v30];
+    placeholderFontColor2 = [spec placeholderFontColor];
+    textProperties2 = [configuration textProperties];
+    [textProperties2 setColor:placeholderFontColor2];
   }
 
-  v32 = [v5 specManager];
-  v33 = [v32 extendedTraitCollection];
-  [v33 layoutReferenceSize];
+  specManager2 = [viewModel specManager];
+  extendedTraitCollection = [specManager2 extendedTraitCollection];
+  [extendedTraitCollection layoutReferenceSize];
   v35 = v34;
   v37 = v36;
 
-  v38 = [v32 dynamicHeaderHeightCallback];
-  if (v38)
+  dynamicHeaderHeightCallback = [specManager2 dynamicHeaderHeightCallback];
+  if (dynamicHeaderHeightCallback)
   {
-    v39 = v38;
-    v40 = [v5 gridStyle];
+    v39 = dynamicHeaderHeightCallback;
+    gridStyle = [viewModel gridStyle];
 
-    if (v40 == 3)
+    if (gridStyle == 3)
     {
-      v41 = [v32 dynamicHeaderHeightCallback];
-      v42 = v41[2](v35, v37);
+      dynamicHeaderHeightCallback2 = [specManager2 dynamicHeaderHeightCallback];
+      v42 = dynamicHeaderHeightCallback2[2](v35, v37);
 
-      v43 = [(PXPhotosUIViewController *)self view];
-      [v43 safeAreaInsets];
+      view = [(PXPhotosUIViewController *)self view];
+      [view safeAreaInsets];
       v45 = v42 - v44;
-      [v12 directionalLayoutMargins];
+      [configuration directionalLayoutMargins];
       v47 = v46;
-      [v12 directionalLayoutMargins];
-      [v12 setDirectionalLayoutMargins:{v45, v47, 0.0}];
+      [configuration directionalLayoutMargins];
+      [configuration setDirectionalLayoutMargins:{v45, v47, 0.0}];
     }
   }
 
-  v48 = [v25 contentUnavailablePlaceholderDisablesVerticalBounce];
-  v49 = [(PXPhotosUIViewController *)self gridView];
-  v50 = [v49 scrollViewController];
-  [v50 setAlwaysBounceVertical:v48 ^ 1u];
+  contentUnavailablePlaceholderDisablesVerticalBounce = [spec contentUnavailablePlaceholderDisablesVerticalBounce];
+  gridView = [(PXPhotosUIViewController *)self gridView];
+  scrollViewController = [gridView scrollViewController];
+  [scrollViewController setAlwaysBounceVertical:contentUnavailablePlaceholderDisablesVerticalBounce ^ 1u];
 
-  v51 = [v12 updatedConfigurationForState:v4];
+  v51 = [configuration updatedConfigurationForState:stateCopy];
   [(PXPhotosUIViewController *)self setContentUnavailableConfiguration:v51];
 
   [(PXPhotosUIViewController *)self invalidateHeaderView];
-  v52 = [(PXPhotosUIViewController *)self configuration];
-  v53 = [v52 allowsDragIn];
+  configuration2 = [(PXPhotosUIViewController *)self configuration];
+  allowsDragIn = [configuration2 allowsDragIn];
 
-  if (!v53)
+  if (!allowsDragIn)
   {
     goto LABEL_29;
   }
 
   v63 = [off_1E77217F0 alloc];
   emptyPlaceholderDragController = [(PXPhotosUIViewController *)self view];
-  v55 = [(PXPhotosUIViewController *)self viewModel];
-  v56 = [v55 selectionManager];
-  v57 = [(PXPhotosUIViewController *)self viewModel];
-  v58 = [v57 assetCollectionActionManager];
-  v59 = [(PXPhotosUIViewController *)self interaction];
-  v60 = [v63 initWithContentView:emptyPlaceholderDragController selectionManager:v56 assetCollectionActionManager:v58 delegate:v59];
+  viewModel2 = [(PXPhotosUIViewController *)self viewModel];
+  selectionManager = [viewModel2 selectionManager];
+  viewModel3 = [(PXPhotosUIViewController *)self viewModel];
+  assetCollectionActionManager = [viewModel3 assetCollectionActionManager];
+  interaction = [(PXPhotosUIViewController *)self interaction];
+  v60 = [v63 initWithContentView:emptyPlaceholderDragController selectionManager:selectionManager assetCollectionActionManager:assetCollectionActionManager delegate:interaction];
   v61 = self->_emptyPlaceholderDragController;
   self->_emptyPlaceholderDragController = v60;
 
@@ -4665,10 +4665,10 @@ void __77__PXPhotosUIViewController__updateContentUnavailableConfigurationUsingS
 
   if (!v3)
   {
-    v4 = [(PXPhotosUIViewController *)self viewModel];
-    v5 = [v4 isInSelectMode];
+    viewModel = [(PXPhotosUIViewController *)self viewModel];
+    isInSelectMode = [viewModel isInSelectMode];
 
-    if (v5)
+    if (isInSelectMode)
     {
 
       [(PXPhotosUIViewController *)self becomeFirstResponder];
@@ -4684,31 +4684,31 @@ void __77__PXPhotosUIViewController__updateContentUnavailableConfigurationUsingS
 
 - (void)_updateEmptyBehaviorIfNeeded
 {
-  v22 = [(PXPhotosUIViewController *)self viewModel];
-  v3 = [v22 currentDataSource];
-  if ([v3 numberOfSections])
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  currentDataSource = [viewModel currentDataSource];
+  if ([currentDataSource numberOfSections])
   {
-    if ([v22 emptyPlaceholderState] == 3)
+    if ([viewModel emptyPlaceholderState] == 3)
     {
-      v4 = [(UIViewController *)self px_oneUpPresentation];
-      [v4 stopAnimated:1];
+      px_oneUpPresentation = [(UIViewController *)self px_oneUpPresentation];
+      [px_oneUpPresentation stopAnimated:1];
 
-      v5 = [(PXPhotosUIViewController *)self viewModel];
-      if ([v5 allowsPopOnEmptyBehavior])
+      viewModel2 = [(PXPhotosUIViewController *)self viewModel];
+      if ([viewModel2 allowsPopOnEmptyBehavior])
       {
-        v6 = [(PXPhotosUIViewController *)self viewModel];
-        v7 = [v6 appearState];
+        viewModel3 = [(PXPhotosUIViewController *)self viewModel];
+        appearState = [viewModel3 appearState];
 
-        if (v7 == 2)
+        if (appearState == 2)
         {
-          v8 = [(PXPhotosUIViewController *)self navigationController];
-          v9 = [v8 px_popToViewControllerPrecedingViewController:self animated:1];
+          navigationController = [(PXPhotosUIViewController *)self navigationController];
+          v9 = [navigationController px_popToViewControllerPrecedingViewController:self animated:1];
 
           if (!v9)
           {
-            v10 = [(PXPhotosUIViewController *)self navigationController];
-            v11 = [v10 presentingViewController];
-            [v11 dismissViewControllerAnimated:1 completion:0];
+            navigationController2 = [(PXPhotosUIViewController *)self navigationController];
+            presentingViewController = [navigationController2 presentingViewController];
+            [presentingViewController dismissViewControllerAnimated:1 completion:0];
           }
 
           goto LABEL_19;
@@ -4725,42 +4725,42 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v12 = [(PXPhotosUIViewController *)self viewModel];
-  v13 = [v12 allowsPopOnContainerDeleteBehavior];
-  if (v13)
+  viewModel4 = [(PXPhotosUIViewController *)self viewModel];
+  allowsPopOnContainerDeleteBehavior = [viewModel4 allowsPopOnContainerDeleteBehavior];
+  if (allowsPopOnContainerDeleteBehavior)
   {
-    v14 = [(PXPhotosUIViewController *)self viewModel];
-    v15 = [v14 appearState];
+    viewModel5 = [(PXPhotosUIViewController *)self viewModel];
+    appearState2 = [viewModel5 appearState];
 
-    if (v15 != 2)
+    if (appearState2 != 2)
     {
       v17 = 0;
       goto LABEL_14;
     }
 
-    v16 = [(PXPhotosUIViewController *)self navigationController];
+    navigationController3 = [(PXPhotosUIViewController *)self navigationController];
     v17 = 1;
-    v18 = [v16 px_popToViewControllerPrecedingViewController:self animated:1];
+    v18 = [navigationController3 px_popToViewControllerPrecedingViewController:self animated:1];
 
-    v19 = v22;
+    v19 = viewModel;
     if (v18)
     {
       goto LABEL_15;
     }
 
-    v12 = [(PXPhotosUIViewController *)self navigationController];
-    v20 = [v12 presentingViewController];
-    [v20 dismissViewControllerAnimated:1 completion:0];
+    viewModel4 = [(PXPhotosUIViewController *)self navigationController];
+    presentingViewController2 = [viewModel4 presentingViewController];
+    [presentingViewController2 dismissViewControllerAnimated:1 completion:0];
   }
 
-  v17 = v13;
+  v17 = allowsPopOnContainerDeleteBehavior;
 LABEL_14:
-  v19 = v22;
+  v19 = viewModel;
 LABEL_15:
   if ([v19 viewDelegateRespondsTo:4])
   {
-    v21 = [v22 viewDelegate];
-    [v21 containerWasDeletedForPhotosViewController:self];
+    viewDelegate = [viewModel viewDelegate];
+    [viewDelegate containerWasDeletedForPhotosViewController:self];
   }
 
   if ((v17 & 1) == 0)
@@ -4771,37 +4771,37 @@ LABEL_15:
 LABEL_19:
 }
 
-- (void)_requestFocusUpdateWithAssetReference:(id)a3
+- (void)_requestFocusUpdateWithAssetReference:(id)reference
 {
-  [(PXPhotosUIViewController *)self setPreferredFocusAssetReference:a3];
+  [(PXPhotosUIViewController *)self setPreferredFocusAssetReference:reference];
   v4 = [MEMORY[0x1E69DCA38] focusSystemForEnvironment:self];
   [v4 requestFocusUpdateToEnvironment:self];
 }
 
-- (void)setAlternateContentView:(id)a3
+- (void)setAlternateContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   alternateContentView = self->_alternateContentView;
-  if (alternateContentView != v5)
+  if (alternateContentView != viewCopy)
   {
     [(UIView *)alternateContentView removeFromSuperview];
-    objc_storeStrong(&self->_alternateContentView, a3);
-    v7 = [(PXPhotosUIViewController *)self view];
-    [v7 bounds];
+    objc_storeStrong(&self->_alternateContentView, view);
+    view = [(PXPhotosUIViewController *)self view];
+    [view bounds];
     [(UIView *)self->_alternateContentView setFrame:?];
     [(UIView *)self->_alternateContentView setAutoresizingMask:18];
-    v8 = [(PXPhotosUIViewController *)self view];
-    [v8 addSubview:self->_alternateContentView];
+    view2 = [(PXPhotosUIViewController *)self view];
+    [view2 addSubview:self->_alternateContentView];
 
     [(PXPhotosUIViewController *)self _updateSubviewsOrdering];
-    LOBYTE(v8) = self->_alternateContentView != 0;
-    v9 = [(PXPhotosUIViewController *)self viewModel];
+    LOBYTE(view2) = self->_alternateContentView != 0;
+    viewModel = [(PXPhotosUIViewController *)self viewModel];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __52__PXPhotosUIViewController_setAlternateContentView___block_invoke;
     v10[3] = &__block_descriptor_33_e53_v16__0__PXPhotosViewModel_PXMutablePhotosViewModel__8l;
-    v11 = v8;
-    [v9 performChanges:v10];
+    v11 = view2;
+    [viewModel performChanges:v10];
   }
 }
 
@@ -4811,9 +4811,9 @@ LABEL_19:
   if (!closeButtonController)
   {
     v4 = [MEMORY[0x1E69DC738] photosViewRoundedAccessoryConfigurationWithSymbolName:@"xmark"];
-    v5 = [(PXPhotosUIViewController *)self toolbarBackdropGroupName];
-    v6 = [v4 background];
-    [v6 _setVisualEffectGroupName:v5];
+    toolbarBackdropGroupName = [(PXPhotosUIViewController *)self toolbarBackdropGroupName];
+    background = [v4 background];
+    [background _setVisualEffectGroupName:toolbarBackdropGroupName];
 
     v7 = [[PXPhotosCloseButtonController alloc] initWithButtonConfiguration:v4];
     v8 = self->_closeButtonController;
@@ -4831,14 +4831,14 @@ LABEL_19:
   statusButtonController = self->_statusButtonController;
   if (!statusButtonController)
   {
-    v4 = [(PXPhotosUIViewController *)self viewModel];
-    v5 = [v4 footerViewModel];
+    viewModel = [(PXPhotosUIViewController *)self viewModel];
+    footerViewModel = [viewModel footerViewModel];
 
     v6 = objc_opt_class();
-    v7 = [(PXPhotosUIViewController *)self toolbarBackdropGroupName];
-    v8 = [v6 _roundedButtonConfigurationWithSymbolName:@"info" inset:7 fontSize:v7 weight:7.0 groupName:14.0];
+    toolbarBackdropGroupName = [(PXPhotosUIViewController *)self toolbarBackdropGroupName];
+    v8 = [v6 _roundedButtonConfigurationWithSymbolName:@"info" inset:7 fontSize:toolbarBackdropGroupName weight:7.0 groupName:14.0];
 
-    v9 = [[PXPhotosStatusToggleButtonController alloc] initWithFooterViewModel:v5 buttonConfiguration:v8];
+    v9 = [[PXPhotosStatusToggleButtonController alloc] initWithFooterViewModel:footerViewModel buttonConfiguration:v8];
     v10 = self->_statusButtonController;
     self->_statusButtonController = v9;
 
@@ -4853,22 +4853,22 @@ LABEL_19:
 {
   if (!self->_filterButtonController)
   {
-    v3 = [(PXPhotosUIViewController *)self configuration];
-    v4 = [v3 enableFilterButton];
+    configuration = [(PXPhotosUIViewController *)self configuration];
+    enableFilterButton = [configuration enableFilterButton];
 
-    if (v4)
+    if (enableFilterButton)
     {
       v5 = [MEMORY[0x1E69DC738] photosViewRoundedAccessoryConfigurationWithSymbolName:@"line.3.horizontal.decrease"];
       if ((MEMORY[0x1A590D320]() & 1) == 0)
       {
-        v6 = [(PXPhotosUIViewController *)self toolbarBackdropGroupName];
-        v7 = [v5 background];
-        [v7 _setVisualEffectGroupName:v6];
+        toolbarBackdropGroupName = [(PXPhotosUIViewController *)self toolbarBackdropGroupName];
+        background = [v5 background];
+        [background _setVisualEffectGroupName:toolbarBackdropGroupName];
       }
 
       v8 = [PXPhotosFilterToggleButtonController alloc];
-      v9 = [(PXPhotosUIViewController *)self viewModel];
-      v10 = [(PXPhotosFilterToggleButtonController *)v8 initWithViewModel:v9 buttonConfiguration:v5];
+      viewModel = [(PXPhotosUIViewController *)self viewModel];
+      v10 = [(PXPhotosFilterToggleButtonController *)v8 initWithViewModel:viewModel buttonConfiguration:v5];
       filterButtonController = self->_filterButtonController;
       self->_filterButtonController = v10;
     }
@@ -4896,43 +4896,43 @@ LABEL_19:
 
 - (PXPhotosViewUIInteraction)interaction
 {
-  v2 = [(PXPhotosUIViewController *)self contentController];
-  v3 = [v2 interaction];
+  contentController = [(PXPhotosUIViewController *)self contentController];
+  interaction = [contentController interaction];
 
-  return v3;
+  return interaction;
 }
 
 - (id)scrollView
 {
-  v2 = [(PXPhotosUIViewController *)self gridView];
-  v3 = [v2 scrollViewController];
-  v4 = [v3 scrollView];
+  gridView = [(PXPhotosUIViewController *)self gridView];
+  scrollViewController = [gridView scrollViewController];
+  scrollView = [scrollViewController scrollView];
 
-  return v4;
+  return scrollView;
 }
 
 - (PXPhotosViewEventTracker)eventTracker
 {
-  v2 = [(PXPhotosUIViewController *)self contentController];
-  v3 = [v2 eventTracker];
+  contentController = [(PXPhotosUIViewController *)self contentController];
+  eventTracker = [contentController eventTracker];
 
-  return v3;
+  return eventTracker;
 }
 
 - (id)currentDataSource
 {
   if ([(PXPhotosUIViewController *)self isViewLoaded])
   {
-    v3 = [(PXPhotosUIViewController *)self contentController];
-    v4 = [v3 viewModel];
-    [v4 currentDataSource];
+    contentController = [(PXPhotosUIViewController *)self contentController];
+    viewModel = [contentController viewModel];
+    [viewModel currentDataSource];
   }
 
   else
   {
-    v3 = [(PXPhotosUIViewController *)self configuration];
-    v4 = [v3 dataSourceManager];
-    [v4 dataSource];
+    contentController = [(PXPhotosUIViewController *)self configuration];
+    viewModel = [contentController dataSourceManager];
+    [viewModel dataSource];
   }
   v5 = ;
 
@@ -4941,26 +4941,26 @@ LABEL_19:
 
 - (PXGView)gridView
 {
-  v2 = [(PXPhotosUIViewController *)self contentController];
-  v3 = [v2 gridView];
+  contentController = [(PXPhotosUIViewController *)self contentController];
+  gridView = [contentController gridView];
 
-  return v3;
+  return gridView;
 }
 
 - (PXPhotosViewModel)viewModel
 {
-  v2 = [(PXPhotosUIViewController *)self contentController];
-  v3 = [v2 viewModel];
+  contentController = [(PXPhotosUIViewController *)self contentController];
+  viewModel = [contentController viewModel];
 
-  return v3;
+  return viewModel;
 }
 
 - (PXPhotosViewModel)viewModelIfLoaded
 {
-  v2 = [(PXPhotosUIViewController *)self contentControllerIfLoaded];
-  v3 = [v2 viewModel];
+  contentControllerIfLoaded = [(PXPhotosUIViewController *)self contentControllerIfLoaded];
+  viewModel = [contentControllerIfLoaded viewModel];
 
-  return v3;
+  return viewModel;
 }
 
 - (PXPhotosContentController)contentController
@@ -4968,8 +4968,8 @@ LABEL_19:
   contentController = self->_contentController;
   if (!contentController)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXPhotosUIViewController.m" lineNumber:216 description:@"Content controller should not be accessed before viewDidLoad"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosUIViewController.m" lineNumber:216 description:@"Content controller should not be accessed before viewDidLoad"];
 
     contentController = self->_contentController;
   }
@@ -4979,16 +4979,16 @@ LABEL_19:
 
 - (NSString)description
 {
-  v3 = [(PXPhotosUIViewController *)self contentControllerIfLoaded];
-  v4 = [v3 viewModel];
+  contentControllerIfLoaded = [(PXPhotosUIViewController *)self contentControllerIfLoaded];
+  viewModel = [contentControllerIfLoaded viewModel];
 
-  if (v4)
+  if (viewModel)
   {
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [v4 currentDataSource];
-    v7 = [v6 containerCollection];
-    v8 = [v7 localizedTitle];
-    v9 = [v5 stringWithFormat:@"containerCollection=%@", v8];
+    currentDataSource = [viewModel currentDataSource];
+    containerCollection = [currentDataSource containerCollection];
+    localizedTitle = [containerCollection localizedTitle];
+    v9 = [v5 stringWithFormat:@"containerCollection=%@", localizedTitle];
   }
 
   else
@@ -5007,8 +5007,8 @@ LABEL_19:
 - (void)dealloc
 {
   PXUnregisterPreferencesObserver(self);
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self->_filterTimeoutObserver];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self->_filterTimeoutObserver];
 
   filterTimeoutObserver = self->_filterTimeoutObserver;
   self->_filterTimeoutObserver = 0;
@@ -5018,60 +5018,60 @@ LABEL_19:
   [(PXPhotosUIViewController *)&v5 dealloc];
 }
 
-- (PXPhotosUIViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PXPhotosUIViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PXPhotosUIViewController.m" lineNumber:191 description:{@"%s is not available as initializer", "-[PXPhotosUIViewController initWithNibName:bundle:]"}];
+  nameCopy = name;
+  bundleCopy = bundle;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosUIViewController.m" lineNumber:191 description:{@"%s is not available as initializer", "-[PXPhotosUIViewController initWithNibName:bundle:]"}];
 
   abort();
 }
 
-- (PXPhotosUIViewController)initWithCoder:(id)a3
+- (PXPhotosUIViewController)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXPhotosUIViewController.m" lineNumber:187 description:{@"%s is not available as initializer", "-[PXPhotosUIViewController initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosUIViewController.m" lineNumber:187 description:{@"%s is not available as initializer", "-[PXPhotosUIViewController initWithCoder:]"}];
 
   abort();
 }
 
-- (PXPhotosUIViewController)initWithConfiguration:(id)a3
+- (PXPhotosUIViewController)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = PXPhotosUIViewController;
   v5 = [(PXPhotosUIViewController *)&v9 initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [configurationCopy copy];
     configuration = v5->_configuration;
     v5->_configuration = v6;
 
     [(PXPhotosViewConfiguration *)v5->_configuration setIsEmbedded:0];
-    [(PXPhotosUIViewController *)v5 swift_initWithConfiguration:v4];
+    [(PXPhotosUIViewController *)v5 swift_initWithConfiguration:configurationCopy];
   }
 
   return v5;
 }
 
-+ (id)_roundedButtonConfigurationWithSymbolName:(id)a3 useOriginalSymbolAppearance:(BOOL)a4 inset:(double)a5 fontSize:(double)a6 weight:(int64_t)a7 groupName:(id)a8
++ (id)_roundedButtonConfigurationWithSymbolName:(id)name useOriginalSymbolAppearance:(BOOL)appearance inset:(double)inset fontSize:(double)size weight:(int64_t)weight groupName:(id)groupName
 {
-  v13 = a3;
+  nameCopy = name;
   v14 = MEMORY[0x1E69DC740];
-  v15 = a8;
-  v16 = [v14 grayButtonConfiguration];
-  if ([v13 length])
+  groupNameCopy = groupName;
+  grayButtonConfiguration = [v14 grayButtonConfiguration];
+  if ([nameCopy length])
   {
-    v17 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:a7 weight:a6];
-    v18 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v13 withConfiguration:v17];
+    v17 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:weight weight:size];
+    v18 = [MEMORY[0x1E69DCAB8] _systemImageNamed:nameCopy withConfiguration:v17];
     if (v18)
     {
-      if (a4)
+      if (appearance)
       {
 LABEL_5:
-        [v16 setImage:v18];
+        [grayButtonConfiguration setImage:v18];
 
         goto LABEL_6;
       }
@@ -5079,42 +5079,42 @@ LABEL_5:
 
     else
     {
-      v18 = [MEMORY[0x1E69DCAB8] px_imageNamed:v13 withConfiguration:v17];
-      if (a4)
+      v18 = [MEMORY[0x1E69DCAB8] px_imageNamed:nameCopy withConfiguration:v17];
+      if (appearance)
       {
         goto LABEL_5;
       }
     }
 
-    v19 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v20 = [v18 imageWithTintColor:v19 renderingMode:1];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v20 = [v18 imageWithTintColor:secondaryLabelColor renderingMode:1];
 
     v18 = v20;
     goto LABEL_5;
   }
 
 LABEL_6:
-  v21 = [MEMORY[0x1E69DC6E8] clearConfiguration];
-  [v21 _setVisualEffectGroupName:v15];
+  clearConfiguration = [MEMORY[0x1E69DC6E8] clearConfiguration];
+  [clearConfiguration _setVisualEffectGroupName:groupNameCopy];
 
   v22 = [MEMORY[0x1E69DC730] effectWithStyle:7];
-  [v21 setVisualEffect:v22];
+  [clearConfiguration setVisualEffect:v22];
 
-  [v16 setBackground:v21];
-  [v16 setContentInsets:{a5, a5, a5, a5}];
-  [v16 setCornerStyle:4];
+  [grayButtonConfiguration setBackground:clearConfiguration];
+  [grayButtonConfiguration setContentInsets:{inset, inset, inset, inset}];
+  [grayButtonConfiguration setCornerStyle:4];
 
-  return v16;
+  return grayButtonConfiguration;
 }
 
-+ (void)_configureOpacityOfSecondaryToolbarController:(id)a3 withViewModel:(id)a4 secondaryToolbarAlpha:(double)a5
++ (void)_configureOpacityOfSecondaryToolbarController:(id)controller withViewModel:(id)model secondaryToolbarAlpha:(double)alpha
 {
-  v10 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  controllerCopy = controller;
+  modelCopy = model;
+  v8 = modelCopy;
+  if (modelCopy)
   {
-    [v7 chromeOpacity];
+    [modelCopy chromeOpacity];
   }
 
   else
@@ -5122,26 +5122,26 @@ LABEL_6:
     v9 = 1.0;
   }
 
-  [v10 setAlpha:v9 * a5];
-  [v10 setShouldAlwaysBeConsideredVisibleForLayoutPurpose:{(objc_msgSend(v8, "chromeItemsToBeConsideredVisibleForLayoutPurpose") >> 5) & 1}];
+  [controllerCopy setAlpha:v9 * alpha];
+  [controllerCopy setShouldAlwaysBeConsideredVisibleForLayoutPurpose:{(objc_msgSend(v8, "chromeItemsToBeConsideredVisibleForLayoutPurpose") >> 5) & 1}];
 }
 
-- (void)ppt_navigateToAssetReference:(id)a3 revealInOneUp:(BOOL)a4 completionHandler:(id)a5
+- (void)ppt_navigateToAssetReference:(id)reference revealInOneUp:(BOOL)up completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 asset];
-  v11 = [v9 assetCollection];
+  upCopy = up;
+  handlerCopy = handler;
+  referenceCopy = reference;
+  asset = [referenceCopy asset];
+  assetCollection = [referenceCopy assetCollection];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __94__PXPhotosUIViewController_PPT__ppt_navigateToAssetReference_revealInOneUp_completionHandler___block_invoke;
   v13[3] = &unk_1E7748588;
   v13[4] = self;
-  v14 = v8;
-  v12 = v8;
-  [(PXPhotosUIViewController *)self ppt_navigateToAsset:v10 inAssetContainer:v11 revealInOneUp:v5 completionHandler:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [(PXPhotosUIViewController *)self ppt_navigateToAsset:asset inAssetContainer:assetCollection revealInOneUp:upCopy completionHandler:v13];
 }
 
 void __94__PXPhotosUIViewController_PPT__ppt_navigateToAssetReference_revealInOneUp_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -5177,27 +5177,27 @@ void __94__PXPhotosUIViewController_PPT__ppt_navigateToAssetReference_revealInOn
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)ppt_scrollToPreviousAssetOfAsset:(id)a3 completion:(id)a4
+- (id)ppt_scrollToPreviousAssetOfAsset:(id)asset completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXPhotosUIViewController *)self viewModel];
-  v9 = [v8 currentDataSource];
+  assetCopy = asset;
+  completionCopy = completion;
+  viewModel = [(PXPhotosUIViewController *)self viewModel];
+  currentDataSource = [viewModel currentDataSource];
 
   v17 = 0u;
   v18 = 0u;
-  if (v9)
+  if (currentDataSource)
   {
-    [v9 indexPathForAssetReference:v6];
+    [currentDataSource indexPathForAssetReference:assetCopy];
   }
 
-  v10 = [(PXPhotosUIViewController *)self contentController];
-  v11 = v10;
-  if (v10)
+  contentController = [(PXPhotosUIViewController *)self contentController];
+  v11 = contentController;
+  if (contentController)
   {
     v14[0] = v17;
     v14[1] = v18;
-    [v10 selectableIndexPathClosestToIndexPath:v14 inDirection:6];
+    [contentController selectableIndexPathClosestToIndexPath:v14 inDirection:6];
   }
 
   else
@@ -5211,8 +5211,8 @@ void __94__PXPhotosUIViewController_PPT__ppt_navigateToAssetReference_revealInOn
 
   v15 = v17;
   v16 = v18;
-  v12 = [v9 assetReferenceAtItemIndexPath:&v15];
-  [(PXPhotosUIViewController *)self scrollToCenterAssetReference:v12 completion:v7];
+  v12 = [currentDataSource assetReferenceAtItemIndexPath:&v15];
+  [(PXPhotosUIViewController *)self scrollToCenterAssetReference:v12 completion:completionCopy];
 
   return v12;
 }

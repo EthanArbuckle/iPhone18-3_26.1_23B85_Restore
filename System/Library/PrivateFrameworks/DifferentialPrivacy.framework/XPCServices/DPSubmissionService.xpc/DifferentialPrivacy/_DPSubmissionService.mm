@@ -1,8 +1,8 @@
 @interface _DPSubmissionService
 + (id)sharedInstance;
 - (_DPSubmissionService)init;
-- (void)fetchTokenWithReply:(id)a3;
-- (void)submitDonation:(id)a3 toDediscoWithReply:(id)a4;
+- (void)fetchTokenWithReply:(id)reply;
+- (void)submitDonation:(id)donation toDediscoWithReply:(id)reply;
 @end
 
 @implementation _DPSubmissionService
@@ -38,11 +38,11 @@
   return v2;
 }
 
-- (void)submitDonation:(id)a3 toDediscoWithReply:(id)a4
+- (void)submitDonation:(id)donation toDediscoWithReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [_DPDediscoUtils dediscoVersionForDonation:v6];
+  donationCopy = donation;
+  replyCopy = reply;
+  v8 = [_DPDediscoUtils dediscoVersionForDonation:donationCopy];
   if (v8 - 2 >= 3)
   {
     if (v8 != 1)
@@ -57,17 +57,17 @@
       goto LABEL_10;
     }
 
-    v9 = [(_DPSubmissionService *)self dediscoManagerV1];
+    dediscoManagerV1 = [(_DPSubmissionService *)self dediscoManagerV1];
     v30 = 0;
-    v10 = [v9 handleDediscoDonation:v6 error:&v30];
+    v10 = [dediscoManagerV1 handleDediscoDonation:donationCopy error:&v30];
     v11 = v30;
   }
 
   else
   {
-    v9 = [(_DPSubmissionService *)self dediscoManagerV2];
+    dediscoManagerV1 = [(_DPSubmissionService *)self dediscoManagerV2];
     v29 = 0;
-    v10 = [v9 handleDediscoDonation:v6 error:&v29];
+    v10 = [dediscoManagerV1 handleDediscoDonation:donationCopy error:&v29];
     v11 = v29;
   }
 
@@ -88,17 +88,17 @@ LABEL_10:
 
   v13 = 0;
 LABEL_13:
-  v7[2](v7, v13, v12);
+  replyCopy[2](replyCopy, v13, v12);
 }
 
-- (void)fetchTokenWithReply:(id)a3
+- (void)fetchTokenWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = objc_autoreleasePoolPush();
   v5 = objc_opt_new();
   if (v5)
   {
-    v3[2](v3, 1, 0);
+    replyCopy[2](replyCopy, 1, 0);
     [v5 fetchTokens];
   }
 
@@ -111,7 +111,7 @@ LABEL_13:
       sub_10004FC98(v6, v7, v8, v9, v10, v11, v12, v13);
     }
 
-    (v3)[2](v3, 0, v6);
+    (replyCopy)[2](replyCopy, 0, v6);
   }
 
   objc_autoreleasePoolPop(v4);

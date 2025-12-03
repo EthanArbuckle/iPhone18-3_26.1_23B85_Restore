@@ -27,8 +27,8 @@
   v17[3] = &unk_2C8C50;
   v17[4] = self;
   v4 = [[IMBlockActivityItemPlusThumbnailProvider alloc] initWithUTI:@"public.plain-text" resolutionBlock:v18 thumbnailResolutionBlock:v17];
-  v5 = [(AEAnnotationFacebookActivityItemProvider *)self supportedActivityTypes];
-  [(IMBlockActivityItemProvider *)v4 setSupportedActivityTypes:v5];
+  supportedActivityTypes = [(AEAnnotationFacebookActivityItemProvider *)self supportedActivityTypes];
+  [(IMBlockActivityItemProvider *)v4 setSupportedActivityTypes:supportedActivityTypes];
 
   [v3 addObject:v4];
   v15[4] = self;
@@ -42,14 +42,14 @@
   v15[2] = sub_29C20;
   v15[3] = &unk_2C8C50;
   v6 = [[IMBlockActivityItemPlusThumbnailProvider alloc] initWithUTI:@"public.html" resolutionBlock:v16 thumbnailResolutionBlock:v15];
-  v7 = [(AEAnnotationFacebookActivityItemProvider *)self supportedActivityTypes];
-  [(IMBlockActivityItemProvider *)v6 setSupportedActivityTypes:v7];
+  supportedActivityTypes2 = [(AEAnnotationFacebookActivityItemProvider *)self supportedActivityTypes];
+  [(IMBlockActivityItemProvider *)v6 setSupportedActivityTypes:supportedActivityTypes2];
 
   [v3 addObject:v6];
-  v8 = [(AEAssetActivityItemProviderSource *)self propertyProvider];
-  v9 = [v8 isStoreAsset];
+  propertyProvider = [(AEAssetActivityItemProviderSource *)self propertyProvider];
+  isStoreAsset = [propertyProvider isStoreAsset];
 
-  if (v9)
+  if (isStoreAsset)
   {
     v13[4] = self;
     v14[0] = _NSConcreteStackBlock;
@@ -62,8 +62,8 @@
     v13[2] = sub_29CC0;
     v13[3] = &unk_2C8C50;
     v10 = [[IMBlockActivityItemPlusThumbnailProvider alloc] initWithUTI:@"public.url" resolutionBlock:v14 thumbnailResolutionBlock:v13];
-    v11 = [(AEAnnotationFacebookActivityItemProvider *)self supportedActivityTypes];
-    [(IMBlockActivityItemProvider *)v10 setSupportedActivityTypes:v11];
+    supportedActivityTypes3 = [(AEAnnotationFacebookActivityItemProvider *)self supportedActivityTypes];
+    [(IMBlockActivityItemProvider *)v10 setSupportedActivityTypes:supportedActivityTypes3];
 
     [v3 addObject:v10];
   }

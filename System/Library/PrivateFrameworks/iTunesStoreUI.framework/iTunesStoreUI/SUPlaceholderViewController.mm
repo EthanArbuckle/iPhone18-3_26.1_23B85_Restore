@@ -8,11 +8,11 @@
 - (void)dealloc;
 - (void)loadView;
 - (void)parentViewControllerHierarchyDidChange;
-- (void)setBackgroundGradient:(id)a3;
-- (void)setDefaultBackgroundGradient:(id)a3;
-- (void)setScriptProperties:(id)a3;
-- (void)setShouldShowLoadingView:(BOOL)a3;
-- (void)setSkLoading:(BOOL)a3;
+- (void)setBackgroundGradient:(id)gradient;
+- (void)setDefaultBackgroundGradient:(id)gradient;
+- (void)setScriptProperties:(id)properties;
+- (void)setShouldShowLoadingView:(BOOL)view;
+- (void)setSkLoading:(BOOL)loading;
 @end
 
 @implementation SUPlaceholderViewController
@@ -24,8 +24,8 @@
   v2 = [(SUViewController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel__bagDidLoadNotification_ name:*MEMORY[0x1E69E4718] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__bagDidLoadNotification_ name:*MEMORY[0x1E69E4718] object:0];
   }
 
   return v2;
@@ -33,8 +33,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69E4718] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69E4718] object:0];
 
   v4.receiver = self;
   v4.super_class = SUPlaceholderViewController;
@@ -56,35 +56,35 @@
   return result;
 }
 
-- (void)setBackgroundGradient:(id)a3
+- (void)setBackgroundGradient:(id)gradient
 {
   backgroundGradient = self->_backgroundGradient;
-  if (backgroundGradient != a3)
+  if (backgroundGradient != gradient)
   {
 
-    self->_backgroundGradient = [a3 copy];
+    self->_backgroundGradient = [gradient copy];
 
     [(SUPlaceholderViewController *)self _reloadBackgroundGradient];
   }
 }
 
-- (void)setDefaultBackgroundGradient:(id)a3
+- (void)setDefaultBackgroundGradient:(id)gradient
 {
   defaultBackgroundGradient = self->_defaultBackgroundGradient;
-  if (defaultBackgroundGradient != a3)
+  if (defaultBackgroundGradient != gradient)
   {
 
-    self->_defaultBackgroundGradient = [a3 copy];
+    self->_defaultBackgroundGradient = [gradient copy];
 
     [(SUPlaceholderViewController *)self _reloadBackgroundGradient];
   }
 }
 
-- (void)setShouldShowLoadingView:(BOOL)a3
+- (void)setShouldShowLoadingView:(BOOL)view
 {
-  if (self->_hideLoadingView == a3)
+  if (self->_hideLoadingView == view)
   {
-    self->_hideLoadingView = !a3;
+    self->_hideLoadingView = !view;
     [(SULoadingView *)self->_loadingView setHidden:?];
   }
 }
@@ -121,12 +121,12 @@
   [(UIViewController *)&v3 parentViewControllerHierarchyDidChange];
 }
 
-- (void)setSkLoading:(BOOL)a3
+- (void)setSkLoading:(BOOL)loading
 {
   v8.receiver = self;
   v8.super_class = SUPlaceholderViewController;
   [(SUViewController *)&v8 setSkLoading:?];
-  if (a3)
+  if (loading)
   {
     v5 = [MEMORY[0x1E69D4A30] weakReferenceWithObject:self];
     v6 = dispatch_time(0, 1500000000);
@@ -151,11 +151,11 @@ uint64_t __44__SUPlaceholderViewController_setSkLoading___block_invoke(uint64_t 
   return [v1 _reloadLoadingView];
 }
 
-- (void)setScriptProperties:(id)a3
+- (void)setScriptProperties:(id)properties
 {
   v4.receiver = self;
   v4.super_class = SUPlaceholderViewController;
-  [(SUViewController *)&v4 setScriptProperties:a3];
+  [(SUViewController *)&v4 setScriptProperties:properties];
   [(SUPlaceholderViewController *)self _reloadBackgroundGradient];
 }
 
@@ -178,13 +178,13 @@ uint64_t __44__SUPlaceholderViewController_setSkLoading___block_invoke(uint64_t 
 
 - (id)_newURLBagBackgroundGradient
 {
-  v3 = [(SUClientInterface *)[(SUViewController *)self clientInterface] clientIdentifier];
-  if (!v3)
+  clientIdentifier = [(SUClientInterface *)[(SUViewController *)self clientInterface] clientIdentifier];
+  if (!clientIdentifier)
   {
     return 0;
   }
 
-  v4 = v3;
+  v4 = clientIdentifier;
   v5 = [MEMORY[0x1E69D49F8] contextWithBagType:0];
   v6 = [objc_msgSend(objc_msgSend(objc_msgSend(MEMORY[0x1E69E47F8] "sharedCache")];
   v7 = 0;
@@ -216,8 +216,8 @@ uint64_t __44__SUPlaceholderViewController_setSkLoading___block_invoke(uint64_t 
 {
   if ([(SUPlaceholderViewController *)self isViewLoaded])
   {
-    v4 = [(SUViewController *)self copyScriptProperties];
-    if ([v4 usesBlurredBackground])
+    copyScriptProperties = [(SUViewController *)self copyScriptProperties];
+    if ([copyScriptProperties usesBlurredBackground])
     {
       [(SUGradientView *)self->_gradientView setGradient:0];
       -[SUGradientView setBackgroundColor:](self->_gradientView, "setBackgroundColor:", [MEMORY[0x1E69DC888] clearColor]);
@@ -225,8 +225,8 @@ uint64_t __44__SUPlaceholderViewController_setSkLoading___block_invoke(uint64_t 
 
     else
     {
-      v3 = [(SUPlaceholderViewController *)self _copyActiveGradient];
-      [(SUGradientView *)self->_gradientView setGradient:v3];
+      _copyActiveGradient = [(SUPlaceholderViewController *)self _copyActiveGradient];
+      [(SUGradientView *)self->_gradientView setGradient:_copyActiveGradient];
     }
   }
 }
@@ -235,23 +235,23 @@ uint64_t __44__SUPlaceholderViewController_setSkLoading___block_invoke(uint64_t 
 {
   if ([(UIViewController *)self isSkLoaded])
   {
-    v3 = [(SUPlaceholderViewController *)self loadingView];
-    [(SULoadingView *)v3 sizeToFit];
-    v4 = [(SUPlaceholderViewController *)self view];
-    [v4 addSubview:v3];
-    [v4 bounds];
+    loadingView = [(SUPlaceholderViewController *)self loadingView];
+    [(SULoadingView *)loadingView sizeToFit];
+    view = [(SUPlaceholderViewController *)self view];
+    [view addSubview:loadingView];
+    [view bounds];
     v6 = v5;
     v8 = v7;
-    [v4 contentInset];
+    [view contentInset];
     v10 = v9;
     v12 = v11;
-    [(SULoadingView *)v3 frame];
+    [(SULoadingView *)loadingView frame];
     v14 = (v6 - v13) * 0.5;
     v15 = floorf(v14);
     v17 = (v8 - v16) * 0.5 - (v10 + v12) * 0.5;
     v18 = floorf(v17);
 
-    [(SULoadingView *)v3 setFrame:v15, v18];
+    [(SULoadingView *)loadingView setFrame:v15, v18];
   }
 
   else

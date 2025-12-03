@@ -1,15 +1,15 @@
 @interface TimeLimitPickerRepresentable.Coordinator
 - (_TtCV10CookingKitP33_3FE83860B62C210505335C3B40C86F6928TimeLimitPickerRepresentable11Coordinator)init;
-- (void)updateTimeLimit:(id)a3;
+- (void)updateTimeLimit:(id)limit;
 @end
 
 @implementation TimeLimitPickerRepresentable.Coordinator
 
-- (void)updateTimeLimit:(id)a3
+- (void)updateTimeLimit:(id)limit
 {
-  v4 = a3;
-  v5 = self;
-  [v4 countDownDuration];
+  limitCopy = limit;
+  selfCopy = self;
+  [limitCopy countDownDuration];
 
   sub_21A176C98(&qword_27CD03878);
   sub_21A2F7194();

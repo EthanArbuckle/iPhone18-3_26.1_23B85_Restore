@@ -1,20 +1,20 @@
 @interface BRCLocalVersion
-- (BOOL)isMissingUploadsWithDiffs:(unint64_t)a3;
-- (BRCLocalVersion)initWithImportObject:(id)a3;
-- (BRCLocalVersion)initWithLocalVersion:(id)a3;
-- (BRCLocalVersion)initWithVersion:(id)a3;
+- (BOOL)isMissingUploadsWithDiffs:(unint64_t)diffs;
+- (BRCLocalVersion)initWithImportObject:(id)object;
+- (BRCLocalVersion)initWithLocalVersion:(id)version;
+- (BRCLocalVersion)initWithVersion:(id)version;
 - (BRFieldContentSignature)versionSignature;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithContext:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithContext:(id)context;
 - (id)isPackageObj;
-- (unint64_t)diffAgainstLocalVersion:(id)a3;
-- (void)_learnVersionFromStoredLocalVersionIdentifier:(id)a3;
+- (unint64_t)diffAgainstLocalVersion:(id)version;
+- (void)_learnVersionFromStoredLocalVersionIdentifier:(id)identifier;
 - (void)bumpLocalChangeCount;
 - (void)clearCKInfo;
 - (void)clearUploadedAssets;
-- (void)sqliteBind:(sqlite3_stmt *)a3 index:(int)a4;
-- (void)updateServerFieldsFromVersion:(id)a3;
-- (void)updateWithImportObject:(id)a3 onlyContentDependentProperties:(BOOL)a4;
+- (void)sqliteBind:(sqlite3_stmt *)bind index:(int)index;
+- (void)updateServerFieldsFromVersion:(id)version;
+- (void)updateWithImportObject:(id)object onlyContentDependentProperties:(BOOL)properties;
 @end
 
 @implementation BRCLocalVersion
@@ -22,24 +22,24 @@
 - (id)isPackageObj
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(BRCVersion *)self isPackage];
+  isPackage = [(BRCVersion *)self isPackage];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:isPackage];
 }
 
-- (id)descriptionWithContext:(id)a3
+- (id)descriptionWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = BRCLocalVersion;
-  v5 = [(BRCVersion *)&v11 descriptionWithContext:v4];
+  v5 = [(BRCVersion *)&v11 descriptionWithContext:contextCopy];
   v6 = [v5 mutableCopy];
 
   uploadError = self->_uploadError;
   if (uploadError)
   {
-    v8 = [(NSError *)uploadError brc_obfuscate];
-    v9 = [BRCDumpContext stringFromError:v8 context:v4];
+    brc_obfuscate = [(NSError *)uploadError brc_obfuscate];
+    v9 = [BRCDumpContext stringFromError:brc_obfuscate context:contextCopy];
     [v6 appendFormat:@" ul-error:%@", v9];
   }
 
@@ -66,16 +66,16 @@
   return v6;
 }
 
-- (unint64_t)diffAgainstLocalVersion:(id)a3
+- (unint64_t)diffAgainstLocalVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(BRCVersion *)self diffAgainst:v4];
+  versionCopy = version;
+  v5 = [(BRCVersion *)self diffAgainst:versionCopy];
   if ((v5 & 0x1000000000000) != 0)
   {
     goto LABEL_7;
   }
 
-  v6 = v4[17];
+  v6 = versionCopy[17];
   v7 = self->_uploadedAssets;
   v8 = v6;
   v9 = v8;
@@ -102,7 +102,7 @@ LABEL_7:
     }
 
 LABEL_8:
-    v11 = v4[18];
+    v11 = versionCopy[18];
     v12 = self->_uploadError;
     v13 = v11;
     v14 = v13;
@@ -140,7 +140,7 @@ LABEL_14:
 LABEL_18:
   if ((v5 & 0x4000000000000) == 0)
   {
-    v16 = v4[19];
+    v16 = versionCopy[19];
     v17 = self->_previousItemGlobalID;
     v18 = v16;
     v19 = v18;
@@ -173,33 +173,33 @@ LABEL_26:
   return v5;
 }
 
-- (BRCLocalVersion)initWithVersion:(id)a3
+- (BRCLocalVersion)initWithVersion:(id)version
 {
   v4.receiver = self;
   v4.super_class = BRCLocalVersion;
-  return [(BRCVersion *)&v4 initWithVersion:a3];
+  return [(BRCVersion *)&v4 initWithVersion:version];
 }
 
-- (BRCLocalVersion)initWithLocalVersion:(id)a3
+- (BRCLocalVersion)initWithLocalVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(BRCLocalVersion *)self initWithVersion:v4];
+  versionCopy = version;
+  v5 = [(BRCLocalVersion *)self initWithVersion:versionCopy];
   if (v5)
   {
-    v6 = [*(v4 + 17) copy];
+    v6 = [*(versionCopy + 17) copy];
     uploadedAssets = v5->_uploadedAssets;
     v5->_uploadedAssets = v6;
 
-    v8 = [*(v4 + 18) copy];
+    v8 = [*(versionCopy + 18) copy];
     uploadError = v5->_uploadError;
     v5->_uploadError = v8;
 
-    v10 = [*(v4 + 19) copy];
+    v10 = [*(versionCopy + 19) copy];
     previousItemGlobalID = v5->_previousItemGlobalID;
     v5->_previousItemGlobalID = v10;
 
-    v5->_localChangeCount = *(v4 + 15);
-    v12 = [*(v4 + 16) copy];
+    v5->_localChangeCount = *(versionCopy + 15);
+    v12 = [*(versionCopy + 16) copy];
     oldVersionIdentifier = v5->_oldVersionIdentifier;
     v5->_oldVersionIdentifier = v12;
   }
@@ -207,14 +207,14 @@ LABEL_26:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithLocalVersion:self];
 }
 
-- (BOOL)isMissingUploadsWithDiffs:(unint64_t)a3
+- (BOOL)isMissingUploadsWithDiffs:(unint64_t)diffs
 {
   if ([(NSData *)self->super._contentSignature brc_signatureIsPendingPlaceHolder])
   {
@@ -236,7 +236,7 @@ LABEL_26:
     }
   }
 
-  else if ((a3 & 0x200000) != 0 && self->super._xattrSignature)
+  else if ((diffs & 0x200000) != 0 && self->super._xattrSignature)
   {
     v5 = brc_bread_crumbs();
     v6 = brc_default_log();
@@ -246,7 +246,7 @@ LABEL_26:
     }
   }
 
-  else if ((a3 & 0x1000000000000) != 0 && !self->_uploadedAssets)
+  else if ((diffs & 0x1000000000000) != 0 && !self->_uploadedAssets)
   {
     v5 = brc_bread_crumbs();
     v6 = brc_default_log();
@@ -258,7 +258,7 @@ LABEL_26:
 
   else
   {
-    if ((a3 & 0x2000000000000) == 0 || self->_uploadError)
+    if ((diffs & 0x2000000000000) == 0 || self->_uploadError)
     {
       return 0;
     }
@@ -283,18 +283,18 @@ LABEL_26:
   self->_uploadError = 0;
 }
 
-- (void)_learnVersionFromStoredLocalVersionIdentifier:(id)a3
+- (void)_learnVersionFromStoredLocalVersionIdentifier:(id)identifier
 {
-  v4 = [a3 componentsSeparatedByString:@""];;
+  v4 = [identifier componentsSeparatedByString:@""];;
   if ([v4 count] == 2)
   {
     v5 = [v4 objectAtIndexedSubscript:1];
-    v6 = [v5 longLongValue];
+    longLongValue = [v5 longLongValue];
   }
 
   else
   {
-    v6 = 0;
+    longLongValue = 0;
   }
 
   v7 = [v4 objectAtIndexedSubscript:0];
@@ -321,29 +321,29 @@ LABEL_26:
   }
 
   [(BRFieldCKInfo *)self->super._ckInfo overwriteEtag:v10];
-  self->_localChangeCount = v6;
+  self->_localChangeCount = longLongValue;
 }
 
-- (void)sqliteBind:(sqlite3_stmt *)a3 index:(int)a4
+- (void)sqliteBind:(sqlite3_stmt *)bind index:(int)index
 {
   v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
   v6 = v7;
-  sqlite3_bind_blob(a3, a4, [v7 bytes], objc_msgSend(v7, "length"), 0xFFFFFFFFFFFFFFFFLL);
+  sqlite3_bind_blob(bind, index, [v7 bytes], objc_msgSend(v7, "length"), 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (void)updateServerFieldsFromVersion:(id)a3
+- (void)updateServerFieldsFromVersion:(id)version
 {
-  v4 = a3;
-  v5 = [v4 conflictLoserEtags];
+  versionCopy = version;
+  conflictLoserEtags = [versionCopy conflictLoserEtags];
   conflictLoserEtags = self->super._conflictLoserEtags;
-  self->super._conflictLoserEtags = v5;
+  self->super._conflictLoserEtags = conflictLoserEtags;
 
-  v7 = [v4 lastEditorDeviceOrUserRowID];
-  [(BRCVersion *)self setLastEditorDeviceOrUserRowID:v7];
+  lastEditorDeviceOrUserRowID = [versionCopy lastEditorDeviceOrUserRowID];
+  [(BRCVersion *)self setLastEditorDeviceOrUserRowID:lastEditorDeviceOrUserRowID];
 
-  v8 = [v4 lastEditorDeviceName];
+  lastEditorDeviceName = [versionCopy lastEditorDeviceName];
 
-  [(BRCVersion *)self setLastEditorDeviceName:v8];
+  [(BRCVersion *)self setLastEditorDeviceName:lastEditorDeviceName];
 }
 
 - (BRFieldContentSignature)versionSignature
@@ -353,29 +353,29 @@ LABEL_26:
   return v2;
 }
 
-- (BRCLocalVersion)initWithImportObject:(id)a3
+- (BRCLocalVersion)initWithImportObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = BRCLocalVersion;
   v5 = [(BRCLocalVersion *)&v9 init];
   if (v5)
   {
-    v6 = [v4 quarantineInfo];
+    quarantineInfo = [objectCopy quarantineInfo];
     quarantineInfo = v5->super._quarantineInfo;
-    v5->super._quarantineInfo = v6;
+    v5->super._quarantineInfo = quarantineInfo;
 
-    [(BRCLocalVersion *)v5 updateWithImportObject:v4 onlyContentDependentProperties:0];
+    [(BRCLocalVersion *)v5 updateWithImportObject:objectCopy onlyContentDependentProperties:0];
   }
 
   return v5;
 }
 
-- (void)updateWithImportObject:(id)a3 onlyContentDependentProperties:(BOOL)a4
+- (void)updateWithImportObject:(id)object onlyContentDependentProperties:(BOOL)properties
 {
-  v6 = a3;
-  v10 = v6;
-  if (a4)
+  objectCopy = object;
+  v10 = objectCopy;
+  if (properties)
   {
     p_originalPOSIXName = &self->super._originalPOSIXName;
     if (self->super._originalPOSIXName)
@@ -386,17 +386,17 @@ LABEL_26:
 
   else
   {
-    self->super._mtime = [v6 modificationTime];
+    self->super._mtime = [objectCopy modificationTime];
     p_originalPOSIXName = &self->super._originalPOSIXName;
   }
 
-  v8 = [v10 logicalName];
+  logicalName = [v10 logicalName];
   v9 = *p_originalPOSIXName;
-  *p_originalPOSIXName = v8;
+  *p_originalPOSIXName = logicalName;
 
-  v6 = v10;
+  objectCopy = v10;
 LABEL_6:
-  if (([v6 isPackageRoot] & 1) == 0)
+  if (([objectCopy isPackageRoot] & 1) == 0)
   {
     self->super._size = [v10 size];
   }

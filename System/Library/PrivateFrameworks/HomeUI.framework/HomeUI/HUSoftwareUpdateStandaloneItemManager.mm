@@ -1,57 +1,57 @@
 @interface HUSoftwareUpdateStandaloneItemManager
-- (HUSoftwareUpdateStandaloneItemManager)initWithDelegate:(id)a3 home:(id)a4;
-- (HUSoftwareUpdateStandaloneItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (id)_buildItemModulesForHome:(id)a3;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (HUSoftwareUpdateStandaloneItemManager)initWithDelegate:(id)delegate home:(id)home;
+- (HUSoftwareUpdateStandaloneItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (id)_buildItemModulesForHome:(id)home;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (id)_homeFuture;
-- (id)_itemsToHideInSet:(id)a3;
-- (id)_transformedUpdateOutcomeForItem:(id)a3 proposedOutcome:(id)a4;
+- (id)_itemsToHideInSet:(id)set;
+- (id)_transformedUpdateOutcomeForItem:(id)item proposedOutcome:(id)outcome;
 - (id)triggerSoftwareUpdateFetch;
-- (void)addHomeSetupSuccessBlock:(id)a3;
+- (void)addHomeSetupSuccessBlock:(id)block;
 - (void)dealloc;
-- (void)home:(id)a3 didUpdateAutomaticSoftwareUpdateEnabled:(BOOL)a4;
-- (void)home:(id)a3 didUpdateAutomaticThirdPartyAccessorySoftwareUpdateEnabled:(BOOL)a4;
-- (void)homeManager:(id)a3 didUpdateHH2State:(BOOL)a4;
+- (void)home:(id)home didUpdateAutomaticSoftwareUpdateEnabled:(BOOL)enabled;
+- (void)home:(id)home didUpdateAutomaticThirdPartyAccessorySoftwareUpdateEnabled:(BOOL)enabled;
+- (void)homeManager:(id)manager didUpdateHH2State:(BOOL)state;
 @end
 
 @implementation HUSoftwareUpdateStandaloneItemManager
 
-- (HUSoftwareUpdateStandaloneItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HUSoftwareUpdateStandaloneItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithDelegate_home_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateStandaloneItemManager.m" lineNumber:61 description:{@"%s is unavailable; use %@ instead", "-[HUSoftwareUpdateStandaloneItemManager initWithDelegate:sourceItem:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateStandaloneItemManager.m" lineNumber:61 description:{@"%s is unavailable; use %@ instead", "-[HUSoftwareUpdateStandaloneItemManager initWithDelegate:sourceItem:]", v7}];
 
   return 0;
 }
 
-- (HUSoftwareUpdateStandaloneItemManager)initWithDelegate:(id)a3 home:(id)a4
+- (HUSoftwareUpdateStandaloneItemManager)initWithDelegate:(id)delegate home:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  homeCopy = home;
   v18.receiver = self;
   v18.super_class = HUSoftwareUpdateStandaloneItemManager;
-  v8 = [(HFItemManager *)&v18 initWithDelegate:v6 sourceItem:0];
+  v8 = [(HFItemManager *)&v18 initWithDelegate:delegateCopy sourceItem:0];
   if (v8)
   {
     v9 = objc_opt_new();
     softwareUpdateFetchFuture = v8->_softwareUpdateFetchFuture;
     v8->_softwareUpdateFetchFuture = v9;
 
-    objc_storeStrong(&v8->_overrideHome, a4);
-    v11 = [MEMORY[0x277D146E8] sharedDispatcher];
-    [v11 addHomeManagerObserver:v8];
+    objc_storeStrong(&v8->_overrideHome, home);
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    [mEMORY[0x277D146E8] addHomeManagerObserver:v8];
 
     objc_initWeak(&location, v8);
-    v12 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v13 = [v12 homeManager];
+    mEMORY[0x277D146E8]2 = [MEMORY[0x277D146E8] sharedDispatcher];
+    homeManager = [mEMORY[0x277D146E8]2 homeManager];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __63__HUSoftwareUpdateStandaloneItemManager_initWithDelegate_home___block_invoke;
     v15[3] = &unk_277DBD078;
     objc_copyWeak(&v16, &location);
-    [v13 fetchDevicesWithCompletionHandler:v15];
+    [homeManager fetchDevicesWithCompletionHandler:v15];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
@@ -81,8 +81,8 @@ void __63__HUSoftwareUpdateStandaloneItemManager_initWithDelegate_home___block_i
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D146E8] sharedDispatcher];
-  [v3 removeHomeObserver:self];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  [mEMORY[0x277D146E8] removeHomeObserver:self];
 
   v4.receiver = self;
   v4.super_class = HUSoftwareUpdateStandaloneItemManager;
@@ -92,41 +92,41 @@ void __63__HUSoftwareUpdateStandaloneItemManager_initWithDelegate_home___block_i
 - (id)_homeFuture
 {
   v2 = MEMORY[0x277D2C900];
-  v3 = [(HUSoftwareUpdateStandaloneItemManager *)self overrideHome];
-  v4 = [v2 futureWithResult:v3];
+  overrideHome = [(HUSoftwareUpdateStandaloneItemManager *)self overrideHome];
+  v4 = [v2 futureWithResult:overrideHome];
 
   return v4;
 }
 
-- (id)_buildItemModulesForHome:(id)a3
+- (id)_buildItemModulesForHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v5 = objc_opt_new();
-  v6 = [[HUFirmwareUpdateItemModule alloc] initWithItemUpdater:self home:v4];
+  v6 = [[HUFirmwareUpdateItemModule alloc] initWithItemUpdater:self home:homeCopy];
   [(HUSoftwareUpdateStandaloneItemManager *)self setFirmwareUpdateModule:v6];
 
-  v7 = [(HUSoftwareUpdateStandaloneItemManager *)self firmwareUpdateModule];
-  [v5 na_safeAddObject:v7];
+  firmwareUpdateModule = [(HUSoftwareUpdateStandaloneItemManager *)self firmwareUpdateModule];
+  [v5 na_safeAddObject:firmwareUpdateModule];
 
-  v8 = [[HUSoftwareUpdateItemModule alloc] initWithItemUpdater:self home:v4 sourceItem:0];
+  v8 = [[HUSoftwareUpdateItemModule alloc] initWithItemUpdater:self home:homeCopy sourceItem:0];
   [(HUSoftwareUpdateStandaloneItemManager *)self setSoftwareUpdateModule:v8];
 
-  v9 = [(HUSoftwareUpdateStandaloneItemManager *)self softwareUpdateModule];
-  [v5 na_safeAddObject:v9];
+  softwareUpdateModule = [(HUSoftwareUpdateStandaloneItemManager *)self softwareUpdateModule];
+  [v5 na_safeAddObject:softwareUpdateModule];
 
   return v5;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v66[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  homeCopy = home;
+  array = [MEMORY[0x277CBEB18] array];
   v63[0] = MEMORY[0x277D85DD0];
   v63[1] = 3221225472;
   v63[2] = __68__HUSoftwareUpdateStandaloneItemManager__buildItemProvidersForHome___block_invoke;
   v63[3] = &unk_277DC1440;
-  v6 = v4;
+  v6 = homeCopy;
   v64 = v6;
   v7 = __68__HUSoftwareUpdateStandaloneItemManager__buildItemProvidersForHome___block_invoke(v63);
   v8 = objc_alloc(MEMORY[0x277D14B38]);
@@ -136,7 +136,7 @@ void __63__HUSoftwareUpdateStandaloneItemManager_initWithDelegate_home___block_i
   v60[3] = &unk_277DB8648;
   v9 = v7;
   v61 = v9;
-  v62 = self;
+  selfCopy = self;
   v10 = [v8 initWithResultsBlock:v60];
   [(HUSoftwareUpdateStandaloneItemManager *)self setAutoUpdateItem:v10];
 
@@ -146,7 +146,7 @@ void __63__HUSoftwareUpdateStandaloneItemManager_initWithDelegate_home___block_i
   v57[2] = __68__HUSoftwareUpdateStandaloneItemManager__buildItemProvidersForHome___block_invoke_3;
   v57[3] = &unk_277DB8648;
   v58 = v9;
-  v59 = self;
+  selfCopy2 = self;
   v12 = v9;
   v13 = [v11 initWithResultsBlock:v57];
   [(HUSoftwareUpdateStandaloneItemManager *)self setAutoUpdateThirdPartyItem:v13];
@@ -158,7 +158,7 @@ void __63__HUSoftwareUpdateStandaloneItemManager_initWithDelegate_home___block_i
   v54[3] = &unk_277DB8648;
   v15 = v6;
   v55 = v15;
-  v56 = self;
+  selfCopy3 = self;
   v16 = [v14 initWithResultsBlock:v54];
   [(HUSoftwareUpdateStandaloneItemManager *)self setHomeUpdateBannerItem:v16];
 
@@ -197,32 +197,32 @@ void __63__HUSoftwareUpdateStandaloneItemManager_initWithDelegate_home___block_i
   [(HUSoftwareUpdateStandaloneItemManager *)self setCarrySettingsItem:v28];
 
   v29 = [HUSoftwareUpdateFetchItem alloc];
-  v30 = [(HUSoftwareUpdateStandaloneItemManager *)self softwareUpdateFetchFuture];
-  v31 = [(HUSoftwareUpdateFetchItem *)v29 initWithHome:v27 softwareUpdateFetchFuture:v30];
+  softwareUpdateFetchFuture = [(HUSoftwareUpdateStandaloneItemManager *)self softwareUpdateFetchFuture];
+  v31 = [(HUSoftwareUpdateFetchItem *)v29 initWithHome:v27 softwareUpdateFetchFuture:softwareUpdateFetchFuture];
   [(HUSoftwareUpdateStandaloneItemManager *)self setFetchItem:v31];
 
   v32 = MEMORY[0x277CBEB58];
-  v33 = [(HUSoftwareUpdateStandaloneItemManager *)self autoUpdateItem];
-  v34 = [(HUSoftwareUpdateStandaloneItemManager *)self fetchItem];
-  v35 = [(HUSoftwareUpdateStandaloneItemManager *)self updateAllItem];
-  v36 = [(HUSoftwareUpdateStandaloneItemManager *)self autoUpdateThirdPartyItem];
-  v37 = [(HUSoftwareUpdateStandaloneItemManager *)self updatedRecentlyItem];
-  v38 = [v32 setWithObjects:{v33, v34, v35, v36, v37, 0, v47, v48, v49, v50}];
+  autoUpdateItem = [(HUSoftwareUpdateStandaloneItemManager *)self autoUpdateItem];
+  fetchItem = [(HUSoftwareUpdateStandaloneItemManager *)self fetchItem];
+  updateAllItem = [(HUSoftwareUpdateStandaloneItemManager *)self updateAllItem];
+  autoUpdateThirdPartyItem = [(HUSoftwareUpdateStandaloneItemManager *)self autoUpdateThirdPartyItem];
+  updatedRecentlyItem = [(HUSoftwareUpdateStandaloneItemManager *)self updatedRecentlyItem];
+  v38 = [v32 setWithObjects:{autoUpdateItem, fetchItem, updateAllItem, autoUpdateThirdPartyItem, updatedRecentlyItem, 0, v47, v48, v49, v50}];
 
-  v39 = [(HUSoftwareUpdateStandaloneItemManager *)self homeUpdateBannerItem];
-  [v38 addObject:v39];
+  homeUpdateBannerItem = [(HUSoftwareUpdateStandaloneItemManager *)self homeUpdateBannerItem];
+  [v38 addObject:homeUpdateBannerItem];
 
   v40 = [objc_alloc(MEMORY[0x277D14B40]) initWithItems:v38];
-  [v5 addObject:v40];
+  [array addObject:v40];
   v41 = MEMORY[0x277CBEB98];
-  v42 = [(HUSoftwareUpdateStandaloneItemManager *)self betaUpdatesItem];
-  v43 = [(HUSoftwareUpdateStandaloneItemManager *)self carrySettingsItem];
-  v44 = [v41 setWithObjects:{v42, v43, 0}];
+  betaUpdatesItem = [(HUSoftwareUpdateStandaloneItemManager *)self betaUpdatesItem];
+  carrySettingsItem = [(HUSoftwareUpdateStandaloneItemManager *)self carrySettingsItem];
+  v44 = [v41 setWithObjects:{betaUpdatesItem, carrySettingsItem, 0}];
 
   v45 = [objc_alloc(MEMORY[0x277D14B48]) initWithItems:v44];
-  [v5 addObject:v45];
+  [array addObject:v45];
 
-  return v5;
+  return array;
 }
 
 id __68__HUSoftwareUpdateStandaloneItemManager__buildItemProvidersForHome___block_invoke(uint64_t a1)
@@ -460,20 +460,20 @@ uint64_t __68__HUSoftwareUpdateStandaloneItemManager__buildItemProvidersForHome_
   return [v3 futureWithResult:v4];
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v49[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
   v6 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"banners"];
-  v7 = [(HUSoftwareUpdateStandaloneItemManager *)self homeUpdateBannerItem];
-  v49[0] = v7;
+  homeUpdateBannerItem = [(HUSoftwareUpdateStandaloneItemManager *)self homeUpdateBannerItem];
+  v49[0] = homeUpdateBannerItem;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:1];
   [v6 setItems:v8];
 
   [v5 addObject:v6];
-  v9 = [(HFItemManager *)self home];
-  LODWORD(v8) = [v9 hf_hasAccessoriesSupportingSoftwareUpdate];
+  home = [(HFItemManager *)self home];
+  LODWORD(v8) = [home hf_hasAccessoriesSupportingSoftwareUpdate];
 
   if (!v8)
   {
@@ -485,34 +485,34 @@ uint64_t __68__HUSoftwareUpdateStandaloneItemManager__buildItemProvidersForHome_
   [v10 setHeaderTitle:v11];
 
   v12 = objc_opt_new();
-  v13 = [(HFItemManager *)self home];
-  v14 = [v13 hf_hasFirstPartyAccessoriesSupportingSoftwareUpdate];
+  home2 = [(HFItemManager *)self home];
+  hf_hasFirstPartyAccessoriesSupportingSoftwareUpdate = [home2 hf_hasFirstPartyAccessoriesSupportingSoftwareUpdate];
 
-  if (v14)
+  if (hf_hasFirstPartyAccessoriesSupportingSoftwareUpdate)
   {
-    v15 = [(HUSoftwareUpdateStandaloneItemManager *)self autoUpdateItem];
-    [v12 addObject:v15];
+    autoUpdateItem = [(HUSoftwareUpdateStandaloneItemManager *)self autoUpdateItem];
+    [v12 addObject:autoUpdateItem];
   }
 
-  v16 = [(HFItemManager *)self home];
-  if (![v16 hf_hasThirdPartyAccessoriesSupportingSoftwareUpdate])
+  home3 = [(HFItemManager *)self home];
+  if (![home3 hf_hasThirdPartyAccessoriesSupportingSoftwareUpdate])
   {
     goto LABEL_7;
   }
 
-  v17 = [(HFItemManager *)self home];
-  v18 = [v17 hf_hasEnabledResidentSupportingThirdPartySoftwareUpdate];
+  home4 = [(HFItemManager *)self home];
+  hf_hasEnabledResidentSupportingThirdPartySoftwareUpdate = [home4 hf_hasEnabledResidentSupportingThirdPartySoftwareUpdate];
 
-  if (v18)
+  if (hf_hasEnabledResidentSupportingThirdPartySoftwareUpdate)
   {
-    v16 = [(HUSoftwareUpdateStandaloneItemManager *)self autoUpdateThirdPartyItem];
-    [v12 addObject:v16];
+    home3 = [(HUSoftwareUpdateStandaloneItemManager *)self autoUpdateThirdPartyItem];
+    [v12 addObject:home3];
 LABEL_7:
   }
 
   [v10 setItems:v12];
-  v19 = [v10 items];
-  v20 = [v19 count];
+  items = [v10 items];
+  v20 = [items count];
 
   if (v20)
   {
@@ -520,16 +520,16 @@ LABEL_7:
   }
 
 LABEL_11:
-  v21 = [(HUSoftwareUpdateStandaloneItemManager *)self fetchItem];
-  v22 = [v21 latestResults];
-  v23 = [v22 objectForKeyedSubscript:*MEMORY[0x277D140F0]];
-  v24 = [v23 BOOLValue];
+  fetchItem = [(HUSoftwareUpdateStandaloneItemManager *)self fetchItem];
+  latestResults = [fetchItem latestResults];
+  v23 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D140F0]];
+  bOOLValue = [v23 BOOLValue];
 
-  if ((v24 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v25 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"updateAll"];
-    v26 = [(HUSoftwareUpdateStandaloneItemManager *)self updateAllItem];
-    v48 = v26;
+    updateAllItem = [(HUSoftwareUpdateStandaloneItemManager *)self updateAllItem];
+    v48 = updateAllItem;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v48 count:1];
     [v25 setItems:v27];
 
@@ -537,50 +537,50 @@ LABEL_11:
   }
 
   v28 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"fetchUpdates"];
-  v29 = [(HUSoftwareUpdateStandaloneItemManager *)self fetchItem];
-  v47 = v29;
+  fetchItem2 = [(HUSoftwareUpdateStandaloneItemManager *)self fetchItem];
+  v47 = fetchItem2;
   v30 = [MEMORY[0x277CBEA60] arrayWithObjects:&v47 count:1];
   [v28 setItems:v30];
 
   [v5 addObject:v28];
-  v31 = [(HUSoftwareUpdateStandaloneItemManager *)self softwareUpdateModule];
-  [v31 setHideAppleUpdates:v24];
+  softwareUpdateModule = [(HUSoftwareUpdateStandaloneItemManager *)self softwareUpdateModule];
+  [softwareUpdateModule setHideAppleUpdates:bOOLValue];
 
-  v32 = [(HUSoftwareUpdateStandaloneItemManager *)self softwareUpdateModule];
-  v33 = [v32 buildSectionsWithDisplayedItems:v4];
+  softwareUpdateModule2 = [(HUSoftwareUpdateStandaloneItemManager *)self softwareUpdateModule];
+  v33 = [softwareUpdateModule2 buildSectionsWithDisplayedItems:itemsCopy];
   [v5 addObjectsFromArray:v33];
 
   v34 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"updatedRecently"];
-  v35 = [(HUSoftwareUpdateStandaloneItemManager *)self updatedRecentlyItem];
-  v46 = v35;
+  updatedRecentlyItem = [(HUSoftwareUpdateStandaloneItemManager *)self updatedRecentlyItem];
+  v46 = updatedRecentlyItem;
   v36 = [MEMORY[0x277CBEA60] arrayWithObjects:&v46 count:1];
   [v34 setItems:v36];
 
   [v5 addObject:v34];
   v37 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"betaUpdates"];
-  v38 = [(HUSoftwareUpdateStandaloneItemManager *)self betaUpdatesItem];
-  v45[0] = v38;
-  v39 = [(HUSoftwareUpdateStandaloneItemManager *)self carrySettingsItem];
-  v45[1] = v39;
+  betaUpdatesItem = [(HUSoftwareUpdateStandaloneItemManager *)self betaUpdatesItem];
+  v45[0] = betaUpdatesItem;
+  carrySettingsItem = [(HUSoftwareUpdateStandaloneItemManager *)self carrySettingsItem];
+  v45[1] = carrySettingsItem;
   v40 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:2];
   [v37 setItems:v40];
 
   [v5 addObject:v37];
-  v41 = [(HUSoftwareUpdateStandaloneItemManager *)self firmwareUpdateModule];
-  v42 = [v41 buildSectionsWithDisplayedItems:v4];
+  firmwareUpdateModule = [(HUSoftwareUpdateStandaloneItemManager *)self firmwareUpdateModule];
+  v42 = [firmwareUpdateModule buildSectionsWithDisplayedItems:itemsCopy];
   [v5 addObjectsFromArray:v42];
 
-  v43 = [MEMORY[0x277D14778] filterSections:v5 toDisplayedItems:v4];
+  v43 = [MEMORY[0x277D14778] filterSections:v5 toDisplayedItems:itemsCopy];
 
   return v43;
 }
 
-- (id)_itemsToHideInSet:(id)a3
+- (id)_itemsToHideInSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v20.receiver = self;
   v20.super_class = HUSoftwareUpdateStandaloneItemManager;
-  v5 = [(HFItemManager *)&v20 _itemsToHideInSet:v4];
+  v5 = [(HFItemManager *)&v20 _itemsToHideInSet:setCopy];
   v6 = [v5 mutableCopy];
 
   v16 = 0;
@@ -594,7 +594,7 @@ LABEL_11:
   v7 = v6;
   v14 = v7;
   v15 = &v16;
-  [v4 na_each:&v10];
+  [setCopy na_each:&v10];
   if ((v17[3] & 1) == 0)
   {
     v8 = [(HUSoftwareUpdateStandaloneItemManager *)self updatedRecentlyItem:v10];
@@ -624,21 +624,21 @@ void __59__HUSoftwareUpdateStandaloneItemManager__itemsToHideInSet___block_invok
   }
 }
 
-- (id)_transformedUpdateOutcomeForItem:(id)a3 proposedOutcome:(id)a4
+- (id)_transformedUpdateOutcomeForItem:(id)item proposedOutcome:(id)outcome
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUSoftwareUpdateStandaloneItemManager *)self firmwareUpdateModule];
+  itemCopy = item;
+  outcomeCopy = outcome;
+  firmwareUpdateModule = [(HUSoftwareUpdateStandaloneItemManager *)self firmwareUpdateModule];
 
-  if (v8)
+  if (firmwareUpdateModule)
   {
-    v9 = [(HUSoftwareUpdateStandaloneItemManager *)self firmwareUpdateModule];
-    v10 = [v9 transformedUpdateOutcomeForItem:v6 proposedOutcome:v7];
+    firmwareUpdateModule2 = [(HUSoftwareUpdateStandaloneItemManager *)self firmwareUpdateModule];
+    v10 = [firmwareUpdateModule2 transformedUpdateOutcomeForItem:itemCopy proposedOutcome:outcomeCopy];
   }
 
   else
   {
-    v10 = v7;
+    v10 = outcomeCopy;
   }
 
   return v10;
@@ -646,41 +646,41 @@ void __59__HUSoftwareUpdateStandaloneItemManager__itemsToHideInSet___block_invok
 
 - (id)triggerSoftwareUpdateFetch
 {
-  v4 = [(HUSoftwareUpdateStandaloneItemManager *)self softwareUpdateFetchFuture];
-  v5 = [v4 isFinished];
+  softwareUpdateFetchFuture = [(HUSoftwareUpdateStandaloneItemManager *)self softwareUpdateFetchFuture];
+  isFinished = [softwareUpdateFetchFuture isFinished];
 
-  if (v5)
+  if (isFinished)
   {
     v6 = objc_opt_new();
     [(HUSoftwareUpdateStandaloneItemManager *)self setSoftwareUpdateFetchFuture:v6];
 
-    v7 = [(HUSoftwareUpdateStandaloneItemManager *)self softwareUpdateFetchFuture];
-    v8 = [(HUSoftwareUpdateStandaloneItemManager *)self fetchItem];
-    [v8 setSoftwareUpdateFetchFuture:v7];
+    softwareUpdateFetchFuture2 = [(HUSoftwareUpdateStandaloneItemManager *)self softwareUpdateFetchFuture];
+    fetchItem = [(HUSoftwareUpdateStandaloneItemManager *)self fetchItem];
+    [fetchItem setSoftwareUpdateFetchFuture:softwareUpdateFetchFuture2];
 
     v9 = MEMORY[0x277D14788];
     v10 = MEMORY[0x277CBEB98];
-    v11 = [(HFItemManager *)self itemProviders];
-    v12 = [v10 setWithArray:v11];
+    itemProviders = [(HFItemManager *)self itemProviders];
+    v12 = [v10 setWithArray:itemProviders];
     v13 = [v9 requestToReloadItemProviders:v12 senderSelector:a2];
     v14 = [(HFItemManager *)self performItemUpdateRequest:v13];
   }
 
-  v15 = [(HUSoftwareUpdateStandaloneItemManager *)self softwareUpdateFetchFuture];
+  softwareUpdateFetchFuture3 = [(HUSoftwareUpdateStandaloneItemManager *)self softwareUpdateFetchFuture];
 
-  return v15;
+  return softwareUpdateFetchFuture3;
 }
 
-- (void)addHomeSetupSuccessBlock:(id)a3
+- (void)addHomeSetupSuccessBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __66__HUSoftwareUpdateStandaloneItemManager_addHomeSetupSuccessBlock___block_invoke;
   v6[3] = &unk_277DC14B8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -690,47 +690,47 @@ void __66__HUSoftwareUpdateStandaloneItemManager_addHomeSetupSuccessBlock___bloc
   v2 = [v3 addSuccessBlock:*(a1 + 40)];
 }
 
-- (void)home:(id)a3 didUpdateAutomaticSoftwareUpdateEnabled:(BOOL)a4
+- (void)home:(id)home didUpdateAutomaticSoftwareUpdateEnabled:(BOOL)enabled
 {
   v6 = MEMORY[0x277D14788];
   v7 = MEMORY[0x277CBEB98];
-  v11 = [(HUSoftwareUpdateStandaloneItemManager *)self autoUpdateItem:a3];
+  v11 = [(HUSoftwareUpdateStandaloneItemManager *)self autoUpdateItem:home];
   v8 = [v7 setWithObject:v11];
   v9 = [v6 requestToUpdateItems:v8 senderSelector:a2];
   v10 = [(HFItemManager *)self performItemUpdateRequest:v9];
 }
 
-- (void)home:(id)a3 didUpdateAutomaticThirdPartyAccessorySoftwareUpdateEnabled:(BOOL)a4
+- (void)home:(id)home didUpdateAutomaticThirdPartyAccessorySoftwareUpdateEnabled:(BOOL)enabled
 {
   v6 = MEMORY[0x277D14788];
   v7 = MEMORY[0x277CBEB98];
-  v11 = [(HUSoftwareUpdateStandaloneItemManager *)self autoUpdateThirdPartyItem:a3];
+  v11 = [(HUSoftwareUpdateStandaloneItemManager *)self autoUpdateThirdPartyItem:home];
   v8 = [v7 setWithObject:v11];
   v9 = [v6 requestToUpdateItems:v8 senderSelector:a2];
   v10 = [(HFItemManager *)self performItemUpdateRequest:v9];
 }
 
-- (void)homeManager:(id)a3 didUpdateHH2State:(BOOL)a4
+- (void)homeManager:(id)manager didUpdateHH2State:(BOOL)state
 {
-  v4 = a4;
+  stateCopy = state;
   v21 = *MEMORY[0x277D85DE8];
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
     v15 = 138412802;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = v8;
     v19 = 1024;
-    v20 = v4;
+    v20 = stateCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@:%@: Migration Completed - didUpdateHH2State = %{BOOL}d", &v15, 0x1Cu);
   }
 
   v9 = MEMORY[0x277D14788];
   v10 = MEMORY[0x277CBEB98];
-  v11 = [(HFItemManager *)self itemProviders];
-  v12 = [v10 setWithArray:v11];
+  itemProviders = [(HFItemManager *)self itemProviders];
+  v12 = [v10 setWithArray:itemProviders];
   v13 = [v9 requestToReloadItemProviders:v12 senderSelector:a2];
   v14 = [(HFItemManager *)self performItemUpdateRequest:v13];
 }

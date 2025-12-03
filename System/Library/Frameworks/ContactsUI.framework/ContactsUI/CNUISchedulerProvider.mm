@@ -4,11 +4,11 @@
 - (CNScheduler)inlineScheduler;
 - (CNScheduler)mainThreadScheduler;
 - (CNUISchedulerProvider)init;
-- (CNUISchedulerProvider)initWithSchedulerProvider:(id)a3;
-- (id)backgroundSchedulerWithQualityOfService:(unint64_t)a3;
-- (id)newReaderWriterSchedulerWithName:(id)a3;
-- (id)newSerialSchedulerWithName:(id)a3;
-- (id)newSynchronousSerialSchedulerWithName:(id)a3;
+- (CNUISchedulerProvider)initWithSchedulerProvider:(id)provider;
+- (id)backgroundSchedulerWithQualityOfService:(unint64_t)service;
+- (id)newReaderWriterSchedulerWithName:(id)name;
+- (id)newSerialSchedulerWithName:(id)name;
+- (id)newSynchronousSerialSchedulerWithName:(id)name;
 - (void)resumeBackgroundScheduler;
 - (void)suspendBackgroundScheduler;
 @end
@@ -17,18 +17,18 @@
 
 - (CNUISchedulerProvider)init
 {
-  v3 = [MEMORY[0x1E6996820] defaultProvider];
-  v4 = [(CNUISchedulerProvider *)self initWithSchedulerProvider:v3];
+  defaultProvider = [MEMORY[0x1E6996820] defaultProvider];
+  v4 = [(CNUISchedulerProvider *)self initWithSchedulerProvider:defaultProvider];
 
   return v4;
 }
 
 - (CNScheduler)mainThreadScheduler
 {
-  v2 = [(CNUISchedulerProvider *)self schedulerProvider];
-  v3 = [v2 mainThreadScheduler];
+  schedulerProvider = [(CNUISchedulerProvider *)self schedulerProvider];
+  mainThreadScheduler = [schedulerProvider mainThreadScheduler];
 
-  return v3;
+  return mainThreadScheduler;
 }
 
 + (id)makeBackgroundScheduler
@@ -41,80 +41,80 @@
 
 - (void)resumeBackgroundScheduler
 {
-  v2 = [(CNUISchedulerProvider *)self suspendableBackgroundScheduler];
-  [v2 resume];
+  suspendableBackgroundScheduler = [(CNUISchedulerProvider *)self suspendableBackgroundScheduler];
+  [suspendableBackgroundScheduler resume];
 }
 
 - (CNScheduler)inlineScheduler
 {
-  v2 = [(CNUISchedulerProvider *)self schedulerProvider];
-  v3 = [v2 inlineScheduler];
+  schedulerProvider = [(CNUISchedulerProvider *)self schedulerProvider];
+  inlineScheduler = [schedulerProvider inlineScheduler];
 
-  return v3;
+  return inlineScheduler;
 }
 
 - (CNScheduler)immediateScheduler
 {
-  v2 = [(CNUISchedulerProvider *)self schedulerProvider];
-  v3 = [v2 immediateScheduler];
+  schedulerProvider = [(CNUISchedulerProvider *)self schedulerProvider];
+  immediateScheduler = [schedulerProvider immediateScheduler];
 
-  return v3;
+  return immediateScheduler;
 }
 
-- (id)newReaderWriterSchedulerWithName:(id)a3
+- (id)newReaderWriterSchedulerWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(CNUISchedulerProvider *)self schedulerProvider];
-  v6 = [v5 newReaderWriterSchedulerWithName:v4];
+  nameCopy = name;
+  schedulerProvider = [(CNUISchedulerProvider *)self schedulerProvider];
+  v6 = [schedulerProvider newReaderWriterSchedulerWithName:nameCopy];
 
   return v6;
 }
 
-- (id)newSynchronousSerialSchedulerWithName:(id)a3
+- (id)newSynchronousSerialSchedulerWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(CNUISchedulerProvider *)self schedulerProvider];
-  v6 = [v5 newSynchronousSerialSchedulerWithName:v4];
+  nameCopy = name;
+  schedulerProvider = [(CNUISchedulerProvider *)self schedulerProvider];
+  v6 = [schedulerProvider newSynchronousSerialSchedulerWithName:nameCopy];
 
   return v6;
 }
 
-- (id)newSerialSchedulerWithName:(id)a3
+- (id)newSerialSchedulerWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(CNUISchedulerProvider *)self schedulerProvider];
-  v6 = [v5 newSerialSchedulerWithName:v4];
+  nameCopy = name;
+  schedulerProvider = [(CNUISchedulerProvider *)self schedulerProvider];
+  v6 = [schedulerProvider newSerialSchedulerWithName:nameCopy];
 
   return v6;
 }
 
-- (id)backgroundSchedulerWithQualityOfService:(unint64_t)a3
+- (id)backgroundSchedulerWithQualityOfService:(unint64_t)service
 {
-  v4 = [(CNUISchedulerProvider *)self schedulerProvider];
-  v5 = [v4 backgroundSchedulerWithQualityOfService:a3];
+  schedulerProvider = [(CNUISchedulerProvider *)self schedulerProvider];
+  v5 = [schedulerProvider backgroundSchedulerWithQualityOfService:service];
 
   return v5;
 }
 
 - (void)suspendBackgroundScheduler
 {
-  v2 = [(CNUISchedulerProvider *)self suspendableBackgroundScheduler];
-  [v2 suspend];
+  suspendableBackgroundScheduler = [(CNUISchedulerProvider *)self suspendableBackgroundScheduler];
+  [suspendableBackgroundScheduler suspend];
 }
 
-- (CNUISchedulerProvider)initWithSchedulerProvider:(id)a3
+- (CNUISchedulerProvider)initWithSchedulerProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = CNUISchedulerProvider;
   v6 = [(CNUISchedulerProvider *)&v13 init];
   if (v6)
   {
-    v7 = [objc_opt_class() makeBackgroundScheduler];
+    makeBackgroundScheduler = [objc_opt_class() makeBackgroundScheduler];
     suspendableBackgroundScheduler = v6->_suspendableBackgroundScheduler;
-    v6->_suspendableBackgroundScheduler = v7;
+    v6->_suspendableBackgroundScheduler = makeBackgroundScheduler;
 
-    objc_storeStrong(&v6->_schedulerProvider, a3);
+    objc_storeStrong(&v6->_schedulerProvider, provider);
     v9 = [[CNUIAfterCACommitScheduler alloc] initWithSchedulerProvider:v6->_schedulerProvider];
     afterCACommitScheduler = v6->_afterCACommitScheduler;
     v6->_afterCACommitScheduler = v9;

@@ -1,7 +1,7 @@
 @interface AAUIImageFetcher
 + (id)sharedImageFetcher;
 - (id)_urlSession;
-- (void)fetchImageAtURL:(id)a3 completionHandler:(id)a4;
+- (void)fetchImageAtURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation AAUIImageFetcher
@@ -25,24 +25,24 @@ uint64_t __38__AAUIImageFetcher_sharedImageFetcher__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)fetchImageAtURL:(id)a3 completionHandler:(id)a4
+- (void)fetchImageAtURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = MEMORY[0x1E69DCEB0];
-  v8 = a3;
-  v9 = [v7 mainScreen];
-  [v9 scale];
+  lCopy = l;
+  mainScreen = [v7 mainScreen];
+  [mainScreen scale];
   v11 = v10;
 
-  v12 = [(AAUIImageFetcher *)self _urlSession];
+  _urlSession = [(AAUIImageFetcher *)self _urlSession];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __54__AAUIImageFetcher_fetchImageAtURL_completionHandler___block_invoke;
   v18 = &unk_1E820CE60;
   v20 = v11;
-  v19 = v6;
-  v13 = v6;
-  v14 = [v12 dataTaskWithURL:v8 completionHandler:&v15];
+  v19 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = [_urlSession dataTaskWithURL:lCopy completionHandler:&v15];
 
   [v14 resume];
 }
@@ -91,13 +91,13 @@ LABEL_7:
   urlSession = self->_urlSession;
   if (!urlSession)
   {
-    v4 = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
+    defaultSessionConfiguration = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
     v5 = [objc_alloc(MEMORY[0x1E698DCC8]) initWithIdentifier:@"com.apple.icloud"];
-    [v4 set_appleIDContext:v5];
+    [defaultSessionConfiguration set_appleIDContext:v5];
 
     v6 = MEMORY[0x1E696AF78];
-    v7 = [MEMORY[0x1E698B830] sharedPinner];
-    v8 = [v6 sessionWithConfiguration:v4 delegate:v7 delegateQueue:0];
+    mEMORY[0x1E698B830] = [MEMORY[0x1E698B830] sharedPinner];
+    v8 = [v6 sessionWithConfiguration:defaultSessionConfiguration delegate:mEMORY[0x1E698B830] delegateQueue:0];
     v9 = self->_urlSession;
     self->_urlSession = v8;
 

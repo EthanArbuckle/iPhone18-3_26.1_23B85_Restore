@@ -1,6 +1,6 @@
 @interface HKClinicalStorageLocations
-+ (BOOL)removeLocalFileAtURL:(id)a3 error:(id *)a4;
-+ (BOOL)storeData:(id)a3 inLocalFileAtURL:(id)a4 error:(id *)a5;
++ (BOOL)removeLocalFileAtURL:(id)l error:(id *)error;
++ (BOOL)storeData:(id)data inLocalFileAtURL:(id)l error:(id *)error;
 + (id)downloadableAttachmentsDirectory;
 + (id)homeMobileDirectory;
 + (id)mobileLibraryHealthDirectory;
@@ -33,17 +33,17 @@
   return v3;
 }
 
-+ (BOOL)storeData:(id)a3 inLocalFileAtURL:(id)a4 error:(id *)a5
++ (BOOL)storeData:(id)data inLocalFileAtURL:(id)l error:(id *)error
 {
   v29[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
-  v11 = [v9 URLByDeletingPathExtension];
-  v12 = [v11 URLByDeletingLastPathComponent];
+  dataCopy = data;
+  lCopy = l;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  uRLByDeletingPathExtension = [lCopy URLByDeletingPathExtension];
+  uRLByDeletingLastPathComponent = [uRLByDeletingPathExtension URLByDeletingLastPathComponent];
 
   v27 = 0;
-  v13 = [v10 createDirectoryAtURL:v12 withIntermediateDirectories:1 attributes:0 error:&v27];
+  v13 = [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v27];
   v14 = v27;
   if ((v13 & 1) == 0)
   {
@@ -51,17 +51,17 @@
     v23 = *MEMORY[0x277CCC2C0];
     if (os_log_type_enabled(*MEMORY[0x277CCC2C0], OS_LOG_TYPE_ERROR))
     {
-      [HKClinicalStorageLocations storeData:a1 inLocalFileAtURL:v23 error:v12];
+      [HKClinicalStorageLocations storeData:self inLocalFileAtURL:v23 error:uRLByDeletingLastPathComponent];
     }
 
     v17 = v14;
     if (v17)
     {
-      if (a5)
+      if (error)
       {
         v24 = v17;
         v19 = 0;
-        *a5 = v17;
+        *error = v17;
         goto LABEL_13;
       }
 
@@ -79,8 +79,8 @@
   v29[0] = v15;
   v29[1] = &unk_2863F0878;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:2];
-  v18 = [v9 path];
-  v19 = [v10 createFileAtPath:v18 contents:v8 attributes:v17];
+  path = [lCopy path];
+  v19 = [defaultManager createFileAtPath:path contents:dataCopy attributes:v17];
 
   if ((v19 & 1) == 0)
   {
@@ -88,12 +88,12 @@
     v20 = *MEMORY[0x277CCC2C0];
     if (os_log_type_enabled(*MEMORY[0x277CCC2C0], OS_LOG_TYPE_ERROR))
     {
-      [HKClinicalStorageLocations storeData:a1 inLocalFileAtURL:v20 error:v9];
+      [HKClinicalStorageLocations storeData:self inLocalFileAtURL:v20 error:lCopy];
     }
 
     v21 = MEMORY[0x277CCA9B8];
-    v22 = [v9 path];
-    [v21 hk_assignError:a5 code:102 format:{@"Error creating file at %@", v22}];
+    path2 = [lCopy path];
+    [v21 hk_assignError:error code:102 format:{@"Error creating file at %@", path2}];
   }
 
 LABEL_13:
@@ -102,13 +102,13 @@ LABEL_13:
   return v19;
 }
 
-+ (BOOL)removeLocalFileAtURL:(id)a3 error:(id *)a4
++ (BOOL)removeLocalFileAtURL:(id)l error:(id *)error
 {
   v5 = MEMORY[0x277CCAA00];
-  v6 = a3;
-  v7 = [v5 defaultManager];
+  lCopy = l;
+  defaultManager = [v5 defaultManager];
   v14 = 0;
-  v8 = [v7 removeItemAtURL:v6 error:&v14];
+  v8 = [defaultManager removeItemAtURL:lCopy error:&v14];
 
   v9 = v14;
   v10 = v9;
@@ -117,10 +117,10 @@ LABEL_13:
     v11 = v9;
     if (v11)
     {
-      if (a4)
+      if (error)
       {
         v12 = v11;
-        *a4 = v11;
+        *error = v11;
       }
 
       else

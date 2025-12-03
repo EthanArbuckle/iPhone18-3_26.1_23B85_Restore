@@ -20,7 +20,7 @@
   v11 = &v12;
   v3 = v2;
   v10 = v3;
-  [a1 fetchMedicalIDDataCreateIfNecessary:1 withCompletion:v9];
+  [self fetchMedicalIDDataCreateIfNecessary:1 withCompletion:v9];
   dispatch_semaphore_wait(v3, 0xFFFFFFFFFFFFFFFFLL);
   v4 = v13[5];
   if (!v4)

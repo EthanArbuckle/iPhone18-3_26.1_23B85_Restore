@@ -1,21 +1,21 @@
 @interface LNAsyncIteratorReference
-- (BOOL)isEqual:(id)a3;
-- (LNAsyncIteratorReference)initWithCoder:(id)a3;
-- (LNAsyncIteratorReference)initWithSequenceIdentifier:(id)a3 iteratorIdentifier:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (LNAsyncIteratorReference)initWithCoder:(id)coder;
+- (LNAsyncIteratorReference)initWithSequenceIdentifier:(id)identifier iteratorIdentifier:(id)iteratorIdentifier;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNAsyncIteratorReference
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -24,10 +24,10 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v7 = [(LNAsyncIteratorReference *)self iteratorIdentifier];
-    v8 = [(LNAsyncIteratorReference *)v6 iteratorIdentifier];
-    v9 = v7;
-    v10 = v8;
+    iteratorIdentifier = [(LNAsyncIteratorReference *)self iteratorIdentifier];
+    iteratorIdentifier2 = [(LNAsyncIteratorReference *)v6 iteratorIdentifier];
+    v9 = iteratorIdentifier;
+    v10 = iteratorIdentifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -54,10 +54,10 @@ LABEL_19:
       }
     }
 
-    v15 = [(LNAsyncIteratorReference *)self sequenceIdentifier];
-    v16 = [(LNAsyncIteratorReference *)v6 sequenceIdentifier];
-    v14 = v15;
-    v17 = v16;
+    sequenceIdentifier = [(LNAsyncIteratorReference *)self sequenceIdentifier];
+    sequenceIdentifier2 = [(LNAsyncIteratorReference *)v6 sequenceIdentifier];
+    v14 = sequenceIdentifier;
+    v17 = sequenceIdentifier2;
     v13 = v17;
     if (v14 == v17)
     {
@@ -84,19 +84,19 @@ LABEL_21:
 
 - (unint64_t)hash
 {
-  v3 = [(LNAsyncIteratorReference *)self iteratorIdentifier];
-  v4 = [v3 hash];
-  v5 = [(LNAsyncIteratorReference *)self sequenceIdentifier];
-  v6 = [v5 hash];
+  iteratorIdentifier = [(LNAsyncIteratorReference *)self iteratorIdentifier];
+  v4 = [iteratorIdentifier hash];
+  sequenceIdentifier = [(LNAsyncIteratorReference *)self sequenceIdentifier];
+  v6 = [sequenceIdentifier hash];
 
   return v6 ^ v4;
 }
 
-- (LNAsyncIteratorReference)initWithCoder:(id)a3
+- (LNAsyncIteratorReference)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iteratorIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sequenceIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iteratorIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sequenceIdentifier"];
 
   if (v5)
   {
@@ -110,26 +110,26 @@ LABEL_21:
 
   if (v7)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LNAsyncIteratorReference *)self initWithSequenceIdentifier:v6 iteratorIdentifier:v5];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNAsyncIteratorReference *)self iteratorIdentifier];
-  [v4 encodeObject:v5 forKey:@"iteratorIdentifier"];
+  coderCopy = coder;
+  iteratorIdentifier = [(LNAsyncIteratorReference *)self iteratorIdentifier];
+  [coderCopy encodeObject:iteratorIdentifier forKey:@"iteratorIdentifier"];
 
-  v6 = [(LNAsyncIteratorReference *)self sequenceIdentifier];
-  [v4 encodeObject:v6 forKey:@"sequenceIdentifier"];
+  sequenceIdentifier = [(LNAsyncIteratorReference *)self sequenceIdentifier];
+  [coderCopy encodeObject:sequenceIdentifier forKey:@"sequenceIdentifier"];
 }
 
 - (id)description
@@ -137,22 +137,22 @@ LABEL_21:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNAsyncIteratorReference *)self sequenceIdentifier];
-  v7 = [v6 UUIDString];
-  v8 = [(LNAsyncIteratorReference *)self iteratorIdentifier];
-  v9 = [v3 stringWithFormat:@"<%@: %@/%@>", v5, v7, v8];
+  sequenceIdentifier = [(LNAsyncIteratorReference *)self sequenceIdentifier];
+  uUIDString = [sequenceIdentifier UUIDString];
+  iteratorIdentifier = [(LNAsyncIteratorReference *)self iteratorIdentifier];
+  v9 = [v3 stringWithFormat:@"<%@: %@/%@>", v5, uUIDString, iteratorIdentifier];
 
   return v9;
 }
 
-- (LNAsyncIteratorReference)initWithSequenceIdentifier:(id)a3 iteratorIdentifier:(id)a4
+- (LNAsyncIteratorReference)initWithSequenceIdentifier:(id)identifier iteratorIdentifier:(id)iteratorIdentifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  identifierCopy = identifier;
+  iteratorIdentifierCopy = iteratorIdentifier;
+  v10 = iteratorIdentifierCopy;
+  if (identifierCopy)
   {
-    if (v9)
+    if (iteratorIdentifierCopy)
     {
       goto LABEL_3;
     }
@@ -160,8 +160,8 @@ LABEL_21:
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"LNAsyncIterator.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"sequenceIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNAsyncIterator.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"sequenceIdentifier"}];
 
     if (v10)
     {
@@ -169,8 +169,8 @@ LABEL_21:
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"LNAsyncIterator.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"iteratorIdentifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNAsyncIterator.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"iteratorIdentifier"}];
 
 LABEL_3:
   v17.receiver = self;
@@ -179,8 +179,8 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_sequenceIdentifier, a3);
-    objc_storeStrong(&v12->_iteratorIdentifier, a4);
+    objc_storeStrong(&v11->_sequenceIdentifier, identifier);
+    objc_storeStrong(&v12->_iteratorIdentifier, iteratorIdentifier);
     v13 = v12;
   }
 

@@ -1,18 +1,18 @@
 @interface SXWebContentLinkTapEvent
-- (SXWebContentLinkTapEvent)initWithIdentifier:(id)a3 destinationURL:(id)a4;
+- (SXWebContentLinkTapEvent)initWithIdentifier:(id)identifier destinationURL:(id)l;
 @end
 
 @implementation SXWebContentLinkTapEvent
 
-- (SXWebContentLinkTapEvent)initWithIdentifier:(id)a3 destinationURL:(id)a4
+- (SXWebContentLinkTapEvent)initWithIdentifier:(id)identifier destinationURL:(id)l
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = SXWebContentLinkTapEvent;
-  v7 = [(SXLinkTapEvent *)&v11 initWithDestinationURL:a4 analytics:0];
+  v7 = [(SXLinkTapEvent *)&v11 initWithDestinationURL:l analytics:0];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     identifier = v7->_identifier;
     v7->_identifier = v8;
   }

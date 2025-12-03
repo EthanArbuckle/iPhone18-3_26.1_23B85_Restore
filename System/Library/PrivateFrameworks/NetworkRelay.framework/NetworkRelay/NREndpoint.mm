@@ -1,19 +1,19 @@
 @interface NREndpoint
 - (id)copyEndpoint;
 - (id)copyNWEndpoint;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initInternalWithDeviceIdentifier:(void *)a3 portString:(int)a4 dataProtectionClass:(void *)a5 service:;
+- (id)initInternalWithDeviceIdentifier:(void *)identifier portString:(int)string dataProtectionClass:(void *)class service:;
 @end
 
 @implementation NREndpoint
 
 - (id)copyNWEndpoint
 {
-  v2 = [(NREndpoint *)self copyEndpoint];
-  if (v2)
+  copyEndpoint = [(NREndpoint *)self copyEndpoint];
+  if (copyEndpoint)
   {
-    v3 = [MEMORY[0x277CD91C8] endpointWithCEndpoint:v2];
+    v3 = [MEMORY[0x277CD91C8] endpointWithCEndpoint:copyEndpoint];
   }
 
   else
@@ -27,23 +27,23 @@
 - (id)copyEndpoint
 {
   v36[4] = *MEMORY[0x277D85DE8];
-  v3 = [(NREndpoint *)self service];
-  if (v3)
+  service = [(NREndpoint *)self service];
+  if (service)
   {
-    v4 = v3;
-    v5 = [(NREndpoint *)self usesASQUIC];
+    v4 = service;
+    usesASQUIC = [(NREndpoint *)self usesASQUIC];
 
-    if (v5)
+    if (usesASQUIC)
     {
       v36[0] = 0;
       v36[1] = 0;
       MEMORY[0x25F8744B0](v36);
-      v6 = [(NREndpoint *)self service];
-      [v6 UTF8String];
+      service2 = [(NREndpoint *)self service];
+      [service2 UTF8String];
       application_service = nw_endpoint_create_application_service();
-      v8 = [(NREndpoint *)self deviceIdentifier];
-      v9 = [v8 nrDeviceIdentifier];
-      v10 = NREndpointCopyDictionary(v9, [(NREndpoint *)self dataProtectionClass]);
+      deviceIdentifier = [(NREndpoint *)self deviceIdentifier];
+      nrDeviceIdentifier = [deviceIdentifier nrDeviceIdentifier];
+      v10 = NREndpointCopyDictionary(nrDeviceIdentifier, [(NREndpoint *)self dataProtectionClass]);
       v11 = v10;
       if (v10)
       {
@@ -75,14 +75,14 @@ LABEL_27:
     }
   }
 
-  v14 = [(NREndpoint *)self deviceIdentifier];
-  v15 = [v14 nrDeviceIdentifier];
-  v16 = [(NREndpoint *)self dataProtectionClass];
-  v17 = [(NREndpoint *)self portString];
-  v18 = v15;
-  v19 = v17;
-  v20 = v16;
-  v21 = NREndpointCopyDictionary(v18, v16);
+  deviceIdentifier2 = [(NREndpoint *)self deviceIdentifier];
+  nrDeviceIdentifier2 = [deviceIdentifier2 nrDeviceIdentifier];
+  dataProtectionClass = [(NREndpoint *)self dataProtectionClass];
+  portString = [(NREndpoint *)self portString];
+  v18 = nrDeviceIdentifier2;
+  v19 = portString;
+  v20 = dataProtectionClass;
+  v21 = NREndpointCopyDictionary(v18, dataProtectionClass);
   v22 = v21;
   if (v21)
   {
@@ -151,41 +151,41 @@ LABEL_30:
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(NREndpoint *)self deviceIdentifier];
-  v5 = [(NREndpoint *)self portString];
-  v6 = [(NREndpoint *)self dataProtectionClass];
-  if (v6 < 5 && ((0x1Bu >> v6) & 1) != 0)
+  deviceIdentifier = [(NREndpoint *)self deviceIdentifier];
+  portString = [(NREndpoint *)self portString];
+  dataProtectionClass = [(NREndpoint *)self dataProtectionClass];
+  if (dataProtectionClass < 5 && ((0x1Bu >> dataProtectionClass) & 1) != 0)
   {
-    v7 = off_27996ADB0[v6];
+    v7 = off_27996ADB0[dataProtectionClass];
   }
 
   else
   {
-    v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unknown[%lld]", v6];
+    v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unknown[%lld]", dataProtectionClass];
   }
 
-  v8 = [v3 initWithFormat:@"NREndpoint[%@ port:%@ %@]", v4, v5, v7];
+  v8 = [v3 initWithFormat:@"NREndpoint[%@ port:%@ %@]", deviceIdentifier, portString, v7];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(NREndpoint *)self deviceIdentifier];
-  v6 = [(NREndpoint *)self portString];
-  v7 = [v4 initWithDeviceIdentifier:v5 portString:v6 dataProtectionClass:{-[NREndpoint dataProtectionClass](self, "dataProtectionClass")}];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  deviceIdentifier = [(NREndpoint *)self deviceIdentifier];
+  portString = [(NREndpoint *)self portString];
+  v7 = [v4 initWithDeviceIdentifier:deviceIdentifier portString:portString dataProtectionClass:{-[NREndpoint dataProtectionClass](self, "dataProtectionClass")}];
 
   return v7;
 }
 
-- (id)initInternalWithDeviceIdentifier:(void *)a3 portString:(int)a4 dataProtectionClass:(void *)a5 service:
+- (id)initInternalWithDeviceIdentifier:(void *)identifier portString:(int)string dataProtectionClass:(void *)class service:
 {
   v67 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  v11 = a5;
-  if (!a1)
+  identifierCopy = identifier;
+  classCopy = class;
+  if (!self)
   {
     goto LABEL_10;
   }
@@ -214,7 +214,7 @@ LABEL_30:
     goto LABEL_27;
   }
 
-  if (!v10)
+  if (!identifierCopy)
   {
     v26 = nrCopyLogObj();
     if (sNRCopyLogToStdErr == 1)
@@ -238,7 +238,7 @@ LABEL_30:
     goto LABEL_27;
   }
 
-  if ((a4 - 5) <= 0xFFFFFFFD)
+  if ((string - 5) <= 0xFFFFFFFD)
   {
     v27 = nrCopyLogObj();
     if (sNRCopyLogToStdErr == 1)
@@ -271,7 +271,7 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v66.receiver = a1;
+  v66.receiver = self;
   v66.super_class = NREndpoint;
   v12 = objc_msgSendSuper2(&v66, sel_init);
   if (!v12)
@@ -307,20 +307,20 @@ LABEL_31:
     goto LABEL_30;
   }
 
-  a1 = v12;
+  self = v12;
   v13 = [v9 copy];
-  v14 = a1[2];
-  a1[2] = v13;
+  v14 = self[2];
+  self[2] = v13;
 
-  v15 = [v10 copy];
-  v16 = a1[3];
-  a1[3] = v15;
+  v15 = [identifierCopy copy];
+  v16 = self[3];
+  self[3] = v15;
 
-  *(a1 + 8) = a4;
-  objc_storeStrong(a1 + 4, a5);
-  v17 = [a1 deviceIdentifier];
-  v18 = [v17 nrDeviceIdentifier];
-  v19 = NREndpointCopyDictionary(v18, [a1 dataProtectionClass]);
+  *(self + 8) = string;
+  objc_storeStrong(self + 4, class);
+  deviceIdentifier = [self deviceIdentifier];
+  nrDeviceIdentifier = [deviceIdentifier nrDeviceIdentifier];
+  v19 = NREndpointCopyDictionary(nrDeviceIdentifier, [self dataProtectionClass]);
   v20 = v19;
   if (v19)
   {
@@ -332,13 +332,13 @@ LABEL_31:
     v21 = 0;
   }
 
-  v22 = [v21 BOOLValue];
+  bOOLValue = [v21 BOOLValue];
 
-  *(a1 + 9) = v22;
+  *(self + 9) = bOOLValue;
 LABEL_10:
 
   v23 = *MEMORY[0x277D85DE8];
-  return a1;
+  return self;
 }
 
 @end

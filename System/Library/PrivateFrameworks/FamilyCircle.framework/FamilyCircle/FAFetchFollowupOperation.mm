@@ -6,8 +6,8 @@
 
 - (id)fetchFollowUps
 {
-  v2 = [(FANetworkClient *)self networkService];
-  v3 = [v2 standardPlistRequestWithEndpoint:@"fetchFamilyFollowups"];
+  networkService = [(FANetworkClient *)self networkService];
+  v3 = [networkService standardPlistRequestWithEndpoint:@"fetchFamilyFollowups"];
 
   return v3;
 }

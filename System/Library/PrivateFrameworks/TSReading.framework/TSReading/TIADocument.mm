@@ -1,41 +1,41 @@
 @interface TIADocument
 - (BOOL)hasUnsavedChanges;
-- (BOOL)validatePassphrase:(id)a3;
+- (BOOL)validatePassphrase:(id)passphrase;
 - (NSString)documentCachePath;
 - (NSString)documentPasswordHint;
 - (NSString)name;
-- (TIADocument)initWithTemporaryFileURL:(id)a3;
+- (TIADocument)initWithTemporaryFileURL:(id)l;
 - (TSADocumentRoot)documentRoot;
 - (id)additionalDocumentPropertiesForWrite;
-- (id)newExporterForType:(id)a3 options:(id)a4 preferredType:(id *)a5;
+- (id)newExporterForType:(id)type options:(id)options preferredType:(id *)preferredType;
 - (id)packageDataForWrite;
-- (id)persistenceWarningsForData:(id)a3 isReadable:(BOOL)a4 isExternal:(BOOL)a5;
-- (void)closeWithCompletionHandler:(id)a3;
-- (void)context:(id)a3 didDownloadDocumentResources:(id)a4 failedOrCancelledDocumentResources:(id)a5 error:(id)a6;
-- (void)coordinatedReadUsingAccessor:(id)a3;
+- (id)persistenceWarningsForData:(id)data isReadable:(BOOL)readable isExternal:(BOOL)external;
+- (void)closeWithCompletionHandler:(id)handler;
+- (void)context:(id)context didDownloadDocumentResources:(id)resources failedOrCancelledDocumentResources:(id)documentResources error:(id)error;
+- (void)coordinatedReadUsingAccessor:(id)accessor;
 - (void)dealloc;
 - (void)documentDidLoad;
-- (void)p_performSynchronousBlockOnMainThread:(id)a3;
-- (void)setDocumentFileProtectionTo:(id)a3;
-- (void)setDocumentPasswordHint:(id)a3;
-- (void)setEncryptionKeyWithPassphrase:(id)a3;
-- (void)setFileProtectionTo:(id)a3 atPath:(id)a4;
+- (void)p_performSynchronousBlockOnMainThread:(id)thread;
+- (void)setDocumentFileProtectionTo:(id)to;
+- (void)setDocumentPasswordHint:(id)hint;
+- (void)setEncryptionKeyWithPassphrase:(id)passphrase;
+- (void)setFileProtectionTo:(id)to atPath:(id)path;
 @end
 
 @implementation TIADocument
 
-- (TIADocument)initWithTemporaryFileURL:(id)a3
+- (TIADocument)initWithTemporaryFileURL:(id)l
 {
-  v3 = [(UIDocument *)self initWithFileURL:a3];
+  v3 = [(UIDocument *)self initWithFileURL:l];
   if (v3)
   {
     [(TIADocument *)v3 setContext:[[TSPObjectContext alloc] initWithDelegate:v3]];
     v4 = [objc_alloc(objc_msgSend(+[TSAApplicationDelegate sharedDelegate](TSAApplicationDelegate "sharedDelegate")];
     if (!v4)
     {
-      v5 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TIADocument initWithTemporaryFileURL:]"];
-      [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/ios/TIADocument.m"), 209, @"invalid nil value for '%s'", "documentRoot"}];
+      [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/ios/TIADocument.m"), 209, @"invalid nil value for '%s'", "documentRoot"}];
     }
 
     [v4 setDelegate:v3];
@@ -88,16 +88,16 @@
 
 - (NSString)documentCachePath
 {
-  v2 = [(TIADocument *)self documentInfo];
+  documentInfo = [(TIADocument *)self documentInfo];
 
-  return [(TIADocumentInfo *)v2 documentCachePath];
+  return [(TIADocumentInfo *)documentInfo documentCachePath];
 }
 
-- (void)closeWithCompletionHandler:(id)a3
+- (void)closeWithCompletionHandler:(id)handler
 {
-  v5 = [(TIADocument *)self isClosed];
+  isClosed = [(TIADocument *)self isClosed];
   documentInfo = self->_documentInfo;
-  if (v5)
+  if (isClosed)
   {
     if ([(TIADocumentInfo *)documentInfo isSaving])
     {
@@ -107,15 +107,15 @@
       v10[2] = __42__TIADocument_closeWithCompletionHandler___block_invoke;
       v10[3] = &unk_279D48DA8;
       v10[4] = self;
-      v10[5] = a3;
+      v10[5] = handler;
       [(TIADocumentInfo *)v7 notifySaveIsFinishedUsingQueue:MEMORY[0x277D85CD0] completion:v10];
     }
 
-    else if (a3)
+    else if (handler)
     {
-      v8 = *(a3 + 2);
+      v8 = *(handler + 2);
 
-      v8(a3, 1);
+      v8(handler, 1);
     }
   }
 
@@ -127,7 +127,7 @@
     v9[2] = __42__TIADocument_closeWithCompletionHandler___block_invoke_2;
     v9[3] = &unk_279D47988;
     v9[4] = self;
-    v9[5] = a3;
+    v9[5] = handler;
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __42__TIADocument_closeWithCompletionHandler___block_invoke_5;
@@ -197,43 +197,43 @@ uint64_t __42__TIADocument_closeWithCompletionHandler___block_invoke_5(uint64_t 
   return (*(v3 + 16))(v3, v4 & 1);
 }
 
-- (void)p_performSynchronousBlockOnMainThread:(id)a3
+- (void)p_performSynchronousBlockOnMainThread:(id)thread
 {
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    v4 = *(a3 + 2);
+    v4 = *(thread + 2);
 
-    v4(a3);
+    v4(thread);
   }
 
   else
   {
     v5 = MEMORY[0x277D85CD0];
 
-    dispatch_sync(v5, a3);
+    dispatch_sync(v5, thread);
   }
 }
 
 - (void)documentDidLoad
 {
-  v3 = [(TIADocument *)self documentRoot];
-  v4 = v3;
+  documentRoot = [(TIADocument *)self documentRoot];
+  v4 = documentRoot;
   atomic_compare_exchange_strong(&self->_documentRootForDocumentDidLoad, &v4, 0);
-  if (v4 == v3)
+  if (v4 == documentRoot)
   {
 
-    [(TSADocumentRoot *)v3 documentDidLoad];
+    [(TSADocumentRoot *)documentRoot documentDidLoad];
   }
 }
 
 - (NSString)name
 {
-  v2 = [(TIADocument *)self documentInfo];
+  documentInfo = [(TIADocument *)self documentInfo];
 
-  return [(TIADocumentInfo *)v2 displayName];
+  return [(TIADocumentInfo *)documentInfo displayName];
 }
 
-- (void)coordinatedReadUsingAccessor:(id)a3
+- (void)coordinatedReadUsingAccessor:(id)accessor
 {
   templateURL = self->_templateURL;
   if (!templateURL)
@@ -251,14 +251,14 @@ uint64_t __42__TIADocument_closeWithCompletionHandler___block_invoke_5(uint64_t 
   v7[1] = 3221225472;
   v7[2] = __44__TIADocument_coordinatedReadUsingAccessor___block_invoke;
   v7[3] = &unk_279D4ADE0;
-  v7[4] = a3;
+  v7[4] = accessor;
   v7[5] = &v9;
   [v6 coordinateReadingItemAtURL:templateURL options:1 error:&v8 byAccessor:v7];
 
   if ((v10[3] & 1) == 0)
   {
     TSULogErrorInFunction();
-    (*(a3 + 2))(a3, 0);
+    (*(accessor + 2))(accessor, 0);
   }
 
   _Block_object_dispose(&v9, 8);
@@ -266,70 +266,70 @@ uint64_t __42__TIADocument_closeWithCompletionHandler___block_invoke_5(uint64_t 
 
 - (id)packageDataForWrite
 {
-  v2 = [(TIADocument *)self documentRoot];
+  documentRoot = [(TIADocument *)self documentRoot];
 
-  return [(TSADocumentRoot *)v2 packageDataForWrite];
+  return [(TSADocumentRoot *)documentRoot packageDataForWrite];
 }
 
 - (id)additionalDocumentPropertiesForWrite
 {
-  v2 = [(TIADocument *)self documentRoot];
+  documentRoot = [(TIADocument *)self documentRoot];
 
-  return [(TSADocumentRoot *)v2 additionalDocumentPropertiesForWrite];
+  return [(TSADocumentRoot *)documentRoot additionalDocumentPropertiesForWrite];
 }
 
-- (id)persistenceWarningsForData:(id)a3 isReadable:(BOOL)a4 isExternal:(BOOL)a5
+- (id)persistenceWarningsForData:(id)data isReadable:(BOOL)readable isExternal:(BOOL)external
 {
-  v5 = a5;
-  v6 = a4;
+  externalCopy = external;
+  readableCopy = readable;
   v8 = [+[TSABaseApplicationDelegate sharedDelegate](TSABaseApplicationDelegate "sharedDelegate")];
 
-  return [v8 persistenceWarningsForData:a3 isReadable:v6 isExternal:v5];
+  return [v8 persistenceWarningsForData:data isReadable:readableCopy isExternal:externalCopy];
 }
 
-- (void)context:(id)a3 didDownloadDocumentResources:(id)a4 failedOrCancelledDocumentResources:(id)a5 error:(id)a6
+- (void)context:(id)context didDownloadDocumentResources:(id)resources failedOrCancelledDocumentResources:(id)documentResources error:(id)error
 {
   objc_opt_class();
-  [a3 documentObject];
+  [context documentObject];
   v10 = TSUDynamicCast();
 
-  [v10 didDownloadDocumentResources:a4 failedOrCancelledDocumentResources:a5 error:a6];
+  [v10 didDownloadDocumentResources:resources failedOrCancelledDocumentResources:documentResources error:error];
 }
 
-- (void)setFileProtectionTo:(id)a3 atPath:(id)a4
+- (void)setFileProtectionTo:(id)to atPath:(id)path
 {
-  if (a4)
+  if (path)
   {
     if ([objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")])
     {
       v7 = 0;
-      v6 = [MEMORY[0x277CCAA00] defaultManager];
-      [v6 changeFileProtectionAtURL:objc_msgSend(MEMORY[0x277CBEBC0] toProtection:"fileURLWithPath:" recursively:a4) error:{a3, 1, &v7}];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager changeFileProtectionAtURL:objc_msgSend(MEMORY[0x277CBEBC0] toProtection:"fileURLWithPath:" recursively:path) error:{to, 1, &v7}];
     }
   }
 }
 
-- (void)setDocumentFileProtectionTo:(id)a3
+- (void)setDocumentFileProtectionTo:(id)to
 {
-  v5 = [(NSURL *)[(UIDocument *)self fileURL] path];
+  path = [(NSURL *)[(UIDocument *)self fileURL] path];
 
-  [(TIADocument *)self setFileProtectionTo:a3 atPath:v5];
+  [(TIADocument *)self setFileProtectionTo:to atPath:path];
 }
 
-- (void)setDocumentPasswordHint:(id)a3
+- (void)setDocumentPasswordHint:(id)hint
 {
-  [(TSPObjectContext *)self->_context setDocumentPasswordHint:a3];
+  [(TSPObjectContext *)self->_context setDocumentPasswordHint:hint];
 
   [(UIDocument *)self updateChangeCount:0];
 }
 
-- (void)setEncryptionKeyWithPassphrase:(id)a3
+- (void)setEncryptionKeyWithPassphrase:(id)passphrase
 {
   [(TIADocument *)self willChangeValueForKey:@"isPasswordProtected"];
-  if (a3)
+  if (passphrase)
   {
     v5 = objc_alloc(MEMORY[0x277D6C270]);
-    v6 = [v5 initAes128KeyFromPassphrase:a3 iterationCount:*MEMORY[0x277D6C398]];
+    v6 = [v5 initAes128KeyFromPassphrase:passphrase iterationCount:*MEMORY[0x277D6C398]];
   }
 
   else
@@ -343,30 +343,30 @@ uint64_t __42__TIADocument_closeWithCompletionHandler___block_invoke_5(uint64_t 
   [(UIDocument *)self updateChangeCount:0];
 }
 
-- (BOOL)validatePassphrase:(id)a3
+- (BOOL)validatePassphrase:(id)passphrase
 {
   if (![(TIADocument *)self isPasswordProtected]|| !self->_encryptionKey)
   {
     return 1;
   }
 
-  v5 = [objc_alloc(MEMORY[0x277D6C270]) initAes128KeyFromPassphrase:a3 withIterationCountAndSaltDataFromCryptoKey:self->_encryptionKey];
+  v5 = [objc_alloc(MEMORY[0x277D6C270]) initAes128KeyFromPassphrase:passphrase withIterationCountAndSaltDataFromCryptoKey:self->_encryptionKey];
 
   return SFUEqualCryptoKeys();
 }
 
 - (NSString)documentPasswordHint
 {
-  v2 = [(TIADocument *)self context];
+  context = [(TIADocument *)self context];
 
-  return [(TSPObjectContext *)v2 documentPasswordHint];
+  return [(TSPObjectContext *)context documentPasswordHint];
 }
 
-- (id)newExporterForType:(id)a3 options:(id)a4 preferredType:(id *)a5
+- (id)newExporterForType:(id)type options:(id)options preferredType:(id *)preferredType
 {
-  v8 = [(TIADocument *)self documentRoot];
+  documentRoot = [(TIADocument *)self documentRoot];
 
-  return [(TSADocumentRoot *)v8 newExporterForType:a3 options:a4 preferredType:a5];
+  return [(TSADocumentRoot *)documentRoot newExporterForType:type options:options preferredType:preferredType];
 }
 
 @end

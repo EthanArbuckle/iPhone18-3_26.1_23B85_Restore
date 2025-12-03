@@ -32,7 +32,7 @@
 
 + (id)squallPicayuneFontDescriptor
 {
-  v2 = [a1 squallFontDescriptor];
+  squallFontDescriptor = [self squallFontDescriptor];
   v10 = kCTFontVariationAttribute;
   v3 = [NSNumber numberWithUnsignedInt:TextToFourCharCode()];
   v8 = v3;
@@ -40,7 +40,7 @@
   v4 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
   v11 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-  v6 = [v2 fontDescriptorByAddingAttributes:v5];
+  v6 = [squallFontDescriptor fontDescriptorByAddingAttributes:v5];
 
   return v6;
 }

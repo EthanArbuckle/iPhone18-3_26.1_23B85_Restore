@@ -1,16 +1,16 @@
 @interface NSSQLLocationAttributeRTreeExtension
-+ (uint64_t)newRTReeTableNameForAttribute:(uint64_t)a3 onEntity:;
-- (BOOL)isEqualToExtension:(id)a3;
-- (BOOL)validate:(id *)a3;
-- (BOOL)validatePropertyWithDescription:(uint64_t)a3 andName:(uint64_t)a4 forUseAs:(uint64_t)a5 onAttributeNamed:(uint64_t)a6 onEntityNamed:(uint64_t *)a7 error:;
-- (NSSQLLocationAttributeRTreeExtension)initWithObjectFromUserInfo:(id)a3 onAttributeNamed:(id)a4 onEntity:(id)a5;
++ (uint64_t)newRTReeTableNameForAttribute:(uint64_t)attribute onEntity:;
+- (BOOL)isEqualToExtension:(id)extension;
+- (BOOL)validate:(id *)validate;
+- (BOOL)validatePropertyWithDescription:(uint64_t)description andName:(uint64_t)name forUseAs:(uint64_t)as onAttributeNamed:(uint64_t)named onEntityNamed:(uint64_t *)entityNamed error:;
+- (NSSQLLocationAttributeRTreeExtension)initWithObjectFromUserInfo:(id)info onAttributeNamed:(id)named onEntity:(id)entity;
 - (void)dealloc;
 - (void)generateSQLStrings;
 @end
 
 @implementation NSSQLLocationAttributeRTreeExtension
 
-- (NSSQLLocationAttributeRTreeExtension)initWithObjectFromUserInfo:(id)a3 onAttributeNamed:(id)a4 onEntity:(id)a5
+- (NSSQLLocationAttributeRTreeExtension)initWithObjectFromUserInfo:(id)info onAttributeNamed:(id)named onEntity:(id)entity
 {
   v22 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
@@ -21,7 +21,7 @@
     goto LABEL_16;
   }
 
-  if (!a3 || ([a3 isNSArray] & 1) == 0 && (objc_msgSend(a3, "isNSString") & 1) == 0)
+  if (!info || ([info isNSArray] & 1) == 0 && (objc_msgSend(info, "isNSString") & 1) == 0)
   {
     v13 = objc_autoreleasePoolPush();
     _pflogInitialize(1);
@@ -35,7 +35,7 @@
         if (v16)
         {
           *buf = 138412290;
-          v21 = a4;
+          namedCopy2 = named;
 LABEL_18:
           _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: error: UserInfo Object for RTree location must be either an array or a comma separated string of two components identifying the latitude / longitude properties - %@\n", buf, 0xCu);
         }
@@ -44,21 +44,21 @@ LABEL_18:
       else if (v16)
       {
         *buf = 138412290;
-        v21 = a4;
+        namedCopy2 = named;
         goto LABEL_18;
       }
     }
 
-    _NSCoreDataLog_console(1, "UserInfo Object for RTree location must be either an array or a comma separated string of two components identifying the latitude / longitude properties - %@", a4);
+    _NSCoreDataLog_console(1, "UserInfo Object for RTree location must be either an array or a comma separated string of two components identifying the latitude / longitude properties - %@", named);
     objc_autoreleasePoolPop(v13);
 
     v8 = 0;
     goto LABEL_16;
   }
 
-  v8->_userInfoObject = a3;
-  v8->_sqlEntity = a5;
-  v8->_attributeName = a4;
+  v8->_userInfoObject = info;
+  v8->_sqlEntity = entity;
+  v8->_attributeName = named;
   v8->_components = 0;
   v9 = [objc_msgSend(-[NSSQLEntity entityDescription](v8->_sqlEntity "entityDescription")];
   v8->_attributeDescription = v9;
@@ -68,9 +68,9 @@ LABEL_18:
   v8->_insertSQLStrings = objc_alloc_init(MEMORY[0x1E695DEC8]);
   v8->_dropSQLStrings = objc_alloc_init(MEMORY[0x1E695DEC8]);
   v8->_bulkUpdateSQLStrings = objc_alloc_init(MEMORY[0x1E695DEC8]);
-  v10 = [v8->_userInfoObject isNSArray];
+  isNSArray = [v8->_userInfoObject isNSArray];
   userInfoObject = v8->_userInfoObject;
-  if (v10)
+  if (isNSArray)
   {
     v12 = [userInfoObject copy];
 LABEL_13:
@@ -89,35 +89,35 @@ LABEL_16:
   return v8;
 }
 
-+ (uint64_t)newRTReeTableNameForAttribute:(uint64_t)a3 onEntity:
++ (uint64_t)newRTReeTableNameForAttribute:(uint64_t)attribute onEntity:
 {
   objc_opt_self();
   v5 = objc_alloc(MEMORY[0x1E696AEC0]);
-  if (a3)
+  if (attribute)
   {
-    if (atomic_load((a3 + 124)))
+    if (atomic_load((attribute + 124)))
     {
-      v7 = *(a3 + 72);
+      attributeCopy = *(attribute + 72);
     }
 
     else
     {
       do
       {
-        v7 = a3;
-        a3 = [a3 superentity];
+        attributeCopy = attribute;
+        attribute = [attribute superentity];
       }
 
-      while (a3);
+      while (attribute);
     }
   }
 
   else
   {
-    v7 = 0;
+    attributeCopy = 0;
   }
 
-  return [v5 initWithFormat:@"Z_RT_%@_%@", objc_msgSend(v7, "name"), objc_msgSend(a2, "name")];
+  return [v5 initWithFormat:@"Z_RT_%@_%@", objc_msgSend(attributeCopy, "name"), objc_msgSend(a2, "name")];
 }
 
 - (void)dealloc
@@ -143,7 +143,7 @@ LABEL_16:
   [(NSSQLLocationAttributeRTreeExtension *)&v3 dealloc];
 }
 
-- (BOOL)isEqualToExtension:(id)a3
+- (BOOL)isEqualToExtension:(id)extension
 {
   v17.receiver = self;
   v17.super_class = NSSQLLocationAttributeRTreeExtension;
@@ -159,7 +159,7 @@ LABEL_16:
   }
 
   v6 = [(NSArray *)self->_components count];
-  v7 = a3 ? *(a3 + 2) : 0;
+  v7 = extension ? *(extension + 2) : 0;
   if (v6 != [v7 count])
   {
     return 0;
@@ -174,14 +174,14 @@ LABEL_16:
   v12[1] = 3221225472;
   v12[2] = __59__NSSQLLocationAttributeRTreeExtension_isEqualToExtension___block_invoke;
   v12[3] = &unk_1E6EC46E0;
-  v12[4] = a3;
+  v12[4] = extension;
   v12[5] = &v13;
   [(NSArray *)components enumerateObjectsUsingBlock:v12];
-  if (*(v14 + 24) == 1 && (!a3 ? (v9 = 0) : (v9 = *(a3 + 6)), [(NSAttributeDescription *)self->_attributeDescription isEqual:v9]))
+  if (*(v14 + 24) == 1 && (!extension ? (v9 = 0) : (v9 = *(extension + 6)), [(NSAttributeDescription *)self->_attributeDescription isEqual:v9]))
   {
-    if (a3)
+    if (extension)
     {
-      v10 = *(a3 + 3);
+      v10 = *(extension + 3);
     }
 
     else
@@ -224,11 +224,11 @@ uint64_t __59__NSSQLLocationAttributeRTreeExtension_isEqualToExtension___block_i
   return result;
 }
 
-- (BOOL)validate:(id *)a3
+- (BOOL)validate:(id *)validate
 {
   v46[1] = *MEMORY[0x1E69E9840];
   v32 = 0;
-  v5 = [(NSSQLEntity *)self->_sqlEntity entityDescription];
+  entityDescription = [(NSSQLEntity *)self->_sqlEntity entityDescription];
   attributeDescription = self->_attributeDescription;
   if (!attributeDescription)
   {
@@ -248,7 +248,7 @@ LABEL_6:
 
   if (![(NSPropertyDescription *)attributeDescription isTransient])
   {
-    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"RTree tables can only be created to back transient attributes. %@.%@ is not transient.", objc_msgSend(v5, "name"), -[NSPropertyDescription name](self->_attributeDescription, "name")];
+    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"RTree tables can only be created to back transient attributes. %@.%@ is not transient.", objc_msgSend(entityDescription, "name"), -[NSPropertyDescription name](self->_attributeDescription, "name")];
     v8 = MEMORY[0x1E696ABC0];
     v9 = *MEMORY[0x1E696A250];
     v39 = *MEMORY[0x1E696A588];
@@ -261,7 +261,7 @@ LABEL_6:
 
   if ([(NSAttributeDescription *)self->_attributeDescription attributeType])
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to configure location index: %@.%@ type is %@ but should be %@.", objc_msgSend(v5, "name"), -[NSPropertyDescription name](self->_attributeDescription, "name"), +[NSAttributeDescription stringForAttributeType:](NSAttributeDescription, "stringForAttributeType:", -[NSAttributeDescription attributeType](self->_attributeDescription, "attributeType")), +[NSAttributeDescription stringForAttributeType:](NSAttributeDescription, "stringForAttributeType:", 0)];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to configure location index: %@.%@ type is %@ but should be %@.", objc_msgSend(entityDescription, "name"), -[NSPropertyDescription name](self->_attributeDescription, "name"), +[NSAttributeDescription stringForAttributeType:](NSAttributeDescription, "stringForAttributeType:", -[NSAttributeDescription attributeType](self->_attributeDescription, "attributeType")), +[NSAttributeDescription stringForAttributeType:](NSAttributeDescription, "stringForAttributeType:", 0)];
     v8 = MEMORY[0x1E696ABC0];
     v9 = *MEMORY[0x1E696A250];
     v41 = *MEMORY[0x1E696A588];
@@ -330,12 +330,12 @@ LABEL_22:
     goto LABEL_6;
   }
 
-  v25 = [(NSArray *)self->_components firstObject];
-  v26 = [(NSArray *)self->_components lastObject];
-  if (v5)
+  firstObject = [(NSArray *)self->_components firstObject];
+  lastObject = [(NSArray *)self->_components lastObject];
+  if (entityDescription)
   {
-    self->_latProp = [objc_msgSend(v5 "propertiesByName")];
-    v27 = [objc_msgSend(v5 "propertiesByName")];
+    self->_latProp = [objc_msgSend(entityDescription "propertiesByName")];
+    v27 = [objc_msgSend(entityDescription "propertiesByName")];
   }
 
   else
@@ -345,7 +345,7 @@ LABEL_22:
   }
 
   self->_longProp = v27;
-  if (-[NSSQLLocationAttributeRTreeExtension validatePropertyWithDescription:andName:forUseAs:onAttributeNamed:onEntityNamed:error:](self, self->_latProp, v25, @"latitude", self->_attributeName, [v5 name], &v32) && -[NSSQLLocationAttributeRTreeExtension validatePropertyWithDescription:andName:forUseAs:onAttributeNamed:onEntityNamed:error:](self, self->_longProp, v26, @"longitude", self->_attributeName, objc_msgSend(v5, "name"), &v32))
+  if (-[NSSQLLocationAttributeRTreeExtension validatePropertyWithDescription:andName:forUseAs:onAttributeNamed:onEntityNamed:error:](self, self->_latProp, firstObject, @"latitude", self->_attributeName, [entityDescription name], &v32) && -[NSSQLLocationAttributeRTreeExtension validatePropertyWithDescription:andName:forUseAs:onAttributeNamed:onEntityNamed:error:](self, self->_longProp, lastObject, @"longitude", self->_attributeName, objc_msgSend(entityDescription, "name"), &v32))
   {
     [(NSSQLLocationAttributeRTreeExtension *)self generateSQLStrings];
     v23 = 1;
@@ -359,7 +359,7 @@ LABEL_22:
   }
 
 LABEL_10:
-  if (!a3)
+  if (!validate)
   {
 LABEL_26:
     v23 = 0;
@@ -367,19 +367,19 @@ LABEL_26:
   }
 
   v23 = 0;
-  *a3 = v22;
+  *validate = v22;
 LABEL_27:
   v30 = *MEMORY[0x1E69E9840];
   return v23;
 }
 
-- (BOOL)validatePropertyWithDescription:(uint64_t)a3 andName:(uint64_t)a4 forUseAs:(uint64_t)a5 onAttributeNamed:(uint64_t)a6 onEntityNamed:(uint64_t *)a7 error:
+- (BOOL)validatePropertyWithDescription:(uint64_t)description andName:(uint64_t)name forUseAs:(uint64_t)as onAttributeNamed:(uint64_t)named onEntityNamed:(uint64_t *)entityNamed error:
 {
   v44[1] = *MEMORY[0x1E69E9840];
   if (result)
   {
     v13 = result;
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to configure location index (invalid %@ on %@.%@): ", a4, a6, a5];
+    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to configure location index (invalid %@ on %@.%@): ", name, named, as];
     v15 = v14;
     if (a2)
     {
@@ -387,7 +387,7 @@ LABEL_27:
       {
         if ([a2 isTransient])
         {
-          v16 = [v15 stringByAppendingFormat:@"%@.%@ is a transient attribute.", a6, a3];
+          v16 = [v15 stringByAppendingFormat:@"%@.%@ is a transient attribute.", named, description];
           v17 = MEMORY[0x1E696ABC0];
           v18 = *MEMORY[0x1E696A250];
           v41 = *MEMORY[0x1E696A588];
@@ -405,7 +405,7 @@ LABEL_27:
             goto LABEL_19;
           }
 
-          v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to configure location index (invalid %@ on %@.%@): %@.%@ is of type %@ and should be of type %@.", a4, objc_msgSend(objc_msgSend(*(v13 + 24), "entityDescription"), "name"), a5, objc_msgSend(objc_msgSend(*(v13 + 24), "entityDescription"), "name"), a3, +[NSAttributeDescription stringForAttributeType:](NSAttributeDescription, "stringForAttributeType:", objc_msgSend(a2, "attributeType")), +[NSAttributeDescription stringForAttributeType:](NSAttributeDescription, "stringForAttributeType:", 500)];
+          v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to configure location index (invalid %@ on %@.%@): %@.%@ is of type %@ and should be of type %@.", name, objc_msgSend(objc_msgSend(*(v13 + 24), "entityDescription"), "name"), as, objc_msgSend(objc_msgSend(*(v13 + 24), "entityDescription"), "name"), description, +[NSAttributeDescription stringForAttributeType:](NSAttributeDescription, "stringForAttributeType:", objc_msgSend(a2, "attributeType")), +[NSAttributeDescription stringForAttributeType:](NSAttributeDescription, "stringForAttributeType:", 500)];
           v17 = MEMORY[0x1E696ABC0];
           v18 = *MEMORY[0x1E696A250];
           v43 = *MEMORY[0x1E696A588];
@@ -418,7 +418,7 @@ LABEL_27:
 
       else
       {
-        v27 = [v15 stringByAppendingFormat:@"%@.%@ is a relationship.", a6, a3];
+        v27 = [v15 stringByAppendingFormat:@"%@.%@ is a relationship.", named, description];
         v17 = MEMORY[0x1E696ABC0];
         v18 = *MEMORY[0x1E696A250];
         v39 = *MEMORY[0x1E696A588];
@@ -438,8 +438,8 @@ LABEL_27:
       v22 = MEMORY[0x1E696ABC0];
       v23 = *MEMORY[0x1E696A250];
       v37 = *MEMORY[0x1E696A588];
-      v38 = [v14 stringByAppendingFormat:@"couldn't find an attribute named '%@' on '%@' to use as the %@.", a3, a6, a4];
-      v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
+      name = [v14 stringByAppendingFormat:@"couldn't find an attribute named '%@' on '%@' to use as the %@.", description, named, name];
+      v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&name forKeys:&v37 count:1];
       v25 = v22;
       v26 = v23;
     }
@@ -447,10 +447,10 @@ LABEL_27:
     v28 = [v25 errorWithDomain:v26 code:134060 userInfo:v24];
     if (v28)
     {
-      if (a7)
+      if (entityNamed)
       {
         result = 0;
-        *a7 = v28;
+        *entityNamed = v28;
         goto LABEL_19;
       }
 
@@ -489,20 +489,20 @@ LABEL_19:
 
 - (void)generateSQLStrings
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 24);
-    v3 = [*(a1 + 56) name];
+    v2 = *(self + 24);
+    name = [*(self + 56) name];
     if (v2)
     {
-      v2 = [v2[5] objectForKey:v3];
+      v2 = [v2[5] objectForKey:name];
     }
 
-    v4 = *(a1 + 24);
-    v5 = [*(a1 + 64) name];
+    v4 = *(self + 24);
+    name2 = [*(self + 64) name];
     if (v4)
     {
-      v6 = [*(v4 + 40) objectForKey:v5];
+      v6 = [*(v4 + 40) objectForKey:name2];
     }
 
     else
@@ -510,26 +510,26 @@ LABEL_19:
       v6 = 0;
     }
 
-    v7 = [*(a1 + 24) tableName];
-    v8 = [v2 columnName];
-    v9 = [v6 columnName];
+    tableName = [*(self + 24) tableName];
+    columnName = [v2 columnName];
+    columnName2 = [v6 columnName];
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [v10 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"CREATE VIRTUAL TABLE IF NOT EXISTS %@ USING RTREE (Z_PK INTEGER PRIMARY KEY, %@_MIN FLOAT, %@_MAX FLOAT, %@_MIN FLOAT, %@_MAX FLOAT)", *(a1 + 40), v8, v8, v9, v9)}];
-    [v11 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"DROP TABLE IF EXISTS %@", *(a1 + 40))}];
-    [v10 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"CREATE TRIGGER IF NOT EXISTS %@_INSERT AFTER INSERT ON %@ FOR EACH ROW BEGIN INSERT OR REPLACE INTO %@ (Z_PK, %@_MIN, %@_MAX, %@_MIN, %@_MAX) VALUES (NEW.Z_PK, NEW.%@, NEW.%@, NEW.%@, NEW.%@) ; END", *(a1 + 40), v7, *(a1 + 40), v8, v8, v9, v9, v8, v8, v9, v9)}];
-    [v11 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"DROP TRIGGER IF EXISTS %@_INSERT", *(a1 + 40))}];
-    [v10 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"CREATE TRIGGER IF NOT EXISTS %@_UPDATE AFTER UPDATE ON %@ FOR EACH ROW BEGIN DELETE FROM %@ WHERE Z_PK = NEW.Z_PK ; INSERT INTO %@ (Z_PK, %@_MIN, %@_MAX, %@_MIN, %@_MAX) VALUES (NEW.Z_PK, NEW.%@, NEW.%@, NEW.%@, NEW.%@) ; END", *(a1 + 40), v7, *(a1 + 40), *(a1 + 40), v8, v8, v9, v9, v8, v8, v9, v9)}];
-    [v11 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"DROP TRIGGER IF EXISTS %@_UPDATE", *(a1 + 40))}];
-    [v10 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"CREATE TRIGGER IF NOT EXISTS %@_DELETE AFTER DELETE ON %@ FOR EACH ROW BEGIN DELETE FROM %@ WHERE Z_PK = OLD.Z_PK ; END", *(a1 + 40), v7, *(a1 + 40))}];
-    [v11 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"DROP TRIGGER IF EXISTS %@_DELETE", *(a1 + 40))}];
-    [v12 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"INSERT OR REPLACE INTO %@ (Z_PK, %@_MIN, %@_MAX, %@_MIN, %@_MAX) SELECT Z_PK, %@, %@, %@, %@ from %@ where %@ NOT NULL and %@ NOT NULL", *(a1 + 40), v8, v8, v9, v9, v8, v8, v9, v9, v7, v8, v9)}];
+    [v10 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"CREATE VIRTUAL TABLE IF NOT EXISTS %@ USING RTREE (Z_PK INTEGER PRIMARY KEY, %@_MIN FLOAT, %@_MAX FLOAT, %@_MIN FLOAT, %@_MAX FLOAT)", *(self + 40), columnName, columnName, columnName2, columnName2)}];
+    [v11 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"DROP TABLE IF EXISTS %@", *(self + 40))}];
+    [v10 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"CREATE TRIGGER IF NOT EXISTS %@_INSERT AFTER INSERT ON %@ FOR EACH ROW BEGIN INSERT OR REPLACE INTO %@ (Z_PK, %@_MIN, %@_MAX, %@_MIN, %@_MAX) VALUES (NEW.Z_PK, NEW.%@, NEW.%@, NEW.%@, NEW.%@) ; END", *(self + 40), tableName, *(self + 40), columnName, columnName, columnName2, columnName2, columnName, columnName, columnName2, columnName2)}];
+    [v11 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"DROP TRIGGER IF EXISTS %@_INSERT", *(self + 40))}];
+    [v10 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"CREATE TRIGGER IF NOT EXISTS %@_UPDATE AFTER UPDATE ON %@ FOR EACH ROW BEGIN DELETE FROM %@ WHERE Z_PK = NEW.Z_PK ; INSERT INTO %@ (Z_PK, %@_MIN, %@_MAX, %@_MIN, %@_MAX) VALUES (NEW.Z_PK, NEW.%@, NEW.%@, NEW.%@, NEW.%@) ; END", *(self + 40), tableName, *(self + 40), *(self + 40), columnName, columnName, columnName2, columnName2, columnName, columnName, columnName2, columnName2)}];
+    [v11 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"DROP TRIGGER IF EXISTS %@_UPDATE", *(self + 40))}];
+    [v10 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"CREATE TRIGGER IF NOT EXISTS %@_DELETE AFTER DELETE ON %@ FOR EACH ROW BEGIN DELETE FROM %@ WHERE Z_PK = OLD.Z_PK ; END", *(self + 40), tableName, *(self + 40))}];
+    [v11 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"DROP TRIGGER IF EXISTS %@_DELETE", *(self + 40))}];
+    [v12 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"INSERT OR REPLACE INTO %@ (Z_PK, %@_MIN, %@_MAX, %@_MIN, %@_MAX) SELECT Z_PK, %@, %@, %@, %@ from %@ where %@ NOT NULL and %@ NOT NULL", *(self + 40), columnName, columnName, columnName2, columnName2, columnName, columnName, columnName2, columnName2, tableName, columnName, columnName2)}];
 
-    *(a1 + 72) = [v10 copy];
-    *(a1 + 80) = [v11 copy];
+    *(self + 72) = [v10 copy];
+    *(self + 80) = [v11 copy];
 
-    *(a1 + 88) = [v12 copy];
+    *(self + 88) = [v12 copy];
   }
 }
 

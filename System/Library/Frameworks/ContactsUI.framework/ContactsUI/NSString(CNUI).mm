@@ -23,55 +23,55 @@
   v9 = [v4 isEqualToString:{v7, v14, v15, v16, v17}];
   v10 = [v8 containsObject:v7];
 
-  if ([a1 cnui_shouldUseJapaneseTransliteration])
+  if ([self cnui_shouldUseJapaneseTransliteration])
   {
-    v11 = [a1 cnui_stringByTransliteratingToKanaAsName:v10];
+    selfCopy = [self cnui_stringByTransliteratingToKanaAsName:v10];
     goto LABEL_16;
   }
 
-  if ([a1 _isOnlyIdeographs])
+  if ([self _isOnlyIdeographs])
   {
-    if ([a1 cnui_shouldUseZhuyinTransliteration])
+    if ([self cnui_shouldUseZhuyinTransliteration])
     {
       if (v9)
       {
-        [a1 _stringByTransliteratingToZhuyinAsFamilyName];
+        [self _stringByTransliteratingToZhuyinAsFamilyName];
       }
 
       else
       {
-        [a1 _stringByTransliteratingToZhuyin];
+        [self _stringByTransliteratingToZhuyin];
       }
 
-      v11 = LABEL_7:;
+      selfCopy = LABEL_7:;
       goto LABEL_16;
     }
 
-    if ([a1 cnui_shouldTransliterateToLatin])
+    if ([self cnui_shouldTransliterateToLatin])
     {
       if (v9)
       {
-        [a1 _stringByTransliteratingToPinyinAsFamilyName];
+        [self _stringByTransliteratingToPinyinAsFamilyName];
       }
 
       else
       {
-        [a1 _stringByTransliteratingToPinyin];
+        [self _stringByTransliteratingToPinyin];
       }
 
       goto LABEL_7;
     }
   }
 
-  else if ([a1 cnui_shouldTransliterateToLatin])
+  else if ([self cnui_shouldTransliterateToLatin])
   {
-    v11 = [a1 _stringByApplyingTransform:@"Any-Latin Any-Title; NFD"];;
+    selfCopy = [self _stringByApplyingTransform:@"Any-Latin Any-Title; NFD"];;
     goto LABEL_16;
   }
 
-  v11 = a1;
+  selfCopy = self;
 LABEL_16:
-  v12 = v11;
+  v12 = selfCopy;
 
   return v12;
 }
@@ -86,7 +86,7 @@ LABEL_16:
   result = [cnui_shouldTransliterateToLatin___supportedScripts containsIndex:25];
   if (result)
   {
-    [a1 cnui_firstUTF32Character];
+    [self cnui_firstUTF32Character];
     return [cnui_shouldTransliterateToLatin___supportedScripts containsIndex:uscript_getScript()] ^ 1;
   }
 
@@ -179,8 +179,8 @@ LABEL_16:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v0 = [MEMORY[0x1E695DF58] preferredLanguages];
-  v1 = [v0 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  v1 = [preferredLanguages countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v1)
   {
     v2 = v1;
@@ -192,7 +192,7 @@ LABEL_16:
       {
         if (*v12 != v3)
         {
-          objc_enumerationMutation(v0);
+          objc_enumerationMutation(preferredLanguages);
         }
 
         v6 = [MEMORY[0x1E695DF58] componentsFromLocaleIdentifier:*(*(&v11 + 1) + 8 * i)];
@@ -213,7 +213,7 @@ LABEL_16:
         }
       }
 
-      v2 = [v0 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v2 = [preferredLanguages countByEnumeratingWithState:&v11 objects:v15 count:16];
       v9 = 0;
       if (v2)
       {
@@ -241,17 +241,17 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __59__NSString_CNUI__cnui_stringByTransliteratingToKanaAsName___block_invoke;
   block[3] = &unk_1E74E6A88;
-  block[4] = a1;
+  block[4] = self;
   if (cnui_stringByTransliteratingToKanaAsName____onceToken != -1)
   {
     dispatch_once(&cnui_stringByTransliteratingToKanaAsName____onceToken, block);
   }
 
-  v5 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v6 = cnui_stringByTransliteratingToKanaAsName____japaneseTokenizer;
-  v14.length = [(__CFString *)a1 length];
+  v14.length = [(__CFString *)self length];
   v14.location = 0;
-  CFStringTokenizerSetString(v6, a1, v14);
+  CFStringTokenizerSetString(v6, self, v14);
   if (a3)
   {
     v7 = 0x1000000;
@@ -270,31 +270,31 @@ LABEL_13:
       v9 = v8;
       if (CFStringGetLength(v8) >= 1)
       {
-        CFStringAppend(v5, v9);
+        CFStringAppend(string, v9);
       }
 
       CFRelease(v9);
     }
   }
 
-  v10 = [(__CFString *)v5 stringByApplyingTransform:@"Hiragana-Katakana" reverse:0];
+  v10 = [(__CFString *)string stringByApplyingTransform:@"Hiragana-Katakana" reverse:0];
 
   return v10;
 }
 
 - (uint64_t)cnui_firstUTF32Character
 {
-  result = [a1 length];
+  result = [self length];
   if (result)
   {
-    if (result != 1 && (v3 = [a1 characterAtIndex:0], v4 = objc_msgSend(a1, "characterAtIndex:", 1), (v3 & 0xFC00) == 0xD800) && (v4 & 0xFC00) == 0xDC00)
+    if (result != 1 && (v3 = [self characterAtIndex:0], v4 = objc_msgSend(self, "characterAtIndex:", 1), (v3 & 0xFC00) == 0xD800) && (v4 & 0xFC00) == 0xDC00)
     {
       return (v4 + (v3 << 10) - 56613888);
     }
 
     else
     {
-      return [a1 characterAtIndex:0];
+      return [self characterAtIndex:0];
     }
   }
 

@@ -1,15 +1,15 @@
 @interface HMMediaSourceDisplayOrderProfile.HMTelevisionProfileDelegateAdaptor
 - (_TtCC7HomeKit32HMMediaSourceDisplayOrderProfileP33_9553D125375AA03A444888892644919534HMTelevisionProfileDelegateAdaptor)init;
-- (void)televisionProfileDidUpdateSourceDisplayOrder:(id)a3;
+- (void)televisionProfileDidUpdateSourceDisplayOrder:(id)order;
 @end
 
 @implementation HMMediaSourceDisplayOrderProfile.HMTelevisionProfileDelegateAdaptor
 
-- (void)televisionProfileDidUpdateSourceDisplayOrder:(id)a3
+- (void)televisionProfileDidUpdateSourceDisplayOrder:(id)order
 {
-  v4 = a3;
-  v5 = self;
-  sub_19BB44888(v4);
+  orderCopy = order;
+  selfCopy = self;
+  sub_19BB44888(orderCopy);
 }
 
 - (_TtCC7HomeKit32HMMediaSourceDisplayOrderProfileP33_9553D125375AA03A444888892644919534HMTelevisionProfileDelegateAdaptor)init

@@ -1,16 +1,16 @@
 @interface MirrorView
 - (UIColor)backgroundColor;
-- (_TtC8AppStore10MirrorView)initWithCoder:(id)a3;
-- (_TtC8AppStore10MirrorView)initWithFrame:(CGRect)a3;
+- (_TtC8AppStore10MirrorView)initWithCoder:(id)coder;
+- (_TtC8AppStore10MirrorView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setBackgroundColor:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation MirrorView
 
-- (_TtC8AppStore10MirrorView)initWithCoder:(id)a3
+- (_TtC8AppStore10MirrorView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   v4 = OBJC_IVAR____TtC8AppStore10MirrorView_artworkLayer;
@@ -25,14 +25,14 @@
 - (void)dealloc
 {
   Strong = swift_unknownObjectWeakLoadStrong();
-  v4 = self;
+  selfCopy = self;
   if (Strong)
   {
     v5 = String._bridgeToObjectiveC()();
-    [Strong removeObserver:v4 forKeyPath:v5];
+    [Strong removeObserver:selfCopy forKeyPath:v5];
   }
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for MirrorView();
   [(MirrorView *)&v6 dealloc];
 }
@@ -41,56 +41,56 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for MirrorView();
-  v2 = [(MirrorView *)&v4 backgroundColor];
+  backgroundColor = [(MirrorView *)&v4 backgroundColor];
 
-  return v2;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v10.receiver = self;
   v10.super_class = type metadata accessor for MirrorView();
   v4 = v10.receiver;
-  v5 = a3;
-  [(MirrorView *)&v10 setBackgroundColor:v5];
+  colorCopy = color;
+  [(MirrorView *)&v10 setBackgroundColor:colorCopy];
   v6 = *&v4[OBJC_IVAR____TtC8AppStore10MirrorView_artworkLayer];
-  v7 = [v4 backgroundColor];
-  if (v7)
+  backgroundColor = [v4 backgroundColor];
+  if (backgroundColor)
   {
-    v8 = v7;
-    v9 = [v7 CGColor];
+    v8 = backgroundColor;
+    cGColor = [backgroundColor CGColor];
   }
 
   else
   {
-    v9 = 0;
+    cGColor = 0;
   }
 
-  [v6 setBackgroundColor:v9];
+  [v6 setBackgroundColor:cGColor];
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001DA280();
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a3)
+  if (path)
   {
     v10 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v12 = v11;
-    if (a4)
+    if (object)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     memset(v18, 0, sizeof(v18));
-    v16 = a5;
-    v17 = self;
-    if (a5)
+    changeCopy = change;
+    selfCopy = self;
+    if (change)
     {
       goto LABEL_4;
     }
@@ -102,18 +102,18 @@ LABEL_7:
 
   v10 = 0;
   v12 = 0;
-  if (!a4)
+  if (!object)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
   swift_unknownObjectRetain();
-  v13 = a5;
-  v14 = self;
+  changeCopy2 = change;
+  selfCopy2 = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
-  if (!a5)
+  if (!change)
   {
     goto LABEL_7;
   }
@@ -124,12 +124,12 @@ LABEL_4:
   v15 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
 
 LABEL_8:
-  sub_1001DA768(v10, v12, v18, v15, a6);
+  sub_1001DA768(v10, v12, v18, v15, context);
 
   sub_10003D444(v18);
 }
 
-- (_TtC8AppStore10MirrorView)initWithFrame:(CGRect)a3
+- (_TtC8AppStore10MirrorView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

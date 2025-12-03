@@ -1,23 +1,23 @@
 @interface _IDSBatchIDQueryController
 - (BOOL)underLimit;
-- (_IDSBatchIDQueryController)initWithService:(id)a3 delegate:(id)a4 queue:(id)a5 parent:(id)a6;
-- (void)_calloutToDelegateWithResult:(id)a3 error:(id)a4;
+- (_IDSBatchIDQueryController)initWithService:(id)service delegate:(id)delegate queue:(id)queue parent:(id)parent;
+- (void)_calloutToDelegateWithResult:(id)result error:(id)error;
 - (void)_invalidateNextQueryTimer;
-- (void)_nextQuery:(id)a3;
-- (void)_scheduleNextQuery:(double)a3;
+- (void)_nextQuery:(id)query;
+- (void)_scheduleNextQuery:(double)query;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setDestinations:(id)a3;
+- (void)setDestinations:(id)destinations;
 @end
 
 @implementation _IDSBatchIDQueryController
 
-- (_IDSBatchIDQueryController)initWithService:(id)a3 delegate:(id)a4 queue:(id)a5 parent:(id)a6
+- (_IDSBatchIDQueryController)initWithService:(id)service delegate:(id)delegate queue:(id)queue parent:(id)parent
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  serviceCopy = service;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  parentCopy = parent;
   if (!_IDSRunningInDaemon())
   {
     v39.receiver = self;
@@ -28,10 +28,10 @@
       goto LABEL_24;
     }
 
-    v17 = [v11 length];
+    v17 = [serviceCopy length];
     if (v17)
     {
-      if (v12)
+      if (delegateCopy)
       {
         goto LABEL_9;
       }
@@ -46,29 +46,29 @@
         _os_log_impl(&dword_1959FF000, v32, OS_LOG_TYPE_DEFAULT, "No service name, bailing...", v38, 2u);
       }
 
-      if (v12)
+      if (delegateCopy)
       {
 LABEL_9:
-        if (v13)
+        if (queueCopy)
         {
           if (!v17)
           {
             goto LABEL_5;
           }
 
-          objc_storeStrong(&self->_serviceName, a3);
-          v18 = [MEMORY[0x1E6995700] weakRefWithObject:v12];
+          objc_storeStrong(&self->_serviceName, service);
+          v18 = [MEMORY[0x1E6995700] weakRefWithObject:delegateCopy];
           delegate = self->_delegate;
           self->_delegate = v18;
 
-          objc_storeStrong(&self->_queue, a5);
-          v20 = [MEMORY[0x1E6995700] weakRefWithObject:v14];
+          objc_storeStrong(&self->_queue, queue);
+          v20 = [MEMORY[0x1E6995700] weakRefWithObject:parentCopy];
           parent = self->_parent;
           self->_parent = v20;
 
-          v22 = [MEMORY[0x1E696AEC0] stringGUID];
+          stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
           listenerID = self->_listenerID;
-          self->_listenerID = v22;
+          self->_listenerID = stringGUID;
 
           destinations = self->_destinations;
           self->_destinations = 0;
@@ -89,15 +89,15 @@ LABEL_9:
 
           if (v30 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
-            v31 = [v30 integerValue];
+            integerValue = [v30 integerValue];
           }
 
           else
           {
-            v31 = 60;
+            integerValue = 60;
           }
 
-          v34 = [v28 initWithLimit:v31 timeLimit:sub_195B20DDC()];
+          v34 = [v28 initWithLimit:integerValue timeLimit:sub_195B20DDC()];
           rateLimiter = self->_rateLimiter;
           self->_rateLimiter = v34;
 
@@ -108,7 +108,7 @@ LABEL_9:
 
 LABEL_24:
           self = self;
-          v16 = self;
+          selfCopy = self;
           goto LABEL_25;
         }
 
@@ -131,7 +131,7 @@ LABEL_20:
       _os_log_impl(&dword_1959FF000, v33, OS_LOG_TYPE_DEFAULT, "No delegate, bailing...", v38, 2u);
     }
 
-    if (v13)
+    if (queueCopy)
     {
       goto LABEL_5;
     }
@@ -148,10 +148,10 @@ LABEL_20:
 LABEL_4:
 
 LABEL_5:
-  v16 = 0;
+  selfCopy = 0;
 LABEL_25:
 
-  return v16;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -169,7 +169,7 @@ LABEL_25:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1959FF000, v3, OS_LOG_TYPE_DEFAULT, "Client request to invalidate: %@", &v6, 0xCu);
   }
 
@@ -180,33 +180,33 @@ LABEL_25:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_scheduleNextQuery:(double)a3
+- (void)_scheduleNextQuery:(double)query
 {
   v11 = *MEMORY[0x1E69E9840];
   v5 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134217984;
-    v10 = a3;
+    queryCopy = query;
     _os_log_impl(&dword_1959FF000, v5, OS_LOG_TYPE_DEFAULT, "Scheduling next batch in %f", &v9, 0xCu);
   }
 
-  v6 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__nextQuery_ selector:0 userInfo:0 repeats:a3];
+  v6 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__nextQuery_ selector:0 userInfo:0 repeats:query];
   nextQueryTimer = self->_nextQueryTimer;
   self->_nextQueryTimer = v6;
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDestinations:(id)a3
+- (void)setDestinations:(id)destinations
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  destinationsCopy = destinations;
   v5 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v32 = v4;
+    v32 = destinationsCopy;
     _os_log_impl(&dword_1959FF000, v5, OS_LOG_TYPE_DEFAULT, "setDestinations %@", buf, 0xCu);
   }
 
@@ -225,7 +225,7 @@ LABEL_11:
     goto LABEL_21;
   }
 
-  if (self->_destinations == v4 || [(NSArray *)v4 isEqualToArray:?])
+  if (self->_destinations == destinationsCopy || [(NSArray *)destinationsCopy isEqualToArray:?])
   {
     v6 = +[IDSLogging IDQuery];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -240,7 +240,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v8 = [(NSArray *)v4 mutableCopy];
+  v8 = [(NSArray *)destinationsCopy mutableCopy];
   destinations = self->_destinations;
   self->_destinations = v8;
 
@@ -285,7 +285,7 @@ LABEL_21:
     self->_destinationsToQuery = 0;
 
     os_unfair_lock_unlock(&self->_destinationsToQuerylock);
-    v22 = [(NSArray *)v4 copy];
+    v22 = [(NSArray *)destinationsCopy copy];
     v23 = +[IDSIDQueryController sharedInstance];
     serviceName = self->_serviceName;
     listenerID = self->_listenerID;
@@ -308,7 +308,7 @@ LABEL_22:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_nextQuery:(id)a3
+- (void)_nextQuery:(id)query
 {
   v47 = *MEMORY[0x1E69E9840];
   v4 = 0x1E743D000uLL;
@@ -316,20 +316,20 @@ LABEL_22:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v43 = self;
+    selfCopy4 = self;
     _os_log_impl(&dword_1959FF000, v5, OS_LOG_TYPE_DEFAULT, " * Next query timer hit: %@", buf, 0xCu);
   }
 
   [(_IDSBatchIDQueryController *)self _invalidateNextQueryTimer];
-  v6 = [MEMORY[0x1E695DF00] date];
-  [v6 timeIntervalSinceDate:self->_timeOfDeath];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceDate:self->_timeOfDeath];
   if (v7 > 0.0 && sub_195B213D0())
   {
     v8 = +[IDSLogging IDQuery];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v43 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, "We're dead, not querying: %@", buf, 0xCu);
     }
 
@@ -342,12 +342,12 @@ LABEL_22:
 
   if (v10)
   {
-    v11 = [v10 intValue];
+    intValue = [v10 intValue];
   }
 
   else
   {
-    v11 = 15;
+    intValue = 15;
   }
 
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -366,14 +366,14 @@ LABEL_22:
   v15 = v14;
   v16 = 0;
   v17 = *v39;
-  v36 = v6;
-  v35 = v11;
+  v36 = date;
+  v35 = intValue;
   while (2)
   {
     v18 = 0;
-    if (v16 <= v11)
+    if (v16 <= intValue)
     {
-      v19 = v11;
+      v19 = intValue;
     }
 
     else
@@ -398,14 +398,14 @@ LABEL_22:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v43 = self;
+          selfCopy4 = self;
           v23 = "We've reached the max number of queries, not adding anymore: %@";
 LABEL_28:
           _os_log_impl(&dword_1959FF000, v22, OS_LOG_TYPE_DEFAULT, v23, buf, 0xCu);
         }
 
 LABEL_29:
-        v6 = v36;
+        date = v36;
 
         goto LABEL_30;
       }
@@ -417,7 +417,7 @@ LABEL_29:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v43 = self;
+          selfCopy4 = self;
           v23 = "We've reached the max number of queries for this batch, not adding anymore: %@";
           goto LABEL_28;
         }
@@ -433,9 +433,9 @@ LABEL_29:
 
     while (v15 != v18);
     v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v38 objects:v46 count:16];
-    v6 = v36;
+    date = v36;
     v4 = 0x1E743D000;
-    v11 = v35;
+    intValue = v35;
     if (v15)
     {
       continue;
@@ -470,8 +470,8 @@ LABEL_30:
     else
     {
       v27 = sub_195B213D0();
-      v28 = [*(v4 + 1160) IDQuery];
-      if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+      iDQuery = [*(v4 + 1160) IDQuery];
+      if (os_log_type_enabled(iDQuery, OS_LOG_TYPE_DEFAULT))
       {
         v29 = @"YES";
         if (v27)
@@ -480,10 +480,10 @@ LABEL_30:
         }
 
         *buf = 138412546;
-        v43 = v29;
+        selfCopy4 = v29;
         v44 = 2112;
-        v45 = self;
-        _os_log_impl(&dword_1959FF000, v28, OS_LOG_TYPE_DEFAULT, "We've reached the max number of queries, possibly deferring queries: %@ %@", buf, 0x16u);
+        selfCopy5 = self;
+        _os_log_impl(&dword_1959FF000, iDQuery, OS_LOG_TYPE_DEFAULT, "We've reached the max number of queries, possibly deferring queries: %@ %@", buf, 0x16u);
       }
 
       if ((v27 & 1) == 0)
@@ -515,7 +515,7 @@ LABEL_43:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1959FF000, v3, OS_LOG_TYPE_DEFAULT, "Invalidating next query timer: %@", &v6, 0xCu);
   }
 
@@ -526,23 +526,23 @@ LABEL_43:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_calloutToDelegateWithResult:(id)a3 error:(id)a4
+- (void)_calloutToDelegateWithResult:(id)result error:(id)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CUTWeakReference *)self->_delegate object];
-  v9 = v8;
-  if (v8 && (v10 = self->_queue) != 0)
+  resultCopy = result;
+  errorCopy = error;
+  object = [(CUTWeakReference *)self->_delegate object];
+  v9 = object;
+  if (object && (v10 = self->_queue) != 0)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = sub_195B22048;
     v14[3] = &unk_1E743EEE8;
-    v15 = v8;
-    v16 = v6;
-    v17 = self;
-    v18 = v7;
+    v15 = object;
+    v16 = resultCopy;
+    selfCopy = self;
+    v18 = errorCopy;
     dispatch_async(v10, v14);
 
     v11 = v15;
@@ -575,15 +575,15 @@ LABEL_43:
 
     if (v5)
     {
-      v6 = [v5 intValue];
+      intValue = [v5 intValue];
     }
 
     else
     {
-      v6 = 60;
+      intValue = 60;
     }
 
-    return numberOfQueriesDone < v6;
+    return numberOfQueriesDone < intValue;
   }
 
   else

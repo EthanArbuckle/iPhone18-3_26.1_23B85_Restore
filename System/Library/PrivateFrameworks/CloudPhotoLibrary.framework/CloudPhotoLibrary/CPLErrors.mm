@@ -1,52 +1,52 @@
 @interface CPLErrors
-+ (id)cplErrorCausedBySharedSyncForError:(id)a3;
-+ (id)cplErrorWithCode:(int64_t)a3 description:(id)a4;
-+ (id)cplErrorWithCode:(int64_t)a3 underlyingError:(id)a4 description:(id)a5;
-+ (id)cplErrorWithCode:(int64_t)a3 underlyingError:(id)a4 userInfo:(id)a5 description:(id)a6;
-+ (id)cplErrorWithCode:(int64_t)a3 underlyingError:(id)a4 userInfo:(id)a5 description:(id)a6 arguments:(char *)a7;
-+ (id)errorsForIdentifiers:(id)a3 error:(id)a4;
-+ (id)incorrectMachineStateErrorWithReason:(id)a3;
-+ (id)invalidClientCacheErrorWithReason:(id)a3;
-+ (id)invalidCloudCacheErrorWithReason:(id)a3;
-+ (id)posixErrorForURL:(id)a3;
-+ (id)posixErrorForURL:(id)a3 errorCode:(int)a4;
-+ (id)preventWipeErrorWithReason:(id)a3 preventedByUser:(BOOL)a4;
-+ (id)unableToDeserializeRecordInStorage:(id)a3;
-+ (id)unableToSerializeRecordError:(id)a3 inStorage:(id)a4;
-+ (id)underlyingErrorWithReason:(id)a3;
++ (id)cplErrorCausedBySharedSyncForError:(id)error;
++ (id)cplErrorWithCode:(int64_t)code description:(id)description;
++ (id)cplErrorWithCode:(int64_t)code underlyingError:(id)error description:(id)description;
++ (id)cplErrorWithCode:(int64_t)code underlyingError:(id)error userInfo:(id)info description:(id)description;
++ (id)cplErrorWithCode:(int64_t)code underlyingError:(id)error userInfo:(id)info description:(id)description arguments:(char *)arguments;
++ (id)errorsForIdentifiers:(id)identifiers error:(id)error;
++ (id)incorrectMachineStateErrorWithReason:(id)reason;
++ (id)invalidClientCacheErrorWithReason:(id)reason;
++ (id)invalidCloudCacheErrorWithReason:(id)reason;
++ (id)posixErrorForURL:(id)l;
++ (id)posixErrorForURL:(id)l errorCode:(int)code;
++ (id)preventWipeErrorWithReason:(id)reason preventedByUser:(BOOL)user;
++ (id)unableToDeserializeRecordInStorage:(id)storage;
++ (id)unableToSerializeRecordError:(id)error inStorage:(id)storage;
++ (id)underlyingErrorWithReason:(id)reason;
 @end
 
 @implementation CPLErrors
 
-+ (id)cplErrorCausedBySharedSyncForError:(id)a3
++ (id)cplErrorCausedBySharedSyncForError:(id)error
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
+  errorCopy = error;
   v5 = [v3 alloc];
-  v6 = [v4 userInfo];
-  v7 = [v5 initWithDictionary:v6];
+  userInfo = [errorCopy userInfo];
+  v7 = [v5 initWithDictionary:userInfo];
 
   [v7 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"CPLErrorIsCausedBySharedSync"];
   v8 = MEMORY[0x1E696ABC0];
-  v9 = [v4 domain];
-  v10 = [v4 code];
+  domain = [errorCopy domain];
+  code = [errorCopy code];
 
-  v11 = [v8 errorWithDomain:v9 code:v10 userInfo:v7];
+  v11 = [v8 errorWithDomain:domain code:code userInfo:v7];
 
   return v11;
 }
 
-+ (id)errorsForIdentifiers:(id)a3 error:(id)a4
++ (id)errorsForIdentifiers:(id)identifiers error:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  identifiersCopy = identifiers;
+  errorCopy = error;
+  v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v5;
+  v8 = identifiersCopy;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -61,7 +61,7 @@
           objc_enumerationMutation(v8);
         }
 
-        [v7 setObject:v6 forKeyedSubscript:{*(*(&v15 + 1) + 8 * i), v15}];
+        [v7 setObject:errorCopy forKeyedSubscript:{*(*(&v15 + 1) + 8 * i), v15}];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -75,46 +75,46 @@
   return v7;
 }
 
-+ (id)preventWipeErrorWithReason:(id)a3 preventedByUser:(BOOL)a4
++ (id)preventWipeErrorWithReason:(id)reason preventedByUser:(BOOL)user
 {
-  v4 = a4;
+  userCopy = user;
   v15[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (reason)
   {
-    v6 = a3;
+    reasonCopy = reason;
   }
 
   else
   {
-    v6 = @"no reason";
+    reasonCopy = @"no reason";
   }
 
   v14 = @"CPLErrorResetReason";
-  v15[0] = v6;
+  v15[0] = reasonCopy;
   v7 = MEMORY[0x1E695DF20];
-  v8 = a3;
+  reasonCopy2 = reason;
   v9 = [v7 dictionaryWithObjects:v15 forKeys:&v14 count:1];
   v10 = @"Automatically prevented";
-  if (v4)
+  if (userCopy)
   {
     v10 = @"User prevented";
   }
 
-  v11 = [a1 cplErrorWithCode:1014 underlyingError:0 userInfo:v9 description:{@"%@ wipe for reason '%@'", v10, v8}];
+  v11 = [self cplErrorWithCode:1014 underlyingError:0 userInfo:v9 description:{@"%@ wipe for reason '%@'", v10, reasonCopy2}];
 
   v12 = *MEMORY[0x1E69E9840];
 
   return v11;
 }
 
-+ (id)cplErrorWithCode:(int64_t)a3 underlyingError:(id)a4 userInfo:(id)a5 description:(id)a6 arguments:(char *)a7
++ (id)cplErrorWithCode:(int64_t)code underlyingError:(id)error userInfo:(id)info description:(id)description arguments:(char *)arguments
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  errorCopy = error;
+  infoCopy = info;
+  descriptionCopy = description;
+  if (descriptionCopy)
   {
-    v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:v13 arguments:a7];
+    v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:descriptionCopy arguments:arguments];
   }
 
   else
@@ -124,9 +124,9 @@
 
   v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v16 = v15;
-  if (v12)
+  if (infoCopy)
   {
-    [v15 addEntriesFromDictionary:v12];
+    [v15 addEntriesFromDictionary:infoCopy];
   }
 
   if (v14)
@@ -134,42 +134,42 @@
     [v16 setObject:v14 forKey:*MEMORY[0x1E696A578]];
   }
 
-  if (v11)
+  if (errorCopy)
   {
-    [v16 setObject:v11 forKey:*MEMORY[0x1E696AA08]];
+    [v16 setObject:errorCopy forKey:*MEMORY[0x1E696AA08]];
   }
 
-  v17 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CloudPhotoLibraryErrorDomain" code:a3 userInfo:v16];
+  v17 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CloudPhotoLibraryErrorDomain" code:code userInfo:v16];
 
   return v17;
 }
 
-+ (id)cplErrorWithCode:(int64_t)a3 underlyingError:(id)a4 userInfo:(id)a5 description:(id)a6
++ (id)cplErrorWithCode:(int64_t)code underlyingError:(id)error userInfo:(id)info description:(id)description
 {
-  v6 = [a1 cplErrorWithCode:a3 underlyingError:a4 userInfo:a5 description:a6 arguments:&v9];
+  v6 = [self cplErrorWithCode:code underlyingError:error userInfo:info description:description arguments:&v9];
 
   return v6;
 }
 
-+ (id)cplErrorWithCode:(int64_t)a3 underlyingError:(id)a4 description:(id)a5
++ (id)cplErrorWithCode:(int64_t)code underlyingError:(id)error description:(id)description
 {
-  v5 = [a1 cplErrorWithCode:a3 underlyingError:a4 userInfo:0 description:a5 arguments:&v8];
+  v5 = [self cplErrorWithCode:code underlyingError:error userInfo:0 description:description arguments:&v8];
 
   return v5;
 }
 
-+ (id)cplErrorWithCode:(int64_t)a3 description:(id)a4
++ (id)cplErrorWithCode:(int64_t)code description:(id)description
 {
-  v4 = [a1 cplErrorWithCode:a3 description:a4 arguments:&v7];
+  v4 = [self cplErrorWithCode:code description:description arguments:&v7];
 
   return v4;
 }
 
-+ (id)posixErrorForURL:(id)a3 errorCode:(int)a4
++ (id)posixErrorForURL:(id)l errorCode:(int)code
 {
   v37[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!a4)
+  lCopy = l;
+  if (!code)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -181,15 +181,15 @@
       }
     }
 
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v30 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLErrors.m"];
-    [v29 handleFailureInMethod:a2 object:a1 file:v30 lineNumber:143 description:@"Trying to create a POSIX error without any error!"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v30 lineNumber:143 description:@"Trying to create a POSIX error without any error!"];
 
     abort();
   }
 
-  v8 = v7;
-  v9 = strerror(a4);
+  v8 = lCopy;
+  v9 = strerror(code);
   if (v9 && (v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:v9]) != 0)
   {
     v11 = v10;
@@ -220,25 +220,25 @@
     }
 
     v25 = [v16 dictionaryWithObjects:v17 forKeys:v18 count:v19];
-    v24 = [v12 errorWithDomain:v13 code:a4 userInfo:v25];
+    v24 = [v12 errorWithDomain:v13 code:code userInfo:v25];
   }
 
   else
   {
     v20 = MEMORY[0x1E696ABC0];
     v21 = *MEMORY[0x1E696A798];
-    v22 = a4;
+    codeCopy = code;
     if (v8)
     {
       v32 = *MEMORY[0x1E696A998];
       v33 = v8;
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
-      v24 = [v20 errorWithDomain:v21 code:v22 userInfo:v23];
+      v24 = [v20 errorWithDomain:v21 code:codeCopy userInfo:v23];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:a4 userInfo:0];
+      v24 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:code userInfo:0];
     }
   }
 
@@ -247,54 +247,54 @@
   return v24;
 }
 
-+ (id)posixErrorForURL:(id)a3
++ (id)posixErrorForURL:(id)l
 {
-  v4 = a3;
-  v5 = [a1 posixErrorForURL:v4 errorCode:*__error()];
+  lCopy = l;
+  v5 = [self posixErrorForURL:lCopy errorCode:*__error()];
 
   return v5;
 }
 
-+ (id)unableToDeserializeRecordInStorage:(id)a3
++ (id)unableToDeserializeRecordInStorage:(id)storage
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
+  storageCopy = storage;
   v6 = [v4 alloc];
-  v7 = [v5 name];
+  name = [storageCopy name];
 
-  v8 = [v6 initWithFormat:@"Unable to deserialize record in %@", v7];
-  v9 = [a1 invalidClientCacheErrorWithReason:v8];
+  v8 = [v6 initWithFormat:@"Unable to deserialize record in %@", name];
+  v9 = [self invalidClientCacheErrorWithReason:v8];
 
   return v9;
 }
 
-+ (id)unableToSerializeRecordError:(id)a3 inStorage:(id)a4
++ (id)unableToSerializeRecordError:(id)error inStorage:(id)storage
 {
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a4;
-  v8 = a3;
+  storageCopy = storage;
+  errorCopy = error;
   v9 = [v6 alloc];
   v10 = objc_opt_class();
 
-  v11 = [v7 name];
+  name = [storageCopy name];
 
-  v12 = [v9 initWithFormat:@"Unable to serialize %@ in %@", v10, v11];
-  v13 = [a1 invalidClientCacheErrorWithReason:v12];
+  v12 = [v9 initWithFormat:@"Unable to serialize %@ in %@", v10, name];
+  v13 = [self invalidClientCacheErrorWithReason:v12];
 
   return v13;
 }
 
-+ (id)invalidCloudCacheErrorWithReason:(id)a3
++ (id)invalidCloudCacheErrorWithReason:(id)reason
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (reason)
   {
     v9 = @"CPLErrorResetReason";
-    v10 = a3;
+    reasonCopy = reason;
     v3 = MEMORY[0x1E695DF20];
-    v4 = a3;
-    v5 = [v3 dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-    v6 = [CPLErrors cplErrorWithCode:21 underlyingError:0 userInfo:v5 description:@"Cloud cache is invalid: %@", v4, v9, v10, v11];
+    reasonCopy2 = reason;
+    v5 = [v3 dictionaryWithObjects:&reasonCopy forKeys:&v9 count:1];
+    v6 = [CPLErrors cplErrorWithCode:21 underlyingError:0 userInfo:v5 description:@"Cloud cache is invalid: %@", reasonCopy2, v9, reasonCopy, v11];
   }
 
   else
@@ -307,17 +307,17 @@
   return v6;
 }
 
-+ (id)invalidClientCacheErrorWithReason:(id)a3
++ (id)invalidClientCacheErrorWithReason:(id)reason
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (reason)
   {
     v9 = @"CPLErrorResetReason";
-    v10 = a3;
+    reasonCopy = reason;
     v3 = MEMORY[0x1E695DF20];
-    v4 = a3;
-    v5 = [v3 dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-    v6 = [CPLErrors cplErrorWithCode:20 underlyingError:0 userInfo:v5 description:@"Client cache is invalid: %@", v4, v9, v10, v11];
+    reasonCopy2 = reason;
+    v5 = [v3 dictionaryWithObjects:&reasonCopy forKeys:&v9 count:1];
+    v6 = [CPLErrors cplErrorWithCode:20 underlyingError:0 userInfo:v5 description:@"Client cache is invalid: %@", reasonCopy2, v9, reasonCopy, v11];
   }
 
   else
@@ -330,16 +330,16 @@
   return v6;
 }
 
-+ (id)underlyingErrorWithReason:(id)a3
++ (id)underlyingErrorWithReason:(id)reason
 {
-  v3 = [a1 cplErrorWithCode:256 description:a3 arguments:&v6];
+  v3 = [self cplErrorWithCode:256 description:reason arguments:&v6];
 
   return v3;
 }
 
-+ (id)incorrectMachineStateErrorWithReason:(id)a3
++ (id)incorrectMachineStateErrorWithReason:(id)reason
 {
-  v3 = [a1 cplErrorWithCode:100 description:a3 arguments:&v6];
+  v3 = [self cplErrorWithCode:100 description:reason arguments:&v6];
 
   return v3;
 }

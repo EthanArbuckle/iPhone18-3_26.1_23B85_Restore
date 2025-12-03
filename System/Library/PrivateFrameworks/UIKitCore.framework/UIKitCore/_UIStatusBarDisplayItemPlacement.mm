@@ -1,45 +1,45 @@
 @interface _UIStatusBarDisplayItemPlacement
-+ (_UIStatusBarDisplayItemPlacement)placementWithIdentifier:(id)a3 priority:(int64_t)a4;
-+ (id)spacerPlacementWithSize:(CGSize)a3 priority:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (_UIStatusBarDisplayItemPlacement)placementWithIdentifier:(id)identifier priority:(int64_t)priority;
++ (id)spacerPlacementWithSize:(CGSize)size priority:(int64_t)priority;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (id)excludingAllPlacementsInRegions:(id)a3 exceptPlacements:(id)a4;
-- (id)excludingPlacements:(id)a3;
-- (id)requiringAllPlacements:(id)a3;
-- (id)requiringAnyPlacements:(id)a3;
+- (id)excludingAllPlacementsInRegions:(id)regions exceptPlacements:(id)placements;
+- (id)excludingPlacements:(id)placements;
+- (id)requiringAllPlacements:(id)placements;
+- (id)requiringAnyPlacements:(id)placements;
 - (unint64_t)hash;
 @end
 
 @implementation _UIStatusBarDisplayItemPlacement
 
-+ (_UIStatusBarDisplayItemPlacement)placementWithIdentifier:(id)a3 priority:(int64_t)a4
++ (_UIStatusBarDisplayItemPlacement)placementWithIdentifier:(id)identifier priority:(int64_t)priority
 {
-  v7 = a3;
-  v8 = objc_alloc_init(a1);
-  if (!v7)
+  identifierCopy = identifier;
+  v8 = objc_alloc_init(self);
+  if (!identifierCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"_UIStatusBarDisplayItemPlacement.m" lineNumber:21 description:@"identifier must not be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBarDisplayItemPlacement.m" lineNumber:21 description:@"identifier must not be nil"];
   }
 
   v9 = v8[3];
-  v8[3] = v7;
+  v8[3] = identifierCopy;
 
-  v8[2] = a4;
+  v8[2] = priority;
   *(v8 + 8) = 1;
 
   return v8;
 }
 
-- (id)excludingPlacements:(id)a3
+- (id)excludingPlacements:(id)placements
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  placementsCopy = placements;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  v6 = [placementsCopy countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v6)
   {
     v7 = v6;
@@ -50,28 +50,28 @@
       {
         if (*v29 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(placementsCopy);
         }
 
         v10 = *(*(&v28 + 1) + 8 * i);
-        v11 = [v10 priority];
-        if (v11 >= [(_UIStatusBarDisplayItemPlacement *)self priority])
+        priority = [v10 priority];
+        if (priority >= [(_UIStatusBarDisplayItemPlacement *)self priority])
         {
-          v14 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v14 handleFailureInMethod:a2 object:self file:@"_UIStatusBarDisplayItemPlacement.m" lineNumber:39 description:{@"Item placement %@ can't exclude item placement with higher priority %@", self, v10}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBarDisplayItemPlacement.m" lineNumber:39 description:{@"Item placement %@ can't exclude item placement with higher priority %@", self, v10}];
         }
 
-        v12 = [v10 identifier];
-        v13 = [(_UIStatusBarDisplayItemPlacement *)self identifier];
+        identifier = [v10 identifier];
+        identifier2 = [(_UIStatusBarDisplayItemPlacement *)self identifier];
 
-        if (v12 == v13)
+        if (identifier == identifier2)
         {
-          v15 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v15 handleFailureInMethod:a2 object:self file:@"_UIStatusBarDisplayItemPlacement.m" lineNumber:40 description:{@"Item placement %@ can't exclude item placement with same identifier %@", self, v10}];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIStatusBarDisplayItemPlacement.m" lineNumber:40 description:{@"Item placement %@ can't exclude item placement with same identifier %@", self, v10}];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v7 = [placementsCopy countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v7);
@@ -79,16 +79,16 @@
 
   if (!self->_excludedPlacements)
   {
-    v16 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     excludedPlacements = self->_excludedPlacements;
-    self->_excludedPlacements = v16;
+    self->_excludedPlacements = weakObjectsHashTable;
   }
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v18 = v5;
+  v18 = placementsCopy;
   v19 = [v18 countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v19)
   {
@@ -115,28 +115,28 @@
   return self;
 }
 
-- (id)excludingAllPlacementsInRegions:(id)a3 exceptPlacements:(id)a4
+- (id)excludingAllPlacementsInRegions:(id)regions exceptPlacements:(id)placements
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  regionsCopy = regions;
+  placementsCopy = placements;
   excludedRegionIdentifiers = self->_excludedRegionIdentifiers;
   if (excludedRegionIdentifiers)
   {
-    v9 = [(NSSet *)excludedRegionIdentifiers setByAddingObjectsFromArray:v6];
+    v9 = [(NSSet *)excludedRegionIdentifiers setByAddingObjectsFromArray:regionsCopy];
     v10 = self->_excludedRegionIdentifiers;
     self->_excludedRegionIdentifiers = v9;
   }
 
   else
   {
-    v11 = [MEMORY[0x1E695DFD8] setWithArray:v6];
+    v11 = [MEMORY[0x1E695DFD8] setWithArray:regionsCopy];
     v12 = self->_excludedRegionIdentifiers;
     self->_excludedRegionIdentifiers = v11;
 
-    v13 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     includedPlacements = self->_includedPlacements;
-    self->_includedPlacements = v13;
+    self->_includedPlacements = weakObjectsHashTable;
 
     [(NSHashTable *)self->_includedPlacements addObject:self];
   }
@@ -145,7 +145,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v15 = v7;
+  v15 = placementsCopy;
   v16 = [v15 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v16)
   {
@@ -174,15 +174,15 @@
   return self;
 }
 
-- (id)requiringAllPlacements:(id)a3
+- (id)requiringAllPlacements:(id)placements
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  placementsCopy = placements;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  v6 = [placementsCopy countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v6)
   {
     v7 = v6;
@@ -193,28 +193,28 @@
       {
         if (*v29 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(placementsCopy);
         }
 
         v10 = *(*(&v28 + 1) + 8 * i);
-        v11 = [v10 priority];
-        if (v11 <= [(_UIStatusBarDisplayItemPlacement *)self priority])
+        priority = [v10 priority];
+        if (priority <= [(_UIStatusBarDisplayItemPlacement *)self priority])
         {
-          v14 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v14 handleFailureInMethod:a2 object:self file:@"_UIStatusBarDisplayItemPlacement.m" lineNumber:80 description:{@"Item placement %@ can't require item placement with lower priority %@", self, v10}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBarDisplayItemPlacement.m" lineNumber:80 description:{@"Item placement %@ can't require item placement with lower priority %@", self, v10}];
         }
 
-        v12 = [v10 identifier];
-        v13 = [(_UIStatusBarDisplayItemPlacement *)self identifier];
+        identifier = [v10 identifier];
+        identifier2 = [(_UIStatusBarDisplayItemPlacement *)self identifier];
 
-        if (v12 == v13)
+        if (identifier == identifier2)
         {
-          v15 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v15 handleFailureInMethod:a2 object:self file:@"_UIStatusBarDisplayItemPlacement.m" lineNumber:81 description:{@"Item placement %@ can't require item placement with same identifier %@", self, v10}];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIStatusBarDisplayItemPlacement.m" lineNumber:81 description:{@"Item placement %@ can't require item placement with same identifier %@", self, v10}];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v7 = [placementsCopy countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v7);
@@ -222,16 +222,16 @@
 
   if (!self->_allRequiredPlacements)
   {
-    v16 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     allRequiredPlacements = self->_allRequiredPlacements;
-    self->_allRequiredPlacements = v16;
+    self->_allRequiredPlacements = weakObjectsHashTable;
   }
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v18 = v5;
+  v18 = placementsCopy;
   v19 = [v18 countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v19)
   {
@@ -258,15 +258,15 @@
   return self;
 }
 
-- (id)requiringAnyPlacements:(id)a3
+- (id)requiringAnyPlacements:(id)placements
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  placementsCopy = placements;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  v6 = [placementsCopy countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v6)
   {
     v7 = v6;
@@ -277,28 +277,28 @@
       {
         if (*v29 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(placementsCopy);
         }
 
         v10 = *(*(&v28 + 1) + 8 * i);
-        v11 = [v10 priority];
-        if (v11 <= [(_UIStatusBarDisplayItemPlacement *)self priority])
+        priority = [v10 priority];
+        if (priority <= [(_UIStatusBarDisplayItemPlacement *)self priority])
         {
-          v14 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v14 handleFailureInMethod:a2 object:self file:@"_UIStatusBarDisplayItemPlacement.m" lineNumber:98 description:{@"Item placement %@ can't require item placement with lower priority %@", self, v10}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBarDisplayItemPlacement.m" lineNumber:98 description:{@"Item placement %@ can't require item placement with lower priority %@", self, v10}];
         }
 
-        v12 = [v10 identifier];
-        v13 = [(_UIStatusBarDisplayItemPlacement *)self identifier];
+        identifier = [v10 identifier];
+        identifier2 = [(_UIStatusBarDisplayItemPlacement *)self identifier];
 
-        if (v12 == v13)
+        if (identifier == identifier2)
         {
-          v15 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v15 handleFailureInMethod:a2 object:self file:@"_UIStatusBarDisplayItemPlacement.m" lineNumber:99 description:{@"Item placement %@ can't require item placement with same identifier %@", self, v10}];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIStatusBarDisplayItemPlacement.m" lineNumber:99 description:{@"Item placement %@ can't require item placement with same identifier %@", self, v10}];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v7 = [placementsCopy countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v7);
@@ -306,16 +306,16 @@
 
   if (!self->_anyRequiredPlacements)
   {
-    v16 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     anyRequiredPlacements = self->_anyRequiredPlacements;
-    self->_anyRequiredPlacements = v16;
+    self->_anyRequiredPlacements = weakObjectsHashTable;
   }
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v18 = v5;
+  v18 = placementsCopy;
   v19 = [v18 countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v19)
   {
@@ -342,19 +342,19 @@
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_identifier == v4[3] && self->_priority == v4[2];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_identifier == equalCopy[3] && self->_priority == equalCopy[2];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(_UIStatusBarDisplayItemPlacement *)self identifier];
-  v4 = [v3 hash];
+  identifier = [(_UIStatusBarDisplayItemPlacement *)self identifier];
+  v4 = [identifier hash];
   priority = self->_priority;
 
   return priority ^ v4;
@@ -364,8 +364,8 @@
 {
   v19[6] = *MEMORY[0x1E69E9840];
   v18[0] = @"identifier";
-  v17 = [(_UIStatusBarDisplayItemPlacement *)self identifier];
-  v19[0] = v17;
+  identifier = [(_UIStatusBarDisplayItemPlacement *)self identifier];
+  v19[0] = identifier;
   v18[1] = @"enabled";
   v3 = [MEMORY[0x1E696AD98] numberWithBool:{-[_UIStatusBarDisplayItemPlacement isEnabled](self, "isEnabled")}];
   v19[1] = v3;
@@ -374,18 +374,18 @@
   v19[2] = v4;
   v18[3] = @"excludedPlacements";
   v5 = MEMORY[0x1E696AD98];
-  v6 = [(_UIStatusBarDisplayItemPlacement *)self excludedPlacements];
-  v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(v6, "count")}];
+  excludedPlacements = [(_UIStatusBarDisplayItemPlacement *)self excludedPlacements];
+  v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(excludedPlacements, "count")}];
   v19[3] = v7;
   v18[4] = @"allRequiredPlacements";
   v8 = MEMORY[0x1E696AD98];
-  v9 = [(_UIStatusBarDisplayItemPlacement *)self allRequiredPlacements];
-  v10 = [v8 numberWithUnsignedInteger:{objc_msgSend(v9, "count")}];
+  allRequiredPlacements = [(_UIStatusBarDisplayItemPlacement *)self allRequiredPlacements];
+  v10 = [v8 numberWithUnsignedInteger:{objc_msgSend(allRequiredPlacements, "count")}];
   v19[4] = v10;
   v18[5] = @"anyRequiredPlacements";
   v11 = MEMORY[0x1E696AD98];
-  v12 = [(_UIStatusBarDisplayItemPlacement *)self anyRequiredPlacements];
-  v13 = [v11 numberWithUnsignedInteger:{objc_msgSend(v12, "count")}];
+  anyRequiredPlacements = [(_UIStatusBarDisplayItemPlacement *)self anyRequiredPlacements];
+  v13 = [v11 numberWithUnsignedInteger:{objc_msgSend(anyRequiredPlacements, "count")}];
   v19[5] = v13;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:6];
   v15 = [UIDescriptionBuilder descriptionForObject:self namesAndObjects:v14];
@@ -393,13 +393,13 @@
   return v15;
 }
 
-+ (id)spacerPlacementWithSize:(CGSize)a3 priority:(int64_t)a4
++ (id)spacerPlacementWithSize:(CGSize)size priority:(int64_t)priority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v14[1] = *MEMORY[0x1E69E9840];
   v7 = +[_UIStatusBarSpacerItem randomDisplayIdentifier];
-  v8 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v7 priority:a4];
+  v8 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v7 priority:priority];
   v13 = @"size";
   v9 = [MEMORY[0x1E696B098] valueWithCGSize:{width, height}];
   v14[0] = v9;

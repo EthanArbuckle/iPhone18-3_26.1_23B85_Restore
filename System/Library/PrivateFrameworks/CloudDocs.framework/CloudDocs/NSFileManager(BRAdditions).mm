@@ -55,15 +55,15 @@
   v3 = a3;
   if ([v3 br_isInSyncedLocation])
   {
-    v4 = [v3 br_logicalURL];
+    br_logicalURL = [v3 br_logicalURL];
 
-    v5 = [v4 br_cloudDocsContainer];
-    v6 = [v5 trashRestoreStringForURL:v4];
-    v7 = [v4 URLByDeletingLastPathComponent];
-    v8 = [v7 br_itemID];
+    br_cloudDocsContainer = [br_logicalURL br_cloudDocsContainer];
+    v6 = [br_cloudDocsContainer trashRestoreStringForURL:br_logicalURL];
+    uRLByDeletingLastPathComponent = [br_logicalURL URLByDeletingLastPathComponent];
+    br_itemID = [uRLByDeletingLastPathComponent br_itemID];
 
-    v9 = [v6 pathComponents];
-    v10 = [v9 containsObject:@".Trash"];
+    pathComponents = [v6 pathComponents];
+    v10 = [pathComponents containsObject:@".Trash"];
 
     if (v10)
     {
@@ -77,14 +77,14 @@
 
     else
     {
-      v14 = [v4 br_physicalURL];
+      br_physicalURL = [br_logicalURL br_physicalURL];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __59__NSFileManager_BRAdditions__br_setPutBackInfoOnItemAtURL___block_invoke;
       v17[3] = &unk_1E7A14A58;
       v18 = v6;
-      v19 = v8;
-      v15 = [v14 fp_withReadWriteAccess:v17];
+      v19 = br_itemID;
+      v15 = [br_physicalURL fp_withReadWriteAccess:v17];
 
       v11 = v18;
     }
@@ -92,19 +92,19 @@
 
   else
   {
-    v5 = brc_bread_crumbs("[NSFileManager(BRAdditions) br_setPutBackInfoOnItemAtURL:]", 61);
+    br_cloudDocsContainer = brc_bread_crumbs("[NSFileManager(BRAdditions) br_setPutBackInfoOnItemAtURL:]", 61);
     v6 = brc_default_log(1, 0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v3 path];
+      path = [v3 path];
       *buf = 138412546;
-      v21 = v13;
+      v21 = path;
       v22 = 2112;
-      v23 = v5;
+      v23 = br_cloudDocsContainer;
       _os_log_impl(&dword_1AE2A9000, v6, OS_LOG_TYPE_DEFAULT, "[WARNING] Can't set the put back URL of something outside Mobile Docs: %@%@", buf, 0x16u);
     }
 
-    v4 = v3;
+    br_logicalURL = v3;
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -152,7 +152,7 @@
 {
   v49 = *MEMORY[0x1E69E9840];
   v7 = a3;
-  v8 = [MEMORY[0x1E69673A8] defaultManager];
+  defaultManager = [MEMORY[0x1E69673A8] defaultManager];
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -160,7 +160,7 @@
   v35 = __Block_byref_object_dispose__0;
   v36 = 0;
   obj = 0;
-  v9 = [v8 itemForURL:v7 error:&obj];
+  v9 = [defaultManager itemForURL:v7 error:&obj];
   objc_storeStrong(&v36, obj);
   v10 = v32[5];
   if (v10)
@@ -269,8 +269,8 @@
 {
   v33[1] = *MEMORY[0x1E69E9840];
   v7 = a3;
-  v8 = [MEMORY[0x1E69673A8] defaultManager];
-  v9 = [v8 itemForURL:v7 error:a5];
+  defaultManager = [MEMORY[0x1E69673A8] defaultManager];
+  v9 = [defaultManager itemForURL:v7 error:a5];
 
   if (v9)
   {
@@ -335,28 +335,28 @@
   v7 = v6;
   if (v5)
   {
-    v8 = [v6 br_physicalURL];
+    br_physicalURL = [v6 br_physicalURL];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __61__NSFileManager_BRAdditions__br_setLastOpenDate_onItemAtURL___block_invoke;
     v10[3] = &unk_1E7A14A58;
     v11 = v5;
     v12 = v7;
-    v9 = [v8 fp_withReadWriteAccess:v10];
+    v9 = [br_physicalURL fp_withReadWriteAccess:v10];
   }
 }
 
 - (void)br_setFavoriteRank:()BRAdditions onItemAtURL:
 {
   v5 = a3;
-  v6 = [a4 br_physicalURL];
+  br_physicalURL = [a4 br_physicalURL];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__NSFileManager_BRAdditions__br_setFavoriteRank_onItemAtURL___block_invoke;
   v9[3] = &unk_1E7A14AD0;
   v10 = v5;
   v7 = v5;
-  v8 = [v6 fp_withReadWriteAccess:v9];
+  v8 = [br_physicalURL fp_withReadWriteAccess:v9];
 }
 
 - (uint64_t)br_forceMoveItemAtURL:()BRAdditions toURL:error:
@@ -366,12 +366,12 @@
   if (v9)
   {
     v16 = 0;
-    v10 = [a1 removeItemAtURL:v9 error:&v16];
+    v10 = [self removeItemAtURL:v9 error:&v16];
     v11 = v16;
     v12 = v11;
     if (v10 & 1) != 0 || ([v11 br_isCocoaErrorCode:4])
     {
-      v13 = [a1 moveItemAtURL:v8 toURL:v9 error:a5];
+      v13 = [self moveItemAtURL:v8 toURL:v9 error:a5];
     }
 
     else if (a5)

@@ -1,17 +1,17 @@
 @interface pipeChannel
 - (int)pipeClose;
 - (int)pipeOpen;
-- (int)pipeTransceive:(id)a3 DataOut:(id)a4;
+- (int)pipeTransceive:(id)transceive DataOut:(id)out;
 - (int)pipeWait;
-- (int)pipeWrite:(id)a3;
-- (pipeChannel)initWithName:(id)a3 Channel:(unsigned int)a4;
+- (int)pipeWrite:(id)write;
+- (pipeChannel)initWithName:(id)name Channel:(unsigned int)channel;
 @end
 
 @implementation pipeChannel
 
-- (pipeChannel)initWithName:(id)a3 Channel:(unsigned int)a4
+- (pipeChannel)initWithName:(id)name Channel:(unsigned int)channel
 {
-  v7 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = pipeChannel;
   v8 = [(pipeChannel *)&v13 init];
@@ -25,8 +25,8 @@
     v9->_fidCtx = 0;
 
     v9->_shareID = 0;
-    objc_storeStrong(&v9->_pipeName, a3);
-    v9->_channel = a4;
+    objc_storeStrong(&v9->_pipeName, name);
+    v9->_channel = channel;
     v9->_pipeIsOpen = 0;
   }
 
@@ -70,8 +70,8 @@
     v3 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      v4 = [(pipeChannel *)self channel];
-      sub_10004C4B4(buf, v4, v5);
+      channel = [(pipeChannel *)self channel];
+      sub_10004C4B4(buf, channel, v5);
     }
 
     v6 = 0;
@@ -79,9 +79,9 @@
 
   else
   {
-    v7 = [(pipeChannel *)self pipeWait];
-    *(v29[0] + 24) = v7;
-    if (v7)
+    pipeWait = [(pipeChannel *)self pipeWait];
+    *(v29[0] + 24) = pipeWait;
+    if (pipeWait)
     {
       v8 = &_os_log_default;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -116,8 +116,8 @@
       *(v10 + 12) = xmmword_10006D490;
       dispatch_group_enter(v9);
       v11 = [(pipeChannel *)self pd];
-      v12 = [(pipeChannel *)self shareID];
-      v13 = [(pipeChannel *)self pipeName];
+      shareID = [(pipeChannel *)self shareID];
+      pipeName = [(pipeChannel *)self pipeName];
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_100004888;
@@ -128,26 +128,26 @@
       v27 = v10;
       v14 = v9;
       v23 = v14;
-      [smb_subr sendCreateFile:v11 ShareID:v12 FileName:v13 StreamName:0 Param:v10 CompletionHandler:v22];
+      [smb_subr sendCreateFile:v11 ShareID:shareID FileName:pipeName StreamName:0 Param:v10 CompletionHandler:v22];
 
       dispatch_group_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
       [(pipeChannel *)self setFidCtx:v32[5]];
-      v15 = [(pipeChannel *)self fidCtx];
-      LOBYTE(v10) = v15 == 0;
+      fidCtx = [(pipeChannel *)self fidCtx];
+      LOBYTE(v10) = fidCtx == 0;
 
       if (v10)
       {
         v16 = &_os_log_default;
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
         {
-          v18 = [(pipeChannel *)self channel];
-          v19 = [(pipeChannel *)self pipeName];
+          channel2 = [(pipeChannel *)self channel];
+          pipeName2 = [(pipeChannel *)self pipeName];
           v20 = *(v29[0] + 24);
           v21 = *(v46 + 21);
           *buf = 67109890;
-          v38 = v18;
+          v38 = channel2;
           v39 = 2112;
-          v40 = v19;
+          v40 = pipeName2;
           v41 = 1024;
           v42 = v20;
           v43 = 1024;
@@ -187,8 +187,8 @@
   v3 = dispatch_group_create();
   dispatch_group_enter(v3);
   v4 = [(pipeChannel *)self pd];
-  v5 = [(pipeChannel *)self pipeName];
-  v6 = [(pipeChannel *)self shareID];
+  pipeName = [(pipeChannel *)self pipeName];
+  shareID = [(pipeChannel *)self shareID];
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_100004B5C;
@@ -196,7 +196,7 @@
   v17 = &v18;
   v7 = v3;
   v16 = v7;
-  [smb_subr sendPipeWait:v4 Pipe:v5 ShareID:v6 Timeout:0 CompletionHandler:&v12];
+  [smb_subr sendPipeWait:v4 Pipe:pipeName ShareID:shareID Timeout:0 CompletionHandler:&v12];
 
   dispatch_group_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   if (*(v19[0] + 24))
@@ -205,8 +205,8 @@
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       [(pipeChannel *)self channel:v12];
-      v9 = [(pipeChannel *)self pipeName];
-      sub_10004C4F8(v9, v19);
+      pipeName2 = [(pipeChannel *)self pipeName];
+      sub_10004C4F8(pipeName2, v19);
     }
 
     v10 = *(v19[0] + 24);
@@ -230,9 +230,9 @@
   v18 = 0;
   if (self->_pipeIsOpen)
   {
-    v4 = [(pipeChannel *)self fidCtx];
+    fidCtx = [(pipeChannel *)self fidCtx];
 
-    if (v4)
+    if (fidCtx)
     {
       v5 = dispatch_group_create();
       v6 = malloc_type_malloc(0x40uLL, 0x100004022DBA428uLL);
@@ -241,26 +241,26 @@
       *v6 = 0u;
       v6[1] = 0u;
       dispatch_group_enter(v5);
-      v7 = [(pipeChannel *)self fidCtx];
+      fidCtx2 = [(pipeChannel *)self fidCtx];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_100004D94;
       v12[3] = &unk_10008C830;
       v14 = &v16;
       v15 = v6;
-      v4 = v5;
-      v13 = v4;
-      [smb_subr sendClose:v7 Param:v6 GetPostAttrs:0 CompletionHandler:v12];
+      fidCtx = v5;
+      v13 = fidCtx;
+      [smb_subr sendClose:fidCtx2 Param:v6 GetPostAttrs:0 CompletionHandler:v12];
 
-      dispatch_group_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
+      dispatch_group_wait(fidCtx, 0xFFFFFFFFFFFFFFFFLL);
       if (*(v17[0] + 24))
       {
         v8 = &_os_log_default;
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
         {
           [(pipeChannel *)self channel];
-          v9 = [(pipeChannel *)self pipeName];
-          sub_10004C544(v9, v17);
+          pipeName = [(pipeChannel *)self pipeName];
+          sub_10004C544(pipeName, v17);
         }
       }
     }
@@ -276,10 +276,10 @@
   return v2;
 }
 
-- (int)pipeTransceive:(id)a3 DataOut:(id)a4
+- (int)pipeTransceive:(id)transceive DataOut:(id)out
 {
-  v6 = a3;
-  v7 = a4;
+  transceiveCopy = transceive;
+  outCopy = out;
   v24 = 0;
   v25[0] = &v24;
   v25[1] = 0x2020000000;
@@ -288,7 +288,7 @@
   {
     v8 = dispatch_group_create();
     dispatch_group_enter(v8);
-    v9 = [(pipeChannel *)self fidCtx];
+    fidCtx = [(pipeChannel *)self fidCtx];
     v18 = _NSConcreteStackBlock;
     v19 = 3221225472;
     v20 = sub_10000503C;
@@ -296,7 +296,7 @@
     v23 = &v24;
     v10 = v8;
     v22 = v10;
-    [smb_subr sendPipeTransceive:v9 InData:v6 OutData:v7 CompletionHandler:&v18];
+    [smb_subr sendPipeTransceive:fidCtx InData:transceiveCopy OutData:outCopy CompletionHandler:&v18];
 
     dispatch_group_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
     if (*(v25[0] + 24))
@@ -305,8 +305,8 @@
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
         [(pipeChannel *)self channel:v18];
-        v12 = [(pipeChannel *)self pipeName];
-        sub_10004C5E8(v12, v25);
+        pipeName = [(pipeChannel *)self pipeName];
+        sub_10004C5E8(pipeName, v25);
       }
 
       v13 = *(v25[0] + 24);
@@ -323,9 +323,9 @@
     v14 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      v15 = [(pipeChannel *)self channel];
-      v16 = [(pipeChannel *)self pipeName];
-      sub_10004C590(v16, v27, v15);
+      channel = [(pipeChannel *)self channel];
+      pipeName2 = [(pipeChannel *)self pipeName];
+      sub_10004C590(pipeName2, v27, channel);
     }
 
     v13 = 9;
@@ -337,9 +337,9 @@
   return v13;
 }
 
-- (int)pipeWrite:(id)a3
+- (int)pipeWrite:(id)write
 {
-  v4 = a3;
+  writeCopy = write;
   v21 = 0;
   v22[0] = &v21;
   v22[1] = 0x2020000000;
@@ -349,12 +349,12 @@
     v5 = malloc_type_malloc(0x20uLL, 0x1010040BA4D407CuLL);
     *v5 = 0u;
     v5[1] = 0u;
-    *(v5 + 4) = [v4 length];
-    v6 = v4;
-    *(v5 + 1) = [v4 bytes];
+    *(v5 + 4) = [writeCopy length];
+    v6 = writeCopy;
+    *(v5 + 1) = [writeCopy bytes];
     v7 = dispatch_group_create();
     dispatch_group_enter(v7);
-    v8 = [(pipeChannel *)self fidCtx];
+    fidCtx = [(pipeChannel *)self fidCtx];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_1000052E0;
@@ -363,7 +363,7 @@
     v20 = v5;
     v9 = v7;
     v18 = v9;
-    [smb_subr sendWrite:v8 Param:v5 WriteBuf:v4 CompletionHandler:v17];
+    [smb_subr sendWrite:fidCtx Param:v5 WriteBuf:writeCopy CompletionHandler:v17];
 
     dispatch_group_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
     if (*(v22[0] + 24))
@@ -372,8 +372,8 @@
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
         [(pipeChannel *)self channel];
-        v11 = [(pipeChannel *)self pipeName];
-        sub_10004C68C(v11, v22);
+        pipeName = [(pipeChannel *)self pipeName];
+        sub_10004C68C(pipeName, v22);
       }
 
       v12 = *(v22[0] + 24);
@@ -391,9 +391,9 @@
     v13 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      v14 = [(pipeChannel *)self channel];
-      v15 = [(pipeChannel *)self pipeName];
-      sub_10004C634(v15, v24, v14);
+      channel = [(pipeChannel *)self channel];
+      pipeName2 = [(pipeChannel *)self pipeName];
+      sub_10004C634(pipeName2, v24, channel);
       v12 = 9;
       v9 = &_os_log_default;
     }

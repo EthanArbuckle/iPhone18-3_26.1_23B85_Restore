@@ -1,13 +1,13 @@
 @interface OrgApacheLuceneUtilPagedBytes_PagedBytesDataOutput
-- (OrgApacheLuceneUtilPagedBytes_PagedBytesDataOutput)initWithOrgApacheLuceneUtilPagedBytes:(id)a3;
+- (OrgApacheLuceneUtilPagedBytes_PagedBytesDataOutput)initWithOrgApacheLuceneUtilPagedBytes:(id)bytes;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilPagedBytes_PagedBytesDataOutput
 
-- (OrgApacheLuceneUtilPagedBytes_PagedBytesDataOutput)initWithOrgApacheLuceneUtilPagedBytes:(id)a3
+- (OrgApacheLuceneUtilPagedBytes_PagedBytesDataOutput)initWithOrgApacheLuceneUtilPagedBytes:(id)bytes
 {
-  JreStrongAssign(&self->this$0_, a3);
+  JreStrongAssign(&self->this$0_, bytes);
   OrgApacheLuceneStoreDataOutput_init(self, v4);
   return self;
 }

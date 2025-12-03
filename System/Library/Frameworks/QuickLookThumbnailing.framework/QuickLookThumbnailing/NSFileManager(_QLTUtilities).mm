@@ -8,15 +8,15 @@
 {
   v22 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v4 path];
-  v7 = [v5 fileExistsAtPath:v6];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v4 path];
+  v7 = [defaultManager fileExistsAtPath:path];
 
   if (v7)
   {
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v15 = 0;
-    v9 = [v8 removeItemAtURL:v4 error:&v15];
+    v9 = [defaultManager2 removeItemAtURL:v4 error:&v15];
     v10 = v15;
 
     v11 = _log();

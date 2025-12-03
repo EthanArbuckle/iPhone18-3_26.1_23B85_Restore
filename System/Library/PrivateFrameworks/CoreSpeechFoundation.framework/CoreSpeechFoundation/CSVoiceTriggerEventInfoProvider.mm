@@ -1,19 +1,19 @@
 @interface CSVoiceTriggerEventInfoProvider
-+ (BOOL)isVoiceTriggerInfoAvailableLocally:(id)a3;
++ (BOOL)isVoiceTriggerInfoAvailableLocally:(id)locally;
 + (id)sharedInstance;
-- (BOOL)_isBuiltInDeviceFromDeviceId:(id)a3;
+- (BOOL)_isBuiltInDeviceFromDeviceId:(id)id;
 - (CSVoiceTriggerEventInfoProvider)init;
-- (void)fetchVoiceTriggerInfoWithAudioContext:(id)a3 resultVoiceTriggerInfo:(id *)a4 resultRTSTriggerInfo:(id *)a5;
-- (void)setVoiceTriggerInfo:(id)a3 deviceId:(id)a4;
+- (void)fetchVoiceTriggerInfoWithAudioContext:(id)context resultVoiceTriggerInfo:(id *)info resultRTSTriggerInfo:(id *)triggerInfo;
+- (void)setVoiceTriggerInfo:(id)info deviceId:(id)id;
 @end
 
 @implementation CSVoiceTriggerEventInfoProvider
 
-- (BOOL)_isBuiltInDeviceFromDeviceId:(id)a3
+- (BOOL)_isBuiltInDeviceFromDeviceId:(id)id
 {
-  if (a3)
+  if (id)
   {
-    return [a3 isEqualToString:@"BuiltInMicrophoneDevice"];
+    return [id isEqualToString:@"BuiltInMicrophoneDevice"];
   }
 
   else
@@ -22,9 +22,9 @@
   }
 }
 
-- (void)fetchVoiceTriggerInfoWithAudioContext:(id)a3 resultVoiceTriggerInfo:(id *)a4 resultRTSTriggerInfo:(id *)a5
+- (void)fetchVoiceTriggerInfoWithAudioContext:(id)context resultVoiceTriggerInfo:(id *)info resultRTSTriggerInfo:(id *)triggerInfo
 {
-  v8 = a3;
+  contextCopy = context;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -37,12 +37,12 @@
   v25 = __Block_byref_object_copy__2649;
   v26 = __Block_byref_object_dispose__2650;
   v27 = 0;
-  v9 = [v8 deviceId];
-  if ([v8 isDarwinVoiceTriggered])
+  deviceId = [contextCopy deviceId];
+  if ([contextCopy isDarwinVoiceTriggered])
   {
     v10 = +[CSRemoteDarwinDeviceInfo sharedInstance];
-    v11 = [v8 deviceId];
-    v12 = [v10 fetchDeviceUUIDStringFromUID:v11];
+    deviceId2 = [contextCopy deviceId];
+    v12 = [v10 fetchDeviceUUIDStringFromUID:deviceId2];
 
     v13 = +[CSDarwinVoiceTriggerEventInfoProvider sharedInstance];
     v14 = [v13 getMachTimeAdjustedVoiceTriggerEventInfoForDeviceUUID:v12];
@@ -57,22 +57,22 @@
     v17[1] = 3221225472;
     v17[2] = __117__CSVoiceTriggerEventInfoProvider_fetchVoiceTriggerInfoWithAudioContext_resultVoiceTriggerInfo_resultRTSTriggerInfo___block_invoke;
     v17[3] = &unk_1E865C808;
-    v18 = v9;
-    v19 = self;
+    v18 = deviceId;
+    selfCopy = self;
     v20 = &v28;
     v21 = &v22;
     dispatch_async_and_wait(queue, v17);
     v12 = v18;
   }
 
-  if (a4)
+  if (info)
   {
-    *a4 = v29[5];
+    *info = v29[5];
   }
 
-  if (a5)
+  if (triggerInfo)
   {
-    *a5 = v23[5];
+    *triggerInfo = v23[5];
   }
 
   _Block_object_dispose(&v22, 8);
@@ -121,20 +121,20 @@ void __117__CSVoiceTriggerEventInfoProvider_fetchVoiceTriggerInfoWithAudioContex
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setVoiceTriggerInfo:(id)a3 deviceId:(id)a4
+- (void)setVoiceTriggerInfo:(id)info deviceId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  idCopy = id;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__CSVoiceTriggerEventInfoProvider_setVoiceTriggerInfo_deviceId___block_invoke;
   block[3] = &unk_1E865C778;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = infoCopy;
+  selfCopy = self;
+  v14 = idCopy;
+  v9 = idCopy;
+  v10 = infoCopy;
   dispatch_async(queue, block);
 }
 
@@ -180,28 +180,28 @@ uint64_t __64__CSVoiceTriggerEventInfoProvider_setVoiceTriggerInfo_deviceId___bl
     queue = v2->_queue;
     v2->_queue = v3;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     accessoryVoiceTriggerEvents = v2->_accessoryVoiceTriggerEvents;
-    v2->_accessoryVoiceTriggerEvents = v5;
+    v2->_accessoryVoiceTriggerEvents = dictionary;
   }
 
   return v2;
 }
 
-+ (BOOL)isVoiceTriggerInfoAvailableLocally:(id)a3
++ (BOOL)isVoiceTriggerInfoAvailableLocally:(id)locally
 {
-  v3 = a3;
-  if (+[CSUtils isLocalVoiceTriggerAvailable](CSUtils, "isLocalVoiceTriggerAvailable") || ([v3 isHearstVoiceTriggered] & 1) != 0 || (objc_msgSend(v3, "isJarvisVoiceTriggered") & 1) != 0)
+  locallyCopy = locally;
+  if (+[CSUtils isLocalVoiceTriggerAvailable](CSUtils, "isLocalVoiceTriggerAvailable") || ([locallyCopy isHearstVoiceTriggered] & 1) != 0 || (objc_msgSend(locallyCopy, "isJarvisVoiceTriggered") & 1) != 0)
   {
-    v4 = 1;
+    isRemoraVoiceTriggered = 1;
   }
 
   else
   {
-    v4 = [v3 isRemoraVoiceTriggered];
+    isRemoraVoiceTriggered = [locallyCopy isRemoraVoiceTriggered];
   }
 
-  v5 = [v3 isDarwinVoiceTriggered] | v4;
+  v5 = [locallyCopy isDarwinVoiceTriggered] | isRemoraVoiceTriggered;
 
   return v5 & 1;
 }

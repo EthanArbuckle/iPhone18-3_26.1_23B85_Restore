@@ -1,29 +1,29 @@
 @interface HDCloudSyncDeviceContextRecord
-+ (BOOL)hasFutureSchema:(id)a3;
-+ (BOOL)isDeviceContextRecord:(id)a3;
-+ (BOOL)isDeviceContextRecordID:(id)a3;
-+ (id)hkctl_deviceContextRecordWithRecordID:(id)a3 zoneID:(id)a4 ownerID:(id)a5;
-+ (id)recordIDWithZoneID:(id)a3 syncIdentity:(id)a4;
-+ (id)unitTest_recordWithRandomIDInZone:(id)a3 deviceContext:(id)a4;
-- (HDCloudSyncDeviceContextRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4;
-- (id)deviceContextWithError:(id *)a3;
-- (id)initInZone:(id)a3 deviceContext:(id)a4;
++ (BOOL)hasFutureSchema:(id)schema;
++ (BOOL)isDeviceContextRecord:(id)record;
++ (BOOL)isDeviceContextRecordID:(id)d;
++ (id)hkctl_deviceContextRecordWithRecordID:(id)d zoneID:(id)iD ownerID:(id)ownerID;
++ (id)recordIDWithZoneID:(id)d syncIdentity:(id)identity;
++ (id)unitTest_recordWithRandomIDInZone:(id)zone deviceContext:(id)context;
+- (HDCloudSyncDeviceContextRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version;
+- (id)deviceContextWithError:(id *)error;
+- (id)initInZone:(id)zone deviceContext:(id)context;
 @end
 
 @implementation HDCloudSyncDeviceContextRecord
 
-+ (BOOL)isDeviceContextRecord:(id)a3
++ (BOOL)isDeviceContextRecord:(id)record
 {
-  v3 = [a3 recordType];
-  v4 = [v3 isEqualToString:@"CloudSyncDeviceContextRecordType"];
+  recordType = [record recordType];
+  v4 = [recordType isEqualToString:@"CloudSyncDeviceContextRecordType"];
 
   return v4;
 }
 
-+ (BOOL)isDeviceContextRecordID:(id)a3
++ (BOOL)isDeviceContextRecordID:(id)d
 {
-  v3 = [a3 recordName];
-  v4 = [v3 componentsSeparatedByString:@"/"];
+  recordName = [d recordName];
+  v4 = [recordName componentsSeparatedByString:@"/"];
 
   if ([v4 count] == 2)
   {
@@ -39,49 +39,49 @@
   return v6;
 }
 
-+ (id)recordIDWithZoneID:(id)a3 syncIdentity:(id)a4
++ (id)recordIDWithZoneID:(id)d syncIdentity:(id)identity
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a3;
-  v7 = [a4 identityString];
-  v8 = [v5 stringWithFormat:@"%@%@%@", @"CloudSyncDeviceContextRecord", @"/", v7];
+  dCopy = d;
+  identityString = [identity identityString];
+  v8 = [v5 stringWithFormat:@"%@%@%@", @"CloudSyncDeviceContextRecord", @"/", identityString];
 
-  v9 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v8 zoneID:v6];
+  v9 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v8 zoneID:dCopy];
 
   return v9;
 }
 
-- (id)initInZone:(id)a3 deviceContext:(id)a4
+- (id)initInZone:(id)zone deviceContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 syncIdentity];
-  v9 = [HDCloudSyncDeviceContextRecord recordIDWithZoneID:v7 syncIdentity:v8];
+  contextCopy = context;
+  zoneCopy = zone;
+  syncIdentity = [contextCopy syncIdentity];
+  v9 = [HDCloudSyncDeviceContextRecord recordIDWithZoneID:zoneCopy syncIdentity:syncIdentity];
 
   v10 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"CloudSyncDeviceContextRecordType" recordID:v9];
   v11 = [(HDCloudSyncDeviceContextRecord *)self initWithCKRecord:v10 schemaVersion:1];
   v12 = v11;
   if (v11)
   {
-    setUnderlyingDeviceContext(v11->_underlyingDeviceContext, v6);
+    setUnderlyingDeviceContext(v11->_underlyingDeviceContext, contextCopy);
   }
 
   return v12;
 }
 
-- (HDCloudSyncDeviceContextRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4
+- (HDCloudSyncDeviceContextRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version
 {
   v15.receiver = self;
   v15.super_class = HDCloudSyncDeviceContextRecord;
-  v4 = [(HDCloudSyncRecord *)&v15 initWithCKRecord:a3 schemaVersion:a4];
+  v4 = [(HDCloudSyncRecord *)&v15 initWithCKRecord:record schemaVersion:version];
   v5 = v4;
   if (!v4)
   {
     goto LABEL_9;
   }
 
-  v6 = [(HDCloudSyncRecord *)v4 underlyingMessage];
-  if (!v6)
+  underlyingMessage = [(HDCloudSyncRecord *)v4 underlyingMessage];
+  if (!underlyingMessage)
   {
     v11 = objc_alloc_init(HDCloudSyncCodableDeviceContext);
     underlyingDeviceContext = v5->_underlyingDeviceContext;
@@ -90,7 +90,7 @@
     goto LABEL_8;
   }
 
-  v7 = [[HDCloudSyncCodableDeviceContext alloc] initWithData:v6];
+  v7 = [[HDCloudSyncCodableDeviceContext alloc] initWithData:underlyingMessage];
   v8 = v5->_underlyingDeviceContext;
   v5->_underlyingDeviceContext = v7;
 
@@ -117,7 +117,7 @@ LABEL_10:
   return v10;
 }
 
-- (id)deviceContextWithError:(id *)a3
+- (id)deviceContextWithError:(id *)error
 {
   if ([(HDCloudSyncCodableDeviceContext *)self->_underlyingDeviceContext hasCurrentOSName])
   {
@@ -127,20 +127,20 @@ LABEL_10:
       {
         if ([(HDCloudSyncCodableDeviceContext *)self->_underlyingDeviceContext hasModificationDate])
         {
-          v5 = [(HDCloudSyncCodableDeviceContext *)self->_underlyingDeviceContext syncIdentity];
-          v6 = [HDSyncIdentity syncIdentityWithCodable:v5 error:a3];
+          syncIdentity = [(HDCloudSyncCodableDeviceContext *)self->_underlyingDeviceContext syncIdentity];
+          v6 = [HDSyncIdentity syncIdentityWithCodable:syncIdentity error:error];
 
           if (v6)
           {
             v7 = [HDDeviceContext alloc];
-            v8 = [(HDCloudSyncCodableDeviceContext *)self->_underlyingDeviceContext type];
-            v9 = [(HDCloudSyncCodableDeviceContext *)self->_underlyingDeviceContext productTypeName];
-            v10 = [(HDCloudSyncCodableDeviceContext *)self->_underlyingDeviceContext currentOSName];
-            v11 = [(HDCloudSyncCodableDeviceContext *)self->_underlyingDeviceContext currentOSVersion];
+            type = [(HDCloudSyncCodableDeviceContext *)self->_underlyingDeviceContext type];
+            productTypeName = [(HDCloudSyncCodableDeviceContext *)self->_underlyingDeviceContext productTypeName];
+            currentOSName = [(HDCloudSyncCodableDeviceContext *)self->_underlyingDeviceContext currentOSName];
+            currentOSVersion = [(HDCloudSyncCodableDeviceContext *)self->_underlyingDeviceContext currentOSVersion];
             HKNSOperatingSystemVersionFromString();
             [(HDCloudSyncCodableDeviceContext *)self->_underlyingDeviceContext modificationDate];
             v12 = HDDecodeDateForValue();
-            v13 = [(HDDeviceContext *)v7 initWithType:v8 productTypeName:v9 currentOSName:v10 currentOSVersion:v17 modificationDate:v12 syncIdentity:v6];
+            v13 = [(HDDeviceContext *)v7 initWithType:type productTypeName:productTypeName currentOSName:currentOSName currentOSVersion:v17 modificationDate:v12 syncIdentity:v6];
           }
 
           else
@@ -175,35 +175,35 @@ LABEL_10:
     v15 = @"Missing OS Name";
   }
 
-  [v14 hk_assignError:a3 code:3 format:v15];
+  [v14 hk_assignError:error code:3 format:v15];
   v13 = 0;
 LABEL_12:
 
   return v13;
 }
 
-+ (BOOL)hasFutureSchema:(id)a3
++ (BOOL)hasFutureSchema:(id)schema
 {
-  v3 = [a3 encryptedValues];
-  v4 = [v3 objectForKeyedSubscript:@"Version"];
+  encryptedValues = [schema encryptedValues];
+  v4 = [encryptedValues objectForKeyedSubscript:@"Version"];
 
   v5 = v4 && [v4 integerValue] > 1;
   return v5;
 }
 
-+ (id)unitTest_recordWithRandomIDInZone:(id)a3 deviceContext:(id)a4
++ (id)unitTest_recordWithRandomIDInZone:(id)zone deviceContext:(id)context
 {
   v6 = MEMORY[0x277CCACA8];
   v7 = MEMORY[0x277CCAD78];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 UUID];
-  v11 = [v10 UUIDString];
-  v12 = [v6 stringWithFormat:@"%@%@%@", @"CloudSyncDeviceContextRecord", @"/", v11];
+  contextCopy = context;
+  zoneCopy = zone;
+  uUID = [v7 UUID];
+  uUIDString = [uUID UUIDString];
+  v12 = [v6 stringWithFormat:@"%@%@%@", @"CloudSyncDeviceContextRecord", @"/", uUIDString];
 
-  v13 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v12 zoneID:v9];
-  v14 = [a1 alloc];
-  v15 = v8;
+  v13 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v12 zoneID:zoneCopy];
+  v14 = [self alloc];
+  v15 = contextCopy;
   if (v14)
   {
     v16 = MEMORY[0x277CBC5A0];
@@ -223,28 +223,28 @@ LABEL_12:
   return v14;
 }
 
-+ (id)hkctl_deviceContextRecordWithRecordID:(id)a3 zoneID:(id)a4 ownerID:(id)a5
++ (id)hkctl_deviceContextRecordWithRecordID:(id)d zoneID:(id)iD ownerID:(id)ownerID
 {
   v8 = MEMORY[0x277CBC5F8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v8 alloc] initWithZoneName:v10 ownerName:v9];
+  ownerIDCopy = ownerID;
+  iDCopy = iD;
+  dCopy = d;
+  v12 = [[v8 alloc] initWithZoneName:iDCopy ownerName:ownerIDCopy];
 
-  v13 = [a1 alloc];
+  v13 = [self alloc];
   v14 = [HDDeviceContext alloc];
   v15 = [HDSyncIdentity alloc];
-  v16 = [MEMORY[0x277CCAD78] UUID];
-  v17 = [MEMORY[0x277CCAD78] UUID];
-  v18 = [(HDSyncIdentity *)v15 initWithHardwareIdentifier:v16 databaseIdentifier:v17 instanceDiscriminator:&stru_283BF39C8];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUID2 = [MEMORY[0x277CCAD78] UUID];
+  v18 = [(HDSyncIdentity *)v15 initWithHardwareIdentifier:uUID databaseIdentifier:uUID2 instanceDiscriminator:&stru_283BF39C8];
   v19 = [(HDDeviceContext *)v14 initForLocalDeviceWithType:0 syncIdentity:v18];
   v20 = [v13 initInZone:v12 deviceContext:v19];
-  v21 = [v20 record];
+  record = [v20 record];
 
-  v22 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v11 zoneID:v12];
-  [v21 setRecordID:v22];
+  v22 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:dCopy zoneID:v12];
+  [record setRecordID:v22];
 
-  return v21;
+  return record;
 }
 
 @end

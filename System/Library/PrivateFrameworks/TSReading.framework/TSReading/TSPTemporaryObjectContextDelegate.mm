@@ -1,20 +1,20 @@
 @interface TSPTemporaryObjectContextDelegate
-- (TSPTemporaryObjectContextDelegate)initWithPackageURL:(id)a3;
-- (id)persistenceWarningsForData:(id)a3 isReadable:(BOOL)a4 isExternal:(BOOL)a5;
-- (void)performReadUsingAccessor:(id)a3;
+- (TSPTemporaryObjectContextDelegate)initWithPackageURL:(id)l;
+- (id)persistenceWarningsForData:(id)data isReadable:(BOOL)readable isExternal:(BOOL)external;
+- (void)performReadUsingAccessor:(id)accessor;
 @end
 
 @implementation TSPTemporaryObjectContextDelegate
 
-- (TSPTemporaryObjectContextDelegate)initWithPackageURL:(id)a3
+- (TSPTemporaryObjectContextDelegate)initWithPackageURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = TSPTemporaryObjectContextDelegate;
   v5 = [(TSPTemporaryObjectContextDelegate *)&v12 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     packageURL = v5->_packageURL;
     v5->_packageURL = v6;
 
@@ -29,19 +29,19 @@
   return v5;
 }
 
-- (void)performReadUsingAccessor:(id)a3
+- (void)performReadUsingAccessor:(id)accessor
 {
-  v5 = a3;
-  v4 = [(TSPTemporaryObjectContextDelegate *)self packageURL];
-  v5[2](v5, v4);
+  accessorCopy = accessor;
+  packageURL = [(TSPTemporaryObjectContextDelegate *)self packageURL];
+  accessorCopy[2](accessorCopy, packageURL);
 }
 
-- (id)persistenceWarningsForData:(id)a3 isReadable:(BOOL)a4 isExternal:(BOOL)a5
+- (id)persistenceWarningsForData:(id)data isReadable:(BOOL)readable isExternal:(BOOL)external
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = v7;
-  if (a4)
+  externalCopy = external;
+  dataCopy = data;
+  v8 = dataCopy;
+  if (readable)
   {
     v9 = 0;
   }
@@ -50,15 +50,15 @@
   {
     v10 = MEMORY[0x277CBEB98];
     v11 = MEMORY[0x277CCACA8];
-    v12 = [v7 filename];
-    v13 = v12;
+    filename = [dataCopy filename];
+    v13 = filename;
     v14 = @"Package";
-    if (v5)
+    if (externalCopy)
     {
       v14 = @"External";
     }
 
-    v15 = [v11 stringWithFormat:@"%@ data %@ is missing.", v14, v12];
+    v15 = [v11 stringWithFormat:@"%@ data %@ is missing.", v14, filename];
     v9 = [v10 setWithObject:v15];
   }
 

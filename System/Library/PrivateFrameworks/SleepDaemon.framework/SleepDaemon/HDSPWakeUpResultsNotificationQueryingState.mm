@@ -1,5 +1,5 @@
 @interface HDSPWakeUpResultsNotificationQueryingState
-- (HDSPWakeUpResultsNotificationQueryingState)initWithCoder:(id)a3;
+- (HDSPWakeUpResultsNotificationQueryingState)initWithCoder:(id)coder;
 - (id)expirationDate;
 - (void)_executeQuery;
 - (void)_retryQueryIfNeededOrTransitionToNeedsProtectedDataState;
@@ -10,16 +10,16 @@
 - (void)didExit;
 - (void)protectedHealthDataDidBecomeAvailable;
 - (void)queryDidComplete;
-- (void)queryDidFailWithError:(id)a3;
+- (void)queryDidFailWithError:(id)error;
 @end
 
 @implementation HDSPWakeUpResultsNotificationQueryingState
 
-- (HDSPWakeUpResultsNotificationQueryingState)initWithCoder:(id)a3
+- (HDSPWakeUpResultsNotificationQueryingState)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = HDSPWakeUpResultsNotificationQueryingState;
-  v3 = [(HKSPPersistentStateMachineState *)&v7 initWithCoder:a3];
+  v3 = [(HKSPPersistentStateMachineState *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -32,34 +32,34 @@
 
 - (id)expirationDate
 {
-  v3 = [(HDSPWakeUpResultsNotificationStateMachineState *)self infoProvider];
-  v4 = [(HDSPWakeUpResultsNotificationStateMachineState *)self infoProvider];
-  v5 = [v4 currentDate];
-  v6 = [v3 notificationAttemptWindowForWakeUpBeforeDate:v5];
-  v7 = [v6 endDate];
+  infoProvider = [(HDSPWakeUpResultsNotificationStateMachineState *)self infoProvider];
+  infoProvider2 = [(HDSPWakeUpResultsNotificationStateMachineState *)self infoProvider];
+  currentDate = [infoProvider2 currentDate];
+  v6 = [infoProvider notificationAttemptWindowForWakeUpBeforeDate:currentDate];
+  endDate = [v6 endDate];
 
-  return v7;
+  return endDate;
 }
 
 - (void)didEnter
 {
-  v3 = [(HKSPStateMachineState *)self stateMachine];
-  v14 = [v3 currentContext];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  currentContext = [stateMachine currentContext];
 
-  if ([v14 hasStateTransitionOrInitializing])
+  if ([currentContext hasStateTransitionOrInitializing])
   {
-    v4 = [(HKSPStateMachineState *)self stateMachine];
-    v5 = [v14 previousState];
-    if (v5)
+    stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+    previousState = [currentContext previousState];
+    if (previousState)
     {
-      v6 = v5;
-      v7 = [v4 needsProtectedDataState];
-      if (v7)
+      v6 = previousState;
+      needsProtectedDataState = [stateMachine2 needsProtectedDataState];
+      if (needsProtectedDataState)
       {
-        v8 = v7;
-        v9 = [v14 previousState];
-        v10 = [v4 needsProtectedDataState];
-        v11 = [v9 isMemberOfClass:objc_opt_class()];
+        v8 = needsProtectedDataState;
+        previousState2 = [currentContext previousState];
+        needsProtectedDataState2 = [stateMachine2 needsProtectedDataState];
+        v11 = [previousState2 isMemberOfClass:objc_opt_class()];
 
         if (v11)
         {
@@ -72,9 +72,9 @@
       }
     }
 
-    v12 = [(HKSPStateMachineState *)self stateMachine];
-    v13 = [v12 delegate];
-    [v13 startObservingProtectedHealthDataAvailability];
+    stateMachine3 = [(HKSPStateMachineState *)self stateMachine];
+    delegate = [stateMachine3 delegate];
+    [delegate startObservingProtectedHealthDataAvailability];
 
 LABEL_8:
     [(HDSPWakeUpResultsNotificationQueryingState *)self _executeQuery];
@@ -83,23 +83,23 @@ LABEL_8:
 
 - (void)didExit
 {
-  v3 = [(HKSPStateMachineState *)self stateMachine];
-  v12 = [v3 currentContext];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  currentContext = [stateMachine currentContext];
 
-  if ([v12 hasStateTransitionOrInitializing])
+  if ([currentContext hasStateTransitionOrInitializing])
   {
-    v4 = [(HKSPStateMachineState *)self stateMachine];
-    v5 = [v12 nextState];
-    if (v5)
+    stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+    nextState = [currentContext nextState];
+    if (nextState)
     {
-      v6 = v5;
-      v7 = [v4 needsProtectedDataState];
-      if (v7)
+      v6 = nextState;
+      needsProtectedDataState = [stateMachine2 needsProtectedDataState];
+      if (needsProtectedDataState)
       {
-        v8 = v7;
-        v9 = [v12 nextState];
-        v10 = [v4 needsProtectedDataState];
-        v11 = [v9 isMemberOfClass:objc_opt_class()];
+        v8 = needsProtectedDataState;
+        nextState2 = [currentContext nextState];
+        needsProtectedDataState2 = [stateMachine2 needsProtectedDataState];
+        v11 = [nextState2 isMemberOfClass:objc_opt_class()];
 
         if (v11)
         {
@@ -112,32 +112,32 @@ LABEL_8:
       }
     }
 
-    [v4 stopObservingProtectedHealthDataAvailability];
+    [stateMachine2 stopObservingProtectedHealthDataAvailability];
 LABEL_8:
   }
 }
 
-- (void)queryDidFailWithError:(id)a3
+- (void)queryDidFailWithError:(id)error
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
     v9 = objc_opt_class();
     v10 = 2114;
-    v11 = v4;
+    v11 = errorCopy;
     v6 = v9;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received query failed with error %{public}@", &v8, 0x16u);
   }
 
-  if ([v4 hksp_isHealthDatabaseInaccessibleError])
+  if ([errorCopy hksp_isHealthDatabaseInaccessibleError])
   {
     [(HDSPWakeUpResultsNotificationQueryingState *)self _retryQueryIfNeededOrTransitionToNeedsProtectedDataState];
   }
 
-  else if ([v4 hdsp_isInsufficientSleepDataError])
+  else if ([errorCopy hdsp_isInsufficientSleepDataError])
   {
     [(HDSPWakeUpResultsNotificationQueryingState *)self _transitionToRetryState];
   }
@@ -195,8 +195,8 @@ LABEL_8:
   }
 
   self->_shouldRetryImmediatelyOnFailure = 0;
-  v5 = [(HKSPStateMachineState *)self stateMachine];
-  [v5 executeQuery];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  [stateMachine executeQuery];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -211,35 +211,35 @@ LABEL_8:
 
   else
   {
-    v5 = [(HKSPStateMachineState *)self stateMachine];
-    v3 = [(HKSPStateMachineState *)self stateMachine];
-    v4 = [v3 needsProtectedDataState];
-    [v5 enterState:v4];
+    stateMachine = [(HKSPStateMachineState *)self stateMachine];
+    stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+    needsProtectedDataState = [stateMachine2 needsProtectedDataState];
+    [stateMachine enterState:needsProtectedDataState];
   }
 }
 
 - (void)_transitionToWaitingForWakeUpState
 {
-  v5 = [(HKSPStateMachineState *)self stateMachine];
-  v3 = [(HKSPStateMachineState *)self stateMachine];
-  v4 = [v3 waitingForWakeUpState];
-  [v5 enterState:v4];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+  waitingForWakeUpState = [stateMachine2 waitingForWakeUpState];
+  [stateMachine enterState:waitingForWakeUpState];
 }
 
 - (void)_transitionToNotifiedState
 {
-  v5 = [(HKSPStateMachineState *)self stateMachine];
-  v3 = [(HKSPStateMachineState *)self stateMachine];
-  v4 = [v3 notifiedState];
-  [v5 enterState:v4];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+  notifiedState = [stateMachine2 notifiedState];
+  [stateMachine enterState:notifiedState];
 }
 
 - (void)_transitionToRetryState
 {
-  v5 = [(HKSPStateMachineState *)self stateMachine];
-  v3 = [(HKSPStateMachineState *)self stateMachine];
-  v4 = [v3 waitingForRetryState];
-  [v5 enterState:v4];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+  waitingForRetryState = [stateMachine2 waitingForRetryState];
+  [stateMachine enterState:waitingForRetryState];
 }
 
 @end

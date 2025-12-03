@@ -6,7 +6,7 @@
 
 + (id)mf_decodeFailedErrorWithUserInfo:()MIME
 {
-  v3 = [a1 errorWithDomain:@"MFMIMEErrorDomain" code:2000000 userInfo:a3];
+  v3 = [self errorWithDomain:@"MFMIMEErrorDomain" code:2000000 userInfo:a3];
 
   return v3;
 }

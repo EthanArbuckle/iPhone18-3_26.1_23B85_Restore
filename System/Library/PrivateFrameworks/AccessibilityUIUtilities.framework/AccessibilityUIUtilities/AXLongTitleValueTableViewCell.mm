@@ -1,6 +1,6 @@
 @interface AXLongTitleValueTableViewCell
-- (AXLongTitleValueTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (AXLongTitleValueTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (double)iconImageViewGap;
 - (unint64_t)accessibilityTraits;
 - (void)layoutSubviews;
@@ -8,19 +8,19 @@
 
 @implementation AXLongTitleValueTableViewCell
 
-- (AXLongTitleValueTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (AXLongTitleValueTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v10.receiver = self;
   v10.super_class = AXLongTitleValueTableViewCell;
-  v5 = [(PSTableCell *)&v10 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(PSTableCell *)&v10 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   v6 = v5;
   if (v5)
   {
-    v7 = [(PSTableCell *)v5 valueLabel];
-    [v7 setNumberOfLines:0];
+    valueLabel = [(PSTableCell *)v5 valueLabel];
+    [valueLabel setNumberOfLines:0];
 
-    v8 = [(PSTableCell *)v6 titleLabel];
-    [v8 setNumberOfLines:0];
+    titleLabel = [(PSTableCell *)v6 titleLabel];
+    [titleLabel setNumberOfLines:0];
   }
 
   return v6;
@@ -31,14 +31,14 @@
   v55.receiver = self;
   v55.super_class = AXLongTitleValueTableViewCell;
   [(PSTableCell *)&v55 layoutSubviews];
-  v3 = [(AXLongTitleValueTableViewCell *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(AXLongTitleValueTableViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (!IsAccessibilityCategory)
   {
-    v6 = [(AXLongTitleValueTableViewCell *)self contentView];
-    [v6 bounds];
+    contentView = [(AXLongTitleValueTableViewCell *)self contentView];
+    [contentView bounds];
     v8 = v7;
     v10 = v9;
 
@@ -54,8 +54,8 @@
       }
     }
 
-    v14 = [(PSTableCell *)self specifier];
-    v15 = [v14 objectForKeyedSubscript:*MEMORY[0x1E69C5920]];
+    specifier = [(PSTableCell *)self specifier];
+    v15 = [specifier objectForKeyedSubscript:*MEMORY[0x1E69C5920]];
     if (v15)
     {
       v16 = 1;
@@ -63,8 +63,8 @@
 
     else
     {
-      v17 = [(PSTableCell *)self specifier];
-      v18 = [v17 objectForKeyedSubscript:*MEMORY[0x1E69C5930]];
+      specifier2 = [(PSTableCell *)self specifier];
+      v18 = [specifier2 objectForKeyedSubscript:*MEMORY[0x1E69C5930]];
       if (v18)
       {
         v16 = 1;
@@ -72,20 +72,20 @@
 
       else
       {
-        v19 = [(PSTableCell *)self specifier];
-        v20 = [v19 objectForKeyedSubscript:*MEMORY[0x1E69C5948]];
+        specifier3 = [(PSTableCell *)self specifier];
+        v20 = [specifier3 objectForKeyedSubscript:*MEMORY[0x1E69C5948]];
         v16 = v20 != 0;
       }
     }
 
-    v21 = [(PSTableCell *)self iconImageView];
-    v22 = v21;
+    iconImageView = [(PSTableCell *)self iconImageView];
+    v22 = iconImageView;
     v23 = 0.0;
     if (v16)
     {
-      if (v21)
+      if (iconImageView)
       {
-        [v21 frame];
+        [iconImageView frame];
         if (v24 != 0.0)
         {
           [v22 frame];
@@ -98,24 +98,24 @@
 
     [(AXLongTitleValueTableViewCell *)self layoutMargins];
     v29 = v8 - v28 - v12 + -6.0 - v23;
-    v30 = [(PSTableCell *)self valueLabel];
+    valueLabel = [(PSTableCell *)self valueLabel];
     v31 = v8;
     v32 = v12;
-    [v30 sizeThatFits:{v29 * 0.5, v10}];
+    [valueLabel sizeThatFits:{v29 * 0.5, v10}];
     v34 = v33;
     v36 = v35;
 
-    v37 = [(PSTableCell *)self titleLabel];
+    titleLabel = [(PSTableCell *)self titleLabel];
     v38 = v10;
-    [v37 sizeThatFits:{v29 - v34, v10}];
+    [titleLabel sizeThatFits:{v29 - v34, v10}];
     v54 = v39;
     v41 = v40;
 
-    v42 = [(PSTableCell *)self valueLabel];
-    [v42 frame];
+    valueLabel2 = [(PSTableCell *)self valueLabel];
+    [valueLabel2 frame];
 
-    v43 = [(PSTableCell *)self titleLabel];
-    [v43 frame];
+    titleLabel2 = [(PSTableCell *)self titleLabel];
+    [titleLabel2 frame];
     v45 = v44;
 
     if ([(AXLongTitleValueTableViewCell *)self _shouldReverseLayoutDirection])
@@ -133,28 +133,28 @@
     v48 = floorf(v47);
     v49 = (v38 - v41) * 0.5;
     v50 = floorf(v49);
-    v51 = [(PSTableCell *)self valueLabel];
-    [v51 setFrame:{v32, v48, v34, v36}];
+    valueLabel3 = [(PSTableCell *)self valueLabel];
+    [valueLabel3 setFrame:{v32, v48, v34, v36}];
 
-    v52 = [(PSTableCell *)self titleLabel];
-    [v52 setFrame:{v45, v50, v54, v41}];
+    titleLabel3 = [(PSTableCell *)self titleLabel];
+    [titleLabel3 setFrame:{v45, v50, v54, v41}];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(PSTableCell *)self specifier];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69C5920]];
-  if (!v7)
+  height = fits.height;
+  width = fits.width;
+  specifier = [(PSTableCell *)self specifier];
+  specifier2 = [specifier objectForKeyedSubscript:*MEMORY[0x1E69C5920]];
+  if (!specifier2)
   {
-    v7 = [(PSTableCell *)self specifier];
-    v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69C5930]];
+    specifier2 = [(PSTableCell *)self specifier];
+    v8 = [specifier2 objectForKeyedSubscript:*MEMORY[0x1E69C5930]];
     if (!v8)
     {
-      v55 = [(PSTableCell *)self specifier];
-      v13 = [v55 objectForKeyedSubscript:*MEMORY[0x1E69C5948]];
+      specifier3 = [(PSTableCell *)self specifier];
+      v13 = [specifier3 objectForKeyedSubscript:*MEMORY[0x1E69C5948]];
 
       if (!v13)
       {
@@ -166,13 +166,13 @@
   }
 
 LABEL_5:
-  v9 = [(PSTableCell *)self iconImageView];
+  iconImageView = [(PSTableCell *)self iconImageView];
 
-  if (v9)
+  if (iconImageView)
   {
-    v10 = [(AXLongTitleValueTableViewCell *)self traitCollection];
-    v11 = [v10 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v11);
+    traitCollection = [(AXLongTitleValueTableViewCell *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (IsAccessibilityCategory)
     {
@@ -181,12 +181,12 @@ LABEL_5:
 
     else
     {
-      v14 = [(PSTableCell *)self valueLabel];
+      valueLabel = [(PSTableCell *)self valueLabel];
       LODWORD(v13) = 1;
-      [v14 setNumberOfLines:1];
+      [valueLabel setNumberOfLines:1];
 
-      v15 = [(PSTableCell *)self titleLabel];
-      [v15 setNumberOfLines:1];
+      titleLabel = [(PSTableCell *)self titleLabel];
+      [titleLabel setNumberOfLines:1];
     }
   }
 
@@ -201,14 +201,14 @@ LABEL_10:
   [(AXLongTitleValueTableViewCell *)&v70 sizeThatFits:width, height];
   v17 = v16;
   v19 = v18;
-  v20 = [(AXLongTitleValueTableViewCell *)self traitCollection];
-  v21 = [v20 preferredContentSizeCategory];
-  v22 = UIContentSizeCategoryIsAccessibilityCategory(v21);
+  traitCollection2 = [(AXLongTitleValueTableViewCell *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
+  v22 = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory2);
 
   if (!v22)
   {
-    v23 = [(AXLongTitleValueTableViewCell *)self contentView];
-    [v23 sizeThatFits:{v17, v19}];
+    contentView = [(AXLongTitleValueTableViewCell *)self contentView];
+    [contentView sizeThatFits:{v17, v19}];
     v25 = v24;
     v27 = v26;
 
@@ -226,7 +226,7 @@ LABEL_10:
       v57 = 3221225472;
       v58 = __46__AXLongTitleValueTableViewCell_sizeThatFits___block_invoke;
       v59 = &unk_1E812E558;
-      v60 = self;
+      selfCopy = self;
       v61 = &v64;
       v62 = v25;
       v63 = v27;
@@ -241,8 +241,8 @@ LABEL_10:
       v32 = [(PSTableCell *)self valueLabel:v56];
       [v32 setNumberOfLines:0];
 
-      v33 = [(PSTableCell *)self titleLabel];
-      [v33 setNumberOfLines:0];
+      titleLabel2 = [(PSTableCell *)self titleLabel];
+      [titleLabel2 setNumberOfLines:0];
     }
 
     [(AXLongTitleValueTableViewCell *)self layoutMargins];
@@ -259,14 +259,14 @@ LABEL_10:
 
     [(AXLongTitleValueTableViewCell *)self layoutMargins];
     v38 = v37;
-    v39 = [(PSTableCell *)self valueLabel];
+    valueLabel2 = [(PSTableCell *)self valueLabel];
     v40 = v25 - v38 - v35 + -6.0 - v29;
-    [v39 sizeThatFits:{v40 * 0.5, v27}];
+    [valueLabel2 sizeThatFits:{v40 * 0.5, v27}];
     v42 = v41;
     v44 = v43;
 
-    v45 = [(PSTableCell *)self titleLabel];
-    [v45 sizeThatFits:{v40 - v42, v27}];
+    titleLabel3 = [(PSTableCell *)self titleLabel];
+    [titleLabel3 sizeThatFits:{v40 - v42, v27}];
     v47 = v46;
 
     [(AXLongTitleValueTableViewCell *)self layoutMargins];
@@ -311,8 +311,8 @@ uint64_t __46__AXLongTitleValueTableViewCell_sizeThatFits___block_invoke(uint64_
 
 - (double)iconImageViewGap
 {
-  v2 = [(AXLongTitleValueTableViewCell *)self traitCollection];
-  if ([v2 userInterfaceIdiom] == 3)
+  traitCollection = [(AXLongTitleValueTableViewCell *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 3)
   {
     v3 = 8.0;
   }
@@ -329,26 +329,26 @@ uint64_t __46__AXLongTitleValueTableViewCell_sizeThatFits___block_invoke(uint64_
 {
   v14.receiver = self;
   v14.super_class = AXLongTitleValueTableViewCell;
-  v3 = [(AXLongTitleValueTableViewCell *)&v14 accessibilityTraits];
-  v4 = [(PSTableCell *)self specifier];
-  v5 = [v4 propertyForKey:@"VOCommandContext"];
+  accessibilityTraits = [(AXLongTitleValueTableViewCell *)&v14 accessibilityTraits];
+  specifier = [(PSTableCell *)self specifier];
+  v5 = [specifier propertyForKey:@"VOCommandContext"];
 
-  v6 = [(PSTableCell *)self specifier];
-  v7 = [v6 propertyForKey:@"command"];
+  specifier2 = [(PSTableCell *)self specifier];
+  v7 = [specifier2 propertyForKey:@"command"];
 
-  v8 = [(PSTableCell *)self specifier];
-  v9 = [v8 propertyForKey:@"AXLongTitleValueTableViewCellButtonBoolKey"];
-  v10 = [v9 BOOLValue];
+  specifier3 = [(PSTableCell *)self specifier];
+  v9 = [specifier3 propertyForKey:@"AXLongTitleValueTableViewCellButtonBoolKey"];
+  bOOLValue = [v9 BOOLValue];
 
-  if ([(PSTableCell *)self type]== 4 && ([(PSTableCell *)self cellEnabled]& v10) == 1)
+  if ([(PSTableCell *)self type]== 4 && ([(PSTableCell *)self cellEnabled]& bOOLValue) == 1)
   {
     if (v5 || (-[PSTableCell specifier](self, "specifier"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 detailControllerClass] | v7, v11, v12))
     {
-      v3 |= *MEMORY[0x1E69DD9B8];
+      accessibilityTraits |= *MEMORY[0x1E69DD9B8];
     }
   }
 
-  return v3;
+  return accessibilityTraits;
 }
 
 @end

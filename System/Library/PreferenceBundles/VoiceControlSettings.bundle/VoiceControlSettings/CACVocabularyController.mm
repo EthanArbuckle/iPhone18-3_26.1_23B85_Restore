@@ -1,8 +1,8 @@
 @interface CACVocabularyController
 - (id)specifiers;
-- (id)vocabularySummary:(id)a3;
+- (id)vocabularySummary:(id)summary;
 - (void)deleteAllVocabulary;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
 - (void)exportVocabulary;
 - (void)importVocabulary;
 @end
@@ -68,7 +68,7 @@
   return v4;
 }
 
-- (id)vocabularySummary:(id)a3
+- (id)vocabularySummary:(id)summary
 {
   v3 = +[VCVocabularyObjC visibleVocabularyEntriesForActiveLocale];
   v4 = [v3 count];
@@ -133,9 +133,9 @@
   else
   {
     v8 = +[VCSettingsObjC shared];
-    v9 = [v8 activeLocale];
-    v10 = [v9 localeIdentifier];
-    v11 = [CACLocaleUtilities localizedDisplayStringForLocaleIdentifier:v10];
+    activeLocale = [v8 activeLocale];
+    localeIdentifier = [activeLocale localeIdentifier];
+    v11 = [CACLocaleUtilities localizedDisplayStringForLocaleIdentifier:localeIdentifier];
 
     v12 = settingsLocString(@"DELETE_ALL_VOCABULARY_ALERT_TITLE_WITH_LOCALE", @"CommandAndControlSettings");
     v7 = [NSString localizedStringWithFormat:v12, v11];
@@ -160,10 +160,10 @@
   [(CACVocabularyController *)self presentViewController:v14 animated:1 completion:0];
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
-  v5 = [a4 firstObject];
-  v6 = [CACVocabularyImportExportUtilities importFromURL:v5];
+  firstObject = [ls firstObject];
+  v6 = [CACVocabularyImportExportUtilities importFromURL:firstObject];
   [v6 displayAlertForViewController:self];
 
   [(CACVocabularyController *)self reloadSpecifiers];

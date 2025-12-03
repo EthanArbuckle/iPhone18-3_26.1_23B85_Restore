@@ -1,56 +1,56 @@
 @interface SRBlurFromRootNavigationTransitionController
-- (SRBlurFromRootNavigationTransitionController)initWithDelegate:(id)a3;
+- (SRBlurFromRootNavigationTransitionController)initWithDelegate:(id)delegate;
 - (SRBlurFromRootNavigationTransitionControllerDelegate)delegate;
 - (UINavigationController)_navigationController;
-- (void)_coordinateTransitionWithTransitionCoordination:(id)a3;
+- (void)_coordinateTransitionWithTransitionCoordination:(id)coordination;
 - (void)_performPopAnimations;
 - (void)_performPushAnimations;
 - (void)_updateBlurVisibility;
-- (void)coordinateAdditionalTransitionsWithTransitionCoordinator:(id)a3;
+- (void)coordinateAdditionalTransitionsWithTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SRBlurFromRootNavigationTransitionController
 
-- (SRBlurFromRootNavigationTransitionController)initWithDelegate:(id)a3
+- (SRBlurFromRootNavigationTransitionController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = SRBlurFromRootNavigationTransitionController;
   v5 = [(SRBlurFromRootNavigationTransitionController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (void)coordinateAdditionalTransitionsWithTransitionCoordinator:(id)a3
+- (void)coordinateAdditionalTransitionsWithTransitionCoordinator:(id)coordinator
 {
-  v8 = a3;
+  coordinatorCopy = coordinator;
   if ([(SRBlurFromRootNavigationTransitionController *)self operation])
   {
     if ([(SRBlurFromRootNavigationTransitionController *)self operation]== 2)
     {
-      v4 = [(SRBlurFromRootNavigationTransitionController *)self _navigationController];
-      v5 = [v4 viewControllers];
-      v6 = [v5 count];
+      _navigationController = [(SRBlurFromRootNavigationTransitionController *)self _navigationController];
+      viewControllers = [_navigationController viewControllers];
+      v6 = [viewControllers count];
 
       if (v6 == 1)
       {
-        v7 = [(SRBlurFromRootNavigationTransitionController *)self delegate];
-        [v7 blurFromRootNavigationTransitionController:self requestHostBlurVisible:0 requestPresentationBlurVisible:1];
+        delegate = [(SRBlurFromRootNavigationTransitionController *)self delegate];
+        [delegate blurFromRootNavigationTransitionController:self requestHostBlurVisible:0 requestPresentationBlurVisible:1];
       }
     }
 
-    [(SRBlurFromRootNavigationTransitionController *)self _coordinateTransitionWithTransitionCoordination:v8];
+    [(SRBlurFromRootNavigationTransitionController *)self _coordinateTransitionWithTransitionCoordination:coordinatorCopy];
   }
 }
 
-- (void)_coordinateTransitionWithTransitionCoordination:(id)a3
+- (void)_coordinateTransitionWithTransitionCoordination:(id)coordination
 {
-  v4 = a3;
+  coordinationCopy = coordination;
   objc_initWeak(&location, self);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -62,7 +62,7 @@
   v5[2] = sub_100053468;
   v5[3] = &unk_100167718;
   objc_copyWeak(&v6, &location);
-  [v4 animateAlongsideTransition:v7 completion:v5];
+  [coordinationCopy animateAlongsideTransition:v7 completion:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -70,40 +70,40 @@
 
 - (void)_performPushAnimations
 {
-  v3 = [(SRBlurFromRootNavigationTransitionController *)self _navigationController];
-  v4 = [v3 viewControllers];
-  v5 = [v4 count];
+  _navigationController = [(SRBlurFromRootNavigationTransitionController *)self _navigationController];
+  viewControllers = [_navigationController viewControllers];
+  v5 = [viewControllers count];
 
   if (v5 == 2)
   {
-    v6 = [(SRBlurFromRootNavigationTransitionController *)self delegate];
-    [v6 blurFromRootNavigationTransitionController:self requestBackgroundBlurViewVisible:1];
+    delegate = [(SRBlurFromRootNavigationTransitionController *)self delegate];
+    [delegate blurFromRootNavigationTransitionController:self requestBackgroundBlurViewVisible:1];
   }
 }
 
 - (void)_performPopAnimations
 {
-  v3 = [(SRBlurFromRootNavigationTransitionController *)self _navigationController];
-  v4 = [v3 viewControllers];
-  v5 = [v4 count];
+  _navigationController = [(SRBlurFromRootNavigationTransitionController *)self _navigationController];
+  viewControllers = [_navigationController viewControllers];
+  v5 = [viewControllers count];
 
   if (v5 == 1)
   {
-    v6 = [(SRBlurFromRootNavigationTransitionController *)self delegate];
-    [v6 blurFromRootNavigationTransitionController:self requestBackgroundBlurViewVisible:0];
+    delegate = [(SRBlurFromRootNavigationTransitionController *)self delegate];
+    [delegate blurFromRootNavigationTransitionController:self requestBackgroundBlurViewVisible:0];
   }
 }
 
 - (void)_updateBlurVisibility
 {
-  v3 = [(SRBlurFromRootNavigationTransitionController *)self _navigationController];
-  v4 = [v3 viewControllers];
-  v5 = [v4 count];
+  _navigationController = [(SRBlurFromRootNavigationTransitionController *)self _navigationController];
+  viewControllers = [_navigationController viewControllers];
+  v5 = [viewControllers count];
 
   if (v5 == 1 || (-[SRBlurFromRootNavigationTransitionController _navigationController](self, "_navigationController"), v6 = objc_claimAutoreleasedReturnValue(), [v6 viewControllers], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6, v8 == 2))
   {
-    v9 = [(SRBlurFromRootNavigationTransitionController *)self delegate];
-    [v9 blurFromRootNavigationTransitionController:self requestHostBlurVisible:v5 != 1 requestPresentationBlurVisible:0];
+    delegate = [(SRBlurFromRootNavigationTransitionController *)self delegate];
+    [delegate blurFromRootNavigationTransitionController:self requestHostBlurVisible:v5 != 1 requestPresentationBlurVisible:0];
   }
 }
 

@@ -1,6 +1,6 @@
 @interface NENexusFlow
 - (void)dealloc;
-- (void)setupFlowProtocolWithUUID:(void *)a1;
+- (void)setupFlowProtocolWithUUID:(void *)d;
 @end
 
 @implementation NENexusFlow
@@ -18,7 +18,7 @@
   [(NENexusFlow *)&v3 dealloc];
 }
 
-- (void)setupFlowProtocolWithUUID:(void *)a1
+- (void)setupFlowProtocolWithUUID:(void *)d
 {
   v10 = *MEMORY[0x1E69E9840];
   v3 = a2;
@@ -29,8 +29,8 @@
     v4[2] = &NENexusFlowIdentifier;
     v4[3] = &NENexusFlowCallbacks;
     [v3 getUUIDBytes:v4];
-    v5[5] = a1;
-    [a1 setProtocol:v5];
+    v5[5] = d;
+    [d setProtocol:v5];
   }
 
   else

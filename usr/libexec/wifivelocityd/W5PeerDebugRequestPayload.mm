@@ -1,26 +1,26 @@
 @interface W5PeerDebugRequestPayload
-+ (id)payloadFromDictionary:(id)a3;
-- (W5PeerDebugRequestPayload)initWithRequest:(id)a3;
++ (id)payloadFromDictionary:(id)dictionary;
+- (W5PeerDebugRequestPayload)initWithRequest:(id)request;
 - (id)encode;
 @end
 
 @implementation W5PeerDebugRequestPayload
 
-+ (id)payloadFromDictionary:(id)a3
++ (id)payloadFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithRequest:v3];
+  dictionaryCopy = dictionary;
+  v4 = [objc_alloc(objc_opt_class()) initWithRequest:dictionaryCopy];
 
   return v4;
 }
 
-- (W5PeerDebugRequestPayload)initWithRequest:(id)a3
+- (W5PeerDebugRequestPayload)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v19.receiver = self;
   v19.super_class = W5PeerDebugRequestPayload;
   v5 = [(W5PeerDebugRequestPayload *)&v19 init];
-  if (!v5 || (v6 = [v4 objectForKey:@"version"], (v5->_version = v6) == 0) || (objc_msgSend(v4, "objectForKey:", @"type"), (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!v5 || (v6 = [requestCopy objectForKey:@"version"], (v5->_version = v6) == 0) || (objc_msgSend(requestCopy, "objectForKey:", @"type"), (v7 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 
     v13 = sub_100098A04();
@@ -38,7 +38,7 @@
 
   v8 = v7;
   v5->_requestType = [v7 integerValue];
-  v9 = [v4 objectForKey:@"config"];
+  v9 = [requestCopy objectForKey:@"config"];
   if (v9)
   {
     v10 = objc_opt_class();
@@ -55,7 +55,7 @@
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v20 = 138543362;
-        v21 = v4;
+        v21 = requestCopy;
         _os_log_send_and_compose_impl();
       }
     }
@@ -71,12 +71,12 @@ LABEL_9:
 - (id)encode
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(W5PeerDebugRequestPayload *)self version];
+  version = [(W5PeerDebugRequestPayload *)self version];
 
-  if (v4)
+  if (version)
   {
-    v5 = [(W5PeerDebugRequestPayload *)self version];
-    [v3 setObject:v5 forKey:@"version"];
+    version2 = [(W5PeerDebugRequestPayload *)self version];
+    [v3 setObject:version2 forKey:@"version"];
 
     if ([(W5PeerDebugRequestPayload *)self requestType])
     {
@@ -85,13 +85,13 @@ LABEL_9:
 
       if ([(W5PeerDebugRequestPayload *)self requestType]== 2)
       {
-        v7 = [(W5PeerDebugRequestPayload *)self configuration];
+        configuration = [(W5PeerDebugRequestPayload *)self configuration];
 
-        if (v7)
+        if (configuration)
         {
-          v8 = [(W5PeerDebugRequestPayload *)self configuration];
+          configuration2 = [(W5PeerDebugRequestPayload *)self configuration];
           v18 = 0;
-          v9 = [NSKeyedArchiver archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v18];
+          v9 = [NSKeyedArchiver archivedDataWithRootObject:configuration2 requiringSecureCoding:1 error:&v18];
           v10 = v18;
 
           if (v10 || !v9)

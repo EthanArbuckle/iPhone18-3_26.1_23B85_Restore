@@ -1,19 +1,19 @@
 @interface FigCameraViewfinderSessionLocal
 - ($115C4C562B26FF47E01F9F4EA65B5887)clientAuditToken;
-- (id)_initWithOwningViewfinder:(id)a3 captureSessionProxy:(id)a4 delegateStorage:(id)a5;
+- (id)_initWithOwningViewfinder:(id)viewfinder captureSessionProxy:(id)proxy delegateStorage:(id)storage;
 - (uint64_t)_closePreviewStream;
 - (uint64_t)_setupStateMachine;
-- (void)_captureSessionDidCapturePhotoWithStatus:(int)a3 thumbnailData:(id)a4 timestamp:(id *)a5;
+- (void)_captureSessionDidCapturePhotoWithStatus:(int)status thumbnailData:(id)data timestamp:(id *)timestamp;
 - (void)_captureSessionDidFinishMovieRecording;
 - (void)_captureSessionDidStartMovieRecording;
 - (void)_captureSessionDidStop;
-- (void)cameraViewfinderStream:(id)a3 didCloseWithStatus:(int)a4;
-- (void)cameraViewfinderStreamDidOpen:(id)a3;
-- (void)captureSessionPreviewTapDidClose:(id)a3;
-- (void)captureSessionPreviewTapDidOpen:(id)a3;
+- (void)cameraViewfinderStream:(id)stream didCloseWithStatus:(int)status;
+- (void)cameraViewfinderStreamDidOpen:(id)open;
+- (void)captureSessionPreviewTapDidClose:(id)close;
+- (void)captureSessionPreviewTapDidOpen:(id)open;
 - (void)closePreviewStream;
 - (void)dealloc;
-- (void)openPreviewStreamWithOptions:(id)a3;
+- (void)openPreviewStreamWithOptions:(id)options;
 @end
 
 @implementation FigCameraViewfinderSessionLocal
@@ -57,21 +57,21 @@
   return result;
 }
 
-- (id)_initWithOwningViewfinder:(id)a3 captureSessionProxy:(id)a4 delegateStorage:(id)a5
+- (id)_initWithOwningViewfinder:(id)viewfinder captureSessionProxy:(id)proxy delegateStorage:(id)storage
 {
-  if (a4)
+  if (proxy)
   {
     v12.receiver = self;
     v12.super_class = FigCameraViewfinderSessionLocal;
-    v8 = [(FigCameraViewfinderSession *)&v12 initSubclass];
-    v9 = v8;
-    if (v8)
+    initSubclass = [(FigCameraViewfinderSession *)&v12 initSubclass];
+    v9 = initSubclass;
+    if (initSubclass)
     {
-      [(FigCameraViewfinderSessionLocal *)v8 _setupStateMachine];
-      objc_storeWeak(v9 + 2, a3);
-      v9[5] = a4;
-      v9[6] = [a4 identifier];
-      v9[1] = a5;
+      [(FigCameraViewfinderSessionLocal *)initSubclass _setupStateMachine];
+      objc_storeWeak(v9 + 2, viewfinder);
+      v9[5] = proxy;
+      v9[6] = [proxy identifier];
+      v9[1] = storage;
       v9[8] = dispatch_queue_create("com.apple.coremedia.cameraviewfindersession.previewstream", 0);
       v10 = objc_alloc_init(FigCameraViewfinderStream);
       v9[7] = v10;
@@ -98,7 +98,7 @@
   [(FigCameraViewfinderSession *)&v3 dealloc];
 }
 
-- (void)openPreviewStreamWithOptions:(id)a3
+- (void)openPreviewStreamWithOptions:(id)options
 {
   if (dword_1ED844150)
   {
@@ -115,7 +115,7 @@
   v7[2] = __64__FigCameraViewfinderSessionLocal_openPreviewStreamWithOptions___block_invoke;
   v7[3] = &unk_1E798F898;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = options;
   fig_dispatch_async_autoreleasepool(previewStreamQueue, v7);
 }
 
@@ -145,7 +145,7 @@ uint64_t __64__FigCameraViewfinderSessionLocal_openPreviewStreamWithOptions___bl
   fig_dispatch_async_autoreleasepool(previewStreamQueue, v3);
 }
 
-- (void)cameraViewfinderStreamDidOpen:(id)a3
+- (void)cameraViewfinderStreamDidOpen:(id)open
 {
   if (!_FigIsCurrentDispatchQueue())
   {
@@ -169,17 +169,17 @@ uint64_t __64__FigCameraViewfinderSessionLocal_openPreviewStreamWithOptions___bl
   }
 }
 
-- (void)cameraViewfinderStream:(id)a3 didCloseWithStatus:(int)a4
+- (void)cameraViewfinderStream:(id)stream didCloseWithStatus:(int)status
 {
   if (!_FigIsCurrentDispatchQueue())
   {
     [FigCameraViewfinderSessionLocal cameraViewfinderStream:didCloseWithStatus:];
   }
 
-  v6 = [(FigStateMachine *)self->_stateMachine currentState];
-  if (v6 <= 7)
+  currentState = [(FigStateMachine *)self->_stateMachine currentState];
+  if (currentState <= 7)
   {
-    if (v6 == 2)
+    if (currentState == 2)
     {
 LABEL_14:
       if (self->_ended)
@@ -199,7 +199,7 @@ LABEL_14:
 
       else
       {
-        previewStreamClosedErrorStatus = a4;
+        previewStreamClosedErrorStatus = status;
       }
 
       self->_previewStreamClosedErrorStatus = previewStreamClosedErrorStatus;
@@ -209,7 +209,7 @@ LABEL_14:
       return;
     }
 
-    if (v6 != 4)
+    if (currentState != 4)
     {
       return;
     }
@@ -218,8 +218,8 @@ LABEL_10:
     if ([(FigStateMachine *)self->_stateMachine transitionToState:16 fromStates:12])
     {
       self->_previewStreamClosed = 1;
-      self->_previewStreamClosedErrorStatus = a4;
-      v7 = self;
+      self->_previewStreamClosedErrorStatus = status;
+      selfCopy = self;
       captureSessionProxy = self->_captureSessionProxy;
 
       [(FigCaptureSessionProxy *)captureSessionProxy closePreviewTap];
@@ -228,20 +228,20 @@ LABEL_10:
     return;
   }
 
-  switch(v6)
+  switch(currentState)
   {
     case 8:
       goto LABEL_10;
     case 16:
       self->_previewStreamClosed = 1;
-      self->_previewStreamClosedErrorStatus = a4;
+      self->_previewStreamClosedErrorStatus = status;
       return;
     case 32:
       goto LABEL_14;
   }
 }
 
-- (void)captureSessionPreviewTapDidOpen:(id)a3
+- (void)captureSessionPreviewTapDidOpen:(id)open
 {
   previewStreamQueue = self->_previewStreamQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -252,7 +252,7 @@ LABEL_10:
   fig_dispatch_async_autoreleasepool(previewStreamQueue, v4);
 }
 
-- (void)captureSessionPreviewTapDidClose:(id)a3
+- (void)captureSessionPreviewTapDidClose:(id)close
 {
   previewStreamQueue = self->_previewStreamQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -317,7 +317,7 @@ uint64_t __57__FigCameraViewfinderSessionLocal__captureSessionDidStop__block_inv
   return result;
 }
 
-- (void)_captureSessionDidCapturePhotoWithStatus:(int)a3 thumbnailData:(id)a4 timestamp:(id *)a5
+- (void)_captureSessionDidCapturePhotoWithStatus:(int)status thumbnailData:(id)data timestamp:(id *)timestamp
 {
   if (!self->_ended)
   {
@@ -326,10 +326,10 @@ uint64_t __57__FigCameraViewfinderSessionLocal__captureSessionDidStop__block_inv
     v6[1] = 3221225472;
     v6[2] = __100__FigCameraViewfinderSessionLocal__captureSessionDidCapturePhotoWithStatus_thumbnailData_timestamp___block_invoke;
     v6[3] = &unk_1E7997578;
-    v7 = a3;
+    statusCopy = status;
     v6[4] = self;
-    v6[5] = a4;
-    v8 = *a5;
+    v6[5] = data;
+    v8 = *timestamp;
     [(FigDelegateStorage *)delegateStorage invokeDelegateCallbackWithBlock:v6];
   }
 }

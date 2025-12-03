@@ -1,7 +1,7 @@
 @interface HMDPersistAuditAccessoryResultOperation
 + (id)logCategory;
-- (BOOL)mainWithError:(id *)a3;
-- (id)initForRestrictedGuestWithAccessory:(id)a3;
+- (BOOL)mainWithError:(id *)error;
+- (id)initForRestrictedGuestWithAccessory:(id)accessory;
 - (id)logIdentifier;
 @end
 
@@ -9,20 +9,20 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDBackgroundOperation *)self operationUUID];
-  v3 = [v2 UUIDString];
+  operationUUID = [(HMDBackgroundOperation *)self operationUUID];
+  uUIDString = [operationUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (BOOL)mainWithError:(id *)a3
+- (BOOL)mainWithError:(id *)error
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = [(HMDAccessoryBackgroundOperation *)self accessoryOperationStatus];
+  accessoryOperationStatus = [(HMDAccessoryBackgroundOperation *)self accessoryOperationStatus];
   v5 = objc_opt_class();
-  v6 = [(HMDAccessoryBackgroundOperation *)self accessoryUUID];
-  v7 = [(HMDBackgroundOperation *)self homeManager];
-  v8 = [v5 findAccessoryUsing:v6 homeManager:v7];
+  accessoryUUID = [(HMDAccessoryBackgroundOperation *)self accessoryUUID];
+  homeManager = [(HMDBackgroundOperation *)self homeManager];
+  v8 = [v5 findAccessoryUsing:accessoryUUID homeManager:homeManager];
 
   v9 = v8;
   objc_opt_class();
@@ -52,30 +52,30 @@
 
   v14 = v13;
 
-  if (!v4)
+  if (!accessoryOperationStatus)
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       v19 = HMFGetLogIdentifier();
-      v20 = [(HMDAccessoryBackgroundOperation *)v17 accessoryUUID];
-      v21 = [(HMDAccessoryBackgroundOperation *)v17 accessoryIdentifier];
-      v22 = [(HMDAccessoryBackgroundOperation *)v17 homeUUID];
+      accessoryUUID2 = [(HMDAccessoryBackgroundOperation *)selfCopy accessoryUUID];
+      accessoryIdentifier = [(HMDAccessoryBackgroundOperation *)selfCopy accessoryIdentifier];
+      homeUUID = [(HMDAccessoryBackgroundOperation *)selfCopy homeUUID];
       *buf = 138544130;
       *&buf[4] = v19;
       *&buf[12] = 2112;
-      *&buf[14] = v20;
+      *&buf[14] = accessoryUUID2;
       *&buf[22] = 2112;
-      v53 = v21;
+      v53 = accessoryIdentifier;
       LOWORD(v54) = 2112;
-      *(&v54 + 2) = v22;
+      *(&v54 + 2) = homeUUID;
       _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_ERROR, "%{public}@Unable to run audit operation on accessory : %@/%@, for Home: %@ due to invalid status", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v16);
-    if (a3)
+    if (error)
     {
       goto LABEL_18;
     }
@@ -86,31 +86,31 @@
   if (!(v11 | v14))
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy2 = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       v26 = HMFGetLogIdentifier();
-      v27 = [(HMDAccessoryBackgroundOperation *)v24 accessoryUUID];
-      v28 = [(HMDAccessoryBackgroundOperation *)v24 accessoryIdentifier];
-      v29 = [(HMDAccessoryBackgroundOperation *)v24 homeUUID];
+      accessoryUUID3 = [(HMDAccessoryBackgroundOperation *)selfCopy2 accessoryUUID];
+      accessoryIdentifier2 = [(HMDAccessoryBackgroundOperation *)selfCopy2 accessoryIdentifier];
+      homeUUID2 = [(HMDAccessoryBackgroundOperation *)selfCopy2 homeUUID];
       *buf = 138544130;
       *&buf[4] = v26;
       *&buf[12] = 2112;
-      *&buf[14] = v27;
+      *&buf[14] = accessoryUUID3;
       *&buf[22] = 2112;
-      v53 = v28;
+      v53 = accessoryIdentifier2;
       LOWORD(v54) = 2112;
-      *(&v54 + 2) = v29;
+      *(&v54 + 2) = homeUUID2;
       _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_ERROR, "%{public}@Unable to run audit operation on nil accessory : %@/%@, for Home: %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v23);
-    if (a3)
+    if (error)
     {
 LABEL_18:
       [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-      *a3 = v15 = 0;
+      *error = v15 = 0;
       goto LABEL_23;
     }
 
@@ -119,16 +119,16 @@ LABEL_19:
     goto LABEL_23;
   }
 
-  if (v4 == 1)
+  if (accessoryOperationStatus == 1)
   {
     v15 = 1;
   }
 
   else
   {
-    v30 = [(HMDBackgroundOperation *)self userData];
-    v31 = [v30 objectForKeyedSubscript:@"HMDBackgroundOpsUpdateAuditTimeForRestrictedGuestKey"];
-    v32 = [v31 BOOLValue];
+    userData = [(HMDBackgroundOperation *)self userData];
+    v31 = [userData objectForKeyedSubscript:@"HMDBackgroundOpsUpdateAuditTimeForRestrictedGuestKey"];
+    bOOLValue = [v31 BOOLValue];
 
     v48 = 0;
     v49 = &v48;
@@ -141,25 +141,25 @@ LABEL_19:
     *&v54 = __Block_byref_object_dispose__53754;
     *(&v54 + 1) = 0;
     v33 = +[HMDCoreData sharedInstance];
-    v34 = [v12 home];
-    v35 = [v34 uuid];
-    v36 = [v33 contextWithHomeUUID:v35];
+    home = [v12 home];
+    uuid = [home uuid];
+    v36 = [v33 contextWithHomeUUID:uuid];
 
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __57__HMDPersistAuditAccessoryResultOperation_mainWithError___block_invoke;
     v41[3] = &unk_2786741E8;
     v42 = v12;
-    v43 = self;
-    v47 = v32;
+    selfCopy3 = self;
+    v47 = bOOLValue;
     v45 = buf;
     v46 = &v48;
     v37 = v36;
     v44 = v37;
     [v37 unsafeSynchronousBlock:v41];
-    if (a3)
+    if (error)
     {
-      *a3 = *(*&buf[8] + 40);
+      *error = *(*&buf[8] + 40);
     }
 
     v15 = *(v49 + 24);
@@ -270,17 +270,17 @@ LABEL_18:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (id)initForRestrictedGuestWithAccessory:(id)a3
+- (id)initForRestrictedGuestWithAccessory:(id)accessory
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v11 = @"HMDBackgroundOpsUpdateAuditTimeForRestrictedGuestKey";
   v12[0] = MEMORY[0x277CBEC38];
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  accessoryCopy = accessory;
   v6 = [v4 dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v10.receiver = self;
   v10.super_class = HMDPersistAuditAccessoryResultOperation;
-  v7 = [(HMDAccessoryBackgroundOperation *)&v10 initWithAccessory:v5 userData:v6];
+  v7 = [(HMDAccessoryBackgroundOperation *)&v10 initWithAccessory:accessoryCopy userData:v6];
 
   v8 = *MEMORY[0x277D85DE8];
   return v7;

@@ -8,9 +8,9 @@
 - (void)_migrateSkyDefaultsIfNecessary
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = [(BSAbstractDefaultDomain *)self _store];
-  v4 = [v3 bs_defaultExists:@"SBBottomLeftCornerGestureFeature"];
-  if (v4 != [v3 bs_defaultExists:@"SBBottomLeftCornerGestureTouchTypes"])
+  _store = [(BSAbstractDefaultDomain *)self _store];
+  v4 = [_store bs_defaultExists:@"SBBottomLeftCornerGestureFeature"];
+  if (v4 != [_store bs_defaultExists:@"SBBottomLeftCornerGestureTouchTypes"])
   {
     v5 = SBLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -51,7 +51,7 @@
 
   if (v4)
   {
-    [v3 removeObjectForKey:@"SBApplePencilScreenshotFromCorner"];
+    [_store removeObjectForKey:@"SBApplePencilScreenshotFromCorner"];
     v5 = SBLogCommon();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -68,7 +68,7 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (![v3 bs_defaultExists:@"SBApplePencilScreenshotFromCorner"])
+  if (![_store bs_defaultExists:@"SBApplePencilScreenshotFromCorner"])
   {
     v5 = SBLogCommon();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -83,8 +83,8 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  [v3 setInteger:0 forKey:@"SBBottomLeftCornerGestureFeature"];
-  v12 = [v3 BOOLForKey:@"SBApplePencilScreenshotFromCorner"];
+  [_store setInteger:0 forKey:@"SBBottomLeftCornerGestureFeature"];
+  v12 = [_store BOOLForKey:@"SBApplePencilScreenshotFromCorner"];
   if (v12)
   {
     v13 = 2;
@@ -95,8 +95,8 @@ LABEL_24:
     v13 = 0;
   }
 
-  [v3 setInteger:v13 forKey:@"SBBottomLeftCornerGestureTouchTypes"];
-  [v3 removeObjectForKey:@"SBApplePencilScreenshotFromCorner"];
+  [_store setInteger:v13 forKey:@"SBBottomLeftCornerGestureTouchTypes"];
+  [_store removeObjectForKey:@"SBApplePencilScreenshotFromCorner"];
   v5 = SBLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -123,13 +123,13 @@ LABEL_24:
 
 LABEL_25:
 
-  v17 = [v3 bs_defaultExists:@"SBBottomRightCornerGestureFeature"];
-  if (v17 == [v3 bs_defaultExists:@"SBBottomRightCornerGestureTouchTypes"])
+  v17 = [_store bs_defaultExists:@"SBBottomRightCornerGestureFeature"];
+  if (v17 == [_store bs_defaultExists:@"SBBottomRightCornerGestureTouchTypes"])
   {
     if (v17)
     {
-      [v3 removeObjectForKey:@"SBApplePencilPaperFromCorner"];
-      [v3 removeObjectForKey:@"SBFingerSwipePaperFromCorner"];
+      [_store removeObjectForKey:@"SBApplePencilPaperFromCorner"];
+      [_store removeObjectForKey:@"SBFingerSwipePaperFromCorner"];
       v18 = SBLogCommon();
       if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
@@ -144,21 +144,21 @@ LABEL_25:
 
     else
     {
-      v24 = [v3 bs_defaultExists:@"SBApplePencilPaperFromCorner"];
-      v25 = [v3 bs_defaultExists:@"SBFingerSwipePaperFromCorner"];
+      v24 = [_store bs_defaultExists:@"SBApplePencilPaperFromCorner"];
+      v25 = [_store bs_defaultExists:@"SBFingerSwipePaperFromCorner"];
       v26 = v25;
       if ((v24 & 1) != 0 || v25)
       {
         v27 = 1;
-        [v3 setInteger:1 forKey:{@"SBBottomRightCornerGestureFeature", *v34}];
+        [_store setInteger:1 forKey:{@"SBBottomRightCornerGestureFeature", *v34}];
         if (v24)
         {
-          v27 = [v3 BOOLForKey:@"SBApplePencilPaperFromCorner"];
+          v27 = [_store BOOLForKey:@"SBApplePencilPaperFromCorner"];
         }
 
         if (v26)
         {
-          v28 = [v3 BOOLForKey:@"SBFingerSwipePaperFromCorner"];
+          v28 = [_store BOOLForKey:@"SBFingerSwipePaperFromCorner"];
         }
 
         else
@@ -177,9 +177,9 @@ LABEL_25:
         }
 
         v30 = v28;
-        [v3 setInteger:v29 | v28 forKey:@"SBBottomRightCornerGestureTouchTypes"];
-        [v3 removeObjectForKey:@"SBApplePencilPaperFromCorner"];
-        [v3 removeObjectForKey:@"SBFingerSwipePaperFromCorner"];
+        [_store setInteger:v29 | v28 forKey:@"SBBottomRightCornerGestureTouchTypes"];
+        [_store removeObjectForKey:@"SBApplePencilPaperFromCorner"];
+        [_store removeObjectForKey:@"SBFingerSwipePaperFromCorner"];
         v18 = SBLogCommon();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
@@ -282,12 +282,12 @@ LABEL_59:
 - (void)_bindAndRegisterDefaults
 {
   [(SBCornerGestureDefaults *)self _migrateSkyDefaultsIfNecessary];
-  v8 = [(BSAbstractDefaultDomain *)self _store];
-  if (([v8 bs_defaultExists:@"SBGestureRequiresEducation-Corner"] & 1) == 0)
+  _store = [(BSAbstractDefaultDomain *)self _store];
+  if (([_store bs_defaultExists:@"SBGestureRequiresEducation-Corner"] & 1) == 0)
   {
-    [v8 setInteger:1 forKey:@"SBGestureRequiresEducation-Corner"];
-    [v8 setValue:&unk_1F3D3EB68 forKey:@"SBBottomLeftCornerGestureTouchTypes"];
-    [v8 setValue:&unk_1F3D3EB68 forKey:@"SBBottomRightCornerGestureTouchTypes"];
+    [_store setInteger:1 forKey:@"SBGestureRequiresEducation-Corner"];
+    [_store setValue:&unk_1F3D3EB68 forKey:@"SBBottomLeftCornerGestureTouchTypes"];
+    [_store setValue:&unk_1F3D3EB68 forKey:@"SBBottomRightCornerGestureTouchTypes"];
   }
 
   v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"bottomLeftCornerGestureFeature"];

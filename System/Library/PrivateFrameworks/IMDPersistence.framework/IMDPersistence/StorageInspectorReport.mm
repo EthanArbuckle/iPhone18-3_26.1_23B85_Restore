@@ -1,15 +1,15 @@
 @interface StorageInspectorReport
-+ (id)createFromData:(id)a3 error:(id *)a4;
++ (id)createFromData:(id)data error:(id *)error;
 - (NSString)description;
 - (_TtC14IMDPersistence22StorageInspectorReport)init;
-- (id)encodeToData:(id *)a3;
+- (id)encodeToData:(id *)data;
 @end
 
 @implementation StorageInspectorReport
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B7C75B18();
 
   v3 = sub_1B7CFEA30();
@@ -31,13 +31,13 @@
   return [(StorageInspectorReport *)&v6 init];
 }
 
-- (id)encodeToData:(id *)a3
+- (id)encodeToData:(id *)data
 {
   v4 = sub_1B7CFDC10();
   v5 = *(v4 + 48);
   v6 = *(v4 + 52);
   swift_allocObject();
-  v7 = self;
+  selfCopy = self;
   sub_1B7CFDC00();
   type metadata accessor for StorageInspectorReport();
   sub_1B7C77334(&qword_1EBA52E38, type metadata accessor for StorageInspectorReport);
@@ -50,9 +50,9 @@
   return v11;
 }
 
-+ (id)createFromData:(id)a3 error:(id *)a4
++ (id)createFromData:(id)data error:(id *)error
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = sub_1B7CFE020();
   v7 = v6;
 

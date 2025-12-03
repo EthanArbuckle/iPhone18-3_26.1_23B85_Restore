@@ -4,36 +4,36 @@
 + (id)defaultSpeakScreenOptions;
 + (id)defaultSwitchControlOptions;
 + (id)options;
-+ (id)voiceOverOptionsIncludingElementsFromOpaqueProviders:(BOOL)a3 honorsGroups:(BOOL)a4;
++ (id)voiceOverOptionsIncludingElementsFromOpaqueProviders:(BOOL)providers honorsGroups:(BOOL)groups;
 - (UIAccessibilityElementTraversalOptions)init;
 - (id)description;
-- (void)setAllowedElementsForTraversal:(id)a3;
+- (void)setAllowedElementsForTraversal:(id)traversal;
 @end
 
 @implementation UIAccessibilityElementTraversalOptions
 
 + (id)options
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)voiceOverOptionsIncludingElementsFromOpaqueProviders:(BOOL)a3 honorsGroups:(BOOL)a4
++ (id)voiceOverOptionsIncludingElementsFromOpaqueProviders:(BOOL)providers honorsGroups:(BOOL)groups
 {
-  v4 = a4;
-  v7 = [a1 options];
-  [v7 setHonorsElementGrouping:v4];
+  groupsCopy = groups;
+  options = [self options];
+  [options setHonorsElementGrouping:groupsCopy];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __108__UIAccessibilityElementTraversalOptions_voiceOverOptionsIncludingElementsFromOpaqueProviders_honorsGroups___block_invoke;
   v9[3] = &__block_descriptor_42_e8_B16__0_8l;
-  v9[4] = a1;
-  v10 = a3;
-  v11 = v4;
-  [v7 setLeafNodePredicate:v9];
+  v9[4] = self;
+  providersCopy = providers;
+  v11 = groupsCopy;
+  [options setLeafNodePredicate:v9];
 
-  return v7;
+  return options;
 }
 
 uint64_t __108__UIAccessibilityElementTraversalOptions_voiceOverOptionsIncludingElementsFromOpaqueProviders_honorsGroups___block_invoke(uint64_t a1, void *a2)
@@ -59,13 +59,13 @@ uint64_t __108__UIAccessibilityElementTraversalOptions_voiceOverOptionsIncluding
 
 + (id)defaultSwitchControlOptions
 {
-  v2 = [a1 options];
-  [v2 setShouldReturnScannerGroups:1];
-  [v2 setShouldOnlyIncludeElementsWithVisibleFrame:1];
-  [v2 setShouldIncludeStatusBarWindow:1];
-  [v2 setLeafNodePredicate:&__block_literal_global_3];
+  options = [self options];
+  [options setShouldReturnScannerGroups:1];
+  [options setShouldOnlyIncludeElementsWithVisibleFrame:1];
+  [options setShouldIncludeStatusBarWindow:1];
+  [options setLeafNodePredicate:&__block_literal_global_3];
 
-  return v2;
+  return options;
 }
 
 uint64_t __69__UIAccessibilityElementTraversalOptions_defaultSwitchControlOptions__block_invoke(uint64_t a1, void *a2)
@@ -90,8 +90,8 @@ uint64_t __69__UIAccessibilityElementTraversalOptions_defaultSwitchControlOption
   v2 = +[UIAccessibilityElementTraversalOptions options];
   [v2 setLeafNodePredicate:&__block_literal_global_282];
   [v2 setForSpeakScreen:1];
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 _accessibilitySpeakThisRootElement];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  _accessibilitySpeakThisRootElement = [mEMORY[0x1E69DC668] _accessibilitySpeakThisRootElement];
 
   v5 = AXLogSpeakScreen();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -99,8 +99,8 @@ uint64_t __69__UIAccessibilityElementTraversalOptions_defaultSwitchControlOption
     +[UIAccessibilityElementTraversalOptions defaultSpeakScreenOptions];
   }
 
-  v6 = [MEMORY[0x1E69DC668] sharedApplication];
-  v7 = [v6 _accessibilitySpeakThisViewsFromSceneRequestedForActiveSpeakScreenSession];
+  mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+  _accessibilitySpeakThisViewsFromSceneRequestedForActiveSpeakScreenSession = [mEMORY[0x1E69DC668]2 _accessibilitySpeakThisViewsFromSceneRequestedForActiveSpeakScreenSession];
 
   v8 = AXLogSpeakScreen();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -108,27 +108,27 @@ uint64_t __69__UIAccessibilityElementTraversalOptions_defaultSwitchControlOption
     +[UIAccessibilityElementTraversalOptions defaultSpeakScreenOptions];
   }
 
-  if (v4)
+  if (_accessibilitySpeakThisRootElement)
   {
-    v13[0] = v4;
-    v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-    [v2 setAllowedElementsForTraversal:v9];
+    v13[0] = _accessibilitySpeakThisRootElement;
+    mEMORY[0x1E69DC668]3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
+    [v2 setAllowedElementsForTraversal:mEMORY[0x1E69DC668]3];
 LABEL_7:
 
     goto LABEL_10;
   }
 
-  if (!v7)
+  if (!_accessibilitySpeakThisViewsFromSceneRequestedForActiveSpeakScreenSession)
   {
-    v9 = [MEMORY[0x1E69DC668] sharedApplication];
-    v11 = [v9 _accessibilitySpeakThisViewController];
-    v12 = [v11 _accessibilitySpeakThisViews];
-    [v2 setAllowedElementsForTraversal:v12];
+    mEMORY[0x1E69DC668]3 = [MEMORY[0x1E69DC668] sharedApplication];
+    _accessibilitySpeakThisViewController = [mEMORY[0x1E69DC668]3 _accessibilitySpeakThisViewController];
+    _accessibilitySpeakThisViews = [_accessibilitySpeakThisViewController _accessibilitySpeakThisViews];
+    [v2 setAllowedElementsForTraversal:_accessibilitySpeakThisViews];
 
     goto LABEL_7;
   }
 
-  [v2 setAllowedElementsForTraversal:v7];
+  [v2 setAllowedElementsForTraversal:_accessibilitySpeakThisViewsFromSceneRequestedForActiveSpeakScreenSession];
 LABEL_10:
 
   return v2;
@@ -162,16 +162,16 @@ uint64_t __67__UIAccessibilityElementTraversalOptions_defaultSpeakScreenOptions_
 
 + (id)defaultFullKeyboardAccessOptions
 {
-  v2 = [a1 options];
-  [v2 setShouldIncludeStatusBarWindow:1];
-  [v2 setLeafNodePredicate:&__block_literal_global_286];
+  options = [self options];
+  [options setShouldIncludeStatusBarWindow:1];
+  [options setLeafNodePredicate:&__block_literal_global_286];
 
-  return v2;
+  return options;
 }
 
 + (id)defaultContinuityDisplayOptions
 {
-  v2 = [a1 voiceOverOptionsIncludingElementsFromOpaqueProviders:1 honorsGroups:0];
+  v2 = [self voiceOverOptionsIncludingElementsFromOpaqueProviders:1 honorsGroups:0];
   [v2 setShouldOnlyIncludeElementsWithVisibleFrame:1];
 
   return v2;
@@ -194,9 +194,9 @@ uint64_t __67__UIAccessibilityElementTraversalOptions_defaultSpeakScreenOptions_
 
 - (id)description
 {
-  v3 = [(UIAccessibilityElementTraversalOptions *)self direction];
+  direction = [(UIAccessibilityElementTraversalOptions *)self direction];
   v4 = @"previous";
-  if (v3 == 1)
+  if (direction == 1)
   {
     v4 = @"next";
   }
@@ -258,16 +258,16 @@ uint64_t __67__UIAccessibilityElementTraversalOptions_defaultSpeakScreenOptions_
   return v14;
 }
 
-- (void)setAllowedElementsForTraversal:(id)a3
+- (void)setAllowedElementsForTraversal:(id)traversal
 {
-  v5 = a3;
+  traversalCopy = traversal;
   allowedElementsForTraversal = self->_allowedElementsForTraversal;
   p_allowedElementsForTraversal = &self->_allowedElementsForTraversal;
-  if (allowedElementsForTraversal != v5)
+  if (allowedElementsForTraversal != traversalCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_allowedElementsForTraversal, a3);
-    v5 = v8;
+    v8 = traversalCopy;
+    objc_storeStrong(p_allowedElementsForTraversal, traversal);
+    traversalCopy = v8;
   }
 }
 

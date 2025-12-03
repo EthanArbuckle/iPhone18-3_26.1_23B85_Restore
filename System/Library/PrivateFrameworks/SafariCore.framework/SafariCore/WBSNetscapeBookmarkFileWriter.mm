@@ -1,34 +1,34 @@
 @interface WBSNetscapeBookmarkFileWriter
-- (BOOL)_writeString:(id)a3 error:(id *)a4;
-- (BOOL)appendURLString:(id)a3 title:(id)a4 dateOfLastVisitIfReadingListItem:(id)a5 error:(id *)a6;
-- (BOOL)closeFolderWithError:(id *)a3;
-- (BOOL)openFolder:(id)a3 identifier:(id)a4 error:(id *)a5;
-- (WBSNetscapeBookmarkFileWriter)initWithFileHandle:(id)a3 error:(id *)a4;
-- (WBSNetscapeBookmarkFileWriter)initWithURL:(id)a3 error:(id *)a4;
+- (BOOL)_writeString:(id)string error:(id *)error;
+- (BOOL)appendURLString:(id)string title:(id)title dateOfLastVisitIfReadingListItem:(id)item error:(id *)error;
+- (BOOL)closeFolderWithError:(id *)error;
+- (BOOL)openFolder:(id)folder identifier:(id)identifier error:(id *)error;
+- (WBSNetscapeBookmarkFileWriter)initWithFileHandle:(id)handle error:(id *)error;
+- (WBSNetscapeBookmarkFileWriter)initWithURL:(id)l error:(id *)error;
 @end
 
 @implementation WBSNetscapeBookmarkFileWriter
 
-- (WBSNetscapeBookmarkFileWriter)initWithURL:(id)a3 error:(id *)a4
+- (WBSNetscapeBookmarkFileWriter)initWithURL:(id)l error:(id *)error
 {
-  v6 = [MEMORY[0x1E696AC00] safari_fileHandleWithURL:a3 options:1537 createMode:416 error:a4];
+  v6 = [MEMORY[0x1E696AC00] safari_fileHandleWithURL:l options:1537 createMode:416 error:error];
   if (v6)
   {
-    self = [(WBSNetscapeBookmarkFileWriter *)self initWithFileHandle:v6 error:a4];
-    v7 = self;
+    self = [(WBSNetscapeBookmarkFileWriter *)self initWithFileHandle:v6 error:error];
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (WBSNetscapeBookmarkFileWriter)initWithFileHandle:(id)a3 error:(id *)a4
+- (WBSNetscapeBookmarkFileWriter)initWithFileHandle:(id)handle error:(id *)error
 {
-  v7 = a3;
+  handleCopy = handle;
   v25.receiver = self;
   v25.super_class = WBSNetscapeBookmarkFileWriter;
   v8 = [(WBSNetscapeBookmarkFileWriter *)&v25 init];
@@ -38,33 +38,33 @@
     goto LABEL_11;
   }
 
-  objc_storeStrong(&v8->_fileHandle, a3);
+  objc_storeStrong(&v8->_fileHandle, handle);
   v10 = objc_alloc_init(MEMORY[0x1E696AD60]);
   indentation = v9->_indentation;
   v9->_indentation = v10;
 
-  if (![(WBSNetscapeBookmarkFileWriter *)v9 _writeString:@"<!DOCTYPE NETSCAPE-Bookmark-file-1>\n" error:a4])
+  if (![(WBSNetscapeBookmarkFileWriter *)v9 _writeString:@"<!DOCTYPE NETSCAPE-Bookmark-file-1>\n" error:error])
   {
     goto LABEL_11;
   }
 
   v12 = MEMORY[0x1E695DF58];
-  v13 = [MEMORY[0x1E695DF58] currentLocale];
-  v14 = [v13 languageCode];
-  v15 = [v12 characterDirectionForLanguage:v14];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  languageCode = [currentLocale languageCode];
+  v15 = [v12 characterDirectionForLanguage:languageCode];
 
   v16 = v15 == 2 ? @"<HTML dir=rtl>\n" : @"<HTML>\n";
-  if ([(WBSNetscapeBookmarkFileWriter *)v9 _writeString:v16 error:a4]&& [(WBSNetscapeBookmarkFileWriter *)v9 _writeString:@"<META HTTP-EQUIV=Content-Type CONTENT=text/html; charset=UTF-8>\n" error:a4])
+  if ([(WBSNetscapeBookmarkFileWriter *)v9 _writeString:v16 error:error]&& [(WBSNetscapeBookmarkFileWriter *)v9 _writeString:@"<META HTTP-EQUIV=Content-Type CONTENT=text/html; charset=UTF-8>\n" error:error])
   {
     v17 = _WBSLocalizedString(@"Bookmarks (exported bookmarks HTML title)", &_WBSLocalizableStringsBundleOnceToken, &_WBSLocalizableStringsBundle);
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<TITLE>%@</TITLE>\n", v17];
-    v19 = [(WBSNetscapeBookmarkFileWriter *)v9 _writeString:v18 error:a4];
+    v19 = [(WBSNetscapeBookmarkFileWriter *)v9 _writeString:v18 error:error];
 
     if (v19)
     {
       v20 = _WBSLocalizedString(@"Bookmarks (exported bookmarks displayed title)", &_WBSLocalizableStringsBundleOnceToken, &_WBSLocalizableStringsBundle);
       v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<H1>%@</H1>\n", v20];
-      v22 = [(WBSNetscapeBookmarkFileWriter *)v9 _writeString:v21 error:a4];
+      v22 = [(WBSNetscapeBookmarkFileWriter *)v9 _writeString:v21 error:error];
 
       if (v22)
       {
@@ -92,26 +92,26 @@ LABEL_11:
   return v23;
 }
 
-- (BOOL)openFolder:(id)a3 identifier:(id)a4 error:(id *)a5
+- (BOOL)openFolder:(id)folder identifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  folderCopy = folder;
+  identifierCopy = identifier;
+  if (folderCopy)
   {
-    if (![(WBSNetscapeBookmarkFileWriter *)self _writeString:self->_indentation error:a5])
+    if (![(WBSNetscapeBookmarkFileWriter *)self _writeString:self->_indentation error:error])
     {
       goto LABEL_10;
     }
 
-    if (![(WBSNetscapeBookmarkFileWriter *)self _writeString:@"<DT><H3" error:a5])
+    if (![(WBSNetscapeBookmarkFileWriter *)self _writeString:@"<DT><H3" error:error])
     {
       goto LABEL_10;
     }
 
-    if (v9)
+    if (identifierCopy)
     {
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@" id=%@", v9];
-      v11 = [(WBSNetscapeBookmarkFileWriter *)self _writeString:v10 error:a5];
+      identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@" id=%@", identifierCopy];
+      v11 = [(WBSNetscapeBookmarkFileWriter *)self _writeString:identifierCopy error:error];
 
       if (!v11)
       {
@@ -120,9 +120,9 @@ LABEL_11:
     }
 
     v12 = MEMORY[0x1E696AEC0];
-    v13 = escapeHTML(v8);
+    v13 = escapeHTML(folderCopy);
     v14 = [v12 stringWithFormat:@">%@</H3>\n", v13];
-    v15 = [(WBSNetscapeBookmarkFileWriter *)self _writeString:v14 error:a5];
+    v15 = [(WBSNetscapeBookmarkFileWriter *)self _writeString:v14 error:error];
 
     if (!v15)
     {
@@ -130,7 +130,7 @@ LABEL_11:
     }
   }
 
-  if ([(WBSNetscapeBookmarkFileWriter *)self _writeString:self->_indentation error:a5]&& [(WBSNetscapeBookmarkFileWriter *)self _writeString:@"<DL><p>\n" error:a5])
+  if ([(WBSNetscapeBookmarkFileWriter *)self _writeString:self->_indentation error:error]&& [(WBSNetscapeBookmarkFileWriter *)self _writeString:@"<DL><p>\n" error:error])
   {
     [(NSMutableString *)self->_indentation appendString:@"\t"];
     v16 = 1;
@@ -145,29 +145,29 @@ LABEL_10:
   return v16;
 }
 
-- (BOOL)appendURLString:(id)a3 title:(id)a4 dateOfLastVisitIfReadingListItem:(id)a5 error:(id *)a6
+- (BOOL)appendURLString:(id)string title:(id)title dateOfLastVisitIfReadingListItem:(id)item error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([(WBSNetscapeBookmarkFileWriter *)self _writeString:self->_indentation error:a6])
+  stringCopy = string;
+  titleCopy = title;
+  itemCopy = item;
+  if ([(WBSNetscapeBookmarkFileWriter *)self _writeString:self->_indentation error:error])
   {
     v13 = MEMORY[0x1E696AEC0];
-    if (v12)
+    if (itemCopy)
     {
-      [v12 timeIntervalSince1970];
+      [itemCopy timeIntervalSince1970];
       v15 = v14;
-      v16 = escapeHTML(v11);
-      [v13 stringWithFormat:@"<DT><A LAST_VISIT=%f HREF=%@>%@</A>\n", v15, v10, v16];
+      v16 = escapeHTML(titleCopy);
+      [v13 stringWithFormat:@"<DT><A LAST_VISIT=%f HREF=%@>%@</A>\n", v15, stringCopy, v16];
     }
 
     else
     {
-      v16 = escapeHTML(v11);
-      [v13 stringWithFormat:@"<DT><A HREF=%@>%@</A>\n", v10, v16];
+      v16 = escapeHTML(titleCopy);
+      [v13 stringWithFormat:@"<DT><A HREF=%@>%@</A>\n", stringCopy, v16];
     }
     v17 = ;
-    v18 = [(WBSNetscapeBookmarkFileWriter *)self _writeString:v17 error:a6];
+    v18 = [(WBSNetscapeBookmarkFileWriter *)self _writeString:v17 error:error];
   }
 
   else
@@ -178,33 +178,33 @@ LABEL_10:
   return v18;
 }
 
-- (BOOL)closeFolderWithError:(id *)a3
+- (BOOL)closeFolderWithError:(id *)error
 {
   if (![(NSMutableString *)self->_indentation length])
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:0];
     }
 
     return 0;
   }
 
   [(NSMutableString *)self->_indentation deleteCharactersInRange:[(NSMutableString *)self->_indentation length]- 1, 1];
-  if (![(WBSNetscapeBookmarkFileWriter *)self _writeString:self->_indentation error:a3])
+  if (![(WBSNetscapeBookmarkFileWriter *)self _writeString:self->_indentation error:error])
   {
     return 0;
   }
 
-  return [(WBSNetscapeBookmarkFileWriter *)self _writeString:@"</DL><p>\n" error:a3];
+  return [(WBSNetscapeBookmarkFileWriter *)self _writeString:@"</DL><p>\n" error:error];
 }
 
-- (BOOL)_writeString:(id)a3 error:(id *)a4
+- (BOOL)_writeString:(id)string error:(id *)error
 {
-  v6 = [a3 dataUsingEncoding:4];
-  LOBYTE(a4) = [(WBSNetscapeBookmarkFileWriter *)self _writeData:v6 error:a4];
+  v6 = [string dataUsingEncoding:4];
+  LOBYTE(error) = [(WBSNetscapeBookmarkFileWriter *)self _writeData:v6 error:error];
 
-  return a4;
+  return error;
 }
 
 @end

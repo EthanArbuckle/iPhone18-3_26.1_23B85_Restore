@@ -1,5 +1,5 @@
 @interface MenstrualCyclesOnboardingLastPeriodViewController
-- (void)datePickerChangedWithPicker:(id)a3;
+- (void)datePickerChangedWithPicker:(id)picker;
 - (void)viewDidLoad;
 @end
 
@@ -7,13 +7,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E2A6EB4();
 }
 
-- (void)datePickerChangedWithPicker:(id)a3
+- (void)datePickerChangedWithPicker:(id)picker
 {
-  v4 = self;
+  selfCopy = self;
   v3 = sub_29E1C7678();
   [v3 setEnabled_];
 }

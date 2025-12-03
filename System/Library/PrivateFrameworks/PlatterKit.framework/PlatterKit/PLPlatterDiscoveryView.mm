@@ -1,20 +1,20 @@
 @interface PLPlatterDiscoveryView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PLPlatterDiscoveryView)init;
 - (UIView)graphicView;
-- (id)visualStylingProviderForCategory:(int64_t)a3;
+- (id)visualStylingProviderForCategory:(int64_t)category;
 - (void)_configureBodyLabelIfNeccessary;
 - (void)_configureClearButtonIfNeccessary;
 - (void)_configureTitleTextLabelIfNeccessary;
-- (void)_layoutSubviewInBounds:(CGRect)a3 measuringOnly:(CGSize *)a4;
+- (void)_layoutSubviewInBounds:(CGRect)bounds measuringOnly:(CGSize *)only;
 - (void)layoutSubviews;
-- (void)setBodyText:(id)a3;
-- (void)setClearAction:(id)a3;
-- (void)setGraphicView:(id)a3;
-- (void)setTitleText:(id)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
-- (void)updateVisualStylingOfView:(id)a3 style:(int64_t)a4 visualStylingProvider:(id)a5 outgoingProvider:(id)a6;
-- (void)visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5;
+- (void)setBodyText:(id)text;
+- (void)setClearAction:(id)action;
+- (void)setGraphicView:(id)view;
+- (void)setTitleText:(id)text;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
+- (void)updateVisualStylingOfView:(id)view style:(int64_t)style visualStylingProvider:(id)provider outgoingProvider:(id)outgoingProvider;
+- (void)visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider;
 @end
 
 @implementation PLPlatterDiscoveryView
@@ -36,18 +36,18 @@
   return v3;
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v7 = a3;
-  v4 = [(PLPlatterDiscoveryView *)self titleText];
+  textCopy = text;
+  titleText = [(PLPlatterDiscoveryView *)self titleText];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
-    if (v7)
+    if (textCopy)
     {
       [(PLPlatterDiscoveryView *)self _configureTitleTextLabelIfNeccessary];
-      [(UILabel *)self->_titleTextLabel setText:v7];
+      [(UILabel *)self->_titleTextLabel setText:textCopy];
     }
 
     else
@@ -61,18 +61,18 @@
   }
 }
 
-- (void)setBodyText:(id)a3
+- (void)setBodyText:(id)text
 {
-  v7 = a3;
-  v4 = [(PLPlatterDiscoveryView *)self bodyText];
+  textCopy = text;
+  bodyText = [(PLPlatterDiscoveryView *)self bodyText];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
-    if (v7)
+    if (textCopy)
     {
       [(PLPlatterDiscoveryView *)self _configureBodyLabelIfNeccessary];
-      [(UILabel *)self->_bodyTextLabel setText:v7];
+      [(UILabel *)self->_bodyTextLabel setText:textCopy];
     }
 
     else
@@ -88,26 +88,26 @@
 
 - (UIView)graphicView
 {
-  v2 = [(UIView *)self->_graphicContainerView subviews];
-  v3 = [v2 firstObject];
+  subviews = [(UIView *)self->_graphicContainerView subviews];
+  firstObject = [subviews firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (void)setGraphicView:(id)a3
+- (void)setGraphicView:(id)view
 {
-  v13 = a3;
-  v4 = [(PLPlatterDiscoveryView *)self graphicView];
+  viewCopy = view;
+  graphicView = [(PLPlatterDiscoveryView *)self graphicView];
 
-  if (v4)
+  if (graphicView)
   {
-    v5 = [(PLPlatterDiscoveryView *)self graphicView];
-    [v5 removeFromSuperview];
+    graphicView2 = [(PLPlatterDiscoveryView *)self graphicView];
+    [graphicView2 removeFromSuperview];
   }
 
   graphicContainerView = self->_graphicContainerView;
-  v7 = v13;
-  if (v13)
+  v7 = viewCopy;
+  if (viewCopy)
   {
     if (!graphicContainerView)
     {
@@ -115,17 +115,17 @@
       v9 = self->_graphicContainerView;
       self->_graphicContainerView = v8;
 
-      v10 = [(PLPlatterView *)self customContentView];
-      [v10 addSubview:self->_graphicContainerView];
+      customContentView = [(PLPlatterView *)self customContentView];
+      [customContentView addSubview:self->_graphicContainerView];
 
-      v11 = [(PLPlatterView *)self customContentView];
-      [v11 sendSubviewToBack:self->_graphicContainerView];
+      customContentView2 = [(PLPlatterView *)self customContentView];
+      [customContentView2 sendSubviewToBack:self->_graphicContainerView];
 
-      v7 = v13;
+      v7 = viewCopy;
     }
 
     [v7 setAutoresizingMask:18];
-    [(UIView *)self->_graphicContainerView addSubview:v13];
+    [(UIView *)self->_graphicContainerView addSubview:viewCopy];
   }
 
   else
@@ -138,9 +138,9 @@
   [(PLPlatterDiscoveryView *)self setNeedsLayout];
 }
 
-- (void)setClearAction:(id)a3
+- (void)setClearAction:(id)action
 {
-  v7 = a3;
+  actionCopy = action;
   clearButton = self->_clearButton;
   if (clearButton)
   {
@@ -149,7 +149,7 @@
     self->_clearButton = 0;
   }
 
-  objc_storeStrong(&self->_clearAction, a3);
+  objc_storeStrong(&self->_clearAction, action);
   if (self->_clearAction)
   {
     [(PLPlatterDiscoveryView *)self _configureClearButtonIfNeccessary];
@@ -159,7 +159,7 @@
   [(PLPlatterDiscoveryView *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v6 = *MEMORY[0x277CBF3A8];
   BSRectWithSize();
@@ -192,20 +192,20 @@
     clearButton = self->_clearButton;
     self->_clearButton = v3;
 
-    v11 = [MEMORY[0x277D75230] plainButtonConfiguration];
-    v5 = [MEMORY[0x277CF0D60] defaultFontProvider];
-    v6 = [v5 preferredFontForTextStyle:*MEMORY[0x277D76938] hiFontStyle:4];
+    plainButtonConfiguration = [MEMORY[0x277D75230] plainButtonConfiguration];
+    defaultFontProvider = [MEMORY[0x277CF0D60] defaultFontProvider];
+    v6 = [defaultFontProvider preferredFontForTextStyle:*MEMORY[0x277D76938] hiFontStyle:4];
 
     v7 = [MEMORY[0x277D755D0] configurationWithFont:v6];
     v8 = [MEMORY[0x277D755B8] systemImageNamed:@"xmark" withConfiguration:v7];
-    [v11 setImage:v8];
-    [(UIButton *)self->_clearButton setConfiguration:v11];
+    [plainButtonConfiguration setImage:v8];
+    [(UIButton *)self->_clearButton setConfiguration:plainButtonConfiguration];
     [(PLPlatterDiscoveryView *)self updateVisualStylingOfView:self->_clearButton style:1 visualStylingProvider:self->_strokeVisualStylingProvider outgoingProvider:0];
-    v9 = [(PLPlatterView *)self customContentView];
-    [v9 addSubview:self->_clearButton];
+    customContentView = [(PLPlatterView *)self customContentView];
+    [customContentView addSubview:self->_clearButton];
 
-    v10 = [(PLPlatterView *)self customContentView];
-    [v10 bringSubviewToFront:self->_clearButton];
+    customContentView2 = [(PLPlatterView *)self customContentView];
+    [customContentView2 bringSubviewToFront:self->_clearButton];
   }
 }
 
@@ -220,8 +220,8 @@
     self->_titleTextLabel = v4;
 
     v6 = self->_titleTextLabel;
-    v7 = [(PLPlatterDiscoveryView *)self titleText];
-    [(UILabel *)v6 setText:v7];
+    titleText = [(PLPlatterDiscoveryView *)self titleText];
+    [(UILabel *)v6 setText:titleText];
 
     v8 = self->_titleTextLabel;
     v9 = [MEMORY[0x277D74300] fontWithDescriptor:v15 size:0.0];
@@ -235,8 +235,8 @@
     [(UILabel *)v10 setMinimumScaleFactor:v12 / v13];
     [(UILabel *)self->_titleTextLabel setNumberOfLines:0];
     [(PLPlatterDiscoveryView *)self updateVisualStylingOfView:self->_titleTextLabel style:0 visualStylingProvider:self->_strokeVisualStylingProvider outgoingProvider:0];
-    v14 = [(PLPlatterView *)self customContentView];
-    [v14 addSubview:self->_titleTextLabel];
+    customContentView = [(PLPlatterView *)self customContentView];
+    [customContentView addSubview:self->_titleTextLabel];
   }
 }
 
@@ -249,8 +249,8 @@
     self->_bodyTextLabel = v3;
 
     v5 = self->_bodyTextLabel;
-    v6 = [(PLPlatterDiscoveryView *)self bodyText];
-    [(UILabel *)v5 setText:v6];
+    bodyText = [(PLPlatterDiscoveryView *)self bodyText];
+    [(UILabel *)v5 setText:bodyText];
 
     v7 = self->_bodyTextLabel;
     v8 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769C0]];
@@ -258,20 +258,20 @@
 
     [(PLPlatterDiscoveryView *)self updateVisualStylingOfView:self->_bodyTextLabel style:1 visualStylingProvider:self->_strokeVisualStylingProvider outgoingProvider:0];
     [(UILabel *)self->_bodyTextLabel setNumberOfLines:0];
-    v9 = [(PLPlatterView *)self customContentView];
-    [v9 addSubview:self->_bodyTextLabel];
+    customContentView = [(PLPlatterView *)self customContentView];
+    [customContentView addSubview:self->_bodyTextLabel];
   }
 }
 
-- (void)_layoutSubviewInBounds:(CGRect)a3 measuringOnly:(CGSize *)a4
+- (void)_layoutSubviewInBounds:(CGRect)bounds measuringOnly:(CGSize *)only
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(PLPlatterDiscoveryView *)self _shouldReverseLayoutDirection];
-  v11 = [(PLPlatterDiscoveryView *)self traitCollection];
-  [v11 displayScale];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _shouldReverseLayoutDirection = [(PLPlatterDiscoveryView *)self _shouldReverseLayoutDirection];
+  traitCollection = [(PLPlatterDiscoveryView *)self traitCollection];
+  [traitCollection displayScale];
 
   v37.origin.x = x;
   v37.origin.y = y;
@@ -288,7 +288,7 @@
     v20 = v16;
     v21 = v17;
     v22 = v18;
-    if (!a4)
+    if (!only)
     {
       [(UILabel *)self->_titleTextLabel setFrame:v15, v16, v17, v18];
     }
@@ -309,7 +309,7 @@
     v29 = v25;
     v30 = v26;
     v31 = v27;
-    if (!a4)
+    if (!only)
     {
       [(UILabel *)self->_bodyTextLabel setFrame:v24, v25, v26, v27];
     }
@@ -321,11 +321,11 @@
     CGRectGetMaxY(v39);
   }
 
-  if (a4)
+  if (only)
   {
     UISizeRoundToScale();
-    a4->width = v32;
-    a4->height = v33;
+    only->width = v32;
+    only->height = v33;
   }
 
   else
@@ -334,7 +334,7 @@
     [(UIView *)self->_graphicContainerView setFrame:?];
     clearButton = self->_clearButton;
     v35 = v12 + -2.0 + -44.0;
-    if (v10)
+    if (_shouldReverseLayoutDirection)
     {
       v35 = 2.0;
     }
@@ -343,7 +343,7 @@
   }
 }
 
-- (id)visualStylingProviderForCategory:(int64_t)a3
+- (id)visualStylingProviderForCategory:(int64_t)category
 {
   strokeVisualStylingProvider = self->_strokeVisualStylingProvider;
   if (strokeVisualStylingProvider)
@@ -355,18 +355,18 @@
   {
     v6.receiver = self;
     v6.super_class = PLPlatterDiscoveryView;
-    v4 = [(PLPlatterView *)&v6 visualStylingProviderForCategory:a3];
+    v4 = [(PLPlatterView *)&v6 visualStylingProviderForCategory:category];
   }
 
   return v4;
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v15 = a3;
-  v7 = [(PLPlatterDiscoveryView *)self requiredVisualStyleCategories];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  v9 = [v7 containsObject:v8];
+  providerCopy = provider;
+  requiredVisualStyleCategories = [(PLPlatterDiscoveryView *)self requiredVisualStyleCategories];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:category];
+  v9 = [requiredVisualStyleCategories containsObject:v8];
 
   if ((v9 & 1) == 0)
   {
@@ -374,37 +374,37 @@
   }
 
   strokeVisualStylingProvider = self->_strokeVisualStylingProvider;
-  v11 = v15;
-  if (strokeVisualStylingProvider != v15)
+  v11 = providerCopy;
+  if (strokeVisualStylingProvider != providerCopy)
   {
-    v12 = v15;
+    v12 = providerCopy;
     v13 = self->_strokeVisualStylingProvider;
     self->_strokeVisualStylingProvider = v12;
     v14 = strokeVisualStylingProvider;
 
-    [(PLPlatterDiscoveryView *)self visualStylingProviderDidChange:self->_strokeVisualStylingProvider forCategory:a4 outgoingProvider:v14];
-    v11 = v15;
+    [(PLPlatterDiscoveryView *)self visualStylingProviderDidChange:self->_strokeVisualStylingProvider forCategory:category outgoingProvider:v14];
+    v11 = providerCopy;
   }
 }
 
-- (void)visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5
+- (void)visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider
 {
   titleTextLabel = self->_titleTextLabel;
-  v8 = a5;
-  v9 = a3;
-  [(PLPlatterDiscoveryView *)self updateVisualStylingOfView:titleTextLabel style:0 visualStylingProvider:v9 outgoingProvider:v8];
-  [(PLPlatterDiscoveryView *)self updateVisualStylingOfView:self->_bodyTextLabel style:1 visualStylingProvider:v9 outgoingProvider:v8];
-  [(PLPlatterDiscoveryView *)self updateVisualStylingOfView:self->_clearButton style:1 visualStylingProvider:v9 outgoingProvider:v8];
+  providerCopy = provider;
+  changeCopy = change;
+  [(PLPlatterDiscoveryView *)self updateVisualStylingOfView:titleTextLabel style:0 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
+  [(PLPlatterDiscoveryView *)self updateVisualStylingOfView:self->_bodyTextLabel style:1 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
+  [(PLPlatterDiscoveryView *)self updateVisualStylingOfView:self->_clearButton style:1 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
 }
 
-- (void)updateVisualStylingOfView:(id)a3 style:(int64_t)a4 visualStylingProvider:(id)a5 outgoingProvider:(id)a6
+- (void)updateVisualStylingOfView:(id)view style:(int64_t)style visualStylingProvider:(id)provider outgoingProvider:(id)outgoingProvider
 {
-  if (a3)
+  if (view)
   {
-    v9 = a5;
-    v10 = a3;
-    [a6 stopAutomaticallyUpdatingView:v10];
-    [v9 automaticallyUpdateView:v10 withStyle:a4];
+    providerCopy = provider;
+    viewCopy = view;
+    [outgoingProvider stopAutomaticallyUpdatingView:viewCopy];
+    [providerCopy automaticallyUpdateView:viewCopy withStyle:style];
   }
 }
 

@@ -1,6 +1,6 @@
 @interface MHSchemaMHClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (MHSchemaMHASRAudioConfigureStarted)asrAudioConfigureStarted;
 - (MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext)acousticFalseTriggerMitigationEvaluationContext;
 - (MHSchemaMHAdaptiveSiriVolumeTTSVolumeQueried)adaptiveSiriVolumeTTSVolumeQueried;
@@ -29,8 +29,8 @@
 - (MHSchemaMHAttendingContext)attendingContext;
 - (MHSchemaMHAudioDucked)audioDucked;
 - (MHSchemaMHCarplayLanguageMismatch)carPlayLangaugeMismatched;
-- (MHSchemaMHClientEvent)initWithDictionary:(id)a3;
-- (MHSchemaMHClientEvent)initWithJSON:(id)a3;
+- (MHSchemaMHClientEvent)initWithDictionary:(id)dictionary;
+- (MHSchemaMHClientEvent)initWithJSON:(id)n;
 - (MHSchemaMHCoreSpeechPreprocessorCompleted)coreSpeechPreprocessorCompleted;
 - (MHSchemaMHCrownPressed)crownPressed;
 - (MHSchemaMHDarwinConnectedDeviceWakeContext)darwinConnectedDeviceWakeContext;
@@ -70,7 +70,7 @@
 - (MHSchemaMHVoiceTriggerTwoShotDetected)voiceTriggerTwoShotDetected;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -143,72 +143,72 @@
 - (void)deleteVoiceTriggerRePrompted;
 - (void)deleteVoiceTriggerRejectDetected;
 - (void)deleteVoiceTriggerTwoShotDetected;
-- (void)setAcousticFalseTriggerMitigationEvaluationContext:(id)a3;
-- (void)setAdaptiveSiriVolumeTTSVolumeQueried:(id)a3;
-- (void)setAdaptiveSiriVolumeUserIntentDetected:(id)a3;
-- (void)setAdblockerContext:(id)a3;
-- (void)setApplicationPlaybackAttempted:(id)a3;
-- (void)setAsrAudioConfigureStarted:(id)a3;
-- (void)setAssistantDaemonAudioBluetoothInfo:(id)a3;
-- (void)setAssistantDaemonAudioConfigureContext:(id)a3;
-- (void)setAssistantDaemonAudioFetchRouteContext:(id)a3;
-- (void)setAssistantDaemonAudioInitContext:(id)a3;
-- (void)setAssistantDaemonAudioLateBufferDetected:(id)a3;
-- (void)setAssistantDaemonAudioPrepareContext:(id)a3;
-- (void)setAssistantDaemonAudioPrewarmContext:(id)a3;
-- (void)setAssistantDaemonAudioRecordingContext:(id)a3;
-- (void)setAssistantDaemonAudioRecordingFailureInsufficientPriority:(id)a3;
-- (void)setAssistantDaemonAudioRecordingFirstBufferContext:(id)a3;
-- (void)setAssistantDaemonAudioRecordingInterruptionContext:(id)a3;
-- (void)setAssistantDaemonAudioRecordingInterruptionStartedTier1:(id)a3;
-- (void)setAssistantDaemonAudioRecordingLastBufferContext:(id)a3;
-- (void)setAssistantDaemonAudioRecordingMissedBufferDetected:(id)a3;
-- (void)setAssistantDaemonAudioSessionSetActiveContext:(id)a3;
-- (void)setAssistantDaemonAudioSessionSetInactiveContext:(id)a3;
-- (void)setAssistantDaemonAudioStartRecordingContext:(id)a3;
-- (void)setAssistantDaemonAudioStopRecordingContext:(id)a3;
-- (void)setAssistantDaemonAudioTwoShotTransitionContext:(id)a3;
-- (void)setAttendingContext:(id)a3;
-- (void)setAudioDucked:(id)a3;
-- (void)setAudioRecordingFailed:(id)a3;
-- (void)setCarPlayLangaugeMismatched:(id)a3;
-- (void)setCoreSpeechPreprocessorCompleted:(id)a3;
-- (void)setCrownPressed:(id)a3;
-- (void)setDarwinConnectedDeviceWakeContext:(id)a3;
-- (void)setEndpointDelayContext:(id)a3;
-- (void)setEndpointDetected:(id)a3;
-- (void)setEndpointLatencyInfoReported:(id)a3;
-- (void)setEndpointerAccessibleContext:(id)a3;
-- (void)setEndpointerUsed:(id)a3;
-- (void)setFinalMitigationRecommendation:(id)a3;
-- (void)setLatticeFalseTriggerMitigationEvaluationContext:(id)a3;
-- (void)setOdldFalseTriggerMitigated:(id)a3;
-- (void)setOnDeviceEndpointerContext:(id)a3;
-- (void)setRtsFalseRejectDetected:(id)a3;
-- (void)setRtsFirstPassPolicyTriggered:(id)a3;
-- (void)setRtsSecondPassPolicyDecisionMade:(id)a3;
-- (void)setRtsTriggered:(id)a3;
-- (void)setServerEndpointerContext:(id)a3;
-- (void)setSiriDirectedSpeechDetectionFailed:(id)a3;
-- (void)setSiriLaunchRequestContext:(id)a3;
-- (void)setSpeakerFalseTriggerMitigated:(id)a3;
-- (void)setSpeakerIdEnrollmentDataReportedTier1:(id)a3;
-- (void)setSpeakerIdModelOneSessionReportedTier1:(id)a3;
-- (void)setSpeakerIdModelSelectedClockSessionInfoTier1:(id)a3;
-- (void)setSpeechDetectorContext:(id)a3;
-- (void)setSpeechStopDetected:(id)a3;
-- (void)setStoppedListeningForSpeechContinuation:(id)a3;
-- (void)setTrpCreated:(id)a3;
-- (void)setUnintendedResponseSuppressionExecutionContext:(id)a3;
-- (void)setUserEngagementModelContext:(id)a3;
-- (void)setUserSpeakingContext:(id)a3;
-- (void)setVoiceProfileICloudSyncFinished:(id)a3;
-- (void)setVoiceProfileOnboarded:(id)a3;
-- (void)setVoiceTriggerContext:(id)a3;
-- (void)setVoiceTriggerRePrompted:(id)a3;
-- (void)setVoiceTriggerRejectDetected:(id)a3;
-- (void)setVoiceTriggerTwoShotDetected:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAcousticFalseTriggerMitigationEvaluationContext:(id)context;
+- (void)setAdaptiveSiriVolumeTTSVolumeQueried:(id)queried;
+- (void)setAdaptiveSiriVolumeUserIntentDetected:(id)detected;
+- (void)setAdblockerContext:(id)context;
+- (void)setApplicationPlaybackAttempted:(id)attempted;
+- (void)setAsrAudioConfigureStarted:(id)started;
+- (void)setAssistantDaemonAudioBluetoothInfo:(id)info;
+- (void)setAssistantDaemonAudioConfigureContext:(id)context;
+- (void)setAssistantDaemonAudioFetchRouteContext:(id)context;
+- (void)setAssistantDaemonAudioInitContext:(id)context;
+- (void)setAssistantDaemonAudioLateBufferDetected:(id)detected;
+- (void)setAssistantDaemonAudioPrepareContext:(id)context;
+- (void)setAssistantDaemonAudioPrewarmContext:(id)context;
+- (void)setAssistantDaemonAudioRecordingContext:(id)context;
+- (void)setAssistantDaemonAudioRecordingFailureInsufficientPriority:(id)priority;
+- (void)setAssistantDaemonAudioRecordingFirstBufferContext:(id)context;
+- (void)setAssistantDaemonAudioRecordingInterruptionContext:(id)context;
+- (void)setAssistantDaemonAudioRecordingInterruptionStartedTier1:(id)tier1;
+- (void)setAssistantDaemonAudioRecordingLastBufferContext:(id)context;
+- (void)setAssistantDaemonAudioRecordingMissedBufferDetected:(id)detected;
+- (void)setAssistantDaemonAudioSessionSetActiveContext:(id)context;
+- (void)setAssistantDaemonAudioSessionSetInactiveContext:(id)context;
+- (void)setAssistantDaemonAudioStartRecordingContext:(id)context;
+- (void)setAssistantDaemonAudioStopRecordingContext:(id)context;
+- (void)setAssistantDaemonAudioTwoShotTransitionContext:(id)context;
+- (void)setAttendingContext:(id)context;
+- (void)setAudioDucked:(id)ducked;
+- (void)setAudioRecordingFailed:(id)failed;
+- (void)setCarPlayLangaugeMismatched:(id)mismatched;
+- (void)setCoreSpeechPreprocessorCompleted:(id)completed;
+- (void)setCrownPressed:(id)pressed;
+- (void)setDarwinConnectedDeviceWakeContext:(id)context;
+- (void)setEndpointDelayContext:(id)context;
+- (void)setEndpointDetected:(id)detected;
+- (void)setEndpointLatencyInfoReported:(id)reported;
+- (void)setEndpointerAccessibleContext:(id)context;
+- (void)setEndpointerUsed:(id)used;
+- (void)setFinalMitigationRecommendation:(id)recommendation;
+- (void)setLatticeFalseTriggerMitigationEvaluationContext:(id)context;
+- (void)setOdldFalseTriggerMitigated:(id)mitigated;
+- (void)setOnDeviceEndpointerContext:(id)context;
+- (void)setRtsFalseRejectDetected:(id)detected;
+- (void)setRtsFirstPassPolicyTriggered:(id)triggered;
+- (void)setRtsSecondPassPolicyDecisionMade:(id)made;
+- (void)setRtsTriggered:(id)triggered;
+- (void)setServerEndpointerContext:(id)context;
+- (void)setSiriDirectedSpeechDetectionFailed:(id)failed;
+- (void)setSiriLaunchRequestContext:(id)context;
+- (void)setSpeakerFalseTriggerMitigated:(id)mitigated;
+- (void)setSpeakerIdEnrollmentDataReportedTier1:(id)tier1;
+- (void)setSpeakerIdModelOneSessionReportedTier1:(id)tier1;
+- (void)setSpeakerIdModelSelectedClockSessionInfoTier1:(id)tier1;
+- (void)setSpeechDetectorContext:(id)context;
+- (void)setSpeechStopDetected:(id)detected;
+- (void)setStoppedListeningForSpeechContinuation:(id)continuation;
+- (void)setTrpCreated:(id)created;
+- (void)setUnintendedResponseSuppressionExecutionContext:(id)context;
+- (void)setUserEngagementModelContext:(id)context;
+- (void)setUserSpeakingContext:(id)context;
+- (void)setVoiceProfileICloudSyncFinished:(id)finished;
+- (void)setVoiceProfileOnboarded:(id)onboarded;
+- (void)setVoiceTriggerContext:(id)context;
+- (void)setVoiceTriggerRePrompted:(id)prompted;
+- (void)setVoiceTriggerRejectDetected:(id)detected;
+- (void)setVoiceTriggerTwoShotDetected:(id)detected;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHClientEvent
@@ -1130,29 +1130,29 @@
 
 - (int)clockIsolationLevel
 {
-  v2 = [(MHSchemaMHClientEvent *)self whichEvent_Type];
-  if (v2 - 157 > 8)
+  whichEvent_Type = [(MHSchemaMHClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 157 > 8)
   {
     return 1;
   }
 
   else
   {
-    return dword_1AA738C64[v2 - 157];
+    return dword_1AA738C64[whichEvent_Type - 157];
   }
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(MHSchemaMHClientEvent *)self whichEvent_Type];
-  if (v2 - 100 > 0x41)
+  whichEvent_Type = [(MHSchemaMHClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 100 > 0x41)
   {
     return @"com.apple.aiml.siri.mh.MHClientEvent";
   }
 
   else
   {
-    return off_1E78D9570[v2 - 100];
+    return off_1E78D9570[whichEvent_Type - 100];
   }
 }
 
@@ -1171,16 +1171,16 @@
   return v3;
 }
 
-- (MHSchemaMHClientEvent)initWithDictionary:(id)a3
+- (MHSchemaMHClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v202.receiver = self;
   v202.super_class = MHSchemaMHClientEvent;
   v5 = [(MHSchemaMHClientEvent *)&v202 init];
 
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"mhId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"mhId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1188,7 +1188,7 @@
       [(MHSchemaMHClientEvent *)v5 setMhId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1196,7 +1196,7 @@
       [(MHSchemaMHClientEvent *)v5 setEventMetadata:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"acousticFalseTriggerMitigationEvaluationContext"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"acousticFalseTriggerMitigationEvaluationContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1204,7 +1204,7 @@
       [(MHSchemaMHClientEvent *)v5 setAcousticFalseTriggerMitigationEvaluationContext:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"latticeFalseTriggerMitigationEvaluationContext"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"latticeFalseTriggerMitigationEvaluationContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1212,7 +1212,7 @@
       [(MHSchemaMHClientEvent *)v5 setLatticeFalseTriggerMitigationEvaluationContext:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"unintendedResponseSuppressionExecutionContext"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"unintendedResponseSuppressionExecutionContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1220,7 +1220,7 @@
       [(MHSchemaMHClientEvent *)v5 setUnintendedResponseSuppressionExecutionContext:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"coreSpeechPreprocessorCompleted"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"coreSpeechPreprocessorCompleted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1228,7 +1228,7 @@
       [(MHSchemaMHClientEvent *)v5 setCoreSpeechPreprocessorCompleted:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"asrAudioConfigureStarted"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"asrAudioConfigureStarted"];
     objc_opt_class();
     v201 = v18;
     if (objc_opt_isKindOfClass())
@@ -1237,7 +1237,7 @@
       [(MHSchemaMHClientEvent *)v5 setAsrAudioConfigureStarted:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"assistantDaemonAudioInitContext"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"assistantDaemonAudioInitContext"];
     objc_opt_class();
     v200 = v20;
     if (objc_opt_isKindOfClass())
@@ -1246,7 +1246,7 @@
       [(MHSchemaMHClientEvent *)v5 setAssistantDaemonAudioInitContext:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"assistantDaemonAudioConfigureContext"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"assistantDaemonAudioConfigureContext"];
     objc_opt_class();
     v199 = v22;
     if (objc_opt_isKindOfClass())
@@ -1255,7 +1255,7 @@
       [(MHSchemaMHClientEvent *)v5 setAssistantDaemonAudioConfigureContext:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"assistantDaemonAudioPrepareContext"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"assistantDaemonAudioPrepareContext"];
     objc_opt_class();
     v198 = v24;
     if (objc_opt_isKindOfClass())
@@ -1264,7 +1264,7 @@
       [(MHSchemaMHClientEvent *)v5 setAssistantDaemonAudioPrepareContext:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"assistantDaemonAudioPrewarmContext"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"assistantDaemonAudioPrewarmContext"];
     objc_opt_class();
     v197 = v26;
     if (objc_opt_isKindOfClass())
@@ -1273,7 +1273,7 @@
       [(MHSchemaMHClientEvent *)v5 setAssistantDaemonAudioPrewarmContext:v27];
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"assistantDaemonAudioStartRecordingContext"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"assistantDaemonAudioStartRecordingContext"];
     objc_opt_class();
     v196 = v28;
     if (objc_opt_isKindOfClass())
@@ -1282,7 +1282,7 @@
       [(MHSchemaMHClientEvent *)v5 setAssistantDaemonAudioStartRecordingContext:v29];
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"assistantDaemonAudioStopRecordingContext"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"assistantDaemonAudioStopRecordingContext"];
     objc_opt_class();
     v195 = v30;
     if (objc_opt_isKindOfClass())
@@ -1291,7 +1291,7 @@
       [(MHSchemaMHClientEvent *)v5 setAssistantDaemonAudioStopRecordingContext:v31];
     }
 
-    v32 = [v4 objectForKeyedSubscript:@"assistantDaemonAudioSessionSetActiveContext"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"assistantDaemonAudioSessionSetActiveContext"];
     objc_opt_class();
     v194 = v32;
     if (objc_opt_isKindOfClass())
@@ -1300,7 +1300,7 @@
       [(MHSchemaMHClientEvent *)v5 setAssistantDaemonAudioSessionSetActiveContext:v33];
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"assistantDaemonAudioSessionSetInactiveContext"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"assistantDaemonAudioSessionSetInactiveContext"];
     objc_opt_class();
     v193 = v34;
     if (objc_opt_isKindOfClass())
@@ -1309,7 +1309,7 @@
       [(MHSchemaMHClientEvent *)v5 setAssistantDaemonAudioSessionSetInactiveContext:v35];
     }
 
-    v36 = [v4 objectForKeyedSubscript:@"assistantDaemonAudioFetchRouteContext"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"assistantDaemonAudioFetchRouteContext"];
     objc_opt_class();
     v192 = v36;
     if (objc_opt_isKindOfClass())
@@ -1318,7 +1318,7 @@
       [(MHSchemaMHClientEvent *)v5 setAssistantDaemonAudioFetchRouteContext:v37];
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"assistantDaemonAudioRecordingContext"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"assistantDaemonAudioRecordingContext"];
     objc_opt_class();
     v191 = v38;
     if (objc_opt_isKindOfClass())
@@ -1327,7 +1327,7 @@
       [(MHSchemaMHClientEvent *)v5 setAssistantDaemonAudioRecordingContext:v39];
     }
 
-    v40 = [v4 objectForKeyedSubscript:@"assistantDaemonAudioRecordingMissedBufferDetected"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"assistantDaemonAudioRecordingMissedBufferDetected"];
     objc_opt_class();
     v190 = v40;
     if (objc_opt_isKindOfClass())
@@ -1336,7 +1336,7 @@
       [(MHSchemaMHClientEvent *)v5 setAssistantDaemonAudioRecordingMissedBufferDetected:v41];
     }
 
-    v42 = [v4 objectForKeyedSubscript:@"assistantDaemonAudioLateBufferDetected"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"assistantDaemonAudioLateBufferDetected"];
     objc_opt_class();
     v189 = v42;
     if (objc_opt_isKindOfClass())
@@ -1345,7 +1345,7 @@
       [(MHSchemaMHClientEvent *)v5 setAssistantDaemonAudioLateBufferDetected:v43];
     }
 
-    v44 = [v4 objectForKeyedSubscript:@"assistantDaemonAudioRecordingFirstBufferContext"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"assistantDaemonAudioRecordingFirstBufferContext"];
     objc_opt_class();
     v188 = v44;
     if (objc_opt_isKindOfClass())
@@ -1354,7 +1354,7 @@
       [(MHSchemaMHClientEvent *)v5 setAssistantDaemonAudioRecordingFirstBufferContext:v45];
     }
 
-    v46 = [v4 objectForKeyedSubscript:@"assistantDaemonAudioRecordingLastBufferContext"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"assistantDaemonAudioRecordingLastBufferContext"];
     objc_opt_class();
     v187 = v46;
     if (objc_opt_isKindOfClass())
@@ -1363,7 +1363,7 @@
       [(MHSchemaMHClientEvent *)v5 setAssistantDaemonAudioRecordingLastBufferContext:v47];
     }
 
-    v48 = [v4 objectForKeyedSubscript:@"assistantDaemonAudioRecordingInterruptionContext"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"assistantDaemonAudioRecordingInterruptionContext"];
     objc_opt_class();
     v186 = v48;
     if (objc_opt_isKindOfClass())
@@ -1372,7 +1372,7 @@
       [(MHSchemaMHClientEvent *)v5 setAssistantDaemonAudioRecordingInterruptionContext:v49];
     }
 
-    v50 = [v4 objectForKeyedSubscript:@"assistantDaemonAudioRecordingInterruptionStartedTier1"];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"assistantDaemonAudioRecordingInterruptionStartedTier1"];
     objc_opt_class();
     v185 = v50;
     if (objc_opt_isKindOfClass())
@@ -1381,7 +1381,7 @@
       [(MHSchemaMHClientEvent *)v5 setAssistantDaemonAudioRecordingInterruptionStartedTier1:v51];
     }
 
-    v52 = [v4 objectForKeyedSubscript:@"assistantDaemonAudioBluetoothInfo"];
+    v52 = [dictionaryCopy objectForKeyedSubscript:@"assistantDaemonAudioBluetoothInfo"];
     objc_opt_class();
     v184 = v52;
     if (objc_opt_isKindOfClass())
@@ -1390,7 +1390,7 @@
       [(MHSchemaMHClientEvent *)v5 setAssistantDaemonAudioBluetoothInfo:v53];
     }
 
-    v54 = [v4 objectForKeyedSubscript:@"voiceTriggerTwoShotDetected"];
+    v54 = [dictionaryCopy objectForKeyedSubscript:@"voiceTriggerTwoShotDetected"];
     objc_opt_class();
     v183 = v54;
     if (objc_opt_isKindOfClass())
@@ -1399,7 +1399,7 @@
       [(MHSchemaMHClientEvent *)v5 setVoiceTriggerTwoShotDetected:v55];
     }
 
-    v56 = [v4 objectForKeyedSubscript:@"assistantDaemonAudioTwoShotTransitionContext"];
+    v56 = [dictionaryCopy objectForKeyedSubscript:@"assistantDaemonAudioTwoShotTransitionContext"];
     objc_opt_class();
     v182 = v56;
     if (objc_opt_isKindOfClass())
@@ -1408,7 +1408,7 @@
       [(MHSchemaMHClientEvent *)v5 setAssistantDaemonAudioTwoShotTransitionContext:v57];
     }
 
-    v58 = [v4 objectForKeyedSubscript:@"voiceTriggerContext"];
+    v58 = [dictionaryCopy objectForKeyedSubscript:@"voiceTriggerContext"];
     objc_opt_class();
     v181 = v58;
     if (objc_opt_isKindOfClass())
@@ -1417,7 +1417,7 @@
       [(MHSchemaMHClientEvent *)v5 setVoiceTriggerContext:v59];
     }
 
-    v60 = [v4 objectForKeyedSubscript:@"endpointDetected"];
+    v60 = [dictionaryCopy objectForKeyedSubscript:@"endpointDetected"];
     objc_opt_class();
     v180 = v60;
     if (objc_opt_isKindOfClass())
@@ -1426,7 +1426,7 @@
       [(MHSchemaMHClientEvent *)v5 setEndpointDetected:v61];
     }
 
-    v62 = [v4 objectForKeyedSubscript:@"endpointLatencyInfoReported"];
+    v62 = [dictionaryCopy objectForKeyedSubscript:@"endpointLatencyInfoReported"];
     objc_opt_class();
     v179 = v62;
     if (objc_opt_isKindOfClass())
@@ -1435,7 +1435,7 @@
       [(MHSchemaMHClientEvent *)v5 setEndpointLatencyInfoReported:v63];
     }
 
-    v64 = [v4 objectForKeyedSubscript:@"adblockerContext"];
+    v64 = [dictionaryCopy objectForKeyedSubscript:@"adblockerContext"];
     objc_opt_class();
     v178 = v64;
     if (objc_opt_isKindOfClass())
@@ -1444,7 +1444,7 @@
       [(MHSchemaMHClientEvent *)v5 setAdblockerContext:v65];
     }
 
-    v66 = [v4 objectForKeyedSubscript:@"onDeviceEndpointerContext"];
+    v66 = [dictionaryCopy objectForKeyedSubscript:@"onDeviceEndpointerContext"];
     objc_opt_class();
     v177 = v66;
     if (objc_opt_isKindOfClass())
@@ -1453,7 +1453,7 @@
       [(MHSchemaMHClientEvent *)v5 setOnDeviceEndpointerContext:v67];
     }
 
-    v68 = [v4 objectForKeyedSubscript:@"serverEndpointerContext"];
+    v68 = [dictionaryCopy objectForKeyedSubscript:@"serverEndpointerContext"];
     objc_opt_class();
     v176 = v68;
     if (objc_opt_isKindOfClass())
@@ -1462,7 +1462,7 @@
       [(MHSchemaMHClientEvent *)v5 setServerEndpointerContext:v69];
     }
 
-    v70 = [v4 objectForKeyedSubscript:@"endpointerUsed"];
+    v70 = [dictionaryCopy objectForKeyedSubscript:@"endpointerUsed"];
     objc_opt_class();
     v175 = v70;
     if (objc_opt_isKindOfClass())
@@ -1471,7 +1471,7 @@
       [(MHSchemaMHClientEvent *)v5 setEndpointerUsed:v71];
     }
 
-    v72 = [v4 objectForKeyedSubscript:@"endpointDelayContext"];
+    v72 = [dictionaryCopy objectForKeyedSubscript:@"endpointDelayContext"];
     objc_opt_class();
     v174 = v72;
     if (objc_opt_isKindOfClass())
@@ -1480,7 +1480,7 @@
       [(MHSchemaMHClientEvent *)v5 setEndpointDelayContext:v73];
     }
 
-    v74 = [v4 objectForKeyedSubscript:@"finalMitigationRecommendation"];
+    v74 = [dictionaryCopy objectForKeyedSubscript:@"finalMitigationRecommendation"];
     objc_opt_class();
     v173 = v74;
     if (objc_opt_isKindOfClass())
@@ -1489,7 +1489,7 @@
       [(MHSchemaMHClientEvent *)v5 setFinalMitigationRecommendation:v75];
     }
 
-    v76 = [v4 objectForKeyedSubscript:@"applicationPlaybackAttempted"];
+    v76 = [dictionaryCopy objectForKeyedSubscript:@"applicationPlaybackAttempted"];
     objc_opt_class();
     v172 = v76;
     if (objc_opt_isKindOfClass())
@@ -1498,7 +1498,7 @@
       [(MHSchemaMHClientEvent *)v5 setApplicationPlaybackAttempted:v77];
     }
 
-    v78 = [v4 objectForKeyedSubscript:@"siriLaunchRequestContext"];
+    v78 = [dictionaryCopy objectForKeyedSubscript:@"siriLaunchRequestContext"];
     objc_opt_class();
     v171 = v78;
     if (objc_opt_isKindOfClass())
@@ -1507,7 +1507,7 @@
       [(MHSchemaMHClientEvent *)v5 setSiriLaunchRequestContext:v79];
     }
 
-    v80 = [v4 objectForKeyedSubscript:@"endpointerAccessibleContext"];
+    v80 = [dictionaryCopy objectForKeyedSubscript:@"endpointerAccessibleContext"];
     objc_opt_class();
     v170 = v80;
     if (objc_opt_isKindOfClass())
@@ -1516,7 +1516,7 @@
       [(MHSchemaMHClientEvent *)v5 setEndpointerAccessibleContext:v81];
     }
 
-    v82 = [v4 objectForKeyedSubscript:@"carPlayLangaugeMismatched"];
+    v82 = [dictionaryCopy objectForKeyedSubscript:@"carPlayLangaugeMismatched"];
     objc_opt_class();
     v169 = v82;
     if (objc_opt_isKindOfClass())
@@ -1525,7 +1525,7 @@
       [(MHSchemaMHClientEvent *)v5 setCarPlayLangaugeMismatched:v83];
     }
 
-    v84 = [v4 objectForKeyedSubscript:@"darwinConnectedDeviceWakeContext"];
+    v84 = [dictionaryCopy objectForKeyedSubscript:@"darwinConnectedDeviceWakeContext"];
     objc_opt_class();
     v168 = v84;
     if (objc_opt_isKindOfClass())
@@ -1534,7 +1534,7 @@
       [(MHSchemaMHClientEvent *)v5 setDarwinConnectedDeviceWakeContext:v85];
     }
 
-    v86 = [v4 objectForKeyedSubscript:@"odldFalseTriggerMitigated"];
+    v86 = [dictionaryCopy objectForKeyedSubscript:@"odldFalseTriggerMitigated"];
     objc_opt_class();
     v167 = v86;
     if (objc_opt_isKindOfClass())
@@ -1543,7 +1543,7 @@
       [(MHSchemaMHClientEvent *)v5 setOdldFalseTriggerMitigated:v87];
     }
 
-    v88 = [v4 objectForKeyedSubscript:@"speakerFalseTriggerMitigated"];
+    v88 = [dictionaryCopy objectForKeyedSubscript:@"speakerFalseTriggerMitigated"];
     objc_opt_class();
     v166 = v88;
     if (objc_opt_isKindOfClass())
@@ -1552,7 +1552,7 @@
       [(MHSchemaMHClientEvent *)v5 setSpeakerFalseTriggerMitigated:v89];
     }
 
-    v90 = [v4 objectForKeyedSubscript:@"siriDirectedSpeechDetectionFailed"];
+    v90 = [dictionaryCopy objectForKeyedSubscript:@"siriDirectedSpeechDetectionFailed"];
     objc_opt_class();
     v165 = v90;
     if (objc_opt_isKindOfClass())
@@ -1561,7 +1561,7 @@
       [(MHSchemaMHClientEvent *)v5 setSiriDirectedSpeechDetectionFailed:v91];
     }
 
-    v92 = [v4 objectForKeyedSubscript:@"audioDucked"];
+    v92 = [dictionaryCopy objectForKeyedSubscript:@"audioDucked"];
     objc_opt_class();
     v164 = v92;
     if (objc_opt_isKindOfClass())
@@ -1570,7 +1570,7 @@
       [(MHSchemaMHClientEvent *)v5 setAudioDucked:v93];
     }
 
-    v94 = [v4 objectForKeyedSubscript:@"audioRecordingFailed"];
+    v94 = [dictionaryCopy objectForKeyedSubscript:@"audioRecordingFailed"];
     objc_opt_class();
     v163 = v94;
     if (objc_opt_isKindOfClass())
@@ -1579,7 +1579,7 @@
       [(MHSchemaMHClientEvent *)v5 setAudioRecordingFailed:v95];
     }
 
-    v96 = [v4 objectForKeyedSubscript:@"rtsFalseRejectDetected"];
+    v96 = [dictionaryCopy objectForKeyedSubscript:@"rtsFalseRejectDetected"];
     objc_opt_class();
     v162 = v96;
     if (objc_opt_isKindOfClass())
@@ -1588,7 +1588,7 @@
       [(MHSchemaMHClientEvent *)v5 setRtsFalseRejectDetected:v97];
     }
 
-    v98 = [v4 objectForKeyedSubscript:@"trpCreated"];
+    v98 = [dictionaryCopy objectForKeyedSubscript:@"trpCreated"];
     objc_opt_class();
     v161 = v98;
     if (objc_opt_isKindOfClass())
@@ -1597,7 +1597,7 @@
       [(MHSchemaMHClientEvent *)v5 setTrpCreated:v99];
     }
 
-    v100 = [v4 objectForKeyedSubscript:@"userSpeakingContext"];
+    v100 = [dictionaryCopy objectForKeyedSubscript:@"userSpeakingContext"];
     objc_opt_class();
     v160 = v100;
     if (objc_opt_isKindOfClass())
@@ -1606,7 +1606,7 @@
       [(MHSchemaMHClientEvent *)v5 setUserSpeakingContext:v101];
     }
 
-    v102 = [v4 objectForKeyedSubscript:@"speechStopDetected"];
+    v102 = [dictionaryCopy objectForKeyedSubscript:@"speechStopDetected"];
     objc_opt_class();
     v159 = v102;
     if (objc_opt_isKindOfClass())
@@ -1615,7 +1615,7 @@
       [(MHSchemaMHClientEvent *)v5 setSpeechStopDetected:v103];
     }
 
-    v104 = [v4 objectForKeyedSubscript:@"speechDetectorContext"];
+    v104 = [dictionaryCopy objectForKeyedSubscript:@"speechDetectorContext"];
     objc_opt_class();
     v158 = v104;
     if (objc_opt_isKindOfClass())
@@ -1624,7 +1624,7 @@
       [(MHSchemaMHClientEvent *)v5 setSpeechDetectorContext:v105];
     }
 
-    v106 = [v4 objectForKeyedSubscript:@"stoppedListeningForSpeechContinuation"];
+    v106 = [dictionaryCopy objectForKeyedSubscript:@"stoppedListeningForSpeechContinuation"];
     objc_opt_class();
     v157 = v106;
     if (objc_opt_isKindOfClass())
@@ -1633,7 +1633,7 @@
       [(MHSchemaMHClientEvent *)v5 setStoppedListeningForSpeechContinuation:v107];
     }
 
-    v108 = [v4 objectForKeyedSubscript:@"userEngagementModelContext"];
+    v108 = [dictionaryCopy objectForKeyedSubscript:@"userEngagementModelContext"];
     objc_opt_class();
     v156 = v108;
     if (objc_opt_isKindOfClass())
@@ -1642,7 +1642,7 @@
       [(MHSchemaMHClientEvent *)v5 setUserEngagementModelContext:v109];
     }
 
-    v110 = [v4 objectForKeyedSubscript:@"attendingContext"];
+    v110 = [dictionaryCopy objectForKeyedSubscript:@"attendingContext"];
     objc_opt_class();
     v155 = v110;
     if (objc_opt_isKindOfClass())
@@ -1651,7 +1651,7 @@
       [(MHSchemaMHClientEvent *)v5 setAttendingContext:v111];
     }
 
-    v112 = [v4 objectForKeyedSubscript:@"crownPressed"];
+    v112 = [dictionaryCopy objectForKeyedSubscript:@"crownPressed"];
     objc_opt_class();
     v154 = v112;
     if (objc_opt_isKindOfClass())
@@ -1660,7 +1660,7 @@
       [(MHSchemaMHClientEvent *)v5 setCrownPressed:v113];
     }
 
-    v114 = [v4 objectForKeyedSubscript:@"rtsTriggered"];
+    v114 = [dictionaryCopy objectForKeyedSubscript:@"rtsTriggered"];
     objc_opt_class();
     v153 = v114;
     if (objc_opt_isKindOfClass())
@@ -1669,7 +1669,7 @@
       [(MHSchemaMHClientEvent *)v5 setRtsTriggered:v115];
     }
 
-    v116 = [v4 objectForKeyedSubscript:@"rtsFirstPassPolicyTriggered"];
+    v116 = [dictionaryCopy objectForKeyedSubscript:@"rtsFirstPassPolicyTriggered"];
     objc_opt_class();
     v152 = v116;
     if (objc_opt_isKindOfClass())
@@ -1678,7 +1678,7 @@
       [(MHSchemaMHClientEvent *)v5 setRtsFirstPassPolicyTriggered:v117];
     }
 
-    v118 = [v4 objectForKeyedSubscript:@"rtsSecondPassPolicyDecisionMade"];
+    v118 = [dictionaryCopy objectForKeyedSubscript:@"rtsSecondPassPolicyDecisionMade"];
     objc_opt_class();
     v151 = v118;
     if (objc_opt_isKindOfClass())
@@ -1687,7 +1687,7 @@
       [(MHSchemaMHClientEvent *)v5 setRtsSecondPassPolicyDecisionMade:v119];
     }
 
-    v120 = [v4 objectForKeyedSubscript:@"voiceProfileOnboarded"];
+    v120 = [dictionaryCopy objectForKeyedSubscript:@"voiceProfileOnboarded"];
     objc_opt_class();
     v150 = v120;
     if (objc_opt_isKindOfClass())
@@ -1696,7 +1696,7 @@
       [(MHSchemaMHClientEvent *)v5 setVoiceProfileOnboarded:v121];
     }
 
-    v122 = [v4 objectForKeyedSubscript:@"voiceTriggerRePrompted"];
+    v122 = [dictionaryCopy objectForKeyedSubscript:@"voiceTriggerRePrompted"];
     objc_opt_class();
     v149 = v122;
     if (objc_opt_isKindOfClass())
@@ -1706,7 +1706,7 @@
     }
 
     v146 = v10;
-    v124 = [v4 objectForKeyedSubscript:@"assistantDaemonAudioRecordingFailureInsufficientPriority"];
+    v124 = [dictionaryCopy objectForKeyedSubscript:@"assistantDaemonAudioRecordingFailureInsufficientPriority"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1716,7 +1716,7 @@
 
     v142 = v124;
     v145 = v12;
-    v126 = [v4 objectForKeyedSubscript:@"voiceProfileICloudSyncFinished"];
+    v126 = [dictionaryCopy objectForKeyedSubscript:@"voiceProfileICloudSyncFinished"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1725,7 +1725,7 @@
     }
 
     v144 = v14;
-    v128 = [v4 objectForKeyedSubscript:@"voiceTriggerRejectDetected"];
+    v128 = [dictionaryCopy objectForKeyedSubscript:@"voiceTriggerRejectDetected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1734,7 +1734,7 @@
     }
 
     v143 = v16;
-    v130 = [v4 objectForKeyedSubscript:@"adaptiveSiriVolumeTTSVolumeQueried"];
+    v130 = [dictionaryCopy objectForKeyedSubscript:@"adaptiveSiriVolumeTTSVolumeQueried"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1743,7 +1743,7 @@
     }
 
     v148 = v6;
-    v132 = [v4 objectForKeyedSubscript:@"adaptiveSiriVolumeUserIntentDetected"];
+    v132 = [dictionaryCopy objectForKeyedSubscript:@"adaptiveSiriVolumeUserIntentDetected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1752,7 +1752,7 @@
     }
 
     v147 = v8;
-    v134 = [v4 objectForKeyedSubscript:@"speakerIdEnrollmentDataReportedTier1"];
+    v134 = [dictionaryCopy objectForKeyedSubscript:@"speakerIdEnrollmentDataReportedTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1760,7 +1760,7 @@
       [(MHSchemaMHClientEvent *)v5 setSpeakerIdEnrollmentDataReportedTier1:v135];
     }
 
-    v136 = [v4 objectForKeyedSubscript:@"speakerIdModelSelectedClockSessionInfoTier1"];
+    v136 = [dictionaryCopy objectForKeyedSubscript:@"speakerIdModelSelectedClockSessionInfoTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1768,7 +1768,7 @@
       [(MHSchemaMHClientEvent *)v5 setSpeakerIdModelSelectedClockSessionInfoTier1:v137];
     }
 
-    v138 = [v4 objectForKeyedSubscript:@"speakerIdModelOneSessionReportedTier1"];
+    v138 = [dictionaryCopy objectForKeyedSubscript:@"speakerIdModelOneSessionReportedTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1782,30 +1782,30 @@
   return v5;
 }
 
-- (MHSchemaMHClientEvent)initWithJSON:(id)a3
+- (MHSchemaMHClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -1818,1083 +1818,1083 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_acousticFalseTriggerMitigationEvaluationContext)
   {
-    v4 = [(MHSchemaMHClientEvent *)self acousticFalseTriggerMitigationEvaluationContext];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    acousticFalseTriggerMitigationEvaluationContext = [(MHSchemaMHClientEvent *)self acousticFalseTriggerMitigationEvaluationContext];
+    dictionaryRepresentation = [acousticFalseTriggerMitigationEvaluationContext dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"acousticFalseTriggerMitigationEvaluationContext"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"acousticFalseTriggerMitigationEvaluationContext"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"acousticFalseTriggerMitigationEvaluationContext"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"acousticFalseTriggerMitigationEvaluationContext"];
     }
   }
 
   if (self->_adaptiveSiriVolumeTTSVolumeQueried)
   {
-    v7 = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeTTSVolumeQueried];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    adaptiveSiriVolumeTTSVolumeQueried = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeTTSVolumeQueried];
+    dictionaryRepresentation2 = [adaptiveSiriVolumeTTSVolumeQueried dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"adaptiveSiriVolumeTTSVolumeQueried"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"adaptiveSiriVolumeTTSVolumeQueried"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"adaptiveSiriVolumeTTSVolumeQueried"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"adaptiveSiriVolumeTTSVolumeQueried"];
     }
   }
 
   if (self->_adaptiveSiriVolumeUserIntentDetected)
   {
-    v10 = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeUserIntentDetected];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    adaptiveSiriVolumeUserIntentDetected = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeUserIntentDetected];
+    dictionaryRepresentation3 = [adaptiveSiriVolumeUserIntentDetected dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"adaptiveSiriVolumeUserIntentDetected"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"adaptiveSiriVolumeUserIntentDetected"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"adaptiveSiriVolumeUserIntentDetected"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"adaptiveSiriVolumeUserIntentDetected"];
     }
   }
 
   if (self->_adblockerContext)
   {
-    v13 = [(MHSchemaMHClientEvent *)self adblockerContext];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    adblockerContext = [(MHSchemaMHClientEvent *)self adblockerContext];
+    dictionaryRepresentation4 = [adblockerContext dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"adblockerContext"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"adblockerContext"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"adblockerContext"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"adblockerContext"];
     }
   }
 
   if (self->_applicationPlaybackAttempted)
   {
-    v16 = [(MHSchemaMHClientEvent *)self applicationPlaybackAttempted];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    applicationPlaybackAttempted = [(MHSchemaMHClientEvent *)self applicationPlaybackAttempted];
+    dictionaryRepresentation5 = [applicationPlaybackAttempted dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"applicationPlaybackAttempted"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"applicationPlaybackAttempted"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"applicationPlaybackAttempted"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"applicationPlaybackAttempted"];
     }
   }
 
   if (self->_asrAudioConfigureStarted)
   {
-    v19 = [(MHSchemaMHClientEvent *)self asrAudioConfigureStarted];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    asrAudioConfigureStarted = [(MHSchemaMHClientEvent *)self asrAudioConfigureStarted];
+    dictionaryRepresentation6 = [asrAudioConfigureStarted dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"asrAudioConfigureStarted"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"asrAudioConfigureStarted"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"asrAudioConfigureStarted"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"asrAudioConfigureStarted"];
     }
   }
 
   if (self->_assistantDaemonAudioBluetoothInfo)
   {
-    v22 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioBluetoothInfo];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    assistantDaemonAudioBluetoothInfo = [(MHSchemaMHClientEvent *)self assistantDaemonAudioBluetoothInfo];
+    dictionaryRepresentation7 = [assistantDaemonAudioBluetoothInfo dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"assistantDaemonAudioBluetoothInfo"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"assistantDaemonAudioBluetoothInfo"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"assistantDaemonAudioBluetoothInfo"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"assistantDaemonAudioBluetoothInfo"];
     }
   }
 
   if (self->_assistantDaemonAudioConfigureContext)
   {
-    v25 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioConfigureContext];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    assistantDaemonAudioConfigureContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioConfigureContext];
+    dictionaryRepresentation8 = [assistantDaemonAudioConfigureContext dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"assistantDaemonAudioConfigureContext"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"assistantDaemonAudioConfigureContext"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"assistantDaemonAudioConfigureContext"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"assistantDaemonAudioConfigureContext"];
     }
   }
 
   if (self->_assistantDaemonAudioFetchRouteContext)
   {
-    v28 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioFetchRouteContext];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    assistantDaemonAudioFetchRouteContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioFetchRouteContext];
+    dictionaryRepresentation9 = [assistantDaemonAudioFetchRouteContext dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"assistantDaemonAudioFetchRouteContext"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"assistantDaemonAudioFetchRouteContext"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"assistantDaemonAudioFetchRouteContext"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"assistantDaemonAudioFetchRouteContext"];
     }
   }
 
   if (self->_assistantDaemonAudioInitContext)
   {
-    v31 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioInitContext];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    assistantDaemonAudioInitContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioInitContext];
+    dictionaryRepresentation10 = [assistantDaemonAudioInitContext dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"assistantDaemonAudioInitContext"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"assistantDaemonAudioInitContext"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"assistantDaemonAudioInitContext"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"assistantDaemonAudioInitContext"];
     }
   }
 
   if (self->_assistantDaemonAudioLateBufferDetected)
   {
-    v34 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioLateBufferDetected];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    assistantDaemonAudioLateBufferDetected = [(MHSchemaMHClientEvent *)self assistantDaemonAudioLateBufferDetected];
+    dictionaryRepresentation11 = [assistantDaemonAudioLateBufferDetected dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"assistantDaemonAudioLateBufferDetected"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"assistantDaemonAudioLateBufferDetected"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"assistantDaemonAudioLateBufferDetected"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"assistantDaemonAudioLateBufferDetected"];
     }
   }
 
   if (self->_assistantDaemonAudioPrepareContext)
   {
-    v37 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrepareContext];
-    v38 = [v37 dictionaryRepresentation];
-    if (v38)
+    assistantDaemonAudioPrepareContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrepareContext];
+    dictionaryRepresentation12 = [assistantDaemonAudioPrepareContext dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v38 forKeyedSubscript:@"assistantDaemonAudioPrepareContext"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"assistantDaemonAudioPrepareContext"];
     }
 
     else
     {
-      v39 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v39 forKeyedSubscript:@"assistantDaemonAudioPrepareContext"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"assistantDaemonAudioPrepareContext"];
     }
   }
 
   if (self->_assistantDaemonAudioPrewarmContext)
   {
-    v40 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrewarmContext];
-    v41 = [v40 dictionaryRepresentation];
-    if (v41)
+    assistantDaemonAudioPrewarmContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrewarmContext];
+    dictionaryRepresentation13 = [assistantDaemonAudioPrewarmContext dictionaryRepresentation];
+    if (dictionaryRepresentation13)
     {
-      [v3 setObject:v41 forKeyedSubscript:@"assistantDaemonAudioPrewarmContext"];
+      [dictionary setObject:dictionaryRepresentation13 forKeyedSubscript:@"assistantDaemonAudioPrewarmContext"];
     }
 
     else
     {
-      v42 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v42 forKeyedSubscript:@"assistantDaemonAudioPrewarmContext"];
+      null13 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null13 forKeyedSubscript:@"assistantDaemonAudioPrewarmContext"];
     }
   }
 
   if (self->_assistantDaemonAudioRecordingContext)
   {
-    v43 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingContext];
-    v44 = [v43 dictionaryRepresentation];
-    if (v44)
+    assistantDaemonAudioRecordingContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingContext];
+    dictionaryRepresentation14 = [assistantDaemonAudioRecordingContext dictionaryRepresentation];
+    if (dictionaryRepresentation14)
     {
-      [v3 setObject:v44 forKeyedSubscript:@"assistantDaemonAudioRecordingContext"];
+      [dictionary setObject:dictionaryRepresentation14 forKeyedSubscript:@"assistantDaemonAudioRecordingContext"];
     }
 
     else
     {
-      v45 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v45 forKeyedSubscript:@"assistantDaemonAudioRecordingContext"];
+      null14 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null14 forKeyedSubscript:@"assistantDaemonAudioRecordingContext"];
     }
   }
 
   if (self->_assistantDaemonAudioRecordingFailureInsufficientPriority)
   {
-    v46 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFailureInsufficientPriority];
-    v47 = [v46 dictionaryRepresentation];
-    if (v47)
+    assistantDaemonAudioRecordingFailureInsufficientPriority = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFailureInsufficientPriority];
+    dictionaryRepresentation15 = [assistantDaemonAudioRecordingFailureInsufficientPriority dictionaryRepresentation];
+    if (dictionaryRepresentation15)
     {
-      [v3 setObject:v47 forKeyedSubscript:@"assistantDaemonAudioRecordingFailureInsufficientPriority"];
+      [dictionary setObject:dictionaryRepresentation15 forKeyedSubscript:@"assistantDaemonAudioRecordingFailureInsufficientPriority"];
     }
 
     else
     {
-      v48 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v48 forKeyedSubscript:@"assistantDaemonAudioRecordingFailureInsufficientPriority"];
+      null15 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null15 forKeyedSubscript:@"assistantDaemonAudioRecordingFailureInsufficientPriority"];
     }
   }
 
   if (self->_assistantDaemonAudioRecordingFirstBufferContext)
   {
-    v49 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFirstBufferContext];
-    v50 = [v49 dictionaryRepresentation];
-    if (v50)
+    assistantDaemonAudioRecordingFirstBufferContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFirstBufferContext];
+    dictionaryRepresentation16 = [assistantDaemonAudioRecordingFirstBufferContext dictionaryRepresentation];
+    if (dictionaryRepresentation16)
     {
-      [v3 setObject:v50 forKeyedSubscript:@"assistantDaemonAudioRecordingFirstBufferContext"];
+      [dictionary setObject:dictionaryRepresentation16 forKeyedSubscript:@"assistantDaemonAudioRecordingFirstBufferContext"];
     }
 
     else
     {
-      v51 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v51 forKeyedSubscript:@"assistantDaemonAudioRecordingFirstBufferContext"];
+      null16 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null16 forKeyedSubscript:@"assistantDaemonAudioRecordingFirstBufferContext"];
     }
   }
 
   if (self->_assistantDaemonAudioRecordingInterruptionContext)
   {
-    v52 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionContext];
-    v53 = [v52 dictionaryRepresentation];
-    if (v53)
+    assistantDaemonAudioRecordingInterruptionContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionContext];
+    dictionaryRepresentation17 = [assistantDaemonAudioRecordingInterruptionContext dictionaryRepresentation];
+    if (dictionaryRepresentation17)
     {
-      [v3 setObject:v53 forKeyedSubscript:@"assistantDaemonAudioRecordingInterruptionContext"];
+      [dictionary setObject:dictionaryRepresentation17 forKeyedSubscript:@"assistantDaemonAudioRecordingInterruptionContext"];
     }
 
     else
     {
-      v54 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v54 forKeyedSubscript:@"assistantDaemonAudioRecordingInterruptionContext"];
+      null17 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null17 forKeyedSubscript:@"assistantDaemonAudioRecordingInterruptionContext"];
     }
   }
 
   if (self->_assistantDaemonAudioRecordingInterruptionStartedTier1)
   {
-    v55 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionStartedTier1];
-    v56 = [v55 dictionaryRepresentation];
-    if (v56)
+    assistantDaemonAudioRecordingInterruptionStartedTier1 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionStartedTier1];
+    dictionaryRepresentation18 = [assistantDaemonAudioRecordingInterruptionStartedTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation18)
     {
-      [v3 setObject:v56 forKeyedSubscript:@"assistantDaemonAudioRecordingInterruptionStartedTier1"];
+      [dictionary setObject:dictionaryRepresentation18 forKeyedSubscript:@"assistantDaemonAudioRecordingInterruptionStartedTier1"];
     }
 
     else
     {
-      v57 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v57 forKeyedSubscript:@"assistantDaemonAudioRecordingInterruptionStartedTier1"];
+      null18 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null18 forKeyedSubscript:@"assistantDaemonAudioRecordingInterruptionStartedTier1"];
     }
   }
 
   if (self->_assistantDaemonAudioRecordingLastBufferContext)
   {
-    v58 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingLastBufferContext];
-    v59 = [v58 dictionaryRepresentation];
-    if (v59)
+    assistantDaemonAudioRecordingLastBufferContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingLastBufferContext];
+    dictionaryRepresentation19 = [assistantDaemonAudioRecordingLastBufferContext dictionaryRepresentation];
+    if (dictionaryRepresentation19)
     {
-      [v3 setObject:v59 forKeyedSubscript:@"assistantDaemonAudioRecordingLastBufferContext"];
+      [dictionary setObject:dictionaryRepresentation19 forKeyedSubscript:@"assistantDaemonAudioRecordingLastBufferContext"];
     }
 
     else
     {
-      v60 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v60 forKeyedSubscript:@"assistantDaemonAudioRecordingLastBufferContext"];
+      null19 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null19 forKeyedSubscript:@"assistantDaemonAudioRecordingLastBufferContext"];
     }
   }
 
   if (self->_assistantDaemonAudioRecordingMissedBufferDetected)
   {
-    v61 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingMissedBufferDetected];
-    v62 = [v61 dictionaryRepresentation];
-    if (v62)
+    assistantDaemonAudioRecordingMissedBufferDetected = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingMissedBufferDetected];
+    dictionaryRepresentation20 = [assistantDaemonAudioRecordingMissedBufferDetected dictionaryRepresentation];
+    if (dictionaryRepresentation20)
     {
-      [v3 setObject:v62 forKeyedSubscript:@"assistantDaemonAudioRecordingMissedBufferDetected"];
+      [dictionary setObject:dictionaryRepresentation20 forKeyedSubscript:@"assistantDaemonAudioRecordingMissedBufferDetected"];
     }
 
     else
     {
-      v63 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v63 forKeyedSubscript:@"assistantDaemonAudioRecordingMissedBufferDetected"];
+      null20 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null20 forKeyedSubscript:@"assistantDaemonAudioRecordingMissedBufferDetected"];
     }
   }
 
   if (self->_assistantDaemonAudioSessionSetActiveContext)
   {
-    v64 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetActiveContext];
-    v65 = [v64 dictionaryRepresentation];
-    if (v65)
+    assistantDaemonAudioSessionSetActiveContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetActiveContext];
+    dictionaryRepresentation21 = [assistantDaemonAudioSessionSetActiveContext dictionaryRepresentation];
+    if (dictionaryRepresentation21)
     {
-      [v3 setObject:v65 forKeyedSubscript:@"assistantDaemonAudioSessionSetActiveContext"];
+      [dictionary setObject:dictionaryRepresentation21 forKeyedSubscript:@"assistantDaemonAudioSessionSetActiveContext"];
     }
 
     else
     {
-      v66 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v66 forKeyedSubscript:@"assistantDaemonAudioSessionSetActiveContext"];
+      null21 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null21 forKeyedSubscript:@"assistantDaemonAudioSessionSetActiveContext"];
     }
   }
 
   if (self->_assistantDaemonAudioSessionSetInactiveContext)
   {
-    v67 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetInactiveContext];
-    v68 = [v67 dictionaryRepresentation];
-    if (v68)
+    assistantDaemonAudioSessionSetInactiveContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetInactiveContext];
+    dictionaryRepresentation22 = [assistantDaemonAudioSessionSetInactiveContext dictionaryRepresentation];
+    if (dictionaryRepresentation22)
     {
-      [v3 setObject:v68 forKeyedSubscript:@"assistantDaemonAudioSessionSetInactiveContext"];
+      [dictionary setObject:dictionaryRepresentation22 forKeyedSubscript:@"assistantDaemonAudioSessionSetInactiveContext"];
     }
 
     else
     {
-      v69 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v69 forKeyedSubscript:@"assistantDaemonAudioSessionSetInactiveContext"];
+      null22 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null22 forKeyedSubscript:@"assistantDaemonAudioSessionSetInactiveContext"];
     }
   }
 
   if (self->_assistantDaemonAudioStartRecordingContext)
   {
-    v70 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStartRecordingContext];
-    v71 = [v70 dictionaryRepresentation];
-    if (v71)
+    assistantDaemonAudioStartRecordingContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStartRecordingContext];
+    dictionaryRepresentation23 = [assistantDaemonAudioStartRecordingContext dictionaryRepresentation];
+    if (dictionaryRepresentation23)
     {
-      [v3 setObject:v71 forKeyedSubscript:@"assistantDaemonAudioStartRecordingContext"];
+      [dictionary setObject:dictionaryRepresentation23 forKeyedSubscript:@"assistantDaemonAudioStartRecordingContext"];
     }
 
     else
     {
-      v72 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v72 forKeyedSubscript:@"assistantDaemonAudioStartRecordingContext"];
+      null23 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null23 forKeyedSubscript:@"assistantDaemonAudioStartRecordingContext"];
     }
   }
 
   if (self->_assistantDaemonAudioStopRecordingContext)
   {
-    v73 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStopRecordingContext];
-    v74 = [v73 dictionaryRepresentation];
-    if (v74)
+    assistantDaemonAudioStopRecordingContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStopRecordingContext];
+    dictionaryRepresentation24 = [assistantDaemonAudioStopRecordingContext dictionaryRepresentation];
+    if (dictionaryRepresentation24)
     {
-      [v3 setObject:v74 forKeyedSubscript:@"assistantDaemonAudioStopRecordingContext"];
+      [dictionary setObject:dictionaryRepresentation24 forKeyedSubscript:@"assistantDaemonAudioStopRecordingContext"];
     }
 
     else
     {
-      v75 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v75 forKeyedSubscript:@"assistantDaemonAudioStopRecordingContext"];
+      null24 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null24 forKeyedSubscript:@"assistantDaemonAudioStopRecordingContext"];
     }
   }
 
   if (self->_assistantDaemonAudioTwoShotTransitionContext)
   {
-    v76 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioTwoShotTransitionContext];
-    v77 = [v76 dictionaryRepresentation];
-    if (v77)
+    assistantDaemonAudioTwoShotTransitionContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioTwoShotTransitionContext];
+    dictionaryRepresentation25 = [assistantDaemonAudioTwoShotTransitionContext dictionaryRepresentation];
+    if (dictionaryRepresentation25)
     {
-      [v3 setObject:v77 forKeyedSubscript:@"assistantDaemonAudioTwoShotTransitionContext"];
+      [dictionary setObject:dictionaryRepresentation25 forKeyedSubscript:@"assistantDaemonAudioTwoShotTransitionContext"];
     }
 
     else
     {
-      v78 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v78 forKeyedSubscript:@"assistantDaemonAudioTwoShotTransitionContext"];
+      null25 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null25 forKeyedSubscript:@"assistantDaemonAudioTwoShotTransitionContext"];
     }
   }
 
   if (self->_attendingContext)
   {
-    v79 = [(MHSchemaMHClientEvent *)self attendingContext];
-    v80 = [v79 dictionaryRepresentation];
-    if (v80)
+    attendingContext = [(MHSchemaMHClientEvent *)self attendingContext];
+    dictionaryRepresentation26 = [attendingContext dictionaryRepresentation];
+    if (dictionaryRepresentation26)
     {
-      [v3 setObject:v80 forKeyedSubscript:@"attendingContext"];
+      [dictionary setObject:dictionaryRepresentation26 forKeyedSubscript:@"attendingContext"];
     }
 
     else
     {
-      v81 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v81 forKeyedSubscript:@"attendingContext"];
+      null26 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null26 forKeyedSubscript:@"attendingContext"];
     }
   }
 
   if (self->_audioDucked)
   {
-    v82 = [(MHSchemaMHClientEvent *)self audioDucked];
-    v83 = [v82 dictionaryRepresentation];
-    if (v83)
+    audioDucked = [(MHSchemaMHClientEvent *)self audioDucked];
+    dictionaryRepresentation27 = [audioDucked dictionaryRepresentation];
+    if (dictionaryRepresentation27)
     {
-      [v3 setObject:v83 forKeyedSubscript:@"audioDucked"];
+      [dictionary setObject:dictionaryRepresentation27 forKeyedSubscript:@"audioDucked"];
     }
 
     else
     {
-      v84 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v84 forKeyedSubscript:@"audioDucked"];
+      null27 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null27 forKeyedSubscript:@"audioDucked"];
     }
   }
 
   if (self->_audioRecordingFailed)
   {
-    v85 = [(MHSchemaMHClientEvent *)self audioRecordingFailed];
-    v86 = [v85 dictionaryRepresentation];
-    if (v86)
+    audioRecordingFailed = [(MHSchemaMHClientEvent *)self audioRecordingFailed];
+    dictionaryRepresentation28 = [audioRecordingFailed dictionaryRepresentation];
+    if (dictionaryRepresentation28)
     {
-      [v3 setObject:v86 forKeyedSubscript:@"audioRecordingFailed"];
+      [dictionary setObject:dictionaryRepresentation28 forKeyedSubscript:@"audioRecordingFailed"];
     }
 
     else
     {
-      v87 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v87 forKeyedSubscript:@"audioRecordingFailed"];
+      null28 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null28 forKeyedSubscript:@"audioRecordingFailed"];
     }
   }
 
   if (self->_carPlayLangaugeMismatched)
   {
-    v88 = [(MHSchemaMHClientEvent *)self carPlayLangaugeMismatched];
-    v89 = [v88 dictionaryRepresentation];
-    if (v89)
+    carPlayLangaugeMismatched = [(MHSchemaMHClientEvent *)self carPlayLangaugeMismatched];
+    dictionaryRepresentation29 = [carPlayLangaugeMismatched dictionaryRepresentation];
+    if (dictionaryRepresentation29)
     {
-      [v3 setObject:v89 forKeyedSubscript:@"carPlayLangaugeMismatched"];
+      [dictionary setObject:dictionaryRepresentation29 forKeyedSubscript:@"carPlayLangaugeMismatched"];
     }
 
     else
     {
-      v90 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v90 forKeyedSubscript:@"carPlayLangaugeMismatched"];
+      null29 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null29 forKeyedSubscript:@"carPlayLangaugeMismatched"];
     }
   }
 
   if (self->_coreSpeechPreprocessorCompleted)
   {
-    v91 = [(MHSchemaMHClientEvent *)self coreSpeechPreprocessorCompleted];
-    v92 = [v91 dictionaryRepresentation];
-    if (v92)
+    coreSpeechPreprocessorCompleted = [(MHSchemaMHClientEvent *)self coreSpeechPreprocessorCompleted];
+    dictionaryRepresentation30 = [coreSpeechPreprocessorCompleted dictionaryRepresentation];
+    if (dictionaryRepresentation30)
     {
-      [v3 setObject:v92 forKeyedSubscript:@"coreSpeechPreprocessorCompleted"];
+      [dictionary setObject:dictionaryRepresentation30 forKeyedSubscript:@"coreSpeechPreprocessorCompleted"];
     }
 
     else
     {
-      v93 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v93 forKeyedSubscript:@"coreSpeechPreprocessorCompleted"];
+      null30 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null30 forKeyedSubscript:@"coreSpeechPreprocessorCompleted"];
     }
   }
 
   if (self->_crownPressed)
   {
-    v94 = [(MHSchemaMHClientEvent *)self crownPressed];
-    v95 = [v94 dictionaryRepresentation];
-    if (v95)
+    crownPressed = [(MHSchemaMHClientEvent *)self crownPressed];
+    dictionaryRepresentation31 = [crownPressed dictionaryRepresentation];
+    if (dictionaryRepresentation31)
     {
-      [v3 setObject:v95 forKeyedSubscript:@"crownPressed"];
+      [dictionary setObject:dictionaryRepresentation31 forKeyedSubscript:@"crownPressed"];
     }
 
     else
     {
-      v96 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v96 forKeyedSubscript:@"crownPressed"];
+      null31 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null31 forKeyedSubscript:@"crownPressed"];
     }
   }
 
   if (self->_darwinConnectedDeviceWakeContext)
   {
-    v97 = [(MHSchemaMHClientEvent *)self darwinConnectedDeviceWakeContext];
-    v98 = [v97 dictionaryRepresentation];
-    if (v98)
+    darwinConnectedDeviceWakeContext = [(MHSchemaMHClientEvent *)self darwinConnectedDeviceWakeContext];
+    dictionaryRepresentation32 = [darwinConnectedDeviceWakeContext dictionaryRepresentation];
+    if (dictionaryRepresentation32)
     {
-      [v3 setObject:v98 forKeyedSubscript:@"darwinConnectedDeviceWakeContext"];
+      [dictionary setObject:dictionaryRepresentation32 forKeyedSubscript:@"darwinConnectedDeviceWakeContext"];
     }
 
     else
     {
-      v99 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v99 forKeyedSubscript:@"darwinConnectedDeviceWakeContext"];
+      null32 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null32 forKeyedSubscript:@"darwinConnectedDeviceWakeContext"];
     }
   }
 
   if (self->_endpointDelayContext)
   {
-    v100 = [(MHSchemaMHClientEvent *)self endpointDelayContext];
-    v101 = [v100 dictionaryRepresentation];
-    if (v101)
+    endpointDelayContext = [(MHSchemaMHClientEvent *)self endpointDelayContext];
+    dictionaryRepresentation33 = [endpointDelayContext dictionaryRepresentation];
+    if (dictionaryRepresentation33)
     {
-      [v3 setObject:v101 forKeyedSubscript:@"endpointDelayContext"];
+      [dictionary setObject:dictionaryRepresentation33 forKeyedSubscript:@"endpointDelayContext"];
     }
 
     else
     {
-      v102 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v102 forKeyedSubscript:@"endpointDelayContext"];
+      null33 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null33 forKeyedSubscript:@"endpointDelayContext"];
     }
   }
 
   if (self->_endpointDetected)
   {
-    v103 = [(MHSchemaMHClientEvent *)self endpointDetected];
-    v104 = [v103 dictionaryRepresentation];
-    if (v104)
+    endpointDetected = [(MHSchemaMHClientEvent *)self endpointDetected];
+    dictionaryRepresentation34 = [endpointDetected dictionaryRepresentation];
+    if (dictionaryRepresentation34)
     {
-      [v3 setObject:v104 forKeyedSubscript:@"endpointDetected"];
+      [dictionary setObject:dictionaryRepresentation34 forKeyedSubscript:@"endpointDetected"];
     }
 
     else
     {
-      v105 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v105 forKeyedSubscript:@"endpointDetected"];
+      null34 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null34 forKeyedSubscript:@"endpointDetected"];
     }
   }
 
   if (self->_endpointLatencyInfoReported)
   {
-    v106 = [(MHSchemaMHClientEvent *)self endpointLatencyInfoReported];
-    v107 = [v106 dictionaryRepresentation];
-    if (v107)
+    endpointLatencyInfoReported = [(MHSchemaMHClientEvent *)self endpointLatencyInfoReported];
+    dictionaryRepresentation35 = [endpointLatencyInfoReported dictionaryRepresentation];
+    if (dictionaryRepresentation35)
     {
-      [v3 setObject:v107 forKeyedSubscript:@"endpointLatencyInfoReported"];
+      [dictionary setObject:dictionaryRepresentation35 forKeyedSubscript:@"endpointLatencyInfoReported"];
     }
 
     else
     {
-      v108 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v108 forKeyedSubscript:@"endpointLatencyInfoReported"];
+      null35 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null35 forKeyedSubscript:@"endpointLatencyInfoReported"];
     }
   }
 
   if (self->_endpointerAccessibleContext)
   {
-    v109 = [(MHSchemaMHClientEvent *)self endpointerAccessibleContext];
-    v110 = [v109 dictionaryRepresentation];
-    if (v110)
+    endpointerAccessibleContext = [(MHSchemaMHClientEvent *)self endpointerAccessibleContext];
+    dictionaryRepresentation36 = [endpointerAccessibleContext dictionaryRepresentation];
+    if (dictionaryRepresentation36)
     {
-      [v3 setObject:v110 forKeyedSubscript:@"endpointerAccessibleContext"];
+      [dictionary setObject:dictionaryRepresentation36 forKeyedSubscript:@"endpointerAccessibleContext"];
     }
 
     else
     {
-      v111 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v111 forKeyedSubscript:@"endpointerAccessibleContext"];
+      null36 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null36 forKeyedSubscript:@"endpointerAccessibleContext"];
     }
   }
 
   if (self->_endpointerUsed)
   {
-    v112 = [(MHSchemaMHClientEvent *)self endpointerUsed];
-    v113 = [v112 dictionaryRepresentation];
-    if (v113)
+    endpointerUsed = [(MHSchemaMHClientEvent *)self endpointerUsed];
+    dictionaryRepresentation37 = [endpointerUsed dictionaryRepresentation];
+    if (dictionaryRepresentation37)
     {
-      [v3 setObject:v113 forKeyedSubscript:@"endpointerUsed"];
+      [dictionary setObject:dictionaryRepresentation37 forKeyedSubscript:@"endpointerUsed"];
     }
 
     else
     {
-      v114 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v114 forKeyedSubscript:@"endpointerUsed"];
+      null37 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null37 forKeyedSubscript:@"endpointerUsed"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v115 = [(MHSchemaMHClientEvent *)self eventMetadata];
-    v116 = [v115 dictionaryRepresentation];
-    if (v116)
+    eventMetadata = [(MHSchemaMHClientEvent *)self eventMetadata];
+    dictionaryRepresentation38 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation38)
     {
-      [v3 setObject:v116 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation38 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v117 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v117 forKeyedSubscript:@"eventMetadata"];
+      null38 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null38 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_finalMitigationRecommendation)
   {
-    v118 = [(MHSchemaMHClientEvent *)self finalMitigationRecommendation];
-    v119 = [v118 dictionaryRepresentation];
-    if (v119)
+    finalMitigationRecommendation = [(MHSchemaMHClientEvent *)self finalMitigationRecommendation];
+    dictionaryRepresentation39 = [finalMitigationRecommendation dictionaryRepresentation];
+    if (dictionaryRepresentation39)
     {
-      [v3 setObject:v119 forKeyedSubscript:@"finalMitigationRecommendation"];
+      [dictionary setObject:dictionaryRepresentation39 forKeyedSubscript:@"finalMitigationRecommendation"];
     }
 
     else
     {
-      v120 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v120 forKeyedSubscript:@"finalMitigationRecommendation"];
+      null39 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null39 forKeyedSubscript:@"finalMitigationRecommendation"];
     }
   }
 
   if (self->_latticeFalseTriggerMitigationEvaluationContext)
   {
-    v121 = [(MHSchemaMHClientEvent *)self latticeFalseTriggerMitigationEvaluationContext];
-    v122 = [v121 dictionaryRepresentation];
-    if (v122)
+    latticeFalseTriggerMitigationEvaluationContext = [(MHSchemaMHClientEvent *)self latticeFalseTriggerMitigationEvaluationContext];
+    dictionaryRepresentation40 = [latticeFalseTriggerMitigationEvaluationContext dictionaryRepresentation];
+    if (dictionaryRepresentation40)
     {
-      [v3 setObject:v122 forKeyedSubscript:@"latticeFalseTriggerMitigationEvaluationContext"];
+      [dictionary setObject:dictionaryRepresentation40 forKeyedSubscript:@"latticeFalseTriggerMitigationEvaluationContext"];
     }
 
     else
     {
-      v123 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v123 forKeyedSubscript:@"latticeFalseTriggerMitigationEvaluationContext"];
+      null40 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null40 forKeyedSubscript:@"latticeFalseTriggerMitigationEvaluationContext"];
     }
   }
 
   if (self->_mhId)
   {
-    v124 = [(MHSchemaMHClientEvent *)self mhId];
-    v125 = [v124 dictionaryRepresentation];
-    if (v125)
+    mhId = [(MHSchemaMHClientEvent *)self mhId];
+    dictionaryRepresentation41 = [mhId dictionaryRepresentation];
+    if (dictionaryRepresentation41)
     {
-      [v3 setObject:v125 forKeyedSubscript:@"mhId"];
+      [dictionary setObject:dictionaryRepresentation41 forKeyedSubscript:@"mhId"];
     }
 
     else
     {
-      v126 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v126 forKeyedSubscript:@"mhId"];
+      null41 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null41 forKeyedSubscript:@"mhId"];
     }
   }
 
   if (self->_odldFalseTriggerMitigated)
   {
-    v127 = [(MHSchemaMHClientEvent *)self odldFalseTriggerMitigated];
-    v128 = [v127 dictionaryRepresentation];
-    if (v128)
+    odldFalseTriggerMitigated = [(MHSchemaMHClientEvent *)self odldFalseTriggerMitigated];
+    dictionaryRepresentation42 = [odldFalseTriggerMitigated dictionaryRepresentation];
+    if (dictionaryRepresentation42)
     {
-      [v3 setObject:v128 forKeyedSubscript:@"odldFalseTriggerMitigated"];
+      [dictionary setObject:dictionaryRepresentation42 forKeyedSubscript:@"odldFalseTriggerMitigated"];
     }
 
     else
     {
-      v129 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v129 forKeyedSubscript:@"odldFalseTriggerMitigated"];
+      null42 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null42 forKeyedSubscript:@"odldFalseTriggerMitigated"];
     }
   }
 
   if (self->_onDeviceEndpointerContext)
   {
-    v130 = [(MHSchemaMHClientEvent *)self onDeviceEndpointerContext];
-    v131 = [v130 dictionaryRepresentation];
-    if (v131)
+    onDeviceEndpointerContext = [(MHSchemaMHClientEvent *)self onDeviceEndpointerContext];
+    dictionaryRepresentation43 = [onDeviceEndpointerContext dictionaryRepresentation];
+    if (dictionaryRepresentation43)
     {
-      [v3 setObject:v131 forKeyedSubscript:@"onDeviceEndpointerContext"];
+      [dictionary setObject:dictionaryRepresentation43 forKeyedSubscript:@"onDeviceEndpointerContext"];
     }
 
     else
     {
-      v132 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v132 forKeyedSubscript:@"onDeviceEndpointerContext"];
+      null43 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null43 forKeyedSubscript:@"onDeviceEndpointerContext"];
     }
   }
 
   if (self->_rtsFalseRejectDetected)
   {
-    v133 = [(MHSchemaMHClientEvent *)self rtsFalseRejectDetected];
-    v134 = [v133 dictionaryRepresentation];
-    if (v134)
+    rtsFalseRejectDetected = [(MHSchemaMHClientEvent *)self rtsFalseRejectDetected];
+    dictionaryRepresentation44 = [rtsFalseRejectDetected dictionaryRepresentation];
+    if (dictionaryRepresentation44)
     {
-      [v3 setObject:v134 forKeyedSubscript:@"rtsFalseRejectDetected"];
+      [dictionary setObject:dictionaryRepresentation44 forKeyedSubscript:@"rtsFalseRejectDetected"];
     }
 
     else
     {
-      v135 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v135 forKeyedSubscript:@"rtsFalseRejectDetected"];
+      null44 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null44 forKeyedSubscript:@"rtsFalseRejectDetected"];
     }
   }
 
   if (self->_rtsFirstPassPolicyTriggered)
   {
-    v136 = [(MHSchemaMHClientEvent *)self rtsFirstPassPolicyTriggered];
-    v137 = [v136 dictionaryRepresentation];
-    if (v137)
+    rtsFirstPassPolicyTriggered = [(MHSchemaMHClientEvent *)self rtsFirstPassPolicyTriggered];
+    dictionaryRepresentation45 = [rtsFirstPassPolicyTriggered dictionaryRepresentation];
+    if (dictionaryRepresentation45)
     {
-      [v3 setObject:v137 forKeyedSubscript:@"rtsFirstPassPolicyTriggered"];
+      [dictionary setObject:dictionaryRepresentation45 forKeyedSubscript:@"rtsFirstPassPolicyTriggered"];
     }
 
     else
     {
-      v138 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v138 forKeyedSubscript:@"rtsFirstPassPolicyTriggered"];
+      null45 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null45 forKeyedSubscript:@"rtsFirstPassPolicyTriggered"];
     }
   }
 
   if (self->_rtsSecondPassPolicyDecisionMade)
   {
-    v139 = [(MHSchemaMHClientEvent *)self rtsSecondPassPolicyDecisionMade];
-    v140 = [v139 dictionaryRepresentation];
-    if (v140)
+    rtsSecondPassPolicyDecisionMade = [(MHSchemaMHClientEvent *)self rtsSecondPassPolicyDecisionMade];
+    dictionaryRepresentation46 = [rtsSecondPassPolicyDecisionMade dictionaryRepresentation];
+    if (dictionaryRepresentation46)
     {
-      [v3 setObject:v140 forKeyedSubscript:@"rtsSecondPassPolicyDecisionMade"];
+      [dictionary setObject:dictionaryRepresentation46 forKeyedSubscript:@"rtsSecondPassPolicyDecisionMade"];
     }
 
     else
     {
-      v141 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v141 forKeyedSubscript:@"rtsSecondPassPolicyDecisionMade"];
+      null46 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null46 forKeyedSubscript:@"rtsSecondPassPolicyDecisionMade"];
     }
   }
 
   if (self->_rtsTriggered)
   {
-    v142 = [(MHSchemaMHClientEvent *)self rtsTriggered];
-    v143 = [v142 dictionaryRepresentation];
-    if (v143)
+    rtsTriggered = [(MHSchemaMHClientEvent *)self rtsTriggered];
+    dictionaryRepresentation47 = [rtsTriggered dictionaryRepresentation];
+    if (dictionaryRepresentation47)
     {
-      [v3 setObject:v143 forKeyedSubscript:@"rtsTriggered"];
+      [dictionary setObject:dictionaryRepresentation47 forKeyedSubscript:@"rtsTriggered"];
     }
 
     else
     {
-      v144 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v144 forKeyedSubscript:@"rtsTriggered"];
+      null47 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null47 forKeyedSubscript:@"rtsTriggered"];
     }
   }
 
   if (self->_serverEndpointerContext)
   {
-    v145 = [(MHSchemaMHClientEvent *)self serverEndpointerContext];
-    v146 = [v145 dictionaryRepresentation];
-    if (v146)
+    serverEndpointerContext = [(MHSchemaMHClientEvent *)self serverEndpointerContext];
+    dictionaryRepresentation48 = [serverEndpointerContext dictionaryRepresentation];
+    if (dictionaryRepresentation48)
     {
-      [v3 setObject:v146 forKeyedSubscript:@"serverEndpointerContext"];
+      [dictionary setObject:dictionaryRepresentation48 forKeyedSubscript:@"serverEndpointerContext"];
     }
 
     else
     {
-      v147 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v147 forKeyedSubscript:@"serverEndpointerContext"];
+      null48 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null48 forKeyedSubscript:@"serverEndpointerContext"];
     }
   }
 
   if (self->_siriDirectedSpeechDetectionFailed)
   {
-    v148 = [(MHSchemaMHClientEvent *)self siriDirectedSpeechDetectionFailed];
-    v149 = [v148 dictionaryRepresentation];
-    if (v149)
+    siriDirectedSpeechDetectionFailed = [(MHSchemaMHClientEvent *)self siriDirectedSpeechDetectionFailed];
+    dictionaryRepresentation49 = [siriDirectedSpeechDetectionFailed dictionaryRepresentation];
+    if (dictionaryRepresentation49)
     {
-      [v3 setObject:v149 forKeyedSubscript:@"siriDirectedSpeechDetectionFailed"];
+      [dictionary setObject:dictionaryRepresentation49 forKeyedSubscript:@"siriDirectedSpeechDetectionFailed"];
     }
 
     else
     {
-      v150 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v150 forKeyedSubscript:@"siriDirectedSpeechDetectionFailed"];
+      null49 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null49 forKeyedSubscript:@"siriDirectedSpeechDetectionFailed"];
     }
   }
 
   if (self->_siriLaunchRequestContext)
   {
-    v151 = [(MHSchemaMHClientEvent *)self siriLaunchRequestContext];
-    v152 = [v151 dictionaryRepresentation];
-    if (v152)
+    siriLaunchRequestContext = [(MHSchemaMHClientEvent *)self siriLaunchRequestContext];
+    dictionaryRepresentation50 = [siriLaunchRequestContext dictionaryRepresentation];
+    if (dictionaryRepresentation50)
     {
-      [v3 setObject:v152 forKeyedSubscript:@"siriLaunchRequestContext"];
+      [dictionary setObject:dictionaryRepresentation50 forKeyedSubscript:@"siriLaunchRequestContext"];
     }
 
     else
     {
-      v153 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v153 forKeyedSubscript:@"siriLaunchRequestContext"];
+      null50 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null50 forKeyedSubscript:@"siriLaunchRequestContext"];
     }
   }
 
   if (self->_speakerFalseTriggerMitigated)
   {
-    v154 = [(MHSchemaMHClientEvent *)self speakerFalseTriggerMitigated];
-    v155 = [v154 dictionaryRepresentation];
-    if (v155)
+    speakerFalseTriggerMitigated = [(MHSchemaMHClientEvent *)self speakerFalseTriggerMitigated];
+    dictionaryRepresentation51 = [speakerFalseTriggerMitigated dictionaryRepresentation];
+    if (dictionaryRepresentation51)
     {
-      [v3 setObject:v155 forKeyedSubscript:@"speakerFalseTriggerMitigated"];
+      [dictionary setObject:dictionaryRepresentation51 forKeyedSubscript:@"speakerFalseTriggerMitigated"];
     }
 
     else
     {
-      v156 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v156 forKeyedSubscript:@"speakerFalseTriggerMitigated"];
+      null51 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null51 forKeyedSubscript:@"speakerFalseTriggerMitigated"];
     }
   }
 
   if (self->_speakerIdEnrollmentDataReportedTier1)
   {
-    v157 = [(MHSchemaMHClientEvent *)self speakerIdEnrollmentDataReportedTier1];
-    v158 = [v157 dictionaryRepresentation];
-    if (v158)
+    speakerIdEnrollmentDataReportedTier1 = [(MHSchemaMHClientEvent *)self speakerIdEnrollmentDataReportedTier1];
+    dictionaryRepresentation52 = [speakerIdEnrollmentDataReportedTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation52)
     {
-      [v3 setObject:v158 forKeyedSubscript:@"speakerIdEnrollmentDataReportedTier1"];
+      [dictionary setObject:dictionaryRepresentation52 forKeyedSubscript:@"speakerIdEnrollmentDataReportedTier1"];
     }
 
     else
     {
-      v159 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v159 forKeyedSubscript:@"speakerIdEnrollmentDataReportedTier1"];
+      null52 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null52 forKeyedSubscript:@"speakerIdEnrollmentDataReportedTier1"];
     }
   }
 
   if (self->_speakerIdModelOneSessionReportedTier1)
   {
-    v160 = [(MHSchemaMHClientEvent *)self speakerIdModelOneSessionReportedTier1];
-    v161 = [v160 dictionaryRepresentation];
-    if (v161)
+    speakerIdModelOneSessionReportedTier1 = [(MHSchemaMHClientEvent *)self speakerIdModelOneSessionReportedTier1];
+    dictionaryRepresentation53 = [speakerIdModelOneSessionReportedTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation53)
     {
-      [v3 setObject:v161 forKeyedSubscript:@"speakerIdModelOneSessionReportedTier1"];
+      [dictionary setObject:dictionaryRepresentation53 forKeyedSubscript:@"speakerIdModelOneSessionReportedTier1"];
     }
 
     else
     {
-      v162 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v162 forKeyedSubscript:@"speakerIdModelOneSessionReportedTier1"];
+      null53 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null53 forKeyedSubscript:@"speakerIdModelOneSessionReportedTier1"];
     }
   }
 
   if (self->_speakerIdModelSelectedClockSessionInfoTier1)
   {
-    v163 = [(MHSchemaMHClientEvent *)self speakerIdModelSelectedClockSessionInfoTier1];
-    v164 = [v163 dictionaryRepresentation];
-    if (v164)
+    speakerIdModelSelectedClockSessionInfoTier1 = [(MHSchemaMHClientEvent *)self speakerIdModelSelectedClockSessionInfoTier1];
+    dictionaryRepresentation54 = [speakerIdModelSelectedClockSessionInfoTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation54)
     {
-      [v3 setObject:v164 forKeyedSubscript:@"speakerIdModelSelectedClockSessionInfoTier1"];
+      [dictionary setObject:dictionaryRepresentation54 forKeyedSubscript:@"speakerIdModelSelectedClockSessionInfoTier1"];
     }
 
     else
     {
-      v165 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v165 forKeyedSubscript:@"speakerIdModelSelectedClockSessionInfoTier1"];
+      null54 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null54 forKeyedSubscript:@"speakerIdModelSelectedClockSessionInfoTier1"];
     }
   }
 
   if (self->_speechDetectorContext)
   {
-    v166 = [(MHSchemaMHClientEvent *)self speechDetectorContext];
-    v167 = [v166 dictionaryRepresentation];
-    if (v167)
+    speechDetectorContext = [(MHSchemaMHClientEvent *)self speechDetectorContext];
+    dictionaryRepresentation55 = [speechDetectorContext dictionaryRepresentation];
+    if (dictionaryRepresentation55)
     {
-      [v3 setObject:v167 forKeyedSubscript:@"speechDetectorContext"];
+      [dictionary setObject:dictionaryRepresentation55 forKeyedSubscript:@"speechDetectorContext"];
     }
 
     else
     {
-      v168 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v168 forKeyedSubscript:@"speechDetectorContext"];
+      null55 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null55 forKeyedSubscript:@"speechDetectorContext"];
     }
   }
 
   if (self->_speechStopDetected)
   {
-    v169 = [(MHSchemaMHClientEvent *)self speechStopDetected];
-    v170 = [v169 dictionaryRepresentation];
-    if (v170)
+    speechStopDetected = [(MHSchemaMHClientEvent *)self speechStopDetected];
+    dictionaryRepresentation56 = [speechStopDetected dictionaryRepresentation];
+    if (dictionaryRepresentation56)
     {
-      [v3 setObject:v170 forKeyedSubscript:@"speechStopDetected"];
+      [dictionary setObject:dictionaryRepresentation56 forKeyedSubscript:@"speechStopDetected"];
     }
 
     else
     {
-      v171 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v171 forKeyedSubscript:@"speechStopDetected"];
+      null56 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null56 forKeyedSubscript:@"speechStopDetected"];
     }
   }
 
   if (self->_stoppedListeningForSpeechContinuation)
   {
-    v172 = [(MHSchemaMHClientEvent *)self stoppedListeningForSpeechContinuation];
-    v173 = [v172 dictionaryRepresentation];
-    if (v173)
+    stoppedListeningForSpeechContinuation = [(MHSchemaMHClientEvent *)self stoppedListeningForSpeechContinuation];
+    dictionaryRepresentation57 = [stoppedListeningForSpeechContinuation dictionaryRepresentation];
+    if (dictionaryRepresentation57)
     {
-      [v3 setObject:v173 forKeyedSubscript:@"stoppedListeningForSpeechContinuation"];
+      [dictionary setObject:dictionaryRepresentation57 forKeyedSubscript:@"stoppedListeningForSpeechContinuation"];
     }
 
     else
     {
-      v174 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v174 forKeyedSubscript:@"stoppedListeningForSpeechContinuation"];
+      null57 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null57 forKeyedSubscript:@"stoppedListeningForSpeechContinuation"];
     }
   }
 
   if (self->_trpCreated)
   {
-    v175 = [(MHSchemaMHClientEvent *)self trpCreated];
-    v176 = [v175 dictionaryRepresentation];
-    if (v176)
+    trpCreated = [(MHSchemaMHClientEvent *)self trpCreated];
+    dictionaryRepresentation58 = [trpCreated dictionaryRepresentation];
+    if (dictionaryRepresentation58)
     {
-      [v3 setObject:v176 forKeyedSubscript:@"trpCreated"];
+      [dictionary setObject:dictionaryRepresentation58 forKeyedSubscript:@"trpCreated"];
     }
 
     else
     {
-      v177 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v177 forKeyedSubscript:@"trpCreated"];
+      null58 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null58 forKeyedSubscript:@"trpCreated"];
     }
   }
 
   if (self->_unintendedResponseSuppressionExecutionContext)
   {
-    v178 = [(MHSchemaMHClientEvent *)self unintendedResponseSuppressionExecutionContext];
-    v179 = [v178 dictionaryRepresentation];
-    if (v179)
+    unintendedResponseSuppressionExecutionContext = [(MHSchemaMHClientEvent *)self unintendedResponseSuppressionExecutionContext];
+    dictionaryRepresentation59 = [unintendedResponseSuppressionExecutionContext dictionaryRepresentation];
+    if (dictionaryRepresentation59)
     {
-      [v3 setObject:v179 forKeyedSubscript:@"unintendedResponseSuppressionExecutionContext"];
+      [dictionary setObject:dictionaryRepresentation59 forKeyedSubscript:@"unintendedResponseSuppressionExecutionContext"];
     }
 
     else
     {
-      v180 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v180 forKeyedSubscript:@"unintendedResponseSuppressionExecutionContext"];
+      null59 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null59 forKeyedSubscript:@"unintendedResponseSuppressionExecutionContext"];
     }
   }
 
   if (self->_userEngagementModelContext)
   {
-    v181 = [(MHSchemaMHClientEvent *)self userEngagementModelContext];
-    v182 = [v181 dictionaryRepresentation];
-    if (v182)
+    userEngagementModelContext = [(MHSchemaMHClientEvent *)self userEngagementModelContext];
+    dictionaryRepresentation60 = [userEngagementModelContext dictionaryRepresentation];
+    if (dictionaryRepresentation60)
     {
-      [v3 setObject:v182 forKeyedSubscript:@"userEngagementModelContext"];
+      [dictionary setObject:dictionaryRepresentation60 forKeyedSubscript:@"userEngagementModelContext"];
     }
 
     else
     {
-      v183 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v183 forKeyedSubscript:@"userEngagementModelContext"];
+      null60 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null60 forKeyedSubscript:@"userEngagementModelContext"];
     }
   }
 
   if (self->_userSpeakingContext)
   {
-    v184 = [(MHSchemaMHClientEvent *)self userSpeakingContext];
-    v185 = [v184 dictionaryRepresentation];
-    if (v185)
+    userSpeakingContext = [(MHSchemaMHClientEvent *)self userSpeakingContext];
+    dictionaryRepresentation61 = [userSpeakingContext dictionaryRepresentation];
+    if (dictionaryRepresentation61)
     {
-      [v3 setObject:v185 forKeyedSubscript:@"userSpeakingContext"];
+      [dictionary setObject:dictionaryRepresentation61 forKeyedSubscript:@"userSpeakingContext"];
     }
 
     else
     {
-      v186 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v186 forKeyedSubscript:@"userSpeakingContext"];
+      null61 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null61 forKeyedSubscript:@"userSpeakingContext"];
     }
   }
 
   if (self->_voiceProfileICloudSyncFinished)
   {
-    v187 = [(MHSchemaMHClientEvent *)self voiceProfileICloudSyncFinished];
-    v188 = [v187 dictionaryRepresentation];
-    if (v188)
+    voiceProfileICloudSyncFinished = [(MHSchemaMHClientEvent *)self voiceProfileICloudSyncFinished];
+    dictionaryRepresentation62 = [voiceProfileICloudSyncFinished dictionaryRepresentation];
+    if (dictionaryRepresentation62)
     {
-      [v3 setObject:v188 forKeyedSubscript:@"voiceProfileICloudSyncFinished"];
+      [dictionary setObject:dictionaryRepresentation62 forKeyedSubscript:@"voiceProfileICloudSyncFinished"];
     }
 
     else
     {
-      v189 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v189 forKeyedSubscript:@"voiceProfileICloudSyncFinished"];
+      null62 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null62 forKeyedSubscript:@"voiceProfileICloudSyncFinished"];
     }
   }
 
   if (self->_voiceProfileOnboarded)
   {
-    v190 = [(MHSchemaMHClientEvent *)self voiceProfileOnboarded];
-    v191 = [v190 dictionaryRepresentation];
-    if (v191)
+    voiceProfileOnboarded = [(MHSchemaMHClientEvent *)self voiceProfileOnboarded];
+    dictionaryRepresentation63 = [voiceProfileOnboarded dictionaryRepresentation];
+    if (dictionaryRepresentation63)
     {
-      [v3 setObject:v191 forKeyedSubscript:@"voiceProfileOnboarded"];
+      [dictionary setObject:dictionaryRepresentation63 forKeyedSubscript:@"voiceProfileOnboarded"];
     }
 
     else
     {
-      v192 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v192 forKeyedSubscript:@"voiceProfileOnboarded"];
+      null63 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null63 forKeyedSubscript:@"voiceProfileOnboarded"];
     }
   }
 
   if (self->_voiceTriggerContext)
   {
-    v193 = [(MHSchemaMHClientEvent *)self voiceTriggerContext];
-    v194 = [v193 dictionaryRepresentation];
-    if (v194)
+    voiceTriggerContext = [(MHSchemaMHClientEvent *)self voiceTriggerContext];
+    dictionaryRepresentation64 = [voiceTriggerContext dictionaryRepresentation];
+    if (dictionaryRepresentation64)
     {
-      [v3 setObject:v194 forKeyedSubscript:@"voiceTriggerContext"];
+      [dictionary setObject:dictionaryRepresentation64 forKeyedSubscript:@"voiceTriggerContext"];
     }
 
     else
     {
-      v195 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v195 forKeyedSubscript:@"voiceTriggerContext"];
+      null64 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null64 forKeyedSubscript:@"voiceTriggerContext"];
     }
   }
 
   if (self->_voiceTriggerRePrompted)
   {
-    v196 = [(MHSchemaMHClientEvent *)self voiceTriggerRePrompted];
-    v197 = [v196 dictionaryRepresentation];
-    if (v197)
+    voiceTriggerRePrompted = [(MHSchemaMHClientEvent *)self voiceTriggerRePrompted];
+    dictionaryRepresentation65 = [voiceTriggerRePrompted dictionaryRepresentation];
+    if (dictionaryRepresentation65)
     {
-      [v3 setObject:v197 forKeyedSubscript:@"voiceTriggerRePrompted"];
+      [dictionary setObject:dictionaryRepresentation65 forKeyedSubscript:@"voiceTriggerRePrompted"];
     }
 
     else
     {
-      v198 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v198 forKeyedSubscript:@"voiceTriggerRePrompted"];
+      null65 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null65 forKeyedSubscript:@"voiceTriggerRePrompted"];
     }
   }
 
   if (self->_voiceTriggerRejectDetected)
   {
-    v199 = [(MHSchemaMHClientEvent *)self voiceTriggerRejectDetected];
-    v200 = [v199 dictionaryRepresentation];
-    if (v200)
+    voiceTriggerRejectDetected = [(MHSchemaMHClientEvent *)self voiceTriggerRejectDetected];
+    dictionaryRepresentation66 = [voiceTriggerRejectDetected dictionaryRepresentation];
+    if (dictionaryRepresentation66)
     {
-      [v3 setObject:v200 forKeyedSubscript:@"voiceTriggerRejectDetected"];
+      [dictionary setObject:dictionaryRepresentation66 forKeyedSubscript:@"voiceTriggerRejectDetected"];
     }
 
     else
     {
-      v201 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v201 forKeyedSubscript:@"voiceTriggerRejectDetected"];
+      null66 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null66 forKeyedSubscript:@"voiceTriggerRejectDetected"];
     }
   }
 
   if (self->_voiceTriggerTwoShotDetected)
   {
-    v202 = [(MHSchemaMHClientEvent *)self voiceTriggerTwoShotDetected];
-    v203 = [v202 dictionaryRepresentation];
-    if (v203)
+    voiceTriggerTwoShotDetected = [(MHSchemaMHClientEvent *)self voiceTriggerTwoShotDetected];
+    dictionaryRepresentation67 = [voiceTriggerTwoShotDetected dictionaryRepresentation];
+    if (dictionaryRepresentation67)
     {
-      [v3 setObject:v203 forKeyedSubscript:@"voiceTriggerTwoShotDetected"];
+      [dictionary setObject:dictionaryRepresentation67 forKeyedSubscript:@"voiceTriggerTwoShotDetected"];
     }
 
     else
     {
-      v204 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v204 forKeyedSubscript:@"voiceTriggerTwoShotDetected"];
+      null67 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null67 forKeyedSubscript:@"voiceTriggerTwoShotDetected"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v205 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v205 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -2968,34 +2968,34 @@
   return v58 ^ v68 ^ [(MHSchemaMHSpeakerIdDataCollectionSampleSessionReportedTier1 *)self->_speakerIdModelOneSessionReportedTier1 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_338;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_338;
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self mhId];
-  v7 = [v4 mhId];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self mhId];
+  mhId2 = [equalCopy mhId];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v8 = [(MHSchemaMHClientEvent *)self mhId];
-  if (v8)
+  mhId3 = [(MHSchemaMHClientEvent *)self mhId];
+  if (mhId3)
   {
-    v9 = v8;
-    v10 = [(MHSchemaMHClientEvent *)self mhId];
-    v11 = [v4 mhId];
-    v12 = [v10 isEqual:v11];
+    v9 = mhId3;
+    mhId4 = [(MHSchemaMHClientEvent *)self mhId];
+    mhId5 = [equalCopy mhId];
+    v12 = [mhId4 isEqual:mhId5];
 
     if (!v12)
     {
@@ -3007,20 +3007,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self eventMetadata];
+  mhId2 = [equalCopy eventMetadata];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v13 = [(MHSchemaMHClientEvent *)self eventMetadata];
-  if (v13)
+  eventMetadata = [(MHSchemaMHClientEvent *)self eventMetadata];
+  if (eventMetadata)
   {
-    v14 = v13;
-    v15 = [(MHSchemaMHClientEvent *)self eventMetadata];
-    v16 = [v4 eventMetadata];
-    v17 = [v15 isEqual:v16];
+    v14 = eventMetadata;
+    eventMetadata2 = [(MHSchemaMHClientEvent *)self eventMetadata];
+    eventMetadata3 = [equalCopy eventMetadata];
+    v17 = [eventMetadata2 isEqual:eventMetadata3];
 
     if (!v17)
     {
@@ -3032,20 +3032,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self acousticFalseTriggerMitigationEvaluationContext];
-  v7 = [v4 acousticFalseTriggerMitigationEvaluationContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self acousticFalseTriggerMitigationEvaluationContext];
+  mhId2 = [equalCopy acousticFalseTriggerMitigationEvaluationContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v18 = [(MHSchemaMHClientEvent *)self acousticFalseTriggerMitigationEvaluationContext];
-  if (v18)
+  acousticFalseTriggerMitigationEvaluationContext = [(MHSchemaMHClientEvent *)self acousticFalseTriggerMitigationEvaluationContext];
+  if (acousticFalseTriggerMitigationEvaluationContext)
   {
-    v19 = v18;
-    v20 = [(MHSchemaMHClientEvent *)self acousticFalseTriggerMitigationEvaluationContext];
-    v21 = [v4 acousticFalseTriggerMitigationEvaluationContext];
-    v22 = [v20 isEqual:v21];
+    v19 = acousticFalseTriggerMitigationEvaluationContext;
+    acousticFalseTriggerMitigationEvaluationContext2 = [(MHSchemaMHClientEvent *)self acousticFalseTriggerMitigationEvaluationContext];
+    acousticFalseTriggerMitigationEvaluationContext3 = [equalCopy acousticFalseTriggerMitigationEvaluationContext];
+    v22 = [acousticFalseTriggerMitigationEvaluationContext2 isEqual:acousticFalseTriggerMitigationEvaluationContext3];
 
     if (!v22)
     {
@@ -3057,20 +3057,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self latticeFalseTriggerMitigationEvaluationContext];
-  v7 = [v4 latticeFalseTriggerMitigationEvaluationContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self latticeFalseTriggerMitigationEvaluationContext];
+  mhId2 = [equalCopy latticeFalseTriggerMitigationEvaluationContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v23 = [(MHSchemaMHClientEvent *)self latticeFalseTriggerMitigationEvaluationContext];
-  if (v23)
+  latticeFalseTriggerMitigationEvaluationContext = [(MHSchemaMHClientEvent *)self latticeFalseTriggerMitigationEvaluationContext];
+  if (latticeFalseTriggerMitigationEvaluationContext)
   {
-    v24 = v23;
-    v25 = [(MHSchemaMHClientEvent *)self latticeFalseTriggerMitigationEvaluationContext];
-    v26 = [v4 latticeFalseTriggerMitigationEvaluationContext];
-    v27 = [v25 isEqual:v26];
+    v24 = latticeFalseTriggerMitigationEvaluationContext;
+    latticeFalseTriggerMitigationEvaluationContext2 = [(MHSchemaMHClientEvent *)self latticeFalseTriggerMitigationEvaluationContext];
+    latticeFalseTriggerMitigationEvaluationContext3 = [equalCopy latticeFalseTriggerMitigationEvaluationContext];
+    v27 = [latticeFalseTriggerMitigationEvaluationContext2 isEqual:latticeFalseTriggerMitigationEvaluationContext3];
 
     if (!v27)
     {
@@ -3082,20 +3082,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self unintendedResponseSuppressionExecutionContext];
-  v7 = [v4 unintendedResponseSuppressionExecutionContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self unintendedResponseSuppressionExecutionContext];
+  mhId2 = [equalCopy unintendedResponseSuppressionExecutionContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v28 = [(MHSchemaMHClientEvent *)self unintendedResponseSuppressionExecutionContext];
-  if (v28)
+  unintendedResponseSuppressionExecutionContext = [(MHSchemaMHClientEvent *)self unintendedResponseSuppressionExecutionContext];
+  if (unintendedResponseSuppressionExecutionContext)
   {
-    v29 = v28;
-    v30 = [(MHSchemaMHClientEvent *)self unintendedResponseSuppressionExecutionContext];
-    v31 = [v4 unintendedResponseSuppressionExecutionContext];
-    v32 = [v30 isEqual:v31];
+    v29 = unintendedResponseSuppressionExecutionContext;
+    unintendedResponseSuppressionExecutionContext2 = [(MHSchemaMHClientEvent *)self unintendedResponseSuppressionExecutionContext];
+    unintendedResponseSuppressionExecutionContext3 = [equalCopy unintendedResponseSuppressionExecutionContext];
+    v32 = [unintendedResponseSuppressionExecutionContext2 isEqual:unintendedResponseSuppressionExecutionContext3];
 
     if (!v32)
     {
@@ -3107,20 +3107,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self coreSpeechPreprocessorCompleted];
-  v7 = [v4 coreSpeechPreprocessorCompleted];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self coreSpeechPreprocessorCompleted];
+  mhId2 = [equalCopy coreSpeechPreprocessorCompleted];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v33 = [(MHSchemaMHClientEvent *)self coreSpeechPreprocessorCompleted];
-  if (v33)
+  coreSpeechPreprocessorCompleted = [(MHSchemaMHClientEvent *)self coreSpeechPreprocessorCompleted];
+  if (coreSpeechPreprocessorCompleted)
   {
-    v34 = v33;
-    v35 = [(MHSchemaMHClientEvent *)self coreSpeechPreprocessorCompleted];
-    v36 = [v4 coreSpeechPreprocessorCompleted];
-    v37 = [v35 isEqual:v36];
+    v34 = coreSpeechPreprocessorCompleted;
+    coreSpeechPreprocessorCompleted2 = [(MHSchemaMHClientEvent *)self coreSpeechPreprocessorCompleted];
+    coreSpeechPreprocessorCompleted3 = [equalCopy coreSpeechPreprocessorCompleted];
+    v37 = [coreSpeechPreprocessorCompleted2 isEqual:coreSpeechPreprocessorCompleted3];
 
     if (!v37)
     {
@@ -3132,20 +3132,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self asrAudioConfigureStarted];
-  v7 = [v4 asrAudioConfigureStarted];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self asrAudioConfigureStarted];
+  mhId2 = [equalCopy asrAudioConfigureStarted];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v38 = [(MHSchemaMHClientEvent *)self asrAudioConfigureStarted];
-  if (v38)
+  asrAudioConfigureStarted = [(MHSchemaMHClientEvent *)self asrAudioConfigureStarted];
+  if (asrAudioConfigureStarted)
   {
-    v39 = v38;
-    v40 = [(MHSchemaMHClientEvent *)self asrAudioConfigureStarted];
-    v41 = [v4 asrAudioConfigureStarted];
-    v42 = [v40 isEqual:v41];
+    v39 = asrAudioConfigureStarted;
+    asrAudioConfigureStarted2 = [(MHSchemaMHClientEvent *)self asrAudioConfigureStarted];
+    asrAudioConfigureStarted3 = [equalCopy asrAudioConfigureStarted];
+    v42 = [asrAudioConfigureStarted2 isEqual:asrAudioConfigureStarted3];
 
     if (!v42)
     {
@@ -3157,20 +3157,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioInitContext];
-  v7 = [v4 assistantDaemonAudioInitContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self assistantDaemonAudioInitContext];
+  mhId2 = [equalCopy assistantDaemonAudioInitContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v43 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioInitContext];
-  if (v43)
+  assistantDaemonAudioInitContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioInitContext];
+  if (assistantDaemonAudioInitContext)
   {
-    v44 = v43;
-    v45 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioInitContext];
-    v46 = [v4 assistantDaemonAudioInitContext];
-    v47 = [v45 isEqual:v46];
+    v44 = assistantDaemonAudioInitContext;
+    assistantDaemonAudioInitContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioInitContext];
+    assistantDaemonAudioInitContext3 = [equalCopy assistantDaemonAudioInitContext];
+    v47 = [assistantDaemonAudioInitContext2 isEqual:assistantDaemonAudioInitContext3];
 
     if (!v47)
     {
@@ -3182,20 +3182,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioConfigureContext];
-  v7 = [v4 assistantDaemonAudioConfigureContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self assistantDaemonAudioConfigureContext];
+  mhId2 = [equalCopy assistantDaemonAudioConfigureContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v48 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioConfigureContext];
-  if (v48)
+  assistantDaemonAudioConfigureContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioConfigureContext];
+  if (assistantDaemonAudioConfigureContext)
   {
-    v49 = v48;
-    v50 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioConfigureContext];
-    v51 = [v4 assistantDaemonAudioConfigureContext];
-    v52 = [v50 isEqual:v51];
+    v49 = assistantDaemonAudioConfigureContext;
+    assistantDaemonAudioConfigureContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioConfigureContext];
+    assistantDaemonAudioConfigureContext3 = [equalCopy assistantDaemonAudioConfigureContext];
+    v52 = [assistantDaemonAudioConfigureContext2 isEqual:assistantDaemonAudioConfigureContext3];
 
     if (!v52)
     {
@@ -3207,20 +3207,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrepareContext];
-  v7 = [v4 assistantDaemonAudioPrepareContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrepareContext];
+  mhId2 = [equalCopy assistantDaemonAudioPrepareContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v53 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrepareContext];
-  if (v53)
+  assistantDaemonAudioPrepareContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrepareContext];
+  if (assistantDaemonAudioPrepareContext)
   {
-    v54 = v53;
-    v55 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrepareContext];
-    v56 = [v4 assistantDaemonAudioPrepareContext];
-    v57 = [v55 isEqual:v56];
+    v54 = assistantDaemonAudioPrepareContext;
+    assistantDaemonAudioPrepareContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrepareContext];
+    assistantDaemonAudioPrepareContext3 = [equalCopy assistantDaemonAudioPrepareContext];
+    v57 = [assistantDaemonAudioPrepareContext2 isEqual:assistantDaemonAudioPrepareContext3];
 
     if (!v57)
     {
@@ -3232,20 +3232,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrewarmContext];
-  v7 = [v4 assistantDaemonAudioPrewarmContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrewarmContext];
+  mhId2 = [equalCopy assistantDaemonAudioPrewarmContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v58 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrewarmContext];
-  if (v58)
+  assistantDaemonAudioPrewarmContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrewarmContext];
+  if (assistantDaemonAudioPrewarmContext)
   {
-    v59 = v58;
-    v60 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrewarmContext];
-    v61 = [v4 assistantDaemonAudioPrewarmContext];
-    v62 = [v60 isEqual:v61];
+    v59 = assistantDaemonAudioPrewarmContext;
+    assistantDaemonAudioPrewarmContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrewarmContext];
+    assistantDaemonAudioPrewarmContext3 = [equalCopy assistantDaemonAudioPrewarmContext];
+    v62 = [assistantDaemonAudioPrewarmContext2 isEqual:assistantDaemonAudioPrewarmContext3];
 
     if (!v62)
     {
@@ -3257,20 +3257,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStartRecordingContext];
-  v7 = [v4 assistantDaemonAudioStartRecordingContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStartRecordingContext];
+  mhId2 = [equalCopy assistantDaemonAudioStartRecordingContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v63 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStartRecordingContext];
-  if (v63)
+  assistantDaemonAudioStartRecordingContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStartRecordingContext];
+  if (assistantDaemonAudioStartRecordingContext)
   {
-    v64 = v63;
-    v65 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStartRecordingContext];
-    v66 = [v4 assistantDaemonAudioStartRecordingContext];
-    v67 = [v65 isEqual:v66];
+    v64 = assistantDaemonAudioStartRecordingContext;
+    assistantDaemonAudioStartRecordingContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStartRecordingContext];
+    assistantDaemonAudioStartRecordingContext3 = [equalCopy assistantDaemonAudioStartRecordingContext];
+    v67 = [assistantDaemonAudioStartRecordingContext2 isEqual:assistantDaemonAudioStartRecordingContext3];
 
     if (!v67)
     {
@@ -3282,20 +3282,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStopRecordingContext];
-  v7 = [v4 assistantDaemonAudioStopRecordingContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStopRecordingContext];
+  mhId2 = [equalCopy assistantDaemonAudioStopRecordingContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v68 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStopRecordingContext];
-  if (v68)
+  assistantDaemonAudioStopRecordingContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStopRecordingContext];
+  if (assistantDaemonAudioStopRecordingContext)
   {
-    v69 = v68;
-    v70 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStopRecordingContext];
-    v71 = [v4 assistantDaemonAudioStopRecordingContext];
-    v72 = [v70 isEqual:v71];
+    v69 = assistantDaemonAudioStopRecordingContext;
+    assistantDaemonAudioStopRecordingContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStopRecordingContext];
+    assistantDaemonAudioStopRecordingContext3 = [equalCopy assistantDaemonAudioStopRecordingContext];
+    v72 = [assistantDaemonAudioStopRecordingContext2 isEqual:assistantDaemonAudioStopRecordingContext3];
 
     if (!v72)
     {
@@ -3307,20 +3307,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetActiveContext];
-  v7 = [v4 assistantDaemonAudioSessionSetActiveContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetActiveContext];
+  mhId2 = [equalCopy assistantDaemonAudioSessionSetActiveContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v73 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetActiveContext];
-  if (v73)
+  assistantDaemonAudioSessionSetActiveContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetActiveContext];
+  if (assistantDaemonAudioSessionSetActiveContext)
   {
-    v74 = v73;
-    v75 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetActiveContext];
-    v76 = [v4 assistantDaemonAudioSessionSetActiveContext];
-    v77 = [v75 isEqual:v76];
+    v74 = assistantDaemonAudioSessionSetActiveContext;
+    assistantDaemonAudioSessionSetActiveContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetActiveContext];
+    assistantDaemonAudioSessionSetActiveContext3 = [equalCopy assistantDaemonAudioSessionSetActiveContext];
+    v77 = [assistantDaemonAudioSessionSetActiveContext2 isEqual:assistantDaemonAudioSessionSetActiveContext3];
 
     if (!v77)
     {
@@ -3332,20 +3332,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetInactiveContext];
-  v7 = [v4 assistantDaemonAudioSessionSetInactiveContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetInactiveContext];
+  mhId2 = [equalCopy assistantDaemonAudioSessionSetInactiveContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v78 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetInactiveContext];
-  if (v78)
+  assistantDaemonAudioSessionSetInactiveContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetInactiveContext];
+  if (assistantDaemonAudioSessionSetInactiveContext)
   {
-    v79 = v78;
-    v80 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetInactiveContext];
-    v81 = [v4 assistantDaemonAudioSessionSetInactiveContext];
-    v82 = [v80 isEqual:v81];
+    v79 = assistantDaemonAudioSessionSetInactiveContext;
+    assistantDaemonAudioSessionSetInactiveContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetInactiveContext];
+    assistantDaemonAudioSessionSetInactiveContext3 = [equalCopy assistantDaemonAudioSessionSetInactiveContext];
+    v82 = [assistantDaemonAudioSessionSetInactiveContext2 isEqual:assistantDaemonAudioSessionSetInactiveContext3];
 
     if (!v82)
     {
@@ -3357,20 +3357,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioFetchRouteContext];
-  v7 = [v4 assistantDaemonAudioFetchRouteContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self assistantDaemonAudioFetchRouteContext];
+  mhId2 = [equalCopy assistantDaemonAudioFetchRouteContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v83 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioFetchRouteContext];
-  if (v83)
+  assistantDaemonAudioFetchRouteContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioFetchRouteContext];
+  if (assistantDaemonAudioFetchRouteContext)
   {
-    v84 = v83;
-    v85 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioFetchRouteContext];
-    v86 = [v4 assistantDaemonAudioFetchRouteContext];
-    v87 = [v85 isEqual:v86];
+    v84 = assistantDaemonAudioFetchRouteContext;
+    assistantDaemonAudioFetchRouteContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioFetchRouteContext];
+    assistantDaemonAudioFetchRouteContext3 = [equalCopy assistantDaemonAudioFetchRouteContext];
+    v87 = [assistantDaemonAudioFetchRouteContext2 isEqual:assistantDaemonAudioFetchRouteContext3];
 
     if (!v87)
     {
@@ -3382,20 +3382,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingContext];
-  v7 = [v4 assistantDaemonAudioRecordingContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingContext];
+  mhId2 = [equalCopy assistantDaemonAudioRecordingContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v88 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingContext];
-  if (v88)
+  assistantDaemonAudioRecordingContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingContext];
+  if (assistantDaemonAudioRecordingContext)
   {
-    v89 = v88;
-    v90 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingContext];
-    v91 = [v4 assistantDaemonAudioRecordingContext];
-    v92 = [v90 isEqual:v91];
+    v89 = assistantDaemonAudioRecordingContext;
+    assistantDaemonAudioRecordingContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingContext];
+    assistantDaemonAudioRecordingContext3 = [equalCopy assistantDaemonAudioRecordingContext];
+    v92 = [assistantDaemonAudioRecordingContext2 isEqual:assistantDaemonAudioRecordingContext3];
 
     if (!v92)
     {
@@ -3407,20 +3407,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingMissedBufferDetected];
-  v7 = [v4 assistantDaemonAudioRecordingMissedBufferDetected];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingMissedBufferDetected];
+  mhId2 = [equalCopy assistantDaemonAudioRecordingMissedBufferDetected];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v93 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingMissedBufferDetected];
-  if (v93)
+  assistantDaemonAudioRecordingMissedBufferDetected = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingMissedBufferDetected];
+  if (assistantDaemonAudioRecordingMissedBufferDetected)
   {
-    v94 = v93;
-    v95 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingMissedBufferDetected];
-    v96 = [v4 assistantDaemonAudioRecordingMissedBufferDetected];
-    v97 = [v95 isEqual:v96];
+    v94 = assistantDaemonAudioRecordingMissedBufferDetected;
+    assistantDaemonAudioRecordingMissedBufferDetected2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingMissedBufferDetected];
+    assistantDaemonAudioRecordingMissedBufferDetected3 = [equalCopy assistantDaemonAudioRecordingMissedBufferDetected];
+    v97 = [assistantDaemonAudioRecordingMissedBufferDetected2 isEqual:assistantDaemonAudioRecordingMissedBufferDetected3];
 
     if (!v97)
     {
@@ -3432,20 +3432,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioLateBufferDetected];
-  v7 = [v4 assistantDaemonAudioLateBufferDetected];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self assistantDaemonAudioLateBufferDetected];
+  mhId2 = [equalCopy assistantDaemonAudioLateBufferDetected];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v98 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioLateBufferDetected];
-  if (v98)
+  assistantDaemonAudioLateBufferDetected = [(MHSchemaMHClientEvent *)self assistantDaemonAudioLateBufferDetected];
+  if (assistantDaemonAudioLateBufferDetected)
   {
-    v99 = v98;
-    v100 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioLateBufferDetected];
-    v101 = [v4 assistantDaemonAudioLateBufferDetected];
-    v102 = [v100 isEqual:v101];
+    v99 = assistantDaemonAudioLateBufferDetected;
+    assistantDaemonAudioLateBufferDetected2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioLateBufferDetected];
+    assistantDaemonAudioLateBufferDetected3 = [equalCopy assistantDaemonAudioLateBufferDetected];
+    v102 = [assistantDaemonAudioLateBufferDetected2 isEqual:assistantDaemonAudioLateBufferDetected3];
 
     if (!v102)
     {
@@ -3457,20 +3457,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFirstBufferContext];
-  v7 = [v4 assistantDaemonAudioRecordingFirstBufferContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFirstBufferContext];
+  mhId2 = [equalCopy assistantDaemonAudioRecordingFirstBufferContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v103 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFirstBufferContext];
-  if (v103)
+  assistantDaemonAudioRecordingFirstBufferContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFirstBufferContext];
+  if (assistantDaemonAudioRecordingFirstBufferContext)
   {
-    v104 = v103;
-    v105 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFirstBufferContext];
-    v106 = [v4 assistantDaemonAudioRecordingFirstBufferContext];
-    v107 = [v105 isEqual:v106];
+    v104 = assistantDaemonAudioRecordingFirstBufferContext;
+    assistantDaemonAudioRecordingFirstBufferContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFirstBufferContext];
+    assistantDaemonAudioRecordingFirstBufferContext3 = [equalCopy assistantDaemonAudioRecordingFirstBufferContext];
+    v107 = [assistantDaemonAudioRecordingFirstBufferContext2 isEqual:assistantDaemonAudioRecordingFirstBufferContext3];
 
     if (!v107)
     {
@@ -3482,20 +3482,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingLastBufferContext];
-  v7 = [v4 assistantDaemonAudioRecordingLastBufferContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingLastBufferContext];
+  mhId2 = [equalCopy assistantDaemonAudioRecordingLastBufferContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v108 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingLastBufferContext];
-  if (v108)
+  assistantDaemonAudioRecordingLastBufferContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingLastBufferContext];
+  if (assistantDaemonAudioRecordingLastBufferContext)
   {
-    v109 = v108;
-    v110 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingLastBufferContext];
-    v111 = [v4 assistantDaemonAudioRecordingLastBufferContext];
-    v112 = [v110 isEqual:v111];
+    v109 = assistantDaemonAudioRecordingLastBufferContext;
+    assistantDaemonAudioRecordingLastBufferContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingLastBufferContext];
+    assistantDaemonAudioRecordingLastBufferContext3 = [equalCopy assistantDaemonAudioRecordingLastBufferContext];
+    v112 = [assistantDaemonAudioRecordingLastBufferContext2 isEqual:assistantDaemonAudioRecordingLastBufferContext3];
 
     if (!v112)
     {
@@ -3507,20 +3507,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionContext];
-  v7 = [v4 assistantDaemonAudioRecordingInterruptionContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionContext];
+  mhId2 = [equalCopy assistantDaemonAudioRecordingInterruptionContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v113 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionContext];
-  if (v113)
+  assistantDaemonAudioRecordingInterruptionContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionContext];
+  if (assistantDaemonAudioRecordingInterruptionContext)
   {
-    v114 = v113;
-    v115 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionContext];
-    v116 = [v4 assistantDaemonAudioRecordingInterruptionContext];
-    v117 = [v115 isEqual:v116];
+    v114 = assistantDaemonAudioRecordingInterruptionContext;
+    assistantDaemonAudioRecordingInterruptionContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionContext];
+    assistantDaemonAudioRecordingInterruptionContext3 = [equalCopy assistantDaemonAudioRecordingInterruptionContext];
+    v117 = [assistantDaemonAudioRecordingInterruptionContext2 isEqual:assistantDaemonAudioRecordingInterruptionContext3];
 
     if (!v117)
     {
@@ -3532,20 +3532,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionStartedTier1];
-  v7 = [v4 assistantDaemonAudioRecordingInterruptionStartedTier1];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionStartedTier1];
+  mhId2 = [equalCopy assistantDaemonAudioRecordingInterruptionStartedTier1];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v118 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionStartedTier1];
-  if (v118)
+  assistantDaemonAudioRecordingInterruptionStartedTier1 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionStartedTier1];
+  if (assistantDaemonAudioRecordingInterruptionStartedTier1)
   {
-    v119 = v118;
-    v120 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionStartedTier1];
-    v121 = [v4 assistantDaemonAudioRecordingInterruptionStartedTier1];
-    v122 = [v120 isEqual:v121];
+    v119 = assistantDaemonAudioRecordingInterruptionStartedTier1;
+    assistantDaemonAudioRecordingInterruptionStartedTier12 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionStartedTier1];
+    assistantDaemonAudioRecordingInterruptionStartedTier13 = [equalCopy assistantDaemonAudioRecordingInterruptionStartedTier1];
+    v122 = [assistantDaemonAudioRecordingInterruptionStartedTier12 isEqual:assistantDaemonAudioRecordingInterruptionStartedTier13];
 
     if (!v122)
     {
@@ -3557,20 +3557,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioBluetoothInfo];
-  v7 = [v4 assistantDaemonAudioBluetoothInfo];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self assistantDaemonAudioBluetoothInfo];
+  mhId2 = [equalCopy assistantDaemonAudioBluetoothInfo];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v123 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioBluetoothInfo];
-  if (v123)
+  assistantDaemonAudioBluetoothInfo = [(MHSchemaMHClientEvent *)self assistantDaemonAudioBluetoothInfo];
+  if (assistantDaemonAudioBluetoothInfo)
   {
-    v124 = v123;
-    v125 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioBluetoothInfo];
-    v126 = [v4 assistantDaemonAudioBluetoothInfo];
-    v127 = [v125 isEqual:v126];
+    v124 = assistantDaemonAudioBluetoothInfo;
+    assistantDaemonAudioBluetoothInfo2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioBluetoothInfo];
+    assistantDaemonAudioBluetoothInfo3 = [equalCopy assistantDaemonAudioBluetoothInfo];
+    v127 = [assistantDaemonAudioBluetoothInfo2 isEqual:assistantDaemonAudioBluetoothInfo3];
 
     if (!v127)
     {
@@ -3582,20 +3582,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self voiceTriggerTwoShotDetected];
-  v7 = [v4 voiceTriggerTwoShotDetected];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self voiceTriggerTwoShotDetected];
+  mhId2 = [equalCopy voiceTriggerTwoShotDetected];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v128 = [(MHSchemaMHClientEvent *)self voiceTriggerTwoShotDetected];
-  if (v128)
+  voiceTriggerTwoShotDetected = [(MHSchemaMHClientEvent *)self voiceTriggerTwoShotDetected];
+  if (voiceTriggerTwoShotDetected)
   {
-    v129 = v128;
-    v130 = [(MHSchemaMHClientEvent *)self voiceTriggerTwoShotDetected];
-    v131 = [v4 voiceTriggerTwoShotDetected];
-    v132 = [v130 isEqual:v131];
+    v129 = voiceTriggerTwoShotDetected;
+    voiceTriggerTwoShotDetected2 = [(MHSchemaMHClientEvent *)self voiceTriggerTwoShotDetected];
+    voiceTriggerTwoShotDetected3 = [equalCopy voiceTriggerTwoShotDetected];
+    v132 = [voiceTriggerTwoShotDetected2 isEqual:voiceTriggerTwoShotDetected3];
 
     if (!v132)
     {
@@ -3607,20 +3607,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioTwoShotTransitionContext];
-  v7 = [v4 assistantDaemonAudioTwoShotTransitionContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self assistantDaemonAudioTwoShotTransitionContext];
+  mhId2 = [equalCopy assistantDaemonAudioTwoShotTransitionContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v133 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioTwoShotTransitionContext];
-  if (v133)
+  assistantDaemonAudioTwoShotTransitionContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioTwoShotTransitionContext];
+  if (assistantDaemonAudioTwoShotTransitionContext)
   {
-    v134 = v133;
-    v135 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioTwoShotTransitionContext];
-    v136 = [v4 assistantDaemonAudioTwoShotTransitionContext];
-    v137 = [v135 isEqual:v136];
+    v134 = assistantDaemonAudioTwoShotTransitionContext;
+    assistantDaemonAudioTwoShotTransitionContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioTwoShotTransitionContext];
+    assistantDaemonAudioTwoShotTransitionContext3 = [equalCopy assistantDaemonAudioTwoShotTransitionContext];
+    v137 = [assistantDaemonAudioTwoShotTransitionContext2 isEqual:assistantDaemonAudioTwoShotTransitionContext3];
 
     if (!v137)
     {
@@ -3632,20 +3632,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self voiceTriggerContext];
-  v7 = [v4 voiceTriggerContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self voiceTriggerContext];
+  mhId2 = [equalCopy voiceTriggerContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v138 = [(MHSchemaMHClientEvent *)self voiceTriggerContext];
-  if (v138)
+  voiceTriggerContext = [(MHSchemaMHClientEvent *)self voiceTriggerContext];
+  if (voiceTriggerContext)
   {
-    v139 = v138;
-    v140 = [(MHSchemaMHClientEvent *)self voiceTriggerContext];
-    v141 = [v4 voiceTriggerContext];
-    v142 = [v140 isEqual:v141];
+    v139 = voiceTriggerContext;
+    voiceTriggerContext2 = [(MHSchemaMHClientEvent *)self voiceTriggerContext];
+    voiceTriggerContext3 = [equalCopy voiceTriggerContext];
+    v142 = [voiceTriggerContext2 isEqual:voiceTriggerContext3];
 
     if (!v142)
     {
@@ -3657,20 +3657,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self endpointDetected];
-  v7 = [v4 endpointDetected];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self endpointDetected];
+  mhId2 = [equalCopy endpointDetected];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v143 = [(MHSchemaMHClientEvent *)self endpointDetected];
-  if (v143)
+  endpointDetected = [(MHSchemaMHClientEvent *)self endpointDetected];
+  if (endpointDetected)
   {
-    v144 = v143;
-    v145 = [(MHSchemaMHClientEvent *)self endpointDetected];
-    v146 = [v4 endpointDetected];
-    v147 = [v145 isEqual:v146];
+    v144 = endpointDetected;
+    endpointDetected2 = [(MHSchemaMHClientEvent *)self endpointDetected];
+    endpointDetected3 = [equalCopy endpointDetected];
+    v147 = [endpointDetected2 isEqual:endpointDetected3];
 
     if (!v147)
     {
@@ -3682,20 +3682,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self endpointLatencyInfoReported];
-  v7 = [v4 endpointLatencyInfoReported];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self endpointLatencyInfoReported];
+  mhId2 = [equalCopy endpointLatencyInfoReported];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v148 = [(MHSchemaMHClientEvent *)self endpointLatencyInfoReported];
-  if (v148)
+  endpointLatencyInfoReported = [(MHSchemaMHClientEvent *)self endpointLatencyInfoReported];
+  if (endpointLatencyInfoReported)
   {
-    v149 = v148;
-    v150 = [(MHSchemaMHClientEvent *)self endpointLatencyInfoReported];
-    v151 = [v4 endpointLatencyInfoReported];
-    v152 = [v150 isEqual:v151];
+    v149 = endpointLatencyInfoReported;
+    endpointLatencyInfoReported2 = [(MHSchemaMHClientEvent *)self endpointLatencyInfoReported];
+    endpointLatencyInfoReported3 = [equalCopy endpointLatencyInfoReported];
+    v152 = [endpointLatencyInfoReported2 isEqual:endpointLatencyInfoReported3];
 
     if (!v152)
     {
@@ -3707,20 +3707,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self adblockerContext];
-  v7 = [v4 adblockerContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self adblockerContext];
+  mhId2 = [equalCopy adblockerContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v153 = [(MHSchemaMHClientEvent *)self adblockerContext];
-  if (v153)
+  adblockerContext = [(MHSchemaMHClientEvent *)self adblockerContext];
+  if (adblockerContext)
   {
-    v154 = v153;
-    v155 = [(MHSchemaMHClientEvent *)self adblockerContext];
-    v156 = [v4 adblockerContext];
-    v157 = [v155 isEqual:v156];
+    v154 = adblockerContext;
+    adblockerContext2 = [(MHSchemaMHClientEvent *)self adblockerContext];
+    adblockerContext3 = [equalCopy adblockerContext];
+    v157 = [adblockerContext2 isEqual:adblockerContext3];
 
     if (!v157)
     {
@@ -3732,20 +3732,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self onDeviceEndpointerContext];
-  v7 = [v4 onDeviceEndpointerContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self onDeviceEndpointerContext];
+  mhId2 = [equalCopy onDeviceEndpointerContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v158 = [(MHSchemaMHClientEvent *)self onDeviceEndpointerContext];
-  if (v158)
+  onDeviceEndpointerContext = [(MHSchemaMHClientEvent *)self onDeviceEndpointerContext];
+  if (onDeviceEndpointerContext)
   {
-    v159 = v158;
-    v160 = [(MHSchemaMHClientEvent *)self onDeviceEndpointerContext];
-    v161 = [v4 onDeviceEndpointerContext];
-    v162 = [v160 isEqual:v161];
+    v159 = onDeviceEndpointerContext;
+    onDeviceEndpointerContext2 = [(MHSchemaMHClientEvent *)self onDeviceEndpointerContext];
+    onDeviceEndpointerContext3 = [equalCopy onDeviceEndpointerContext];
+    v162 = [onDeviceEndpointerContext2 isEqual:onDeviceEndpointerContext3];
 
     if (!v162)
     {
@@ -3757,20 +3757,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self serverEndpointerContext];
-  v7 = [v4 serverEndpointerContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self serverEndpointerContext];
+  mhId2 = [equalCopy serverEndpointerContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v163 = [(MHSchemaMHClientEvent *)self serverEndpointerContext];
-  if (v163)
+  serverEndpointerContext = [(MHSchemaMHClientEvent *)self serverEndpointerContext];
+  if (serverEndpointerContext)
   {
-    v164 = v163;
-    v165 = [(MHSchemaMHClientEvent *)self serverEndpointerContext];
-    v166 = [v4 serverEndpointerContext];
-    v167 = [v165 isEqual:v166];
+    v164 = serverEndpointerContext;
+    serverEndpointerContext2 = [(MHSchemaMHClientEvent *)self serverEndpointerContext];
+    serverEndpointerContext3 = [equalCopy serverEndpointerContext];
+    v167 = [serverEndpointerContext2 isEqual:serverEndpointerContext3];
 
     if (!v167)
     {
@@ -3782,20 +3782,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self endpointerUsed];
-  v7 = [v4 endpointerUsed];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self endpointerUsed];
+  mhId2 = [equalCopy endpointerUsed];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v168 = [(MHSchemaMHClientEvent *)self endpointerUsed];
-  if (v168)
+  endpointerUsed = [(MHSchemaMHClientEvent *)self endpointerUsed];
+  if (endpointerUsed)
   {
-    v169 = v168;
-    v170 = [(MHSchemaMHClientEvent *)self endpointerUsed];
-    v171 = [v4 endpointerUsed];
-    v172 = [v170 isEqual:v171];
+    v169 = endpointerUsed;
+    endpointerUsed2 = [(MHSchemaMHClientEvent *)self endpointerUsed];
+    endpointerUsed3 = [equalCopy endpointerUsed];
+    v172 = [endpointerUsed2 isEqual:endpointerUsed3];
 
     if (!v172)
     {
@@ -3807,20 +3807,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self endpointDelayContext];
-  v7 = [v4 endpointDelayContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self endpointDelayContext];
+  mhId2 = [equalCopy endpointDelayContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v173 = [(MHSchemaMHClientEvent *)self endpointDelayContext];
-  if (v173)
+  endpointDelayContext = [(MHSchemaMHClientEvent *)self endpointDelayContext];
+  if (endpointDelayContext)
   {
-    v174 = v173;
-    v175 = [(MHSchemaMHClientEvent *)self endpointDelayContext];
-    v176 = [v4 endpointDelayContext];
-    v177 = [v175 isEqual:v176];
+    v174 = endpointDelayContext;
+    endpointDelayContext2 = [(MHSchemaMHClientEvent *)self endpointDelayContext];
+    endpointDelayContext3 = [equalCopy endpointDelayContext];
+    v177 = [endpointDelayContext2 isEqual:endpointDelayContext3];
 
     if (!v177)
     {
@@ -3832,20 +3832,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self finalMitigationRecommendation];
-  v7 = [v4 finalMitigationRecommendation];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self finalMitigationRecommendation];
+  mhId2 = [equalCopy finalMitigationRecommendation];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v178 = [(MHSchemaMHClientEvent *)self finalMitigationRecommendation];
-  if (v178)
+  finalMitigationRecommendation = [(MHSchemaMHClientEvent *)self finalMitigationRecommendation];
+  if (finalMitigationRecommendation)
   {
-    v179 = v178;
-    v180 = [(MHSchemaMHClientEvent *)self finalMitigationRecommendation];
-    v181 = [v4 finalMitigationRecommendation];
-    v182 = [v180 isEqual:v181];
+    v179 = finalMitigationRecommendation;
+    finalMitigationRecommendation2 = [(MHSchemaMHClientEvent *)self finalMitigationRecommendation];
+    finalMitigationRecommendation3 = [equalCopy finalMitigationRecommendation];
+    v182 = [finalMitigationRecommendation2 isEqual:finalMitigationRecommendation3];
 
     if (!v182)
     {
@@ -3857,20 +3857,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self applicationPlaybackAttempted];
-  v7 = [v4 applicationPlaybackAttempted];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self applicationPlaybackAttempted];
+  mhId2 = [equalCopy applicationPlaybackAttempted];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v183 = [(MHSchemaMHClientEvent *)self applicationPlaybackAttempted];
-  if (v183)
+  applicationPlaybackAttempted = [(MHSchemaMHClientEvent *)self applicationPlaybackAttempted];
+  if (applicationPlaybackAttempted)
   {
-    v184 = v183;
-    v185 = [(MHSchemaMHClientEvent *)self applicationPlaybackAttempted];
-    v186 = [v4 applicationPlaybackAttempted];
-    v187 = [v185 isEqual:v186];
+    v184 = applicationPlaybackAttempted;
+    applicationPlaybackAttempted2 = [(MHSchemaMHClientEvent *)self applicationPlaybackAttempted];
+    applicationPlaybackAttempted3 = [equalCopy applicationPlaybackAttempted];
+    v187 = [applicationPlaybackAttempted2 isEqual:applicationPlaybackAttempted3];
 
     if (!v187)
     {
@@ -3882,20 +3882,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self siriLaunchRequestContext];
-  v7 = [v4 siriLaunchRequestContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self siriLaunchRequestContext];
+  mhId2 = [equalCopy siriLaunchRequestContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v188 = [(MHSchemaMHClientEvent *)self siriLaunchRequestContext];
-  if (v188)
+  siriLaunchRequestContext = [(MHSchemaMHClientEvent *)self siriLaunchRequestContext];
+  if (siriLaunchRequestContext)
   {
-    v189 = v188;
-    v190 = [(MHSchemaMHClientEvent *)self siriLaunchRequestContext];
-    v191 = [v4 siriLaunchRequestContext];
-    v192 = [v190 isEqual:v191];
+    v189 = siriLaunchRequestContext;
+    siriLaunchRequestContext2 = [(MHSchemaMHClientEvent *)self siriLaunchRequestContext];
+    siriLaunchRequestContext3 = [equalCopy siriLaunchRequestContext];
+    v192 = [siriLaunchRequestContext2 isEqual:siriLaunchRequestContext3];
 
     if (!v192)
     {
@@ -3907,20 +3907,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self endpointerAccessibleContext];
-  v7 = [v4 endpointerAccessibleContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self endpointerAccessibleContext];
+  mhId2 = [equalCopy endpointerAccessibleContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v193 = [(MHSchemaMHClientEvent *)self endpointerAccessibleContext];
-  if (v193)
+  endpointerAccessibleContext = [(MHSchemaMHClientEvent *)self endpointerAccessibleContext];
+  if (endpointerAccessibleContext)
   {
-    v194 = v193;
-    v195 = [(MHSchemaMHClientEvent *)self endpointerAccessibleContext];
-    v196 = [v4 endpointerAccessibleContext];
-    v197 = [v195 isEqual:v196];
+    v194 = endpointerAccessibleContext;
+    endpointerAccessibleContext2 = [(MHSchemaMHClientEvent *)self endpointerAccessibleContext];
+    endpointerAccessibleContext3 = [equalCopy endpointerAccessibleContext];
+    v197 = [endpointerAccessibleContext2 isEqual:endpointerAccessibleContext3];
 
     if (!v197)
     {
@@ -3932,20 +3932,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self carPlayLangaugeMismatched];
-  v7 = [v4 carPlayLangaugeMismatched];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self carPlayLangaugeMismatched];
+  mhId2 = [equalCopy carPlayLangaugeMismatched];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v198 = [(MHSchemaMHClientEvent *)self carPlayLangaugeMismatched];
-  if (v198)
+  carPlayLangaugeMismatched = [(MHSchemaMHClientEvent *)self carPlayLangaugeMismatched];
+  if (carPlayLangaugeMismatched)
   {
-    v199 = v198;
-    v200 = [(MHSchemaMHClientEvent *)self carPlayLangaugeMismatched];
-    v201 = [v4 carPlayLangaugeMismatched];
-    v202 = [v200 isEqual:v201];
+    v199 = carPlayLangaugeMismatched;
+    carPlayLangaugeMismatched2 = [(MHSchemaMHClientEvent *)self carPlayLangaugeMismatched];
+    carPlayLangaugeMismatched3 = [equalCopy carPlayLangaugeMismatched];
+    v202 = [carPlayLangaugeMismatched2 isEqual:carPlayLangaugeMismatched3];
 
     if (!v202)
     {
@@ -3957,20 +3957,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self darwinConnectedDeviceWakeContext];
-  v7 = [v4 darwinConnectedDeviceWakeContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self darwinConnectedDeviceWakeContext];
+  mhId2 = [equalCopy darwinConnectedDeviceWakeContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v203 = [(MHSchemaMHClientEvent *)self darwinConnectedDeviceWakeContext];
-  if (v203)
+  darwinConnectedDeviceWakeContext = [(MHSchemaMHClientEvent *)self darwinConnectedDeviceWakeContext];
+  if (darwinConnectedDeviceWakeContext)
   {
-    v204 = v203;
-    v205 = [(MHSchemaMHClientEvent *)self darwinConnectedDeviceWakeContext];
-    v206 = [v4 darwinConnectedDeviceWakeContext];
-    v207 = [v205 isEqual:v206];
+    v204 = darwinConnectedDeviceWakeContext;
+    darwinConnectedDeviceWakeContext2 = [(MHSchemaMHClientEvent *)self darwinConnectedDeviceWakeContext];
+    darwinConnectedDeviceWakeContext3 = [equalCopy darwinConnectedDeviceWakeContext];
+    v207 = [darwinConnectedDeviceWakeContext2 isEqual:darwinConnectedDeviceWakeContext3];
 
     if (!v207)
     {
@@ -3982,20 +3982,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self odldFalseTriggerMitigated];
-  v7 = [v4 odldFalseTriggerMitigated];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self odldFalseTriggerMitigated];
+  mhId2 = [equalCopy odldFalseTriggerMitigated];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v208 = [(MHSchemaMHClientEvent *)self odldFalseTriggerMitigated];
-  if (v208)
+  odldFalseTriggerMitigated = [(MHSchemaMHClientEvent *)self odldFalseTriggerMitigated];
+  if (odldFalseTriggerMitigated)
   {
-    v209 = v208;
-    v210 = [(MHSchemaMHClientEvent *)self odldFalseTriggerMitigated];
-    v211 = [v4 odldFalseTriggerMitigated];
-    v212 = [v210 isEqual:v211];
+    v209 = odldFalseTriggerMitigated;
+    odldFalseTriggerMitigated2 = [(MHSchemaMHClientEvent *)self odldFalseTriggerMitigated];
+    odldFalseTriggerMitigated3 = [equalCopy odldFalseTriggerMitigated];
+    v212 = [odldFalseTriggerMitigated2 isEqual:odldFalseTriggerMitigated3];
 
     if (!v212)
     {
@@ -4007,20 +4007,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self speakerFalseTriggerMitigated];
-  v7 = [v4 speakerFalseTriggerMitigated];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self speakerFalseTriggerMitigated];
+  mhId2 = [equalCopy speakerFalseTriggerMitigated];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v213 = [(MHSchemaMHClientEvent *)self speakerFalseTriggerMitigated];
-  if (v213)
+  speakerFalseTriggerMitigated = [(MHSchemaMHClientEvent *)self speakerFalseTriggerMitigated];
+  if (speakerFalseTriggerMitigated)
   {
-    v214 = v213;
-    v215 = [(MHSchemaMHClientEvent *)self speakerFalseTriggerMitigated];
-    v216 = [v4 speakerFalseTriggerMitigated];
-    v217 = [v215 isEqual:v216];
+    v214 = speakerFalseTriggerMitigated;
+    speakerFalseTriggerMitigated2 = [(MHSchemaMHClientEvent *)self speakerFalseTriggerMitigated];
+    speakerFalseTriggerMitigated3 = [equalCopy speakerFalseTriggerMitigated];
+    v217 = [speakerFalseTriggerMitigated2 isEqual:speakerFalseTriggerMitigated3];
 
     if (!v217)
     {
@@ -4032,20 +4032,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self siriDirectedSpeechDetectionFailed];
-  v7 = [v4 siriDirectedSpeechDetectionFailed];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self siriDirectedSpeechDetectionFailed];
+  mhId2 = [equalCopy siriDirectedSpeechDetectionFailed];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v218 = [(MHSchemaMHClientEvent *)self siriDirectedSpeechDetectionFailed];
-  if (v218)
+  siriDirectedSpeechDetectionFailed = [(MHSchemaMHClientEvent *)self siriDirectedSpeechDetectionFailed];
+  if (siriDirectedSpeechDetectionFailed)
   {
-    v219 = v218;
-    v220 = [(MHSchemaMHClientEvent *)self siriDirectedSpeechDetectionFailed];
-    v221 = [v4 siriDirectedSpeechDetectionFailed];
-    v222 = [v220 isEqual:v221];
+    v219 = siriDirectedSpeechDetectionFailed;
+    siriDirectedSpeechDetectionFailed2 = [(MHSchemaMHClientEvent *)self siriDirectedSpeechDetectionFailed];
+    siriDirectedSpeechDetectionFailed3 = [equalCopy siriDirectedSpeechDetectionFailed];
+    v222 = [siriDirectedSpeechDetectionFailed2 isEqual:siriDirectedSpeechDetectionFailed3];
 
     if (!v222)
     {
@@ -4057,20 +4057,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self audioDucked];
-  v7 = [v4 audioDucked];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self audioDucked];
+  mhId2 = [equalCopy audioDucked];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v223 = [(MHSchemaMHClientEvent *)self audioDucked];
-  if (v223)
+  audioDucked = [(MHSchemaMHClientEvent *)self audioDucked];
+  if (audioDucked)
   {
-    v224 = v223;
-    v225 = [(MHSchemaMHClientEvent *)self audioDucked];
-    v226 = [v4 audioDucked];
-    v227 = [v225 isEqual:v226];
+    v224 = audioDucked;
+    audioDucked2 = [(MHSchemaMHClientEvent *)self audioDucked];
+    audioDucked3 = [equalCopy audioDucked];
+    v227 = [audioDucked2 isEqual:audioDucked3];
 
     if (!v227)
     {
@@ -4082,20 +4082,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self audioRecordingFailed];
-  v7 = [v4 audioRecordingFailed];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self audioRecordingFailed];
+  mhId2 = [equalCopy audioRecordingFailed];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v228 = [(MHSchemaMHClientEvent *)self audioRecordingFailed];
-  if (v228)
+  audioRecordingFailed = [(MHSchemaMHClientEvent *)self audioRecordingFailed];
+  if (audioRecordingFailed)
   {
-    v229 = v228;
-    v230 = [(MHSchemaMHClientEvent *)self audioRecordingFailed];
-    v231 = [v4 audioRecordingFailed];
-    v232 = [v230 isEqual:v231];
+    v229 = audioRecordingFailed;
+    audioRecordingFailed2 = [(MHSchemaMHClientEvent *)self audioRecordingFailed];
+    audioRecordingFailed3 = [equalCopy audioRecordingFailed];
+    v232 = [audioRecordingFailed2 isEqual:audioRecordingFailed3];
 
     if (!v232)
     {
@@ -4107,20 +4107,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self rtsFalseRejectDetected];
-  v7 = [v4 rtsFalseRejectDetected];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self rtsFalseRejectDetected];
+  mhId2 = [equalCopy rtsFalseRejectDetected];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v233 = [(MHSchemaMHClientEvent *)self rtsFalseRejectDetected];
-  if (v233)
+  rtsFalseRejectDetected = [(MHSchemaMHClientEvent *)self rtsFalseRejectDetected];
+  if (rtsFalseRejectDetected)
   {
-    v234 = v233;
-    v235 = [(MHSchemaMHClientEvent *)self rtsFalseRejectDetected];
-    v236 = [v4 rtsFalseRejectDetected];
-    v237 = [v235 isEqual:v236];
+    v234 = rtsFalseRejectDetected;
+    rtsFalseRejectDetected2 = [(MHSchemaMHClientEvent *)self rtsFalseRejectDetected];
+    rtsFalseRejectDetected3 = [equalCopy rtsFalseRejectDetected];
+    v237 = [rtsFalseRejectDetected2 isEqual:rtsFalseRejectDetected3];
 
     if (!v237)
     {
@@ -4132,20 +4132,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self trpCreated];
-  v7 = [v4 trpCreated];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self trpCreated];
+  mhId2 = [equalCopy trpCreated];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v238 = [(MHSchemaMHClientEvent *)self trpCreated];
-  if (v238)
+  trpCreated = [(MHSchemaMHClientEvent *)self trpCreated];
+  if (trpCreated)
   {
-    v239 = v238;
-    v240 = [(MHSchemaMHClientEvent *)self trpCreated];
-    v241 = [v4 trpCreated];
-    v242 = [v240 isEqual:v241];
+    v239 = trpCreated;
+    trpCreated2 = [(MHSchemaMHClientEvent *)self trpCreated];
+    trpCreated3 = [equalCopy trpCreated];
+    v242 = [trpCreated2 isEqual:trpCreated3];
 
     if (!v242)
     {
@@ -4157,20 +4157,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self userSpeakingContext];
-  v7 = [v4 userSpeakingContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self userSpeakingContext];
+  mhId2 = [equalCopy userSpeakingContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v243 = [(MHSchemaMHClientEvent *)self userSpeakingContext];
-  if (v243)
+  userSpeakingContext = [(MHSchemaMHClientEvent *)self userSpeakingContext];
+  if (userSpeakingContext)
   {
-    v244 = v243;
-    v245 = [(MHSchemaMHClientEvent *)self userSpeakingContext];
-    v246 = [v4 userSpeakingContext];
-    v247 = [v245 isEqual:v246];
+    v244 = userSpeakingContext;
+    userSpeakingContext2 = [(MHSchemaMHClientEvent *)self userSpeakingContext];
+    userSpeakingContext3 = [equalCopy userSpeakingContext];
+    v247 = [userSpeakingContext2 isEqual:userSpeakingContext3];
 
     if (!v247)
     {
@@ -4182,20 +4182,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self speechStopDetected];
-  v7 = [v4 speechStopDetected];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self speechStopDetected];
+  mhId2 = [equalCopy speechStopDetected];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v248 = [(MHSchemaMHClientEvent *)self speechStopDetected];
-  if (v248)
+  speechStopDetected = [(MHSchemaMHClientEvent *)self speechStopDetected];
+  if (speechStopDetected)
   {
-    v249 = v248;
-    v250 = [(MHSchemaMHClientEvent *)self speechStopDetected];
-    v251 = [v4 speechStopDetected];
-    v252 = [v250 isEqual:v251];
+    v249 = speechStopDetected;
+    speechStopDetected2 = [(MHSchemaMHClientEvent *)self speechStopDetected];
+    speechStopDetected3 = [equalCopy speechStopDetected];
+    v252 = [speechStopDetected2 isEqual:speechStopDetected3];
 
     if (!v252)
     {
@@ -4207,20 +4207,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self speechDetectorContext];
-  v7 = [v4 speechDetectorContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self speechDetectorContext];
+  mhId2 = [equalCopy speechDetectorContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v253 = [(MHSchemaMHClientEvent *)self speechDetectorContext];
-  if (v253)
+  speechDetectorContext = [(MHSchemaMHClientEvent *)self speechDetectorContext];
+  if (speechDetectorContext)
   {
-    v254 = v253;
-    v255 = [(MHSchemaMHClientEvent *)self speechDetectorContext];
-    v256 = [v4 speechDetectorContext];
-    v257 = [v255 isEqual:v256];
+    v254 = speechDetectorContext;
+    speechDetectorContext2 = [(MHSchemaMHClientEvent *)self speechDetectorContext];
+    speechDetectorContext3 = [equalCopy speechDetectorContext];
+    v257 = [speechDetectorContext2 isEqual:speechDetectorContext3];
 
     if (!v257)
     {
@@ -4232,20 +4232,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self stoppedListeningForSpeechContinuation];
-  v7 = [v4 stoppedListeningForSpeechContinuation];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self stoppedListeningForSpeechContinuation];
+  mhId2 = [equalCopy stoppedListeningForSpeechContinuation];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v258 = [(MHSchemaMHClientEvent *)self stoppedListeningForSpeechContinuation];
-  if (v258)
+  stoppedListeningForSpeechContinuation = [(MHSchemaMHClientEvent *)self stoppedListeningForSpeechContinuation];
+  if (stoppedListeningForSpeechContinuation)
   {
-    v259 = v258;
-    v260 = [(MHSchemaMHClientEvent *)self stoppedListeningForSpeechContinuation];
-    v261 = [v4 stoppedListeningForSpeechContinuation];
-    v262 = [v260 isEqual:v261];
+    v259 = stoppedListeningForSpeechContinuation;
+    stoppedListeningForSpeechContinuation2 = [(MHSchemaMHClientEvent *)self stoppedListeningForSpeechContinuation];
+    stoppedListeningForSpeechContinuation3 = [equalCopy stoppedListeningForSpeechContinuation];
+    v262 = [stoppedListeningForSpeechContinuation2 isEqual:stoppedListeningForSpeechContinuation3];
 
     if (!v262)
     {
@@ -4257,20 +4257,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self userEngagementModelContext];
-  v7 = [v4 userEngagementModelContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self userEngagementModelContext];
+  mhId2 = [equalCopy userEngagementModelContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v263 = [(MHSchemaMHClientEvent *)self userEngagementModelContext];
-  if (v263)
+  userEngagementModelContext = [(MHSchemaMHClientEvent *)self userEngagementModelContext];
+  if (userEngagementModelContext)
   {
-    v264 = v263;
-    v265 = [(MHSchemaMHClientEvent *)self userEngagementModelContext];
-    v266 = [v4 userEngagementModelContext];
-    v267 = [v265 isEqual:v266];
+    v264 = userEngagementModelContext;
+    userEngagementModelContext2 = [(MHSchemaMHClientEvent *)self userEngagementModelContext];
+    userEngagementModelContext3 = [equalCopy userEngagementModelContext];
+    v267 = [userEngagementModelContext2 isEqual:userEngagementModelContext3];
 
     if (!v267)
     {
@@ -4282,20 +4282,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self attendingContext];
-  v7 = [v4 attendingContext];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self attendingContext];
+  mhId2 = [equalCopy attendingContext];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v268 = [(MHSchemaMHClientEvent *)self attendingContext];
-  if (v268)
+  attendingContext = [(MHSchemaMHClientEvent *)self attendingContext];
+  if (attendingContext)
   {
-    v269 = v268;
-    v270 = [(MHSchemaMHClientEvent *)self attendingContext];
-    v271 = [v4 attendingContext];
-    v272 = [v270 isEqual:v271];
+    v269 = attendingContext;
+    attendingContext2 = [(MHSchemaMHClientEvent *)self attendingContext];
+    attendingContext3 = [equalCopy attendingContext];
+    v272 = [attendingContext2 isEqual:attendingContext3];
 
     if (!v272)
     {
@@ -4307,20 +4307,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self crownPressed];
-  v7 = [v4 crownPressed];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self crownPressed];
+  mhId2 = [equalCopy crownPressed];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v273 = [(MHSchemaMHClientEvent *)self crownPressed];
-  if (v273)
+  crownPressed = [(MHSchemaMHClientEvent *)self crownPressed];
+  if (crownPressed)
   {
-    v274 = v273;
-    v275 = [(MHSchemaMHClientEvent *)self crownPressed];
-    v276 = [v4 crownPressed];
-    v277 = [v275 isEqual:v276];
+    v274 = crownPressed;
+    crownPressed2 = [(MHSchemaMHClientEvent *)self crownPressed];
+    crownPressed3 = [equalCopy crownPressed];
+    v277 = [crownPressed2 isEqual:crownPressed3];
 
     if (!v277)
     {
@@ -4332,20 +4332,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self rtsTriggered];
-  v7 = [v4 rtsTriggered];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self rtsTriggered];
+  mhId2 = [equalCopy rtsTriggered];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v278 = [(MHSchemaMHClientEvent *)self rtsTriggered];
-  if (v278)
+  rtsTriggered = [(MHSchemaMHClientEvent *)self rtsTriggered];
+  if (rtsTriggered)
   {
-    v279 = v278;
-    v280 = [(MHSchemaMHClientEvent *)self rtsTriggered];
-    v281 = [v4 rtsTriggered];
-    v282 = [v280 isEqual:v281];
+    v279 = rtsTriggered;
+    rtsTriggered2 = [(MHSchemaMHClientEvent *)self rtsTriggered];
+    rtsTriggered3 = [equalCopy rtsTriggered];
+    v282 = [rtsTriggered2 isEqual:rtsTriggered3];
 
     if (!v282)
     {
@@ -4357,20 +4357,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self rtsFirstPassPolicyTriggered];
-  v7 = [v4 rtsFirstPassPolicyTriggered];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self rtsFirstPassPolicyTriggered];
+  mhId2 = [equalCopy rtsFirstPassPolicyTriggered];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v283 = [(MHSchemaMHClientEvent *)self rtsFirstPassPolicyTriggered];
-  if (v283)
+  rtsFirstPassPolicyTriggered = [(MHSchemaMHClientEvent *)self rtsFirstPassPolicyTriggered];
+  if (rtsFirstPassPolicyTriggered)
   {
-    v284 = v283;
-    v285 = [(MHSchemaMHClientEvent *)self rtsFirstPassPolicyTriggered];
-    v286 = [v4 rtsFirstPassPolicyTriggered];
-    v287 = [v285 isEqual:v286];
+    v284 = rtsFirstPassPolicyTriggered;
+    rtsFirstPassPolicyTriggered2 = [(MHSchemaMHClientEvent *)self rtsFirstPassPolicyTriggered];
+    rtsFirstPassPolicyTriggered3 = [equalCopy rtsFirstPassPolicyTriggered];
+    v287 = [rtsFirstPassPolicyTriggered2 isEqual:rtsFirstPassPolicyTriggered3];
 
     if (!v287)
     {
@@ -4382,20 +4382,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self rtsSecondPassPolicyDecisionMade];
-  v7 = [v4 rtsSecondPassPolicyDecisionMade];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self rtsSecondPassPolicyDecisionMade];
+  mhId2 = [equalCopy rtsSecondPassPolicyDecisionMade];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v288 = [(MHSchemaMHClientEvent *)self rtsSecondPassPolicyDecisionMade];
-  if (v288)
+  rtsSecondPassPolicyDecisionMade = [(MHSchemaMHClientEvent *)self rtsSecondPassPolicyDecisionMade];
+  if (rtsSecondPassPolicyDecisionMade)
   {
-    v289 = v288;
-    v290 = [(MHSchemaMHClientEvent *)self rtsSecondPassPolicyDecisionMade];
-    v291 = [v4 rtsSecondPassPolicyDecisionMade];
-    v292 = [v290 isEqual:v291];
+    v289 = rtsSecondPassPolicyDecisionMade;
+    rtsSecondPassPolicyDecisionMade2 = [(MHSchemaMHClientEvent *)self rtsSecondPassPolicyDecisionMade];
+    rtsSecondPassPolicyDecisionMade3 = [equalCopy rtsSecondPassPolicyDecisionMade];
+    v292 = [rtsSecondPassPolicyDecisionMade2 isEqual:rtsSecondPassPolicyDecisionMade3];
 
     if (!v292)
     {
@@ -4407,20 +4407,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self voiceProfileOnboarded];
-  v7 = [v4 voiceProfileOnboarded];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self voiceProfileOnboarded];
+  mhId2 = [equalCopy voiceProfileOnboarded];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v293 = [(MHSchemaMHClientEvent *)self voiceProfileOnboarded];
-  if (v293)
+  voiceProfileOnboarded = [(MHSchemaMHClientEvent *)self voiceProfileOnboarded];
+  if (voiceProfileOnboarded)
   {
-    v294 = v293;
-    v295 = [(MHSchemaMHClientEvent *)self voiceProfileOnboarded];
-    v296 = [v4 voiceProfileOnboarded];
-    v297 = [v295 isEqual:v296];
+    v294 = voiceProfileOnboarded;
+    voiceProfileOnboarded2 = [(MHSchemaMHClientEvent *)self voiceProfileOnboarded];
+    voiceProfileOnboarded3 = [equalCopy voiceProfileOnboarded];
+    v297 = [voiceProfileOnboarded2 isEqual:voiceProfileOnboarded3];
 
     if (!v297)
     {
@@ -4432,20 +4432,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self voiceTriggerRePrompted];
-  v7 = [v4 voiceTriggerRePrompted];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self voiceTriggerRePrompted];
+  mhId2 = [equalCopy voiceTriggerRePrompted];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v298 = [(MHSchemaMHClientEvent *)self voiceTriggerRePrompted];
-  if (v298)
+  voiceTriggerRePrompted = [(MHSchemaMHClientEvent *)self voiceTriggerRePrompted];
+  if (voiceTriggerRePrompted)
   {
-    v299 = v298;
-    v300 = [(MHSchemaMHClientEvent *)self voiceTriggerRePrompted];
-    v301 = [v4 voiceTriggerRePrompted];
-    v302 = [v300 isEqual:v301];
+    v299 = voiceTriggerRePrompted;
+    voiceTriggerRePrompted2 = [(MHSchemaMHClientEvent *)self voiceTriggerRePrompted];
+    voiceTriggerRePrompted3 = [equalCopy voiceTriggerRePrompted];
+    v302 = [voiceTriggerRePrompted2 isEqual:voiceTriggerRePrompted3];
 
     if (!v302)
     {
@@ -4457,20 +4457,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFailureInsufficientPriority];
-  v7 = [v4 assistantDaemonAudioRecordingFailureInsufficientPriority];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFailureInsufficientPriority];
+  mhId2 = [equalCopy assistantDaemonAudioRecordingFailureInsufficientPriority];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v303 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFailureInsufficientPriority];
-  if (v303)
+  assistantDaemonAudioRecordingFailureInsufficientPriority = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFailureInsufficientPriority];
+  if (assistantDaemonAudioRecordingFailureInsufficientPriority)
   {
-    v304 = v303;
-    v305 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFailureInsufficientPriority];
-    v306 = [v4 assistantDaemonAudioRecordingFailureInsufficientPriority];
-    v307 = [v305 isEqual:v306];
+    v304 = assistantDaemonAudioRecordingFailureInsufficientPriority;
+    assistantDaemonAudioRecordingFailureInsufficientPriority2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFailureInsufficientPriority];
+    assistantDaemonAudioRecordingFailureInsufficientPriority3 = [equalCopy assistantDaemonAudioRecordingFailureInsufficientPriority];
+    v307 = [assistantDaemonAudioRecordingFailureInsufficientPriority2 isEqual:assistantDaemonAudioRecordingFailureInsufficientPriority3];
 
     if (!v307)
     {
@@ -4482,20 +4482,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self voiceProfileICloudSyncFinished];
-  v7 = [v4 voiceProfileICloudSyncFinished];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self voiceProfileICloudSyncFinished];
+  mhId2 = [equalCopy voiceProfileICloudSyncFinished];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v308 = [(MHSchemaMHClientEvent *)self voiceProfileICloudSyncFinished];
-  if (v308)
+  voiceProfileICloudSyncFinished = [(MHSchemaMHClientEvent *)self voiceProfileICloudSyncFinished];
+  if (voiceProfileICloudSyncFinished)
   {
-    v309 = v308;
-    v310 = [(MHSchemaMHClientEvent *)self voiceProfileICloudSyncFinished];
-    v311 = [v4 voiceProfileICloudSyncFinished];
-    v312 = [v310 isEqual:v311];
+    v309 = voiceProfileICloudSyncFinished;
+    voiceProfileICloudSyncFinished2 = [(MHSchemaMHClientEvent *)self voiceProfileICloudSyncFinished];
+    voiceProfileICloudSyncFinished3 = [equalCopy voiceProfileICloudSyncFinished];
+    v312 = [voiceProfileICloudSyncFinished2 isEqual:voiceProfileICloudSyncFinished3];
 
     if (!v312)
     {
@@ -4507,20 +4507,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self voiceTriggerRejectDetected];
-  v7 = [v4 voiceTriggerRejectDetected];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self voiceTriggerRejectDetected];
+  mhId2 = [equalCopy voiceTriggerRejectDetected];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v313 = [(MHSchemaMHClientEvent *)self voiceTriggerRejectDetected];
-  if (v313)
+  voiceTriggerRejectDetected = [(MHSchemaMHClientEvent *)self voiceTriggerRejectDetected];
+  if (voiceTriggerRejectDetected)
   {
-    v314 = v313;
-    v315 = [(MHSchemaMHClientEvent *)self voiceTriggerRejectDetected];
-    v316 = [v4 voiceTriggerRejectDetected];
-    v317 = [v315 isEqual:v316];
+    v314 = voiceTriggerRejectDetected;
+    voiceTriggerRejectDetected2 = [(MHSchemaMHClientEvent *)self voiceTriggerRejectDetected];
+    voiceTriggerRejectDetected3 = [equalCopy voiceTriggerRejectDetected];
+    v317 = [voiceTriggerRejectDetected2 isEqual:voiceTriggerRejectDetected3];
 
     if (!v317)
     {
@@ -4532,20 +4532,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeTTSVolumeQueried];
-  v7 = [v4 adaptiveSiriVolumeTTSVolumeQueried];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeTTSVolumeQueried];
+  mhId2 = [equalCopy adaptiveSiriVolumeTTSVolumeQueried];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v318 = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeTTSVolumeQueried];
-  if (v318)
+  adaptiveSiriVolumeTTSVolumeQueried = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeTTSVolumeQueried];
+  if (adaptiveSiriVolumeTTSVolumeQueried)
   {
-    v319 = v318;
-    v320 = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeTTSVolumeQueried];
-    v321 = [v4 adaptiveSiriVolumeTTSVolumeQueried];
-    v322 = [v320 isEqual:v321];
+    v319 = adaptiveSiriVolumeTTSVolumeQueried;
+    adaptiveSiriVolumeTTSVolumeQueried2 = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeTTSVolumeQueried];
+    adaptiveSiriVolumeTTSVolumeQueried3 = [equalCopy adaptiveSiriVolumeTTSVolumeQueried];
+    v322 = [adaptiveSiriVolumeTTSVolumeQueried2 isEqual:adaptiveSiriVolumeTTSVolumeQueried3];
 
     if (!v322)
     {
@@ -4557,20 +4557,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeUserIntentDetected];
-  v7 = [v4 adaptiveSiriVolumeUserIntentDetected];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeUserIntentDetected];
+  mhId2 = [equalCopy adaptiveSiriVolumeUserIntentDetected];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v323 = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeUserIntentDetected];
-  if (v323)
+  adaptiveSiriVolumeUserIntentDetected = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeUserIntentDetected];
+  if (adaptiveSiriVolumeUserIntentDetected)
   {
-    v324 = v323;
-    v325 = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeUserIntentDetected];
-    v326 = [v4 adaptiveSiriVolumeUserIntentDetected];
-    v327 = [v325 isEqual:v326];
+    v324 = adaptiveSiriVolumeUserIntentDetected;
+    adaptiveSiriVolumeUserIntentDetected2 = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeUserIntentDetected];
+    adaptiveSiriVolumeUserIntentDetected3 = [equalCopy adaptiveSiriVolumeUserIntentDetected];
+    v327 = [adaptiveSiriVolumeUserIntentDetected2 isEqual:adaptiveSiriVolumeUserIntentDetected3];
 
     if (!v327)
     {
@@ -4582,20 +4582,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self speakerIdEnrollmentDataReportedTier1];
-  v7 = [v4 speakerIdEnrollmentDataReportedTier1];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self speakerIdEnrollmentDataReportedTier1];
+  mhId2 = [equalCopy speakerIdEnrollmentDataReportedTier1];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v328 = [(MHSchemaMHClientEvent *)self speakerIdEnrollmentDataReportedTier1];
-  if (v328)
+  speakerIdEnrollmentDataReportedTier1 = [(MHSchemaMHClientEvent *)self speakerIdEnrollmentDataReportedTier1];
+  if (speakerIdEnrollmentDataReportedTier1)
   {
-    v329 = v328;
-    v330 = [(MHSchemaMHClientEvent *)self speakerIdEnrollmentDataReportedTier1];
-    v331 = [v4 speakerIdEnrollmentDataReportedTier1];
-    v332 = [v330 isEqual:v331];
+    v329 = speakerIdEnrollmentDataReportedTier1;
+    speakerIdEnrollmentDataReportedTier12 = [(MHSchemaMHClientEvent *)self speakerIdEnrollmentDataReportedTier1];
+    speakerIdEnrollmentDataReportedTier13 = [equalCopy speakerIdEnrollmentDataReportedTier1];
+    v332 = [speakerIdEnrollmentDataReportedTier12 isEqual:speakerIdEnrollmentDataReportedTier13];
 
     if (!v332)
     {
@@ -4607,20 +4607,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self speakerIdModelSelectedClockSessionInfoTier1];
-  v7 = [v4 speakerIdModelSelectedClockSessionInfoTier1];
-  if ((v6 != 0) == (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self speakerIdModelSelectedClockSessionInfoTier1];
+  mhId2 = [equalCopy speakerIdModelSelectedClockSessionInfoTier1];
+  if ((mhId != 0) == (mhId2 == 0))
   {
     goto LABEL_337;
   }
 
-  v333 = [(MHSchemaMHClientEvent *)self speakerIdModelSelectedClockSessionInfoTier1];
-  if (v333)
+  speakerIdModelSelectedClockSessionInfoTier1 = [(MHSchemaMHClientEvent *)self speakerIdModelSelectedClockSessionInfoTier1];
+  if (speakerIdModelSelectedClockSessionInfoTier1)
   {
-    v334 = v333;
-    v335 = [(MHSchemaMHClientEvent *)self speakerIdModelSelectedClockSessionInfoTier1];
-    v336 = [v4 speakerIdModelSelectedClockSessionInfoTier1];
-    v337 = [v335 isEqual:v336];
+    v334 = speakerIdModelSelectedClockSessionInfoTier1;
+    speakerIdModelSelectedClockSessionInfoTier12 = [(MHSchemaMHClientEvent *)self speakerIdModelSelectedClockSessionInfoTier1];
+    speakerIdModelSelectedClockSessionInfoTier13 = [equalCopy speakerIdModelSelectedClockSessionInfoTier1];
+    v337 = [speakerIdModelSelectedClockSessionInfoTier12 isEqual:speakerIdModelSelectedClockSessionInfoTier13];
 
     if (!v337)
     {
@@ -4632,12 +4632,12 @@
   {
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self speakerIdModelOneSessionReportedTier1];
-  v7 = [v4 speakerIdModelOneSessionReportedTier1];
-  if ((v6 != 0) != (v7 == 0))
+  mhId = [(MHSchemaMHClientEvent *)self speakerIdModelOneSessionReportedTier1];
+  mhId2 = [equalCopy speakerIdModelOneSessionReportedTier1];
+  if ((mhId != 0) != (mhId2 == 0))
   {
-    v338 = [(MHSchemaMHClientEvent *)self speakerIdModelOneSessionReportedTier1];
-    if (!v338)
+    speakerIdModelOneSessionReportedTier1 = [(MHSchemaMHClientEvent *)self speakerIdModelOneSessionReportedTier1];
+    if (!speakerIdModelOneSessionReportedTier1)
     {
 
 LABEL_341:
@@ -4645,10 +4645,10 @@ LABEL_341:
       goto LABEL_339;
     }
 
-    v339 = v338;
-    v340 = [(MHSchemaMHClientEvent *)self speakerIdModelOneSessionReportedTier1];
-    v341 = [v4 speakerIdModelOneSessionReportedTier1];
-    v342 = [v340 isEqual:v341];
+    v339 = speakerIdModelOneSessionReportedTier1;
+    speakerIdModelOneSessionReportedTier12 = [(MHSchemaMHClientEvent *)self speakerIdModelOneSessionReportedTier1];
+    speakerIdModelOneSessionReportedTier13 = [equalCopy speakerIdModelOneSessionReportedTier1];
+    v342 = [speakerIdModelOneSessionReportedTier12 isEqual:speakerIdModelOneSessionReportedTier13];
 
     if (v342)
     {
@@ -4668,546 +4668,546 @@ LABEL_339:
   return v343;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v139 = a3;
-  v4 = [(MHSchemaMHClientEvent *)self mhId];
+  toCopy = to;
+  mhId = [(MHSchemaMHClientEvent *)self mhId];
 
-  if (v4)
+  if (mhId)
   {
-    v5 = [(MHSchemaMHClientEvent *)self mhId];
+    mhId2 = [(MHSchemaMHClientEvent *)self mhId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self eventMetadata];
+  eventMetadata = [(MHSchemaMHClientEvent *)self eventMetadata];
 
-  if (v6)
+  if (eventMetadata)
   {
-    v7 = [(MHSchemaMHClientEvent *)self eventMetadata];
+    eventMetadata2 = [(MHSchemaMHClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(MHSchemaMHClientEvent *)self acousticFalseTriggerMitigationEvaluationContext];
+  acousticFalseTriggerMitigationEvaluationContext = [(MHSchemaMHClientEvent *)self acousticFalseTriggerMitigationEvaluationContext];
 
-  if (v8)
+  if (acousticFalseTriggerMitigationEvaluationContext)
   {
-    v9 = [(MHSchemaMHClientEvent *)self acousticFalseTriggerMitigationEvaluationContext];
+    acousticFalseTriggerMitigationEvaluationContext2 = [(MHSchemaMHClientEvent *)self acousticFalseTriggerMitigationEvaluationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(MHSchemaMHClientEvent *)self latticeFalseTriggerMitigationEvaluationContext];
+  latticeFalseTriggerMitigationEvaluationContext = [(MHSchemaMHClientEvent *)self latticeFalseTriggerMitigationEvaluationContext];
 
-  if (v10)
+  if (latticeFalseTriggerMitigationEvaluationContext)
   {
-    v11 = [(MHSchemaMHClientEvent *)self latticeFalseTriggerMitigationEvaluationContext];
+    latticeFalseTriggerMitigationEvaluationContext2 = [(MHSchemaMHClientEvent *)self latticeFalseTriggerMitigationEvaluationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(MHSchemaMHClientEvent *)self unintendedResponseSuppressionExecutionContext];
+  unintendedResponseSuppressionExecutionContext = [(MHSchemaMHClientEvent *)self unintendedResponseSuppressionExecutionContext];
 
-  if (v12)
+  if (unintendedResponseSuppressionExecutionContext)
   {
-    v13 = [(MHSchemaMHClientEvent *)self unintendedResponseSuppressionExecutionContext];
+    unintendedResponseSuppressionExecutionContext2 = [(MHSchemaMHClientEvent *)self unintendedResponseSuppressionExecutionContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(MHSchemaMHClientEvent *)self coreSpeechPreprocessorCompleted];
+  coreSpeechPreprocessorCompleted = [(MHSchemaMHClientEvent *)self coreSpeechPreprocessorCompleted];
 
-  if (v14)
+  if (coreSpeechPreprocessorCompleted)
   {
-    v15 = [(MHSchemaMHClientEvent *)self coreSpeechPreprocessorCompleted];
+    coreSpeechPreprocessorCompleted2 = [(MHSchemaMHClientEvent *)self coreSpeechPreprocessorCompleted];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(MHSchemaMHClientEvent *)self asrAudioConfigureStarted];
+  asrAudioConfigureStarted = [(MHSchemaMHClientEvent *)self asrAudioConfigureStarted];
 
-  if (v16)
+  if (asrAudioConfigureStarted)
   {
-    v17 = [(MHSchemaMHClientEvent *)self asrAudioConfigureStarted];
+    asrAudioConfigureStarted2 = [(MHSchemaMHClientEvent *)self asrAudioConfigureStarted];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioInitContext];
+  assistantDaemonAudioInitContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioInitContext];
 
-  if (v18)
+  if (assistantDaemonAudioInitContext)
   {
-    v19 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioInitContext];
+    assistantDaemonAudioInitContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioInitContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioConfigureContext];
+  assistantDaemonAudioConfigureContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioConfigureContext];
 
-  if (v20)
+  if (assistantDaemonAudioConfigureContext)
   {
-    v21 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioConfigureContext];
+    assistantDaemonAudioConfigureContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioConfigureContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrepareContext];
+  assistantDaemonAudioPrepareContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrepareContext];
 
-  if (v22)
+  if (assistantDaemonAudioPrepareContext)
   {
-    v23 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrepareContext];
+    assistantDaemonAudioPrepareContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrepareContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrewarmContext];
+  assistantDaemonAudioPrewarmContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrewarmContext];
 
-  if (v24)
+  if (assistantDaemonAudioPrewarmContext)
   {
-    v25 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrewarmContext];
+    assistantDaemonAudioPrewarmContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrewarmContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStartRecordingContext];
+  assistantDaemonAudioStartRecordingContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStartRecordingContext];
 
-  if (v26)
+  if (assistantDaemonAudioStartRecordingContext)
   {
-    v27 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStartRecordingContext];
+    assistantDaemonAudioStartRecordingContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStartRecordingContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v28 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStopRecordingContext];
+  assistantDaemonAudioStopRecordingContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStopRecordingContext];
 
-  if (v28)
+  if (assistantDaemonAudioStopRecordingContext)
   {
-    v29 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStopRecordingContext];
+    assistantDaemonAudioStopRecordingContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStopRecordingContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v30 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetActiveContext];
+  assistantDaemonAudioSessionSetActiveContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetActiveContext];
 
-  if (v30)
+  if (assistantDaemonAudioSessionSetActiveContext)
   {
-    v31 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetActiveContext];
+    assistantDaemonAudioSessionSetActiveContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetActiveContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v32 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetInactiveContext];
+  assistantDaemonAudioSessionSetInactiveContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetInactiveContext];
 
-  if (v32)
+  if (assistantDaemonAudioSessionSetInactiveContext)
   {
-    v33 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetInactiveContext];
+    assistantDaemonAudioSessionSetInactiveContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetInactiveContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v34 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioFetchRouteContext];
+  assistantDaemonAudioFetchRouteContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioFetchRouteContext];
 
-  if (v34)
+  if (assistantDaemonAudioFetchRouteContext)
   {
-    v35 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioFetchRouteContext];
+    assistantDaemonAudioFetchRouteContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioFetchRouteContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v36 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingContext];
+  assistantDaemonAudioRecordingContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingContext];
 
-  if (v36)
+  if (assistantDaemonAudioRecordingContext)
   {
-    v37 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingContext];
+    assistantDaemonAudioRecordingContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v38 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingMissedBufferDetected];
+  assistantDaemonAudioRecordingMissedBufferDetected = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingMissedBufferDetected];
 
-  if (v38)
+  if (assistantDaemonAudioRecordingMissedBufferDetected)
   {
-    v39 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingMissedBufferDetected];
+    assistantDaemonAudioRecordingMissedBufferDetected2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingMissedBufferDetected];
     PBDataWriterWriteSubmessage();
   }
 
-  v40 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioLateBufferDetected];
+  assistantDaemonAudioLateBufferDetected = [(MHSchemaMHClientEvent *)self assistantDaemonAudioLateBufferDetected];
 
-  if (v40)
+  if (assistantDaemonAudioLateBufferDetected)
   {
-    v41 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioLateBufferDetected];
+    assistantDaemonAudioLateBufferDetected2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioLateBufferDetected];
     PBDataWriterWriteSubmessage();
   }
 
-  v42 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFirstBufferContext];
+  assistantDaemonAudioRecordingFirstBufferContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFirstBufferContext];
 
-  if (v42)
+  if (assistantDaemonAudioRecordingFirstBufferContext)
   {
-    v43 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFirstBufferContext];
+    assistantDaemonAudioRecordingFirstBufferContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFirstBufferContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v44 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingLastBufferContext];
+  assistantDaemonAudioRecordingLastBufferContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingLastBufferContext];
 
-  if (v44)
+  if (assistantDaemonAudioRecordingLastBufferContext)
   {
-    v45 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingLastBufferContext];
+    assistantDaemonAudioRecordingLastBufferContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingLastBufferContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v46 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionContext];
+  assistantDaemonAudioRecordingInterruptionContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionContext];
 
-  if (v46)
+  if (assistantDaemonAudioRecordingInterruptionContext)
   {
-    v47 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionContext];
+    assistantDaemonAudioRecordingInterruptionContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v48 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionStartedTier1];
+  assistantDaemonAudioRecordingInterruptionStartedTier1 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionStartedTier1];
 
-  if (v48)
+  if (assistantDaemonAudioRecordingInterruptionStartedTier1)
   {
-    v49 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionStartedTier1];
+    assistantDaemonAudioRecordingInterruptionStartedTier12 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionStartedTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v50 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioBluetoothInfo];
+  assistantDaemonAudioBluetoothInfo = [(MHSchemaMHClientEvent *)self assistantDaemonAudioBluetoothInfo];
 
-  if (v50)
+  if (assistantDaemonAudioBluetoothInfo)
   {
-    v51 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioBluetoothInfo];
+    assistantDaemonAudioBluetoothInfo2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioBluetoothInfo];
     PBDataWriterWriteSubmessage();
   }
 
-  v52 = [(MHSchemaMHClientEvent *)self voiceTriggerTwoShotDetected];
+  voiceTriggerTwoShotDetected = [(MHSchemaMHClientEvent *)self voiceTriggerTwoShotDetected];
 
-  if (v52)
+  if (voiceTriggerTwoShotDetected)
   {
-    v53 = [(MHSchemaMHClientEvent *)self voiceTriggerTwoShotDetected];
+    voiceTriggerTwoShotDetected2 = [(MHSchemaMHClientEvent *)self voiceTriggerTwoShotDetected];
     PBDataWriterWriteSubmessage();
   }
 
-  v54 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioTwoShotTransitionContext];
+  assistantDaemonAudioTwoShotTransitionContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioTwoShotTransitionContext];
 
-  if (v54)
+  if (assistantDaemonAudioTwoShotTransitionContext)
   {
-    v55 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioTwoShotTransitionContext];
+    assistantDaemonAudioTwoShotTransitionContext2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioTwoShotTransitionContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v56 = [(MHSchemaMHClientEvent *)self voiceTriggerContext];
+  voiceTriggerContext = [(MHSchemaMHClientEvent *)self voiceTriggerContext];
 
-  if (v56)
+  if (voiceTriggerContext)
   {
-    v57 = [(MHSchemaMHClientEvent *)self voiceTriggerContext];
+    voiceTriggerContext2 = [(MHSchemaMHClientEvent *)self voiceTriggerContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v58 = [(MHSchemaMHClientEvent *)self endpointDetected];
+  endpointDetected = [(MHSchemaMHClientEvent *)self endpointDetected];
 
-  if (v58)
+  if (endpointDetected)
   {
-    v59 = [(MHSchemaMHClientEvent *)self endpointDetected];
+    endpointDetected2 = [(MHSchemaMHClientEvent *)self endpointDetected];
     PBDataWriterWriteSubmessage();
   }
 
-  v60 = [(MHSchemaMHClientEvent *)self endpointLatencyInfoReported];
+  endpointLatencyInfoReported = [(MHSchemaMHClientEvent *)self endpointLatencyInfoReported];
 
-  if (v60)
+  if (endpointLatencyInfoReported)
   {
-    v61 = [(MHSchemaMHClientEvent *)self endpointLatencyInfoReported];
+    endpointLatencyInfoReported2 = [(MHSchemaMHClientEvent *)self endpointLatencyInfoReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v62 = [(MHSchemaMHClientEvent *)self adblockerContext];
+  adblockerContext = [(MHSchemaMHClientEvent *)self adblockerContext];
 
-  if (v62)
+  if (adblockerContext)
   {
-    v63 = [(MHSchemaMHClientEvent *)self adblockerContext];
+    adblockerContext2 = [(MHSchemaMHClientEvent *)self adblockerContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v64 = [(MHSchemaMHClientEvent *)self onDeviceEndpointerContext];
+  onDeviceEndpointerContext = [(MHSchemaMHClientEvent *)self onDeviceEndpointerContext];
 
-  if (v64)
+  if (onDeviceEndpointerContext)
   {
-    v65 = [(MHSchemaMHClientEvent *)self onDeviceEndpointerContext];
+    onDeviceEndpointerContext2 = [(MHSchemaMHClientEvent *)self onDeviceEndpointerContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v66 = [(MHSchemaMHClientEvent *)self serverEndpointerContext];
+  serverEndpointerContext = [(MHSchemaMHClientEvent *)self serverEndpointerContext];
 
-  if (v66)
+  if (serverEndpointerContext)
   {
-    v67 = [(MHSchemaMHClientEvent *)self serverEndpointerContext];
+    serverEndpointerContext2 = [(MHSchemaMHClientEvent *)self serverEndpointerContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v68 = [(MHSchemaMHClientEvent *)self endpointerUsed];
+  endpointerUsed = [(MHSchemaMHClientEvent *)self endpointerUsed];
 
-  if (v68)
+  if (endpointerUsed)
   {
-    v69 = [(MHSchemaMHClientEvent *)self endpointerUsed];
+    endpointerUsed2 = [(MHSchemaMHClientEvent *)self endpointerUsed];
     PBDataWriterWriteSubmessage();
   }
 
-  v70 = [(MHSchemaMHClientEvent *)self endpointDelayContext];
+  endpointDelayContext = [(MHSchemaMHClientEvent *)self endpointDelayContext];
 
-  if (v70)
+  if (endpointDelayContext)
   {
-    v71 = [(MHSchemaMHClientEvent *)self endpointDelayContext];
+    endpointDelayContext2 = [(MHSchemaMHClientEvent *)self endpointDelayContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v72 = [(MHSchemaMHClientEvent *)self finalMitigationRecommendation];
+  finalMitigationRecommendation = [(MHSchemaMHClientEvent *)self finalMitigationRecommendation];
 
-  if (v72)
+  if (finalMitigationRecommendation)
   {
-    v73 = [(MHSchemaMHClientEvent *)self finalMitigationRecommendation];
+    finalMitigationRecommendation2 = [(MHSchemaMHClientEvent *)self finalMitigationRecommendation];
     PBDataWriterWriteSubmessage();
   }
 
-  v74 = [(MHSchemaMHClientEvent *)self applicationPlaybackAttempted];
+  applicationPlaybackAttempted = [(MHSchemaMHClientEvent *)self applicationPlaybackAttempted];
 
-  if (v74)
+  if (applicationPlaybackAttempted)
   {
-    v75 = [(MHSchemaMHClientEvent *)self applicationPlaybackAttempted];
+    applicationPlaybackAttempted2 = [(MHSchemaMHClientEvent *)self applicationPlaybackAttempted];
     PBDataWriterWriteSubmessage();
   }
 
-  v76 = [(MHSchemaMHClientEvent *)self siriLaunchRequestContext];
+  siriLaunchRequestContext = [(MHSchemaMHClientEvent *)self siriLaunchRequestContext];
 
-  if (v76)
+  if (siriLaunchRequestContext)
   {
-    v77 = [(MHSchemaMHClientEvent *)self siriLaunchRequestContext];
+    siriLaunchRequestContext2 = [(MHSchemaMHClientEvent *)self siriLaunchRequestContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v78 = [(MHSchemaMHClientEvent *)self endpointerAccessibleContext];
+  endpointerAccessibleContext = [(MHSchemaMHClientEvent *)self endpointerAccessibleContext];
 
-  if (v78)
+  if (endpointerAccessibleContext)
   {
-    v79 = [(MHSchemaMHClientEvent *)self endpointerAccessibleContext];
+    endpointerAccessibleContext2 = [(MHSchemaMHClientEvent *)self endpointerAccessibleContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v80 = [(MHSchemaMHClientEvent *)self carPlayLangaugeMismatched];
+  carPlayLangaugeMismatched = [(MHSchemaMHClientEvent *)self carPlayLangaugeMismatched];
 
-  if (v80)
+  if (carPlayLangaugeMismatched)
   {
-    v81 = [(MHSchemaMHClientEvent *)self carPlayLangaugeMismatched];
+    carPlayLangaugeMismatched2 = [(MHSchemaMHClientEvent *)self carPlayLangaugeMismatched];
     PBDataWriterWriteSubmessage();
   }
 
-  v82 = [(MHSchemaMHClientEvent *)self darwinConnectedDeviceWakeContext];
+  darwinConnectedDeviceWakeContext = [(MHSchemaMHClientEvent *)self darwinConnectedDeviceWakeContext];
 
-  if (v82)
+  if (darwinConnectedDeviceWakeContext)
   {
-    v83 = [(MHSchemaMHClientEvent *)self darwinConnectedDeviceWakeContext];
+    darwinConnectedDeviceWakeContext2 = [(MHSchemaMHClientEvent *)self darwinConnectedDeviceWakeContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v84 = [(MHSchemaMHClientEvent *)self odldFalseTriggerMitigated];
+  odldFalseTriggerMitigated = [(MHSchemaMHClientEvent *)self odldFalseTriggerMitigated];
 
-  if (v84)
+  if (odldFalseTriggerMitigated)
   {
-    v85 = [(MHSchemaMHClientEvent *)self odldFalseTriggerMitigated];
+    odldFalseTriggerMitigated2 = [(MHSchemaMHClientEvent *)self odldFalseTriggerMitigated];
     PBDataWriterWriteSubmessage();
   }
 
-  v86 = [(MHSchemaMHClientEvent *)self speakerFalseTriggerMitigated];
+  speakerFalseTriggerMitigated = [(MHSchemaMHClientEvent *)self speakerFalseTriggerMitigated];
 
-  if (v86)
+  if (speakerFalseTriggerMitigated)
   {
-    v87 = [(MHSchemaMHClientEvent *)self speakerFalseTriggerMitigated];
+    speakerFalseTriggerMitigated2 = [(MHSchemaMHClientEvent *)self speakerFalseTriggerMitigated];
     PBDataWriterWriteSubmessage();
   }
 
-  v88 = [(MHSchemaMHClientEvent *)self siriDirectedSpeechDetectionFailed];
+  siriDirectedSpeechDetectionFailed = [(MHSchemaMHClientEvent *)self siriDirectedSpeechDetectionFailed];
 
-  if (v88)
+  if (siriDirectedSpeechDetectionFailed)
   {
-    v89 = [(MHSchemaMHClientEvent *)self siriDirectedSpeechDetectionFailed];
+    siriDirectedSpeechDetectionFailed2 = [(MHSchemaMHClientEvent *)self siriDirectedSpeechDetectionFailed];
     PBDataWriterWriteSubmessage();
   }
 
-  v90 = [(MHSchemaMHClientEvent *)self audioDucked];
+  audioDucked = [(MHSchemaMHClientEvent *)self audioDucked];
 
-  if (v90)
+  if (audioDucked)
   {
-    v91 = [(MHSchemaMHClientEvent *)self audioDucked];
+    audioDucked2 = [(MHSchemaMHClientEvent *)self audioDucked];
     PBDataWriterWriteSubmessage();
   }
 
-  v92 = [(MHSchemaMHClientEvent *)self audioRecordingFailed];
+  audioRecordingFailed = [(MHSchemaMHClientEvent *)self audioRecordingFailed];
 
-  if (v92)
+  if (audioRecordingFailed)
   {
-    v93 = [(MHSchemaMHClientEvent *)self audioRecordingFailed];
+    audioRecordingFailed2 = [(MHSchemaMHClientEvent *)self audioRecordingFailed];
     PBDataWriterWriteSubmessage();
   }
 
-  v94 = [(MHSchemaMHClientEvent *)self rtsFalseRejectDetected];
+  rtsFalseRejectDetected = [(MHSchemaMHClientEvent *)self rtsFalseRejectDetected];
 
-  if (v94)
+  if (rtsFalseRejectDetected)
   {
-    v95 = [(MHSchemaMHClientEvent *)self rtsFalseRejectDetected];
+    rtsFalseRejectDetected2 = [(MHSchemaMHClientEvent *)self rtsFalseRejectDetected];
     PBDataWriterWriteSubmessage();
   }
 
-  v96 = [(MHSchemaMHClientEvent *)self trpCreated];
+  trpCreated = [(MHSchemaMHClientEvent *)self trpCreated];
 
-  if (v96)
+  if (trpCreated)
   {
-    v97 = [(MHSchemaMHClientEvent *)self trpCreated];
+    trpCreated2 = [(MHSchemaMHClientEvent *)self trpCreated];
     PBDataWriterWriteSubmessage();
   }
 
-  v98 = [(MHSchemaMHClientEvent *)self userSpeakingContext];
+  userSpeakingContext = [(MHSchemaMHClientEvent *)self userSpeakingContext];
 
-  if (v98)
+  if (userSpeakingContext)
   {
-    v99 = [(MHSchemaMHClientEvent *)self userSpeakingContext];
+    userSpeakingContext2 = [(MHSchemaMHClientEvent *)self userSpeakingContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v100 = [(MHSchemaMHClientEvent *)self speechStopDetected];
+  speechStopDetected = [(MHSchemaMHClientEvent *)self speechStopDetected];
 
-  if (v100)
+  if (speechStopDetected)
   {
-    v101 = [(MHSchemaMHClientEvent *)self speechStopDetected];
+    speechStopDetected2 = [(MHSchemaMHClientEvent *)self speechStopDetected];
     PBDataWriterWriteSubmessage();
   }
 
-  v102 = [(MHSchemaMHClientEvent *)self speechDetectorContext];
+  speechDetectorContext = [(MHSchemaMHClientEvent *)self speechDetectorContext];
 
-  if (v102)
+  if (speechDetectorContext)
   {
-    v103 = [(MHSchemaMHClientEvent *)self speechDetectorContext];
+    speechDetectorContext2 = [(MHSchemaMHClientEvent *)self speechDetectorContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v104 = [(MHSchemaMHClientEvent *)self stoppedListeningForSpeechContinuation];
+  stoppedListeningForSpeechContinuation = [(MHSchemaMHClientEvent *)self stoppedListeningForSpeechContinuation];
 
-  if (v104)
+  if (stoppedListeningForSpeechContinuation)
   {
-    v105 = [(MHSchemaMHClientEvent *)self stoppedListeningForSpeechContinuation];
+    stoppedListeningForSpeechContinuation2 = [(MHSchemaMHClientEvent *)self stoppedListeningForSpeechContinuation];
     PBDataWriterWriteSubmessage();
   }
 
-  v106 = [(MHSchemaMHClientEvent *)self userEngagementModelContext];
+  userEngagementModelContext = [(MHSchemaMHClientEvent *)self userEngagementModelContext];
 
-  if (v106)
+  if (userEngagementModelContext)
   {
-    v107 = [(MHSchemaMHClientEvent *)self userEngagementModelContext];
+    userEngagementModelContext2 = [(MHSchemaMHClientEvent *)self userEngagementModelContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v108 = [(MHSchemaMHClientEvent *)self attendingContext];
+  attendingContext = [(MHSchemaMHClientEvent *)self attendingContext];
 
-  if (v108)
+  if (attendingContext)
   {
-    v109 = [(MHSchemaMHClientEvent *)self attendingContext];
+    attendingContext2 = [(MHSchemaMHClientEvent *)self attendingContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v110 = [(MHSchemaMHClientEvent *)self crownPressed];
+  crownPressed = [(MHSchemaMHClientEvent *)self crownPressed];
 
-  if (v110)
+  if (crownPressed)
   {
-    v111 = [(MHSchemaMHClientEvent *)self crownPressed];
+    crownPressed2 = [(MHSchemaMHClientEvent *)self crownPressed];
     PBDataWriterWriteSubmessage();
   }
 
-  v112 = [(MHSchemaMHClientEvent *)self rtsTriggered];
+  rtsTriggered = [(MHSchemaMHClientEvent *)self rtsTriggered];
 
-  if (v112)
+  if (rtsTriggered)
   {
-    v113 = [(MHSchemaMHClientEvent *)self rtsTriggered];
+    rtsTriggered2 = [(MHSchemaMHClientEvent *)self rtsTriggered];
     PBDataWriterWriteSubmessage();
   }
 
-  v114 = [(MHSchemaMHClientEvent *)self rtsFirstPassPolicyTriggered];
+  rtsFirstPassPolicyTriggered = [(MHSchemaMHClientEvent *)self rtsFirstPassPolicyTriggered];
 
-  if (v114)
+  if (rtsFirstPassPolicyTriggered)
   {
-    v115 = [(MHSchemaMHClientEvent *)self rtsFirstPassPolicyTriggered];
+    rtsFirstPassPolicyTriggered2 = [(MHSchemaMHClientEvent *)self rtsFirstPassPolicyTriggered];
     PBDataWriterWriteSubmessage();
   }
 
-  v116 = [(MHSchemaMHClientEvent *)self rtsSecondPassPolicyDecisionMade];
+  rtsSecondPassPolicyDecisionMade = [(MHSchemaMHClientEvent *)self rtsSecondPassPolicyDecisionMade];
 
-  if (v116)
+  if (rtsSecondPassPolicyDecisionMade)
   {
-    v117 = [(MHSchemaMHClientEvent *)self rtsSecondPassPolicyDecisionMade];
+    rtsSecondPassPolicyDecisionMade2 = [(MHSchemaMHClientEvent *)self rtsSecondPassPolicyDecisionMade];
     PBDataWriterWriteSubmessage();
   }
 
-  v118 = [(MHSchemaMHClientEvent *)self voiceProfileOnboarded];
+  voiceProfileOnboarded = [(MHSchemaMHClientEvent *)self voiceProfileOnboarded];
 
-  if (v118)
+  if (voiceProfileOnboarded)
   {
-    v119 = [(MHSchemaMHClientEvent *)self voiceProfileOnboarded];
+    voiceProfileOnboarded2 = [(MHSchemaMHClientEvent *)self voiceProfileOnboarded];
     PBDataWriterWriteSubmessage();
   }
 
-  v120 = [(MHSchemaMHClientEvent *)self voiceTriggerRePrompted];
+  voiceTriggerRePrompted = [(MHSchemaMHClientEvent *)self voiceTriggerRePrompted];
 
-  if (v120)
+  if (voiceTriggerRePrompted)
   {
-    v121 = [(MHSchemaMHClientEvent *)self voiceTriggerRePrompted];
+    voiceTriggerRePrompted2 = [(MHSchemaMHClientEvent *)self voiceTriggerRePrompted];
     PBDataWriterWriteSubmessage();
   }
 
-  v122 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFailureInsufficientPriority];
+  assistantDaemonAudioRecordingFailureInsufficientPriority = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFailureInsufficientPriority];
 
-  if (v122)
+  if (assistantDaemonAudioRecordingFailureInsufficientPriority)
   {
-    v123 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFailureInsufficientPriority];
+    assistantDaemonAudioRecordingFailureInsufficientPriority2 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFailureInsufficientPriority];
     PBDataWriterWriteSubmessage();
   }
 
-  v124 = [(MHSchemaMHClientEvent *)self voiceProfileICloudSyncFinished];
+  voiceProfileICloudSyncFinished = [(MHSchemaMHClientEvent *)self voiceProfileICloudSyncFinished];
 
-  if (v124)
+  if (voiceProfileICloudSyncFinished)
   {
-    v125 = [(MHSchemaMHClientEvent *)self voiceProfileICloudSyncFinished];
+    voiceProfileICloudSyncFinished2 = [(MHSchemaMHClientEvent *)self voiceProfileICloudSyncFinished];
     PBDataWriterWriteSubmessage();
   }
 
-  v126 = [(MHSchemaMHClientEvent *)self voiceTriggerRejectDetected];
+  voiceTriggerRejectDetected = [(MHSchemaMHClientEvent *)self voiceTriggerRejectDetected];
 
-  if (v126)
+  if (voiceTriggerRejectDetected)
   {
-    v127 = [(MHSchemaMHClientEvent *)self voiceTriggerRejectDetected];
+    voiceTriggerRejectDetected2 = [(MHSchemaMHClientEvent *)self voiceTriggerRejectDetected];
     PBDataWriterWriteSubmessage();
   }
 
-  v128 = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeTTSVolumeQueried];
+  adaptiveSiriVolumeTTSVolumeQueried = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeTTSVolumeQueried];
 
-  if (v128)
+  if (adaptiveSiriVolumeTTSVolumeQueried)
   {
-    v129 = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeTTSVolumeQueried];
+    adaptiveSiriVolumeTTSVolumeQueried2 = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeTTSVolumeQueried];
     PBDataWriterWriteSubmessage();
   }
 
-  v130 = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeUserIntentDetected];
+  adaptiveSiriVolumeUserIntentDetected = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeUserIntentDetected];
 
-  if (v130)
+  if (adaptiveSiriVolumeUserIntentDetected)
   {
-    v131 = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeUserIntentDetected];
+    adaptiveSiriVolumeUserIntentDetected2 = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeUserIntentDetected];
     PBDataWriterWriteSubmessage();
   }
 
-  v132 = [(MHSchemaMHClientEvent *)self speakerIdEnrollmentDataReportedTier1];
+  speakerIdEnrollmentDataReportedTier1 = [(MHSchemaMHClientEvent *)self speakerIdEnrollmentDataReportedTier1];
 
-  if (v132)
+  if (speakerIdEnrollmentDataReportedTier1)
   {
-    v133 = [(MHSchemaMHClientEvent *)self speakerIdEnrollmentDataReportedTier1];
+    speakerIdEnrollmentDataReportedTier12 = [(MHSchemaMHClientEvent *)self speakerIdEnrollmentDataReportedTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v134 = [(MHSchemaMHClientEvent *)self speakerIdModelSelectedClockSessionInfoTier1];
+  speakerIdModelSelectedClockSessionInfoTier1 = [(MHSchemaMHClientEvent *)self speakerIdModelSelectedClockSessionInfoTier1];
 
-  if (v134)
+  if (speakerIdModelSelectedClockSessionInfoTier1)
   {
-    v135 = [(MHSchemaMHClientEvent *)self speakerIdModelSelectedClockSessionInfoTier1];
+    speakerIdModelSelectedClockSessionInfoTier12 = [(MHSchemaMHClientEvent *)self speakerIdModelSelectedClockSessionInfoTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v136 = [(MHSchemaMHClientEvent *)self speakerIdModelOneSessionReportedTier1];
+  speakerIdModelOneSessionReportedTier1 = [(MHSchemaMHClientEvent *)self speakerIdModelOneSessionReportedTier1];
 
-  v137 = v139;
-  if (v136)
+  v137 = toCopy;
+  if (speakerIdModelOneSessionReportedTier1)
   {
-    v138 = [(MHSchemaMHClientEvent *)self speakerIdModelOneSessionReportedTier1];
+    speakerIdModelOneSessionReportedTier12 = [(MHSchemaMHClientEvent *)self speakerIdModelOneSessionReportedTier1];
     PBDataWriterWriteSubmessage();
 
-    v137 = v139;
+    v137 = toCopy;
   }
 }
 
@@ -5236,9 +5236,9 @@ LABEL_339:
   return v3;
 }
 
-- (void)setSpeakerIdModelOneSessionReportedTier1:(id)a3
+- (void)setSpeakerIdModelOneSessionReportedTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -5432,14 +5432,14 @@ LABEL_339:
   self->_speakerIdModelSelectedClockSessionInfoTier1 = 0;
 
   v69 = 165;
-  if (!v4)
+  if (!tier1Copy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   speakerIdModelOneSessionReportedTier1 = self->_speakerIdModelOneSessionReportedTier1;
-  self->_speakerIdModelOneSessionReportedTier1 = v4;
+  self->_speakerIdModelOneSessionReportedTier1 = tier1Copy;
 }
 
 - (void)deleteSpeakerIdModelSelectedClockSessionInfoTier1
@@ -5467,9 +5467,9 @@ LABEL_339:
   return v3;
 }
 
-- (void)setSpeakerIdModelSelectedClockSessionInfoTier1:(id)a3
+- (void)setSpeakerIdModelSelectedClockSessionInfoTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -5663,14 +5663,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 164;
-  if (!v4)
+  if (!tier1Copy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   speakerIdModelSelectedClockSessionInfoTier1 = self->_speakerIdModelSelectedClockSessionInfoTier1;
-  self->_speakerIdModelSelectedClockSessionInfoTier1 = v4;
+  self->_speakerIdModelSelectedClockSessionInfoTier1 = tier1Copy;
 }
 
 - (void)deleteSpeakerIdEnrollmentDataReportedTier1
@@ -5698,9 +5698,9 @@ LABEL_339:
   return v3;
 }
 
-- (void)setSpeakerIdEnrollmentDataReportedTier1:(id)a3
+- (void)setSpeakerIdEnrollmentDataReportedTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -5894,14 +5894,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 163;
-  if (!v4)
+  if (!tier1Copy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   speakerIdEnrollmentDataReportedTier1 = self->_speakerIdEnrollmentDataReportedTier1;
-  self->_speakerIdEnrollmentDataReportedTier1 = v4;
+  self->_speakerIdEnrollmentDataReportedTier1 = tier1Copy;
 }
 
 - (void)deleteAdaptiveSiriVolumeUserIntentDetected
@@ -5914,9 +5914,9 @@ LABEL_339:
   }
 }
 
-- (void)setAdaptiveSiriVolumeUserIntentDetected:(id)a3
+- (void)setAdaptiveSiriVolumeUserIntentDetected:(id)detected
 {
-  v4 = a3;
+  detectedCopy = detected;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -6110,14 +6110,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 162;
-  if (!v4)
+  if (!detectedCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   adaptiveSiriVolumeUserIntentDetected = self->_adaptiveSiriVolumeUserIntentDetected;
-  self->_adaptiveSiriVolumeUserIntentDetected = v4;
+  self->_adaptiveSiriVolumeUserIntentDetected = detectedCopy;
 }
 
 - (void)deleteAdaptiveSiriVolumeTTSVolumeQueried
@@ -6130,9 +6130,9 @@ LABEL_339:
   }
 }
 
-- (void)setAdaptiveSiriVolumeTTSVolumeQueried:(id)a3
+- (void)setAdaptiveSiriVolumeTTSVolumeQueried:(id)queried
 {
-  v4 = a3;
+  queriedCopy = queried;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -6326,14 +6326,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 161;
-  if (!v4)
+  if (!queriedCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   adaptiveSiriVolumeTTSVolumeQueried = self->_adaptiveSiriVolumeTTSVolumeQueried;
-  self->_adaptiveSiriVolumeTTSVolumeQueried = v4;
+  self->_adaptiveSiriVolumeTTSVolumeQueried = queriedCopy;
 }
 
 - (void)deleteVoiceTriggerRejectDetected
@@ -6346,9 +6346,9 @@ LABEL_339:
   }
 }
 
-- (void)setVoiceTriggerRejectDetected:(id)a3
+- (void)setVoiceTriggerRejectDetected:(id)detected
 {
-  v4 = a3;
+  detectedCopy = detected;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -6542,14 +6542,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 160;
-  if (!v4)
+  if (!detectedCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   voiceTriggerRejectDetected = self->_voiceTriggerRejectDetected;
-  self->_voiceTriggerRejectDetected = v4;
+  self->_voiceTriggerRejectDetected = detectedCopy;
 }
 
 - (void)deleteVoiceProfileICloudSyncFinished
@@ -6562,9 +6562,9 @@ LABEL_339:
   }
 }
 
-- (void)setVoiceProfileICloudSyncFinished:(id)a3
+- (void)setVoiceProfileICloudSyncFinished:(id)finished
 {
-  v4 = a3;
+  finishedCopy = finished;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -6758,14 +6758,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 159;
-  if (!v4)
+  if (!finishedCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   voiceProfileICloudSyncFinished = self->_voiceProfileICloudSyncFinished;
-  self->_voiceProfileICloudSyncFinished = v4;
+  self->_voiceProfileICloudSyncFinished = finishedCopy;
 }
 
 - (void)deleteAssistantDaemonAudioRecordingFailureInsufficientPriority
@@ -6778,9 +6778,9 @@ LABEL_339:
   }
 }
 
-- (void)setAssistantDaemonAudioRecordingFailureInsufficientPriority:(id)a3
+- (void)setAssistantDaemonAudioRecordingFailureInsufficientPriority:(id)priority
 {
-  v4 = a3;
+  priorityCopy = priority;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -6974,14 +6974,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 158;
-  if (!v4)
+  if (!priorityCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   assistantDaemonAudioRecordingFailureInsufficientPriority = self->_assistantDaemonAudioRecordingFailureInsufficientPriority;
-  self->_assistantDaemonAudioRecordingFailureInsufficientPriority = v4;
+  self->_assistantDaemonAudioRecordingFailureInsufficientPriority = priorityCopy;
 }
 
 - (void)deleteVoiceTriggerRePrompted
@@ -6994,9 +6994,9 @@ LABEL_339:
   }
 }
 
-- (void)setVoiceTriggerRePrompted:(id)a3
+- (void)setVoiceTriggerRePrompted:(id)prompted
 {
-  v4 = a3;
+  promptedCopy = prompted;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -7190,14 +7190,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 157;
-  if (!v4)
+  if (!promptedCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   voiceTriggerRePrompted = self->_voiceTriggerRePrompted;
-  self->_voiceTriggerRePrompted = v4;
+  self->_voiceTriggerRePrompted = promptedCopy;
 }
 
 - (void)deleteVoiceProfileOnboarded
@@ -7210,9 +7210,9 @@ LABEL_339:
   }
 }
 
-- (void)setVoiceProfileOnboarded:(id)a3
+- (void)setVoiceProfileOnboarded:(id)onboarded
 {
-  v4 = a3;
+  onboardedCopy = onboarded;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -7406,14 +7406,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 155;
-  if (!v4)
+  if (!onboardedCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   voiceProfileOnboarded = self->_voiceProfileOnboarded;
-  self->_voiceProfileOnboarded = v4;
+  self->_voiceProfileOnboarded = onboardedCopy;
 }
 
 - (void)deleteRtsSecondPassPolicyDecisionMade
@@ -7426,9 +7426,9 @@ LABEL_339:
   }
 }
 
-- (void)setRtsSecondPassPolicyDecisionMade:(id)a3
+- (void)setRtsSecondPassPolicyDecisionMade:(id)made
 {
-  v4 = a3;
+  madeCopy = made;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -7622,14 +7622,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 154;
-  if (!v4)
+  if (!madeCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   rtsSecondPassPolicyDecisionMade = self->_rtsSecondPassPolicyDecisionMade;
-  self->_rtsSecondPassPolicyDecisionMade = v4;
+  self->_rtsSecondPassPolicyDecisionMade = madeCopy;
 }
 
 - (void)deleteRtsFirstPassPolicyTriggered
@@ -7642,9 +7642,9 @@ LABEL_339:
   }
 }
 
-- (void)setRtsFirstPassPolicyTriggered:(id)a3
+- (void)setRtsFirstPassPolicyTriggered:(id)triggered
 {
-  v4 = a3;
+  triggeredCopy = triggered;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -7838,14 +7838,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 153;
-  if (!v4)
+  if (!triggeredCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   rtsFirstPassPolicyTriggered = self->_rtsFirstPassPolicyTriggered;
-  self->_rtsFirstPassPolicyTriggered = v4;
+  self->_rtsFirstPassPolicyTriggered = triggeredCopy;
 }
 
 - (void)deleteRtsTriggered
@@ -7858,9 +7858,9 @@ LABEL_339:
   }
 }
 
-- (void)setRtsTriggered:(id)a3
+- (void)setRtsTriggered:(id)triggered
 {
-  v4 = a3;
+  triggeredCopy = triggered;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -8054,14 +8054,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 152;
-  if (!v4)
+  if (!triggeredCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   rtsTriggered = self->_rtsTriggered;
-  self->_rtsTriggered = v4;
+  self->_rtsTriggered = triggeredCopy;
 }
 
 - (void)deleteCrownPressed
@@ -8074,9 +8074,9 @@ LABEL_339:
   }
 }
 
-- (void)setCrownPressed:(id)a3
+- (void)setCrownPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -8270,14 +8270,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 151;
-  if (!v4)
+  if (!pressedCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   crownPressed = self->_crownPressed;
-  self->_crownPressed = v4;
+  self->_crownPressed = pressedCopy;
 }
 
 - (void)deleteAttendingContext
@@ -8290,9 +8290,9 @@ LABEL_339:
   }
 }
 
-- (void)setAttendingContext:(id)a3
+- (void)setAttendingContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -8486,14 +8486,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 150;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   attendingContext = self->_attendingContext;
-  self->_attendingContext = v4;
+  self->_attendingContext = contextCopy;
 }
 
 - (void)deleteUserEngagementModelContext
@@ -8506,9 +8506,9 @@ LABEL_339:
   }
 }
 
-- (void)setUserEngagementModelContext:(id)a3
+- (void)setUserEngagementModelContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -8702,14 +8702,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 149;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   userEngagementModelContext = self->_userEngagementModelContext;
-  self->_userEngagementModelContext = v4;
+  self->_userEngagementModelContext = contextCopy;
 }
 
 - (void)deleteStoppedListeningForSpeechContinuation
@@ -8722,9 +8722,9 @@ LABEL_339:
   }
 }
 
-- (void)setStoppedListeningForSpeechContinuation:(id)a3
+- (void)setStoppedListeningForSpeechContinuation:(id)continuation
 {
-  v4 = a3;
+  continuationCopy = continuation;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -8918,14 +8918,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 148;
-  if (!v4)
+  if (!continuationCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   stoppedListeningForSpeechContinuation = self->_stoppedListeningForSpeechContinuation;
-  self->_stoppedListeningForSpeechContinuation = v4;
+  self->_stoppedListeningForSpeechContinuation = continuationCopy;
 }
 
 - (void)deleteSpeechDetectorContext
@@ -8938,9 +8938,9 @@ LABEL_339:
   }
 }
 
-- (void)setSpeechDetectorContext:(id)a3
+- (void)setSpeechDetectorContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -9134,14 +9134,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 147;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   speechDetectorContext = self->_speechDetectorContext;
-  self->_speechDetectorContext = v4;
+  self->_speechDetectorContext = contextCopy;
 }
 
 - (void)deleteSpeechStopDetected
@@ -9154,9 +9154,9 @@ LABEL_339:
   }
 }
 
-- (void)setSpeechStopDetected:(id)a3
+- (void)setSpeechStopDetected:(id)detected
 {
-  v4 = a3;
+  detectedCopy = detected;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -9350,14 +9350,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 146;
-  if (!v4)
+  if (!detectedCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   speechStopDetected = self->_speechStopDetected;
-  self->_speechStopDetected = v4;
+  self->_speechStopDetected = detectedCopy;
 }
 
 - (void)deleteUserSpeakingContext
@@ -9370,9 +9370,9 @@ LABEL_339:
   }
 }
 
-- (void)setUserSpeakingContext:(id)a3
+- (void)setUserSpeakingContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -9566,14 +9566,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 145;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   userSpeakingContext = self->_userSpeakingContext;
-  self->_userSpeakingContext = v4;
+  self->_userSpeakingContext = contextCopy;
 }
 
 - (void)deleteTrpCreated
@@ -9586,9 +9586,9 @@ LABEL_339:
   }
 }
 
-- (void)setTrpCreated:(id)a3
+- (void)setTrpCreated:(id)created
 {
-  v4 = a3;
+  createdCopy = created;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -9782,14 +9782,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 144;
-  if (!v4)
+  if (!createdCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   trpCreated = self->_trpCreated;
-  self->_trpCreated = v4;
+  self->_trpCreated = createdCopy;
 }
 
 - (void)deleteRtsFalseRejectDetected
@@ -9802,9 +9802,9 @@ LABEL_339:
   }
 }
 
-- (void)setRtsFalseRejectDetected:(id)a3
+- (void)setRtsFalseRejectDetected:(id)detected
 {
-  v4 = a3;
+  detectedCopy = detected;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -9998,14 +9998,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 143;
-  if (!v4)
+  if (!detectedCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   rtsFalseRejectDetected = self->_rtsFalseRejectDetected;
-  self->_rtsFalseRejectDetected = v4;
+  self->_rtsFalseRejectDetected = detectedCopy;
 }
 
 - (void)deleteAudioRecordingFailed
@@ -10018,9 +10018,9 @@ LABEL_339:
   }
 }
 
-- (void)setAudioRecordingFailed:(id)a3
+- (void)setAudioRecordingFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -10214,14 +10214,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 142;
-  if (!v4)
+  if (!failedCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   audioRecordingFailed = self->_audioRecordingFailed;
-  self->_audioRecordingFailed = v4;
+  self->_audioRecordingFailed = failedCopy;
 }
 
 - (void)deleteAudioDucked
@@ -10234,9 +10234,9 @@ LABEL_339:
   }
 }
 
-- (void)setAudioDucked:(id)a3
+- (void)setAudioDucked:(id)ducked
 {
-  v4 = a3;
+  duckedCopy = ducked;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -10430,14 +10430,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 141;
-  if (!v4)
+  if (!duckedCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   audioDucked = self->_audioDucked;
-  self->_audioDucked = v4;
+  self->_audioDucked = duckedCopy;
 }
 
 - (void)deleteSiriDirectedSpeechDetectionFailed
@@ -10450,9 +10450,9 @@ LABEL_339:
   }
 }
 
-- (void)setSiriDirectedSpeechDetectionFailed:(id)a3
+- (void)setSiriDirectedSpeechDetectionFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -10646,14 +10646,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 140;
-  if (!v4)
+  if (!failedCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   siriDirectedSpeechDetectionFailed = self->_siriDirectedSpeechDetectionFailed;
-  self->_siriDirectedSpeechDetectionFailed = v4;
+  self->_siriDirectedSpeechDetectionFailed = failedCopy;
 }
 
 - (void)deleteSpeakerFalseTriggerMitigated
@@ -10666,9 +10666,9 @@ LABEL_339:
   }
 }
 
-- (void)setSpeakerFalseTriggerMitigated:(id)a3
+- (void)setSpeakerFalseTriggerMitigated:(id)mitigated
 {
-  v4 = a3;
+  mitigatedCopy = mitigated;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -10862,14 +10862,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 139;
-  if (!v4)
+  if (!mitigatedCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   speakerFalseTriggerMitigated = self->_speakerFalseTriggerMitigated;
-  self->_speakerFalseTriggerMitigated = v4;
+  self->_speakerFalseTriggerMitigated = mitigatedCopy;
 }
 
 - (void)deleteOdldFalseTriggerMitigated
@@ -10882,9 +10882,9 @@ LABEL_339:
   }
 }
 
-- (void)setOdldFalseTriggerMitigated:(id)a3
+- (void)setOdldFalseTriggerMitigated:(id)mitigated
 {
-  v4 = a3;
+  mitigatedCopy = mitigated;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -11078,14 +11078,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 138;
-  if (!v4)
+  if (!mitigatedCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   odldFalseTriggerMitigated = self->_odldFalseTriggerMitigated;
-  self->_odldFalseTriggerMitigated = v4;
+  self->_odldFalseTriggerMitigated = mitigatedCopy;
 }
 
 - (void)deleteDarwinConnectedDeviceWakeContext
@@ -11098,9 +11098,9 @@ LABEL_339:
   }
 }
 
-- (void)setDarwinConnectedDeviceWakeContext:(id)a3
+- (void)setDarwinConnectedDeviceWakeContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -11294,14 +11294,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 137;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   darwinConnectedDeviceWakeContext = self->_darwinConnectedDeviceWakeContext;
-  self->_darwinConnectedDeviceWakeContext = v4;
+  self->_darwinConnectedDeviceWakeContext = contextCopy;
 }
 
 - (void)deleteCarPlayLangaugeMismatched
@@ -11314,9 +11314,9 @@ LABEL_339:
   }
 }
 
-- (void)setCarPlayLangaugeMismatched:(id)a3
+- (void)setCarPlayLangaugeMismatched:(id)mismatched
 {
-  v4 = a3;
+  mismatchedCopy = mismatched;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -11510,14 +11510,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 136;
-  if (!v4)
+  if (!mismatchedCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   carPlayLangaugeMismatched = self->_carPlayLangaugeMismatched;
-  self->_carPlayLangaugeMismatched = v4;
+  self->_carPlayLangaugeMismatched = mismatchedCopy;
 }
 
 - (void)deleteEndpointerAccessibleContext
@@ -11530,9 +11530,9 @@ LABEL_339:
   }
 }
 
-- (void)setEndpointerAccessibleContext:(id)a3
+- (void)setEndpointerAccessibleContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -11726,14 +11726,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 135;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   endpointerAccessibleContext = self->_endpointerAccessibleContext;
-  self->_endpointerAccessibleContext = v4;
+  self->_endpointerAccessibleContext = contextCopy;
 }
 
 - (void)deleteSiriLaunchRequestContext
@@ -11746,9 +11746,9 @@ LABEL_339:
   }
 }
 
-- (void)setSiriLaunchRequestContext:(id)a3
+- (void)setSiriLaunchRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -11942,14 +11942,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 134;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   siriLaunchRequestContext = self->_siriLaunchRequestContext;
-  self->_siriLaunchRequestContext = v4;
+  self->_siriLaunchRequestContext = contextCopy;
 }
 
 - (void)deleteApplicationPlaybackAttempted
@@ -11962,9 +11962,9 @@ LABEL_339:
   }
 }
 
-- (void)setApplicationPlaybackAttempted:(id)a3
+- (void)setApplicationPlaybackAttempted:(id)attempted
 {
-  v4 = a3;
+  attemptedCopy = attempted;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -12158,14 +12158,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 133;
-  if (!v4)
+  if (!attemptedCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   applicationPlaybackAttempted = self->_applicationPlaybackAttempted;
-  self->_applicationPlaybackAttempted = v4;
+  self->_applicationPlaybackAttempted = attemptedCopy;
 }
 
 - (void)deleteFinalMitigationRecommendation
@@ -12178,9 +12178,9 @@ LABEL_339:
   }
 }
 
-- (void)setFinalMitigationRecommendation:(id)a3
+- (void)setFinalMitigationRecommendation:(id)recommendation
 {
-  v4 = a3;
+  recommendationCopy = recommendation;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -12374,14 +12374,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 132;
-  if (!v4)
+  if (!recommendationCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   finalMitigationRecommendation = self->_finalMitigationRecommendation;
-  self->_finalMitigationRecommendation = v4;
+  self->_finalMitigationRecommendation = recommendationCopy;
 }
 
 - (void)deleteEndpointDelayContext
@@ -12394,9 +12394,9 @@ LABEL_339:
   }
 }
 
-- (void)setEndpointDelayContext:(id)a3
+- (void)setEndpointDelayContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -12590,14 +12590,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 131;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   endpointDelayContext = self->_endpointDelayContext;
-  self->_endpointDelayContext = v4;
+  self->_endpointDelayContext = contextCopy;
 }
 
 - (void)deleteEndpointerUsed
@@ -12610,9 +12610,9 @@ LABEL_339:
   }
 }
 
-- (void)setEndpointerUsed:(id)a3
+- (void)setEndpointerUsed:(id)used
 {
-  v4 = a3;
+  usedCopy = used;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -12806,14 +12806,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 130;
-  if (!v4)
+  if (!usedCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   endpointerUsed = self->_endpointerUsed;
-  self->_endpointerUsed = v4;
+  self->_endpointerUsed = usedCopy;
 }
 
 - (void)deleteServerEndpointerContext
@@ -12826,9 +12826,9 @@ LABEL_339:
   }
 }
 
-- (void)setServerEndpointerContext:(id)a3
+- (void)setServerEndpointerContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -13022,14 +13022,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 129;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   serverEndpointerContext = self->_serverEndpointerContext;
-  self->_serverEndpointerContext = v4;
+  self->_serverEndpointerContext = contextCopy;
 }
 
 - (void)deleteOnDeviceEndpointerContext
@@ -13042,9 +13042,9 @@ LABEL_339:
   }
 }
 
-- (void)setOnDeviceEndpointerContext:(id)a3
+- (void)setOnDeviceEndpointerContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -13237,9 +13237,9 @@ LABEL_339:
   speakerIdModelOneSessionReportedTier1 = self->_speakerIdModelOneSessionReportedTier1;
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
-  self->_whichEvent_Type = (v4 != 0) << 7;
+  self->_whichEvent_Type = (contextCopy != 0) << 7;
   onDeviceEndpointerContext = self->_onDeviceEndpointerContext;
-  self->_onDeviceEndpointerContext = v4;
+  self->_onDeviceEndpointerContext = contextCopy;
 }
 
 - (void)deleteAdblockerContext
@@ -13252,9 +13252,9 @@ LABEL_339:
   }
 }
 
-- (void)setAdblockerContext:(id)a3
+- (void)setAdblockerContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -13448,14 +13448,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 127;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   adblockerContext = self->_adblockerContext;
-  self->_adblockerContext = v4;
+  self->_adblockerContext = contextCopy;
 }
 
 - (void)deleteEndpointLatencyInfoReported
@@ -13468,9 +13468,9 @@ LABEL_339:
   }
 }
 
-- (void)setEndpointLatencyInfoReported:(id)a3
+- (void)setEndpointLatencyInfoReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -13664,14 +13664,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 126;
-  if (!v4)
+  if (!reportedCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   endpointLatencyInfoReported = self->_endpointLatencyInfoReported;
-  self->_endpointLatencyInfoReported = v4;
+  self->_endpointLatencyInfoReported = reportedCopy;
 }
 
 - (void)deleteEndpointDetected
@@ -13684,9 +13684,9 @@ LABEL_339:
   }
 }
 
-- (void)setEndpointDetected:(id)a3
+- (void)setEndpointDetected:(id)detected
 {
-  v4 = a3;
+  detectedCopy = detected;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -13880,14 +13880,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 125;
-  if (!v4)
+  if (!detectedCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   endpointDetected = self->_endpointDetected;
-  self->_endpointDetected = v4;
+  self->_endpointDetected = detectedCopy;
 }
 
 - (void)deleteVoiceTriggerContext
@@ -13900,9 +13900,9 @@ LABEL_339:
   }
 }
 
-- (void)setVoiceTriggerContext:(id)a3
+- (void)setVoiceTriggerContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -14096,14 +14096,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 124;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   voiceTriggerContext = self->_voiceTriggerContext;
-  self->_voiceTriggerContext = v4;
+  self->_voiceTriggerContext = contextCopy;
 }
 
 - (void)deleteAssistantDaemonAudioTwoShotTransitionContext
@@ -14116,9 +14116,9 @@ LABEL_339:
   }
 }
 
-- (void)setAssistantDaemonAudioTwoShotTransitionContext:(id)a3
+- (void)setAssistantDaemonAudioTwoShotTransitionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -14312,14 +14312,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 123;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   assistantDaemonAudioTwoShotTransitionContext = self->_assistantDaemonAudioTwoShotTransitionContext;
-  self->_assistantDaemonAudioTwoShotTransitionContext = v4;
+  self->_assistantDaemonAudioTwoShotTransitionContext = contextCopy;
 }
 
 - (void)deleteVoiceTriggerTwoShotDetected
@@ -14332,9 +14332,9 @@ LABEL_339:
   }
 }
 
-- (void)setVoiceTriggerTwoShotDetected:(id)a3
+- (void)setVoiceTriggerTwoShotDetected:(id)detected
 {
-  v4 = a3;
+  detectedCopy = detected;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -14528,14 +14528,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 122;
-  if (!v4)
+  if (!detectedCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   voiceTriggerTwoShotDetected = self->_voiceTriggerTwoShotDetected;
-  self->_voiceTriggerTwoShotDetected = v4;
+  self->_voiceTriggerTwoShotDetected = detectedCopy;
 }
 
 - (void)deleteAssistantDaemonAudioBluetoothInfo
@@ -14548,9 +14548,9 @@ LABEL_339:
   }
 }
 
-- (void)setAssistantDaemonAudioBluetoothInfo:(id)a3
+- (void)setAssistantDaemonAudioBluetoothInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -14744,14 +14744,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 121;
-  if (!v4)
+  if (!infoCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   assistantDaemonAudioBluetoothInfo = self->_assistantDaemonAudioBluetoothInfo;
-  self->_assistantDaemonAudioBluetoothInfo = v4;
+  self->_assistantDaemonAudioBluetoothInfo = infoCopy;
 }
 
 - (void)deleteAssistantDaemonAudioRecordingInterruptionStartedTier1
@@ -14764,9 +14764,9 @@ LABEL_339:
   }
 }
 
-- (void)setAssistantDaemonAudioRecordingInterruptionStartedTier1:(id)a3
+- (void)setAssistantDaemonAudioRecordingInterruptionStartedTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -14960,14 +14960,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 120;
-  if (!v4)
+  if (!tier1Copy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   assistantDaemonAudioRecordingInterruptionStartedTier1 = self->_assistantDaemonAudioRecordingInterruptionStartedTier1;
-  self->_assistantDaemonAudioRecordingInterruptionStartedTier1 = v4;
+  self->_assistantDaemonAudioRecordingInterruptionStartedTier1 = tier1Copy;
 }
 
 - (void)deleteAssistantDaemonAudioRecordingInterruptionContext
@@ -14980,9 +14980,9 @@ LABEL_339:
   }
 }
 
-- (void)setAssistantDaemonAudioRecordingInterruptionContext:(id)a3
+- (void)setAssistantDaemonAudioRecordingInterruptionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -15176,14 +15176,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 119;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   assistantDaemonAudioRecordingInterruptionContext = self->_assistantDaemonAudioRecordingInterruptionContext;
-  self->_assistantDaemonAudioRecordingInterruptionContext = v4;
+  self->_assistantDaemonAudioRecordingInterruptionContext = contextCopy;
 }
 
 - (void)deleteAssistantDaemonAudioRecordingLastBufferContext
@@ -15196,9 +15196,9 @@ LABEL_339:
   }
 }
 
-- (void)setAssistantDaemonAudioRecordingLastBufferContext:(id)a3
+- (void)setAssistantDaemonAudioRecordingLastBufferContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -15392,14 +15392,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 118;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   assistantDaemonAudioRecordingLastBufferContext = self->_assistantDaemonAudioRecordingLastBufferContext;
-  self->_assistantDaemonAudioRecordingLastBufferContext = v4;
+  self->_assistantDaemonAudioRecordingLastBufferContext = contextCopy;
 }
 
 - (void)deleteAssistantDaemonAudioRecordingFirstBufferContext
@@ -15412,9 +15412,9 @@ LABEL_339:
   }
 }
 
-- (void)setAssistantDaemonAudioRecordingFirstBufferContext:(id)a3
+- (void)setAssistantDaemonAudioRecordingFirstBufferContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -15608,14 +15608,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 117;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   assistantDaemonAudioRecordingFirstBufferContext = self->_assistantDaemonAudioRecordingFirstBufferContext;
-  self->_assistantDaemonAudioRecordingFirstBufferContext = v4;
+  self->_assistantDaemonAudioRecordingFirstBufferContext = contextCopy;
 }
 
 - (void)deleteAssistantDaemonAudioLateBufferDetected
@@ -15628,9 +15628,9 @@ LABEL_339:
   }
 }
 
-- (void)setAssistantDaemonAudioLateBufferDetected:(id)a3
+- (void)setAssistantDaemonAudioLateBufferDetected:(id)detected
 {
-  v4 = a3;
+  detectedCopy = detected;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -15824,14 +15824,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 116;
-  if (!v4)
+  if (!detectedCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   assistantDaemonAudioLateBufferDetected = self->_assistantDaemonAudioLateBufferDetected;
-  self->_assistantDaemonAudioLateBufferDetected = v4;
+  self->_assistantDaemonAudioLateBufferDetected = detectedCopy;
 }
 
 - (void)deleteAssistantDaemonAudioRecordingMissedBufferDetected
@@ -15844,9 +15844,9 @@ LABEL_339:
   }
 }
 
-- (void)setAssistantDaemonAudioRecordingMissedBufferDetected:(id)a3
+- (void)setAssistantDaemonAudioRecordingMissedBufferDetected:(id)detected
 {
-  v4 = a3;
+  detectedCopy = detected;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -16040,14 +16040,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 115;
-  if (!v4)
+  if (!detectedCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   assistantDaemonAudioRecordingMissedBufferDetected = self->_assistantDaemonAudioRecordingMissedBufferDetected;
-  self->_assistantDaemonAudioRecordingMissedBufferDetected = v4;
+  self->_assistantDaemonAudioRecordingMissedBufferDetected = detectedCopy;
 }
 
 - (void)deleteAssistantDaemonAudioRecordingContext
@@ -16060,9 +16060,9 @@ LABEL_339:
   }
 }
 
-- (void)setAssistantDaemonAudioRecordingContext:(id)a3
+- (void)setAssistantDaemonAudioRecordingContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -16256,14 +16256,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 114;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   assistantDaemonAudioRecordingContext = self->_assistantDaemonAudioRecordingContext;
-  self->_assistantDaemonAudioRecordingContext = v4;
+  self->_assistantDaemonAudioRecordingContext = contextCopy;
 }
 
 - (void)deleteAssistantDaemonAudioFetchRouteContext
@@ -16276,9 +16276,9 @@ LABEL_339:
   }
 }
 
-- (void)setAssistantDaemonAudioFetchRouteContext:(id)a3
+- (void)setAssistantDaemonAudioFetchRouteContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -16472,14 +16472,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 113;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   assistantDaemonAudioFetchRouteContext = self->_assistantDaemonAudioFetchRouteContext;
-  self->_assistantDaemonAudioFetchRouteContext = v4;
+  self->_assistantDaemonAudioFetchRouteContext = contextCopy;
 }
 
 - (void)deleteAssistantDaemonAudioSessionSetInactiveContext
@@ -16492,9 +16492,9 @@ LABEL_339:
   }
 }
 
-- (void)setAssistantDaemonAudioSessionSetInactiveContext:(id)a3
+- (void)setAssistantDaemonAudioSessionSetInactiveContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -16688,14 +16688,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 112;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   assistantDaemonAudioSessionSetInactiveContext = self->_assistantDaemonAudioSessionSetInactiveContext;
-  self->_assistantDaemonAudioSessionSetInactiveContext = v4;
+  self->_assistantDaemonAudioSessionSetInactiveContext = contextCopy;
 }
 
 - (void)deleteAssistantDaemonAudioSessionSetActiveContext
@@ -16708,9 +16708,9 @@ LABEL_339:
   }
 }
 
-- (void)setAssistantDaemonAudioSessionSetActiveContext:(id)a3
+- (void)setAssistantDaemonAudioSessionSetActiveContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -16904,14 +16904,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 111;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   assistantDaemonAudioSessionSetActiveContext = self->_assistantDaemonAudioSessionSetActiveContext;
-  self->_assistantDaemonAudioSessionSetActiveContext = v4;
+  self->_assistantDaemonAudioSessionSetActiveContext = contextCopy;
 }
 
 - (void)deleteAssistantDaemonAudioStopRecordingContext
@@ -16924,9 +16924,9 @@ LABEL_339:
   }
 }
 
-- (void)setAssistantDaemonAudioStopRecordingContext:(id)a3
+- (void)setAssistantDaemonAudioStopRecordingContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -17120,14 +17120,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 110;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   assistantDaemonAudioStopRecordingContext = self->_assistantDaemonAudioStopRecordingContext;
-  self->_assistantDaemonAudioStopRecordingContext = v4;
+  self->_assistantDaemonAudioStopRecordingContext = contextCopy;
 }
 
 - (void)deleteAssistantDaemonAudioStartRecordingContext
@@ -17140,9 +17140,9 @@ LABEL_339:
   }
 }
 
-- (void)setAssistantDaemonAudioStartRecordingContext:(id)a3
+- (void)setAssistantDaemonAudioStartRecordingContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -17336,14 +17336,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 109;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   assistantDaemonAudioStartRecordingContext = self->_assistantDaemonAudioStartRecordingContext;
-  self->_assistantDaemonAudioStartRecordingContext = v4;
+  self->_assistantDaemonAudioStartRecordingContext = contextCopy;
 }
 
 - (void)deleteAssistantDaemonAudioPrewarmContext
@@ -17356,9 +17356,9 @@ LABEL_339:
   }
 }
 
-- (void)setAssistantDaemonAudioPrewarmContext:(id)a3
+- (void)setAssistantDaemonAudioPrewarmContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -17552,14 +17552,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 108;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   assistantDaemonAudioPrewarmContext = self->_assistantDaemonAudioPrewarmContext;
-  self->_assistantDaemonAudioPrewarmContext = v4;
+  self->_assistantDaemonAudioPrewarmContext = contextCopy;
 }
 
 - (void)deleteAssistantDaemonAudioPrepareContext
@@ -17572,9 +17572,9 @@ LABEL_339:
   }
 }
 
-- (void)setAssistantDaemonAudioPrepareContext:(id)a3
+- (void)setAssistantDaemonAudioPrepareContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -17768,14 +17768,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 107;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   assistantDaemonAudioPrepareContext = self->_assistantDaemonAudioPrepareContext;
-  self->_assistantDaemonAudioPrepareContext = v4;
+  self->_assistantDaemonAudioPrepareContext = contextCopy;
 }
 
 - (void)deleteAssistantDaemonAudioConfigureContext
@@ -17788,9 +17788,9 @@ LABEL_339:
   }
 }
 
-- (void)setAssistantDaemonAudioConfigureContext:(id)a3
+- (void)setAssistantDaemonAudioConfigureContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -17984,14 +17984,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 106;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   assistantDaemonAudioConfigureContext = self->_assistantDaemonAudioConfigureContext;
-  self->_assistantDaemonAudioConfigureContext = v4;
+  self->_assistantDaemonAudioConfigureContext = contextCopy;
 }
 
 - (void)deleteAssistantDaemonAudioInitContext
@@ -18004,9 +18004,9 @@ LABEL_339:
   }
 }
 
-- (void)setAssistantDaemonAudioInitContext:(id)a3
+- (void)setAssistantDaemonAudioInitContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -18200,14 +18200,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 105;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   assistantDaemonAudioInitContext = self->_assistantDaemonAudioInitContext;
-  self->_assistantDaemonAudioInitContext = v4;
+  self->_assistantDaemonAudioInitContext = contextCopy;
 }
 
 - (void)deleteAsrAudioConfigureStarted
@@ -18220,9 +18220,9 @@ LABEL_339:
   }
 }
 
-- (void)setAsrAudioConfigureStarted:(id)a3
+- (void)setAsrAudioConfigureStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -18416,14 +18416,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 104;
-  if (!v4)
+  if (!startedCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   asrAudioConfigureStarted = self->_asrAudioConfigureStarted;
-  self->_asrAudioConfigureStarted = v4;
+  self->_asrAudioConfigureStarted = startedCopy;
 }
 
 - (void)deleteCoreSpeechPreprocessorCompleted
@@ -18436,9 +18436,9 @@ LABEL_339:
   }
 }
 
-- (void)setCoreSpeechPreprocessorCompleted:(id)a3
+- (void)setCoreSpeechPreprocessorCompleted:(id)completed
 {
-  v4 = a3;
+  completedCopy = completed;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -18632,14 +18632,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 103;
-  if (!v4)
+  if (!completedCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   coreSpeechPreprocessorCompleted = self->_coreSpeechPreprocessorCompleted;
-  self->_coreSpeechPreprocessorCompleted = v4;
+  self->_coreSpeechPreprocessorCompleted = completedCopy;
 }
 
 - (void)deleteUnintendedResponseSuppressionExecutionContext
@@ -18652,9 +18652,9 @@ LABEL_339:
   }
 }
 
-- (void)setUnintendedResponseSuppressionExecutionContext:(id)a3
+- (void)setUnintendedResponseSuppressionExecutionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -18848,14 +18848,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 102;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   unintendedResponseSuppressionExecutionContext = self->_unintendedResponseSuppressionExecutionContext;
-  self->_unintendedResponseSuppressionExecutionContext = v4;
+  self->_unintendedResponseSuppressionExecutionContext = contextCopy;
 }
 
 - (void)deleteLatticeFalseTriggerMitigationEvaluationContext
@@ -18868,9 +18868,9 @@ LABEL_339:
   }
 }
 
-- (void)setLatticeFalseTriggerMitigationEvaluationContext:(id)a3
+- (void)setLatticeFalseTriggerMitigationEvaluationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
   self->_acousticFalseTriggerMitigationEvaluationContext = 0;
 
@@ -19064,14 +19064,14 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 101;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   latticeFalseTriggerMitigationEvaluationContext = self->_latticeFalseTriggerMitigationEvaluationContext;
-  self->_latticeFalseTriggerMitigationEvaluationContext = v4;
+  self->_latticeFalseTriggerMitigationEvaluationContext = contextCopy;
 }
 
 - (void)deleteAcousticFalseTriggerMitigationEvaluationContext
@@ -19084,9 +19084,9 @@ LABEL_339:
   }
 }
 
-- (void)setAcousticFalseTriggerMitigationEvaluationContext:(id)a3
+- (void)setAcousticFalseTriggerMitigationEvaluationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   latticeFalseTriggerMitigationEvaluationContext = self->_latticeFalseTriggerMitigationEvaluationContext;
   self->_latticeFalseTriggerMitigationEvaluationContext = 0;
 
@@ -19280,656 +19280,656 @@ LABEL_339:
   self->_speakerIdModelOneSessionReportedTier1 = 0;
 
   v69 = 100;
-  if (!v4)
+  if (!contextCopy)
   {
     v69 = 0;
   }
 
   self->_whichEvent_Type = v69;
   acousticFalseTriggerMitigationEvaluationContext = self->_acousticFalseTriggerMitigationEvaluationContext;
-  self->_acousticFalseTriggerMitigationEvaluationContext = v4;
+  self->_acousticFalseTriggerMitigationEvaluationContext = contextCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v209.receiver = self;
   v209.super_class = MHSchemaMHClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v209 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v209 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(MHSchemaMHClientEvent *)self deleteSpeakerIdEnrollmentDataReportedTier1];
     [(MHSchemaMHClientEvent *)self deleteSpeakerIdModelSelectedClockSessionInfoTier1];
     [(MHSchemaMHClientEvent *)self deleteSpeakerIdModelOneSessionReportedTier1];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(MHSchemaMHClientEvent *)self deleteSpeakerIdEnrollmentDataReportedTier1];
     [(MHSchemaMHClientEvent *)self deleteSpeakerIdModelSelectedClockSessionInfoTier1];
     [(MHSchemaMHClientEvent *)self deleteSpeakerIdModelOneSessionReportedTier1];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(MHSchemaMHClientEvent *)self deleteSpeakerIdEnrollmentDataReportedTier1];
     [(MHSchemaMHClientEvent *)self deleteSpeakerIdModelSelectedClockSessionInfoTier1];
     [(MHSchemaMHClientEvent *)self deleteSpeakerIdModelOneSessionReportedTier1];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(MHSchemaMHClientEvent *)self deleteSpeakerIdEnrollmentDataReportedTier1];
     [(MHSchemaMHClientEvent *)self deleteSpeakerIdModelSelectedClockSessionInfoTier1];
     [(MHSchemaMHClientEvent *)self deleteSpeakerIdModelOneSessionReportedTier1];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(MHSchemaMHClientEvent *)self deleteSpeakerIdEnrollmentDataReportedTier1];
     [(MHSchemaMHClientEvent *)self deleteSpeakerIdModelSelectedClockSessionInfoTier1];
     [(MHSchemaMHClientEvent *)self deleteSpeakerIdModelOneSessionReportedTier1];
   }
 
-  v6 = [(MHSchemaMHClientEvent *)self mhId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  mhId = [(MHSchemaMHClientEvent *)self mhId];
+  v7 = [mhId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(MHSchemaMHClientEvent *)self deleteMhId];
   }
 
-  v9 = [(MHSchemaMHClientEvent *)self eventMetadata];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  eventMetadata = [(MHSchemaMHClientEvent *)self eventMetadata];
+  v10 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(MHSchemaMHClientEvent *)self deleteEventMetadata];
   }
 
-  v12 = [(MHSchemaMHClientEvent *)self acousticFalseTriggerMitigationEvaluationContext];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  acousticFalseTriggerMitigationEvaluationContext = [(MHSchemaMHClientEvent *)self acousticFalseTriggerMitigationEvaluationContext];
+  v13 = [acousticFalseTriggerMitigationEvaluationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(MHSchemaMHClientEvent *)self deleteAcousticFalseTriggerMitigationEvaluationContext];
   }
 
-  v15 = [(MHSchemaMHClientEvent *)self latticeFalseTriggerMitigationEvaluationContext];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  latticeFalseTriggerMitigationEvaluationContext = [(MHSchemaMHClientEvent *)self latticeFalseTriggerMitigationEvaluationContext];
+  v16 = [latticeFalseTriggerMitigationEvaluationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(MHSchemaMHClientEvent *)self deleteLatticeFalseTriggerMitigationEvaluationContext];
   }
 
-  v18 = [(MHSchemaMHClientEvent *)self unintendedResponseSuppressionExecutionContext];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  unintendedResponseSuppressionExecutionContext = [(MHSchemaMHClientEvent *)self unintendedResponseSuppressionExecutionContext];
+  v19 = [unintendedResponseSuppressionExecutionContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(MHSchemaMHClientEvent *)self deleteUnintendedResponseSuppressionExecutionContext];
   }
 
-  v21 = [(MHSchemaMHClientEvent *)self coreSpeechPreprocessorCompleted];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  coreSpeechPreprocessorCompleted = [(MHSchemaMHClientEvent *)self coreSpeechPreprocessorCompleted];
+  v22 = [coreSpeechPreprocessorCompleted applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(MHSchemaMHClientEvent *)self deleteCoreSpeechPreprocessorCompleted];
   }
 
-  v24 = [(MHSchemaMHClientEvent *)self asrAudioConfigureStarted];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  asrAudioConfigureStarted = [(MHSchemaMHClientEvent *)self asrAudioConfigureStarted];
+  v25 = [asrAudioConfigureStarted applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(MHSchemaMHClientEvent *)self deleteAsrAudioConfigureStarted];
   }
 
-  v27 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioInitContext];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  assistantDaemonAudioInitContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioInitContext];
+  v28 = [assistantDaemonAudioInitContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(MHSchemaMHClientEvent *)self deleteAssistantDaemonAudioInitContext];
   }
 
-  v30 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioConfigureContext];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  assistantDaemonAudioConfigureContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioConfigureContext];
+  v31 = [assistantDaemonAudioConfigureContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(MHSchemaMHClientEvent *)self deleteAssistantDaemonAudioConfigureContext];
   }
 
-  v33 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrepareContext];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  assistantDaemonAudioPrepareContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrepareContext];
+  v34 = [assistantDaemonAudioPrepareContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(MHSchemaMHClientEvent *)self deleteAssistantDaemonAudioPrepareContext];
   }
 
-  v36 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrewarmContext];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  assistantDaemonAudioPrewarmContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioPrewarmContext];
+  v37 = [assistantDaemonAudioPrewarmContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(MHSchemaMHClientEvent *)self deleteAssistantDaemonAudioPrewarmContext];
   }
 
-  v39 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStartRecordingContext];
-  v40 = [v39 applySensitiveConditionsPolicy:v4];
-  v41 = [v40 suppressMessage];
+  assistantDaemonAudioStartRecordingContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStartRecordingContext];
+  v40 = [assistantDaemonAudioStartRecordingContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage12 = [v40 suppressMessage];
 
-  if (v41)
+  if (suppressMessage12)
   {
     [(MHSchemaMHClientEvent *)self deleteAssistantDaemonAudioStartRecordingContext];
   }
 
-  v42 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStopRecordingContext];
-  v43 = [v42 applySensitiveConditionsPolicy:v4];
-  v44 = [v43 suppressMessage];
+  assistantDaemonAudioStopRecordingContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioStopRecordingContext];
+  v43 = [assistantDaemonAudioStopRecordingContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage13 = [v43 suppressMessage];
 
-  if (v44)
+  if (suppressMessage13)
   {
     [(MHSchemaMHClientEvent *)self deleteAssistantDaemonAudioStopRecordingContext];
   }
 
-  v45 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetActiveContext];
-  v46 = [v45 applySensitiveConditionsPolicy:v4];
-  v47 = [v46 suppressMessage];
+  assistantDaemonAudioSessionSetActiveContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetActiveContext];
+  v46 = [assistantDaemonAudioSessionSetActiveContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage14 = [v46 suppressMessage];
 
-  if (v47)
+  if (suppressMessage14)
   {
     [(MHSchemaMHClientEvent *)self deleteAssistantDaemonAudioSessionSetActiveContext];
   }
 
-  v48 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetInactiveContext];
-  v49 = [v48 applySensitiveConditionsPolicy:v4];
-  v50 = [v49 suppressMessage];
+  assistantDaemonAudioSessionSetInactiveContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioSessionSetInactiveContext];
+  v49 = [assistantDaemonAudioSessionSetInactiveContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage15 = [v49 suppressMessage];
 
-  if (v50)
+  if (suppressMessage15)
   {
     [(MHSchemaMHClientEvent *)self deleteAssistantDaemonAudioSessionSetInactiveContext];
   }
 
-  v51 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioFetchRouteContext];
-  v52 = [v51 applySensitiveConditionsPolicy:v4];
-  v53 = [v52 suppressMessage];
+  assistantDaemonAudioFetchRouteContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioFetchRouteContext];
+  v52 = [assistantDaemonAudioFetchRouteContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage16 = [v52 suppressMessage];
 
-  if (v53)
+  if (suppressMessage16)
   {
     [(MHSchemaMHClientEvent *)self deleteAssistantDaemonAudioFetchRouteContext];
   }
 
-  v54 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingContext];
-  v55 = [v54 applySensitiveConditionsPolicy:v4];
-  v56 = [v55 suppressMessage];
+  assistantDaemonAudioRecordingContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingContext];
+  v55 = [assistantDaemonAudioRecordingContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage17 = [v55 suppressMessage];
 
-  if (v56)
+  if (suppressMessage17)
   {
     [(MHSchemaMHClientEvent *)self deleteAssistantDaemonAudioRecordingContext];
   }
 
-  v57 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingMissedBufferDetected];
-  v58 = [v57 applySensitiveConditionsPolicy:v4];
-  v59 = [v58 suppressMessage];
+  assistantDaemonAudioRecordingMissedBufferDetected = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingMissedBufferDetected];
+  v58 = [assistantDaemonAudioRecordingMissedBufferDetected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage18 = [v58 suppressMessage];
 
-  if (v59)
+  if (suppressMessage18)
   {
     [(MHSchemaMHClientEvent *)self deleteAssistantDaemonAudioRecordingMissedBufferDetected];
   }
 
-  v60 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioLateBufferDetected];
-  v61 = [v60 applySensitiveConditionsPolicy:v4];
-  v62 = [v61 suppressMessage];
+  assistantDaemonAudioLateBufferDetected = [(MHSchemaMHClientEvent *)self assistantDaemonAudioLateBufferDetected];
+  v61 = [assistantDaemonAudioLateBufferDetected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage19 = [v61 suppressMessage];
 
-  if (v62)
+  if (suppressMessage19)
   {
     [(MHSchemaMHClientEvent *)self deleteAssistantDaemonAudioLateBufferDetected];
   }
 
-  v63 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFirstBufferContext];
-  v64 = [v63 applySensitiveConditionsPolicy:v4];
-  v65 = [v64 suppressMessage];
+  assistantDaemonAudioRecordingFirstBufferContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFirstBufferContext];
+  v64 = [assistantDaemonAudioRecordingFirstBufferContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage20 = [v64 suppressMessage];
 
-  if (v65)
+  if (suppressMessage20)
   {
     [(MHSchemaMHClientEvent *)self deleteAssistantDaemonAudioRecordingFirstBufferContext];
   }
 
-  v66 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingLastBufferContext];
-  v67 = [v66 applySensitiveConditionsPolicy:v4];
-  v68 = [v67 suppressMessage];
+  assistantDaemonAudioRecordingLastBufferContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingLastBufferContext];
+  v67 = [assistantDaemonAudioRecordingLastBufferContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage21 = [v67 suppressMessage];
 
-  if (v68)
+  if (suppressMessage21)
   {
     [(MHSchemaMHClientEvent *)self deleteAssistantDaemonAudioRecordingLastBufferContext];
   }
 
-  v69 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionContext];
-  v70 = [v69 applySensitiveConditionsPolicy:v4];
-  v71 = [v70 suppressMessage];
+  assistantDaemonAudioRecordingInterruptionContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionContext];
+  v70 = [assistantDaemonAudioRecordingInterruptionContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage22 = [v70 suppressMessage];
 
-  if (v71)
+  if (suppressMessage22)
   {
     [(MHSchemaMHClientEvent *)self deleteAssistantDaemonAudioRecordingInterruptionContext];
   }
 
-  v72 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionStartedTier1];
-  v73 = [v72 applySensitiveConditionsPolicy:v4];
-  v74 = [v73 suppressMessage];
+  assistantDaemonAudioRecordingInterruptionStartedTier1 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingInterruptionStartedTier1];
+  v73 = [assistantDaemonAudioRecordingInterruptionStartedTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage23 = [v73 suppressMessage];
 
-  if (v74)
+  if (suppressMessage23)
   {
     [(MHSchemaMHClientEvent *)self deleteAssistantDaemonAudioRecordingInterruptionStartedTier1];
   }
 
-  v75 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioBluetoothInfo];
-  v76 = [v75 applySensitiveConditionsPolicy:v4];
-  v77 = [v76 suppressMessage];
+  assistantDaemonAudioBluetoothInfo = [(MHSchemaMHClientEvent *)self assistantDaemonAudioBluetoothInfo];
+  v76 = [assistantDaemonAudioBluetoothInfo applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage24 = [v76 suppressMessage];
 
-  if (v77)
+  if (suppressMessage24)
   {
     [(MHSchemaMHClientEvent *)self deleteAssistantDaemonAudioBluetoothInfo];
   }
 
-  v78 = [(MHSchemaMHClientEvent *)self voiceTriggerTwoShotDetected];
-  v79 = [v78 applySensitiveConditionsPolicy:v4];
-  v80 = [v79 suppressMessage];
+  voiceTriggerTwoShotDetected = [(MHSchemaMHClientEvent *)self voiceTriggerTwoShotDetected];
+  v79 = [voiceTriggerTwoShotDetected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage25 = [v79 suppressMessage];
 
-  if (v80)
+  if (suppressMessage25)
   {
     [(MHSchemaMHClientEvent *)self deleteVoiceTriggerTwoShotDetected];
   }
 
-  v81 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioTwoShotTransitionContext];
-  v82 = [v81 applySensitiveConditionsPolicy:v4];
-  v83 = [v82 suppressMessage];
+  assistantDaemonAudioTwoShotTransitionContext = [(MHSchemaMHClientEvent *)self assistantDaemonAudioTwoShotTransitionContext];
+  v82 = [assistantDaemonAudioTwoShotTransitionContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage26 = [v82 suppressMessage];
 
-  if (v83)
+  if (suppressMessage26)
   {
     [(MHSchemaMHClientEvent *)self deleteAssistantDaemonAudioTwoShotTransitionContext];
   }
 
-  v84 = [(MHSchemaMHClientEvent *)self voiceTriggerContext];
-  v85 = [v84 applySensitiveConditionsPolicy:v4];
-  v86 = [v85 suppressMessage];
+  voiceTriggerContext = [(MHSchemaMHClientEvent *)self voiceTriggerContext];
+  v85 = [voiceTriggerContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage27 = [v85 suppressMessage];
 
-  if (v86)
+  if (suppressMessage27)
   {
     [(MHSchemaMHClientEvent *)self deleteVoiceTriggerContext];
   }
 
-  v87 = [(MHSchemaMHClientEvent *)self endpointDetected];
-  v88 = [v87 applySensitiveConditionsPolicy:v4];
-  v89 = [v88 suppressMessage];
+  endpointDetected = [(MHSchemaMHClientEvent *)self endpointDetected];
+  v88 = [endpointDetected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage28 = [v88 suppressMessage];
 
-  if (v89)
+  if (suppressMessage28)
   {
     [(MHSchemaMHClientEvent *)self deleteEndpointDetected];
   }
 
-  v90 = [(MHSchemaMHClientEvent *)self endpointLatencyInfoReported];
-  v91 = [v90 applySensitiveConditionsPolicy:v4];
-  v92 = [v91 suppressMessage];
+  endpointLatencyInfoReported = [(MHSchemaMHClientEvent *)self endpointLatencyInfoReported];
+  v91 = [endpointLatencyInfoReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage29 = [v91 suppressMessage];
 
-  if (v92)
+  if (suppressMessage29)
   {
     [(MHSchemaMHClientEvent *)self deleteEndpointLatencyInfoReported];
   }
 
-  v93 = [(MHSchemaMHClientEvent *)self adblockerContext];
-  v94 = [v93 applySensitiveConditionsPolicy:v4];
-  v95 = [v94 suppressMessage];
+  adblockerContext = [(MHSchemaMHClientEvent *)self adblockerContext];
+  v94 = [adblockerContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage30 = [v94 suppressMessage];
 
-  if (v95)
+  if (suppressMessage30)
   {
     [(MHSchemaMHClientEvent *)self deleteAdblockerContext];
   }
 
-  v96 = [(MHSchemaMHClientEvent *)self onDeviceEndpointerContext];
-  v97 = [v96 applySensitiveConditionsPolicy:v4];
-  v98 = [v97 suppressMessage];
+  onDeviceEndpointerContext = [(MHSchemaMHClientEvent *)self onDeviceEndpointerContext];
+  v97 = [onDeviceEndpointerContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage31 = [v97 suppressMessage];
 
-  if (v98)
+  if (suppressMessage31)
   {
     [(MHSchemaMHClientEvent *)self deleteOnDeviceEndpointerContext];
   }
 
-  v99 = [(MHSchemaMHClientEvent *)self serverEndpointerContext];
-  v100 = [v99 applySensitiveConditionsPolicy:v4];
-  v101 = [v100 suppressMessage];
+  serverEndpointerContext = [(MHSchemaMHClientEvent *)self serverEndpointerContext];
+  v100 = [serverEndpointerContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage32 = [v100 suppressMessage];
 
-  if (v101)
+  if (suppressMessage32)
   {
     [(MHSchemaMHClientEvent *)self deleteServerEndpointerContext];
   }
 
-  v102 = [(MHSchemaMHClientEvent *)self endpointerUsed];
-  v103 = [v102 applySensitiveConditionsPolicy:v4];
-  v104 = [v103 suppressMessage];
+  endpointerUsed = [(MHSchemaMHClientEvent *)self endpointerUsed];
+  v103 = [endpointerUsed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage33 = [v103 suppressMessage];
 
-  if (v104)
+  if (suppressMessage33)
   {
     [(MHSchemaMHClientEvent *)self deleteEndpointerUsed];
   }
 
-  v105 = [(MHSchemaMHClientEvent *)self endpointDelayContext];
-  v106 = [v105 applySensitiveConditionsPolicy:v4];
-  v107 = [v106 suppressMessage];
+  endpointDelayContext = [(MHSchemaMHClientEvent *)self endpointDelayContext];
+  v106 = [endpointDelayContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage34 = [v106 suppressMessage];
 
-  if (v107)
+  if (suppressMessage34)
   {
     [(MHSchemaMHClientEvent *)self deleteEndpointDelayContext];
   }
 
-  v108 = [(MHSchemaMHClientEvent *)self finalMitigationRecommendation];
-  v109 = [v108 applySensitiveConditionsPolicy:v4];
-  v110 = [v109 suppressMessage];
+  finalMitigationRecommendation = [(MHSchemaMHClientEvent *)self finalMitigationRecommendation];
+  v109 = [finalMitigationRecommendation applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage35 = [v109 suppressMessage];
 
-  if (v110)
+  if (suppressMessage35)
   {
     [(MHSchemaMHClientEvent *)self deleteFinalMitigationRecommendation];
   }
 
-  v111 = [(MHSchemaMHClientEvent *)self applicationPlaybackAttempted];
-  v112 = [v111 applySensitiveConditionsPolicy:v4];
-  v113 = [v112 suppressMessage];
+  applicationPlaybackAttempted = [(MHSchemaMHClientEvent *)self applicationPlaybackAttempted];
+  v112 = [applicationPlaybackAttempted applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage36 = [v112 suppressMessage];
 
-  if (v113)
+  if (suppressMessage36)
   {
     [(MHSchemaMHClientEvent *)self deleteApplicationPlaybackAttempted];
   }
 
-  v114 = [(MHSchemaMHClientEvent *)self siriLaunchRequestContext];
-  v115 = [v114 applySensitiveConditionsPolicy:v4];
-  v116 = [v115 suppressMessage];
+  siriLaunchRequestContext = [(MHSchemaMHClientEvent *)self siriLaunchRequestContext];
+  v115 = [siriLaunchRequestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage37 = [v115 suppressMessage];
 
-  if (v116)
+  if (suppressMessage37)
   {
     [(MHSchemaMHClientEvent *)self deleteSiriLaunchRequestContext];
   }
 
-  v117 = [(MHSchemaMHClientEvent *)self endpointerAccessibleContext];
-  v118 = [v117 applySensitiveConditionsPolicy:v4];
-  v119 = [v118 suppressMessage];
+  endpointerAccessibleContext = [(MHSchemaMHClientEvent *)self endpointerAccessibleContext];
+  v118 = [endpointerAccessibleContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage38 = [v118 suppressMessage];
 
-  if (v119)
+  if (suppressMessage38)
   {
     [(MHSchemaMHClientEvent *)self deleteEndpointerAccessibleContext];
   }
 
-  v120 = [(MHSchemaMHClientEvent *)self carPlayLangaugeMismatched];
-  v121 = [v120 applySensitiveConditionsPolicy:v4];
-  v122 = [v121 suppressMessage];
+  carPlayLangaugeMismatched = [(MHSchemaMHClientEvent *)self carPlayLangaugeMismatched];
+  v121 = [carPlayLangaugeMismatched applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage39 = [v121 suppressMessage];
 
-  if (v122)
+  if (suppressMessage39)
   {
     [(MHSchemaMHClientEvent *)self deleteCarPlayLangaugeMismatched];
   }
 
-  v123 = [(MHSchemaMHClientEvent *)self darwinConnectedDeviceWakeContext];
-  v124 = [v123 applySensitiveConditionsPolicy:v4];
-  v125 = [v124 suppressMessage];
+  darwinConnectedDeviceWakeContext = [(MHSchemaMHClientEvent *)self darwinConnectedDeviceWakeContext];
+  v124 = [darwinConnectedDeviceWakeContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage40 = [v124 suppressMessage];
 
-  if (v125)
+  if (suppressMessage40)
   {
     [(MHSchemaMHClientEvent *)self deleteDarwinConnectedDeviceWakeContext];
   }
 
-  v126 = [(MHSchemaMHClientEvent *)self odldFalseTriggerMitigated];
-  v127 = [v126 applySensitiveConditionsPolicy:v4];
-  v128 = [v127 suppressMessage];
+  odldFalseTriggerMitigated = [(MHSchemaMHClientEvent *)self odldFalseTriggerMitigated];
+  v127 = [odldFalseTriggerMitigated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage41 = [v127 suppressMessage];
 
-  if (v128)
+  if (suppressMessage41)
   {
     [(MHSchemaMHClientEvent *)self deleteOdldFalseTriggerMitigated];
   }
 
-  v129 = [(MHSchemaMHClientEvent *)self speakerFalseTriggerMitigated];
-  v130 = [v129 applySensitiveConditionsPolicy:v4];
-  v131 = [v130 suppressMessage];
+  speakerFalseTriggerMitigated = [(MHSchemaMHClientEvent *)self speakerFalseTriggerMitigated];
+  v130 = [speakerFalseTriggerMitigated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage42 = [v130 suppressMessage];
 
-  if (v131)
+  if (suppressMessage42)
   {
     [(MHSchemaMHClientEvent *)self deleteSpeakerFalseTriggerMitigated];
   }
 
-  v132 = [(MHSchemaMHClientEvent *)self siriDirectedSpeechDetectionFailed];
-  v133 = [v132 applySensitiveConditionsPolicy:v4];
-  v134 = [v133 suppressMessage];
+  siriDirectedSpeechDetectionFailed = [(MHSchemaMHClientEvent *)self siriDirectedSpeechDetectionFailed];
+  v133 = [siriDirectedSpeechDetectionFailed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage43 = [v133 suppressMessage];
 
-  if (v134)
+  if (suppressMessage43)
   {
     [(MHSchemaMHClientEvent *)self deleteSiriDirectedSpeechDetectionFailed];
   }
 
-  v135 = [(MHSchemaMHClientEvent *)self audioDucked];
-  v136 = [v135 applySensitiveConditionsPolicy:v4];
-  v137 = [v136 suppressMessage];
+  audioDucked = [(MHSchemaMHClientEvent *)self audioDucked];
+  v136 = [audioDucked applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage44 = [v136 suppressMessage];
 
-  if (v137)
+  if (suppressMessage44)
   {
     [(MHSchemaMHClientEvent *)self deleteAudioDucked];
   }
 
-  v138 = [(MHSchemaMHClientEvent *)self audioRecordingFailed];
-  v139 = [v138 applySensitiveConditionsPolicy:v4];
-  v140 = [v139 suppressMessage];
+  audioRecordingFailed = [(MHSchemaMHClientEvent *)self audioRecordingFailed];
+  v139 = [audioRecordingFailed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage45 = [v139 suppressMessage];
 
-  if (v140)
+  if (suppressMessage45)
   {
     [(MHSchemaMHClientEvent *)self deleteAudioRecordingFailed];
   }
 
-  v141 = [(MHSchemaMHClientEvent *)self rtsFalseRejectDetected];
-  v142 = [v141 applySensitiveConditionsPolicy:v4];
-  v143 = [v142 suppressMessage];
+  rtsFalseRejectDetected = [(MHSchemaMHClientEvent *)self rtsFalseRejectDetected];
+  v142 = [rtsFalseRejectDetected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage46 = [v142 suppressMessage];
 
-  if (v143)
+  if (suppressMessage46)
   {
     [(MHSchemaMHClientEvent *)self deleteRtsFalseRejectDetected];
   }
 
-  v144 = [(MHSchemaMHClientEvent *)self trpCreated];
-  v145 = [v144 applySensitiveConditionsPolicy:v4];
-  v146 = [v145 suppressMessage];
+  trpCreated = [(MHSchemaMHClientEvent *)self trpCreated];
+  v145 = [trpCreated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage47 = [v145 suppressMessage];
 
-  if (v146)
+  if (suppressMessage47)
   {
     [(MHSchemaMHClientEvent *)self deleteTrpCreated];
   }
 
-  v147 = [(MHSchemaMHClientEvent *)self userSpeakingContext];
-  v148 = [v147 applySensitiveConditionsPolicy:v4];
-  v149 = [v148 suppressMessage];
+  userSpeakingContext = [(MHSchemaMHClientEvent *)self userSpeakingContext];
+  v148 = [userSpeakingContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage48 = [v148 suppressMessage];
 
-  if (v149)
+  if (suppressMessage48)
   {
     [(MHSchemaMHClientEvent *)self deleteUserSpeakingContext];
   }
 
-  v150 = [(MHSchemaMHClientEvent *)self speechStopDetected];
-  v151 = [v150 applySensitiveConditionsPolicy:v4];
-  v152 = [v151 suppressMessage];
+  speechStopDetected = [(MHSchemaMHClientEvent *)self speechStopDetected];
+  v151 = [speechStopDetected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage49 = [v151 suppressMessage];
 
-  if (v152)
+  if (suppressMessage49)
   {
     [(MHSchemaMHClientEvent *)self deleteSpeechStopDetected];
   }
 
-  v153 = [(MHSchemaMHClientEvent *)self speechDetectorContext];
-  v154 = [v153 applySensitiveConditionsPolicy:v4];
-  v155 = [v154 suppressMessage];
+  speechDetectorContext = [(MHSchemaMHClientEvent *)self speechDetectorContext];
+  v154 = [speechDetectorContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage50 = [v154 suppressMessage];
 
-  if (v155)
+  if (suppressMessage50)
   {
     [(MHSchemaMHClientEvent *)self deleteSpeechDetectorContext];
   }
 
-  v156 = [(MHSchemaMHClientEvent *)self stoppedListeningForSpeechContinuation];
-  v157 = [v156 applySensitiveConditionsPolicy:v4];
-  v158 = [v157 suppressMessage];
+  stoppedListeningForSpeechContinuation = [(MHSchemaMHClientEvent *)self stoppedListeningForSpeechContinuation];
+  v157 = [stoppedListeningForSpeechContinuation applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage51 = [v157 suppressMessage];
 
-  if (v158)
+  if (suppressMessage51)
   {
     [(MHSchemaMHClientEvent *)self deleteStoppedListeningForSpeechContinuation];
   }
 
-  v159 = [(MHSchemaMHClientEvent *)self userEngagementModelContext];
-  v160 = [v159 applySensitiveConditionsPolicy:v4];
-  v161 = [v160 suppressMessage];
+  userEngagementModelContext = [(MHSchemaMHClientEvent *)self userEngagementModelContext];
+  v160 = [userEngagementModelContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage52 = [v160 suppressMessage];
 
-  if (v161)
+  if (suppressMessage52)
   {
     [(MHSchemaMHClientEvent *)self deleteUserEngagementModelContext];
   }
 
-  v162 = [(MHSchemaMHClientEvent *)self attendingContext];
-  v163 = [v162 applySensitiveConditionsPolicy:v4];
-  v164 = [v163 suppressMessage];
+  attendingContext = [(MHSchemaMHClientEvent *)self attendingContext];
+  v163 = [attendingContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage53 = [v163 suppressMessage];
 
-  if (v164)
+  if (suppressMessage53)
   {
     [(MHSchemaMHClientEvent *)self deleteAttendingContext];
   }
 
-  v165 = [(MHSchemaMHClientEvent *)self crownPressed];
-  v166 = [v165 applySensitiveConditionsPolicy:v4];
-  v167 = [v166 suppressMessage];
+  crownPressed = [(MHSchemaMHClientEvent *)self crownPressed];
+  v166 = [crownPressed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage54 = [v166 suppressMessage];
 
-  if (v167)
+  if (suppressMessage54)
   {
     [(MHSchemaMHClientEvent *)self deleteCrownPressed];
   }
 
-  v168 = [(MHSchemaMHClientEvent *)self rtsTriggered];
-  v169 = [v168 applySensitiveConditionsPolicy:v4];
-  v170 = [v169 suppressMessage];
+  rtsTriggered = [(MHSchemaMHClientEvent *)self rtsTriggered];
+  v169 = [rtsTriggered applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage55 = [v169 suppressMessage];
 
-  if (v170)
+  if (suppressMessage55)
   {
     [(MHSchemaMHClientEvent *)self deleteRtsTriggered];
   }
 
-  v171 = [(MHSchemaMHClientEvent *)self rtsFirstPassPolicyTriggered];
-  v172 = [v171 applySensitiveConditionsPolicy:v4];
-  v173 = [v172 suppressMessage];
+  rtsFirstPassPolicyTriggered = [(MHSchemaMHClientEvent *)self rtsFirstPassPolicyTriggered];
+  v172 = [rtsFirstPassPolicyTriggered applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage56 = [v172 suppressMessage];
 
-  if (v173)
+  if (suppressMessage56)
   {
     [(MHSchemaMHClientEvent *)self deleteRtsFirstPassPolicyTriggered];
   }
 
-  v174 = [(MHSchemaMHClientEvent *)self rtsSecondPassPolicyDecisionMade];
-  v175 = [v174 applySensitiveConditionsPolicy:v4];
-  v176 = [v175 suppressMessage];
+  rtsSecondPassPolicyDecisionMade = [(MHSchemaMHClientEvent *)self rtsSecondPassPolicyDecisionMade];
+  v175 = [rtsSecondPassPolicyDecisionMade applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage57 = [v175 suppressMessage];
 
-  if (v176)
+  if (suppressMessage57)
   {
     [(MHSchemaMHClientEvent *)self deleteRtsSecondPassPolicyDecisionMade];
   }
 
-  v177 = [(MHSchemaMHClientEvent *)self voiceProfileOnboarded];
-  v178 = [v177 applySensitiveConditionsPolicy:v4];
-  v179 = [v178 suppressMessage];
+  voiceProfileOnboarded = [(MHSchemaMHClientEvent *)self voiceProfileOnboarded];
+  v178 = [voiceProfileOnboarded applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage58 = [v178 suppressMessage];
 
-  if (v179)
+  if (suppressMessage58)
   {
     [(MHSchemaMHClientEvent *)self deleteVoiceProfileOnboarded];
   }
 
-  v180 = [(MHSchemaMHClientEvent *)self voiceTriggerRePrompted];
-  v181 = [v180 applySensitiveConditionsPolicy:v4];
-  v182 = [v181 suppressMessage];
+  voiceTriggerRePrompted = [(MHSchemaMHClientEvent *)self voiceTriggerRePrompted];
+  v181 = [voiceTriggerRePrompted applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage59 = [v181 suppressMessage];
 
-  if (v182)
+  if (suppressMessage59)
   {
     [(MHSchemaMHClientEvent *)self deleteVoiceTriggerRePrompted];
   }
 
-  v183 = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFailureInsufficientPriority];
-  v184 = [v183 applySensitiveConditionsPolicy:v4];
-  v185 = [v184 suppressMessage];
+  assistantDaemonAudioRecordingFailureInsufficientPriority = [(MHSchemaMHClientEvent *)self assistantDaemonAudioRecordingFailureInsufficientPriority];
+  v184 = [assistantDaemonAudioRecordingFailureInsufficientPriority applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage60 = [v184 suppressMessage];
 
-  if (v185)
+  if (suppressMessage60)
   {
     [(MHSchemaMHClientEvent *)self deleteAssistantDaemonAudioRecordingFailureInsufficientPriority];
   }
 
-  v186 = [(MHSchemaMHClientEvent *)self voiceProfileICloudSyncFinished];
-  v187 = [v186 applySensitiveConditionsPolicy:v4];
-  v188 = [v187 suppressMessage];
+  voiceProfileICloudSyncFinished = [(MHSchemaMHClientEvent *)self voiceProfileICloudSyncFinished];
+  v187 = [voiceProfileICloudSyncFinished applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage61 = [v187 suppressMessage];
 
-  if (v188)
+  if (suppressMessage61)
   {
     [(MHSchemaMHClientEvent *)self deleteVoiceProfileICloudSyncFinished];
   }
 
-  v189 = [(MHSchemaMHClientEvent *)self voiceTriggerRejectDetected];
-  v190 = [v189 applySensitiveConditionsPolicy:v4];
-  v191 = [v190 suppressMessage];
+  voiceTriggerRejectDetected = [(MHSchemaMHClientEvent *)self voiceTriggerRejectDetected];
+  v190 = [voiceTriggerRejectDetected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage62 = [v190 suppressMessage];
 
-  if (v191)
+  if (suppressMessage62)
   {
     [(MHSchemaMHClientEvent *)self deleteVoiceTriggerRejectDetected];
   }
 
-  v192 = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeTTSVolumeQueried];
-  v193 = [v192 applySensitiveConditionsPolicy:v4];
-  v194 = [v193 suppressMessage];
+  adaptiveSiriVolumeTTSVolumeQueried = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeTTSVolumeQueried];
+  v193 = [adaptiveSiriVolumeTTSVolumeQueried applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage63 = [v193 suppressMessage];
 
-  if (v194)
+  if (suppressMessage63)
   {
     [(MHSchemaMHClientEvent *)self deleteAdaptiveSiriVolumeTTSVolumeQueried];
   }
 
-  v195 = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeUserIntentDetected];
-  v196 = [v195 applySensitiveConditionsPolicy:v4];
-  v197 = [v196 suppressMessage];
+  adaptiveSiriVolumeUserIntentDetected = [(MHSchemaMHClientEvent *)self adaptiveSiriVolumeUserIntentDetected];
+  v196 = [adaptiveSiriVolumeUserIntentDetected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage64 = [v196 suppressMessage];
 
-  if (v197)
+  if (suppressMessage64)
   {
     [(MHSchemaMHClientEvent *)self deleteAdaptiveSiriVolumeUserIntentDetected];
   }
 
-  v198 = [(MHSchemaMHClientEvent *)self speakerIdEnrollmentDataReportedTier1];
-  v199 = [v198 applySensitiveConditionsPolicy:v4];
-  v200 = [v199 suppressMessage];
+  speakerIdEnrollmentDataReportedTier1 = [(MHSchemaMHClientEvent *)self speakerIdEnrollmentDataReportedTier1];
+  v199 = [speakerIdEnrollmentDataReportedTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage65 = [v199 suppressMessage];
 
-  if (v200)
+  if (suppressMessage65)
   {
     [(MHSchemaMHClientEvent *)self deleteSpeakerIdEnrollmentDataReportedTier1];
   }
 
-  v201 = [(MHSchemaMHClientEvent *)self speakerIdModelSelectedClockSessionInfoTier1];
-  v202 = [v201 applySensitiveConditionsPolicy:v4];
-  v203 = [v202 suppressMessage];
+  speakerIdModelSelectedClockSessionInfoTier1 = [(MHSchemaMHClientEvent *)self speakerIdModelSelectedClockSessionInfoTier1];
+  v202 = [speakerIdModelSelectedClockSessionInfoTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage66 = [v202 suppressMessage];
 
-  if (v203)
+  if (suppressMessage66)
   {
     [(MHSchemaMHClientEvent *)self deleteSpeakerIdModelSelectedClockSessionInfoTier1];
   }
 
-  v204 = [(MHSchemaMHClientEvent *)self speakerIdModelOneSessionReportedTier1];
-  v205 = [v204 applySensitiveConditionsPolicy:v4];
-  v206 = [v205 suppressMessage];
+  speakerIdModelOneSessionReportedTier1 = [(MHSchemaMHClientEvent *)self speakerIdModelOneSessionReportedTier1];
+  v205 = [speakerIdModelOneSessionReportedTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage67 = [v205 suppressMessage];
 
-  if (v206)
+  if (suppressMessage67)
   {
     [(MHSchemaMHClientEvent *)self deleteSpeakerIdModelOneSessionReportedTier1];
   }
@@ -19949,77 +19949,77 @@ LABEL_339:
 
 - (int)componentName
 {
-  v2 = [(MHSchemaMHClientEvent *)self eventMetadata];
-  v3 = [v2 mhId];
+  eventMetadata = [(MHSchemaMHClientEvent *)self eventMetadata];
+  mhId = [eventMetadata mhId];
 
-  if (v3)
+  if (mhId)
   {
-    v4 = [v3 value];
-    if (v4)
+    value = [mhId value];
+    if (value)
     {
-      v5 = [v3 value];
-      v6 = [v5 length];
+      value2 = [mhId value];
+      v6 = [value2 length];
 
       if (v6)
       {
-        LODWORD(v4) = 9;
+        LODWORD(value) = 9;
       }
 
       else
       {
-        LODWORD(v4) = 0;
+        LODWORD(value) = 0;
       }
     }
   }
 
   else
   {
-    LODWORD(v4) = 0;
+    LODWORD(value) = 0;
   }
 
-  return v4;
+  return value;
 }
 
 - (id)getComponentId
 {
-  v2 = [(MHSchemaMHClientEvent *)self eventMetadata];
-  v3 = [v2 mhId];
+  eventMetadata = [(MHSchemaMHClientEvent *)self eventMetadata];
+  mhId = [eventMetadata mhId];
 
-  if (!v3)
+  if (!mhId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [mhId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [mhId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = mhId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(MHSchemaMHClientEvent *)self whichEvent_Type];
+  whichEvent_Type = [(MHSchemaMHClientEvent *)self whichEvent_Type];
   v4 = 0;
-  v5 = v3 - 100;
+  v5 = whichEvent_Type - 100;
   v6 = &OBJC_IVAR___MHSchemaMHClientEvent__acousticFalseTriggerMitigationEvaluationContext;
   switch(v5)
   {
@@ -20226,16 +20226,16 @@ LABEL_66:
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 100 > 0x41)
+  if (tag - 100 > 0x41)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78E9D18[a3 - 100];
+    return off_1E78E9D18[tag - 100];
   }
 }
 

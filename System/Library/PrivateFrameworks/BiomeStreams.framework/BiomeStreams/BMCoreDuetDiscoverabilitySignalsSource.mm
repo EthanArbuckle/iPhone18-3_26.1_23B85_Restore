@@ -1,27 +1,27 @@
 @interface BMCoreDuetDiscoverabilitySignalsSource
-- (void)sendEvent:(id)a3;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation BMCoreDuetDiscoverabilitySignalsSource
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
   v67[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v5 = __biome_log_for_category();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(BMCoreDuetDiscoverabilitySignalsSource *)self sendEvent:v4, v5];
+    [(BMCoreDuetDiscoverabilitySignalsSource *)self sendEvent:eventCopy, v5];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
-    v51 = [v6 identifier];
-    v50 = [v6 bundleID];
-    v48 = [v6 context];
-    v7 = [v6 userInfo];
+    v6 = eventCopy;
+    identifier = [v6 identifier];
+    bundleID = [v6 bundleID];
+    context = [v6 context];
+    userInfo = [v6 userInfo];
     v8 = MGCopyAnswer();
     if (v8)
     {
@@ -33,27 +33,27 @@
       v49 = 0;
     }
 
-    if (v51 && v50 && v49)
+    if (identifier && bundleID && v49)
     {
       v9 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:CFAbsoluteTimeGetCurrent()];
       v10 = objc_alloc(MEMORY[0x1E695DF90]);
       v67[0] = v49;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:1];
-      v12 = [get_DKDiscoverabilitySignalsMetadataKeyClass() osBuild];
-      v66 = v12;
+      osBuild = [get_DKDiscoverabilitySignalsMetadataKeyClass() osBuild];
+      v66 = osBuild;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v66 count:1];
       v47 = [v10 initWithObjects:v11 forKeys:v13];
 
-      if (v48)
+      if (context)
       {
-        v14 = [get_DKDiscoverabilitySignalsMetadataKeyClass() context];
-        [v47 setObject:v48 forKeyedSubscript:v14];
+        context2 = [get_DKDiscoverabilitySignalsMetadataKeyClass() context];
+        [v47 setObject:context forKeyedSubscript:context2];
       }
 
-      if (v7)
+      if (userInfo)
       {
-        v15 = [get_DKDiscoverabilitySignalsMetadataKeyClass() userInfo];
-        [v47 setObject:v7 forKeyedSubscript:v15];
+        userInfo2 = [get_DKDiscoverabilitySignalsMetadataKeyClass() userInfo];
+        [v47 setObject:userInfo forKeyedSubscript:userInfo2];
       }
 
       v60 = 0;
@@ -74,7 +74,7 @@
 
       v17 = v16;
       _Block_object_dispose(&v60, 8);
-      v46 = [[v16 alloc] initWithIdentifier:0 bundleIdentifier:v50 itemIdentifier:0 groupIdentifier:0 deviceIdentifier:0 userIdentifier:0];
+      v46 = [[v16 alloc] initWithIdentifier:0 bundleIdentifier:bundleID itemIdentifier:0 groupIdentifier:0 deviceIdentifier:0 userIdentifier:0];
       v60 = 0;
       v61 = &v60;
       v62 = 0x2050000000;
@@ -111,14 +111,14 @@
 
       v21 = v20;
       _Block_object_dispose(&v60, 8);
-      v22 = [v20 discoverabilitySignalsStream];
+      discoverabilitySignalsStream = [v20 discoverabilitySignalsStream];
       v23 = [v47 copy];
-      v45 = [v18 eventWithStream:v22 source:v46 startDate:v9 endDate:v9 identifierStringValue:v51 metadata:v23];
+      v45 = [v18 eventWithStream:discoverabilitySignalsStream source:v46 startDate:v9 endDate:v9 identifierStringValue:identifier metadata:v23];
 
-      if (v7)
+      if (userInfo)
       {
         v54 = 0;
-        v24 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v7 options:0 error:&v54];
+        v24 = [MEMORY[0x1E696ACB0] dataWithJSONObject:userInfo options:0 error:&v54];
         v25 = v54;
         if (v25)
         {
@@ -154,30 +154,30 @@
       v28 = v27;
       _Block_object_dispose(&v60, 8);
       v29 = [v27 alloc];
-      v30 = [v6 identifier];
-      v31 = [v6 context];
-      v32 = [v29 initWithContentIdentifier:v30 context:v31 osBuild:v49 userInfo:v24];
+      identifier2 = [v6 identifier];
+      context3 = [v6 context];
+      v32 = [v29 initWithContentIdentifier:identifier2 context:context3 osBuild:v49 userInfo:v24];
 
       v33 = BMRootLibraryBridge();
       v34 = [v33 streamWithIdentifier:@"Discoverability.Signals" error:0];
 
-      v35 = [v34 source];
-      [v35 sendEvent:v32];
+      source = [v34 source];
+      [source sendEvent:v32];
 
       v36 = objc_alloc(MEMORY[0x1E695DF90]);
-      v65[0] = v51;
-      v65[1] = v50;
+      v65[0] = identifier;
+      v65[1] = bundleID;
       v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v65 count:2];
       v38 = [v36 initWithObjects:v37 forKeys:&unk_1EF309260];
 
-      if (v48)
+      if (context)
       {
-        [v38 setObject:v48 forKeyedSubscript:@"context"];
+        [v38 setObject:context forKeyedSubscript:@"context"];
       }
 
-      if (v7)
+      if (userInfo)
       {
-        [v38 setObject:v7 forKeyedSubscript:@"userInfo"];
+        [v38 setObject:userInfo forKeyedSubscript:@"userInfo"];
       }
 
       v60 = 0;
@@ -198,7 +198,7 @@
 
       v40 = v39;
       _Block_object_dispose(&v60, 8);
-      v41 = [v39 userKnowledgeStore];
+      userKnowledgeStore = [v39 userKnowledgeStore];
       v64 = v45;
       v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v64 count:1];
       v52[0] = MEMORY[0x1E69E9820];
@@ -207,7 +207,7 @@
       v52[3] = &unk_1E6E53900;
       v53 = v38;
       v43 = v38;
-      [v41 saveObjects:v42 responseQueue:0 withCompletion:v52];
+      [userKnowledgeStore saveObjects:v42 responseQueue:0 withCompletion:v52];
     }
 
     else

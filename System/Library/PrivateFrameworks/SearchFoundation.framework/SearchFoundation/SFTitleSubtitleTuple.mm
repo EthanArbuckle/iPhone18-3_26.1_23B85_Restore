@@ -1,42 +1,42 @@
 @interface SFTitleSubtitleTuple
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFTitleSubtitleTuple)initWithCoder:(id)a3;
-- (SFTitleSubtitleTuple)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFTitleSubtitleTuple)initWithCoder:(id)coder;
+- (SFTitleSubtitleTuple)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFTitleSubtitleTuple
 
 - (unint64_t)hash
 {
-  v3 = [(SFTitleSubtitleTuple *)self title];
-  v4 = [v3 hash];
-  v5 = [(SFTitleSubtitleTuple *)self subtitle];
-  v6 = [v5 hash];
+  title = [(SFTitleSubtitleTuple *)self title];
+  v4 = [title hash];
+  subtitle = [(SFTitleSubtitleTuple *)self subtitle];
+  v6 = [subtitle hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFTitleSubtitleTuple *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFTitleSubtitleTuple *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(SFTitleSubtitleTuple *)self title];
-      v8 = [(SFTitleSubtitleTuple *)v6 title];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      title = [(SFTitleSubtitleTuple *)self title];
+      title2 = [(SFTitleSubtitleTuple *)v6 title];
+      if ((title != 0) == (title2 == 0))
       {
         v11 = 0;
 LABEL_19:
@@ -44,12 +44,12 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v9 = [(SFTitleSubtitleTuple *)self title];
-      if (v9)
+      title3 = [(SFTitleSubtitleTuple *)self title];
+      if (title3)
       {
-        v3 = [(SFTitleSubtitleTuple *)self title];
-        v10 = [(SFTitleSubtitleTuple *)v6 title];
-        if (![v3 isEqual:v10])
+        title4 = [(SFTitleSubtitleTuple *)self title];
+        title5 = [(SFTitleSubtitleTuple *)v6 title];
+        if (![title4 isEqual:title5])
         {
           v11 = 0;
 LABEL_17:
@@ -58,13 +58,13 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        v21 = v10;
+        v21 = title5;
       }
 
-      v12 = [(SFTitleSubtitleTuple *)self subtitle];
-      v13 = [(SFTitleSubtitleTuple *)v6 subtitle];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      subtitle = [(SFTitleSubtitleTuple *)self subtitle];
+      subtitle2 = [(SFTitleSubtitleTuple *)v6 subtitle];
+      v14 = subtitle2;
+      if ((subtitle != 0) == (subtitle2 == 0))
       {
 
         v11 = 0;
@@ -72,16 +72,16 @@ LABEL_18:
 
       else
       {
-        v15 = [(SFTitleSubtitleTuple *)self subtitle];
-        if (v15)
+        subtitle3 = [(SFTitleSubtitleTuple *)self subtitle];
+        if (subtitle3)
         {
-          v16 = v15;
-          v19 = [(SFTitleSubtitleTuple *)self subtitle];
+          v16 = subtitle3;
+          subtitle4 = [(SFTitleSubtitleTuple *)self subtitle];
           [(SFTitleSubtitleTuple *)v6 subtitle];
-          v17 = v20 = v3;
-          v11 = [v19 isEqual:v17];
+          v17 = v20 = title4;
+          v11 = [subtitle4 isEqual:v17];
 
-          v3 = v20;
+          title4 = v20;
         }
 
         else
@@ -91,8 +91,8 @@ LABEL_18:
         }
       }
 
-      v10 = v21;
-      if (!v9)
+      title5 = v21;
+      if (!title3)
       {
         goto LABEL_18;
       }
@@ -108,15 +108,15 @@ LABEL_20:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFTitleSubtitleTuple *)self title];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  title = [(SFTitleSubtitleTuple *)self title];
+  v6 = [title copy];
   [v4 setTitle:v6];
 
-  v7 = [(SFTitleSubtitleTuple *)self subtitle];
-  v8 = [v7 copy];
+  subtitle = [(SFTitleSubtitleTuple *)self subtitle];
+  v8 = [subtitle copy];
   [v4 setSubtitle:v8];
 
   return v4;
@@ -125,31 +125,31 @@ LABEL_20:
 - (NSData)jsonData
 {
   v2 = [[_SFPBTitleSubtitleTuple alloc] initWithFacade:self];
-  v3 = [(_SFPBTitleSubtitleTuple *)v2 jsonData];
+  jsonData = [(_SFPBTitleSubtitleTuple *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBTitleSubtitleTuple alloc] initWithFacade:self];
-  v3 = [(_SFPBTitleSubtitleTuple *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBTitleSubtitleTuple *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBTitleSubtitleTuple alloc] initWithFacade:self];
-  v5 = [(_SFPBTitleSubtitleTuple *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBTitleSubtitleTuple *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFTitleSubtitleTuple)initWithCoder:(id)a3
+- (SFTitleSubtitleTuple)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBTitleSubtitleTuple alloc] initWithData:v5];
   v7 = [(SFTitleSubtitleTuple *)self initWithProtobuf:v6];
@@ -157,28 +157,28 @@ LABEL_20:
   return v7;
 }
 
-- (SFTitleSubtitleTuple)initWithProtobuf:(id)a3
+- (SFTitleSubtitleTuple)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFTitleSubtitleTuple;
   v5 = [(SFTitleSubtitleTuple *)&v12 init];
   if (v5)
   {
-    v6 = [v4 title];
+    title = [protobufCopy title];
 
-    if (v6)
+    if (title)
     {
-      v7 = [v4 title];
-      [(SFTitleSubtitleTuple *)v5 setTitle:v7];
+      title2 = [protobufCopy title];
+      [(SFTitleSubtitleTuple *)v5 setTitle:title2];
     }
 
-    v8 = [v4 subtitle];
+    subtitle = [protobufCopy subtitle];
 
-    if (v8)
+    if (subtitle)
     {
-      v9 = [v4 subtitle];
-      [(SFTitleSubtitleTuple *)v5 setSubtitle:v9];
+      subtitle2 = [protobufCopy subtitle];
+      [(SFTitleSubtitleTuple *)v5 setSubtitle:subtitle2];
     }
 
     v10 = v5;

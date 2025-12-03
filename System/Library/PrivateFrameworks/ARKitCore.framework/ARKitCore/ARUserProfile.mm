@@ -1,7 +1,7 @@
 @interface ARUserProfile
 + (id)defaultProfile;
-- (ARUserProfile)initWithIdentifier:(id)a3 type:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
+- (ARUserProfile)initWithIdentifier:(id)identifier type:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
@@ -14,17 +14,17 @@
   return v2;
 }
 
-- (ARUserProfile)initWithIdentifier:(id)a3 type:(int64_t)a4
+- (ARUserProfile)initWithIdentifier:(id)identifier type:(int64_t)type
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = ARUserProfile;
   v8 = [(ARUserProfile *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a3);
-    v9->_type = a4;
+    objc_storeStrong(&v8->_identifier, identifier);
+    v9->_type = type;
   }
 
   return v9;
@@ -75,10 +75,10 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()] && self->_type == v4[2] && -[NSString isEqualToString:](self->_identifier, "isEqualToString:", v4[1]);
+  equalCopy = equal;
+  v5 = [equalCopy isMemberOfClass:objc_opt_class()] && self->_type == equalCopy[2] && -[NSString isEqualToString:](self->_identifier, "isEqualToString:", equalCopy[1]);
 
   return v5;
 }

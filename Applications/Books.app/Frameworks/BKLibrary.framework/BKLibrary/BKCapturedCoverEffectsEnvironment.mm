@@ -1,23 +1,23 @@
 @interface BKCapturedCoverEffectsEnvironment
-+ (id)newCapturedEnvironment:(id)a3;
++ (id)newCapturedEnvironment:(id)environment;
 @end
 
 @implementation BKCapturedCoverEffectsEnvironment
 
-+ (id)newCapturedEnvironment:(id)a3
++ (id)newCapturedEnvironment:(id)environment
 {
-  if (!a3)
+  if (!environment)
   {
     return 0;
   }
 
-  v3 = a3;
+  environmentCopy = environment;
   v4 = objc_alloc_init(BKCapturedCoverEffectsEnvironment);
-  -[BKCapturedCoverEffectsEnvironment setCoverEffectsContent:](v4, "setCoverEffectsContent:", [v3 coverEffectsContent]);
-  -[BKCapturedCoverEffectsEnvironment setCoverEffectsNightMode:](v4, "setCoverEffectsNightMode:", [v3 coverEffectsNightMode]);
-  v5 = [v3 coverEffectRTLOverride];
+  -[BKCapturedCoverEffectsEnvironment setCoverEffectsContent:](v4, "setCoverEffectsContent:", [environmentCopy coverEffectsContent]);
+  -[BKCapturedCoverEffectsEnvironment setCoverEffectsNightMode:](v4, "setCoverEffectsNightMode:", [environmentCopy coverEffectsNightMode]);
+  coverEffectRTLOverride = [environmentCopy coverEffectRTLOverride];
 
-  [(BKCapturedCoverEffectsEnvironment *)v4 setCoverEffectRTLOverride:v5];
+  [(BKCapturedCoverEffectsEnvironment *)v4 setCoverEffectRTLOverride:coverEffectRTLOverride];
   return v4;
 }
 

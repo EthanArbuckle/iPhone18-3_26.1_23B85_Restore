@@ -1,17 +1,17 @@
 @interface MPStoreLyricsSnippetURLComponents
-- (MPStoreLyricsSnippetURLComponents)initWithSong:(id)a3 language:(id)a4 startTime:(double)a5 endTime:(double)a6;
-- (MPStoreLyricsSnippetURLComponents)initWithURL:(id)a3;
-- (id)signatureWithCountryCode:(id)a3 adamID:(id)a4 startTime:(id)a5 endTime:(id)a6 language:(id)a7;
-- (void)URLWithAdditionalParameters:(id)a3 completion:(id)a4;
+- (MPStoreLyricsSnippetURLComponents)initWithSong:(id)song language:(id)language startTime:(double)time endTime:(double)endTime;
+- (MPStoreLyricsSnippetURLComponents)initWithURL:(id)l;
+- (id)signatureWithCountryCode:(id)code adamID:(id)d startTime:(id)time endTime:(id)endTime language:(id)language;
+- (void)URLWithAdditionalParameters:(id)parameters completion:(id)completion;
 @end
 
 @implementation MPStoreLyricsSnippetURLComponents
 
-- (id)signatureWithCountryCode:(id)a3 adamID:(id)a4 startTime:(id)a5 endTime:(id)a6 language:(id)a7
+- (id)signatureWithCountryCode:(id)code adamID:(id)d startTime:(id)time endTime:(id)endTime language:(id)language
 {
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"lyrics%@%@%@%@%@", a3, a4, a5, a6, a7];
+  language = [MEMORY[0x1E696AEC0] stringWithFormat:@"lyrics%@%@%@%@%@", code, d, time, endTime, language];
   v8 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:20];
-  CC_SHA1([v7 UTF8String], objc_msgSend(v7, "length"), objc_msgSend(v8, "mutableBytes"));
+  CC_SHA1([language UTF8String], objc_msgSend(language, "length"), objc_msgSend(v8, "mutableBytes"));
   [v8 setLength:16];
   fd3fa4R8(3, [v8 mutableBytes]);
   v9 = [v8 base64EncodedStringWithOptions:0];
@@ -19,25 +19,25 @@
   return v9;
 }
 
-- (void)URLWithAdditionalParameters:(id)a3 completion:(id)a4
+- (void)URLWithAdditionalParameters:(id)parameters completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  completionCopy = completion;
   v8 = objc_alloc(MEMORY[0x1E69E4618]);
-  v9 = [MEMORY[0x1E69E4680] activeAccount];
-  v10 = [v8 initWithIdentity:v9];
+  activeAccount = [MEMORY[0x1E69E4680] activeAccount];
+  v10 = [v8 initWithIdentity:activeAccount];
 
-  v11 = [MEMORY[0x1E69E4658] sharedBagProvider];
+  mEMORY[0x1E69E4658] = [MEMORY[0x1E69E4658] sharedBagProvider];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __76__MPStoreLyricsSnippetURLComponents_URLWithAdditionalParameters_completion___block_invoke;
   v14[3] = &unk_1E767D258;
-  v15 = v6;
-  v16 = v7;
+  v15 = parametersCopy;
+  v16 = completionCopy;
   v14[4] = self;
-  v12 = v6;
-  v13 = v7;
-  [v11 getBagForRequestContext:v10 withCompletionHandler:v14];
+  v12 = parametersCopy;
+  v13 = completionCopy;
+  [mEMORY[0x1E69E4658] getBagForRequestContext:v10 withCompletionHandler:v14];
 }
 
 void __76__MPStoreLyricsSnippetURLComponents_URLWithAdditionalParameters_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -214,15 +214,15 @@ void __76__MPStoreLyricsSnippetURLComponents_URLWithAdditionalParameters_complet
   }
 }
 
-- (MPStoreLyricsSnippetURLComponents)initWithSong:(id)a3 language:(id)a4 startTime:(double)a5 endTime:(double)a6
+- (MPStoreLyricsSnippetURLComponents)initWithSong:(id)song language:(id)language startTime:(double)time endTime:(double)endTime
 {
-  v10 = a3;
-  v11 = a4;
+  songCopy = song;
+  languageCopy = language;
   v18.receiver = self;
   v18.super_class = MPStoreLyricsSnippetURLComponents;
   v12 = [(MPStoreLyricsSnippetURLComponents *)&v18 init];
   v13 = v12;
-  if (v12 && (objc_storeStrong(&v12->_language, a4), v13->_startTime = a5, v13->_endTime = a6, [v10 identifiers], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "preferredStoreStringIdentifierForPersonID:", 0), v15 = objc_claimAutoreleasedReturnValue(), v13->_songAdamID = objc_msgSend(v15, "integerValue"), v15, v14, !v13->_songAdamID))
+  if (v12 && (objc_storeStrong(&v12->_language, language), v13->_startTime = time, v13->_endTime = endTime, [songCopy identifiers], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "preferredStoreStringIdentifierForPersonID:", 0), v15 = objc_claimAutoreleasedReturnValue(), v13->_songAdamID = objc_msgSend(v15, "integerValue"), v15, v14, !v13->_songAdamID))
   {
     v16 = 0;
   }
@@ -235,10 +235,10 @@ void __76__MPStoreLyricsSnippetURLComponents_URLWithAdditionalParameters_complet
   return v16;
 }
 
-- (MPStoreLyricsSnippetURLComponents)initWithURL:(id)a3
+- (MPStoreLyricsSnippetURLComponents)initWithURL:(id)l
 {
   v65 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v63.receiver = self;
   v63.super_class = MPStoreLyricsSnippetURLComponents;
   v5 = [(MPStoreLyricsSnippetURLComponents *)&v63 init];
@@ -247,10 +247,10 @@ void __76__MPStoreLyricsSnippetURLComponents_URLWithAdditionalParameters_complet
     goto LABEL_43;
   }
 
-  v6 = [v4 absoluteString];
+  absoluteString = [lCopy absoluteString];
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"https?://%@/(?<countryCode>\\w{2})/lyrics/(?<adamID>[0-9]+)", @"music.apple.com"];
   v8 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:v7 options:1 error:0];
-  v9 = [v8 firstMatchInString:v6 options:0 range:{0, objc_msgSend(v6, "length")}];
+  v9 = [v8 firstMatchInString:absoluteString options:0 range:{0, objc_msgSend(absoluteString, "length")}];
   v10 = v9;
   if (!v9 || ((v11 = [v9 rangeWithName:@"adamID"], v13 = v12, v14 = objc_msgSend(v10, "rangeWithName:", @"countryCode"), v11 != 0x7FFFFFFFFFFFFFFFLL) ? (v16 = v14 == 0x7FFFFFFFFFFFFFFFLL) : (v16 = 1), v16))
   {
@@ -264,17 +264,17 @@ void __76__MPStoreLyricsSnippetURLComponents_URLWithAdditionalParameters_complet
   v52 = v8;
   v53 = v7;
   v55 = v5;
-  v50 = [v6 substringWithRange:{v11, v13}];
-  v54 = v6;
-  v49 = [v6 substringWithRange:{v18, v19}];
-  v56 = v4;
-  [MEMORY[0x1E696AF20] componentsWithURL:v4 resolvingAgainstBaseURL:0];
+  v50 = [absoluteString substringWithRange:{v11, v13}];
+  v54 = absoluteString;
+  v49 = [absoluteString substringWithRange:{v18, v19}];
+  v56 = lCopy;
+  [MEMORY[0x1E696AF20] componentsWithURL:lCopy resolvingAgainstBaseURL:0];
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v48 = v62 = 0u;
-  v20 = [v48 queryItems];
-  v21 = [v20 countByEnumeratingWithState:&v59 objects:v64 count:16];
+  queryItems = [v48 queryItems];
+  v21 = [queryItems countByEnumeratingWithState:&v59 objects:v64 count:16];
   if (!v21)
   {
     v23 = 0;
@@ -296,63 +296,63 @@ void __76__MPStoreLyricsSnippetURLComponents_URLWithAdditionalParameters_complet
     {
       if (*v60 != v25)
       {
-        objc_enumerationMutation(v20);
+        objc_enumerationMutation(queryItems);
       }
 
       v27 = *(*(&v59 + 1) + 8 * i);
-      v28 = [v27 name];
-      v29 = [v28 isEqualToString:@"ts"];
+      name = [v27 name];
+      v29 = [name isEqualToString:@"ts"];
 
       if (v29)
       {
-        v30 = [v27 value];
+        value = [v27 value];
         v31 = v23;
-        v23 = v30;
+        v23 = value;
       }
 
       else
       {
-        v32 = [v27 name];
-        v33 = [v32 isEqualToString:@"te"];
+        name2 = [v27 name];
+        v33 = [name2 isEqualToString:@"te"];
 
         if (v33)
         {
-          v34 = [v27 value];
+          value2 = [v27 value];
           v31 = v24;
-          v24 = v34;
+          v24 = value2;
         }
 
         else
         {
-          v35 = [v27 name];
-          v36 = [v35 isEqualToString:@"l"];
+          name3 = [v27 name];
+          v36 = [name3 isEqualToString:@"l"];
 
           if (v36)
           {
-            v37 = [v27 value];
+            value3 = [v27 value];
             v31 = v58;
-            v58 = v37;
+            v58 = value3;
           }
 
           else
           {
-            v38 = [v27 name];
-            v39 = [v38 isEqualToString:@"tk"];
+            name4 = [v27 name];
+            v39 = [name4 isEqualToString:@"tk"];
 
             if (!v39)
             {
               continue;
             }
 
-            v40 = [v27 value];
+            value4 = [v27 value];
             v31 = v57;
-            v57 = v40;
+            v57 = value4;
           }
         }
       }
     }
 
-    v22 = [v20 countByEnumeratingWithState:&v59 objects:v64 count:16];
+    v22 = [queryItems countByEnumeratingWithState:&v59 objects:v64 count:16];
   }
 
   while (v22);
@@ -383,7 +383,7 @@ LABEL_28:
     objc_storeStrong(&v55->_countryCode, v49);
   }
 
-  v4 = v56;
+  lCopy = v56;
   if (v44)
   {
 LABEL_43:

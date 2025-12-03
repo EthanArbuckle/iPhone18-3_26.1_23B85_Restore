@@ -1,34 +1,34 @@
 @interface TPSGestaltValidation
-- (void)validateWithCompletion:(id)a3;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSGestaltValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TPSDeviceCapabilityValidation *)self queries];
-  v6 = [v5 count];
+  completionCopy = completion;
+  queries = [(TPSDeviceCapabilityValidation *)self queries];
+  v6 = [queries count];
 
   if (v6)
   {
-    v7 = [(TPSDeviceCapabilityValidation *)self queries];
-    v8 = [v7 allKeys];
+    queries2 = [(TPSDeviceCapabilityValidation *)self queries];
+    allKeys = [queries2 allKeys];
     v9 = MGCopyMultipleAnswers();
 
     if (v9)
     {
-      v29 = v4;
+      v29 = completionCopy;
       v33 = 0u;
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v10 = [(TPSDeviceCapabilityValidation *)self queries];
-      v11 = [v10 allKeys];
+      queries3 = [(TPSDeviceCapabilityValidation *)self queries];
+      allKeys2 = [queries3 allKeys];
 
-      obj = v11;
-      v12 = [v11 countByEnumeratingWithState:&v31 objects:v43 count:16];
+      obj = allKeys2;
+      v12 = [allKeys2 countByEnumeratingWithState:&v31 objects:v43 count:16];
       if (v12)
       {
         v14 = v12;
@@ -48,11 +48,11 @@
 
             v18 = *(*(&v31 + 1) + 8 * v17);
             v19 = [v9 objectForKeyedSubscript:{v18, v28}];
-            v20 = [(TPSDeviceCapabilityValidation *)self queries];
-            v21 = [v20 objectForKeyedSubscript:v18];
+            queries4 = [(TPSDeviceCapabilityValidation *)self queries];
+            v21 = [queries4 objectForKeyedSubscript:v18];
 
-            v22 = [MEMORY[0x277D71778] targeting];
-            if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
+            targeting = [MEMORY[0x277D71778] targeting];
+            if (os_log_type_enabled(targeting, OS_LOG_TYPE_DEBUG))
             {
               v24 = objc_opt_class();
               *buf = v28;
@@ -64,7 +64,7 @@
               v41 = 2112;
               v42 = v21;
               v25 = v24;
-              _os_log_debug_impl(&dword_232D6F000, v22, OS_LOG_TYPE_DEBUG, "%@ - checking %@...Answer: %@. Expected: %@", buf, 0x2Au);
+              _os_log_debug_impl(&dword_232D6F000, targeting, OS_LOG_TYPE_DEBUG, "%@ - checking %@...Answer: %@. Expected: %@", buf, 0x2Au);
             }
 
             objc_opt_class();
@@ -117,19 +117,19 @@ LABEL_22:
 
 LABEL_25:
 
-      v4 = v29;
+      completionCopy = v29;
       (*(v29 + 2))(v29, v16, 0);
     }
 
     else
     {
-      (*(v4 + 2))(v4, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 
   else
   {
-    (*(v4 + 2))(v4, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 
   v27 = *MEMORY[0x277D85DE8];

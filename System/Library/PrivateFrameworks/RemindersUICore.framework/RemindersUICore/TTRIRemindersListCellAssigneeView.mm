@@ -7,7 +7,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   TTRIRemindersListCellAssigneeView.layoutSubviews()();
 }
 

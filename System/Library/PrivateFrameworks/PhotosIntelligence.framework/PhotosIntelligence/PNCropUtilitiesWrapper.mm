@@ -1,11 +1,11 @@
 @interface PNCropUtilitiesWrapper
-+ (CGSize)widgetSizeForFamily:(int64_t)a3;
-+ (id)cropVariantsFromSignalsPrefersFaceCrops:(int)a3 aspectRatio:(int)a4 sourcePixelWidth:(int)a5 sourcePixelHeight:acceptableCropRect:preferredCropRect:faceAreaRect:objectSaliencyRects:gazeAreaRect:isDenormalized:;
++ (CGSize)widgetSizeForFamily:(int64_t)family;
++ (id)cropVariantsFromSignalsPrefersFaceCrops:(int)crops aspectRatio:(int)ratio sourcePixelWidth:(int)width sourcePixelHeight:acceptableCropRect:preferredCropRect:faceAreaRect:objectSaliencyRects:gazeAreaRect:isDenormalized:;
 @end
 
 @implementation PNCropUtilitiesWrapper
 
-+ (CGSize)widgetSizeForFamily:(int64_t)a3
++ (CGSize)widgetSizeForFamily:(int64_t)family
 {
   v19 = 0;
   v20 = &v19;
@@ -37,7 +37,7 @@ LABEL_7:
   }
 
   v8 = v7;
-  v9 = [v7 metricsForFamily:a3];
+  v9 = [v7 metricsForFamily:family];
   if (!v9)
   {
     goto LABEL_7;
@@ -55,9 +55,9 @@ LABEL_7:
   return result;
 }
 
-+ (id)cropVariantsFromSignalsPrefersFaceCrops:(int)a3 aspectRatio:(int)a4 sourcePixelWidth:(int)a5 sourcePixelHeight:acceptableCropRect:preferredCropRect:faceAreaRect:objectSaliencyRects:gazeAreaRect:isDenormalized:
++ (id)cropVariantsFromSignalsPrefersFaceCrops:(int)crops aspectRatio:(int)ratio sourcePixelWidth:(int)width sourcePixelHeight:acceptableCropRect:preferredCropRect:faceAreaRect:objectSaliencyRects:gazeAreaRect:isDenormalized:
 {
-  if (a3)
+  if (crops)
   {
     v5 = &unk_1F46E56F0;
   }
@@ -67,7 +67,7 @@ LABEL_7:
     v5 = MEMORY[0x1E695E0F0];
   }
 
-  return [PNCropUtilities cropVariantsFromSignalsWithCropTypes:"cropVariantsFromSignalsWithCropTypes:aspectRatio:sourcePixelWidth:sourcePixelHeight:acceptableCropRect:preferredCropRect:faceAreaRect:objectSaliencyRects:gazeAreaRect:isDenormalized:" aspectRatio:v5 sourcePixelWidth:a4 sourcePixelHeight:a5 acceptableCropRect:? preferredCropRect:? faceAreaRect:? objectSaliencyRects:? gazeAreaRect:? isDenormalized:?];
+  return [PNCropUtilities cropVariantsFromSignalsWithCropTypes:"cropVariantsFromSignalsWithCropTypes:aspectRatio:sourcePixelWidth:sourcePixelHeight:acceptableCropRect:preferredCropRect:faceAreaRect:objectSaliencyRects:gazeAreaRect:isDenormalized:" aspectRatio:v5 sourcePixelWidth:ratio sourcePixelHeight:width acceptableCropRect:? preferredCropRect:? faceAreaRect:? objectSaliencyRects:? gazeAreaRect:? isDenormalized:?];
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface WBSFrequentlyVistedSiteAnalyticsPayload
-- (WBSFrequentlyVistedSiteAnalyticsPayload)initWithItemPosition:(unint64_t)a3 lastVisitedDate:(id)a4 score:(id)a5;
+- (WBSFrequentlyVistedSiteAnalyticsPayload)initWithItemPosition:(unint64_t)position lastVisitedDate:(id)date score:(id)score;
 - (id)debugDescription;
 - (id)eventDictionaryDescription;
 @end
 
 @implementation WBSFrequentlyVistedSiteAnalyticsPayload
 
-- (WBSFrequentlyVistedSiteAnalyticsPayload)initWithItemPosition:(unint64_t)a3 lastVisitedDate:(id)a4 score:(id)a5
+- (WBSFrequentlyVistedSiteAnalyticsPayload)initWithItemPosition:(unint64_t)position lastVisitedDate:(id)date score:(id)score
 {
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  scoreCopy = score;
   v15.receiver = self;
   v15.super_class = WBSFrequentlyVistedSiteAnalyticsPayload;
   v11 = [(WBSFrequentlyVistedSiteAnalyticsPayload *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    v11->_itemPosition = a3;
-    objc_storeStrong(&v11->_lastVisitedDate, a4);
-    objc_storeStrong(&v12->_score, a5);
+    v11->_itemPosition = position;
+    objc_storeStrong(&v11->_lastVisitedDate, date);
+    objc_storeStrong(&v12->_score, score);
     v13 = v12;
   }
 

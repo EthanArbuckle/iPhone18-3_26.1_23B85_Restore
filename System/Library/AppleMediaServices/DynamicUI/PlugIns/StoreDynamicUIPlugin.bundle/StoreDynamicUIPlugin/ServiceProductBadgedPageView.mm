@@ -1,23 +1,23 @@
 @interface ServiceProductBadgedPageView
-- (void)didTapOffer:(id)a3;
+- (void)didTapOffer:(id)offer;
 - (void)layoutSubviews;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ServiceProductBadgedPageView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_FA8F4();
 }
 
-- (void)didTapOffer:(id)a3
+- (void)didTapOffer:(id)offer
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_13BF54();
   swift_unknownObjectRelease();
   sub_FB5E0(v5);
@@ -27,21 +27,21 @@
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_FB6C0();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_FB744(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_FB744(change);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
+  scrollCopy = scroll;
+  selfCopy = self;
   sub_FBD98();
 }
 

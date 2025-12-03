@@ -27,7 +27,7 @@
 {
   v6.receiver = self;
   v6.super_class = SBFolderTitleTextFieldAccessibility;
-  v2 = [(SBFolderTitleTextFieldAccessibility *)&v6 accessibilityValue];
+  accessibilityValue = [(SBFolderTitleTextFieldAccessibility *)&v6 accessibilityValue];
   v5 = accessibilityLocalizedString(@"folder.name.textfield");
   v3 = __UIAXStringForVariables();
 
@@ -38,8 +38,8 @@
 {
   if ([(SBFolderTitleTextFieldAccessibility *)self safeBoolForKey:@"_showingEditUI"])
   {
-    v3 = [(SBFolderTitleTextFieldAccessibility *)self accessibilityTraits];
-    if ((*MEMORY[0x29EDC7528] & ~v3) == 0)
+    accessibilityTraits = [(SBFolderTitleTextFieldAccessibility *)self accessibilityTraits];
+    if ((*MEMORY[0x29EDC7528] & ~accessibilityTraits) == 0)
     {
       return 1;
     }
@@ -54,13 +54,13 @@
 {
   v5.receiver = self;
   v5.super_class = SBFolderTitleTextFieldAccessibility;
-  v3 = [(SBFolderTitleTextFieldAccessibility *)&v5 accessibilityTraits];
+  accessibilityTraits = [(SBFolderTitleTextFieldAccessibility *)&v5 accessibilityTraits];
   if (([(SBFolderTitleTextFieldAccessibility *)self safeBoolForKey:@"_showingEditUI"]& 1) == 0)
   {
     return *MEMORY[0x29EDC7F80] | _AXTraitsRemoveTrait();
   }
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (id)accessibilityHint
@@ -71,9 +71,9 @@
   }
 
   v4 = [(SBFolderTitleTextFieldAccessibility *)self safeValueForKey:@"clearButtonMode"];
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
 
-  if (v5 == 3)
+  if (intValue == 3)
   {
     v6 = @"folder.name.enter.edit.textfield.hint";
   }

@@ -3,10 +3,10 @@
 + (id)sharedInstance;
 + (void)cancelNotificationTTR;
 + (void)sendNotificationTTR;
-+ (void)setNotBefore:(id)a3;
++ (void)setNotBefore:(id)before;
 - (AppleProxNotificationTTR)init;
 - (void)cancelNotification;
-- (void)processNotificationResponse:(unint64_t)a3;
+- (void)processNotificationResponse:(unint64_t)response;
 - (void)releaseNotification;
 - (void)sendNotification;
 @end
@@ -27,14 +27,14 @@
 
 + (void)sendNotificationTTR
 {
-  v2 = [a1 sharedInstance];
-  [v2 sendNotification];
+  sharedInstance = [self sharedInstance];
+  [sharedInstance sendNotification];
 }
 
 + (void)cancelNotificationTTR
 {
-  v2 = [a1 sharedInstance];
-  [v2 cancelNotification];
+  sharedInstance = [self sharedInstance];
+  [sharedInstance cancelNotification];
 }
 
 + (id)notBefore
@@ -61,12 +61,12 @@
   return v8;
 }
 
-+ (void)setNotBefore:(id)a3
++ (void)setNotBefore:(id)before
 {
-  v3 = a3;
+  beforeCopy = before;
   v4 = +[NSUserDefaults standardUserDefaults];
   v8 = @"NotBefore";
-  v9 = v3;
+  v9 = beforeCopy;
   v5 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
@@ -110,9 +110,9 @@ LABEL_8:
 {
   if (MGGetBoolAnswer())
   {
-    v3 = [objc_opt_class() notBefore];
+    notBefore = [objc_opt_class() notBefore];
     v4 = +[NSDate now];
-    v5 = [v3 compare:v4];
+    v5 = [notBefore compare:v4];
 
     if (v5 == &dword_0 + 1)
     {
@@ -195,13 +195,13 @@ LABEL_9:
   }
 }
 
-- (void)processNotificationResponse:(unint64_t)a3
+- (void)processNotificationResponse:(unint64_t)response
 {
   v5 = LoggingProx();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v9 = a3;
+    responseCopy = response;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Processing UserNotification for TTR (%d)", buf, 8u);
   }
 
@@ -211,7 +211,7 @@ LABEL_9:
   v7[2] = sub_26F0;
   v7[3] = &unk_146C8;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = response;
   dispatch_async(ttrQueue, v7);
 }
 

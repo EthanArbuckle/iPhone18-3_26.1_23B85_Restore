@@ -1,13 +1,13 @@
 @interface PKTrailingAccessoryLabel
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSAttributedString)attributedText;
-- (PKTrailingAccessoryLabel)initWithCoder:(id)a3;
+- (PKTrailingAccessoryLabel)initWithCoder:(id)coder;
 - (UIEdgeInsets)contentInsets;
 - (int64_t)maximumNumberOfLines;
 - (void)layoutSubviews;
-- (void)setAttributedText:(id)a3;
-- (void)setContentInsets:(UIEdgeInsets)a3;
-- (void)setMaximumNumberOfLines:(int64_t)a3;
+- (void)setAttributedText:(id)text;
+- (void)setContentInsets:(UIEdgeInsets)insets;
+- (void)setMaximumNumberOfLines:(int64_t)lines;
 - (void)unregisterAccessories;
 @end
 
@@ -15,36 +15,36 @@
 
 - (NSAttributedString)attributedText
 {
-  v2 = [*(&self->super.super.super.isa + OBJC_IVAR___PKTrailingAccessoryLabel_textView) attributedText];
+  attributedText = [*(&self->super.super.super.isa + OBJC_IVAR___PKTrailingAccessoryLabel_textView) attributedText];
 
-  return v2;
+  return attributedText;
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___PKTrailingAccessoryLabel_textView);
-  v5 = a3;
-  v6 = self;
+  textCopy = text;
+  selfCopy = self;
   [v4 setAttributedText_];
-  [(PKTrailingAccessoryLabel *)v6 setNeedsLayout];
+  [(PKTrailingAccessoryLabel *)selfCopy setNeedsLayout];
 }
 
 - (int64_t)maximumNumberOfLines
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR___PKTrailingAccessoryLabel_textView);
-  v3 = self;
-  v4 = [v2 textContainer];
-  v5 = [v4 maximumNumberOfLines];
+  selfCopy = self;
+  textContainer = [v2 textContainer];
+  maximumNumberOfLines = [textContainer maximumNumberOfLines];
 
-  return v5;
+  return maximumNumberOfLines;
 }
 
-- (void)setMaximumNumberOfLines:(int64_t)a3
+- (void)setMaximumNumberOfLines:(int64_t)lines
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___PKTrailingAccessoryLabel_textView);
-  v6 = self;
-  v5 = [v4 textContainer];
-  [v5 setMaximumNumberOfLines_];
+  selfCopy = self;
+  textContainer = [v4 textContainer];
+  [textContainer setMaximumNumberOfLines_];
 }
 
 - (UIEdgeInsets)contentInsets
@@ -62,12 +62,12 @@
   return result;
 }
 
-- (void)setContentInsets:(UIEdgeInsets)a3
+- (void)setContentInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v8 = (self + OBJC_IVAR___PKTrailingAccessoryLabel_contentInsets);
   swift_beginAccess();
   *v8 = top;
@@ -77,7 +77,7 @@
   [(PKTrailingAccessoryLabel *)self setNeedsLayout];
 }
 
-- (PKTrailingAccessoryLabel)initWithCoder:(id)a3
+- (PKTrailingAccessoryLabel)initWithCoder:(id)coder
 {
   v4 = (self + OBJC_IVAR___PKTrailingAccessoryLabel_contentInsets);
   v5 = *(MEMORY[0x1E69DDCE0] + 16);
@@ -93,10 +93,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_1BD6D80C8(1, 0.0, 0.0, width, 1.79769313e308);
 
   v6 = width;
@@ -118,7 +118,7 @@
 
 - (void)unregisterAccessories
 {
-  v2 = self;
+  selfCopy = self;
   TrailingAccessoryLabel.unregisterAccessories()();
 }
 

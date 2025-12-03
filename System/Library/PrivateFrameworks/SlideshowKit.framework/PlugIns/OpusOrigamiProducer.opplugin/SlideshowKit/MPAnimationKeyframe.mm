@@ -2,16 +2,16 @@
 - (MPAnimationKeyframe)init;
 - (double)postControl;
 - (double)preControl;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)relativeTimeCompare:(id)a3;
-- (void)copyVars:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)relativeTimeCompare:(id)compare;
+- (void)copyVars:(id)vars;
 - (void)dealloc;
-- (void)setKeyframe:(id)a3;
-- (void)setOffsetType:(unint64_t)a3;
-- (void)setParentPath:(id)a3;
-- (void)setPostControl:(double)a3;
-- (void)setPreControl:(double)a3;
-- (void)setTime:(double)a3;
+- (void)setKeyframe:(id)keyframe;
+- (void)setOffsetType:(unint64_t)type;
+- (void)setParentPath:(id)path;
+- (void)setPostControl:(double)control;
+- (void)setPreControl:(double)control;
+- (void)setTime:(double)time;
 @end
 
 @implementation MPAnimationKeyframe
@@ -32,9 +32,9 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 copyVars:self];
   return v4;
 }
@@ -53,9 +53,9 @@
   [(MPAnimationKeyframe *)&v4 dealloc];
 }
 
-- (void)setTime:(double)a3
+- (void)setTime:(double)time
 {
-  self->_time = a3;
+  self->_time = time;
   keyframe = self->_keyframe;
   if (keyframe)
   {
@@ -63,9 +63,9 @@
   }
 }
 
-- (void)setOffsetType:(unint64_t)a3
+- (void)setOffsetType:(unint64_t)type
 {
-  self->_offsetType = a3;
+  self->_offsetType = type;
   keyframe = self->_keyframe;
   if (keyframe)
   {
@@ -84,14 +84,14 @@
   return result;
 }
 
-- (void)setPreControl:(double)a3
+- (void)setPreControl:(double)control
 {
-  self->_preControl = a3;
+  self->_preControl = control;
   keyframe = self->_keyframe;
   if (keyframe)
   {
-    *&a3 = a3;
-    [(MCAnimationKeyframe *)keyframe setPreControl:a3];
+    *&control = control;
+    [(MCAnimationKeyframe *)keyframe setPreControl:control];
   }
 }
 
@@ -106,23 +106,23 @@
   return result;
 }
 
-- (void)setPostControl:(double)a3
+- (void)setPostControl:(double)control
 {
-  self->_postControl = a3;
+  self->_postControl = control;
   keyframe = self->_keyframe;
   if (keyframe)
   {
-    *&a3 = a3;
-    [(MCAnimationKeyframe *)keyframe setPostControl:a3];
+    *&control = control;
+    [(MCAnimationKeyframe *)keyframe setPostControl:control];
   }
 }
 
-- (int64_t)relativeTimeCompare:(id)a3
+- (int64_t)relativeTimeCompare:(id)compare
 {
   parentPath = self->_parentPath;
   [(MPAnimationPath *)parentPath relativeTimeForKeyframe:self];
   v6 = v5;
-  [(MPAnimationPath *)parentPath relativeTimeForKeyframe:a3];
+  [(MPAnimationPath *)parentPath relativeTimeForKeyframe:compare];
   if (v6 < v7)
   {
     return -1;
@@ -134,17 +134,17 @@
   }
 }
 
-- (void)setParentPath:(id)a3
+- (void)setParentPath:(id)path
 {
-  if (a3 && self->_parentPath)
+  if (path && self->_parentPath)
   {
     objc_exception_throw([NSException exceptionWithName:@"ManyToOneException" reason:@"A keyframe  may one have one parent.  Please remove it first.  This is unsupported." userInfo:0, v3, v4]);
   }
 
-  self->_parentPath = a3;
+  self->_parentPath = path;
 }
 
-- (void)setKeyframe:(id)a3
+- (void)setKeyframe:(id)keyframe
 {
   keyframe = self->_keyframe;
   if (keyframe)
@@ -153,9 +153,9 @@
     self->_keyframe = 0;
   }
 
-  v6 = a3;
-  self->_keyframe = v6;
-  if (v6)
+  keyframeCopy = keyframe;
+  self->_keyframe = keyframeCopy;
+  if (keyframeCopy)
   {
     if (self->_preControl != 10000000.0)
     {
@@ -175,12 +175,12 @@
   }
 }
 
-- (void)copyVars:(id)a3
+- (void)copyVars:(id)vars
 {
-  self->_time = *(a3 + 4);
-  self->_offsetType = *(a3 + 5);
-  self->_preControl = *(a3 + 6);
-  self->_postControl = *(a3 + 7);
+  self->_time = *(vars + 4);
+  self->_offsetType = *(vars + 5);
+  self->_preControl = *(vars + 6);
+  self->_postControl = *(vars + 7);
 }
 
 @end

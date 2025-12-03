@@ -1,8 +1,8 @@
 @interface ASOServiceOverlayLoader
 + (OS_os_log)log;
-- (id)loadOverlayForConfiguration:(id)a3 delegate:(id)a4 serviceContext:(id)a5 metricsReporter:(id)a6;
+- (id)loadOverlayForConfiguration:(id)configuration delegate:(id)delegate serviceContext:(id)context metricsReporter:(id)reporter;
 - (id)processReengagement;
-- (void)recordClickThroughImpressionWithDidInitiateDownload:(BOOL)a3;
+- (void)recordClickThroughImpressionWithDidInitiateDownload:(BOOL)download;
 - (void)serviceOverlayPresenterDidFinishDismissing;
 - (void)serviceOverlayPresenterDidFinishPresenting;
 @end
@@ -21,12 +21,12 @@
   return v3;
 }
 
-- (id)loadOverlayForConfiguration:(id)a3 delegate:(id)a4 serviceContext:(id)a5 metricsReporter:(id)a6
+- (id)loadOverlayForConfiguration:(id)configuration delegate:(id)delegate serviceContext:(id)context metricsReporter:(id)reporter
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
+  contextCopy = context;
+  reporterCopy = reporter;
   v14 = +[ASOServiceOverlayLoader log];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -44,13 +44,13 @@
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Using ASOServiceOverlayAppLockupProvider", v25, 2u);
     }
 
-    [(ASOServiceOverlayLoader *)self setConfig:v10];
-    [(ASOServiceOverlayLoader *)self setServiceContext:v12];
+    [(ASOServiceOverlayLoader *)self setConfig:configurationCopy];
+    [(ASOServiceOverlayLoader *)self setServiceContext:contextCopy];
     v16 = objc_alloc_init(ASOServiceOverlayAppLockupProvider);
     [(ASOServiceOverlayAppLockupProvider *)v16 setAdInteractionAttributor:self];
     v17 = v16;
 LABEL_11:
-    v21 = [(ASOServiceOverlayAppClipLockupProvider *)v17 loadOverlayForConfiguration:v10 delegate:v11 serviceContext:v12 metricsReporter:v13];
+    v21 = [(ASOServiceOverlayAppClipLockupProvider *)v17 loadOverlayForConfiguration:configurationCopy delegate:delegateCopy serviceContext:contextCopy metricsReporter:reporterCopy];
     goto LABEL_15;
   }
 
@@ -86,7 +86,7 @@ LABEL_15:
 
 - (void)serviceOverlayPresenterDidFinishPresenting
 {
-  v3 = [(ASOServiceOverlayLoader *)self config];
+  config = [(ASOServiceOverlayLoader *)self config];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -108,39 +108,39 @@ LABEL_15:
 
 - (void)serviceOverlayPresenterDidFinishDismissing
 {
-  v3 = [(ASOServiceOverlayLoader *)self config];
+  config = [(ASOServiceOverlayLoader *)self config];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v5 = [(ASOServiceOverlayLoader *)self attributionTimer];
-    [v5 invalidate];
+    attributionTimer = [(ASOServiceOverlayLoader *)self attributionTimer];
+    [attributionTimer invalidate];
   }
 }
 
-- (void)recordClickThroughImpressionWithDidInitiateDownload:(BOOL)a3
+- (void)recordClickThroughImpressionWithDidInitiateDownload:(BOOL)download
 {
-  v3 = a3;
-  v5 = [(ASOServiceOverlayLoader *)self config];
+  downloadCopy = download;
+  config = [(ASOServiceOverlayLoader *)self config];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v7 = [(ASOServiceOverlayLoader *)self attributionTimer];
-    [v7 invalidate];
+    attributionTimer = [(ASOServiceOverlayLoader *)self attributionTimer];
+    [attributionTimer invalidate];
 
-    v8 = [(ASOServiceOverlayLoader *)self config];
-    v9 = [v8 storage];
-    v10 = [(ASOServiceOverlayLoader *)self config];
-    v11 = [v10 appIdentifier];
-    v12 = [(ASOServiceOverlayLoader *)self serviceContext];
-    v13 = [v12 hostAdamID];
-    v14 = [(ASOServiceOverlayLoader *)self serviceContext];
-    [v14 hostBundleIdentifier];
-    v15 = v16 = v3;
-    [ASOServiceAdAttribution recordImpressionWithParameters:v9 storeIdentifier:v11 hostAdamID:v13 clientBundleId:v15 interactionType:1];
+    config2 = [(ASOServiceOverlayLoader *)self config];
+    storage = [config2 storage];
+    config3 = [(ASOServiceOverlayLoader *)self config];
+    appIdentifier = [config3 appIdentifier];
+    serviceContext = [(ASOServiceOverlayLoader *)self serviceContext];
+    hostAdamID = [serviceContext hostAdamID];
+    serviceContext2 = [(ASOServiceOverlayLoader *)self serviceContext];
+    [serviceContext2 hostBundleIdentifier];
+    v15 = v16 = downloadCopy;
+    [ASOServiceAdAttribution recordImpressionWithParameters:storage storeIdentifier:appIdentifier hostAdamID:hostAdamID clientBundleId:v15 interactionType:1];
 
     if (v16)
     {
@@ -152,7 +152,7 @@ LABEL_15:
 
 - (id)processReengagement
 {
-  v3 = [(ASOServiceOverlayLoader *)self config];
+  config = [(ASOServiceOverlayLoader *)self config];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -174,16 +174,16 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v7 = [(ASOServiceOverlayLoader *)self attributionTimer];
-  [v7 invalidate];
+  attributionTimer = [(ASOServiceOverlayLoader *)self attributionTimer];
+  [attributionTimer invalidate];
 
-  v8 = [(ASOServiceOverlayLoader *)self config];
-  v9 = [v8 storage];
-  v10 = [(ASOServiceOverlayLoader *)self config];
-  v11 = [v10 appIdentifier];
-  v12 = [(ASOServiceOverlayLoader *)self serviceContext];
-  v13 = [v12 hostBundleIdentifier];
-  v6 = [ASOServiceAdAttribution processReengagementWithParameters:v9 storeIdentifier:v11 clientBundleID:v13];
+  config2 = [(ASOServiceOverlayLoader *)self config];
+  storage = [config2 storage];
+  config3 = [(ASOServiceOverlayLoader *)self config];
+  appIdentifier = [config3 appIdentifier];
+  serviceContext = [(ASOServiceOverlayLoader *)self serviceContext];
+  hostBundleIdentifier = [serviceContext hostBundleIdentifier];
+  v6 = [ASOServiceAdAttribution processReengagementWithParameters:storage storeIdentifier:appIdentifier clientBundleID:hostBundleIdentifier];
 
 LABEL_8:
 

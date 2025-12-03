@@ -1,42 +1,42 @@
 @interface ATXSetAlarmTimeOfDayDataSource
-+ (id)medianFrom:(id)a3;
-+ (id)timeOfDayFromDonations:(id)a3;
-- (ATXSetAlarmTimeOfDayDataSource)initWithDevice:(id)a3;
-- (id)_recentIntentDonationsForBundleId:(id)a3 limit:(unint64_t)a4;
-- (void)alarmTimeOfDay:(id)a3;
++ (id)medianFrom:(id)from;
++ (id)timeOfDayFromDonations:(id)donations;
+- (ATXSetAlarmTimeOfDayDataSource)initWithDevice:(id)device;
+- (id)_recentIntentDonationsForBundleId:(id)id limit:(unint64_t)limit;
+- (void)alarmTimeOfDay:(id)day;
 @end
 
 @implementation ATXSetAlarmTimeOfDayDataSource
 
-- (ATXSetAlarmTimeOfDayDataSource)initWithDevice:(id)a3
+- (ATXSetAlarmTimeOfDayDataSource)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = ATXSetAlarmTimeOfDayDataSource;
   v6 = [(ATXSetAlarmTimeOfDayDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
 }
 
-- (id)_recentIntentDonationsForBundleId:(id)a3 limit:(unint64_t)a4
+- (id)_recentIntentDonationsForBundleId:(id)id limit:(unint64_t)limit
 {
-  v5 = a3;
+  idCopy = id;
   v6 = objc_opt_new();
   v7 = BiomeLibrary();
   v8 = [v7 App];
-  v9 = [v8 Intent];
-  v10 = [v9 atx_publisherWithStartDate:0 endDate:0 maxEvents:0 lastN:0 reversed:1];
+  intent = [v8 Intent];
+  v10 = [intent atx_publisherWithStartDate:0 endDate:0 maxEvents:0 lastN:0 reversed:1];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __74__ATXSetAlarmTimeOfDayDataSource__recentIntentDonationsForBundleId_limit___block_invoke;
   v21[3] = &unk_278C3D520;
-  v22 = v5;
-  v11 = v5;
+  v22 = idCopy;
+  v11 = idCopy;
   v12 = [v10 filterWithIsIncluded:v21];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -44,7 +44,7 @@
   v18[3] = &unk_278C3D548;
   v13 = v6;
   v19 = v13;
-  v20 = a4;
+  limitCopy = limit;
   v14 = [v12 sinkWithCompletion:&__block_literal_global_12 shouldContinue:v18];
 
   v15 = v19;
@@ -94,17 +94,17 @@ BOOL __74__ATXSetAlarmTimeOfDayDataSource__recentIntentDonationsForBundleId_limi
   return v7;
 }
 
-+ (id)timeOfDayFromDonations:(id)a3
++ (id)timeOfDayFromDonations:(id)donations
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
+  donationsCopy = donations;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v5 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v3;
+  v6 = donationsCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -120,16 +120,16 @@ BOOL __74__ATXSetAlarmTimeOfDayDataSource__recentIntentDonationsForBundleId_limi
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v11 intentClass];
-        v13 = [v12 isEqualToString:@"MTCreateAlarmIntent"];
+        intentClass = [v11 intentClass];
+        v13 = [intentClass isEqualToString:@"MTCreateAlarmIntent"];
 
         if (v13)
         {
           v19 = 0;
           v20 = 0;
           v18 = 0;
-          v14 = [v11 absoluteTimestamp];
-          [v4 getHour:&v20 minute:&v19 second:&v18 nanosecond:0 fromDate:v14];
+          absoluteTimestamp = [v11 absoluteTimestamp];
+          [currentCalendar getHour:&v20 minute:&v19 second:&v18 nanosecond:0 fromDate:absoluteTimestamp];
 
           v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:3600 * v20 + 60 * v19 + v18];
           [v5 addObject:v15];
@@ -147,16 +147,16 @@ BOOL __74__ATXSetAlarmTimeOfDayDataSource__recentIntentDonationsForBundleId_limi
   return v5;
 }
 
-+ (id)medianFrom:(id)a3
++ (id)medianFrom:(id)from
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  fromCopy = from;
+  if ([fromCopy count])
   {
     v4 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"self" ascending:1];
     v10[0] = v4;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-    v6 = [v3 sortedArrayUsingDescriptors:v5];
+    v6 = [fromCopy sortedArrayUsingDescriptors:v5];
 
     v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v6, "count") >> 1}];
   }
@@ -171,10 +171,10 @@ BOOL __74__ATXSetAlarmTimeOfDayDataSource__recentIntentDonationsForBundleId_limi
   return v7;
 }
 
-- (void)alarmTimeOfDay:(id)a3
+- (void)alarmTimeOfDay:(id)day
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dayCopy = day;
   if (ATXHeuristicCanLearnFromApp(&unk_2850BA3B0))
   {
     v5 = [(ATXSetAlarmTimeOfDayDataSource *)self _recentIntentDonationsForBundleId:@"com.apple.mobiletimer" limit:20];
@@ -196,12 +196,12 @@ BOOL __74__ATXSetAlarmTimeOfDayDataSource__recentIntentDonationsForBundleId_limi
       _os_log_debug_impl(&dword_23E3EA000, v12, OS_LOG_TYPE_DEBUG, "Median time to set alarm: %tu:%02tu (based on %tu donations)", &v14, 0x20u);
     }
 
-    v4[2](v4, v7, 0);
+    dayCopy[2](dayCopy, v7, 0);
   }
 
   else
   {
-    v4[2](v4, &unk_2850BA4E8, 0);
+    dayCopy[2](dayCopy, &unk_2850BA4E8, 0);
   }
 
   v13 = *MEMORY[0x277D85DE8];

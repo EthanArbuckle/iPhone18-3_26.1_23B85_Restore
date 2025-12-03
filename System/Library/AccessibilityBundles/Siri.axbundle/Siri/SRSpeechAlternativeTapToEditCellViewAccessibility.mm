@@ -1,5 +1,5 @@
 @interface SRSpeechAlternativeTapToEditCellViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (SRSpeechAlternativeTapToEditCellViewAccessibility)init;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnotateTapToEditLabel;
@@ -7,11 +7,11 @@
 
 @implementation SRSpeechAlternativeTapToEditCellViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SRSpeechAlternativeTapToEditCellView" hasInstanceMethod:@"init" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SRSpeechAlternativeTapToEditCellView" hasInstanceVariable:@"_tapToEditLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SRSpeechAlternativeTapToEditCellView" hasInstanceMethod:@"init" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SRSpeechAlternativeTapToEditCellView" hasInstanceVariable:@"_tapToEditLabel" withType:"UILabel"];
 }
 
 - (void)_axAnnotateTapToEditLabel

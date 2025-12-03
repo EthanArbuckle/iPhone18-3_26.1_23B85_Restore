@@ -1,28 +1,28 @@
 @interface SiriSharedUICompactUserUtteranceView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SiriSharedUICompactUserUtteranceView)initWithContentInsets:(UIEdgeInsets)a3 cornerRadius:(double)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SiriSharedUICompactUserUtteranceView)initWithContentInsets:(UIEdgeInsets)insets cornerRadius:(double)radius;
 - (SiriSharedUICompactUserUtteranceViewDelegate)delegate;
 - (UIEdgeInsets)contentInsets;
-- (id)_createStreamingTextViewForEmojisOnly:(BOOL)a3;
+- (id)_createStreamingTextViewForEmojisOnly:(BOOL)only;
 - (id)_fontForStreamingTextView;
-- (void)_handleTap:(id)a3;
-- (void)_setStreamingText:(id)a3 carousel:(BOOL)a4 showEditImage:(BOOL)a5;
+- (void)_handleTap:(id)tap;
+- (void)_setStreamingText:(id)text carousel:(BOOL)carousel showEditImage:(BOOL)image;
 - (void)_updateAmbientAppearance;
 - (void)layoutSubviews;
-- (void)setIsInAmbient:(BOOL)a3;
-- (void)setIsInAmbientInteractivity:(BOOL)a3;
-- (void)setLatencySummary:(id)a3;
-- (void)setSpeechRecognitionHypothesis:(id)a3;
+- (void)setIsInAmbient:(BOOL)ambient;
+- (void)setIsInAmbientInteractivity:(BOOL)interactivity;
+- (void)setLatencySummary:(id)summary;
+- (void)setSpeechRecognitionHypothesis:(id)hypothesis;
 @end
 
 @implementation SiriSharedUICompactUserUtteranceView
 
-- (SiriSharedUICompactUserUtteranceView)initWithContentInsets:(UIEdgeInsets)a3 cornerRadius:(double)a4
+- (SiriSharedUICompactUserUtteranceView)initWithContentInsets:(UIEdgeInsets)insets cornerRadius:(double)radius
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v32.receiver = self;
   v32.super_class = SiriSharedUICompactUserUtteranceView;
   v9 = [(SiriSharedUICompactUserUtteranceView *)&v32 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -41,16 +41,16 @@
     [(SiriSharedUICompactUserUtteranceView *)v10 _setBackgroundView:v14];
 
     backgroundView = v10->_backgroundView;
-    v16 = [MEMORY[0x277D75348] clearColor];
-    [(UIVisualEffectView *)backgroundView setBackgroundColor:v16];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIVisualEffectView *)backgroundView setBackgroundColor:clearColor];
 
-    v17 = [(SiriSharedUICompactUserUtteranceView *)v10 _backgroundView];
-    v18 = [v17 layer];
-    [v18 setCornerRadius:a4];
+    _backgroundView = [(SiriSharedUICompactUserUtteranceView *)v10 _backgroundView];
+    layer = [_backgroundView layer];
+    [layer setCornerRadius:radius];
 
-    v19 = [(SiriSharedUICompactUserUtteranceView *)v10 _backgroundView];
-    v20 = [v19 layer];
-    [v20 setMaskedCorners:3];
+    _backgroundView2 = [(SiriSharedUICompactUserUtteranceView *)v10 _backgroundView];
+    layer2 = [_backgroundView2 layer];
+    [layer2 setMaskedCorners:3];
 
     v21 = [(SiriSharedUICompactUserUtteranceView *)v10 _createStreamingTextViewForEmojisOnly:0];
     [(SiriSharedUICompactUserUtteranceView *)v10 _setStreamingTextView:v21];
@@ -70,8 +70,8 @@
 
     if ([MEMORY[0x277CEF4D0] saeAvailable])
     {
-      v23 = [(SiriSharedUICompactUserUtteranceView *)v10 traitCollection];
-      if ([v23 userInterfaceStyle] == 1)
+      traitCollection = [(SiriSharedUICompactUserUtteranceView *)v10 traitCollection];
+      if ([traitCollection userInterfaceStyle] == 1)
       {
         [MEMORY[0x277D75348] systemDarkGrayColor];
       }
@@ -80,29 +80,29 @@
       {
         [MEMORY[0x277D75348] systemLightGrayColor];
       }
-      v24 = ;
+      contentView = ;
 
-      [(SUICStreamingTextView *)v10->_streamingTextView setStartTextColor:v24];
-      [(SUICStreamingTextView *)v10->_streamingTextView setEndTextColor:v24];
+      [(SUICStreamingTextView *)v10->_streamingTextView setStartTextColor:contentView];
+      [(SUICStreamingTextView *)v10->_streamingTextView setEndTextColor:contentView];
       streamingTextView = v10->_streamingTextView;
       v28 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76918] weight:*MEMORY[0x277D74410]];
       [(SUICStreamingTextView *)streamingTextView setFont:v28];
 
-      v25 = [(SiriSharedUICompactUserUtteranceView *)v10 _streamingTextView];
+      _streamingTextView = [(SiriSharedUICompactUserUtteranceView *)v10 _streamingTextView];
       v26 = v10;
     }
 
     else
     {
-      v24 = [(UIVisualEffectView *)v10->_backgroundView contentView];
-      v25 = [(SiriSharedUICompactUserUtteranceView *)v10 _streamingTextView];
-      v26 = v24;
+      contentView = [(UIVisualEffectView *)v10->_backgroundView contentView];
+      _streamingTextView = [(SiriSharedUICompactUserUtteranceView *)v10 _streamingTextView];
+      v26 = contentView;
     }
 
-    [(SiriSharedUICompactUserUtteranceView *)v26 addSubview:v25];
+    [(SiriSharedUICompactUserUtteranceView *)v26 addSubview:_streamingTextView];
 
-    v29 = [(SiriSharedUICompactUserUtteranceView *)v10 _emojiMaskStreamingTextView];
-    [(SiriSharedUICompactUserUtteranceView *)v10 addSubview:v29];
+    _emojiMaskStreamingTextView = [(SiriSharedUICompactUserUtteranceView *)v10 _emojiMaskStreamingTextView];
+    [(SiriSharedUICompactUserUtteranceView *)v10 addSubview:_emojiMaskStreamingTextView];
 
     v30 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v10 action:sel__handleTap_];
     [(SiriSharedUICompactUserUtteranceView *)v10 addGestureRecognizer:v30];
@@ -111,17 +111,17 @@
   return v10;
 }
 
-- (void)setLatencySummary:(id)a3
+- (void)setLatencySummary:(id)summary
 {
   self->_currentDisplayType = 2;
-  [(SiriSharedUICompactUserUtteranceView *)self _setStreamingText:a3 carousel:1 showEditImage:0];
+  [(SiriSharedUICompactUserUtteranceView *)self _setStreamingText:summary carousel:1 showEditImage:0];
 
   [(SiriSharedUICompactUserUtteranceView *)self setNeedsLayout];
 }
 
-- (void)setSpeechRecognitionHypothesis:(id)a3
+- (void)setSpeechRecognitionHypothesis:(id)hypothesis
 {
-  v15 = a3;
+  hypothesisCopy = hypothesis;
   if (self->_speechRecognitionHypothesis)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -129,12 +129,12 @@
   }
 
   currentDisplayType = self->_currentDisplayType;
-  self->_currentDisplayType = v15 != 0;
-  v6 = [v15 copy];
+  self->_currentDisplayType = hypothesisCopy != 0;
+  v6 = [hypothesisCopy copy];
   speechRecognitionHypothesis = self->_speechRecognitionHypothesis;
   self->_speechRecognitionHypothesis = v6;
 
-  if ([v15 isFinal])
+  if ([hypothesisCopy isFinal])
   {
     v8 = !self->_isInAmbient;
   }
@@ -145,12 +145,12 @@
   }
 
   v9 = currentDisplayType == 2;
-  v10 = [v15 userUtterance];
-  v11 = [v10 bestTextInterpretation];
-  v12 = v11;
-  if (v11)
+  userUtterance = [hypothesisCopy userUtterance];
+  bestTextInterpretation = [userUtterance bestTextInterpretation];
+  v12 = bestTextInterpretation;
+  if (bestTextInterpretation)
   {
-    v13 = v11;
+    v13 = bestTextInterpretation;
   }
 
   else
@@ -166,21 +166,21 @@
   [(SiriSharedUICompactUserUtteranceView *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(SiriSharedUICompactUserUtteranceView *)self _streamingTextView];
-  v7 = [v6 text];
-  v8 = [v7 length];
+  height = fits.height;
+  width = fits.width;
+  _streamingTextView = [(SiriSharedUICompactUserUtteranceView *)self _streamingTextView];
+  text = [_streamingTextView text];
+  v8 = [text length];
 
   if (v8)
   {
     p_contentInsets = &self->_contentInsets;
     v10 = width - self->_contentInsets.left - self->_contentInsets.right;
     v11 = height - self->_contentInsets.top - self->_contentInsets.bottom;
-    v12 = [(SiriSharedUICompactUserUtteranceView *)self _streamingTextView];
-    [v12 sizeThatFits:{v10, v11}];
+    _streamingTextView2 = [(SiriSharedUICompactUserUtteranceView *)self _streamingTextView];
+    [_streamingTextView2 sizeThatFits:{v10, v11}];
     v14 = v13;
     v16 = v15;
 
@@ -215,8 +215,8 @@
   backgroundView = self->_backgroundView;
   [(SiriSharedUICompactUserUtteranceView *)self bounds];
   [(UIVisualEffectView *)backgroundView setFrame:?];
-  v8 = [(SUICStreamingTextView *)self->_streamingTextView text];
-  v9 = [v8 length];
+  text = [(SUICStreamingTextView *)self->_streamingTextView text];
+  v9 = [text length];
 
   if (v9)
   {
@@ -236,24 +236,24 @@
     v14 = v13;
     top = self->_contentInsets.top;
     v15 = self->_contentInsets.left;
-    v17 = [(SiriSharedUICompactUserUtteranceView *)self _streamingTextView];
-    [v17 setFrame:{v15, top, v12, v14}];
+    _streamingTextView = [(SiriSharedUICompactUserUtteranceView *)self _streamingTextView];
+    [_streamingTextView setFrame:{v15, top, v12, v14}];
 
-    v18 = [(SiriSharedUICompactUserUtteranceView *)self _emojiMaskStreamingTextView];
-    [v18 setFrame:{v15, top, v12, v14}];
+    _emojiMaskStreamingTextView = [(SiriSharedUICompactUserUtteranceView *)self _emojiMaskStreamingTextView];
+    [_emojiMaskStreamingTextView setFrame:{v15, top, v12, v14}];
   }
 }
 
-- (id)_createStreamingTextViewForEmojisOnly:(BOOL)a3
+- (id)_createStreamingTextViewForEmojisOnly:(BOOL)only
 {
-  v3 = a3;
+  onlyCopy = only;
   v5 = objc_alloc_init(MEMORY[0x277D61A80]);
-  v6 = [(SiriSharedUICompactUserUtteranceView *)self _fontForStreamingTextView];
-  [v5 setFont:v6];
+  _fontForStreamingTextView = [(SiriSharedUICompactUserUtteranceView *)self _fontForStreamingTextView];
+  [v5 setFont:_fontForStreamingTextView];
   [v5 setAnimationDuration:0.3];
-  v7 = [MEMORY[0x277D75128] sharedApplication];
-  v8 = [v7 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v8);
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   v10 = 0.0;
   if (IsAccessibilityCategory)
@@ -262,7 +262,7 @@
   }
 
   [v5 setHyphenationFactor:v10];
-  if (v3)
+  if (onlyCopy)
   {
     [v5 setRenderEmojisOnly:1];
   }
@@ -275,10 +275,10 @@
   return v5;
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
   v10 = *MEMORY[0x277D85DE8];
-  if ([a3 state] == 3)
+  if ([tap state] == 3)
   {
     v4 = MEMORY[0x277CEF098];
     v5 = *MEMORY[0x277CEF098];
@@ -302,8 +302,8 @@
 
     else
     {
-      v7 = [(SiriSharedUICompactUserUtteranceView *)self delegate];
-      [v7 userUtteranceViewTapped:self];
+      delegate = [(SiriSharedUICompactUserUtteranceView *)self delegate];
+      [delegate userUtteranceViewTapped:self];
     }
   }
 }
@@ -327,19 +327,19 @@
   return v4;
 }
 
-- (void)_setStreamingText:(id)a3 carousel:(BOOL)a4 showEditImage:(BOOL)a5
+- (void)_setStreamingText:(id)text carousel:(BOOL)carousel showEditImage:(BOOL)image
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  imageCopy = image;
+  carouselCopy = carousel;
+  textCopy = text;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
   v34 = __Block_byref_object_copy_;
   v35 = __Block_byref_object_dispose_;
   v36 = 0;
-  v9 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v10 = [v8 stringByTrimmingCharactersInSet:v9];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v10 = [textCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   if (v10)
   {
@@ -378,8 +378,8 @@
       [v32[5] addObject:v14];
     }
 
-    [(SUICStreamingTextView *)self->_streamingTextView setWords:v32[5] showEditImage:v5 useCarouselAnimation:v6];
-    [(SUICStreamingTextView *)self->_emojiMaskStreamingTextView setWords:v32[5] showEditImage:0 useCarouselAnimation:v6];
+    [(SUICStreamingTextView *)self->_streamingTextView setWords:v32[5] showEditImage:imageCopy useCarouselAnimation:carouselCopy];
+    [(SUICStreamingTextView *)self->_emojiMaskStreamingTextView setWords:v32[5] showEditImage:0 useCarouselAnimation:carouselCopy];
 
     _Block_object_dispose(v23, 8);
     _Block_object_dispose(&v25, 8);
@@ -429,20 +429,20 @@ void __81__SiriSharedUICompactUserUtteranceView__setStreamingText_carousel_showE
   }
 }
 
-- (void)setIsInAmbient:(BOOL)a3
+- (void)setIsInAmbient:(BOOL)ambient
 {
-  if (self->_isInAmbient != a3)
+  if (self->_isInAmbient != ambient)
   {
-    self->_isInAmbient = a3;
+    self->_isInAmbient = ambient;
     [(SiriSharedUICompactUserUtteranceView *)self _updateAmbientAppearance];
   }
 }
 
-- (void)setIsInAmbientInteractivity:(BOOL)a3
+- (void)setIsInAmbientInteractivity:(BOOL)interactivity
 {
-  if (self->_isInAmbientInteractivity != a3)
+  if (self->_isInAmbientInteractivity != interactivity)
   {
-    self->_isInAmbientInteractivity = a3;
+    self->_isInAmbientInteractivity = interactivity;
     [(SiriSharedUICompactUserUtteranceView *)self _updateAmbientAppearance];
   }
 }
@@ -461,20 +461,20 @@ void __81__SiriSharedUICompactUserUtteranceView__setStreamingText_carousel_showE
 
   [(SUICStreamingTextView *)self->_streamingTextView setShowEditTextImage:v3];
   streamingTextView = self->_streamingTextView;
-  v5 = [(SiriSharedUICompactUserUtteranceView *)self _fontForStreamingTextView];
-  [(SUICStreamingTextView *)streamingTextView setFont:v5];
+  _fontForStreamingTextView = [(SiriSharedUICompactUserUtteranceView *)self _fontForStreamingTextView];
+  [(SUICStreamingTextView *)streamingTextView setFont:_fontForStreamingTextView];
 
   emojiMaskStreamingTextView = self->_emojiMaskStreamingTextView;
-  v7 = [(SiriSharedUICompactUserUtteranceView *)self _fontForStreamingTextView];
-  [(SUICStreamingTextView *)emojiMaskStreamingTextView setFont:v7];
+  _fontForStreamingTextView2 = [(SiriSharedUICompactUserUtteranceView *)self _fontForStreamingTextView];
+  [(SUICStreamingTextView *)emojiMaskStreamingTextView setFont:_fontForStreamingTextView2];
 
   v8 = self->_streamingTextView;
-  v9 = [(SUICStreamingTextView *)v8 words];
-  [(SUICStreamingTextView *)v8 setWords:v9];
+  words = [(SUICStreamingTextView *)v8 words];
+  [(SUICStreamingTextView *)v8 setWords:words];
 
   v10 = self->_emojiMaskStreamingTextView;
-  v11 = [(SUICStreamingTextView *)v10 words];
-  [(SUICStreamingTextView *)v10 setWords:v11];
+  words2 = [(SUICStreamingTextView *)v10 words];
+  [(SUICStreamingTextView *)v10 setWords:words2];
 }
 
 - (SiriSharedUICompactUserUtteranceViewDelegate)delegate

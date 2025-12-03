@@ -1,42 +1,42 @@
 @interface BRCloudDocsHelper
-+ (id)queryFastPathsForPrimaryPersona:(id)a3;
-- (id)queryPathsForPersona:(id)a3 withError:(id *)a4;
++ (id)queryFastPathsForPrimaryPersona:(id)persona;
+- (id)queryPathsForPersona:(id)persona withError:(id *)error;
 @end
 
 @implementation BRCloudDocsHelper
 
-+ (id)queryFastPathsForPrimaryPersona:(id)a3
++ (id)queryFastPathsForPrimaryPersona:(id)persona
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E69DF068] sharedManager];
-  v5 = [v4 currentPersona];
+  personaCopy = persona;
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
-  if (([v3 isEqualToString:@"__defaultPersonaID__"] & 1) != 0 || (objc_msgSend(v5, "isDataSeparatedPersona") & 1) == 0 && (objc_msgSend(v5, "userPersonaUniqueString"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqualToString:", v3), v11, v12))
+  if (([personaCopy isEqualToString:@"__defaultPersonaID__"] & 1) != 0 || (objc_msgSend(currentPersona, "isDataSeparatedPersona") & 1) == 0 && (objc_msgSend(currentPersona, "userPersonaUniqueString"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqualToString:", personaCopy), v11, v12))
   {
-    v6 = [MEMORY[0x1E695DFF8] fp_homeDirectory];
-    v7 = [v6 br_realpathURL];
+    fp_homeDirectory = [MEMORY[0x1E695DFF8] fp_homeDirectory];
+    br_realpathURL = [fp_homeDirectory br_realpathURL];
 
-    if (v7)
+    if (br_realpathURL)
     {
-      v8 = [MEMORY[0x1E695DFF8] fp_lmdURL];
-      v9 = [v8 br_realpathURL];
+      fp_lmdURL = [MEMORY[0x1E695DFF8] fp_lmdURL];
+      br_realpathURL2 = [fp_lmdURL br_realpathURL];
 
       v15 = 0;
       v10 = 0;
-      if ([MEMORY[0x1E695DFF8] br_isURL:v9 syncRootOwnedByICloudDrive:&v15 withError:0])
+      if ([MEMORY[0x1E695DFF8] br_isURL:br_realpathURL2 syncRootOwnedByICloudDrive:&v15 withError:0])
       {
-        if (v9 && (v15 & 1) != 0)
+        if (br_realpathURL2 && (v15 & 1) != 0)
         {
           v10 = objc_opt_new();
-          [v10 setObject:v7 forKeyedSubscript:@"home"];
-          [v10 setObject:v9 forKeyedSubscript:@"Mobile Documents"];
+          [v10 setObject:br_realpathURL forKeyedSubscript:@"home"];
+          [v10 setObject:br_realpathURL2 forKeyedSubscript:@"Mobile Documents"];
         }
 
         else
         {
           v16 = @"home";
-          v17[0] = v7;
+          v17[0] = br_realpathURL;
           v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
         }
       }
@@ -58,7 +58,7 @@
   return v10;
 }
 
-- (id)queryPathsForPersona:(id)a3 withError:(id *)a4
+- (id)queryPathsForPersona:(id)persona withError:(id *)error
 {
   v4 = brc_bread_crumbs("[BRCloudDocsHelper queryPathsForPersona:withError:]", 82);
   v5 = brc_default_log(0, 0);

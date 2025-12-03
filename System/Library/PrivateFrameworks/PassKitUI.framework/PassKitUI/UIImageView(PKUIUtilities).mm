@@ -8,23 +8,23 @@
 
 - (uint64_t)pkui_alignmentRect
 {
-  [a1 frame];
+  [self frame];
 
-  return [a1 alignmentRectForFrame:?];
+  return [self alignmentRectForFrame:?];
 }
 
 - (uint64_t)pkui_setAlignmentRect:()PKUIUtilities
 {
-  [a1 frameForAlignmentRect:?];
+  [self frameForAlignmentRect:?];
 
-  return [a1 setFrame:?];
+  return [self setFrame:?];
 }
 
 - (double)pkui_alignmentSize
 {
-  [a1 frame];
+  [self frame];
   v3 = v2;
-  [a1 alignmentRectInsets];
+  [self alignmentRectInsets];
   return v3 - (v4 + v5);
 }
 

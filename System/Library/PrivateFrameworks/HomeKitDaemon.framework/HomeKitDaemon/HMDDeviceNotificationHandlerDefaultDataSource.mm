@@ -1,7 +1,7 @@
 @interface HMDDeviceNotificationHandlerDefaultDataSource
-- (HMDDeviceNotificationHandlerDefaultDataSource)initWithHome:(id)a3;
+- (HMDDeviceNotificationHandlerDefaultDataSource)initWithHome:(id)home;
 - (HMDHome)home;
-- (id)timerWithType:(unsigned __int8)a3;
+- (id)timerWithType:(unsigned __int8)type;
 @end
 
 @implementation HMDDeviceNotificationHandlerDefaultDataSource
@@ -13,14 +13,14 @@
   return WeakRetained;
 }
 
-- (id)timerWithType:(unsigned __int8)a3
+- (id)timerWithType:(unsigned __int8)type
 {
-  v3 = a3;
-  v4 = [(HMDDeviceNotificationHandlerDefaultDataSource *)self home];
-  v5 = [v4 isCurrentDeviceAvailableResident];
-  if (v3 == 1)
+  typeCopy = type;
+  home = [(HMDDeviceNotificationHandlerDefaultDataSource *)self home];
+  isCurrentDeviceAvailableResident = [home isCurrentDeviceAvailableResident];
+  if (typeCopy == 1)
   {
-    if (v5)
+    if (isCurrentDeviceAvailableResident)
     {
       v6 = pendingResponseTickPeriod;
     }
@@ -34,7 +34,7 @@
   else
   {
     v6 = 0;
-    if (!v3)
+    if (!typeCopy)
     {
       v6 = coalesceNotificationsPeriod;
     }
@@ -45,16 +45,16 @@
   return v7;
 }
 
-- (HMDDeviceNotificationHandlerDefaultDataSource)initWithHome:(id)a3
+- (HMDDeviceNotificationHandlerDefaultDataSource)initWithHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v8.receiver = self;
   v8.super_class = HMDDeviceNotificationHandlerDefaultDataSource;
   v5 = [(HMDDeviceNotificationHandlerDefaultDataSource *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_home, v4);
+    objc_storeWeak(&v5->_home, homeCopy);
   }
 
   return v6;

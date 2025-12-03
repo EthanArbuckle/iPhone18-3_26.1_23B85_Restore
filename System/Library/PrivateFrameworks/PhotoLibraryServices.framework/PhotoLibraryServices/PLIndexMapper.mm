@@ -1,23 +1,23 @@
 @interface PLIndexMapper
-- (BOOL)applyContainerChangeNotification:(id)a3 changeTypes:(int)a4 toFilteredIndexes:(id)a5;
-- (PLIndexMapper)initWithDataSource:(id)a3;
-- (id)backingIndexesForIndexes:(id)a3;
-- (id)indexesForBackingIndexes:(id)a3;
-- (unint64_t)backingIndexForIndex:(unint64_t)a3;
-- (unint64_t)indexForBackingIndex:(unint64_t)a3;
+- (BOOL)applyContainerChangeNotification:(id)notification changeTypes:(int)types toFilteredIndexes:(id)indexes;
+- (PLIndexMapper)initWithDataSource:(id)source;
+- (id)backingIndexesForIndexes:(id)indexes;
+- (id)indexesForBackingIndexes:(id)indexes;
+- (unint64_t)backingIndexForIndex:(unint64_t)index;
+- (unint64_t)indexForBackingIndex:(unint64_t)index;
 @end
 
 @implementation PLIndexMapper
 
-- (BOOL)applyContainerChangeNotification:(id)a3 changeTypes:(int)a4 toFilteredIndexes:(id)a5
+- (BOOL)applyContainerChangeNotification:(id)notification changeTypes:(int)types toFilteredIndexes:(id)indexes
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 shouldReload];
-  if (v8)
+  typesCopy = types;
+  notificationCopy = notification;
+  indexesCopy = indexes;
+  shouldReload = [notificationCopy shouldReload];
+  if (notificationCopy)
   {
-    v11 = v10;
+    v11 = shouldReload;
   }
 
   else
@@ -28,15 +28,15 @@
   if ((v11 & 1) == 0)
   {
     v12 = objc_autoreleasePoolPush();
-    if (v6)
+    if (typesCopy)
     {
-      v13 = [v8 deletedIndexes];
-      [v9 pl_adjustIndexesForDeletions:v13];
+      deletedIndexes = [notificationCopy deletedIndexes];
+      [indexesCopy pl_adjustIndexesForDeletions:deletedIndexes];
 
-      if ((v6 & 2) == 0)
+      if ((typesCopy & 2) == 0)
       {
 LABEL_7:
-        if ((v6 & 4) == 0)
+        if ((typesCopy & 4) == 0)
         {
           goto LABEL_8;
         }
@@ -45,29 +45,29 @@ LABEL_7:
       }
     }
 
-    else if ((v6 & 2) == 0)
+    else if ((typesCopy & 2) == 0)
     {
       goto LABEL_7;
     }
 
-    v14 = [v8 insertedIndexes];
-    v15 = [v14 firstIndex];
-    if (v15 != 0x7FFFFFFFFFFFFFFFLL)
+    insertedIndexes = [notificationCopy insertedIndexes];
+    firstIndex = [insertedIndexes firstIndex];
+    if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      for (i = v15; i != 0x7FFFFFFFFFFFFFFFLL; i = [v14 indexGreaterThanIndex:i])
+      for (i = firstIndex; i != 0x7FFFFFFFFFFFFFFFLL; i = [insertedIndexes indexGreaterThanIndex:i])
       {
-        [v9 shiftIndexesStartingAtIndex:i by:1];
+        [indexesCopy shiftIndexesStartingAtIndex:i by:1];
         if ([(PLIndexMapperDataSource *)self->_dataSource shouldIncludeObjectAtIndex:i])
         {
-          [v9 addIndex:i];
+          [indexesCopy addIndex:i];
         }
       }
     }
 
-    if ((v6 & 4) == 0)
+    if ((typesCopy & 4) == 0)
     {
 LABEL_8:
-      if ((v6 & 8) == 0)
+      if ((typesCopy & 8) == 0)
       {
         goto LABEL_25;
       }
@@ -76,19 +76,19 @@ LABEL_8:
     }
 
 LABEL_17:
-    v17 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     v24 = MEMORY[0x1E69E9820];
     v25 = 3221225472;
     v26 = __80__PLIndexMapper_applyContainerChangeNotification_changeTypes_toFilteredIndexes___block_invoke;
     v27 = &unk_1E756B6B0;
-    v18 = v9;
+    v18 = indexesCopy;
     v28 = v18;
-    v29 = v17;
-    v19 = v17;
-    [v8 enumerateMovesWithBlock:&v24];
+    v29 = indexSet;
+    v19 = indexSet;
+    [notificationCopy enumerateMovesWithBlock:&v24];
     [v18 addIndexes:{v19, v24, v25, v26, v27}];
 
-    if ((v6 & 8) == 0)
+    if ((typesCopy & 8) == 0)
     {
 LABEL_25:
       objc_autoreleasePoolPop(v12);
@@ -96,20 +96,20 @@ LABEL_25:
     }
 
 LABEL_18:
-    v20 = [v8 changedIndexes];
-    v21 = [v20 firstIndex];
-    if (v21 != 0x7FFFFFFFFFFFFFFFLL)
+    changedIndexes = [notificationCopy changedIndexes];
+    firstIndex2 = [changedIndexes firstIndex];
+    if (firstIndex2 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      for (j = v21; j != 0x7FFFFFFFFFFFFFFFLL; j = [v20 indexGreaterThanIndex:j])
+      for (j = firstIndex2; j != 0x7FFFFFFFFFFFFFFFLL; j = [changedIndexes indexGreaterThanIndex:j])
       {
         if ([(PLIndexMapperDataSource *)self->_dataSource shouldIncludeObjectAtIndex:j])
         {
-          [v9 addIndex:j];
+          [indexesCopy addIndex:j];
         }
 
         else
         {
-          [v9 removeIndex:j];
+          [indexesCopy removeIndex:j];
         }
       }
     }
@@ -136,12 +136,12 @@ uint64_t __80__PLIndexMapper_applyContainerChangeNotification_changeTypes_toFilt
   return result;
 }
 
-- (unint64_t)backingIndexForIndex:(unint64_t)a3
+- (unint64_t)backingIndexForIndex:(unint64_t)index
 {
   v3 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [(PLIndexMapperDataSource *)self->_dataSource filteredIndexes];
+    filteredIndexes = [(PLIndexMapperDataSource *)self->_dataSource filteredIndexes];
     v12[0] = 0;
     v12[1] = v12;
     v12[2] = 0x2020000000;
@@ -155,13 +155,13 @@ uint64_t __80__PLIndexMapper_applyContainerChangeNotification_changeTypes_toFilt
     v7[2] = __38__PLIndexMapper_backingIndexForIndex___block_invoke;
     v7[3] = &unk_1E756B688;
     v7[5] = &v8;
-    v7[6] = a3;
+    v7[6] = index;
     v7[4] = v12;
-    [v5 enumerateRangesUsingBlock:v7];
+    [filteredIndexes enumerateRangesUsingBlock:v7];
     v3 = v9[3];
     if (v3 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v3 = [v5 lastIndex] + 1;
+      v3 = [filteredIndexes lastIndex] + 1;
     }
 
     _Block_object_dispose(&v8, 8);
@@ -188,23 +188,23 @@ void *__38__PLIndexMapper_backingIndexForIndex___block_invoke(void *result, uint
   return result;
 }
 
-- (id)backingIndexesForIndexes:(id)a3
+- (id)backingIndexesForIndexes:(id)indexes
 {
   dataSource = self->_dataSource;
-  v6 = a3;
-  v7 = [(PLIndexMapperDataSource *)dataSource filteredIndexes];
-  v8 = [MEMORY[0x1E696AD50] indexSet];
+  indexesCopy = indexes;
+  filteredIndexes = [(PLIndexMapperDataSource *)dataSource filteredIndexes];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __42__PLIndexMapper_backingIndexesForIndexes___block_invoke;
   v13[3] = &unk_1E756B660;
-  v14 = v7;
-  v9 = v8;
-  v16 = self;
+  v14 = filteredIndexes;
+  v9 = indexSet;
+  selfCopy = self;
   v17 = a2;
   v15 = v9;
-  v10 = v7;
-  [v6 enumerateRangesUsingBlock:v13];
+  v10 = filteredIndexes;
+  [indexesCopy enumerateRangesUsingBlock:v13];
 
   v11 = v9;
   return v9;
@@ -269,34 +269,34 @@ void __42__PLIndexMapper_backingIndexesForIndexes___block_invoke_2(uint64_t a1, 
   *(*(*(a1 + 56) + 8) + 24) += a3;
 }
 
-- (unint64_t)indexForBackingIndex:(unint64_t)a3
+- (unint64_t)indexForBackingIndex:(unint64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v5 = [(PLIndexMapperDataSource *)self->_dataSource filteredIndexes];
-  v6 = [v5 countOfIndexesInRange:{0, a3}];
+  filteredIndexes = [(PLIndexMapperDataSource *)self->_dataSource filteredIndexes];
+  v6 = [filteredIndexes countOfIndexesInRange:{0, index}];
 
   return v6;
 }
 
-- (id)indexesForBackingIndexes:(id)a3
+- (id)indexesForBackingIndexes:(id)indexes
 {
   dataSource = self->_dataSource;
-  v4 = a3;
-  v5 = [(PLIndexMapperDataSource *)dataSource filteredIndexes];
-  v6 = [MEMORY[0x1E696AD50] indexSet];
+  indexesCopy = indexes;
+  filteredIndexes = [(PLIndexMapperDataSource *)dataSource filteredIndexes];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __42__PLIndexMapper_indexesForBackingIndexes___block_invoke;
   v12[3] = &unk_1E756B610;
-  v13 = v5;
-  v7 = v6;
+  v13 = filteredIndexes;
+  v7 = indexSet;
   v14 = v7;
-  v8 = v5;
-  [v4 enumerateRangesUsingBlock:v12];
+  v8 = filteredIndexes;
+  [indexesCopy enumerateRangesUsingBlock:v12];
 
   v9 = v14;
   v10 = v7;
@@ -313,13 +313,13 @@ uint64_t __42__PLIndexMapper_indexesForBackingIndexes___block_invoke(uint64_t a1
   return [v8 addIndexesInRange:{v6, v7}];
 }
 
-- (PLIndexMapper)initWithDataSource:(id)a3
+- (PLIndexMapper)initWithDataSource:(id)source
 {
-  v5 = a3;
-  if (!v5)
+  sourceCopy = source;
+  if (!sourceCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PLIndexMapper.m" lineNumber:25 description:@"Must initialize with a data source"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLIndexMapper.m" lineNumber:25 description:@"Must initialize with a data source"];
   }
 
   v10.receiver = self;
@@ -328,7 +328,7 @@ uint64_t __42__PLIndexMapper_indexesForBackingIndexes___block_invoke(uint64_t a1
   v7 = v6;
   if (v6)
   {
-    v6->_dataSource = v5;
+    v6->_dataSource = sourceCopy;
   }
 
   return v7;

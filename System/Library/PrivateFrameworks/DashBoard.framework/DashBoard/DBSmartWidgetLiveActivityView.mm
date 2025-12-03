@@ -2,25 +2,25 @@
 - (BOOL)_liveActivityHasValidMetrics;
 - (BOOL)_updateLiveActivityMetricsIfNecessary;
 - (CGRect)predictedBounds;
-- (DBSmartWidgetLiveActivityView)initWithFrame:(CGRect)a3 predictedSize:(CGSize)a4;
-- (id)_debugDescriptionWithPrediction:(id)a3;
+- (DBSmartWidgetLiveActivityView)initWithFrame:(CGRect)frame predictedSize:(CGSize)size;
+- (id)_debugDescriptionWithPrediction:(id)prediction;
 - (void)_updateViews;
 - (void)layoutSubviews;
-- (void)predictionDidUpdate:(id)a3;
-- (void)preparePrediction:(id)a3 withPredictedSize:(CGSize)a4 completion:(id)a5;
-- (void)setPredictedBounds:(CGRect)a3;
+- (void)predictionDidUpdate:(id)update;
+- (void)preparePrediction:(id)prediction withPredictedSize:(CGSize)size completion:(id)completion;
+- (void)setPredictedBounds:(CGRect)bounds;
 @end
 
 @implementation DBSmartWidgetLiveActivityView
 
-- (DBSmartWidgetLiveActivityView)initWithFrame:(CGRect)a3 predictedSize:(CGSize)a4
+- (DBSmartWidgetLiveActivityView)initWithFrame:(CGRect)frame predictedSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v35[4] = *MEMORY[0x277D85DE8];
   v34.receiver = self;
   v34.super_class = DBSmartWidgetLiveActivityView;
-  v6 = [(DBSmartWidgetView *)&v34 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v6 = [(DBSmartWidgetView *)&v34 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v6)
   {
     v7 = objc_alloc_init(_TtC9DashBoard34DBLiveActivityWidgetViewController);
@@ -28,42 +28,42 @@
     v6->_liveActivityViewController = v7;
 
     v9 = objc_opt_new();
-    v10 = [(DBLiveActivityWidgetViewController *)v6->_liveActivityViewController view];
-    [v10 _setBackground:v9];
+    view = [(DBLiveActivityWidgetViewController *)v6->_liveActivityViewController view];
+    [view _setBackground:v9];
 
-    v11 = [(DBLiveActivityWidgetViewController *)v6->_liveActivityViewController view];
-    [v11 setOverrideUserInterfaceStyle:2];
+    view2 = [(DBLiveActivityWidgetViewController *)v6->_liveActivityViewController view];
+    [view2 setOverrideUserInterfaceStyle:2];
 
     v6->_predictedBounds.origin.x = 0.0;
     v6->_predictedBounds.origin.y = 0.0;
     v6->_predictedBounds.size.width = width;
     v6->_predictedBounds.size.height = height;
-    v12 = [(DBLiveActivityWidgetViewController *)v6->_liveActivityViewController view];
-    [(DBSmartWidgetLiveActivityView *)v6 addSubview:v12];
+    view3 = [(DBLiveActivityWidgetViewController *)v6->_liveActivityViewController view];
+    [(DBSmartWidgetLiveActivityView *)v6 addSubview:view3];
 
-    v13 = [(DBLiveActivityWidgetViewController *)v6->_liveActivityViewController view];
-    [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view4 = [(DBLiveActivityWidgetViewController *)v6->_liveActivityViewController view];
+    [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v26 = MEMORY[0x277CCAAD0];
-    v33 = [(DBLiveActivityWidgetViewController *)v6->_liveActivityViewController view];
-    v32 = [v33 leadingAnchor];
-    v31 = [(DBSmartWidgetLiveActivityView *)v6 leadingAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31];
+    view5 = [(DBLiveActivityWidgetViewController *)v6->_liveActivityViewController view];
+    leadingAnchor = [view5 leadingAnchor];
+    leadingAnchor2 = [(DBSmartWidgetLiveActivityView *)v6 leadingAnchor];
+    v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v35[0] = v30;
-    v29 = [(DBLiveActivityWidgetViewController *)v6->_liveActivityViewController view];
-    v28 = [v29 trailingAnchor];
-    v27 = [(DBSmartWidgetLiveActivityView *)v6 trailingAnchor];
-    v25 = [v28 constraintEqualToAnchor:v27];
+    view6 = [(DBLiveActivityWidgetViewController *)v6->_liveActivityViewController view];
+    trailingAnchor = [view6 trailingAnchor];
+    trailingAnchor2 = [(DBSmartWidgetLiveActivityView *)v6 trailingAnchor];
+    v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v35[1] = v25;
-    v14 = [(DBLiveActivityWidgetViewController *)v6->_liveActivityViewController view];
-    v15 = [v14 topAnchor];
-    v16 = [(DBSmartWidgetLiveActivityView *)v6 topAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    view7 = [(DBLiveActivityWidgetViewController *)v6->_liveActivityViewController view];
+    topAnchor = [view7 topAnchor];
+    topAnchor2 = [(DBSmartWidgetLiveActivityView *)v6 topAnchor];
+    v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v35[2] = v17;
-    v18 = [(DBLiveActivityWidgetViewController *)v6->_liveActivityViewController view];
-    v19 = [v18 bottomAnchor];
-    v20 = [(DBSmartWidgetLiveActivityView *)v6 bottomAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    view8 = [(DBLiveActivityWidgetViewController *)v6->_liveActivityViewController view];
+    bottomAnchor = [view8 bottomAnchor];
+    bottomAnchor2 = [(DBSmartWidgetLiveActivityView *)v6 bottomAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v35[3] = v21;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:4];
     [v26 activateConstraints:v22];
@@ -80,13 +80,13 @@
   return v6;
 }
 
-- (void)preparePrediction:(id)a3 withPredictedSize:(CGSize)a4 completion:(id)a5
+- (void)preparePrediction:(id)prediction withPredictedSize:(CGSize)size completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v21[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  predictionCopy = prediction;
+  completionCopy = completion;
   [(DBSmartWidgetLiveActivityView *)self setPredictedBounds:0.0, 0.0, width, height];
   [(DBSmartWidgetLiveActivityView *)self _updateLiveActivityMetricsIfNecessary];
   objc_opt_class();
@@ -97,19 +97,19 @@
       v11 = DBLogForCategory(9uLL);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        [DBSmartWidgetLiveActivityView preparePrediction:v9 withPredictedSize:? completion:?];
+        [DBSmartWidgetLiveActivityView preparePrediction:predictionCopy withPredictedSize:? completion:?];
       }
 
-      v12 = [(DBSmartWidgetLiveActivityView *)self liveActivityViewController];
-      v13 = [v9 activityDescriptor];
+      liveActivityViewController = [(DBSmartWidgetLiveActivityView *)self liveActivityViewController];
+      activityDescriptor = [predictionCopy activityDescriptor];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __80__DBSmartWidgetLiveActivityView_preparePrediction_withPredictedSize_completion___block_invoke;
       v17[3] = &unk_278F01640;
       v17[4] = self;
-      v18 = v9;
-      v19 = v10;
-      [v12 activateLiveActivityWithDescriptor:v13 completion:v17];
+      v18 = predictionCopy;
+      v19 = completionCopy;
+      [liveActivityViewController activateLiveActivityWithDescriptor:activityDescriptor completion:v17];
     }
 
     else
@@ -120,9 +120,9 @@
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
       v16 = [v14 errorWithDomain:@"com.apple.dashboard.liveActivity" code:0 userInfo:v15];
 
-      if (v10)
+      if (completionCopy)
       {
-        (*(v10 + 2))(v10, v16);
+        (*(completionCopy + 2))(completionCopy, v16);
       }
     }
   }
@@ -147,9 +147,9 @@ void __80__DBSmartWidgetLiveActivityView_preparePrediction_withPredictedSize_com
 - (void)layoutSubviews
 {
   OUTLINED_FUNCTION_3_0();
-  v2 = [v1 window];
-  v3 = [v0 prediction];
-  v9 = [v0 _debugDescriptionWithPrediction:v3];
+  window = [v1 window];
+  prediction = [v0 prediction];
+  v9 = [v0 _debugDescriptionWithPrediction:prediction];
   OUTLINED_FUNCTION_1_1();
   _os_log_debug_impl(v4, v5, v6, v7, v8, 0x20u);
 }
@@ -166,14 +166,14 @@ void __47__DBSmartWidgetLiveActivityView_layoutSubviews__block_invoke(uint64_t a
   [*(a1 + 32) _updateViews];
 }
 
-- (void)setPredictedBounds:(CGRect)a3
+- (void)setPredictedBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   p_predictedBounds = &self->_predictedBounds;
-  if (!CGRectEqualToRect(a3, self->_predictedBounds))
+  if (!CGRectEqualToRect(bounds, self->_predictedBounds))
   {
     v8 = DBLogForCategory(9uLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -251,17 +251,17 @@ LABEL_8:
   return !v14;
 }
 
-- (id)_debugDescriptionWithPrediction:(id)a3
+- (id)_debugDescriptionWithPrediction:(id)prediction
 {
   liveActivityViewController = self->_liveActivityViewController;
-  v5 = a3;
+  predictionCopy = prediction;
   [(DBLiveActivityWidgetViewController *)liveActivityViewController rectForSystemMetrics];
   v7 = v6;
   v9 = v8;
   v10 = MEMORY[0x277CCACA8];
-  v11 = [v5 uniqueIdentifier];
+  uniqueIdentifier = [predictionCopy uniqueIdentifier];
 
-  v12 = [v11 UUIDString];
+  uUIDString = [uniqueIdentifier UUIDString];
   v13 = MEMORY[0x277CCAE60];
   [(DBSmartWidgetLiveActivityView *)self bounds];
   v27[0] = v14;
@@ -276,7 +276,7 @@ LABEL_8:
   *&v25[1] = v9;
   v21 = [MEMORY[0x277CCAE60] valueWithBytes:v25 objCType:"{CGSize=dd}"];
   v22 = [MEMORY[0x277CCABB0] numberWithDouble:v7 / v9];
-  v23 = [v10 stringWithFormat:@"Identifier: %@. Current size %@ predicted size %@. LA size %@. Aspect ratio: %@", v12, v16, v20, v21, v22];
+  v23 = [v10 stringWithFormat:@"Identifier: %@. Current size %@ predicted size %@. LA size %@. Aspect ratio: %@", uUIDString, v16, v20, v21, v22];
 
   return v23;
 }
@@ -293,18 +293,18 @@ LABEL_8:
   return v4 != 0.0;
 }
 
-- (void)predictionDidUpdate:(id)a3
+- (void)predictionDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(DBSmartWidgetView *)self prediction];
-  v6 = [v5 uniqueIdentifier];
-  v7 = [v4 uniqueIdentifier];
+  updateCopy = update;
+  prediction = [(DBSmartWidgetView *)self prediction];
+  uniqueIdentifier = [prediction uniqueIdentifier];
+  uniqueIdentifier2 = [updateCopy uniqueIdentifier];
 
-  if (v6 == v7)
+  if (uniqueIdentifier == uniqueIdentifier2)
   {
     v8.receiver = self;
     v8.super_class = DBSmartWidgetLiveActivityView;
-    [(DBSmartWidgetView *)&v8 predictionDidUpdate:v4];
+    [(DBSmartWidgetView *)&v8 predictionDidUpdate:updateCopy];
   }
 }
 

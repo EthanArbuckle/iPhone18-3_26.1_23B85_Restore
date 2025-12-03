@@ -1,49 +1,49 @@
 @interface ASDUpdateMetricsEvent
 + (id)relativeMetricsKeys;
-- (ASDUpdateMetricsEvent)initWithCoder:(id)a3;
-- (ASDUpdateMetricsEvent)initWithDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ASDUpdateMetricsEvent)initWithCoder:(id)coder;
+- (ASDUpdateMetricsEvent)initWithDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASDUpdateMetricsEvent
 
-- (ASDUpdateMetricsEvent)initWithDictionary:(id)a3
+- (ASDUpdateMetricsEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = ASDUpdateMetricsEvent;
   v5 = [(ASDUpdateMetricsEvent *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"a"];
+    v6 = [dictionaryCopy objectForKey:@"a"];
     available = v5->_available;
     v5->_available = v6;
 
-    v8 = [v4 objectForKey:@"d"];
+    v8 = [dictionaryCopy objectForKey:@"d"];
     discovery = v5->_discovery;
     v5->_discovery = v8;
 
-    v10 = [v4 objectForKey:@"ps"];
+    v10 = [dictionaryCopy objectForKey:@"ps"];
     purchaseStart = v5->_purchaseStart;
     v5->_purchaseStart = v10;
 
-    v12 = [v4 objectForKey:@"pc"];
+    v12 = [dictionaryCopy objectForKey:@"pc"];
     purchaseComplete = v5->_purchaseComplete;
     v5->_purchaseComplete = v12;
 
-    v14 = [v4 objectForKey:@"ds"];
+    v14 = [dictionaryCopy objectForKey:@"ds"];
     downloadStart = v5->_downloadStart;
     v5->_downloadStart = v14;
 
-    v16 = [v4 objectForKey:@"dc"];
+    v16 = [dictionaryCopy objectForKey:@"dc"];
     downloadComplete = v5->_downloadComplete;
     v5->_downloadComplete = v16;
 
-    v18 = [v4 objectForKey:@"is"];
+    v18 = [dictionaryCopy objectForKey:@"is"];
     installStart = v5->_installStart;
     v5->_installStart = v18;
 
-    v20 = [v4 objectForKey:@"ic"];
+    v20 = [dictionaryCopy objectForKey:@"ic"];
     installComplete = v5->_installComplete;
     v5->_installComplete = v20;
   }
@@ -51,43 +51,43 @@
   return v5;
 }
 
-- (ASDUpdateMetricsEvent)initWithCoder:(id)a3
+- (ASDUpdateMetricsEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = ASDUpdateMetricsEvent;
   v5 = [(ASDUpdateMetricsEvent *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"a"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"a"];
     available = v5->_available;
     v5->_available = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"d"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"d"];
     discovery = v5->_discovery;
     v5->_discovery = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ps"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ps"];
     purchaseStart = v5->_purchaseStart;
     v5->_purchaseStart = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pc"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pc"];
     purchaseComplete = v5->_purchaseComplete;
     v5->_purchaseComplete = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ds"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ds"];
     downloadStart = v5->_downloadStart;
     v5->_downloadStart = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dc"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dc"];
     downloadComplete = v5->_downloadComplete;
     v5->_downloadComplete = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"is"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"is"];
     installStart = v5->_installStart;
     v5->_installStart = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ic"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ic"];
     installComplete = v5->_installComplete;
     v5->_installComplete = v20;
   }
@@ -95,18 +95,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   available = self->_available;
-  v5 = a3;
-  [v5 encodeObject:available forKey:@"a"];
-  [v5 encodeObject:self->_discovery forKey:@"d"];
-  [v5 encodeObject:self->_purchaseStart forKey:@"ps"];
-  [v5 encodeObject:self->_purchaseComplete forKey:@"pc"];
-  [v5 encodeObject:self->_downloadStart forKey:@"ds"];
-  [v5 encodeObject:self->_downloadComplete forKey:@"dc"];
-  [v5 encodeObject:self->_installStart forKey:@"is"];
-  [v5 encodeObject:self->_installComplete forKey:@"ic"];
+  coderCopy = coder;
+  [coderCopy encodeObject:available forKey:@"a"];
+  [coderCopy encodeObject:self->_discovery forKey:@"d"];
+  [coderCopy encodeObject:self->_purchaseStart forKey:@"ps"];
+  [coderCopy encodeObject:self->_purchaseComplete forKey:@"pc"];
+  [coderCopy encodeObject:self->_downloadStart forKey:@"ds"];
+  [coderCopy encodeObject:self->_downloadComplete forKey:@"dc"];
+  [coderCopy encodeObject:self->_installStart forKey:@"is"];
+  [coderCopy encodeObject:self->_installComplete forKey:@"ic"];
 }
 
 + (id)relativeMetricsKeys

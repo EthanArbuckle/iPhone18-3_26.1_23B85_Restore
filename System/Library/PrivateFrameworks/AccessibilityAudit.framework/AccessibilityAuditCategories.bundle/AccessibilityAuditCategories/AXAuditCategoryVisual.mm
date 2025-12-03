@@ -1,12 +1,12 @@
 @interface AXAuditCategoryVisual
-- (BOOL)hasTextInRegionOfAuditIssue:(id)a3;
-- (CGRect)_scaleRect:(CGRect)a3 scale:(double)a4;
-- (id)_auditGetScreenshotImageDataForFrame:(CGRect)a3;
-- (id)_processVisionResult:(id)a3 options:(id)a4 coagulator:(id)a5;
+- (BOOL)hasTextInRegionOfAuditIssue:(id)issue;
+- (CGRect)_scaleRect:(CGRect)rect scale:(double)scale;
+- (id)_auditGetScreenshotImageDataForFrame:(CGRect)frame;
+- (id)_processVisionResult:(id)result options:(id)options coagulator:(id)coagulator;
 - (id)allSupportedAuditTypes;
 - (id)caseSelectorsForAuditing;
-- (int64_t)_interfaceOrientationForElement:(id)a3;
-- (void)_auditRunContrastDetectionForAuditIssue:(id)a3;
+- (int64_t)_interfaceOrientationForElement:(id)element;
+- (void)_auditRunContrastDetectionForAuditIssue:(id)issue;
 - (void)_mlAuditTimedOut;
 - (void)auditInaccessibleElement;
 - (void)auditTextContrast;
@@ -56,8 +56,8 @@
   }
 
   v6 = +[AXAuditScreenshotManager sharedManager];
-  v7 = [v6 lastTimestamp];
-  if (!v7)
+  lastTimestamp = [v6 lastTimestamp];
+  if (!lastTimestamp)
   {
 
     goto LABEL_33;
@@ -77,8 +77,8 @@ LABEL_33:
   v109 = 0x3032000000;
   v110 = sub_5128;
   v111 = sub_5138;
-  v112 = [(AXAuditCategoryEmbedded *)self iOSFrontmostAppForTargetPid];
-  v77 = [*(*(&buf + 1) + 40) uiElement];
+  iOSFrontmostAppForTargetPid = [(AXAuditCategoryEmbedded *)self iOSFrontmostAppForTargetPid];
+  uiElement = [*(*(&buf + 1) + 40) uiElement];
   v9 = +[NSMutableArray array];
   v10 = [*(*(&buf + 1) + 40) elementsForAttribute:2095];
   v102[0] = _NSConcreteStackBlock;
@@ -94,18 +94,18 @@ LABEL_33:
     sub_82AC();
   }
 
-  v11 = [qword_14E18 coreAnimationMainDisplay];
-  [v11 scale];
+  coreAnimationMainDisplay = [qword_14E18 coreAnimationMainDisplay];
+  [coreAnimationMainDisplay scale];
   v13 = v12;
 
-  v14 = [qword_14E20 imageNode];
-  [v14 setShouldProcessRemotely:0];
+  imageNode = [qword_14E20 imageNode];
+  [imageNode setShouldProcessRemotely:0];
 
   v15 = +[AXMVisionScreenRecognitionOptions defaultOptions];
   [v15 setDetectAXElements:1];
   [v15 setDetectText:0];
-  [v15 setIsRTL:{objc_msgSend(v77, "BOOLWithAXAttribute:", 3026)}];
-  [v15 setOrientation:{-[AXAuditCategoryVisual _interfaceOrientationForElement:](self, "_interfaceOrientationForElement:", v77)}];
+  [v15 setIsRTL:{objc_msgSend(uiElement, "BOOLWithAXAttribute:", 3026)}];
+  [v15 setOrientation:{-[AXAuditCategoryVisual _interfaceOrientationForElement:](self, "_interfaceOrientationForElement:", uiElement)}];
   memset(v101, 0, sizeof(v101));
   [(AXAuditCategoryEmbedded *)self windowContextInformation];
   [v15 setFullRect:{*&v101[8], *&v101[16], *&v101[32]}];
@@ -125,10 +125,10 @@ LABEL_33:
   v67 = v15;
   v74 = [[CIImage alloc] initWithImage:v76];
   v18 = +[AXElement systemWideElement];
-  v19 = [v18 springBoardApplication];
-  v75 = [v19 uiElement];
+  springBoardApplication = [v18 springBoardApplication];
+  uiElement2 = [springBoardApplication uiElement];
 
-  [v75 arrayWithAXAttribute:3054];
+  [uiElement2 arrayWithAXAttribute:3054];
   v99 = 0u;
   v100 = 0u;
   v97 = 0u;
@@ -256,8 +256,8 @@ LABEL_33:
   v58 = v78;
   v85 = v58;
   v59 = objc_retainBlock(v79);
-  v60 = [(AXAuditCategoryVisual *)self _mlAuditTimer];
-  if (!v60 || (-[AXAuditCategoryVisual _mlAuditTimer](self, "_mlAuditTimer"), v61 = objc_claimAutoreleasedReturnValue(), v62 = [v61 isValid], v61, v60, (v62 & 1) == 0))
+  _mlAuditTimer = [(AXAuditCategoryVisual *)self _mlAuditTimer];
+  if (!_mlAuditTimer || (-[AXAuditCategoryVisual _mlAuditTimer](self, "_mlAuditTimer"), v61 = objc_claimAutoreleasedReturnValue(), v62 = [v61 isValid], v61, _mlAuditTimer, (v62 & 1) == 0))
   {
     v104[0] = @"selectorName";
     v104[1] = @"caseResult";
@@ -268,8 +268,8 @@ LABEL_33:
     [(AXAuditCategoryVisual *)self set_mlAuditTimer:v64];
   }
 
-  v65 = [qword_14E20 imageNode];
-  [v65 triggerWithImage:v74 options:v56 cacheKey:0 resultHandler:v59];
+  imageNode2 = [qword_14E20 imageNode];
+  [imageNode2 triggerWithImage:v74 options:v56 cacheKey:0 resultHandler:v59];
 
   _Block_object_dispose(v95, 8);
   _Block_object_dispose(&buf, 8);
@@ -286,16 +286,16 @@ LABEL_34:
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_INFO, "%s: ML-generated description timed out!", &v10, 0xCu);
   }
 
-  v3 = [(AXAuditCategoryVisual *)self _mlAuditTimer];
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"selectorName"];
+  _mlAuditTimer = [(AXAuditCategoryVisual *)self _mlAuditTimer];
+  userInfo = [_mlAuditTimer userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"selectorName"];
 
-  v6 = [(AXAuditCategoryVisual *)self _mlAuditTimer];
-  v7 = [v6 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"caseResult"];
+  _mlAuditTimer2 = [(AXAuditCategoryVisual *)self _mlAuditTimer];
+  userInfo2 = [_mlAuditTimer2 userInfo];
+  v8 = [userInfo2 objectForKeyedSubscript:@"caseResult"];
 
-  v9 = [(AXAuditCategoryVisual *)self _mlAuditTimer];
-  [v9 invalidate];
+  _mlAuditTimer3 = [(AXAuditCategoryVisual *)self _mlAuditTimer];
+  [_mlAuditTimer3 invalidate];
 
   [(AXAuditCategoryVisual *)self set_mlAuditTimer:0];
   if ([v5 length])
@@ -313,12 +313,12 @@ LABEL_34:
   }
 }
 
-- (CGRect)_scaleRect:(CGRect)a3 scale:(double)a4
+- (CGRect)_scaleRect:(CGRect)rect scale:(double)scale
 {
-  v4 = a3.origin.x * a4;
-  v5 = a3.origin.y * a4;
-  v6 = a3.size.width * a4;
-  v7 = a3.size.height * a4;
+  v4 = rect.origin.x * scale;
+  v5 = rect.origin.y * scale;
+  v6 = rect.size.width * scale;
+  v7 = rect.size.height * scale;
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -326,18 +326,18 @@ LABEL_34:
   return result;
 }
 
-- (id)_processVisionResult:(id)a3 options:(id)a4 coagulator:(id)a5
+- (id)_processVisionResult:(id)result options:(id)options coagulator:(id)coagulator
 {
-  v7 = a3;
-  v24 = a4;
-  v23 = a5;
+  resultCopy = result;
+  optionsCopy = options;
+  coagulatorCopy = coagulator;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v25 = v7;
-  v8 = [v7 features];
-  v9 = [v8 countByEnumeratingWithState:&v30 objects:v39 count:16];
+  v25 = resultCopy;
+  features = [resultCopy features];
+  v9 = [features countByEnumeratingWithState:&v30 objects:v39 count:16];
   if (v9)
   {
     v10 = v9;
@@ -349,7 +349,7 @@ LABEL_34:
       {
         if (*v31 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(features);
         }
 
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
@@ -366,7 +366,7 @@ LABEL_34:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v30 objects:v39 count:16];
+      v10 = [features countByEnumeratingWithState:&v30 objects:v39 count:16];
     }
 
     while (v10);
@@ -377,16 +377,16 @@ LABEL_34:
     sub_83DC();
   }
 
-  if ([v24 disableCoagulator])
+  if ([optionsCopy disableCoagulator])
   {
-    v14 = [v25 features];
+    features2 = [v25 features];
   }
 
   else
   {
     CFAbsoluteTimeGetCurrent();
-    v15 = [v25 features];
-    v14 = [v23 coagulateElements:v15];
+    features3 = [v25 features];
+    features2 = [coagulatorCopy coagulateElements:features3];
 
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
@@ -398,7 +398,7 @@ LABEL_34:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v16 = v14;
+  v16 = features2;
   v17 = [v16 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v17)
   {
@@ -442,7 +442,7 @@ LABEL_34:
   return v16;
 }
 
-- (int64_t)_interfaceOrientationForElement:(id)a3
+- (int64_t)_interfaceOrientationForElement:(id)element
 {
   result = [objc_opt_class() axDeviceOrientationForInterfaceOrientation:{-[AXAuditCategoryEmbedded interfaceOrientation](self, "interfaceOrientation")}];
   if ((result - 1) >= 4)
@@ -467,8 +467,8 @@ LABEL_34:
     v8 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
 
     v9 = +[NSMutableArray array];
-    v10 = [(AXAuditCategoryEmbedded *)self iOSFrontmostAppForTargetPid];
-    v11 = [v10 auditIssuesForOptions:v8];
+    iOSFrontmostAppForTargetPid = [(AXAuditCategoryEmbedded *)self iOSFrontmostAppForTargetPid];
+    v11 = [iOSFrontmostAppForTargetPid auditIssuesForOptions:v8];
     [v9 addObjectsFromArray:v11];
 
     if ([v9 count])
@@ -519,20 +519,20 @@ LABEL_34:
   }
 }
 
-- (BOOL)hasTextInRegionOfAuditIssue:(id)a3
+- (BOOL)hasTextInRegionOfAuditIssue:(id)issue
 {
-  v4 = a3;
-  v5 = [v4 auditElement];
-  v6 = [v5 axElement];
+  issueCopy = issue;
+  auditElement = [issueCopy auditElement];
+  axElement = [auditElement axElement];
 
-  if (-[AXAuditCategoryVisual _doesContainsTextForTraits:](self, "_doesContainsTextForTraits:", [v6 traits]))
+  if (-[AXAuditCategoryVisual _doesContainsTextForTraits:](self, "_doesContainsTextForTraits:", [axElement traits]))
   {
     v7 = 1;
   }
 
   else
   {
-    [v4 elementRect];
+    [issueCopy elementRect];
     v8 = [(AXAuditCategoryVisual *)self _auditGetScreenshotImageDataForFrame:?];
     v9 = +[AXAuditImageDetectionManager sharedManager];
     v10 = [v9 detectionResultsFromImageData:v8];
@@ -543,103 +543,103 @@ LABEL_34:
   return v7;
 }
 
-- (id)_auditGetScreenshotImageDataForFrame:(CGRect)a3
+- (id)_auditGetScreenshotImageDataForFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = +[AXAuditScreenshotManager sharedManager];
-  v8 = [v7 lastTimestamp];
-  v9 = [v7 screenshotImageForTimestamp:v8 inRect:{x, y, width, height}];
+  lastTimestamp = [v7 lastTimestamp];
+  v9 = [v7 screenshotImageForTimestamp:lastTimestamp inRect:{x, y, width, height}];
   v10 = UIImagePNGRepresentation(v9);
 
   return v10;
 }
 
-- (void)_auditRunContrastDetectionForAuditIssue:(id)a3
+- (void)_auditRunContrastDetectionForAuditIssue:(id)issue
 {
-  v4 = a3;
+  issueCopy = issue;
   v5 = +[AXAuditContrastDetectionManager sharedManager];
   v6 = objc_alloc_init(AXAuditContrastInput);
-  v7 = [v4 auditElement];
-  v8 = [v7 axElement];
+  auditElement = [issueCopy auditElement];
+  axElement = [auditElement axElement];
 
-  [v4 elementRect];
+  [issueCopy elementRect];
   v9 = [(AXAuditCategoryVisual *)self _auditGetScreenshotImageDataForFrame:?];
   [v6 setImageData:v9];
   [v6 setEnhanced:0];
-  v10 = [v4 foregroundColor];
-  if (v10)
+  foregroundColor = [issueCopy foregroundColor];
+  if (foregroundColor)
   {
-    [v6 setForegroundHexColorValue:v10];
+    [v6 setForegroundHexColorValue:foregroundColor];
   }
 
-  v11 = [v4 backgroundColor];
-  if (v11)
+  backgroundColor = [issueCopy backgroundColor];
+  if (backgroundColor)
   {
-    [v6 setBackgroundHexColorValue:v11];
+    [v6 setBackgroundHexColorValue:backgroundColor];
   }
 
-  [v4 fontSize];
+  [issueCopy fontSize];
   if (v12 > 0.0)
   {
     [v6 setFontSize:?];
   }
 
-  v13 = [v4 elementDescription];
-  [v6 setIdentifier:v13];
+  elementDescription = [issueCopy elementDescription];
+  [v6 setIdentifier:elementDescription];
 
   v14 = [v5 contrastResultForInput:v6];
   v15 = v14;
   if (v14)
   {
-    v16 = [v14 classification];
-    if ([(AXAuditCategoryVisual *)self _isFailureContrastIssueType:v16])
+    classification = [v14 classification];
+    if ([(AXAuditCategoryVisual *)self _isFailureContrastIssueType:classification])
     {
       v29 = v9;
-      v30 = v8;
-      v17 = [(AXAuditCategoryEmbedded *)self elementDescriptionForElement:v8];
-      v18 = [AXAuditIssue auditIssueForClassification:v16];
+      v30 = axElement;
+      v17 = [(AXAuditCategoryEmbedded *)self elementDescriptionForElement:axElement];
+      v18 = [AXAuditIssue auditIssueForClassification:classification];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v28 = v5;
-        v19 = [v4 auditElement];
-        [v18 setAuditElement:v19];
+        auditElement2 = [issueCopy auditElement];
+        [v18 setAuditElement:auditElement2];
 
         v27 = v17;
         [v18 setElementDescription:v17];
-        [v4 elementRect];
+        [issueCopy elementRect];
         [v18 setElementRect:?];
-        v20 = [v15 summary];
-        v31 = v20;
+        summary = [v15 summary];
+        v31 = summary;
         v21 = [NSArray arrayWithObjects:&v31 count:1];
         [v18 setLongDescExtraInfo:v21];
 
         [v15 fontSize];
         [v18 setFontSize:?];
-        v22 = [v15 compareColors];
-        if ([v22 count] == &dword_0 + 2)
+        compareColors = [v15 compareColors];
+        if ([compareColors count] == &dword_0 + 2)
         {
-          v23 = [v22 objectAtIndexedSubscript:0];
+          v23 = [compareColors objectAtIndexedSubscript:0];
           [v18 setForegroundColor:v23];
 
-          v24 = [v22 objectAtIndexedSubscript:1];
+          v24 = [compareColors objectAtIndexedSubscript:1];
           [v18 setBackgroundColor:v24];
         }
 
-        v25 = [(AXAuditCategoryVisual *)self currentCaseResult];
-        [v25 addAuditIssue:v18];
-        v26 = [(AXAuditCategoryVisual *)self delegate];
-        [v26 auditCategory:self didEncounterIssue:v18];
+        currentCaseResult = [(AXAuditCategoryVisual *)self currentCaseResult];
+        [currentCaseResult addAuditIssue:v18];
+        delegate = [(AXAuditCategoryVisual *)self delegate];
+        [delegate auditCategory:self didEncounterIssue:v18];
 
         v17 = v27;
         v5 = v28;
       }
 
       v9 = v29;
-      v8 = v30;
+      axElement = v30;
     }
   }
 }

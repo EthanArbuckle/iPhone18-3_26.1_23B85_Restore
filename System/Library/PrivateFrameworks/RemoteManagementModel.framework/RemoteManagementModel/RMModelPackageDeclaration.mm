@@ -1,12 +1,12 @@
 @interface RMModelPackageDeclaration
 + (NSSet)allowedPayloadKeys;
 + (id)assetTypes;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 manifestURL:(id)a4;
-+ (id)buildWithIdentifier:(id)a3 manifestURL:(id)a4 installBehavior:(id)a5 repairBehavior:(id)a6 uninstallBehavior:(id)a7;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier manifestURL:(id)l;
++ (id)buildWithIdentifier:(id)identifier manifestURL:(id)l installBehavior:(id)behavior repairBehavior:(id)repairBehavior uninstallBehavior:(id)uninstallBehavior;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelPackageDeclaration
@@ -34,57 +34,57 @@
   return v2;
 }
 
-+ (id)buildWithIdentifier:(id)a3 manifestURL:(id)a4 installBehavior:(id)a5 repairBehavior:(id)a6 uninstallBehavior:(id)a7
++ (id)buildWithIdentifier:(id)identifier manifestURL:(id)l installBehavior:(id)behavior repairBehavior:(id)repairBehavior uninstallBehavior:(id)uninstallBehavior
 {
-  v11 = a3;
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
+  identifierCopy = identifier;
+  uninstallBehaviorCopy = uninstallBehavior;
+  repairBehaviorCopy = repairBehavior;
+  behaviorCopy = behavior;
+  lCopy = l;
   v16 = objc_opt_new();
   [v16 setDeclarationType:@"com.apple.configuration.package"];
-  if (v11)
+  if (identifierCopy)
   {
-    [v16 setDeclarationIdentifier:v11];
+    [v16 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v17 = [MEMORY[0x277CCAD78] UUID];
-    v18 = [v17 UUIDString];
-    [v16 setDeclarationIdentifier:v18];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v16 setDeclarationIdentifier:uUIDString];
   }
 
-  [v16 setPayloadManifestURL:v15];
+  [v16 setPayloadManifestURL:lCopy];
 
-  [v16 setPayloadInstallBehavior:v14];
-  [v16 setPayloadRepairBehavior:v13];
+  [v16 setPayloadInstallBehavior:behaviorCopy];
+  [v16 setPayloadRepairBehavior:repairBehaviorCopy];
 
-  [v16 setPayloadUninstallBehavior:v12];
+  [v16 setPayloadUninstallBehavior:uninstallBehaviorCopy];
   [v16 updateServerToken];
 
   return v16;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 manifestURL:(id)a4
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier manifestURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  lCopy = l;
   v7 = objc_opt_new();
   [v7 setDeclarationType:@"com.apple.configuration.package"];
-  if (v5)
+  if (identifierCopy)
   {
-    [v7 setDeclarationIdentifier:v5];
+    [v7 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
-    [v7 setDeclarationIdentifier:v9];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v7 setDeclarationIdentifier:uUIDString];
   }
 
-  [v7 setPayloadManifestURL:v6];
+  [v7 setPayloadManifestURL:lCopy];
 
   [v7 updateServerToken];
 
@@ -108,12 +108,12 @@
   return v5;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v9 = MEMORY[0x277CBEB58];
-  v10 = [v8 allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys = [dictionaryCopy allKeys];
+  v11 = [v9 setWithArray:allKeys];
 
   v12 = +[RMModelPackageDeclaration allowedPayloadKeys];
   [v11 minusSet:v12];
@@ -121,10 +121,10 @@
   v13 = [v11 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v13];
 
-  if ([(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"ManifestURL" forKeyPath:@"payloadManifestURL" isRequired:1 defaultValue:0 error:a5]&& (LOWORD(v16) = a4, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"InstallBehavior" forKeyPath:@"payloadInstallBehavior" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v16 error:a5]) && (LOWORD(v17) = a4, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"RepairBehavior" forKeyPath:@"payloadRepairBehavior" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v17 error:a5]))
+  if ([(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"ManifestURL" forKeyPath:@"payloadManifestURL" isRequired:1 defaultValue:0 error:error]&& (LOWORD(v16) = type, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"InstallBehavior" forKeyPath:@"payloadInstallBehavior" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v16 error:error]) && (LOWORD(v17) = type, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"RepairBehavior" forKeyPath:@"payloadRepairBehavior" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v17 error:error]))
   {
-    LOWORD(v18) = a4;
-    v14 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"UninstallBehavior" forKeyPath:@"payloadUninstallBehavior" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v18 error:a5];
+    LOWORD(v18) = type;
+    v14 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"UninstallBehavior" forKeyPath:@"payloadUninstallBehavior" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v18 error:error];
   }
 
   else
@@ -135,46 +135,46 @@
   return v14;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v5 = objc_opt_new();
-  v6 = [(RMModelPackageDeclaration *)self payloadManifestURL];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"ManifestURL" value:v6 isRequired:1 defaultValue:0];
+  payloadManifestURL = [(RMModelPackageDeclaration *)self payloadManifestURL];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"ManifestURL" value:payloadManifestURL isRequired:1 defaultValue:0];
 
-  v7 = [(RMModelPackageDeclaration *)self payloadInstallBehavior];
+  payloadInstallBehavior = [(RMModelPackageDeclaration *)self payloadInstallBehavior];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __54__RMModelPackageDeclaration_serializePayloadWithType___block_invoke;
   v16[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v17 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"InstallBehavior" value:v7 dictSerializer:v16 isRequired:0 defaultValue:0];
+  typeCopy = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"InstallBehavior" value:payloadInstallBehavior dictSerializer:v16 isRequired:0 defaultValue:0];
 
-  v8 = [(RMModelPackageDeclaration *)self payloadRepairBehavior];
+  payloadRepairBehavior = [(RMModelPackageDeclaration *)self payloadRepairBehavior];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __54__RMModelPackageDeclaration_serializePayloadWithType___block_invoke_2;
   v14[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v15 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"RepairBehavior" value:v8 dictSerializer:v14 isRequired:0 defaultValue:0];
+  typeCopy2 = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"RepairBehavior" value:payloadRepairBehavior dictSerializer:v14 isRequired:0 defaultValue:0];
 
-  v9 = [(RMModelPackageDeclaration *)self payloadUninstallBehavior];
+  payloadUninstallBehavior = [(RMModelPackageDeclaration *)self payloadUninstallBehavior];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __54__RMModelPackageDeclaration_serializePayloadWithType___block_invoke_3;
   v12[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v13 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"UninstallBehavior" value:v9 dictSerializer:v12 isRequired:0 defaultValue:0];
+  typeCopy3 = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"UninstallBehavior" value:payloadUninstallBehavior dictSerializer:v12 isRequired:0 defaultValue:0];
 
   v10 = [v5 copy];
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = RMModelPackageDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v14 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v14 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadManifestURL copy];
   v6 = v4[6];
   v4[6] = v5;

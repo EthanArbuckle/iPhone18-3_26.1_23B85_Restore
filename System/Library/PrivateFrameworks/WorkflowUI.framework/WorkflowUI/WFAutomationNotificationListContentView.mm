@@ -1,20 +1,20 @@
 @interface WFAutomationNotificationListContentView
 - (CGSize)preferredSize;
-- (WFAutomationNotificationListContentView)initWithFrame:(CGRect)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)updateUIFromNotificationUserInfo:(id)a3;
+- (WFAutomationNotificationListContentView)initWithFrame:(CGRect)frame;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)updateUIFromNotificationUserInfo:(id)info;
 @end
 
 @implementation WFAutomationNotificationListContentView
 
 - (CGSize)preferredSize
 {
-  v3 = [(WFAutomationNotificationListContentView *)self tableView];
-  [v3 layoutIfNeeded];
+  tableView = [(WFAutomationNotificationListContentView *)self tableView];
+  [tableView layoutIfNeeded];
 
-  v4 = [(WFAutomationNotificationListContentView *)self tableView];
-  [v4 contentSize];
+  tableView2 = [(WFAutomationNotificationListContentView *)self tableView];
+  [tableView2 contentSize];
   v6 = v5;
   v8 = v7;
 
@@ -25,52 +25,52 @@
   return result;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(WFAutomationNotificationListContentView *)self triggerDisplayInfo:a3];
+  v4 = [(WFAutomationNotificationListContentView *)self triggerDisplayInfo:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [(WFAutomationNotificationListContentView *)self triggerDisplayInfo];
-  v9 = [v8 objectAtIndex:{objc_msgSend(v5, "row")}];
+  triggerDisplayInfo = [(WFAutomationNotificationListContentView *)self triggerDisplayInfo];
+  v9 = [triggerDisplayInfo objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-  v10 = [(WFAutomationNotificationListContentView *)self tableView];
-  v11 = [v10 dequeueReusableCellWithIdentifier:v7 forIndexPath:v5];
+  tableView = [(WFAutomationNotificationListContentView *)self tableView];
+  v11 = [tableView dequeueReusableCellWithIdentifier:v7 forIndexPath:pathCopy];
 
   [v11 setAccessoryType:0];
-  v12 = [v9 localizedTitle];
-  v13 = [v9 localizedDescription];
+  localizedTitle = [v9 localizedTitle];
+  localizedDescription = [v9 localizedDescription];
   v14 = [objc_msgSend(v9 "triggerClass")];
   v15 = [objc_msgSend(v9 "triggerClass")];
   [objc_msgSend(v9 "triggerClass")];
   v17 = v16;
-  v18 = [v9 actionIcons];
-  [v11 setTitle:v12 description:v13 triggerIcon:v14 triggerTintColor:v15 triggerCornerRadius:v18 actionIcons:v17];
+  actionIcons = [v9 actionIcons];
+  [v11 setTitle:localizedTitle description:localizedDescription triggerIcon:v14 triggerTintColor:v15 triggerCornerRadius:actionIcons actionIcons:v17];
 
   return v11;
 }
 
-- (void)updateUIFromNotificationUserInfo:(id)a3
+- (void)updateUIFromNotificationUserInfo:(id)info
 {
   v5 = WFTriggerDisplayInfoToDisableFromNotificationUserInfo();
   [(WFAutomationNotificationListContentView *)self setTriggerDisplayInfo:v5];
-  v4 = [(WFAutomationNotificationListContentView *)self tableView];
-  [v4 reloadData];
+  tableView = [(WFAutomationNotificationListContentView *)self tableView];
+  [tableView reloadData];
 }
 
-- (WFAutomationNotificationListContentView)initWithFrame:(CGRect)a3
+- (WFAutomationNotificationListContentView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v29.receiver = self;
   v29.super_class = WFAutomationNotificationListContentView;
   v7 = [(WFAutomationNotificationListContentView *)&v29 initWithFrame:?];
@@ -81,41 +81,41 @@
     v7->_tableView = v8;
     v10 = v8;
 
-    v11 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-    v12 = [(WFAutomationNotificationListContentView *)v7 tableView];
-    [v12 setBackgroundColor:v11];
+    systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+    tableView = [(WFAutomationNotificationListContentView *)v7 tableView];
+    [tableView setBackgroundColor:systemGroupedBackgroundColor];
 
     v13 = *MEMORY[0x277D76F30];
-    v14 = [(WFAutomationNotificationListContentView *)v7 tableView];
-    [v14 setRowHeight:v13];
+    tableView2 = [(WFAutomationNotificationListContentView *)v7 tableView];
+    [tableView2 setRowHeight:v13];
 
-    v15 = [(WFAutomationNotificationListContentView *)v7 tableView];
-    [v15 setEstimatedRowHeight:110.0];
+    tableView3 = [(WFAutomationNotificationListContentView *)v7 tableView];
+    [tableView3 setEstimatedRowHeight:110.0];
 
-    v16 = [(WFAutomationNotificationListContentView *)v7 tableView];
-    [v16 setSeparatorInset:{0.0, 124.0, 0.0, 0.0}];
+    tableView4 = [(WFAutomationNotificationListContentView *)v7 tableView];
+    [tableView4 setSeparatorInset:{0.0, 124.0, 0.0, 0.0}];
 
-    v17 = [(WFAutomationNotificationListContentView *)v7 tableView];
-    [v17 setAutoresizingMask:18];
+    tableView5 = [(WFAutomationNotificationListContentView *)v7 tableView];
+    [tableView5 setAutoresizingMask:18];
 
-    v18 = [(WFAutomationNotificationListContentView *)v7 tableView];
-    [v18 setDelegate:v7];
+    tableView6 = [(WFAutomationNotificationListContentView *)v7 tableView];
+    [tableView6 setDelegate:v7];
 
-    v19 = [(WFAutomationNotificationListContentView *)v7 tableView];
-    [v19 setDataSource:v7];
+    tableView7 = [(WFAutomationNotificationListContentView *)v7 tableView];
+    [tableView7 setDataSource:v7];
 
-    v20 = [(WFAutomationNotificationListContentView *)v7 tableView];
-    [(WFAutomationNotificationListContentView *)v7 addSubview:v20];
+    tableView8 = [(WFAutomationNotificationListContentView *)v7 tableView];
+    [(WFAutomationNotificationListContentView *)v7 addSubview:tableView8];
 
-    v21 = [(WFAutomationNotificationListContentView *)v7 tableView];
-    v22 = [v21 wf_addConstraintsToFillSuperview:v7];
+    tableView9 = [(WFAutomationNotificationListContentView *)v7 tableView];
+    v22 = [tableView9 wf_addConstraintsToFillSuperview:v7];
 
-    v23 = [(WFAutomationNotificationListContentView *)v7 tableView];
+    tableView10 = [(WFAutomationNotificationListContentView *)v7 tableView];
     v24 = objc_opt_class();
     v25 = objc_opt_class();
 
     v26 = NSStringFromClass(v25);
-    [v23 registerClass:v24 forCellReuseIdentifier:v26];
+    [tableView10 registerClass:v24 forCellReuseIdentifier:v26];
 
     v27 = v7;
   }

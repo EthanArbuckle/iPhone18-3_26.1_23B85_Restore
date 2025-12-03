@@ -1,17 +1,17 @@
 @interface FTUpdateAudioInfo
-- (FTUpdateAudioInfo)initWithFlatbuffData:(id)a3 root:(const UpdateAudioInfo *)a4 verify:(BOOL)a5;
+- (FTUpdateAudioInfo)initWithFlatbuffData:(id)data root:(const UpdateAudioInfo *)root verify:(BOOL)verify;
 - (NSString)product_id;
 - (NSString)vendor_id;
-- (Offset<siri::speech::schema_fb::UpdateAudioInfo>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::UpdateAudioInfo>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 @end
 
 @implementation FTUpdateAudioInfo
 
-- (FTUpdateAudioInfo)initWithFlatbuffData:(id)a3 root:(const UpdateAudioInfo *)a4 verify:(BOOL)a5
+- (FTUpdateAudioInfo)initWithFlatbuffData:(id)data root:(const UpdateAudioInfo *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTUpdateAudioInfo;
   v10 = [(FTUpdateAudioInfo *)&v25 init];
@@ -20,35 +20,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -120,37 +120,37 @@ LABEL_13:
   return v6;
 }
 
-- (Offset<siri::speech::schema_fb::UpdateAudioInfo>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::UpdateAudioInfo>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FTUpdateAudioInfo *)self product_id];
-  v6 = v5;
-  if (!v5)
+  product_id = [(FTUpdateAudioInfo *)self product_id];
+  v6 = product_id;
+  if (!product_id)
   {
-    v5 = &stru_284834138;
+    product_id = &stru_284834138;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)product_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v10 = [(FTUpdateAudioInfo *)self vendor_id];
-  v11 = v10;
-  if (!v10)
+  vendor_id = [(FTUpdateAudioInfo *)self vendor_id];
+  v11 = vendor_id;
+  if (!vendor_id)
   {
-    v10 = &stru_284834138;
+    vendor_id = &stru_284834138;
   }
 
-  v12 = [(__CFString *)v10 UTF8String];
-  v13 = strlen(v12);
-  LODWORD(v12) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v12, v13);
+  uTF8String2 = [(__CFString *)vendor_id UTF8String];
+  v13 = strlen(uTF8String2);
+  LODWORD(uTF8String2) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String2, v13);
 
-  *(a3 + 70) = 1;
-  v14 = *(a3 + 10);
-  v15 = *(a3 + 8) - *(a3 + 12);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 4, String);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v12);
+  *(buffer + 70) = 1;
+  v14 = *(buffer + 10);
+  v15 = *(buffer + 8) - *(buffer + 12);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 4, String);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, uTF8String2);
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v15 + v14);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v15 + v14);
 }
 
 - (id)flatbuffData

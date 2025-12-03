@@ -1,10 +1,10 @@
 @interface NSRunLoop
-- (BOOL)rc_runUntilNextDisplayLinkEventWithTimeout:(double)a3;
+- (BOOL)rc_runUntilNextDisplayLinkEventWithTimeout:(double)timeout;
 @end
 
 @implementation NSRunLoop
 
-- (BOOL)rc_runUntilNextDisplayLinkEventWithTimeout:(double)a3
+- (BOOL)rc_runUntilNextDisplayLinkEventWithTimeout:(double)timeout
 {
   v11 = 0;
   v12 = &v11;
@@ -29,7 +29,7 @@
     v7 = CFAbsoluteTimeGetCurrent();
   }
 
-  while (a3 < 0.0 || v7 - Current <= a3);
+  while (timeout < 0.0 || v7 - Current <= timeout);
   [v5 invalidate];
 
   v8 = *(v12 + 24);

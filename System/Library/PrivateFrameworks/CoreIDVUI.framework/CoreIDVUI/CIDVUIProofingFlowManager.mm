@@ -1,23 +1,23 @@
 @interface CIDVUIProofingFlowManager
-- (CIDVUIProofingFlowManager)initWithDelegate:(id)a3;
+- (CIDVUIProofingFlowManager)initWithDelegate:(id)delegate;
 - (id)proofingFlowViewController;
 - (unint64_t)currentProofingEligibilityStatus;
-- (void)proofingFlowAvailability:(id)a3;
-- (void)proofingStatus:(id)a3 country:(id)a4 completion:(id)a5;
-- (void)startProofing:(id)a3 completion:(id)a4;
+- (void)proofingFlowAvailability:(id)availability;
+- (void)proofingStatus:(id)status country:(id)country completion:(id)completion;
+- (void)startProofing:(id)proofing completion:(id)completion;
 @end
 
 @implementation CIDVUIProofingFlowManager
 
-- (CIDVUIProofingFlowManager)initWithDelegate:(id)a3
+- (CIDVUIProofingFlowManager)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = CIDVUIProofingFlowManager;
   v5 = [(CIDVUIProofingFlowManager *)&v8 init];
   if (v5)
   {
-    v6 = [[_TtC9CoreIDVUI33CIDVUIInternalProofingFlowManager alloc] initWithDelegate:v4 externalProofingFlowManager:v5];
+    v6 = [[_TtC9CoreIDVUI33CIDVUIInternalProofingFlowManager alloc] initWithDelegate:delegateCopy externalProofingFlowManager:v5];
     [(CIDVUIProofingFlowManager *)v5 setProofingFlowManager:v6];
   }
 
@@ -26,42 +26,42 @@
 
 - (unint64_t)currentProofingEligibilityStatus
 {
-  v2 = [(CIDVUIProofingFlowManager *)self proofingFlowManager];
-  v3 = [v2 proofingEligibilityStatus];
+  proofingFlowManager = [(CIDVUIProofingFlowManager *)self proofingFlowManager];
+  proofingEligibilityStatus = [proofingFlowManager proofingEligibilityStatus];
 
-  return v3;
+  return proofingEligibilityStatus;
 }
 
-- (void)startProofing:(id)a3 completion:(id)a4
+- (void)startProofing:(id)proofing completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CIDVUIProofingFlowManager *)self proofingFlowManager];
-  [v8 startProofingWithConfiguration:v7 completionHandler:v6];
+  completionCopy = completion;
+  proofingCopy = proofing;
+  proofingFlowManager = [(CIDVUIProofingFlowManager *)self proofingFlowManager];
+  [proofingFlowManager startProofingWithConfiguration:proofingCopy completionHandler:completionCopy];
 }
 
 - (id)proofingFlowViewController
 {
-  v2 = [(CIDVUIProofingFlowManager *)self proofingFlowManager];
-  v3 = [v2 proofingFlowViewController];
+  proofingFlowManager = [(CIDVUIProofingFlowManager *)self proofingFlowManager];
+  proofingFlowViewController = [proofingFlowManager proofingFlowViewController];
 
-  return v3;
+  return proofingFlowViewController;
 }
 
-- (void)proofingFlowAvailability:(id)a3
+- (void)proofingFlowAvailability:(id)availability
 {
-  v4 = a3;
-  v5 = [(CIDVUIProofingFlowManager *)self proofingFlowManager];
-  [v5 proofingFlowAvailabilityWithCompletionHandler:v4];
+  availabilityCopy = availability;
+  proofingFlowManager = [(CIDVUIProofingFlowManager *)self proofingFlowManager];
+  [proofingFlowManager proofingFlowAvailabilityWithCompletionHandler:availabilityCopy];
 }
 
-- (void)proofingStatus:(id)a3 country:(id)a4 completion:(id)a5
+- (void)proofingStatus:(id)status country:(id)country completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CIDVUIProofingFlowManager *)self proofingFlowManager];
-  [v11 proofingStatusFor:v10 country:v9 completionHandler:v8];
+  completionCopy = completion;
+  countryCopy = country;
+  statusCopy = status;
+  proofingFlowManager = [(CIDVUIProofingFlowManager *)self proofingFlowManager];
+  [proofingFlowManager proofingStatusFor:statusCopy country:countryCopy completionHandler:completionCopy];
 }
 
 @end

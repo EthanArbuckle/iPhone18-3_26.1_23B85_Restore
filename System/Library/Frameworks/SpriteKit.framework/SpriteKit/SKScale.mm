@@ -1,16 +1,16 @@
 @interface SKScale
-+ (id)scaleToSize:(CGSize)a3 duration:(double)a4;
-+ (id)scaleXBy:(double)a3 duration:(double)a4;
-+ (id)scaleXBy:(double)a3 y:(double)a4 duration:(double)a5;
-+ (id)scaleXTo:(double)a3 duration:(double)a4;
-+ (id)scaleXTo:(double)a3 y:(double)a4 duration:(double)a5;
-+ (id)scaleYBy:(double)a3 duration:(double)a4;
-+ (id)scaleYTo:(double)a3 duration:(double)a4;
++ (id)scaleToSize:(CGSize)size duration:(double)duration;
++ (id)scaleXBy:(double)by duration:(double)duration;
++ (id)scaleXBy:(double)by y:(double)y duration:(double)duration;
++ (id)scaleXTo:(double)to duration:(double)duration;
++ (id)scaleXTo:(double)to y:(double)y duration:(double)duration;
++ (id)scaleYBy:(double)by duration:(double)duration;
++ (id)scaleYTo:(double)to duration:(double)duration;
 - (SKScale)init;
-- (SKScale)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKScale)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)reversedAction;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKScale
@@ -27,12 +27,12 @@
   return 0;
 }
 
-- (SKScale)initWithCoder:(id)a3
+- (SKScale)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = SKScale;
-  if ([(SKAction *)&v6 initWithCoder:v4])
+  if ([(SKAction *)&v6 initWithCoder:coderCopy])
   {
     operator new();
   }
@@ -40,93 +40,93 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = SKScale;
-  [(SKAction *)&v17 encodeWithCoder:v4];
+  [(SKAction *)&v17 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mycaction->var23];
-  [v4 encodeObject:v5 forKey:@"_lastRatio"];
+  [coderCopy encodeObject:v5 forKey:@"_lastRatio"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mycaction->var19];
-  [v4 encodeObject:v6 forKey:@"_scaleTargetX"];
+  [coderCopy encodeObject:v6 forKey:@"_scaleTargetX"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mycaction->var20];
-  [v4 encodeObject:v7 forKey:@"_scaleTargetY"];
+  [coderCopy encodeObject:v7 forKey:@"_scaleTargetY"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mycaction->var21];
-  [v4 encodeObject:v8 forKey:@"_scaleTargetReversedX"];
+  [coderCopy encodeObject:v8 forKey:@"_scaleTargetReversedX"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mycaction->var22];
-  [v4 encodeObject:v9 forKey:@"_scaleTargetReversedY"];
+  [coderCopy encodeObject:v9 forKey:@"_scaleTargetReversedY"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mycaction->var26];
-  [v4 encodeObject:v10 forKey:@"_deltaScaleX"];
+  [coderCopy encodeObject:v10 forKey:@"_deltaScaleX"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mycaction->var27];
-  [v4 encodeObject:v11 forKey:@"_deltaScaleY"];
+  [coderCopy encodeObject:v11 forKey:@"_deltaScaleY"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:self->_mycaction->var28];
-  [v4 encodeObject:v12 forKey:@"_isReversed"];
+  [coderCopy encodeObject:v12 forKey:@"_isReversed"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithBool:self->_mycaction->var29];
-  [v4 encodeObject:v13 forKey:@"_isRelative"];
+  [coderCopy encodeObject:v13 forKey:@"_isRelative"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithBool:self->_mycaction->var30];
-  [v4 encodeObject:v14 forKey:@"_useX"];
+  [coderCopy encodeObject:v14 forKey:@"_useX"];
 
   v15 = [MEMORY[0x277CCABB0] numberWithBool:self->_mycaction->var31];
-  [v4 encodeObject:v15 forKey:@"_useY"];
+  [coderCopy encodeObject:v15 forKey:@"_useY"];
 
   v16 = [MEMORY[0x277CCABB0] numberWithBool:self->_mycaction->var32];
-  [v4 encodeObject:v16 forKey:@"_isTargetSizeBased"];
+  [coderCopy encodeObject:v16 forKey:@"_isTargetSizeBased"];
 
-  [v4 encodeCGSize:@"_targetSize" forKey:{self->_mycaction->var33.width, self->_mycaction->var33.height}];
+  [coderCopy encodeCGSize:@"_targetSize" forKey:{self->_mycaction->var33.width, self->_mycaction->var33.height}];
 }
 
-+ (id)scaleXBy:(double)a3 y:(double)a4 duration:(double)a5
++ (id)scaleXBy:(double)by y:(double)y duration:(double)duration
 {
   v8 = objc_alloc_init(SKScale);
   v9 = v8;
-  v10 = a3;
+  byCopy = by;
   mycaction = v8->_mycaction;
-  v12 = a4;
-  mycaction->var19 = v10;
-  mycaction->var20 = v12;
-  v13 = v10;
+  yCopy = y;
+  mycaction->var19 = byCopy;
+  mycaction->var20 = yCopy;
+  v13 = byCopy;
   v14 = 0.0;
   v15 = 0.0;
   if ((LODWORD(v13) & 0x60000000) != 0)
   {
-    v15 = 1.0 / a3;
+    v15 = 1.0 / by;
   }
 
   mycaction->var21 = v15;
-  if ((LODWORD(v12) & 0x60000000) != 0)
+  if ((LODWORD(yCopy) & 0x60000000) != 0)
   {
-    v14 = 1.0 / a4;
+    v14 = 1.0 / y;
   }
 
   mycaction->var22 = v14;
   *&mycaction->var29 = 257;
   mycaction->var31 = 1;
-  [(SKAction *)v8 setDuration:a5];
+  [(SKAction *)v8 setDuration:duration];
 
   return v9;
 }
 
-+ (id)scaleXBy:(double)a3 duration:(double)a4
++ (id)scaleXBy:(double)by duration:(double)duration
 {
   v6 = objc_alloc_init(SKScale);
   v7 = v6;
   mycaction = v6->_mycaction;
-  v9 = a3;
-  mycaction->var19 = v9;
+  byCopy = by;
+  mycaction->var19 = byCopy;
   mycaction->var20 = 1.0;
-  if ((LODWORD(v9) & 0x60000000) != 0)
+  if ((LODWORD(byCopy) & 0x60000000) != 0)
   {
-    v10 = 1.0 / a3;
+    v10 = 1.0 / by;
   }
 
   else
@@ -138,22 +138,22 @@
   mycaction->var22 = 1.0;
   *&mycaction->var29 = 257;
   mycaction->var31 = 0;
-  [(SKAction *)v6 setDuration:a4];
+  [(SKAction *)v6 setDuration:duration];
 
   return v7;
 }
 
-+ (id)scaleYBy:(double)a3 duration:(double)a4
++ (id)scaleYBy:(double)by duration:(double)duration
 {
   v6 = objc_alloc_init(SKScale);
   v7 = v6;
   mycaction = v6->_mycaction;
   mycaction->var19 = 1.0;
-  v9 = a3;
-  mycaction->var20 = v9;
-  if ((LODWORD(v9) & 0x60000000) != 0)
+  byCopy = by;
+  mycaction->var20 = byCopy;
+  if ((LODWORD(byCopy) & 0x60000000) != 0)
   {
-    v10 = 1.0 / a3;
+    v10 = 1.0 / by;
   }
 
   else
@@ -165,15 +165,15 @@
   mycaction->var21 = 1.0;
   *&mycaction->var29 = 1;
   mycaction->var31 = 1;
-  [(SKAction *)v6 setDuration:a4];
+  [(SKAction *)v6 setDuration:duration];
 
   return v7;
 }
 
-+ (id)scaleToSize:(CGSize)a3 duration:(double)a4
++ (id)scaleToSize:(CGSize)size duration:(double)duration
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = objc_alloc_init(SKScale);
   mycaction = v7->_mycaction;
   __asm { FMOV            V0.4S, #1.0 }
@@ -182,62 +182,62 @@
   *&mycaction->var29 = 16843008;
   mycaction->var33.width = width;
   mycaction->var33.height = height;
-  [(SKAction *)v7 setDuration:a4];
+  [(SKAction *)v7 setDuration:duration];
 
   return v7;
 }
 
-+ (id)scaleXTo:(double)a3 y:(double)a4 duration:(double)a5
++ (id)scaleXTo:(double)to y:(double)y duration:(double)duration
 {
   v6 = objc_alloc_init(SKScale);
-  v7.f64[0] = a3;
-  v7.f64[1] = a4;
+  v7.f64[0] = to;
+  v7.f64[1] = y;
   mycaction = v6->_mycaction;
   *&mycaction->var19 = vcvt_hight_f32_f64(vcvt_f32_f64(v7), v7);
   *&mycaction->var29 = 256;
   mycaction->var31 = 1;
-  [(SKAction *)v6 setDuration:a5];
+  [(SKAction *)v6 setDuration:duration];
 
   return v6;
 }
 
-+ (id)scaleXTo:(double)a3 duration:(double)a4
++ (id)scaleXTo:(double)to duration:(double)duration
 {
   v6 = objc_alloc_init(SKScale);
   mycaction = v6->_mycaction;
-  v8 = a3;
-  mycaction->var19 = v8;
+  toCopy = to;
+  mycaction->var19 = toCopy;
   mycaction->var20 = 1.0;
-  mycaction->var21 = v8;
+  mycaction->var21 = toCopy;
   mycaction->var22 = 1.0;
   *&mycaction->var29 = 256;
   mycaction->var31 = 0;
-  [(SKAction *)v6 setDuration:a4];
+  [(SKAction *)v6 setDuration:duration];
 
   return v6;
 }
 
-+ (id)scaleYTo:(double)a3 duration:(double)a4
++ (id)scaleYTo:(double)to duration:(double)duration
 {
   v6 = objc_alloc_init(SKScale);
   mycaction = v6->_mycaction;
   mycaction->var19 = 1.0;
-  v8 = a3;
-  mycaction->var20 = v8;
+  toCopy = to;
+  mycaction->var20 = toCopy;
   mycaction->var21 = 1.0;
-  mycaction->var22 = v8;
+  mycaction->var22 = toCopy;
   *&mycaction->var29 = 0;
   mycaction->var31 = 1;
-  [(SKAction *)v6 setDuration:a4];
+  [(SKAction *)v6 setDuration:duration];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = SKScale;
-  result = [(SKAction *)&v7 copyWithZone:a3];
+  result = [(SKAction *)&v7 copyWithZone:zone];
   mycaction = self->_mycaction;
   v6 = *(result + 2);
   *(v6 + 128) = mycaction->var23;

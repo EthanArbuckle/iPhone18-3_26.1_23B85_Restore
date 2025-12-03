@@ -1,25 +1,25 @@
 @interface GKImageBrush
-- (CGSize)sizeForInput:(id)a3;
-- (double)scaleForInput:(id)a3;
-- (void)drawInRect:(CGRect)a3 withContext:(CGContext *)a4 input:(id)a5;
+- (CGSize)sizeForInput:(id)input;
+- (double)scaleForInput:(id)input;
+- (void)drawInRect:(CGRect)rect withContext:(CGContext *)context input:(id)input;
 @end
 
 @implementation GKImageBrush
 
-- (CGSize)sizeForInput:(id)a3
+- (CGSize)sizeForInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   inputTransform = self->_inputTransform;
   if (inputTransform)
   {
-    v6 = inputTransform[2](inputTransform, v4);
+    v6 = inputTransform[2](inputTransform, inputCopy);
 
-    v4 = v6;
+    inputCopy = v6;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 size];
+    [inputCopy size];
 LABEL_8:
     v10 = v7;
     v12 = v8;
@@ -30,11 +30,11 @@ LABEL_8:
   {
     v15.receiver = self;
     v15.super_class = GKImageBrush;
-    [(GKBrush *)&v15 sizeForInput:v4];
+    [(GKBrush *)&v15 sizeForInput:inputCopy];
     goto LABEL_8;
   }
 
-  [v4 bounds];
+  [inputCopy bounds];
   v10 = v9;
   v12 = v11;
 LABEL_9:
@@ -46,32 +46,32 @@ LABEL_9:
   return result;
 }
 
-- (double)scaleForInput:(id)a3
+- (double)scaleForInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   inputTransform = self->_inputTransform;
   if (inputTransform)
   {
-    v6 = inputTransform[2](inputTransform, v4);
+    v6 = inputTransform[2](inputTransform, inputCopy);
 
-    v4 = v6;
+    inputCopy = v6;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 scale];
+    [inputCopy scale];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v4 contentScaleFactor];
+    [inputCopy contentScaleFactor];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = GKImageBrush;
-    [(GKBrush *)&v10 scaleForInput:v4];
+    [(GKBrush *)&v10 scaleForInput:inputCopy];
   }
 
   v8 = v7;
@@ -79,25 +79,25 @@ LABEL_9:
   return v8;
 }
 
-- (void)drawInRect:(CGRect)a3 withContext:(CGContext *)a4 input:(id)a5
+- (void)drawInRect:(CGRect)rect withContext:(CGContext *)context input:(id)input
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  inputCopy = input;
   inputTransform = self->_inputTransform;
-  v13 = v11;
-  v16 = v11;
+  v13 = inputCopy;
+  v16 = inputCopy;
   if (inputTransform)
   {
-    v13 = inputTransform[2](inputTransform, v11);
+    v13 = inputTransform[2](inputTransform, inputCopy);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    UIGraphicsPushContext(a4);
+    UIGraphicsPushContext(context);
     [v13 drawInRect:{x, y, width, height}];
     UIGraphicsPopContext();
     if (annotateOnceToken != -1)

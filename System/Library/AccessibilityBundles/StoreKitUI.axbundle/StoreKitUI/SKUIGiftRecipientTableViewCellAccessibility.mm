@@ -26,9 +26,9 @@
 {
   v2 = [(SKUIGiftRecipientTableViewCellAccessibility *)self safeValueForKey:@"_recipientView"];
   v3 = [v2 safeValueForKey:@"focused"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

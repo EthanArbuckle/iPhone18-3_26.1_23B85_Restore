@@ -1,5 +1,5 @@
 @interface CPSPermissionItemViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axLabeledSwitchStack;
 - (id)_axSwitchLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -7,14 +7,14 @@
 
 @implementation CPSPermissionItemViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CPSPermissionItemView" hasInstanceMethod:@"setOn:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"CPSPermissionItemView" hasInstanceVariable:@"_permissionSwitch" withType:"UISwitch"];
-  [v3 validateClass:@"CPSPermissionItemView" hasInstanceVariable:@"_switchWithLabelVisualEffectView" withType:"UIVisualEffectView"];
-  [v3 validateClass:@"UIVisualEffectView" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CPSVibrantLabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CPSPermissionItemView" hasInstanceMethod:@"setOn:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"CPSPermissionItemView" hasInstanceVariable:@"_permissionSwitch" withType:"UISwitch"];
+  [validationsCopy validateClass:@"CPSPermissionItemView" hasInstanceVariable:@"_switchWithLabelVisualEffectView" withType:"UIVisualEffectView"];
+  [validationsCopy validateClass:@"UIVisualEffectView" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CPSVibrantLabel"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -24,25 +24,25 @@
   [(CPSPermissionItemViewAccessibility *)&v17 _accessibilityLoadAccessibilityInformation];
   LOBYTE(location) = 0;
   objc_opt_class();
-  v3 = [(CPSPermissionItemViewAccessibility *)self _axLabeledSwitchStack];
+  _axLabeledSwitchStack = [(CPSPermissionItemViewAccessibility *)self _axLabeledSwitchStack];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [(CPSPermissionItemViewAccessibility *)self _axPermissionSwitch];
+  _axPermissionSwitch = [(CPSPermissionItemViewAccessibility *)self _axPermissionSwitch];
   [v4 setIsAccessibilityElement:1];
-  v6 = [(CPSPermissionItemViewAccessibility *)self _axSwitchLabel];
-  v7 = [v6 accessibilityLabel];
-  [v4 setAccessibilityLabel:v7];
+  _axSwitchLabel = [(CPSPermissionItemViewAccessibility *)self _axSwitchLabel];
+  accessibilityLabel = [_axSwitchLabel accessibilityLabel];
+  [v4 setAccessibilityLabel:accessibilityLabel];
 
-  [v4 setAccessibilityTraits:{objc_msgSend(v5, "accessibilityTraits")}];
+  [v4 setAccessibilityTraits:{objc_msgSend(_axPermissionSwitch, "accessibilityTraits")}];
   objc_initWeak(&location, self);
-  v8 = [v5 accessibilityValue];
-  [v4 setAccessibilityValue:v8];
+  accessibilityValue = [_axPermissionSwitch accessibilityValue];
+  [v4 setAccessibilityValue:accessibilityValue];
 
   v14[0] = MEMORY[0x29EDCA5F8];
   v14[1] = 3221225472;
   v14[2] = __80__CPSPermissionItemViewAccessibility__accessibilityLoadAccessibilityInformation__block_invoke;
   v14[3] = &unk_29F2B3B08;
-  v9 = v5;
+  v9 = _axPermissionSwitch;
   v15 = v9;
   [v4 _setAccessibilityValueBlock:v14];
   v11[0] = MEMORY[0x29EDCA5F8];
@@ -95,8 +95,8 @@ uint64_t __59__CPSPermissionItemViewAccessibility__axLabeledSwitchStack__block_i
 
 - (id)_axSwitchLabel
 {
-  v2 = [(CPSPermissionItemViewAccessibility *)self _axLabeledSwitchStack];
-  v3 = [v2 _accessibilityFindSubviewDescendant:&__block_literal_global_317];
+  _axLabeledSwitchStack = [(CPSPermissionItemViewAccessibility *)self _axLabeledSwitchStack];
+  v3 = [_axLabeledSwitchStack _accessibilityFindSubviewDescendant:&__block_literal_global_317];
 
   return v3;
 }

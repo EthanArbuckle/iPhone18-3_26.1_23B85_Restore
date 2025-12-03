@@ -1,9 +1,9 @@
 @interface NavIdleTimeoutGestureRecognizer
-- (NavIdleTimeoutGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (NavIdleTimeoutGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation NavIdleTimeoutGestureRecognizer
@@ -17,32 +17,32 @@
   self->_event = 0;
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  objc_storeStrong(&self->_event, a4);
+  objc_storeStrong(&self->_event, event);
 
   [(NavIdleTimeoutGestureRecognizer *)self setState:4];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  objc_storeStrong(&self->_event, a4);
+  objc_storeStrong(&self->_event, event);
 
   [(NavIdleTimeoutGestureRecognizer *)self setState:3];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  objc_storeStrong(&self->_event, a4);
+  objc_storeStrong(&self->_event, event);
 
   [(NavIdleTimeoutGestureRecognizer *)self setState:1];
 }
 
-- (NavIdleTimeoutGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (NavIdleTimeoutGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = NavIdleTimeoutGestureRecognizer;
-  v4 = [(NavIdleTimeoutGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(NavIdleTimeoutGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {

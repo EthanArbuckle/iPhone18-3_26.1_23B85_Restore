@@ -1,15 +1,15 @@
 @interface PKPerformActionLoadingView
-- (PKPerformActionLoadingView)initWithFrame:(CGRect)a3;
+- (PKPerformActionLoadingView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation PKPerformActionLoadingView
 
-- (PKPerformActionLoadingView)initWithFrame:(CGRect)a3
+- (PKPerformActionLoadingView)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = PKPerformActionLoadingView;
-  v3 = [(PKPerformActionLoadingView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPerformActionLoadingView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
@@ -24,16 +24,16 @@
     v3->_loadingLabel = v7;
 
     v9 = v3->_loadingLabel;
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v9 setBackgroundColor:v10];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v9 setBackgroundColor:clearColor];
 
     v11 = v3->_loadingLabel;
     v12 = PKLocalizedPaymentString(&cfstr_PerformActionL.isa);
     [(UILabel *)v11 setText:v12];
 
     v13 = v3->_loadingLabel;
-    v14 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v13 setTextColor:v14];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v13 setTextColor:secondaryLabelColor];
 
     [(PKPerformActionLoadingView *)v3 addSubview:v3->_loadingLabel];
   }

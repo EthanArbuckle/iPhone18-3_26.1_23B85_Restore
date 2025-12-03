@@ -2,13 +2,13 @@
 - (BOOL)isExecuting;
 - (BOOL)isFinished;
 - (HKLookUpAppPrivacyPolicyURLOperation)init;
-- (HKLookUpAppPrivacyPolicyURLOperation)initWithBundleIdentifier:(id)a3;
+- (HKLookUpAppPrivacyPolicyURLOperation)initWithBundleIdentifier:(id)identifier;
 - (id)debugDescription;
 - (id)description;
 - (void)_performLookup;
 - (void)cancel;
-- (void)setExecuting:(BOOL)a3;
-- (void)setFinished:(BOOL)a3;
+- (void)setExecuting:(BOOL)executing;
+- (void)setFinished:(BOOL)finished;
 - (void)start;
 @end
 
@@ -24,15 +24,15 @@
   return 0;
 }
 
-- (HKLookUpAppPrivacyPolicyURLOperation)initWithBundleIdentifier:(id)a3
+- (HKLookUpAppPrivacyPolicyURLOperation)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = HKLookUpAppPrivacyPolicyURLOperation;
   v5 = [(HKLookUpAppPrivacyPolicyURLOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v6;
   }
@@ -44,7 +44,7 @@
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(HKLookUpAppPrivacyPolicyURLOperation *)self bundleIdentifier];
+  bundleIdentifier = [(HKLookUpAppPrivacyPolicyURLOperation *)self bundleIdentifier];
   v6 = HKSensitiveLogItem();
   v7 = [v3 initWithFormat:@"<%@:%p bundleIdentifier: %@>", v4, self, v6];
 
@@ -55,7 +55,7 @@
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(HKLookUpAppPrivacyPolicyURLOperation *)self bundleIdentifier];
+  bundleIdentifier = [(HKLookUpAppPrivacyPolicyURLOperation *)self bundleIdentifier];
   v6 = HKSensitiveLogItem();
   v10.receiver = self;
   v10.super_class = HKLookUpAppPrivacyPolicyURLOperation;
@@ -68,57 +68,57 @@
 - (void)cancel
 {
   v8 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (![(HKLookUpAppPrivacyPolicyURLOperation *)v2 isFinished])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(HKLookUpAppPrivacyPolicyURLOperation *)selfCopy isFinished])
   {
-    v5.receiver = v2;
+    v5.receiver = selfCopy;
     v5.super_class = HKLookUpAppPrivacyPolicyURLOperation;
     [(HKLookUpAppPrivacyPolicyURLOperation *)&v5 cancel];
-    v3 = [(HKLookUpAppPrivacyPolicyURLOperation *)v2 outstandingPromise];
-    [v3 cancel];
+    outstandingPromise = [(HKLookUpAppPrivacyPolicyURLOperation *)selfCopy outstandingPromise];
+    [outstandingPromise cancel];
 
-    [(HKLookUpAppPrivacyPolicyURLOperation *)v2 setOutstandingPromise:0];
+    [(HKLookUpAppPrivacyPolicyURLOperation *)selfCopy setOutstandingPromise:0];
     _HKInitializeLogging();
     v4 = *MEMORY[0x1E696B948];
     if (os_log_type_enabled(*MEMORY[0x1E696B948], OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v7 = v2;
+      v7 = selfCopy;
       _os_log_impl(&dword_1C3942000, v4, OS_LOG_TYPE_INFO, "%{public}@ did cancel", buf, 0xCu);
     }
 
-    [(HKLookUpAppPrivacyPolicyURLOperation *)v2 setExecuting:0];
-    [(HKLookUpAppPrivacyPolicyURLOperation *)v2 setFinished:1];
+    [(HKLookUpAppPrivacyPolicyURLOperation *)selfCopy setExecuting:0];
+    [(HKLookUpAppPrivacyPolicyURLOperation *)selfCopy setFinished:1];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_performLookup
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E698C7D8];
-  v4 = [MEMORY[0x1E698C9E0] bagSubProfile];
-  v5 = [MEMORY[0x1E698C9E0] bagSubProfileVersion];
-  v6 = [v3 bagForProfile:v4 profileVersion:v5];
+  bagSubProfile = [MEMORY[0x1E698C9E0] bagSubProfile];
+  bagSubProfileVersion = [MEMORY[0x1E698C9E0] bagSubProfileVersion];
+  v6 = [v3 bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   v7 = objc_alloc(MEMORY[0x1E698C9E0]);
   v8 = [v7 initWithType:0 clientIdentifier:*MEMORY[0x1E696C860] clientVersion:@"1" bag:v6];
-  v9 = [(HKLookUpAppPrivacyPolicyURLOperation *)self bundleIdentifier];
-  v13[0] = v9;
+  bundleIdentifier = [(HKLookUpAppPrivacyPolicyURLOperation *)self bundleIdentifier];
+  v13[0] = bundleIdentifier;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   [v8 setBundleIdentifiers:v10];
 
   [v8 setAdditionalQueryParams:&unk_1F4384BA8];
-  v11 = [v8 perform];
+  perform = [v8 perform];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __54__HKLookUpAppPrivacyPolicyURLOperation__performLookup__block_invoke;
   v12[3] = &unk_1E81B85D8;
   v12[4] = self;
-  [v11 addFinishBlock:v12];
-  [(HKLookUpAppPrivacyPolicyURLOperation *)self setOutstandingPromise:v11];
+  [perform addFinishBlock:v12];
+  [(HKLookUpAppPrivacyPolicyURLOperation *)self setOutstandingPromise:perform];
 }
 
 void __54__HKLookUpAppPrivacyPolicyURLOperation__performLookup__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -231,42 +231,42 @@ void __54__HKLookUpAppPrivacyPolicyURLOperation__performLookup__block_invoke(uin
   objc_sync_exit(obj);
 }
 
-- (void)setExecuting:(BOOL)a3
+- (void)setExecuting:(BOOL)executing
 {
   obj = self;
   objc_sync_enter(obj);
   [(HKLookUpAppPrivacyPolicyURLOperation *)obj willChangeValueForKey:@"isExecuting"];
-  obj->_executing = a3;
+  obj->_executing = executing;
   [(HKLookUpAppPrivacyPolicyURLOperation *)obj didChangeValueForKey:@"isExecuting"];
   objc_sync_exit(obj);
 }
 
 - (BOOL)isExecuting
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  executing = v2->_executing;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  executing = selfCopy->_executing;
+  objc_sync_exit(selfCopy);
 
   return executing;
 }
 
-- (void)setFinished:(BOOL)a3
+- (void)setFinished:(BOOL)finished
 {
   obj = self;
   objc_sync_enter(obj);
   [(HKLookUpAppPrivacyPolicyURLOperation *)obj willChangeValueForKey:@"isFinished"];
-  obj->_finished = a3;
+  obj->_finished = finished;
   [(HKLookUpAppPrivacyPolicyURLOperation *)obj didChangeValueForKey:@"isFinished"];
   objc_sync_exit(obj);
 }
 
 - (BOOL)isFinished
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  finished = v2->_finished;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  finished = selfCopy->_finished;
+  objc_sync_exit(selfCopy);
 
   return finished;
 }

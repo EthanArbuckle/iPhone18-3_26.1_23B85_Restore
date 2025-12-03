@@ -1,235 +1,235 @@
 @interface TransparencyManagedDataStore
-+ (id)deserializeLoggableDatas:(id)a3 error:(id *)a4;
-+ (id)deserializeNSError:(id)a3 error:(id *)a4;
-+ (id)serializeLoggableDatas:(id)a3;
-+ (id)serializeNSError:(id)a3;
++ (id)deserializeLoggableDatas:(id)datas error:(id *)error;
++ (id)deserializeNSError:(id)error error:(id *)a4;
++ (id)serializeLoggableDatas:(id)datas;
++ (id)serializeNSError:(id)error;
 + (id)supportedClassTypes;
-+ (void)cleanseError:(id *)a3;
-- (BOOL)clearAllFailureEvents:(id)a3 error:(id *)a4;
-- (BOOL)clearSelfFailureRelatedData:(id)a3 uri:(id)a4 error:(id *)a5;
-- (BOOL)clearSelfValidationFollowups:(id)a3 uri:(id)a4 error:(id *)a5;
-- (BOOL)clearState:(id *)a3;
-- (BOOL)clearStateForApplication:(id)a3 error:(id *)a4;
-- (BOOL)createFollowupTicket:(id)a3 uri:(id)a4 startTime:(id)a5 error:(id *)a6;
-- (BOOL)deleteCompletedSingleQueryForUris:(id)a3 application:(id)a4 error:(id *)a5;
-- (BOOL)deleteDownloadRecord:(unint64_t)a3 application:(id)a4 error:(id *)a5;
-- (BOOL)deleteDownloadRecordById:(id)a3 error:(id *)a4;
-- (BOOL)deleteDownloadRecords:(id)a3 error:(id *)a4;
-- (BOOL)deleteSMTsWithSPKINotIn:(id)a3 application:(id)a4 error:(id *)a5;
-- (BOOL)deleteSTHs:(id)a3 logBeginMsLessThan:(unint64_t)a4 error:(id *)a5;
-- (BOOL)deleteServerRPCs:(id)a3 error:(id *)a4;
-- (BOOL)deleteServerRpcById:(id)a3 error:(id *)a4;
-- (BOOL)disableCacheHitsForUris:(id)a3 application:(id)a4 error:(id *)a5;
++ (void)cleanseError:(id *)error;
+- (BOOL)clearAllFailureEvents:(id)events error:(id *)error;
+- (BOOL)clearSelfFailureRelatedData:(id)data uri:(id)uri error:(id *)error;
+- (BOOL)clearSelfValidationFollowups:(id)followups uri:(id)uri error:(id *)error;
+- (BOOL)clearState:(id *)state;
+- (BOOL)clearStateForApplication:(id)application error:(id *)error;
+- (BOOL)createFollowupTicket:(id)ticket uri:(id)uri startTime:(id)time error:(id *)error;
+- (BOOL)deleteCompletedSingleQueryForUris:(id)uris application:(id)application error:(id *)error;
+- (BOOL)deleteDownloadRecord:(unint64_t)record application:(id)application error:(id *)error;
+- (BOOL)deleteDownloadRecordById:(id)id error:(id *)error;
+- (BOOL)deleteDownloadRecords:(id)records error:(id *)error;
+- (BOOL)deleteSMTsWithSPKINotIn:(id)in application:(id)application error:(id *)error;
+- (BOOL)deleteSTHs:(id)hs logBeginMsLessThan:(unint64_t)than error:(id *)error;
+- (BOOL)deleteServerRPCs:(id)cs error:(id *)error;
+- (BOOL)deleteServerRpcById:(id)id error:(id *)error;
+- (BOOL)disableCacheHitsForUris:(id)uris application:(id)application error:(id *)error;
 - (BOOL)drainDataStore;
-- (BOOL)failRpcId:(id)a3 failure:(id)a4 error:(id *)a5;
-- (BOOL)fetchBooleanPropertyOnMostRecentMapHead:(id)a3 logBeginMs:(unint64_t)a4 propertyName:(id)a5 error:(id *)a6;
-- (BOOL)garbageCollectEntity:(id)a3 predicate:(id)a4 error:(id *)a5;
-- (BOOL)garbageCollectEntityBatchDelete:(id)a3 predicate:(id)a4 error:(id *)a5;
-- (BOOL)hasPendingDownloadForUUID:(id)a3 error:(id *)a4;
-- (BOOL)hasPendingSingleQueryForUri:(id)a3 application:(id)a4 error:(id *)a5;
-- (BOOL)ignoreFailureForResults:(id)a3 error:(id *)a4;
-- (BOOL)ignoreFailureForUri:(id)a3 application:(id)a4 status:(unint64_t)a5 error:(id *)a6;
-- (BOOL)initSelfState:(id)a3 uri:(id)a4 error:(id *)a5;
-- (BOOL)logMetricsForApplication:(id)a3 error:(id *)a4;
-- (BOOL)logRequestMetricsForApplication:(id)a3 error:(id *)a4;
-- (BOOL)logSMTMetricsForApplication:(id)a3 error:(id *)a4;
-- (BOOL)logSTHMetricsForApplication:(id)a3 error:(id *)a4;
-- (BOOL)onMocLogVerificationMetricsForApplication:(id)a3 error:(id *)a4;
-- (BOOL)onQueueRemoveFailures:(id)a3 error:(id *)a4;
-- (BOOL)onQueueSetCachedPeerOptInState:(BOOL)a3 uris:(id)a4 application:(id)a5 error:(id *)a6;
-- (BOOL)performAndWaitForDeviceId:(id)a3 application:(id)a4 error:(id *)a5 block:(id)a6;
-- (BOOL)performAndWaitForDownloadId:(id)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)performAndWaitForFailedEventId:(id)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)performAndWaitForFetchId:(id)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)performAndWaitForPeer:(id)a3 application:(id)a4 error:(id *)a5 block:(id)a6;
-- (BOOL)performAndWaitForRequestId:(id)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)performAndWaitForRpcId:(id)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)performAndWaitForVerificationId:(id)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)performBlockWithSelfState:(id)a3 uri:(id)a4 error:(id *)a5 block:(id)a6;
-- (BOOL)performCheckWithNewestMap:(id)a3 logBeginMs:(unint64_t)a4 error:(id *)a5 block:(id)a6;
-- (BOOL)performForPendingSMTs:(id)a3 uri:(id)a4 error:(id *)a5 batchSize:(unint64_t)a6 block:(id)a7;
-- (BOOL)performForPendingVerfications:(id)a3 uri:(id)a4 responseOlderThan:(id)a5 error:(id *)a6 batchSize:(unint64_t)a7 block:(id)a8;
-- (BOOL)persistAndRefaultObject:(id)a3 error:(id *)a4;
-- (BOOL)persistAndRefaultObjects:(id)a3 error:(id *)a4;
-- (BOOL)persistWithError:(id *)a3;
-- (BOOL)populateExistingRequestsToLookupTable:(id *)a3;
-- (BOOL)populateMissingLogHeadHashes:(id *)a3;
-- (BOOL)resetPeersToPending:(id)a3 error:(id *)a4;
-- (BOOL)resetPendingRequests:(id)a3 error:(id *)a4;
-- (BOOL)resetVerificationsToPending:(id)a3 error:(id *)a4;
-- (BOOL)setResponse:(id)a3 downloadId:(id)a4 error:(id *)a5;
-- (BOOL)setResponseForRpcId:(id)a3 response:(id)a4 responseStatus:(id)a5 usedReversePush:(BOOL)a6 serverHint:(id)a7 error:(id *)a8;
-- (BOOL)setSeenDate:(id)a3 uris:(id)a4 application:(id)a5 error:(id *)a6;
-- (BOOL)shouldGarbageCollectSMH:(id)a3 application:(id)a4 logBeginMs:(unint64_t)a5 olderThanRevision:(unint64_t)a6 olderThanDate:(id)a7;
-- (BOOL)shouldGarbageCollectSTH:(id)a3 application:(id)a4 logBeginMs:(unint64_t)a5 olderThanDate:(id)a6;
-- (TransparencyManagedDataStore)initWithController:(id)a3 followup:(id)a4 logger:(id)a5;
+- (BOOL)failRpcId:(id)id failure:(id)failure error:(id *)error;
+- (BOOL)fetchBooleanPropertyOnMostRecentMapHead:(id)head logBeginMs:(unint64_t)ms propertyName:(id)name error:(id *)error;
+- (BOOL)garbageCollectEntity:(id)entity predicate:(id)predicate error:(id *)error;
+- (BOOL)garbageCollectEntityBatchDelete:(id)delete predicate:(id)predicate error:(id *)error;
+- (BOOL)hasPendingDownloadForUUID:(id)d error:(id *)error;
+- (BOOL)hasPendingSingleQueryForUri:(id)uri application:(id)application error:(id *)error;
+- (BOOL)ignoreFailureForResults:(id)results error:(id *)error;
+- (BOOL)ignoreFailureForUri:(id)uri application:(id)application status:(unint64_t)status error:(id *)error;
+- (BOOL)initSelfState:(id)state uri:(id)uri error:(id *)error;
+- (BOOL)logMetricsForApplication:(id)application error:(id *)error;
+- (BOOL)logRequestMetricsForApplication:(id)application error:(id *)error;
+- (BOOL)logSMTMetricsForApplication:(id)application error:(id *)error;
+- (BOOL)logSTHMetricsForApplication:(id)application error:(id *)error;
+- (BOOL)onMocLogVerificationMetricsForApplication:(id)application error:(id *)error;
+- (BOOL)onQueueRemoveFailures:(id)failures error:(id *)error;
+- (BOOL)onQueueSetCachedPeerOptInState:(BOOL)state uris:(id)uris application:(id)application error:(id *)error;
+- (BOOL)performAndWaitForDeviceId:(id)id application:(id)application error:(id *)error block:(id)block;
+- (BOOL)performAndWaitForDownloadId:(id)id error:(id *)error block:(id)block;
+- (BOOL)performAndWaitForFailedEventId:(id)id error:(id *)error block:(id)block;
+- (BOOL)performAndWaitForFetchId:(id)id error:(id *)error block:(id)block;
+- (BOOL)performAndWaitForPeer:(id)peer application:(id)application error:(id *)error block:(id)block;
+- (BOOL)performAndWaitForRequestId:(id)id error:(id *)error block:(id)block;
+- (BOOL)performAndWaitForRpcId:(id)id error:(id *)error block:(id)block;
+- (BOOL)performAndWaitForVerificationId:(id)id error:(id *)error block:(id)block;
+- (BOOL)performBlockWithSelfState:(id)state uri:(id)uri error:(id *)error block:(id)block;
+- (BOOL)performCheckWithNewestMap:(id)map logBeginMs:(unint64_t)ms error:(id *)error block:(id)block;
+- (BOOL)performForPendingSMTs:(id)ts uri:(id)uri error:(id *)error batchSize:(unint64_t)size block:(id)block;
+- (BOOL)performForPendingVerfications:(id)verfications uri:(id)uri responseOlderThan:(id)than error:(id *)error batchSize:(unint64_t)size block:(id)block;
+- (BOOL)persistAndRefaultObject:(id)object error:(id *)error;
+- (BOOL)persistAndRefaultObjects:(id)objects error:(id *)error;
+- (BOOL)persistWithError:(id *)error;
+- (BOOL)populateExistingRequestsToLookupTable:(id *)table;
+- (BOOL)populateMissingLogHeadHashes:(id *)hashes;
+- (BOOL)resetPeersToPending:(id)pending error:(id *)error;
+- (BOOL)resetPendingRequests:(id)requests error:(id *)error;
+- (BOOL)resetVerificationsToPending:(id)pending error:(id *)error;
+- (BOOL)setResponse:(id)response downloadId:(id)id error:(id *)error;
+- (BOOL)setResponseForRpcId:(id)id response:(id)response responseStatus:(id)status usedReversePush:(BOOL)push serverHint:(id)hint error:(id *)error;
+- (BOOL)setSeenDate:(id)date uris:(id)uris application:(id)application error:(id *)error;
+- (BOOL)shouldGarbageCollectSMH:(id)h application:(id)application logBeginMs:(unint64_t)ms olderThanRevision:(unint64_t)revision olderThanDate:(id)date;
+- (BOOL)shouldGarbageCollectSTH:(id)h application:(id)application logBeginMs:(unint64_t)ms olderThanDate:(id)date;
+- (TransparencyManagedDataStore)initWithController:(id)controller followup:(id)followup logger:(id)logger;
 - (TransparencyManagedDataStoreController)controller;
 - (TransparencyManagedDataStoreProtocol)updateDelegate;
 - (TransparencyPeerOverrides)peerOverridesStore;
 - (TransparencyStaticKeyStore)staticKeyStore;
-- (id)copyStatistics:(id *)a3;
+- (id)copyStatistics:(id *)statistics;
 - (id)createBatchQuery;
-- (id)createBatchQuery:(id)a3 backgroundOpId:(id)a4 error:(id *)a5;
-- (id)createDownloadRecord:(unint64_t)a3 moc:(id)a4 application:(id)a5;
-- (id)createFailureEvent:(id)a3 application:(id)a4 optInServer:(id)a5;
+- (id)createBatchQuery:(id)query backgroundOpId:(id)id error:(id *)error;
+- (id)createDownloadRecord:(unint64_t)record moc:(id)moc application:(id)application;
+- (id)createFailureEvent:(id)event application:(id)application optInServer:(id)server;
 - (id)createFetchRecord;
-- (id)createFetchRecordForRequestData:(id)a3 request:(id)a4 error:(id *)a5;
-- (id)createIDSKTVerification:(id)a3 application:(id)a4 accountKey:(id)a5 idsResponseTime:(id)a6 serverLoggableDatas:(id)a7 optedIn:(unint64_t)a8 type:(unint64_t)a9 syncedLoggableDatas:(id)a10 verificationId:(id)a11 error:(id *)a12;
-- (id)createIDSKTVerification:(id)a3 application:(id)a4 onMoc:(id)a5 accountKey:(id)a6 idsResponseTime:(id)a7 serverLoggableDatas:(id)a8 optedIn:(unint64_t)a9 type:(unint64_t)a10 syncedLoggableDatas:(id)a11 verificationId:(id)a12 error:(id *)a13;
-- (id)createIDSKTVerification:(id)a3 application:(id)a4 verificationInfo:(id)a5 type:(unint64_t)a6 syncedLoggableDatas:(id)a7 verificationId:(id)a8 error:(id *)a9;
+- (id)createFetchRecordForRequestData:(id)data request:(id)request error:(id *)error;
+- (id)createIDSKTVerification:(id)verification application:(id)application accountKey:(id)key idsResponseTime:(id)time serverLoggableDatas:(id)datas optedIn:(unint64_t)in type:(unint64_t)type syncedLoggableDatas:(id)self0 verificationId:(id)self1 error:(id *)self2;
+- (id)createIDSKTVerification:(id)verification application:(id)application onMoc:(id)moc accountKey:(id)key idsResponseTime:(id)time serverLoggableDatas:(id)datas optedIn:(unint64_t)in type:(unint64_t)self0 syncedLoggableDatas:(id)self1 verificationId:(id)self2 error:(id *)self3;
+- (id)createIDSKTVerification:(id)verification application:(id)application verificationInfo:(id)info type:(unint64_t)type syncedLoggableDatas:(id)datas verificationId:(id)id error:(id *)error;
 - (id)createMapHead;
-- (id)createMapHead:(id)a3 application:(id)a4 logBeginTime:(unint64_t)a5 logHeadHash:(id)a6 logType:(int64_t)a7 revision:(unint64_t)a8 populating:(BOOL)a9 gossip:(BOOL)a10;
-- (id)createMutation:(id)a3 application:(id)a4 uri:(id)a5 mutationMs:(unint64_t)a6 spkiHash:(id)a7 receiptTime:(id)a8;
-- (id)createPeerState:(id)a3 application:(id)a4 error:(id *)a5;
-- (id)createRecordFromLoggableData:(id)a3 application:(id)a4;
+- (id)createMapHead:(id)head application:(id)application logBeginTime:(unint64_t)time logHeadHash:(id)hash logType:(int64_t)type revision:(unint64_t)revision populating:(BOOL)populating gossip:(BOOL)self0;
+- (id)createMutation:(id)mutation application:(id)application uri:(id)uri mutationMs:(unint64_t)ms spkiHash:(id)hash receiptTime:(id)time;
+- (id)createPeerState:(id)state application:(id)application error:(id *)error;
+- (id)createRecordFromLoggableData:(id)data application:(id)application;
 - (id)createRequest;
-- (id)createRequestWithUri:(id)a3 application:(id)a4 accountKey:(id)a5 serverData:(id)a6 syncedData:(id)a7 idsResponseTime:(id)a8 queryRequest:(id)a9 queryResponse:(id)a10 responseDate:(id)a11 type:(unint64_t)a12 clientId:(id)a13 error:(id *)a14;
-- (id)createRequestWithUri:(id)a3 application:(id)a4 accountKey:(id)a5 serverData:(id)a6 syncedData:(id)a7 queryRequest:(id)a8 queryResponse:(id)a9 type:(unint64_t)a10 clientId:(id)a11 error:(id *)a12;
+- (id)createRequestWithUri:(id)uri application:(id)application accountKey:(id)key serverData:(id)data syncedData:(id)syncedData idsResponseTime:(id)time queryRequest:(id)request queryResponse:(id)self0 responseDate:(id)self1 type:(unint64_t)self2 clientId:(id)self3 error:(id *)self4;
+- (id)createRequestWithUri:(id)uri application:(id)application accountKey:(id)key serverData:(id)data syncedData:(id)syncedData queryRequest:(id)request queryResponse:(id)response type:(unint64_t)self0 clientId:(id)self1 error:(id *)self2;
 - (id)createSignedMutationTimestampsFailure;
 - (id)createSignedTreeHeadFailure;
 - (id)createSingleQuery;
-- (id)createSingleQuery:(id)a3 backgroundOpId:(id)a4 error:(id *)a5;
+- (id)createSingleQuery:(id)query backgroundOpId:(id)id error:(id *)error;
 - (id)createTreeHead;
-- (id)createVerification:(id)a3 application:(id)a4 onMoc:(id)a5 verificationInfo:(id)a6 error:(id *)a7;
-- (id)downloadRecords:(id *)a3;
-- (id)failedHeadSignaturesWithRevisions:(id)a3 application:(id)a4;
-- (id)fetchCompletedRequests:(id)a3 olderThan:(id)a4 error:(id *)a5;
-- (id)fetchDownloadRecord:(unint64_t)a3 application:(id)a4 error:(id *)a5;
-- (id)fetchDownloadRecordById:(id)a3 error:(id *)a4;
-- (id)fetchFetchRecordById:(id)a3 error:(id *)a4;
-- (id)fetchLatestSingleQueryByUri:(id)a3 application:(id)a4 error:(id *)a5;
-- (id)fetchNumericPropertyOnMostRecentMapHead:(id)a3 logBeginMs:(unint64_t)a4 propertyName:(id)a5 error:(id *)a6;
-- (id)fetchOrCreateVerification:(id)a3 application:(id)a4 verificationInfo:(id)a5 fetchNow:(BOOL)a6 error:(id *)a7;
-- (id)fetchPeer:(id)a3 application:(id)a4 error:(id *)a5;
-- (id)fetchRecentFailureEvents:(id)a3 fetchLimit:(unint64_t)a4 error:(id *)a5;
-- (id)fetchRequestForUUID:(id)a3 error:(id *)a4;
-- (id)fetchRequestWithUri:(id)a3 application:(id)a4 accountKey:(id)a5 loggableDatas:(id)a6 youngerThan:(id)a7 error:(id *)a8;
-- (id)fetchRequestsForURI:(id)a3 error:(id *)a4;
-- (id)fetchServerRpcById:(id)a3 error:(id *)a4;
-- (id)getLatestSuccessfulBatchQueryForUri:(id)a3 application:(id)a4 requestYoungerThan:(id)a5 error:(id *)a6;
-- (id)getLatestSuccessfulSingleQueryForUri:(id)a3 application:(id)a4 requestYoungerThan:(id)a5 error:(id *)a6;
-- (id)getOptInStatus:(id)a3 application:(id)a4 error:(id *)a5;
-- (id)getPendingSmtUris:(id)a3 fetchLimit:(unint64_t)a4 error:(id *)a5;
-- (id)getTapToRadarDate:(id)a3;
-- (id)insertCompletedSingleQuery:(id)a3 application:(id)a4 request:(id)a5 response:(id)a6 traceUUID:(id)a7 responseStatus:(int64_t)a8 serverHint:(id)a9;
-- (id)latestConsistencyVerifiedTreeHeadRevision:(id)a3 logBeginMs:(unint64_t)a4 error:(id *)a5;
-- (id)latestConsistencyVerifiedTreeHeadSTH:(id)a3 logBeginMs:(unint64_t)a4 error:(id *)a5;
-- (id)onMocFetchVerificationForVerificationId:(id)a3 error:(id *)a4;
-- (id)onMocSetPendingResultForVerification:(id)a3;
-- (id)peerVerificationIdForUri:(id)a3 application:(id)a4 verificationInfo:(id)a5 newerThan:(id)a6 error:(id *)a7;
-- (id)pendingVerificationURIs:(id)a3 fetchLimit:(unint64_t)a4 error:(id *)a5;
-- (id)requestFailures:(id *)a3;
-- (id)requestIds:(id *)a3;
-- (id)requests:(id *)a3;
+- (id)createVerification:(id)verification application:(id)application onMoc:(id)moc verificationInfo:(id)info error:(id *)error;
+- (id)downloadRecords:(id *)records;
+- (id)failedHeadSignaturesWithRevisions:(id)revisions application:(id)application;
+- (id)fetchCompletedRequests:(id)requests olderThan:(id)than error:(id *)error;
+- (id)fetchDownloadRecord:(unint64_t)record application:(id)application error:(id *)error;
+- (id)fetchDownloadRecordById:(id)id error:(id *)error;
+- (id)fetchFetchRecordById:(id)id error:(id *)error;
+- (id)fetchLatestSingleQueryByUri:(id)uri application:(id)application error:(id *)error;
+- (id)fetchNumericPropertyOnMostRecentMapHead:(id)head logBeginMs:(unint64_t)ms propertyName:(id)name error:(id *)error;
+- (id)fetchOrCreateVerification:(id)verification application:(id)application verificationInfo:(id)info fetchNow:(BOOL)now error:(id *)error;
+- (id)fetchPeer:(id)peer application:(id)application error:(id *)error;
+- (id)fetchRecentFailureEvents:(id)events fetchLimit:(unint64_t)limit error:(id *)error;
+- (id)fetchRequestForUUID:(id)d error:(id *)error;
+- (id)fetchRequestWithUri:(id)uri application:(id)application accountKey:(id)key loggableDatas:(id)datas youngerThan:(id)than error:(id *)error;
+- (id)fetchRequestsForURI:(id)i error:(id *)error;
+- (id)fetchServerRpcById:(id)id error:(id *)error;
+- (id)getLatestSuccessfulBatchQueryForUri:(id)uri application:(id)application requestYoungerThan:(id)than error:(id *)error;
+- (id)getLatestSuccessfulSingleQueryForUri:(id)uri application:(id)application requestYoungerThan:(id)than error:(id *)error;
+- (id)getOptInStatus:(id)status application:(id)application error:(id *)error;
+- (id)getPendingSmtUris:(id)uris fetchLimit:(unint64_t)limit error:(id *)error;
+- (id)getTapToRadarDate:(id)date;
+- (id)insertCompletedSingleQuery:(id)query application:(id)application request:(id)request response:(id)response traceUUID:(id)d responseStatus:(int64_t)status serverHint:(id)hint;
+- (id)latestConsistencyVerifiedTreeHeadRevision:(id)revision logBeginMs:(unint64_t)ms error:(id *)error;
+- (id)latestConsistencyVerifiedTreeHeadSTH:(id)h logBeginMs:(unint64_t)ms error:(id *)error;
+- (id)onMocFetchVerificationForVerificationId:(id)id error:(id *)error;
+- (id)onMocSetPendingResultForVerification:(id)verification;
+- (id)peerVerificationIdForUri:(id)uri application:(id)application verificationInfo:(id)info newerThan:(id)than error:(id *)error;
+- (id)pendingVerificationURIs:(id)is fetchLimit:(unint64_t)limit error:(id *)error;
+- (id)requestFailures:(id *)failures;
+- (id)requestIds:(id *)ids;
+- (id)requests:(id *)requests;
 - (id)retainContext;
-- (id)signedMutationTimestamps:(id *)a3;
-- (id)signedMutationTimestampsFailures:(id *)a3;
-- (id)signedTreeHeadFailures:(id *)a3;
-- (id)treeHeads:(id *)a3;
-- (id)treeHeadsForApplication:(id)a3 error:(id *)a4;
-- (id)unverifiedRevisions:(id)a3 isMapHead:(BOOL)a4 inclusion:(BOOL)a5 logBeginMs:(unint64_t)a6 error:(id *)a7;
-- (id)verifierResultForPeer:(id)a3 application:(id)a4;
-- (unint64_t)checkFollowupTicket:(id)a3 uri:(id)a4 checkTime:(id)a5 error:(id *)a6;
-- (unint64_t)countOutstandingRequestsForApplication:(id)a3 error:(id *)a4;
-- (unint64_t)countOutstandingSMHsForApplication:(id)a3 error:(id *)a4;
-- (unint64_t)countOutstandingSMTsForApplication:(id)a3 error:(id *)a4;
-- (unint64_t)countOutstandingSTHsForApplication:(id)a3 error:(id *)a4;
-- (unint64_t)countOutstandingVerificationsForApplication:(id)a3 error:(id *)a4;
-- (unint64_t)countTotalRequestsForApplication:(id)a3 error:(id *)a4;
-- (unint64_t)countTotalSMTsForApplication:(id)a3 error:(id *)a4;
-- (unint64_t)countTotalSTHsForApplication:(id)a3 error:(id *)a4;
-- (unint64_t)countTotalVerificationsForApplication:(id)a3 error:(id *)a4;
-- (unint64_t)newestMapRevision:(id)a3 logBeginMs:(unint64_t)a4 error:(id *)a5;
-- (unint64_t)onMocCountEntity:(id)a3 predicate:(id)a4 error:(id *)a5;
-- (unint64_t)requestCount:(id *)a3;
-- (unint64_t)requestFailureCount:(id *)a3;
-- (unint64_t)signedMutationTimestampCount:(id *)a3;
-- (unint64_t)signedMutationTimestampsFailureCount:(id *)a3;
-- (unint64_t)signedTreeHeadFailureCount:(id *)a3;
-- (unint64_t)treeHeadCount:(id *)a3;
-- (void)clearFailureEvents:(id)a3 completionBlock:(id)a4;
-- (void)clearPeerState:(id)a3 uris:(id)a4 error:(id *)a5;
-- (void)createIDSVerificationID:(id)a3 verification:(id)a4;
-- (void)createKTRequestID:(id)a3 request:(id)a4;
-- (void)createSelfValidationState:(id)a3 uri:(id)a4 error:(id *)a5;
-- (void)deleteNonRecentVerificationsForApplication:(id)a3 error:(id *)a4;
-- (void)deleteObject:(id)a3;
-- (void)deleteObjectSet:(id)a3;
-- (void)errorsForFailedEvents:(id)a3 completionBlock:(id)a4;
-- (void)failHeadDownload:(id)a3 failure:(id)a4 logClient:(id)a5;
-- (void)failHeadDownloadRecord:(id)a3 failure:(id)a4 error:(id *)a5;
-- (void)fetchSelfValidationState:(id)a3 uri:(id)a4 error:(id *)a5;
-- (void)garbageCollectRequests:(id)a3 olderThan:(id)a4 error:(id *)a5;
-- (void)garbageCollectSMHs:(id)a3 logBeginMs:(unint64_t)a4 olderThanRevision:(unint64_t)a5 olderThanDate:(id)a6 error:(id *)a7;
-- (void)garbageCollectSMTs:(id *)a3;
-- (void)garbageCollectSTHs:(id)a3 logBeginMs:(unint64_t)a4 olderThanDate:(id)a5 error:(id *)a6;
-- (void)garbageCollectServerRPCs:(id *)a3;
-- (void)garbageCollectVerifications:(id *)a3;
-- (void)onMocSetMapHead:(id)a3 inclusionResult:(unint64_t)a4 inclusionError:(id)a5;
-- (void)onMocSetMapHead:(id)a3 mmdResult:(unint64_t)a4 mmdError:(id)a5;
-- (void)onMocSetMapHead:(id)a3 signatureResult:(unint64_t)a4 signatureError:(id)a5;
-- (void)peers:(id)a3;
-- (void)performAndWaitForLatestSelfRequest:(id)a3 accountKey:(id)a4 block:(id)a5;
-- (void)performBlock:(id)a3;
-- (void)performBlockAndWait:(id)a3;
-- (void)performBlockAndWaitWithMoc:(id)a3;
-- (void)performForPendingSTHs:(id)a3 olderThan:(id)a4 type:(unint64_t)a5 error:(id *)a6 block:(id)a7;
-- (void)performForRequestsWithPendingResponses:(id)a3 error:(id *)a4 block:(id)a5;
-- (void)performForSMHsWithUnverifiedMMD:(id)a3 error:(id *)a4 block:(id)a5;
-- (void)performForSMTsWithUnverifiedSignature:(id)a3 error:(id *)a4 block:(id)a5;
-- (void)performForSTHsWithUnverifiedSignature:(id)a3 error:(id *)a4 block:(id)a5;
-- (void)performOnBatchesOfEntity:(id)a3 predicate:(id)a4 enforceMax:(BOOL)a5 error:(id *)a6 block:(id)a7;
-- (void)recalculateVerifierResultForPeer:(id)a3 application:(id)a4 after:(double)a5;
-- (void)refaultObject:(id)a3;
-- (void)refaultObjects:(id)a3;
+- (id)signedMutationTimestamps:(id *)timestamps;
+- (id)signedMutationTimestampsFailures:(id *)failures;
+- (id)signedTreeHeadFailures:(id *)failures;
+- (id)treeHeads:(id *)heads;
+- (id)treeHeadsForApplication:(id)application error:(id *)error;
+- (id)unverifiedRevisions:(id)revisions isMapHead:(BOOL)head inclusion:(BOOL)inclusion logBeginMs:(unint64_t)ms error:(id *)error;
+- (id)verifierResultForPeer:(id)peer application:(id)application;
+- (unint64_t)checkFollowupTicket:(id)ticket uri:(id)uri checkTime:(id)time error:(id *)error;
+- (unint64_t)countOutstandingRequestsForApplication:(id)application error:(id *)error;
+- (unint64_t)countOutstandingSMHsForApplication:(id)application error:(id *)error;
+- (unint64_t)countOutstandingSMTsForApplication:(id)application error:(id *)error;
+- (unint64_t)countOutstandingSTHsForApplication:(id)application error:(id *)error;
+- (unint64_t)countOutstandingVerificationsForApplication:(id)application error:(id *)error;
+- (unint64_t)countTotalRequestsForApplication:(id)application error:(id *)error;
+- (unint64_t)countTotalSMTsForApplication:(id)application error:(id *)error;
+- (unint64_t)countTotalSTHsForApplication:(id)application error:(id *)error;
+- (unint64_t)countTotalVerificationsForApplication:(id)application error:(id *)error;
+- (unint64_t)newestMapRevision:(id)revision logBeginMs:(unint64_t)ms error:(id *)error;
+- (unint64_t)onMocCountEntity:(id)entity predicate:(id)predicate error:(id *)error;
+- (unint64_t)requestCount:(id *)count;
+- (unint64_t)requestFailureCount:(id *)count;
+- (unint64_t)signedMutationTimestampCount:(id *)count;
+- (unint64_t)signedMutationTimestampsFailureCount:(id *)count;
+- (unint64_t)signedTreeHeadFailureCount:(id *)count;
+- (unint64_t)treeHeadCount:(id *)count;
+- (void)clearFailureEvents:(id)events completionBlock:(id)block;
+- (void)clearPeerState:(id)state uris:(id)uris error:(id *)error;
+- (void)createIDSVerificationID:(id)d verification:(id)verification;
+- (void)createKTRequestID:(id)d request:(id)request;
+- (void)createSelfValidationState:(id)state uri:(id)uri error:(id *)error;
+- (void)deleteNonRecentVerificationsForApplication:(id)application error:(id *)error;
+- (void)deleteObject:(id)object;
+- (void)deleteObjectSet:(id)set;
+- (void)errorsForFailedEvents:(id)events completionBlock:(id)block;
+- (void)failHeadDownload:(id)download failure:(id)failure logClient:(id)client;
+- (void)failHeadDownloadRecord:(id)record failure:(id)failure error:(id *)error;
+- (void)fetchSelfValidationState:(id)state uri:(id)uri error:(id *)error;
+- (void)garbageCollectRequests:(id)requests olderThan:(id)than error:(id *)error;
+- (void)garbageCollectSMHs:(id)hs logBeginMs:(unint64_t)ms olderThanRevision:(unint64_t)revision olderThanDate:(id)date error:(id *)error;
+- (void)garbageCollectSMTs:(id *)ts;
+- (void)garbageCollectSTHs:(id)hs logBeginMs:(unint64_t)ms olderThanDate:(id)date error:(id *)error;
+- (void)garbageCollectServerRPCs:(id *)cs;
+- (void)garbageCollectVerifications:(id *)verifications;
+- (void)onMocSetMapHead:(id)head inclusionResult:(unint64_t)result inclusionError:(id)error;
+- (void)onMocSetMapHead:(id)head mmdResult:(unint64_t)result mmdError:(id)error;
+- (void)onMocSetMapHead:(id)head signatureResult:(unint64_t)result signatureError:(id)error;
+- (void)peers:(id)peers;
+- (void)performAndWaitForLatestSelfRequest:(id)request accountKey:(id)key block:(id)block;
+- (void)performBlock:(id)block;
+- (void)performBlockAndWait:(id)wait;
+- (void)performBlockAndWaitWithMoc:(id)moc;
+- (void)performForPendingSTHs:(id)hs olderThan:(id)than type:(unint64_t)type error:(id *)error block:(id)block;
+- (void)performForRequestsWithPendingResponses:(id)responses error:(id *)error block:(id)block;
+- (void)performForSMHsWithUnverifiedMMD:(id)d error:(id *)error block:(id)block;
+- (void)performForSMTsWithUnverifiedSignature:(id)signature error:(id *)error block:(id)block;
+- (void)performForSTHsWithUnverifiedSignature:(id)signature error:(id *)error block:(id)block;
+- (void)performOnBatchesOfEntity:(id)entity predicate:(id)predicate enforceMax:(BOOL)max error:(id *)error block:(id)block;
+- (void)recalculateVerifierResultForPeer:(id)peer application:(id)application after:(double)after;
+- (void)refaultObject:(id)object;
+- (void)refaultObjects:(id)objects;
 - (void)releaseContext;
-- (void)removeFailuresOnOptIn:(id)a3;
-- (void)reportCoreDataPersistEventForLocation:(id)a3 underlyingError:(id)a4;
-- (void)reportFailedRevisions:(id)a3 failure:(id)a4 downloadType:(unint64_t)a5 application:(id)a6;
-- (void)saveAndRefaultObject:(id)a3;
-- (void)setCachedPeerOptInState:(BOOL)a3 uris:(id)a4 application:(id)a5;
-- (void)storeTTR:(id)a3 withType:(id)a4;
-- (void)updateIDSCacheWithResults:(id)a3;
+- (void)removeFailuresOnOptIn:(id)in;
+- (void)reportCoreDataPersistEventForLocation:(id)location underlyingError:(id)error;
+- (void)reportFailedRevisions:(id)revisions failure:(id)failure downloadType:(unint64_t)type application:(id)application;
+- (void)saveAndRefaultObject:(id)object;
+- (void)setCachedPeerOptInState:(BOOL)state uris:(id)uris application:(id)application;
+- (void)storeTTR:(id)r withType:(id)type;
+- (void)updateIDSCacheWithResults:(id)results;
 @end
 
 @implementation TransparencyManagedDataStore
 
-- (id)createPeerState:(id)a3 application:(id)a4 error:(id *)a5
+- (id)createPeerState:(id)state application:(id)application error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(TransparencyManagedDataStore *)self context];
-  v11 = [NSEntityDescription insertNewObjectForEntityForName:@"PeerState" inManagedObjectContext:v10];
+  applicationCopy = application;
+  stateCopy = state;
+  context = [(TransparencyManagedDataStore *)self context];
+  v11 = [NSEntityDescription insertNewObjectForEntityForName:@"PeerState" inManagedObjectContext:context];
 
-  [v11 setUri:v9];
-  [v11 setApplication:v8];
+  [v11 setUri:stateCopy];
+  [v11 setApplication:applicationCopy];
 
-  if ([(TransparencyManagedDataStore *)self persistWithError:a5])
+  if ([(TransparencyManagedDataStore *)self persistWithError:error])
   {
     v12 = v11;
   }
 
   else
   {
-    [objc_opt_class() cleanseError:a5];
+    [objc_opt_class() cleanseError:error];
     v12 = 0;
   }
 
   return v12;
 }
 
-- (id)fetchPeer:(id)a3 application:(id)a4 error:(id *)a5
+- (id)fetchPeer:(id)peer application:(id)application error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  applicationCopy = application;
+  peerCopy = peer;
   v10 = [NSFetchRequest fetchRequestWithEntityName:@"PeerState"];
-  v11 = [NSPredicate predicateWithFormat:@"uri = %@ && application = %@", v9, v8];
+  applicationCopy = [NSPredicate predicateWithFormat:@"uri = %@ && application = %@", peerCopy, applicationCopy];
 
-  [v10 setPredicate:v11];
-  v12 = [(TransparencyManagedDataStore *)self context];
-  v13 = [v12 executeFetchRequest:v10 error:a5];
+  [v10 setPredicate:applicationCopy];
+  context = [(TransparencyManagedDataStore *)self context];
+  v13 = [context executeFetchRequest:v10 error:error];
 
-  [objc_opt_class() cleanseError:a5];
+  [objc_opt_class() cleanseError:error];
   if (v13 && [v13 count])
   {
     v14 = [v13 objectAtIndexedSubscript:0];
@@ -243,11 +243,11 @@
   return v14;
 }
 
-- (BOOL)performAndWaitForPeer:(id)a3 application:(id)a4 error:(id *)a5 block:(id)a6
+- (BOOL)performAndWaitForPeer:(id)peer application:(id)application error:(id *)error block:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  peerCopy = peer;
+  applicationCopy = application;
+  blockCopy = block;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -263,21 +263,21 @@
   v19[2] = sub_10001EC48;
   v19[3] = &unk_100317DB8;
   v19[4] = self;
-  v13 = v10;
+  v13 = peerCopy;
   v20 = v13;
-  v14 = v11;
+  v14 = applicationCopy;
   v21 = v14;
   v23 = &v25;
-  v15 = v12;
+  v15 = blockCopy;
   v22 = v15;
   v24 = &v31;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v19];
-  if (a5)
+  if (error)
   {
     v16 = v26[5];
     if (v16)
     {
-      *a5 = v16;
+      *error = v16;
     }
   }
 
@@ -289,7 +289,7 @@
   return v17;
 }
 
-- (BOOL)resetPeersToPending:(id)a3 error:(id *)a4
+- (BOOL)resetPeersToPending:(id)pending error:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -301,18 +301,18 @@
   v12[1] = 3221225472;
   v12[2] = sub_10001EF18;
   v12[3] = &unk_100317DE0;
-  v13 = self;
+  selfCopy = self;
   v15 = &v16;
-  v5 = a3;
-  v14 = v5;
-  [(TransparencyManagedDataStore *)v13 performBlockAndWait:v12];
+  pendingCopy = pending;
+  v14 = pendingCopy;
+  [(TransparencyManagedDataStore *)selfCopy performBlockAndWait:v12];
   v6 = v17;
-  if (a4)
+  if (error)
   {
     v7 = v17[5];
     if (v7)
     {
-      *a4 = v7;
+      *error = v7;
       v6 = v17;
     }
   }
@@ -339,7 +339,7 @@
   return v8 == 0;
 }
 
-- (void)peers:(id)a3
+- (void)peers:(id)peers
 {
   v8[0] = 0;
   v8[1] = v8;
@@ -351,20 +351,20 @@
   v4[1] = 3221225472;
   v4[2] = sub_10001F298;
   v4[3] = &unk_100317E48;
-  v5 = self;
+  selfCopy = self;
   v7 = v8;
-  v3 = a3;
-  v6 = v3;
-  [(TransparencyManagedDataStore *)v5 performBlockAndWait:v4];
+  peersCopy = peers;
+  v6 = peersCopy;
+  [(TransparencyManagedDataStore *)selfCopy performBlockAndWait:v4];
 
   _Block_object_dispose(v8, 8);
 }
 
-- (BOOL)setSeenDate:(id)a3 uris:(id)a4 application:(id)a5 error:(id *)a6
+- (BOOL)setSeenDate:(id)date uris:(id)uris application:(id)application error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dateCopy = date;
+  urisCopy = uris;
+  applicationCopy = application;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -377,20 +377,20 @@
   v22[3] = &unk_100317E90;
   v22[4] = self;
   v26 = &v27;
-  v13 = v11;
+  v13 = urisCopy;
   v23 = v13;
-  v14 = v12;
+  v14 = applicationCopy;
   v24 = v14;
-  v15 = v10;
+  v15 = dateCopy;
   v25 = v15;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v22];
   v16 = v28;
-  if (a6)
+  if (error)
   {
     v17 = v28[5];
     if (v17)
     {
-      *a6 = v17;
+      *error = v17;
       v16 = v28;
     }
   }
@@ -417,15 +417,15 @@
   return v18 == 0;
 }
 
-- (void)updateIDSCacheWithResults:(id)a3
+- (void)updateIDSCacheWithResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v37 = +[NSMutableArray array];
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v4;
+  obj = resultsCopy;
   v5 = [obj countByEnumeratingWithState:&v44 objects:v61 count:16];
   if (v5)
   {
@@ -458,7 +458,7 @@
           v59 = sub_10001EC40;
           v60 = 0;
           v13 = [v9 uri];
-          v14 = [v9 application];
+          application = [v9 application];
           v16 = (*&v57[8] + 40);
           v15 = *(*&v57[8] + 40);
           v42[6] = v57;
@@ -469,7 +469,7 @@
           v42[3] = &unk_100317ED8;
           v42[4] = v9;
           v42[5] = self;
-          [(TransparencyManagedDataStore *)self performAndWaitForPeer:v13 application:v14 error:&v43 block:v42];
+          [(TransparencyManagedDataStore *)self performAndWaitForPeer:v13 application:application error:&v43 block:v42];
           objc_storeStrong(v16, v43);
 
           if (*(*&v57[8] + 40))
@@ -582,19 +582,19 @@
     while (v26);
   }
 
-  v34 = [(TransparencyManagedDataStore *)self updateDelegate];
-  [v34 peerVerificationUpdated:v25];
+  updateDelegate = [(TransparencyManagedDataStore *)self updateDelegate];
+  [updateDelegate peerVerificationUpdated:v25];
 }
 
-- (BOOL)ignoreFailureForResults:(id)a3 error:(id *)a4
+- (BOOL)ignoreFailureForResults:(id)results error:(id *)error
 {
-  v6 = a3;
-  v26 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count]);
+  resultsCopy = results;
+  v26 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [resultsCopy count]);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = v6;
+  v7 = resultsCopy;
   v8 = [v7 countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v8)
   {
@@ -615,8 +615,8 @@
 
         v13 = *(*(&v27 + 1) + 8 * v12);
         v14 = [v13 uri];
-        v15 = [v13 application];
-        v16 = -[TransparencyManagedDataStore ignoreFailureForUri:application:status:error:](self, "ignoreFailureForUri:application:status:error:", v14, v15, [v13 uiStatus], a4);
+        application = [v13 application];
+        v16 = -[TransparencyManagedDataStore ignoreFailureForUri:application:status:error:](self, "ignoreFailureForUri:application:status:error:", v14, application, [v13 uiStatus], error);
 
         if (v16)
         {
@@ -638,8 +638,8 @@
           }
 
           v20 = [v13 uri];
-          v21 = [v13 application];
-          v22 = [(TransparencyManagedDataStore *)self verifierResultForPeer:v20 application:v21];
+          application2 = [v13 application];
+          v22 = [(TransparencyManagedDataStore *)self verifierResultForPeer:v20 application:application2];
           [v26 addObject:v22];
         }
 
@@ -668,28 +668,28 @@
   return v25 & 1;
 }
 
-- (BOOL)ignoreFailureForUri:(id)a3 application:(id)a4 status:(unint64_t)a5 error:(id *)a6
+- (BOOL)ignoreFailureForUri:(id)uri application:(id)application status:(unint64_t)status error:(id *)error
 {
-  v10 = a3;
+  uriCopy = uri;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = sub_10001EC30;
   v28 = sub_10001EC40;
   v29 = 0;
-  v22 = a5;
+  statusCopy = status;
   obj = 0;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10002062C;
   v18[3] = &unk_100317FA0;
   v18[4] = self;
-  v11 = a4;
-  v19 = v11;
-  v12 = v10;
+  applicationCopy = application;
+  v19 = applicationCopy;
+  v12 = uriCopy;
   v20 = v12;
   v21 = &v24;
-  v13 = [(TransparencyManagedDataStore *)self performAndWaitForPeer:v12 application:v11 error:&obj block:v18];
+  v13 = [(TransparencyManagedDataStore *)self performAndWaitForPeer:v12 application:applicationCopy error:&obj block:v18];
   objc_storeStrong(&v29, obj);
   if (!v13)
   {
@@ -703,7 +703,7 @@
     {
       v15 = v25[5];
       *buf = 138544130;
-      v31 = v11;
+      v31 = applicationCopy;
       v32 = 2160;
       v33 = 1752392040;
       v34 = 2112;
@@ -713,12 +713,12 @@
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "unable to ignore error for application=%{public}@ uri=%{mask.hash}@: %@", buf, 0x2Au);
     }
 
-    if (a6)
+    if (error)
     {
       v16 = v25[5];
       if (v16)
       {
-        *a6 = v16;
+        *error = v16;
       }
     }
   }
@@ -727,10 +727,10 @@
   return v13;
 }
 
-- (id)getOptInStatus:(id)a3 application:(id)a4 error:(id *)a5
+- (id)getOptInStatus:(id)status application:(id)application error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  statusCopy = status;
+  applicationCopy = application;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -742,37 +742,37 @@
   v12[2] = sub_1000209D8;
   v12[3] = &unk_100317FE8;
   v12[4] = &v13;
-  [(TransparencyManagedDataStore *)self performAndWaitForPeer:v8 application:v9 error:a5 block:v12];
+  [(TransparencyManagedDataStore *)self performAndWaitForPeer:statusCopy application:applicationCopy error:error block:v12];
   v10 = v14[5];
   _Block_object_dispose(&v13, 8);
 
   return v10;
 }
 
-- (id)verifierResultForPeer:(id)a3 application:(id)a4
+- (id)verifierResultForPeer:(id)peer application:(id)application
 {
-  v6 = a3;
-  v7 = a4;
+  peerCopy = peer;
+  applicationCopy = application;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = sub_10001EC30;
   v25 = sub_10001EC40;
-  v26 = [[KTVerifierResult alloc] initWithUri:v6 application:v7];
+  v26 = [[KTVerifierResult alloc] initWithUri:peerCopy application:applicationCopy];
   v19 = &v21;
   v20 = 0;
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_100020C28;
   v16 = &unk_100318030;
-  v17 = self;
-  v8 = v6;
+  selfCopy = self;
+  v8 = peerCopy;
   v18 = v8;
-  v9 = [(TransparencyManagedDataStore *)self performAndWaitForPeer:v8 application:v7 error:&v20 block:&v13];
+  v9 = [(TransparencyManagedDataStore *)self performAndWaitForPeer:v8 application:applicationCopy error:&v20 block:&v13];
   v10 = v20;
   if ((v9 & 1) == 0)
   {
-    [v22[5] setFailure:{v10, v13, v14, v15, v16, v17}];
+    [v22[5] setFailure:{v10, v13, v14, v15, v16, selfCopy}];
   }
 
   v11 = v22[5];
@@ -782,54 +782,54 @@
   return v11;
 }
 
-- (void)recalculateVerifierResultForPeer:(id)a3 application:(id)a4 after:(double)a5
+- (void)recalculateVerifierResultForPeer:(id)peer application:(id)application after:(double)after
 {
-  v8 = a3;
-  v9 = a4;
+  peerCopy = peer;
+  applicationCopy = application;
   objc_initWeak(&location, self);
-  v10 = dispatch_time(0, (a5 * 1000000000.0));
-  v11 = [(TransparencyManagedDataStore *)self peerQueue];
+  v10 = dispatch_time(0, (after * 1000000000.0));
+  peerQueue = [(TransparencyManagedDataStore *)self peerQueue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100020FC4;
   v14[3] = &unk_1003174D8;
   objc_copyWeak(&v17, &location);
-  v15 = v8;
-  v16 = v9;
-  v12 = v9;
-  v13 = v8;
-  dispatch_after(v10, v11, v14);
+  v15 = peerCopy;
+  v16 = applicationCopy;
+  v12 = applicationCopy;
+  v13 = peerCopy;
+  dispatch_after(v10, peerQueue, v14);
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
 }
 
-- (id)onMocSetPendingResultForVerification:(id)a3
+- (id)onMocSetPendingResultForVerification:(id)verification
 {
-  v4 = a3;
-  v5 = [v4 uri];
-  v6 = [v4 application];
-  v7 = [[KTVerifierResult alloc] initPendingForUri:v5 application:v6];
-  v8 = [v4 serverLoggableDatas];
-  v9 = [v8 loggableDatas];
-  [v7 setLoggableDatas:v9];
+  verificationCopy = verification;
+  v5 = [verificationCopy uri];
+  application = [verificationCopy application];
+  v7 = [[KTVerifierResult alloc] initPendingForUri:v5 application:application];
+  serverLoggableDatas = [verificationCopy serverLoggableDatas];
+  loggableDatas = [serverLoggableDatas loggableDatas];
+  [v7 setLoggableDatas:loggableDatas];
 
-  v10 = [v4 accountKey];
+  accountKey = [verificationCopy accountKey];
 
-  if (v10)
+  if (accountKey)
   {
-    v11 = [v4 accountKey];
-    v12 = [KTAccountPublicID ktAccountPublicIDWithPublicKeyInfo:v11 error:0];
+    accountKey2 = [verificationCopy accountKey];
+    v12 = [KTAccountPublicID ktAccountPublicIDWithPublicKeyInfo:accountKey2 error:0];
     [v7 setPublicID:v12];
   }
 
-  v13 = [v4 peerState];
-  v14 = [(TransparencyManagedDataStore *)self staticKeyStore];
+  peerState = [verificationCopy peerState];
+  staticKeyStore = [(TransparencyManagedDataStore *)self staticKeyStore];
   v15 = +[NSDate now];
-  [v13 updateResultWithStaticKey:v7 staticKeyStore:v14 forDate:v15];
+  [peerState updateResultWithStaticKey:v7 staticKeyStore:staticKeyStore forDate:v15];
 
-  v16 = [v7 uiStatus];
-  if (v16 != [v13 lastIDSCacheUIStatus])
+  uiStatus = [v7 uiStatus];
+  if (uiStatus != [peerState lastIDSCacheUIStatus])
   {
     if (qword_10038BC10 != -1)
     {
@@ -841,9 +841,9 @@
     {
       v18 = v17;
       *buf = 134218754;
-      v24 = [v13 lastIDSCacheUIStatus];
+      lastIDSCacheUIStatus = [peerState lastIDSCacheUIStatus];
       v25 = 2048;
-      v26 = [v7 uiStatus];
+      uiStatus2 = [v7 uiStatus];
       v27 = 2160;
       v28 = 1752392040;
       v29 = 2112;
@@ -858,20 +858,20 @@
     [v7 setSentToIDS:1];
   }
 
-  v20 = [(TransparencyManagedDataStore *)self peerOverridesStore];
-  [v20 applyPeerOverrides:v7 peer:v13];
+  peerOverridesStore = [(TransparencyManagedDataStore *)self peerOverridesStore];
+  [peerOverridesStore applyPeerOverrides:v7 peer:peerState];
 
-  [(TransparencyManagedDataStore *)self persistAndRefaultObject:v13 error:0];
+  [(TransparencyManagedDataStore *)self persistAndRefaultObject:peerState error:0];
 
   return v7;
 }
 
-- (void)clearPeerState:(id)a3 uris:(id)a4 error:(id *)a5
+- (void)clearPeerState:(id)state uris:(id)uris error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v9 && [v9 count])
+  stateCopy = state;
+  urisCopy = uris;
+  v10 = urisCopy;
+  if (urisCopy && [urisCopy count])
   {
     if (qword_10038BC10 != -1)
     {
@@ -884,13 +884,13 @@
       v12 = v11;
       v13 = [v10 componentsJoinedByString:{@", "}];
       *buf = 138412546;
-      v18 = v8;
+      v18 = stateCopy;
       v19 = 2112;
       v20 = v13;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Clearing peer state for %@ for %@", buf, 0x16u);
     }
 
-    [NSPredicate predicateWithFormat:@"application = %@ && uri IN %@", v8, v10];
+    [NSPredicate predicateWithFormat:@"application = %@ && uri IN %@", stateCopy, v10];
   }
 
   else
@@ -904,54 +904,54 @@
     if (os_log_type_enabled(qword_10038BC18, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v18 = v8;
+      v18 = stateCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "Clearing peer state for %@", buf, 0xCu);
     }
 
-    [NSPredicate predicateWithFormat:@"application = %@", v8, v16];
+    [NSPredicate predicateWithFormat:@"application = %@", stateCopy, v16];
   }
   v15 = ;
-  if ([(TransparencyManagedDataStore *)self garbageCollectEntity:@"PeerState" predicate:v15 error:a5]&& [(TransparencyManagedDataStore *)self garbageCollectEntity:@"IDSKTVerification" predicate:v15 error:a5])
+  if ([(TransparencyManagedDataStore *)self garbageCollectEntity:@"PeerState" predicate:v15 error:error]&& [(TransparencyManagedDataStore *)self garbageCollectEntity:@"IDSKTVerification" predicate:v15 error:error])
   {
-    [(TransparencyManagedDataStore *)self garbageCollectEntity:@"RPCSingleQuery" predicate:v15 error:a5];
+    [(TransparencyManagedDataStore *)self garbageCollectEntity:@"RPCSingleQuery" predicate:v15 error:error];
   }
 }
 
-- (void)setCachedPeerOptInState:(BOOL)a3 uris:(id)a4 application:(id)a5
+- (void)setCachedPeerOptInState:(BOOL)state uris:(id)uris application:(id)application
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(TransparencyManagedDataStore *)self peerQueue];
+  urisCopy = uris;
+  applicationCopy = application;
+  peerQueue = [(TransparencyManagedDataStore *)self peerQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000216D0;
   v13[3] = &unk_1003180B8;
-  v16 = a3;
+  stateCopy = state;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = urisCopy;
+  v15 = applicationCopy;
+  v11 = applicationCopy;
+  v12 = urisCopy;
+  dispatch_async(peerQueue, v13);
 }
 
-- (void)removeFailuresOnOptIn:(id)a3
+- (void)removeFailuresOnOptIn:(id)in
 {
-  v4 = a3;
-  v5 = [(TransparencyManagedDataStore *)self peerQueue];
+  inCopy = in;
+  peerQueue = [(TransparencyManagedDataStore *)self peerQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002179C;
   v7[3] = &unk_1003180E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = inCopy;
+  v6 = inCopy;
+  dispatch_async(peerQueue, v7);
 }
 
-- (BOOL)onQueueRemoveFailures:(id)a3 error:(id *)a4
+- (BOOL)onQueueRemoveFailures:(id)failures error:(id *)error
 {
-  v6 = a3;
+  failuresCopy = failures;
   if (qword_10038BC10 != -1)
   {
     sub_100247AF8();
@@ -961,7 +961,7 @@
   if (os_log_type_enabled(qword_10038BC18, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = failuresCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "removing all saved failures for %{public}@ following opt-in", &buf, 0xCu);
   }
 
@@ -977,16 +977,16 @@
   v15[3] = &unk_100317DE0;
   v15[4] = self;
   p_buf = &buf;
-  v8 = v6;
+  v8 = failuresCopy;
   v16 = v8;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v15];
   v9 = *(&buf + 1);
-  if (a4)
+  if (error)
   {
     v10 = *(*(&buf + 1) + 40);
     if (v10)
     {
-      *a4 = v10;
+      *error = v10;
       v9 = *(&buf + 1);
     }
   }
@@ -1013,12 +1013,12 @@
   return v11 == 0;
 }
 
-- (BOOL)onQueueSetCachedPeerOptInState:(BOOL)a3 uris:(id)a4 application:(id)a5 error:(id *)a6
+- (BOOL)onQueueSetCachedPeerOptInState:(BOOL)state uris:(id)uris application:(id)application error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = [(TransparencyManagedDataStore *)self peerQueue];
-  dispatch_assert_queue_V2(v12);
+  urisCopy = uris;
+  applicationCopy = application;
+  peerQueue = [(TransparencyManagedDataStore *)self peerQueue];
+  dispatch_assert_queue_V2(peerQueue);
 
   v36 = 0;
   v37 = &v36;
@@ -1032,19 +1032,19 @@
   v31[3] = &unk_100318168;
   v31[4] = self;
   v34 = &v36;
-  v13 = v10;
+  v13 = urisCopy;
   v32 = v13;
-  v14 = v11;
+  v14 = applicationCopy;
   v33 = v14;
-  v35 = a3;
+  stateCopy = state;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v31];
   v15 = v37;
-  if (a6)
+  if (error)
   {
     v16 = v37[5];
     if (v16)
     {
-      *a6 = v16;
+      *error = v16;
       v15 = v37;
     }
   }
@@ -1112,41 +1112,41 @@
 
 - (id)createMapHead
 {
-  v2 = [(TransparencyManagedDataStore *)self context];
-  v3 = [NSEntityDescription insertNewObjectForEntityForName:@"KTTreeHead" inManagedObjectContext:v2];
+  context = [(TransparencyManagedDataStore *)self context];
+  v3 = [NSEntityDescription insertNewObjectForEntityForName:@"KTTreeHead" inManagedObjectContext:context];
 
   return v3;
 }
 
-- (id)createMapHead:(id)a3 application:(id)a4 logBeginTime:(unint64_t)a5 logHeadHash:(id)a6 logType:(int64_t)a7 revision:(unint64_t)a8 populating:(BOOL)a9 gossip:(BOOL)a10
+- (id)createMapHead:(id)head application:(id)application logBeginTime:(unint64_t)time logHeadHash:(id)hash logType:(int64_t)type revision:(unint64_t)revision populating:(BOOL)populating gossip:(BOOL)self0
 {
-  v16 = a6;
-  v17 = a4;
-  v18 = a3;
-  v19 = [(TransparencyManagedDataStore *)self createTreeHead];
-  [v19 setSth:v18];
+  hashCopy = hash;
+  applicationCopy = application;
+  headCopy = head;
+  createTreeHead = [(TransparencyManagedDataStore *)self createTreeHead];
+  [createTreeHead setSth:headCopy];
 
-  [v19 setIsMapHead:1];
-  [v19 setApplication:v17];
+  [createTreeHead setIsMapHead:1];
+  [createTreeHead setApplication:applicationCopy];
 
-  [v19 setUnsigned:"logBeginTime" value:a5];
-  [v19 setLogHeadHash:v16];
+  [createTreeHead setUnsigned:"logBeginTime" value:time];
+  [createTreeHead setLogHeadHash:hashCopy];
 
-  [v19 setLogType:a7];
-  [v19 setUnsigned:"revision" value:a8];
-  [v19 setPopulating:a9];
-  [v19 setGossip:a10];
-  [v19 setReceiptTime:CFAbsoluteTimeGetCurrent()];
-  [v19 setInclusionVerified:2];
-  [v19 setConsistencyVerified:1];
+  [createTreeHead setLogType:type];
+  [createTreeHead setUnsigned:"revision" value:revision];
+  [createTreeHead setPopulating:populating];
+  [createTreeHead setGossip:gossip];
+  [createTreeHead setReceiptTime:CFAbsoluteTimeGetCurrent()];
+  [createTreeHead setInclusionVerified:2];
+  [createTreeHead setConsistencyVerified:1];
 
-  return v19;
+  return createTreeHead;
 }
 
-- (BOOL)fetchBooleanPropertyOnMostRecentMapHead:(id)a3 logBeginMs:(unint64_t)a4 propertyName:(id)a5 error:(id *)a6
+- (BOOL)fetchBooleanPropertyOnMostRecentMapHead:(id)head logBeginMs:(unint64_t)ms propertyName:(id)name error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  headCopy = head;
+  nameCopy = name;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -1163,19 +1163,19 @@
   v17[3] = &unk_100325E60;
   v17[4] = self;
   v20 = &v23;
-  v12 = v10;
+  v12 = headCopy;
   v18 = v12;
-  v22 = a4;
-  v13 = v11;
+  msCopy = ms;
+  v13 = nameCopy;
   v19 = v13;
   v21 = &v29;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v17];
-  if (a6)
+  if (error)
   {
     v14 = v24[5];
     if (v14)
     {
-      *a6 = v14;
+      *error = v14;
     }
   }
 
@@ -1187,10 +1187,10 @@
   return v15;
 }
 
-- (id)fetchNumericPropertyOnMostRecentMapHead:(id)a3 logBeginMs:(unint64_t)a4 propertyName:(id)a5 error:(id *)a6
+- (id)fetchNumericPropertyOnMostRecentMapHead:(id)head logBeginMs:(unint64_t)ms propertyName:(id)name error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  headCopy = head;
+  nameCopy = name;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -1209,19 +1209,19 @@
   v17[3] = &unk_100325E60;
   v17[4] = self;
   v20 = &v23;
-  v12 = v10;
+  v12 = headCopy;
   v18 = v12;
-  v22 = a4;
-  v13 = v11;
+  msCopy = ms;
+  v13 = nameCopy;
   v19 = v13;
   v21 = &v29;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v17];
-  if (a6)
+  if (error)
   {
     v14 = v24[5];
     if (v14)
     {
-      *a6 = v14;
+      *error = v14;
     }
   }
 
@@ -1233,10 +1233,10 @@
   return v15;
 }
 
-- (unint64_t)newestMapRevision:(id)a3 logBeginMs:(unint64_t)a4 error:(id *)a5
+- (unint64_t)newestMapRevision:(id)revision logBeginMs:(unint64_t)ms error:(id *)error
 {
   v13 = 0;
-  v6 = [(TransparencyManagedDataStore *)self fetchNumericPropertyOnMostRecentMapHead:a3 logBeginMs:a4 propertyName:@"revision" error:&v13];
+  v6 = [(TransparencyManagedDataStore *)self fetchNumericPropertyOnMostRecentMapHead:revision logBeginMs:ms propertyName:@"revision" error:&v13];
   v7 = v13;
   v8 = v7;
   if (v6)
@@ -1251,27 +1251,27 @@
 
   if (v9)
   {
-    v10 = [v6 unsignedLongLongValue];
+    unsignedLongLongValue = [v6 unsignedLongLongValue];
   }
 
   else
   {
-    v10 = 0;
-    if (a5 && v7)
+    unsignedLongLongValue = 0;
+    if (error && v7)
     {
       v11 = v7;
-      v10 = 0;
-      *a5 = v8;
+      unsignedLongLongValue = 0;
+      *error = v8;
     }
   }
 
-  return v10;
+  return unsignedLongLongValue;
 }
 
-- (BOOL)performCheckWithNewestMap:(id)a3 logBeginMs:(unint64_t)a4 error:(id *)a5 block:(id)a6
+- (BOOL)performCheckWithNewestMap:(id)map logBeginMs:(unint64_t)ms error:(id *)error block:(id)block
 {
-  v10 = a3;
-  v11 = a6;
+  mapCopy = map;
+  blockCopy = block;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -1288,19 +1288,19 @@
   v17[3] = &unk_100325F28;
   v17[4] = self;
   v20 = &v27;
-  v12 = v10;
+  v12 = mapCopy;
   v21 = &v23;
-  v22 = a4;
+  msCopy = ms;
   v18 = v12;
-  v13 = v11;
+  v13 = blockCopy;
   v19 = v13;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v17];
-  if (a5)
+  if (error)
   {
     v14 = v28[5];
     if (v14)
     {
-      *a5 = v14;
+      *error = v14;
     }
   }
 
@@ -1312,10 +1312,10 @@
   return v15;
 }
 
-- (void)garbageCollectSMHs:(id)a3 logBeginMs:(unint64_t)a4 olderThanRevision:(unint64_t)a5 olderThanDate:(id)a6 error:(id *)a7
+- (void)garbageCollectSMHs:(id)hs logBeginMs:(unint64_t)ms olderThanRevision:(unint64_t)revision olderThanDate:(id)date error:(id *)error
 {
-  v12 = a3;
-  v13 = a6;
+  hsCopy = hs;
+  dateCopy = date;
   if (qword_10039C730 != -1)
   {
     sub_10025AFEC();
@@ -1325,31 +1325,31 @@
   if (os_log_type_enabled(qword_10039C738, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v21 = a5;
+    revisionCopy = revision;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "garbage collecting map heads earlier than revision %llu", buf, 0xCu);
   }
 
-  v15 = [NSPredicate predicateWithFormat:@"isMapHead == YES && application == %@ && (revision != %llu && receiptTime < %@ || logBeginTime < %llu || logBeginTime == %llu && signatureVerified != %d && inclusionVerified != %d && mmdVerified != %d && revision < %llu)", v12, a5, v13, a4, a4, 2, 2, 2, a5];
+  revision = [NSPredicate predicateWithFormat:@"isMapHead == YES && application == %@ && (revision != %llu && receiptTime < %@ || logBeginTime < %llu || logBeginTime == %llu && signatureVerified != %d && inclusionVerified != %d && mmdVerified != %d && revision < %llu)", hsCopy, revision, dateCopy, ms, ms, 2, 2, 2, revision];
   v19 = 0;
-  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTTreeHead" predicate:v15 error:&v19];
+  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTTreeHead" predicate:revision error:&v19];
   v16 = v19;
   v17 = v16;
-  if (a7 && v16)
+  if (error && v16)
   {
     v18 = v16;
-    *a7 = v17;
+    *error = v17;
   }
 }
 
-- (BOOL)shouldGarbageCollectSMH:(id)a3 application:(id)a4 logBeginMs:(unint64_t)a5 olderThanRevision:(unint64_t)a6 olderThanDate:(id)a7
+- (BOOL)shouldGarbageCollectSMH:(id)h application:(id)application logBeginMs:(unint64_t)ms olderThanRevision:(unint64_t)revision olderThanDate:(id)date
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
-  if ([v11 isMapHead])
+  hCopy = h;
+  applicationCopy = application;
+  dateCopy = date;
+  if ([hCopy isMapHead])
   {
-    v14 = [NSPredicate predicateWithFormat:@"isMapHead == YES && application == %@ && (revision != %llu && receiptTime < %@ || logBeginTime < %llu || logBeginTime == %llu && signatureVerified != %d && inclusionVerified != %d && mmdVerified != %d && revision < %llu)", v12, a6, v13, a5, a5, 2, 2, 2, a6];
-    v15 = [v14 evaluateWithObject:v11];
+    revision = [NSPredicate predicateWithFormat:@"isMapHead == YES && application == %@ && (revision != %llu && receiptTime < %@ || logBeginTime < %llu || logBeginTime == %llu && signatureVerified != %d && inclusionVerified != %d && mmdVerified != %d && revision < %llu)", applicationCopy, revision, dateCopy, ms, ms, 2, 2, 2, revision];
+    v15 = [revision evaluateWithObject:hCopy];
   }
 
   else
@@ -1360,87 +1360,87 @@
   return v15;
 }
 
-- (void)onMocSetMapHead:(id)a3 signatureResult:(unint64_t)a4 signatureError:(id)a5
+- (void)onMocSetMapHead:(id)head signatureResult:(unint64_t)result signatureError:(id)error
 {
-  v13 = a3;
-  v8 = a5;
-  [v13 setUnsigned:"signatureVerified" value:a4];
-  if (v8)
+  headCopy = head;
+  errorCopy = error;
+  [headCopy setUnsigned:"signatureVerified" value:result];
+  if (errorCopy)
   {
-    v9 = [(TransparencyManagedDataStore *)self createSignedTreeHeadFailure];
-    [v9 setErrorCode:{objc_msgSend(v8, "code")}];
-    v10 = [v8 domain];
-    [v9 setErrorDomain:v10];
+    createSignedTreeHeadFailure = [(TransparencyManagedDataStore *)self createSignedTreeHeadFailure];
+    [createSignedTreeHeadFailure setErrorCode:{objc_msgSend(errorCopy, "code")}];
+    domain = [errorCopy domain];
+    [createSignedTreeHeadFailure setErrorDomain:domain];
 
-    [v9 setSth:v13];
-    [v9 setVerificationType:0];
+    [createSignedTreeHeadFailure setSth:headCopy];
+    [createSignedTreeHeadFailure setVerificationType:0];
   }
 
-  if (a4 == 1 && [v13 inclusionVerified] == 1 && objc_msgSend(v13, "mmdVerified") == 1)
+  if (result == 1 && [headCopy inclusionVerified] == 1 && objc_msgSend(headCopy, "mmdVerified") == 1)
   {
-    v11 = [(TransparencyManagedDataStore *)self updateDelegate];
-    v12 = [v13 application];
-    [v11 mapHeadUpdated:v12 populating:{objc_msgSend(v13, "populating")}];
+    updateDelegate = [(TransparencyManagedDataStore *)self updateDelegate];
+    application = [headCopy application];
+    [updateDelegate mapHeadUpdated:application populating:{objc_msgSend(headCopy, "populating")}];
   }
 }
 
-- (void)onMocSetMapHead:(id)a3 mmdResult:(unint64_t)a4 mmdError:(id)a5
+- (void)onMocSetMapHead:(id)head mmdResult:(unint64_t)result mmdError:(id)error
 {
-  v14 = a3;
-  v8 = a5;
-  [v14 setUnsigned:"mmdVerified" value:a4];
-  if (v8)
+  headCopy = head;
+  errorCopy = error;
+  [headCopy setUnsigned:"mmdVerified" value:result];
+  if (errorCopy)
   {
-    v9 = [(TransparencyManagedDataStore *)self createSignedTreeHeadFailure];
-    [v9 setErrorCode:{objc_msgSend(v8, "code")}];
-    v10 = [v8 domain];
-    [v9 setErrorDomain:v10];
+    createSignedTreeHeadFailure = [(TransparencyManagedDataStore *)self createSignedTreeHeadFailure];
+    [createSignedTreeHeadFailure setErrorCode:{objc_msgSend(errorCopy, "code")}];
+    domain = [errorCopy domain];
+    [createSignedTreeHeadFailure setErrorDomain:domain];
 
-    [v9 setSth:v14];
-    [v9 setVerificationType:3];
+    [createSignedTreeHeadFailure setSth:headCopy];
+    [createSignedTreeHeadFailure setVerificationType:3];
   }
 
-  if ([v14 signatureVerified] == 1)
+  if ([headCopy signatureVerified] == 1)
   {
-    v11 = [v14 inclusionVerified];
-    if (a4 == 1 && v11 == 1)
+    inclusionVerified = [headCopy inclusionVerified];
+    if (result == 1 && inclusionVerified == 1)
     {
-      v12 = [(TransparencyManagedDataStore *)self updateDelegate];
-      v13 = [v14 application];
-      [v12 mapHeadUpdated:v13 populating:{objc_msgSend(v14, "populating")}];
+      updateDelegate = [(TransparencyManagedDataStore *)self updateDelegate];
+      application = [headCopy application];
+      [updateDelegate mapHeadUpdated:application populating:{objc_msgSend(headCopy, "populating")}];
     }
   }
 }
 
-- (void)onMocSetMapHead:(id)a3 inclusionResult:(unint64_t)a4 inclusionError:(id)a5
+- (void)onMocSetMapHead:(id)head inclusionResult:(unint64_t)result inclusionError:(id)error
 {
-  v14 = a3;
-  v8 = a5;
-  [v14 setUnsigned:"inclusionVerified" value:a4];
-  if (v8)
+  headCopy = head;
+  errorCopy = error;
+  [headCopy setUnsigned:"inclusionVerified" value:result];
+  if (errorCopy)
   {
-    v9 = [(TransparencyManagedDataStore *)self createSignedTreeHeadFailure];
-    [v9 setErrorCode:{objc_msgSend(v8, "code")}];
-    v10 = [v8 domain];
-    [v9 setErrorDomain:v10];
+    createSignedTreeHeadFailure = [(TransparencyManagedDataStore *)self createSignedTreeHeadFailure];
+    [createSignedTreeHeadFailure setErrorCode:{objc_msgSend(errorCopy, "code")}];
+    domain = [errorCopy domain];
+    [createSignedTreeHeadFailure setErrorDomain:domain];
 
-    [v9 setSth:v14];
-    [v9 setVerificationType:1];
+    [createSignedTreeHeadFailure setSth:headCopy];
+    [createSignedTreeHeadFailure setVerificationType:1];
   }
 
-  v11 = [v14 signatureVerified];
-  if (a4 == 1 && v11 == 1 && [v14 mmdVerified] == 1)
+  signatureVerified = [headCopy signatureVerified];
+  if (result == 1 && signatureVerified == 1 && [headCopy mmdVerified] == 1)
   {
-    v12 = [(TransparencyManagedDataStore *)self updateDelegate];
-    v13 = [v14 application];
-    [v12 mapHeadUpdated:v13 populating:{objc_msgSend(v14, "populating")}];
+    updateDelegate = [(TransparencyManagedDataStore *)self updateDelegate];
+    application = [headCopy application];
+    [updateDelegate mapHeadUpdated:application populating:{objc_msgSend(headCopy, "populating")}];
   }
 }
 
-- (void)createSelfValidationState:(id)a3 uri:(id)a4 error:(id *)a5
+- (void)createSelfValidationState:(id)state uri:(id)uri error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  stateCopy = state;
+  uriCopy = uri;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -1459,18 +1459,18 @@
   v15[3] = &unk_10031CDB8;
   v18 = &v26;
   v15[4] = self;
-  v10 = v8;
+  v10 = stateCopy;
   v16 = v10;
-  v11 = v9;
+  v11 = uriCopy;
   v17 = v11;
   v19 = &v20;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v15];
-  if (a5)
+  if (error)
   {
     v12 = v21[5];
     if (v12)
     {
-      *a5 = [TransparencyError errorWithDomain:kTransparencyErrorDatabase code:-129 errorLevel:1 underlyingError:v12 description:@"couldn't create self state"];
+      *error = [TransparencyError errorWithDomain:kTransparencyErrorDatabase code:-129 errorLevel:1 underlyingError:v12 description:@"couldn't create self state"];
     }
   }
 
@@ -1482,10 +1482,10 @@
   return v13;
 }
 
-- (void)fetchSelfValidationState:(id)a3 uri:(id)a4 error:(id *)a5
+- (void)fetchSelfValidationState:(id)state uri:(id)uri error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  stateCopy = state;
+  uriCopy = uri;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -1504,18 +1504,18 @@
   v15[3] = &unk_1003263D8;
   v15[4] = self;
   v18 = &v20;
-  v10 = v8;
+  v10 = stateCopy;
   v16 = v10;
-  v11 = v9;
+  v11 = uriCopy;
   v17 = v11;
   v19 = &v26;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v15];
-  if (a5)
+  if (error)
   {
     v12 = v21[5];
     if (v12)
     {
-      *a5 = [TransparencyError errorWithDomain:kTransparencyErrorDatabase code:-128 errorLevel:1 underlyingError:v12 description:@"couldn't fetch self state"];
+      *error = [TransparencyError errorWithDomain:kTransparencyErrorDatabase code:-128 errorLevel:1 underlyingError:v12 description:@"couldn't fetch self state"];
     }
   }
 
@@ -1527,36 +1527,36 @@
   return v13;
 }
 
-- (BOOL)initSelfState:(id)a3 uri:(id)a4 error:(id *)a5
+- (BOOL)initSelfState:(id)state uri:(id)uri error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  stateCopy = state;
+  uriCopy = uri;
   v16 = 0;
-  v10 = [(TransparencyManagedDataStore *)self fetchSelfValidationState:v8 uri:v9 error:&v16];
+  v10 = [(TransparencyManagedDataStore *)self fetchSelfValidationState:stateCopy uri:uriCopy error:&v16];
   v11 = v16;
   if (!v10)
   {
     v15 = 0;
-    v10 = [(TransparencyManagedDataStore *)self createSelfValidationState:v8 uri:v9 error:&v15];
+    v10 = [(TransparencyManagedDataStore *)self createSelfValidationState:stateCopy uri:uriCopy error:&v15];
     v12 = v15;
 
     v11 = v12;
   }
 
-  if (a5 && v11)
+  if (error && v11)
   {
     v13 = v11;
-    *a5 = v11;
+    *error = v11;
   }
 
   return v10 != 0;
 }
 
-- (BOOL)performBlockWithSelfState:(id)a3 uri:(id)a4 error:(id *)a5 block:(id)a6
+- (BOOL)performBlockWithSelfState:(id)state uri:(id)uri error:(id *)error block:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  stateCopy = state;
+  uriCopy = uri;
+  blockCopy = block;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -1572,21 +1572,21 @@
   v19[2] = sub_1001B3660;
   v19[3] = &unk_100326400;
   v19[4] = self;
-  v13 = v10;
+  v13 = stateCopy;
   v20 = v13;
-  v14 = v11;
+  v14 = uriCopy;
   v21 = v14;
   v23 = &v29;
   v24 = &v25;
-  v15 = v12;
+  v15 = blockCopy;
   v22 = v15;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v19];
-  if (a5)
+  if (error)
   {
     v16 = v30[5];
     if (v16)
     {
-      *a5 = v16;
+      *error = v16;
     }
   }
 
@@ -1598,36 +1598,36 @@
   return v17;
 }
 
-- (BOOL)createFollowupTicket:(id)a3 uri:(id)a4 startTime:(id)a5 error:(id *)a6
+- (BOOL)createFollowupTicket:(id)ticket uri:(id)uri startTime:(id)time error:(id *)error
 {
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1001B38A8;
   v15[3] = &unk_100326428;
-  v16 = a5;
-  v10 = v16;
-  v11 = a4;
-  v12 = a3;
+  timeCopy = time;
+  v10 = timeCopy;
+  uriCopy = uri;
+  ticketCopy = ticket;
   v13 = objc_retainBlock(v15);
-  LOBYTE(a6) = [(TransparencyManagedDataStore *)self performBlockWithSelfState:v12 uri:v11 error:a6 block:v13];
+  LOBYTE(error) = [(TransparencyManagedDataStore *)self performBlockWithSelfState:ticketCopy uri:uriCopy error:error block:v13];
 
-  return a6;
+  return error;
 }
 
-- (unint64_t)checkFollowupTicket:(id)a3 uri:(id)a4 checkTime:(id)a5 error:(id *)a6
+- (unint64_t)checkFollowupTicket:(id)ticket uri:(id)uri checkTime:(id)time error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  ticketCopy = ticket;
+  uriCopy = uri;
+  timeCopy = time;
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_1001B3A88;
   v22[3] = &unk_100326450;
-  v13 = v10;
+  v13 = ticketCopy;
   v23 = v13;
-  v14 = v11;
+  v14 = uriCopy;
   v24 = v14;
-  v15 = v12;
+  v15 = timeCopy;
   v25 = v15;
   v16 = objc_retainBlock(v22);
   v21 = 0;
@@ -1635,11 +1635,11 @@
   v18 = v21;
   if (v18)
   {
-    if (a6)
+    if (error)
     {
       v18 = v18;
       v19 = 0;
-      *a6 = v18;
+      *error = v18;
     }
 
     else
@@ -1663,8 +1663,8 @@
 
 - (id)createBatchQuery
 {
-  v2 = [(TransparencyManagedDataStore *)self context];
-  v3 = [NSEntityDescription insertNewObjectForEntityForName:@"RPCBatchQuery" inManagedObjectContext:v2];
+  context = [(TransparencyManagedDataStore *)self context];
+  v3 = [NSEntityDescription insertNewObjectForEntityForName:@"RPCBatchQuery" inManagedObjectContext:context];
 
   [v3 setRpcType:1];
 
@@ -1673,98 +1673,98 @@
 
 - (id)createSingleQuery
 {
-  v2 = [(TransparencyManagedDataStore *)self context];
-  v3 = [NSEntityDescription insertNewObjectForEntityForName:@"RPCSingleQuery" inManagedObjectContext:v2];
+  context = [(TransparencyManagedDataStore *)self context];
+  v3 = [NSEntityDescription insertNewObjectForEntityForName:@"RPCSingleQuery" inManagedObjectContext:context];
 
   [v3 setRpcType:0];
 
   return v3;
 }
 
-- (id)createBatchQuery:(id)a3 backgroundOpId:(id)a4 error:(id *)a5
+- (id)createBatchQuery:(id)query backgroundOpId:(id)id error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(TransparencyManagedDataStore *)self createBatchQuery];
-  v11 = [v9 application];
-  v12 = [v9 data];
-  v13 = [(TransparencyManagedDataStore *)self initializeServerRPC:v10 application:v11 backgroundOpId:v8 request:v12];
+  idCopy = id;
+  queryCopy = query;
+  createBatchQuery = [(TransparencyManagedDataStore *)self createBatchQuery];
+  application = [queryCopy application];
+  data = [queryCopy data];
+  v13 = [(TransparencyManagedDataStore *)self initializeServerRPC:createBatchQuery application:application backgroundOpId:idCopy request:data];
 
-  v14 = [v9 uriArray];
+  uriArray = [queryCopy uriArray];
 
-  v15 = [NSArray arrayWithArray:v14];
-  [v10 setUris:v15];
+  v15 = [NSArray arrayWithArray:uriArray];
+  [createBatchQuery setUris:v15];
 
-  if ([(TransparencyManagedDataStore *)self persistWithError:a5])
+  if ([(TransparencyManagedDataStore *)self persistWithError:error])
   {
-    v16 = [v10 rpcId];
+    rpcId = [createBatchQuery rpcId];
   }
 
   else
   {
-    v16 = 0;
+    rpcId = 0;
   }
 
-  [TransparencyManagedDataStore cleanseError:a5];
+  [TransparencyManagedDataStore cleanseError:error];
 
-  return v16;
+  return rpcId;
 }
 
-- (id)createSingleQuery:(id)a3 backgroundOpId:(id)a4 error:(id *)a5
+- (id)createSingleQuery:(id)query backgroundOpId:(id)id error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(TransparencyManagedDataStore *)self createSingleQuery];
-  v11 = [v9 application];
-  v12 = [v9 data];
-  v13 = [(TransparencyManagedDataStore *)self initializeServerRPC:v10 application:v11 backgroundOpId:v8 request:v12];
+  idCopy = id;
+  queryCopy = query;
+  createSingleQuery = [(TransparencyManagedDataStore *)self createSingleQuery];
+  application = [queryCopy application];
+  data = [queryCopy data];
+  v13 = [(TransparencyManagedDataStore *)self initializeServerRPC:createSingleQuery application:application backgroundOpId:idCopy request:data];
 
-  v14 = [v9 uri];
+  v14 = [queryCopy uri];
 
   v15 = [NSString stringWithString:v14];
-  [v10 setUri:v15];
+  [createSingleQuery setUri:v15];
 
-  if ([(TransparencyManagedDataStore *)self persistWithError:a5])
+  if ([(TransparencyManagedDataStore *)self persistWithError:error])
   {
-    v16 = [v10 rpcId];
+    rpcId = [createSingleQuery rpcId];
   }
 
   else
   {
-    v16 = 0;
+    rpcId = 0;
   }
 
-  [TransparencyManagedDataStore cleanseError:a5];
+  [TransparencyManagedDataStore cleanseError:error];
 
-  return v16;
+  return rpcId;
 }
 
-- (id)insertCompletedSingleQuery:(id)a3 application:(id)a4 request:(id)a5 response:(id)a6 traceUUID:(id)a7 responseStatus:(int64_t)a8 serverHint:(id)a9
+- (id)insertCompletedSingleQuery:(id)query application:(id)application request:(id)request response:(id)response traceUUID:(id)d responseStatus:(int64_t)status serverHint:(id)hint
 {
-  v14 = a7;
-  v15 = a9;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = [(TransparencyManagedDataStore *)self context];
-  v20 = [NSEntityDescription insertNewObjectForEntityForName:@"RPCSingleQuery" inManagedObjectContext:v19];
+  dCopy = d;
+  hintCopy = hint;
+  responseCopy = response;
+  requestCopy = request;
+  applicationCopy = application;
+  context = [(TransparencyManagedDataStore *)self context];
+  v20 = [NSEntityDescription insertNewObjectForEntityForName:@"RPCSingleQuery" inManagedObjectContext:context];
 
   [v20 setRpcType:0];
-  [v20 setRequest:v17];
+  [v20 setRequest:requestCopy];
 
-  [v20 setResponse:v16];
-  [v20 setResponseStatus:a8];
+  [v20 setResponse:responseCopy];
+  [v20 setResponseStatus:status];
   v21 = +[NSDate date];
   [v20 setResponseTime:v21];
 
   v22 = +[NSUUID UUID];
   [v20 setRpcId:v22];
 
-  [v20 setApplication:v18];
-  [v20 setServerHint:v15];
+  [v20 setApplication:applicationCopy];
+  [v20 setServerHint:hintCopy];
 
   [v20 setUsedReversePush:1];
-  if (a8 == 7 || a8 == 1)
+  if (status == 7 || status == 1)
   {
     [v20 setState:1];
     if (qword_10039C948 != -1)
@@ -1776,13 +1776,13 @@
     if (os_log_type_enabled(qword_10039C950, OS_LOG_TYPE_DEFAULT))
     {
       v24 = v23;
-      v25 = [v20 rpcId];
+      rpcId = [v20 rpcId];
       v30 = 138412802;
-      v31 = v25;
+      v31 = rpcId;
       v32 = 2048;
-      v33 = [v20 rpcType];
+      rpcType = [v20 rpcType];
       v34 = 2112;
-      v35 = v14;
+      rpcType2 = dCopy;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "CompletedRPC succeeded. rpcId: %@, rpcType: %lld %@", &v30, 0x20u);
 
 LABEL_11:
@@ -1801,16 +1801,16 @@ LABEL_11:
     if (os_log_type_enabled(qword_10039C950, OS_LOG_TYPE_ERROR))
     {
       v24 = v26;
-      v27 = [v20 responseStatus];
-      v28 = [v20 rpcId];
+      responseStatus = [v20 responseStatus];
+      rpcId2 = [v20 rpcId];
       v30 = 134218754;
-      v31 = v27;
+      v31 = responseStatus;
       v32 = 2112;
-      v33 = v28;
+      rpcType = rpcId2;
       v34 = 2048;
-      v35 = [v20 rpcType];
+      rpcType2 = [v20 rpcType];
       v36 = 2112;
-      v37 = v14;
+      v37 = dCopy;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "CompletedRPC failed. responseStatus: %lld, rpcId: %@, rpcType: %lld %@", &v30, 0x2Au);
 
       goto LABEL_11;
@@ -1820,7 +1820,7 @@ LABEL_11:
   return v20;
 }
 
-- (BOOL)deleteServerRpcById:(id)a3 error:(id *)a4
+- (BOOL)deleteServerRpcById:(id)id error:(id *)error
 {
   v24 = 0;
   v25 = &v24;
@@ -1836,12 +1836,12 @@ LABEL_11:
   v13[1] = 3221225472;
   v13[2] = sub_1001CB4BC;
   v13[3] = &unk_100327140;
-  v14 = self;
-  v6 = a3;
-  v15 = v6;
+  selfCopy = self;
+  idCopy = id;
+  v15 = idCopy;
   v16 = &v18;
   v17 = &v24;
-  [(TransparencyManagedDataStore *)v14 performBlockAndWait:v13];
+  [(TransparencyManagedDataStore *)selfCopy performBlockAndWait:v13];
   if (v25[3])
   {
     v7 = 1;
@@ -1854,15 +1854,15 @@ LABEL_11:
     v10[1] = 3221225472;
     v10[2] = sub_1001CB598;
     v10[3] = &unk_10031A9E0;
-    v11 = v6;
+    v11 = idCopy;
     v12 = &v18;
     [(TransparencyManagedDataStore *)self performBlockAndWait:v10];
-    if (a4)
+    if (error)
     {
       v8 = v19[5];
       if (v8)
       {
-        *a4 = v8;
+        *error = v8;
       }
     }
 
@@ -1875,17 +1875,17 @@ LABEL_11:
   return v7 & 1;
 }
 
-- (id)fetchServerRpcById:(id)a3 error:(id *)a4
+- (id)fetchServerRpcById:(id)id error:(id *)error
 {
-  v6 = a3;
+  idCopy = id;
   v7 = [NSFetchRequest fetchRequestWithEntityName:@"ServerRPC"];
-  v8 = [NSPredicate predicateWithFormat:@"rpcId = %@", v6];
+  idCopy = [NSPredicate predicateWithFormat:@"rpcId = %@", idCopy];
 
-  [v7 setPredicate:v8];
-  v9 = [(TransparencyManagedDataStore *)self context];
-  v10 = [v9 executeFetchRequest:v7 error:a4];
+  [v7 setPredicate:idCopy];
+  context = [(TransparencyManagedDataStore *)self context];
+  v10 = [context executeFetchRequest:v7 error:error];
 
-  [TransparencyManagedDataStore cleanseError:a4];
+  [TransparencyManagedDataStore cleanseError:error];
   if (v10 && [v10 count])
   {
     v11 = [v10 objectAtIndexedSubscript:0];
@@ -1899,24 +1899,24 @@ LABEL_11:
   return v11;
 }
 
-- (id)fetchLatestSingleQueryByUri:(id)a3 application:(id)a4 error:(id *)a5
+- (id)fetchLatestSingleQueryByUri:(id)uri application:(id)application error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  applicationCopy = application;
+  uriCopy = uri;
   v10 = [NSFetchRequest fetchRequestWithEntityName:@"RPCSingleQuery"];
-  v11 = [NSPredicate predicateWithFormat:@"application = %@ && uri = %@", v8, v9];
+  uriCopy = [NSPredicate predicateWithFormat:@"application = %@ && uri = %@", applicationCopy, uriCopy];
 
-  [v10 setPredicate:v11];
+  [v10 setPredicate:uriCopy];
   v12 = [NSSortDescriptor sortDescriptorWithKey:@"requestTime" ascending:0];
   v18 = v12;
   v13 = [NSArray arrayWithObjects:&v18 count:1];
   [v10 setSortDescriptors:v13];
 
   [v10 setFetchLimit:1];
-  v14 = [(TransparencyManagedDataStore *)self context];
-  v15 = [v14 executeFetchRequest:v10 error:a5];
+  context = [(TransparencyManagedDataStore *)self context];
+  v15 = [context executeFetchRequest:v10 error:error];
 
-  [TransparencyManagedDataStore cleanseError:a5];
+  [TransparencyManagedDataStore cleanseError:error];
   if (v15 && [v15 count])
   {
     v16 = [v15 objectAtIndexedSubscript:0];
@@ -1930,10 +1930,10 @@ LABEL_11:
   return v16;
 }
 
-- (BOOL)performAndWaitForRpcId:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)performAndWaitForRpcId:(id)id error:(id *)error block:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  idCopy = id;
+  blockCopy = block;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -1949,19 +1949,19 @@ LABEL_11:
   v15[2] = sub_1001CBB10;
   v15[3] = &unk_100327500;
   v15[4] = self;
-  v10 = v8;
+  v10 = idCopy;
   v16 = v10;
   v18 = &v20;
-  v11 = v9;
+  v11 = blockCopy;
   v17 = v11;
   v19 = &v26;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v15];
-  if (a4)
+  if (error)
   {
     v12 = v21[5];
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -1973,9 +1973,9 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)failRpcId:(id)a3 failure:(id)a4 error:(id *)a5
+- (BOOL)failRpcId:(id)id failure:(id)failure error:(id *)error
 {
-  v8 = a3;
+  idCopy = id;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -1987,23 +1987,23 @@ LABEL_11:
   v16[1] = 3221225472;
   v16[2] = sub_1001CBEA4;
   v16[3] = &unk_100327548;
-  v9 = a4;
-  v17 = v9;
-  v18 = self;
+  failureCopy = failure;
+  v17 = failureCopy;
+  selfCopy = self;
   v19 = &v21;
-  [(TransparencyManagedDataStore *)self performAndWaitForRpcId:v8 error:&obj block:v16];
+  [(TransparencyManagedDataStore *)self performAndWaitForRpcId:idCopy error:&obj block:v16];
   objc_storeStrong(&v26, obj);
   v10 = (v22 + 5);
   v15 = v22[5];
   [TransparencyManagedDataStore cleanseError:&v15];
   objc_storeStrong(v10, v15);
   v11 = v22;
-  if (a5)
+  if (error)
   {
     v12 = v22[5];
     if (v12)
     {
-      *a5 = v12;
+      *error = v12;
       v11 = v22;
     }
   }
@@ -2014,12 +2014,12 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)setResponseForRpcId:(id)a3 response:(id)a4 responseStatus:(id)a5 usedReversePush:(BOOL)a6 serverHint:(id)a7 error:(id *)a8
+- (BOOL)setResponseForRpcId:(id)id response:(id)response responseStatus:(id)status usedReversePush:(BOOL)push serverHint:(id)hint error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
+  idCopy = id;
+  responseCopy = response;
+  statusCopy = status;
+  hintCopy = hint;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -2031,28 +2031,28 @@ LABEL_11:
   v27[1] = 3221225472;
   v27[2] = sub_1001CC224;
   v27[3] = &unk_1003275B0;
-  v18 = v15;
+  v18 = responseCopy;
   v28 = v18;
-  v19 = v16;
+  v19 = statusCopy;
   v29 = v19;
-  v33 = a6;
-  v20 = v17;
+  pushCopy = push;
+  v20 = hintCopy;
   v30 = v20;
-  v31 = self;
+  selfCopy = self;
   v32 = &v35;
-  [(TransparencyManagedDataStore *)self performAndWaitForRpcId:v14 error:&obj block:v27];
+  [(TransparencyManagedDataStore *)self performAndWaitForRpcId:idCopy error:&obj block:v27];
   objc_storeStrong(&v40, obj);
   v21 = (v36 + 5);
   v26 = v36[5];
   [TransparencyManagedDataStore cleanseError:&v26];
   objc_storeStrong(v21, v26);
   v22 = v36;
-  if (a8)
+  if (error)
   {
     v23 = v36[5];
     if (v23)
     {
-      *a8 = v23;
+      *error = v23;
       v22 = v36;
     }
   }
@@ -2063,11 +2063,11 @@ LABEL_11:
   return v24;
 }
 
-- (id)getLatestSuccessfulSingleQueryForUri:(id)a3 application:(id)a4 requestYoungerThan:(id)a5 error:(id *)a6
+- (id)getLatestSuccessfulSingleQueryForUri:(id)uri application:(id)application requestYoungerThan:(id)than error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  uriCopy = uri;
+  applicationCopy = application;
+  thanCopy = than;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -2091,9 +2091,9 @@ LABEL_11:
     *buf = 141558530;
     v39 = 1752392040;
     v40 = 2112;
-    v41 = v10;
+    v41 = uriCopy;
     v42 = 2112;
-    v43 = v12;
+    v43 = thanCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "getting successful ServerRPC for %{mask.hash}@ younger than %@", buf, 0x20u);
   }
 
@@ -2101,21 +2101,21 @@ LABEL_11:
   v20[1] = 3221225472;
   v20[2] = sub_1001CC81C;
   v20[3] = &unk_1003275F8;
-  v14 = v10;
+  v14 = uriCopy;
   v21 = v14;
-  v15 = v11;
+  v15 = applicationCopy;
   v22 = v15;
-  v16 = v12;
+  v16 = thanCopy;
   v23 = v16;
   v24 = &v26;
   v25 = &v32;
   [(TransparencyManagedDataStore *)self performBlockAndWaitWithMoc:v20];
-  if (a6)
+  if (error)
   {
     v17 = v27[5];
     if (v17)
     {
-      *a6 = v17;
+      *error = v17;
     }
   }
 
@@ -2127,11 +2127,11 @@ LABEL_11:
   return v18;
 }
 
-- (id)getLatestSuccessfulBatchQueryForUri:(id)a3 application:(id)a4 requestYoungerThan:(id)a5 error:(id *)a6
+- (id)getLatestSuccessfulBatchQueryForUri:(id)uri application:(id)application requestYoungerThan:(id)than error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  uriCopy = uri;
+  applicationCopy = application;
+  thanCopy = than;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -2148,22 +2148,22 @@ LABEL_11:
   v19[1] = 3221225472;
   v19[2] = sub_1001CCC1C;
   v19[3] = &unk_100327000;
-  v13 = v11;
+  v13 = applicationCopy;
   v20 = v13;
-  v14 = v12;
+  v14 = thanCopy;
   v21 = v14;
-  v22 = self;
+  selfCopy = self;
   v24 = &v26;
-  v15 = v10;
+  v15 = uriCopy;
   v23 = v15;
   v25 = &v32;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v19];
-  if (a6)
+  if (error)
   {
     v16 = v27[5];
     if (v16)
     {
-      *a6 = v16;
+      *error = v16;
     }
   }
 
@@ -2175,10 +2175,10 @@ LABEL_11:
   return v17;
 }
 
-- (BOOL)hasPendingSingleQueryForUri:(id)a3 application:(id)a4 error:(id *)a5
+- (BOOL)hasPendingSingleQueryForUri:(id)uri application:(id)application error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  uriCopy = uri;
+  applicationCopy = application;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -2194,9 +2194,9 @@ LABEL_11:
   v17[2] = sub_1001CD134;
   v17[3] = &unk_100327620;
   v17[4] = self;
-  v10 = v8;
+  v10 = uriCopy;
   v18 = v10;
-  v11 = v9;
+  v11 = applicationCopy;
   v19 = v11;
   v20 = &v22;
   v21 = &v26;
@@ -2222,12 +2222,12 @@ LABEL_11:
     }
   }
 
-  if (a5)
+  if (error)
   {
     v14 = v27[5];
     if (v14)
     {
-      *a5 = v14;
+      *error = v14;
     }
   }
 
@@ -2239,7 +2239,7 @@ LABEL_11:
   return v15;
 }
 
-- (void)garbageCollectServerRPCs:(id *)a3
+- (void)garbageCollectServerRPCs:(id *)cs
 {
   if (qword_10039C948 != -1)
   {
@@ -2255,8 +2255,8 @@ LABEL_11:
 
   v6 = [NSDate dateWithTimeIntervalSinceNow:-kTransparencyMaxmimumDownloadRecordLifetime];
   v7 = [NSPredicate predicateWithFormat:@"state == %@ && requestTime < %@", &off_10033CFA8, v6];
-  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"RPCSingleQuery" predicate:v7 error:a3];
-  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"RPCBatchQuery" predicate:v7 error:a3];
+  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"RPCSingleQuery" predicate:v7 error:cs];
+  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"RPCBatchQuery" predicate:v7 error:cs];
   if (qword_10039C948 != -1)
   {
     sub_10025C30C();
@@ -2273,13 +2273,13 @@ LABEL_11:
 
   v10 = [NSPredicate predicateWithFormat:@"state != %@ && responseTime < %@", &off_10033CFA8, v9];
 
-  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"RPCSingleQuery" predicate:v10 error:a3];
-  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"RPCBatchQuery" predicate:v10 error:a3];
+  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"RPCSingleQuery" predicate:v10 error:cs];
+  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"RPCBatchQuery" predicate:v10 error:cs];
 }
 
-- (BOOL)deleteServerRPCs:(id)a3 error:(id *)a4
+- (BOOL)deleteServerRPCs:(id)cs error:(id *)error
 {
-  v6 = a3;
+  csCopy = cs;
   if (qword_10039C948 != -1)
   {
     sub_10025C334();
@@ -2292,16 +2292,16 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Deleting cached server RPCs", buf, 2u);
   }
 
-  v8 = [NSPredicate predicateWithFormat:@"application == %@", v6];
-  v9 = [(TransparencyManagedDataStore *)self garbageCollectEntity:@"ServerRPC" predicate:v8 error:a4];
+  csCopy = [NSPredicate predicateWithFormat:@"application == %@", csCopy];
+  v9 = [(TransparencyManagedDataStore *)self garbageCollectEntity:@"ServerRPC" predicate:csCopy error:error];
 
   return v9;
 }
 
-- (BOOL)deleteCompletedSingleQueryForUris:(id)a3 application:(id)a4 error:(id *)a5
+- (BOOL)deleteCompletedSingleQueryForUris:(id)uris application:(id)application error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  urisCopy = uris;
+  applicationCopy = application;
   if (qword_10039C948 != -1)
   {
     sub_10025C348();
@@ -2311,7 +2311,7 @@ LABEL_11:
   if (os_log_type_enabled(qword_10039C950, OS_LOG_TYPE_INFO))
   {
     v11 = v10;
-    v12 = [v8 componentsJoinedByString:{@", "}];
+    v12 = [urisCopy componentsJoinedByString:{@", "}];
     *buf = 141558274;
     v17 = 1752392040;
     v18 = 2112;
@@ -2319,21 +2319,21 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Deleting cached server RPCs for %{mask.hash}@", buf, 0x16u);
   }
 
-  v13 = [NSPredicate predicateWithFormat:@"uri IN %@ && application == %@ && state != %@", v8, v9, &off_10033CFA8];
-  v14 = [(TransparencyManagedDataStore *)self garbageCollectEntity:@"RPCSingleQuery" predicate:v13 error:a5];
+  v13 = [NSPredicate predicateWithFormat:@"uri IN %@ && application == %@ && state != %@", urisCopy, applicationCopy, &off_10033CFA8];
+  v14 = [(TransparencyManagedDataStore *)self garbageCollectEntity:@"RPCSingleQuery" predicate:v13 error:error];
 
   return v14;
 }
 
-- (id)createIDSKTVerification:(id)a3 application:(id)a4 accountKey:(id)a5 idsResponseTime:(id)a6 serverLoggableDatas:(id)a7 optedIn:(unint64_t)a8 type:(unint64_t)a9 syncedLoggableDatas:(id)a10 verificationId:(id)a11 error:(id *)a12
+- (id)createIDSKTVerification:(id)verification application:(id)application accountKey:(id)key idsResponseTime:(id)time serverLoggableDatas:(id)datas optedIn:(unint64_t)in type:(unint64_t)type syncedLoggableDatas:(id)self0 verificationId:(id)self1 error:(id *)self2
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a10;
-  v23 = a11;
+  verificationCopy = verification;
+  applicationCopy = application;
+  keyCopy = key;
+  timeCopy = time;
+  datasCopy = datas;
+  loggableDatasCopy = loggableDatas;
+  idCopy = id;
   v53 = 0;
   v54 = &v53;
   v55 = 0x3032000000;
@@ -2351,31 +2351,31 @@ LABEL_11:
   v35[2] = sub_1001D9DCC;
   v35[3] = &unk_100327BD0;
   v35[4] = self;
-  v24 = v17;
+  v24 = verificationCopy;
   v36 = v24;
-  v25 = v18;
+  v25 = applicationCopy;
   v37 = v25;
-  v26 = v19;
+  v26 = keyCopy;
   v38 = v26;
-  v27 = v20;
+  v27 = timeCopy;
   v39 = v27;
-  v28 = v21;
+  v28 = datasCopy;
   v40 = v28;
-  v45 = a8;
-  v46 = a9;
-  v29 = v22;
+  inCopy = in;
+  typeCopy = type;
+  v29 = loggableDatasCopy;
   v41 = v29;
-  v30 = v23;
+  v30 = idCopy;
   v42 = v30;
   v43 = &v47;
   v44 = &v53;
   [(TransparencyManagedDataStore *)self performBlockAndWaitWithMoc:v35];
-  if (a12)
+  if (error)
   {
     v31 = v48[5];
     if (v31)
     {
-      *a12 = v31;
+      *error = v31;
     }
   }
 
@@ -2387,25 +2387,25 @@ LABEL_11:
   return v32;
 }
 
-- (id)createIDSKTVerification:(id)a3 application:(id)a4 onMoc:(id)a5 accountKey:(id)a6 idsResponseTime:(id)a7 serverLoggableDatas:(id)a8 optedIn:(unint64_t)a9 type:(unint64_t)a10 syncedLoggableDatas:(id)a11 verificationId:(id)a12 error:(id *)a13
+- (id)createIDSKTVerification:(id)verification application:(id)application onMoc:(id)moc accountKey:(id)key idsResponseTime:(id)time serverLoggableDatas:(id)datas optedIn:(unint64_t)in type:(unint64_t)self0 syncedLoggableDatas:(id)self1 verificationId:(id)self2 error:(id *)self3
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a6;
-  v21 = a7;
-  v22 = v20;
-  v23 = v21;
-  v24 = a11;
-  v76 = a12;
-  v25 = a8;
-  v26 = [NSEntityDescription insertNewObjectForEntityForName:@"IDSKTVerification" inManagedObjectContext:a5];
+  verificationCopy = verification;
+  applicationCopy = application;
+  keyCopy = key;
+  timeCopy = time;
+  v22 = keyCopy;
+  v23 = timeCopy;
+  loggableDatasCopy = loggableDatas;
+  idCopy = id;
+  datasCopy = datas;
+  v26 = [NSEntityDescription insertNewObjectForEntityForName:@"IDSKTVerification" inManagedObjectContext:moc];
   v27 = +[NSDate now];
   [v26 setCreationTime:v27];
 
-  [v26 setUri:v18];
-  [v26 setApplication:v19];
+  [v26 setUri:verificationCopy];
+  [v26 setApplication:applicationCopy];
   [v26 setAccountKey:v22];
-  [v26 setUnsigned:"idsOptedIn" value:a9];
+  [v26 setUnsigned:"idsOptedIn" value:in];
   if (v23)
   {
     [v26 setIdsResponseTime:v23];
@@ -2413,24 +2413,24 @@ LABEL_11:
 
   else
   {
-    v28 = [v26 creationTime];
-    [v26 setIdsResponseTime:v28];
+    creationTime = [v26 creationTime];
+    [v26 setIdsResponseTime:creationTime];
   }
 
-  v29 = [[KTLoggableDataArray alloc] initWithLoggableDatas:v25];
+  v29 = [[KTLoggableDataArray alloc] initWithLoggableDatas:datasCopy];
 
   [v26 setServerLoggableDatas:v29];
-  [v26 setUnsigned:"type" value:a10];
-  if (v24)
+  [v26 setUnsigned:"type" value:type];
+  if (loggableDatasCopy)
   {
-    v30 = [[KTLoggableDataArray alloc] initWithLoggableDatas:v24];
+    v30 = [[KTLoggableDataArray alloc] initWithLoggableDatas:loggableDatasCopy];
     [v26 setSyncedLoggableDatas:v30];
   }
 
-  v31 = v76;
-  if (v76)
+  v31 = idCopy;
+  if (idCopy)
   {
-    [v26 setVerificationId:v76];
+    [v26 setVerificationId:idCopy];
   }
 
   else
@@ -2439,44 +2439,44 @@ LABEL_11:
     [v26 setVerificationId:v32];
   }
 
-  v33 = [v26 verificationId];
-  [(TransparencyManagedDataStore *)self createIDSVerificationID:v33 verification:v26];
+  verificationId = [v26 verificationId];
+  [(TransparencyManagedDataStore *)self createIDSVerificationID:verificationId verification:v26];
 
   v78 = 0;
-  v34 = [(TransparencyManagedDataStore *)self fetchPeer:v18 application:v19 error:&v78];
+  v34 = [(TransparencyManagedDataStore *)self fetchPeer:verificationCopy application:applicationCopy error:&v78];
   v35 = v78;
   v36 = v35;
-  if (v34 || (v77 = v35, [(TransparencyManagedDataStore *)self createPeerState:v18 application:v19 error:&v77], v34 = objc_claimAutoreleasedReturnValue(), v37 = v77, v38 = v36, v36 = v37, v38, v34))
+  if (v34 || (v77 = v35, [(TransparencyManagedDataStore *)self createPeerState:verificationCopy application:applicationCopy error:&v77], v34 = objc_claimAutoreleasedReturnValue(), v37 = v77, v38 = v36, v36 = v37, v38, v34))
   {
-    v75 = v24;
+    v75 = loggableDatasCopy;
     [v26 setPeerState:v34];
-    v39 = [v34 mostRecentVerification];
+    mostRecentVerification = [v34 mostRecentVerification];
 
     v73 = v36;
-    if (!v39)
+    if (!mostRecentVerification)
     {
       goto LABEL_23;
     }
 
     if (v23)
     {
-      v40 = [v34 mostRecentVerification];
-      v41 = [v40 idsResponseTime];
-      if (v41)
+      mostRecentVerification2 = [v34 mostRecentVerification];
+      idsResponseTime = [mostRecentVerification2 idsResponseTime];
+      if (idsResponseTime)
       {
-        v42 = v41;
-        v43 = [v34 mostRecentVerification];
-        [v43 idsResponseTime];
+        v42 = idsResponseTime;
+        mostRecentVerification3 = [v34 mostRecentVerification];
+        [mostRecentVerification3 idsResponseTime];
         v44 = v22;
-        v45 = v19;
-        v47 = v46 = v18;
+        v45 = applicationCopy;
+        v47 = v46 = verificationCopy;
         v70 = [v47 compare:v23];
 
-        v18 = v46;
-        v19 = v45;
+        verificationCopy = v46;
+        applicationCopy = v45;
         v22 = v44;
 
-        v31 = v76;
+        v31 = idCopy;
         v36 = v73;
         if (v70 == -1)
         {
@@ -2489,30 +2489,30 @@ LABEL_11:
       }
     }
 
-    v50 = [v34 mostRecentVerification];
-    v51 = [v50 idsResponseTime];
-    if (v51)
+    mostRecentVerification4 = [v34 mostRecentVerification];
+    idsResponseTime2 = [mostRecentVerification4 idsResponseTime];
+    if (idsResponseTime2)
     {
 
       goto LABEL_29;
     }
 
-    v52 = [v34 mostRecentVerification];
-    v53 = [v52 creationTime];
+    mostRecentVerification5 = [v34 mostRecentVerification];
+    creationTime2 = [mostRecentVerification5 creationTime];
     [v26 creationTime];
     v54 = v23;
     v55 = v22;
-    v56 = v19;
-    v58 = v57 = v18;
-    v71 = [v53 compare:v58];
+    v56 = applicationCopy;
+    v58 = v57 = verificationCopy;
+    v71 = [creationTime2 compare:v58];
 
-    v18 = v57;
-    v19 = v56;
+    verificationCopy = v57;
+    applicationCopy = v56;
     v22 = v55;
     v23 = v54;
     v36 = v73;
 
-    v31 = v76;
+    v31 = idCopy;
     if (v71 != -1)
     {
       goto LABEL_29;
@@ -2520,29 +2520,29 @@ LABEL_11:
 
 LABEL_23:
     [v26 setPeerStateMostRecent:v34];
-    v59 = [v34 mostRecentSuccess];
+    mostRecentSuccess = [v34 mostRecentSuccess];
 
-    if (v59)
+    if (mostRecentSuccess)
     {
-      v60 = [v34 mostRecentSuccess];
-      v61 = [v60 accountKey];
-      if ([v61 isEqual:v22])
+      mostRecentSuccess2 = [v34 mostRecentSuccess];
+      accountKey = [mostRecentSuccess2 accountKey];
+      if ([accountKey isEqual:v22])
       {
-        v62 = [v34 mostRecentSuccess];
-        v63 = [v62 serverLoggableDatas];
+        mostRecentSuccess3 = [v34 mostRecentSuccess];
+        serverLoggableDatas = [mostRecentSuccess3 serverLoggableDatas];
         [v26 serverLoggableDatas];
         v72 = v23;
         v64 = v22;
-        v65 = v19;
-        v67 = v66 = v18;
-        v69 = [v63 isEqual:v67];
+        v65 = applicationCopy;
+        v67 = v66 = verificationCopy;
+        v69 = [serverLoggableDatas isEqual:v67];
 
-        v18 = v66;
-        v19 = v65;
+        verificationCopy = v66;
+        applicationCopy = v65;
         v22 = v64;
         v23 = v72;
 
-        v31 = v76;
+        v31 = idCopy;
         v36 = v73;
         if (v69)
         {
@@ -2562,16 +2562,16 @@ LABEL_23:
 LABEL_29:
     v48 = v26;
 
-    v24 = v75;
+    loggableDatasCopy = v75;
     goto LABEL_30;
   }
 
   v48 = 0;
-  if (a13 && v36)
+  if (error && v36)
   {
     v49 = v36;
     v48 = 0;
-    *a13 = v36;
+    *error = v36;
   }
 
 LABEL_30:
@@ -2579,53 +2579,53 @@ LABEL_30:
   return v48;
 }
 
-- (id)createIDSKTVerification:(id)a3 application:(id)a4 verificationInfo:(id)a5 type:(unint64_t)a6 syncedLoggableDatas:(id)a7 verificationId:(id)a8 error:(id *)a9
+- (id)createIDSKTVerification:(id)verification application:(id)application verificationInfo:(id)info type:(unint64_t)type syncedLoggableDatas:(id)datas verificationId:(id)id error:(id *)error
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [v15 accountKey];
-  v19 = [v15 idsResponseTime];
-  v20 = [v15 serverLoggableDatas];
-  v21 = [v15 optedIn];
+  idCopy = id;
+  datasCopy = datas;
+  infoCopy = info;
+  applicationCopy = application;
+  verificationCopy = verification;
+  accountKey = [infoCopy accountKey];
+  idsResponseTime = [infoCopy idsResponseTime];
+  serverLoggableDatas = [infoCopy serverLoggableDatas];
+  optedIn = [infoCopy optedIn];
 
-  v22 = [(TransparencyManagedDataStore *)self createIDSKTVerification:v17 application:v16 accountKey:v18 idsResponseTime:v19 serverLoggableDatas:v20 optedIn:v21 type:a6 syncedLoggableDatas:v14 verificationId:v13 error:a9];
+  v22 = [(TransparencyManagedDataStore *)self createIDSKTVerification:verificationCopy application:applicationCopy accountKey:accountKey idsResponseTime:idsResponseTime serverLoggableDatas:serverLoggableDatas optedIn:optedIn type:type syncedLoggableDatas:datasCopy verificationId:idCopy error:error];
 
   return v22;
 }
 
-- (id)onMocFetchVerificationForVerificationId:(id)a3 error:(id *)a4
+- (id)onMocFetchVerificationForVerificationId:(id)id error:(id *)error
 {
-  v6 = a3;
+  idCopy = id;
   v7 = +[KTRequestID fetchRequest];
-  v8 = [NSPredicate predicateWithFormat:@"requestId == %@", v6];
+  idCopy = [NSPredicate predicateWithFormat:@"requestId == %@", idCopy];
 
-  [v7 setPredicate:v8];
+  [v7 setPredicate:idCopy];
   [v7 setRelationshipKeyPathsForPrefetching:&off_10033D820];
-  v9 = [(TransparencyManagedDataStore *)self context];
-  v10 = [v9 executeFetchRequest:v7 error:a4];
+  context = [(TransparencyManagedDataStore *)self context];
+  v10 = [context executeFetchRequest:v7 error:error];
 
-  [TransparencyManagedDataStore cleanseError:a4];
+  [TransparencyManagedDataStore cleanseError:error];
   if ([v10 count])
   {
     v11 = [v10 objectAtIndexedSubscript:0];
-    v12 = [v11 idsKTVerification];
+    idsKTVerification = [v11 idsKTVerification];
   }
 
   else
   {
-    v12 = 0;
+    idsKTVerification = 0;
   }
 
-  return v12;
+  return idsKTVerification;
 }
 
-- (BOOL)performAndWaitForVerificationId:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)performAndWaitForVerificationId:(id)id error:(id *)error block:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  idCopy = id;
+  blockCopy = block;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -2641,19 +2641,19 @@ LABEL_30:
   v15[2] = sub_1001DA834;
   v15[3] = &unk_100327500;
   v15[4] = self;
-  v10 = v8;
+  v10 = idCopy;
   v16 = v10;
   v18 = &v20;
-  v11 = v9;
+  v11 = blockCopy;
   v17 = v11;
   v19 = &v26;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v15];
-  if (a4)
+  if (error)
   {
     v12 = v21[5];
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -2665,7 +2665,7 @@ LABEL_30:
   return v13;
 }
 
-- (BOOL)resetVerificationsToPending:(id)a3 error:(id *)a4
+- (BOOL)resetVerificationsToPending:(id)pending error:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -2677,18 +2677,18 @@ LABEL_30:
   v13[1] = 3221225472;
   v13[2] = sub_1001DAAE4;
   v13[3] = &unk_100317DE0;
-  v14 = self;
+  selfCopy = self;
   v16 = &v17;
-  v6 = a3;
-  v15 = v6;
-  [(TransparencyManagedDataStore *)v14 performBlockAndWait:v13];
+  pendingCopy = pending;
+  v15 = pendingCopy;
+  [(TransparencyManagedDataStore *)selfCopy performBlockAndWait:v13];
   v7 = v18;
-  if (a4)
+  if (error)
   {
     v8 = v18[5];
     if (v8)
     {
-      *a4 = v8;
+      *error = v8;
       v7 = v18;
     }
   }
@@ -2714,19 +2714,19 @@ LABEL_30:
 
   else
   {
-    v11 = [(TransparencyManagedDataStore *)self resetPeersToPending:v6 error:a4];
+    v11 = [(TransparencyManagedDataStore *)self resetPeersToPending:pendingCopy error:error];
   }
 
   _Block_object_dispose(&v17, 8);
   return v11;
 }
 
-- (BOOL)performForPendingVerfications:(id)a3 uri:(id)a4 responseOlderThan:(id)a5 error:(id *)a6 batchSize:(unint64_t)a7 block:(id)a8
+- (BOOL)performForPendingVerfications:(id)verfications uri:(id)uri responseOlderThan:(id)than error:(id *)error batchSize:(unint64_t)size block:(id)block
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
+  verficationsCopy = verfications;
+  uriCopy = uri;
+  thanCopy = than;
+  blockCopy = block;
   v41 = 0;
   v42 = &v41;
   v43 = 0x2020000000;
@@ -2743,23 +2743,23 @@ LABEL_30:
   v27[3] = &unk_100327C38;
   v27[4] = self;
   v32 = &v35;
-  v18 = v15;
+  v18 = uriCopy;
   v28 = v18;
-  v19 = v14;
+  v19 = verficationsCopy;
   v29 = v19;
-  v20 = v16;
+  v20 = thanCopy;
   v30 = v20;
-  v34 = a7;
-  v21 = v17;
+  sizeCopy = size;
+  v21 = blockCopy;
   v31 = v21;
   v33 = &v41;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v27];
-  if (a6)
+  if (error)
   {
     v22 = v36[5];
     if (v22)
     {
-      *a6 = v22;
+      *error = v22;
     }
   }
 
@@ -2793,7 +2793,7 @@ LABEL_30:
   return v23 & 1;
 }
 
-- (id)pendingVerificationURIs:(id)a3 fetchLimit:(unint64_t)a4 error:(id *)a5
+- (id)pendingVerificationURIs:(id)is fetchLimit:(unint64_t)limit error:(id *)error
 {
   v23 = 0;
   v24 = &v23;
@@ -2811,19 +2811,19 @@ LABEL_30:
   v11[1] = 3221225472;
   v11[2] = sub_1001DB438;
   v11[3] = &unk_100327C80;
-  v12 = self;
+  selfCopy = self;
   v14 = &v17;
-  v7 = a3;
+  isCopy = is;
   v15 = &v23;
-  v16 = a4;
-  v13 = v7;
-  [(TransparencyManagedDataStore *)v12 performBlockAndWait:v11];
-  if (a5)
+  limitCopy = limit;
+  v13 = isCopy;
+  [(TransparencyManagedDataStore *)selfCopy performBlockAndWait:v11];
+  if (error)
   {
     v8 = v18[5];
     if (v8)
     {
-      *a5 = v8;
+      *error = v8;
     }
   }
 
@@ -2835,12 +2835,12 @@ LABEL_30:
   return v9;
 }
 
-- (id)peerVerificationIdForUri:(id)a3 application:(id)a4 verificationInfo:(id)a5 newerThan:(id)a6 error:(id *)a7
+- (id)peerVerificationIdForUri:(id)uri application:(id)application verificationInfo:(id)info newerThan:(id)than error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  uriCopy = uri;
+  applicationCopy = application;
+  infoCopy = info;
+  thanCopy = than;
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
@@ -2854,33 +2854,33 @@ LABEL_30:
   v40 = sub_1001D9DC4;
   v41 = 0;
   v16 = [KTLoggableDataArray alloc];
-  v17 = [v14 serverLoggableDatas];
-  v18 = [(KTLoggableDataArray *)v16 initWithLoggableDatas:v17];
+  serverLoggableDatas = [infoCopy serverLoggableDatas];
+  v18 = [(KTLoggableDataArray *)v16 initWithLoggableDatas:serverLoggableDatas];
 
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_1001DB964;
   v27[3] = &unk_100327CA8;
-  v19 = v13;
+  v19 = applicationCopy;
   v28 = v19;
-  v20 = v12;
+  v20 = uriCopy;
   v29 = v20;
-  v21 = v15;
+  v21 = thanCopy;
   v30 = v21;
-  v22 = v14;
+  v22 = infoCopy;
   v31 = v22;
   v34 = &v36;
   v23 = v18;
   v35 = &v42;
   v32 = v23;
-  v33 = self;
+  selfCopy = self;
   [(TransparencyManagedDataStore *)self performBlockAndWaitWithMoc:v27];
-  if (a7)
+  if (error)
   {
     v24 = v37[5];
     if (v24)
     {
-      *a7 = v24;
+      *error = v24;
     }
   }
 
@@ -2892,18 +2892,18 @@ LABEL_30:
   return v25;
 }
 
-- (id)fetchOrCreateVerification:(id)a3 application:(id)a4 verificationInfo:(id)a5 fetchNow:(BOOL)a6 error:(id *)a7
+- (id)fetchOrCreateVerification:(id)verification application:(id)application verificationInfo:(id)info fetchNow:(BOOL)now error:(id *)error
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (v8)
+  nowCopy = now;
+  verificationCopy = verification;
+  applicationCopy = application;
+  infoCopy = info;
+  if (nowCopy)
   {
-    v15 = [(TransparencyManagedDataStore *)self createPeerIDSKTVerification:v12 application:v13 verificationInfo:v14 error:a7];
-    v16 = [(TransparencyManagedDataStore *)self logger];
-    v17 = [TransparencyAnalytics formatEventName:@"CacheVerifyFetch" application:v13];
-    [v16 logSuccessForEventNamed:v17];
+    v15 = [(TransparencyManagedDataStore *)self createPeerIDSKTVerification:verificationCopy application:applicationCopy verificationInfo:infoCopy error:error];
+    logger = [(TransparencyManagedDataStore *)self logger];
+    v17 = [TransparencyAnalytics formatEventName:@"CacheVerifyFetch" application:applicationCopy];
+    [logger logSuccessForEventNamed:v17];
 
     if (qword_10039C9E0 != -1)
     {
@@ -2918,7 +2918,7 @@ LABEL_30:
       v32 = 2160;
       v33 = 1752392040;
       v34 = 2112;
-      v35 = v12;
+      v35 = verificationCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "created verificationId %{public}@ for %{mask.hash}@ because fetchNow", &v30, 0x20u);
     }
 
@@ -2929,7 +2929,7 @@ LABEL_30:
   {
     +[TransparencySettings defaultQueryCacheTimeout];
     v21 = [NSDate dateWithTimeIntervalSinceNow:-v20];
-    v22 = [(TransparencyManagedDataStore *)self peerVerificationIdForUri:v12 application:v13 verificationInfo:v14 newerThan:v21 error:a7];
+    v22 = [(TransparencyManagedDataStore *)self peerVerificationIdForUri:verificationCopy application:applicationCopy verificationInfo:infoCopy newerThan:v21 error:error];
     if (v22)
     {
       v23 = v22;
@@ -2946,7 +2946,7 @@ LABEL_30:
         v32 = 2160;
         v33 = 1752392040;
         v34 = 2112;
-        v35 = v12;
+        v35 = verificationCopy;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "re-using verificationId %{public}@ for %{mask.hash}@", &v30, 0x20u);
       }
 
@@ -2955,7 +2955,7 @@ LABEL_30:
 
     else
     {
-      v23 = [(TransparencyManagedDataStore *)self createPeerIDSKTVerification:v12 application:v13 verificationInfo:v14 error:a7];
+      v23 = [(TransparencyManagedDataStore *)self createPeerIDSKTVerification:verificationCopy application:applicationCopy verificationInfo:infoCopy error:error];
       if (qword_10039C9E0 != -1)
       {
         sub_10025C7BC();
@@ -2969,16 +2969,16 @@ LABEL_30:
         v32 = 2160;
         v33 = 1752392040;
         v34 = 2112;
-        v35 = v12;
+        v35 = verificationCopy;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "created verificationId %{public}@ for %{mask.hash}@ none cached", &v30, 0x20u);
       }
 
       v25 = @"CacheVerifyMiss";
     }
 
-    v27 = [(TransparencyManagedDataStore *)self logger];
-    v28 = [TransparencyAnalytics formatEventName:v25 application:v13];
-    [v27 logSuccessForEventNamed:v28];
+    logger2 = [(TransparencyManagedDataStore *)self logger];
+    v28 = [TransparencyAnalytics formatEventName:v25 application:applicationCopy];
+    [logger2 logSuccessForEventNamed:v28];
 
     v19 = v23;
   }
@@ -2986,19 +2986,19 @@ LABEL_30:
   return v19;
 }
 
-- (id)createVerification:(id)a3 application:(id)a4 onMoc:(id)a5 verificationInfo:(id)a6 error:(id *)a7
+- (id)createVerification:(id)verification application:(id)application onMoc:(id)moc verificationInfo:(id)info error:(id *)error
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = [v12 accountKey];
-  v16 = [v12 idsResponseTime];
-  v17 = [v12 serverLoggableDatas];
-  v18 = [v12 optedIn];
+  verificationCopy = verification;
+  infoCopy = info;
+  mocCopy = moc;
+  applicationCopy = application;
+  accountKey = [infoCopy accountKey];
+  idsResponseTime = [infoCopy idsResponseTime];
+  serverLoggableDatas = [infoCopy serverLoggableDatas];
+  optedIn = [infoCopy optedIn];
 
   v25 = 0;
-  v19 = [(TransparencyManagedDataStore *)self createIDSKTVerification:v11 application:v14 onMoc:v13 accountKey:v15 idsResponseTime:v16 serverLoggableDatas:v17 optedIn:v18 type:0 syncedLoggableDatas:0 verificationId:0 error:&v25];
+  v19 = [(TransparencyManagedDataStore *)self createIDSKTVerification:verificationCopy application:applicationCopy onMoc:mocCopy accountKey:accountKey idsResponseTime:idsResponseTime serverLoggableDatas:serverLoggableDatas optedIn:optedIn type:0 syncedLoggableDatas:0 verificationId:0 error:&v25];
 
   v20 = v25;
   if (qword_10039C9E0 != -1)
@@ -3010,20 +3010,20 @@ LABEL_30:
   if (os_log_type_enabled(qword_10039C9E8, OS_LOG_TYPE_DEFAULT))
   {
     v22 = v21;
-    v23 = [v19 verificationId];
+    verificationId = [v19 verificationId];
     *buf = 138543874;
-    v27 = v23;
+    v27 = verificationId;
     v28 = 2160;
     v29 = 1752392040;
     v30 = 2112;
-    v31 = v11;
+    v31 = verificationCopy;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "created verificationId %{public}@ for %{mask.hash}@ none cached", buf, 0x20u);
   }
 
   return v19;
 }
 
-- (void)garbageCollectVerifications:(id *)a3
+- (void)garbageCollectVerifications:(id *)verifications
 {
   if (qword_10039C9E0 != -1)
   {
@@ -3040,22 +3040,22 @@ LABEL_30:
   v6 = [NSDate dateWithTimeIntervalSinceNow:-kKTMaximumPendingRequestLifetime];
   v7 = [NSPredicate predicateWithFormat:@"creationTime < %@", v6];
 
-  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"IDSKTVerification" predicate:v7 error:a3];
+  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"IDSKTVerification" predicate:v7 error:verifications];
   v8 = [NSPredicate predicateWithFormat:@"peerStateFailure == nil && peerStateMostRecent == nil && peerStateMostRecentSuccess == nil && peerStateMostRecentCompleted == nil"];
 
-  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"IDSKTVerification" predicate:v8 error:a3];
+  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"IDSKTVerification" predicate:v8 error:verifications];
 }
 
-- (void)deleteNonRecentVerificationsForApplication:(id)a3 error:(id *)a4
+- (void)deleteNonRecentVerificationsForApplication:(id)application error:(id *)error
 {
-  v6 = [NSPredicate predicateWithFormat:@"application == %@ && peerStateFailure == nil && peerStateMostRecent == nil && peerStateMostRecentSuccess == nil && peerStateMostRecentCompleted == nil", a3];
-  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"IDSKTVerification" predicate:v6 error:a4];
+  application = [NSPredicate predicateWithFormat:@"application == %@ && peerStateFailure == nil && peerStateMostRecent == nil && peerStateMostRecentSuccess == nil && peerStateMostRecentCompleted == nil", application];
+  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"IDSKTVerification" predicate:application error:error];
 }
 
-- (BOOL)disableCacheHitsForUris:(id)a3 application:(id)a4 error:(id *)a5
+- (BOOL)disableCacheHitsForUris:(id)uris application:(id)application error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  urisCopy = uris;
+  applicationCopy = application;
   if (qword_10039C9E0 != -1)
   {
     sub_10025C820();
@@ -3065,7 +3065,7 @@ LABEL_30:
   if (os_log_type_enabled(qword_10039C9E8, OS_LOG_TYPE_INFO))
   {
     v11 = v10;
-    v12 = [v8 componentsJoinedByString:{@", "}];
+    v12 = [urisCopy componentsJoinedByString:{@", "}];
     *buf = 141558274;
     *&buf[4] = 1752392040;
     *&buf[12] = 2112;
@@ -3085,18 +3085,18 @@ LABEL_30:
   v21[3] = &unk_10031D0C8;
   v21[4] = self;
   v24 = buf;
-  v13 = v8;
+  v13 = urisCopy;
   v22 = v13;
-  v14 = v9;
+  v14 = applicationCopy;
   v23 = v14;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v21];
   v15 = *&buf[8];
-  if (a5)
+  if (error)
   {
     v16 = *(*&buf[8] + 40);
     if (v16)
     {
-      *a5 = v16;
+      *error = v16;
       v15 = *&buf[8];
     }
   }
@@ -3127,27 +3127,27 @@ LABEL_30:
   return v17 == 0;
 }
 
-- (unint64_t)countOutstandingVerificationsForApplication:(id)a3 error:(id *)a4
+- (unint64_t)countOutstandingVerificationsForApplication:(id)application error:(id *)error
 {
-  v6 = [NSPredicate predicateWithFormat:@"verificationResult == %d && application == %@", 2, a3];
-  v7 = [(TransparencyManagedDataStore *)self onMocCountEntity:@"IDSKTVerification" predicate:v6 error:a4];
+  application = [NSPredicate predicateWithFormat:@"verificationResult == %d && application == %@", 2, application];
+  v7 = [(TransparencyManagedDataStore *)self onMocCountEntity:@"IDSKTVerification" predicate:application error:error];
 
   return v7;
 }
 
-- (unint64_t)countTotalVerificationsForApplication:(id)a3 error:(id *)a4
+- (unint64_t)countTotalVerificationsForApplication:(id)application error:(id *)error
 {
-  v6 = [NSPredicate predicateWithFormat:@"application == %@", a3];
-  v7 = [(TransparencyManagedDataStore *)self onMocCountEntity:@"IDSKTVerification" predicate:v6 error:a4];
+  application = [NSPredicate predicateWithFormat:@"application == %@", application];
+  v7 = [(TransparencyManagedDataStore *)self onMocCountEntity:@"IDSKTVerification" predicate:application error:error];
 
   return v7;
 }
 
-- (BOOL)onMocLogVerificationMetricsForApplication:(id)a3 error:(id *)a4
+- (BOOL)onMocLogVerificationMetricsForApplication:(id)application error:(id *)error
 {
-  v6 = a3;
+  applicationCopy = application;
   v24 = 0;
-  v7 = [(TransparencyManagedDataStore *)self countOutstandingVerificationsForApplication:v6 error:&v24];
+  v7 = [(TransparencyManagedDataStore *)self countOutstandingVerificationsForApplication:applicationCopy error:&v24];
   v8 = v24;
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -3160,18 +3160,18 @@ LABEL_30:
     if (os_log_type_enabled(qword_10039C9E8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v26 = v6;
+      v26 = applicationCopy;
       v27 = 2112;
       v28 = v8;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "failed to get outstanding IDSKTVerifications for %@: %@", buf, 0x16u);
     }
 
     v10 = 0;
-    if (a4 && v8)
+    if (error && v8)
     {
       v11 = v8;
       v10 = 0;
-      *a4 = v8;
+      *error = v8;
     }
 
     v12 = v8;
@@ -3179,13 +3179,13 @@ LABEL_30:
 
   else
   {
-    v13 = [(TransparencyManagedDataStore *)self logger];
+    logger = [(TransparencyManagedDataStore *)self logger];
     v14 = [NSNumber numberWithUnsignedInteger:v7];
-    v15 = [TransparencyAnalytics formatEventName:@"PendVer" application:v6];
-    [v13 logMetric:v14 withName:v15];
+    v15 = [TransparencyAnalytics formatEventName:@"PendVer" application:applicationCopy];
+    [logger logMetric:v14 withName:v15];
 
     v23 = v8;
-    v16 = [(TransparencyManagedDataStore *)self countTotalVerificationsForApplication:v6 error:&v23];
+    v16 = [(TransparencyManagedDataStore *)self countTotalVerificationsForApplication:applicationCopy error:&v23];
     v12 = v23;
 
     if (v16 == 0x7FFFFFFFFFFFFFFFLL)
@@ -3199,27 +3199,27 @@ LABEL_30:
       if (os_log_type_enabled(qword_10039C9E8, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v26 = v6;
+        v26 = applicationCopy;
         v27 = 2112;
         v28 = v12;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "failed to get total IDSKTVerifications for %@: %@", buf, 0x16u);
       }
 
       v10 = 0;
-      if (a4 && v12)
+      if (error && v12)
       {
         v18 = v12;
         v10 = 0;
-        *a4 = v12;
+        *error = v12;
       }
     }
 
     else
     {
-      v19 = [(TransparencyManagedDataStore *)self logger];
+      logger2 = [(TransparencyManagedDataStore *)self logger];
       v20 = [NSNumber numberWithUnsignedInteger:v16];
-      v21 = [TransparencyAnalytics formatEventName:@"TotVer" application:v6];
-      [v19 logMetric:v20 withName:v21];
+      v21 = [TransparencyAnalytics formatEventName:@"TotVer" application:applicationCopy];
+      [logger2 logMetric:v20 withName:v21];
 
       v10 = 1;
     }
@@ -3228,34 +3228,34 @@ LABEL_30:
   return v10;
 }
 
-- (id)createRecordFromLoggableData:(id)a3 application:(id)a4
+- (id)createRecordFromLoggableData:(id)data application:(id)application
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TransparencyManagedDataStore *)self context];
-  v9 = [NSEntityDescription insertNewObjectForEntityForName:@"KTDeviceRecord" inManagedObjectContext:v8];
+  dataCopy = data;
+  applicationCopy = application;
+  context = [(TransparencyManagedDataStore *)self context];
+  v9 = [NSEntityDescription insertNewObjectForEntityForName:@"KTDeviceRecord" inManagedObjectContext:context];
 
   if (v9)
   {
-    v10 = [v6 deviceID];
-    [v9 setDeviceId:v10];
+    deviceID = [dataCopy deviceID];
+    [v9 setDeviceId:deviceID];
 
-    v14 = v6;
+    v14 = dataCopy;
     v11 = [NSArray arrayWithObjects:&v14 count:1];
     v12 = [TransparencyManagedDataStore serializeLoggableDatas:v11];
     [v9 setLoggableData:v12];
 
-    [v9 setApplication:v7];
+    [v9 setApplication:applicationCopy];
   }
 
   return v9;
 }
 
-- (BOOL)performAndWaitForDeviceId:(id)a3 application:(id)a4 error:(id *)a5 block:(id)a6
+- (BOOL)performAndWaitForDeviceId:(id)id application:(id)application error:(id *)error block:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  idCopy = id;
+  applicationCopy = application;
+  blockCopy = block;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -3270,22 +3270,22 @@ LABEL_30:
   v19[1] = 3221225472;
   v19[2] = sub_1001DD17C;
   v19[3] = &unk_100317DB8;
-  v13 = v10;
+  v13 = idCopy;
   v20 = v13;
-  v14 = v11;
+  v14 = applicationCopy;
   v21 = v14;
-  v22 = self;
+  selfCopy = self;
   v24 = &v26;
-  v15 = v12;
+  v15 = blockCopy;
   v23 = v15;
   v25 = &v32;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v19];
-  if (a5)
+  if (error)
   {
     v16 = v27[5];
     if (v16)
     {
-      *a5 = v16;
+      *error = v16;
     }
   }
 
@@ -3299,41 +3299,41 @@ LABEL_30:
 
 - (id)createRequest
 {
-  v2 = [(TransparencyManagedDataStore *)self context];
-  v3 = [NSEntityDescription insertNewObjectForEntityForName:@"KTRequest" inManagedObjectContext:v2];
+  context = [(TransparencyManagedDataStore *)self context];
+  v3 = [NSEntityDescription insertNewObjectForEntityForName:@"KTRequest" inManagedObjectContext:context];
 
   return v3;
 }
 
-- (id)createRequestWithUri:(id)a3 application:(id)a4 accountKey:(id)a5 serverData:(id)a6 syncedData:(id)a7 queryRequest:(id)a8 queryResponse:(id)a9 type:(unint64_t)a10 clientId:(id)a11 error:(id *)a12
+- (id)createRequestWithUri:(id)uri application:(id)application accountKey:(id)key serverData:(id)data syncedData:(id)syncedData queryRequest:(id)request queryResponse:(id)response type:(unint64_t)self0 clientId:(id)self1 error:(id *)self2
 {
-  v18 = a11;
-  v19 = a9;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = a3;
+  idCopy = id;
+  responseCopy = response;
+  requestCopy = request;
+  syncedDataCopy = syncedData;
+  dataCopy = data;
+  keyCopy = key;
+  applicationCopy = application;
+  uriCopy = uri;
   v26 = +[NSDate date];
   v27 = +[NSDate date];
-  v30 = [(TransparencyManagedDataStore *)self createRequestWithUri:v25 application:v24 accountKey:v23 serverData:v22 syncedData:v21 idsResponseTime:v26 queryRequest:v20 queryResponse:v19 responseDate:v27 type:a10 clientId:v18 error:a12];
+  v30 = [(TransparencyManagedDataStore *)self createRequestWithUri:uriCopy application:applicationCopy accountKey:keyCopy serverData:dataCopy syncedData:syncedDataCopy idsResponseTime:v26 queryRequest:requestCopy queryResponse:responseCopy responseDate:v27 type:type clientId:idCopy error:error];
 
   return v30;
 }
 
-- (id)createRequestWithUri:(id)a3 application:(id)a4 accountKey:(id)a5 serverData:(id)a6 syncedData:(id)a7 idsResponseTime:(id)a8 queryRequest:(id)a9 queryResponse:(id)a10 responseDate:(id)a11 type:(unint64_t)a12 clientId:(id)a13 error:(id *)a14
+- (id)createRequestWithUri:(id)uri application:(id)application accountKey:(id)key serverData:(id)data syncedData:(id)syncedData idsResponseTime:(id)time queryRequest:(id)request queryResponse:(id)self0 responseDate:(id)self1 type:(unint64_t)self2 clientId:(id)self3 error:(id *)self4
 {
-  v19 = a3;
-  v37 = a4;
-  v20 = a5;
-  v42 = a6;
-  v41 = a7;
-  v40 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a13;
+  uriCopy = uri;
+  applicationCopy = application;
+  keyCopy = key;
+  dataCopy = data;
+  syncedDataCopy = syncedData;
+  timeCopy = time;
+  requestCopy = request;
+  responseCopy = response;
+  dateCopy = date;
+  idCopy = id;
   v63 = 0;
   v64 = &v63;
   v65 = 0x3032000000;
@@ -3352,35 +3352,35 @@ LABEL_30:
   v43[3] = &unk_100327E70;
   v43[4] = self;
   v54 = &v57;
-  v36 = v19;
+  v36 = uriCopy;
   v44 = v36;
-  v38 = v37;
+  v38 = applicationCopy;
   v45 = v38;
-  v25 = v20;
+  v25 = keyCopy;
   v46 = v25;
-  v26 = v24;
+  v26 = idCopy;
   v47 = v26;
-  v27 = v21;
+  v27 = requestCopy;
   v48 = v27;
-  v28 = v22;
+  v28 = responseCopy;
   v49 = v28;
-  v29 = v23;
+  v29 = dateCopy;
   v50 = v29;
-  v30 = v40;
+  v30 = timeCopy;
   v51 = v30;
-  v31 = v41;
+  v31 = syncedDataCopy;
   v52 = v31;
-  v32 = v42;
+  v32 = dataCopy;
   v55 = &v63;
-  v56 = a12;
+  typeCopy = type;
   v53 = v32;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v43];
-  if (a14)
+  if (error)
   {
     v33 = v58[5];
     if (v33)
     {
-      *a14 = v33;
+      *error = v33;
     }
   }
 
@@ -3392,57 +3392,57 @@ LABEL_30:
   return v34;
 }
 
-- (id)requests:(id *)a3
+- (id)requests:(id *)requests
 {
   v5 = [NSFetchRequest fetchRequestWithEntityName:@"KTRequest"];
-  v6 = [(TransparencyManagedDataStore *)self context];
-  v7 = [v6 executeFetchRequest:v5 error:a3];
+  context = [(TransparencyManagedDataStore *)self context];
+  v7 = [context executeFetchRequest:v5 error:requests];
 
-  if (a3 && *a3)
+  if (requests && *requests)
   {
     [(TransparencyManagedDataStore *)self reportCoreDataEventForEntity:@"KTRequest" write:0 code:-128 underlyingError:?];
-    [TransparencyManagedDataStore cleanseError:a3];
+    [TransparencyManagedDataStore cleanseError:requests];
   }
 
   return v7;
 }
 
-- (unint64_t)requestCount:(id *)a3
+- (unint64_t)requestCount:(id *)count
 {
   v5 = [NSFetchRequest fetchRequestWithEntityName:@"KTRequest"];
-  v6 = [(TransparencyManagedDataStore *)self context];
-  v7 = [v6 countForFetchRequest:v5 error:a3];
+  context = [(TransparencyManagedDataStore *)self context];
+  v7 = [context countForFetchRequest:v5 error:count];
 
-  [TransparencyManagedDataStore cleanseError:a3];
+  [TransparencyManagedDataStore cleanseError:count];
   return v7;
 }
 
-- (id)fetchRequestForUUID:(id)a3 error:(id *)a4
+- (id)fetchRequestForUUID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v7 = [NSFetchRequest fetchRequestWithEntityName:@"KTRequestID"];
-  v8 = [NSPredicate predicateWithFormat:@"requestId == %@", v6];
-  [v7 setPredicate:v8];
+  dCopy = [NSPredicate predicateWithFormat:@"requestId == %@", dCopy];
+  [v7 setPredicate:dCopy];
 
   [v7 setRelationshipKeyPathsForPrefetching:&off_10033D850];
-  v9 = [(TransparencyManagedDataStore *)self context];
-  v10 = [v9 executeFetchRequest:v7 error:a4];
+  context = [(TransparencyManagedDataStore *)self context];
+  v10 = [context executeFetchRequest:v7 error:error];
 
-  [TransparencyManagedDataStore cleanseError:a4];
+  [TransparencyManagedDataStore cleanseError:error];
   if ([v10 count] == 1)
   {
     v11 = [v10 objectAtIndexedSubscript:0];
-    v12 = [v11 request];
+    request = [v11 request];
   }
 
   else
   {
     v13 = [v10 count];
-    if (a4 && v13 >= 2)
+    if (error && v13 >= 2)
     {
-      v14 = [TransparencyError errorWithDomain:kTransparencyErrorDatabase code:-57 underlyingError:*a4 description:@"Fetch returned too many requests for requestId = %@", v6];
-      *a4 = v14;
-      [(TransparencyManagedDataStore *)self reportCoreDataEventForEntity:@"KTRequestID" write:0 code:-57 underlyingError:v14];
+      dCopy2 = [TransparencyError errorWithDomain:kTransparencyErrorDatabase code:-57 underlyingError:*error description:@"Fetch returned too many requests for requestId = %@", dCopy];
+      *error = dCopy2;
+      [(TransparencyManagedDataStore *)self reportCoreDataEventForEntity:@"KTRequestID" write:0 code:-57 underlyingError:dCopy2];
       if (qword_10039CA00 != -1)
       {
         sub_10025C938();
@@ -3452,18 +3452,18 @@ LABEL_30:
       if (os_log_type_enabled(qword_10039CA08, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v21 = v6;
+        v21 = dCopy;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Fetch returned too many requests for requestId = %@", buf, 0xCu);
       }
     }
 
     v16 = [v10 count];
-    v12 = 0;
-    if (a4 && !v16)
+    request = 0;
+    if (error && !v16)
     {
-      v17 = [TransparencyError errorWithDomain:kTransparencyErrorDatabase code:-58 underlyingError:*a4 description:@"Fetch returned no requests for requestId = %@", v6];
-      *a4 = v17;
-      [(TransparencyManagedDataStore *)self reportCoreDataEventForEntity:@"KTRequestID" hardFailure:0 write:0 code:-58 underlyingError:v17];
+      dCopy3 = [TransparencyError errorWithDomain:kTransparencyErrorDatabase code:-58 underlyingError:*error description:@"Fetch returned no requests for requestId = %@", dCopy];
+      *error = dCopy3;
+      [(TransparencyManagedDataStore *)self reportCoreDataEventForEntity:@"KTRequestID" hardFailure:0 write:0 code:-58 underlyingError:dCopy3];
       if (qword_10039CA00 != -1)
       {
         sub_10025C94C();
@@ -3473,43 +3473,43 @@ LABEL_30:
       if (os_log_type_enabled(qword_10039CA08, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v21 = v6;
+        v21 = dCopy;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Fetch returned no requests for requestId = %@", buf, 0xCu);
       }
 
-      v12 = 0;
+      request = 0;
     }
   }
 
-  return v12;
+  return request;
 }
 
-- (id)fetchRequestsForURI:(id)a3 error:(id *)a4
+- (id)fetchRequestsForURI:(id)i error:(id *)error
 {
-  v6 = a3;
+  iCopy = i;
   v7 = [NSFetchRequest fetchRequestWithEntityName:@"KTRequest"];
-  v8 = [NSPredicate predicateWithFormat:@"uri == %@", v6];
+  iCopy = [NSPredicate predicateWithFormat:@"uri == %@", iCopy];
 
-  [v7 setPredicate:v8];
-  v9 = [(TransparencyManagedDataStore *)self context];
-  v10 = [v9 executeFetchRequest:v7 error:a4];
+  [v7 setPredicate:iCopy];
+  context = [(TransparencyManagedDataStore *)self context];
+  v10 = [context executeFetchRequest:v7 error:error];
 
-  [TransparencyManagedDataStore cleanseError:a4];
+  [TransparencyManagedDataStore cleanseError:error];
 
   return v10;
 }
 
-- (id)fetchRequestWithUri:(id)a3 application:(id)a4 accountKey:(id)a5 loggableDatas:(id)a6 youngerThan:(id)a7 error:(id *)a8
+- (id)fetchRequestWithUri:(id)uri application:(id)application accountKey:(id)key loggableDatas:(id)datas youngerThan:(id)than error:(id *)error
 {
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  thanCopy = than;
+  datasCopy = datas;
+  keyCopy = key;
+  applicationCopy = application;
+  uriCopy = uri;
   v19 = [NSFetchRequest fetchRequestWithEntityName:@"KTRequest"];
-  v20 = [NSPredicate predicateWithFormat:@"uri == %@ && application == %@ && accountKey == %@ && serverLoggableDatas == %@ && requestTime > %@", v18, v17, v16, v15, v14];
+  thanCopy = [NSPredicate predicateWithFormat:@"uri == %@ && application == %@ && accountKey == %@ && serverLoggableDatas == %@ && requestTime > %@", uriCopy, applicationCopy, keyCopy, datasCopy, thanCopy];
 
-  [v19 setPredicate:v20];
+  [v19 setPredicate:thanCopy];
   v21 = [NSSortDescriptor sortDescriptorWithKey:@"requestTime" ascending:0];
   v28 = v21;
   v22 = [NSArray arrayWithObjects:&v28 count:1];
@@ -3517,44 +3517,44 @@ LABEL_30:
 
   [v19 setFetchLimit:1];
   [v19 setPropertiesToFetch:&off_10033D868];
-  v23 = [(TransparencyManagedDataStore *)self context];
-  v24 = [v23 executeFetchRequest:v19 error:a8];
+  context = [(TransparencyManagedDataStore *)self context];
+  v24 = [context executeFetchRequest:v19 error:error];
 
-  [TransparencyManagedDataStore cleanseError:a8];
+  [TransparencyManagedDataStore cleanseError:error];
   if (v24 && [v24 count])
   {
     v25 = [v24 objectAtIndexedSubscript:0];
-    v26 = [v25 requestId];
+    requestId = [v25 requestId];
   }
 
   else
   {
-    v26 = 0;
+    requestId = 0;
   }
 
-  return v26;
+  return requestId;
 }
 
-- (void)performForRequestsWithPendingResponses:(id)a3 error:(id *)a4 block:(id)a5
+- (void)performForRequestsWithPendingResponses:(id)responses error:(id *)error block:(id)block
 {
-  v8 = a5;
-  v9 = [NSPredicate predicateWithFormat:@"verificationResult == %d && application == %@", 2, a3];
-  [(TransparencyManagedDataStore *)self performOnRequestsForPredicate:v9 enforceMax:1 error:a4 block:v8];
+  blockCopy = block;
+  responses = [NSPredicate predicateWithFormat:@"verificationResult == %d && application == %@", 2, responses];
+  [(TransparencyManagedDataStore *)self performOnRequestsForPredicate:responses enforceMax:1 error:error block:blockCopy];
 }
 
-- (id)fetchCompletedRequests:(id)a3 olderThan:(id)a4 error:(id *)a5
+- (id)fetchCompletedRequests:(id)requests olderThan:(id)than error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([(TransparencyManagedDataStore *)self persistWithError:a5])
+  requestsCopy = requests;
+  thanCopy = than;
+  if ([(TransparencyManagedDataStore *)self persistWithError:error])
   {
     v10 = [NSFetchRequest fetchRequestWithEntityName:@"KTRequest"];
     [v10 setReturnsDistinctResults:1];
-    v11 = [NSPredicate predicateWithFormat:@"requestTime < %@ && (verificationResult == %d || verificationResult == %d) && application == %@", v9, 1, 0, v8];
-    [v10 setPredicate:v11];
+    requestsCopy = [NSPredicate predicateWithFormat:@"requestTime < %@ && (verificationResult == %d || verificationResult == %d) && application == %@", thanCopy, 1, 0, requestsCopy];
+    [v10 setPredicate:requestsCopy];
 
-    v12 = [(TransparencyManagedDataStore *)self context];
-    v13 = [v12 executeFetchRequest:v10 error:a5];
+    context = [(TransparencyManagedDataStore *)self context];
+    v13 = [context executeFetchRequest:v10 error:error];
   }
 
   else
@@ -3570,9 +3570,9 @@ LABEL_30:
   v14 = qword_10039CA08;
   if (os_log_type_enabled(qword_10039CA08, OS_LOG_TYPE_ERROR))
   {
-    if (a5)
+    if (error)
     {
-      v15 = *a5;
+      v15 = *error;
     }
 
     else
@@ -3585,12 +3585,12 @@ LABEL_30:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "unable to read completed requests: %@", buf, 0xCu);
   }
 
-  [TransparencyManagedDataStore cleanseError:a5];
+  [TransparencyManagedDataStore cleanseError:error];
 
   return v13;
 }
 
-- (BOOL)populateExistingRequestsToLookupTable:(id *)a3
+- (BOOL)populateExistingRequestsToLookupTable:(id *)table
 {
   v5 = [NSPredicate predicateWithFormat:@"requestIDCache.@count == 0"];
   v12[0] = _NSConcreteStackBlock;
@@ -3598,10 +3598,10 @@ LABEL_30:
   v12[2] = sub_1001DEA0C;
   v12[3] = &unk_100327EF8;
   v12[4] = self;
-  [(TransparencyManagedDataStore *)self performOnBatchesOfEntity:@"KTRequest" predicate:v5 enforceMax:0 error:a3 block:v12];
-  if (a3 && *a3)
+  [(TransparencyManagedDataStore *)self performOnBatchesOfEntity:@"KTRequest" predicate:v5 enforceMax:0 error:table block:v12];
+  if (table && *table)
   {
-    v6 = *a3;
+    v6 = *table;
     [(TransparencyManagedDataStore *)self reportCoreDataEventForEntity:@"KTRequest" write:1 code:-200 underlyingError:v6];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
@@ -3622,23 +3622,23 @@ LABEL_30:
   return v8;
 }
 
-- (void)garbageCollectRequests:(id)a3 olderThan:(id)a4 error:(id *)a5
+- (void)garbageCollectRequests:(id)requests olderThan:(id)than error:(id *)error
 {
-  v8 = a3;
-  v9 = [NSPredicate predicateWithFormat:@"requestTime < %@ && (verificationResult == %d || verificationResult == %d || verificationResult == %d) && application == %@", a4, 1, 0, 3, v8];
-  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTRequest" predicate:v9 error:a5];
+  requestsCopy = requests;
+  requestsCopy = [NSPredicate predicateWithFormat:@"requestTime < %@ && (verificationResult == %d || verificationResult == %d || verificationResult == %d) && application == %@", than, 1, 0, 3, requestsCopy];
+  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTRequest" predicate:requestsCopy error:error];
   v10 = [NSDate dateWithTimeIntervalSinceNow:-kKTMaximumPendingRequestLifetime];
-  v11 = [NSPredicate predicateWithFormat:@"requestTime < %@ && application == %@", v10, v8];
+  requestsCopy2 = [NSPredicate predicateWithFormat:@"requestTime < %@ && application == %@", v10, requestsCopy];
 
-  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTRequest" predicate:v11 error:a5];
+  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTRequest" predicate:requestsCopy2 error:error];
 }
 
-- (BOOL)resetPendingRequests:(id)a3 error:(id *)a4
+- (BOOL)resetPendingRequests:(id)requests error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  requestsCopy = requests;
+  if (requestsCopy)
   {
-    [NSPredicate predicateWithFormat:@"application == %@ AND verificationResult == %d", v6, 2];
+    [NSPredicate predicateWithFormat:@"application == %@ AND verificationResult == %d", requestsCopy, 2];
   }
 
   else
@@ -3651,33 +3651,33 @@ LABEL_30:
   v11[2] = sub_1001DEE58;
   v11[3] = &unk_100327EF8;
   v11[4] = self;
-  [(TransparencyManagedDataStore *)self performOnRequestsForPredicate:v7 enforceMax:0 error:a4 block:v11];
-  v8 = !a4 || !*a4;
+  [(TransparencyManagedDataStore *)self performOnRequestsForPredicate:v7 enforceMax:0 error:error block:v11];
+  v8 = !error || !*error;
 
   return v8;
 }
 
-- (unint64_t)countOutstandingRequestsForApplication:(id)a3 error:(id *)a4
+- (unint64_t)countOutstandingRequestsForApplication:(id)application error:(id *)error
 {
-  v6 = [NSPredicate predicateWithFormat:@"verificationResult == %d && application == %@", 2, a3];
-  v7 = [(TransparencyManagedDataStore *)self onMocCountEntity:@"KTRequest" predicate:v6 error:a4];
+  application = [NSPredicate predicateWithFormat:@"verificationResult == %d && application == %@", 2, application];
+  v7 = [(TransparencyManagedDataStore *)self onMocCountEntity:@"KTRequest" predicate:application error:error];
 
   return v7;
 }
 
-- (unint64_t)countTotalRequestsForApplication:(id)a3 error:(id *)a4
+- (unint64_t)countTotalRequestsForApplication:(id)application error:(id *)error
 {
-  v6 = [NSPredicate predicateWithFormat:@"application == %@", a3];
-  v7 = [(TransparencyManagedDataStore *)self onMocCountEntity:@"KTRequest" predicate:v6 error:a4];
+  application = [NSPredicate predicateWithFormat:@"application == %@", application];
+  v7 = [(TransparencyManagedDataStore *)self onMocCountEntity:@"KTRequest" predicate:application error:error];
 
   return v7;
 }
 
-- (BOOL)logRequestMetricsForApplication:(id)a3 error:(id *)a4
+- (BOOL)logRequestMetricsForApplication:(id)application error:(id *)error
 {
-  v6 = a3;
+  applicationCopy = application;
   v24 = 0;
-  v7 = [(TransparencyManagedDataStore *)self countOutstandingRequestsForApplication:v6 error:&v24];
+  v7 = [(TransparencyManagedDataStore *)self countOutstandingRequestsForApplication:applicationCopy error:&v24];
   v8 = v24;
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -3690,18 +3690,18 @@ LABEL_30:
     if (os_log_type_enabled(qword_10039CA08, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v26 = v6;
+      v26 = applicationCopy;
       v27 = 2112;
       v28 = v8;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "failed to get outstanding requests for %@: %@", buf, 0x16u);
     }
 
     v10 = 0;
-    if (a4 && v8)
+    if (error && v8)
     {
       v11 = v8;
       v10 = 0;
-      *a4 = v8;
+      *error = v8;
     }
 
     v12 = v8;
@@ -3709,13 +3709,13 @@ LABEL_30:
 
   else
   {
-    v13 = [(TransparencyManagedDataStore *)self logger];
+    logger = [(TransparencyManagedDataStore *)self logger];
     v14 = [NSNumber numberWithUnsignedInteger:v7];
-    v15 = [TransparencyAnalytics formatEventName:@"OutstandingRequests" application:v6];
-    [v13 logMetric:v14 withName:v15];
+    v15 = [TransparencyAnalytics formatEventName:@"OutstandingRequests" application:applicationCopy];
+    [logger logMetric:v14 withName:v15];
 
     v23 = v8;
-    v16 = [(TransparencyManagedDataStore *)self countTotalRequestsForApplication:v6 error:&v23];
+    v16 = [(TransparencyManagedDataStore *)self countTotalRequestsForApplication:applicationCopy error:&v23];
     v12 = v23;
 
     if (v16 == 0x7FFFFFFFFFFFFFFFLL)
@@ -3729,27 +3729,27 @@ LABEL_30:
       if (os_log_type_enabled(qword_10039CA08, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v26 = v6;
+        v26 = applicationCopy;
         v27 = 2112;
         v28 = v12;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "failed to get total requests for %@: %@", buf, 0x16u);
       }
 
       v10 = 0;
-      if (a4 && v12)
+      if (error && v12)
       {
         v18 = v12;
         v10 = 0;
-        *a4 = v12;
+        *error = v12;
       }
     }
 
     else
     {
-      v19 = [(TransparencyManagedDataStore *)self logger];
+      logger2 = [(TransparencyManagedDataStore *)self logger];
       v20 = [NSNumber numberWithUnsignedInteger:v16];
-      v21 = [TransparencyAnalytics formatEventName:@"TotalRequests" application:v6];
-      [v19 logMetric:v20 withName:v21];
+      v21 = [TransparencyAnalytics formatEventName:@"TotalRequests" application:applicationCopy];
+      [logger2 logMetric:v20 withName:v21];
 
       v10 = 1;
     }
@@ -3758,10 +3758,10 @@ LABEL_30:
   return v10;
 }
 
-- (BOOL)performAndWaitForRequestId:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)performAndWaitForRequestId:(id)id error:(id *)error block:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  idCopy = id;
+  blockCopy = block;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -3777,19 +3777,19 @@ LABEL_30:
   v15[2] = sub_1001DF624;
   v15[3] = &unk_100327500;
   v15[4] = self;
-  v10 = v8;
+  v10 = idCopy;
   v16 = v10;
   v18 = &v20;
-  v11 = v9;
+  v11 = blockCopy;
   v17 = v11;
   v19 = &v26;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v15];
-  if (a4)
+  if (error)
   {
     v12 = v21[5];
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -3801,160 +3801,160 @@ LABEL_30:
   return v13;
 }
 
-- (void)performAndWaitForLatestSelfRequest:(id)a3 accountKey:(id)a4 block:(id)a5
+- (void)performAndWaitForLatestSelfRequest:(id)request accountKey:(id)key block:(id)block
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1001DF7C4;
   v11[3] = &unk_100327F80;
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  v15 = a5;
-  v8 = v15;
-  v9 = v13;
-  v10 = v12;
+  requestCopy = request;
+  keyCopy = key;
+  selfCopy = self;
+  blockCopy = block;
+  v8 = blockCopy;
+  v9 = keyCopy;
+  v10 = requestCopy;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v11];
 }
 
-- (id)requestFailures:(id *)a3
+- (id)requestFailures:(id *)failures
 {
   v5 = [NSFetchRequest fetchRequestWithEntityName:@"KTRequestFailure"];
-  v6 = [(TransparencyManagedDataStore *)self context];
-  v7 = [v6 executeFetchRequest:v5 error:a3];
+  context = [(TransparencyManagedDataStore *)self context];
+  v7 = [context executeFetchRequest:v5 error:failures];
 
-  if (a3 && *a3)
+  if (failures && *failures)
   {
     [(TransparencyManagedDataStore *)self reportCoreDataEventForEntity:@"KTRequestFailure" write:0 code:-128 underlyingError:?];
-    [TransparencyManagedDataStore cleanseError:a3];
+    [TransparencyManagedDataStore cleanseError:failures];
   }
 
   return v7;
 }
 
-- (unint64_t)requestFailureCount:(id *)a3
+- (unint64_t)requestFailureCount:(id *)count
 {
   v5 = [NSFetchRequest fetchRequestWithEntityName:@"KTRequestFailure"];
-  v6 = [(TransparencyManagedDataStore *)self context];
-  v7 = [v6 countForFetchRequest:v5 error:a3];
+  context = [(TransparencyManagedDataStore *)self context];
+  v7 = [context countForFetchRequest:v5 error:count];
 
-  [TransparencyManagedDataStore cleanseError:a3];
+  [TransparencyManagedDataStore cleanseError:count];
   return v7;
 }
 
-- (void)createKTRequestID:(id)a3 request:(id)a4
+- (void)createKTRequestID:(id)d request:(id)request
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TransparencyManagedDataStore *)self context];
-  v9 = [NSEntityDescription insertNewObjectForEntityForName:@"KTRequestID" inManagedObjectContext:v8];
+  requestCopy = request;
+  dCopy = d;
+  context = [(TransparencyManagedDataStore *)self context];
+  v9 = [NSEntityDescription insertNewObjectForEntityForName:@"KTRequestID" inManagedObjectContext:context];
 
-  [v9 setRequestId:v7];
-  [v9 setRequest:v6];
+  [v9 setRequestId:dCopy];
+  [v9 setRequest:requestCopy];
 }
 
-- (void)createIDSVerificationID:(id)a3 verification:(id)a4
+- (void)createIDSVerificationID:(id)d verification:(id)verification
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TransparencyManagedDataStore *)self context];
-  v9 = [NSEntityDescription insertNewObjectForEntityForName:@"KTRequestID" inManagedObjectContext:v8];
+  verificationCopy = verification;
+  dCopy = d;
+  context = [(TransparencyManagedDataStore *)self context];
+  v9 = [NSEntityDescription insertNewObjectForEntityForName:@"KTRequestID" inManagedObjectContext:context];
 
-  [v9 setRequestId:v7];
-  [v9 setIdsKTVerification:v6];
+  [v9 setRequestId:dCopy];
+  [v9 setIdsKTVerification:verificationCopy];
 }
 
-- (id)requestIds:(id *)a3
+- (id)requestIds:(id *)ids
 {
   v5 = [NSFetchRequest fetchRequestWithEntityName:@"KTRequestID"];
-  v6 = [(TransparencyManagedDataStore *)self context];
-  v7 = [v6 executeFetchRequest:v5 error:a3];
+  context = [(TransparencyManagedDataStore *)self context];
+  v7 = [context executeFetchRequest:v5 error:ids];
 
-  if (a3 && *a3)
+  if (ids && *ids)
   {
     [(TransparencyManagedDataStore *)self reportCoreDataEventForEntity:@"KTRequestID" write:0 code:-128 underlyingError:?];
-    [TransparencyManagedDataStore cleanseError:a3];
+    [TransparencyManagedDataStore cleanseError:ids];
   }
 
   return v7;
 }
 
-- (id)createMutation:(id)a3 application:(id)a4 uri:(id)a5 mutationMs:(unint64_t)a6 spkiHash:(id)a7 receiptTime:(id)a8
+- (id)createMutation:(id)mutation application:(id)application uri:(id)uri mutationMs:(unint64_t)ms spkiHash:(id)hash receiptTime:(id)time
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = [(TransparencyManagedDataStore *)self context];
-  v20 = [NSEntityDescription insertNewObjectForEntityForName:@"KTMutation" inManagedObjectContext:v19];
+  mutationCopy = mutation;
+  applicationCopy = application;
+  uriCopy = uri;
+  hashCopy = hash;
+  timeCopy = time;
+  context = [(TransparencyManagedDataStore *)self context];
+  v20 = [NSEntityDescription insertNewObjectForEntityForName:@"KTMutation" inManagedObjectContext:context];
 
   if (v20)
   {
-    [v20 setSmt:v14];
-    [v20 setUnsigned:"mutationMs" value:a6];
-    [v20 setReceiptTime:v18];
-    [v20 setApplication:v15];
-    [v20 setUri:v16];
-    [v20 setSpkiHash:v17];
+    [v20 setSmt:mutationCopy];
+    [v20 setUnsigned:"mutationMs" value:ms];
+    [v20 setReceiptTime:timeCopy];
+    [v20 setApplication:applicationCopy];
+    [v20 setUri:uriCopy];
+    [v20 setSpkiHash:hashCopy];
   }
 
   return v20;
 }
 
-- (id)signedMutationTimestamps:(id *)a3
+- (id)signedMutationTimestamps:(id *)timestamps
 {
   v5 = +[KTMutation fetchRequest];
-  v6 = [(TransparencyManagedDataStore *)self context];
-  v7 = [v6 executeFetchRequest:v5 error:a3];
+  context = [(TransparencyManagedDataStore *)self context];
+  v7 = [context executeFetchRequest:v5 error:timestamps];
 
-  if (a3 && *a3)
+  if (timestamps && *timestamps)
   {
     [(TransparencyManagedDataStore *)self reportCoreDataEventForEntity:@"KTMutation" write:0 code:-128 underlyingError:?];
-    [TransparencyManagedDataStore cleanseError:a3];
+    [TransparencyManagedDataStore cleanseError:timestamps];
   }
 
   return v7;
 }
 
-- (unint64_t)signedMutationTimestampCount:(id *)a3
+- (unint64_t)signedMutationTimestampCount:(id *)count
 {
   v5 = +[KTMutation fetchRequest];
-  v6 = [(TransparencyManagedDataStore *)self context];
-  v7 = [v6 countForFetchRequest:v5 error:a3];
+  context = [(TransparencyManagedDataStore *)self context];
+  v7 = [context countForFetchRequest:v5 error:count];
 
-  [TransparencyManagedDataStore cleanseError:a3];
+  [TransparencyManagedDataStore cleanseError:count];
   return v7;
 }
 
-- (void)performForSMTsWithUnverifiedSignature:(id)a3 error:(id *)a4 block:(id)a5
+- (void)performForSMTsWithUnverifiedSignature:(id)signature error:(id *)error block:(id)block
 {
-  v8 = a5;
-  v9 = [NSPredicate predicateWithFormat:@"signatureResult == %d && mergeResult == %d && application == %@", 2, 2, a3];
-  [(TransparencyManagedDataStore *)self performOnBatchesOfEntity:@"KTMutation" predicate:v9 enforceMax:0 error:a4 block:v8];
+  blockCopy = block;
+  signature = [NSPredicate predicateWithFormat:@"signatureResult == %d && mergeResult == %d && application == %@", 2, 2, signature];
+  [(TransparencyManagedDataStore *)self performOnBatchesOfEntity:@"KTMutation" predicate:signature enforceMax:0 error:error block:blockCopy];
 }
 
-- (unint64_t)countOutstandingSMTsForApplication:(id)a3 error:(id *)a4
+- (unint64_t)countOutstandingSMTsForApplication:(id)application error:(id *)error
 {
-  v6 = [NSPredicate predicateWithFormat:@"(signatureResult == %d || mergeResult == %d) && application == %@", 2, 2, a3];
-  v7 = [(TransparencyManagedDataStore *)self onMocCountEntity:@"KTMutation" predicate:v6 error:a4];
-
-  return v7;
-}
-
-- (unint64_t)countTotalSMTsForApplication:(id)a3 error:(id *)a4
-{
-  v6 = [NSPredicate predicateWithFormat:@"application == %@", a3];
-  v7 = [(TransparencyManagedDataStore *)self onMocCountEntity:@"KTMutation" predicate:v6 error:a4];
+  application = [NSPredicate predicateWithFormat:@"(signatureResult == %d || mergeResult == %d) && application == %@", 2, 2, application];
+  v7 = [(TransparencyManagedDataStore *)self onMocCountEntity:@"KTMutation" predicate:application error:error];
 
   return v7;
 }
 
-- (BOOL)logSMTMetricsForApplication:(id)a3 error:(id *)a4
+- (unint64_t)countTotalSMTsForApplication:(id)application error:(id *)error
 {
-  v6 = a3;
+  application = [NSPredicate predicateWithFormat:@"application == %@", application];
+  v7 = [(TransparencyManagedDataStore *)self onMocCountEntity:@"KTMutation" predicate:application error:error];
+
+  return v7;
+}
+
+- (BOOL)logSMTMetricsForApplication:(id)application error:(id *)error
+{
+  applicationCopy = application;
   v24 = 0;
-  v7 = [(TransparencyManagedDataStore *)self countOutstandingSMTsForApplication:v6 error:&v24];
+  v7 = [(TransparencyManagedDataStore *)self countOutstandingSMTsForApplication:applicationCopy error:&v24];
   v8 = v24;
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -3967,18 +3967,18 @@ LABEL_30:
     if (os_log_type_enabled(qword_10039CA18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v26 = v6;
+      v26 = applicationCopy;
       v27 = 2112;
       v28 = v8;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "failed to get outstanding SMTs for %@: %@", buf, 0x16u);
     }
 
     v10 = 0;
-    if (a4 && v8)
+    if (error && v8)
     {
       v11 = v8;
       v10 = 0;
-      *a4 = v8;
+      *error = v8;
     }
 
     v12 = v8;
@@ -3986,13 +3986,13 @@ LABEL_30:
 
   else
   {
-    v13 = [(TransparencyManagedDataStore *)self logger];
+    logger = [(TransparencyManagedDataStore *)self logger];
     v14 = [NSNumber numberWithUnsignedInteger:v7];
-    v15 = [TransparencyAnalytics formatEventName:@"OutstandingSMTs" application:v6];
-    [v13 logMetric:v14 withName:v15];
+    v15 = [TransparencyAnalytics formatEventName:@"OutstandingSMTs" application:applicationCopy];
+    [logger logMetric:v14 withName:v15];
 
     v23 = v8;
-    v16 = [(TransparencyManagedDataStore *)self countTotalSMTsForApplication:v6 error:&v23];
+    v16 = [(TransparencyManagedDataStore *)self countTotalSMTsForApplication:applicationCopy error:&v23];
     v12 = v23;
 
     if (v16 == 0x7FFFFFFFFFFFFFFFLL)
@@ -4006,27 +4006,27 @@ LABEL_30:
       if (os_log_type_enabled(qword_10039CA18, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v26 = v6;
+        v26 = applicationCopy;
         v27 = 2112;
         v28 = v12;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "failed to get total SMTs for %@: %@", buf, 0x16u);
       }
 
       v10 = 0;
-      if (a4 && v12)
+      if (error && v12)
       {
         v18 = v12;
         v10 = 0;
-        *a4 = v12;
+        *error = v12;
       }
     }
 
     else
     {
-      v19 = [(TransparencyManagedDataStore *)self logger];
+      logger2 = [(TransparencyManagedDataStore *)self logger];
       v20 = [NSNumber numberWithUnsignedInteger:v16];
-      v21 = [TransparencyAnalytics formatEventName:@"TotalSMTs" application:v6];
-      [v19 logMetric:v20 withName:v21];
+      v21 = [TransparencyAnalytics formatEventName:@"TotalSMTs" application:applicationCopy];
+      [logger2 logMetric:v20 withName:v21];
 
       v10 = 1;
     }
@@ -4035,7 +4035,7 @@ LABEL_30:
   return v10;
 }
 
-- (void)garbageCollectSMTs:(id *)a3
+- (void)garbageCollectSMTs:(id *)ts
 {
   if (qword_10039CA10 != -1)
   {
@@ -4052,7 +4052,7 @@ LABEL_30:
   v6 = [NSDate dateWithTimeIntervalSinceNow:-kKTMaximumPendingRequestLifetime];
   v7 = [NSPredicate predicateWithFormat:@"receiptTime < %@", v6];
 
-  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTMutation" predicate:v7 error:a3];
+  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTMutation" predicate:v7 error:ts];
   if (qword_10039CA10 != -1)
   {
     sub_10025CA50();
@@ -4068,14 +4068,14 @@ LABEL_30:
   v9 = [NSDate dateWithTimeIntervalSinceNow:-kKTMaximumCompletedRequestLifetime];
   v10 = [NSPredicate predicateWithFormat:@"receiptTime < %@ && signatureResult == %d && mergeResult == %d", v9, 1, 1];
 
-  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTMutation" predicate:v10 error:a3];
+  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTMutation" predicate:v10 error:ts];
 }
 
-- (BOOL)performForPendingSMTs:(id)a3 uri:(id)a4 error:(id *)a5 batchSize:(unint64_t)a6 block:(id)a7
+- (BOOL)performForPendingSMTs:(id)ts uri:(id)uri error:(id *)error batchSize:(unint64_t)size block:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  tsCopy = ts;
+  uriCopy = uri;
+  blockCopy = block;
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
@@ -4092,21 +4092,21 @@ LABEL_30:
   v23[3] = &unk_100328028;
   v23[4] = self;
   v27 = &v30;
-  v15 = v13;
+  v15 = uriCopy;
   v24 = v15;
-  v16 = v12;
+  v16 = tsCopy;
   v25 = v16;
-  v29 = a6;
-  v17 = v14;
+  sizeCopy = size;
+  v17 = blockCopy;
   v26 = v17;
   v28 = &v36;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v23];
-  if (a5)
+  if (error)
   {
     v18 = v31[5];
     if (v18)
     {
-      *a5 = v18;
+      *error = v18;
     }
   }
 
@@ -4140,7 +4140,7 @@ LABEL_30:
   return v19 & 1;
 }
 
-- (id)getPendingSmtUris:(id)a3 fetchLimit:(unint64_t)a4 error:(id *)a5
+- (id)getPendingSmtUris:(id)uris fetchLimit:(unint64_t)limit error:(id *)error
 {
   v23 = 0;
   v24 = &v23;
@@ -4158,19 +4158,19 @@ LABEL_30:
   v11[1] = 3221225472;
   v11[2] = sub_1001E0D7C;
   v11[3] = &unk_100327C80;
-  v12 = self;
+  selfCopy = self;
   v14 = &v17;
-  v7 = a3;
+  urisCopy = uris;
   v15 = &v23;
-  v16 = a4;
-  v13 = v7;
-  [(TransparencyManagedDataStore *)v12 performBlockAndWait:v11];
-  if (a5)
+  limitCopy = limit;
+  v13 = urisCopy;
+  [(TransparencyManagedDataStore *)selfCopy performBlockAndWait:v11];
+  if (error)
   {
     v8 = v18[5];
     if (v8)
     {
-      *a5 = v8;
+      *error = v8;
     }
   }
 
@@ -4182,10 +4182,10 @@ LABEL_30:
   return v9;
 }
 
-- (BOOL)deleteSMTsWithSPKINotIn:(id)a3 application:(id)a4 error:(id *)a5
+- (BOOL)deleteSMTsWithSPKINotIn:(id)in application:(id)application error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  inCopy = in;
+  applicationCopy = application;
   if (qword_10039CA10 != -1)
   {
     sub_10025CAA0();
@@ -4195,68 +4195,68 @@ LABEL_30:
   if (os_log_type_enabled(qword_10039CA18, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v15 = v9;
+    v15 = applicationCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Deleting %@ SMTs with old SPKI hashes", buf, 0xCu);
   }
 
-  v11 = [NSPredicate predicateWithFormat:@"application == %@ && (NOT spkiHash IN %@ || spkiHash == nil)", v9, v8];
-  v12 = [(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTMutation" predicate:v11 error:a5];
+  inCopy = [NSPredicate predicateWithFormat:@"application == %@ && (NOT spkiHash IN %@ || spkiHash == nil)", applicationCopy, inCopy];
+  v12 = [(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTMutation" predicate:inCopy error:error];
 
   return v12;
 }
 
 - (id)createSignedMutationTimestampsFailure
 {
-  v2 = [(TransparencyManagedDataStore *)self context];
-  v3 = [NSEntityDescription insertNewObjectForEntityForName:@"KTSMTFailure" inManagedObjectContext:v2];
+  context = [(TransparencyManagedDataStore *)self context];
+  v3 = [NSEntityDescription insertNewObjectForEntityForName:@"KTSMTFailure" inManagedObjectContext:context];
 
   return v3;
 }
 
-- (id)signedMutationTimestampsFailures:(id *)a3
+- (id)signedMutationTimestampsFailures:(id *)failures
 {
   v5 = [NSFetchRequest fetchRequestWithEntityName:@"KTSMTFailure"];
-  v6 = [(TransparencyManagedDataStore *)self context];
-  v7 = [v6 executeFetchRequest:v5 error:a3];
+  context = [(TransparencyManagedDataStore *)self context];
+  v7 = [context executeFetchRequest:v5 error:failures];
 
-  if (a3 && *a3)
+  if (failures && *failures)
   {
     [(TransparencyManagedDataStore *)self reportCoreDataEventForEntity:@"KTSMTFailure" write:0 code:-128 underlyingError:?];
-    [TransparencyManagedDataStore cleanseError:a3];
+    [TransparencyManagedDataStore cleanseError:failures];
   }
 
   return v7;
 }
 
-- (unint64_t)signedMutationTimestampsFailureCount:(id *)a3
+- (unint64_t)signedMutationTimestampsFailureCount:(id *)count
 {
   v5 = [NSFetchRequest fetchRequestWithEntityName:@"KTSMTFailure"];
-  v6 = [(TransparencyManagedDataStore *)self context];
-  v7 = [v6 countForFetchRequest:v5 error:a3];
+  context = [(TransparencyManagedDataStore *)self context];
+  v7 = [context countForFetchRequest:v5 error:count];
 
-  [TransparencyManagedDataStore cleanseError:a3];
+  [TransparencyManagedDataStore cleanseError:count];
   return v7;
 }
 
-+ (id)serializeNSError:(id)a3
++ (id)serializeNSError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
-  v9 = v3;
-  v5 = v3;
+  v9 = errorCopy;
+  v5 = errorCopy;
   [TransparencyManagedDataStore cleanseError:&v9];
   v6 = v9;
 
   [v4 encodeObject:v6 forKey:@"error"];
-  v7 = [v4 encodedData];
+  encodedData = [v4 encodedData];
 
-  return v7;
+  return encodedData;
 }
 
-+ (id)deserializeNSError:(id)a3 error:(id *)a4
++ (id)deserializeNSError:(id)error error:(id *)a4
 {
-  v5 = a3;
-  v6 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v5 error:a4];
+  errorCopy = error;
+  v6 = [[NSKeyedUnarchiver alloc] initForReadingFromData:errorCopy error:a4];
 
   v7 = [NSSet setWithObjects:objc_opt_class(), 0];
   [v6 _enableStrictSecureDecodingMode];
@@ -4265,12 +4265,12 @@ LABEL_30:
   return v8;
 }
 
-- (id)createFailureEvent:(id)a3 application:(id)a4 optInServer:(id)a5
+- (id)createFailureEvent:(id)event application:(id)application optInServer:(id)server
 {
-  v8 = a3;
-  v9 = a4;
+  eventCopy = event;
+  applicationCopy = application;
   v19 = 0;
-  v10 = [a5 getAggregateOptInState:&v19];
+  v10 = [server getAggregateOptInState:&v19];
   v11 = v19;
   if (!v10)
   {
@@ -4297,19 +4297,19 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v12 = [(TransparencyManagedDataStore *)self context];
-  v13 = [NSEntityDescription insertNewObjectForEntityForName:@"KTFailureEvent" inManagedObjectContext:v12];
+  context = [(TransparencyManagedDataStore *)self context];
+  v13 = [NSEntityDescription insertNewObjectForEntityForName:@"KTFailureEvent" inManagedObjectContext:context];
 
   if (v13)
   {
-    [v13 setApplication:v9];
+    [v13 setApplication:applicationCopy];
     v14 = +[NSUUID UUID];
     [v13 setEventId:v14];
 
     v15 = +[NSDate date];
     [v13 setFailureTime:v15];
 
-    v16 = [TransparencyManagedDataStore serializeNSError:v8];
+    v16 = [TransparencyManagedDataStore serializeNSError:eventCopy];
     [v13 setEncodedError:v16];
   }
 
@@ -4318,7 +4318,7 @@ LABEL_10:
   return v13;
 }
 
-- (id)fetchRecentFailureEvents:(id)a3 fetchLimit:(unint64_t)a4 error:(id *)a5
+- (id)fetchRecentFailureEvents:(id)events fetchLimit:(unint64_t)limit error:(id *)error
 {
   v23 = 0;
   v24 = &v23;
@@ -4336,19 +4336,19 @@ LABEL_10:
   v11[1] = 3221225472;
   v11[2] = sub_100214C4C;
   v11[3] = &unk_100327C80;
-  v12 = self;
+  selfCopy = self;
   v14 = &v17;
-  v7 = a3;
+  eventsCopy = events;
   v15 = &v23;
-  v16 = a4;
-  v13 = v7;
-  [(TransparencyManagedDataStore *)v12 performBlockAndWait:v11];
-  if (a5)
+  limitCopy = limit;
+  v13 = eventsCopy;
+  [(TransparencyManagedDataStore *)selfCopy performBlockAndWait:v11];
+  if (error)
   {
     v8 = v18[5];
     if (v8)
     {
-      *a5 = v8;
+      *error = v8;
     }
   }
 
@@ -4360,24 +4360,24 @@ LABEL_10:
   return v9;
 }
 
-- (void)errorsForFailedEvents:(id)a3 completionBlock:(id)a4
+- (void)errorsForFailedEvents:(id)events completionBlock:(id)block
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1002150E8;
   v8[3] = &unk_10032A8F0;
-  v9 = a3;
-  v10 = a4;
+  eventsCopy = events;
+  blockCopy = block;
   v8[4] = self;
-  v6 = v9;
-  v7 = v10;
+  v6 = eventsCopy;
+  v7 = blockCopy;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v8];
 }
 
-- (BOOL)performAndWaitForFailedEventId:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)performAndWaitForFailedEventId:(id)id error:(id *)error block:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  idCopy = id;
+  blockCopy = block;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -4392,20 +4392,20 @@ LABEL_10:
   v15[1] = 3221225472;
   v15[2] = sub_100215838;
   v15[3] = &unk_100327500;
-  v10 = v8;
+  v10 = idCopy;
   v16 = v10;
-  v17 = self;
+  selfCopy = self;
   v19 = &v21;
-  v11 = v9;
+  v11 = blockCopy;
   v18 = v11;
   v20 = &v27;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v15];
-  if (a4)
+  if (error)
   {
     v12 = v22[5];
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -4417,13 +4417,13 @@ LABEL_10:
   return v13;
 }
 
-- (BOOL)clearAllFailureEvents:(id)a3 error:(id *)a4
+- (BOOL)clearAllFailureEvents:(id)events error:(id *)error
 {
-  v6 = [NSPredicate predicateWithFormat:@"application == %@", a3];
-  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTFailureEvent" predicate:v6 error:a4];
-  if (a4 && *a4)
+  events = [NSPredicate predicateWithFormat:@"application == %@", events];
+  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTFailureEvent" predicate:events error:error];
+  if (error && *error)
   {
-    v7 = *a4;
+    v7 = *error;
     [(TransparencyManagedDataStore *)self reportCoreDataEventForEntity:@"KTFailureEvent" write:1 code:-171 underlyingError:v7];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
@@ -4444,34 +4444,34 @@ LABEL_10:
   return v9;
 }
 
-- (void)clearFailureEvents:(id)a3 completionBlock:(id)a4
+- (void)clearFailureEvents:(id)events completionBlock:(id)block
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100215D94;
   v8[3] = &unk_10032A8F0;
-  v9 = a3;
-  v10 = a4;
+  eventsCopy = events;
+  blockCopy = block;
   v8[4] = self;
-  v6 = v9;
-  v7 = v10;
+  v6 = eventsCopy;
+  v7 = blockCopy;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v8];
 }
 
-- (BOOL)clearSelfFailureRelatedData:(id)a3 uri:(id)a4 error:(id *)a5
+- (BOOL)clearSelfFailureRelatedData:(id)data uri:(id)uri error:(id *)error
 {
-  v8 = a4;
-  v9 = [NSPredicate predicateWithFormat:@"request.uri == %@ AND application == %@ AND request.type == %lld", v8, a3, 1];
-  if (![(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTFailureEvent" predicate:v9 error:a5])
+  uriCopy = uri;
+  v9 = [NSPredicate predicateWithFormat:@"request.uri == %@ AND application == %@ AND request.type == %lld", uriCopy, data, 1];
+  if (![(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTFailureEvent" predicate:v9 error:error])
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_19;
     }
 
-    if (*a5)
+    if (*error)
     {
-      v10 = *a5;
+      v10 = *error;
       [(TransparencyManagedDataStore *)self reportCoreDataEventForEntity:@"KTFailureEvent" write:1 code:-310 underlyingError:v10];
       if (qword_10039CCB8 != -1)
       {
@@ -4485,7 +4485,7 @@ LABEL_10:
       }
 
       *buf = 138412546;
-      v15 = v8;
+      v15 = uriCopy;
       v16 = 2112;
       v17 = v10;
       v12 = "failed to clear self-validation failure events for uri %@: %@";
@@ -4493,20 +4493,20 @@ LABEL_10:
     }
 
 LABEL_18:
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_19;
   }
 
-  if (![(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTDeviceRecord" predicate:v9 error:a5])
+  if (![(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTDeviceRecord" predicate:v9 error:error])
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_19;
     }
 
-    if (*a5)
+    if (*error)
     {
-      v10 = *a5;
+      v10 = *error;
       [(TransparencyManagedDataStore *)self reportCoreDataEventForEntity:@"KTDeviceRecord" write:1 code:-310 underlyingError:v10];
       if (qword_10039CCB8 != -1)
       {
@@ -4520,7 +4520,7 @@ LABEL_18:
       }
 
       *buf = 138412546;
-      v15 = v8;
+      v15 = uriCopy;
       v16 = 2112;
       v17 = v10;
       v12 = "failed to clear outdated device records for uri %@: %@";
@@ -4534,24 +4534,24 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  LOBYTE(a5) = 1;
+  LOBYTE(error) = 1;
 LABEL_19:
 
-  return a5;
+  return error;
 }
 
-- (BOOL)clearSelfValidationFollowups:(id)a3 uri:(id)a4 error:(id *)a5
+- (BOOL)clearSelfValidationFollowups:(id)followups uri:(id)uri error:(id *)error
 {
-  v27 = a3;
-  v7 = a4;
-  v8 = [(TransparencyManagedDataStore *)self followup];
-  v9 = [v8 getPendingFollowups];
+  followupsCopy = followups;
+  uriCopy = uri;
+  followup = [(TransparencyManagedDataStore *)self followup];
+  getPendingFollowups = [followup getPendingFollowups];
 
-  if ([v9 count])
+  if ([getPendingFollowups count])
   {
-    v26 = [NSPredicate predicateWithFormat:@"eventId in %@ AND application == %@ AND request.type == %lld AND request.uri == %@", v9, v27, 1, v7];
+    uriCopy = [NSPredicate predicateWithFormat:@"eventId in %@ AND application == %@ AND request.type == %lld AND request.uri == %@", getPendingFollowups, followupsCopy, 1, uriCopy];
     v10 = +[KTFailureEvent fetchRequest];
-    [v10 setPredicate:v26];
+    [v10 setPredicate:uriCopy];
     [v10 setPropertiesToFetch:&off_10033D8E0];
     [v10 setReturnsDistinctResults:1];
     [v10 setResultType:2];
@@ -4589,7 +4589,7 @@ LABEL_19:
       {
         v13 = v38[5];
         *buf = 138543618;
-        v51 = v9;
+        v51 = getPendingFollowups;
         v52 = 2112;
         v53 = v13;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "failed to fetch self-request eventIds: %{public}@ : %@", buf, 0x16u);
@@ -4609,8 +4609,8 @@ LABEL_19:
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v17 = [v44[5] reverseObjectEnumerator];
-      v18 = [v17 countByEnumeratingWithState:&v28 objects:v49 count:16];
+      reverseObjectEnumerator = [v44[5] reverseObjectEnumerator];
+      v18 = [reverseObjectEnumerator countByEnumeratingWithState:&v28 objects:v49 count:16];
       if (v18)
       {
         v19 = *v29;
@@ -4620,14 +4620,14 @@ LABEL_19:
           {
             if (*v29 != v19)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             v21 = [*(*(&v28 + 1) + 8 * i) objectForKeyedSubscript:@"eventId"];
             [v16 addObject:v21];
           }
 
-          v18 = [v17 countByEnumeratingWithState:&v28 objects:v49 count:16];
+          v18 = [reverseObjectEnumerator countByEnumeratingWithState:&v28 objects:v49 count:16];
         }
 
         while (v18);
@@ -4640,7 +4640,7 @@ LABEL_19:
     }
 
     v22 = +[TransparencyFollowup instance];
-    v23 = [v22 clearFollowups:v16 error:a5];
+    v23 = [v22 clearFollowups:v16 error:error];
 
     _Block_object_dispose(&v37, 8);
     _Block_object_dispose(&v43, 8);
@@ -4656,69 +4656,69 @@ LABEL_19:
 
 - (id)createTreeHead
 {
-  v2 = [(TransparencyManagedDataStore *)self context];
-  v3 = [NSEntityDescription insertNewObjectForEntityForName:@"KTTreeHead" inManagedObjectContext:v2];
+  context = [(TransparencyManagedDataStore *)self context];
+  v3 = [NSEntityDescription insertNewObjectForEntityForName:@"KTTreeHead" inManagedObjectContext:context];
 
   return v3;
 }
 
-- (id)treeHeads:(id *)a3
+- (id)treeHeads:(id *)heads
 {
   v5 = [NSFetchRequest fetchRequestWithEntityName:@"KTTreeHead"];
-  v6 = [(TransparencyManagedDataStore *)self context];
+  context = [(TransparencyManagedDataStore *)self context];
   v11 = 0;
-  v7 = [v6 executeFetchRequest:v5 error:&v11];
+  v7 = [context executeFetchRequest:v5 error:&v11];
   v8 = v11;
 
   if (v8)
   {
     [(TransparencyManagedDataStore *)self reportCoreDataEventForEntity:@"KTTreeHead" write:0 code:-128 underlyingError:v8];
-    if (a3)
+    if (heads)
     {
       v9 = v8;
-      *a3 = v8;
+      *heads = v8;
     }
 
-    [TransparencyManagedDataStore cleanseError:a3];
+    [TransparencyManagedDataStore cleanseError:heads];
   }
 
   return v7;
 }
 
-- (id)treeHeadsForApplication:(id)a3 error:(id *)a4
+- (id)treeHeadsForApplication:(id)application error:(id *)error
 {
-  v6 = a3;
+  applicationCopy = application;
   v7 = [NSFetchRequest fetchRequestWithEntityName:@"KTTreeHead"];
-  v8 = [NSPredicate predicateWithFormat:@"application == %@", v6];
+  applicationCopy = [NSPredicate predicateWithFormat:@"application == %@", applicationCopy];
 
-  [v7 setPredicate:v8];
-  v9 = [(TransparencyManagedDataStore *)self context];
+  [v7 setPredicate:applicationCopy];
+  context = [(TransparencyManagedDataStore *)self context];
   v14 = 0;
-  v10 = [v9 executeFetchRequest:v7 error:&v14];
+  v10 = [context executeFetchRequest:v7 error:&v14];
   v11 = v14;
 
-  if (a4 && v11)
+  if (error && v11)
   {
     v12 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
-  [TransparencyManagedDataStore cleanseError:a4];
+  [TransparencyManagedDataStore cleanseError:error];
 
   return v10;
 }
 
-- (unint64_t)treeHeadCount:(id *)a3
+- (unint64_t)treeHeadCount:(id *)count
 {
   v5 = [NSFetchRequest fetchRequestWithEntityName:@"KTTreeHead"];
-  v6 = [(TransparencyManagedDataStore *)self context];
-  v7 = [v6 countForFetchRequest:v5 error:a3];
+  context = [(TransparencyManagedDataStore *)self context];
+  v7 = [context countForFetchRequest:v5 error:count];
 
-  [TransparencyManagedDataStore cleanseError:a3];
+  [TransparencyManagedDataStore cleanseError:count];
   return v7;
 }
 
-- (id)latestConsistencyVerifiedTreeHeadRevision:(id)a3 logBeginMs:(unint64_t)a4 error:(id *)a5
+- (id)latestConsistencyVerifiedTreeHeadRevision:(id)revision logBeginMs:(unint64_t)ms error:(id *)error
 {
   v24 = 0;
   v25 = &v24;
@@ -4736,19 +4736,19 @@ LABEL_19:
   v12[1] = 3221225472;
   v12[2] = sub_10021A9F8;
   v12[3] = &unk_10032AE50;
-  v8 = a3;
+  revisionCopy = revision;
   v16 = &v24;
-  v17 = a4;
-  v13 = v8;
-  v14 = self;
+  msCopy = ms;
+  v13 = revisionCopy;
+  selfCopy = self;
   v15 = &v18;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v12];
-  if (a5)
+  if (error)
   {
     v9 = v19[5];
     if (v9)
     {
-      *a5 = v9;
+      *error = v9;
     }
   }
 
@@ -4760,7 +4760,7 @@ LABEL_19:
   return v10;
 }
 
-- (id)latestConsistencyVerifiedTreeHeadSTH:(id)a3 logBeginMs:(unint64_t)a4 error:(id *)a5
+- (id)latestConsistencyVerifiedTreeHeadSTH:(id)h logBeginMs:(unint64_t)ms error:(id *)error
 {
   v24 = 0;
   v25 = &v24;
@@ -4778,20 +4778,20 @@ LABEL_19:
   v11[1] = 3221225472;
   v11[2] = sub_10021B0A0;
   v11[3] = &unk_10032AED8;
-  v12 = self;
+  selfCopy = self;
   v14 = &v18;
-  v7 = a3;
-  v13 = v7;
+  hCopy = h;
+  v13 = hCopy;
   v15 = &v24;
-  v16 = a4;
-  v17 = a5;
-  [(TransparencyManagedDataStore *)v12 performBlockAndWait:v11];
-  if (a5)
+  msCopy = ms;
+  errorCopy = error;
+  [(TransparencyManagedDataStore *)selfCopy performBlockAndWait:v11];
+  if (error)
   {
     v8 = v19[5];
     if (v8)
     {
-      *a5 = v8;
+      *error = v8;
     }
   }
 
@@ -4803,7 +4803,7 @@ LABEL_19:
   return v9;
 }
 
-- (id)unverifiedRevisions:(id)a3 isMapHead:(BOOL)a4 inclusion:(BOOL)a5 logBeginMs:(unint64_t)a6 error:(id *)a7
+- (id)unverifiedRevisions:(id)revisions isMapHead:(BOOL)head inclusion:(BOOL)inclusion logBeginMs:(unint64_t)ms error:(id *)error
 {
   v28 = 0;
   v29 = &v28;
@@ -4821,21 +4821,21 @@ LABEL_19:
   v14[1] = 3221225472;
   v14[2] = sub_10021B81C;
   v14[3] = &unk_10032AF00;
-  v20 = a5;
-  v21 = a4;
-  v10 = a3;
+  inclusionCopy = inclusion;
+  headCopy = head;
+  revisionsCopy = revisions;
   v18 = &v28;
-  v19 = a6;
-  v15 = v10;
-  v16 = self;
+  msCopy = ms;
+  v15 = revisionsCopy;
+  selfCopy = self;
   v17 = &v22;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v14];
-  if (a7)
+  if (error)
   {
     v11 = v23[5];
     if (v11)
     {
-      *a7 = v11;
+      *error = v11;
     }
   }
 
@@ -4847,7 +4847,7 @@ LABEL_19:
   return v12;
 }
 
-- (BOOL)populateMissingLogHeadHashes:(id *)a3
+- (BOOL)populateMissingLogHeadHashes:(id *)hashes
 {
   v5 = [NSPredicate predicateWithFormat:@"isMapHead == NO && logHeadHash == nil"];
   v12[0] = _NSConcreteStackBlock;
@@ -4855,10 +4855,10 @@ LABEL_19:
   v12[2] = sub_10021BCB4;
   v12[3] = &unk_100327EF8;
   v12[4] = self;
-  [(TransparencyManagedDataStore *)self performOnBatchesOfEntity:@"KTTreeHead" predicate:v5 enforceMax:0 error:a3 block:v12];
-  if (a3 && *a3)
+  [(TransparencyManagedDataStore *)self performOnBatchesOfEntity:@"KTTreeHead" predicate:v5 enforceMax:0 error:hashes block:v12];
+  if (hashes && *hashes)
   {
-    v6 = *a3;
+    v6 = *hashes;
     [(TransparencyManagedDataStore *)self reportCoreDataEventForEntity:@"KTTreeHead" write:1 code:-194 underlyingError:v6];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
@@ -4879,93 +4879,93 @@ LABEL_19:
   return v8;
 }
 
-- (void)performForPendingSTHs:(id)a3 olderThan:(id)a4 type:(unint64_t)a5 error:(id *)a6 block:(id)a7
+- (void)performForPendingSTHs:(id)hs olderThan:(id)than type:(unint64_t)type error:(id *)error block:(id)block
 {
-  v15 = a3;
-  v12 = a4;
-  v13 = a7;
-  if (a5 > 3)
+  hsCopy = hs;
+  thanCopy = than;
+  blockCopy = block;
+  if (type > 3)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = [NSPredicate predicateWithFormat:*(&off_10032B0F0 + a5), v15, v12, 2];
+    v14 = [NSPredicate predicateWithFormat:*(&off_10032B0F0 + type), hsCopy, thanCopy, 2];
   }
 
-  [(TransparencyManagedDataStore *)self performOnBatchesOfEntity:@"KTTreeHead" predicate:v14 enforceMax:0 error:a6 block:v13];
+  [(TransparencyManagedDataStore *)self performOnBatchesOfEntity:@"KTTreeHead" predicate:v14 enforceMax:0 error:error block:blockCopy];
 }
 
-- (void)performForSTHsWithUnverifiedSignature:(id)a3 error:(id *)a4 block:(id)a5
+- (void)performForSTHsWithUnverifiedSignature:(id)signature error:(id *)error block:(id)block
 {
-  v8 = a5;
-  v9 = [NSPredicate predicateWithFormat:@"application == %@ && signatureVerified == %d", a3, 2];
-  [(TransparencyManagedDataStore *)self performOnBatchesOfEntity:@"KTTreeHead" predicate:v9 enforceMax:0 error:a4 block:v8];
+  blockCopy = block;
+  v9 = [NSPredicate predicateWithFormat:@"application == %@ && signatureVerified == %d", signature, 2];
+  [(TransparencyManagedDataStore *)self performOnBatchesOfEntity:@"KTTreeHead" predicate:v9 enforceMax:0 error:error block:blockCopy];
 }
 
-- (void)performForSMHsWithUnverifiedMMD:(id)a3 error:(id *)a4 block:(id)a5
+- (void)performForSMHsWithUnverifiedMMD:(id)d error:(id *)error block:(id)block
 {
-  v8 = a5;
-  v9 = [NSPredicate predicateWithFormat:@"isMapHead = %@ && application == %@ && mmdVerified == %d", &__kCFBooleanTrue, a3, 2];
-  [(TransparencyManagedDataStore *)self performOnBatchesOfEntity:@"KTTreeHead" predicate:v9 enforceMax:0 error:a4 block:v8];
+  blockCopy = block;
+  v9 = [NSPredicate predicateWithFormat:@"isMapHead = %@ && application == %@ && mmdVerified == %d", &__kCFBooleanTrue, d, 2];
+  [(TransparencyManagedDataStore *)self performOnBatchesOfEntity:@"KTTreeHead" predicate:v9 enforceMax:0 error:error block:blockCopy];
 }
 
-- (void)garbageCollectSTHs:(id)a3 logBeginMs:(unint64_t)a4 olderThanDate:(id)a5 error:(id *)a6
+- (void)garbageCollectSTHs:(id)hs logBeginMs:(unint64_t)ms olderThanDate:(id)date error:(id *)error
 {
-  v10 = a5;
-  v11 = a3;
-  v13 = [(TransparencyManagedDataStore *)self latestConsistencyVerifiedTreeHeadRevision:v11 logBeginMs:a4 error:a6];
-  v12 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"isMapHead == NO && receiptTime < %@ && (consistencyVerified == %d || consistencyVerified == %d || consistencyVerified == %d) && application == %@ && revision != %llu", v10, 1, 0, 3, v11, [v13 unsignedLongLongValue]);
+  dateCopy = date;
+  hsCopy = hs;
+  v13 = [(TransparencyManagedDataStore *)self latestConsistencyVerifiedTreeHeadRevision:hsCopy logBeginMs:ms error:error];
+  v12 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"isMapHead == NO && receiptTime < %@ && (consistencyVerified == %d || consistencyVerified == %d || consistencyVerified == %d) && application == %@ && revision != %llu", dateCopy, 1, 0, 3, hsCopy, [v13 unsignedLongLongValue]);
 
-  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTTreeHead" predicate:v12 error:a6];
+  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTTreeHead" predicate:v12 error:error];
 }
 
-- (BOOL)shouldGarbageCollectSTH:(id)a3 application:(id)a4 logBeginMs:(unint64_t)a5 olderThanDate:(id)a6
+- (BOOL)shouldGarbageCollectSTH:(id)h application:(id)application logBeginMs:(unint64_t)ms olderThanDate:(id)date
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([v10 isMapHead])
+  hCopy = h;
+  applicationCopy = application;
+  dateCopy = date;
+  if ([hCopy isMapHead])
   {
     v13 = 0;
   }
 
   else
   {
-    v14 = [(TransparencyManagedDataStore *)self latestConsistencyVerifiedTreeHeadRevision:v11 logBeginMs:a5 error:0];
-    v15 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"isMapHead == NO && receiptTime < %@ && (consistencyVerified == %d || consistencyVerified == %d || consistencyVerified == %d) && application == %@ && revision != %llu", v12, 1, 0, 3, v11, [v14 unsignedLongLongValue]);
-    v13 = [v15 evaluateWithObject:v10];
+    v14 = [(TransparencyManagedDataStore *)self latestConsistencyVerifiedTreeHeadRevision:applicationCopy logBeginMs:ms error:0];
+    v15 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"isMapHead == NO && receiptTime < %@ && (consistencyVerified == %d || consistencyVerified == %d || consistencyVerified == %d) && application == %@ && revision != %llu", dateCopy, 1, 0, 3, applicationCopy, [v14 unsignedLongLongValue]);
+    v13 = [v15 evaluateWithObject:hCopy];
   }
 
   return v13;
 }
 
-- (unint64_t)countOutstandingSTHsForApplication:(id)a3 error:(id *)a4
+- (unint64_t)countOutstandingSTHsForApplication:(id)application error:(id *)error
 {
-  v6 = [NSPredicate predicateWithFormat:@"application == %@ && isMapHead == NO && (signatureVerified == %d || consistencyVerified == %d || inclusionVerified == %d)", a3, 2, 2, 2];
-  v7 = [(TransparencyManagedDataStore *)self onMocCountEntity:@"KTTreeHead" predicate:v6 error:a4];
+  v6 = [NSPredicate predicateWithFormat:@"application == %@ && isMapHead == NO && (signatureVerified == %d || consistencyVerified == %d || inclusionVerified == %d)", application, 2, 2, 2];
+  v7 = [(TransparencyManagedDataStore *)self onMocCountEntity:@"KTTreeHead" predicate:v6 error:error];
 
   return v7;
 }
 
-- (unint64_t)countTotalSTHsForApplication:(id)a3 error:(id *)a4
+- (unint64_t)countTotalSTHsForApplication:(id)application error:(id *)error
 {
-  v6 = [NSPredicate predicateWithFormat:@"application == %@", a3];
-  v7 = [(TransparencyManagedDataStore *)self onMocCountEntity:@"KTTreeHead" predicate:v6 error:a4];
+  application = [NSPredicate predicateWithFormat:@"application == %@", application];
+  v7 = [(TransparencyManagedDataStore *)self onMocCountEntity:@"KTTreeHead" predicate:application error:error];
 
   return v7;
 }
 
-- (unint64_t)countOutstandingSMHsForApplication:(id)a3 error:(id *)a4
+- (unint64_t)countOutstandingSMHsForApplication:(id)application error:(id *)error
 {
-  v6 = [NSPredicate predicateWithFormat:@"application == %@ && isMapHead == YES && (signatureVerified == %d || mmdVerified == %d || inclusionVerified == %d)", a3, 2, 2, 2];
-  v7 = [(TransparencyManagedDataStore *)self onMocCountEntity:@"KTTreeHead" predicate:v6 error:a4];
+  v6 = [NSPredicate predicateWithFormat:@"application == %@ && isMapHead == YES && (signatureVerified == %d || mmdVerified == %d || inclusionVerified == %d)", application, 2, 2, 2];
+  v7 = [(TransparencyManagedDataStore *)self onMocCountEntity:@"KTTreeHead" predicate:v6 error:error];
 
   return v7;
 }
 
-- (BOOL)logSTHMetricsForApplication:(id)a3 error:(id *)a4
+- (BOOL)logSTHMetricsForApplication:(id)application error:(id *)error
 {
   v12 = 0;
   v13 = &v12;
@@ -4975,25 +4975,25 @@ LABEL_19:
   v7[1] = 3221225472;
   v7[2] = sub_10021C764;
   v7[3] = &unk_100326DB0;
-  v8 = self;
-  v5 = a3;
+  selfCopy = self;
+  applicationCopy = application;
   v10 = &v12;
-  v11 = a4;
-  v9 = v5;
-  [(TransparencyManagedDataStore *)v8 performBlockAndWait:v7];
-  LOBYTE(a4) = *(v13 + 24);
+  errorCopy = error;
+  v9 = applicationCopy;
+  [(TransparencyManagedDataStore *)selfCopy performBlockAndWait:v7];
+  LOBYTE(error) = *(v13 + 24);
 
   _Block_object_dispose(&v12, 8);
-  return a4;
+  return error;
 }
 
-- (BOOL)deleteSTHs:(id)a3 logBeginMsLessThan:(unint64_t)a4 error:(id *)a5
+- (BOOL)deleteSTHs:(id)hs logBeginMsLessThan:(unint64_t)than error:(id *)error
 {
-  v7 = [NSPredicate predicateWithFormat:@"application == %@ && logBeginTime < %llu", a3, a4];
-  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTTreeHead" predicate:v7 error:a5];
-  if (a5 && *a5)
+  than = [NSPredicate predicateWithFormat:@"application == %@ && logBeginTime < %llu", hs, than];
+  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTTreeHead" predicate:than error:error];
+  if (error && *error)
   {
-    v8 = *a5;
+    v8 = *error;
     [(TransparencyManagedDataStore *)self reportCoreDataEventForEntity:@"KTTreeHead" write:1 code:-171 underlyingError:v8];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
@@ -5014,22 +5014,22 @@ LABEL_19:
   return v10;
 }
 
-- (void)reportFailedRevisions:(id)a3 failure:(id)a4 downloadType:(unint64_t)a5 application:(id)a6
+- (void)reportFailedRevisions:(id)revisions failure:(id)failure downloadType:(unint64_t)type application:(id)application
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (a5 - 1 <= 2)
+  revisionsCopy = revisions;
+  failureCopy = failure;
+  applicationCopy = application;
+  if (type - 1 <= 2)
   {
-    v12 = [TransparencyAnalytics formatEventName:*(&off_10032B110 + a5 - 1) application:v11];
-    v18[0] = v9;
+    v12 = [TransparencyAnalytics formatEventName:*(&off_10032B110 + type - 1) application:applicationCopy];
+    v18[0] = revisionsCopy;
     v17[0] = @"requestedRevisions";
     v17[1] = @"errorCode";
-    v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v10 code]);
+    v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [failureCopy code]);
     v18[1] = v13;
     v17[2] = @"errorDomain";
-    v14 = [v10 domain];
-    v18[2] = v14;
+    domain = [failureCopy domain];
+    v18[2] = domain;
     v15 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:3];
 
     v16 = +[TransparencyAnalytics logger];
@@ -5037,24 +5037,24 @@ LABEL_19:
   }
 }
 
-- (void)failHeadDownloadRecord:(id)a3 failure:(id)a4 error:(id *)a5
+- (void)failHeadDownloadRecord:(id)record failure:(id)failure error:(id *)error
 {
-  v8 = a3;
-  v32 = a4;
-  v9 = [v8 revisions];
-  if (v9)
+  recordCopy = record;
+  failureCopy = failure;
+  revisions = [recordCopy revisions];
+  if (revisions)
   {
-    v10 = [NSJSONSerialization JSONObjectWithData:v9 options:0 error:a5];
+    v10 = [NSJSONSerialization JSONObjectWithData:revisions options:0 error:error];
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       if (os_variant_allows_internal_security_policies())
       {
-        v11 = [v8 downloadType];
-        v12 = [v8 application];
-        [(TransparencyManagedDataStore *)self reportFailedRevisions:v10 failure:v32 downloadType:v11 application:v12];
+        downloadType = [recordCopy downloadType];
+        application = [recordCopy application];
+        [(TransparencyManagedDataStore *)self reportFailedRevisions:v10 failure:failureCopy downloadType:downloadType application:application];
       }
 
-      v13 = [v8 downloadType];
+      downloadType2 = [recordCopy downloadType];
       v39 = 0u;
       v40 = 0u;
       v41 = 0u;
@@ -5065,7 +5065,7 @@ LABEL_19:
       {
         v15 = v14;
         v30 = v10;
-        v31 = v9;
+        v31 = revisions;
         v16 = *v40;
         do
         {
@@ -5081,16 +5081,16 @@ LABEL_19:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v19 = [v8 application];
+              application2 = [recordCopy application];
               v34[0] = _NSConcreteStackBlock;
               v34[1] = 3221225472;
               v34[2] = sub_10021D4EC;
               v34[3] = &unk_10032B068;
-              v38 = v13;
-              v35 = v8;
-              v36 = self;
-              v37 = v32;
-              [(TransparencyManagedDataStore *)self performForSTHs:v19 isMapHead:v13 == 1 revision:v18 error:a5 block:v34];
+              v38 = downloadType2;
+              v35 = recordCopy;
+              selfCopy = self;
+              v37 = failureCopy;
+              [(TransparencyManagedDataStore *)self performForSTHs:application2 isMapHead:downloadType2 == 1 revision:v18 error:error block:v34];
             }
 
             else
@@ -5104,9 +5104,9 @@ LABEL_19:
               if (os_log_type_enabled(qword_10039CCE0, OS_LOG_TYPE_ERROR))
               {
                 v21 = v20;
-                v22 = [v8 downloadId];
+                downloadId = [recordCopy downloadId];
                 *buf = 138543618;
-                v45 = v22;
+                v45 = downloadId;
                 v46 = 2112;
                 v47 = v18;
                 _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "invalid revision type serialized from downloadId %{public}@: %@", buf, 0x16u);
@@ -5122,7 +5122,7 @@ LABEL_19:
 
         while (v15);
         v10 = v30;
-        v9 = v31;
+        revisions = v31;
       }
 
       v23 = obj;
@@ -5138,11 +5138,11 @@ LABEL_19:
       v23 = qword_10039CCE0;
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        v24 = [v8 downloadId];
-        v25 = v24;
-        if (a5)
+        downloadId2 = [recordCopy downloadId];
+        v25 = downloadId2;
+        if (error)
         {
-          v26 = *a5;
+          v26 = *error;
         }
 
         else
@@ -5151,7 +5151,7 @@ LABEL_19:
         }
 
         *buf = 138543618;
-        v45 = v24;
+        v45 = downloadId2;
         v46 = 2112;
         v47 = v26;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "failed to deserialize revisions for downloadId %{public}@: %@", buf, 0x16u);
@@ -5170,19 +5170,19 @@ LABEL_19:
     if (os_log_type_enabled(qword_10039CCE0, OS_LOG_TYPE_ERROR))
     {
       v28 = v27;
-      v29 = [v8 downloadId];
+      downloadId3 = [recordCopy downloadId];
       *buf = 138543362;
-      v45 = v29;
+      v45 = downloadId3;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "STH download record type missing revisions for downloadId %{public}@", buf, 0xCu);
     }
   }
 }
 
-- (void)failHeadDownload:(id)a3 failure:(id)a4 logClient:(id)a5
+- (void)failHeadDownload:(id)download failure:(id)failure logClient:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  downloadCopy = download;
+  failureCopy = failure;
+  clientCopy = client;
   if (qword_10039CCD8 != -1)
   {
     sub_10025EF44();
@@ -5192,7 +5192,7 @@ LABEL_19:
   if (os_log_type_enabled(qword_10039CCE0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v20 = v8;
+    v20 = downloadCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "failing STH downloadId %{public}@", buf, 0xCu);
   }
 
@@ -5200,16 +5200,16 @@ LABEL_19:
   v14 = 3221225472;
   v15 = sub_10021DA0C;
   v16 = &unk_10032B0D0;
-  v17 = self;
-  v18 = v9;
-  v12 = v9;
-  [(TransparencyManagedDataStore *)self performAndWaitForDownloadId:v8 error:0 block:&v13];
-  [v10 deleteDownloadId:{v8, v13, v14, v15, v16, v17}];
+  selfCopy = self;
+  v18 = failureCopy;
+  v12 = failureCopy;
+  [(TransparencyManagedDataStore *)self performAndWaitForDownloadId:downloadCopy error:0 block:&v13];
+  [clientCopy deleteDownloadId:{downloadCopy, v13, v14, v15, v16, selfCopy}];
 }
 
-- (id)failedHeadSignaturesWithRevisions:(id)a3 application:(id)a4
+- (id)failedHeadSignaturesWithRevisions:(id)revisions application:(id)application
 {
-  v6 = a3;
+  revisionsCopy = revisions;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -5220,11 +5220,11 @@ LABEL_19:
   v11[1] = 3221225472;
   v11[2] = sub_10021DCC4;
   v11[3] = &unk_100327098;
-  v7 = a4;
-  v12 = v7;
-  v8 = v6;
+  applicationCopy = application;
+  v12 = applicationCopy;
+  v8 = revisionsCopy;
   v13 = v8;
-  v14 = self;
+  selfCopy = self;
   v15 = &v16;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v11];
   v9 = v17[5];
@@ -5236,43 +5236,43 @@ LABEL_19:
 
 - (id)createSignedTreeHeadFailure
 {
-  v2 = [(TransparencyManagedDataStore *)self context];
-  v3 = [NSEntityDescription insertNewObjectForEntityForName:@"KTSTHFailure" inManagedObjectContext:v2];
+  context = [(TransparencyManagedDataStore *)self context];
+  v3 = [NSEntityDescription insertNewObjectForEntityForName:@"KTSTHFailure" inManagedObjectContext:context];
 
   return v3;
 }
 
-- (id)signedTreeHeadFailures:(id *)a3
+- (id)signedTreeHeadFailures:(id *)failures
 {
   v5 = [NSFetchRequest fetchRequestWithEntityName:@"KTSTHFailure"];
-  v6 = [(TransparencyManagedDataStore *)self context];
-  v7 = [v6 executeFetchRequest:v5 error:a3];
+  context = [(TransparencyManagedDataStore *)self context];
+  v7 = [context executeFetchRequest:v5 error:failures];
 
-  if (a3 && *a3)
+  if (failures && *failures)
   {
     [(TransparencyManagedDataStore *)self reportCoreDataEventForEntity:@"KTSTHFailure" write:0 code:-128 underlyingError:?];
-    [TransparencyManagedDataStore cleanseError:a3];
+    [TransparencyManagedDataStore cleanseError:failures];
   }
 
   return v7;
 }
 
-- (unint64_t)signedTreeHeadFailureCount:(id *)a3
+- (unint64_t)signedTreeHeadFailureCount:(id *)count
 {
   v5 = [NSFetchRequest fetchRequestWithEntityName:@"KTSTHFailure"];
-  v6 = [(TransparencyManagedDataStore *)self context];
-  v7 = [v6 countForFetchRequest:v5 error:a3];
+  context = [(TransparencyManagedDataStore *)self context];
+  v7 = [context countForFetchRequest:v5 error:count];
 
-  [TransparencyManagedDataStore cleanseError:a3];
+  [TransparencyManagedDataStore cleanseError:count];
   return v7;
 }
 
-- (id)createDownloadRecord:(unint64_t)a3 moc:(id)a4 application:(id)a5
+- (id)createDownloadRecord:(unint64_t)record moc:(id)moc application:(id)application
 {
-  v7 = a5;
-  v8 = [NSEntityDescription insertNewObjectForEntityForName:@"DownloadRecord" inManagedObjectContext:a4];
-  [v8 setUnsigned:"downloadType" value:a3];
-  [v8 setApplication:v7];
+  applicationCopy = application;
+  v8 = [NSEntityDescription insertNewObjectForEntityForName:@"DownloadRecord" inManagedObjectContext:moc];
+  [v8 setUnsigned:"downloadType" value:record];
+  [v8 setApplication:applicationCopy];
 
   v9 = +[NSUUID UUID];
   [v8 setDownloadId:v9];
@@ -5282,32 +5282,32 @@ LABEL_19:
   return v8;
 }
 
-- (id)downloadRecords:(id *)a3
+- (id)downloadRecords:(id *)records
 {
   v5 = [NSFetchRequest fetchRequestWithEntityName:@"DownloadRecord"];
-  v6 = [(TransparencyManagedDataStore *)self context];
-  v7 = [v6 executeFetchRequest:v5 error:a3];
+  context = [(TransparencyManagedDataStore *)self context];
+  v7 = [context executeFetchRequest:v5 error:records];
 
-  if (a3 && *a3)
+  if (records && *records)
   {
     [(TransparencyManagedDataStore *)self reportCoreDataEventForEntity:@"DownloadRecord" write:0 code:-128 underlyingError:?];
-    [TransparencyManagedDataStore cleanseError:a3];
+    [TransparencyManagedDataStore cleanseError:records];
   }
 
   return v7;
 }
 
-- (id)fetchDownloadRecord:(unint64_t)a3 application:(id)a4 error:(id *)a5
+- (id)fetchDownloadRecord:(unint64_t)record application:(id)application error:(id *)error
 {
-  v8 = a4;
+  applicationCopy = application;
   v9 = [NSFetchRequest fetchRequestWithEntityName:@"DownloadRecord"];
-  v10 = [NSPredicate predicateWithFormat:@"downloadType == %d && application = %@", a3, v8];
+  applicationCopy = [NSPredicate predicateWithFormat:@"downloadType == %d && application = %@", record, applicationCopy];
 
-  [v9 setPredicate:v10];
-  v11 = [(TransparencyManagedDataStore *)self context];
-  v12 = [v11 executeFetchRequest:v9 error:a5];
+  [v9 setPredicate:applicationCopy];
+  context = [(TransparencyManagedDataStore *)self context];
+  v12 = [context executeFetchRequest:v9 error:error];
 
-  [TransparencyManagedDataStore cleanseError:a5];
+  [TransparencyManagedDataStore cleanseError:error];
   if (v12 && [v12 count])
   {
     v13 = [v12 objectAtIndexedSubscript:0];
@@ -5321,17 +5321,17 @@ LABEL_19:
   return v13;
 }
 
-- (id)fetchDownloadRecordById:(id)a3 error:(id *)a4
+- (id)fetchDownloadRecordById:(id)id error:(id *)error
 {
-  v6 = a3;
+  idCopy = id;
   v7 = [NSFetchRequest fetchRequestWithEntityName:@"DownloadRecord"];
-  v8 = [NSPredicate predicateWithFormat:@"downloadId = %@", v6];
+  idCopy = [NSPredicate predicateWithFormat:@"downloadId = %@", idCopy];
 
-  [v7 setPredicate:v8];
-  v9 = [(TransparencyManagedDataStore *)self context];
-  v10 = [v9 executeFetchRequest:v7 error:a4];
+  [v7 setPredicate:idCopy];
+  context = [(TransparencyManagedDataStore *)self context];
+  v10 = [context executeFetchRequest:v7 error:error];
 
-  [TransparencyManagedDataStore cleanseError:a4];
+  [TransparencyManagedDataStore cleanseError:error];
   if (v10 && [v10 count])
   {
     v11 = [v10 objectAtIndexedSubscript:0];
@@ -5345,7 +5345,7 @@ LABEL_19:
   return v11;
 }
 
-- (BOOL)hasPendingDownloadForUUID:(id)a3 error:(id *)a4
+- (BOOL)hasPendingDownloadForUUID:(id)d error:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -5361,18 +5361,18 @@ LABEL_19:
   v9[1] = 3221225472;
   v9[2] = sub_10021E5F0;
   v9[3] = &unk_100327140;
-  v10 = self;
-  v5 = a3;
-  v11 = v5;
+  selfCopy = self;
+  dCopy = d;
+  v11 = dCopy;
   v12 = &v14;
   v13 = &v20;
-  [(TransparencyManagedDataStore *)v10 performBlockAndWait:v9];
-  if (a4)
+  [(TransparencyManagedDataStore *)selfCopy performBlockAndWait:v9];
+  if (error)
   {
     v6 = v15[5];
     if (v6)
     {
-      *a4 = v6;
+      *error = v6;
     }
   }
 
@@ -5384,9 +5384,9 @@ LABEL_19:
   return v7;
 }
 
-- (BOOL)setResponse:(id)a3 downloadId:(id)a4 error:(id *)a5
+- (BOOL)setResponse:(id)response downloadId:(id)id error:(id *)error
 {
-  v8 = a3;
+  responseCopy = response;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -5401,20 +5401,20 @@ LABEL_19:
   v14[1] = 3221225472;
   v14[2] = sub_10021E844;
   v14[3] = &unk_10031A230;
-  v9 = a4;
-  v15 = v9;
-  v16 = self;
+  idCopy = id;
+  v15 = idCopy;
+  selfCopy = self;
   v18 = &v20;
-  v10 = v8;
+  v10 = responseCopy;
   v17 = v10;
   v19 = &v26;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v14];
-  if (a5)
+  if (error)
   {
     v11 = v21[5];
     if (v11)
     {
-      *a5 = v11;
+      *error = v11;
     }
   }
 
@@ -5426,7 +5426,7 @@ LABEL_19:
   return v12;
 }
 
-- (BOOL)deleteDownloadRecordById:(id)a3 error:(id *)a4
+- (BOOL)deleteDownloadRecordById:(id)id error:(id *)error
 {
   v24 = 0;
   v25 = &v24;
@@ -5442,12 +5442,12 @@ LABEL_19:
   v13[1] = 3221225472;
   v13[2] = sub_10021ED00;
   v13[3] = &unk_100327140;
-  v14 = self;
-  v6 = a3;
-  v15 = v6;
+  selfCopy = self;
+  idCopy = id;
+  v15 = idCopy;
   v16 = &v18;
   v17 = &v24;
-  [(TransparencyManagedDataStore *)v14 performBlockAndWait:v13];
+  [(TransparencyManagedDataStore *)selfCopy performBlockAndWait:v13];
   if (v25[3])
   {
     v7 = 1;
@@ -5460,15 +5460,15 @@ LABEL_19:
     v10[1] = 3221225472;
     v10[2] = sub_10021EDDC;
     v10[3] = &unk_10031A9E0;
-    v11 = v6;
+    v11 = idCopy;
     v12 = &v18;
     [(TransparencyManagedDataStore *)self performBlockAndWait:v10];
-    if (a4)
+    if (error)
     {
       v8 = v19[5];
       if (v8)
       {
-        *a4 = v8;
+        *error = v8;
       }
     }
 
@@ -5481,7 +5481,7 @@ LABEL_19:
   return v7 & 1;
 }
 
-- (BOOL)deleteDownloadRecords:(id)a3 error:(id *)a4
+- (BOOL)deleteDownloadRecords:(id)records error:(id *)error
 {
   v24 = 0;
   v25 = &v24;
@@ -5497,9 +5497,9 @@ LABEL_19:
   v13[1] = 3221225472;
   v13[2] = sub_10021F0E8;
   v13[3] = &unk_100327140;
-  v6 = a3;
-  v14 = v6;
-  v15 = self;
+  recordsCopy = records;
+  v14 = recordsCopy;
+  selfCopy = self;
   v16 = &v18;
   v17 = &v24;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v13];
@@ -5510,17 +5510,17 @@ LABEL_19:
     v10[1] = 3221225472;
     v10[2] = sub_10021F228;
     v10[3] = &unk_10031A9E0;
-    v11 = v6;
+    v11 = recordsCopy;
     v12 = &v18;
     [(TransparencyManagedDataStore *)self performBlockAndWait:v10];
   }
 
-  if (a4)
+  if (error)
   {
     v7 = v19[5];
     if (v7)
     {
-      *a4 = v7;
+      *error = v7;
     }
   }
 
@@ -5532,7 +5532,7 @@ LABEL_19:
   return v8;
 }
 
-- (BOOL)deleteDownloadRecord:(unint64_t)a3 application:(id)a4 error:(id *)a5
+- (BOOL)deleteDownloadRecord:(unint64_t)record application:(id)application error:(id *)error
 {
   v26 = 0;
   v27 = &v26;
@@ -5548,13 +5548,13 @@ LABEL_19:
   v14[1] = 3221225472;
   v14[2] = sub_10021F540;
   v14[3] = &unk_10032AE50;
-  v15 = self;
-  v19 = a3;
-  v7 = a4;
-  v16 = v7;
+  selfCopy = self;
+  recordCopy = record;
+  applicationCopy = application;
+  v16 = applicationCopy;
   v17 = &v20;
   v18 = &v26;
-  [(TransparencyManagedDataStore *)v15 performBlockAndWait:v14];
+  [(TransparencyManagedDataStore *)selfCopy performBlockAndWait:v14];
   if ((v27[3] & 1) == 0)
   {
     [(TransparencyManagedDataStore *)self reportCoreDataEventForEntity:@"DownloadRecord" write:1 code:-190 underlyingError:v21[5]];
@@ -5562,17 +5562,17 @@ LABEL_19:
     v11[1] = 3221225472;
     v11[2] = sub_10021F61C;
     v11[3] = &unk_10031A9E0;
-    v12 = v7;
+    v12 = applicationCopy;
     v13 = &v20;
     [(TransparencyManagedDataStore *)self performBlockAndWait:v11];
   }
 
-  if (a5)
+  if (error)
   {
     v8 = v21[5];
     if (v8)
     {
-      *a5 = v8;
+      *error = v8;
     }
   }
 
@@ -5584,10 +5584,10 @@ LABEL_19:
   return v9;
 }
 
-- (BOOL)performAndWaitForDownloadId:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)performAndWaitForDownloadId:(id)id error:(id *)error block:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  idCopy = id;
+  blockCopy = block;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -5603,19 +5603,19 @@ LABEL_19:
   v15[2] = sub_10021F8C8;
   v15[3] = &unk_100327500;
   v15[4] = self;
-  v10 = v8;
+  v10 = idCopy;
   v16 = v10;
   v18 = &v20;
-  v11 = v9;
+  v11 = blockCopy;
   v17 = v11;
   v19 = &v26;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v15];
-  if (a4)
+  if (error)
   {
     v12 = v21[5];
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -5629,49 +5629,49 @@ LABEL_19:
 
 - (id)createFetchRecord
 {
-  v2 = [(TransparencyManagedDataStore *)self context];
-  v3 = [NSEntityDescription insertNewObjectForEntityForName:@"FetchRecord" inManagedObjectContext:v2];
+  context = [(TransparencyManagedDataStore *)self context];
+  v3 = [NSEntityDescription insertNewObjectForEntityForName:@"FetchRecord" inManagedObjectContext:context];
 
   return v3;
 }
 
-- (id)createFetchRecordForRequestData:(id)a3 request:(id)a4 error:(id *)a5
+- (id)createFetchRecordForRequestData:(id)data request:(id)request error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(TransparencyManagedDataStore *)self createFetchRecord];
+  requestCopy = request;
+  dataCopy = data;
+  createFetchRecord = [(TransparencyManagedDataStore *)self createFetchRecord];
   v11 = +[NSUUID UUID];
-  [v10 setFetchId:v11];
+  [createFetchRecord setFetchId:v11];
 
-  [v10 setRequestData:v9];
-  [v10 setRequest:v8];
+  [createFetchRecord setRequestData:dataCopy];
+  [createFetchRecord setRequest:requestCopy];
 
-  if ([(TransparencyManagedDataStore *)self persistWithError:a5])
+  if ([(TransparencyManagedDataStore *)self persistWithError:error])
   {
-    v12 = [v10 fetchId];
+    fetchId = [createFetchRecord fetchId];
   }
 
   else
   {
-    v12 = 0;
+    fetchId = 0;
   }
 
-  [TransparencyManagedDataStore cleanseError:a5];
+  [TransparencyManagedDataStore cleanseError:error];
 
-  return v12;
+  return fetchId;
 }
 
-- (id)fetchFetchRecordById:(id)a3 error:(id *)a4
+- (id)fetchFetchRecordById:(id)id error:(id *)error
 {
-  v6 = a3;
+  idCopy = id;
   v7 = [NSFetchRequest fetchRequestWithEntityName:@"FetchRecord"];
-  v8 = [NSPredicate predicateWithFormat:@"fetchId = %@", v6];
+  idCopy = [NSPredicate predicateWithFormat:@"fetchId = %@", idCopy];
 
-  [v7 setPredicate:v8];
-  v9 = [(TransparencyManagedDataStore *)self context];
-  v10 = [v9 executeFetchRequest:v7 error:a4];
+  [v7 setPredicate:idCopy];
+  context = [(TransparencyManagedDataStore *)self context];
+  v10 = [context executeFetchRequest:v7 error:error];
 
-  [TransparencyManagedDataStore cleanseError:a4];
+  [TransparencyManagedDataStore cleanseError:error];
   if (v10 && [v10 count])
   {
     v11 = [v10 objectAtIndexedSubscript:0];
@@ -5685,10 +5685,10 @@ LABEL_19:
   return v11;
 }
 
-- (BOOL)performAndWaitForFetchId:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)performAndWaitForFetchId:(id)id error:(id *)error block:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  idCopy = id;
+  blockCopy = block;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -5704,19 +5704,19 @@ LABEL_19:
   v15[2] = sub_10021FDC4;
   v15[3] = &unk_100327500;
   v15[4] = self;
-  v10 = v8;
+  v10 = idCopy;
   v16 = v10;
   v18 = &v20;
-  v11 = v9;
+  v11 = blockCopy;
   v17 = v11;
   v19 = &v26;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v15];
-  if (a4)
+  if (error)
   {
     v12 = v21[5];
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -5728,77 +5728,77 @@ LABEL_19:
   return v13;
 }
 
-- (TransparencyManagedDataStore)initWithController:(id)a3 followup:(id)a4 logger:(id)a5
+- (TransparencyManagedDataStore)initWithController:(id)controller followup:(id)followup logger:(id)logger
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  followupCopy = followup;
+  loggerCopy = logger;
   v15.receiver = self;
   v15.super_class = TransparencyManagedDataStore;
   v11 = [(TransparencyManagedDataStore *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    [(TransparencyManagedDataStore *)v11 setController:v8];
-    [(TransparencyManagedDataStore *)v12 setLogger:v10];
+    [(TransparencyManagedDataStore *)v11 setController:controllerCopy];
+    [(TransparencyManagedDataStore *)v12 setLogger:loggerCopy];
     v13 = dispatch_queue_create("TransparencyManagedDataStore peerQueue", 0);
     [(TransparencyManagedDataStore *)v12 setPeerQueue:v13];
 
     [(TransparencyManagedDataStore *)v12 setContextRefCount:0];
-    [(TransparencyManagedDataStore *)v12 setFollowup:v9];
+    [(TransparencyManagedDataStore *)v12 setFollowup:followupCopy];
     [(TransparencyManagedDataStore *)v12 setServerRPCTimeoutSeconds:kTransparencyMaxmimumServerRPCWaitTime];
   }
 
   return v12;
 }
 
-+ (void)cleanseError:(id *)a3
++ (void)cleanseError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = [SecXPCHelper cleanseErrorForXPC:*a3];
+    *error = [SecXPCHelper cleanseErrorForXPC:*error];
   }
 }
 
-- (void)reportCoreDataPersistEventForLocation:(id)a3 underlyingError:(id)a4
+- (void)reportCoreDataPersistEventForLocation:(id)location underlyingError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TransparencyManagedDataStore *)self logger];
-  v9 = [SecXPCHelper cleanseErrorForXPC:v6];
+  errorCopy = error;
+  locationCopy = location;
+  logger = [(TransparencyManagedDataStore *)self logger];
+  v9 = [SecXPCHelper cleanseErrorForXPC:errorCopy];
 
   v11[0] = @"entityType";
   v11[1] = @"write";
   v12[0] = @"Persistence";
   v12[1] = &__kCFBooleanTrue;
   v11[2] = @"location";
-  v12[2] = v7;
+  v12[2] = locationCopy;
   v10 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:3];
 
-  [v8 logResultForEvent:@"ktCoreDataEvent" hardFailure:1 result:v9 withAttributes:v10];
+  [logger logResultForEvent:@"ktCoreDataEvent" hardFailure:1 result:v9 withAttributes:v10];
 }
 
-+ (id)serializeLoggableDatas:(id)a3
++ (id)serializeLoggableDatas:(id)datas
 {
-  v3 = a3;
+  datasCopy = datas;
   v4 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
-  [v4 encodeObject:v3 forKey:@"loggableDatas"];
+  [v4 encodeObject:datasCopy forKey:@"loggableDatas"];
 
-  v5 = [v4 encodedData];
+  encodedData = [v4 encodedData];
 
-  return v5;
+  return encodedData;
 }
 
-+ (id)deserializeLoggableDatas:(id)a3 error:(id *)a4
++ (id)deserializeLoggableDatas:(id)datas error:(id *)error
 {
-  v6 = a3;
+  datasCopy = datas;
   v18 = 0;
-  v7 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v6 error:&v18];
+  v7 = [[NSKeyedUnarchiver alloc] initForReadingFromData:datasCopy error:&v18];
 
   v8 = v18;
-  v9 = [a1 supportedClassTypes];
+  supportedClassTypes = [self supportedClassTypes];
   v17 = v8;
-  v10 = [v7 decodeTopLevelObjectOfClasses:v9 forKey:@"loggableDatas" error:&v17];
+  v10 = [v7 decodeTopLevelObjectOfClasses:supportedClassTypes forKey:@"loggableDatas" error:&v17];
   v11 = v17;
 
   if (!v10 && [v11 code] == 4864)
@@ -5819,10 +5819,10 @@ LABEL_19:
     }
   }
 
-  if (a4 && v11)
+  if (error && v11)
   {
     v15 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
   return v10;
@@ -5835,21 +5835,21 @@ LABEL_19:
   return [NSSet setWithObjects:v2, v3, objc_opt_class(), 0];
 }
 
-- (void)deleteObject:(id)a3
+- (void)deleteObject:(id)object
 {
-  v4 = a3;
-  v5 = [(TransparencyManagedDataStore *)self context];
-  [v5 deleteObject:v4];
+  objectCopy = object;
+  context = [(TransparencyManagedDataStore *)self context];
+  [context deleteObject:objectCopy];
 }
 
-- (void)deleteObjectSet:(id)a3
+- (void)deleteObjectSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [setCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -5861,7 +5861,7 @@ LABEL_19:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(setCopy);
         }
 
         [(TransparencyManagedDataStore *)self deleteObject:*(*(&v9 + 1) + 8 * v8)];
@@ -5869,14 +5869,14 @@ LABEL_19:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [setCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (BOOL)clearState:(id *)a3
+- (BOOL)clearState:(id *)state
 {
   v22 = 0;
   v23 = &v22;
@@ -5888,27 +5888,27 @@ LABEL_19:
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v5 = [(TransparencyManagedDataStore *)self controller];
-  v6 = [v5 persistentContainer];
-  v7 = [v6 managedObjectModel];
+  controller = [(TransparencyManagedDataStore *)self controller];
+  persistentContainer = [controller persistentContainer];
+  managedObjectModel = [persistentContainer managedObjectModel];
 
-  [v7 entities];
+  [managedObjectModel entities];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10023E0C8;
   v8 = v12[3] = &unk_100327620;
   v13 = v8;
   v14 = &off_10033D958;
-  v15 = self;
+  selfCopy = self;
   v16 = &v22;
   v17 = &v18;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v12];
-  if (a3)
+  if (state)
   {
     v9 = v23[5];
     if (v9)
     {
-      *a3 = v9;
+      *state = v9;
     }
   }
 
@@ -5920,10 +5920,10 @@ LABEL_19:
   return v10;
 }
 
-- (BOOL)garbageCollectEntityBatchDelete:(id)a3 predicate:(id)a4 error:(id *)a5
+- (BOOL)garbageCollectEntityBatchDelete:(id)delete predicate:(id)predicate error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  deleteCopy = delete;
+  predicateCopy = predicate;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -5934,20 +5934,20 @@ LABEL_19:
   v19 = 3221225472;
   v20 = sub_10023E5A8;
   v21 = &unk_10032CB80;
-  v10 = v8;
+  v10 = deleteCopy;
   v22 = v10;
-  v11 = v9;
+  v11 = predicateCopy;
   v23 = v11;
-  v24 = self;
+  selfCopy = self;
   v25 = &v26;
   [(TransparencyManagedDataStore *)self performBlockAndWaitWithMoc:&v18];
   v12 = v27;
-  if (a5)
+  if (error)
   {
     v13 = v27[5];
     if (v13)
     {
-      *a5 = v13;
+      *error = v13;
       v12 = v27;
     }
   }
@@ -5977,10 +5977,10 @@ LABEL_19:
   return v14 == 0;
 }
 
-- (BOOL)garbageCollectEntity:(id)a3 predicate:(id)a4 error:(id *)a5
+- (BOOL)garbageCollectEntity:(id)entity predicate:(id)predicate error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  entityCopy = entity;
+  predicateCopy = predicate;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -5991,10 +5991,10 @@ LABEL_19:
   v20 = 3221225472;
   v21 = sub_10023EB04;
   v22 = &unk_10032CBC8;
-  v10 = v8;
+  v10 = entityCopy;
   v23 = v10;
-  v11 = v9;
-  v25 = self;
+  v11 = predicateCopy;
+  selfCopy = self;
   v26 = &v27;
   v24 = v11;
   [(TransparencyManagedDataStore *)self performBlockAndWaitWithMoc:&v19];
@@ -6022,12 +6022,12 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "failed to garbage collect %@: %@", buf, 0x16u);
     }
 
-    if (a5)
+    if (error)
     {
       v17 = v28[5];
       if (v17)
       {
-        *a5 = v17;
+        *error = v17;
       }
     }
   }
@@ -6036,10 +6036,10 @@ LABEL_19:
   return v12 == 0;
 }
 
-- (void)storeTTR:(id)a3 withType:(id)a4
+- (void)storeTTR:(id)r withType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  rCopy = r;
+  typeCopy = type;
   if (qword_10039CEC8 != -1)
   {
     sub_1002604C0();
@@ -6049,9 +6049,9 @@ LABEL_19:
   if (os_log_type_enabled(qword_10039CED0, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v15 = v7;
+    v15 = typeCopy;
     v16 = 2112;
-    v17 = v6;
+    v17 = rCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "storeTTR %@, %@", buf, 0x16u);
   }
 
@@ -6059,16 +6059,16 @@ LABEL_19:
   v11[1] = 3221225472;
   v11[2] = sub_10023EF34;
   v11[3] = &unk_10032CC70;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = typeCopy;
+  v13 = rCopy;
+  v9 = rCopy;
+  v10 = typeCopy;
   [(TransparencyManagedDataStore *)self performBlockAndWaitWithMoc:v11];
 }
 
-- (id)getTapToRadarDate:(id)a3
+- (id)getTapToRadarDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -6076,8 +6076,8 @@ LABEL_19:
   v17 = sub_10023E0C0;
   v18 = 0;
   v5 = +[CachedData fetchRequest];
-  v6 = [NSPredicate predicateWithFormat:@"key = %@ AND application = %@", @"TapToRadarDate", v4];
-  [v5 setPredicate:v6];
+  dateCopy = [NSPredicate predicateWithFormat:@"key = %@ AND application = %@", @"TapToRadarDate", dateCopy];
+  [v5 setPredicate:dateCopy];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -6094,20 +6094,20 @@ LABEL_19:
   return v8;
 }
 
-- (unint64_t)onMocCountEntity:(id)a3 predicate:(id)a4 error:(id *)a5
+- (unint64_t)onMocCountEntity:(id)entity predicate:(id)predicate error:(id *)error
 {
-  v8 = a4;
-  v9 = [NSFetchRequest fetchRequestWithEntityName:a3];
-  [v9 setPredicate:v8];
+  predicateCopy = predicate;
+  v9 = [NSFetchRequest fetchRequestWithEntityName:entity];
+  [v9 setPredicate:predicateCopy];
 
-  v10 = [(TransparencyManagedDataStore *)self context];
-  v11 = [v10 countForFetchRequest:v9 error:a5];
+  context = [(TransparencyManagedDataStore *)self context];
+  v11 = [context countForFetchRequest:v9 error:error];
 
-  [TransparencyManagedDataStore cleanseError:a5];
+  [TransparencyManagedDataStore cleanseError:error];
   return v11;
 }
 
-- (BOOL)logMetricsForApplication:(id)a3 error:(id *)a4
+- (BOOL)logMetricsForApplication:(id)application error:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -6123,18 +6123,18 @@ LABEL_19:
   v9[1] = 3221225472;
   v9[2] = sub_10023F888;
   v9[3] = &unk_100327140;
-  v10 = self;
-  v5 = a3;
-  v11 = v5;
+  selfCopy = self;
+  applicationCopy = application;
+  v11 = applicationCopy;
   v12 = &v14;
   v13 = &v20;
-  [(TransparencyManagedDataStore *)v10 performBlockAndWait:v9];
-  if (a4)
+  [(TransparencyManagedDataStore *)selfCopy performBlockAndWait:v9];
+  if (error)
   {
     v6 = v15[5];
     if (v6)
     {
-      *a4 = v6;
+      *error = v6;
     }
   }
 
@@ -6146,28 +6146,28 @@ LABEL_19:
   return v7;
 }
 
-- (void)refaultObject:(id)a3
+- (void)refaultObject:(id)object
 {
-  v4 = a3;
-  v5 = [(TransparencyManagedDataStore *)self context];
-  [v5 refreshObject:v4 mergeChanges:0];
+  objectCopy = object;
+  context = [(TransparencyManagedDataStore *)self context];
+  [context refreshObject:objectCopy mergeChanges:0];
 }
 
-- (void)saveAndRefaultObject:(id)a3
+- (void)saveAndRefaultObject:(id)object
 {
-  v4 = a3;
-  v5 = [(TransparencyManagedDataStore *)self context];
-  [v5 refreshObject:v4 mergeChanges:1];
+  objectCopy = object;
+  context = [(TransparencyManagedDataStore *)self context];
+  [context refreshObject:objectCopy mergeChanges:1];
 }
 
-- (void)refaultObjects:(id)a3
+- (void)refaultObjects:(id)objects
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [a3 allObjects];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allObjects = [objects allObjects];
+  v5 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -6179,68 +6179,68 @@ LABEL_19:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allObjects);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
-        v10 = [(TransparencyManagedDataStore *)self context];
-        [v10 refreshObject:v9 mergeChanges:0];
+        context = [(TransparencyManagedDataStore *)self context];
+        [context refreshObject:v9 mergeChanges:0];
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (BOOL)persistWithError:(id *)a3
+- (BOOL)persistWithError:(id *)error
 {
-  v5 = [(TransparencyManagedDataStore *)self controller];
-  v6 = [(TransparencyManagedDataStore *)self context];
-  LOBYTE(a3) = [v5 saveContext:v6 error:a3];
+  controller = [(TransparencyManagedDataStore *)self controller];
+  context = [(TransparencyManagedDataStore *)self context];
+  LOBYTE(error) = [controller saveContext:context error:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)persistAndRefaultObject:(id)a3 error:(id *)a4
+- (BOOL)persistAndRefaultObject:(id)object error:(id *)error
 {
-  v6 = a3;
-  v7 = [(TransparencyManagedDataStore *)self persistWithError:a4];
+  objectCopy = object;
+  v7 = [(TransparencyManagedDataStore *)self persistWithError:error];
   if (v7)
   {
-    [(TransparencyManagedDataStore *)self refaultObject:v6];
+    [(TransparencyManagedDataStore *)self refaultObject:objectCopy];
   }
 
   return v7;
 }
 
-- (BOOL)persistAndRefaultObjects:(id)a3 error:(id *)a4
+- (BOOL)persistAndRefaultObjects:(id)objects error:(id *)error
 {
-  v5 = [(TransparencyManagedDataStore *)self persistWithError:a4];
+  v5 = [(TransparencyManagedDataStore *)self persistWithError:error];
   if (v5)
   {
-    v6 = [(TransparencyManagedDataStore *)self context];
-    [v6 refreshAllObjects];
+    context = [(TransparencyManagedDataStore *)self context];
+    [context refreshAllObjects];
   }
 
   return v5;
 }
 
-- (BOOL)clearStateForApplication:(id)a3 error:(id *)a4
+- (BOOL)clearStateForApplication:(id)application error:(id *)error
 {
-  v6 = [NSPredicate predicateWithFormat:@"application = %@", a3];
-  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTRequest" predicate:v6 error:a4];
-  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTTreeHead" predicate:v6 error:a4];
-  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTMutation" predicate:v6 error:a4];
+  application = [NSPredicate predicateWithFormat:@"application = %@", application];
+  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTRequest" predicate:application error:error];
+  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTTreeHead" predicate:application error:error];
+  [(TransparencyManagedDataStore *)self garbageCollectEntity:@"KTMutation" predicate:application error:error];
 
   return 1;
 }
 
-- (id)copyStatistics:(id *)a3
+- (id)copyStatistics:(id *)statistics
 {
   v15 = 0;
   v16 = &v15;
@@ -6262,12 +6262,12 @@ LABEL_19:
   v8[5] = &v15;
   v8[6] = &v9;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v8];
-  if (a3)
+  if (statistics)
   {
     v5 = v10[5];
     if (v5)
     {
-      *a3 = v5;
+      *statistics = v5;
     }
   }
 
@@ -6278,11 +6278,11 @@ LABEL_19:
   return v6;
 }
 
-- (void)performOnBatchesOfEntity:(id)a3 predicate:(id)a4 enforceMax:(BOOL)a5 error:(id *)a6 block:(id)a7
+- (void)performOnBatchesOfEntity:(id)entity predicate:(id)predicate enforceMax:(BOOL)max error:(id *)error block:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  entityCopy = entity;
+  predicateCopy = predicate;
+  blockCopy = block;
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
@@ -6301,12 +6301,12 @@ LABEL_19:
   v24[3] = &unk_10032CD58;
   v24[4] = self;
   v28 = &v31;
-  v15 = v12;
+  v15 = entityCopy;
   v25 = v15;
-  v16 = v13;
+  v16 = predicateCopy;
   v26 = v16;
-  v30 = a5;
-  v17 = v14;
+  maxCopy = max;
+  v17 = blockCopy;
   v27 = v17;
   v29 = &v37;
   [(TransparencyManagedDataStore *)self performBlockAndWait:v24];
@@ -6321,22 +6321,22 @@ LABEL_19:
     v22 = v16;
     v23 = &v31;
     [(TransparencyManagedDataStore *)self performBlockAndWait:v20];
-    if (a6)
+    if (error)
     {
       v18 = v32[5];
       if (v18)
       {
-        *a6 = v18;
+        *error = v18;
       }
     }
   }
 
-  else if (a6)
+  else if (error)
   {
     v19 = v38[5];
     if (v19)
     {
-      *a6 = v19;
+      *error = v19;
     }
   }
 
@@ -6346,22 +6346,22 @@ LABEL_19:
 
 - (id)retainContext
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(TransparencyManagedDataStore *)v2 context];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  context = [(TransparencyManagedDataStore *)selfCopy context];
 
-  if (!v3)
+  if (!context)
   {
-    v4 = [(TransparencyManagedDataStore *)v2 controller];
-    v5 = [v4 backgroundContext];
-    [(TransparencyManagedDataStore *)v2 setContext:v5];
+    controller = [(TransparencyManagedDataStore *)selfCopy controller];
+    backgroundContext = [controller backgroundContext];
+    [(TransparencyManagedDataStore *)selfCopy setContext:backgroundContext];
   }
 
-  [(TransparencyManagedDataStore *)v2 setContextRefCount:[(TransparencyManagedDataStore *)v2 contextRefCount]+ 1];
-  v6 = [(TransparencyManagedDataStore *)v2 context];
-  objc_sync_exit(v2);
+  [(TransparencyManagedDataStore *)selfCopy setContextRefCount:[(TransparencyManagedDataStore *)selfCopy contextRefCount]+ 1];
+  context2 = [(TransparencyManagedDataStore *)selfCopy context];
+  objc_sync_exit(selfCopy);
 
-  return v6;
+  return context2;
 }
 
 - (void)releaseContext
@@ -6383,10 +6383,10 @@ LABEL_19:
   v3 = 120;
   do
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    v5 = [(TransparencyManagedDataStore *)v4 contextRefCount];
-    objc_sync_exit(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    contextRefCount = [(TransparencyManagedDataStore *)selfCopy contextRefCount];
+    objc_sync_exit(selfCopy);
 
     sleep(1u);
     if (v3 < 2)
@@ -6397,55 +6397,55 @@ LABEL_19:
     --v3;
   }
 
-  while (v5 >= 1);
-  return v5 < 1;
+  while (contextRefCount >= 1);
+  return contextRefCount < 1;
 }
 
-- (void)performBlockAndWaitWithMoc:(id)a3
+- (void)performBlockAndWaitWithMoc:(id)moc
 {
-  v4 = a3;
+  mocCopy = moc;
   [(TransparencyManagedDataStore *)self retainContext];
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = sub_100240B58;
   v11 = v10 = &unk_10031DB50;
-  v12 = v4;
+  v12 = mocCopy;
   v5 = v11;
-  v6 = v4;
+  v6 = mocCopy;
   [v5 performBlockAndWait:&v7];
   [(TransparencyManagedDataStore *)self releaseContext:v7];
 }
 
-- (void)performBlockAndWait:(id)a3
+- (void)performBlockAndWait:(id)wait
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100240C00;
   v5[3] = &unk_10032CDA0;
-  v6 = a3;
-  v4 = v6;
+  waitCopy = wait;
+  v4 = waitCopy;
   [(TransparencyManagedDataStore *)self performBlockAndWaitWithMoc:v5];
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x3032000000;
   v10[3] = sub_10023E0B0;
   v10[4] = sub_10023E0C0;
   v11 = os_transaction_create();
-  v5 = [(TransparencyManagedDataStore *)self retainContext];
+  retainContext = [(TransparencyManagedDataStore *)self retainContext];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100240D40;
   v7[3] = &unk_10032CDC8;
-  v6 = v4;
+  v6 = blockCopy;
   v7[4] = self;
   v8 = v6;
   v9 = v10;
-  [v5 performBlock:v7];
+  [retainContext performBlock:v7];
 
   _Block_object_dispose(v10, 8);
 }

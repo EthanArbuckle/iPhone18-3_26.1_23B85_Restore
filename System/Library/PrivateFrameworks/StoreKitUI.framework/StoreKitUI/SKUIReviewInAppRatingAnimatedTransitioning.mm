@@ -1,17 +1,17 @@
 @interface SKUIReviewInAppRatingAnimatedTransitioning
-- (id)_presentedViewControllerForContext:(id)a3;
-- (void)_animateTransition:(id)a3 completionBlock:(id)a4;
-- (void)animateTransition:(id)a3;
+- (id)_presentedViewControllerForContext:(id)context;
+- (void)_animateTransition:(id)transition completionBlock:(id)block;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation SKUIReviewInAppRatingAnimatedTransitioning
 
-- (id)_presentedViewControllerForContext:(id)a3
+- (id)_presentedViewControllerForContext:(id)context
 {
   v4 = *MEMORY[0x277D77230];
-  v5 = a3;
-  v6 = [v5 viewControllerForKey:v4];
-  v7 = [v5 viewControllerForKey:*MEMORY[0x277D77240]];
+  contextCopy = context;
+  v6 = [contextCopy viewControllerForKey:v4];
+  v7 = [contextCopy viewControllerForKey:*MEMORY[0x277D77240]];
 
   if ([(SKUIReviewInAppRatingAnimatedTransitioning *)self isPresentation])
   {
@@ -28,28 +28,28 @@
   return v8;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __64__SKUIReviewInAppRatingAnimatedTransitioning_animateTransition___block_invoke;
   v6[3] = &unk_2781F84A0;
-  v7 = v4;
-  v5 = v4;
+  v7 = transitionCopy;
+  v5 = transitionCopy;
   [(SKUIReviewInAppRatingAnimatedTransitioning *)self _animateTransition:v5 completionBlock:v6];
 }
 
-- (void)_animateTransition:(id)a3 completionBlock:(id)a4
+- (void)_animateTransition:(id)transition completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 containerView];
-  v9 = [(SKUIReviewInAppRatingAnimatedTransitioning *)self isPresentation];
-  v10 = [(SKUIReviewInAppRatingAnimatedTransitioning *)self _presentedViewControllerForContext:v7];
-  v11 = [v10 view];
-  [v8 layoutIfNeeded];
-  [(SKUIReviewInAppRatingAnimatedTransitioning *)self transitionDuration:v7];
+  blockCopy = block;
+  transitionCopy = transition;
+  containerView = [transitionCopy containerView];
+  isPresentation = [(SKUIReviewInAppRatingAnimatedTransitioning *)self isPresentation];
+  v10 = [(SKUIReviewInAppRatingAnimatedTransitioning *)self _presentedViewControllerForContext:transitionCopy];
+  view = [v10 view];
+  [containerView layoutIfNeeded];
+  [(SKUIReviewInAppRatingAnimatedTransitioning *)self transitionDuration:transitionCopy];
   v13 = v12;
 
   v14 = *(MEMORY[0x277CBF2C0] + 16);
@@ -59,7 +59,7 @@
   *&v31.a = *&v32.a;
   *&v31.c = v14;
   *&v31.tx = *&v32.tx;
-  if (v9)
+  if (isPresentation)
   {
     CGAffineTransformMakeScale(&v32, 1.2, 1.2);
     v15 = 0.0;
@@ -72,21 +72,21 @@
   }
 
   v30 = v32;
-  [v11 setTransform:&v30];
-  [v11 setAlpha:v15];
-  v16 = [v10 presentationController];
+  [view setTransform:&v30];
+  [view setAlpha:v15];
+  presentationController = [v10 presentationController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = [v16 dimmingView];
+    dimmingView = [presentationController dimmingView];
   }
 
   else
   {
-    v17 = 0;
+    dimmingView = 0;
   }
 
-  if (v9)
+  if (isPresentation)
   {
     v18 = 1.0;
   }
@@ -96,7 +96,7 @@
     v18 = 0.0;
   }
 
-  [v17 setAlpha:v15];
+  [dimmingView setAlpha:v15];
   v19 = MEMORY[0x277D75D18];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
@@ -104,16 +104,16 @@
   v25[3] = &unk_2781FAE90;
   v28 = v31;
   v29 = v18;
-  v26 = v11;
-  v27 = v17;
+  v26 = view;
+  v27 = dimmingView;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __81__SKUIReviewInAppRatingAnimatedTransitioning__animateTransition_completionBlock___block_invoke_2;
   v23[3] = &unk_2781F85B8;
-  v24 = v6;
-  v20 = v6;
-  v21 = v17;
-  v22 = v11;
+  v24 = blockCopy;
+  v20 = blockCopy;
+  v21 = dimmingView;
+  v22 = view;
   [v19 animateWithDuration:6 delay:v25 usingSpringWithDamping:v23 initialSpringVelocity:v13 options:0.0 animations:600.0 completion:0.0];
 }
 

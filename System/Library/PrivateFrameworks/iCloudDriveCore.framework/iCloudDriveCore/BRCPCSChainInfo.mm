@@ -1,29 +1,29 @@
 @interface BRCPCSChainInfo
-- (BRCPCSChainInfo)initWithItemID:(id)a3 parentID:(id)a4 structuralCKInfo:(id)a5 contentCKInfo:(id)a6 itemType:(char)a7 aliasTargetZoneIsShared:(BOOL)a8 chainState:(unsigned int)a9;
+- (BRCPCSChainInfo)initWithItemID:(id)d parentID:(id)iD structuralCKInfo:(id)info contentCKInfo:(id)kInfo itemType:(char)type aliasTargetZoneIsShared:(BOOL)shared chainState:(unsigned int)state;
 @end
 
 @implementation BRCPCSChainInfo
 
-- (BRCPCSChainInfo)initWithItemID:(id)a3 parentID:(id)a4 structuralCKInfo:(id)a5 contentCKInfo:(id)a6 itemType:(char)a7 aliasTargetZoneIsShared:(BOOL)a8 chainState:(unsigned int)a9
+- (BRCPCSChainInfo)initWithItemID:(id)d parentID:(id)iD structuralCKInfo:(id)info contentCKInfo:(id)kInfo itemType:(char)type aliasTargetZoneIsShared:(BOOL)shared chainState:(unsigned int)state
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v22 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  infoCopy = info;
+  kInfoCopy = kInfo;
   v23.receiver = self;
   v23.super_class = BRCPCSChainInfo;
   v19 = [(BRCPCSChainInfo *)&v23 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_itemID, a3);
-    objc_storeStrong(&v20->_parentID, a4);
-    v20->_itemType = a7;
-    objc_storeStrong(&v20->_structuralCKInfo, a5);
-    objc_storeStrong(&v20->_contentCKInfo, a6);
-    v20->_chainState = a9;
-    v20->_aliasTargetZoneIsShared = a8;
-    if (!v16 || !v17)
+    objc_storeStrong(&v19->_itemID, d);
+    objc_storeStrong(&v20->_parentID, iD);
+    v20->_itemType = type;
+    objc_storeStrong(&v20->_structuralCKInfo, info);
+    objc_storeStrong(&v20->_contentCKInfo, kInfo);
+    v20->_chainState = state;
+    v20->_aliasTargetZoneIsShared = shared;
+    if (!dCopy || !iDCopy)
     {
       [BRCPCSChainInfo initWithItemID:parentID:structuralCKInfo:contentCKInfo:itemType:aliasTargetZoneIsShared:chainState:];
     }

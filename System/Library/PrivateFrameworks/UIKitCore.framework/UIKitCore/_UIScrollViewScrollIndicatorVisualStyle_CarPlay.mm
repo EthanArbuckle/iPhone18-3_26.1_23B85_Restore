@@ -1,21 +1,21 @@
 @interface _UIScrollViewScrollIndicatorVisualStyle_CarPlay
-- (id)colorForIndicatorStyle:(int64_t)a3 expanded:(BOOL)a4;
+- (id)colorForIndicatorStyle:(int64_t)style expanded:(BOOL)expanded;
 @end
 
 @implementation _UIScrollViewScrollIndicatorVisualStyle_CarPlay
 
-- (id)colorForIndicatorStyle:(int64_t)a3 expanded:(BOOL)a4
+- (id)colorForIndicatorStyle:(int64_t)style expanded:(BOOL)expanded
 {
-  if (a3)
+  if (style)
   {
     v6.receiver = self;
     v6.super_class = _UIScrollViewScrollIndicatorVisualStyle_CarPlay;
-    v4 = [(_UIScrollViewScrollIndicatorVisualStyle_iOS *)&v6 colorForIndicatorStyle:a3 expanded:a4];
+    v4 = [(_UIScrollViewScrollIndicatorVisualStyle_iOS *)&v6 colorForIndicatorStyle:style expanded:expanded];
   }
 
   else
   {
-    v4 = [UIColor colorWithWhite:0 alpha:a4, 0.68, 0.2];
+    v4 = [UIColor colorWithWhite:0 alpha:expanded, 0.68, 0.2];
   }
 
   return v4;

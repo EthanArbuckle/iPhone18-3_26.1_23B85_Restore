@@ -1,108 +1,108 @@
 @interface OADTableStyle
 - (id)description;
-- (id)partStyle:(int)a3;
-- (void)setStyle:(id)a3 forPart:(int)a4;
+- (id)partStyle:(int)style;
+- (void)setStyle:(id)style forPart:(int)part;
 @end
 
 @implementation OADTableStyle
 
-- (id)partStyle:(int)a3
+- (id)partStyle:(int)style
 {
-  switch(a3)
+  switch(style)
   {
     case 1:
-      v5 = [(OADTableStyle *)self wholeTableStyle];
+      wholeTableStyle = [(OADTableStyle *)self wholeTableStyle];
       goto LABEL_18;
     case 2:
-      v5 = [(OADTableStyle *)self band1HorzStyle];
+      wholeTableStyle = [(OADTableStyle *)self band1HorzStyle];
       goto LABEL_18;
     case 3:
-      v5 = [(OADTableStyle *)self band2HorzStyle];
+      wholeTableStyle = [(OADTableStyle *)self band2HorzStyle];
       goto LABEL_18;
     case 4:
-      v5 = [(OADTableStyle *)self band1VertStyle];
+      wholeTableStyle = [(OADTableStyle *)self band1VertStyle];
       goto LABEL_18;
     case 5:
-      v5 = [(OADTableStyle *)self band2VertStyle];
+      wholeTableStyle = [(OADTableStyle *)self band2VertStyle];
       goto LABEL_18;
     case 6:
-      v5 = [(OADTableStyle *)self firstRowStyle];
+      wholeTableStyle = [(OADTableStyle *)self firstRowStyle];
       goto LABEL_18;
     case 7:
-      v5 = [(OADTableStyle *)self lastRowStyle];
+      wholeTableStyle = [(OADTableStyle *)self lastRowStyle];
       goto LABEL_18;
     case 8:
-      v5 = [(OADTableStyle *)self firstColumnStyle];
+      wholeTableStyle = [(OADTableStyle *)self firstColumnStyle];
       goto LABEL_18;
     case 9:
-      v5 = [(OADTableStyle *)self lastColumnStyle];
+      wholeTableStyle = [(OADTableStyle *)self lastColumnStyle];
       goto LABEL_18;
     case 10:
-      v5 = [(OADTableStyle *)self northWestStyle];
+      wholeTableStyle = [(OADTableStyle *)self northWestStyle];
       goto LABEL_18;
     case 11:
-      v5 = [(OADTableStyle *)self northEastStyle];
+      wholeTableStyle = [(OADTableStyle *)self northEastStyle];
       goto LABEL_18;
     case 12:
-      v5 = [(OADTableStyle *)self southWestStyle];
+      wholeTableStyle = [(OADTableStyle *)self southWestStyle];
       goto LABEL_18;
     case 13:
-      v5 = [(OADTableStyle *)self southEastStyle];
+      wholeTableStyle = [(OADTableStyle *)self southEastStyle];
 LABEL_18:
 
       break;
     default:
-      v5 = 0;
+      wholeTableStyle = 0;
 
       break;
   }
 
-  return v5;
+  return wholeTableStyle;
 }
 
-- (void)setStyle:(id)a3 forPart:(int)a4
+- (void)setStyle:(id)style forPart:(int)part
 {
-  v6 = a3;
-  switch(a4)
+  styleCopy = style;
+  switch(part)
   {
     case 1:
-      [(OADTableStyle *)self setWholeTableStyle:v6];
+      [(OADTableStyle *)self setWholeTableStyle:styleCopy];
       break;
     case 2:
-      [(OADTableStyle *)self setBand1HorzStyle:v6];
+      [(OADTableStyle *)self setBand1HorzStyle:styleCopy];
       break;
     case 3:
-      [(OADTableStyle *)self setBand2HorzStyle:v6];
+      [(OADTableStyle *)self setBand2HorzStyle:styleCopy];
       break;
     case 4:
-      [(OADTableStyle *)self setBand1VertStyle:v6];
+      [(OADTableStyle *)self setBand1VertStyle:styleCopy];
       break;
     case 5:
-      [(OADTableStyle *)self setBand2VertStyle:v6];
+      [(OADTableStyle *)self setBand2VertStyle:styleCopy];
       break;
     case 6:
-      [(OADTableStyle *)self setFirstRowStyle:v6];
+      [(OADTableStyle *)self setFirstRowStyle:styleCopy];
       break;
     case 7:
-      [(OADTableStyle *)self setLastRowStyle:v6];
+      [(OADTableStyle *)self setLastRowStyle:styleCopy];
       break;
     case 8:
-      [(OADTableStyle *)self setFirstColumnStyle:v6];
+      [(OADTableStyle *)self setFirstColumnStyle:styleCopy];
       break;
     case 9:
-      [(OADTableStyle *)self setLastColumnStyle:v6];
+      [(OADTableStyle *)self setLastColumnStyle:styleCopy];
       break;
     case 10:
-      [(OADTableStyle *)self setNorthWestStyle:v6];
+      [(OADTableStyle *)self setNorthWestStyle:styleCopy];
       break;
     case 11:
-      [(OADTableStyle *)self setNorthEastStyle:v6];
+      [(OADTableStyle *)self setNorthEastStyle:styleCopy];
       break;
     case 12:
-      [(OADTableStyle *)self setSouthWestStyle:v6];
+      [(OADTableStyle *)self setSouthWestStyle:styleCopy];
       break;
     case 13:
-      [(OADTableStyle *)self setSouthEastStyle:v6];
+      [(OADTableStyle *)self setSouthEastStyle:styleCopy];
       break;
     default:
       break;

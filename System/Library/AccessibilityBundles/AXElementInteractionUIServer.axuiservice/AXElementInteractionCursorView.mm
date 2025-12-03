@@ -1,51 +1,51 @@
 @interface AXElementInteractionCursorView
-+ (CGRect)resizeFrameForDisplay:(CGRect)a3;
-- (AXElementInteractionCursorView)initWithFrame:(CGRect)a3;
++ (CGRect)resizeFrameForDisplay:(CGRect)display;
+- (AXElementInteractionCursorView)initWithFrame:(CGRect)frame;
 - (CGRect)cursorFrame;
-- (id)_retrieveBezierPaths:(CGRect)a3 usingRealPaths:(BOOL *)a4;
-- (id)_retrieveFrameBezierPath:(CGRect)a3;
+- (id)_retrieveBezierPaths:(CGRect)paths usingRealPaths:(BOOL *)realPaths;
+- (id)_retrieveFrameBezierPath:(CGRect)path;
 - (id)_retrievePathBezierPaths;
 - (void)_orderIn;
 - (void)_orderOut;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)setCursorFrame:(CGRect)a3;
-- (void)setIsHidden:(BOOL)a3;
-- (void)setPath:(CGPath *)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setCursorFrame:(CGRect)frame;
+- (void)setIsHidden:(BOOL)hidden;
+- (void)setPath:(CGPath *)path;
 @end
 
 @implementation AXElementInteractionCursorView
 
-+ (CGRect)resizeFrameForDisplay:(CGRect)a3
++ (CGRect)resizeFrameForDisplay:(CGRect)display
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a3.size.width >= 15.0)
+  y = display.origin.y;
+  x = display.origin.x;
+  if (display.size.width >= 15.0)
   {
     v5 = 2.5;
   }
 
   else
   {
-    v5 = 15.0 - a3.size.width + 2.5;
+    v5 = 15.0 - display.size.width + 2.5;
   }
 
-  if (a3.size.height >= 15.0)
+  if (display.size.height >= 15.0)
   {
     v6 = 2.5;
   }
 
   else
   {
-    v6 = 15.0 - a3.size.height;
+    v6 = 15.0 - display.size.height;
   }
 
   v21 = v6;
   v22 = v5;
-  v7 = a3.size.width - fabs(x);
+  v7 = display.size.width - fabs(x);
   if (x >= 0.0)
   {
-    width = a3.size.width;
+    width = display.size.width;
   }
 
   else
@@ -53,10 +53,10 @@
     width = v7;
   }
 
-  v9 = a3.size.height - fabs(a3.origin.y);
-  if (a3.origin.y >= 0.0)
+  v9 = display.size.height - fabs(display.origin.y);
+  if (display.origin.y >= 0.0)
   {
-    height = a3.size.height;
+    height = display.size.height;
   }
 
   else
@@ -129,11 +129,11 @@
   return CGRectInset(*(&v17 - 1), v15, v16);
 }
 
-- (AXElementInteractionCursorView)initWithFrame:(CGRect)a3
+- (AXElementInteractionCursorView)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = AXElementInteractionCursorView;
-  v3 = [(AXElementInteractionCursorView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AXElementInteractionCursorView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(AXElementInteractionCursorView *)v3 setClipsToBounds:1];
   [(AXElementInteractionCursorView *)v3 setOpaque:0];
   return v3;
@@ -147,14 +147,14 @@
   [(AXElementInteractionCursorView *)&v3 dealloc];
 }
 
-- (void)setPath:(CGPath *)a3
+- (void)setPath:(CGPath *)path
 {
-  if (a3 && !CGPathIsEmpty(a3))
+  if (path && !CGPathIsEmpty(path))
   {
-    self->_path = a3;
-    CFRetain(a3);
-    v6 = [(AXElementInteractionCursorView *)self window];
-    [v6 frame];
+    self->_path = path;
+    CFRetain(path);
+    window = [(AXElementInteractionCursorView *)self window];
+    [window frame];
     [(AXElementInteractionCursorView *)self setFrame:?];
   }
 
@@ -169,12 +169,12 @@
   }
 }
 
-- (void)setIsHidden:(BOOL)a3
+- (void)setIsHidden:(BOOL)hidden
 {
   isHidden = self->_isHidden;
-  if (!isHidden || a3)
+  if (!isHidden || hidden)
   {
-    if (a3 && !isHidden)
+    if (hidden && !isHidden)
     {
       self->_isHidden = 1;
       [(AXElementInteractionCursorView *)self _orderOut];
@@ -210,12 +210,12 @@
   [UIView animateWithDuration:196608 delay:v2 options:0 animations:0.05 completion:0.0];
 }
 
-- (void)setCursorFrame:(CGRect)a3
+- (void)setCursorFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(AXElementInteractionCursorView *)self lineWidth];
   v9 = -(v8 + 6.0);
   v16.origin.x = x;
@@ -256,7 +256,7 @@
   return v3;
 }
 
-- (id)_retrieveFrameBezierPath:(CGRect)a3
+- (id)_retrieveFrameBezierPath:(CGRect)path
 {
   if (CGSizeZero.width == self->_cursorFrame.size.width && CGSizeZero.height == self->_cursorFrame.size.height)
   {
@@ -265,7 +265,7 @@
 
   else
   {
-    v20 = CGRectInset(a3, 3.0, 3.0);
+    v20 = CGRectInset(path, 3.0, 3.0);
     x = v20.origin.x;
     y = v20.origin.y;
     width = v20.size.width;
@@ -298,41 +298,41 @@
   return v17;
 }
 
-- (id)_retrieveBezierPaths:(CGRect)a3 usingRealPaths:(BOOL *)a4
+- (id)_retrieveBezierPaths:(CGRect)paths usingRealPaths:(BOOL *)realPaths
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = paths.size.height;
+  width = paths.size.width;
+  y = paths.origin.y;
+  x = paths.origin.x;
   path = self->_path;
   if (path)
   {
     IsEmpty = CGPathIsEmpty(path);
-    *a4 = !IsEmpty;
+    *realPaths = !IsEmpty;
     if (!IsEmpty)
     {
-      v12 = [(AXElementInteractionCursorView *)self _retrievePathBezierPaths];
+      _retrievePathBezierPaths = [(AXElementInteractionCursorView *)self _retrievePathBezierPaths];
       goto LABEL_6;
     }
   }
 
   else
   {
-    *a4 = 0;
+    *realPaths = 0;
   }
 
-  v12 = [(AXElementInteractionCursorView *)self _retrieveFrameBezierPath:x, y, width, height];
+  _retrievePathBezierPaths = [(AXElementInteractionCursorView *)self _retrieveFrameBezierPath:x, y, width, height];
 LABEL_6:
 
-  return v12;
+  return _retrievePathBezierPaths;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v16 = 0;
   v8 = [(AXElementInteractionCursorView *)self _retrieveBezierPaths:&v16 usingRealPaths:?];
   v17.origin.x = x;

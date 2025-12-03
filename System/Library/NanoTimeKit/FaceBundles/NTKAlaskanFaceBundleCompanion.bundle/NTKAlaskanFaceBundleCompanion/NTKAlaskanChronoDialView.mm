@@ -1,39 +1,39 @@
 @interface NTKAlaskanChronoDialView
 + (id)layerDisabledActions;
-- (NTKAlaskanChronoDialView)initWithFrame:(CGRect)a3 options:(id)a4 palette:(id)a5;
-- (void)updateWithColorPalette:(id)a3;
+- (NTKAlaskanChronoDialView)initWithFrame:(CGRect)frame options:(id)options palette:(id)palette;
+- (void)updateWithColorPalette:(id)palette;
 @end
 
 @implementation NTKAlaskanChronoDialView
 
-- (NTKAlaskanChronoDialView)initWithFrame:(CGRect)a3 options:(id)a4 palette:(id)a5
+- (NTKAlaskanChronoDialView)initWithFrame:(CGRect)frame options:(id)options palette:(id)palette
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
-  v13 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  optionsCopy = options;
+  paletteCopy = palette;
   v47.receiver = self;
   v47.super_class = NTKAlaskanChronoDialView;
-  v14 = [(NTKAlaskanChronoDialView *)&v47 initWithFrame:x, y, width, height];
-  if (v14)
+  height = [(NTKAlaskanChronoDialView *)&v47 initWithFrame:x, y, width, height];
+  if (height)
   {
     v15 = +[NTKFaceViewRenderingContext sharedRenderingContext];
-    v16 = [v15 device];
+    device = [v15 device];
 
-    objc_storeStrong(&v14->_palette, a5);
-    objc_storeStrong(&v14->_options, a4);
-    objc_initWeak(&location, v14);
-    v17 = [v12 ticksCount];
+    objc_storeStrong(&height->_palette, palette);
+    objc_storeStrong(&height->_options, options);
+    objc_initWeak(&location, height);
+    ticksCount = [optionsCopy ticksCount];
     v18 = [NTKAlaskanDialView alloc];
     v42[0] = _NSConcreteStackBlock;
     v42[1] = 3221225472;
     v42[2] = sub_11598;
     v42[3] = &unk_39118;
     objc_copyWeak(&v45, &location);
-    v43 = v12;
-    v31 = v16;
+    v43 = optionsCopy;
+    v31 = device;
     v44 = v31;
     v40[0] = _NSConcreteStackBlock;
     v40[1] = 3221225472;
@@ -41,7 +41,7 @@
     v40[3] = &unk_38D48;
     v19 = v43;
     v41 = v19;
-    v20 = [(NTKAlaskanDialView *)v18 initWithNumberOfMarkers:v17 markersFactory:v42 angleProvider:v40];
+    v20 = [(NTKAlaskanDialView *)v18 initWithNumberOfMarkers:ticksCount markersFactory:v42 angleProvider:v40];
     [(NTKAlaskanDialView *)v20 setShouldRotateMarkers:1];
     [v19 ticksContentInset];
     [(NTKAlaskanDialView *)v20 setContentInset:?];
@@ -50,10 +50,10 @@
 
     [(NTKAlaskanDialView *)v20 setShouldPixelAlignCenterPoints:0];
     [(NTKAlaskanDialView *)v20 setAutoresizingMask:18];
-    objc_storeStrong(&v14->_ticksView, v20);
-    [(NTKAlaskanChronoDialView *)v14 addSubview:v14->_ticksView];
+    objc_storeStrong(&height->_ticksView, v20);
+    [(NTKAlaskanChronoDialView *)height addSubview:height->_ticksView];
     v22 = [NTKAlaskanDialView alloc];
-    v23 = [v19 markersCount];
+    markersCount = [v19 markersCount];
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
     v37[2] = sub_118BC;
@@ -66,16 +66,16 @@
     v35[3] = &unk_38D48;
     v24 = v38;
     v36 = v24;
-    v25 = [(NTKAlaskanDialView *)v22 initWithNumberOfMarkers:v23 markersFactory:v37 angleProvider:v35];
+    v25 = [(NTKAlaskanDialView *)v22 initWithNumberOfMarkers:markersCount markersFactory:v37 angleProvider:v35];
     [v24 markersDiameter];
     [(NTKAlaskanDialView *)v25 setContentDiameter:?];
     [(NTKAlaskanDialView *)v25 setAutoresizingMask:18];
-    objc_storeStrong(&v14->_markersView, v25);
-    [(NTKAlaskanChronoDialView *)v14 addSubview:v14->_markersView];
+    objc_storeStrong(&height->_markersView, v25);
+    [(NTKAlaskanChronoDialView *)height addSubview:height->_markersView];
     if ([v24 hasSecondaryMarkers])
     {
       v26 = [NTKAlaskanDialView alloc];
-      v27 = [v24 secondaryMarkersCount];
+      secondaryMarkersCount = [v24 secondaryMarkersCount];
       v32[0] = _NSConcreteStackBlock;
       v32[1] = 3221225472;
       v32[2] = sub_11A7C;
@@ -83,12 +83,12 @@
       objc_copyWeak(&v34, &location);
       v28 = v24;
       v33 = v28;
-      v29 = [(NTKAlaskanDialView *)v26 initWithNumberOfMarkers:v27 markersFactory:v32];
+      v29 = [(NTKAlaskanDialView *)v26 initWithNumberOfMarkers:secondaryMarkersCount markersFactory:v32];
       [v28 secondaryMarkersDiameter];
       [(NTKAlaskanDialView *)v29 setContentDiameter:?];
       [(NTKAlaskanDialView *)v29 setAutoresizingMask:18];
-      objc_storeStrong(&v14->_secondaryMarkersView, v29);
-      [(NTKAlaskanChronoDialView *)v14 addSubview:v14->_secondaryMarkersView];
+      objc_storeStrong(&height->_secondaryMarkersView, v29);
+      [(NTKAlaskanChronoDialView *)height addSubview:height->_secondaryMarkersView];
 
       objc_destroyWeak(&v34);
     }
@@ -98,7 +98,7 @@
     objc_destroyWeak(&location);
   }
 
-  return v14;
+  return height;
 }
 
 + (id)layerDisabledActions
@@ -123,17 +123,17 @@
   return v3;
 }
 
-- (void)updateWithColorPalette:(id)a3
+- (void)updateWithColorPalette:(id)palette
 {
-  v5 = a3;
-  objc_storeStrong(&self->_palette, a3);
+  paletteCopy = palette;
+  objc_storeStrong(&self->_palette, palette);
   ticksView = self->_ticksView;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_11E40;
   v16[3] = &unk_39168;
   v16[4] = self;
-  v7 = v5;
+  v7 = paletteCopy;
   v17 = v7;
   [(NTKAlaskanDialView *)ticksView enumerateMarkers:v16];
   markersView = self->_markersView;

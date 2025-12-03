@@ -1,27 +1,27 @@
 @interface OrgApacheLuceneIndexSingleTermsEnum
-- (OrgApacheLuceneIndexSingleTermsEnum)initWithOrgApacheLuceneIndexTermsEnum:(id)a3 withOrgApacheLuceneUtilBytesRef:(id)a4;
-- (id)acceptWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (OrgApacheLuceneIndexSingleTermsEnum)initWithOrgApacheLuceneIndexTermsEnum:(id)enum withOrgApacheLuceneUtilBytesRef:(id)ref;
+- (id)acceptWithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneIndexSingleTermsEnum
 
-- (OrgApacheLuceneIndexSingleTermsEnum)initWithOrgApacheLuceneIndexTermsEnum:(id)a3 withOrgApacheLuceneUtilBytesRef:(id)a4
+- (OrgApacheLuceneIndexSingleTermsEnum)initWithOrgApacheLuceneIndexTermsEnum:(id)enum withOrgApacheLuceneUtilBytesRef:(id)ref
 {
-  OrgApacheLuceneIndexFilteredTermsEnum_initWithOrgApacheLuceneIndexTermsEnum_(self, a3);
-  JreStrongAssign((&self->super.doSeek_ + 1), a4);
-  [(OrgApacheLuceneIndexFilteredTermsEnum *)self setInitialSeekTermWithOrgApacheLuceneUtilBytesRef:a4];
+  OrgApacheLuceneIndexFilteredTermsEnum_initWithOrgApacheLuceneIndexTermsEnum_(self, enum);
+  JreStrongAssign((&self->super.doSeek_ + 1), ref);
+  [(OrgApacheLuceneIndexFilteredTermsEnum *)self setInitialSeekTermWithOrgApacheLuceneUtilBytesRef:ref];
   return self;
 }
 
-- (id)acceptWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (id)acceptWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
-  if (!a3)
+  if (!ref)
   {
     JreThrowNullPointerException();
   }
 
-  v3 = [a3 isEqual:*(&self->super.doSeek_ + 1)];
+  v3 = [ref isEqual:*(&self->super.doSeek_ + 1)];
   if ((atomic_load_explicit(OrgApacheLuceneIndexFilteredTermsEnum_AcceptStatusEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1000169CC();

@@ -116,16 +116,16 @@ uint64_t __42__PXZoomablePhotosSettings_sharedInstance__block_invoke()
 - (NSArray)columns
 {
   v3 = +[PXZoomablePhotosSettings columnChoices];
-  v4 = [(PXZoomablePhotosSettings *)self columnsChoiceIndex];
+  columnsChoiceIndex = [(PXZoomablePhotosSettings *)self columnsChoiceIndex];
   v5 = [v3 count];
-  if (v4 >= v5 - 1)
+  if (columnsChoiceIndex >= v5 - 1)
   {
     v6 = v5 - 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = columnsChoiceIndex;
   }
 
   v7 = [v3 objectAtIndexedSubscript:v6];
@@ -157,7 +157,7 @@ void __41__PXZoomablePhotosSettings_columnChoices__block_invoke()
   block[1] = 3221225472;
   block[2] = __40__PXZoomablePhotosSettings_validColumns__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (validColumns_onceToken != -1)
   {
     dispatch_once(&validColumns_onceToken, block);

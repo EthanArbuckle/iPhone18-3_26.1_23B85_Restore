@@ -1,31 +1,31 @@
 @interface MUICatchUpFeedbackController
 + (BOOL)isFeedbackRestricted;
-+ (void)provideAutomaticSummaryFeedbackWithType:(int64_t)a3 message:(id)a4 sourceViewController:(id)a5;
-+ (void)provideHighlightsFeedbackWithType:(int64_t)a3 message:(id)a4 sourceViewController:(id)a5;
++ (void)provideAutomaticSummaryFeedbackWithType:(int64_t)type message:(id)message sourceViewController:(id)controller;
++ (void)provideHighlightsFeedbackWithType:(int64_t)type message:(id)message sourceViewController:(id)controller;
 @end
 
 @implementation MUICatchUpFeedbackController
 
-+ (void)provideAutomaticSummaryFeedbackWithType:(int64_t)a3 message:(id)a4 sourceViewController:(id)a5
++ (void)provideAutomaticSummaryFeedbackWithType:(int64_t)type message:(id)message sourceViewController:(id)controller
 {
   swift_getObjCClassMetadata();
-  MEMORY[0x277D82BE0](a4);
-  MEMORY[0x277D82BE0](a5);
+  MEMORY[0x277D82BE0](message);
+  MEMORY[0x277D82BE0](controller);
   swift_getObjCClassMetadata();
-  static MUICatchUpFeedbackController.provideAutomaticSummaryFeedback(with:message:sourceViewController:)(a3, a4, a5);
-  MEMORY[0x277D82BD8](a5);
-  MEMORY[0x277D82BD8](a4);
+  static MUICatchUpFeedbackController.provideAutomaticSummaryFeedback(with:message:sourceViewController:)(type, message, controller);
+  MEMORY[0x277D82BD8](controller);
+  MEMORY[0x277D82BD8](message);
 }
 
-+ (void)provideHighlightsFeedbackWithType:(int64_t)a3 message:(id)a4 sourceViewController:(id)a5
++ (void)provideHighlightsFeedbackWithType:(int64_t)type message:(id)message sourceViewController:(id)controller
 {
   swift_getObjCClassMetadata();
-  MEMORY[0x277D82BE0](a4);
-  MEMORY[0x277D82BE0](a5);
+  MEMORY[0x277D82BE0](message);
+  MEMORY[0x277D82BE0](controller);
   swift_getObjCClassMetadata();
-  static MUICatchUpFeedbackController.provideHighlightsFeedback(with:message:sourceViewController:)(a3, a4, a5);
-  MEMORY[0x277D82BD8](a5);
-  MEMORY[0x277D82BD8](a4);
+  static MUICatchUpFeedbackController.provideHighlightsFeedback(with:message:sourceViewController:)(type, message, controller);
+  MEMORY[0x277D82BD8](controller);
+  MEMORY[0x277D82BD8](message);
 }
 
 + (BOOL)isFeedbackRestricted

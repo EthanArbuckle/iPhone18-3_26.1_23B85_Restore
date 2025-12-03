@@ -1,65 +1,65 @@
 @interface BMEntityRelationshipEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMEntityRelationshipEvent)initWithClientId:(id)a3 relationship:(id)a4 sourceEntity:(id)a5 targetEntity:(id)a6 attributes:(id)a7;
-- (BMEntityRelationshipEvent)initWithProto:(id)a3;
-- (BMEntityRelationshipEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMEntityRelationshipEvent)initWithClientId:(id)id relationship:(id)relationship sourceEntity:(id)entity targetEntity:(id)targetEntity attributes:(id)attributes;
+- (BMEntityRelationshipEvent)initWithProto:(id)proto;
+- (BMEntityRelationshipEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
-- (id)entityFromPBEntity:(id)a3;
+- (id)entityFromPBEntity:(id)entity;
 - (id)proto;
 @end
 
 @implementation BMEntityRelationshipEvent
 
-- (BMEntityRelationshipEvent)initWithClientId:(id)a3 relationship:(id)a4 sourceEntity:(id)a5 targetEntity:(id)a6 attributes:(id)a7
+- (BMEntityRelationshipEvent)initWithClientId:(id)id relationship:(id)relationship sourceEntity:(id)entity targetEntity:(id)targetEntity attributes:(id)attributes
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  idCopy = id;
+  relationshipCopy = relationship;
+  entityCopy = entity;
+  targetEntityCopy = targetEntity;
+  attributesCopy = attributes;
   v21.receiver = self;
   v21.super_class = BMEntityRelationshipEvent;
   v17 = [(BMEntityRelationshipEvent *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_clientId, a3);
-    objc_storeStrong(&v18->_relationship, a4);
-    objc_storeStrong(&v18->_sourceEntity, a5);
-    objc_storeStrong(&v18->_targetEntity, a6);
-    objc_storeStrong(&v18->_attributes, a7);
+    objc_storeStrong(&v17->_clientId, id);
+    objc_storeStrong(&v18->_relationship, relationship);
+    objc_storeStrong(&v18->_sourceEntity, entity);
+    objc_storeStrong(&v18->_targetEntity, targetEntity);
+    objc_storeStrong(&v18->_attributes, attributes);
   }
 
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     clientId = self->_clientId;
-    v7 = [v5 clientId];
-    if ([(NSString *)clientId isEqualToString:v7])
+    clientId = [v5 clientId];
+    if ([(NSString *)clientId isEqualToString:clientId])
     {
       relationship = self->_relationship;
-      v9 = [v5 relationship];
-      if ([(NSString *)relationship isEqualToString:v9])
+      relationship = [v5 relationship];
+      if ([(NSString *)relationship isEqualToString:relationship])
       {
         sourceEntity = self->_sourceEntity;
-        v11 = [v5 sourceEntity];
-        if ([(BMEntity *)sourceEntity isEqual:v11])
+        sourceEntity = [v5 sourceEntity];
+        if ([(BMEntity *)sourceEntity isEqual:sourceEntity])
         {
           targetEntity = self->_targetEntity;
-          v13 = [v5 targetEntity];
-          if ([(BMEntity *)targetEntity isEqual:v13])
+          targetEntity = [v5 targetEntity];
+          if ([(BMEntity *)targetEntity isEqual:targetEntity])
           {
             attributes = self->_attributes;
-            v15 = [v5 attributes];
-            v16 = [BMEntityRelationshipEventUtilities checkNullableDictionaryEqualityForSource:attributes target:v15];
+            attributes = [v5 attributes];
+            v16 = [BMEntityRelationshipEventUtilities checkNullableDictionaryEqualityForSource:attributes target:attributes];
           }
 
           else
@@ -94,12 +94,12 @@
   return v16;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
-    v5 = a3;
-    v6 = [[a1 alloc] initWithProtoData:v5];
+    dataCopy = data;
+    v6 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -112,38 +112,38 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(BMEntityRelationshipEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMEntityRelationshipEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMEntityRelationshipEvent)initWithProto:(id)a3
+- (BMEntityRelationshipEvent)initWithProto:(id)proto
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  protoCopy = proto;
+  if (protoCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [v5 sourceEntity];
-    v7 = [(BMEntityRelationshipEvent *)self entityFromPBEntity:v6];
+    v5 = protoCopy;
+    sourceEntity = [v5 sourceEntity];
+    v7 = [(BMEntityRelationshipEvent *)self entityFromPBEntity:sourceEntity];
 
-    v8 = [v5 targetEntity];
-    v9 = [(BMEntityRelationshipEvent *)self entityFromPBEntity:v8];
+    targetEntity = [v5 targetEntity];
+    v9 = [(BMEntityRelationshipEvent *)self entityFromPBEntity:targetEntity];
 
-    v10 = [v5 attributes];
+    attributes = [v5 attributes];
 
-    if (v10)
+    if (attributes)
     {
       v25 = v9;
       v26 = v7;
-      v10 = objc_opt_new();
+      attributes = objc_opt_new();
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v11 = [v5 attributes];
-      v12 = [v11 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      attributes2 = [v5 attributes];
+      v12 = [attributes2 countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v12)
       {
         v13 = v12;
@@ -154,16 +154,16 @@
           {
             if (*v28 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(attributes2);
             }
 
             v16 = *(*(&v27 + 1) + 8 * i);
-            v17 = [v16 value];
+            value = [v16 value];
             v18 = [v16 key];
-            [v10 setValue:v17 forKey:v18];
+            [attributes setValue:value forKey:v18];
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v27 objects:v31 count:16];
+          v13 = [attributes2 countByEnumeratingWithState:&v27 objects:v31 count:16];
         }
 
         while (v13);
@@ -173,63 +173,63 @@
       v7 = v26;
     }
 
-    v19 = [v5 clientId];
-    v20 = [v5 relationship];
-    v21 = [v10 copy];
-    self = [(BMEntityRelationshipEvent *)self initWithClientId:v19 relationship:v20 sourceEntity:v7 targetEntity:v9 attributes:v21];
+    clientId = [v5 clientId];
+    relationship = [v5 relationship];
+    v21 = [attributes copy];
+    self = [(BMEntityRelationshipEvent *)self initWithClientId:clientId relationship:relationship sourceEntity:v7 targetEntity:v9 attributes:v21];
 
-    v22 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v22 = 0;
+    selfCopy = 0;
   }
 
   v23 = *MEMORY[0x1E69E9840];
-  return v22;
+  return selfCopy;
 }
 
-- (BMEntityRelationshipEvent)initWithProtoData:(id)a3
+- (BMEntityRelationshipEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBEntityRelationshipEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBEntityRelationshipEvent alloc] initWithData:dataCopy];
 
     self = [(BMEntityRelationshipEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v30 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(BMEntityRelationshipEvent *)self clientId];
-  [v3 setClientId:v4];
+  clientId = [(BMEntityRelationshipEvent *)self clientId];
+  [v3 setClientId:clientId];
 
-  v5 = [(BMEntityRelationshipEvent *)self relationship];
-  [v3 setRelationship:v5];
+  relationship = [(BMEntityRelationshipEvent *)self relationship];
+  [v3 setRelationship:relationship];
 
-  v6 = [(BMEntityRelationshipEvent *)self sourceEntity];
-  v7 = [v6 proto];
-  [v3 setSourceEntity:v7];
+  sourceEntity = [(BMEntityRelationshipEvent *)self sourceEntity];
+  proto = [sourceEntity proto];
+  [v3 setSourceEntity:proto];
 
-  v8 = [(BMEntityRelationshipEvent *)self targetEntity];
-  v9 = [v8 proto];
-  [v3 setTargetEntity:v9];
+  targetEntity = [(BMEntityRelationshipEvent *)self targetEntity];
+  proto2 = [targetEntity proto];
+  [v3 setTargetEntity:proto2];
 
-  v10 = [(BMEntityRelationshipEvent *)self attributes];
+  attributes = [(BMEntityRelationshipEvent *)self attributes];
 
-  if (v10)
+  if (attributes)
   {
     v11 = objc_opt_new();
     v25 = 0u;
@@ -255,8 +255,8 @@
           v17 = objc_autoreleasePoolPush();
           v18 = objc_opt_new();
           [v18 setKey:v16];
-          v19 = [(BMEntityRelationshipEvent *)self attributes];
-          v20 = [v19 objectForKeyedSubscript:v16];
+          attributes2 = [(BMEntityRelationshipEvent *)self attributes];
+          v20 = [attributes2 objectForKeyedSubscript:v16];
           [v18 setValue:v20];
 
           [v11 addObject:v18];
@@ -278,20 +278,20 @@
   return v3;
 }
 
-- (id)entityFromPBEntity:(id)a3
+- (id)entityFromPBEntity:(id)entity
 {
-  v3 = a3;
+  entityCopy = entity;
   v4 = [BMEntity alloc];
-  v5 = [v3 hasPersonEntity];
-  v6 = [v3 hasTopicEntity];
+  hasPersonEntity = [entityCopy hasPersonEntity];
+  hasTopicEntity = [entityCopy hasTopicEntity];
   v7 = [BMTopicEntity alloc];
-  v8 = [v3 topicEntity];
-  v9 = [(BMTopicEntity *)v7 initWithProto:v8];
+  topicEntity = [entityCopy topicEntity];
+  v9 = [(BMTopicEntity *)v7 initWithProto:topicEntity];
   v10 = [BMPersonEntity alloc];
-  v11 = [v3 personEntity];
+  personEntity = [entityCopy personEntity];
 
-  v12 = [(BMPersonEntity *)v10 initWithProto:v11];
-  v13 = [(BMEntity *)v4 initWithIsPersonType:v5 isTopicType:v6 topicEntity:v9 personEntity:v12];
+  v12 = [(BMPersonEntity *)v10 initWithProto:personEntity];
+  v13 = [(BMEntity *)v4 initWithIsPersonType:hasPersonEntity isTopicType:hasTopicEntity topicEntity:v9 personEntity:v12];
 
   return v13;
 }

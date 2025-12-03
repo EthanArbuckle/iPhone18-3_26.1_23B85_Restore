@@ -1,7 +1,7 @@
 @interface _ANECoreMLModelCompiler
-+ (id)compileModelAt:(id)a3 csIdentity:(id)a4 key:(id)a5 optionsFilename:(id)a6 tempDirectory:(id)a7 outputURL:(id)a8 saveSourceModelPath:(id)a9 aotModelBinaryPath:(id)a10 isEncryptedModel:(BOOL)a11 options:(id)a12 ok:(BOOL *)a13 error:(id *)a14;
-+ (id)createErrorWithString:(id)a3;
-+ (id)pathsForModelURL:(id)a3;
++ (id)compileModelAt:(id)at csIdentity:(id)identity key:(id)key optionsFilename:(id)filename tempDirectory:(id)directory outputURL:(id)l saveSourceModelPath:(id)path aotModelBinaryPath:(id)self0 isEncryptedModel:(BOOL)self1 options:(id)self2 ok:(BOOL *)self3 error:(id *)self4;
++ (id)createErrorWithString:(id)string;
++ (id)pathsForModelURL:(id)l;
 + (void)initialize;
 @end
 
@@ -14,53 +14,53 @@
   _objc_release_x1();
 }
 
-+ (id)createErrorWithString:(id)a3
++ (id)createErrorWithString:(id)string
 {
-  v4 = [NSString stringWithFormat:@"_ANECoreMLModelCompiler : error %@", a3];
+  string = [NSString stringWithFormat:@"_ANECoreMLModelCompiler : error %@", string];
   v5 = qword_100021B28;
   if (os_log_type_enabled(qword_100021B28, OS_LOG_TYPE_ERROR))
   {
-    sub_100011A9C(v5, a2, v4);
+    sub_100011A9C(v5, a2, string);
   }
 
   [_ANEDataReporter addValue:1 forScalarKey:@"ModelFailsEspressoCompilation"];
   v6 = +[_ANEStrings errorDomainEspresso];
   v10 = NSLocalizedDescriptionKey;
-  v11 = v4;
+  v11 = string;
   v7 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v8 = [NSError errorWithDomain:v6 code:1 userInfo:v7];
 
   return v8;
 }
 
-+ (id)pathsForModelURL:(id)a3
++ (id)pathsForModelURL:(id)l
 {
-  v3 = [a3 path];
-  v4 = [NSString stringWithFormat:@"%@/", v3];
+  path = [l path];
+  v4 = [NSString stringWithFormat:@"%@/", path];
   v5 = +[NSFileManager defaultManager];
-  v6 = [v5 enumeratorAtPath:v3];
+  v6 = [v5 enumeratorAtPath:path];
   v7 = 0;
   while (1)
   {
-    v8 = [v6 nextObject];
+    nextObject = [v6 nextObject];
 
-    if (!v8)
+    if (!nextObject)
     {
       break;
     }
 
-    v7 = v8;
-    if ([v8 containsString:@".net"])
+    v7 = nextObject;
+    if ([nextObject containsString:@".net"])
     {
       goto LABEL_6;
     }
   }
 
-  v8 = [NSString stringWithFormat:@"model.espresso.net"];
+  nextObject = [NSString stringWithFormat:@"model.espresso.net"];
 LABEL_6:
-  v9 = [NSString stringWithFormat:@"%@%@", v4, v8];
-  v10 = [v4 pathExtension];
-  if ([v10 isEqualToString:@"bin"])
+  v9 = [NSString stringWithFormat:@"%@%@", v4, nextObject];
+  pathExtension = [v4 pathExtension];
+  if ([pathExtension isEqualToString:@"bin"])
   {
     v11 = v4;
 LABEL_8:
@@ -80,17 +80,17 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v10 = [v4 pathExtension];
-  if ([v10 isEqualToString:@"net"])
+  pathExtension = [v4 pathExtension];
+  if ([pathExtension isEqualToString:@"net"])
   {
-    v11 = v3;
+    v11 = path;
     goto LABEL_8;
   }
 
-  v15 = [v4 pathExtension];
-  v16 = [v15 isEqualToString:@"mil"];
+  pathExtension2 = [v4 pathExtension];
+  v16 = [pathExtension2 isEqualToString:@"mil"];
 
-  v11 = v3;
+  v11 = path;
   if (v16)
   {
     goto LABEL_10;
@@ -101,25 +101,25 @@ LABEL_11:
   return v9;
 }
 
-+ (id)compileModelAt:(id)a3 csIdentity:(id)a4 key:(id)a5 optionsFilename:(id)a6 tempDirectory:(id)a7 outputURL:(id)a8 saveSourceModelPath:(id)a9 aotModelBinaryPath:(id)a10 isEncryptedModel:(BOOL)a11 options:(id)a12 ok:(BOOL *)a13 error:(id *)a14
++ (id)compileModelAt:(id)at csIdentity:(id)identity key:(id)key optionsFilename:(id)filename tempDirectory:(id)directory outputURL:(id)l saveSourceModelPath:(id)path aotModelBinaryPath:(id)self0 isEncryptedModel:(BOOL)self1 options:(id)self2 ok:(BOOL *)self3 error:(id *)self4
 {
-  v82 = a3;
-  v81 = a4;
-  v83 = a5;
-  v77 = a6;
-  v73 = a7;
-  v74 = a8;
-  v75 = a9;
-  v66 = a10;
-  v84 = a12;
+  atCopy = at;
+  identityCopy = identity;
+  keyCopy = key;
+  filenameCopy = filename;
+  directoryCopy = directory;
+  lCopy = l;
+  pathCopy = path;
+  binaryPathCopy = binaryPath;
+  optionsCopy = options;
   context = objc_autoreleasePoolPush();
   v76 = +[NSFileManager defaultManager];
-  v85 = [a1 pathsForModelURL:v82];
-  v19 = [v82 path];
-  v68 = [NSString stringWithFormat:@"%@/", v19];
+  v85 = [self pathsForModelURL:atCopy];
+  path = [atCopy path];
+  v68 = [NSString stringWithFormat:@"%@/", path];
 
-  v20 = [v74 path];
-  obj = [NSString stringWithFormat:@"%@/", v20];
+  path2 = [lCopy path];
+  obj = [NSString stringWithFormat:@"%@/", path2];
 
   v21 = +[_ANELog compiler];
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -130,11 +130,11 @@ LABEL_11:
     *&buf[12] = 2112;
     *&buf[14] = v85;
     *&buf[22] = 2112;
-    *&buf[24] = v75;
+    *&buf[24] = pathCopy;
     _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "%@ inputModelPath=%@ sourceModelPath=%@", buf, 0x20u);
   }
 
-  v22 = [v84 objectForKeyedSubscript:kANEModelKeyEspressoTranslationOptions];
+  v22 = [optionsCopy objectForKeyedSubscript:kANEModelKeyEspressoTranslationOptions];
   v23 = &__NSDictionary0__struct;
   if (v22)
   {
@@ -143,20 +143,20 @@ LABEL_11:
 
   v72 = v23;
   v24 = [_ANEHashEncoding hexStringForString:v85];
-  v25 = [_ANEHashEncoding hexStringForString:v83];
-  v26 = [NSString stringWithFormat:@"%@/%@/%@/%@/", v73, v81, v24, v25];
+  v25 = [_ANEHashEncoding hexStringForString:keyCopy];
+  v26 = [NSString stringWithFormat:@"%@/%@/%@/%@/", directoryCopy, identityCopy, v24, v25];
 
   [v76 createDirectoryAtPath:v26 withIntermediateDirectories:1 attributes:0 error:0];
   v79 = +[NSDate date];
   v89 = 0;
-  LODWORD(v24) = [_ANEEspressoIRTranslator translateModelAt:v85 key:v83 outputPath:v26 isEncryptedModel:a11 translationOptions:v72 error:&v89];
+  LODWORD(v24) = [_ANEEspressoIRTranslator translateModelAt:v85 key:keyCopy outputPath:v26 isEncryptedModel:model translationOptions:v72 error:&v89];
   v80 = v89;
   v78 = +[NSDate date];
   [v78 timeIntervalSinceDate:v79];
   v28 = v27;
   if (v24)
   {
-    if (v77)
+    if (filenameCopy)
     {
       v29 = [v68 stringByAppendingPathComponent:?];
       goto LABEL_21;
@@ -193,14 +193,14 @@ LABEL_17:
             *&buf[22] = 2112;
             *&buf[24] = v85;
             LOWORD(v93[0]) = 2112;
-            *(v93 + 2) = v83;
+            *(v93 + 2) = keyCopy;
             WORD5(v93[0]) = 2112;
             *(v93 + 12) = v26;
             _os_log_error_impl(&_mh_execute_header, v63, OS_LOG_TYPE_ERROR, "%@: %@ : FAILED : [_ANEEspressoIRTranslator -translateModelAt:%@ key=%@ outputPath:%@]", buf, 0x34u);
           }
 
-          *a13 = 0;
-          v60 = [a1 createErrorWithString:v34];
+          *ok = 0;
+          v60 = [self createErrorWithString:v34];
 
           v71 = &__NSDictionary0__struct;
           v31 = 0.0;
@@ -210,11 +210,11 @@ LABEL_17:
         }
 
 LABEL_21:
-        v38 = [v84 objectForKeyedSubscript:kANEFAOTCacheUrlIdentifierKey];
+        v38 = [optionsCopy objectForKeyedSubscript:kANEFAOTCacheUrlIdentifierKey];
 
         if (v38)
         {
-          v39 = [v84 objectForKeyedSubscript:kANEFAOTCacheUrlIdentifierKey];
+          v39 = [optionsCopy objectForKeyedSubscript:kANEFAOTCacheUrlIdentifierKey];
         }
 
         else
@@ -233,9 +233,9 @@ LABEL_21:
         *&buf[24] = v40;
 
         objc_storeStrong(v93, obj);
-        objc_storeStrong(&v93[1], a9);
-        objc_storeStrong(v93 + 1, a10);
-        *(&v93[1] + 9) = a11;
+        objc_storeStrong(&v93[1], path);
+        objc_storeStrong(v93 + 1, binaryPath);
+        *(&v93[1] + 9) = model;
         BYTE8(v93[1]) = v39 != 0;
         if (v39)
         {
@@ -250,7 +250,7 @@ LABEL_21:
         v42 = +[NSDate date];
 
         v87 = v80;
-        v71 = [_ANECompiler compileModel:buf options:v84 ok:a13 error:&v87];
+        v71 = [_ANECompiler compileModel:buf options:optionsCopy ok:ok error:&v87];
         v43 = v87;
 
         v44 = +[NSDate date];
@@ -283,7 +283,7 @@ LABEL_28:
     goto LABEL_17;
   }
 
-  *a13 = 0;
+  *ok = 0;
   v30 = qword_100021B28;
   v31 = 0.0;
   if (os_log_type_enabled(qword_100021B28, OS_LOG_TYPE_ERROR))
@@ -295,7 +295,7 @@ LABEL_28:
     *&buf[12] = 2112;
     *&buf[14] = v85;
     *&buf[22] = 2112;
-    *&buf[24] = v83;
+    *&buf[24] = keyCopy;
     LOWORD(v93[0]) = 2112;
     *(v93 + 2) = v26;
     WORD5(v93[0]) = 2112;
@@ -306,14 +306,14 @@ LABEL_28:
   v71 = &__NSDictionary0__struct;
   v32 = 2;
 LABEL_29:
-  v47 = [NSURL fileURLWithPath:v75];
+  v47 = [NSURL fileURLWithPath:pathCopy];
   v86 = &stru_10001CBD8;
   v48 = [_ANEStrings trimmedModelPath:v47 trimmedPath:&v86];
   v49 = v86;
 
   v90[0] = @"csIdentity";
   v90[1] = @"modelURL";
-  v91[0] = v81;
+  v91[0] = identityCopy;
   v91[1] = v49;
   v90[2] = @"privacy_score";
   v50 = [NSNumber numberWithBool:v48];
@@ -321,8 +321,8 @@ LABEL_29:
   v90[3] = @"modelType";
   v51 = [NSNumber numberWithInteger:v32];
   v91[3] = v51;
-  v52 = v77;
-  if (!v77)
+  v52 = filenameCopy;
+  if (!filenameCopy)
   {
     v52 = &stru_10001CBD8;
   }
@@ -336,15 +336,15 @@ LABEL_29:
   v54 = [NSNumber numberWithDouble:v31];
   v91[6] = v54;
   v90[7] = @"modelCompiled";
-  v55 = [NSNumber numberWithBool:*a13];
+  v55 = [NSNumber numberWithBool:*ok];
   v91[7] = v55;
   v56 = [NSDictionary dictionaryWithObjects:v91 forKeys:v90 count:8];
   [_ANEDataReporter reportTelemetryToPPS:@"modelCompilation" playload:v56];
 
   objc_autoreleasePoolPop(context);
-  if (a14 && !*a13)
+  if (error && !*ok)
   {
-    *a14 = [v80 copy];
+    *error = [v80 copy];
   }
 
   v57 = qword_100021B28;

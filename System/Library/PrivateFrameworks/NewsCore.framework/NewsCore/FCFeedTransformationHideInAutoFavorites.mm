@@ -1,30 +1,30 @@
 @interface FCFeedTransformationHideInAutoFavorites
-+ (id)transformationWithFeedContextByFeedID:(id)a3 autoFavoriteTagIDs:(id)a4;
-- (id)transformFeedItems:(id)a3;
++ (id)transformationWithFeedContextByFeedID:(id)d autoFavoriteTagIDs:(id)ds;
+- (id)transformFeedItems:(id)items;
 @end
 
 @implementation FCFeedTransformationHideInAutoFavorites
 
-+ (id)transformationWithFeedContextByFeedID:(id)a3 autoFavoriteTagIDs:(id)a4
++ (id)transformationWithFeedContextByFeedID:(id)d autoFavoriteTagIDs:(id)ds
 {
-  v5 = a4;
-  v6 = a3;
+  dsCopy = ds;
+  dCopy = d;
   v7 = objc_opt_new();
-  [v7 setFeedContextByFeedID:v6];
+  [v7 setFeedContextByFeedID:dCopy];
 
-  [v7 setAutoFavoriteTagIDs:v5];
+  [v7 setAutoFavoriteTagIDs:dsCopy];
 
   return v7;
 }
 
-- (id)transformFeedItems:(id)a3
+- (id)transformFeedItems:(id)items
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __62__FCFeedTransformationHideInAutoFavorites_transformFeedItems___block_invoke;
   v5[3] = &unk_1E7C37898;
   v5[4] = self;
-  v3 = [a3 fc_arrayOfObjectsPassingTest:v5];
+  v3 = [items fc_arrayOfObjectsPassingTest:v5];
 
   return v3;
 }

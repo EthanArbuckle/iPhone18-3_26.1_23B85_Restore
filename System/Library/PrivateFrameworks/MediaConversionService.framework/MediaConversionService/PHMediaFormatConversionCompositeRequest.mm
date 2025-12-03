@@ -5,11 +5,11 @@
 - (BOOL)requiresCreationDateMetadataChange;
 - (BOOL)requiresFormatConversion;
 - (BOOL)requiresLocationMetadataChange;
-- (id)compositeRequestCommonInitWithError:(id *)a3;
+- (id)compositeRequestCommonInitWithError:(id *)error;
 - (void)didFinishProcessing;
-- (void)enqueueSubrequestsOnConversionManager:(id)a3;
-- (void)enumerateSubrequests:(id)a3;
-- (void)preflightWithConversionManager:(id)a3;
+- (void)enqueueSubrequestsOnConversionManager:(id)manager;
+- (void)enumerateSubrequests:(id)subrequests;
+- (void)preflightWithConversionManager:(id)manager;
 - (void)propagateRequestOptionsToSubrequests;
 - (void)setupProgress;
 @end
@@ -53,11 +53,11 @@ void __56__PHMediaFormatConversionCompositeRequest_setupProgress__block_invoke(u
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v3 = [(PHMediaFormatConversionRequest *)self error];
+      error = [(PHMediaFormatConversionRequest *)self error];
       *buf = 138412546;
-      v7 = self;
+      selfCopy = self;
       v8 = 2112;
-      v9 = v3;
+      v9 = error;
       _os_log_error_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Composite conversion request %@ failed: %@", buf, 0x16u);
     }
   }
@@ -163,7 +163,7 @@ void __79__PHMediaFormatConversionCompositeRequest_propagateRequestOptionsToSubr
   [v14 setAccessibilityDescriptionMetadataBehavior:v12 withAccessibilityDescription:v13];
 }
 
-- (void)enumerateSubrequests:(id)a3
+- (void)enumerateSubrequests:(id)subrequests
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];
@@ -171,7 +171,7 @@ void __79__PHMediaFormatConversionCompositeRequest_propagateRequestOptionsToSubr
   [v3 raise:v4 format:{@"Subclasses must override %@", v5}];
 }
 
-- (void)enqueueSubrequestsOnConversionManager:(id)a3
+- (void)enqueueSubrequestsOnConversionManager:(id)manager
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];
@@ -179,20 +179,20 @@ void __79__PHMediaFormatConversionCompositeRequest_propagateRequestOptionsToSubr
   [v3 raise:v4 format:{@"Subclasses must override %@", v5}];
 }
 
-- (id)compositeRequestCommonInitWithError:(id *)a3
+- (id)compositeRequestCommonInitWithError:(id *)error
 {
-  if ([(PHMediaFormatConversionRequest *)self prepareWithError:a3])
+  if ([(PHMediaFormatConversionRequest *)self prepareWithError:error])
   {
     [(PHMediaFormatConversionCompositeRequest *)self setupProgress];
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (BOOL)requiresAccessibilityDescriptionMetadataChange
@@ -405,29 +405,29 @@ uint64_t __71__PHMediaFormatConversionCompositeRequest_areAllSubrequestsPrefligh
   return result;
 }
 
-- (void)preflightWithConversionManager:(id)a3
+- (void)preflightWithConversionManager:(id)manager
 {
-  v5 = a3;
-  v6 = [(PHMediaFormatConversionRequest *)self status];
-  if (v6 <= 5 && ((1 << v6) & 0x31) != 0)
+  managerCopy = manager;
+  status = [(PHMediaFormatConversionRequest *)self status];
+  if (status <= 5 && ((1 << status) & 0x31) != 0)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    v8 = [(PHMediaFormatConversionRequest *)self statusString];
-    [v7 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1503 description:{@"Preflight of request in invalid state %@", v8}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    statusString = [(PHMediaFormatConversionRequest *)self statusString];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1503 description:{@"Preflight of request in invalid state %@", statusString}];
   }
 
   if ([(PHMediaFormatConversionRequest *)self preflighted])
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1506 description:@"Preflight of already preflighted request"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1506 description:@"Preflight of already preflighted request"];
   }
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __74__PHMediaFormatConversionCompositeRequest_preflightWithConversionManager___block_invoke;
   v11[3] = &unk_27989B6A0;
-  v12 = v5;
-  v9 = v5;
+  v12 = managerCopy;
+  v9 = managerCopy;
   [(PHMediaFormatConversionCompositeRequest *)self enumerateSubrequests:v11];
   [(PHMediaFormatConversionRequest *)self setPreflighted:1];
 }

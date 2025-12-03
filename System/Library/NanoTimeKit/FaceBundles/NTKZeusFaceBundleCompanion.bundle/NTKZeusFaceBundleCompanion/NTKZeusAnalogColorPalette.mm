@@ -7,18 +7,18 @@
 - (id)_secondHand;
 - (id)_splitBackground;
 - (id)_typefaceSwatch;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)handInlayForDensity:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)handInlayForDensity:(unint64_t)density;
 - (id)identifier;
 - (id)swatch;
-- (id)swatchImageForSize:(CGSize)a3;
+- (id)swatchImageForSize:(CGSize)size;
 - (id)swatchPrimaryColor;
 - (id)tritium_dial;
 - (id)tritium_handInlay;
-- (id)typefaceSwatchImageForStyle:(unint64_t)a3;
+- (id)typefaceSwatchImageForStyle:(unint64_t)style;
 - (unint64_t)bleed;
-- (void)configurationDidChange:(id)a3;
-- (void)setDensity:(unint64_t)a3;
+- (void)configurationDidChange:(id)change;
+- (void)setDensity:(unint64_t)density;
 @end
 
 @implementation NTKZeusAnalogColorPalette
@@ -41,8 +41,8 @@
   {
     v8.receiver = self;
     v8.super_class = NTKZeusAnalogColorPalette;
-    v4 = [(NTKZeusAnalogColorPalette *)&v8 identifier];
-    v5 = [NSString stringWithFormat:@"%@-%lu", v4, self->_density];
+    identifier = [(NTKZeusAnalogColorPalette *)&v8 identifier];
+    v5 = [NSString stringWithFormat:@"%@-%lu", identifier, self->_density];
     v6 = self->_cachedIdentifier;
     self->_cachedIdentifier = v5;
 
@@ -52,27 +52,27 @@
   return cachedIdentifier;
 }
 
-- (void)configurationDidChange:(id)a3
+- (void)configurationDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = NTKZeusAnalogColorPalette;
-  [(NTKZeusAnalogColorPalette *)&v5 configurationDidChange:a3];
+  [(NTKZeusAnalogColorPalette *)&v5 configurationDidChange:change];
   cachedIdentifier = self->_cachedIdentifier;
   self->_cachedIdentifier = 0;
 }
 
-- (void)setDensity:(unint64_t)a3
+- (void)setDensity:(unint64_t)density
 {
-  self->_density = a3;
+  self->_density = density;
   self->_cachedIdentifier = 0;
   _objc_release_x1();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NTKZeusAnalogColorPalette;
-  v4 = [(NTKZeusAnalogColorPalette *)&v6 copyWithZone:a3];
+  v4 = [(NTKZeusAnalogColorPalette *)&v6 copyWithZone:zone];
   [v4 setDensity:{-[NTKZeusAnalogColorPalette density](self, "density")}];
   return v4;
 }
@@ -82,15 +82,15 @@
   if ([(NTKZeusAnalogColorPalette *)self isCompositePalette])
   {
     v3 = [(NTKZeusAnalogColorPalette *)self paletteAtIndex:1];
-    v4 = [v3 primaryColor];
+    primaryColor = [v3 primaryColor];
   }
 
   else
   {
-    v4 = 0;
+    primaryColor = 0;
   }
 
-  return v4;
+  return primaryColor;
 }
 
 - (id)_splitBackground
@@ -98,15 +98,15 @@
   if ([(NTKZeusAnalogColorPalette *)self isCompositePalette])
   {
     v3 = [(NTKZeusAnalogColorPalette *)self paletteAtIndex:0];
-    v4 = [v3 primaryColor];
+    primaryColor = [v3 primaryColor];
   }
 
   else
   {
-    v4 = [(NTKZeusAnalogColorPalette *)self background];
+    primaryColor = [(NTKZeusAnalogColorPalette *)self background];
   }
 
-  return v4;
+  return primaryColor;
 }
 
 - (id)_secondHand
@@ -127,7 +127,7 @@
 
 - (id)_typefaceSwatch
 {
-  v3 = [(NTKZeusAnalogColorPalette *)self dial];
+  dial = [(NTKZeusAnalogColorPalette *)self dial];
   v4 = +[UIColor blackColor];
   CLKContrastRatioForColors();
   v6 = v5;
@@ -146,38 +146,38 @@
   return v7;
 }
 
-- (id)handInlayForDensity:(unint64_t)a3
+- (id)handInlayForDensity:(unint64_t)density
 {
-  v5 = [(NTKZeusAnalogColorPalette *)self pigmentEditOption];
-  v6 = [v5 identifier];
-  if ([v6 isEqual:ntk_zeus_orangeDial])
+  pigmentEditOption = [(NTKZeusAnalogColorPalette *)self pigmentEditOption];
+  identifier = [pigmentEditOption identifier];
+  if ([identifier isEqual:ntk_zeus_orangeDial])
   {
     goto LABEL_7;
   }
 
-  v7 = [(NTKZeusAnalogColorPalette *)self pigmentEditOption];
-  v8 = [v7 identifier];
-  v9 = [v8 isEqual:ntk_zeus_rougeHands];
-  if (a3 == 3 || (v9 & 1) != 0)
+  pigmentEditOption2 = [(NTKZeusAnalogColorPalette *)self pigmentEditOption];
+  identifier2 = [pigmentEditOption2 identifier];
+  v9 = [identifier2 isEqual:ntk_zeus_rougeHands];
+  if (density == 3 || (v9 & 1) != 0)
   {
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  v10 = [(NTKZeusAnalogColorPalette *)self bleed];
+  bleed = [(NTKZeusAnalogColorPalette *)self bleed];
 
-  if (!v10)
+  if (!bleed)
   {
-    v11 = [(NTKZeusAnalogColorPalette *)self secondHand];
+    secondHand = [(NTKZeusAnalogColorPalette *)self secondHand];
     goto LABEL_9;
   }
 
 LABEL_8:
-  v11 = [(NTKZeusAnalogColorPalette *)self valueForKey:@"handInlay"];
+  secondHand = [(NTKZeusAnalogColorPalette *)self valueForKey:@"handInlay"];
 LABEL_9:
 
-  return v11;
+  return secondHand;
 }
 
 - (NSNumber)secondHandAlpha
@@ -259,26 +259,26 @@ LABEL_9:
 
 - (BOOL)wantsStatusBarIconShadow
 {
-  v3 = [(NTKZeusAnalogColorPalette *)self bleed];
-  if (v3)
+  bleed = [(NTKZeusAnalogColorPalette *)self bleed];
+  if (bleed)
   {
-    LOBYTE(v3) = ![(NTKZeusAnalogColorPalette *)self isNoir];
+    LOBYTE(bleed) = ![(NTKZeusAnalogColorPalette *)self isNoir];
   }
 
-  return v3;
+  return bleed;
 }
 
-- (id)typefaceSwatchImageForStyle:(unint64_t)a3
+- (id)typefaceSwatchImageForStyle:(unint64_t)style
 {
-  if (a3 > 1)
+  if (style > 1)
   {
     v5 = @"Numbers4";
-    if (a3 != 3)
+    if (style != 3)
     {
       v5 = 0;
     }
 
-    if (a3 == 2)
+    if (style == 2)
     {
       v4 = @"Numbers3";
     }
@@ -289,9 +289,9 @@ LABEL_9:
     }
   }
 
-  else if (a3)
+  else if (style)
   {
-    if (a3 == 1)
+    if (style == 1)
     {
       if ([(NTKZeusAnalogColorPalette *)self bleed]== &dword_0 + 2 || [(NTKZeusAnalogColorPalette *)self bleed]== &dword_0 + 3)
       {
@@ -322,8 +322,8 @@ LABEL_9:
   v6 = [NSString stringWithFormat:@"Swatch-ZeusAnalog-%@", v4];
   v7 = [NSBundle bundleForClass:objc_opt_class()];
   v8 = [UIImage imageNamed:v6 inBundle:v7 compatibleWithTraitCollection:0];
-  v9 = [(NTKZeusAnalogColorPalette *)self typefaceSwatch];
-  v10 = [v8 _flatImageWithColor:v9];
+  typefaceSwatch = [(NTKZeusAnalogColorPalette *)self typefaceSwatch];
+  v10 = [v8 _flatImageWithColor:typefaceSwatch];
 
   return v10;
 }
@@ -332,85 +332,85 @@ LABEL_9:
 {
   if ([(NTKZeusAnalogColorPalette *)self bleed]&& [(NTKZeusAnalogColorPalette *)self bleed]!= &dword_0 + 1)
   {
-    v3 = 0;
+    primaryColor = 0;
   }
 
   else
   {
-    v3 = [(NTKZeusAnalogColorPalette *)self primaryColor];
+    primaryColor = [(NTKZeusAnalogColorPalette *)self primaryColor];
   }
 
-  return v3;
+  return primaryColor;
 }
 
 - (id)tritium_dial
 {
-  v3 = [(NTKZeusAnalogColorPalette *)self dial];
-  v4 = [(NTKZeusAnalogColorPalette *)self tritiumPalette];
-  v5 = [v4 background];
+  dial = [(NTKZeusAnalogColorPalette *)self dial];
+  tritiumPalette = [(NTKZeusAnalogColorPalette *)self tritiumPalette];
+  background = [tritiumPalette background];
   CLKContrastRatioForColors();
   v7 = v6;
 
   if (v7 >= 4.5)
   {
-    v8 = 0;
+    primaryColor = 0;
   }
 
   else
   {
-    v8 = [(NTKZeusAnalogColorPalette *)self primaryColor];
+    primaryColor = [(NTKZeusAnalogColorPalette *)self primaryColor];
   }
 
-  return v8;
+  return primaryColor;
 }
 
 - (id)swatch
 {
   if ([(NTKZeusAnalogColorPalette *)self isGradientStyle])
   {
-    v3 = 0;
+    swatch = 0;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = NTKZeusAnalogColorPalette;
-    v3 = [(NTKZeusAnalogColorPalette *)&v5 swatch];
+    swatch = [(NTKZeusAnalogColorPalette *)&v5 swatch];
   }
 
-  return v3;
+  return swatch;
 }
 
-- (id)swatchImageForSize:(CGSize)a3
+- (id)swatchImageForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(NTKZeusAnalogColorPalette *)self isGradientStyle])
   {
-    v6 = [(NTKZeusAnalogColorPalette *)self configuration];
-    v7 = [v6 uniqueId];
+    configuration = [(NTKZeusAnalogColorPalette *)self configuration];
+    uniqueId = [configuration uniqueId];
     v23.width = width;
     v23.height = height;
     v8 = NSStringFromCGSize(v23);
-    v9 = [NSString stringWithFormat:@"%@-%@", v7, v8];
+    v9 = [NSString stringWithFormat:@"%@-%@", uniqueId, v8];
 
-    v10 = [(NTKZeusAnalogColorPalette *)self swatchImageCache];
-    v11 = [v10 objectForKey:v9];
+    swatchImageCache = [(NTKZeusAnalogColorPalette *)self swatchImageCache];
+    height = [swatchImageCache objectForKey:v9];
 
-    if (!v11)
+    if (!height)
     {
-      v12 = [(NTKZeusAnalogColorPalette *)self splitBackground];
-      v13 = [(NTKZeusAnalogColorPalette *)self background];
+      splitBackground = [(NTKZeusAnalogColorPalette *)self splitBackground];
+      background = [(NTKZeusAnalogColorPalette *)self background];
       v20 = 0.0;
       v21 = 0.0;
       v18 = 0.0;
       v19 = 0.0;
-      [v13 getHue:&v21 saturation:&v20 brightness:&v19 alpha:&v18];
+      [background getHue:&v21 saturation:&v20 brightness:&v19 alpha:&v18];
       v14 = [UIColor colorWithHue:v21 saturation:v20 brightness:v19 * 0.8 alpha:v18];
-      v11 = NTKSwatchTwoColorGradientImage();
+      height = NTKSwatchTwoColorGradientImage();
 
-      v15 = [(NTKZeusAnalogColorPalette *)self swatchImageCache];
-      [v15 setObject:v11 forKey:v9];
+      swatchImageCache2 = [(NTKZeusAnalogColorPalette *)self swatchImageCache];
+      [swatchImageCache2 setObject:height forKey:v9];
     }
   }
 
@@ -418,34 +418,34 @@ LABEL_9:
   {
     v17.receiver = self;
     v17.super_class = NTKZeusAnalogColorPalette;
-    v11 = [(NTKZeusAnalogColorPalette *)&v17 swatchImageForSize:width, height];
+    height = [(NTKZeusAnalogColorPalette *)&v17 swatchImageForSize:width, height];
   }
 
-  return v11;
+  return height;
 }
 
 - (id)swatchPrimaryColor
 {
   if ([(NTKZeusAnalogColorPalette *)self isGradientStyle])
   {
-    v3 = 0;
+    swatchPrimaryColor = 0;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = NTKZeusAnalogColorPalette;
-    v3 = [(NTKZeusAnalogColorPalette *)&v5 swatchPrimaryColor];
+    swatchPrimaryColor = [(NTKZeusAnalogColorPalette *)&v5 swatchPrimaryColor];
   }
 
-  return v3;
+  return swatchPrimaryColor;
 }
 
 - (BOOL)isNoir
 {
-  v2 = [(NTKZeusAnalogColorPalette *)self pigmentEditOption];
-  v3 = [v2 identifier];
-  v4 = [v3 isEqual:ntk_zeus_noir];
+  pigmentEditOption = [(NTKZeusAnalogColorPalette *)self pigmentEditOption];
+  identifier = [pigmentEditOption identifier];
+  v4 = [identifier isEqual:ntk_zeus_noir];
 
   return v4;
 }

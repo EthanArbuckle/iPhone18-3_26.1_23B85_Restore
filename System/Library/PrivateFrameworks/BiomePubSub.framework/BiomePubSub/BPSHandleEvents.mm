@@ -1,47 +1,47 @@
 @interface BPSHandleEvents
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5;
-- (BPSHandleEvents)initWithUpstream:(id)a3 receiveSubscription:(id)a4 receiveOutput:(id)a5 receiveCompletion:(id)a6 receiveCancel:(id)a7 receiveRequest:(id)a8;
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state;
+- (BPSHandleEvents)initWithUpstream:(id)upstream receiveSubscription:(id)subscription receiveOutput:(id)output receiveCompletion:(id)completion receiveCancel:(id)cancel receiveRequest:(id)request;
 - (id)bookmarkableUpstreams;
 - (id)nextEvent;
 - (id)upstreamPublishers;
 - (void)cancel;
-- (void)subscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation BPSHandleEvents
 
-- (BPSHandleEvents)initWithUpstream:(id)a3 receiveSubscription:(id)a4 receiveOutput:(id)a5 receiveCompletion:(id)a6 receiveCancel:(id)a7 receiveRequest:(id)a8
+- (BPSHandleEvents)initWithUpstream:(id)upstream receiveSubscription:(id)subscription receiveOutput:(id)output receiveCompletion:(id)completion receiveCancel:(id)cancel receiveRequest:(id)request
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  upstreamCopy = upstream;
+  subscriptionCopy = subscription;
+  outputCopy = output;
+  completionCopy = completion;
+  cancelCopy = cancel;
+  requestCopy = request;
   v34.receiver = self;
   v34.super_class = BPSHandleEvents;
   v21 = [(BPSHandleEvents *)&v34 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_upstream, a3);
-    v23 = [v16 copy];
+    objc_storeStrong(&v21->_upstream, upstream);
+    v23 = [subscriptionCopy copy];
     receiveSubscription = v22->_receiveSubscription;
     v22->_receiveSubscription = v23;
 
-    v25 = [v17 copy];
+    v25 = [outputCopy copy];
     receiveOutput = v22->_receiveOutput;
     v22->_receiveOutput = v25;
 
-    v27 = [v18 copy];
+    v27 = [completionCopy copy];
     receiveCompletion = v22->_receiveCompletion;
     v22->_receiveCompletion = v27;
 
-    v29 = [v19 copy];
+    v29 = [cancelCopy copy];
     receiveCancel = v22->_receiveCancel;
     v22->_receiveCancel = v29;
 
-    v31 = [v20 copy];
+    v31 = [requestCopy copy];
     receiveRequest = v22->_receiveRequest;
     v22->_receiveRequest = v31;
 
@@ -51,28 +51,28 @@
   return v22;
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
   upstream = self->_upstream;
-  v5 = a3;
-  v6 = [[_BPSHandleEventsInner alloc] initWithDownstream:v5 handleEvents:self];
+  subscribeCopy = subscribe;
+  v6 = [[_BPSHandleEventsInner alloc] initWithDownstream:subscribeCopy handleEvents:self];
 
   [(BPSPublisher *)upstream subscribe:v6];
 }
 
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  publisherCopy = publisher;
+  upstreamsCopy = upstreams;
   v8 = [BPSHandleEvents alloc];
-  v9 = [v7 firstObject];
+  firstObject = [upstreamsCopy firstObject];
 
-  v10 = [v6 receiveSubscription];
-  v11 = [v6 receiveOutput];
-  v12 = [v6 receiveCompletion];
-  v13 = [v6 receiveCancel];
-  v14 = [v6 receiveRequest];
-  v15 = [(BPSHandleEvents *)v8 initWithUpstream:v9 receiveSubscription:v10 receiveOutput:v11 receiveCompletion:v12 receiveCancel:v13 receiveRequest:v14];
+  receiveSubscription = [publisherCopy receiveSubscription];
+  receiveOutput = [publisherCopy receiveOutput];
+  receiveCompletion = [publisherCopy receiveCompletion];
+  receiveCancel = [publisherCopy receiveCancel];
+  receiveRequest = [publisherCopy receiveRequest];
+  v15 = [(BPSHandleEvents *)v8 initWithUpstream:firstObject receiveSubscription:receiveSubscription receiveOutput:receiveOutput receiveCompletion:receiveCompletion receiveCancel:receiveCancel receiveRequest:receiveRequest];
 
   return v15;
 }
@@ -80,8 +80,8 @@
 - (id)bookmarkableUpstreams
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(BPSHandleEvents *)self upstream];
-  v6[0] = v2;
+  upstream = [(BPSHandleEvents *)self upstream];
+  v6[0] = upstream;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -92,8 +92,8 @@
 - (id)upstreamPublishers
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(BPSHandleEvents *)self upstream];
-  v6[0] = v2;
+  upstream = [(BPSHandleEvents *)self upstream];
+  v6[0] = upstream;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -103,22 +103,22 @@
 
 - (id)nextEvent
 {
-  v3 = [(BPSHandleEvents *)self upstream];
-  v4 = [v3 nextEvent];
+  upstream = [(BPSHandleEvents *)self upstream];
+  nextEvent = [upstream nextEvent];
 
-  if (v4)
+  if (nextEvent)
   {
-    v5 = [(BPSHandleEvents *)self receiveOutput];
-    (v5)[2](v5, v4);
+    receiveOutput = [(BPSHandleEvents *)self receiveOutput];
+    (receiveOutput)[2](receiveOutput, nextEvent);
   }
 
-  return v4;
+  return nextEvent;
 }
 
 - (void)cancel
 {
-  v2 = [(BPSHandleEvents *)self receiveCancel];
-  v2[2]();
+  receiveCancel = [(BPSHandleEvents *)self receiveCancel];
+  receiveCancel[2]();
 }
 
 @end

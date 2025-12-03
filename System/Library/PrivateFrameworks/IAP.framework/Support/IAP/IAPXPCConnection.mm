@@ -1,24 +1,24 @@
 @interface IAPXPCConnection
-- (IAPXPCConnection)initWithServiceName:(id)a3 queueName:(id)a4;
-- (IAPXPCConnection)initWithXPCConnection:(id)a3 queueName:(id)a4;
-- (id)_initIAPXPCConnection:(id)a3;
+- (IAPXPCConnection)initWithServiceName:(id)name queueName:(id)queueName;
+- (IAPXPCConnection)initWithXPCConnection:(id)connection queueName:(id)name;
+- (id)_initIAPXPCConnection:(id)connection;
 - (id)copyReplyQueue;
 - (id)disconnectBlock;
 - (id)messageBlock;
 - (void)_reloadEventHandler;
 - (void)dealloc;
-- (void)sendMessage:(id)a3;
-- (void)sendMessage:(id)a3 withReply:(id)a4;
-- (void)sendSynchronousMessage:(id)a3 withReply:(id)a4;
-- (void)setDisconnectBlock:(id)a3;
-- (void)setMessageBlock:(id)a3;
-- (void)setReplyQueue:(id)a3;
-- (void)setTargetQueue:(id)a3;
+- (void)sendMessage:(id)message;
+- (void)sendMessage:(id)message withReply:(id)reply;
+- (void)sendSynchronousMessage:(id)message withReply:(id)reply;
+- (void)setDisconnectBlock:(id)block;
+- (void)setMessageBlock:(id)block;
+- (void)setReplyQueue:(id)queue;
+- (void)setTargetQueue:(id)queue;
 @end
 
 @implementation IAPXPCConnection
 
-- (id)_initIAPXPCConnection:(id)a3
+- (id)_initIAPXPCConnection:(id)connection
 {
   v7.receiver = self;
   v7.super_class = IAPXPCConnection;
@@ -27,34 +27,34 @@
   if (v4)
   {
     *&v4->isValid = 257;
-    v4->_dispatchQueue = dispatch_queue_create([a3 UTF8String], 0);
+    v4->_dispatchQueue = dispatch_queue_create([connection UTF8String], 0);
   }
 
   return v5;
 }
 
-- (IAPXPCConnection)initWithServiceName:(id)a3 queueName:(id)a4
+- (IAPXPCConnection)initWithServiceName:(id)name queueName:(id)queueName
 {
-  if (!a3 || !a4)
+  if (!name || !queueName)
   {
     return 0;
   }
 
   *&self->isValid = 257;
-  mach_service = xpc_connection_create_mach_service([a3 UTF8String], 0, 0);
-  v7 = [(IAPXPCConnection *)self initWithXPCConnection:mach_service queueName:a4];
+  mach_service = xpc_connection_create_mach_service([name UTF8String], 0, 0);
+  v7 = [(IAPXPCConnection *)self initWithXPCConnection:mach_service queueName:queueName];
   xpc_release(mach_service);
   return v7;
 }
 
-- (IAPXPCConnection)initWithXPCConnection:(id)a3 queueName:(id)a4
+- (IAPXPCConnection)initWithXPCConnection:(id)connection queueName:(id)name
 {
-  v5 = [(IAPXPCConnection *)self _initIAPXPCConnection:a4];
+  v5 = [(IAPXPCConnection *)self _initIAPXPCConnection:name];
   v6 = v5;
   if (v5)
   {
     *&v5->isValid = 257;
-    v5->_connection = xpc_retain(a3);
+    v5->_connection = xpc_retain(connection);
     [(IAPXPCConnection *)v6 _reloadEventHandler];
     xpc_connection_resume(v6->_connection);
   }
@@ -150,37 +150,37 @@
   return v3;
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
   if (self->isValid)
   {
-    xpc_connection_send_message(self->_connection, a3);
+    xpc_connection_send_message(self->_connection, message);
   }
 }
 
-- (void)sendMessage:(id)a3 withReply:(id)a4
+- (void)sendMessage:(id)message withReply:(id)reply
 {
   if (self->isValid)
   {
-    xpc_connection_send_message_with_reply(self->_connection, a3, self->_replyQueue, a4);
+    xpc_connection_send_message_with_reply(self->_connection, message, self->_replyQueue, reply);
   }
 }
 
-- (void)sendSynchronousMessage:(id)a3 withReply:(id)a4
+- (void)sendSynchronousMessage:(id)message withReply:(id)reply
 {
   if (self->isValid)
   {
-    v6 = xpc_connection_send_message_with_reply_sync(self->_connection, a3);
-    if (a4)
+    v6 = xpc_connection_send_message_with_reply_sync(self->_connection, message);
+    if (reply)
     {
-      (*(a4 + 2))(a4, v6);
+      (*(reply + 2))(reply, v6);
     }
 
     xpc_release(v6);
   }
 }
 
-- (void)setDisconnectBlock:(id)a3
+- (void)setDisconnectBlock:(id)block
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -188,11 +188,11 @@
   v4[2] = sub_100018F48;
   v4[3] = &unk_10002D900;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = block;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setMessageBlock:(id)a3
+- (void)setMessageBlock:(id)block
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -200,11 +200,11 @@
   v4[2] = sub_100019018;
   v4[3] = &unk_10002D900;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = block;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setReplyQueue:(id)a3
+- (void)setReplyQueue:(id)queue
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -212,18 +212,18 @@
   v4[2] = sub_1000190E8;
   v4[3] = &unk_10002D820;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = queue;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setTargetQueue:(id)a3
+- (void)setTargetQueue:(id)queue
 {
-  dispatch_set_target_queue(self->_dispatchQueue, a3);
+  dispatch_set_target_queue(self->_dispatchQueue, queue);
   replyQueue = self->_replyQueue;
   if (replyQueue)
   {
 
-    dispatch_set_target_queue(replyQueue, a3);
+    dispatch_set_target_queue(replyQueue, queue);
   }
 }
 

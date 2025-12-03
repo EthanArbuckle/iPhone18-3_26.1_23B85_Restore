@@ -1,9 +1,9 @@
 @interface SUKeybagOptions
 - (SUKeybagOptions)init;
-- (SUKeybagOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUKeybagOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUKeybagOptions
@@ -31,40 +31,40 @@
   return v3;
 }
 
-- (SUKeybagOptions)initWithCoder:(id)a3
+- (SUKeybagOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = SUKeybagOptions;
   v5 = [(SUKeybagOptions *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passcode"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passcode"];
     [(SUKeybagOptions *)v5 setPasscode:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"laContext"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"laContext"];
     [(SUKeybagOptions *)v5 setLaContext:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"descriptor"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"descriptor"];
     [(SUKeybagOptions *)v5 setDescriptor:v8];
 
-    -[SUKeybagOptions setKeybagType:](v5, "setKeybagType:", [v4 decodeIntForKey:@"keybagType"]);
+    -[SUKeybagOptions setKeybagType:](v5, "setKeybagType:", [coderCopy decodeIntForKey:@"keybagType"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   passcode = self->_passcode;
-  v5 = a3;
-  [v5 encodeObject:passcode forKey:@"passcode"];
-  [v5 encodeObject:self->_laContext forKey:@"laContext"];
-  [v5 encodeObject:self->_descriptor forKey:@"descriptor"];
-  [v5 encodeInt:self->_keybagType forKey:@"keybagType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:passcode forKey:@"passcode"];
+  [coderCopy encodeObject:self->_laContext forKey:@"laContext"];
+  [coderCopy encodeObject:self->_descriptor forKey:@"descriptor"];
+  [coderCopy encodeInt:self->_keybagType forKey:@"keybagType"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setPasscode:self->_passcode];
@@ -77,10 +77,10 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SUKeybagOptions *)self descriptor];
-  v5 = [(SUKeybagOptions *)self keybagType];
-  v6 = [(SUKeybagOptions *)self passcode];
-  if (v6)
+  descriptor = [(SUKeybagOptions *)self descriptor];
+  keybagType = [(SUKeybagOptions *)self keybagType];
+  passcode = [(SUKeybagOptions *)self passcode];
+  if (passcode)
   {
     v7 = @"<PRESENT>";
   }
@@ -90,8 +90,8 @@
     v7 = @"<NULL>";
   }
 
-  v8 = [(SUKeybagOptions *)self laContext];
-  if (v8)
+  laContext = [(SUKeybagOptions *)self laContext];
+  if (laContext)
   {
     v9 = @"<PRESENT>";
   }
@@ -101,7 +101,7 @@
     v9 = @"<NULL>";
   }
 
-  v10 = [v3 stringWithFormat:@"\n            descriptor: %@\n            keybagType: %d\n            passcode: %@\n            LAContext:%@", v4, v5, v7, v9];
+  v10 = [v3 stringWithFormat:@"\n            descriptor: %@\n            keybagType: %d\n            passcode: %@\n            LAContext:%@", descriptor, keybagType, v7, v9];
 
   return v10;
 }

@@ -1,9 +1,9 @@
 @interface CNUIContainerContext
-- (CNUIContainerContext)initWithContainers:(id)a3;
+- (CNUIContainerContext)initWithContainers:(id)containers;
 - (NSArray)addedContainers;
 - (NSDictionary)removedContainers;
-- (void)addContainer:(id)a3;
-- (void)removeContainer:(id)a3;
+- (void)addContainer:(id)container;
+- (void)removeContainer:(id)container;
 - (void)resetToInitialState;
 @end
 
@@ -11,21 +11,21 @@
 
 - (void)resetToInitialState
 {
-  v5 = [(CNUIContainerContext *)self originalContainers];
-  v3 = [v5 allValues];
-  v4 = [v3 copy];
+  originalContainers = [(CNUIContainerContext *)self originalContainers];
+  allValues = [originalContainers allValues];
+  v4 = [allValues copy];
   [(CNUIContainerContext *)self setSelectedContainers:v4];
 }
 
 - (NSDictionary)removedContainers
 {
-  v3 = [(CNUIContainerContext *)self originalContainers];
+  originalContainers = [(CNUIContainerContext *)self originalContainers];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __41__CNUIContainerContext_removedContainers__block_invoke;
   v6[3] = &unk_1E74E4298;
   v6[4] = self;
-  v4 = [v3 _cn_filter:v6];
+  v4 = [originalContainers _cn_filter:v6];
 
   return v4;
 }
@@ -42,13 +42,13 @@ uint64_t __41__CNUIContainerContext_removedContainers__block_invoke(uint64_t a1,
 
 - (NSArray)addedContainers
 {
-  v3 = [(CNUIContainerContext *)self selectedContainers];
+  selectedContainers = [(CNUIContainerContext *)self selectedContainers];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39__CNUIContainerContext_addedContainers__block_invoke;
   v6[3] = &unk_1E74E75E0;
   v6[4] = self;
-  v4 = [v3 _cn_filter:v6];
+  v4 = [selectedContainers _cn_filter:v6];
 
   return v4;
 }
@@ -64,44 +64,44 @@ uint64_t __39__CNUIContainerContext_addedContainers__block_invoke(uint64_t a1, v
   return v6 ^ 1u;
 }
 
-- (void)removeContainer:(id)a3
+- (void)removeContainer:(id)container
 {
-  v9 = a3;
-  v4 = [(CNUIContainerContext *)self selectedContainers];
-  v5 = [v4 containsObject:v9];
+  containerCopy = container;
+  selectedContainers = [(CNUIContainerContext *)self selectedContainers];
+  v5 = [selectedContainers containsObject:containerCopy];
 
   if (v5)
   {
-    v6 = [(CNUIContainerContext *)self selectedContainers];
-    v7 = [v6 mutableCopy];
+    selectedContainers2 = [(CNUIContainerContext *)self selectedContainers];
+    v7 = [selectedContainers2 mutableCopy];
 
-    [v7 removeObject:v9];
+    [v7 removeObject:containerCopy];
     v8 = [v7 copy];
     [(CNUIContainerContext *)self setSelectedContainers:v8];
   }
 }
 
-- (void)addContainer:(id)a3
+- (void)addContainer:(id)container
 {
-  v4 = a3;
-  v5 = [(CNUIContainerContext *)self selectedContainers];
-  v6 = [v5 containsObject:v4];
+  containerCopy = container;
+  selectedContainers = [(CNUIContainerContext *)self selectedContainers];
+  v6 = [selectedContainers containsObject:containerCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(CNUIContainerContext *)self selectedContainers];
+    selectedContainers2 = [(CNUIContainerContext *)self selectedContainers];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __37__CNUIContainerContext_addContainer___block_invoke;
     v12[3] = &unk_1E74E75E0;
-    v8 = v4;
+    v8 = containerCopy;
     v13 = v8;
-    v9 = [v7 _cn_any:v12];
+    v9 = [selectedContainers2 _cn_any:v12];
 
     if ((v9 & 1) == 0)
     {
-      v10 = [(CNUIContainerContext *)self selectedContainers];
-      v11 = [v10 arrayByAddingObject:v8];
+      selectedContainers3 = [(CNUIContainerContext *)self selectedContainers];
+      v11 = [selectedContainers3 arrayByAddingObject:v8];
       [(CNUIContainerContext *)self setSelectedContainers:v11];
     }
   }
@@ -116,19 +116,19 @@ uint64_t __37__CNUIContainerContext_addContainer___block_invoke(uint64_t a1, voi
   return v5;
 }
 
-- (CNUIContainerContext)initWithContainers:(id)a3
+- (CNUIContainerContext)initWithContainers:(id)containers
 {
-  v5 = a3;
+  containersCopy = containers;
   v11.receiver = self;
   v11.super_class = CNUIContainerContext;
   v6 = [(CNUIContainerContext *)&v11 init];
   if (v6)
   {
-    v7 = [v5 allValues];
+    allValues = [containersCopy allValues];
     selectedContainers = v6->_selectedContainers;
-    v6->_selectedContainers = v7;
+    v6->_selectedContainers = allValues;
 
-    objc_storeStrong(&v6->_originalContainers, a3);
+    objc_storeStrong(&v6->_originalContainers, containers);
     v9 = v6;
   }
 

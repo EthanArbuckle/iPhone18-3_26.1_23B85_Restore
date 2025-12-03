@@ -1,14 +1,14 @@
 @interface TPInComingCallBottomBarButton
-- (CGRect)imageRectForContentRect:(CGRect)a3;
-- (CGRect)titleRectForContentRect:(CGRect)a3;
+- (CGRect)imageRectForContentRect:(CGRect)rect;
+- (CGRect)titleRectForContentRect:(CGRect)rect;
 - (CGSize)intrinsicContentSize;
-- (TPInComingCallBottomBarButton)initWithFrame:(CGRect)a3;
+- (TPInComingCallBottomBarButton)initWithFrame:(CGRect)frame;
 - (double)titleRectYOffset;
 @end
 
 @implementation TPInComingCallBottomBarButton
 
-- (TPInComingCallBottomBarButton)initWithFrame:(CGRect)a3
+- (TPInComingCallBottomBarButton)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = TPInComingCallBottomBarButton;
@@ -17,26 +17,26 @@
   {
     +[TPUIConfiguration defaultHeight];
     [(TPInComingCallBottomBarButton *)v3 setDiameter:?];
-    v4 = [(TPInComingCallBottomBarButton *)v3 titleLabel];
-    [v4 setTextAlignment:1];
+    titleLabel = [(TPInComingCallBottomBarButton *)v3 titleLabel];
+    [titleLabel setTextAlignment:1];
 
     v5 = +[TPUIConfiguration defaultFont];
-    v6 = [(TPInComingCallBottomBarButton *)v3 titleLabel];
-    [v6 setFont:v5];
+    titleLabel2 = [(TPInComingCallBottomBarButton *)v3 titleLabel];
+    [titleLabel2 setFont:v5];
 
-    v7 = [(TPInComingCallBottomBarButton *)v3 titleLabel];
-    [v7 setLineBreakMode:4];
+    titleLabel3 = [(TPInComingCallBottomBarButton *)v3 titleLabel];
+    [titleLabel3 setLineBreakMode:4];
 
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
-    [(TPInComingCallBottomBarButton *)v3 setTintColor:v8];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(TPInComingCallBottomBarButton *)v3 setTintColor:whiteColor];
 
-    v9 = [(TPInComingCallBottomBarButton *)v3 titleLabel];
-    [v9 setNumberOfLines:0];
+    titleLabel4 = [(TPInComingCallBottomBarButton *)v3 titleLabel];
+    [titleLabel4 setNumberOfLines:0];
 
     [(TPInComingCallBottomBarButton *)v3 diameter];
     v11 = v10 * 0.5;
-    v12 = [(TPInComingCallBottomBarButton *)v3 layer];
-    [v12 setCornerRadius:v11];
+    layer = [(TPInComingCallBottomBarButton *)v3 layer];
+    [layer setCornerRadius:v11];
   }
 
   return v3;
@@ -54,19 +54,19 @@
   return result;
 }
 
-- (CGRect)imageRectForContentRect:(CGRect)a3
+- (CGRect)imageRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = rect.size.height;
+  width = rect.size.width;
   v17.receiver = self;
   v17.super_class = TPInComingCallBottomBarButton;
-  [(TPInComingCallBottomBarButton *)&v17 imageRectForContentRect:a3.origin.x, a3.origin.y];
+  [(TPInComingCallBottomBarButton *)&v17 imageRectForContentRect:rect.origin.x, rect.origin.y];
   v6 = v5;
   v8 = v7;
   x = width * 0.5 - v5 * 0.5;
   y = height * 0.5 - v7 * 0.5;
-  v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v11 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   if (v12 == 1.0)
   {
     v18.origin.x = x;
@@ -91,46 +91,46 @@
   return result;
 }
 
-- (CGRect)titleRectForContentRect:(CGRect)a3
+- (CGRect)titleRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = rect.size.height;
+  width = rect.size.width;
   v41[1] = *MEMORY[0x1E69E9840];
   v6 = *MEMORY[0x1E695F058];
   v7 = *(MEMORY[0x1E695F058] + 8);
   v8 = *(MEMORY[0x1E695F058] + 16);
   v9 = *(MEMORY[0x1E695F058] + 24);
-  v10 = [(TPInComingCallBottomBarButton *)self currentTitle:a3.origin.x];
+  v10 = [(TPInComingCallBottomBarButton *)self currentTitle:rect.origin.x];
   if (v10)
   {
     v11 = v10;
-    v12 = [(TPInComingCallBottomBarButton *)self currentTitle];
-    v13 = [v12 length];
+    currentTitle = [(TPInComingCallBottomBarButton *)self currentTitle];
+    v13 = [currentTitle length];
 
     if (v13)
     {
-      v14 = [(TPInComingCallBottomBarButton *)self titleLabel];
-      [v14 preferredMaxLayoutWidth];
+      titleLabel = [(TPInComingCallBottomBarButton *)self titleLabel];
+      [titleLabel preferredMaxLayoutWidth];
       v16 = v15;
-      v17 = [v14 font];
-      v18 = v17;
-      if (v17)
+      font = [titleLabel font];
+      v18 = font;
+      if (font)
       {
-        v19 = v17;
+        defaultFont = font;
       }
 
       else
       {
-        v19 = [objc_opt_class() defaultFont];
+        defaultFont = [objc_opt_class() defaultFont];
       }
 
-      v20 = v19;
+      v20 = defaultFont;
 
       v40 = *MEMORY[0x1E69DB648];
       v41[0] = v20;
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:&v40 count:1];
-      v22 = [(TPInComingCallBottomBarButton *)self currentTitle];
-      [v22 boundingRectWithSize:1 options:v21 attributes:0 context:{3.40282347e38, 3.40282347e38}];
+      currentTitle2 = [(TPInComingCallBottomBarButton *)self currentTitle];
+      [currentTitle2 boundingRectWithSize:1 options:v21 attributes:0 context:{3.40282347e38, 3.40282347e38}];
       v24 = v23;
       v26 = v25;
 
@@ -147,8 +147,8 @@
 
       if (v8 == v16)
       {
-        v28 = [(TPInComingCallBottomBarButton *)self currentTitle];
-        [v28 boundingRectWithSize:1 options:v21 attributes:0 context:{v16, 3.40282347e38}];
+        currentTitle3 = [(TPInComingCallBottomBarButton *)self currentTitle];
+        [currentTitle3 boundingRectWithSize:1 options:v21 attributes:0 context:{v16, 3.40282347e38}];
         v30 = v29;
 
         v31 = ceil(v30);
@@ -173,7 +173,7 @@
       v34 = height + v33;
       if (v8 == v16 && v9 == 45.0)
       {
-        [v14 setAdjustsFontSizeToFitWidth:1];
+        [titleLabel setAdjustsFontSizeToFitWidth:1];
       }
 
       v6 = ceil(v32);

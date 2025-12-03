@@ -1,26 +1,26 @@
 @interface STAMSClient
-+ (id)_makeGlobalQueryParamsFor:(id)a3;
-+ (id)makeAMSMediaTaskForApps:(id)a3 isGlobal:(BOOL)a4;
-+ (void)_handleLoadMediaTaskForResult:(id)a3 error:(id)a4 withCompletionHandler:(id)a5;
-+ (void)loadMediaForTask:(id)a3 withCompletionHandler:(id)a4;
++ (id)_makeGlobalQueryParamsFor:(id)for;
++ (id)makeAMSMediaTaskForApps:(id)apps isGlobal:(BOOL)global;
++ (void)_handleLoadMediaTaskForResult:(id)result error:(id)error withCompletionHandler:(id)handler;
++ (void)loadMediaForTask:(id)task withCompletionHandler:(id)handler;
 @end
 
 @implementation STAMSClient
 
-+ (id)makeAMSMediaTaskForApps:(id)a3 isGlobal:(BOOL)a4
++ (id)makeAMSMediaTaskForApps:(id)apps isGlobal:(BOOL)global
 {
-  v4 = a4;
+  globalCopy = global;
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 count])
+  appsCopy = apps;
+  if ([appsCopy count])
   {
-    v23 = v4;
-    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
+    v23 = globalCopy;
+    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(appsCopy, "count")}];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v8 = v6;
+    v8 = appsCopy;
     v9 = [v8 countByEnumeratingWithState:&v24 objects:v31 count:16];
     if (v9)
     {
@@ -45,11 +45,11 @@
       while (v10);
     }
 
-    v14 = [a1 createScreenTimeBag];
+    createScreenTimeBag = [self createScreenTimeBag];
     v15 = objc_alloc(MEMORY[0x1E698C9E0]);
     if (v23)
     {
-      v16 = [v15 initWithType:7 clientIdentifier:@"com.apple.ScreenTimeSettingsUI" clientVersion:@"1" bag:v14];
+      v16 = [v15 initWithType:7 clientIdentifier:@"com.apple.ScreenTimeSettingsUI" clientVersion:@"1" bag:createScreenTimeBag];
       v17 = [STAMSClient _makeGlobalQueryParamsFor:v8];
       [v16 setAdditionalQueryParams:v17];
 
@@ -65,7 +65,7 @@ LABEL_17:
 
     else
     {
-      v16 = [v15 initWithType:0 clientIdentifier:@"com.apple.ScreenTimeSettingsUI" clientVersion:@"1" bag:v14];
+      v16 = [v15 initWithType:0 clientIdentifier:@"com.apple.ScreenTimeSettingsUI" clientVersion:@"1" bag:createScreenTimeBag];
       v29[0] = @"extend";
       v29[1] = @"additionalPlatforms";
       v30[0] = @"shortName";
@@ -101,20 +101,20 @@ LABEL_19:
   return v16;
 }
 
-+ (void)loadMediaForTask:(id)a3 withCompletionHandler:(id)a4
++ (void)loadMediaForTask:(id)task withCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 bag];
+  taskCopy = task;
+  handlerCopy = handler;
+  v7 = [taskCopy bag];
   v8 = [v7 BOOLForKey:@"enable-app-distribution-account-personalization"];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __54__STAMSClient_loadMediaForTask_withCompletionHandler___block_invoke;
   v11[3] = &unk_1E7CE7530;
-  v12 = v5;
-  v13 = v6;
-  v9 = v6;
-  v10 = v5;
+  v12 = taskCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = taskCopy;
   [v8 valueWithCompletion:v11];
 }
 
@@ -143,16 +143,16 @@ void __54__STAMSClient_loadMediaForTask_withCompletionHandler___block_invoke(uin
   [v6 addFinishBlock:v7];
 }
 
-+ (void)_handleLoadMediaTaskForResult:(id)a3 error:(id)a4 withCompletionHandler:(id)a5
++ (void)_handleLoadMediaTaskForResult:(id)result error:(id)error withCompletionHandler:(id)handler
 {
   v102 = *MEMORY[0x1E69E9840];
-  v62 = a3;
-  v61 = a4;
-  v7 = a5;
+  resultCopy = result;
+  errorCopy = error;
+  handlerCopy = handler;
   if (os_variant_has_internal_content())
   {
-    v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v9 = [v8 BOOLForKey:@"STAppInfoCacheForcingAMSNilResponse"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v9 = [standardUserDefaults BOOLForKey:@"STAppInfoCacheForcingAMSNilResponse"];
   }
 
   else
@@ -160,10 +160,10 @@ void __54__STAMSClient_loadMediaForTask_withCompletionHandler___block_invoke(uin
     v9 = 0;
   }
 
-  if (!v62 || (v9 & 1) != 0)
+  if (!resultCopy || (v9 & 1) != 0)
   {
-    v59 = v61;
-    v7[2](v7, v61, 0);
+    v59 = errorCopy;
+    handlerCopy[2](handlerCopy, errorCopy, 0);
     goto LABEL_70;
   }
 
@@ -172,7 +172,7 @@ void __54__STAMSClient_loadMediaForTask_withCompletionHandler___block_invoke(uin
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
-  obj = [v62 responseDataItems];
+  obj = [resultCopy responseDataItems];
   v67 = [obj countByEnumeratingWithState:&v81 objects:v99 count:16];
   if (!v67)
   {
@@ -180,7 +180,7 @@ void __54__STAMSClient_loadMediaForTask_withCompletionHandler___block_invoke(uin
   }
 
   v66 = *v82;
-  v64 = v7;
+  v64 = handlerCopy;
   do
   {
     v10 = 0;
@@ -272,7 +272,7 @@ LABEL_16:
             v37 = 0;
           }
 
-          v7 = v64;
+          handlerCopy = v64;
           v10 = v77;
           v12 = v68;
         }
@@ -324,8 +324,8 @@ LABEL_34:
         v45 = [v44 objectForKeyedSubscript:@"ios"];
         v46 = [v45 objectForKeyedSubscript:@"versionAttributes"];
 
-        v47 = [v46 allKeys];
-        v48 = [v47 objectAtIndexedSubscript:0];
+        allKeys = [v46 allKeys];
+        v48 = [allKeys objectAtIndexedSubscript:0];
 
         if (v48)
         {
@@ -368,7 +368,7 @@ LABEL_34:
               v37 = 0;
             }
 
-            v7 = v64;
+            handlerCopy = v64;
           }
 
           else
@@ -437,18 +437,18 @@ LABEL_58:
 LABEL_68:
 
   v58 = [v65 copy];
-  (v7)[2](v7, 0, v58);
+  (handlerCopy)[2](handlerCopy, 0, v58);
 
-  v59 = v61;
+  v59 = errorCopy;
 LABEL_70:
 
   v60 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_makeGlobalQueryParamsFor:(id)a3
++ (id)_makeGlobalQueryParamsFor:(id)for
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  forCopy = for;
   v4 = objc_opt_new();
   [v4 setObject:@"shortName forKey:{allowedDistributorIds", @"extend"}];
   [v4 setObject:@"additionalVersions" forKey:@"with"];
@@ -456,7 +456,7 @@ LABEL_70:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = forCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -475,7 +475,7 @@ LABEL_70:
         if ([v10 versionIdentifier])
         {
           v11 = MEMORY[0x1E696AEC0];
-          v12 = [v10 versionIdentifier];
+          versionIdentifier = [v10 versionIdentifier];
         }
 
         else
@@ -486,10 +486,10 @@ LABEL_70:
           }
 
           v11 = MEMORY[0x1E696AEC0];
-          v12 = [v10 betaVersionIdentifier];
+          versionIdentifier = [v10 betaVersionIdentifier];
         }
 
-        v13 = [v11 stringWithFormat:@"%llu", v12];
+        v13 = [v11 stringWithFormat:@"%llu", versionIdentifier];
         if (v13)
         {
           v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"version[apps:%llu]", objc_msgSend(v10, "adamID")];

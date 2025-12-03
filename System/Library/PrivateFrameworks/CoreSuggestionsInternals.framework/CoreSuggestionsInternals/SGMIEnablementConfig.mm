@@ -8,53 +8,53 @@
 + (BOOL)logWarningSignatureStats
 {
   v2 = +[SGMITrialClientWrapper sharedInstance];
-  v3 = [v2 signatureStatsLogging];
-  v4 = [v3 BOOLValue];
+  signatureStatsLogging = [v2 signatureStatsLogging];
+  bOOLValue = [signatureStatsLogging BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)detectSalientMails
 {
-  v2 = [MEMORY[0x277D02098] detectSalientMails];
-  v3 = v2;
-  if (v2)
+  detectSalientMails = [MEMORY[0x277D02098] detectSalientMails];
+  v3 = detectSalientMails;
+  if (detectSalientMails)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [detectSalientMails BOOLValue];
   }
 
   else
   {
     v5 = +[SGMITrialClientWrapper sharedInstance];
-    v6 = [v5 isEnabled];
-    v7 = [v5 isDNUOnlyEnablement];
-    v8 = v7;
-    if (v6)
+    isEnabled = [v5 isEnabled];
+    isDNUOnlyEnablement = [v5 isDNUOnlyEnablement];
+    v8 = isDNUOnlyEnablement;
+    if (isEnabled)
     {
-      v9 = v7 == 0;
-      v10 = [v6 BOOLValue];
-      v4 = v9 & v10;
-      if (v8 && (v10 & 1) != 0)
+      v9 = isDNUOnlyEnablement == 0;
+      bOOLValue2 = [isEnabled BOOLValue];
+      bOOLValue = v9 & bOOLValue2;
+      if (v8 && (bOOLValue2 & 1) != 0)
       {
         if ([v8 BOOLValue])
         {
-          v4 = [MEMORY[0x277D42590] isDNUEnabled];
+          bOOLValue = [MEMORY[0x277D42590] isDNUEnabled];
         }
 
         else
         {
-          v4 = 1;
+          bOOLValue = 1;
         }
       }
     }
 
     else
     {
-      v4 = 0;
+      bOOLValue = 0;
     }
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

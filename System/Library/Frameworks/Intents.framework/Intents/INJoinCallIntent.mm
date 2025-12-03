@@ -1,21 +1,21 @@
 @interface INJoinCallIntent
 - (INCallGroupConversation)groupConversation;
 - (INCallGroupConversationFilter)groupConversationFilter;
-- (INJoinCallIntent)initWithGroupConversationFilter:(id)a3 groupConversation:(id)a4;
+- (INJoinCallIntent)initWithGroupConversationFilter:(id)filter groupConversation:(id)conversation;
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setGroupConversation:(id)a3;
-- (void)setGroupConversationFilter:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setGroupConversation:(id)conversation;
+- (void)setGroupConversationFilter:(id)filter;
 @end
 
 @implementation INJoinCallIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INJoinCallIntent *)self _typedBackingStore:a3];
+  v6 = [(INJoinCallIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -24,29 +24,29 @@
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"groupConversationFilter";
-  v3 = [(INJoinCallIntent *)self groupConversationFilter];
-  v4 = v3;
-  if (!v3)
+  groupConversationFilter = [(INJoinCallIntent *)self groupConversationFilter];
+  null = groupConversationFilter;
+  if (!groupConversationFilter)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"groupConversation";
-  v11[0] = v4;
-  v5 = [(INJoinCallIntent *)self groupConversation];
-  v6 = v5;
-  if (!v5)
+  v11[0] = null;
+  groupConversation = [(INJoinCallIntent *)self groupConversation];
+  null2 = groupConversation;
+  if (!groupConversation)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  if (!v5)
+  if (!groupConversation)
   {
   }
 
-  if (!v3)
+  if (!groupConversationFilter)
   {
   }
 
@@ -55,81 +55,81 @@
   return v7;
 }
 
-- (void)setGroupConversation:(id)a3
+- (void)setGroupConversation:(id)conversation
 {
-  v4 = a3;
-  v6 = [(INJoinCallIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToCallGroupConversation(v4);
+  conversationCopy = conversation;
+  _typedBackingStore = [(INJoinCallIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToCallGroupConversation(conversationCopy);
 
-  [v6 setGroupConversation:v5];
+  [_typedBackingStore setGroupConversation:v5];
 }
 
 - (INCallGroupConversation)groupConversation
 {
-  v2 = [(INJoinCallIntent *)self _typedBackingStore];
-  v3 = [v2 groupConversation];
-  v4 = INIntentSlotValueTransformFromCallGroupConversation(v3);
+  _typedBackingStore = [(INJoinCallIntent *)self _typedBackingStore];
+  groupConversation = [_typedBackingStore groupConversation];
+  v4 = INIntentSlotValueTransformFromCallGroupConversation(groupConversation);
 
   return v4;
 }
 
-- (void)setGroupConversationFilter:(id)a3
+- (void)setGroupConversationFilter:(id)filter
 {
-  v4 = a3;
-  v6 = [(INJoinCallIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToCallGroupConversationFilter(v4);
+  filterCopy = filter;
+  _typedBackingStore = [(INJoinCallIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToCallGroupConversationFilter(filterCopy);
 
-  [v6 setGroupConversationFilter:v5];
+  [_typedBackingStore setGroupConversationFilter:v5];
 }
 
 - (INCallGroupConversationFilter)groupConversationFilter
 {
-  v2 = [(INJoinCallIntent *)self _typedBackingStore];
-  v3 = [v2 groupConversationFilter];
-  v4 = INIntentSlotValueTransformFromCallGroupConversationFilter(v3);
+  _typedBackingStore = [(INJoinCallIntent *)self _typedBackingStore];
+  groupConversationFilter = [_typedBackingStore groupConversationFilter];
+  v4 = INIntentSlotValueTransformFromCallGroupConversationFilter(groupConversationFilter);
 
   return v4;
 }
 
-- (INJoinCallIntent)initWithGroupConversationFilter:(id)a3 groupConversation:(id)a4
+- (INJoinCallIntent)initWithGroupConversationFilter:(id)filter groupConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
+  filterCopy = filter;
+  conversationCopy = conversation;
   v11.receiver = self;
   v11.super_class = INJoinCallIntent;
   v8 = [(INIntent *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(INJoinCallIntent *)v8 setGroupConversationFilter:v6];
-    [(INJoinCallIntent *)v9 setGroupConversation:v7];
+    [(INJoinCallIntent *)v8 setGroupConversationFilter:filterCopy];
+    [(INJoinCallIntent *)v9 setGroupConversation:conversationCopy];
   }
 
   return v9;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INJoinCallIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INJoinCallIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INJoinCallIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INJoinCallIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

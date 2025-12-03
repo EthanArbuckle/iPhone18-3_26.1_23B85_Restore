@@ -1,29 +1,29 @@
 @interface PXFanningVisualPositionsChangeDetails
-- ($5E4061BE7C3C8BB942C4587960135C41)bodyVisualPositionAfterApplyingChangesToBodyIndex:(SEL)a3;
-- ($5E4061BE7C3C8BB942C4587960135C41)bodyVisualPositionAfterRevertingChangesFromBodyIndex:(SEL)a3;
-- (PXFanningVisualPositionsChangeDetails)initWithCountBeforeChanges:(int64_t)a3 anchorIndexBeforeChanges:(int64_t)a4 headerIndexesBeforeChanges:(id)a5 countAfterChanges:(int64_t)a6 anchorIndexAfterChanges:(int64_t)a7 headerIndexesAfterChanges:(id)a8 anchorFan:(int64_t)a9 anchorReload:(int64_t)a10;
+- ($5E4061BE7C3C8BB942C4587960135C41)bodyVisualPositionAfterApplyingChangesToBodyIndex:(SEL)index;
+- ($5E4061BE7C3C8BB942C4587960135C41)bodyVisualPositionAfterRevertingChangesFromBodyIndex:(SEL)index;
+- (PXFanningVisualPositionsChangeDetails)initWithCountBeforeChanges:(int64_t)changes anchorIndexBeforeChanges:(int64_t)beforeChanges headerIndexesBeforeChanges:(id)indexesBeforeChanges countAfterChanges:(int64_t)afterChanges anchorIndexAfterChanges:(int64_t)indexAfterChanges headerIndexesAfterChanges:(id)indexesAfterChanges anchorFan:(int64_t)fan anchorReload:(int64_t)self0;
 @end
 
 @implementation PXFanningVisualPositionsChangeDetails
 
-- ($5E4061BE7C3C8BB942C4587960135C41)bodyVisualPositionAfterRevertingChangesFromBodyIndex:(SEL)a3
+- ($5E4061BE7C3C8BB942C4587960135C41)bodyVisualPositionAfterRevertingChangesFromBodyIndex:(SEL)index
 {
   retstr->var1 = 0;
   *&retstr->var2 = 0;
   retstr->var0 = 0;
   retstr->var2 = 1;
-  v7 = [(PXVisualPositionsChangeDetails *)self anchorBodyIndexBeforeChanges];
+  anchorBodyIndexBeforeChanges = [(PXVisualPositionsChangeDetails *)self anchorBodyIndexBeforeChanges];
   result = [(PXVisualPositionsChangeDetails *)self anchorBodyIndexAfterChanges];
   if (result == a4)
   {
-    retstr->var0 = v7;
+    retstr->var0 = anchorBodyIndexBeforeChanges;
     return result;
   }
 
   anchorFan = self->_anchorFan;
   if (anchorFan < 0)
   {
-    v10 = v7 + a4;
+    v10 = anchorBodyIndexBeforeChanges + a4;
     if (result <= a4)
     {
       v11 = v10 - (result + anchorFan);
@@ -35,7 +35,7 @@
 
   if (result - anchorFan > a4)
   {
-    v10 = v7 + a4;
+    v10 = anchorBodyIndexBeforeChanges + a4;
 LABEL_7:
     v11 = v10 - result + anchorFan;
 LABEL_11:
@@ -46,21 +46,21 @@ LABEL_11:
 
   if (result + anchorFan < a4)
   {
-    v11 = v7 + a4 - (result + anchorFan);
+    v11 = anchorBodyIndexBeforeChanges + a4 - (result + anchorFan);
     goto LABEL_11;
   }
 
   v12 = 0;
-  retstr->var0 = v7;
+  retstr->var0 = anchorBodyIndexBeforeChanges;
   retstr->var1 = 1;
   retstr->var2 = 0;
-  v11 = v7;
+  v11 = anchorBodyIndexBeforeChanges;
 LABEL_12:
   anchorReload = self->_anchorReload;
   if (anchorReload >= 1)
   {
     v14 = anchorFan & (anchorFan >> 63);
-    if (v14 - v7 + v11 <= anchorReload && v14 + v7 - v11 <= anchorReload)
+    if (v14 - anchorBodyIndexBeforeChanges + v11 <= anchorReload && v14 + anchorBodyIndexBeforeChanges - v11 <= anchorReload)
     {
       v16 = 0;
     }
@@ -76,15 +76,15 @@ LABEL_12:
   return result;
 }
 
-- ($5E4061BE7C3C8BB942C4587960135C41)bodyVisualPositionAfterApplyingChangesToBodyIndex:(SEL)a3
+- ($5E4061BE7C3C8BB942C4587960135C41)bodyVisualPositionAfterApplyingChangesToBodyIndex:(SEL)index
 {
   retstr->var1 = 0;
   *&retstr->var2 = 0;
   retstr->var0 = 0;
   retstr->var2 = 1;
-  v7 = [(PXVisualPositionsChangeDetails *)self anchorBodyIndexBeforeChanges];
+  anchorBodyIndexBeforeChanges = [(PXVisualPositionsChangeDetails *)self anchorBodyIndexBeforeChanges];
   result = [(PXVisualPositionsChangeDetails *)self anchorBodyIndexAfterChanges];
-  if (a4 == v7)
+  if (a4 == anchorBodyIndexBeforeChanges)
   {
     retstr->var0 = result;
     return result;
@@ -94,9 +94,9 @@ LABEL_12:
   if ((anchorFan & 0x8000000000000000) == 0)
   {
     v10 = result + a4;
-    if (a4 < v7)
+    if (a4 < anchorBodyIndexBeforeChanges)
     {
-      v11 = v7 + anchorFan;
+      v11 = anchorBodyIndexBeforeChanges + anchorFan;
 LABEL_8:
       v12 = &v10[-v11];
 LABEL_13:
@@ -105,22 +105,22 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v13 = &v10[-v7];
+    v13 = &v10[-anchorBodyIndexBeforeChanges];
 LABEL_12:
     v12 = &v13[anchorFan];
     goto LABEL_13;
   }
 
-  v11 = anchorFan + v7;
-  if (anchorFan + v7 > a4)
+  v11 = anchorFan + anchorBodyIndexBeforeChanges;
+  if (anchorFan + anchorBodyIndexBeforeChanges > a4)
   {
     v10 = result + a4;
     goto LABEL_8;
   }
 
-  if (v7 - anchorFan < a4)
+  if (anchorBodyIndexBeforeChanges - anchorFan < a4)
   {
-    v13 = result + a4 - v7;
+    v13 = result + a4 - anchorBodyIndexBeforeChanges;
     goto LABEL_12;
   }
 
@@ -150,15 +150,15 @@ LABEL_14:
   return result;
 }
 
-- (PXFanningVisualPositionsChangeDetails)initWithCountBeforeChanges:(int64_t)a3 anchorIndexBeforeChanges:(int64_t)a4 headerIndexesBeforeChanges:(id)a5 countAfterChanges:(int64_t)a6 anchorIndexAfterChanges:(int64_t)a7 headerIndexesAfterChanges:(id)a8 anchorFan:(int64_t)a9 anchorReload:(int64_t)a10
+- (PXFanningVisualPositionsChangeDetails)initWithCountBeforeChanges:(int64_t)changes anchorIndexBeforeChanges:(int64_t)beforeChanges headerIndexesBeforeChanges:(id)indexesBeforeChanges countAfterChanges:(int64_t)afterChanges anchorIndexAfterChanges:(int64_t)indexAfterChanges headerIndexesAfterChanges:(id)indexesAfterChanges anchorFan:(int64_t)fan anchorReload:(int64_t)self0
 {
   v11.receiver = self;
   v11.super_class = PXFanningVisualPositionsChangeDetails;
-  result = [(PXVisualPositionsChangeDetails *)&v11 initWithCountBeforeChanges:a3 anchorIndexBeforeChanges:a4 headerIndexesBeforeChanges:a5 countAfterChanges:a6 anchorIndexAfterChanges:a7 headerIndexesAfterChanges:a8];
+  result = [(PXVisualPositionsChangeDetails *)&v11 initWithCountBeforeChanges:changes anchorIndexBeforeChanges:beforeChanges headerIndexesBeforeChanges:indexesBeforeChanges countAfterChanges:afterChanges anchorIndexAfterChanges:indexAfterChanges headerIndexesAfterChanges:indexesAfterChanges];
   if (result)
   {
-    result->_anchorFan = a9;
-    result->_anchorReload = a10;
+    result->_anchorFan = fan;
+    result->_anchorReload = reload;
   }
 
   return result;

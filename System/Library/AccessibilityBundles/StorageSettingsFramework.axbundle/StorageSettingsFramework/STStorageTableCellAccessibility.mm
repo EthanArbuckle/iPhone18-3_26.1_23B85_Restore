@@ -1,17 +1,17 @@
 @interface STStorageTableCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation STStorageTableCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STStorageTableCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"STStorageTableCell" hasInstanceVariable:@"_infoLabel" withType:"UILabel"];
-  [v3 validateClass:@"STStorageTableCell" hasInstanceVariable:@"_sizeLabel" withType:"UILabel"];
-  [v3 validateClass:@"STStorageTableCell" hasInstanceMethod:@"infoHidden" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STStorageTableCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"STStorageTableCell" hasInstanceVariable:@"_infoLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"STStorageTableCell" hasInstanceVariable:@"_sizeLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"STStorageTableCell" hasInstanceMethod:@"infoHidden" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel
@@ -20,7 +20,7 @@
   if ([(STStorageTableCellAccessibility *)self safeBoolForKey:@"infoHidden"])
   {
     v4 = [(STStorageTableCellAccessibility *)self safeUIViewForKey:@"_infoLabel"];
-    v7 = [v4 accessibilityLabel];
+    accessibilityLabel = [v4 accessibilityLabel];
     v5 = __UIAXStringForVariables();
 
     v3 = v5;

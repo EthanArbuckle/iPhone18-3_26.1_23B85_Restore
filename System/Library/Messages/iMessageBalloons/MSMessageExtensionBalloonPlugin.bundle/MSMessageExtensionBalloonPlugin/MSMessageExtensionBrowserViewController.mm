@@ -1,9 +1,9 @@
 @interface MSMessageExtensionBrowserViewController
-+ (void)invalidateSnapshotForKey:(id)a3;
-- (BOOL)_canCurrentPluginShowInBrowserPluginIdentifier:(id)a3;
++ (void)invalidateSnapshotForKey:(id)key;
+- (BOOL)_canCurrentPluginShowInBrowserPluginIdentifier:(id)identifier;
 - (BOOL)_shouldVendRemoteViewControllerForCardSwipeSPI;
 - (BOOL)extensionWantsDraftAssetArchives;
-- (BOOL)hasEntitlement:(id)a3;
+- (BOOL)hasEntitlement:(id)entitlement;
 - (BOOL)isAlive;
 - (BOOL)isFromValidExtension;
 - (BOOL)isGenerativePlaygroundExtension;
@@ -15,165 +15,165 @@
 - (BOOL)wantsDarkUI;
 - (BOOL)wantsOpaqueUI;
 - (IMBalloonAppExtension)balloonExtensionPlugin;
-- (MSMessageExtensionBrowserViewController)initWithBalloonPlugin:(id)a3 dataSource:(id)a4;
+- (MSMessageExtensionBrowserViewController)initWithBalloonPlugin:(id)plugin dataSource:(id)source;
 - (NSString)description;
 - (_MSMessageComposeExtensionProtocol)remoteProxy;
 - (_UIRemoteViewController)_containedRemoteViewController;
-- (id)_arrayForApplePlistKey:(id)a3;
+- (id)_arrayForApplePlistKey:(id)key;
 - (id)_bundleIDsForSwipeGestureDisablement;
-- (id)_configurePhotosDraftAssetArchivesWithConversationID:(id)a3;
-- (id)_itemPayloadFromMSMessage:(id)a3;
+- (id)_configurePhotosDraftAssetArchivesWithConversationID:(id)d;
+- (id)_itemPayloadFromMSMessage:(id)message;
 - (id)assetExplorerTransport;
 - (id)cancelTouchesInView;
 - (id)childViewControllerForStatusBarHidden;
 - (id)childViewControllerForStatusBarStyle;
 - (id)currentConversationState;
 - (id)extension;
-- (id)fetchPluginPayloadsAndClear:(BOOL)a3;
+- (id)fetchPluginPayloadsAndClear:(BOOL)clear;
 - (id)fetchPluginStagedIdentifiers;
 - (id)iMessageLoginID;
 - (id)navigationItem;
 - (id)requestSnapshotDataForPersistance;
-- (id)substituteNameInString:(id)a3;
-- (id)substituteNameInString:(id)a3 withAppID:(id)a4;
+- (id)substituteNameInString:(id)string;
+- (id)substituteNameInString:(id)string withAppID:(id)d;
 - (id)workingDirForDraft;
 - (unint64_t)presentationStyle;
 - (unint64_t)sheetDetentStyle;
 - (void)_addRemoteViewController;
 - (void)_addRemoteViewControllerAndConfigureExtension;
-- (void)_addStickerAnimationDidFinishWithCompletion:(id)a3;
-- (void)_addStickerToStoreWithRepresentations:(id)a3 completionHandler:(id)a4;
-- (void)_addStickerToStoreWithRepresentations:(id)a3 completionWithStickerIDs:(id)a4;
-- (void)_addStickerToStoreWithRepresentations:(id)a3 sourceRect:(CGRect)a4 completion:(id)a5;
-- (void)_addStickerToStoreWithRepresentations:(id)a3 sourceRect:(CGRect)a4 effect:(int64_t)a5 completion:(id)a6;
-- (void)_addStickerToStoreWithUISticker:(id)a3 sourceRect:(CGRect)a4 completion:(id)a5;
-- (void)_animatedStickerCreationProgressChanged:(id)a3 progress:(double)a4;
-- (void)_assetArchiveRemoved:(id)a3;
-- (void)_callAndDequeueLoadCompletionBlocks:(BOOL)a3;
-- (void)_canShowBrowserForPluginIdentifier:(id)a3 completion:(id)a4;
+- (void)_addStickerAnimationDidFinishWithCompletion:(id)completion;
+- (void)_addStickerToStoreWithRepresentations:(id)representations completionHandler:(id)handler;
+- (void)_addStickerToStoreWithRepresentations:(id)representations completionWithStickerIDs:(id)ds;
+- (void)_addStickerToStoreWithRepresentations:(id)representations sourceRect:(CGRect)rect completion:(id)completion;
+- (void)_addStickerToStoreWithRepresentations:(id)representations sourceRect:(CGRect)rect effect:(int64_t)effect completion:(id)completion;
+- (void)_addStickerToStoreWithUISticker:(id)sticker sourceRect:(CGRect)rect completion:(id)completion;
+- (void)_animatedStickerCreationProgressChanged:(id)changed progress:(double)progress;
+- (void)_assetArchiveRemoved:(id)removed;
+- (void)_callAndDequeueLoadCompletionBlocks:(BOOL)blocks;
+- (void)_canShowBrowserForPluginIdentifier:(id)identifier completion:(id)completion;
 - (void)_cancelExtensionRequest;
-- (void)_configureMessage:(id)a3 messageSenderAddress:(id)a4 withConversation:(id)a5;
+- (void)_configureMessage:(id)message messageSenderAddress:(id)address withConversation:(id)conversation;
 - (void)_didRemoveStickerPreview;
 - (void)_dismiss;
 - (void)_dismissAndPresentPhotosApp;
-- (void)_handleExtensionInterruption:(id)a3;
-- (void)_instantiateRemoteViewControllerIfNeededWithIntent:(int64_t)a3 completion:(id)a4;
+- (void)_handleExtensionInterruption:(id)interruption;
+- (void)_instantiateRemoteViewControllerIfNeededWithIntent:(int64_t)intent completion:(id)completion;
 - (void)_markCurrentMessageAsPlayedIfNeeded;
-- (void)_openURL:(id)a3 completionHandler:(id)a4;
+- (void)_openURL:(id)l completionHandler:(id)handler;
 - (void)_postCurrentPluginBrowserViewDidPrepareForDisplay;
 - (void)_prepareForAddStickerFromSubjectLift;
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 destructiveButtonTitle:(id)a6 completion:(id)a7;
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 image:(id)a6 completion:(id)a7;
+- (void)_presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle destructiveButtonTitle:(id)destructiveButtonTitle completion:(id)completion;
+- (void)_presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle image:(id)image completion:(id)completion;
 - (void)_remoteViewDidBecomeReadyForDisplay;
-- (void)_removeAssetArchiveWithIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)_removeAssetArchiveWithIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)_removeRemoteViewController;
 - (void)_removeRemoteViewControllerAndCancelExtensionRequestIfNeeded;
-- (void)_requestConversationAvatarsWithSize:(CGSize)a3 completionHandler:(id)a4;
-- (void)_requestFullScreenModalPresentationWithSize:(CGSize)a3;
-- (void)_requestHostSceneIdentifierWithCompletion:(id)a3;
-- (void)_requestPresentationStyle:(unint64_t)a3;
-- (void)_requestPresentationWithStickerType:(id)a3 identifier:(id)a4;
-- (void)_requestStickerExtensionMetadataDictionary:(id)a3;
+- (void)_requestConversationAvatarsWithSize:(CGSize)size completionHandler:(id)handler;
+- (void)_requestFullScreenModalPresentationWithSize:(CGSize)size;
+- (void)_requestHostSceneIdentifierWithCompletion:(id)completion;
+- (void)_requestPresentationStyle:(unint64_t)style;
+- (void)_requestPresentationWithStickerType:(id)type identifier:(id)identifier;
+- (void)_requestStickerExtensionMetadataDictionary:(id)dictionary;
 - (void)_sendBecomeActiveMessage;
-- (void)_sendCustomAcknowledgement:(id)a3 selectedMessage:(id)a4 completionHandler:(id)a5;
-- (void)_sendInstantiationRequestToExtensionWithHandler:(id)a3;
+- (void)_sendCustomAcknowledgement:(id)acknowledgement selectedMessage:(id)message completionHandler:(id)handler;
+- (void)_sendInstantiationRequestToExtensionWithHandler:(id)handler;
 - (void)_sendResignActiveMessage;
-- (void)_setPluginIdentifierToShow:(id)a3 completion:(id)a4;
-- (void)_showBrowserForPluginIdentifier:(id)a3 style:(unint64_t)a4 completion:(id)a5;
-- (void)_stageAppItem:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5;
-- (void)_stageAssetArchive:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5;
-- (void)_stageMediaItem:(id)a3 skipShelf:(BOOL)a4 forceStage:(BOOL)a5 completionHandler:(id)a6;
-- (void)_stageRichLink:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5;
-- (void)_startDragMediaItem:(id)a3 frameInRemoteView:(CGRect)a4 fence:(id)a5 completionHandler:(id)a6;
-- (void)_stickerDruidDragEndedWithPayload:(id)a3;
-- (void)_stickerDruidDragEndedWithPayload:(id)a3 pluginIdentifier:(id)a4;
+- (void)_setPluginIdentifierToShow:(id)show completion:(id)completion;
+- (void)_showBrowserForPluginIdentifier:(id)identifier style:(unint64_t)style completion:(id)completion;
+- (void)_stageAppItem:(id)item skipShelf:(BOOL)shelf completionHandler:(id)handler;
+- (void)_stageAssetArchive:(id)archive skipShelf:(BOOL)shelf completionHandler:(id)handler;
+- (void)_stageMediaItem:(id)item skipShelf:(BOOL)shelf forceStage:(BOOL)stage completionHandler:(id)handler;
+- (void)_stageRichLink:(id)link skipShelf:(BOOL)shelf completionHandler:(id)handler;
+- (void)_startDragMediaItem:(id)item frameInRemoteView:(CGRect)view fence:(id)fence completionHandler:(id)handler;
+- (void)_stickerDruidDragEndedWithPayload:(id)payload;
+- (void)_stickerDruidDragEndedWithPayload:(id)payload pluginIdentifier:(id)identifier;
 - (void)_stickerDruidDragStarted;
 - (void)_transportStagingStateDidChange;
-- (void)_updateSnapshotForNextLaunch:(id)a3;
-- (void)appendDraftAssetArchivesIfNeeded:(id)a3;
-- (void)applicationDidEnterBackground:(id)a3;
-- (void)applicationWillEnterForeground:(id)a3;
+- (void)_updateSnapshotForNextLaunch:(id)launch;
+- (void)appendDraftAssetArchivesIfNeeded:(id)needed;
+- (void)applicationDidEnterBackground:(id)background;
+- (void)applicationWillEnterForeground:(id)foreground;
 - (void)beginDisablingUserInteraction;
 - (void)beginSuppressingAppearanceMethods;
 - (void)browserScrolledOffScreen;
 - (void)browserScrolledOnScreen;
-- (void)chatKitTransport:(id)a3 commitPayload:(id)a4;
-- (void)chatKitTransport:(id)a3 didUpdatePersistedURLsForPackageIdentifier:(id)a4;
-- (void)checkForTouchInRemoteProcessIfNecessaryWithCompletion:(id)a3;
+- (void)chatKitTransport:(id)transport commitPayload:(id)payload;
+- (void)chatKitTransport:(id)transport didUpdatePersistedURLsForPackageIdentifier:(id)identifier;
+- (void)checkForTouchInRemoteProcessIfNecessaryWithCompletion:(id)completion;
 - (void)clearAllStagedPluginPackages;
-- (void)clearPluginPackagesWithIdentifiers:(id)a3;
-- (void)datasourcePayloadDidChange:(id)a3 updateFlags:(unint64_t)a4;
+- (void)clearPluginPackagesWithIdentifiers:(id)identifiers;
+- (void)datasourcePayloadDidChange:(id)change updateFlags:(unint64_t)flags;
 - (void)dealloc;
 - (void)deferredForceTearDownRemoteView;
-- (void)didCancelSendingPluginPayload:(id)a3;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didCancelSendingPluginPayload:(id)payload;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)didReceiveMemoryWarning;
-- (void)didSelectGPAsset:(id)a3 recipeData:(id)a4 completion:(id)a5;
-- (void)didStartSendingPluginPayload:(id)a3;
-- (void)dragManager:(id)a3 didBeginDraggingItem:(id)a4;
-- (void)dragManager:(id)a3 didEndDraggingItem:(id)a4 toDragTarget:(id)a5 dropArea:(int)a6;
+- (void)didSelectGPAsset:(id)asset recipeData:(id)data completion:(id)completion;
+- (void)didStartSendingPluginPayload:(id)payload;
+- (void)dragManager:(id)manager didBeginDraggingItem:(id)item;
+- (void)dragManager:(id)manager didEndDraggingItem:(id)item toDragTarget:(id)target dropArea:(int)area;
 - (void)dropAssertion;
 - (void)endDisablingUserInteraction;
 - (void)endSuppressingAppearanceMethods;
-- (void)forceTearDownRemoteViewOverridingExceptions:(BOOL)a3;
-- (void)handleTextInputPayload:(id)a3 withPayloadID:(id)a4 completion:(id)a5;
+- (void)forceTearDownRemoteViewOverridingExceptions:(BOOL)exceptions;
+- (void)handleTextInputPayload:(id)payload withPayloadID:(id)d completion:(id)completion;
 - (void)killExtensionProcess;
-- (void)loadProxyIfNeededWithCompletion:(id)a3;
-- (void)loadRemoteViewWithCompletion:(id)a3;
-- (void)messageAddedWithDataSource:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)packageTransport:(id)a3 didUnstagePackageWithIdentifier:(id)a4;
-- (void)prepareForPresentationWithCompletionHandler:(id)a3;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)loadProxyIfNeededWithCompletion:(id)completion;
+- (void)loadRemoteViewWithCompletion:(id)completion;
+- (void)messageAddedWithDataSource:(id)source;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)packageTransport:(id)transport didUnstagePackageWithIdentifier:(id)identifier;
+- (void)prepareForPresentationWithCompletionHandler:(id)handler;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)removeSnapshot;
-- (void)requestStickerExtensionMetadataDictionary:(id)a3;
-- (void)restoreDraftStateFromPayload:(id)a3;
+- (void)requestStickerExtensionMetadataDictionary:(id)dictionary;
+- (void)restoreDraftStateFromPayload:(id)payload;
 - (void)saveSnapshotForBrowserViewController;
-- (void)setBalloonPluginDataSource:(id)a3;
-- (void)showSnapshotForSize:(CGSize)a3;
-- (void)stageAssetToTransportAndNotifySendDelegate:(id)a3;
-- (void)touchUpOccuredForIdentifier:(unsigned int)a3 detached:(BOOL)a4 context:(unsigned int)a5 pid:(int)a6;
+- (void)setBalloonPluginDataSource:(id)source;
+- (void)showSnapshotForSize:(CGSize)size;
+- (void)stageAssetToTransportAndNotifySendDelegate:(id)delegate;
+- (void)touchUpOccuredForIdentifier:(unsigned int)identifier detached:(BOOL)detached context:(unsigned int)context pid:(int)pid;
 - (void)unloadRemoteView;
-- (void)validatePayloadForSending:(id)a3 associatedText:(id)a4 completionHandler:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)validatePayloadForSending:(id)sending associatedText:(id)text completionHandler:(id)handler;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidTransitionToCompactPresentation;
 - (void)viewDidTransitionToExpandedPresentation;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 - (void)viewWillTransitionToCompactPresentation;
 - (void)viewWillTransitionToExpandedPresentation;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)volumeButtonPressed:(BOOL)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)volumeButtonPressed:(BOOL)pressed;
 @end
 
 @implementation MSMessageExtensionBrowserViewController
 
 - (IMBalloonAppExtension)balloonExtensionPlugin
 {
-  v2 = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
+  balloonPlugin = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
-    v2 = 0;
+    balloonPlugin = 0;
   }
 
-  return v2;
+  return balloonPlugin;
 }
 
-- (MSMessageExtensionBrowserViewController)initWithBalloonPlugin:(id)a3 dataSource:(id)a4
+- (MSMessageExtensionBrowserViewController)initWithBalloonPlugin:(id)plugin dataSource:(id)source
 {
-  v6 = a4;
+  sourceCopy = source;
   v21.receiver = self;
   v21.super_class = MSMessageExtensionBrowserViewController;
-  v7 = [(MSMessageExtensionBrowserViewController *)&v21 initWithBalloonPlugin:a3 dataSource:v6];
+  v7 = [(MSMessageExtensionBrowserViewController *)&v21 initWithBalloonPlugin:plugin dataSource:sourceCopy];
   if (v7)
   {
-    v8 = [v6 message];
+    message = [sourceCopy message];
     message = v7->_message;
-    v7->_message = v8;
+    v7->_message = message;
 
     v7->_shouldAutomaticallyForwardAppearanceMethods = 1;
     sessionUUID = v7->_sessionUUID;
@@ -193,7 +193,7 @@
     touchTracker = v7->_touchTracker;
     v7->_touchTracker = v14;
 
-    [v6 setDelegate:v7];
+    [sourceCopy setDelegate:v7];
     if (CKIsRunningInMessages())
     {
       v16 = +[BKSTouchDeliveryObservationService sharedInstance];
@@ -221,7 +221,7 @@
     *buf = 136315394;
     v8 = "[MSMessageExtensionBrowserViewController dealloc]";
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "%s %lX", buf, 0x16u);
   }
 
@@ -243,30 +243,30 @@
 
 - (NSString)description
 {
-  v3 = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
-  v4 = [v3 identifier];
-  v5 = [NSString stringWithFormat:@"<%@ %p %@>", v4, self, objc_opt_class()];
+  balloonPlugin = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
+  identifier = [balloonPlugin identifier];
+  v5 = [NSString stringWithFormat:@"<%@ %p %@>", identifier, self, objc_opt_class()];
 
   return v5;
 }
 
 - (id)navigationItem
 {
-  v3 = [(UIViewController *)self->_remoteViewController navigationItem];
-  v4 = v3;
-  if (v3)
+  navigationItem = [(UIViewController *)self->_remoteViewController navigationItem];
+  v4 = navigationItem;
+  if (navigationItem)
   {
-    v5 = v3;
+    navigationItem2 = navigationItem;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = MSMessageExtensionBrowserViewController;
-    v5 = [(MSMessageExtensionBrowserViewController *)&v8 navigationItem];
+    navigationItem2 = [(MSMessageExtensionBrowserViewController *)&v8 navigationItem];
   }
 
-  v6 = v5;
+  v6 = navigationItem2;
 
   return v6;
 }
@@ -275,18 +275,18 @@
 {
   v4.receiver = self;
   v4.super_class = MSMessageExtensionBrowserViewController;
-  v2 = [(MSMessageExtensionBrowserViewController *)&v4 childViewControllerForStatusBarHidden];
+  childViewControllerForStatusBarHidden = [(MSMessageExtensionBrowserViewController *)&v4 childViewControllerForStatusBarHidden];
 
-  return v2;
+  return childViewControllerForStatusBarHidden;
 }
 
 - (id)childViewControllerForStatusBarStyle
 {
   v4.receiver = self;
   v4.super_class = MSMessageExtensionBrowserViewController;
-  v2 = [(MSMessageExtensionBrowserViewController *)&v4 childViewControllerForStatusBarStyle];
+  childViewControllerForStatusBarStyle = [(MSMessageExtensionBrowserViewController *)&v4 childViewControllerForStatusBarStyle];
 
-  return v2;
+  return childViewControllerForStatusBarStyle;
 }
 
 - (_UIRemoteViewController)_containedRemoteViewController
@@ -309,13 +309,13 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && ([(MSMessageExtensionBrowserViewController *)self linkedBeforeYukon]& 1) == 0)
   {
-    v4 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
-    v5 = [v4 extension];
-    v6 = v5;
-    if (v5)
+    balloonExtensionPlugin = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
+    extension = [balloonExtensionPlugin extension];
+    v6 = extension;
+    if (extension)
     {
-      v7 = [v5 infoDictionary];
-      v8 = [v7 objectForKeyedSubscript:kCFBundleIdentifierKey];
+      infoDictionary = [extension infoDictionary];
+      v8 = [infoDictionary objectForKeyedSubscript:kCFBundleIdentifierKey];
       if (v8 && (-[MSMessageExtensionBrowserViewController _bundleIDsForSwipeGestureDisablement](self, "_bundleIDsForSwipeGestureDisablement"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 containsObject:v8], v9, v10))
       {
         v3 = [(MSMessageExtensionBrowserViewController *)self linkedBeforeDawn]^ 1;
@@ -353,17 +353,17 @@
   return v3;
 }
 
-- (BOOL)hasEntitlement:(id)a3
+- (BOOL)hasEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = [(MSMessageExtensionBrowserViewController *)self extension];
+  entitlementCopy = entitlement;
+  extension = [(MSMessageExtensionBrowserViewController *)self extension];
 
-  if (v5)
+  if (extension)
   {
-    v6 = [(MSMessageExtensionBrowserViewController *)self extension];
-    v7 = [v6 _extensionContextForUUID:self->_sessionUUID];
-    v8 = [v7 _auxiliaryConnection];
-    v9 = [v8 valueForEntitlement:v4];
+    extension2 = [(MSMessageExtensionBrowserViewController *)self extension];
+    v7 = [extension2 _extensionContextForUUID:self->_sessionUUID];
+    _auxiliaryConnection = [v7 _auxiliaryConnection];
+    v9 = [_auxiliaryConnection valueForEntitlement:entitlementCopy];
 
     if (v9)
     {
@@ -392,8 +392,8 @@
     return 1;
   }
 
-  v4 = [(MSMessageExtensionBrowserViewController *)self extension];
-  if (v4)
+  extension = [(MSMessageExtensionBrowserViewController *)self extension];
+  if (extension)
   {
     v2 = 0;
   }
@@ -416,9 +416,9 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)loadRemoteViewWithCompletion:(id)a3
+- (void)loadRemoteViewWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = IMLogHandleForCategory();
   v6 = os_signpost_id_generate(v5);
   v7 = v5;
@@ -429,13 +429,13 @@
     _os_signpost_emit_with_name_impl(&dword_0, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "extensionLoading", "", buf, 2u);
   }
 
-  v9 = [(MSMessageExtensionBrowserViewController *)self isInDeferredTeardown];
+  isInDeferredTeardown = [(MSMessageExtensionBrowserViewController *)self isInDeferredTeardown];
   v10 = self->_remoteViewController;
   v11 = ms_defaultLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v23 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "loadRemoteView %@", buf, 0xCu);
   }
 
@@ -444,13 +444,13 @@
   v15[2] = sub_2F40;
   v15[3] = &unk_4CE58;
   v16 = v10;
-  v17 = self;
-  v21 = v9;
+  selfCopy2 = self;
+  v21 = isInDeferredTeardown;
   v18 = v8;
-  v19 = v4;
+  v19 = completionCopy;
   v20 = v6;
   v12 = v8;
-  v13 = v4;
+  v13 = completionCopy;
   v14 = v10;
   [(MSMessageExtensionBrowserViewController *)self _instantiateRemoteViewControllerIfNeeded:v15];
 }
@@ -461,7 +461,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "unloadRemoteView %@", &v4, 0xCu);
   }
 
@@ -470,18 +470,18 @@
 
 - (BOOL)mayBeKeptInViewHierarchy
 {
-  v3 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
-  v4 = [v3 proxy];
+  balloonExtensionPlugin = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
+  proxy = [balloonExtensionPlugin proxy];
 
-  v5 = [v4 objectForInfoDictionaryKey:@"NSCameraUsageDescription" ofClass:objc_opt_class() inScope:0];
+  v5 = [proxy objectForInfoDictionaryKey:@"NSCameraUsageDescription" ofClass:objc_opt_class() inScope:0];
 
-  v6 = [v4 objectForInfoDictionaryKey:@"NSMicrophoneUsageDescription" ofClass:objc_opt_class() inScope:0];
+  v6 = [proxy objectForInfoDictionaryKey:@"NSMicrophoneUsageDescription" ofClass:objc_opt_class() inScope:0];
   v7 = v5 | v6;
 
-  v8 = [(MSMessageExtensionBrowserViewController *)self inFullScreenModalPresentation];
+  inFullScreenModalPresentation = [(MSMessageExtensionBrowserViewController *)self inFullScreenModalPresentation];
   if (v7)
   {
-    v9 = v8;
+    v9 = inFullScreenModalPresentation;
   }
 
   else
@@ -492,25 +492,25 @@
   return v9;
 }
 
-- (void)setBalloonPluginDataSource:(id)a3
+- (void)setBalloonPluginDataSource:(id)source
 {
-  v4 = a3;
-  v5 = [(MSMessageExtensionBrowserViewController *)self balloonPluginDataSource];
-  v6 = v4;
-  if (v5 != v6)
+  sourceCopy = source;
+  balloonPluginDataSource = [(MSMessageExtensionBrowserViewController *)self balloonPluginDataSource];
+  v6 = sourceCopy;
+  if (balloonPluginDataSource != v6)
   {
-    [v5 setDelegate:0];
+    [balloonPluginDataSource setDelegate:0];
     [v6 setDelegate:self];
-    v7 = [v6 message];
+    message = [v6 message];
     message = self->_message;
-    self->_message = v7;
+    self->_message = message;
 
     v11.receiver = self;
     v11.super_class = MSMessageExtensionBrowserViewController;
     [(MSMessageExtensionBrowserViewController *)&v11 setBalloonPluginDataSource:v6];
-    v9 = [(MSMessageExtensionBrowserViewController *)self currentConversationState];
-    v10 = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
-    [v10 _conversationDidChangeWithConversationState:v9];
+    currentConversationState = [(MSMessageExtensionBrowserViewController *)self currentConversationState];
+    remoteProxy = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
+    [remoteProxy _conversationDidChangeWithConversationState:currentConversationState];
 
     [(MSMessageExtensionBrowserViewController *)self _markCurrentMessageAsPlayedIfNeeded];
   }
@@ -547,14 +547,14 @@
 {
   if (self->_sessionUUID)
   {
-    v3 = [(MSMessageExtensionBrowserViewController *)self extension];
-    [v3 cancelExtensionRequestWithIdentifier:self->_sessionUUID];
+    extension = [(MSMessageExtensionBrowserViewController *)self extension];
+    [extension cancelExtensionRequestWithIdentifier:self->_sessionUUID];
 
     v4 = ms_defaultLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138412290;
-      v7 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, " cancelled extension request for extension %@", &v6, 0xCu);
     }
 
@@ -568,7 +568,7 @@
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138412290;
-      v7 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_0, p_super, OS_LOG_TYPE_DEFAULT, " no _sessionUUID could not cancel %@", &v6, 0xCu);
     }
   }
@@ -579,8 +579,8 @@
   if (![(MSMessageExtensionBrowserViewController *)self isInDeferredTeardown]&& ![(MSMessageExtensionBrowserViewController *)self isWaitingForReply])
   {
     [(MSMessageExtensionBrowserViewController *)self setIsInDeferredTeardown:1];
-    v3 = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
-    [v3 _hostDidBeginDeferredTeardown];
+    remoteProxy = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
+    [remoteProxy _hostDidBeginDeferredTeardown];
 
     im_dispatch_after();
   }
@@ -588,22 +588,22 @@
 
 - (void)dropAssertion
 {
-  v2 = [(MSMessageExtensionBrowserViewController *)self extension];
-  [v2 _dropAssertion];
+  extension = [(MSMessageExtensionBrowserViewController *)self extension];
+  [extension _dropAssertion];
 }
 
 - (void)killExtensionProcess
 {
   v3 = +[CKPluginExtensionStateObserver sharedInstance];
-  v4 = [v3 passKitUIPresented];
+  passKitUIPresented = [v3 passKitUIPresented];
 
-  if (v4)
+  if (passKitUIPresented)
   {
     v5 = ms_defaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = self;
+      selfCopy2 = self;
       v6 = "self %@ killExtensionProcess not doing  work as we are suspending due to passkit UI";
 LABEL_7:
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, v6, buf, 0xCu);
@@ -614,15 +614,15 @@ LABEL_7:
   }
 
   v7 = +[CKPluginExtensionStateObserver sharedInstance];
-  v8 = [v7 iTunesStoreDialogPresented];
+  iTunesStoreDialogPresented = [v7 iTunesStoreDialogPresented];
 
-  if (v8)
+  if (iTunesStoreDialogPresented)
   {
     v5 = ms_defaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = self;
+      selfCopy2 = self;
       v6 = "self %@ killExtensionProcess not  suspend work as we are suspending due to iTunesStore UI";
       goto LABEL_7;
     }
@@ -634,25 +634,25 @@ LABEL_8:
 
   if ((IMGetDomainBoolForKey() & 1) == 0)
   {
-    v9 = [(MSMessageExtensionBrowserViewController *)self extension];
-    [v9 _kill:9];
+    extension = [(MSMessageExtensionBrowserViewController *)self extension];
+    [extension _kill:9];
   }
 }
 
 - (BOOL)isAlive
 {
-  v2 = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
-  v3 = v2 != 0;
+  remoteProxy = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
+  v3 = remoteProxy != 0;
 
   return v3;
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = MSMessageExtensionBrowserViewController;
   [(MSMessageExtensionBrowserViewController *)&v5 didMoveToParentViewController:?];
-  if (a3)
+  if (controller)
   {
     [(MSMessageExtensionBrowserViewController *)self setIsInDeferredTeardown:0];
   }
@@ -660,24 +660,24 @@ LABEL_8:
 
 - (BOOL)prefersStatusBarHidden
 {
-  v3 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
-  v4 = [v3 identifier];
+  balloonExtensionPlugin = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
+  identifier = [balloonExtensionPlugin identifier];
   v5 = IMBalloonExtensionIDWithSuffix();
-  v6 = [v4 isEqualToString:v5];
+  v6 = [identifier isEqualToString:v5];
 
   if (!v6)
   {
     return 0;
   }
 
-  v7 = [(MSMessageExtensionBrowserViewController *)self remoteViewController];
+  remoteViewController = [(MSMessageExtensionBrowserViewController *)self remoteViewController];
 
-  if (v7)
+  if (remoteViewController)
   {
-    v8 = [(MSMessageExtensionBrowserViewController *)self remoteViewController];
-    v9 = [v8 prefersStatusBarHidden];
+    remoteViewController2 = [(MSMessageExtensionBrowserViewController *)self remoteViewController];
+    prefersStatusBarHidden = [remoteViewController2 prefersStatusBarHidden];
 
-    return v9;
+    return prefersStatusBarHidden;
   }
 
   else
@@ -688,28 +688,28 @@ LABEL_8:
   }
 }
 
-- (void)forceTearDownRemoteViewOverridingExceptions:(BOOL)a3
+- (void)forceTearDownRemoteViewOverridingExceptions:(BOOL)exceptions
 {
   [(MSMessageExtensionBrowserViewController *)self setIsInDeferredTeardown:0];
-  if (a3)
+  if (exceptions)
   {
     goto LABEL_2;
   }
 
-  v21 = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
-  v22 = [v21 identifier];
-  v23 = [v22 containsString:IMBalloonPluginIdentifierSurf];
+  balloonPlugin = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
+  identifier = [balloonPlugin identifier];
+  v23 = [identifier containsString:IMBalloonPluginIdentifierSurf];
 
   v24 = +[CKPluginExtensionStateObserver sharedInstance];
-  LOBYTE(v22) = [v24 passKitUIPresented];
+  LOBYTE(identifier) = [v24 passKitUIPresented];
 
-  if ((v22 & 1) != 0 || v23)
+  if ((identifier & 1) != 0 || v23)
   {
     v27 = ms_defaultLog();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       v29 = 138412290;
-      v30 = self;
+      selfCopy2 = self;
       v28 = "self %@ prepareForSuspend not doing suspend work as we are suspending due to passkit UI/ Apple Pay UI";
       goto LABEL_17;
     }
@@ -720,15 +720,15 @@ LABEL_18:
   }
 
   v25 = +[CKPluginExtensionStateObserver sharedInstance];
-  v26 = [v25 iTunesStoreDialogPresented];
+  iTunesStoreDialogPresented = [v25 iTunesStoreDialogPresented];
 
-  if (v26)
+  if (iTunesStoreDialogPresented)
   {
     v27 = ms_defaultLog();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       v29 = 138412290;
-      v30 = self;
+      selfCopy2 = self;
       v28 = "self %@ prepareForSuspend not doing suspend work as we are suspending due to iTunesStore UI";
 LABEL_17:
       _os_log_impl(&dword_0, v27, OS_LOG_TYPE_DEFAULT, v28, &v29, 0xCu);
@@ -746,7 +746,7 @@ LABEL_2:
     sessionUUID = self->_sessionUUID;
     v8 = [NSNumber numberWithUnsignedInteger:[(MSMessageExtensionBrowserViewController *)self extensionLoadRequestCount]];
     v29 = 138412802;
-    v30 = remoteViewController;
+    selfCopy2 = remoteViewController;
     v31 = 2112;
     v32 = sessionUUID;
     v33 = 2112;
@@ -756,16 +756,16 @@ LABEL_2:
 
   [(MSMessageExtensionBrowserViewController *)self _sendResignActiveMessage];
   [(MSMessageExtensionBrowserViewController *)self setIsWaitingForReply:0];
-  v9 = [(MSMessageExtensionBrowserViewController *)self remoteViewController];
+  remoteViewController = [(MSMessageExtensionBrowserViewController *)self remoteViewController];
 
-  if (v9)
+  if (remoteViewController)
   {
-    v10 = [(MSMessageExtensionBrowserViewController *)self remoteViewController];
-    [v10 removeFromParentViewController];
+    remoteViewController2 = [(MSMessageExtensionBrowserViewController *)self remoteViewController];
+    [remoteViewController2 removeFromParentViewController];
 
-    v11 = [(MSMessageExtensionBrowserViewController *)self remoteViewController];
-    v12 = [v11 view];
-    [v12 removeFromSuperview];
+    remoteViewController3 = [(MSMessageExtensionBrowserViewController *)self remoteViewController];
+    view = [remoteViewController3 view];
+    [view removeFromSuperview];
 
     [(MSMessageExtensionBrowserViewController *)self setRemoteViewController:0];
   }
@@ -789,32 +789,32 @@ LABEL_2:
   remoteViewController = self->_remoteViewController;
   if (remoteViewController)
   {
-    v28 = [(UIViewController *)remoteViewController view];
-    [v28 setAutoresizingMask:18];
-    v4 = [(MSMessageExtensionBrowserViewController *)self view];
-    [v4 bounds];
+    view = [(UIViewController *)remoteViewController view];
+    [view setAutoresizingMask:18];
+    view2 = [(MSMessageExtensionBrowserViewController *)self view];
+    [view2 bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
 
-    v13 = [(UIViewController *)self->_remoteViewController view];
-    [v13 setFrame:{v6, v8, v10, v12}];
+    view3 = [(UIViewController *)self->_remoteViewController view];
+    [view3 setFrame:{v6, v8, v10, v12}];
 
     v14 = +[CKUIBehavior sharedBehaviors];
-    v15 = [v14 theme];
-    v16 = [v15 browserCardBackgroundColor];
-    v17 = [(MSMessageExtensionBrowserViewController *)self view];
-    [v17 setBackgroundColor:v16];
+    theme = [v14 theme];
+    browserCardBackgroundColor = [theme browserCardBackgroundColor];
+    view4 = [(MSMessageExtensionBrowserViewController *)self view];
+    [view4 setBackgroundColor:browserCardBackgroundColor];
 
     if (+[_MSPresentationState isRunningInCameraContext])
     {
-      v18 = [(MSMessageExtensionBrowserViewController *)self view];
-      [v18 addSubview:v28];
+      view5 = [(MSMessageExtensionBrowserViewController *)self view];
+      [view5 addSubview:view];
 
       v19 = +[UIColor secondarySystemBackgroundColor];
-      v20 = [(UIViewController *)self->_remoteViewController view];
-      [v20 setBackgroundColor:v19];
+      view6 = [(UIViewController *)self->_remoteViewController view];
+      [view6 setBackgroundColor:v19];
 
       [(MSMessageExtensionBrowserViewController *)self addChildViewController:self->_remoteViewController];
       [(UIViewController *)self->_remoteViewController beginAppearanceTransition:1 animated:0];
@@ -823,19 +823,19 @@ LABEL_2:
     else
     {
       v22 = +[CKUIBehavior sharedBehaviors];
-      v23 = [v22 theme];
-      v24 = [v23 browserCardBackgroundColor];
-      v25 = [(UIViewController *)self->_remoteViewController view];
-      [v25 setBackgroundColor:v24];
+      theme2 = [v22 theme];
+      browserCardBackgroundColor2 = [theme2 browserCardBackgroundColor];
+      view7 = [(UIViewController *)self->_remoteViewController view];
+      [view7 setBackgroundColor:browserCardBackgroundColor2];
 
       [(MSMessageExtensionBrowserViewController *)self addChildViewController:self->_remoteViewController];
       [(UIViewController *)self->_remoteViewController beginAppearanceTransition:1 animated:0];
-      v26 = [(MSMessageExtensionBrowserViewController *)self view];
-      [v26 addSubview:v28];
+      view8 = [(MSMessageExtensionBrowserViewController *)self view];
+      [view8 addSubview:view];
     }
 
-    v27 = [(MSMessageExtensionBrowserViewController *)self view];
-    [v27 setNeedsLayout];
+    view9 = [(MSMessageExtensionBrowserViewController *)self view];
+    [view9 setNeedsLayout];
 
     [(UIViewController *)self->_remoteViewController endAppearanceTransition];
     [(UIViewController *)self->_remoteViewController didMoveToParentViewController:self];
@@ -854,13 +854,13 @@ LABEL_2:
 
 - (void)_removeRemoteViewController
 {
-  v3 = [(UIViewController *)self->_remoteViewController parentViewController];
+  parentViewController = [(UIViewController *)self->_remoteViewController parentViewController];
 
-  if (v3 == self)
+  if (parentViewController == self)
   {
     [(UIViewController *)self->_remoteViewController beginAppearanceTransition:0 animated:0];
-    v4 = [(UIViewController *)self->_remoteViewController view];
-    [v4 removeFromSuperview];
+    view = [(UIViewController *)self->_remoteViewController view];
+    [view removeFromSuperview];
     [(UIViewController *)self->_remoteViewController removeFromParentViewController];
     [(UIViewController *)self->_remoteViewController endAppearanceTransition];
   }
@@ -872,7 +872,7 @@ LABEL_2:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "_addRemoteViewControllerAndConfigureExtension %@", &v4, 0xCu);
   }
 
@@ -880,7 +880,7 @@ LABEL_2:
   [(MSMessageExtensionBrowserViewController *)self _addRemoteViewController];
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
   if (CKIsRunningInMessages())
   {
@@ -889,7 +889,7 @@ LABEL_2:
   }
 }
 
-- (void)applicationWillEnterForeground:(id)a3
+- (void)applicationWillEnterForeground:(id)foreground
 {
   if (CKIsRunningInMessages())
   {
@@ -898,14 +898,14 @@ LABEL_2:
   }
 }
 
-- (void)_handleExtensionInterruption:(id)a3
+- (void)_handleExtensionInterruption:(id)interruption
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:IMExtensionRemoteConnectionInterruptedBundleIdentifier];
+  userInfo = [interruption userInfo];
+  v5 = [userInfo objectForKey:IMExtensionRemoteConnectionInterruptedBundleIdentifier];
 
-  v6 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
-  v7 = [v6 identifier];
-  v8 = [v5 isEqualToString:v7];
+  balloonExtensionPlugin = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
+  identifier = [balloonExtensionPlugin identifier];
+  v8 = [v5 isEqualToString:identifier];
 
   if (v8)
   {
@@ -924,29 +924,29 @@ LABEL_2:
   }
 }
 
-- (id)_arrayForApplePlistKey:(id)a3
+- (id)_arrayForApplePlistKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
-  v6 = [v5 proxy];
+  keyCopy = key;
+  balloonExtensionPlugin = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
+  proxy = [balloonExtensionPlugin proxy];
 
-  if (v6)
+  if (proxy)
   {
-    v7 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
-    v8 = [v7 proxy];
-    v9 = [v8 objectForInfoDictionaryKey:v4 ofClass:objc_opt_class() inScope:2];
+    balloonExtensionPlugin2 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
+    proxy2 = [balloonExtensionPlugin2 proxy];
+    v9 = [proxy2 objectForInfoDictionaryKey:keyCopy ofClass:objc_opt_class() inScope:2];
   }
 
   else
   {
-    v10 = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
-    v11 = [v10 appBundle];
-    v7 = [v11 objectForInfoDictionaryKey:v4];
+    balloonPlugin = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
+    appBundle = [balloonPlugin appBundle];
+    balloonExtensionPlugin2 = [appBundle objectForInfoDictionaryKey:keyCopy];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v7;
+      v12 = balloonExtensionPlugin2;
     }
 
     else
@@ -974,32 +974,32 @@ LABEL_2:
 
 - (BOOL)wantsDarkUI
 {
-  v2 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
-  v3 = [v2 proxy];
-  v4 = [v3 objectForInfoDictionaryKey:@"MSMessagesOverlayAppearanceDark" ofClass:objc_opt_class() inScope:2];
-  v5 = [v4 BOOLValue];
+  balloonExtensionPlugin = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
+  proxy = [balloonExtensionPlugin proxy];
+  v4 = [proxy objectForInfoDictionaryKey:@"MSMessagesOverlayAppearanceDark" ofClass:objc_opt_class() inScope:2];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)wantsOpaqueUI
 {
-  v2 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
-  v3 = [v2 proxy];
-  v4 = [v3 objectForInfoDictionaryKey:@"MSMessagesOverlayAppearanceOpaque" ofClass:objc_opt_class() inScope:2];
-  v5 = [v4 BOOLValue];
+  balloonExtensionPlugin = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
+  proxy = [balloonExtensionPlugin proxy];
+  v4 = [proxy objectForInfoDictionaryKey:@"MSMessagesOverlayAppearanceOpaque" ofClass:objc_opt_class() inScope:2];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)shouldSuppressEntryView
 {
-  v2 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
-  v3 = [v2 proxy];
-  v4 = [v3 objectForInfoDictionaryKey:@"MSExpandedPresentationHidesComposeField" ofClass:objc_opt_class() inScope:2];
-  v5 = [v4 BOOLValue];
+  balloonExtensionPlugin = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
+  proxy = [balloonExtensionPlugin proxy];
+  v4 = [proxy objectForInfoDictionaryKey:@"MSExpandedPresentationHidesComposeField" ofClass:objc_opt_class() inScope:2];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (unint64_t)sheetDetentStyle
@@ -1059,10 +1059,10 @@ LABEL_2:
     v16 = ms_defaultLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
-      v18 = [v17 identifier];
+      balloonPlugin = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
+      identifier = [balloonPlugin identifier];
       *buf = 138412290;
-      v34 = v18;
+      v34 = identifier;
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "Timed out generating snapshot for %@", buf, 0xCu);
     }
   }
@@ -1079,69 +1079,69 @@ LABEL_2:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(UIViewController *)self->_remoteViewController _cancelTouchesForCurrentEventInHostedContent];
+    _cancelTouchesForCurrentEventInHostedContent = [(UIViewController *)self->_remoteViewController _cancelTouchesForCurrentEventInHostedContent];
   }
 
   else
   {
-    v3 = 0;
+    _cancelTouchesForCurrentEventInHostedContent = 0;
   }
 
-  return v3;
+  return _cancelTouchesForCurrentEventInHostedContent;
 }
 
 - (id)extension
 {
-  v2 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
-  v3 = [v2 extension];
+  balloonExtensionPlugin = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
+  extension = [balloonExtensionPlugin extension];
 
-  return v3;
+  return extension;
 }
 
 - (_MSMessageComposeExtensionProtocol)remoteProxy
 {
-  v3 = [(MSMessageExtensionBrowserViewController *)self extension];
+  extension = [(MSMessageExtensionBrowserViewController *)self extension];
 
-  if (v3)
+  if (extension)
   {
-    v4 = [(MSMessageExtensionBrowserViewController *)self extension];
-    v5 = [(UIViewController *)v4 _extensionContextForUUID:self->_sessionUUID];
-    v6 = [v5 _auxiliaryConnection];
-    v7 = [v6 remoteObjectProxy];
+    extension2 = [(MSMessageExtensionBrowserViewController *)self extension];
+    v5 = [(UIViewController *)extension2 _extensionContextForUUID:self->_sessionUUID];
+    _auxiliaryConnection = [v5 _auxiliaryConnection];
+    remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
   }
 
   else
   {
-    v4 = self->_remoteViewController;
+    extension2 = self->_remoteViewController;
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(UIViewController *)v4 appContext];
+      remoteObjectProxy = [(UIViewController *)extension2 appContext];
     }
 
     else
     {
-      v7 = 0;
+      remoteObjectProxy = 0;
     }
   }
 
-  return v7;
+  return remoteObjectProxy;
 }
 
-- (void)_callAndDequeueLoadCompletionBlocks:(BOOL)a3
+- (void)_callAndDequeueLoadCompletionBlocks:(BOOL)blocks
 {
-  v3 = a3;
+  blocksCopy = blocks;
   v5 = ms_defaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MSMessageExtensionBrowserViewController *)self extensionLoadRequestCompletionBlockArray];
-    v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 count]);
-    v8 = [NSNumber numberWithBool:v3];
+    extensionLoadRequestCompletionBlockArray = [(MSMessageExtensionBrowserViewController *)self extensionLoadRequestCompletionBlockArray];
+    v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [extensionLoadRequestCompletionBlockArray count]);
+    v8 = [NSNumber numberWithBool:blocksCopy];
     *buf = 138412802;
     v21 = v7;
     v22 = 2112;
     v23 = v8;
     v24 = 2112;
-    v25 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Will dequeue %@ blocks with result %@ %@", buf, 0x20u);
   }
 
@@ -1149,8 +1149,8 @@ LABEL_2:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [(MSMessageExtensionBrowserViewController *)self extensionLoadRequestCompletionBlockArray];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  extensionLoadRequestCompletionBlockArray2 = [(MSMessageExtensionBrowserViewController *)self extensionLoadRequestCompletionBlockArray];
+  v10 = [extensionLoadRequestCompletionBlockArray2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1162,7 +1162,7 @@ LABEL_2:
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(extensionLoadRequestCompletionBlockArray2);
         }
 
         (*(*(*(&v15 + 1) + 8 * v13) + 16))();
@@ -1170,19 +1170,19 @@ LABEL_2:
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v11 = [extensionLoadRequestCompletionBlockArray2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v11);
   }
 
-  v14 = [(MSMessageExtensionBrowserViewController *)self extensionLoadRequestCompletionBlockArray];
-  [v14 removeAllObjects];
+  extensionLoadRequestCompletionBlockArray3 = [(MSMessageExtensionBrowserViewController *)self extensionLoadRequestCompletionBlockArray];
+  [extensionLoadRequestCompletionBlockArray3 removeAllObjects];
 }
 
-- (void)_sendInstantiationRequestToExtensionWithHandler:(id)a3
+- (void)_sendInstantiationRequestToExtensionWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = IMLogHandleForCategory();
   v6 = os_signpost_id_generate(v5);
   v7 = v5;
@@ -1193,19 +1193,19 @@ LABEL_2:
     _os_signpost_emit_with_name_impl(&dword_0, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "extensionLoading", "", buf, 2u);
   }
 
-  v9 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
-  v10 = [v9 extension];
-  if (v10)
+  balloonExtensionPlugin = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
+  extension = [balloonExtensionPlugin extension];
+  if (extension)
   {
-    v37 = v4;
+    v37 = handlerCopy;
     v11 = objc_alloc_init(NSExtensionItem);
     v12 = CKIsRunningInCameraAppsClient();
     v13 = CKIsRunningInUserGeneratedStickersExtension();
     [(MSMessageExtensionBrowserViewController *)self preferredContentSize];
     if (v15 == CGSizeZero.width && v14 == CGSizeZero.height)
     {
-      v23 = [(MSMessageExtensionBrowserViewController *)self view];
-      [v23 bounds];
+      view = [(MSMessageExtensionBrowserViewController *)self view];
+      [view bounds];
       x = v24;
       y = v25;
       v20 = v26;
@@ -1225,9 +1225,9 @@ LABEL_2:
     v28 = [NSValue valueWithCGRect:x, y, v20, v22];
     v41[0] = v28;
     v40[1] = _MSExtensionContextIsPrimary;
-    v29 = [(MSMessageExtensionBrowserViewController *)self isPrimaryViewController];
+    isPrimaryViewController = [(MSMessageExtensionBrowserViewController *)self isPrimaryViewController];
     v30 = &off_4EA90;
-    if (v29)
+    if (isPrimaryViewController)
     {
       v31 = &off_4EA78;
     }
@@ -1262,8 +1262,8 @@ LABEL_2:
 
     v39 = v11;
     v34 = [NSArray arrayWithObjects:&v39 count:1];
-    v4 = v37;
-    [v10 instantiateViewControllerWithInputItems:v34 listenerEndpoint:0 connectionHandler:v37];
+    handlerCopy = v37;
+    [extension instantiateViewControllerWithInputItems:v34 listenerEndpoint:0 connectionHandler:v37];
   }
 
   v35 = v8;
@@ -1275,27 +1275,27 @@ LABEL_2:
   }
 }
 
-- (void)_instantiateRemoteViewControllerIfNeededWithIntent:(int64_t)a3 completion:(id)a4
+- (void)_instantiateRemoteViewControllerIfNeededWithIntent:(int64_t)intent completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   [(MSMessageExtensionBrowserViewController *)self setIsInDeferredTeardown:0];
-  v7 = [(MSMessageExtensionBrowserViewController *)self extension];
+  extension = [(MSMessageExtensionBrowserViewController *)self extension];
 
-  if (!v7)
+  if (!extension)
   {
     if (self->_remoteViewController)
     {
-      if (v6)
+      if (completionCopy)
       {
-        v6[2](v6, 1);
+        completionCopy[2](completionCopy, 1);
       }
     }
 
     else
     {
-      v31 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
-      v32 = [v31 appBundle];
-      v33 = objc_alloc_init([v32 principalClass]);
+      balloonExtensionPlugin = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
+      appBundle = [balloonExtensionPlugin appBundle];
+      v33 = objc_alloc_init([appBundle principalClass]);
 
       v34 = [[_MSMessageAppBundleContext alloc] initWithViewController:v33 wantsLiveView:0];
       [(MSMessageExtensionBrowserViewController *)self setAppContext:v34];
@@ -1311,7 +1311,7 @@ LABEL_2:
       block[2] = sub_5634;
       block[3] = &unk_4CEA8;
       block[4] = self;
-      v47 = v6;
+      v47 = completionCopy;
       dispatch_async(&_dispatch_main_q, block);
     }
 
@@ -1322,14 +1322,14 @@ LABEL_2:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = [NSNumber numberWithUnsignedInteger:[(MSMessageExtensionBrowserViewController *)self extensionLoadRequestCount]];
-    v10 = objc_retainBlock(v6);
+    v10 = objc_retainBlock(completionCopy);
     v11 = [NSNumber numberWithBool:[(MSMessageExtensionBrowserViewController *)self extensionLoadRequestInFlight]];
     *buf = 138413058;
-    v49 = v9;
+    selfCopy2 = v9;
     v50 = 2112;
     v51 = v10;
     v52 = 2112;
-    v53 = self;
+    selfCopy = self;
     v54 = 2112;
     v55 = v11;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "_instantiateRemoteViewController. Current request count %@, block %@ self %@ request in flight %@", buf, 0x2Au);
@@ -1348,7 +1348,7 @@ LABEL_2:
 
   if ([(MSMessageExtensionBrowserViewController *)self extensionLoadRequestInFlight])
   {
-    if (v6)
+    if (completionCopy)
     {
       goto LABEL_12;
     }
@@ -1356,14 +1356,14 @@ LABEL_2:
 LABEL_26:
     if ((v12 & 1) == 0)
     {
-      v37 = [(MSMessageExtensionBrowserViewController *)self remoteViewController];
-      [v37 beginAppearanceTransition:1 animated:1];
+      remoteViewController = [(MSMessageExtensionBrowserViewController *)self remoteViewController];
+      [remoteViewController beginAppearanceTransition:1 animated:1];
 
-      v38 = [(MSMessageExtensionBrowserViewController *)self remoteViewController];
-      [v38 endAppearanceTransition];
+      remoteViewController2 = [(MSMessageExtensionBrowserViewController *)self remoteViewController];
+      [remoteViewController2 endAppearanceTransition];
 
       v19 = 0;
-      if (!v6)
+      if (!completionCopy)
       {
         goto LABEL_40;
       }
@@ -1377,7 +1377,7 @@ LABEL_28:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v49 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_0, v21, OS_LOG_TYPE_DEFAULT, "_instantiateRemoteViewController. Instantiating remote VC  %@", buf, 0xCu);
     }
 
@@ -1394,13 +1394,13 @@ LABEL_28:
     v43 = sub_568C;
     v44 = &unk_4CEF8;
     objc_copyWeak(v45, buf);
-    v45[1] = a3;
+    v45[1] = intent;
     v30 = objc_retainBlock(&v41);
     [(MSMessageExtensionBrowserViewController *)self _sendInstantiationRequestToExtensionWithHandler:v30, v41, v42, v43, v44];
 
     objc_destroyWeak(v45);
     objc_destroyWeak(buf);
-    if (!v6)
+    if (!completionCopy)
     {
       goto LABEL_40;
     }
@@ -1413,17 +1413,17 @@ LABEL_36:
       {
         v40 = [NSNumber numberWithUnsignedInteger:[(MSMessageExtensionBrowserViewController *)self extensionLoadRequestCount]];
         *buf = 138412290;
-        v49 = v40;
+        selfCopy2 = v40;
         _os_log_impl(&dword_0, v39, OS_LOG_TYPE_DEFAULT, "Calling block immediately. Updated Request count %@", buf, 0xCu);
       }
 
-      v6[2](v6, 1);
+      completionCopy[2](completionCopy, 1);
     }
 
     goto LABEL_40;
   }
 
-  if (v6)
+  if (completionCopy)
   {
     v20 = v12;
   }
@@ -1464,17 +1464,17 @@ LABEL_12:
     }
 
     *buf = 138412802;
-    v49 = v14;
+    selfCopy2 = v14;
     v50 = 2112;
     v51 = v15;
     v52 = 2112;
-    v53 = v16;
+    selfCopy = v16;
     _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Request in flight or we will try loading extension. Queueing block in array. Updated Request count %@, shouldLoadExtension %@, extension request in flight %@", buf, 0x20u);
   }
 
-  v17 = [(MSMessageExtensionBrowserViewController *)self extensionLoadRequestCompletionBlockArray];
-  v18 = [v6 copy];
-  [v17 addObject:v18];
+  extensionLoadRequestCompletionBlockArray = [(MSMessageExtensionBrowserViewController *)self extensionLoadRequestCompletionBlockArray];
+  v18 = [completionCopy copy];
+  [extensionLoadRequestCompletionBlockArray addObject:v18];
 
   if (v12)
   {
@@ -1507,9 +1507,9 @@ LABEL_40:
   [(MSMessageExtensionBrowserViewController *)self setShouldAutomaticallyForwardAppearanceMethods:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = ms_traceLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1518,56 +1518,56 @@ LABEL_40:
 
   v6.receiver = self;
   v6.super_class = MSMessageExtensionBrowserViewController;
-  [(MSMessageExtensionBrowserViewController *)&v6 viewWillAppear:v3];
+  [(MSMessageExtensionBrowserViewController *)&v6 viewWillAppear:appearCopy];
 }
 
-- (void)showSnapshotForSize:(CGSize)a3
+- (void)showSnapshotForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ((objc_opt_respondsToSelector() & 1) == 0 || ([(MSMessageExtensionBrowserViewController *)self shouldDisableSnapshotView]& 1) == 0)
   {
     if (width == CGSizeZero.width && height == CGSizeZero.height)
     {
-      v7 = [(MSMessageExtensionBrowserViewController *)self view];
-      [v7 bounds];
+      view = [(MSMessageExtensionBrowserViewController *)self view];
+      [view bounds];
       width = v8;
       height = v9;
     }
 
     [(MSMessageExtensionBrowserViewController *)self removeSnapshot];
-    v10 = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
-    v11 = [v10 identifier];
-    v12 = [(MSMessageExtensionBrowserViewController *)self view];
-    v13 = [v12 traitCollection];
-    v19 = +[CKSnapshotCacheKey keyWithIdentifier:interfaceStyle:bounds:](CKSnapshotCacheKey, "keyWithIdentifier:interfaceStyle:bounds:", v11, [v13 userInterfaceStyle], CGPointZero.x, CGPointZero.y, width, height);
+    balloonPlugin = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
+    identifier = [balloonPlugin identifier];
+    view2 = [(MSMessageExtensionBrowserViewController *)self view];
+    traitCollection = [view2 traitCollection];
+    v19 = +[CKSnapshotCacheKey keyWithIdentifier:interfaceStyle:bounds:](CKSnapshotCacheKey, "keyWithIdentifier:interfaceStyle:bounds:", identifier, [traitCollection userInterfaceStyle], CGPointZero.x, CGPointZero.y, width, height);
 
     v14 = +[CKBalloonPluginManager sharedInstance];
     v15 = [v14 browserSnapshotForKey:v19];
     [(MSMessageExtensionBrowserViewController *)self setSnapshotView:v15];
 
-    v16 = [(MSMessageExtensionBrowserViewController *)self snapshotView];
+    snapshotView = [(MSMessageExtensionBrowserViewController *)self snapshotView];
 
-    if (v16)
+    if (snapshotView)
     {
-      v17 = [(MSMessageExtensionBrowserViewController *)self view];
-      v18 = [(MSMessageExtensionBrowserViewController *)self snapshotView];
-      [v17 insertSubview:v18 atIndex:0];
+      view3 = [(MSMessageExtensionBrowserViewController *)self view];
+      snapshotView2 = [(MSMessageExtensionBrowserViewController *)self snapshotView];
+      [view3 insertSubview:snapshotView2 atIndex:0];
     }
   }
 }
 
 - (void)removeSnapshot
 {
-  v3 = [(MSMessageExtensionBrowserViewController *)self snapshotView];
-  [v3 removeFromSuperview];
+  snapshotView = [(MSMessageExtensionBrowserViewController *)self snapshotView];
+  [snapshotView removeFromSuperview];
 
   [(MSMessageExtensionBrowserViewController *)self setSnapshotView:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = ms_traceLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1576,12 +1576,12 @@ LABEL_40:
 
   v6.receiver = self;
   v6.super_class = MSMessageExtensionBrowserViewController;
-  [(MSMessageExtensionBrowserViewController *)&v6 viewDidAppear:v3];
+  [(MSMessageExtensionBrowserViewController *)&v6 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = ms_traceLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1590,7 +1590,7 @@ LABEL_40:
 
   v6.receiver = self;
   v6.super_class = MSMessageExtensionBrowserViewController;
-  [(MSMessageExtensionBrowserViewController *)&v6 viewWillDisappear:v3];
+  [(MSMessageExtensionBrowserViewController *)&v6 viewWillDisappear:disappearCopy];
   if (CKIsRunningInMacCatalyst())
   {
     if ([(MSMessageExtensionBrowserViewController *)self isBeingDismissed])
@@ -1600,9 +1600,9 @@ LABEL_40:
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = ms_traceLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1611,30 +1611,30 @@ LABEL_40:
 
   v6.receiver = self;
   v6.super_class = MSMessageExtensionBrowserViewController;
-  [(MSMessageExtensionBrowserViewController *)&v6 viewDidDisappear:v3];
+  [(MSMessageExtensionBrowserViewController *)&v6 viewDidDisappear:disappearCopy];
 }
 
 - (void)browserScrolledOnScreen
 {
-  v3 = [(MSMessageExtensionBrowserViewController *)self remoteViewController];
-  if (v3)
+  remoteViewController = [(MSMessageExtensionBrowserViewController *)self remoteViewController];
+  if (remoteViewController)
   {
-    v9 = v3;
-    v4 = [v3 parentViewController];
+    v9 = remoteViewController;
+    parentViewController = [remoteViewController parentViewController];
 
-    v3 = v9;
-    if (v4 != self)
+    remoteViewController = v9;
+    if (parentViewController != self)
     {
       [(MSMessageExtensionBrowserViewController *)self _addRemoteViewController];
-      v5 = [(MSMessageExtensionBrowserViewController *)self remoteViewController];
-      v6 = [v5 view];
-      [v6 setNeedsLayout];
+      remoteViewController2 = [(MSMessageExtensionBrowserViewController *)self remoteViewController];
+      view = [remoteViewController2 view];
+      [view setNeedsLayout];
 
-      v7 = [(MSMessageExtensionBrowserViewController *)self remoteViewController];
-      v8 = [v7 view];
-      [v8 layoutIfNeeded];
+      remoteViewController3 = [(MSMessageExtensionBrowserViewController *)self remoteViewController];
+      view2 = [remoteViewController3 view];
+      [view2 layoutIfNeeded];
 
-      v3 = v9;
+      remoteViewController = v9;
     }
   }
 }
@@ -1643,10 +1643,10 @@ LABEL_40:
 {
   if (![(MSMessageExtensionBrowserViewController *)self isInDeferredTeardown])
   {
-    v3 = [(MSMessageExtensionBrowserViewController *)self remoteViewController];
-    v4 = [v3 parentViewController];
+    remoteViewController = [(MSMessageExtensionBrowserViewController *)self remoteViewController];
+    parentViewController = [remoteViewController parentViewController];
 
-    if (v4 == self)
+    if (parentViewController == self)
     {
 
       [(MSMessageExtensionBrowserViewController *)self _removeRemoteViewController];
@@ -1654,13 +1654,13 @@ LABEL_40:
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7.receiver = self;
   v7.super_class = MSMessageExtensionBrowserViewController;
-  [(MSMessageExtensionBrowserViewController *)&v7 viewWillTransitionToSize:a4 withTransitionCoordinator:?];
+  [(MSMessageExtensionBrowserViewController *)&v7 viewWillTransitionToSize:coordinator withTransitionCoordinator:?];
   if (CKIsRunningInMacCatalyst())
   {
     [(MSMessageExtensionBrowserViewController *)self showSnapshotForSize:width, height];
@@ -1674,8 +1674,8 @@ LABEL_40:
   [(MSMessageExtensionBrowserViewController *)&v5 viewWillTransitionToExpandedPresentation];
   v3 = objc_alloc_init(_MSPresentationState);
   [v3 setPresentationStyle:1];
-  v4 = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
-  [v4 _presentationWillChangeToPresentationState:v3];
+  remoteProxy = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
+  [remoteProxy _presentationWillChangeToPresentationState:v3];
 }
 
 - (void)viewDidTransitionToExpandedPresentation
@@ -1685,8 +1685,8 @@ LABEL_40:
   [(MSMessageExtensionBrowserViewController *)&v5 viewDidTransitionToExpandedPresentation];
   v3 = objc_alloc_init(_MSPresentationState);
   [v3 setPresentationStyle:1];
-  v4 = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
-  [v4 _presentationDidChangeToPresentationState:v3];
+  remoteProxy = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
+  [remoteProxy _presentationDidChangeToPresentationState:v3];
 }
 
 - (void)viewWillTransitionToCompactPresentation
@@ -1696,8 +1696,8 @@ LABEL_40:
   [(MSMessageExtensionBrowserViewController *)&v5 viewWillTransitionToCompactPresentation];
   v3 = objc_alloc_init(_MSPresentationState);
   [v3 setPresentationStyle:0];
-  v4 = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
-  [v4 _presentationWillChangeToPresentationState:v3];
+  remoteProxy = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
+  [remoteProxy _presentationWillChangeToPresentationState:v3];
 }
 
 - (void)viewDidTransitionToCompactPresentation
@@ -1721,8 +1721,8 @@ LABEL_40:
 
   else
   {
-    v5 = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
-    [v5 _presentationDidChangeToPresentationState:v3];
+    remoteProxy = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
+    [remoteProxy _presentationDidChangeToPresentationState:v3];
   }
 }
 
@@ -1731,15 +1731,15 @@ LABEL_40:
   v13.receiver = self;
   v13.super_class = MSMessageExtensionBrowserViewController;
   [(MSMessageExtensionBrowserViewController *)&v13 viewWillLayoutSubviews];
-  v3 = [(MSMessageExtensionBrowserViewController *)self view];
-  [v3 bounds];
+  view = [(MSMessageExtensionBrowserViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(UIViewController *)self->_remoteViewController view];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  view2 = [(UIViewController *)self->_remoteViewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
 - (void)didReceiveMemoryWarning
@@ -1811,38 +1811,38 @@ LABEL_40:
 
   if (v8)
   {
-    v16 = [v8 strippedLogin];
+    strippedLogin = [v8 strippedLogin];
     goto LABEL_16;
   }
 
 LABEL_15:
-  v16 = [v9 strippedLogin];
+  strippedLogin = [v9 strippedLogin];
   v8 = 0;
 LABEL_16:
 
-  return v16;
+  return strippedLogin;
 }
 
 - (id)currentConversationState
 {
   v3 = objc_alloc_init(_MSConversationState);
-  v4 = [(MSMessageExtensionBrowserViewController *)self conversationID];
-  v5 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
-  v6 = [v5 identifier];
+  conversationID = [(MSMessageExtensionBrowserViewController *)self conversationID];
+  balloonExtensionPlugin = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
+  identifier = [balloonExtensionPlugin identifier];
 
   v7 = +[IMBalloonPluginManager sharedInstance];
-  v46 = v6;
-  v8 = [v7 conversationID:v4 appID:v6];
+  v46 = identifier;
+  v8 = [v7 conversationID:conversationID appID:identifier];
   [v3 setConversationIdentifier:v8];
 
-  v47 = self;
+  selfCopy = self;
   if ([(MSMessageExtensionBrowserViewController *)self hasEntitlement:@"com.apple.messages.private.AllowConversationIdentifierAccess"])
   {
-    v9 = [(MSMessageExtensionBrowserViewController *)self conversationID];
-    [v3 setConversationID:v9];
+    conversationID2 = [(MSMessageExtensionBrowserViewController *)self conversationID];
+    [v3 setConversationID:conversationID2];
 
-    v10 = [(MSMessageExtensionBrowserViewController *)self conversationEngramID];
-    [v3 setConversationEngramID:v10];
+    conversationEngramID = [(MSMessageExtensionBrowserViewController *)self conversationEngramID];
+    [v3 setConversationEngramID:conversationEngramID];
 
     [v3 setIsiMessage:{-[MSMessageExtensionBrowserViewController isiMessage](self, "isiMessage")}];
     v11 = [IMNetworkMonitor createNetworkMonitorWithRemoteHost:0 delegate:0 allowsUltraConstrainedNetwork:1];
@@ -1860,11 +1860,11 @@ LABEL_16:
     }
 
     v13 = +[CKConversationList sharedConversationList];
-    v14 = [v13 conversationForExistingChatWithGUID:v4];
+    v14 = [v13 conversationForExistingChatWithGUID:conversationID];
 
-    v15 = [v14 chat];
-    v16 = [v15 groupID];
-    [v3 setGroupID:v16];
+    chat = [v14 chat];
+    groupID = [chat groupID];
+    [v3 setGroupID:groupID];
 
     if (objc_opt_respondsToSelector())
     {
@@ -1904,27 +1904,27 @@ LABEL_16:
 
   if ([(MSMessageExtensionBrowserViewController *)self hasEntitlement:@"com.apple.messages.private.AllowParticipantAddressAccess"])
   {
-    v20 = [(MSMessageExtensionBrowserViewController *)self iMessageLoginID];
-    [v3 setiMessageLoginID:v20];
+    iMessageLoginID = [(MSMessageExtensionBrowserViewController *)self iMessageLoginID];
+    [v3 setiMessageLoginID:iMessageLoginID];
 
-    v21 = [(MSMessageExtensionBrowserViewController *)self sender];
-    [v3 setSenderAddress:v21];
+    sender = [(MSMessageExtensionBrowserViewController *)self sender];
+    [v3 setSenderAddress:sender];
 
-    v22 = [(MSMessageExtensionBrowserViewController *)self recipients];
-    [v3 setRecipientAddresses:v22];
+    recipients = [(MSMessageExtensionBrowserViewController *)self recipients];
+    [v3 setRecipientAddresses:recipients];
   }
 
   if ([(MSMessageExtensionBrowserViewController *)self hasEntitlement:@"com.apple.messages.private.AllowConversationContextAccess"])
   {
-    v23 = [(MSMessageExtensionBrowserViewController *)self generativeContext];
-    [v3 setConversationContext:v23];
+    generativeContext = [(MSMessageExtensionBrowserViewController *)self generativeContext];
+    [v3 setConversationContext:generativeContext];
 
-    v24 = [(MSMessageExtensionBrowserViewController *)self generatedSummary];
-    [v3 setGeneratedSummary:v24];
+    generatedSummary = [(MSMessageExtensionBrowserViewController *)self generatedSummary];
+    [v3 setGeneratedSummary:generatedSummary];
   }
 
   v25 = +[IMBalloonPluginManager sharedInstance];
-  v26 = [v25 localParticipantIdentifierForAppID:v6 conversationID:v4];
+  v26 = [v25 localParticipantIdentifierForAppID:identifier conversationID:conversationID];
   v45 = v3;
   [v3 setSenderIdentifier:v26];
 
@@ -1933,9 +1933,9 @@ LABEL_16:
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v28 = [(MSMessageExtensionBrowserViewController *)self recipients];
-  v29 = [v28 countByEnumeratingWithState:&v48 objects:v52 count:16];
-  v44 = v4;
+  recipients2 = [(MSMessageExtensionBrowserViewController *)self recipients];
+  v29 = [recipients2 countByEnumeratingWithState:&v48 objects:v52 count:16];
+  v44 = conversationID;
   if (v29)
   {
     v30 = v29;
@@ -1947,7 +1947,7 @@ LABEL_16:
       {
         if (*v49 != v32)
         {
-          objc_enumerationMutation(v28);
+          objc_enumerationMutation(recipients2);
         }
 
         v34 = *(*(&v48 + 1) + 8 * i);
@@ -1955,11 +1955,11 @@ LABEL_16:
         v36 = [v35 recipientIDForRecipient:v34 appID:v46];
 
         [v27 addObject:v36];
-        self = v47;
-        if (([(MSMessage *)v47->_message isFromMe]& 1) == 0)
+        self = selfCopy;
+        if (([(MSMessage *)selfCopy->_message isFromMe]& 1) == 0)
         {
-          v37 = [(MSMessage *)v47->_message senderParticipantIdentifier];
-          v38 = [v36 isEqual:v37];
+          senderParticipantIdentifier = [(MSMessage *)selfCopy->_message senderParticipantIdentifier];
+          v38 = [v36 isEqual:senderParticipantIdentifier];
 
           if (v38)
           {
@@ -1968,11 +1968,11 @@ LABEL_16:
             v31 = v39;
           }
 
-          self = v47;
+          self = selfCopy;
         }
       }
 
-      v30 = [v28 countByEnumeratingWithState:&v48 objects:v52 count:16];
+      v30 = [recipients2 countByEnumeratingWithState:&v48 objects:v52 count:16];
     }
 
     while (v30);
@@ -1997,18 +1997,18 @@ LABEL_16:
 
 - (void)_markCurrentMessageAsPlayedIfNeeded
 {
-  v6 = [(MSMessageExtensionBrowserViewController *)self message];
-  if ([v6 shouldExpire])
+  message = [(MSMessageExtensionBrowserViewController *)self message];
+  if ([message shouldExpire])
   {
-    if (([v6 isFromMe] & 1) == 0)
+    if (([message isFromMe] & 1) == 0)
     {
-      v3 = [(MSMessageExtensionBrowserViewController *)self balloonPluginDataSource];
-      v4 = [v3 isPlayed];
+      balloonPluginDataSource = [(MSMessageExtensionBrowserViewController *)self balloonPluginDataSource];
+      isPlayed = [balloonPluginDataSource isPlayed];
 
-      if ((v4 & 1) == 0)
+      if ((isPlayed & 1) == 0)
       {
-        v5 = [(MSMessageExtensionBrowserViewController *)self balloonPluginDataSource];
-        [v5 markAsPlayed];
+        balloonPluginDataSource2 = [(MSMessageExtensionBrowserViewController *)self balloonPluginDataSource];
+        [balloonPluginDataSource2 markAsPlayed];
       }
     }
   }
@@ -2029,38 +2029,38 @@ LABEL_16:
   return 0;
 }
 
-- (void)_configureMessage:(id)a3 messageSenderAddress:(id)a4 withConversation:(id)a5
+- (void)_configureMessage:(id)message messageSenderAddress:(id)address withConversation:(id)conversation
 {
-  v19 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v19 isFromMe])
+  messageCopy = message;
+  addressCopy = address;
+  conversationCopy = conversation;
+  if ([messageCopy isFromMe])
   {
     v10 = +[IMBalloonPluginManager sharedInstance];
-    v11 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
-    v12 = [v11 identifier];
-    v13 = [(MSMessageExtensionBrowserViewController *)self conversationID];
-    v14 = [v10 localParticipantIdentifierForAppID:v12 conversationID:v13];
-    [v19 setSenderParticipantIdentifier:v14];
+    balloonExtensionPlugin = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
+    identifier = [balloonExtensionPlugin identifier];
+    conversationID = [(MSMessageExtensionBrowserViewController *)self conversationID];
+    v14 = [v10 localParticipantIdentifierForAppID:identifier conversationID:conversationID];
+    [messageCopy setSenderParticipantIdentifier:v14];
   }
 
-  [v19 _sanitize];
+  [messageCopy _sanitize];
   if ([(MSMessageExtensionBrowserViewController *)self hasEntitlement:@"com.apple.messages.private.AllowGUIDAccess"])
   {
-    v15 = [(MSMessageExtensionBrowserViewController *)self balloonPluginDataSource];
-    v16 = [v15 messageGUID];
-    [(MSMessage *)self->_message setGuid:v16];
+    balloonPluginDataSource = [(MSMessageExtensionBrowserViewController *)self balloonPluginDataSource];
+    messageGUID = [balloonPluginDataSource messageGUID];
+    [(MSMessage *)self->_message setGuid:messageGUID];
   }
 
   if ([(MSMessageExtensionBrowserViewController *)self hasEntitlement:@"com.apple.messages.private.AllowParticipantAddressAccess"])
   {
     if (([(MSMessage *)self->_message isFromMe]& 1) != 0)
     {
-      v17 = [v9 senderAddress];
+      senderAddress = [conversationCopy senderAddress];
 
-      if (v17)
+      if (senderAddress)
       {
-        [v9 senderAddress];
+        [conversationCopy senderAddress];
       }
 
       else
@@ -2073,15 +2073,15 @@ LABEL_16:
 
     else
     {
-      [(MSMessage *)self->_message setSenderAddress:v8];
+      [(MSMessage *)self->_message setSenderAddress:addressCopy];
     }
   }
 }
 
 - (void)_sendBecomeActiveMessage
 {
-  v3 = [(MSMessageExtensionBrowserViewController *)self currentConversationState];
-  [(MSMessageExtensionBrowserViewController *)self appendDraftAssetArchivesIfNeeded:v3];
+  currentConversationState = [(MSMessageExtensionBrowserViewController *)self currentConversationState];
+  [(MSMessageExtensionBrowserViewController *)self appendDraftAssetArchivesIfNeeded:currentConversationState];
   v4 = objc_alloc_init(_MSPresentationState);
   [v4 setPresentationStyle:{-[MSMessageExtensionBrowserViewController presentationStyle](self, "presentationStyle")}];
   v5 = ms_traceLog();
@@ -2090,8 +2090,8 @@ LABEL_16:
     sub_2C424(v5, v6, v7, v8, v9, v10, v11, v12);
   }
 
-  v13 = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
-  [v13 _becomeActiveWithConversationState:v3 presentationState:v4];
+  remoteProxy = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
+  [remoteProxy _becomeActiveWithConversationState:currentConversationState presentationState:v4];
 
   [(MSMessageExtensionBrowserViewController *)self _markCurrentMessageAsPlayedIfNeeded];
 }
@@ -2104,29 +2104,29 @@ LABEL_16:
     sub_2C49C(v3, v4, v5, v6, v7, v8, v9, v10);
   }
 
-  v11 = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
-  [v11 _resignActive];
+  remoteProxy = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
+  [remoteProxy _resignActive];
 }
 
 - (void)saveSnapshotForBrowserViewController
 {
   v3 = +[CKBalloonPluginManager sharedInstance];
-  v4 = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
-  v5 = [v4 identifier];
-  v6 = [(MSMessageExtensionBrowserViewController *)self view];
-  v7 = [v6 traitCollection];
-  v8 = [v7 userInterfaceStyle];
-  v9 = [(MSMessageExtensionBrowserViewController *)self view];
-  [v9 bounds];
-  v10 = [CKSnapshotCacheKey keyWithIdentifier:v5 interfaceStyle:v8 bounds:?];
+  balloonPlugin = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
+  identifier = [balloonPlugin identifier];
+  view = [(MSMessageExtensionBrowserViewController *)self view];
+  traitCollection = [view traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  view2 = [(MSMessageExtensionBrowserViewController *)self view];
+  [view2 bounds];
+  v10 = [CKSnapshotCacheKey keyWithIdentifier:identifier interfaceStyle:userInterfaceStyle bounds:?];
 
   v11 = objc_alloc_init(IMTimingCollection);
   [v11 startTimingForKey:@"_saveSnapshotForBrowserViewController:"];
-  v12 = [v3 snapshotCache];
-  v13 = [v10 stringValue];
-  LOBYTE(v7) = [v12 isGeneratingPreviewForKey:v13];
+  snapshotCache = [v3 snapshotCache];
+  stringValue = [v10 stringValue];
+  LOBYTE(traitCollection) = [snapshotCache isGeneratingPreviewForKey:stringValue];
 
-  if ((v7 & 1) == 0)
+  if ((traitCollection & 1) == 0)
   {
     v26[0] = 0;
     v26[1] = v26;
@@ -2140,7 +2140,7 @@ LABEL_16:
     v24[3] = sub_48E0;
     v24[4] = sub_48F0;
     v25 = 0;
-    v14 = [v3 snapshotCache];
+    snapshotCache2 = [v3 snapshotCache];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_7638;
@@ -2156,9 +2156,9 @@ LABEL_16:
     v21 = v24;
     v20 = v10;
     v22 = v26;
-    v15 = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
-    v16 = [v15 identifier];
-    [v14 enqueueGenerationBlock:v23 completion:v18 withPriority:-1 forKey:v16];
+    balloonPlugin2 = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
+    identifier2 = [balloonPlugin2 identifier];
+    [snapshotCache2 enqueueGenerationBlock:v23 completion:v18 withPriority:-1 forKey:identifier2];
 
     [v11 stopTimingForKey:@"_saveSnapshotForBrowserViewController:"];
     v17 = ms_traceLog();
@@ -2172,9 +2172,9 @@ LABEL_16:
   }
 }
 
-+ (void)invalidateSnapshotForKey:(id)a3
++ (void)invalidateSnapshotForKey:(id)key
 {
-  v3 = [a3 stringValue];
+  stringValue = [key stringValue];
   v4 = CKBrowserSnapshotPreviewURL();
 
   v5 = +[NSFileManager defaultManager];
@@ -2182,14 +2182,14 @@ LABEL_16:
   [v5 removeItemAtURL:v4 error:&v6];
 }
 
-- (id)substituteNameInString:(id)a3
+- (id)substituteNameInString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v4 = a3;
-    v5 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
-    v6 = [v5 identifier];
-    v7 = [(MSMessageExtensionBrowserViewController *)self substituteNameInString:v4 withAppID:v6];
+    stringCopy = string;
+    balloonExtensionPlugin = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
+    identifier = [balloonExtensionPlugin identifier];
+    v7 = [(MSMessageExtensionBrowserViewController *)self substituteNameInString:stringCopy withAppID:identifier];
   }
 
   else
@@ -2200,45 +2200,45 @@ LABEL_16:
   return v7;
 }
 
-- (id)substituteNameInString:(id)a3 withAppID:(id)a4
+- (id)substituteNameInString:(id)string withAppID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  stringCopy = string;
+  dCopy = d;
+  v8 = dCopy;
+  if (stringCopy && dCopy)
   {
-    v43 = v6;
+    v43 = stringCopy;
     v9 = objc_alloc_init(NSMutableArray);
     v10 = objc_alloc_init(NSMutableArray);
-    v11 = [(MSMessageExtensionBrowserViewController *)self sender];
+    sender = [(MSMessageExtensionBrowserViewController *)self sender];
 
-    if (v11)
+    if (sender)
     {
       if (v10)
       {
-        v12 = [(MSMessageExtensionBrowserViewController *)self sender];
+        sender2 = [(MSMessageExtensionBrowserViewController *)self sender];
 
-        if (v12)
+        if (sender2)
         {
-          v13 = [(MSMessageExtensionBrowserViewController *)self sender];
-          CFArrayAppendValue(v10, v13);
+          sender3 = [(MSMessageExtensionBrowserViewController *)self sender];
+          CFArrayAppendValue(v10, sender3);
         }
       }
 
       if (v9)
       {
         v14 = +[IMBalloonPluginManager sharedInstance];
-        v15 = [(MSMessageExtensionBrowserViewController *)self conversationID];
-        v16 = [v14 localParticipantIdentifierForAppID:v8 conversationID:v15];
-        v17 = [v16 UUIDString];
+        conversationID = [(MSMessageExtensionBrowserViewController *)self conversationID];
+        v16 = [v14 localParticipantIdentifierForAppID:v8 conversationID:conversationID];
+        uUIDString = [v16 UUIDString];
 
-        if (v17)
+        if (uUIDString)
         {
           v18 = +[IMBalloonPluginManager sharedInstance];
-          v19 = [(MSMessageExtensionBrowserViewController *)self conversationID];
-          v20 = [v18 localParticipantIdentifierForAppID:v8 conversationID:v19];
-          v21 = [v20 UUIDString];
-          CFArrayAppendValue(v9, v21);
+          conversationID2 = [(MSMessageExtensionBrowserViewController *)self conversationID];
+          v20 = [v18 localParticipantIdentifierForAppID:v8 conversationID:conversationID2];
+          uUIDString2 = [v20 UUIDString];
+          CFArrayAppendValue(v9, uUIDString2);
         }
       }
     }
@@ -2248,9 +2248,9 @@ LABEL_16:
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v42 = self;
-    v22 = [(MSMessageExtensionBrowserViewController *)self recipients];
-    v23 = [v22 countByEnumeratingWithState:&v45 objects:v55 count:16];
+    selfCopy = self;
+    recipients = [(MSMessageExtensionBrowserViewController *)self recipients];
+    v23 = [recipients countByEnumeratingWithState:&v45 objects:v55 count:16];
     if (v23)
     {
       v24 = v23;
@@ -2261,17 +2261,17 @@ LABEL_16:
         {
           if (*v46 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(recipients);
           }
 
           v27 = *(*(&v45 + 1) + 8 * i);
           v28 = +[IMBalloonPluginManager sharedInstance];
           v29 = [v28 recipientIDForRecipient:v27 appID:v44];
-          v30 = [v29 UUIDString];
+          uUIDString3 = [v29 UUIDString];
 
-          if (v9 && v30)
+          if (v9 && uUIDString3)
           {
-            CFArrayAppendValue(v9, v30);
+            CFArrayAppendValue(v9, uUIDString3);
           }
 
           if (v10 && v27)
@@ -2280,7 +2280,7 @@ LABEL_16:
           }
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v45 objects:v55 count:16];
+        v24 = [recipients countByEnumeratingWithState:&v45 objects:v55 count:16];
       }
 
       while (v24);
@@ -2309,19 +2309,19 @@ LABEL_16:
       }
 
       v38 = [v32 copy];
-      v6 = v43;
+      stringCopy = v43;
     }
 
     else
     {
       v32 = ms_defaultLog();
-      v6 = v43;
+      stringCopy = v43;
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
         v40 = [NSNumber numberWithUnsignedInteger:[(__CFArray *)v9 count]];
         v41 = [NSNumber numberWithUnsignedInteger:[(__CFArray *)v10 count]];
         *buf = 138412802;
-        v50 = v42;
+        selfCopy2 = selfCopy;
         v51 = 2112;
         v52 = v40;
         v53 = 2112;
@@ -2341,9 +2341,9 @@ LABEL_16:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v50 = self;
+      selfCopy2 = self;
       v51 = 2112;
-      v52 = v6;
+      v52 = stringCopy;
       v53 = 2112;
       v54 = v8;
       _os_log_error_impl(&dword_0, v9, OS_LOG_TYPE_ERROR, "self %@ substituteNameInString invalid parameters string %@ appID %@", buf, 0x20u);
@@ -2355,33 +2355,33 @@ LABEL_16:
   return v38;
 }
 
-- (void)_openURL:(id)a3 completionHandler:(id)a4
+- (void)_openURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   if ([(MSMessageExtensionBrowserViewController *)self hasEntitlement:@"com.apple.messages.private.AllowConversationIdentifierAccess"])
   {
-    v8 = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
-    v9 = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
-    v10 = [v9 identifier];
-    [v8 openURL:v6 pluginID:v10 completionHandler:v7];
+    sendDelegate = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
+    balloonPlugin = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
+    identifier = [balloonPlugin identifier];
+    [sendDelegate openURL:lCopy pluginID:identifier completionHandler:handlerCopy];
 
-    v11 = ms_defaultLog();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    bundleIdentifier = ms_defaultLog();
+    if (os_log_type_enabled(bundleIdentifier, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "Entitled App. Allowing opening all URLs", buf, 2u);
+      _os_log_impl(&dword_0, bundleIdentifier, OS_LOG_TYPE_DEFAULT, "Entitled App. Allowing opening all URLs", buf, 2u);
     }
 
     goto LABEL_12;
   }
 
-  v12 = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
-  v13 = [v12 isLaunchProhibited];
+  balloonPlugin2 = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
+  isLaunchProhibited = [balloonPlugin2 isLaunchProhibited];
 
   v14 = ms_defaultLog();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-  if (!v13)
+  if (!isLaunchProhibited)
   {
     if (v15)
     {
@@ -2389,14 +2389,14 @@ LABEL_16:
       _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "Not entitled App. Allowing opening containing app", buf, 2u);
     }
 
-    v16 = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
-    v17 = [v16 appBundle];
-    v11 = [v17 bundleIdentifier];
+    balloonPlugin3 = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
+    appBundle = [balloonPlugin3 appBundle];
+    bundleIdentifier = [appBundle bundleIdentifier];
 
-    v18 = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
-    v19 = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
-    v20 = [v19 identifier];
-    [v18 openURL:v6 applicationIdentifier:v11 pluginID:v20 completionHandler:v7];
+    sendDelegate2 = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
+    balloonPlugin4 = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
+    identifier2 = [balloonPlugin4 identifier];
+    [sendDelegate2 openURL:lCopy applicationIdentifier:bundleIdentifier pluginID:identifier2 completionHandler:handlerCopy];
 
     goto LABEL_12;
   }
@@ -2407,38 +2407,38 @@ LABEL_16:
     _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "Not allowing openURL for launch prohibited app", buf, 2u);
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_8204;
     block[3] = &unk_4CFE8;
-    v22 = v7;
+    v22 = handlerCopy;
     dispatch_async(&_dispatch_main_q, block);
-    v11 = v22;
+    bundleIdentifier = v22;
 LABEL_12:
   }
 }
 
-- (void)_stageAppItem:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5
+- (void)_stageAppItem:(id)item skipShelf:(BOOL)shelf completionHandler:(id)handler
 {
-  v8 = a3;
+  itemCopy = item;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_82E8;
   v11[3] = &unk_4D038;
-  v13 = self;
-  v14 = a5;
-  v12 = v8;
-  v15 = a4;
-  v9 = v8;
-  v10 = v14;
+  selfCopy = self;
+  handlerCopy = handler;
+  v12 = itemCopy;
+  shelfCopy = shelf;
+  v9 = itemCopy;
+  v10 = handlerCopy;
   dispatch_async(&_dispatch_main_q, v11);
 }
 
-- (void)_sendCustomAcknowledgement:(id)a3 selectedMessage:(id)a4 completionHandler:(id)a5
+- (void)_sendCustomAcknowledgement:(id)acknowledgement selectedMessage:(id)message completionHandler:(id)handler
 {
-  v5 = a5;
+  handlerCopy = handler;
   v6 = [NSError errorWithDomain:MSMessagesErrorDomain code:-1 userInfo:0];
   v7 = ms_defaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -2446,12 +2446,12 @@ LABEL_12:
     sub_2C5E4();
   }
 
-  v5[2](v5, v6);
+  handlerCopy[2](handlerCopy, v6);
 }
 
-- (void)_requestConversationAvatarsWithSize:(CGSize)a3 completionHandler:(id)a4
+- (void)_requestConversationAvatarsWithSize:(CGSize)size completionHandler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = [NSError errorWithDomain:MSMessagesErrorDomain code:-1 userInfo:0];
   v6 = ms_defaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -2459,108 +2459,108 @@ LABEL_12:
     sub_2C5E4();
   }
 
-  v4[2](v4, 0, v5);
+  handlerCopy[2](handlerCopy, 0, v5);
 }
 
-- (id)_itemPayloadFromMSMessage:(id)a3
+- (id)_itemPayloadFromMSMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
-  v6 = [v5 adamID];
+  messageCopy = message;
+  balloonExtensionPlugin = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
+  adamID = [balloonExtensionPlugin adamID];
 
-  v7 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
-  v8 = [v7 browserDisplayName];
+  balloonExtensionPlugin2 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
+  browserDisplayName = [balloonExtensionPlugin2 browserDisplayName];
 
-  v9 = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
-  v10 = [v9 canSendDataPayloads];
+  balloonPlugin = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
+  canSendDataPayloads = [balloonPlugin canSendDataPayloads];
 
-  v11 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
-  v12 = [v11 __ck_statusJPEGImageDataForTransportWithCompressionFactor:0.2];
-  v13 = [MSMessageExtensionDataSource pluginPayloadFromMessagePayload:v4 appIconData:v12 appName:v8 adamID:v6 allowDataPayloads:v10];
+  balloonExtensionPlugin3 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
+  v12 = [balloonExtensionPlugin3 __ck_statusJPEGImageDataForTransportWithCompressionFactor:0.2];
+  v13 = [MSMessageExtensionDataSource pluginPayloadFromMessagePayload:messageCopy appIconData:v12 appName:browserDisplayName adamID:adamID allowDataPayloads:canSendDataPayloads];
 
-  v14 = [v4 session];
+  session = [messageCopy session];
 
-  v15 = [(MSMessageExtensionBrowserViewController *)self message];
-  v16 = [v15 session];
-  LODWORD(v12) = [v14 isEqual:v16];
+  message = [(MSMessageExtensionBrowserViewController *)self message];
+  session2 = [message session];
+  LODWORD(v12) = [session isEqual:session2];
 
   if (v12)
   {
     [v13 setUpdate:1];
-    v17 = [(MSMessageExtensionBrowserViewController *)self balloonPluginDataSource];
-    v18 = [v17 sessionGUID];
-    [v13 setAssociatedMessageGUID:v18];
+    balloonPluginDataSource = [(MSMessageExtensionBrowserViewController *)self balloonPluginDataSource];
+    sessionGUID = [balloonPluginDataSource sessionGUID];
+    [v13 setAssociatedMessageGUID:sessionGUID];
   }
 
-  v19 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
-  v20 = [v19 attributionInfo];
-  [v13 setAttributionInfo:v20];
+  balloonExtensionPlugin4 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
+  attributionInfo = [balloonExtensionPlugin4 attributionInfo];
+  [v13 setAttributionInfo:attributionInfo];
 
-  v21 = [v13 statusText];
-  v22 = [(MSMessageExtensionBrowserViewController *)self substituteNameInString:v21];
+  statusText = [v13 statusText];
+  v22 = [(MSMessageExtensionBrowserViewController *)self substituteNameInString:statusText];
   [v13 setStatusText:v22];
 
-  v23 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
-  v24 = [v23 identifier];
-  [v13 setPluginBundleID:v24];
+  balloonExtensionPlugin5 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
+  identifier = [balloonExtensionPlugin5 identifier];
+  [v13 setPluginBundleID:identifier];
 
   return v13;
 }
 
-- (void)_stageMediaItem:(id)a3 skipShelf:(BOOL)a4 forceStage:(BOOL)a5 completionHandler:(id)a6
+- (void)_stageMediaItem:(id)item skipShelf:(BOOL)shelf forceStage:(BOOL)stage completionHandler:(id)handler
 {
-  v10 = a3;
+  itemCopy = item;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_8D84;
   v13[3] = &unk_4D060;
-  v17 = a4;
-  v15 = self;
-  v16 = a6;
-  v14 = v10;
-  v18 = a5;
-  v11 = v16;
-  v12 = v10;
+  shelfCopy = shelf;
+  selfCopy = self;
+  handlerCopy = handler;
+  v14 = itemCopy;
+  stageCopy = stage;
+  v11 = handlerCopy;
+  v12 = itemCopy;
   dispatch_async(&_dispatch_main_q, v13);
 }
 
-- (void)_stageRichLink:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5
+- (void)_stageRichLink:(id)link skipShelf:(BOOL)shelf completionHandler:(id)handler
 {
-  v8 = a3;
+  linkCopy = link;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_9804;
   v11[3] = &unk_4D038;
-  v13 = self;
-  v14 = a5;
-  v15 = a4;
-  v12 = v8;
-  v9 = v8;
-  v10 = v14;
+  selfCopy = self;
+  handlerCopy = handler;
+  shelfCopy = shelf;
+  v12 = linkCopy;
+  v9 = linkCopy;
+  v10 = handlerCopy;
   dispatch_async(&_dispatch_main_q, v11);
 }
 
-- (void)_startDragMediaItem:(id)a3 frameInRemoteView:(CGRect)a4 fence:(id)a5 completionHandler:(id)a6
+- (void)_startDragMediaItem:(id)item frameInRemoteView:(CGRect)view fence:(id)fence completionHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = view.size.height;
+  width = view.size.width;
+  y = view.origin.y;
+  x = view.origin.x;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_9B24;
   v15[3] = &unk_4D088;
   v15[4] = self;
-  v16 = a3;
+  itemCopy = item;
   v19 = x;
   v20 = y;
   v21 = width;
   v22 = height;
-  v17 = a5;
-  v18 = a6;
-  v12 = v17;
-  v13 = v18;
-  v14 = v16;
+  fenceCopy = fence;
+  handlerCopy = handler;
+  v12 = fenceCopy;
+  v13 = handlerCopy;
+  v14 = itemCopy;
   dispatch_async(&_dispatch_main_q, v15);
 }
 
@@ -2574,53 +2574,53 @@ LABEL_12:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_stickerDruidDragEndedWithPayload:(id)a3
+- (void)_stickerDruidDragEndedWithPayload:(id)payload
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_A05C;
   v5[3] = &unk_4CF20;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  payloadCopy = payload;
+  selfCopy = self;
+  v4 = payloadCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (void)_stickerDruidDragEndedWithPayload:(id)a3 pluginIdentifier:(id)a4
+- (void)_stickerDruidDragEndedWithPayload:(id)payload pluginIdentifier:(id)identifier
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_A294;
   block[3] = &unk_4D0B0;
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  v6 = v10;
-  v7 = v9;
+  payloadCopy = payload;
+  identifierCopy = identifier;
+  selfCopy = self;
+  v6 = identifierCopy;
+  v7 = payloadCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_requestPresentationStyle:(unint64_t)a3
+- (void)_requestPresentationStyle:(unint64_t)style
 {
-  v5 = [(MSMessageExtensionBrowserViewController *)self presentationStyle];
-  if (v5 != 3)
+  presentationStyle = [(MSMessageExtensionBrowserViewController *)self presentationStyle];
+  if (presentationStyle != 3)
   {
 LABEL_6:
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_A498;
     block[3] = &unk_4D0D8;
-    v13 = v5 == 3;
+    v13 = presentationStyle == 3;
     block[4] = self;
-    block[5] = a3;
+    block[5] = style;
     dispatch_async(&_dispatch_main_q, block);
     return;
   }
 
-  v6 = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
-  v7 = [v6 identifier];
+  balloonPlugin = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
+  identifier = [balloonPlugin identifier];
   v8 = IMBalloonExtensionIDWithSuffix();
-  v9 = [v7 isEqualToString:v8];
+  v9 = [identifier isEqualToString:v8];
 
   if (v9)
   {
@@ -2640,10 +2640,10 @@ LABEL_6:
   }
 }
 
-- (void)_requestFullScreenModalPresentationWithSize:(CGSize)a3
+- (void)_requestFullScreenModalPresentationWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = ms_traceLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -2680,48 +2680,48 @@ LABEL_6:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 image:(id)a6 completion:(id)a7
+- (void)_presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle image:(id)image completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
+  imageCopy = image;
+  completionCopy = completion;
   if ([(MSMessageExtensionBrowserViewController *)self hasEntitlement:@"com.apple.messages.private.AllowAlertPresentation"])
   {
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_AC4C;
     v17[3] = &unk_4D150;
-    v18 = v12;
-    v19 = v13;
-    v20 = v15;
-    v21 = v14;
-    v22 = self;
-    v23 = v16;
+    v18 = titleCopy;
+    v19 = messageCopy;
+    v20 = imageCopy;
+    v21 = buttonTitleCopy;
+    selfCopy = self;
+    v23 = completionCopy;
     dispatch_async(&_dispatch_main_q, v17);
   }
 }
 
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 destructiveButtonTitle:(id)a6 completion:(id)a7
+- (void)_presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle destructiveButtonTitle:(id)destructiveButtonTitle completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
+  destructiveButtonTitleCopy = destructiveButtonTitle;
+  completionCopy = completion;
   if ([(MSMessageExtensionBrowserViewController *)self hasEntitlement:@"com.apple.messages.private.AllowAlertPresentation"])
   {
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_AEC0;
     v17[3] = &unk_4D178;
-    v18 = v12;
-    v19 = v13;
-    v20 = v14;
-    v23 = v16;
-    v21 = v15;
-    v22 = self;
+    v18 = titleCopy;
+    v19 = messageCopy;
+    v20 = buttonTitleCopy;
+    v23 = completionCopy;
+    v21 = destructiveButtonTitleCopy;
+    selfCopy = self;
     dispatch_async(&_dispatch_main_q, v17);
   }
 }
@@ -2736,184 +2736,184 @@ LABEL_6:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_updateSnapshotForNextLaunch:(id)a3
+- (void)_updateSnapshotForNextLaunch:(id)launch
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_B2C4;
   v4[3] = &unk_4CF20;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  launchCopy = launch;
+  v3 = launchCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)_requestHostSceneIdentifierWithCompletion:(id)a3
+- (void)_requestHostSceneIdentifierWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_B6FC;
     v6[3] = &unk_4CEA8;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     dispatch_async(&_dispatch_main_q, v6);
   }
 }
 
-- (void)_requestPresentationWithStickerType:(id)a3 identifier:(id)a4
+- (void)_requestPresentationWithStickerType:(id)type identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  identifierCopy = identifier;
   v8 = ms_traceLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     sub_2C998(v8, v9, v10, v11, v12, v13, v14, v15);
   }
 
-  v16 = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
+  remoteProxy = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
   v17 = objc_opt_respondsToSelector();
 
   if (v17)
   {
-    v18 = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
-    [v18 _requestPresentationWithStickerType:v6 identifier:v7];
+    remoteProxy2 = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
+    [remoteProxy2 _requestPresentationWithStickerType:typeCopy identifier:identifierCopy];
   }
 }
 
-- (void)_requestStickerExtensionMetadataDictionary:(id)a3
+- (void)_requestStickerExtensionMetadataDictionary:(id)dictionary
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_B960;
   v4[3] = &unk_4CEA8;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  dictionaryCopy = dictionary;
+  v3 = dictionaryCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)requestStickerExtensionMetadataDictionary:(id)a3
+- (void)requestStickerExtensionMetadataDictionary:(id)dictionary
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_BA8C;
   v4[3] = &unk_4CEA8;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  dictionaryCopy = dictionary;
+  v3 = dictionaryCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
 - (void)beginDisablingUserInteraction
 {
-  v2 = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
-  [v2 beginDisablingUserInteraction];
+  remoteProxy = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
+  [remoteProxy beginDisablingUserInteraction];
 }
 
 - (void)endDisablingUserInteraction
 {
-  v2 = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
-  [v2 endDisablingUserInteraction];
+  remoteProxy = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
+  [remoteProxy endDisablingUserInteraction];
 }
 
-- (void)datasourcePayloadDidChange:(id)a3 updateFlags:(unint64_t)a4
+- (void)datasourcePayloadDidChange:(id)change updateFlags:(unint64_t)flags
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 message];
-  objc_storeStrong(&self->_message, v7);
-  if ((v4 & 0x13) != 0)
+  flagsCopy = flags;
+  changeCopy = change;
+  message = [changeCopy message];
+  objc_storeStrong(&self->_message, message);
+  if ((flagsCopy & 0x13) != 0)
   {
-    v8 = [(MSMessageExtensionBrowserViewController *)self currentConversationState];
+    currentConversationState = [(MSMessageExtensionBrowserViewController *)self currentConversationState];
     v9 = ms_traceLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       sub_2CA88(v9, v10, v11, v12, v13, v14, v15, v16);
     }
 
-    v17 = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
-    v18 = [v7 _sanitizedCopy];
-    [v17 _didReceiveMessage:v18 conversationState:v8];
+    remoteProxy = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
+    _sanitizedCopy = [message _sanitizedCopy];
+    [remoteProxy _didReceiveMessage:_sanitizedCopy conversationState:currentConversationState];
   }
 }
 
-- (void)messageAddedWithDataSource:(id)a3
+- (void)messageAddedWithDataSource:(id)source
 {
-  v4 = [a3 pluginPayload];
-  v5 = [MSMessageExtensionDataSource messagePayloadFromPluginPayload:v4];
+  pluginPayload = [source pluginPayload];
+  v5 = [MSMessageExtensionDataSource messagePayloadFromPluginPayload:pluginPayload];
 
-  v6 = [(MSMessageExtensionBrowserViewController *)self currentConversationState];
+  currentConversationState = [(MSMessageExtensionBrowserViewController *)self currentConversationState];
   v7 = ms_traceLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     sub_2CB00(v7, v8, v9, v10, v11, v12, v13, v14);
   }
 
-  v15 = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
-  [v15 _didReceiveMessage:v5 conversationState:v6];
+  remoteProxy = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
+  [remoteProxy _didReceiveMessage:v5 conversationState:currentConversationState];
 
   [(MSMessageExtensionBrowserViewController *)self _markCurrentMessageAsPlayedIfNeeded];
 }
 
-- (void)dragManager:(id)a3 didBeginDraggingItem:(id)a4
+- (void)dragManager:(id)manager didBeginDraggingItem:(id)item
 {
-  v5 = a4;
-  v14 = [(MSMessageExtensionBrowserViewController *)self currentDragPayload];
+  itemCopy = item;
+  currentDragPayload = [(MSMessageExtensionBrowserViewController *)self currentDragPayload];
 
-  v6 = v14;
-  if (v14 == v5)
+  v6 = currentDragPayload;
+  if (currentDragPayload == itemCopy)
   {
-    v7 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
-    v8 = [v7 identifier];
+    balloonExtensionPlugin = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
+    identifier = [balloonExtensionPlugin identifier];
 
-    v9 = [MSMessageExtensionUtilities isValidSticker:v14];
+    v9 = [MSMessageExtensionUtilities isValidSticker:currentDragPayload];
     if (!v9)
     {
-      v10 = [v14 convertToStickerWithExtensionIdentifier:v8];
+      v10 = [currentDragPayload convertToStickerWithExtensionIdentifier:identifier];
       if (v10)
       {
-        v11 = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
+        sendDelegate = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
         v12 = objc_opt_respondsToSelector();
 
         if (v12)
         {
-          v13 = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
-          [v13 didBeginDraggingSticker:v10];
+          sendDelegate2 = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
+          [sendDelegate2 didBeginDraggingSticker:v10];
         }
       }
     }
 
-    v6 = v14;
+    v6 = currentDragPayload;
   }
 }
 
-- (void)dragManager:(id)a3 didEndDraggingItem:(id)a4 toDragTarget:(id)a5 dropArea:(int)a6
+- (void)dragManager:(id)manager didEndDraggingItem:(id)item toDragTarget:(id)target dropArea:(int)area
 {
-  v21 = a3;
-  v10 = a5;
-  v11 = a4;
-  v12 = [(MSMessageExtensionBrowserViewController *)self currentDragPayload];
+  managerCopy = manager;
+  targetCopy = target;
+  itemCopy = item;
+  currentDragPayload = [(MSMessageExtensionBrowserViewController *)self currentDragPayload];
 
-  if (v12 == v11)
+  if (currentDragPayload == itemCopy)
   {
-    v13 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
-    v14 = [v13 identifier];
+    balloonExtensionPlugin = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
+    identifier = [balloonExtensionPlugin identifier];
 
-    v15 = [MSMessageExtensionUtilities isValidSticker:v12];
-    v16 = [(MSMessageExtensionBrowserViewController *)self completionHandler];
-    v17 = v16;
+    v15 = [MSMessageExtensionUtilities isValidSticker:currentDragPayload];
+    completionHandler = [(MSMessageExtensionBrowserViewController *)self completionHandler];
+    v17 = completionHandler;
     if (v15)
     {
-      (*(v16 + 16))(v16, 0, v15);
+      (*(completionHandler + 16))(completionHandler, 0, v15);
     }
 
     else
     {
-      if (a6 == 3)
+      if (area == 3)
       {
         v18 = [NSError errorWithDomain:@"MSMessageExtensionBrowserViewController" code:1 userInfo:0];
         (v17)[2](v17, 1, v18);
@@ -2921,10 +2921,10 @@ LABEL_6:
 
       else
       {
-        v18 = [v12 convertToStickerWithExtensionIdentifier:v14];
-        v19 = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
-        v20 = [v21 draggedSticker];
-        [v19 commitSticker:v18 withDragTarget:v10 draggedSticker:v20];
+        v18 = [currentDragPayload convertToStickerWithExtensionIdentifier:identifier];
+        sendDelegate = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
+        draggedSticker = [managerCopy draggedSticker];
+        [sendDelegate commitSticker:v18 withDragTarget:targetCopy draggedSticker:draggedSticker];
 
         v17[2](v17, 0, 0);
       }
@@ -2935,30 +2935,30 @@ LABEL_6:
   }
 }
 
-- (void)validatePayloadForSending:(id)a3 associatedText:(id)a4 completionHandler:(id)a5
+- (void)validatePayloadForSending:(id)sending associatedText:(id)text completionHandler:(id)handler
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_C184;
   v11[3] = &unk_4D1C8;
-  v12 = a3;
-  v13 = self;
-  v14 = a4;
-  v15 = a5;
-  v8 = v15;
-  v9 = v14;
-  v10 = v12;
+  sendingCopy = sending;
+  selfCopy = self;
+  textCopy = text;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  v9 = textCopy;
+  v10 = sendingCopy;
   [(MSMessageExtensionBrowserViewController *)self _instantiateRemoteViewControllerIfNeededWithIntent:2 completion:v11];
 }
 
-- (void)didStartSendingPluginPayload:(id)a3
+- (void)didStartSendingPluginPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v5 = ms_defaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = payloadCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "didStartSendingPluginPayload %@", buf, 0xCu);
   }
 
@@ -2966,20 +2966,20 @@ LABEL_6:
   v7[1] = 3221225472;
   v7[2] = sub_C674;
   v7[3] = &unk_4D1F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = payloadCopy;
+  selfCopy = self;
+  v6 = payloadCopy;
   [(MSMessageExtensionBrowserViewController *)self _instantiateRemoteViewControllerIfNeededWithIntent:2 completion:v7];
 }
 
-- (void)didCancelSendingPluginPayload:(id)a3
+- (void)didCancelSendingPluginPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v5 = ms_defaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = payloadCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "didCancelSendingPluginPayload %@", buf, 0xCu);
   }
 
@@ -2987,33 +2987,33 @@ LABEL_6:
   v7[1] = 3221225472;
   v7[2] = sub_C8AC;
   v7[3] = &unk_4D1F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = payloadCopy;
+  selfCopy = self;
+  v6 = payloadCopy;
   [(MSMessageExtensionBrowserViewController *)self _instantiateRemoteViewControllerIfNeededWithIntent:2 completion:v7];
 }
 
-- (void)didSelectGPAsset:(id)a3 recipeData:(id)a4 completion:(id)a5
+- (void)didSelectGPAsset:(id)asset recipeData:(id)data completion:(id)completion
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_CAC0;
   v11[3] = &unk_4D1C8;
-  v12 = a3;
-  v13 = self;
-  v14 = a4;
-  v15 = a5;
-  v8 = v15;
-  v9 = v14;
-  v10 = v12;
+  assetCopy = asset;
+  selfCopy = self;
+  dataCopy = data;
+  completionCopy = completion;
+  v8 = completionCopy;
+  v9 = dataCopy;
+  v10 = assetCopy;
   [(MSMessageExtensionBrowserViewController *)self _instantiateRemoteViewControllerIfNeeded:v11];
 }
 
-- (void)handleTextInputPayload:(id)a3 withPayloadID:(id)a4 completion:(id)a5
+- (void)handleTextInputPayload:(id)payload withPayloadID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  payloadCopy = payload;
+  dCopy = d;
+  completionCopy = completion;
   v11 = ms_traceLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -3025,25 +3025,25 @@ LABEL_6:
   v27[2] = sub_CDE0;
   v27[3] = &unk_4D240;
   v27[4] = self;
-  v28 = v10;
-  v19 = v10;
+  v28 = completionCopy;
+  v19 = completionCopy;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_CE68;
   v23[3] = &unk_4D1C8;
   v23[4] = self;
-  v24 = v8;
-  v25 = v9;
+  v24 = payloadCopy;
+  v25 = dCopy;
   v26 = objc_retainBlock(v27);
   v20 = v26;
-  v21 = v9;
-  v22 = v8;
+  v21 = dCopy;
+  v22 = payloadCopy;
   [(MSMessageExtensionBrowserViewController *)self _instantiateRemoteViewControllerIfNeeded:v23];
 }
 
-- (void)prepareForPresentationWithCompletionHandler:(id)a3
+- (void)prepareForPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = ms_traceLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -3055,26 +3055,26 @@ LABEL_6:
   v14[2] = sub_D028;
   v14[3] = &unk_4D240;
   v14[4] = self;
-  v15 = v4;
-  v13 = v4;
+  v15 = handlerCopy;
+  v13 = handlerCopy;
   [(MSMessageExtensionBrowserViewController *)self _instantiateRemoteViewControllerIfNeeded:v14];
 }
 
-- (void)volumeButtonPressed:(BOOL)a3
+- (void)volumeButtonPressed:(BOOL)pressed
 {
-  v3 = a3;
-  v4 = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
-  [v4 _volumeButtonPressed:v3];
+  pressedCopy = pressed;
+  remoteProxy = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
+  [remoteProxy _volumeButtonPressed:pressedCopy];
 }
 
-- (void)loadProxyIfNeededWithCompletion:(id)a3
+- (void)loadProxyIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
+  completionCopy = completion;
+  remoteProxy = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
 
-  if (v5)
+  if (remoteProxy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
   else
@@ -3083,118 +3083,118 @@ LABEL_6:
     v6[1] = 3221225472;
     v6[2] = sub_D220;
     v6[3] = &unk_4D268;
-    v7 = v4;
+    v7 = completionCopy;
     [(MSMessageExtensionBrowserViewController *)self loadRemoteViewWithCompletion:v6];
   }
 }
 
-- (void)_setPluginIdentifierToShow:(id)a3 completion:(id)a4
+- (void)_setPluginIdentifierToShow:(id)show completion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_D2F0;
   v7[3] = &unk_4D290;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(MSMessageExtensionBrowserViewController *)v8 loadProxyIfNeededWithCompletion:v7];
+  selfCopy = self;
+  showCopy = show;
+  completionCopy = completion;
+  v5 = completionCopy;
+  v6 = showCopy;
+  [(MSMessageExtensionBrowserViewController *)selfCopy loadProxyIfNeededWithCompletion:v7];
 }
 
-- (void)_addStickerToStoreWithRepresentations:(id)a3 completionHandler:(id)a4
+- (void)_addStickerToStoreWithRepresentations:(id)representations completionHandler:(id)handler
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_D404;
   v7[3] = &unk_4D290;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(MSMessageExtensionBrowserViewController *)v8 loadProxyIfNeededWithCompletion:v7];
+  selfCopy = self;
+  representationsCopy = representations;
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  v6 = representationsCopy;
+  [(MSMessageExtensionBrowserViewController *)selfCopy loadProxyIfNeededWithCompletion:v7];
 }
 
-- (void)_addStickerToStoreWithRepresentations:(id)a3 completionWithStickerIDs:(id)a4
+- (void)_addStickerToStoreWithRepresentations:(id)representations completionWithStickerIDs:(id)ds
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_D518;
   v7[3] = &unk_4D290;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(MSMessageExtensionBrowserViewController *)v8 loadProxyIfNeededWithCompletion:v7];
+  selfCopy = self;
+  representationsCopy = representations;
+  dsCopy = ds;
+  v5 = dsCopy;
+  v6 = representationsCopy;
+  [(MSMessageExtensionBrowserViewController *)selfCopy loadProxyIfNeededWithCompletion:v7];
 }
 
-- (void)_addStickerToStoreWithRepresentations:(id)a3 sourceRect:(CGRect)a4 completion:(id)a5
+- (void)_addStickerToStoreWithRepresentations:(id)representations sourceRect:(CGRect)rect completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_D654;
   v12[3] = &unk_4D2B8;
-  v13 = self;
-  v14 = a3;
+  selfCopy = self;
+  representationsCopy = representations;
   v16 = x;
   v17 = y;
   v18 = width;
   v19 = height;
-  v15 = a5;
-  v10 = v15;
-  v11 = v14;
-  [(MSMessageExtensionBrowserViewController *)v13 loadProxyIfNeededWithCompletion:v12];
+  completionCopy = completion;
+  v10 = completionCopy;
+  v11 = representationsCopy;
+  [(MSMessageExtensionBrowserViewController *)selfCopy loadProxyIfNeededWithCompletion:v12];
 }
 
-- (void)_addStickerToStoreWithRepresentations:(id)a3 sourceRect:(CGRect)a4 effect:(int64_t)a5 completion:(id)a6
+- (void)_addStickerToStoreWithRepresentations:(id)representations sourceRect:(CGRect)rect effect:(int64_t)effect completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_D7A0;
   v14[3] = &unk_4D2E0;
-  v15 = self;
-  v16 = a3;
+  selfCopy = self;
+  representationsCopy = representations;
   v18 = x;
   v19 = y;
   v20 = width;
   v21 = height;
-  v22 = a5;
-  v17 = a6;
-  v12 = v17;
-  v13 = v16;
-  [(MSMessageExtensionBrowserViewController *)v15 loadProxyIfNeededWithCompletion:v14];
+  effectCopy = effect;
+  completionCopy = completion;
+  v12 = completionCopy;
+  v13 = representationsCopy;
+  [(MSMessageExtensionBrowserViewController *)selfCopy loadProxyIfNeededWithCompletion:v14];
 }
 
-- (void)_addStickerToStoreWithUISticker:(id)a3 sourceRect:(CGRect)a4 completion:(id)a5
+- (void)_addStickerToStoreWithUISticker:(id)sticker sourceRect:(CGRect)rect completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_D8E8;
   v12[3] = &unk_4D2B8;
-  v13 = self;
-  v14 = a3;
+  selfCopy = self;
+  stickerCopy = sticker;
   v16 = x;
   v17 = y;
   v18 = width;
   v19 = height;
-  v15 = a5;
-  v10 = v15;
-  v11 = v14;
-  [(MSMessageExtensionBrowserViewController *)v13 loadProxyIfNeededWithCompletion:v12];
+  completionCopy = completion;
+  v10 = completionCopy;
+  v11 = stickerCopy;
+  [(MSMessageExtensionBrowserViewController *)selfCopy loadProxyIfNeededWithCompletion:v12];
 }
 
 - (void)_prepareForAddStickerFromSubjectLift
@@ -3207,16 +3207,16 @@ LABEL_6:
   [(MSMessageExtensionBrowserViewController *)self loadProxyIfNeededWithCompletion:v2];
 }
 
-- (void)_addStickerAnimationDidFinishWithCompletion:(id)a3
+- (void)_addStickerAnimationDidFinishWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_DA88;
   v4[3] = &unk_4CEA8;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(MSMessageExtensionBrowserViewController *)v5 loadProxyIfNeededWithCompletion:v4];
+  selfCopy = self;
+  completionCopy = completion;
+  v3 = completionCopy;
+  [(MSMessageExtensionBrowserViewController *)selfCopy loadProxyIfNeededWithCompletion:v4];
 }
 
 - (void)_didRemoveStickerPreview
@@ -3229,60 +3229,60 @@ LABEL_6:
   [(MSMessageExtensionBrowserViewController *)self loadProxyIfNeededWithCompletion:v2];
 }
 
-- (void)_animatedStickerCreationProgressChanged:(id)a3 progress:(double)a4
+- (void)_animatedStickerCreationProgressChanged:(id)changed progress:(double)progress
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_DC30;
   v6[3] = &unk_4D308;
-  v7 = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v8;
-  [(MSMessageExtensionBrowserViewController *)v7 loadProxyIfNeededWithCompletion:v6];
+  selfCopy = self;
+  changedCopy = changed;
+  progressCopy = progress;
+  v5 = changedCopy;
+  [(MSMessageExtensionBrowserViewController *)selfCopy loadProxyIfNeededWithCompletion:v6];
 }
 
-- (void)_canShowBrowserForPluginIdentifier:(id)a3 completion:(id)a4
+- (void)_canShowBrowserForPluginIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
-  if ([(MSMessageExtensionBrowserViewController *)self _canCurrentPluginShowInBrowserPluginIdentifier:v8])
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if ([(MSMessageExtensionBrowserViewController *)self _canCurrentPluginShowInBrowserPluginIdentifier:identifierCopy])
   {
-    v7 = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
-    [v7 canShowBrowserForPluginIdentifier:v8 completion:v6];
+    sendDelegate = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
+    [sendDelegate canShowBrowserForPluginIdentifier:identifierCopy completion:completionCopy];
   }
 
   else
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)_showBrowserForPluginIdentifier:(id)a3 style:(unint64_t)a4 completion:(id)a5
+- (void)_showBrowserForPluginIdentifier:(id)identifier style:(unint64_t)style completion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_DDEC;
   v9[3] = &unk_4D330;
   v9[4] = self;
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
-  v7 = v11;
-  v8 = v10;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  styleCopy = style;
+  v7 = completionCopy;
+  v8 = identifierCopy;
   dispatch_async(&_dispatch_main_q, v9);
 }
 
-- (BOOL)_canCurrentPluginShowInBrowserPluginIdentifier:(id)a3
+- (BOOL)_canCurrentPluginShowInBrowserPluginIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
-  v6 = [v5 identifier];
+  identifierCopy = identifier;
+  balloonPlugin = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
+  identifier = [balloonPlugin identifier];
 
   v7 = IMStickersExtensionIdentifier();
   v8 = IMBalloonExtensionIDWithSuffix();
 
-  if ([v6 isEqualToString:v8] && (objc_msgSend(v4, "isEqualToString:", IMBalloonPluginIdentifierAppStore) & 1) != 0)
+  if ([identifier isEqualToString:v8] && (objc_msgSend(identifierCopy, "isEqualToString:", IMBalloonPluginIdentifierAppStore) & 1) != 0)
   {
     v9 = 1;
   }
@@ -3301,41 +3301,41 @@ LABEL_6:
   return v9;
 }
 
-- (void)checkForTouchInRemoteProcessIfNecessaryWithCompletion:(id)a3
+- (void)checkForTouchInRemoteProcessIfNecessaryWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MSMessageExtensionBrowserViewController *)self touchTracker];
-  [v5 checkForTouchWithCompletion:v4];
+  completionCopy = completion;
+  touchTracker = [(MSMessageExtensionBrowserViewController *)self touchTracker];
+  [touchTracker checkForTouchWithCompletion:completionCopy];
 }
 
-- (void)touchUpOccuredForIdentifier:(unsigned int)a3 detached:(BOOL)a4 context:(unsigned int)a5 pid:(int)a6
+- (void)touchUpOccuredForIdentifier:(unsigned int)identifier detached:(BOOL)detached context:(unsigned int)context pid:(int)pid
 {
-  v8 = [(MSMessageExtensionBrowserViewController *)self balloonPlugin:*&a3];
-  v10 = [v8 extension];
+  v8 = [(MSMessageExtensionBrowserViewController *)self balloonPlugin:*&identifier];
+  extension = [v8 extension];
 
-  if ([v10 pidForRequestIdentifier:self->_sessionUUID] == a6)
+  if ([extension pidForRequestIdentifier:self->_sessionUUID] == pid)
   {
-    v9 = [(MSMessageExtensionBrowserViewController *)self touchTracker];
-    [v9 touchReceived];
+    touchTracker = [(MSMessageExtensionBrowserViewController *)self touchTracker];
+    [touchTracker touchReceived];
   }
 }
 
 - (BOOL)isPhotosExtensionBrowser
 {
-  v2 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
-  v3 = [v2 identifier];
+  balloonExtensionPlugin = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
+  identifier = [balloonExtensionPlugin identifier];
   v4 = IMBalloonExtensionIDWithSuffix();
-  v5 = [v3 isEqualToString:v4];
+  v5 = [identifier isEqualToString:v4];
 
   return v5;
 }
 
 - (BOOL)isGenerativePlaygroundExtension
 {
-  v2 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
-  v3 = [v2 identifier];
+  balloonExtensionPlugin = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
+  identifier = [balloonExtensionPlugin identifier];
   v4 = IMBalloonExtensionIDWithSuffix();
-  v5 = [v3 isEqualToString:v4];
+  v5 = [identifier isEqualToString:v4];
 
   return v5;
 }
@@ -3352,28 +3352,28 @@ LABEL_6:
 
 - (BOOL)isFromValidExtension
 {
-  v3 = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
-  v4 = [v3 identifier];
+  balloonExtensionPlugin = [(MSMessageExtensionBrowserViewController *)self balloonExtensionPlugin];
+  identifier = [balloonExtensionPlugin identifier];
 
   v5 = IMBalloonExtensionIDWithSuffix();
-  LOBYTE(v3) = [v4 isEqualToString:v5];
+  LOBYTE(balloonExtensionPlugin) = [identifier isEqualToString:v5];
 
   v6 = IMBalloonExtensionIDWithSuffix();
-  LOBYTE(v5) = [v4 isEqualToString:v6];
+  LOBYTE(v5) = [identifier isEqualToString:v6];
 
   v7 = IMBalloonExtensionIDWithSuffix();
-  LOBYTE(v6) = [v4 isEqualToString:v7];
+  LOBYTE(v6) = [identifier isEqualToString:v7];
 
   v8 = IMBalloonExtensionIDWithSuffix();
-  v9 = [v4 isEqualToString:v8];
+  v9 = [identifier isEqualToString:v8];
 
   v10 = IMBalloonExtensionIDWithSuffix();
-  v11 = [v4 isEqualToString:v10];
+  v11 = [identifier isEqualToString:v10];
 
   v12 = IMBalloonExtensionIDWithSuffix();
-  v13 = [v4 isEqualToString:v12];
+  v13 = [identifier isEqualToString:v12];
 
-  v14 = v3 | v5 | v6 | v9 | v11 | v13 | [(MSMessageExtensionBrowserViewController *)self isGenerativePlaygroundExtension];
+  v14 = balloonExtensionPlugin | v5 | v6 | v9 | v11 | v13 | [(MSMessageExtensionBrowserViewController *)self isGenerativePlaygroundExtension];
   v15 = ms_defaultLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -3384,7 +3384,7 @@ LABEL_6:
     }
 
     v18 = 138412546;
-    v19 = v4;
+    v19 = identifier;
     v20 = 2112;
     v21 = v16;
     _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "checking if it's valid for extension: [%@], result: [%@]", &v18, 0x16u);
@@ -3422,22 +3422,22 @@ LABEL_6:
   return assetExplorerTransport;
 }
 
-- (void)appendDraftAssetArchivesIfNeeded:(id)a3
+- (void)appendDraftAssetArchivesIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   if ([(MSMessageExtensionBrowserViewController *)self extensionWantsDraftAssetArchives])
   {
     if ([(MSMessageExtensionBrowserViewController *)self isPhotosExtensionBrowser])
     {
-      v5 = [v4 conversationID];
-      v6 = [(MSMessageExtensionBrowserViewController *)self _configurePhotosDraftAssetArchivesWithConversationID:v5];
+      conversationID = [neededCopy conversationID];
+      v6 = [(MSMessageExtensionBrowserViewController *)self _configurePhotosDraftAssetArchivesWithConversationID:conversationID];
     }
 
     else
     {
-      v5 = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
-      v7 = [v4 conversationID];
-      v6 = [v5 configurePhotosDraftAssetArchivesWithConversationID:v7];
+      conversationID = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
+      conversationID2 = [neededCopy conversationID];
+      v6 = [conversationID configurePhotosDraftAssetArchivesWithConversationID:conversationID2];
     }
 
     if ([v6 count])
@@ -3450,33 +3450,33 @@ LABEL_6:
         _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Appended %tu drafts to initial conversation state", &v10, 0xCu);
       }
 
-      [v4 setDraftAssetArchives:v6];
+      [neededCopy setDraftAssetArchives:v6];
     }
 
-    v9 = [v4 conversationID];
-    [(MSMessageExtensionBrowserViewController *)self setLastDraftConversationID:v9];
+    conversationID3 = [neededCopy conversationID];
+    [(MSMessageExtensionBrowserViewController *)self setLastDraftConversationID:conversationID3];
   }
 }
 
-- (id)_configurePhotosDraftAssetArchivesWithConversationID:(id)a3
+- (id)_configurePhotosDraftAssetArchivesWithConversationID:(id)d
 {
-  v21 = a3;
+  dCopy = d;
   if ([(MSMessageExtensionBrowserViewController *)self isPhotosExtensionBrowser])
   {
-    v4 = [(MSMessageExtensionBrowserViewController *)self assetExplorerTransport];
-    v19 = [v4 orderedStagedIdentifiers];
+    assetExplorerTransport = [(MSMessageExtensionBrowserViewController *)self assetExplorerTransport];
+    orderedStagedIdentifiers = [assetExplorerTransport orderedStagedIdentifiers];
     v5 = objc_alloc_init(NSMutableArray);
-    if ([v19 count])
+    if ([orderedStagedIdentifiers count])
     {
-      v6 = [(MSMessageExtensionBrowserViewController *)self lastDraftConversationID];
-      if ([v6 length])
+      lastDraftConversationID = [(MSMessageExtensionBrowserViewController *)self lastDraftConversationID];
+      if ([lastDraftConversationID length])
       {
-        v7 = [(MSMessageExtensionBrowserViewController *)self lastDraftConversationID];
-        v8 = [v21 isEqualToString:v7];
+        lastDraftConversationID2 = [(MSMessageExtensionBrowserViewController *)self lastDraftConversationID];
+        v8 = [dCopy isEqualToString:lastDraftConversationID2];
 
         if ((v8 & 1) == 0)
         {
-          [v4 unstagePackagesWithIdentifiers:v19 evictFiles:0];
+          [assetExplorerTransport unstagePackagesWithIdentifiers:orderedStagedIdentifiers evictFiles:0];
 LABEL_25:
           v9 = [v5 copy];
 
@@ -3493,7 +3493,7 @@ LABEL_25:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v10 = v19;
+    v10 = orderedStagedIdentifiers;
     v11 = [v10 countByEnumeratingWithState:&v23 objects:v29 count:16];
     if (v11)
     {
@@ -3507,7 +3507,7 @@ LABEL_25:
             objc_enumerationMutation(v10);
           }
 
-          v14 = [v4 stagedPackageForIdentifier:*(*(&v23 + 1) + 8 * i), v19];
+          v14 = [assetExplorerTransport stagedPackageForIdentifier:*(*(&v23 + 1) + 8 * i), orderedStagedIdentifiers];
           if (v14)
           {
             v22 = 0;
@@ -3537,10 +3537,10 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v4 = ms_defaultLog();
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+  assetExplorerTransport = ms_defaultLog();
+  if (os_log_type_enabled(assetExplorerTransport, OS_LOG_TYPE_ERROR))
   {
-    sub_2D8A0(v4);
+    sub_2D8A0(assetExplorerTransport);
   }
 
   v9 = &__NSArray0__struct;
@@ -3549,31 +3549,31 @@ LABEL_26:
   return v9;
 }
 
-- (id)fetchPluginPayloadsAndClear:(BOOL)a3
+- (id)fetchPluginPayloadsAndClear:(BOOL)clear
 {
-  v3 = a3;
-  v4 = [(MSMessageExtensionBrowserViewController *)self assetExplorerTransport];
-  v5 = [v4 orderedStagedIdentifiers];
-  v6 = [v4 orderedStagedPayloads];
-  if (v3)
+  clearCopy = clear;
+  assetExplorerTransport = [(MSMessageExtensionBrowserViewController *)self assetExplorerTransport];
+  orderedStagedIdentifiers = [assetExplorerTransport orderedStagedIdentifiers];
+  orderedStagedPayloads = [assetExplorerTransport orderedStagedPayloads];
+  if (clearCopy)
   {
-    [v4 unstagePackagesWithIdentifiers:v5 evictFiles:0];
+    [assetExplorerTransport unstagePackagesWithIdentifiers:orderedStagedIdentifiers evictFiles:0];
   }
 
-  return v6;
+  return orderedStagedPayloads;
 }
 
-- (void)restoreDraftStateFromPayload:(id)a3
+- (void)restoreDraftStateFromPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v5 = +[NSMutableArray array];
   v6 = +[NSMutableArray array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [v4 attachments];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  attachments = [payloadCopy attachments];
+  v8 = [attachments countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -3585,7 +3585,7 @@ LABEL_26:
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(attachments);
         }
 
         v12 = *(*(&v17 + 1) + 8 * v11);
@@ -3605,7 +3605,7 @@ LABEL_26:
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [attachments countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
@@ -3622,76 +3622,76 @@ LABEL_26:
 
   if ([v5 count])
   {
-    v15 = [(MSMessageExtensionBrowserViewController *)self assetExplorerTransport];
+    assetExplorerTransport = [(MSMessageExtensionBrowserViewController *)self assetExplorerTransport];
     v16 = [v5 copy];
-    [v15 stagePersistedPayloads:v16];
+    [assetExplorerTransport stagePersistedPayloads:v16];
   }
 }
 
 - (id)fetchPluginStagedIdentifiers
 {
-  v2 = [(MSMessageExtensionBrowserViewController *)self assetExplorerTransport];
-  v3 = [v2 orderedStagedIdentifiers];
+  assetExplorerTransport = [(MSMessageExtensionBrowserViewController *)self assetExplorerTransport];
+  orderedStagedIdentifiers = [assetExplorerTransport orderedStagedIdentifiers];
 
-  return v3;
+  return orderedStagedIdentifiers;
 }
 
-- (void)clearPluginPackagesWithIdentifiers:(id)a3
+- (void)clearPluginPackagesWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(MSMessageExtensionBrowserViewController *)self assetExplorerTransport];
-  [v5 unstagePackagesWithIdentifiers:v4 evictFiles:1];
+  identifiersCopy = identifiers;
+  assetExplorerTransport = [(MSMessageExtensionBrowserViewController *)self assetExplorerTransport];
+  [assetExplorerTransport unstagePackagesWithIdentifiers:identifiersCopy evictFiles:1];
 }
 
 - (void)clearAllStagedPluginPackages
 {
-  v3 = [(MSMessageExtensionBrowserViewController *)self assetExplorerTransport];
-  v2 = [v3 orderedStagedIdentifiers];
-  [v3 unstagePackagesWithIdentifiers:v2 evictFiles:1];
+  assetExplorerTransport = [(MSMessageExtensionBrowserViewController *)self assetExplorerTransport];
+  orderedStagedIdentifiers = [assetExplorerTransport orderedStagedIdentifiers];
+  [assetExplorerTransport unstagePackagesWithIdentifiers:orderedStagedIdentifiers evictFiles:1];
 }
 
-- (void)_stageAssetArchive:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5
+- (void)_stageAssetArchive:(id)archive skipShelf:(BOOL)shelf completionHandler:(id)handler
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1FB3C;
   v9[3] = &unk_4D828;
   v9[4] = self;
-  v10 = a3;
-  v12 = a4;
-  v11 = a5;
-  v7 = v11;
-  v8 = v10;
+  archiveCopy = archive;
+  shelfCopy = shelf;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  v8 = archiveCopy;
   dispatch_async(&_dispatch_main_q, v9);
 }
 
-- (void)stageAssetToTransportAndNotifySendDelegate:(id)a3
+- (void)stageAssetToTransportAndNotifySendDelegate:(id)delegate
 {
-  v8 = a3;
-  v4 = [(MSMessageExtensionBrowserViewController *)self assetExplorerTransport];
-  [v4 stagePackage:v8];
+  delegateCopy = delegate;
+  assetExplorerTransport = [(MSMessageExtensionBrowserViewController *)self assetExplorerTransport];
+  [assetExplorerTransport stagePackage:delegateCopy];
 
-  v5 = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
+  sendDelegate = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v8 browserItemPayload];
-    if (v6)
+    browserItemPayload = [delegateCopy browserItemPayload];
+    if (browserItemPayload)
     {
-      v7 = [v8 identifier];
-      [v5 didStageAssetArchive:v6 identifier:v7];
+      identifier = [delegateCopy identifier];
+      [sendDelegate didStageAssetArchive:browserItemPayload identifier:identifier];
     }
   }
 }
 
-- (void)_removeAssetArchiveWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)_removeAssetArchiveWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = ms_defaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v6;
+    v15 = identifierCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Call to _removeAssetArchiveWithIdentifier: %@", buf, 0xCu);
   }
 
@@ -3700,44 +3700,44 @@ LABEL_26:
   block[2] = sub_20118;
   block[3] = &unk_4D290;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifierCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_assetArchiveRemoved:(id)a3
+- (void)_assetArchiveRemoved:(id)removed
 {
-  v4 = a3;
-  v5 = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
-  [v5 _didRemoveAssetArchiveWithIdentifier:v4];
+  removedCopy = removed;
+  remoteProxy = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
+  [remoteProxy _didRemoveAssetArchiveWithIdentifier:removedCopy];
 }
 
-- (void)packageTransport:(id)a3 didUnstagePackageWithIdentifier:(id)a4
+- (void)packageTransport:(id)transport didUnstagePackageWithIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
+  identifierCopy = identifier;
+  sendDelegate = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 eagerUploadCancelIdentifier:v5];
+    [sendDelegate eagerUploadCancelIdentifier:identifierCopy];
   }
 
-  v7 = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
+  remoteProxy = [(MSMessageExtensionBrowserViewController *)self remoteProxy];
   v8 = ms_defaultLog();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (remoteProxy)
   {
     if (v9)
     {
       v11 = 138412546;
-      v12 = v7;
+      v12 = remoteProxy;
       v13 = 2112;
-      v14 = v5;
+      v14 = identifierCopy;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "packageTransport:didUnstagePackageWithIdentifier: Signal %@ asset archive was removed with identifier: %@", &v11, 0x16u);
     }
 
-    [v7 _didRemoveAssetArchiveWithIdentifier:v5];
+    [remoteProxy _didRemoveAssetArchiveWithIdentifier:identifierCopy];
   }
 
   else
@@ -3745,45 +3745,45 @@ LABEL_26:
     if (v9)
     {
       v11 = 138412290;
-      v12 = v5;
+      v12 = identifierCopy;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "packageTransport:didUnstagePackageWithIdentifier: Current browser is not this extension, asking send delegate to notify active browser of : %@", &v11, 0xCu);
     }
 
-    v10 = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
-    [v10 notifyActiveBrowserAssetArchiveWasRemoved:v5];
+    sendDelegate2 = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
+    [sendDelegate2 notifyActiveBrowserAssetArchiveWasRemoved:identifierCopy];
   }
 }
 
-- (void)chatKitTransport:(id)a3 commitPayload:(id)a4
+- (void)chatKitTransport:(id)transport commitPayload:(id)payload
 {
-  v5 = a4;
-  v6 = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
-  [v6 commitPayload:v5];
+  payloadCopy = payload;
+  sendDelegate = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
+  [sendDelegate commitPayload:payloadCopy];
 }
 
 - (id)workingDirForDraft
 {
-  v3 = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
-  v4 = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
-  v5 = [v4 identifier];
-  v6 = [v3 workingDraftDirForPluginIdentifier:v5];
+  sendDelegate = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
+  balloonPlugin = [(MSMessageExtensionBrowserViewController *)self balloonPlugin];
+  identifier = [balloonPlugin identifier];
+  v6 = [sendDelegate workingDraftDirForPluginIdentifier:identifier];
 
   return v6;
 }
 
-- (void)chatKitTransport:(id)a3 didUpdatePersistedURLsForPackageIdentifier:(id)a4
+- (void)chatKitTransport:(id)transport didUpdatePersistedURLsForPackageIdentifier:(id)identifier
 {
-  v9 = a3;
-  v6 = a4;
+  transportCopy = transport;
+  identifierCopy = identifier;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v9 payloadForIdentifier:v6];
+    v7 = [transportCopy payloadForIdentifier:identifierCopy];
     if (v7)
     {
-      v8 = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
+      sendDelegate = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
       if (objc_opt_respondsToSelector())
       {
-        [v8 generatePreviewAndStoreInCacheForSendingPhotoFromPayload:v7];
+        [sendDelegate generatePreviewAndStoreInCacheForSendingPhotoFromPayload:v7];
       }
     }
   }
@@ -3791,16 +3791,16 @@ LABEL_26:
 
 - (void)_transportStagingStateDidChange
 {
-  v3 = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
-  v4 = [(MSMessageExtensionBrowserViewController *)self assetExplorerTransport];
-  v5 = [v4 orderedStagedIdentifiers];
+  sendDelegate = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
+  assetExplorerTransport = [(MSMessageExtensionBrowserViewController *)self assetExplorerTransport];
+  orderedStagedIdentifiers = [assetExplorerTransport orderedStagedIdentifiers];
 
-  v6 = [v5 count];
+  v6 = [orderedStagedIdentifiers count];
   if (v6 < 1)
   {
     if (!v6 && [(MSMessageExtensionBrowserViewController *)self isShowingAssetExplorerShelf])
     {
-      [v3 dismissEntryViewShelf];
+      [sendDelegate dismissEntryViewShelf];
       [(MSMessageExtensionBrowserViewController *)self setAssetExplorerShelfViewController:0];
       [(MSMessageExtensionBrowserViewController *)self setIsShowingAssetExplorerShelf:0];
     }
@@ -3816,8 +3816,8 @@ LABEL_26:
     }
 
     v8 = [v7 alloc];
-    v9 = [(MSMessageExtensionBrowserViewController *)self assetExplorerTransport];
-    v10 = [v8 initWithPackageTransport:v9];
+    assetExplorerTransport2 = [(MSMessageExtensionBrowserViewController *)self assetExplorerTransport];
+    v10 = [v8 initWithPackageTransport:assetExplorerTransport2];
 
     if (objc_opt_respondsToSelector())
     {
@@ -3829,27 +3829,27 @@ LABEL_26:
     v11[2] = sub_207A8;
     v11[3] = &unk_4D850;
     v11[4] = self;
-    [v3 showEntryViewPhotosShelf:v10 completion:v11];
+    [sendDelegate showEntryViewPhotosShelf:v10 completion:v11];
     [(MSMessageExtensionBrowserViewController *)self setAssetExplorerShelfViewController:v10];
     [(MSMessageExtensionBrowserViewController *)self setIsShowingAssetExplorerShelf:1];
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 1) != 0 && MSAssetExplorerTransportContext == a5)
+  if ((change & 1) != 0 && MSAssetExplorerTransportContext == context)
   {
     [(MSMessageExtensionBrowserViewController *)self _transportStagingStateDidChange];
   }
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
-  [v10 showModalViewController:v9 animated:v5 completion:v8];
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
+  sendDelegate = [(MSMessageExtensionBrowserViewController *)self sendDelegate];
+  [sendDelegate showModalViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
 @end

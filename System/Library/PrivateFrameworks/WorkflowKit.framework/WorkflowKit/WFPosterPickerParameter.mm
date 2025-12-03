@@ -7,8 +7,8 @@
 
 - (BOOL)handlesDefaultPoster
 {
-  v2 = [(WFParameter *)self definition];
-  v3 = [v2 objectForKey:@"HandlesDefaultPoster"];
+  definition = [(WFParameter *)self definition];
+  v3 = [definition objectForKey:@"HandlesDefaultPoster"];
 
   if (v3)
   {
@@ -31,14 +31,14 @@
 
   v5 = v4;
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
 - (BOOL)shouldOnlyShowEligiblePhotosPosters
 {
-  v2 = [(WFParameter *)self definition];
-  v3 = [v2 objectForKey:@"VisiblePosters"];
+  definition = [(WFParameter *)self definition];
+  v3 = [definition objectForKey:@"VisiblePosters"];
 
   if (v3)
   {

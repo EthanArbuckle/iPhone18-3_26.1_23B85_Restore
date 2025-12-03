@@ -13,18 +13,18 @@
   if ([(ZWAlertManager *)self _shouldShowZoomAlert])
   {
     v3 = +[AXSettings sharedInstance];
-    v4 = [v3 zoomShowedBanner];
+    zoomShowedBanner = [v3 zoomShowedBanner];
 
-    if ((v4 & 1) == 0)
+    if ((zoomShowedBanner & 1) == 0)
     {
       v5 = +[AXUIDisplayManager sharedDisplayManager];
-      v6 = [(ZWAlertManager *)self currentAlertID];
+      currentAlertID = [(ZWAlertManager *)self currentAlertID];
 
-      if (v6)
+      if (currentAlertID)
       {
-        v7 = [(ZWAlertManager *)self currentAlertID];
+        currentAlertID2 = [(ZWAlertManager *)self currentAlertID];
         v8 = +[ZWUIServer sharedInstance];
-        [v5 hideAlertWithIdentifier:v7 forService:v8];
+        [v5 hideAlertWithIdentifier:currentAlertID2 forService:v8];
       }
 
       v9 = ZWLocString(@"ZOOM_ENABLED_BANNER");
@@ -43,13 +43,13 @@
   if ([(ZWAlertManager *)self _shouldShowZoomAlert])
   {
     v3 = +[AXUIDisplayManager sharedDisplayManager];
-    v4 = [(ZWAlertManager *)self currentAlertID];
+    currentAlertID = [(ZWAlertManager *)self currentAlertID];
 
-    if (v4)
+    if (currentAlertID)
     {
-      v5 = [(ZWAlertManager *)self currentAlertID];
+      currentAlertID2 = [(ZWAlertManager *)self currentAlertID];
       v6 = +[ZWUIServer sharedInstance];
-      [v3 hideAlertWithIdentifier:v5 forService:v6];
+      [v3 hideAlertWithIdentifier:currentAlertID2 forService:v6];
     }
 
     v7 = ZWLocString(@"ZOOM_DISABLED_BANNER");
@@ -65,9 +65,9 @@
 - (BOOL)_shouldShowZoomAlert
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 securePayAssertionActive];
+  securePayAssertionActive = [v2 securePayAssertionActive];
 
-  if (v3)
+  if (securePayAssertionActive)
   {
     v4 = AXLogAssertions();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -85,29 +85,29 @@
     [v6 zoomFactor];
     if (v7 <= AXZoomMinimumZoomLevel)
     {
-      v5 = 1;
+      zoomInStandby = 1;
     }
 
     else
     {
       v8 = +[ZWCoalescedSettings sharedInstance];
-      v5 = [v8 zoomInStandby];
+      zoomInStandby = [v8 zoomInStandby];
     }
   }
 
-  return v5;
+  return zoomInStandby;
 }
 
 - (void)showOrbZoomToggleOn
 {
   v8 = +[AXUIDisplayManager sharedDisplayManager];
-  v3 = [(ZWAlertManager *)self currentAlertID];
+  currentAlertID = [(ZWAlertManager *)self currentAlertID];
 
-  if (v3)
+  if (currentAlertID)
   {
-    v4 = [(ZWAlertManager *)self currentAlertID];
+    currentAlertID2 = [(ZWAlertManager *)self currentAlertID];
     v5 = +[ZWUIServer sharedInstance];
-    [v8 hideAlertWithIdentifier:v4 forService:v5];
+    [v8 hideAlertWithIdentifier:currentAlertID2 forService:v5];
   }
 
   v6 = +[ZWUIServer sharedInstance];
@@ -118,13 +118,13 @@
 - (void)showOrbZoomToggleOff
 {
   v8 = +[AXUIDisplayManager sharedDisplayManager];
-  v3 = [(ZWAlertManager *)self currentAlertID];
+  currentAlertID = [(ZWAlertManager *)self currentAlertID];
 
-  if (v3)
+  if (currentAlertID)
   {
-    v4 = [(ZWAlertManager *)self currentAlertID];
+    currentAlertID2 = [(ZWAlertManager *)self currentAlertID];
     v5 = +[ZWUIServer sharedInstance];
-    [v8 hideAlertWithIdentifier:v4 forService:v5];
+    [v8 hideAlertWithIdentifier:currentAlertID2 forService:v5];
   }
 
   v6 = +[ZWUIServer sharedInstance];

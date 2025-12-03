@@ -1,5 +1,5 @@
 @interface HUQuickControlColorViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityFirstQuickControlElementForFocus;
 - (id)accessibilityElements;
 - (void)_updateColorPicker;
@@ -7,15 +7,15 @@
 
 @implementation HUQuickControlColorViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUQuickControlColorView" hasInstanceMethod:@"mode" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"HUQuickControlColorView" hasInstanceMethod:@"colorLinearPaletteView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlColorView" hasInstanceMethod:@"colorPickerView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlColorView" hasInstanceMethod:@"_updateColorPicker" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"HUColorPickerView" hasInstanceMethod:@"colorWheelView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUColorSwatchView" hasInstanceMethod:@"selectionState" withFullSignature:{"Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUQuickControlColorView" hasInstanceMethod:@"mode" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"HUQuickControlColorView" hasInstanceMethod:@"colorLinearPaletteView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlColorView" hasInstanceMethod:@"colorPickerView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlColorView" hasInstanceMethod:@"_updateColorPicker" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"HUColorPickerView" hasInstanceMethod:@"colorWheelView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUColorSwatchView" hasInstanceMethod:@"selectionState" withFullSignature:{"Q", 0}];
 }
 
 - (id)accessibilityElements

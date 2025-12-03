@@ -1,19 +1,19 @@
 @interface PurchaseManifest
-+ (id)_sharedManifestWithManifestType:(int64_t)a3;
-+ (id)sharedManifestForDownloadKind:(id)a3;
-+ (void)_handleMessage:(id)a3 connection:(id)a4 usingBlock:(id)a5;
-+ (void)getPathsWithMessage:(id)a3 connection:(id)a4;
++ (id)_sharedManifestWithManifestType:(int64_t)type;
++ (id)sharedManifestForDownloadKind:(id)kind;
++ (void)_handleMessage:(id)message connection:(id)connection usingBlock:(id)block;
++ (void)getPathsWithMessage:(id)message connection:(id)connection;
 + (void)jetsam;
-+ (void)observeXPCServer:(id)a3;
-+ (void)rebuildWithMessage:(id)a3 connection:(id)a4;
-+ (void)removeItemWithMessage:(id)a3 connection:(id)a4;
++ (void)observeXPCServer:(id)server;
++ (void)rebuildWithMessage:(id)message connection:(id)connection;
++ (void)removeItemWithMessage:(id)message connection:(id)connection;
 - (BOOL)_writeToFile;
 - (NSArray)purchaseManifestItems;
 - (NSString)path;
-- (PurchaseManifest)initWithPurchaseDirectory:(id)a3;
+- (PurchaseManifest)initWithPurchaseDirectory:(id)directory;
 - (id)_dictionary;
-- (id)removeItemsWithAssetPaths:(id)a3 error:(id *)a4;
-- (void)addCompletedItem:(id)a3;
+- (id)removeItemsWithAssetPaths:(id)paths error:(id *)error;
+- (void)addCompletedItem:(id)item;
 - (void)dealloc;
 - (void)jetsam;
 - (void)rebuildManifest;
@@ -21,9 +21,9 @@
 
 @implementation PurchaseManifest
 
-- (PurchaseManifest)initWithPurchaseDirectory:(id)a3
+- (PurchaseManifest)initWithPurchaseDirectory:(id)directory
 {
-  if (!a3)
+  if (!directory)
   {
     sub_100271E80(a2, self);
   }
@@ -34,7 +34,7 @@
   if (v5)
   {
     v5->_dispatchQueue = dispatch_queue_create("com.apple.itunesstored.PurchaseManifest", 0);
-    v5->_path = [a3 stringByAppendingPathComponent:@"StorePurchasesInfo.plist"];
+    v5->_path = [directory stringByAppendingPathComponent:@"StorePurchasesInfo.plist"];
   }
 
   return v5;
@@ -57,7 +57,7 @@
   [v2 makeObjectsPerformSelector:"jetsam"];
 }
 
-+ (id)sharedManifestForDownloadKind:(id)a3
++ (id)sharedManifestForDownloadKind:(id)kind
 {
   if ((SSDownloadKindIsMediaKind() & 1) == 0 && (SSDownloadKindIsPodcastKind() & 1) == 0 && !SSDownloadKindIsToneKind())
   {
@@ -70,7 +70,7 @@
     qword_100383DA8 = objc_alloc_init(NSMutableArray);
   }
 
-  v4 = sub_10020F36C(a3);
+  v4 = sub_10020F36C(kind);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -124,7 +124,7 @@ LABEL_17:
   return v10;
 }
 
-- (void)addCompletedItem:(id)a3
+- (void)addCompletedItem:(id)item
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -132,7 +132,7 @@ LABEL_17:
   v4[2] = sub_100097D18;
   v4[3] = &unk_100327350;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = item;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -179,7 +179,7 @@ LABEL_17:
   dispatch_sync(dispatchQueue, block);
 }
 
-- (id)removeItemsWithAssetPaths:(id)a3 error:(id *)a4
+- (id)removeItemsWithAssetPaths:(id)paths error:(id *)error
 {
   v5 = +[NSMutableSet set];
   v74 = objc_alloc_init(NSMutableOrderedSet);
@@ -190,15 +190,15 @@ LABEL_17:
   v92 = sub_100099130;
   v93 = 0;
   v6 = objc_alloc_init(NSMutableSet);
-  v7 = [(NSString *)self->_path stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent = [(NSString *)self->_path stringByDeletingLastPathComponent];
   v75 = v6;
-  v77 = self;
+  selfCopy = self;
   v73 = v5;
   v86 = 0u;
   v87 = 0u;
   v84 = 0u;
   v85 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v84 objects:v101 count:16];
+  v8 = [paths countByEnumeratingWithState:&v84 objects:v101 count:16];
   if (v8)
   {
     v9 = *v85;
@@ -208,14 +208,14 @@ LABEL_17:
       {
         if (*v85 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(paths);
         }
 
         v11 = *(*(&v84 + 1) + 8 * i);
         v12 = [v11 length];
-        if (v12 > -[NSString length](v7, "length") && ([v11 hasPrefix:v7] & 1) != 0)
+        if (v12 > -[NSString length](stringByDeletingLastPathComponent, "length") && ([v11 hasPrefix:stringByDeletingLastPathComponent] & 1) != 0)
         {
-          [v75 addObject:{objc_msgSend(v11, "substringFromIndex:", -[NSString length](v7, "length") + 1)}];
+          [v75 addObject:{objc_msgSend(v11, "substringFromIndex:", -[NSString length](stringByDeletingLastPathComponent, "length") + 1)}];
         }
 
         else
@@ -226,20 +226,20 @@ LABEL_17:
             v13 = +[SSLogConfig sharedConfig];
           }
 
-          v14 = [v13 shouldLog];
-          v15 = [v13 shouldLogToDisk];
-          v16 = [v13 OSLogObject];
-          if (v15)
+          shouldLog = [v13 shouldLog];
+          shouldLogToDisk = [v13 shouldLogToDisk];
+          oSLogObject = [v13 OSLogObject];
+          if (shouldLogToDisk)
           {
-            v17 = v14 | 2;
+            v17 = shouldLog | 2;
           }
 
           else
           {
-            v17 = v14;
+            v17 = shouldLog;
           }
 
-          if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
           {
             v18 = v17;
           }
@@ -257,7 +257,7 @@ LABEL_17:
             v97 = 2112;
             v98 = v11;
             v99 = 2112;
-            v100 = v7;
+            v100 = stringByDeletingLastPathComponent;
             LODWORD(v71) = 32;
             v68 = &v95;
             v20 = _os_log_send_and_compose_impl();
@@ -273,7 +273,7 @@ LABEL_17:
         }
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v84 objects:v101 count:16];
+      v8 = [paths countByEnumeratingWithState:&v84 objects:v101 count:16];
     }
 
     while (v8);
@@ -281,7 +281,7 @@ LABEL_17:
 
   v23 = v73;
   v24 = [v75 count];
-  if (v24 != [a3 count])
+  if (v24 != [paths count])
   {
     v25 = [NSError errorWithDomain:SSErrorDomain code:601 userInfo:0];
     v89[5] = v25;
@@ -289,22 +289,22 @@ LABEL_17:
 
   if ([v75 count])
   {
-    dispatchQueue = v77->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10009913C;
     block[3] = &unk_1003273B8;
-    block[4] = v77;
+    block[4] = selfCopy;
     block[5] = v75;
     block[6] = v73;
-    block[7] = v7;
+    block[7] = stringByDeletingLastPathComponent;
     block[8] = v74;
     block[9] = &v88;
     dispatch_sync(dispatchQueue, block);
   }
 
   v27 = [v73 count];
-  if (v27 == [a3 count])
+  if (v27 == [paths count])
   {
     if ([v74 count])
     {
@@ -315,20 +315,20 @@ LABEL_17:
         v29 = +[SSLogConfig sharedConfig];
       }
 
-      v30 = [v29 shouldLog];
-      v31 = [v29 shouldLogToDisk];
-      v32 = [v29 OSLogObject];
-      if (v31)
+      shouldLog2 = [v29 shouldLog];
+      shouldLogToDisk2 = [v29 shouldLogToDisk];
+      oSLogObject2 = [v29 OSLogObject];
+      if (shouldLogToDisk2)
       {
-        v33 = v30 | 2;
+        v33 = shouldLog2 | 2;
       }
 
       else
       {
-        v33 = v30;
+        v33 = shouldLog2;
       }
 
-      if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
       {
         v34 = v33;
       }
@@ -389,20 +389,20 @@ LABEL_17:
                 v45 = +[SSLogConfig sharedConfig];
               }
 
-              v46 = [v45 shouldLog];
-              v47 = [v45 shouldLogToDisk];
-              v48 = [v45 OSLogObject];
-              if (v47)
+              shouldLog3 = [v45 shouldLog];
+              shouldLogToDisk3 = [v45 shouldLogToDisk];
+              oSLogObject3 = [v45 OSLogObject];
+              if (shouldLogToDisk3)
               {
-                v49 = v46 | 2;
+                v49 = shouldLog3 | 2;
               }
 
               else
               {
-                v49 = v46;
+                v49 = shouldLog3;
               }
 
-              if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
+              if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
               {
                 v50 = v49;
               }
@@ -441,20 +441,20 @@ LABEL_17:
                 v55 = +[SSLogConfig sharedConfig];
               }
 
-              v56 = [v55 shouldLog];
-              v57 = [v55 shouldLogToDisk];
-              v58 = [v55 OSLogObject];
-              if (v57)
+              shouldLog4 = [v55 shouldLog];
+              shouldLogToDisk4 = [v55 shouldLogToDisk];
+              oSLogObject4 = [v55 OSLogObject];
+              if (shouldLogToDisk4)
               {
-                v59 = v56 | 2;
+                v59 = shouldLog4 | 2;
               }
 
               else
               {
-                v59 = v56;
+                v59 = shouldLog4;
               }
 
-              if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
+              if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
               {
                 v60 = v59;
               }
@@ -499,9 +499,9 @@ LABEL_17:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = v89[5];
+    *error = v89[5];
   }
 
   v66 = v89[5];
@@ -509,78 +509,78 @@ LABEL_17:
   return v23;
 }
 
-+ (void)getPathsWithMessage:(id)a3 connection:(id)a4
++ (void)getPathsWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000995F8;
   v4[3] = &unk_1003273E0;
-  v4[4] = a4;
-  v4[5] = a3;
-  v4[6] = a1;
-  [a1 _handleMessage:a3 connection:a4 usingBlock:v4];
+  v4[4] = connection;
+  v4[5] = message;
+  v4[6] = self;
+  [self _handleMessage:message connection:connection usingBlock:v4];
 }
 
-+ (void)observeXPCServer:(id)a3
++ (void)observeXPCServer:(id)server
 {
-  [a3 addObserver:a1 selector:"getPathsWithMessage:connection:" forMessage:46];
-  [a3 addObserver:a1 selector:"rebuildWithMessage:connection:" forMessage:47];
+  [server addObserver:self selector:"getPathsWithMessage:connection:" forMessage:46];
+  [server addObserver:self selector:"rebuildWithMessage:connection:" forMessage:47];
 
-  [a3 addObserver:a1 selector:"removeItemWithMessage:connection:" forMessage:44];
+  [server addObserver:self selector:"removeItemWithMessage:connection:" forMessage:44];
 }
 
-+ (void)rebuildWithMessage:(id)a3 connection:(id)a4
++ (void)rebuildWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100099908;
   v4[3] = &unk_1003273E0;
-  v4[4] = a4;
-  v4[5] = a3;
-  v4[6] = a1;
-  [a1 _handleMessage:a3 connection:a4 usingBlock:v4];
+  v4[4] = connection;
+  v4[5] = message;
+  v4[6] = self;
+  [self _handleMessage:message connection:connection usingBlock:v4];
 }
 
-+ (void)removeItemWithMessage:(id)a3 connection:(id)a4
++ (void)removeItemWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000999FC;
   v4[3] = &unk_1003273E0;
-  v4[4] = a4;
-  v4[5] = a3;
-  v4[6] = a1;
-  [a1 _handleMessage:a3 connection:a4 usingBlock:v4];
+  v4[4] = connection;
+  v4[5] = message;
+  v4[6] = self;
+  [self _handleMessage:message connection:connection usingBlock:v4];
 }
 
-+ (void)_handleMessage:(id)a3 connection:(id)a4 usingBlock:(id)a5
++ (void)_handleMessage:(id)message connection:(id)connection usingBlock:(id)block
 {
   [+[Daemon daemon](Daemon "daemon")];
-  xpc_retain(a3);
-  xpc_retain(a4);
+  xpc_retain(message);
+  xpc_retain(connection);
   global_queue = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100099CA0;
   block[3] = &unk_100327408;
-  block[5] = a4;
-  block[6] = a5;
-  block[4] = a3;
+  block[5] = connection;
+  block[6] = block;
+  block[4] = message;
   dispatch_async(global_queue, block);
 }
 
-+ (id)_sharedManifestWithManifestType:(int64_t)a3
++ (id)_sharedManifestWithManifestType:(int64_t)type
 {
-  if (!a3)
+  if (!type)
   {
     v3 = &SSDownloadKindMusic;
-    return [a1 sharedManifestForDownloadKind:*v3];
+    return [self sharedManifestForDownloadKind:*v3];
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = &SSDownloadKindPodcast;
-    return [a1 sharedManifestForDownloadKind:*v3];
+    return [self sharedManifestForDownloadKind:*v3];
   }
 
   return 0;
@@ -601,15 +601,15 @@ LABEL_17:
           v3 = +[SSLogConfig sharedConfig];
         }
 
-        v4 = [v3 shouldLog];
+        shouldLog = [v3 shouldLog];
         if ([v3 shouldLogToDisk])
         {
-          v5 = v4 | 2;
+          v5 = shouldLog | 2;
         }
 
         else
         {
-          v5 = v4;
+          v5 = shouldLog;
         }
 
         if (!os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_INFO))
@@ -656,15 +656,15 @@ LABEL_17:
           v12 = +[SSLogConfig sharedConfig];
         }
 
-        v13 = [v12 shouldLog];
+        shouldLog2 = [v12 shouldLog];
         if ([v12 shouldLogToDisk])
         {
-          v14 = v13 | 2;
+          v14 = shouldLog2 | 2;
         }
 
         else
         {
-          v14 = v13;
+          v14 = shouldLog2;
         }
 
         if (!os_log_type_enabled([v12 OSLogObject], OS_LOG_TYPE_INFO))
@@ -723,15 +723,15 @@ LABEL_17:
     v7 = +[SSLogConfig sharedConfig];
   }
 
-  v8 = [v7 shouldLog];
+  shouldLog = [v7 shouldLog];
   if ([v7 shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
   if (!os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_INFO))

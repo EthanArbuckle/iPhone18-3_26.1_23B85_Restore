@@ -1,28 +1,28 @@
 @interface JavaLangReflectAccessibleObject
-- (id)getAnnotationWithIOSClass:(id)a3;
-- (id)getAnnotationsFromAccessor:(id)a3;
+- (id)getAnnotationWithIOSClass:(id)class;
+- (id)getAnnotationsFromAccessor:(id)accessor;
 @end
 
 @implementation JavaLangReflectAccessibleObject
 
-- (id)getAnnotationWithIOSClass:(id)a3
+- (id)getAnnotationWithIOSClass:(id)class
 {
-  if (!a3)
+  if (!class)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [(JavaLangReflectAccessibleObject *)self getAnnotations];
-  v5 = v4[2];
+  getAnnotations = [(JavaLangReflectAccessibleObject *)self getAnnotations];
+  v5 = getAnnotations[2];
   if (v5 < 1)
   {
     return 0;
   }
 
-  for (i = v4; ; i += 2)
+  for (i = getAnnotations; ; i += 2)
   {
     v7 = *(i + 3);
-    if ([a3 isInstance:v7])
+    if ([class isInstance:v7])
     {
       break;
     }
@@ -36,13 +36,13 @@
   return v7;
 }
 
-- (id)getAnnotationsFromAccessor:(id)a3
+- (id)getAnnotationsFromAccessor:(id)accessor
 {
-  if (a3)
+  if (accessor)
   {
     v4 = [IOSObjectArray arrayWithLength:0 type:NSObject_class_()];
 
-    return [a3 invokeWithId:0 withNSObjectArray:v4];
+    return [accessor invokeWithId:0 withNSObjectArray:v4];
   }
 
   else

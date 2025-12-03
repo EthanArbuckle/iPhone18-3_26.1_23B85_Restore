@@ -1,10 +1,10 @@
 @interface CIEnhancementCalculator
 - (CIEnhancementCalculator)init;
-- (id)histogramFromRows:(id)a3 componentOffset:(unsigned int)a4;
-- (id)setupFaceColorFromImage:(id)a3 usingContext:(id)a4 detectorOpts:(id)a5;
-- (void)analyzeFeatures:(id)a3 usingContext:(id)a4 baseImage:(id)a5;
+- (id)histogramFromRows:(id)rows componentOffset:(unsigned int)offset;
+- (id)setupFaceColorFromImage:(id)image usingContext:(id)context detectorOpts:(id)opts;
+- (void)analyzeFeatures:(id)features usingContext:(id)context baseImage:(id)image;
 - (void)dealloc;
-- (void)setupHistogramsUsing:(id)a3 redIndex:(int)a4 greenIndex:(int)a5 blueIndex:(int)a6;
+- (void)setupHistogramsUsing:(id)using redIndex:(int)index greenIndex:(int)greenIndex blueIndex:(int)blueIndex;
 @end
 
 @implementation CIEnhancementCalculator
@@ -32,30 +32,30 @@
   [(CIEnhancementCalculation *)&v2 dealloc];
 }
 
-- (id)histogramFromRows:(id)a3 componentOffset:(unsigned int)a4
+- (id)histogramFromRows:(id)rows componentOffset:(unsigned int)offset
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = [a3 width];
-  v7 = [a3 height];
-  v8 = [a3 bytesPerPixel];
+  width = [rows width];
+  height = [rows height];
+  bytesPerPixel = [rows bytesPerPixel];
   bzero(v20, 0x800uLL);
-  if (v7)
+  if (height)
   {
-    for (i = 0; i < v7; i = (i + 1))
+    for (i = 0; i < height; i = (i + 1))
     {
-      v10 = [a3 rowAtIndex:i];
-      if (v6)
+      v10 = [rows rowAtIndex:i];
+      if (width)
       {
         v11 = 0;
         v12 = 1;
         do
         {
-          v13 = *(v10 + a4 + v11);
+          v13 = *(v10 + offset + v11);
           v20[v13] = v20[v13] + 1.0;
-          v11 += v8;
+          v11 += bytesPerPixel;
         }
 
-        while (v6 > v12++);
+        while (width > v12++);
       }
     }
   }
@@ -81,9 +81,9 @@
   return [CIEnhancementHistogram histogramFromData:v20];
 }
 
-- (void)setupHistogramsUsing:(id)a3 redIndex:(int)a4 greenIndex:(int)a5 blueIndex:(int)a6
+- (void)setupHistogramsUsing:(id)using redIndex:(int)index greenIndex:(int)greenIndex blueIndex:(int)blueIndex
 {
-  v6 = MEMORY[0x1EEE9AC00](self, a2, a3, *&a4, *&a5, *&a6);
+  v6 = MEMORY[0x1EEE9AC00](self, a2, using, *&index, *&greenIndex, *&blueIndex);
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -93,14 +93,14 @@
   bzero(v61, 0x800uLL);
   bzero(v60, 0x800uLL);
   bzero(v59, 0x800uLL);
-  v15 = [v14 bytesPerPixel];
+  bytesPerPixel = [v14 bytesPerPixel];
   bzero(v58, 0x800uLL);
-  v16 = [v14 width];
+  width = [v14 width];
   v57 = v14;
-  v56 = [v14 height];
-  if (v56)
+  height = [v14 height];
+  if (height)
   {
-    v17 = v16;
+    v17 = width;
     v18 = 0;
     v19 = v17 - 1;
     do
@@ -116,7 +116,7 @@
         LOBYTE(v26) = llround(v25 + v21 * 0.1);
         do
         {
-          v27 = v20 + v24 * v15;
+          v27 = v20 + v24 * bytesPerPixel;
           v28 = *(v27 + v12);
           v58[*(v27 + v12)] = v58[*(v27 + v12)] + 1.0;
           v29 = *(v27 + v10);
@@ -125,7 +125,7 @@
           v31 = v58[v30] + 1.0;
           v58[v30] = v31;
           LOBYTE(v35) = v26;
-          v32 = v20 + ++v24 * v15;
+          v32 = v20 + ++v24 * bytesPerPixel;
           LOBYTE(v31) = *(v32 + v12);
           LOBYTE(v25) = *(v32 + v10);
           *&v33 = *&v25 * 0.7;
@@ -208,7 +208,7 @@
       v18 = (v18 + 1);
     }
 
-    while (v56 > v18);
+    while (height > v18);
   }
 
   v39 = 0;
@@ -289,20 +289,20 @@
   [v55 setSaturationHistogram:{+[CIEnhancementHistogram histogramFromData:](CIEnhancementHistogram, "histogramFromData:", v59)}];
 }
 
-- (void)analyzeFeatures:(id)a3 usingContext:(id)a4 baseImage:(id)a5
+- (void)analyzeFeatures:(id)features usingContext:(id)context baseImage:(id)image
 {
   v42 = *MEMORY[0x1E69E9840];
-  if ([a3 count])
+  if ([features count])
   {
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v9 = [a3 countByEnumeratingWithState:&v37 objects:v41 count:16];
+    v9 = [features countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v9)
     {
       v10 = v9;
-      v34 = self;
+      selfCopy = self;
       v11 = *v38;
       v12 = 0.0;
       v13 = 0.0;
@@ -313,7 +313,7 @@
         {
           if (*v38 != v11)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(features);
           }
 
           v16 = *(*(&v37 + 1) + 8 * i);
@@ -322,7 +322,7 @@
           {
             v17 = [CIAutoEnhanceFace alloc];
             [v16 bounds];
-            v18 = [(CIAutoEnhanceFace *)v17 initWithBounds:a5 andImage:a4 usingContext:?];
+            v18 = [(CIAutoEnhanceFace *)v17 initWithBounds:image andImage:context usingContext:?];
             __x.origin.x = 0.0;
             [(CIAutoEnhanceFace *)v18 I];
             v20 = v19;
@@ -349,7 +349,7 @@
               if (CGRectMakeWithDictionaryRepresentation(v28, &__x))
               {
                 v29 = [CIAutoEnhanceFace alloc];
-                v18 = [(CIAutoEnhanceFace *)v29 initWithBounds:a5 andImage:a4 usingContext:__x.origin.x, __x.origin.y, *&__x.size];
+                v18 = [(CIAutoEnhanceFace *)v29 initWithBounds:image andImage:context usingContext:__x.origin.x, __x.origin.y, *&__x.size];
                 v35 = 0.0;
                 [(CIAutoEnhanceFace *)v18 I];
                 v31 = v30;
@@ -377,12 +377,12 @@ LABEL_11:
           }
         }
 
-        v10 = [a3 countByEnumeratingWithState:&v37 objects:v41 count:16];
+        v10 = [features countByEnumeratingWithState:&v37 objects:v41 count:16];
         if (!v10)
         {
           if (v12 > 0.0)
           {
-            [(CIEnhancementCalculation *)v34 setFaceColorFromChromaI:v14 / v12 andChromaQ:v13 / v12];
+            [(CIEnhancementCalculation *)selfCopy setFaceColorFromChromaI:v14 / v12 andChromaQ:v13 / v12];
           }
 
           return;
@@ -392,11 +392,11 @@ LABEL_11:
   }
 }
 
-- (id)setupFaceColorFromImage:(id)a3 usingContext:(id)a4 detectorOpts:(id)a5
+- (id)setupFaceColorFromImage:(id)image usingContext:(id)context detectorOpts:(id)opts
 {
-  v8 = [[CIDetector detectorOfType:? context:? options:?]options:"featuresInImage:options:", a3, a5];
-  [(CIEnhancementCalculator *)self analyzeFeatures:v8 usingContext:a4 baseImage:a3];
-  return v8;
+  opts = [[CIDetector detectorOfType:? context:? options:?]options:"featuresInImage:options:", image, opts];
+  [(CIEnhancementCalculator *)self analyzeFeatures:opts usingContext:context baseImage:image];
+  return opts;
 }
 
 @end

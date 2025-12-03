@@ -1,46 +1,46 @@
 @interface PBItemCollectionServicer
-+ (id)newServicerForConnection:(id)a3 itemCollection:(id)a4;
-- (PBItemCollectionServicer)initWithConnection:(id)a3 itemCollection:(id)a4;
-- (void)callCleanupBlockWithUUID:(id)a3;
-- (void)loadRepresentationForItemAtIndex:(unint64_t)a3 type:(id)a4 completionBlock:(id)a5;
++ (id)newServicerForConnection:(id)connection itemCollection:(id)collection;
+- (PBItemCollectionServicer)initWithConnection:(id)connection itemCollection:(id)collection;
+- (void)callCleanupBlockWithUUID:(id)d;
+- (void)loadRepresentationForItemAtIndex:(unint64_t)index type:(id)type completionBlock:(id)block;
 @end
 
 @implementation PBItemCollectionServicer
 
-+ (id)newServicerForConnection:(id)a3 itemCollection:(id)a4
++ (id)newServicerForConnection:(id)connection itemCollection:(id)collection
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PBItemCollectionServicer alloc] initWithConnection:v6 itemCollection:v5];
+  collectionCopy = collection;
+  connectionCopy = connection;
+  v7 = [[PBItemCollectionServicer alloc] initWithConnection:connectionCopy itemCollection:collectionCopy];
 
   return v7;
 }
 
-- (PBItemCollectionServicer)initWithConnection:(id)a3 itemCollection:(id)a4
+- (PBItemCollectionServicer)initWithConnection:(id)connection itemCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  collectionCopy = collection;
   v16.receiver = self;
   v16.super_class = PBItemCollectionServicer;
   v8 = [(PBItemCollectionServicer *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_itemCollection, a4);
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v8->_itemCollection, collection);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     cleanupQueue_cleanupHandlerByUUID = v9->_cleanupQueue_cleanupHandlerByUUID;
-    v9->_cleanupQueue_cleanupHandlerByUUID = v10;
+    v9->_cleanupQueue_cleanupHandlerByUUID = dictionary;
 
-    [v6 setExportedObject:v9];
+    [connectionCopy setExportedObject:v9];
     v12 = PBNewDataProviderXPCInterface();
-    [v6 setExportedInterface:v12];
+    [connectionCopy setExportedInterface:v12];
 
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __62__PBItemCollectionServicer_initWithConnection_itemCollection___block_invoke;
     v14[3] = &unk_279A063A0;
     v15 = v9;
-    [v6 setInvalidationHandler:v14];
+    [connectionCopy setInvalidationHandler:v14];
   }
 
   return v9;
@@ -130,25 +130,25 @@ uint64_t __62__PBItemCollectionServicer_initWithConnection_itemCollection___bloc
   return [v5 removeAllObjects];
 }
 
-- (void)loadRepresentationForItemAtIndex:(unint64_t)a3 type:(id)a4 completionBlock:(id)a5
+- (void)loadRepresentationForItemAtIndex:(unint64_t)index type:(id)type completionBlock:(id)block
 {
   v55 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  typeCopy = type;
+  blockCopy = block;
   v10 = [MEMORY[0x277CCAC48] progressWithTotalUnitCount:100];
-  v11 = [(PBItemCollectionServicer *)self itemCollection];
+  itemCollection = [(PBItemCollectionServicer *)self itemCollection];
   v12 = _PBLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    *&buf[4] = v8;
+    *&buf[4] = typeCopy;
     *&buf[12] = 2048;
-    *&buf[14] = a3;
+    *&buf[14] = index;
     _os_log_debug_impl(&dword_25E138000, v12, OS_LOG_TYPE_DEBUG, "loadRepresentationForItemAtIndex:type:completionBlock: requesting load of type %@ from item at index %ld", buf, 0x16u);
   }
 
-  v13 = [v11 items];
-  v14 = [v13 count] > a3;
+  items = [itemCollection items];
+  v14 = [items count] > index;
 
   if (v14)
   {
@@ -158,10 +158,10 @@ uint64_t __62__PBItemCollectionServicer_initWithConnection_itemCollection___bloc
     v52 = __Block_byref_object_copy__2;
     v53 = __Block_byref_object_dispose__2;
     v54 = 0;
-    v15 = [(PBItemCollectionServicer *)self itemCollection];
-    v16 = [v15 isGeneralPasteboard];
+    itemCollection2 = [(PBItemCollectionServicer *)self itemCollection];
+    isGeneralPasteboard = [itemCollection2 isGeneralPasteboard];
 
-    if (v16)
+    if (isGeneralPasteboard)
     {
       v17 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, 0);
       v18 = *(*&buf[8] + 40);
@@ -174,22 +174,22 @@ uint64_t __62__PBItemCollectionServicer_initWithConnection_itemCollection___bloc
       dispatch_activate(*(*&buf[8] + 40));
     }
 
-    v21 = [v11 items];
-    v22 = [v21 objectAtIndexedSubscript:a3];
+    items2 = [itemCollection items];
+    v22 = [items2 objectAtIndexedSubscript:index];
 
-    v23 = [v22 representationConformingToType:v8];
+    v23 = [v22 representationConformingToType:typeCopy];
     if (v23)
     {
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
       v35[2] = __82__PBItemCollectionServicer_loadRepresentationForItemAtIndex_type_completionBlock___block_invoke_4;
       v35[3] = &unk_279A06F38;
-      v36 = v8;
+      v36 = typeCopy;
       v40 = buf;
-      v41 = a3;
+      indexCopy = index;
       v37 = v22;
-      v38 = self;
-      v39 = v9;
+      selfCopy = self;
+      v39 = blockCopy;
       v24 = [v23 loadWithCompletionHandler:v35];
       [v10 addChild:v24 withPendingUnitCount:100];
 
@@ -198,17 +198,17 @@ uint64_t __62__PBItemCollectionServicer_initWithConnection_itemCollection___bloc
 
     else
     {
-      v29 = PBCannotLoadRepresentationError(v8, 0);
+      v29 = PBCannotLoadRepresentationError(typeCopy, 0);
       [v10 setCompletedUnitCount:{objc_msgSend(v10, "totalUnitCount")}];
       v30 = _PBLog();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
       {
         *v45 = 138412802;
-        v46 = v8;
+        v46 = typeCopy;
         v47 = 2048;
-        v48 = a3;
+        indexCopy2 = index;
         v49 = 2112;
-        v50 = v11;
+        v50 = itemCollection;
         _os_log_fault_impl(&dword_25E138000, v30, OS_LOG_TYPE_FAULT, "loadRepresentationForItemAtIndex:type:completionBlock: was asked to load representation of type %@ for index %ld but no such representation could be found from collection %@", v45, 0x20u);
       }
 
@@ -216,7 +216,7 @@ uint64_t __62__PBItemCollectionServicer_initWithConnection_itemCollection___bloc
       v32[1] = 3221225472;
       v32[2] = __82__PBItemCollectionServicer_loadRepresentationForItemAtIndex_type_completionBlock___block_invoke_11;
       v32[3] = &unk_279A06B28;
-      v34 = v9;
+      v34 = blockCopy;
       v25 = v29;
       v33 = v25;
       PBDispatchAsyncCallback(v32);
@@ -231,24 +231,24 @@ uint64_t __62__PBItemCollectionServicer_initWithConnection_itemCollection___bloc
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      *&buf[4] = v8;
+      *&buf[4] = typeCopy;
       *&buf[12] = 2048;
-      *&buf[14] = a3;
+      *&buf[14] = index;
       *&buf[22] = 2112;
-      v52 = v11;
+      v52 = itemCollection;
       _os_log_error_impl(&dword_25E138000, v26, OS_LOG_TYPE_ERROR, "loadRepresentationForItemAtIndex:type:completionBlock: was asked to load representation of type %@ for index %ld from collection %@ but no such index exists.", buf, 0x20u);
     }
 
-    if (v9)
+    if (blockCopy)
     {
-      v27 = PBIndexOutOfRangeError(a3, 0);
+      v27 = PBIndexOutOfRangeError(index, 0);
       [v10 setCompletedUnitCount:{objc_msgSend(v10, "totalUnitCount")}];
       v42[0] = MEMORY[0x277D85DD0];
       v42[1] = 3221225472;
       v42[2] = __82__PBItemCollectionServicer_loadRepresentationForItemAtIndex_type_completionBlock___block_invoke;
       v42[3] = &unk_279A06B28;
       v43 = v27;
-      v44 = v9;
+      v44 = blockCopy;
       v28 = v27;
       PBDispatchAsyncCallback(v42);
     }
@@ -471,16 +471,16 @@ void __82__PBItemCollectionServicer_loadRepresentationForItemAtIndex_type_comple
   [*(a1[4] + 8) setObject:v2 forKeyedSubscript:*(*(a1[6] + 8) + 40)];
 }
 
-- (void)callCleanupBlockWithUUID:(id)a3
+- (void)callCleanupBlockWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__12_0;
   v14 = __Block_byref_object_dispose__13_0;
   v15 = 0;
-  if (v4)
+  if (dCopy)
   {
     v5 = _cleanupQueue();
     block[0] = MEMORY[0x277D85DD0];
@@ -489,7 +489,7 @@ void __82__PBItemCollectionServicer_loadRepresentationForItemAtIndex_type_comple
     block[3] = &unk_279A06D80;
     v9 = &v10;
     block[4] = self;
-    v8 = v4;
+    v8 = dCopy;
     dispatch_sync(v5, block);
 
     v6 = v11[5];

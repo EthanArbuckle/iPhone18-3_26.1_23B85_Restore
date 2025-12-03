@@ -1,16 +1,16 @@
 @interface AVOutputDeviceLegacyFrecentsWriter
 + (id)defaultFrecentsWriter;
 - (AVOutputDeviceLegacyFrecentsWriter)init;
-- (BOOL)persistToDiskReturningError:(id *)a3;
+- (BOOL)persistToDiskReturningError:(id *)error;
 - (void)dealloc;
-- (void)removeFrecencyInfoForDeviceID:(id)a3;
+- (void)removeFrecencyInfoForDeviceID:(id)d;
 @end
 
 @implementation AVOutputDeviceLegacyFrecentsWriter
 
 + (id)defaultFrecentsWriter
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -22,15 +22,15 @@
   [(AVOutputDeviceLegacyFrecentsWriter *)&v3 dealloc];
 }
 
-- (void)removeFrecencyInfoForDeviceID:(id)a3
+- (void)removeFrecencyInfoForDeviceID:(id)d
 {
   [(NSMutableDictionary *)self->_updatedFrecentsList removeObjectForKey:?];
   keysToRemove = self->_keysToRemove;
 
-  [(NSMutableArray *)keysToRemove addObject:a3];
+  [(NSMutableArray *)keysToRemove addObject:d];
 }
 
-- (BOOL)persistToDiskReturningError:(id *)a3
+- (BOOL)persistToDiskReturningError:(id *)error
 {
   CFPreferencesSetMultiple(self->_updatedFrecentsList, self->_keysToRemove, @"com.apple.avfoundation.frecents", *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
   v4 = CFPreferencesAppSynchronize(@"com.apple.avfoundation.frecents");

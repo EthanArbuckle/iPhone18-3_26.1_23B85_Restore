@@ -1,6 +1,6 @@
 @interface _HKReportTableViewCell
 - (_HKReportTableViewCell)init;
-- (void)setReportName:(id)a3 reportImage:(id)a4;
+- (void)setReportName:(id)name reportImage:(id)image;
 - (void)setUpUI;
 @end
 
@@ -37,57 +37,57 @@
   self->_reportImageView = v7;
 
   [(UIImageView *)self->_reportImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [(_HKReportTableViewCell *)self contentView];
-  [v9 addSubview:self->_reportLabel];
+  contentView = [(_HKReportTableViewCell *)self contentView];
+  [contentView addSubview:self->_reportLabel];
 
-  v10 = [(_HKReportTableViewCell *)self contentView];
-  [v10 addSubview:self->_reportImageView];
+  contentView2 = [(_HKReportTableViewCell *)self contentView];
+  [contentView2 addSubview:self->_reportImageView];
 
   v27 = MEMORY[0x1E696ACD8];
-  v34 = [(UIImageView *)self->_reportImageView topAnchor];
-  v35 = [(_HKReportTableViewCell *)self contentView];
-  v33 = [v35 topAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33 constant:30.0];
+  topAnchor = [(UIImageView *)self->_reportImageView topAnchor];
+  contentView3 = [(_HKReportTableViewCell *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v32 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:30.0];
   v36[0] = v32;
-  v30 = [(UIImageView *)self->_reportImageView centerXAnchor];
-  v31 = [(_HKReportTableViewCell *)self contentView];
-  v29 = [v31 centerXAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  centerXAnchor = [(UIImageView *)self->_reportImageView centerXAnchor];
+  contentView4 = [(_HKReportTableViewCell *)self contentView];
+  centerXAnchor2 = [contentView4 centerXAnchor];
+  v28 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v36[1] = v28;
-  v26 = [(UILabel *)self->_reportLabel topAnchor];
-  v25 = [(UIImageView *)self->_reportImageView bottomAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25 constant:30.0];
+  topAnchor3 = [(UILabel *)self->_reportLabel topAnchor];
+  bottomAnchor = [(UIImageView *)self->_reportImageView bottomAnchor];
+  v24 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:30.0];
   v36[2] = v24;
-  v11 = [(UILabel *)self->_reportLabel centerXAnchor];
-  v12 = [(_HKReportTableViewCell *)self contentView];
-  v13 = [v12 centerXAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  centerXAnchor3 = [(UILabel *)self->_reportLabel centerXAnchor];
+  contentView5 = [(_HKReportTableViewCell *)self contentView];
+  centerXAnchor4 = [contentView5 centerXAnchor];
+  v14 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v36[3] = v14;
-  v15 = [(UILabel *)self->_reportLabel bottomAnchor];
-  v16 = [(_HKReportTableViewCell *)self contentView];
-  v17 = [v16 bottomAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  bottomAnchor2 = [(UILabel *)self->_reportLabel bottomAnchor];
+  contentView6 = [(_HKReportTableViewCell *)self contentView];
+  bottomAnchor3 = [contentView6 bottomAnchor];
+  v18 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v36[4] = v18;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:5];
   [v27 activateConstraints:v19];
 
-  v20 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-  v21 = [(_HKReportTableViewCell *)self contentView];
-  [v21 setBackgroundColor:v20];
+  systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+  contentView7 = [(_HKReportTableViewCell *)self contentView];
+  [contentView7 setBackgroundColor:systemGroupedBackgroundColor];
 
-  v22 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-  v23 = [(_HKReportTableViewCell *)self backgroundView];
-  [v23 setBackgroundColor:v22];
+  systemGroupedBackgroundColor2 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+  backgroundView = [(_HKReportTableViewCell *)self backgroundView];
+  [backgroundView setBackgroundColor:systemGroupedBackgroundColor2];
 
   [(_HKReportTableViewCell *)self setSelectionStyle:0];
 }
 
-- (void)setReportName:(id)a3 reportImage:(id)a4
+- (void)setReportName:(id)name reportImage:(id)image
 {
   reportLabel = self->_reportLabel;
-  v7 = a4;
-  [(UILabel *)reportLabel setText:a3];
-  [(UIImageView *)self->_reportImageView setImage:v7];
+  imageCopy = image;
+  [(UILabel *)reportLabel setText:name];
+  [(UIImageView *)self->_reportImageView setImage:imageCopy];
 }
 
 @end

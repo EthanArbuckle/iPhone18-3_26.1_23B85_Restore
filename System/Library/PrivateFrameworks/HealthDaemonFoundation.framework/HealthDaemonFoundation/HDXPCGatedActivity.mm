@@ -1,56 +1,56 @@
 @interface HDXPCGatedActivity
 - (BOOL)shouldDefer;
 - (BOOL)waitingForTrigger;
-- (HDXPCGatedActivity)initWithName:(id)a3 criteria:(id)a4 loggingCategory:(id)a5 handler:(id)a6;
+- (HDXPCGatedActivity)initWithName:(id)name criteria:(id)criteria loggingCategory:(id)category handler:(id)handler;
 - (id)description;
-- (id)xpcActivity_copyCriteria:(id)a3;
-- (void)_activityFinishedWithResult:(int64_t)a3 error:(id)a4;
-- (void)_handleXPCActivityCallback:(id)a3;
+- (id)xpcActivity_copyCriteria:(id)criteria;
+- (void)_activityFinishedWithResult:(int64_t)result error:(id)error;
+- (void)_handleXPCActivityCallback:(id)callback;
 - (void)_lock_resetNextActivityFireDate;
-- (void)_lock_setNextScheduledFireDeadline:(double)a3;
-- (void)_performActivity:(id)a3 completion:(id)a4;
-- (void)_registerActivityWithCriteria:(id)a3;
-- (void)_registerActivityWithCriteria:(id)a3 delay:(double)a4 gracePeriod:(double)a5;
-- (void)_runRequestWithMaximumDelay:(double)a3 requiredDelay:(double)a4 completion:(id)a5;
-- (void)requestRunWithMaximumDelay:(double)a3 completion:(id)a4;
-- (void)setWaitingForTrigger:(BOOL)a3;
-- (void)unitTest_setActivityCompletion:(id)a3;
-- (void)unitTest_setActivityShim:(id)a3;
-- (void)xpcActivity_register:(const char *)a3 criteria:(id)a4 handler:(id)a5;
-- (void)xpcActivity_unregister:(const char *)a3;
+- (void)_lock_setNextScheduledFireDeadline:(double)deadline;
+- (void)_performActivity:(id)activity completion:(id)completion;
+- (void)_registerActivityWithCriteria:(id)criteria;
+- (void)_registerActivityWithCriteria:(id)criteria delay:(double)delay gracePeriod:(double)period;
+- (void)_runRequestWithMaximumDelay:(double)delay requiredDelay:(double)requiredDelay completion:(id)completion;
+- (void)requestRunWithMaximumDelay:(double)delay completion:(id)completion;
+- (void)setWaitingForTrigger:(BOOL)trigger;
+- (void)unitTest_setActivityCompletion:(id)completion;
+- (void)unitTest_setActivityShim:(id)shim;
+- (void)xpcActivity_register:(const char *)activity_register criteria:(id)criteria handler:(id)handler;
+- (void)xpcActivity_unregister:(const char *)activity_unregister;
 @end
 
 @implementation HDXPCGatedActivity
 
-- (HDXPCGatedActivity)initWithName:(id)a3 criteria:(id)a4 loggingCategory:(id)a5 handler:(id)a6
+- (HDXPCGatedActivity)initWithName:(id)name criteria:(id)criteria loggingCategory:(id)category handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  criteriaCopy = criteria;
+  categoryCopy = category;
+  handlerCopy = handler;
   v28.receiver = self;
   v28.super_class = HDXPCGatedActivity;
   v14 = [(HDXPCGatedActivity *)&v28 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [nameCopy copy];
     name = v14->_name;
     v14->_name = v15;
 
     v14->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v14->_loggingCategory, a5);
-    v17 = [v13 copy];
+    objc_storeStrong(&v14->_loggingCategory, category);
+    v17 = [handlerCopy copy];
     handler = v14->_handler;
     v14->_handler = v17;
 
-    v19 = xpc_copy(v11);
+    v19 = xpc_copy(criteriaCopy);
     p_criteria = &v14->_criteria;
     criteria = v14->_criteria;
     v14->_criteria = v19;
 
     objc_storeWeak(&v14->_activityShim, v14);
-    v22 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v22 doubleForKey:v14->_name];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults doubleForKey:v14->_name];
     v24 = v23;
 
     if (v24 <= 0.0)
@@ -91,11 +91,11 @@
   return v3;
 }
 
-- (void)setWaitingForTrigger:(BOOL)a3
+- (void)setWaitingForTrigger:(BOOL)trigger
 {
   v11 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
-  if (a3)
+  if (trigger)
   {
     nextScheduledFireDeadline = self->_nextScheduledFireDeadline;
     os_unfair_lock_unlock(&self->_lock);
@@ -106,7 +106,7 @@
       if (os_log_type_enabled(loggingCategory, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 138543362;
-        v10 = self;
+        selfCopy = self;
         _os_log_impl(&dword_25156C000, loggingCategory, OS_LOG_TYPE_DEFAULT, "%{public}@: Requesting implicit run by setting waitingForTrigger = YES.", &v9, 0xCu);
       }
 
@@ -156,9 +156,9 @@ LABEL_7:
   return v10;
 }
 
-- (void)requestRunWithMaximumDelay:(double)a3 completion:(id)a4
+- (void)requestRunWithMaximumDelay:(double)delay completion:(id)completion
 {
-  v9 = a4;
+  completionCopy = completion;
   quota = self->_quota;
   if (quota)
   {
@@ -171,20 +171,20 @@ LABEL_7:
     v8 = 0.0;
   }
 
-  [(HDXPCGatedActivity *)self _runRequestWithMaximumDelay:v9 requiredDelay:a3 completion:v8];
+  [(HDXPCGatedActivity *)self _runRequestWithMaximumDelay:completionCopy requiredDelay:delay completion:v8];
 }
 
-- (void)_runRequestWithMaximumDelay:(double)a3 requiredDelay:(double)a4 completion:(id)a5
+- (void)_runRequestWithMaximumDelay:(double)delay requiredDelay:(double)requiredDelay completion:(id)completion
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   nextScheduledFireDeadline = self->_nextScheduledFireDeadline;
   if (nextScheduledFireDeadline > 0.0)
   {
     if (self->_inProgress && self->_rescheduleWhileInProgress)
     {
-      v10 = CFAbsoluteTimeGetCurrent() + a3;
+      v10 = CFAbsoluteTimeGetCurrent() + delay;
       nextFireTime = self->_nextFireTime;
       if (nextFireTime == 0.0 || v10 < nextFireTime)
       {
@@ -201,7 +201,7 @@ LABEL_7:
         nextCompletions = self->_nextCompletions;
       }
 
-      v16 = [v8 copy];
+      v16 = [completionCopy copy];
       v17 = _Block_copy(v16);
       [(NSMutableArray *)nextCompletions addObject:v17];
 
@@ -210,7 +210,7 @@ LABEL_7:
       if (os_log_type_enabled(loggingCategory, OS_LOG_TYPE_DEFAULT))
       {
         v32 = 138543362;
-        v33 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_25156C000, loggingCategory, OS_LOG_TYPE_DEFAULT, "%{public}@: Run requested delayed because activity is already in progress.", &v32, 0xCu);
       }
 
@@ -220,23 +220,23 @@ LABEL_23:
     }
 
     v19 = nextScheduledFireDeadline - CFAbsoluteTimeGetCurrent();
-    if (v19 <= a3)
+    if (v19 <= delay)
     {
       _HKInitializeLogging();
       v27 = self->_loggingCategory;
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         v32 = 138543874;
-        v33 = self;
+        selfCopy3 = self;
         v34 = 2048;
-        v35 = a3;
+        delayCopy2 = delay;
         v36 = 2048;
-        v37 = v19;
+        requiredDelayCopy = v19;
         _os_log_impl(&dword_25156C000, v27, OS_LOG_TYPE_DEFAULT, "%{public}@: Run requested with delay %lf, but next fire date is in  %lf, no need to re-register.", &v32, 0x20u);
       }
 
       pendingCompletions = self->_pendingCompletions;
-      v29 = [v8 copy];
+      v29 = [completionCopy copy];
       v30 = _Block_copy(v29);
       [(NSMutableArray *)pendingCompletions addObject:v30];
 
@@ -244,17 +244,17 @@ LABEL_23:
     }
   }
 
-  [(HDXPCGatedActivity *)self _lock_setNextScheduledFireDeadline:CFAbsoluteTimeGetCurrent() + a3];
+  [(HDXPCGatedActivity *)self _lock_setNextScheduledFireDeadline:CFAbsoluteTimeGetCurrent() + delay];
   _HKInitializeLogging();
   v20 = self->_loggingCategory;
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     v32 = 138543874;
-    v33 = self;
+    selfCopy3 = self;
     v34 = 2048;
-    v35 = a3;
+    delayCopy2 = delay;
     v36 = 2048;
-    v37 = a4;
+    requiredDelayCopy = requiredDelay;
     _os_log_impl(&dword_25156C000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@: Requesting run with maximum delay %lf, required delay %lf", &v32, 0x20u);
   }
 
@@ -268,13 +268,13 @@ LABEL_23:
     v21 = self->_pendingCompletions;
   }
 
-  v24 = [v8 copy];
+  v24 = [completionCopy copy];
   v25 = _Block_copy(v24);
   [(NSMutableArray *)v21 addObject:v25];
 
   v26 = xpc_copy(self->_criteria);
   os_unfair_lock_unlock(&self->_lock);
-  [(HDXPCGatedActivity *)self _registerActivityWithCriteria:v26 delay:a4 gracePeriod:a3];
+  [(HDXPCGatedActivity *)self _registerActivityWithCriteria:v26 delay:requiredDelay gracePeriod:delay];
 
 LABEL_24:
   v31 = *MEMORY[0x277D85DE8];
@@ -282,11 +282,11 @@ LABEL_24:
 
 - (BOOL)shouldDefer
 {
-  v3 = [(HDXPCGatedActivity *)self currentActivity];
-  if (v3)
+  currentActivity = [(HDXPCGatedActivity *)self currentActivity];
+  if (currentActivity)
   {
     WeakRetained = objc_loadWeakRetained(&self->_activityShim);
-    v5 = [WeakRetained xpcActivity_shouldDefer:v3];
+    v5 = [WeakRetained xpcActivity_shouldDefer:currentActivity];
   }
 
   else
@@ -297,18 +297,18 @@ LABEL_24:
   return v5;
 }
 
-- (void)_registerActivityWithCriteria:(id)a3
+- (void)_registerActivityWithCriteria:(id)criteria
 {
-  v4 = a3;
+  criteriaCopy = criteria;
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_activityShim);
-  v6 = [(NSString *)self->_name UTF8String];
+  uTF8String = [(NSString *)self->_name UTF8String];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__HDXPCGatedActivity__registerActivityWithCriteria___block_invoke;
   v7[3] = &unk_2796BD8A0;
   objc_copyWeak(&v8, &location);
-  [WeakRetained xpcActivity_register:v6 criteria:v4 handler:v7];
+  [WeakRetained xpcActivity_register:uTF8String criteria:criteriaCopy handler:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -324,38 +324,38 @@ void __52__HDXPCGatedActivity__registerActivityWithCriteria___block_invoke(uint6
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)_registerActivityWithCriteria:(id)a3 delay:(double)a4 gracePeriod:(double)a5
+- (void)_registerActivityWithCriteria:(id)criteria delay:(double)delay gracePeriod:(double)period
 {
   v7 = *MEMORY[0x277D86250];
-  v8 = a4;
-  xdict = a3;
-  xpc_dictionary_set_int64(xdict, v7, v8);
-  xpc_dictionary_set_int64(xdict, *MEMORY[0x277D86270], a5);
+  delayCopy = delay;
+  xdict = criteria;
+  xpc_dictionary_set_int64(xdict, v7, delayCopy);
+  xpc_dictionary_set_int64(xdict, *MEMORY[0x277D86270], period);
   xpc_dictionary_set_BOOL(xdict, *MEMORY[0x277D86360], 0);
   [(HDXPCGatedActivity *)self _registerActivityWithCriteria:xdict];
 }
 
-- (void)_handleXPCActivityCallback:(id)a3
+- (void)_handleXPCActivityCallback:(id)callback
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  callbackCopy = callback;
   WeakRetained = objc_loadWeakRetained(&self->_activityShim);
-  v6 = [WeakRetained xpcActivity_getState:v4];
+  v6 = [WeakRetained xpcActivity_getState:callbackCopy];
 
   if (v6)
   {
-    v7 = [(HDXPCGatedActivity *)self waitingForTrigger];
+    waitingForTrigger = [(HDXPCGatedActivity *)self waitingForTrigger];
     _HKInitializeLogging();
     loggingCategory = self->_loggingCategory;
     v9 = os_log_type_enabled(loggingCategory, OS_LOG_TYPE_DEFAULT);
-    if (v7)
+    if (waitingForTrigger)
     {
       if (v9)
       {
         *buf = 138543618;
-        v25 = self;
+        selfCopy2 = self;
         v26 = 2114;
-        v27 = v4;
+        v27 = callbackCopy;
         _os_log_impl(&dword_25156C000, loggingCategory, OS_LOG_TYPE_DEFAULT, "%{public}@ fired with activity %{public}@", buf, 0x16u);
       }
 
@@ -364,7 +364,7 @@ void __52__HDXPCGatedActivity__registerActivityWithCriteria___block_invoke(uint6
       v22[2] = __49__HDXPCGatedActivity__handleXPCActivityCallback___block_invoke;
       v22[3] = &unk_2796BDDE8;
       v22[4] = self;
-      v23 = v4;
+      v23 = callbackCopy;
       [(HDXPCGatedActivity *)self _performActivity:v23 completion:v22];
     }
 
@@ -373,9 +373,9 @@ void __52__HDXPCGatedActivity__registerActivityWithCriteria___block_invoke(uint6
       if (v9)
       {
         *buf = 138543618;
-        v25 = self;
+        selfCopy2 = self;
         v26 = 2114;
-        v27 = v4;
+        v27 = callbackCopy;
         _os_log_impl(&dword_25156C000, loggingCategory, OS_LOG_TYPE_DEFAULT, "%{public}@ fired with activity %{public}@, but we're not currently waiting on a trigger.", buf, 0x16u);
       }
 
@@ -383,7 +383,7 @@ void __52__HDXPCGatedActivity__registerActivityWithCriteria___block_invoke(uint6
       [(HDXPCGatedActivity *)self _lock_resetNextActivityFireDate];
       os_unfair_lock_unlock(&self->_lock);
       v12 = objc_loadWeakRetained(&self->_activityShim);
-      v13 = [v12 xpcActivity_setCompletionStatus:0 activity:v4];
+      v13 = [v12 xpcActivity_setCompletionStatus:0 activity:callbackCopy];
 
       if ((v13 & 1) == 0)
       {
@@ -405,7 +405,7 @@ void __52__HDXPCGatedActivity__registerActivityWithCriteria___block_invoke(uint6
     {
       name = self->_name;
       *buf = 138543362;
-      v25 = name;
+      selfCopy2 = name;
       _os_log_impl(&dword_25156C000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Checked in for gated scheduling", buf, 0xCu);
     }
   }
@@ -582,10 +582,10 @@ LABEL_26:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performActivity:(id)a3 completion:(id)a4
+- (void)_performActivity:(id)activity completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  activityCopy = activity;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   pendingCompletions = self->_pendingCompletions;
   if (!pendingCompletions)
@@ -597,14 +597,14 @@ LABEL_26:
     pendingCompletions = self->_pendingCompletions;
   }
 
-  v12 = [v8 copy];
+  v12 = [completionCopy copy];
   v13 = _Block_copy(v12);
   [(NSMutableArray *)pendingCompletions addObject:v13];
 
   inProgress = self->_inProgress;
   if (!inProgress)
   {
-    objc_storeStrong(&self->_currentActivity, a3);
+    objc_storeStrong(&self->_currentActivity, activity);
     self->_inProgress = 1;
   }
 
@@ -612,7 +612,7 @@ LABEL_26:
   os_unfair_lock_unlock(&self->_lock);
   if (!inProgress)
   {
-    if (v7 && (WeakRetained = objc_loadWeakRetained(&self->_activityShim), v17 = [WeakRetained xpcActivity_setState:4 activity:v7], WeakRetained, (v17 & 1) == 0))
+    if (activityCopy && (WeakRetained = objc_loadWeakRetained(&self->_activityShim), v17 = [WeakRetained xpcActivity_setState:4 activity:activityCopy], WeakRetained, (v17 & 1) == 0))
     {
       _HKInitializeLogging();
       loggingCategory = self->_loggingCategory;
@@ -633,7 +633,7 @@ LABEL_26:
       v26[4] = self;
       v19 = v18;
       v27 = v19;
-      v15[2](v15, self, v7, v26);
+      v15[2](v15, self, activityCopy, v26);
       if (HDIsUnitTesting())
       {
         unitTest_ActivityCompletion = self->unitTest_ActivityCompletion;
@@ -654,10 +654,10 @@ uint64_t __50__HDXPCGatedActivity__performActivity_completion___block_invoke(uin
   return [v4 invalidate];
 }
 
-- (void)_activityFinishedWithResult:(int64_t)a3 error:(id)a4
+- (void)_activityFinishedWithResult:(int64_t)result error:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
   self->_inProgress = 0;
   v6 = self->_pendingCompletions;
@@ -702,69 +702,69 @@ uint64_t __50__HDXPCGatedActivity__performActivity_completion___block_invoke(uin
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_lock_setNextScheduledFireDeadline:(double)a3
+- (void)_lock_setNextScheduledFireDeadline:(double)deadline
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  self->_nextScheduledFireDeadline = a3;
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v5 setDouble:self->_name forKey:a3];
+  self->_nextScheduledFireDeadline = deadline;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setDouble:self->_name forKey:deadline];
 }
 
 - (void)_lock_resetNextActivityFireDate
 {
   os_unfair_lock_assert_owner(&self->_lock);
   self->_nextScheduledFireDeadline = 0.0;
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v3 removeObjectForKey:self->_name];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults removeObjectForKey:self->_name];
 }
 
-- (void)xpcActivity_register:(const char *)a3 criteria:(id)a4 handler:(id)a5
+- (void)xpcActivity_register:(const char *)activity_register criteria:(id)criteria handler:(id)handler
 {
-  criteria = a4;
-  v7 = a5;
+  criteria = criteria;
+  handlerCopy = handler;
   if ((HDIsUnitTesting() & 1) == 0)
   {
-    xpc_activity_register(a3, criteria, v7);
+    xpc_activity_register(activity_register, criteria, handlerCopy);
   }
 }
 
-- (void)xpcActivity_unregister:(const char *)a3
+- (void)xpcActivity_unregister:(const char *)activity_unregister
 {
   if ((HDIsUnitTesting() & 1) == 0)
   {
 
-    xpc_activity_unregister(a3);
+    xpc_activity_unregister(activity_unregister);
   }
 }
 
-- (id)xpcActivity_copyCriteria:(id)a3
+- (id)xpcActivity_copyCriteria:(id)criteria
 {
-  v3 = xpc_activity_copy_criteria(a3);
+  v3 = xpc_activity_copy_criteria(criteria);
 
   return v3;
 }
 
-- (void)unitTest_setActivityShim:(id)a3
+- (void)unitTest_setActivityShim:(id)shim
 {
-  v5 = a3;
+  shimCopy = shim;
   os_unfair_lock_lock(&self->_lock);
-  if (v5)
+  if (shimCopy)
   {
-    v4 = v5;
+    selfCopy = shimCopy;
   }
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  objc_storeWeak(&self->_activityShim, v4);
+  objc_storeWeak(&self->_activityShim, selfCopy);
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)unitTest_setActivityCompletion:(id)a3
+- (void)unitTest_setActivityCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   unitTest_ActivityCompletion = self->unitTest_ActivityCompletion;
   self->unitTest_ActivityCompletion = v4;
 

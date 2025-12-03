@@ -1,21 +1,21 @@
 @interface AppleEthernetPrivateRelayConfigurator
-- (void)setValuesForConfig:(id)a3 fromService:(__SCNetworkService *)a4;
-- (void)updateSettings:(id)a3 fromCurrentConfig:(id)a4 toNewConfig:(id)a5;
-- (void)updateSettingsFromCurrentConfig:(id)a3 toNewConfig:(id)a4 forService:(__SCNetworkService *)a5;
+- (void)setValuesForConfig:(id)config fromService:(__SCNetworkService *)service;
+- (void)updateSettings:(id)settings fromCurrentConfig:(id)config toNewConfig:(id)newConfig;
+- (void)updateSettingsFromCurrentConfig:(id)config toNewConfig:(id)newConfig forService:(__SCNetworkService *)service;
 @end
 
 @implementation AppleEthernetPrivateRelayConfigurator
 
-- (void)setValuesForConfig:(id)a3 fromService:(__SCNetworkService *)a4
+- (void)setValuesForConfig:(id)config fromService:(__SCNetworkService *)service
 {
-  v7 = a3;
-  v6 = [(AppleEthernetProtocolConfigurator *)self delegate];
-  LODWORD(a4) = [v6 getPrivateRelayDisabledForService:a4];
+  configCopy = config;
+  delegate = [(AppleEthernetProtocolConfigurator *)self delegate];
+  LODWORD(service) = [delegate getPrivateRelayDisabledForService:service];
 
-  [v7 setPrivacyProxyEnabled:a4 ^ 1];
+  [configCopy setPrivacyProxyEnabled:service ^ 1];
 }
 
-- (void)updateSettings:(id)a3 fromCurrentConfig:(id)a4 toNewConfig:(id)a5
+- (void)updateSettings:(id)settings fromCurrentConfig:(id)config toNewConfig:(id)newConfig
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
@@ -23,15 +23,15 @@
   }
 }
 
-- (void)updateSettingsFromCurrentConfig:(id)a3 toNewConfig:(id)a4 forService:(__SCNetworkService *)a5
+- (void)updateSettingsFromCurrentConfig:(id)config toNewConfig:(id)newConfig forService:(__SCNetworkService *)service
 {
-  v8 = a4;
-  LODWORD(a3) = [a3 privacyProxyEnabled];
-  if (a3 != [v8 privacyProxyEnabled])
+  newConfigCopy = newConfig;
+  LODWORD(config) = [config privacyProxyEnabled];
+  if (config != [newConfigCopy privacyProxyEnabled])
   {
-    v9 = [v8 privacyProxyEnabled] ^ 1;
-    v10 = [(AppleEthernetProtocolConfigurator *)self delegate];
-    v11 = [v10 setPrivateRelayDisabledForService:a5 withPrivateRelayDisabled:v9];
+    v9 = [newConfigCopy privacyProxyEnabled] ^ 1;
+    delegate = [(AppleEthernetProtocolConfigurator *)self delegate];
+    v11 = [delegate setPrivateRelayDisabledForService:service withPrivateRelayDisabled:v9];
 
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {

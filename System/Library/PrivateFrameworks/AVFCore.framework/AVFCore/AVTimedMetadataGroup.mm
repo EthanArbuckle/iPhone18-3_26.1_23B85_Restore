@@ -2,12 +2,12 @@
 - (AVTimedMetadataGroup)init;
 - (AVTimedMetadataGroup)initWithItems:(NSArray *)items timeRange:(CMTimeRange *)timeRange;
 - (AVTimedMetadataGroup)initWithSampleBuffer:(CMSampleBufferRef)sampleBuffer;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CMMetadataFormatDescriptionRef)copyFormatDescription;
 - (CMTimeRange)timeRange;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (opaqueCMSampleBuffer)_createSerializedRepresentationWithFormatDescription:(opaqueCMFormatDescription *)a3 error:(id *)a4;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (opaqueCMSampleBuffer)_createSerializedRepresentationWithFormatDescription:(opaqueCMFormatDescription *)description error:(id *)error;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -16,12 +16,12 @@
 
 - (AVTimedMetadataGroup)init
 {
-  v3 = [MEMORY[0x1E695DEC8] array];
+  array = [MEMORY[0x1E695DEC8] array];
   v4 = *(MEMORY[0x1E6960C98] + 16);
   v6[0] = *MEMORY[0x1E6960C98];
   v6[1] = v4;
   v6[2] = *(MEMORY[0x1E6960C98] + 32);
-  return [(AVTimedMetadataGroup *)self initWithItems:v3 timeRange:v6];
+  return [(AVTimedMetadataGroup *)self initWithItems:array timeRange:v6];
 }
 
 - (AVTimedMetadataGroup)initWithItems:(NSArray *)items timeRange:(CMTimeRange *)timeRange
@@ -57,7 +57,7 @@
 
 - (AVTimedMetadataGroup)initWithSampleBuffer:(CMSampleBufferRef)sampleBuffer
 {
-  v3 = self;
+  selfCopy = self;
   v25 = *MEMORY[0x1E69E9840];
   v4 = *(MEMORY[0x1E6960C98] + 16);
   *&v15.start.value = *MEMORY[0x1E6960C98];
@@ -70,10 +70,10 @@
 
   if (!self)
   {
-    return v3;
+    return selfCopy;
   }
 
-  v6 = [MEMORY[0x1E695DEC8] array];
+  array = [MEMORY[0x1E695DEC8] array];
   DataBuffer = CMSampleBufferGetDataBuffer(sampleBuffer);
   memset(&v19, 0, sizeof(v19));
   CMSampleBufferGetOutputPresentationTimeStamp(&v19, sampleBuffer);
@@ -84,7 +84,7 @@
     MetadataItemsFromSampleBuffer = FigMetadataCreateMetadataItemsFromSampleBuffer();
     v17 = v19;
     v16 = v18;
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     memset(duration, 0, sizeof(duration));
     v22 = 0u;
     v23 = 0u;
@@ -108,7 +108,7 @@
           [v13 setTime:&v20];
           v20 = v16;
           [v13 setDuration:&v20];
-          [v6 addObject:v13];
+          [array addObject:v13];
 
           ++v12;
         }
@@ -137,13 +137,13 @@ LABEL_16:
   }
 
   start[0] = v15;
-  v3 = [(AVTimedMetadataGroup *)v3 initWithItems:v6 timeRange:start];
-  if (v3)
+  selfCopy = [(AVTimedMetadataGroup *)selfCopy initWithItems:array timeRange:start];
+  if (selfCopy)
   {
-    v3->_priv->backingSBuf = CFRetain(sampleBuffer);
+    selfCopy->_priv->backingSBuf = CFRetain(sampleBuffer);
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -168,10 +168,10 @@ LABEL_16:
   [(AVTimedMetadataGroup *)&v5 dealloc];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [AVMutableTimedMetadataGroup allocWithZone:a3];
-  v5 = [(AVTimedMetadataGroup *)self items];
+  v4 = [AVMutableTimedMetadataGroup allocWithZone:zone];
+  items = [(AVTimedMetadataGroup *)self items];
   if (self)
   {
     [(AVTimedMetadataGroup *)self timeRange];
@@ -182,7 +182,7 @@ LABEL_16:
     memset(v7, 0, sizeof(v7));
   }
 
-  return [(AVMutableTimedMetadataGroup *)v4 initWithItems:v5 timeRange:v7];
+  return [(AVMutableTimedMetadataGroup *)v4 initWithItems:items timeRange:v7];
 }
 
 - (id)description
@@ -204,9 +204,9 @@ LABEL_16:
   return [v3 stringWithFormat:@"<%@: %p, timeRange=%@, items=%@>", v5, self, CMTimeRangeCopyDescription(v6, &range), -[AVTimedMetadataGroup items](self, "items")];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v10) = 1;
   }
@@ -215,7 +215,7 @@ LABEL_16:
   {
     v16 = v3;
     v17 = v4;
-    if (a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (equal && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v7 = 0uLL;
       memset(&v15, 0, sizeof(v15));
@@ -228,22 +228,22 @@ LABEL_16:
       *&v14.start.epoch = v7;
       *&v14.duration.timescale = v7;
       *&v14.start.value = v7;
-      [a3 timeRange];
-      v8 = [(AVTimedMetadataGroup *)self items];
-      v9 = [a3 items];
+      [equal timeRange];
+      items = [(AVTimedMetadataGroup *)self items];
+      items2 = [equal items];
       range1 = v15;
       v12 = v14;
       v10 = CMTimeRangeEqual(&range1, &v12);
       if (v10)
       {
-        if (v8 == v9)
+        if (items == items2)
         {
           LOBYTE(v10) = 1;
         }
 
         else
         {
-          LOBYTE(v10) = [(NSArray *)v8 isEqual:v9];
+          LOBYTE(v10) = [(NSArray *)items isEqual:items2];
         }
       }
     }
@@ -297,7 +297,7 @@ LABEL_16:
   return result;
 }
 
-- (opaqueCMSampleBuffer)_createSerializedRepresentationWithFormatDescription:(opaqueCMFormatDescription *)a3 error:(id *)a4
+- (opaqueCMSampleBuffer)_createSerializedRepresentationWithFormatDescription:(opaqueCMFormatDescription *)description error:(id *)error
 {
   v71 = *MEMORY[0x1E69E9840];
   backingSBuf = self->_priv->backingSBuf;
@@ -321,7 +321,7 @@ LABEL_16:
   [(AVTimedMetadataGroup *)self timeRange];
   cf = 0;
   v66 = 0;
-  if (!a3)
+  if (!description)
   {
     v9 = 0;
 LABEL_62:
@@ -336,8 +336,8 @@ LABEL_62:
     goto LABEL_41;
   }
 
-  formatDescription = a3;
-  v53 = a4;
+  formatDescription = description;
+  errorCopy = error;
   v63 = 0u;
   v64 = 0u;
   v61 = 0u;
@@ -372,34 +372,34 @@ LABEL_62:
       v15 = *(*(&v61 + 1) + 8 * v14);
       v69 = 0;
       v16 = FigBoxedMetadataGetFormatDescription();
-      v17 = [v15 identifier];
-      v18 = [v15 _serializationDataType];
-      v19 = [v15 extendedLanguageTag];
-      v20 = [v15 value];
-      if (!v17)
+      identifier = [v15 identifier];
+      _serializationDataType = [v15 _serializationDataType];
+      extendedLanguageTag = [v15 extendedLanguageTag];
+      value = [v15 value];
+      if (!identifier)
       {
         v32 = MEMORY[0x1E696AEC0];
         v33 = objc_opt_class();
         v34 = NSStringFromClass(v33);
-        v35 = [v32 stringWithFormat:@"Metadata item %p has no identifier.  If the item was given a key and key space, use +[%@ %@] to check whether an identifier can be made from that key and key space", v15, v34, NSStringFromSelector(aSelector)];
+        sampleSizeArray = [v32 stringWithFormat:@"Metadata item %p has no identifier.  If the item was given a key and key space, use +[%@ %@] to check whether an identifier can be made from that key and key space", v15, v34, NSStringFromSelector(aSelector)];
 LABEL_47:
-        v36 = v35;
+        v36 = sampleSizeArray;
 LABEL_49:
         v39 = AVErrorForClientProgrammingError([MEMORY[0x1E695DF30] exceptionWithName:v49 reason:v36 userInfo:0]);
-        a4 = v53;
+        error = errorCopy;
         goto LABEL_50;
       }
 
-      if (!v18)
+      if (!_serializationDataType)
       {
-        v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Metadata item %p has no data type", v15, v43, sampleSizeArray];
+        sampleSizeArray = [MEMORY[0x1E696AEC0] stringWithFormat:@"Metadata item %p has no data type", v15, v43, sampleSizeArray];
         goto LABEL_47;
       }
 
-      v21 = v20;
-      if (!v20)
+      v21 = value;
+      if (!value)
       {
-        v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Metadata item %p has no value", v15, v43, sampleSizeArray];
+        sampleSizeArray = [MEMORY[0x1E696AEC0] stringWithFormat:@"Metadata item %p has no value", v15, v43, sampleSizeArray];
         goto LABEL_47;
       }
 
@@ -407,7 +407,7 @@ LABEL_49:
       {
         v37 = objc_opt_class();
         v38 = NSStringFromClass(v37);
-        v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"No entry in format description %p for metadata item %p with identifier %@, data type %@ and extended language tag %@.  If you created this format description using -[%@ %@], make sure the instance of %@ used to create the format description contains a representative sample of metadata items which includes an item with the same combination of identifier, dataType, and extended language tag as this one", v16, v15, v17, v18, v19, v38, NSStringFromSelector(v46), v38];
+        v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"No entry in format description %p for metadata item %p with identifier %@, data type %@ and extended language tag %@.  If you created this format description using -[%@ %@], make sure the instance of %@ used to create the format description contains a representative sample of metadata items which includes an item with the same combination of identifier, dataType, and extended language tag as this one", v16, v15, identifier, _serializationDataType, extendedLanguageTag, v38, NSStringFromSelector(v46), v38];
         goto LABEL_49;
       }
 
@@ -419,7 +419,7 @@ LABEL_49:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 && AVCGPointFromNSValue(v21, v68))
       {
-        if (![(__CFString *)v18 isEqualToString:v51])
+        if (![(__CFString *)_serializationDataType isEqualToString:v51])
         {
           goto LABEL_59;
         }
@@ -431,7 +431,7 @@ LABEL_49:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 && AVCGRectFromNSValue(v21, &sampleTimingArray))
       {
-        if (![(__CFString *)v18 isEqualToString:v50])
+        if (![(__CFString *)_serializationDataType isEqualToString:v50])
         {
           goto LABEL_59;
         }
@@ -443,7 +443,7 @@ LABEL_49:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 && AVCGSizeFromNSValue(v21, &v67))
       {
-        if ([(__CFString *)v18 isEqualToString:v48])
+        if ([(__CFString *)_serializationDataType isEqualToString:v48])
         {
           appended = FigBoxedMetadataAppendCGSize();
 LABEL_29:
@@ -454,7 +454,7 @@ LABEL_29:
 LABEL_59:
         v40 = MEMORY[0x1E696AEC0];
         v41 = objc_opt_class();
-        v42 = [MEMORY[0x1E695DF30] exceptionWithName:v49 reason:objc_msgSend(v40 userInfo:{"stringWithFormat:", @"Value %@ of class %@ in metadata item %p is not compatible with base data type %@", v21, NSStringFromClass(v41), v15, v18), 0}];
+        v42 = [MEMORY[0x1E695DF30] exceptionWithName:v49 reason:objc_msgSend(v40 userInfo:{"stringWithFormat:", @"Value %@ of class %@ in metadata item %p is not compatible with base data type %@", v21, NSStringFromClass(v41), v15, _serializationDataType), 0}];
         v39 = AVErrorForClientProgrammingError(v42);
         v69 = v39;
 LABEL_50:
@@ -480,7 +480,7 @@ LABEL_32:
       {
         if (appended == -16328)
         {
-          BaseDataTypeForConformingDataType = CMMetadataDataTypeRegistryGetBaseDataTypeForConformingDataType(v18);
+          BaseDataTypeForConformingDataType = CMMetadataDataTypeRegistryGetBaseDataTypeForConformingDataType(_serializationDataType);
           v28 = MEMORY[0x1E696AEC0];
           v29 = objc_opt_class();
           v30 = [MEMORY[0x1E695DF30] exceptionWithName:v49 reason:objc_msgSend(v28 userInfo:{"stringWithFormat:", @"Value %@ of class %@ in metadata item %p is not compatible with base data type %@", v21, NSStringFromClass(v29), v15, BaseDataTypeForConformingDataType), 0}];
@@ -492,7 +492,7 @@ LABEL_32:
           v31 = AVLocalizedErrorWithUnderlyingOSStatus(appended, 0);
         }
 
-        a4 = v53;
+        error = errorCopy;
         v69 = v31;
         if (v31)
         {
@@ -557,11 +557,11 @@ LABEL_63:
   }
 
 LABEL_65:
-  if (a4)
+  if (error)
   {
     if (!result)
     {
-      *a4 = v9;
+      *error = v9;
     }
   }
 

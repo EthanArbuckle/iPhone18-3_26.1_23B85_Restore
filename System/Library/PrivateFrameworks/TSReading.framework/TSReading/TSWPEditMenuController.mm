@@ -2,14 +2,14 @@
 + (id)p_sharedEditMenuController;
 + (int)menuState;
 + (void)hideEditMenu;
-+ (void)showEditMenuAtTargetRect:(CGRect)a3 canCenterHUD:(BOOL)a4 interactiveCanvasController:(id)a5;
++ (void)showEditMenuAtTargetRect:(CGRect)rect canCenterHUD:(BOOL)d interactiveCanvasController:(id)controller;
 - (CGRect)targetRect;
 - (TSWPEditMenuController)init;
 - (UIView)targetView;
 - (void)dealloc;
 - (void)p_didAnimateKeyboard;
-- (void)p_setMenuVisible:(id)a3;
-- (void)setIsBeginningEditing:(BOOL)a3;
+- (void)p_setMenuVisible:(id)visible;
+- (void)setIsBeginningEditing:(BOOL)editing;
 @end
 
 @implementation TSWPEditMenuController
@@ -35,22 +35,22 @@ uint64_t __52__TSWPEditMenuController_p_sharedEditMenuController__block_invoke()
 
 + (int)menuState
 {
-  v2 = [a1 p_sharedEditMenuController];
-  v3 = v2[2];
+  p_sharedEditMenuController = [self p_sharedEditMenuController];
+  v3 = p_sharedEditMenuController[2];
 
   return v3;
 }
 
-+ (void)showEditMenuAtTargetRect:(CGRect)a3 canCenterHUD:(BOOL)a4 interactiveCanvasController:(id)a5
++ (void)showEditMenuAtTargetRect:(CGRect)rect canCenterHUD:(BOOL)d interactiveCanvasController:(id)controller
 {
-  v5 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v40 = a5;
-  v11 = [MEMORY[0x277D75718] sharedMenuController];
-  [v40 visibleBoundsRectClippedToWindow];
+  dCopy = d;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  mEMORY[0x277D75718] = [MEMORY[0x277D75718] sharedMenuController];
+  [controllerCopy visibleBoundsRectClippedToWindow];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -68,7 +68,7 @@ uint64_t __52__TSWPEditMenuController_p_sharedEditMenuController__block_invoke()
   v42 = v45.size.height;
   v20 = v45.origin.y;
   v21 = v45.size.width;
-  [v11 setArrowDirection:0];
+  [mEMORY[0x277D75718] setArrowDirection:0];
   v46.origin.x = v41;
   v46.size.height = v42;
   v46.origin.y = v20;
@@ -105,10 +105,10 @@ uint64_t __52__TSWPEditMenuController_p_sharedEditMenuController__block_invoke()
         v33 = 2;
       }
 
-      [v11 setArrowDirection:v33];
+      [mEMORY[0x277D75718] setArrowDirection:v33];
     }
 
-    else if (v5)
+    else if (dCopy)
     {
       v28.n128_f64[0] = TSDCenterOfRect(v41, v20, v21, v42);
       v29.n128_u64[0] = *MEMORY[0x277CBF3A8];
@@ -133,26 +133,26 @@ uint64_t __52__TSWPEditMenuController_p_sharedEditMenuController__block_invoke()
       v21 = 1.0;
     }
 
-    v34 = [v40 layerHost];
-    v35 = [v34 asiOSCVC];
+    layerHost = [controllerCopy layerHost];
+    asiOSCVC = [layerHost asiOSCVC];
 
-    v36 = [v35 extraMenuItems];
-    [v11 setMenuItems:v36];
+    extraMenuItems = [asiOSCVC extraMenuItems];
+    [mEMORY[0x277D75718] setMenuItems:extraMenuItems];
 
-    v37 = [v40 layerHost];
-    v38 = [v37 canvasView];
+    layerHost2 = [controllerCopy layerHost];
+    canvasView = [layerHost2 canvasView];
 
-    v39 = [a1 p_sharedEditMenuController];
-    [v39 setTargetRect:{v41, v20, v21, v42}];
-    [v39 setTargetView:v38];
-    [v39 p_setMenuVisible:MEMORY[0x277CBEC38]];
+    p_sharedEditMenuController = [self p_sharedEditMenuController];
+    [p_sharedEditMenuController setTargetRect:{v41, v20, v21, v42}];
+    [p_sharedEditMenuController setTargetView:canvasView];
+    [p_sharedEditMenuController p_setMenuVisible:MEMORY[0x277CBEC38]];
   }
 }
 
 + (void)hideEditMenu
 {
-  v2 = [a1 p_sharedEditMenuController];
-  [v2 p_setMenuVisible:MEMORY[0x277CBEC28]];
+  p_sharedEditMenuController = [self p_sharedEditMenuController];
+  [p_sharedEditMenuController p_setMenuVisible:MEMORY[0x277CBEC28]];
 }
 
 - (TSWPEditMenuController)init
@@ -162,11 +162,11 @@ uint64_t __52__TSWPEditMenuController_p_sharedEditMenuController__block_invoke()
   v2 = [(TSWPEditMenuController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_p_willShowMenu_ name:*MEMORY[0x277D76CC0] object:0];
-    [v3 addObserver:v2 selector:sel_p_didShowMenu_ name:*MEMORY[0x277D76CB0] object:0];
-    [v3 addObserver:v2 selector:sel_p_willHideMenu_ name:*MEMORY[0x277D76CB8] object:0];
-    [v3 addObserver:v2 selector:sel_p_didHideMenu_ name:*MEMORY[0x277D76CA8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_p_willShowMenu_ name:*MEMORY[0x277D76CC0] object:0];
+    [defaultCenter addObserver:v2 selector:sel_p_didShowMenu_ name:*MEMORY[0x277D76CB0] object:0];
+    [defaultCenter addObserver:v2 selector:sel_p_willHideMenu_ name:*MEMORY[0x277D76CB8] object:0];
+    [defaultCenter addObserver:v2 selector:sel_p_didHideMenu_ name:*MEMORY[0x277D76CA8] object:0];
     [TSKKeyboardMonitor addKeyboardObserver:v2];
   }
 
@@ -175,25 +175,25 @@ uint64_t __52__TSWPEditMenuController_p_sharedEditMenuController__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = TSWPEditMenuController;
   [(TSWPEditMenuController *)&v4 dealloc];
 }
 
-- (void)p_setMenuVisible:(id)a3
+- (void)p_setMenuVisible:(id)visible
 {
-  v7 = a3;
+  visibleCopy = visible;
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_p_setMenuVisible_ object:0];
   if ((self->_menuState | 2) == 3)
   {
-    [(TSWPEditMenuController *)self performSelector:sel_p_setMenuVisible_ withObject:v7 afterDelay:0.1];
+    [(TSWPEditMenuController *)self performSelector:sel_p_setMenuVisible_ withObject:visibleCopy afterDelay:0.1];
     goto LABEL_3;
   }
 
-  if (([v7 BOOLValue] & 1) == 0)
+  if (([visibleCopy BOOLValue] & 1) == 0)
   {
     self->_showMenuOnKeyboard = 0;
     if (!self->_menuState)
@@ -201,21 +201,21 @@ uint64_t __52__TSWPEditMenuController_p_sharedEditMenuController__block_invoke()
       goto LABEL_3;
     }
 
-    v5 = [MEMORY[0x277D75718] sharedMenuController];
-    [v5 hideMenu];
+    mEMORY[0x277D75718] = [MEMORY[0x277D75718] sharedMenuController];
+    [mEMORY[0x277D75718] hideMenu];
     goto LABEL_12;
   }
 
   if (self->_menuState != 2)
   {
-    v4 = [(TSWPEditMenuController *)self targetView];
+    targetView = [(TSWPEditMenuController *)self targetView];
 
-    if (v4)
+    if (targetView)
     {
-      v5 = [MEMORY[0x277D75718] sharedMenuController];
-      v6 = [(TSWPEditMenuController *)self targetView];
+      mEMORY[0x277D75718] = [MEMORY[0x277D75718] sharedMenuController];
+      targetView2 = [(TSWPEditMenuController *)self targetView];
       [(TSWPEditMenuController *)self targetRect];
-      [v5 showMenuFromView:v6 rect:?];
+      [mEMORY[0x277D75718] showMenuFromView:targetView2 rect:?];
 
 LABEL_12:
     }
@@ -233,12 +233,12 @@ LABEL_3:
   }
 }
 
-- (void)setIsBeginningEditing:(BOOL)a3
+- (void)setIsBeginningEditing:(BOOL)editing
 {
-  v3 = a3;
+  editingCopy = editing;
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_p_clearIsBeginningEditing object:0];
-  self->_isBeginningEditing = v3;
-  if (v3)
+  self->_isBeginningEditing = editingCopy;
+  if (editingCopy)
   {
 
     [(TSWPEditMenuController *)self performSelector:sel_p_clearIsBeginningEditing withObject:0 afterDelay:0.25];

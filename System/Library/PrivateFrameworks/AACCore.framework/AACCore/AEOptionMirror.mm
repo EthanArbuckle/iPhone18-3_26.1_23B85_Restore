@@ -1,29 +1,29 @@
 @interface AEOptionMirror
-+ (id)flippedOptionMapWithMap:(uint64_t)a1;
-+ (uint64_t)clearMaskWithNumbers:(uint64_t)a1;
-+ (uint64_t)destinationOptionsFromSource:(void *)a3 destinationOptionsBySource:;
-- (AEOptionMirror)initWithMirroredOptions:(id)a3;
++ (id)flippedOptionMapWithMap:(uint64_t)map;
++ (uint64_t)clearMaskWithNumbers:(uint64_t)numbers;
++ (uint64_t)destinationOptionsFromSource:(void *)source destinationOptionsBySource:;
+- (AEOptionMirror)initWithMirroredOptions:(id)options;
 - (int64_t)leftClearMask;
-- (int64_t)leftOptionsFromRight:(int64_t)a3;
+- (int64_t)leftOptionsFromRight:(int64_t)right;
 - (int64_t)rightClearMask;
-- (int64_t)rightOptionsFromLeft:(int64_t)a3;
+- (int64_t)rightOptionsFromLeft:(int64_t)left;
 @end
 
 @implementation AEOptionMirror
 
-- (AEOptionMirror)initWithMirroredOptions:(id)a3
+- (AEOptionMirror)initWithMirroredOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v11.receiver = self;
   v11.super_class = AEOptionMirror;
   v5 = [(AEOptionMirror *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [optionsCopy copy];
     rightOptionsByLeft = v5->_rightOptionsByLeft;
     v5->_rightOptionsByLeft = v6;
 
-    v8 = [AEOptionMirror flippedOptionMapWithMap:v4];
+    v8 = [AEOptionMirror flippedOptionMapWithMap:optionsCopy];
     leftOptionsByRight = v5->_leftOptionsByRight;
     v5->_leftOptionsByRight = v8;
   }
@@ -31,7 +31,7 @@
   return v5;
 }
 
-+ (id)flippedOptionMapWithMap:(uint64_t)a1
++ (id)flippedOptionMapWithMap:(uint64_t)map
 {
   v2 = a2;
   objc_opt_self();
@@ -48,9 +48,9 @@
   return v4;
 }
 
-+ (uint64_t)destinationOptionsFromSource:(void *)a3 destinationOptionsBySource:
++ (uint64_t)destinationOptionsFromSource:(void *)source destinationOptionsBySource:
 {
-  v4 = a3;
+  sourceCopy = source;
   objc_opt_self();
   if (a2 < 1)
   {
@@ -66,7 +66,7 @@
       if ((a2 & v6) != 0)
       {
         v7 = [MEMORY[0x277CCABB0] numberWithInteger:a2 & v6];
-        v8 = [v4 objectForKeyedSubscript:v7];
+        v8 = [sourceCopy objectForKeyedSubscript:v7];
         v5 |= [v8 integerValue];
       }
 
@@ -80,7 +80,7 @@
   return v5;
 }
 
-+ (uint64_t)clearMaskWithNumbers:(uint64_t)a1
++ (uint64_t)clearMaskWithNumbers:(uint64_t)numbers
 {
   v17 = *MEMORY[0x277D85DE8];
   v2 = a2;
@@ -126,29 +126,29 @@
   return v9;
 }
 
-- (int64_t)leftOptionsFromRight:(int64_t)a3
+- (int64_t)leftOptionsFromRight:(int64_t)right
 {
   if (self)
   {
-    return [AEOptionMirror destinationOptionsFromSource:a3 destinationOptionsBySource:self->_leftOptionsByRight];
+    return [AEOptionMirror destinationOptionsFromSource:right destinationOptionsBySource:self->_leftOptionsByRight];
   }
 
   else
   {
-    return OUTLINED_FUNCTION_0_2(AEOptionMirror, a3);
+    return OUTLINED_FUNCTION_0_2(AEOptionMirror, right);
   }
 }
 
-- (int64_t)rightOptionsFromLeft:(int64_t)a3
+- (int64_t)rightOptionsFromLeft:(int64_t)left
 {
   if (self)
   {
-    return [AEOptionMirror destinationOptionsFromSource:a3 destinationOptionsBySource:self->_rightOptionsByLeft];
+    return [AEOptionMirror destinationOptionsFromSource:left destinationOptionsBySource:self->_rightOptionsByLeft];
   }
 
   else
   {
-    return OUTLINED_FUNCTION_0_2(AEOptionMirror, a3);
+    return OUTLINED_FUNCTION_0_2(AEOptionMirror, left);
   }
 }
 
@@ -159,8 +159,8 @@
     self = self->_leftOptionsByRight;
   }
 
-  v2 = [(AEOptionMirror *)self allValues];
-  v3 = [AEOptionMirror clearMaskWithNumbers:v2];
+  allValues = [(AEOptionMirror *)self allValues];
+  v3 = [AEOptionMirror clearMaskWithNumbers:allValues];
 
   return v3;
 }
@@ -172,8 +172,8 @@
     self = self->_rightOptionsByLeft;
   }
 
-  v2 = [(AEOptionMirror *)self allValues];
-  v3 = [AEOptionMirror clearMaskWithNumbers:v2];
+  allValues = [(AEOptionMirror *)self allValues];
+  v3 = [AEOptionMirror clearMaskWithNumbers:allValues];
 
   return v3;
 }

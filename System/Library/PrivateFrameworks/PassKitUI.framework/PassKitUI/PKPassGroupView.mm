@@ -1,16 +1,16 @@
 @interface PKPassGroupView
-- (BOOL)_shouldAnimatePropertyAdditivelyWithKey:(id)a3;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (BOOL)gestureCollector:(id)a3 recognizerShouldBegin:(id)a4;
-- (BOOL)overridePageControlAlpha:(double)a3;
-- (BOOL)overrideShadowAlpha:(double)a3;
-- (BOOL)pageControlAlphaOverrideMatchesPredicate:(id)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGPoint)_fanningPositionForCardView:(id)a3 atStackIndex:(unint64_t)a4 withSelectedFrame:(CGRect)a5;
-- (CGPoint)_stackingPositionForCardView:(id)a3 atStackIndex:(unint64_t)a4 withSeparation:(BOOL)a5;
-- (CGRect)_pagingFrameForCardView:(id)a3 atIndex:(unint64_t)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPassGroupView)initWithGroup:(id)a3 delegate:(id)a4 presentationState:(int64_t)a5;
+- (BOOL)_shouldAnimatePropertyAdditivelyWithKey:(id)key;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (BOOL)gestureCollector:(id)collector recognizerShouldBegin:(id)begin;
+- (BOOL)overridePageControlAlpha:(double)alpha;
+- (BOOL)overrideShadowAlpha:(double)alpha;
+- (BOOL)pageControlAlphaOverrideMatchesPredicate:(id)predicate;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGPoint)_fanningPositionForCardView:(id)view atStackIndex:(unint64_t)index withSelectedFrame:(CGRect)frame;
+- (CGPoint)_stackingPositionForCardView:(id)view atStackIndex:(unint64_t)index withSeparation:(BOOL)separation;
+- (CGRect)_pagingFrameForCardView:(id)view atIndex:(unint64_t)index;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPassGroupView)initWithGroup:(id)group delegate:(id)delegate presentationState:(int64_t)state;
 - (PKPassGroupViewDelegate)delegate;
 - (PKPassViewGestureCollector)gestureCollector;
 - (PKReusablePassViewQueue)passViewQueue;
@@ -19,79 +19,79 @@
 - (_NSRange)_rangeOfFannedIndices;
 - (_NSRange)_rangeOfPagingIndices;
 - (_NSRange)_rangeOfVisibleIndices;
-- (id)_loadCardViewForIndex:(unint64_t)a3 contentMode:(int64_t)a4;
+- (id)_loadCardViewForIndex:(unint64_t)index contentMode:(int64_t)mode;
 - (id)_observers;
 - (id)beginSuppressingPageControl;
 - (id)createExternalTapGestureRecognizer;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)passViewForIndex:(unint64_t)a3;
-- (int64_t)_defaultContentModeForIndex:(unint64_t)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)passViewForIndex:(unint64_t)index;
+- (int64_t)_defaultContentModeForIndex:(unint64_t)index;
 - (void)_addPanAndLongPressGestureRecognizers;
-- (void)_applyContentMode:(int64_t)a3 toPassView:(id)a4 animated:(BOOL)a5;
+- (void)_applyContentMode:(int64_t)mode toPassView:(id)view animated:(BOOL)animated;
 - (void)_endTrackingAnimation;
-- (void)_enumerateIndicesInFannedOrderWithHandler:(id)a3;
-- (void)_enumerateIndicesInStackOrderWithHandler:(id)a3;
-- (void)_enumeratePassViewsInStackOrderWithHandler:(id)a3;
+- (void)_enumerateIndicesInFannedOrderWithHandler:(id)handler;
+- (void)_enumerateIndicesInStackOrderWithHandler:(id)handler;
+- (void)_enumeratePassViewsInStackOrderWithHandler:(id)handler;
 - (void)_groupViewTapped;
-- (void)_handlePanGesture:(id)a3;
-- (void)_handlePress:(id)a3;
+- (void)_handlePanGesture:(id)gesture;
+- (void)_handlePress:(id)press;
 - (void)_layoutFan;
 - (void)_layoutPages;
 - (void)_layoutStack;
-- (void)_pageControlChanged:(id)a3;
-- (void)_preventLayoutForAction:(id)a3;
+- (void)_pageControlChanged:(id)changed;
+- (void)_preventLayoutForAction:(id)action;
 - (void)_removeDelayedAnimations;
 - (void)_removePageControl;
 - (void)_updateCachedGroupState;
 - (void)_updateCachedLayoutState;
 - (void)_updateDelegateResponderCache;
 - (void)_updateFrontmostPassViewIfNecessary;
-- (void)_updateLoadedViews:(BOOL)a3;
-- (void)_updatePageControlFrameAnimated:(BOOL)a3;
-- (void)_updatePageControlVisibilityAnimated:(BOOL)a3 withDelay:(double)a4;
+- (void)_updateLoadedViews:(BOOL)views;
+- (void)_updatePageControlFrameAnimated:(BOOL)animated;
+- (void)_updatePageControlVisibilityAnimated:(BOOL)animated withDelay:(double)delay;
 - (void)_updatePageControlWithDisplayIndex;
 - (void)_updatePausedState;
-- (void)addPassGroupViewObserver:(id)a3;
-- (void)applyContentModesAnimated:(BOOL)a3;
+- (void)addPassGroupViewObserver:(id)observer;
+- (void)applyContentModesAnimated:(BOOL)animated;
 - (void)clearPageControlAlphaOverride;
 - (void)clearShadowAlphaOverride;
 - (void)dealloc;
-- (void)deleteButtonPressedFromSourceView:(id)a3;
+- (void)deleteButtonPressedFromSourceView:(id)view;
 - (void)didMoveToSuperview;
-- (void)dismissBackOfPassIfNecessaryForUniqueID:(id)a3;
+- (void)dismissBackOfPassIfNecessaryForUniqueID:(id)d;
 - (void)endPinningFrontFaceContentMode;
-- (void)faceFrameDidChangeForPassView:(id)a3;
-- (void)group:(id)a3 didInsertPass:(id)a4 withState:(id)a5 atIndex:(unint64_t)a6;
-- (void)group:(id)a3 didMovePassFromIndex:(unint64_t)a4 toIndex:(unint64_t)a5;
-- (void)group:(id)a3 didRemovePass:(id)a4 atIndex:(unint64_t)a5;
-- (void)group:(id)a3 didUpdatePass:(id)a4 withState:(id)a5 atIndex:(unint64_t)a6;
-- (void)group:(id)a3 didUpdatePassState:(id)a4 forPass:(id)a5 atIndex:(unint64_t)a6;
+- (void)faceFrameDidChangeForPassView:(id)view;
+- (void)group:(id)group didInsertPass:(id)pass withState:(id)state atIndex:(unint64_t)index;
+- (void)group:(id)group didMovePassFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (void)group:(id)group didRemovePass:(id)pass atIndex:(unint64_t)index;
+- (void)group:(id)group didUpdatePass:(id)pass withState:(id)state atIndex:(unint64_t)index;
+- (void)group:(id)group didUpdatePassState:(id)state forPass:(id)pass atIndex:(unint64_t)index;
 - (void)invalidate;
 - (void)layoutSubviews;
-- (void)layoutSubviewsAnimated:(BOOL)a3;
+- (void)layoutSubviewsAnimated:(BOOL)animated;
 - (void)markGroupDeleted;
-- (void)passViewDidResize:(id)a3 animated:(BOOL)a4;
-- (void)passViewExpandButtonTapped:(id)a3;
-- (void)presentDiff:(id)a3 completion:(id)a4;
-- (void)presentPassWithUniqueID:(id)a3 withContext:(id)a4 animated:(BOOL)a5;
-- (void)removePassGroupViewObserver:(id)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setBlurRadius:(double)a3;
-- (void)setDimmer:(double)a3 animated:(BOOL)a4;
-- (void)setFrontmostPassView:(id)a3 withContext:(id)a4 animated:(BOOL)a5;
-- (void)setFrontmostPassViewFromPassIndex:(int64_t)a3 withContext:(id)a4 animated:(BOOL)a5;
-- (void)setGestureCollector:(id)a3;
-- (void)setLoaned:(BOOL)a3;
-- (void)setModallyPresented:(BOOL)a3;
-- (void)setPassViewExpanded:(BOOL)a3 forPass:(id)a4 animated:(BOOL)a5;
-- (void)setPaused:(BOOL)a3;
-- (void)setPresentationState:(int64_t)a3 withContext:(id)a4 animated:(BOOL)a5;
+- (void)passViewDidResize:(id)resize animated:(BOOL)animated;
+- (void)passViewExpandButtonTapped:(id)tapped;
+- (void)presentDiff:(id)diff completion:(id)completion;
+- (void)presentPassWithUniqueID:(id)d withContext:(id)context animated:(BOOL)animated;
+- (void)removePassGroupViewObserver:(id)observer;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setBlurRadius:(double)radius;
+- (void)setDimmer:(double)dimmer animated:(BOOL)animated;
+- (void)setFrontmostPassView:(id)view withContext:(id)context animated:(BOOL)animated;
+- (void)setFrontmostPassViewFromPassIndex:(int64_t)index withContext:(id)context animated:(BOOL)animated;
+- (void)setGestureCollector:(id)collector;
+- (void)setLoaned:(BOOL)loaned;
+- (void)setModallyPresented:(BOOL)presented;
+- (void)setPassViewExpanded:(BOOL)expanded forPass:(id)pass animated:(BOOL)animated;
+- (void)setPaused:(BOOL)paused;
+- (void)setPresentationState:(int64_t)state withContext:(id)context animated:(BOOL)animated;
 - (void)sizeToFit;
-- (void)updatePageControlFrameAnimated:(BOOL)a3;
-- (void)updateToStackWithProgress:(double)a3 originalPosition:(CGPoint)a4;
+- (void)updatePageControlFrameAnimated:(BOOL)animated;
+- (void)updateToStackWithProgress:(double)progress originalPosition:(CGPoint)position;
 @end
 
 @implementation PKPassGroupView
@@ -258,26 +258,26 @@
 {
   p_layoutState = &self->_layoutState;
   self->_layoutState.numberOfPasses = [(PKGroup *)self->_group passCount];
-  v4 = [(PKGroup *)self->_group frontmostPassIndex];
+  frontmostPassIndex = [(PKGroup *)self->_group frontmostPassIndex];
   numberOfPasses = self->_layoutState.numberOfPasses;
   v6 = numberOfPasses != 0;
   v7 = numberOfPasses - 1;
   if (v6)
   {
-    v8 = v7;
+    frontmostPassIndex2 = v7;
   }
 
   else
   {
-    v8 = 0;
+    frontmostPassIndex2 = 0;
   }
 
-  if (v4 < v8)
+  if (frontmostPassIndex < frontmostPassIndex2)
   {
-    v8 = [(PKGroup *)self->_group frontmostPassIndex];
+    frontmostPassIndex2 = [(PKGroup *)self->_group frontmostPassIndex];
   }
 
-  p_layoutState->selectedIndex = v8;
+  p_layoutState->selectedIndex = frontmostPassIndex2;
 }
 
 - (void)sizeToFit
@@ -298,9 +298,9 @@
 
 - (void)_removePageControl
 {
-  v3 = [(UIPageControl *)self->_pageControl superview];
+  superview = [(UIPageControl *)self->_pageControl superview];
 
-  if (v3)
+  if (superview)
   {
     [(UIPageControl *)self->_pageControl removeFromSuperview];
     v5[0] = MEMORY[0x1E69E9820];
@@ -309,9 +309,9 @@
     v5[3] = &unk_1E8010970;
     v5[4] = self;
     [MEMORY[0x1E69DD250] performWithoutAnimation:v5];
-    v4 = [(UIPageControl *)self->_pageControl layer];
-    [v4 removeAllAnimations];
-    [v4 clearHasBeenCommitted];
+    layer = [(UIPageControl *)self->_pageControl layer];
+    [layer removeAllAnimations];
+    [layer clearHasBeenCommitted];
     *&self->_layoutState &= 0x9Fu;
   }
 }
@@ -321,14 +321,14 @@
   v12.receiver = self;
   v12.super_class = PKPassGroupView;
   [(PKPassGroupView *)&v12 didMoveToSuperview];
-  v3 = [(PKPassGroupView *)self superview];
-  if (v3)
+  superview = [(PKPassGroupView *)self superview];
+  if (superview)
   {
-    v4 = [(UIPageControl *)self->_pageControl superview];
-    v5 = v4;
-    if (v4)
+    superview2 = [(UIPageControl *)self->_pageControl superview];
+    v5 = superview2;
+    if (superview2)
     {
-      v6 = v4 == v3;
+      v6 = superview2 == superview;
     }
 
     else
@@ -339,10 +339,10 @@
     if (!v6)
     {
       [(UIPageControl *)self->_pageControl center];
-      [v5 convertPoint:v3 toView:?];
+      [v5 convertPoint:superview toView:?];
       v8 = v7;
       v10 = v9;
-      [v3 insertSubview:self->_pageControl atIndex:0];
+      [superview insertSubview:self->_pageControl atIndex:0];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __37__PKPassGroupView_didMoveToSuperview__block_invoke;
@@ -440,9 +440,9 @@
     [(UIScrollView *)self->_horizontalScrollView contentSize];
     v17 = v16;
     v19 = v18;
-    v20 = [(PKPassGroupView *)self frontmostPassView];
-    [v20 sizeToFit];
-    [v20 sizeOfFront];
+    frontmostPassView = [(PKPassGroupView *)self frontmostPassView];
+    [frontmostPassView sizeToFit];
+    [frontmostPassView sizeOfFront];
     v22 = v21;
     [(UIScrollView *)self->_horizontalScrollView frame];
     v43.origin.x = v7;
@@ -456,8 +456,8 @@
 
     [(PKPassGroupView *)self _updateCachedLayoutState];
     v23 = self->_layoutState.bounds.size.width * self->_layoutState.numberOfPasses;
-    v24 = [(UIScrollView *)self->_horizontalScrollView isScrollAnimating];
-    if (v24)
+    isScrollAnimating = [(UIScrollView *)self->_horizontalScrollView isScrollAnimating];
+    if (isScrollAnimating)
     {
       v25 = v17;
     }
@@ -467,7 +467,7 @@
       v25 = v23;
     }
 
-    if (v24)
+    if (isScrollAnimating)
     {
       v26 = v19;
     }
@@ -502,7 +502,7 @@
     {
       if ([(PKGroup *)self->_group passCount]>= 2)
       {
-        v29 = [(UIScrollView *)self->_horizontalScrollView layer];
+        layer = [(UIScrollView *)self->_horizontalScrollView layer];
         v30 = *(MEMORY[0x1E69792E8] + 48);
         v35[2] = *(MEMORY[0x1E69792E8] + 32);
         v35[3] = v30;
@@ -516,7 +516,7 @@
         v33 = *(MEMORY[0x1E69792E8] + 112);
         v38 = *(MEMORY[0x1E69792E8] + 96);
         v39 = v33;
-        [v29 setSublayerTransform:v35];
+        [layer setSublayerTransform:v35];
       }
 
       presentationState = self->_presentationState;
@@ -591,7 +591,7 @@
   v11 = x + v10 - v7;
   [(UIScrollView *)self->_horizontalScrollView setContentOffset:0 animated:v10, 0.0];
   v12 = self->_presentationState == 2;
-  v13 = [(PKPassGroupView *)self _rangeOfVisibleIndices];
+  _rangeOfVisibleIndices = [(PKPassGroupView *)self _rangeOfVisibleIndices];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __31__PKPassGroupView__layoutStack__block_invoke;
@@ -601,7 +601,7 @@
   *&v15[6] = y + 0.0 - v9;
   v16 = v12;
   v17 = v4;
-  v15[7] = v13;
+  v15[7] = _rangeOfVisibleIndices;
   v15[8] = v14;
   [(PKPassGroupView *)self _enumeratePassViewsInStackOrderWithHandler:v15];
 }
@@ -677,10 +677,10 @@ void __31__PKPassGroupView__layoutStack__block_invoke(uint64_t a1, void *a2, uni
   }
 }
 
-- (PKPassGroupView)initWithGroup:(id)a3 delegate:(id)a4 presentationState:(int64_t)a5
+- (PKPassGroupView)initWithGroup:(id)group delegate:(id)delegate presentationState:(int64_t)state
 {
-  v9 = a3;
-  v10 = a4;
+  groupCopy = group;
+  delegateCopy = delegate;
   v29.receiver = self;
   v29.super_class = PKPassGroupView;
   v11 = *MEMORY[0x1E695F058];
@@ -692,14 +692,14 @@ void __31__PKPassGroupView__layoutStack__block_invoke(uint64_t a1, void *a2, uni
   {
     v16 = objc_autoreleasePoolPush();
     v15->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v15->_delegate, v10);
+    objc_storeWeak(&v15->_delegate, delegateCopy);
     v15->_hitTestEnabled = 1;
     v15->_modalReferenceScale = 1.0;
     [(PKPassGroupView *)v15 _updateDelegateResponderCache];
-    v17 = [(PKPassGroupView *)v15 layer];
-    [v17 setAnchorPoint:{0.5, 0.0}];
-    [v17 setMasksToBounds:0];
-    v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v9, "passCount")}];
+    layer = [(PKPassGroupView *)v15 layer];
+    [layer setAnchorPoint:{0.5, 0.0}];
+    [layer setMasksToBounds:0];
+    v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(groupCopy, "passCount")}];
     passViewsByUniqueID = v15->_passViewsByUniqueID;
     v15->_passViewsByUniqueID = v18;
 
@@ -707,10 +707,10 @@ void __31__PKPassGroupView__layoutStack__block_invoke(uint64_t a1, void *a2, uni
     delayedAnimations = v15->_delayedAnimations;
     v15->_delayedAnimations = v20;
 
-    v22 = [v10 groupViewReusablePassViewQueue:v15];
+    v22 = [delegateCopy groupViewReusablePassViewQueue:v15];
     objc_storeWeak(&v15->_passViewQueue, v22);
 
-    objc_storeStrong(&v15->_group, a3);
+    objc_storeStrong(&v15->_group, group);
     [(PKGroup *)v15->_group addGroupObserver:v15];
     v23 = objc_alloc(MEMORY[0x1E69DCEF8]);
     [(PKPassGroupView *)v15 bounds];
@@ -734,7 +734,7 @@ void __31__PKPassGroupView__layoutStack__block_invoke(uint64_t a1, void *a2, uni
     [(UIPageControl *)v15->_pageControl setAnchorPoint:0.5, 0.0];
     [(UIPageControl *)v15->_pageControl setAlpha:0.0];
     [(UIPageControl *)v15->_pageControl setAutoresizingMask:0];
-    v15->_presentationState = a5;
+    v15->_presentationState = state;
     [(PKPassGroupView *)v15 _addPanAndLongPressGestureRecognizers];
     [(PKPassGroupView *)v15 _updateCachedLayoutState];
     [(PKPassGroupView *)v15 setFrontmostPassViewFromPassIndex:v15->_layoutState.selectedIndex];
@@ -762,10 +762,10 @@ void __31__PKPassGroupView__layoutStack__block_invoke(uint64_t a1, void *a2, uni
   [(PKPassGroupView *)&v3 dealloc];
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"filters.gaussianBlur.inputRadius"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"filters.gaussianBlur.inputRadius"])
   {
     v5 = 1;
   }
@@ -774,16 +774,16 @@ void __31__PKPassGroupView__layoutStack__block_invoke(uint64_t a1, void *a2, uni
   {
     v7.receiver = self;
     v7.super_class = PKPassGroupView;
-    v5 = [(PKPassGroupView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(PKPassGroupView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
 }
 
-- (BOOL)_shouldAnimatePropertyAdditivelyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyAdditivelyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"filters.gaussianBlur.inputRadius"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"filters.gaussianBlur.inputRadius"])
   {
     v5 = 1;
   }
@@ -792,15 +792,15 @@ void __31__PKPassGroupView__layoutStack__block_invoke(uint64_t a1, void *a2, uni
   {
     v7.receiver = self;
     v7.super_class = PKPassGroupView;
-    v5 = [(PKPassGroupView *)&v7 _shouldAnimatePropertyAdditivelyWithKey:v4];
+    v5 = [(PKPassGroupView *)&v7 _shouldAnimatePropertyAdditivelyWithKey:keyCopy];
   }
 
   return v5;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKPassView *)self->_frontmostPassView sizeThatFits:a3.width, a3.height];
+  [(PKPassView *)self->_frontmostPassView sizeThatFits:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
   if ([(PKPassGroupView *)self _willShowPageControl])
@@ -818,12 +818,12 @@ void __31__PKPassGroupView__layoutStack__block_invoke(uint64_t a1, void *a2, uni
 
 - (UIEdgeInsets)alignmentRectInsets
 {
-  v3 = [(PKPassGroupView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(PKPassGroupView *)self _shouldReverseLayoutDirection];
   PKFloatRoundToPixel();
   v5 = v4;
-  v6 = [(PKPassGroupView *)self _willShowPageControl];
+  _willShowPageControl = [(PKPassGroupView *)self _willShowPageControl];
   v7 = 0.0;
-  if (v6)
+  if (_willShowPageControl)
   {
     v8 = 12.0;
   }
@@ -833,7 +833,7 @@ void __31__PKPassGroupView__layoutStack__block_invoke(uint64_t a1, void *a2, uni
     v8 = 0.0;
   }
 
-  if (v3)
+  if (_shouldReverseLayoutDirection)
   {
     v9 = 8.0 - v5;
   }
@@ -843,7 +843,7 @@ void __31__PKPassGroupView__layoutStack__block_invoke(uint64_t a1, void *a2, uni
     v9 = v5;
   }
 
-  if (v3)
+  if (_shouldReverseLayoutDirection)
   {
     v10 = v5;
   }
@@ -860,27 +860,27 @@ void __31__PKPassGroupView__layoutStack__block_invoke(uint64_t a1, void *a2, uni
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   v12.receiver = self;
   v12.super_class = PKPassGroupView;
-  if ([(PKPassGroupView *)&v12 pointInside:v7 withEvent:x, y])
+  if ([(PKPassGroupView *)&v12 pointInside:eventCopy withEvent:x, y])
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [(UIPageControl *)self->_pageControl superview];
+    superview = [(UIPageControl *)self->_pageControl superview];
 
-    if (v9)
+    if (superview)
     {
       pageControl = self->_pageControl;
       [(UIPageControl *)pageControl convertPoint:self fromView:x, y];
-      v8 = [(UIPageControl *)pageControl pointInside:v7 withEvent:?];
+      v8 = [(UIPageControl *)pageControl pointInside:eventCopy withEvent:?];
     }
 
     else
@@ -892,25 +892,25 @@ void __31__PKPassGroupView__layoutStack__block_invoke(uint64_t a1, void *a2, uni
   return v8;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if (self->_hitTestEnabled)
   {
     v13.receiver = self;
     v13.super_class = PKPassGroupView;
-    v8 = [(PKPassGroupView *)&v13 hitTest:v7 withEvent:x, y];
+    v8 = [(PKPassGroupView *)&v13 hitTest:eventCopy withEvent:x, y];
     if (v8 == self)
     {
-      v9 = [(UIPageControl *)self->_pageControl superview];
+      superview = [(UIPageControl *)self->_pageControl superview];
 
-      if (v9)
+      if (superview)
       {
         pageControl = self->_pageControl;
         [(UIPageControl *)pageControl convertPoint:self fromView:x, y];
-        v11 = [(UIPageControl *)pageControl hitTest:v7 withEvent:?];
+        v11 = [(UIPageControl *)pageControl hitTest:eventCopy withEvent:?];
       }
 
       else
@@ -930,10 +930,10 @@ void __31__PKPassGroupView__layoutStack__block_invoke(uint64_t a1, void *a2, uni
   return v8;
 }
 
-- (void)_preventLayoutForAction:(id)a3
+- (void)_preventLayoutForAction:(id)action
 {
-  v7 = a3;
-  if (!v7 || (v4 = self->_preventLayoutCounter + 1, ++self->_preventLayoutCounter, (v4 & 0x10000) != 0) || (v5 = objc_autoreleasePoolPush(), v7[2](), objc_autoreleasePoolPop(v5), v6 = self->_preventLayoutCounter - 1, --self->_preventLayoutCounter, v6 >= 0x10000))
+  actionCopy = action;
+  if (!actionCopy || (v4 = self->_preventLayoutCounter + 1, ++self->_preventLayoutCounter, (v4 & 0x10000) != 0) || (v5 = objc_autoreleasePoolPush(), actionCopy[2](), objc_autoreleasePoolPop(v5), v6 = self->_preventLayoutCounter - 1, --self->_preventLayoutCounter, v6 >= 0x10000))
   {
     __break(1u);
   }
@@ -948,11 +948,11 @@ void __31__PKPassGroupView__layoutStack__block_invoke(uint64_t a1, void *a2, uni
   }
 }
 
-- (void)layoutSubviewsAnimated:(BOOL)a3
+- (void)layoutSubviewsAnimated:(BOOL)animated
 {
   p_layoutState = &self->_layoutState;
   v4 = *(&self->_layoutState + 16);
-  *(&self->_layoutState + 16) = v4 & 0xFE | a3;
+  *(&self->_layoutState + 16) = v4 & 0xFE | animated;
   [(PKPassGroupView *)self layoutIfNeeded];
   *(p_layoutState + 16) = *(p_layoutState + 16) & 0xFE | v4 & 1;
 }
@@ -1171,28 +1171,28 @@ void __31__PKPassGroupView__layoutPages__block_invoke_2(uint64_t a1, void *a2, v
   [v14 setPosition:{v6 + v11, v8 + v13}];
 }
 
-- (void)updateToStackWithProgress:(double)a3 originalPosition:(CGPoint)a4
+- (void)updateToStackWithProgress:(double)progress originalPosition:(CGPoint)position
 {
   v36 = *MEMORY[0x1E69E9840];
   if (self->_presentationState == 3)
   {
-    y = a4.y;
-    x = a4.x;
+    y = position.y;
+    x = position.x;
     p_layoutState = &self->_layoutState;
     layoutState = self->_layoutState;
     if ((layoutState & 8) == 0)
     {
       *p_layoutState = layoutState | 8;
       self->_layoutState.indeterminateProgress = 0.0;
-      v10 = [(PKRemoveableAnimationTrackerStore *)self->_delayedAnimations trackers];
-      if ([v10 count])
+      trackers = [(PKRemoveableAnimationTrackerStore *)self->_delayedAnimations trackers];
+      if ([trackers count])
       {
         [(PKPassGroupView *)self _removeDelayedAnimations];
         v33 = 0u;
         v34 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v11 = v10;
+        v11 = trackers;
         v12 = [v11 countByEnumeratingWithState:&v31 objects:v35 count:16];
         if (v12)
         {
@@ -1236,7 +1236,7 @@ LABEL_14:
     }
 
     v15 = 1.0;
-    v16 = fmin(fmax(a3, 0.0), 1.0);
+    v16 = fmin(fmax(progress, 0.0), 1.0);
     if ((layoutState & 0x10) != 0)
     {
       if (v16 >= 0.85)
@@ -1276,8 +1276,8 @@ LABEL_14:
       }
 
       p_layoutState->indeterminateProgress = v15;
-      v19 = [(PKPassGroupView *)self layer];
-      [v19 position];
+      layer = [(PKPassGroupView *)self layer];
+      [layer position];
       v21 = v20;
       v23 = v22;
 
@@ -1379,18 +1379,18 @@ void __62__PKPassGroupView_updateToStackWithProgress_originalPosition___block_in
   }
 }
 
-- (CGPoint)_stackingPositionForCardView:(id)a3 atStackIndex:(unint64_t)a4 withSeparation:(BOOL)a5
+- (CGPoint)_stackingPositionForCardView:(id)view atStackIndex:(unint64_t)index withSeparation:(BOOL)separation
 {
-  v5 = a5;
-  v7 = a3;
-  [v7 bounds];
+  separationCopy = separation;
+  viewCopy = view;
+  [viewCopy bounds];
   PKSizeAlignedInRect();
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  if (v5)
+  if (separationCopy)
   {
-    v15 = v8 + a4 * 6.0;
+    v15 = v8 + index * 6.0;
   }
 
   else
@@ -1398,7 +1398,7 @@ void __62__PKPassGroupView_updateToStackWithProgress_originalPosition___block_in
     v15 = v8;
   }
 
-  [v7 anchorPoint];
+  [viewCopy anchorPoint];
   v17 = v16;
   v19 = v18;
 
@@ -1409,32 +1409,32 @@ void __62__PKPassGroupView_updateToStackWithProgress_originalPosition___block_in
   return result;
 }
 
-- (CGPoint)_fanningPositionForCardView:(id)a3 atStackIndex:(unint64_t)a4 withSelectedFrame:(CGRect)a5
+- (CGPoint)_fanningPositionForCardView:(id)view atStackIndex:(unint64_t)index withSelectedFrame:(CGRect)frame
 {
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v8 = a3;
-  [v8 bounds];
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  [viewCopy bounds];
   v10 = v9;
   v12 = v11;
-  [v8 anchorPoint];
+  [viewCopy anchorPoint];
   v14 = v13;
   v16 = v15;
 
   v17 = x + v14 * v10;
-  v18 = y + a4 * 60.0 + v16 * v12;
+  v18 = y + index * 60.0 + v16 * v12;
   result.y = v18;
   result.x = v17;
   return result;
 }
 
-- (CGRect)_pagingFrameForCardView:(id)a3 atIndex:(unint64_t)a4
+- (CGRect)_pagingFrameForCardView:(id)view atIndex:(unint64_t)index
 {
-  [a3 bounds];
+  [view bounds];
   v7 = v6;
   v9 = v8;
-  v10.n128_f64[0] = a4;
-  v11.n128_f64[0] = (self->_layoutState.bounds.size.width - v6) * 0.5 + a4 * self->_layoutState.bounds.size.width;
+  v10.n128_f64[0] = index;
+  v11.n128_f64[0] = (self->_layoutState.bounds.size.width - v6) * 0.5 + index * self->_layoutState.bounds.size.width;
   PKFloatFloorToPixel(v11, v10);
   v13 = 0.0;
   v14 = v7;
@@ -1446,46 +1446,46 @@ void __62__PKPassGroupView_updateToStackWithProgress_originalPosition___block_in
   return result;
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  if (self->_paused != a3)
+  if (self->_paused != paused)
   {
-    self->_paused = a3;
+    self->_paused = paused;
     [(PKPassGroupView *)self _updatePausedState];
   }
 }
 
-- (void)setFrontmostPassViewFromPassIndex:(int64_t)a3 withContext:(id)a4 animated:(BOOL)a5
+- (void)setFrontmostPassViewFromPassIndex:(int64_t)index withContext:(id)context animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [(PKPassGroupView *)self passViewForIndex:a3];
-  [(PKPassGroupView *)self setFrontmostPassView:v9 withContext:v8 animated:v5];
+  animatedCopy = animated;
+  contextCopy = context;
+  v9 = [(PKPassGroupView *)self passViewForIndex:index];
+  [(PKPassGroupView *)self setFrontmostPassView:v9 withContext:contextCopy animated:animatedCopy];
 }
 
-- (void)setFrontmostPassView:(id)a3 withContext:(id)a4 animated:(BOOL)a5
+- (void)setFrontmostPassView:(id)view withContext:(id)context animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  viewCopy = view;
+  contextCopy = context;
   frontmostPassView = self->_frontmostPassView;
-  if (frontmostPassView != v9)
+  if (frontmostPassView != viewCopy)
   {
-    v20 = v9;
+    v20 = viewCopy;
     if (frontmostPassView)
     {
-      v12 = [(PKPassView *)frontmostPassView contentMode];
+      contentMode = [(PKPassView *)frontmostPassView contentMode];
       frontmostPassView = self->_frontmostPassView;
     }
 
     else
     {
-      v12 = 1;
+      contentMode = 1;
     }
 
     [(PKPassView *)frontmostPassView setModallyPresented:0];
-    objc_storeStrong(&self->_frontmostPassView, a3);
+    objc_storeStrong(&self->_frontmostPassView, view);
     v13 = self->_frontmostPassView;
     if (v13)
     {
@@ -1494,9 +1494,9 @@ void __62__PKPassGroupView_updateToStackWithProgress_originalPosition___block_in
         [(PKPassView *)v13 setModallyPresented:1];
       }
 
-      if (self->_frontFaceContentModePinningCounter && v12 > [(PKPassView *)self->_frontmostPassView contentMode])
+      if (self->_frontFaceContentModePinningCounter && contentMode > [(PKPassView *)self->_frontmostPassView contentMode])
       {
-        [(PKPassView *)self->_frontmostPassView setContentMode:v12 animated:v5];
+        [(PKPassView *)self->_frontmostPassView setContentMode:contentMode animated:animatedCopy];
       }
     }
 
@@ -1506,8 +1506,8 @@ void __62__PKPassGroupView_updateToStackWithProgress_originalPosition___block_in
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v14 = [(PKPassGroupView *)self _observers];
-    v15 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    _observers = [(PKPassGroupView *)self _observers];
+    v15 = [_observers countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v15)
     {
       v16 = v15;
@@ -1518,45 +1518,45 @@ void __62__PKPassGroupView_updateToStackWithProgress_originalPosition___block_in
         {
           if (*v22 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(_observers);
           }
 
           v19 = *(*(&v21 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            [v19 groupView:self frontmostPassViewDidChange:self->_frontmostPassView withContext:v10];
+            [v19 groupView:self frontmostPassViewDidChange:self->_frontmostPassView withContext:contextCopy];
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v16 = [_observers countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v16);
     }
 
-    v9 = v20;
+    viewCopy = v20;
   }
 }
 
-- (void)setPresentationState:(int64_t)a3 withContext:(id)a4 animated:(BOOL)a5
+- (void)setPresentationState:(int64_t)state withContext:(id)context animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a4;
+  animatedCopy = animated;
+  contextCopy = context;
   presentationState = self->_presentationState;
   layoutState = self->_layoutState;
-  if (presentationState != a3 || (layoutState & 8) != 0)
+  if (presentationState != state || (layoutState & 8) != 0)
   {
-    self->_presentationState = a3;
-    v17 = v8;
-    if (presentationState != a3 && !v5)
+    self->_presentationState = state;
+    v17 = contextCopy;
+    if (presentationState != state && !animatedCopy)
     {
       [(PKPassGroupView *)self _removeDelayedAnimations];
-      a3 = self->_presentationState;
+      state = self->_presentationState;
     }
 
-    v12 = a3 == 3 && [(PKGroup *)self->_group passCount]> 1;
-    v13 = [v17 presentFanned];
-    v14 = v13;
+    v12 = state == 3 && [(PKGroup *)self->_group passCount]> 1;
+    presentFanned = [v17 presentFanned];
+    v14 = presentFanned;
     *&self->_layoutState &= 0xE7u;
     if (v12)
     {
@@ -1568,7 +1568,7 @@ void __62__PKPassGroupView_updateToStackWithProgress_originalPosition___block_in
       v15 = 0;
     }
 
-    if (((layoutState & 0x18) == 8) | v13 & 1)
+    if (((layoutState & 0x18) == 8) | presentFanned & 1)
     {
       v16 = 0;
     }
@@ -1580,36 +1580,36 @@ void __62__PKPassGroupView_updateToStackWithProgress_originalPosition___block_in
 
     *(&self->_layoutState + 16) = *(&self->_layoutState + 16) & 0xFD | v16;
     [(PKPassGroupView *)self setNeedsLayout];
-    [(PKPassGroupView *)self layoutSubviewsAnimated:v5 & ~(v12 & v14)];
+    [(PKPassGroupView *)self layoutSubviewsAnimated:animatedCopy & ~(v12 & v14)];
     *(&self->_layoutState + 16) &= ~2u;
     [(PKPassGroupView *)self _updatePausedState];
-    [(PKPassGroupView *)self _updatePageControlVisibilityAnimated:v5 withDelay:0.0];
-    v8 = v17;
+    [(PKPassGroupView *)self _updatePageControlVisibilityAnimated:animatedCopy withDelay:0.0];
+    contextCopy = v17;
   }
 }
 
-- (void)deleteButtonPressedFromSourceView:(id)a3
+- (void)deleteButtonPressedFromSourceView:(id)view
 {
-  v6 = a3;
-  v4 = [(PKPassView *)self->_frontmostPassView pass];
+  viewCopy = view;
+  pass = [(PKPassView *)self->_frontmostPassView pass];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (pass && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [WeakRetained groupView:self deleteButtonPressedForPass:v4 sourceView:v6];
+    [WeakRetained groupView:self deleteButtonPressedForPass:pass sourceView:viewCopy];
   }
 }
 
-- (void)setPassViewExpanded:(BOOL)a3 forPass:(id)a4 animated:(BOOL)a5
+- (void)setPassViewExpanded:(BOOL)expanded forPass:(id)pass animated:(BOOL)animated
 {
-  v5 = a3;
+  expandedCopy = expanded;
   passViewsByUniqueID = self->_passViewsByUniqueID;
-  v7 = [a4 uniqueID];
-  v8 = [(NSMutableDictionary *)passViewsByUniqueID objectForKey:v7];
+  uniqueID = [pass uniqueID];
+  v8 = [(NSMutableDictionary *)passViewsByUniqueID objectForKey:uniqueID];
 
-  [v8 setFrontFaceExpanded:v5 animated:1];
+  [v8 setFrontFaceExpanded:expandedCopy animated:1];
 }
 
-- (void)applyContentModesAnimated:(BOOL)a3
+- (void)applyContentModesAnimated:(BOOL)animated
 {
   presentationState = self->_presentationState;
   if (presentationState == 1)
@@ -1689,7 +1689,7 @@ LABEL_20:
   v12[6] = v10;
   v12[7] = v6;
   v12[8] = v11;
-  v13 = a3;
+  animatedCopy = animated;
   [(PKPassGroupView *)self _enumeratePassViewsInStackOrderWithHandler:v12];
 }
 
@@ -1721,17 +1721,17 @@ uint64_t __45__PKPassGroupView_applyContentModesAnimated___block_invoke(uint64_t
   }
 }
 
-- (void)presentDiff:(id)a3 completion:(id)a4
+- (void)presentDiff:(id)diff completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  diffCopy = diff;
+  completionCopy = completion;
+  if (diffCopy)
   {
-    v8 = [v6 passUniqueID];
-    [(PKPassGroupView *)self presentPassWithUniqueID:v8];
-    v9 = [(NSMutableDictionary *)self->_passViewsByUniqueID objectForKey:v8];
-    [v9 presentDiff:v6 completion:v7];
+    passUniqueID = [diffCopy passUniqueID];
+    [(PKPassGroupView *)self presentPassWithUniqueID:passUniqueID];
+    v9 = [(NSMutableDictionary *)self->_passViewsByUniqueID objectForKey:passUniqueID];
+    [v9 presentDiff:diffCopy completion:completionCopy];
   }
 
   else
@@ -1740,8 +1740,8 @@ uint64_t __45__PKPassGroupView_applyContentModesAnimated___block_invoke(uint64_t
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = self->_passViewsByUniqueID;
-    v10 = [(NSMutableDictionary *)v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    passUniqueID = self->_passViewsByUniqueID;
+    v10 = [(NSMutableDictionary *)passUniqueID countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1753,17 +1753,17 @@ uint64_t __45__PKPassGroupView_applyContentModesAnimated___block_invoke(uint64_t
         {
           if (*v16 != v12)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(passUniqueID);
           }
 
           v14 = [(NSMutableDictionary *)self->_passViewsByUniqueID objectForKey:*(*(&v15 + 1) + 8 * v13), v15];
-          [v14 presentDiff:0 completion:v7];
+          [v14 presentDiff:0 completion:completionCopy];
 
           ++v13;
         }
 
         while (v11 != v13);
-        v11 = [(NSMutableDictionary *)v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v11 = [(NSMutableDictionary *)passUniqueID countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v11);
@@ -1771,16 +1771,16 @@ uint64_t __45__PKPassGroupView_applyContentModesAnimated___block_invoke(uint64_t
   }
 }
 
-- (void)presentPassWithUniqueID:(id)a3 withContext:(id)a4 animated:(BOOL)a5
+- (void)presentPassWithUniqueID:(id)d withContext:(id)context animated:(BOOL)animated
 {
-  v5 = a5;
-  v10 = a4;
-  v8 = [(PKGroup *)self->_group indexForPassUniqueID:a3];
+  animatedCopy = animated;
+  contextCopy = context;
+  v8 = [(PKGroup *)self->_group indexForPassUniqueID:d];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = v8;
     [(PKGroup *)self->_group setFrontmostPassIndex:v8];
-    [(PKPassGroupView *)self setFrontmostPassViewFromPassIndex:v9 withContext:v10 animated:v5];
+    [(PKPassGroupView *)self setFrontmostPassViewFromPassIndex:v9 withContext:contextCopy animated:animatedCopy];
     [(PKPassGroupView *)self _updateCachedGroupState];
     [(PKPassGroupView *)self _updateLoadedViews:1];
     if (self->_presentationState == 3)
@@ -1791,23 +1791,23 @@ uint64_t __45__PKPassGroupView_applyContentModesAnimated___block_invoke(uint64_t
 
     else
     {
-      [(PKPassGroupView *)self setPresentationState:3 withContext:v10 animated:1];
+      [(PKPassGroupView *)self setPresentationState:3 withContext:contextCopy animated:1];
     }
   }
 }
 
-- (void)setDimmer:(double)a3 animated:(BOOL)a4
+- (void)setDimmer:(double)dimmer animated:(BOOL)animated
 {
-  self->_dimmerValue = a3;
-  v6 = [(PKPassGroupView *)self frontmostPassView];
+  self->_dimmerValue = dimmer;
+  frontmostPassView = [(PKPassGroupView *)self frontmostPassView];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __38__PKPassGroupView_setDimmer_animated___block_invoke;
   v8[3] = &unk_1E8025428;
-  v9 = v6;
-  v10 = self;
-  v11 = a4;
-  v7 = v6;
+  v9 = frontmostPassView;
+  selfCopy = self;
+  animatedCopy = animated;
+  v7 = frontmostPassView;
   [(PKPassGroupView *)self _enumeratePassViewsInStackOrderWithHandler:v8];
 }
 
@@ -1852,28 +1852,28 @@ void __38__PKPassGroupView_setDimmer_animated___block_invoke(uint64_t a1, void *
   return result;
 }
 
-- (void)_enumerateIndicesInStackOrderWithHandler:(id)a3
+- (void)_enumerateIndicesInStackOrderWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(PKPassGroupView *)self _rangeOfVisibleIndices];
   PKEnumerateRangeInStackOrder();
 }
 
-- (void)_enumerateIndicesInFannedOrderWithHandler:(id)a3
+- (void)_enumerateIndicesInFannedOrderWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(PKPassGroupView *)self _rangeOfFannedIndices];
   PKEnumerateRangeInStackOrder();
 }
 
-- (void)_enumeratePassViewsInStackOrderWithHandler:(id)a3
+- (void)_enumeratePassViewsInStackOrderWithHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_passViewsByUniqueID allKeys];
-    v6 = [v5 mutableCopy];
+    allKeys = [(NSMutableDictionary *)self->_passViewsByUniqueID allKeys];
+    v6 = [allKeys mutableCopy];
 
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
@@ -1890,8 +1890,8 @@ void __38__PKPassGroupView_setDimmer_animated___block_invoke(uint64_t a1, void *
       v21[2] = __62__PKPassGroupView__enumeratePassViewsInStackOrderWithHandler___block_invoke_2;
       v21[3] = &unk_1E8025478;
       v22 = v7;
-      v23 = self;
-      v24 = v4;
+      selfCopy = self;
+      v24 = handlerCopy;
       [(PKPassGroupView *)self _enumerateIndicesInFannedOrderWithHandler:v21];
     }
 
@@ -1919,7 +1919,7 @@ void __38__PKPassGroupView_setDimmer_animated___block_invoke(uint64_t a1, void *
           v14 = [(PKPassGroupView *)self passViewForIndex:v13];
           if (v14)
           {
-            (*(v4 + 2))(v4, v14, v13, 0);
+            (*(handlerCopy + 2))(handlerCopy, v14, v13, 0);
           }
 
           ++v12;
@@ -1937,7 +1937,7 @@ void __38__PKPassGroupView_setDimmer_animated___block_invoke(uint64_t a1, void *
     v15[2] = __62__PKPassGroupView__enumeratePassViewsInStackOrderWithHandler___block_invoke_3;
     v15[3] = &unk_1E80254A0;
     v15[4] = self;
-    v16 = v4;
+    v16 = handlerCopy;
     [(PKPassGroupView *)self _enumerateIndicesInStackOrderWithHandler:v15];
   }
 }
@@ -1993,11 +1993,11 @@ void __62__PKPassGroupView__enumeratePassViewsInStackOrderWithHandler___block_in
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_applyContentMode:(int64_t)a3 toPassView:(id)a4 animated:(BOOL)a5
+- (void)_applyContentMode:(int64_t)mode toPassView:(id)view animated:(BOOL)animated
 {
-  v5 = a5;
-  v11 = a4;
-  v8 = [(PKPassView *)v11 contentMode];
+  animatedCopy = animated;
+  viewCopy = view;
+  contentMode = [(PKPassView *)viewCopy contentMode];
   if (self->_animationCounter)
   {
     v9 = 0;
@@ -2005,7 +2005,7 @@ void __62__PKPassGroupView__enumeratePassViewsInStackOrderWithHandler___block_in
 
   else if (self->_frontFaceContentModePinningCounter)
   {
-    v9 = self->_frontmostPassView != v11;
+    v9 = self->_frontmostPassView != viewCopy;
   }
 
   else
@@ -2013,22 +2013,22 @@ void __62__PKPassGroupView__enumeratePassViewsInStackOrderWithHandler___block_in
     v9 = 1;
   }
 
-  if (v8 < a3)
+  if (contentMode < mode)
   {
     v9 = 1;
   }
 
-  if (v8 != a3 && v9)
+  if (contentMode != mode && v9)
   {
-    v10 = v5 ? 0.5 : 0.0;
-    if (a3 == 5 || v8 != 5 || !v5 || ([(PKPassView *)v11 setContentMode:4 animated:1], a3 != 4))
+    v10 = animatedCopy ? 0.5 : 0.0;
+    if (mode == 5 || contentMode != 5 || !animatedCopy || ([(PKPassView *)viewCopy setContentMode:4 animated:1], mode != 4))
     {
-      [(PKPassView *)v11 setContentMode:a3 animated:v5 withDelay:v10];
+      [(PKPassView *)viewCopy setContentMode:mode animated:animatedCopy withDelay:v10];
     }
   }
 }
 
-- (void)_updateLoadedViews:(BOOL)a3
+- (void)_updateLoadedViews:(BOOL)views
 {
   v5 = objc_autoreleasePoolPush();
   v8 = 0;
@@ -2039,7 +2039,7 @@ void __62__PKPassGroupView__enumeratePassViewsInStackOrderWithHandler___block_in
   v6[1] = 3221225472;
   v6[2] = __38__PKPassGroupView__updateLoadedViews___block_invoke;
   v6[3] = &unk_1E80254F0;
-  v7 = a3;
+  viewsCopy = views;
   v6[4] = self;
   v6[5] = &v8;
   [(PKPassGroupView *)self _preventLayoutForAction:v6];
@@ -2151,56 +2151,56 @@ void __38__PKPassGroupView__updateLoadedViews___block_invoke_75(uint64_t a1, uni
   }
 }
 
-- (id)_loadCardViewForIndex:(unint64_t)a3 contentMode:(int64_t)a4
+- (id)_loadCardViewForIndex:(unint64_t)index contentMode:(int64_t)mode
 {
   WeakRetained = objc_loadWeakRetained(&self->_passViewQueue);
-  v8 = [WeakRetained dequeueReusablePassView];
+  dequeueReusablePassView = [WeakRetained dequeueReusablePassView];
 
-  if (v8)
+  if (dequeueReusablePassView)
   {
     goto LABEL_2;
   }
 
   if (self->_invalidated)
   {
-    v8 = 0;
+    dequeueReusablePassView = 0;
     goto LABEL_10;
   }
 
-  v10 = [(PKGroup *)self->_group passAtIndex:a3];
-  v11 = [(PKGroup *)self->_group stateAtIndex:a3];
+  v10 = [(PKGroup *)self->_group passAtIndex:index];
+  v11 = [(PKGroup *)self->_group stateAtIndex:index];
   v12 = objc_loadWeakRetained(&self->_delegate);
   v13 = [v12 groupViewPassesSuppressedContent:self];
 
-  v8 = [[PKPassView alloc] initWithPass:v10 content:a4 suppressedContent:v13];
-  [(PKPassView *)v8 setPassState:v11];
+  dequeueReusablePassView = [[PKPassView alloc] initWithPass:v10 content:mode suppressedContent:v13];
+  [(PKPassView *)dequeueReusablePassView setPassState:v11];
 
-  if (v8)
+  if (dequeueReusablePassView)
   {
 LABEL_2:
-    [(PKPassView *)v8 setDelegate:self];
-    [(UIScrollView *)self->_horizontalScrollView addSubview:v8];
-    v9 = [(PKPassView *)v8 uniqueID];
-    if (v9)
+    [(PKPassView *)dequeueReusablePassView setDelegate:self];
+    [(UIScrollView *)self->_horizontalScrollView addSubview:dequeueReusablePassView];
+    uniqueID = [(PKPassView *)dequeueReusablePassView uniqueID];
+    if (uniqueID)
     {
-      [(NSMutableDictionary *)self->_passViewsByUniqueID setObject:v8 forKey:v9];
+      [(NSMutableDictionary *)self->_passViewsByUniqueID setObject:dequeueReusablePassView forKey:uniqueID];
     }
 
-    [(PKPassView *)v8 setPaused:self->_effectivePaused];
-    [(PKPassView *)v8 sizeToFit];
+    [(PKPassView *)dequeueReusablePassView setPaused:self->_effectivePaused];
+    [(PKPassView *)dequeueReusablePassView sizeToFit];
     if (self->_presentationState == 3)
     {
-      [(PKPassGroupView *)self _pagingFrameForCardView:v8 atIndex:a3];
-      [(PKPassView *)v8 setFrame:?];
+      [(PKPassGroupView *)self _pagingFrameForCardView:dequeueReusablePassView atIndex:index];
+      [(PKPassView *)dequeueReusablePassView setFrame:?];
     }
   }
 
 LABEL_10:
 
-  return v8;
+  return dequeueReusablePassView;
 }
 
-- (int64_t)_defaultContentModeForIndex:(unint64_t)a3
+- (int64_t)_defaultContentModeForIndex:(unint64_t)index
 {
   presentationState = self->_presentationState;
   if (presentationState == 1)
@@ -2219,7 +2219,7 @@ LABEL_10:
   }
 
 LABEL_4:
-  if (self->_layoutState.selectedIndex == a3)
+  if (self->_layoutState.selectedIndex == index)
   {
     return 2;
   }
@@ -2227,12 +2227,12 @@ LABEL_4:
   return 1;
 }
 
-- (id)passViewForIndex:(unint64_t)a3
+- (id)passViewForIndex:(unint64_t)index
 {
-  v4 = [(PKGroup *)self->_group passAtIndex:a3];
-  v5 = [v4 uniqueID];
+  v4 = [(PKGroup *)self->_group passAtIndex:index];
+  uniqueID = [v4 uniqueID];
 
-  v6 = [(NSMutableDictionary *)self->_passViewsByUniqueID objectForKey:v5];
+  v6 = [(NSMutableDictionary *)self->_passViewsByUniqueID objectForKey:uniqueID];
 
   return v6;
 }
@@ -2245,18 +2245,18 @@ LABEL_4:
   [(PKRemoveableAnimationTrackerStore *)delayedAnimations clear];
 }
 
-- (void)updatePageControlFrameAnimated:(BOOL)a3
+- (void)updatePageControlFrameAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(UIPageControl *)self->_pageControl superview];
-  if ((*&self->_layoutState & 4) != 0 || v5)
+  animatedCopy = animated;
+  superview = [(UIPageControl *)self->_pageControl superview];
+  if ((*&self->_layoutState & 4) != 0 || superview)
   {
-    v7 = v5;
-    v6 = [(PKPassGroupView *)self superview];
+    v7 = superview;
+    superview2 = [(PKPassGroupView *)self superview];
 
-    if (v7 == v6)
+    if (v7 == superview2)
     {
-      [(PKPassGroupView *)self _updatePageControlFrameAnimated:v3];
+      [(PKPassGroupView *)self _updatePageControlFrameAnimated:animatedCopy];
     }
 
     else
@@ -2264,7 +2264,7 @@ LABEL_4:
       [(PKPassGroupView *)self _updatePageControlVisibilityAnimated:1 withDelay:0.0];
     }
 
-    v5 = v7;
+    superview = v7;
   }
 }
 
@@ -2359,9 +2359,9 @@ void __46__PKPassGroupView_beginSuppressingPageControl__block_invoke_3(uint64_t 
   }
 }
 
-- (BOOL)overrideShadowAlpha:(double)a3
+- (BOOL)overrideShadowAlpha:(double)alpha
 {
-  if (self->_shadowHasAlphaOverride && self->_shadowAlphaOverride == a3)
+  if (self->_shadowHasAlphaOverride && self->_shadowAlphaOverride == alpha)
   {
     return 0;
   }
@@ -2370,7 +2370,7 @@ void __46__PKPassGroupView_beginSuppressingPageControl__block_invoke_3(uint64_t 
   shadowHasAlphaOverride = self->_shadowHasAlphaOverride;
   v5 = 1;
   self->_shadowHasAlphaOverride = 1;
-  self->_shadowAlphaOverride = a3;
+  self->_shadowAlphaOverride = alpha;
   if (!shadowHasAlphaOverride)
   {
     [(PKPassGroupView *)self layoutSubviewsAnimated:1];
@@ -2393,17 +2393,17 @@ void __46__PKPassGroupView_beginSuppressingPageControl__block_invoke_3(uint64_t 
   }
 }
 
-- (BOOL)overridePageControlAlpha:(double)a3
+- (BOOL)overridePageControlAlpha:(double)alpha
 {
   pageControlHasAlphaOverride = self->_pageControlHasAlphaOverride;
-  if (pageControlHasAlphaOverride && self->_pageControlAlphaOverride == a3)
+  if (pageControlHasAlphaOverride && self->_pageControlAlphaOverride == alpha)
   {
     return 0;
   }
 
   v6 = 1;
   self->_pageControlHasAlphaOverride = 1;
-  self->_pageControlAlphaOverride = a3;
+  self->_pageControlAlphaOverride = alpha;
   if ((*&self->_layoutState & 2) != 0)
   {
     [(PKPassGroupView *)self _updatePageControlVisibilityAnimated:!pageControlHasAlphaOverride withDelay:0.0, v3, v4];
@@ -2425,15 +2425,15 @@ void __46__PKPassGroupView_beginSuppressingPageControl__block_invoke_3(uint64_t 
   }
 }
 
-- (BOOL)pageControlAlphaOverrideMatchesPredicate:(id)a3
+- (BOOL)pageControlAlphaOverrideMatchesPredicate:(id)predicate
 {
-  v4 = a3;
-  if (v4)
+  predicateCopy = predicate;
+  if (predicateCopy)
   {
-    v5 = v4;
+    v5 = predicateCopy;
     if (self->_pageControlHasAlphaOverride)
     {
-      v6 = (*(v4 + 2))(v4, self->_pageControlAlphaOverride);
+      v6 = (*(predicateCopy + 2))(predicateCopy, self->_pageControlAlphaOverride);
     }
 
     else
@@ -2441,7 +2441,7 @@ void __46__PKPassGroupView_beginSuppressingPageControl__block_invoke_3(uint64_t 
       v6 = 0;
     }
 
-    LOBYTE(v4) = v6;
+    LOBYTE(predicateCopy) = v6;
   }
 
   else
@@ -2449,18 +2449,18 @@ void __46__PKPassGroupView_beginSuppressingPageControl__block_invoke_3(uint64_t 
     __break(1u);
   }
 
-  return v4;
+  return predicateCopy;
 }
 
-- (void)_pageControlChanged:(id)a3
+- (void)_pageControlChanged:(id)changed
 {
   if (self->_presentationState == 3)
   {
-    v4 = [(PKPassGroupView *)self displayIndex];
-    v5 = [(UIPageControl *)self->_pageControl currentPage];
-    if (v4 != v5)
+    displayIndex = [(PKPassGroupView *)self displayIndex];
+    currentPage = [(UIPageControl *)self->_pageControl currentPage];
+    if (displayIndex != currentPage)
     {
-      v8 = CGRectGetWidth(self->_layoutState.bounds) * v5;
+      v8 = CGRectGetWidth(self->_layoutState.bounds) * currentPage;
       horizontalScrollView = self->_horizontalScrollView;
 
       [(UIScrollView *)horizontalScrollView setContentOffset:1 animated:v8, 0.0];
@@ -2476,12 +2476,12 @@ void __46__PKPassGroupView_beginSuppressingPageControl__block_invoke_3(uint64_t 
   }
 }
 
-- (void)_updatePageControlFrameAnimated:(BOOL)a3
+- (void)_updatePageControlFrameAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(UIPageControl *)self->_pageControl superview];
+  animatedCopy = animated;
+  superview = [(UIPageControl *)self->_pageControl superview];
 
-  if (v5)
+  if (superview)
   {
     p_layoutState = &self->_layoutState;
     if ((*(&self->_layoutState + 16) & 0x40) != 0)
@@ -2497,7 +2497,7 @@ void __46__PKPassGroupView_beginSuppressingPageControl__block_invoke_3(uint64_t 
       }
     }
 
-    if (v3)
+    if (animatedCopy)
     {
       v10 = *p_layoutState;
       if ((v10 & 0x20) != 0)
@@ -2505,18 +2505,18 @@ void __46__PKPassGroupView_beginSuppressingPageControl__block_invoke_3(uint64_t 
         v11 = (v10 >> 6) & 1;
         if (self->_pageControlAnimationCounter)
         {
-          LOBYTE(v3) = 1;
+          LOBYTE(animatedCopy) = 1;
         }
 
         else
         {
-          LOBYTE(v3) = v11;
+          LOBYTE(animatedCopy) = v11;
         }
       }
 
       else
       {
-        LOBYTE(v3) = 0;
+        LOBYTE(animatedCopy) = 0;
       }
     }
 
@@ -2526,12 +2526,12 @@ void __46__PKPassGroupView_beginSuppressingPageControl__block_invoke_3(uint64_t 
     aBlock[1] = 3221225472;
     aBlock[2] = __51__PKPassGroupView__updatePageControlFrameAnimated___block_invoke;
     aBlock[3] = &unk_1E8025560;
-    v38 = v3;
+    v38 = animatedCopy;
     aBlock[4] = self;
     v12 = _Block_copy(aBlock);
-    v13 = [(PKPassView *)self->_frontmostPassView superview];
+    superview2 = [(PKPassView *)self->_frontmostPassView superview];
 
-    if (v13)
+    if (superview2)
     {
       [(PKPassGroupView *)self center];
       v35 = v15;
@@ -2588,22 +2588,22 @@ void __51__PKPassGroupView__updatePageControlFrameAnimated___block_invoke(uint64
 
 - (void)_updatePageControlWithDisplayIndex
 {
-  v3 = [(PKPassGroupView *)self displayIndex];
-  if (v3 != [(UIPageControl *)self->_pageControl currentPage])
+  displayIndex = [(PKPassGroupView *)self displayIndex];
+  if (displayIndex != [(UIPageControl *)self->_pageControl currentPage])
   {
     pageControl = self->_pageControl;
 
-    [(UIPageControl *)pageControl setCurrentPage:v3];
+    [(UIPageControl *)pageControl setCurrentPage:displayIndex];
   }
 }
 
-- (void)_updatePageControlVisibilityAnimated:(BOOL)a3 withDelay:(double)a4
+- (void)_updatePageControlVisibilityAnimated:(BOOL)animated withDelay:(double)delay
 {
-  v5 = a3;
-  v7 = [(PKPassGroupView *)self superview];
-  v8 = [(PKGroup *)self->_group passCount];
+  animatedCopy = animated;
+  superview = [(PKPassGroupView *)self superview];
+  passCount = [(PKGroup *)self->_group passCount];
   layoutState = self->_layoutState;
-  v10 = v8 > 1 && self->_modallyPresented;
+  v10 = passCount > 1 && self->_modallyPresented;
   v11 = layoutState & 0xFE | v10;
   *&self->_layoutState = v11;
   v12 = v10 && self->_presentationState == 3;
@@ -2619,7 +2619,7 @@ void __51__PKPassGroupView__updatePageControlFrameAnimated___block_invoke(uint64
 
   v14 = v13 | v11 & 0xFB;
   *&self->_layoutState = v14;
-  if (v7 && v12)
+  if (superview && v12)
   {
     *&self->_layoutState = v14 & 0xFD | (2 * (self->_pageControlSuppressionCounter == 0));
   }
@@ -2627,24 +2627,24 @@ void __51__PKPassGroupView__updatePageControlFrameAnimated___block_invoke(uint64
   else
   {
     *&self->_layoutState = v14 & 0xFD;
-    if (!v7)
+    if (!superview)
     {
       [(PKPassGroupView *)self _removePageControl];
       goto LABEL_20;
     }
   }
 
-  v15 = [(UIPageControl *)self->_pageControl superview];
-  v16 = v15;
-  if (v15 != v7)
+  superview2 = [(UIPageControl *)self->_pageControl superview];
+  v16 = superview2;
+  if (superview2 != superview)
   {
-    if (v15)
+    if (superview2)
     {
       [(UIPageControl *)self->_pageControl center];
-      [v16 convertPoint:v7 toView:?];
+      [v16 convertPoint:superview toView:?];
       v18 = v17;
       v20 = v19;
-      [v7 insertSubview:self->_pageControl atIndex:0];
+      [superview insertSubview:self->_pageControl atIndex:0];
       v50[0] = MEMORY[0x1E69E9820];
       v50[1] = 3221225472;
       v50[2] = __66__PKPassGroupView__updatePageControlVisibilityAnimated_withDelay___block_invoke;
@@ -2657,21 +2657,21 @@ void __51__PKPassGroupView__updatePageControlFrameAnimated___block_invoke(uint64
 
     else if (*&self->_layoutState)
     {
-      [v7 insertSubview:self->_pageControl atIndex:0];
+      [superview insertSubview:self->_pageControl atIndex:0];
     }
   }
 
 LABEL_20:
-  v21 = [(UIPageControl *)self->_pageControl superview];
+  superview3 = [(UIPageControl *)self->_pageControl superview];
 
-  if (v8 != [(UIPageControl *)self->_pageControl numberOfPages])
+  if (passCount != [(UIPageControl *)self->_pageControl numberOfPages])
   {
-    [(UIPageControl *)self->_pageControl setNumberOfPages:v8];
+    [(UIPageControl *)self->_pageControl setNumberOfPages:passCount];
   }
 
-  if (v21)
+  if (superview3)
   {
-    v22 = v5;
+    v22 = animatedCopy;
   }
 
   else
@@ -2680,7 +2680,7 @@ LABEL_20:
   }
 
   [(PKPassGroupView *)self _updatePageControlFrameAnimated:v22];
-  v23 = [(UIPageControl *)self->_pageControl layer];
+  layer = [(UIPageControl *)self->_pageControl layer];
   pageControlAlphaOverride = 0.0;
   if ((*&self->_layoutState & 2) != 0)
   {
@@ -2695,8 +2695,8 @@ LABEL_20:
   pageControl = self->_pageControl;
   if (v22)
   {
-    v26 = [MEMORY[0x1E69B92B0] sharedDefaultFactory];
-    [(UIPageControl *)pageControl pkui_setAlpha:v26 withAnimationFactory:&v49 animation:0 removePriorAnimation:pageControlAlphaOverride];
+    mEMORY[0x1E69B92B0] = [MEMORY[0x1E69B92B0] sharedDefaultFactory];
+    [(UIPageControl *)pageControl pkui_setAlpha:mEMORY[0x1E69B92B0] withAnimationFactory:&v49 animation:0 removePriorAnimation:pageControlAlphaOverride];
   }
 
   else
@@ -2704,12 +2704,12 @@ LABEL_20:
     [(UIPageControl *)pageControl pkui_setAlpha:0 withAnimationFactory:&v49 animation:0 removePriorAnimation:pageControlAlphaOverride];
     if (pageControlAlphaOverride != v27)
     {
-      [v23 removeAnimationForKey:@"opacity"];
+      [layer removeAnimationForKey:@"opacity"];
     }
   }
 
   v28 = self->_layoutState;
-  if (v21 && pageControlAlphaOverride > 0.0)
+  if (superview3 && pageControlAlphaOverride > 0.0)
   {
     v28 |= 0x40u;
     *&self->_layoutState = v28;
@@ -2719,7 +2719,7 @@ LABEL_20:
   {
     [v49 duration];
     v30 = v29;
-    [v49 setBeginTime:a4];
+    [v49 setBeginTime:delay];
     if ((v28 & 4) == 0)
     {
       [(UIScrollView *)self->_horizontalScrollView setScrollEnabled:(*&self->_layoutState >> 2) & 1];
@@ -2743,7 +2743,7 @@ LABEL_20:
     v42[2] = __66__PKPassGroupView__updatePageControlVisibilityAnimated_withDelay___block_invoke_3;
     v42[3] = &unk_1E801ECE0;
     v44[1] = v30;
-    v44[2] = *&a4;
+    v44[2] = *&delay;
     objc_copyWeak(v44, &location);
     v33 = v31;
     v43 = v33;
@@ -2758,8 +2758,8 @@ LABEL_20:
     v35 = v33;
     v40 = v35;
     [v34 pkui_setCompletionHandler:&v36];
-    [v23 removeAnimationForKey:{@"opacity", v36, v37, v38, v39}];
-    [v23 addAnimation:v49 forKey:@"opacity"];
+    [layer removeAnimationForKey:{@"opacity", v36, v37, v38, v39}];
+    [layer addAnimation:v49 forKey:@"opacity"];
 
     objc_destroyWeak(&v41);
     objc_destroyWeak(v44);
@@ -2853,9 +2853,9 @@ void __66__PKPassGroupView__updatePageControlVisibilityAnimated_withDelay___bloc
   }
 }
 
-- (void)setBlurRadius:(double)a3
+- (void)setBlurRadius:(double)radius
 {
-  if (self->_blurRadius != a3)
+  if (self->_blurRadius != radius)
   {
     if (!self->_filter)
     {
@@ -2867,10 +2867,10 @@ void __66__PKPassGroupView__updatePageControlVisibilityAnimated_withDelay___bloc
       [MEMORY[0x1E69DD250] performWithoutAnimation:v7];
     }
 
-    self->_blurRadius = a3;
-    v5 = [(PKPassGroupView *)self layer];
+    self->_blurRadius = radius;
+    layer = [(PKPassGroupView *)self layer];
     v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_blurRadius];
-    [v5 setValue:v6 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+    [layer setValue:v6 forKeyPath:@"filters.gaussianBlur.inputRadius"];
   }
 }
 
@@ -2891,12 +2891,12 @@ void __33__PKPassGroupView_setBlurRadius___block_invoke(uint64_t a1)
   [v6 setFilters:v7];
 }
 
-- (void)setModallyPresented:(BOOL)a3
+- (void)setModallyPresented:(BOOL)presented
 {
-  if (self->_modallyPresented != a3)
+  if (self->_modallyPresented != presented)
   {
     v9 = v3;
-    self->_modallyPresented = a3;
+    self->_modallyPresented = presented;
     frontmostPassView = self->_frontmostPassView;
     if (frontmostPassView)
     {
@@ -2909,17 +2909,17 @@ void __33__PKPassGroupView_setBlurRadius___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setLoaned:(BOOL)a3
+- (void)setLoaned:(BOOL)loaned
 {
-  if (self->_loaned != a3)
+  if (self->_loaned != loaned)
   {
-    self->_loaned = a3;
+    self->_loaned = loaned;
   }
 }
 
-- (void)setGestureCollector:(id)a3
+- (void)setGestureCollector:(id)collector
 {
-  obj = a3;
+  obj = collector;
   WeakRetained = objc_loadWeakRetained(&self->_gestureCollector);
   if (WeakRetained != obj)
   {
@@ -2933,12 +2933,12 @@ void __33__PKPassGroupView_setBlurRadius___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_handlePress:(id)a3
+- (void)_handlePress:(id)press
 {
-  v4 = [a3 state];
-  if ((v4 - 3) >= 2)
+  state = [press state];
+  if ((state - 3) >= 2)
   {
-    if (v4 != 1)
+    if (state != 1)
     {
       return;
     }
@@ -3034,12 +3034,12 @@ void __32__PKPassGroupView__handlePress___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_handlePanGesture:(id)a3
+- (void)_handlePanGesture:(id)gesture
 {
-  v12 = a3;
+  gestureCopy = gesture;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [v12 state];
-  if ((v5 - 3) < 2)
+  state = [gestureCopy state];
+  if ((state - 3) < 2)
   {
     if (objc_opt_respondsToSelector())
     {
@@ -3049,9 +3049,9 @@ void __32__PKPassGroupView__handlePress___block_invoke(uint64_t a1)
 
   else
   {
-    if (v5 != 2)
+    if (state != 2)
     {
-      if (v5 != 1)
+      if (state != 1)
       {
         goto LABEL_10;
       }
@@ -3064,10 +3064,10 @@ void __32__PKPassGroupView__handlePress___block_invoke(uint64_t a1)
 
     if (objc_opt_respondsToSelector())
     {
-      [v12 translationInView:self];
+      [gestureCopy translationInView:self];
       v7 = v6;
       v9 = v8;
-      [v12 velocityInView:self];
+      [gestureCopy velocityInView:self];
       [WeakRetained groupView:self panned:v7 withVelocity:{v9, v10, v11}];
     }
   }
@@ -3075,13 +3075,13 @@ void __32__PKPassGroupView__handlePress___block_invoke(uint64_t a1)
 LABEL_10:
 }
 
-- (BOOL)gestureCollector:(id)a3 recognizerShouldBegin:(id)a4
+- (BOOL)gestureCollector:(id)collector recognizerShouldBegin:(id)begin
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (v8 = v7) != 0)
+  collectorCopy = collector;
+  beginCopy = begin;
+  if (collectorCopy && (v8 = beginCopy) != 0)
   {
-    if (self->_longPressGestureRecognizer == v7 && (*(&self->_layoutState + 16) & 0x20) != 0)
+    if (self->_longPressGestureRecognizer == beginCopy && (*(&self->_layoutState + 16) & 0x20) != 0)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       v9 = [WeakRetained groupViewShouldAllowPanning:self];
@@ -3092,7 +3092,7 @@ LABEL_10:
       v9 = 1;
     }
 
-    LOBYTE(v7) = v9;
+    LOBYTE(beginCopy) = v9;
   }
 
   else
@@ -3100,15 +3100,15 @@ LABEL_10:
     __break(1u);
   }
 
-  return v7;
+  return beginCopy;
 }
 
 - (void)_updateFrontmostPassViewIfNecessary
 {
-  v3 = [(PKPassGroupView *)self displayIndex];
-  if (v3 != self->_layoutState.selectedIndex)
+  displayIndex = [(PKPassGroupView *)self displayIndex];
+  if (displayIndex != self->_layoutState.selectedIndex)
   {
-    v4 = v3;
+    v4 = displayIndex;
     if ([(PKPassView *)self->_frontmostPassView isFrontFaceExpanded])
     {
       [(PKPassView *)self->_frontmostPassView setFrontFaceExpanded:0 animated:1];
@@ -3121,13 +3121,13 @@ LABEL_10:
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   horizontalScrollView = self->_horizontalScrollView;
-  if (horizontalScrollView == v4 && self->_presentationState == 3)
+  if (horizontalScrollView == scrollCopy && self->_presentationState == 3)
   {
-    v10 = v4;
+    v10 = scrollCopy;
     [(UIScrollView *)horizontalScrollView bounds];
     self->_layoutState.bounds.origin.x = v6;
     self->_layoutState.bounds.origin.y = v7;
@@ -3141,18 +3141,18 @@ LABEL_10:
 
     [(PKPassGroupView *)self _updateLoadedViews:0];
     [(PKPassGroupView *)self setNeedsLayout];
-    v4 = v10;
+    scrollCopy = v10;
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v6 = a3;
+  draggingCopy = dragging;
   horizontalScrollView = self->_horizontalScrollView;
-  if (horizontalScrollView == v6)
+  if (horizontalScrollView == draggingCopy)
   {
-    v12 = v6;
-    if (self->_presentationState == 3 && !a4)
+    v12 = draggingCopy;
+    if (self->_presentationState == 3 && !decelerate)
     {
       [(UIScrollView *)horizontalScrollView bounds];
       self->_layoutState.bounds.origin.x = v8;
@@ -3162,24 +3162,24 @@ LABEL_10:
       [(PKPassGroupView *)self _updateFrontmostPassViewIfNecessary];
       [(PKPassGroupView *)self _updatePageControlWithDisplayIndex];
       [(PKPassGroupView *)self _updateLoadedViews:1];
-      v6 = v12;
+      draggingCopy = v12;
     }
 
-    if (!a4)
+    if (!decelerate)
     {
       [(PKPassGroupView *)self setNeedsLayout];
-      v6 = v12;
+      draggingCopy = v12;
     }
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
+  deceleratingCopy = decelerating;
   horizontalScrollView = self->_horizontalScrollView;
-  if (horizontalScrollView == v4)
+  if (horizontalScrollView == deceleratingCopy)
   {
-    v10 = v4;
+    v10 = deceleratingCopy;
     if (self->_presentationState == 3)
     {
       [(UIScrollView *)horizontalScrollView bounds];
@@ -3193,17 +3193,17 @@ LABEL_10:
     }
 
     [(PKPassGroupView *)self setNeedsLayout];
-    v4 = v10;
+    deceleratingCopy = v10;
   }
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   horizontalScrollView = self->_horizontalScrollView;
-  if (horizontalScrollView == v4)
+  if (horizontalScrollView == animationCopy)
   {
-    v10 = v4;
+    v10 = animationCopy;
     if (self->_presentationState == 3)
     {
       [(UIScrollView *)horizontalScrollView bounds];
@@ -3217,17 +3217,17 @@ LABEL_10:
     }
 
     [(PKPassGroupView *)self setNeedsLayout];
-    v4 = v10;
+    animationCopy = v10;
   }
 }
 
-- (void)group:(id)a3 didInsertPass:(id)a4 withState:(id)a5 atIndex:(unint64_t)a6
+- (void)group:(id)group didInsertPass:(id)pass withState:(id)state atIndex:(unint64_t)index
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  groupCopy = group;
   [(PKPassGroupView *)self _updateCachedGroupState];
-  v9 = [(PKPassGroupView *)self _rangeOfVisibleIndices];
-  if (a6 < v9 || a6 - v9 >= v10)
+  _rangeOfVisibleIndices = [(PKPassGroupView *)self _rangeOfVisibleIndices];
+  if (index < _rangeOfVisibleIndices || index - _rangeOfVisibleIndices >= v10)
   {
     v11 = 0;
   }
@@ -3235,18 +3235,18 @@ LABEL_10:
   else
   {
     v11 = self->_presentationState != 3;
-    v12 = [(PKPassGroupView *)self _loadCardViewForIndex:a6 contentMode:[(PKPassGroupView *)self _defaultContentModeForIndex:a6]];
-    v13 = [v12 layer];
+    v12 = [(PKPassGroupView *)self _loadCardViewForIndex:index contentMode:[(PKPassGroupView *)self _defaultContentModeForIndex:index]];
+    layer = [v12 layer];
     MidX = CGRectGetMidX(self->_layoutState.bounds);
-    [v13 setPosition:{MidX, CGRectGetMaxY(self->_layoutState.bounds)}];
+    [layer setPosition:{MidX, CGRectGetMaxY(self->_layoutState.bounds)}];
   }
 
   selectedIndex = self->_layoutState.selectedIndex;
   if (self->_presentationState == 3)
   {
-    if (selectedIndex >= a6)
+    if (selectedIndex >= index)
     {
-      [v8 setFrontmostPassIndex:selectedIndex + 1];
+      [groupCopy setFrontmostPassIndex:selectedIndex + 1];
       [(PKPassGroupView *)self setFrontmostPassViewFromPassIndex:selectedIndex + 1];
       [(PKPassGroupView *)self _updateCachedGroupState];
       selectedIndex = self->_layoutState.selectedIndex;
@@ -3260,15 +3260,15 @@ LABEL_10:
     [(PKPassGroupView *)self setFrontmostPassViewFromPassIndex:self->_layoutState.selectedIndex];
   }
 
-  if ([v8 passCount] == 2)
+  if ([groupCopy passCount] == 2)
   {
     [(PKPassGroupView *)self sizeToFit];
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v16 = [(PKPassGroupView *)self _observers];
-    v17 = [v16 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    _observers = [(PKPassGroupView *)self _observers];
+    v17 = [_observers countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v17)
     {
       v18 = v17;
@@ -3279,7 +3279,7 @@ LABEL_10:
         {
           if (*v23 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(_observers);
           }
 
           v21 = *(*(&v22 + 1) + 8 * i);
@@ -3289,7 +3289,7 @@ LABEL_10:
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v18 = [_observers countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v18);
@@ -3303,19 +3303,19 @@ LABEL_10:
   [(PKPassGroupView *)self _updatePageControlWithDisplayIndex];
 }
 
-- (void)group:(id)a3 didUpdatePass:(id)a4 withState:(id)a5 atIndex:(unint64_t)a6
+- (void)group:(id)group didUpdatePass:(id)pass withState:(id)state atIndex:(unint64_t)index
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [v8 uniqueID];
-  v10 = [(NSMutableDictionary *)self->_passViewsByUniqueID objectForKey:v9];
+  passCopy = pass;
+  uniqueID = [passCopy uniqueID];
+  v10 = [(NSMutableDictionary *)self->_passViewsByUniqueID objectForKey:uniqueID];
   v11 = v10;
   if (v10)
   {
-    v12 = [(PKPassView *)v10 contentMode];
-    if ((v12 - 1) <= 2)
+    contentMode = [(PKPassView *)v10 contentMode];
+    if ((contentMode - 1) <= 2)
     {
-      [v8 loadImageSetSync:2 preheat:0];
+      [passCopy loadImageSetSync:2 preheat:0];
     }
 
     [(PKPassView *)v11 frame];
@@ -3325,22 +3325,22 @@ LABEL_10:
     v20 = v19;
     [(PKPassView *)v11 removeFromSuperview];
     [(PKPassView *)v11 setDelegate:0];
-    v30 = v9;
-    [(NSMutableDictionary *)self->_passViewsByUniqueID removeObjectForKey:v9];
-    v21 = [(PKPassGroupView *)self _loadCardViewForIndex:a6 contentMode:v12];
+    v30 = uniqueID;
+    [(NSMutableDictionary *)self->_passViewsByUniqueID removeObjectForKey:uniqueID];
+    v21 = [(PKPassGroupView *)self _loadCardViewForIndex:index contentMode:contentMode];
     [v21 setFrame:{v14, v16, v18, v20}];
     if (v11 == self->_frontmostPassView)
     {
       [(PKPassGroupView *)self setFrontmostPassView:v21];
     }
 
-    v31 = v8;
-    v22 = [(PKPassGroupView *)self _rangeOfVisibleIndices];
-    if (a6 >= v22 && a6 - v22 < v23)
+    v31 = passCopy;
+    _rangeOfVisibleIndices = [(PKPassGroupView *)self _rangeOfVisibleIndices];
+    if (index >= _rangeOfVisibleIndices && index - _rangeOfVisibleIndices < v23)
     {
       [(PKPassGroupView *)self setNeedsLayout];
       [(PKPassGroupView *)self layoutSubviewsAnimated:0];
-      [v21 setContentMode:v12 animated:0];
+      [v21 setContentMode:contentMode animated:0];
     }
 
     [(PKPassGroupView *)self setDimmer:0 animated:self->_dimmerValue];
@@ -3348,8 +3348,8 @@ LABEL_10:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v24 = [(PKPassGroupView *)self _observers];
-    v25 = [v24 countByEnumeratingWithState:&v32 objects:v36 count:16];
+    _observers = [(PKPassGroupView *)self _observers];
+    v25 = [_observers countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v25)
     {
       v26 = v25;
@@ -3360,7 +3360,7 @@ LABEL_10:
         {
           if (*v33 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(_observers);
           }
 
           v29 = *(*(&v32 + 1) + 8 * i);
@@ -3370,45 +3370,45 @@ LABEL_10:
           }
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v32 objects:v36 count:16];
+        v26 = [_observers countByEnumeratingWithState:&v32 objects:v36 count:16];
       }
 
       while (v26);
     }
 
-    v9 = v30;
-    v8 = v31;
+    uniqueID = v30;
+    passCopy = v31;
   }
 }
 
-- (void)group:(id)a3 didRemovePass:(id)a4 atIndex:(unint64_t)a5
+- (void)group:(id)group didRemovePass:(id)pass atIndex:(unint64_t)index
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  groupCopy = group;
+  passCopy = pass;
   [(PKPassGroupView *)self layoutIfNeeded];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __47__PKPassGroupView_group_didRemovePass_atIndex___block_invoke;
   v21[3] = &unk_1E8012C50;
   v21[4] = self;
-  v10 = v9;
+  v10 = passCopy;
   v22 = v10;
-  v23 = a5;
+  indexCopy = index;
   [(PKPassGroupView *)self _preventLayoutForAction:v21];
   [(PKPassGroupView *)self setNeedsLayout];
   if (self->_presentationState == 3)
   {
     [(PKPassGroupView *)self layoutSubviewsAnimated:1];
     *(&self->_layoutState + 16) &= ~4u;
-    if ([v8 passCount] == 1)
+    if ([groupCopy passCount] == 1)
     {
       v19 = 0u;
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v11 = [(PKPassGroupView *)self _observers];
-      v12 = [v11 countByEnumeratingWithState:&v17 objects:v24 count:16];
+      _observers = [(PKPassGroupView *)self _observers];
+      v12 = [_observers countByEnumeratingWithState:&v17 objects:v24 count:16];
       if (v12)
       {
         v13 = v12;
@@ -3419,7 +3419,7 @@ LABEL_10:
           {
             if (*v18 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(_observers);
             }
 
             v16 = *(*(&v17 + 1) + 8 * i);
@@ -3429,7 +3429,7 @@ LABEL_10:
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v17 objects:v24 count:16];
+          v13 = [_observers countByEnumeratingWithState:&v17 objects:v24 count:16];
         }
 
         while (v13);
@@ -3517,17 +3517,17 @@ void __47__PKPassGroupView_group_didRemovePass_atIndex___block_invoke(uint64_t a
   }
 }
 
-- (void)group:(id)a3 didUpdatePassState:(id)a4 forPass:(id)a5 atIndex:(unint64_t)a6
+- (void)group:(id)group didUpdatePassState:(id)state forPass:(id)pass atIndex:(unint64_t)index
 {
-  v8 = a4;
-  v10 = [a5 uniqueID];
-  v9 = [(NSMutableDictionary *)self->_passViewsByUniqueID objectForKey:v10];
-  [v9 setPassState:v8];
+  stateCopy = state;
+  uniqueID = [pass uniqueID];
+  v9 = [(NSMutableDictionary *)self->_passViewsByUniqueID objectForKey:uniqueID];
+  [v9 setPassState:stateCopy];
 }
 
-- (void)group:(id)a3 didMovePassFromIndex:(unint64_t)a4 toIndex:(unint64_t)a5
+- (void)group:(id)group didMovePassFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
-  [(PKPassGroupView *)self setNeedsLayout:a3];
+  [(PKPassGroupView *)self setNeedsLayout:group];
 
   [(PKPassGroupView *)self layoutSubviewsAnimated:1];
 }
@@ -3541,14 +3541,14 @@ void __47__PKPassGroupView_group_didRemovePass_atIndex___block_invoke(uint64_t a
   }
 }
 
-- (void)dismissBackOfPassIfNecessaryForUniqueID:(id)a3
+- (void)dismissBackOfPassIfNecessaryForUniqueID:(id)d
 {
-  v6 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_detailsVC);
-  if (WeakRetained && (!v6 || !self->_passBeingPresented || [v6 isEqualToString:?]))
+  if (WeakRetained && (!dCopy || !self->_passBeingPresented || [dCopy isEqualToString:?]))
   {
-    v5 = [WeakRetained presentingViewController];
-    [v5 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [WeakRetained presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
@@ -3595,9 +3595,9 @@ void __47__PKPassGroupView_group_didRemovePass_atIndex___block_invoke(uint64_t a
   }
 }
 
-- (void)passViewDidResize:(id)a3 animated:(BOOL)a4
+- (void)passViewDidResize:(id)resize animated:(BOOL)animated
 {
-  if (self->_frontmostPassView == a3)
+  if (self->_frontmostPassView == resize)
   {
     [(PKPassGroupView *)self sizeToFit];
 
@@ -3605,9 +3605,9 @@ void __47__PKPassGroupView_group_didRemovePass_atIndex___block_invoke(uint64_t a
   }
 }
 
-- (void)passViewExpandButtonTapped:(id)a3
+- (void)passViewExpandButtonTapped:(id)tapped
 {
-  if (self->_frontmostPassView == a3)
+  if (self->_frontmostPassView == tapped)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
@@ -3617,19 +3617,19 @@ void __47__PKPassGroupView_group_didRemovePass_atIndex___block_invoke(uint64_t a
   }
 }
 
-- (void)faceFrameDidChangeForPassView:(id)a3
+- (void)faceFrameDidChangeForPassView:(id)view
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (self->_frontmostPassView == v4)
+  viewCopy = view;
+  if (self->_frontmostPassView == viewCopy)
   {
     [(PKPassGroupView *)self updatePageControlFrameAnimated:0];
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(PKPassGroupView *)self _observers];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    _observers = [(PKPassGroupView *)self _observers];
+    v6 = [_observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -3641,20 +3641,20 @@ void __47__PKPassGroupView_group_didRemovePass_atIndex___block_invoke(uint64_t a
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_observers);
           }
 
           v10 = *(*(&v11 + 1) + 8 * v9);
           if (objc_opt_respondsToSelector())
           {
-            [v10 groupView:self faceViewFrameDidChangeForFrontmostPassView:v4];
+            [v10 groupView:self faceViewFrameDidChangeForFrontmostPassView:viewCopy];
           }
 
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [_observers countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -3665,34 +3665,34 @@ void __47__PKPassGroupView_group_didRemovePass_atIndex___block_invoke(uint64_t a
 - (id)_observers
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return allObjects;
 }
 
-- (void)addPassGroupViewObserver:(id)a3
+- (void)addPassGroupViewObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
   observers = self->_observers;
   if (!observers)
   {
-    v5 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
     v6 = self->_observers;
-    self->_observers = v5;
+    self->_observers = pk_weakObjectsHashTableUsingPointerPersonality;
 
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v7];
+  [(NSHashTable *)observers addObject:observerCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removePassGroupViewObserver:(id)a3
+- (void)removePassGroupViewObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }

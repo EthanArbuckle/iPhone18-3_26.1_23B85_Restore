@@ -2,29 +2,29 @@
 - (SDAirDropAlertManagerDelegate)classroomDelegate;
 - (SDAirDropAlertManagerDelegate)delegate;
 - (SDAirDropTransferManager)init;
-- (id)itemTypesForTransfer:(id)a3;
+- (id)itemTypesForTransfer:(id)transfer;
 - (void)activate;
-- (void)askEventForRecordID:(id)a3 withResults:(id)a4;
-- (void)cancelEventForRecordID:(id)a3 withResults:(id)a4;
-- (void)cleanUpTransfer:(id)a3;
-- (void)cleanUpURL:(id)a3;
-- (void)connectionEstablished:(id)a3;
-- (void)connectionInvalidated:(id)a3;
-- (void)errorEventForRecordID:(id)a3 withResults:(id)a4;
-- (void)failTransfer:(id)a3 withState:(unint64_t)a4 failureReason:(unint64_t)a5;
-- (void)finishedEventForRecordID:(id)a3 withResults:(id)a4;
-- (void)handlerFailedForTransfer:(id)a3;
+- (void)askEventForRecordID:(id)d withResults:(id)results;
+- (void)cancelEventForRecordID:(id)d withResults:(id)results;
+- (void)cleanUpTransfer:(id)transfer;
+- (void)cleanUpURL:(id)l;
+- (void)connectionEstablished:(id)established;
+- (void)connectionInvalidated:(id)invalidated;
+- (void)errorEventForRecordID:(id)d withResults:(id)results;
+- (void)failTransfer:(id)transfer withState:(unint64_t)state failureReason:(unint64_t)reason;
+- (void)finishedEventForRecordID:(id)d withResults:(id)results;
+- (void)handlerFailedForTransfer:(id)transfer;
 - (void)invalidate;
 - (void)loadAllPersistedTransfers;
-- (void)notifyObserversOfRemovedTransfer:(id)a3;
-- (void)notifyObserversOfUpdatedTransfer:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)progressEventForRecordID:(id)a3 withResults:(id)a4;
-- (void)removeTransfer:(id)a3 shouldCleanup:(BOOL)a4;
-- (void)setHandler:(id)a3 forTransfer:(id)a4;
-- (void)setTransferState:(unint64_t)a3 forTransfer:(id)a4 shouldNotify:(BOOL)a5 shouldCleanup:(BOOL)a6;
-- (void)transfer:(id)a3 actionTriggeredForAction:(id)a4;
-- (void)transferUserResponseUpdated:(id)a3;
+- (void)notifyObserversOfRemovedTransfer:(id)transfer;
+- (void)notifyObserversOfUpdatedTransfer:(id)transfer;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)progressEventForRecordID:(id)d withResults:(id)results;
+- (void)removeTransfer:(id)transfer shouldCleanup:(BOOL)cleanup;
+- (void)setHandler:(id)handler forTransfer:(id)transfer;
+- (void)setTransferState:(unint64_t)state forTransfer:(id)transfer shouldNotify:(BOOL)notify shouldCleanup:(BOOL)cleanup;
+- (void)transfer:(id)transfer actionTriggeredForAction:(id)action;
+- (void)transferUserResponseUpdated:(id)updated;
 @end
 
 @implementation SDAirDropTransferManager
@@ -72,133 +72,133 @@
   [(SDXPCDaemon *)&v2 _invalidate];
 }
 
-- (void)notifyObserversOfUpdatedTransfer:(id)a3
+- (void)notifyObserversOfUpdatedTransfer:(id)transfer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  transferCopy = transfer;
+  v5 = transferCopy;
+  if (transferCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000C9E04;
     v6[3] = &unk_1008CF8A0;
-    v7 = v4;
+    v7 = transferCopy;
     [(SDAirDropTransferManager *)self _enumerateRemoteObjectProxiesUsingBlock:v6];
   }
 }
 
-- (void)notifyObserversOfRemovedTransfer:(id)a3
+- (void)notifyObserversOfRemovedTransfer:(id)transfer
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000C9EA8;
   v5[3] = &unk_1008CF8A0;
-  v6 = [a3 copy];
+  v6 = [transfer copy];
   v4 = v6;
   [(SDAirDropTransferManager *)self _enumerateRemoteObjectProxiesUsingBlock:v5];
 }
 
-- (void)removeTransfer:(id)a3 shouldCleanup:(BOOL)a4
+- (void)removeTransfer:(id)transfer shouldCleanup:(BOOL)cleanup
 {
-  v4 = a4;
-  v6 = a3;
+  cleanupCopy = cleanup;
+  transferCopy = transfer;
   v7 = airdrop_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 identifier];
+    identifier = [transferCopy identifier];
     v14 = 138412290;
-    v15 = v8;
+    v15 = identifier;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Removing transfer with id %@", &v14, 0xCu);
   }
 
-  v9 = [(SDAirDropTransferManager *)self transferIdentifierToHandler];
-  v10 = [v6 identifier];
-  [v9 setObject:0 forKeyedSubscript:v10];
+  transferIdentifierToHandler = [(SDAirDropTransferManager *)self transferIdentifierToHandler];
+  identifier2 = [transferCopy identifier];
+  [transferIdentifierToHandler setObject:0 forKeyedSubscript:identifier2];
 
-  v11 = [(SDAirDropTransferManager *)self transferIdentifierToTransfer];
-  v12 = [v6 identifier];
-  [v11 setObject:0 forKeyedSubscript:v12];
+  transferIdentifierToTransfer = [(SDAirDropTransferManager *)self transferIdentifierToTransfer];
+  identifier3 = [transferCopy identifier];
+  [transferIdentifierToTransfer setObject:0 forKeyedSubscript:identifier3];
 
-  v13 = [(SDAirDropTransferManager *)self kvoObservingKeys];
-  [v6 removeObserver:self forKeyPaths:v13 context:off_100970518];
+  kvoObservingKeys = [(SDAirDropTransferManager *)self kvoObservingKeys];
+  [transferCopy removeObserver:self forKeyPaths:kvoObservingKeys context:off_100970518];
 
-  [(SDAirDropTransferManager *)self notifyObserversOfRemovedTransfer:v6];
-  if (v4)
+  [(SDAirDropTransferManager *)self notifyObserversOfRemovedTransfer:transferCopy];
+  if (cleanupCopy)
   {
-    [(SDAirDropTransferManager *)self cleanUpTransfer:v6];
+    [(SDAirDropTransferManager *)self cleanUpTransfer:transferCopy];
   }
 }
 
-- (void)cleanUpTransfer:(id)a3
+- (void)cleanUpTransfer:(id)transfer
 {
-  v4 = a3;
+  transferCopy = transfer;
   v5 = airdrop_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
+    identifier = [transferCopy identifier];
     v8 = 138412290;
-    v9 = v6;
+    v9 = identifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Cleaning up transfer with id %@", &v8, 0xCu);
   }
 
-  v7 = [SDAirDropHandler transferURLForTransfer:v4];
+  v7 = [SDAirDropHandler transferURLForTransfer:transferCopy];
   [(SDAirDropTransferManager *)self cleanUpURL:v7];
 }
 
-- (void)askEventForRecordID:(id)a3 withResults:(id)a4
+- (void)askEventForRecordID:(id)d withResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[SFAirDropTransfer alloc] initWithIdentifier:v6 initialInformation:v7];
-  [v8 updateWithInformation:v7];
+  dCopy = d;
+  resultsCopy = results;
+  v8 = [[SFAirDropTransfer alloc] initWithIdentifier:dCopy initialInformation:resultsCopy];
+  [v8 updateWithInformation:resultsCopy];
   v9 = [(SDAirDropTransferManager *)self itemTypesForTransfer:v8];
-  v10 = [v8 metaData];
-  [v10 setItems:v9];
+  metaData = [v8 metaData];
+  [metaData setItems:v9];
 
   v11 = airdrop_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 identifier];
-    v13 = [v8 metaData];
-    v14 = [v13 items];
+    identifier = [v8 identifier];
+    metaData2 = [v8 metaData];
+    items = [metaData2 items];
     v25 = 138543874;
-    v26 = v12;
+    v26 = identifier;
     v27 = 2112;
     v28 = v8;
     v29 = 2112;
-    v30 = v14;
+    v30 = items;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[Transfer: %{public}@]: New incoming transfer %@ with items: %@", &v25, 0x20u);
   }
 
-  v15 = [SFAirDropTransferTestingSnapshot writeSnapshotForTransfer:v8 initialInfo:v7 name:@"before_handler" error:0];
-  v16 = [(SDAirDropTransferManager *)self transferIdentifierToTransfer];
-  [v16 setObject:v8 forKeyedSubscript:v6];
+  v15 = [SFAirDropTransferTestingSnapshot writeSnapshotForTransfer:v8 initialInfo:resultsCopy name:@"before_handler" error:0];
+  transferIdentifierToTransfer = [(SDAirDropTransferManager *)self transferIdentifierToTransfer];
+  [transferIdentifierToTransfer setObject:v8 forKeyedSubscript:dCopy];
 
   v17 = [SDAirDropHandlerFactory handlerForTransfer:v8];
-  v18 = [(SDAirDropTransferManager *)self kvoObservingKeys];
-  [v8 addObserver:self forKeyPaths:v18 options:0 context:off_100970518];
+  kvoObservingKeys = [(SDAirDropTransferManager *)self kvoObservingKeys];
+  [v8 addObserver:self forKeyPaths:kvoObservingKeys options:0 context:off_100970518];
 
   if (v17)
   {
     [(SDAirDropTransferManager *)self setHandler:v17 forTransfer:v8];
-    v19 = [v8 metaData];
-    if ([v19 canAutoAccept])
+    metaData3 = [v8 metaData];
+    if ([metaData3 canAutoAccept])
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if ((isKindOfClass & 1) == 0)
       {
-        v21 = [v8 metaData];
-        [v21 setDidAutoAccept:1];
+        metaData4 = [v8 metaData];
+        [metaData4 setDidAutoAccept:1];
 
         [(SDAirDropTransferManager *)self setTransferState:1 forTransfer:v8 shouldNotify:0];
-        v22 = [v8 possibleActions];
-        v23 = [v22 firstObject];
-        [(SDAirDropTransferManager *)self transfer:v8 actionTriggeredForAction:v23];
+        possibleActions = [v8 possibleActions];
+        firstObject = [possibleActions firstObject];
+        [(SDAirDropTransferManager *)self transfer:v8 actionTriggeredForAction:firstObject];
 
 LABEL_10:
-        v24 = [SFAirDropTransferTestingSnapshot writeSnapshotForTransfer:v8 initialInfo:v7 name:@"after_handler" error:0];
+        v24 = [SFAirDropTransferTestingSnapshot writeSnapshotForTransfer:v8 initialInfo:resultsCopy name:@"after_handler" error:0];
         goto LABEL_11;
       }
     }
@@ -215,16 +215,16 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)progressEventForRecordID:(id)a3 withResults:(id)a4
+- (void)progressEventForRecordID:(id)d withResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SDAirDropTransferManager *)self transferIdentifierToTransfer];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  dCopy = d;
+  resultsCopy = results;
+  transferIdentifierToTransfer = [(SDAirDropTransferManager *)self transferIdentifierToTransfer];
+  v9 = [transferIdentifierToTransfer objectForKeyedSubscript:dCopy];
 
   if (v9)
   {
-    [v9 updateWithInformation:v7];
+    [v9 updateWithInformation:resultsCopy];
     if ([v9 transferState] == 1)
     {
       [(SDAirDropTransferManager *)self setTransferState:2 forTransfer:v9 shouldNotify:1];
@@ -241,16 +241,16 @@ LABEL_11:
   }
 }
 
-- (void)cancelEventForRecordID:(id)a3 withResults:(id)a4
+- (void)cancelEventForRecordID:(id)d withResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SDAirDropTransferManager *)self transferIdentifierToTransfer];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  dCopy = d;
+  resultsCopy = results;
+  transferIdentifierToTransfer = [(SDAirDropTransferManager *)self transferIdentifierToTransfer];
+  v9 = [transferIdentifierToTransfer objectForKeyedSubscript:dCopy];
 
   if (v9)
   {
-    [v9 updateWithInformation:v7];
+    [v9 updateWithInformation:resultsCopy];
     [(SDAirDropTransferManager *)self failTransfer:v9 withState:3 failureReason:1];
   }
 
@@ -264,12 +264,12 @@ LABEL_11:
   }
 }
 
-- (void)errorEventForRecordID:(id)a3 withResults:(id)a4
+- (void)errorEventForRecordID:(id)d withResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SDAirDropTransferManager *)self transferIdentifierToTransfer];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  dCopy = d;
+  resultsCopy = results;
+  transferIdentifierToTransfer = [(SDAirDropTransferManager *)self transferIdentifierToTransfer];
+  v9 = [transferIdentifierToTransfer objectForKeyedSubscript:dCopy];
 
   v10 = airdrop_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_ERROR);
@@ -280,7 +280,7 @@ LABEL_11:
       sub_1000CC458();
     }
 
-    [v9 updateWithInformation:v7];
+    [v9 updateWithInformation:resultsCopy];
     [(SDAirDropTransferManager *)self failTransfer:v9 withState:9 failureReason:1];
   }
 
@@ -293,16 +293,16 @@ LABEL_11:
   }
 }
 
-- (void)finishedEventForRecordID:(id)a3 withResults:(id)a4
+- (void)finishedEventForRecordID:(id)d withResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SDAirDropTransferManager *)self transferIdentifierToTransfer];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  dCopy = d;
+  resultsCopy = results;
+  transferIdentifierToTransfer = [(SDAirDropTransferManager *)self transferIdentifierToTransfer];
+  v9 = [transferIdentifierToTransfer objectForKeyedSubscript:dCopy];
 
   if (v9)
   {
-    [v9 updateWithInformation:v7];
+    [v9 updateWithInformation:resultsCopy];
     [(SDAirDropTransferManager *)self setTransferState:4 forTransfer:v9 shouldNotify:1];
   }
 
@@ -316,16 +316,16 @@ LABEL_11:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (off_100970518 == a6)
+  pathCopy = path;
+  objectCopy = object;
+  v12 = objectCopy;
+  if (off_100970518 == context)
   {
-    v13 = v11;
+    v13 = objectCopy;
     v14 = NSStringFromSelector("userResponse");
-    v15 = [v10 isEqual:v14];
+    v15 = [pathCopy isEqual:v14];
 
     if (v15)
     {
@@ -335,7 +335,7 @@ LABEL_11:
     else
     {
       v16 = NSStringFromSelector("needsAction");
-      v17 = [v10 isEqual:v16];
+      v17 = [pathCopy isEqual:v16];
 
       if (v17)
       {
@@ -348,80 +348,80 @@ LABEL_11:
   {
     v18.receiver = self;
     v18.super_class = SDAirDropTransferManager;
-    [(SDAirDropTransferManager *)&v18 observeValueForKeyPath:v10 ofObject:v11 change:a5 context:a6];
+    [(SDAirDropTransferManager *)&v18 observeValueForKeyPath:pathCopy ofObject:objectCopy change:change context:context];
   }
 }
 
-- (void)transferUserResponseUpdated:(id)a3
+- (void)transferUserResponseUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [v4 userResponse];
+  updatedCopy = updated;
+  userResponse = [updatedCopy userResponse];
   v6 = airdrop_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = SFAirDropTransferUserResponseToString();
-    v8 = [v4 identifier];
+    identifier = [updatedCopy identifier];
     *buf = 138412546;
     v32 = v7;
     v33 = 2112;
-    v34 = v8;
+    v34 = identifier;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "User response: %@ for transfer with id %@", buf, 0x16u);
   }
 
-  if (v5 <= 1)
+  if (userResponse <= 1)
   {
-    if (!v5)
+    if (!userResponse)
     {
       goto LABEL_18;
     }
 
-    if (v5 == 1)
+    if (userResponse == 1)
     {
-      v9 = [(SDAirDropTransferManager *)self transferIdentifierToHandler];
-      v10 = [v4 identifier];
-      v11 = [v9 objectForKeyedSubscript:v10];
+      transferIdentifierToHandler = [(SDAirDropTransferManager *)self transferIdentifierToHandler];
+      identifier2 = [updatedCopy identifier];
+      v11 = [transferIdentifierToHandler objectForKeyedSubscript:identifier2];
 
-      v12 = [v4 customDestinationURL];
+      customDestinationURL = [updatedCopy customDestinationURL];
       if (objc_opt_respondsToSelector())
       {
-        v13 = [v11 shouldExtractMediaFromPhotosBundles];
+        shouldExtractMediaFromPhotosBundles = [v11 shouldExtractMediaFromPhotosBundles];
       }
 
       else
       {
-        v13 = 0;
+        shouldExtractMediaFromPhotosBundles = 0;
       }
 
-      v19 = [(SDAirDropTransferManager *)self delegate];
-      v20 = [v4 identifier];
-      [v19 alertManager:self acceptingTransferWithRecordID:v20 withDestinationURL:v12 shouldExtractMediaFromPhotosBundlesForRecordID:v13];
+      delegate = [(SDAirDropTransferManager *)self delegate];
+      identifier3 = [updatedCopy identifier];
+      [delegate alertManager:self acceptingTransferWithRecordID:identifier3 withDestinationURL:customDestinationURL shouldExtractMediaFromPhotosBundlesForRecordID:shouldExtractMediaFromPhotosBundles];
 
-      v21 = [(SDAirDropTransferManager *)self classroomDelegate];
-      v22 = [v4 identifier];
-      [v21 alertManager:self acceptingTransferWithRecordID:v22 withDestinationURL:v12 shouldExtractMediaFromPhotosBundlesForRecordID:v13];
+      classroomDelegate = [(SDAirDropTransferManager *)self classroomDelegate];
+      identifier4 = [updatedCopy identifier];
+      [classroomDelegate alertManager:self acceptingTransferWithRecordID:identifier4 withDestinationURL:customDestinationURL shouldExtractMediaFromPhotosBundlesForRecordID:shouldExtractMediaFromPhotosBundles];
 
-      [(SDAirDropTransferManager *)self notifyObserversOfUpdatedTransfer:v4];
+      [(SDAirDropTransferManager *)self notifyObserversOfUpdatedTransfer:updatedCopy];
       goto LABEL_18;
     }
 
     goto LABEL_12;
   }
 
-  if (v5 == 2)
+  if (userResponse == 2)
   {
-    v15 = [(SDAirDropTransferManager *)self delegate];
-    v16 = [v4 identifier];
-    [v15 alertManager:self cancelingTransferWithRecordID:v16 withFailureReason:{objc_msgSend(v4, "failureReason")}];
+    delegate2 = [(SDAirDropTransferManager *)self delegate];
+    identifier5 = [updatedCopy identifier];
+    [delegate2 alertManager:self cancelingTransferWithRecordID:identifier5 withFailureReason:{objc_msgSend(updatedCopy, "failureReason")}];
 
-    v17 = [(SDAirDropTransferManager *)self classroomDelegate];
-    v18 = [v4 identifier];
-    [v17 alertManager:self cancelingTransferWithRecordID:v18 withFailureReason:{objc_msgSend(v4, "failureReason")}];
+    classroomDelegate2 = [(SDAirDropTransferManager *)self classroomDelegate];
+    identifier6 = [updatedCopy identifier];
+    [classroomDelegate2 alertManager:self cancelingTransferWithRecordID:identifier6 withFailureReason:{objc_msgSend(updatedCopy, "failureReason")}];
 
-    [(SDAirDropTransferManager *)self removeTransfer:v4 shouldCleanup:1];
+    [(SDAirDropTransferManager *)self removeTransfer:updatedCopy shouldCleanup:1];
     goto LABEL_18;
   }
 
-  if (v5 != 3)
+  if (userResponse != 3)
   {
 LABEL_12:
     v14 = airdrop_log();
@@ -433,24 +433,24 @@ LABEL_12:
     goto LABEL_18;
   }
 
-  if ([v4 transferState] == 7)
+  if ([updatedCopy transferState] == 7)
   {
-    [(SDAirDropTransferManager *)self setTransferState:8 forTransfer:v4 shouldNotify:1 shouldCleanup:1];
+    [(SDAirDropTransferManager *)self setTransferState:8 forTransfer:updatedCopy shouldNotify:1 shouldCleanup:1];
   }
 
 LABEL_18:
-  v23 = [v4 metaData];
-  if (v23)
+  metaData = [updatedCopy metaData];
+  if (metaData)
   {
-    v24 = v23;
-    v25 = [v4 metaData];
-    v26 = [v25 transferTypes];
+    v24 = metaData;
+    metaData2 = [updatedCopy metaData];
+    transferTypes = [metaData2 transferTypes];
 
-    if ((v26 & 0x40000) != 0)
+    if ((transferTypes & 0x40000) != 0)
     {
-      if ([v4 userResponse])
+      if ([updatedCopy userResponse])
       {
-        v27 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 userResponse]);
+        v27 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [updatedCopy userResponse]);
         v30 = v27;
         v28 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1];
 
@@ -460,17 +460,17 @@ LABEL_18:
   }
 }
 
-- (void)transfer:(id)a3 actionTriggeredForAction:(id)a4
+- (void)transfer:(id)transfer actionTriggeredForAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SDAirDropTransferManager *)self transferIdentifierToHandler];
-  v9 = [v6 identifier];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  transferCopy = transfer;
+  actionCopy = action;
+  transferIdentifierToHandler = [(SDAirDropTransferManager *)self transferIdentifierToHandler];
+  identifier = [transferCopy identifier];
+  v10 = [transferIdentifierToHandler objectForKeyedSubscript:identifier];
 
   if (v10)
   {
-    [v10 actionSelected:v7];
+    [v10 actionSelected:actionCopy];
   }
 
   else
@@ -483,15 +483,15 @@ LABEL_18:
   }
 }
 
-- (void)connectionEstablished:(id)a3
+- (void)connectionEstablished:(id)established
 {
-  v4 = a3;
+  establishedCopy = established;
   v5 = airdrop_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 sd_description];
+    sd_description = [establishedCopy sd_description];
     *buf = 138412290;
-    v9 = v6;
+    v9 = sd_description;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "New connection established %@", buf, 0xCu);
   }
 
@@ -500,34 +500,34 @@ LABEL_18:
   v7[2] = sub_1000CAEE0;
   v7[3] = &unk_1008CF8C8;
   v7[4] = self;
-  [(SDAirDropTransferManager *)self _remoteObjectProxyForConnection:v4 usingBlock:v7];
+  [(SDAirDropTransferManager *)self _remoteObjectProxyForConnection:establishedCopy usingBlock:v7];
 }
 
-- (void)connectionInvalidated:(id)a3
+- (void)connectionInvalidated:(id)invalidated
 {
-  v3 = a3;
+  invalidatedCopy = invalidated;
   v4 = airdrop_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 sd_description];
+    sd_description = [invalidatedCopy sd_description];
     v6 = 138412290;
-    v7 = v5;
+    v7 = sd_description;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Connection invalidated %@", &v6, 0xCu);
   }
 }
 
-- (void)setHandler:(id)a3 forTransfer:(id)a4
+- (void)setHandler:(id)handler forTransfer:(id)transfer
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  transferCopy = transfer;
   v8 = airdrop_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 identifier];
+    identifier = [transferCopy identifier];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
     *buf = 138543618;
-    v25 = v9;
+    v25 = identifier;
     v26 = 2112;
     v27 = v11;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[Transfer: %{public}@] Setting handler of class %@", buf, 0x16u);
@@ -538,59 +538,59 @@ LABEL_18:
   v22[2] = sub_1000CB2D4;
   v22[3] = &unk_1008CF918;
   v22[4] = self;
-  v12 = v7;
+  v12 = transferCopy;
   v23 = v12;
-  [v6 setUpdateTransferStateHandler:v22];
+  [handlerCopy setUpdateTransferStateHandler:v22];
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = sub_1000CB39C;
   v19 = &unk_1008CF990;
-  v20 = self;
+  selfCopy = self;
   v21 = v12;
   v13 = v12;
-  [v6 setCompletionHandler:&v16];
-  [v6 activate];
-  v14 = [(SDAirDropTransferManager *)self transferIdentifierToHandler];
-  v15 = [v13 identifier];
-  [v14 setObject:v6 forKeyedSubscript:v15];
+  [handlerCopy setCompletionHandler:&v16];
+  [handlerCopy activate];
+  transferIdentifierToHandler = [(SDAirDropTransferManager *)self transferIdentifierToHandler];
+  identifier2 = [v13 identifier];
+  [transferIdentifierToHandler setObject:handlerCopy forKeyedSubscript:identifier2];
 }
 
-- (void)handlerFailedForTransfer:(id)a3
+- (void)handlerFailedForTransfer:(id)transfer
 {
-  v4 = a3;
-  v5 = [(SDAirDropTransferManager *)self transferIdentifierToHandler];
-  v6 = [v4 identifier];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  transferCopy = transfer;
+  transferIdentifierToHandler = [(SDAirDropTransferManager *)self transferIdentifierToHandler];
+  identifier = [transferCopy identifier];
+  v7 = [transferIdentifierToHandler objectForKeyedSubscript:identifier];
 
   v8 = airdrop_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    sub_1000CC6A8(v7, v4);
+    sub_1000CC6A8(v7, transferCopy);
   }
 
-  v9 = [[SDAirDropHandleriCloudDrive alloc] initWithTransfer:v4];
+  v9 = [[SDAirDropHandleriCloudDrive alloc] initWithTransfer:transferCopy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 || ![(SDAirDropHandleriCloudDrive *)v9 canHandleTransfer])
   {
-    [(SDAirDropTransferManager *)self failTransfer:v4 withState:9 failureReason:3];
+    [(SDAirDropTransferManager *)self failTransfer:transferCopy withState:9 failureReason:3];
   }
 
   else
   {
-    [(SDAirDropTransferManager *)self setHandler:v9 forTransfer:v4];
-    v10 = [(SDAirDropTransferManager *)self transferIdentifierToHandler];
-    v11 = [v4 identifier];
-    v12 = [v10 objectForKeyedSubscript:v11];
+    [(SDAirDropTransferManager *)self setHandler:v9 forTransfer:transferCopy];
+    transferIdentifierToHandler2 = [(SDAirDropTransferManager *)self transferIdentifierToHandler];
+    identifier2 = [transferCopy identifier];
+    v12 = [transferIdentifierToHandler2 objectForKeyedSubscript:identifier2];
     [v12 transferUpdated];
 
-    [(SDAirDropTransferManager *)self notifyObserversOfUpdatedTransfer:v4];
+    [(SDAirDropTransferManager *)self notifyObserversOfUpdatedTransfer:transferCopy];
   }
 }
 
-- (void)failTransfer:(id)a3 withState:(unint64_t)a4 failureReason:(unint64_t)a5
+- (void)failTransfer:(id)transfer withState:(unint64_t)state failureReason:(unint64_t)reason
 {
-  v9 = a3;
-  if (a4 != 3 && a4 != 9)
+  transferCopy = transfer;
+  if (state != 3 && state != 9)
   {
     v10 = +[NSAssertionHandler currentHandler];
     v11 = SFAirDropTransferStateToString();
@@ -603,64 +603,64 @@ LABEL_18:
     sub_1000CC74C();
   }
 
-  [v9 setFailureReason:a5];
+  [transferCopy setFailureReason:reason];
   v13 = off_1008C8CF8;
-  if (a5 != 2)
+  if (reason != 2)
   {
     v13 = off_1008C8CF0;
   }
 
-  v14 = [objc_alloc(*v13) initWithTransfer:v9];
-  [(SDAirDropTransferManager *)self setHandler:v14 forTransfer:v9];
+  v14 = [objc_alloc(*v13) initWithTransfer:transferCopy];
+  [(SDAirDropTransferManager *)self setHandler:v14 forTransfer:transferCopy];
   [v14 setCompletionHandler:&stru_1008CF9D0];
-  [(SDAirDropTransferManager *)self setTransferState:a4 forTransfer:v9 shouldNotify:1];
+  [(SDAirDropTransferManager *)self setTransferState:state forTransfer:transferCopy shouldNotify:1];
 }
 
-- (void)setTransferState:(unint64_t)a3 forTransfer:(id)a4 shouldNotify:(BOOL)a5 shouldCleanup:(BOOL)a6
+- (void)setTransferState:(unint64_t)state forTransfer:(id)transfer shouldNotify:(BOOL)notify shouldCleanup:(BOOL)cleanup
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a4;
+  cleanupCopy = cleanup;
+  notifyCopy = notify;
+  transferCopy = transfer;
   v11 = airdrop_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     sub_1000CC7FC();
   }
 
-  [v10 setTransferState:a3];
-  v12 = [(SDAirDropTransferManager *)self transferIdentifierToHandler];
-  v13 = [v10 identifier];
-  v14 = [v12 objectForKeyedSubscript:v13];
+  [transferCopy setTransferState:state];
+  transferIdentifierToHandler = [(SDAirDropTransferManager *)self transferIdentifierToHandler];
+  identifier = [transferCopy identifier];
+  v14 = [transferIdentifierToHandler objectForKeyedSubscript:identifier];
   [v14 transferUpdated];
 
-  if (v7)
+  if (notifyCopy)
   {
-    [(SDAirDropTransferManager *)self notifyObserversOfUpdatedTransfer:v10];
+    [(SDAirDropTransferManager *)self notifyObserversOfUpdatedTransfer:transferCopy];
   }
 
-  if (v6)
+  if (cleanupCopy)
   {
-    [(SDAirDropTransferManager *)self removeTransfer:v10 shouldCleanup:1];
+    [(SDAirDropTransferManager *)self removeTransfer:transferCopy shouldCleanup:1];
   }
 }
 
-- (void)cleanUpURL:(id)a3
+- (void)cleanUpURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
     v4 = airdrop_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [v3 path];
+      path = [lCopy path];
       *buf = 138412290;
-      v12 = v5;
+      v12 = path;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Cleaning up URL %@", buf, 0xCu);
     }
 
     v6 = +[NSFileManager defaultManager];
     v10 = 0;
-    v7 = [v6 removeItemAtURL:v3 error:&v10];
+    v7 = [v6 removeItemAtURL:lCopy error:&v10];
     v8 = v10;
 
     if ((v7 & 1) == 0)
@@ -749,9 +749,9 @@ LABEL_18:
   }
 }
 
-- (id)itemTypesForTransfer:(id)a3
+- (id)itemTypesForTransfer:(id)transfer
 {
-  v3 = a3;
+  transferCopy = transfer;
   v42[0] = _NSConcreteStackBlock;
   v42[1] = 3221225472;
   v42[2] = sub_1000CC120;
@@ -763,11 +763,11 @@ LABEL_18:
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v32 = v3;
-  v5 = [v3 metaData];
-  v6 = [v5 rawFiles];
+  v32 = transferCopy;
+  metaData = [transferCopy metaData];
+  rawFiles = [metaData rawFiles];
 
-  v7 = [v6 countByEnumeratingWithState:&v38 objects:v45 count:16];
+  v7 = [rawFiles countByEnumeratingWithState:&v38 objects:v45 count:16];
   if (v7)
   {
     v8 = v7;
@@ -780,7 +780,7 @@ LABEL_18:
       {
         if (*v39 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(rawFiles);
         }
 
         v13 = *(*(&v38 + 1) + 8 * i);
@@ -789,7 +789,7 @@ LABEL_18:
         (v4[2])(v4, v14, v15, 1);
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v38 objects:v45 count:16];
+      v8 = [rawFiles countByEnumeratingWithState:&v38 objects:v45 count:16];
     }
 
     while (v8);
@@ -823,18 +823,18 @@ LABEL_18:
           v23 = +[LSApplicationWorkspace defaultWorkspace];
           v24 = [v23 applicationsAvailableForOpeningURL:v20];
 
-          v25 = [v24 firstObject];
-          v26 = [v25 applicationIdentifier];
+          firstObject = [v24 firstObject];
+          applicationIdentifier = [firstObject applicationIdentifier];
 
-          if (v26)
+          if (applicationIdentifier)
           {
-            (v4[2])(v4, v26, 0, 0);
+            (v4[2])(v4, applicationIdentifier, 0, 0);
           }
 
           else
           {
-            v27 = [v22 scheme];
-            (v4[2])(v4, v27, 0, 0);
+            scheme = [v22 scheme];
+            (v4[2])(v4, scheme, 0, 0);
           }
         }
       }
@@ -845,8 +845,8 @@ LABEL_18:
     while (v17);
   }
 
-  v28 = [v31 allValues];
-  v29 = [NSSet setWithArray:v28];
+  allValues = [v31 allValues];
+  v29 = [NSSet setWithArray:allValues];
 
   return v29;
 }

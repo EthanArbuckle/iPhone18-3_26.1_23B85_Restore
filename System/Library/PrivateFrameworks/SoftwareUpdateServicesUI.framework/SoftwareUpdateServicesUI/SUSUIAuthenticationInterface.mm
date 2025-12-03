@@ -1,13 +1,13 @@
 @interface SUSUIAuthenticationInterface
 + (id)sharedInstance;
-- (BOOL)attemptAuthentication:(id)a3 outBlocked:(BOOL *)a4;
+- (BOOL)attemptAuthentication:(id)authentication outBlocked:(BOOL *)blocked;
 - (BOOL)isBlocked;
 - (SUSUIAuthenticationInterface)init;
-- (SUSUIAuthenticationInterface)initWithKeybag:(id)a3;
+- (SUSUIAuthenticationInterface)initWithKeybag:(id)keybag;
 - (unint64_t)_currentFailedAttemptsCount;
-- (void)_setNumberOfFailedAuthenticationAttempts:(unint64_t)a3;
-- (void)_setPasscodeLocked:(BOOL)a3;
-- (void)keybagInterface:(id)a3 passcodeLockedStateDidChange:(BOOL)a4;
+- (void)_setNumberOfFailedAuthenticationAttempts:(unint64_t)attempts;
+- (void)_setPasscodeLocked:(BOOL)locked;
+- (void)keybagInterface:(id)interface passcodeLockedStateDidChange:(BOOL)change;
 - (void)resetAttempts;
 @end
 
@@ -39,53 +39,53 @@ uint64_t __46__SUSUIAuthenticationInterface_sharedInstance__block_invoke()
 
 - (SUSUIAuthenticationInterface)init
 {
-  v6 = self;
-  v4 = [MEMORY[0x277D648A8] sharedInstance];
-  v6 = 0;
-  v6 = [(SUSUIAuthenticationInterface *)self initWithKeybag:?];
-  v5 = MEMORY[0x277D82BE0](v6);
-  MEMORY[0x277D82BD8](v4);
-  objc_storeStrong(&v6, 0);
+  selfCopy = self;
+  mEMORY[0x277D648A8] = [MEMORY[0x277D648A8] sharedInstance];
+  selfCopy = 0;
+  selfCopy = [(SUSUIAuthenticationInterface *)self initWithKeybag:?];
+  v5 = MEMORY[0x277D82BE0](selfCopy);
+  MEMORY[0x277D82BD8](mEMORY[0x277D648A8]);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (SUSUIAuthenticationInterface)initWithKeybag:(id)a3
+- (SUSUIAuthenticationInterface)initWithKeybag:(id)keybag
 {
   v15 = *MEMORY[0x277D85DE8];
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v13;
-  v13 = 0;
+  objc_storeStrong(location, keybag);
+  v3 = selfCopy;
+  selfCopy = 0;
   v11.receiver = v3;
   v11.super_class = SUSUIAuthenticationInterface;
   v9 = [(SUSUIAuthenticationInterface *)&v11 init];
-  v13 = v9;
-  objc_storeStrong(&v13, v9);
+  selfCopy = v9;
+  objc_storeStrong(&selfCopy, v9);
   if (v9)
   {
     v4 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.softwareupdateservices.security"];
-    defaults = v13->_defaults;
-    v13->_defaults = v4;
+    defaults = selfCopy->_defaults;
+    selfCopy->_defaults = v4;
     MEMORY[0x277D82BD8](defaults);
-    objc_storeStrong(&v13->_keybag, location[0]);
-    [(SUKeybagInterface *)v13->_keybag addObserver:v13];
-    v6 = [(SUKeybagInterface *)v13->_keybag isPasscodeLocked];
-    v13->_isPasscodeLocked = v6;
+    objc_storeStrong(&selfCopy->_keybag, location[0]);
+    [(SUKeybagInterface *)selfCopy->_keybag addObserver:selfCopy];
+    isPasscodeLocked = [(SUKeybagInterface *)selfCopy->_keybag isPasscodeLocked];
+    selfCopy->_isPasscodeLocked = isPasscodeLocked;
     v10 = SUSUILogKeybagInterface();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_1_4_0(v14, v13->_isPasscodeLocked);
+      __os_log_helper_16_0_1_4_0(v14, selfCopy->_isPasscodeLocked);
       _os_log_impl(&dword_26AC54000, v10, OS_LOG_TYPE_DEFAULT, "Initialized with passcode locked: %d", v14, 8u);
     }
 
     objc_storeStrong(&v10, 0);
   }
 
-  v8 = MEMORY[0x277D82BE0](v13);
+  v8 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   *MEMORY[0x277D85DE8];
   return v8;
 }
@@ -93,7 +93,7 @@ uint64_t __46__SUSUIAuthenticationInterface_sharedInstance__block_invoke()
 - (BOOL)isBlocked
 {
   v14 = *MEMORY[0x277D85DE8];
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   [(SUKeybagInterface *)self->_keybag backOffTime];
   v8 = v2;
@@ -108,16 +108,16 @@ uint64_t __46__SUSUIAuthenticationInterface_sharedInstance__block_invoke()
   objc_storeStrong(&location, 0);
   if (*&v8 <= 0.0)
   {
-    v5 = [(SUSUIAuthenticationInterface *)v10 _currentFailedAttemptsCount];
+    _currentFailedAttemptsCount = [(SUSUIAuthenticationInterface *)selfCopy _currentFailedAttemptsCount];
     oslog = SUSUILogKeybagInterface();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_1_4_0(v12, v5);
+      __os_log_helper_16_0_1_4_0(v12, _currentFailedAttemptsCount);
       _os_log_impl(&dword_26AC54000, oslog, OS_LOG_TYPE_DEFAULT, "isBlocked: currentFailedAttemptsCount: %d", v12, 8u);
     }
 
     objc_storeStrong(&oslog, 0);
-    v11 = v5 >= 5;
+    v11 = _currentFailedAttemptsCount >= 5;
   }
 
   else
@@ -129,18 +129,18 @@ uint64_t __46__SUSUIAuthenticationInterface_sharedInstance__block_invoke()
   return v11;
 }
 
-- (BOOL)attemptAuthentication:(id)a3 outBlocked:(BOOL *)a4
+- (BOOL)attemptAuthentication:(id)authentication outBlocked:(BOOL *)blocked
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v19 = a4;
+  objc_storeStrong(location, authentication);
+  blockedCopy = blocked;
   v18 = 0;
-  v17 = [(SUSUIAuthenticationInterface *)v21 isBlocked];
-  if (!v17)
+  isBlocked = [(SUSUIAuthenticationInterface *)selfCopy isBlocked];
+  if (!isBlocked)
   {
-    if ([(SUKeybagInterface *)v21->_keybag authenticate:location[0]])
+    if ([(SUKeybagInterface *)selfCopy->_keybag authenticate:location[0]])
     {
       v16 = SUSUILogKeybagInterface();
       v15 = OS_LOG_TYPE_DEFAULT;
@@ -169,19 +169,19 @@ uint64_t __46__SUSUIAuthenticationInterface_sharedInstance__block_invoke()
       }
 
       objc_storeStrong(&v13, 0);
-      [(SUSUIAuthenticationInterface *)v21 _incrementFailedAttemptsCount];
-      v17 = [(SUSUIAuthenticationInterface *)v21 isBlocked];
+      [(SUSUIAuthenticationInterface *)selfCopy _incrementFailedAttemptsCount];
+      isBlocked = [(SUSUIAuthenticationInterface *)selfCopy isBlocked];
     }
   }
 
-  if (v19)
+  if (blockedCopy)
   {
-    *v19 = v17;
+    *blockedCopy = isBlocked;
   }
 
-  if (v17)
+  if (isBlocked)
   {
-    [(SUKeybagInterface *)v21->_keybag lockDevice];
+    [(SUKeybagInterface *)selfCopy->_keybag lockDevice];
   }
 
   v5 = v18;
@@ -191,7 +191,7 @@ uint64_t __46__SUSUIAuthenticationInterface_sharedInstance__block_invoke()
 
 - (void)resetAttempts
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   if (self->_isController)
   {
@@ -206,50 +206,50 @@ uint64_t __46__SUSUIAuthenticationInterface_sharedInstance__block_invoke()
     }
 
     objc_storeStrong(location, 0);
-    [(SUSUIAuthenticationInterface *)v7 _setNumberOfFailedAuthenticationAttempts:0];
-    [(NSUserDefaults *)v7->_defaults synchronize];
+    [(SUSUIAuthenticationInterface *)selfCopy _setNumberOfFailedAuthenticationAttempts:0];
+    [(NSUserDefaults *)selfCopy->_defaults synchronize];
   }
 }
 
-- (void)_setNumberOfFailedAuthenticationAttempts:(unint64_t)a3
+- (void)_setNumberOfFailedAuthenticationAttempts:(unint64_t)attempts
 {
   defaults = self->_defaults;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:attempts];
   [NSUserDefaults setObject:"setObject:forKey:" forKey:?];
   MEMORY[0x277D82BD8](v4);
   [(NSUserDefaults *)self->_defaults synchronize];
 }
 
-- (void)_setPasscodeLocked:(BOOL)a3
+- (void)_setPasscodeLocked:(BOOL)locked
 {
   v8 = *MEMORY[0x277D85DE8];
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
-  if (self->_isPasscodeLocked != a3)
+  lockedCopy = locked;
+  if (self->_isPasscodeLocked != locked)
   {
-    v6->_isPasscodeLocked = v4;
+    selfCopy->_isPasscodeLocked = lockedCopy;
     oslog = SUSUILogKeybagInterface();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_1_4_0(v7, v4);
+      __os_log_helper_16_0_1_4_0(v7, lockedCopy);
       _os_log_impl(&dword_26AC54000, oslog, OS_LOG_TYPE_DEFAULT, "Passcode locked state did change: %d", v7, 8u);
     }
 
     objc_storeStrong(&oslog, 0);
-    [(SUSUIAuthenticationInterface *)v6 resetAttempts];
+    [(SUSUIAuthenticationInterface *)selfCopy resetAttempts];
   }
 
   *MEMORY[0x277D85DE8];
 }
 
-- (void)keybagInterface:(id)a3 passcodeLockedStateDidChange:(BOOL)a4
+- (void)keybagInterface:(id)interface passcodeLockedStateDidChange:(BOOL)change
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = a4;
+  objc_storeStrong(location, interface);
+  changeCopy = change;
   v6 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v6;
@@ -258,8 +258,8 @@ uint64_t __46__SUSUIAuthenticationInterface_sharedInstance__block_invoke()
   v10 = 0;
   v11 = __77__SUSUIAuthenticationInterface_keybagInterface_passcodeLockedStateDidChange___block_invoke;
   v12 = &unk_279CB3BD8;
-  v13 = MEMORY[0x277D82BE0](v17);
-  v14 = v15;
+  v13 = MEMORY[0x277D82BE0](selfCopy);
+  v14 = changeCopy;
   dispatch_async(queue, &v8);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(&v13, 0);
@@ -269,9 +269,9 @@ uint64_t __46__SUSUIAuthenticationInterface_sharedInstance__block_invoke()
 - (unint64_t)_currentFailedAttemptsCount
 {
   v3 = [(NSUserDefaults *)self->_defaults objectForKey:@"SUSUIFailedAttemptCountsWhileUnlocked"];
-  v4 = [v3 unsignedIntegerValue];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
   MEMORY[0x277D82BD8](v3);
-  return v4;
+  return unsignedIntegerValue;
 }
 
 @end

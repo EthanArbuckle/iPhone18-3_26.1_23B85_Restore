@@ -1,48 +1,48 @@
 @interface CSHandshakeMessage
 + (id)requiredParameters;
-+ (id)responseMessageFromDictionary:(id)a3;
-- (CSHandshakeMessage)initWithIDSIdentifier:(id)a3 sessionPairingIdentifier:(id)a4 participantInfo:(id)a5;
-- (CSHandshakeMessage)initWithMessage:(id)a3;
++ (id)responseMessageFromDictionary:(id)dictionary;
+- (CSHandshakeMessage)initWithIDSIdentifier:(id)identifier sessionPairingIdentifier:(id)pairingIdentifier participantInfo:(id)info;
+- (CSHandshakeMessage)initWithMessage:(id)message;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation CSHandshakeMessage
 
-+ (id)responseMessageFromDictionary:(id)a3
++ (id)responseMessageFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [[CSHandshakeResponseMessage alloc] initWithMessage:v3];
+  dictionaryCopy = dictionary;
+  v4 = [[CSHandshakeResponseMessage alloc] initWithMessage:dictionaryCopy];
 
   return v4;
 }
 
-- (CSHandshakeMessage)initWithIDSIdentifier:(id)a3 sessionPairingIdentifier:(id)a4 participantInfo:(id)a5
+- (CSHandshakeMessage)initWithIDSIdentifier:(id)identifier sessionPairingIdentifier:(id)pairingIdentifier participantInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  pairingIdentifierCopy = pairingIdentifier;
+  infoCopy = info;
   v23.receiver = self;
   v23.super_class = CSHandshakeMessage;
   v11 = [(CSHandshakeMessage *)&v23 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     v13 = *(v11 + 1);
     *(v11 + 1) = v12;
 
-    v14 = [v9 copy];
+    v14 = [pairingIdentifierCopy copy];
     v15 = *(v11 + 2);
     *(v11 + 2) = v14;
 
-    v16 = [v10 copy];
+    v16 = [infoCopy copy];
     v17 = *(v11 + 3);
     *(v11 + 3) = v16;
 
-    v18 = [MEMORY[0x277CCAC38] processInfo];
-    v19 = v18;
-    if (v18)
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    v19 = processInfo;
+    if (processInfo)
     {
-      [v18 operatingSystemVersion];
+      [processInfo operatingSystemVersion];
     }
 
     else
@@ -63,26 +63,26 @@
   return v11;
 }
 
-- (CSHandshakeMessage)initWithMessage:(id)a3
+- (CSHandshakeMessage)initWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v27.receiver = self;
   v27.super_class = CSHandshakeMessage;
-  v5 = [(CSMessage *)&v27 initWithMessage:v4];
+  v5 = [(CSMessage *)&v27 initWithMessage:messageCopy];
   if (v5)
   {
-    v25 = [v4 objectForKeyedSubscript:@"IDS_Identifier"];
-    v24 = [v4 objectForKeyedSubscript:@"SessionPairingIdentifier"];
-    v26 = [v4 objectForKeyedSubscript:@"ParticipantInfo"];
+    v25 = [messageCopy objectForKeyedSubscript:@"IDS_Identifier"];
+    v24 = [messageCopy objectForKeyedSubscript:@"SessionPairingIdentifier"];
+    v26 = [messageCopy objectForKeyedSubscript:@"ParticipantInfo"];
     v23 = [objc_alloc(MEMORY[0x277CF6C40]) initWithDictionary:v26];
-    v6 = [v4 objectForKeyedSubscript:@"OSMajorVersion"];
-    v7 = [v4 objectForKeyedSubscript:@"OSMinorVersion"];
-    v22 = [v4 objectForKeyedSubscript:@"OSPatchVersion"];
-    v19 = [v4 objectForKeyedSubscript:@"ProtocolVersion"];
-    v21 = [v4 objectForKeyedSubscript:@"OSMajorVersionRequired"];
-    v8 = [v4 objectForKeyedSubscript:@"OSMinorVersionRequired"];
-    v9 = [v4 objectForKeyedSubscript:@"OSPatchVersionRequired"];
-    v20 = [v4 objectForKeyedSubscript:@"RequiredProtocolVersion"];
+    v6 = [messageCopy objectForKeyedSubscript:@"OSMajorVersion"];
+    v7 = [messageCopy objectForKeyedSubscript:@"OSMinorVersion"];
+    v22 = [messageCopy objectForKeyedSubscript:@"OSPatchVersion"];
+    v19 = [messageCopy objectForKeyedSubscript:@"ProtocolVersion"];
+    v21 = [messageCopy objectForKeyedSubscript:@"OSMajorVersionRequired"];
+    v8 = [messageCopy objectForKeyedSubscript:@"OSMinorVersionRequired"];
+    v9 = [messageCopy objectForKeyedSubscript:@"OSPatchVersionRequired"];
+    v20 = [messageCopy objectForKeyedSubscript:@"RequiredProtocolVersion"];
     v10 = [v25 copy];
     idsIdentifier = v5->_idsIdentifier;
     v5->_idsIdentifier = v10;
@@ -112,7 +112,7 @@
 
 + (id)requiredParameters
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CSHandshakeMessage;
   v2 = objc_msgSendSuper2(&v5, sel_requiredParameters);
   v3 = [v2 mutableCopy];
@@ -136,8 +136,8 @@
 {
   v17.receiver = self;
   v17.super_class = CSHandshakeMessage;
-  v3 = [(CSMessage *)&v17 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(CSMessage *)&v17 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
   v5 = [(NSString *)self->_idsIdentifier copy];
   [v4 setObject:v5 forKey:@"IDS_Identifier"];
@@ -145,8 +145,8 @@
   v6 = [(NSString *)self->_sessionPairingIdentifier copy];
   [v4 setObject:v6 forKey:@"SessionPairingIdentifier"];
 
-  v7 = [(CMContinuityCaptureParticipantInfo *)self->_participantInfo dictionaryRepresentation];
-  [v4 setObject:v7 forKey:@"ParticipantInfo"];
+  dictionaryRepresentation2 = [(CMContinuityCaptureParticipantInfo *)self->_participantInfo dictionaryRepresentation];
+  [v4 setObject:dictionaryRepresentation2 forKey:@"ParticipantInfo"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:self->_operatingSystemVersion.majorVersion];
   [v4 setObject:v8 forKey:@"OSMajorVersion"];

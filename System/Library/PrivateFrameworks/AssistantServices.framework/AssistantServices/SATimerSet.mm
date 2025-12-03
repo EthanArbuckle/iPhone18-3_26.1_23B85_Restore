@@ -1,13 +1,13 @@
 @interface SATimerSet
 - (id)_ad_timerRequestRepresentation;
-- (id)_ad_timerResponseForResponse:(id)a3;
+- (id)_ad_timerResponseForResponse:(id)response;
 @end
 
 @implementation SATimerSet
 
-- (id)_ad_timerResponseForResponse:(id)a3
+- (id)_ad_timerResponseForResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -27,8 +27,8 @@
 - (id)_ad_timerRequestRepresentation
 {
   v3 = objc_alloc_init(AFSetTimerRequest);
-  v4 = [(SATimerSet *)self timer];
-  v5 = [v4 _ad_timerWithState:1];
+  timer = [(SATimerSet *)self timer];
+  v5 = [timer _ad_timerWithState:1];
   [v3 setTimer:v5];
 
   return v3;

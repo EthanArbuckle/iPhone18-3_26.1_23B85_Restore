@@ -1,24 +1,24 @@
 @interface UBDeadlockInfo
-- (UBDeadlockInfo)initWithNode:(id)a3 timeSpentDeadlocked:(double)a4 tasksInvolved:(id)a5 numThreadsInvolved:(unint64_t)a6;
+- (UBDeadlockInfo)initWithNode:(id)node timeSpentDeadlocked:(double)deadlocked tasksInvolved:(id)involved numThreadsInvolved:(unint64_t)threadsInvolved;
 - (id)debugDescription;
 @end
 
 @implementation UBDeadlockInfo
 
-- (UBDeadlockInfo)initWithNode:(id)a3 timeSpentDeadlocked:(double)a4 tasksInvolved:(id)a5 numThreadsInvolved:(unint64_t)a6
+- (UBDeadlockInfo)initWithNode:(id)node timeSpentDeadlocked:(double)deadlocked tasksInvolved:(id)involved numThreadsInvolved:(unint64_t)threadsInvolved
 {
-  v11 = a3;
-  v12 = a5;
+  nodeCopy = node;
+  involvedCopy = involved;
   v19.receiver = self;
   v19.super_class = UBDeadlockInfo;
   v13 = [(UBDeadlockInfo *)&v19 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_node, a3);
-    v14->_timeSpentDeadlocked = a4;
-    objc_storeStrong(&v14->_tasksInvolved, a5);
-    v14->_numThreadsInvolved = a6;
+    objc_storeStrong(&v13->_node, node);
+    v14->_timeSpentDeadlocked = deadlocked;
+    objc_storeStrong(&v14->_tasksInvolved, involved);
+    v14->_numThreadsInvolved = threadsInvolved;
     v15 = objc_alloc_init(MEMORY[0x277CBEB58]);
     tasksBlocked = v14->_tasksBlocked;
     v14->_tasksBlocked = v15;
@@ -37,9 +37,9 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v18 = self;
-  v4 = [(UBDeadlockInfo *)self tasksInvolved];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  selfCopy = self;
+  tasksInvolved = [(UBDeadlockInfo *)self tasksInvolved];
+  v5 = [tasksInvolved countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -50,14 +50,14 @@
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(tasksInvolved);
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
-        v10 = [v9 name];
-        if (v10)
+        name = [v9 name];
+        if (name)
         {
-          [v3 addObject:v10];
+          [v3 addObject:name];
         }
 
         else
@@ -67,7 +67,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [tasksInvolved countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v6);
@@ -75,8 +75,8 @@
 
   v12 = objc_alloc(MEMORY[0x277CCACA8]);
   v13 = [v3 componentsJoinedByString:{@", "}];
-  v14 = [(UBDeadlockInfo *)v18 tasksBlocked];
-  v15 = [v12 initWithFormat:@"Deadlock in %@, blocking %lu tasks", v13, objc_msgSend(v14, "count")];
+  tasksBlocked = [(UBDeadlockInfo *)selfCopy tasksBlocked];
+  v15 = [v12 initWithFormat:@"Deadlock in %@, blocking %lu tasks", v13, objc_msgSend(tasksBlocked, "count")];
 
   v16 = *MEMORY[0x277D85DE8];
 

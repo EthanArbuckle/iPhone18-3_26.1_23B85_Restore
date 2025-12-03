@@ -7,7 +7,7 @@
 - (void)attach;
 - (void)dealloc;
 - (void)detach;
-- (void)session:(id)a3 didChangeState:(unint64_t)a4;
+- (void)session:(id)session didChangeState:(unint64_t)state;
 - (void)startDebugInfoRefreshTimer;
 - (void)updateCameraFrame;
 - (void)updateDebugText;
@@ -17,9 +17,9 @@
 
 @implementation VIOSessionStateFloatingDebugViewController
 
-- (void)session:(id)a3 didChangeState:(unint64_t)a4
+- (void)session:(id)session didChangeState:(unint64_t)state
 {
-  if (a4 != 1)
+  if (state != 1)
   {
     block[5] = v4;
     block[6] = v5;
@@ -34,29 +34,29 @@
 
 - (void)updateCameraFrame
 {
-  v3 = [(VIOSessionStateFloatingDebugViewController *)self session];
-  v4 = [v3 state];
+  session = [(VIOSessionStateFloatingDebugViewController *)self session];
+  state = [session state];
 
-  if (v4 == 1)
+  if (state == 1)
   {
-    v5 = [(VIOSessionStateFloatingDebugViewController *)self session];
-    v6 = [v5 currentFrame];
+    session2 = [(VIOSessionStateFloatingDebugViewController *)self session];
+    currentFrame = [session2 currentFrame];
 
-    if (v6)
+    if (currentFrame)
     {
       memset(&v22, 0, sizeof(v22));
-      v7 = [(MapsFloatingDebugViewController *)self contentView];
-      v8 = [v7 window];
-      v9 = [v8 windowScene];
-      v10 = [v9 interfaceOrientation];
-      v11 = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
-      [v11 bounds];
-      [v6 displayTransformForOrientation:v10 viewportSize:{v12, v13}];
+      contentView = [(MapsFloatingDebugViewController *)self contentView];
+      window = [contentView window];
+      windowScene = [window windowScene];
+      interfaceOrientation = [windowScene interfaceOrientation];
+      cameraFeedImageView = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
+      [cameraFeedImageView bounds];
+      [currentFrame displayTransformForOrientation:interfaceOrientation viewportSize:{v12, v13}];
 
       v20 = v22;
       CGAffineTransformInvert(&v21, &v20);
       v22 = v21;
-      v14 = +[CIImage imageWithCVPixelBuffer:](CIImage, "imageWithCVPixelBuffer:", [v6 capturedImage]);
+      v14 = +[CIImage imageWithCVPixelBuffer:](CIImage, "imageWithCVPixelBuffer:", [currentFrame capturedImage]);
       v21 = v22;
       v15 = [v14 imageByApplyingTransform:&v21];
 
@@ -65,8 +65,8 @@
       v17 = [v16 createCGImage:v15 fromRect:?];
       v18 = [UIImage imageWithCGImage:v17];
       CGImageRelease(v17);
-      v19 = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
-      [v19 setImage:v18];
+      cameraFeedImageView2 = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
+      [cameraFeedImageView2 setImage:v18];
     }
   }
 }
@@ -89,10 +89,10 @@
 
 - (void)updateDebugText
 {
-  v3 = [(VIOSessionStateFloatingDebugViewController *)self vioSessionTask];
-  v4 = [v3 activeMonitors];
+  vioSessionTask = [(VIOSessionStateFloatingDebugViewController *)self vioSessionTask];
+  activeMonitors = [vioSessionTask activeMonitors];
 
-  if ([v4 count])
+  if ([activeMonitors count])
   {
     v5 = +[NSMutableString string];
     [v5 appendFormat:@"Currently active monitors:\n"];
@@ -100,7 +100,7 @@
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v6 = v4;
+    v6 = activeMonitors;
     v7 = [v6 countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v7)
     {
@@ -127,34 +127,34 @@
     }
 
     [v5 appendFormat:@"\n"];
-    v13 = [v6 anyObject];
-    v14 = [v13 stateManager];
+    anyObject = [v6 anyObject];
+    stateManager = [anyObject stateManager];
 
-    if ([v14 isThrottling])
+    if ([stateManager isThrottling])
     {
-      v15 = [v14 throttleEventReason];
+      throttleEventReason = [stateManager throttleEventReason];
       v16 = @"VIOSessionThrottleEventDeviceMotion";
-      if (!v15)
+      if (!throttleEventReason)
       {
         v16 = @"VIOSessionThrottleEventARTrackingState";
       }
 
       [v5 appendFormat:@"VIO session is currently being throttled for the following reason:\n%@\n", v16];
-      [v14 remainingThrottleTime];
+      [stateManager remainingThrottleTime];
       v17 = [NSNumber numberWithDouble:?];
-      v18 = [v17 stringValue];
-      [v5 appendFormat:@"Throttle time remaining: %@", v18];
+      stringValue = [v17 stringValue];
+      [v5 appendFormat:@"Throttle time remaining: %@", stringValue];
     }
 
-    else if ([v14 isDisabled])
+    else if ([stateManager isDisabled])
     {
       [v5 appendFormat:@"VIO session is currently disabled for the following reasons:\n"];
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v20 = [v14 disableEventReasons];
-      v21 = [v20 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      disableEventReasons = [stateManager disableEventReasons];
+      v21 = [disableEventReasons countByEnumeratingWithState:&v28 objects:v36 count:16];
       if (v21)
       {
         v22 = v21;
@@ -165,20 +165,20 @@
           {
             if (*v29 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(disableEventReasons);
             }
 
-            v25 = [*(*(&v28 + 1) + 8 * j) integerValue];
+            integerValue = [*(*(&v28 + 1) + 8 * j) integerValue];
             v26 = @"VIOSessionDisableEventLowPowerMode";
-            if ((v25 - 1) <= 9)
+            if ((integerValue - 1) <= 9)
             {
-              v26 = *(&off_10165ECF0 + (v25 - 1));
+              v26 = *(&off_10165ECF0 + (integerValue - 1));
             }
 
             [v5 appendFormat:@"%@\n", v26];
           }
 
-          v22 = [v20 countByEnumeratingWithState:&v28 objects:v36 count:16];
+          v22 = [disableEventReasons countByEnumeratingWithState:&v28 objects:v36 count:16];
         }
 
         while (v22);
@@ -190,31 +190,31 @@
       [v5 appendFormat:@"VIO session is currently neither throttled nor disabled"];
     }
 
-    v27 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
-    [v27 setText:v5];
+    debugInfoLabel = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
+    [debugInfoLabel setText:v5];
   }
 
   else
   {
-    v19 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
-    [v19 setText:@"There are currently no running monitors"];
+    debugInfoLabel2 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
+    [debugInfoLabel2 setText:@"There are currently no running monitors"];
   }
 }
 
 - (ARSession)session
 {
   v2 = +[MapsARSessionManager sharedManager];
-  v3 = [v2 session];
+  session = [v2 session];
 
-  return v3;
+  return session;
 }
 
 - (VIOSessionTask)vioSessionTask
 {
   v2 = +[UIApplication _maps_keyMapsSceneDelegate];
-  v3 = [v2 platformController];
-  v4 = [v3 auxiliaryTasksManager];
-  v5 = [v4 auxilaryTaskForClass:objc_opt_class()];
+  platformController = [v2 platformController];
+  auxiliaryTasksManager = [platformController auxiliaryTasksManager];
+  v5 = [auxiliaryTasksManager auxilaryTaskForClass:objc_opt_class()];
 
   return v5;
 }
@@ -250,21 +250,21 @@
   v6.receiver = self;
   v6.super_class = VIOSessionStateFloatingDebugViewController;
   [(MapsFloatingDebugViewController *)&v6 updateViewForCurrentState];
-  v3 = [(MapsFloatingDebugViewController *)self viewState];
-  if (v3 == 1)
+  viewState = [(MapsFloatingDebugViewController *)self viewState];
+  if (viewState == 1)
   {
-    v5 = [(VIOSessionStateFloatingDebugViewController *)self session];
-    [v5 _addObserver:self];
+    session = [(VIOSessionStateFloatingDebugViewController *)self session];
+    [session _addObserver:self];
 
     [(VIOSessionStateFloatingDebugViewController *)self updateDebugText];
     [(VIOSessionStateFloatingDebugViewController *)self startDebugInfoRefreshTimer];
   }
 
-  else if (!v3)
+  else if (!viewState)
   {
     [(VIOSessionStateFloatingDebugViewController *)self setDebugInfoRefreshTimer:0];
-    v4 = [(VIOSessionStateFloatingDebugViewController *)self session];
-    [v4 _removeObserver:self];
+    session2 = [(VIOSessionStateFloatingDebugViewController *)self session];
+    [session2 _removeObserver:self];
   }
 }
 
@@ -277,48 +277,48 @@
   [(VIOSessionStateFloatingDebugViewController *)self setDebugInfoLabel:v3];
 
   v4 = +[UIColor clearColor];
-  v5 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
-  [v5 setBackgroundColor:v4];
+  debugInfoLabel = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
+  [debugInfoLabel setBackgroundColor:v4];
 
   v6 = +[UIColor whiteColor];
-  v7 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
-  [v7 setTextColor:v6];
+  debugInfoLabel2 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
+  [debugInfoLabel2 setTextColor:v6];
 
-  v8 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
-  [v8 setNumberOfLines:0];
+  debugInfoLabel3 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
+  [debugInfoLabel3 setNumberOfLines:0];
 
-  v9 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  debugInfoLabel4 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
+  [debugInfoLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v10 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
+  debugInfoLabel5 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
   LODWORD(v11) = 1148846080;
-  [v10 setContentCompressionResistancePriority:1 forAxis:v11];
+  [debugInfoLabel5 setContentCompressionResistancePriority:1 forAxis:v11];
 
-  v12 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
+  debugInfoLabel6 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
   LODWORD(v13) = 1148846080;
-  [v12 setContentCompressionResistancePriority:0 forAxis:v13];
+  [debugInfoLabel6 setContentCompressionResistancePriority:0 forAxis:v13];
 
-  v14 = [(MapsFloatingDebugViewController *)self contentView];
-  v15 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
-  [v14 addSubview:v15];
+  contentView = [(MapsFloatingDebugViewController *)self contentView];
+  debugInfoLabel7 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
+  [contentView addSubview:debugInfoLabel7];
 
-  v69 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
-  v65 = [v69 leadingAnchor];
-  v67 = [(MapsFloatingDebugViewController *)self contentView];
-  v63 = [v67 leadingAnchor];
-  v61 = [v65 constraintEqualToAnchor:v63];
+  debugInfoLabel8 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
+  leadingAnchor = [debugInfoLabel8 leadingAnchor];
+  contentView2 = [(MapsFloatingDebugViewController *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v61 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v73[0] = v61;
-  v59 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
-  v56 = [v59 trailingAnchor];
-  v16 = [(MapsFloatingDebugViewController *)self contentView];
-  v17 = [v16 trailingAnchor];
-  v18 = [v56 constraintEqualToAnchor:v17];
+  debugInfoLabel9 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
+  trailingAnchor = [debugInfoLabel9 trailingAnchor];
+  contentView3 = [(MapsFloatingDebugViewController *)self contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v73[1] = v18;
-  v19 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
-  v20 = [v19 topAnchor];
-  v21 = [(MapsFloatingDebugViewController *)self contentView];
-  v22 = [v21 topAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  debugInfoLabel10 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
+  topAnchor = [debugInfoLabel10 topAnchor];
+  contentView4 = [(MapsFloatingDebugViewController *)self contentView];
+  topAnchor2 = [contentView4 topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v73[2] = v23;
   v24 = [NSArray arrayWithObjects:v73 count:3];
   [NSLayoutConstraint activateConstraints:v24];
@@ -328,51 +328,51 @@
   v27 = [v25 initWithImage:v26];
   [(VIOSessionStateFloatingDebugViewController *)self setCameraFeedImageView:v27];
 
-  v28 = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
-  [v28 setContentMode:1];
+  cameraFeedImageView = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
+  [cameraFeedImageView setContentMode:1];
 
-  v29 = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
-  [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
+  cameraFeedImageView2 = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
+  [cameraFeedImageView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v30 = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
+  cameraFeedImageView3 = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
   LODWORD(v31) = 1148846080;
-  [v30 setContentCompressionResistancePriority:1 forAxis:v31];
+  [cameraFeedImageView3 setContentCompressionResistancePriority:1 forAxis:v31];
 
-  v32 = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
+  cameraFeedImageView4 = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
   LODWORD(v33) = 1148846080;
-  [v32 setContentCompressionResistancePriority:0 forAxis:v33];
+  [cameraFeedImageView4 setContentCompressionResistancePriority:0 forAxis:v33];
 
-  v34 = [(MapsFloatingDebugViewController *)self contentView];
-  v35 = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
-  [v34 addSubview:v35];
+  contentView5 = [(MapsFloatingDebugViewController *)self contentView];
+  cameraFeedImageView5 = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
+  [contentView5 addSubview:cameraFeedImageView5];
 
-  v70 = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
-  v66 = [v70 topAnchor];
-  v68 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
-  v64 = [v68 bottomAnchor];
-  v62 = [v66 constraintEqualToAnchor:v64 constant:5.0];
+  cameraFeedImageView6 = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
+  topAnchor3 = [cameraFeedImageView6 topAnchor];
+  debugInfoLabel11 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
+  bottomAnchor = [debugInfoLabel11 bottomAnchor];
+  v62 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:5.0];
   v72[0] = v62;
-  v60 = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
-  v57 = [v60 centerXAnchor];
-  v58 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
-  v55 = [v58 centerXAnchor];
-  v54 = [v57 constraintEqualToAnchor:v55];
+  cameraFeedImageView7 = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
+  centerXAnchor = [cameraFeedImageView7 centerXAnchor];
+  debugInfoLabel12 = [(VIOSessionStateFloatingDebugViewController *)self debugInfoLabel];
+  centerXAnchor2 = [debugInfoLabel12 centerXAnchor];
+  v54 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v72[1] = v54;
-  v53 = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
-  v52 = [v53 widthAnchor];
-  v51 = [v52 constraintEqualToConstant:200.0];
+  cameraFeedImageView8 = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
+  widthAnchor = [cameraFeedImageView8 widthAnchor];
+  v51 = [widthAnchor constraintEqualToConstant:200.0];
   v72[2] = v51;
-  v50 = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
-  v49 = [v50 heightAnchor];
-  v36 = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
-  v37 = [v36 widthAnchor];
-  v38 = [v49 constraintEqualToAnchor:v37];
+  cameraFeedImageView9 = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
+  heightAnchor = [cameraFeedImageView9 heightAnchor];
+  cameraFeedImageView10 = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
+  widthAnchor2 = [cameraFeedImageView10 widthAnchor];
+  v38 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
   v72[3] = v38;
-  v39 = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
-  v40 = [v39 bottomAnchor];
-  v41 = [(MapsFloatingDebugViewController *)self contentView];
-  v42 = [v41 bottomAnchor];
-  v43 = [v40 constraintEqualToAnchor:v42];
+  cameraFeedImageView11 = [(VIOSessionStateFloatingDebugViewController *)self cameraFeedImageView];
+  bottomAnchor2 = [cameraFeedImageView11 bottomAnchor];
+  contentView6 = [(MapsFloatingDebugViewController *)self contentView];
+  bottomAnchor3 = [contentView6 bottomAnchor];
+  v43 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v72[4] = v43;
   v44 = [NSArray arrayWithObjects:v72 count:5];
   [NSLayoutConstraint activateConstraints:v44];
@@ -380,14 +380,14 @@
   v45 = [UIImageSymbolConfiguration configurationWithPointSize:7 weight:3 scale:35.0];
   v46 = [UIImage systemImageNamed:@"arkit" withConfiguration:v45];
   v47 = [v46 imageWithRenderingMode:2];
-  v48 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
-  [v48 setImage:v47];
+  thumbnailImageView = [(MapsFloatingDebugViewController *)self thumbnailImageView];
+  [thumbnailImageView setImage:v47];
 }
 
 - (void)dealloc
 {
-  v3 = [(VIOSessionStateFloatingDebugViewController *)self session];
-  [v3 _removeObserver:self];
+  session = [(VIOSessionStateFloatingDebugViewController *)self session];
+  [session _removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VIOSessionStateFloatingDebugViewController;

@@ -1,30 +1,30 @@
 @interface _UITableViewDragController
-- (BOOL)canProvideItemsForDragAtPoint:(CGPoint)a3;
-- (BOOL)dragInteraction:(id)a3 prefersFullSizePreviewsForSession:(id)a4;
-- (BOOL)dragInteraction:(id)a3 sessionAllowsMoveOperation:(id)a4;
-- (BOOL)dragInteraction:(id)a3 sessionIsRestrictedToDraggingApplication:(id)a4;
+- (BOOL)canProvideItemsForDragAtPoint:(CGPoint)point;
+- (BOOL)dragInteraction:(id)interaction prefersFullSizePreviewsForSession:(id)session;
+- (BOOL)dragInteraction:(id)interaction sessionAllowsMoveOperation:(id)operation;
+- (BOOL)dragInteraction:(id)interaction sessionIsRestrictedToDraggingApplication:(id)application;
 - (BOOL)isActive;
 - (NSIndexPath)draggedIndexPath;
 - (UITableViewCell)draggedCell;
-- (_UITableViewDragController)initWithTableView:(id)a3;
+- (_UITableViewDragController)initWithTableView:(id)view;
 - (_UITableViewDragControllerDelegate)tableView;
-- (id)_dragInteraction:(id)a3 sessionPropertiesForSession:(id)a4;
-- (id)dragInteraction:(id)a3 itemsForAddingToSession:(id)a4 withTouchAtPoint:(CGPoint)a5;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (id)dragInteraction:(id)a3 sessionForAddingItems:(id)a4 withTouchAtPoint:(CGPoint)a5;
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForAddingToSession:(id)a4 withTouchAtPoint:(CGPoint)a5;
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForSession:(id)a4;
+- (id)_dragInteraction:(id)interaction sessionPropertiesForSession:(id)session;
+- (id)dragInteraction:(id)interaction itemsForAddingToSession:(id)session withTouchAtPoint:(CGPoint)point;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (id)dragInteraction:(id)interaction sessionForAddingItems:(id)items withTouchAtPoint:(CGPoint)point;
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForAddingToSession:(id)session withTouchAtPoint:(CGPoint)point;
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForSession:(id)session;
 - (void)beginDragForTentativeRows;
-- (void)beginDragOfRowsForSession:(id)a3 notifyDelegate:(BOOL)a4;
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5;
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 session:(id)a4 willAddItems:(id)a5 forInteraction:(id)a6;
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4;
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5;
+- (void)beginDragOfRowsForSession:(id)session notifyDelegate:(BOOL)delegate;
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator;
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction session:(id)session willAddItems:(id)items forInteraction:(id)forInteraction;
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin;
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session;
 - (void)forceReset;
-- (void)immediatelyBeginDragWithTouch:(id)a3;
+- (void)immediatelyBeginDragWithTouch:(id)touch;
 - (void)resetDragState;
 - (void)setupDragInteraction;
 - (void)uninstallFromTableView;
@@ -33,13 +33,13 @@
 
 @implementation _UITableViewDragController
 
-- (_UITableViewDragController)initWithTableView:(id)a3
+- (_UITableViewDragController)initWithTableView:(id)view
 {
-  v5 = a3;
-  if (!v5)
+  viewCopy = view;
+  if (!viewCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"_UITableViewDragController.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"tableView != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UITableViewDragController.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"tableView != nil"}];
   }
 
   v16.receiver = self;
@@ -48,20 +48,20 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_tableView, v5);
-    v8 = [MEMORY[0x1E695DFA0] orderedSet];
+    objc_storeWeak(&v6->_tableView, viewCopy);
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
     indexPaths = v7->_indexPaths;
-    v7->_indexPaths = v8;
+    v7->_indexPaths = orderedSet;
 
-    v10 = [MEMORY[0x1E695DFA0] orderedSet];
+    orderedSet2 = [MEMORY[0x1E695DFA0] orderedSet];
     tentativeIndexPaths = v7->_tentativeIndexPaths;
-    v7->_tentativeIndexPaths = v10;
+    v7->_tentativeIndexPaths = orderedSet2;
 
     v7->_clientEnabledState = 0;
     v7->_forceEnabledForReordering = 0;
-    v12 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     cellsAnimatingCancel = v7->_cellsAnimatingCancel;
-    v7->_cellsAnimatingCancel = v12;
+    v7->_cellsAnimatingCancel = strongToStrongObjectsMapTable;
 
     [(_UITableViewDragController *)v7 resetDragState];
     [(_UITableViewDragController *)v7 setupDragInteraction];
@@ -74,8 +74,8 @@
 {
   v4 = [[UIDragInteraction alloc] initWithDelegate:self];
   [(_UITableViewDragController *)self setDragInteraction:v4];
-  v3 = [(_UITableViewDragController *)self tableView];
-  [v3 addInteraction:v4];
+  tableView = [(_UITableViewDragController *)self tableView];
+  [tableView addInteraction:v4];
 }
 
 - (void)updateDragInteractionEnabledState
@@ -88,9 +88,9 @@
 
   else
   {
-    v5 = [(_UITableViewDragController *)self clientEnabledState];
-    v6 = v5 == 1 || v3;
-    if (v5 == 2)
+    clientEnabledState = [(_UITableViewDragController *)self clientEnabledState];
+    v6 = clientEnabledState == 1 || v3;
+    if (clientEnabledState == 2)
     {
       v4 = 0;
     }
@@ -101,30 +101,30 @@
     }
   }
 
-  v7 = [(_UITableViewDragController *)self dragInteraction];
-  [v7 setEnabled:v4];
+  dragInteraction = [(_UITableViewDragController *)self dragInteraction];
+  [dragInteraction setEnabled:v4];
 }
 
 - (void)uninstallFromTableView
 {
   [(_UITableViewDragController *)self forceReset];
-  v4 = [(_UITableViewDragController *)self tableView];
-  v3 = [(_UITableViewDragController *)self dragInteraction];
-  [v4 removeInteraction:v3];
+  tableView = [(_UITableViewDragController *)self tableView];
+  dragInteraction = [(_UITableViewDragController *)self dragInteraction];
+  [tableView removeInteraction:dragInteraction];
 }
 
 - (BOOL)isActive
 {
-  v3 = [(_UITableViewDragController *)self indexPaths];
-  if ([v3 count])
+  indexPaths = [(_UITableViewDragController *)self indexPaths];
+  if ([indexPaths count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(_UITableViewDragController *)self dragSession];
-    v4 = v5 != 0;
+    dragSession = [(_UITableViewDragController *)self dragSession];
+    v4 = dragSession != 0;
   }
 
   return v4;
@@ -132,44 +132,44 @@
 
 - (UITableViewCell)draggedCell
 {
-  v3 = [(_UITableViewDragController *)self indexPaths];
-  v4 = [v3 count];
+  indexPaths = [(_UITableViewDragController *)self indexPaths];
+  v4 = [indexPaths count];
 
   if (v4 == 1)
   {
-    v5 = [(_UITableViewDragController *)self initiatingCell];
+    initiatingCell = [(_UITableViewDragController *)self initiatingCell];
   }
 
   else
   {
-    v5 = 0;
+    initiatingCell = 0;
   }
 
-  return v5;
+  return initiatingCell;
 }
 
 - (NSIndexPath)draggedIndexPath
 {
-  v3 = [(_UITableViewDragController *)self indexPaths];
-  v4 = [v3 count];
+  indexPaths = [(_UITableViewDragController *)self indexPaths];
+  v4 = [indexPaths count];
 
   if (v4 == 1)
   {
-    v5 = [(_UITableViewDragController *)self initiatingIndexPath];
+    initiatingIndexPath = [(_UITableViewDragController *)self initiatingIndexPath];
   }
 
   else
   {
-    v5 = 0;
+    initiatingIndexPath = 0;
   }
 
-  return v5;
+  return initiatingIndexPath;
 }
 
 - (void)forceReset
 {
-  v3 = [(_UITableViewDragController *)self indexPaths];
-  v4 = [v3 count];
+  indexPaths = [(_UITableViewDragController *)self indexPaths];
+  v4 = [indexPaths count];
 
   if (v4)
   {
@@ -178,18 +178,18 @@
   }
 }
 
-- (void)immediatelyBeginDragWithTouch:(id)a3
+- (void)immediatelyBeginDragWithTouch:(id)touch
 {
-  v4 = a3;
-  v5 = [(_UITableViewDragController *)self dragInteraction];
-  [v5 _immediatelyBeginDragWithTouch:v4 completion:0];
+  touchCopy = touch;
+  dragInteraction = [(_UITableViewDragController *)self dragInteraction];
+  [dragInteraction _immediatelyBeginDragWithTouch:touchCopy completion:0];
 }
 
-- (BOOL)canProvideItemsForDragAtPoint:(CGPoint)a3
+- (BOOL)canProvideItemsForDragAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(_UITableViewDragController *)self tableView];
+  y = point.y;
+  x = point.x;
+  tableView = [(_UITableViewDragController *)self tableView];
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -201,7 +201,7 @@
   v26[2] = __60___UITableViewDragController_canProvideItemsForDragAtPoint___block_invoke;
   v26[3] = &unk_1E7108E50;
   v28 = &v31;
-  v7 = v6;
+  v7 = tableView;
   v27 = v7;
   v29 = x;
   v30 = y;
@@ -228,8 +228,8 @@
     {
       [(_UITableViewDragController *)self setTentativeInitiatingCell:v21[5]];
       [(_UITableViewDragController *)self setTentativeInitiatingIndexPath:v32[5]];
-      v13 = [(_UITableViewDragController *)self indexPaths];
-      v14 = [v13 count];
+      indexPaths = [(_UITableViewDragController *)self indexPaths];
+      v14 = [indexPaths count];
 
       if (!v14)
       {
@@ -258,17 +258,17 @@
 
 - (void)beginDragForTentativeRows
 {
-  v4 = [(_UITableViewDragController *)self indexPaths];
-  v5 = [v4 count];
+  indexPaths = [(_UITableViewDragController *)self indexPaths];
+  v5 = [indexPaths count];
 
   if (!v5)
   {
     has_internal_diagnostics = os_variant_has_internal_diagnostics();
-    v7 = [(_UITableViewDragController *)self initiatingCell];
+    initiatingCell = [(_UITableViewDragController *)self initiatingCell];
 
     if (has_internal_diagnostics)
     {
-      if (v7)
+      if (initiatingCell)
       {
         v16 = __UIFaultDebugAssertLog();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
@@ -279,7 +279,7 @@
       }
     }
 
-    else if (v7)
+    else if (initiatingCell)
     {
       v22 = *(__UILogGetCategoryCachedImpl("Assert", &_MergedGlobals_1308) + 8);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -290,11 +290,11 @@
     }
 
     v8 = os_variant_has_internal_diagnostics();
-    v9 = [(_UITableViewDragController *)self initiatingIndexPath];
+    initiatingIndexPath = [(_UITableViewDragController *)self initiatingIndexPath];
 
     if (v8)
     {
-      if (v9)
+      if (initiatingIndexPath)
       {
         v17 = __UIFaultDebugAssertLog();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
@@ -305,7 +305,7 @@
       }
     }
 
-    else if (v9)
+    else if (initiatingIndexPath)
     {
       v23 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED4A1088) + 8);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -315,15 +315,15 @@
       }
     }
 
-    v10 = [(_UITableViewDragController *)self tentativeInitiatingCell];
-    v11 = [(_UITableViewDragController *)self tentativeInitiatingIndexPath];
-    v12 = v11;
-    if (v10)
+    tentativeInitiatingCell = [(_UITableViewDragController *)self tentativeInitiatingCell];
+    tentativeInitiatingIndexPath = [(_UITableViewDragController *)self tentativeInitiatingIndexPath];
+    v12 = tentativeInitiatingIndexPath;
+    if (tentativeInitiatingCell)
     {
-      if (v11)
+      if (tentativeInitiatingIndexPath)
       {
 LABEL_8:
-        [(_UITableViewDragController *)self setInitiatingCell:v10];
+        [(_UITableViewDragController *)self setInitiatingCell:tentativeInitiatingCell];
         [(_UITableViewDragController *)self setInitiatingIndexPath:v12];
 
         goto LABEL_9;
@@ -332,9 +332,9 @@ LABEL_8:
 
     else
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v19 = NSStringFromSelector(a2);
-      [v18 handleFailureInMethod:a2 object:self file:@"_UITableViewDragController.m" lineNumber:235 description:{@"_UITableViewDragController internal inconsistency: initiatingCell cannot be nil in %@", v19}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UITableViewDragController.m" lineNumber:235 description:{@"_UITableViewDragController internal inconsistency: initiatingCell cannot be nil in %@", v19}];
 
       if (v12)
       {
@@ -342,38 +342,38 @@ LABEL_8:
       }
     }
 
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = NSStringFromSelector(a2);
-    [v20 handleFailureInMethod:a2 object:self file:@"_UITableViewDragController.m" lineNumber:236 description:{@"_UITableViewDragController internal inconsistency: initiatingIndexPath cannot be nil in %@", v21}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UITableViewDragController.m" lineNumber:236 description:{@"_UITableViewDragController internal inconsistency: initiatingIndexPath cannot be nil in %@", v21}];
 
     goto LABEL_8;
   }
 
 LABEL_9:
-  v13 = [(_UITableViewDragController *)self tentativeIndexPaths];
-  if (![v13 count])
+  tentativeIndexPaths = [(_UITableViewDragController *)self tentativeIndexPaths];
+  if (![tentativeIndexPaths count])
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = NSStringFromSelector(a2);
-    [v14 handleFailureInMethod:a2 object:self file:@"_UITableViewDragController.m" lineNumber:241 description:{@"_UITableViewDragController internal inconsistency: tentativeIndexPaths cannot be empty in %@", v15}];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"_UITableViewDragController.m" lineNumber:241 description:{@"_UITableViewDragController internal inconsistency: tentativeIndexPaths cannot be empty in %@", v15}];
   }
 
-  [(NSMutableOrderedSet *)self->_indexPaths unionOrderedSet:v13];
+  [(NSMutableOrderedSet *)self->_indexPaths unionOrderedSet:tentativeIndexPaths];
   [(_UITableViewDragController *)self setTentativeInitiatingCell:0];
   [(_UITableViewDragController *)self setTentativeInitiatingIndexPath:0];
   [(_UITableViewDragController *)self clearTentativeRows];
 }
 
-- (void)beginDragOfRowsForSession:(id)a3 notifyDelegate:(BOOL)a4
+- (void)beginDragOfRowsForSession:(id)session notifyDelegate:(BOOL)delegate
 {
-  v4 = a4;
-  v8 = a3;
+  delegateCopy = delegate;
+  sessionCopy = session;
   [(_UITableViewDragController *)self beginDragForTentativeRows];
-  v6 = [(_UITableViewDragController *)self tableView];
-  v7 = v6;
-  if (v4)
+  tableView = [(_UITableViewDragController *)self tableView];
+  v7 = tableView;
+  if (delegateCopy)
   {
-    [v6 _dragSessionWillBegin:v8];
+    [tableView _dragSessionWillBegin:sessionCopy];
   }
 
   [v7 _updateAppearanceOfVisibleRowsForDragState];
@@ -385,10 +385,10 @@ LABEL_9:
   [(_UITableViewDragController *)self setInitiatingCell:0];
   [(_UITableViewDragController *)self setInitiatingIndexPath:0];
   [(NSMutableOrderedSet *)self->_indexPaths removeAllObjects];
-  v3 = [(_UITableViewDragController *)self dragSession];
-  v4 = [(_UITableViewDragController *)self tableView];
-  v5 = v3;
-  v6 = v4;
+  dragSession = [(_UITableViewDragController *)self dragSession];
+  tableView = [(_UITableViewDragController *)self tableView];
+  v5 = dragSession;
+  v6 = tableView;
   if (v5)
   {
     objc_opt_class();
@@ -396,8 +396,8 @@ LABEL_9:
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [v5 items];
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    items = [v5 items];
+    v8 = [items countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -408,18 +408,18 @@ LABEL_9:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(items);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
-          v13 = [v12 _privateLocalContext];
-          if (v13)
+          _privateLocalContext = [v12 _privateLocalContext];
+          if (_privateLocalContext)
           {
             if (objc_opt_isKindOfClass())
             {
-              v14 = [v13 tableView];
+              tableView2 = [_privateLocalContext tableView];
 
-              if (v14 == v6)
+              if (tableView2 == v6)
               {
                 [v12 _setPrivateLocalContext:0];
               }
@@ -427,7 +427,7 @@ LABEL_9:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [items countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v9);
@@ -435,27 +435,27 @@ LABEL_9:
   }
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(_UITableViewDragController *)self tableView];
-  v32 = v6;
-  [v6 locationInView:v7];
+  sessionCopy = session;
+  tableView = [(_UITableViewDragController *)self tableView];
+  v32 = sessionCopy;
+  [sessionCopy locationInView:tableView];
   if ([(_UITableViewDragController *)self canProvideItemsForDragAtPoint:?])
   {
-    v8 = [(_UITableViewDragController *)self tentativeInitiatingIndexPath];
-    if (!v8)
+    tentativeInitiatingIndexPath = [(_UITableViewDragController *)self tentativeInitiatingIndexPath];
+    if (!tentativeInitiatingIndexPath)
     {
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v24 = NSStringFromSelector(a2);
-      [v23 handleFailureInMethod:a2 object:self file:@"_UITableViewDragController.m" lineNumber:284 description:{@"_UITableViewDragController internal inconsistency: tentativeInitiatingIndexPath cannot be nil in %@", v24}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UITableViewDragController.m" lineNumber:284 description:{@"_UITableViewDragController internal inconsistency: tentativeInitiatingIndexPath cannot be nil in %@", v24}];
     }
 
-    v9 = [v7 _rowsToIncludeInDragSession:v6 atIndexPath:v8 withDataOwner:{objc_msgSend(v7, "_dataOwnerForDragSession:atIndexPath:", v6, v8)}];
+    v9 = [tableView _rowsToIncludeInDragSession:sessionCopy atIndexPath:tentativeInitiatingIndexPath withDataOwner:{objc_msgSend(tableView, "_dataOwnerForDragSession:atIndexPath:", sessionCopy, tentativeInitiatingIndexPath)}];
     has_internal_diagnostics = os_variant_has_internal_diagnostics();
-    v11 = [v9 containsObject:v8];
-    v27 = v8;
+    v11 = [v9 containsObject:tentativeInitiatingIndexPath];
+    v27 = tentativeInitiatingIndexPath;
     if (has_internal_diagnostics)
     {
       if ((v11 & 1) == 0)
@@ -489,7 +489,7 @@ LABEL_9:
     if (v33)
     {
       v31 = *v40;
-      v29 = self;
+      selfCopy = self;
       do
       {
         for (i = 0; i != v33; ++i)
@@ -500,7 +500,7 @@ LABEL_9:
           }
 
           v13 = *(*(&v39 + 1) + 8 * i);
-          v14 = [v7 _itemsForBeginningDragSession:v32 atIndexPath:v13];
+          v14 = [tableView _itemsForBeginningDragSession:v32 atIndexPath:v13];
           if ([v14 count])
           {
             [(_UITableViewDragController *)self addTentativeRowAtIndexPath:v13];
@@ -525,7 +525,7 @@ LABEL_9:
                   }
 
                   v20 = *(*(&v35 + 1) + 8 * j);
-                  v21 = [[_UITableViewDragItemContext alloc] initWithIndexPath:v13 forTableView:v7];
+                  v21 = [[_UITableViewDragItemContext alloc] initWithIndexPath:v13 forTableView:tableView];
                   [v20 _setPrivateLocalContext:v21];
                 }
 
@@ -536,7 +536,7 @@ LABEL_9:
             }
 
             [v30 addObjectsFromArray:v15];
-            self = v29;
+            self = selfCopy;
             v14 = v34;
           }
         }
@@ -556,28 +556,28 @@ LABEL_9:
   return v30;
 }
 
-- (id)dragInteraction:(id)a3 itemsForAddingToSession:(id)a4 withTouchAtPoint:(CGPoint)a5
+- (id)dragInteraction:(id)interaction itemsForAddingToSession:(id)session withTouchAtPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
+  y = point.y;
+  x = point.x;
   v29 = *MEMORY[0x1E69E9840];
-  v9 = a4;
+  sessionCopy = session;
   if ([(_UITableViewDragController *)self canProvideItemsForDragAtPoint:x, y])
   {
-    v10 = [(_UITableViewDragController *)self tentativeInitiatingIndexPath];
-    if (!v10)
+    tentativeInitiatingIndexPath = [(_UITableViewDragController *)self tentativeInitiatingIndexPath];
+    if (!tentativeInitiatingIndexPath)
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v22 = NSStringFromSelector(a2);
-      [v21 handleFailureInMethod:a2 object:self file:@"_UITableViewDragController.m" lineNumber:317 description:{@"_UITableViewDragController internal inconsistency: tentativeInitiatingIndexPath cannot be nil in %@", v22}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UITableViewDragController.m" lineNumber:317 description:{@"_UITableViewDragController internal inconsistency: tentativeInitiatingIndexPath cannot be nil in %@", v22}];
     }
 
-    v11 = [(_UITableViewDragController *)self tableView];
-    v12 = [v11 _itemsForAddingToDragSession:v9 atIndexPath:v10 point:objc_msgSend(v9 withDataOwner:{"_dataOwner"), x, y}];
+    tableView = [(_UITableViewDragController *)self tableView];
+    v12 = [tableView _itemsForAddingToDragSession:sessionCopy atIndexPath:tentativeInitiatingIndexPath point:objc_msgSend(sessionCopy withDataOwner:{"_dataOwner"), x, y}];
     if ([v12 count])
     {
-      v23 = v9;
-      [(_UITableViewDragController *)self addTentativeRowAtIndexPath:v10];
+      v23 = sessionCopy;
+      [(_UITableViewDragController *)self addTentativeRowAtIndexPath:tentativeInitiatingIndexPath];
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
@@ -598,7 +598,7 @@ LABEL_9:
             }
 
             v18 = *(*(&v24 + 1) + 8 * i);
-            v19 = [[_UITableViewDragItemContext alloc] initWithIndexPath:v10 forTableView:v11];
+            v19 = [[_UITableViewDragItemContext alloc] initWithIndexPath:tentativeInitiatingIndexPath forTableView:tableView];
             [v18 _setPrivateLocalContext:v19];
           }
 
@@ -608,7 +608,7 @@ LABEL_9:
         while (v15);
       }
 
-      v9 = v23;
+      sessionCopy = v23;
     }
   }
 
@@ -620,27 +620,27 @@ LABEL_9:
   return v12;
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 _privateLocalContext];
-  if (v12)
+  interactionCopy = interaction;
+  itemCopy = item;
+  sessionCopy = session;
+  _privateLocalContext = [itemCopy _privateLocalContext];
+  if (_privateLocalContext)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v30 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v31 = NSStringFromSelector(a2);
-      [v30 handleFailureInMethod:a2 object:self file:@"_UITableViewDragController.m" lineNumber:337 description:{@"UITableView internal inconsistency: %@ should never be called for a drag item that did not come from this table view", v31}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UITableViewDragController.m" lineNumber:337 description:{@"UITableView internal inconsistency: %@ should never be called for a drag item that did not come from this table view", v31}];
     }
   }
 
-  v13 = [v12 indexPath];
-  if (v13)
+  indexPath = [_privateLocalContext indexPath];
+  if (indexPath)
   {
-    v14 = [(_UITableViewDragController *)self tableView];
+    tableView = [(_UITableViewDragController *)self tableView];
     v36 = 0;
     v37 = &v36;
     v38 = 0x3032000000;
@@ -652,23 +652,23 @@ LABEL_9:
     v32[2] = __76___UITableViewDragController_dragInteraction_previewForLiftingItem_session___block_invoke;
     v32[3] = &unk_1E70FB728;
     v35 = &v36;
-    v15 = v14;
+    v15 = tableView;
     v33 = v15;
-    v16 = v13;
+    v16 = indexPath;
     v34 = v16;
     [v15 _performUsingPresentationValues:v32];
     v17 = v37[5];
     if (v17 && ([v17 window], v18 = objc_claimAutoreleasedReturnValue(), v18, v18))
     {
-      v19 = [v37[5] _dropAnimationContainerView];
+      _dropAnimationContainerView = [v37[5] _dropAnimationContainerView];
 
-      if (v19)
+      if (_dropAnimationContainerView)
       {
         v20 = [UIDragPreviewTarget alloc];
-        v21 = [v37[5] superview];
+        superview = [v37[5] superview];
         [v37[5] center];
-        [v21 convertPoint:v15 toView:?];
-        v19 = [(UIPreviewTarget *)v20 initWithContainer:v15 center:?];
+        [superview convertPoint:v15 toView:?];
+        _dropAnimationContainerView = [(UIPreviewTarget *)v20 initWithContainer:v15 center:?];
       }
 
       v22 = [v15 _dragPreviewParametersForIndexPath:v16];
@@ -686,9 +686,9 @@ LABEL_9:
       v26 = v24;
 
       v27 = [UITargetedDragPreview alloc];
-      if (v19)
+      if (_dropAnimationContainerView)
       {
-        v28 = [(UITargetedDragPreview *)v27 initWithView:v37[5] parameters:v26 target:v19];
+        v28 = [(UITargetedDragPreview *)v27 initWithView:v37[5] parameters:v26 target:_dropAnimationContainerView];
       }
 
       else
@@ -715,68 +715,68 @@ LABEL_9:
   return v25;
 }
 
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session
 {
-  v7 = a4;
-  v8 = [(_UITableViewDragController *)self tentativeIndexPaths];
-  v9 = [v8 copy];
+  animatorCopy = animator;
+  tentativeIndexPaths = [(_UITableViewDragController *)self tentativeIndexPaths];
+  v9 = [tentativeIndexPaths copy];
 
   if (![v9 count])
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = NSStringFromSelector(a2);
-    [v14 handleFailureInMethod:a2 object:self file:@"_UITableViewDragController.m" lineNumber:377 description:{@"_UITableViewDragController internal inconsistency: tentativeIndexPaths cannot be empty in %@", v15}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UITableViewDragController.m" lineNumber:377 description:{@"_UITableViewDragController internal inconsistency: tentativeIndexPaths cannot be empty in %@", v15}];
   }
 
-  v10 = [(_UITableViewDragController *)self tableView];
-  [v10 _prepareToLiftRowsAtIndexPaths:v9];
+  tableView = [(_UITableViewDragController *)self tableView];
+  [tableView _prepareToLiftRowsAtIndexPaths:v9];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __82___UITableViewDragController_dragInteraction_willAnimateLiftWithAnimator_session___block_invoke;
   v18[3] = &unk_1E70F35B8;
-  v11 = v10;
+  v11 = tableView;
   v19 = v11;
   v20 = v9;
   v12 = v9;
-  [v7 addAnimations:v18];
+  [animatorCopy addAnimations:v18];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __82___UITableViewDragController_dragInteraction_willAnimateLiftWithAnimator_session___block_invoke_2;
   v16[3] = &unk_1E70F5DB8;
   v17 = v11;
   v13 = v11;
-  [v7 addCompletion:v16];
+  [animatorCopy addCompletion:v16];
 }
 
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin
 {
-  v5 = a4;
-  [(_UITableViewDragController *)self setDragSession:v5];
-  [(_UITableViewDragController *)self beginDragOfRowsForSession:v5 notifyDelegate:1];
+  beginCopy = begin;
+  [(_UITableViewDragController *)self setDragSession:beginCopy];
+  [(_UITableViewDragController *)self beginDragOfRowsForSession:beginCopy notifyDelegate:1];
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation
 {
-  v6 = a4;
+  sessionCopy = session;
   [(_UITableViewDragController *)self resetDragState];
-  v7 = [(_UITableViewDragController *)self tableView];
+  tableView = [(_UITableViewDragController *)self tableView];
   [(_UITableViewDragController *)self setDragSession:0];
-  [v7 _dragSessionDidEnd:v6];
+  [tableView _dragSessionDidEnd:sessionCopy];
 
-  [v7 _updateAppearanceOfVisibleRowsForDragState];
+  [tableView _updateAppearanceOfVisibleRowsForDragState];
 }
 
-- (id)dragInteraction:(id)a3 sessionForAddingItems:(id)a4 withTouchAtPoint:(CGPoint)a5
+- (id)dragInteraction:(id)interaction sessionForAddingItems:(id)items withTouchAtPoint:(CGPoint)point
 {
-  v6 = a4;
-  v7 = [(_UITableViewDragController *)self dragSession];
-  if (v7)
+  itemsCopy = items;
+  dragSession = [(_UITableViewDragController *)self dragSession];
+  if (dragSession)
   {
-    if ([v6 containsObject:v7])
+    if ([itemsCopy containsObject:dragSession])
     {
-      v8 = v7;
+      firstObject = dragSession;
 LABEL_9:
-      v10 = v8;
+      v10 = firstObject;
       goto LABEL_11;
     }
 
@@ -801,9 +801,9 @@ LABEL_9:
     }
   }
 
-  if ([v6 count] == 1)
+  if ([itemsCopy count] == 1)
   {
-    v8 = [v6 firstObject];
+    firstObject = [itemsCopy firstObject];
     goto LABEL_9;
   }
 
@@ -813,45 +813,45 @@ LABEL_11:
   return v10;
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 willAddItems:(id)a5 forInteraction:(id)a6
+- (void)dragInteraction:(id)interaction session:(id)session willAddItems:(id)items forInteraction:(id)forInteraction
 {
-  v9 = a4;
-  if (a3 == a6)
+  sessionCopy = session;
+  if (interaction == forInteraction)
   {
-    v11 = v9;
-    v10 = [(_UITableViewDragController *)self dragSession];
+    v11 = sessionCopy;
+    dragSession = [(_UITableViewDragController *)self dragSession];
 
-    if (!v10)
+    if (!dragSession)
     {
       [(_UITableViewDragController *)self setDragSession:v11];
     }
 
-    [(_UITableViewDragController *)self beginDragOfRowsForSession:v11 notifyDelegate:v10 == 0];
-    v9 = v11;
+    [(_UITableViewDragController *)self beginDragOfRowsForSession:v11 notifyDelegate:dragSession == 0];
+    sessionCopy = v11;
   }
 }
 
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 _privateLocalContext];
-  if (v12)
+  interactionCopy = interaction;
+  itemCopy = item;
+  defaultCopy = default;
+  _privateLocalContext = [itemCopy _privateLocalContext];
+  if (_privateLocalContext)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v26 = NSStringFromSelector(a2);
-      [v25 handleFailureInMethod:a2 object:self file:@"_UITableViewDragController.m" lineNumber:456 description:{@"UITableView internal inconsistency: %@ should never be called for a drag item that did not come from this table view", v26}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UITableViewDragController.m" lineNumber:456 description:{@"UITableView internal inconsistency: %@ should never be called for a drag item that did not come from this table view", v26}];
     }
   }
 
-  v13 = [v12 indexPath];
-  if (v13)
+  indexPath = [_privateLocalContext indexPath];
+  if (indexPath)
   {
-    v14 = [(_UITableViewDragController *)self tableView];
+    tableView = [(_UITableViewDragController *)self tableView];
     v31 = 0;
     v32 = &v31;
     v33 = 0x3032000000;
@@ -863,16 +863,16 @@ LABEL_11:
     v27[2] = __83___UITableViewDragController_dragInteraction_previewForCancellingItem_withDefault___block_invoke;
     v27[3] = &unk_1E70FB728;
     v30 = &v31;
-    v15 = v14;
+    v15 = tableView;
     v28 = v15;
-    v16 = v13;
+    v16 = indexPath;
     v29 = v16;
     [v15 _performUsingPresentationValues:v27];
     v17 = v32[5];
     if (v17 && ([v17 window], v18 = objc_claimAutoreleasedReturnValue(), v18, v18))
     {
-      v19 = [(_UITableViewDragController *)self cellsAnimatingCancel];
-      [v19 setObject:v32[5] forKey:v10];
+      cellsAnimatingCancel = [(_UITableViewDragController *)self cellsAnimatingCancel];
+      [cellsAnimatingCancel setObject:v32[5] forKey:itemCopy];
 
       v20 = [v15 _beginAnimatingDropOfCell:v32[5] isCanceling:1];
       v21 = [v15 _dragPreviewParametersForIndexPath:v16];
@@ -905,26 +905,26 @@ LABEL_11:
   return v23;
 }
 
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_UITableViewDragController *)self cellsAnimatingCancel];
-  v12 = [v11 objectForKey:v9];
+  interactionCopy = interaction;
+  itemCopy = item;
+  animatorCopy = animator;
+  cellsAnimatingCancel = [(_UITableViewDragController *)self cellsAnimatingCancel];
+  v12 = [cellsAnimatingCancel objectForKey:itemCopy];
 
   if (v12)
   {
-    v13 = [(_UITableViewDragController *)self tableView];
+    tableView = [(_UITableViewDragController *)self tableView];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __81___UITableViewDragController_dragInteraction_item_willAnimateCancelWithAnimator___block_invoke;
     v23[3] = &unk_1E70F35B8;
-    v14 = v13;
+    v14 = tableView;
     v24 = v14;
     v15 = v12;
     v25 = v15;
-    [v10 addAnimations:v23];
+    [animatorCopy addAnimations:v23];
     objc_initWeak(&location, self);
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
@@ -934,42 +934,42 @@ LABEL_11:
     v16 = v14;
     v18 = v16;
     v19 = v15;
-    v20 = v9;
-    [v10 addCompletion:v17];
+    v20 = itemCopy;
+    [animatorCopy addCompletion:v17];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
   }
 }
 
-- (BOOL)dragInteraction:(id)a3 sessionAllowsMoveOperation:(id)a4
+- (BOOL)dragInteraction:(id)interaction sessionAllowsMoveOperation:(id)operation
 {
-  v5 = a4;
-  v6 = [(_UITableViewDragController *)self tableView];
-  v7 = [v6 _dragSessionAllowsMoveOperation:v5];
+  operationCopy = operation;
+  tableView = [(_UITableViewDragController *)self tableView];
+  v7 = [tableView _dragSessionAllowsMoveOperation:operationCopy];
 
   return v7;
 }
 
-- (BOOL)dragInteraction:(id)a3 sessionIsRestrictedToDraggingApplication:(id)a4
+- (BOOL)dragInteraction:(id)interaction sessionIsRestrictedToDraggingApplication:(id)application
 {
-  v5 = a4;
-  v6 = [(_UITableViewDragController *)self tableView];
-  v7 = [v6 _dragSessionIsRestrictedToDraggingApplication:v5];
+  applicationCopy = application;
+  tableView = [(_UITableViewDragController *)self tableView];
+  v7 = [tableView _dragSessionIsRestrictedToDraggingApplication:applicationCopy];
 
   return v7;
 }
 
-- (BOOL)dragInteraction:(id)a3 prefersFullSizePreviewsForSession:(id)a4
+- (BOOL)dragInteraction:(id)interaction prefersFullSizePreviewsForSession:(id)session
 {
-  v5 = a4;
-  v6 = [(_UITableViewDragController *)self tableView];
-  [v6 bounds];
+  sessionCopy = session;
+  tableView = [(_UITableViewDragController *)self tableView];
+  [tableView bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [v5 locationInView:v6];
+  [sessionCopy locationInView:tableView];
   v16 = v15;
   v18 = v17;
 
@@ -979,26 +979,26 @@ LABEL_11:
   v21.size.height = v14;
   v20.x = v16;
   v20.y = v18;
-  LOBYTE(v5) = CGRectContainsPoint(v21, v20);
+  LOBYTE(sessionCopy) = CGRectContainsPoint(v21, v20);
 
-  return v5;
+  return sessionCopy;
 }
 
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForSession:(id)a4
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForSession:(id)session
 {
-  v6 = a4;
+  sessionCopy = session;
   if (_UIShouldEnforceOpenInRulesInAccountBasedApp())
   {
-    v7 = [(_UITableViewDragController *)self tentativeInitiatingIndexPath];
-    if (!v7)
+    tentativeInitiatingIndexPath = [(_UITableViewDragController *)self tentativeInitiatingIndexPath];
+    if (!tentativeInitiatingIndexPath)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v12 = NSStringFromSelector(a2);
-      [v11 handleFailureInMethod:a2 object:self file:@"_UITableViewDragController.m" lineNumber:531 description:{@"_UITableViewDragController internal inconsistency: tentativeInitiatingIndexPath cannot be nil in %@", v12}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UITableViewDragController.m" lineNumber:531 description:{@"_UITableViewDragController internal inconsistency: tentativeInitiatingIndexPath cannot be nil in %@", v12}];
     }
 
-    v8 = [(_UITableViewDragController *)self tableView];
-    v9 = [v8 _dataOwnerForDragSession:v6 atIndexPath:v7];
+    tableView = [(_UITableViewDragController *)self tableView];
+    v9 = [tableView _dataOwnerForDragSession:sessionCopy atIndexPath:tentativeInitiatingIndexPath];
   }
 
   else
@@ -1009,23 +1009,23 @@ LABEL_11:
   return v9;
 }
 
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForAddingToSession:(id)a4 withTouchAtPoint:(CGPoint)a5
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForAddingToSession:(id)session withTouchAtPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4;
+  y = point.y;
+  x = point.x;
+  sessionCopy = session;
   if (_UIShouldEnforceOpenInRulesInAccountBasedApp() && [(_UITableViewDragController *)self canProvideItemsForDragAtPoint:x, y])
   {
-    v10 = [(_UITableViewDragController *)self tentativeInitiatingIndexPath];
-    if (!v10)
+    tentativeInitiatingIndexPath = [(_UITableViewDragController *)self tentativeInitiatingIndexPath];
+    if (!tentativeInitiatingIndexPath)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v15 = NSStringFromSelector(a2);
-      [v14 handleFailureInMethod:a2 object:self file:@"_UITableViewDragController.m" lineNumber:545 description:{@"_UITableViewDragController internal inconsistency: tentativeInitiatingIndexPath cannot be nil in %@", v15}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UITableViewDragController.m" lineNumber:545 description:{@"_UITableViewDragController internal inconsistency: tentativeInitiatingIndexPath cannot be nil in %@", v15}];
     }
 
-    v11 = [(_UITableViewDragController *)self tableView];
-    v12 = [v11 _dataOwnerForDragSession:v9 atIndexPath:v10];
+    tableView = [(_UITableViewDragController *)self tableView];
+    v12 = [tableView _dataOwnerForDragSession:sessionCopy atIndexPath:tentativeInitiatingIndexPath];
   }
 
   else
@@ -1036,11 +1036,11 @@ LABEL_11:
   return v12;
 }
 
-- (id)_dragInteraction:(id)a3 sessionPropertiesForSession:(id)a4
+- (id)_dragInteraction:(id)interaction sessionPropertiesForSession:(id)session
 {
-  v5 = a4;
-  v6 = [(_UITableViewDragController *)self tableView];
-  v7 = [v6 _dragSessionPropertiesForSession:v5];
+  sessionCopy = session;
+  tableView = [(_UITableViewDragController *)self tableView];
+  v7 = [tableView _dragSessionPropertiesForSession:sessionCopy];
 
   return v7;
 }

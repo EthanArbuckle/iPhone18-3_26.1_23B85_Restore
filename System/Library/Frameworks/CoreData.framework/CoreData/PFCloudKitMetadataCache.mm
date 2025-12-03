@@ -1,11 +1,11 @@
 @interface PFCloudKitMetadataCache
 - (PFCloudKitMetadataCache)init;
-- (uint64_t)cacheMetadataForObjectsWithIDs:(uint64_t)a3 andRecordsWithIDs:(void *)a4 inStore:(void *)a5 withManagedObjectContext:(uint64_t)a6 mirroringOptions:(void *)a7 error:;
-- (uint64_t)recordMetadataForRecordID:(uint64_t)a1;
-- (void)_addMirroredRelationshipMTMKey:(uint64_t)a3 forObjectWithID:(uint64_t)a4 andRelationshipName:;
-- (void)cacheZoneMetadata:(uint64_t)a1;
+- (uint64_t)cacheMetadataForObjectsWithIDs:(uint64_t)ds andRecordsWithIDs:(void *)iDs inStore:(void *)store withManagedObjectContext:(uint64_t)context mirroringOptions:(void *)options error:;
+- (uint64_t)recordMetadataForRecordID:(uint64_t)d;
+- (void)_addMirroredRelationshipMTMKey:(uint64_t)key forObjectWithID:(uint64_t)d andRelationshipName:;
+- (void)cacheZoneMetadata:(uint64_t)metadata;
 - (void)dealloc;
-- (void)registerRecordMetadata:(void *)a3 forObject:;
+- (void)registerRecordMetadata:(void *)metadata forObject:;
 @end
 
 @implementation PFCloudKitMetadataCache
@@ -49,10 +49,10 @@
   [(PFCloudKitMetadataCache *)&v3 dealloc];
 }
 
-- (uint64_t)cacheMetadataForObjectsWithIDs:(uint64_t)a3 andRecordsWithIDs:(void *)a4 inStore:(void *)a5 withManagedObjectContext:(uint64_t)a6 mirroringOptions:(void *)a7 error:
+- (uint64_t)cacheMetadataForObjectsWithIDs:(uint64_t)ds andRecordsWithIDs:(void *)iDs inStore:(void *)store withManagedObjectContext:(uint64_t)context mirroringOptions:(void *)options error:
 {
   v230 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v151 = 0;
     goto LABEL_169;
@@ -60,15 +60,15 @@
 
   v210 = 0;
   v141 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  v160 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:a3];
-  v144 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:a3];
+  v160 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:ds];
+  v144 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:ds];
   v159 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v161 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v162 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v163 = objc_alloc_init(MEMORY[0x1E695DF90]);
   if ([a2 count])
   {
-    v9 = [NSCKRecordMetadata createMapOfMetadataMatchingObjectIDs:a2 inStore:a4 inManagedObjectContext:a5 error:&v210];
+    v9 = [NSCKRecordMetadata createMapOfMetadataMatchingObjectIDs:a2 inStore:iDs inManagedObjectContext:store error:&v210];
     v10 = v9;
     v11 = v9 != 0;
     if (v9)
@@ -77,7 +77,7 @@
       v209[1] = 3221225472;
       v209[2] = __132__PFCloudKitMetadataCache_cacheMetadataForObjectsWithIDs_andRecordsWithIDs_inStore_withManagedObjectContext_mirroringOptions_error___block_invoke;
       v209[3] = &unk_1E6EC4890;
-      v209[4] = a1;
+      v209[4] = self;
       v209[5] = v161;
       v209[6] = v162;
       v209[7] = v163;
@@ -102,7 +102,7 @@
   if ([v144 count])
   {
     context = objc_autoreleasePoolPush();
-    v13 = +[NSCKRecordMetadata metadataForRecordIDs:fromStore:inManagedObjectContext:error:](NSCKRecordMetadata, [v144 allObjects], a4, a5, &v210);
+    v13 = +[NSCKRecordMetadata metadataForRecordIDs:fromStore:inManagedObjectContext:error:](NSCKRecordMetadata, [v144 allObjects], iDs, store, &v210);
     v14 = v13;
     if (!v13)
     {
@@ -133,10 +133,10 @@
 
         v17 = *(*(&v205 + 1) + 8 * i);
         v18 = objc_autoreleasePoolPush();
-        v19 = [(NSCKRecordMetadata *)v17 createObjectIDForLinkedRow];
-        [a1[2] setObject:v17 forKey:v19];
+        createObjectIDForLinkedRow = [(NSCKRecordMetadata *)v17 createObjectIDForLinkedRow];
+        [self[2] setObject:v17 forKey:createObjectIDForLinkedRow];
         v20 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-        [a1[6] setObject:v20 forKey:v19];
+        [self[6] setObject:v20 forKey:createObjectIDForLinkedRow];
         v21 = [v161 objectForKey:{objc_msgSend(v17, "entityId")}];
         if (!v21)
         {
@@ -146,17 +146,17 @@
 
         [v21 addObject:{objc_msgSend(v17, "entityPK")}];
 
-        v22 = [v17 lastExportedTransactionNumber];
+        lastExportedTransactionNumber = [v17 lastExportedTransactionNumber];
         v23 = [v162 objectForKey:{objc_msgSend(v17, "entityId")}];
-        v24 = [v163 objectForKey:v19];
-        if (v22)
+        v24 = [v163 objectForKey:createObjectIDForLinkedRow];
+        if (lastExportedTransactionNumber)
         {
-          if ([v23 compare:v22] != 1)
+          if ([v23 compare:lastExportedTransactionNumber] != 1)
           {
-            [v162 setObject:v22 forKey:{objc_msgSend(v17, "entityId")}];
+            [v162 setObject:lastExportedTransactionNumber forKey:{objc_msgSend(v17, "entityId")}];
           }
 
-          if ([v24 compare:v22] != 1)
+          if ([v24 compare:lastExportedTransactionNumber] != 1)
           {
             goto LABEL_26;
           }
@@ -171,15 +171,15 @@
 
           if (!v24)
           {
-            v22 = &unk_1EF435E48;
+            lastExportedTransactionNumber = &unk_1EF435E48;
 LABEL_26:
-            [v163 setObject:v22 forKey:v19];
+            [v163 setObject:lastExportedTransactionNumber forKey:createObjectIDForLinkedRow];
           }
         }
 
-        v25 = [(NSCKRecordMetadata *)v17 createRecordID];
-        [v160 addObject:v25];
-        [a1[3] setObject:v17 forKey:v25];
+        createRecordID = [(NSCKRecordMetadata *)v17 createRecordID];
+        [v160 addObject:createRecordID];
+        [self[3] setObject:v17 forKey:createRecordID];
 
         objc_autoreleasePoolPop(v18);
       }
@@ -202,8 +202,8 @@ LABEL_159:
     goto LABEL_160;
   }
 
-  v27 = [v160 allObjects];
-  v28 = [NSCKMirroredRelationship fetchMirroredRelationshipsMatchingRelatingRecords:v27 andRelatingRecordIDs:a4 fromStore:a5 inManagedObjectContext:&v210 error:?];
+  allObjects = [v160 allObjects];
+  v28 = [NSCKMirroredRelationship fetchMirroredRelationshipsMatchingRelatingRecords:allObjects andRelatingRecordIDs:iDs fromStore:store inManagedObjectContext:&v210 error:?];
   if (!v28)
   {
     v91 = v210;
@@ -213,7 +213,7 @@ LABEL_107:
     goto LABEL_160;
   }
 
-  v156 = [objc_msgSend(a5 "persistentStoreCoordinator")];
+  v156 = [objc_msgSend(store "persistentStoreCoordinator")];
   v203 = 0u;
   v204 = 0u;
   v201 = 0u;
@@ -238,12 +238,12 @@ LABEL_107:
         {
           v35 = +[PFCloudKitSerializer mtmKeyForObjectWithRecordName:relatedToObjectWithRecordName:byRelationship:withInverse:](PFCloudKitSerializer, [v32 recordName], objc_msgSend(v32, "relatedRecordName"), v34, objc_msgSend(v34, "inverseRelationship"));
           v36 = -[NSCKRecordZoneMetadata createRecordZoneID]([v32 recordZone]);
-          if ([objc_msgSend(a1[4] objectForKey:{v36), "objectForKey:", v35}])
+          if ([objc_msgSend(self[4] objectForKey:{v36), "objectForKey:", v35}])
           {
             LogStream = _PFLogGetLogStream(17);
             if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
             {
-              v43 = [objc_msgSend(a1[4] objectForKey:{v36), "objectForKey:", v35}];
+              v43 = [objc_msgSend(self[4] objectForKey:{v36), "objectForKey:", v35}];
               *buf = 138412802;
               v225 = v35;
               v226 = 2112;
@@ -256,7 +256,7 @@ LABEL_107:
             v38 = _PFLogGetLogStream(17);
             if (os_log_type_enabled(v38, OS_LOG_TYPE_FAULT))
             {
-              v44 = [objc_msgSend(a1[4] objectForKey:{v36), "objectForKey:", v35}];
+              v44 = [objc_msgSend(self[4] objectForKey:{v36), "objectForKey:", v35}];
               *buf = 138412802;
               v225 = v35;
               v226 = 2112;
@@ -267,23 +267,23 @@ LABEL_107:
             }
           }
 
-          v39 = [a1[4] objectForKey:v36];
+          v39 = [self[4] objectForKey:v36];
           if (!v39)
           {
             v39 = objc_alloc_init(MEMORY[0x1E695DF90]);
-            [a1[4] setObject:v39 forKey:v36];
+            [self[4] setObject:v39 forKey:v36];
           }
 
           [v39 setObject:v32 forKey:v35];
 
-          v40 = [(NSCKMirroredRelationship *)v32 createRecordID];
-          [a1[3] setObject:v32 forKey:v40];
+          createRecordID2 = [(NSCKMirroredRelationship *)v32 createRecordID];
+          [self[3] setObject:v32 forKey:createRecordID2];
 
-          v41 = [(NSCKMirroredRelationship *)v32 createRecordIDForRecord];
-          [v159 addObject:v41];
+          createRecordIDForRecord = [(NSCKMirroredRelationship *)v32 createRecordIDForRecord];
+          [v159 addObject:createRecordIDForRecord];
 
-          v42 = [(NSCKMirroredRelationship *)v32 createRecordIDForRelatedRecord];
-          [v159 addObject:v42];
+          createRecordIDForRelatedRecord = [(NSCKMirroredRelationship *)v32 createRecordIDForRelatedRecord];
+          [v159 addObject:createRecordIDForRelatedRecord];
         }
 
         objc_autoreleasePoolPop(v33);
@@ -296,7 +296,7 @@ LABEL_107:
   }
 
   [v159 minusSet:v160];
-  v45 = +[NSCKRecordMetadata metadataForRecordIDs:fromStore:inManagedObjectContext:error:](NSCKRecordMetadata, [v159 allObjects], a4, a5, &v210);
+  v45 = +[NSCKRecordMetadata metadataForRecordIDs:fromStore:inManagedObjectContext:error:](NSCKRecordMetadata, [v159 allObjects], iDs, store, &v210);
   v46 = v45;
   if (!v45)
   {
@@ -323,11 +323,11 @@ LABEL_107:
 
         v50 = *(*(&v197 + 1) + 8 * k);
         v51 = objc_autoreleasePoolPush();
-        v52 = [(NSCKRecordMetadata *)v50 createObjectIDForLinkedRow];
-        [a1[2] setObject:v50 forKey:v52];
+        createObjectIDForLinkedRow2 = [(NSCKRecordMetadata *)v50 createObjectIDForLinkedRow];
+        [self[2] setObject:v50 forKey:createObjectIDForLinkedRow2];
 
-        v53 = [(NSCKRecordMetadata *)v50 createRecordID];
-        [a1[3] setObject:v50 forKey:v53];
+        createRecordID3 = [(NSCKRecordMetadata *)v50 createRecordID];
+        [self[3] setObject:v50 forKey:createRecordID3];
 
         objc_autoreleasePoolPop(v51);
       }
@@ -338,12 +338,12 @@ LABEL_107:
     while (v47);
   }
 
-  v54 = [objc_msgSend(a4 "_persistentStoreCoordinator")];
+  v54 = [objc_msgSend(iDs "_persistentStoreCoordinator")];
   v195 = 0u;
   v196 = 0u;
   v193 = 0u;
   v194 = 0u;
-  obj = a1[4];
+  obj = self[4];
   v55 = [obj countByEnumeratingWithState:&v193 objects:v220 count:16];
   if (v55)
   {
@@ -361,7 +361,7 @@ LABEL_107:
 
         v57 = *(*(&v193 + 1) + 8 * v56);
         v58 = objc_autoreleasePoolPush();
-        v59 = [a1[4] objectForKey:v57];
+        v59 = [self[4] objectForKey:v57];
         contexta = v58;
         v157 = v56;
         v191 = 0u;
@@ -384,30 +384,30 @@ LABEL_107:
               v63 = *(*(&v189 + 1) + 8 * m);
               v64 = [v59 objectForKey:v63];
               v65 = [objc_msgSend(objc_msgSend(objc_msgSend(v54 "entitiesByName")];
-              v66 = [(NSCKMirroredRelationship *)v64 createRecordIDForRecord];
-              v67 = [(PFCloudKitMetadataCache *)a1 recordMetadataForRecordID:v66];
+              createRecordIDForRecord2 = [(NSCKMirroredRelationship *)v64 createRecordIDForRecord];
+              v67 = [(PFCloudKitMetadataCache *)self recordMetadataForRecordID:createRecordIDForRecord2];
               if (v67)
               {
-                v68 = [(NSCKRecordMetadata *)v67 createObjectIDForLinkedRow];
-                -[PFCloudKitMetadataCache _addMirroredRelationshipMTMKey:forObjectWithID:andRelationshipName:](a1, v63, v68, [v65 name]);
+                createObjectIDForLinkedRow3 = [(NSCKRecordMetadata *)v67 createObjectIDForLinkedRow];
+                -[PFCloudKitMetadataCache _addMirroredRelationshipMTMKey:forObjectWithID:andRelationshipName:](self, v63, createObjectIDForLinkedRow3, [v65 name]);
               }
 
               else
               {
-                [a1[7] addObject:v63];
+                [self[7] addObject:v63];
               }
 
-              v69 = [(NSCKMirroredRelationship *)v64 createRecordIDForRelatedRecord];
-              v70 = [(PFCloudKitMetadataCache *)a1 recordMetadataForRecordID:v69];
+              createRecordIDForRelatedRecord2 = [(NSCKMirroredRelationship *)v64 createRecordIDForRelatedRecord];
+              v70 = [(PFCloudKitMetadataCache *)self recordMetadataForRecordID:createRecordIDForRelatedRecord2];
               if (v70)
               {
-                v71 = [(NSCKRecordMetadata *)v70 createObjectIDForLinkedRow];
-                -[PFCloudKitMetadataCache _addMirroredRelationshipMTMKey:forObjectWithID:andRelationshipName:](a1, v63, v71, [objc_msgSend(v65 "inverseRelationship")]);
+                createObjectIDForLinkedRow4 = [(NSCKRecordMetadata *)v70 createObjectIDForLinkedRow];
+                -[PFCloudKitMetadataCache _addMirroredRelationshipMTMKey:forObjectWithID:andRelationshipName:](self, v63, createObjectIDForLinkedRow4, [objc_msgSend(v65 "inverseRelationship")]);
               }
 
               else
               {
-                [a1[7] addObject:v63];
+                [self[7] addObject:v63];
               }
             }
 
@@ -430,9 +430,9 @@ LABEL_107:
 
   v72 = objc_autoreleasePoolPush();
   v73 = +[NSFetchRequest fetchRequestWithEntityName:](NSFetchRequest, "fetchRequestWithEntityName:", +[NSCKRecordZoneMetadata entityPath]);
-  v218 = a4;
-  -[NSFetchRequest setAffectedStores:](v73, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v218 count:1]);
-  v74 = [a5 executeFetchRequest:v73 error:&v210];
+  iDsCopy = iDs;
+  -[NSFetchRequest setAffectedStores:](v73, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:&iDsCopy count:1]);
+  v74 = [store executeFetchRequest:v73 error:&v210];
   v75 = v74;
   if (!v74)
   {
@@ -466,20 +466,20 @@ LABEL_107:
 
       v79 = *(*(&v185 + 1) + 8 * v78);
       v80 = objc_autoreleasePoolPush();
-      v81 = [(NSCKRecordZoneMetadata *)v79 createRecordZoneID];
-      [a1[1] setObject:v79 forKey:v81];
+      createRecordZoneID = [(NSCKRecordZoneMetadata *)v79 createRecordZoneID];
+      [self[1] setObject:v79 forKey:createRecordZoneID];
       if (![v79 encodedShareAsset])
       {
-        [a1[8] addObject:v81];
+        [self[8] addObject:createRecordZoneID];
 LABEL_96:
 
         v88 = 1;
         goto LABEL_98;
       }
 
-      if (a6)
+      if (context)
       {
-        v82 = *(a6 + 136);
+        v82 = *(context + 136);
       }
 
       else
@@ -487,36 +487,36 @@ LABEL_96:
         v82 = 0;
       }
 
-      v83 = [v79 encodedShareAsset];
-      v84 = v83;
-      if (v83)
+      encodedShareAsset = [v79 encodedShareAsset];
+      v84 = encodedShareAsset;
+      if (encodedShareAsset)
       {
-        if ([objc_msgSend(v83 "binaryData")])
+        if ([objc_msgSend(encodedShareAsset "binaryData")])
         {
-          v85 = [v84 binaryData];
+          binaryData = [v84 binaryData];
         }
 
         else
         {
-          v85 = [v84 externalBinaryData];
+          binaryData = [v84 externalBinaryData];
         }
       }
 
       else
       {
-        v85 = 0;
+        binaryData = 0;
       }
 
-      v86 = [(PFCloudKitArchivingUtilities *)v82 shareFromEncodedData:v85 inZoneWithID:v81 error:&v210];
+      v86 = [(PFCloudKitArchivingUtilities *)v82 shareFromEncodedData:binaryData inZoneWithID:createRecordZoneID error:&v210];
       v87 = v86;
       if (v86)
       {
         if ([objc_msgSend(v86 "currentUserParticipant")] != 2)
         {
-          [a1[8] addObject:v81];
+          [self[8] addObject:createRecordZoneID];
         }
 
-        v81 = 0;
+        createRecordZoneID = 0;
         goto LABEL_96;
       }
 
@@ -604,21 +604,21 @@ LABEL_120:
       v103 = [NSPersistentHistoryChangeRequest fetchHistoryWithFetchRequest:v102];
       [(NSPersistentHistoryChangeRequest *)v103 setResultType:5];
       [(NSPersistentHistoryChangeRequest *)v103 setUseQueryGenerationToken:1];
-      v214 = a4;
-      -[NSPersistentStoreRequest setAffectedStores:](v103, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v214 count:1]);
-      v104 = [a5 executeRequest:v103 error:&v210];
+      iDsCopy2 = iDs;
+      -[NSPersistentStoreRequest setAffectedStores:](v103, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:&iDsCopy2 count:1]);
+      v104 = [store executeRequest:v103 error:&v210];
       v105 = v104;
       if (v104)
       {
-        v106 = [v104 result];
+        result = [v104 result];
         v175 = 0u;
         v176 = 0u;
         v173 = 0u;
         v174 = 0u;
-        v107 = [v106 countByEnumeratingWithState:&v173 objects:v213 count:16];
+        v107 = [result countByEnumeratingWithState:&v173 objects:v213 count:16];
         if (v107)
         {
-          v134 = v106;
+          v134 = result;
           v130 = v105;
           v137 = *v174;
           do
@@ -640,12 +640,12 @@ LABEL_120:
                 v172 = 0u;
                 v169 = 0u;
                 v170 = 0u;
-                v109 = [v108 changes];
-                v110 = [v109 countByEnumeratingWithState:&v169 objects:v212 count:16];
+                changes = [v108 changes];
+                v110 = [changes countByEnumeratingWithState:&v169 objects:v212 count:16];
                 if (v110)
                 {
                   v111 = *v170;
-                  contextb = v109;
+                  contextb = changes;
                   do
                   {
                     for (ii = 0; ii != v110; ++ii)
@@ -678,18 +678,18 @@ LABEL_120:
                         }
                       }
 
-                      v118 = [v108 transactionNumber];
-                      if (v118 >= [v115 integerValue])
+                      transactionNumber = [v108 transactionNumber];
+                      if (transactionNumber >= [v115 integerValue])
                       {
-                        v119 = [a1[6] objectForKey:{objc_msgSend(v113, "changedObjectID")}];
+                        v119 = [self[6] objectForKey:{objc_msgSend(v113, "changedObjectID")}];
                         if (v119)
                         {
                           v167 = 0u;
                           v168 = 0u;
                           v165 = 0u;
                           v166 = 0u;
-                          v120 = [v113 updatedProperties];
-                          v121 = [v120 countByEnumeratingWithState:&v165 objects:v211 count:16];
+                          updatedProperties = [v113 updatedProperties];
+                          v121 = [updatedProperties countByEnumeratingWithState:&v165 objects:v211 count:16];
                           if (v121)
                           {
                             v122 = *v166;
@@ -699,13 +699,13 @@ LABEL_120:
                               {
                                 if (*v166 != v122)
                                 {
-                                  objc_enumerationMutation(v120);
+                                  objc_enumerationMutation(updatedProperties);
                                 }
 
                                 [v119 addObject:{objc_msgSend(*(*(&v165 + 1) + 8 * jj), "name")}];
                               }
 
-                              v121 = [v120 countByEnumeratingWithState:&v165 objects:v211 count:16];
+                              v121 = [updatedProperties countByEnumeratingWithState:&v165 objects:v211 count:16];
                             }
 
                             while (v121);
@@ -774,9 +774,9 @@ LABEL_160:
     v125 = v210;
     if (v125)
     {
-      if (a7)
+      if (options)
       {
-        *a7 = v125;
+        *options = v125;
       }
     }
 
@@ -869,12 +869,12 @@ LABEL_14:
   [*(*(a1 + 32) + 24) setObject:a3 forKey:v12];
 }
 
-- (uint64_t)recordMetadataForRecordID:(uint64_t)a1
+- (uint64_t)recordMetadataForRecordID:(uint64_t)d
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (d)
   {
-    v3 = [*(a1 + 24) objectForKey:a2];
+    v3 = [*(d + 24) objectForKey:a2];
     if (v3)
     {
       objc_opt_class();
@@ -912,20 +912,20 @@ LABEL_14:
   return v3;
 }
 
-- (void)_addMirroredRelationshipMTMKey:(uint64_t)a3 forObjectWithID:(uint64_t)a4 andRelationshipName:
+- (void)_addMirroredRelationshipMTMKey:(uint64_t)key forObjectWithID:(uint64_t)d andRelationshipName:
 {
-  v8 = [objc_msgSend(*(a1 + 40) "objectForKey:{"objectForKey:", a4}")];
+  v8 = [objc_msgSend(*(self + 40) "objectForKey:{"objectForKey:", d}")];
   if (!v8)
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v9 = [*(a1 + 40) objectForKey:a3];
+    v9 = [*(self + 40) objectForKey:key];
     if (!v9)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      [*(a1 + 40) setObject:v9 forKey:a3];
+      [*(self + 40) setObject:v9 forKey:key];
     }
 
-    [v9 setObject:v10 forKey:a4];
+    [v9 setObject:v10 forKey:d];
 
     v8 = v10;
   }
@@ -934,28 +934,28 @@ LABEL_14:
   [v8 addObject:a2];
 }
 
-- (void)registerRecordMetadata:(void *)a3 forObject:
+- (void)registerRecordMetadata:(void *)metadata forObject:
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 16) setObject:a2 forKey:{objc_msgSend(a3, "objectID")}];
-    v5 = [(NSCKRecordMetadata *)a2 createRecordID];
-    [*(a1 + 24) setObject:a2 forKey:v5];
+    [*(self + 16) setObject:a2 forKey:{objc_msgSend(metadata, "objectID")}];
+    createRecordID = [(NSCKRecordMetadata *)a2 createRecordID];
+    [*(self + 24) setObject:a2 forKey:createRecordID];
   }
 }
 
-- (void)cacheZoneMetadata:(uint64_t)a1
+- (void)cacheZoneMetadata:(uint64_t)metadata
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (metadata)
   {
-    v4 = [(NSCKRecordZoneMetadata *)a2 createRecordZoneID];
-    if ([*(a1 + 8) objectForKey:v4])
+    createRecordZoneID = [(NSCKRecordZoneMetadata *)a2 createRecordZoneID];
+    if ([*(metadata + 8) objectForKey:createRecordZoneID])
     {
       LogStream = _PFLogGetLogStream(17);
       if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
       {
-        v8 = *(a1 + 8);
+        v8 = *(metadata + 8);
         v10 = 138412546;
         v11 = a2;
         v12 = 2112;
@@ -966,7 +966,7 @@ LABEL_14:
       v6 = _PFLogGetLogStream(17);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
       {
-        v9 = *(a1 + 8);
+        v9 = *(metadata + 8);
         v10 = 138412546;
         v11 = a2;
         v12 = 2112;
@@ -975,7 +975,7 @@ LABEL_14:
       }
     }
 
-    [*(a1 + 8) setObject:a2 forKey:v4];
+    [*(metadata + 8) setObject:a2 forKey:createRecordZoneID];
   }
 
   v7 = *MEMORY[0x1E69E9840];

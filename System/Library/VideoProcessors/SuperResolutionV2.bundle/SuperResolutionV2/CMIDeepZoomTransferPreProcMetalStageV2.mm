@@ -1,6 +1,6 @@
 @interface CMIDeepZoomTransferPreProcMetalStageV2
-- (CMIDeepZoomTransferPreProcMetalStageV2)initWithMetalContext:(id)a3 withTileConfiguration:(id *)a4;
-- (int)computeLocalHomographies:(CMIDeepZoomTransferPreProcMetalStageV2 *)self referencePixelBuffer:(SEL)a2 referenceMetadata:(id)a3 nonReferencePixelBuffer:(__CVBuffer *)a4 nonReferenceMetadata:(id)a5 referenceNormalizedCropRectangle:(__CVBuffer *)a6 nonReferenceNormalizedCropRectangle:(id)a7 computeLocalHomographiesConfig:(CGRect *)a8 tileCount:(CGRect *)a9 tileIndex:(id)a10;
+- (CMIDeepZoomTransferPreProcMetalStageV2)initWithMetalContext:(id)context withTileConfiguration:(id *)configuration;
+- (int)computeLocalHomographies:(CMIDeepZoomTransferPreProcMetalStageV2 *)self referencePixelBuffer:(SEL)buffer referenceMetadata:(id)metadata nonReferencePixelBuffer:(__CVBuffer *)pixelBuffer nonReferenceMetadata:(id)referenceMetadata referenceNormalizedCropRectangle:(__CVBuffer *)rectangle nonReferenceNormalizedCropRectangle:(id)cropRectangle computeLocalHomographiesConfig:(CGRect *)config tileCount:(CGRect *)count tileIndex:(id)self0;
 - (void)dealloc;
 @end
 
@@ -14,16 +14,16 @@
   [(CMIDeepZoomTransferPreProcMetalStageV2 *)&v3 dealloc];
 }
 
-- (CMIDeepZoomTransferPreProcMetalStageV2)initWithMetalContext:(id)a3 withTileConfiguration:(id *)a4
+- (CMIDeepZoomTransferPreProcMetalStageV2)initWithMetalContext:(id)context withTileConfiguration:(id *)configuration
 {
-  v7 = a3;
-  if (!a4)
+  contextCopy = context;
+  if (!configuration)
   {
     goto LABEL_15;
   }
 
-  v8 = 0;
-  if (*a4 && *(a4 + 1))
+  selfCopy = 0;
+  if (*configuration && *(configuration + 1))
   {
     v21.receiver = self;
     v21.super_class = CMIDeepZoomTransferPreProcMetalStageV2;
@@ -33,11 +33,11 @@
     {
 LABEL_12:
       self = self;
-      v8 = self;
+      selfCopy = self;
       goto LABEL_13;
     }
 
-    objc_storeStrong(&v9->_metalContext, a3);
+    objc_storeStrong(&v9->_metalContext, context);
     if (self->_metalContext || (+[NSBundle bundleForClass:](NSBundle, "bundleForClass:", objc_opt_class()), v10 = objc_claimAutoreleasedReturnValue(), v11 = [[FigMetalContext alloc] initWithbundle:v10 andOptionalCommandQueue:0], metalContext = self->_metalContext, self->_metalContext = v11, metalContext, v10, self->_metalContext))
     {
       if (!sub_D184(self) && !sub_D240(self))
@@ -45,8 +45,8 @@ LABEL_12:
         v19 = kCVMetalTextureCacheMaximumTextureAgeKey;
         v20 = &off_19028;
         v13 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
-        v14 = [(FigMetalContext *)self->_metalContext device];
-        v15 = CVMetalTextureCacheCreate(kCFAllocatorDefault, v13, v14, 0, &self->_cvMetalTextureCacheRef);
+        device = [(FigMetalContext *)self->_metalContext device];
+        v15 = CVMetalTextureCacheCreate(kCFAllocatorDefault, v13, device, 0, &self->_cvMetalTextureCacheRef);
 
         if (!v15)
         {
@@ -56,7 +56,7 @@ LABEL_12:
 
           if (self->_regwarpCPU)
           {
-            *self->_anon_30 = *a4;
+            *self->_anon_30 = *configuration;
 
             goto LABEL_12;
           }
@@ -65,42 +65,42 @@ LABEL_12:
     }
 
 LABEL_15:
-    v8 = 0;
+    selfCopy = 0;
   }
 
 LABEL_13:
 
-  return v8;
+  return selfCopy;
 }
 
-- (int)computeLocalHomographies:(CMIDeepZoomTransferPreProcMetalStageV2 *)self referencePixelBuffer:(SEL)a2 referenceMetadata:(id)a3 nonReferencePixelBuffer:(__CVBuffer *)a4 nonReferenceMetadata:(id)a5 referenceNormalizedCropRectangle:(__CVBuffer *)a6 nonReferenceNormalizedCropRectangle:(id)a7 computeLocalHomographiesConfig:(CGRect *)a8 tileCount:(CGRect *)a9 tileIndex:(id)a10
+- (int)computeLocalHomographies:(CMIDeepZoomTransferPreProcMetalStageV2 *)self referencePixelBuffer:(SEL)buffer referenceMetadata:(id)metadata nonReferencePixelBuffer:(__CVBuffer *)pixelBuffer nonReferenceMetadata:(id)referenceMetadata referenceNormalizedCropRectangle:(__CVBuffer *)rectangle nonReferenceNormalizedCropRectangle:(id)cropRectangle computeLocalHomographiesConfig:(CGRect *)config tileCount:(CGRect *)count tileIndex:(id)self0
 {
-  v14 = a3;
-  Width = a5;
-  v16 = a7;
-  v178 = a10;
+  metadataCopy = metadata;
+  Width = referenceMetadata;
+  cropRectangleCopy = cropRectangle;
+  indexCopy = index;
   v17 = 0;
   origin = 0u;
   v209 = 0;
   v206 = 0u;
   v207 = 0;
   v18 = -12780;
-  v176 = v14;
-  if (!v14)
+  v176 = metadataCopy;
+  if (!metadataCopy)
   {
     sub_3660();
-    v19 = self;
+    selfCopy7 = self;
     goto LABEL_121;
   }
 
-  v19 = self;
-  if (!a4 || !Width || !a6)
+  selfCopy7 = self;
+  if (!pixelBuffer || !Width || !rectangle)
   {
     goto LABEL_127;
   }
 
   sub_3660();
-  if (!v16)
+  if (!cropRectangleCopy)
   {
     goto LABEL_121;
   }
@@ -134,14 +134,14 @@ LABEL_127:
   v191 = v26;
   v195 = v27.u32[1];
   v169 = v24;
-  v171 = a6;
+  rectangleCopy = rectangle;
   v189 = v23;
   v186 = v22;
-  v146 = v16;
-  v29 = [v16 objectForKeyedSubscript:kFigCaptureSampleBufferMetadata_StillImageProcessingMetadata];
+  v146 = cropRectangleCopy;
+  v29 = [cropRectangleCopy objectForKeyedSubscript:kFigCaptureSampleBufferMetadata_StillImageProcessingMetadata];
   v30 = [v29 objectForKeyedSubscript:kFigCaptureStillImageProcessingMetadataKey_RegistrationHomography];
 
-  pixelBuffer = a4;
+  pixelBuffer = pixelBuffer;
   v144 = v30;
   if (v30)
   {
@@ -166,7 +166,7 @@ LABEL_127:
     [v39 floatValue];
     v181.i32[1] = v182;
 
-    a4 = pixelBuffer;
+    pixelBuffer = pixelBuffer;
   }
 
   else
@@ -178,10 +178,10 @@ LABEL_127:
 
   __asm { FMOV            V0.2D, #1.0 }
 
-  if (a8)
+  if (config)
   {
-    size = a8->size;
-    origin = a8->origin;
+    size = config->size;
+    origin = config->origin;
     v209 = size;
   }
 
@@ -191,12 +191,12 @@ LABEL_127:
     v209 = _Q0;
   }
 
-  v16 = v146;
-  v19 = self;
-  if (a9)
+  cropRectangleCopy = v146;
+  selfCopy7 = self;
+  if (count)
   {
-    v44 = a9->size;
-    v206 = a9->origin;
+    v44 = count->size;
+    v206 = count->origin;
     v207 = v44;
   }
 
@@ -206,11 +206,11 @@ LABEL_127:
     v207 = _Q0;
   }
 
-  v14 = v195;
+  metadataCopy = v195;
   v46 = v18 == -65536 && v195 == 0xFFFF;
   if (!(v18 | v195) || v46)
   {
-    v143 = sub_E1EC(self, a4, Width, v171, v146, &origin, &v206, v169);
+    v143 = sub_E1EC(self, pixelBuffer, Width, rectangleCopy, v146, &origin, &v206, v169);
     if (v143)
     {
       v18 = v143;
@@ -223,7 +223,7 @@ LABEL_127:
   v17 = 0x1000040451B5BE8;
   Width = CVPixelBufferGetWidth(self->_opticalOutputFlowPixelBuffer);
   Height = CVPixelBufferGetHeight(self->_opticalOutputFlowPixelBuffer);
-  v16 = Height;
+  cropRectangleCopy = Height;
   v48 = vand_s8(v191, 0xFFFF0000FFFFLL);
   v49 = vand_s8(vadd_s32(vadd_s32(v191, -1), __PAIR64__(Height, Width)), 0xFFFF0000FFFFLL);
   v49.i32[0] /= v48.i32[0];
@@ -231,8 +231,8 @@ LABEL_127:
   v193 = __PAIR64__(Height, Width);
   v197 = v49;
   BytesPerRow = CVPixelBufferGetBytesPerRow(self->_opticalOutputFlowPixelBuffer);
-  v19 = (16 * v197.u32[0] * v197.u32[1]);
-  v50 = malloc_type_malloc(v19, 0x1000040451B5BE8uLL);
+  selfCopy7 = (16 * v197.u32[0] * v197.u32[1]);
+  v50 = malloc_type_malloc(selfCopy7, 0x1000040451B5BE8uLL);
   if (!v50)
   {
     sub_3694();
@@ -241,19 +241,19 @@ LABEL_127:
   }
 
   v167 = v50;
-  v51 = malloc_type_malloc(v19, 0x1000040451B5BE8uLL);
+  v51 = malloc_type_malloc(selfCopy7, 0x1000040451B5BE8uLL);
   if (!v51)
   {
-    v14 = 0;
+    metadataCopy = 0;
     sub_3700();
     goto LABEL_120;
   }
 
   v166 = v51;
-  v19 = self;
+  selfCopy7 = self;
   if (CVPixelBufferLockBaseAddress(self->_opticalOutputFlowPixelBuffer, 1uLL) || (BaseAddress = CVPixelBufferGetBaseAddress(self->_opticalOutputFlowPixelBuffer)) == 0)
   {
-    v14 = 0;
+    metadataCopy = 0;
     v18 = -12782;
     goto LABEL_115;
   }
@@ -273,18 +273,18 @@ LABEL_127:
   v155 = v52;
   if (v53 >= v52)
   {
-    v14 = 0;
+    metadataCopy = 0;
     v18 = 0;
 LABEL_115:
     Width = v145;
-    v16 = v146;
+    cropRectangleCopy = v146;
     goto LABEL_119;
   }
 
   v54.f32[0] = Width;
-  v55 = v14;
-  LODWORD(v56) = v14;
-  v14 = 0;
+  v55 = metadataCopy;
+  LODWORD(v56) = metadataCopy;
+  metadataCopy = 0;
   v57 = v55 == 0xFFFF;
   if (v55 == 0xFFFF)
   {
@@ -307,7 +307,7 @@ LABEL_115:
     v56 = v56;
   }
 
-  v164 = v16;
+  v164 = cropRectangleCopy;
   v165 = Width;
   v54.f32[1] = v164;
   v59 = vmul_f32(v54, 0x3974C40139379301);
@@ -321,8 +321,8 @@ LABEL_115:
   HIWORD(v201) = WORD2(v193);
   LOWORD(v201) = v193;
   v63 = v56 * v197.u16[2];
-  v175 = v16;
-  v147 = v16 - v63;
+  v175 = cropRectangleCopy;
+  v147 = cropRectangleCopy - v63;
   v64 = 16 * v197.u16[0];
   v65 = v53 * v197.u16[0];
   v150 = v197.u16[0];
@@ -375,7 +375,7 @@ LABEL_117:
   v156 = 2 * v53 * v159;
   v70 = v66;
   v71 = v147;
-  v72 = v14;
+  v72 = metadataCopy;
   while (1)
   {
     v198 = v72;
@@ -387,7 +387,7 @@ LABEL_117:
     v187 = v56;
     v74 = v56 * v174;
     v75 = v175 - v56 * v174 >= v174 ? v174 : v175 - v56 * v174;
-    if ([v178 useFlowWeightedAverage])
+    if ([indexCopy useFlowWeightedAverage])
     {
       break;
     }
@@ -484,11 +484,11 @@ LABEL_117:
     v106 = (v75 * v69);
     if ((v77 / v106) > 0.6)
     {
-      v134 = self;
+      selfCopy6 = self;
       v136 = v166;
       v135 = v167;
 LABEL_110:
-      v137 = sub_EA84(v134, &v203, v135, v136);
+      v137 = sub_EA84(selfCopy6, &v203, v135, v136);
       if (v137)
       {
         v18 = v137;
@@ -502,7 +502,7 @@ LABEL_107:
 
     if ((v76 / v106) > 0.6)
     {
-      v134 = self;
+      selfCopy6 = self;
       v136 = v166;
       v135 = v167;
       goto LABEL_110;
@@ -598,19 +598,19 @@ LABEL_91:
     v131 = [NSNumber numberWithFloat:v130];
     v202[8] = v131;
     v132 = [NSArray arrayWithObjects:v202 count:9];
-    v14 = [NSMutableArray arrayWithArray:v132];
+    metadataCopy = [NSMutableArray arrayWithArray:v132];
 
-    if (!v14)
+    if (!metadataCopy)
     {
       v18 = -12782;
       goto LABEL_117;
     }
 
-    [v176 addObject:v14];
+    [v176 addObject:metadataCopy];
     v56 = v187 + 1;
     v70 = v183 + v168;
     v71 = v185;
-    v72 = v14;
+    v72 = metadataCopy;
     v62 = 2 * (BytesPerRow >> 1);
     if (v187 + 1 == v177)
     {
@@ -622,7 +622,7 @@ LABEL_91:
   CVPixelBufferGetHeightOfPlane(pixelBuffer, 0);
   HIWORD(v199) = v75;
   LOWORD(v199) = v161;
-  v133 = sub_E6E0(self, &v203, v201, WidthOfPlane, v199, BaseAddress + 2 * v156 + 2 * v74 * (BytesPerRow >> 1), BytesPerRow, v178);
+  v133 = sub_E6E0(self, &v203, v201, WidthOfPlane, v199, BaseAddress + 2 * v156 + 2 * v74 * (BytesPerRow >> 1), BytesPerRow, indexCopy);
   if (!v133)
   {
     goto LABEL_107;
@@ -633,19 +633,19 @@ LABEL_91:
   FigDebugAssert3();
 LABEL_126:
   Width = v145;
-  v14 = v198;
+  metadataCopy = v198;
 LABEL_118:
-  v16 = v146;
-  v19 = self;
+  cropRectangleCopy = v146;
+  selfCopy7 = self;
 LABEL_119:
   v17 = v144;
   v20 = v166;
 LABEL_120:
   v21 = v167;
 LABEL_121:
-  opticalOutputFlowPixelBuffer = v19->_opticalOutputFlowPixelBuffer;
+  opticalOutputFlowPixelBuffer = selfCopy7->_opticalOutputFlowPixelBuffer;
   v139 = v20;
-  v140 = v14;
+  v140 = metadataCopy;
   v141 = v21;
   CVPixelBufferUnlockBaseAddress(opticalOutputFlowPixelBuffer, 1uLL);
   free(v141);

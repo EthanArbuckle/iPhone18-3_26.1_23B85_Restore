@@ -1,33 +1,33 @@
 @interface WFConditionalAction
 - (BOOL)inputRequired;
 - (BOOL)isDeletable;
-- (BOOL)legacyBehaviorIgnoresOutputFromAction:(id)a3 inWorkflow:(id)a4;
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4;
-- (BOOL)showsAddButtonForParameter:(id)a3;
-- (BOOL)truthWithVariableSource:(id)a3;
+- (BOOL)legacyBehaviorIgnoresOutputFromAction:(id)action inWorkflow:(id)workflow;
+- (BOOL)setParameterState:(id)state forKey:(id)key;
+- (BOOL)showsAddButtonForParameter:(id)parameter;
+- (BOOL)truthWithVariableSource:(id)source;
 - (NSArray)inputContentClasses;
 - (WFActionParameterSummary)parameterSummary;
-- (WFConditionalAction)initWithIdentifier:(id)a3 definition:(id)a4 serializedParameters:(id)a5;
+- (WFConditionalAction)initWithIdentifier:(id)identifier definition:(id)definition serializedParameters:(id)parameters;
 - (id)createAccompanyingActions;
-- (id)localizedDefaultOutputNameWithContext:(id)a3;
-- (id)localizedNameWithContext:(id)a3;
+- (id)localizedDefaultOutputNameWithContext:(id)context;
+- (id)localizedNameWithContext:(id)context;
 - (id)minimumSupportedClientVersion;
-- (id)parameterStateForKey:(id)a3 fallingBackToDefaultValue:(BOOL)a4;
-- (id)parameterStateUpdateForPlusButtonForParameter:(id)a3;
+- (id)parameterStateForKey:(id)key fallingBackToDefaultValue:(BOOL)value;
+- (id)parameterStateUpdateForPlusButtonForParameter:(id)parameter;
 - (id)serializedParameters;
-- (id)visibleParametersWithProcessing:(BOOL)a3;
-- (void)resetEvaluationCriteriaWithVariableSource:(id)a3;
-- (void)runWithInput:(WFContentCollection *)a3 completionHandler:(id)a4;
-- (void)variableDidChange:(id)a3;
+- (id)visibleParametersWithProcessing:(BOOL)processing;
+- (void)resetEvaluationCriteriaWithVariableSource:(id)source;
+- (void)runWithInput:(WFContentCollection *)input completionHandler:(id)handler;
+- (void)variableDidChange:(id)change;
 - (void)visibleParametersUpdated;
 @end
 
 @implementation WFConditionalAction
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
+  contextCopy = context;
+  selfCopy = self;
   sub_1CA438EEC();
 
   v6 = sub_1CA94C368();
@@ -37,7 +37,7 @@
 
 - (BOOL)isDeletable
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1CA439278();
 
   return v3;
@@ -45,7 +45,7 @@
 
 - (BOOL)inputRequired
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1CA4393B8();
 
   return v3;
@@ -53,7 +53,7 @@
 
 - (NSArray)inputContentClasses
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CA439454();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC444880, &qword_1CA984340);
@@ -62,21 +62,21 @@
   return v3;
 }
 
-- (BOOL)legacyBehaviorIgnoresOutputFromAction:(id)a3 inWorkflow:(id)a4
+- (BOOL)legacyBehaviorIgnoresOutputFromAction:(id)action inWorkflow:(id)workflow
 {
-  v5 = a3;
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  LOBYTE(v5) = sub_1CA4394DC(v5, v8);
+  actionCopy = action;
+  actionCopy2 = action;
+  workflowCopy = workflow;
+  selfCopy = self;
+  LOBYTE(actionCopy) = sub_1CA4394DC(actionCopy, workflowCopy);
 
-  return v5 & 1;
+  return actionCopy & 1;
 }
 
-- (id)localizedDefaultOutputNameWithContext:(id)a3
+- (id)localizedDefaultOutputNameWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
+  contextCopy = context;
+  selfCopy = self;
   sub_1CA4395D8();
   v7 = v6;
 
@@ -95,7 +95,7 @@
 
 - (id)createAccompanyingActions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1CA4397B4();
 
   if (v3)
@@ -112,23 +112,23 @@
   return v4;
 }
 
-- (WFConditionalAction)initWithIdentifier:(id)a3 definition:(id)a4 serializedParameters:(id)a5
+- (WFConditionalAction)initWithIdentifier:(id)identifier definition:(id)definition serializedParameters:(id)parameters
 {
   v7 = sub_1CA94C3A8();
   v9 = v8;
-  if (a5)
+  if (parameters)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC444480, &unk_1CA983520);
-    a5 = sub_1CA94C1C8();
+    parameters = sub_1CA94C1C8();
   }
 
-  v10 = a4;
-  return WFConditionalAction.init(identifier:definition:serializedParameters:)(v7, v9, a4, a5);
+  definitionCopy = definition;
+  return WFConditionalAction.init(identifier:definition:serializedParameters:)(v7, v9, definition, parameters);
 }
 
 - (id)serializedParameters
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CA439DB8();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC444480, &unk_1CA983520);
@@ -139,7 +139,7 @@
 
 - (id)minimumSupportedClientVersion
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CA43A4A0();
 
   v3 = sub_1CA94C368();
@@ -149,16 +149,16 @@
 
 - (WFActionParameterSummary)parameterSummary
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CA43A920();
   v4 = v3;
 
   return v4;
 }
 
-- (id)visibleParametersWithProcessing:(BOOL)a3
+- (id)visibleParametersWithProcessing:(BOOL)processing
 {
-  v3 = self;
+  selfCopy = self;
   sub_1CA43B220();
 
   sub_1CA25B3D0(0, &qword_1EC441AA0, off_1E836EDB8);
@@ -167,11 +167,11 @@
   return v4;
 }
 
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4
+- (BOOL)setParameterState:(id)state forKey:(id)key
 {
   sub_1CA94C3A8();
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_1CA43C050();
   v7 = v6;
   swift_unknownObjectRelease();
@@ -179,11 +179,11 @@
   return v7 & 1;
 }
 
-- (id)parameterStateForKey:(id)a3 fallingBackToDefaultValue:(BOOL)a4
+- (id)parameterStateForKey:(id)key fallingBackToDefaultValue:(BOOL)value
 {
   v5 = sub_1CA94C3A8();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   v9 = sub_1CA43CB20(v5, v7);
 
   return v9;
@@ -191,62 +191,62 @@
 
 - (void)visibleParametersUpdated
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CA43D094();
 }
 
-- (void)resetEvaluationCriteriaWithVariableSource:(id)a3
+- (void)resetEvaluationCriteriaWithVariableSource:(id)source
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1CA43D3FC(a3);
+  selfCopy = self;
+  sub_1CA43D3FC(source);
   swift_unknownObjectRelease();
 }
 
-- (BOOL)truthWithVariableSource:(id)a3
+- (BOOL)truthWithVariableSource:(id)source
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = sub_1CA43D5CC(a3);
+  selfCopy = self;
+  v6 = sub_1CA43D5CC(source);
   swift_unknownObjectRelease();
 
   return v6 & 1;
 }
 
-- (void)runWithInput:(WFContentCollection *)a3 completionHandler:(id)a4
+- (void)runWithInput:(WFContentCollection *)input completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = input;
   v7[3] = v6;
   v7[4] = self;
-  v8 = a3;
-  v9 = self;
+  inputCopy = input;
+  selfCopy = self;
 
   sub_1CA67052C(&unk_1CA987B68, v7);
 }
 
-- (BOOL)showsAddButtonForParameter:(id)a3
+- (BOOL)showsAddButtonForParameter:(id)parameter
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = WFConditionalAction.showsAddButton(for:)(v5);
+  parameterCopy = parameter;
+  selfCopy = self;
+  LOBYTE(self) = WFConditionalAction.showsAddButton(for:)(selfCopy);
 
   return self & 1;
 }
 
-- (id)parameterStateUpdateForPlusButtonForParameter:(id)a3
+- (id)parameterStateUpdateForPlusButtonForParameter:(id)parameter
 {
-  v4 = a3;
-  v5 = self;
-  v6 = WFConditionalAction.parameterStateUpdateForPlusButton(for:)(v5);
+  parameterCopy = parameter;
+  selfCopy = self;
+  v6 = WFConditionalAction.parameterStateUpdateForPlusButton(for:)(selfCopy);
 
   return v6;
 }
 
-- (void)variableDidChange:(id)a3
+- (void)variableDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v7.super.isa = self;
   isa = v7.super.isa;
   WFConditionalAction.variableDidChange(_:)(v7);

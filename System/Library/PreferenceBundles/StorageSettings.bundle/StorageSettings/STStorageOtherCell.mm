@@ -1,6 +1,6 @@
 @interface STStorageOtherCell
 + (id)specifierForOther;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation STStorageOtherCell
@@ -18,17 +18,17 @@
   return v2;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = STStorageOtherCell;
-  v4 = a3;
-  [(STStorageOtherCell *)&v7 refreshCellContentsWithSpecifier:v4];
+  specifierCopy = specifier;
+  [(STStorageOtherCell *)&v7 refreshCellContentsWithSpecifier:specifierCopy];
   STLoadTableIconForAppID();
-  v5 = [v4 propertyForKey:PSTitleKey];
+  v5 = [specifierCopy propertyForKey:PSTitleKey];
   [(STStorageOtherCell *)self setTitle:v5];
 
-  v6 = [v4 propertyForKey:PSValueKey];
+  v6 = [specifierCopy propertyForKey:PSValueKey];
 
   -[STStorageOtherCell setSize:](self, "setSize:", [v6 longLongValue]);
   [(STStorageOtherCell *)self setInfo:0];

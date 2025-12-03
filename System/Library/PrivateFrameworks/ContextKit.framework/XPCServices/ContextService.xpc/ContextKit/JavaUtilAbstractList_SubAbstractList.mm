@@ -1,20 +1,20 @@
 @interface JavaUtilAbstractList_SubAbstractList
-- (BOOL)addAllWithInt:(int)a3 withJavaUtilCollection:(id)a4;
-- (BOOL)addAllWithJavaUtilCollection:(id)a3;
-- (id)getWithInt:(int)a3;
-- (id)listIteratorWithInt:(int)a3;
-- (id)removeWithInt:(int)a3;
-- (id)setWithInt:(int)a3 withId:(id)a4;
+- (BOOL)addAllWithInt:(int)int withJavaUtilCollection:(id)collection;
+- (BOOL)addAllWithJavaUtilCollection:(id)collection;
+- (id)getWithInt:(int)int;
+- (id)listIteratorWithInt:(int)int;
+- (id)removeWithInt:(int)int;
+- (id)setWithInt:(int)int withId:(id)id;
 - (int)size;
-- (void)addWithInt:(int)a3 withId:(id)a4;
+- (void)addWithInt:(int)int withId:(id)id;
 - (void)dealloc;
-- (void)removeRangeWithInt:(int)a3 withInt:(int)a4;
-- (void)sizeChangedWithBoolean:(BOOL)a3;
+- (void)removeRangeWithInt:(int)int withInt:(int)withInt;
+- (void)sizeChangedWithBoolean:(BOOL)boolean;
 @end
 
 @implementation JavaUtilAbstractList_SubAbstractList
 
-- (void)addWithInt:(int)a3 withId:(id)a4
+- (void)addWithInt:(int)int withId:(id)id
 {
   fullList = self->fullList_;
   if (!fullList)
@@ -29,18 +29,18 @@ LABEL_9:
     objc_exception_throw(v6);
   }
 
-  if (a3 < 0 || self->size_ < a3)
+  if (int < 0 || self->size_ < int)
   {
     v6 = new_JavaLangIndexOutOfBoundsException_init();
     goto LABEL_9;
   }
 
-  [(JavaUtilAbstractList *)fullList addWithInt:(self->offset_ + a3) withId:a4];
+  [(JavaUtilAbstractList *)fullList addWithInt:(self->offset_ + int) withId:id];
   ++self->size_;
   self->super.modCount_ = self->fullList_->modCount_;
 }
 
-- (BOOL)addAllWithInt:(int)a3 withJavaUtilCollection:(id)a4
+- (BOOL)addAllWithInt:(int)int withJavaUtilCollection:(id)collection
 {
   fullList = self->fullList_;
   if (!fullList)
@@ -55,18 +55,18 @@ LABEL_12:
     objc_exception_throw(v9);
   }
 
-  if (a3 < 0 || self->size_ < a3)
+  if (int < 0 || self->size_ < int)
   {
     v9 = new_JavaLangIndexOutOfBoundsException_init();
     goto LABEL_12;
   }
 
-  v7 = [(JavaUtilAbstractList *)fullList addAllWithInt:(self->offset_ + a3) withJavaUtilCollection:?];
+  v7 = [(JavaUtilAbstractList *)fullList addAllWithInt:(self->offset_ + int) withJavaUtilCollection:?];
   if (v7)
   {
-    if (a4)
+    if (collection)
     {
-      self->size_ += [a4 size];
+      self->size_ += [collection size];
       self->super.modCount_ = self->fullList_->modCount_;
       return v7;
     }
@@ -78,7 +78,7 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)addAllWithJavaUtilCollection:(id)a3
+- (BOOL)addAllWithJavaUtilCollection:(id)collection
 {
   fullList = self->fullList_;
   if (!fullList)
@@ -92,12 +92,12 @@ LABEL_9:
     objc_exception_throw(v8);
   }
 
-  v6 = [(JavaUtilAbstractList *)fullList addAllWithInt:(self->size_ + self->offset_) withJavaUtilCollection:a3];
+  v6 = [(JavaUtilAbstractList *)fullList addAllWithInt:(self->size_ + self->offset_) withJavaUtilCollection:collection];
   if (v6)
   {
-    if (a3)
+    if (collection)
     {
-      self->size_ += [a3 size];
+      self->size_ += [collection size];
       self->super.modCount_ = self->fullList_->modCount_;
       return v6;
     }
@@ -109,7 +109,7 @@ LABEL_7:
   return v6;
 }
 
-- (id)getWithInt:(int)a3
+- (id)getWithInt:(int)int
 {
   fullList = self->fullList_;
   if (!fullList)
@@ -124,19 +124,19 @@ LABEL_11:
     objc_exception_throw(v7);
   }
 
-  if (a3 < 0 || self->size_ <= a3)
+  if (int < 0 || self->size_ <= int)
   {
     v7 = new_JavaLangIndexOutOfBoundsException_init();
     goto LABEL_11;
   }
 
-  v4 = (self->offset_ + a3);
+  v4 = (self->offset_ + int);
   v5 = self->fullList_;
 
   return [(JavaUtilAbstractList *)v5 getWithInt:v4];
 }
 
-- (id)listIteratorWithInt:(int)a3
+- (id)listIteratorWithInt:(int)int
 {
   fullList = self->fullList_;
   if (!fullList)
@@ -151,13 +151,13 @@ LABEL_11:
     objc_exception_throw(v10);
   }
 
-  if (a3 < 0 || self->size_ < a3)
+  if (int < 0 || self->size_ < int)
   {
     v10 = new_JavaLangIndexOutOfBoundsException_init();
     goto LABEL_11;
   }
 
-  v5 = [(JavaUtilAbstractList *)fullList listIteratorWithInt:(self->offset_ + a3)];
+  v5 = [(JavaUtilAbstractList *)fullList listIteratorWithInt:(self->offset_ + int)];
   offset = self->offset_;
   size = self->size_;
   v8 = [JavaUtilAbstractList_SubAbstractList_SubAbstractListIterator alloc];
@@ -169,7 +169,7 @@ LABEL_11:
   return v8;
 }
 
-- (id)removeWithInt:(int)a3
+- (id)removeWithInt:(int)int
 {
   fullList = self->fullList_;
   if (!fullList)
@@ -184,22 +184,22 @@ LABEL_9:
     objc_exception_throw(v6);
   }
 
-  if (a3 < 0 || self->size_ <= a3)
+  if (int < 0 || self->size_ <= int)
   {
     v6 = new_JavaLangIndexOutOfBoundsException_init();
     goto LABEL_9;
   }
 
-  result = [(JavaUtilAbstractList *)fullList removeWithInt:(self->offset_ + a3)];
+  result = [(JavaUtilAbstractList *)fullList removeWithInt:(self->offset_ + int)];
   --self->size_;
   self->super.modCount_ = self->fullList_->modCount_;
   return result;
 }
 
-- (void)removeRangeWithInt:(int)a3 withInt:(int)a4
+- (void)removeRangeWithInt:(int)int withInt:(int)withInt
 {
-  v4 = a3 - a4;
-  if (a3 != a4)
+  v4 = int - withInt;
+  if (int != withInt)
   {
     fullList = self->fullList_;
     if (!fullList)
@@ -213,13 +213,13 @@ LABEL_9:
       objc_exception_throw(v7);
     }
 
-    [(JavaUtilAbstractList *)fullList removeRangeWithInt:(self->offset_ + a3) withInt:(self->offset_ + a4)];
+    [(JavaUtilAbstractList *)fullList removeRangeWithInt:(self->offset_ + int) withInt:(self->offset_ + withInt)];
     self->size_ += v4;
     self->super.modCount_ = self->fullList_->modCount_;
   }
 }
 
-- (id)setWithInt:(int)a3 withId:(id)a4
+- (id)setWithInt:(int)int withId:(id)id
 {
   fullList = self->fullList_;
   if (!fullList)
@@ -234,16 +234,16 @@ LABEL_11:
     objc_exception_throw(v8);
   }
 
-  if (a3 < 0 || self->size_ <= a3)
+  if (int < 0 || self->size_ <= int)
   {
     v8 = new_JavaLangIndexOutOfBoundsException_init();
     goto LABEL_11;
   }
 
-  v5 = (self->offset_ + a3);
+  v5 = (self->offset_ + int);
   v6 = self->fullList_;
 
-  return [(JavaUtilAbstractList *)v6 setWithInt:v5 withId:a4];
+  return [(JavaUtilAbstractList *)v6 setWithInt:v5 withId:id];
 }
 
 - (int)size
@@ -263,10 +263,10 @@ LABEL_11:
   return self->size_;
 }
 
-- (void)sizeChangedWithBoolean:(BOOL)a3
+- (void)sizeChangedWithBoolean:(BOOL)boolean
 {
   size = self->size_;
-  if (a3)
+  if (boolean)
   {
     v4 = size + 1;
   }

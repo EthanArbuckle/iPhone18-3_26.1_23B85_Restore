@@ -1,84 +1,84 @@
 @interface _SFPBRFSymbolImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFSymbolImage)initWithDictionary:(id)a3;
-- (_SFPBRFSymbolImage)initWithFacade:(id)a3;
-- (_SFPBRFSymbolImage)initWithJSON:(id)a3;
+- (_SFPBRFSymbolImage)initWithDictionary:(id)dictionary;
+- (_SFPBRFSymbolImage)initWithFacade:(id)facade;
+- (_SFPBRFSymbolImage)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setName:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setName:(id)name;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFSymbolImage
 
-- (_SFPBRFSymbolImage)initWithFacade:(id)a3
+- (_SFPBRFSymbolImage)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFSymbolImage *)self init];
   if (v5)
   {
-    v6 = [v4 name];
+    name = [facadeCopy name];
 
-    if (v6)
+    if (name)
     {
-      v7 = [v4 name];
-      [(_SFPBRFSymbolImage *)v5 setName:v7];
+      name2 = [facadeCopy name];
+      [(_SFPBRFSymbolImage *)v5 setName:name2];
     }
 
-    v8 = [v4 primary_color];
+    primary_color = [facadeCopy primary_color];
 
-    if (v8)
+    if (primary_color)
     {
       v9 = [_SFPBRFColor alloc];
-      v10 = [v4 primary_color];
-      v11 = [(_SFPBRFColor *)v9 initWithFacade:v10];
+      primary_color2 = [facadeCopy primary_color];
+      v11 = [(_SFPBRFColor *)v9 initWithFacade:primary_color2];
       [(_SFPBRFSymbolImage *)v5 setPrimary_color:v11];
     }
 
-    v12 = [v4 secondary_color];
+    secondary_color = [facadeCopy secondary_color];
 
-    if (v12)
+    if (secondary_color)
     {
       v13 = [_SFPBRFColor alloc];
-      v14 = [v4 secondary_color];
-      v15 = [(_SFPBRFColor *)v13 initWithFacade:v14];
+      secondary_color2 = [facadeCopy secondary_color];
+      v15 = [(_SFPBRFColor *)v13 initWithFacade:secondary_color2];
       [(_SFPBRFSymbolImage *)v5 setSecondary_color:v15];
     }
 
-    if ([v4 hasImage_style])
+    if ([facadeCopy hasImage_style])
     {
-      -[_SFPBRFSymbolImage setImage_style:](v5, "setImage_style:", [v4 image_style]);
+      -[_SFPBRFSymbolImage setImage_style:](v5, "setImage_style:", [facadeCopy image_style]);
     }
 
-    if ([v4 hasSymbol_rendering_mode])
+    if ([facadeCopy hasSymbol_rendering_mode])
     {
-      -[_SFPBRFSymbolImage setSymbol_rendering_mode:](v5, "setSymbol_rendering_mode:", [v4 symbol_rendering_mode]);
+      -[_SFPBRFSymbolImage setSymbol_rendering_mode:](v5, "setSymbol_rendering_mode:", [facadeCopy symbol_rendering_mode]);
     }
 
-    v16 = [v4 background_color];
+    background_color = [facadeCopy background_color];
 
-    if (v16)
+    if (background_color)
     {
       v17 = [_SFPBRFColor alloc];
-      v18 = [v4 background_color];
-      v19 = [(_SFPBRFColor *)v17 initWithFacade:v18];
+      background_color2 = [facadeCopy background_color];
+      v19 = [(_SFPBRFColor *)v17 initWithFacade:background_color2];
       [(_SFPBRFSymbolImage *)v5 setBackground_color:v19];
     }
 
-    if ([v4 hasPunches_through_background])
+    if ([facadeCopy hasPunches_through_background])
     {
-      -[_SFPBRFSymbolImage setPunches_through_background:](v5, "setPunches_through_background:", [v4 punches_through_background]);
+      -[_SFPBRFSymbolImage setPunches_through_background:](v5, "setPunches_through_background:", [facadeCopy punches_through_background]);
     }
 
-    if ([v4 hasVibrancy])
+    if ([facadeCopy hasVibrancy])
     {
-      -[_SFPBRFSymbolImage setVibrancy:](v5, "setVibrancy:", [v4 vibrancy]);
+      -[_SFPBRFSymbolImage setVibrancy:](v5, "setVibrancy:", [facadeCopy vibrancy]);
     }
 
-    if ([v4 hasCorner_rounding_mode])
+    if ([facadeCopy hasCorner_rounding_mode])
     {
-      -[_SFPBRFSymbolImage setCorner_rounding_mode:](v5, "setCorner_rounding_mode:", [v4 corner_rounding_mode]);
+      -[_SFPBRFSymbolImage setCorner_rounding_mode:](v5, "setCorner_rounding_mode:", [facadeCopy corner_rounding_mode]);
     }
 
     v20 = v5;
@@ -87,15 +87,15 @@
   return v5;
 }
 
-- (_SFPBRFSymbolImage)initWithDictionary:(id)a3
+- (_SFPBRFSymbolImage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = _SFPBRFSymbolImage;
   v5 = [(_SFPBRFSymbolImage *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"name"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"name"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -103,7 +103,7 @@
       [(_SFPBRFSymbolImage *)v5 setName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"primaryColor"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"primaryColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -111,7 +111,7 @@
       [(_SFPBRFSymbolImage *)v5 setPrimary_color:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:{@"secondaryColor", v8}];
+    v10 = [dictionaryCopy objectForKeyedSubscript:{@"secondaryColor", v8}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -119,21 +119,21 @@
       [(_SFPBRFSymbolImage *)v5 setSecondary_color:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"imageStyle"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"imageStyle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBRFSymbolImage setImage_style:](v5, "setImage_style:", [v12 intValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"symbolRenderingMode"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"symbolRenderingMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBRFSymbolImage setSymbol_rendering_mode:](v5, "setSymbol_rendering_mode:", [v13 intValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"backgroundColor"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"backgroundColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -141,21 +141,21 @@
       [(_SFPBRFSymbolImage *)v5 setBackground_color:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"punchesThroughBackground"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"punchesThroughBackground"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBRFSymbolImage setPunches_through_background:](v5, "setPunches_through_background:", [v16 BOOLValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"vibrancy"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"vibrancy"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBRFSymbolImage setVibrancy:](v5, "setVibrancy:", [v17 intValue]);
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"cornerRoundingMode"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"cornerRoundingMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -168,30 +168,30 @@
   return v5;
 }
 
-- (_SFPBRFSymbolImage)initWithJSON:(id)a3
+- (_SFPBRFSymbolImage)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFSymbolImage *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFSymbolImage *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFSymbolImage *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -204,133 +204,133 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_background_color)
   {
-    v4 = [(_SFPBRFSymbolImage *)self background_color];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    background_color = [(_SFPBRFSymbolImage *)self background_color];
+    dictionaryRepresentation = [background_color dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"backgroundColor"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"backgroundColor"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"backgroundColor"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"backgroundColor"];
     }
   }
 
   if (self->_corner_rounding_mode)
   {
-    v7 = [(_SFPBRFSymbolImage *)self corner_rounding_mode];
-    if (v7 >= 3)
+    corner_rounding_mode = [(_SFPBRFSymbolImage *)self corner_rounding_mode];
+    if (corner_rounding_mode >= 3)
     {
-      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v7];
+      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", corner_rounding_mode];
     }
 
     else
     {
-      v8 = off_1E7ACE548[v7];
+      v8 = off_1E7ACE548[corner_rounding_mode];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"cornerRoundingMode"];
+    [dictionary setObject:v8 forKeyedSubscript:@"cornerRoundingMode"];
   }
 
   if (self->_image_style)
   {
-    v9 = [(_SFPBRFSymbolImage *)self image_style];
-    if (v9 < 0x2A && ((0x3FFDFFFFFFFuLL >> v9) & 1) != 0)
+    image_style = [(_SFPBRFSymbolImage *)self image_style];
+    if (image_style < 0x2A && ((0x3FFDFFFFFFFuLL >> image_style) & 1) != 0)
     {
-      v10 = off_1E7ACE270[v9];
+      v10 = off_1E7ACE270[image_style];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v9];
+      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", image_style];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"imageStyle"];
+    [dictionary setObject:v10 forKeyedSubscript:@"imageStyle"];
   }
 
   if (self->_name)
   {
-    v11 = [(_SFPBRFSymbolImage *)self name];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"name"];
+    name = [(_SFPBRFSymbolImage *)self name];
+    v12 = [name copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"name"];
   }
 
   if (self->_primary_color)
   {
-    v13 = [(_SFPBRFSymbolImage *)self primary_color];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    primary_color = [(_SFPBRFSymbolImage *)self primary_color];
+    dictionaryRepresentation2 = [primary_color dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"primaryColor"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"primaryColor"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"primaryColor"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"primaryColor"];
     }
   }
 
   if (self->_punches_through_background)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBRFSymbolImage punches_through_background](self, "punches_through_background")}];
-    [v3 setObject:v16 forKeyedSubscript:@"punchesThroughBackground"];
+    [dictionary setObject:v16 forKeyedSubscript:@"punchesThroughBackground"];
   }
 
   if (self->_secondary_color)
   {
-    v17 = [(_SFPBRFSymbolImage *)self secondary_color];
-    v18 = [v17 dictionaryRepresentation];
-    if (v18)
+    secondary_color = [(_SFPBRFSymbolImage *)self secondary_color];
+    dictionaryRepresentation3 = [secondary_color dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v18 forKeyedSubscript:@"secondaryColor"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"secondaryColor"];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v19 forKeyedSubscript:@"secondaryColor"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"secondaryColor"];
     }
   }
 
   if (self->_symbol_rendering_mode)
   {
-    v20 = [(_SFPBRFSymbolImage *)self symbol_rendering_mode];
-    if (v20 >= 5)
+    symbol_rendering_mode = [(_SFPBRFSymbolImage *)self symbol_rendering_mode];
+    if (symbol_rendering_mode >= 5)
     {
-      v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v20];
+      v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", symbol_rendering_mode];
     }
 
     else
     {
-      v21 = off_1E7ACE448[v20];
+      v21 = off_1E7ACE448[symbol_rendering_mode];
     }
 
-    [v3 setObject:v21 forKeyedSubscript:@"symbolRenderingMode"];
+    [dictionary setObject:v21 forKeyedSubscript:@"symbolRenderingMode"];
   }
 
   if (self->_vibrancy)
   {
-    v22 = [(_SFPBRFSymbolImage *)self vibrancy];
-    if (v22 >= 3)
+    vibrancy = [(_SFPBRFSymbolImage *)self vibrancy];
+    if (vibrancy >= 3)
     {
-      v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v22];
+      v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", vibrancy];
     }
 
     else
     {
-      v23 = off_1E7ACE548[v22];
+      v23 = off_1E7ACE548[vibrancy];
     }
 
-    [v3 setObject:v23 forKeyedSubscript:@"vibrancy"];
+    [dictionary setObject:v23 forKeyedSubscript:@"vibrancy"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -354,28 +354,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ (2654435761 * self->_vibrancy) ^ (2654435761 * self->_corner_rounding_mode);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
-  v5 = [(_SFPBRFSymbolImage *)self name];
-  v6 = [v4 name];
-  if ((v5 != 0) == (v6 == 0))
+  name = [(_SFPBRFSymbolImage *)self name];
+  name2 = [equalCopy name];
+  if ((name != 0) == (name2 == 0))
   {
     goto LABEL_23;
   }
 
-  v7 = [(_SFPBRFSymbolImage *)self name];
-  if (v7)
+  name3 = [(_SFPBRFSymbolImage *)self name];
+  if (name3)
   {
-    v8 = v7;
-    v9 = [(_SFPBRFSymbolImage *)self name];
-    v10 = [v4 name];
-    v11 = [v9 isEqual:v10];
+    v8 = name3;
+    name4 = [(_SFPBRFSymbolImage *)self name];
+    name5 = [equalCopy name];
+    v11 = [name4 isEqual:name5];
 
     if (!v11)
     {
@@ -387,20 +387,20 @@
   {
   }
 
-  v5 = [(_SFPBRFSymbolImage *)self primary_color];
-  v6 = [v4 primary_color];
-  if ((v5 != 0) == (v6 == 0))
+  name = [(_SFPBRFSymbolImage *)self primary_color];
+  name2 = [equalCopy primary_color];
+  if ((name != 0) == (name2 == 0))
   {
     goto LABEL_23;
   }
 
-  v12 = [(_SFPBRFSymbolImage *)self primary_color];
-  if (v12)
+  primary_color = [(_SFPBRFSymbolImage *)self primary_color];
+  if (primary_color)
   {
-    v13 = v12;
-    v14 = [(_SFPBRFSymbolImage *)self primary_color];
-    v15 = [v4 primary_color];
-    v16 = [v14 isEqual:v15];
+    v13 = primary_color;
+    primary_color2 = [(_SFPBRFSymbolImage *)self primary_color];
+    primary_color3 = [equalCopy primary_color];
+    v16 = [primary_color2 isEqual:primary_color3];
 
     if (!v16)
     {
@@ -412,20 +412,20 @@
   {
   }
 
-  v5 = [(_SFPBRFSymbolImage *)self secondary_color];
-  v6 = [v4 secondary_color];
-  if ((v5 != 0) == (v6 == 0))
+  name = [(_SFPBRFSymbolImage *)self secondary_color];
+  name2 = [equalCopy secondary_color];
+  if ((name != 0) == (name2 == 0))
   {
     goto LABEL_23;
   }
 
-  v17 = [(_SFPBRFSymbolImage *)self secondary_color];
-  if (v17)
+  secondary_color = [(_SFPBRFSymbolImage *)self secondary_color];
+  if (secondary_color)
   {
-    v18 = v17;
-    v19 = [(_SFPBRFSymbolImage *)self secondary_color];
-    v20 = [v4 secondary_color];
-    v21 = [v19 isEqual:v20];
+    v18 = secondary_color;
+    secondary_color2 = [(_SFPBRFSymbolImage *)self secondary_color];
+    secondary_color3 = [equalCopy secondary_color];
+    v21 = [secondary_color2 isEqual:secondary_color3];
 
     if (!v21)
     {
@@ -438,33 +438,33 @@
   }
 
   image_style = self->_image_style;
-  if (image_style != [v4 image_style])
+  if (image_style != [equalCopy image_style])
   {
     goto LABEL_24;
   }
 
   symbol_rendering_mode = self->_symbol_rendering_mode;
-  if (symbol_rendering_mode != [v4 symbol_rendering_mode])
+  if (symbol_rendering_mode != [equalCopy symbol_rendering_mode])
   {
     goto LABEL_24;
   }
 
-  v5 = [(_SFPBRFSymbolImage *)self background_color];
-  v6 = [v4 background_color];
-  if ((v5 != 0) == (v6 == 0))
+  name = [(_SFPBRFSymbolImage *)self background_color];
+  name2 = [equalCopy background_color];
+  if ((name != 0) == (name2 == 0))
   {
 LABEL_23:
 
     goto LABEL_24;
   }
 
-  v24 = [(_SFPBRFSymbolImage *)self background_color];
-  if (v24)
+  background_color = [(_SFPBRFSymbolImage *)self background_color];
+  if (background_color)
   {
-    v25 = v24;
-    v26 = [(_SFPBRFSymbolImage *)self background_color];
-    v27 = [v4 background_color];
-    v28 = [v26 isEqual:v27];
+    v25 = background_color;
+    background_color2 = [(_SFPBRFSymbolImage *)self background_color];
+    background_color3 = [equalCopy background_color];
+    v28 = [background_color2 isEqual:background_color3];
 
     if (!v28)
     {
@@ -477,13 +477,13 @@ LABEL_23:
   }
 
   punches_through_background = self->_punches_through_background;
-  if (punches_through_background == [v4 punches_through_background])
+  if (punches_through_background == [equalCopy punches_through_background])
   {
     vibrancy = self->_vibrancy;
-    if (vibrancy == [v4 vibrancy])
+    if (vibrancy == [equalCopy vibrancy])
     {
       corner_rounding_mode = self->_corner_rounding_mode;
-      v29 = corner_rounding_mode == [v4 corner_rounding_mode];
+      v29 = corner_rounding_mode == [equalCopy corner_rounding_mode];
       goto LABEL_25;
     }
   }
@@ -495,23 +495,23 @@ LABEL_25:
   return v29;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
-  v4 = [(_SFPBRFSymbolImage *)self name];
-  if (v4)
+  toCopy = to;
+  name = [(_SFPBRFSymbolImage *)self name];
+  if (name)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBRFSymbolImage *)self primary_color];
-  if (v5)
+  primary_color = [(_SFPBRFSymbolImage *)self primary_color];
+  if (primary_color)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBRFSymbolImage *)self secondary_color];
-  if (v6)
+  secondary_color = [(_SFPBRFSymbolImage *)self secondary_color];
+  if (secondary_color)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -526,8 +526,8 @@ LABEL_25:
     PBDataWriterWriteInt32Field();
   }
 
-  v7 = [(_SFPBRFSymbolImage *)self background_color];
-  if (v7)
+  background_color = [(_SFPBRFSymbolImage *)self background_color];
+  if (background_color)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -542,18 +542,18 @@ LABEL_25:
     PBDataWriterWriteInt32Field();
   }
 
-  v8 = [(_SFPBRFSymbolImage *)self corner_rounding_mode];
-  v9 = v10;
-  if (v8)
+  corner_rounding_mode = [(_SFPBRFSymbolImage *)self corner_rounding_mode];
+  v9 = toCopy;
+  if (corner_rounding_mode)
   {
     PBDataWriterWriteInt32Field();
-    v9 = v10;
+    v9 = toCopy;
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   name = self->_name;
   self->_name = v4;
 

@@ -1,67 +1,67 @@
 @interface SiriCoreSQLiteColumnConstraint
-+ (id)defaultColumnConstraintWithName:(id)a3 value:(id)a4;
-+ (id)notNullColumnConstraintWithName:(id)a3;
-+ (id)primaryKeyColumnConstraintWithName:(id)a3 usesAutoIncrement:(BOOL)a4;
-+ (id)uniqueColumnConstraintWithName:(id)a3;
-- (SiriCoreSQLiteColumnConstraint)initWithName:(id)a3 type:(int64_t)a4 value:(id)a5 options:(unint64_t)a6;
++ (id)defaultColumnConstraintWithName:(id)name value:(id)value;
++ (id)notNullColumnConstraintWithName:(id)name;
++ (id)primaryKeyColumnConstraintWithName:(id)name usesAutoIncrement:(BOOL)increment;
++ (id)uniqueColumnConstraintWithName:(id)name;
+- (SiriCoreSQLiteColumnConstraint)initWithName:(id)name type:(int64_t)type value:(id)value options:(unint64_t)options;
 @end
 
 @implementation SiriCoreSQLiteColumnConstraint
 
-- (SiriCoreSQLiteColumnConstraint)initWithName:(id)a3 type:(int64_t)a4 value:(id)a5 options:(unint64_t)a6
+- (SiriCoreSQLiteColumnConstraint)initWithName:(id)name type:(int64_t)type value:(id)value options:(unint64_t)options
 {
-  v10 = a3;
-  v11 = a5;
+  nameCopy = name;
+  valueCopy = value;
   v18.receiver = self;
   v18.super_class = SiriCoreSQLiteColumnConstraint;
   v12 = [(SiriCoreSQLiteColumnConstraint *)&v18 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [nameCopy copy];
     name = v12->_name;
     v12->_name = v13;
 
-    v12->_type = a4;
-    v15 = [v11 copy];
+    v12->_type = type;
+    v15 = [valueCopy copy];
     value = v12->_value;
     v12->_value = v15;
 
-    v12->_options = a6;
+    v12->_options = options;
   }
 
   return v12;
 }
 
-+ (id)defaultColumnConstraintWithName:(id)a3 value:(id)a4
++ (id)defaultColumnConstraintWithName:(id)name value:(id)value
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SiriCoreSQLiteColumnConstraint alloc] initWithName:v6 type:4 value:v5 options:0];
+  valueCopy = value;
+  nameCopy = name;
+  v7 = [[SiriCoreSQLiteColumnConstraint alloc] initWithName:nameCopy type:4 value:valueCopy options:0];
 
   return v7;
 }
 
-+ (id)uniqueColumnConstraintWithName:(id)a3
++ (id)uniqueColumnConstraintWithName:(id)name
 {
-  v3 = a3;
-  v4 = [[SiriCoreSQLiteColumnConstraint alloc] initWithName:v3 type:3 value:0 options:0];
+  nameCopy = name;
+  v4 = [[SiriCoreSQLiteColumnConstraint alloc] initWithName:nameCopy type:3 value:0 options:0];
 
   return v4;
 }
 
-+ (id)notNullColumnConstraintWithName:(id)a3
++ (id)notNullColumnConstraintWithName:(id)name
 {
-  v3 = a3;
-  v4 = [[SiriCoreSQLiteColumnConstraint alloc] initWithName:v3 type:2 value:0 options:0];
+  nameCopy = name;
+  v4 = [[SiriCoreSQLiteColumnConstraint alloc] initWithName:nameCopy type:2 value:0 options:0];
 
   return v4;
 }
 
-+ (id)primaryKeyColumnConstraintWithName:(id)a3 usesAutoIncrement:(BOOL)a4
++ (id)primaryKeyColumnConstraintWithName:(id)name usesAutoIncrement:(BOOL)increment
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [[SiriCoreSQLiteColumnConstraint alloc] initWithName:v5 type:1 value:0 options:v4];
+  incrementCopy = increment;
+  nameCopy = name;
+  v6 = [[SiriCoreSQLiteColumnConstraint alloc] initWithName:nameCopy type:1 value:0 options:incrementCopy];
 
   return v6;
 }

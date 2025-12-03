@@ -1,24 +1,24 @@
 @interface _DKHistogramQuery
-+ (id)histogramQueryForPersistedHistogramsForStream:(id)a3 withCustomIdentifier:(id)a4;
-+ (id)histogramQueryForStream:(id)a3 interval:(id)a4;
-+ (id)histogramQueryForStream:(id)a3 interval:(id)a4 predicate:(id)a5 valueKeyPaths:(id)a6;
-+ (id)histogramQueryForStream:(id)a3 interval:(id)a4 withPredicate:(id)a5;
-- (_DKHistogram)_histogramFromEvents:(_DKHistogram *)a1;
-- (_DKHistogram)_histogramFromManagedObjects:(_DKHistogram *)a1;
-- (_DKHistogram)_histogramFromValueCounts:(_DKHistogram *)a1;
++ (id)histogramQueryForPersistedHistogramsForStream:(id)stream withCustomIdentifier:(id)identifier;
++ (id)histogramQueryForStream:(id)stream interval:(id)interval;
++ (id)histogramQueryForStream:(id)stream interval:(id)interval predicate:(id)predicate valueKeyPaths:(id)paths;
++ (id)histogramQueryForStream:(id)stream interval:(id)interval withPredicate:(id)predicate;
+- (_DKHistogram)_histogramFromEvents:(_DKHistogram *)events;
+- (_DKHistogram)_histogramFromManagedObjects:(_DKHistogram *)objects;
+- (_DKHistogram)_histogramFromValueCounts:(_DKHistogram *)counts;
 - (_DKHistogramQuery)init;
-- (_DKHistogramQuery)initWithCoder:(id)a3;
-- (id)_fetchRemoteResultsWithStorage:(void *)a3 error:;
-- (id)_valueForEvent:(void *)a1;
+- (_DKHistogramQuery)initWithCoder:(id)coder;
+- (id)_fetchRemoteResultsWithStorage:(void *)storage error:;
+- (id)_valueForEvent:(void *)event;
 - (id)description;
-- (id)executeUsingCoreDataStorage:(id)a3 error:(id *)a4;
-- (id)handleResults:(id)a3 error:(id)a4;
+- (id)executeUsingCoreDataStorage:(id)storage error:(id *)error;
+- (id)handleResults:(id)results error:(id)error;
 - (void)_constructFetchRequestPredicate;
 - (void)_defaultValueKeyPaths;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCustomIdentifier:(uint64_t)a1;
-- (void)setInterval:(uint64_t)a1;
-- (void)setStream:(uint64_t)a1;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCustomIdentifier:(uint64_t)identifier;
+- (void)setInterval:(uint64_t)interval;
+- (void)setStream:(uint64_t)stream;
 @end
 
 @implementation _DKHistogramQuery
@@ -39,23 +39,23 @@
   return result;
 }
 
-+ (id)histogramQueryForStream:(id)a3 interval:(id)a4
++ (id)histogramQueryForStream:(id)stream interval:(id)interval
 {
-  v5 = a4;
-  v6 = a3;
+  intervalCopy = interval;
+  streamCopy = stream;
   v7 = objc_opt_class();
   v8 = [MEMORY[0x1E696AE18] predicateWithValue:1];
-  v9 = [v7 histogramQueryForStream:v6 interval:v5 withPredicate:v8];
+  v9 = [v7 histogramQueryForStream:streamCopy interval:intervalCopy withPredicate:v8];
 
   return v9;
 }
 
-+ (id)histogramQueryForStream:(id)a3 interval:(id)a4 withPredicate:(id)a5
++ (id)histogramQueryForStream:(id)stream interval:(id)interval withPredicate:(id)predicate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 eventValueType];
+  streamCopy = stream;
+  intervalCopy = interval;
+  predicateCopy = predicate;
+  eventValueType = [streamCopy eventValueType];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -66,72 +66,72 @@
 
   else
   {
-    v13 = objc_alloc_init(a1);
-    [(_DKHistogramQuery *)v13 setStream:v8];
-    [(_DKHistogramQuery *)v13 setInterval:v9];
-    [v13 setPredicate:v10];
-    v15 = [(_DKHistogramQuery *)v13 _defaultValueKeyPaths];
-    [v13 setValueKeyPaths:v15];
+    v13 = objc_alloc_init(self);
+    [(_DKHistogramQuery *)v13 setStream:streamCopy];
+    [(_DKHistogramQuery *)v13 setInterval:intervalCopy];
+    [v13 setPredicate:predicateCopy];
+    _defaultValueKeyPaths = [(_DKHistogramQuery *)v13 _defaultValueKeyPaths];
+    [v13 setValueKeyPaths:_defaultValueKeyPaths];
   }
 
   return v13;
 }
 
-+ (id)histogramQueryForStream:(id)a3 interval:(id)a4 predicate:(id)a5 valueKeyPaths:(id)a6
++ (id)histogramQueryForStream:(id)stream interval:(id)interval predicate:(id)predicate valueKeyPaths:(id)paths
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  streamCopy = stream;
+  intervalCopy = interval;
+  predicateCopy = predicate;
+  pathsCopy = paths;
   v13 = objc_opt_class();
   v14 = v13;
-  if (v11)
+  if (predicateCopy)
   {
-    v15 = [v13 histogramQueryForStream:v9 interval:v10 withPredicate:v11];
+    v15 = [v13 histogramQueryForStream:streamCopy interval:intervalCopy withPredicate:predicateCopy];
   }
 
   else
   {
     v16 = [MEMORY[0x1E696AE18] predicateWithValue:1];
-    v15 = [v14 histogramQueryForStream:v9 interval:v10 withPredicate:v16];
+    v15 = [v14 histogramQueryForStream:streamCopy interval:intervalCopy withPredicate:v16];
   }
 
-  [v15 setValueKeyPaths:v12];
+  [v15 setValueKeyPaths:pathsCopy];
 
   return v15;
 }
 
-- (_DKHistogramQuery)initWithCoder:(id)a3
+- (_DKHistogramQuery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = _DKHistogramQuery;
-  v5 = [(_DKQuery *)&v20 initWithCoder:v4];
+  v5 = [(_DKQuery *)&v20 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stream"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stream"];
     stream = v5->_stream;
     v5->_stream = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"customIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customIdentifier"];
     customIdentifier = v5->_customIdentifier;
     v5->_customIdentifier = v8;
 
-    v5->_includeLocalResults = [v4 decodeBoolForKey:@"includeLocalResults"];
-    v5->_includeRemoteResults = [v4 decodeBoolForKey:@"includeRemoteResults"];
-    v5->_remoteHistogramLimit = [v4 decodeIntegerForKey:@"remoteHistogramLimit"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"interval"];
+    v5->_includeLocalResults = [coderCopy decodeBoolForKey:@"includeLocalResults"];
+    v5->_includeRemoteResults = [coderCopy decodeBoolForKey:@"includeRemoteResults"];
+    v5->_remoteHistogramLimit = [coderCopy decodeIntegerForKey:@"remoteHistogramLimit"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"interval"];
     interval = v5->_interval;
     v5->_interval = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
     predicate = v5->_predicate;
     v5->_predicate = v12;
 
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"valueKeyPaths"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"valueKeyPaths"];
     valueKeyPaths = v5->_valueKeyPaths;
     v5->_valueKeyPaths = v17;
   }
@@ -139,29 +139,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _DKHistogramQuery;
-  v4 = a3;
-  [(_DKQuery *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_stream forKey:{@"stream", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_customIdentifier forKey:@"customIdentifier"];
-  [v4 encodeBool:self->_includeLocalResults forKey:@"includeLocalResults"];
-  [v4 encodeBool:self->_includeRemoteResults forKey:@"includeRemoteResults"];
-  [v4 encodeInteger:self->_remoteHistogramLimit forKey:@"remoteHistogramLimit"];
-  [v4 encodeObject:self->_interval forKey:@"interval"];
-  [v4 encodeObject:self->_predicate forKey:@"predicate"];
-  [v4 encodeObject:self->_valueKeyPaths forKey:@"valueKeyPaths"];
+  coderCopy = coder;
+  [(_DKQuery *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_stream forKey:{@"stream", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_customIdentifier forKey:@"customIdentifier"];
+  [coderCopy encodeBool:self->_includeLocalResults forKey:@"includeLocalResults"];
+  [coderCopy encodeBool:self->_includeRemoteResults forKey:@"includeRemoteResults"];
+  [coderCopy encodeInteger:self->_remoteHistogramLimit forKey:@"remoteHistogramLimit"];
+  [coderCopy encodeObject:self->_interval forKey:@"interval"];
+  [coderCopy encodeObject:self->_predicate forKey:@"predicate"];
+  [coderCopy encodeObject:self->_valueKeyPaths forKey:@"valueKeyPaths"];
 }
 
-- (id)_fetchRemoteResultsWithStorage:(void *)a3 error:
+- (id)_fetchRemoteResultsWithStorage:(void *)storage error:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [MEMORY[0x1E695DF00] date];
-    v7 = [(_DKHistogramQuery *)a1 _constructFetchRequestPredicate];
+    date = [MEMORY[0x1E695DF00] date];
+    _constructFetchRequestPredicate = [(_DKHistogramQuery *)self _constructFetchRequestPredicate];
     v28 = 0;
     v29 = &v28;
     v30 = 0x3032000000;
@@ -181,20 +181,20 @@
     v15[3] = &unk_1E7369CD8;
     v9 = v8;
     v16 = v9;
-    v10 = v7;
+    v10 = _constructFetchRequestPredicate;
     v17 = v10;
-    v18 = a1;
-    v11 = v6;
+    selfCopy = self;
+    v11 = date;
     v19 = v11;
     v20 = &v22;
     v21 = &v28;
     [v9 performWithOptions:4 andBlock:v15];
-    if (a3)
+    if (storage)
     {
       v12 = v23[5];
       if (v12)
       {
-        *a3 = v12;
+        *storage = v12;
       }
     }
 
@@ -212,15 +212,15 @@
   return v13;
 }
 
-- (id)executeUsingCoreDataStorage:(id)a3 error:(id *)a4
+- (id)executeUsingCoreDataStorage:(id)storage error:(id *)error
 {
   v88[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [(_DKHistogramQuery *)self stream];
-  if (v8)
+  storageCopy = storage;
+  stream = [(_DKHistogramQuery *)self stream];
+  if (stream)
   {
-    v4 = [(_DKHistogramQuery *)self stream];
-    v88[0] = v4;
+    stream2 = [(_DKHistogramQuery *)self stream];
+    v88[0] = stream2;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v88 count:1];
   }
 
@@ -232,13 +232,13 @@
   v10 = _streamNameFromStreams(v9);
   _cdknowledge_signpost_query_begin(v10);
 
-  if (v8)
+  if (stream)
   {
   }
 
-  v11 = [(_DKHistogramQuery *)self stream];
+  stream3 = [(_DKHistogramQuery *)self stream];
 
-  if (!v11)
+  if (!stream3)
   {
     v19 = +[_CDLogging knowledgeChannel];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -246,13 +246,13 @@
       [_DKHistogramQuery executeUsingCoreDataStorage:v19 error:?];
     }
 
-    if (a4)
+    if (error)
     {
       v20 = MEMORY[0x1E696ABC0];
       v86 = *MEMORY[0x1E696A578];
       v87 = @"No event stream specified.";
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v87 forKeys:&v86 count:1];
-      *a4 = [v20 errorWithDomain:@"com.apple.coreduet.knowledge" code:4 userInfo:v21];
+      *error = [v20 errorWithDomain:@"com.apple.coreduet.knowledge" code:4 userInfo:v21];
     }
 
     v22 = 4;
@@ -267,13 +267,13 @@
       [_DKHistogramQuery executeUsingCoreDataStorage:v27 error:?];
     }
 
-    if (a4)
+    if (error)
     {
       v28 = MEMORY[0x1E696ABC0];
       v84 = *MEMORY[0x1E696A578];
       v85 = @"Invalid parameters: includeLocalResults and includeRemoteResults are both NO.";
       v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v85 forKeys:&v84 count:1];
-      *a4 = [v28 errorWithDomain:@"com.apple.coreduet.knowledge" code:3 userInfo:v29];
+      *error = [v28 errorWithDomain:@"com.apple.coreduet.knowledge" code:3 userInfo:v29];
     }
 
     v22 = 3;
@@ -283,8 +283,8 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v12 = [(_DKHistogramQuery *)self valueKeyPaths];
-  v13 = [v12 count];
+  valueKeyPaths = [(_DKHistogramQuery *)self valueKeyPaths];
+  v13 = [valueKeyPaths count];
 
   if (!v13)
   {
@@ -293,25 +293,25 @@ LABEL_35:
 
   if ([(_DKHistogramQuery *)self includeLocalResults])
   {
-    v69 = v7;
+    v69 = storageCopy;
     context = objc_autoreleasePoolPush();
-    v32 = [(_DKHistogramQuery *)self interval];
-    v33 = [v32 startDate];
-    v34 = [(_DKHistogramQuery *)self interval];
-    v35 = [v34 endDate];
-    v36 = [_DKQuery predicateForEventsBetweenStartDate:v33 endDate:v35];
+    interval = [(_DKHistogramQuery *)self interval];
+    startDate = [interval startDate];
+    interval2 = [(_DKHistogramQuery *)self interval];
+    endDate = [interval2 endDate];
+    v36 = [_DKQuery predicateForEventsBetweenStartDate:startDate endDate:endDate];
 
     v37 = v36;
     v38 = MEMORY[0x1E696AB28];
     v83[0] = v36;
-    v39 = [(_DKHistogramQuery *)self predicate];
-    v83[1] = v39;
+    predicate = [(_DKHistogramQuery *)self predicate];
+    v83[1] = predicate;
     v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v83 count:2];
     v41 = [v38 andPredicateWithSubpredicates:v40];
 
     v42 = v41;
-    v43 = [(_DKHistogramQuery *)self stream];
-    v82 = v43;
+    stream4 = [(_DKHistogramQuery *)self stream];
+    v82 = stream4;
     v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v82 count:1];
     v45 = [_DKEventQuery eventQueryWithPredicate:v41 eventStreams:v44 offset:0 limit:0 sortDescriptors:0];
 
@@ -322,15 +322,15 @@ LABEL_35:
     v67 = v45;
     [v45 setTracker:&__block_literal_global_56];
     v48 = MEMORY[0x1E695DF70];
-    v49 = [(_DKHistogramQuery *)self valueKeyPaths];
-    v50 = [v48 arrayWithCapacity:{objc_msgSend(v49, "count")}];
+    valueKeyPaths2 = [(_DKHistogramQuery *)self valueKeyPaths];
+    v50 = [v48 arrayWithCapacity:{objc_msgSend(valueKeyPaths2, "count")}];
 
     v75 = 0u;
     v76 = 0u;
     v73 = 0u;
     v74 = 0u;
-    v51 = [(_DKHistogramQuery *)self valueKeyPaths];
-    v52 = [v51 countByEnumeratingWithState:&v73 objects:v81 count:16];
+    valueKeyPaths3 = [(_DKHistogramQuery *)self valueKeyPaths];
+    v52 = [valueKeyPaths3 countByEnumeratingWithState:&v73 objects:v81 count:16];
     if (v52)
     {
       v53 = v52;
@@ -342,7 +342,7 @@ LABEL_35:
         {
           if (*v74 != v54)
           {
-            objc_enumerationMutation(v51);
+            objc_enumerationMutation(valueKeyPaths3);
           }
 
           v56 = *(*(&v73 + 1) + 8 * i);
@@ -365,7 +365,7 @@ LABEL_35:
           [v50 addObject:v57];
         }
 
-        v53 = [v51 countByEnumeratingWithState:&v73 objects:v81 count:16];
+        v53 = [valueKeyPaths3 countByEnumeratingWithState:&v73 objects:v81 count:16];
         if (v53)
         {
           continue;
@@ -375,13 +375,13 @@ LABEL_35:
       }
 
 LABEL_52:
-      v7 = v69;
+      storageCopy = v69;
       v37 = v66;
     }
 
     else
     {
-      v7 = v69;
+      storageCopy = v69;
     }
 
     if ([v50 count])
@@ -391,16 +391,16 @@ LABEL_52:
       v64 = +[_CDLogging knowledgeChannel];
       if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
       {
-        v65 = [(_DKHistogramQuery *)self stream];
+        stream5 = [(_DKHistogramQuery *)self stream];
         *buf = 138412546;
         v78 = v50;
         v79 = 2112;
-        v80 = v65;
+        v80 = stream5;
         _os_log_impl(&dword_191750000, v64, OS_LOG_TYPE_DEFAULT, "Fetching value counts for histogram for keyPaths: %@ stream: %@", buf, 0x16u);
       }
 
       v72 = 0;
-      v62 = [v67 executeUsingCoreDataStorage:v7 error:&v72];
+      v62 = [v67 executeUsingCoreDataStorage:storageCopy error:&v72];
       v14 = v72;
       v63 = [(_DKHistogramQuery *)self _histogramFromValueCounts:v62];
     }
@@ -410,14 +410,14 @@ LABEL_52:
       v60 = +[_CDLogging knowledgeChannel];
       if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
       {
-        v61 = [(_DKHistogramQuery *)self stream];
+        stream6 = [(_DKHistogramQuery *)self stream];
         *buf = 138412290;
-        v78 = v61;
+        v78 = stream6;
         _os_log_impl(&dword_191750000, v60, OS_LOG_TYPE_DEFAULT, "Fetching events for histogram query for stream: %@", buf, 0xCu);
       }
 
       v71 = 0;
-      v62 = [v67 executeUsingCoreDataStorage:v7 error:&v71];
+      v62 = [v67 executeUsingCoreDataStorage:storageCopy error:&v71];
       v14 = v71;
       v63 = [(_DKHistogramQuery *)self _histogramFromEvents:v62];
     }
@@ -436,7 +436,7 @@ LABEL_52:
   if (![(_DKHistogramQuery *)self includeRemoteResults])
   {
     v17 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -446,16 +446,16 @@ LABEL_52:
 
   v16 = objc_autoreleasePoolPush();
   v70 = v14;
-  v17 = [(_DKHistogramQuery *)self _fetchRemoteResultsWithStorage:v7 error:&v70];
+  v17 = [(_DKHistogramQuery *)self _fetchRemoteResultsWithStorage:storageCopy error:&v70];
   v18 = v70;
 
   objc_autoreleasePoolPop(v16);
   v14 = v18;
-  if (a4)
+  if (error)
   {
 LABEL_22:
     v23 = v14;
-    *a4 = v14;
+    *error = v14;
   }
 
 LABEL_23:
@@ -468,9 +468,9 @@ LABEL_23:
 
   else
   {
-    v25 = [(_DKHistogramQuery *)self includeRemoteResults];
+    includeRemoteResults = [(_DKHistogramQuery *)self includeRemoteResults];
     _cdknowledge_signpost_query_end(0, 0);
-    if (v25)
+    if (includeRemoteResults)
     {
       v24 = v17;
     }
@@ -489,24 +489,24 @@ LABEL_36:
   return v26;
 }
 
-- (id)handleResults:(id)a3 error:(id)a4
+- (id)handleResults:(id)results error:(id)error
 {
-  v6 = a3;
+  resultsCopy = results;
   histogramHandler = self->_histogramHandler;
   if (histogramHandler)
   {
-    histogramHandler[2](histogramHandler, self, v6, a4);
+    histogramHandler[2](histogramHandler, self, resultsCopy, error);
   }
 
-  return v6;
+  return resultsCopy;
 }
 
 - (void)_defaultValueKeyPaths
 {
   if (result)
   {
-    v1 = [result stream];
-    v2 = [v1 eventValueType];
+    stream = [result stream];
+    eventValueType = [stream eventValueType];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -524,40 +524,40 @@ LABEL_36:
   return result;
 }
 
-- (void)setStream:(uint64_t)a1
+- (void)setStream:(uint64_t)stream
 {
-  if (a1)
+  if (stream)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 40);
+    OUTLINED_FUNCTION_0_8(stream, a2, 40);
   }
 }
 
-- (void)setInterval:(uint64_t)a1
+- (void)setInterval:(uint64_t)interval
 {
-  if (a1)
+  if (interval)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 48);
+    OUTLINED_FUNCTION_0_8(interval, a2, 48);
   }
 }
 
-+ (id)histogramQueryForPersistedHistogramsForStream:(id)a3 withCustomIdentifier:(id)a4
++ (id)histogramQueryForPersistedHistogramsForStream:(id)stream withCustomIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = objc_alloc_init(a1);
-  [(_DKHistogramQuery *)v8 setStream:v7];
+  identifierCopy = identifier;
+  streamCopy = stream;
+  v8 = objc_alloc_init(self);
+  [(_DKHistogramQuery *)v8 setStream:streamCopy];
 
-  [(_DKHistogramQuery *)v8 setCustomIdentifier:v6];
+  [(_DKHistogramQuery *)v8 setCustomIdentifier:identifierCopy];
   [v8 setIncludeLocalResults:0];
 
   return v8;
 }
 
-- (void)setCustomIdentifier:(uint64_t)a1
+- (void)setCustomIdentifier:(uint64_t)identifier
 {
-  if (a1)
+  if (identifier)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 64);
+    OUTLINED_FUNCTION_0_8(identifier, a2, 64);
   }
 }
 
@@ -566,7 +566,7 @@ LABEL_36:
   v16 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(_DKHistogramQuery *)self stream];
+  stream = [(_DKHistogramQuery *)self stream];
   if (self)
   {
     customIdentifier = self->_customIdentifier;
@@ -578,22 +578,22 @@ LABEL_36:
   }
 
   v7 = customIdentifier;
-  v8 = [(_DKHistogramQuery *)self interval];
-  v9 = [(_DKHistogramQuery *)self predicate];
-  v10 = [(_DKHistogramQuery *)self valueKeyPaths];
+  interval = [(_DKHistogramQuery *)self interval];
+  predicate = [(_DKHistogramQuery *)self predicate];
+  valueKeyPaths = [(_DKHistogramQuery *)self valueKeyPaths];
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[_DKHistogramQuery includeLocalResults](self, "includeLocalResults")}];
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[_DKHistogramQuery includeRemoteResults](self, "includeRemoteResults")}];
   v13 = [MEMORY[0x1E696AD98] numberWithInteger:{-[_DKHistogramQuery remoteHistogramLimit](self, "remoteHistogramLimit")}];
-  v14 = [v16 stringWithFormat:@"%@:{stream=%@ customIdentifier=%@; interval=%@; predicate=%@; valueKeyPaths=%@; includeLocalResults=%@; includeRemoteResults=%@; remoteHistogramLimit=%@}", v4, v5, v7, v8, v9, v10, v11, v12, v13];;
+  v14 = [v16 stringWithFormat:@"%@:{stream=%@ customIdentifier=%@; interval=%@; predicate=%@; valueKeyPaths=%@; includeLocalResults=%@; includeRemoteResults=%@; remoteHistogramLimit=%@}", v4, stream, v7, interval, predicate, valueKeyPaths, v11, v12, v13];;
 
   return v14;
 }
 
-- (_DKHistogram)_histogramFromValueCounts:(_DKHistogram *)a1
+- (_DKHistogram)_histogramFromValueCounts:(_DKHistogram *)counts
 {
   v56 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (counts)
   {
     v4 = +[_CDLogging knowledgeChannel];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -676,9 +676,9 @@ LABEL_36:
             v18 = [v10 count];
             if (v18 == 1)
             {
-              v26 = [v10 allValues];
-              v27 = [v26 firstObject];
-              [OUTLINED_FUNCTION_2_16(v27 v28];
+              allValues = [v10 allValues];
+              firstObject = [allValues firstObject];
+              [OUTLINED_FUNCTION_2_16(firstObject v28];
             }
 
             else
@@ -698,12 +698,12 @@ LABEL_36:
 
     if ([v5 count])
     {
-      a1 = [[_DKHistogram alloc] initWithHistogram:v5];
+      counts = [[_DKHistogram alloc] initWithHistogram:v5];
     }
 
     else
     {
-      a1 = 0;
+      counts = 0;
     }
 
     v3 = v38;
@@ -711,34 +711,34 @@ LABEL_36:
 
   v35 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return counts;
 }
 
-- (id)_valueForEvent:(void *)a1
+- (id)_valueForEvent:(void *)event
 {
   v29 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (event)
   {
-    v4 = [a1 valueKeyPaths];
-    v5 = [v4 count];
+    valueKeyPaths = [event valueKeyPaths];
+    v5 = [valueKeyPaths count];
 
     if (v5 == 1)
     {
-      v6 = [a1 valueKeyPaths];
-      v7 = [v6 firstObject];
-      a1 = [v3 valueForKeyPath:v7];
+      valueKeyPaths2 = [event valueKeyPaths];
+      firstObject = [valueKeyPaths2 firstObject];
+      event = [v3 valueForKeyPath:firstObject];
     }
 
     else
     {
       v8 = MEMORY[0x1E695DF90];
-      v9 = [a1 valueKeyPaths];
-      v6 = [v8 dictionaryWithCapacity:{objc_msgSend(v9, "count")}];
+      valueKeyPaths3 = [event valueKeyPaths];
+      valueKeyPaths2 = [v8 dictionaryWithCapacity:{objc_msgSend(valueKeyPaths3, "count")}];
 
       v27 = 0u;
       v28 = 0;
-      v10 = [a1 valueKeyPaths];
+      valueKeyPaths4 = [event valueKeyPaths];
       OUTLINED_FUNCTION_36();
       v12 = [v11 countByEnumeratingWithState:? objects:? count:?];
       if (v12)
@@ -752,39 +752,39 @@ LABEL_36:
             OUTLINED_FUNCTION_1_20(v12, v13, v14, v15, v16, v17, v18, v19, v27, *(&v27 + 1), v28);
             if (!v22)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(valueKeyPaths4);
             }
 
             v23 = *(*(&v27 + 1) + 8 * v21);
             v24 = [v3 valueForKeyPath:v23];
-            [v6 setObject:v24 forKeyedSubscript:v23];
+            [valueKeyPaths2 setObject:v24 forKeyedSubscript:v23];
 
             ++v21;
           }
 
           while (v20 != v21);
           OUTLINED_FUNCTION_36();
-          v12 = [v10 countByEnumeratingWithState:? objects:? count:?];
+          v12 = [valueKeyPaths4 countByEnumeratingWithState:? objects:? count:?];
           v20 = v12;
         }
 
         while (v12);
       }
 
-      a1 = [v6 copy];
+      event = [valueKeyPaths2 copy];
     }
   }
 
   v25 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return event;
 }
 
-- (_DKHistogram)_histogramFromEvents:(_DKHistogram *)a1
+- (_DKHistogram)_histogramFromEvents:(_DKHistogram *)events
 {
   v29 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (events)
   {
     v4 = +[_CDLogging knowledgeChannel];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -816,7 +816,7 @@ LABEL_36:
             objc_enumerationMutation(v6);
           }
 
-          v19 = [(_DKHistogramQuery *)a1 _valueForEvent:?];
+          v19 = [(_DKHistogramQuery *)events _valueForEvent:?];
           [v5 addObject:v19];
 
           ++v17;
@@ -832,75 +832,75 @@ LABEL_36:
 
     if ([v5 count])
     {
-      a1 = [[_DKHistogram alloc] initWithValues:v5];
+      events = [[_DKHistogram alloc] initWithValues:v5];
     }
 
     else
     {
-      a1 = 0;
+      events = 0;
     }
   }
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return events;
 }
 
 - (void)_constructFetchRequestPredicate
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if (a1[8])
+    if (self[8])
     {
       v2 = MEMORY[0x1E696AE18];
-      v3 = [a1 stream];
-      v4 = [v3 name];
+      stream = [self stream];
+      name = [stream name];
       v5 = MEMORY[0x1E696AD98];
-      v6 = [v1 stream];
-      v7 = [v6 eventValueType];
-      v8 = [v5 numberWithInteger:{objc_msgSend(v7, "typeCode")}];
-      v1 = [v2 predicateWithFormat:@"streamName == %@ && streamTypeCode == %@ && customIdentifier == %@", v4, v8, v1[8]];
+      stream2 = [selfCopy stream];
+      eventValueType = [stream2 eventValueType];
+      v8 = [v5 numberWithInteger:{objc_msgSend(eventValueType, "typeCode")}];
+      selfCopy = [v2 predicateWithFormat:@"streamName == %@ && streamTypeCode == %@ && customIdentifier == %@", name, v8, selfCopy[8]];
 LABEL_6:
 
       goto LABEL_7;
     }
 
-    v9 = [a1 interval];
+    interval = [self interval];
 
-    if (v9)
+    if (interval)
     {
       v16 = MEMORY[0x1E696AE18];
-      v3 = [v1 stream];
-      v4 = [v3 name];
+      stream = [selfCopy stream];
+      name = [stream name];
       v10 = MEMORY[0x1E696AD98];
-      v6 = [v1 stream];
-      v7 = [v6 eventValueType];
-      v8 = [v10 numberWithInteger:{objc_msgSend(v7, "typeCode")}];
-      v11 = [v1 interval];
-      v12 = [v11 startDate];
-      v13 = [v1 interval];
-      v14 = [v13 endDate];
-      v1 = [v16 predicateWithFormat:@"streamName == %@ && streamTypeCode == %@ && startDate >= %@ && startDate <= %@", v4, v8, v12, v14];
+      stream2 = [selfCopy stream];
+      eventValueType = [stream2 eventValueType];
+      v8 = [v10 numberWithInteger:{objc_msgSend(eventValueType, "typeCode")}];
+      interval2 = [selfCopy interval];
+      startDate = [interval2 startDate];
+      interval3 = [selfCopy interval];
+      endDate = [interval3 endDate];
+      selfCopy = [v16 predicateWithFormat:@"streamName == %@ && streamTypeCode == %@ && startDate >= %@ && startDate <= %@", name, v8, startDate, endDate];
 
       goto LABEL_6;
     }
 
-    v1 = 0;
+    selfCopy = 0;
   }
 
 LABEL_7:
 
-  return v1;
+  return selfCopy;
 }
 
-- (_DKHistogram)_histogramFromManagedObjects:(_DKHistogram *)a1
+- (_DKHistogram)_histogramFromManagedObjects:(_DKHistogram *)objects
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (objects)
   {
-    a1 = objc_alloc_init(_DKHistogram);
+    objects = objc_alloc_init(_DKHistogram);
     v20 = 0u;
     v21 = 0;
     v4 = v3;
@@ -923,7 +923,7 @@ LABEL_7:
           v17 = [[_DKHistogram alloc] initWithManagedObject:*(*(&v20 + 1) + 8 * v15)];
           if (v17)
           {
-            [(_DKHistogram *)a1 addHistogram:v17];
+            [(_DKHistogram *)objects addHistogram:v17];
           }
 
           ++v15;
@@ -941,7 +941,7 @@ LABEL_7:
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return objects;
 }
 
 - (void)executeUsingCoreDataStorage:(void *)a1 error:.cold.2(void *a1)

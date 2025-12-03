@@ -1,5 +1,5 @@
 @interface PUActivityItemSourceOperation
-- (PUActivityItemSourceOperation)initWithDelegate:(id)a3 activityType:(id)a4;
+- (PUActivityItemSourceOperation)initWithDelegate:(id)delegate activityType:(id)type;
 - (PUActivityItemSourceOperationDelegate)delegate;
 - (void)main;
 @end
@@ -15,23 +15,23 @@
 
 - (void)main
 {
-  v4 = [(PUActivityItemSourceOperation *)self delegate];
-  v3 = [(PUActivityItemSourceOperation *)self activityType];
-  [v4 activityItemSourceOperation:self prepareItemForActivityType:v3];
+  delegate = [(PUActivityItemSourceOperation *)self delegate];
+  activityType = [(PUActivityItemSourceOperation *)self activityType];
+  [delegate activityItemSourceOperation:self prepareItemForActivityType:activityType];
 }
 
-- (PUActivityItemSourceOperation)initWithDelegate:(id)a3 activityType:(id)a4
+- (PUActivityItemSourceOperation)initWithDelegate:(id)delegate activityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  typeCopy = type;
   v15.receiver = self;
   v15.super_class = PUActivityItemSourceOperation;
   v8 = [(PUActivityItemSourceOperation *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    v10 = [v7 copy];
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    v10 = [typeCopy copy];
     activityType = v9->_activityType;
     v9->_activityType = v10;
 

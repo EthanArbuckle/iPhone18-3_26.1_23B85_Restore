@@ -1,25 +1,25 @@
 @interface PaletteBackgroundView
-- (_TtC18ASMessagesProvider21PaletteBackgroundView)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProvider21PaletteBackgroundView)initWithEffect:(id)a3;
+- (_TtC18ASMessagesProvider21PaletteBackgroundView)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProvider21PaletteBackgroundView)initWithEffect:(id)effect;
 @end
 
 @implementation PaletteBackgroundView
 
-- (_TtC18ASMessagesProvider21PaletteBackgroundView)initWithEffect:(id)a3
+- (_TtC18ASMessagesProvider21PaletteBackgroundView)initWithEffect:(id)effect
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider21PaletteBackgroundView_blurEffectOverride) = 0;
   v5.receiver = self;
   v5.super_class = type metadata accessor for PaletteBackgroundView();
-  return [(PaletteBackgroundView *)&v5 initWithEffect:a3];
+  return [(PaletteBackgroundView *)&v5 initWithEffect:effect];
 }
 
-- (_TtC18ASMessagesProvider21PaletteBackgroundView)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider21PaletteBackgroundView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider21PaletteBackgroundView_blurEffectOverride) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for PaletteBackgroundView();
-  v4 = a3;
-  v5 = [(PaletteBackgroundView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(PaletteBackgroundView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

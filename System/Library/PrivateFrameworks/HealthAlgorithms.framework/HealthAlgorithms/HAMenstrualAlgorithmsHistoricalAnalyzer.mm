@@ -1,7 +1,7 @@
 @interface HAMenstrualAlgorithmsHistoricalAnalyzer
 - (HAMenstrualAlgorithmsHistoricalAnalyzer)init;
-- (id)analyzeWithError:(id *)a3;
-- (void)appendDay:(id)a3;
+- (id)analyzeWithError:(id *)error;
+- (void)appendDay:(id)day;
 - (void)dealloc;
 @end
 
@@ -40,8 +40,8 @@
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:2];
     v12 = [v10 setWithArray:v11];
 
-    v13 = [(NSXPCConnection *)v4->_connectionToService remoteObjectInterface];
-    [v13 setClasses:v12 forSelector:sel_finishSessionWithReply_ argumentIndex:0 ofReply:1];
+    remoteObjectInterface = [(NSXPCConnection *)v4->_connectionToService remoteObjectInterface];
+    [remoteObjectInterface setClasses:v12 forSelector:sel_finishSessionWithReply_ argumentIndex:0 ofReply:1];
 
     objc_initWeak(buf, v4);
     v25[0] = MEMORY[0x277D85DD0];
@@ -57,12 +57,12 @@
     objc_copyWeak(&v24, buf);
     [(NSXPCConnection *)v4->_connectionToService setInterruptionHandler:&v20];
     [(NSXPCConnection *)v4->_connectionToService resume:v20];
-    v14 = [(NSXPCConnection *)v4->_connectionToService remoteObjectProxy];
+    remoteObjectProxy = [(NSXPCConnection *)v4->_connectionToService remoteObjectProxy];
     remoteObjectProxy = v4->_remoteObjectProxy;
-    v4->_remoteObjectProxy = v14;
+    v4->_remoteObjectProxy = remoteObjectProxy;
 
-    v16 = [(HAMenstrualAlgorithmsHistoricalAnalyzer *)v4 remoteObjectProxy];
-    [v16 beginSession];
+    remoteObjectProxy2 = [(HAMenstrualAlgorithmsHistoricalAnalyzer *)v4 remoteObjectProxy];
+    [remoteObjectProxy2 beginSession];
 
     v17 = v4;
     objc_destroyWeak(&v24);
@@ -102,35 +102,35 @@ void __47__HAMenstrualAlgorithmsHistoricalAnalyzer_init__block_invoke_563(uint64
 
 - (void)dealloc
 {
-  v3 = [(HAMenstrualAlgorithmsHistoricalAnalyzer *)self connectionToService];
-  [v3 invalidate];
+  connectionToService = [(HAMenstrualAlgorithmsHistoricalAnalyzer *)self connectionToService];
+  [connectionToService invalidate];
 
   v4.receiver = self;
   v4.super_class = HAMenstrualAlgorithmsHistoricalAnalyzer;
   [(HAMenstrualAlgorithmsHistoricalAnalyzer *)&v4 dealloc];
 }
 
-- (void)appendDay:(id)a3
+- (void)appendDay:(id)day
 {
-  v10 = a3;
-  v4 = [(HAMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
-  [v4 addObject:v10];
+  dayCopy = day;
+  dayInputBuffer = [(HAMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
+  [dayInputBuffer addObject:dayCopy];
 
-  v5 = [(HAMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
-  v6 = [v5 count];
+  dayInputBuffer2 = [(HAMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
+  v6 = [dayInputBuffer2 count];
 
   if (v6 == 100)
   {
-    v7 = [(HAMenstrualAlgorithmsHistoricalAnalyzer *)self remoteObjectProxy];
-    v8 = [(HAMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
-    [v7 appendDays:v8];
+    remoteObjectProxy = [(HAMenstrualAlgorithmsHistoricalAnalyzer *)self remoteObjectProxy];
+    dayInputBuffer3 = [(HAMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
+    [remoteObjectProxy appendDays:dayInputBuffer3];
 
-    v9 = [(HAMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
-    [v9 removeAllObjects];
+    dayInputBuffer4 = [(HAMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
+    [dayInputBuffer4 removeAllObjects];
   }
 }
 
-- (id)analyzeWithError:(id *)a3
+- (id)analyzeWithError:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
   v5 = ha_get_log();
@@ -141,21 +141,21 @@ void __47__HAMenstrualAlgorithmsHistoricalAnalyzer_init__block_invoke_563(uint64
     _os_log_impl(&dword_251282000, v5, OS_LOG_TYPE_DEFAULT, "%{public}s", &buf, 0xCu);
   }
 
-  v6 = [(HAMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
-  v7 = [v6 count] == 0;
+  dayInputBuffer = [(HAMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
+  v7 = [dayInputBuffer count] == 0;
 
   if (!v7)
   {
-    v8 = [(HAMenstrualAlgorithmsHistoricalAnalyzer *)self remoteObjectProxy];
-    v9 = [(HAMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
-    [v8 appendDays:v9];
+    remoteObjectProxy = [(HAMenstrualAlgorithmsHistoricalAnalyzer *)self remoteObjectProxy];
+    dayInputBuffer2 = [(HAMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
+    [remoteObjectProxy appendDays:dayInputBuffer2];
 
-    v10 = [(HAMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
-    [v10 removeAllObjects];
+    dayInputBuffer3 = [(HAMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
+    [dayInputBuffer3 removeAllObjects];
   }
 
-  v11 = [(HAMenstrualAlgorithmsHistoricalAnalyzer *)self connectionToService];
-  v12 = [v11 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_565];
+  connectionToService = [(HAMenstrualAlgorithmsHistoricalAnalyzer *)self connectionToService];
+  v12 = [connectionToService synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_565];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -177,12 +177,12 @@ void __47__HAMenstrualAlgorithmsHistoricalAnalyzer_init__block_invoke_563(uint64
       [HAMenstrualAlgorithmsHistoricalAnalyzer analyzeWithError:];
     }
 
-    if (a3)
+    if (error)
     {
       v14 = MEMORY[0x277CCA9B8];
       v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v16 = [v15 bundleIdentifier];
-      *a3 = [v14 errorWithDomain:v16 code:-1 userInfo:0];
+      bundleIdentifier = [v15 bundleIdentifier];
+      *error = [v14 errorWithDomain:bundleIdentifier code:-1 userInfo:0];
     }
   }
 

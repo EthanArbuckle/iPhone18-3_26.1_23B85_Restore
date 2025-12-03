@@ -1,7 +1,7 @@
 @interface TiledDocumentView
 - (id)attachments;
-- (id)initInScrollView:(id)a3 sixChannelBlending:(BOOL)a4 defaultDrawingClass:(Class)a5 readOnly:(BOOL)a6;
-- (void)_canvasView:(id)a3 didCompleteRefinementEntry:(id)a4;
+- (id)initInScrollView:(id)view sixChannelBlending:(BOOL)blending defaultDrawingClass:(Class)class readOnly:(BOOL)only;
+- (void)_canvasView:(id)view didCompleteRefinementEntry:(id)entry;
 - (void)didMoveToWindow;
 @end
 
@@ -9,14 +9,14 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   TiledDocumentView.didMoveToWindow()();
 }
 
 - (id)attachments
 {
   swift_beginAccess();
-  v3 = self;
+  selfCopy = self;
 
   v5 = specialized Sequence.flatMap<A>(_:)(v4);
 
@@ -28,15 +28,15 @@
   return v6.super.isa;
 }
 
-- (void)_canvasView:(id)a3 didCompleteRefinementEntry:(id)a4
+- (void)_canvasView:(id)view didCompleteRefinementEntry:(id)entry
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  specialized TiledDocumentView._canvasView(_:didCompleteRefinementEntry:)(v7);
+  viewCopy = view;
+  entryCopy = entry;
+  selfCopy = self;
+  specialized TiledDocumentView._canvasView(_:didCompleteRefinementEntry:)(entryCopy);
 }
 
-- (id)initInScrollView:(id)a3 sixChannelBlending:(BOOL)a4 defaultDrawingClass:(Class)a5 readOnly:(BOOL)a6
+- (id)initInScrollView:(id)view sixChannelBlending:(BOOL)blending defaultDrawingClass:(Class)class readOnly:(BOOL)only
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

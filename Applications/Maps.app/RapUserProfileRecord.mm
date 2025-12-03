@@ -1,23 +1,23 @@
 @interface RapUserProfileRecord
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RapUserProfileRecord
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   mapItemStorage = self->_mapItemStorage;
-  v11 = v4;
-  v6 = v4[4];
+  v11 = fromCopy;
+  v6 = fromCopy[4];
   if (mapItemStorage)
   {
     if (v6)
@@ -93,13 +93,13 @@
   return v6 ^ v8 ^ [(NSString *)self->_subtitle hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((mapItemStorage = self->_mapItemStorage, !(mapItemStorage | v4[4])) || -[GEOMapItemStorage isEqual:](mapItemStorage, "isEqual:")) && ((directions = self->_directions, !(directions | v4[3])) || -[RAPDirectionsRecording isEqual:](directions, "isEqual:")) && ((curatedCollectionIdentifier = self->_curatedCollectionIdentifier, !(curatedCollectionIdentifier | v4[1])) || -[NSString isEqual:](curatedCollectionIdentifier, "isEqual:")) && ((curatedCollectionProviderIdentifier = self->_curatedCollectionProviderIdentifier, !(curatedCollectionProviderIdentifier | v4[2])) || -[NSString isEqual:](curatedCollectionProviderIdentifier, "isEqual:")) && ((muninViewState = self->_muninViewState, !(muninViewState | v4[5])) || -[GEOMuninViewState isEqual:](muninViewState, "isEqual:")) && ((title = self->_title, !(title | v4[7])) || -[NSString isEqual:](title, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((mapItemStorage = self->_mapItemStorage, !(mapItemStorage | equalCopy[4])) || -[GEOMapItemStorage isEqual:](mapItemStorage, "isEqual:")) && ((directions = self->_directions, !(directions | equalCopy[3])) || -[RAPDirectionsRecording isEqual:](directions, "isEqual:")) && ((curatedCollectionIdentifier = self->_curatedCollectionIdentifier, !(curatedCollectionIdentifier | equalCopy[1])) || -[NSString isEqual:](curatedCollectionIdentifier, "isEqual:")) && ((curatedCollectionProviderIdentifier = self->_curatedCollectionProviderIdentifier, !(curatedCollectionProviderIdentifier | equalCopy[2])) || -[NSString isEqual:](curatedCollectionProviderIdentifier, "isEqual:")) && ((muninViewState = self->_muninViewState, !(muninViewState | equalCopy[5])) || -[GEOMuninViewState isEqual:](muninViewState, "isEqual:")) && ((title = self->_title, !(title | equalCopy[7])) || -[NSString isEqual:](title, "isEqual:")))
   {
     subtitle = self->_subtitle;
-    if (subtitle | v4[6])
+    if (subtitle | equalCopy[6])
     {
       v12 = [(NSString *)subtitle isEqual:?];
     }
@@ -118,144 +118,144 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(GEOMapItemStorage *)self->_mapItemStorage copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(GEOMapItemStorage *)self->_mapItemStorage copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(RAPDirectionsRecording *)self->_directions copyWithZone:a3];
+  v8 = [(RAPDirectionsRecording *)self->_directions copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_curatedCollectionIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_curatedCollectionIdentifier copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
-  v12 = [(NSString *)self->_curatedCollectionProviderIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_curatedCollectionProviderIdentifier copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
-  v14 = [(GEOMuninViewState *)self->_muninViewState copyWithZone:a3];
+  v14 = [(GEOMuninViewState *)self->_muninViewState copyWithZone:zone];
   v15 = v5[5];
   v5[5] = v14;
 
-  v16 = [(NSString *)self->_title copyWithZone:a3];
+  v16 = [(NSString *)self->_title copyWithZone:zone];
   v17 = v5[7];
   v5[7] = v16;
 
-  v18 = [(NSString *)self->_subtitle copyWithZone:a3];
+  v18 = [(NSString *)self->_subtitle copyWithZone:zone];
   v19 = v5[6];
   v5[6] = v18;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_mapItemStorage)
   {
-    [v4 setMapItemStorage:?];
-    v4 = v5;
+    [toCopy setMapItemStorage:?];
+    toCopy = v5;
   }
 
   if (self->_directions)
   {
     [v5 setDirections:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_curatedCollectionIdentifier)
   {
     [v5 setCuratedCollectionIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_curatedCollectionProviderIdentifier)
   {
     [v5 setCuratedCollectionProviderIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_muninViewState)
   {
     [v5 setMuninViewState:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_title)
   {
     [v5 setTitle:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_subtitle)
   {
     [v5 setSubtitle:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_mapItemStorage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_directions)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_curatedCollectionIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_curatedCollectionProviderIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_muninViewState)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_title)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_subtitle)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -264,18 +264,18 @@
       while (1)
       {
         LOBYTE(v21[0]) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:v21 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:v21 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v21[0] & 0x7F) << v6;
@@ -292,11 +292,11 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -356,7 +356,7 @@ LABEL_36:
           objc_storeStrong(&self->PBCodable_opaque[v16], v15);
           v21[0] = 0;
           v21[1] = 0;
-          if (!PBReaderPlaceMark() || ![(RAPDirectionsRecording *)v15 readFrom:a3])
+          if (!PBReaderPlaceMark() || ![(RAPDirectionsRecording *)v15 readFrom:from])
           {
 
             return 0;
@@ -375,13 +375,13 @@ LABEL_39:
       }
 
 LABEL_40:
-      v19 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v19 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
@@ -390,15 +390,15 @@ LABEL_40:
   mapItemStorage = self->_mapItemStorage;
   if (mapItemStorage)
   {
-    v5 = [(GEOMapItemStorage *)mapItemStorage dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"mapItemStorage"];
+    dictionaryRepresentation = [(GEOMapItemStorage *)mapItemStorage dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"mapItemStorage"];
   }
 
   directions = self->_directions;
   if (directions)
   {
-    v7 = [(RAPDirectionsRecording *)directions dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"directions"];
+    dictionaryRepresentation2 = [(RAPDirectionsRecording *)directions dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"directions"];
   }
 
   curatedCollectionIdentifier = self->_curatedCollectionIdentifier;
@@ -416,8 +416,8 @@ LABEL_40:
   muninViewState = self->_muninViewState;
   if (muninViewState)
   {
-    v11 = [(GEOMuninViewState *)muninViewState dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"muninViewState"];
+    dictionaryRepresentation3 = [(GEOMuninViewState *)muninViewState dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"muninViewState"];
   }
 
   title = self->_title;
@@ -440,8 +440,8 @@ LABEL_40:
   v7.receiver = self;
   v7.super_class = RapUserProfileRecord;
   v3 = [(RapUserProfileRecord *)&v7 description];
-  v4 = [(RapUserProfileRecord *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(RapUserProfileRecord *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }

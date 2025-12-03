@@ -1,16 +1,16 @@
 @interface CKRichLinkUtilities
-+ (id)validURLsInString:(id)a3 inRange:(_NSRange)a4 validatesRichLinkSupport:(BOOL)a5;
++ (id)validURLsInString:(id)string inRange:(_NSRange)range validatesRichLinkSupport:(BOOL)support;
 - (_TtC7ChatKit19CKRichLinkUtilities)init;
 @end
 
 @implementation CKRichLinkUtilities
 
-+ (id)validURLsInString:(id)a3 inRange:(_NSRange)a4 validatesRichLinkSupport:(BOOL)a5
++ (id)validURLsInString:(id)string inRange:(_NSRange)range validatesRichLinkSupport:(BOOL)support
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v8 = sub_190D56F10();
-  _s7ChatKit19CKRichLinkUtilitiesC17validURLsInString_7inRange013validatesRichD7SupportSayAA014CKDataDetectedD6ResultCGSS_So8_NSRangeVSbtFZ_0(v8, v9, location, length, a5);
+  _s7ChatKit19CKRichLinkUtilitiesC17validURLsInString_7inRange013validatesRichD7SupportSayAA014CKDataDetectedD6ResultCGSS_So8_NSRangeVSbtFZ_0(v8, v9, location, length, support);
 
   type metadata accessor for CKDataDetectedLinkResult();
   v10 = sub_190D57160();

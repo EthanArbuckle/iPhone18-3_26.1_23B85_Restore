@@ -1,8 +1,8 @@
 @interface AVRunLoopCondition
 + (void)initialize;
 - (AVRunLoopCondition)init;
-- (BOOL)_waitInMode:(id)a3 untilDate:(id)a4;
-- (void)_signalRunLoopWithState:(id)a3;
+- (BOOL)_waitInMode:(id)mode untilDate:(id)date;
+- (void)_signalRunLoopWithState:(id)state;
 - (void)broadcast;
 - (void)dealloc;
 - (void)signal;
@@ -12,7 +12,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work();
@@ -51,13 +51,13 @@
   [(NSCondition *)&v3 dealloc];
 }
 
-- (BOOL)_waitInMode:(id)a3 untilDate:(id)a4
+- (BOOL)_waitInMode:(id)mode untilDate:(id)date
 {
   v20 = *MEMORY[0x1E69E9840];
   v7 = objc_autoreleasePoolPush();
-  if (!a3)
+  if (!mode)
   {
-    a3 = @"AVRunLoopConditionSignalRunLoopMode";
+    mode = @"AVRunLoopConditionSignalRunLoopMode";
   }
 
   Current = CFRunLoopGetCurrent();
@@ -71,7 +71,7 @@
   v10 = CFRunLoopSourceCreate(*MEMORY[0x1E695E480], 0, &context);
   v11 = v10;
   [(NSMutableArray *)self->_runLoopStateList addObject:v9];
-  CFRunLoopAddSource(Current, v10, a3);
+  CFRunLoopAddSource(Current, v10, mode);
   [(AVRunLoopConditionRunLoopState *)v9 setSignalSource:v10];
   [(NSCondition *)self unlock];
   if (![(AVRunLoopConditionRunLoopState *)v9 signaled])
@@ -80,9 +80,9 @@
     {
       v12 = objc_autoreleasePoolPush();
       v13 = 1000000000.0;
-      if (a4)
+      if (date)
       {
-        if ([a4 compare:{objc_msgSend(MEMORY[0x1E695DF00], "date", 1000000000.0)}] != 1)
+        if ([date compare:{objc_msgSend(MEMORY[0x1E695DF00], "date", 1000000000.0)}] != 1)
         {
           if (dword_1ED5AC178)
           {
@@ -95,10 +95,10 @@
           break;
         }
 
-        [a4 timeIntervalSinceNow];
+        [date timeIntervalSinceNow];
       }
 
-      CFRunLoopRunInMode(a3, v13, 1u);
+      CFRunLoopRunInMode(mode, v13, 1u);
       objc_autoreleasePoolPop(v12);
     }
 
@@ -107,11 +107,11 @@
 
   [(NSCondition *)self lock:v16];
   [(AVRunLoopConditionRunLoopState *)v9 setSignalSource:0];
-  CFRunLoopRemoveSource(Current, v10, a3);
+  CFRunLoopRemoveSource(Current, v10, mode);
   [(NSMutableArray *)self->_runLoopStateList removeObject:v9];
-  v14 = [(AVRunLoopConditionRunLoopState *)v9 signaled];
+  signaled = [(AVRunLoopConditionRunLoopState *)v9 signaled];
   objc_autoreleasePoolPop(v7);
-  return v14;
+  return signaled;
 }
 
 - (void)broadcast
@@ -146,12 +146,12 @@
   }
 }
 
-- (void)_signalRunLoopWithState:(id)a3
+- (void)_signalRunLoopWithState:(id)state
 {
-  CFRunLoopSourceSignal([a3 signalSource]);
-  v4 = [a3 runLoop];
+  CFRunLoopSourceSignal([state signalSource]);
+  runLoop = [state runLoop];
 
-  CFRunLoopWakeUp(v4);
+  CFRunLoopWakeUp(runLoop);
 }
 
 @end

@@ -1,54 +1,54 @@
 @interface ConfusionPairBuilder
-+ (void)generateConfusionPairsWithUUID:(id)a3 parameters:(id)a4 language:(id)a5 task:(id)a6 samplingRate:(unint64_t)a7 recognizedNbest:(id)a8 recognizedText:(id)a9 correctedText:(id)a10 selectedAlternatives:(id)a11 completion:(id)a12;
++ (void)generateConfusionPairsWithUUID:(id)d parameters:(id)parameters language:(id)language task:(id)task samplingRate:(unint64_t)rate recognizedNbest:(id)nbest recognizedText:(id)text correctedText:(id)self0 selectedAlternatives:(id)self1 completion:(id)self2;
 + (void)initialize;
 @end
 
 @implementation ConfusionPairBuilder
 
-+ (void)generateConfusionPairsWithUUID:(id)a3 parameters:(id)a4 language:(id)a5 task:(id)a6 samplingRate:(unint64_t)a7 recognizedNbest:(id)a8 recognizedText:(id)a9 correctedText:(id)a10 selectedAlternatives:(id)a11 completion:(id)a12
++ (void)generateConfusionPairsWithUUID:(id)d parameters:(id)parameters language:(id)language task:(id)task samplingRate:(unint64_t)rate recognizedNbest:(id)nbest recognizedText:(id)text correctedText:(id)self0 selectedAlternatives:(id)self1 completion:(id)self2
 {
-  v16 = a3;
-  v17 = a4;
-  v105 = a5;
-  v104 = a6;
-  v107 = a8;
-  v106 = a9;
-  v102 = a10;
-  v18 = v17;
-  v103 = a11;
-  v101 = a12;
+  dCopy = d;
+  parametersCopy = parameters;
+  languageCopy = language;
+  taskCopy = task;
+  nbestCopy = nbest;
+  textCopy = text;
+  correctedTextCopy = correctedText;
+  v18 = parametersCopy;
+  alternativesCopy = alternatives;
+  completionCopy = completion;
   v19 = qword_10003FFB0;
   if (os_log_type_enabled(qword_10003FFB0, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v136 = v17;
+    v136 = parametersCopy;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Confusion Pair Builder: Start generating confusion pairs with parameters:%@", buf, 0xCu);
   }
 
-  v21 = v104;
-  v20 = v105;
-  if ([v16 length])
+  v21 = taskCopy;
+  v20 = languageCopy;
+  if ([dCopy length])
   {
-    if ([v105 length])
+    if ([languageCopy length])
     {
-      v22 = [v104 length];
-      if (a7)
+      v22 = [taskCopy length];
+      if (rate)
       {
-        if (v22 && [v107 count])
+        if (v22 && [nbestCopy count])
         {
-          v23 = [v107 firstObject];
-          if ([v23 count])
+          firstObject = [nbestCopy firstObject];
+          if ([firstObject count])
           {
-            v24 = [v106 length];
+            v24 = [textCopy length];
 
             if (v24)
             {
               v99 = v18;
               v25 = objc_alloc_init(NSMutableArray);
               v26 = objc_alloc_init(NSMutableSet);
-              v97 = v16;
-              v27 = v16;
-              v28 = v103;
+              v97 = dCopy;
+              v27 = dCopy;
+              v28 = alternativesCopy;
               v110 = v26;
               v114 = v25;
               v128 = 0u;
@@ -85,13 +85,13 @@
                       v38 = v114;
                       if (v36)
                       {
-                        v39 = [(ConfusionPairAligner *)v36 confusionPairs];
-                        [v110 addObjectsFromArray:v39];
+                        confusionPairs = [(ConfusionPairAligner *)v36 confusionPairs];
+                        [v110 addObjectsFromArray:confusionPairs];
                         v126 = 0u;
                         v127 = 0u;
                         v124 = 0u;
                         v125 = 0u;
-                        v40 = v39;
+                        v40 = confusionPairs;
                         v41 = [v40 countByEnumeratingWithState:&v124 objects:v134 count:16];
                         if (v41)
                         {
@@ -152,11 +152,11 @@
                 _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_INFO, "Confusion Pair Builder: Populated confusion pairs for alternative selection, count: %lu, unique count: %lu", buf, 0x16u);
               }
 
-              v51 = [v102 length];
-              v16 = v98;
+              v51 = [correctedTextCopy length];
+              dCopy = v98;
               v18 = v99;
-              v21 = v104;
-              v20 = v105;
+              v21 = taskCopy;
+              v20 = languageCopy;
               if (!v51)
               {
                 v59 = qword_10003FFB0;
@@ -167,17 +167,17 @@
                 }
 
                 v56 = [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:356 userInfo:0];
-                v57 = v101;
+                v57 = completionCopy;
                 v58 = v114;
-                (*(v101 + 2))(v101, v114, v56);
-                v53 = v102;
-                v52 = v106;
+                (*(completionCopy + 2))(completionCopy, v114, v56);
+                v53 = correctedTextCopy;
+                v52 = textCopy;
                 goto LABEL_98;
               }
 
-              v52 = [v106 stringByReplacingOccurrencesOfString:@"’" withString:@"'"];
+              v52 = [textCopy stringByReplacingOccurrencesOfString:@"’" withString:@"'"];
 
-              v53 = [v102 stringByReplacingOccurrencesOfString:@"’" withString:@"'"];
+              v53 = [correctedTextCopy stringByReplacingOccurrencesOfString:@"’" withString:@"'"];
 
               if ([v52 isEqualToString:v53])
               {
@@ -191,9 +191,9 @@
                 v55 = 356;
 LABEL_36:
                 v56 = [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:v55 userInfo:0];
-                v57 = v101;
+                v57 = completionCopy;
                 v58 = v114;
-                (*(v101 + 2))(v101, v114, v56);
+                (*(completionCopy + 2))(completionCopy, v114, v56);
 LABEL_98:
 
                 goto LABEL_39;
@@ -212,8 +212,8 @@ LABEL_98:
                 v56 = v61;
                 if (v61)
                 {
-                  v62 = [(ConfusionPairAligner *)v61 confusionPairs];
-                  v63 = [v62 count];
+                  confusionPairs2 = [(ConfusionPairAligner *)v61 confusionPairs];
+                  v63 = [confusionPairs2 count];
 
                   if (v63)
                   {
@@ -222,8 +222,8 @@ LABEL_98:
                     v120 = 0u;
                     v121 = 0u;
                     v112 = v56;
-                    v64 = [v56 confusionPairs];
-                    v65 = [v64 countByEnumeratingWithState:&v120 objects:v133 count:16];
+                    confusionPairs3 = [v56 confusionPairs];
+                    v65 = [confusionPairs3 countByEnumeratingWithState:&v120 objects:v133 count:16];
                     if (v65)
                     {
                       v66 = v65;
@@ -234,7 +234,7 @@ LABEL_98:
                         {
                           if (*v121 != v67)
                           {
-                            objc_enumerationMutation(v64);
+                            objc_enumerationMutation(confusionPairs3);
                           }
 
                           v69 = *(*(&v120 + 1) + 8 * k);
@@ -244,36 +244,36 @@ LABEL_98:
                           }
                         }
 
-                        v66 = [v64 countByEnumeratingWithState:&v120 objects:v133 count:16];
+                        v66 = [confusionPairs3 countByEnumeratingWithState:&v120 objects:v133 count:16];
                       }
 
                       while (v66);
                     }
 
-                    v21 = v104;
-                    v20 = v105;
+                    v21 = taskCopy;
+                    v20 = languageCopy;
                     v56 = v112;
                   }
                 }
 
-                v57 = v101;
+                v57 = completionCopy;
                 v58 = v114;
-                (*(v101 + 2))(v101, v114, 0);
+                (*(completionCopy + 2))(completionCopy, v114, 0);
                 goto LABEL_98;
               }
 
-              v70 = [v107 firstObject];
-              v71 = [v70 count];
-              v72 = [v99 uttLengthThreshold];
+              firstObject2 = [nbestCopy firstObject];
+              v71 = [firstObject2 count];
+              uttLengthThreshold = [v99 uttLengthThreshold];
 
-              if (v71 > v72)
+              if (v71 > uttLengthThreshold)
               {
                 v73 = qword_10003FFB0;
                 if (os_log_type_enabled(qword_10003FFB0, OS_LOG_TYPE_INFO))
                 {
                   v74 = v73;
-                  v75 = [v107 firstObject];
-                  v76 = [v75 count];
+                  firstObject3 = [nbestCopy firstObject];
+                  v76 = [firstObject3 count];
                   *buf = 134217984;
                   v136 = v76;
                   _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_INFO, "Confusion Pair Builder: Filtered by utterance length: %lu", buf, 0xCu);
@@ -285,7 +285,7 @@ LABEL_98:
 
               v77 = objc_alloc_init(_EAREditDistance);
               v56 = v77;
-              v57 = v101;
+              v57 = completionCopy;
               if (v77)
               {
                 v113 = v77;
@@ -294,11 +294,11 @@ LABEL_98:
                 v80 = v79;
                 if (v79)
                 {
-                  v81 = [v79 intValue];
-                  v82 = v81;
-                  if (v81 < 1)
+                  intValue = [v79 intValue];
+                  v82 = intValue;
+                  if (intValue < 1)
                   {
-                    if (!v81)
+                    if (!intValue)
                     {
                       v95 = qword_10003FFB0;
                       if (os_log_type_enabled(qword_10003FFB0, OS_LOG_TYPE_INFO))
@@ -312,7 +312,7 @@ LABEL_98:
                     }
                   }
 
-                  else if ([v99 distanceThreshold] < v81)
+                  else if ([v99 distanceThreshold] < intValue)
                   {
                     v83 = qword_10003FFB0;
                     if (os_log_type_enabled(qword_10003FFB0, OS_LOG_TYPE_INFO))
@@ -325,19 +325,19 @@ LABEL_98:
                     v84 = 357;
 LABEL_95:
                     v96 = [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:v84 userInfo:0];
-                    (*(v101 + 2))(v101, v114, v96);
+                    (*(completionCopy + 2))(completionCopy, v114, v96);
 
-                    v57 = v101;
+                    v57 = completionCopy;
                     goto LABEL_96;
                   }
                 }
 
-                v21 = v104;
-                v20 = v105;
+                v21 = taskCopy;
+                v20 = languageCopy;
                 v56 = v113;
               }
 
-              v78 = [[EditClassifier alloc] initWithLanguage:v20 task:v21 samplingRate:a7];
+              v78 = [[EditClassifier alloc] initWithLanguage:v20 task:v21 samplingRate:rate];
               v85 = qword_10003FFB0;
               if (os_log_type_enabled(qword_10003FFB0, OS_LOG_TYPE_INFO))
               {
@@ -355,11 +355,11 @@ LABEL_95:
                 }
 
                 v80 = [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:352 userInfo:0];
-                (*(v101 + 2))(v101, 0, v80);
+                (*(completionCopy + 2))(completionCopy, 0, v80);
                 goto LABEL_97;
               }
 
-              v86 = [(EditClassifier *)v78 classifyWithUUID:v109 parameters:v99 nbestTokens:v107 recognizedText:v52 correctedText:v53];
+              v86 = [(EditClassifier *)v78 classifyWithUUID:v109 parameters:v99 nbestTokens:nbestCopy recognizedText:v52 correctedText:v53];
               if (v86)
               {
                 v80 = v86;
@@ -370,18 +370,18 @@ LABEL_95:
                   _os_log_impl(&_mh_execute_header, v87, OS_LOG_TYPE_INFO, "Confusion Pair Builder: Failed to classify user edit", buf, 2u);
                 }
 
-                v57 = v101;
-                (*(v101 + 2))(v101, v114, v80);
+                v57 = completionCopy;
+                (*(completionCopy + 2))(completionCopy, v114, v80);
                 goto LABEL_97;
               }
 
               v113 = v56;
-              v89 = [(EditClassifier *)v78 confusionPairs];
+              confusionPairs4 = [(EditClassifier *)v78 confusionPairs];
               v116 = 0u;
               v117 = 0u;
               v118 = 0u;
               v119 = 0u;
-              v90 = [v89 countByEnumeratingWithState:&v116 objects:v132 count:16];
+              v90 = [confusionPairs4 countByEnumeratingWithState:&v116 objects:v132 count:16];
               if (v90)
               {
                 v91 = v90;
@@ -392,7 +392,7 @@ LABEL_95:
                   {
                     if (*v117 != v92)
                     {
-                      objc_enumerationMutation(v89);
+                      objc_enumerationMutation(confusionPairs4);
                     }
 
                     v94 = *(*(&v116 + 1) + 8 * m);
@@ -403,14 +403,14 @@ LABEL_95:
                     }
                   }
 
-                  v91 = [v89 countByEnumeratingWithState:&v116 objects:v132 count:16];
+                  v91 = [confusionPairs4 countByEnumeratingWithState:&v116 objects:v132 count:16];
                 }
 
                 while (v91);
               }
 
-              v57 = v101;
-              (*(v101 + 2))(v101, v114, 0);
+              v57 = completionCopy;
+              (*(completionCopy + 2))(completionCopy, v114, 0);
 
               v80 = 0;
               v18 = v99;
@@ -418,8 +418,8 @@ LABEL_96:
               v56 = v113;
 LABEL_97:
 
-              v21 = v104;
-              v20 = v105;
+              v21 = taskCopy;
+              v20 = languageCopy;
               v58 = v114;
               goto LABEL_98;
             }
@@ -434,16 +434,16 @@ LABEL_97:
   }
 
   v58 = [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:351 userInfo:0];
-  v57 = v101;
-  (*(v101 + 2))(v101, 0, v58);
-  v53 = v102;
-  v52 = v106;
+  v57 = completionCopy;
+  (*(completionCopy + 2))(completionCopy, 0, v58);
+  v53 = correctedTextCopy;
+  v52 = textCopy;
 LABEL_39:
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_10003FFB0 = os_log_create("com.apple.speech.speechmodeltraining", "useredit");
 

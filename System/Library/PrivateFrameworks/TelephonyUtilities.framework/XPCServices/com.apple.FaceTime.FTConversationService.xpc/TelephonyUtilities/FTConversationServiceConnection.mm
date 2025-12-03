@@ -1,24 +1,24 @@
 @interface FTConversationServiceConnection
-- (FTConversationServiceConnection)initWithConnection:(id)a3 queue:(id)a4;
+- (FTConversationServiceConnection)initWithConnection:(id)connection queue:(id)queue;
 - (FTConversationServiceConnectionDelegate)delegate;
 - (NSSet)entitlements;
-- (void)addConversationLinkDescriptors:(id)a3 reply:(id)a4;
-- (void)addOrUpdateConversationLinkDescriptors:(id)a3 reply:(id)a4;
-- (void)conversationLinkDescriptorCountWithPredicate:(id)a3 reply:(id)a4;
-- (void)conversationLinkDescriptorDidChangeForPersistentDataSource:(id)a3;
-- (void)conversationLinkDescriptorsWithPredicate:(id)a3 limit:(unint64_t)a4 offset:(unint64_t)a5 reply:(id)a6;
+- (void)addConversationLinkDescriptors:(id)descriptors reply:(id)reply;
+- (void)addOrUpdateConversationLinkDescriptors:(id)descriptors reply:(id)reply;
+- (void)conversationLinkDescriptorCountWithPredicate:(id)predicate reply:(id)reply;
+- (void)conversationLinkDescriptorDidChangeForPersistentDataSource:(id)source;
+- (void)conversationLinkDescriptorsWithPredicate:(id)predicate limit:(unint64_t)limit offset:(unint64_t)offset reply:(id)reply;
 - (void)dealloc;
-- (void)integerForKey:(id)a3 reply:(id)a4;
+- (void)integerForKey:(id)key reply:(id)reply;
 - (void)invalidate;
-- (void)removeConversationLinkDescriptorsWithPredicate:(id)a3 deleteReason:(int64_t)a4 reply:(id)a5;
-- (void)removeLinkDescriptorsFromDataSourceWithPredicate:(id)a3 reply:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setExpirationDate:(id)a3 withRevision:(int64_t)a4 forConversationLinkDescriptorsWithPredicate:(id)a5 reply:(id)a6;
-- (void)setInteger:(int64_t)a3 forKey:(id)a4 reply:(id)a5;
-- (void)setInvitedHandles:(id)a3 withRevision:(int64_t)a4 forConversationLinkDescriptorsWithPredicate:(id)a5 reply:(id)a6;
-- (void)setName:(id)a3 withRevision:(int64_t)a4 forConversationLinkDescriptorsWithPredicate:(id)a5 reply:(id)a6;
-- (void)setString:(id)a3 forKey:(id)a4 reply:(id)a5;
-- (void)stringForKey:(id)a3 reply:(id)a4;
+- (void)removeConversationLinkDescriptorsWithPredicate:(id)predicate deleteReason:(int64_t)reason reply:(id)reply;
+- (void)removeLinkDescriptorsFromDataSourceWithPredicate:(id)predicate reply:(id)reply;
+- (void)setDelegate:(id)delegate;
+- (void)setExpirationDate:(id)date withRevision:(int64_t)revision forConversationLinkDescriptorsWithPredicate:(id)predicate reply:(id)reply;
+- (void)setInteger:(int64_t)integer forKey:(id)key reply:(id)reply;
+- (void)setInvitedHandles:(id)handles withRevision:(int64_t)revision forConversationLinkDescriptorsWithPredicate:(id)predicate reply:(id)reply;
+- (void)setName:(id)name withRevision:(int64_t)revision forConversationLinkDescriptorsWithPredicate:(id)predicate reply:(id)reply;
+- (void)setString:(id)string forKey:(id)key reply:(id)reply;
+- (void)stringForKey:(id)key reply:(id)reply;
 @end
 
 @implementation FTConversationServiceConnection
@@ -26,12 +26,12 @@
 - (NSSet)entitlements
 {
   os_unfair_lock_lock(&self->_accessorLock);
-  v3 = [(FTConversationServiceConnection *)self connection];
-  v4 = [v3 conversationServiceEntitlements];
+  connection = [(FTConversationServiceConnection *)self connection];
+  conversationServiceEntitlements = [connection conversationServiceEntitlements];
 
   os_unfair_lock_unlock(&self->_accessorLock);
 
-  return v4;
+  return conversationServiceEntitlements;
 }
 
 - (FTConversationServiceConnectionDelegate)delegate
@@ -43,10 +43,10 @@
   return WeakRetained;
 }
 
-- (FTConversationServiceConnection)initWithConnection:(id)a3 queue:(id)a4
+- (FTConversationServiceConnection)initWithConnection:(id)connection queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = FTConversationServiceConnection;
   v9 = [(FTConversationServiceConnection *)&v19 init];
@@ -54,8 +54,8 @@
   if (v9)
   {
     v9->_accessorLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_queue, a4);
-    objc_storeStrong(&v10->_connection, a3);
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeStrong(&v10->_connection, connection);
     [(NSXPCConnection *)v10->_connection setExportedObject:v10];
     v11 = +[TUConversationLinkDescriptorXPCClientDataSource serverXPCInterface];
     [(NSXPCConnection *)v10->_connection setExportedInterface:v11];
@@ -76,7 +76,7 @@
     v14[3] = &unk_100018738;
     objc_copyWeak(&v15, &location);
     [(NSXPCConnection *)v10->_connection setInvalidationHandler:v14];
-    [(NSXPCConnection *)v10->_connection _setQueue:v8];
+    [(NSXPCConnection *)v10->_connection _setQueue:queueCopy];
     [(NSXPCConnection *)v10->_connection resume];
     objc_destroyWeak(&v15);
     objc_destroyWeak(&v17);
@@ -94,9 +94,9 @@
   [(FTConversationServiceConnection *)&v3 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   os_unfair_lock_lock(&self->_accessorLock);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
@@ -111,30 +111,30 @@
 - (void)invalidate
 {
   os_unfair_lock_lock(&self->_accessorLock);
-  v3 = [(FTConversationServiceConnection *)self connection];
-  [v3 invalidate];
+  connection = [(FTConversationServiceConnection *)self connection];
+  [connection invalidate];
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)conversationLinkDescriptorDidChangeForPersistentDataSource:(id)a3
+- (void)conversationLinkDescriptorDidChangeForPersistentDataSource:(id)source
 {
-  v4 = [(FTConversationServiceConnection *)self connection];
-  v3 = [v4 remoteObjectProxy];
-  [v3 conversationLinkDescriptorsDidChange];
+  connection = [(FTConversationServiceConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy conversationLinkDescriptorsDidChange];
 }
 
-- (void)addConversationLinkDescriptors:(id)a3 reply:(id)a4
+- (void)addConversationLinkDescriptors:(id)descriptors reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(FTConversationServiceConnection *)self entitlements];
-  v10 = [v9 containsObject:@"modify-conversation-links"];
+  descriptorsCopy = descriptors;
+  replyCopy = reply;
+  entitlements = [(FTConversationServiceConnection *)self entitlements];
+  v10 = [entitlements containsObject:@"modify-conversation-links"];
 
   if (v10)
   {
-    v11 = [(FTConversationServiceConnection *)self delegate];
-    [v11 addConversationLinkDescriptors:v7 reply:v8];
+    delegate = [(FTConversationServiceConnection *)self delegate];
+    [delegate addConversationLinkDescriptors:descriptorsCopy reply:replyCopy];
   }
 
   else
@@ -145,22 +145,22 @@
       sub_10000CE7C(a2);
     }
 
-    v11 = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
-    v8[2](v8, 0, v11);
+    delegate = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
+    replyCopy[2](replyCopy, 0, delegate);
   }
 }
 
-- (void)addOrUpdateConversationLinkDescriptors:(id)a3 reply:(id)a4
+- (void)addOrUpdateConversationLinkDescriptors:(id)descriptors reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(FTConversationServiceConnection *)self entitlements];
-  v10 = [v9 containsObject:@"modify-conversation-links"];
+  descriptorsCopy = descriptors;
+  replyCopy = reply;
+  entitlements = [(FTConversationServiceConnection *)self entitlements];
+  v10 = [entitlements containsObject:@"modify-conversation-links"];
 
   if (v10)
   {
-    v11 = [(FTConversationServiceConnection *)self delegate];
-    [v11 addOrUpdateConversationLinkDescriptors:v7 reply:v8];
+    delegate = [(FTConversationServiceConnection *)self delegate];
+    [delegate addOrUpdateConversationLinkDescriptors:descriptorsCopy reply:replyCopy];
   }
 
   else
@@ -171,22 +171,22 @@
       sub_10000CE7C(a2);
     }
 
-    v11 = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
-    v8[2](v8, 0, v11);
+    delegate = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
+    replyCopy[2](replyCopy, 0, delegate);
   }
 }
 
-- (void)conversationLinkDescriptorCountWithPredicate:(id)a3 reply:(id)a4
+- (void)conversationLinkDescriptorCountWithPredicate:(id)predicate reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(FTConversationServiceConnection *)self entitlements];
-  v10 = [v9 containsObject:@"access-conversation-links"];
+  predicateCopy = predicate;
+  replyCopy = reply;
+  entitlements = [(FTConversationServiceConnection *)self entitlements];
+  v10 = [entitlements containsObject:@"access-conversation-links"];
 
   if (v10)
   {
-    v11 = [(FTConversationServiceConnection *)self delegate];
-    [v11 conversationLinkDescriptorCountWithPredicate:v7 reply:v8];
+    delegate = [(FTConversationServiceConnection *)self delegate];
+    [delegate conversationLinkDescriptorCountWithPredicate:predicateCopy reply:replyCopy];
   }
 
   else
@@ -197,22 +197,22 @@
       sub_10000CE7C(a2);
     }
 
-    v11 = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
-    v8[2](v8, 0x7FFFFFFFFFFFFFFFLL, v11);
+    delegate = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
+    replyCopy[2](replyCopy, 0x7FFFFFFFFFFFFFFFLL, delegate);
   }
 }
 
-- (void)conversationLinkDescriptorsWithPredicate:(id)a3 limit:(unint64_t)a4 offset:(unint64_t)a5 reply:(id)a6
+- (void)conversationLinkDescriptorsWithPredicate:(id)predicate limit:(unint64_t)limit offset:(unint64_t)offset reply:(id)reply
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = [(FTConversationServiceConnection *)self entitlements];
-  v14 = [v13 containsObject:@"access-conversation-links"];
+  predicateCopy = predicate;
+  replyCopy = reply;
+  entitlements = [(FTConversationServiceConnection *)self entitlements];
+  v14 = [entitlements containsObject:@"access-conversation-links"];
 
   if (v14)
   {
-    v15 = [(FTConversationServiceConnection *)self delegate];
-    [v15 conversationLinkDescriptorsWithPredicate:v11 limit:a4 offset:a5 reply:v12];
+    delegate = [(FTConversationServiceConnection *)self delegate];
+    [delegate conversationLinkDescriptorsWithPredicate:predicateCopy limit:limit offset:offset reply:replyCopy];
   }
 
   else
@@ -223,23 +223,23 @@
       sub_10000CE7C(a2);
     }
 
-    v15 = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
-    v12[2](v12, 0, v15);
+    delegate = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
+    replyCopy[2](replyCopy, 0, delegate);
   }
 }
 
-- (void)removeConversationLinkDescriptorsWithPredicate:(id)a3 deleteReason:(int64_t)a4 reply:(id)a5
+- (void)removeConversationLinkDescriptorsWithPredicate:(id)predicate deleteReason:(int64_t)reason reply:(id)reply
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
-  v11 = [(FTConversationServiceConnection *)self entitlements];
-  v12 = [v11 containsObject:@"modify-conversation-links"];
+  reasonCopy = reason;
+  predicateCopy = predicate;
+  replyCopy = reply;
+  entitlements = [(FTConversationServiceConnection *)self entitlements];
+  v12 = [entitlements containsObject:@"modify-conversation-links"];
 
   if (v12)
   {
-    v13 = [(FTConversationServiceConnection *)self delegate];
-    [v13 removeConversationLinkDescriptorsWithPredicate:v9 deleteReason:v6 reply:v10];
+    delegate = [(FTConversationServiceConnection *)self delegate];
+    [delegate removeConversationLinkDescriptorsWithPredicate:predicateCopy deleteReason:reasonCopy reply:replyCopy];
   }
 
   else
@@ -250,22 +250,22 @@
       sub_10000CE7C(a2);
     }
 
-    v13 = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
-    v10[2](v10, 0x7FFFFFFFFFFFFFFFLL, v13);
+    delegate = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
+    replyCopy[2](replyCopy, 0x7FFFFFFFFFFFFFFFLL, delegate);
   }
 }
 
-- (void)removeLinkDescriptorsFromDataSourceWithPredicate:(id)a3 reply:(id)a4
+- (void)removeLinkDescriptorsFromDataSourceWithPredicate:(id)predicate reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(FTConversationServiceConnection *)self entitlements];
-  v10 = [v9 containsObject:@"modify-conversation-links"];
+  predicateCopy = predicate;
+  replyCopy = reply;
+  entitlements = [(FTConversationServiceConnection *)self entitlements];
+  v10 = [entitlements containsObject:@"modify-conversation-links"];
 
   if (v10)
   {
-    v11 = [(FTConversationServiceConnection *)self delegate];
-    [v11 removeLinkDescriptorsFromDataSourceWithPredicate:v7 reply:v8];
+    delegate = [(FTConversationServiceConnection *)self delegate];
+    [delegate removeLinkDescriptorsFromDataSourceWithPredicate:predicateCopy reply:replyCopy];
   }
 
   else
@@ -276,23 +276,23 @@
       sub_10000CE7C(a2);
     }
 
-    v11 = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
-    v8[2](v8, 0x7FFFFFFFFFFFFFFFLL, v11);
+    delegate = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
+    replyCopy[2](replyCopy, 0x7FFFFFFFFFFFFFFFLL, delegate);
   }
 }
 
-- (void)setExpirationDate:(id)a3 withRevision:(int64_t)a4 forConversationLinkDescriptorsWithPredicate:(id)a5 reply:(id)a6
+- (void)setExpirationDate:(id)date withRevision:(int64_t)revision forConversationLinkDescriptorsWithPredicate:(id)predicate reply:(id)reply
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(FTConversationServiceConnection *)self entitlements];
-  v15 = [v14 containsObject:@"modify-conversation-links"];
+  dateCopy = date;
+  predicateCopy = predicate;
+  replyCopy = reply;
+  entitlements = [(FTConversationServiceConnection *)self entitlements];
+  v15 = [entitlements containsObject:@"modify-conversation-links"];
 
   if (v15)
   {
-    v16 = [(FTConversationServiceConnection *)self delegate];
-    [v16 setExpirationDate:v11 withRevision:a4 forConversationLinkDescriptorsWithPredicate:v12 reply:v13];
+    delegate = [(FTConversationServiceConnection *)self delegate];
+    [delegate setExpirationDate:dateCopy withRevision:revision forConversationLinkDescriptorsWithPredicate:predicateCopy reply:replyCopy];
   }
 
   else
@@ -303,23 +303,23 @@
       sub_10000CE7C(a2);
     }
 
-    v16 = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
-    v13[2](v13, 0x7FFFFFFFFFFFFFFFLL, v16);
+    delegate = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
+    replyCopy[2](replyCopy, 0x7FFFFFFFFFFFFFFFLL, delegate);
   }
 }
 
-- (void)setInvitedHandles:(id)a3 withRevision:(int64_t)a4 forConversationLinkDescriptorsWithPredicate:(id)a5 reply:(id)a6
+- (void)setInvitedHandles:(id)handles withRevision:(int64_t)revision forConversationLinkDescriptorsWithPredicate:(id)predicate reply:(id)reply
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(FTConversationServiceConnection *)self entitlements];
-  v15 = [v14 containsObject:@"modify-conversation-links"];
+  handlesCopy = handles;
+  predicateCopy = predicate;
+  replyCopy = reply;
+  entitlements = [(FTConversationServiceConnection *)self entitlements];
+  v15 = [entitlements containsObject:@"modify-conversation-links"];
 
   if (v15)
   {
-    v16 = [(FTConversationServiceConnection *)self delegate];
-    [v16 setInvitedHandles:v11 withRevision:a4 forConversationLinkDescriptorsWithPredicate:v12 reply:v13];
+    delegate = [(FTConversationServiceConnection *)self delegate];
+    [delegate setInvitedHandles:handlesCopy withRevision:revision forConversationLinkDescriptorsWithPredicate:predicateCopy reply:replyCopy];
   }
 
   else
@@ -330,23 +330,23 @@
       sub_10000CE7C(a2);
     }
 
-    v16 = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
-    v13[2](v13, 0x7FFFFFFFFFFFFFFFLL, v16);
+    delegate = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
+    replyCopy[2](replyCopy, 0x7FFFFFFFFFFFFFFFLL, delegate);
   }
 }
 
-- (void)setName:(id)a3 withRevision:(int64_t)a4 forConversationLinkDescriptorsWithPredicate:(id)a5 reply:(id)a6
+- (void)setName:(id)name withRevision:(int64_t)revision forConversationLinkDescriptorsWithPredicate:(id)predicate reply:(id)reply
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(FTConversationServiceConnection *)self entitlements];
-  v15 = [v14 containsObject:@"modify-conversation-links"];
+  nameCopy = name;
+  predicateCopy = predicate;
+  replyCopy = reply;
+  entitlements = [(FTConversationServiceConnection *)self entitlements];
+  v15 = [entitlements containsObject:@"modify-conversation-links"];
 
   if (v15)
   {
-    v16 = [(FTConversationServiceConnection *)self delegate];
-    [v16 setName:v11 withRevision:a4 forConversationLinkDescriptorsWithPredicate:v12 reply:v13];
+    delegate = [(FTConversationServiceConnection *)self delegate];
+    [delegate setName:nameCopy withRevision:revision forConversationLinkDescriptorsWithPredicate:predicateCopy reply:replyCopy];
   }
 
   else
@@ -357,22 +357,22 @@
       sub_10000CE7C(a2);
     }
 
-    v16 = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
-    v13[2](v13, 0x7FFFFFFFFFFFFFFFLL, v16);
+    delegate = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
+    replyCopy[2](replyCopy, 0x7FFFFFFFFFFFFFFFLL, delegate);
   }
 }
 
-- (void)setInteger:(int64_t)a3 forKey:(id)a4 reply:(id)a5
+- (void)setInteger:(int64_t)integer forKey:(id)key reply:(id)reply
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = [(FTConversationServiceConnection *)self entitlements];
-  v12 = [v11 containsObject:@"modify-conversation-links"];
+  keyCopy = key;
+  replyCopy = reply;
+  entitlements = [(FTConversationServiceConnection *)self entitlements];
+  v12 = [entitlements containsObject:@"modify-conversation-links"];
 
   if (v12)
   {
-    v13 = [(FTConversationServiceConnection *)self delegate];
-    [v13 setInteger:a3 forKey:v9 reply:v10];
+    delegate = [(FTConversationServiceConnection *)self delegate];
+    [delegate setInteger:integer forKey:keyCopy reply:replyCopy];
   }
 
   else
@@ -383,22 +383,22 @@
       sub_10000CE7C(a2);
     }
 
-    v13 = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
-    v10[2](v10, 1, v13);
+    delegate = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
+    replyCopy[2](replyCopy, 1, delegate);
   }
 }
 
-- (void)integerForKey:(id)a3 reply:(id)a4
+- (void)integerForKey:(id)key reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(FTConversationServiceConnection *)self entitlements];
-  v10 = [v9 containsObject:@"access-conversation-links"];
+  keyCopy = key;
+  replyCopy = reply;
+  entitlements = [(FTConversationServiceConnection *)self entitlements];
+  v10 = [entitlements containsObject:@"access-conversation-links"];
 
   if (v10)
   {
-    v11 = [(FTConversationServiceConnection *)self delegate];
-    [v11 integerForKey:v7 reply:v8];
+    delegate = [(FTConversationServiceConnection *)self delegate];
+    [delegate integerForKey:keyCopy reply:replyCopy];
   }
 
   else
@@ -409,23 +409,23 @@
       sub_10000CE7C(a2);
     }
 
-    v11 = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
-    v8[2](v8, 0x7FFFFFFFFFFFFFFFLL, v11);
+    delegate = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
+    replyCopy[2](replyCopy, 0x7FFFFFFFFFFFFFFFLL, delegate);
   }
 }
 
-- (void)setString:(id)a3 forKey:(id)a4 reply:(id)a5
+- (void)setString:(id)string forKey:(id)key reply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(FTConversationServiceConnection *)self entitlements];
-  v13 = [v12 containsObject:@"modify-conversation-links"];
+  stringCopy = string;
+  keyCopy = key;
+  replyCopy = reply;
+  entitlements = [(FTConversationServiceConnection *)self entitlements];
+  v13 = [entitlements containsObject:@"modify-conversation-links"];
 
   if (v13)
   {
-    v14 = [(FTConversationServiceConnection *)self delegate];
-    [v14 setString:v9 forKey:v10 reply:v11];
+    delegate = [(FTConversationServiceConnection *)self delegate];
+    [delegate setString:stringCopy forKey:keyCopy reply:replyCopy];
   }
 
   else
@@ -436,22 +436,22 @@
       sub_10000CE7C(a2);
     }
 
-    v14 = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
-    v11[2](v11, 1, v14);
+    delegate = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
+    replyCopy[2](replyCopy, 1, delegate);
   }
 }
 
-- (void)stringForKey:(id)a3 reply:(id)a4
+- (void)stringForKey:(id)key reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(FTConversationServiceConnection *)self entitlements];
-  v10 = [v9 containsObject:@"access-conversation-links"];
+  keyCopy = key;
+  replyCopy = reply;
+  entitlements = [(FTConversationServiceConnection *)self entitlements];
+  v10 = [entitlements containsObject:@"access-conversation-links"];
 
   if (v10)
   {
-    v11 = [(FTConversationServiceConnection *)self delegate];
-    [v11 stringForKey:v7 reply:v8];
+    delegate = [(FTConversationServiceConnection *)self delegate];
+    [delegate stringForKey:keyCopy reply:replyCopy];
   }
 
   else
@@ -462,8 +462,8 @@
       sub_10000CE7C(a2);
     }
 
-    v11 = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
-    v8[2](v8, 0, v11);
+    delegate = [NSError errorWithDomain:@"com.apple.FaceTime.FTConversationService" code:1 userInfo:0];
+    replyCopy[2](replyCopy, 0, delegate);
   }
 }
 

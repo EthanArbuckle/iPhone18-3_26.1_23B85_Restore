@@ -1,16 +1,16 @@
 @interface MSUFreeSpaceManager
 + (id)sharedInstance;
-- (BOOL)requestFreeSpace:(unint64_t)a3 allowSpecialCaseUrgency:(id)a4 disableMobileAssetPurge:(id)a5 disableSpecialCaseUrgency:(id)a6 disableAPFSReserve:(id)a7 error:(id *)a8;
-- (MSUFreeSpaceManager)initWithMountedDataVolume:(id)a3;
+- (BOOL)requestFreeSpace:(unint64_t)space allowSpecialCaseUrgency:(id)urgency disableMobileAssetPurge:(id)purge disableSpecialCaseUrgency:(id)caseUrgency disableAPFSReserve:(id)reserve error:(id *)error;
+- (MSUFreeSpaceManager)initWithMountedDataVolume:(id)volume;
 - (NSString)dataMountPoint;
 - (id)description;
-- (id)metricInfo:(BOOL)a3;
+- (id)metricInfo:(BOOL)info;
 - (id)preallocatedSpaceMetricInfo;
-- (unint64_t)availableSpace:(id *)a3;
-- (unsigned)getAPFSFreeBlocksThreshold:(id *)a3;
+- (unint64_t)availableSpace:(id *)space;
+- (unsigned)getAPFSFreeBlocksThreshold:(id *)threshold;
 - (void)dealloc;
 - (void)discardOldCacheDeletePaths;
-- (void)setDataMountPoint:(id)a3;
+- (void)setDataMountPoint:(id)point;
 @end
 
 @implementation MSUFreeSpaceManager
@@ -33,7 +33,7 @@ void __37__MSUFreeSpaceManager_sharedInstance__block_invoke(id a1)
   objc_autoreleasePoolPop(v1);
 }
 
-- (MSUFreeSpaceManager)initWithMountedDataVolume:(id)a3
+- (MSUFreeSpaceManager)initWithMountedDataVolume:(id)volume
 {
   v7.receiver = self;
   v7.super_class = MSUFreeSpaceManager;
@@ -41,7 +41,7 @@ void __37__MSUFreeSpaceManager_sharedInstance__block_invoke(id a1)
   v5 = v4;
   if (v4)
   {
-    [(MSUFreeSpaceManager *)v4 setDataMountPoint:a3];
+    [(MSUFreeSpaceManager *)v4 setDataMountPoint:volume];
     *&v5->_purgeableRequested = 0u;
     *&v5->_manuallyPurged = 0u;
   }
@@ -56,13 +56,13 @@ void __37__MSUFreeSpaceManager_sharedInstance__block_invoke(id a1)
   [(MSUFreeSpaceManager *)&v3 dealloc];
 }
 
-- (BOOL)requestFreeSpace:(unint64_t)a3 allowSpecialCaseUrgency:(id)a4 disableMobileAssetPurge:(id)a5 disableSpecialCaseUrgency:(id)a6 disableAPFSReserve:(id)a7 error:(id *)a8
+- (BOOL)requestFreeSpace:(unint64_t)space allowSpecialCaseUrgency:(id)urgency disableMobileAssetPurge:(id)purge disableSpecialCaseUrgency:(id)caseUrgency disableAPFSReserve:(id)reserve error:(id *)error
 {
   objc_sync_enter(self);
   objc_sync_exit(self);
-  if (a8)
+  if (error)
   {
-    *a8 = 0;
+    *error = 0;
   }
 
   return 1;
@@ -147,7 +147,7 @@ void __37__MSUFreeSpaceManager_sharedInstance__block_invoke(id a1)
   objc_sync_exit(self);
 }
 
-- (unsigned)getAPFSFreeBlocksThreshold:(id *)a3
+- (unsigned)getAPFSFreeBlocksThreshold:(id *)threshold
 {
   objc_sync_enter(self);
   v14 = 0;
@@ -184,15 +184,15 @@ void __37__MSUFreeSpaceManager_sharedInstance__block_invoke(id a1)
   }
 
   objc_sync_exit(self);
-  if (a3)
+  if (threshold)
   {
-    *a3 = v8;
+    *threshold = v8;
   }
 
   return 0;
 }
 
-- (unint64_t)availableSpace:(id *)a3
+- (unint64_t)availableSpace:(id *)space
 {
   objc_sync_enter(self);
   v5 = [(NSString *)self->_dataMountPoint copy];
@@ -208,12 +208,12 @@ void __37__MSUFreeSpaceManager_sharedInstance__block_invoke(id a1)
   }
 
   bzero(&v15, 0x878uLL);
-  v7 = [(__CFString *)v6 UTF8String];
-  if (!statfs(v7, &v15))
+  uTF8String = [(__CFString *)v6 UTF8String];
+  if (!statfs(uTF8String, &v15))
   {
     v10 = 0;
     v11 = v15.f_bavail * v15.f_bsize;
-    if (!a3)
+    if (!space)
     {
       goto LABEL_7;
     }
@@ -224,13 +224,13 @@ void __37__MSUFreeSpaceManager_sharedInstance__block_invoke(id a1)
   v8 = *__error();
   v13 = NSDebugDescriptionErrorKey;
   v9 = __error();
-  v14 = [NSString stringWithFormat:@"statfs(%s) failed : %s", v7, strerror(*v9), NSDebugDescriptionErrorKey];
-  v10 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v8 userInfo:[NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1]];
+  nSDebugDescriptionErrorKey = [NSString stringWithFormat:@"statfs(%s) failed : %s", uTF8String, strerror(*v9), NSDebugDescriptionErrorKey];
+  v10 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v8 userInfo:[NSDictionary dictionaryWithObjects:&nSDebugDescriptionErrorKey forKeys:&v13 count:1]];
   v11 = 0;
-  if (a3)
+  if (space)
   {
 LABEL_6:
-    *a3 = v10;
+    *space = v10;
   }
 
 LABEL_7:
@@ -245,9 +245,9 @@ LABEL_7:
   return [NSDictionary dictionaryWithDictionary:v2];
 }
 
-- (id)metricInfo:(BOOL)a3
+- (id)metricInfo:(BOOL)info
 {
-  v3 = a3;
+  infoCopy = info;
   v5 = +[NSMutableDictionary dictionary];
   manuallyPurged = self->_manuallyPurged;
   if (manuallyPurged)
@@ -263,7 +263,7 @@ LABEL_7:
     [v5 setObject:+[NSNumber numberWithLongLong:](NSNumber forKeyedSubscript:{"numberWithLongLong:", self->_netPurgedBytes / 0x100000), @"purgedMeasured"}];
   }
 
-  if (v3)
+  if (infoCopy)
   {
     *&self->_manuallyPurged = 0u;
     *&self->_purgeableRequested = 0u;
@@ -280,20 +280,20 @@ LABEL_7:
   return dataMountPoint;
 }
 
-- (void)setDataMountPoint:(id)a3
+- (void)setDataMountPoint:(id)point
 {
   objc_sync_enter(self);
-  self->_dataMountPoint = [a3 copy];
+  self->_dataMountPoint = [point copy];
   bzero(&v11, 0x878uLL);
-  v5 = [a3 UTF8String];
-  if (statfs(v5, &v11))
+  uTF8String = [point UTF8String];
+  if (statfs(uTF8String, &v11))
   {
     v6 = msuSharedLogger();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v7 = __error();
       v8 = strerror(*v7);
-      [(MSUFreeSpaceManager *)v8 setDataMountPoint:v10, v5, v6];
+      [(MSUFreeSpaceManager *)v8 setDataMountPoint:v10, uTF8String, v6];
     }
 
     f_bsize = 4096;

@@ -1,15 +1,15 @@
 @interface NSException
-+ (BOOL)crl_catchExceptionsInBlock:(id)a3 error:(id *)a4;
-+ (void)crl_raiseWithError:(id)a3;
++ (BOOL)crl_catchExceptionsInBlock:(id)block error:(id *)error;
++ (void)crl_raiseWithError:(id)error;
 - (id)crl_error;
 @end
 
 @implementation NSException
 
-+ (void)crl_raiseWithError:(id)a3
++ (void)crl_raiseWithError:(id)error
 {
-  v3 = a3;
-  if (!v3)
+  errorCopy = error;
+  if (!errorCopy)
   {
     v4 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -39,28 +39,28 @@
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:14 isFatal:0 description:"Invalid parameter not satisfying: %{public}s", "error != nil"];
   }
 
-  v9 = [v3 localizedFailureReason];
-  v10 = v9;
-  if (v9)
+  localizedFailureReason = [errorCopy localizedFailureReason];
+  v10 = localizedFailureReason;
+  if (localizedFailureReason)
   {
-    v11 = v9;
+    v11 = localizedFailureReason;
   }
 
   else
   {
-    v12 = [v3 localizedDescription];
-    v13 = v12;
+    localizedDescription = [errorCopy localizedDescription];
+    v13 = localizedDescription;
     v14 = @"NSError exception";
-    if (v12)
+    if (localizedDescription)
     {
-      v14 = v12;
+      v14 = localizedDescription;
     }
 
     v11 = v14;
   }
 
   v17 = @"CRLErrorExceptionUserInfoKey";
-  v18 = v3;
+  v18 = errorCopy;
   v15 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
   v16 = [NSException exceptionWithName:@"CRLErrorException" reason:v11 userInfo:v15];
 
@@ -69,8 +69,8 @@
 
 - (id)crl_error
 {
-  v2 = [(NSException *)self userInfo];
-  v3 = [v2 objectForKey:@"CRLErrorExceptionUserInfoKey"];
+  userInfo = [(NSException *)self userInfo];
+  v3 = [userInfo objectForKey:@"CRLErrorExceptionUserInfoKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -116,10 +116,10 @@
   return v4;
 }
 
-+ (BOOL)crl_catchExceptionsInBlock:(id)a3 error:(id *)a4
++ (BOOL)crl_catchExceptionsInBlock:(id)block error:(id *)error
 {
-  v4 = a3;
-  v4[2]();
+  blockCopy = block;
+  blockCopy[2]();
 
   return 1;
 }

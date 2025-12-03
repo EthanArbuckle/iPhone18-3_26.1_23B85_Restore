@@ -1,9 +1,9 @@
 @interface MDMReturnToServiceUtilities
-+ (BOOL)validateReturnToServiceRequestWithMDMProfileData:(id)a3 wifiProfileData:(id)a4 revertToSnapshotName:(id)a5 bootstrapToken:(id)a6 error:(id *)a7;
++ (BOOL)validateReturnToServiceRequestWithMDMProfileData:(id)data wifiProfileData:(id)profileData revertToSnapshotName:(id)name bootstrapToken:(id)token error:(id *)error;
 + (id)_eraseDeviceActivationLockIsOnError;
 + (id)_eraseDeviceContainsMDMPayloadError;
-+ (id)_eraseDeviceInvalidMDMProfileErrorWithUnderlayingError:(id)a3;
-+ (id)_eraseDeviceInvalidWiFiProfileErrorWithUnderlayingError:(id)a3;
++ (id)_eraseDeviceInvalidMDMProfileErrorWithUnderlayingError:(id)error;
++ (id)_eraseDeviceInvalidWiFiProfileErrorWithUnderlayingError:(id)error;
 + (id)_eraseDeviceMissingBootstrapTokenError;
 + (id)_eraseDeviceMissingMDMProfileError;
 + (id)_eraseDeviceMissingSnapshotError;
@@ -12,43 +12,43 @@
 + (id)_eraseDeviceNotTeslaEnrolledError;
 + (id)_eraseDeviceProvisionallyEnrolledError;
 + (id)_triggerRRTSServeraRejectError;
-+ (void)performRRTSCheckInAndValidationWithCompletionHandler:(id)a3;
++ (void)performRRTSCheckInAndValidationWithCompletionHandler:(id)handler;
 @end
 
 @implementation MDMReturnToServiceUtilities
 
-+ (BOOL)validateReturnToServiceRequestWithMDMProfileData:(id)a3 wifiProfileData:(id)a4 revertToSnapshotName:(id)a5 bootstrapToken:(id)a6 error:(id *)a7
++ (BOOL)validateReturnToServiceRequestWithMDMProfileData:(id)data wifiProfileData:(id)profileData revertToSnapshotName:(id)name bootstrapToken:(id)token error:(id *)error
 {
   v67 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v59 = a6;
-  v14 = [MEMORY[0x277D24640] sharedConfiguration];
-  v60 = [MEMORY[0x277D24648] sharedConfiguration];
-  v61 = v14;
-  v15 = [v14 enrollmentServerInfo];
-  if (!v15)
+  dataCopy = data;
+  profileDataCopy = profileData;
+  tokenCopy = token;
+  mEMORY[0x277D24640] = [MEMORY[0x277D24640] sharedConfiguration];
+  mEMORY[0x277D24648] = [MEMORY[0x277D24648] sharedConfiguration];
+  v61 = mEMORY[0x277D24640];
+  enrollmentServerInfo = [mEMORY[0x277D24640] enrollmentServerInfo];
+  if (!enrollmentServerInfo)
   {
     goto LABEL_8;
   }
 
-  v16 = v15;
+  v16 = enrollmentServerInfo;
   [MEMORY[0x277CB8F48] defaultStore];
-  v17 = a7;
-  v19 = v18 = v12;
-  v20 = [v19 dmc_visibleRemoteManagementAccounts];
-  v21 = [v20 count];
+  errorCopy = error;
+  v19 = v18 = dataCopy;
+  dmc_visibleRemoteManagementAccounts = [v19 dmc_visibleRemoteManagementAccounts];
+  v21 = [dmc_visibleRemoteManagementAccounts count];
 
-  v12 = v18;
-  a7 = v17;
+  dataCopy = v18;
+  error = errorCopy;
 
   if (!v21)
   {
 LABEL_8:
-    v28 = v60;
-    v29 = [v60 personaID];
+    v28 = mEMORY[0x277D24648];
+    personaID = [mEMORY[0x277D24648] personaID];
 
-    if (v29)
+    if (personaID)
     {
       v30 = *DMCLogObjects();
       v24 = v61;
@@ -58,26 +58,26 @@ LABEL_8:
         _os_log_impl(&dword_2561F5000, v30, OS_LOG_TYPE_ERROR, "Device has enterprise persona.", buf, 2u);
       }
 
-      v23 = v13;
-      if (a7)
+      v23 = profileDataCopy;
+      if (error)
       {
-        v31 = [a1 _eraseDeviceNotSupporttedError];
+        _eraseDeviceNotSupporttedError = [self _eraseDeviceNotSupporttedError];
 LABEL_13:
-        v26 = v31;
-        if (v31)
+        _eraseDeviceContainsMDMPayloadError = _eraseDeviceNotSupporttedError;
+        if (_eraseDeviceNotSupporttedError)
         {
-          v32 = v31;
-          v33 = a7;
-          LOBYTE(a7) = 0;
-          *v33 = v26;
+          v32 = _eraseDeviceNotSupporttedError;
+          errorCopy2 = error;
+          LOBYTE(error) = 0;
+          *errorCopy2 = _eraseDeviceContainsMDMPayloadError;
         }
 
         else
         {
-          LOBYTE(a7) = 0;
+          LOBYTE(error) = 0;
         }
 
-        v36 = v59;
+        v36 = tokenCopy;
         goto LABEL_45;
       }
 
@@ -94,24 +94,24 @@ LABEL_13:
         _os_log_impl(&dword_2561F5000, v34, OS_LOG_TYPE_ERROR, "Failed to trigger return to service since activation lock is on", buf, 2u);
       }
 
-      v23 = v13;
-      if (a7)
+      v23 = profileDataCopy;
+      if (error)
       {
-        v31 = [a1 _eraseDeviceActivationLockIsOnError];
+        _eraseDeviceNotSupporttedError = [self _eraseDeviceActivationLockIsOnError];
         goto LABEL_13;
       }
 
 LABEL_39:
-      v36 = v59;
+      v36 = tokenCopy;
       goto LABEL_46;
     }
 
-    v35 = [MEMORY[0x277D24648] isRapidReturnToService];
-    v23 = v13;
-    v36 = v59;
-    if (v59 && v35)
+    isRapidReturnToService = [MEMORY[0x277D24648] isRapidReturnToService];
+    v23 = profileDataCopy;
+    v36 = tokenCopy;
+    if (tokenCopy && isRapidReturnToService)
     {
-      if (!a5)
+      if (!name)
       {
         v45 = *DMCLogObjects();
         if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
@@ -120,36 +120,36 @@ LABEL_39:
           _os_log_impl(&dword_2561F5000, v45, OS_LOG_TYPE_ERROR, "Failed to trigger rapid return to service since snapshot name is nil", buf, 2u);
         }
 
-        if (!a7)
+        if (!error)
         {
           goto LABEL_46;
         }
 
-        v46 = [a1 _eraseDeviceMissingSnapshotError];
+        _eraseDeviceMissingSnapshotError = [self _eraseDeviceMissingSnapshotError];
         goto LABEL_80;
       }
 
       v64 = 0;
-      v37 = [MDMBootstrapTokenUtilities validateBootstrapToken:v59 error:&v64];
+      v37 = [MDMBootstrapTokenUtilities validateBootstrapToken:tokenCopy error:&v64];
       v38 = v64;
-      v26 = v38;
+      _eraseDeviceContainsMDMPayloadError = v38;
       if (!v37)
       {
-        v47 = a7;
+        errorCopy3 = error;
         v48 = *DMCLogObjects();
         if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v66 = v26;
+          v66 = _eraseDeviceContainsMDMPayloadError;
           _os_log_impl(&dword_2561F5000, v48, OS_LOG_TYPE_ERROR, "Bootstrap token is not valid with error: %{public}@", buf, 0xCu);
         }
 
-        LOBYTE(a7) = 0;
-        if (v47 && v26)
+        LOBYTE(error) = 0;
+        if (errorCopy3 && _eraseDeviceContainsMDMPayloadError)
         {
-          v49 = v26;
-          LOBYTE(a7) = 0;
-          *v47 = v26;
+          v49 = _eraseDeviceContainsMDMPayloadError;
+          LOBYTE(error) = 0;
+          *errorCopy3 = _eraseDeviceContainsMDMPayloadError;
         }
 
         goto LABEL_45;
@@ -160,30 +160,30 @@ LABEL_39:
     {
       v63 = 0;
       v39 = [MEMORY[0x277D26290] profileWithData:v23 outError:&v63];
-      v26 = v63;
-      if (v26 || [v39 containsPayloadOfClass:objc_opt_class()])
+      _eraseDeviceContainsMDMPayloadError = v63;
+      if (_eraseDeviceContainsMDMPayloadError || [v39 containsPayloadOfClass:objc_opt_class()])
       {
-        v40 = v12;
+        v40 = dataCopy;
         v41 = *DMCLogObjects();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v66 = v26;
+          v66 = _eraseDeviceContainsMDMPayloadError;
           _os_log_impl(&dword_2561F5000, v41, OS_LOG_TYPE_ERROR, "Invalid WiFi profile: %{public}@", buf, 0xCu);
         }
 
-        if (!v26)
+        if (!_eraseDeviceContainsMDMPayloadError)
         {
-          v26 = [a1 _eraseDeviceContainsMDMPayloadError];
+          _eraseDeviceContainsMDMPayloadError = [self _eraseDeviceContainsMDMPayloadError];
         }
 
-        v12 = v40;
-        if (!a7)
+        dataCopy = v40;
+        if (!error)
         {
           goto LABEL_37;
         }
 
-        v42 = [a1 _eraseDeviceInvalidWiFiProfileErrorWithUnderlayingError:v26];
+        v42 = [self _eraseDeviceInvalidWiFiProfileErrorWithUnderlayingError:_eraseDeviceContainsMDMPayloadError];
         if (!v42)
         {
           goto LABEL_36;
@@ -195,38 +195,38 @@ LABEL_39:
       v24 = v61;
     }
 
-    if (v12)
+    if (dataCopy)
     {
       v62 = 0;
-      v39 = [MEMORY[0x277D26290] profileWithData:v12 outError:&v62];
-      v26 = v62;
-      if (!v26)
+      v39 = [MEMORY[0x277D26290] profileWithData:dataCopy outError:&v62];
+      _eraseDeviceContainsMDMPayloadError = v62;
+      if (!_eraseDeviceContainsMDMPayloadError)
       {
         if ([v39 containsPayloadOfClass:objc_opt_class()])
         {
-          LOBYTE(a7) = 1;
-          v26 = v39;
+          LOBYTE(error) = 1;
+          _eraseDeviceContainsMDMPayloadError = v39;
           goto LABEL_38;
         }
 
-        v26 = [a1 _eraseDeviceMissingMDMProfileError];
+        _eraseDeviceContainsMDMPayloadError = [self _eraseDeviceMissingMDMProfileError];
       }
 
-      v55 = v12;
+      v55 = dataCopy;
       v56 = *DMCLogObjects();
       if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v66 = v26;
+        v66 = _eraseDeviceContainsMDMPayloadError;
         _os_log_impl(&dword_2561F5000, v56, OS_LOG_TYPE_ERROR, "Invalid MDM profile: %{public}@", buf, 0xCu);
       }
 
-      v12 = v55;
-      if (!a7)
+      dataCopy = v55;
+      if (!error)
       {
 LABEL_37:
 
-        LOBYTE(a7) = 0;
+        LOBYTE(error) = 0;
 LABEL_38:
         v24 = v61;
 LABEL_45:
@@ -234,7 +234,7 @@ LABEL_45:
         goto LABEL_46;
       }
 
-      v42 = [a1 _eraseDeviceInvalidMDMProfileErrorWithUnderlayingError:v26];
+      v42 = [self _eraseDeviceInvalidMDMProfileErrorWithUnderlayingError:_eraseDeviceContainsMDMPayloadError];
       if (!v42)
       {
 LABEL_36:
@@ -244,7 +244,7 @@ LABEL_36:
 
 LABEL_35:
       v42 = v42;
-      *a7 = v42;
+      *error = v42;
       goto LABEL_36;
     }
 
@@ -252,13 +252,13 @@ LABEL_35:
     {
       if ([v24 isTeslaEnrolled])
       {
-        v50 = [v24 details];
-        v51 = [v50 objectForKeyedSubscript:*MEMORY[0x277D03048]];
+        details = [v24 details];
+        v51 = [details objectForKeyedSubscript:*MEMORY[0x277D03048]];
 
         if (!v51)
         {
-          LOBYTE(a7) = 1;
-          v28 = v60;
+          LOBYTE(error) = 1;
+          v28 = mEMORY[0x277D24648];
           goto LABEL_46;
         }
 
@@ -269,7 +269,7 @@ LABEL_35:
           _os_log_impl(&dword_2561F5000, v52, OS_LOG_TYPE_ERROR, "MDM profile is required for cloud configuration with ConfigurationWebURL.", buf, 2u);
         }
 
-        v28 = v60;
+        v28 = mEMORY[0x277D24648];
         goto LABEL_78;
       }
 
@@ -295,25 +295,25 @@ LABEL_77:
     }
 
 LABEL_78:
-    if (!a7)
+    if (!error)
     {
       goto LABEL_46;
     }
 
-    v46 = [a1 _eraseDeviceMissingMDMProfileError];
+    _eraseDeviceMissingSnapshotError = [self _eraseDeviceMissingMDMProfileError];
 LABEL_80:
-    v26 = v46;
-    if (v46)
+    _eraseDeviceContainsMDMPayloadError = _eraseDeviceMissingSnapshotError;
+    if (_eraseDeviceMissingSnapshotError)
     {
-      v57 = v46;
-      v58 = a7;
-      LOBYTE(a7) = 0;
-      *v58 = v26;
+      v57 = _eraseDeviceMissingSnapshotError;
+      errorCopy4 = error;
+      LOBYTE(error) = 0;
+      *errorCopy4 = _eraseDeviceContainsMDMPayloadError;
     }
 
     else
     {
-      LOBYTE(a7) = 0;
+      LOBYTE(error) = 0;
     }
 
     goto LABEL_45;
@@ -326,40 +326,40 @@ LABEL_80:
     _os_log_impl(&dword_2561F5000, v22, OS_LOG_TYPE_ERROR, "Device is enrolled with Apple Bussiness Essentials.", buf, 2u);
   }
 
-  v23 = v13;
+  v23 = profileDataCopy;
   v24 = v61;
-  if (v17)
+  if (errorCopy)
   {
-    v25 = [a1 _eraseDeviceNotSupporttedError];
-    v26 = v25;
-    if (v25)
+    _eraseDeviceNotSupporttedError2 = [self _eraseDeviceNotSupporttedError];
+    _eraseDeviceContainsMDMPayloadError = _eraseDeviceNotSupporttedError2;
+    if (_eraseDeviceNotSupporttedError2)
     {
-      v27 = v25;
-      LOBYTE(a7) = 0;
-      *v17 = v26;
+      v27 = _eraseDeviceNotSupporttedError2;
+      LOBYTE(error) = 0;
+      *errorCopy = _eraseDeviceContainsMDMPayloadError;
     }
 
     else
     {
-      LOBYTE(a7) = 0;
+      LOBYTE(error) = 0;
     }
 
-    v36 = v59;
-    v28 = v60;
+    v36 = tokenCopy;
+    v28 = mEMORY[0x277D24648];
     goto LABEL_45;
   }
 
-  v36 = v59;
-  v28 = v60;
+  v36 = tokenCopy;
+  v28 = mEMORY[0x277D24648];
 LABEL_46:
 
   v43 = *MEMORY[0x277D85DE8];
-  return a7;
+  return error;
 }
 
-+ (void)performRRTSCheckInAndValidationWithCompletionHandler:(id)a3
++ (void)performRRTSCheckInAndValidationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([MEMORY[0x277D03500] shouldSimulateRapidReturnToService])
   {
     v5 = *(DMCLogObjects() + 8);
@@ -369,9 +369,9 @@ LABEL_46:
       _os_log_impl(&dword_2561F5000, v5, OS_LOG_TYPE_ERROR, "MDMReturnToServiceUtilities: Simulating RRTS request response", buf, 2u);
     }
 
-    v6 = [MEMORY[0x277D03500] simulatedWiFiProfile];
+    simulatedWiFiProfile = [MEMORY[0x277D03500] simulatedWiFiProfile];
     v7 = [MEMORY[0x277D03500] bootstrapTokenOverrideWithDefaultValue:0];
-    (*(v4 + 2))(v4, 1, 0, v6, v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 1, 0, simulatedWiFiProfile, v7, 0);
   }
 
   else
@@ -382,10 +382,10 @@ LABEL_46:
     v10[1] = 3221225472;
     v10[2] = __84__MDMReturnToServiceUtilities_performRRTSCheckInAndValidationWithCompletionHandler___block_invoke;
     v10[3] = &unk_27982CC10;
-    v11 = v4;
-    v12 = a1;
+    v11 = handlerCopy;
+    selfCopy = self;
     [v8 executeRequestForMessageType:v9 channelType:0 requestDict:0 completionHandler:v10];
-    v6 = v11;
+    simulatedWiFiProfile = v11;
   }
 }
 
@@ -527,25 +527,25 @@ LABEL_24:
   return v5;
 }
 
-+ (id)_eraseDeviceInvalidWiFiProfileErrorWithUnderlayingError:(id)a3
++ (id)_eraseDeviceInvalidWiFiProfileErrorWithUnderlayingError:(id)error
 {
   v3 = MEMORY[0x277CCA9B8];
   v4 = *MEMORY[0x277D03480];
-  v5 = a3;
-  v6 = [@"MDM_ERROR_COULD_NOT_RETURN_TO_SERVICE_INVAID_WIFI_PROFILE" DMCAppendGreenteaSuffix];
+  errorCopy = error;
+  dMCAppendGreenteaSuffix = [@"MDM_ERROR_COULD_NOT_RETURN_TO_SERVICE_INVAID_WIFI_PROFILE" DMCAppendGreenteaSuffix];
   v7 = DMCUnformattedErrorArray();
-  v8 = [v3 DMCErrorWithDomain:v4 code:12089 descriptionArray:v7 underlyingError:v5 errorType:{*MEMORY[0x277D032F8], 0}];
+  v8 = [v3 DMCErrorWithDomain:v4 code:12089 descriptionArray:v7 underlyingError:errorCopy errorType:{*MEMORY[0x277D032F8], 0}];
 
   return v8;
 }
 
-+ (id)_eraseDeviceInvalidMDMProfileErrorWithUnderlayingError:(id)a3
++ (id)_eraseDeviceInvalidMDMProfileErrorWithUnderlayingError:(id)error
 {
   v3 = MEMORY[0x277CCA9B8];
   v4 = *MEMORY[0x277D03480];
-  v5 = a3;
+  errorCopy = error;
   v6 = DMCErrorArray();
-  v7 = [v3 DMCErrorWithDomain:v4 code:12089 descriptionArray:v6 underlyingError:v5 errorType:{*MEMORY[0x277D032F8], 0}];
+  v7 = [v3 DMCErrorWithDomain:v4 code:12089 descriptionArray:v6 underlyingError:errorCopy errorType:{*MEMORY[0x277D032F8], 0}];
 
   return v7;
 }

@@ -31,16 +31,16 @@
   {
     v5 = +[AMSUnitTests isRunningUnitTests];
     v6 = +[AMSLogConfig sharedConfig];
-    v7 = v6;
+    defaultCenter = v6;
     if (v5)
     {
       if (!v6)
       {
-        v7 = +[AMSLogConfig sharedConfig];
+        defaultCenter = +[AMSLogConfig sharedConfig];
       }
 
-      v8 = [v7 OSLogObject];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      oSLogObject = [defaultCenter OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v9 = AMSLogKey();
         v10 = MEMORY[0x1E696AEC0];
@@ -62,7 +62,7 @@
         *(&buf.pw_name + 4) = v13;
         WORD2(buf.pw_passwd) = 1026;
         *(&buf.pw_passwd + 6) = v20;
-        _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_ERROR, "%{public}@Failed to query sysconf for buffer size using _SC_GETPW_R_SIZE_MAX. errno = %{public}d", &buf, 0x12u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Failed to query sysconf for buffer size using _SC_GETPW_R_SIZE_MAX. errno = %{public}d", &buf, 0x12u);
         if (v9)
         {
 
@@ -70,20 +70,20 @@
         }
       }
 
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      v14 = +[AMSLogConfig sharedConfig];
-      [v7 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v14 userInfo:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      oSLogObject2 = +[AMSLogConfig sharedConfig];
+      [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject2 userInfo:0];
     }
 
     else
     {
       if (!v6)
       {
-        v7 = +[AMSLogConfig sharedConfig];
+        defaultCenter = +[AMSLogConfig sharedConfig];
       }
 
-      v14 = [v7 OSLogObject];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
+      oSLogObject2 = [defaultCenter OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_FAULT))
       {
         v15 = AMSLogKey();
         v16 = MEMORY[0x1E696AEC0];
@@ -105,7 +105,7 @@
         *(&buf.pw_name + 4) = v19;
         WORD2(buf.pw_passwd) = 1026;
         *(&buf.pw_passwd + 6) = v21;
-        _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_FAULT, "%{public}@Failed to query sysconf for buffer size using _SC_GETPW_R_SIZE_MAX. errno = %{public}d", &buf, 0x12u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_FAULT, "%{public}@Failed to query sysconf for buffer size using _SC_GETPW_R_SIZE_MAX. errno = %{public}d", &buf, 0x12u);
         if (v15)
         {
 
@@ -140,82 +140,82 @@
           v25 = +[AMSLogConfig sharedConfig];
         }
 
-        v26 = [v25 OSLogObject];
-        if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+        oSLogObject3 = [v25 OSLogObject];
+        if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
         {
           v27 = AMSLogKey();
           v28 = MEMORY[0x1E696AEC0];
           if (v27)
           {
             v29 = objc_opt_class();
-            a1 = AMSLogKey();
-            [v28 stringWithFormat:@"%@: [%@] ", v29, a1];
+            self = AMSLogKey();
+            [v28 stringWithFormat:@"%@: [%@] ", v29, self];
           }
 
           else
           {
             [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
           }
-          v30 = ;
+          selfCopy = ;
           *v78 = 138544130;
-          v79 = v30;
+          v79 = selfCopy;
           v80 = 1026;
           v81 = v23;
           v82 = 2050;
           v83 = v4;
           v84 = 1026;
           v85 = v24;
-          _os_log_impl(&dword_192869000, v26, OS_LOG_TYPE_ERROR, "%{public}@Failed to get the real home directory path. getpwuid_r failed for UID %{public}d. bufferSize = %{public}zu | status = %{public}d", v78, 0x22u);
+          _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@Failed to get the real home directory path. getpwuid_r failed for UID %{public}d. bufferSize = %{public}zu | status = %{public}d", v78, 0x22u);
           if (v27)
           {
 
-            v30 = a1;
+            selfCopy = self;
           }
         }
 
-        v41 = [MEMORY[0x1E696AD88] defaultCenter];
-        v42 = +[AMSLogConfig sharedConfig];
-        [v41 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v42 userInfo:0];
+        defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+        oSLogObject4 = +[AMSLogConfig sharedConfig];
+        [defaultCenter2 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject4 userInfo:0];
       }
 
       else
       {
-        v41 = +[AMSLogConfig sharedConfig];
-        if (!v41)
+        defaultCenter2 = +[AMSLogConfig sharedConfig];
+        if (!defaultCenter2)
         {
-          v41 = +[AMSLogConfig sharedConfig];
+          defaultCenter2 = +[AMSLogConfig sharedConfig];
         }
 
-        v42 = [v41 OSLogObject];
-        if (os_log_type_enabled(v42, OS_LOG_TYPE_FAULT))
+        oSLogObject4 = [defaultCenter2 OSLogObject];
+        if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_FAULT))
         {
           v43 = AMSLogKey();
           v44 = MEMORY[0x1E696AEC0];
           if (v43)
           {
             v45 = objc_opt_class();
-            a1 = AMSLogKey();
-            [v44 stringWithFormat:@"%@: [%@] ", v45, a1];
+            self = AMSLogKey();
+            [v44 stringWithFormat:@"%@: [%@] ", v45, self];
           }
 
           else
           {
             [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
           }
-          v46 = ;
+          selfCopy2 = ;
           *v78 = 138544130;
-          v79 = v46;
+          v79 = selfCopy2;
           v80 = 1026;
           v81 = v23;
           v82 = 2050;
           v83 = v4;
           v84 = 1026;
           v85 = v24;
-          _os_log_impl(&dword_192869000, v42, OS_LOG_TYPE_FAULT, "%{public}@Failed to get the real home directory path. getpwuid_r failed for UID %{public}d. bufferSize = %{public}zu | status = %{public}d", v78, 0x22u);
+          _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_FAULT, "%{public}@Failed to get the real home directory path. getpwuid_r failed for UID %{public}d. bufferSize = %{public}zu | status = %{public}d", v78, 0x22u);
           if (v43)
           {
 
-            v46 = a1;
+            selfCopy2 = self;
           }
         }
       }
@@ -242,54 +242,54 @@ LABEL_113:
           v54 = +[AMSLogConfig sharedConfig];
         }
 
-        v55 = [v54 OSLogObject];
-        if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
+        oSLogObject5 = [v54 OSLogObject];
+        if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_ERROR))
         {
           v60 = AMSLogKey();
           v61 = MEMORY[0x1E696AEC0];
           if (v60)
           {
             v62 = objc_opt_class();
-            a1 = AMSLogKey();
-            [v61 stringWithFormat:@"%@: [%@] ", v62, a1];
+            self = AMSLogKey();
+            [v61 stringWithFormat:@"%@: [%@] ", v62, self];
           }
 
           else
           {
             [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
           }
-          v63 = ;
+          selfCopy3 = ;
           *v78 = 138543618;
-          v79 = v63;
+          v79 = selfCopy3;
           v80 = 1026;
           v81 = v23;
-          _os_log_impl(&dword_192869000, v55, OS_LOG_TYPE_ERROR, "%{public}@Failed to get the real home directory path. getpwuid_r found a user for UID %{public}d, but pw_dir is NULL.", v78, 0x12u);
+          _os_log_impl(&dword_192869000, oSLogObject5, OS_LOG_TYPE_ERROR, "%{public}@Failed to get the real home directory path. getpwuid_r found a user for UID %{public}d, but pw_dir is NULL.", v78, 0x12u);
           if (v60)
           {
 
-            v63 = a1;
+            selfCopy3 = self;
           }
         }
 
 LABEL_98:
 
-        v41 = [MEMORY[0x1E696AD88] defaultCenter];
-        v42 = +[AMSLogConfig sharedConfig];
-        [v41 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v42 userInfo:0];
+        defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+        oSLogObject4 = +[AMSLogConfig sharedConfig];
+        [defaultCenter2 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject4 userInfo:0];
 LABEL_112:
 
         v3 = 0;
         goto LABEL_113;
       }
 
-      v41 = +[AMSLogConfig sharedConfig];
-      if (!v41)
+      defaultCenter2 = +[AMSLogConfig sharedConfig];
+      if (!defaultCenter2)
       {
-        v41 = +[AMSLogConfig sharedConfig];
+        defaultCenter2 = +[AMSLogConfig sharedConfig];
       }
 
-      v42 = [v41 OSLogObject];
-      if (!os_log_type_enabled(v42, OS_LOG_TYPE_FAULT))
+      oSLogObject4 = [defaultCenter2 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_FAULT))
       {
         goto LABEL_112;
       }
@@ -299,24 +299,24 @@ LABEL_112:
       if (v64)
       {
         v73 = objc_opt_class();
-        a1 = AMSLogKey();
-        [v72 stringWithFormat:@"%@: [%@] ", v73, a1];
+        self = AMSLogKey();
+        [v72 stringWithFormat:@"%@: [%@] ", v73, self];
       }
 
       else
       {
         [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
       }
-      v67 = ;
+      selfCopy6 = ;
       *v78 = 138543618;
-      v79 = v67;
+      v79 = selfCopy6;
       v80 = 1026;
       v81 = v23;
-      _os_log_impl(&dword_192869000, v42, OS_LOG_TYPE_FAULT, "%{public}@Failed to get the real home directory path. getpwuid_r found a user for UID %{public}d, but pw_dir is NULL.", v78, 0x12u);
+      _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_FAULT, "%{public}@Failed to get the real home directory path. getpwuid_r found a user for UID %{public}d, but pw_dir is NULL.", v78, 0x12u);
       if (v64)
       {
 
-        v67 = a1;
+        selfCopy6 = self;
       }
     }
 
@@ -330,46 +330,46 @@ LABEL_112:
           v54 = +[AMSLogConfig sharedConfig];
         }
 
-        v55 = [v54 OSLogObject];
-        if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
+        oSLogObject5 = [v54 OSLogObject];
+        if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_ERROR))
         {
           v56 = AMSLogKey();
           v57 = MEMORY[0x1E696AEC0];
           if (v56)
           {
             v58 = objc_opt_class();
-            a1 = AMSLogKey();
-            [v57 stringWithFormat:@"%@: [%@] ", v58, a1];
+            self = AMSLogKey();
+            [v57 stringWithFormat:@"%@: [%@] ", v58, self];
           }
 
           else
           {
             [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
           }
-          v59 = ;
+          selfCopy5 = ;
           *v78 = 138543618;
-          v79 = v59;
+          v79 = selfCopy5;
           v80 = 1026;
           v81 = v23;
-          _os_log_impl(&dword_192869000, v55, OS_LOG_TYPE_ERROR, "%{public}@Failed to get the real home directory path. getpwuid_r did not find a user for UID %{public}d.", v78, 0x12u);
+          _os_log_impl(&dword_192869000, oSLogObject5, OS_LOG_TYPE_ERROR, "%{public}@Failed to get the real home directory path. getpwuid_r did not find a user for UID %{public}d.", v78, 0x12u);
           if (v56)
           {
 
-            v59 = a1;
+            selfCopy5 = self;
           }
         }
 
         goto LABEL_98;
       }
 
-      v41 = +[AMSLogConfig sharedConfig];
-      if (!v41)
+      defaultCenter2 = +[AMSLogConfig sharedConfig];
+      if (!defaultCenter2)
       {
-        v41 = +[AMSLogConfig sharedConfig];
+        defaultCenter2 = +[AMSLogConfig sharedConfig];
       }
 
-      v42 = [v41 OSLogObject];
-      if (!os_log_type_enabled(v42, OS_LOG_TYPE_FAULT))
+      oSLogObject4 = [defaultCenter2 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_FAULT))
       {
         goto LABEL_112;
       }
@@ -379,24 +379,24 @@ LABEL_112:
       if (v64)
       {
         v66 = objc_opt_class();
-        a1 = AMSLogKey();
-        [v65 stringWithFormat:@"%@: [%@] ", v66, a1];
+        self = AMSLogKey();
+        [v65 stringWithFormat:@"%@: [%@] ", v66, self];
       }
 
       else
       {
         [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
       }
-      v67 = ;
+      selfCopy6 = ;
       *v78 = 138543618;
-      v79 = v67;
+      v79 = selfCopy6;
       v80 = 1026;
       v81 = v23;
-      _os_log_impl(&dword_192869000, v42, OS_LOG_TYPE_FAULT, "%{public}@Failed to get the real home directory path. getpwuid_r did not find a user for UID %{public}d.", v78, 0x12u);
+      _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_FAULT, "%{public}@Failed to get the real home directory path. getpwuid_r did not find a user for UID %{public}d.", v78, 0x12u);
       if (v64)
       {
 
-        v67 = a1;
+        selfCopy6 = self;
       }
     }
 
@@ -413,8 +413,8 @@ LABEL_112:
       v33 = +[AMSLogConfig sharedConfig];
     }
 
-    v34 = [v33 OSLogObject];
-    if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+    oSLogObject6 = [v33 OSLogObject];
+    if (os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_ERROR))
     {
       v35 = AMSLogKey();
       v36 = MEMORY[0x1E696AEC0];
@@ -439,15 +439,15 @@ LABEL_112:
       *(&buf.pw_passwd + 6) = v4;
       HIWORD(buf.pw_gid) = 1026;
       LODWORD(buf.pw_change) = v68;
-      _os_log_impl(&dword_192869000, v34, OS_LOG_TYPE_ERROR, "%{public}@Failed to allocate buffer for getpwuid_r(). bufferSize = %{public}zu, errno = %{public}d", &buf, 0x1Cu);
+      _os_log_impl(&dword_192869000, oSLogObject6, OS_LOG_TYPE_ERROR, "%{public}@Failed to allocate buffer for getpwuid_r(). bufferSize = %{public}zu, errno = %{public}d", &buf, 0x1Cu);
       if (v35)
       {
       }
     }
 
-    v69 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
     v70 = +[AMSLogConfig sharedConfig];
-    [v69 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v70 userInfo:0];
+    [defaultCenter3 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v70 userInfo:0];
   }
 
   else
@@ -457,8 +457,8 @@ LABEL_112:
       v33 = +[AMSLogConfig sharedConfig];
     }
 
-    v47 = [v33 OSLogObject];
-    if (os_log_type_enabled(v47, OS_LOG_TYPE_FAULT))
+    oSLogObject7 = [v33 OSLogObject];
+    if (os_log_type_enabled(oSLogObject7, OS_LOG_TYPE_FAULT))
     {
       v48 = AMSLogKey();
       v49 = MEMORY[0x1E696AEC0];
@@ -483,7 +483,7 @@ LABEL_112:
       *(&buf.pw_passwd + 6) = v4;
       HIWORD(buf.pw_gid) = 1026;
       LODWORD(buf.pw_change) = v71;
-      _os_log_impl(&dword_192869000, v47, OS_LOG_TYPE_FAULT, "%{public}@Failed to allocate buffer for getpwuid_r(). bufferSize = %{public}zu, errno = %{public}d", &buf, 0x1Cu);
+      _os_log_impl(&dword_192869000, oSLogObject7, OS_LOG_TYPE_FAULT, "%{public}@Failed to allocate buffer for getpwuid_r(). bufferSize = %{public}zu, errno = %{public}d", &buf, 0x1Cu);
       if (v48)
       {
       }
@@ -498,18 +498,18 @@ LABEL_114:
 
 - (id)ams_URLBySortingQueryParameters
 {
-  v2 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:a1 resolvingAgainstBaseURL:0];
-  v3 = [v2 percentEncodedQueryItems];
-  if ([v3 count])
+  v2 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:self resolvingAgainstBaseURL:0];
+  percentEncodedQueryItems = [v2 percentEncodedQueryItems];
+  if ([percentEncodedQueryItems count])
   {
-    v4 = [a1 _sortedQueryItemsFromQueryItems:v3];
+    v4 = [self _sortedQueryItemsFromQueryItems:percentEncodedQueryItems];
     [v2 setPercentEncodedQueryItems:v4];
 
-    v5 = [a1 fragment];
-    if (v5 && (v6 = v5, [a1 fragment], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", &stru_1F071BA78), v7, v6, (v8 & 1) == 0))
+    fragment = [self fragment];
+    if (fragment && (v6 = fragment, [self fragment], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", &stru_1F071BA78), v7, v6, (v8 & 1) == 0))
     {
-      v10 = [a1 fragment];
-      [v2 setFragment:v10];
+      fragment2 = [self fragment];
+      [v2 setFragment:fragment2];
     }
 
     else
@@ -521,37 +521,37 @@ LABEL_114:
     v12 = v11;
     if (v11)
     {
-      v13 = v11;
+      selfCopy = v11;
     }
 
     else
     {
-      v13 = a1;
+      selfCopy = self;
     }
 
-    v9 = v13;
+    selfCopy2 = selfCopy;
   }
 
   else
   {
-    v9 = a1;
+    selfCopy2 = self;
   }
 
-  return v9;
+  return selfCopy2;
 }
 
 - (uint64_t)ams_isBagLoadURL
 {
   v2 = [MEMORY[0x1E695DFF8] URLWithString:0x1F071F838];
   v3 = [MEMORY[0x1E695DFF8] URLWithString:0x1F071F858];
-  v4 = [a1 host];
-  v5 = [v2 host];
-  v6 = [v4 hasSuffix:v5];
+  host = [self host];
+  host2 = [v2 host];
+  v6 = [host hasSuffix:host2];
   if (v6)
   {
-    v7 = [a1 path];
-    v8 = [v2 path];
-    if ([v7 isEqualToString:v8])
+    path = [self path];
+    path2 = [v2 path];
+    if ([path isEqualToString:path2])
     {
       v9 = 1;
 LABEL_9:
@@ -559,17 +559,17 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v15 = v8;
-    v17 = v7;
+    v15 = path2;
+    v17 = path;
   }
 
-  v10 = [a1 host];
-  v11 = [v3 host];
-  if ([v10 hasSuffix:v11])
+  host3 = [self host];
+  host4 = [v3 host];
+  if ([host3 hasSuffix:host4])
   {
-    v12 = [a1 path];
-    v13 = [v3 path];
-    v9 = [v12 isEqualToString:v13];
+    path3 = [self path];
+    path4 = [v3 path];
+    v9 = [path3 isEqualToString:path4];
   }
 
   else
@@ -577,8 +577,8 @@ LABEL_9:
     v9 = 0;
   }
 
-  v8 = v16;
-  v7 = v18;
+  path2 = v16;
+  path = v18;
   if (v6)
   {
     goto LABEL_9;
@@ -591,24 +591,24 @@ LABEL_10:
 
 - (uint64_t)ams_isSecure
 {
-  v1 = [a1 scheme];
-  v2 = [v1 isEqualToString:@"https"];
+  scheme = [self scheme];
+  v2 = [scheme isEqualToString:@"https"];
 
   return v2;
 }
 
 - (uint64_t)ams_isHTTP
 {
-  v2 = [a1 scheme];
-  if ([v2 isEqualToString:@"http"])
+  scheme = [self scheme];
+  if ([scheme isEqualToString:@"http"])
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [a1 scheme];
-    v3 = [v4 isEqualToString:@"https"];
+    scheme2 = [self scheme];
+    v3 = [scheme2 isEqualToString:@"https"];
   }
 
   return v3;
@@ -616,18 +616,18 @@ LABEL_10:
 
 - (id)ams_schemeSwizzledURL
 {
-  v1 = a1;
-  v2 = [v1 scheme];
+  selfCopy = self;
+  scheme = [selfCopy scheme];
   v3 = [MEMORY[0x1E695DFD8] setWithArray:&unk_1F0779C88];
   v4 = [MEMORY[0x1E695DFD8] setWithArray:&unk_1F0779CA0];
-  if ([v3 containsObject:v2])
+  if ([v3 containsObject:scheme])
   {
     v5 = @"http";
   }
 
   else
   {
-    if (![v4 containsObject:v2])
+    if (![v4 containsObject:scheme])
     {
       goto LABEL_6;
     }
@@ -635,16 +635,16 @@ LABEL_10:
     v5 = @"https";
   }
 
-  v6 = [v1 absoluteString];
-  v7 = [v6 substringFromIndex:{objc_msgSend(v2, "length")}];
+  absoluteString = [selfCopy absoluteString];
+  v7 = [absoluteString substringFromIndex:{objc_msgSend(scheme, "length")}];
   v8 = [(__CFString *)v5 stringByAppendingString:v7];
 
   v9 = [MEMORY[0x1E695DFF8] URLWithString:v8];
 
-  v1 = v9;
+  selfCopy = v9;
 LABEL_6:
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)ams_URLQueryAllowedCharacterSet
@@ -669,7 +669,7 @@ LABEL_6:
   v8 = a3;
   v9 = [v6 dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
-  v10 = [a1 ams_URLByAppendingQueryParameters:v9];
+  v10 = [self ams_URLByAppendingQueryParameters:v9];
 
   return v10;
 }
@@ -677,7 +677,7 @@ LABEL_6:
 - (id)ams_URLByAppendingQueryParameters:()AppleMediaServices_Project preservingQueryEncoding:
 {
   v6 = [a3 ams_arrayUsingTransform:&__block_literal_global_138];
-  v7 = [a1 ams_URLByAppendingQueryItems:v6 preservingQueryEncoding:a4];
+  v7 = [self ams_URLByAppendingQueryItems:v6 preservingQueryEncoding:a4];
 
   return v7;
 }
@@ -686,42 +686,42 @@ LABEL_6:
 {
   v42 = *MEMORY[0x1E69E9840];
   v6 = a3;
-  v7 = [MEMORY[0x1E695DFF8] _isAppendWithUnmodifiedParametersFeatureFlagEnabled];
-  v35 = a1;
-  v8 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:a1 resolvingAgainstBaseURL:0];
+  _isAppendWithUnmodifiedParametersFeatureFlagEnabled = [MEMORY[0x1E695DFF8] _isAppendWithUnmodifiedParametersFeatureFlagEnabled];
+  selfCopy = self;
+  v8 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:self resolvingAgainstBaseURL:0];
   v34 = v8;
-  if (v7 & 1) != 0 || (a4)
+  if (_isAppendWithUnmodifiedParametersFeatureFlagEnabled & 1) != 0 || (a4)
   {
     goto LABEL_6;
   }
 
   v9 = +[AMSProcessInfo currentProcess];
-  v10 = [v9 bundleIdentifier];
-  if ([v10 isEqualToString:@"com.apple.Music"])
+  bundleIdentifier = [v9 bundleIdentifier];
+  if ([bundleIdentifier isEqualToString:@"com.apple.Music"])
   {
 
 LABEL_6:
-    v14 = [v8 percentEncodedQueryItems];
+    percentEncodedQueryItems = [v8 percentEncodedQueryItems];
     v15 = 1;
     goto LABEL_7;
   }
 
   v11 = +[AMSProcessInfo currentProcess];
-  v12 = [v11 bundleIdentifier];
-  v13 = [v12 isEqualToString:@"com.apple.TVMusic"];
+  bundleIdentifier2 = [v11 bundleIdentifier];
+  v13 = [bundleIdentifier2 isEqualToString:@"com.apple.TVMusic"];
 
   if (v13)
   {
     goto LABEL_6;
   }
 
-  v14 = [v8 queryItems];
+  percentEncodedQueryItems = [v8 queryItems];
   v15 = 0;
 LABEL_7:
   v16 = MEMORY[0x1E695E0F0];
-  if (v14)
+  if (percentEncodedQueryItems)
   {
-    v16 = v14;
+    v16 = percentEncodedQueryItems;
   }
 
   v17 = v16;
@@ -753,11 +753,11 @@ LABEL_7:
         if (v15)
         {
           v25 = MEMORY[0x1E696AF60];
-          v26 = [*(*(&v37 + 1) + 8 * i) name];
-          v27 = [v24 value];
-          v28 = [v35 ams_URLQueryAllowedCharacterSet];
-          v29 = [v27 stringByAddingPercentEncodingWithAllowedCharacters:v28];
-          v30 = [v25 queryItemWithName:v26 value:v29];
+          name = [*(*(&v37 + 1) + 8 * i) name];
+          value = [v24 value];
+          ams_URLQueryAllowedCharacterSet = [selfCopy ams_URLQueryAllowedCharacterSet];
+          v29 = [value stringByAddingPercentEncodingWithAllowedCharacters:ams_URLQueryAllowedCharacterSet];
+          v30 = [v25 queryItemWithName:name value:v29];
 
           [v19 addObject:v30];
         }
@@ -774,34 +774,34 @@ LABEL_7:
     while (v21);
   }
 
-  v31 = [v35 ams_URLByReplacingQueryItems:v19 withEncodedParameters:v15];
+  v31 = [selfCopy ams_URLByReplacingQueryItems:v19 withEncodedParameters:v15];
 
   return v31;
 }
 
 - (id)ams_URLByDeletingTrailingSlash
 {
-  v2 = [a1 absoluteString];
-  if ([v2 hasSuffix:@"/"])
+  absoluteString = [self absoluteString];
+  if ([absoluteString hasSuffix:@"/"])
   {
-    v3 = [v2 substringToIndex:{objc_msgSend(v2, "length") - 1}];
-    v4 = [MEMORY[0x1E695DFF8] URLWithString:v3];
+    v3 = [absoluteString substringToIndex:{objc_msgSend(absoluteString, "length") - 1}];
+    selfCopy = [MEMORY[0x1E695DFF8] URLWithString:v3];
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)ams_URLByReplacingSchemeWithScheme:()AppleMediaServices_Project
 {
   v4 = a3;
-  v5 = [a1 absoluteString];
-  v6 = [a1 scheme];
-  v7 = [v5 substringFromIndex:{objc_msgSend(v6, "length")}];
+  absoluteString = [self absoluteString];
+  scheme = [self scheme];
+  v7 = [absoluteString substringFromIndex:{objc_msgSend(scheme, "length")}];
   v8 = [v4 stringByAppendingString:v7];
 
   v9 = [MEMORY[0x1E695DFF8] URLWithString:v8];
@@ -822,7 +822,7 @@ LABEL_7:
   v9 = v8;
   [v7 enumerateKeysAndObjectsUsingBlock:v12];
 
-  v10 = [a1 ams_URLByReplacingQueryItems:v9 withEncodedParameters:a4];
+  v10 = [self ams_URLByReplacingQueryItems:v9 withEncodedParameters:a4];
 
   return v10;
 }
@@ -831,7 +831,7 @@ LABEL_7:
 {
   v6 = MEMORY[0x1E696AF20];
   v7 = a3;
-  v8 = [[v6 alloc] initWithURL:a1 resolvingAgainstBaseURL:0];
+  v8 = [[v6 alloc] initWithURL:self resolvingAgainstBaseURL:0];
   v9 = v8;
   if (a4)
   {

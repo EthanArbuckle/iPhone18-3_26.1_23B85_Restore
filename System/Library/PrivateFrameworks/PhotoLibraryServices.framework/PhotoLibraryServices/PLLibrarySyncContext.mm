@@ -1,68 +1,68 @@
 @interface PLLibrarySyncContext
-- (BOOL)personUUIDIsDeleted:(id)a3;
-- (PLLibrarySyncContext)initWithPhotoLibrary:(id)a3;
+- (BOOL)personUUIDIsDeleted:(id)deleted;
+- (PLLibrarySyncContext)initWithPhotoLibrary:(id)library;
 - (id)makeFace;
-- (id)personForUUID:(id)a3;
-- (void)deleteFaces:(id)a3;
-- (void)setAssetAdjustmentState:(id)a3 forCloudIdentifier:(id)a4;
+- (id)personForUUID:(id)d;
+- (void)deleteFaces:(id)faces;
+- (void)setAssetAdjustmentState:(id)state forCloudIdentifier:(id)identifier;
 @end
 
 @implementation PLLibrarySyncContext
 
-- (void)setAssetAdjustmentState:(id)a3 forCloudIdentifier:(id)a4
+- (void)setAssetAdjustmentState:(id)state forCloudIdentifier:(id)identifier
 {
   assetAdjustmentStatesByCloudIdentifier = self->_assetAdjustmentStatesByCloudIdentifier;
-  if (a3)
+  if (state)
   {
-    [(NSMutableDictionary *)assetAdjustmentStatesByCloudIdentifier setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)assetAdjustmentStatesByCloudIdentifier setObject:state forKey:identifier];
   }
 
   else
   {
-    [(NSMutableDictionary *)assetAdjustmentStatesByCloudIdentifier removeObjectForKey:a4];
+    [(NSMutableDictionary *)assetAdjustmentStatesByCloudIdentifier removeObjectForKey:identifier];
   }
 }
 
-- (BOOL)personUUIDIsDeleted:(id)a3
+- (BOOL)personUUIDIsDeleted:(id)deleted
 {
-  if (!a3)
+  if (!deleted)
   {
     return 0;
   }
 
   v4 = MEMORY[0x1E6994BB8];
-  v5 = a3;
+  deletedCopy = deleted;
   v6 = [v4 alloc];
-  v7 = [(PLLibrarySyncContext *)self photoLibrary];
-  v8 = [v7 mainScopeIdentifier];
-  v9 = [v6 initWithScopeIdentifier:v8 identifier:v5];
+  photoLibrary = [(PLLibrarySyncContext *)self photoLibrary];
+  mainScopeIdentifier = [photoLibrary mainScopeIdentifier];
+  v9 = [v6 initWithScopeIdentifier:mainScopeIdentifier identifier:deletedCopy];
 
-  v10 = [(PLCloudRecordOrganizer *)self->_recordOrganizer deletePersonRecords];
-  LOBYTE(v5) = [PLCloudRecordOrganizer records:v10 containsScopedIdentifier:v9];
+  deletePersonRecords = [(PLCloudRecordOrganizer *)self->_recordOrganizer deletePersonRecords];
+  LOBYTE(deletedCopy) = [PLCloudRecordOrganizer records:deletePersonRecords containsScopedIdentifier:v9];
 
-  return v5;
+  return deletedCopy;
 }
 
-- (id)personForUUID:(id)a3
+- (id)personForUUID:(id)d
 {
   photoLibrary = self->_photoLibrary;
-  v4 = a3;
-  v5 = [(PLPhotoLibrary *)photoLibrary managedObjectContext];
-  v6 = [PLPerson personWithUUID:v4 inManagedObjectContext:v5];
+  dCopy = d;
+  managedObjectContext = [(PLPhotoLibrary *)photoLibrary managedObjectContext];
+  v6 = [PLPerson personWithUUID:dCopy inManagedObjectContext:managedObjectContext];
 
   return v6;
 }
 
-- (void)deleteFaces:(id)a3
+- (void)deleteFaces:(id)faces
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLPhotoLibrary *)self->_photoLibrary managedObjectContext];
+  facesCopy = faces;
+  managedObjectContext = [(PLPhotoLibrary *)self->_photoLibrary managedObjectContext];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = facesCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -82,7 +82,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v5 deleteObject:{v11, v12}];
+          [managedObjectContext deleteObject:{v11, v12}];
         }
 
         ++v10;
@@ -98,23 +98,23 @@
 
 - (id)makeFace
 {
-  v2 = [(PLPhotoLibrary *)self->_photoLibrary managedObjectContext];
-  v3 = [(PLManagedObject *)PLDetectedFace insertInManagedObjectContext:v2];
+  managedObjectContext = [(PLPhotoLibrary *)self->_photoLibrary managedObjectContext];
+  v3 = [(PLManagedObject *)PLDetectedFace insertInManagedObjectContext:managedObjectContext];
 
   return v3;
 }
 
-- (PLLibrarySyncContext)initWithPhotoLibrary:(id)a3
+- (PLLibrarySyncContext)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v14.receiver = self;
   v14.super_class = PLLibrarySyncContext;
   v6 = [(PLLibrarySyncContext *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
-    v8 = [[PLCloudRecordOrganizer alloc] initWithPhotoLibrary:v5];
+    objc_storeStrong(&v6->_photoLibrary, library);
+    v8 = [[PLCloudRecordOrganizer alloc] initWithPhotoLibrary:libraryCopy];
     recordOrganizer = v7->_recordOrganizer;
     v7->_recordOrganizer = v8;
 

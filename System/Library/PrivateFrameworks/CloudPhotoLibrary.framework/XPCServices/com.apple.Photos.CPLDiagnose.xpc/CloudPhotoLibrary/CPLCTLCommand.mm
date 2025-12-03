@@ -2,70 +2,70 @@
 + (NSString)commandName;
 + (NSString)shortDescription;
 + (NSString)toolName;
-+ (id)commandWithArgc:(int)a3 argv:(char *)a4;
-+ (id)commandWithName:(id)a3;
++ (id)commandWithArgc:(int)argc argv:(char *)argv;
++ (id)commandWithName:(id)name;
 + (void)_printUsage;
-+ (void)registerCommandClass:(Class)a3;
-+ (void)setToolName:(id)a3;
-+ (void)setToolPath:(id)a3;
++ (void)registerCommandClass:(Class)class;
++ (void)setToolName:(id)name;
++ (void)setToolPath:(id)path;
 - (BOOL)_shouldUseTimeoutForLibraryOpening;
-- (BOOL)parseCommandOptionsWithArgc:(int)a3 argv:(char *)a4;
+- (BOOL)parseCommandOptionsWithArgc:(int)argc argv:(char *)argv;
 - (CPLCTLCommand)init;
 - (CPLDaemonConnection)daemonConnection;
 - (CPLPhotosDaemonConnection)photosDaemonConnection;
 - (CPLPrivateEngine)privateEngine;
 - (NSString)defaultLibraryIdentifier;
 - (id)_tempFolderURL;
-- (id)getEngineWrapperStatusesWithError:(id *)a3;
-- (id)getLibraryIdentifiersWithDomain:(int64_t)a3 error:(id *)a4;
-- (id)openedLibraryManagerWithError:(id *)a3;
-- (id)openedLibraryManagerWithLibraryIdentifier:(id)a3 timeout:(BOOL)a4 withTargetUserIdentifier:(unsigned int)a5 error:(id *)a6;
-- (id)photosLibraryURLFromBaseURL:(id)a3;
-- (id)tempFolderURLWithError:(id *)a3;
+- (id)getEngineWrapperStatusesWithError:(id *)error;
+- (id)getLibraryIdentifiersWithDomain:(int64_t)domain error:(id *)error;
+- (id)openedLibraryManagerWithError:(id *)error;
+- (id)openedLibraryManagerWithLibraryIdentifier:(id)identifier timeout:(BOOL)timeout withTargetUserIdentifier:(unsigned int)userIdentifier error:(id *)error;
+- (id)photosLibraryURLFromBaseURL:(id)l;
+- (id)tempFolderURLWithError:(id *)error;
 - (int)execute;
 - (int)outputFd;
-- (void)_setInterruptionHandler:(id)a3;
-- (void)beginOutputTo:(id)a3;
-- (void)closeLibraryManager:(id)a3;
+- (void)_setInterruptionHandler:(id)handler;
+- (void)beginOutputTo:(id)to;
+- (void)closeLibraryManager:(id)manager;
 - (void)closeOutput;
 - (void)cplInterrupt;
 - (void)disableOutput;
-- (void)endOutputTo:(id)a3;
+- (void)endOutputTo:(id)to;
 - (void)forgetRemainingSpace;
-- (void)prepareToRunWithinCommand:(id)a3;
-- (void)printError:(id)a3 arguments:(char *)a4;
-- (void)printFormat:(id)a3;
-- (void)printFormat:(id)a3 arguments:(char *)a4;
-- (void)printJSONData:(id)a3;
-- (void)printJSONObject:(id)a3;
-- (void)put:(id)a3;
-- (void)putBrightF:(id)a3;
-- (void)putF:(id)a3;
-- (void)putF:(id)a3 arguments:(char *)a4;
-- (void)puts:(const char *)a3;
-- (void)startInterruptibleOperationWithInterruptionBlock:(id)a3;
+- (void)prepareToRunWithinCommand:(id)command;
+- (void)printError:(id)error arguments:(char *)arguments;
+- (void)printFormat:(id)format;
+- (void)printFormat:(id)format arguments:(char *)arguments;
+- (void)printJSONData:(id)data;
+- (void)printJSONObject:(id)object;
+- (void)put:(id)put;
+- (void)putBrightF:(id)f;
+- (void)putF:(id)f;
+- (void)putF:(id)f arguments:(char *)arguments;
+- (void)puts:(const char *)puts;
+- (void)startInterruptibleOperationWithInterruptionBlock:(id)block;
 - (void)stopInterruptibleOperation;
 @end
 
 @implementation CPLCTLCommand
 
-+ (void)setToolPath:(id)a3
++ (void)setToolPath:(id)path
 {
-  qword_100040BE0 = [a3 copy];
+  qword_100040BE0 = [path copy];
 
   _objc_release_x1();
 }
 
-+ (void)setToolName:(id)a3
++ (void)setToolName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   if (qword_100040BE8)
   {
-    sub_10001E4FC(a1, a2);
+    sub_10001E4FC(self, a2);
   }
 
-  v8 = v5;
-  v6 = [v5 copy];
+  v8 = nameCopy;
+  v6 = [nameCopy copy];
   v7 = qword_100040BE8;
   qword_100040BE8 = v6;
 }
@@ -75,35 +75,35 @@
   v3 = qword_100040BE8;
   if (!qword_100040BE8)
   {
-    sub_10001E62C(a1, a2);
+    sub_10001E62C(self, a2);
   }
 
   return v3;
 }
 
-+ (id)commandWithArgc:(int)a3 argv:(char *)a4
++ (id)commandWithArgc:(int)argc argv:(char *)argv
 {
-  v5 = (a3 - 1);
-  if (a3 == 1)
+  v5 = (argc - 1);
+  if (argc == 1)
   {
-    v6 = [a1 commandWithName:{@"help", a4}];
+    v6 = [self commandWithName:{@"help", argv}];
     goto LABEL_11;
   }
 
-  v7 = a4 + 1;
-  v8 = [NSString stringWithUTF8String:a4[1]];
+  v7 = argv + 1;
+  v8 = [NSString stringWithUTF8String:argv[1]];
   if (!v8)
   {
-    v10 = [a1 commandWithName:@"help"];
+    v10 = [self commandWithName:@"help"];
     [(CPLCTLCommand *)v10 printFormat:@"Invalid command name"];
     v6 = 0;
     goto LABEL_10;
   }
 
-  v9 = [a1 commandWithName:v8];
+  v9 = [self commandWithName:v8];
   if (!v9)
   {
-    v10 = [a1 commandWithName:@"help"];
+    v10 = [self commandWithName:@"help"];
     [(CPLCTLCommand *)v10 printFormat:@"Invalid command '%@'", v8];
     goto LABEL_9;
   }
@@ -126,14 +126,14 @@ LABEL_11:
   return v6;
 }
 
-+ (id)commandWithName:(id)a3
++ (id)commandWithName:(id)name
 {
-  v3 = objc_alloc_init([a1 commandClassWithName:a3]);
+  v3 = objc_alloc_init([self commandClassWithName:name]);
 
   return v3;
 }
 
-+ (void)registerCommandClass:(Class)a3
++ (void)registerCommandClass:(Class)class
 {
   if (!qword_100040BF0)
   {
@@ -146,16 +146,16 @@ LABEL_11:
     qword_100040BF0 = v8;
   }
 
-  v11 = [(objc_class *)a3 commandName];
+  commandName = [(objc_class *)class commandName];
   v10 = [qword_100040BF0 objectForKey:?];
 
   if (v10)
   {
-    sub_10001E75C(v11, a2, a1);
+    sub_10001E75C(commandName, a2, self);
   }
 
-  [qword_100040BF0 setObject:a3 forKey:v11];
-  [qword_100040BF8 addObject:v11];
+  [qword_100040BF0 setObject:class forKey:commandName];
+  [qword_100040BF8 addObject:commandName];
 }
 
 - (CPLCTLCommand)init
@@ -183,7 +183,7 @@ LABEL_11:
   v5 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Tools/cplctl/CPLCTLCommand.m"];
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:a1 file:v5 lineNumber:190 description:{@"+[%@ %@] should be overriden", v6, v7}];
+  [v4 handleFailureInMethod:a2 object:self file:v5 lineNumber:190 description:{@"+[%@ %@] should be overriden", v6, v7}];
 
   abort();
 }
@@ -194,26 +194,26 @@ LABEL_11:
   v5 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Tools/cplctl/CPLCTLCommand.m"];
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:a1 file:v5 lineNumber:195 description:{@"+[%@ %@] should be overriden", v6, v7}];
+  [v4 handleFailureInMethod:a2 object:self file:v5 lineNumber:195 description:{@"+[%@ %@] should be overriden", v6, v7}];
 
   abort();
 }
 
-- (BOOL)parseCommandOptionsWithArgc:(int)a3 argv:(char *)a4
+- (BOOL)parseCommandOptionsWithArgc:(int)argc argv:(char *)argv
 {
-  if (a3 != 1)
+  if (argc != 1)
   {
-    v6 = [objc_opt_class() commandName];
-    [(CPLCTLCommand *)self printFormat:@"Invalid parameters for %@", v6];
+    commandName = [objc_opt_class() commandName];
+    [(CPLCTLCommand *)self printFormat:@"Invalid parameters for %@", commandName];
   }
 
-  return a3 == 1;
+  return argc == 1;
 }
 
 - (int)execute
 {
-  v3 = [objc_opt_class() commandName];
-  [(CPLCTLCommand *)self printFormat:@"%@ is not implemented yet.", v3];
+  commandName = [objc_opt_class() commandName];
+  [(CPLCTLCommand *)self printFormat:@"%@ is not implemented yet.", commandName];
 
   return 1;
 }
@@ -221,35 +221,35 @@ LABEL_11:
 - (BOOL)_shouldUseTimeoutForLibraryOpening
 {
   v2 = +[NSProcessInfo processInfo];
-  v3 = [v2 environment];
-  v4 = [v3 objectForKeyedSubscript:@"CPLCTL_TIMEOUT"];
+  environment = [v2 environment];
+  v4 = [environment objectForKeyedSubscript:@"CPLCTL_TIMEOUT"];
 
   if (v4)
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (id)openedLibraryManagerWithLibraryIdentifier:(id)a3 timeout:(BOOL)a4 withTargetUserIdentifier:(unsigned int)a5 error:(id *)a6
+- (id)openedLibraryManagerWithLibraryIdentifier:(id)identifier timeout:(BOOL)timeout withTargetUserIdentifier:(unsigned int)userIdentifier error:(id *)error
 {
-  v9 = a3;
-  v10 = [(CPLCTLCommand *)self privateEngine];
-  v11 = v10;
-  if (v10)
+  identifierCopy = identifier;
+  privateEngine = [(CPLCTLCommand *)self privateEngine];
+  v11 = privateEngine;
+  if (privateEngine)
   {
-    v12 = [v10 libraryManager];
+    libraryManager = [privateEngine libraryManager];
     goto LABEL_20;
   }
 
-  v12 = [[CPLLibraryManager alloc] initForManagementWithLibraryIdentifier:v9];
-  [v12 setDelegate:self];
+  libraryManager = [[CPLLibraryManager alloc] initForManagementWithLibraryIdentifier:identifierCopy];
+  [libraryManager setDelegate:self];
   v13 = +[NSDate date];
   v14 = dispatch_group_create();
   dispatch_group_enter(v14);
@@ -266,8 +266,8 @@ LABEL_11:
   p_buf = &buf;
   v15 = v14;
   v38 = v15;
-  [v12 openWithCompletionHandler:v37];
-  if (a4)
+  [libraryManager openWithCompletionHandler:v37];
+  if (timeout)
   {
     v16 = dispatch_time(0, 30000000000);
     if (dispatch_group_wait(v15, v16))
@@ -285,7 +285,7 @@ LABEL_11:
       v36 = &buf;
       block[4] = self;
       v34 = v13;
-      v35 = v12;
+      v35 = libraryManager;
       dispatch_group_notify(v15, v19, block);
 
       goto LABEL_9;
@@ -323,42 +323,42 @@ LABEL_9:
       }
     }
 
-    if (a6)
+    if (error)
     {
-      if (([v9 isEqualToString:CPLLibraryIdentifierSystemLibrary] & 1) == 0)
+      if (([identifierCopy isEqualToString:CPLLibraryIdentifierSystemLibrary] & 1) == 0)
       {
         v22 = [NSError alloc];
-        v32 = [v18 domain];
-        v23 = [v18 code];
+        domain = [v18 domain];
+        code = [v18 code];
         v40[0] = NSLocalizedDescriptionKey;
         v24 = [NSString alloc];
-        v25 = [v18 localizedDescription];
-        v26 = [v24 initWithFormat:@"%@ (%@)", v25, v9];
+        localizedDescription = [v18 localizedDescription];
+        identifierCopy = [v24 initWithFormat:@"%@ (%@)", localizedDescription, identifierCopy];
         v40[1] = NSUnderlyingErrorKey;
-        v41[0] = v26;
+        v41[0] = identifierCopy;
         v41[1] = v18;
         v27 = [NSDictionary dictionaryWithObjects:v41 forKeys:v40 count:2];
-        v28 = [v22 initWithDomain:v32 code:v23 userInfo:v27];
+        v28 = [v22 initWithDomain:domain code:code userInfo:v27];
 
         v18 = v28;
       }
 
       v29 = v18;
-      *a6 = v18;
+      *error = v18;
     }
 
     else
     {
-      v30 = [v18 localizedDescription];
-      [(CPLCTLCommand *)self printFormat:@"Can't get access to daemon's library manager for %@: %@", v9, v30];
+      localizedDescription2 = [v18 localizedDescription];
+      [(CPLCTLCommand *)self printFormat:@"Can't get access to daemon's library manager for %@: %@", identifierCopy, localizedDescription2];
     }
 
-    v12 = 0;
+    libraryManager = 0;
   }
 
 LABEL_20:
 
-  return v12;
+  return libraryManager;
 }
 
 - (NSString)defaultLibraryIdentifier
@@ -372,27 +372,27 @@ LABEL_20:
   else
   {
     v5 = +[NSProcessInfo processInfo];
-    v6 = [v5 environment];
-    v7 = [v6 objectForKeyedSubscript:@"CPLDefaultLibraryIdentifier"];
+    environment = [v5 environment];
+    defaultLibraryIdentifier = [environment objectForKeyedSubscript:@"CPLDefaultLibraryIdentifier"];
 
-    if (!v7)
+    if (!defaultLibraryIdentifier)
     {
       storeCommand = self->_storeCommand;
       if (storeCommand)
       {
-        v7 = [(CPLStoreCommand *)storeCommand defaultLibraryIdentifier];
+        defaultLibraryIdentifier = [(CPLStoreCommand *)storeCommand defaultLibraryIdentifier];
       }
 
       else
       {
-        v7 = 0;
+        defaultLibraryIdentifier = 0;
       }
     }
 
     v9 = CPLLibraryIdentifierSystemLibrary;
-    if (v7)
+    if (defaultLibraryIdentifier)
     {
-      v9 = v7;
+      v9 = defaultLibraryIdentifier;
     }
 
     v3 = v9;
@@ -401,18 +401,18 @@ LABEL_20:
   return v3;
 }
 
-- (id)photosLibraryURLFromBaseURL:(id)a3
+- (id)photosLibraryURLFromBaseURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [v3 pathComponents];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  pathComponents = [lCopy pathComponents];
+  v5 = [pathComponents countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
-    v15 = v3;
+    v15 = lCopy;
     v6 = 0;
     v7 = *v17;
     while (2)
@@ -421,7 +421,7 @@ LABEL_20:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(pathComponents);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
@@ -438,8 +438,8 @@ LABEL_20:
           v6 = [[NSURL alloc] initFileURLWithPath:v9 isDirectory:1];
         }
 
-        v12 = [v9 pathExtension];
-        v13 = [v12 isEqualToString:@"photoslibrary"];
+        pathExtension = [v9 pathExtension];
+        v13 = [pathExtension isEqualToString:@"photoslibrary"];
 
         if (v13)
         {
@@ -452,7 +452,7 @@ LABEL_20:
         objc_autoreleasePoolPop(v10);
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [pathComponents countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v5)
       {
         continue;
@@ -462,7 +462,7 @@ LABEL_20:
     }
 
 LABEL_14:
-    v3 = v15;
+    lCopy = v15;
   }
 
   else
@@ -473,19 +473,19 @@ LABEL_14:
   return v5;
 }
 
-- (id)openedLibraryManagerWithError:(id *)a3
+- (id)openedLibraryManagerWithError:(id *)error
 {
-  v5 = [(CPLCTLCommand *)self defaultLibraryIdentifier];
-  v6 = [(CPLCTLCommand *)self openedLibraryManagerWithLibraryIdentifier:v5 error:a3];
+  defaultLibraryIdentifier = [(CPLCTLCommand *)self defaultLibraryIdentifier];
+  v6 = [(CPLCTLCommand *)self openedLibraryManagerWithLibraryIdentifier:defaultLibraryIdentifier error:error];
 
   return v6;
 }
 
-- (void)closeLibraryManager:(id)a3
+- (void)closeLibraryManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(CPLCTLCommand *)self privateEngine];
-  if (!v5)
+  managerCopy = manager;
+  privateEngine = [(CPLCTLCommand *)self privateEngine];
+  if (!privateEngine)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
@@ -493,7 +493,7 @@ LABEL_14:
     v7[3] = &unk_100034DF8;
     v8 = dispatch_semaphore_create(0);
     v6 = v8;
-    [v4 closeWithCompletionHandler:v7];
+    [managerCopy closeWithCompletionHandler:v7];
     dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   }
 }
@@ -502,8 +502,8 @@ LABEL_14:
 {
   v4 = objc_alloc_init(CPLHelpCommand);
   [(CPLHelpCommand *)v4 setStandaloneTool:1];
-  v3 = [a1 commandName];
-  [(CPLHelpCommand *)v4 setHelpCommandName:v3];
+  commandName = [self commandName];
+  [(CPLHelpCommand *)v4 setHelpCommandName:commandName];
 
   [(CPLHelpCommand *)v4 execute];
 }
@@ -526,7 +526,7 @@ LABEL_14:
   return v4;
 }
 
-- (id)getEngineWrapperStatusesWithError:(id *)a3
+- (id)getEngineWrapperStatusesWithError:(id *)error
 {
   v50 = 0;
   v51 = &v50;
@@ -540,8 +540,8 @@ LABEL_14:
   v47 = sub_100009E98;
   v48 = sub_100009EA8;
   v49 = 0;
-  v4 = [(CPLCTLCommand *)self daemonConnection];
-  [v4 queue];
+  daemonConnection = [(CPLCTLCommand *)self daemonConnection];
+  [daemonConnection queue];
   v42[0] = 0;
   v42[1] = v42;
   v42[2] = 0x2020000000;
@@ -570,7 +570,7 @@ LABEL_14:
   v28[3] = &unk_100034E70;
   v31 = v38;
   v32 = v40;
-  v7 = v4;
+  v7 = daemonConnection;
   v29 = v7;
   v8 = v6;
   v30 = v8;
@@ -601,9 +601,9 @@ LABEL_14:
 
   (v12[2])(v12);
   v15 = v51[5];
-  if (a3 && !v15)
+  if (error && !v15)
   {
-    *a3 = v45[5];
+    *error = v45[5];
     v15 = v51[5];
   }
 
@@ -637,13 +637,13 @@ LABEL_14:
   return v4;
 }
 
-- (id)getLibraryIdentifiersWithDomain:(int64_t)a3 error:(id *)a4
+- (id)getLibraryIdentifiersWithDomain:(int64_t)domain error:(id *)error
 {
-  v6 = [(CPLCTLCommand *)self photosDaemonConnection];
-  v7 = [v6 managementServiceWithError:a4];
+  photosDaemonConnection = [(CPLCTLCommand *)self photosDaemonConnection];
+  v7 = [photosDaemonConnection managementServiceWithError:error];
   if (v7)
   {
-    v8 = [v6 queue];
+    queue = [photosDaemonConnection queue];
     v40 = 0;
     v41 = &v40;
     v42 = 0x3032000000;
@@ -657,7 +657,7 @@ LABEL_14:
     v38 = sub_100009EA8;
     v39 = 0;
     v9 = objc_alloc_init(PLPhotoLibrarySearchCriteria);
-    [(PLPhotoLibrarySearchCriteria *)v9 setDomain:a3];
+    [(PLPhotoLibrarySearchCriteria *)v9 setDomain:domain];
     v10 = dispatch_semaphore_create(0);
     v32[0] = 0;
     v32[1] = v32;
@@ -667,7 +667,7 @@ LABEL_14:
     v26[1] = 3221225472;
     v26[2] = sub_10000B580;
     v26[3] = &unk_100034F38;
-    v11 = v8;
+    v11 = queue;
     v27 = v11;
     v29 = v32;
     v30 = &v34;
@@ -701,9 +701,9 @@ LABEL_14:
     }
 
     v17 = v35[5];
-    if (a4 && !v17)
+    if (error && !v17)
     {
-      *a4 = v41[5];
+      *error = v41[5];
       v17 = v35[5];
     }
 
@@ -723,28 +723,28 @@ LABEL_14:
   return v18;
 }
 
-- (void)printFormat:(id)a3 arguments:(char *)a4
+- (void)printFormat:(id)format arguments:(char *)arguments
 {
   output = self->_output;
-  v7 = a3;
-  [(CPLOutput *)output printFormat:v7 arguments:a4];
-  [(CPLOutput *)self->_logOutput printFormat:v7 arguments:a4];
+  formatCopy = format;
+  [(CPLOutput *)output printFormat:formatCopy arguments:arguments];
+  [(CPLOutput *)self->_logOutput printFormat:formatCopy arguments:arguments];
 }
 
-- (void)printFormat:(id)a3
+- (void)printFormat:(id)format
 {
   output = self->_output;
-  v5 = a3;
-  [(CPLOutput *)output printFormat:v5 arguments:&v6];
-  [(CPLOutput *)self->_logOutput printFormat:v5 arguments:&v6];
+  formatCopy = format;
+  [(CPLOutput *)output printFormat:formatCopy arguments:&v6];
+  [(CPLOutput *)self->_logOutput printFormat:formatCopy arguments:&v6];
 }
 
-- (void)printError:(id)a3 arguments:(char *)a4
+- (void)printError:(id)error arguments:(char *)arguments
 {
   output = self->_output;
-  v7 = a3;
-  [(CPLOutput *)output printError:v7 arguments:a4];
-  [(CPLOutput *)self->_logOutput printError:v7 arguments:a4];
+  errorCopy = error;
+  [(CPLOutput *)output printError:errorCopy arguments:arguments];
+  [(CPLOutput *)self->_logOutput printError:errorCopy arguments:arguments];
 }
 
 - (int)outputFd
@@ -769,47 +769,47 @@ LABEL_14:
   [(CPLOutput *)logOutput forgetRemainingSpace];
 }
 
-- (void)puts:(const char *)a3
+- (void)puts:(const char *)puts
 {
   [(CPLOutput *)self->_output puts:?];
   logOutput = self->_logOutput;
 
-  [(CPLOutput *)logOutput puts:a3];
+  [(CPLOutput *)logOutput puts:puts];
 }
 
-- (void)put:(id)a3
+- (void)put:(id)put
 {
   output = self->_output;
-  v5 = a3;
-  [(CPLOutput *)output put:v5];
-  [(CPLOutput *)self->_logOutput put:v5];
+  putCopy = put;
+  [(CPLOutput *)output put:putCopy];
+  [(CPLOutput *)self->_logOutput put:putCopy];
 }
 
-- (void)putBrightF:(id)a3
+- (void)putBrightF:(id)f
 {
   output = self->_output;
-  v5 = a3;
+  fCopy = f;
   [(CPLOutput *)output startFgColor:0xFFFFFFFFLL bgColor:0xFFFFFFFFLL attr:2];
-  [(CPLOutput *)self->_output putF:v5 arguments:&v6];
-  [(CPLOutput *)self->_logOutput putF:v5 arguments:&v6];
+  [(CPLOutput *)self->_output putF:fCopy arguments:&v6];
+  [(CPLOutput *)self->_logOutput putF:fCopy arguments:&v6];
 
   [(CPLOutput *)self->_output resetColorsAndAttributes];
 }
 
-- (void)putF:(id)a3
+- (void)putF:(id)f
 {
   output = self->_output;
-  v5 = a3;
-  [(CPLOutput *)output putF:v5 arguments:&v6];
-  [(CPLOutput *)self->_logOutput putF:v5 arguments:&v6];
+  fCopy = f;
+  [(CPLOutput *)output putF:fCopy arguments:&v6];
+  [(CPLOutput *)self->_logOutput putF:fCopy arguments:&v6];
 }
 
-- (void)putF:(id)a3 arguments:(char *)a4
+- (void)putF:(id)f arguments:(char *)arguments
 {
   output = self->_output;
-  v7 = a3;
-  [(CPLOutput *)output putF:v7 arguments:a4];
-  [(CPLOutput *)self->_logOutput putF:v7 arguments:a4];
+  fCopy = f;
+  [(CPLOutput *)output putF:fCopy arguments:arguments];
+  [(CPLOutput *)self->_logOutput putF:fCopy arguments:arguments];
 }
 
 - (void)disableOutput
@@ -818,9 +818,9 @@ LABEL_14:
   [(CPLCTLCommand *)self beginOutputTo:v3];
 }
 
-- (void)beginOutputTo:(id)a3
+- (void)beginOutputTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   outputStack = self->_outputStack;
   if (!outputStack)
   {
@@ -832,29 +832,29 @@ LABEL_14:
   }
 
   [(NSMutableArray *)outputStack addObject:self->_output];
-  [(CPLOutput *)v4 setPrintHeader:[(CPLOutput *)self->_output printHeader]];
+  [(CPLOutput *)toCopy setPrintHeader:[(CPLOutput *)self->_output printHeader]];
   output = self->_output;
-  self->_output = v4;
+  self->_output = toCopy;
 }
 
-- (void)endOutputTo:(id)a3
+- (void)endOutputTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (![(NSMutableArray *)self->_outputStack count])
   {
     sub_10001E94C();
   }
 
-  if (self->_output != v7)
+  if (self->_output != toCopy)
   {
     sub_10001E920();
   }
 
-  v4 = [(NSMutableArray *)self->_outputStack lastObject];
+  lastObject = [(NSMutableArray *)self->_outputStack lastObject];
   output = self->_output;
-  self->_output = v4;
+  self->_output = lastObject;
 
-  [(CPLOutput *)self->_output setPrintHeader:[(CPLOutput *)v7 printHeader]];
+  [(CPLOutput *)self->_output setPrintHeader:[(CPLOutput *)toCopy printHeader]];
   [(NSMutableArray *)self->_outputStack removeLastObject];
   if (![(NSMutableArray *)self->_outputStack count])
   {
@@ -863,41 +863,41 @@ LABEL_14:
   }
 }
 
-- (void)prepareToRunWithinCommand:(id)a3
+- (void)prepareToRunWithinCommand:(id)command
 {
-  v5 = a3;
-  objc_storeStrong(&self->_output, a3);
-  v6 = [v5 logOutput];
+  commandCopy = command;
+  objc_storeStrong(&self->_output, command);
+  logOutput = [commandCopy logOutput];
   logOutput = self->_logOutput;
-  self->_logOutput = v6;
+  self->_logOutput = logOutput;
 
   storeCommand = self->_storeCommand;
-  self->_storeCommand = v5;
+  self->_storeCommand = commandCopy;
 }
 
 - (CPLPrivateEngine)privateEngine
 {
-  v2 = [(CPLCTLCommand *)self storeCommand];
-  v3 = [v2 store];
-  v4 = [v3 currentPrivateEngine];
+  storeCommand = [(CPLCTLCommand *)self storeCommand];
+  store = [storeCommand store];
+  currentPrivateEngine = [store currentPrivateEngine];
 
-  return v4;
+  return currentPrivateEngine;
 }
 
-- (void)printJSONObject:(id)a3
+- (void)printJSONObject:(id)object
 {
   output = self->_output;
-  v5 = a3;
-  [(CPLOutput *)output printJSONObject:v5];
-  [(CPLOutput *)self->_logOutput printJSONObject:v5];
+  objectCopy = object;
+  [(CPLOutput *)output printJSONObject:objectCopy];
+  [(CPLOutput *)self->_logOutput printJSONObject:objectCopy];
 }
 
-- (void)printJSONData:(id)a3
+- (void)printJSONData:(id)data
 {
   output = self->_output;
-  v5 = a3;
-  [(CPLOutput *)output printJSONData:v5];
-  [(CPLOutput *)self->_logOutput printJSONData:v5];
+  dataCopy = data;
+  [(CPLOutput *)output printJSONData:dataCopy];
+  [(CPLOutput *)self->_logOutput printJSONData:dataCopy];
 }
 
 - (void)closeOutput
@@ -911,24 +911,24 @@ LABEL_14:
   self->_logOutput = 0;
 }
 
-- (void)_setInterruptionHandler:(id)a3
+- (void)_setInterruptionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   interruptionQueue = self->_interruptionQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000C09C;
   v7[3] = &unk_100035020;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(interruptionQueue, v7);
 }
 
-- (void)startInterruptibleOperationWithInterruptionBlock:(id)a3
+- (void)startInterruptibleOperationWithInterruptionBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
+  blockCopy = block;
+  v5 = blockCopy;
   if (self->_storeCommand)
   {
     interruptionQueue = self->_interruptionQueue;
@@ -936,15 +936,15 @@ LABEL_14:
     v8 = 3221225472;
     v9 = sub_10000C2E4;
     v10 = &unk_100035048;
-    v11 = self;
-    v12 = v4;
+    selfCopy = self;
+    v12 = blockCopy;
     dispatch_sync(interruptionQueue, &v7);
-    [(CPLStoreCommand *)self->_storeCommand startInterruptibleOperation:self, v7, v8, v9, v10, v11];
+    [(CPLStoreCommand *)self->_storeCommand startInterruptibleOperation:self, v7, v8, v9, v10, selfCopy];
   }
 
   else
   {
-    [(CPLCTLCommand *)self _setInterruptionHandler:v4];
+    [(CPLCTLCommand *)self _setInterruptionHandler:blockCopy];
   }
 }
 
@@ -982,41 +982,41 @@ LABEL_14:
 
 - (id)_tempFolderURL
 {
-  v3 = [(CPLCTLCommand *)self storeCommand];
-  v4 = v3;
-  if (v3)
+  storeCommand = [(CPLCTLCommand *)self storeCommand];
+  v4 = storeCommand;
+  if (storeCommand)
   {
-    v5 = [v3 store];
-    v6 = v5;
+    store = [storeCommand store];
+    v6 = store;
 LABEL_4:
-    v7 = [v5 tempFolderURL];
+    tempFolderURL = [store tempFolderURL];
     goto LABEL_5;
   }
 
-  v5 = [(CPLCTLCommand *)self privateEngine];
-  v6 = v5;
-  if (v5)
+  store = [(CPLCTLCommand *)self privateEngine];
+  v6 = store;
+  if (store)
   {
     goto LABEL_4;
   }
 
   v9 = NSTemporaryDirectory();
-  v7 = [[NSURL alloc] initFileURLWithPath:v9 isDirectory:1];
+  tempFolderURL = [[NSURL alloc] initFileURLWithPath:v9 isDirectory:1];
 
 LABEL_5:
 
-  return v7;
+  return tempFolderURL;
 }
 
-- (id)tempFolderURLWithError:(id *)a3
+- (id)tempFolderURLWithError:(id *)error
 {
-  v5 = [(CPLCTLCommand *)self _tempFolderURL];
-  if (!v5)
+  _tempFolderURL = [(CPLCTLCommand *)self _tempFolderURL];
+  if (!_tempFolderURL)
   {
     sub_10001EA54();
   }
 
-  v6 = v5;
+  v6 = _tempFolderURL;
   v7 = +[NSFileManager defaultManager];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
@@ -1034,14 +1034,14 @@ LABEL_5:
     v9 = v11;
   }
 
-  v12 = [(CPLCTLCommand *)self storeCommand];
-  v13 = v12;
-  if (v12)
+  storeCommand = [(CPLCTLCommand *)self storeCommand];
+  v13 = storeCommand;
+  if (storeCommand)
   {
-    v14 = [v12 currentStepIndex];
+    currentStepIndex = [storeCommand currentStepIndex];
     v15 = [NSString alloc];
     v16 = +[NSUUID UUID];
-    v17 = [v15 initWithFormat:@"%lu-%@-%@", v14, v9, v16];
+    v17 = [v15 initWithFormat:@"%lu-%@-%@", currentStepIndex, v9, v16];
   }
 
   else
@@ -1055,8 +1055,8 @@ LABEL_5:
 
   v31 = 0;
   v20 = [v6 URLByAppendingPathComponent:v19 isDirectory:1];
-  v21 = [v20 path];
-  v22 = [v7 fileExistsAtPath:v21 isDirectory:&v31];
+  path = [v20 path];
+  v22 = [v7 fileExistsAtPath:path isDirectory:&v31];
 
   if (v22)
   {
@@ -1065,10 +1065,10 @@ LABEL_5:
       v23 = v20;
     }
 
-    else if (a3)
+    else if (error)
     {
       +[CPLErrors unknownError];
-      *a3 = v23 = 0;
+      *error = v23 = 0;
     }
 
     else
@@ -1088,11 +1088,11 @@ LABEL_5:
       v23 = v20;
     }
 
-    else if (a3)
+    else if (error)
     {
       v27 = v25;
       v23 = 0;
-      *a3 = v26;
+      *error = v26;
     }
 
     else

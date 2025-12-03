@@ -1,25 +1,25 @@
 @interface SBCenterIconZoomAnimator
 - (CGPoint)cameraPosition;
-- (CGPoint)iconListView:(id)a3 centerForIconCoordinate:(SBIconCoordinate)a4 metrics:(id)a5 proposedCenter:(CGPoint)a6;
-- (CGPoint)iconListView:(id)a3 originForIconCoordinate:(SBIconCoordinate)a4 metrics:(id)a5 proposedOrigin:(CGPoint)a6;
-- (SBCenterIconZoomAnimator)initWithFolderController:(id)a3;
+- (CGPoint)iconListView:(id)view centerForIconCoordinate:(SBIconCoordinate)coordinate metrics:(id)metrics proposedCenter:(CGPoint)center;
+- (CGPoint)iconListView:(id)view originForIconCoordinate:(SBIconCoordinate)coordinate metrics:(id)metrics proposedOrigin:(CGPoint)origin;
+- (SBCenterIconZoomAnimator)initWithFolderController:(id)controller;
 - (id)_animationFactoryForDock;
 - (id)_animationFactoryForFolderView;
-- (id)_animationFactoryForIcon:(id)a3;
+- (id)_animationFactoryForIcon:(id)icon;
 - (unint64_t)_numberOfSignificantAnimations;
 - (void)_calculateCenters;
 - (void)_calculateCentersAndCameraPosition;
 - (void)_cleanupAnimation;
-- (void)_cleanupAnimationIncludingDock:(BOOL)a3;
-- (void)_performAnimationToFraction:(double)a3 withCentralAnimationSettings:(id)a4 delay:(double)a5 alreadyAnimating:(BOOL)a6 sharedCompletion:(id)a7;
-- (void)_positionView:(id)a3 forIcon:(id)a4;
+- (void)_cleanupAnimationIncludingDock:(BOOL)dock;
+- (void)_performAnimationToFraction:(double)fraction withCentralAnimationSettings:(id)settings delay:(double)delay alreadyAnimating:(BOOL)animating sharedCompletion:(id)completion;
+- (void)_positionView:(id)view forIcon:(id)icon;
 - (void)_prepareAnimation;
-- (void)_setAnimationFraction:(double)a3 withCenter:(CGPoint)a4;
-- (void)_setZPositionForView:(id)a3 center:(CGPoint)a4 andFraction:(double)a5;
+- (void)_setAnimationFraction:(double)fraction withCenter:(CGPoint)center;
+- (void)_setZPositionForView:(id)view center:(CGPoint)center andFraction:(double)fraction;
 - (void)_setZoomViewAnchorPoint;
-- (void)_updateDockForFraction:(double)a3;
-- (void)iconList:(id)a3 didAddIcon:(id)a4;
-- (void)iconList:(id)a3 didReplaceIcon:(id)a4 withIcon:(id)a5;
+- (void)_updateDockForFraction:(double)fraction;
+- (void)iconList:(id)list didAddIcon:(id)icon;
+- (void)iconList:(id)list didReplaceIcon:(id)icon withIcon:(id)withIcon;
 @end
 
 @implementation SBCenterIconZoomAnimator
@@ -38,7 +38,7 @@ void __45__SBCenterIconZoomAnimator__prepareAnimation__block_invoke(uint64_t a1,
 
 - (void)_calculateCentersAndCameraPosition
 {
-  v20 = [(SBIconZoomAnimator *)self iconListView];
+  iconListView = [(SBIconZoomAnimator *)self iconListView];
   [(SBCenterIconZoomAnimator *)self _calculateCenters];
   v3 = vcvtmd_s64_f64(self->_centerCol);
   if (v3 <= 1)
@@ -51,7 +51,7 @@ void __45__SBCenterIconZoomAnimator__prepareAnimation__block_invoke(uint64_t a1,
     v4 = v3;
   }
 
-  [v20 centerForIconCoordinate:{v4, 1}];
+  [iconListView centerForIconCoordinate:{v4, 1}];
   v6 = v5;
   v7 = vcvtpd_s64_f64(self->_centerCol);
   if (v7 <= 1)
@@ -64,7 +64,7 @@ void __45__SBCenterIconZoomAnimator__prepareAnimation__block_invoke(uint64_t a1,
     v8 = v7;
   }
 
-  [v20 centerForIconCoordinate:{v8, 1}];
+  [iconListView centerForIconCoordinate:{v8, 1}];
   v10 = (v6 + v9) * 0.5;
   v11 = vcvtmd_s64_f64(self->_centerRow);
   if (v11 <= 1)
@@ -77,7 +77,7 @@ void __45__SBCenterIconZoomAnimator__prepareAnimation__block_invoke(uint64_t a1,
     v12 = v11;
   }
 
-  [v20 centerForIconCoordinate:{1, v12}];
+  [iconListView centerForIconCoordinate:{1, v12}];
   v14 = v13;
   v15 = vcvtpd_s64_f64(self->_centerRow);
   if (v15 <= 1)
@@ -90,23 +90,23 @@ void __45__SBCenterIconZoomAnimator__prepareAnimation__block_invoke(uint64_t a1,
     v16 = v15;
   }
 
-  [v20 centerForIconCoordinate:{1, v16}];
-  [v20 convertPoint:self->_zoomView toView:{v10, (v14 + v17) * 0.5}];
+  [iconListView centerForIconCoordinate:{1, v16}];
+  [iconListView convertPoint:self->_zoomView toView:{v10, (v14 + v17) * 0.5}];
   self->_cameraPosition.x = v18;
   self->_cameraPosition.y = v19;
 }
 
 - (void)_calculateCenters
 {
-  v30 = [(SBIconZoomAnimator *)self iconListView];
-  v3 = [v30 iconColumnsForCurrentOrientation];
-  v4 = [v30 iconRowsForCurrentOrientation];
-  v5 = [(SBIconAnimator *)self settings];
-  v6 = [v5 preferCenterOfIconGrid];
+  iconListView = [(SBIconZoomAnimator *)self iconListView];
+  iconColumnsForCurrentOrientation = [iconListView iconColumnsForCurrentOrientation];
+  iconRowsForCurrentOrientation = [iconListView iconRowsForCurrentOrientation];
+  settings = [(SBIconAnimator *)self settings];
+  preferCenterOfIconGrid = [settings preferCenterOfIconGrid];
 
-  if (v6)
+  if (preferCenterOfIconGrid)
   {
-    if (v3)
+    if (iconColumnsForCurrentOrientation)
     {
       v7 = 1.0;
     }
@@ -116,12 +116,12 @@ void __45__SBCenterIconZoomAnimator__prepareAnimation__block_invoke(uint64_t a1,
       v7 = 0.5;
     }
 
-    self->_centerCol = v7 + (v3 >> 1);
-    v8 = (v4 >> 1);
+    self->_centerCol = v7 + (iconColumnsForCurrentOrientation >> 1);
+    v8 = (iconRowsForCurrentOrientation >> 1);
     v9 = 184;
     v10 = v8 + 1.0;
     v11 = v8 + 0.5;
-    if (v4)
+    if (iconRowsForCurrentOrientation)
     {
       v12 = v10;
     }
@@ -134,21 +134,21 @@ void __45__SBCenterIconZoomAnimator__prepareAnimation__block_invoke(uint64_t a1,
 
   else
   {
-    v13 = [v30 window];
-    [v13 center];
+    window = [iconListView window];
+    [window center];
     v15 = v14;
     v17 = v16;
 
-    v18 = [v30 window];
-    [v30 convertPoint:v18 fromView:{v15, v17}];
+    window2 = [iconListView window];
+    [iconListView convertPoint:window2 fromView:{v15, v17}];
     v20 = v19;
     v22 = v21;
 
-    [v30 fractionalCoordinateAtPoint:{v20, v22}];
+    [iconListView fractionalCoordinateAtPoint:{v20, v22}];
     v12 = round(v23 + v23) * 0.5;
     v24 = BSFloatEqualToFloat();
-    v25 = [(SBIconAnimator *)self settings];
-    [v25 centerRowCoordinate];
+    settings2 = [(SBIconAnimator *)self settings];
+    [settings2 centerRowCoordinate];
     if (v24)
     {
       self->_centerRow = floor(v26) + 0.5;
@@ -160,8 +160,8 @@ void __45__SBCenterIconZoomAnimator__prepareAnimation__block_invoke(uint64_t a1,
 
       else
       {
-        v28 = [MEMORY[0x1E69DC938] currentDevice];
-        v27 = [v28 userInterfaceIdiom] == 1;
+        currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+        v27 = [currentDevice userInterfaceIdiom] == 1;
       }
 
       if (v27)
@@ -180,14 +180,14 @@ void __45__SBCenterIconZoomAnimator__prepareAnimation__block_invoke(uint64_t a1,
 
   *(&self->super.super.super.isa + v9) = v12;
   centerRow = self->_centerRow;
-  if (centerRow >= v4)
+  if (centerRow >= iconRowsForCurrentOrientation)
   {
     do
     {
       centerRow = centerRow + -1.0;
     }
 
-    while (centerRow >= v4);
+    while (centerRow >= iconRowsForCurrentOrientation);
     self->_centerRow = centerRow;
   }
 }
@@ -199,32 +199,32 @@ void __45__SBCenterIconZoomAnimator__prepareAnimation__block_invoke(uint64_t a1,
   [(SBIconZoomAnimator *)&v35 _prepareAnimation];
   [(SBCenterIconZoomAnimator *)self _perspectiveTransform];
   self->_iconZoomedZ = SBHZPositionForScale(80.0, v3);
-  v4 = [(SBCenterIconZoomAnimator *)self folderController];
-  v5 = [v4 innerFolderController];
-  if (v5)
+  folderController = [(SBCenterIconZoomAnimator *)self folderController];
+  innerFolderController = [folderController innerFolderController];
+  if (innerFolderController)
   {
-    v6 = [v4 view];
+    view = [folderController view];
     folderView = self->_folderView;
-    self->_folderView = v6;
+    self->_folderView = view;
   }
 
-  v8 = [(SBIconZoomAnimator *)self iconListView];
-  v9 = [v8 addOverridingLayoutDelegate:self reason:@"CenterIconZoom"];
+  iconListView = [(SBIconZoomAnimator *)self iconListView];
+  v9 = [iconListView addOverridingLayoutDelegate:self reason:@"CenterIconZoom"];
   [(SBCenterIconZoomAnimator *)self setIconListViewOverridingLayoutDelegateAssertion:v9];
 
-  v10 = [v8 model];
-  [v10 addListObserver:self];
+  model = [iconListView model];
+  [model addListObserver:self];
 
   v11 = [SBHTouchPassThroughView alloc];
-  [v8 bounds];
+  [iconListView bounds];
   v12 = [(SBHTouchPassThroughView *)v11 initWithFrame:?];
   zoomView = self->_zoomView;
   self->_zoomView = v12;
 
-  [v8 addSubview:self->_zoomView];
+  [iconListView addSubview:self->_zoomView];
   [(SBCenterIconZoomAnimator *)self _perspectiveTransform];
   v15 = v14;
-  v16 = [(UIView *)self->_zoomView layer];
+  layer = [(UIView *)self->_zoomView layer];
   v17 = *(MEMORY[0x1E69792E8] + 48);
   v30[2] = *(MEMORY[0x1E69792E8] + 32);
   v30[3] = v17;
@@ -237,29 +237,29 @@ void __45__SBCenterIconZoomAnimator__prepareAnimation__block_invoke(uint64_t a1,
   v19 = *(MEMORY[0x1E69792E8] + 112);
   v33 = *(MEMORY[0x1E69792E8] + 96);
   v34 = v19;
-  [v16 setSublayerTransform:v30];
+  [layer setSublayerTransform:v30];
 
-  v20 = [(UIView *)self->_zoomView layer];
-  v21 = [v20 superlayer];
+  layer2 = [(UIView *)self->_zoomView layer];
+  superlayer = [layer2 superlayer];
 
   v22 = objc_alloc_init(MEMORY[0x1E6979310]);
   captureOnlyBackdropLayer = self->_captureOnlyBackdropLayer;
   self->_captureOnlyBackdropLayer = v22;
 
   v24 = self->_captureOnlyBackdropLayer;
-  [v8 bounds];
+  [iconListView bounds];
   [(CABackdropLayer *)v24 setBounds:?];
   [(CABackdropLayer *)self->_captureOnlyBackdropLayer setCaptureOnly:1];
   [(CABackdropLayer *)self->_captureOnlyBackdropLayer setScale:0.25];
   [(CABackdropLayer *)self->_captureOnlyBackdropLayer setGroupName:@"SBRootFolder"];
   v25 = self->_captureOnlyBackdropLayer;
-  v26 = [(UIView *)self->_zoomView layer];
-  [v21 insertSublayer:v25 below:v26];
+  layer3 = [(UIView *)self->_zoomView layer];
+  [superlayer insertSublayer:v25 below:layer3];
 
   [(SBCenterIconZoomAnimator *)self _calculateCentersAndCameraPosition];
   [(SBCenterIconZoomAnimator *)self _setZoomViewAnchorPoint];
-  v27 = [(SBCenterIconZoomAnimator *)self folderController];
-  v28 = [v27 beginModifyingDockOffscreenFractionForReason:@"SBCenterIconZoomDockFractionAnimatorReason"];
+  folderController2 = [(SBCenterIconZoomAnimator *)self folderController];
+  v28 = [folderController2 beginModifyingDockOffscreenFractionForReason:@"SBCenterIconZoomDockFractionAnimatorReason"];
 
   [(SBCenterIconZoomAnimator *)self setDockOffscreenFractionModifier:v28];
   v29[0] = MEMORY[0x1E69E9820];
@@ -271,11 +271,11 @@ void __45__SBCenterIconZoomAnimator__prepareAnimation__block_invoke(uint64_t a1,
   self->_animatingIcons = 1;
 }
 
-- (SBCenterIconZoomAnimator)initWithFolderController:(id)a3
+- (SBCenterIconZoomAnimator)initWithFolderController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = SBCenterIconZoomAnimator;
-  result = [(SBIconZoomAnimator *)&v4 initWithAnimationContainer:a3];
+  result = [(SBIconZoomAnimator *)&v4 initWithAnimationContainer:controller];
   if (result)
   {
     result->_iconZoomedZ = 0.0;
@@ -304,26 +304,26 @@ void __45__SBCenterIconZoomAnimator__prepareAnimation__block_invoke(uint64_t a1,
     v13 = self->_cameraPosition.y / v12;
   }
 
-  v15 = [(UIView *)self->_zoomView layer];
-  [v15 setAnchorPoint:{v14, v13}];
+  layer = [(UIView *)self->_zoomView layer];
+  [layer setAnchorPoint:{v14, v13}];
 
   zoomView = self->_zoomView;
 
   [(UIView *)zoomView setFrame:v4, v6, v8, v10];
 }
 
-- (void)_setAnimationFraction:(double)a3 withCenter:(CGPoint)a4
+- (void)_setAnimationFraction:(double)fraction withCenter:(CGPoint)center
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __61__SBCenterIconZoomAnimator__setAnimationFraction_withCenter___block_invoke;
   v6[3] = &unk_1E808A3F0;
   v6[4] = self;
-  v7 = a4;
-  v8 = a3;
+  centerCopy = center;
+  fractionCopy = fraction;
   [(SBIconZoomAnimator *)self enumerateIconsAndIconViewsWithHandler:v6];
-  [(UIView *)self->_folderView setAlpha:1.0 - a3];
-  [(SBCenterIconZoomAnimator *)self _updateDockForFraction:a3];
+  [(UIView *)self->_folderView setAlpha:1.0 - fraction];
+  [(SBCenterIconZoomAnimator *)self _updateDockForFraction:fraction];
 }
 
 uint64_t __61__SBCenterIconZoomAnimator__setAnimationFraction_withCenter___block_invoke(uint64_t result, uint64_t a2, uint64_t a3, char a4)
@@ -336,22 +336,22 @@ uint64_t __61__SBCenterIconZoomAnimator__setAnimationFraction_withCenter___block
   return result;
 }
 
-- (void)_setZPositionForView:(id)a3 center:(CGPoint)a4 andFraction:(double)a5
+- (void)_setZPositionForView:(id)view center:(CGPoint)center andFraction:(double)fraction
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  [(SBCenterIconZoomAnimator *)self _zPositionForView:v9 center:x andFraction:y, a5];
+  y = center.y;
+  x = center.x;
+  viewCopy = view;
+  [(SBCenterIconZoomAnimator *)self _zPositionForView:viewCopy center:x andFraction:y, fraction];
   v11 = v10;
-  v12 = [v9 layer];
+  layer = [viewCopy layer];
 
-  [v12 setZPosition:v11 * self->_iconZoomedZ];
+  [layer setZPosition:v11 * self->_iconZoomedZ];
 }
 
-- (void)_updateDockForFraction:(double)a3
+- (void)_updateDockForFraction:(double)fraction
 {
-  v4 = [(SBCenterIconZoomAnimator *)self dockOffscreenFractionModifier];
-  [v4 setDockOffscreenFraction:a3];
+  dockOffscreenFractionModifier = [(SBCenterIconZoomAnimator *)self dockOffscreenFractionModifier];
+  [dockOffscreenFractionModifier setDockOffscreenFraction:fraction];
 }
 
 - (void)_cleanupAnimation
@@ -362,19 +362,19 @@ uint64_t __61__SBCenterIconZoomAnimator__setAnimationFraction_withCenter___block
   [(SBIconZoomAnimator *)&v3 _cleanupAnimation];
 }
 
-- (void)_cleanupAnimationIncludingDock:(BOOL)a3
+- (void)_cleanupAnimationIncludingDock:(BOOL)dock
 {
-  v3 = a3;
-  v5 = [(SBIconZoomAnimator *)self iconListView];
+  dockCopy = dock;
+  iconListView = [(SBIconZoomAnimator *)self iconListView];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __59__SBCenterIconZoomAnimator__cleanupAnimationIncludingDock___block_invoke;
   v11[3] = &unk_1E808A3C8;
-  v6 = v5;
+  v6 = iconListView;
   v12 = v6;
   [(SBIconZoomAnimator *)self enumerateIconsAndIconViewsWithHandler:v11];
-  v7 = [(SBCenterIconZoomAnimator *)self iconListViewOverridingLayoutDelegateAssertion];
-  [v7 invalidate];
+  iconListViewOverridingLayoutDelegateAssertion = [(SBCenterIconZoomAnimator *)self iconListViewOverridingLayoutDelegateAssertion];
+  [iconListViewOverridingLayoutDelegateAssertion invalidate];
 
   [(SBCenterIconZoomAnimator *)self setIconListViewOverridingLayoutDelegateAssertion:0];
   [(CABackdropLayer *)self->_captureOnlyBackdropLayer removeFromSuperlayer];
@@ -385,10 +385,10 @@ uint64_t __61__SBCenterIconZoomAnimator__setAnimationFraction_withCenter___block
   zoomView = self->_zoomView;
   self->_zoomView = 0;
 
-  if (v3)
+  if (dockCopy)
   {
-    v10 = [(SBCenterIconZoomAnimator *)self dockOffscreenFractionModifier];
-    [v10 invalidate];
+    dockOffscreenFractionModifier = [(SBCenterIconZoomAnimator *)self dockOffscreenFractionModifier];
+    [dockOffscreenFractionModifier invalidate];
 
     [(SBCenterIconZoomAnimator *)self setDockOffscreenFractionModifier:0];
   }
@@ -418,26 +418,26 @@ void __59__SBCenterIconZoomAnimator__cleanupAnimationIncludingDock___block_invok
 {
   v8.receiver = self;
   v8.super_class = SBCenterIconZoomAnimator;
-  v3 = [(SBIconZoomAnimator *)&v8 _numberOfSignificantAnimations];
-  v4 = &v3[[(SBIconZoomAnimator *)self listIconCount]];
-  v5 = [(SBCenterIconZoomAnimator *)self folderController];
-  v6 = &v4[[v5 hasDock]];
+  _numberOfSignificantAnimations = [(SBIconZoomAnimator *)&v8 _numberOfSignificantAnimations];
+  v4 = &_numberOfSignificantAnimations[[(SBIconZoomAnimator *)self listIconCount]];
+  folderController = [(SBCenterIconZoomAnimator *)self folderController];
+  v6 = &v4[[folderController hasDock]];
 
   return v6;
 }
 
-- (void)_performAnimationToFraction:(double)a3 withCentralAnimationSettings:(id)a4 delay:(double)a5 alreadyAnimating:(BOOL)a6 sharedCompletion:(id)a7
+- (void)_performAnimationToFraction:(double)fraction withCentralAnimationSettings:(id)settings delay:(double)delay alreadyAnimating:(BOOL)animating sharedCompletion:(id)completion
 {
-  v7 = a6;
-  v12 = a7;
+  animatingCopy = animating;
+  completionCopy = completion;
   v31.receiver = self;
   v31.super_class = SBCenterIconZoomAnimator;
-  [(SBIconZoomAnimator *)&v31 _performAnimationToFraction:a4 withCentralAnimationSettings:v7 delay:v12 alreadyAnimating:a3 sharedCompletion:a5];
+  [(SBIconZoomAnimator *)&v31 _performAnimationToFraction:settings withCentralAnimationSettings:animatingCopy delay:completionCopy alreadyAnimating:fraction sharedCompletion:delay];
   if ((BSFloatIsZero() & 1) != 0 || BSFloatIsOne())
   {
     [(SBCenterIconZoomAnimator *)self _iconZoomDelay];
-    v14 = v13 + a5;
-    if (v7)
+    v14 = v13 + delay;
+    if (animatingCopy)
     {
       v15 = 0.0;
     }
@@ -453,7 +453,7 @@ void __59__SBCenterIconZoomAnimator__cleanupAnimationIncludingDock___block_invok
     v26[3] = &unk_1E808A418;
     v26[4] = self;
     v28 = v15;
-    if (v7)
+    if (animatingCopy)
     {
       v16 = 6;
     }
@@ -464,37 +464,37 @@ void __59__SBCenterIconZoomAnimator__cleanupAnimationIncludingDock___block_invok
     }
 
     v29 = v16;
-    v30 = a3;
-    v17 = v12;
+    fractionCopy = fraction;
+    v17 = completionCopy;
     v27 = v17;
     [(SBIconZoomAnimator *)self enumerateIconsAndIconViewsWithHandler:v26];
-    v18 = [(SBCenterIconZoomAnimator *)self folderController];
-    v19 = [v18 hasDock];
+    folderController = [(SBCenterIconZoomAnimator *)self folderController];
+    hasDock = [folderController hasDock];
 
-    if (v19)
+    if (hasDock)
     {
       v20 = MEMORY[0x1E698E7D0];
-      v21 = [(SBCenterIconZoomAnimator *)self _animationFactoryForDock];
+      _animationFactoryForDock = [(SBCenterIconZoomAnimator *)self _animationFactoryForDock];
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __125__SBCenterIconZoomAnimator__performAnimationToFraction_withCentralAnimationSettings_delay_alreadyAnimating_sharedCompletion___block_invoke_3;
       v25[3] = &unk_1E8088CB8;
       v25[4] = self;
-      *&v25[5] = a3;
-      [v20 animateWithFactory:v21 additionalDelay:v16 options:v25 actions:v17 completion:v15];
+      *&v25[5] = fraction;
+      [v20 animateWithFactory:_animationFactoryForDock additionalDelay:v16 options:v25 actions:v17 completion:v15];
     }
 
     if (self->_folderView)
     {
       v22 = MEMORY[0x1E698E7D0];
-      v23 = [(SBCenterIconZoomAnimator *)self _animationFactoryForFolderView];
+      _animationFactoryForFolderView = [(SBCenterIconZoomAnimator *)self _animationFactoryForFolderView];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __125__SBCenterIconZoomAnimator__performAnimationToFraction_withCentralAnimationSettings_delay_alreadyAnimating_sharedCompletion___block_invoke_4;
       v24[3] = &unk_1E8088CB8;
       v24[4] = self;
-      *&v24[5] = a3;
-      [v22 animateWithFactory:v23 additionalDelay:v16 options:v24 actions:v15];
+      *&v24[5] = fraction;
+      [v22 animateWithFactory:_animationFactoryForFolderView additionalDelay:v16 options:v24 actions:v15];
     }
   }
 }
@@ -534,16 +534,16 @@ void __125__SBCenterIconZoomAnimator__performAnimationToFraction_withCentralAnim
   [v2 setDockOffscreenFraction:*(a1 + 40)];
 }
 
-- (CGPoint)iconListView:(id)a3 originForIconCoordinate:(SBIconCoordinate)a4 metrics:(id)a5 proposedOrigin:(CGPoint)a6
+- (CGPoint)iconListView:(id)view originForIconCoordinate:(SBIconCoordinate)coordinate metrics:(id)metrics proposedOrigin:(CGPoint)origin
 {
-  y = a6.y;
-  x = a6.x;
-  v9 = a3;
-  v10 = [(SBIconZoomAnimator *)self iconListView];
+  y = origin.y;
+  x = origin.x;
+  viewCopy = view;
+  iconListView = [(SBIconZoomAnimator *)self iconListView];
 
-  if (v10 == v9)
+  if (iconListView == viewCopy)
   {
-    [(UIView *)self->_zoomView convertPoint:v9 fromView:x, y];
+    [(UIView *)self->_zoomView convertPoint:viewCopy fromView:x, y];
     x = v11;
     y = v12;
   }
@@ -555,16 +555,16 @@ void __125__SBCenterIconZoomAnimator__performAnimationToFraction_withCentralAnim
   return result;
 }
 
-- (CGPoint)iconListView:(id)a3 centerForIconCoordinate:(SBIconCoordinate)a4 metrics:(id)a5 proposedCenter:(CGPoint)a6
+- (CGPoint)iconListView:(id)view centerForIconCoordinate:(SBIconCoordinate)coordinate metrics:(id)metrics proposedCenter:(CGPoint)center
 {
-  y = a6.y;
-  x = a6.x;
-  v9 = a3;
-  v10 = [(SBIconZoomAnimator *)self iconListView];
+  y = center.y;
+  x = center.x;
+  viewCopy = view;
+  iconListView = [(SBIconZoomAnimator *)self iconListView];
 
-  if (v10 == v9)
+  if (iconListView == viewCopy)
   {
-    [(UIView *)self->_zoomView convertPoint:v9 fromView:x, y];
+    [(UIView *)self->_zoomView convertPoint:viewCopy fromView:x, y];
     x = v11;
     y = v12;
   }
@@ -576,56 +576,56 @@ void __125__SBCenterIconZoomAnimator__performAnimationToFraction_withCentralAnim
   return result;
 }
 
-- (void)iconList:(id)a3 didAddIcon:(id)a4
+- (void)iconList:(id)list didAddIcon:(id)icon
 {
-  v10 = a4;
-  v6 = a3;
-  v7 = [(SBIconZoomAnimator *)self iconListView];
-  v8 = [v7 model];
+  iconCopy = icon;
+  listCopy = list;
+  iconListView = [(SBIconZoomAnimator *)self iconListView];
+  model = [iconListView model];
 
-  if (v8 == v6)
+  if (model == listCopy)
   {
-    v9 = [(SBIconZoomAnimator *)self iconViewForIcon:v10];
-    [(SBCenterIconZoomAnimator *)self _positionView:v9 forIcon:v10];
+    v9 = [(SBIconZoomAnimator *)self iconViewForIcon:iconCopy];
+    [(SBCenterIconZoomAnimator *)self _positionView:v9 forIcon:iconCopy];
   }
 }
 
-- (void)iconList:(id)a3 didReplaceIcon:(id)a4 withIcon:(id)a5
+- (void)iconList:(id)list didReplaceIcon:(id)icon withIcon:(id)withIcon
 {
-  v11 = a5;
-  v7 = a3;
-  v8 = [(SBIconZoomAnimator *)self iconListView];
-  v9 = [v8 model];
+  withIconCopy = withIcon;
+  listCopy = list;
+  iconListView = [(SBIconZoomAnimator *)self iconListView];
+  model = [iconListView model];
 
-  if (v9 == v7)
+  if (model == listCopy)
   {
-    v10 = [(SBIconZoomAnimator *)self iconViewForIcon:v11];
-    [(SBCenterIconZoomAnimator *)self _positionView:v10 forIcon:v11];
+    v10 = [(SBIconZoomAnimator *)self iconViewForIcon:withIconCopy];
+    [(SBCenterIconZoomAnimator *)self _positionView:v10 forIcon:withIconCopy];
   }
 }
 
-- (void)_positionView:(id)a3 forIcon:(id)a4
+- (void)_positionView:(id)view forIcon:(id)icon
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(SBIconZoomAnimator *)self iconListView];
-  [v7 centerForIcon:v6];
+  viewCopy = view;
+  iconCopy = icon;
+  iconListView = [(SBIconZoomAnimator *)self iconListView];
+  [iconListView centerForIcon:iconCopy];
   v9 = v8;
   v11 = v10;
 
-  [(UIView *)self->_zoomView convertPoint:v7 fromView:v9, v11];
-  [v12 setCenter:?];
+  [(UIView *)self->_zoomView convertPoint:iconListView fromView:v9, v11];
+  [viewCopy setCenter:?];
 }
 
-- (id)_animationFactoryForIcon:(id)a3
+- (id)_animationFactoryForIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(SBIconAnimator *)self settings];
-  v6 = [v5 centralAnimationSettings];
-  if ([v5 distanceEffect])
+  iconCopy = icon;
+  settings = [(SBIconAnimator *)self settings];
+  centralAnimationSettings = [settings centralAnimationSettings];
+  if ([settings distanceEffect])
   {
-    v7 = [(SBIconZoomAnimator *)self iconListView];
-    v8 = [v7 coordinateForIcon:v4];
+    iconListView = [(SBIconZoomAnimator *)self iconListView];
+    v8 = [iconListView coordinateForIcon:iconCopy];
     v10 = v9;
 
     if (SBIconCoordinateIsNotFound(v8, v10))
@@ -638,9 +638,9 @@ void __125__SBCenterIconZoomAnimator__performAnimationToFraction_withCentralAnim
       v11 = (floor(vabdd_f64(v10, self->_centerRow)) + floor(vabdd_f64(v8, self->_centerCol)));
     }
 
-    [v6 mass];
+    [centralAnimationSettings mass];
     v13 = v12;
-    [v5 firstHopIncrement];
+    [settings firstHopIncrement];
     if (v11)
     {
       v15 = v14;
@@ -649,8 +649,8 @@ void __125__SBCenterIconZoomAnimator__performAnimationToFraction_withCentralAnim
         v16 = 1;
         do
         {
-          v13 = v13 + v15 * [v5 distanceEffect];
-          [v5 hopIncrementAcceleration];
+          v13 = v13 + v15 * [settings distanceEffect];
+          [settings hopIncrementAcceleration];
           if (v16 >= v11)
           {
             break;
@@ -669,19 +669,19 @@ void __125__SBCenterIconZoomAnimator__performAnimationToFraction_withCentralAnim
       v13 = 0.1;
     }
 
-    [v6 mass];
+    [centralAnimationSettings mass];
     if (v13 != v18)
     {
-      v19 = [v6 copy];
+      v19 = [centralAnimationSettings copy];
 
       [v19 setMass:v13];
-      v6 = v19;
+      centralAnimationSettings = v19;
     }
   }
 
   v20 = MEMORY[0x1E698E7D0];
-  v21 = [v6 BSAnimationSettings];
-  v22 = [v20 factoryWithSettings:v21];
+  bSAnimationSettings = [centralAnimationSettings BSAnimationSettings];
+  v22 = [v20 factoryWithSettings:bSAnimationSettings];
 
   [v22 setAllowsAdditiveAnimations:1];
 
@@ -690,22 +690,22 @@ void __125__SBCenterIconZoomAnimator__performAnimationToFraction_withCentralAnim
 
 - (id)_animationFactoryForDock
 {
-  v2 = [(SBIconAnimator *)self settings];
-  v3 = [v2 centralAnimationSettings];
-  [v2 dockMass];
+  settings = [(SBIconAnimator *)self settings];
+  centralAnimationSettings = [settings centralAnimationSettings];
+  [settings dockMass];
   v5 = v4;
-  [v3 mass];
+  [centralAnimationSettings mass];
   if (v6 != v5)
   {
-    v7 = [v3 copy];
+    v7 = [centralAnimationSettings copy];
 
     [v7 setMass:v5];
-    v3 = v7;
+    centralAnimationSettings = v7;
   }
 
   v8 = MEMORY[0x1E698E7D0];
-  v9 = [v3 BSAnimationSettings];
-  v10 = [v8 factoryWithSettings:v9];
+  bSAnimationSettings = [centralAnimationSettings BSAnimationSettings];
+  v10 = [v8 factoryWithSettings:bSAnimationSettings];
 
   [v10 setAllowsAdditiveAnimations:1];
 
@@ -715,10 +715,10 @@ void __125__SBCenterIconZoomAnimator__performAnimationToFraction_withCentralAnim
 - (id)_animationFactoryForFolderView
 {
   v2 = MEMORY[0x1E698E7D0];
-  v3 = [(SBIconAnimator *)self settings];
-  v4 = [v3 centralAnimationSettings];
-  v5 = [v4 BSAnimationSettings];
-  v6 = [v2 factoryWithSettings:v5];
+  settings = [(SBIconAnimator *)self settings];
+  centralAnimationSettings = [settings centralAnimationSettings];
+  bSAnimationSettings = [centralAnimationSettings BSAnimationSettings];
+  v6 = [v2 factoryWithSettings:bSAnimationSettings];
 
   [v6 setAllowsAdditiveAnimations:1];
 

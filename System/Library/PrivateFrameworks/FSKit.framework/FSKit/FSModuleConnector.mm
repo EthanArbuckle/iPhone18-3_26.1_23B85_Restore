@@ -1,51 +1,51 @@
 @interface FSModuleConnector
-- (void)activateVolume:(id)a3 resource:(id)a4 options:(id)a5 replyHandler:(id)a6;
-- (void)checkIn:(id)a3 replyHandler:(id)a4;
-- (void)checkWithOptions:(id)a3 connection:(id)a4 taskID:(id)a5 replyHandler:(id)a6;
-- (void)deactivateVolume:(id)a3 numericOptions:(unint64_t)a4 replyHandler:(id)a5;
-- (void)formatWithOptions:(id)a3 connection:(id)a4 taskID:(id)a5 replyHandler:(id)a6;
-- (void)getLegacyVolumeEndpoint:(id)a3 replyHandler:(id)a4;
-- (void)getModuleListenerEndpoint:(id)a3;
-- (void)getVolumeEndpoint:(id)a3 replyHandler:(id)a4;
-- (void)loadResource:(id)a3 options:(id)a4 replyHandler:(id)a5;
-- (void)ping:(id)a3;
-- (void)probeResource:(id)a3 replyHandler:(id)a4;
-- (void)sendCloseResource:(id)a3;
-- (void)sendConfigureUserClient:(id)a3 replyHandler:(id)a4;
-- (void)sendIsVolumeUsed:(id)a3 bundle:(id)a4 replyHandler:(id)a5;
-- (void)sendRevokeResource:(id)a3;
-- (void)sendTaskUpdate:(id)a3;
-- (void)sendWipeResource:(id)a3 replyHandler:(id)a4;
-- (void)unloadResource:(id)a3 options:(id)a4 replyHandler:(id)a5;
+- (void)activateVolume:(id)volume resource:(id)resource options:(id)options replyHandler:(id)handler;
+- (void)checkIn:(id)in replyHandler:(id)handler;
+- (void)checkWithOptions:(id)options connection:(id)connection taskID:(id)d replyHandler:(id)handler;
+- (void)deactivateVolume:(id)volume numericOptions:(unint64_t)options replyHandler:(id)handler;
+- (void)formatWithOptions:(id)options connection:(id)connection taskID:(id)d replyHandler:(id)handler;
+- (void)getLegacyVolumeEndpoint:(id)endpoint replyHandler:(id)handler;
+- (void)getModuleListenerEndpoint:(id)endpoint;
+- (void)getVolumeEndpoint:(id)endpoint replyHandler:(id)handler;
+- (void)loadResource:(id)resource options:(id)options replyHandler:(id)handler;
+- (void)ping:(id)ping;
+- (void)probeResource:(id)resource replyHandler:(id)handler;
+- (void)sendCloseResource:(id)resource;
+- (void)sendConfigureUserClient:(id)client replyHandler:(id)handler;
+- (void)sendIsVolumeUsed:(id)used bundle:(id)bundle replyHandler:(id)handler;
+- (void)sendRevokeResource:(id)resource;
+- (void)sendTaskUpdate:(id)update;
+- (void)sendWipeResource:(id)resource replyHandler:(id)handler;
+- (void)unloadResource:(id)resource options:(id)options replyHandler:(id)handler;
 @end
 
 @implementation FSModuleConnector
 
-- (void)sendTaskUpdate:(id)a3
+- (void)sendTaskUpdate:(id)update
 {
   ourConnection = self->_ourConnection;
   if (ourConnection)
   {
-    v4 = a3;
-    v5 = [(NSXPCConnection *)ourConnection remoteObjectProxy];
-    [v5 taskStatusUpdate:v4];
+    updateCopy = update;
+    remoteObjectProxy = [(NSXPCConnection *)ourConnection remoteObjectProxy];
+    [remoteObjectProxy taskStatusUpdate:updateCopy];
   }
 }
 
-- (void)sendRevokeResource:(id)a3
+- (void)sendRevokeResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   v5 = fskit_std_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [FSModuleConnector sendRevokeResource:v4];
+    [FSModuleConnector sendRevokeResource:resourceCopy];
   }
 
   ourConnection = self->_ourConnection;
   if (ourConnection)
   {
     v7 = [(NSXPCConnection *)ourConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_2];
-    [v7 revokeResource:v4 replyHandler:&__block_literal_global_237];
+    [v7 revokeResource:resourceCopy replyHandler:&__block_literal_global_237];
     v8 = fskit_std_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
@@ -86,20 +86,20 @@ void __40__FSModuleConnector_sendRevokeResource___block_invoke_235(uint64_t a1, 
   }
 }
 
-- (void)sendCloseResource:(id)a3
+- (void)sendCloseResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   v5 = fskit_std_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [FSModuleConnector sendCloseResource:v4];
+    [FSModuleConnector sendCloseResource:resourceCopy];
   }
 
   ourConnection = self->_ourConnection;
   if (ourConnection)
   {
     v7 = [(NSXPCConnection *)ourConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_239];
-    [v7 closeResource:v4 replyHandler:&__block_literal_global_242];
+    [v7 closeResource:resourceCopy replyHandler:&__block_literal_global_242];
     v8 = fskit_std_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
@@ -140,11 +140,11 @@ void __39__FSModuleConnector_sendCloseResource___block_invoke_240(uint64_t a1, v
   }
 }
 
-- (void)sendIsVolumeUsed:(id)a3 bundle:(id)a4 replyHandler:(id)a5
+- (void)sendIsVolumeUsed:(id)used bundle:(id)bundle replyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  usedCopy = used;
+  bundleCopy = bundle;
+  handlerCopy = handler;
   v11 = fskit_std_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -158,10 +158,10 @@ void __39__FSModuleConnector_sendCloseResource___block_invoke_240(uint64_t a1, v
     v16[1] = 3221225472;
     v16[2] = __58__FSModuleConnector_sendIsVolumeUsed_bundle_replyHandler___block_invoke;
     v16[3] = &unk_278FECE20;
-    v13 = v10;
+    v13 = handlerCopy;
     v17 = v13;
     v14 = [(NSXPCConnection *)v12 synchronousRemoteObjectProxyWithErrorHandler:v16];
-    [v14 isVolumeIDUsed:v8 bundle:v9 replyHandler:v13];
+    [v14 isVolumeIDUsed:usedCopy bundle:bundleCopy replyHandler:v13];
     v15 = fskit_std_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
@@ -171,7 +171,7 @@ void __39__FSModuleConnector_sendCloseResource___block_invoke_240(uint64_t a1, v
 
   else
   {
-    (*(v10 + 2))(v10, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -187,10 +187,10 @@ void __58__FSModuleConnector_sendIsVolumeUsed_bundle_replyHandler___block_invoke
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)sendWipeResource:(id)a3 replyHandler:(id)a4
+- (void)sendWipeResource:(id)resource replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  resourceCopy = resource;
+  handlerCopy = handler;
   v8 = fskit_std_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -207,7 +207,7 @@ void __58__FSModuleConnector_sendIsVolumeUsed_bundle_replyHandler___block_invoke
       v17[1] = 3221225472;
       v17[2] = __51__FSModuleConnector_sendWipeResource_replyHandler___block_invoke;
       v17[3] = &unk_278FECE20;
-      v11 = v7;
+      v11 = handlerCopy;
       v18 = v11;
       v12 = [(NSXPCConnection *)v9 remoteObjectProxyWithErrorHandler:v17];
       v14[0] = MEMORY[0x277D85DD0];
@@ -216,7 +216,7 @@ void __58__FSModuleConnector_sendIsVolumeUsed_bundle_replyHandler___block_invoke
       v14[3] = &unk_278FECE90;
       v15 = v10;
       v16 = v11;
-      [v12 wipeResource:v6 replyHandler:v14];
+      [v12 wipeResource:resourceCopy replyHandler:v14];
       v13 = fskit_std_log();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
@@ -227,13 +227,13 @@ void __58__FSModuleConnector_sendIsVolumeUsed_bundle_replyHandler___block_invoke
     else
     {
       v12 = fs_errorForPOSIXError(8);
-      (*(v7 + 2))(v7, v12);
+      (*(handlerCopy + 2))(handlerCopy, v12);
     }
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -270,10 +270,10 @@ void __51__FSModuleConnector_sendWipeResource_replyHandler___block_invoke_243(ui
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)sendConfigureUserClient:(id)a3 replyHandler:(id)a4
+- (void)sendConfigureUserClient:(id)client replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  handlerCopy = handler;
   v8 = fskit_std_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -287,10 +287,10 @@ void __51__FSModuleConnector_sendWipeResource_replyHandler___block_invoke_243(ui
     v13[1] = 3221225472;
     v13[2] = __58__FSModuleConnector_sendConfigureUserClient_replyHandler___block_invoke;
     v13[3] = &unk_278FECE20;
-    v10 = v7;
+    v10 = handlerCopy;
     v14 = v10;
     v11 = [(NSXPCConnection *)v9 synchronousRemoteObjectProxyWithErrorHandler:v13];
-    [v11 configureUserClient:v6 replyHandler:v10];
+    [v11 configureUserClient:clientCopy replyHandler:v10];
     v12 = fskit_std_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
@@ -300,7 +300,7 @@ void __51__FSModuleConnector_sendWipeResource_replyHandler___block_invoke_243(ui
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -316,9 +316,9 @@ void __58__FSModuleConnector_sendConfigureUserClient_replyHandler___block_invoke
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)ping:(id)a3
+- (void)ping:(id)ping
 {
-  v4 = a3;
+  pingCopy = ping;
   v5 = fskit_std_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -335,35 +335,35 @@ void __58__FSModuleConnector_sendConfigureUserClient_replyHandler___block_invoke
     v6 = fs_errorForPOSIXError(8);
   }
 
-  v4[2](v4, v6);
+  pingCopy[2](pingCopy, v6);
 }
 
-- (void)checkIn:(id)a3 replyHandler:(id)a4
+- (void)checkIn:(id)in replyHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  inCopy = in;
+  handlerCopy = handler;
   v8 = fskit_std_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v6;
+    v22 = inCopy;
     _os_log_impl(&dword_24A929000, v8, OS_LOG_TYPE_DEFAULT, "FSModuleExtension.checkIn:extensionID:%@", buf, 0xCu);
   }
 
   v9 = self->_ourModule;
   objc_sync_enter(v9);
-  v10 = [(FSModuleExtension *)self->_ourModule instanceID];
+  instanceID = [(FSModuleExtension *)self->_ourModule instanceID];
 
   ourModule = self->_ourModule;
-  if (!v10)
+  if (!instanceID)
   {
-    [(FSModuleExtension *)ourModule setInstanceID:v6];
+    [(FSModuleExtension *)ourModule setInstanceID:inCopy];
     goto LABEL_9;
   }
 
-  v12 = [(FSModuleExtension *)ourModule instanceID];
-  v13 = [v12 isEqual:v6];
+  instanceID2 = [(FSModuleExtension *)ourModule instanceID];
+  v13 = [instanceID2 isEqual:inCopy];
 
   if (v13)
   {
@@ -375,8 +375,8 @@ LABEL_9:
   v14 = fskit_std_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    v15 = [(FSModuleExtension *)self->_ourModule instanceID];
-    [(FSModuleConnector *)v6 checkIn:v15 replyHandler:buf, v14];
+    instanceID3 = [(FSModuleExtension *)self->_ourModule instanceID];
+    [(FSModuleConnector *)inCopy checkIn:instanceID3 replyHandler:buf, v14];
   }
 
   v16 = fs_errorForPOSIXError(17);
@@ -391,58 +391,58 @@ LABEL_10:
     _os_log_impl(&dword_24A929000, v17, OS_LOG_TYPE_DEFAULT, "FSModuleExtension.checkIn returning %@", &v19, 0xCu);
   }
 
-  v7[2](v7, v16);
+  handlerCopy[2](handlerCopy, v16);
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getLegacyVolumeEndpoint:(id)a3 replyHandler:(id)a4
+- (void)getLegacyVolumeEndpoint:(id)endpoint replyHandler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = fs_errorForPOSIXError(45);
-  v4[2](v4, 0, v5);
+  handlerCopy[2](handlerCopy, 0, v5);
 }
 
-- (void)getVolumeEndpoint:(id)a3 replyHandler:(id)a4
+- (void)getVolumeEndpoint:(id)endpoint replyHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  endpointCopy = endpoint;
+  handlerCopy = handler;
   v8 = fskit_std_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 136315394;
     v18 = "[FSModuleConnector getVolumeEndpoint:replyHandler:]";
     v19 = 2112;
-    v20 = v6;
+    v20 = endpointCopy;
     _os_log_impl(&dword_24A929000, v8, OS_LOG_TYPE_DEFAULT, "%s:start:volID:%@", &v17, 0x16u);
   }
 
-  if (v6)
+  if (endpointCopy)
   {
-    v9 = [(FSModuleExtension *)self->_ourModule volumes];
-    v10 = [v9 objectForKeyedSubscript:v6];
+    volumes = [(FSModuleExtension *)self->_ourModule volumes];
+    v10 = [volumes objectForKeyedSubscript:endpointCopy];
 
     if (v10)
     {
-      v11 = [v10 listener];
-      v12 = [v11 endpoint];
+      listener = [v10 listener];
+      endpoint = [listener endpoint];
 
       v13 = fskit_std_log();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v10 listener];
+        listener2 = [v10 listener];
         v17 = 136315906;
         v18 = "[FSModuleConnector getVolumeEndpoint:replyHandler:]";
         v19 = 2112;
-        v20 = v6;
+        v20 = endpointCopy;
         v21 = 2112;
-        v22 = v14;
+        v22 = listener2;
         v23 = 2112;
-        v24 = v12;
+        v24 = endpoint;
         _os_log_impl(&dword_24A929000, v13, OS_LOG_TYPE_DEFAULT, "%s:end:found:volID:%@ listener %@ returning ep %@", &v17, 0x2Au);
       }
 
-      v7[2](v7, v12, 0);
+      handlerCopy[2](handlerCopy, endpoint, 0);
     }
 
     else
@@ -453,30 +453,30 @@ LABEL_10:
         v17 = 136315394;
         v18 = "[FSModuleConnector getVolumeEndpoint:replyHandler:]";
         v19 = 2112;
-        v20 = v6;
+        v20 = endpointCopy;
         _os_log_impl(&dword_24A929000, v15, OS_LOG_TYPE_DEFAULT, "%s:end:ENOENT:volID:%@", &v17, 0x16u);
       }
 
-      v12 = fs_errorForPOSIXError(2);
-      (v7)[2](v7, 0, v12);
+      endpoint = fs_errorForPOSIXError(2);
+      (handlerCopy)[2](handlerCopy, 0, endpoint);
     }
   }
 
   else
   {
     v10 = fs_errorForPOSIXError(5);
-    (v7)[2](v7, 0, v10);
+    (handlerCopy)[2](handlerCopy, 0, v10);
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)probeResource:(id)a3 replyHandler:(id)a4
+- (void)probeResource:(id)resource replyHandler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  resourceCopy = resource;
+  handlerCopy = handler;
+  v8 = resourceCopy;
   v9 = v8;
   if ([v8 kind] == 1)
   {
@@ -487,7 +487,7 @@ LABEL_10:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        v32 = [v10 fileDescriptor];
+        fileDescriptor = [v10 fileDescriptor];
         _os_log_impl(&dword_24A929000, v11, OS_LOG_TYPE_DEFAULT, "Successful dynamic cast of resource to bd. Got fd %d", buf, 8u);
       }
 
@@ -512,17 +512,17 @@ LABEL_10:
   v24 = 3221225472;
   v25 = __48__FSModuleConnector_probeResource_replyHandler___block_invoke;
   v26 = &unk_278FECEB8;
-  v27 = self;
+  selfCopy = self;
   v15 = v8;
   v28 = v15;
   v16 = v14;
   v29 = v16;
-  v17 = v7;
+  v17 = handlerCopy;
   v30 = v17;
   v18 = _Block_copy(&v23);
   if ([(FSModuleExtension *)v16 isNormalFS:v23])
   {
-    v19 = [(_EXExtension *)v16 delegate];
+    delegate = [(_EXExtension *)v16 delegate];
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
       v20 = fskit_std_log();
@@ -539,7 +539,7 @@ LABEL_10:
 
   if ([(FSModuleExtension *)v16 isSimpleFS])
   {
-    v19 = [(_EXExtension *)v16 delegate];
+    delegate = [(_EXExtension *)v16 delegate];
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
       v20 = fskit_std_log();
@@ -558,7 +558,7 @@ LABEL_20:
     }
 
 LABEL_17:
-    [v19 probeResource:v15 replyHandler:v18];
+    [delegate probeResource:v15 replyHandler:v18];
 LABEL_21:
   }
 
@@ -616,13 +616,13 @@ void __48__FSModuleConnector_probeResource_replyHandler___block_invoke(uint64_t 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkWithOptions:(id)a3 connection:(id)a4 taskID:(id)a5 replyHandler:(id)a6
+- (void)checkWithOptions:(id)options connection:(id)connection taskID:(id)d replyHandler:(id)handler
 {
   v52 = *MEMORY[0x277D85DE8];
-  v28 = a3;
-  v10 = a4;
-  v29 = a5;
-  v11 = a6;
+  optionsCopy = options;
+  connectionCopy = connection;
+  dCopy = d;
+  handlerCopy = handler;
   v12 = fskit_std_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -633,7 +633,7 @@ void __48__FSModuleConnector_probeResource_replyHandler___block_invoke(uint64_t 
 
   if ([(FSModuleExtension *)self->_ourModule supportsSimpleMaintenanceOps])
   {
-    v13 = [(_EXExtension *)self->_ourModule delegate];
+    delegate = [(_EXExtension *)self->_ourModule delegate];
     v14 = self->_ourModule;
     v15 = dispatch_group_create();
     *&buf = 0;
@@ -649,20 +649,20 @@ void __48__FSModuleConnector_probeResource_replyHandler___block_invoke(uint64_t 
     v45[4] = self;
     v16 = v14;
     v46 = v16;
-    [v10 setEarlyCompletedBlock:v45];
+    [connectionCopy setEarlyCompletedBlock:v45];
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
     v43[2] = __69__FSModuleConnector_checkWithOptions_connection_taskID_replyHandler___block_invoke_2;
     v43[3] = &unk_278FECF08;
     v17 = v15;
     v44 = v17;
-    [v10 setLateCompletedBlock:v43];
+    [connectionCopy setLateCompletedBlock:v43];
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = __69__FSModuleConnector_checkWithOptions_connection_taskID_replyHandler___block_invoke_3;
     v42[3] = &unk_278FECF30;
     v42[4] = &buf;
-    [v10 connect:v42];
+    [connectionCopy connect:v42];
     if (*(*(&buf + 1) + 40))
     {
       v18 = fskit_std_log();
@@ -672,7 +672,7 @@ void __48__FSModuleConnector_probeResource_replyHandler___block_invoke(uint64_t 
         _os_log_impl(&dword_24A929000, v18, OS_LOG_TYPE_DEFAULT, "checkWithOptions: encountered on connect error!", v41, 2u);
       }
 
-      (*(v11 + 2))(v11, 0, *(*(&buf + 1) + 40));
+      (*(handlerCopy + 2))(handlerCopy, 0, *(*(&buf + 1) + 40));
       v19 = 0;
       v20 = 0;
     }
@@ -680,11 +680,11 @@ void __48__FSModuleConnector_probeResource_replyHandler___block_invoke(uint64_t 
     else
     {
       v21 = FSTaskPurposeCheck[0];
-      v22 = [(FSModuleExtension *)v16 bundleID];
-      v23 = [(FSModuleExtension *)v16 instanceID];
-      v24 = [FSTaskDescription taskDescriptionWithID:v29 state:1 purpose:v21 error:0 bundleID:v22 extensionID:v23 resource:0];
+      bundleID = [(FSModuleExtension *)v16 bundleID];
+      instanceID = [(FSModuleExtension *)v16 instanceID];
+      v24 = [FSTaskDescription taskDescriptionWithID:dCopy state:1 purpose:v21 error:0 bundleID:bundleID extensionID:instanceID resource:0];
 
-      v25 = [[FSTask alloc] initWithMessageConnection:v10 taskID:v29];
+      v25 = [[FSTask alloc] initWithMessageConnection:connectionCopy taskID:dCopy];
       v26 = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
@@ -693,15 +693,15 @@ void __48__FSModuleConnector_probeResource_replyHandler___block_invoke(uint64_t 
       v20 = v24;
       v31 = v20;
       v32 = v17;
-      v33 = v13;
+      v33 = delegate;
       v19 = v25;
       v34 = v19;
-      v35 = v28;
+      v35 = optionsCopy;
       v36 = v16;
-      v37 = v29;
-      v40 = v11;
-      v38 = v10;
-      v39 = self;
+      v37 = dCopy;
+      v40 = handlerCopy;
+      v38 = connectionCopy;
+      selfCopy = self;
       dispatch_async(v26, block);
     }
 
@@ -710,8 +710,8 @@ void __48__FSModuleConnector_probeResource_replyHandler___block_invoke(uint64_t 
 
   else
   {
-    v13 = fs_errorForPOSIXError(45);
-    (*(v11 + 2))(v11, 0, v13);
+    delegate = fs_errorForPOSIXError(45);
+    (*(handlerCopy + 2))(handlerCopy, 0, delegate);
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -832,13 +832,13 @@ LABEL_11:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)formatWithOptions:(id)a3 connection:(id)a4 taskID:(id)a5 replyHandler:(id)a6
+- (void)formatWithOptions:(id)options connection:(id)connection taskID:(id)d replyHandler:(id)handler
 {
   v52 = *MEMORY[0x277D85DE8];
-  v28 = a3;
-  v10 = a4;
-  v29 = a5;
-  v11 = a6;
+  optionsCopy = options;
+  connectionCopy = connection;
+  dCopy = d;
+  handlerCopy = handler;
   v12 = fskit_std_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -849,7 +849,7 @@ LABEL_11:
 
   if ([(FSModuleExtension *)self->_ourModule supportsSimpleMaintenanceOps])
   {
-    v13 = [(_EXExtension *)self->_ourModule delegate];
+    delegate = [(_EXExtension *)self->_ourModule delegate];
     v14 = self->_ourModule;
     v15 = dispatch_group_create();
     *&buf = 0;
@@ -865,20 +865,20 @@ LABEL_11:
     v45[4] = self;
     v16 = v14;
     v46 = v16;
-    [v10 setEarlyCompletedBlock:v45];
+    [connectionCopy setEarlyCompletedBlock:v45];
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
     v43[2] = __70__FSModuleConnector_formatWithOptions_connection_taskID_replyHandler___block_invoke_2;
     v43[3] = &unk_278FECF08;
     v17 = v15;
     v44 = v17;
-    [v10 setLateCompletedBlock:v43];
+    [connectionCopy setLateCompletedBlock:v43];
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = __70__FSModuleConnector_formatWithOptions_connection_taskID_replyHandler___block_invoke_3;
     v42[3] = &unk_278FECF30;
     v42[4] = &buf;
-    [v10 connect:v42];
+    [connectionCopy connect:v42];
     if (*(*(&buf + 1) + 40))
     {
       v18 = fskit_std_log();
@@ -888,7 +888,7 @@ LABEL_11:
         _os_log_impl(&dword_24A929000, v18, OS_LOG_TYPE_DEFAULT, "formatWithOptions: encountered on connect error!", v41, 2u);
       }
 
-      (*(v11 + 2))(v11, 0, *(*(&buf + 1) + 40));
+      (*(handlerCopy + 2))(handlerCopy, 0, *(*(&buf + 1) + 40));
       v19 = 0;
       v20 = 0;
     }
@@ -896,11 +896,11 @@ LABEL_11:
     else
     {
       v21 = FSTaskPurposeFormat[0];
-      v22 = [(FSModuleExtension *)v16 bundleID];
-      v23 = [(FSModuleExtension *)v16 instanceID];
-      v24 = [FSTaskDescription taskDescriptionWithID:v29 state:1 purpose:v21 error:0 bundleID:v22 extensionID:v23 resource:0];
+      bundleID = [(FSModuleExtension *)v16 bundleID];
+      instanceID = [(FSModuleExtension *)v16 instanceID];
+      v24 = [FSTaskDescription taskDescriptionWithID:dCopy state:1 purpose:v21 error:0 bundleID:bundleID extensionID:instanceID resource:0];
 
-      v25 = [[FSTask alloc] initWithMessageConnection:v10 taskID:v29];
+      v25 = [[FSTask alloc] initWithMessageConnection:connectionCopy taskID:dCopy];
       v26 = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
@@ -909,15 +909,15 @@ LABEL_11:
       v20 = v24;
       v31 = v20;
       v32 = v17;
-      v33 = v13;
+      v33 = delegate;
       v19 = v25;
       v34 = v19;
-      v35 = v28;
+      v35 = optionsCopy;
       v36 = v16;
-      v37 = v29;
-      v40 = v11;
-      v38 = v10;
-      v39 = self;
+      v37 = dCopy;
+      v40 = handlerCopy;
+      v38 = connectionCopy;
+      selfCopy = self;
       dispatch_async(v26, block);
     }
 
@@ -926,8 +926,8 @@ LABEL_11:
 
   else
   {
-    v13 = fs_errorForPOSIXError(45);
-    (*(v11 + 2))(v11, 0, v13);
+    delegate = fs_errorForPOSIXError(45);
+    (*(handlerCopy + 2))(handlerCopy, 0, delegate);
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -1048,12 +1048,12 @@ LABEL_11:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)loadResource:(id)a3 options:(id)a4 replyHandler:(id)a5
+- (void)loadResource:(id)resource options:(id)options replyHandler:(id)handler
 {
   v55 = *MEMORY[0x277D85DE8];
-  v25 = a3;
-  v26 = a4;
-  v8 = a5;
+  resourceCopy = resource;
+  optionsCopy = options;
+  handlerCopy = handler;
   v9 = fskit_std_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -1080,10 +1080,10 @@ LABEL_11:
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v12 = [v26 taskOptions];
-    v13 = [v12 taskOptions];
+    taskOptions = [optionsCopy taskOptions];
+    v12TaskOptions = [taskOptions taskOptions];
 
-    v14 = [v13 countByEnumeratingWithState:&v41 objects:v49 count:16];
+    v14 = [v12TaskOptions countByEnumeratingWithState:&v41 objects:v49 count:16];
     if (v14)
     {
       v15 = *v42;
@@ -1094,10 +1094,10 @@ LABEL_11:
         {
           if (*v42 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(v12TaskOptions);
           }
 
-          if ([*(*(&v41 + 1) + 8 * v16) containsString:{@"-f", v25}])
+          if ([*(*(&v41 + 1) + 8 * v16) containsString:{@"-f", resourceCopy}])
           {
             *(v46 + 24) = 1;
           }
@@ -1106,7 +1106,7 @@ LABEL_11:
         }
 
         while (v14 != v16);
-        v14 = [v13 countByEnumeratingWithState:&v41 objects:v49 count:16];
+        v14 = [v12TaskOptions countByEnumeratingWithState:&v41 objects:v49 count:16];
       }
 
       while (v14);
@@ -1119,10 +1119,10 @@ LABEL_11:
     v17 = v10;
     v34 = v17;
     v39 = &v45;
-    v18 = v25;
+    v18 = resourceCopy;
     v35 = v18;
-    v19 = v8;
-    v37 = self;
+    v19 = handlerCopy;
+    selfCopy = self;
     v38 = v19;
     p_buf = &buf;
     v36 = v11;
@@ -1134,7 +1134,7 @@ LABEL_11:
     block[3] = &unk_278FED070;
     v28 = v17;
     v29 = v18;
-    v30 = v26;
+    v30 = optionsCopy;
     v31 = v21;
     v32 = v19;
     v22 = v21;
@@ -1147,7 +1147,7 @@ LABEL_11:
   else
   {
     v23 = fs_errorForPOSIXError(45);
-    (*(v8 + 2))(v8, 0, v23);
+    (*(handlerCopy + 2))(handlerCopy, 0, v23);
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -1496,12 +1496,12 @@ LABEL_8:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unloadResource:(id)a3 options:(id)a4 replyHandler:(id)a5
+- (void)unloadResource:(id)resource options:(id)options replyHandler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resourceCopy = resource;
+  optionsCopy = options;
+  handlerCopy = handler;
   v11 = fskit_std_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -1519,12 +1519,12 @@ LABEL_8:
     aBlock[3] = &unk_278FED098;
     v13 = v12;
     v26 = v13;
-    v27 = self;
-    v14 = v8;
+    selfCopy = self;
+    v14 = resourceCopy;
     v28 = v14;
-    v29 = v10;
+    v29 = handlerCopy;
     v15 = _Block_copy(aBlock);
-    v16 = [(_EXExtension *)v13 delegate];
+    delegate = [(_EXExtension *)v13 delegate];
     v17 = objc_opt_respondsToSelector();
 
     if (v17)
@@ -1536,7 +1536,7 @@ LABEL_8:
       v20[3] = &unk_278FED0C0;
       v21 = v13;
       v22 = v14;
-      v23 = v9;
+      v23 = optionsCopy;
       v24 = v15;
       dispatch_async(v18, v20);
     }
@@ -1550,7 +1550,7 @@ LABEL_8:
   else
   {
     v13 = fs_errorForPOSIXError(45);
-    (*(v10 + 2))(v10, v13);
+    (*(handlerCopy + 2))(handlerCopy, v13);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -1597,12 +1597,12 @@ void __57__FSModuleConnector_unloadResource_options_replyHandler___block_invoke_
   [v6 unloadResource:v4 options:v5 replyHandler:*(a1 + 56)];
 }
 
-- (void)activateVolume:(id)a3 resource:(id)a4 options:(id)a5 replyHandler:(id)a6
+- (void)activateVolume:(id)volume resource:(id)resource options:(id)options replyHandler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  volumeCopy = volume;
+  optionsCopy = options;
+  handlerCopy = handler;
   v12 = fskit_std_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -1612,24 +1612,24 @@ void __57__FSModuleConnector_unloadResource_options_replyHandler___block_invoke_
   }
 
   v13 = self->_ourModule;
-  v14 = [(FSModuleExtension *)v13 volumes];
-  v15 = [v14 objectForKeyedSubscript:v9];
+  volumes = [(FSModuleExtension *)v13 volumes];
+  v15 = [volumes objectForKeyedSubscript:volumeCopy];
 
   if (v15 && ([v15 volume], v16 = objc_claimAutoreleasedReturnValue(), v16, v16))
   {
-    v17 = [v15 volume];
+    volume = [v15 volume];
     v18 = dispatch_get_global_queue(0, 0);
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __66__FSModuleConnector_activateVolume_resource_options_replyHandler___block_invoke;
     v22[3] = &unk_278FED138;
-    v23 = v17;
-    v24 = v10;
-    v25 = v9;
-    v28 = v11;
+    v23 = volume;
+    v24 = optionsCopy;
+    v25 = volumeCopy;
+    v28 = handlerCopy;
     v26 = v13;
     v27 = v15;
-    v19 = v17;
+    v19 = volume;
     dispatch_async(v18, v22);
   }
 
@@ -1642,7 +1642,7 @@ void __57__FSModuleConnector_unloadResource_options_replyHandler___block_invoke_
     }
 
     v19 = fs_errorForPOSIXError(45);
-    (*(v11 + 2))(v11, v19);
+    (*(handlerCopy + 2))(handlerCopy, v19);
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -1734,11 +1734,11 @@ uint64_t __66__FSModuleConnector_activateVolume_resource_options_replyHandler___
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)deactivateVolume:(id)a3 numericOptions:(unint64_t)a4 replyHandler:(id)a5
+- (void)deactivateVolume:(id)volume numericOptions:(unint64_t)options replyHandler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  volumeCopy = volume;
+  handlerCopy = handler;
   v10 = fskit_std_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -1748,20 +1748,20 @@ uint64_t __66__FSModuleConnector_activateVolume_resource_options_replyHandler___
   }
 
   v11 = self->_ourModule;
-  v12 = [(FSModuleExtension *)v11 volumes];
-  v13 = [v12 objectForKeyedSubscript:v8];
+  volumes = [(FSModuleExtension *)v11 volumes];
+  v13 = [volumes objectForKeyedSubscript:volumeCopy];
 
   if (v13 && ([v13 volume], v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
   {
-    v15 = [v13 volume];
+    volume = [v13 volume];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __66__FSModuleConnector_deactivateVolume_numericOptions_replyHandler___block_invoke;
     v18[3] = &unk_278FED0E8;
-    v19 = v8;
+    v19 = volumeCopy;
     v20 = v13;
-    v21 = v9;
-    [v15 deactivateWithOptions:a4 replyHandler:v18];
+    v21 = handlerCopy;
+    [volume deactivateWithOptions:options replyHandler:v18];
   }
 
   else
@@ -1772,8 +1772,8 @@ uint64_t __66__FSModuleConnector_activateVolume_resource_options_replyHandler___
       [FSModuleConnector deactivateVolume:numericOptions:replyHandler:];
     }
 
-    v15 = fs_errorForPOSIXError(45);
-    (*(v9 + 2))(v9, v15);
+    volume = fs_errorForPOSIXError(45);
+    (*(handlerCopy + 2))(handlerCopy, volume);
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -1795,29 +1795,29 @@ void __66__FSModuleConnector_deactivateVolume_numericOptions_replyHandler___bloc
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)getModuleListenerEndpoint:(id)a3
+- (void)getModuleListenerEndpoint:(id)endpoint
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(FSModuleExtension *)self->_ourModule secondaryListener];
+  endpointCopy = endpoint;
+  secondaryListener = [(FSModuleExtension *)self->_ourModule secondaryListener];
   v6 = fskit_std_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = secondaryListener;
     _os_log_impl(&dword_24A929000, v6, OS_LOG_TYPE_DEFAULT, "getModuleListenerEndpoint got listener %@", &v9, 0xCu);
   }
 
-  if (v5)
+  if (secondaryListener)
   {
-    v7 = [v5 endpoint];
-    v4[2](v4, v7, 0);
+    endpoint = [secondaryListener endpoint];
+    endpointCopy[2](endpointCopy, endpoint, 0);
   }
 
   else
   {
-    v7 = fs_errorForPOSIXError(12);
-    (v4)[2](v4, 0, v7);
+    endpoint = fs_errorForPOSIXError(12);
+    (endpointCopy)[2](endpointCopy, 0, endpoint);
   }
 
   v8 = *MEMORY[0x277D85DE8];

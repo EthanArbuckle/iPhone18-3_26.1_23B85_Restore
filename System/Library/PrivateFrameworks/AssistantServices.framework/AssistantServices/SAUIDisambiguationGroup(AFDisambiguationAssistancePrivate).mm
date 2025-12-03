@@ -10,7 +10,7 @@
 
 - (id)af_assistedSelectionItem
 {
-  v1 = _af_AssistedSelectionItem(a1);
+  v1 = _af_AssistedSelectionItem(self);
   v2 = +[AFAnalytics sharedAnalytics];
   v3 = v2;
   if (v1)
@@ -30,13 +30,13 @@
 
 - (void)af_setDisambiguationInfo:()AFDisambiguationAssistancePrivate
 {
-  v4 = a1;
+  selfCopy = self;
   v5 = a3;
-  objc_setAssociatedObject(v4, "DisambiguationInfoKey", v5, 1);
+  objc_setAssociatedObject(selfCopy, "DisambiguationInfoKey", v5, 1);
   v7 = objc_alloc_init(AFDisambiguationStore);
-  v6 = [v4 af_disambiguationIdentifier];
+  af_disambiguationIdentifier = [selfCopy af_disambiguationIdentifier];
 
-  [(AFDisambiguationStore *)v7 saveInfo:v5 forIdentifier:v6];
+  [(AFDisambiguationStore *)v7 saveInfo:v5 forIdentifier:af_disambiguationIdentifier];
 }
 
 - (id)af_itemForIndexIdentifier:()AFDisambiguationAssistancePrivate
@@ -48,13 +48,13 @@
     v8 = v5;
     v9 = v6;
     v10 = [v4 substringToIndex:v5];
-    v11 = [v10 integerValue];
-    v12 = [a1 disambiguationLists];
-    v13 = [v12 count];
+    integerValue = [v10 integerValue];
+    disambiguationLists = [self disambiguationLists];
+    v13 = [disambiguationLists count];
     v14 = v13;
-    if (v11)
+    if (integerValue)
     {
-      if (v11 >= v13)
+      if (integerValue >= v13)
       {
         v15 = 0x7FFFFFFFFFFFFFFFLL;
         goto LABEL_11;
@@ -75,7 +75,7 @@ LABEL_11:
 
         else
         {
-          v17 = [v12 objectAtIndexedSubscript:v15];
+          v17 = [disambiguationLists objectAtIndexedSubscript:v15];
           v7 = [v17 af_itemForIndexIdentifier:v16];
         }
 
@@ -83,14 +83,14 @@ LABEL_11:
       }
     }
 
-    if (v11 >= 0x7FFFFFFFFFFFFFFFLL)
+    if (integerValue >= 0x7FFFFFFFFFFFFFFFLL)
     {
       v15 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
     {
-      v15 = v11;
+      v15 = integerValue;
     }
 
     goto LABEL_11;
@@ -110,8 +110,8 @@ LABEL_15:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [a1 disambiguationLists];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  disambiguationLists = [self disambiguationLists];
+  v6 = [disambiguationLists countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -126,7 +126,7 @@ LABEL_15:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(disambiguationLists);
         }
 
         v12 = [*(*(&v17 + 1) + 8 * v10) af_indexIdentifierForItem:v4];
@@ -152,7 +152,7 @@ LABEL_15:
       }
 
       while (v7 != v10);
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [disambiguationLists countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v7)
       {
         continue;
@@ -180,8 +180,8 @@ LABEL_13:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [a1 disambiguationLists];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  disambiguationLists = [self disambiguationLists];
+  v3 = [disambiguationLists countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -192,13 +192,13 @@ LABEL_13:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(disambiguationLists);
         }
 
         _UpdateSha1WithDisambiguationList(&c, *(*(&v10 + 1) + 8 * i));
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v4 = [disambiguationLists countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v4);

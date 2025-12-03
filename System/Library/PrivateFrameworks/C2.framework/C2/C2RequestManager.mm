@@ -1,18 +1,18 @@
 @interface C2RequestManager
 + (void)initialize;
 - (C2RequestManager)init;
-- (id)createDataTaskWithRequest:(id)a3 options:(id)a4 delegate:(id)a5 sessionHandle:(id *)a6;
-- (id)testUtility_sessionForTask:(id)a3;
-- (id)testUtility_sessionTaskForTask:(id)a3;
-- (void)_testUtility_forTask:(id)a3 sessionHandle:(id *)a4 taskHandle:(id *)a5;
+- (id)createDataTaskWithRequest:(id)request options:(id)options delegate:(id)delegate sessionHandle:(id *)handle;
+- (id)testUtility_sessionForTask:(id)task;
+- (id)testUtility_sessionTaskForTask:(id)task;
+- (void)_testUtility_forTask:(id)task sessionHandle:(id *)handle taskHandle:(id *)taskHandle;
 @end
 
 @implementation C2RequestManager
 
 + (void)initialize
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"C2RequestManager.m" lineNumber:16 description:{@"Failed to alloc/init C2RequestManager, crash."}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"C2RequestManager.m" lineNumber:16 description:{@"Failed to alloc/init C2RequestManager, crash."}];
 }
 
 - (C2RequestManager)init
@@ -73,20 +73,20 @@ uint64_t __24__C2RequestManager_init__block_invoke_12()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)createDataTaskWithRequest:(id)a3 options:(id)a4 delegate:(id)a5 sessionHandle:(id *)a6
+- (id)createDataTaskWithRequest:(id)request options:(id)options delegate:(id)delegate sessionHandle:(id *)handle
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v11 metricOptions];
-  [v13 rollReportFrequencyRandomValue];
+  requestCopy = request;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  metricOptions = [optionsCopy metricOptions];
+  [metricOptions rollReportFrequencyRandomValue];
 
   v14 = objc_autoreleasePoolPush();
   Current = CFAbsoluteTimeGetCurrent();
-  v16 = [(C2RequestManager *)self sessionPool];
-  v17 = [v11 identifier];
-  v18 = [v16 createDataTaskWithRequestIdentifer:v17 request:v10 options:v11 delegate:v12 sessionHandle:a6];
+  sessionPool = [(C2RequestManager *)self sessionPool];
+  identifier = [optionsCopy identifier];
+  v18 = [sessionPool createDataTaskWithRequestIdentifer:identifier request:requestCopy options:optionsCopy delegate:delegateCopy sessionHandle:handle];
 
   v19 = CFAbsoluteTimeGetCurrent() - Current;
   if (C2_DEFAULT_LOG_BLOCK_7 != -1)
@@ -110,7 +110,7 @@ uint64_t __24__C2RequestManager_init__block_invoke_12()
     v24 = 134218498;
     v25 = v19;
     v26 = 2112;
-    v27 = v10;
+    v27 = requestCopy;
     v28 = 2112;
     v29 = v18;
     _os_log_impl(&dword_242158000, v20, v21, "Creation of data task took %.3f seconds for request %@ resulting in task %@.", &v24, 0x20u);
@@ -130,48 +130,48 @@ uint64_t __77__C2RequestManager_createDataTaskWithRequest_options_delegate_sessi
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)testUtility_sessionForTask:(id)a3
+- (id)testUtility_sessionForTask:(id)task
 {
   v5 = 0;
-  [(C2RequestManager *)self _testUtility_forTask:a3 sessionHandle:&v5 taskHandle:0];
+  [(C2RequestManager *)self _testUtility_forTask:task sessionHandle:&v5 taskHandle:0];
   v3 = v5;
 
   return v3;
 }
 
-- (id)testUtility_sessionTaskForTask:(id)a3
+- (id)testUtility_sessionTaskForTask:(id)task
 {
   v5 = 0;
-  [(C2RequestManager *)self _testUtility_forTask:a3 sessionHandle:0 taskHandle:&v5];
+  [(C2RequestManager *)self _testUtility_forTask:task sessionHandle:0 taskHandle:&v5];
   v3 = v5;
 
   return v3;
 }
 
-- (void)_testUtility_forTask:(id)a3 sessionHandle:(id *)a4 taskHandle:(id *)a5
+- (void)_testUtility_forTask:(id)task sessionHandle:(id *)handle taskHandle:(id *)taskHandle
 {
   v46 = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v35, "taskIdentifier")}];
+  taskCopy = task;
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(taskCopy, "taskIdentifier")}];
   if (!v7)
   {
     [C2RequestManager _testUtility_forTask:a2 sessionHandle:self taskHandle:?];
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  v28 = v8->_sessionPool;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v28 = selfCopy->_sessionPool;
   objc_sync_enter(v28);
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v27 = v8;
-  v9 = [(C2SessionPool *)v8->_sessionPool sessionGroupForSessionConfigurationName];
-  v10 = [v9 allValues];
+  v27 = selfCopy;
+  sessionGroupForSessionConfigurationName = [(C2SessionPool *)selfCopy->_sessionPool sessionGroupForSessionConfigurationName];
+  allValues = [sessionGroupForSessionConfigurationName allValues];
 
-  v11 = [v10 countByEnumeratingWithState:&v40 objects:v45 count:16];
-  obj = v10;
+  v11 = [allValues countByEnumeratingWithState:&v40 objects:v45 count:16];
+  obj = allValues;
   if (v11)
   {
     v12 = 0;
@@ -191,8 +191,8 @@ uint64_t __77__C2RequestManager_createDataTaskWithRequest_options_delegate_sessi
         v37 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v14 = [v13 sessions];
-        v15 = [v14 countByEnumeratingWithState:&v36 objects:v44 count:16];
+        sessions = [v13 sessions];
+        v15 = [sessions countByEnumeratingWithState:&v36 objects:v44 count:16];
         if (v15)
         {
           v16 = *v37;
@@ -203,19 +203,19 @@ LABEL_10:
           {
             if (*v37 != v16)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(sessions);
             }
 
             v19 = *(*(&v36 + 1) + 8 * v17);
             objc_sync_enter(v19);
-            v20 = [v19 wrappedTaskByTaskIdentifier];
-            v12 = [v20 objectForKeyedSubscript:v7];
+            wrappedTaskByTaskIdentifier = [v19 wrappedTaskByTaskIdentifier];
+            v12 = [wrappedTaskByTaskIdentifier objectForKeyedSubscript:v7];
 
             if (v12)
             {
-              v21 = [v12 taskDescription];
-              v22 = [v35 taskDescription];
-              v23 = [v21 isEqual:v22];
+              taskDescription = [v12 taskDescription];
+              taskDescription2 = [taskCopy taskDescription];
+              v23 = [taskDescription isEqual:taskDescription2];
 
               if (v23)
               {
@@ -229,7 +229,7 @@ LABEL_10:
             v18 = v12;
             if (v15 == v17)
             {
-              v15 = [v14 countByEnumeratingWithState:&v36 objects:v44 count:16];
+              v15 = [sessions countByEnumeratingWithState:&v36 objects:v44 count:16];
               if (v15)
               {
                 goto LABEL_10;
@@ -270,16 +270,16 @@ LABEL_24:
   objc_sync_exit(v28);
   objc_sync_exit(v27);
 
-  if (a4)
+  if (handle)
   {
     v24 = v19;
-    *a4 = v19;
+    *handle = v19;
   }
 
-  if (a5)
+  if (taskHandle)
   {
     v25 = v12;
-    *a5 = v12;
+    *taskHandle = v12;
   }
 
   v26 = *MEMORY[0x277D85DE8];

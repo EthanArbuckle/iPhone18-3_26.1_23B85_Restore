@@ -1,54 +1,54 @@
 @interface TPPBPeerPermanentInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEpoch:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEpoch:(BOOL)epoch;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TPPBPeerPermanentInfo
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((v4[7] & 2) != 0)
+  fromCopy = from;
+  if ((fromCopy[7] & 2) != 0)
   {
-    self->_epoch = v4[2];
+    self->_epoch = fromCopy[2];
     *&self->_has |= 2u;
   }
 
-  v5 = v4;
-  if (v4[6])
+  v5 = fromCopy;
+  if (fromCopy[6])
   {
     [(TPPBPeerPermanentInfo *)self setSigningPubKey:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(TPPBPeerPermanentInfo *)self setEncryptionPubKey:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(TPPBPeerPermanentInfo *)self setMachineId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
     [(TPPBPeerPermanentInfo *)self setModelId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[7])
+  if (fromCopy[7])
   {
-    self->_creationTime = v4[1];
+    self->_creationTime = fromCopy[1];
     *&self->_has |= 1u;
   }
 }
@@ -82,24 +82,24 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = *(v4 + 56);
+  v5 = *(equalCopy + 56);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_epoch != *(v4 + 2))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_epoch != *(equalCopy + 2))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 56) & 2) != 0)
+  else if ((*(equalCopy + 56) & 2) != 0)
   {
 LABEL_19:
     v10 = 0;
@@ -107,13 +107,13 @@ LABEL_19:
   }
 
   signingPubKey = self->_signingPubKey;
-  if (signingPubKey | *(v4 + 6) && ![(NSData *)signingPubKey isEqual:?])
+  if (signingPubKey | *(equalCopy + 6) && ![(NSData *)signingPubKey isEqual:?])
   {
     goto LABEL_19;
   }
 
   encryptionPubKey = self->_encryptionPubKey;
-  if (encryptionPubKey | *(v4 + 3))
+  if (encryptionPubKey | *(equalCopy + 3))
   {
     if (![(NSData *)encryptionPubKey isEqual:?])
     {
@@ -122,7 +122,7 @@ LABEL_19:
   }
 
   machineId = self->_machineId;
-  if (machineId | *(v4 + 4))
+  if (machineId | *(equalCopy + 4))
   {
     if (![(NSString *)machineId isEqual:?])
     {
@@ -131,7 +131,7 @@ LABEL_19:
   }
 
   modelId = self->_modelId;
-  if (modelId | *(v4 + 5))
+  if (modelId | *(equalCopy + 5))
   {
     if (![(NSString *)modelId isEqual:?])
     {
@@ -139,10 +139,10 @@ LABEL_19:
     }
   }
 
-  v10 = (*(v4 + 56) & 1) == 0;
+  v10 = (*(equalCopy + 56) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_creationTime != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_creationTime != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
@@ -155,9 +155,9 @@ LABEL_20:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -165,19 +165,19 @@ LABEL_20:
     *(v5 + 56) |= 2u;
   }
 
-  v7 = [(NSData *)self->_signingPubKey copyWithZone:a3];
+  v7 = [(NSData *)self->_signingPubKey copyWithZone:zone];
   v8 = *(v6 + 48);
   *(v6 + 48) = v7;
 
-  v9 = [(NSData *)self->_encryptionPubKey copyWithZone:a3];
+  v9 = [(NSData *)self->_encryptionPubKey copyWithZone:zone];
   v10 = *(v6 + 24);
   *(v6 + 24) = v9;
 
-  v11 = [(NSString *)self->_machineId copyWithZone:a3];
+  v11 = [(NSString *)self->_machineId copyWithZone:zone];
   v12 = *(v6 + 32);
   *(v6 + 32) = v11;
 
-  v13 = [(NSString *)self->_modelId copyWithZone:a3];
+  v13 = [(NSString *)self->_modelId copyWithZone:zone];
   v14 = *(v6 + 40);
   *(v6 + 40) = v13;
 
@@ -190,50 +190,50 @@ LABEL_20:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[2] = self->_epoch;
-    *(v4 + 56) |= 2u;
+    toCopy[2] = self->_epoch;
+    *(toCopy + 56) |= 2u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_signingPubKey)
   {
-    [v4 setSigningPubKey:?];
-    v4 = v5;
+    [toCopy setSigningPubKey:?];
+    toCopy = v5;
   }
 
   if (self->_encryptionPubKey)
   {
     [v5 setEncryptionPubKey:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_machineId)
   {
     [v5 setMachineId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_modelId)
   {
     [v5 setModelId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[1] = self->_creationTime;
-    *(v4 + 56) |= 1u;
+    toCopy[1] = self->_creationTime;
+    *(toCopy + 56) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
     epoch = self->_epoch;
@@ -269,44 +269,44 @@ LABEL_20:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_epoch];
-    [v3 setObject:v4 forKey:@"epoch"];
+    [dictionary setObject:v4 forKey:@"epoch"];
   }
 
   signingPubKey = self->_signingPubKey;
   if (signingPubKey)
   {
-    [v3 setObject:signingPubKey forKey:@"signing_pub_key"];
+    [dictionary setObject:signingPubKey forKey:@"signing_pub_key"];
   }
 
   encryptionPubKey = self->_encryptionPubKey;
   if (encryptionPubKey)
   {
-    [v3 setObject:encryptionPubKey forKey:@"encryption_pub_key"];
+    [dictionary setObject:encryptionPubKey forKey:@"encryption_pub_key"];
   }
 
   machineId = self->_machineId;
   if (machineId)
   {
-    [v3 setObject:machineId forKey:@"machine_id"];
+    [dictionary setObject:machineId forKey:@"machine_id"];
   }
 
   modelId = self->_modelId;
   if (modelId)
   {
-    [v3 setObject:modelId forKey:@"model_id"];
+    [dictionary setObject:modelId forKey:@"model_id"];
   }
 
   if (*&self->_has)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_creationTime];
-    [v3 setObject:v9 forKey:@"creation_time"];
+    [dictionary setObject:v9 forKey:@"creation_time"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -315,15 +315,15 @@ LABEL_20:
   v8.receiver = self;
   v8.super_class = TPPBPeerPermanentInfo;
   v4 = [(TPPBPeerPermanentInfo *)&v8 description];
-  v5 = [(TPPBPeerPermanentInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(TPPBPeerPermanentInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasEpoch:(BOOL)a3
+- (void)setHasEpoch:(BOOL)epoch
 {
-  if (a3)
+  if (epoch)
   {
     v3 = 2;
   }

@@ -1,19 +1,19 @@
 @interface RPNWUtils
-+ (BOOL)checkPid:(int)a3 hasEntitlement:(id)a4;
-+ (BOOL)shouldBypassPrefixBundleIDFromParameters:(id)a3;
-+ (id)_quicProtocolOptionsFromParameters:(id)a3;
-+ (id)createTokenForClient:(id)a3;
-+ (id)publicKeyFromAgentClient:(id)a3;
++ (BOOL)checkPid:(int)pid hasEntitlement:(id)entitlement;
++ (BOOL)shouldBypassPrefixBundleIDFromParameters:(id)parameters;
++ (id)_quicProtocolOptionsFromParameters:(id)parameters;
++ (id)createTokenForClient:(id)client;
++ (id)publicKeyFromAgentClient:(id)client;
 @end
 
 @implementation RPNWUtils
 
-+ (id)createTokenForClient:(id)a3
++ (id)createTokenForClient:(id)client
 {
   *uu = 0;
   v10 = 0;
   memset(out, 0, 37);
-  v3 = a3;
+  clientCopy = client;
   nw_agent_client_get_uuid();
   uuid_unparse(uu, out);
   v4 = nw_agent_client_copy_parameters();
@@ -33,9 +33,9 @@
   return v6;
 }
 
-+ (BOOL)checkPid:(int)a3 hasEntitlement:(id)a4
++ (BOOL)checkPid:(int)pid hasEntitlement:(id)entitlement
 {
-  v5 = a4;
+  entitlementCopy = entitlement;
   if (dword_1001D2F60 <= 30 && (dword_1001D2F60 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -44,7 +44,7 @@
   memset(&task_info_out, 0, sizeof(task_info_out));
   task_info_outCnt = 8;
   tn = 0;
-  if (task_name_for_pid(mach_task_self_, a3, &tn))
+  if (task_name_for_pid(mach_task_self_, pid, &tn))
   {
     if (dword_1001D2F60 <= 90 && (dword_1001D2F60 != -1 || _LogCategory_Initialize()))
     {
@@ -70,7 +70,7 @@
   {
     v9 = v8;
     *token.val = 0;
-    v10 = SecTaskCopyValueForEntitlement(v8, v5, &token);
+    v10 = SecTaskCopyValueForEntitlement(v8, entitlementCopy, &token);
     v11 = *token.val;
     if (*token.val)
     {
@@ -128,13 +128,13 @@ LABEL_15:
   return v6;
 }
 
-+ (id)publicKeyFromAgentClient:(id)a3
++ (id)publicKeyFromAgentClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v5 = nw_agent_client_copy_parameters();
   if (v5)
   {
-    v6 = [a1 _quicProtocolOptionsFromParameters:v5];
+    v6 = [self _quicProtocolOptionsFromParameters:v5];
     if (v6)
     {
       v7 = nw_quic_options_copy_local_public_key();
@@ -174,10 +174,10 @@ LABEL_15:
   return v8;
 }
 
-+ (id)_quicProtocolOptionsFromParameters:(id)a3
++ (id)_quicProtocolOptionsFromParameters:(id)parameters
 {
-  v3 = a3;
-  v4 = nw_parameters_copy_default_protocol_stack(v3);
+  parametersCopy = parameters;
+  v4 = nw_parameters_copy_default_protocol_stack(parametersCopy);
   v5 = v4;
   if (v4)
   {
@@ -210,9 +210,9 @@ LABEL_15:
   return v6;
 }
 
-+ (BOOL)shouldBypassPrefixBundleIDFromParameters:(id)a3
++ (BOOL)shouldBypassPrefixBundleIDFromParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   v4 = nw_parameters_copy_custom_options();
   v5 = v4;
   if (!v4)
@@ -246,7 +246,7 @@ LABEL_15:
     }
 
 LABEL_20:
-    v14 = 0;
+    bOOLValue = 0;
     goto LABEL_26;
   }
 
@@ -267,7 +267,7 @@ LABEL_20:
       sub_10010DB5C();
     }
 
-    v14 = 0;
+    bOOLValue = 0;
   }
 
   else
@@ -278,11 +278,11 @@ LABEL_20:
     }
 
     v15 = [v12 objectForKeyedSubscript:@"shouldBypassPrefixBundleID"];
-    v14 = [v15 BOOLValue];
+    bOOLValue = [v15 BOOLValue];
   }
 
 LABEL_26:
-  return v14;
+  return bOOLValue;
 }
 
 @end

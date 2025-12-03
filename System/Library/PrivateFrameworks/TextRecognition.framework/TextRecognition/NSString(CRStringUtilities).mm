@@ -18,24 +18,24 @@
 
 - (uint64_t)_crConvertToUnicode32
 {
-  if ([a1 length] == 1)
+  if ([self length] == 1)
   {
-    return [a1 characterAtIndex:0];
+    return [self characterAtIndex:0];
   }
 
-  if ([a1 length] != 2)
+  if ([self length] != 2)
   {
     return 0;
   }
 
-  v3 = [a1 characterAtIndex:0];
-  return ([a1 characterAtIndex:1] + (v3 << 10) - 56613888);
+  v3 = [self characterAtIndex:0];
+  return ([self characterAtIndex:1] + (v3 << 10) - 56613888);
 }
 
 - (uint64_t)_crContainsText
 {
-  v2 = [MEMORY[0x1E696AB08] letterCharacterSet];
-  v3 = [a1 _crContainsCharactersInSet:v2];
+  letterCharacterSet = [MEMORY[0x1E696AB08] letterCharacterSet];
+  v3 = [self _crContainsCharactersInSet:letterCharacterSet];
 
   return v3;
 }
@@ -46,13 +46,13 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [a1 length];
+  v2 = [self length];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __53__NSString_CRStringUtilities___crStartsWithUppercase__block_invoke;
   v5[3] = &unk_1E7BC1FB8;
   v5[4] = &v6;
-  [a1 enumerateSubstringsInRange:0 options:v2 usingBlock:{2, v5}];
+  [self enumerateSubstringsInRange:0 options:v2 usingBlock:{2, v5}];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -64,13 +64,13 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [a1 length];
+  v2 = [self length];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __53__NSString_CRStringUtilities___crStartsWithLowercase__block_invoke;
   v5[3] = &unk_1E7BC1FB8;
   v5[4] = &v6;
-  [a1 enumerateSubstringsInRange:0 options:v2 usingBlock:{2, v5}];
+  [self enumerateSubstringsInRange:0 options:v2 usingBlock:{2, v5}];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -78,11 +78,11 @@
 
 - (uint64_t)_crIsAllCaps
 {
-  v2 = [a1 uppercaseString];
-  if ([v2 isEqualToString:a1])
+  uppercaseString = [self uppercaseString];
+  if ([uppercaseString isEqualToString:self])
   {
-    v3 = [a1 lowercaseString];
-    v4 = [v3 isEqualToString:a1] ^ 1;
+    lowercaseString = [self lowercaseString];
+    v4 = [lowercaseString isEqualToString:self] ^ 1;
   }
 
   else
@@ -100,13 +100,13 @@
     dispatch_once(&qword_1ED95FEB8, &__block_literal_global_8);
   }
 
-  if (![a1 length])
+  if (![self length])
   {
     return 0;
   }
 
-  v2 = [a1 stringByTrimmingCharactersInSet:_MergedGlobals_15];
-  v3 = [a1 hasSuffix:v2] ^ 1;
+  v2 = [self stringByTrimmingCharactersInSet:_MergedGlobals_15];
+  v3 = [self hasSuffix:v2] ^ 1;
 
   return v3;
 }
@@ -114,7 +114,7 @@
 - (uint64_t)_crCountConsecutiveCharactersAtIndex:()CRStringUtilities fromSet:
 {
   v6 = a4;
-  if ([a1 length] <= a3)
+  if ([self length] <= a3)
   {
     v7 = 0;
   }
@@ -124,7 +124,7 @@
     v7 = 0;
     do
     {
-      if (![v6 characterIsMember:{objc_msgSend(a1, "characterAtIndex:", a3)}])
+      if (![v6 characterIsMember:{objc_msgSend(self, "characterAtIndex:", a3)}])
       {
         break;
       }
@@ -133,7 +133,7 @@
       ++a3;
     }
 
-    while (a3 < [a1 length]);
+    while (a3 < [self length]);
   }
 
   return v7;
@@ -142,7 +142,7 @@
 - (id)_crStringByReplacingCharactersInSet:()CRStringUtilities withString:
 {
   v6 = a4;
-  v7 = [a1 componentsSeparatedByCharactersInSet:a3];
+  v7 = [self componentsSeparatedByCharactersInSet:a3];
   v8 = [v7 componentsJoinedByString:v6];
 
   return v8;
@@ -150,25 +150,25 @@
 
 - (id)_crArrayOfComposedCharacters
 {
-  v2 = [MEMORY[0x1E695DF70] array];
-  v3 = [a1 length];
+  array = [MEMORY[0x1E695DF70] array];
+  v3 = [self length];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__NSString_CRStringUtilities___crArrayOfComposedCharacters__block_invoke;
   v6[3] = &unk_1E7BC2828;
-  v4 = v2;
+  v4 = array;
   v7 = v4;
-  [a1 enumerateSubstringsInRange:0 options:v3 usingBlock:{2, v6}];
+  [self enumerateSubstringsInRange:0 options:v3 usingBlock:{2, v6}];
 
   return v4;
 }
 
 - (id)_crReplacedUkrainianApostrophes
 {
-  if ([a1 length] > 2)
+  if ([self length] > 2)
   {
-    v3 = [a1 mutableCopy];
-    if (([a1 length] - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+    v3 = [self mutableCopy];
+    if (([self length] - 3) <= 0xFFFFFFFFFFFFFFFDLL)
     {
       v4 = 1;
       do
@@ -185,49 +185,49 @@
         ++v4;
       }
 
-      while (v7 < [a1 length] - 1);
+      while (v7 < [self length] - 1);
     }
 
-    v2 = [MEMORY[0x1E696AEC0] stringWithString:v3];
+    selfCopy = [MEMORY[0x1E696AEC0] stringWithString:v3];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)_crStringByRemovingInvalidArabicDiacritics
 {
   v55 = *MEMORY[0x1E69E9840];
-  if ([a1 length] <= 1)
+  if ([self length] <= 1)
   {
-    v45 = a1;
+    selfCopy = self;
     goto LABEL_60;
   }
 
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v4 = 0x1E696A000uLL;
-  if ([a1 length])
+  if ([self length])
   {
     v5 = 0;
     v6 = 0;
     do
     {
-      v53 = [a1 characterAtIndex:v6];
-      v7 = [*(v4 + 2824) _crBasicArabicCharacterSet];
-      if ([v7 characterIsMember:v53])
+      v53 = [self characterAtIndex:v6];
+      _crBasicArabicCharacterSet = [*(v4 + 2824) _crBasicArabicCharacterSet];
+      if ([_crBasicArabicCharacterSet characterIsMember:v53])
       {
         v8 = 1;
       }
 
       else
       {
-        v9 = [*(v4 + 2824) _crArabicDiacriticCharacterSet];
-        v8 = [v9 characterIsMember:v53];
+        _crArabicDiacriticCharacterSet = [*(v4 + 2824) _crArabicDiacriticCharacterSet];
+        v8 = [_crArabicDiacriticCharacterSet characterIsMember:v53];
 
         v4 = 0x1E696A000;
       }
@@ -254,7 +254,7 @@
       v5 = v8;
     }
 
-    while (v6 < [a1 length]);
+    while (v6 < [self length]);
   }
 
   if ([v3 length])
@@ -264,7 +264,7 @@
   }
 
   v38 = v3;
-  v45 = [MEMORY[0x1E696AD60] string];
+  selfCopy = [MEMORY[0x1E696AD60] string];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
@@ -287,11 +287,11 @@
 
         v42 = v14;
         v15 = *(*(&v49 + 1) + 8 * v14);
-        v16 = [MEMORY[0x1E696AB08] _crBasicArabicCharacterSet];
-        v48 = [v16 characterIsMember:v13];
+        _crBasicArabicCharacterSet2 = [MEMORY[0x1E696AB08] _crBasicArabicCharacterSet];
+        v48 = [_crBasicArabicCharacterSet2 characterIsMember:v13];
 
-        v17 = [MEMORY[0x1E696AB08] _crArabicDiacriticCharacterSet];
-        v18 = [v17 characterIsMember:v13];
+        _crArabicDiacriticCharacterSet2 = [MEMORY[0x1E696AB08] _crArabicDiacriticCharacterSet];
+        v18 = [_crArabicDiacriticCharacterSet2 characterIsMember:v13];
 
         if ([v15 length])
         {
@@ -301,14 +301,14 @@
           while (1)
           {
             v13 = [v15 characterAtIndex:v19];
-            v22 = [MEMORY[0x1E696AB08] _crBasicArabicCharacterSet];
-            v23 = [v22 characterIsMember:v13];
+            _crBasicArabicCharacterSet3 = [MEMORY[0x1E696AB08] _crBasicArabicCharacterSet];
+            v23 = [_crBasicArabicCharacterSet3 characterIsMember:v13];
 
-            v24 = [MEMORY[0x1E696AB08] _crArabicDiacriticCharacterSet];
-            v25 = [v24 characterIsMember:v13];
+            _crArabicDiacriticCharacterSet3 = [MEMORY[0x1E696AB08] _crArabicDiacriticCharacterSet];
+            v25 = [_crArabicDiacriticCharacterSet3 characterIsMember:v13];
 
-            v26 = [MEMORY[0x1E696AB08] _crArabicTanweenDiacriticCharacterSet];
-            v27 = [v26 characterIsMember:v13];
+            _crArabicTanweenDiacriticCharacterSet = [MEMORY[0x1E696AB08] _crArabicTanweenDiacriticCharacterSet];
+            v27 = [_crArabicTanweenDiacriticCharacterSet characterIsMember:v13];
 
             if (((v19 != 0) & (v48 | v18)) == 0)
             {
@@ -348,8 +348,8 @@
               if (v19 + 1 < [v15 length])
               {
                 v44 = v43 - (v30 == 1569);
-                v31 = [MEMORY[0x1E696AB08] _crBasicArabicCharacterSet];
-                v32 = [v15 rangeOfCharacterFromSet:v31 options:2 range:{v19 + 1, v20 + v44}];
+                _crBasicArabicCharacterSet4 = [MEMORY[0x1E696AB08] _crBasicArabicCharacterSet];
+                v32 = [v15 rangeOfCharacterFromSet:_crBasicArabicCharacterSet4 options:2 range:{v19 + 1, v20 + v44}];
 
                 if (v32 != 0x7FFFFFFFFFFFFFFFLL)
                 {
@@ -372,7 +372,7 @@
                   v13 = 1611;
 LABEL_54:
                   v53 = v13;
-                  [v45 replaceCharactersInRange:objc_msgSend(v45 withCharacters:"length") - 1 length:{1, &v53, 1}];
+                  [selfCopy replaceCharactersInRange:objc_msgSend(selfCopy withCharacters:"length") - 1 length:{1, &v53, 1}];
                   v25 = v18;
                   goto LABEL_35;
               }
@@ -380,7 +380,7 @@ LABEL_54:
               if ((v18 & v25 & 1) == 0)
               {
 LABEL_51:
-                [v45 appendFormat:@"%C", v47];
+                [selfCopy appendFormat:@"%C", v47];
                 v48 = v23;
                 goto LABEL_35;
               }
@@ -393,16 +393,16 @@ LABEL_51:
                 goto LABEL_51;
               }
 
-              v33 = [MEMORY[0x1E696AB08] _crArabicCombiningDiacriticCharacterSet];
-              v34 = [v33 characterIsMember:v13];
+              _crArabicCombiningDiacriticCharacterSet = [MEMORY[0x1E696AB08] _crArabicCombiningDiacriticCharacterSet];
+              v34 = [_crArabicCombiningDiacriticCharacterSet characterIsMember:v13];
 
               if (v21 == 1617 && (v34 & 1) != 0)
               {
                 goto LABEL_51;
               }
 
-              v35 = [MEMORY[0x1E696AB08] _crArabicCombiningDiacriticCharacterSet];
-              v36 = [v35 characterIsMember:v21];
+              _crArabicCombiningDiacriticCharacterSet2 = [MEMORY[0x1E696AB08] _crArabicCombiningDiacriticCharacterSet];
+              v36 = [_crArabicCombiningDiacriticCharacterSet2 characterIsMember:v21];
 
               if ((v46 & v36) == 1)
               {
@@ -441,19 +441,19 @@ LABEL_57:
 
 LABEL_60:
 
-  return v45;
+  return selfCopy;
 }
 
 - (id)_crStringByRemovingParenthesizedText
 {
-  if (a1 && [a1 length] > 1)
+  if (self && [self length] > 1)
   {
     if (qword_1ED95FEC8 != -1)
     {
       dispatch_once(&qword_1ED95FEC8, &__block_literal_global_32);
     }
 
-    v2 = [a1 mutableCopy];
+    v2 = [self mutableCopy];
     v4 = [v2 rangeOfCharacterFromSet:qword_1ED95FEC0 options:0 range:{0, objc_msgSend(v2, "length")}];
     if (v4 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -506,7 +506,7 @@ LABEL_60:
 
   else
   {
-    v2 = [a1 copy];
+    v2 = [self copy];
   }
 
   return v2;
@@ -514,15 +514,15 @@ LABEL_60:
 
 - (id)_crStringByReversingComposedCharacterSequences
 {
-  v2 = [MEMORY[0x1E696AD60] stringWithCapacity:{objc_msgSend(a1, "length")}];
-  v3 = [a1 length];
+  v2 = [MEMORY[0x1E696AD60] stringWithCapacity:{objc_msgSend(self, "length")}];
+  v3 = [self length];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __77__NSString_CRStringUtilities___crStringByReversingComposedCharacterSequences__block_invoke;
   v7[3] = &unk_1E7BC2828;
   v8 = v2;
   v4 = v2;
-  [a1 enumerateSubstringsInRange:0 options:v3 usingBlock:{258, v7}];
+  [self enumerateSubstringsInRange:0 options:v3 usingBlock:{258, v7}];
   v5 = [v4 copy];
 
   return v5;

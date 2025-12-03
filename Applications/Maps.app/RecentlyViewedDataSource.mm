@@ -1,34 +1,34 @@
 @interface RecentlyViewedDataSource
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (RecentlyViewedDataSource)initWithTableView:(id)a3 updateLocation:(BOOL)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)mapItemAtIndexPath:(id)a3;
-- (id)objectAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (RecentlyViewedDataSource)initWithTableView:(id)view updateLocation:(BOOL)location;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)mapItemAtIndexPath:(id)path;
+- (id)objectAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (void)_buildContent;
 - (void)_loadContent;
-- (void)didTapOnAccessoryView:(id)a3 withType:(int64_t)a4 object:(id)a5;
-- (void)removeItemAtIndexPath:(id)a3;
-- (void)setActive:(BOOL)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)didTapOnAccessoryView:(id)view withType:(int64_t)type object:(id)object;
+- (void)removeItemAtIndexPath:(id)path;
+- (void)setActive:(BOOL)active;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation RecentlyViewedDataSource
 
-- (void)didTapOnAccessoryView:(id)a3 withType:(int64_t)a4 object:(id)a5
+- (void)didTapOnAccessoryView:(id)view withType:(int64_t)type object:(id)object
 {
-  v16 = a3;
-  v8 = a5;
-  if (a4 == 4 || a4 == 1)
+  viewCopy = view;
+  objectCopy = object;
+  if (type == 4 || type == 1)
   {
-    v9 = [(DataSource *)self delegate];
+    delegate = [(DataSource *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(DataSource *)self delegate];
-      [v11 searchDataSource:self addItem:v8];
+      delegate2 = [(DataSource *)self delegate];
+      [delegate2 searchDataSource:self addItem:objectCopy];
     }
 
     v12 = [UIButton buttonWithType:0];
@@ -43,20 +43,20 @@
     [v12 setTintColor:v15];
 
     [v12 setAccessibilityIdentifier:@"AccessoryCheckmarkButton"];
-    [v16 setAccessoryView:v12];
+    [viewCopy setAccessoryView:v12];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v11 = [(RecentlyViewedDataSource *)self mapItemAtIndexPath:v6];
-  v8 = [(DataSource *)self delegate];
-  [v8 dataSource:self itemTapped:v11];
+  pathCopy = path;
+  viewCopy = view;
+  v11 = [(RecentlyViewedDataSource *)self mapItemAtIndexPath:pathCopy];
+  delegate = [(DataSource *)self delegate];
+  [delegate dataSource:self itemTapped:v11];
 
-  [v7 deselectRowAtIndexPath:v6 animated:1];
-  v9 = [v7 cellForRowAtIndexPath:v6];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  v9 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
   if ([v9 conformsToProtocol:&OBJC_PROTOCOL___AutocompleteCellAccessoryView])
   {
@@ -68,52 +68,52 @@
   }
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v4 = [a3 cellForRowAtIndexPath:a4];
+  v4 = [view cellForRowAtIndexPath:path];
   v5 = ![v4 conformsToProtocol:&OBJC_PROTOCOL___AutocompleteCellAccessoryView] || objc_msgSend(v4, "accessoryViewType") != 3;
 
   return v5;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v5 = a3;
-  v6 = [v5 _maps_indexOfFirstNonEmptySection] == a4;
+  viewCopy = view;
+  v6 = [viewCopy _maps_indexOfFirstNonEmptySection] == section;
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"[RecentlyViewed] RecentlyViewed" value:@"localized string not found" table:0];
-  [v5 bounds];
+  [viewCopy bounds];
   Width = CGRectGetWidth(v14);
-  v10 = [v5 traitCollection];
+  traitCollection = [viewCopy traitCollection];
 
-  [SectionHeaderTableViewHeaderFooterView heightWhenFirstNonEmptySection:v6 title:v8 actionTitle:0 availableWidth:v10 traitCollection:Width];
+  [SectionHeaderTableViewHeaderFooterView heightWhenFirstNonEmptySection:v6 title:v8 actionTitle:0 availableWidth:traitCollection traitCollection:Width];
   v12 = v11;
 
   return v12;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v5 = a3;
+  viewCopy = view;
   v6 = [SectionHeaderTableViewHeaderFooterView alloc];
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"[RecentlyViewed] RecentlyViewed" value:@"localized string not found" table:0];
-  v9 = [v5 _maps_indexOfFirstNonEmptySection];
+  _maps_indexOfFirstNonEmptySection = [viewCopy _maps_indexOfFirstNonEmptySection];
 
-  v10 = [(SectionHeaderTableViewHeaderFooterView *)v6 initWithTitle:v8 isFirstNonEmptySection:v9 == a4];
-  [(SectionHeaderTableViewHeaderFooterView *)v10 setAccessibilityIdentifiersWithBaseString:@"RecentlyViewed"];
-  [(SectionHeaderTableViewHeaderFooterView *)v10 setShowsBottomHairline:0];
+  section = [(SectionHeaderTableViewHeaderFooterView *)v6 initWithTitle:v8 isFirstNonEmptySection:_maps_indexOfFirstNonEmptySection == section];
+  [(SectionHeaderTableViewHeaderFooterView *)section setAccessibilityIdentifiersWithBaseString:@"RecentlyViewed"];
+  [(SectionHeaderTableViewHeaderFooterView *)section setShowsBottomHairline:0];
 
-  return v10;
+  return section;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RecentlyViewedDataSource *)self mapItemAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(RecentlyViewedDataSource *)self mapItemAtIndexPath:pathCopy];
   v9 = +[TwoLinesTableViewCell identifier];
-  v10 = [v7 dequeueReusableCellWithIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9 forIndexPath:pathCopy];
 
   v11 = [TwoLinesContentViewModelComposer cellModelForMapItem:v8];
   [v10 setViewModel:v11];
@@ -125,20 +125,20 @@
   return v10;
 }
 
-- (void)removeItemAtIndexPath:(id)a3
+- (void)removeItemAtIndexPath:(id)path
 {
-  v3 = [(RecentlyViewedDataSource *)self objectAtIndexPath:a3];
+  v3 = [(RecentlyViewedDataSource *)self objectAtIndexPath:path];
   v4 = +[Recents sharedRecents];
   v6 = v3;
   v5 = [NSArray arrayWithObjects:&v6 count:1];
   [v4 deleteRecents:v5 completion:&stru_101655180];
 }
 
-- (id)mapItemAtIndexPath:(id)a3
+- (id)mapItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(RecentlyViewedDataSource *)self objectAtIndexPath:v4];
-  v6 = [v5 historyEntry];
+  pathCopy = path;
+  v5 = [(RecentlyViewedDataSource *)self objectAtIndexPath:pathCopy];
+  historyEntry = [v5 historyEntry];
 
   v10 = 0;
   v11 = &v10;
@@ -151,24 +151,24 @@
   v9[2] = sub_100DE65A0;
   v9[3] = &unk_101661C68;
   v9[4] = &v10;
-  [v6 ifSearch:0 ifRoute:0 ifPlaceDisplay:v9 ifTransitLineItem:0];
+  [historyEntry ifSearch:0 ifRoute:0 ifPlaceDisplay:v9 ifTransitLineItem:0];
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
 
   return v7;
 }
 
-- (id)objectAtIndexPath:(id)a3
+- (id)objectAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (([v4 row] & 0x8000000000000000) != 0 || (v5 = objc_msgSend(v4, "row"), v5 >= -[NSArray count](self->_recents, "count")))
+  pathCopy = path;
+  if (([pathCopy row] & 0x8000000000000000) != 0 || (v5 = objc_msgSend(pathCopy, "row"), v5 >= -[NSArray count](self->_recents, "count")))
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = -[NSArray objectAtIndexedSubscript:](self->_recents, "objectAtIndexedSubscript:", [v4 row]);
+    v6 = -[NSArray objectAtIndexedSubscript:](self->_recents, "objectAtIndexedSubscript:", [pathCopy row]);
   }
 
   return v6;
@@ -196,7 +196,7 @@
         }
 
         v5 = *(*(&v19 + 1) + 8 * i);
-        v6 = [v5 historyEntry];
+        historyEntry = [v5 historyEntry];
         v13 = 0;
         v14 = &v13;
         v15 = 0x3032000000;
@@ -208,7 +208,7 @@
         v12[2] = sub_100DE6908;
         v12[3] = &unk_101661C68;
         v12[4] = &v13;
-        [v6 ifSearch:0 ifRoute:0 ifPlaceDisplay:v12 ifTransitLineItem:0];
+        [historyEntry ifSearch:0 ifRoute:0 ifPlaceDisplay:v12 ifTransitLineItem:0];
         if (v14[5])
         {
           [v11 addObject:v5];
@@ -231,39 +231,39 @@
 - (void)_loadContent
 {
   v3 = +[Recents sharedRecents];
-  v4 = [v3 orderedRecents];
-  v5 = [v4 copy];
+  orderedRecents = [v3 orderedRecents];
+  v5 = [orderedRecents copy];
   recentsContent = self->_recentsContent;
   self->_recentsContent = v5;
 
   [(RecentlyViewedDataSource *)self _buildContent];
   if ([(DataSource *)self active])
   {
-    v7 = [(DataSource *)self delegate];
-    [v7 dataSourceUpdated:self];
+    delegate = [(DataSource *)self delegate];
+    [delegate dataSourceUpdated:self];
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
   v4.receiver = self;
   v4.super_class = RecentlyViewedDataSource;
-  [(DataSource *)&v4 setActive:a3];
+  [(DataSource *)&v4 setActive:active];
   [(RecentlyViewedDataSource *)self _loadContent];
 }
 
-- (RecentlyViewedDataSource)initWithTableView:(id)a3 updateLocation:(BOOL)a4
+- (RecentlyViewedDataSource)initWithTableView:(id)view updateLocation:(BOOL)location
 {
-  v4 = a4;
-  v6 = a3;
+  locationCopy = location;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = RecentlyViewedDataSource;
-  v7 = [(DataSource *)&v13 initWithTableView:v6 updateLocation:v4];
+  v7 = [(DataSource *)&v13 initWithTableView:viewCopy updateLocation:locationCopy];
   if (v7)
   {
     v8 = objc_opt_class();
     v9 = +[TwoLinesTableViewCell identifier];
-    [v6 registerClass:v8 forCellReuseIdentifier:v9];
+    [viewCopy registerClass:v8 forCellReuseIdentifier:v9];
 
     [(RecentlyViewedDataSource *)v7 _loadContent];
     v10 = +[NSNotificationCenter defaultCenter];

@@ -1,22 +1,22 @@
 @interface CATBlockOperationObserver
 - (CATBlockOperationObserver)init;
-- (void)invokeBlock:(id)a3 operation:(id)a4;
-- (void)operationDidFinish:(id)a3;
-- (void)operationDidProgress:(id)a3;
-- (void)operationDidStart:(id)a3;
-- (void)setDelegateQueue:(id)a3;
+- (void)invokeBlock:(id)block operation:(id)operation;
+- (void)operationDidFinish:(id)finish;
+- (void)operationDidProgress:(id)progress;
+- (void)operationDidStart:(id)start;
+- (void)setDelegateQueue:(id)queue;
 @end
 
 @implementation CATBlockOperationObserver
 
-- (void)setDelegateQueue:(id)a3
+- (void)setDelegateQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   p_delegateQueue = &self->_delegateQueue;
-  if (self->_delegateQueue != v5)
+  if (self->_delegateQueue != queueCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_delegateQueue, a3);
+    v8 = queueCopy;
+    objc_storeStrong(p_delegateQueue, queue);
     v7 = v8;
     if (!v8)
     {
@@ -24,10 +24,10 @@
     }
 
     dispatch_set_target_queue(self->mQueue, v7);
-    v5 = v8;
+    queueCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](p_delegateQueue, v5);
+  MEMORY[0x2821F96F8](p_delegateQueue, queueCopy);
 }
 
 - (CATBlockOperationObserver)init
@@ -48,40 +48,40 @@
   return v2;
 }
 
-- (void)operationDidStart:(id)a3
+- (void)operationDidStart:(id)start
 {
-  v4 = a3;
-  v5 = [(CATBlockOperationObserver *)self didStart];
-  [(CATBlockOperationObserver *)self invokeBlock:v5 operation:v4];
+  startCopy = start;
+  didStart = [(CATBlockOperationObserver *)self didStart];
+  [(CATBlockOperationObserver *)self invokeBlock:didStart operation:startCopy];
 }
 
-- (void)operationDidProgress:(id)a3
+- (void)operationDidProgress:(id)progress
 {
-  v4 = a3;
-  v5 = [(CATBlockOperationObserver *)self didProgress];
-  [(CATBlockOperationObserver *)self invokeBlock:v5 operation:v4];
+  progressCopy = progress;
+  didProgress = [(CATBlockOperationObserver *)self didProgress];
+  [(CATBlockOperationObserver *)self invokeBlock:didProgress operation:progressCopy];
 }
 
-- (void)operationDidFinish:(id)a3
+- (void)operationDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = [(CATBlockOperationObserver *)self didFinish];
-  [(CATBlockOperationObserver *)self invokeBlock:v5 operation:v4];
+  finishCopy = finish;
+  didFinish = [(CATBlockOperationObserver *)self didFinish];
+  [(CATBlockOperationObserver *)self invokeBlock:didFinish operation:finishCopy];
 }
 
-- (void)invokeBlock:(id)a3 operation:(id)a4
+- (void)invokeBlock:(id)block operation:(id)operation
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  blockCopy = block;
+  operationCopy = operation;
+  if (blockCopy)
   {
     mQueue = self->mQueue;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __51__CATBlockOperationObserver_invokeBlock_operation___block_invoke;
     v11[3] = &unk_278DA71E0;
-    v13 = v6;
-    v12 = v7;
+    v13 = blockCopy;
+    v12 = operationCopy;
     v9 = v11;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;

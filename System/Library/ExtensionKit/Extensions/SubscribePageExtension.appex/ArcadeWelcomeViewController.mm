@@ -1,17 +1,17 @@
 @interface ArcadeWelcomeViewController
-- (_TtC22SubscribePageExtension27ArcadeWelcomeViewController)initWithCoder:(id)a3;
-- (_TtC22SubscribePageExtension27ArcadeWelcomeViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC22SubscribePageExtension27ArcadeWelcomeViewController)initWithCoder:(id)coder;
+- (_TtC22SubscribePageExtension27ArcadeWelcomeViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation ArcadeWelcomeViewController
 
-- (_TtC22SubscribePageExtension27ArcadeWelcomeViewController)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension27ArcadeWelcomeViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension27ArcadeWelcomeViewController_overlayViewController) = 0;
   result = sub_100754644();
@@ -21,37 +21,37 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100661560();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100661770();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1006619E0(a3);
+  selfCopy = self;
+  sub_1006619E0(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100661C40(a3);
+  selfCopy = self;
+  sub_100661C40(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100661F6C(a3);
+  selfCopy = self;
+  sub_100661F6C(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   ObjectType = swift_getObjectType();
   v6 = sub_100742964();
   v7 = *(v6 - 8);
@@ -59,16 +59,16 @@
   v9 = &v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   v11.receiver = self;
   v11.super_class = ObjectType;
-  v10 = self;
-  [(ArcadeWelcomeViewController *)&v11 viewDidDisappear:v3];
-  sub_10000C888((&v10->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension27ArcadeWelcomeViewController_lifecycleObserver), *&v10->artworkLoader[OBJC_IVAR____TtC22SubscribePageExtension27ArcadeWelcomeViewController_lifecycleObserver]);
+  selfCopy = self;
+  [(ArcadeWelcomeViewController *)&v11 viewDidDisappear:disappearCopy];
+  sub_10000C888((&selfCopy->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension27ArcadeWelcomeViewController_lifecycleObserver), *&selfCopy->artworkLoader[OBJC_IVAR____TtC22SubscribePageExtension27ArcadeWelcomeViewController_lifecycleObserver]);
   (*(v7 + 104))(v9, enum case for StoreViewControllerLifecycleEvent.didDisappear(_:), v6);
   sub_100742974();
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (_TtC22SubscribePageExtension27ArcadeWelcomeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22SubscribePageExtension27ArcadeWelcomeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,14 +1,14 @@
 @interface XPCConnectionDelegateShim
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5;
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply;
 @end
 
 @implementation XPCConnectionDelegateShim
 
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply
 {
-  v6 = a4;
+  invocationCopy = invocation;
   [(XPCConnectionDelegateShim *)self handleInvocation];
-  [v6 invoke];
+  [invocationCopy invoke];
 }
 
 @end

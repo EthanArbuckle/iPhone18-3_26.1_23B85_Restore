@@ -1,55 +1,55 @@
 @interface ISO18013HybridHandler
-- (id)setActiveCredential:(id)a3;
-- (id)setActiveCredentials:(id)a3;
-- (id)startTransactionWithAuthorization:(id)a3 options:(unint64_t)a4;
+- (id)setActiveCredential:(id)credential;
+- (id)setActiveCredentials:(id)credentials;
+- (id)startTransactionWithAuthorization:(id)authorization options:(unint64_t)options;
 - (id)stopTransaction;
-- (void)alternativeCarrierConnectedWithStatus:(unint64_t)a3;
-- (void)alternativeCarrierDisconnectedWithStatus:(unint64_t)a3;
-- (void)connectionHandoverCompleted:(id)a3;
+- (void)alternativeCarrierConnectedWithStatus:(unint64_t)status;
+- (void)alternativeCarrierDisconnectedWithStatus:(unint64_t)status;
+- (void)connectionHandoverCompleted:(id)completed;
 - (void)notificationClientConnected;
-- (void)processISO18013CredentialProposals:(id)a3 readerAuthInfo:(id)a4;
-- (void)session:(id)a3 connectionHandoverProcessFailure:(id)a4;
-- (void)session:(id)a3 didEndTransaction:(id)a4;
-- (void)session:(id)a3 didEndUnexpectedly:(id)a4;
-- (void)session:(id)a3 didEnterFieldWithNotification:(id)a4;
-- (void)session:(id)a3 didExpireTransactionForApplet:(id)a4;
-- (void)session:(id)a3 didStartTransaction:(id)a4;
-- (void)session:(id)a3 fieldChange:(BOOL)a4;
-- (void)session:(id)a3 fieldNotification:(id)a4;
-- (void)session:(id)a3 tnepService:(id)a4;
-- (void)sessionDidExitField:(id)a3;
-- (void)tearDownWithCompletion:(id)a3;
-- (void)transactionEndedWithIdentifier:(id)a3 error:(id)a4;
-- (void)transactionStarted:(unint64_t)a3;
+- (void)processISO18013CredentialProposals:(id)proposals readerAuthInfo:(id)info;
+- (void)session:(id)session connectionHandoverProcessFailure:(id)failure;
+- (void)session:(id)session didEndTransaction:(id)transaction;
+- (void)session:(id)session didEndUnexpectedly:(id)unexpectedly;
+- (void)session:(id)session didEnterFieldWithNotification:(id)notification;
+- (void)session:(id)session didExpireTransactionForApplet:(id)applet;
+- (void)session:(id)session didStartTransaction:(id)transaction;
+- (void)session:(id)session fieldChange:(BOOL)change;
+- (void)session:(id)session fieldNotification:(id)notification;
+- (void)session:(id)session tnepService:(id)service;
+- (void)sessionDidExitField:(id)field;
+- (void)tearDownWithCompletion:(id)completion;
+- (void)transactionEndedWithIdentifier:(id)identifier error:(id)error;
+- (void)transactionStarted:(unint64_t)started;
 - (void)xpcInterrupted;
 - (void)xpcInvalidated;
 @end
 
 @implementation ISO18013HybridHandler
 
-- (id)setActiveCredential:(id)a3
+- (id)setActiveCredential:(id)credential
 {
   v38[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  credentialCopy = credential;
+  v6 = credentialCopy;
+  if (credentialCopy)
   {
-    v7 = [v5 type];
-    if (v7 == [(ISO18013HybridHandler *)self supportedCredentialType])
+    type = [credentialCopy type];
+    if (type == [(ISO18013HybridHandler *)self supportedCredentialType])
     {
-      v10 = [v6 subIdentifier];
-      if (v10)
+      subIdentifier = [v6 subIdentifier];
+      if (subIdentifier)
       {
-        v13 = v10;
-        v14 = [v6 subIdentifier];
-        v15 = [v14 lengthOfBytesUsingEncoding:4];
+        v13 = subIdentifier;
+        subIdentifier2 = [v6 subIdentifier];
+        v15 = [subIdentifier2 lengthOfBytesUsingEncoding:4];
 
         if (v15)
         {
           v16 = [STSCredential alloc];
-          v17 = [v6 type];
-          v18 = [v6 identifier];
-          v19 = [(STSCredential *)v16 initWithType:v17 identifier:v18 subIdentifier:0];
+          type2 = [v6 type];
+          identifier = [v6 identifier];
+          v19 = [(STSCredential *)v16 initWithType:type2 identifier:identifier subIdentifier:0];
 
           v34[0] = v6;
           v34[1] = v19;
@@ -116,12 +116,12 @@ LABEL_10:
   return v21;
 }
 
-- (id)setActiveCredentials:(id)a3
+- (id)setActiveCredentials:(id)credentials
 {
   v91[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  credentialsCopy = credentials;
+  v6 = credentialsCopy;
+  if (!credentialsCopy)
   {
     sub_26538DF04(self, 0);
     v80.receiver = self;
@@ -130,7 +130,7 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  if ([v5 count] != 2)
+  if ([credentialsCopy count] != 2)
   {
     sub_265398094(OS_LOG_TYPE_ERROR, 0, "[ISO18013HybridHandler setActiveCredentials:]", 247, self, @"Non expected number of credentials provided", v7, v8, v59);
     v16 = MEMORY[0x277CCA9B8];
@@ -240,8 +240,8 @@ LABEL_29:
       goto LABEL_7;
     }
 
-    v38 = [v37 identifier];
-    v63 = [v11 appletWithIdentifier:v38];
+    identifier = [v37 identifier];
+    v63 = [v11 appletWithIdentifier:identifier];
 
     if (v63)
     {
@@ -297,8 +297,8 @@ LABEL_27:
 
     else
     {
-      v54 = [v69[5] identifier];
-      sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler setActiveCredentials:]", 295, self, @"applet not found for identifier = %@", v55, v56, v54);
+      identifier2 = [v69[5] identifier];
+      sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler setActiveCredentials:]", 295, self, @"applet not found for identifier = %@", v55, v56, identifier2);
 
       v57 = MEMORY[0x277CCA9B8];
       v62 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
@@ -341,27 +341,27 @@ LABEL_12:
   sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler stopTransaction]", 341, self, &stru_2876E3E50, v2, v3, v28);
   v31.receiver = self;
   v31.super_class = ISO18013HybridHandler;
-  v6 = [(STSTransactionHandler *)&v31 stopTransaction];
-  v7 = [(STSHandler *)self activeSTSCredential];
-  if (v7)
+  stopTransaction = [(STSTransactionHandler *)&v31 stopTransaction];
+  activeSTSCredential = [(STSHandler *)self activeSTSCredential];
+  if (activeSTSCredential)
   {
-    v8 = v7;
-    v9 = [(STSHandler *)self activeSTSCredential];
-    if ([v9 type] == 5)
+    v8 = activeSTSCredential;
+    activeSTSCredential2 = [(STSHandler *)self activeSTSCredential];
+    if ([activeSTSCredential2 type] == 5)
     {
-      v10 = [(STSHandler *)self activeSTSCredential];
-      v11 = [v10 identifier];
+      activeSTSCredential3 = [(STSHandler *)self activeSTSCredential];
+      identifier = [activeSTSCredential3 identifier];
 
-      if (v11)
+      if (identifier)
       {
         sub_265398094(OS_LOG_TYPE_INFO, 0, "[ISO18013HybridHandler stopTransaction]", 348, self, &stru_2876E3E50, v12, v13, v29);
         handoverSession = self->_handoverSession;
-        v30 = v6;
+        v30 = stopTransaction;
         [(NFSecureTransactionServicesHandoverHybridSession *)handoverSession stopCardEmulation:&v30];
         v15 = v30;
 
         transactionState = self->_transactionState;
-        v6 = v15;
+        stopTransaction = v15;
         goto LABEL_8;
       }
     }
@@ -380,13 +380,13 @@ LABEL_12:
 LABEL_8:
   if (transactionState == 1 || (transactionState & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v17 = [(STSTransactionHandler *)self parent];
-    [v17 fireSessionDidEndUnexpectedlyEventWithStatus:3];
+    parent = [(STSTransactionHandler *)self parent];
+    [parent fireSessionDidEndUnexpectedlyEventWithStatus:3];
   }
 
 LABEL_11:
   sub_26538E044(self, 0);
-  if (v6)
+  if (stopTransaction)
   {
     v18 = MEMORY[0x277CCA9B8];
     v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
@@ -394,7 +394,7 @@ LABEL_11:
     v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"Unexpected Result"];
     v21 = *MEMORY[0x277CCA7E8];
     v33[0] = v20;
-    v33[1] = v6;
+    v33[1] = stopTransaction;
     v32[1] = v21;
     v32[2] = @"Line";
     v33[2] = &unk_2876ED6C8;
@@ -418,19 +418,19 @@ LABEL_11:
   return v25;
 }
 
-- (void)tearDownWithCompletion:(id)a3
+- (void)tearDownWithCompletion:(id)completion
 {
-  v7 = a3;
+  completionCopy = completion;
   sub_265398094(OS_LOG_TYPE_INFO, 0, "[ISO18013HybridHandler tearDownWithCompletion:]", 365, self, &stru_2876E3E50, v4, v5, v6);
-  sub_26538E044(self, v7);
+  sub_26538E044(self, completionCopy);
 }
 
-- (id)startTransactionWithAuthorization:(id)a3 options:(unint64_t)a4
+- (id)startTransactionWithAuthorization:(id)authorization options:(unint64_t)options
 {
   v90[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler startTransactionWithAuthorization:options:]", 413, self, @"options = 0x%04x", v8, v9, a4);
-  if ((a4 & 4) != 0)
+  authorizationCopy = authorization;
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler startTransactionWithAuthorization:options:]", 413, self, @"options = 0x%04x", v8, v9, options);
+  if ((options & 4) != 0)
   {
     sub_265398094(OS_LOG_TYPE_ERROR, 0, "[ISO18013HybridHandler startTransactionWithAuthorization:options:]", 415, self, @"Non supported options", v10, v11, v69);
     v45 = MEMORY[0x277CCA9B8];
@@ -454,23 +454,23 @@ LABEL_11:
 
   if (self)
   {
-    self->_startTransactionOption = a4;
+    self->_startTransactionOption = options;
   }
 
-  v12 = [(STSHandler *)self activeSTSCredentials];
-  sub_265398094(OS_LOG_TYPE_INFO, 0, "[ISO18013HybridHandler startTransactionWithAuthorization:options:]", 421, self, @"active credentials=%@", v13, v14, v12);
+  activeSTSCredentials = [(STSHandler *)self activeSTSCredentials];
+  sub_265398094(OS_LOG_TYPE_INFO, 0, "[ISO18013HybridHandler startTransactionWithAuthorization:options:]", 421, self, @"active credentials=%@", v13, v14, activeSTSCredentials);
 
-  v15 = [(STSHandler *)self activeSTSCredential];
-  if ([v15 type] != 5)
+  activeSTSCredential = [(STSHandler *)self activeSTSCredential];
+  if ([activeSTSCredential type] != 5)
   {
 
     goto LABEL_20;
   }
 
-  v16 = [(STSHandler *)self activeSTSCredential];
-  v17 = [v16 identifier];
+  activeSTSCredential2 = [(STSHandler *)self activeSTSCredential];
+  identifier = [activeSTSCredential2 identifier];
 
-  if (!v17)
+  if (!identifier)
   {
 LABEL_20:
     v79[0] = MEMORY[0x277D85DD0];
@@ -484,9 +484,9 @@ LABEL_20:
     goto LABEL_36;
   }
 
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler startTransactionWithAuthorization:options:]", 426, self, @"auth: %@", v18, v19, v7);
-  v20 = [(STSHandler *)self activeSTSCredentials];
-  if (![v20 count])
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler startTransactionWithAuthorization:options:]", 426, self, @"auth: %@", v18, v19, authorizationCopy);
+  activeSTSCredentials2 = [(STSHandler *)self activeSTSCredentials];
+  if (![activeSTSCredentials2 count])
   {
     __assert_rtn("[ISO18013HybridHandler startTransactionWithAuthorization:options:]", "ISO18013HybridHandler.m", 428, "self.activeSTSCredentials.count > 0");
   }
@@ -502,13 +502,13 @@ LABEL_20:
   v78 = v22;
   if (self->_jpkiCredential)
   {
-    v26 = [v22 activeApplet];
-    v27 = [v26 identifier];
+    activeApplet = [v22 activeApplet];
+    identifier2 = [activeApplet identifier];
 
-    if (v27)
+    if (identifier2)
     {
-      v28 = [(STSCredential *)self->_jpkiCredential identifier];
-      v29 = [v27 isEqualToString:v28];
+      identifier3 = [(STSCredential *)self->_jpkiCredential identifier];
+      v29 = [identifier2 isEqualToString:identifier3];
 
       if (v29)
       {
@@ -516,8 +516,8 @@ LABEL_20:
       }
     }
 
-    v30 = [(STSCredential *)self->_jpkiCredential identifier];
-    v31 = [v22 appletWithIdentifier:v30];
+    identifier4 = [(STSCredential *)self->_jpkiCredential identifier];
+    v31 = [v22 appletWithIdentifier:identifier4];
 
     if (v31)
     {
@@ -622,7 +622,7 @@ LABEL_28:
   if (!v25)
   {
     v80 = 0;
-    v58 = [v22 startCardEmulationWithAuthorization:v7 error:&v80];
+    v58 = [v22 startCardEmulationWithAuthorization:authorizationCopy error:&v80];
     v25 = v80;
     if (v58)
     {
@@ -668,12 +668,12 @@ LABEL_36:
   return v51;
 }
 
-- (void)transactionStarted:(unint64_t)a3
+- (void)transactionStarted:(unint64_t)started
 {
   if (self)
   {
     transactionState = self->_transactionState;
-    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler transactionStarted:]", 470, self, @"status=%lu, transactionState=%lu", v3, v4, a3);
+    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler transactionStarted:]", 470, self, @"status=%lu, transactionState=%lu", v3, v4, started);
     v9 = self->_transactionState;
     if (v9 > 4 || ((1 << v9) & 0x13) == 0)
     {
@@ -683,29 +683,29 @@ LABEL_36:
 
   else
   {
-    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler transactionStarted:]", 470, 0, @"status=%lu, transactionState=%lu", v3, v4, a3);
+    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler transactionStarted:]", 470, 0, @"status=%lu, transactionState=%lu", v3, v4, started);
   }
 
-  v11 = [(STSTransactionHandler *)self parent];
-  if (a3 == 9)
+  parent = [(STSTransactionHandler *)self parent];
+  if (started == 9)
   {
     if (self)
     {
       self->_transactionState = 1;
     }
 
-    v18 = v11;
-    [v11 fireRequestHandoverConfirmation];
+    v18 = parent;
+    [parent fireRequestHandoverConfirmation];
   }
 
   else
   {
-    if (a3)
+    if (started)
     {
       goto LABEL_20;
     }
 
-    v18 = v11;
+    v18 = parent;
     if (self && self->_transactionState >= 2)
     {
       sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler transactionStarted:]", 488, self, @"Unexpected state, dropping start event", v12, v13, v16);
@@ -714,8 +714,8 @@ LABEL_36:
     else
     {
       v14 = objc_opt_new();
-      v15 = [(STSHandler *)self activeSTSCredential];
-      [v14 setCredential:v15];
+      activeSTSCredential = [(STSHandler *)self activeSTSCredential];
+      [v14 setCredential:activeSTSCredential];
 
       [v14 setTransactionMode:4];
       [v18 fireTransactionStartEvent:v14];
@@ -726,48 +726,48 @@ LABEL_36:
     }
   }
 
-  v11 = v18;
+  parent = v18;
 LABEL_20:
 }
 
-- (void)transactionEndedWithIdentifier:(id)a3 error:(id)a4
+- (void)transactionEndedWithIdentifier:(id)identifier error:(id)error
 {
-  v22 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  errorCopy = error;
   if (!self)
   {
-    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler transactionEndedWithIdentifier:error:]", 512, 0, @"keyIdentifier: %@, error: %@", v6, v7, v22);
+    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler transactionEndedWithIdentifier:error:]", 512, 0, @"keyIdentifier: %@, error: %@", v6, v7, identifierCopy);
     goto LABEL_8;
   }
 
   if ((self->_transactionState & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
-    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler transactionEndedWithIdentifier:error:]", 508, self, @"Dropping transaction end event, keyIdentifier: %@, error: %@", v6, v7, v22);
+    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler transactionEndedWithIdentifier:error:]", 508, self, @"Dropping transaction end event, keyIdentifier: %@, error: %@", v6, v7, identifierCopy);
     goto LABEL_22;
   }
 
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler transactionEndedWithIdentifier:error:]", 512, self, @"keyIdentifier: %@, error: %@", v6, v7, v22);
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler transactionEndedWithIdentifier:error:]", 512, self, @"keyIdentifier: %@, error: %@", v6, v7, identifierCopy);
   v9 = self->_releasedCredential;
   if (!v9)
   {
 LABEL_8:
-    v11 = [(STSHandler *)self activeSTSCredential];
-    if (v11)
+    activeSTSCredential = [(STSHandler *)self activeSTSCredential];
+    if (activeSTSCredential)
     {
       goto LABEL_6;
     }
 
 LABEL_9:
     v12 = 5;
-    v11 = [STSCredential credentialWithType:5 identifier:0x2876E5050 subIdentifier:v22];
-    sub_265398094(OS_LOG_TYPE_ERROR, 0, "[ISO18013HybridHandler transactionEndedWithIdentifier:error:]", 522, self, @"A credential is not available.  Creating a credential for event - credential=%@", v13, v14, v11);
+    activeSTSCredential = [STSCredential credentialWithType:5 identifier:0x2876E5050 subIdentifier:identifierCopy];
+    sub_265398094(OS_LOG_TYPE_ERROR, 0, "[ISO18013HybridHandler transactionEndedWithIdentifier:error:]", 522, self, @"A credential is not available.  Creating a credential for event - credential=%@", v13, v14, activeSTSCredential);
     goto LABEL_10;
   }
 
   v10 = v9;
-  v11 = self->_releasedCredential;
+  activeSTSCredential = self->_releasedCredential;
 
-  if (!v11)
+  if (!activeSTSCredential)
   {
     goto LABEL_9;
   }
@@ -776,23 +776,23 @@ LABEL_6:
   v12 = 0;
 LABEL_10:
   v15 = objc_alloc_init(STSTransactionEndEvent);
-  [(STSTransactionEndEvent *)v15 setCredential:v11];
+  [(STSTransactionEndEvent *)v15 setCredential:activeSTSCredential];
   [(STSTransactionEndEvent *)v15 setStatus:v12];
-  if (v8)
+  if (errorCopy)
   {
-    v16 = [v8 domain];
-    v17 = [v16 isEqual:@"STSXPCHelperErrorDomain"];
+    domain = [errorCopy domain];
+    v17 = [domain isEqual:@"STSXPCHelperErrorDomain"];
 
     if (v17)
     {
-      v18 = [v8 code];
+      code = [errorCopy code];
       v19 = 3;
-      if (v18 == 14)
+      if (code == 14)
       {
         v19 = 4;
       }
 
-      if (v18 == 15)
+      if (code == 15)
       {
         v20 = 6;
       }
@@ -811,8 +811,8 @@ LABEL_10:
     [(STSTransactionEndEvent *)v15 setStatus:v20];
   }
 
-  v21 = [(STSTransactionHandler *)self parent];
-  [v21 fireTransactionEndEvent:v15];
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireTransactionEndEvent:v15];
 
   if (self)
   {
@@ -831,15 +831,15 @@ LABEL_22:
   }
 
   v8 = sub_26538F90C(&self->super.super.super.isa);
-  v6 = [(STSTransactionHandler *)self parent];
-  [v8 stsSessionNotificationListenerStarted:v6];
+  parent = [(STSTransactionHandler *)self parent];
+  [v8 stsSessionNotificationListenerStarted:parent];
 }
 
-- (void)alternativeCarrierConnectedWithStatus:(unint64_t)a3
+- (void)alternativeCarrierConnectedWithStatus:(unint64_t)status
 {
   v20[4] = *MEMORY[0x277D85DE8];
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler alternativeCarrierConnectedWithStatus:]", 569, self, @"status=%lu", v3, v4, a3);
-  if (a3)
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler alternativeCarrierConnectedWithStatus:]", 569, self, @"status=%lu", v3, v4, status);
+  if (status)
   {
     v8 = MEMORY[0x277CCA9B8];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
@@ -863,13 +863,13 @@ LABEL_22:
     v14 = 0;
   }
 
-  v15 = [(STSTransactionHandler *)self parent];
+  parent = [(STSTransactionHandler *)self parent];
   v16 = sub_26538F90C(&self->super.super.super.isa);
-  [v16 stsSession:v15 connectedAlternativeCarrierWithStatus:v14];
+  [v16 stsSession:parent connectedAlternativeCarrierWithStatus:v14];
 
-  if (a3)
+  if (status)
   {
-    if (a3 == 3)
+    if (status == 3)
     {
       v17 = 1;
     }
@@ -879,36 +879,36 @@ LABEL_22:
       v17 = 2;
     }
 
-    [v15 fireSessionDidEndUnexpectedlyEventWithStatus:v17];
+    [parent fireSessionDidEndUnexpectedlyEventWithStatus:v17];
     sub_26538E044(self, 0);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)alternativeCarrierDisconnectedWithStatus:(unint64_t)a3
+- (void)alternativeCarrierDisconnectedWithStatus:(unint64_t)status
 {
   if (self)
   {
     transactionState = self->_transactionState;
   }
 
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler alternativeCarrierDisconnectedWithStatus:]", 591, self, @"status=%d, transactionState=%lu", v3, v4, a3);
-  v23 = [(STSTransactionHandler *)self parent];
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler alternativeCarrierDisconnectedWithStatus:]", 591, self, @"status=%d, transactionState=%lu", v3, v4, status);
+  parent = [(STSTransactionHandler *)self parent];
   v8 = sub_26538F90C(&self->super.super.super.isa);
-  [v8 stsSessionAlternativeCarrierDisconnected:v23];
+  [v8 stsSessionAlternativeCarrierDisconnected:parent];
 
   if (self && (self->_transactionState & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler alternativeCarrierDisconnectedWithStatus:]", 597, self, @"Transaction end unexpectedly", v9, v10, v21);
     v11 = 1;
-    if (a3 <= 3)
+    if (status <= 3)
     {
-      if (a3 - 1 >= 2)
+      if (status - 1 >= 2)
       {
-        if (a3)
+        if (status)
         {
-          v11 = a3 != 3;
+          v11 = status != 3;
         }
 
         else
@@ -916,9 +916,9 @@ LABEL_22:
           v11 = 0;
         }
 
-        if (a3)
+        if (status)
         {
-          v14 = a3 == 3;
+          v14 = status == 3;
         }
 
         else
@@ -932,22 +932,22 @@ LABEL_22:
 
     else
     {
-      if (a3 > 9)
+      if (status > 9)
       {
         v14 = 0;
         goto LABEL_24;
       }
 
-      if (((1 << a3) & 0x230) == 0)
+      if (((1 << status) & 0x230) == 0)
       {
-        v12 = 1 << a3;
+        v12 = 1 << status;
         v13 = 6;
-        if (a3 != 8)
+        if (status != 8)
         {
           v13 = 0;
         }
 
-        v11 = (v12 & 0xC0) == 0 && a3 != 8;
+        v11 = (v12 & 0xC0) == 0 && status != 8;
         if ((v12 & 0xC0) != 0)
         {
           v14 = 12;
@@ -974,12 +974,12 @@ LABEL_24:
 
     else
     {
-      v16 = [(STSHandler *)self activeSTSCredential];
+      activeSTSCredential = [(STSHandler *)self activeSTSCredential];
 
-      if (v16)
+      if (activeSTSCredential)
       {
-        v17 = [(STSHandler *)self activeSTSCredential];
-        [(STSTransactionEndEvent *)v15 setCredential:v17];
+        activeSTSCredential2 = [(STSHandler *)self activeSTSCredential];
+        [(STSTransactionEndEvent *)v15 setCredential:activeSTSCredential2];
       }
 
       else
@@ -995,16 +995,16 @@ LABEL_24:
       }
     }
 
-    [v23 fireTransactionEndEvent:v15];
+    [parent fireTransactionEndEvent:v15];
   }
 
   sub_26538E044(self, 0);
 }
 
-- (void)processISO18013CredentialProposals:(id)a3 readerAuthInfo:(id)a4
+- (void)processISO18013CredentialProposals:(id)proposals readerAuthInfo:(id)info
 {
-  v6 = a4;
-  v7 = a3;
+  infoCopy = info;
+  proposalsCopy = proposals;
   sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler processISO18013CredentialProposals:readerAuthInfo:]", 648, self, &stru_2876E3E50, v8, v9, v12);
   v10 = sub_265398338();
   if (os_signpost_enabled(v10))
@@ -1018,16 +1018,16 @@ LABEL_24:
     self->_transactionState = 3;
   }
 
-  v11 = [(STSTransactionHandler *)self parent];
-  [v11 fireDidReceive18013Requests:v7 readerAuthInfo:v6];
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireDidReceive18013Requests:proposalsCopy readerAuthInfo:infoCopy];
 }
 
 - (void)xpcInvalidated
 {
   if (!self || self->_transactionState != 5)
   {
-    v3 = [(STSTransactionHandler *)self parent];
-    [v3 fireSessionDidEndUnexpectedlyEventWithStatus:2];
+    parent = [(STSTransactionHandler *)self parent];
+    [parent fireSessionDidEndUnexpectedlyEventWithStatus:2];
 
     sub_26538E044(self, 0);
   }
@@ -1037,22 +1037,22 @@ LABEL_24:
 {
   if (!self || self->_transactionState != 5)
   {
-    v3 = [(STSTransactionHandler *)self parent];
-    [v3 fireSessionDidEndUnexpectedlyEventWithStatus:2];
+    parent = [(STSTransactionHandler *)self parent];
+    [parent fireSessionDidEndUnexpectedlyEventWithStatus:2];
 
     sub_26538E044(self, 0);
   }
 }
 
-- (void)session:(id)a3 fieldChange:(BOOL)a4
+- (void)session:(id)session fieldChange:(BOOL)change
 {
-  v4 = a4;
+  changeCopy = change;
   v12 = *MEMORY[0x277D85DE8];
   v6 = sub_265398338();
   if (os_signpost_enabled(v6))
   {
     v7 = "no";
-    if (v4)
+    if (changeCopy)
     {
       v7 = "yes";
     }
@@ -1062,7 +1062,7 @@ LABEL_24:
     _os_signpost_emit_with_name_impl(&dword_26536F000, v6, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ISO18013HybridHandler_FieldChange", "fieldPresent=%s", &v10, 0xCu);
   }
 
-  if (v4)
+  if (changeCopy)
   {
     if (self)
     {
@@ -1080,67 +1080,67 @@ LABEL_24:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)session:(id)a3 fieldNotification:(id)a4
+- (void)session:(id)session fieldNotification:(id)notification
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler session:fieldNotification:]", 705, self, @"field=%@", v6, v7, v5);
+  notificationCopy = notification;
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler session:fieldNotification:]", 705, self, @"field=%@", v6, v7, notificationCopy);
   v8 = sub_265398338();
   if (os_signpost_enabled(v8))
   {
     *buf = 138412290;
-    v13 = v5;
+    v13 = notificationCopy;
     _os_signpost_emit_with_name_impl(&dword_26536F000, v8, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ISO18013HybridHandler_FieldDetect", "field=%@", buf, 0xCu);
   }
 
-  v9 = sub_265399348(v5);
-  v10 = [(STSTransactionHandler *)self parent];
-  [v10 fireFieldNotificationEvent:v9];
+  v9 = sub_265399348(notificationCopy);
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireFieldNotificationEvent:v9];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)session:(id)a3 tnepService:(id)a4
+- (void)session:(id)session tnepService:(id)service
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  serviceCopy = service;
   v6 = sub_265398338();
   if (os_signpost_enabled(v6))
   {
     *buf = 138412290;
-    v11 = v5;
+    v11 = serviceCopy;
     _os_signpost_emit_with_name_impl(&dword_26536F000, v6, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ISO18013HybridHandler_TnepService_Selected", "service=%@", buf, 0xCu);
   }
 
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler session:tnepService:]", 715, self, @"service=%@", v7, v8, v5);
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler session:tnepService:]", 715, self, @"service=%@", v7, v8, serviceCopy);
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)session:(id)a3 connectionHandoverProcessFailure:(id)a4
+- (void)session:(id)session connectionHandoverProcessFailure:(id)failure
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  failureCopy = failure;
   v8 = sub_265398338();
   if (os_signpost_enabled(v8))
   {
     *buf = 138412290;
-    v38 = v7;
+    v38 = failureCopy;
     _os_signpost_emit_with_name_impl(&dword_26536F000, v8, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ISO18013HybridHandler_HandoverFailure", "error=%@", buf, 0xCu);
   }
 
   if (!self || (transactionState = self->_transactionState, transactionState < 2))
   {
-    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler session:connectionHandoverProcessFailure:]", 727, self, @"error=%@, transactionState=%lu, handoverCompeted=%d", v9, v10, v7);
+    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler session:connectionHandoverProcessFailure:]", 727, self, @"error=%@, transactionState=%lu, handoverCompeted=%d", v9, v10, failureCopy);
 LABEL_8:
-    if ([v7 code] == 2 || objc_msgSend(v7, "code") == 8)
+    if ([failureCopy code] == 2 || objc_msgSend(failureCopy, "code") == 8)
     {
       sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler session:connectionHandoverProcessFailure:]", 737, self, @"Allows reader to retry", v14, v15, v35);
       goto LABEL_35;
     }
 
-    v16 = 4 * ([v7 code] == 6);
-    v17 = v7;
+    v16 = 4 * ([failureCopy code] == 6);
+    v17 = failureCopy;
     v18 = v17;
     if (!v17)
     {
@@ -1148,18 +1148,18 @@ LABEL_8:
       goto LABEL_33;
     }
 
-    v19 = [v17 domain];
-    if ([v19 isEqualToString:@"STSXPCHelperErrorDomain"])
+    domain = [v17 domain];
+    if ([domain isEqualToString:@"STSXPCHelperErrorDomain"])
     {
-      v20 = [v18 code];
+      code = [v18 code];
 
-      if (v20 == 12)
+      if (code == 12)
       {
-        v21 = [v18 userInfo];
-        v22 = [v21 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+        userInfo = [v18 userInfo];
+        v22 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
-        v23 = [v22 domain];
-        v24 = [v23 isEqualToString:@"BluetoothDomain"];
+        domain2 = [v22 domain];
+        v24 = [domain2 isEqualToString:@"BluetoothDomain"];
 
         if (v24)
         {
@@ -1178,18 +1178,18 @@ LABEL_8:
 
 LABEL_19:
         v26 = v18;
-        v27 = [v26 domain];
-        if ([v27 isEqualToString:@"WifiDomain"])
+        domain3 = [v26 domain];
+        if ([domain3 isEqualToString:@"WifiDomain"])
         {
-          v28 = [v26 code];
+          code2 = [v26 code];
 
-          if (v28 == 12)
+          if (code2 == 12)
           {
-            v29 = [v26 userInfo];
-            v30 = [v29 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+            userInfo2 = [v26 userInfo];
+            v30 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
-            v31 = [v30 domain];
-            v32 = [v31 isEqualToString:@"WifiDomain"];
+            domain4 = [v30 domain];
+            v32 = [domain4 isEqualToString:@"WifiDomain"];
 
             if (v32)
             {
@@ -1221,8 +1221,8 @@ LABEL_33:
 
 LABEL_34:
         sub_265390080(self);
-        v33 = [(STSTransactionHandler *)self parent];
-        [v33 fireSessionDidEndUnexpectedlyEventWithStatus:v16];
+        parent = [(STSTransactionHandler *)self parent];
+        [parent fireSessionDidEndUnexpectedlyEventWithStatus:v16];
 
         goto LABEL_35;
       }
@@ -1237,20 +1237,20 @@ LABEL_34:
   }
 
   v36 = self->_transactionState;
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler session:connectionHandoverProcessFailure:]", 727, self, @"error=%@, transactionState=%lu, handoverCompeted=%d", v9, v10, v7);
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler session:connectionHandoverProcessFailure:]", 727, self, @"error=%@, transactionState=%lu, handoverCompeted=%d", v9, v10, failureCopy);
   if (transactionState == 5)
   {
     goto LABEL_8;
   }
 
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler session:connectionHandoverProcessFailure:]", 730, self, @"Handover has completed; ignore error=%@", v12, v13, v7);
-  [(ISO18013HybridHandler *)self connectionHandoverCompleted:v6];
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler session:connectionHandoverProcessFailure:]", 730, self, @"Handover has completed; ignore error=%@", v12, v13, failureCopy);
+  [(ISO18013HybridHandler *)self connectionHandoverCompleted:sessionCopy];
 LABEL_35:
 
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectionHandoverCompleted:(id)a3
+- (void)connectionHandoverCompleted:(id)completed
 {
   v4 = sub_265398338();
   if (os_signpost_enabled(v4))
@@ -1276,41 +1276,41 @@ LABEL_35:
   }
 }
 
-- (void)session:(id)a3 didEndUnexpectedly:(id)a4
+- (void)session:(id)session didEndUnexpectedly:(id)unexpectedly
 {
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler session:didEndUnexpectedly:]", 772, self, @"reason: %@", v4, v5, a4);
-  v7 = [(STSTransactionHandler *)self parent];
-  [v7 fireSessionDidEndUnexpectedlyEventWithStatus:0];
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler session:didEndUnexpectedly:]", 772, self, @"reason: %@", v4, v5, unexpectedly);
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireSessionDidEndUnexpectedlyEventWithStatus:0];
 }
 
-- (void)session:(id)a3 didEnterFieldWithNotification:(id)a4
+- (void)session:(id)session didEnterFieldWithNotification:(id)notification
 {
-  v5 = a4;
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler session:didEnterFieldWithNotification:]", 783, self, @"%@", v6, v7, v5);
-  v9 = sub_265399348(v5);
+  notificationCopy = notification;
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler session:didEnterFieldWithNotification:]", 783, self, @"%@", v6, v7, notificationCopy);
+  v9 = sub_265399348(notificationCopy);
 
-  v8 = [(STSTransactionHandler *)self parent];
-  [v8 fireFieldNotificationEvent:v9];
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireFieldNotificationEvent:v9];
 }
 
-- (void)sessionDidExitField:(id)a3
+- (void)sessionDidExitField:(id)field
 {
   sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler sessionDidExitField:]", 789, self, @"Field Off", v3, v4, v6);
-  v7 = [(STSTransactionHandler *)self parent];
-  [v7 fireFieldDetectEvent:0];
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireFieldDetectEvent:0];
 }
 
-- (void)session:(id)a3 didExpireTransactionForApplet:(id)a4
+- (void)session:(id)session didExpireTransactionForApplet:(id)applet
 {
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler session:didExpireTransactionForApplet:]", 800, self, @"EXPIRED: %@", v4, v5, a4);
-  v7 = [(STSTransactionHandler *)self parent];
-  [v7 fireDidExpireTransaction:1];
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler session:didExpireTransactionForApplet:]", 800, self, @"EXPIRED: %@", v4, v5, applet);
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireDidExpireTransaction:1];
 }
 
-- (void)session:(id)a3 didStartTransaction:(id)a4
+- (void)session:(id)session didStartTransaction:(id)transaction
 {
-  v5 = a4;
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler session:didStartTransaction:]", 806, self, @"START: %@", v6, v7, v5);
+  transactionCopy = transaction;
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler session:didStartTransaction:]", 806, self, @"START: %@", v6, v7, transactionCopy);
   v8 = [STSTransactionStartEvent alloc];
   if (self)
   {
@@ -1322,16 +1322,16 @@ LABEL_35:
     jpkiCredential = 0;
   }
 
-  v11 = [(STSTransactionStartEvent *)v8 initWithCredential:jpkiCredential andNearFieldStartEvent:v5];
+  v11 = [(STSTransactionStartEvent *)v8 initWithCredential:jpkiCredential andNearFieldStartEvent:transactionCopy];
 
-  v10 = [(STSTransactionHandler *)self parent];
-  [v10 fireTransactionStartEvent:v11];
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireTransactionStartEvent:v11];
 }
 
-- (void)session:(id)a3 didEndTransaction:(id)a4
+- (void)session:(id)session didEndTransaction:(id)transaction
 {
-  v5 = a4;
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler session:didEndTransaction:]", 814, self, @"END: %@", v6, v7, v5);
+  transactionCopy = transaction;
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013HybridHandler session:didEndTransaction:]", 814, self, @"END: %@", v6, v7, transactionCopy);
   v8 = [STSTransactionEndEvent alloc];
   if (self)
   {
@@ -1343,10 +1343,10 @@ LABEL_35:
     jpkiCredential = 0;
   }
 
-  v11 = [(STSTransactionEndEvent *)v8 initWithCredential:jpkiCredential andNearFieldEndEvent:v5];
+  v11 = [(STSTransactionEndEvent *)v8 initWithCredential:jpkiCredential andNearFieldEndEvent:transactionCopy];
 
-  v10 = [(STSTransactionHandler *)self parent];
-  [v10 fireTransactionEndEvent:v11];
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireTransactionEndEvent:v11];
 }
 
 @end

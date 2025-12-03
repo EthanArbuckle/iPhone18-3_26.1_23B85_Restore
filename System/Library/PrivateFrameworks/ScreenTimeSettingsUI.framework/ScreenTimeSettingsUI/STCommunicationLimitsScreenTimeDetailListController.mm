@@ -1,12 +1,12 @@
 @interface STCommunicationLimitsScreenTimeDetailListController
-+ (void)showCompatibilityAlertIfNeededWithCoordinator:(id)a3 presentingViewController:(id)a4 okHandler:(id)a5;
-- (id)_allowedCommunicationGroupFooterText:(id)a3;
++ (void)showCompatibilityAlertIfNeededWithCoordinator:(id)coordinator presentingViewController:(id)controller okHandler:(id)handler;
+- (id)_allowedCommunicationGroupFooterText:(id)text;
 - (id)specifiers;
 - (void)_didFinishEditingCommunicationLimit;
 - (void)_updateAllowedCommunicationGroupFooterText;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)willResignActive;
 @end
 
@@ -14,13 +14,13 @@
 
 - (void)viewDidLoad
 {
-  v3 = [(STCommunicationLimitsScreenTimeDetailListController *)self specifier];
-  v4 = [v3 objectForKeyedSubscript:0x287675C48];
+  specifier = [(STCommunicationLimitsScreenTimeDetailListController *)self specifier];
+  v4 = [specifier objectForKeyedSubscript:0x287675C48];
 
-  v5 = [v4 contentPrivacyCoordinator];
-  v6 = [v5 viewModel];
-  v7 = [v6 communicationLimits];
-  v8 = [v7 copy];
+  contentPrivacyCoordinator = [v4 contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  communicationLimits = [viewModel communicationLimits];
+  v8 = [communicationLimits copy];
   [(STCommunicationLimitsScreenTimeDetailListController *)self setCommunicationLimits:v8];
 
   v9 = +[STScreenTimeSettingsUIBundle bundle];
@@ -38,9 +38,9 @@
   [(STCommunicationLimitsScreenTimeDetailListController *)&v11 viewDidLoad];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(STCommunicationLimitsScreenTimeDetailListController *)self _didFinishEditingCommunicationLimit];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -50,7 +50,7 @@
 
   v5.receiver = self;
   v5.super_class = STCommunicationLimitsScreenTimeDetailListController;
-  [(STCommunicationLimitsScreenTimeDetailListController *)&v5 viewWillDisappear:v3];
+  [(STCommunicationLimitsScreenTimeDetailListController *)&v5 viewWillDisappear:disappearCopy];
 }
 
 - (void)willResignActive
@@ -63,61 +63,61 @@
 
 - (void)_didFinishEditingCommunicationLimit
 {
-  v4 = [(STCommunicationLimitsScreenTimeDetailListController *)self specifier];
-  v25 = [v4 objectForKeyedSubscript:0x287675C48];
+  specifier = [(STCommunicationLimitsScreenTimeDetailListController *)self specifier];
+  v25 = [specifier objectForKeyedSubscript:0x287675C48];
 
-  v5 = [(STCommunicationLimitsScreenTimeDetailListController *)self communicationLimits];
-  v6 = [(STCommunicationLimitsScreenTimeDetailListController *)self allowedCommunicationGroupSpecifier];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D40090]];
+  communicationLimits = [(STCommunicationLimitsScreenTimeDetailListController *)self communicationLimits];
+  allowedCommunicationGroupSpecifier = [(STCommunicationLimitsScreenTimeDetailListController *)self allowedCommunicationGroupSpecifier];
+  v7 = [allowedCommunicationGroupSpecifier objectForKeyedSubscript:*MEMORY[0x277D40090]];
 
-  v8 = [(STCommunicationLimitsScreenTimeDetailListController *)self allowContactsOnlySpecifier];
+  allowContactsOnlySpecifier = [(STCommunicationLimitsScreenTimeDetailListController *)self allowContactsOnlySpecifier];
 
-  if (v7 == v8)
+  if (v7 == allowContactsOnlySpecifier)
   {
     v10 = 2;
   }
 
   else
   {
-    v9 = [(STCommunicationLimitsScreenTimeDetailListController *)self allowGroupsWithOneContactSpecifier];
-    v10 = v7 == v9;
+    allowGroupsWithOneContactSpecifier = [(STCommunicationLimitsScreenTimeDetailListController *)self allowGroupsWithOneContactSpecifier];
+    v10 = v7 == allowGroupsWithOneContactSpecifier;
   }
 
-  [v5 setScreenTimeCommunicationLimit:v10];
-  v11 = [v5 screenTimeCommunicationLimit];
-  v12 = [v25 contentPrivacyCoordinator];
-  v13 = [v12 viewModel];
-  v14 = [v13 communicationLimits];
-  v15 = [v14 screenTimeCommunicationLimit];
+  [communicationLimits setScreenTimeCommunicationLimit:v10];
+  screenTimeCommunicationLimit = [communicationLimits screenTimeCommunicationLimit];
+  contentPrivacyCoordinator = [v25 contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  communicationLimits2 = [viewModel communicationLimits];
+  screenTimeCommunicationLimit2 = [communicationLimits2 screenTimeCommunicationLimit];
 
-  if (v11 != v15)
+  if (screenTimeCommunicationLimit != screenTimeCommunicationLimit2)
   {
-    v16 = [v5 downtimeCommunicationLimit];
-    v17 = [v5 screenTimeCommunicationLimit];
-    if (v17 > 1)
+    downtimeCommunicationLimit = [communicationLimits downtimeCommunicationLimit];
+    screenTimeCommunicationLimit3 = [communicationLimits screenTimeCommunicationLimit];
+    if (screenTimeCommunicationLimit3 > 1)
     {
       v18 = v25;
-      if (v17 == 2)
+      if (screenTimeCommunicationLimit3 == 2)
       {
-        if (v16 != 2)
+        if (downtimeCommunicationLimit != 2)
         {
-          v19 = v5;
+          v19 = communicationLimits;
           v20 = 2;
           goto LABEL_18;
         }
 
 LABEL_19:
-        v22 = v5;
+        v22 = communicationLimits;
         v23 = 0;
 LABEL_20:
         [v22 setContactsEditable:v23];
         goto LABEL_21;
       }
 
-      if (v17 == 3)
+      if (screenTimeCommunicationLimit3 == 3)
       {
-        v21 = [MEMORY[0x277CCA890] currentHandler];
-        [v21 handleFailureInMethod:a2 object:self file:@"STCommunicationLimitsScreenTimeDetailListController.m" lineNumber:97 description:@"Unexpected general communication policy whitelisted contacts"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"STCommunicationLimitsScreenTimeDetailListController.m" lineNumber:97 description:@"Unexpected general communication policy whitelisted contacts"];
 
 LABEL_21:
         v18 = v25;
@@ -127,23 +127,23 @@ LABEL_21:
     else
     {
       v18 = v25;
-      if (!v17)
+      if (!screenTimeCommunicationLimit3)
       {
-        if (v16)
+        if (downtimeCommunicationLimit)
         {
-          [v5 setDowntimeCommunicationLimit:0];
+          [communicationLimits setDowntimeCommunicationLimit:0];
         }
 
-        v22 = v5;
+        v22 = communicationLimits;
         v23 = 1;
         goto LABEL_20;
       }
 
-      if (v17 == 1)
+      if (screenTimeCommunicationLimit3 == 1)
       {
-        if (v16 != 1)
+        if (downtimeCommunicationLimit != 1)
         {
-          v19 = v5;
+          v19 = communicationLimits;
           v20 = 1;
 LABEL_18:
           [v19 setDowntimeCommunicationLimit:v20];
@@ -154,33 +154,33 @@ LABEL_18:
       }
     }
 
-    v24 = [v18 contentPrivacyCoordinator];
-    [v24 saveCommunicationLimits:v5 completionHandler:0];
+    contentPrivacyCoordinator2 = [v18 contentPrivacyCoordinator];
+    [contentPrivacyCoordinator2 saveCommunicationLimits:communicationLimits completionHandler:0];
   }
 }
 
-+ (void)showCompatibilityAlertIfNeededWithCoordinator:(id)a3 presentingViewController:(id)a4 okHandler:(id)a5
++ (void)showCompatibilityAlertIfNeededWithCoordinator:(id)coordinator presentingViewController:(id)controller okHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [a3 viewModel];
-  v10 = [v9 me];
-  v11 = [v10 dsid];
-  v12 = [v11 stringValue];
+  controllerCopy = controller;
+  handlerCopy = handler;
+  viewModel = [coordinator viewModel];
+  v10 = [viewModel me];
+  dsid = [v10 dsid];
+  stringValue = [dsid stringValue];
 
-  if ([v9 shouldShowCompatibilityAlerts] && !+[STCommunicationLimits hasShownCompatibilityAlertForDSID:](STCommunicationLimits, "hasShownCompatibilityAlertForDSID:", v12))
+  if ([viewModel shouldShowCompatibilityAlerts] && !+[STCommunicationLimits hasShownCompatibilityAlertForDSID:](STCommunicationLimits, "hasShownCompatibilityAlertForDSID:", stringValue))
   {
     v13 = +[STScreenTimeSettingsUIBundle bundle];
     if ([v10 isRemoteUser])
     {
-      v14 = [v10 givenName];
-      if (v14)
+      givenName = [v10 givenName];
+      if (givenName)
       {
         v24 = [v13 localizedStringForKey:@"UpdateChildDevicesAlertTitleFormat" value:&stru_28766E5A8 table:0];
-        v15 = [MEMORY[0x277CBEAF8] currentLocale];
-        v25 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v24 locale:v15, v14];
+        currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+        v25 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v24 locale:currentLocale, givenName];
         v16 = [v13 localizedStringForKey:@"CommunicationLimitsChildCompatibilityAlertMessageFormat" value:&stru_28766E5A8 table:0];
-        v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v16 locale:v15, v14];
+        v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v16 locale:currentLocale, givenName];
 
         v18 = v25;
 LABEL_9:
@@ -188,15 +188,15 @@ LABEL_9:
 
         v21 = [MEMORY[0x277D75110] alertControllerWithTitle:v18 message:v17 preferredStyle:1];
         v22 = [v13 localizedStringForKey:@"ConfirmationButtonOK" value:&stru_28766E5A8 table:0];
-        v23 = [MEMORY[0x277D750F8] actionWithTitle:v22 style:0 handler:v8];
+        v23 = [MEMORY[0x277D750F8] actionWithTitle:v22 style:0 handler:handlerCopy];
         [v21 addAction:v23];
         [v21 setPreferredAction:v23];
         v27[0] = MEMORY[0x277D85DD0];
         v27[1] = 3221225472;
         v27[2] = __136__STCommunicationLimitsScreenTimeDetailListController_showCompatibilityAlertIfNeededWithCoordinator_presentingViewController_okHandler___block_invoke;
         v27[3] = &unk_279B7C998;
-        v28 = v12;
-        [v7 presentViewController:v21 animated:1 completion:v27];
+        v28 = stringValue;
+        [controllerCopy presentViewController:v21 animated:1 completion:v27];
 
         goto LABEL_10;
       }
@@ -209,9 +209,9 @@ LABEL_9:
     else
     {
       v18 = [v13 localizedStringForKey:@"UpdateOtherDevicesAlertTitle" value:&stru_28766E5A8 table:0];
-      v14 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"CommunicationLimitsCompatibilityAlertMessage"];
+      givenName = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"CommunicationLimitsCompatibilityAlertMessage"];
       v19 = v13;
-      v20 = v14;
+      v20 = givenName;
     }
 
     v17 = [v19 localizedStringForKey:v20 value:&stru_28766E5A8 table:0];
@@ -229,25 +229,25 @@ LABEL_10:
     v45 = *MEMORY[0x277D3FC48];
     v4 = objc_opt_new();
     v46 = +[STScreenTimeSettingsUIBundle bundle];
-    v5 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    v6 = [(STCommunicationLimitsScreenTimeDetailListController *)self specifier];
-    v7 = [v6 objectForKeyedSubscript:0x287675C48];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    specifier = [(STCommunicationLimitsScreenTimeDetailListController *)self specifier];
+    v7 = [specifier objectForKeyedSubscript:0x287675C48];
 
     v44 = v7;
-    v8 = [v7 viewModel];
-    v9 = [v8 me];
+    viewModel = [v7 viewModel];
+    v9 = [viewModel me];
 
     v10 = v9;
     if ([v10 isRemoteUser])
     {
-      v11 = [v10 givenName];
+      givenName = [v10 givenName];
       v12 = +[STScreenTimeSettingsUIBundle bundle];
       v13 = v12;
-      if (v11)
+      if (givenName)
       {
         v14 = [v12 localizedStringForKey:@"CommunicationLimitsRemoteHeaderText" value:&stru_28766E5A8 table:0];
 
-        v15 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v14, v11];
+        v15 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v14, givenName];
         v13 = v14;
       }
 
@@ -259,15 +259,15 @@ LABEL_10:
 
     else
     {
-      v11 = +[STScreenTimeSettingsUIBundle bundle];
-      v15 = [v11 localizedStringForKey:@"CommunicationLimitsLocalHeaderText" value:&stru_28766E5A8 table:0];
+      givenName = +[STScreenTimeSettingsUIBundle bundle];
+      v15 = [givenName localizedStringForKey:@"CommunicationLimitsLocalHeaderText" value:&stru_28766E5A8 table:0];
     }
 
     v43 = v10;
     v42 = *MEMORY[0x277D3FF88];
-    [v5 setObject:v15 forKeyedSubscript:?];
+    [emptyGroupSpecifier setObject:v15 forKeyedSubscript:?];
 
-    [v4 addObject:v5];
+    [v4 addObject:emptyGroupSpecifier];
     v16 = MEMORY[0x277D3FAD8];
     v17 = [v46 localizedStringForKey:@"AllowedCommunicationSectionTitle" value:&stru_28766E5A8 table:0];
     v18 = [v16 groupSpecifierWithName:v17];
@@ -297,21 +297,21 @@ LABEL_10:
     [v28 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v23];
     [(STCommunicationLimitsScreenTimeDetailListController *)self setAllowEveryoneSpecifier:v28];
     [v4 addObject:v28];
-    v29 = [(STCommunicationLimitsScreenTimeDetailListController *)self communicationLimits];
-    v30 = [v29 screenTimeCommunicationLimit];
+    communicationLimits = [(STCommunicationLimitsScreenTimeDetailListController *)self communicationLimits];
+    screenTimeCommunicationLimit = [communicationLimits screenTimeCommunicationLimit];
 
     v31 = MEMORY[0x277D40090];
-    if (v30 > 1)
+    if (screenTimeCommunicationLimit > 1)
     {
-      if (v30 == 3)
+      if (screenTimeCommunicationLimit == 3)
       {
-        v35 = [MEMORY[0x277CCA890] currentHandler];
-        [v35 handleFailureInMethod:a2 object:self file:@"STCommunicationLimitsScreenTimeDetailListController.m" lineNumber:191 description:@"Unexpected general communication policy whitelisted contacts"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"STCommunicationLimitsScreenTimeDetailListController.m" lineNumber:191 description:@"Unexpected general communication policy whitelisted contacts"];
 
         goto LABEL_18;
       }
 
-      if (v30 == 2)
+      if (screenTimeCommunicationLimit == 2)
       {
         v32 = *MEMORY[0x277D40090];
         v33 = v18;
@@ -322,13 +322,13 @@ LABEL_10:
 
     else
     {
-      if (!v30)
+      if (!screenTimeCommunicationLimit)
       {
         [v18 setObject:v28 forKeyedSubscript:*MEMORY[0x277D40090]];
         goto LABEL_18;
       }
 
-      if (v30 == 1)
+      if (screenTimeCommunicationLimit == 1)
       {
         v32 = *MEMORY[0x277D40090];
         v33 = v18;
@@ -352,21 +352,21 @@ LABEL_18:
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v14.receiver = self;
   v14.super_class = STCommunicationLimitsScreenTimeDetailListController;
-  v6 = a4;
-  [(STCommunicationLimitsScreenTimeDetailListController *)&v14 tableView:a3 didSelectRowAtIndexPath:v6];
+  pathCopy = path;
+  [(STCommunicationLimitsScreenTimeDetailListController *)&v14 tableView:view didSelectRowAtIndexPath:pathCopy];
   v7 = [(STCommunicationLimitsScreenTimeDetailListController *)self allowedCommunicationGroupSpecifier:v14.receiver];
   v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D40090]];
-  v9 = [(STCommunicationLimitsScreenTimeDetailListController *)self allowEveryoneSpecifier];
-  v10 = [(STCommunicationLimitsScreenTimeDetailListController *)self specifierAtIndexPath:v6];
+  allowEveryoneSpecifier = [(STCommunicationLimitsScreenTimeDetailListController *)self allowEveryoneSpecifier];
+  v10 = [(STCommunicationLimitsScreenTimeDetailListController *)self specifierAtIndexPath:pathCopy];
 
-  if (v10 != v9 && v8 != v9)
+  if (v10 != allowEveryoneSpecifier && v8 != allowEveryoneSpecifier)
   {
-    v11 = [(STCommunicationLimitsScreenTimeDetailListController *)self specifier];
-    v12 = [v11 objectForKeyedSubscript:0x287675C48];
+    specifier = [(STCommunicationLimitsScreenTimeDetailListController *)self specifier];
+    v12 = [specifier objectForKeyedSubscript:0x287675C48];
 
     [objc_opt_class() showCompatibilityAlertIfNeededWithCoordinator:v12 presentingViewController:self okHandler:0];
   }
@@ -377,12 +377,12 @@ LABEL_18:
   [(STCommunicationLimitsScreenTimeDetailListController *)self _updateAllowedCommunicationGroupFooterText];
 }
 
-- (id)_allowedCommunicationGroupFooterText:(id)a3
+- (id)_allowedCommunicationGroupFooterText:(id)text
 {
-  v4 = a3;
-  v5 = [(STCommunicationLimitsScreenTimeDetailListController *)self allowEveryoneSpecifier];
+  textCopy = text;
+  allowEveryoneSpecifier = [(STCommunicationLimitsScreenTimeDetailListController *)self allowEveryoneSpecifier];
 
-  if (v5 == v4)
+  if (allowEveryoneSpecifier == textCopy)
   {
     v7 = +[STScreenTimeSettingsUIBundle bundle];
     v15 = [v7 localizedStringForKey:@"DuringScreenTimeEveryoneFooterText" value:&stru_28766E5A8 table:0];
@@ -390,33 +390,33 @@ LABEL_18:
 
   else
   {
-    v6 = [(STCommunicationLimitsScreenTimeDetailListController *)self specifier];
-    v7 = [v6 objectForKeyedSubscript:0x287675C48];
+    specifier = [(STCommunicationLimitsScreenTimeDetailListController *)self specifier];
+    v7 = [specifier objectForKeyedSubscript:0x287675C48];
 
-    v8 = [v7 viewModel];
-    v9 = [v8 me];
+    viewModel = [v7 viewModel];
+    v9 = [viewModel me];
 
     if ([v9 isRemoteUser])
     {
-      v10 = [v9 givenName];
-      v11 = [(STCommunicationLimitsScreenTimeDetailListController *)self allowContactsOnlySpecifier];
+      givenName = [v9 givenName];
+      allowContactsOnlySpecifier = [(STCommunicationLimitsScreenTimeDetailListController *)self allowContactsOnlySpecifier];
 
       v12 = +[STScreenTimeSettingsUIBundle bundle];
       v13 = v12;
-      if (v10)
+      if (givenName)
       {
-        if (v11 == v4)
+        if (allowContactsOnlySpecifier == textCopy)
         {
           v14 = [v12 localizedStringForKey:@"DuringScreenTimeContactsOnlyRemoteFooterText" value:&stru_28766E5A8 table:0];
 
-          [MEMORY[0x277CCACA8] localizedStringWithFormat:v14, v10, v21];
+          [MEMORY[0x277CCACA8] localizedStringWithFormat:v14, givenName, v21];
         }
 
         else
         {
           v14 = [v12 localizedStringForKey:@"DuringScreenTimeGroupsWithOneContactRemoteFooterText" value:&stru_28766E5A8 table:0];
 
-          [MEMORY[0x277CCACA8] localizedStringWithFormat:v14, v10, v10];
+          [MEMORY[0x277CCACA8] localizedStringWithFormat:v14, givenName, givenName];
         }
         v15 = ;
         v13 = v14;
@@ -424,7 +424,7 @@ LABEL_18:
 
       else
       {
-        if (v11 == v4)
+        if (allowContactsOnlySpecifier == textCopy)
         {
           v19 = @"DuringScreenTimeContactsOnlyRemoteGenericFooterText";
         }
@@ -440,11 +440,11 @@ LABEL_18:
 
     else
     {
-      v16 = [(STCommunicationLimitsScreenTimeDetailListController *)self allowContactsOnlySpecifier];
+      allowContactsOnlySpecifier2 = [(STCommunicationLimitsScreenTimeDetailListController *)self allowContactsOnlySpecifier];
 
       v17 = +[STScreenTimeSettingsUIBundle bundle];
-      v10 = v17;
-      if (v16 == v4)
+      givenName = v17;
+      if (allowContactsOnlySpecifier2 == textCopy)
       {
         v18 = @"DuringScreenTimeContactsOnlyLocalFooterText";
       }
@@ -463,8 +463,8 @@ LABEL_18:
 
 - (void)_updateAllowedCommunicationGroupFooterText
 {
-  v3 = [(STCommunicationLimitsScreenTimeDetailListController *)self allowedCommunicationGroupSpecifier];
-  [(STCommunicationLimitsScreenTimeDetailListController *)self reloadSpecifier:v3 animated:1];
+  allowedCommunicationGroupSpecifier = [(STCommunicationLimitsScreenTimeDetailListController *)self allowedCommunicationGroupSpecifier];
+  [(STCommunicationLimitsScreenTimeDetailListController *)self reloadSpecifier:allowedCommunicationGroupSpecifier animated:1];
 }
 
 @end

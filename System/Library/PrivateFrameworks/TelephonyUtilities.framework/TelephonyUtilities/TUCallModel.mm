@@ -1,10 +1,10 @@
 @interface TUCallModel
-- (BOOL)isEqual:(id)a3;
-- (TUCallModel)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TUCallModel)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUCallModel
@@ -24,18 +24,18 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(TUCallModel *)self supportsHolding];
-    if (v6 == [v5 supportsHolding] && (v7 = -[TUCallModel supportsGrouping](self, "supportsGrouping"), v7 == objc_msgSend(v5, "supportsGrouping")) && (v8 = -[TUCallModel supportsUngrouping](self, "supportsUngrouping"), v8 == objc_msgSend(v5, "supportsUngrouping")) && (v9 = -[TUCallModel supportsDTMF](self, "supportsDTMF"), v9 == objc_msgSend(v5, "supportsDTMF")) && (v10 = -[TUCallModel supportsUnambiguousMultiPartyState](self, "supportsUnambiguousMultiPartyState"), v10 == objc_msgSend(v5, "supportsUnambiguousMultiPartyState")) && (v11 = -[TUCallModel supportsAddCall](self, "supportsAddCall"), v11 == objc_msgSend(v5, "supportsAddCall")))
+    v5 = equalCopy;
+    supportsHolding = [(TUCallModel *)self supportsHolding];
+    if (supportsHolding == [v5 supportsHolding] && (v7 = -[TUCallModel supportsGrouping](self, "supportsGrouping"), v7 == objc_msgSend(v5, "supportsGrouping")) && (v8 = -[TUCallModel supportsUngrouping](self, "supportsUngrouping"), v8 == objc_msgSend(v5, "supportsUngrouping")) && (v9 = -[TUCallModel supportsDTMF](self, "supportsDTMF"), v9 == objc_msgSend(v5, "supportsDTMF")) && (v10 = -[TUCallModel supportsUnambiguousMultiPartyState](self, "supportsUnambiguousMultiPartyState"), v10 == objc_msgSend(v5, "supportsUnambiguousMultiPartyState")) && (v11 = -[TUCallModel supportsAddCall](self, "supportsAddCall"), v11 == objc_msgSend(v5, "supportsAddCall")))
     {
-      v14 = [(TUCallModel *)self supportsSendingToVoicemail];
-      v12 = v14 ^ [v5 supportsSendingToVoicemail] ^ 1;
+      supportsSendingToVoicemail = [(TUCallModel *)self supportsSendingToVoicemail];
+      v12 = supportsSendingToVoicemail ^ [v5 supportsSendingToVoicemail] ^ 1;
     }
 
     else
@@ -130,9 +130,9 @@
   return v8 ^ v11 ^ v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setSupportsHolding:{-[TUCallModel supportsHolding](self, "supportsHolding")}];
   [v4 setSupportsGrouping:{-[TUCallModel supportsGrouping](self, "supportsGrouping")}];
   [v4 setSupportsUngrouping:{-[TUCallModel supportsUngrouping](self, "supportsUngrouping")}];
@@ -143,67 +143,67 @@
   return v4;
 }
 
-- (TUCallModel)initWithCoder:(id)a3
+- (TUCallModel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(TUCallModel *)self init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_supportsHolding);
-    v5->_supportsHolding = [v4 decodeBoolForKey:v6];
+    v5->_supportsHolding = [coderCopy decodeBoolForKey:v6];
 
     v7 = NSStringFromSelector(sel_supportsGrouping);
-    v5->_supportsGrouping = [v4 decodeBoolForKey:v7];
+    v5->_supportsGrouping = [coderCopy decodeBoolForKey:v7];
 
     v8 = NSStringFromSelector(sel_supportsUngrouping);
-    v5->_supportsUngrouping = [v4 decodeBoolForKey:v8];
+    v5->_supportsUngrouping = [coderCopy decodeBoolForKey:v8];
 
     v9 = NSStringFromSelector(sel_supportsDTMF);
-    v5->_supportsDTMF = [v4 decodeBoolForKey:v9];
+    v5->_supportsDTMF = [coderCopy decodeBoolForKey:v9];
 
     v10 = NSStringFromSelector(sel_supportsUnambiguousMultiPartyState);
-    v5->_supportsUnambiguousMultiPartyState = [v4 decodeBoolForKey:v10];
+    v5->_supportsUnambiguousMultiPartyState = [coderCopy decodeBoolForKey:v10];
 
     v11 = NSStringFromSelector(sel_supportsAddCall);
-    v5->_supportsAddCall = [v4 decodeBoolForKey:v11];
+    v5->_supportsAddCall = [coderCopy decodeBoolForKey:v11];
 
     v12 = NSStringFromSelector(sel_supportsSendingToVoicemail);
-    v5->_supportsSendingToVoicemail = [v4 decodeBoolForKey:v12];
+    v5->_supportsSendingToVoicemail = [coderCopy decodeBoolForKey:v12];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TUCallModel *)self supportsHolding];
+  coderCopy = coder;
+  supportsHolding = [(TUCallModel *)self supportsHolding];
   v6 = NSStringFromSelector(sel_supportsHolding);
-  [v4 encodeBool:v5 forKey:v6];
+  [coderCopy encodeBool:supportsHolding forKey:v6];
 
-  v7 = [(TUCallModel *)self supportsGrouping];
+  supportsGrouping = [(TUCallModel *)self supportsGrouping];
   v8 = NSStringFromSelector(sel_supportsGrouping);
-  [v4 encodeBool:v7 forKey:v8];
+  [coderCopy encodeBool:supportsGrouping forKey:v8];
 
-  v9 = [(TUCallModel *)self supportsUngrouping];
+  supportsUngrouping = [(TUCallModel *)self supportsUngrouping];
   v10 = NSStringFromSelector(sel_supportsUngrouping);
-  [v4 encodeBool:v9 forKey:v10];
+  [coderCopy encodeBool:supportsUngrouping forKey:v10];
 
-  v11 = [(TUCallModel *)self supportsDTMF];
+  supportsDTMF = [(TUCallModel *)self supportsDTMF];
   v12 = NSStringFromSelector(sel_supportsDTMF);
-  [v4 encodeBool:v11 forKey:v12];
+  [coderCopy encodeBool:supportsDTMF forKey:v12];
 
-  v13 = [(TUCallModel *)self supportsUnambiguousMultiPartyState];
+  supportsUnambiguousMultiPartyState = [(TUCallModel *)self supportsUnambiguousMultiPartyState];
   v14 = NSStringFromSelector(sel_supportsUnambiguousMultiPartyState);
-  [v4 encodeBool:v13 forKey:v14];
+  [coderCopy encodeBool:supportsUnambiguousMultiPartyState forKey:v14];
 
-  v15 = [(TUCallModel *)self supportsAddCall];
+  supportsAddCall = [(TUCallModel *)self supportsAddCall];
   v16 = NSStringFromSelector(sel_supportsAddCall);
-  [v4 encodeBool:v15 forKey:v16];
+  [coderCopy encodeBool:supportsAddCall forKey:v16];
 
-  v17 = [(TUCallModel *)self supportsSendingToVoicemail];
+  supportsSendingToVoicemail = [(TUCallModel *)self supportsSendingToVoicemail];
   v18 = NSStringFromSelector(sel_supportsSendingToVoicemail);
-  [v4 encodeBool:v17 forKey:v18];
+  [coderCopy encodeBool:supportsSendingToVoicemail forKey:v18];
 }
 
 @end

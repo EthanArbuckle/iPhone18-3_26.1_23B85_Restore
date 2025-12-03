@@ -1,22 +1,22 @@
 @interface BCUIRingView
-- (BCUIRingView)initWithFrame:(CGRect)a3;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BCUIRingView)initWithFrame:(CGRect)frame;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (CGSize)sizeThatFits:(CGSize)result;
 - (void)_invalidatePath;
 - (void)layoutSubviews;
-- (void)setFillColor:(id)a3;
-- (void)setFractionComplete:(double)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setRingEnd:(double)a3;
-- (void)setRingStart:(double)a3;
-- (void)setStrokeColor:(id)a3;
+- (void)setFillColor:(id)color;
+- (void)setFractionComplete:(double)complete;
+- (void)setFrame:(CGRect)frame;
+- (void)setRingEnd:(double)end;
+- (void)setRingStart:(double)start;
+- (void)setStrokeColor:(id)color;
 @end
 
 @implementation BCUIRingView
 
-- (void)setRingStart:(double)a3
+- (void)setRingStart:(double)start
 {
-  v3 = fmin(fmax(a3, 0.0), 1.0);
+  v3 = fmin(fmax(start, 0.0), 1.0);
   if (v3 != self->_ringStart)
   {
     self->_ringStart = v3;
@@ -24,9 +24,9 @@
   }
 }
 
-- (void)setRingEnd:(double)a3
+- (void)setRingEnd:(double)end
 {
-  v3 = fmin(fmax(a3, 0.0), 1.0);
+  v3 = fmin(fmax(end, 0.0), 1.0);
   if (v3 != self->_ringEnd)
   {
     self->_ringEnd = v3;
@@ -34,42 +34,42 @@
   }
 }
 
-- (void)setStrokeColor:(id)a3
+- (void)setStrokeColor:(id)color
 {
-  v5 = a3;
-  if (self->_strokeColor != v5)
+  colorCopy = color;
+  if (self->_strokeColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_strokeColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_strokeColor, color);
     [(BCUIRingView *)self setNeedsLayout];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v5 = a3;
-  if (self->_fillColor != v5)
+  colorCopy = color;
+  if (self->_fillColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_fillColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_fillColor, color);
     [(BCUIRingView *)self setNeedsLayout];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setFractionComplete:(double)a3
+- (void)setFractionComplete:(double)complete
 {
   [(BCUIRingView *)self setRingStart:0.0];
 
-  [(BCUIRingView *)self setRingEnd:a3];
+  [(BCUIRingView *)self setRingEnd:complete];
 }
 
-- (BCUIRingView)initWithFrame:(CGRect)a3
+- (BCUIRingView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = BCUIRingView;
-  v3 = [(BCUIRingView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BCUIRingView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -89,31 +89,31 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(BCUIRingView *)self _shapeLayer];
-  v4 = v3;
-  v32 = v3;
+  _shapeLayer = [(BCUIRingView *)self _shapeLayer];
+  v4 = _shapeLayer;
+  v32 = _shapeLayer;
   if (self->_ringEnd > self->_ringStart)
   {
-    v5 = [v3 path];
+    path = [_shapeLayer path];
     v4 = v32;
-    if (!v5)
+    if (!path)
     {
       [(BCUIRingView *)self bounds];
       v7 = v6;
       v9 = v8;
-      v10 = [(BCUIRingView *)self window];
-      if (v10)
+      window = [(BCUIRingView *)self window];
+      if (window)
       {
-        v11 = [(BCUIRingView *)self window];
-        v12 = [v11 screen];
-        [v12 scale];
+        window2 = [(BCUIRingView *)self window];
+        screen = [window2 screen];
+        [screen scale];
         v14 = v13;
       }
 
       else
       {
-        v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-        [v11 scale];
+        window2 = [MEMORY[0x1E69DCEB0] mainScreen];
+        [window2 scale];
         v14 = v15;
       }
 
@@ -152,8 +152,8 @@
 
   else
   {
-    v31 = [MEMORY[0x1E69DC888] clearColor];
-    [v32 setFillColor:{objc_msgSend(v31, "CGColor")}];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v32 setFillColor:{objc_msgSend(clearColor, "CGColor")}];
   }
 
   [v32 setStrokeColor:{-[UIColor CGColor](self->_strokeColor, "CGColor")}];
@@ -161,12 +161,12 @@
   [v32 setStrokeEnd:self->_ringEnd];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(BCUIRingView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -202,10 +202,10 @@
   return result;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"strokeStart"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"strokeEnd") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"strokeColor"))
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"strokeStart"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"strokeEnd") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"strokeColor"))
   {
     v5 = 1;
   }
@@ -214,7 +214,7 @@
   {
     v7.receiver = self;
     v7.super_class = BCUIRingView;
-    v5 = [(BCUIRingView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(BCUIRingView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
@@ -222,8 +222,8 @@
 
 - (void)_invalidatePath
 {
-  v3 = [(BCUIRingView *)self _shapeLayer];
-  [v3 setPath:0];
+  _shapeLayer = [(BCUIRingView *)self _shapeLayer];
+  [_shapeLayer setPath:0];
 
   [(BCUIRingView *)self setNeedsLayout];
 }

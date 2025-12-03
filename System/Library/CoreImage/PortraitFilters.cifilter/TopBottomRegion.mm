@@ -1,25 +1,25 @@
 @interface TopBottomRegion
 - ($D9ACD5A945031E604089763E4FBE0988)boundsRect;
-- (BOOL)containsPointX:(float)a3 Y:(float)a4;
-- (TopBottomRegion)initWithSegments:(int)a3 boundsRect:(CGRect)a4;
-- (void)adjustForX:(float)a3 Y:(float)a4;
+- (BOOL)containsPointX:(float)x Y:(float)y;
+- (TopBottomRegion)initWithSegments:(int)segments boundsRect:(CGRect)rect;
+- (void)adjustForX:(float)x Y:(float)y;
 - (void)dealloc;
-- (void)lowerBottomBy:(float)a3;
+- (void)lowerBottomBy:(float)by;
 - (void)printSummary;
-- (void)raiseTopBy:(float)a3;
-- (void)smoothWithSize:(int)a3;
+- (void)raiseTopBy:(float)by;
+- (void)smoothWithSize:(int)size;
 @end
 
 @implementation TopBottomRegion
 
-- (TopBottomRegion)initWithSegments:(int)a3 boundsRect:(CGRect)a4
+- (TopBottomRegion)initWithSegments:(int)segments boundsRect:(CGRect)rect
 {
-  width = a4.size.width;
-  x = a4.origin.x;
+  width = rect.size.width;
+  x = rect.origin.x;
   v15.receiver = self;
   v15.super_class = TopBottomRegion;
-  v7 = [(TopBottomRegion *)&v15 init:a4.origin.x];
-  v7->nsegs = a3;
+  v7 = [(TopBottomRegion *)&v15 init:rect.origin.x];
+  v7->nsegs = segments;
   v8 = x;
   v9 = x + width;
   v7->xmin = v8;
@@ -52,11 +52,11 @@
   [(TopBottomRegion *)&v3 dealloc];
 }
 
-- (void)smoothWithSize:(int)a3
+- (void)smoothWithSize:(int)size
 {
   v17 = objc_alloc_init(Rgon);
   v4 = [(TopBottomRegion *)self top];
-  v5 = [(TopBottomRegion *)self bottom];
+  bottom = [(TopBottomRegion *)self bottom];
   xdatamin = self->xdatamin;
   LODWORD(xdatamax) = self->xdatamax;
   if (xdatamin <= xdatamax)
@@ -64,7 +64,7 @@
     v10 = xdatamin;
     do
     {
-      *&v7 = v5[v10];
+      *&v7 = bottom[v10];
       *&v6 = v10;
       [(Rgon *)v17 AdjustForPointX:v6 Y:v7];
       *&v11 = v4[v10];
@@ -83,7 +83,7 @@
     v15 = xdatamin;
     do
     {
-      v16 = (v5[v15] + v4[v15]) * 0.5;
+      v16 = (bottom[v15] + v4[v15]) * 0.5;
       while (1)
       {
         *&v6 = v15;
@@ -105,7 +105,7 @@
   }
 }
 
-- (void)raiseTopBy:(float)a3
+- (void)raiseTopBy:(float)by
 {
   v5 = [(TopBottomRegion *)self top];
   xdatamax = self->xdatamax;
@@ -116,7 +116,7 @@
     v9 = xdatamax - xdatamin + 1;
     do
     {
-      *v8 = *v8 + a3;
+      *v8 = *v8 + by;
       ++v8;
       --v9;
     }
@@ -125,18 +125,18 @@
   }
 }
 
-- (void)lowerBottomBy:(float)a3
+- (void)lowerBottomBy:(float)by
 {
-  v5 = [(TopBottomRegion *)self bottom];
+  bottom = [(TopBottomRegion *)self bottom];
   xdatamax = self->xdatamax;
   xdatamin = self->xdatamin;
   if (xdatamin <= xdatamax)
   {
-    v8 = &v5[xdatamin];
+    v8 = &bottom[xdatamin];
     v9 = xdatamax - xdatamin + 1;
     do
     {
-      v10 = *v8 - a3;
+      v10 = *v8 - by;
       if (v10 < 0.0)
       {
         v10 = 0.0;
@@ -150,19 +150,19 @@
   }
 }
 
-- (BOOL)containsPointX:(float)a3 Y:(float)a4
+- (BOOL)containsPointX:(float)x Y:(float)y
 {
   v7 = [(TopBottomRegion *)self top];
-  v8 = [(TopBottomRegion *)self bottom];
-  v9 = ((a3 - self->xmin) / self->seglength);
-  return v8[v9] < a4 && v7[v9] > a4;
+  bottom = [(TopBottomRegion *)self bottom];
+  v9 = ((x - self->xmin) / self->seglength);
+  return bottom[v9] < y && v7[v9] > y;
 }
 
-- (void)adjustForX:(float)a3 Y:(float)a4
+- (void)adjustForX:(float)x Y:(float)y
 {
-  v6 = ((a3 - self->xmin) / self->seglength);
+  v6 = ((x - self->xmin) / self->seglength);
   v7 = [(TopBottomRegion *)self top];
-  v8 = [(TopBottomRegion *)self bottom];
+  bottom = [(TopBottomRegion *)self bottom];
   if ([(TopBottomRegion *)self isempty])
   {
     nsegs = self->nsegs;
@@ -170,8 +170,8 @@
     {
       do
       {
-        *v8++ = a4;
-        *v7++ = a4;
+        *bottom++ = y;
+        *v7++ = y;
         --nsegs;
       }
 
@@ -186,14 +186,14 @@
 
   else
   {
-    if (v7[v6] < a4)
+    if (v7[v6] < y)
     {
-      v7[v6] = a4;
+      v7[v6] = y;
     }
 
-    if (v8[v6] > a4)
+    if (bottom[v6] > y)
     {
-      v8[v6] = a4;
+      bottom[v6] = y;
     }
 
     if (self->xdatamin > v6)
@@ -211,10 +211,10 @@
 - ($D9ACD5A945031E604089763E4FBE0988)boundsRect
 {
   v3 = [(TopBottomRegion *)self top];
-  v4 = [(TopBottomRegion *)self bottom];
+  bottom = [(TopBottomRegion *)self bottom];
   xmin = self->xmin;
   xmax = self->xmax;
-  v7 = v4[self->xdatamin];
+  v7 = bottom[self->xdatamin];
   v8 = v3[self->xdatamax];
   result.var1.y = v8;
   result.var1.x = xmax;
@@ -226,9 +226,9 @@
 - (void)printSummary
 {
   v3 = [(TopBottomRegion *)self top];
-  v4 = [(TopBottomRegion *)self bottom];
+  bottom = [(TopBottomRegion *)self bottom];
   puts("topbottom region summary");
-  printf("xmin, xmax, ymin, ymax {%f, %f}, {%f, %f} \n", self->xmin, self->xmax, v4[self->xdatamin], v3[self->xdatamax]);
+  printf("xmin, xmax, ymin, ymax {%f, %f}, {%f, %f} \n", self->xmin, self->xmax, bottom[self->xdatamin], v3[self->xdatamax]);
 }
 
 @end

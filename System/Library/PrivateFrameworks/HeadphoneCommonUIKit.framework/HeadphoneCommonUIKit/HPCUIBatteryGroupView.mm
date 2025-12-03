@@ -1,43 +1,43 @@
 @interface HPCUIBatteryGroupView
-- (HPCUIBatteryGroupView)initWithFrame:(CGRect)a3 batteryPercent:(unsigned __int8)a4 isCharging:(BOOL)a5 glyph:(id)a6 batteryLevelDescription:(id)a7 batteryIconView:(id)a8;
-- (void)createBatteryGroupView:(BOOL)a3;
-- (void)setChargePercent:(unsigned __int8)a3;
+- (HPCUIBatteryGroupView)initWithFrame:(CGRect)frame batteryPercent:(unsigned __int8)percent isCharging:(BOOL)charging glyph:(id)glyph batteryLevelDescription:(id)description batteryIconView:(id)view;
+- (void)createBatteryGroupView:(BOOL)view;
+- (void)setChargePercent:(unsigned __int8)percent;
 @end
 
 @implementation HPCUIBatteryGroupView
 
-- (HPCUIBatteryGroupView)initWithFrame:(CGRect)a3 batteryPercent:(unsigned __int8)a4 isCharging:(BOOL)a5 glyph:(id)a6 batteryLevelDescription:(id)a7 batteryIconView:(id)a8
+- (HPCUIBatteryGroupView)initWithFrame:(CGRect)frame batteryPercent:(unsigned __int8)percent isCharging:(BOOL)charging glyph:(id)glyph batteryLevelDescription:(id)description batteryIconView:(id)view
 {
-  v11 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  chargingCopy = charging;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  glyphCopy = glyph;
+  descriptionCopy = description;
+  viewCopy = view;
   v24.receiver = self;
   v24.super_class = HPCUIBatteryGroupView;
-  v21 = [(HPCUIBatteryGroupView *)&v24 initWithFrame:x, y, width, height];
-  v22 = v21;
-  if (v21)
+  height = [(HPCUIBatteryGroupView *)&v24 initWithFrame:x, y, width, height];
+  v22 = height;
+  if (height)
   {
-    v21->batteryPercentNumber = a4;
-    objc_storeStrong(&v21->batteryGlyphView, a6);
-    objc_storeStrong(&v22->batteryLevelDescription, a7);
-    objc_storeStrong(&v22->_batteryIconView, a8);
-    [(HPCUIBatteryGroupView *)v22 createBatteryGroupView:v11];
+    height->batteryPercentNumber = percent;
+    objc_storeStrong(&height->batteryGlyphView, glyph);
+    objc_storeStrong(&v22->batteryLevelDescription, description);
+    objc_storeStrong(&v22->_batteryIconView, view);
+    [(HPCUIBatteryGroupView *)v22 createBatteryGroupView:chargingCopy];
   }
 
   return v22;
 }
 
-- (void)createBatteryGroupView:(BOOL)a3
+- (void)createBatteryGroupView:(BOOL)view
 {
-  v3 = a3;
+  viewCopy = view;
   v45 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = self->_batteryIconView;
-  [(HPCUIBatteryIConType *)v5 setIsCharging:v3];
+  [(HPCUIBatteryIConType *)v5 setIsCharging:viewCopy];
   [(HPCUIBatteryIConType *)v5 setContentMode:1];
   [(HPCUIBatteryIConType *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
   v6 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -53,102 +53,102 @@
   if (batteryGlyphView)
   {
     [(UIImageView *)batteryGlyphView setContentMode:1];
-    v9 = objc_alloc_init(MEMORY[0x1E69DCF90]);
-    [v9 setAxis:0];
-    [v9 setAlignment:3];
-    [v9 setDistribution:2];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v9 setSemanticContentAttribute:3];
+    bottomAnchor5 = objc_alloc_init(MEMORY[0x1E69DCF90]);
+    [bottomAnchor5 setAxis:0];
+    [bottomAnchor5 setAlignment:3];
+    [bottomAnchor5 setDistribution:2];
+    [bottomAnchor5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [bottomAnchor5 setSemanticContentAttribute:3];
     [(UIImageView *)self->batteryGlyphView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v9 addArrangedSubview:self->batteryGlyphView];
-    [v9 addArrangedSubview:self->batteryPercentLabel];
-    [(HPCUIBatteryGroupView *)self addSubview:v9];
-    v10 = [v9 heightAnchor];
-    v11 = [v10 constraintEqualToConstant:20.0];
+    [bottomAnchor5 addArrangedSubview:self->batteryGlyphView];
+    [bottomAnchor5 addArrangedSubview:self->batteryPercentLabel];
+    [(HPCUIBatteryGroupView *)self addSubview:bottomAnchor5];
+    heightAnchor = [bottomAnchor5 heightAnchor];
+    v11 = [heightAnchor constraintEqualToConstant:20.0];
     [v45 addObject:v11];
 
-    v12 = [(UIImageView *)self->batteryGlyphView heightAnchor];
-    v13 = [(UILabel *)self->batteryPercentLabel heightAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    heightAnchor2 = [(UIImageView *)self->batteryGlyphView heightAnchor];
+    heightAnchor3 = [(UILabel *)self->batteryPercentLabel heightAnchor];
+    v14 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
     [v45 addObject:v14];
 
-    v15 = [v9 heightAnchor];
-    v16 = [(UILabel *)self->batteryPercentLabel heightAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    heightAnchor4 = [bottomAnchor5 heightAnchor];
+    heightAnchor5 = [(UILabel *)self->batteryPercentLabel heightAnchor];
+    v17 = [heightAnchor4 constraintEqualToAnchor:heightAnchor5];
     [v45 addObject:v17];
 
-    v18 = [(HPCUIBatteryIConType *)v5 topAnchor];
-    v19 = [(HPCUIBatteryGroupView *)self topAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    topAnchor = [(HPCUIBatteryIConType *)v5 topAnchor];
+    topAnchor2 = [(HPCUIBatteryGroupView *)self topAnchor];
+    v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v45 addObject:v20];
 
-    v21 = [(HPCUIBatteryIConType *)v5 centerXAnchor];
-    v22 = [(HPCUIBatteryGroupView *)self centerXAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    centerXAnchor = [(HPCUIBatteryIConType *)v5 centerXAnchor];
+    centerXAnchor2 = [(HPCUIBatteryGroupView *)self centerXAnchor];
+    v23 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v45 addObject:v23];
 
-    v24 = [v9 centerXAnchor];
-    v25 = [(HPCUIBatteryIConType *)v5 centerXAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    centerXAnchor3 = [bottomAnchor5 centerXAnchor];
+    centerXAnchor4 = [(HPCUIBatteryIConType *)v5 centerXAnchor];
+    v26 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     [v45 addObject:v26];
 
-    v27 = [v9 topAnchor];
-    v28 = [(HPCUIBatteryIConType *)v5 bottomAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28 constant:5.0];
+    topAnchor3 = [bottomAnchor5 topAnchor];
+    bottomAnchor = [(HPCUIBatteryIConType *)v5 bottomAnchor];
+    v29 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:5.0];
     [v45 addObject:v29];
 
-    v30 = [v9 bottomAnchor];
-    v31 = [(HPCUIBatteryGroupView *)self bottomAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
+    bottomAnchor2 = [bottomAnchor5 bottomAnchor];
+    bottomAnchor3 = [(HPCUIBatteryGroupView *)self bottomAnchor];
+    v32 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     [v45 addObject:v32];
   }
 
   else
   {
     [(HPCUIBatteryGroupView *)self addSubview:self->batteryPercentLabel];
-    v33 = [(HPCUIBatteryIConType *)v5 topAnchor];
-    v34 = [(HPCUIBatteryGroupView *)self topAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34];
+    topAnchor4 = [(HPCUIBatteryIConType *)v5 topAnchor];
+    topAnchor5 = [(HPCUIBatteryGroupView *)self topAnchor];
+    v35 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
     [v45 addObject:v35];
 
-    v36 = [(HPCUIBatteryIConType *)v5 centerXAnchor];
-    v37 = [(HPCUIBatteryGroupView *)self centerXAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37];
+    centerXAnchor5 = [(HPCUIBatteryIConType *)v5 centerXAnchor];
+    centerXAnchor6 = [(HPCUIBatteryGroupView *)self centerXAnchor];
+    v38 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     [v45 addObject:v38];
 
-    v39 = [(UILabel *)self->batteryPercentLabel centerXAnchor];
-    v40 = [(HPCUIBatteryIConType *)v5 centerXAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40];
+    centerXAnchor7 = [(UILabel *)self->batteryPercentLabel centerXAnchor];
+    centerXAnchor8 = [(HPCUIBatteryIConType *)v5 centerXAnchor];
+    v41 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
     [v45 addObject:v41];
 
-    v42 = [(UILabel *)self->batteryPercentLabel topAnchor];
-    v43 = [(HPCUIBatteryIConType *)v5 bottomAnchor];
-    v44 = [v42 constraintEqualToAnchor:v43 constant:5.0];
+    topAnchor6 = [(UILabel *)self->batteryPercentLabel topAnchor];
+    bottomAnchor4 = [(HPCUIBatteryIConType *)v5 bottomAnchor];
+    v44 = [topAnchor6 constraintEqualToAnchor:bottomAnchor4 constant:5.0];
     [v45 addObject:v44];
 
-    v9 = [(UILabel *)self->batteryPercentLabel bottomAnchor];
-    v30 = [(HPCUIBatteryGroupView *)self bottomAnchor];
-    v31 = [v9 constraintEqualToAnchor:v30];
-    [v45 addObject:v31];
+    bottomAnchor5 = [(UILabel *)self->batteryPercentLabel bottomAnchor];
+    bottomAnchor2 = [(HPCUIBatteryGroupView *)self bottomAnchor];
+    bottomAnchor3 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor2];
+    [v45 addObject:bottomAnchor3];
   }
 
   [MEMORY[0x1E696ACD8] activateConstraints:v45];
 }
 
-- (void)setChargePercent:(unsigned __int8)a3
+- (void)setChargePercent:(unsigned __int8)percent
 {
-  v3 = a3;
+  percentCopy = percent;
   v5 = 0.0;
-  if (a3)
+  if (percent)
   {
     v5 = 1.0;
   }
 
   [(HPCUIBatteryGroupView *)self setAlpha:v5];
-  [(HPCUIBatteryIConType *)self->_batteryIconView setChargePercent:v3 / 100.0];
+  [(HPCUIBatteryIConType *)self->_batteryIconView setChargePercent:percentCopy / 100.0];
   v10 = objc_alloc_init(MEMORY[0x1E696ADA0]);
   [v10 setNumberStyle:3];
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:v3 / 100.0];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:percentCopy / 100.0];
   v7 = [v10 stringFromNumber:v6];
   v8 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%@", v7];
   [(UILabel *)self->batteryPercentLabel setText:v8];

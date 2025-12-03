@@ -1,109 +1,109 @@
 @interface STUIStatusBar
-+ (CGSize)intrinsicContentSizeForTargetScreen:(id)a3 orientation:(int64_t)a4 onLockScreen:(BOOL)a5;
-+ (CGSize)intrinsicContentSizeForTargetScreen:(id)a3 orientation:(int64_t)a4 onLockScreen:(BOOL)a5 isAzulBLinked:(BOOL)a6;
-+ (double)_effectiveScaleForVisualProviderClass:(Class)a3 targetScreen:(id)a4;
-+ (id)sensorActivityIndicatorForScreen:(id)a3;
-+ (id)stringForStatusBarStyle:(int64_t)a3;
-+ (void)registerSensorActivityIndicator:(id)a3 forScreen:(id)a4;
-- (BOOL)_accessibilityHUDGestureManager:(id)a3 shouldBeginAtPoint:(CGPoint)a4;
-- (BOOL)_cursorLocation:(CGPoint)a3 isInsideActionable:(id)a4;
-- (BOOL)_cursorLocation:(CGPoint)a3 isInsideHoverableActionable:(id)a4;
-- (BOOL)_gestureRecognizer:(id)a3 isInsideActionable:(id)a4;
-- (BOOL)_gestureRecognizer:(id)a3 pressInsideActionable:(id)a4;
-- (BOOL)_gestureRecognizer:(id)a3 touchInsideActionable:(id)a4;
++ (CGSize)intrinsicContentSizeForTargetScreen:(id)screen orientation:(int64_t)orientation onLockScreen:(BOOL)lockScreen;
++ (CGSize)intrinsicContentSizeForTargetScreen:(id)screen orientation:(int64_t)orientation onLockScreen:(BOOL)lockScreen isAzulBLinked:(BOOL)linked;
++ (double)_effectiveScaleForVisualProviderClass:(Class)class targetScreen:(id)screen;
++ (id)sensorActivityIndicatorForScreen:(id)screen;
++ (id)stringForStatusBarStyle:(int64_t)style;
++ (void)registerSensorActivityIndicator:(id)indicator forScreen:(id)screen;
+- (BOOL)_accessibilityHUDGestureManager:(id)manager shouldBeginAtPoint:(CGPoint)point;
+- (BOOL)_cursorLocation:(CGPoint)location isInsideActionable:(id)actionable;
+- (BOOL)_cursorLocation:(CGPoint)location isInsideHoverableActionable:(id)actionable;
+- (BOOL)_gestureRecognizer:(id)recognizer isInsideActionable:(id)actionable;
+- (BOOL)_gestureRecognizer:(id)recognizer pressInsideActionable:(id)actionable;
+- (BOOL)_gestureRecognizer:(id)recognizer touchInsideActionable:(id)actionable;
 - (BOOL)_showSensorActivityIndicatorWithoutPortalView;
 - (BOOL)_useAutomaticStyle;
 - (BOOL)areAnimationsEnabled;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (CGAffineTransform)_effectiveScaleTransform;
-- (CGRect)_extendedHoverFrameForActionable:(id)a3;
-- (CGRect)_frameForActionable:(id)a3;
-- (CGRect)_frameForActionable:(id)a3 actionInsets:(UIEdgeInsets)a4;
-- (CGRect)_pressFrameForActionable:(id)a3;
+- (CGRect)_extendedHoverFrameForActionable:(id)actionable;
+- (CGRect)_frameForActionable:(id)actionable;
+- (CGRect)_frameForActionable:(id)actionable actionInsets:(UIEdgeInsets)insets;
+- (CGRect)_pressFrameForActionable:(id)actionable;
 - (CGRect)avoidanceFrame;
-- (CGRect)frameForDisplayItemWithIdentifier:(id)a3;
-- (CGRect)frameForPartWithIdentifier:(id)a3;
-- (CGRect)frameForPartWithIdentifier:(id)a3 includeInternalItems:(BOOL)a4;
+- (CGRect)frameForDisplayItemWithIdentifier:(id)identifier;
+- (CGRect)frameForPartWithIdentifier:(id)identifier;
+- (CGRect)frameForPartWithIdentifier:(id)identifier includeInternalItems:(BOOL)items;
 - (CGSize)intrinsicContentSize;
 - (NSSet)dependentDataEntryKeys;
 - (NSString)_visualProviderClassName;
-- (STUIStatusBar)initWithStyle:(int64_t)a3;
+- (STUIStatusBar)initWithStyle:(int64_t)style;
 - (STUIStatusBarActionable)hoveredActionable;
 - (STUIStatusBarActionable)targetActionable;
 - (STUIStatusBarAdditionalDataEntriesDelegate)additionalDataDelegate;
 - (STUIStatusBarMenuBarProvider)menuBarProvider;
 - (STUIStatusBarVisualProvider)visualProvider;
-- (UIOffset)offsetForPartWithIdentifier:(id)a3;
+- (UIOffset)offsetForPartWithIdentifier:(id)identifier;
 - (UIScreen)_effectiveTargetScreen;
-- (double)alphaForPartWithIdentifier:(id)a3;
+- (double)alphaForPartWithIdentifier:(id)identifier;
 - (double)maximumPossibleMenuBarWidth;
-- (id)_accessibilityHUDGestureManager:(id)a3 HUDItemForPoint:(CGPoint)a4;
-- (id)_actionablesForPartWithIdentifier:(id)a3 includeInternalItems:(BOOL)a4 onlyVisible:(BOOL)a5;
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 forDebug:(BOOL)a4;
+- (id)_accessibilityHUDGestureManager:(id)manager HUDItemForPoint:(CGPoint)point;
+- (id)_actionablesForPartWithIdentifier:(id)identifier includeInternalItems:(BOOL)items onlyVisible:(BOOL)visible;
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix forDebug:(BOOL)debug;
 - (id)_expandedDescription;
-- (id)_expandedDescriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)_itemWithIdentifier:(id)a3 createIfNeeded:(BOOL)a4;
+- (id)_expandedDescriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)_itemWithIdentifier:(id)identifier createIfNeeded:(BOOL)needed;
 - (id)_rearrangeOverflowedItems;
-- (id)_regionsForPartWithIdentifier:(id)a3 includeInternalItems:(BOOL)a4;
-- (id)_traitCollectionForChildEnvironment:(id)a3;
-- (id)actionForPartWithIdentifier:(id)a3;
+- (id)_regionsForPartWithIdentifier:(id)identifier includeInternalItems:(BOOL)items;
+- (id)_traitCollectionForChildEnvironment:(id)environment;
+- (id)actionForPartWithIdentifier:(id)identifier;
 - (id)additionalEntriesByRelativePriority;
-- (id)dataEntryKeysForItemsWithIdentifiers:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)displayItemIdentifiersInRegionsWithIdentifiers:(id)a3;
-- (id)displayItemWithIdentifier:(id)a3;
-- (id)imageForAvatarIdentifier:(id)a3;
-- (id)itemIdentifiersInRegionsWithIdentifiers:(id)a3;
-- (id)itemsDependingOnKeys:(id)a3;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (id)regionWithIdentifier:(id)a3;
-- (id)styleAttributesForStyle:(int64_t)a3;
+- (id)dataEntryKeysForItemsWithIdentifiers:(id)identifiers;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)displayItemIdentifiersInRegionsWithIdentifiers:(id)identifiers;
+- (id)displayItemWithIdentifier:(id)identifier;
+- (id)imageForAvatarIdentifier:(id)identifier;
+- (id)itemIdentifiersInRegionsWithIdentifiers:(id)identifiers;
+- (id)itemsDependingOnKeys:(id)keys;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (id)regionWithIdentifier:(id)identifier;
+- (id)styleAttributesForStyle:(int64_t)style;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (id)viewForAdditionalEntryWithIdentifier:(id)a3;
-- (int64_t)_effectiveStyleFromStyle:(int64_t)a3;
-- (int64_t)styleForPartWithIdentifier:(id)a3;
+- (id)viewForAdditionalEntryWithIdentifier:(id)identifier;
+- (int64_t)_effectiveStyleFromStyle:(int64_t)style;
+- (int64_t)styleForPartWithIdentifier:(id)identifier;
 - (unsigned)animationContextId;
-- (void)_accessibilityHUDGestureManager:(id)a3 showHUDItem:(id)a4;
-- (void)_delayUpdatesWithKeys:(id)a3 fromAnimation:(id)a4;
-- (void)_dismissAccessibilityHUDForGestureManager:(id)a3;
+- (void)_accessibilityHUDGestureManager:(id)manager showHUDItem:(id)item;
+- (void)_delayUpdatesWithKeys:(id)keys fromAnimation:(id)animation;
+- (void)_dismissAccessibilityHUDForGestureManager:(id)manager;
 - (void)_fixupDisplayItemAttributes;
-- (void)_performAnimations:(id)a3;
-- (void)_performWithInheritedAnimation:(id)a3;
-- (void)_prepareAnimations:(id)a3;
+- (void)_performAnimations:(id)animations;
+- (void)_performWithInheritedAnimation:(id)animation;
+- (void)_prepareAnimations:(id)animations;
 - (void)_prepareVisualProviderIfNeeded;
-- (void)_setAutomaticStyle:(int64_t)a3 additionalStylesForRegionIdentifiers:(id)a4;
-- (void)_setVisualProviderClassName:(id)a3;
+- (void)_setAutomaticStyle:(int64_t)style additionalStylesForRegionIdentifiers:(id)identifiers;
+- (void)_setVisualProviderClassName:(id)name;
 - (void)_updateActionGestureRecognizerAllowableTouchTypesIfNeeded;
-- (void)_updateDisplayedItemsWithData:(id)a3 styleAttributes:(id)a4 extraAnimations:(id)a5;
+- (void)_updateDisplayedItemsWithData:(id)data styleAttributes:(id)attributes extraAnimations:(id)animations;
 - (void)_updateRegionItems;
 - (void)_updateStyleAttributes;
-- (void)_updateWithAggregatedData:(id)a3;
-- (void)_updateWithData:(id)a3 completionHandler:(id)a4;
+- (void)_updateWithAggregatedData:(id)data;
+- (void)_updateWithData:(id)data completionHandler:(id)handler;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5;
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator;
 - (void)reinitializeStatusBar;
 - (void)resetVisualProvider;
-- (void)resizeSubviewsWithOldSize:(CGSize)a3;
-- (void)setAction:(id)a3 forPartWithIdentifier:(id)a4;
-- (void)setAdditionalDataDelegate:(id)a3;
-- (void)setAlpha:(double)a3 forPartWithIdentifier:(id)a4;
-- (void)setAvoidanceFrame:(CGRect)a3 animationSettings:(id)a4 options:(unint64_t)a5;
-- (void)setDisabledPartIdentifiers:(id)a3;
-- (void)setEnabledPartIdentifiers:(id)a3;
-- (void)setForegroundColor:(id)a3;
-- (void)setHidden:(BOOL)a3 animationParameters:(id)a4;
-- (void)setMode:(int64_t)a3;
-- (void)setOffset:(UIOffset)a3 forPartWithIdentifier:(id)a4;
-- (void)setOrientation:(int64_t)a3;
-- (void)setOverlayData:(id)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setStyle:(int64_t)a3 forPartWithIdentifier:(id)a4;
-- (void)setStyleAttributes:(id)a3;
-- (void)statusBarGesture:(id)a3;
+- (void)resizeSubviewsWithOldSize:(CGSize)size;
+- (void)setAction:(id)action forPartWithIdentifier:(id)identifier;
+- (void)setAdditionalDataDelegate:(id)delegate;
+- (void)setAlpha:(double)alpha forPartWithIdentifier:(id)identifier;
+- (void)setAvoidanceFrame:(CGRect)frame animationSettings:(id)settings options:(unint64_t)options;
+- (void)setDisabledPartIdentifiers:(id)identifiers;
+- (void)setEnabledPartIdentifiers:(id)identifiers;
+- (void)setForegroundColor:(id)color;
+- (void)setHidden:(BOOL)hidden animationParameters:(id)parameters;
+- (void)setMode:(int64_t)mode;
+- (void)setOffset:(UIOffset)offset forPartWithIdentifier:(id)identifier;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setOverlayData:(id)data;
+- (void)setStyle:(int64_t)style;
+- (void)setStyle:(int64_t)style forPartWithIdentifier:(id)identifier;
+- (void)setStyleAttributes:(id)attributes;
+- (void)statusBarGesture:(id)gesture;
 - (void)updateConstraints;
 - (void)updateForcingIterativeOverflow;
 - (void)updateMenuBar;
@@ -120,9 +120,9 @@
       visualProviderClass = self->_visualProviderClass;
       if (!visualProviderClass)
       {
-        v5 = [(STUIStatusBar *)self _effectiveTargetScreen];
-        v6 = [(STUIStatusBar *)self visualProviderInfo];
-        v7 = STUIStatusBarGetVisualProviderClassForScreen(v5, v6);
+        _effectiveTargetScreen = [(STUIStatusBar *)self _effectiveTargetScreen];
+        visualProviderInfo = [(STUIStatusBar *)self visualProviderInfo];
+        v7 = STUIStatusBarGetVisualProviderClassForScreen(_effectiveTargetScreen, visualProviderInfo);
         v8 = self->_visualProviderClass;
         self->_visualProviderClass = v7;
 
@@ -369,28 +369,28 @@
       pointerInteraction = self->_pointerInteraction;
       self->_pointerInteraction = v33;
 
-      v35 = [(STUIStatusBar *)self foregroundView];
-      [v35 addInteraction:self->_pointerInteraction];
+      foregroundView = [(STUIStatusBar *)self foregroundView];
+      [foregroundView addInteraction:self->_pointerInteraction];
 
       [(STUIStatusBar *)self addSubview:self->_foregroundView];
     }
 
     if (![(NSDictionary *)self->_regions count])
     {
-      v36 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v37 = self->_visualProvider;
-      v38 = [(STUIStatusBar *)self containerView];
-      v39 = [(STUIStatusBarVisualProvider *)v37 setupInContainerView:v38];
+      containerView = [(STUIStatusBar *)self containerView];
+      v39 = [(STUIStatusBarVisualProvider *)v37 setupInContainerView:containerView];
 
       v48[0] = MEMORY[0x277D85DD0];
       v48[1] = 3221225472;
       v48[2] = __47__STUIStatusBar__prepareVisualProviderIfNeeded__block_invoke;
       v48[3] = &unk_279D393F0;
       v48[4] = self;
-      v40 = v36;
+      v40 = dictionary;
       v49 = v40;
       [v39 enumerateObjectsUsingBlock:v48];
-      objc_storeStrong(&self->_regions, v36);
+      objc_storeStrong(&self->_regions, dictionary);
       regions = self->_regions;
       v47[0] = MEMORY[0x277D85DD0];
       v47[1] = 3221225472;
@@ -413,12 +413,12 @@
       }
 
       v42 = self->_visualProvider;
-      v43 = self;
-      v44 = v43;
+      selfCopy = self;
+      v44 = selfCopy;
       statusBarFlags = self->_statusBarFlags;
       if ((*&statusBarFlags & 0x80000) != 0)
       {
-        if ((v43->_style & 0x3F) == 0)
+        if ((selfCopy->_style & 0x3F) == 0)
         {
           v46 = 1;
           goto LABEL_80;
@@ -426,7 +426,7 @@
 
         if ((*&statusBarFlags & 0x1000000) != 0)
         {
-          v46 = [(STUIStatusBar *)v43 mode]!= 1;
+          v46 = [(STUIStatusBar *)selfCopy mode]!= 1;
           goto LABEL_80;
         }
       }
@@ -448,25 +448,25 @@ LABEL_81:
     goto LABEL_2;
   }
 
-  v6 = self;
-  v7 = [(CGAffineTransform *)self _screen];
-  [v7 _nativeScale];
+  selfCopy = self;
+  _screen = [(CGAffineTransform *)self _screen];
+  [_screen _nativeScale];
   v9 = v8;
 
-  if ((LOBYTE(v6[9].a) & 4) != 0)
+  if ((LOBYTE(selfCopy[9].a) & 4) != 0)
   {
-    [*&v6[12].ty referenceScreenScale];
+    [*&selfCopy[12].ty referenceScreenScale];
     v12 = v13;
   }
 
   else
   {
-    v10 = [(CGAffineTransform *)v6 _screen];
-    [v10 _scale];
+    _screen2 = [(CGAffineTransform *)selfCopy _screen];
+    [_screen2 _scale];
     v12 = v11;
   }
 
-  self = [(CGAffineTransform *)v6 mode];
+  self = [(CGAffineTransform *)selfCopy mode];
   if (self == 1 || v9 == 0.0 || vabdd_f64(v12, v9) <= 0.00000011920929)
   {
 LABEL_2:
@@ -492,19 +492,19 @@ LABEL_2:
   if (v3)
   {
 LABEL_2:
-    v4 = v3;
+    screen = v3;
     goto LABEL_4;
   }
 
-  v5 = [(STUIStatusBar *)self window];
-  v4 = [v5 screen];
+  window = [(STUIStatusBar *)self window];
+  screen = [window screen];
 
-  if (!v4)
+  if (!screen)
   {
-    v7 = [(STUIStatusBar *)self traitCollection];
-    v8 = [v7 userInterfaceIdiom];
+    traitCollection = [(STUIStatusBar *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v8 == 3)
+    if (userInterfaceIdiom == 3)
     {
       [MEMORY[0x277D759A0] _carScreen];
     }
@@ -519,7 +519,7 @@ LABEL_2:
 
 LABEL_4:
 
-  return v4;
+  return screen;
 }
 
 - (void)_updateActionGestureRecognizerAllowableTouchTypesIfNeeded
@@ -610,15 +610,15 @@ void __47__STUIStatusBar__prepareVisualProviderIfNeeded__block_invoke_2(uint64_t
 
 - (void)_updateStyleAttributes
 {
-  v2 = self;
-  v3 = v2;
-  statusBarFlags = v2->_statusBarFlags;
+  selfCopy = self;
+  v3 = selfCopy;
+  statusBarFlags = selfCopy->_statusBarFlags;
   if ((*&statusBarFlags & 0x80000) == 0)
   {
     goto LABEL_4;
   }
 
-  if ((v2->_style & 0x3F) != 0)
+  if ((selfCopy->_style & 0x3F) != 0)
   {
     if ((*&statusBarFlags & 0x1000000) == 0)
     {
@@ -629,9 +629,9 @@ LABEL_5:
       goto LABEL_9;
     }
 
-    v6 = [(STUIStatusBar *)v2 mode];
+    mode = [(STUIStatusBar *)selfCopy mode];
 
-    if (v6 == 1)
+    if (mode == 1)
     {
       goto LABEL_5;
     }
@@ -674,19 +674,19 @@ LABEL_9:
     return 0;
   }
 
-  v3 = [(STUIStatusBar *)self window];
-  if (v3)
+  window = [(STUIStatusBar *)self window];
+  if (window)
   {
-    v4 = [(STUIStatusBar *)self window];
-    v5 = [v4 _hasContext];
+    window2 = [(STUIStatusBar *)self window];
+    _hasContext = [window2 _hasContext];
   }
 
   else
   {
-    v5 = 0;
+    _hasContext = 0;
   }
 
-  return v5;
+  return _hasContext;
 }
 
 - (void)_fixupDisplayItemAttributes
@@ -704,12 +704,12 @@ LABEL_9:
 
 - (BOOL)_useAutomaticStyle
 {
-  v2 = self;
-  v3 = v2;
-  statusBarFlags = v2->_statusBarFlags;
+  selfCopy = self;
+  v3 = selfCopy;
+  statusBarFlags = selfCopy->_statusBarFlags;
   if ((*&statusBarFlags & 0x80000) != 0)
   {
-    if ((v2->_style & 0x3F) == 0)
+    if ((selfCopy->_style & 0x3F) == 0)
     {
       v5 = 1;
       goto LABEL_7;
@@ -717,7 +717,7 @@ LABEL_9:
 
     if ((*&statusBarFlags & 0x1000000) != 0)
     {
-      v5 = [(STUIStatusBar *)v2 mode]!= 1;
+      v5 = [(STUIStatusBar *)selfCopy mode]!= 1;
       goto LABEL_7;
     }
   }
@@ -747,10 +747,10 @@ LABEL_7:
     return;
   }
 
-  v2 = self;
+  selfCopy = self;
   v3 = 560;
   [(NSMutableDictionary *)self->_displayItemStates enumerateKeysAndObjectsUsingBlock:&__block_literal_global_155_0];
-  [(NSDictionary *)v2->_regions keysSortedByValueUsingComparator:&__block_literal_global_158];
+  [(NSDictionary *)selfCopy->_regions keysSortedByValueUsingComparator:&__block_literal_global_158];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
@@ -763,7 +763,7 @@ LABEL_7:
 
   v38 = 0;
   v39 = *v55;
-  v45 = v2;
+  v45 = selfCopy;
   do
   {
     for (i = 0; i != v40; i = v23 + 1)
@@ -775,9 +775,9 @@ LABEL_7:
 
       v42 = i;
       v5 = *(*(&v54 + 1) + 8 * i);
-      v41 = [(NSDictionary *)v2->_regions objectForKeyedSubscript:v5];
+      v41 = [(NSDictionary *)selfCopy->_regions objectForKeyedSubscript:v5];
       v6 = objc_alloc_init(MEMORY[0x277CBEB40]);
-      v7 = [(STUIStatusBarVisualProvider *)v2->_visualProvider orderedDisplayItemPlacementsInRegionWithIdentifier:v5];
+      v7 = [(STUIStatusBarVisualProvider *)selfCopy->_visualProvider orderedDisplayItemPlacementsInRegionWithIdentifier:v5];
       v50 = 0u;
       v51 = 0u;
       v52 = 0u;
@@ -799,23 +799,23 @@ LABEL_7:
             }
 
             v12 = *(*(&v50 + 1) + 8 * j);
-            v13 = [v12 identifier];
+            identifier = [v12 identifier];
             v14 = v3;
-            v15 = [*(&v2->super.super.super.isa + v3) objectForKeyedSubscript:v13];
+            v15 = [*(&selfCopy->super.super.super.isa + v3) objectForKeyedSubscript:identifier];
             v16 = [v15 isCurrentPlacement:v12];
 
             if (v16)
             {
-              v17 = [STUIStatusBarItem itemIdentifierForDisplayItemIdentifier:v13];
-              v18 = [(STUIStatusBar *)v2 itemWithIdentifier:v17];
-              v19 = [v12 identifier];
-              v20 = [v18 displayItemForIdentifier:v19];
+              v17 = [STUIStatusBarItem itemIdentifierForDisplayItemIdentifier:identifier];
+              v18 = [(STUIStatusBar *)selfCopy itemWithIdentifier:v17];
+              identifier2 = [v12 identifier];
+              v20 = [v18 displayItemForIdentifier:identifier2];
 
               v6 = v43;
               [v20 setPlacement:v12];
               [v43 addObject:v20];
 
-              v2 = v45;
+              selfCopy = v45;
             }
 
             v3 = v14;
@@ -827,8 +827,8 @@ LABEL_7:
         while (v9);
       }
 
-      v21 = [v41 displayItems];
-      v22 = [v6 isEqual:v21];
+      displayItems = [v41 displayItems];
+      v22 = [v6 isEqual:displayItems];
 
       if (v22)
       {
@@ -839,13 +839,13 @@ LABEL_19:
       }
 
       v23 = v42;
-      if ((*(&v2->_statusBarFlags + 1) & 0x10) == 0)
+      if ((*(&selfCopy->_statusBarFlags + 1) & 0x10) == 0)
       {
         goto LABEL_19;
       }
 
       v24 = v43;
-      v25 = [(STUIStatusBarVisualProvider *)v2->_visualProvider region:v41 willSetDisplayItems:v43];
+      v25 = [(STUIStatusBarVisualProvider *)selfCopy->_visualProvider region:v41 willSetDisplayItems:v43];
       v26 = v25;
       if (v25 != v43)
       {
@@ -856,8 +856,8 @@ LABEL_19:
 
 LABEL_23:
       [v41 setDisplayItems:v24];
-      v28 = [v41 displayItems];
-      [v24 minusOrderedSet:v28];
+      displayItems2 = [v41 displayItems];
+      [v24 minusOrderedSet:displayItems2];
 
       v48 = 0u;
       v49 = 0u;
@@ -879,8 +879,8 @@ LABEL_23:
             }
 
             v34 = *(&v45->super.super.super.isa + v3);
-            v35 = [*(*(&v46 + 1) + 8 * k) identifier];
-            v36 = [v34 objectForKeyedSubscript:v35];
+            identifier3 = [*(*(&v46 + 1) + 8 * k) identifier];
+            v36 = [v34 objectForKeyedSubscript:identifier3];
             [v36 updateToNextEnabledPlacement];
           }
 
@@ -889,7 +889,7 @@ LABEL_23:
 
         while (v31);
         v38 = 1;
-        v2 = v45;
+        selfCopy = v45;
       }
     }
 
@@ -899,13 +899,13 @@ LABEL_23:
   while (v40);
   if (v38)
   {
-    [(STUIStatusBar *)v2 _updateRegionItems];
+    [(STUIStatusBar *)selfCopy _updateRegionItems];
   }
 
 LABEL_35:
-  if ((*(&v2->_statusBarFlags + 1) & 0x20) != 0)
+  if ((*(&selfCopy->_statusBarFlags + 1) & 0x20) != 0)
   {
-    [(STUIStatusBarVisualProvider *)v2->_visualProvider statusBarRegionsUpdated];
+    [(STUIStatusBarVisualProvider *)selfCopy->_visualProvider statusBarRegionsUpdated];
   }
 }
 
@@ -930,8 +930,8 @@ uint64_t __35__STUIStatusBar__updateRegionItems__block_invoke_2(uint64_t a1, voi
 {
   v7.receiver = self;
   v7.super_class = STUIStatusBar;
-  v3 = [(STUIStatusBar *)&v7 layoutSubviews];
-  __31__STUIStatusBar_layoutSubviews__block_invoke(v3, self->_foregroundView);
+  layoutSubviews = [(STUIStatusBar *)&v7 layoutSubviews];
+  __31__STUIStatusBar_layoutSubviews__block_invoke(layoutSubviews, self->_foregroundView);
   regions = self->_regions;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -942,7 +942,7 @@ uint64_t __35__STUIStatusBar__updateRegionItems__block_invoke_2(uint64_t a1, voi
   [(UIView *)self->_foregroundView layoutIfNeeded];
   if ((*&self->_statusBarFlags & 0x800008) == 0)
   {
-    v5 = [(STUIStatusBar *)self _rearrangeOverflowedItems];
+    _rearrangeOverflowedItems = [(STUIStatusBar *)self _rearrangeOverflowedItems];
   }
 
   [(STUIStatusBar *)self layoutIfNeeded];
@@ -1064,8 +1064,8 @@ LABEL_10:
 {
   v66 = *MEMORY[0x277D85DE8];
   [(UIView *)self->_foregroundView removeFromSuperview];
-  v3 = [(STUIStatusBar *)self foregroundView];
-  [v3 removeInteraction:self->_pointerInteraction];
+  foregroundView = [(STUIStatusBar *)self foregroundView];
+  [foregroundView removeInteraction:self->_pointerInteraction];
 
   pointerInteraction = self->_pointerInteraction;
   self->_pointerInteraction = 0;
@@ -1076,8 +1076,8 @@ LABEL_10:
   visualProvider = self->_visualProvider;
   self->_visualProvider = 0;
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  [(STUIStatusBar *)self setItems:v7];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(STUIStatusBar *)self setItems:dictionary];
 
   [(STUIStatusBar *)self resetVisualProvider];
   objc_initWeak(&location, self);
@@ -1098,8 +1098,8 @@ LABEL_10:
   if (self->_enabledPartIdentifiers)
   {
     v11 = MEMORY[0x277CBEB58];
-    v12 = [(NSDictionary *)self->_regions allKeys];
-    v13 = [v11 setWithArray:v12];
+    allKeys = [(NSDictionary *)self->_regions allKeys];
+    v13 = [v11 setWithArray:allKeys];
 
     v53 = 0u;
     v54 = 0u;
@@ -1138,8 +1138,8 @@ LABEL_10:
                   objc_enumerationMutation(v18);
                 }
 
-                v22 = [*(*(&v47 + 1) + 8 * j) identifier];
-                [v13 removeObject:v22];
+                identifier = [*(*(&v47 + 1) + 8 * j) identifier];
+                [v13 removeObject:identifier];
               }
 
               v19 = [v18 countByEnumeratingWithState:&v47 objects:v64 count:16];
@@ -1278,10 +1278,10 @@ uint64_t __38__STUIStatusBar_reinitializeStatusBar__block_invoke_3(uint64_t a1)
 
 - (unsigned)animationContextId
 {
-  v2 = [(STUIStatusBar *)self window];
-  v3 = [v2 _contextId];
+  window = [(STUIStatusBar *)self window];
+  _contextId = [window _contextId];
 
-  return v3;
+  return _contextId;
 }
 
 - (void)dealloc
@@ -1374,43 +1374,43 @@ uint64_t ___STUIStatusBar_BackgroundActivity_Log_block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (id)stringForStatusBarStyle:(int64_t)a3
++ (id)stringForStatusBarStyle:(int64_t)style
 {
   v3 = @"_UIStatusBarResolvedStyleInherited";
   v4 = @"_UIStatusBarResolvedStyleAutomaticWithLightBias";
   v5 = @"_UIStatusBarResolvedStyleAutomaticWithDarkBias";
-  if (a3 != 128)
+  if (style != 128)
   {
     v5 = 0;
   }
 
-  if (a3 != 64)
+  if (style != 64)
   {
     v4 = v5;
   }
 
-  if (a3 != 4)
+  if (style != 4)
   {
     v3 = v4;
   }
 
   v6 = @"_UIStatusBarResolvedStyleDarkContent";
-  if (a3 != 2)
+  if (style != 2)
   {
     v6 = 0;
   }
 
-  if (a3 == 1)
+  if (style == 1)
   {
     v6 = @"_UIStatusBarResolvedStyleLightContent";
   }
 
-  if (!a3)
+  if (!style)
   {
     v6 = @"_UIStatusBarResolvedStyleDefault";
   }
 
-  if (a3 <= 3)
+  if (style <= 3)
   {
     return v6;
   }
@@ -1421,20 +1421,20 @@ uint64_t ___STUIStatusBar_BackgroundActivity_Log_block_invoke()
   }
 }
 
-+ (void)registerSensorActivityIndicator:(id)a3 forScreen:(id)a4
++ (void)registerSensorActivityIndicator:(id)indicator forScreen:(id)screen
 {
   v5 = _MergedGlobals_7;
-  v6 = a4;
-  v7 = a3;
+  screenCopy = screen;
+  indicatorCopy = indicator;
   if (v5 != -1)
   {
     dispatch_once(&_MergedGlobals_7, &__block_literal_global_13);
   }
 
   v8 = qword_280C1E718;
-  v9 = sensorActivityScreenIdentifier(v6);
+  v9 = sensorActivityScreenIdentifier(screenCopy);
 
-  [v8 setObject:v7 forKey:v9];
+  [v8 setObject:indicatorCopy forKey:v9];
 }
 
 uint64_t __59__STUIStatusBar_registerSensorActivityIndicator_forScreen___block_invoke()
@@ -1446,16 +1446,16 @@ uint64_t __59__STUIStatusBar_registerSensorActivityIndicator_forScreen___block_i
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (id)sensorActivityIndicatorForScreen:(id)a3
++ (id)sensorActivityIndicatorForScreen:(id)screen
 {
   v3 = qword_280C1E718;
-  v4 = sensorActivityScreenIdentifier(a3);
+  v4 = sensorActivityScreenIdentifier(screen);
   v5 = [v3 objectForKey:v4];
 
   return v5;
 }
 
-- (STUIStatusBar)initWithStyle:(int64_t)a3
+- (STUIStatusBar)initWithStyle:(int64_t)style
 {
   v30[1] = *MEMORY[0x277D85DE8];
   v29.receiver = self;
@@ -1476,28 +1476,28 @@ uint64_t __59__STUIStatusBar_registerSensorActivityIndicator_forScreen___block_i
 
   if ((*&v4->_statusBarFlags & 0x1000000) != 0)
   {
-    v7 = 0;
+    styleCopy = 0;
   }
 
   else
   {
-    v7 = a3;
+    styleCopy = style;
   }
 
-  v4->_style = v7;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  [(STUIStatusBar *)v4 setItems:v8];
+  v4->_style = styleCopy;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(STUIStatusBar *)v4 setItems:dictionary];
 
-  v9 = [MEMORY[0x277CBEB38] dictionary];
-  [(STUIStatusBar *)v4 setDisplayItemStates:v9];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  [(STUIStatusBar *)v4 setDisplayItemStates:dictionary2];
 
   [(STUIStatusBar *)v4 _setHostsLayoutEngine:1];
   v10 = +[STUIStatusBarSettingsDomain rootSettings];
-  v11 = [v10 forcedMode];
+  forcedMode = [v10 forcedMode];
 
-  if (v11 != -1)
+  if (forcedMode != -1)
   {
-    v4->_mode = v11;
+    v4->_mode = forcedMode;
   }
 
   objc_initWeak(&location, v4);
@@ -1565,30 +1565,30 @@ void __31__STUIStatusBar_initWithStyle___block_invoke_71(uint64_t a1)
 - (id)_expandedDescription
 {
   v2 = [(STUIStatusBar *)self _expandedDescriptionBuilderWithMultilinePrefix:0];
-  v3 = [v2 build];
+  build = [v2 build];
 
-  return v3;
+  return build;
 }
 
-- (void)_setVisualProviderClassName:(id)a3
+- (void)_setVisualProviderClassName:(id)name
 {
-  if (a3)
+  if (name)
   {
-    a3 = NSClassFromString(a3);
+    name = NSClassFromString(name);
   }
 
-  [(STUIStatusBar *)self _setVisualProviderClass:a3];
+  [(STUIStatusBar *)self _setVisualProviderClass:name];
 }
 
 - (NSString)_visualProviderClassName
 {
-  v2 = [(STUIStatusBar *)self _visualProviderClass];
-  if (v2)
+  _visualProviderClass = [(STUIStatusBar *)self _visualProviderClass];
+  if (_visualProviderClass)
   {
-    v2 = NSStringFromClass(v2);
+    _visualProviderClass = NSStringFromClass(_visualProviderClass);
   }
 
-  return v2;
+  return _visualProviderClass;
 }
 
 void __38__STUIStatusBar_reinitializeStatusBar__block_invoke_2(uint64_t a1, uint64_t a2, void *a3)
@@ -1606,17 +1606,17 @@ void __38__STUIStatusBar_reinitializeStatusBar__block_invoke_2(uint64_t a1, uint
   }
 }
 
-- (void)setMode:(int64_t)a3
+- (void)setMode:(int64_t)mode
 {
   v5 = +[STUIStatusBarSettingsDomain rootSettings];
-  v6 = [v5 forcedMode];
+  forcedMode = [v5 forcedMode];
 
-  if (v6 == -1)
+  if (forcedMode == -1)
   {
     mode = self->_mode;
-    if (mode != a3)
+    if (mode != mode)
     {
-      self->_mode = a3;
+      self->_mode = mode;
       if (self->_visualProvider)
       {
         v8[0] = MEMORY[0x277D85DD0];
@@ -1636,11 +1636,11 @@ void __38__STUIStatusBar_reinitializeStatusBar__block_invoke_2(uint64_t a1, uint
   }
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    self->_orientation = a3;
+    self->_orientation = orientation;
     visualProvider = self->_visualProvider;
     if (visualProvider)
     {
@@ -1654,13 +1654,13 @@ void __38__STUIStatusBar_reinitializeStatusBar__block_invoke_2(uint64_t a1, uint
   *&self->_statusBarFlags |= 1u;
 }
 
-- (void)setAvoidanceFrame:(CGRect)a3 animationSettings:(id)a4 options:(unint64_t)a5
+- (void)setAvoidanceFrame:(CGRect)frame animationSettings:(id)settings options:(unint64_t)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  settingsCopy = settings;
   [(STUIStatusBar *)self _effectiveScaleTransform];
   v22.origin.x = x;
   v22.origin.y = y;
@@ -1684,30 +1684,30 @@ void __38__STUIStatusBar_reinitializeStatusBar__block_invoke_2(uint64_t a1, uint
     self->_avoidanceFrame.size.height = v15;
     if ((*&self->_statusBarFlags & 0x40) != 0)
     {
-      [(STUIStatusBarVisualProvider *)self->_visualProvider avoidanceFrameUpdatedFromFrame:v11 withAnimationSettings:a5 options:v17, v18, v19, v20];
+      [(STUIStatusBarVisualProvider *)self->_visualProvider avoidanceFrameUpdatedFromFrame:settingsCopy withAnimationSettings:options options:v17, v18, v19, v20];
     }
   }
 }
 
-- (id)_traitCollectionForChildEnvironment:(id)a3
+- (id)_traitCollectionForChildEnvironment:(id)environment
 {
-  v4 = [(STUIStatusBar *)self traitCollection];
-  v5 = [(STUIStatusBar *)self effectiveUserInterfaceLayoutDirection];
+  traitCollection = [(STUIStatusBar *)self traitCollection];
+  effectiveUserInterfaceLayoutDirection = [(STUIStatusBar *)self effectiveUserInterfaceLayoutDirection];
   v6 = objc_opt_self();
-  v7 = [v4 traitCollectionByReplacingNSIntegerValue:v5 forTrait:v6];
+  v7 = [traitCollection traitCollectionByReplacingNSIntegerValue:effectiveUserInterfaceLayoutDirection forTrait:v6];
 
   return v7;
 }
 
-- (void)_performWithInheritedAnimation:(id)a3
+- (void)_performWithInheritedAnimation:(id)animation
 {
   v3 = MEMORY[0x277CD9FF0];
-  v4 = a3;
+  animationCopy = animation;
   [v3 begin];
-  v5 = [MEMORY[0x277D75D18] areAnimationsEnabled];
-  v6 = [MEMORY[0x277D75D18] _isInAnimationBlock];
+  areAnimationsEnabled = [MEMORY[0x277D75D18] areAnimationsEnabled];
+  _isInAnimationBlock = [MEMORY[0x277D75D18] _isInAnimationBlock];
   v7 = MEMORY[0x277CD9FF0];
-  if (v6)
+  if (_isInAnimationBlock)
   {
     [MEMORY[0x277D75D18] _currentAnimationDuration];
     [v7 setAnimationDuration:?];
@@ -1722,26 +1722,26 @@ void __38__STUIStatusBar_reinitializeStatusBar__block_invoke_2(uint64_t a1, uint
     [MEMORY[0x277D75D18] setAnimationsEnabled:0];
   }
 
-  v4[2](v4);
+  animationCopy[2](animationCopy);
 
   [MEMORY[0x277CD9FF0] commit];
   v10 = MEMORY[0x277D75D18];
 
-  [v10 setAnimationsEnabled:v5];
+  [v10 setAnimationsEnabled:areAnimationsEnabled];
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
   style = self->_style;
-  if (style == a3)
+  if (style == style)
   {
     return;
   }
 
   automaticStyle = self->_automaticStyle;
-  v7 = self;
-  v8 = v7;
-  statusBarFlags = v7->_statusBarFlags;
+  selfCopy = self;
+  v8 = selfCopy;
+  statusBarFlags = selfCopy->_statusBarFlags;
   if ((*&statusBarFlags & 0x80000) != 0)
   {
     if ((self->_style & 0x3F) == 0)
@@ -1752,16 +1752,16 @@ void __38__STUIStatusBar_reinitializeStatusBar__block_invoke_2(uint64_t a1, uint
 
     if ((*&statusBarFlags & 0x1000000) != 0)
     {
-      v10 = [(STUIStatusBar *)v7 mode]!= 1;
+      v10 = [(STUIStatusBar *)selfCopy mode]!= 1;
       goto LABEL_8;
     }
   }
 
   v10 = 0;
 LABEL_8:
-  v11 = a3 >> 6;
+  v11 = style >> 6;
 
-  self->_style = a3;
+  self->_style = style;
   v12 = v8;
   p_isa = &v12->super.super.super.isa;
   v14 = v12->_statusBarFlags;
@@ -1847,7 +1847,7 @@ LABEL_23:
     goto LABEL_31;
   }
 
-  if (a3 <= 0x3F)
+  if (style <= 0x3F)
   {
     v11 = self->_automaticStyle;
   }
@@ -1923,12 +1923,12 @@ void __26__STUIStatusBar_setStyle___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_foregroundColor, a3);
+    objc_storeStrong(&self->_foregroundColor, color);
     if (self->_visualProvider)
     {
       v6[0] = MEMORY[0x277D85DD0];
@@ -1941,14 +1941,14 @@ void __26__STUIStatusBar_setStyle___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setHidden:(BOOL)a3 animationParameters:(id)a4
+- (void)setHidden:(BOOL)hidden animationParameters:(id)parameters
 {
-  v4 = a3;
-  v6 = a4;
+  hiddenCopy = hidden;
+  parametersCopy = parameters;
   statusBarFlags = self->_statusBarFlags;
-  if (((((*&statusBarFlags & 0x2000000) == 0) ^ v4) & 1) == 0)
+  if (((((*&statusBarFlags & 0x2000000) == 0) ^ hiddenCopy) & 1) == 0)
   {
-    if (v4)
+    if (hiddenCopy)
     {
       v8 = 0x2000000;
     }
@@ -1959,15 +1959,15 @@ void __26__STUIStatusBar_setStyle___block_invoke_2(uint64_t a1)
     }
 
     self->_statusBarFlags = (*&statusBarFlags & 0xFDFFFFFF | v8);
-    v9 = self;
-    v10 = v9;
+    selfCopy = self;
+    v10 = selfCopy;
     v11 = self->_statusBarFlags;
     if ((*&v11 & 0x80000) == 0)
     {
       goto LABEL_8;
     }
 
-    if ((v9->_style & 0x3F) != 0)
+    if ((selfCopy->_style & 0x3F) != 0)
     {
       if ((*&v11 & 0x1000000) == 0)
       {
@@ -1976,7 +1976,7 @@ LABEL_8:
         goto LABEL_9;
       }
 
-      v12 = [(STUIStatusBar *)v9 mode]== 1;
+      v12 = [(STUIStatusBar *)selfCopy mode]== 1;
     }
 
     else
@@ -1987,7 +1987,7 @@ LABEL_8:
     visualProvider = v10->_visualProvider;
     if (visualProvider && !v12 && (*(&self->_statusBarFlags + 2) & 8) != 0)
     {
-      if (v4)
+      if (hiddenCopy)
       {
         [(STUIStatusBarVisualProvider *)visualProvider updateLumaTracking:0];
       }
@@ -2062,40 +2062,40 @@ LABEL_12:
 LABEL_7:
 }
 
-- (void)setStyleAttributes:(id)a3
+- (void)setStyleAttributes:(id)attributes
 {
-  v6 = a3;
-  if (([v6 isEqual:self->_styleAttributes] & 1) == 0)
+  attributesCopy = attributes;
+  if (([attributesCopy isEqual:self->_styleAttributes] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [attributesCopy copy];
     styleAttributes = self->_styleAttributes;
     self->_styleAttributes = v4;
 
-    [(STUIStatusBar *)self _updateDisplayedItemsWithData:0 styleAttributes:v6 extraAnimations:MEMORY[0x277CBEBF8]];
+    [(STUIStatusBar *)self _updateDisplayedItemsWithData:0 styleAttributes:attributesCopy extraAnimations:MEMORY[0x277CBEBF8]];
   }
 }
 
-- (int64_t)_effectiveStyleFromStyle:(int64_t)a3
+- (int64_t)_effectiveStyleFromStyle:(int64_t)style
 {
-  v3 = a3;
-  if (!a3)
+  styleCopy = style;
+  if (!style)
   {
-    v4 = [(STUIStatusBar *)self traitCollection];
-    if ([v4 userInterfaceStyle] == 2)
+    traitCollection = [(STUIStatusBar *)self traitCollection];
+    if ([traitCollection userInterfaceStyle] == 2)
     {
-      v3 = 1;
+      styleCopy = 1;
     }
 
     else
     {
-      v3 = 2;
+      styleCopy = 2;
     }
   }
 
-  return v3;
+  return styleCopy;
 }
 
-- (id)styleAttributesForStyle:(int64_t)a3
+- (id)styleAttributesForStyle:(int64_t)style
 {
   v9 = 0;
   v10 = &v9;
@@ -2103,15 +2103,15 @@ LABEL_7:
   v12 = __Block_byref_object_copy__5;
   v13 = __Block_byref_object_dispose__5;
   v14 = 0;
-  v5 = [(STUIStatusBar *)self traitCollection];
+  traitCollection = [(STUIStatusBar *)self traitCollection];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __41__STUIStatusBar_styleAttributesForStyle___block_invoke;
   v8[3] = &unk_279D394B0;
   v8[5] = &v9;
-  v8[6] = a3;
+  v8[6] = style;
   v8[4] = self;
-  [v5 performAsCurrentTraitCollection:v8];
+  [traitCollection performAsCurrentTraitCollection:v8];
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -2129,45 +2129,45 @@ void __41__STUIStatusBar_styleAttributesForStyle___block_invoke(uint64_t a1)
   *(v4 + 40) = v3;
 }
 
-- (void)setOverlayData:(id)a3
+- (void)setOverlayData:(id)data
 {
-  v11 = a3;
-  if ([v11 isEmpty])
+  dataCopy = data;
+  if ([dataCopy isEmpty])
   {
 
-    v11 = 0;
+    dataCopy = 0;
   }
 
-  v4 = [(STUIStatusBar *)self overlayData];
+  overlayData = [(STUIStatusBar *)self overlayData];
 
-  v5 = v11;
-  if (v11 != v4)
+  v5 = dataCopy;
+  if (dataCopy != overlayData)
   {
-    v6 = [(STUIStatusBarDataAggregator *)self->_dataAggregator overlayData];
+    overlayData2 = [(STUIStatusBarDataAggregator *)self->_dataAggregator overlayData];
 
-    if (v6)
+    if (overlayData2)
     {
-      v7 = [(STUIStatusBarDataAggregator *)self->_dataAggregator overlayData];
-      v8 = [v7 dataByApplyingOverlay:self->_currentData];
+      overlayData3 = [(STUIStatusBarDataAggregator *)self->_dataAggregator overlayData];
+      v8 = [overlayData3 dataByApplyingOverlay:self->_currentData];
       v9 = [v8 mutableCopy];
 
-      v10 = v11;
-      if (v11)
+      v10 = dataCopy;
+      if (dataCopy)
       {
         if (v9)
         {
-          [v9 applyUpdate:v11];
+          [v9 applyUpdate:dataCopy];
 LABEL_12:
           [(STUIStatusBarDataAggregator *)self->_dataAggregator setOverlayData:0];
           [(STUIStatusBarDataAggregator *)self->_dataAggregator updateWithData:v9];
-          [(STUIStatusBarDataAggregator *)self->_dataAggregator setOverlayData:v11];
+          [(STUIStatusBarDataAggregator *)self->_dataAggregator setOverlayData:dataCopy];
 
-          v5 = v11;
+          v5 = dataCopy;
           goto LABEL_13;
         }
 
 LABEL_9:
-        v11 = v10;
+        dataCopy = v10;
         v9 = [v10 mutableCopy];
         goto LABEL_12;
       }
@@ -2175,8 +2175,8 @@ LABEL_9:
 
     else
     {
-      v10 = v11;
-      if (v11)
+      v10 = dataCopy;
+      if (dataCopy)
       {
         goto LABEL_9;
       }
@@ -2184,18 +2184,18 @@ LABEL_9:
       v9 = 0;
     }
 
-    v11 = v10;
+    dataCopy = v10;
     goto LABEL_12;
   }
 
 LABEL_13:
 }
 
-- (void)_updateWithData:(id)a3 completionHandler:(id)a4
+- (void)_updateWithData:(id)data completionHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   [(STUIStatusBar *)self _prepareVisualProviderIfNeeded];
   v8 = _STUIStatusBar_Log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -2210,29 +2210,29 @@ LABEL_13:
       v9 = @"NO";
     }
 
-    v10 = [(STUIStatusBarDataAggregator *)self->_dataAggregator delayedEntryKeys];
+    delayedEntryKeys = [(STUIStatusBarDataAggregator *)self->_dataAggregator delayedEntryKeys];
     *buf = 134218754;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
-    v20 = v6;
+    v20 = dataCopy;
     v21 = 2112;
     v22 = v9;
     v23 = 2112;
-    v24 = v10;
+    v24 = delayedEntryKeys;
     _os_log_impl(&dword_26C4DD000, v8, OS_LOG_TYPE_INFO, "Status bar %p update with data: %@, animated: %@, delayedKeys: %@", buf, 0x2Au);
   }
 
-  [(STUIStatusBar *)self setUpdateCompletionHandler:v7];
+  [(STUIStatusBar *)self setUpdateCompletionHandler:handlerCopy];
   currentData = self->_currentData;
   if (currentData)
   {
-    [(STMutableStatusBarData *)currentData applyUpdate:v6];
-    [(STUIStatusBarDataAggregator *)self->_dataAggregator updateWithData:v6];
+    [(STMutableStatusBarData *)currentData applyUpdate:dataCopy];
+    [(STUIStatusBarDataAggregator *)self->_dataAggregator updateWithData:dataCopy];
   }
 
   else
   {
-    v12 = [v6 mutableCopy];
+    v12 = [dataCopy mutableCopy];
     v13 = self->_currentData;
     self->_currentData = v12;
 
@@ -2242,19 +2242,19 @@ LABEL_13:
     v15[2] = __51__STUIStatusBar__updateWithData_completionHandler___block_invoke;
     v15[3] = &unk_279D38150;
     v15[4] = self;
-    v16 = v6;
+    v16 = dataCopy;
     [v14 performWithoutAnimation:v15];
   }
 }
 
-- (void)_updateWithAggregatedData:(id)a3
+- (void)_updateWithAggregatedData:(id)data
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  dataCopy = data;
+  v5 = [dataCopy mutableCopy];
   v6 = +[STUIStatusBarDataBroadcaster sharedInstance];
-  v7 = [v6 currentData];
-  [v5 applyUpdate:v7];
+  currentData = [v6 currentData];
+  [v5 applyUpdate:currentData];
 
   if (*(&self->_statusBarFlags + 1))
   {
@@ -2280,17 +2280,17 @@ LABEL_13:
   v10 = _STUIStatusBar_Log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = [MEMORY[0x277D75D18] areAnimationsEnabled];
+    areAnimationsEnabled = [MEMORY[0x277D75D18] areAnimationsEnabled];
     v12 = @"NO";
     *v17 = 134218498;
     *&v17[4] = self;
     *&v17[12] = 2112;
-    if (v11)
+    if (areAnimationsEnabled)
     {
       v12 = @"YES";
     }
 
-    *&v17[14] = v4;
+    *&v17[14] = dataCopy;
     v18 = 2112;
     v19 = v12;
     _os_log_impl(&dword_26C4DD000, v10, OS_LOG_TYPE_INFO, "Status bar %p now applying update: %@, animated: %@", v17, 0x20u);
@@ -2306,9 +2306,9 @@ LABEL_13:
 
   self->_statusBarFlags = (*&statusBarFlags | 1);
   [(UIPointerInteraction *)self->_pointerInteraction invalidate];
-  v14 = [(STUIStatusBar *)self updateCompletionHandler];
+  updateCompletionHandler = [(STUIStatusBar *)self updateCompletionHandler];
 
-  if (v14)
+  if (updateCompletionHandler)
   {
     v15 = _Block_copy(self->_updateCompletionHandler);
     updateCompletionHandler = self->_updateCompletionHandler;
@@ -2318,24 +2318,24 @@ LABEL_13:
   }
 }
 
-- (void)_updateDisplayedItemsWithData:(id)a3 styleAttributes:(id)a4 extraAnimations:(id)a5
+- (void)_updateDisplayedItemsWithData:(id)data styleAttributes:(id)attributes extraAnimations:(id)animations
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(STUIStatusBar *)self traitCollection];
+  dataCopy = data;
+  attributesCopy = attributes;
+  animationsCopy = animations;
+  traitCollection = [(STUIStatusBar *)self traitCollection];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __79__STUIStatusBar__updateDisplayedItemsWithData_styleAttributes_extraAnimations___block_invoke;
   v15[3] = &unk_279D39548;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  [v11 performAsCurrentTraitCollection:v15];
+  v16 = dataCopy;
+  v17 = attributesCopy;
+  v18 = animationsCopy;
+  v12 = animationsCopy;
+  v13 = attributesCopy;
+  v14 = dataCopy;
+  [traitCollection performAsCurrentTraitCollection:v15];
 }
 
 void __79__STUIStatusBar__updateDisplayedItemsWithData_styleAttributes_extraAnimations___block_invoke(uint64_t a1)
@@ -2449,16 +2449,16 @@ uint64_t __79__STUIStatusBar__updateDisplayedItemsWithData_styleAttributes_extra
   return [v2 layoutIfNeeded];
 }
 
-- (void)_prepareAnimations:(id)a3
+- (void)_prepareAnimations:(id)animations
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [STUIStatusBarAnimation prepareAnimations:v4 forStatusBar:self];
+  animationsCopy = animations;
+  [STUIStatusBarAnimation prepareAnimations:animationsCopy forStatusBar:self];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = v4;
+  v5 = animationsCopy;
   v23 = [v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v23)
   {
@@ -2474,8 +2474,8 @@ uint64_t __79__STUIStatusBar__updateDisplayedItemsWithData_styleAttributes_extra
         }
 
         v7 = *(*(&v28 + 1) + 8 * i);
-        v8 = [v7 effectiveDelayedItemIdentifiers];
-        if ([v8 count])
+        effectiveDelayedItemIdentifiers = [v7 effectiveDelayedItemIdentifiers];
+        if ([effectiveDelayedItemIdentifiers count])
         {
           v22 = v7;
           v9 = [MEMORY[0x277CBEB58] set];
@@ -2483,7 +2483,7 @@ uint64_t __79__STUIStatusBar__updateDisplayedItemsWithData_styleAttributes_extra
           v25 = 0u;
           v26 = 0u;
           v27 = 0u;
-          v10 = v8;
+          v10 = effectiveDelayedItemIdentifiers;
           v11 = [v10 countByEnumeratingWithState:&v24 objects:v32 count:16];
           if (v11)
           {
@@ -2499,8 +2499,8 @@ uint64_t __79__STUIStatusBar__updateDisplayedItemsWithData_styleAttributes_extra
                 }
 
                 v15 = [(STUIStatusBar *)self itemWithIdentifier:*(*(&v24 + 1) + 8 * j)];
-                v16 = [v15 dependentEntryKeys];
-                [v9 unionSet:v16];
+                dependentEntryKeys = [v15 dependentEntryKeys];
+                [v9 unionSet:dependentEntryKeys];
               }
 
               v12 = [v10 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -2535,11 +2535,11 @@ uint64_t __79__STUIStatusBar__updateDisplayedItemsWithData_styleAttributes_extra
   }
 }
 
-- (void)_delayUpdatesWithKeys:(id)a3 fromAnimation:(id)a4
+- (void)_delayUpdatesWithKeys:(id)keys fromAnimation:(id)animation
 {
   v6 = self->_dataAggregator;
-  v7 = a4;
-  v8 = [(STUIStatusBarDataAggregator *)v6 beginDelayingUpdatesForEntryKeys:a3];
+  animationCopy = animation;
+  v8 = [(STUIStatusBarDataAggregator *)v6 beginDelayingUpdatesForEntryKeys:keys];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __53__STUIStatusBar__delayUpdatesWithKeys_fromAnimation___block_invoke;
@@ -2548,7 +2548,7 @@ uint64_t __79__STUIStatusBar__updateDisplayedItemsWithData_styleAttributes_extra
   v13 = v8;
   v9 = v8;
   v10 = v6;
-  [v7 addTotalCompletionHandler:v11];
+  [animationCopy addTotalCompletionHandler:v11];
 }
 
 - (void)updateForcingIterativeOverflow
@@ -2558,15 +2558,15 @@ uint64_t __79__STUIStatusBar__updateDisplayedItemsWithData_styleAttributes_extra
   *&self->_statusBarFlags &= ~0x800000u;
 }
 
-- (void)_performAnimations:(id)a3
+- (void)_performAnimations:(id)animations
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  animationsCopy = animations;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [animationsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2577,7 +2577,7 @@ uint64_t __79__STUIStatusBar__updateDisplayedItemsWithData_styleAttributes_extra
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(animationsCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -2592,29 +2592,29 @@ uint64_t __79__STUIStatusBar__updateDisplayedItemsWithData_styleAttributes_extra
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [animationsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 }
 
-+ (double)_effectiveScaleForVisualProviderClass:(Class)a3 targetScreen:(id)a4
++ (double)_effectiveScaleForVisualProviderClass:(Class)class targetScreen:(id)screen
 {
-  v5 = a4;
+  screenCopy = screen;
   v6 = 1.0;
-  if ([(objc_class *)a3 scalesWithScreenNativeScale])
+  if ([(objc_class *)class scalesWithScreenNativeScale])
   {
-    [v5 _nativeScale];
+    [screenCopy _nativeScale];
     v8 = v7;
     if (objc_opt_respondsToSelector())
     {
-      [(objc_class *)a3 referenceScreenScale];
+      [(objc_class *)class referenceScreenScale];
     }
 
     else
     {
-      [v5 _scale];
+      [screenCopy _scale];
     }
 
     if (v8 != 0.0 && vabdd_f64(v9, v8) > 0.00000011920929)
@@ -2639,10 +2639,10 @@ uint64_t __79__STUIStatusBar__updateDisplayedItemsWithData_styleAttributes_extra
   }
 }
 
-- (void)resizeSubviewsWithOldSize:(CGSize)a3
+- (void)resizeSubviewsWithOldSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = STUIStatusBar;
   [(STUIStatusBar *)&v12 resizeSubviewsWithOldSize:?];
@@ -2676,17 +2676,17 @@ void __31__STUIStatusBar_layoutSubviews__block_invoke_3(uint64_t a1, void *a2)
   (*(v2 + 16))(v2, v3);
 }
 
-- (CGRect)_extendedHoverFrameForActionable:(id)a3
+- (CGRect)_extendedHoverFrameForActionable:(id)actionable
 {
-  v4 = a3;
-  [v4 absoluteHoverFrame];
+  actionableCopy = actionable;
+  [actionableCopy absoluteHoverFrame];
   x = v22.origin.x;
   y = v22.origin.y;
   width = v22.size.width;
   height = v22.size.height;
   if (!CGRectIsNull(v22))
   {
-    [v4 extendedHoverInsets];
+    [actionableCopy extendedHoverInsets];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -2718,30 +2718,30 @@ void __31__STUIStatusBar_layoutSubviews__block_invoke_3(uint64_t a1, void *a2)
   return result;
 }
 
-- (BOOL)_cursorLocation:(CGPoint)a3 isInsideActionable:(id)a4
+- (BOOL)_cursorLocation:(CGPoint)location isInsideActionable:(id)actionable
 {
-  y = a3.y;
-  x = a3.x;
-  [(STUIStatusBar *)self _frameForActionable:a4];
+  y = location.y;
+  x = location.x;
+  [(STUIStatusBar *)self _frameForActionable:actionable];
   v10 = x;
   v11 = y;
 
   return CGRectContainsPoint(*&v6, *&v10);
 }
 
-- (BOOL)_cursorLocation:(CGPoint)a3 isInsideHoverableActionable:(id)a4
+- (BOOL)_cursorLocation:(CGPoint)location isInsideHoverableActionable:(id)actionable
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  [(STUIStatusBar *)self _extendedHoverFrameForActionable:v7];
+  y = location.y;
+  x = location.x;
+  actionableCopy = actionable;
+  [(STUIStatusBar *)self _extendedHoverFrameForActionable:actionableCopy];
   v8 = v16.origin.x;
   v9 = v16.origin.y;
   width = v16.size.width;
   height = v16.size.height;
   if (CGRectIsNull(v16))
   {
-    v12 = [(STUIStatusBar *)self _cursorLocation:v7 isInsideActionable:x, y];
+    v12 = [(STUIStatusBar *)self _cursorLocation:actionableCopy isInsideActionable:x, y];
   }
 
   else
@@ -2760,11 +2760,11 @@ void __31__STUIStatusBar_layoutSubviews__block_invoke_3(uint64_t a1, void *a2)
   return v13;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionCopy = interaction;
+  requestCopy = request;
+  regionCopy = region;
   regionActionValidationBlock = self->_regionActionValidationBlock;
   if (regionActionValidationBlock && !regionActionValidationBlock[2]())
   {
@@ -2790,14 +2790,14 @@ void __31__STUIStatusBar_layoutSubviews__block_invoke_3(uint64_t a1, void *a2)
     v24 = 3221225472;
     v25 = __67__STUIStatusBar_pointerInteraction_regionForRequest_defaultRegion___block_invoke;
     v26 = &unk_279D39638;
-    v27 = self;
-    v28 = v9;
+    selfCopy = self;
+    v28 = requestCopy;
     v29 = &v37;
     v30 = &v31;
     [(NSDictionary *)regions enumerateKeysAndObjectsUsingBlock:&v23];
     if (v38[5])
     {
-      [(STUIStatusBar *)self _extendedHoverFrameForActionable:v23, v24, v25, v26, v27];
+      [(STUIStatusBar *)self _extendedHoverFrameForActionable:v23, v24, v25, v26, selfCopy];
       x = v44.origin.x;
       y = v44.origin.y;
       width = v44.size.width;
@@ -2950,13 +2950,13 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator
 {
-  v6 = [a4 identifier];
-  v8 = v6;
-  if (v6)
+  identifier = [region identifier];
+  v8 = identifier;
+  if (identifier)
   {
-    v7 = [(STUIStatusBar *)self regionWithIdentifier:v6];
+    v7 = [(STUIStatusBar *)self regionWithIdentifier:identifier];
     if (!v7)
     {
       v7 = [(STUIStatusBar *)self displayItemWithIdentifier:v8];
@@ -2971,18 +2971,18 @@ LABEL_9:
   }
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   WeakRetained = objc_loadWeakRetained(&self->_hoveredActionable);
-  v6 = [WeakRetained hoverView];
+  hoverView = [WeakRetained hoverView];
 
   v7 = objc_loadWeakRetained(&self->_hoveredActionable);
-  v8 = [v7 hoverAction];
-  v9 = [v8 isEnabled];
+  hoverAction = [v7 hoverAction];
+  isEnabled = [hoverAction isEnabled];
 
-  if (v6)
+  if (hoverView)
   {
-    v10 = v9 == 0;
+    v10 = isEnabled == 0;
   }
 
   else
@@ -3004,7 +3004,7 @@ LABEL_9:
   v20 = v19;
 
   v21 = objc_loadWeakRetained(&self->_hoveredActionable);
-  v22 = [v21 hoverHighlightsAsRegion];
+  hoverHighlightsAsRegion = [v21 hoverHighlightsAsRegion];
 
   v47.origin.x = v14;
   v47.origin.y = v16;
@@ -3013,36 +3013,36 @@ LABEL_9:
   if (!CGRectIsNull(v47))
   {
     v31 = objc_opt_new();
-    [(STUIStatusBar *)self convertRect:v6 toView:v14, v16, v18, v20];
+    [(STUIStatusBar *)self convertRect:hoverView toView:v14, v16, v18, v20];
     v32 = [MEMORY[0x277D75208] bezierPathWithRect:?];
     [v31 setVisiblePath:v32];
 
-    v28 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:v6 parameters:v31];
-    if ((v22 & 1) == 0)
+    v28 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:hoverView parameters:v31];
+    if ((hoverHighlightsAsRegion & 1) == 0)
     {
       goto LABEL_9;
     }
 
 LABEL_11:
     v29 = [MEMORY[0x277D75860] effectWithPreview:v28];
-    v33 = [(STUIStatusBar *)self visualProvider];
-    v34 = [v33 conformsToProtocol:&unk_287D30370];
+    visualProvider = [(STUIStatusBar *)self visualProvider];
+    v34 = [visualProvider conformsToProtocol:&unk_287D30370];
 
     if (v34)
     {
-      v35 = [(STUIStatusBar *)self visualProvider];
+      visualProvider2 = [(STUIStatusBar *)self visualProvider];
       [objc_opt_class() regionCursorInsets];
       v14 = v14 + v36;
       v16 = v16 + v37;
       v18 = v18 - (v36 + v38);
       v20 = v20 - (v37 + v39);
 
-      v40 = [(STUIStatusBar *)self visualProvider];
-      v41 = [objc_opt_class() regionCursorIsPill];
+      visualProvider3 = [(STUIStatusBar *)self visualProvider];
+      regionCursorIsPill = [objc_opt_class() regionCursorIsPill];
 
-      if ((v41 & 1) == 0)
+      if ((regionCursorIsPill & 1) == 0)
       {
-        v42 = [(STUIStatusBar *)self visualProvider];
+        visualProvider4 = [(STUIStatusBar *)self visualProvider];
         [objc_opt_class() regionCursorCornerRadius];
         v30 = v43;
 
@@ -3066,13 +3066,13 @@ LABEL_11:
     goto LABEL_16;
   }
 
-  [v6 frame];
+  [hoverView frame];
   v14 = v24;
   v16 = v25;
   v18 = v26;
   v20 = v27;
-  v28 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:v6];
-  if (v22)
+  v28 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:hoverView];
+  if (hoverHighlightsAsRegion)
   {
     goto LABEL_11;
   }
@@ -3089,11 +3089,11 @@ LABEL_17:
   return v11;
 }
 
-- (CGRect)_frameForActionable:(id)a3
+- (CGRect)_frameForActionable:(id)actionable
 {
-  v4 = a3;
-  [v4 actionInsets];
-  [(STUIStatusBar *)self _frameForActionable:v4 actionInsets:?];
+  actionableCopy = actionable;
+  [actionableCopy actionInsets];
+  [(STUIStatusBar *)self _frameForActionable:actionableCopy actionInsets:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -3110,9 +3110,9 @@ LABEL_17:
   return result;
 }
 
-- (CGRect)_pressFrameForActionable:(id)a3
+- (CGRect)_pressFrameForActionable:(id)actionable
 {
-  [(STUIStatusBar *)self _frameForActionable:a3 actionInsets:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
+  [(STUIStatusBar *)self _frameForActionable:actionable actionInsets:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -3120,20 +3120,20 @@ LABEL_17:
   return result;
 }
 
-- (CGRect)_frameForActionable:(id)a3 actionInsets:(UIEdgeInsets)a4
+- (CGRect)_frameForActionable:(id)actionable actionInsets:(UIEdgeInsets)insets
 {
-  v5 = a3;
-  v6 = [v5 layoutItem];
-  [v6 _ui_bounds];
+  actionableCopy = actionable;
+  layoutItem = [actionableCopy layoutItem];
+  [layoutItem _ui_bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [v5 layoutItem];
+  layoutItem2 = [actionableCopy layoutItem];
 
-  v16 = [v15 _ui_view];
-  [v16 convertRect:self toView:{v8, v10, v12, v14}];
+  _ui_view = [layoutItem2 _ui_view];
+  [_ui_view convertRect:self toView:{v8, v10, v12, v14}];
 
   [(STUIStatusBar *)self _currentScreenScale];
 
@@ -3145,22 +3145,22 @@ LABEL_17:
   return result;
 }
 
-- (BOOL)_gestureRecognizer:(id)a3 isInsideActionable:(id)a4
+- (BOOL)_gestureRecognizer:(id)recognizer isInsideActionable:(id)actionable
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STUIStatusBar *)self _gestureRecognizer:v6 touchInsideActionable:v7]|| [(STUIStatusBar *)self _gestureRecognizer:v6 pressInsideActionable:v7];
+  recognizerCopy = recognizer;
+  actionableCopy = actionable;
+  v8 = [(STUIStatusBar *)self _gestureRecognizer:recognizerCopy touchInsideActionable:actionableCopy]|| [(STUIStatusBar *)self _gestureRecognizer:recognizerCopy pressInsideActionable:actionableCopy];
 
   return v8;
 }
 
-- (BOOL)_gestureRecognizer:(id)a3 touchInsideActionable:(id)a4
+- (BOOL)_gestureRecognizer:(id)recognizer touchInsideActionable:(id)actionable
 {
-  v6 = a4;
-  [a3 locationInView:self];
+  actionableCopy = actionable;
+  [recognizer locationInView:self];
   v8 = v7;
   v10 = v9;
-  [(STUIStatusBar *)self _frameForActionable:v6];
+  [(STUIStatusBar *)self _frameForActionable:actionableCopy];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -3176,19 +3176,19 @@ LABEL_17:
   return CGRectContainsPoint(*&v19, *&v23);
 }
 
-- (BOOL)_gestureRecognizer:(id)a3 pressInsideActionable:(id)a4
+- (BOOL)_gestureRecognizer:(id)recognizer pressInsideActionable:(id)actionable
 {
-  v5 = a4;
-  v6 = [(STUIStatusBar *)self _focusSystem];
-  v7 = [v6 focusedItem];
+  actionableCopy = actionable;
+  _focusSystem = [(STUIStatusBar *)self _focusSystem];
+  focusedItem = [_focusSystem focusedItem];
 
-  [(STUIStatusBar *)self _pressFrameForActionable:v5];
+  [(STUIStatusBar *)self _pressFrameForActionable:actionableCopy];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  [v7 frame];
+  [focusedItem frame];
   v22.origin.x = v16;
   v22.origin.y = v17;
   v22.size.width = v18;
@@ -3202,15 +3202,15 @@ LABEL_17:
   return self;
 }
 
-- (void)statusBarGesture:(id)a3
+- (void)statusBarGesture:(id)gesture
 {
-  v18 = a3;
-  v4 = [v18 state];
-  v5 = v4;
-  v6 = v4 - 1;
-  if ((v4 - 1) > 2)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  v5 = state;
+  v6 = state - 1;
+  if ((state - 1) > 2)
   {
-    if ((v4 - 3) > 2)
+    if ((state - 3) > 2)
     {
       v9 = 0;
       goto LABEL_19;
@@ -3222,7 +3222,7 @@ LABEL_17:
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_targetActionable);
-    v8 = [(STUIStatusBar *)self _gestureRecognizer:v18 isInsideActionable:WeakRetained];
+    v8 = [(STUIStatusBar *)self _gestureRecognizer:gestureCopy isInsideActionable:WeakRetained];
 
     if (v8)
     {
@@ -3252,11 +3252,11 @@ LABEL_17:
       goto LABEL_19;
     }
 
-    v14 = [v9 hoverAction];
-    if (v14 || ([v9 action], (v14 = objc_claimAutoreleasedReturnValue()) != 0) || (-[STUIStatusBar action](self, "action"), (v14 = objc_claimAutoreleasedReturnValue()) != 0))
+    hoverAction = [v9 hoverAction];
+    if (hoverAction || ([v9 action], (hoverAction = objc_claimAutoreleasedReturnValue()) != 0) || (-[STUIStatusBar action](self, "action"), (hoverAction = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v15 = v14;
-      [v14 performWithStatusBar:self completionHandler:0];
+      v15 = hoverAction;
+      [hoverAction performWithStatusBar:self completionHandler:0];
     }
   }
 
@@ -3271,9 +3271,9 @@ LABEL_17:
 LABEL_19:
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   WeakRetained = objc_loadWeakRetained(&self->_hoveredActionable);
 
   if (WeakRetained)
@@ -3290,7 +3290,7 @@ LABEL_19:
     v11[2] = __46__STUIStatusBar_gestureRecognizerShouldBegin___block_invoke;
     v11[3] = &unk_279D39660;
     v11[4] = self;
-    v12 = v4;
+    v12 = beginCopy;
     [(NSDictionary *)regions enumerateKeysAndObjectsUsingBlock:v11];
   }
 
@@ -3367,18 +3367,18 @@ void __46__STUIStatusBar_gestureRecognizerShouldBegin___block_invoke_2(uint64_t 
   }
 }
 
-- (id)_actionablesForPartWithIdentifier:(id)a3 includeInternalItems:(BOOL)a4 onlyVisible:(BOOL)a5
+- (id)_actionablesForPartWithIdentifier:(id)identifier includeInternalItems:(BOOL)items onlyVisible:(BOOL)visible
 {
-  v5 = a5;
-  v6 = a4;
+  visibleCopy = visible;
+  itemsCopy = items;
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  identifierCopy = identifier;
   v9 = [MEMORY[0x277CBEB58] set];
   [(STUIStatusBar *)self _prepareVisualProviderIfNeeded];
   v10 = [MEMORY[0x277CBEB98] set];
-  if (v6)
+  if (itemsCopy)
   {
-    v11 = [STUIStatusBarIdentifier displayIdentifierFromStringRepresentation:v8];
+    v11 = [STUIStatusBarIdentifier displayIdentifierFromStringRepresentation:identifierCopy];
     if (v11)
     {
       v12 = [MEMORY[0x277CBEB98] setWithObject:v11];
@@ -3389,7 +3389,7 @@ void __46__STUIStatusBar_gestureRecognizerShouldBegin___block_invoke_2(uint64_t 
 
   if ((*(&self->_statusBarFlags + 1) & 0x80) != 0)
   {
-    v13 = [(STUIStatusBarVisualProvider *)self->_visualProvider displayItemIdentifiersForPartWithIdentifier:v8];
+    v13 = [(STUIStatusBarVisualProvider *)self->_visualProvider displayItemIdentifiersForPartWithIdentifier:identifierCopy];
     v14 = [v10 setByAddingObjectsFromSet:v13];
 
     v10 = v14;
@@ -3416,7 +3416,7 @@ void __46__STUIStatusBar_gestureRecognizerShouldBegin___block_invoke_2(uint64_t 
 
         v20 = [(STUIStatusBar *)self displayItemWithIdentifier:*(*(&v24 + 1) + 8 * i), v24];
         v21 = v20;
-        if (v20 && (!v5 || [v20 visible]))
+        if (v20 && (!visibleCopy || [v20 visible]))
         {
           [v9 addObject:v21];
         }
@@ -3430,22 +3430,22 @@ void __46__STUIStatusBar_gestureRecognizerShouldBegin___block_invoke_2(uint64_t 
 
   if (![v9 count])
   {
-    v22 = [(STUIStatusBar *)self _regionsForPartWithIdentifier:v8 includeInternalItems:v6];
+    v22 = [(STUIStatusBar *)self _regionsForPartWithIdentifier:identifierCopy includeInternalItems:itemsCopy];
     [v9 unionSet:v22];
   }
 
   return v9;
 }
 
-- (id)_regionsForPartWithIdentifier:(id)a3 includeInternalItems:(BOOL)a4
+- (id)_regionsForPartWithIdentifier:(id)identifier includeInternalItems:(BOOL)items
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = [MEMORY[0x277CBEB58] set];
   [(STUIStatusBar *)self _prepareVisualProviderIfNeeded];
-  if (a4)
+  if (items)
   {
-    [MEMORY[0x277CBEB98] setWithObject:v6];
+    [MEMORY[0x277CBEB98] setWithObject:identifierCopy];
   }
 
   else
@@ -3455,7 +3455,7 @@ void __46__STUIStatusBar_gestureRecognizerShouldBegin___block_invoke_2(uint64_t 
   v8 = ;
   if (*(&self->_statusBarFlags + 2))
   {
-    v9 = [(STUIStatusBarVisualProvider *)self->_visualProvider regionIdentifiersForPartWithIdentifier:v6];
+    v9 = [(STUIStatusBarVisualProvider *)self->_visualProvider regionIdentifiersForPartWithIdentifier:identifierCopy];
     v10 = [v8 setByAddingObjectsFromSet:v9];
 
     v8 = v10;
@@ -3496,15 +3496,15 @@ void __46__STUIStatusBar_gestureRecognizerShouldBegin___block_invoke_2(uint64_t 
   return v7;
 }
 
-- (void)setAction:(id)a3 forPartWithIdentifier:(id)a4
+- (void)setAction:(id)action forPartWithIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  actionCopy = action;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(STUIStatusBar *)self _actionablesForPartWithIdentifier:a4 includeInternalItems:0 onlyVisible:0, 0];
+  v7 = [(STUIStatusBar *)self _actionablesForPartWithIdentifier:identifier includeInternalItems:0 onlyVisible:0, 0];
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -3520,7 +3520,7 @@ void __46__STUIStatusBar_gestureRecognizerShouldBegin___block_invoke_2(uint64_t 
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) setAction:v6];
+        [*(*(&v12 + 1) + 8 * v11++) setAction:actionCopy];
       }
 
       while (v9 != v11);
@@ -3531,25 +3531,25 @@ void __46__STUIStatusBar_gestureRecognizerShouldBegin___block_invoke_2(uint64_t 
   }
 }
 
-- (id)actionForPartWithIdentifier:(id)a3
+- (id)actionForPartWithIdentifier:(id)identifier
 {
-  v3 = [(STUIStatusBar *)self _actionablesForPartWithIdentifier:a3 includeInternalItems:0 onlyVisible:0];
-  v4 = [v3 anyObject];
-  v5 = [v4 action];
+  v3 = [(STUIStatusBar *)self _actionablesForPartWithIdentifier:identifier includeInternalItems:0 onlyVisible:0];
+  anyObject = [v3 anyObject];
+  action = [anyObject action];
 
-  return v5;
+  return action;
 }
 
-- (void)setOffset:(UIOffset)a3 forPartWithIdentifier:(id)a4
+- (void)setOffset:(UIOffset)offset forPartWithIdentifier:(id)identifier
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = offset.vertical;
+  horizontal = offset.horizontal;
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(STUIStatusBar *)self _regionsForPartWithIdentifier:a4 includeInternalItems:0, 0];
+  v6 = [(STUIStatusBar *)self _regionsForPartWithIdentifier:identifier includeInternalItems:0, 0];
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
@@ -3576,14 +3576,14 @@ void __46__STUIStatusBar_gestureRecognizerShouldBegin___block_invoke_2(uint64_t 
   }
 }
 
-- (UIOffset)offsetForPartWithIdentifier:(id)a3
+- (UIOffset)offsetForPartWithIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(STUIStatusBar *)self _regionsForPartWithIdentifier:a3 includeInternalItems:0, 0];
+  v3 = [(STUIStatusBar *)self _regionsForPartWithIdentifier:identifier includeInternalItems:0, 0];
   v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
@@ -3629,14 +3629,14 @@ LABEL_11:
   return result;
 }
 
-- (void)setAlpha:(double)a3 forPartWithIdentifier:(id)a4
+- (void)setAlpha:(double)alpha forPartWithIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(STUIStatusBar *)self _regionsForPartWithIdentifier:a4 includeInternalItems:0, 0];
+  v5 = [(STUIStatusBar *)self _regionsForPartWithIdentifier:identifier includeInternalItems:0, 0];
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -3652,8 +3652,8 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v11 + 1) + 8 * v9) contentView];
-        [v10 setAlpha:a3];
+        contentView = [*(*(&v11 + 1) + 8 * v9) contentView];
+        [contentView setAlpha:alpha];
 
         ++v9;
       }
@@ -3666,14 +3666,14 @@ LABEL_11:
   }
 }
 
-- (double)alphaForPartWithIdentifier:(id)a3
+- (double)alphaForPartWithIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(STUIStatusBar *)self _regionsForPartWithIdentifier:a3 includeInternalItems:0, 0];
+  v3 = [(STUIStatusBar *)self _regionsForPartWithIdentifier:identifier includeInternalItems:0, 0];
   v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
   v5 = 1.0;
   if (v4)
@@ -3690,12 +3690,12 @@ LABEL_11:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 contentView];
+        contentView = [v9 contentView];
 
-        if (v10)
+        if (contentView)
         {
-          v11 = [v9 contentView];
-          [v11 alpha];
+          contentView2 = [v9 contentView];
+          [contentView2 alpha];
           v5 = v12;
 
           goto LABEL_11;
@@ -3717,14 +3717,14 @@ LABEL_11:
   return v5;
 }
 
-- (void)setStyle:(int64_t)a3 forPartWithIdentifier:(id)a4
+- (void)setStyle:(int64_t)style forPartWithIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(STUIStatusBar *)self _regionsForPartWithIdentifier:a4 includeInternalItems:0];
+  v6 = [(STUIStatusBar *)self _regionsForPartWithIdentifier:identifier includeInternalItems:0];
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -3741,9 +3741,9 @@ LABEL_11:
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
-        if ([v12 style] != a3)
+        if ([v12 style] != style)
         {
-          [v12 setStyle:a3];
+          [v12 setStyle:style];
           v9 = 1;
         }
       }
@@ -3776,18 +3776,18 @@ void __48__STUIStatusBar_setStyle_forPartWithIdentifier___block_invoke(uint64_t 
   [v1 _updateDisplayedItemsWithData:0 styleAttributes:v2 extraAnimations:MEMORY[0x277CBEBF8]];
 }
 
-- (void)_setAutomaticStyle:(int64_t)a3 additionalStylesForRegionIdentifiers:(id)a4
+- (void)_setAutomaticStyle:(int64_t)style additionalStylesForRegionIdentifiers:(id)identifiers
 {
   v52 = *MEMORY[0x277D85DE8];
-  obj = a4;
-  v6 = a4;
+  obj = identifiers;
+  identifiersCopy = identifiers;
   automaticStyle = self->_automaticStyle;
-  if (automaticStyle != a3)
+  if (automaticStyle != style)
   {
-    self->_automaticStyle = a3;
+    self->_automaticStyle = style;
   }
 
-  v37 = a3;
+  styleCopy = style;
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
@@ -3810,11 +3810,11 @@ void __48__STUIStatusBar_setStyle_forPartWithIdentifier___block_invoke(uint64_t 
 
         v12 = *(*(&v46 + 1) + 8 * i);
         v13 = [(NSDictionary *)self->_automaticStyleOutliers objectForKeyedSubscript:v12, obj];
-        v14 = [v13 integerValue];
+        integerValue = [v13 integerValue];
 
-        v15 = [v6 objectForKeyedSubscript:v12];
+        v15 = [identifiersCopy objectForKeyedSubscript:v12];
         v16 = v15;
-        if (!v15 || [v15 integerValue] != v14)
+        if (!v15 || [v15 integerValue] != integerValue)
         {
           v17 = [(STUIStatusBar *)self regionWithIdentifier:v12];
           [v17 setAutomaticStyle:4];
@@ -3838,7 +3838,7 @@ void __48__STUIStatusBar_setStyle_forPartWithIdentifier___block_invoke(uint64_t 
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v18 = v6;
+  v18 = identifiersCopy;
   v19 = [v18 countByEnumeratingWithState:&v42 objects:v50 count:16];
   if (v19)
   {
@@ -3856,12 +3856,12 @@ void __48__STUIStatusBar_setStyle_forPartWithIdentifier___block_invoke(uint64_t 
         v23 = *(*(&v42 + 1) + 8 * j);
         v24 = [(NSDictionary *)self->_automaticStyleOutliers objectForKeyedSubscript:v23, obj];
         v25 = [v18 objectForKeyedSubscript:v23];
-        v26 = [v25 integerValue];
+        integerValue2 = [v25 integerValue];
 
-        if (!v24 || v26 != [v24 integerValue])
+        if (!v24 || integerValue2 != [v24 integerValue])
         {
           v27 = [(STUIStatusBar *)self regionWithIdentifier:v23];
-          [v27 setAutomaticStyle:v26];
+          [v27 setAutomaticStyle:integerValue2];
 
           v38 = 1;
         }
@@ -3874,11 +3874,11 @@ void __48__STUIStatusBar_setStyle_forPartWithIdentifier___block_invoke(uint64_t 
   }
 
   objc_storeStrong(&self->_automaticStyleOutliers, obj);
-  if (automaticStyle != v37 || (v38 & 1) != 0)
+  if (automaticStyle != styleCopy || (v38 & 1) != 0)
   {
-    v28 = self;
-    v29 = v28;
-    statusBarFlags = v28->_statusBarFlags;
+    selfCopy = self;
+    v29 = selfCopy;
+    statusBarFlags = selfCopy->_statusBarFlags;
     if ((*&statusBarFlags & 0x80000) == 0)
     {
 LABEL_30:
@@ -3886,16 +3886,16 @@ LABEL_30:
       goto LABEL_38;
     }
 
-    if ((v28->_style & 0x3F) != 0)
+    if ((selfCopy->_style & 0x3F) != 0)
     {
       if ((*&statusBarFlags & 0x1000000) == 0)
       {
         goto LABEL_30;
       }
 
-      v31 = [(STUIStatusBar *)v28 mode];
+      mode = [(STUIStatusBar *)selfCopy mode];
 
-      if (v31 == 1)
+      if (mode == 1)
       {
         goto LABEL_38;
       }
@@ -3909,16 +3909,16 @@ LABEL_30:
     aBlock[1] = 3221225472;
     aBlock[2] = __73__STUIStatusBar__setAutomaticStyle_additionalStylesForRegionIdentifiers___block_invoke;
     aBlock[3] = &unk_279D39688;
-    v40 = automaticStyle != v37;
+    v40 = automaticStyle != styleCopy;
     aBlock[4] = v29;
     v41 = v38 & 1;
     v32 = _Block_copy(aBlock);
     if (-[STUIStatusBar areAnimationsEnabled](v29, "areAnimationsEnabled") && ([MEMORY[0x277D75D18] _isInAnimationBlock] & 1) == 0)
     {
-      v33 = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
-      [v33 duration];
-      [v33 setDuration:v34 * 0.6];
-      [MEMORY[0x277D75A80] animateWithParameters:v33 fromCurrentState:1 animations:v32 completion:0];
+      initWithDefaultParameters = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
+      [initWithDefaultParameters duration];
+      [initWithDefaultParameters setDuration:v34 * 0.6];
+      [MEMORY[0x277D75A80] animateWithParameters:initWithDefaultParameters fromCurrentState:1 animations:v32 completion:0];
     }
 
     else
@@ -3945,24 +3945,24 @@ void __73__STUIStatusBar__setAutomaticStyle_additionalStylesForRegionIdentifiers
   }
 }
 
-- (int64_t)styleForPartWithIdentifier:(id)a3
+- (int64_t)styleForPartWithIdentifier:(id)identifier
 {
-  v3 = [(STUIStatusBar *)self _regionsForPartWithIdentifier:a3 includeInternalItems:0];
-  v4 = [v3 anyObject];
-  v5 = [v4 style];
+  v3 = [(STUIStatusBar *)self _regionsForPartWithIdentifier:identifier includeInternalItems:0];
+  anyObject = [v3 anyObject];
+  style = [anyObject style];
 
-  return v5;
+  return style;
 }
 
-- (void)setEnabledPartIdentifiers:(id)a3
+- (void)setEnabledPartIdentifiers:(id)identifiers
 {
   v42 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  if (self->_enabledPartIdentifiers != v22)
+  identifiersCopy = identifiers;
+  if (self->_enabledPartIdentifiers != identifiersCopy)
   {
-    v23 = self;
-    objc_storeStrong(&self->_enabledPartIdentifiers, a3);
-    if (![(NSArray *)v22 count])
+    selfCopy = self;
+    objc_storeStrong(&self->_enabledPartIdentifiers, identifiers);
+    if (![(NSArray *)identifiersCopy count])
     {
       [(UIPointerInteraction *)self->_pointerInteraction setEnabled:0];
       [(UIPointerInteraction *)self->_pointerInteraction setEnabled:1];
@@ -3974,18 +3974,18 @@ void __73__STUIStatusBar__setAutomaticStyle_additionalStylesForRegionIdentifiers
     v38 = 0x2020000000;
     v39 = 0;
     v5 = [MEMORY[0x277CBEB98] set];
-    if (v22)
+    if (identifiersCopy)
     {
       v21 = v5;
       v6 = MEMORY[0x277CBEB58];
-      v7 = [(NSDictionary *)self->_regions allKeys];
-      v8 = [v6 setWithArray:v7];
+      allKeys = [(NSDictionary *)self->_regions allKeys];
+      v8 = [v6 setWithArray:allKeys];
 
       v34 = 0u;
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v9 = v22;
+      v9 = identifiersCopy;
       v10 = [(NSArray *)v9 countByEnumeratingWithState:&v32 objects:v41 count:16];
       if (v10)
       {
@@ -4004,7 +4004,7 @@ void __73__STUIStatusBar__setAutomaticStyle_additionalStylesForRegionIdentifiers
             v29 = 0u;
             v30 = 0u;
             v31 = 0u;
-            v14 = [(STUIStatusBar *)v23 _regionsForPartWithIdentifier:v13 includeInternalItems:0];
+            v14 = [(STUIStatusBar *)selfCopy _regionsForPartWithIdentifier:v13 includeInternalItems:0];
             v15 = [v14 countByEnumeratingWithState:&v28 objects:v40 count:16];
             if (v15)
             {
@@ -4018,8 +4018,8 @@ void __73__STUIStatusBar__setAutomaticStyle_additionalStylesForRegionIdentifiers
                     objc_enumerationMutation(v14);
                   }
 
-                  v18 = [*(*(&v28 + 1) + 8 * j) identifier];
-                  [v8 removeObject:v18];
+                  identifier = [*(*(&v28 + 1) + 8 * j) identifier];
+                  [v8 removeObject:identifier];
                 }
 
                 v15 = [v14 countByEnumeratingWithState:&v28 objects:v40 count:16];
@@ -4041,7 +4041,7 @@ void __73__STUIStatusBar__setAutomaticStyle_additionalStylesForRegionIdentifiers
       v8 = v5;
     }
 
-    regions = v23->_regions;
+    regions = selfCopy->_regions;
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __43__STUIStatusBar_setEnabledPartIdentifiers___block_invoke;
@@ -4052,17 +4052,17 @@ void __73__STUIStatusBar__setAutomaticStyle_additionalStylesForRegionIdentifiers
     [(NSDictionary *)regions enumerateKeysAndObjectsUsingBlock:v25];
     if (*(v37 + 24) == 1)
     {
-      if ((*(&v23->_statusBarFlags + 2) & 2) != 0)
+      if ((*(&selfCopy->_statusBarFlags + 2) & 2) != 0)
       {
-        [(STUIStatusBarVisualProvider *)v23->_visualProvider statusBarEnabledPartsUpdated];
+        [(STUIStatusBarVisualProvider *)selfCopy->_visualProvider statusBarEnabledPartsUpdated];
       }
 
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __43__STUIStatusBar_setEnabledPartIdentifiers___block_invoke_2;
       v24[3] = &unk_279D37F00;
-      v24[4] = v23;
-      [(STUIStatusBar *)v23 _performWithInheritedAnimation:v24];
+      v24[4] = selfCopy;
+      [(STUIStatusBar *)selfCopy _performWithInheritedAnimation:v24];
     }
 
     _Block_object_dispose(&v36, 8);
@@ -4098,16 +4098,16 @@ void __43__STUIStatusBar_setEnabledPartIdentifiers___block_invoke(uint64_t a1, u
   }
 }
 
-- (void)setDisabledPartIdentifiers:(id)a3
+- (void)setDisabledPartIdentifiers:(id)identifiers
 {
   v53 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_disabledPartIdentifiers != v5)
+  identifiersCopy = identifiers;
+  if (self->_disabledPartIdentifiers != identifiersCopy)
   {
-    obj = a3;
+    obj = identifiers;
     [(STUIStatusBar *)self _prepareVisualProviderIfNeeded];
-    v31 = v5;
-    v6 = [(NSArray *)self->_disabledPartIdentifiers arrayByExcludingObjectsInArray:v5];
+    v31 = identifiersCopy;
+    v6 = [(NSArray *)self->_disabledPartIdentifiers arrayByExcludingObjectsInArray:identifiersCopy];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
@@ -4227,7 +4227,7 @@ void __43__STUIStatusBar_setEnabledPartIdentifiers___block_invoke(uint64_t a1, u
       while (v21);
     }
 
-    v5 = v31;
+    identifiersCopy = v31;
     if (v9)
     {
       if ((*(&self->_statusBarFlags + 2) & 2) != 0)
@@ -4245,11 +4245,11 @@ void __43__STUIStatusBar_setEnabledPartIdentifiers___block_invoke(uint64_t a1, u
   }
 }
 
-- (CGRect)frameForPartWithIdentifier:(id)a3 includeInternalItems:(BOOL)a4
+- (CGRect)frameForPartWithIdentifier:(id)identifier includeInternalItems:(BOOL)items
 {
-  v4 = a4;
+  itemsCopy = items;
   v72 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = MEMORY[0x277CBF398];
   if (*&self->_statusBarFlags)
   {
@@ -4261,13 +4261,13 @@ void __43__STUIStatusBar_setEnabledPartIdentifiers___block_invoke(uint64_t a1, u
   y = v7[1];
   width = v7[2];
   height = v7[3];
-  if ([v6 isEqualToString:@"clockPartIdentifier"] && (objc_opt_respondsToSelector() & 1) != 0)
+  if ([identifierCopy isEqualToString:@"clockPartIdentifier"] && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v68 = 0u;
     v69 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v12 = [(STUIStatusBar *)self _actionablesForPartWithIdentifier:v6 includeInternalItems:v4 onlyVisible:1];
+    v12 = [(STUIStatusBar *)self _actionablesForPartWithIdentifier:identifierCopy includeInternalItems:itemsCopy onlyVisible:1];
     v13 = [v12 countByEnumeratingWithState:&v66 objects:v71 count:16];
     if (v13)
     {
@@ -4283,7 +4283,7 @@ void __43__STUIStatusBar_setEnabledPartIdentifiers___block_invoke(uint64_t a1, u
           }
 
           v17 = *(*(&v66 + 1) + 8 * i);
-          v18 = [v17 layoutItem];
+          layoutItem = [v17 layoutItem];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -4292,15 +4292,15 @@ void __43__STUIStatusBar_setEnabledPartIdentifiers___block_invoke(uint64_t a1, u
 
           else
           {
-            [v18 _ui_bounds];
+            [layoutItem _ui_bounds];
           }
 
           v23 = v19;
           v24 = v20;
           v25 = v21;
           v26 = v22;
-          v27 = [v18 _ui_view];
-          [(STUIStatusBar *)self convertRect:v27 fromView:v23, v24, v25, v26];
+          _ui_view = [layoutItem _ui_view];
+          [(STUIStatusBar *)self convertRect:_ui_view fromView:v23, v24, v25, v26];
           v29 = v28;
           v31 = v30;
           v33 = v32;
@@ -4334,7 +4334,7 @@ void __43__STUIStatusBar_setEnabledPartIdentifiers___block_invoke(uint64_t a1, u
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v12 = [(STUIStatusBar *)self _actionablesForPartWithIdentifier:v6 includeInternalItems:v4 onlyVisible:1, 0];
+    v12 = [(STUIStatusBar *)self _actionablesForPartWithIdentifier:identifierCopy includeInternalItems:itemsCopy onlyVisible:1, 0];
     v36 = [v12 countByEnumeratingWithState:&v62 objects:v70 count:16];
     if (v36)
     {
@@ -4349,14 +4349,14 @@ void __43__STUIStatusBar_setEnabledPartIdentifiers___block_invoke(uint64_t a1, u
             objc_enumerationMutation(v12);
           }
 
-          v40 = [*(*(&v62 + 1) + 8 * j) layoutItem];
-          [v40 _ui_bounds];
+          layoutItem2 = [*(*(&v62 + 1) + 8 * j) layoutItem];
+          [layoutItem2 _ui_bounds];
           v42 = v41;
           v44 = v43;
           v46 = v45;
           v48 = v47;
-          v49 = [v40 _ui_view];
-          [(STUIStatusBar *)self convertRect:v49 fromView:v42, v44, v46, v48];
+          _ui_view2 = [layoutItem2 _ui_view];
+          [(STUIStatusBar *)self convertRect:_ui_view2 fromView:v42, v44, v46, v48];
           v51 = v50;
           v53 = v52;
           v55 = v54;
@@ -4395,9 +4395,9 @@ void __43__STUIStatusBar_setEnabledPartIdentifiers___block_invoke(uint64_t a1, u
   return result;
 }
 
-- (CGRect)frameForPartWithIdentifier:(id)a3
+- (CGRect)frameForPartWithIdentifier:(id)identifier
 {
-  [(STUIStatusBar *)self frameForPartWithIdentifier:a3 includeInternalItems:0];
+  [(STUIStatusBar *)self frameForPartWithIdentifier:identifier includeInternalItems:0];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -4405,35 +4405,35 @@ void __43__STUIStatusBar_setEnabledPartIdentifiers___block_invoke(uint64_t a1, u
   return result;
 }
 
-+ (CGSize)intrinsicContentSizeForTargetScreen:(id)a3 orientation:(int64_t)a4 onLockScreen:(BOOL)a5
++ (CGSize)intrinsicContentSizeForTargetScreen:(id)screen orientation:(int64_t)orientation onLockScreen:(BOOL)lockScreen
 {
-  [a1 intrinsicContentSizeForTargetScreen:a3 orientation:a4 onLockScreen:a5 isAzulBLinked:1];
+  [self intrinsicContentSizeForTargetScreen:screen orientation:orientation onLockScreen:lockScreen isAzulBLinked:1];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-+ (CGSize)intrinsicContentSizeForTargetScreen:(id)a3 orientation:(int64_t)a4 onLockScreen:(BOOL)a5 isAzulBLinked:(BOOL)a6
++ (CGSize)intrinsicContentSizeForTargetScreen:(id)screen orientation:(int64_t)orientation onLockScreen:(BOOL)lockScreen isAzulBLinked:(BOOL)linked
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  VisualProviderClassForScreen = STUIStatusBarGetVisualProviderClassForScreen(v10, 0);
-  if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+  linkedCopy = linked;
+  lockScreenCopy = lockScreen;
+  screenCopy = screen;
+  VisualProviderClassForScreen = STUIStatusBarGetVisualProviderClassForScreen(screenCopy, 0);
+  if (lockScreenCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [VisualProviderClassForScreen intrinsicLockScreenContentSizeForOrientation:a4];
+    [VisualProviderClassForScreen intrinsicLockScreenContentSizeForOrientation:orientation];
   }
 
   else
   {
-    [VisualProviderClassForScreen intrinsicContentSizeForOrientation:a4];
+    [VisualProviderClassForScreen intrinsicContentSizeForOrientation:orientation];
   }
 
   v14 = v12;
   v15 = v13;
-  if (v6)
+  if (linkedCopy)
   {
-    [a1 _effectiveScaleForVisualProviderClass:VisualProviderClassForScreen targetScreen:v10];
+    [self _effectiveScaleForVisualProviderClass:VisualProviderClassForScreen targetScreen:screenCopy];
     v15 = round(v15 * v16);
   }
 
@@ -4475,11 +4475,11 @@ void __39__STUIStatusBar_dependentDataEntryKeys__block_invoke(uint64_t a1, void 
 - (CGSize)intrinsicContentSize
 {
   [(STUIStatusBar *)self _prepareVisualProviderIfNeeded];
-  v3 = [(STUIStatusBar *)self window];
+  window = [(STUIStatusBar *)self window];
   v4 = objc_opt_class();
-  if (v3)
+  if (window)
   {
-    v5 = [*MEMORY[0x277D76620] _sceneInterfaceOrientationFromWindow:v3];
+    v5 = [*MEMORY[0x277D76620] _sceneInterfaceOrientationFromWindow:window];
   }
 
   else
@@ -4498,11 +4498,11 @@ void __39__STUIStatusBar_dependentDataEntryKeys__block_invoke(uint64_t a1, void 
   return result;
 }
 
-- (id)_itemWithIdentifier:(id)a3 createIfNeeded:(BOOL)a4
+- (id)_itemWithIdentifier:(id)identifier createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_items objectForKeyedSubscript:v6];
+  neededCopy = needed;
+  identifierCopy = identifier;
+  v7 = [(NSMutableDictionary *)self->_items objectForKeyedSubscript:identifierCopy];
   if (v7)
   {
     v8 = 1;
@@ -4510,32 +4510,32 @@ void __39__STUIStatusBar_dependentDataEntryKeys__block_invoke(uint64_t a1, void 
 
   else
   {
-    v8 = !v4;
+    v8 = !neededCopy;
   }
 
   if (!v8)
   {
-    v7 = [STUIStatusBarItem createItemForIdentifier:v6 statusBar:self];
+    v7 = [STUIStatusBarItem createItemForIdentifier:identifierCopy statusBar:self];
     if ((*(&self->_statusBarFlags + 2) & 4) != 0)
     {
       [(STUIStatusBarVisualProvider *)self->_visualProvider itemCreated:v7];
     }
 
-    [(NSMutableDictionary *)self->_items setObject:v7 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_items setObject:v7 forKeyedSubscript:identifierCopy];
   }
 
   return v7;
 }
 
-- (id)displayItemWithIdentifier:(id)a3
+- (id)displayItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [STUIStatusBarItem itemIdentifierForDisplayItemIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [STUIStatusBarItem itemIdentifierForDisplayItemIdentifier:identifierCopy];
   v6 = [(STUIStatusBar *)self _itemWithIdentifier:v5 createIfNeeded:0];
 
   if (v6)
   {
-    v7 = [v6 displayItemForIdentifier:v4];
+    v7 = [v6 displayItemForIdentifier:identifierCopy];
   }
 
   else
@@ -4546,28 +4546,28 @@ void __39__STUIStatusBar_dependentDataEntryKeys__block_invoke(uint64_t a1, void 
   return v7;
 }
 
-- (id)regionWithIdentifier:(id)a3
+- (id)regionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(STUIStatusBar *)self _prepareVisualProviderIfNeeded];
-  v5 = [(NSDictionary *)self->_regions objectForKeyedSubscript:v4];
+  v5 = [(NSDictionary *)self->_regions objectForKeyedSubscript:identifierCopy];
 
   return v5;
 }
 
-- (id)itemsDependingOnKeys:(id)a3
+- (id)itemsDependingOnKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   v5 = [MEMORY[0x277CBEB58] set];
   items = self->_items;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __38__STUIStatusBar_itemsDependingOnKeys___block_invoke;
   v12[3] = &unk_279D396B0;
-  v13 = v4;
+  v13 = keysCopy;
   v7 = v5;
   v14 = v7;
-  v8 = v4;
+  v8 = keysCopy;
   [(NSMutableDictionary *)items enumerateKeysAndObjectsUsingBlock:v12];
   v9 = v14;
   v10 = v7;
@@ -4587,34 +4587,34 @@ void __38__STUIStatusBar_itemsDependingOnKeys___block_invoke(uint64_t a1, uint64
   }
 }
 
-- (CGRect)frameForDisplayItemWithIdentifier:(id)a3
+- (CGRect)frameForDisplayItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(STUIStatusBar *)self layoutIfNeeded];
   v5 = *MEMORY[0x277CBF3A0];
   v6 = *(MEMORY[0x277CBF3A0] + 8);
   v7 = *(MEMORY[0x277CBF3A0] + 16);
   v8 = *(MEMORY[0x277CBF3A0] + 24);
   items = self->_items;
-  v10 = [STUIStatusBarItem itemIdentifierForDisplayItemIdentifier:v4];
+  v10 = [STUIStatusBarItem itemIdentifierForDisplayItemIdentifier:identifierCopy];
   v11 = [(NSMutableDictionary *)items objectForKeyedSubscript:v10];
 
   if (v11)
   {
-    v12 = [v11 displayItemForIdentifier:v4];
+    v12 = [v11 displayItemForIdentifier:identifierCopy];
     v13 = v12;
     if (v12)
     {
-      v14 = [v12 view];
-      [v14 alpha];
+      view = [v12 view];
+      [view alpha];
       if (v15 > 0.0)
       {
-        v16 = [v14 window];
+        window = [view window];
 
-        if (v16)
+        if (window)
         {
-          [v14 bounds];
-          [(STUIStatusBar *)self convertRect:v14 fromView:?];
+          [view bounds];
+          [(STUIStatusBar *)self convertRect:view fromView:?];
           v5 = v17;
           v6 = v18;
           v7 = v19;
@@ -4635,16 +4635,16 @@ void __38__STUIStatusBar_itemsDependingOnKeys___block_invoke(uint64_t a1, uint64
   return result;
 }
 
-- (id)displayItemIdentifiersInRegionsWithIdentifiers:(id)a3
+- (id)displayItemIdentifiersInRegionsWithIdentifiers:(id)identifiers
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = [MEMORY[0x277CBEB58] set];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v4;
+  obj = identifiersCopy;
   v6 = [obj countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v6)
   {
@@ -4678,8 +4678,8 @@ void __38__STUIStatusBar_itemsDependingOnKeys___block_invoke(uint64_t a1, uint64
                 objc_enumerationMutation(v10);
               }
 
-              v15 = [*(*(&v18 + 1) + 8 * j) identifier];
-              [v5 addObject:v15];
+              identifier = [*(*(&v18 + 1) + 8 * j) identifier];
+              [v5 addObject:identifier];
             }
 
             v12 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
@@ -4698,12 +4698,12 @@ void __38__STUIStatusBar_itemsDependingOnKeys___block_invoke(uint64_t a1, uint64
   return v5;
 }
 
-- (id)itemIdentifiersInRegionsWithIdentifiers:(id)a3
+- (id)itemIdentifiersInRegionsWithIdentifiers:(id)identifiers
 {
   v4 = MEMORY[0x277CBEB58];
-  v5 = a3;
+  identifiersCopy = identifiers;
   v6 = [v4 set];
-  v7 = [(STUIStatusBar *)self displayItemIdentifiersInRegionsWithIdentifiers:v5];
+  v7 = [(STUIStatusBar *)self displayItemIdentifiersInRegionsWithIdentifiers:identifiersCopy];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -4722,16 +4722,16 @@ void __57__STUIStatusBar_itemIdentifiersInRegionsWithIdentifiers___block_invoke(
   [*(a1 + 32) addObject:v3];
 }
 
-- (id)dataEntryKeysForItemsWithIdentifiers:(id)a3
+- (id)dataEntryKeysForItemsWithIdentifiers:(id)identifiers
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = [MEMORY[0x277CBEB58] set];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -4747,8 +4747,8 @@ void __57__STUIStatusBar_itemIdentifiersInRegionsWithIdentifiers___block_invoke(
         }
 
         v11 = [(STUIStatusBar *)self itemWithIdentifier:*(*(&v14 + 1) + 8 * i), v14];
-        v12 = [v11 dependentEntryKeys];
-        [v5 unionSet:v12];
+        dependentEntryKeys = [v11 dependentEntryKeys];
+        [v5 unionSet:dependentEntryKeys];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -4760,27 +4760,27 @@ void __57__STUIStatusBar_itemIdentifiersInRegionsWithIdentifiers___block_invoke(
   return v5;
 }
 
-- (BOOL)_accessibilityHUDGestureManager:(id)a3 shouldBeginAtPoint:(CGPoint)a4
+- (BOOL)_accessibilityHUDGestureManager:(id)manager shouldBeginAtPoint:(CGPoint)point
 {
-  v4 = [(STUIStatusBar *)self traitCollection:a3];
+  v4 = [(STUIStatusBar *)self traitCollection:manager];
   v5 = [v4 userInterfaceIdiom] != 3;
 
   return v5;
 }
 
-- (id)_accessibilityHUDGestureManager:(id)a3 HUDItemForPoint:(CGPoint)a4
+- (id)_accessibilityHUDGestureManager:(id)manager HUDItemForPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v25 = *MEMORY[0x277D85DE8];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [(STUIStatusBar *)self regions:a3];
-  v7 = [v6 allValues];
+  v6 = [(STUIStatusBar *)self regions:manager];
+  allValues = [v6 allValues];
 
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v8 = [allValues countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -4791,7 +4791,7 @@ void __57__STUIStatusBar_itemIdentifiersInRegionsWithIdentifiers___block_invoke(
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
@@ -4801,7 +4801,7 @@ void __57__STUIStatusBar_itemIdentifiersInRegionsWithIdentifiers___block_invoke(
           v14 = v13;
           if (v13)
           {
-            v15 = [v13 view];
+            view = [v13 view];
             v16 = objc_opt_respondsToSelector();
 
             if (v16)
@@ -4812,7 +4812,7 @@ void __57__STUIStatusBar_itemIdentifiersInRegionsWithIdentifiers___block_invoke(
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v9);
@@ -4821,34 +4821,34 @@ void __57__STUIStatusBar_itemIdentifiersInRegionsWithIdentifiers___block_invoke(
   v14 = 0;
 LABEL_13:
 
-  v17 = [v14 view];
-  v18 = [v17 accessibilityHUDRepresentation];
+  view2 = [v14 view];
+  accessibilityHUDRepresentation = [view2 accessibilityHUDRepresentation];
 
-  return v18;
+  return accessibilityHUDRepresentation;
 }
 
-- (void)_accessibilityHUDGestureManager:(id)a3 showHUDItem:(id)a4
+- (void)_accessibilityHUDGestureManager:(id)manager showHUDItem:(id)item
 {
-  v5 = a4;
-  v6 = [(STUIStatusBar *)self traitCollection];
-  [v5 setCustomUserInterfaceStyle:{objc_msgSend(v6, "userInterfaceStyle")}];
+  itemCopy = item;
+  traitCollection = [(STUIStatusBar *)self traitCollection];
+  [itemCopy setCustomUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
-  v7 = [(STUIStatusBar *)self _statusBarWindowForAccessibilityHUD];
-  [v7 _showAccessibilityHUDItem:v5 forView:self];
+  _statusBarWindowForAccessibilityHUD = [(STUIStatusBar *)self _statusBarWindowForAccessibilityHUD];
+  [_statusBarWindowForAccessibilityHUD _showAccessibilityHUDItem:itemCopy forView:self];
 }
 
-- (void)_dismissAccessibilityHUDForGestureManager:(id)a3
+- (void)_dismissAccessibilityHUDForGestureManager:(id)manager
 {
-  v3 = [(STUIStatusBar *)self _statusBarWindowForAccessibilityHUD];
-  [v3 _dismissAccessibilityHUD];
+  _statusBarWindowForAccessibilityHUD = [(STUIStatusBar *)self _statusBarWindowForAccessibilityHUD];
+  [_statusBarWindowForAccessibilityHUD _dismissAccessibilityHUD];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STUIStatusBar *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STUIStatusBar *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -4859,43 +4859,43 @@ LABEL_13:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STUIStatusBar *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STUIStatusBar *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STUIStatusBar *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STUIStatusBar *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 forDebug:(BOOL)a4
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix forDebug:(BOOL)debug
 {
-  v4 = a4;
-  v5 = [(STUIStatusBar *)self succinctDescriptionBuilder];
-  [v5 setUseDebugDescription:v4];
+  debugCopy = debug;
+  succinctDescriptionBuilder = [(STUIStatusBar *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder setUseDebugDescription:debugCopy];
 
-  return v5;
+  return succinctDescriptionBuilder;
 }
 
-- (id)_expandedDescriptionBuilderWithMultilinePrefix:(id)a3
+- (id)_expandedDescriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(STUIStatusBar *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v5 = [v4 activeMultilinePrefix];
+  v4 = [(STUIStatusBar *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  activeMultilinePrefix = [v4 activeMultilinePrefix];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __64__STUIStatusBar__expandedDescriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_279D38150;
   v6 = v4;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v5 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v9];
 
   v7 = v6;
   return v6;
@@ -4958,9 +4958,9 @@ void __64__STUIStatusBar__expandedDescriptionBuilderWithMultilinePrefix___block_
   [v6 appendString:v7 withName:@"orientation"];
 }
 
-- (void)setAdditionalDataDelegate:(id)a3
+- (void)setAdditionalDataDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_additionalDataDelegate);
 
   if (WeakRetained != obj)
@@ -4987,26 +4987,26 @@ void __64__STUIStatusBar__expandedDescriptionBuilderWithMultilinePrefix___block_
   if (WeakRetained)
   {
     v4 = objc_loadWeakRetained(&self->_additionalDataDelegate);
-    v5 = [v4 additionalEntriesByRelativePriority];
+    additionalEntriesByRelativePriority = [v4 additionalEntriesByRelativePriority];
   }
 
   else
   {
-    v5 = 0;
+    additionalEntriesByRelativePriority = 0;
   }
 
-  return v5;
+  return additionalEntriesByRelativePriority;
 }
 
-- (id)viewForAdditionalEntryWithIdentifier:(id)a3
+- (id)viewForAdditionalEntryWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_additionalDataDelegate);
 
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_additionalDataDelegate);
-    v7 = [v6 viewForAdditionalEntryWithIdentifier:v4];
+    v7 = [v6 viewForAdditionalEntryWithIdentifier:identifierCopy];
   }
 
   else
@@ -5017,14 +5017,14 @@ void __64__STUIStatusBar__expandedDescriptionBuilderWithMultilinePrefix___block_
   return v7;
 }
 
-- (id)imageForAvatarIdentifier:(id)a3
+- (id)imageForAvatarIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_additionalDataDelegate);
   if (WeakRetained && (statusBarFlags = self->_statusBarFlags, WeakRetained, (*&statusBarFlags & 0x200000) != 0))
   {
     v8 = objc_loadWeakRetained(&self->_additionalDataDelegate);
-    v7 = [v8 imageForAvatarIdentifier:v4];
+    v7 = [v8 imageForAvatarIdentifier:identifierCopy];
   }
 
   else
@@ -5052,11 +5052,11 @@ void __64__STUIStatusBar__expandedDescriptionBuilderWithMultilinePrefix___block_
 
 - (double)maximumPossibleMenuBarWidth
 {
-  v2 = [(STUIStatusBar *)self visualProvider];
+  visualProvider = [(STUIStatusBar *)self visualProvider];
   v3 = 0.0;
   if (objc_opt_respondsToSelector())
   {
-    [v2 maximumPossibleMenuBarWidth];
+    [visualProvider maximumPossibleMenuBarWidth];
     v3 = v4;
   }
 

@@ -1,15 +1,15 @@
 @interface POPlatformSSOListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)initForLogin:(BOOL)a3 authenticationProcess:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)initForLogin:(BOOL)login authenticationProcess:(id)process;
 @end
 
 @implementation POPlatformSSOListener
 
-- (id)initForLogin:(BOOL)a3 authenticationProcess:(id)a4
+- (id)initForLogin:(BOOL)login authenticationProcess:(id)process
 {
-  v5 = a3;
-  v7 = a4;
-  if (v5)
+  loginCopy = login;
+  processCopy = process;
+  if (loginCopy)
   {
     v8 = @"com.apple.PlatformSSO.login.service-xpc";
   }
@@ -25,16 +25,16 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_process, a4);
+    objc_storeStrong(&v9->_process, process);
   }
 
   return v10;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = PO_LOG_POAgentListener();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -42,14 +42,14 @@
   }
 
   v9 = [POAgentProcess alloc];
-  v10 = [(POPlatformSSOListener *)self process];
-  v11 = [(POAgentProcess *)v9 initWithXPCConnection:v7 authenticationProcess:v10];
+  process = [(POPlatformSSOListener *)self process];
+  v11 = [(POAgentProcess *)v9 initWithXPCConnection:connectionCopy authenticationProcess:process];
 
   v12 = [MEMORY[0x277D3D1F8] interfaceWithInternalProtocol:&unk_28708F1E0];
-  [v7 setExportedInterface:v12];
+  [connectionCopy setExportedInterface:v12];
 
-  [v7 setExportedObject:v11];
-  [v7 resume];
+  [connectionCopy setExportedObject:v11];
+  [connectionCopy resume];
   objc_initWeak(&location, v11);
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
@@ -58,7 +58,7 @@
   objc_copyWeak(&v19, &location);
   [(POAgentCoreProcess *)v11 setInvalidationHandler:&v15];
   v13 = [(POAgentCoreProcess *)v11 invalidationHandler:v15];
-  [v7 setInvalidationHandler:v13];
+  [connectionCopy setInvalidationHandler:v13];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);

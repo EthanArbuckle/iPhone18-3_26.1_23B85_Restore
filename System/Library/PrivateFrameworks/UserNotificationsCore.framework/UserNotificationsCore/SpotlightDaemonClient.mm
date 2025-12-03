@@ -1,15 +1,15 @@
 @interface SpotlightDaemonClient
 - (_TtC21UserNotificationsCoreP33_2EBB79DBAE553364D10B28CEFE20CBF021SpotlightDaemonClient)init;
-- (void)searchableItemsDidUpdate:(id)a3;
+- (void)searchableItemsDidUpdate:(id)update;
 @end
 
 @implementation SpotlightDaemonClient
 
-- (void)searchableItemsDidUpdate:(id)a3
+- (void)searchableItemsDidUpdate:(id)update
 {
   sub_1DA7AF3EC(0, &qword_1EE114DD0, 0x1E6964E80);
   v4 = sub_1DA940BE4();
-  v5 = self;
+  selfCopy = self;
   sub_1DA88362C(v4);
 }
 

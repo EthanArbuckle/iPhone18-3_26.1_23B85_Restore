@@ -1,50 +1,50 @@
 @interface NPSDomainAccessorUtils
-+ (BOOL)BOOLForObject:(id)a3 existsAndHasValidFormat:(BOOL *)a4;
-+ (double)doubleForObject:(id)a3 existsAndHasValidFormat:(BOOL *)a4;
-+ (float)floatForObject:(id)a3 existsAndHasValidFormat:(BOOL *)a4;
-+ (id)URLForObject:(id)a3;
-+ (id)arrayForObject:(id)a3;
-+ (id)dataForObject:(id)a3;
-+ (id)dictionaryForObject:(id)a3;
-+ (id)objectForURL:(id)a3;
-+ (id)stringArrayForObject:(id)a3;
-+ (id)stringForObject:(id)a3;
-+ (int64_t)integerForObject:(id)a3 existsAndHasValidFormat:(BOOL *)a4;
-+ (int64_t)longForObject:(id)a3 existsAndHasValidFormat:(BOOL *)a4;
++ (BOOL)BOOLForObject:(id)object existsAndHasValidFormat:(BOOL *)format;
++ (double)doubleForObject:(id)object existsAndHasValidFormat:(BOOL *)format;
++ (float)floatForObject:(id)object existsAndHasValidFormat:(BOOL *)format;
++ (id)URLForObject:(id)object;
++ (id)arrayForObject:(id)object;
++ (id)dataForObject:(id)object;
++ (id)dictionaryForObject:(id)object;
++ (id)objectForURL:(id)l;
++ (id)stringArrayForObject:(id)object;
++ (id)stringForObject:(id)object;
++ (int64_t)integerForObject:(id)object existsAndHasValidFormat:(BOOL *)format;
++ (int64_t)longForObject:(id)object existsAndHasValidFormat:(BOOL *)format;
 @end
 
 @implementation NPSDomainAccessorUtils
 
-+ (id)stringForObject:(id)a3
++ (id)stringForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 stringValue];
+      stringValue = [objectCopy stringValue];
     }
 
     else
     {
-      v4 = 0;
+      stringValue = 0;
     }
 
-    v3 = v4;
+    objectCopy = stringValue;
   }
 
-  return v3;
+  return objectCopy;
 }
 
-+ (id)arrayForObject:(id)a3
++ (id)arrayForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = objectCopy;
   }
 
   else
@@ -57,13 +57,13 @@
   return v4;
 }
 
-+ (id)dictionaryForObject:(id)a3
++ (id)dictionaryForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = objectCopy;
   }
 
   else
@@ -76,13 +76,13 @@
   return v4;
 }
 
-+ (id)dataForObject:(id)a3
++ (id)dataForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = objectCopy;
   }
 
   else
@@ -95,10 +95,10 @@
   return v4;
 }
 
-+ (id)stringArrayForObject:(id)a3
++ (id)stringArrayForObject:(id)object
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -106,7 +106,7 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = v3;
+    v4 = objectCopy;
     v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
     v6 = v4;
     if (v5)
@@ -158,79 +158,79 @@ LABEL_13:
   return v6;
 }
 
-+ (int64_t)integerForObject:(id)a3 existsAndHasValidFormat:(BOOL *)a4
++ (int64_t)integerForObject:(id)object existsAndHasValidFormat:(BOOL *)format
 {
-  v5 = a3;
-  if (v5 && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
+  objectCopy = object;
+  if (objectCopy && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
   {
-    v6 = [v5 integerValue];
-    if (a4)
+    integerValue = [objectCopy integerValue];
+    if (format)
     {
       v7 = 1;
 LABEL_8:
-      *a4 = v7;
+      *format = v7;
     }
   }
 
   else
   {
-    v6 = 0;
-    if (a4)
+    integerValue = 0;
+    if (format)
     {
       v7 = 0;
       goto LABEL_8;
     }
   }
 
-  return v6;
+  return integerValue;
 }
 
-+ (int64_t)longForObject:(id)a3 existsAndHasValidFormat:(BOOL *)a4
++ (int64_t)longForObject:(id)object existsAndHasValidFormat:(BOOL *)format
 {
-  v5 = a3;
-  if (v5 && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
+  objectCopy = object;
+  if (objectCopy && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
   {
-    v6 = [v5 longLongValue];
-    if (a4)
+    longLongValue = [objectCopy longLongValue];
+    if (format)
     {
       v7 = 1;
 LABEL_8:
-      *a4 = v7;
+      *format = v7;
     }
   }
 
   else
   {
-    v6 = 0;
-    if (a4)
+    longLongValue = 0;
+    if (format)
     {
       v7 = 0;
       goto LABEL_8;
     }
   }
 
-  return v6;
+  return longLongValue;
 }
 
-+ (float)floatForObject:(id)a3 existsAndHasValidFormat:(BOOL *)a4
++ (float)floatForObject:(id)object existsAndHasValidFormat:(BOOL *)format
 {
-  v5 = a3;
-  if (v5 && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
+  objectCopy = object;
+  if (objectCopy && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
   {
-    [v5 floatValue];
+    [objectCopy floatValue];
     v7 = v6;
-    if (a4)
+    if (format)
     {
       v8 = 1;
 LABEL_8:
-      *a4 = v8;
+      *format = v8;
     }
   }
 
   else
   {
     v7 = 0.0;
-    if (a4)
+    if (format)
     {
       v8 = 0;
       goto LABEL_8;
@@ -240,25 +240,25 @@ LABEL_8:
   return v7;
 }
 
-+ (double)doubleForObject:(id)a3 existsAndHasValidFormat:(BOOL *)a4
++ (double)doubleForObject:(id)object existsAndHasValidFormat:(BOOL *)format
 {
-  v5 = a3;
-  if (v5 && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
+  objectCopy = object;
+  if (objectCopy && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
   {
-    [v5 doubleValue];
+    [objectCopy doubleValue];
     v7 = v6;
-    if (a4)
+    if (format)
     {
       v8 = 1;
 LABEL_8:
-      *a4 = v8;
+      *format = v8;
     }
   }
 
   else
   {
     v7 = 0.0;
-    if (a4)
+    if (format)
     {
       v8 = 0;
       goto LABEL_8;
@@ -268,18 +268,18 @@ LABEL_8:
   return v7;
 }
 
-+ (BOOL)BOOLForObject:(id)a3 existsAndHasValidFormat:(BOOL *)a4
++ (BOOL)BOOLForObject:(id)object existsAndHasValidFormat:(BOOL *)format
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 length];
-    if (![v5 compare:@"YES" options:1 range:{0, v6}] || !objc_msgSend(v5, "compare:options:range:", @"Y", 1, 0, v6) || !objc_msgSend(v5, "compare:options:range:", @"true", 1, 0, v6) || !objc_msgSend(v5, "compare:options:range:", @"1", 1, 0, v6))
+    v6 = [objectCopy length];
+    if (![objectCopy compare:@"YES" options:1 range:{0, v6}] || !objc_msgSend(objectCopy, "compare:options:range:", @"Y", 1, 0, v6) || !objc_msgSend(objectCopy, "compare:options:range:", @"true", 1, 0, v6) || !objc_msgSend(objectCopy, "compare:options:range:", @"1", 1, 0, v6))
     {
       v8 = 1;
-      v7 = 1;
-      if (!a4)
+      bOOLValue = 1;
+      if (!format)
       {
         goto LABEL_20;
       }
@@ -287,10 +287,10 @@ LABEL_8:
       goto LABEL_19;
     }
 
-    if (![v5 compare:@"NO" options:1 range:{0, v6}] || !objc_msgSend(v5, "compare:options:range:", @"N", 1, 0, v6) || !objc_msgSend(v5, "compare:options:range:", @"false", 1, 0, v6) || !objc_msgSend(v5, "compare:options:range:", @"0", 1, 0, v6))
+    if (![objectCopy compare:@"NO" options:1 range:{0, v6}] || !objc_msgSend(objectCopy, "compare:options:range:", @"N", 1, 0, v6) || !objc_msgSend(objectCopy, "compare:options:range:", @"false", 1, 0, v6) || !objc_msgSend(objectCopy, "compare:options:range:", @"0", 1, 0, v6))
     {
-      v7 = 0;
-      if (!a4)
+      bOOLValue = 0;
+      if (!format)
       {
         goto LABEL_20;
       }
@@ -299,14 +299,14 @@ LABEL_8:
     }
 
 LABEL_17:
-    if (!a4)
+    if (!format)
     {
-      v7 = 0;
+      bOOLValue = 0;
       goto LABEL_20;
     }
 
     v8 = 0;
-    v7 = 0;
+    bOOLValue = 0;
     goto LABEL_19;
   }
 
@@ -316,40 +316,40 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v7 = [v5 BOOLValue];
-  if (a4)
+  bOOLValue = [objectCopy BOOLValue];
+  if (format)
   {
 LABEL_14:
     v8 = 1;
 LABEL_19:
-    *a4 = v8;
+    *format = v8;
   }
 
 LABEL_20:
 
-  return v7;
+  return bOOLValue;
 }
 
-+ (id)URLForObject:(id)a3
++ (id)URLForObject:(id)object
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  objectCopy = object;
   NSClassFromString(&cfstr_Nsdata.isa);
   if (objc_opt_isKindOfClass())
   {
     v4 = MEMORY[0x1E696ACD0];
-    v3 = v3;
+    objectCopy = objectCopy;
     v13 = 0;
-    v5 = [v4 unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:&v13];
+    v5 = [v4 unarchivedObjectOfClass:objc_opt_class() fromData:objectCopy error:&v13];
 
-    v6 = v13;
-    if (v6)
+    stringByExpandingTildeInPath = v13;
+    if (stringByExpandingTildeInPath)
     {
       v7 = nps_daemon_log;
       if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
       {
         v8 = v7;
-        v9 = [v3 length];
+        v9 = [objectCopy length];
         *buf = 134217984;
         v15 = v9;
         _os_log_impl(&dword_1C0D93000, v8, OS_LOG_TYPE_DEFAULT, "URL unarchiving fail from %ld bytes of data", buf, 0xCu);
@@ -363,8 +363,8 @@ LABEL_20:
   if (objc_opt_isKindOfClass())
   {
     v10 = MEMORY[0x1E695DFF8];
-    v6 = [v3 stringByExpandingTildeInPath];
-    v5 = [v10 fileURLWithPath:v6];
+    stringByExpandingTildeInPath = [objectCopy stringByExpandingTildeInPath];
+    v5 = [v10 fileURLWithPath:stringByExpandingTildeInPath];
 LABEL_7:
 
     goto LABEL_9;
@@ -377,17 +377,17 @@ LABEL_9:
   return v5;
 }
 
-+ (id)objectForURL:(id)a3
++ (id)objectForURL:(id)l
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 isFileURL])
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
-    if (![v3 isFileReferenceURL])
+    if (![lCopy isFileReferenceURL])
     {
-      v9 = [v3 absoluteURL];
-      v11 = [v9 path];
-      v7 = [v11 stringByAbbreviatingWithTildeInPath];
+      absoluteURL = [lCopy absoluteURL];
+      path = [absoluteURL path];
+      stringByAbbreviatingWithTildeInPath = [path stringByAbbreviatingWithTildeInPath];
 
       goto LABEL_9;
     }
@@ -406,21 +406,21 @@ LABEL_9:
     v6 = &v15;
   }
 
-  v7 = [v4 archivedDataWithRootObject:v3 requiringSecureCoding:1 error:{v6, v14, v15}];
+  stringByAbbreviatingWithTildeInPath = [v4 archivedDataWithRootObject:lCopy requiringSecureCoding:1 error:{v6, v14, v15}];
   v8 = *v5;
   if (!v8)
   {
     goto LABEL_10;
   }
 
-  v9 = v8;
+  absoluteURL = v8;
   v10 = nps_daemon_log;
   if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v17 = v3;
+    v17 = lCopy;
     v18 = 2112;
-    v19 = v9;
+    v19 = absoluteURL;
     _os_log_impl(&dword_1C0D93000, v10, OS_LOG_TYPE_DEFAULT, "URL archiving of %@ returned error %@", buf, 0x16u);
   }
 
@@ -429,7 +429,7 @@ LABEL_9:
 LABEL_10:
   v12 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return stringByAbbreviatingWithTildeInPath;
 }
 
 @end

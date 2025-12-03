@@ -1,6 +1,6 @@
 @interface DNDSAppForegroundTriggerConfiguration
 - (DNDSAppForegroundTriggerConfiguration)init;
-- (void)addTriggerForModeWithIdentifier:(id)a3 onForegroundOfApp:(id)a4;
+- (void)addTriggerForModeWithIdentifier:(id)identifier onForegroundOfApp:(id)app;
 @end
 
 @implementation DNDSAppForegroundTriggerConfiguration
@@ -20,13 +20,13 @@
   return v3;
 }
 
-- (void)addTriggerForModeWithIdentifier:(id)a3 onForegroundOfApp:(id)a4
+- (void)addTriggerForModeWithIdentifier:(id)identifier onForegroundOfApp:(id)app
 {
   bundleIDToModeIdentifierTriggers = self->_bundleIDToModeIdentifierTriggers;
-  v7 = a4;
-  v8 = a3;
+  appCopy = app;
+  identifierCopy = identifier;
   v11 = [(NSDictionary *)bundleIDToModeIdentifierTriggers mutableCopy];
-  [v11 setObject:v8 forKeyedSubscript:v7];
+  [v11 setObject:identifierCopy forKeyedSubscript:appCopy];
 
   v9 = [v11 copy];
   v10 = self->_bundleIDToModeIdentifierTriggers;

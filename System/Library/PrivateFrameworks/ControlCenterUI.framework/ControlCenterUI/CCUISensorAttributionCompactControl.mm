@@ -1,30 +1,30 @@
 @interface CCUISensorAttributionCompactControl
-- (CCUISensorAttributionCompactControl)initWithFrame:(CGRect)a3;
+- (CCUISensorAttributionCompactControl)initWithFrame:(CGRect)frame;
 - (CCUISensorAttributionCompactControlDelegate)delegate;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CGSize)sizeThatFitsMaximumAllowableWidth;
-- (double)_layoutSingleIndicatorView:(id)a3 trailingX:(double)a4 visible:(BOOL)a5;
+- (double)_layoutSingleIndicatorView:(id)view trailingX:(double)x visible:(BOOL)visible;
 - (double)_visibleIndicatorsWidth;
-- (id)_configureIndicatorViewForType:(unint64_t)a3 inactive:(BOOL)a4;
+- (id)_configureIndicatorViewForType:(unint64_t)type inactive:(BOOL)inactive;
 - (id)_rightChevronImage;
 - (id)clone;
 - (void)_configureChevronViews;
 - (void)_configureChevronWrapperAppearance;
-- (void)_configureIndicatorView:(id)a3 forGameModeState:(unint64_t)a4;
-- (void)_decideToExpandOrCompactAndForwardToDelegate:(id)a3;
+- (void)_configureIndicatorView:(id)view forGameModeState:(unint64_t)state;
+- (void)_decideToExpandOrCompactAndForwardToDelegate:(id)delegate;
 - (void)_layoutBackgroundView;
 - (void)_layoutChevronViews;
 - (void)_layoutIndicatorViews;
 - (void)_layoutLabelViews;
-- (void)_setChevronAlphaForExpanded:(BOOL)a3 animated:(BOOL)a4;
-- (void)_setLabelWrapperViewAlphaForExpanded:(BOOL)a3 animated:(BOOL)a4;
-- (void)_updateBackgroundViewColorWithUniqueEntities:(id)a3 audioVideoControlsAreEnabled:(BOOL)a4;
+- (void)_setChevronAlphaForExpanded:(BOOL)expanded animated:(BOOL)animated;
+- (void)_setLabelWrapperViewAlphaForExpanded:(BOOL)expanded animated:(BOOL)animated;
+- (void)_updateBackgroundViewColorWithUniqueEntities:(id)entities audioVideoControlsAreEnabled:(BOOL)enabled;
 - (void)_updateContentIfDisplayedAttributionsAreStaleAndLayout;
 - (void)handleTouchCanceled;
 - (void)handleTouchDown;
 - (void)layoutSubviews;
-- (void)setExpanded:(BOOL)a3 animated:(BOOL)a4;
+- (void)setExpanded:(BOOL)expanded animated:(BOOL)animated;
 @end
 
 @implementation CCUISensorAttributionCompactControl
@@ -46,15 +46,15 @@
 - (double)_visibleIndicatorsWidth
 {
   v3 = self->_singleIndicatorSize.width * [(CCUISensorAttributionCompactControl *)self activeIndicatorsCount];
-  v4 = [(CCUISensorAttributionCompactControl *)self activeIndicatorsCount];
-  if (v4 <= 1)
+  activeIndicatorsCount = [(CCUISensorAttributionCompactControl *)self activeIndicatorsCount];
+  if (activeIndicatorsCount <= 1)
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = v4;
+    v5 = activeIndicatorsCount;
   }
 
   return v3 + (v5 - 1) * 4.0;
@@ -93,8 +93,8 @@
   if (v5)
   {
     v6 = v5;
-    v7 = 0;
-    v50 = 0;
+    usedRecently2 = 0;
+    usedRecently = 0;
     v8 = *v58;
     do
     {
@@ -109,13 +109,13 @@
         if (![v10 sensorType])
         {
           self->_showingCamera = 1;
-          v50 = [v10 usedRecently];
+          usedRecently = [v10 usedRecently];
         }
 
         if ([v10 sensorType] == 1)
         {
           self->_showingMicrophone = 1;
-          v7 = [v10 usedRecently];
+          usedRecently2 = [v10 usedRecently];
         }
 
         if ([v10 sensorType] == 2)
@@ -137,13 +137,13 @@
 
   else
   {
-    v7 = 0;
-    v50 = 0;
+    usedRecently2 = 0;
+    usedRecently = 0;
   }
 
   v11 = self->_displayedAttributions;
   v12 = v11;
-  if (!self->_showingCamera || (v50) && v7 & 1 | !self->_showingMicrophone && self->_displayedInactiveMicrophoneAttribution)
+  if (!self->_showingCamera || (usedRecently) && usedRecently2 & 1 | !self->_showingMicrophone && self->_displayedInactiveMicrophoneAttribution)
   {
     self->_showingInactiveMicrophone = 1;
     v13 = [(NSSet *)v11 setByAddingObject:self->_displayedInactiveMicrophoneAttribution];
@@ -153,23 +153,23 @@
 
   v14 = CCUIUniqueSensorAttributionEntitiesForSensorActivityData(v12, 1);
   v15 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v16 = [v14 firstObject];
-  v17 = [v16 displayNameForCompactView];
-  v52 = [(CCUISensorAttributionCompactControl *)self delegate];
-  v18 = [v52 bundleIdentifierUsingAudioVideoControlsForSensorAttributionCompactControl:self];
+  firstObject = [v14 firstObject];
+  displayNameForCompactView = [firstObject displayNameForCompactView];
+  delegate = [(CCUISensorAttributionCompactControl *)self delegate];
+  v18 = [delegate bundleIdentifierUsingAudioVideoControlsForSensorAttributionCompactControl:self];
   v51 = CCUIUniqueSensorAttributionEntitiesForSensorActivityData(v12, 0);
   [CCUISensorAttributionCompactControl _updateBackgroundViewColorWithUniqueEntities:"_updateBackgroundViewColorWithUniqueEntities:audioVideoControlsAreEnabled:" audioVideoControlsAreEnabled:?];
   if ([v14 count] == 1)
   {
-    [v15 appendString:v17];
+    [v15 appendString:displayNameForCompactView];
   }
 
   else
   {
     if (v18)
     {
-      v48 = v16;
-      v49 = v17;
+      v48 = firstObject;
+      v49 = displayNameForCompactView;
       v46 = v15;
       v47 = v12;
       v55 = 0u;
@@ -192,14 +192,14 @@
             }
 
             v24 = *(*(&v53 + 1) + 8 * j);
-            v25 = [v24 bundleIdentifier];
-            v26 = [v25 isEqualToString:v18];
+            bundleIdentifier = [v24 bundleIdentifier];
+            v26 = [bundleIdentifier isEqualToString:v18];
 
             if (v26)
             {
-              v27 = [v24 displayNameForCompactView];
+              displayNameForCompactView2 = [v24 displayNameForCompactView];
               v15 = v46;
-              [v46 appendString:v27];
+              [v46 appendString:displayNameForCompactView2];
 
               v12 = v47;
               goto LABEL_46;
@@ -226,13 +226,13 @@
       {
         if ([v14 count] >= 3)
         {
-          v35 = v17;
+          v35 = displayNameForCompactView;
           v36 = [v14 count] - 1;
           v37 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v38 = [v37 localizedStringForKey:@"CONTROL_CENTER_SENSOR_STATUS_ONE_APP_AMPERSAND_N_MORE" value:&stru_28301B138 table:@"ControlCenterUI"];
 
           v45 = v36;
-          v17 = v35;
+          displayNameForCompactView = v35;
           v39 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v38, v35, v45];
           [v15 appendString:v39];
         }
@@ -240,19 +240,19 @@
         goto LABEL_47;
       }
 
-      v48 = v16;
-      v49 = v17;
+      v48 = firstObject;
+      v49 = displayNameForCompactView;
       v28 = [v14 objectAtIndex:1];
-      v29 = [v28 displayNameForCompactView];
+      displayNameForCompactView3 = [v28 displayNameForCompactView];
 
-      v30 = [MEMORY[0x277CBEAF8] currentLocale];
-      v31 = [v30 languageCode];
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+      languageCode = [currentLocale languageCode];
 
-      if (([v31 isEqualToString:@"es"] & 1) != 0 || objc_msgSend(v31, "isEqualToString:", @"he"))
+      if (([languageCode isEqualToString:@"es"] & 1) != 0 || objc_msgSend(languageCode, "isEqualToString:", @"he"))
       {
         v32 = MEMORY[0x277CCAAF0];
         v61[0] = v49;
-        v61[1] = v29;
+        v61[1] = displayNameForCompactView3;
         v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:2];
         v34 = [v32 localizedStringByJoiningStrings:v33];
 
@@ -264,14 +264,14 @@
         v40 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v34 = [v40 localizedStringForKey:@"CONTROL_CENTER_SENSOR_STATUS_TWO_APPS_AMPERSAND" value:&stru_28301B138 table:@"ControlCenterUI"];
 
-        v41 = [MEMORY[0x277CCACA8] stringWithFormat:v34, v49, v29];
+        v41 = [MEMORY[0x277CCACA8] stringWithFormat:v34, v49, displayNameForCompactView3];
         [v15 appendString:v41];
       }
     }
 
 LABEL_46:
-    v16 = v48;
-    v17 = v49;
+    firstObject = v48;
+    displayNameForCompactView = v49;
   }
 
 LABEL_47:
@@ -316,9 +316,9 @@ LABEL_55:
 
 - (void)_layoutIndicatorViews
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v4 = -4.0;
-  if ([v3 userInterfaceLayoutDirection] == 1)
+  if ([mEMORY[0x277D75128] userInterfaceLayoutDirection] == 1)
   {
     [(CCUISensorAttributionCompactControl *)self bounds];
     v4 = v5 + 4.0 + 1.0;
@@ -347,8 +347,8 @@ LABEL_55:
     v7 = v6;
     [(CCUISensorAttributionCompactControl *)self _visibleIndicatorsWidth];
     v9 = v7 - v8;
-    v10 = [(CCUISensorAttributionCompactControl *)self chevronImageView];
-    [v10 frame];
+    chevronImageView = [(CCUISensorAttributionCompactControl *)self chevronImageView];
+    [chevronImageView frame];
     v12 = v9 - v11;
 
     if ([(CCUISensorAttributionCompactControl *)self activeIndicatorsCount]<= 0)
@@ -373,8 +373,8 @@ LABEL_55:
       v16 = v14;
     }
 
-    v17 = [(UILabel *)*p_detailLabel text];
-    v18 = [v17 length];
+    text = [(UILabel *)*p_detailLabel text];
+    v18 = [text length];
 
     if (v18)
     {
@@ -400,10 +400,10 @@ LABEL_55:
       v23 = v22;
     }
 
-    v24 = [MEMORY[0x277D75128] sharedApplication];
-    v25 = [v24 userInterfaceLayoutDirection];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
-    if (v25 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v26 = &self->_detailLabel;
     }
@@ -413,7 +413,7 @@ LABEL_55:
       v26 = p_descriptionLabel;
     }
 
-    if (v25 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v27 = v16;
     }
@@ -423,7 +423,7 @@ LABEL_55:
       v27 = v23;
     }
 
-    if (v25 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v28 = height;
     }
@@ -433,7 +433,7 @@ LABEL_55:
       v28 = v20;
     }
 
-    if (v25 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v29 = p_descriptionLabel;
     }
@@ -443,7 +443,7 @@ LABEL_55:
       v29 = &self->_detailLabel;
     }
 
-    if (v25 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v30 = v23;
     }
@@ -453,24 +453,24 @@ LABEL_55:
       v30 = v16;
     }
 
-    if (v25 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       height = v20;
     }
 
     [(UILabel *)*v26 setFrame:0.0, 0.0, v27, v28];
     [(UILabel *)*v29 setFrame:v27, 0.0, v30, height];
-    v31 = [MEMORY[0x277D75128] sharedApplication];
-    if ([v31 userInterfaceLayoutDirection] == 1)
+    mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+    if ([mEMORY[0x277D75128]2 userInterfaceLayoutDirection] == 1)
     {
-      v32 = [(CCUISensorAttributionCompactControl *)self chevronImageView];
-      [v32 frame];
+      chevronImageView2 = [(CCUISensorAttributionCompactControl *)self chevronImageView];
+      [chevronImageView2 frame];
     }
 
     UIRectCenteredYInRect();
-    v33 = [(CCUISensorAttributionCompactControl *)self window];
-    v34 = [v33 screen];
-    [v34 scale];
+    window = [(CCUISensorAttributionCompactControl *)self window];
+    screen = [window screen];
+    [screen scale];
     UIRectIntegralWithScale();
     x = v35;
     y = v37;
@@ -479,8 +479,8 @@ LABEL_55:
 
     if (self->_expanded)
     {
-      v43 = [MEMORY[0x277D75128] sharedApplication];
-      if ([v43 userInterfaceLayoutDirection] == 1)
+      mEMORY[0x277D75128]3 = [MEMORY[0x277D75128] sharedApplication];
+      if ([mEMORY[0x277D75128]3 userInterfaceLayoutDirection] == 1)
       {
         v44 = -108.0;
       }
@@ -513,15 +513,15 @@ LABEL_55:
   if (chevronWrapperView)
   {
     [(UIView *)chevronWrapperView frame];
-    v4 = [(CCUISensorAttributionCompactControl *)self labelWrapperView];
-    [v4 frame];
+    labelWrapperView = [(CCUISensorAttributionCompactControl *)self labelWrapperView];
+    [labelWrapperView frame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
 
-    v13 = [MEMORY[0x277D75128] sharedApplication];
-    if ([v13 userInterfaceLayoutDirection] != 1)
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    if ([mEMORY[0x277D75128] userInterfaceLayoutDirection] != 1)
     {
       v29.origin.x = v6;
       v29.origin.y = v8;
@@ -539,15 +539,15 @@ LABEL_55:
     v21 = v20 + 0.5;
     if (self->_expanded)
     {
-      v22 = [MEMORY[0x277D75128] sharedApplication];
+      mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
       maximumAllowableWidth = 0.0;
-      if ([v22 userInterfaceLayoutDirection] != 1)
+      if ([mEMORY[0x277D75128]2 userInterfaceLayoutDirection] != 1)
       {
         maximumAllowableWidth = self->_maximumAllowableWidth;
       }
 
-      v24 = [(CCUISensorAttributionCompactControl *)self superview];
-      [v24 convertPoint:self toView:{maximumAllowableWidth, 0.0}];
+      superview = [(CCUISensorAttributionCompactControl *)self superview];
+      [superview convertPoint:self toView:{maximumAllowableWidth, 0.0}];
       v15 = v25;
     }
 
@@ -561,35 +561,35 @@ LABEL_55:
 
 - (void)_layoutBackgroundView
 {
-  v17 = [(CCUISensorAttributionCompactControl *)self backgroundView];
-  v3 = [(CCUISensorAttributionCompactControl *)self delegate];
-  v4 = [v3 bundleIdentifierUsingAudioVideoControlsForSensorAttributionCompactControl:self];
+  backgroundView = [(CCUISensorAttributionCompactControl *)self backgroundView];
+  delegate = [(CCUISensorAttributionCompactControl *)self delegate];
+  v4 = [delegate bundleIdentifierUsingAudioVideoControlsForSensorAttributionCompactControl:self];
   v5 = v4 == 0;
 
-  [v17 setHidden:v5];
+  [backgroundView setHidden:v5];
   [(CCUISensorAttributionCompactControl *)self bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [MEMORY[0x277D75128] sharedApplication];
-  v15 = [v14 userInterfaceLayoutDirection];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
   v16 = -8.0;
-  if (v15 != 1)
+  if (userInterfaceLayoutDirection != 1)
   {
     v16 = -2.0;
   }
 
-  [v17 setFrame:{v7 + v16, v9 + -2.0, v11 + 12.0, v13 + 4.0}];
-  [v17 _setContinuousCornerRadius:(v13 + 4.0) * 0.5];
+  [backgroundView setFrame:{v7 + v16, v9 + -2.0, v11 + 12.0, v13 + 4.0}];
+  [backgroundView _setContinuousCornerRadius:(v13 + 4.0) * 0.5];
 }
 
-- (CCUISensorAttributionCompactControl)initWithFrame:(CGRect)a3
+- (CCUISensorAttributionCompactControl)initWithFrame:(CGRect)frame
 {
   v37.receiver = self;
   v37.super_class = CCUISensorAttributionCompactControl;
-  v3 = [(CCUISensorAttributionCompactControl *)&v37 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CCUISensorAttributionCompactControl *)&v37 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D75D18]);
@@ -608,13 +608,13 @@ LABEL_55:
     v3->_descriptionLabel = v12;
 
     v14 = v3->_descriptionLabel;
-    v15 = [(CCUISensorAttributionCompactControl *)v3 _fontForTitleLabel];
-    [(UILabel *)v14 setFont:v15];
+    _fontForTitleLabel = [(CCUISensorAttributionCompactControl *)v3 _fontForTitleLabel];
+    [(UILabel *)v14 setFont:_fontForTitleLabel];
 
     [(UILabel *)v3->_descriptionLabel setAdjustsFontSizeToFitWidth:0];
     v16 = v3->_descriptionLabel;
-    v17 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v16 setTextColor:v17];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v16 setTextColor:whiteColor];
 
     [(UILabel *)v3->_descriptionLabel setUserInteractionEnabled:0];
     [(UILabel *)v3->_descriptionLabel setAdjustsFontForContentSizeCategory:0];
@@ -623,13 +623,13 @@ LABEL_55:
     v3->_detailLabel = v18;
 
     v20 = v3->_detailLabel;
-    v21 = [(CCUISensorAttributionCompactControl *)v3 _fontForTitleLabel];
-    [(UILabel *)v20 setFont:v21];
+    _fontForTitleLabel2 = [(CCUISensorAttributionCompactControl *)v3 _fontForTitleLabel];
+    [(UILabel *)v20 setFont:_fontForTitleLabel2];
 
     [(UILabel *)v3->_detailLabel setAdjustsFontSizeToFitWidth:0];
     v22 = v3->_detailLabel;
-    v23 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v22 setTextColor:v23];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v22 setTextColor:whiteColor2];
 
     [(UILabel *)v3->_detailLabel setUserInteractionEnabled:0];
     [(UILabel *)v3->_detailLabel setAdjustsFontForContentSizeCategory:0];
@@ -670,9 +670,9 @@ LABEL_55:
   return v3;
 }
 
-- (void)_decideToExpandOrCompactAndForwardToDelegate:(id)a3
+- (void)_decideToExpandOrCompactAndForwardToDelegate:(id)delegate
 {
-  if (self->_touchUUID == a3)
+  if (self->_touchUUID == delegate)
   {
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     v5 = v4 - self->_touchDownDate;
@@ -695,8 +695,8 @@ LABEL_55:
 
 - (void)handleTouchDown
 {
-  v3 = [MEMORY[0x277CCAD78] UUID];
-  objc_storeStrong(&self->_touchUUID, v3);
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  objc_storeStrong(&self->_touchUUID, uUID);
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   self->_touchDownDate = v4;
   v5 = dispatch_time(0, 200000000);
@@ -704,9 +704,9 @@ LABEL_55:
   v9 = 3221225472;
   v10 = __54__CCUISensorAttributionCompactControl_handleTouchDown__block_invoke;
   v11 = &unk_278381DC8;
-  v12 = self;
-  v13 = v3;
-  v6 = v3;
+  selfCopy = self;
+  v13 = uUID;
+  v6 = uUID;
   dispatch_after(v5, MEMORY[0x277D85CD0], &v8);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained handleCompactControlTouchBeganEvent];
@@ -721,12 +721,12 @@ LABEL_55:
   self->_touchUUID = 0;
 }
 
-- (id)_configureIndicatorViewForType:(unint64_t)a3 inactive:(BOOL)a4
+- (id)_configureIndicatorViewForType:(unint64_t)type inactive:(BOOL)inactive
 {
-  v7 = CCUIImageForSensorType(a3);
+  v7 = CCUIImageForSensorType(type);
   v8 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v7];
-  v9 = [MEMORY[0x277D75348] systemWhiteColor];
-  [v8 setTintColor:v9];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  [v8 setTintColor:systemWhiteColor];
 
   CGAffineTransformMakeScale(&v23, 0.5, 0.5);
   [v8 setTransform:&v23];
@@ -735,14 +735,14 @@ LABEL_55:
   v12 = [v10 initWithImage:v11];
 
   [v12 setTag:1];
-  if (a4)
+  if (inactive)
   {
     [MEMORY[0x277D75348] systemGrayColor];
   }
 
   else
   {
-    CCUIIndicatorColorForSensorType(a3);
+    CCUIIndicatorColorForSensorType(type);
   }
   v13 = ;
   [v12 setTintColor:v13];
@@ -760,31 +760,31 @@ LABEL_55:
   [v15 bounds];
   self->_singleIndicatorSize.width = v16;
   self->_singleIndicatorSize.height = v17;
-  v18 = CCUIIdentifierForSensorType(a3);
+  v18 = CCUIIdentifierForSensorType(type);
   [v15 setAccessibilityIdentifier:v18];
 
-  v19 = [v15 layer];
-  [v19 setShouldRasterize:1];
+  layer = [v15 layer];
+  [layer setShouldRasterize:1];
 
-  v20 = [MEMORY[0x277D759A0] mainScreen];
-  v21 = [v15 layer];
-  [v20 scale];
-  [v21 setRasterizationScale:?];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  layer2 = [v15 layer];
+  [mainScreen scale];
+  [layer2 setRasterizationScale:?];
 
   [(CCUISensorAttributionCompactControl *)self addSubview:v15];
 
   return v15;
 }
 
-- (void)_configureIndicatorView:(id)a3 forGameModeState:(unint64_t)a4
+- (void)_configureIndicatorView:(id)view forGameModeState:(unint64_t)state
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a3 subviews];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  subviews = [view subviews];
+  v6 = [subviews countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -795,7 +795,7 @@ LABEL_55:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -808,7 +808,7 @@ LABEL_55:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -817,13 +817,13 @@ LABEL_55:
 
 - (id)_rightChevronImage
 {
-  v2 = [MEMORY[0x277CF0D60] defaultFontProvider];
-  v3 = [v2 preferredFontForTextStyle:*MEMORY[0x277D769D0] hiFontStyle:4];
+  defaultFontProvider = [MEMORY[0x277CF0D60] defaultFontProvider];
+  v3 = [defaultFontProvider preferredFontForTextStyle:*MEMORY[0x277D769D0] hiFontStyle:4];
 
   v4 = [MEMORY[0x277D755D0] configurationWithFont:v3];
   v5 = [MEMORY[0x277D755B8] systemImageNamed:@"chevron.forward" withConfiguration:v4];
-  v6 = [MEMORY[0x277D75348] systemWhiteColor];
-  v7 = [v5 imageWithTintColor:v6 renderingMode:1];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  v7 = [v5 imageWithTintColor:systemWhiteColor renderingMode:1];
 
   return v7;
 }
@@ -831,8 +831,8 @@ LABEL_55:
 - (void)_configureChevronViews
 {
   v3 = objc_alloc(MEMORY[0x277D755E8]);
-  v4 = [(CCUISensorAttributionCompactControl *)self _rightChevronImage];
-  v5 = [v3 initWithImage:v4];
+  _rightChevronImage = [(CCUISensorAttributionCompactControl *)self _rightChevronImage];
+  v5 = [v3 initWithImage:_rightChevronImage];
   chevronImageView = self->_chevronImageView;
   self->_chevronImageView = v5;
 
@@ -856,8 +856,8 @@ LABEL_55:
 {
   if (self->_expanded)
   {
-    v3 = [MEMORY[0x277D75128] sharedApplication];
-    v4 = dbl_21EAB5650[[v3 userInterfaceLayoutDirection] == 1];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    v4 = dbl_21EAB5650[[mEMORY[0x277D75128] userInterfaceLayoutDirection] == 1];
 
     p_chevronWrapperView = &self->_chevronWrapperView;
     chevronWrapperView = self->_chevronWrapperView;
@@ -886,8 +886,8 @@ LABEL_55:
   v3 = [CCUISensorAttributionCompactControl alloc];
   [(CCUISensorAttributionCompactControl *)self bounds];
   v4 = [(CCUISensorAttributionCompactControl *)v3 initWithFrame:?];
-  v5 = [(CCUISensorAttributionCompactControl *)self delegate];
-  [(CCUISensorAttributionCompactControl *)v4 setDelegate:v5];
+  delegate = [(CCUISensorAttributionCompactControl *)self delegate];
+  [(CCUISensorAttributionCompactControl *)v4 setDelegate:delegate];
 
   [(CCUISensorAttributionCompactControl *)self maximumAllowableWidth];
   [(CCUISensorAttributionCompactControl *)v4 setMaximumAllowableWidth:?];
@@ -902,10 +902,10 @@ LABEL_55:
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(CCUISensorAttributionCompactControl *)self _visibleIndicatorsWidth:a3.width];
+  width = fits.width;
+  [(CCUISensorAttributionCompactControl *)self _visibleIndicatorsWidth:fits.width];
   v6 = v5;
   v7 = width - v5;
   [(UIImageView *)self->_chevronImageView frame];
@@ -929,29 +929,29 @@ LABEL_55:
   return result;
 }
 
-- (double)_layoutSingleIndicatorView:(id)a3 trailingX:(double)a4 visible:(BOOL)a5
+- (double)_layoutSingleIndicatorView:(id)view trailingX:(double)x visible:(BOOL)visible
 {
-  v5 = a5;
-  v8 = a3;
+  visibleCopy = visible;
+  viewCopy = view;
   [(CCUISensorAttributionCompactControl *)self bounds];
-  if (v8)
+  if (viewCopy)
   {
-    if (!v5)
+    if (!visibleCopy)
     {
-      [v8 setHidden:1];
+      [viewCopy setHidden:1];
       v17 = *MEMORY[0x277D76580];
 LABEL_11:
-      [v8 setAccessibilityTraits:v17];
+      [viewCopy setAccessibilityTraits:v17];
       goto LABEL_12;
     }
 
-    [v8 frame];
+    [viewCopy frame];
     rect = v9;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [MEMORY[0x277D75128] sharedApplication];
-    if ([v16 userInterfaceLayoutDirection] == 1)
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    if ([mEMORY[0x277D75128] userInterfaceLayoutDirection] == 1)
     {
       v35.origin.x = rect;
       v35.origin.y = v11;
@@ -965,13 +965,13 @@ LABEL_11:
     v21 = v20;
     v23 = v22;
     v25 = v24;
-    v26 = [MEMORY[0x277D75128] sharedApplication];
-    v27 = [v26 userInterfaceLayoutDirection];
+    mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x277D75128]2 userInterfaceLayoutDirection];
     v28 = v19;
     v29 = v21;
     v30 = v23;
     v31 = v25;
-    if (v27 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       MinX = CGRectGetMinX(*&v28);
     }
@@ -981,12 +981,12 @@ LABEL_11:
       MinX = CGRectGetMaxX(*&v28);
     }
 
-    a4 = MinX;
+    x = MinX;
 
-    [v8 setFrame:{v19, v21, v23, v25}];
+    [viewCopy setFrame:{v19, v21, v23, v25}];
     if (!self->_alwaysHidesSensorIcons)
     {
-      [v8 setHidden:0];
+      [viewCopy setHidden:0];
       v17 = 0;
       goto LABEL_11;
     }
@@ -994,38 +994,38 @@ LABEL_11:
 
 LABEL_12:
 
-  return a4;
+  return x;
 }
 
-- (void)_updateBackgroundViewColorWithUniqueEntities:(id)a3 audioVideoControlsAreEnabled:(BOOL)a4
+- (void)_updateBackgroundViewColorWithUniqueEntities:(id)entities audioVideoControlsAreEnabled:(BOOL)enabled
 {
-  v4 = a4;
-  v11 = a3;
-  v6 = [(CCUISensorAttributionCompactControl *)self backgroundView];
+  enabledCopy = enabled;
+  entitiesCopy = entities;
+  backgroundView = [(CCUISensorAttributionCompactControl *)self backgroundView];
   v7 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.15];
-  if (v4)
+  if (enabledCopy)
   {
-    v8 = [v11 firstObject];
-    v9 = v8;
-    if (v8)
+    firstObject = [entitiesCopy firstObject];
+    v9 = firstObject;
+    if (firstObject)
     {
-      v10 = CCUIIndicatorColorForSensorType([v8 sensorType]);
+      v10 = CCUIIndicatorColorForSensorType([firstObject sensorType]);
 
       v7 = v10;
     }
   }
 
-  [v6 setBackgroundColor:v7];
+  [backgroundView setBackgroundColor:v7];
 }
 
-- (void)setExpanded:(BOOL)a3 animated:(BOOL)a4
+- (void)setExpanded:(BOOL)expanded animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  self->_expanded = a3;
+  animatedCopy = animated;
+  expandedCopy = expanded;
+  self->_expanded = expanded;
   [CCUISensorAttributionCompactControl _setLabelWrapperViewAlphaForExpanded:"_setLabelWrapperViewAlphaForExpanded:animated:" animated:?];
-  [(CCUISensorAttributionCompactControl *)self _setChevronAlphaForExpanded:v5 animated:v4];
-  if (v5)
+  [(CCUISensorAttributionCompactControl *)self _setChevronAlphaForExpanded:expandedCopy animated:animatedCopy];
+  if (expandedCopy)
   {
     [(UIView *)self->_cameraIndicatorView setHidden:1];
     [(UIView *)self->_micIndicatorView setHidden:1];
@@ -1036,22 +1036,22 @@ LABEL_12:
   else
   {
     [(UIView *)self->_inactiveMicIndicatorView setHidden:0];
-    if (v4)
+    if (animatedCopy)
     {
       [(UIView *)self->_inactiveMicIndicatorView setAlpha:0.0];
     }
   }
 
-  [(UIView *)self->_gameModeIndicatorView setHidden:v5];
+  [(UIView *)self->_gameModeIndicatorView setHidden:expandedCopy];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __60__CCUISensorAttributionCompactControl_setExpanded_animated___block_invoke;
   aBlock[3] = &unk_278381EB8;
   aBlock[4] = self;
-  v13 = v5;
+  v13 = expandedCopy;
   v7 = _Block_copy(aBlock);
   v8 = v7;
-  if (v4)
+  if (animatedCopy)
   {
     v9 = MEMORY[0x277D75D18];
     v10[0] = MEMORY[0x277D85DD0];
@@ -1082,12 +1082,12 @@ uint64_t __60__CCUISensorAttributionCompactControl_setExpanded_animated___block_
   return [v2 setAlpha:v3];
 }
 
-- (void)_setChevronAlphaForExpanded:(BOOL)a3 animated:(BOOL)a4
+- (void)_setChevronAlphaForExpanded:(BOOL)expanded animated:(BOOL)animated
 {
-  if (a4)
+  if (animated)
   {
     v5 = 0.66;
-    if (a3)
+    if (expanded)
     {
       v5 = 0.33;
     }
@@ -1107,27 +1107,27 @@ uint64_t __60__CCUISensorAttributionCompactControl_setExpanded_animated___block_
   }
 }
 
-- (void)_setLabelWrapperViewAlphaForExpanded:(BOOL)a3 animated:(BOOL)a4
+- (void)_setLabelWrapperViewAlphaForExpanded:(BOOL)expanded animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(CCUISensorAttributionCompactControl *)self delegate];
-  v8 = [v7 bundleIdentifierUsingAudioVideoControlsForSensorAttributionCompactControl:self];
+  animatedCopy = animated;
+  expandedCopy = expanded;
+  delegate = [(CCUISensorAttributionCompactControl *)self delegate];
+  v8 = [delegate bundleIdentifierUsingAudioVideoControlsForSensorAttributionCompactControl:self];
   v9 = v8 != 0;
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __85__CCUISensorAttributionCompactControl__setLabelWrapperViewAlphaForExpanded_animated___block_invoke;
   v13[3] = &unk_2783825B8;
-  v14 = v5;
+  v14 = expandedCopy;
   v13[4] = self;
   v15 = v9;
   v10 = _Block_copy(v13);
   v11 = v10;
-  if (v4)
+  if (animatedCopy)
   {
     v12 = 0.66;
-    if (v5)
+    if (expandedCopy)
     {
       v12 = 0.33;
     }
@@ -1188,8 +1188,8 @@ uint64_t __85__CCUISensorAttributionCompactControl__setLabelWrapperViewAlphaForE
 
   if (Width != 0.0)
   {
-    v8 = [(UILabel *)self->_descriptionLabel text];
-    if ([v8 length])
+    text = [(UILabel *)self->_descriptionLabel text];
+    if ([text length])
     {
       v6 = 12.0;
     }

@@ -1,32 +1,32 @@
 @interface PSThirdPartyAppController
-- (id)_readToggleSwitchSpecifierValue:(id)a3;
-- (id)_uiValueFromValue:(id)a3 specifier:(id)a4;
-- (id)_valueFromUIValue:(id)a3 specifier:(id)a4;
+- (id)_readToggleSwitchSpecifierValue:(id)value;
+- (id)_uiValueFromValue:(id)value specifier:(id)specifier;
+- (id)_valueFromUIValue:(id)value specifier:(id)specifier;
 - (id)bundle;
 - (id)loadSpecifiers;
 - (id)plistFileURL;
-- (void)_setToggleSwitchSpecifierValue:(id)a3 specifier:(id)a4;
-- (void)postThirdPartySettingDidChangeNotificationForSpecifier:(id)a3;
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4;
-- (void)showController:(id)a3 animate:(BOOL)a4;
-- (void)showPrivacyControllerForBundleID:(id)a3;
-- (void)showPrivacyControllerForBundleName:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)_setToggleSwitchSpecifierValue:(id)value specifier:(id)specifier;
+- (void)postThirdPartySettingDidChangeNotificationForSpecifier:(id)specifier;
+- (void)setPreferenceValue:(id)value specifier:(id)specifier;
+- (void)showController:(id)controller animate:(BOOL)animate;
+- (void)showPrivacyControllerForBundleID:(id)d;
+- (void)showPrivacyControllerForBundleName:(id)name;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PSThirdPartyAppController
 
-- (id)_uiValueFromValue:(id)a3 specifier:(id)a4
+- (id)_uiValueFromValue:(id)value specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [a4 propertyForKey:@"TrueValue"];
+  valueCopy = value;
+  v6 = [specifier propertyForKey:@"TrueValue"];
   v7 = MEMORY[0x1E695E4D0];
   if (!v6)
   {
     v6 = *MEMORY[0x1E695E4D0];
   }
 
-  v8 = [v5 isEqual:v6];
+  v8 = [valueCopy isEqual:v6];
 
   v9 = MEMORY[0x1E695E4C0];
   if (v8)
@@ -40,12 +40,12 @@
   return v10;
 }
 
-- (id)_valueFromUIValue:(id)a3 specifier:(id)a4
+- (id)_valueFromUIValue:(id)value specifier:(id)specifier
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 propertyForKey:@"TrueValue"];
-  v8 = [v5 propertyForKey:@"FalseValue"];
+  specifierCopy = specifier;
+  valueCopy = value;
+  v7 = [specifierCopy propertyForKey:@"TrueValue"];
+  v8 = [specifierCopy propertyForKey:@"FalseValue"];
 
   if (v7)
   {
@@ -66,9 +66,9 @@
 
   v8 = *MEMORY[0x1E695E4C0];
 LABEL_3:
-  v9 = [v6 BOOLValue];
+  bOOLValue = [valueCopy BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
     v10 = v7;
   }
@@ -83,35 +83,35 @@ LABEL_3:
   return v10;
 }
 
-- (id)_readToggleSwitchSpecifierValue:(id)a3
+- (id)_readToggleSwitchSpecifierValue:(id)value
 {
-  v4 = a3;
-  v5 = [(PSSpecifierController *)self readPreferenceValue:v4];
+  valueCopy = value;
+  v5 = [(PSSpecifierController *)self readPreferenceValue:valueCopy];
   if (v5)
   {
     v6 = v5;
-    v7 = [v4 propertyForKey:@"negate"];
-    v8 = [v7 BOOLValue];
+    v7 = [valueCopy propertyForKey:@"negate"];
+    bOOLValue = [v7 BOOLValue];
 
-    if (v8)
+    if (bOOLValue)
     {
       v9 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v6, "BOOLValue") ^ 1}];
 
       v6 = v9;
     }
 
-    [v4 setProperty:v6 forKey:@"value"];
+    [valueCopy setProperty:v6 forKey:@"value"];
     goto LABEL_7;
   }
 
-  v10 = [v4 propertyForKey:@"default"];
+  v10 = [valueCopy propertyForKey:@"default"];
   if (v10)
   {
     v6 = v10;
-    [(PSThirdPartyAppController *)self setPreferenceValue:v10 specifier:v4];
+    [(PSThirdPartyAppController *)self setPreferenceValue:v10 specifier:valueCopy];
 LABEL_7:
-    v11 = [(PSThirdPartyAppController *)self _uiValueFromValue:v6 specifier:v4];
-    [v4 setProperty:v11 forKey:@"value"];
+    v11 = [(PSThirdPartyAppController *)self _uiValueFromValue:v6 specifier:valueCopy];
+    [valueCopy setProperty:v11 forKey:@"value"];
 
     goto LABEL_8;
   }
@@ -122,12 +122,12 @@ LABEL_8:
   return v11;
 }
 
-- (void)_setToggleSwitchSpecifierValue:(id)a3 specifier:(id)a4
+- (void)_setToggleSwitchSpecifierValue:(id)value specifier:(id)specifier
 {
-  v11 = a4;
-  v6 = [(PSThirdPartyAppController *)self _valueFromUIValue:a3 specifier:v11];
-  v7 = [v11 propertyForKey:@"defaults"];
-  v8 = [v11 propertyForKey:@"key"];
+  specifierCopy = specifier;
+  v6 = [(PSThirdPartyAppController *)self _valueFromUIValue:value specifier:specifierCopy];
+  v7 = [specifierCopy propertyForKey:@"defaults"];
+  v8 = [specifierCopy propertyForKey:@"key"];
   if (v7)
   {
     v9 = v8 == 0;
@@ -145,62 +145,62 @@ LABEL_8:
 
   else
   {
-    [(PSThirdPartyAppController *)self setPreferenceValue:v6 specifier:v11];
+    [(PSThirdPartyAppController *)self setPreferenceValue:v6 specifier:specifierCopy];
     GSSendAppPreferencesChanged();
   }
 }
 
-- (void)showPrivacyControllerForBundleID:(id)a3
+- (void)showPrivacyControllerForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[PSAppListController onBoardingKitBundleIDDict];
-  v6 = [v4 propertyForKey:@"AppBundleID"];
+  v6 = [dCopy propertyForKey:@"AppBundleID"];
 
   v9 = [v5 objectForKey:v6];
 
   if ([v9 length])
   {
     v7 = [getOBPrivacyPresenterClass_0() presenterForPrivacySplashWithIdentifier:v9];
-    v8 = [(PSSpecifierController *)self viewController];
-    [v7 setPresentingViewController:v8];
+    viewController = [(PSSpecifierController *)self viewController];
+    [v7 setPresentingViewController:viewController];
 
     [v7 present];
   }
 }
 
-- (void)showPrivacyControllerForBundleName:(id)a3
+- (void)showPrivacyControllerForBundleName:(id)name
 {
-  v13 = a3;
+  nameCopy = name;
   v4 = +[PSAppListController onBoardingKitBundleNameDict];
-  v5 = [v13 propertyForKey:@"AppBundleID"];
+  v5 = [nameCopy propertyForKey:@"AppBundleID"];
   v6 = [v4 objectForKey:v5];
 
   if ([v6 length])
   {
-    v7 = [v13 objectForKeyedSubscript:@"AppSettingsBundle"];
-    v8 = [v7 bundlePath];
-    v9 = [v8 stringByDeletingLastPathComponent];
-    v10 = [v9 stringByAppendingPathComponent:v6];
+    v7 = [nameCopy objectForKeyedSubscript:@"AppSettingsBundle"];
+    bundlePath = [v7 bundlePath];
+    stringByDeletingLastPathComponent = [bundlePath stringByDeletingLastPathComponent];
+    v10 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v6];
     v11 = [getOBPrivacyPresenterClass_0() presenterForPrivacySplashWithBundleAtPath:v10];
-    v12 = [(PSSpecifierController *)self viewController];
-    [v11 setPresentingViewController:v12];
+    viewController = [(PSSpecifierController *)self viewController];
+    [v11 setPresentingViewController:viewController];
 
     [v11 present];
   }
 }
 
-- (void)showController:(id)a3 animate:(BOOL)a4
+- (void)showController:(id)controller animate:(BOOL)animate
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PSSpecifierController *)self viewController];
-  [v7 presentViewController:v6 animated:v4 completion:0];
+  animateCopy = animate;
+  controllerCopy = controller;
+  viewController = [(PSSpecifierController *)self viewController];
+  [viewController presentViewController:controllerCopy animated:animateCopy completion:0];
 }
 
-- (void)postThirdPartySettingDidChangeNotificationForSpecifier:(id)a3
+- (void)postThirdPartySettingDidChangeNotificationForSpecifier:(id)specifier
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v3 = [a3 propertyForKey:@"AppBundleID"];
+  v3 = [specifier propertyForKey:@"AppBundleID"];
   v4 = v3;
   if (v3)
   {
@@ -210,119 +210,119 @@ LABEL_8:
   }
 }
 
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4
+- (void)setPreferenceValue:(id)value specifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = PSThirdPartyAppController;
-  v6 = a4;
-  [(PSSpecifierController *)&v7 setPreferenceValue:a3 specifier:v6];
-  [(PSThirdPartyAppController *)self postThirdPartySettingDidChangeNotificationForSpecifier:v6, v7.receiver, v7.super_class];
+  specifierCopy = specifier;
+  [(PSSpecifierController *)&v7 setPreferenceValue:value specifier:specifierCopy];
+  [(PSThirdPartyAppController *)self postThirdPartySettingDidChangeNotificationForSpecifier:specifierCopy, v7.receiver, v7.super_class];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PSThirdPartyAppController;
-  [(PSSpecifierController *)&v4 viewWillAppear:a3];
+  [(PSSpecifierController *)&v4 viewWillAppear:appear];
   [(PSSpecifierController *)self reloadSpecifiers];
 }
 
 - (id)loadSpecifiers
 {
-  v3 = [(PSSpecifierController *)self specifiers];
+  specifiers = [(PSSpecifierController *)self specifiers];
 
-  if (v3)
+  if (specifiers)
   {
     goto LABEL_40;
   }
 
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [(PSSpecifierController *)self specifier];
-  v6 = [v5 propertyForKey:@"id"];
+  array = [MEMORY[0x1E695DF70] array];
+  specifier = [(PSSpecifierController *)self specifier];
+  v6 = [specifier propertyForKey:@"id"];
 
-  v7 = [(PSSpecifierController *)self specifier];
-  v8 = [v7 propertyForKey:@"isThirdPartyDetail"];
-  LODWORD(v9) = [v8 BOOLValue];
+  specifier2 = [(PSSpecifierController *)self specifier];
+  v8 = [specifier2 propertyForKey:@"isThirdPartyDetail"];
+  LODWORD(stringByDeletingPathExtension) = [v8 BOOLValue];
 
-  if (v9)
+  if (stringByDeletingPathExtension)
   {
     v69 = 1;
   }
 
   else
   {
-    v10 = [(PSThirdPartyAppController *)self appPolicy];
+    appPolicy = [(PSThirdPartyAppController *)self appPolicy];
 
-    if (!v10)
+    if (!appPolicy)
     {
       v11 = [[PSSystemPolicyForApp alloc] initWithBundleIdentifier:v6];
       [(PSThirdPartyAppController *)self setAppPolicy:v11];
 
-      v12 = [(PSThirdPartyAppController *)self appPolicy];
-      [v12 setDelegate:self];
+      appPolicy2 = [(PSThirdPartyAppController *)self appPolicy];
+      [appPolicy2 setDelegate:self];
 
-      v13 = [(PSThirdPartyAppController *)self appPolicy];
-      [(PSThirdPartyAppController *)self setSystemPolicy:v13];
+      appPolicy3 = [(PSThirdPartyAppController *)self appPolicy];
+      [(PSThirdPartyAppController *)self setSystemPolicy:appPolicy3];
     }
 
-    v14 = [(PSThirdPartyAppController *)self systemPolicy];
-    v15 = [v14 specifiers];
+    systemPolicy = [(PSThirdPartyAppController *)self systemPolicy];
+    specifiers2 = [systemPolicy specifiers];
 
-    v69 = [v15 count] == 0;
-    [v4 addObjectsFromArray:v15];
+    v69 = [specifiers2 count] == 0;
+    [array addObjectsFromArray:specifiers2];
   }
 
-  v16 = [(PSSpecifierController *)self viewController];
-  v17 = [v16 title];
+  viewController = [(PSSpecifierController *)self viewController];
+  title = [viewController title];
 
   v18 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v19 = [(PSSpecifierController *)self loadSpecifiersFromPlistName:@"KeyboardExtension" target:self bundle:v18];
 
   v71 = v19;
-  [v4 addObjectsFromArray:v19];
-  v20 = [(PSSpecifierController *)self viewController];
-  [v20 setTitle:v17];
+  [array addObjectsFromArray:v19];
+  viewController2 = [(PSSpecifierController *)self viewController];
+  [viewController2 setTitle:title];
 
-  v21 = [MEMORY[0x1E695DF70] array];
-  v22 = [(PSThirdPartyAppController *)self plistFileURL];
-  v23 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v22];
+  array2 = [MEMORY[0x1E695DF70] array];
+  plistFileURL = [(PSThirdPartyAppController *)self plistFileURL];
+  v23 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:plistFileURL];
   v73 = v6;
-  v72 = v9;
-  v70 = v22;
+  v72 = stringByDeletingPathExtension;
+  v70 = plistFileURL;
   v74 = v23;
   if (v23)
   {
     v24 = v23;
-    v75 = v21;
+    v75 = array2;
     v25 = [v23 objectForKey:@"StringsTable"];
-    v9 = [v25 stringByDeletingPathExtension];
+    stringByDeletingPathExtension = [v25 stringByDeletingPathExtension];
 
-    if (v9)
+    if (stringByDeletingPathExtension)
     {
-      v26 = [(PSSpecifierController *)self specifier];
-      [v26 setProperty:v9 forKey:@"StringsTable"];
+      specifier3 = [(PSSpecifierController *)self specifier];
+      [specifier3 setProperty:stringByDeletingPathExtension forKey:@"StringsTable"];
     }
 
     v27 = [v24 objectForKey:@"ApplicationGroupContainerIdentifier"];
     if (v27)
     {
       v28 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:v6];
-      v29 = [v28 groupContainerURLs];
-      v30 = [v29 objectForKey:v27];
+      groupContainerURLs = [v28 groupContainerURLs];
+      v30 = [groupContainerURLs objectForKey:v27];
 
       if (v30)
       {
-        v31 = [(PSSpecifierController *)self specifier];
-        [v31 setProperty:v27 forKey:@"appGroupBundleID"];
+        specifier4 = [(PSSpecifierController *)self specifier];
+        [specifier4 setProperty:v27 forKey:@"appGroupBundleID"];
 
-        v32 = [(PSSpecifierController *)self specifier];
-        [v32 setProperty:v27 forKey:@"containerBundleID"];
+        specifier5 = [(PSSpecifierController *)self specifier];
+        [specifier5 setProperty:v27 forKey:@"containerBundleID"];
       }
 
       v24 = v74;
     }
 
-    v67 = v17;
+    v67 = title;
     v33 = [v24 objectForKey:@"PreferenceSpecifiers"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -334,8 +334,8 @@ LABEL_8:
         for (i = 0; i != v35; ++i)
         {
           v37 = [v33 objectAtIndex:i];
-          v38 = [(PSSpecifierController *)self specifier];
-          v39 = [PSAppListController specifiersFromDictionary:v37 stringsTable:v9 parentSpecifier:v38 target:self];
+          specifier6 = [(PSSpecifierController *)self specifier];
+          v39 = [PSAppListController specifiersFromDictionary:v37 stringsTable:stringByDeletingPathExtension parentSpecifier:specifier6 target:self];
 
           if (v39)
           {
@@ -350,109 +350,109 @@ LABEL_8:
       NSLog(&cfstr_ErrorPreferenc.isa);
     }
 
-    v17 = v67;
+    title = v67;
     v6 = v73;
-    LODWORD(v9) = v72;
-    v21 = v75;
+    LODWORD(stringByDeletingPathExtension) = v72;
+    array2 = v75;
   }
 
   else
   {
-    NSLog(&cfstr_ErrorCouldnTLo.isa, v22);
+    NSLog(&cfstr_ErrorCouldnTLo.isa, plistFileURL);
   }
 
-  if (!(([v21 count] == 0) | (v9 | v69) & 1))
+  if (!(([array2 count] == 0) | (stringByDeletingPathExtension | v69) & 1))
   {
     v40 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:v6];
-    v41 = [v40 localizedName];
+    localizedName = [v40 localizedName];
 
     v42 = MEMORY[0x1E696AEC0];
     v43 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     [v43 localizedStringForKey:@"APP_SETTINGS" value:&stru_1EFE45030 table:@"PSSystemPolicy"];
-    v45 = v44 = v21;
-    v9 = [v42 stringWithFormat:v45, v41];
+    v45 = v44 = array2;
+    stringByDeletingPathExtension = [v42 stringWithFormat:v45, localizedName];
 
-    v46 = [v44 firstObject];
-    v47 = [v46 identifier];
-    LOBYTE(v45) = [v47 isEqualToString:v9];
+    firstObject = [v44 firstObject];
+    identifier = [firstObject identifier];
+    LOBYTE(v45) = [identifier isEqualToString:stringByDeletingPathExtension];
 
     if (v45)
     {
 LABEL_31:
 
-      LOBYTE(v9) = v72;
-      v21 = v44;
+      LOBYTE(stringByDeletingPathExtension) = v72;
+      array2 = v44;
       v6 = v73;
       goto LABEL_32;
     }
 
-    v68 = v17;
-    v48 = [v44 firstObject];
-    if ([v48 cellType])
+    v68 = title;
+    firstObject2 = [v44 firstObject];
+    if ([firstObject2 cellType])
     {
     }
 
     else
     {
-      v49 = [v44 firstObject];
-      v50 = [v49 name];
-      v51 = [v50 length];
+      firstObject3 = [v44 firstObject];
+      name = [firstObject3 name];
+      v51 = [name length];
 
       if (!v51)
       {
-        v52 = [v44 firstObject];
-        [v52 setName:v9];
+        firstObject4 = [v44 firstObject];
+        [firstObject4 setName:stringByDeletingPathExtension];
         goto LABEL_30;
       }
     }
 
-    v52 = [PSSpecifier groupSpecifierWithName:v9];
-    [v4 addObject:v52];
+    firstObject4 = [PSSpecifier groupSpecifierWithName:stringByDeletingPathExtension];
+    [array addObject:firstObject4];
 LABEL_30:
-    v17 = v68;
+    title = v68;
 
     goto LABEL_31;
   }
 
 LABEL_32:
-  [v4 addObjectsFromArray:v21];
-  if ((v9 & 1) == 0)
+  [array addObjectsFromArray:array2];
+  if ((stringByDeletingPathExtension & 1) == 0)
   {
-    v53 = [(PSThirdPartyAppController *)self driverPolicy];
+    driverPolicy = [(PSThirdPartyAppController *)self driverPolicy];
 
-    if (!v53)
+    if (!driverPolicy)
     {
       v54 = [[PSDriverPolicyForApp alloc] initWithBundleIdentifier:v6];
       [(PSThirdPartyAppController *)self setDriverPolicy:v54];
 
-      v55 = [(PSThirdPartyAppController *)self driverPolicy];
-      [v55 setDelegate:self];
+      driverPolicy2 = [(PSThirdPartyAppController *)self driverPolicy];
+      [driverPolicy2 setDelegate:self];
     }
 
-    v56 = [(PSThirdPartyAppController *)self driverPolicy];
-    v57 = [v56 specifiers];
+    driverPolicy3 = [(PSThirdPartyAppController *)self driverPolicy];
+    specifiers3 = [driverPolicy3 specifiers];
 
-    [v4 addObjectsFromArray:v57];
+    [array addObjectsFromArray:specifiers3];
   }
 
-  v58 = [(PSSpecifierController *)self specifier];
-  if (v58)
+  specifier7 = [(PSSpecifierController *)self specifier];
+  if (specifier7)
   {
-    v59 = v58;
-    v60 = [(PSSpecifierController *)self specifier];
-    v61 = [v60 propertyForKey:@"id"];
+    v59 = specifier7;
+    specifier8 = [(PSSpecifierController *)self specifier];
+    v61 = [specifier8 propertyForKey:@"id"];
 
     if (!v61)
     {
-      v62 = [(PSSpecifierController *)self specifier];
-      v63 = [v62 propertyForKey:@"AppBundleID"];
+      specifier9 = [(PSSpecifierController *)self specifier];
+      v63 = [specifier9 propertyForKey:@"AppBundleID"];
 
-      v64 = [(PSSpecifierController *)self specifier];
-      [v64 setProperty:v63 forKey:@"id"];
+      specifier10 = [(PSSpecifierController *)self specifier];
+      [specifier10 setProperty:v63 forKey:@"id"];
     }
   }
 
-  v65 = [v4 copy];
+  v65 = [array copy];
   [(PSSpecifierController *)self setSpecifiers:v65];
 
 LABEL_40:
@@ -462,12 +462,12 @@ LABEL_40:
 
 - (id)bundle
 {
-  v3 = [(PSSpecifierController *)self specifier];
-  v4 = [v3 propertyForKey:@"AppSettingsBundle"];
+  specifier = [(PSSpecifierController *)self specifier];
+  v4 = [specifier propertyForKey:@"AppSettingsBundle"];
 
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v4 bundlePath];
-  v7 = [v5 fileExistsAtPath:v6];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  bundlePath = [v4 bundlePath];
+  v7 = [defaultManager fileExistsAtPath:bundlePath];
 
   if (v7)
   {
@@ -476,19 +476,19 @@ LABEL_40:
 
   else
   {
-    v9 = [(PSSpecifierController *)self specifier];
-    v10 = [v9 propertyForKey:@"AppBundleID"];
+    specifier2 = [(PSSpecifierController *)self specifier];
+    v10 = [specifier2 propertyForKey:@"AppBundleID"];
     v11 = [PSSystemPolicyManager thirdPartyApplicationForBundleID:v10];
 
-    v12 = [v11 record];
-    v13 = [v12 URL];
+    record = [v11 record];
+    v13 = [record URL];
     v14 = [v13 URLByAppendingPathComponent:@"Settings.bundle"];
 
     if (v14)
     {
       v8 = [MEMORY[0x1E696AAE8] bundleWithURL:v14];
-      v15 = [(PSSpecifierController *)self specifier];
-      [v15 setProperty:v8 forKey:@"AppSettingsBundle"];
+      specifier3 = [(PSSpecifierController *)self specifier];
+      [specifier3 setProperty:v8 forKey:@"AppSettingsBundle"];
     }
 
     else
@@ -502,14 +502,14 @@ LABEL_40:
 
 - (id)plistFileURL
 {
-  v3 = [(PSSpecifierController *)self specifier];
-  v4 = [v3 propertyForKey:@"File"];
+  specifier = [(PSSpecifierController *)self specifier];
+  v4 = [specifier propertyForKey:@"File"];
 
-  v5 = [(PSThirdPartyAppController *)self bundle];
-  v6 = [v5 URLForResource:v4 withExtension:@"plist"];
+  bundle = [(PSThirdPartyAppController *)self bundle];
+  v6 = [bundle URLForResource:v4 withExtension:@"plist"];
   if (!v6)
   {
-    NSLog(&cfstr_ErrorCanTFindP.isa, v4, v5);
+    NSLog(&cfstr_ErrorCanTFindP.isa, v4, bundle);
   }
 
   return v6;

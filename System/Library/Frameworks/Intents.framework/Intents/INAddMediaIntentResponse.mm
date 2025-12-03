@@ -1,16 +1,16 @@
 @interface INAddMediaIntentResponse
-+ (int)_errorCodeFromCode:(int64_t)a3;
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
-- (INAddMediaIntentResponse)initWithBackingStore:(id)a3;
++ (int)_errorCodeFromCode:(int64_t)code;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
+- (INAddMediaIntentResponse)initWithBackingStore:(id)store;
 - (INAddMediaIntentResponse)initWithCode:(INAddMediaIntentResponseCode)code userActivity:(NSUserActivity *)userActivity;
-- (INAddMediaIntentResponse)initWithCoder:(id)a3;
+- (INAddMediaIntentResponse)initWithCoder:(id)coder;
 - (INAddMediaIntentResponseCode)code;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (int64_t)_codeWithName:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INAddMediaIntentResponse
@@ -20,13 +20,13 @@
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"code";
   v2 = INAddMediaIntentResponseCodeGetName([(INAddMediaIntentResponse *)self code]);
-  v3 = v2;
+  null = v2;
   if (!v2)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v8[0] = v3;
+  v8[0] = null;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   if (!v2)
   {
@@ -37,32 +37,32 @@
   return v4;
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INAddMediaIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INAddMediaIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INAddMediaIntentResponseCodeInProgress"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INAddMediaIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INAddMediaIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INAddMediaIntentResponseCodeInProgress"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INAddMediaIntentResponseCodeSuccess"])
+  if ([nameCopy isEqualToString:@"INAddMediaIntentResponseCodeSuccess"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INAddMediaIntentResponseCodeHandleInApp"])
+  if ([nameCopy isEqualToString:@"INAddMediaIntentResponseCodeHandleInApp"])
   {
     v4 = 4;
   }
 
-  if ([v3 isEqualToString:@"INAddMediaIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INAddMediaIntentResponseCodeFailure"])
   {
     v4 = 5;
   }
 
-  if ([v3 isEqualToString:@"INAddMediaIntentResponseCodeFailureRequiringAppLaunch"])
+  if ([nameCopy isEqualToString:@"INAddMediaIntentResponseCodeFailureRequiringAppLaunch"])
   {
     v5 = 6;
   }
@@ -72,7 +72,7 @@
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INAddMediaIntentResponseCodeFailureAlreadyInLibrary"];
+  v6 = [nameCopy isEqualToString:@"INAddMediaIntentResponseCodeFailureAlreadyInLibrary"];
 
   if (v6)
   {
@@ -87,20 +87,20 @@
 
 - (int64_t)_intentResponseCode
 {
-  v2 = [(INAddMediaIntentResponse *)self code];
+  code = [(INAddMediaIntentResponse *)self code];
   v3 = 5;
-  if (v2 != 1000)
+  if (code != 1000)
   {
     v3 = 0;
   }
 
-  if (v2 == INAddMediaIntentResponseCodeFailureRequiringAppLaunch)
+  if (code == INAddMediaIntentResponseCodeFailureRequiringAppLaunch)
   {
     v3 = 6;
   }
 
   v4 = 7;
-  if (v2 == INAddMediaIntentResponseCodeFailure)
+  if (code == INAddMediaIntentResponseCodeFailure)
   {
     v5 = 5;
   }
@@ -110,34 +110,34 @@
     v5 = 0;
   }
 
-  if (v2 != INAddMediaIntentResponseCodeHandleInApp)
+  if (code != INAddMediaIntentResponseCodeHandleInApp)
   {
     v4 = v5;
   }
 
-  if (v2 <= INAddMediaIntentResponseCodeFailure)
+  if (code <= INAddMediaIntentResponseCodeFailure)
   {
     v3 = v4;
   }
 
   v6 = 3;
   v7 = 4;
-  if (v2 != INAddMediaIntentResponseCodeSuccess)
+  if (code != INAddMediaIntentResponseCodeSuccess)
   {
     v7 = 0;
   }
 
-  if (v2 != INAddMediaIntentResponseCodeInProgress)
+  if (code != INAddMediaIntentResponseCodeInProgress)
   {
     v6 = v7;
   }
 
-  if (v2 == INAddMediaIntentResponseCodeReady)
+  if (code == INAddMediaIntentResponseCodeReady)
   {
     v6 = 1;
   }
 
-  if (v2 <= INAddMediaIntentResponseCodeSuccess)
+  if (code <= INAddMediaIntentResponseCodeSuccess)
   {
     return v6;
   }
@@ -148,18 +148,18 @@
   }
 }
 
-- (INAddMediaIntentResponse)initWithCoder:(id)a3
+- (INAddMediaIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INAddMediaIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INAddMediaIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
 - (INAddMediaIntentResponseCode)code
@@ -169,18 +169,18 @@
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INAddMediaIntentResponse)initWithBackingStore:(id)a3
+- (INAddMediaIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INAddMediaIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INAddMediaIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
 - (INAddMediaIntentResponse)initWithCode:(INAddMediaIntentResponseCode)code userActivity:(NSUserActivity *)userActivity
@@ -211,9 +211,9 @@
   return v10;
 }
 
-+ (int)_errorCodeFromCode:(int64_t)a3
++ (int)_errorCodeFromCode:(int64_t)code
 {
-  if (a3 == 1000)
+  if (code == 1000)
   {
     return 1;
   }
@@ -224,12 +224,12 @@
   }
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
   result = 3;
-  if (a3 <= 3)
+  if (code <= 3)
   {
-    if (a3 == 3)
+    if (code == 3)
     {
       v4 = 0;
     }
@@ -239,7 +239,7 @@
       v4 = 3;
     }
 
-    if (a3 == 2)
+    if (code == 2)
     {
       v5 = 2;
     }
@@ -249,7 +249,7 @@
       v5 = v4;
     }
 
-    if (a3 == 1)
+    if (code == 1)
     {
       return 5;
     }
@@ -260,7 +260,7 @@
     }
   }
 
-  else if ((a3 - 4) < 3 || a3 == 1000)
+  else if ((code - 4) < 3 || code == 1000)
   {
     return 1;
   }
@@ -268,37 +268,37 @@
   return result;
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
   v5 = 2;
-  if (a3 != 2)
+  if (type != 2)
   {
-    v5 = a3 == 5;
+    v5 = type == 5;
   }
 
   v6 = 3;
   v7 = 5;
-  if (a5)
+  if (requested)
   {
     v7 = 6;
   }
 
-  if (a4 == 1)
+  if (code == 1)
   {
     v7 = 1000;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v7 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     v6 = v7;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
     return v6;
   }

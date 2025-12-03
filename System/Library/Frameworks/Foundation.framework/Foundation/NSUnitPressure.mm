@@ -1,5 +1,5 @@
 @interface NSUnitPressure
-+ (id)_measurementWithNaturalScale:(id)a3 system:(unint64_t)a4;
++ (id)_measurementWithNaturalScale:(id)scale system:(unint64_t)system;
 + (void)initialize;
 @end
 
@@ -7,34 +7,34 @@
 
 + (void)initialize
 {
-  if (NSUnitPressure == a1)
+  if (NSUnitPressure == self)
   {
     objc_opt_class();
   }
 }
 
-+ (id)_measurementWithNaturalScale:(id)a3 system:(unint64_t)a4
++ (id)_measurementWithNaturalScale:(id)scale system:(unint64_t)system
 {
-  v4 = a3;
-  if (a4)
+  scaleCopy = scale;
+  if (system)
   {
-    return v4;
+    return scaleCopy;
   }
 
-  if (([objc_msgSend(a3 "unit")] & 1) == 0)
+  if (([objc_msgSend(scale "unit")] & 1) == 0)
   {
-    v4 = [v4 measurementByConvertingToUnit:{+[NSUnitPressure baseUnit](NSUnitPressure, "baseUnit")}];
+    scaleCopy = [scaleCopy measurementByConvertingToUnit:{+[NSUnitPressure baseUnit](NSUnitPressure, "baseUnit")}];
   }
 
-  [v4 doubleValue];
+  [scaleCopy doubleValue];
   if (v5 < 1000.0)
   {
-    return v4;
+    return scaleCopy;
   }
 
   v7 = +[NSUnitPressure kilopascals];
 
-  return [v4 measurementByConvertingToUnit:v7];
+  return [scaleCopy measurementByConvertingToUnit:v7];
 }
 
 @end

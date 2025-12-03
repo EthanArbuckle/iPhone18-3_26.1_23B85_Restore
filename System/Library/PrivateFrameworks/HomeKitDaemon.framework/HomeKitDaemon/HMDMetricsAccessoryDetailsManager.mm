@@ -1,8 +1,8 @@
 @interface HMDMetricsAccessoryDetailsManager
 - (HMDHouseholdMetricsDataSource)dataSource;
-- (HMDMetricsAccessoryDetailsManager)initWithDataSource:(id)a3;
-- (id)accessoryCategoryLogEventsForHomeWithUUID:(id)a3;
-- (id)logEventsPopulatedForHomeWithUUID:(id)a3 associatedWithDate:(id)a4;
+- (HMDMetricsAccessoryDetailsManager)initWithDataSource:(id)source;
+- (id)accessoryCategoryLogEventsForHomeWithUUID:(id)d;
+- (id)logEventsPopulatedForHomeWithUUID:(id)d associatedWithDate:(id)date;
 @end
 
 @implementation HMDMetricsAccessoryDetailsManager
@@ -14,19 +14,19 @@
   return WeakRetained;
 }
 
-- (id)accessoryCategoryLogEventsForHomeWithUUID:(id)a3
+- (id)accessoryCategoryLogEventsForHomeWithUUID:(id)d
 {
   v82 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v58 = self;
-  v5 = [(HMDMetricsAccessoryDetailsManager *)self dataSource];
-  v6 = [MEMORY[0x277CBEB18] array];
+  dCopy = d;
+  selfCopy = self;
+  dataSource = [(HMDMetricsAccessoryDetailsManager *)self dataSource];
+  array = [MEMORY[0x277CBEB18] array];
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v53 = v5;
-  obj = [v5 homeDataSources];
+  v53 = dataSource;
+  obj = [dataSource homeDataSources];
   v56 = [obj countByEnumeratingWithState:&v71 objects:v81 count:16];
   if (v56)
   {
@@ -35,7 +35,7 @@
     v61 = *MEMORY[0x277CCE930];
     v60 = *MEMORY[0x277CCE938];
     v59 = *MEMORY[0x277CCE900];
-    v63 = v6;
+    v63 = array;
     do
     {
       for (i = 0; i != v56; ++i)
@@ -46,10 +46,10 @@
         }
 
         v8 = *(*(&v71 + 1) + 8 * i);
-        if (v4)
+        if (dCopy)
         {
-          v9 = [*(*(&v71 + 1) + 8 * i) uuid];
-          v10 = [v9 isEqual:v4];
+          uuid = [*(*(&v71 + 1) + 8 * i) uuid];
+          v10 = [uuid isEqual:dCopy];
 
           if (!v10)
           {
@@ -62,8 +62,8 @@
         v70 = 0u;
         v67 = 0u;
         v68 = 0u;
-        v64 = [v8 accessories];
-        v66 = [v64 countByEnumeratingWithState:&v67 objects:v80 count:16];
+        accessories = [v8 accessories];
+        v66 = [accessories countByEnumeratingWithState:&v67 objects:v80 count:16];
         if (!v66)
         {
           goto LABEL_50;
@@ -77,7 +77,7 @@
           {
             if (*v68 != v65)
             {
-              objc_enumerationMutation(v64);
+              objc_enumerationMutation(accessories);
             }
 
             v12 = *(*(&v67 + 1) + 8 * v11);
@@ -108,15 +108,15 @@
                 v32 = 0;
               }
 
-              v15 = v32;
+              hostAccessory = v32;
 
-              if (v15)
+              if (hostAccessory)
               {
                 v33 = [HMDAccessoryCategoryLogEvent alloc];
-                v17 = [v31 category];
-                v18 = [v17 categoryType];
-                v34 = [(HMDAccessoryCategoryLogEvent *)v33 initWithAccessoryDetailsType:2 accessoryCategoryIdentifier:v18 homeUUID:v4];
-                [v6 addObject:v34];
+                category = [v31 category];
+                categoryType = [category categoryType];
+                v34 = [(HMDAccessoryCategoryLogEvent *)v33 initWithAccessoryDetailsType:2 accessoryCategoryIdentifier:categoryType homeUUID:dCopy];
+                [array addObject:v34];
               }
 
               else
@@ -133,16 +133,16 @@
                   v36 = 0;
                 }
 
-                v17 = v36;
+                category = v36;
 
-                if (v17)
+                if (category)
                 {
-                  v37 = [v35 category];
-                  v38 = [v37 categoryType];
-                  v18 = [v38 stringByAppendingString:@"_AirPlay"];
+                  category2 = [v35 category];
+                  categoryType2 = [category2 categoryType];
+                  categoryType = [categoryType2 stringByAppendingString:@"_AirPlay"];
 
-                  v39 = [[HMDAccessoryCategoryLogEvent alloc] initWithAccessoryDetailsType:1 accessoryCategoryIdentifier:v18 homeUUID:v4];
-                  [v6 addObject:v39];
+                  v39 = [[HMDAccessoryCategoryLogEvent alloc] initWithAccessoryDetailsType:1 accessoryCategoryIdentifier:categoryType homeUUID:dCopy];
+                  [array addObject:v39];
                 }
 
                 else
@@ -158,21 +158,21 @@
                     v41 = 0;
                   }
 
-                  v18 = v41;
+                  categoryType = v41;
 
-                  if (v18)
+                  if (categoryType)
                   {
                     v42 = [HMDAccessoryCategoryLogEvent alloc];
-                    v43 = [v40 category];
-                    v44 = [v43 categoryType];
-                    v45 = [(HMDAccessoryCategoryLogEvent *)v42 initWithAccessoryDetailsType:3 accessoryCategoryIdentifier:v44 homeUUID:v4];
-                    [v6 addObject:v45];
+                    category3 = [v40 category];
+                    categoryType3 = [category3 categoryType];
+                    v45 = [(HMDAccessoryCategoryLogEvent *)v42 initWithAccessoryDetailsType:3 accessoryCategoryIdentifier:categoryType3 homeUUID:dCopy];
+                    [array addObject:v45];
                   }
 
                   else
                   {
                     v46 = objc_autoreleasePoolPush();
-                    v47 = v58;
+                    v47 = selfCopy;
                     v48 = HMFGetOSLogHandle();
                     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
                     {
@@ -185,38 +185,38 @@
                     }
 
                     objc_autoreleasePoolPop(v46);
-                    v18 = 0;
+                    categoryType = 0;
                   }
 
-                  v17 = 0;
+                  category = 0;
                 }
 
-                v15 = 0;
+                hostAccessory = 0;
               }
 
               goto LABEL_45;
             }
 
-            v15 = [v14 hostAccessory];
+            hostAccessory = [v14 hostAccessory];
             objc_opt_class();
-            if ((objc_opt_isKindOfClass() & 1) == 0 || !v15)
+            if ((objc_opt_isKindOfClass() & 1) == 0 || !hostAccessory)
             {
-              v16 = v4;
-              v17 = [HMDMetricsUtilities primaryServiceTypeForHAPAccessory:v14];
+              v16 = dCopy;
+              category = [HMDMetricsUtilities primaryServiceTypeForHAPAccessory:v14];
               v79[0] = v62;
               v79[1] = v61;
               v79[2] = v60;
-              v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v79 count:3];
+              categoryType = [MEMORY[0x277CBEA60] arrayWithObjects:v79 count:3];
               if ([v14 hasTelevisionService])
               {
                 goto LABEL_23;
               }
 
-              v19 = [v14 category];
-              v20 = [v19 categoryType];
-              v21 = [v18 containsObject:v20];
+              category4 = [v14 category];
+              categoryType4 = [category4 categoryType];
+              v21 = [categoryType containsObject:categoryType4];
 
-              if ((v21 & 1) != 0 || ([v17 isEqual:@"00000228-0000-1000-8000-0026BB765291"] & 1) != 0 || (objc_msgSend(v14, "category"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "categoryType"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "isEqualToString:", v59), v23, v22, v24))
+              if ((v21 & 1) != 0 || ([category isEqual:@"00000228-0000-1000-8000-0026BB765291"] & 1) != 0 || (objc_msgSend(v14, "category"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "categoryType"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "isEqualToString:", v59), v23, v22, v24))
               {
 LABEL_23:
                 v25 = 1;
@@ -228,12 +228,12 @@ LABEL_23:
               }
 
               v26 = [HMDAccessoryCategoryLogEvent alloc];
-              v27 = [v12 category];
-              v28 = [v27 categoryType];
+              category5 = [v12 category];
+              categoryType5 = [category5 categoryType];
               v29 = v25;
-              v4 = v16;
-              v30 = [(HMDAccessoryCategoryLogEvent *)v26 initWithAccessoryDetailsType:v29 accessoryCategoryIdentifier:v28 homeUUID:v16];
-              v6 = v63;
+              dCopy = v16;
+              v30 = [(HMDAccessoryCategoryLogEvent *)v26 initWithAccessoryDetailsType:v29 accessoryCategoryIdentifier:categoryType5 homeUUID:v16];
+              array = v63;
               [v63 addObject:v30];
 
 LABEL_45:
@@ -243,7 +243,7 @@ LABEL_45:
           }
 
           while (v66 != v11);
-          v50 = [v64 countByEnumeratingWithState:&v67 objects:v80 count:16];
+          v50 = [accessories countByEnumeratingWithState:&v67 objects:v80 count:16];
           v66 = v50;
           if (!v50)
           {
@@ -263,15 +263,15 @@ LABEL_50:
 
   v51 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return array;
 }
 
-- (id)logEventsPopulatedForHomeWithUUID:(id)a3 associatedWithDate:(id)a4
+- (id)logEventsPopulatedForHomeWithUUID:(id)d associatedWithDate:(id)date
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDMetricsAccessoryDetailsManager *)self accessoryCategoryLogEventsForHomeWithUUID:v6];
+  dCopy = d;
+  dateCopy = date;
+  v8 = [(HMDMetricsAccessoryDetailsManager *)self accessoryCategoryLogEventsForHomeWithUUID:dCopy];
   if ([v8 count])
   {
     v9 = +[HMDAccessoryCategoryLogEvent denominatorSpecifyingEvent];
@@ -283,7 +283,7 @@ LABEL_50:
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -291,7 +291,7 @@ LABEL_50:
       v17 = 138543618;
       v18 = v14;
       v19 = 2112;
-      v20 = v6;
+      v20 = dCopy;
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Returning NULL (for onboarded configuration) to household metrics request for home with UUID: %@", &v17, 0x16u);
     }
 
@@ -304,16 +304,16 @@ LABEL_50:
   return v10;
 }
 
-- (HMDMetricsAccessoryDetailsManager)initWithDataSource:(id)a3
+- (HMDMetricsAccessoryDetailsManager)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v8.receiver = self;
   v8.super_class = HMDMetricsAccessoryDetailsManager;
   v5 = [(HMDMetricsAccessoryDetailsManager *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_dataSource, v4);
+    objc_storeWeak(&v5->_dataSource, sourceCopy);
   }
 
   return v6;

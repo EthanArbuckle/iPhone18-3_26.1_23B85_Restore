@@ -1,67 +1,67 @@
 @interface BWZoomRange
-+ (id)fudgedZoomRangeWithLower:(float)a3 upperBound:(float)a4 fudgedLowerBound:(float)a5 fudgedUpperBound:(float)a6;
-+ (id)zoomRangeWithLower:(float)a3 upperBound:(float)a4;
-- (BOOL)isEqual:(id)a3;
-- (BWZoomRange)initWithLowerBound:(float)a3 upperBound:(float)a4;
-- (BWZoomRange)initWithLowerBound:(float)a3 upperBound:(float)a4 fudgedLowerBound:(float)a5 fudgedUpperBound:(float)a6;
-- (float)applyFudgeToZoomFactor:(float)a3;
-- (float)removeFudgeFromZoomFactor:(float)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)fudgedZoomRangeWithLower:(float)lower upperBound:(float)bound fudgedLowerBound:(float)lowerBound fudgedUpperBound:(float)upperBound;
++ (id)zoomRangeWithLower:(float)lower upperBound:(float)bound;
+- (BOOL)isEqual:(id)equal;
+- (BWZoomRange)initWithLowerBound:(float)bound upperBound:(float)upperBound;
+- (BWZoomRange)initWithLowerBound:(float)bound upperBound:(float)upperBound fudgedLowerBound:(float)lowerBound fudgedUpperBound:(float)fudgedUpperBound;
+- (float)applyFudgeToZoomFactor:(float)factor;
+- (float)removeFudgeFromZoomFactor:(float)factor;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation BWZoomRange
 
-+ (id)zoomRangeWithLower:(float)a3 upperBound:(float)a4
++ (id)zoomRangeWithLower:(float)lower upperBound:(float)bound
 {
   v6 = [BWZoomRange alloc];
-  *&v7 = a3;
-  *&v8 = a4;
+  *&v7 = lower;
+  *&v8 = bound;
   v9 = [(BWZoomRange *)v6 initWithLowerBound:v7 upperBound:v8];
 
   return v9;
 }
 
-+ (id)fudgedZoomRangeWithLower:(float)a3 upperBound:(float)a4 fudgedLowerBound:(float)a5 fudgedUpperBound:(float)a6
++ (id)fudgedZoomRangeWithLower:(float)lower upperBound:(float)bound fudgedLowerBound:(float)lowerBound fudgedUpperBound:(float)upperBound
 {
   v10 = [BWZoomRange alloc];
-  *&v11 = a3;
-  *&v12 = a4;
-  *&v13 = a5;
-  *&v14 = a6;
+  *&v11 = lower;
+  *&v12 = bound;
+  *&v13 = lowerBound;
+  *&v14 = upperBound;
   v15 = [(BWZoomRange *)v10 initWithLowerBound:v11 upperBound:v12 fudgedLowerBound:v13 fudgedUpperBound:v14];
 
   return v15;
 }
 
-- (BWZoomRange)initWithLowerBound:(float)a3 upperBound:(float)a4 fudgedLowerBound:(float)a5 fudgedUpperBound:(float)a6
+- (BWZoomRange)initWithLowerBound:(float)bound upperBound:(float)upperBound fudgedLowerBound:(float)lowerBound fudgedUpperBound:(float)fudgedUpperBound
 {
   v23.receiver = self;
   v23.super_class = BWZoomRange;
   result = [(BWZoomRange *)&v23 init];
   if (result)
   {
-    if (a3 < a4 && a5 < a6)
+    if (bound < upperBound && lowerBound < fudgedUpperBound)
     {
-      result->_lowerBound = a3;
-      result->_upperBound = a4;
-      result->_fudgedLowerBound = a5;
-      result->_fudgedUpperBound = a6;
-      v12 = a3 * 1024.0;
-      if (a3 >= 1024.0)
+      result->_lowerBound = bound;
+      result->_upperBound = upperBound;
+      result->_fudgedLowerBound = lowerBound;
+      result->_fudgedUpperBound = fudgedUpperBound;
+      boundCopy = bound * 1024.0;
+      if (bound >= 1024.0)
       {
-        v12 = a3;
+        boundCopy = bound;
       }
 
-      v13 = v12;
-      v14 = a4 * 1024.0;
-      if (a4 >= 1024.0)
+      v13 = boundCopy;
+      upperBoundCopy = upperBound * 1024.0;
+      if (upperBound >= 1024.0)
       {
-        v14 = a4;
+        upperBoundCopy = upperBound;
       }
 
-      v15 = v14;
-      if (a6 >= 1024.0)
+      v15 = upperBoundCopy;
+      if (fudgedUpperBound >= 1024.0)
       {
         v16 = 2.0;
       }
@@ -71,8 +71,8 @@
         v16 = 2048.0;
       }
 
-      v17 = (v16 * a6);
-      if (a5 >= 1024.0)
+      v17 = (v16 * fudgedUpperBound);
+      if (lowerBound >= 1024.0)
       {
         v18 = 2.0;
       }
@@ -82,7 +82,7 @@
         v18 = 2048.0;
       }
 
-      v19 = (v18 * a5);
+      v19 = (v18 * lowerBound);
       v20 = v15 ^ v13;
       if (v13 == v19 || v15 == v17)
       {
@@ -107,16 +107,16 @@
   return result;
 }
 
-- (BWZoomRange)initWithLowerBound:(float)a3 upperBound:(float)a4
+- (BWZoomRange)initWithLowerBound:(float)bound upperBound:(float)upperBound
 {
-  *&v4 = a3;
-  *&v5 = a4;
-  return [(BWZoomRange *)self initWithLowerBound:*&a3 upperBound:*&a4 fudgedLowerBound:v4 fudgedUpperBound:v5];
+  *&v4 = bound;
+  *&v5 = upperBound;
+  return [(BWZoomRange *)self initWithLowerBound:*&bound upperBound:*&upperBound fudgedLowerBound:v4 fudgedUpperBound:v5];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [BWZoomRange allocWithZone:a3];
+  v4 = [BWZoomRange allocWithZone:zone];
   *&v5 = self->_lowerBound;
   *&v6 = self->_upperBound;
   *&v7 = self->_fudgedLowerBound;
@@ -125,9 +125,9 @@
   return [(BWZoomRange *)v4 initWithLowerBound:v5 upperBound:v6 fudgedLowerBound:v7 fudgedUpperBound:v8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -138,40 +138,40 @@
     return 0;
   }
 
-  [a3 lowerBound];
+  [equal lowerBound];
   if (v5 != self->_lowerBound)
   {
     return 0;
   }
 
-  [a3 upperBound];
+  [equal upperBound];
   if (v6 != self->_upperBound)
   {
     return 0;
   }
 
-  [a3 fudgedLowerBound];
+  [equal fudgedLowerBound];
   if (v7 != self->_fudgedLowerBound)
   {
     return 0;
   }
 
-  [a3 fudgedUpperBound];
+  [equal fudgedUpperBound];
   return v9 == self->_fudgedUpperBound;
 }
 
-- (float)applyFudgeToZoomFactor:(float)a3
+- (float)applyFudgeToZoomFactor:(float)factor
 {
   lowerBound = self->_lowerBound;
-  if (lowerBound > a3)
+  if (lowerBound > factor)
   {
     return self->_fudgedLowerBound;
   }
 
   upperBound = self->_upperBound;
-  if (upperBound >= a3)
+  if (upperBound >= factor)
   {
-    return self->_fudgedLowerBound + ((self->_fudgedUpperBound - self->_fudgedLowerBound) * ((a3 - lowerBound) / (upperBound - lowerBound)));
+    return self->_fudgedLowerBound + ((self->_fudgedUpperBound - self->_fudgedLowerBound) * ((factor - lowerBound) / (upperBound - lowerBound)));
   }
 
   else
@@ -180,18 +180,18 @@
   }
 }
 
-- (float)removeFudgeFromZoomFactor:(float)a3
+- (float)removeFudgeFromZoomFactor:(float)factor
 {
   fudgedLowerBound = self->_fudgedLowerBound;
-  if (fudgedLowerBound > a3)
+  if (fudgedLowerBound > factor)
   {
     return self->_lowerBound;
   }
 
   fudgedUpperBound = self->_fudgedUpperBound;
-  if (fudgedUpperBound >= a3)
+  if (fudgedUpperBound >= factor)
   {
-    return self->_lowerBound + ((self->_upperBound - self->_lowerBound) * ((a3 - fudgedLowerBound) / (fudgedUpperBound - fudgedLowerBound)));
+    return self->_lowerBound + ((self->_upperBound - self->_lowerBound) * ((factor - fudgedLowerBound) / (fudgedUpperBound - fudgedLowerBound)));
   }
 
   else

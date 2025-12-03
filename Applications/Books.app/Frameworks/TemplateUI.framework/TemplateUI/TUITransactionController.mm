@@ -1,22 +1,22 @@
 @interface TUITransactionController
-- (TUITransactionController)initWithQueue:(id)a3;
-- (id)newDidUpdateObserver:(id)a3;
-- (id)newWillUpdateObserver:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)performUpdate:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setUpdateCallback:(id)a3;
-- (void)transactionCoordinator:(id)a3 didEndUpdateWithTransactionGroup:(id)a4;
-- (void)transactionCoordinator:(id)a3 performUpdateForTransactionGroup:(id)a4;
-- (void)transactionCoordinator:(id)a3 willBeginUpdateWithTransactionGroup:(id)a4;
+- (TUITransactionController)initWithQueue:(id)queue;
+- (id)newDidUpdateObserver:(id)observer;
+- (id)newWillUpdateObserver:(id)observer;
+- (void)addObserver:(id)observer;
+- (void)performUpdate:(id)update;
+- (void)removeObserver:(id)observer;
+- (void)setUpdateCallback:(id)callback;
+- (void)transactionCoordinator:(id)coordinator didEndUpdateWithTransactionGroup:(id)group;
+- (void)transactionCoordinator:(id)coordinator performUpdateForTransactionGroup:(id)group;
+- (void)transactionCoordinator:(id)coordinator willBeginUpdateWithTransactionGroup:(id)group;
 @end
 
 @implementation TUITransactionController
 
-- (void)setUpdateCallback:(id)a3
+- (void)setUpdateCallback:(id)callback
 {
-  v4 = a3;
-  if (v4)
+  callbackCopy = callback;
+  if (callbackCopy)
   {
     objc_initWeak(&location, self);
     v5[0] = _NSConcreteStackBlock;
@@ -24,7 +24,7 @@
     v5[2] = sub_78454;
     v5[3] = &unk_25FB80;
     objc_copyWeak(&v7, &location);
-    v6 = v4;
+    v6 = callbackCopy;
     [(TUITransactionController *)self setUpdateBlock:v5];
 
     objc_destroyWeak(&v7);
@@ -32,34 +32,34 @@
   }
 }
 
-- (id)newWillUpdateObserver:(id)a3
+- (id)newWillUpdateObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [[_TUITransactionControllerJSObserver alloc] initWithWillUpdateValue:v4 didUpdateValue:0];
+  observerCopy = observer;
+  v5 = [[_TUITransactionControllerJSObserver alloc] initWithWillUpdateValue:observerCopy didUpdateValue:0];
 
   [(TUITransactionController *)self addObserver:v5];
   return v5;
 }
 
-- (id)newDidUpdateObserver:(id)a3
+- (id)newDidUpdateObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [[_TUITransactionControllerJSObserver alloc] initWithWillUpdateValue:0 didUpdateValue:v4];
+  observerCopy = observer;
+  v5 = [[_TUITransactionControllerJSObserver alloc] initWithWillUpdateValue:0 didUpdateValue:observerCopy];
 
   [(TUITransactionController *)self addObserver:v5];
   return v5;
 }
 
-- (void)performUpdate:(id)a3
+- (void)performUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(TUITransactionController *)self coordinator];
-  [v5 performUpdateForTransactionGroup:v4];
+  updateCopy = update;
+  coordinator = [(TUITransactionController *)self coordinator];
+  [coordinator performUpdateForTransactionGroup:updateCopy];
 }
 
-- (TUITransactionController)initWithQueue:(id)a3
+- (TUITransactionController)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = TUITransactionController;
   v5 = [(TUITransactionController *)&v15 init];
@@ -77,7 +77,7 @@
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "[fid:%lu] created %@", buf, 0x16u);
     }
 
-    v8 = [[_TUITransactionControllerWorkQueueContext alloc] initWithQueue:v4];
+    v8 = [[_TUITransactionControllerWorkQueueContext alloc] initWithQueue:queueCopy];
     queueContext = v5->_queueContext;
     v5->_queueContext = v8;
 
@@ -96,40 +96,40 @@
   return v5;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
+    observerCopy = observer;
     os_unfair_lock_lock(&self->_accessLock);
-    [(NSHashTable *)self->_observers addObject:v4];
+    [(NSHashTable *)self->_observers addObject:observerCopy];
 
     os_unfair_lock_unlock(&self->_accessLock);
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
+    observerCopy = observer;
     os_unfair_lock_lock(&self->_accessLock);
-    [(NSHashTable *)self->_observers removeObject:v4];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
 
     os_unfair_lock_unlock(&self->_accessLock);
   }
 }
 
-- (void)transactionCoordinator:(id)a3 willBeginUpdateWithTransactionGroup:(id)a4
+- (void)transactionCoordinator:(id)coordinator willBeginUpdateWithTransactionGroup:(id)group
 {
   os_unfair_lock_lock(&self->_accessLock);
-  v5 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   os_unfair_lock_unlock(&self->_accessLock);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = v5;
+  v6 = allObjects;
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
@@ -157,16 +157,16 @@
   }
 }
 
-- (void)transactionCoordinator:(id)a3 didEndUpdateWithTransactionGroup:(id)a4
+- (void)transactionCoordinator:(id)coordinator didEndUpdateWithTransactionGroup:(id)group
 {
   os_unfair_lock_lock(&self->_accessLock);
-  v5 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   os_unfair_lock_unlock(&self->_accessLock);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = v5;
+  v6 = allObjects;
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
@@ -194,17 +194,17 @@
   }
 }
 
-- (void)transactionCoordinator:(id)a3 performUpdateForTransactionGroup:(id)a4
+- (void)transactionCoordinator:(id)coordinator performUpdateForTransactionGroup:(id)group
 {
   updateBlock = self->_updateBlock;
   if (updateBlock)
   {
-    updateBlock[2](updateBlock, a4);
+    updateBlock[2](updateBlock, group);
   }
 
   else
   {
-    [a3 performUpdateForTransactionGroup:a4];
+    [coordinator performUpdateForTransactionGroup:group];
   }
 }
 

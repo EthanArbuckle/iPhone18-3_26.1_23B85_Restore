@@ -1,16 +1,16 @@
 @interface NWUDPSession
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 - (NSString)localPort;
 - (NSString)privateDescription;
 - (NSUInteger)maximumDatagramLength;
-- (NWUDPSession)initWithConnection:(id)a3;
-- (NWUDPSession)initWithEndpoint:(id)a3 parameters:(id)a4;
+- (NWUDPSession)initWithConnection:(id)connection;
+- (NWUDPSession)initWithEndpoint:(id)endpoint parameters:(id)parameters;
 - (NWUDPSession)initWithUpgradeForSession:(NWUDPSession *)session;
 - (id)description;
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4;
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content;
 - (void)cancel;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)readInternal;
 - (void)setReadHandler:(void *)handler maxDatagrams:(NSUInteger)maxDatagrams;
 - (void)setupEventHandler;
@@ -21,19 +21,19 @@
 
 @implementation NWUDPSession
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"maximumDatagramLength"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"maximumDatagramLength"])
   {
     v5 = 0;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___NWUDPSession;
-    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, keyCopy);
   }
 
   return v5;
@@ -41,27 +41,27 @@
 
 - (NSString)localPort
 {
-  v2 = [(NWUDPSession *)self connection];
-  v3 = [v2 connectedLocalEndpoint];
+  connection = [(NWUDPSession *)self connection];
+  connectedLocalEndpoint = [connection connectedLocalEndpoint];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 port];
+    port = [connectedLocalEndpoint port];
   }
 
   else
   {
-    v4 = 0;
+    port = 0;
   }
 
-  return v4;
+  return port;
 }
 
 - (void)cancel
 {
-  v2 = [(NWUDPSession *)self connection];
-  [v2 cancel];
+  connection = [(NWUDPSession *)self connection];
+  [connection cancel];
 }
 
 - (void)writeDatagram:(NSData *)datagram completionHandler:(void *)completionHandler
@@ -69,19 +69,19 @@
   v10[1] = *MEMORY[0x1E69E9840];
   v6 = completionHandler;
   v7 = datagram;
-  v8 = [(NWUDPSession *)self connection];
+  connection = [(NWUDPSession *)self connection];
   v10[0] = v7;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
 
-  [v8 writeDatagrams:v9 completionHandler:v6];
+  [connection writeDatagrams:v9 completionHandler:v6];
 }
 
 - (void)writeMultipleDatagrams:(NSArray *)datagramArray completionHandler:(void *)completionHandler
 {
   v6 = completionHandler;
   v7 = datagramArray;
-  v8 = [(NWUDPSession *)self connection];
-  [v8 writeDatagrams:v7 completionHandler:v6];
+  connection = [(NWUDPSession *)self connection];
+  [connection writeDatagrams:v7 completionHandler:v6];
 }
 
 - (void)setReadHandler:(void *)handler maxDatagrams:(NSUInteger)maxDatagrams
@@ -176,23 +176,23 @@ LABEL_20:
 
 - (void)readInternal
 {
-  v3 = [(NWUDPSession *)self readHandler];
-  if (v3)
+  readHandler = [(NWUDPSession *)self readHandler];
+  if (readHandler)
   {
-    v4 = v3;
-    v5 = [(NWUDPSession *)self connection];
-    v6 = [v5 connectionState];
+    v4 = readHandler;
+    connection = [(NWUDPSession *)self connection];
+    connectionState = [connection connectionState];
 
-    if (v6 == 3)
+    if (connectionState == 3)
     {
-      v7 = [(NWUDPSession *)self connection];
-      v8 = [(NWUDPSession *)self maxReadDatagrams];
+      connection2 = [(NWUDPSession *)self connection];
+      maxReadDatagrams = [(NWUDPSession *)self maxReadDatagrams];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __28__NWUDPSession_readInternal__block_invoke;
       v9[3] = &unk_1E6A33390;
       v9[4] = self;
-      [v7 readDatagramsWithMinimumCount:0 maximumCount:v8 completionHandler:v9];
+      [connection2 readDatagramsWithMinimumCount:0 maximumCount:maxReadDatagrams completionHandler:v9];
     }
   }
 }
@@ -214,18 +214,18 @@ void __28__NWUDPSession_readInternal__block_invoke(uint64_t a1, void *a2, void *
 
 - (NSUInteger)maximumDatagramLength
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NWUDPSession *)v2 internalMTU];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  internalMTU = [(NWUDPSession *)selfCopy internalMTU];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return internalMTU;
 }
 
 - (void)tryNextResolvedEndpoint
 {
-  v2 = [(NWUDPSession *)self connection];
-  [v2 cancelCurrentEndpoint];
+  connection = [(NWUDPSession *)self connection];
+  [connection cancelCurrentEndpoint];
 }
 
 - (NSString)privateDescription
@@ -242,17 +242,17 @@ void __28__NWUDPSession_readInternal__block_invoke(uint64_t a1, void *a2, void *
   return v2;
 }
 
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content
 {
-  v4 = a4;
-  v5 = *&a3;
+  contentCopy = content;
+  v5 = *&indent;
   v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v7 appendString:@"{"];
-  v8 = [(NWUDPSession *)self parameters];
-  [v7 appendPrettyObject:v8 withName:@"parameters" indent:v5 showFullContent:v4];
+  parameters = [(NWUDPSession *)self parameters];
+  [v7 appendPrettyObject:parameters withName:@"parameters" indent:v5 showFullContent:contentCopy];
 
-  v9 = [(NWUDPSession *)self endpoint];
-  [v7 appendPrettyObject:v9 withName:@"endpoint" indent:v5 showFullContent:v4];
+  endpoint = [(NWUDPSession *)self endpoint];
+  [v7 appendPrettyObject:endpoint withName:@"endpoint" indent:v5 showFullContent:contentCopy];
 
   [v7 appendString:@"\n}"];
   return v7;
@@ -260,17 +260,17 @@ void __28__NWUDPSession_readInternal__block_invoke(uint64_t a1, void *a2, void *
 
 - (void)dealloc
 {
-  v3 = [(NWUDPSession *)self connection];
-  [v3 removeObserver:self forKeyPath:@"connectionState"];
+  connection = [(NWUDPSession *)self connection];
+  [connection removeObserver:self forKeyPath:@"connectionState"];
 
-  v4 = [(NWUDPSession *)self connection];
-  [v4 removeObserver:self forKeyPath:@"viable"];
+  connection2 = [(NWUDPSession *)self connection];
+  [connection2 removeObserver:self forKeyPath:@"viable"];
 
-  v5 = [(NWUDPSession *)self connection];
-  [v5 removeObserver:self forKeyPath:@"hasBetterPath"];
+  connection3 = [(NWUDPSession *)self connection];
+  [connection3 removeObserver:self forKeyPath:@"hasBetterPath"];
 
-  v6 = [(NWUDPSession *)self connection];
-  [v6 removeObserver:self forKeyPath:@"currentPath"];
+  connection4 = [(NWUDPSession *)self connection];
+  [connection4 removeObserver:self forKeyPath:@"currentPath"];
 
   v7.receiver = self;
   v7.super_class = NWUDPSession;
@@ -280,18 +280,18 @@ void __28__NWUDPSession_readInternal__block_invoke(uint64_t a1, void *a2, void *
 - (NWUDPSession)initWithUpgradeForSession:(NWUDPSession *)session
 {
   v4 = session;
-  v5 = [(NWUDPSession *)v4 endpoint];
-  v6 = [(NWUDPSession *)v4 parameters];
+  endpoint = [(NWUDPSession *)v4 endpoint];
+  parameters = [(NWUDPSession *)v4 parameters];
 
-  v7 = [(NWUDPSession *)self initWithEndpoint:v5 parameters:v6];
+  v7 = [(NWUDPSession *)self initWithEndpoint:endpoint parameters:parameters];
   return v7;
 }
 
-- (NWUDPSession)initWithEndpoint:(id)a3 parameters:(id)a4
+- (NWUDPSession)initWithEndpoint:(id)endpoint parameters:(id)parameters
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  endpointCopy = endpoint;
+  parametersCopy = parameters;
   v24.receiver = self;
   v24.super_class = NWUDPSession;
   v9 = [(NWUDPSession *)&v24 init];
@@ -381,10 +381,10 @@ LABEL_19:
   }
 
   v9->_internalMTU = 1500;
-  objc_storeStrong(&v9->_endpoint, a3);
-  [v8 setDataMode:1];
-  objc_storeStrong(&v10->_parameters, a4);
-  v11 = [(NWConnection *)NWDatagramConnection connectionWithEndpoint:v7 parameters:v8];
+  objc_storeStrong(&v9->_endpoint, endpoint);
+  [parametersCopy setDataMode:1];
+  objc_storeStrong(&v10->_parameters, parameters);
+  v11 = [(NWConnection *)NWDatagramConnection connectionWithEndpoint:endpointCopy parameters:parametersCopy];
   connection = v10->_connection;
   v10->_connection = v11;
 
@@ -404,34 +404,34 @@ LABEL_22:
 
 - (void)setupEventHandler
 {
-  v3 = [(NWUDPSession *)self connection];
-  [v3 addObserver:self forKeyPath:@"connectionState" options:5 context:0];
+  connection = [(NWUDPSession *)self connection];
+  [connection addObserver:self forKeyPath:@"connectionState" options:5 context:0];
 
-  v4 = [(NWUDPSession *)self connection];
-  [v4 addObserver:self forKeyPath:@"hasBetterPath" options:5 context:0];
+  connection2 = [(NWUDPSession *)self connection];
+  [connection2 addObserver:self forKeyPath:@"hasBetterPath" options:5 context:0];
 
-  v5 = [(NWUDPSession *)self connection];
-  [v5 addObserver:self forKeyPath:@"viable" options:5 context:0];
+  connection3 = [(NWUDPSession *)self connection];
+  [connection3 addObserver:self forKeyPath:@"viable" options:5 context:0];
 
-  v6 = [(NWUDPSession *)self connection];
-  [v6 addObserver:self forKeyPath:@"currentPath" options:5 context:0];
+  connection4 = [(NWUDPSession *)self connection];
+  [connection4 addObserver:self forKeyPath:@"currentPath" options:5 context:0];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v22 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v22 isEqualToString:@"connectionState"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"connectionState"])
   {
-    v11 = [(NWUDPSession *)self connection];
-    v12 = [v11 connectionState];
+    connection = [(NWUDPSession *)self connection];
+    connectionState = [connection connectionState];
 
-    if (v12 == 3)
+    if (connectionState == 3)
     {
-      v13 = [(NWUDPSession *)self connection];
-      v14 = [v13 connectedRemoteEndpoint];
-      [(NWUDPSession *)self setResolvedEndpoint:v14];
+      connection2 = [(NWUDPSession *)self connection];
+      connectedRemoteEndpoint = [connection2 connectedRemoteEndpoint];
+      [(NWUDPSession *)self setResolvedEndpoint:connectedRemoteEndpoint];
 
       [(NWUDPSession *)self setState:3];
       [(NWUDPSession *)self readInternal];
@@ -439,54 +439,54 @@ LABEL_22:
 
     else
     {
-      [(NWUDPSession *)self setState:v12];
+      [(NWUDPSession *)self setState:connectionState];
     }
   }
 
-  else if ([v22 isEqualToString:@"hasBetterPath"])
+  else if ([pathCopy isEqualToString:@"hasBetterPath"])
   {
-    v15 = [(NWUDPSession *)self connection];
-    -[NWUDPSession setHasBetterPath:](self, "setHasBetterPath:", [v15 hasBetterPath]);
+    connection3 = [(NWUDPSession *)self connection];
+    -[NWUDPSession setHasBetterPath:](self, "setHasBetterPath:", [connection3 hasBetterPath]);
   }
 
-  else if ([v22 isEqualToString:@"viable"])
+  else if ([pathCopy isEqualToString:@"viable"])
   {
-    v16 = [(NWUDPSession *)self connection];
-    -[NWUDPSession setViable:](self, "setViable:", [v16 isViable]);
+    connection4 = [(NWUDPSession *)self connection];
+    -[NWUDPSession setViable:](self, "setViable:", [connection4 isViable]);
   }
 
-  else if ([v22 isEqualToString:@"currentPath"])
+  else if ([pathCopy isEqualToString:@"currentPath"])
   {
-    v17 = [(NWUDPSession *)self connection];
-    v18 = [v17 currentPath];
-    [(NWUDPSession *)self setCurrentPath:v18];
+    connection5 = [(NWUDPSession *)self connection];
+    currentPath = [connection5 currentPath];
+    [(NWUDPSession *)self setCurrentPath:currentPath];
 
-    v19 = [(NWUDPSession *)self currentPath];
-    v20 = [v19 maximumDatagramSize];
+    currentPath2 = [(NWUDPSession *)self currentPath];
+    maximumDatagramSize = [currentPath2 maximumDatagramSize];
 
-    v21 = self;
-    objc_sync_enter(v21);
-    if (v20 == [(NWUDPSession *)v21 internalMTU])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (maximumDatagramSize == [(NWUDPSession *)selfCopy internalMTU])
     {
-      objc_sync_exit(v21);
+      objc_sync_exit(selfCopy);
     }
 
     else
     {
-      [(NWUDPSession *)v21 willChangeValueForKey:@"maximumDatagramLength"];
-      [(NWUDPSession *)v21 setInternalMTU:v20];
-      objc_sync_exit(v21);
+      [(NWUDPSession *)selfCopy willChangeValueForKey:@"maximumDatagramLength"];
+      [(NWUDPSession *)selfCopy setInternalMTU:maximumDatagramSize];
+      objc_sync_exit(selfCopy);
 
-      [(NWUDPSession *)v21 didChangeValueForKey:@"maximumDatagramLength"];
+      [(NWUDPSession *)selfCopy didChangeValueForKey:@"maximumDatagramLength"];
     }
   }
 }
 
-- (NWUDPSession)initWithConnection:(id)a3
+- (NWUDPSession)initWithConnection:(id)connection
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  connectionCopy = connection;
+  if (!connectionCopy)
   {
     v15 = __nwlog_obj();
     *buf = 136446210;
@@ -659,33 +659,33 @@ LABEL_36:
   }
 
   self = v5;
-  v6 = [(NWConnection *)NWDatagramConnection connectionWithInternalConnection:v4];
+  v6 = [(NWConnection *)NWDatagramConnection connectionWithInternalConnection:connectionCopy];
   connection = self->_connection;
   self->_connection = v6;
 
   if (!self->_connection)
   {
 LABEL_40:
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_41;
   }
 
-  v8 = [(NWUDPSession *)self connection];
-  v9 = [v8 endpoint];
+  connection = [(NWUDPSession *)self connection];
+  endpoint = [connection endpoint];
   endpoint = self->_endpoint;
-  self->_endpoint = v9;
+  self->_endpoint = endpoint;
 
-  v11 = [(NWUDPSession *)self connection];
-  v12 = [v11 parameters];
+  connection2 = [(NWUDPSession *)self connection];
+  parameters = [connection2 parameters];
   parameters = self->_parameters;
-  self->_parameters = v12;
+  self->_parameters = parameters;
 
   [(NWUDPSession *)self setupEventHandler];
   self = self;
-  v14 = self;
+  selfCopy = self;
 LABEL_41:
 
-  return v14;
+  return selfCopy;
 }
 
 @end

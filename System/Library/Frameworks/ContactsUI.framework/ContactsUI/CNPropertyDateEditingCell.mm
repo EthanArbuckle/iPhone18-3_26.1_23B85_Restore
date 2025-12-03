@@ -1,82 +1,82 @@
 @interface CNPropertyDateEditingCell
-- (BOOL)textFieldShouldBeginEditing:(id)a3;
-- (CNPropertyDateEditingCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BOOL)textFieldShouldBeginEditing:(id)editing;
+- (CNPropertyDateEditingCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UIDatePicker)datePicker;
 - (void)applyCalendarAndDate;
-- (void)dateChanged:(id)a3;
-- (void)labelButtonClicked:(id)a3;
-- (void)localeUpdated:(id)a3;
-- (void)picker:(id)a3 didPickItem:(id)a4;
-- (void)pickerDidCancel:(id)a3;
+- (void)dateChanged:(id)changed;
+- (void)labelButtonClicked:(id)clicked;
+- (void)localeUpdated:(id)updated;
+- (void)picker:(id)picker didPickItem:(id)item;
+- (void)pickerDidCancel:(id)cancel;
 - (void)prepareForReuse;
 - (void)regainFocus;
-- (void)textFieldDidEndEditing:(id)a3 reason:(int64_t)a4;
-- (void)updateValueWithPropertyItem:(id)a3;
+- (void)textFieldDidEndEditing:(id)editing reason:(int64_t)reason;
+- (void)updateValueWithPropertyItem:(id)item;
 @end
 
 @implementation CNPropertyDateEditingCell
 
 - (void)regainFocus
 {
-  v2 = [(CNPropertySimpleEditingCell *)self textField];
-  [v2 becomeFirstResponder];
+  textField = [(CNPropertySimpleEditingCell *)self textField];
+  [textField becomeFirstResponder];
 }
 
-- (void)picker:(id)a3 didPickItem:(id)a4
+- (void)picker:(id)picker didPickItem:(id)item
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNPropertyCell *)self delegate];
-  v9 = [(CNPropertyCell *)self propertyItem];
-  [v8 propertyCell:self didUpdateItem:v9 withNewLabel:v6];
+  itemCopy = item;
+  pickerCopy = picker;
+  delegate = [(CNPropertyCell *)self delegate];
+  propertyItem = [(CNPropertyCell *)self propertyItem];
+  [delegate propertyCell:self didUpdateItem:propertyItem withNewLabel:itemCopy];
 
   [(CNPropertyDateEditingCell *)self applyCalendarAndDate];
-  v10 = [(CNPropertyCell *)self presentingDelegate];
+  presentingDelegate = [(CNPropertyCell *)self presentingDelegate];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __48__CNPropertyDateEditingCell_picker_didPickItem___block_invoke;
   v11[3] = &unk_1E74E6A88;
   v11[4] = self;
-  [v10 sender:self dismissViewController:v7 completionHandler:v11];
+  [presentingDelegate sender:self dismissViewController:pickerCopy completionHandler:v11];
 }
 
-- (void)pickerDidCancel:(id)a3
+- (void)pickerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = [(CNPropertyCell *)self presentingDelegate];
+  cancelCopy = cancel;
+  presentingDelegate = [(CNPropertyCell *)self presentingDelegate];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__CNPropertyDateEditingCell_pickerDidCancel___block_invoke;
   v6[3] = &unk_1E74E6A88;
   v6[4] = self;
-  [v5 sender:self dismissViewController:v4 completionHandler:v6];
+  [presentingDelegate sender:self dismissViewController:cancelCopy completionHandler:v6];
 }
 
-- (void)textFieldDidEndEditing:(id)a3 reason:(int64_t)a4
+- (void)textFieldDidEndEditing:(id)editing reason:(int64_t)reason
 {
-  v10 = a3;
+  editingCopy = editing;
   if ([(CNPropertyDateEditingCell *)self shouldEditDatesTextually])
   {
-    v5 = [(CNPropertyCell *)self propertyItem];
-    v6 = [v10 text];
-    v7 = [v5 valueForDisplayString:v6];
+    propertyItem = [(CNPropertyCell *)self propertyItem];
+    text = [editingCopy text];
+    v7 = [propertyItem valueForDisplayString:text];
 
-    v8 = [(CNPropertyCell *)self delegate];
-    v9 = [(CNPropertyCell *)self propertyItem];
-    [v8 propertyCell:self didUpdateItem:v9 withNewValue:v7];
+    delegate = [(CNPropertyCell *)self delegate];
+    propertyItem2 = [(CNPropertyCell *)self propertyItem];
+    [delegate propertyCell:self didUpdateItem:propertyItem2 withNewValue:v7];
   }
 }
 
-- (BOOL)textFieldShouldBeginEditing:(id)a3
+- (BOOL)textFieldShouldBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = [(CNPropertyCell *)self propertyItem];
-  v6 = [v5 isReadonly];
+  editingCopy = editing;
+  propertyItem = [(CNPropertyCell *)self propertyItem];
+  isReadonly = [propertyItem isReadonly];
 
-  if ((v6 & 1) == 0)
+  if ((isReadonly & 1) == 0)
   {
-    v8 = [(CNPropertySimpleEditingCell *)self textField];
-    [v8 _cnui_applyContactStyle];
+    textField = [(CNPropertySimpleEditingCell *)self textField];
+    [textField _cnui_applyContactStyle];
 
     if ([(CNPropertyDateEditingCell *)self shouldEditDatesTextually])
     {
@@ -84,10 +84,10 @@
       goto LABEL_11;
     }
 
-    v9 = [MEMORY[0x1E69DC938] currentDevice];
-    v10 = [v9 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v10 & 0xFFFFFFFFFFFFFFFBLL) == 1 && (-[CNPropertyDateEditingCell traitCollection](self, "traitCollection"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 horizontalSizeClass], v11, v12 != 1))
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 && (-[CNPropertyDateEditingCell traitCollection](self, "traitCollection"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 horizontalSizeClass], v11, v12 != 1))
     {
       dispatch_async(MEMORY[0x1E69E96A0], &__block_literal_global_41_29938);
       contentViewController = self->_contentViewController;
@@ -97,11 +97,11 @@
         v24 = self->_contentViewController;
         self->_contentViewController = v23;
 
-        v25 = [(CNPropertyDateEditingCell *)self datePicker];
-        [(UIViewController *)self->_contentViewController setView:v25];
+        datePicker = [(CNPropertyDateEditingCell *)self datePicker];
+        [(UIViewController *)self->_contentViewController setView:datePicker];
 
-        v26 = [(CNPropertyDateEditingCell *)self datePicker];
-        [v26 bounds];
+        datePicker2 = [(CNPropertyDateEditingCell *)self datePicker];
+        [datePicker2 bounds];
         [(UIViewController *)self->_contentViewController setPreferredContentSize:v27, v28];
 
         contentViewController = self->_contentViewController;
@@ -117,39 +117,39 @@
         goto LABEL_2;
       }
 
-      v29 = [(UIViewController *)self->_contentViewController view];
-      v30 = [v29 window];
+      view = [(UIViewController *)self->_contentViewController view];
+      window = [view window];
 
-      if (v30)
+      if (window)
       {
         goto LABEL_2;
       }
 
-      v19 = [(CNPropertyCell *)self presentingDelegate];
-      [v19 sender:v4 presentViewController:self->_contentViewController];
+      presentingDelegate = [(CNPropertyCell *)self presentingDelegate];
+      [presentingDelegate sender:editingCopy presentViewController:self->_contentViewController];
       v7 = 0;
     }
 
     else
     {
-      v13 = [(CNPropertyDateEditingCell *)self datePickerContainerView];
+      datePickerContainerView = [(CNPropertyDateEditingCell *)self datePickerContainerView];
 
-      if (!v13)
+      if (!datePickerContainerView)
       {
         v14 = [CNDatePickerContainerView alloc];
-        v15 = [(CNPropertyDateEditingCell *)self datePicker];
-        v16 = [(CNDatePickerContainerView *)v14 initWithDatePicker:v15];
+        datePicker3 = [(CNPropertyDateEditingCell *)self datePicker];
+        v16 = [(CNDatePickerContainerView *)v14 initWithDatePicker:datePicker3];
 
         [(CNDatePickerContainerView *)v16 setTranslatesAutoresizingMaskIntoConstraints:0];
         [(CNPropertyDateEditingCell *)self setDatePickerContainerView:v16];
-        v17 = [(CNPropertyDateEditingCell *)self datePickerContainerView];
-        v18 = [(CNPropertySimpleEditingCell *)self textField];
-        [v18 setInputView:v17];
+        datePickerContainerView2 = [(CNPropertyDateEditingCell *)self datePickerContainerView];
+        textField2 = [(CNPropertySimpleEditingCell *)self textField];
+        [textField2 setInputView:datePickerContainerView2];
       }
 
-      v19 = [MEMORY[0x1E69DC888] clearColor];
-      v20 = [(CNPropertySimpleEditingCell *)self textField];
-      [v20 setInsertionPointColor:v19];
+      presentingDelegate = [MEMORY[0x1E69DC888] clearColor];
+      textField3 = [(CNPropertySimpleEditingCell *)self textField];
+      [textField3 setInsertionPointColor:presentingDelegate];
 
       v7 = 1;
     }
@@ -173,11 +173,11 @@ void __57__CNPropertyDateEditingCell_textFieldShouldBeginEditing___block_invoke(
 
 - (void)applyCalendarAndDate
 {
-  v3 = [(CNPropertyCell *)self propertyItem];
-  v4 = [v3 labeledValue];
-  v18 = [v4 value];
+  propertyItem = [(CNPropertyCell *)self propertyItem];
+  labeledValue = [propertyItem labeledValue];
+  value = [labeledValue value];
 
-  if ([(CNPropertyDateEditingCell *)self _shouldUseYearlessPickerForDateComponents:v18])
+  if ([(CNPropertyDateEditingCell *)self _shouldUseYearlessPickerForDateComponents:value])
   {
     v5 = 4271;
   }
@@ -188,34 +188,34 @@ void __57__CNPropertyDateEditingCell_textFieldShouldBeginEditing___block_invoke(
   }
 
   [(UIDatePicker *)self->_datePicker setDatePickerMode:v5];
-  v6 = [v18 calendar];
-  v7 = [v6 copy];
+  calendar = [value calendar];
+  v7 = [calendar copy];
 
-  v8 = [v7 calendarIdentifier];
-  v9 = [v8 isEqualToString:*MEMORY[0x1E695D850]];
+  calendarIdentifier = [v7 calendarIdentifier];
+  v9 = [calendarIdentifier isEqualToString:*MEMORY[0x1E695D850]];
 
   if (v9)
   {
-    v10 = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
+    autoupdatingCurrentCalendar = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
 
-    v7 = v10;
+    v7 = autoupdatingCurrentCalendar;
   }
 
-  v11 = [(UIDatePicker *)self->_datePicker timeZone];
-  [v7 setTimeZone:v11];
+  timeZone = [(UIDatePicker *)self->_datePicker timeZone];
+  [v7 setTimeZone:timeZone];
 
   v12 = MEMORY[0x1E69AAE08];
-  v13 = [v7 calendarIdentifier];
-  v14 = [v12 localeForCalendarID:v13];
+  calendarIdentifier2 = [v7 calendarIdentifier];
+  v14 = [v12 localeForCalendarID:calendarIdentifier2];
 
   [(UIDatePicker *)self->_datePicker setLocale:v14];
-  v15 = [MEMORY[0x1E6996B48] dateFromComponents:v18 destinationCalendar:v7];
+  v15 = [MEMORY[0x1E6996B48] dateFromComponents:value destinationCalendar:v7];
   [(UIDatePicker *)self->_datePicker setDate:v15];
 
   [(UIDatePicker *)self->_datePicker setCalendar:v7];
-  v16 = [v7 calendarIdentifier];
+  calendarIdentifier3 = [v7 calendarIdentifier];
   currentCalendarIdentifier = self->_currentCalendarIdentifier;
-  self->_currentCalendarIdentifier = v16;
+  self->_currentCalendarIdentifier = calendarIdentifier3;
 }
 
 - (UIDatePicker)datePicker
@@ -234,130 +234,130 @@ void __57__CNPropertyDateEditingCell_textFieldShouldBeginEditing___block_invoke(
   }
 
   [(CNPropertyDateEditingCell *)self applyCalendarAndDate];
-  v7 = [(CNPropertyCell *)self delegate];
-  v8 = [(CNPropertyCell *)self propertyItem];
-  v9 = [(CNPropertyCell *)self propertyItem];
-  v10 = [v9 labeledValue];
-  v11 = [v10 value];
-  [v7 propertyCell:self didUpdateItem:v8 withNewValue:v11];
+  delegate = [(CNPropertyCell *)self delegate];
+  propertyItem = [(CNPropertyCell *)self propertyItem];
+  propertyItem2 = [(CNPropertyCell *)self propertyItem];
+  labeledValue = [propertyItem2 labeledValue];
+  value = [labeledValue value];
+  [delegate propertyCell:self didUpdateItem:propertyItem withNewValue:value];
 
   v12 = self->_datePicker;
 
   return v12;
 }
 
-- (void)updateValueWithPropertyItem:(id)a3
+- (void)updateValueWithPropertyItem:(id)item
 {
-  v21 = a3;
-  v4 = [(CNPropertyDateEditingCell *)self currentCalendarIdentifier];
-  v5 = [v21 labeledValue];
-  v6 = [v5 value];
+  itemCopy = item;
+  currentCalendarIdentifier = [(CNPropertyDateEditingCell *)self currentCalendarIdentifier];
+  labeledValue = [itemCopy labeledValue];
+  value = [labeledValue value];
 
-  v7 = [v6 calendar];
-  v8 = [v7 calendarIdentifier];
-  [(CNPropertyDateEditingCell *)self setCurrentCalendarIdentifier:v8];
+  calendar = [value calendar];
+  calendarIdentifier = [calendar calendarIdentifier];
+  [(CNPropertyDateEditingCell *)self setCurrentCalendarIdentifier:calendarIdentifier];
 
-  v9 = [(CNPropertyEditingCell *)self valueString];
-  v10 = [(CNPropertySimpleEditingCell *)self valueView];
-  v11 = [v10 ab_text];
-  v12 = [v9 isEqualToString:v11];
+  valueString = [(CNPropertyEditingCell *)self valueString];
+  valueView = [(CNPropertySimpleEditingCell *)self valueView];
+  ab_text = [valueView ab_text];
+  v12 = [valueString isEqualToString:ab_text];
 
   if ((v12 & 1) == 0)
   {
-    if (!-[CNPropertyDateEditingCell shouldEditDatesTextually](self, "shouldEditDatesTextually") || (-[CNPropertySimpleEditingCell textField](self, "textField"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 isEditing], v13, !v14) || v4 && (-[CNPropertyDateEditingCell currentCalendarIdentifier](self, "currentCalendarIdentifier"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v4, "isEqualToString:", v15), v15, (v16 & 1) == 0))
+    if (!-[CNPropertyDateEditingCell shouldEditDatesTextually](self, "shouldEditDatesTextually") || (-[CNPropertySimpleEditingCell textField](self, "textField"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 isEditing], v13, !v14) || currentCalendarIdentifier && (-[CNPropertyDateEditingCell currentCalendarIdentifier](self, "currentCalendarIdentifier"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(currentCalendarIdentifier, "isEqualToString:", v15), v15, (v16 & 1) == 0))
     {
-      v17 = [(CNPropertyEditingCell *)self valueString];
-      v18 = [(CNPropertySimpleEditingCell *)self valueView];
-      [v18 setAb_text:v17];
+      valueString2 = [(CNPropertyEditingCell *)self valueString];
+      valueView2 = [(CNPropertySimpleEditingCell *)self valueView];
+      [valueView2 setAb_text:valueString2];
     }
 
     if ([(CNPropertyDateEditingCell *)self shouldEditDatesTextually])
     {
-      v19 = [v21 placeholderString];
-      v20 = [(CNPropertySimpleEditingCell *)self textField];
-      [v20 setPlaceholder:v19];
+      placeholderString = [itemCopy placeholderString];
+      textField = [(CNPropertySimpleEditingCell *)self textField];
+      [textField setPlaceholder:placeholderString];
     }
   }
 }
 
-- (void)dateChanged:(id)a3
+- (void)dateChanged:(id)changed
 {
-  v23 = a3;
-  v4 = [(CNPropertyCell *)self propertyItem];
-  v5 = [v4 property];
-  v6 = [v5 isEqualToString:@"birthdays"];
+  changedCopy = changed;
+  propertyItem = [(CNPropertyCell *)self propertyItem];
+  property = [propertyItem property];
+  v6 = [property isEqualToString:@"birthdays"];
 
   if (v6 && (-[CNPropertyCell propertyItem](self, "propertyItem"), v7 = objc_claimAutoreleasedReturnValue(), [v7 labeledValue], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "label"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", @"_systemCalendar"), v9, v8, v7, !v10))
   {
     v15 = MEMORY[0x1E6996B48];
-    v12 = [v23 date];
-    v13 = [v23 calendar];
-    v16 = [v23 calendar];
-    v14 = [v15 componentsFromDate:v12 sourceCalendar:v13 destinationCalendar:v16];
+    date = [changedCopy date];
+    calendar = [changedCopy calendar];
+    calendar2 = [changedCopy calendar];
+    v14 = [v15 componentsFromDate:date sourceCalendar:calendar destinationCalendar:calendar2];
   }
 
   else
   {
     v11 = MEMORY[0x1E6996B48];
-    v12 = [v23 date];
-    v13 = [v23 calendar];
-    v14 = [v11 GMTComponentsFromDate:v12 sourceCalendar:v13];
+    date = [changedCopy date];
+    calendar = [changedCopy calendar];
+    v14 = [v11 GMTComponentsFromDate:date sourceCalendar:calendar];
   }
 
-  v17 = [(CNPropertyCell *)self propertyItem];
-  [v17 updateLabeledValueWithValue:v14];
+  propertyItem2 = [(CNPropertyCell *)self propertyItem];
+  [propertyItem2 updateLabeledValueWithValue:v14];
 
-  v18 = [(CNPropertyCell *)self propertyItem];
-  v19 = [v18 displayValue];
-  v20 = [(CNPropertySimpleEditingCell *)self textField];
-  [v20 setText:v19];
+  propertyItem3 = [(CNPropertyCell *)self propertyItem];
+  displayValue = [propertyItem3 displayValue];
+  textField = [(CNPropertySimpleEditingCell *)self textField];
+  [textField setText:displayValue];
 
-  v21 = [(CNPropertyCell *)self delegate];
-  v22 = [(CNPropertyCell *)self propertyItem];
-  [v21 propertyCell:self didUpdateItem:v22 withNewValue:v14];
+  delegate = [(CNPropertyCell *)self delegate];
+  propertyItem4 = [(CNPropertyCell *)self propertyItem];
+  [delegate propertyCell:self didUpdateItem:propertyItem4 withNewValue:v14];
 }
 
-- (void)labelButtonClicked:(id)a3
+- (void)labelButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = [(CNPropertyCell *)self propertyItem];
-  v6 = [v5 property];
-  v7 = [v6 isEqualToString:*MEMORY[0x1E695C1F0]];
+  clickedCopy = clicked;
+  propertyItem = [(CNPropertyCell *)self propertyItem];
+  property = [propertyItem property];
+  v7 = [property isEqualToString:*MEMORY[0x1E695C1F0]];
 
   if (v7)
   {
     v21.receiver = self;
     v21.super_class = CNPropertyDateEditingCell;
-    [(CNPropertyEditingCell *)&v21 labelButtonClicked:v4];
+    [(CNPropertyEditingCell *)&v21 labelButtonClicked:clickedCopy];
   }
 
   else
   {
-    v8 = [(CNPropertyCell *)self propertyItem];
-    v9 = [v8 extendedLabels];
-    v10 = [v9 count];
+    propertyItem2 = [(CNPropertyCell *)self propertyItem];
+    extendedLabels = [propertyItem2 extendedLabels];
+    v10 = [extendedLabels count];
 
     if (v10 >= 2)
     {
       v11 = [CNLabelPickerController alloc];
-      v12 = [(CNPropertyCell *)self propertyItem];
-      v13 = [(CNLabelPickerController *)v11 initForPropertyItem:v12];
+      propertyItem3 = [(CNPropertyCell *)self propertyItem];
+      v13 = [(CNLabelPickerController *)v11 initForPropertyItem:propertyItem3];
 
       v14 = CNContactsUIBundle();
       v15 = [v14 localizedStringForKey:@"SELECT_BIRTHDAY_CALENDAR_TITLE" value:&stru_1F0CE7398 table:@"Localized"];
       [v13 setTitle:v15];
 
       [v13 setItemLocalizationBlock:&__block_literal_global_29956];
-      v16 = [(CNPropertyCell *)self propertyItem];
-      v17 = [v16 labeledValue];
-      v18 = [v17 label];
-      [v13 setSelectedItem:v18];
+      propertyItem4 = [(CNPropertyCell *)self propertyItem];
+      labeledValue = [propertyItem4 labeledValue];
+      label = [labeledValue label];
+      [v13 setSelectedItem:label];
 
       [v13 setDelegate:self];
       [v13 setAllowsCustomItems:0];
       v19 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v13];
-      v20 = [(CNPropertyCell *)self presentingDelegate];
-      [v20 sender:v4 presentViewController:v19];
+      presentingDelegate = [(CNPropertyCell *)self presentingDelegate];
+      [presentingDelegate sender:clickedCopy presentViewController:v19];
     }
   }
 }
@@ -408,15 +408,15 @@ LABEL_9:
   return v12;
 }
 
-- (void)localeUpdated:(id)a3
+- (void)localeUpdated:(id)updated
 {
-  v9 = [(CNPropertyCell *)self propertyItem];
-  v4 = [(CNPropertyCell *)self propertyItem];
-  v5 = [v4 labeledValue];
-  v6 = [v5 value];
-  v7 = [v9 displayStringForValue:v6];
-  v8 = [(CNPropertySimpleEditingCell *)self textField];
-  [v8 setText:v7];
+  propertyItem = [(CNPropertyCell *)self propertyItem];
+  propertyItem2 = [(CNPropertyCell *)self propertyItem];
+  labeledValue = [propertyItem2 labeledValue];
+  value = [labeledValue value];
+  v7 = [propertyItem displayStringForValue:value];
+  textField = [(CNPropertySimpleEditingCell *)self textField];
+  [textField setText:v7];
 }
 
 - (void)prepareForReuse
@@ -438,31 +438,31 @@ LABEL_9:
   [(CNPropertySimpleEditingCell *)&v7 prepareForReuse];
 }
 
-- (CNPropertyDateEditingCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CNPropertyDateEditingCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v12.receiver = self;
   v12.super_class = CNPropertyDateEditingCell;
-  v4 = [(CNPropertyEditingCell *)&v12 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CNPropertyEditingCell *)&v12 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v4 selector:sel_localeUpdated_ name:@"_UIApplicationLocaleDidChange" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_localeUpdated_ name:@"_UIApplicationLocaleDidChange" object:0];
 
     if (!v4->_shouldEditDatesTextually)
     {
-      v6 = [(CNPropertySimpleEditingCell *)v4 textField];
-      [v6 setClearButtonMode:0];
+      textField = [(CNPropertySimpleEditingCell *)v4 textField];
+      [textField setClearButtonMode:0];
 
-      v7 = [(CNPropertySimpleEditingCell *)v4 textField];
-      [v7 setTextLoupeVisibility:1];
+      textField2 = [(CNPropertySimpleEditingCell *)v4 textField];
+      [textField2 setTextLoupeVisibility:1];
 
-      v8 = [MEMORY[0x1E69DC888] clearColor];
-      v9 = [(CNPropertySimpleEditingCell *)v4 textField];
-      [v9 setInsertionPointColor:v8];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      textField3 = [(CNPropertySimpleEditingCell *)v4 textField];
+      [textField3 setInsertionPointColor:clearColor];
     }
 
-    v10 = [(CNPropertySimpleEditingCell *)v4 textField];
-    [v10 setDelegate:v4];
+    textField4 = [(CNPropertySimpleEditingCell *)v4 textField];
+    [textField4 setDelegate:v4];
   }
 
   return v4;

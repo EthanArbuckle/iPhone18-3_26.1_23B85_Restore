@@ -1,14 +1,14 @@
 @interface SGTokenizerML
-+ (id)tokenize:(id)a3;
-+ (void)enumerateTokensInString:(id)a3 block:(id)a4;
-+ (void)enumerateTokensInString:(id)a3 withRange:(_NSRange)a4 block:(id)a5;
++ (id)tokenize:(id)tokenize;
++ (void)enumerateTokensInString:(id)string block:(id)block;
++ (void)enumerateTokensInString:(id)string withRange:(_NSRange)range block:(id)block;
 @end
 
 @implementation SGTokenizerML
 
-+ (id)tokenize:(id)a3
++ (id)tokenize:(id)tokenize
 {
-  v4 = a3;
+  tokenizeCopy = tokenize;
   v5 = objc_opt_new();
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -16,21 +16,21 @@
   v8[3] = &unk_278EB81F0;
   v6 = v5;
   v9 = v6;
-  [a1 enumerateTokensInString:v4 block:v8];
+  [self enumerateTokensInString:tokenizeCopy block:v8];
 
   return v6;
 }
 
-+ (void)enumerateTokensInString:(id)a3 withRange:(_NSRange)a4 block:(id)a5
++ (void)enumerateTokensInString:(id)string withRange:(_NSRange)range block:(id)block
 {
-  length = a4.length;
-  location = a4.location;
-  v10 = a3;
-  v11 = a5;
-  v12 = v11;
-  if (v10)
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  blockCopy = block;
+  v12 = blockCopy;
+  if (stringCopy)
   {
-    if (v11)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
@@ -38,8 +38,8 @@
 
   else
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"SGFutureFoundationFramework.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"str"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGFutureFoundationFramework.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"str"}];
 
     if (v12)
     {
@@ -47,8 +47,8 @@
     }
   }
 
-  v18 = [MEMORY[0x277CCA890] currentHandler];
-  [v18 handleFailureInMethod:a2 object:a1 file:@"SGFutureFoundationFramework.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGFutureFoundationFramework.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"block"}];
 
 LABEL_3:
   block[0] = MEMORY[0x277D85DD0];
@@ -56,25 +56,25 @@ LABEL_3:
   block[2] = __57__SGTokenizerML_enumerateTokensInString_withRange_block___block_invoke;
   block[3] = &__block_descriptor_48_e5_v8__0l;
   block[4] = a2;
-  block[5] = a1;
+  block[5] = self;
   if (enumerateTokensInString_withRange_block___pasOnceToken2 != -1)
   {
     dispatch_once(&enumerateTokensInString_withRange_block___pasOnceToken2, block);
   }
 
   v13 = enumerateTokensInString_withRange_block___pasExprOnceResult;
-  v14 = [v13 result];
+  result = [v13 result];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __57__SGTokenizerML_enumerateTokensInString_withRange_block___block_invoke_3;
   v19[3] = &unk_278EB81C8;
   v22 = location;
   v23 = length;
-  v20 = v10;
+  v20 = stringCopy;
   v21 = v12;
   v15 = v12;
-  v16 = v10;
-  [v14 runWithLockAcquired:v19];
+  v16 = stringCopy;
+  [result runWithLockAcquired:v19];
 }
 
 void __57__SGTokenizerML_enumerateTokensInString_withRange_block___block_invoke(uint64_t a1)
@@ -169,11 +169,11 @@ LABEL_8:
   return v10;
 }
 
-+ (void)enumerateTokensInString:(id)a3 block:(id)a4
++ (void)enumerateTokensInString:(id)string block:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  [objc_opt_class() enumerateTokensInString:v6 withRange:0 block:{objc_msgSend(v6, "length"), v5}];
+  blockCopy = block;
+  stringCopy = string;
+  [objc_opt_class() enumerateTokensInString:stringCopy withRange:0 block:{objc_msgSend(stringCopy, "length"), blockCopy}];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface MFNewcastleAuthScheme
 + (void)load;
-- (BOOL)canAuthenticateAccountClass:(Class)a3 connection:(id)a4;
+- (BOOL)canAuthenticateAccountClass:(Class)class connection:(id)connection;
 @end
 
 @implementation MFNewcastleAuthScheme
@@ -11,25 +11,25 @@
   {
     v3 = MEMORY[0x277D28408];
 
-    [v3 registerSchemeClass:a1];
+    [v3 registerSchemeClass:self];
   }
 }
 
-- (BOOL)canAuthenticateAccountClass:(Class)a3 connection:(id)a4
+- (BOOL)canAuthenticateAccountClass:(Class)class connection:(id)connection
 {
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = [(objc_class *)a3 isSubclassOfClass:objc_opt_class()];
+    v7 = [(objc_class *)class isSubclassOfClass:objc_opt_class()];
   }
 
   v10.receiver = self;
   v10.super_class = MFNewcastleAuthScheme;
-  if ([(MFAuthScheme *)&v10 canAuthenticateAccountClass:a3 connection:a4])
+  if ([(MFAuthScheme *)&v10 canAuthenticateAccountClass:class connection:connection])
   {
     v8 = v7 == 0;
   }
@@ -46,7 +46,7 @@
 
   else
   {
-    return [a4 loginDisabled] ^ 1;
+    return [connection loginDisabled] ^ 1;
   }
 }
 

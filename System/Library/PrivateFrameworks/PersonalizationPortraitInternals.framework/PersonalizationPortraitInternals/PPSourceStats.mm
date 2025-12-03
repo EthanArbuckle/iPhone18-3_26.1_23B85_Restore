@@ -1,16 +1,16 @@
 @interface PPSourceStats
 - (NSSet)featureNames;
-- (PPSourceStats)initWithMinRefCount:(int64_t)a3 maxRefCount:(int64_t)a4 avgRefCount:(double)a5 medianRefCount:(double)a6 earliestDate:(id)a7 latestDate:(id)a8 uniqueBundleIdCount:(int64_t)a9 uniqueDocIdCount:(int64_t)a10 recordCount:(unint64_t)a11;
-- (id)featureValueForName:(id)a3;
+- (PPSourceStats)initWithMinRefCount:(int64_t)count maxRefCount:(int64_t)refCount avgRefCount:(double)avgRefCount medianRefCount:(double)medianRefCount earliestDate:(id)date latestDate:(id)latestDate uniqueBundleIdCount:(int64_t)idCount uniqueDocIdCount:(int64_t)self0 recordCount:(unint64_t)self1;
+- (id)featureValueForName:(id)name;
 - (id)toDictionary;
 @end
 
 @implementation PPSourceStats
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"minRefCount"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"minRefCount"])
   {
     v5 = MEMORY[0x277CBFEF8];
     minRefCount = self->_minRefCount;
@@ -21,14 +21,14 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if ([v4 isEqualToString:@"maxRefCount"])
+  if ([nameCopy isEqualToString:@"maxRefCount"])
   {
     v5 = MEMORY[0x277CBFEF8];
     minRefCount = self->_maxRefCount;
     goto LABEL_5;
   }
 
-  if ([v4 isEqualToString:@"meanRefCount"])
+  if ([nameCopy isEqualToString:@"meanRefCount"])
   {
     v8 = MEMORY[0x277CBFEF8];
     avgRefCount = self->_avgRefCount;
@@ -37,14 +37,14 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([v4 isEqualToString:@"medianRefCount"])
+  if ([nameCopy isEqualToString:@"medianRefCount"])
   {
     v8 = MEMORY[0x277CBFEF8];
     avgRefCount = self->_medianRefCount;
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:@"earliestDate"])
+  if ([nameCopy isEqualToString:@"earliestDate"])
   {
     v10 = MEMORY[0x277CBFEF8];
     earliestDate = self->_earliestDate;
@@ -54,28 +54,28 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:@"latestDate"])
+  if ([nameCopy isEqualToString:@"latestDate"])
   {
     v10 = MEMORY[0x277CBFEF8];
     earliestDate = self->_latestDate;
     goto LABEL_14;
   }
 
-  if ([v4 isEqualToString:@"bundleIdCount"])
+  if ([nameCopy isEqualToString:@"bundleIdCount"])
   {
     v5 = MEMORY[0x277CBFEF8];
     minRefCount = self->_uniqueBundleIdCount;
     goto LABEL_5;
   }
 
-  if ([v4 isEqualToString:@"docIdCount"])
+  if ([nameCopy isEqualToString:@"docIdCount"])
   {
     v5 = MEMORY[0x277CBFEF8];
     minRefCount = self->_uniqueDocIdCount;
     goto LABEL_5;
   }
 
-  if ([v4 isEqualToString:@"recordCount"])
+  if ([nameCopy isEqualToString:@"recordCount"])
   {
     v5 = MEMORY[0x277CBFEF8];
     minRefCount = self->_recordCount;
@@ -190,25 +190,25 @@ void __29__PPSourceStats_featureNames__block_invoke()
   return v14;
 }
 
-- (PPSourceStats)initWithMinRefCount:(int64_t)a3 maxRefCount:(int64_t)a4 avgRefCount:(double)a5 medianRefCount:(double)a6 earliestDate:(id)a7 latestDate:(id)a8 uniqueBundleIdCount:(int64_t)a9 uniqueDocIdCount:(int64_t)a10 recordCount:(unint64_t)a11
+- (PPSourceStats)initWithMinRefCount:(int64_t)count maxRefCount:(int64_t)refCount avgRefCount:(double)avgRefCount medianRefCount:(double)medianRefCount earliestDate:(id)date latestDate:(id)latestDate uniqueBundleIdCount:(int64_t)idCount uniqueDocIdCount:(int64_t)self0 recordCount:(unint64_t)self1
 {
-  v20 = a7;
-  v21 = a8;
+  dateCopy = date;
+  latestDateCopy = latestDate;
   v25.receiver = self;
   v25.super_class = PPSourceStats;
   v22 = [(PPSourceStats *)&v25 init];
   v23 = v22;
   if (v22)
   {
-    v22->_minRefCount = a3;
-    v22->_maxRefCount = a4;
-    v22->_avgRefCount = a5;
-    v22->_medianRefCount = a6;
-    objc_storeStrong(&v22->_earliestDate, a7);
-    objc_storeStrong(&v23->_latestDate, a8);
-    v23->_uniqueBundleIdCount = a9;
-    v23->_uniqueDocIdCount = a10;
-    v23->_recordCount = a11;
+    v22->_minRefCount = count;
+    v22->_maxRefCount = refCount;
+    v22->_avgRefCount = avgRefCount;
+    v22->_medianRefCount = medianRefCount;
+    objc_storeStrong(&v22->_earliestDate, date);
+    objc_storeStrong(&v23->_latestDate, latestDate);
+    v23->_uniqueBundleIdCount = idCount;
+    v23->_uniqueDocIdCount = docIdCount;
+    v23->_recordCount = recordCount;
   }
 
   return v23;

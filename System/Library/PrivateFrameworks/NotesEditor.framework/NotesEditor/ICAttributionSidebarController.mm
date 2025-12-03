@@ -1,7 +1,7 @@
 @interface ICAttributionSidebarController
 + (id)keyPathsForValuesAffectingAttributionSidebarVisibility;
 - (ICAttributionSidebarController)init;
-- (ICAttributionSidebarController)initWithTextView:(id)a3;
+- (ICAttributionSidebarController)initWithTextView:(id)view;
 - (ICAttributionSidebarView)attributionSidebarView;
 - (ICNAEventReporter)eventReporter;
 - (ICTTTextEditFilter)filter;
@@ -9,27 +9,27 @@
 - (int64_t)attributionSidebarVisibility;
 - (void)cancelActiveGestures;
 - (void)dealloc;
-- (void)handlePanGesture:(id)a3;
-- (void)hideSidebarAnimated:(BOOL)a3 contextPath:(int64_t)a4;
-- (void)noteDidUpdateShare:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFilter:(id)a3;
-- (void)setFilter:(id)a3 animated:(BOOL)a4;
-- (void)setTextViewController:(id)a3;
-- (void)showSidebarAnimated:(BOOL)a3;
+- (void)handlePanGesture:(id)gesture;
+- (void)hideSidebarAnimated:(BOOL)animated contextPath:(int64_t)path;
+- (void)noteDidUpdateShare:(id)share;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFilter:(id)filter;
+- (void)setFilter:(id)filter animated:(BOOL)animated;
+- (void)setTextViewController:(id)controller;
+- (void)showSidebarAnimated:(BOOL)animated;
 @end
 
 @implementation ICAttributionSidebarController
 
 - (int64_t)attributionSidebarVisibility
 {
-  v3 = [(ICAttributionSidebarController *)self attributionSidebarView];
-  [v3 visibleContentWidth];
+  attributionSidebarView = [(ICAttributionSidebarController *)self attributionSidebarView];
+  [attributionSidebarView visibleContentWidth];
   v5 = v4;
 
-  v6 = [(ICAttributionSidebarController *)self attributionSidebarView];
-  [v6 fullContentWidth];
+  attributionSidebarView2 = [(ICAttributionSidebarController *)self attributionSidebarView];
+  [attributionSidebarView2 fullContentWidth];
   v8 = v7;
 
   v9 = vabdd_f64(0.0, v5);
@@ -55,18 +55,18 @@
   if (ICInternalSettingsIsTextKit2Enabled())
   {
     objc_opt_class();
-    v3 = [(ICAttributionSidebarController *)self textView];
+    textView = [(ICAttributionSidebarController *)self textView];
     v4 = ICDynamicCast();
-    v5 = [v4 attributionSidebarView];
+    attributionSidebarView = [v4 attributionSidebarView];
   }
 
   else
   {
-    v3 = [(ICAttributionSidebarController *)self textViewController];
-    v5 = [v3 attributionSidebarView];
+    textView = [(ICAttributionSidebarController *)self textViewController];
+    attributionSidebarView = [textView attributionSidebarView];
   }
 
-  return v5;
+  return attributionSidebarView;
 }
 
 - (ICTextView)textView
@@ -74,43 +74,43 @@
   textView = self->_textView;
   if (textView)
   {
-    v3 = textView;
+    textView = textView;
   }
 
   else
   {
-    v4 = [(ICAttributionSidebarController *)self textViewController];
-    v3 = [v4 textView];
+    textViewController = [(ICAttributionSidebarController *)self textViewController];
+    textView = [textViewController textView];
   }
 
-  return v3;
+  return textView;
 }
 
-- (ICAttributionSidebarController)initWithTextView:(id)a3
+- (ICAttributionSidebarController)initWithTextView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = ICAttributionSidebarController;
   v6 = [(ICAttributionSidebarController *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_textView, a3);
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v7 selector:sel_noteDidUpdateShare_ name:*MEMORY[0x277D364D8] object:0];
+    objc_storeStrong(&v6->_textView, view);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_noteDidUpdateShare_ name:*MEMORY[0x277D364D8] object:0];
 
     v9 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:v7 action:sel_handlePanGesture_];
     [(ICAttributionSidebarController *)v7 setPanGestureRecognizer:v9];
 
-    v10 = [(ICAttributionSidebarController *)v7 panGestureRecognizer];
-    [v10 setAllowedScrollTypesMask:2];
+    panGestureRecognizer = [(ICAttributionSidebarController *)v7 panGestureRecognizer];
+    [panGestureRecognizer setAllowedScrollTypesMask:2];
 
-    v11 = [(ICAttributionSidebarController *)v7 panGestureRecognizer];
-    [v5 addGestureRecognizer:v11];
+    panGestureRecognizer2 = [(ICAttributionSidebarController *)v7 panGestureRecognizer];
+    [viewCopy addGestureRecognizer:panGestureRecognizer2];
 
-    v12 = [(ICAttributionSidebarController *)v7 isEnabled];
-    v13 = [(ICAttributionSidebarController *)v7 panGestureRecognizer];
-    [v13 setEnabled:v12];
+    isEnabled = [(ICAttributionSidebarController *)v7 isEnabled];
+    panGestureRecognizer3 = [(ICAttributionSidebarController *)v7 panGestureRecognizer];
+    [panGestureRecognizer3 setEnabled:isEnabled];
   }
 
   return v7;
@@ -123,55 +123,55 @@
   v2 = [(ICAttributionSidebarController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_noteDidUpdateShare_ name:*MEMORY[0x277D364D8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_noteDidUpdateShare_ name:*MEMORY[0x277D364D8] object:0];
   }
 
   return v2;
 }
 
-- (void)setTextViewController:(id)a3
+- (void)setTextViewController:(id)controller
 {
-  v15 = a3;
+  controllerCopy = controller;
   textViewController = self->_textViewController;
   if (textViewController)
   {
-    v6 = [(ICTextViewController *)textViewController textView];
-    v7 = [(ICAttributionSidebarController *)self panGestureRecognizer];
-    [v6 removeGestureRecognizer:v7];
+    textView = [(ICTextViewController *)textViewController textView];
+    panGestureRecognizer = [(ICAttributionSidebarController *)self panGestureRecognizer];
+    [textView removeGestureRecognizer:panGestureRecognizer];
 
     [(ICTextViewController *)self->_textViewController ic_removeObserver:self forKeyPath:@"textView" context:&compoundliteral_2];
   }
 
-  objc_storeStrong(&self->_textViewController, a3);
-  [v15 ic_addObserver:self forKeyPath:@"textView" context:&compoundliteral_2];
-  v8 = [(ICAttributionSidebarController *)self panGestureRecognizer];
+  objc_storeStrong(&self->_textViewController, controller);
+  [controllerCopy ic_addObserver:self forKeyPath:@"textView" context:&compoundliteral_2];
+  panGestureRecognizer2 = [(ICAttributionSidebarController *)self panGestureRecognizer];
 
-  if (!v8)
+  if (!panGestureRecognizer2)
   {
     v9 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:self action:sel_handlePanGesture_];
     [(ICAttributionSidebarController *)self setPanGestureRecognizer:v9];
 
-    v10 = [(ICAttributionSidebarController *)self panGestureRecognizer];
-    [v10 setAllowedScrollTypesMask:2];
+    panGestureRecognizer3 = [(ICAttributionSidebarController *)self panGestureRecognizer];
+    [panGestureRecognizer3 setAllowedScrollTypesMask:2];
   }
 
-  v11 = [v15 textView];
-  v12 = [(ICAttributionSidebarController *)self panGestureRecognizer];
-  [v11 addGestureRecognizer:v12];
+  textView2 = [controllerCopy textView];
+  panGestureRecognizer4 = [(ICAttributionSidebarController *)self panGestureRecognizer];
+  [textView2 addGestureRecognizer:panGestureRecognizer4];
 
-  v13 = [(ICAttributionSidebarController *)self isEnabled];
-  v14 = [(ICAttributionSidebarController *)self panGestureRecognizer];
-  [v14 setEnabled:v13];
+  isEnabled = [(ICAttributionSidebarController *)self isEnabled];
+  panGestureRecognizer5 = [(ICAttributionSidebarController *)self panGestureRecognizer];
+  [panGestureRecognizer5 setEnabled:isEnabled];
 }
 
 - (void)dealloc
 {
-  v3 = [(ICAttributionSidebarController *)self textViewController];
-  [v3 ic_removeObserver:self forKeyPath:@"textView" context:&compoundliteral_2];
+  textViewController = [(ICAttributionSidebarController *)self textViewController];
+  [textViewController ic_removeObserver:self forKeyPath:@"textView" context:&compoundliteral_2];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = ICAttributionSidebarController;
@@ -180,77 +180,77 @@
 
 - (ICTTTextEditFilter)filter
 {
-  v2 = [(ICAttributionSidebarController *)self attributionSidebarView];
-  v3 = [v2 filter];
+  attributionSidebarView = [(ICAttributionSidebarController *)self attributionSidebarView];
+  filter = [attributionSidebarView filter];
 
-  return v3;
+  return filter;
 }
 
-- (void)setFilter:(id)a3
+- (void)setFilter:(id)filter
 {
-  v4 = a3;
-  v5 = [(ICAttributionSidebarController *)self attributionSidebarView];
-  [v5 setFilter:v4];
+  filterCopy = filter;
+  attributionSidebarView = [(ICAttributionSidebarController *)self attributionSidebarView];
+  [attributionSidebarView setFilter:filterCopy];
 }
 
-- (void)setFilter:(id)a3 animated:(BOOL)a4
+- (void)setFilter:(id)filter animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(ICAttributionSidebarController *)self attributionSidebarView];
-  [v7 setFilter:v6 animated:v4];
+  animatedCopy = animated;
+  filterCopy = filter;
+  attributionSidebarView = [(ICAttributionSidebarController *)self attributionSidebarView];
+  [attributionSidebarView setFilter:filterCopy animated:animatedCopy];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_enabled = a3;
-  v4 = [(ICAttributionSidebarController *)self panGestureRecognizer];
-  [v4 setEnabled:v3];
+  enabledCopy = enabled;
+  self->_enabled = enabled;
+  panGestureRecognizer = [(ICAttributionSidebarController *)self panGestureRecognizer];
+  [panGestureRecognizer setEnabled:enabledCopy];
 }
 
-- (void)showSidebarAnimated:(BOOL)a3
+- (void)showSidebarAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(ICAttributionSidebarController *)self attributionSidebarVisibility]== 2)
   {
     return;
   }
 
-  v5 = [(ICAttributionSidebarController *)self attributionSidebarView];
-  [v5 fullContentWidth];
+  attributionSidebarView = [(ICAttributionSidebarController *)self attributionSidebarView];
+  [attributionSidebarView fullContentWidth];
   v7 = v6;
 
   if (!ICInternalSettingsIsTextKit2Enabled())
   {
-    v9 = [(ICAttributionSidebarController *)self textViewController];
-    [v9 setAttributionSidebarWidth:0 isGestureActive:v3 animated:v7 currentVelocity:0.0];
+    textViewController = [(ICAttributionSidebarController *)self textViewController];
+    [textViewController setAttributionSidebarWidth:0 isGestureActive:animatedCopy animated:v7 currentVelocity:0.0];
     goto LABEL_6;
   }
 
-  v8 = [(ICAttributionSidebarController *)self sidebarWidthDidChangeHandler];
+  sidebarWidthDidChangeHandler = [(ICAttributionSidebarController *)self sidebarWidthDidChangeHandler];
 
-  if (v8)
+  if (sidebarWidthDidChangeHandler)
   {
-    v9 = [(ICAttributionSidebarController *)self sidebarWidthDidChangeHandler];
-    v9[2](v9, 0, v3, v7, 0.0);
+    textViewController = [(ICAttributionSidebarController *)self sidebarWidthDidChangeHandler];
+    textViewController[2](textViewController, 0, animatedCopy, v7, 0.0);
 LABEL_6:
   }
 
-  v10 = [(ICAttributionSidebarController *)self textView];
-  v11 = [v10 editorController];
-  v13 = [v11 note];
+  textView = [(ICAttributionSidebarController *)self textView];
+  editorController = [textView editorController];
+  note = [editorController note];
 
-  if (v13)
+  if (note)
   {
-    v12 = [(ICAttributionSidebarController *)self eventReporter];
-    [v12 startAttributionSideBarViewEventForNote:v13];
+    eventReporter = [(ICAttributionSidebarController *)self eventReporter];
+    [eventReporter startAttributionSideBarViewEventForNote:note];
   }
 }
 
-- (void)hideSidebarAnimated:(BOOL)a3 contextPath:(int64_t)a4
+- (void)hideSidebarAnimated:(BOOL)animated contextPath:(int64_t)path
 {
-  v5 = a3;
+  animatedCopy = animated;
   if (![(ICAttributionSidebarController *)self attributionSidebarVisibility])
   {
     return;
@@ -258,26 +258,26 @@ LABEL_6:
 
   if (!ICInternalSettingsIsTextKit2Enabled())
   {
-    v8 = [(ICAttributionSidebarController *)self textViewController];
-    [v8 setAttributionSidebarWidth:0 isGestureActive:v5 animated:0.0 currentVelocity:0.0];
+    textViewController = [(ICAttributionSidebarController *)self textViewController];
+    [textViewController setAttributionSidebarWidth:0 isGestureActive:animatedCopy animated:0.0 currentVelocity:0.0];
     goto LABEL_7;
   }
 
-  v7 = [(ICAttributionSidebarController *)self sidebarWidthDidChangeHandler];
+  sidebarWidthDidChangeHandler = [(ICAttributionSidebarController *)self sidebarWidthDidChangeHandler];
 
-  if (v7)
+  if (sidebarWidthDidChangeHandler)
   {
-    v8 = [(ICAttributionSidebarController *)self sidebarWidthDidChangeHandler];
-    v8[2](v8, 0, v5, 0.0, 0.0);
+    textViewController = [(ICAttributionSidebarController *)self sidebarWidthDidChangeHandler];
+    textViewController[2](textViewController, 0, animatedCopy, 0.0, 0.0);
 LABEL_7:
   }
 
-  v9 = [(ICAttributionSidebarController *)self textView];
-  v10 = [v9 editorController];
-  v12 = [v10 note];
+  textView = [(ICAttributionSidebarController *)self textView];
+  editorController = [textView editorController];
+  note = [editorController note];
 
-  v11 = [(ICAttributionSidebarController *)self eventReporter];
-  [v11 submitAttributionSideBarViewEventForNote:v12 contextPath:a4 startState:3 endState:1];
+  eventReporter = [(ICAttributionSidebarController *)self eventReporter];
+  [eventReporter submitAttributionSideBarViewEventForNote:note contextPath:path startState:3 endState:1];
 }
 
 + (id)keyPathsForValuesAffectingAttributionSidebarVisibility
@@ -299,21 +299,21 @@ LABEL_7:
 
 - (void)cancelActiveGestures
 {
-  v3 = [(ICAttributionSidebarController *)self panGestureRecognizer];
-  [v3 setEnabled:0];
+  panGestureRecognizer = [(ICAttributionSidebarController *)self panGestureRecognizer];
+  [panGestureRecognizer setEnabled:0];
 
-  v4 = [(ICAttributionSidebarController *)self isEnabled];
-  v5 = [(ICAttributionSidebarController *)self panGestureRecognizer];
-  [v5 setEnabled:v4];
+  isEnabled = [(ICAttributionSidebarController *)self isEnabled];
+  panGestureRecognizer2 = [(ICAttributionSidebarController *)self panGestureRecognizer];
+  [panGestureRecognizer2 setEnabled:isEnabled];
 }
 
-- (void)handlePanGesture:(id)a3
+- (void)handlePanGesture:(id)gesture
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 1)
   {
-    v5 = [(ICAttributionSidebarController *)self attributionSidebarView];
-    [v5 visibleContentWidth];
+    attributionSidebarView = [(ICAttributionSidebarController *)self attributionSidebarView];
+    [attributionSidebarView visibleContentWidth];
     [(ICAttributionSidebarController *)self setAttributionSidebarGestureBaselineX:?];
 
     [(ICAttributionSidebarController *)self setAttributionSidebarGestureAcceptedDistanceX:0.0];
@@ -324,17 +324,17 @@ LABEL_7:
     [(ICAttributionSidebarController *)self setAttributionSidebarGestureHasBegunToOpen:0];
   }
 
-  v7 = [(ICAttributionSidebarController *)self textView];
-  v8 = [v7 ic_isRTL];
+  textView = [(ICAttributionSidebarController *)self textView];
+  ic_isRTL = [textView ic_isRTL];
 
-  v9 = [(ICAttributionSidebarController *)self attributionSidebarView];
-  [v4 translationInView:v9];
+  attributionSidebarView2 = [(ICAttributionSidebarController *)self attributionSidebarView];
+  [gestureCopy translationInView:attributionSidebarView2];
   v11 = v10;
   v12 = -v10;
 
-  v13 = [(ICAttributionSidebarController *)self textViewController];
-  v14 = [v13 view];
-  [v4 velocityInView:v14];
+  textViewController = [(ICAttributionSidebarController *)self textViewController];
+  view = [textViewController view];
+  [gestureCopy velocityInView:view];
   v16 = v15;
   v18 = v17;
 
@@ -358,7 +358,7 @@ LABEL_7:
     v20 = -v16;
   }
 
-  if (v8)
+  if (ic_isRTL)
   {
     v21 = v12;
   }
@@ -370,7 +370,7 @@ LABEL_7:
 
   v108 = v16;
   v109 = v21;
-  if (v8)
+  if (ic_isRTL)
   {
     v22 = v16 < 0.0;
   }
@@ -380,40 +380,40 @@ LABEL_7:
     v22 = v16 > 0.0;
   }
 
-  v23 = [(ICAttributionSidebarController *)self attributionSidebarVisibility];
+  attributionSidebarVisibility = [(ICAttributionSidebarController *)self attributionSidebarVisibility];
   v24 = 1.0;
-  if (v23 != 1)
+  if (attributionSidebarVisibility != 1)
   {
     v24 = 3.0;
   }
 
   v25 = v19 * v24;
-  v26 = [(ICAttributionSidebarController *)self textView];
-  [v26 safeAreaInsets];
+  textView2 = [(ICAttributionSidebarController *)self textView];
+  [textView2 safeAreaInsets];
   v28 = v27;
-  v29 = [(ICAttributionSidebarController *)self textView];
-  v30 = [v29 userTitleView];
-  [v30 frame];
+  textView3 = [(ICAttributionSidebarController *)self textView];
+  userTitleView = [textView3 userTitleView];
+  [userTitleView frame];
   v32 = v31;
-  v33 = [(ICAttributionSidebarController *)self textView];
-  v34 = [v33 dateView];
-  [v34 frame];
+  textView4 = [(ICAttributionSidebarController *)self textView];
+  dateView = [textView4 dateView];
+  [dateView frame];
   v36 = v35;
 
-  v37 = [v4 state] == 3 || objc_msgSend(v4, "state") == 4 || objc_msgSend(v4, "state") == 5;
-  v38 = [(ICAttributionSidebarController *)self textView];
-  [v4 locationInView:v38];
+  v37 = [gestureCopy state] == 3 || objc_msgSend(gestureCopy, "state") == 4 || objc_msgSend(gestureCopy, "state") == 5;
+  textView5 = [(ICAttributionSidebarController *)self textView];
+  [gestureCopy locationInView:textView5];
   v40 = v39;
   v42 = v41;
 
-  v43 = [(ICAttributionSidebarController *)self textView];
-  v44 = [v43 editorController];
-  v45 = [v44 isPositionOnTodoItem:{v40, v42}];
+  textView6 = [(ICAttributionSidebarController *)self textView];
+  editorController = [textView6 editorController];
+  v45 = [editorController isPositionOnTodoItem:{v40, v42}];
 
   if (v20 > v25 || v37)
   {
-    v46 = [(ICAttributionSidebarController *)self textView];
-    [v46 contentOffset];
+    textView7 = [(ICAttributionSidebarController *)self textView];
+    [textView7 contentOffset];
     if (v47 >= -(v28 + v32 + v36) && (v22 || [(ICAttributionSidebarController *)self attributionSidebarVisibility]> 0 || [(ICAttributionSidebarController *)self attributionSidebarGestureHasBegunToOpen]))
     {
       if ((([(ICAttributionSidebarController *)self attributionSidebarVisibility]< 1) & v45) == 0)
@@ -422,8 +422,8 @@ LABEL_7:
         goto LABEL_46;
       }
 
-      v55 = [(ICAttributionSidebarController *)self attributionSidebarGestureStartTime];
-      [v55 timeIntervalSinceNow];
+      attributionSidebarGestureStartTime = [(ICAttributionSidebarController *)self attributionSidebarGestureStartTime];
+      [attributionSidebarGestureStartTime timeIntervalSinceNow];
       v57 = v56;
 
       if (v57 >= 0.0)
@@ -442,16 +442,16 @@ LABEL_46:
         [(ICAttributionSidebarController *)self attributionSidebarGestureIgnoredDistanceX];
         [(ICAttributionSidebarController *)self setAttributionSidebarGestureAcceptedDistanceX:v109 - v59];
         [(ICAttributionSidebarController *)self setAttributionSidebarGestureHasBegunToOpen:1];
-        v60 = [(ICAttributionSidebarController *)self attributionSidebarView];
-        [v60 fullContentWidth];
+        attributionSidebarView3 = [(ICAttributionSidebarController *)self attributionSidebarView];
+        [attributionSidebarView3 fullContentWidth];
         v62 = v61;
-        [v60 previewContentWidth];
+        [attributionSidebarView3 previewContentWidth];
         v64 = v63;
         if ([(ICAttributionSidebarController *)self attributionSidebarVisibility]== 0 && v22 || [(ICAttributionSidebarController *)self attributionSidebarVisibility]== 2 && (v65 = v108, v108 < 0.0))
         {
           v66 = MEMORY[0x277CCABB0];
-          v67 = [(ICAttributionSidebarController *)self textView];
-          [v67 contentOffset];
+          textView8 = [(ICAttributionSidebarController *)self textView];
+          [textView8 contentOffset];
           v69 = [v66 numberWithDouble:v68];
           [(ICAttributionSidebarController *)self setAttributionSidebarGestureBaselineContentOffsetY:v69];
         }
@@ -460,7 +460,7 @@ LABEL_46:
         if (!v37)
         {
           v73 = v70;
-          if ([v4 state] == 2)
+          if ([gestureCopy state] == 2)
           {
             [(ICAttributionSidebarController *)self attributionSidebarGestureBaselineX];
             v75 = v74;
@@ -490,12 +490,12 @@ LABEL_46:
 
         else
         {
-          v71 = [(ICAttributionSidebarController *)self textView];
-          v72 = [v71 isScrolling] ^ 1;
+          textView9 = [(ICAttributionSidebarController *)self textView];
+          v72 = [textView9 isScrolling] ^ 1;
         }
 
-        v77 = [(ICAttributionSidebarController *)self attributionSidebarView];
-        [v77 visibleContentWidth];
+        attributionSidebarView4 = [(ICAttributionSidebarController *)self attributionSidebarView];
+        [attributionSidebarView4 visibleContentWidth];
         v79 = v78;
 
         if (v22)
@@ -511,13 +511,13 @@ LABEL_66:
               block[1] = 3221225472;
               block[2] = __51__ICAttributionSidebarController_handlePanGesture___block_invoke;
               block[3] = &unk_2781ABCF8;
-              v111 = v60;
+              v111 = attributionSidebarView3;
               dispatch_async(MEMORY[0x277D85CD0], block);
             }
 
 LABEL_68:
             [(ICAttributionSidebarController *)self setAttributionSidebarGestureBaselineContentOffsetY:0];
-            [v60 visibleContentWidth];
+            [attributionSidebarView3 visibleContentWidth];
             if (v82 == 0.0 && v73 <= 0.0)
             {
               [(ICAttributionSidebarController *)self setAttributionSidebarGestureHasBegunToOpen:0];
@@ -527,23 +527,23 @@ LABEL_97:
             }
 
 LABEL_72:
-            v83 = [(ICAttributionSidebarController *)self textView];
-            v84 = [v83 editorController];
-            v85 = [v84 note];
+            textView10 = [(ICAttributionSidebarController *)self textView];
+            editorController2 = [textView10 editorController];
+            note = [editorController2 note];
 
-            [v60 visibleContentWidth];
-            if (v86 == 0.0 && v73 > 0.0 && v85)
+            [attributionSidebarView3 visibleContentWidth];
+            if (v86 == 0.0 && v73 > 0.0 && note)
             {
-              v87 = [(ICAttributionSidebarController *)self eventReporter];
-              [v87 startAttributionSideBarViewEventForNote:v85];
+              eventReporter = [(ICAttributionSidebarController *)self eventReporter];
+              [eventReporter startAttributionSideBarViewEventForNote:note];
             }
 
-            [v60 fullContentWidth];
+            [attributionSidebarView3 fullContentWidth];
             if (v73 >= v88)
             {
-              [v60 visibleContentWidth];
+              [attributionSidebarView3 visibleContentWidth];
               v91 = v90;
-              [v60 fullContentWidth];
+              [attributionSidebarView3 fullContentWidth];
               v89 = v91 < v92;
             }
 
@@ -554,7 +554,7 @@ LABEL_72:
 
             if (v73 <= 0.0)
             {
-              [v60 visibleContentWidth];
+              [attributionSidebarView3 visibleContentWidth];
               v93 = v94 > 0.0;
             }
 
@@ -566,40 +566,40 @@ LABEL_72:
             if (!v89 && !v93)
             {
 LABEL_91:
-              v105 = [v4 state];
+              state = [gestureCopy state];
               if (ICInternalSettingsIsTextKit2Enabled())
               {
-                v106 = [(ICAttributionSidebarController *)self sidebarWidthDidChangeHandler];
+                sidebarWidthDidChangeHandler = [(ICAttributionSidebarController *)self sidebarWidthDidChangeHandler];
 
-                if (!v106)
+                if (!sidebarWidthDidChangeHandler)
                 {
 LABEL_96:
 
                   goto LABEL_97;
                 }
 
-                v107 = [(ICAttributionSidebarController *)self sidebarWidthDidChangeHandler];
-                (v107)[2](v107, !v37, v105 != 2, v73, v108);
+                sidebarWidthDidChangeHandler2 = [(ICAttributionSidebarController *)self sidebarWidthDidChangeHandler];
+                (sidebarWidthDidChangeHandler2)[2](sidebarWidthDidChangeHandler2, !v37, state != 2, v73, v108);
               }
 
               else
               {
-                v107 = [(ICAttributionSidebarController *)self textViewController];
-                [v107 setAttributionSidebarWidth:!v37 isGestureActive:v105 != 2 animated:v73 currentVelocity:v108];
+                sidebarWidthDidChangeHandler2 = [(ICAttributionSidebarController *)self textViewController];
+                [sidebarWidthDidChangeHandler2 setAttributionSidebarWidth:!v37 isGestureActive:state != 2 animated:v73 currentVelocity:v108];
               }
 
               goto LABEL_96;
             }
 
-            if (v85)
+            if (note)
             {
               if (v89)
               {
-                v95 = [(ICAttributionSidebarController *)self eventReporter];
-                [v95 submitAttributionSideBarViewEventForNote:v85 contextPath:3 startState:2 endState:3];
+                eventReporter2 = [(ICAttributionSidebarController *)self eventReporter];
+                [eventReporter2 submitAttributionSideBarViewEventForNote:note contextPath:3 startState:2 endState:3];
 
-                v96 = [(ICAttributionSidebarController *)self eventReporter];
-                [v96 startAttributionSideBarViewEventForNote:v85];
+                eventReporter3 = [(ICAttributionSidebarController *)self eventReporter];
+                [eventReporter3 startAttributionSideBarViewEventForNote:note];
               }
 
               else
@@ -609,24 +609,24 @@ LABEL_96:
                   goto LABEL_89;
                 }
 
-                v96 = [(ICAttributionSidebarController *)self eventReporter];
-                [v96 submitAttributionSideBarViewEventForNote:v85 contextPath:3 startState:3 endState:1];
+                eventReporter3 = [(ICAttributionSidebarController *)self eventReporter];
+                [eventReporter3 submitAttributionSideBarViewEventForNote:note contextPath:3 startState:3 endState:1];
               }
             }
 
 LABEL_89:
-            v97 = [(ICAttributionSidebarController *)self attributionSidebarGestureBaselineContentOffsetY];
+            attributionSidebarGestureBaselineContentOffsetY = [(ICAttributionSidebarController *)self attributionSidebarGestureBaselineContentOffsetY];
 
-            if (v97)
+            if (attributionSidebarGestureBaselineContentOffsetY)
             {
-              v98 = [(ICAttributionSidebarController *)self textView];
-              [v98 contentOffset];
+              textView11 = [(ICAttributionSidebarController *)self textView];
+              [textView11 contentOffset];
               v100 = v99;
-              v101 = [(ICAttributionSidebarController *)self attributionSidebarGestureBaselineContentOffsetY];
-              [v101 floatValue];
+              attributionSidebarGestureBaselineContentOffsetY2 = [(ICAttributionSidebarController *)self attributionSidebarGestureBaselineContentOffsetY];
+              [attributionSidebarGestureBaselineContentOffsetY2 floatValue];
               v103 = v102;
-              v104 = [(ICAttributionSidebarController *)self textView];
-              [v104 setContentOffset:{v100, v103}];
+              textView12 = [(ICAttributionSidebarController *)self textView];
+              [textView12 setContentOffset:{v100, v103}];
             }
 
             goto LABEL_91;
@@ -662,15 +662,15 @@ LABEL_89:
   [(ICAttributionSidebarController *)self setAttributionSidebarGestureIgnoredDistanceX:v109 - v48];
   if (v19 > v20 * 3.0 && [(ICAttributionSidebarController *)self attributionSidebarVisibility]== 2)
   {
-    v49 = [(ICAttributionSidebarController *)self textView];
-    v50 = [v49 isEditing];
+    textView13 = [(ICAttributionSidebarController *)self textView];
+    isEditing = [textView13 isEditing];
 
-    if (v50)
+    if (isEditing)
     {
       if (v19 > 80.0)
       {
-        v51 = [(ICAttributionSidebarController *)self textView];
-        [v51 resignFirstResponder];
+        textView14 = [(ICAttributionSidebarController *)self textView];
+        [textView14 resignFirstResponder];
       }
     }
   }
@@ -682,17 +682,17 @@ LABEL_89:
     {
       if (!ICInternalSettingsIsTextKit2Enabled())
       {
-        v54 = [(ICAttributionSidebarController *)self textViewController];
-        [v54 setAttributionSidebarWidth:0 isGestureActive:0 animated:0.0 currentVelocity:v108];
+        textViewController2 = [(ICAttributionSidebarController *)self textViewController];
+        [textViewController2 setAttributionSidebarWidth:0 isGestureActive:0 animated:0.0 currentVelocity:v108];
         goto LABEL_59;
       }
 
-      v53 = [(ICAttributionSidebarController *)self sidebarWidthDidChangeHandler];
+      sidebarWidthDidChangeHandler3 = [(ICAttributionSidebarController *)self sidebarWidthDidChangeHandler];
 
-      if (v53)
+      if (sidebarWidthDidChangeHandler3)
       {
-        v54 = [(ICAttributionSidebarController *)self sidebarWidthDidChangeHandler];
-        v54[2](v54, 0, 0, 0.0, v108);
+        textViewController2 = [(ICAttributionSidebarController *)self sidebarWidthDidChangeHandler];
+        textViewController2[2](textViewController2, 0, 0, 0.0, v108);
 LABEL_59:
       }
     }
@@ -701,26 +701,26 @@ LABEL_59:
 LABEL_98:
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
-  if (([(ICAttributionSidebarController *)self ic_didAddObserverForContext:a6 inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/iOS/Editor/Attributions/ICAttributionSidebarController.m"]& 1) != 0)
+  pathCopy = path;
+  changeCopy = change;
+  objectCopy = object;
+  if (([(ICAttributionSidebarController *)self ic_didAddObserverForContext:context inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/iOS/Editor/Attributions/ICAttributionSidebarController.m"]& 1) != 0)
   {
-    v13 = [(ICAttributionSidebarController *)self ic_shouldIgnoreObserveValue:v11 ofObject:v12 forKeyPath:v10];
+    v13 = [(ICAttributionSidebarController *)self ic_shouldIgnoreObserveValue:changeCopy ofObject:objectCopy forKeyPath:pathCopy];
 
-    if (a6 == &compoundliteral_2 && (v13 & 1) == 0 && [v10 isEqualToString:@"textView"])
+    if (context == &compoundliteral_2 && (v13 & 1) == 0 && [pathCopy isEqualToString:@"textView"])
     {
-      v14 = [(ICAttributionSidebarController *)self panGestureRecognizer];
-      v15 = [v14 view];
-      v16 = [(ICAttributionSidebarController *)self panGestureRecognizer];
-      [v15 removeGestureRecognizer:v16];
+      panGestureRecognizer = [(ICAttributionSidebarController *)self panGestureRecognizer];
+      view = [panGestureRecognizer view];
+      panGestureRecognizer2 = [(ICAttributionSidebarController *)self panGestureRecognizer];
+      [view removeGestureRecognizer:panGestureRecognizer2];
 
-      v17 = [(ICAttributionSidebarController *)self textViewController];
-      v18 = [v17 textView];
-      v19 = [(ICAttributionSidebarController *)self panGestureRecognizer];
-      [v18 addGestureRecognizer:v19];
+      textViewController = [(ICAttributionSidebarController *)self textViewController];
+      textView = [textViewController textView];
+      panGestureRecognizer3 = [(ICAttributionSidebarController *)self panGestureRecognizer];
+      [textView addGestureRecognizer:panGestureRecognizer3];
     }
   }
 
@@ -728,29 +728,29 @@ LABEL_98:
   {
     v20.receiver = self;
     v20.super_class = ICAttributionSidebarController;
-    [(ICAttributionSidebarController *)&v20 observeValueForKeyPath:v10 ofObject:v12 change:v11 context:a6];
+    [(ICAttributionSidebarController *)&v20 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)noteDidUpdateShare:(id)a3
+- (void)noteDidUpdateShare:(id)share
 {
-  v4 = a3;
+  shareCopy = share;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [shareCopy object];
 
   v12 = ICCheckedDynamicCast();
 
-  v6 = [(ICAttributionSidebarController *)self textView];
-  v7 = [v6 editorController];
-  v8 = [v7 note];
+  textView = [(ICAttributionSidebarController *)self textView];
+  editorController = [textView editorController];
+  note = [editorController note];
 
-  v9 = [v8 objectID];
-  v10 = [v12 objectID];
-  if ([v9 isEqual:v10])
+  objectID = [note objectID];
+  objectID2 = [v12 objectID];
+  if ([objectID isEqual:objectID2])
   {
-    v11 = [v8 isSharedViaICloud];
+    isSharedViaICloud = [note isSharedViaICloud];
 
-    if ((v11 & 1) == 0)
+    if ((isSharedViaICloud & 1) == 0)
     {
       [(ICAttributionSidebarController *)self hideSidebarAnimated:1];
     }
@@ -763,11 +763,11 @@ LABEL_98:
 
 - (ICNAEventReporter)eventReporter
 {
-  v2 = [(ICAttributionSidebarController *)self textView];
-  v3 = [v2 editorController];
-  v4 = [v3 eventReporter];
+  textView = [(ICAttributionSidebarController *)self textView];
+  editorController = [textView editorController];
+  eventReporter = [editorController eventReporter];
 
-  return v4;
+  return eventReporter;
 }
 
 @end

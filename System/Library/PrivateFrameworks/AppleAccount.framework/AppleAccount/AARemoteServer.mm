@@ -1,22 +1,22 @@
 @interface AARemoteServer
 + (AARemoteServer)sharedServer;
 + (AARemoteServer)sharedServerWithNoUrlCache;
-- (id)_bodyDictionaryWithProtocolVersion:(id)a3;
+- (id)_bodyDictionaryWithProtocolVersion:(id)version;
 - (id)_configurationCacheInvalidatingIfNecessary;
 - (id)_configurationLock_configurationCacheInvalidatingIfNecessary;
-- (id)_initRequiringUrlCache:(BOOL)a3;
-- (id)_newURLRequestWithURLString:(id)a3;
-- (id)_redactedBodyStringWithPropertyList:(id)a3;
-- (id)_redactedHeadersFromHTTPHeaders:(id)a3;
-- (void)_configurationAndResponseWithCompletion:(id)a3;
-- (void)_fetchConfigurationAndResponseWithCompletion:(id)a3;
-- (void)_setConfigurationCache:(id)a3;
-- (void)_startRequest:(id)a3 responseClass:(Class)a4 mainThread:(BOOL)a5 completion:(id)a6;
-- (void)authenticateAccount:(id)a3 completion:(id)a4;
-- (void)configurationWithCompletion:(id)a3;
-- (void)loginDelegates:(id)a3 parameters:(id)a4 completion:(id)a5;
-- (void)registerAccount:(id)a3 withHSA:(BOOL)a4 completion:(id)a5;
-- (void)urlConfigurationWithCompletion:(id)a3;
+- (id)_initRequiringUrlCache:(BOOL)cache;
+- (id)_newURLRequestWithURLString:(id)string;
+- (id)_redactedBodyStringWithPropertyList:(id)list;
+- (id)_redactedHeadersFromHTTPHeaders:(id)headers;
+- (void)_configurationAndResponseWithCompletion:(id)completion;
+- (void)_fetchConfigurationAndResponseWithCompletion:(id)completion;
+- (void)_setConfigurationCache:(id)cache;
+- (void)_startRequest:(id)request responseClass:(Class)class mainThread:(BOOL)thread completion:(id)completion;
+- (void)authenticateAccount:(id)account completion:(id)completion;
+- (void)configurationWithCompletion:(id)completion;
+- (void)loginDelegates:(id)delegates parameters:(id)parameters completion:(id)completion;
+- (void)registerAccount:(id)account withHSA:(BOOL)a completion:(id)completion;
+- (void)urlConfigurationWithCompletion:(id)completion;
 @end
 
 @implementation AARemoteServer
@@ -59,16 +59,16 @@ uint64_t __30__AARemoteServer_sharedServer__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_initRequiringUrlCache:(BOOL)a3
+- (id)_initRequiringUrlCache:(BOOL)cache
 {
-  v3 = a3;
+  cacheCopy = cache;
   v18 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = AARemoteServer;
   v4 = [(AARemoteServer *)&v15 init];
   if (v4)
   {
-    if (v3)
+    if (cacheCopy)
     {
       +[AAURLSession sharedSession];
     }
@@ -94,7 +94,7 @@ uint64_t __30__AARemoteServer_sharedServer__block_invoke()
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = @"NO";
-      if (v3)
+      if (cacheCopy)
       {
         v12 = @"YES";
       }
@@ -109,10 +109,10 @@ uint64_t __30__AARemoteServer_sharedServer__block_invoke()
   return v4;
 }
 
-- (void)configurationWithCompletion:(id)a3
+- (void)configurationWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [AARemoteServer configurationWithCompletion:];
   }
@@ -122,8 +122,8 @@ uint64_t __30__AARemoteServer_sharedServer__block_invoke()
   v6[2] = __46__AARemoteServer_configurationWithCompletion___block_invoke;
   v6[3] = &unk_1E7C9BA60;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(AARemoteServer *)self urlConfigurationWithCompletion:v6];
 }
 
@@ -187,9 +187,9 @@ void __46__AARemoteServer_configurationWithCompletion___block_invoke_65(uint64_t
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)urlConfigurationWithCompletion:(id)a3
+- (void)urlConfigurationWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = _AALogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -197,26 +197,26 @@ void __46__AARemoteServer_configurationWithCompletion___block_invoke_65(uint64_t
   }
 
   v5 = objc_alloc_init(AADaemonController);
-  [(AADaemonController *)v5 urlConfigurationWithCompletion:v3];
+  [(AADaemonController *)v5 urlConfigurationWithCompletion:completionCopy];
 }
 
-- (void)_configurationAndResponseWithCompletion:(id)a3
+- (void)_configurationAndResponseWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __58__AARemoteServer__configurationAndResponseWithCompletion___block_invoke;
   aBlock[3] = &unk_1E7C9C040;
-  v5 = v4;
+  v5 = completionCopy;
   v15 = v5;
   v6 = _Block_copy(aBlock);
-  v7 = [(AARemoteServer *)self _configurationCacheInvalidatingIfNecessary];
-  v8 = v7;
-  if (v7)
+  _configurationCacheInvalidatingIfNecessary = [(AARemoteServer *)self _configurationCacheInvalidatingIfNecessary];
+  v8 = _configurationCacheInvalidatingIfNecessary;
+  if (_configurationCacheInvalidatingIfNecessary)
   {
-    v9 = [v7 configuration];
-    v10 = [v8 response];
-    v6[2](v6, v9, v10, 0);
+    configuration = [_configurationCacheInvalidatingIfNecessary configuration];
+    response = [v8 response];
+    v6[2](v6, configuration, response, 0);
   }
 
   else
@@ -302,12 +302,12 @@ void __58__AARemoteServer__configurationAndResponseWithCompletion___block_invoke
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_setConfigurationCache:(id)a3
+- (void)_setConfigurationCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   os_unfair_lock_lock(&self->_configurationLock);
   configurationCache = self->_configurationCache;
-  self->_configurationCache = v4;
+  self->_configurationCache = cacheCopy;
 
   os_unfair_lock_unlock(&self->_configurationLock);
 }
@@ -315,17 +315,17 @@ void __58__AARemoteServer__configurationAndResponseWithCompletion___block_invoke
 - (id)_configurationCacheInvalidatingIfNecessary
 {
   os_unfair_lock_lock(&self->_configurationLock);
-  v3 = [(AARemoteServer *)self _configurationLock_configurationCacheInvalidatingIfNecessary];
+  _configurationLock_configurationCacheInvalidatingIfNecessary = [(AARemoteServer *)self _configurationLock_configurationCacheInvalidatingIfNecessary];
   os_unfair_lock_unlock(&self->_configurationLock);
 
-  return v3;
+  return _configurationLock_configurationCacheInvalidatingIfNecessary;
 }
 
 - (id)_configurationLock_configurationCacheInvalidatingIfNecessary
 {
   os_unfair_lock_assert_owner(&self->_configurationLock);
-  v3 = [(AARemoteServerConfigurationCache *)self->_configurationCache creationDate];
-  [v3 timeIntervalSinceNow];
+  creationDate = [(AARemoteServerConfigurationCache *)self->_configurationCache creationDate];
+  [creationDate timeIntervalSinceNow];
   v5 = v4;
 
   if (v5 < -600.0)
@@ -339,10 +339,10 @@ void __58__AARemoteServer__configurationAndResponseWithCompletion___block_invoke
   return v7;
 }
 
-- (void)_fetchConfigurationAndResponseWithCompletion:(id)a3
+- (void)_fetchConfigurationAndResponseWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [AARemoteServer _fetchConfigurationAndResponseWithCompletion:];
   }
@@ -351,8 +351,8 @@ void __58__AARemoteServer__configurationAndResponseWithCompletion___block_invoke
   aBlock[1] = 3221225472;
   aBlock[2] = __63__AARemoteServer__fetchConfigurationAndResponseWithCompletion___block_invoke;
   aBlock[3] = &unk_1E7C9C040;
-  v19 = v4;
-  v5 = v4;
+  v19 = completionCopy;
+  v5 = completionCopy;
   v6 = _Block_copy(aBlock);
   v7 = [objc_alloc(MEMORY[0x1E696AF20]) initWithString:@"https://setup.icloud.com"];
   [v7 setPath:@"/configurations/init"];
@@ -360,14 +360,14 @@ void __58__AARemoteServer__configurationAndResponseWithCompletion___block_invoke
   v8 = [v7 URL];
 
   v9 = [MEMORY[0x1E695AC18] requestWithURL:v8];
-  v10 = [(AARemoteServer *)self session];
+  session = [(AARemoteServer *)self session];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __63__AARemoteServer__fetchConfigurationAndResponseWithCompletion___block_invoke_2;
   v16 = &unk_1E7C9BD40;
   v17 = v6;
   v11 = v6;
-  v12 = [v10 bodyTaskWithRequest:v9 completion:&v13];
+  v12 = [session bodyTaskWithRequest:v9 completion:&v13];
   [v12 resume];
 }
 
@@ -427,12 +427,12 @@ void __63__AARemoteServer__fetchConfigurationAndResponseWithCompletion___block_i
 LABEL_9:
 }
 
-- (void)authenticateAccount:(id)a3 completion:(id)a4
+- (void)authenticateAccount:(id)account completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  accountCopy = account;
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (!accountCopy)
   {
     [AARemoteServer(Deprecated) authenticateAccount:completion:];
     if (v7)
@@ -445,7 +445,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v6)
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
@@ -453,20 +453,20 @@ LABEL_5:
 LABEL_3:
   v8 = [MEMORY[0x1E695DFF8] aa_URLWithEndpoint:@"authenticate"];
   v9 = [AAAuthenticateRequest alloc];
-  v10 = [v8 absoluteString];
-  v11 = [v5 username];
-  v12 = [v5 aa_password];
-  v13 = [(AAAuthenticateRequest *)v9 initWithURLString:v10 username:v11 password:v12];
+  absoluteString = [v8 absoluteString];
+  username = [accountCopy username];
+  aa_password = [accountCopy aa_password];
+  v13 = [(AAAuthenticateRequest *)v9 initWithURLString:absoluteString username:username password:aa_password];
 
   v14 = [AARequester alloc];
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
   v21 = __61__AARemoteServer_Deprecated__authenticateAccount_completion___block_invoke;
   v22 = &unk_1E7C9C068;
-  v23 = v5;
+  v23 = accountCopy;
   v24 = v7;
   v15 = v7;
-  v16 = v5;
+  v16 = accountCopy;
   v17 = [(AARequester *)v14 initWithRequest:v13 handler:&v19];
   v18 = objc_alloc_init(MEMORY[0x1E696ADC8]);
   [v18 addOperation:{v17, v19, v20, v21, v22}];
@@ -529,16 +529,16 @@ void __61__AARemoteServer_Deprecated__authenticateAccount_completion___block_inv
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerAccount:(id)a3 withHSA:(BOOL)a4 completion:(id)a5
+- (void)registerAccount:(id)account withHSA:(BOOL)a completion:(id)completion
 {
-  v6 = a4;
+  aCopy = a;
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  accountCopy = account;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (accountCopy)
   {
-    if (v9)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -563,20 +563,20 @@ LABEL_3:
   }
 
   v12 = [MEMORY[0x1E695DFF8] aa_URLWithEndpoint:@"loginOrCreateAccount"];
-  v13 = [v12 absoluteString];
-  v14 = [(AARemoteServer *)self _newURLRequestWithURLString:v13];
+  absoluteString = [v12 absoluteString];
+  v14 = [(AARemoteServer *)self _newURLRequestWithURLString:absoluteString];
 
-  if (v6)
+  if (aCopy)
   {
-    v15 = [v8 aa_personID];
-    [v14 aa_addDeviceProvisioningInfoHeadersWithDSID:v15 sendEmptyValues:1];
+    aa_personID = [accountCopy aa_personID];
+    [v14 aa_addDeviceProvisioningInfoHeadersWithDSID:aa_personID sendEmptyValues:1];
   }
 
   v16 = +[AADeviceInfo udid];
   [v14 setValue:v16 forHTTPHeaderField:@"Device-UDID"];
 
   [v14 setHTTPMethod:@"POST"];
-  [v14 aa_addAuthTokenOrBasicAuthHeaderWithAccount:v8 preferUsingPassword:1];
+  [v14 aa_addAuthTokenOrBasicAuthHeaderWithAccount:accountCopy preferUsingPassword:1];
   v17 = [(AARemoteServer *)self _bodyDictionaryWithProtocolVersion:@"1.0"];
   v18 = [v14 aa_setXMLBodyWithParameters:v17];
 
@@ -589,22 +589,22 @@ LABEL_3:
   v24 = v23;
   if (v20 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
   {
-    v25 = [v8 accountType];
-    v26 = [v25 identifier];
+    accountType = [accountCopy accountType];
+    identifier = [accountType identifier];
     *buf = 138543362;
-    v40 = v26;
+    v40 = identifier;
     _os_signpost_emit_with_name_impl(&dword_1B6F6A000, v24, OS_SIGNPOST_INTERVAL_BEGIN, v20, "LoginOrCreateAccount", " AccountType=%{public,signpost.telemetry:string2,name=AccountType}@  enableTelemetry=YES ", buf, 0xCu);
   }
 
   v27 = _AASignpostLogSystem();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
-    v28 = [v8 accountType];
-    v29 = [v28 identifier];
+    accountType2 = [accountCopy accountType];
+    identifier2 = [accountType2 identifier];
     *buf = 134218242;
     v40 = v20;
     v41 = 2114;
-    v42 = v29;
+    v42 = identifier2;
     _os_log_impl(&dword_1B6F6A000, v27, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: LoginOrCreateAccount  AccountType=%{public,signpost.telemetry:string2,name=AccountType}@  enableTelemetry=YES ", buf, 0x16u);
   }
 
@@ -615,10 +615,10 @@ LABEL_3:
   v34[3] = &unk_1E7C9C090;
   v37 = v20;
   v38 = v22;
-  v35 = v8;
+  v35 = accountCopy;
   v36 = v10;
   v31 = v10;
-  v32 = v8;
+  v32 = accountCopy;
   [(AARemoteServer *)self _startRequest:v14 responseClass:v30 mainThread:0 completion:v34];
 
   v33 = *MEMORY[0x1E69E9840];
@@ -719,15 +719,15 @@ void __65__AARemoteServer_Deprecated__registerAccount_withHSA_completion___block
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)loginDelegates:(id)a3 parameters:(id)a4 completion:(id)a5
+- (void)loginDelegates:(id)delegates parameters:(id)parameters completion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v29 = a5;
-  if (v8)
+  delegatesCopy = delegates;
+  parametersCopy = parameters;
+  completionCopy = completion;
+  if (delegatesCopy)
   {
-    if (v9)
+    if (parametersCopy)
     {
       goto LABEL_3;
     }
@@ -736,7 +736,7 @@ void __65__AARemoteServer_Deprecated__registerAccount_withHSA_completion___block
   else
   {
     [AARemoteServer(Deprecated) loginDelegates:parameters:completion:];
-    if (v9)
+    if (parametersCopy)
     {
       goto LABEL_3;
     }
@@ -752,26 +752,26 @@ LABEL_3:
   }
 
   v11 = [MEMORY[0x1E695DFF8] aa_URLWithEndpoint:@"loginDelegates"];
-  v12 = [v11 absoluteString];
-  v13 = [(AARemoteServer *)self _newURLRequestWithURLString:v12];
+  absoluteString = [v11 absoluteString];
+  v13 = [(AARemoteServer *)self _newURLRequestWithURLString:absoluteString];
 
-  v14 = [v8 aa_personID];
+  aa_personID = [delegatesCopy aa_personID];
 
-  if (v14)
+  if (aa_personID)
   {
-    v15 = [v8 aa_personID];
-    [v13 aa_addDeviceProvisioningInfoHeadersWithDSID:v15];
+    aa_personID2 = [delegatesCopy aa_personID];
+    [v13 aa_addDeviceProvisioningInfoHeadersWithDSID:aa_personID2];
   }
 
-  [v13 setHTTPMethod:{@"POST", v29}];
+  [v13 setHTTPMethod:{@"POST", completionCopy}];
   v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v16 setValue:v9 forKey:@"delegates"];
-  v17 = [v8 username];
-  [v16 setValue:v17 forKey:@"apple-id"];
+  [v16 setValue:parametersCopy forKey:@"delegates"];
+  username = [delegatesCopy username];
+  [v16 setValue:username forKey:@"apple-id"];
 
-  v18 = [v8 credential];
-  v19 = [v18 password];
-  [v16 setValue:v19 forKey:@"password"];
+  credential = [delegatesCopy credential];
+  password = [credential password];
+  [v16 setValue:password forKey:@"password"];
 
   v20 = +[AADeviceInfo appleIDClientIdentifier];
   [v16 setValue:v20 forKey:@"client-id"];
@@ -780,14 +780,14 @@ LABEL_3:
   v21 = _AALogSystem();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [(AARemoteServer *)self _redactedBodyStringWithPropertyList:v9];
+    v22 = [(AARemoteServer *)self _redactedBodyStringWithPropertyList:parametersCopy];
     *buf = 138412290;
     v34 = v22;
     _os_log_impl(&dword_1B6F6A000, v21, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
   [v13 addValue:@"text/plist" forHTTPHeaderField:@"Content-Type"];
-  [v13 aa_addAltDSIDAndRepairStateWithAccount:v8];
+  [v13 aa_addAltDSIDAndRepairStateWithAccount:delegatesCopy];
   v23 = +[AADeviceInfo udid];
   [v13 setValue:v23 forHTTPHeaderField:@"Device-UDID"];
 
@@ -812,24 +812,24 @@ LABEL_3:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_bodyDictionaryWithProtocolVersion:(id)a3
+- (id)_bodyDictionaryWithProtocolVersion:(id)version
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
-  v5 = [v3 dictionary];
-  [v5 setObject:v4 forKey:@"protocolVersion"];
+  versionCopy = version;
+  dictionary = [v3 dictionary];
+  [dictionary setObject:versionCopy forKey:@"protocolVersion"];
 
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  v7 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v8 = [v7 name];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  name = [localTimeZone name];
 
-  [v6 setObject:v8 forKey:@"timezone"];
-  v9 = [MEMORY[0x1E695DF58] preferredLanguages];
-  v10 = [v9 firstObject];
+  [dictionary2 setObject:name forKey:@"timezone"];
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  firstObject = [preferredLanguages firstObject];
 
-  if (v10)
+  if (firstObject)
   {
-    v11 = v10;
+    v11 = firstObject;
   }
 
   else
@@ -837,19 +837,19 @@ LABEL_3:
     v11 = @"en";
   }
 
-  [v6 setObject:v11 forKey:@"language"];
+  [dictionary2 setObject:v11 forKey:@"language"];
   v12 = +[AADeviceInfo appleIDClientIdentifier];
-  [v6 setObject:v12 forKey:@"client-id"];
+  [dictionary2 setObject:v12 forKey:@"client-id"];
 
-  [v5 setObject:v6 forKey:@"userInfo"];
+  [dictionary setObject:dictionary2 forKey:@"userInfo"];
 
-  return v5;
+  return dictionary;
 }
 
-- (id)_redactedBodyStringWithPropertyList:(id)a3
+- (id)_redactedBodyStringWithPropertyList:(id)list
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [a3 mutableCopy];
+  v3 = [list mutableCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -893,10 +893,10 @@ LABEL_3:
   return v14;
 }
 
-- (id)_redactedHeadersFromHTTPHeaders:(id)a3
+- (id)_redactedHeadersFromHTTPHeaders:(id)headers
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [a3 mutableCopy];
+  v3 = [headers mutableCopy];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -937,11 +937,11 @@ LABEL_3:
   return v3;
 }
 
-- (void)_startRequest:(id)a3 responseClass:(Class)a4 mainThread:(BOOL)a5 completion:(id)a6
+- (void)_startRequest:(id)request responseClass:(Class)class mainThread:(BOOL)thread completion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
+  requestCopy = request;
+  completionCopy = completion;
   v12 = _AALogSystem();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -952,7 +952,7 @@ LABEL_3:
   v13 = _AALogSystem();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v10 description];
+    v14 = [requestCopy description];
     *buf = 138412290;
     v27 = v14;
     _os_log_impl(&dword_1B6F6A000, v13, OS_LOG_TYPE_DEFAULT, "HTTP Request: %@", buf, 0xCu);
@@ -961,23 +961,23 @@ LABEL_3:
   v15 = _AALogSystem();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v10 allHTTPHeaderFields];
-    v17 = [(AARemoteServer *)self _redactedHeadersFromHTTPHeaders:v16];
+    allHTTPHeaderFields = [requestCopy allHTTPHeaderFields];
+    v17 = [(AARemoteServer *)self _redactedHeadersFromHTTPHeaders:allHTTPHeaderFields];
     *buf = 138412290;
     v27 = v17;
     _os_log_impl(&dword_1B6F6A000, v15, OS_LOG_TYPE_DEFAULT, "HTTP Headers:\n%@", buf, 0xCu);
   }
 
-  v18 = [(AARemoteServer *)self signingSession];
+  signingSession = [(AARemoteServer *)self signingSession];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __80__AARemoteServer_Deprecated___startRequest_responseClass_mainThread_completion___block_invoke;
   v22[3] = &unk_1E7C9C108;
-  v25 = a5;
-  v23 = v11;
-  v24 = a4;
-  v19 = v11;
-  v20 = [v18 dataTaskWithRequest:v10 completion:v22];
+  threadCopy = thread;
+  v23 = completionCopy;
+  classCopy = class;
+  v19 = completionCopy;
+  v20 = [signingSession dataTaskWithRequest:requestCopy completion:v22];
   [v20 resume];
 
   v21 = *MEMORY[0x1E69E9840];
@@ -1030,11 +1030,11 @@ void __80__AARemoteServer_Deprecated___startRequest_responseClass_mainThread_com
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_newURLRequestWithURLString:(id)a3
+- (id)_newURLRequestWithURLString:(id)string
 {
   v3 = MEMORY[0x1E696AF20];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithString:v4];
+  stringCopy = string;
+  v5 = [[v3 alloc] initWithString:stringCopy];
 
   v6 = MEMORY[0x1E695AC18];
   v7 = [v5 URL];

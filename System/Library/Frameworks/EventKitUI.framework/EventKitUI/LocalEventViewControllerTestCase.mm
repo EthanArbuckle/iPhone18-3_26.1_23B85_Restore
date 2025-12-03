@@ -13,8 +13,8 @@
   v5 = [objc_alloc(MEMORY[0x1E6966A18]) initWithOptions:44 path:v4];
   v6 = [MEMORY[0x1E6966A08] eventWithEventStore:v5];
   [v6 setTitle:@"EventTestTitle"];
-  v7 = [v5 defaultCalendarForNewEvents];
-  [v6 setCalendar:v7];
+  defaultCalendarForNewEvents = [v5 defaultCalendarForNewEvents];
+  [v6 setCalendar:defaultCalendarForNewEvents];
 
   v8 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:0.0];
   [v6 setStartDate:v8];

@@ -1,15 +1,15 @@
 @interface STStorageUsageAppHeaderCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation STStorageUsageAppHeaderCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STStorageUsageAppHeaderCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"STStorageUsageAppHeaderCell" hasInstanceVariable:@"_infoLabel" withType:"UILabel"];
-  [v3 validateClass:@"STStorageUsageAppHeaderCell" hasInstanceVariable:@"_vendorLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STStorageUsageAppHeaderCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"STStorageUsageAppHeaderCell" hasInstanceVariable:@"_infoLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"STStorageUsageAppHeaderCell" hasInstanceVariable:@"_vendorLabel" withType:"UILabel"];
 }
 
 @end

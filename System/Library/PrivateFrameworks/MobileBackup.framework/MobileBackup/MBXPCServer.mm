@@ -1,158 +1,158 @@
 @interface MBXPCServer
 + (id)sharedInstance;
-- (BOOL)_checkForBackupCtlPrivileged:(id)a3 description:(id)a4 error:(id *)a5;
+- (BOOL)_checkForBackupCtlPrivileged:(id)privileged description:(id)description error:(id *)error;
 - (MBBackupScheduler)scheduler;
-- (MBXPCServer)initWithServiceName:(id)a3;
+- (MBXPCServer)initWithServiceName:(id)name;
 - (id)description;
 - (id)serviceManager;
-- (void)_accountChanged:(id)a3;
-- (void)_acquireLock:(id)a3;
-- (void)_archiveLogs:(id)a3;
-- (void)_backgroundRestoreInfo:(id)a3;
-- (void)_backupList:(id)a3;
-- (void)_backupState:(id)a3;
-- (void)_beginPrebuddyBackup:(id)a3;
-- (void)_boostBackgroundRestore:(id)a3;
-- (void)_boostManualBackup:(id)a3;
-- (void)_cancel:(id)a3;
-- (void)_cancelAppRestore:(id)a3;
-- (void)_cancelDeviceTransfer:(id)a3;
-- (void)_cancelPrebuddy:(id)a3;
-- (void)_cancelRestore:(id)a3;
-- (void)_clearAllPendingFollowUps:(id)a3;
-- (void)_clearRestoreSession:(id)a3;
-- (void)_countCameraRollQuota:(id)a3;
-- (void)_countRestoreFailures:(id)a3;
-- (void)_dataExistsForApp:(id)a3;
-- (void)_dateOfLastBackup:(id)a3;
-- (void)_dateOfNextBackup:(id)a3;
-- (void)_deleteAccount:(id)a3;
-- (void)_deleteBackup:(id)a3;
-- (void)_deviceIsLocking:(id)a3;
-- (void)_deviceIsUnlocked:(id)a3;
-- (void)_deviceLockInfos:(id)a3;
-- (void)_disabledDomainInfos:(id)a3;
-- (void)_discountCameraRollQuota:(id)a3;
-- (void)_domainInfo:(id)a3;
-- (void)_domainInfoList:(id)a3;
-- (void)_exitMegaBackupMode:(id)a3;
-- (void)_fetchBackgroundRestoreCellularAccess:(id)a3;
-- (void)_fetchBackupCKRecordsIntoDB:(id)a3;
-- (void)_fetchBundleIDs:(id)a3;
-- (void)_fetchPersonalPersonaIdentifier:(id)a3;
-- (void)_fetchRestorableSnapshots:(id)a3;
-- (void)_fileExists:(id)a3;
-- (void)_finishRestore:(id)a3;
-- (void)_getAllowiTunesBackup:(id)a3;
-- (void)_getAppleIDsMap:(id)a3;
-- (void)_getBackupDeviceUUID:(id)a3;
-- (void)_getBuddyData:(id)a3;
-- (void)_handleRequest:(id)a3;
-- (void)_inheritBackup:(id)a3;
-- (void)_insufficientFreeSpaceToRestore:(id)a3;
-- (void)_isBackupEnabled:(id)a3;
-- (void)_isBackupOnCellularEnabled:(id)a3;
-- (void)_isDomainEnabled:(id)a3;
-- (void)_isInitialMegaBackupCompleted:(id)a3;
-- (void)_isLocalBackupPasswordSet:(id)a3;
-- (void)_isPrebuddyMode:(id)a3;
-- (void)_journalForBackupUUID:(id)a3;
-- (void)_journalLastModifiedForBackupUUID:(id)a3;
-- (void)_listRestoreFailures:(id)a3;
-- (void)_listSnapshotFiles:(id)a3;
-- (void)_logPrebuddyFlowTelemetry:(id)a3;
-- (void)_mergeSnapshots:(id)a3;
-- (void)_nextBackupSize:(id)a3;
-- (void)_nextBackupSizeInfo:(id)a3;
-- (void)_passcodeChanged:(id)a3;
-- (void)_pendingSnapshotForCurrentDevice:(id)a3;
-- (void)_pinSnapshot:(id)a3;
-- (void)_postFollowUpForBackgroundRestoreProgress:(id)a3;
-- (void)_postFollowUpForDrySpellWithDuration:(id)a3;
-- (void)_postFollowUpForRestoreFailed:(id)a3;
-- (void)_postFollowUpForRestoreFinished:(id)a3;
-- (void)_postFollowUpForRestoreTimeout:(id)a3;
-- (void)_prebuddyBackupDeleted:(id)a3;
-- (void)_prepareForBackgroundRestore:(id)a3;
-- (void)_prioritizeRestoreFile:(id)a3;
-- (void)_rebootDevice:(id)a3;
-- (void)_releaseLock:(id)a3;
-- (void)_removeDomain:(id)a3;
-- (void)_repair:(id)a3;
-- (void)_reportRestoreFailure:(id)a3;
-- (void)_requestMegaBackupExpirationDate:(id)a3;
-- (void)_reservedBackupSizeList:(id)a3;
-- (void)_respondSynchronouslyTo:(id)a3 description:(id)a4 withAccount:(id)a5;
-- (void)_respondSynchronouslyTo:(id)a3 with:(id)a4;
-- (void)_restoreDomain:(id)a3;
-- (void)_restoreFiles:(id)a3;
-- (void)_restoreInfo:(id)a3;
-- (void)_restorePreviousSettingsEnabledForMegaBackup:(id)a3;
-- (void)_restoreState:(id)a3;
-- (void)_restoreSupportsBatching:(id)a3;
-- (void)_saveBackgroundRestoreCellularAccess:(id)a3;
-- (void)_saveBackupDomainsEnabledForMegaBackup:(id)a3;
-- (void)_saveBackupEnabledForMegaBackup:(id)a3;
-- (void)_saveSyncSettingsEnabledForMegaBackup:(id)a3;
-- (void)_scheduleActivities:(id)a3;
-- (void)_sendBarrierMessage:(id)a3;
-- (void)_sendMessage:(id)a3 connections:(id)a4;
-- (void)_setAllowiTunesBackup:(id)a3;
-- (void)_setBackupEnabled:(id)a3;
-- (void)_setBackupOnCellularEnabled:(id)a3;
-- (void)_setDomainEnabled:(id)a3;
-- (void)_setEntryPointForMegaBackupTelemetry:(id)a3;
-- (void)_setMegaBackupTurnOnAllAppsSyncTelemetry:(id)a3;
-- (void)_setMegaBackupTurnOniCloudBackupTelemetry:(id)a3;
-- (void)_setPrebuddyUIDeltaTelemetry:(id)a3;
-- (void)_setRestoreQualityOfService:(id)a3;
-- (void)_setupBackup:(id)a3;
-- (void)_signalPrebuddy:(id)a3;
-- (void)_startAppRestore:(id)a3;
-- (void)_startBackup:(id)a3;
-- (void)_startBookRestore:(id)a3;
-- (void)_startDataTransfer:(id)a3;
-- (void)_startDeviceTransfer:(id)a3;
-- (void)_startFileRestore:(id)a3;
-- (void)_startFilesRestore:(id)a3;
-- (void)_startKeychainDataImport:(id)a3;
-- (void)_startKeychainDataTransfer:(id)a3;
-- (void)_startPreflight:(id)a3;
-- (void)_startRestore:(id)a3;
-- (void)_startScan:(id)a3;
-- (void)_startScanForBundleIDs:(id)a3;
-- (void)_syncBackupEnabled:(id)a3;
-- (void)_synchronizeFileLists:(id)a3;
+- (void)_accountChanged:(id)changed;
+- (void)_acquireLock:(id)lock;
+- (void)_archiveLogs:(id)logs;
+- (void)_backgroundRestoreInfo:(id)info;
+- (void)_backupList:(id)list;
+- (void)_backupState:(id)state;
+- (void)_beginPrebuddyBackup:(id)backup;
+- (void)_boostBackgroundRestore:(id)restore;
+- (void)_boostManualBackup:(id)backup;
+- (void)_cancel:(id)_cancel;
+- (void)_cancelAppRestore:(id)restore;
+- (void)_cancelDeviceTransfer:(id)transfer;
+- (void)_cancelPrebuddy:(id)prebuddy;
+- (void)_cancelRestore:(id)restore;
+- (void)_clearAllPendingFollowUps:(id)ups;
+- (void)_clearRestoreSession:(id)session;
+- (void)_countCameraRollQuota:(id)quota;
+- (void)_countRestoreFailures:(id)failures;
+- (void)_dataExistsForApp:(id)app;
+- (void)_dateOfLastBackup:(id)backup;
+- (void)_dateOfNextBackup:(id)backup;
+- (void)_deleteAccount:(id)account;
+- (void)_deleteBackup:(id)backup;
+- (void)_deviceIsLocking:(id)locking;
+- (void)_deviceIsUnlocked:(id)unlocked;
+- (void)_deviceLockInfos:(id)infos;
+- (void)_disabledDomainInfos:(id)infos;
+- (void)_discountCameraRollQuota:(id)quota;
+- (void)_domainInfo:(id)info;
+- (void)_domainInfoList:(id)list;
+- (void)_exitMegaBackupMode:(id)mode;
+- (void)_fetchBackgroundRestoreCellularAccess:(id)access;
+- (void)_fetchBackupCKRecordsIntoDB:(id)b;
+- (void)_fetchBundleIDs:(id)ds;
+- (void)_fetchPersonalPersonaIdentifier:(id)identifier;
+- (void)_fetchRestorableSnapshots:(id)snapshots;
+- (void)_fileExists:(id)exists;
+- (void)_finishRestore:(id)restore;
+- (void)_getAllowiTunesBackup:(id)backup;
+- (void)_getAppleIDsMap:(id)map;
+- (void)_getBackupDeviceUUID:(id)d;
+- (void)_getBuddyData:(id)data;
+- (void)_handleRequest:(id)request;
+- (void)_inheritBackup:(id)backup;
+- (void)_insufficientFreeSpaceToRestore:(id)restore;
+- (void)_isBackupEnabled:(id)enabled;
+- (void)_isBackupOnCellularEnabled:(id)enabled;
+- (void)_isDomainEnabled:(id)enabled;
+- (void)_isInitialMegaBackupCompleted:(id)completed;
+- (void)_isLocalBackupPasswordSet:(id)set;
+- (void)_isPrebuddyMode:(id)mode;
+- (void)_journalForBackupUUID:(id)d;
+- (void)_journalLastModifiedForBackupUUID:(id)d;
+- (void)_listRestoreFailures:(id)failures;
+- (void)_listSnapshotFiles:(id)files;
+- (void)_logPrebuddyFlowTelemetry:(id)telemetry;
+- (void)_mergeSnapshots:(id)snapshots;
+- (void)_nextBackupSize:(id)size;
+- (void)_nextBackupSizeInfo:(id)info;
+- (void)_passcodeChanged:(id)changed;
+- (void)_pendingSnapshotForCurrentDevice:(id)device;
+- (void)_pinSnapshot:(id)snapshot;
+- (void)_postFollowUpForBackgroundRestoreProgress:(id)progress;
+- (void)_postFollowUpForDrySpellWithDuration:(id)duration;
+- (void)_postFollowUpForRestoreFailed:(id)failed;
+- (void)_postFollowUpForRestoreFinished:(id)finished;
+- (void)_postFollowUpForRestoreTimeout:(id)timeout;
+- (void)_prebuddyBackupDeleted:(id)deleted;
+- (void)_prepareForBackgroundRestore:(id)restore;
+- (void)_prioritizeRestoreFile:(id)file;
+- (void)_rebootDevice:(id)device;
+- (void)_releaseLock:(id)lock;
+- (void)_removeDomain:(id)domain;
+- (void)_repair:(id)_repair;
+- (void)_reportRestoreFailure:(id)failure;
+- (void)_requestMegaBackupExpirationDate:(id)date;
+- (void)_reservedBackupSizeList:(id)list;
+- (void)_respondSynchronouslyTo:(id)to description:(id)description withAccount:(id)account;
+- (void)_respondSynchronouslyTo:(id)to with:(id)with;
+- (void)_restoreDomain:(id)domain;
+- (void)_restoreFiles:(id)files;
+- (void)_restoreInfo:(id)info;
+- (void)_restorePreviousSettingsEnabledForMegaBackup:(id)backup;
+- (void)_restoreState:(id)state;
+- (void)_restoreSupportsBatching:(id)batching;
+- (void)_saveBackgroundRestoreCellularAccess:(id)access;
+- (void)_saveBackupDomainsEnabledForMegaBackup:(id)backup;
+- (void)_saveBackupEnabledForMegaBackup:(id)backup;
+- (void)_saveSyncSettingsEnabledForMegaBackup:(id)backup;
+- (void)_scheduleActivities:(id)activities;
+- (void)_sendBarrierMessage:(id)message;
+- (void)_sendMessage:(id)message connections:(id)connections;
+- (void)_setAllowiTunesBackup:(id)backup;
+- (void)_setBackupEnabled:(id)enabled;
+- (void)_setBackupOnCellularEnabled:(id)enabled;
+- (void)_setDomainEnabled:(id)enabled;
+- (void)_setEntryPointForMegaBackupTelemetry:(id)telemetry;
+- (void)_setMegaBackupTurnOnAllAppsSyncTelemetry:(id)telemetry;
+- (void)_setMegaBackupTurnOniCloudBackupTelemetry:(id)telemetry;
+- (void)_setPrebuddyUIDeltaTelemetry:(id)telemetry;
+- (void)_setRestoreQualityOfService:(id)service;
+- (void)_setupBackup:(id)backup;
+- (void)_signalPrebuddy:(id)prebuddy;
+- (void)_startAppRestore:(id)restore;
+- (void)_startBackup:(id)backup;
+- (void)_startBookRestore:(id)restore;
+- (void)_startDataTransfer:(id)transfer;
+- (void)_startDeviceTransfer:(id)transfer;
+- (void)_startFileRestore:(id)restore;
+- (void)_startFilesRestore:(id)restore;
+- (void)_startKeychainDataImport:(id)import;
+- (void)_startKeychainDataTransfer:(id)transfer;
+- (void)_startPreflight:(id)preflight;
+- (void)_startRestore:(id)restore;
+- (void)_startScan:(id)scan;
+- (void)_startScanForBundleIDs:(id)ds;
+- (void)_syncBackupEnabled:(id)enabled;
+- (void)_synchronizeFileLists:(id)lists;
 - (void)_unlocked;
-- (void)_unpinSnapshot:(id)a3;
-- (void)_unsetLocalBackupPassword:(id)a3;
-- (void)_updateMegaBackupExpirationDate:(id)a3;
-- (void)_updatePrebuddyFollowUp:(id)a3;
-- (void)_wasBackupEnabledForMegaBackup:(id)a3;
-- (void)connection:(id)a3 didFinishDeviceTransferKeychainTransfer:(id)a4;
-- (void)connection:(id)a3 didFinishDeviceTransferWithError:(id)a4;
-- (void)connection:(id)a3 didReceiveMessage:(id)a4;
-- (void)connection:(id)a3 didUpdateDeviceTransferConnectionInfo:(id)a4;
-- (void)connection:(id)a3 didUpdateDeviceTransferProgress:(id)a4;
-- (void)connectionWasInvalidated:(id)a3;
+- (void)_unpinSnapshot:(id)snapshot;
+- (void)_unsetLocalBackupPassword:(id)password;
+- (void)_updateMegaBackupExpirationDate:(id)date;
+- (void)_updatePrebuddyFollowUp:(id)up;
+- (void)_wasBackupEnabledForMegaBackup:(id)backup;
+- (void)connection:(id)connection didFinishDeviceTransferKeychainTransfer:(id)transfer;
+- (void)connection:(id)connection didFinishDeviceTransferWithError:(id)error;
+- (void)connection:(id)connection didReceiveMessage:(id)message;
+- (void)connection:(id)connection didUpdateDeviceTransferConnectionInfo:(id)info;
+- (void)connection:(id)connection didUpdateDeviceTransferProgress:(id)progress;
+- (void)connectionWasInvalidated:(id)invalidated;
 - (void)dealloc;
-- (void)manager:(id)a3 didFailBackupWithError:(id)a4;
-- (void)manager:(id)a3 didFailRestoreForPath:(id)a4 withContext:(id)a5 error:(id)a6;
-- (void)manager:(id)a3 didFailRestoreWithContext:(id)a4 error:(id)a5;
-- (void)manager:(id)a3 didFailScanWithError:(id)a4;
-- (void)manager:(id)a3 didFailVerificationWithError:(id)a4;
-- (void)manager:(id)a3 didFinishRestoreForPath:(id)a4 withContext:(id)a5;
-- (void)manager:(id)a3 didFinishRestoreWithContext:(id)a4;
-- (void)manager:(id)a3 didScanBundleWithID:(id)a4 bytesUsed:(unint64_t)a5;
-- (void)manager:(id)a3 didScanDomainWithName:(id)a4 forBundleID:(id)a5 bytesUsed:(unint64_t)a6;
-- (void)manager:(id)a3 didScanFiles:(id)a4 forDomainWithName:(id)a5 bundleID:(id)a6;
-- (void)manager:(id)a3 didSetBackupEnabled:(BOOL)a4;
-- (void)manager:(id)a3 didUpdateBackgroundRestoreWithContext:(id)a4;
-- (void)manager:(id)a3 didUpdateProgress:(float)a4 estimatedTimeRemaining:(unint64_t)a5 bytesRemaining:(int64_t)a6 state:(id)a7 context:(id)a8;
-- (void)managerDidCancelRestore:(id)a3;
-- (void)managerDidFinishBackup:(id)a3;
-- (void)managerDidFinishScan:(id)a3 bytesUsed:(unint64_t)a4;
-- (void)managerDidFinishVerification:(id)a3;
+- (void)manager:(id)manager didFailBackupWithError:(id)error;
+- (void)manager:(id)manager didFailRestoreForPath:(id)path withContext:(id)context error:(id)error;
+- (void)manager:(id)manager didFailRestoreWithContext:(id)context error:(id)error;
+- (void)manager:(id)manager didFailScanWithError:(id)error;
+- (void)manager:(id)manager didFailVerificationWithError:(id)error;
+- (void)manager:(id)manager didFinishRestoreForPath:(id)path withContext:(id)context;
+- (void)manager:(id)manager didFinishRestoreWithContext:(id)context;
+- (void)manager:(id)manager didScanBundleWithID:(id)d bytesUsed:(unint64_t)used;
+- (void)manager:(id)manager didScanDomainWithName:(id)name forBundleID:(id)d bytesUsed:(unint64_t)used;
+- (void)manager:(id)manager didScanFiles:(id)files forDomainWithName:(id)name bundleID:(id)d;
+- (void)manager:(id)manager didSetBackupEnabled:(BOOL)enabled;
+- (void)manager:(id)manager didUpdateBackgroundRestoreWithContext:(id)context;
+- (void)manager:(id)manager didUpdateProgress:(float)progress estimatedTimeRemaining:(unint64_t)remaining bytesRemaining:(int64_t)bytesRemaining state:(id)state context:(id)context;
+- (void)managerDidCancelRestore:(id)restore;
+- (void)managerDidFinishBackup:(id)backup;
+- (void)managerDidFinishScan:(id)scan bytesUsed:(unint64_t)used;
+- (void)managerDidFinishVerification:(id)verification;
 @end
 
 @implementation MBXPCServer
@@ -169,9 +169,9 @@
   return v3;
 }
 
-- (MBXPCServer)initWithServiceName:(id)a3
+- (MBXPCServer)initWithServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v43.receiver = self;
   v43.super_class = MBXPCServer;
   v5 = [(MBXPCServer *)&v43 init];
@@ -188,9 +188,9 @@
 
     v12 = objc_opt_class();
     v13 = [NSString stringWithFormat:@"xpc_%s", class_getName(v12)];
-    v14 = [v13 UTF8String];
+    uTF8String = [v13 UTF8String];
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v16 = dispatch_queue_create(v14, v15);
+    v16 = dispatch_queue_create(uTF8String, v15);
 
     v17 = MKBDeviceUnlockedSinceBoot();
     atomic_store(v17 == 1, v5 + 32);
@@ -247,7 +247,7 @@
     v28 = *(v5 + 2);
     *(v5 + 2) = v27;
 
-    mach_service = xpc_connection_create_mach_service([v4 UTF8String], v16, 1uLL);
+    mach_service = xpc_connection_create_mach_service([nameCopy UTF8String], v16, 1uLL);
     v30 = *(v5 + 1);
     *(v5 + 1) = mach_service;
 
@@ -339,26 +339,26 @@
   return v4;
 }
 
-- (void)_handleRequest:(id)a3
+- (void)_handleRequest:(id)request
 {
-  v4 = a3;
-  v5 = v4;
+  requestCopy = request;
+  v5 = requestCopy;
   v6 = atomic_load(&self->_unlocked);
   if (v6)
   {
-    v7 = [v4 personaIdentifier];
-    if (v7)
+    personaIdentifier = [requestCopy personaIdentifier];
+    if (personaIdentifier)
     {
       v8 = +[UMUserManager sharedManager];
-      v9 = [v8 currentPersona];
+      currentPersona = [v8 currentPersona];
 
-      if (!v9)
+      if (!currentPersona)
       {
         __assert_rtn("[MBXPCServer _handleRequest:]", "MBXPCServer.m", 376, "currentPersona");
       }
 
-      v10 = [v9 userPersonaUniqueString];
-      if ([v7 isEqual:v10])
+      userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+      if ([personaIdentifier isEqual:userPersonaUniqueString])
       {
         v11 = 0;
         v12 = 0;
@@ -368,25 +368,25 @@ LABEL_6:
       }
 
       v34 = 0;
-      v12 = [v9 copyCurrentPersonaContextWithError:&v34];
+      v12 = [currentPersona copyCurrentPersonaContextWithError:&v34];
       v23 = v34;
       if (v12)
       {
-        v24 = [v9 createPersonaContextForBackgroundProcessingWithPersonaUniqueString:v7];
+        v24 = [currentPersona createPersonaContextForBackgroundProcessingWithPersonaUniqueString:personaIdentifier];
 
         if (!v24)
         {
-          v11 = v10;
-          v28 = [v5 connection];
-          [v28 setPersonaIdentifier:v7];
+          v11 = userPersonaUniqueString;
+          connection = [v5 connection];
+          [connection setPersonaIdentifier:personaIdentifier];
 
           v29 = MBGetDefaultLog();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v36 = v7;
+            v36 = personaIdentifier;
             _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Adopted persona %{public}@", buf, 0xCu);
-            v31 = v7;
+            v31 = personaIdentifier;
             _MBLog();
           }
 
@@ -397,11 +397,11 @@ LABEL_6:
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v36 = v7;
+          v36 = personaIdentifier;
           v37 = 2114;
           v38 = v24;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "Failed to adopt persona %{public}@: %{public}@", buf, 0x16u);
-          v31 = v7;
+          v31 = personaIdentifier;
           v32 = v24;
           _MBLog();
         }
@@ -423,11 +423,11 @@ LABEL_28:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v36 = v10;
+        v36 = userPersonaUniqueString;
         v37 = 2114;
         v38 = v23;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "Failed to copy the persona context for persona %{public}@: %{public}@", buf, 0x16u);
-        v31 = v10;
+        v31 = userPersonaUniqueString;
         v32 = v23;
         _MBLog();
       }
@@ -440,17 +440,17 @@ LABEL_28:
 
     else
     {
-      v9 = 0;
+      currentPersona = 0;
     }
 
     v12 = 0;
     v11 = 0;
 LABEL_12:
-    v15 = [v5 name];
-    if (v15)
+    name = [v5 name];
+    if (name)
     {
-      v16 = v15;
-      v17 = [&off_1003E1EB0 objectForKeyedSubscript:v15];
+      v16 = name;
+      v17 = [&off_1003E1EB0 objectForKeyedSubscript:name];
       if (v17)
       {
         v18 = v17;
@@ -469,8 +469,8 @@ LABEL_29:
         }
 
         v19 = +[UMUserManager sharedManager];
-        v20 = [v19 currentPersona];
-        v21 = [v20 restorePersonaWithSavedPersonaContext:v12];
+        currentPersona2 = [v19 currentPersona];
+        v21 = [currentPersona2 restorePersonaWithSavedPersonaContext:v12];
 
         v22 = MBGetDefaultLog();
         v23 = v22;
@@ -514,15 +514,15 @@ LABEL_29:
     objc_exception_throw(v30);
   }
 
-  v7 = [v4 name];
-  v9 = [v5 connection];
+  personaIdentifier = [requestCopy name];
+  currentPersona = [v5 connection];
   v13 = MBGetDefaultLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v36 = v7;
+    v36 = personaIdentifier;
     v37 = 2112;
-    v38 = v9;
+    v38 = currentPersona;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Device has not yet been unlocked. Ignoring request: %@ from %@", buf, 0x16u);
     _MBLog();
   }
@@ -550,9 +550,9 @@ LABEL_30:
   return v4;
 }
 
-- (void)_synchronizeFileLists:(id)a3
+- (void)_synchronizeFileLists:(id)lists
 {
-  v4 = a3;
+  listsCopy = lists;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v19 = 0;
@@ -561,18 +561,18 @@ LABEL_30:
 
   if (v7)
   {
-    v9 = [v4 arguments];
-    v10 = [v9 objectAtIndexedSubscript:0];
+    arguments = [listsCopy arguments];
+    v10 = [arguments objectAtIndexedSubscript:0];
 
-    v11 = [v4 arguments];
-    v12 = [v11 objectAtIndexedSubscript:1];
+    arguments2 = [listsCopy arguments];
+    v12 = [arguments2 objectAtIndexedSubscript:1];
 
-    v13 = [(MBXPCServer *)self serviceManager];
+    serviceManager = [(MBXPCServer *)self serviceManager];
     v18 = v8;
-    v14 = [v13 synchronizeFileListsWithDeviceUUID:v10 commitID:v12 account:v7 error:&v18];
+    v14 = [serviceManager synchronizeFileListsWithDeviceUUID:v10 commitID:v12 account:v7 error:&v18];
     v15 = v18;
 
-    [v4 setReply:v14];
+    [listsCopy setReply:v14];
     v8 = v15;
   }
 
@@ -588,32 +588,32 @@ LABEL_30:
       _MBLog();
     }
 
-    [v4 setReply:0];
+    [listsCopy setReply:0];
   }
 
-  [v4 setReplyError:{v8, v17}];
-  [v4 sendReply];
+  [listsCopy setReplyError:{v8, v17}];
+  [listsCopy sendReply];
 }
 
-- (void)_fetchBackupCKRecordsIntoDB:(id)a3
+- (void)_fetchBackupCKRecordsIntoDB:(id)b
 {
-  v3 = a3;
+  bCopy = b;
   v4 = [MBServiceAccount alloc];
   v5 = +[UMUserPersona currentPersona];
   v13 = 0;
   v6 = [(MBServiceAccount *)v4 initWithPersona:v5 error:&v13];
   v7 = v13;
 
-  v8 = [(MBServiceAccount *)v6 persona];
-  v9 = [v8 snapshotDatabaseDirectory];
+  persona = [(MBServiceAccount *)v6 persona];
+  snapshotDatabaseDirectory = [persona snapshotDatabaseDirectory];
 
   v12 = v7;
-  LODWORD(v8) = MBBuildBackupCKRecordsDB(v6, 0, v9, &v12);
+  LODWORD(persona) = MBBuildBackupCKRecordsDB(v6, 0, snapshotDatabaseDirectory, &v12);
   v10 = v12;
 
-  if (v8)
+  if (persona)
   {
-    v11 = v9;
+    v11 = snapshotDatabaseDirectory;
   }
 
   else
@@ -621,18 +621,18 @@ LABEL_30:
     v11 = 0;
   }
 
-  [v3 setReply:v11];
-  [v3 setReplyError:v10];
+  [bCopy setReply:v11];
+  [bCopy setReplyError:v10];
 
-  [v3 sendReply];
+  [bCopy sendReply];
 }
 
-- (void)_setupBackup:(id)a3
+- (void)_setupBackup:(id)backup
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v4 connection];
-  v7 = [v5 lastObject];
+  backupCopy = backup;
+  arguments = [backupCopy arguments];
+  connection = [backupCopy connection];
+  lastObject = [arguments lastObject];
   v8 = [MBServiceAccount alloc];
   v9 = +[UMUserPersona currentPersona];
   v19 = 0;
@@ -641,9 +641,9 @@ LABEL_30:
 
   if (v10)
   {
-    v12 = [(MBXPCServer *)self serviceManager];
+    serviceManager = [(MBXPCServer *)self serviceManager];
     v18 = v11;
-    v13 = [v12 setupBackupWithPasscode:v7 account:v10 connection:v6 error:&v18];
+    v13 = [serviceManager setupBackupWithPasscode:lastObject account:v10 connection:connection error:&v18];
     v14 = v18;
 
     v11 = v14;
@@ -651,12 +651,12 @@ LABEL_30:
 
   else
   {
-    v12 = MBGetDefaultLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v21 = v11;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to set up backup due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to set up backup due to nil account: %{public}@", buf, 0xCu);
       v17 = v11;
       _MBLog();
     }
@@ -665,23 +665,23 @@ LABEL_30:
   }
 
   v15 = [NSNumber numberWithBool:v13];
-  [v4 setReply:v15];
+  [backupCopy setReply:v15];
 
   if ((v13 & 1) == 0)
   {
     v16 = [MBError sanitizedError:v11];
-    [v4 setReplyError:v16];
+    [backupCopy setReplyError:v16];
   }
 
-  [v4 sendReply];
+  [backupCopy sendReply];
 }
 
-- (void)_startBackup:(id)a3
+- (void)_startBackup:(id)backup
 {
-  v4 = a3;
-  v5 = [v4 connection];
-  v6 = [v4 arguments];
-  v7 = [v6 firstObject];
+  backupCopy = backup;
+  connection = [backupCopy connection];
+  arguments = [backupCopy arguments];
+  firstObject = [arguments firstObject];
 
   v8 = [MBServiceAccount alloc];
   v9 = +[UMUserPersona currentPersona];
@@ -691,9 +691,9 @@ LABEL_30:
 
   if (v10)
   {
-    v12 = [(MBXPCServer *)self serviceManager];
+    serviceManager = [(MBXPCServer *)self serviceManager];
     v18 = v11;
-    v13 = [v12 startBackupWithOptions:v7 reason:1 xpcActivity:0 account:v10 connection:v5 error:&v18];
+    v13 = [serviceManager startBackupWithOptions:firstObject reason:1 xpcActivity:0 account:v10 connection:connection error:&v18];
     v14 = v18;
 
     v11 = v14;
@@ -701,12 +701,12 @@ LABEL_30:
 
   else
   {
-    v12 = MBGetDefaultLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v21 = v11;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to start backup due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to start backup due to nil account: %{public}@", buf, 0xCu);
       v17 = v11;
       _MBLog();
     }
@@ -715,22 +715,22 @@ LABEL_30:
   }
 
   v15 = [NSNumber numberWithBool:v13];
-  [v4 setReply:v15];
+  [backupCopy setReply:v15];
 
   if ((v13 & 1) == 0)
   {
     v16 = [MBError sanitizedError:v11];
-    [v4 setReplyError:v16];
+    [backupCopy setReplyError:v16];
   }
 
-  [v4 sendReply];
+  [backupCopy sendReply];
 }
 
-- (void)_signalPrebuddy:(id)a3
+- (void)_signalPrebuddy:(id)prebuddy
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v5 firstObject];
+  prebuddyCopy = prebuddy;
+  arguments = [prebuddyCopy arguments];
+  firstObject = [arguments firstObject];
   v7 = [MBServiceAccount alloc];
   v8 = +[UMUserPersona currentPersona];
   v14 = 0;
@@ -739,10 +739,10 @@ LABEL_30:
 
   if (v9)
   {
-    v11 = [(MBXPCServer *)self serviceManager];
-    [v11 signalPrebuddy:v6 account:v9];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    [serviceManager signalPrebuddy:firstObject account:v9];
 
-    [v4 setReply:&__kCFBooleanTrue];
+    [prebuddyCopy setReply:&__kCFBooleanTrue];
   }
 
   else
@@ -758,12 +758,12 @@ LABEL_30:
     }
   }
 
-  [v4 sendReply];
+  [prebuddyCopy sendReply];
 }
 
-- (void)_updatePrebuddyFollowUp:(id)a3
+- (void)_updatePrebuddyFollowUp:(id)up
 {
-  v4 = a3;
+  upCopy = up;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v13 = 0;
@@ -772,11 +772,11 @@ LABEL_30:
 
   if (v7)
   {
-    v9 = [(MBXPCServer *)self serviceManager];
-    [v9 updatePrebuddyFollowUp:v7];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    [serviceManager updatePrebuddyFollowUp:v7];
 
     v10 = [NSNumber numberWithBool:1];
-    [v4 setReply:v10];
+    [upCopy setReply:v10];
   }
 
   else
@@ -791,18 +791,18 @@ LABEL_30:
     }
 
     v12 = [NSNumber numberWithBool:0];
-    [v4 setReply:v12];
+    [upCopy setReply:v12];
 
     v10 = [MBError sanitizedError:v8];
-    [v4 setReplyError:v10];
+    [upCopy setReplyError:v10];
   }
 
-  [v4 sendReply];
+  [upCopy sendReply];
 }
 
-- (void)_cancelPrebuddy:(id)a3
+- (void)_cancelPrebuddy:(id)prebuddy
 {
-  v4 = a3;
+  prebuddyCopy = prebuddy;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v16 = 0;
@@ -811,15 +811,15 @@ LABEL_30:
 
   if (v7)
   {
-    v9 = [v4 arguments];
-    v10 = [v9 firstObject];
-    v11 = [v10 BOOLValue];
+    arguments = [prebuddyCopy arguments];
+    firstObject = [arguments firstObject];
+    bOOLValue = [firstObject BOOLValue];
 
-    v12 = [(MBXPCServer *)self serviceManager];
-    [v12 clearPrebuddyWithAccount:v7 accountSignOut:v11];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    [serviceManager clearPrebuddyWithAccount:v7 accountSignOut:bOOLValue];
 
     v13 = [NSNumber numberWithBool:1];
-    [v4 setReply:v13];
+    [prebuddyCopy setReply:v13];
   }
 
   else
@@ -834,20 +834,20 @@ LABEL_30:
     }
 
     v15 = [NSNumber numberWithBool:0];
-    [v4 setReply:v15];
+    [prebuddyCopy setReply:v15];
 
     v13 = [MBError sanitizedError:v8];
-    [v4 setReplyError:v13];
+    [prebuddyCopy setReplyError:v13];
   }
 
-  [v4 sendReply];
+  [prebuddyCopy sendReply];
 }
 
-- (void)_beginPrebuddyBackup:(id)a3
+- (void)_beginPrebuddyBackup:(id)backup
 {
-  v4 = a3;
-  v5 = [v4 connection];
-  v6 = [v4 arguments];
+  backupCopy = backup;
+  connection = [backupCopy connection];
+  arguments = [backupCopy arguments];
   v7 = [MBServiceAccount alloc];
   v8 = +[UMUserPersona currentPersona];
   v17 = 0;
@@ -856,14 +856,14 @@ LABEL_30:
 
   if (v9)
   {
-    v11 = [v6 firstObject];
-    v12 = [v11 BOOLValue];
+    firstObject = [arguments firstObject];
+    bOOLValue = [firstObject BOOLValue];
 
-    v13 = [(MBXPCServer *)self serviceManager];
-    [v13 beginPrebuddyBackupWithAccount:v9 connection:v5 fromManualSignal:v12];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    [serviceManager beginPrebuddyBackupWithAccount:v9 connection:connection fromManualSignal:bOOLValue];
 
     v14 = [NSNumber numberWithBool:1];
-    [v4 setReply:v14];
+    [backupCopy setReply:v14];
   }
 
   else
@@ -878,30 +878,30 @@ LABEL_30:
     }
 
     v16 = [NSNumber numberWithBool:0];
-    [v4 setReply:v16];
+    [backupCopy setReply:v16];
 
     v14 = [MBError sanitizedError:v10];
-    [v4 setReplyError:v14];
+    [backupCopy setReplyError:v14];
   }
 
-  [v4 sendReply];
+  [backupCopy sendReply];
 }
 
-- (void)_isPrebuddyMode:(id)a3
+- (void)_isPrebuddyMode:(id)mode
 {
-  v7 = a3;
-  v4 = [(MBXPCServer *)self serviceManager];
-  v5 = [v4 isPrebuddyMode];
+  modeCopy = mode;
+  serviceManager = [(MBXPCServer *)self serviceManager];
+  isPrebuddyMode = [serviceManager isPrebuddyMode];
 
-  v6 = [NSNumber numberWithBool:v5];
-  [v7 setReply:v6];
+  v6 = [NSNumber numberWithBool:isPrebuddyMode];
+  [modeCopy setReply:v6];
 
-  [v7 sendReply];
+  [modeCopy sendReply];
 }
 
-- (void)_isInitialMegaBackupCompleted:(id)a3
+- (void)_isInitialMegaBackupCompleted:(id)completed
 {
-  v4 = a3;
+  completedCopy = completed;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v12 = 0;
@@ -910,18 +910,18 @@ LABEL_30:
 
   if (v7)
   {
-    v9 = [(MBXPCServer *)self serviceManager];
-    v10 = [v9 isInitialMegaBackupCompleted:v7];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    v10 = [serviceManager isInitialMegaBackupCompleted:v7];
   }
 
   else
   {
-    v9 = MBGetDefaultLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v14 = v8;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to fetch is initial mega backup completed due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to fetch is initial mega backup completed due to nil account: %{public}@", buf, 0xCu);
       _MBLog();
     }
 
@@ -929,24 +929,24 @@ LABEL_30:
   }
 
   v11 = [NSNumber numberWithBool:v10];
-  [v4 setReply:v11];
+  [completedCopy setReply:v11];
 
-  [v4 setReplyError:v8];
-  [v4 sendReply];
+  [completedCopy setReplyError:v8];
+  [completedCopy sendReply];
 }
 
-- (void)_saveBackupEnabledForMegaBackup:(id)a3
+- (void)_saveBackupEnabledForMegaBackup:(id)backup
 {
-  v5 = a3;
-  v4 = [(MBXPCServer *)self serviceManager];
-  [v4 saveBackupEnabledForMegaBackup];
+  backupCopy = backup;
+  serviceManager = [(MBXPCServer *)self serviceManager];
+  [serviceManager saveBackupEnabledForMegaBackup];
 
-  [v5 sendReply];
+  [backupCopy sendReply];
 }
 
-- (void)_wasBackupEnabledForMegaBackup:(id)a3
+- (void)_wasBackupEnabledForMegaBackup:(id)backup
 {
-  v4 = a3;
+  backupCopy = backup;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v15 = 0;
@@ -955,9 +955,9 @@ LABEL_30:
 
   if (v7)
   {
-    v9 = [(MBXPCServer *)self serviceManager];
+    serviceManager = [(MBXPCServer *)self serviceManager];
     v14 = v8;
-    v10 = [v9 restorePreviousSettingsEnabledForMegaBackup:v7 error:&v14];
+    v10 = [serviceManager restorePreviousSettingsEnabledForMegaBackup:v7 error:&v14];
     v11 = v14;
 
     v8 = v11;
@@ -965,12 +965,12 @@ LABEL_30:
 
   else
   {
-    v9 = MBGetDefaultLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v17 = v8;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to fetch was backup enabled for mega backup due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to fetch was backup enabled for mega backup due to nil account: %{public}@", buf, 0xCu);
       _MBLog();
     }
 
@@ -978,39 +978,39 @@ LABEL_30:
   }
 
   v12 = [NSNumber numberWithBool:v10];
-  [v4 setReply:v12];
+  [backupCopy setReply:v12];
 
   v13 = [MBError sanitizedError:v8];
-  [v4 setReplyError:v13];
+  [backupCopy setReplyError:v13];
 
-  [v4 sendReply];
+  [backupCopy sendReply];
 }
 
-- (void)_saveSyncSettingsEnabledForMegaBackup:(id)a3
+- (void)_saveSyncSettingsEnabledForMegaBackup:(id)backup
 {
-  v4 = a3;
-  v7 = [v4 arguments];
-  v5 = [v7 firstObject];
-  v6 = [(MBXPCServer *)self serviceManager];
-  [v6 saveSyncSettingsEnabledForMegaBackup:v5];
+  backupCopy = backup;
+  arguments = [backupCopy arguments];
+  firstObject = [arguments firstObject];
+  serviceManager = [(MBXPCServer *)self serviceManager];
+  [serviceManager saveSyncSettingsEnabledForMegaBackup:firstObject];
 
-  [v4 sendReply];
+  [backupCopy sendReply];
 }
 
-- (void)_saveBackupDomainsEnabledForMegaBackup:(id)a3
+- (void)_saveBackupDomainsEnabledForMegaBackup:(id)backup
 {
-  v4 = a3;
-  v7 = [v4 arguments];
-  v5 = [v7 firstObject];
-  v6 = [(MBXPCServer *)self serviceManager];
-  [v6 saveBackupDomainsEnabledForMegaBackup:v5];
+  backupCopy = backup;
+  arguments = [backupCopy arguments];
+  firstObject = [arguments firstObject];
+  serviceManager = [(MBXPCServer *)self serviceManager];
+  [serviceManager saveBackupDomainsEnabledForMegaBackup:firstObject];
 
-  [v4 sendReply];
+  [backupCopy sendReply];
 }
 
-- (void)_restorePreviousSettingsEnabledForMegaBackup:(id)a3
+- (void)_restorePreviousSettingsEnabledForMegaBackup:(id)backup
 {
-  v4 = a3;
+  backupCopy = backup;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v14 = 0;
@@ -1019,9 +1019,9 @@ LABEL_30:
 
   if (v7)
   {
-    v9 = [(MBXPCServer *)self serviceManager];
+    serviceManager = [(MBXPCServer *)self serviceManager];
     v13 = v8;
-    v10 = [v9 restorePreviousSettingsEnabledForMegaBackup:v7 error:&v13];
+    v10 = [serviceManager restorePreviousSettingsEnabledForMegaBackup:v7 error:&v13];
     v11 = v13;
 
     v8 = v11;
@@ -1029,12 +1029,12 @@ LABEL_30:
 
   else
   {
-    v9 = MBGetDefaultLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v16 = v8;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to restore previous settings enabled for mega backup due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to restore previous settings enabled for mega backup due to nil account: %{public}@", buf, 0xCu);
       _MBLog();
     }
 
@@ -1042,15 +1042,15 @@ LABEL_30:
   }
 
   v12 = [NSNumber numberWithBool:v10];
-  [v4 setReply:v12];
+  [backupCopy setReply:v12];
 
-  [v4 setReplyError:v8];
-  [v4 sendReply];
+  [backupCopy setReplyError:v8];
+  [backupCopy sendReply];
 }
 
-- (void)_requestMegaBackupExpirationDate:(id)a3
+- (void)_requestMegaBackupExpirationDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v16 = 0;
@@ -1059,12 +1059,12 @@ LABEL_30:
 
   if (v7)
   {
-    v9 = [v4 arguments];
-    v10 = [v9 firstObject];
+    arguments = [dateCopy arguments];
+    firstObject = [arguments firstObject];
 
-    v11 = [(MBXPCServer *)self serviceManager];
+    serviceManager = [(MBXPCServer *)self serviceManager];
     v15 = v8;
-    v12 = [v11 requestMegaBackupExpirationDate:v10 account:v7 error:&v15];
+    v12 = [serviceManager requestMegaBackupExpirationDate:firstObject account:v7 error:&v15];
     v13 = v15;
 
     v8 = v13;
@@ -1072,12 +1072,12 @@ LABEL_30:
 
   else
   {
-    v10 = MBGetDefaultLog();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    firstObject = MBGetDefaultLog();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v18 = v8;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Failed to request mega backup expiration date due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_ERROR, "Failed to request mega backup expiration date due to nil account: %{public}@", buf, 0xCu);
       _MBLog();
     }
 
@@ -1085,15 +1085,15 @@ LABEL_30:
   }
 
   v14 = [NSNumber numberWithBool:v12];
-  [v4 setReply:v14];
+  [dateCopy setReply:v14];
 
-  [v4 setReplyError:v8];
-  [v4 sendReply];
+  [dateCopy setReplyError:v8];
+  [dateCopy sendReply];
 }
 
-- (void)_updateMegaBackupExpirationDate:(id)a3
+- (void)_updateMegaBackupExpirationDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v13 = 0;
@@ -1102,35 +1102,35 @@ LABEL_30:
 
   if (v7)
   {
-    v9 = [v4 arguments];
-    v10 = [v9 firstObject];
+    arguments = [dateCopy arguments];
+    firstObject = [arguments firstObject];
 
-    v11 = [(MBXPCServer *)self serviceManager];
-    [v11 updateMegaBackupExpirationDate:v10 account:v7];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    [serviceManager updateMegaBackupExpirationDate:firstObject account:v7];
   }
 
   else
   {
-    v10 = MBGetDefaultLog();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    firstObject = MBGetDefaultLog();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v15 = v8;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Failed to update mega backup expiration date due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_ERROR, "Failed to update mega backup expiration date due to nil account: %{public}@", buf, 0xCu);
       _MBLog();
     }
   }
 
   v12 = [NSNumber numberWithBool:v7 != 0];
-  [v4 setReply:v12];
+  [dateCopy setReply:v12];
 
-  [v4 setReplyError:v8];
-  [v4 sendReply];
+  [dateCopy setReplyError:v8];
+  [dateCopy sendReply];
 }
 
-- (void)_exitMegaBackupMode:(id)a3
+- (void)_exitMegaBackupMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v11 = 0;
@@ -1139,32 +1139,32 @@ LABEL_30:
 
   if (v7)
   {
-    v9 = [(MBXPCServer *)self serviceManager];
-    [v9 exitMegaBackupModeWithAccount:v7];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    [serviceManager exitMegaBackupModeWithAccount:v7];
   }
 
   else
   {
-    v9 = MBGetDefaultLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v13 = v8;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to exit mega backup mode due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to exit mega backup mode due to nil account: %{public}@", buf, 0xCu);
       _MBLog();
     }
   }
 
   v10 = [NSNumber numberWithBool:v7 != 0];
-  [v4 setReply:v10];
+  [modeCopy setReply:v10];
 
-  [v4 setReplyError:v8];
-  [v4 sendReply];
+  [modeCopy setReplyError:v8];
+  [modeCopy sendReply];
 }
 
-- (void)_prebuddyBackupDeleted:(id)a3
+- (void)_prebuddyBackupDeleted:(id)deleted
 {
-  v4 = a3;
+  deletedCopy = deleted;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v11 = 0;
@@ -1173,32 +1173,32 @@ LABEL_30:
 
   if (v7)
   {
-    v9 = [(MBXPCServer *)self serviceManager];
-    [v9 prebuddyBackupDeletedWithAccount:v7];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    [serviceManager prebuddyBackupDeletedWithAccount:v7];
   }
 
   else
   {
-    v9 = MBGetDefaultLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v13 = v8;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to respond to prebuddy backup deleted due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to respond to prebuddy backup deleted due to nil account: %{public}@", buf, 0xCu);
       _MBLog();
     }
   }
 
   v10 = [NSNumber numberWithBool:v7 != 0];
-  [v4 setReply:v10];
+  [deletedCopy setReply:v10];
 
-  [v4 setReplyError:v8];
-  [v4 sendReply];
+  [deletedCopy setReplyError:v8];
+  [deletedCopy sendReply];
 }
 
-- (void)_setMegaBackupTurnOniCloudBackupTelemetry:(id)a3
+- (void)_setMegaBackupTurnOniCloudBackupTelemetry:(id)telemetry
 {
-  v4 = a3;
+  telemetryCopy = telemetry;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v16 = 0;
@@ -1207,8 +1207,8 @@ LABEL_30:
 
   if (v7)
   {
-    v9 = [v4 arguments];
-    v10 = [v9 lastObject];
+    arguments = [telemetryCopy arguments];
+    lastObject = [arguments lastObject];
 
     v11 = MBGetDefaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1216,44 +1216,44 @@ LABEL_30:
       *buf = 138543618;
       v18 = @"MegaBackupTurnOniCloudBackup";
       v19 = 2112;
-      v20 = v10;
+      v20 = lastObject;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Setting %{public}@ to: %@", buf, 0x16u);
       _MBLog();
     }
 
-    v12 = [(MBServiceAccount *)v7 persona];
-    [v12 setPreferencesValue:v10 forKey:@"MegaBackupTurnOniCloudBackup"];
+    persona = [(MBServiceAccount *)v7 persona];
+    [persona setPreferencesValue:lastObject forKey:@"MegaBackupTurnOniCloudBackup"];
 
-    v13 = [(MBXPCServer *)self serviceManager];
-    [v13 submitMegaLifeCycleTelemetriesWithAccount:v7];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    [serviceManager submitMegaLifeCycleTelemetriesWithAccount:v7];
   }
 
   else
   {
-    v10 = MBGetDefaultLog();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    lastObject = MBGetDefaultLog();
+    if (os_log_type_enabled(lastObject, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
       v18 = @"MegaBackupTurnOniCloudBackup";
       v19 = 2114;
       v20 = v8;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Failed to set %{public}@ due to nil account: %{public}@", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, lastObject, OS_LOG_TYPE_ERROR, "Failed to set %{public}@ due to nil account: %{public}@", buf, 0x16u);
       _MBLog();
     }
   }
 
   v14 = [NSNumber numberWithBool:v7 != 0];
-  [v4 setReply:v14];
+  [telemetryCopy setReply:v14];
 
   v15 = [MBError sanitizedError:v8];
-  [v4 setError:v15];
+  [telemetryCopy setError:v15];
 
-  [v4 sendReply];
+  [telemetryCopy sendReply];
 }
 
-- (void)_setMegaBackupTurnOnAllAppsSyncTelemetry:(id)a3
+- (void)_setMegaBackupTurnOnAllAppsSyncTelemetry:(id)telemetry
 {
-  v4 = a3;
+  telemetryCopy = telemetry;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v16 = 0;
@@ -1262,8 +1262,8 @@ LABEL_30:
 
   if (v7)
   {
-    v9 = [v4 arguments];
-    v10 = [v9 lastObject];
+    arguments = [telemetryCopy arguments];
+    lastObject = [arguments lastObject];
 
     v11 = MBGetDefaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1271,47 +1271,47 @@ LABEL_30:
       *buf = 138543618;
       v18 = @"MegaBackupTurnOnAllAppsSync";
       v19 = 2112;
-      v20 = v10;
+      v20 = lastObject;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Setting %{public}@ to: %@", buf, 0x16u);
       _MBLog();
     }
 
-    v12 = [(MBServiceAccount *)v7 persona];
-    [v12 setPreferencesValue:v10 forKey:@"MegaBackupTurnOnAllAppsSync"];
+    persona = [(MBServiceAccount *)v7 persona];
+    [persona setPreferencesValue:lastObject forKey:@"MegaBackupTurnOnAllAppsSync"];
 
-    v13 = [(MBXPCServer *)self serviceManager];
-    [v13 submitMegaLifeCycleTelemetriesWithAccount:v7];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    [serviceManager submitMegaLifeCycleTelemetriesWithAccount:v7];
   }
 
   else
   {
-    v10 = MBGetDefaultLog();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    lastObject = MBGetDefaultLog();
+    if (os_log_type_enabled(lastObject, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
       v18 = @"MegaBackupTurnOnAllAppsSync";
       v19 = 2114;
       v20 = v8;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Failed to set %{public}@ due to nil account: %{public}@", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, lastObject, OS_LOG_TYPE_ERROR, "Failed to set %{public}@ due to nil account: %{public}@", buf, 0x16u);
       _MBLog();
     }
   }
 
   v14 = [NSNumber numberWithBool:v7 != 0];
-  [v4 setReply:v14];
+  [telemetryCopy setReply:v14];
 
   v15 = [MBError sanitizedError:v8];
-  [v4 setError:v15];
+  [telemetryCopy setError:v15];
 
-  [v4 sendReply];
+  [telemetryCopy sendReply];
 }
 
-- (void)_setPrebuddyUIDeltaTelemetry:(id)a3
+- (void)_setPrebuddyUIDeltaTelemetry:(id)telemetry
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v5 objectAtIndexedSubscript:0];
-  v7 = [v5 objectAtIndexedSubscript:1];
+  telemetryCopy = telemetry;
+  arguments = [telemetryCopy arguments];
+  v6 = [arguments objectAtIndexedSubscript:0];
+  v7 = [arguments objectAtIndexedSubscript:1];
   v8 = [MBServiceAccount alloc];
   v9 = +[UMUserPersona currentPersona];
   v30 = 0;
@@ -1322,7 +1322,7 @@ LABEL_30:
   v13 = v12;
   if (v10)
   {
-    v29 = self;
+    selfCopy = self;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
@@ -1335,29 +1335,29 @@ LABEL_30:
       _MBLog();
     }
 
-    v14 = [(MBServiceAccount *)v10 persona];
-    v13 = [v14 copyPreferencesValueForKey:@"MegaBackupFlowStartDate" class:objc_opt_class()];
+    persona = [(MBServiceAccount *)v10 persona];
+    v13 = [persona copyPreferencesValueForKey:@"MegaBackupFlowStartDate" class:objc_opt_class()];
 
-    v15 = [(MBServiceAccount *)v10 persona];
-    v16 = [v15 copyPreferencesValueForKey:v6 class:objc_opt_class()];
+    persona2 = [(MBServiceAccount *)v10 persona];
+    v16 = [persona2 copyPreferencesValueForKey:v6 class:objc_opt_class()];
 
     if (v13 && !v16)
     {
-      v17 = [(MBServiceAccount *)v10 persona];
-      v28 = v5;
+      persona3 = [(MBServiceAccount *)v10 persona];
+      v28 = arguments;
       v18 = v11;
       v19 = v7;
       v20 = +[NSDate now];
       [v20 timeIntervalSinceDate:v13];
       v22 = [NSNumber numberWithInt:v21];
-      [v17 setPreferencesValue:v22 forKey:v6];
+      [persona3 setPreferencesValue:v22 forKey:v6];
 
       v7 = v19;
       v11 = v18;
-      v5 = v28;
+      arguments = v28;
     }
 
-    v23 = [(MBXPCServer *)v29 serviceManager:v26];
+    v23 = [(MBXPCServer *)selfCopy serviceManager:v26];
     [v23 submitMegaLifeCycleTelemetriesWithAccount:v10];
   }
 
@@ -1374,20 +1374,20 @@ LABEL_30:
   }
 
   v24 = [NSNumber numberWithBool:v10 != 0];
-  [v4 setReply:v24];
+  [telemetryCopy setReply:v24];
 
   v25 = [MBError sanitizedError:v11];
-  [v4 setError:v25];
+  [telemetryCopy setError:v25];
 
-  [v4 sendReply];
+  [telemetryCopy sendReply];
 }
 
-- (void)_setEntryPointForMegaBackupTelemetry:(id)a3
+- (void)_setEntryPointForMegaBackupTelemetry:(id)telemetry
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v5 objectAtIndexedSubscript:0];
-  v7 = [v6 integerValue];
+  telemetryCopy = telemetry;
+  arguments = [telemetryCopy arguments];
+  v6 = [arguments objectAtIndexedSubscript:0];
+  integerValue = [v6 integerValue];
 
   v8 = [MBServiceAccount alloc];
   v9 = +[UMUserPersona currentPersona];
@@ -1404,29 +1404,29 @@ LABEL_30:
       *buf = 138543618;
       v26 = @"MegaBackupEntryPoint";
       v27 = 2048;
-      v28 = v7;
+      v28 = integerValue;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Setting %{public}@ to: %ld", buf, 0x16u);
       v22 = @"MegaBackupEntryPoint";
-      v23 = v7;
+      v23 = integerValue;
       _MBLog();
     }
 
-    v14 = [(MBServiceAccount *)v10 persona];
-    v13 = [v14 copyPreferencesValueForKey:@"MegaBackupFlowStartDate" class:objc_opt_class()];
+    persona = [(MBServiceAccount *)v10 persona];
+    v13 = [persona copyPreferencesValueForKey:@"MegaBackupFlowStartDate" class:objc_opt_class()];
 
     if (!v13)
     {
-      v15 = [(MBServiceAccount *)v10 persona];
+      persona2 = [(MBServiceAccount *)v10 persona];
       v16 = +[NSDate date];
-      [v15 setPreferencesValue:v16 forKey:@"MegaBackupFlowStartDate"];
+      [persona2 setPreferencesValue:v16 forKey:@"MegaBackupFlowStartDate"];
     }
 
     v17 = [(MBServiceAccount *)v10 persona:v22];
-    v18 = [NSNumber numberWithInteger:v7];
+    v18 = [NSNumber numberWithInteger:integerValue];
     [v17 setPreferencesValue:v18 forKey:@"MegaBackupEntryPoint"];
 
-    v19 = [(MBXPCServer *)self serviceManager];
-    [v19 submitMegaLifeCycleTelemetriesWithAccount:v10];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    [serviceManager submitMegaLifeCycleTelemetriesWithAccount:v10];
   }
 
   else if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1434,7 +1434,7 @@ LABEL_30:
     *buf = 138543874;
     v26 = @"MegaBackupEntryPoint";
     v27 = 2048;
-    v28 = v7;
+    v28 = integerValue;
     v29 = 2114;
     v30 = v11;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to set %{public}@ to %ld due to nil account: %{public}@", buf, 0x20u);
@@ -1442,20 +1442,20 @@ LABEL_30:
   }
 
   v20 = [NSNumber numberWithBool:v10 != 0];
-  [v4 setReply:v20];
+  [telemetryCopy setReply:v20];
 
   v21 = [MBError sanitizedError:v11];
-  [v4 setError:v21];
+  [telemetryCopy setError:v21];
 
-  [v4 sendReply];
+  [telemetryCopy sendReply];
 }
 
-- (void)_logPrebuddyFlowTelemetry:(id)a3
+- (void)_logPrebuddyFlowTelemetry:(id)telemetry
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v5 objectAtIndexedSubscript:0];
-  v7 = [v6 integerValue];
+  telemetryCopy = telemetry;
+  arguments = [telemetryCopy arguments];
+  v6 = [arguments objectAtIndexedSubscript:0];
+  integerValue = [v6 integerValue];
 
   v8 = [MBServiceAccount alloc];
   v9 = +[UMUserPersona currentPersona];
@@ -1464,7 +1464,7 @@ LABEL_30:
   v11 = v18;
 
   v12 = MBGetDefaultLog();
-  v13 = v12;
+  serviceManager = v12;
   if (v10)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1472,17 +1472,17 @@ LABEL_30:
       *buf = 138543618;
       v20 = @"PrebuddyFlowStep";
       v21 = 2048;
-      v22 = v7;
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Setting %{public}@ to: %ld", buf, 0x16u);
+      v22 = integerValue;
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_DEFAULT, "Setting %{public}@ to: %ld", buf, 0x16u);
       _MBLog();
     }
 
-    v14 = [(MBServiceAccount *)v10 persona];
-    v15 = [NSNumber numberWithInteger:v7];
-    [v14 setPreferencesValue:v15 forKey:@"PrebuddyFlowStep"];
+    persona = [(MBServiceAccount *)v10 persona];
+    v15 = [NSNumber numberWithInteger:integerValue];
+    [persona setPreferencesValue:v15 forKey:@"PrebuddyFlowStep"];
 
-    v13 = [(MBXPCServer *)self serviceManager];
-    [v13 submitMegaLifeCycleTelemetriesWithAccount:v10];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    [serviceManager submitMegaLifeCycleTelemetriesWithAccount:v10];
   }
 
   else if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1490,26 +1490,26 @@ LABEL_30:
     *buf = 138543874;
     v20 = @"PrebuddyFlowStep";
     v21 = 2048;
-    v22 = v7;
+    v22 = integerValue;
     v23 = 2114;
     v24 = v11;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to set %{public}@ to %ld due to nil account: %{public}@", buf, 0x20u);
+    _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to set %{public}@ to %ld due to nil account: %{public}@", buf, 0x20u);
     _MBLog();
   }
 
   v16 = [NSNumber numberWithBool:v10 != 0];
-  [v4 setReply:v16];
+  [telemetryCopy setReply:v16];
 
   v17 = [MBError sanitizedError:v11];
-  [v4 setError:v17];
+  [telemetryCopy setError:v17];
 
-  [v4 sendReply];
+  [telemetryCopy sendReply];
 }
 
-- (void)_cancel:(id)a3
+- (void)_cancel:(id)_cancel
 {
-  v4 = a3;
-  v5 = [v4 connection];
+  _cancelCopy = _cancel;
+  connection = [_cancelCopy connection];
   v6 = [MBServiceAccount alloc];
   v7 = +[UMUserPersona currentPersona];
   v11 = 0;
@@ -1518,28 +1518,28 @@ LABEL_30:
 
   if (v8)
   {
-    v10 = [(MBXPCServer *)self serviceManager];
-    [v10 cancelEnginesWithAccount:v8 connection:v5];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    [serviceManager cancelEnginesWithAccount:v8 connection:connection];
   }
 
   else
   {
-    v10 = MBGetDefaultLog();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v13 = v9;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Failed to cancel due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to cancel due to nil account: %{public}@", buf, 0xCu);
       _MBLog();
     }
   }
 
-  [v4 sendReply];
+  [_cancelCopy sendReply];
 }
 
-- (void)_finishRestore:(id)a3
+- (void)_finishRestore:(id)restore
 {
-  v4 = a3;
+  restoreCopy = restore;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v10 = 0;
@@ -1548,31 +1548,31 @@ LABEL_30:
 
   if (v7)
   {
-    v9 = [(MBXPCServer *)self serviceManager];
-    [v9 finishAirTrafficRestoreWithAccount:v7];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    [serviceManager finishAirTrafficRestoreWithAccount:v7];
   }
 
   else
   {
-    v9 = MBGetDefaultLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v12 = v8;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to finish AirTraffic restore due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to finish AirTraffic restore due to nil account: %{public}@", buf, 0xCu);
       _MBLog();
     }
   }
 
-  [v4 sendReply];
+  [restoreCopy sendReply];
 }
 
-- (void)_deleteBackup:(id)a3
+- (void)_deleteBackup:(id)backup
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v4 connection];
-  v7 = [v5 objectAtIndexedSubscript:0];
+  backupCopy = backup;
+  arguments = [backupCopy arguments];
+  connection = [backupCopy connection];
+  v7 = [arguments objectAtIndexedSubscript:0];
   v8 = [MBServiceAccount alloc];
   v9 = +[UMUserPersona currentPersona];
   v19 = 0;
@@ -1581,9 +1581,9 @@ LABEL_30:
 
   if (v10)
   {
-    v12 = [(MBXPCServer *)self serviceManager];
+    serviceManager = [(MBXPCServer *)self serviceManager];
     v18 = v11;
-    v13 = [v12 deleteBackupUDID:v7 disableIfCurrentDevice:1 account:v10 connection:v6 error:&v18];
+    v13 = [serviceManager deleteBackupUDID:v7 disableIfCurrentDevice:1 account:v10 connection:connection error:&v18];
     v14 = v18;
 
     v11 = v14;
@@ -1591,12 +1591,12 @@ LABEL_30:
 
   else
   {
-    v12 = MBGetDefaultLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v21 = v11;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to delete backup due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to delete backup due to nil account: %{public}@", buf, 0xCu);
       v17 = v11;
       _MBLog();
     }
@@ -1605,28 +1605,28 @@ LABEL_30:
   }
 
   v15 = [NSNumber numberWithBool:v13];
-  [v4 setReply:v15];
+  [backupCopy setReply:v15];
 
   if ((v13 & 1) == 0)
   {
     v16 = [MBError sanitizedError:v11];
-    [v4 setReplyError:v16];
+    [backupCopy setReplyError:v16];
   }
 
-  [v4 sendReply];
+  [backupCopy sendReply];
 }
 
-- (void)_backupList:(id)a3
+- (void)_backupList:(id)list
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v4 connection];
-  if ([v5 count] != 1)
+  listCopy = list;
+  arguments = [listCopy arguments];
+  connection = [listCopy connection];
+  if ([arguments count] != 1)
   {
     [NSException raise:NSInvalidArgumentException format:@"filter argument required for backup list command"];
   }
 
-  v7 = [v5 objectAtIndexedSubscript:0];
+  v7 = [arguments objectAtIndexedSubscript:0];
   v8 = [MBServiceAccount alloc];
   v9 = +[UMUserPersona currentPersona];
   v18 = 0;
@@ -1649,9 +1649,9 @@ LABEL_30:
     goto LABEL_10;
   }
 
-  v12 = [(MBXPCServer *)self serviceManager];
+  serviceManager = [(MBXPCServer *)self serviceManager];
   v17 = v11;
-  v13 = [v12 getBackupListWithFiltering:objc_msgSend(v7 account:"BOOLValue") connection:v10 error:{v6, &v17}];
+  v13 = [serviceManager getBackupListWithFiltering:objc_msgSend(v7 account:"BOOLValue") connection:v10 error:{connection, &v17}];
   v14 = v17;
 
   if (!v13)
@@ -1659,19 +1659,19 @@ LABEL_30:
     v11 = v14;
 LABEL_10:
     v13 = [MBError sanitizedError:v11, v16];
-    [v4 setReplyError:v13];
+    [listCopy setReplyError:v13];
     goto LABEL_11;
   }
 
-  [v4 setReply:v13];
+  [listCopy setReply:v13];
 LABEL_11:
 
-  [v4 sendReply];
+  [listCopy sendReply];
 }
 
-- (void)_isBackupEnabled:(id)a3
+- (void)_isBackupEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = [MBServiceAccount alloc];
   v5 = +[UMUserPersona currentPersona];
   v13 = 0;
@@ -1691,28 +1691,28 @@ LABEL_11:
     }
   }
 
-  v9 = [(MBServiceAccount *)v6 isEnabledForBackup];
+  isEnabledForBackup = [(MBServiceAccount *)v6 isEnabledForBackup];
   v10 = MBGetDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v15) = v9;
+    LODWORD(v15) = isEnabledForBackup;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "isBackupEnabled:%d", buf, 8u);
     _MBLog();
   }
 
-  v11 = [NSNumber numberWithBool:v9];
-  [v3 setReply:v11];
+  v11 = [NSNumber numberWithBool:isEnabledForBackup];
+  [enabledCopy setReply:v11];
 
-  [v3 sendReply];
+  [enabledCopy sendReply];
 }
 
-- (void)_setBackupEnabled:(id)a3
+- (void)_setBackupEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [v4 connection];
-  v6 = [v4 arguments];
-  v7 = [v6 lastObject];
+  enabledCopy = enabled;
+  connection = [enabledCopy connection];
+  arguments = [enabledCopy arguments];
+  lastObject = [arguments lastObject];
   v8 = [MBServiceAccount alloc];
   v9 = +[UMUserPersona currentPersona];
   v13 = 0;
@@ -1721,28 +1721,28 @@ LABEL_11:
 
   if (v10)
   {
-    v12 = [(MBXPCServer *)self serviceManager];
-    -[NSObject setBackupEnabled:account:connection:](v12, "setBackupEnabled:account:connection:", [v7 BOOLValue], v10, v5);
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    -[NSObject setBackupEnabled:account:connection:](serviceManager, "setBackupEnabled:account:connection:", [lastObject BOOLValue], v10, connection);
   }
 
   else
   {
-    v12 = MBGetDefaultLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v15 = v11;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to enable backup due to nil account: %@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to enable backup due to nil account: %@", buf, 0xCu);
       _MBLog();
     }
   }
 
-  [v4 sendReply];
+  [enabledCopy sendReply];
 }
 
-- (void)_isBackupOnCellularEnabled:(id)a3
+- (void)_isBackupOnCellularEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -1798,18 +1798,18 @@ LABEL_11:
   }
 
   v13 = [NSNumber numberWithBool:*(v21 + 24)];
-  [v3 setReply:v13];
+  [enabledCopy setReply:v13];
 
   v14 = [MBError sanitizedError:v7];
-  [v3 setError:v14];
+  [enabledCopy setError:v14];
 
-  [v3 sendReply];
+  [enabledCopy sendReply];
   _Block_object_dispose(&v20, 8);
 }
 
-- (void)_setBackupOnCellularEnabled:(id)a3
+- (void)_setBackupOnCellularEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v19 = 0;
@@ -1818,18 +1818,18 @@ LABEL_11:
 
   if (v7)
   {
-    v9 = [v4 arguments];
-    v10 = [v9 lastObject];
+    arguments = [enabledCopy arguments];
+    lastObject = [arguments lastObject];
 
     v11 = sub_100156CCC();
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100157010;
     block[3] = &unk_1003BC2E0;
-    v16 = v10;
+    v16 = lastObject;
     v17 = v7;
-    v18 = self;
-    v12 = v10;
+    selfCopy = self;
+    v12 = lastObject;
     dispatch_sync(v11, block);
   }
 
@@ -1848,18 +1848,18 @@ LABEL_11:
   }
 
   v13 = [NSNumber numberWithBool:v7 != 0];
-  [v4 setReply:v13];
+  [enabledCopy setReply:v13];
 
   v14 = [MBError sanitizedError:v8];
-  [v4 setError:v14];
+  [enabledCopy setError:v14];
 
-  [v4 sendReply];
+  [enabledCopy sendReply];
 }
 
-- (void)_syncBackupEnabled:(id)a3
+- (void)_syncBackupEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [v4 connection];
+  enabledCopy = enabled;
+  connection = [enabledCopy connection];
   v6 = [MBServiceAccount alloc];
   v7 = +[UMUserPersona currentPersona];
   v11 = 0;
@@ -1868,28 +1868,28 @@ LABEL_11:
 
   if (v8)
   {
-    v10 = [(MBXPCServer *)self serviceManager];
-    [v10 syncBackupEnabledWithAccount:v8 connection:v5];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    [serviceManager syncBackupEnabledWithAccount:v8 connection:connection];
   }
 
   else
   {
-    v10 = MBGetDefaultLog();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v13 = v9;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Failed to sync backup enabled due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to sync backup enabled due to nil account: %{public}@", buf, 0xCu);
       _MBLog();
     }
   }
 
-  [v4 sendReply];
+  [enabledCopy sendReply];
 }
 
-- (void)_isLocalBackupPasswordSet:(id)a3
+- (void)_isLocalBackupPasswordSet:(id)set
 {
-  v3 = a3;
+  setCopy = set;
   v11 = 0;
   v4 = [MBKeychainManager fetchLocalBackupPasswordAndReturnError:&v11];
   v5 = v11;
@@ -1901,7 +1901,7 @@ LABEL_11:
     {
 LABEL_3:
       v7 = [MBError sanitizedError:v5];
-      [v3 setReplyError:v7];
+      [setCopy setReplyError:v7];
     }
   }
 
@@ -1926,14 +1926,14 @@ LABEL_3:
   }
 
   v8 = [NSNumber numberWithBool:v6];
-  [v3 setReply:v8];
+  [setCopy setReply:v8];
 
-  [v3 sendReply];
+  [setCopy sendReply];
 }
 
-- (void)_unsetLocalBackupPassword:(id)a3
+- (void)_unsetLocalBackupPassword:(id)password
 {
-  v3 = a3;
+  passwordCopy = password;
   v15 = 0;
   v4 = [MBKeychainManager fetchLocalBackupPasswordAndReturnError:&v15];
   v5 = v15;
@@ -2006,28 +2006,28 @@ LABEL_3:
   {
 LABEL_14:
     v11 = [MBError sanitizedError:v5, v13];
-    [v3 setReplyError:v11];
+    [passwordCopy setReplyError:v11];
   }
 
 LABEL_15:
   v12 = [NSNumber numberWithBool:v10, v13];
-  [v3 setReply:v12];
+  [passwordCopy setReply:v12];
 
-  [v3 sendReply];
+  [passwordCopy sendReply];
 }
 
-- (void)_getBackupDeviceUUID:(id)a3
+- (void)_getBackupDeviceUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v3 = MBDeviceUUID();
-  [v4 setReply:v3];
+  [dCopy setReply:v3];
 
-  [v4 sendReply];
+  [dCopy sendReply];
 }
 
-- (void)_backupState:(id)a3
+- (void)_backupState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v12 = 0;
@@ -2049,22 +2049,22 @@ LABEL_15:
     goto LABEL_6;
   }
 
-  v9 = [(MBXPCServer *)self serviceManager];
-  v10 = [v9 backupStateInfoForInitialMegaBackup:0 account:v7];
+  serviceManager = [(MBXPCServer *)self serviceManager];
+  v10 = [serviceManager backupStateInfoForInitialMegaBackup:0 account:v7];
 
   if (v10)
   {
-    [v4 setReply:v10];
+    [stateCopy setReply:v10];
 LABEL_6:
   }
 
-  [v4 sendReply];
+  [stateCopy sendReply];
 }
 
-- (void)_dateOfLastBackup:(id)a3
+- (void)_dateOfLastBackup:(id)backup
 {
-  v4 = a3;
-  v5 = [v4 connection];
+  backupCopy = backup;
+  connection = [backupCopy connection];
   v6 = [MBServiceAccount alloc];
   v7 = +[UMUserPersona currentPersona];
   v16 = 0;
@@ -2073,9 +2073,9 @@ LABEL_6:
 
   if (v8)
   {
-    v10 = [(MBXPCServer *)self scheduler];
+    scheduler = [(MBXPCServer *)self scheduler];
     v15 = v9;
-    v11 = [v10 dateOfLastBackupWithAccount:v8 connection:v5 error:&v15];
+    v11 = [scheduler dateOfLastBackupWithAccount:v8 connection:connection error:&v15];
     v12 = v15;
 
     if (!v11)
@@ -2083,7 +2083,7 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    [v4 setReply:v11];
+    [backupCopy setReply:v11];
     v9 = v12;
   }
 
@@ -2105,16 +2105,16 @@ LABEL_7:
   if (v12)
   {
     v13 = [MBError sanitizedError:v12];
-    [v4 setReplyError:v13];
+    [backupCopy setReplyError:v13];
   }
 
-  [v4 sendReply];
+  [backupCopy sendReply];
 }
 
-- (void)_dateOfNextBackup:(id)a3
+- (void)_dateOfNextBackup:(id)backup
 {
-  v4 = a3;
-  v5 = [v4 connection];
+  backupCopy = backup;
+  connection = [backupCopy connection];
   v6 = [MBServiceAccount alloc];
   v7 = +[UMUserPersona currentPersona];
   v16 = 0;
@@ -2123,9 +2123,9 @@ LABEL_7:
 
   if (v8)
   {
-    v10 = [(MBXPCServer *)self scheduler];
+    scheduler = [(MBXPCServer *)self scheduler];
     v15 = v9;
-    v11 = [v10 dateOfNextScheduledBackupWithAccount:v8 connection:v5 error:&v15];
+    v11 = [scheduler dateOfNextScheduledBackupWithAccount:v8 connection:connection error:&v15];
     v12 = v15;
 
     if (!v11)
@@ -2133,7 +2133,7 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    [v4 setReply:v11];
+    [backupCopy setReply:v11];
     v9 = v12;
   }
 
@@ -2155,15 +2155,15 @@ LABEL_7:
   if (v12)
   {
     v13 = [MBError sanitizedError:v12];
-    [v4 setReplyError:v13];
+    [backupCopy setReplyError:v13];
   }
 
-  [v4 sendReply];
+  [backupCopy sendReply];
 }
 
-- (void)_nextBackupSize:(id)a3
+- (void)_nextBackupSize:(id)size
 {
-  v4 = a3;
+  sizeCopy = size;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v13 = 0;
@@ -2172,11 +2172,11 @@ LABEL_7:
 
   if (v7)
   {
-    v9 = [(MBXPCServer *)self serviceManager];
-    v10 = [v9 nextBackupSizeWithAccount:v7];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    v10 = [serviceManager nextBackupSizeWithAccount:v7];
 
     v11 = [NSNumber numberWithUnsignedLongLong:v10];
-    [v4 setReply:v11];
+    [sizeCopy setReply:v11];
   }
 
   else
@@ -2191,15 +2191,15 @@ LABEL_7:
     }
 
     v11 = [MBError sanitizedError:v8];
-    [v4 setReplyError:v11];
+    [sizeCopy setReplyError:v11];
   }
 
-  [v4 sendReply];
+  [sizeCopy sendReply];
 }
 
-- (void)_nextBackupSizeInfo:(id)a3
+- (void)_nextBackupSizeInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v12 = 0;
@@ -2208,9 +2208,9 @@ LABEL_7:
 
   if (v7)
   {
-    v9 = [(MBXPCServer *)self serviceManager];
-    v10 = [v9 nextBackupSizeInfoWithAccount:v7];
-    [v4 setReply:v10];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    v10 = [serviceManager nextBackupSizeInfoWithAccount:v7];
+    [infoCopy setReply:v10];
   }
 
   else
@@ -2224,19 +2224,19 @@ LABEL_7:
       _MBLog();
     }
 
-    v9 = [MBError sanitizedError:v8];
-    [v4 setReplyError:v9];
+    serviceManager = [MBError sanitizedError:v8];
+    [infoCopy setReplyError:serviceManager];
   }
 
-  [v4 sendReply];
+  [infoCopy sendReply];
 }
 
-- (void)_journalLastModifiedForBackupUUID:(id)a3
+- (void)_journalLastModifiedForBackupUUID:(id)d
 {
-  v4 = a3;
-  v5 = [v4 connection];
-  v6 = [v4 arguments];
-  v7 = [v6 objectAtIndexedSubscript:0];
+  dCopy = d;
+  connection = [dCopy connection];
+  arguments = [dCopy arguments];
+  v7 = [arguments objectAtIndexedSubscript:0];
   v8 = [MBServiceAccount alloc];
   v9 = +[UMUserPersona currentPersona];
   v18 = 0;
@@ -2259,9 +2259,9 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v12 = [(MBXPCServer *)self serviceManager];
+  serviceManager = [(MBXPCServer *)self serviceManager];
   v17 = v11;
-  v13 = [v12 journalLastModifiedForBackupUUID:v7 account:v10 connection:v5 error:&v17];
+  v13 = [serviceManager journalLastModifiedForBackupUUID:v7 account:v10 connection:connection error:&v17];
   v14 = v17;
 
   if (!v13)
@@ -2269,22 +2269,22 @@ LABEL_7:
     v11 = v14;
 LABEL_8:
     v13 = [MBError sanitizedError:v11, v16];
-    [v4 setReplyError:v13];
+    [dCopy setReplyError:v13];
     goto LABEL_9;
   }
 
-  [v4 setReply:v13];
+  [dCopy setReply:v13];
 LABEL_9:
 
-  [v4 sendReply];
+  [dCopy sendReply];
 }
 
-- (void)_journalForBackupUUID:(id)a3
+- (void)_journalForBackupUUID:(id)d
 {
-  v4 = a3;
-  v5 = [v4 connection];
-  v6 = [v4 arguments];
-  v7 = [v6 objectAtIndexedSubscript:0];
+  dCopy = d;
+  connection = [dCopy connection];
+  arguments = [dCopy arguments];
+  v7 = [arguments objectAtIndexedSubscript:0];
   v8 = [MBServiceAccount alloc];
   v9 = +[UMUserPersona currentPersona];
   v18 = 0;
@@ -2307,9 +2307,9 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  v12 = [(MBXPCServer *)self serviceManager];
+  serviceManager = [(MBXPCServer *)self serviceManager];
   v17 = v11;
-  v13 = [v12 journalForBackupUUID:v7 account:v10 connection:v5 error:&v17];
+  v13 = [serviceManager journalForBackupUUID:v7 account:v10 connection:connection error:&v17];
   v14 = v17;
 
   if (!v13)
@@ -2317,25 +2317,25 @@ LABEL_9:
     v11 = v14;
 LABEL_8:
     v13 = [MBError sanitizedError:v11, v16];
-    [v4 setReplyError:v13];
+    [dCopy setReplyError:v13];
     goto LABEL_9;
   }
 
-  [v4 setReply:v13];
+  [dCopy setReply:v13];
 LABEL_9:
 
-  [v4 sendReply];
+  [dCopy sendReply];
 }
 
-- (void)_listSnapshotFiles:(id)a3
+- (void)_listSnapshotFiles:(id)files
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v4 connection];
-  v7 = [v5 objectAtIndexedSubscript:0];
-  v8 = [v7 integerValue];
+  filesCopy = files;
+  arguments = [filesCopy arguments];
+  connection = [filesCopy connection];
+  v7 = [arguments objectAtIndexedSubscript:0];
+  integerValue = [v7 integerValue];
 
-  v9 = [v5 objectAtIndexedSubscript:1];
+  v9 = [arguments objectAtIndexedSubscript:1];
   v10 = [MBServiceAccount alloc];
   v11 = +[UMUserPersona currentPersona];
   v20 = 0;
@@ -2358,9 +2358,9 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  v14 = [(MBXPCServer *)self serviceManager];
+  serviceManager = [(MBXPCServer *)self serviceManager];
   v19 = v13;
-  v15 = [v14 filesForSnapshotID:v8 backupUDID:v9 account:v12 connection:v6 error:&v19];
+  v15 = [serviceManager filesForSnapshotID:integerValue backupUDID:v9 account:v12 connection:connection error:&v19];
   v16 = v19;
 
   if (!v15)
@@ -2368,23 +2368,23 @@ LABEL_9:
     v13 = v16;
 LABEL_8:
     v15 = [MBError sanitizedError:v13, v18];
-    [v4 setReplyError:v15];
+    [filesCopy setReplyError:v15];
     goto LABEL_9;
   }
 
-  [v4 setReply:v15];
+  [filesCopy setReply:v15];
 LABEL_9:
 
-  [v4 sendReply];
+  [filesCopy sendReply];
 }
 
-- (void)_mergeSnapshots:(id)a3
+- (void)_mergeSnapshots:(id)snapshots
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v4 connection];
-  v7 = [v5 objectAtIndexedSubscript:0];
-  v8 = [v5 subarrayWithRange:{1, objc_msgSend(v5, "count") - 1}];
+  snapshotsCopy = snapshots;
+  arguments = [snapshotsCopy arguments];
+  connection = [snapshotsCopy connection];
+  v7 = [arguments objectAtIndexedSubscript:0];
+  v8 = [arguments subarrayWithRange:{1, objc_msgSend(arguments, "count") - 1}];
   v9 = [MBServiceAccount alloc];
   v10 = +[UMUserPersona currentPersona];
   v18 = 0;
@@ -2393,9 +2393,9 @@ LABEL_9:
 
   if (v11)
   {
-    v13 = [(MBXPCServer *)self serviceManager];
+    serviceManager = [(MBXPCServer *)self serviceManager];
     v17 = v12;
-    [v13 mergeSnapshots:v8 backupUUID:v7 account:v11 connection:v6 error:&v17];
+    [serviceManager mergeSnapshots:v8 backupUUID:v7 account:v11 connection:connection error:&v17];
     v14 = v17;
 
     v12 = v14;
@@ -2403,12 +2403,12 @@ LABEL_9:
 
   else
   {
-    v13 = MBGetDefaultLog();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v20 = v12;
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to merge snapshots due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to merge snapshots due to nil account: %{public}@", buf, 0xCu);
       v16 = v12;
       _MBLog();
     }
@@ -2417,26 +2417,26 @@ LABEL_9:
   if (v12)
   {
     v15 = [MBError sanitizedError:v12];
-    [v4 setReplyError:v15];
+    [snapshotsCopy setReplyError:v15];
   }
 
   else
   {
-    [v4 setReply:&__kCFBooleanTrue];
+    [snapshotsCopy setReply:&__kCFBooleanTrue];
   }
 
-  [v4 sendReply];
+  [snapshotsCopy sendReply];
 }
 
-- (void)_pinSnapshot:(id)a3
+- (void)_pinSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v4 connection];
-  v7 = [v5 objectAtIndexedSubscript:0];
-  v8 = [v7 unsignedIntegerValue];
+  snapshotCopy = snapshot;
+  arguments = [snapshotCopy arguments];
+  connection = [snapshotCopy connection];
+  v7 = [arguments objectAtIndexedSubscript:0];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  v9 = [v5 objectAtIndexedSubscript:1];
+  v9 = [arguments objectAtIndexedSubscript:1];
   v10 = [MBServiceAccount alloc];
   v11 = +[UMUserPersona currentPersona];
   v21 = 0;
@@ -2445,9 +2445,9 @@ LABEL_9:
 
   if (v12)
   {
-    v14 = [(MBXPCServer *)self serviceManager];
+    serviceManager = [(MBXPCServer *)self serviceManager];
     v20 = v13;
-    v15 = [v14 pinSnapshotID:v8 backupUDID:v9 account:v12 connection:v6 error:&v20];
+    v15 = [serviceManager pinSnapshotID:unsignedIntegerValue backupUDID:v9 account:v12 connection:connection error:&v20];
     v16 = v20;
 
     v13 = v16;
@@ -2455,12 +2455,12 @@ LABEL_9:
 
   else
   {
-    v14 = MBGetDefaultLog();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v23 = v13;
-      _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Failed to pin snapshot due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to pin snapshot due to nil account: %{public}@", buf, 0xCu);
       v19 = v13;
       _MBLog();
     }
@@ -2469,26 +2469,26 @@ LABEL_9:
   }
 
   v17 = [NSNumber numberWithBool:v15];
-  [v4 setReply:v17];
+  [snapshotCopy setReply:v17];
 
   if ((v15 & 1) == 0)
   {
     v18 = [MBError sanitizedError:v13];
-    [v4 setReplyError:v18];
+    [snapshotCopy setReplyError:v18];
   }
 
-  [v4 sendReply];
+  [snapshotCopy sendReply];
 }
 
-- (void)_unpinSnapshot:(id)a3
+- (void)_unpinSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v4 connection];
-  v7 = [v5 objectAtIndexedSubscript:0];
-  v8 = [v7 unsignedIntegerValue];
+  snapshotCopy = snapshot;
+  arguments = [snapshotCopy arguments];
+  connection = [snapshotCopy connection];
+  v7 = [arguments objectAtIndexedSubscript:0];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  v9 = [v5 objectAtIndexedSubscript:1];
+  v9 = [arguments objectAtIndexedSubscript:1];
   v10 = [MBServiceAccount alloc];
   v11 = +[UMUserPersona currentPersona];
   v21 = 0;
@@ -2497,9 +2497,9 @@ LABEL_9:
 
   if (v12)
   {
-    v14 = [(MBXPCServer *)self serviceManager];
+    serviceManager = [(MBXPCServer *)self serviceManager];
     v20 = v13;
-    v15 = [v14 unpinSnapshotID:v8 backupUDID:v9 account:v12 connection:v6 error:&v20];
+    v15 = [serviceManager unpinSnapshotID:unsignedIntegerValue backupUDID:v9 account:v12 connection:connection error:&v20];
     v16 = v20;
 
     v13 = v16;
@@ -2507,12 +2507,12 @@ LABEL_9:
 
   else
   {
-    v14 = MBGetDefaultLog();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v23 = v13;
-      _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Failed to unpin snapshot due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to unpin snapshot due to nil account: %{public}@", buf, 0xCu);
       v19 = v13;
       _MBLog();
     }
@@ -2521,23 +2521,23 @@ LABEL_9:
   }
 
   v17 = [NSNumber numberWithBool:v15];
-  [v4 setReply:v17];
+  [snapshotCopy setReply:v17];
 
   if ((v15 & 1) == 0)
   {
     v18 = [MBError sanitizedError:v13];
-    [v4 setReplyError:v18];
+    [snapshotCopy setReplyError:v18];
   }
 
-  [v4 sendReply];
+  [snapshotCopy sendReply];
 }
 
-- (void)_fetchBundleIDs:(id)a3
+- (void)_fetchBundleIDs:(id)ds
 {
-  v3 = a3;
-  v4 = [v3 connection];
-  v5 = [v3 arguments];
-  v6 = [v5 objectAtIndexedSubscript:0];
+  dsCopy = ds;
+  connection = [dsCopy connection];
+  arguments = [dsCopy arguments];
+  v6 = [arguments objectAtIndexedSubscript:0];
 
   v7 = [MBServiceAccount alloc];
   v8 = +[UMUserPersona currentPersona];
@@ -2565,7 +2565,7 @@ LABEL_9:
   }
 
   v16 = v10;
-  v11 = MBFetchAppBundleIDsInSnapshot(v6, v9, v4, &v16);
+  v11 = MBFetchAppBundleIDsInSnapshot(v6, v9, connection, &v16);
   v12 = v16;
 
   if (!v11)
@@ -2573,20 +2573,20 @@ LABEL_9:
     v10 = v12;
 LABEL_8:
     v11 = [MBError sanitizedError:v10, v14, v15];
-    [v3 setReplyError:v11];
+    [dsCopy setReplyError:v11];
     goto LABEL_9;
   }
 
-  [v3 setReply:v11];
+  [dsCopy setReply:v11];
 LABEL_9:
 
-  [v3 sendReply];
+  [dsCopy sendReply];
 }
 
-- (void)_fetchRestorableSnapshots:(id)a3
+- (void)_fetchRestorableSnapshots:(id)snapshots
 {
-  v4 = a3;
-  v5 = [v4 connection];
+  snapshotsCopy = snapshots;
+  connection = [snapshotsCopy connection];
   v6 = [MBServiceAccount alloc];
   v7 = +[UMUserPersona currentPersona];
   v16 = 0;
@@ -2609,9 +2609,9 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  v10 = [(MBXPCServer *)self serviceManager];
+  serviceManager = [(MBXPCServer *)self serviceManager];
   v15 = v9;
-  v11 = [v10 fetchRestorableSnapshotsForAccount:v8 connection:v5 error:&v15];
+  v11 = [serviceManager fetchRestorableSnapshotsForAccount:v8 connection:connection error:&v15];
   v12 = v15;
 
   if (!v11)
@@ -2619,33 +2619,33 @@ LABEL_9:
     v9 = v12;
 LABEL_8:
     v11 = [MBError sanitizedError:v9, v14];
-    [v4 setReplyError:v11];
+    [snapshotsCopy setReplyError:v11];
     goto LABEL_9;
   }
 
-  [v4 setReply:v11];
+  [snapshotsCopy setReply:v11];
 LABEL_9:
 
-  [v4 sendReply];
+  [snapshotsCopy sendReply];
 }
 
-- (void)_restoreSupportsBatching:(id)a3
+- (void)_restoreSupportsBatching:(id)batching
 {
-  v7 = a3;
-  v4 = [(MBXPCServer *)self serviceManager];
-  v5 = [v4 restoreSupportsBatching];
+  batchingCopy = batching;
+  serviceManager = [(MBXPCServer *)self serviceManager];
+  restoreSupportsBatching = [serviceManager restoreSupportsBatching];
 
-  v6 = [NSNumber numberWithBool:v5];
-  [v7 setReply:v6];
+  v6 = [NSNumber numberWithBool:restoreSupportsBatching];
+  [batchingCopy setReply:v6];
 
-  [v7 sendReply];
+  [batchingCopy sendReply];
 }
 
-- (void)_setRestoreQualityOfService:(id)a3
+- (void)_setRestoreQualityOfService:(id)service
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v4 connection];
+  serviceCopy = service;
+  arguments = [serviceCopy arguments];
+  connection = [serviceCopy connection];
   v7 = [MBServiceAccount alloc];
   v8 = +[UMUserPersona currentPersona];
   v16 = 0;
@@ -2654,11 +2654,11 @@ LABEL_9:
 
   if (v9)
   {
-    v11 = [v5 firstObject];
-    v12 = [v11 integerValue];
+    firstObject = [arguments firstObject];
+    integerValue = [firstObject integerValue];
 
-    v13 = [(MBXPCServer *)self serviceManager];
-    [v13 setRestoreQualityOfService:v12 account:v9 connection:v6];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    [serviceManager setRestoreQualityOfService:integerValue account:v9 connection:connection];
   }
 
   else
@@ -2673,17 +2673,17 @@ LABEL_9:
       _MBLog();
     }
 
-    [v4 setReplyError:v10];
+    [serviceCopy setReplyError:v10];
   }
 
-  [v4 sendReply];
+  [serviceCopy sendReply];
 }
 
-- (void)_saveBackgroundRestoreCellularAccess:(id)a3
+- (void)_saveBackgroundRestoreCellularAccess:(id)access
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v5 firstObject];
+  accessCopy = access;
+  arguments = [accessCopy arguments];
+  firstObject = [arguments firstObject];
 
   v7 = [MBServiceAccount alloc];
   v8 = +[UMUserPersona currentPersona];
@@ -2693,9 +2693,9 @@ LABEL_9:
 
   if (v9)
   {
-    v11 = [(MBXPCServer *)self serviceManager];
+    serviceManager = [(MBXPCServer *)self serviceManager];
     v17 = v10;
-    v12 = [v11 saveBackgroundRestoreCellularAccess:v6 account:v9 error:&v17];
+    v12 = [serviceManager saveBackgroundRestoreCellularAccess:firstObject account:v9 error:&v17];
     v13 = v17;
 
     v10 = v13;
@@ -2703,12 +2703,12 @@ LABEL_9:
 
   else
   {
-    v11 = MBGetDefaultLog();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v20 = v10;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Failed to save background restore cellular access due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to save background restore cellular access due to nil account: %{public}@", buf, 0xCu);
       v16 = v10;
       _MBLog();
     }
@@ -2717,20 +2717,20 @@ LABEL_9:
   }
 
   v14 = [NSNumber numberWithBool:v12];
-  [v4 setReply:v14];
+  [accessCopy setReply:v14];
 
   if ((v12 & 1) == 0)
   {
     v15 = [MBError sanitizedError:v10];
-    [v4 setReplyError:v15];
+    [accessCopy setReplyError:v15];
   }
 
-  [v4 sendReply];
+  [accessCopy sendReply];
 }
 
-- (void)_fetchBackgroundRestoreCellularAccess:(id)a3
+- (void)_fetchBackgroundRestoreCellularAccess:(id)access
 {
-  v4 = a3;
+  accessCopy = access;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v15 = 0;
@@ -2739,23 +2739,23 @@ LABEL_9:
 
   if (v7)
   {
-    v9 = [(MBXPCServer *)self serviceManager];
+    serviceManager = [(MBXPCServer *)self serviceManager];
     v14 = v8;
-    v10 = [v9 fetchBackgroundRestoreCellularAccessForAccount:v7 error:&v14];
+    v10 = [serviceManager fetchBackgroundRestoreCellularAccessForAccount:v7 error:&v14];
     v11 = v14;
 
-    [v4 setReply:v10];
+    [accessCopy setReply:v10];
     v8 = v11;
   }
 
   else
   {
-    v9 = MBGetDefaultLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v17 = v8;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to fetch background restore cellular access due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to fetch background restore cellular access due to nil account: %{public}@", buf, 0xCu);
       v13 = v8;
       _MBLog();
     }
@@ -2764,15 +2764,15 @@ LABEL_9:
   if (v8)
   {
     v12 = [MBError sanitizedError:v8];
-    [v4 setReplyError:v12];
+    [accessCopy setReplyError:v12];
   }
 
-  [v4 sendReply];
+  [accessCopy sendReply];
 }
 
-- (void)_startRestore:(id)a3
+- (void)_startRestore:(id)restore
 {
-  v4 = a3;
+  restoreCopy = restore;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v20 = 0;
@@ -2781,18 +2781,18 @@ LABEL_9:
 
   if (v7)
   {
-    v9 = [v4 arguments];
-    v10 = [v9 objectAtIndexedSubscript:0];
+    arguments = [restoreCopy arguments];
+    v10 = [arguments objectAtIndexedSubscript:0];
     v11 = 0;
-    if ([v9 count]>= 2)
+    if ([arguments count]>= 2)
     {
-      v11 = [v9 objectAtIndexedSubscript:1];
+      v11 = [arguments objectAtIndexedSubscript:1];
     }
 
-    v12 = [(MBXPCServer *)self serviceManager];
-    v13 = [v4 connection];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    connection = [restoreCopy connection];
     v19 = v8;
-    v14 = [v12 startRestoreForSnapshot:v10 options:v11 account:v7 connection:v13 error:&v19];
+    v14 = [serviceManager startRestoreForSnapshot:v10 options:v11 account:v7 connection:connection error:&v19];
     v15 = v19;
 
     v8 = v15;
@@ -2800,12 +2800,12 @@ LABEL_9:
 
   else
   {
-    v9 = MBGetDefaultLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    arguments = MBGetDefaultLog();
+    if (os_log_type_enabled(arguments, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v22 = v8;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to start restore due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, arguments, OS_LOG_TYPE_ERROR, "Failed to start restore due to nil account: %{public}@", buf, 0xCu);
       v18 = v8;
       _MBLog();
     }
@@ -2814,28 +2814,28 @@ LABEL_9:
   }
 
   v16 = [NSNumber numberWithBool:v14];
-  [v4 setReply:v16];
+  [restoreCopy setReply:v16];
 
   if ((v14 & 1) == 0)
   {
     v17 = [MBError sanitizedError:v8];
-    [v4 setReplyError:v17];
+    [restoreCopy setReplyError:v17];
   }
 
-  [v4 sendReply];
+  [restoreCopy sendReply];
 }
 
-- (void)_inheritBackup:(id)a3
+- (void)_inheritBackup:(id)backup
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  if ([v5 count] <= 1)
+  backupCopy = backup;
+  arguments = [backupCopy arguments];
+  if ([arguments count] <= 1)
   {
     [NSException raise:NSInvalidArgumentException format:@"must provide both snapshotUUID and deviceUUID to inherit from"];
   }
 
-  v6 = [v5 objectAtIndexedSubscript:1];
-  v7 = [v5 objectAtIndexedSubscript:0];
+  v6 = [arguments objectAtIndexedSubscript:1];
+  v7 = [arguments objectAtIndexedSubscript:0];
   v8 = [MBServiceAccount alloc];
   v9 = +[UMUserPersona currentPersona];
   v19 = 0;
@@ -2844,9 +2844,9 @@ LABEL_9:
 
   if (v10)
   {
-    v12 = [(MBXPCServer *)self serviceManager];
+    serviceManager = [(MBXPCServer *)self serviceManager];
     v18 = v11;
-    v13 = [v12 inheritSnapshotWithAccount:v10 fromSnapshot:v7 fromDevice:v6 error:&v18];
+    v13 = [serviceManager inheritSnapshotWithAccount:v10 fromSnapshot:v7 fromDevice:v6 error:&v18];
     v14 = v18;
 
     v11 = v14;
@@ -2854,12 +2854,12 @@ LABEL_9:
 
   else
   {
-    v12 = MBGetDefaultLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v21 = v11;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to inherit backup due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to inherit backup due to nil account: %{public}@", buf, 0xCu);
       v17 = v11;
       _MBLog();
     }
@@ -2868,20 +2868,20 @@ LABEL_9:
   }
 
   v15 = [NSNumber numberWithBool:v13];
-  [v4 setReply:v15];
+  [backupCopy setReply:v15];
 
   if ((v13 & 1) == 0)
   {
     v16 = [MBError sanitizedError:v11];
-    [v4 setReplyError:v16];
+    [backupCopy setReplyError:v16];
   }
 
-  [v4 sendReply];
+  [backupCopy sendReply];
 }
 
-- (void)_cancelRestore:(id)a3
+- (void)_cancelRestore:(id)restore
 {
-  v4 = a3;
+  restoreCopy = restore;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v12 = 0;
@@ -2890,8 +2890,8 @@ LABEL_9:
 
   if (v7)
   {
-    v9 = [(MBXPCServer *)self serviceManager];
-    [v9 cancelBackgroundRestoreWithAccount:v7];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    [serviceManager cancelBackgroundRestoreWithAccount:v7];
   }
 
   else
@@ -2905,22 +2905,22 @@ LABEL_9:
       _MBLog();
     }
 
-    v9 = [MBError sanitizedError:v8];
-    [v4 setReplyError:v9];
+    serviceManager = [MBError sanitizedError:v8];
+    [restoreCopy setReplyError:serviceManager];
   }
 
   v11 = [NSNumber numberWithBool:v7 != 0];
-  [v4 setReply:v11];
+  [restoreCopy setReply:v11];
 
-  [v4 sendReply];
+  [restoreCopy sendReply];
 }
 
-- (void)_startFileRestore:(id)a3
+- (void)_startFileRestore:(id)restore
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v4 connection];
-  v7 = [v5 objectAtIndexedSubscript:0];
+  restoreCopy = restore;
+  arguments = [restoreCopy arguments];
+  connection = [restoreCopy connection];
+  v7 = [arguments objectAtIndexedSubscript:0];
   v8 = [MBServiceAccount alloc];
   v9 = +[UMUserPersona currentPersona];
   v19 = 0;
@@ -2929,9 +2929,9 @@ LABEL_9:
 
   if (v10)
   {
-    v12 = [(MBXPCServer *)self serviceManager];
+    serviceManager = [(MBXPCServer *)self serviceManager];
     v18 = v11;
-    v13 = [v12 restoreFileWithPath:v7 context:v6 account:v10 error:&v18];
+    v13 = [serviceManager restoreFileWithPath:v7 context:connection account:v10 error:&v18];
     v14 = v18;
 
     v11 = v14;
@@ -2939,12 +2939,12 @@ LABEL_9:
 
   else
   {
-    v12 = MBGetDefaultLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v21 = v11;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to start file restore due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to start file restore due to nil account: %{public}@", buf, 0xCu);
       v17 = v11;
       _MBLog();
     }
@@ -2953,23 +2953,23 @@ LABEL_9:
   }
 
   v15 = [NSNumber numberWithBool:v13];
-  [v4 setReply:v15];
+  [restoreCopy setReply:v15];
 
   if ((v13 & 1) == 0)
   {
     v16 = [MBError sanitizedError:v11];
-    [v4 setReplyError:v16];
+    [restoreCopy setReplyError:v16];
   }
 
-  [v4 sendReply];
+  [restoreCopy sendReply];
 }
 
-- (void)_startFilesRestore:(id)a3
+- (void)_startFilesRestore:(id)restore
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v4 connection];
-  v7 = [v5 objectAtIndexedSubscript:0];
+  restoreCopy = restore;
+  arguments = [restoreCopy arguments];
+  connection = [restoreCopy connection];
+  v7 = [arguments objectAtIndexedSubscript:0];
   v8 = [MBServiceAccount alloc];
   v9 = +[UMUserPersona currentPersona];
   v19 = 0;
@@ -2978,9 +2978,9 @@ LABEL_9:
 
   if (v10)
   {
-    v12 = [(MBXPCServer *)self serviceManager];
+    serviceManager = [(MBXPCServer *)self serviceManager];
     v18 = v11;
-    v13 = [v12 restoreFilesWithPaths:v7 context:v6 account:v10 error:&v18];
+    v13 = [serviceManager restoreFilesWithPaths:v7 context:connection account:v10 error:&v18];
     v14 = v18;
 
     v11 = v14;
@@ -2988,12 +2988,12 @@ LABEL_9:
 
   else
   {
-    v12 = MBGetDefaultLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v21 = v11;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to start files restore due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to start files restore due to nil account: %{public}@", buf, 0xCu);
       v17 = v11;
       _MBLog();
     }
@@ -3002,23 +3002,23 @@ LABEL_9:
   }
 
   v15 = [NSNumber numberWithBool:v13];
-  [v4 setReply:v15];
+  [restoreCopy setReply:v15];
 
   if ((v13 & 1) == 0)
   {
     v16 = [MBError sanitizedError:v11];
-    [v4 setReplyError:v16];
+    [restoreCopy setReplyError:v16];
   }
 
-  [v4 sendReply];
+  [restoreCopy sendReply];
 }
 
-- (void)_startBookRestore:(id)a3
+- (void)_startBookRestore:(id)restore
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v4 connection];
-  v7 = [v5 firstObject];
+  restoreCopy = restore;
+  arguments = [restoreCopy arguments];
+  connection = [restoreCopy connection];
+  firstObject = [arguments firstObject];
   v8 = [MBServiceAccount alloc];
   v9 = +[UMUserPersona currentPersona];
   v19 = 0;
@@ -3027,9 +3027,9 @@ LABEL_9:
 
   if (v10)
   {
-    v12 = [(MBXPCServer *)self serviceManager];
+    serviceManager = [(MBXPCServer *)self serviceManager];
     v18 = v11;
-    v13 = [v12 restoreBookWithPath:v7 context:v6 account:v10 error:&v18];
+    v13 = [serviceManager restoreBookWithPath:firstObject context:connection account:v10 error:&v18];
     v14 = v18;
 
     v11 = v14;
@@ -3037,12 +3037,12 @@ LABEL_9:
 
   else
   {
-    v12 = MBGetDefaultLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v21 = v11;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to start the book restore due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to start the book restore due to nil account: %{public}@", buf, 0xCu);
       v17 = v11;
       _MBLog();
     }
@@ -3051,27 +3051,27 @@ LABEL_9:
   }
 
   v15 = [NSNumber numberWithBool:v13];
-  [v4 setReply:v15];
+  [restoreCopy setReply:v15];
 
   if ((v13 & 1) == 0)
   {
     v16 = [MBError sanitizedError:v11];
-    [v4 setReplyError:v16];
+    [restoreCopy setReplyError:v16];
   }
 
-  [v4 sendReply];
+  [restoreCopy sendReply];
 }
 
-- (void)_startAppRestore:(id)a3
+- (void)_startAppRestore:(id)restore
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v4 connection];
-  v7 = [v5 objectAtIndexedSubscript:0];
-  v8 = [v5 objectAtIndexedSubscript:1];
-  v9 = [v8 BOOLValue];
+  restoreCopy = restore;
+  arguments = [restoreCopy arguments];
+  connection = [restoreCopy connection];
+  v7 = [arguments objectAtIndexedSubscript:0];
+  v8 = [arguments objectAtIndexedSubscript:1];
+  bOOLValue = [v8 BOOLValue];
 
-  v10 = [v5 objectAtIndexedSubscript:2];
+  v10 = [arguments objectAtIndexedSubscript:2];
   v11 = [MBServiceAccount alloc];
   v12 = +[UMUserPersona currentPersona];
   v22 = 0;
@@ -3080,9 +3080,9 @@ LABEL_9:
 
   if (v13)
   {
-    v15 = [(MBXPCServer *)self serviceManager];
+    serviceManager = [(MBXPCServer *)self serviceManager];
     v21 = v14;
-    v16 = [v15 restoreApplicationWithBundleID:v7 failed:v9 qos:v10 context:v6 account:v13 error:&v21];
+    v16 = [serviceManager restoreApplicationWithBundleID:v7 failed:bOOLValue qos:v10 context:connection account:v13 error:&v21];
     v17 = v21;
 
     v14 = v17;
@@ -3090,12 +3090,12 @@ LABEL_9:
 
   else
   {
-    v15 = MBGetDefaultLog();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v24 = v14;
-      _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Failed to start the app restore due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to start the app restore due to nil account: %{public}@", buf, 0xCu);
       v20 = v14;
       _MBLog();
     }
@@ -3104,42 +3104,42 @@ LABEL_9:
   }
 
   v18 = [NSNumber numberWithBool:v16];
-  [v4 setReply:v18];
+  [restoreCopy setReply:v18];
 
   if ((v16 & 1) == 0)
   {
     v19 = [MBError sanitizedError:v14];
-    [v4 setReplyError:v19];
+    [restoreCopy setReplyError:v19];
   }
 
-  [v4 sendReply];
+  [restoreCopy sendReply];
 }
 
-- (void)_cancelAppRestore:(id)a3
+- (void)_cancelAppRestore:(id)restore
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v5 objectAtIndexedSubscript:0];
-  v7 = [(MBXPCServer *)self serviceManager];
+  restoreCopy = restore;
+  arguments = [restoreCopy arguments];
+  v6 = [arguments objectAtIndexedSubscript:0];
+  serviceManager = [(MBXPCServer *)self serviceManager];
   v12 = 0;
-  v8 = [v7 cancelApplicationRestoreWithBundleID:v6 error:&v12];
+  v8 = [serviceManager cancelApplicationRestoreWithBundleID:v6 error:&v12];
   v9 = v12;
 
   v10 = [NSNumber numberWithBool:v8];
-  [v4 setReply:v10];
+  [restoreCopy setReply:v10];
 
   if ((v8 & 1) == 0)
   {
     v11 = [MBError sanitizedError:v9];
-    [v4 setReplyError:v11];
+    [restoreCopy setReplyError:v11];
   }
 
-  [v4 sendReply];
+  [restoreCopy sendReply];
 }
 
-- (void)_restoreInfo:(id)a3
+- (void)_restoreInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = [MBServiceAccount alloc];
   v5 = +[UMUserPersona currentPersona];
   v14 = 0;
@@ -3148,13 +3148,13 @@ LABEL_9:
 
   if (v6)
   {
-    v8 = [(MBServiceAccount *)v6 persona];
-    if (v8)
+    persona = [(MBServiceAccount *)v6 persona];
+    if (persona)
     {
 LABEL_3:
-      v9 = [v8 copyPreferencesValueForKey:@"RestoreInfo" class:objc_opt_class()];
+      v9 = [persona copyPreferencesValueForKey:@"RestoreInfo" class:objc_opt_class()];
       v10 = [[MBRestoreInfo alloc] initWithDictionaryRepresentation:v9];
-      [v3 setReply:v10];
+      [infoCopy setReply:v10];
 
       goto LABEL_8;
     }
@@ -3163,11 +3163,11 @@ LABEL_3:
   else
   {
     v13 = v7;
-    v8 = [MBPersona personalPersonaWithError:&v13];
+    persona = [MBPersona personalPersonaWithError:&v13];
     v11 = v13;
 
     v7 = v11;
-    if (v8)
+    if (persona)
     {
       goto LABEL_3;
     }
@@ -3183,23 +3183,23 @@ LABEL_3:
   }
 
   v9 = [MBError sanitizedError:v7];
-  [v3 setReplyError:v9];
+  [infoCopy setReplyError:v9];
 LABEL_8:
 
-  [v3 sendReply];
+  [infoCopy sendReply];
 }
 
-- (void)_restoreState:(id)a3
+- (void)_restoreState:(id)state
 {
-  v4 = a3;
-  v5 = [(MBXPCServer *)self serviceManager];
+  stateCopy = state;
+  serviceManager = [(MBXPCServer *)self serviceManager];
   v11 = 0;
-  v6 = [v5 restoreStateWithError:&v11];
+  v6 = [serviceManager restoreStateWithError:&v11];
   v7 = v11;
 
   if (v6)
   {
-    [v4 setReply:v6];
+    [stateCopy setReply:v6];
   }
 
   else
@@ -3215,15 +3215,15 @@ LABEL_8:
     }
 
     v9 = [MBError sanitizedError:v7];
-    [v4 setReplyError:v9];
+    [stateCopy setReplyError:v9];
   }
 
-  [v4 sendReply];
+  [stateCopy sendReply];
 }
 
-- (void)_backgroundRestoreInfo:(id)a3
+- (void)_backgroundRestoreInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v12 = 0;
@@ -3245,21 +3245,21 @@ LABEL_8:
     goto LABEL_6;
   }
 
-  v9 = [(MBXPCServer *)self serviceManager];
-  v10 = [v9 backgroundRestoreInfoWithAccount:v7];
+  serviceManager = [(MBXPCServer *)self serviceManager];
+  v10 = [serviceManager backgroundRestoreInfoWithAccount:v7];
 
   if (v10)
   {
-    [v4 setReply:v10];
+    [infoCopy setReply:v10];
 LABEL_6:
   }
 
-  [v4 sendReply];
+  [infoCopy sendReply];
 }
 
-- (void)_clearRestoreSession:(id)a3
+- (void)_clearRestoreSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v10 = 0;
@@ -3268,30 +3268,30 @@ LABEL_6:
 
   if (v7)
   {
-    v9 = [(MBXPCServer *)self serviceManager];
-    [v9 clearRestoreSessionWithAccount:v7];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    [serviceManager clearRestoreSessionWithAccount:v7];
   }
 
   else
   {
-    v9 = MBGetDefaultLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v12 = v8;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to clear the restore session due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to clear the restore session due to nil account: %{public}@", buf, 0xCu);
       _MBLog();
     }
   }
 
-  [v4 sendReply];
+  [sessionCopy sendReply];
 }
 
-- (void)_reportRestoreFailure:(id)a3
+- (void)_reportRestoreFailure:(id)failure
 {
-  v3 = a3;
-  v4 = [v3 arguments];
-  v5 = [v4 objectAtIndexedSubscript:0];
+  failureCopy = failure;
+  arguments = [failureCopy arguments];
+  v5 = [arguments objectAtIndexedSubscript:0];
   v6 = +[UMUserPersona currentPersona];
   v16 = 0;
   v7 = [MBPersona personaWithUMPersona:v6 error:&v16];
@@ -3323,23 +3323,23 @@ LABEL_6:
   }
 
   v12 = [NSNumber numberWithBool:v10];
-  [v3 setReply:v12];
+  [failureCopy setReply:v12];
 
   if ((v10 & 1) == 0)
   {
     v13 = [MBError sanitizedError:v8];
-    [v3 setReplyError:v13];
+    [failureCopy setReplyError:v13];
   }
 
-  [v3 sendReply];
+  [failureCopy sendReply];
 }
 
-- (void)_countRestoreFailures:(id)a3
+- (void)_countRestoreFailures:(id)failures
 {
-  v3 = a3;
-  v13 = [v3 arguments];
-  v4 = [v13 objectAtIndexedSubscript:0];
-  v5 = [v13 objectAtIndexedSubscript:1];
+  failuresCopy = failures;
+  arguments = [failuresCopy arguments];
+  v4 = [arguments objectAtIndexedSubscript:0];
+  v5 = [arguments objectAtIndexedSubscript:1];
   v6 = +[MBRestoreFailuresManager sharedManager];
   v7 = +[NSNull null];
   if (v4 == v7)
@@ -3366,18 +3366,18 @@ LABEL_6:
   v11 = [v6 countOfRestoreFailuresForDataclass:v8 assetType:v10];
 
   v12 = [NSNumber numberWithUnsignedInteger:v11];
-  [v3 setReply:v12];
+  [failuresCopy setReply:v12];
 
-  [v3 sendReply];
+  [failuresCopy sendReply];
 }
 
-- (void)_listRestoreFailures:(id)a3
+- (void)_listRestoreFailures:(id)failures
 {
-  v3 = a3;
-  v14 = [v3 arguments];
-  v4 = [v14 objectAtIndexedSubscript:0];
-  v5 = [v14 objectAtIndexedSubscript:1];
-  v6 = [v14 objectAtIndexedSubscript:2];
+  failuresCopy = failures;
+  arguments = [failuresCopy arguments];
+  v4 = [arguments objectAtIndexedSubscript:0];
+  v5 = [arguments objectAtIndexedSubscript:1];
+  v6 = [arguments objectAtIndexedSubscript:2];
   v7 = NSRangeFromString(v6);
 
   v8 = +[MBRestoreFailuresManager sharedManager];
@@ -3405,16 +3405,16 @@ LABEL_6:
 
   v13 = [v8 restoreFailuresForDataClass:v10 assetType:v12 range:{v7.location, v7.length}];
 
-  [v3 setReply:v13];
-  [v3 sendReply];
+  [failuresCopy setReply:v13];
+  [failuresCopy sendReply];
 }
 
-- (void)_restoreFiles:(id)a3
+- (void)_restoreFiles:(id)files
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v24 = [v5 objectAtIndexedSubscript:0];
-  v6 = [v5 objectAtIndexedSubscript:1];
+  filesCopy = files;
+  arguments = [filesCopy arguments];
+  v24 = [arguments objectAtIndexedSubscript:0];
+  v6 = [arguments objectAtIndexedSubscript:1];
   v7 = +[NSNull null];
   if (v6 == v7)
   {
@@ -3423,17 +3423,17 @@ LABEL_6:
 
   else
   {
-    v8 = [v5 objectAtIndexedSubscript:1];
+    v8 = [arguments objectAtIndexedSubscript:1];
   }
 
-  v9 = [v5 objectAtIndexedSubscript:2];
-  v10 = [v9 BOOLValue];
+  v9 = [arguments objectAtIndexedSubscript:2];
+  bOOLValue = [v9 BOOLValue];
 
-  v11 = [v5 objectAtIndexedSubscript:3];
-  v12 = [v11 unsignedIntegerValue];
+  v11 = [arguments objectAtIndexedSubscript:3];
+  unsignedIntegerValue = [v11 unsignedIntegerValue];
 
-  v13 = [v5 objectAtIndexedSubscript:4];
-  v14 = [v13 unsignedIntegerValue];
+  v13 = [arguments objectAtIndexedSubscript:4];
+  unsignedIntegerValue2 = [v13 unsignedIntegerValue];
 
   v15 = [MBServiceAccount alloc];
   v16 = +[UMUserPersona currentPersona];
@@ -3457,9 +3457,9 @@ LABEL_6:
     goto LABEL_11;
   }
 
-  v19 = [(MBXPCServer *)self serviceManager];
+  serviceManager = [(MBXPCServer *)self serviceManager];
   v25 = v18;
-  v20 = [v19 restoreFilesForDomain:v24 relativePath:v8 pendingOnly:v10 range:v12 account:v14 error:{v17, &v25}];
+  v20 = [serviceManager restoreFilesForDomain:v24 relativePath:v8 pendingOnly:bOOLValue range:unsignedIntegerValue account:unsignedIntegerValue2 error:{v17, &v25}];
   v21 = v25;
 
   if (!v20)
@@ -3467,21 +3467,21 @@ LABEL_6:
     v18 = v21;
 LABEL_11:
     v20 = [MBError sanitizedError:v18, v23];
-    [v4 setReplyError:v20];
+    [filesCopy setReplyError:v20];
     goto LABEL_12;
   }
 
-  [v4 setReply:v20];
+  [filesCopy setReply:v20];
 LABEL_12:
 
-  [v4 sendReply];
+  [filesCopy sendReply];
 }
 
-- (void)_prioritizeRestoreFile:(id)a3
+- (void)_prioritizeRestoreFile:(id)file
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v5 objectAtIndexedSubscript:0];
+  fileCopy = file;
+  arguments = [fileCopy arguments];
+  v6 = [arguments objectAtIndexedSubscript:0];
   v7 = [MBServiceAccount alloc];
   v8 = +[UMUserPersona currentPersona];
   v12 = 0;
@@ -3490,28 +3490,28 @@ LABEL_12:
 
   if (v9)
   {
-    v11 = [(MBXPCServer *)self serviceManager];
-    [v11 prioritizeRestoreFileWithPath:v6 account:v9];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    [serviceManager prioritizeRestoreFileWithPath:v6 account:v9];
   }
 
   else
   {
-    v11 = MBGetDefaultLog();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v14 = v10;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Failed to prioritize restore for file due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to prioritize restore for file due to nil account: %{public}@", buf, 0xCu);
       _MBLog();
     }
   }
 
-  [v4 sendReply];
+  [fileCopy sendReply];
 }
 
-- (void)_insufficientFreeSpaceToRestore:(id)a3
+- (void)_insufficientFreeSpaceToRestore:(id)restore
 {
-  v3 = a3;
+  restoreCopy = restore;
   v4 = [MBServiceAccount alloc];
   v5 = +[UMUserPersona currentPersona];
   v10 = 0;
@@ -3536,12 +3536,12 @@ LABEL_12:
     }
   }
 
-  [v3 sendReply];
+  [restoreCopy sendReply];
 }
 
-- (void)_prepareForBackgroundRestore:(id)a3
+- (void)_prepareForBackgroundRestore:(id)restore
 {
-  v4 = a3;
+  restoreCopy = restore;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v16 = 0;
@@ -3564,9 +3564,9 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  v9 = [(MBXPCServer *)self serviceManager];
+  serviceManager = [(MBXPCServer *)self serviceManager];
   v15 = v8;
-  v10 = [v9 prepareForBackgroundRestoreWithAccount:v7 error:&v15];
+  v10 = [serviceManager prepareForBackgroundRestoreWithAccount:v7 error:&v15];
   v11 = v15;
 
   if (!v10)
@@ -3574,19 +3574,19 @@ LABEL_12:
     v8 = v11;
 LABEL_8:
     v13 = [MBError sanitizedError:v8, v14];
-    [v4 setReplyError:v13];
+    [restoreCopy setReplyError:v13];
 
     goto LABEL_9;
   }
 
-  [v4 setReply:&__kCFBooleanTrue];
+  [restoreCopy setReply:&__kCFBooleanTrue];
 LABEL_9:
-  [v4 sendReply];
+  [restoreCopy sendReply];
 }
 
-- (void)_boostBackgroundRestore:(id)a3
+- (void)_boostBackgroundRestore:(id)restore
 {
-  v4 = a3;
+  restoreCopy = restore;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v14 = 0;
@@ -3595,13 +3595,13 @@ LABEL_9:
 
   if (v7)
   {
-    v9 = [(MBXPCServer *)self serviceManager];
+    serviceManager = [(MBXPCServer *)self serviceManager];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10015BA00;
     v12[3] = &unk_1003BC010;
-    v13 = v4;
-    [v9 boostBackgroundRestoreWithAccount:v7 completionHandler:v12];
+    v13 = restoreCopy;
+    [serviceManager boostBackgroundRestoreWithAccount:v7 completionHandler:v12];
   }
 
   else
@@ -3616,15 +3616,15 @@ LABEL_9:
     }
 
     v11 = [MBError sanitizedError:v8];
-    [v4 setReplyError:v11];
+    [restoreCopy setReplyError:v11];
 
-    [v4 sendReply];
+    [restoreCopy sendReply];
   }
 }
 
-- (void)_boostManualBackup:(id)a3
+- (void)_boostManualBackup:(id)backup
 {
-  v4 = a3;
+  backupCopy = backup;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v13 = 0;
@@ -3633,56 +3633,56 @@ LABEL_9:
 
   if (v7)
   {
-    v9 = [(MBXPCServer *)self serviceManager];
+    serviceManager = [(MBXPCServer *)self serviceManager];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10015BBA8;
     v11[3] = &unk_1003BC010;
-    v12 = v4;
-    [v9 boostManualBackupWithAccount:v7 completionHandler:v11];
+    v12 = backupCopy;
+    [serviceManager boostManualBackupWithAccount:v7 completionHandler:v11];
   }
 
   else
   {
     v10 = [MBError sanitizedError:v8];
-    [v4 setReplyError:v10];
+    [backupCopy setReplyError:v10];
 
-    [v4 sendReply];
+    [backupCopy sendReply];
   }
 }
 
-- (void)_scheduleActivities:(id)a3
+- (void)_scheduleActivities:(id)activities
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10015BCA0;
   v4[3] = &unk_1003BFD78;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(MBXPCServer *)v5 _respondSynchronouslyTo:v3 with:v4];
+  selfCopy = self;
+  activitiesCopy = activities;
+  v3 = activitiesCopy;
+  [(MBXPCServer *)selfCopy _respondSynchronouslyTo:v3 with:v4];
 }
 
-- (void)_restoreDomain:(id)a3
+- (void)_restoreDomain:(id)domain
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10015BDE4;
   v4[3] = &unk_1003BFDA0;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(MBXPCServer *)v5 _respondSynchronouslyTo:v3 description:@"restore domain" withAccount:v4];
+  selfCopy = self;
+  domainCopy = domain;
+  v3 = domainCopy;
+  [(MBXPCServer *)selfCopy _respondSynchronouslyTo:v3 description:@"restore domain" withAccount:v4];
 }
 
-- (void)_acquireLock:(id)a3
+- (void)_acquireLock:(id)lock
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v4 connection];
-  v7 = [v5 objectAtIndexedSubscript:0];
-  v8 = [v5 objectAtIndexedSubscript:1];
-  v9 = [v5 objectAtIndexedSubscript:2];
+  lockCopy = lock;
+  arguments = [lockCopy arguments];
+  connection = [lockCopy connection];
+  v7 = [arguments objectAtIndexedSubscript:0];
+  v8 = [arguments objectAtIndexedSubscript:1];
+  v9 = [arguments objectAtIndexedSubscript:2];
   [v9 doubleValue];
   v11 = v10;
 
@@ -3694,9 +3694,9 @@ LABEL_9:
 
   if (v14)
   {
-    v16 = [(MBXPCServer *)self serviceManager];
+    serviceManager = [(MBXPCServer *)self serviceManager];
     v22 = v15;
-    v17 = [v16 acquireLockWithBackupUDID:v7 account:v14 owner:v8 timeout:v6 connection:&v22 error:v11];
+    v17 = [serviceManager acquireLockWithBackupUDID:v7 account:v14 owner:v8 timeout:connection connection:&v22 error:v11];
     v18 = v22;
 
     v15 = v18;
@@ -3704,12 +3704,12 @@ LABEL_9:
 
   else
   {
-    v16 = MBGetDefaultLog();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v25 = v15;
-      _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Failed to acquire lock due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to acquire lock due to nil account: %{public}@", buf, 0xCu);
       v21 = v15;
       _MBLog();
     }
@@ -3718,24 +3718,24 @@ LABEL_9:
   }
 
   v19 = [NSNumber numberWithBool:v17];
-  [v4 setReply:v19];
+  [lockCopy setReply:v19];
 
   if ((v17 & 1) == 0)
   {
     v20 = [MBError sanitizedError:v15];
-    [v4 setReplyError:v20];
+    [lockCopy setReplyError:v20];
   }
 
-  [v4 sendReply];
+  [lockCopy sendReply];
 }
 
-- (void)_releaseLock:(id)a3
+- (void)_releaseLock:(id)lock
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v4 connection];
-  v7 = [v5 objectAtIndexedSubscript:0];
-  v8 = [v5 objectAtIndexedSubscript:1];
+  lockCopy = lock;
+  arguments = [lockCopy arguments];
+  connection = [lockCopy connection];
+  v7 = [arguments objectAtIndexedSubscript:0];
+  v8 = [arguments objectAtIndexedSubscript:1];
   v9 = [MBServiceAccount alloc];
   v10 = +[UMUserPersona currentPersona];
   v20 = 0;
@@ -3744,9 +3744,9 @@ LABEL_9:
 
   if (v11)
   {
-    v13 = [(MBXPCServer *)self serviceManager];
+    serviceManager = [(MBXPCServer *)self serviceManager];
     v19 = v12;
-    v14 = [v13 releaseLockWithBackupUDID:v7 account:v11 owner:v8 connection:v6 error:&v19];
+    v14 = [serviceManager releaseLockWithBackupUDID:v7 account:v11 owner:v8 connection:connection error:&v19];
     v15 = v19;
 
     v12 = v15;
@@ -3754,12 +3754,12 @@ LABEL_9:
 
   else
   {
-    v13 = MBGetDefaultLog();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v22 = v12;
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to release lock due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to release lock due to nil account: %{public}@", buf, 0xCu);
       v18 = v12;
       _MBLog();
     }
@@ -3768,21 +3768,21 @@ LABEL_9:
   }
 
   v16 = [NSNumber numberWithBool:v14];
-  [v4 setReply:v16];
+  [lockCopy setReply:v16];
 
   if ((v14 & 1) == 0)
   {
     v17 = [MBError sanitizedError:v12];
-    [v4 setReplyError:v17];
+    [lockCopy setReplyError:v17];
   }
 
-  [v4 sendReply];
+  [lockCopy sendReply];
 }
 
-- (void)_deviceLockInfos:(id)a3
+- (void)_deviceLockInfos:(id)infos
 {
-  v4 = a3;
-  v5 = [v4 connection];
+  infosCopy = infos;
+  connection = [infosCopy connection];
   v6 = [MBServiceAccount alloc];
   v7 = +[UMUserPersona currentPersona];
   v16 = 0;
@@ -3805,9 +3805,9 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  v10 = [(MBXPCServer *)self serviceManager];
+  serviceManager = [(MBXPCServer *)self serviceManager];
   v15 = v9;
-  v11 = [v10 deviceLockInfosWithAccount:v8 connection:v5 error:&v15];
+  v11 = [serviceManager deviceLockInfosWithAccount:v8 connection:connection error:&v15];
   v12 = v15;
 
   if (!v11)
@@ -3815,21 +3815,21 @@ LABEL_9:
     v9 = v12;
 LABEL_8:
     v11 = [MBError sanitizedError:v9, v14];
-    [v4 setReplyError:v11];
+    [infosCopy setReplyError:v11];
     goto LABEL_9;
   }
 
-  [v4 setReply:v11];
+  [infosCopy setReply:v11];
 LABEL_9:
 
-  [v4 sendReply];
+  [infosCopy sendReply];
 }
 
-- (void)_fileExists:(id)a3
+- (void)_fileExists:(id)exists
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v5 objectAtIndexedSubscript:0];
+  existsCopy = exists;
+  arguments = [existsCopy arguments];
+  v6 = [arguments objectAtIndexedSubscript:0];
   v7 = [MBServiceAccount alloc];
   v8 = +[UMUserPersona currentPersona];
   v18 = 0;
@@ -3838,11 +3838,11 @@ LABEL_9:
 
   if (v9)
   {
-    v11 = [(MBXPCServer *)self serviceManager];
-    v12 = [v11 restoreFileExistsWithPath:v6 account:v9];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    v12 = [serviceManager restoreFileExistsWithPath:v6 account:v9];
 
     v13 = [NSNumber numberWithBool:v12];
-    [v4 setReply:v13];
+    [existsCopy setReply:v13];
 
     if (v12)
     {
@@ -3863,20 +3863,20 @@ LABEL_9:
     }
 
     v15 = [NSNumber numberWithBool:0];
-    [v4 setReply:v15];
+    [existsCopy setReply:v15];
   }
 
   v16 = [MBError sanitizedError:v10, v17];
-  [v4 setReplyError:v16];
+  [existsCopy setReplyError:v16];
 
 LABEL_8:
 }
 
-- (void)_dataExistsForApp:(id)a3
+- (void)_dataExistsForApp:(id)app
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v5 objectAtIndexedSubscript:0];
+  appCopy = app;
+  arguments = [appCopy arguments];
+  v6 = [arguments objectAtIndexedSubscript:0];
   v17 = 0;
   v7 = [MBServiceAccount alloc];
   v8 = +[UMUserPersona currentPersona];
@@ -3886,18 +3886,18 @@ LABEL_8:
 
   if (v9)
   {
-    v11 = [(MBXPCServer *)self serviceManager];
-    v12 = [v11 restoreDataExistsForApplicationWithBundleID:v6 size:&v17 account:v9];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    v12 = [serviceManager restoreDataExistsForApplicationWithBundleID:v6 size:&v17 account:v9];
   }
 
   else
   {
-    v11 = MBGetDefaultLog();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v20 = v10;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Failed to check for data existence due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to check for data existence due to nil account: %{public}@", buf, 0xCu);
       _MBLog();
     }
 
@@ -3909,17 +3909,17 @@ LABEL_8:
   v14 = [NSNumber numberWithUnsignedLongLong:v17];
   v18[1] = v14;
   v15 = [NSArray arrayWithObjects:v18 count:2];
-  [v4 setReply:v15];
+  [appCopy setReply:v15];
 
-  [v4 sendReply];
+  [appCopy sendReply];
 }
 
-- (void)_removeDomain:(id)a3
+- (void)_removeDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v4 connection];
-  v7 = [v5 objectAtIndexedSubscript:0];
+  domainCopy = domain;
+  arguments = [domainCopy arguments];
+  connection = [domainCopy connection];
+  v7 = [arguments objectAtIndexedSubscript:0];
   v8 = [MBServiceAccount alloc];
   v9 = +[UMUserPersona currentPersona];
   v19 = 0;
@@ -3928,9 +3928,9 @@ LABEL_8:
 
   if (v10)
   {
-    v12 = [(MBXPCServer *)self serviceManager];
+    serviceManager = [(MBXPCServer *)self serviceManager];
     v18 = v11;
-    v13 = [v12 removeDomainName:v7 account:v10 connection:v6 error:&v18];
+    v13 = [serviceManager removeDomainName:v7 account:v10 connection:connection error:&v18];
     v14 = v18;
 
     v11 = v14;
@@ -3938,12 +3938,12 @@ LABEL_8:
 
   else
   {
-    v12 = MBGetDefaultLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v21 = v11;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to remove domain due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to remove domain due to nil account: %{public}@", buf, 0xCu);
       v17 = v11;
       _MBLog();
     }
@@ -3952,22 +3952,22 @@ LABEL_8:
   }
 
   v15 = [NSNumber numberWithBool:v13];
-  [v4 setReply:v15];
+  [domainCopy setReply:v15];
 
   if ((v13 & 1) == 0)
   {
     v16 = [MBError sanitizedError:v11];
-    [v4 setReplyError:v16];
+    [domainCopy setReplyError:v16];
   }
 
-  [v4 sendReply];
+  [domainCopy sendReply];
 }
 
-- (void)_domainInfo:(id)a3
+- (void)_domainInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 arguments];
-  v5 = [v4 objectAtIndexedSubscript:0];
+  infoCopy = info;
+  arguments = [infoCopy arguments];
+  v5 = [arguments objectAtIndexedSubscript:0];
   v6 = [MBServiceAccount alloc];
   v7 = +[UMUserPersona currentPersona];
   v17 = 0;
@@ -3986,33 +3986,33 @@ LABEL_8:
       _MBLog();
     }
 
-    [v3 setReply:0];
+    [infoCopy setReply:0];
     v12 = v9;
     goto LABEL_7;
   }
 
-  v10 = [v3 connection];
+  connection = [infoCopy connection];
   v16 = v9;
-  v11 = MBCalculateQuotaForDomain(v5, v8, v10, &v16);
+  v11 = MBCalculateQuotaForDomain(v5, v8, connection, &v16);
   v12 = v16;
 
-  [v3 setReply:v11];
+  [infoCopy setReply:v11];
   v9 = v12;
   if (!v11)
   {
 LABEL_7:
     v14 = [MBError sanitizedError:v9, v15];
-    [v3 setReplyError:v14];
+    [infoCopy setReplyError:v14];
 
     v11 = 0;
   }
 
-  [v3 sendReply];
+  [infoCopy sendReply];
 }
 
-- (void)_domainInfoList:(id)a3
+- (void)_domainInfoList:(id)list
 {
-  v3 = a3;
+  listCopy = list;
   v4 = [MBServiceAccount alloc];
   v5 = +[UMUserPersona currentPersona];
   v15 = 0;
@@ -4031,33 +4031,33 @@ LABEL_7:
       _MBLog();
     }
 
-    [v3 setReply:0];
+    [listCopy setReply:0];
     v10 = v7;
     goto LABEL_7;
   }
 
-  v8 = [v3 connection];
+  connection = [listCopy connection];
   v14 = v7;
-  v9 = MBCalculateQuotaForDomainsInCurrentDevice(v6, v8, &v14);
+  v9 = MBCalculateQuotaForDomainsInCurrentDevice(v6, connection, &v14);
   v10 = v14;
 
-  [v3 setReply:v9];
+  [listCopy setReply:v9];
   v7 = v10;
   if (!v9)
   {
 LABEL_7:
     v12 = [MBError sanitizedError:v7, v13];
-    [v3 setReplyError:v12];
+    [listCopy setReplyError:v12];
 
     v9 = 0;
   }
 
-  [v3 sendReply];
+  [listCopy sendReply];
 }
 
-- (void)_disabledDomainInfos:(id)a3
+- (void)_disabledDomainInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v11 = 0;
@@ -4066,33 +4066,33 @@ LABEL_7:
 
   if (v7)
   {
-    v9 = [(MBXPCServer *)self serviceManager];
-    v10 = [v9 disabledDomainInfosForAccount:v7];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    v10 = [serviceManager disabledDomainInfosForAccount:v7];
   }
 
   else
   {
-    v9 = MBGetDefaultLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v13 = v8;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to set domain enabled/disabled due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to set domain enabled/disabled due to nil account: %{public}@", buf, 0xCu);
       _MBLog();
     }
 
     v10 = 0;
   }
 
-  [v4 setReply:v10];
-  [v4 sendReply];
+  [infosCopy setReply:v10];
+  [infosCopy sendReply];
 }
 
-- (void)_isDomainEnabled:(id)a3
+- (void)_isDomainEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v5 objectAtIndexedSubscript:0];
+  enabledCopy = enabled;
+  arguments = [enabledCopy arguments];
+  v6 = [arguments objectAtIndexedSubscript:0];
   v7 = [MBServiceAccount alloc];
   v8 = +[UMUserPersona currentPersona];
   v14 = 0;
@@ -4101,18 +4101,18 @@ LABEL_7:
 
   if (v9)
   {
-    v11 = [(MBXPCServer *)self serviceManager];
-    v12 = [v11 isBackupEnabledForDomainName:v6 account:v9];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    v12 = [serviceManager isBackupEnabledForDomainName:v6 account:v9];
   }
 
   else
   {
-    v11 = MBGetDefaultLog();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v16 = v10;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Failed to set domain enabled/disabled due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to set domain enabled/disabled due to nil account: %{public}@", buf, 0xCu);
       _MBLog();
     }
 
@@ -4120,19 +4120,19 @@ LABEL_7:
   }
 
   v13 = [NSNumber numberWithBool:v12];
-  [v4 setReply:v13];
+  [enabledCopy setReply:v13];
 
-  [v4 sendReply];
+  [enabledCopy sendReply];
 }
 
-- (void)_setDomainEnabled:(id)a3
+- (void)_setDomainEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v5 objectAtIndexedSubscript:0];
-  v7 = [v6 BOOLValue];
+  enabledCopy = enabled;
+  arguments = [enabledCopy arguments];
+  v6 = [arguments objectAtIndexedSubscript:0];
+  bOOLValue = [v6 BOOLValue];
 
-  v8 = [v5 objectAtIndexedSubscript:1];
+  v8 = [arguments objectAtIndexedSubscript:1];
   v9 = [MBServiceAccount alloc];
   v10 = +[UMUserPersona currentPersona];
   v14 = 0;
@@ -4141,58 +4141,58 @@ LABEL_7:
 
   if (v11)
   {
-    v13 = [(MBXPCServer *)self serviceManager];
-    [v13 setBackupEnabled:v7 forDomainName:v8 account:v11];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    [serviceManager setBackupEnabled:bOOLValue forDomainName:v8 account:v11];
   }
 
   else
   {
-    v13 = MBGetDefaultLog();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v16 = v12;
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to set domain enabled/disabled due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to set domain enabled/disabled due to nil account: %{public}@", buf, 0xCu);
       _MBLog();
     }
   }
 
-  [v4 sendReply];
+  [enabledCopy sendReply];
 }
 
-- (void)_setAllowiTunesBackup:(id)a3
+- (void)_setAllowiTunesBackup:(id)backup
 {
-  v4 = a3;
-  v8 = [v4 arguments];
-  v5 = [v8 objectAtIndexedSubscript:0];
+  backupCopy = backup;
+  arguments = [backupCopy arguments];
+  v5 = [arguments objectAtIndexedSubscript:0];
   v6 = [v5 intValue] != 0;
 
-  v7 = [(MBXPCServer *)self serviceManager];
-  [v7 setAllowiTunesBackup:v6];
+  serviceManager = [(MBXPCServer *)self serviceManager];
+  [serviceManager setAllowiTunesBackup:v6];
 
-  [v4 sendReply];
+  [backupCopy sendReply];
 }
 
-- (void)_getAllowiTunesBackup:(id)a3
+- (void)_getAllowiTunesBackup:(id)backup
 {
-  v7 = a3;
-  v4 = [(MBXPCServer *)self serviceManager];
-  v5 = [v4 allowiTunesBackup];
+  backupCopy = backup;
+  serviceManager = [(MBXPCServer *)self serviceManager];
+  allowiTunesBackup = [serviceManager allowiTunesBackup];
 
-  v6 = [NSNumber numberWithBool:v5];
-  [v7 setReply:v6];
+  v6 = [NSNumber numberWithBool:allowiTunesBackup];
+  [backupCopy setReply:v6];
 
-  [v7 sendReply];
+  [backupCopy sendReply];
 }
 
-- (void)_getBuddyData:(id)a3
+- (void)_getBuddyData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v4 connection];
-  v7 = [v5 objectAtIndexedSubscript:0];
-  v8 = [v5 objectAtIndexedSubscript:1];
-  v9 = [v8 unsignedIntegerValue];
+  dataCopy = data;
+  arguments = [dataCopy arguments];
+  connection = [dataCopy connection];
+  v7 = [arguments objectAtIndexedSubscript:0];
+  v8 = [arguments objectAtIndexedSubscript:1];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
   v10 = [MBServiceAccount alloc];
   v11 = +[UMUserPersona currentPersona];
@@ -4216,9 +4216,9 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v14 = [(MBXPCServer *)self serviceManager];
+  serviceManager = [(MBXPCServer *)self serviceManager];
   v19 = v13;
-  v15 = [v14 getBuddyDataStashForBackupUDID:v7 snapshotID:v9 account:v12 connection:v6 error:&v19];
+  v15 = [serviceManager getBuddyDataStashForBackupUDID:v7 snapshotID:unsignedIntegerValue account:v12 connection:connection error:&v19];
   v16 = v19;
 
   if (!v15)
@@ -4226,24 +4226,24 @@ LABEL_7:
     v13 = v16;
 LABEL_8:
     v15 = [MBError sanitizedError:v13, v18];
-    [v4 setReplyError:v15];
+    [dataCopy setReplyError:v15];
     goto LABEL_9;
   }
 
-  [v4 setReply:v15];
+  [dataCopy setReply:v15];
 LABEL_9:
 
-  [v4 sendReply];
+  [dataCopy sendReply];
 }
 
-- (void)_getAppleIDsMap:(id)a3
+- (void)_getAppleIDsMap:(id)map
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v4 connection];
-  v7 = [v5 objectAtIndexedSubscript:0];
-  v8 = [v5 objectAtIndexedSubscript:1];
-  v9 = [v8 unsignedIntegerValue];
+  mapCopy = map;
+  arguments = [mapCopy arguments];
+  connection = [mapCopy connection];
+  v7 = [arguments objectAtIndexedSubscript:0];
+  v8 = [arguments objectAtIndexedSubscript:1];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
   v10 = [MBServiceAccount alloc];
   v11 = +[UMUserPersona currentPersona];
@@ -4268,10 +4268,10 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v14 = [(MBXPCServer *)self serviceManager];
+  serviceManager = [(MBXPCServer *)self serviceManager];
   v23 = v13;
   v24 = 0;
-  v15 = [v14 getAppleIDsMapForBackupUDID:v7 account:v12 snapshotID:v9 activeAppleID:&v24 connection:v6 error:&v23];
+  v15 = [serviceManager getAppleIDsMapForBackupUDID:v7 account:v12 snapshotID:unsignedIntegerValue activeAppleID:&v24 connection:connection error:&v23];
   v16 = v24;
   v17 = v23;
 
@@ -4280,7 +4280,7 @@ LABEL_9:
     v13 = v17;
 LABEL_9:
     v15 = [MBError sanitizedError:v13, v22];
-    [v4 setReplyError:v15];
+    [mapCopy setReplyError:v15];
     goto LABEL_12;
   }
 
@@ -4297,15 +4297,15 @@ LABEL_9:
     [v19 addObject:v21];
   }
 
-  [v4 setReply:v19];
+  [mapCopy setReply:v19];
 
 LABEL_12:
-  [v4 sendReply];
+  [mapCopy sendReply];
 }
 
-- (void)_deleteAccount:(id)a3
+- (void)_deleteAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v16 = 0;
@@ -4314,9 +4314,9 @@ LABEL_12:
 
   if (v7)
   {
-    v9 = [(MBXPCServer *)self serviceManager];
+    serviceManager = [(MBXPCServer *)self serviceManager];
     v15 = v8;
-    v10 = [v9 deleteAccountWithServiceAccount:v7 error:&v15];
+    v10 = [serviceManager deleteAccountWithServiceAccount:v7 error:&v15];
     v11 = v15;
 
     v8 = v11;
@@ -4324,12 +4324,12 @@ LABEL_12:
 
   else
   {
-    v9 = MBGetDefaultLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v18 = v8;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to delete account due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to delete account due to nil account: %{public}@", buf, 0xCu);
       v14 = v8;
       _MBLog();
     }
@@ -4338,65 +4338,65 @@ LABEL_12:
   }
 
   v12 = [NSNumber numberWithBool:v10];
-  [v4 setReply:v12];
+  [accountCopy setReply:v12];
 
   if ((v10 & 1) == 0)
   {
     v13 = [MBError sanitizedError:v8];
-    [v4 setReplyError:v13];
+    [accountCopy setReplyError:v13];
   }
 
-  [v4 sendReply];
+  [accountCopy sendReply];
 }
 
-- (void)_accountChanged:(id)a3
+- (void)_accountChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v8 = [v5 firstObject];
+  changedCopy = changed;
+  arguments = [changedCopy arguments];
+  firstObject = [arguments firstObject];
 
-  v6 = [(MBXPCServer *)self serviceManager];
-  [v6 accountChanged:v8];
+  serviceManager = [(MBXPCServer *)self serviceManager];
+  [serviceManager accountChanged:firstObject];
 
-  v7 = [(MBXPCServer *)self scheduler];
-  [v7 accountChanged];
+  scheduler = [(MBXPCServer *)self scheduler];
+  [scheduler accountChanged];
 
-  [v4 sendReply];
+  [changedCopy sendReply];
 }
 
-- (void)_passcodeChanged:(id)a3
+- (void)_passcodeChanged:(id)changed
 {
-  v5 = a3;
-  v4 = [(MBXPCServer *)self scheduler];
-  [v4 passcodeChanged];
+  changedCopy = changed;
+  scheduler = [(MBXPCServer *)self scheduler];
+  [scheduler passcodeChanged];
 
-  [v5 sendReply];
+  [changedCopy sendReply];
 }
 
-- (void)_deviceIsLocking:(id)a3
+- (void)_deviceIsLocking:(id)locking
 {
-  v5 = a3;
-  v4 = [(MBXPCServer *)self serviceManager];
-  [v4 deviceIsLocking];
+  lockingCopy = locking;
+  serviceManager = [(MBXPCServer *)self serviceManager];
+  [serviceManager deviceIsLocking];
 
-  [v5 sendReply];
+  [lockingCopy sendReply];
 }
 
-- (void)_deviceIsUnlocked:(id)a3
+- (void)_deviceIsUnlocked:(id)unlocked
 {
-  v5 = a3;
-  v4 = [(MBXPCServer *)self serviceManager];
-  [v4 deviceIsUnlocked];
+  unlockedCopy = unlocked;
+  serviceManager = [(MBXPCServer *)self serviceManager];
+  [serviceManager deviceIsUnlocked];
 
-  [v5 sendReply];
+  [unlockedCopy sendReply];
 }
 
-- (void)_archiveLogs:(id)a3
+- (void)_archiveLogs:(id)logs
 {
-  v3 = a3;
-  v4 = [v3 arguments];
-  v5 = [v3 connection];
-  v6 = [v5 xpcConnection];
+  logsCopy = logs;
+  arguments = [logsCopy arguments];
+  connection = [logsCopy connection];
+  xpcConnection = [connection xpcConnection];
   *__argv = 0u;
   v26 = 0u;
   xpc_connection_get_audit_token();
@@ -4464,9 +4464,9 @@ LABEL_15:
   {
     if (MGGetBoolAnswer())
     {
-      if ([v4 count] == 1 && (objc_msgSend(v4, "objectAtIndexedSubscript:", 0), v18 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v18, (isKindOfClass & 1) != 0))
+      if ([arguments count] == 1 && (objc_msgSend(arguments, "objectAtIndexedSubscript:", 0), v18 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v18, (isKindOfClass & 1) != 0))
       {
-        v20 = [v4 objectAtIndexedSubscript:0];
+        v20 = [arguments objectAtIndexedSubscript:0];
         v21 = strdup([v20 fileSystemRepresentation]);
 
         token.val[0] = 0;
@@ -4483,7 +4483,7 @@ LABEL_15:
           LODWORD(error) = 0;
           waitpid(token.val[0], &error, 0);
           v22 = [NSNumber numberWithInt:error];
-          [v3 setReply:v22];
+          [logsCopy setReply:v22];
 
           goto LABEL_26;
         }
@@ -4508,35 +4508,35 @@ LABEL_15:
     v17 = &off_1003E0E40;
   }
 
-  [v3 setReply:{v17, v23}];
+  [logsCopy setReply:{v17, v23}];
 LABEL_26:
-  [v3 sendReply];
+  [logsCopy sendReply];
 }
 
-- (void)_rebootDevice:(id)a3
+- (void)_rebootDevice:(id)device
 {
-  v3 = [a3 arguments];
-  v4 = [v3 lastObject];
-  v5 = [v4 BOOLValue];
+  arguments = [device arguments];
+  lastObject = [arguments lastObject];
+  bOOLValue = [lastObject BOOLValue];
 
   v6 = +[MBDaemon sharedDaemon];
-  [v6 reboot:v5];
+  [v6 reboot:bOOLValue];
 
   abort();
 }
 
-- (void)_repair:(id)a3
+- (void)_repair:(id)_repair
 {
-  v5 = a3;
-  v4 = [(MBXPCServer *)self serviceManager];
-  [v4 repair];
+  _repairCopy = _repair;
+  serviceManager = [(MBXPCServer *)self serviceManager];
+  [serviceManager repair];
 
-  [v5 sendReply];
+  [_repairCopy sendReply];
 }
 
-- (void)_startScan:(id)a3
+- (void)_startScan:(id)scan
 {
-  v4 = a3;
+  scanCopy = scan;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v16 = 0;
@@ -4545,9 +4545,9 @@ LABEL_26:
 
   if (v7)
   {
-    v9 = [(MBXPCServer *)self serviceManager];
+    serviceManager = [(MBXPCServer *)self serviceManager];
     v15 = v8;
-    v10 = [v9 startScanWithAccount:v7 error:&v15];
+    v10 = [serviceManager startScanWithAccount:v7 error:&v15];
     v11 = v15;
 
     v8 = v11;
@@ -4555,12 +4555,12 @@ LABEL_26:
 
   else
   {
-    v9 = MBGetDefaultLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v18 = v8;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to start scan due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to start scan due to nil account: %{public}@", buf, 0xCu);
       v14 = v8;
       _MBLog();
     }
@@ -4569,22 +4569,22 @@ LABEL_26:
   }
 
   v12 = [NSNumber numberWithBool:v10];
-  [v4 setReply:v12];
+  [scanCopy setReply:v12];
 
   if ((v10 & 1) == 0)
   {
     v13 = [MBError sanitizedError:v8];
-    [v4 setReplyError:v13];
+    [scanCopy setReplyError:v13];
   }
 
-  [v4 sendReply];
+  [scanCopy sendReply];
 }
 
-- (void)_startScanForBundleIDs:(id)a3
+- (void)_startScanForBundleIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [v4 arguments];
-  v6 = [v5 firstObject];
+  dsCopy = ds;
+  arguments = [dsCopy arguments];
+  firstObject = [arguments firstObject];
   v7 = [MBServiceAccount alloc];
   v8 = +[UMUserPersona currentPersona];
   v22 = 0;
@@ -4620,9 +4620,9 @@ LABEL_26:
       {
         v10 = v16;
 LABEL_2:
-        v11 = [(MBXPCServer *)self serviceManager];
+        serviceManager = [(MBXPCServer *)self serviceManager];
         v20 = v10;
-        v12 = [v11 startScanForBundleIDs:v6 account:v9 error:&v20];
+        v12 = [serviceManager startScanForBundleIDs:firstObject account:v9 error:&v20];
         v13 = v20;
 
         v10 = v13;
@@ -4647,27 +4647,27 @@ LABEL_2:
 LABEL_13:
 
   v17 = [NSNumber numberWithBool:v12];
-  [v4 setReply:v17];
+  [dsCopy setReply:v17];
 
   if ((v12 & 1) == 0)
   {
     v18 = [MBError sanitizedError:v10];
-    [v4 setReplyError:v18];
+    [dsCopy setReplyError:v18];
   }
 
-  [v4 sendReply];
+  [dsCopy sendReply];
 }
 
-- (void)_sendMessage:(id)a3 connections:(id)a4
+- (void)_sendMessage:(id)message connections:(id)connections
 {
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  connectionsCopy = connections;
   v7 = +[UMUserPersona currentPersona];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v6;
+  v8 = connectionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -4686,7 +4686,7 @@ LABEL_13:
         v13 = *(*(&v17 + 1) + 8 * v12);
         if (![v7 isEnterprisePersona] || (objc_msgSend(v7, "userPersonaUniqueString"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "personaIdentifier"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v14, "isEqualToString:", v15), v15, v14, v16))
         {
-          [v13 sendMessage:v5];
+          [v13 sendMessage:messageCopy];
         }
 
         v12 = v12 + 1;
@@ -4700,15 +4700,15 @@ LABEL_13:
   }
 }
 
-- (void)_sendBarrierMessage:(id)a3
+- (void)_sendBarrierMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   dispatch_assert_queue_V2(self->_connectionsQueue);
-  v26 = self;
+  selfCopy = self;
   v6 = self->_connections;
   v7 = dispatch_group_create();
-  v8 = [v5 name];
-  [v8 UTF8String];
+  name = [messageCopy name];
+  [name UTF8String];
   v24 = os_transaction_create();
 
   v9 = objc_autoreleasePoolPush();
@@ -4740,9 +4740,9 @@ LABEL_13:
         v16 = *(*(&v40 + 1) + 8 * i);
         if ([v11 isEnterprisePersona])
         {
-          v17 = [v11 userPersonaUniqueString];
-          v18 = [v16 personaIdentifier];
-          v19 = [v17 isEqualToString:v18];
+          userPersonaUniqueString = [v11 userPersonaUniqueString];
+          personaIdentifier = [v16 personaIdentifier];
+          v19 = [userPersonaUniqueString isEqualToString:personaIdentifier];
 
           if (!v19)
           {
@@ -4756,7 +4756,7 @@ LABEL_13:
         v38[2] = sub_10015EC70;
         v38[3] = &unk_1003BC0B0;
         v39 = v7;
-        [v16 sendMessage:v5 barrierBlock:v38];
+        [v16 sendMessage:messageCopy barrierBlock:v38];
       }
 
       v13 = [(NSMutableArray *)obj countByEnumeratingWithState:&v40 objects:v44 count:16];
@@ -4783,26 +4783,26 @@ LABEL_13:
   v22 = v33[5];
   v33[5] = v21;
 
-  dispatch_group_notify(v7, v26->_connectionsQueue, v33[5]);
+  dispatch_group_notify(v7, selfCopy->_connectionsQueue, v33[5]);
   v23 = dispatch_walltime(0, 3600000000000);
-  dispatch_after(v23, v26->_connectionsQueue, v33[5]);
+  dispatch_after(v23, selfCopy->_connectionsQueue, v33[5]);
 
   _Block_object_dispose(&v32, 8);
 }
 
-- (void)_countCameraRollQuota:(id)a3
+- (void)_countCameraRollQuota:(id)quota
 {
-  v5 = a3;
-  v4 = [(MBXPCServer *)self serviceManager];
-  [v4 countCameraRollQuota];
+  quotaCopy = quota;
+  serviceManager = [(MBXPCServer *)self serviceManager];
+  [serviceManager countCameraRollQuota];
 
-  [v5 sendReply];
+  [quotaCopy sendReply];
 }
 
-- (void)_discountCameraRollQuota:(id)a3
+- (void)_discountCameraRollQuota:(id)quota
 {
-  v4 = a3;
-  v5 = [v4 connection];
+  quotaCopy = quota;
+  connection = [quotaCopy connection];
   v6 = [MBServiceAccount alloc];
   v7 = +[UMUserPersona currentPersona];
   v17 = 0;
@@ -4811,9 +4811,9 @@ LABEL_13:
 
   if (v8)
   {
-    v10 = [(MBXPCServer *)self serviceManager];
+    serviceManager = [(MBXPCServer *)self serviceManager];
     v16 = v9;
-    v11 = [v10 discountCameraRollQuotaWithAccount:v8 connection:v5 error:&v16];
+    v11 = [serviceManager discountCameraRollQuotaWithAccount:v8 connection:connection error:&v16];
     v12 = v16;
 
     v9 = v12;
@@ -4821,12 +4821,12 @@ LABEL_13:
 
   else
   {
-    v10 = MBGetDefaultLog();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    serviceManager = MBGetDefaultLog();
+    if (os_log_type_enabled(serviceManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v19 = v9;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Failed to discount camera roll quota due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, serviceManager, OS_LOG_TYPE_ERROR, "Failed to discount camera roll quota due to nil account: %{public}@", buf, 0xCu);
       v15 = v9;
       _MBLog();
     }
@@ -4835,21 +4835,21 @@ LABEL_13:
   }
 
   v13 = [NSNumber numberWithBool:v11];
-  [v4 setReply:v13];
+  [quotaCopy setReply:v13];
 
   if ((v11 & 1) == 0)
   {
     v14 = [MBError sanitizedError:v9];
-    [v4 setError:v14];
+    [quotaCopy setError:v14];
   }
 
-  [v4 sendReply];
+  [quotaCopy sendReply];
 }
 
-- (void)_reservedBackupSizeList:(id)a3
+- (void)_reservedBackupSizeList:(id)list
 {
-  v4 = a3;
-  v5 = [v4 connection];
+  listCopy = list;
+  connection = [listCopy connection];
   v6 = [MBServiceAccount alloc];
   v7 = +[UMUserPersona currentPersona];
   v16 = 0;
@@ -4872,9 +4872,9 @@ LABEL_13:
     goto LABEL_8;
   }
 
-  v10 = [(MBXPCServer *)self serviceManager];
+  serviceManager = [(MBXPCServer *)self serviceManager];
   v15 = v9;
-  v11 = [v10 reservedBackupSizeListWithAccount:v8 connection:v5 error:&v15];
+  v11 = [serviceManager reservedBackupSizeListWithAccount:v8 connection:connection error:&v15];
   v12 = v15;
 
   if (!v11)
@@ -4882,19 +4882,19 @@ LABEL_13:
     v9 = v12;
 LABEL_8:
     v11 = [MBError sanitizedError:v9, v14];
-    [v4 setReplyError:v11];
+    [listCopy setReplyError:v11];
     goto LABEL_9;
   }
 
-  [v4 setReply:v11];
+  [listCopy setReply:v11];
 LABEL_9:
 
-  [v4 sendReply];
+  [listCopy sendReply];
 }
 
-- (void)_pendingSnapshotForCurrentDevice:(id)a3
+- (void)_pendingSnapshotForCurrentDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v15 = 0;
@@ -4917,9 +4917,9 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  v9 = [(MBXPCServer *)self serviceManager];
+  serviceManager = [(MBXPCServer *)self serviceManager];
   v14 = v8;
-  v10 = [v9 pendingSnapshotForCurrentDeviceAndAccount:v7 error:&v14];
+  v10 = [serviceManager pendingSnapshotForCurrentDeviceAndAccount:v7 error:&v14];
   v11 = v14;
 
   if (!v10)
@@ -4927,63 +4927,63 @@ LABEL_9:
     v8 = v11;
 LABEL_8:
     v10 = [MBError sanitizedError:v8, v13];
-    [v4 setReplyError:v10];
+    [deviceCopy setReplyError:v10];
     goto LABEL_9;
   }
 
-  [v4 setReply:v10];
+  [deviceCopy setReply:v10];
 LABEL_9:
 
-  [v4 sendReply];
+  [deviceCopy sendReply];
 }
 
-- (void)manager:(id)a3 didSetBackupEnabled:(BOOL)a4
+- (void)manager:(id)manager didSetBackupEnabled:(BOOL)enabled
 {
   connectionsQueue = self->_connectionsQueue;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10015F3B4;
   v5[3] = &unk_1003BCAC0;
-  v6 = a4;
+  enabledCopy = enabled;
   v5[4] = self;
   dispatch_async(connectionsQueue, v5);
 }
 
-- (void)manager:(id)a3 didUpdateProgress:(float)a4 estimatedTimeRemaining:(unint64_t)a5 bytesRemaining:(int64_t)a6 state:(id)a7 context:(id)a8
+- (void)manager:(id)manager didUpdateProgress:(float)progress estimatedTimeRemaining:(unint64_t)remaining bytesRemaining:(int64_t)bytesRemaining state:(id)state context:(id)context
 {
-  v13 = a7;
-  v14 = a8;
+  stateCopy = state;
+  contextCopy = context;
   connectionsQueue = self->_connectionsQueue;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10015F570;
   v18[3] = &unk_1003BFDF0;
-  v19 = v14;
-  v20 = self;
-  v24 = a4;
-  v22 = a5;
-  v23 = a6;
-  v21 = v13;
-  v16 = v13;
-  v17 = v14;
+  v19 = contextCopy;
+  selfCopy = self;
+  progressCopy = progress;
+  remainingCopy = remaining;
+  bytesRemainingCopy = bytesRemaining;
+  v21 = stateCopy;
+  v16 = stateCopy;
+  v17 = contextCopy;
   dispatch_async(connectionsQueue, v18);
 }
 
-- (void)manager:(id)a3 didUpdateBackgroundRestoreWithContext:(id)a4
+- (void)manager:(id)manager didUpdateBackgroundRestoreWithContext:(id)context
 {
-  v5 = a4;
+  contextCopy = context;
   connectionsQueue = self->_connectionsQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10015F780;
   v8[3] = &unk_1003BC060;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = contextCopy;
+  selfCopy = self;
+  v7 = contextCopy;
   dispatch_async(connectionsQueue, v8);
 }
 
-- (void)managerDidFinishVerification:(id)a3
+- (void)managerDidFinishVerification:(id)verification
 {
   connectionsQueue = self->_connectionsQueue;
   block[0] = _NSConcreteStackBlock;
@@ -4994,91 +4994,91 @@ LABEL_9:
   dispatch_async(connectionsQueue, block);
 }
 
-- (void)manager:(id)a3 didScanBundleWithID:(id)a4 bytesUsed:(unint64_t)a5
+- (void)manager:(id)manager didScanBundleWithID:(id)d bytesUsed:(unint64_t)used
 {
-  v7 = a4;
+  dCopy = d;
   connectionsQueue = self->_connectionsQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10015F9E0;
   block[3] = &unk_1003BDB10;
-  v12 = self;
-  v13 = a5;
-  v11 = v7;
-  v9 = v7;
+  selfCopy = self;
+  usedCopy = used;
+  v11 = dCopy;
+  v9 = dCopy;
   dispatch_async(connectionsQueue, block);
 }
 
-- (void)manager:(id)a3 didScanDomainWithName:(id)a4 forBundleID:(id)a5 bytesUsed:(unint64_t)a6
+- (void)manager:(id)manager didScanDomainWithName:(id)name forBundleID:(id)d bytesUsed:(unint64_t)used
 {
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  dCopy = d;
   connectionsQueue = self->_connectionsQueue;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10015FB88;
   v14[3] = &unk_1003BD8C8;
-  v15 = v9;
-  v16 = v10;
-  v17 = self;
-  v18 = a6;
-  v12 = v10;
-  v13 = v9;
+  v15 = nameCopy;
+  v16 = dCopy;
+  selfCopy = self;
+  usedCopy = used;
+  v12 = dCopy;
+  v13 = nameCopy;
   dispatch_async(connectionsQueue, v14);
 }
 
-- (void)manager:(id)a3 didScanFiles:(id)a4 forDomainWithName:(id)a5 bundleID:(id)a6
+- (void)manager:(id)manager didScanFiles:(id)files forDomainWithName:(id)name bundleID:(id)d
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  filesCopy = files;
+  nameCopy = name;
+  dCopy = d;
   connectionsQueue = self->_connectionsQueue;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10015FD4C;
   v16[3] = &unk_1003BC5B8;
-  v17 = v9;
-  v18 = v10;
-  v19 = v11;
-  v20 = self;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
+  v17 = filesCopy;
+  v18 = nameCopy;
+  v19 = dCopy;
+  selfCopy = self;
+  v13 = dCopy;
+  v14 = nameCopy;
+  v15 = filesCopy;
   dispatch_async(connectionsQueue, v16);
 }
 
-- (void)manager:(id)a3 didFinishRestoreWithContext:(id)a4
+- (void)manager:(id)manager didFinishRestoreWithContext:(id)context
 {
-  v5 = a4;
+  contextCopy = context;
   connectionsQueue = self->_connectionsQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10015FEAC;
   v8[3] = &unk_1003BC060;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = contextCopy;
+  selfCopy = self;
+  v7 = contextCopy;
   dispatch_async(connectionsQueue, v8);
 }
 
-- (void)manager:(id)a3 didFinishRestoreForPath:(id)a4 withContext:(id)a5
+- (void)manager:(id)manager didFinishRestoreForPath:(id)path withContext:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  pathCopy = path;
+  contextCopy = context;
   connectionsQueue = self->_connectionsQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10016004C;
   block[3] = &unk_1003BC2E0;
-  v13 = v8;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v8;
+  v13 = contextCopy;
+  selfCopy = self;
+  v15 = pathCopy;
+  v10 = pathCopy;
+  v11 = contextCopy;
   dispatch_async(connectionsQueue, block);
 }
 
-- (void)managerDidCancelRestore:(id)a3
+- (void)managerDidCancelRestore:(id)restore
 {
   connectionsQueue = self->_connectionsQueue;
   block[0] = _NSConcreteStackBlock;
@@ -5089,7 +5089,7 @@ LABEL_9:
   dispatch_async(connectionsQueue, block);
 }
 
-- (void)managerDidFinishBackup:(id)a3
+- (void)managerDidFinishBackup:(id)backup
 {
   connectionsQueue = self->_connectionsQueue;
   block[0] = _NSConcreteStackBlock;
@@ -5100,20 +5100,20 @@ LABEL_9:
   dispatch_async(connectionsQueue, block);
 }
 
-- (void)manager:(id)a3 didFailBackupWithError:(id)a4
+- (void)manager:(id)manager didFailBackupWithError:(id)error
 {
-  v5 = a4;
-  if (+[MBError isCancelledError:](MBError, "isCancelledError:", v5) && [v5 code] != 202)
+  errorCopy = error;
+  if (+[MBError isCancelledError:](MBError, "isCancelledError:", errorCopy) && [errorCopy code] != 202)
   {
-    v15[0] = v5;
+    v15[0] = errorCopy;
     v14[0] = NSUnderlyingErrorKey;
     v14[1] = NSLocalizedDescriptionKey;
-    v6 = [v5 localizedDescription];
-    v15[1] = v6;
+    localizedDescription = [errorCopy localizedDescription];
+    v15[1] = localizedDescription;
     v7 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2];
     v8 = [NSError errorWithDomain:@"MBErrorDomain" code:202 userInfo:v7];
 
-    v5 = v8;
+    errorCopy = v8;
   }
 
   connectionsQueue = self->_connectionsQueue;
@@ -5121,13 +5121,13 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = sub_10016052C;
   block[3] = &unk_1003BC060;
-  v12 = v5;
-  v13 = self;
-  v10 = v5;
+  v12 = errorCopy;
+  selfCopy = self;
+  v10 = errorCopy;
   dispatch_async(connectionsQueue, block);
 }
 
-- (void)managerDidFinishScan:(id)a3 bytesUsed:(unint64_t)a4
+- (void)managerDidFinishScan:(id)scan bytesUsed:(unint64_t)used
 {
   connectionsQueue = self->_connectionsQueue;
   v5[0] = _NSConcreteStackBlock;
@@ -5135,24 +5135,24 @@ LABEL_9:
   v5[2] = sub_1001606D8;
   v5[3] = &unk_1003BDAE8;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = used;
   dispatch_async(connectionsQueue, v5);
 }
 
-- (void)manager:(id)a3 didFailScanWithError:(id)a4
+- (void)manager:(id)manager didFailScanWithError:(id)error
 {
-  v5 = a4;
-  if (+[MBError isCancelledError:](MBError, "isCancelledError:", v5) && [v5 code] != 202)
+  errorCopy = error;
+  if (+[MBError isCancelledError:](MBError, "isCancelledError:", errorCopy) && [errorCopy code] != 202)
   {
-    v15[0] = v5;
+    v15[0] = errorCopy;
     v14[0] = NSUnderlyingErrorKey;
     v14[1] = NSLocalizedDescriptionKey;
-    v6 = [v5 localizedDescription];
-    v15[1] = v6;
+    localizedDescription = [errorCopy localizedDescription];
+    v15[1] = localizedDescription;
     v7 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2];
     v8 = [NSError errorWithDomain:@"MBErrorDomain" code:202 userInfo:v7];
 
-    v5 = v8;
+    errorCopy = v8;
   }
 
   connectionsQueue = self->_connectionsQueue;
@@ -5160,67 +5160,67 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = sub_1001609A0;
   block[3] = &unk_1003BC060;
-  v12 = v5;
-  v13 = self;
-  v10 = v5;
+  v12 = errorCopy;
+  selfCopy = self;
+  v10 = errorCopy;
   dispatch_async(connectionsQueue, block);
 }
 
-- (void)manager:(id)a3 didFailVerificationWithError:(id)a4
+- (void)manager:(id)manager didFailVerificationWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   connectionsQueue = self->_connectionsQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100160B70;
   v8[3] = &unk_1003BC060;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = errorCopy;
+  selfCopy = self;
+  v7 = errorCopy;
   dispatch_async(connectionsQueue, v8);
 }
 
-- (void)manager:(id)a3 didFailRestoreWithContext:(id)a4 error:(id)a5
+- (void)manager:(id)manager didFailRestoreWithContext:(id)context error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  contextCopy = context;
+  errorCopy = error;
   connectionsQueue = self->_connectionsQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100160CC8;
   block[3] = &unk_1003BC2E0;
-  v13 = v7;
-  v14 = self;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = contextCopy;
+  selfCopy = self;
+  v15 = errorCopy;
+  v10 = errorCopy;
+  v11 = contextCopy;
   dispatch_async(connectionsQueue, block);
 }
 
-- (void)manager:(id)a3 didFailRestoreForPath:(id)a4 withContext:(id)a5 error:(id)a6
+- (void)manager:(id)manager didFailRestoreForPath:(id)path withContext:(id)context error:(id)error
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  pathCopy = path;
+  contextCopy = context;
+  errorCopy = error;
   connectionsQueue = self->_connectionsQueue;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100160EB4;
   v16[3] = &unk_1003BC5B8;
-  v17 = v10;
-  v18 = self;
-  v19 = v9;
-  v20 = v11;
-  v13 = v11;
-  v14 = v9;
-  v15 = v10;
+  v17 = contextCopy;
+  selfCopy = self;
+  v19 = pathCopy;
+  v20 = errorCopy;
+  v13 = errorCopy;
+  v14 = pathCopy;
+  v15 = contextCopy;
   dispatch_async(connectionsQueue, v16);
 }
 
-- (void)connection:(id)a3 didReceiveMessage:(id)a4
+- (void)connection:(id)connection didReceiveMessage:(id)message
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  messageCopy = message;
   v9 = +[MBDaemon sharedDaemon];
   [v9 holdWorkAssertion:a2];
 
@@ -5229,19 +5229,19 @@ LABEL_9:
   v14[1] = 3221225472;
   v14[2] = sub_100161100;
   v14[3] = &unk_1003BD8C8;
-  v15 = v7;
-  v16 = v8;
-  v17 = self;
+  v15 = connectionCopy;
+  v16 = messageCopy;
+  selfCopy = self;
   v18 = a2;
-  v11 = v8;
-  v12 = v7;
+  v11 = messageCopy;
+  v12 = connectionCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v14);
   dispatch_async(v10, v13);
 }
 
-- (void)connectionWasInvalidated:(id)a3
+- (void)connectionWasInvalidated:(id)invalidated
 {
-  v4 = a3;
+  invalidatedCopy = invalidated;
   v5 = dispatch_group_create();
   dispatch_group_enter(v5);
   v6 = dispatch_get_global_queue(21, 0);
@@ -5250,7 +5250,7 @@ LABEL_9:
   block[2] = sub_1001613A8;
   block[3] = &unk_1003BC2E0;
   block[4] = self;
-  v7 = v4;
+  v7 = invalidatedCopy;
   v15 = v7;
   v16 = v5;
   v8 = v5;
@@ -5262,7 +5262,7 @@ LABEL_9:
   v11[2] = sub_100161418;
   v11[3] = &unk_1003BC060;
   v12 = v7;
-  v13 = self;
+  selfCopy = self;
   v10 = v7;
   dispatch_group_notify(v8, connectionsQueue, v11);
 }
@@ -5277,16 +5277,16 @@ LABEL_9:
   return v4;
 }
 
-- (void)connection:(id)a3 didFinishDeviceTransferWithError:(id)a4
+- (void)connection:(id)connection didFinishDeviceTransferWithError:(id)error
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  connectionCopy = connection;
+  errorCopy = error;
+  if (!connectionCopy)
   {
     __assert_rtn("[MBXPCServer connection:didFinishDeviceTransferWithError:]", "MBXPCServer.m", 2454, "connection");
   }
 
-  v7 = v6;
+  v7 = errorCopy;
   v8 = MBGetDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -5309,7 +5309,7 @@ LABEL_9:
   v16[3] = &unk_1003BC0B0;
   v11 = dispatch_semaphore_create(0);
   v17 = v11;
-  [v5 sendMessage:v9 barrierBlock:v16];
+  [connectionCopy sendMessage:v9 barrierBlock:v16];
   v12 = dispatch_time(0, 600000000000);
   v13 = dispatch_semaphore_wait(v11, v12);
   v14 = MBGetDefaultLog();
@@ -5335,30 +5335,30 @@ LABEL_11:
   }
 }
 
-- (void)connection:(id)a3 didFinishDeviceTransferKeychainTransfer:(id)a4
+- (void)connection:(id)connection didFinishDeviceTransferKeychainTransfer:(id)transfer
 {
-  v7 = a3;
-  v5 = a4;
-  if (!v7)
+  connectionCopy = connection;
+  transferCopy = transfer;
+  if (!connectionCopy)
   {
     __assert_rtn("[MBXPCServer connection:didFinishDeviceTransferKeychainTransfer:]", "MBXPCServer.m", 2473, "connection");
   }
 
   v6 = [MBMessage messageWithName:@"kMBMessageDidFinishDeviceTransferKeychainTransfer" arguments:0];
-  [v7 sendMessage:v6];
+  [connectionCopy sendMessage:v6];
 }
 
-- (void)connection:(id)a3 didUpdateDeviceTransferProgress:(id)a4
+- (void)connection:(id)connection didUpdateDeviceTransferProgress:(id)progress
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  connectionCopy = connection;
+  progressCopy = progress;
+  if (!connectionCopy)
   {
     __assert_rtn("[MBXPCServer connection:didUpdateDeviceTransferProgress:]", "MBXPCServer.m", 2480, "connection");
   }
 
-  v7 = v6;
-  if (!v6)
+  v7 = progressCopy;
+  if (!progressCopy)
   {
     __assert_rtn("[MBXPCServer connection:didUpdateDeviceTransferProgress:]", "MBXPCServer.m", 2481, "progressInfo");
   }
@@ -5378,25 +5378,25 @@ LABEL_11:
   v10 = [NSArray arrayWithObjects:&v12 count:1];
   v11 = [MBMessage messageWithName:@"kMBMessageDidUpdateDeviceTransferProgress" arguments:v10];
 
-  [v5 sendMessage:v11];
+  [connectionCopy sendMessage:v11];
 }
 
-- (void)connection:(id)a3 didUpdateDeviceTransferConnectionInfo:(id)a4
+- (void)connection:(id)connection didUpdateDeviceTransferConnectionInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  connectionCopy = connection;
+  infoCopy = info;
+  if (!connectionCopy)
   {
     __assert_rtn("[MBXPCServer connection:didUpdateDeviceTransferConnectionInfo:]", "MBXPCServer.m", 2489, "connection");
   }
 
-  v7 = v6;
-  if (!v6)
+  v7 = infoCopy;
+  if (!infoCopy)
   {
     __assert_rtn("[MBXPCServer connection:didUpdateDeviceTransferConnectionInfo:]", "MBXPCServer.m", 2490, "info");
   }
 
-  if ([v6 connectionState] != 1 && objc_msgSend(v7, "connectionState") != 2)
+  if ([infoCopy connectionState] != 1 && objc_msgSend(v7, "connectionState") != 2)
   {
     __assert_rtn("[MBXPCServer connection:didUpdateDeviceTransferConnectionInfo:]", "MBXPCServer.m", 2491, "info.connectionState == MBDeviceTransferConnectionStateConnected || info.connectionState == MBDeviceTransferConnectionStateDisconnected");
   }
@@ -5405,31 +5405,31 @@ LABEL_11:
   v8 = [NSArray arrayWithObjects:&v10 count:1];
   v9 = [MBMessage messageWithName:@"kMBMessageDidUpdateDeviceTransferConnectionInfo" arguments:v8];
 
-  [v5 sendMessage:v9];
+  [connectionCopy sendMessage:v9];
 }
 
-- (void)_startDeviceTransfer:(id)a3
+- (void)_startDeviceTransfer:(id)transfer
 {
-  v4 = a3;
-  v5 = [v4 connection];
-  v6 = [v4 arguments];
-  if (![v6 count])
+  transferCopy = transfer;
+  connection = [transferCopy connection];
+  arguments = [transferCopy arguments];
+  if (![arguments count])
   {
     __assert_rtn("[MBXPCServer _startDeviceTransfer:]", "MBXPCServer.m", 2502, "arguments.count");
   }
 
-  v7 = [v6 objectAtIndexedSubscript:0];
-  v8 = [v7 integerValue];
+  v7 = [arguments objectAtIndexedSubscript:0];
+  integerValue = [v7 integerValue];
 
   v9 = 0;
-  if ([v6 count] >= 2)
+  if ([arguments count] >= 2)
   {
-    v9 = [v6 objectAtIndexedSubscript:1];
+    v9 = [arguments objectAtIndexedSubscript:1];
   }
 
-  v10 = [(MBXPCServer *)self serviceManager];
+  serviceManager = [(MBXPCServer *)self serviceManager];
   v15 = 0;
-  v11 = [v10 startDeviceTransferWithTaskType:v8 sessionInfo:v9 connection:v5 error:&v15];
+  v11 = [serviceManager startDeviceTransferWithTaskType:integerValue sessionInfo:v9 connection:connection error:&v15];
   v12 = v15;
 
   if ((v11 & 1) == 0 && !v12)
@@ -5438,151 +5438,151 @@ LABEL_11:
   }
 
   v13 = [NSNumber numberWithBool:v11];
-  [v4 setReply:v13];
+  [transferCopy setReply:v13];
 
   if ((v11 & 1) == 0)
   {
     v14 = [MBError sanitizedError:v12];
-    [v4 setReplyError:v14];
+    [transferCopy setReplyError:v14];
   }
 
-  [v4 sendReply];
+  [transferCopy sendReply];
 }
 
-- (void)_cancelDeviceTransfer:(id)a3
+- (void)_cancelDeviceTransfer:(id)transfer
 {
-  v4 = a3;
-  v5 = [v4 connection];
-  v6 = [v4 arguments];
-  if (![v6 count])
+  transferCopy = transfer;
+  connection = [transferCopy connection];
+  arguments = [transferCopy arguments];
+  if (![arguments count])
   {
     __assert_rtn("[MBXPCServer _cancelDeviceTransfer:]", "MBXPCServer.m", 2518, "arguments.count");
   }
 
-  v7 = [v6 objectAtIndexedSubscript:0];
-  v8 = [v7 integerValue];
+  v7 = [arguments objectAtIndexedSubscript:0];
+  integerValue = [v7 integerValue];
 
-  v9 = [(MBXPCServer *)self serviceManager];
+  serviceManager = [(MBXPCServer *)self serviceManager];
   v14 = 0;
-  v10 = [v9 cancelDeviceTransferWithTaskType:v8 connection:v5 error:&v14];
+  v10 = [serviceManager cancelDeviceTransferWithTaskType:integerValue connection:connection error:&v14];
   v11 = v14;
 
   v12 = [NSNumber numberWithBool:v10];
-  [v4 setReply:v12];
+  [transferCopy setReply:v12];
 
   if ((v10 & 1) == 0)
   {
     v13 = [MBError sanitizedError:v11];
-    [v4 setReplyError:v13];
+    [transferCopy setReplyError:v13];
   }
 
-  [v4 sendReply];
+  [transferCopy sendReply];
 }
 
-- (void)_startPreflight:(id)a3
+- (void)_startPreflight:(id)preflight
 {
-  v4 = a3;
-  v5 = [v4 connection];
-  v6 = [(MBXPCServer *)self serviceManager];
+  preflightCopy = preflight;
+  connection = [preflightCopy connection];
+  serviceManager = [(MBXPCServer *)self serviceManager];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100161EFC;
   v8[3] = &unk_1003BFE18;
-  v9 = v4;
-  v7 = v4;
-  [v6 startPreflightWithConnection:v5 completion:v8];
+  v9 = preflightCopy;
+  v7 = preflightCopy;
+  [serviceManager startPreflightWithConnection:connection completion:v8];
 }
 
-- (void)_startKeychainDataTransfer:(id)a3
+- (void)_startKeychainDataTransfer:(id)transfer
 {
-  v4 = a3;
-  v5 = [v4 connection];
-  v6 = [(MBXPCServer *)self serviceManager];
+  transferCopy = transfer;
+  connection = [transferCopy connection];
+  serviceManager = [(MBXPCServer *)self serviceManager];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100162090;
   v8[3] = &unk_1003BFE40;
-  v9 = v4;
-  v7 = v4;
-  [v6 startKeychainDataTransferWithConnection:v5 completion:v8];
+  v9 = transferCopy;
+  v7 = transferCopy;
+  [serviceManager startKeychainDataTransferWithConnection:connection completion:v8];
 }
 
-- (void)_startKeychainDataImport:(id)a3
+- (void)_startKeychainDataImport:(id)import
 {
-  v4 = a3;
-  v5 = [v4 connection];
-  v6 = [v4 arguments];
-  if (![v6 count])
+  importCopy = import;
+  connection = [importCopy connection];
+  arguments = [importCopy arguments];
+  if (![arguments count])
   {
     __assert_rtn("[MBXPCServer _startKeychainDataImport:]", "MBXPCServer.m", 2554, "arguments.count");
   }
 
-  v7 = [v6 firstObject];
-  v8 = [(MBXPCServer *)self serviceManager];
+  firstObject = [arguments firstObject];
+  serviceManager = [(MBXPCServer *)self serviceManager];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100162280;
   v10[3] = &unk_1003BC010;
-  v11 = v4;
-  v9 = v4;
-  [v8 startKeychainDataImportWithKeychainInfo:v7 connection:v5 completion:v10];
+  v11 = importCopy;
+  v9 = importCopy;
+  [serviceManager startKeychainDataImportWithKeychainInfo:firstObject connection:connection completion:v10];
 }
 
-- (void)_startDataTransfer:(id)a3
+- (void)_startDataTransfer:(id)transfer
 {
-  v4 = a3;
-  v5 = [v4 connection];
-  v6 = [v4 arguments];
-  if (![v6 count])
+  transferCopy = transfer;
+  connection = [transferCopy connection];
+  arguments = [transferCopy arguments];
+  if (![arguments count])
   {
     __assert_rtn("[MBXPCServer _startDataTransfer:]", "MBXPCServer.m", 2568, "arguments.count");
   }
 
-  v7 = [v6 firstObject];
-  v8 = [(MBXPCServer *)self serviceManager];
+  firstObject = [arguments firstObject];
+  serviceManager = [(MBXPCServer *)self serviceManager];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10016244C;
   v10[3] = &unk_1003BC010;
-  v11 = v4;
-  v9 = v4;
-  [v8 startDataTransferWithPreflightInfo:v7 connection:v5 completion:v10];
+  v11 = transferCopy;
+  v9 = transferCopy;
+  [serviceManager startDataTransferWithPreflightInfo:firstObject connection:connection completion:v10];
 }
 
-- (void)_fetchPersonalPersonaIdentifier:(id)a3
+- (void)_fetchPersonalPersonaIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [UMUserPersonaAttributes personaAttributesForPersonaType:0];
-  v5 = [v4 userPersonaUniqueString];
+  userPersonaUniqueString = [v4 userPersonaUniqueString];
 
   v6 = MBGetDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v8 = v5;
+    v8 = userPersonaUniqueString;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "personalPersonaIdentifier: %{public}@", buf, 0xCu);
     _MBLog();
   }
 
-  [v3 setReply:v5];
-  [v3 sendReply];
+  [identifierCopy setReply:userPersonaUniqueString];
+  [identifierCopy sendReply];
 }
 
-- (void)_postFollowUpForDrySpellWithDuration:(id)a3
+- (void)_postFollowUpForDrySpellWithDuration:(id)duration
 {
-  v3 = a3;
-  v4 = [v3 arguments];
-  if ([v4 count] <= 1)
+  durationCopy = duration;
+  arguments = [durationCopy arguments];
+  if ([arguments count] <= 1)
   {
     __assert_rtn("[MBXPCServer _postFollowUpForDrySpellWithDuration:]", "MBXPCServer.m", 2592, "1 < arguments.count");
   }
 
-  v5 = [v4 objectAtIndexedSubscript:0];
+  v5 = [arguments objectAtIndexedSubscript:0];
   [v5 doubleValue];
   v7 = v6;
 
-  v8 = [v4 objectAtIndexedSubscript:1];
-  v9 = [v8 BOOLValue];
+  v8 = [arguments objectAtIndexedSubscript:1];
+  bOOLValue = [v8 BOOLValue];
 
   v10 = [MBServiceAccount alloc];
   v11 = +[UMUserPersona currentPersona];
@@ -5593,10 +5593,10 @@ LABEL_11:
   if (v12)
   {
     v14 = +[MBFollowUpManager sharedManager];
-    v15 = [v14 postFollowUpForDrySpellForAccount:v12 duration:v9 firstBackup:v7];
+    v15 = [v14 postFollowUpForDrySpellForAccount:v12 duration:bOOLValue firstBackup:v7];
 
     v16 = [NSNumber numberWithBool:1];
-    [v3 setReply:v16];
+    [durationCopy setReply:v16];
   }
 
   else
@@ -5611,18 +5611,18 @@ LABEL_11:
     }
 
     v18 = [NSNumber numberWithBool:0];
-    [v3 setReply:v18];
+    [durationCopy setReply:v18];
 
     v16 = [MBError sanitizedError:v13];
-    [v3 setReplyError:v16];
+    [durationCopy setReplyError:v16];
   }
 
-  [v3 sendReply];
+  [durationCopy sendReply];
 }
 
-- (void)_postFollowUpForRestoreTimeout:(id)a3
+- (void)_postFollowUpForRestoreTimeout:(id)timeout
 {
-  v3 = a3;
+  timeoutCopy = timeout;
   v4 = [MBServiceAccount alloc];
   v5 = +[UMUserPersona currentPersona];
   v13 = 0;
@@ -5635,7 +5635,7 @@ LABEL_11:
     v9 = [v8 postFollowUpForRestoreTimeoutForAccount:v6];
 
     v10 = [NSNumber numberWithBool:1];
-    [v3 setReply:v10];
+    [timeoutCopy setReply:v10];
   }
 
   else
@@ -5650,20 +5650,20 @@ LABEL_11:
     }
 
     v12 = [NSNumber numberWithBool:0];
-    [v3 setReply:v12];
+    [timeoutCopy setReply:v12];
 
     v10 = [MBError sanitizedError:v7];
-    [v3 setReplyError:v10];
+    [timeoutCopy setReplyError:v10];
   }
 
-  [v3 sendReply];
+  [timeoutCopy sendReply];
 }
 
-- (void)_postFollowUpForBackgroundRestoreProgress:(id)a3
+- (void)_postFollowUpForBackgroundRestoreProgress:(id)progress
 {
-  v3 = a3;
-  v4 = [v3 arguments];
-  if (![v4 count])
+  progressCopy = progress;
+  arguments = [progressCopy arguments];
+  if (![arguments count])
   {
     __assert_rtn("[MBXPCServer _postFollowUpForBackgroundRestoreProgress:]", "MBXPCServer.m", 2629, "arguments.count > 0");
   }
@@ -5676,32 +5676,32 @@ LABEL_11:
 
   if (v7)
   {
-    v9 = [v4 firstObject];
+    firstObject = [arguments firstObject];
     v10 = +[MBFollowUpManager sharedManager];
-    v11 = [v10 postFollowUpForBackgroundRestoreProgress:v9 account:v7];
+    v11 = [v10 postFollowUpForBackgroundRestoreProgress:firstObject account:v7];
   }
 
   else
   {
-    v9 = MBGetDefaultLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    firstObject = MBGetDefaultLog();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v15 = v8;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to post the follow up due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_ERROR, "Failed to post the follow up due to nil account: %{public}@", buf, 0xCu);
       _MBLog();
     }
   }
 
   v12 = [NSNumber numberWithBool:v7 != 0];
-  [v3 setReply:v12];
+  [progressCopy setReply:v12];
 
-  [v3 sendReply];
+  [progressCopy sendReply];
 }
 
-- (void)_postFollowUpForRestoreFinished:(id)a3
+- (void)_postFollowUpForRestoreFinished:(id)finished
 {
-  v3 = a3;
+  finishedCopy = finished;
   v4 = [MBServiceAccount alloc];
   v5 = +[UMUserPersona currentPersona];
   v14 = 0;
@@ -5710,12 +5710,12 @@ LABEL_11:
 
   if (v6)
   {
-    v8 = [v3 arguments];
-    v9 = [v8 firstObject];
-    v10 = [v9 BOOLValue];
+    arguments = [finishedCopy arguments];
+    firstObject = [arguments firstObject];
+    bOOLValue = [firstObject BOOLValue];
 
     v11 = +[MBFollowUpManager sharedManager];
-    v12 = [v11 postFollowUpForRestoreFinishedForAccount:v6 skipiCloudQuotaOffer:v10];
+    v12 = [v11 postFollowUpForRestoreFinishedForAccount:v6 skipiCloudQuotaOffer:bOOLValue];
   }
 
   else
@@ -5731,14 +5731,14 @@ LABEL_11:
   }
 
   v13 = [NSNumber numberWithBool:v6 != 0];
-  [v3 setReply:v13];
+  [finishedCopy setReply:v13];
 
-  [v3 sendReply];
+  [finishedCopy sendReply];
 }
 
-- (void)_postFollowUpForRestoreFailed:(id)a3
+- (void)_postFollowUpForRestoreFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
   v13 = 0;
@@ -5747,34 +5747,34 @@ LABEL_11:
 
   if (v7)
   {
-    v9 = [v4 arguments];
-    v10 = [v9 firstObject];
+    arguments = [failedCopy arguments];
+    firstObject = [arguments firstObject];
 
-    v11 = [(MBXPCServer *)self serviceManager];
-    [v11 postFollowUpForRestoreFailedForAccount:v7 failedDomainNames:v10];
+    serviceManager = [(MBXPCServer *)self serviceManager];
+    [serviceManager postFollowUpForRestoreFailedForAccount:v7 failedDomainNames:firstObject];
   }
 
   else
   {
-    v10 = MBGetDefaultLog();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    firstObject = MBGetDefaultLog();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v15 = v8;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Failed to post the follow up due to nil account: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_ERROR, "Failed to post the follow up due to nil account: %{public}@", buf, 0xCu);
       _MBLog();
     }
   }
 
   v12 = [NSNumber numberWithBool:v7 != 0];
-  [v4 setReply:v12];
+  [failedCopy setReply:v12];
 
-  [v4 sendReply];
+  [failedCopy sendReply];
 }
 
-- (void)_clearAllPendingFollowUps:(id)a3
+- (void)_clearAllPendingFollowUps:(id)ups
 {
-  v3 = a3;
+  upsCopy = ups;
   v4 = [MBServiceAccount alloc];
   v5 = +[UMUserPersona currentPersona];
   v12 = 0;
@@ -5787,7 +5787,7 @@ LABEL_11:
     [v8 clearAllPendingFollowUps];
 
     v9 = [NSNumber numberWithBool:1];
-    [v3 setReply:v9];
+    [upsCopy setReply:v9];
   }
 
   else
@@ -5802,56 +5802,56 @@ LABEL_11:
     }
 
     v11 = [NSNumber numberWithBool:0];
-    [v3 setReply:v11];
+    [upsCopy setReply:v11];
 
     v9 = [MBError sanitizedError:v7];
-    [v3 setReplyError:v9];
+    [upsCopy setReplyError:v9];
   }
 
-  [v3 sendReply];
+  [upsCopy sendReply];
 }
 
-- (void)_respondSynchronouslyTo:(id)a3 with:(id)a4
+- (void)_respondSynchronouslyTo:(id)to with:(id)with
 {
   v10 = 0;
-  v5 = *(a4 + 2);
-  v6 = a3;
-  v7 = v5(a4, &v10);
+  v5 = *(with + 2);
+  toCopy = to;
+  v7 = v5(with, &v10);
   v8 = v10;
-  [v6 setReply:v7];
+  [toCopy setReply:v7];
 
   v9 = [MBError sanitizedError:v8];
 
-  [v6 setReplyError:v9];
-  [v6 sendReply];
+  [toCopy setReplyError:v9];
+  [toCopy sendReply];
 }
 
-- (void)_respondSynchronouslyTo:(id)a3 description:(id)a4 withAccount:(id)a5
+- (void)_respondSynchronouslyTo:(id)to description:(id)description withAccount:(id)account
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001632AC;
   v10[3] = &unk_1003BFE68;
-  v11 = a4;
-  v12 = a5;
-  v8 = v12;
-  v9 = v11;
-  [(MBXPCServer *)self _respondSynchronouslyTo:a3 with:v10];
+  descriptionCopy = description;
+  accountCopy = account;
+  v8 = accountCopy;
+  v9 = descriptionCopy;
+  [(MBXPCServer *)self _respondSynchronouslyTo:to with:v10];
 }
 
-- (BOOL)_checkForBackupCtlPrivileged:(id)a3 description:(id)a4 error:(id *)a5
+- (BOOL)_checkForBackupCtlPrivileged:(id)privileged description:(id)description error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (!a5)
+  privilegedCopy = privileged;
+  descriptionCopy = description;
+  if (!error)
   {
     __assert_rtn("[MBXPCServer _checkForBackupCtlPrivileged:description:error:]", "MBXPCServer.m", 2718, "error");
   }
 
-  v9 = v8;
-  v10 = [v7 connection];
-  v11 = [v10 xpcConnection];
-  v12 = sub_100152914(v11, @"com.apple.private.backupctl-privileged-command.internal", a5);
+  v9 = descriptionCopy;
+  connection = [privilegedCopy connection];
+  xpcConnection = [connection xpcConnection];
+  v12 = sub_100152914(xpcConnection, @"com.apple.private.backupctl-privileged-command.internal", error);
 
   if (v12)
   {
@@ -5872,7 +5872,7 @@ LABEL_11:
       }
 
       [MBError errorWithCode:305 format:@"%@ is AppleInternal only", v9];
-      *a5 = v13 = 0;
+      *error = v13 = 0;
     }
   }
 

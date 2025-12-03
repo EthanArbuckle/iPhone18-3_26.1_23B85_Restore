@@ -1,19 +1,19 @@
 @interface CSRemoraSecondPassRequest
-- (CSRemoraSecondPassRequest)initWithDeviceID:(id)a3;
+- (CSRemoraSecondPassRequest)initWithDeviceID:(id)d;
 - (id)_secondPassWorkQueue;
 - (void)cancelAudioStreamHold;
 - (void)cancelRequest;
 - (void)dealloc;
-- (void)holdAudioStreamWithTimeout:(double)a3;
-- (void)setAsset:(id)a3;
+- (void)holdAudioStreamWithTimeout:(double)timeout;
+- (void)setAsset:(id)asset;
 @end
 
 @implementation CSRemoraSecondPassRequest
 
 - (void)cancelAudioStreamHold
 {
-  v3 = [(CSRemoraSecondPassRequest *)self audioProvider];
-  [v3 cancelAudioStreamHold:self->_audioStreamHolding];
+  audioProvider = [(CSRemoraSecondPassRequest *)self audioProvider];
+  [audioProvider cancelAudioStreamHold:self->_audioStreamHolding];
 
   audioStreamHolding = self->_audioStreamHolding;
   self->_audioStreamHolding = 0;
@@ -27,21 +27,21 @@
   [(CSRemoraSecondPassRequest *)self cancelAudioStreamHold];
 }
 
-- (void)holdAudioStreamWithTimeout:(double)a3
+- (void)holdAudioStreamWithTimeout:(double)timeout
 {
-  v7 = [CSAudioStreamHoldRequestOption defaultOptionWithTimeout:a3];
-  v4 = [(CSRemoraSecondPassRequest *)self audioProvider];
-  v5 = [v4 holdAudioStreamWithDescription:@"CSRemoraSecondPassRequest" option:v7];
+  v7 = [CSAudioStreamHoldRequestOption defaultOptionWithTimeout:timeout];
+  audioProvider = [(CSRemoraSecondPassRequest *)self audioProvider];
+  v5 = [audioProvider holdAudioStreamWithDescription:@"CSRemoraSecondPassRequest" option:v7];
   audioStreamHolding = self->_audioStreamHolding;
   self->_audioStreamHolding = v5;
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  objc_storeStrong(&self->_currentAsset, a3);
-  v5 = a3;
-  [v5 logAssetVersionForInsight];
-  [(CSVoiceTriggerSecondPass *)self->_voiceTriggerSecondPass setAsset:v5];
+  objc_storeStrong(&self->_currentAsset, asset);
+  assetCopy = asset;
+  [assetCopy logAssetVersionForInsight];
+  [(CSVoiceTriggerSecondPass *)self->_voiceTriggerSecondPass setAsset:assetCopy];
 }
 
 - (void)dealloc
@@ -59,9 +59,9 @@
   [(CSRemoraSecondPassRequest *)&v4 dealloc];
 }
 
-- (CSRemoraSecondPassRequest)initWithDeviceID:(id)a3
+- (CSRemoraSecondPassRequest)initWithDeviceID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = CSRemoraSecondPassRequest;
   v6 = [(CSRemoraSecondPassRequest *)&v13 init];
@@ -75,10 +75,10 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s Using high priority queues for remora second pass", buf, 0xCu);
     }
 
-    objc_storeStrong(&v6->_firstPassDeviceID, a3);
+    objc_storeStrong(&v6->_firstPassDeviceID, d);
     v8 = [CSVoiceTriggerSecondPass alloc];
-    v9 = [(CSRemoraSecondPassRequest *)v6 _secondPassWorkQueue];
-    v10 = [(CSVoiceTriggerSecondPass *)v8 initWithFirstPassSource:7 phsEnabled:0 speechManager:0 supportsMphDetection:0 secondPassQueue:v9];
+    _secondPassWorkQueue = [(CSRemoraSecondPassRequest *)v6 _secondPassWorkQueue];
+    v10 = [(CSVoiceTriggerSecondPass *)v8 initWithFirstPassSource:7 phsEnabled:0 speechManager:0 supportsMphDetection:0 secondPassQueue:_secondPassWorkQueue];
     voiceTriggerSecondPass = v6->_voiceTriggerSecondPass;
     v6->_voiceTriggerSecondPass = v10;
 

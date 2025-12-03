@@ -1,6 +1,6 @@
 @interface SSPodcastResultBuilder
-+ (BOOL)supportsResult:(id)a3;
-- (SSPodcastResultBuilder)initWithResult:(id)a3;
++ (BOOL)supportsResult:(id)result;
+- (SSPodcastResultBuilder)initWithResult:(id)result;
 - (id)buildCompactCardSection;
 - (id)buildDescriptions;
 - (id)buildInlineCardSection;
@@ -9,47 +9,47 @@
 
 @implementation SSPodcastResultBuilder
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
-  v4 = a3;
-  v9.receiver = a1;
+  resultCopy = result;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___SSPodcastResultBuilder;
-  if (objc_msgSendSuper2(&v9, sel_supportsResult_, v4))
+  if (objc_msgSendSuper2(&v9, sel_supportsResult_, resultCopy))
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v4 contentType];
-    v7 = [a1 bundleId];
-    v5 = [v6 hasPrefix:v7];
+    contentType = [resultCopy contentType];
+    bundleId = [self bundleId];
+    v5 = [contentType hasPrefix:bundleId];
   }
 
   return v5;
 }
 
-- (SSPodcastResultBuilder)initWithResult:(id)a3
+- (SSPodcastResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v12.receiver = self;
   v12.super_class = SSPodcastResultBuilder;
-  v5 = [(SSResultBuilder *)&v12 initWithResult:v4];
+  v5 = [(SSResultBuilder *)&v12 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 lastUsedDate];
-    [(SSPodcastResultBuilder *)v5 setLastViewedDate:v6];
+    lastUsedDate = [resultCopy lastUsedDate];
+    [(SSPodcastResultBuilder *)v5 setLastViewedDate:lastUsedDate];
 
-    v7 = [v4 valueForAttribute:*MEMORY[0x1E6963F48] withType:objc_opt_class()];
+    v7 = [resultCopy valueForAttribute:*MEMORY[0x1E6963F48] withType:objc_opt_class()];
     [(SSPodcastResultBuilder *)v5 setName:v7];
 
-    v8 = [v4 valueForAttribute:*MEMORY[0x1E6963F28] withType:objc_opt_class()];
+    v8 = [resultCopy valueForAttribute:*MEMORY[0x1E6963F28] withType:objc_opt_class()];
     [(SSPodcastResultBuilder *)v5 setPodcastDescription:v8];
 
-    v9 = [v4 valueForAttribute:*MEMORY[0x1E6963EB0] withType:objc_opt_class()];
+    v9 = [resultCopy valueForAttribute:*MEMORY[0x1E6963EB0] withType:objc_opt_class()];
     [(SSPodcastResultBuilder *)v5 setImageURL:v9];
 
-    v10 = [v4 valueForAttribute:*MEMORY[0x1E6963D18] withType:objc_opt_class()];
+    v10 = [resultCopy valueForAttribute:*MEMORY[0x1E6963D18] withType:objc_opt_class()];
     [(SSPodcastResultBuilder *)v5 setAuthors:v10];
   }
 
@@ -58,14 +58,14 @@
 
 - (id)buildLastViewedString
 {
-  v3 = [(SSPodcastResultBuilder *)self lastViewedDate];
+  lastViewedDate = [(SSPodcastResultBuilder *)self lastViewedDate];
 
-  if (v3)
+  if (lastViewedDate)
   {
     v4 = +[SSDateFormatManager dateLastOpenedStringFormat];
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [(SSPodcastResultBuilder *)self lastViewedDate];
-    v7 = [SSDateFormatManager dyanmicStringFromDate:v6];
+    lastViewedDate2 = [(SSPodcastResultBuilder *)self lastViewedDate];
+    v7 = [SSDateFormatManager dyanmicStringFromDate:lastViewedDate2];
     v8 = [v5 stringWithFormat:v4, v7];
   }
 
@@ -81,44 +81,44 @@
 {
   v4.receiver = self;
   v4.super_class = SSPodcastResultBuilder;
-  v2 = [(SSResultBuilder *)&v4 buildInlineCardSection];
-  [v2 setPunchoutOptions:0];
+  buildInlineCardSection = [(SSResultBuilder *)&v4 buildInlineCardSection];
+  [buildInlineCardSection setPunchoutOptions:0];
 
-  return v2;
+  return buildInlineCardSection;
 }
 
 - (id)buildCompactCardSection
 {
   v10.receiver = self;
   v10.super_class = SSPodcastResultBuilder;
-  v3 = [(SSResultBuilder *)&v10 buildCompactCardSection];
-  v4 = [v3 descriptions];
+  buildCompactCardSection = [(SSResultBuilder *)&v10 buildCompactCardSection];
+  descriptions = [buildCompactCardSection descriptions];
   v5 = MEMORY[0x1E69CA3A0];
-  v6 = [(SSPodcastResultBuilder *)self buildLastViewedString];
-  v7 = [v5 textWithString:v6];
-  v8 = [v4 arrayByAddingObject:v7];
-  [v3 setDescriptions:v8];
+  buildLastViewedString = [(SSPodcastResultBuilder *)self buildLastViewedString];
+  v7 = [v5 textWithString:buildLastViewedString];
+  v8 = [descriptions arrayByAddingObject:v7];
+  [buildCompactCardSection setDescriptions:v8];
 
-  return v3;
+  return buildCompactCardSection;
 }
 
 - (id)buildDescriptions
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SSResultBuilder *)self result];
-  v4 = [v3 contentType];
-  if ([v4 isEqualToString:@"com.apple.podcasts.show"])
+  result = [(SSResultBuilder *)self result];
+  contentType = [result contentType];
+  if ([contentType isEqualToString:@"com.apple.podcasts.show"])
   {
-    v5 = [(SSPodcastResultBuilder *)self authors];
+    authors = [(SSPodcastResultBuilder *)self authors];
 
-    if (v5)
+    if (authors)
     {
       v6 = MEMORY[0x1E69CA3A0];
-      v7 = [(SSPodcastResultBuilder *)self authors];
-      v8 = [v7 componentsJoinedByString:{@", "}];
+      authors2 = [(SSPodcastResultBuilder *)self authors];
+      v8 = [authors2 componentsJoinedByString:{@", "}];
       v9 = [v6 textWithString:v8];
       v14[0] = v9;
-      v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
+      buildDescriptions = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
 
       goto LABEL_6;
     }
@@ -130,11 +130,11 @@
 
   v13.receiver = self;
   v13.super_class = SSPodcastResultBuilder;
-  v10 = [(SSResultBuilder *)&v13 buildDescriptions];
+  buildDescriptions = [(SSResultBuilder *)&v13 buildDescriptions];
 LABEL_6:
   v11 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return buildDescriptions;
 }
 
 @end

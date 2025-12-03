@@ -1,30 +1,30 @@
 @interface PLVideoEditingOverlayView
-- (PLVideoEditingOverlayView)initWithFrame:(CGRect)a3;
-- (void)setBody:(id)a3;
-- (void)setTitle:(id)a3;
+- (PLVideoEditingOverlayView)initWithFrame:(CGRect)frame;
+- (void)setBody:(id)body;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PLVideoEditingOverlayView
 
-- (void)setBody:(id)a3
+- (void)setBody:(id)body
 {
-  [(UITextView *)self->_bodyLabel setText:a3];
+  [(UITextView *)self->_bodyLabel setText:body];
 
   [(PLVideoEditingOverlayView *)self setNeedsLayout];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  [(UILabel *)self->_titleLabel setText:a3];
+  [(UILabel *)self->_titleLabel setText:title];
 
   [(PLVideoEditingOverlayView *)self setNeedsLayout];
 }
 
-- (PLVideoEditingOverlayView)initWithFrame:(CGRect)a3
+- (PLVideoEditingOverlayView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = PLVideoEditingOverlayView;
-  v3 = [(PLVideoEditingOverlayView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PLVideoEditingOverlayView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

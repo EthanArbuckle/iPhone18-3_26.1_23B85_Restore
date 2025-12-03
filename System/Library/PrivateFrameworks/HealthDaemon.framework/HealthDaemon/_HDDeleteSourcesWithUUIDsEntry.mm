@@ -1,26 +1,26 @@
 @interface _HDDeleteSourcesWithUUIDsEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
-- (_HDDeleteSourcesWithUUIDsEntry)initWithCoder:(id)a3;
-- (_HDDeleteSourcesWithUUIDsEntry)initWithUUIDs:(id)a3 bundleIdentifier:(id)a4;
-- (void)encodeWithCoder:(id)a3;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
+- (_HDDeleteSourcesWithUUIDsEntry)initWithCoder:(id)coder;
+- (_HDDeleteSourcesWithUUIDsEntry)initWithUUIDs:(id)ds bundleIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HDDeleteSourcesWithUUIDsEntry
 
-- (_HDDeleteSourcesWithUUIDsEntry)initWithUUIDs:(id)a3 bundleIdentifier:(id)a4
+- (_HDDeleteSourcesWithUUIDsEntry)initWithUUIDs:(id)ds bundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = _HDDeleteSourcesWithUUIDsEntry;
   v8 = [(_HDDeleteSourcesWithUUIDsEntry *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dsCopy copy];
     UUIDs = v8->_UUIDs;
     v8->_UUIDs = v9;
 
-    v11 = [v7 copy];
+    v11 = [identifierCopy copy];
     bundleIdentifier = v8->_bundleIdentifier;
     v8->_bundleIdentifier = v11;
   }
@@ -28,16 +28,16 @@
   return v8;
 }
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  entriesCopy = entries;
+  profileCopy = profile;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v5;
+  obj = entriesCopy;
   v7 = [obj countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v7)
   {
@@ -55,20 +55,20 @@
         }
 
         v12 = *(*(&v29 + 1) + 8 * i);
-        v13 = [v12 UUIDs];
-        v14 = [v12 bundleIdentifier];
-        v15 = [v6 database];
+        uUIDs = [v12 UUIDs];
+        bundleIdentifier = [v12 bundleIdentifier];
+        database = [profileCopy database];
         v28 = 0;
         v24[0] = MEMORY[0x277D85DD0];
         v24[1] = 3221225472;
         v24[2] = __59___HDDeleteSourcesWithUUIDsEntry_applyEntries_withProfile___block_invoke;
         v24[3] = &unk_278615D40;
-        v25 = v6;
-        v16 = v13;
+        v25 = profileCopy;
+        v16 = uUIDs;
         v26 = v16;
-        v17 = v14;
+        v17 = bundleIdentifier;
         v27 = v17;
-        v18 = [(HDHealthEntity *)HDSampleEntity performWriteTransactionWithHealthDatabase:v15 error:&v28 block:v24];
+        v18 = [(HDHealthEntity *)HDSampleEntity performWriteTransactionWithHealthDatabase:database error:&v28 block:v24];
         v19 = v28;
 
         if (!v18)
@@ -105,36 +105,36 @@ LABEL_14:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (_HDDeleteSourcesWithUUIDsEntry)initWithCoder:(id)a3
+- (_HDDeleteSourcesWithUUIDsEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277CBEB98];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"UUIDs"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"UUIDs"];
 
   if (v8)
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BundleIdentifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BundleIdentifier"];
     self = [(_HDDeleteSourcesWithUUIDsEntry *)self initWithUUIDs:v8 bundleIdentifier:v9];
 
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   UUIDs = self->_UUIDs;
-  v5 = a3;
-  [v5 encodeObject:UUIDs forKey:@"UUIDs"];
-  [v5 encodeObject:self->_bundleIdentifier forKey:@"BundleIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:UUIDs forKey:@"UUIDs"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"BundleIdentifier"];
 }
 
 @end

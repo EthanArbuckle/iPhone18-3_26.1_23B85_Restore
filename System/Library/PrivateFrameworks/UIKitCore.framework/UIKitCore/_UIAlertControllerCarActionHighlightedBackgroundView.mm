@@ -1,6 +1,6 @@
 @interface _UIAlertControllerCarActionHighlightedBackgroundView
-- (void)setCornerRadius:(double)a3;
-- (void)setRoundedCornerPosition:(unint64_t)a3;
+- (void)setCornerRadius:(double)radius;
+- (void)setRoundedCornerPosition:(unint64_t)position;
 - (void)tintColorDidChange;
 @end
 
@@ -8,20 +8,20 @@
 
 - (void)tintColorDidChange
 {
-  v3 = [(UIView *)self tintColor];
-  [(UIView *)self setBackgroundColor:v3];
+  tintColor = [(UIView *)self tintColor];
+  [(UIView *)self setBackgroundColor:tintColor];
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v4 = [(UIView *)self layer];
-  [v4 setCornerRadius:a3];
+  layer = [(UIView *)self layer];
+  [layer setCornerRadius:radius];
 }
 
-- (void)setRoundedCornerPosition:(unint64_t)a3
+- (void)setRoundedCornerPosition:(unint64_t)position
 {
-  v4 = [(UIView *)self layer];
-  [v4 setMaskedCorners:a3];
+  layer = [(UIView *)self layer];
+  [layer setMaskedCorners:position];
 }
 
 @end

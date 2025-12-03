@@ -1,20 +1,20 @@
 @interface SymptomsNetworkAnalyticsRRCConnectedPeriodMetric
 - (id)_eventPayload;
-- (id)_trafficClassString:(unsigned int)a3;
+- (id)_trafficClassString:(unsigned int)string;
 @end
 
 @implementation SymptomsNetworkAnalyticsRRCConnectedPeriodMetric
 
-- (id)_trafficClassString:(unsigned int)a3
+- (id)_trafficClassString:(unsigned int)string
 {
-  if (a3 > 0x1F)
+  if (string > 0x1F)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_27898CCA8[a3];
+    return off_27898CCA8[string];
   }
 }
 

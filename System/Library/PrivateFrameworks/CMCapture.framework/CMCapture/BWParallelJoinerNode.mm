@@ -1,21 +1,21 @@
 @interface BWParallelJoinerNode
-- (BWParallelJoinerNode)initWithNumberOfInputs:(int)a3 mediaType:(unsigned int)a4;
+- (BWParallelJoinerNode)initWithNumberOfInputs:(int)inputs mediaType:(unsigned int)type;
 - (void)dealloc;
-- (void)handleNodeError:(id)a3 forInput:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)handleNodeError:(id)error forInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWParallelJoinerNode
 
-- (BWParallelJoinerNode)initWithNumberOfInputs:(int)a3 mediaType:(unsigned int)a4
+- (BWParallelJoinerNode)initWithNumberOfInputs:(int)inputs mediaType:(unsigned int)type
 {
   v8.receiver = self;
   v8.super_class = BWParallelJoinerNode;
-  v5 = [(BWFunnelNode *)&v8 initWithNumberOfInputs:*&a3 mediaType:*&a4];
+  v5 = [(BWFunnelNode *)&v8 initWithNumberOfInputs:*&inputs mediaType:*&type];
   v6 = v5;
   if (v5)
   {
-    v5->_inputsCount = a3;
+    v5->_inputsCount = inputs;
     v5->_receivedBuffers = objc_alloc_init(MEMORY[0x1E695DF90]);
     v6->_sentErrorCountForID = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
@@ -30,18 +30,18 @@
   [(BWFunnelNode *)&v3 dealloc];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  if (a3)
+  if (buffer)
   {
-    v6 = CMGetAttachment(a3, @"ParallelSplitterInputBuffer", 0);
+    v6 = CMGetAttachment(buffer, @"ParallelSplitterInputBuffer", 0);
     v7 = v6;
     if (v6)
     {
       CFRetain(v6);
     }
 
-    CMRemoveAttachment(a3, @"ParallelSplitterInputBuffer");
+    CMRemoveAttachment(buffer, @"ParallelSplitterInputBuffer");
     v8 = [MEMORY[0x1E696B098] valueWithPointer:v7];
     v9 = [(NSMutableDictionary *)self->_receivedBuffers objectForKeyedSubscript:v8];
     if (!v9)
@@ -50,7 +50,7 @@
       [(NSMutableDictionary *)self->_receivedBuffers setObject:v9 forKeyedSubscript:v8];
     }
 
-    [v9 addObject:a3];
+    [v9 addObject:buffer];
     if ([v9 count] == self->_inputsCount)
     {
       v19 = 0u;
@@ -102,9 +102,9 @@
   }
 }
 
-- (void)handleNodeError:(id)a3 forInput:(id)a4
+- (void)handleNodeError:(id)error forInput:(id)input
 {
-  v6 = -[NSMutableDictionary objectForKeyedSubscript:](self->_sentErrorCountForID, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a3, "hash")}]);
+  v6 = -[NSMutableDictionary objectForKeyedSubscript:](self->_sentErrorCountForID, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(error, "hash")}]);
   if (v6)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v6, "intValue") + 1}];
@@ -112,15 +112,15 @@
 
   else
   {
-    [(BWNodeOutput *)self->super.super._output emitNodeError:a3];
+    [(BWNodeOutput *)self->super.super._output emitNodeError:error];
     v7 = &unk_1F2246C78;
   }
 
-  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_sentErrorCountForID, "setObject:forKeyedSubscript:", v7, [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a3, "hash")}]);
+  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_sentErrorCountForID, "setObject:forKeyedSubscript:", v7, [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(error, "hash")}]);
   if ([v7 intValue] == self->_inputsCount)
   {
     sentErrorCountForID = self->_sentErrorCountForID;
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a3, "hash")}];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(error, "hash")}];
 
     [(NSMutableDictionary *)sentErrorCountForID removeObjectForKey:v9];
   }

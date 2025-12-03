@@ -1,15 +1,15 @@
 @interface PPXFeedViewController
 - (CGSize)_windowSize;
-- (PPXFeedViewController)initWithOptions:(id)a3;
+- (PPXFeedViewController)initWithOptions:(id)options;
 @end
 
 @implementation PPXFeedViewController
 
-- (PPXFeedViewController)initWithOptions:(id)a3
+- (PPXFeedViewController)initWithOptions:(id)options
 {
-  if (a3)
+  if (options)
   {
-    v4 = [a3 mutableCopy];
+    v4 = [options mutableCopy];
   }
 
   else
@@ -34,9 +34,9 @@
 - (CGSize)_windowSize
 {
   v2 = +[PPXJSAWindowProvider sharedProvider];
-  v3 = [v2 window];
+  window = [v2 window];
 
-  [v3 bounds];
+  [window bounds];
   v5 = v4;
   v7 = v6;
 

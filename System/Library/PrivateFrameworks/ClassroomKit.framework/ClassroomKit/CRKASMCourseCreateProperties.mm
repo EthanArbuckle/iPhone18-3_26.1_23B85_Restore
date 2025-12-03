@@ -1,7 +1,7 @@
 @interface CRKASMCourseCreateProperties
-- (BOOL)areFulfilledByCourse:(id)a3;
+- (BOOL)areFulfilledByCourse:(id)course;
 - (CRKASMCourseUpdateProperties)updateProperties;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CRKASMCourseCreateProperties
@@ -21,29 +21,29 @@
   return updateProperties;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(CRKASMCourseCreateProperties *)self location];
-  [v4 setLocation:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  location = [(CRKASMCourseCreateProperties *)self location];
+  [v4 setLocation:location];
 
-  v6 = [(CRKASMCourseCreateProperties *)self updateProperties];
-  [v4 setUpdateProperties:v6];
+  updateProperties = [(CRKASMCourseCreateProperties *)self updateProperties];
+  [v4 setUpdateProperties:updateProperties];
 
   return v4;
 }
 
-- (BOOL)areFulfilledByCourse:(id)a3
+- (BOOL)areFulfilledByCourse:(id)course
 {
-  v4 = a3;
-  v5 = [(CRKASMCourseCreateProperties *)self location];
-  v6 = [v5 identifier];
-  v7 = [v4 location];
-  v8 = [v7 identifier];
-  if ([v6 isEqual:v8])
+  courseCopy = course;
+  location = [(CRKASMCourseCreateProperties *)self location];
+  identifier = [location identifier];
+  location2 = [courseCopy location];
+  identifier2 = [location2 identifier];
+  if ([identifier isEqual:identifier2])
   {
-    v9 = [(CRKASMCourseCreateProperties *)self updateProperties];
-    v10 = [v9 areFulfilledByCourse:v4];
+    updateProperties = [(CRKASMCourseCreateProperties *)self updateProperties];
+    v10 = [updateProperties areFulfilledByCourse:courseCopy];
   }
 
   else

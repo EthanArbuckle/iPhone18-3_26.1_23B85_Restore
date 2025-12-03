@@ -2,7 +2,7 @@
 - ($5E5F304956FB491AF6F034FDF0808287)processorConfig;
 - (CGPoint)geometricDistortionCorrectionInputCropOffset;
 - (void)dealloc;
-- (void)setDepthDataCorrectionEnabled:(BOOL)a3 primaryFormat:(id)a4 depthFormat:(id)a5 baseDepthRotationDegrees:(int)a6;
+- (void)setDepthDataCorrectionEnabled:(BOOL)enabled primaryFormat:(id)format depthFormat:(id)depthFormat baseDepthRotationDegrees:(int)degrees;
 @end
 
 @implementation BWIntelligentDistortionCorrectionProcessorControllerConfiguration
@@ -14,18 +14,18 @@
   [(BWStillImageProcessorControllerConfiguration *)&v3 dealloc];
 }
 
-- (void)setDepthDataCorrectionEnabled:(BOOL)a3 primaryFormat:(id)a4 depthFormat:(id)a5 baseDepthRotationDegrees:(int)a6
+- (void)setDepthDataCorrectionEnabled:(BOOL)enabled primaryFormat:(id)format depthFormat:(id)depthFormat baseDepthRotationDegrees:(int)degrees
 {
-  v9 = a3;
+  enabledCopy = enabled;
 
-  if (v9)
+  if (enabledCopy)
   {
-    self->_primaryFormat = a4;
-    self->_depthFormat = a5;
+    self->_primaryFormat = format;
+    self->_depthFormat = depthFormat;
   }
 
-  self->_depthDataCorrectionEnabled = v9;
-  self->_baseDepthRotationDegrees = a6;
+  self->_depthDataCorrectionEnabled = enabledCopy;
+  self->_baseDepthRotationDegrees = degrees;
 }
 
 - (CGPoint)geometricDistortionCorrectionInputCropOffset

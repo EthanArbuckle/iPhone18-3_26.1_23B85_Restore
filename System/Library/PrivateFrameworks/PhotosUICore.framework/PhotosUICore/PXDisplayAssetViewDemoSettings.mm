@@ -27,8 +27,8 @@
 
 - (NSArray)personLocalIdentifiersToHighlight
 {
-  v2 = [(PXDisplayAssetViewDemoSettings *)self personLocalIdentifiersToHighlightString];
-  v3 = [v2 componentsSeparatedByString:{@", "}];
+  personLocalIdentifiersToHighlightString = [(PXDisplayAssetViewDemoSettings *)self personLocalIdentifiersToHighlightString];
+  v3 = [personLocalIdentifiersToHighlightString componentsSeparatedByString:{@", "}];
 
   return v3;
 }
@@ -84,10 +84,10 @@ uint64_t __61__PXDisplayAssetViewDemoSettings_sceneIdentifiersToHighlight__block
 - (NSArray)stringsToHighlight
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v2 = [(PXDisplayAssetViewDemoSettings *)self stringToHighlight];
-  if ([v2 length])
+  stringToHighlight = [(PXDisplayAssetViewDemoSettings *)self stringToHighlight];
+  if ([stringToHighlight length])
   {
-    v5[0] = v2;
+    v5[0] = stringToHighlight;
     v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
   }
 
@@ -105,7 +105,7 @@ uint64_t __61__PXDisplayAssetViewDemoSettings_sceneIdentifiersToHighlight__block
   block[1] = 3221225472;
   block[2] = __53__PXDisplayAssetViewDemoSettings_transientProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (transientProperties_onceToken_85882 != -1)
   {
     dispatch_once(&transientProperties_onceToken_85882, block);

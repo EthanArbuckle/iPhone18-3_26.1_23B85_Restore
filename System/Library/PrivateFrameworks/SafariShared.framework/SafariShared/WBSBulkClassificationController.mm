@@ -1,23 +1,23 @@
 @interface WBSBulkClassificationController
-- (WBSBulkClassificationController)initWithSuiteURL:(id)a3 bundleNames:(id)a4;
-- (void)_runClassificationForURL:(id)a3 viewportSize:(CGSize)a4 delegate:(id)a5 completionHandler:(id)a6;
-- (void)runTestsAndStoreResultsIn:(id)a3 completionHandler:(id)a4;
+- (WBSBulkClassificationController)initWithSuiteURL:(id)l bundleNames:(id)names;
+- (void)_runClassificationForURL:(id)l viewportSize:(CGSize)size delegate:(id)delegate completionHandler:(id)handler;
+- (void)runTestsAndStoreResultsIn:(id)in completionHandler:(id)handler;
 @end
 
 @implementation WBSBulkClassificationController
 
-- (WBSBulkClassificationController)initWithSuiteURL:(id)a3 bundleNames:(id)a4
+- (WBSBulkClassificationController)initWithSuiteURL:(id)l bundleNames:(id)names
 {
-  v6 = a3;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = WBSBulkClassificationController;
   v7 = [(WBSTestController *)&v14 initWithSuiteURL:0 bundleNames:0];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_inputFileURL, a3);
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
-    v10 = [v9 safari_createDirectoryWithTemplate:@"BulkClassification-XXXX" inDirectory:v6];
+    objc_storeStrong(&v7->_inputFileURL, l);
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v10 = [defaultManager safari_createDirectoryWithTemplate:@"BulkClassification-XXXX" inDirectory:lCopy];
     scratchFileURL = v8->_scratchFileURL;
     v8->_scratchFileURL = v10;
 
@@ -27,14 +27,14 @@
   return v8;
 }
 
-- (void)runTestsAndStoreResultsIn:(id)a3 completionHandler:(id)a4
+- (void)runTestsAndStoreResultsIn:(id)in completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSPageTestController *)self delegate];
-  if (v8)
+  inCopy = in;
+  handlerCopy = handler;
+  delegate = [(WBSPageTestController *)self delegate];
+  if (delegate)
   {
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_create("com.apple.Safari.BulkClassification", v10);
 
@@ -42,13 +42,13 @@
     v16[1] = 3221225472;
     v16[2] = __79__WBSBulkClassificationController_runTestsAndStoreResultsIn_completionHandler___block_invoke;
     v16[3] = &unk_1E7FC8A98;
-    v17 = v6;
-    v18 = v8;
-    v19 = self;
-    v21 = v9;
-    v22 = v7;
+    v17 = inCopy;
+    v18 = delegate;
+    selfCopy = self;
+    v21 = defaultManager;
+    v22 = handlerCopy;
     v20 = v11;
-    v12 = v9;
+    v12 = defaultManager;
     v13 = v11;
     [v18 pageTestControllerInitializeApp:self completionHandler:v16];
   }
@@ -62,9 +62,9 @@
     }
 
     v15 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:0];
-    [v6 reportError:v15 descriptiveResultsName:@"form metadata" forStage:0 forTest:0 inBundle:0];
+    [inCopy reportError:v15 descriptiveResultsName:@"form metadata" forStage:0 forTest:0 inBundle:0];
 
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -313,24 +313,24 @@ uint64_t __79__WBSBulkClassificationController_runTestsAndStoreResultsIn_complet
   return v3();
 }
 
-- (void)_runClassificationForURL:(id)a3 viewportSize:(CGSize)a4 delegate:(id)a5 completionHandler:(id)a6
+- (void)_runClassificationForURL:(id)l viewportSize:(CGSize)size delegate:(id)delegate completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  height = size.height;
+  width = size.width;
+  lCopy = l;
+  delegateCopy = delegate;
+  handlerCopy = handler;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __100__WBSBulkClassificationController__runClassificationForURL_viewportSize_delegate_completionHandler___block_invoke;
   v17[3] = &unk_1E7FC5010;
-  v18 = v12;
-  v19 = self;
-  v20 = v11;
-  v21 = v13;
-  v14 = v11;
-  v15 = v12;
-  v16 = v13;
+  v18 = delegateCopy;
+  selfCopy = self;
+  v20 = lCopy;
+  v21 = handlerCopy;
+  v14 = lCopy;
+  v15 = delegateCopy;
+  v16 = handlerCopy;
   [v15 pageTestController:self resizeViewport:v17 completionHandler:{width, height}];
 }
 

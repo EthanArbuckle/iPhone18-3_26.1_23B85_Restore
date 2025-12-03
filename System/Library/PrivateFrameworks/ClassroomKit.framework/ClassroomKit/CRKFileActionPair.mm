@@ -1,23 +1,23 @@
 @interface CRKFileActionPair
-- (BOOL)isEqual:(id)a3;
-- (CRKFileActionPair)initWithSourceURL:(id)a3 destinationURL:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (CRKFileActionPair)initWithSourceURL:(id)l destinationURL:(id)rL;
 - (unint64_t)hash;
 @end
 
 @implementation CRKFileActionPair
 
-- (CRKFileActionPair)initWithSourceURL:(id)a3 destinationURL:(id)a4
+- (CRKFileActionPair)initWithSourceURL:(id)l destinationURL:(id)rL
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v12.receiver = self;
   v12.super_class = CRKFileActionPair;
   v9 = [(CRKFileActionPair *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sourceURL, a3);
-    objc_storeStrong(&v10->_destinationURL, a4);
+    objc_storeStrong(&v9->_sourceURL, l);
+    objc_storeStrong(&v10->_destinationURL, rL);
   }
 
   return v10;
@@ -37,7 +37,7 @@
   v20 = v5;
   [v5 enumerateObjectsUsingBlock:v19];
 
-  v6 = self;
+  selfCopy = self;
   v7 = v5;
   v15 = 0u;
   v16 = 0u;
@@ -58,7 +58,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v13 = [(CRKFileActionPair *)v6 valueForKey:*(*(&v15 + 1) + 8 * i)];
+        v13 = [(CRKFileActionPair *)selfCopy valueForKey:*(*(&v15 + 1) + 8 * i)];
         v10 ^= [v13 hash];
       }
 
@@ -76,10 +76,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v5 = [@"sourceURL destinationURL"];
   v6 = [v5 mutableCopy];
 
@@ -91,10 +91,10 @@
   v29 = v7;
   [v7 enumerateObjectsUsingBlock:v28];
 
-  v8 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = equalCopy;
   v10 = v7;
-  if (v8 == v9)
+  if (selfCopy == v9)
   {
     v21 = 1;
   }
@@ -123,7 +123,7 @@
 
           v16 = *(*(&v24 + 1) + 8 * i);
           v17 = v9;
-          v18 = [(CRKFileActionPair *)v8 valueForKey:v16];
+          v18 = [(CRKFileActionPair *)selfCopy valueForKey:v16];
           v19 = [(CRKFileActionPair *)v17 valueForKey:v16];
 
           if (v18 | v19)

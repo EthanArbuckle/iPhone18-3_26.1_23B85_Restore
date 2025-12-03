@@ -7,46 +7,46 @@
 - (BOOL)requiresThreadRouter
 {
   v45 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHAPAccessory *)self chipAccessoryServer];
+  chipAccessoryServer = [(HMDHAPAccessory *)self chipAccessoryServer];
 
-  if (v3)
+  if (chipAccessoryServer)
   {
-    v4 = [(HMDHAPAccessory *)self chipAccessoryServer];
-    v5 = [v4 requiresThreadRouter];
+    chipAccessoryServer2 = [(HMDHAPAccessory *)self chipAccessoryServer];
+    requiresThreadRouter = [chipAccessoryServer2 requiresThreadRouter];
 
     v6 = *MEMORY[0x277D85DE8];
-    return v5;
+    return requiresThreadRouter;
   }
 
   else
   {
-    v8 = [(HMDHAPAccessory *)self supportedLinkLayerTypes];
-    v9 = [v8 unsignedIntValue];
+    supportedLinkLayerTypes = [(HMDHAPAccessory *)self supportedLinkLayerTypes];
+    unsignedIntValue = [supportedLinkLayerTypes unsignedIntValue];
 
-    v10 = [(HMDHAPAccessory *)self matterWEDSupport];
-    [v10 isEqualToNumber:&unk_28662A478];
+    matterWEDSupport = [(HMDHAPAccessory *)self matterWEDSupport];
+    [matterWEDSupport isEqualToNumber:&unk_28662A478];
 
-    v11 = [(HMDAccessory *)self home];
-    v12 = [(HMDHAPAccessory *)self deviceCapabilities];
+    home = [(HMDAccessory *)self home];
+    deviceCapabilities = [(HMDHAPAccessory *)self deviceCapabilities];
     if (objc_opt_respondsToSelector())
     {
-      [v12 supportsThreadService];
+      [deviceCapabilities supportsThreadService];
     }
 
     isFeatureMatteriPhoneOnlyPairingControlForThreadEnabled();
-    LODWORD(v13) = ([v11 hasThreadCapableResident] ^ 1) & ((v9 & 0x10) >> 4);
+    LODWORD(v13) = ([home hasThreadCapableResident] ^ 1) & ((unsignedIntValue & 0x10) >> 4);
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       HMFGetLogIdentifier();
-      v17 = v26 = v11;
+      v17 = v26 = home;
       HMFBooleanToString();
-      v18 = v25 = v12;
+      v18 = v25 = deviceCapabilities;
       HMFBooleanToString();
       v19 = v27 = v14;
-      [(HMDHAPAccessory *)v15 supportedLinkLayerTypes];
+      [(HMDHAPAccessory *)selfCopy supportedLinkLayerTypes];
       v13 = v28 = v13;
       v20 = HMFBooleanToString();
       v21 = HMFBooleanToString();
@@ -73,8 +73,8 @@
       LOBYTE(v13) = v28;
       v14 = v27;
 
-      v12 = v25;
-      v11 = v26;
+      deviceCapabilities = v25;
+      home = v26;
     }
 
     objc_autoreleasePoolPop(v14);

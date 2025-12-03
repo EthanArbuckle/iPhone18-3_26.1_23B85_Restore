@@ -8,22 +8,22 @@
 - (PKPaletteToolPickerView)toolPickerView;
 - (double)_compactToolsContainerWidth;
 - (double)_stackViewSpacing;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_updateUI;
-- (void)dismissPalettePopoverWithCompletion:(id)a3;
+- (void)dismissPalettePopoverWithCompletion:(id)completion;
 - (void)layoutSubviews;
-- (void)setContextEditingMode:(int64_t)a3;
-- (void)setCornerLocation:(unint64_t)a3;
-- (void)setEdgeLocation:(unint64_t)a3;
-- (void)setInputAssistantViewVisible:(BOOL)a3;
-- (void)setLassoToolEditingViewIdentifier:(id)a3;
-- (void)setLassoToolEditingViewVisible:(BOOL)a3;
-- (void)setPlusButton:(id)a3;
-- (void)setScalingFactor:(double)a3;
-- (void)setShowsPlusButton:(BOOL)a3;
-- (void)setWantsColorPickerContainerViewInHierarchy:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateColorPickerAndPlusView:(BOOL)a3;
+- (void)setContextEditingMode:(int64_t)mode;
+- (void)setCornerLocation:(unint64_t)location;
+- (void)setEdgeLocation:(unint64_t)location;
+- (void)setInputAssistantViewVisible:(BOOL)visible;
+- (void)setLassoToolEditingViewIdentifier:(id)identifier;
+- (void)setLassoToolEditingViewVisible:(BOOL)visible;
+- (void)setPlusButton:(id)button;
+- (void)setScalingFactor:(double)factor;
+- (void)setShowsPlusButton:(BOOL)button;
+- (void)setWantsColorPickerContainerViewInHierarchy:(BOOL)hierarchy;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateColorPickerAndPlusView:(BOOL)view;
 @end
 
 @implementation PKPaletteToolPickerAndColorPickerView
@@ -39,9 +39,9 @@
   {
     v2->_scalingFactor = 1.0;
     v2->_wantsColorPickerContainerViewInHierarchy = 1;
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     lassoToolEditingViewForIdentifierTable = v3->_lassoToolEditingViewForIdentifierTable;
-    v3->_lassoToolEditingViewForIdentifierTable = v4;
+    v3->_lassoToolEditingViewForIdentifierTable = dictionary;
 
     v6 = objc_alloc_init(MEMORY[0x1E69DCF90]);
     stackView = v3->_stackView;
@@ -52,21 +52,21 @@
     [(UIStackView *)v3->_stackView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PKPaletteToolPickerAndColorPickerView *)v3 addSubview:v3->_stackView];
     v75 = MEMORY[0x1E696ACD8];
-    v80 = [(UIStackView *)v3->_stackView topAnchor];
-    v79 = [(PKPaletteToolPickerAndColorPickerView *)v3 topAnchor];
-    v78 = [v80 constraintEqualToAnchor:v79];
+    topAnchor = [(UIStackView *)v3->_stackView topAnchor];
+    topAnchor2 = [(PKPaletteToolPickerAndColorPickerView *)v3 topAnchor];
+    v78 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v82[0] = v78;
-    v77 = [(UIStackView *)v3->_stackView bottomAnchor];
-    v76 = [(PKPaletteToolPickerAndColorPickerView *)v3 bottomAnchor];
-    v8 = [v77 constraintEqualToAnchor:v76];
+    bottomAnchor = [(UIStackView *)v3->_stackView bottomAnchor];
+    bottomAnchor2 = [(PKPaletteToolPickerAndColorPickerView *)v3 bottomAnchor];
+    v8 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v82[1] = v8;
-    v9 = [(UIStackView *)v3->_stackView leftAnchor];
-    v10 = [(PKPaletteToolPickerAndColorPickerView *)v3 leftAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    leftAnchor = [(UIStackView *)v3->_stackView leftAnchor];
+    leftAnchor2 = [(PKPaletteToolPickerAndColorPickerView *)v3 leftAnchor];
+    v11 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v82[2] = v11;
-    v12 = [(UIStackView *)v3->_stackView rightAnchor];
-    v13 = [(PKPaletteToolPickerAndColorPickerView *)v3 rightAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    rightAnchor = [(UIStackView *)v3->_stackView rightAnchor];
+    rightAnchor2 = [(PKPaletteToolPickerAndColorPickerView *)v3 rightAnchor];
+    v14 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v82[3] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v82 count:4];
     [v75 activateConstraints:v15];
@@ -76,26 +76,26 @@
     v3->_toolPickerContainerView = v16;
 
     [(UIStackView *)v3->_stackView addArrangedSubview:v3->_toolPickerContainerView];
-    v18 = [(PKPaletteToolPickerContainerView *)v3->_toolPickerContainerView heightAnchor];
-    v19 = [(UIStackView *)v3->_stackView heightAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    heightAnchor = [(PKPaletteToolPickerContainerView *)v3->_toolPickerContainerView heightAnchor];
+    heightAnchor2 = [(UIStackView *)v3->_stackView heightAnchor];
+    v20 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     toolPickerContainerViewHeightConstraint = v3->_toolPickerContainerViewHeightConstraint;
     v3->_toolPickerContainerViewHeightConstraint = v20;
 
-    v22 = [(PKPaletteToolPickerContainerView *)v3->_toolPickerContainerView widthAnchor];
-    v23 = [(UIStackView *)v3->_stackView widthAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    widthAnchor = [(PKPaletteToolPickerContainerView *)v3->_toolPickerContainerView widthAnchor];
+    widthAnchor2 = [(UIStackView *)v3->_stackView widthAnchor];
+    v24 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     toolPickerContainerViewWidthConstraint = v3->_toolPickerContainerViewWidthConstraint;
     v3->_toolPickerContainerViewWidthConstraint = v24;
 
-    v26 = [(PKPaletteToolPickerContainerView *)v3->_toolPickerContainerView widthAnchor];
-    v27 = [v26 constraintEqualToConstant:28.0];
+    widthAnchor3 = [(PKPaletteToolPickerContainerView *)v3->_toolPickerContainerView widthAnchor];
+    v27 = [widthAnchor3 constraintEqualToConstant:28.0];
     compactToolPickerContainerViewWidthConstraint = v3->_compactToolPickerContainerViewWidthConstraint;
     v3->_compactToolPickerContainerViewWidthConstraint = v27;
 
-    v29 = [(PKPaletteToolPickerContainerView *)v3->_toolPickerContainerView heightAnchor];
-    v30 = [(UIStackView *)v3->_stackView heightAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    heightAnchor3 = [(PKPaletteToolPickerContainerView *)v3->_toolPickerContainerView heightAnchor];
+    heightAnchor4 = [(UIStackView *)v3->_stackView heightAnchor];
+    v31 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
     compactToolPickerContainerViewHeightConstraint = v3->_compactToolPickerContainerViewHeightConstraint;
     v3->_compactToolPickerContainerViewHeightConstraint = v31;
 
@@ -107,13 +107,13 @@
     colorPickerAndPlusView = v3->_colorPickerAndPlusView;
     v3->_colorPickerAndPlusView = v35;
 
-    v37 = [(UIView *)v3->_colorPickerAndPlusView widthAnchor];
-    v38 = [v37 constraintEqualToConstant:28.0];
+    widthAnchor4 = [(UIView *)v3->_colorPickerAndPlusView widthAnchor];
+    v38 = [widthAnchor4 constraintEqualToConstant:28.0];
     compactColorPickerAndPlusViewWidthConstraint = v3->_compactColorPickerAndPlusViewWidthConstraint;
     v3->_compactColorPickerAndPlusViewWidthConstraint = v38;
 
-    v40 = [(UIView *)v3->_colorPickerAndPlusView heightAnchor];
-    v41 = [v40 constraintEqualToConstant:62.0];
+    heightAnchor5 = [(UIView *)v3->_colorPickerAndPlusView heightAnchor];
+    v41 = [heightAnchor5 constraintEqualToConstant:62.0];
     compactColorPickerAndPlusViewHeightConstraint = v3->_compactColorPickerAndPlusViewHeightConstraint;
     v3->_compactColorPickerAndPlusViewHeightConstraint = v41;
 
@@ -122,13 +122,13 @@
     v3->_colorPickerContainerView = v43;
 
     [(UIStackView *)v3->_stackView addSubview:v3->_colorPickerContainerView];
-    v45 = [(PKPaletteColorPickerContainerView *)v3->_colorPickerContainerView widthAnchor];
-    v46 = [v45 constraintEqualToConstant:28.0];
+    widthAnchor5 = [(PKPaletteColorPickerContainerView *)v3->_colorPickerContainerView widthAnchor];
+    v46 = [widthAnchor5 constraintEqualToConstant:28.0];
     compactColorPickerContainerViewWidthConstraint = v3->_compactColorPickerContainerViewWidthConstraint;
     v3->_compactColorPickerContainerViewWidthConstraint = v46;
 
-    v48 = [(PKPaletteColorPickerContainerView *)v3->_colorPickerContainerView heightAnchor];
-    v49 = [v48 constraintEqualToConstant:28.0];
+    heightAnchor6 = [(PKPaletteColorPickerContainerView *)v3->_colorPickerContainerView heightAnchor];
+    v49 = [heightAnchor6 constraintEqualToConstant:28.0];
     compactColorPickerContainerViewHeightConstraint = v3->_compactColorPickerContainerViewHeightConstraint;
     v3->_compactColorPickerContainerViewHeightConstraint = v49;
 
@@ -142,24 +142,24 @@
 
     [(UIView *)v3->_lassoToolEditingContainerView setClipsToBounds:1];
     [(UIStackView *)v3->_stackView addArrangedSubview:v3->_lassoToolEditingContainerView];
-    v55 = [(UIView *)v3->_lassoToolEditingContainerView widthAnchor];
-    v56 = [v55 constraintEqualToConstant:0.0];
+    widthAnchor6 = [(UIView *)v3->_lassoToolEditingContainerView widthAnchor];
+    v56 = [widthAnchor6 constraintEqualToConstant:0.0];
     lassoToolEditingContainerViewWidthConstraint = v3->_lassoToolEditingContainerViewWidthConstraint;
     v3->_lassoToolEditingContainerViewWidthConstraint = v56;
 
-    v58 = [(UIView *)v3->_lassoToolEditingContainerView heightAnchor];
-    v59 = [v58 constraintEqualToConstant:0.0];
+    heightAnchor7 = [(UIView *)v3->_lassoToolEditingContainerView heightAnchor];
+    v59 = [heightAnchor7 constraintEqualToConstant:0.0];
     lassoToolEditingContainerViewHeightConstraint = v3->_lassoToolEditingContainerViewHeightConstraint;
     v3->_lassoToolEditingContainerViewHeightConstraint = v59;
 
-    v61 = [(UIView *)v3->_lassoToolEditingContainerView widthAnchor];
-    v62 = [v61 constraintEqualToConstant:188.0];
+    widthAnchor7 = [(UIView *)v3->_lassoToolEditingContainerView widthAnchor];
+    v62 = [widthAnchor7 constraintEqualToConstant:188.0];
     lassoToolEditingContainerViewCompactWidthConstraint = v3->_lassoToolEditingContainerViewCompactWidthConstraint;
     v3->_lassoToolEditingContainerViewCompactWidthConstraint = v62;
 
-    v64 = [(UIView *)v3->_lassoToolEditingContainerView heightAnchor];
-    v65 = [(UIStackView *)v3->_stackView heightAnchor];
-    v66 = [v64 constraintEqualToAnchor:v65];
+    heightAnchor8 = [(UIView *)v3->_lassoToolEditingContainerView heightAnchor];
+    heightAnchor9 = [(UIStackView *)v3->_stackView heightAnchor];
+    v66 = [heightAnchor8 constraintEqualToAnchor:heightAnchor9];
     lassoToolEditingContainerViewCompactHeightConstraint = v3->_lassoToolEditingContainerViewCompactHeightConstraint;
     v3->_lassoToolEditingContainerViewCompactHeightConstraint = v66;
 
@@ -185,52 +185,52 @@
 
 - (PKPaletteToolPickerView)toolPickerView
 {
-  v2 = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerContainerView];
-  v3 = [v2 toolPickerView];
+  toolPickerContainerView = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerContainerView];
+  toolPickerView = [toolPickerContainerView toolPickerView];
 
-  return v3;
+  return toolPickerView;
 }
 
 - (PKPaletteColorPickerView)colorPickerView
 {
-  v2 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerContainerView];
-  v3 = [v2 colorPickerView];
+  colorPickerContainerView = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerContainerView];
+  colorPickerView = [colorPickerContainerView colorPickerView];
 
-  return v3;
+  return colorPickerView;
 }
 
-- (void)setInputAssistantViewVisible:(BOOL)a3
+- (void)setInputAssistantViewVisible:(BOOL)visible
 {
-  if (self->_inputAssistantViewVisible != a3)
+  if (self->_inputAssistantViewVisible != visible)
   {
-    self->_inputAssistantViewVisible = a3;
+    self->_inputAssistantViewVisible = visible;
     [(PKPaletteToolPickerAndColorPickerView *)self _updateUI];
   }
 }
 
-- (void)setWantsColorPickerContainerViewInHierarchy:(BOOL)a3
+- (void)setWantsColorPickerContainerViewInHierarchy:(BOOL)hierarchy
 {
-  if (self->_wantsColorPickerContainerViewInHierarchy != a3)
+  if (self->_wantsColorPickerContainerViewInHierarchy != hierarchy)
   {
-    self->_wantsColorPickerContainerViewInHierarchy = a3;
+    self->_wantsColorPickerContainerViewInHierarchy = hierarchy;
     [(PKPaletteToolPickerAndColorPickerView *)self _updateUI];
   }
 }
 
-- (void)setLassoToolEditingViewVisible:(BOOL)a3
+- (void)setLassoToolEditingViewVisible:(BOOL)visible
 {
-  if (self->_lassoToolEditingViewVisible != a3)
+  if (self->_lassoToolEditingViewVisible != visible)
   {
-    self->_lassoToolEditingViewVisible = a3;
+    self->_lassoToolEditingViewVisible = visible;
     [(PKPaletteToolPickerAndColorPickerView *)self _updateUI];
   }
 }
 
-- (void)setLassoToolEditingViewIdentifier:(id)a3
+- (void)setLassoToolEditingViewIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = self->_lassoToolEditingViewIdentifier;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -259,18 +259,18 @@ LABEL_8:
 LABEL_9:
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerContainerView];
-  [(PKPaletteToolPickerAndColorPickerView *)self convertPoint:v8 toView:x, y];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  toolPickerContainerView = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerContainerView];
+  [(PKPaletteToolPickerAndColorPickerView *)self convertPoint:toolPickerContainerView toView:x, y];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerContainerView];
-  v14 = [v13 hitTest:v7 withEvent:{v10, v12}];
+  toolPickerContainerView2 = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerContainerView];
+  v14 = [toolPickerContainerView2 hitTest:eventCopy withEvent:{v10, v12}];
 
   if (v14)
   {
@@ -281,7 +281,7 @@ LABEL_9:
   {
     v18.receiver = self;
     v18.super_class = PKPaletteToolPickerAndColorPickerView;
-    v15 = [(PKPaletteToolPickerAndColorPickerView *)&v18 hitTest:v7 withEvent:x, y];
+    v15 = [(PKPaletteToolPickerAndColorPickerView *)&v18 hitTest:eventCopy withEvent:x, y];
   }
 
   v16 = v15;
@@ -289,69 +289,69 @@ LABEL_9:
   return v16;
 }
 
-- (void)setScalingFactor:(double)a3
+- (void)setScalingFactor:(double)factor
 {
   scalingFactor = self->_scalingFactor;
-  if (scalingFactor != a3 && vabdd_f64(scalingFactor, a3) >= fabs(a3 * 0.000000999999997))
+  if (scalingFactor != factor && vabdd_f64(scalingFactor, factor) >= fabs(factor * 0.000000999999997))
   {
-    self->_scalingFactor = a3;
+    self->_scalingFactor = factor;
     [(PKPaletteToolPickerAndColorPickerView *)self _updateUI];
   }
 }
 
-- (void)setEdgeLocation:(unint64_t)a3
+- (void)setEdgeLocation:(unint64_t)location
 {
-  if (self->_edgeLocation != a3)
+  if (self->_edgeLocation != location)
   {
-    self->_edgeLocation = a3;
+    self->_edgeLocation = location;
     [(PKPaletteToolPickerAndColorPickerView *)self _updateUI];
   }
 }
 
-- (void)setCornerLocation:(unint64_t)a3
+- (void)setCornerLocation:(unint64_t)location
 {
-  if (self->_cornerLocation != a3)
+  if (self->_cornerLocation != location)
   {
-    self->_cornerLocation = a3;
+    self->_cornerLocation = location;
     [(PKPaletteToolPickerAndColorPickerView *)self _updateUI];
   }
 }
 
-- (void)setContextEditingMode:(int64_t)a3
+- (void)setContextEditingMode:(int64_t)mode
 {
-  if (self->_contextEditingMode != a3)
+  if (self->_contextEditingMode != mode)
   {
-    self->_contextEditingMode = a3;
+    self->_contextEditingMode = mode;
     [(PKPaletteToolPickerAndColorPickerView *)self _updateUI];
   }
 }
 
-- (void)setPlusButton:(id)a3
+- (void)setPlusButton:(id)button
 {
-  v5 = a3;
-  if (self->_plusButton != v5)
+  buttonCopy = button;
+  if (self->_plusButton != buttonCopy)
   {
-    v6 = v5;
+    v6 = buttonCopy;
     if ([(PKPaletteToolPickerAndColorPickerView *)self _hasPlusButtonView])
     {
       [(PKPaletteButton *)self->_plusButton removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_plusButton, a3);
-    v5 = v6;
+    objc_storeStrong(&self->_plusButton, button);
+    buttonCopy = v6;
     if (self->_showsPlusButton)
     {
       [(PKPaletteToolPickerAndColorPickerView *)self _updateUI];
-      v5 = v6;
+      buttonCopy = v6;
     }
   }
 }
 
-- (void)setShowsPlusButton:(BOOL)a3
+- (void)setShowsPlusButton:(BOOL)button
 {
-  if (self->_showsPlusButton != a3)
+  if (self->_showsPlusButton != button)
   {
-    self->_showsPlusButton = a3;
+    self->_showsPlusButton = button;
     [(PKPaletteToolPickerAndColorPickerView *)self _updateUI];
   }
 }
@@ -366,37 +366,37 @@ LABEL_9:
   return [(PKPaletteToolPickerAndColorPickerView *)self showsPlusButton];
 }
 
-- (void)updateColorPickerAndPlusView:(BOOL)a3
+- (void)updateColorPickerAndPlusView:(BOOL)view
 {
-  v3 = a3;
+  viewCopy = view;
   v26[2] = *MEMORY[0x1E69E9840];
-  v5 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerAndPlusView];
-  v6 = v5;
-  if (v3)
+  colorPickerAndPlusView = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerAndPlusView];
+  v6 = colorPickerAndPlusView;
+  if (viewCopy)
   {
-    v7 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerContainerView];
-    [v6 addSubview:v7];
+    colorPickerContainerView = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerContainerView];
+    [v6 addSubview:colorPickerContainerView];
 
-    v8 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerAndPlusView];
-    v9 = [(PKPaletteToolPickerAndColorPickerView *)self plusButton];
-    [v8 addSubview:v9];
+    colorPickerAndPlusView2 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerAndPlusView];
+    plusButton = [(PKPaletteToolPickerAndColorPickerView *)self plusButton];
+    [colorPickerAndPlusView2 addSubview:plusButton];
 
-    v10 = [(PKPaletteToolPickerAndColorPickerView *)self stackView];
-    v11 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerAndPlusView];
-    [v10 addArrangedSubview:v11];
+    stackView = [(PKPaletteToolPickerAndColorPickerView *)self stackView];
+    colorPickerAndPlusView3 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerAndPlusView];
+    [stackView addArrangedSubview:colorPickerAndPlusView3];
 
     v22 = MEMORY[0x1E696ACD8];
-    v24 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerContainerView];
-    v12 = [v24 topAnchor];
-    v13 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerAndPlusView];
-    v14 = [v13 topAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    colorPickerContainerView2 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerContainerView];
+    topAnchor = [colorPickerContainerView2 topAnchor];
+    colorPickerAndPlusView4 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerAndPlusView];
+    topAnchor2 = [colorPickerAndPlusView4 topAnchor];
+    v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v26[0] = v15;
-    v16 = [(PKPaletteToolPickerAndColorPickerView *)self plusButton];
-    v17 = [v16 bottomAnchor];
-    v18 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerAndPlusView];
-    v19 = [v18 bottomAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19];
+    plusButton2 = [(PKPaletteToolPickerAndColorPickerView *)self plusButton];
+    bottomAnchor = [plusButton2 bottomAnchor];
+    colorPickerAndPlusView5 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerAndPlusView];
+    bottomAnchor2 = [colorPickerAndPlusView5 bottomAnchor];
+    v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v26[1] = v20;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
     [v22 activateConstraints:v21];
@@ -404,20 +404,20 @@ LABEL_9:
 
   else
   {
-    [v5 removeFromSuperview];
+    [colorPickerAndPlusView removeFromSuperview];
 
     v23 = MEMORY[0x1E696ACD8];
-    v24 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerContainerView];
-    v12 = [v24 topAnchor];
-    v13 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerAndPlusView];
-    v14 = [v13 topAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    colorPickerContainerView2 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerContainerView];
+    topAnchor = [colorPickerContainerView2 topAnchor];
+    colorPickerAndPlusView4 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerAndPlusView];
+    topAnchor2 = [colorPickerAndPlusView4 topAnchor];
+    v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v25[0] = v15;
-    v16 = [(PKPaletteToolPickerAndColorPickerView *)self plusButton];
-    v17 = [v16 bottomAnchor];
-    v18 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerAndPlusView];
-    v19 = [v18 bottomAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19];
+    plusButton2 = [(PKPaletteToolPickerAndColorPickerView *)self plusButton];
+    bottomAnchor = [plusButton2 bottomAnchor];
+    colorPickerAndPlusView5 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerAndPlusView];
+    bottomAnchor2 = [colorPickerAndPlusView5 bottomAnchor];
+    v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v25[1] = v20;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
     [v23 deactivateConstraints:v21];
@@ -426,10 +426,10 @@ LABEL_9:
 
 - (BOOL)_useCompactSize
 {
-  v3 = [(PKPaletteToolPickerAndColorPickerView *)self traitCollection];
-  v4 = [(PKPaletteToolPickerAndColorPickerView *)self window];
-  v5 = [v4 windowScene];
-  v6 = PKUseCompactSize(v3, v5);
+  traitCollection = [(PKPaletteToolPickerAndColorPickerView *)self traitCollection];
+  window = [(PKPaletteToolPickerAndColorPickerView *)self window];
+  windowScene = [window windowScene];
+  v6 = PKUseCompactSize(traitCollection, windowScene);
 
   return v6;
 }
@@ -439,8 +439,8 @@ LABEL_9:
   v120[4] = *MEMORY[0x1E69E9840];
   if ([(PKPaletteToolPickerAndColorPickerView *)self _hasColorPickerContainerView]&& ([(PKPaletteToolPickerAndColorPickerView *)self shouldShowPlusButton]|| ![(PKPaletteToolPickerAndColorPickerView *)self wantsColorPickerContainerViewInHierarchy]))
   {
-    v3 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerContainerView];
-    [v3 removeFromSuperview];
+    colorPickerContainerView = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerContainerView];
+    [colorPickerContainerView removeFromSuperview];
   }
 
   if (![(PKPaletteToolPickerAndColorPickerView *)self shouldShowPlusButton]&& [(PKPaletteToolPickerAndColorPickerView *)self _hasPlusButtonView])
@@ -458,28 +458,28 @@ LABEL_9:
 
   else
   {
-    v4 = [(PKPaletteToolPickerAndColorPickerView *)self stackView];
-    v5 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerContainerView];
-    [v4 addArrangedSubview:v5];
+    stackView = [(PKPaletteToolPickerAndColorPickerView *)self stackView];
+    colorPickerContainerView2 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerContainerView];
+    [stackView addArrangedSubview:colorPickerContainerView2];
   }
 
-  v6 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingViewIdentifier];
+  lassoToolEditingViewIdentifier = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingViewIdentifier];
 
-  if (v6)
+  if (lassoToolEditingViewIdentifier)
   {
-    v7 = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerView];
-    [v7 setClippingViewLassoToolEditingViewVisible:{-[PKPaletteToolPickerAndColorPickerView isLassoToolEditingViewVisible](self, "isLassoToolEditingViewVisible")}];
+    toolPickerView = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerView];
+    [toolPickerView setClippingViewLassoToolEditingViewVisible:{-[PKPaletteToolPickerAndColorPickerView isLassoToolEditingViewVisible](self, "isLassoToolEditingViewVisible")}];
 
     lassoToolEditingViewForIdentifierTable = self->_lassoToolEditingViewForIdentifierTable;
-    v9 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingViewIdentifier];
-    v10 = [(NSMutableDictionary *)lassoToolEditingViewForIdentifierTable objectForKey:v9];
+    lassoToolEditingViewIdentifier2 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingViewIdentifier];
+    v10 = [(NSMutableDictionary *)lassoToolEditingViewForIdentifierTable objectForKey:lassoToolEditingViewIdentifier2];
 
     if (!v10)
     {
       v10 = objc_alloc_init(MEMORY[0x1E69DD250]);
       v11 = self->_lassoToolEditingViewForIdentifierTable;
-      v12 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingViewIdentifier];
-      [(NSMutableDictionary *)v11 setObject:v10 forKey:v12];
+      lassoToolEditingViewIdentifier3 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingViewIdentifier];
+      [(NSMutableDictionary *)v11 setObject:v10 forKey:lassoToolEditingViewIdentifier3];
     }
   }
 
@@ -488,38 +488,38 @@ LABEL_9:
     v10 = self->_lassoToolEditingViewForNilIdentifier;
   }
 
-  v13 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingView];
+  lassoToolEditingView = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingView];
 
   obj = v10;
-  if (v10 != v13)
+  if (v10 != lassoToolEditingView)
   {
-    v14 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingView];
-    [v14 removeFromSuperview];
+    lassoToolEditingView2 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingView];
+    [lassoToolEditingView2 removeFromSuperview];
 
-    v15 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerView];
-    [v15 addSubview:v10];
+    lassoToolEditingContainerView = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerView];
+    [lassoToolEditingContainerView addSubview:v10];
 
     [(UIView *)v10 setTranslatesAutoresizingMaskIntoConstraints:0];
     v103 = MEMORY[0x1E696ACD8];
-    v112 = [(UIView *)v10 topAnchor];
-    v114 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerView];
-    v110 = [v114 topAnchor];
-    v108 = [v112 constraintEqualToAnchor:v110];
+    topAnchor = [(UIView *)v10 topAnchor];
+    lassoToolEditingContainerView2 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerView];
+    topAnchor2 = [lassoToolEditingContainerView2 topAnchor];
+    v108 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v120[0] = v108;
-    v105 = [(UIView *)v10 leadingAnchor];
-    v106 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerView];
-    v104 = [v106 leadingAnchor];
-    v102 = [v105 constraintEqualToAnchor:v104];
+    leadingAnchor = [(UIView *)v10 leadingAnchor];
+    lassoToolEditingContainerView3 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerView];
+    leadingAnchor2 = [lassoToolEditingContainerView3 leadingAnchor];
+    v102 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v120[1] = v102;
-    v16 = [(UIView *)v10 trailingAnchor];
-    v17 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerView];
-    v18 = [v17 trailingAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18];
+    trailingAnchor = [(UIView *)v10 trailingAnchor];
+    lassoToolEditingContainerView4 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerView];
+    trailingAnchor2 = [lassoToolEditingContainerView4 trailingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v120[2] = v19;
-    v20 = [(UIView *)obj bottomAnchor];
-    v21 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerView];
-    v22 = [v21 bottomAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22];
+    bottomAnchor = [(UIView *)obj bottomAnchor];
+    lassoToolEditingContainerView5 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerView];
+    bottomAnchor2 = [lassoToolEditingContainerView5 bottomAnchor];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v120[3] = v23;
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v120 count:4];
     [v103 activateConstraints:v24];
@@ -527,98 +527,98 @@ LABEL_9:
     objc_storeStrong(&self->_lassoToolEditingView, obj);
   }
 
-  v25 = [(PKPaletteToolPickerAndColorPickerView *)self isLassoToolEditingViewVisible];
-  v26 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerView];
-  [v26 setHidden:!v25];
+  isLassoToolEditingViewVisible = [(PKPaletteToolPickerAndColorPickerView *)self isLassoToolEditingViewVisible];
+  lassoToolEditingContainerView6 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerView];
+  [lassoToolEditingContainerView6 setHidden:!isLassoToolEditingViewVisible];
 
-  v27 = [(PKPaletteToolPickerAndColorPickerView *)self isInputAssistantViewVisible];
-  v28 = [(PKPaletteToolPickerAndColorPickerView *)self paletteInputAssistantView];
-  [v28 setHidden:!v27];
+  isInputAssistantViewVisible = [(PKPaletteToolPickerAndColorPickerView *)self isInputAssistantViewVisible];
+  paletteInputAssistantView = [(PKPaletteToolPickerAndColorPickerView *)self paletteInputAssistantView];
+  [paletteInputAssistantView setHidden:!isInputAssistantViewVisible];
 
   [(PKPaletteToolPickerAndColorPickerView *)self scalingFactor];
   v30 = v29;
-  v31 = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerContainerView];
-  [v31 setScalingFactor:v30];
+  toolPickerContainerView = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerContainerView];
+  [toolPickerContainerView setScalingFactor:v30];
 
   [(PKPaletteToolPickerAndColorPickerView *)self scalingFactor];
   v33 = v32;
-  v34 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerView];
-  [v34 setScalingFactor:v33];
+  colorPickerView = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerView];
+  [colorPickerView setScalingFactor:v33];
 
   [(PKPaletteToolPickerAndColorPickerView *)self scalingFactor];
   v36 = v35;
-  v37 = [(PKPaletteToolPickerAndColorPickerView *)self paletteInputAssistantView];
-  [v37 setScalingFactor:v36];
+  paletteInputAssistantView2 = [(PKPaletteToolPickerAndColorPickerView *)self paletteInputAssistantView];
+  [paletteInputAssistantView2 setScalingFactor:v36];
 
-  v38 = [(PKPaletteToolPickerAndColorPickerView *)self edgeLocation];
-  v39 = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerContainerView];
-  [v39 setEdgeLocation:v38];
+  edgeLocation = [(PKPaletteToolPickerAndColorPickerView *)self edgeLocation];
+  toolPickerContainerView2 = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerContainerView];
+  [toolPickerContainerView2 setEdgeLocation:edgeLocation];
 
-  v40 = [(PKPaletteToolPickerAndColorPickerView *)self cornerLocation];
-  v41 = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerContainerView];
-  [v41 setCornerLocation:v40];
+  cornerLocation = [(PKPaletteToolPickerAndColorPickerView *)self cornerLocation];
+  toolPickerContainerView3 = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerContainerView];
+  [toolPickerContainerView3 setCornerLocation:cornerLocation];
 
-  v42 = [(PKPaletteToolPickerAndColorPickerView *)self edgeLocation];
-  v43 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerView];
-  [v43 setEdgeLocation:v42];
+  edgeLocation2 = [(PKPaletteToolPickerAndColorPickerView *)self edgeLocation];
+  colorPickerView2 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerView];
+  [colorPickerView2 setEdgeLocation:edgeLocation2];
 
-  v44 = [(PKPaletteToolPickerAndColorPickerView *)self edgeLocation];
-  v45 = [(PKPaletteToolPickerAndColorPickerView *)self paletteInputAssistantView];
-  [v45 setEdgeLocation:v44];
+  edgeLocation3 = [(PKPaletteToolPickerAndColorPickerView *)self edgeLocation];
+  paletteInputAssistantView3 = [(PKPaletteToolPickerAndColorPickerView *)self paletteInputAssistantView];
+  [paletteInputAssistantView3 setEdgeLocation:edgeLocation3];
 
   [(PKPaletteToolPickerAndColorPickerView *)self _stackViewSpacing];
   v47 = v46;
-  v48 = [(PKPaletteToolPickerAndColorPickerView *)self stackView];
-  [v48 setSpacing:v47];
+  stackView2 = [(PKPaletteToolPickerAndColorPickerView *)self stackView];
+  [stackView2 setSpacing:v47];
 
   v107 = MEMORY[0x1E696ACD8];
-  v115 = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerContainerViewWidthConstraint];
-  v119[0] = v115;
-  v113 = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerContainerViewHeightConstraint];
-  v119[1] = v113;
-  v111 = [(PKPaletteToolPickerAndColorPickerView *)self compactToolPickerContainerViewWidthConstraint];
-  v119[2] = v111;
-  v109 = [(PKPaletteToolPickerAndColorPickerView *)self compactToolPickerContainerViewHeightConstraint];
-  v119[3] = v109;
-  v49 = [(PKPaletteToolPickerAndColorPickerView *)self compactColorPickerContainerViewWidthConstraint];
-  v119[4] = v49;
-  v50 = [(PKPaletteToolPickerAndColorPickerView *)self compactColorPickerContainerViewHeightConstraint];
-  v119[5] = v50;
-  v51 = [(PKPaletteToolPickerAndColorPickerView *)self compactColorPickerAndPlusViewWidthConstraint];
-  v119[6] = v51;
-  v52 = [(PKPaletteToolPickerAndColorPickerView *)self compactColorPickerAndPlusViewHeightConstraint];
-  v119[7] = v52;
-  v53 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerViewWidthConstraint];
-  v119[8] = v53;
-  v54 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerViewHeightConstraint];
-  v119[9] = v54;
-  v55 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerViewCompactWidthConstraint];
-  v119[10] = v55;
-  v56 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerViewCompactHeightConstraint];
-  v119[11] = v56;
+  toolPickerContainerViewWidthConstraint = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerContainerViewWidthConstraint];
+  v119[0] = toolPickerContainerViewWidthConstraint;
+  toolPickerContainerViewHeightConstraint = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerContainerViewHeightConstraint];
+  v119[1] = toolPickerContainerViewHeightConstraint;
+  compactToolPickerContainerViewWidthConstraint = [(PKPaletteToolPickerAndColorPickerView *)self compactToolPickerContainerViewWidthConstraint];
+  v119[2] = compactToolPickerContainerViewWidthConstraint;
+  compactToolPickerContainerViewHeightConstraint = [(PKPaletteToolPickerAndColorPickerView *)self compactToolPickerContainerViewHeightConstraint];
+  v119[3] = compactToolPickerContainerViewHeightConstraint;
+  compactColorPickerContainerViewWidthConstraint = [(PKPaletteToolPickerAndColorPickerView *)self compactColorPickerContainerViewWidthConstraint];
+  v119[4] = compactColorPickerContainerViewWidthConstraint;
+  compactColorPickerContainerViewHeightConstraint = [(PKPaletteToolPickerAndColorPickerView *)self compactColorPickerContainerViewHeightConstraint];
+  v119[5] = compactColorPickerContainerViewHeightConstraint;
+  compactColorPickerAndPlusViewWidthConstraint = [(PKPaletteToolPickerAndColorPickerView *)self compactColorPickerAndPlusViewWidthConstraint];
+  v119[6] = compactColorPickerAndPlusViewWidthConstraint;
+  compactColorPickerAndPlusViewHeightConstraint = [(PKPaletteToolPickerAndColorPickerView *)self compactColorPickerAndPlusViewHeightConstraint];
+  v119[7] = compactColorPickerAndPlusViewHeightConstraint;
+  lassoToolEditingContainerViewWidthConstraint = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerViewWidthConstraint];
+  v119[8] = lassoToolEditingContainerViewWidthConstraint;
+  lassoToolEditingContainerViewHeightConstraint = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerViewHeightConstraint];
+  v119[9] = lassoToolEditingContainerViewHeightConstraint;
+  lassoToolEditingContainerViewCompactWidthConstraint = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerViewCompactWidthConstraint];
+  v119[10] = lassoToolEditingContainerViewCompactWidthConstraint;
+  lassoToolEditingContainerViewCompactHeightConstraint = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerViewCompactHeightConstraint];
+  v119[11] = lassoToolEditingContainerViewCompactHeightConstraint;
   v57 = [MEMORY[0x1E695DEC8] arrayWithObjects:v119 count:12];
   [v107 deactivateConstraints:v57];
 
   if ([(PKPaletteToolPickerAndColorPickerView *)self _useCompactSize])
   {
-    v58 = [(PKPaletteToolPickerAndColorPickerView *)self stackView];
-    [v58 setAxis:0];
+    stackView3 = [(PKPaletteToolPickerAndColorPickerView *)self stackView];
+    [stackView3 setAxis:0];
 
     v59 = MEMORY[0x1E696ACD8];
-    v60 = [(PKPaletteToolPickerAndColorPickerView *)self compactToolPickerContainerViewHeightConstraint];
-    v118[0] = v60;
-    v61 = [(PKPaletteToolPickerAndColorPickerView *)self compactToolPickerContainerViewWidthConstraint];
-    v118[1] = v61;
-    v62 = [(PKPaletteToolPickerAndColorPickerView *)self compactColorPickerContainerViewHeightConstraint];
-    v118[2] = v62;
-    v63 = [(PKPaletteToolPickerAndColorPickerView *)self compactColorPickerAndPlusViewWidthConstraint];
-    v118[3] = v63;
-    v64 = [(PKPaletteToolPickerAndColorPickerView *)self compactColorPickerAndPlusViewHeightConstraint];
-    v118[4] = v64;
-    v65 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerViewCompactWidthConstraint];
-    v118[5] = v65;
-    v66 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerViewCompactHeightConstraint];
-    v118[6] = v66;
+    compactToolPickerContainerViewHeightConstraint2 = [(PKPaletteToolPickerAndColorPickerView *)self compactToolPickerContainerViewHeightConstraint];
+    v118[0] = compactToolPickerContainerViewHeightConstraint2;
+    compactToolPickerContainerViewWidthConstraint2 = [(PKPaletteToolPickerAndColorPickerView *)self compactToolPickerContainerViewWidthConstraint];
+    v118[1] = compactToolPickerContainerViewWidthConstraint2;
+    compactColorPickerContainerViewHeightConstraint2 = [(PKPaletteToolPickerAndColorPickerView *)self compactColorPickerContainerViewHeightConstraint];
+    v118[2] = compactColorPickerContainerViewHeightConstraint2;
+    compactColorPickerAndPlusViewWidthConstraint2 = [(PKPaletteToolPickerAndColorPickerView *)self compactColorPickerAndPlusViewWidthConstraint];
+    v118[3] = compactColorPickerAndPlusViewWidthConstraint2;
+    compactColorPickerAndPlusViewHeightConstraint2 = [(PKPaletteToolPickerAndColorPickerView *)self compactColorPickerAndPlusViewHeightConstraint];
+    v118[4] = compactColorPickerAndPlusViewHeightConstraint2;
+    lassoToolEditingContainerViewCompactWidthConstraint2 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerViewCompactWidthConstraint];
+    v118[5] = lassoToolEditingContainerViewCompactWidthConstraint2;
+    lassoToolEditingContainerViewCompactHeightConstraint2 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerViewCompactHeightConstraint];
+    v118[6] = lassoToolEditingContainerViewCompactHeightConstraint2;
     v67 = [MEMORY[0x1E695DEC8] arrayWithObjects:v118 count:7];
     [v59 activateConstraints:v67];
 
@@ -635,18 +635,18 @@ LABEL_9:
     }
 
     v70 = obj;
-    v71 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerView];
-    [v71 setColorPickerMode:v69];
+    colorPickerView3 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerView];
+    [colorPickerView3 setColorPickerMode:v69];
 
-    v72 = [(PKPaletteToolPickerAndColorPickerView *)self compactColorPickerContainerViewWidthConstraint];
-    [v72 setActive:v68];
+    compactColorPickerContainerViewWidthConstraint2 = [(PKPaletteToolPickerAndColorPickerView *)self compactColorPickerContainerViewWidthConstraint];
+    [compactColorPickerContainerViewWidthConstraint2 setActive:v68];
 
     v73 = v68 && [(PKPaletteToolPickerAndColorPickerView *)self wantsColorPickerContainerViewInHierarchy]&& [(PKPaletteToolPickerAndColorPickerView *)self shouldShowPlusButton];
-    v95 = [(PKPaletteToolPickerAndColorPickerView *)self compactColorPickerAndPlusViewWidthConstraint];
-    [v95 setActive:v73];
+    compactColorPickerAndPlusViewWidthConstraint3 = [(PKPaletteToolPickerAndColorPickerView *)self compactColorPickerAndPlusViewWidthConstraint];
+    [compactColorPickerAndPlusViewWidthConstraint3 setActive:v73];
 
-    v96 = [(PKPaletteToolPickerAndColorPickerView *)self isLassoToolEditingViewVisible];
-    if (v96)
+    isLassoToolEditingViewVisible2 = [(PKPaletteToolPickerAndColorPickerView *)self isLassoToolEditingViewVisible];
+    if (isLassoToolEditingViewVisible2)
     {
       v97 = 46.0;
     }
@@ -656,7 +656,7 @@ LABEL_9:
       v97 = 28.0;
     }
 
-    if (!v96 && ((v68 ^ 1) & 1) == 0)
+    if (!isLassoToolEditingViewVisible2 && ((v68 ^ 1) & 1) == 0)
     {
       if (PKIsVisionDevice())
       {
@@ -683,63 +683,63 @@ LABEL_9:
       }
     }
 
-    v91 = [(PKPaletteToolPickerAndColorPickerView *)self compactToolPickerContainerViewWidthConstraint];
-    [v91 setConstant:v97];
+    compactToolPickerContainerViewWidthConstraint3 = [(PKPaletteToolPickerAndColorPickerView *)self compactToolPickerContainerViewWidthConstraint];
+    [compactToolPickerContainerViewWidthConstraint3 setConstant:v97];
   }
 
   else
   {
-    v74 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerView];
-    [v74 setColorPickerMode:0];
+    colorPickerView4 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerView];
+    [colorPickerView4 setColorPickerMode:0];
 
-    v75 = [(PKPaletteToolPickerAndColorPickerView *)self edgeLocation];
-    v77 = v75 == 2 || v75 == 8;
+    edgeLocation4 = [(PKPaletteToolPickerAndColorPickerView *)self edgeLocation];
+    v77 = edgeLocation4 == 2 || edgeLocation4 == 8;
     v78 = PKPaletteColorSwatchesSize(v77);
     v80 = v79;
     [(PKPaletteToolPickerAndColorPickerView *)self scalingFactor];
     v82 = v78 * v81;
-    v83 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerViewWidthConstraint];
-    [v83 setConstant:v82];
+    lassoToolEditingContainerViewWidthConstraint2 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerViewWidthConstraint];
+    [lassoToolEditingContainerViewWidthConstraint2 setConstant:v82];
 
     [(PKPaletteToolPickerAndColorPickerView *)self scalingFactor];
     v85 = v80 * v84;
-    v86 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerViewHeightConstraint];
-    [v86 setConstant:v85];
+    lassoToolEditingContainerViewHeightConstraint2 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerViewHeightConstraint];
+    [lassoToolEditingContainerViewHeightConstraint2 setConstant:v85];
 
     v87 = MEMORY[0x1E695DF70];
-    v88 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerViewWidthConstraint];
-    v117[0] = v88;
-    v89 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerViewHeightConstraint];
-    v117[1] = v89;
+    lassoToolEditingContainerViewWidthConstraint3 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerViewWidthConstraint];
+    v117[0] = lassoToolEditingContainerViewWidthConstraint3;
+    lassoToolEditingContainerViewHeightConstraint3 = [(PKPaletteToolPickerAndColorPickerView *)self lassoToolEditingContainerViewHeightConstraint];
+    v117[1] = lassoToolEditingContainerViewHeightConstraint3;
     v90 = [MEMORY[0x1E695DEC8] arrayWithObjects:v117 count:2];
-    v91 = [v87 arrayWithArray:v90];
+    compactToolPickerContainerViewWidthConstraint3 = [v87 arrayWithArray:v90];
 
-    v92 = [(PKPaletteToolPickerAndColorPickerView *)self edgeLocation];
-    if (v92 == 8 || v92 == 2)
+    edgeLocation5 = [(PKPaletteToolPickerAndColorPickerView *)self edgeLocation];
+    if (edgeLocation5 == 8 || edgeLocation5 == 2)
     {
-      v93 = [(PKPaletteToolPickerAndColorPickerView *)self stackView];
-      [v93 setAxis:1];
+      stackView4 = [(PKPaletteToolPickerAndColorPickerView *)self stackView];
+      [stackView4 setAxis:1];
 
-      v94 = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerContainerViewWidthConstraint];
+      toolPickerContainerViewWidthConstraint2 = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerContainerViewWidthConstraint];
     }
 
     else
     {
-      v98 = [(PKPaletteToolPickerAndColorPickerView *)self stackView];
-      [v98 setAxis:0];
+      stackView5 = [(PKPaletteToolPickerAndColorPickerView *)self stackView];
+      [stackView5 setAxis:0];
 
-      v94 = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerContainerViewHeightConstraint];
+      toolPickerContainerViewWidthConstraint2 = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerContainerViewHeightConstraint];
     }
 
-    v99 = v94;
+    v99 = toolPickerContainerViewWidthConstraint2;
     v70 = obj;
-    [v91 addObject:v94];
+    [compactToolPickerContainerViewWidthConstraint3 addObject:toolPickerContainerViewWidthConstraint2];
 
-    [MEMORY[0x1E696ACD8] activateConstraints:v91];
+    [MEMORY[0x1E696ACD8] activateConstraints:compactToolPickerContainerViewWidthConstraint3];
   }
 
-  v101 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerContainerView];
-  [v101 setLayoutAxis:1];
+  colorPickerContainerView3 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerContainerView];
+  [colorPickerContainerView3 setLayoutAxis:1];
 }
 
 - (void)layoutSubviews
@@ -749,10 +749,10 @@ LABEL_9:
   [(PKPaletteToolPickerAndColorPickerView *)&v7 layoutSubviews];
   if ([(PKPaletteToolPickerAndColorPickerView *)self shouldShowPlusButton])
   {
-    v3 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerAndPlusView];
-    v4 = [v3 subviews];
-    v5 = [(PKPaletteToolPickerAndColorPickerView *)self plusButton];
-    v6 = [v4 containsObject:v5];
+    colorPickerAndPlusView = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerAndPlusView];
+    subviews = [colorPickerAndPlusView subviews];
+    plusButton = [(PKPaletteToolPickerAndColorPickerView *)self plusButton];
+    v6 = [subviews containsObject:plusButton];
 
     if ((v6 & 1) == 0)
     {
@@ -763,29 +763,29 @@ LABEL_9:
 
 - (double)_compactToolsContainerWidth
 {
-  v4 = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerView];
-  v5 = [v4 toolViews];
-  v6 = [v5 count];
+  toolPickerView = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerView];
+  toolViews = [toolPickerView toolViews];
+  v6 = [toolViews count];
 
   if (!v6)
   {
     return 0.0;
   }
 
-  v7 = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerView];
-  v8 = [v7 toolViews];
-  v9 = [v8 count];
-  v10 = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerView];
-  v11 = [v10 toolViews];
-  v12 = [v11 count];
-  v13 = [(PKPaletteToolPickerAndColorPickerView *)self shouldShowPlusButton];
+  toolPickerView2 = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerView];
+  toolViews2 = [toolPickerView2 toolViews];
+  v9 = [toolViews2 count];
+  toolPickerView3 = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerView];
+  toolViews3 = [toolPickerView3 toolViews];
+  v12 = [toolViews3 count];
+  shouldShowPlusButton = [(PKPaletteToolPickerAndColorPickerView *)self shouldShowPlusButton];
   v14 = 5.0;
   v15 = 5.0;
-  if (v13)
+  if (shouldShowPlusButton)
   {
-    v2 = [(PKPaletteToolPickerAndColorPickerView *)self plusButton];
+    plusButton = [(PKPaletteToolPickerAndColorPickerView *)self plusButton];
     v15 = 2.0;
-    if (!v2)
+    if (!plusButton)
     {
       v15 = 5.0;
     }
@@ -797,11 +797,11 @@ LABEL_9:
     v14 = v15;
   }
 
-  v17 = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerView];
-  v18 = [v17 toolViews];
-  v19 = v14 * ([v18 count] - 1);
+  toolPickerView4 = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerView];
+  toolViews4 = [toolPickerView4 toolViews];
+  v19 = v14 * ([toolViews4 count] - 1);
 
-  if (v13)
+  if (shouldShowPlusButton)
   {
   }
 
@@ -812,9 +812,9 @@ LABEL_9:
 
 - (double)_stackViewSpacing
 {
-  v3 = [(PKPaletteToolPickerAndColorPickerView *)self _useCompactSize];
+  _useCompactSize = [(PKPaletteToolPickerAndColorPickerView *)self _useCompactSize];
   result = 16.0;
-  if (!v3)
+  if (!_useCompactSize)
   {
     [(PKPaletteToolPickerAndColorPickerView *)self scalingFactor];
     return v5 * 12.0;
@@ -825,25 +825,25 @@ LABEL_9:
 
 - (BOOL)_hasColorPickerContainerView
 {
-  v3 = [(PKPaletteToolPickerAndColorPickerView *)self stackView];
-  v4 = [v3 arrangedSubviews];
-  v5 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerContainerView];
-  v6 = [v4 containsObject:v5];
+  stackView = [(PKPaletteToolPickerAndColorPickerView *)self stackView];
+  arrangedSubviews = [stackView arrangedSubviews];
+  colorPickerContainerView = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerContainerView];
+  v6 = [arrangedSubviews containsObject:colorPickerContainerView];
 
   return v6;
 }
 
 - (BOOL)_hasPlusButtonView
 {
-  v3 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerAndPlusView];
-  v4 = [v3 subviews];
-  v5 = [(PKPaletteToolPickerAndColorPickerView *)self plusButton];
-  if ([v4 containsObject:v5])
+  colorPickerAndPlusView = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerAndPlusView];
+  subviews = [colorPickerAndPlusView subviews];
+  plusButton = [(PKPaletteToolPickerAndColorPickerView *)self plusButton];
+  if ([subviews containsObject:plusButton])
   {
-    v6 = [(PKPaletteToolPickerAndColorPickerView *)self stackView];
-    v7 = [v6 subviews];
-    v8 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerAndPlusView];
-    v9 = [v7 containsObject:v8];
+    stackView = [(PKPaletteToolPickerAndColorPickerView *)self stackView];
+    subviews2 = [stackView subviews];
+    colorPickerAndPlusView2 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerAndPlusView];
+    v9 = [subviews2 containsObject:colorPickerAndPlusView2];
   }
 
   else
@@ -854,51 +854,51 @@ LABEL_9:
   return v9;
 }
 
-- (void)dismissPalettePopoverWithCompletion:(id)a3
+- (void)dismissPalettePopoverWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_group_create();
   dispatch_group_enter(v5);
-  v6 = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerView];
+  toolPickerView = [(PKPaletteToolPickerAndColorPickerView *)self toolPickerView];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __77__PKPaletteToolPickerAndColorPickerView_dismissPalettePopoverWithCompletion___block_invoke;
   v12[3] = &unk_1E82D7148;
   v7 = v5;
   v13 = v7;
-  [v6 dismissPalettePopoverWithCompletion:v12];
+  [toolPickerView dismissPalettePopoverWithCompletion:v12];
 
   dispatch_group_enter(v7);
-  v8 = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerContainerView];
+  colorPickerContainerView = [(PKPaletteToolPickerAndColorPickerView *)self colorPickerContainerView];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __77__PKPaletteToolPickerAndColorPickerView_dismissPalettePopoverWithCompletion___block_invoke_2;
   v10[3] = &unk_1E82D7148;
   v9 = v7;
   v11 = v9;
-  [v8 dismissPalettePopoverWithCompletion:v10];
+  [colorPickerContainerView dismissPalettePopoverWithCompletion:v10];
 
-  if (v4)
+  if (completionCopy)
   {
-    dispatch_group_notify(v9, MEMORY[0x1E69E96A0], v4);
+    dispatch_group_notify(v9, MEMORY[0x1E69E96A0], completionCopy);
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = PKPaletteToolPickerAndColorPickerView;
-  [(PKPaletteToolPickerAndColorPickerView *)&v10 traitCollectionDidChange:v4];
-  v5 = [(PKPaletteToolPickerAndColorPickerView *)self traitCollection];
-  v6 = [v5 verticalSizeClass];
-  if (v6 == [v4 verticalSizeClass])
+  [(PKPaletteToolPickerAndColorPickerView *)&v10 traitCollectionDidChange:changeCopy];
+  traitCollection = [(PKPaletteToolPickerAndColorPickerView *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
+  if (verticalSizeClass == [changeCopy verticalSizeClass])
   {
-    v7 = [(PKPaletteToolPickerAndColorPickerView *)self traitCollection];
-    v8 = [v7 horizontalSizeClass];
-    v9 = [v4 horizontalSizeClass];
+    traitCollection2 = [(PKPaletteToolPickerAndColorPickerView *)self traitCollection];
+    horizontalSizeClass = [traitCollection2 horizontalSizeClass];
+    horizontalSizeClass2 = [changeCopy horizontalSizeClass];
 
-    if (v8 == v9)
+    if (horizontalSizeClass == horizontalSizeClass2)
     {
       goto LABEL_6;
     }

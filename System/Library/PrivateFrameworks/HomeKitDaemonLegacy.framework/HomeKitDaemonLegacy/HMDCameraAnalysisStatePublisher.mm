@@ -1,15 +1,15 @@
 @interface HMDCameraAnalysisStatePublisher
 + (id)logCategory;
-- (HMDCameraAnalysisStatePublisher)initWithHome:(id)a3;
-- (HMDCameraAnalysisStatePublisher)initWithHomeMessagingContext:(id)a3 analysisStateManager:(id)a4 workQueue:(id)a5 cameraAnalysisStatePublisherDebounceTimer:(id)a6;
+- (HMDCameraAnalysisStatePublisher)initWithHome:(id)home;
+- (HMDCameraAnalysisStatePublisher)initWithHomeMessagingContext:(id)context analysisStateManager:(id)manager workQueue:(id)queue cameraAnalysisStatePublisherDebounceTimer:(id)timer;
 - (HMDHomeResidentMessagingContext)messagingContext;
 - (NSUUID)messageTargetUUID;
-- (void)_handleRemoteAnalysisStateUpdate:(id)a3;
-- (void)_processStateUpdate:(id)a3;
+- (void)_handleRemoteAnalysisStateUpdate:(id)update;
+- (void)_processStateUpdate:(id)update;
 - (void)_publishAnalysisStateUpdate;
-- (void)configureWithHome:(id)a3;
-- (void)stateManager:(id)a3 didReceiveLocalUpdate:(id)a4;
-- (void)timerDidFire:(id)a3;
+- (void)configureWithHome:(id)home;
+- (void)stateManager:(id)manager didReceiveLocalUpdate:(id)update;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDCameraAnalysisStatePublisher
@@ -21,15 +21,15 @@
   return WeakRetained;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = [(HMDCameraAnalysisStatePublisher *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  fireCopy = fire;
+  workQueue = [(HMDCameraAnalysisStatePublisher *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDCameraAnalysisStatePublisher *)self cameraAnalysisStatePublisherDebounceTimer];
+  cameraAnalysisStatePublisherDebounceTimer = [(HMDCameraAnalysisStatePublisher *)self cameraAnalysisStatePublisherDebounceTimer];
 
-  if (v6 == v4)
+  if (cameraAnalysisStatePublisherDebounceTimer == fireCopy)
   {
 
     [(HMDCameraAnalysisStatePublisher *)self _publishAnalysisStateUpdate];
@@ -38,19 +38,19 @@
 
 - (NSUUID)messageTargetUUID
 {
-  v2 = [(HMDCameraAnalysisStatePublisher *)self messagingContext];
-  v3 = [v2 messageTargetUUID];
+  messagingContext = [(HMDCameraAnalysisStatePublisher *)self messagingContext];
+  messageTargetUUID = [messagingContext messageTargetUUID];
 
-  return v3;
+  return messageTargetUUID;
 }
 
-- (void)stateManager:(id)a3 didReceiveLocalUpdate:(id)a4
+- (void)stateManager:(id)manager didReceiveLocalUpdate:(id)update
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  updateCopy = update;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -58,38 +58,38 @@
     *buf = 138543618;
     v18 = v11;
     v19 = 2112;
-    v20 = v7;
+    v20 = updateCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@Received local analysis state update: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMDCameraAnalysisStatePublisher *)v9 workQueue];
+  workQueue = [(HMDCameraAnalysisStatePublisher *)selfCopy workQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __70__HMDCameraAnalysisStatePublisher_stateManager_didReceiveLocalUpdate___block_invoke;
   v15[3] = &unk_2797359B0;
-  v15[4] = v9;
-  v16 = v7;
-  v13 = v7;
-  dispatch_async(v12, v15);
+  v15[4] = selfCopy;
+  v16 = updateCopy;
+  v13 = updateCopy;
+  dispatch_async(workQueue, v15);
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleRemoteAnalysisStateUpdate:(id)a3
+- (void)_handleRemoteAnalysisStateUpdate:(id)update
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraAnalysisStatePublisher *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  updateCopy = update;
+  workQueue = [(HMDCameraAnalysisStatePublisher *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 messagePayload];
+  messagePayload = [updateCopy messagePayload];
   v22[0] = objc_opt_class();
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
-  v8 = [v6 hmf_unarchivedObjectForKey:@"HMDCameraAnalysisStatePublisherStateUpdateMessageKey" ofClasses:v7];
+  v8 = [messagePayload hmf_unarchivedObjectForKey:@"HMDCameraAnalysisStatePublisherStateUpdateMessageKey" ofClasses:v7];
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   v12 = v11;
   if (v8)
@@ -105,8 +105,8 @@
     }
 
     objc_autoreleasePoolPop(v9);
-    v14 = [(HMDCameraAnalysisStatePublisher *)v10 analysisStateManager];
-    [v14 handleRemoteStateUpdate:v8];
+    analysisStateManager = [(HMDCameraAnalysisStatePublisher *)selfCopy analysisStateManager];
+    [analysisStateManager handleRemoteStateUpdate:v8];
   }
 
   else
@@ -114,11 +114,11 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v15 = HMFGetLogIdentifier();
-      v16 = [v4 identifier];
+      identifier = [updateCopy identifier];
       v18 = 138543618;
       v19 = v15;
       v20 = 2112;
-      v21 = v16;
+      v21 = identifier;
       _os_log_impl(&dword_2531F8000, v12, OS_LOG_TYPE_ERROR, "%{public}@Received nil analysis state update from message with identifier: %@", &v18, 0x16u);
     }
 
@@ -131,23 +131,23 @@
 - (void)_publishAnalysisStateUpdate
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCameraAnalysisStatePublisher *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraAnalysisStatePublisher *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDCameraAnalysisStatePublisher *)self stateUpdate];
-  if (v4)
+  stateUpdate = [(HMDCameraAnalysisStatePublisher *)self stateUpdate];
+  if (stateUpdate)
   {
     [(HMDCameraAnalysisStatePublisher *)self setStateUpdate:0];
     v22 = 0;
-    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v22];
+    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:stateUpdate requiringSecureCoding:1 error:&v22];
     v6 = v22;
     if (v5)
     {
       v23 = @"HMDCameraAnalysisStatePublisherStateUpdateMessageKey";
       v24 = v5;
       v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-      v8 = [(HMDCameraAnalysisStatePublisher *)self messagingContext];
-      v9 = [v8 enabledResidents];
+      messagingContext = [(HMDCameraAnalysisStatePublisher *)self messagingContext];
+      enabledResidents = [messagingContext enabledResidents];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __62__HMDCameraAnalysisStatePublisher__publishAnalysisStateUpdate__block_invoke;
@@ -155,13 +155,13 @@
       v20[4] = self;
       v21 = v7;
       v10 = v7;
-      [v9 na_each:v20];
+      [enabledResidents na_each:v20];
     }
 
     else
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
@@ -169,7 +169,7 @@
         *buf = 138543874;
         v26 = v18;
         v27 = 2112;
-        v28 = v4;
+        v28 = stateUpdate;
         v29 = 2112;
         v30 = v6;
         _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_ERROR, "%{public}@Failed to serialize %@: %@", buf, 0x20u);
@@ -182,7 +182,7 @@
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -234,96 +234,96 @@ void __62__HMDCameraAnalysisStatePublisher__publishAnalysisStateUpdate__block_in
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processStateUpdate:(id)a3
+- (void)_processStateUpdate:(id)update
 {
-  v11 = a3;
-  v4 = [(HMDCameraAnalysisStatePublisher *)self workQueue];
-  dispatch_assert_queue_V2(v4);
+  updateCopy = update;
+  workQueue = [(HMDCameraAnalysisStatePublisher *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v5 = [(HMDCameraAnalysisStatePublisher *)self stateUpdate];
+  stateUpdate = [(HMDCameraAnalysisStatePublisher *)self stateUpdate];
 
-  if (v5)
+  if (stateUpdate)
   {
-    v6 = [(HMDCameraAnalysisStatePublisher *)self stateUpdate];
-    v7 = [v6 stateUpdateByMergingStateUpdate:v11];
+    stateUpdate2 = [(HMDCameraAnalysisStatePublisher *)self stateUpdate];
+    v7 = [stateUpdate2 stateUpdateByMergingStateUpdate:updateCopy];
     [(HMDCameraAnalysisStatePublisher *)self setStateUpdate:v7];
   }
 
   else
   {
-    [(HMDCameraAnalysisStatePublisher *)self setStateUpdate:v11];
+    [(HMDCameraAnalysisStatePublisher *)self setStateUpdate:updateCopy];
   }
 
-  v8 = [(HMDCameraAnalysisStatePublisher *)self cameraAnalysisStatePublisherDebounceTimer];
-  v9 = [v8 isRunning];
+  cameraAnalysisStatePublisherDebounceTimer = [(HMDCameraAnalysisStatePublisher *)self cameraAnalysisStatePublisherDebounceTimer];
+  isRunning = [cameraAnalysisStatePublisherDebounceTimer isRunning];
 
-  if ((v9 & 1) == 0)
+  if ((isRunning & 1) == 0)
   {
-    v10 = [(HMDCameraAnalysisStatePublisher *)self cameraAnalysisStatePublisherDebounceTimer];
-    [v10 resume];
+    cameraAnalysisStatePublisherDebounceTimer2 = [(HMDCameraAnalysisStatePublisher *)self cameraAnalysisStatePublisherDebounceTimer];
+    [cameraAnalysisStatePublisherDebounceTimer2 resume];
   }
 }
 
-- (void)configureWithHome:(id)a3
+- (void)configureWithHome:(id)home
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraAnalysisStatePublisher *)self analysisStateManager];
-  [v5 setDelegate:self];
+  homeCopy = home;
+  analysisStateManager = [(HMDCameraAnalysisStatePublisher *)self analysisStateManager];
+  [analysisStateManager setDelegate:self];
 
   v6 = +[(HMDRemoteMessagePolicy *)HMDMutableRemoteMessagePolicy];
   [v6 setRoles:{objc_msgSend(v6, "roles") | 4}];
-  v7 = [HMDUserMessagePolicy userMessagePolicyWithHome:v4 userPrivilege:3 remoteAccessRequired:0];
+  v7 = [HMDUserMessagePolicy userMessagePolicyWithHome:homeCopy userPrivilege:3 remoteAccessRequired:0];
 
-  v8 = [(HMDCameraAnalysisStatePublisher *)self messagingContext];
-  v9 = [v8 msgDispatcher];
+  messagingContext = [(HMDCameraAnalysisStatePublisher *)self messagingContext];
+  msgDispatcher = [messagingContext msgDispatcher];
   v15[0] = v6;
   v15[1] = v7;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
-  [v9 registerForMessage:@"HMDCameraAnalysisStatePublisherStateUpdateMessage" receiver:self policies:v10 selector:sel__handleRemoteAnalysisStateUpdate_];
+  [msgDispatcher registerForMessage:@"HMDCameraAnalysisStatePublisherStateUpdateMessage" receiver:self policies:v10 selector:sel__handleRemoteAnalysisStateUpdate_];
 
-  v11 = [(HMDCameraAnalysisStatePublisher *)self cameraAnalysisStatePublisherDebounceTimer];
-  [v11 setDelegate:self];
+  cameraAnalysisStatePublisherDebounceTimer = [(HMDCameraAnalysisStatePublisher *)self cameraAnalysisStatePublisherDebounceTimer];
+  [cameraAnalysisStatePublisherDebounceTimer setDelegate:self];
 
-  v12 = [(HMDCameraAnalysisStatePublisher *)self workQueue];
-  v13 = [(HMDCameraAnalysisStatePublisher *)self cameraAnalysisStatePublisherDebounceTimer];
-  [v13 setDelegateQueue:v12];
+  workQueue = [(HMDCameraAnalysisStatePublisher *)self workQueue];
+  cameraAnalysisStatePublisherDebounceTimer2 = [(HMDCameraAnalysisStatePublisher *)self cameraAnalysisStatePublisherDebounceTimer];
+  [cameraAnalysisStatePublisherDebounceTimer2 setDelegateQueue:workQueue];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCameraAnalysisStatePublisher)initWithHomeMessagingContext:(id)a3 analysisStateManager:(id)a4 workQueue:(id)a5 cameraAnalysisStatePublisherDebounceTimer:(id)a6
+- (HMDCameraAnalysisStatePublisher)initWithHomeMessagingContext:(id)context analysisStateManager:(id)manager workQueue:(id)queue cameraAnalysisStatePublisherDebounceTimer:(id)timer
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  contextCopy = context;
+  managerCopy = manager;
+  queueCopy = queue;
+  timerCopy = timer;
   v17.receiver = self;
   v17.super_class = HMDCameraAnalysisStatePublisher;
   v14 = [(HMDCameraAnalysisStatePublisher *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_messagingContext, v10);
-    objc_storeStrong(&v15->_analysisStateManager, a4);
-    objc_storeStrong(&v15->_cameraAnalysisStatePublisherDebounceTimer, a6);
-    objc_storeStrong(&v15->_workQueue, a5);
+    objc_storeWeak(&v14->_messagingContext, contextCopy);
+    objc_storeStrong(&v15->_analysisStateManager, manager);
+    objc_storeStrong(&v15->_cameraAnalysisStatePublisherDebounceTimer, timer);
+    objc_storeStrong(&v15->_workQueue, queue);
   }
 
   return v15;
 }
 
-- (HMDCameraAnalysisStatePublisher)initWithHome:(id)a3
+- (HMDCameraAnalysisStatePublisher)initWithHome:(id)home
 {
   v4 = MEMORY[0x277D14D58];
-  v5 = a3;
+  homeCopy = home;
   v6 = [v4 alloc];
-  v7 = [v5 uuid];
-  v8 = [v6 initWithHomeUUID:v7];
+  uuid = [homeCopy uuid];
+  v8 = [v6 initWithHomeUUID:uuid];
 
   v9 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:8 options:16.0];
-  v10 = [v5 workQueue];
-  v11 = [(HMDCameraAnalysisStatePublisher *)self initWithHomeMessagingContext:v5 analysisStateManager:v8 workQueue:v10 cameraAnalysisStatePublisherDebounceTimer:v9];
+  workQueue = [homeCopy workQueue];
+  v11 = [(HMDCameraAnalysisStatePublisher *)self initWithHomeMessagingContext:homeCopy analysisStateManager:v8 workQueue:workQueue cameraAnalysisStatePublisherDebounceTimer:v9];
 
   return v11;
 }

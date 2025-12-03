@@ -1,10 +1,10 @@
 @interface GroupActivityAssociationCoordinator
-- (void)sceneConnected:(id)a3;
+- (void)sceneConnected:(id)connected;
 @end
 
 @implementation GroupActivityAssociationCoordinator
 
-- (void)sceneConnected:(id)a3
+- (void)sceneConnected:(id)connected
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

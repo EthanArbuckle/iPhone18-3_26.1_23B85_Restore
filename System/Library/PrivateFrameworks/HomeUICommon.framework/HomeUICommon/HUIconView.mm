@@ -1,37 +1,37 @@
 @interface HUIconView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (HFIconDescriptor)iconDescriptor;
-- (HUIconView)initWithFrame:(CGRect)a3 contentMode:(int64_t)a4;
+- (HUIconView)initWithFrame:(CGRect)frame contentMode:(int64_t)mode;
 - (UIVisualEffect)vibrancyEffect;
 - (id)_defaultVibrancyEffect;
 - (id)contentContainerView;
-- (void)_updateVisualEffectStateForVibrancyEffectChange:(BOOL)a3 animated:(BOOL)a4;
+- (void)_updateVisualEffectStateForVibrancyEffectChange:(BOOL)change animated:(BOOL)animated;
 - (void)layoutSubviews;
 - (void)reclaimIconIfPossible;
 - (void)renounceIconIfPossible;
-- (void)setDisplayContext:(unint64_t)a3;
-- (void)setIconSize:(unint64_t)a3;
+- (void)setDisplayContext:(unint64_t)context;
+- (void)setIconSize:(unint64_t)size;
 @end
 
 @implementation HUIconView
 
-- (HUIconView)initWithFrame:(CGRect)a3 contentMode:(int64_t)a4
+- (HUIconView)initWithFrame:(CGRect)frame contentMode:(int64_t)mode
 {
   v10.receiver = self;
   v10.super_class = HUIconView;
-  v5 = [(HUIconView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(HUIconView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x277D75D60]) initWithEffect:0];
     effectView = v5->_effectView;
     v5->_effectView = v6;
 
-    v8 = [(UIVisualEffectView *)v5->_effectView contentView];
-    [v8 setClipsToBounds:0];
+    contentView = [(UIVisualEffectView *)v5->_effectView contentView];
+    [contentView setClipsToBounds:0];
 
     [(HUIconView *)v5 addSubview:v5->_effectView];
-    v5->_contentMode = a4;
+    v5->_contentMode = mode;
     v5->_vibrancyEffectAnimationDuration = 0.25;
   }
 
@@ -40,22 +40,22 @@
 
 - (id)contentContainerView
 {
-  v2 = [(HUIconView *)self effectView];
-  v3 = [v2 contentView];
+  effectView = [(HUIconView *)self effectView];
+  contentView = [effectView contentView];
 
-  return v3;
+  return contentView;
 }
 
 - (void)renounceIconIfPossible
 {
-  v2 = [(HUIconView *)self currentIconContentView];
-  [v2 renounceIconIfPossible];
+  currentIconContentView = [(HUIconView *)self currentIconContentView];
+  [currentIconContentView renounceIconIfPossible];
 }
 
 - (void)reclaimIconIfPossible
 {
-  v2 = [(HUIconView *)self currentIconContentView];
-  [v2 reclaimIconIfPossible];
+  currentIconContentView = [(HUIconView *)self currentIconContentView];
+  [currentIconContentView reclaimIconIfPossible];
 }
 
 - (void)layoutSubviews
@@ -68,8 +68,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(HUIconView *)self effectView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  effectView = [(HUIconView *)self effectView];
+  [effectView setFrame:{v4, v6, v8, v10}];
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -81,8 +81,8 @@
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(HUIconView *)self currentIconContentView];
-  [v20 setFrame:{v13, v15, v17, v19}];
+  currentIconContentView = [(HUIconView *)self currentIconContentView];
+  [currentIconContentView setFrame:{v13, v15, v17, v19}];
 }
 
 uint64_t __28__HUIconView_layoutSubviews__block_invoke(uint64_t a1)
@@ -111,10 +111,10 @@ uint64_t __28__HUIconView_layoutSubviews__block_invoke(uint64_t a1)
 {
   v3 = HUDefaultSizeForIconSize([(HUIconView *)self iconSize]);
   v5 = v4;
-  v6 = [(HUIconView *)self currentIconContentView];
-  if ([v6 conformsToProtocol:&unk_286689600])
+  currentIconContentView = [(HUIconView *)self currentIconContentView];
+  if ([currentIconContentView conformsToProtocol:&unk_286689600])
   {
-    v7 = v6;
+    v7 = currentIconContentView;
   }
 
   else
@@ -142,14 +142,14 @@ uint64_t __28__HUIconView_layoutSubviews__block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  v5 = [(HUIconView *)self currentIconContentView];
-  if (v5)
+  height = fits.height;
+  currentIconContentView = [(HUIconView *)self currentIconContentView];
+  if (currentIconContentView)
   {
-    v6 = [(HUIconView *)self currentIconContentView];
-    [v6 aspectRatio];
+    currentIconContentView2 = [(HUIconView *)self currentIconContentView];
+    [currentIconContentView2 aspectRatio];
     v8 = v7;
   }
 
@@ -170,15 +170,15 @@ uint64_t __28__HUIconView_layoutSubviews__block_invoke(uint64_t a1)
   vibrancyEffect = self->_vibrancyEffect;
   if (vibrancyEffect)
   {
-    v3 = vibrancyEffect;
+    _defaultVibrancyEffect = vibrancyEffect;
   }
 
   else
   {
-    v3 = [(HUIconView *)self _defaultVibrancyEffect];
+    _defaultVibrancyEffect = [(HUIconView *)self _defaultVibrancyEffect];
   }
 
-  return v3;
+  return _defaultVibrancyEffect;
 }
 
 - (id)_defaultVibrancyEffect
@@ -189,29 +189,29 @@ uint64_t __28__HUIconView_layoutSubviews__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)_updateVisualEffectStateForVibrancyEffectChange:(BOOL)a3 animated:(BOOL)a4
+- (void)_updateVisualEffectStateForVibrancyEffectChange:(BOOL)change animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  changeCopy = change;
   v40 = *MEMORY[0x277D85DE8];
-  v7 = [(HUIconView *)self vibrancyEffect];
-  v8 = [(HUIconView *)self currentIconContentView];
-  [v8 setVibrancyEffect:v7];
+  vibrancyEffect = [(HUIconView *)self vibrancyEffect];
+  currentIconContentView = [(HUIconView *)self currentIconContentView];
+  [currentIconContentView setVibrancyEffect:vibrancyEffect];
 
-  v9 = [(HUIconView *)self currentIconContentView];
-  v10 = [v9 wantsManagedVibrancyEffect];
+  currentIconContentView2 = [(HUIconView *)self currentIconContentView];
+  wantsManagedVibrancyEffect = [currentIconContentView2 wantsManagedVibrancyEffect];
 
-  v11 = [(HUIconView *)self displayStyle];
-  v12 = [(HUIconView *)self effectView];
-  v13 = v12;
-  v29 = v11 == 2;
-  if (v11 == 2 && v10)
+  displayStyle = [(HUIconView *)self displayStyle];
+  effectView = [(HUIconView *)self effectView];
+  v13 = effectView;
+  v29 = displayStyle == 2;
+  if (displayStyle == 2 && wantsManagedVibrancyEffect)
   {
-    v14 = [v12 effect];
+    effect = [effectView effect];
 
-    if (!v14 || v5)
+    if (!effect || changeCopy)
     {
-      if (v4)
+      if (animatedCopy)
       {
         v15 = MEMORY[0x277D75D18];
         [(HUIconView *)self vibrancyEffectAnimationDuration];
@@ -221,38 +221,38 @@ uint64_t __28__HUIconView_layoutSubviews__block_invoke(uint64_t a1)
         v37[2] = __71__HUIconView__updateVisualEffectStateForVibrancyEffectChange_animated___block_invoke;
         v37[3] = &unk_27977D4F8;
         v37[4] = self;
-        v38 = v7;
+        v38 = vibrancyEffect;
         [v15 animateWithDuration:v37 animations:v17];
       }
 
       else
       {
-        v28 = [(HUIconView *)self effectView];
-        [v28 setEffect:v7];
+        effectView2 = [(HUIconView *)self effectView];
+        [effectView2 setEffect:vibrancyEffect];
       }
     }
   }
 
   else
   {
-    [v12 setEffect:0];
+    [effectView setEffect:0];
   }
 
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v18 = [(HUIconView *)self currentIconContentView];
-  v19 = [v18 managedVisualEffectViews];
+  currentIconContentView3 = [(HUIconView *)self currentIconContentView];
+  managedVisualEffectViews = [currentIconContentView3 managedVisualEffectViews];
 
-  v20 = [v19 countByEnumeratingWithState:&v33 objects:v39 count:16];
+  v20 = [managedVisualEffectViews countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v20)
   {
     v21 = v20;
     v22 = *v34;
-    if (v11 == 2)
+    if (displayStyle == 2)
     {
-      v23 = v7;
+      v23 = vibrancyEffect;
     }
 
     else
@@ -266,11 +266,11 @@ uint64_t __28__HUIconView_layoutSubviews__block_invoke(uint64_t a1)
       {
         if (*v34 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(managedVisualEffectViews);
         }
 
         v25 = *(*(&v33 + 1) + 8 * i);
-        if (v4)
+        if (animatedCopy)
         {
           v26 = MEMORY[0x277D75D18];
           v30[0] = MEMORY[0x277D85DD0];
@@ -279,7 +279,7 @@ uint64_t __28__HUIconView_layoutSubviews__block_invoke(uint64_t a1)
           v30[3] = &unk_27977D520;
           v30[4] = v25;
           v32 = v29;
-          v31 = v7;
+          v31 = vibrancyEffect;
           [v26 animateWithDuration:v30 animations:0.25];
         }
 
@@ -289,7 +289,7 @@ uint64_t __28__HUIconView_layoutSubviews__block_invoke(uint64_t a1)
         }
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v33 objects:v39 count:16];
+      v21 = [managedVisualEffectViews countByEnumeratingWithState:&v33 objects:v39 count:16];
     }
 
     while (v21);
@@ -320,14 +320,14 @@ uint64_t __71__HUIconView__updateVisualEffectStateForVibrancyEffectChange_animat
   return [*(a1 + 32) setEffect:v1];
 }
 
-- (void)setDisplayContext:(unint64_t)a3
+- (void)setDisplayContext:(unint64_t)context
 {
   displayContext = self->_displayContext;
-  self->_displayContext = a3;
-  v6 = [(HUIconView *)self currentIconContentView];
-  [v6 setDisplayContext:a3];
+  self->_displayContext = context;
+  currentIconContentView = [(HUIconView *)self currentIconContentView];
+  [currentIconContentView setDisplayContext:context];
 
-  if (displayContext != a3 && !self->_vibrancyEffect)
+  if (displayContext != context && !self->_vibrancyEffect)
   {
 
     [(HUIconView *)self _updateVisualEffectStateForVibrancyEffectChange:1];
@@ -336,19 +336,19 @@ uint64_t __71__HUIconView__updateVisualEffectStateForVibrancyEffectChange_animat
 
 - (HFIconDescriptor)iconDescriptor
 {
-  v2 = [(HUIconView *)self currentIconContentView];
-  v3 = [v2 iconDescriptor];
+  currentIconContentView = [(HUIconView *)self currentIconContentView];
+  iconDescriptor = [currentIconContentView iconDescriptor];
 
-  return v3;
+  return iconDescriptor;
 }
 
-- (void)setIconSize:(unint64_t)a3
+- (void)setIconSize:(unint64_t)size
 {
-  if (self->_iconSize != a3)
+  if (self->_iconSize != size)
   {
-    self->_iconSize = a3;
-    v6 = [(HUIconView *)self currentIconContentView];
-    [v6 setIconSize:a3];
+    self->_iconSize = size;
+    currentIconContentView = [(HUIconView *)self currentIconContentView];
+    [currentIconContentView setIconSize:size];
 
     [(HUIconView *)self invalidateIntrinsicContentSize];
   }

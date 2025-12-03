@@ -1,25 +1,25 @@
 @interface CPLPlaceholderRecord
-- (CPLPlaceholderRecord)initWithRecord:(id)a3;
-- (CPLPlaceholderRecord)initWithRecordClass:(Class)a3 scopedIdentifier:(id)a4 relatedRecordClass:(Class)a5 relatedIdentifier:(id)a6;
+- (CPLPlaceholderRecord)initWithRecord:(id)record;
+- (CPLPlaceholderRecord)initWithRecordClass:(Class)class scopedIdentifier:(id)identifier relatedRecordClass:(Class)recordClass relatedIdentifier:(id)relatedIdentifier;
 - (CPLScopedIdentifier)relatedScopedIdentifier;
 - (id)description;
-- (id)translateToClientRecordUsingIDMapping:(id)a3;
-- (id)translateToCloudRecordUsingIDMapping:(id)a3;
+- (id)translateToClientRecordUsingIDMapping:(id)mapping;
+- (id)translateToCloudRecordUsingIDMapping:(id)mapping;
 @end
 
 @implementation CPLPlaceholderRecord
 
-- (id)translateToClientRecordUsingIDMapping:(id)a3
+- (id)translateToClientRecordUsingIDMapping:(id)mapping
 {
-  v4 = a3;
+  mappingCopy = mapping;
   v16 = 0;
-  v5 = [(CPLPlaceholderRecord *)self scopedIdentifier];
-  v6 = [v4 localScopedIdentifierForCloudScopedIdentifier:v5 isFinal:&v16];
-  v7 = [(CPLPlaceholderRecord *)self relatedScopedIdentifier];
-  v8 = v7;
+  scopedIdentifier = [(CPLPlaceholderRecord *)self scopedIdentifier];
+  v6 = [mappingCopy localScopedIdentifierForCloudScopedIdentifier:scopedIdentifier isFinal:&v16];
+  relatedScopedIdentifier = [(CPLPlaceholderRecord *)self relatedScopedIdentifier];
+  v8 = relatedScopedIdentifier;
   if (v6)
   {
-    if (v7)
+    if (relatedScopedIdentifier)
     {
       goto LABEL_3;
     }
@@ -29,14 +29,14 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v6 = [v5 copy];
+  v6 = [scopedIdentifier copy];
   if (!v8)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  v9 = [v4 localScopedIdentifierForCloudScopedIdentifier:0 isFinal:&v16];
+  v9 = [mappingCopy localScopedIdentifierForCloudScopedIdentifier:0 isFinal:&v16];
   if (!v9)
   {
     v9 = [v8 copy];
@@ -44,25 +44,25 @@ LABEL_3:
 
 LABEL_7:
   v10 = objc_alloc(objc_opt_class());
-  v11 = [(CPLPlaceholderRecord *)self recordClass];
-  v12 = [(CPLPlaceholderRecord *)self relatedRecordClass];
-  v13 = [v9 identifier];
-  v14 = [v10 initWithRecordClass:v11 scopedIdentifier:v6 relatedRecordClass:v12 relatedIdentifier:v13];
+  recordClass = [(CPLPlaceholderRecord *)self recordClass];
+  relatedRecordClass = [(CPLPlaceholderRecord *)self relatedRecordClass];
+  identifier = [v9 identifier];
+  v14 = [v10 initWithRecordClass:recordClass scopedIdentifier:v6 relatedRecordClass:relatedRecordClass relatedIdentifier:identifier];
 
   return v14;
 }
 
-- (id)translateToCloudRecordUsingIDMapping:(id)a3
+- (id)translateToCloudRecordUsingIDMapping:(id)mapping
 {
-  v4 = a3;
+  mappingCopy = mapping;
   v16 = 0;
-  v5 = [(CPLPlaceholderRecord *)self scopedIdentifier];
-  v6 = [v4 cloudScopedIdentifierForLocalScopedIdentifier:v5 isFinal:&v16];
-  v7 = [(CPLPlaceholderRecord *)self relatedScopedIdentifier];
-  v8 = v7;
+  scopedIdentifier = [(CPLPlaceholderRecord *)self scopedIdentifier];
+  v6 = [mappingCopy cloudScopedIdentifierForLocalScopedIdentifier:scopedIdentifier isFinal:&v16];
+  relatedScopedIdentifier = [(CPLPlaceholderRecord *)self relatedScopedIdentifier];
+  v8 = relatedScopedIdentifier;
   if (v6)
   {
-    if (v7)
+    if (relatedScopedIdentifier)
     {
       goto LABEL_3;
     }
@@ -72,14 +72,14 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v6 = [v5 copy];
+  v6 = [scopedIdentifier copy];
   if (!v8)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  v9 = [v4 cloudScopedIdentifierForLocalScopedIdentifier:v8 isFinal:&v16];
+  v9 = [mappingCopy cloudScopedIdentifierForLocalScopedIdentifier:v8 isFinal:&v16];
   if (!v9)
   {
     v9 = [v8 copy];
@@ -87,10 +87,10 @@ LABEL_3:
 
 LABEL_7:
   v10 = objc_alloc(objc_opt_class());
-  v11 = [(CPLPlaceholderRecord *)self recordClass];
-  v12 = [(CPLPlaceholderRecord *)self relatedRecordClass];
-  v13 = [v9 identifier];
-  v14 = [v10 initWithRecordClass:v11 scopedIdentifier:v6 relatedRecordClass:v12 relatedIdentifier:v13];
+  recordClass = [(CPLPlaceholderRecord *)self recordClass];
+  relatedRecordClass = [(CPLPlaceholderRecord *)self relatedRecordClass];
+  identifier = [v9 identifier];
+  v14 = [v10 initWithRecordClass:recordClass scopedIdentifier:v6 relatedRecordClass:relatedRecordClass relatedIdentifier:identifier];
 
   return v14;
 }
@@ -109,8 +109,8 @@ LABEL_7:
   {
     v4 = relatedIdentifier;
     v5 = [CPLScopedIdentifier alloc];
-    v6 = [(CPLPlaceholderRecord *)self scopedIdentifier];
-    v7 = [(CPLScopedIdentifier *)v5 initRelativeToScopedIdentifier:v6 identifier:v4];
+    scopedIdentifier = [(CPLPlaceholderRecord *)self scopedIdentifier];
+    v7 = [(CPLScopedIdentifier *)v5 initRelativeToScopedIdentifier:scopedIdentifier identifier:v4];
   }
 
   else
@@ -121,54 +121,54 @@ LABEL_7:
   return v7;
 }
 
-- (CPLPlaceholderRecord)initWithRecord:(id)a3
+- (CPLPlaceholderRecord)initWithRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 relatedIdentifier];
+  recordCopy = record;
+  relatedIdentifier = [recordCopy relatedIdentifier];
   v6 = objc_opt_class();
-  v7 = [v4 scopedIdentifier];
-  if (v5)
+  scopedIdentifier = [recordCopy scopedIdentifier];
+  if (relatedIdentifier)
   {
-    v8 = [v4 relatedRecordClass];
+    relatedRecordClass = [recordCopy relatedRecordClass];
 
-    v9 = self;
+    selfCopy2 = self;
     v10 = v6;
-    v11 = v7;
-    v12 = v8;
-    v13 = v5;
+    v11 = scopedIdentifier;
+    v12 = relatedRecordClass;
+    v13 = relatedIdentifier;
   }
 
   else
   {
 
-    v9 = self;
+    selfCopy2 = self;
     v10 = v6;
-    v11 = v7;
+    v11 = scopedIdentifier;
     v12 = 0;
     v13 = 0;
   }
 
-  v14 = [(CPLPlaceholderRecord *)v9 initWithRecordClass:v10 scopedIdentifier:v11 relatedRecordClass:v12 relatedIdentifier:v13];
+  v14 = [(CPLPlaceholderRecord *)selfCopy2 initWithRecordClass:v10 scopedIdentifier:v11 relatedRecordClass:v12 relatedIdentifier:v13];
 
   return v14;
 }
 
-- (CPLPlaceholderRecord)initWithRecordClass:(Class)a3 scopedIdentifier:(id)a4 relatedRecordClass:(Class)a5 relatedIdentifier:(id)a6
+- (CPLPlaceholderRecord)initWithRecordClass:(Class)class scopedIdentifier:(id)identifier relatedRecordClass:(Class)recordClass relatedIdentifier:(id)relatedIdentifier
 {
-  v11 = a4;
-  v12 = a6;
+  identifierCopy = identifier;
+  relatedIdentifierCopy = relatedIdentifier;
   v16.receiver = self;
   v16.super_class = CPLPlaceholderRecord;
   v13 = [(CPLPlaceholderRecord *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_recordClass, a3);
-    objc_storeStrong(&v14->_scopedIdentifier, a4);
-    if (v12)
+    objc_storeStrong(&v13->_recordClass, class);
+    objc_storeStrong(&v14->_scopedIdentifier, identifier);
+    if (relatedIdentifierCopy)
     {
-      objc_storeStrong(&v14->_relatedIdentifier, a6);
-      objc_storeStrong(&v14->_relatedRecordClass, a5);
+      objc_storeStrong(&v14->_relatedIdentifier, relatedIdentifier);
+      objc_storeStrong(&v14->_relatedRecordClass, recordClass);
     }
   }
 

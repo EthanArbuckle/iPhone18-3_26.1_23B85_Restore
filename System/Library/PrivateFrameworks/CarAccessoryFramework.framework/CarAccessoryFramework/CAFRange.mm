@@ -1,11 +1,11 @@
 @interface CAFRange
-- (BOOL)isInRange:(id)a3;
+- (BOOL)isInRange:(id)range;
 - (CAFFloatRange)floatRange;
 - (CAFInt16Range)int16Range;
 - (CAFInt32Range)int32Range;
 - (CAFInt64Range)int64Range;
 - (CAFInt8Range)int8Range;
-- (CAFRange)initWithMetaData:(id)a3;
+- (CAFRange)initWithMetaData:(id)data;
 - (CAFUInt16Range)uInt16Range;
 - (CAFUInt32Range)uInt32Range;
 - (CAFUInt64Range)uInt64Range;
@@ -15,24 +15,24 @@
 - (NSNumber)minimum;
 - (NSNumber)step;
 - (NSString)description;
-- (id)currentDescriptionForCache:(id)a3;
-- (id)limitedToRange:(id)a3;
-- (id)measurementRangeWithUnit:(id)a3;
-- (id)valueRoundedToNearestStepValue:(id)a3;
+- (id)currentDescriptionForCache:(id)cache;
+- (id)limitedToRange:(id)range;
+- (id)measurementRangeWithUnit:(id)unit;
+- (id)valueRoundedToNearestStepValue:(id)value;
 @end
 
 @implementation CAFRange
 
-- (CAFRange)initWithMetaData:(id)a3
+- (CAFRange)initWithMetaData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = CAFRange;
   v6 = [(CAFRange *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_metaData, a3);
+    objc_storeStrong(&v6->_metaData, data);
     v8 = [[CAFCachedDescription alloc] initWithCacheable:v7 lazyRefreshDescription:1];
     cachedDescription = v7->_cachedDescription;
     v7->_cachedDescription = v8;
@@ -43,104 +43,104 @@
 
 - (NSNumber)minimum
 {
-  v3 = [(CAFRange *)self metaData];
-  v4 = [v3 minimumValue];
+  metaData = [(CAFRange *)self metaData];
+  minimumValue = [metaData minimumValue];
 
-  if (v4)
+  if (minimumValue)
   {
-    v5 = [(CAFRange *)self metaData];
-    v6 = [v5 minimumValue];
+    metaData2 = [(CAFRange *)self metaData];
+    minimumValue2 = [metaData2 minimumValue];
   }
 
   else
   {
-    v6 = [objc_opt_class() minimum];
+    minimumValue2 = [objc_opt_class() minimum];
   }
 
-  return v6;
+  return minimumValue2;
 }
 
 - (NSNumber)maximum
 {
-  v3 = [(CAFRange *)self metaData];
-  v4 = [v3 maximumValue];
+  metaData = [(CAFRange *)self metaData];
+  maximumValue = [metaData maximumValue];
 
-  if (v4)
+  if (maximumValue)
   {
-    v5 = [(CAFRange *)self metaData];
-    v6 = [v5 maximumValue];
+    metaData2 = [(CAFRange *)self metaData];
+    maximumValue2 = [metaData2 maximumValue];
   }
 
   else
   {
-    v6 = [objc_opt_class() maximum];
+    maximumValue2 = [objc_opt_class() maximum];
   }
 
-  return v6;
+  return maximumValue2;
 }
 
 - (NSNumber)step
 {
-  v3 = [(CAFRange *)self metaData];
-  v4 = [v3 stepValue];
+  metaData = [(CAFRange *)self metaData];
+  stepValue = [metaData stepValue];
 
-  if (v4)
+  if (stepValue)
   {
-    v5 = [(CAFRange *)self metaData];
-    v6 = [v5 stepValue];
+    metaData2 = [(CAFRange *)self metaData];
+    stepValue2 = [metaData2 stepValue];
   }
 
   else
   {
-    v6 = [objc_opt_class() step];
+    stepValue2 = [objc_opt_class() step];
   }
 
-  return v6;
+  return stepValue2;
 }
 
 - (NSArray)validValues
 {
-  v2 = [(CAFRange *)self metaData];
-  v3 = [v2 validValues];
+  metaData = [(CAFRange *)self metaData];
+  validValues = [metaData validValues];
 
-  return v3;
+  return validValues;
 }
 
-- (BOOL)isInRange:(id)a3
+- (BOOL)isInRange:(id)range
 {
-  v4 = a3;
-  v5 = [(CAFRange *)self validValues];
+  rangeCopy = range;
+  validValues = [(CAFRange *)self validValues];
 
-  if (v5)
+  if (validValues)
   {
-    v6 = [(CAFRange *)self validValues];
-    v7 = [v6 containsObject:v4];
+    validValues2 = [(CAFRange *)self validValues];
+    v7 = [validValues2 containsObject:rangeCopy];
 
     return v7;
   }
 
   else
   {
-    v9 = [(CAFRange *)self minimum];
-    v10 = [v4 compare:v9];
+    minimum = [(CAFRange *)self minimum];
+    v10 = [rangeCopy compare:minimum];
 
-    v11 = [(CAFRange *)self maximum];
-    v12 = [v4 compare:v11];
+    maximum = [(CAFRange *)self maximum];
+    v12 = [rangeCopy compare:maximum];
 
     return v10 < 2 && (v12 + 1) < 2;
   }
 }
 
-- (id)valueRoundedToNearestStepValue:(id)a3
+- (id)valueRoundedToNearestStepValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = [objc_alloc(MEMORY[0x277CCA988]) initWithRoundingMode:0 scale:0 raiseOnExactness:0 raiseOnOverflow:0 raiseOnUnderflow:0 raiseOnDivideByZero:0];
   v6 = MEMORY[0x277CCA980];
-  v7 = [(CAFRange *)self minimum];
-  v8 = v7;
-  if (v7)
+  minimum = [(CAFRange *)self minimum];
+  v8 = minimum;
+  if (minimum)
   {
-    [v7 decimalValue];
+    [minimum decimalValue];
   }
 
   else
@@ -153,11 +153,11 @@
   v9 = [v6 decimalNumberWithDecimal:&v21];
 
   v10 = MEMORY[0x277CCA980];
-  v11 = [(CAFRange *)self step];
-  v12 = v11;
-  if (v11)
+  step = [(CAFRange *)self step];
+  v12 = step;
+  if (step)
   {
-    [v11 decimalValue];
+    [step decimalValue];
   }
 
   else
@@ -170,9 +170,9 @@
   v13 = [v10 decimalNumberWithDecimal:&v21];
 
   v14 = MEMORY[0x277CCA980];
-  if (v4)
+  if (valueCopy)
   {
-    [v4 decimalValue];
+    [valueCopy decimalValue];
   }
 
   else
@@ -192,52 +192,52 @@
   return v19;
 }
 
-- (id)limitedToRange:(id)a3
+- (id)limitedToRange:(id)range
 {
-  v4 = a3;
-  v5 = [(CAFRange *)self minimum];
-  v6 = [v4 compare:v5];
+  rangeCopy = range;
+  minimum = [(CAFRange *)self minimum];
+  v6 = [rangeCopy compare:minimum];
 
-  v7 = [(CAFRange *)self maximum];
-  v8 = [v4 compare:v7];
+  maximum = [(CAFRange *)self maximum];
+  v8 = [rangeCopy compare:maximum];
 
   if (v6 == -1)
   {
-    v9 = [(CAFRange *)self minimum];
+    minimum2 = [(CAFRange *)self minimum];
   }
 
   else if (v8 == 1)
   {
-    v9 = [(CAFRange *)self maximum];
+    minimum2 = [(CAFRange *)self maximum];
   }
 
   else
   {
-    v9 = v4;
+    minimum2 = rangeCopy;
   }
 
-  v10 = v9;
+  v10 = minimum2;
 
   return v10;
 }
 
 - (NSString)description
 {
-  v2 = [(CAFRange *)self cachedDescription];
-  v3 = [v2 description];
+  cachedDescription = [(CAFRange *)self cachedDescription];
+  v3 = [cachedDescription description];
 
   return v3;
 }
 
-- (id)currentDescriptionForCache:(id)a3
+- (id)currentDescriptionForCache:(id)cache
 {
-  v4 = [(CAFRange *)self validValues];
+  validValues = [(CAFRange *)self validValues];
 
-  if (v4)
+  if (validValues)
   {
     v5 = MEMORY[0x277CCACA8];
-    v6 = [(CAFRange *)self validValues];
-    v7 = [v6 componentsJoinedByString:{@", "}];
+    validValues2 = [(CAFRange *)self validValues];
+    v7 = [validValues2 componentsJoinedByString:{@", "}];
     v8 = [v5 stringWithFormat:@"[%@]", v7];
   }
 
@@ -247,10 +247,10 @@
   }
 
   v9 = MEMORY[0x277CCACA8];
-  v10 = [(CAFRange *)self minimum];
-  v11 = [(CAFRange *)self maximum];
-  v12 = [(CAFRange *)self step];
-  v13 = [v9 stringWithFormat:@"%@[%@..%@]x%@", v8, v10, v11, v12];
+  minimum = [(CAFRange *)self minimum];
+  maximum = [(CAFRange *)self maximum];
+  step = [(CAFRange *)self step];
+  v13 = [v9 stringWithFormat:@"%@[%@..%@]x%@", v8, minimum, maximum, step];
 
   return v13;
 }
@@ -258,8 +258,8 @@
 - (CAFFloatRange)floatRange
 {
   v3 = [CAFFloatRange alloc];
-  v4 = [(CAFRange *)self metaData];
-  v5 = [(CAFRange *)v3 initWithMetaData:v4];
+  metaData = [(CAFRange *)self metaData];
+  v5 = [(CAFRange *)v3 initWithMetaData:metaData];
 
   return v5;
 }
@@ -267,8 +267,8 @@
 - (CAFInt8Range)int8Range
 {
   v3 = [CAFInt8Range alloc];
-  v4 = [(CAFRange *)self metaData];
-  v5 = [(CAFRange *)v3 initWithMetaData:v4];
+  metaData = [(CAFRange *)self metaData];
+  v5 = [(CAFRange *)v3 initWithMetaData:metaData];
 
   return v5;
 }
@@ -276,8 +276,8 @@
 - (CAFInt16Range)int16Range
 {
   v3 = [CAFInt16Range alloc];
-  v4 = [(CAFRange *)self metaData];
-  v5 = [(CAFRange *)v3 initWithMetaData:v4];
+  metaData = [(CAFRange *)self metaData];
+  v5 = [(CAFRange *)v3 initWithMetaData:metaData];
 
   return v5;
 }
@@ -285,8 +285,8 @@
 - (CAFInt32Range)int32Range
 {
   v3 = [CAFInt32Range alloc];
-  v4 = [(CAFRange *)self metaData];
-  v5 = [(CAFRange *)v3 initWithMetaData:v4];
+  metaData = [(CAFRange *)self metaData];
+  v5 = [(CAFRange *)v3 initWithMetaData:metaData];
 
   return v5;
 }
@@ -294,8 +294,8 @@
 - (CAFInt64Range)int64Range
 {
   v3 = [CAFInt64Range alloc];
-  v4 = [(CAFRange *)self metaData];
-  v5 = [(CAFRange *)v3 initWithMetaData:v4];
+  metaData = [(CAFRange *)self metaData];
+  v5 = [(CAFRange *)v3 initWithMetaData:metaData];
 
   return v5;
 }
@@ -303,8 +303,8 @@
 - (CAFUInt8Range)uInt8Range
 {
   v3 = [CAFUInt8Range alloc];
-  v4 = [(CAFRange *)self metaData];
-  v5 = [(CAFRange *)v3 initWithMetaData:v4];
+  metaData = [(CAFRange *)self metaData];
+  v5 = [(CAFRange *)v3 initWithMetaData:metaData];
 
   return v5;
 }
@@ -312,8 +312,8 @@
 - (CAFUInt16Range)uInt16Range
 {
   v3 = [CAFUInt16Range alloc];
-  v4 = [(CAFRange *)self metaData];
-  v5 = [(CAFRange *)v3 initWithMetaData:v4];
+  metaData = [(CAFRange *)self metaData];
+  v5 = [(CAFRange *)v3 initWithMetaData:metaData];
 
   return v5;
 }
@@ -321,8 +321,8 @@
 - (CAFUInt32Range)uInt32Range
 {
   v3 = [CAFUInt32Range alloc];
-  v4 = [(CAFRange *)self metaData];
-  v5 = [(CAFRange *)v3 initWithMetaData:v4];
+  metaData = [(CAFRange *)self metaData];
+  v5 = [(CAFRange *)v3 initWithMetaData:metaData];
 
   return v5;
 }
@@ -330,18 +330,18 @@
 - (CAFUInt64Range)uInt64Range
 {
   v3 = [CAFUInt64Range alloc];
-  v4 = [(CAFRange *)self metaData];
-  v5 = [(CAFRange *)v3 initWithMetaData:v4];
+  metaData = [(CAFRange *)self metaData];
+  v5 = [(CAFRange *)v3 initWithMetaData:metaData];
 
   return v5;
 }
 
-- (id)measurementRangeWithUnit:(id)a3
+- (id)measurementRangeWithUnit:(id)unit
 {
-  v4 = a3;
+  unitCopy = unit;
   v5 = [CAFMeasurementRange alloc];
-  v6 = [(CAFRange *)self metaData];
-  v7 = [(CAFMeasurementRange *)v5 initWithMetaData:v6 unit:v4];
+  metaData = [(CAFRange *)self metaData];
+  v7 = [(CAFMeasurementRange *)v5 initWithMetaData:metaData unit:unitCopy];
 
   return v7;
 }

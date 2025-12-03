@@ -1,8 +1,8 @@
 @interface REAppIconCache
 - (id)_init;
-- (void)_loadIconForIdentifier:(id)a3 completion:(id)a4;
-- (void)_loadRemoteIconForIdentifier:(id)a3 completion:(id)a4;
-- (void)iconForApplicationWithIdentifier:(id)a3 completion:(id)a4;
+- (void)_loadIconForIdentifier:(id)identifier completion:(id)completion;
+- (void)_loadRemoteIconForIdentifier:(id)identifier completion:(id)completion;
+- (void)iconForApplicationWithIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation REAppIconCache
@@ -11,28 +11,28 @@
 {
   v9.receiver = self;
   v9.super_class = REAppIconCache;
-  v2 = [(RESingleton *)&v9 _init];
-  if (v2)
+  _init = [(RESingleton *)&v9 _init];
+  if (_init)
   {
     v3 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
     v4 = dispatch_queue_create("com.apple.RelevanceEngine", v3);
-    v5 = v2[2];
-    v2[2] = v4;
+    v5 = _init[2];
+    _init[2] = v4;
 
     v6 = objc_alloc_init(MEMORY[0x277CBEA78]);
-    v7 = v2[1];
-    v2[1] = v6;
+    v7 = _init[1];
+    _init[1] = v6;
   }
 
-  return v2;
+  return _init;
 }
 
-- (void)iconForApplicationWithIdentifier:(id)a3 completion:(id)a4
+- (void)iconForApplicationWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  IsRemote = REApplicationIsRemote(v6);
-  v9 = [[_REAppKey alloc] initWithIdentifier:v6 remote:IsRemote];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  IsRemote = REApplicationIsRemote(identifierCopy);
+  v9 = [[_REAppKey alloc] initWithIdentifier:identifierCopy remote:IsRemote];
   v10 = [(NSCache *)self->_imageCache objectForKey:v9];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -41,7 +41,7 @@
   v18[4] = self;
   v11 = v9;
   v19 = v11;
-  v12 = v7;
+  v12 = completionCopy;
   v20 = v12;
   v13 = MEMORY[0x22AABC5E0](v18);
   if (v10)
@@ -58,12 +58,12 @@
 
   else if (IsRemote)
   {
-    [(REAppIconCache *)self _loadRemoteIconForIdentifier:v6 completion:v13];
+    [(REAppIconCache *)self _loadRemoteIconForIdentifier:identifierCopy completion:v13];
   }
 
   else
   {
-    [(REAppIconCache *)self _loadIconForIdentifier:v6 completion:v13];
+    [(REAppIconCache *)self _loadIconForIdentifier:identifierCopy completion:v13];
   }
 }
 
@@ -79,11 +79,11 @@ void __62__REAppIconCache_iconForApplicationWithIdentifier_completion___block_in
   (*(a1[6] + 16))();
 }
 
-- (void)_loadRemoteIconForIdentifier:(id)a3 completion:(id)a4
+- (void)_loadRemoteIconForIdentifier:(id)identifier completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v19 = 0;
   if (!RelevanceEngineUILibraryCore_frameworkLibrary)
   {
@@ -143,15 +143,15 @@ LABEL_4:
 
   v12 = v10;
   _Block_object_dispose(&v25, 8);
-  v13 = [v10 sharedInstance];
+  sharedInstance = [v10 sharedInstance];
   queue = self->_queue;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __58__REAppIconCache__loadRemoteIconForIdentifier_completion___block_invoke;
   v17[3] = &unk_2785FA6E8;
-  v18 = v7;
-  v15 = v7;
-  [v13 getIconForBundleID:v6 iconVariant:v11 queue:queue block:v17 timeout:0.0];
+  v18 = completionCopy;
+  v15 = completionCopy;
+  [sharedInstance getIconForBundleID:identifierCopy iconVariant:v11 queue:queue block:v17 timeout:0.0];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -162,18 +162,18 @@ void __58__REAppIconCache__loadRemoteIconForIdentifier_completion___block_invoke
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_loadIconForIdentifier:(id)a3 completion:(id)a4
+- (void)_loadIconForIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __52__REAppIconCache__loadIconForIdentifier_completion___block_invoke;
   v9[3] = &unk_2785F9A40;
-  v10 = v5;
-  v11 = v6;
-  v7 = v6;
-  v8 = v5;
+  v10 = identifierCopy;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  v8 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v9);
 }
 

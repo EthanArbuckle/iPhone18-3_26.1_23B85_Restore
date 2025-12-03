@@ -1,24 +1,24 @@
 @interface WFAutomationNotificationContentView
-- (WFAutomationNotificationContentView)initWithFrame:(CGRect)a3;
-- (void)updateUIFromNotification:(id)a3;
+- (WFAutomationNotificationContentView)initWithFrame:(CGRect)frame;
+- (void)updateUIFromNotification:(id)notification;
 @end
 
 @implementation WFAutomationNotificationContentView
 
-- (void)updateUIFromNotification:(id)a3
+- (void)updateUIFromNotification:(id)notification
 {
-  v4 = [a3 request];
-  v14 = [v4 content];
+  request = [notification request];
+  content = [request content];
 
-  v5 = [v14 title];
-  v6 = [(WFAutomationNotificationContentView *)self titleLabel];
-  [v6 setText:v5];
+  title = [content title];
+  titleLabel = [(WFAutomationNotificationContentView *)self titleLabel];
+  [titleLabel setText:title];
 
-  v7 = [v14 body];
-  v8 = [(WFAutomationNotificationContentView *)self descriptionLabel];
-  [v8 setText:v7];
+  body = [content body];
+  descriptionLabel = [(WFAutomationNotificationContentView *)self descriptionLabel];
+  [descriptionLabel setText:body];
 
-  v9 = [v14 userInfo];
+  userInfo = [content userInfo];
   v10 = WFActionIconsFromNotificationUserInfo();
   v11 = v10;
   if (v10)
@@ -31,15 +31,15 @@
     v12 = MEMORY[0x277CBEBF8];
   }
 
-  v13 = [(WFAutomationNotificationContentView *)self actionIconsView];
-  [v13 setIcons:v12];
+  actionIconsView = [(WFAutomationNotificationContentView *)self actionIconsView];
+  [actionIconsView setIcons:v12];
 }
 
-- (WFAutomationNotificationContentView)initWithFrame:(CGRect)a3
+- (WFAutomationNotificationContentView)initWithFrame:(CGRect)frame
 {
   v26.receiver = self;
   v26.super_class = WFAutomationNotificationContentView;
-  v3 = [(WFAutomationNotificationContentView *)&v26 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WFAutomationNotificationContentView *)&v26 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D75A68]);
@@ -55,8 +55,8 @@
     [(UIStackView *)v3->_stackView setLayoutMarginsRelativeArrangement:1];
     [(WFAutomationNotificationContentView *)v3 addSubview:v3->_stackView];
     v6 = v3->_stackView;
-    v7 = [(WFAutomationNotificationContentView *)v3 layoutMarginsGuide];
-    v8 = [(UIStackView *)v6 wf_addConstraintsToFillLayoutGuide:v7];
+    layoutMarginsGuide = [(WFAutomationNotificationContentView *)v3 layoutMarginsGuide];
+    v8 = [(UIStackView *)v6 wf_addConstraintsToFillLayoutGuide:layoutMarginsGuide];
 
     v9 = [[WFRowOfIconsView alloc] initWithMaxNumberOfIcons:8 height:30.0];
     actionIconsView = v3->_actionIconsView;
@@ -92,8 +92,8 @@
     v21 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
     [(UILabel *)v3->_descriptionLabel setFont:v21];
 
-    v22 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v3->_descriptionLabel setTextColor:v22];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v3->_descriptionLabel setTextColor:secondaryLabelColor];
 
     LODWORD(v23) = 1148846080;
     [(UILabel *)v3->_descriptionLabel setContentCompressionResistancePriority:1 forAxis:v23];

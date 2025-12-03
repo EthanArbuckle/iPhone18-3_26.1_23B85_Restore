@@ -3,11 +3,11 @@
 - (id)_init;
 - (id)cachedDiscoveredDevices;
 - (id)mineDevices;
-- (unint64_t)_indexOfDeviceWithEffectiveIdentifier:(id)a3;
+- (unint64_t)_indexOfDeviceWithEffectiveIdentifier:(id)identifier;
 - (void)_discoveredDevicesChanged;
-- (void)_enumerateObservers:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)_enumerateObservers:(id)observers;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation AXRDeviceDiscoveryManager
@@ -55,38 +55,38 @@ void __52__AXRDeviceDiscoveryManager_cachedDiscoveredDevices__block_invoke(uint6
   *(v3 + 40) = v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observersLock);
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_observersLock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observersLock);
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_observersLock);
 }
 
-- (void)_enumerateObservers:(id)a3
+- (void)_enumerateObservers:(id)observers
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  observersCopy = observers;
+  if (observersCopy)
   {
     os_unfair_lock_lock(&self->_observersLock);
-    v5 = [(NSHashTable *)self->_observers allObjects];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
     os_unfair_lock_unlock(&self->_observersLock);
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = v5;
+    v6 = allObjects;
     v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
@@ -102,7 +102,7 @@ void __52__AXRDeviceDiscoveryManager_cachedDiscoveredDevices__block_invoke(uint6
             objc_enumerationMutation(v6);
           }
 
-          v4[2](v4, *(*(&v12 + 1) + 8 * v10++));
+          observersCopy[2](observersCopy, *(*(&v12 + 1) + 8 * v10++));
         }
 
         while (v8 != v10);
@@ -130,15 +130,15 @@ void __52__AXRDeviceDiscoveryManager_cachedDiscoveredDevices__block_invoke(uint6
     deviceQueue = v2->_deviceQueue;
     v2->_deviceQueue = v5;
 
-    v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v7;
+    v2->_observers = weakObjectsHashTable;
 
     v2->_observersLock._os_unfair_lock_opaque = 0;
     v9 = [objc_alloc(MEMORY[0x277D18778]) initWithService:@"com.apple.private.alloy.accessibility.switchcontrol"];
     [(AXRDeviceDiscoveryManager *)v2 setService:v9];
 
-    v10 = [(AXRDeviceDiscoveryManager *)v2 mineDevices];
+    mineDevices = [(AXRDeviceDiscoveryManager *)v2 mineDevices];
     v11 = objc_opt_new();
     [(AXRDeviceDiscoveryManager *)v2 setDiscoveredDevices:v11];
 
@@ -146,44 +146,44 @@ void __52__AXRDeviceDiscoveryManager_cachedDiscoveredDevices__block_invoke(uint6
     v12 = objc_alloc_init(MEMORY[0x277D44160]);
     [(AXRDeviceDiscoveryManager *)v2 setCompanionLinkClient:v12];
 
-    v13 = [(AXRDeviceDiscoveryManager *)v2 companionLinkClient];
-    [v13 setAppID:@"com.apple.AXRemoteServices.DeviceDiscoveryManager"];
+    companionLinkClient = [(AXRDeviceDiscoveryManager *)v2 companionLinkClient];
+    [companionLinkClient setAppID:@"com.apple.AXRemoteServices.DeviceDiscoveryManager"];
 
-    v14 = [(AXRDeviceDiscoveryManager *)v2 companionLinkClient];
-    [v14 setControlFlags:0x200000002];
+    companionLinkClient2 = [(AXRDeviceDiscoveryManager *)v2 companionLinkClient];
+    [companionLinkClient2 setControlFlags:0x200000002];
 
     v15 = v2->_deviceQueue;
-    v16 = [(AXRDeviceDiscoveryManager *)v2 companionLinkClient];
-    [v16 setDispatchQueue:v15];
+    companionLinkClient3 = [(AXRDeviceDiscoveryManager *)v2 companionLinkClient];
+    [companionLinkClient3 setDispatchQueue:v15];
 
     objc_initWeak(&location, v2);
-    v17 = [(AXRDeviceDiscoveryManager *)v2 companionLinkClient];
-    [v17 setDisconnectHandler:&__block_literal_global_14];
+    companionLinkClient4 = [(AXRDeviceDiscoveryManager *)v2 companionLinkClient];
+    [companionLinkClient4 setDisconnectHandler:&__block_literal_global_14];
 
-    v18 = [(AXRDeviceDiscoveryManager *)v2 companionLinkClient];
-    [v18 setInterruptionHandler:&__block_literal_global_17];
+    companionLinkClient5 = [(AXRDeviceDiscoveryManager *)v2 companionLinkClient];
+    [companionLinkClient5 setInterruptionHandler:&__block_literal_global_17];
 
-    v19 = [(AXRDeviceDiscoveryManager *)v2 companionLinkClient];
-    [v19 setInvalidationHandler:&__block_literal_global_20];
+    companionLinkClient6 = [(AXRDeviceDiscoveryManager *)v2 companionLinkClient];
+    [companionLinkClient6 setInvalidationHandler:&__block_literal_global_20];
 
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __34__AXRDeviceDiscoveryManager__init__block_invoke_21;
     v26[3] = &unk_2786656F8;
     objc_copyWeak(&v27, &location);
-    v20 = [(AXRDeviceDiscoveryManager *)v2 companionLinkClient];
-    [v20 setDeviceFoundHandler:v26];
+    companionLinkClient7 = [(AXRDeviceDiscoveryManager *)v2 companionLinkClient];
+    [companionLinkClient7 setDeviceFoundHandler:v26];
 
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __34__AXRDeviceDiscoveryManager__init__block_invoke_2;
     v24[3] = &unk_2786656F8;
     objc_copyWeak(&v25, &location);
-    v21 = [(AXRDeviceDiscoveryManager *)v2 companionLinkClient];
-    [v21 setDeviceLostHandler:v24];
+    companionLinkClient8 = [(AXRDeviceDiscoveryManager *)v2 companionLinkClient];
+    [companionLinkClient8 setDeviceLostHandler:v24];
 
-    v22 = [(AXRDeviceDiscoveryManager *)v2 companionLinkClient];
-    [v22 activateWithCompletion:&__block_literal_global_35];
+    companionLinkClient9 = [(AXRDeviceDiscoveryManager *)v2 companionLinkClient];
+    [companionLinkClient9 activateWithCompletion:&__block_literal_global_35];
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(&v27);
@@ -512,23 +512,23 @@ void __34__AXRDeviceDiscoveryManager__init__block_invoke_2_32(uint64_t a1, void 
 
 - (id)mineDevices
 {
-  v2 = [(AXRDeviceDiscoveryManager *)self service];
-  v3 = [v2 linkedDevicesWithRelationship:1];
+  service = [(AXRDeviceDiscoveryManager *)self service];
+  v3 = [service linkedDevicesWithRelationship:1];
 
   return v3;
 }
 
-- (unint64_t)_indexOfDeviceWithEffectiveIdentifier:(id)a3
+- (unint64_t)_indexOfDeviceWithEffectiveIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(AXRDeviceDiscoveryManager *)self discoveredDevices];
+  identifierCopy = identifier;
+  discoveredDevices = [(AXRDeviceDiscoveryManager *)self discoveredDevices];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __67__AXRDeviceDiscoveryManager__indexOfDeviceWithEffectiveIdentifier___block_invoke;
   v9[3] = &unk_278665768;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 indexOfObjectPassingTest:v9];
+  v10 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [discoveredDevices indexOfObjectPassingTest:v9];
 
   return v7;
 }
@@ -544,14 +544,14 @@ uint64_t __67__AXRDeviceDiscoveryManager__indexOfDeviceWithEffectiveIdentifier__
 
 - (void)_discoveredDevicesChanged
 {
-  v3 = [(AXRDeviceDiscoveryManager *)self cachedDiscoveredDevices];
+  cachedDiscoveredDevices = [(AXRDeviceDiscoveryManager *)self cachedDiscoveredDevices];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __54__AXRDeviceDiscoveryManager__discoveredDevicesChanged__block_invoke;
   v5[3] = &unk_2786656D0;
   v5[4] = self;
-  v6 = v3;
-  v4 = v3;
+  v6 = cachedDiscoveredDevices;
+  v4 = cachedDiscoveredDevices;
   dispatch_async(MEMORY[0x277D85CD0], v5);
 }
 

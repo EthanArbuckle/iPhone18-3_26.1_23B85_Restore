@@ -1,6 +1,6 @@
 @interface AXIPCServerMessageHandlerContext
-- (AXIPCServerMessageHandlerContext)initWithHandler:(id)a3;
-- (AXIPCServerMessageHandlerContext)initWithTarget:(id)a3 selector:(SEL)a4 async:(BOOL)a5;
+- (AXIPCServerMessageHandlerContext)initWithHandler:(id)handler;
+- (AXIPCServerMessageHandlerContext)initWithTarget:(id)target selector:(SEL)selector async:(BOOL)async;
 - (SEL)selector;
 - (id)target;
 @end
@@ -27,18 +27,18 @@
   }
 }
 
-- (AXIPCServerMessageHandlerContext)initWithHandler:(id)a3
+- (AXIPCServerMessageHandlerContext)initWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v10.receiver = self;
   v10.super_class = AXIPCServerMessageHandlerContext;
   v5 = [(AXIPCServerMessageHandlerContext *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (handlerCopy)
     {
-      v7 = [v4 copy];
+      v7 = [handlerCopy copy];
       handler = v6->_handler;
       v6->_handler = v7;
     }
@@ -53,20 +53,20 @@
   return v6;
 }
 
-- (AXIPCServerMessageHandlerContext)initWithTarget:(id)a3 selector:(SEL)a4 async:(BOOL)a5
+- (AXIPCServerMessageHandlerContext)initWithTarget:(id)target selector:(SEL)selector async:(BOOL)async
 {
-  v8 = a3;
+  targetCopy = target;
   v12.receiver = self;
   v12.super_class = AXIPCServerMessageHandlerContext;
   v9 = [(AXIPCServerMessageHandlerContext *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    if (v8 && a4)
+    if (targetCopy && selector)
     {
-      objc_storeWeak(&v9->_target, v8);
-      v10->_selector = a4;
-      v10->_async = a5;
+      objc_storeWeak(&v9->_target, targetCopy);
+      v10->_selector = selector;
+      v10->_async = async;
     }
 
     else

@@ -1,37 +1,37 @@
 @interface PKIndexableContent
 - (NSString)indexableTextRepresentation;
 - (NSString)presentableTextRepresentation;
-- (PKIndexableContent)initWithIndexableContent:(id)a3;
+- (PKIndexableContent)initWithIndexableContent:(id)content;
 @end
 
 @implementation PKIndexableContent
 
-- (PKIndexableContent)initWithIndexableContent:(id)a3
+- (PKIndexableContent)initWithIndexableContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v8.receiver = self;
   v8.super_class = PKIndexableContent;
   v5 = [(PKIndexableContent *)&v8 init];
   chIndexableContent = v5->_chIndexableContent;
-  v5->_chIndexableContent = v4;
+  v5->_chIndexableContent = contentCopy;
 
   return v5;
 }
 
 - (NSString)indexableTextRepresentation
 {
-  v2 = [(PKIndexableContent *)self chIndexableContent];
-  v3 = [v2 indexableTextRepresentation];
+  chIndexableContent = [(PKIndexableContent *)self chIndexableContent];
+  indexableTextRepresentation = [chIndexableContent indexableTextRepresentation];
 
-  return v3;
+  return indexableTextRepresentation;
 }
 
 - (NSString)presentableTextRepresentation
 {
-  v2 = [(PKIndexableContent *)self chIndexableContent];
-  v3 = [v2 presentableTextRepresentation];
+  chIndexableContent = [(PKIndexableContent *)self chIndexableContent];
+  presentableTextRepresentation = [chIndexableContent presentableTextRepresentation];
 
-  return v3;
+  return presentableTextRepresentation;
 }
 
 @end

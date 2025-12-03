@@ -1,17 +1,17 @@
 @interface NSDebugString
-- (NSDebugString)initWithString:(id)a3;
+- (NSDebugString)initWithString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation NSDebugString
 
-- (NSDebugString)initWithString:(id)a3
+- (NSDebugString)initWithString:(id)string
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = NSDebugString;
   v4 = [(NSString *)&v6 init];
-  v4->string = [a3 copyWithZone:{-[NSDebugString zone](v4, "zone")}];
+  v4->string = [string copyWithZone:{-[NSDebugString zone](v4, "zone")}];
   return v4;
 }
 

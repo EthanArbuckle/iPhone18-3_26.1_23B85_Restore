@@ -1,42 +1,42 @@
 @interface MNTracePlayer
-- (BOOL)requestDirectionsNearTimestamp:(double)a3 withHandler:(id)a4;
-- (MNTracePlayer)initWithPath:(id)a3 outError:(id *)a4;
-- (MNTracePlayer)initWithTrace:(id)a3;
+- (BOOL)requestDirectionsNearTimestamp:(double)timestamp withHandler:(id)handler;
+- (MNTracePlayer)initWithPath:(id)path outError:(id *)error;
+- (MNTracePlayer)initWithTrace:(id)trace;
 - (double)currentTime;
-- (id)_changeRouteRowForTimestamp:(double)a3;
-- (id)_directionsRowForChangeRouteRow:(id)a3;
-- (id)_etauRowForChangeRouteRow:(id)a3;
-- (id)_locationRowBeforeTimestamp:(double)a3;
-- (id)_locationWithCurrentDate:(id)a3;
-- (id)_routeForRouteChangeRow:(id)a3;
-- (id)guidanceEventNearTimestamp:(double)a3;
-- (unint64_t)_directionsRowIndexBeforeTimestamp:(double)a3;
+- (id)_changeRouteRowForTimestamp:(double)timestamp;
+- (id)_directionsRowForChangeRouteRow:(id)row;
+- (id)_etauRowForChangeRouteRow:(id)row;
+- (id)_locationRowBeforeTimestamp:(double)timestamp;
+- (id)_locationWithCurrentDate:(id)date;
+- (id)_routeForRouteChangeRow:(id)row;
+- (id)guidanceEventNearTimestamp:(double)timestamp;
+- (unint64_t)_directionsRowIndexBeforeTimestamp:(double)timestamp;
 - (void)_createTimelineStreams;
 - (void)dealloc;
-- (void)jumpToBookmarkAtIndex:(unint64_t)a3;
-- (void)jumpToLocationAtIndex:(unint64_t)a3;
-- (void)jumpToTime:(double)a3;
+- (void)jumpToBookmarkAtIndex:(unint64_t)index;
+- (void)jumpToLocationAtIndex:(unint64_t)index;
+- (void)jumpToTime:(double)time;
 - (void)pause;
 - (void)resume;
-- (void)setShouldPlayETARequests:(BOOL)a3;
-- (void)setShouldPlayNetworkEvents:(BOOL)a3;
-- (void)setSpeedMultiplier:(double)a3;
-- (void)skipByTimeInterval:(double)a3;
-- (void)startAtLocationIndex:(unint64_t)a3;
+- (void)setShouldPlayETARequests:(BOOL)requests;
+- (void)setShouldPlayNetworkEvents:(BOOL)events;
+- (void)setSpeedMultiplier:(double)multiplier;
+- (void)skipByTimeInterval:(double)interval;
+- (void)startAtLocationIndex:(unint64_t)index;
 - (void)stop;
 @end
 
 @implementation MNTracePlayer
 
-- (id)_routeForRouteChangeRow:(id)a3
+- (id)_routeForRouteChangeRow:(id)row
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  rowCopy = row;
+  v5 = rowCopy;
+  if (rowCopy)
   {
-    v6 = [v4 directionsResponseID];
+    directionsResponseID = [rowCopy directionsResponseID];
 
-    if (v6)
+    if (directionsResponseID)
     {
       v7 = [(MNTracePlayer *)self _directionsRowForChangeRouteRow:v5];
       if (v7)
@@ -44,98 +44,98 @@
         v8 = v7;
 LABEL_5:
         v9 = objc_alloc(MEMORY[0x1E69A2538]);
-        v10 = [v8 waypoints];
-        v11 = [v8 request];
-        v12 = [v11 routeAttributes];
-        v13 = [v8 response];
-        v14 = [v8 request];
-        v15 = [v9 initWithWaypoints:v10 routeAttributes:v12 directionsResponse:v13 directionsRequest:v14];
+        waypoints = [v8 waypoints];
+        request = [v8 request];
+        routeAttributes = [request routeAttributes];
+        response = [v8 response];
+        request2 = [v8 request];
+        v15 = [v9 initWithWaypoints:waypoints routeAttributes:routeAttributes directionsResponse:response directionsRequest:request2];
 
-        v16 = [v15 allRouteInfos];
+        allRouteInfos = [v15 allRouteInfos];
         goto LABEL_6;
       }
     }
 
     else
     {
-      v20 = [v5 etauResponseID];
+      etauResponseID = [v5 etauResponseID];
 
-      if (v20)
+      if (etauResponseID)
       {
         v21 = [(MNTracePlayer *)self _etauRowForChangeRouteRow:v5];
         v8 = v21;
         if (!v21 || ([v21 requestTimestamp], v22 = -[MNTracePlayer _directionsRowIndexBeforeTimestamp:](self, "_directionsRowIndexBeforeTimestamp:"), -[MNTrace directions](self->_trace, "directions"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "count"), v23, v22 >= v24))
         {
-          v19 = 0;
+          route = 0;
 LABEL_15:
 
           goto LABEL_19;
         }
 
-        v25 = [(MNTrace *)self->_trace directions];
-        v15 = [v25 objectAtIndexedSubscript:v22];
+        directions = [(MNTrace *)self->_trace directions];
+        v15 = [directions objectAtIndexedSubscript:v22];
 
         v26 = objc_alloc(MEMORY[0x1E69A2538]);
-        v27 = [v15 waypoints];
-        v28 = [v15 request];
-        v29 = [v28 routeAttributes];
-        v30 = [v8 response];
-        v31 = [v15 response];
-        v32 = [v31 styleAttributes];
-        v33 = [v26 initWithWaypoints:v27 routeAttributes:v29 etauResponse:v30 styleAttributes:v32];
+        waypoints2 = [v15 waypoints];
+        request3 = [v15 request];
+        routeAttributes2 = [request3 routeAttributes];
+        response2 = [v8 response];
+        response3 = [v15 response];
+        styleAttributes = [response3 styleAttributes];
+        v33 = [v26 initWithWaypoints:waypoints2 routeAttributes:routeAttributes2 etauResponse:response2 styleAttributes:styleAttributes];
 
-        v16 = [v33 allETAUAlternateRouteInfos];
+        allRouteInfos = [v33 allETAUAlternateRouteInfos];
 
 LABEL_6:
-        v17 = [v5 routeIndex];
-        if (v17 >= [v16 count])
+        routeIndex = [v5 routeIndex];
+        if (routeIndex >= [allRouteInfos count])
         {
-          v19 = 0;
+          route = 0;
         }
 
         else
         {
-          v18 = [v16 objectAtIndexedSubscript:{objc_msgSend(v5, "routeIndex")}];
-          v19 = [v18 route];
+          v18 = [allRouteInfos objectAtIndexedSubscript:{objc_msgSend(v5, "routeIndex")}];
+          route = [v18 route];
         }
 
-        v8 = v16;
+        v8 = allRouteInfos;
         goto LABEL_15;
       }
 
       [v5 timestamp];
       v34 = [(MNTracePlayer *)self _directionsRowIndexBeforeTimestamp:?];
-      v35 = [(MNTrace *)self->_trace directions];
-      v36 = [v35 count];
+      directions2 = [(MNTrace *)self->_trace directions];
+      v36 = [directions2 count];
 
       if (v34 < v36)
       {
-        v37 = [(MNTrace *)self->_trace directions];
-        v8 = [v37 objectAtIndexedSubscript:v34];
+        directions3 = [(MNTrace *)self->_trace directions];
+        v8 = [directions3 objectAtIndexedSubscript:v34];
 
         goto LABEL_5;
       }
     }
   }
 
-  v19 = 0;
+  route = 0;
 LABEL_19:
 
-  return v19;
+  return route;
 }
 
-- (id)_etauRowForChangeRouteRow:(id)a3
+- (id)_etauRowForChangeRouteRow:(id)row
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 etauResponseID], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  rowCopy = row;
+  v5 = rowCopy;
+  if (rowCopy && ([rowCopy etauResponseID], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     v7 = objc_alloc_init(MNTraceETAUpdateRow);
     [v5 timestamp];
     [(MNTraceETAUpdateRow *)v7 setResponseTimestamp:?];
-    v8 = [(MNTrace *)self->_trace etaUpdates];
-    v9 = [(MNTrace *)self->_trace etaUpdates];
-    v10 = [v8 indexOfObject:v7 inSortedRange:0 options:objc_msgSend(v9 usingComparator:{"count"), 1024, &__block_literal_global_139}];
+    etaUpdates = [(MNTrace *)self->_trace etaUpdates];
+    etaUpdates2 = [(MNTrace *)self->_trace etaUpdates];
+    v10 = [etaUpdates indexOfObject:v7 inSortedRange:0 options:objc_msgSend(etaUpdates2 usingComparator:{"count"), 1024, &__block_literal_global_139}];
 
     if (v10)
     {
@@ -147,21 +147,21 @@ LABEL_19:
       v11 = 0;
     }
 
-    v12 = [(MNTrace *)self->_trace etaUpdates];
-    v13 = [v12 count];
+    etaUpdates3 = [(MNTrace *)self->_trace etaUpdates];
+    v13 = [etaUpdates3 count];
 
     v14 = 0;
     if (v11 < v13 && (v11 & 0x8000000000000000) == 0)
     {
       while (1)
       {
-        v15 = [(MNTrace *)self->_trace etaUpdates];
-        v14 = [v15 objectAtIndexedSubscript:v11];
+        etaUpdates4 = [(MNTrace *)self->_trace etaUpdates];
+        v14 = [etaUpdates4 objectAtIndexedSubscript:v11];
 
-        v16 = [v14 response];
-        v17 = [v16 responseId];
-        v18 = [v5 etauResponseID];
-        v19 = [v17 isEqualToData:v18];
+        response = [v14 response];
+        responseId = [response responseId];
+        etauResponseID = [v5 etauResponseID];
+        v19 = [responseId isEqualToData:etauResponseID];
 
         if (v19)
         {
@@ -201,29 +201,29 @@ uint64_t __43__MNTracePlayer__etauRowForChangeRouteRow___block_invoke(uint64_t a
   return v11;
 }
 
-- (id)_directionsRowForChangeRouteRow:(id)a3
+- (id)_directionsRowForChangeRouteRow:(id)row
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 directionsResponseID], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  rowCopy = row;
+  v5 = rowCopy;
+  if (rowCopy && ([rowCopy directionsResponseID], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     [v5 timestamp];
     v7 = [(MNTracePlayer *)self _directionsRowIndexBeforeTimestamp:?];
-    v8 = [(MNTrace *)self->_trace directions];
-    v9 = [v8 count];
+    directions = [(MNTrace *)self->_trace directions];
+    v9 = [directions count];
 
     v10 = 0;
     if (v7 < v9 && (v7 & 0x8000000000000000) == 0)
     {
       while (1)
       {
-        v11 = [(MNTrace *)self->_trace directions];
-        v10 = [v11 objectAtIndexedSubscript:v7];
+        directions2 = [(MNTrace *)self->_trace directions];
+        v10 = [directions2 objectAtIndexedSubscript:v7];
 
-        v12 = [v10 response];
-        v13 = [v12 directionsResponseID];
-        v14 = [v5 directionsResponseID];
-        v15 = [v13 isEqualToData:v14];
+        response = [v10 response];
+        directionsResponseID = [response directionsResponseID];
+        directionsResponseID2 = [v5 directionsResponseID];
+        v15 = [directionsResponseID isEqualToData:directionsResponseID2];
 
         if (v15)
         {
@@ -247,13 +247,13 @@ LABEL_8:
   return v10;
 }
 
-- (unint64_t)_directionsRowIndexBeforeTimestamp:(double)a3
+- (unint64_t)_directionsRowIndexBeforeTimestamp:(double)timestamp
 {
   v5 = objc_alloc_init(MNTraceDirectionsRow);
-  [(MNTraceDirectionsRow *)v5 setResponseTimestamp:a3];
-  v6 = [(MNTrace *)self->_trace directions];
-  v7 = [(MNTrace *)self->_trace directions];
-  v8 = [v6 indexOfObject:v5 inSortedRange:0 options:objc_msgSend(v7 usingComparator:{"count"), 1024, &__block_literal_global_135}];
+  [(MNTraceDirectionsRow *)v5 setResponseTimestamp:timestamp];
+  directions = [(MNTrace *)self->_trace directions];
+  directions2 = [(MNTrace *)self->_trace directions];
+  v8 = [directions indexOfObject:v5 inSortedRange:0 options:objc_msgSend(directions2 usingComparator:{"count"), 1024, &__block_literal_global_135}];
 
   if (v8)
   {
@@ -284,14 +284,14 @@ uint64_t __52__MNTracePlayer__directionsRowIndexBeforeTimestamp___block_invoke(u
   return v11;
 }
 
-- (id)_changeRouteRowForTimestamp:(double)a3
+- (id)_changeRouteRowForTimestamp:(double)timestamp
 {
-  v4 = [(MNTrace *)self->_trace navigationUpdates];
+  navigationUpdates = [(MNTrace *)self->_trace navigationUpdates];
   v5 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_130];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
+  v6 = [navigationUpdates filteredArrayUsingPredicate:v5];
 
   v7 = objc_alloc_init(MNTraceNavigationUpdatesChangeRouteRow);
-  [(MNTraceNavigationUpdatesRow *)v7 setTimestamp:a3];
+  [(MNTraceNavigationUpdatesRow *)v7 setTimestamp:timestamp];
   v8 = [v6 indexOfObject:v7 inSortedRange:0 options:objc_msgSend(v6 usingComparator:{"count"), 1024, &__block_literal_global_133_17086}];
   if (v8)
   {
@@ -333,13 +333,13 @@ uint64_t __45__MNTracePlayer__changeRouteRowForTimestamp___block_invoke_2(uint64
   return v11;
 }
 
-- (id)_locationRowBeforeTimestamp:(double)a3
+- (id)_locationRowBeforeTimestamp:(double)timestamp
 {
   v5 = objc_alloc_init(MNTraceLocationRow);
-  [(MNTraceLocationRow *)v5 setTimestamp:a3];
-  v6 = [(MNTrace *)self->_trace locations];
-  v7 = [(MNTrace *)self->_trace locations];
-  v8 = [v6 indexOfObject:v5 inSortedRange:0 options:objc_msgSend(v7 usingComparator:{"count"), 1024, &__block_literal_global_126}];
+  [(MNTraceLocationRow *)v5 setTimestamp:timestamp];
+  locations = [(MNTrace *)self->_trace locations];
+  locations2 = [(MNTrace *)self->_trace locations];
+  v8 = [locations indexOfObject:v5 inSortedRange:0 options:objc_msgSend(locations2 usingComparator:{"count"), 1024, &__block_literal_global_126}];
 
   if (v8)
   {
@@ -351,14 +351,14 @@ uint64_t __45__MNTracePlayer__changeRouteRowForTimestamp___block_invoke_2(uint64
     v9 = 0;
   }
 
-  v10 = [(MNTrace *)self->_trace locations];
-  v11 = [v10 count];
+  locations3 = [(MNTrace *)self->_trace locations];
+  v11 = [locations3 count];
 
   v12 = 0;
   if (v9 < v11)
   {
-    v13 = [(MNTrace *)self->_trace locations];
-    v12 = [v13 objectAtIndexedSubscript:v9];
+    locations4 = [(MNTrace *)self->_trace locations];
+    v12 = [locations4 objectAtIndexedSubscript:v9];
   }
 
   return v12;
@@ -380,23 +380,23 @@ uint64_t __45__MNTracePlayer__locationRowBeforeTimestamp___block_invoke(uint64_t
   return v11;
 }
 
-- (id)_locationWithCurrentDate:(id)a3
+- (id)_locationWithCurrentDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v6 = v5;
   if (self->_lastReportedLocation)
   {
-    v7 = [v4 timestamp];
-    v8 = [(MNLocation *)self->_lastReportedLocation originalDate];
-    [v7 timeIntervalSinceDate:v8];
+    timestamp = [dateCopy timestamp];
+    originalDate = [(MNLocation *)self->_lastReportedLocation originalDate];
+    [timestamp timeIntervalSinceDate:originalDate];
     v10 = v9;
 
     if (v10 < 0.0)
     {
       v11 = v10 / self->_speedMultiplier;
-      v12 = [(MNLocation *)self->_lastReportedLocation timestamp];
-      [v12 timeIntervalSinceReferenceDate];
+      timestamp2 = [(MNLocation *)self->_lastReportedLocation timestamp];
+      [timestamp2 timeIntervalSinceReferenceDate];
       v6 = v13 + v11;
     }
   }
@@ -409,14 +409,14 @@ uint64_t __45__MNTracePlayer__locationRowBeforeTimestamp___block_invoke(uint64_t
   v26 = 0u;
   v27 = 0u;
   v25 = 0u;
-  if (v4)
+  if (dateCopy)
   {
-    [v4 clientLocation];
+    [dateCopy clientLocation];
   }
 
   *(v29 + 12) = v6;
   v14 = [MNLocation alloc];
-  v15 = [v4 matchInfo];
+  matchInfo = [dateCopy matchInfo];
   v23[6] = v30;
   v23[7] = v31;
   v24[0] = v32[0];
@@ -427,42 +427,42 @@ uint64_t __45__MNTracePlayer__locationRowBeforeTimestamp___block_invoke(uint64_t
   v23[5] = v29[1];
   v23[0] = v25;
   v23[1] = v26;
-  v16 = [(MNLocation *)v14 initWithClientLocation:v23 matchInfo:v15];
+  v16 = [(MNLocation *)v14 initWithClientLocation:v23 matchInfo:matchInfo];
 
   v17 = *MEMORY[0x1E69A19F8];
   v18 = *(MEMORY[0x1E69A19F8] + 8);
   if (GEOConfigGetBOOL())
   {
-    v19 = [(MNLocation *)v16 uuid];
+    uuid = [(MNLocation *)v16 uuid];
 
-    if (!v19)
+    if (!uuid)
     {
-      v20 = [MEMORY[0x1E696AFB0] UUID];
-      [(MNLocation *)v16 setUuid:v20];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      [(MNLocation *)v16 setUuid:uUID];
     }
   }
 
-  v21 = [v4 timestamp];
-  [(MNLocation *)v16 setOriginalDate:v21];
+  timestamp3 = [dateCopy timestamp];
+  [(MNLocation *)v16 setOriginalDate:timestamp3];
 
   return v16;
 }
 
-- (void)setShouldPlayNetworkEvents:(BOOL)a3
+- (void)setShouldPlayNetworkEvents:(BOOL)events
 {
-  if (self->_shouldPlayNetworkEvents != a3)
+  if (self->_shouldPlayNetworkEvents != events)
   {
-    self->_shouldPlayNetworkEvents = a3;
-    if (a3)
+    self->_shouldPlayNetworkEvents = events;
+    if (events)
     {
-      v4 = [(MNTrace *)self->_trace networkEvents];
-      v5 = [v4 count];
+      networkEvents = [(MNTrace *)self->_trace networkEvents];
+      v5 = [networkEvents count];
 
       if (v5)
       {
         v6 = [MNTracePlayerTimelineStream alloc];
-        v7 = [(MNTrace *)self->_trace networkEvents];
-        v8 = [(MNTracePlayerTimelineStream *)v6 initWithData:v7];
+        networkEvents2 = [(MNTrace *)self->_trace networkEvents];
+        v8 = [(MNTracePlayerTimelineStream *)v6 initWithData:networkEvents2];
         networkEventsStream = self->_networkEventsStream;
         self->_networkEventsStream = v8;
 
@@ -503,21 +503,21 @@ void __44__MNTracePlayer_setShouldPlayNetworkEvents___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)setShouldPlayETARequests:(BOOL)a3
+- (void)setShouldPlayETARequests:(BOOL)requests
 {
-  if (self->_shouldPlayETARequests != a3)
+  if (self->_shouldPlayETARequests != requests)
   {
-    self->_shouldPlayETARequests = a3;
-    if (a3)
+    self->_shouldPlayETARequests = requests;
+    if (requests)
     {
-      v4 = [(MNTrace *)self->_trace etaUpdates];
-      v5 = [v4 count];
+      etaUpdates = [(MNTrace *)self->_trace etaUpdates];
+      v5 = [etaUpdates count];
 
       if (v5)
       {
         v6 = [MNTracePlayerTimelineStream alloc];
-        v7 = [(MNTrace *)self->_trace etaUpdates];
-        v8 = [(MNTracePlayerTimelineStream *)v6 initWithData:v7];
+        etaUpdates2 = [(MNTrace *)self->_trace etaUpdates];
+        v8 = [(MNTracePlayerTimelineStream *)v6 initWithData:etaUpdates2];
         etaUpdatesStream = self->_etaUpdatesStream;
         self->_etaUpdatesStream = v8;
 
@@ -568,14 +568,14 @@ void __42__MNTracePlayer_setShouldPlayETARequests___block_invoke(uint64_t a1, ui
 - (void)_createTimelineStreams
 {
   objc_initWeak(&location, self);
-  v3 = [(MNTrace *)self->_trace locations];
-  v4 = [v3 count];
+  locations = [(MNTrace *)self->_trace locations];
+  v4 = [locations count];
 
   if (v4)
   {
     v5 = [MNTracePlayerTimelineStream alloc];
-    v6 = [(MNTrace *)self->_trace locations];
-    v7 = [(MNTracePlayerTimelineStream *)v5 initWithData:v6];
+    locations2 = [(MNTrace *)self->_trace locations];
+    v7 = [(MNTracePlayerTimelineStream *)v5 initWithData:locations2];
 
     v51[0] = MEMORY[0x1E69E9820];
     v51[1] = 3221225472;
@@ -590,14 +590,14 @@ void __42__MNTracePlayer_setShouldPlayETARequests___block_invoke(uint64_t a1, ui
     objc_destroyWeak(&v52);
   }
 
-  v9 = [(MNTrace *)self->_trace vehicleHeadingData];
-  v10 = [v9 count];
+  vehicleHeadingData = [(MNTrace *)self->_trace vehicleHeadingData];
+  v10 = [vehicleHeadingData count];
 
   if (v10)
   {
     v11 = [MNTracePlayerTimelineStream alloc];
-    v12 = [(MNTrace *)self->_trace vehicleHeadingData];
-    v13 = [(MNTracePlayerTimelineStream *)v11 initWithData:v12];
+    vehicleHeadingData2 = [(MNTrace *)self->_trace vehicleHeadingData];
+    v13 = [(MNTracePlayerTimelineStream *)v11 initWithData:vehicleHeadingData2];
 
     v49[0] = MEMORY[0x1E69E9820];
     v49[1] = 3221225472;
@@ -609,14 +609,14 @@ void __42__MNTracePlayer_setShouldPlayETARequests___block_invoke(uint64_t a1, ui
     objc_destroyWeak(&v50);
   }
 
-  v14 = [(MNTrace *)self->_trace vehicleSpeedData];
-  v15 = [v14 count];
+  vehicleSpeedData = [(MNTrace *)self->_trace vehicleSpeedData];
+  v15 = [vehicleSpeedData count];
 
   if (v15)
   {
     v16 = [MNTracePlayerTimelineStream alloc];
-    v17 = [(MNTrace *)self->_trace vehicleSpeedData];
-    v18 = [(MNTracePlayerTimelineStream *)v16 initWithData:v17];
+    vehicleSpeedData2 = [(MNTrace *)self->_trace vehicleSpeedData];
+    v18 = [(MNTracePlayerTimelineStream *)v16 initWithData:vehicleSpeedData2];
 
     v47[0] = MEMORY[0x1E69E9820];
     v47[1] = 3221225472;
@@ -628,14 +628,14 @@ void __42__MNTracePlayer_setShouldPlayETARequests___block_invoke(uint64_t a1, ui
     objc_destroyWeak(&v48);
   }
 
-  v19 = [(MNTrace *)self->_trace motionData];
-  v20 = [v19 count];
+  motionData = [(MNTrace *)self->_trace motionData];
+  v20 = [motionData count];
 
   if (v20)
   {
     v21 = [MNTracePlayerTimelineStream alloc];
-    v22 = [(MNTrace *)self->_trace motionData];
-    v23 = [(MNTracePlayerTimelineStream *)v21 initWithData:v22];
+    motionData2 = [(MNTrace *)self->_trace motionData];
+    v23 = [(MNTracePlayerTimelineStream *)v21 initWithData:motionData2];
 
     v45[0] = MEMORY[0x1E69E9820];
     v45[1] = 3221225472;
@@ -647,14 +647,14 @@ void __42__MNTracePlayer_setShouldPlayETARequests___block_invoke(uint64_t a1, ui
     objc_destroyWeak(&v46);
   }
 
-  v24 = [(MNTrace *)self->_trace headingData];
-  v25 = [v24 count];
+  headingData = [(MNTrace *)self->_trace headingData];
+  v25 = [headingData count];
 
   if (v25)
   {
     v26 = [MNTracePlayerTimelineStream alloc];
-    v27 = [(MNTrace *)self->_trace headingData];
-    v28 = [(MNTracePlayerTimelineStream *)v26 initWithData:v27];
+    headingData2 = [(MNTrace *)self->_trace headingData];
+    v28 = [(MNTracePlayerTimelineStream *)v26 initWithData:headingData2];
 
     v43[0] = MEMORY[0x1E69E9820];
     v43[1] = 3221225472;
@@ -666,14 +666,14 @@ void __42__MNTracePlayer_setShouldPlayETARequests___block_invoke(uint64_t a1, ui
     objc_destroyWeak(&v44);
   }
 
-  v29 = [(MNTrace *)self->_trace evData];
-  v30 = [v29 count];
+  evData = [(MNTrace *)self->_trace evData];
+  v30 = [evData count];
 
   if (v30)
   {
     v31 = [MNTracePlayerTimelineStream alloc];
-    v32 = [(MNTrace *)self->_trace evData];
-    v33 = [(MNTracePlayerTimelineStream *)v31 initWithData:v32];
+    evData2 = [(MNTrace *)self->_trace evData];
+    v33 = [(MNTracePlayerTimelineStream *)v31 initWithData:evData2];
 
     v41[0] = MEMORY[0x1E69E9820];
     v41[1] = 3221225472;
@@ -685,14 +685,14 @@ void __42__MNTracePlayer_setShouldPlayETARequests___block_invoke(uint64_t a1, ui
     objc_destroyWeak(&v42);
   }
 
-  v34 = [(MNTrace *)self->_trace navigationUpdates];
-  v35 = [v34 count];
+  navigationUpdates = [(MNTrace *)self->_trace navigationUpdates];
+  v35 = [navigationUpdates count];
 
   if (v35)
   {
     v36 = [MNTracePlayerTimelineStream alloc];
-    v37 = [(MNTrace *)self->_trace navigationUpdates];
-    v38 = [(MNTracePlayerTimelineStream *)v36 initWithData:v37];
+    navigationUpdates2 = [(MNTrace *)self->_trace navigationUpdates];
+    v38 = [(MNTracePlayerTimelineStream *)v36 initWithData:navigationUpdates2];
 
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
@@ -944,11 +944,11 @@ LABEL_11:
 LABEL_13:
 }
 
-- (void)setSpeedMultiplier:(double)a3
+- (void)setSpeedMultiplier:(double)multiplier
 {
-  if (self->_speedMultiplier != a3)
+  if (self->_speedMultiplier != multiplier)
   {
-    self->_speedMultiplier = a3;
+    self->_speedMultiplier = multiplier;
     [(MNTracePlayerScheduler *)self->_scheduler setSpeedMultiplier:?];
   }
 }
@@ -960,28 +960,28 @@ LABEL_13:
   return v3 + traceStartTimestamp;
 }
 
-- (void)jumpToBookmarkAtIndex:(unint64_t)a3
+- (void)jumpToBookmarkAtIndex:(unint64_t)index
 {
-  v5 = [(MNTracePlayer *)self trace];
-  v6 = [v5 bookmarks];
-  v8 = [v6 objectAtIndex:a3];
+  trace = [(MNTracePlayer *)self trace];
+  bookmarks = [trace bookmarks];
+  v8 = [bookmarks objectAtIndex:index];
 
   [v8 doubleValue];
   [(MNTracePlayer *)self jumpToTime:v7 + -5.0];
 }
 
-- (void)skipByTimeInterval:(double)a3
+- (void)skipByTimeInterval:(double)interval
 {
   [(MNTracePlayer *)self position];
-  v6 = v5 + a3;
+  v6 = v5 + interval;
 
   [(MNTracePlayer *)self jumpToTime:v6];
 }
 
-- (void)jumpToLocationAtIndex:(unint64_t)a3
+- (void)jumpToLocationAtIndex:(unint64_t)index
 {
-  v5 = [(MNTrace *)self->_trace locations];
-  v7 = [v5 objectAtIndex:a3];
+  locations = [(MNTrace *)self->_trace locations];
+  v7 = [locations objectAtIndex:index];
 
   [v7 timestamp];
   [(MNTracePlayerScheduler *)self->_scheduler setPosition:?];
@@ -991,29 +991,29 @@ LABEL_13:
   [(NSMutableArray *)self->_processedWaypointEvents removeAllObjects];
 }
 
-- (void)jumpToTime:(double)a3
+- (void)jumpToTime:(double)time
 {
   [(MNTracePlayerScheduler *)self->_scheduler position];
   v6 = v5;
-  [(MNTracePlayerScheduler *)self->_scheduler setPosition:a3];
+  [(MNTracePlayerScheduler *)self->_scheduler setPosition:time];
   lastReportedLocation = self->_lastReportedLocation;
   self->_lastReportedLocation = 0;
 
   [(NSMutableArray *)self->_processedWaypointEvents removeAllObjects];
   if (self->_shouldUpdateRouteWhenJumping)
   {
-    v8 = [(MNTracePlayer *)self _changeRouteRowForTimestamp:a3];
+    v8 = [(MNTracePlayer *)self _changeRouteRowForTimestamp:time];
     if (!v8)
     {
       v8 = objc_alloc_init(MNTraceNavigationUpdatesChangeRouteRow);
-      [(MNTraceNavigationUpdatesRow *)v8 setTimestamp:a3];
+      [(MNTraceNavigationUpdatesRow *)v8 setTimestamp:time];
     }
 
     v9 = [(MNTracePlayer *)self _routeForRouteChangeRow:v8];
     if (v9)
     {
       [(GEOObserverHashTable *)self->_observers tracePlayer:self didUpdateCurrentRoute:v9 reason:0];
-      v10 = [(MNTracePlayer *)self _locationRowBeforeTimestamp:a3];
+      v10 = [(MNTracePlayer *)self _locationRowBeforeTimestamp:time];
       if (!v10)
       {
         goto LABEL_17;
@@ -1028,72 +1028,72 @@ LABEL_13:
   if (GEOConfigGetBOOL())
   {
     v8 = objc_alloc_init(MNTraceDirectionsRow);
-    [(MNTraceNavigationUpdatesChangeRouteRow *)v8 setRequestTimestamp:a3];
-    v11 = [(MNTrace *)self->_trace directions];
-    v12 = [(MNTrace *)self->_trace directions];
-    v13 = [v11 indexOfObject:v8 inSortedRange:0 options:objc_msgSend(v12 usingComparator:{"count"), 1024, &__block_literal_global_17099}];
+    [(MNTraceNavigationUpdatesChangeRouteRow *)v8 setRequestTimestamp:time];
+    directions = [(MNTrace *)self->_trace directions];
+    directions2 = [(MNTrace *)self->_trace directions];
+    v13 = [directions indexOfObject:v8 inSortedRange:0 options:objc_msgSend(directions2 usingComparator:{"count"), 1024, &__block_literal_global_17099}];
 
     v14 = v13 - 1;
     if (v13 != 1)
     {
-      v15 = [(MNTrace *)self->_trace directions];
-      v16 = [v15 count];
+      directions3 = [(MNTrace *)self->_trace directions];
+      v16 = [directions3 count];
 
       if (v14 < v16)
       {
-        v17 = [(MNTrace *)self->_trace directions];
-        v18 = [v17 objectAtIndexedSubscript:v14];
+        directions4 = [(MNTrace *)self->_trace directions];
+        v18 = [directions4 objectAtIndexedSubscript:v14];
 
         observers = self->_observers;
-        v20 = [v18 response];
-        v21 = [v18 request];
-        v22 = [v18 waypoints];
-        [(GEOObserverHashTable *)observers tracePlayer:self didJumpToRouteResponse:v20 request:v21 waypoints:v22];
+        response = [v18 response];
+        request = [v18 request];
+        waypoints = [v18 waypoints];
+        [(GEOObserverHashTable *)observers tracePlayer:self didJumpToRouteResponse:response request:request waypoints:waypoints];
       }
     }
 
     v9 = objc_alloc_init(MNTraceLocationRow);
-    [(MNTraceLocationRow *)v9 setTimestamp:a3];
-    v23 = [(MNTrace *)self->_trace locations];
-    v24 = [(MNTrace *)self->_trace locations];
-    v25 = [v23 indexOfObject:v9 inSortedRange:0 options:objc_msgSend(v24 usingComparator:{"count"), 1024, &__block_literal_global_116}];
+    [(MNTraceLocationRow *)v9 setTimestamp:time];
+    locations = [(MNTrace *)self->_trace locations];
+    locations2 = [(MNTrace *)self->_trace locations];
+    v25 = [locations indexOfObject:v9 inSortedRange:0 options:objc_msgSend(locations2 usingComparator:{"count"), 1024, &__block_literal_global_116}];
 
     v26 = v25 - 1;
     if (v25 != 1)
     {
-      v27 = [(MNTrace *)self->_trace locations];
-      v28 = [v27 count];
+      locations3 = [(MNTrace *)self->_trace locations];
+      v28 = [locations3 count];
 
       if (v26 < v28)
       {
-        v29 = [(MNTrace *)self->_trace locations];
-        v10 = [v29 objectAtIndexedSubscript:v26];
+        locations4 = [(MNTrace *)self->_trace locations];
+        v10 = [locations4 objectAtIndexedSubscript:v26];
 
 LABEL_14:
         if ([v10 originalMatchType] == 1)
         {
-          v30 = [v10 location];
+          location = [v10 location];
 LABEL_18:
 
           goto LABEL_19;
         }
 
 LABEL_17:
-        v30 = 0;
+        location = 0;
         goto LABEL_18;
       }
     }
 
 LABEL_16:
-    v30 = 0;
+    location = 0;
 LABEL_19:
 
     goto LABEL_21;
   }
 
-  v30 = 0;
+  location = 0;
 LABEL_21:
-  [(GEOObserverHashTable *)self->_observers tracePlayer:self didSeekToTime:v30 fromTime:a3 location:v6];
+  [(GEOObserverHashTable *)self->_observers tracePlayer:self didSeekToTime:location fromTime:time location:v6];
 }
 
 uint64_t __28__MNTracePlayer_jumpToTime___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -1128,16 +1128,16 @@ uint64_t __28__MNTracePlayer_jumpToTime___block_invoke(uint64_t a1, void *a2, vo
   return v11;
 }
 
-- (BOOL)requestDirectionsNearTimestamp:(double)a3 withHandler:(id)a4
+- (BOOL)requestDirectionsNearTimestamp:(double)timestamp withHandler:(id)handler
 {
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v7 = [(MNTrace *)self->_trace directions];
-  v8 = [v7 countByEnumeratingWithState:&v41 objects:v51 count:16];
+  directions = [(MNTrace *)self->_trace directions];
+  v8 = [directions countByEnumeratingWithState:&v41 objects:v51 count:16];
   if (!v8)
   {
 
@@ -1154,12 +1154,12 @@ uint64_t __28__MNTracePlayer_jumpToTime___block_invoke(uint64_t a1, void *a2, vo
     {
       if (*v42 != v11)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(directions);
       }
 
       v14 = *(*(&v41 + 1) + 8 * i);
       [v14 requestTimestamp];
-      v16 = vabdd_f64(v15, a3);
+      v16 = vabdd_f64(v15, timestamp);
       if (v16 < v12)
       {
         v17 = v14;
@@ -1169,7 +1169,7 @@ uint64_t __28__MNTracePlayer_jumpToTime___block_invoke(uint64_t a1, void *a2, vo
       }
     }
 
-    v9 = [v7 countByEnumeratingWithState:&v41 objects:v51 count:16];
+    v9 = [directions countByEnumeratingWithState:&v41 objects:v51 count:16];
   }
 
   while (v9);
@@ -1207,8 +1207,8 @@ LABEL_19:
     goto LABEL_21;
   }
 
-  v18 = [v10 response];
-  v19 = [v10 error];
+  response = [v10 response];
+  error = [v10 error];
   [v10 requestTimestamp];
   v21 = v20;
   [v10 responseTimestamp];
@@ -1231,13 +1231,13 @@ LABEL_19:
   v36[1] = 3221225472;
   v36[2] = __60__MNTracePlayer_requestDirectionsNearTimestamp_withHandler___block_invoke;
   v36[3] = &unk_1E842FF40;
-  v37 = v18;
-  v39 = v19;
-  v40 = v6;
+  v37 = response;
+  v39 = error;
+  v40 = handlerCopy;
   v38 = v10;
-  v27 = v19;
+  v27 = error;
   v10 = v10;
-  v28 = v18;
+  v28 = response;
   dispatch_after(v26, MEMORY[0x1E69E96A0], v36);
 
   v29 = 1;
@@ -1284,15 +1284,15 @@ void __60__MNTracePlayer_requestDirectionsNearTimestamp_withHandler___block_invo
   }
 }
 
-- (id)guidanceEventNearTimestamp:(double)a3
+- (id)guidanceEventNearTimestamp:(double)timestamp
 {
   v24 = *MEMORY[0x1E69E9840];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [(MNTrace *)self->_trace navigationEvents];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  navigationEvents = [(MNTrace *)self->_trace navigationEvents];
+  v6 = [navigationEvents countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (!v6)
   {
 
@@ -1312,12 +1312,12 @@ LABEL_15:
     {
       if (*v20 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(navigationEvents);
       }
 
       v12 = *(*(&v19 + 1) + 8 * i);
       [v12 relativeTimestamp];
-      v14 = vabdd_f64(v13, a3);
+      v14 = vabdd_f64(v13, timestamp);
       if (v14 < v10)
       {
         v15 = v12;
@@ -1327,7 +1327,7 @@ LABEL_15:
       }
     }
 
-    v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v7 = [navigationEvents countByEnumeratingWithState:&v19 objects:v23 count:16];
   }
 
   while (v7);
@@ -1396,7 +1396,7 @@ LABEL_16:
   [(GEOObserverHashTable *)observers tracePlayerDidStop:self];
 }
 
-- (void)startAtLocationIndex:(unint64_t)a3
+- (void)startAtLocationIndex:(unint64_t)index
 {
   v28 = *MEMORY[0x1E69E9840];
   if (self->_isPlaying)
@@ -1406,8 +1406,8 @@ LABEL_15:
     return;
   }
 
-  v5 = [(MNTrace *)self->_trace locations];
-  v6 = [v5 count];
+  locations = [(MNTrace *)self->_trace locations];
+  v6 = [locations count];
 
   if (!v6)
   {
@@ -1421,19 +1421,19 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v7 = [(MNTrace *)self->_trace locations];
-  v8 = [v7 count];
+  locations2 = [(MNTrace *)self->_trace locations];
+  v8 = [locations2 count];
 
-  if (v8 <= a3)
+  if (v8 <= index)
   {
     v20 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v21 = [(MNTrace *)self->_trace locations];
+      locations3 = [(MNTrace *)self->_trace locations];
       *buf = 67109376;
-      v25 = a3;
+      indexCopy = index;
       v26 = 1024;
-      v27 = [v21 count];
+      v27 = [locations3 count];
       _os_log_impl(&dword_1D311E000, v20, OS_LOG_TYPE_ERROR, "Starting index (%d) out of bounds of location array: [0,%d]", buf, 0xEu);
     }
 
@@ -1442,12 +1442,12 @@ LABEL_15:
 
   if (self->_traceStartTimestamp == 0.0)
   {
-    v9 = [(MNTrace *)self->_trace locations];
-    v10 = [v9 firstObject];
+    locations4 = [(MNTrace *)self->_trace locations];
+    firstObject = [locations4 firstObject];
 
-    v11 = [v10 location];
-    v12 = [v11 timestamp];
-    [v12 timeIntervalSinceReferenceDate];
+    location = [firstObject location];
+    timestamp = [location timestamp];
+    [timestamp timeIntervalSinceReferenceDate];
     self->_traceStartTimestamp = v13;
   }
 
@@ -1457,11 +1457,11 @@ LABEL_15:
   [v14 setProvider:self];
 
   [(GEOObserverHashTable *)self->_observers tracePlayerDidStart:self];
-  v15 = [(MNTrace *)self->_trace locations];
-  v23 = [v15 objectAtIndex:a3];
+  locations5 = [(MNTrace *)self->_trace locations];
+  v23 = [locations5 objectAtIndex:index];
 
-  v16 = [v23 location];
-  v17 = [(MNTracePlayer *)self _locationWithCurrentDate:v16];
+  location2 = [v23 location];
+  v17 = [(MNTracePlayer *)self _locationWithCurrentDate:location2];
   [(GEOObserverHashTable *)self->_observers tracePlayer:self didUpdateLocation:v17];
   [v23 timestamp];
   [(MNTracePlayerScheduler *)self->_scheduler setPosition:?];
@@ -1480,16 +1480,16 @@ LABEL_15:
   [(MNTracePlayer *)&v4 dealloc];
 }
 
-- (MNTracePlayer)initWithTrace:(id)a3
+- (MNTracePlayer)initWithTrace:(id)trace
 {
-  v5 = a3;
+  traceCopy = trace;
   v20.receiver = self;
   v20.super_class = MNTracePlayer;
   v6 = [(MNTracePlayer *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_trace, a3);
+    objc_storeStrong(&v6->_trace, trace);
     v8 = objc_alloc_init(MNTracePlayerScheduler);
     scheduler = v7->_scheduler;
     v7->_scheduler = v8;
@@ -1500,16 +1500,16 @@ LABEL_15:
     observers = v7->_observers;
     v7->_observers = v11;
 
-    v13 = [(MNTrace *)v7->_trace locations];
-    v14 = [v13 lastObject];
-    [v14 timestamp];
+    locations = [(MNTrace *)v7->_trace locations];
+    lastObject = [locations lastObject];
+    [lastObject timestamp];
     v7->_duration = v15;
 
     [(MNTracePlayer *)v7 setSpeedMultiplier:1.0];
     [(MNTracePlayer *)v7 _createTimelineStreams];
-    v16 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     processedWaypointEvents = v7->_processedWaypointEvents;
-    v7->_processedWaypointEvents = v16;
+    v7->_processedWaypointEvents = array;
 
     v18 = v7;
   }
@@ -1517,24 +1517,24 @@ LABEL_15:
   return v7;
 }
 
-- (MNTracePlayer)initWithPath:(id)a3 outError:(id *)a4
+- (MNTracePlayer)initWithPath:(id)path outError:(id *)error
 {
-  v6 = a3;
+  pathCopy = path;
   v7 = objc_alloc_init(MNTraceLoader);
-  v8 = [(MNTraceLoader *)v7 loadTraceWithPath:v6 outError:a4];
+  v8 = [(MNTraceLoader *)v7 loadTraceWithPath:pathCopy outError:error];
 
   if (v8)
   {
     self = [(MNTracePlayer *)self initWithTrace:v8];
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

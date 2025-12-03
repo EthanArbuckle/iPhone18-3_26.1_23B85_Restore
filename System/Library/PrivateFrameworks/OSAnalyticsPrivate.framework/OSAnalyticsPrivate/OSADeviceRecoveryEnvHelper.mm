@@ -1,6 +1,6 @@
 @interface OSADeviceRecoveryEnvHelper
 + (id)sharedInstance;
-- (BOOL)overrideMountPath:(id)a3;
+- (BOOL)overrideMountPath:(id)path;
 - (void)releaseSandboxExtensions;
 @end
 
@@ -31,17 +31,17 @@ uint64_t __44__OSADeviceRecoveryEnvHelper_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)overrideMountPath:(id)a3
+- (BOOL)overrideMountPath:(id)path
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   [(OSADeviceRecoveryEnvHelper *)self releaseSandboxExtensions];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 sandboxExtensions];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  sandboxExtensions = [pathCopy sandboxExtensions];
+  v6 = [sandboxExtensions countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -52,7 +52,7 @@ uint64_t __44__OSADeviceRecoveryEnvHelper_sharedInstance__block_invoke()
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sandboxExtensions);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
@@ -61,7 +61,7 @@ uint64_t __44__OSADeviceRecoveryEnvHelper_sharedInstance__block_invoke()
         {
 
           [(OSADeviceRecoveryEnvHelper *)self releaseSandboxExtensions];
-          v15 = 0;
+          overrideMountPath = 0;
           goto LABEL_11;
         }
 
@@ -70,7 +70,7 @@ uint64_t __44__OSADeviceRecoveryEnvHelper_sharedInstance__block_invoke()
         [(NSMutableArray *)sandboxExtensions addObject:v13];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [sandboxExtensions countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v7)
       {
         continue;
@@ -80,12 +80,12 @@ uint64_t __44__OSADeviceRecoveryEnvHelper_sharedInstance__block_invoke()
     }
   }
 
-  v14 = [MEMORY[0x277D36B80] sharedInstance];
-  v15 = [v14 overrideMountPath];
+  mEMORY[0x277D36B80] = [MEMORY[0x277D36B80] sharedInstance];
+  overrideMountPath = [mEMORY[0x277D36B80] overrideMountPath];
 
 LABEL_11:
   v16 = *MEMORY[0x277D85DE8];
-  return v15;
+  return overrideMountPath;
 }
 
 - (void)releaseSandboxExtensions

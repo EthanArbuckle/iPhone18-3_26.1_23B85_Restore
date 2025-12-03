@@ -1,15 +1,15 @@
 @interface FMCardPresentedRegularTransition
 - (_TtC6FindMy32FMCardPresentedRegularTransition)init;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation FMCardPresentedRegularTransition
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_10026B7CC(a3);
+  selfCopy = self;
+  sub_10026B7CC(transition);
   swift_unknownObjectRelease();
 }
 

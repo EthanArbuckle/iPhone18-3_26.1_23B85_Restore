@@ -1,10 +1,10 @@
 @interface _UIButtonBarStackView
 - (NSString)description;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)layoutSubviews;
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5;
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5;
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator;
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator;
 - (void)updateConstraints;
 @end
 
@@ -49,48 +49,48 @@
   v7.super_class = _UIButtonBarStackView;
   v3 = [(UIStackView *)&v7 description];
   WeakRetained = objc_loadWeakRetained(&self->_buttonBar);
-  v5 = [v3 stringByAppendingFormat:@" buttonBar=%p", WeakRetained];
+  weakRetained = [v3 stringByAppendingFormat:@" buttonBar=%p", WeakRetained];
 
-  return v5;
+  return weakRetained;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  regionCopy = region;
+  requestCopy = request;
+  interactionCopy = interaction;
   WeakRetained = objc_loadWeakRetained(&self->_buttonBar);
-  v12 = [WeakRetained pointerInteraction:v10 regionForRequest:v9 defaultRegion:v8];
+  v12 = [WeakRetained pointerInteraction:interactionCopy regionForRequest:requestCopy defaultRegion:regionCopy];
 
   return v12;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a4;
-  v7 = a3;
+  regionCopy = region;
+  interactionCopy = interaction;
   WeakRetained = objc_loadWeakRetained(&self->_buttonBar);
-  v9 = [WeakRetained pointerInteraction:v7 styleForRegion:v6];
+  v9 = [WeakRetained pointerInteraction:interactionCopy styleForRegion:regionCopy];
 
   return v9;
 }
 
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  animatorCopy = animator;
+  regionCopy = region;
+  interactionCopy = interaction;
   WeakRetained = objc_loadWeakRetained(&self->_buttonBar);
-  [WeakRetained pointerInteraction:v10 willEnterRegion:v9 animator:v8];
+  [WeakRetained pointerInteraction:interactionCopy willEnterRegion:regionCopy animator:animatorCopy];
 }
 
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  animatorCopy = animator;
+  regionCopy = region;
+  interactionCopy = interaction;
   WeakRetained = objc_loadWeakRetained(&self->_buttonBar);
-  [WeakRetained pointerInteraction:v10 willExitRegion:v9 animator:v8];
+  [WeakRetained pointerInteraction:interactionCopy willExitRegion:regionCopy animator:animatorCopy];
 }
 
 @end

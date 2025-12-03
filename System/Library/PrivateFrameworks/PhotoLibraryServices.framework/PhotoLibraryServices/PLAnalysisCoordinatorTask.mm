@@ -1,9 +1,9 @@
 @interface PLAnalysisCoordinatorTask
-+ (id)_orderedStepsForFeature:(unint64_t)a3 withLibraryServicesManager:(id)a4 taskID:(id)a5;
-- (id)initForFeature:(unint64_t)a3 assets:(id)a4 lsm:(id)a5;
++ (id)_orderedStepsForFeature:(unint64_t)feature withLibraryServicesManager:(id)manager taskID:(id)d;
+- (id)initForFeature:(unint64_t)feature assets:(id)assets lsm:(id)lsm;
 - (void)_cancel;
-- (void)_executeStepsStartingAtIndex:(unint64_t)a3 withCompletionHandler:(id)a4;
-- (void)executeWithCompletionHandler:(id)a3;
+- (void)_executeStepsStartingAtIndex:(unint64_t)index withCompletionHandler:(id)handler;
+- (void)executeWithCompletionHandler:(id)handler;
 @end
 
 @implementation PLAnalysisCoordinatorTask
@@ -49,10 +49,10 @@
   os_unfair_lock_unlock(&self->_lock_currentStepIndex);
 }
 
-- (void)executeWithCompletionHandler:(id)a3
+- (void)executeWithCompletionHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_19BF1F000, "analysis-coordinator-task", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -98,7 +98,7 @@
   v15 = v11;
   v19 = v15;
   v20 = v9;
-  v16 = v4;
+  v16 = handlerCopy;
   v18 = v16;
   [(PLAnalysisCoordinatorTask *)self _executeStepsStartingAtIndex:0 withCompletionHandler:v17];
 
@@ -141,20 +141,20 @@ void __58__PLAnalysisCoordinatorTask_executeWithCompletionHandler___block_invoke
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_executeStepsStartingAtIndex:(unint64_t)a3 withCompletionHandler:(id)a4
+- (void)_executeStepsStartingAtIndex:(unint64_t)index withCompletionHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock_currentStepIndex);
-  self->_currentStepIndex = a3;
+  self->_currentStepIndex = index;
   os_unfair_lock_unlock(&self->_lock_currentStepIndex);
-  if ([(NSArray *)self->_steps count]<= a3)
+  if ([(NSArray *)self->_steps count]<= index)
   {
     v14 = MEMORY[0x1E69BF2D0];
-    v15 = [MEMORY[0x1E695DFB0] null];
-    v16 = [v14 successWithResult:v15];
+    null = [MEMORY[0x1E695DFB0] null];
+    v16 = [v14 successWithResult:null];
 
-    v6[2](v6, v16);
+    handlerCopy[2](handlerCopy, v16);
   }
 
   else
@@ -166,7 +166,7 @@ void __58__PLAnalysisCoordinatorTask_executeWithCompletionHandler___block_invoke
       *buf = 138543618;
       v24 = taskID;
       v25 = 2048;
-      v26 = a3;
+      indexCopy2 = index;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Executing step %lu", buf, 0x16u);
     }
 
@@ -179,19 +179,19 @@ void __58__PLAnalysisCoordinatorTask_executeWithCompletionHandler___block_invoke
         *buf = 138543618;
         v24 = v10;
         v25 = 2048;
-        v26 = a3;
+        indexCopy2 = index;
         _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Abandoning step %lu due to cancelled progress", buf, 0x16u);
       }
 
       v11 = MEMORY[0x1E69BF2D0];
       v12 = PLErrorCreate();
       v13 = [v11 failureWithError:v12];
-      v6[2](v6, v13);
+      handlerCopy[2](handlerCopy, v13);
     }
 
     else
     {
-      v17 = [(NSArray *)self->_steps objectAtIndexedSubscript:a3];
+      v17 = [(NSArray *)self->_steps objectAtIndexedSubscript:index];
       assets = self->_assets;
       progress = self->_progress;
       v20[0] = MEMORY[0x1E69E9820];
@@ -199,8 +199,8 @@ void __58__PLAnalysisCoordinatorTask_executeWithCompletionHandler___block_invoke
       v20[2] = __80__PLAnalysisCoordinatorTask__executeStepsStartingAtIndex_withCompletionHandler___block_invoke;
       v20[3] = &unk_1E756D258;
       v20[4] = self;
-      v22 = a3;
-      v21 = v6;
+      indexCopy3 = index;
+      v21 = handlerCopy;
       [v17 performStepForAssets:assets withProgress:progress withCompletionHandler:v20];
     }
   }
@@ -236,40 +236,40 @@ void __80__PLAnalysisCoordinatorTask__executeStepsStartingAtIndex_withCompletion
   }
 }
 
-- (id)initForFeature:(unint64_t)a3 assets:(id)a4 lsm:(id)a5
+- (id)initForFeature:(unint64_t)feature assets:(id)assets lsm:(id)lsm
 {
-  v10 = a4;
-  v11 = a5;
+  assetsCopy = assets;
+  lsmCopy = lsm;
   v26.receiver = self;
   v26.super_class = PLAnalysisCoordinatorTask;
   v12 = [(PLAnalysisCoordinatorTask *)&v26 init];
   if (v12)
   {
-    v13 = [MEMORY[0x1E696AFB0] UUID];
-    v14 = [v13 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     taskID = v12->_taskID;
-    v12->_taskID = v14;
+    v12->_taskID = uUIDString;
 
-    objc_storeStrong(&v12->_assets, a4);
-    objc_storeStrong(&v12->_lsm, a5);
-    v16 = [PLAnalysisCoordinatorTask _orderedStepsForFeature:a3 withLibraryServicesManager:v11 taskID:v12->_taskID];
+    objc_storeStrong(&v12->_assets, assets);
+    objc_storeStrong(&v12->_lsm, lsm);
+    v16 = [PLAnalysisCoordinatorTask _orderedStepsForFeature:feature withLibraryServicesManager:lsmCopy taskID:v12->_taskID];
     steps = v12->_steps;
     v12->_steps = v16;
 
-    if (a3 == 7 && [(NSArray *)v12->_assets count]>= 2)
+    if (feature == 7 && [(NSArray *)v12->_assets count]>= 2)
     {
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v25 handleFailureInMethod:a2 object:v12 file:@"PLAnalysisCoordinatorTask.m" lineNumber:48 description:@"Video sensitivity analysis task may only be analyzed with one asset"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v12 file:@"PLAnalysisCoordinatorTask.m" lineNumber:48 description:@"Video sensitivity analysis task may only be analyzed with one asset"];
     }
 
     if (![(NSArray *)v12->_steps count])
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v24 handleFailureInMethod:a2 object:v12 file:@"PLAnalysisCoordinatorTask.m" lineNumber:49 description:@"Task must have at least one step"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v12 file:@"PLAnalysisCoordinatorTask.m" lineNumber:49 description:@"Task must have at least one step"];
     }
 
     v18 = [(NSArray *)v12->_steps count];
-    v19 = [v10 count];
+    v19 = [assetsCopy count];
     v20 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:v19 * v18];
     progress = v12->_progress;
     v12->_progress = v20;
@@ -282,22 +282,22 @@ void __80__PLAnalysisCoordinatorTask__executeStepsStartingAtIndex_withCompletion
   return v12;
 }
 
-+ (id)_orderedStepsForFeature:(unint64_t)a3 withLibraryServicesManager:(id)a4 taskID:(id)a5
++ (id)_orderedStepsForFeature:(unint64_t)feature withLibraryServicesManager:(id)manager taskID:(id)d
 {
   v26[3] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  if (a3 <= 4)
+  managerCopy = manager;
+  dCopy = d;
+  if (feature <= 4)
   {
-    if (a3 <= 2)
+    if (feature <= 2)
     {
-      if (a3 == 1)
+      if (feature == 1)
       {
-        v9 = [[PLAnalysisCoordinatorStepMediaAnalysis alloc] initWithLibraryServicesManager:v7 parentTaskID:v8 processingType:1];
+        v9 = [[PLAnalysisCoordinatorStepMediaAnalysis alloc] initWithLibraryServicesManager:managerCopy parentTaskID:dCopy processingType:1];
         v26[0] = v9;
-        v10 = [[PLAnalysisCoordinatorStepMediaAnalysis alloc] initWithLibraryServicesManager:v7 parentTaskID:v8 processingType:8];
+        v10 = [[PLAnalysisCoordinatorStepMediaAnalysis alloc] initWithLibraryServicesManager:managerCopy parentTaskID:dCopy processingType:8];
         v26[1] = v10;
-        v15 = [[PLAnalysisCoordinatorStepSearchIndexing alloc] initWithLibraryServicesManager:v7 parentTaskID:v8];
+        v15 = [[PLAnalysisCoordinatorStepSearchIndexing alloc] initWithLibraryServicesManager:managerCopy parentTaskID:dCopy];
         v26[2] = v15;
         v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:3];
 
@@ -305,11 +305,11 @@ LABEL_19:
         goto LABEL_25;
       }
 
-      if (a3 == 2)
+      if (feature == 2)
       {
-        v9 = [[PLAnalysisCoordinatorStepSearchIndexing alloc] initWithLibraryServicesManager:v7 parentTaskID:v8];
+        v9 = [[PLAnalysisCoordinatorStepSearchIndexing alloc] initWithLibraryServicesManager:managerCopy parentTaskID:dCopy];
         v25[0] = v9;
-        v10 = [[PLAnalysisCoordinatorStepSearchSuggestions alloc] initWithLibraryServicesManager:v7 parentTaskID:v8];
+        v10 = [[PLAnalysisCoordinatorStepSearchSuggestions alloc] initWithLibraryServicesManager:managerCopy parentTaskID:dCopy];
         v25[1] = v10;
         v11 = MEMORY[0x1E695DEC8];
         v12 = v25;
@@ -321,18 +321,18 @@ LABEL_18:
       goto LABEL_22;
     }
 
-    if (a3 == 3)
+    if (feature == 3)
     {
-      v9 = [[PLAnalysisCoordinatorStepMediaAnalysis alloc] initWithLibraryServicesManager:v7 parentTaskID:v8 processingType:1];
+      v9 = [[PLAnalysisCoordinatorStepMediaAnalysis alloc] initWithLibraryServicesManager:managerCopy parentTaskID:dCopy processingType:1];
       v24[0] = v9;
-      v10 = [[PLAnalysisCoordinatorStepSearchIndexing alloc] initWithLibraryServicesManager:v7 parentTaskID:v8];
+      v10 = [[PLAnalysisCoordinatorStepSearchIndexing alloc] initWithLibraryServicesManager:managerCopy parentTaskID:dCopy];
       v24[1] = v10;
       v11 = MEMORY[0x1E695DEC8];
       v12 = v24;
       goto LABEL_18;
     }
 
-    v9 = [[PLAnalysisCoordinatorStepMediaAnalysis alloc] initWithLibraryServicesManager:v7 parentTaskID:v8 processingType:4];
+    v9 = [[PLAnalysisCoordinatorStepMediaAnalysis alloc] initWithLibraryServicesManager:managerCopy parentTaskID:dCopy processingType:4];
     v23 = v9;
     v13 = MEMORY[0x1E695DEC8];
     v14 = &v23;
@@ -341,15 +341,15 @@ LABEL_21:
     goto LABEL_25;
   }
 
-  if (a3 > 7)
+  if (feature > 7)
   {
-    if (a3 != 8)
+    if (feature != 8)
     {
-      if (a3 == 100)
+      if (feature == 100)
       {
-        v9 = [[PLAnalysisCoordinatorStepEmpty alloc] initWithLibraryServicesManager:v7 parentTaskID:v8];
+        v9 = [[PLAnalysisCoordinatorStepEmpty alloc] initWithLibraryServicesManager:managerCopy parentTaskID:dCopy];
         v19[0] = v9;
-        v10 = [[PLAnalysisCoordinatorStepEmpty alloc] initWithLibraryServicesManager:v7 parentTaskID:v8];
+        v10 = [[PLAnalysisCoordinatorStepEmpty alloc] initWithLibraryServicesManager:managerCopy parentTaskID:dCopy];
         v19[1] = v10;
         v11 = MEMORY[0x1E695DEC8];
         v12 = v19;
@@ -359,27 +359,27 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v9 = [[PLAnalysisCoordinatorStepMediaAnalysis alloc] initWithLibraryServicesManager:v7 parentTaskID:v8 processingType:1];
+    v9 = [[PLAnalysisCoordinatorStepMediaAnalysis alloc] initWithLibraryServicesManager:managerCopy parentTaskID:dCopy processingType:1];
     v20 = v9;
     v13 = MEMORY[0x1E695DEC8];
     v14 = &v20;
     goto LABEL_21;
   }
 
-  if (a3 == 5)
+  if (feature == 5)
   {
-    v9 = [[PLAnalysisCoordinatorStepMediaAnalysis alloc] initWithLibraryServicesManager:v7 parentTaskID:v8 processingType:1];
+    v9 = [[PLAnalysisCoordinatorStepMediaAnalysis alloc] initWithLibraryServicesManager:managerCopy parentTaskID:dCopy processingType:1];
     v22[0] = v9;
-    v10 = [[PLAnalysisCoordinatorStepMediaAnalysis alloc] initWithLibraryServicesManager:v7 parentTaskID:v8 processingType:4];
+    v10 = [[PLAnalysisCoordinatorStepMediaAnalysis alloc] initWithLibraryServicesManager:managerCopy parentTaskID:dCopy processingType:4];
     v22[1] = v10;
     v11 = MEMORY[0x1E695DEC8];
     v12 = v22;
     goto LABEL_18;
   }
 
-  if (a3 == 7)
+  if (feature == 7)
   {
-    v9 = [[PLAnalysisCoordinatorStepMediaAnalysis alloc] initWithLibraryServicesManager:v7 parentTaskID:v8 processingType:32];
+    v9 = [[PLAnalysisCoordinatorStepMediaAnalysis alloc] initWithLibraryServicesManager:managerCopy parentTaskID:dCopy processingType:32];
     v21 = v9;
     v13 = MEMORY[0x1E695DEC8];
     v14 = &v21;

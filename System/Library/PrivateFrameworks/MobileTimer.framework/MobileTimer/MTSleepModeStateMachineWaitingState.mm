@@ -1,16 +1,16 @@
 @interface MTSleepModeStateMachineWaitingState
-- (void)didEnterWithPreviousState:(id)a3;
+- (void)didEnterWithPreviousState:(id)state;
 @end
 
 @implementation MTSleepModeStateMachineWaitingState
 
-- (void)didEnterWithPreviousState:(id)a3
+- (void)didEnterWithPreviousState:(id)state
 {
-  if (self != a3)
+  if (self != state)
   {
-    v6 = [(MTStateMachineState *)self stateMachine];
-    v5 = [(MTStateMachineState *)self stateMachine];
-    [v6 stateMachine:v5 scheduleUpdateForSecondsFromNow:60.0];
+    stateMachine = [(MTStateMachineState *)self stateMachine];
+    stateMachine2 = [(MTStateMachineState *)self stateMachine];
+    [stateMachine stateMachine:stateMachine2 scheduleUpdateForSecondsFromNow:60.0];
   }
 }
 

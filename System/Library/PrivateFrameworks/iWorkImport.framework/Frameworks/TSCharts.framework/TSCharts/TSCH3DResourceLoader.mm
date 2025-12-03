@@ -1,30 +1,30 @@
 @interface TSCH3DResourceLoader
 + (id)loader;
-+ (unint64_t)estimatedMemoryInBytesForSize:(tvec2<int>)a3 samples:(unint64_t)a4 hasColorbuffer:(BOOL)a5 hasDepthbuffer:(BOOL)a6;
-- (unint64_t)uploadResource:(id)a3 handle:(id)a4 insideSession:(id)a5 config:(id)a6;
-- (void)destroyHandle:(id)a3 insideContext:(id)a4;
++ (unint64_t)estimatedMemoryInBytesForSize:(tvec2<int>)size samples:(unint64_t)samples hasColorbuffer:(BOOL)colorbuffer hasDepthbuffer:(BOOL)depthbuffer;
+- (unint64_t)uploadResource:(id)resource handle:(id)handle insideSession:(id)session config:(id)config;
+- (void)destroyHandle:(id)handle insideContext:(id)context;
 @end
 
 @implementation TSCH3DResourceLoader
 
 + (id)loader
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (unint64_t)estimatedMemoryInBytesForSize:(tvec2<int>)a3 samples:(unint64_t)a4 hasColorbuffer:(BOOL)a5 hasDepthbuffer:(BOOL)a6
++ (unint64_t)estimatedMemoryInBytesForSize:(tvec2<int>)size samples:(unint64_t)samples hasColorbuffer:(BOOL)colorbuffer hasDepthbuffer:(BOOL)depthbuffer
 {
-  v6 = *(*&a3 + 4) * *a3.var0.var0 * a4;
+  v6 = *(*&size + 4) * *size.var0.var0 * samples;
   v7 = 4 * v6;
-  if (!a5)
+  if (!colorbuffer)
   {
     v7 = 0;
   }
 
   v8 = 2 * v6;
-  if (!a6)
+  if (!depthbuffer)
   {
     v8 = 0;
   }
@@ -32,12 +32,12 @@
   return v7 + v8;
 }
 
-- (void)destroyHandle:(id)a3 insideContext:(id)a4
+- (void)destroyHandle:(id)handle insideContext:(id)context
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v13 = objc_msgSend_sharedContext(v7, v8, v9, v10, v11);
+  handleCopy = handle;
+  contextCopy = context;
+  v13 = objc_msgSend_sharedContext(contextCopy, v8, v9, v10, v11);
   if (!v13)
   {
     v17 = MEMORY[0x277D81150];
@@ -48,7 +48,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v28, v29, v30, v31);
   }
 
-  objc_msgSend_deactivateHandle_insideContext_(self, v12, v14, v15, v16, v6, v13);
+  objc_msgSend_deactivateHandle_insideContext_(self, v12, v14, v15, v16, handleCopy, v13);
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
@@ -67,7 +67,7 @@
           objc_enumerationMutation(v35);
         }
 
-        objc_msgSend_deactivateHandle_insideContext_(self, v40, v42, v43, v44, v6, *(*(&v51 + 1) + 8 * i));
+        objc_msgSend_deactivateHandle_insideContext_(self, v40, v42, v43, v44, handleCopy, *(*(&v51 + 1) + 8 * i));
       }
 
       v41 = objc_msgSend_countByEnumeratingWithState_objects_count_(v35, v40, v42, v43, v44, &v51, v55, 16);
@@ -76,16 +76,16 @@
     while (v41);
   }
 
-  objc_msgSend_destroyResourcesInContext_(v6, v47, v48, v49, v50, v7);
+  objc_msgSend_destroyResourcesInContext_(handleCopy, v47, v48, v49, v50, contextCopy);
 }
 
-- (unint64_t)uploadResource:(id)a3 handle:(id)a4 insideSession:(id)a5 config:(id)a6
+- (unint64_t)uploadResource:(id)resource handle:(id)handle insideSession:(id)session config:(id)config
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v17 = objc_msgSend_buffer(a3, v13, v14, v15, v16);
-  v22 = objc_msgSend_uploadDataBuffer_handle_insideSession_config_(self, v18, v19, v20, v21, v17, v10, v11, v12);
+  handleCopy = handle;
+  sessionCopy = session;
+  configCopy = config;
+  v17 = objc_msgSend_buffer(resource, v13, v14, v15, v16);
+  v22 = objc_msgSend_uploadDataBuffer_handle_insideSession_config_(self, v18, v19, v20, v21, v17, handleCopy, sessionCopy, configCopy);
 
   return v22;
 }

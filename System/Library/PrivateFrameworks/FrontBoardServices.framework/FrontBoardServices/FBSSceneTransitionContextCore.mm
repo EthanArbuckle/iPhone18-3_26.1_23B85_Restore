@@ -10,9 +10,9 @@
 - (FBWatchdogTransitionContext)watchdogTransitionContext;
 - (NSError)error;
 - (RBSProcessHandle)clientProcessHandle;
-- (void)setAllowCPUThrottling:(BOOL)a3;
-- (void)setBarrier:(BOOL)a3;
-- (void)setRunningBoardAssertionDisabled:(BOOL)a3;
+- (void)setAllowCPUThrottling:(BOOL)throttling;
+- (void)setBarrier:(BOOL)barrier;
+- (void)setRunningBoardAssertionDisabled:(BOOL)disabled;
 @end
 
 @implementation FBSSceneTransitionContextCore
@@ -27,9 +27,9 @@
 - (BOOL)isRunningBoardAssertionDisabled
 {
   v2 = [(FBSSceneTransitionContextCore *)self valueForProperty:a2 expectedClass:objc_opt_class()];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (FBSceneUpdateContext)updateContext
@@ -42,9 +42,9 @@
 - (BOOL)allowCPUThrottling
 {
   v2 = [(FBSSceneTransitionContextCore *)self valueForProperty:a2 expectedClass:objc_opt_class()];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (FBWatchdogTransitionContext)watchdogTransitionContext
@@ -85,14 +85,14 @@
 - (BOOL)isBarrier
 {
   v2 = [(FBSSceneTransitionContextCore *)self valueForProperty:a2 expectedClass:objc_opt_class()];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setBarrier:(BOOL)a3
+- (void)setBarrier:(BOOL)barrier
 {
-  if (a3)
+  if (barrier)
   {
     v3 = *MEMORY[0x1E695E4D0];
   }
@@ -105,9 +105,9 @@
   [(FBSSceneTransitionContextCore *)self setValue:v3 forProperty:a2];
 }
 
-- (void)setAllowCPUThrottling:(BOOL)a3
+- (void)setAllowCPUThrottling:(BOOL)throttling
 {
-  if (a3)
+  if (throttling)
   {
     v3 = *MEMORY[0x1E695E4D0];
   }
@@ -120,9 +120,9 @@
   [(FBSSceneTransitionContextCore *)self setValue:v3 forProperty:a2];
 }
 
-- (void)setRunningBoardAssertionDisabled:(BOOL)a3
+- (void)setRunningBoardAssertionDisabled:(BOOL)disabled
 {
-  if (a3)
+  if (disabled)
   {
     v3 = *MEMORY[0x1E695E4D0];
   }

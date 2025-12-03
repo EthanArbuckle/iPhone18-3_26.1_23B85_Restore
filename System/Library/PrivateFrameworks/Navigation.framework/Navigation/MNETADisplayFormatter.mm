@@ -1,7 +1,7 @@
 @interface MNETADisplayFormatter
-- (MNETADisplayFormatter)initWithTimeZone:(id)a3;
+- (MNETADisplayFormatter)initWithTimeZone:(id)zone;
 - (MNETADisplayFormatterDelegate)delegate;
-- (id)_displayDateWithRemainingTime:(double)a3;
+- (id)_displayDateWithRemainingTime:(double)time;
 - (void)_scheduleUpdateTimer;
 - (void)_updateDisplayETA;
 - (void)_updateTimerFired;
@@ -17,15 +17,15 @@
   return WeakRetained;
 }
 
-- (id)_displayDateWithRemainingTime:(double)a3
+- (id)_displayDateWithRemainingTime:(double)time
 {
-  v4 = [MEMORY[0x1E695DF00] date];
-  [v4 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v6 = floor(v5 * 0.0166666667);
 
   v7 = MEMORY[0x1E695DF00];
 
-  return [v7 dateWithTimeIntervalSince1970:a3 + v6 * 60.0];
+  return [v7 dateWithTimeIntervalSince1970:time + v6 * 60.0];
 }
 
 - (void)_updateTimerFired
@@ -39,8 +39,8 @@
 
 - (void)_scheduleUpdateTimer
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  [v3 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v5 = v4;
 
   v6 = [MNWeakTimer scheduledTimerWithTimeInterval:self target:sel__updateTimerFired selector:60.0 - (v5 % 0x3C)];
@@ -88,16 +88,16 @@
   [(MNETADisplayFormatter *)&v3 dealloc];
 }
 
-- (MNETADisplayFormatter)initWithTimeZone:(id)a3
+- (MNETADisplayFormatter)initWithTimeZone:(id)zone
 {
-  v5 = a3;
+  zoneCopy = zone;
   v10.receiver = self;
   v10.super_class = MNETADisplayFormatter;
   v6 = [(MNETADisplayFormatter *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_timeZone, a3);
+    objc_storeStrong(&v6->_timeZone, zone);
     v8 = v7;
   }
 

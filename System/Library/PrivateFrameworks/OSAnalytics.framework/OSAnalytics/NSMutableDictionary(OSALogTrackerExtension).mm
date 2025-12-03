@@ -14,7 +14,7 @@
   v40[2] = *MEMORY[0x1E69E9840];
   v10 = a3;
   v11 = a4;
-  v12 = [a1 objectForKey:v10];
+  v12 = [self objectForKey:v10];
   if (v12)
   {
     v13 = v12;
@@ -24,23 +24,23 @@
   else
   {
     v13 = +[OSALogTrackerObject tracker];
-    [a1 setObject:v13 forKey:v10];
+    [self setObject:v13 forKey:v10];
   }
 
   v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a5];
-  v15 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   if (a6)
   {
-    v16 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v38 = 0;
-    v17 = [v16 attributesOfItemAtPath:v14 error:&v38];
+    v17 = [defaultManager attributesOfItemAtPath:v14 error:&v38];
     v18 = v38;
 
     if (v17)
     {
       v19 = [v17 objectForKey:*MEMORY[0x1E696A308]];
 
-      v15 = v19;
+      date = v19;
     }
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -51,26 +51,26 @@
 
   if (v13)
   {
-    v20 = [v13 oldestDate];
-    if (!v20)
+    oldestDate = [v13 oldestDate];
+    if (!oldestDate)
     {
       goto LABEL_14;
     }
 
-    v21 = v20;
-    if (!v15)
+    v21 = oldestDate;
+    if (!date)
     {
 
       goto LABEL_16;
     }
 
-    v22 = [v13 oldestDate];
-    v23 = [v22 compare:v15];
+    oldestDate2 = [v13 oldestDate];
+    v23 = [oldestDate2 compare:date];
 
     if (v23 == 1)
     {
 LABEL_14:
-      [v13 setOldestDate:v15];
+      [v13 setOldestDate:date];
       [v13 setOldestLogPath:v14];
     }
   }
@@ -85,8 +85,8 @@ LABEL_16:
     }
 
     v37 = v10;
-    v25 = [v13 signatures];
-    v26 = [v25 objectForKeyedSubscript:v11];
+    signatures = [v13 signatures];
+    v26 = [signatures objectForKeyedSubscript:v11];
 
     if (v26)
     {
@@ -112,8 +112,8 @@ LABEL_16:
       v40[1] = v30;
       v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:2];
       v32 = [v31 mutableCopy];
-      v33 = [v13 signatures];
-      [v33 setObject:v32 forKeyedSubscript:v11];
+      signatures2 = [v13 signatures];
+      [signatures2 setObject:v32 forKeyedSubscript:v11];
 
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
@@ -135,7 +135,7 @@ LABEL_16:
   v10 = dispatch_time(0, 1000000000);
   if (!dispatch_semaphore_wait(v9, v10))
   {
-    [a1 osa_logTracker_incrementForSubtype_internal:v11 signature:v8 filepath:a5 scan:0];
+    [self osa_logTracker_incrementForSubtype_internal:v11 signature:v8 filepath:a5 scan:0];
     dispatch_semaphore_signal(sAccountingSemaphore);
   }
 }
@@ -171,7 +171,7 @@ LABEL_15:
     v12 = osa_logTracker_trackLogTypes_internal_forOwner_rescan__rescanSentinel;
     osa_logTracker_trackLogTypes_internal_forOwner_rescan__rescanSentinel = 0;
 
-    [a1 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_52];
+    [self enumerateKeysAndObjectsUsingBlock:&__block_literal_global_52];
     v13 = objc_autoreleasePoolPush();
     v31 = 0;
     v32 = &v31;
@@ -202,7 +202,7 @@ LABEL_15:
     v22[3] = &unk_1E7A27FF8;
     v26 = &v46;
     v24 = &v31;
-    v22[4] = a1;
+    v22[4] = self;
     v23 = v8;
     v25 = &v27;
     [OSALog iterateLogsWithOptions:v15 usingBlock:v22];
@@ -211,7 +211,7 @@ LABEL_15:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v18 = v32[3];
-      v19 = [a1 count];
+      v19 = [self count];
       v20 = v28[3];
       *buf = 134218754;
       v37 = v18;
@@ -243,7 +243,7 @@ LABEL_16:
   block[1] = 3221225472;
   block[2] = __85__NSMutableDictionary_OSALogTrackerExtension__osa_logTracker_getForSubtype_forOwner___block_invoke;
   block[3] = &unk_1E7A28020;
-  block[4] = a1;
+  block[4] = self;
   v8 = v6;
   v15 = v8;
   v9 = v7;
@@ -253,7 +253,7 @@ LABEL_16:
     dispatch_once(&osa_logTracker_getForSubtype_forOwner__onceToken, block);
   }
 
-  v10 = [a1 objectForKey:v8];
+  v10 = [self objectForKey:v8];
   v11 = v10;
   if (v10)
   {
@@ -289,8 +289,8 @@ LABEL_16:
   v14 = a4;
   v15 = a7;
   v16 = [v15 objectForKeyedSubscript:@"file-owner"];
-  v83 = a1;
-  v85 = [a1 osa_logTracker_getForSubtype:v14 forOwner:v16];
+  selfCopy = self;
+  v85 = [self osa_logTracker_getForSubtype:v14 forOwner:v16];
   v17 = v13;
   v18 = v15;
   v19 = [v18 objectForKeyedSubscript:@"set-log-limit"];
@@ -307,11 +307,11 @@ LABEL_16:
     v26 = a6;
     v27 = v17;
     v28 = [v18 objectForKeyedSubscript:@"override-limit"];
-    v29 = [v28 BOOLValue];
+    bOOLValue = [v28 BOOLValue];
 
-    if (v29)
+    if (bOOLValue)
     {
-      v23 = -1;
+      unsignedIntegerValue = -1;
     }
 
     else
@@ -331,23 +331,23 @@ LABEL_16:
               v14 = v24;
               if ([v17 hasPrefix:@"211"])
               {
-                v23 = 150;
+                unsignedIntegerValue = 150;
               }
 
               else if ([v17 hasPrefix:@"328"])
               {
-                v23 = 250;
+                unsignedIntegerValue = 250;
               }
 
               else
               {
-                v23 = 25;
+                unsignedIntegerValue = 25;
               }
 
               goto LABEL_11;
             }
 
-            v23 = 100;
+            unsignedIntegerValue = 100;
 LABEL_10:
             v14 = v24;
 LABEL_11:
@@ -355,31 +355,31 @@ LABEL_11:
             goto LABEL_12;
           }
 
-          v23 = 100;
+          unsignedIntegerValue = 100;
 LABEL_9:
           a5 = v25;
           goto LABEL_10;
         }
 
-        v23 = [v19 unsignedIntegerValue];
+        unsignedIntegerValue = [v19 unsignedIntegerValue];
 LABEL_8:
         a6 = v26;
         goto LABEL_9;
       }
 
-      v23 = [v22 integerValue];
+      unsignedIntegerValue = [v22 integerValue];
     }
 
     v17 = v27;
     goto LABEL_8;
   }
 
-  v23 = -1;
+  unsignedIntegerValue = -1;
 LABEL_12:
 
   v30 = v85;
-  v31 = v23;
-  if (v85 < v23 || (v82 = v23, [v83 osa_logTracker_trackLogTypes_internal:v14 forOwner:v16 rescan:osa_logTracker_isLog_byKey_count_withinLimit_withOptions_errorDescription__rescanOldFiles], v30 = objc_msgSend(v83, "osa_logTracker_getForSubtype:forOwner:", v14, v16), v31 = v23, v30 < v23))
+  v31 = unsignedIntegerValue;
+  if (v85 < unsignedIntegerValue || (v82 = unsignedIntegerValue, [selfCopy osa_logTracker_trackLogTypes_internal:v14 forOwner:v16 rescan:osa_logTracker_isLog_byKey_count_withinLimit_withOptions_errorDescription__rescanOldFiles], v30 = objc_msgSend(selfCopy, "osa_logTracker_getForSubtype:forOwner:", v14, v16), v31 = unsignedIntegerValue, v30 < unsignedIntegerValue))
   {
     v32 = 1;
     if (!a5)
@@ -398,15 +398,15 @@ LABEL_12:
     v36 = dispatch_time(0, 1000000000);
     if (!dispatch_semaphore_wait(v35, v36))
     {
-      v37 = [v83 objectForKey:v14];
+      v37 = [selfCopy objectForKey:v14];
       if (!v37)
       {
         [NSMutableDictionary(OSALogTrackerExtension) osa_logTracker_isLog:byKey:count:withinLimit:withOptions:errorDescription:];
       }
 
       v38 = v37;
-      v39 = [v37 signatures];
-      v40 = [v39 objectForKeyedSubscript:v78];
+      signatures = [v37 signatures];
+      v40 = [signatures objectForKeyedSubscript:v78];
 
       v41 = v40;
       if (v40)
@@ -418,7 +418,7 @@ LABEL_12:
         }
 
         v42 = [v40 objectForKeyedSubscript:@"original"];
-        [v83 osa_logTracker_recordNixedDuplicate:{objc_msgSend(v42, "fileSystemRepresentation")}];
+        [selfCopy osa_logTracker_recordNixedDuplicate:{objc_msgSend(v42, "fileSystemRepresentation")}];
 
         v41 = v40;
         goto LABEL_55;
@@ -433,12 +433,12 @@ LABEL_12:
       v93 = 0u;
       v90 = 0u;
       v91 = 0u;
-      v44 = [v38 signatures];
-      v89 = [v44 countByEnumeratingWithState:&v90 objects:v96 count:16];
+      signatures2 = [v38 signatures];
+      v89 = [signatures2 countByEnumeratingWithState:&v90 objects:v96 count:16];
       if (v89)
       {
         v45 = 0;
-        obj = v44;
+        obj = signatures2;
         v88 = *v91;
         do
         {
@@ -450,8 +450,8 @@ LABEL_12:
             }
 
             v47 = *(*(&v90 + 1) + 8 * i);
-            v48 = [v38 signatures];
-            v49 = [v48 objectForKeyedSubscript:v47];
+            signatures3 = [v38 signatures];
+            v49 = [signatures3 objectForKeyedSubscript:v47];
             v50 = [v49 objectForKeyedSubscript:@"dupes"];
             v51 = v38;
             v52 = [v50 count];
@@ -467,8 +467,8 @@ LABEL_12:
 
             else
             {
-              v56 = [v51 signatures];
-              v45 = [v56 objectForKeyedSubscript:v47];
+              signatures4 = [v51 signatures];
+              v45 = [signatures4 objectForKeyedSubscript:v47];
 
               v38 = v51;
             }
@@ -510,10 +510,10 @@ LABEL_12:
             [v61 removeObjectAtIndex:0];
 
             v62 = [v45 objectForKeyedSubscript:@"original"];
-            [v83 osa_logTracker_recordNixedDuplicate:{objc_msgSend(v62, "fileSystemRepresentation")}];
+            [selfCopy osa_logTracker_recordNixedDuplicate:{objc_msgSend(v62, "fileSystemRepresentation")}];
 
-            v63 = [v60 fileSystemRepresentation];
-            remove(v63, v64);
+            fileSystemRepresentation = [v60 fileSystemRepresentation];
+            remove(fileSystemRepresentation, v64);
             [v38 setCount:{objc_msgSend(v38, "count") - 1}];
 
             --v86;
@@ -557,17 +557,17 @@ LABEL_56:
 
   if (v86 >= v82)
   {
-    if ([v83 osa_logTracker_shouldRotateLog:v17])
+    if ([selfCopy osa_logTracker_shouldRotateLog:v17])
     {
       v65 = a6;
       v66 = v17;
       v67 = +[OSALogTrackerObject sharedTrackers];
       v68 = [v67 objectForKey:v14];
 
-      v69 = [v68 oldestLogPath];
-      v70 = [MEMORY[0x1E696AC08] defaultManager];
-      v71 = v70;
-      if (v69 && [v70 fileExistsAtPath:v69] && (objc_msgSend(MEMORY[0x1E696AC08], "defaultManager"), v72 = objc_claimAutoreleasedReturnValue(), v73 = objc_msgSend(v72, "removeItemAtPath:error:", v69, 0), v72, !v73))
+      oldestLogPath = [v68 oldestLogPath];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v71 = defaultManager;
+      if (oldestLogPath && [defaultManager fileExistsAtPath:oldestLogPath] && (objc_msgSend(MEMORY[0x1E696AC08], "defaultManager"), v72 = objc_claimAutoreleasedReturnValue(), v73 = objc_msgSend(v72, "removeItemAtPath:error:", oldestLogPath, 0), v72, !v73))
       {
         v32 = 0;
         if (a8)

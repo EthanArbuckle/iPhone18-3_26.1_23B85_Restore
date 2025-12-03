@@ -1,11 +1,11 @@
 @interface ISCGImageBlockSet
-- (ISCGImageBlockSet)initWithBlockSet:(CGImageBlockSet *)a3;
+- (ISCGImageBlockSet)initWithBlockSet:(CGImageBlockSet *)set;
 - (void)dealloc;
 @end
 
 @implementation ISCGImageBlockSet
 
-- (ISCGImageBlockSet)initWithBlockSet:(CGImageBlockSet *)a3
+- (ISCGImageBlockSet)initWithBlockSet:(CGImageBlockSet *)set
 {
   v5.receiver = self;
   v5.super_class = ISCGImageBlockSet;

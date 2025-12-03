@@ -1,26 +1,26 @@
 @interface IUISessionChangeResponse
-- (IUISessionChangeResponse)initWithCoder:(id)a3;
-- (IUISessionChangeResponse)initWithResponseState:(int64_t)a3;
+- (IUISessionChangeResponse)initWithCoder:(id)coder;
+- (IUISessionChangeResponse)initWithResponseState:(int64_t)state;
 @end
 
 @implementation IUISessionChangeResponse
 
-- (IUISessionChangeResponse)initWithResponseState:(int64_t)a3
+- (IUISessionChangeResponse)initWithResponseState:(int64_t)state
 {
   v5.receiver = self;
   v5.super_class = IUISessionChangeResponse;
   result = [(IUISessionChangeResponse *)&v5 init];
   if (result)
   {
-    result->_responseState = a3;
+    result->_responseState = state;
   }
 
   return result;
 }
 
-- (IUISessionChangeResponse)initWithCoder:(id)a3
+- (IUISessionChangeResponse)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntegerForKey:@"responseState"];
+  v4 = [coder decodeIntegerForKey:@"responseState"];
 
   return [(IUISessionChangeResponse *)self initWithResponseState:v4];
 }

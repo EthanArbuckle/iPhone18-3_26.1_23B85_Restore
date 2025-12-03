@@ -1,19 +1,19 @@
 @interface BRCUserNotificationRequestAccess
-- (BRCUserNotificationRequestAccess)initWithCKShare:(id)a3 userRecordName:(id)a4 accountID:(id)a5;
-- (BRCUserNotificationRequestAccess)initWithRecordName:(id)a3 zoneName:(id)a4 ownerName:(id)a5 userRecordName:(id)a6 accountID:(id)a7;
+- (BRCUserNotificationRequestAccess)initWithCKShare:(id)share userRecordName:(id)name accountID:(id)d;
+- (BRCUserNotificationRequestAccess)initWithRecordName:(id)name zoneName:(id)zoneName ownerName:(id)ownerName userRecordName:(id)recordName accountID:(id)d;
 @end
 
 @implementation BRCUserNotificationRequestAccess
 
-- (BRCUserNotificationRequestAccess)initWithRecordName:(id)a3 zoneName:(id)a4 ownerName:(id)a5 userRecordName:(id)a6 accountID:(id)a7
+- (BRCUserNotificationRequestAccess)initWithRecordName:(id)name zoneName:(id)zoneName ownerName:(id)ownerName userRecordName:(id)recordName accountID:(id)d
 {
-  v13 = a3;
-  v24 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
-  if (v13 && v24 && v14 && v15 && v16)
+  nameCopy = name;
+  zoneNameCopy = zoneName;
+  ownerNameCopy = ownerName;
+  recordNameCopy = recordName;
+  dCopy = d;
+  v17 = dCopy;
+  if (nameCopy && zoneNameCopy && ownerNameCopy && recordNameCopy && dCopy)
   {
     v25.receiver = self;
     v25.super_class = BRCUserNotificationRequestAccess;
@@ -21,15 +21,15 @@
     p_isa = &v18->super.isa;
     if (v18)
     {
-      objc_storeStrong(&v18->_recordName, a3);
-      objc_storeStrong(p_isa + 2, a4);
-      objc_storeStrong(p_isa + 3, a5);
-      objc_storeStrong(p_isa + 4, a6);
-      objc_storeStrong(p_isa + 5, a7);
+      objc_storeStrong(&v18->_recordName, name);
+      objc_storeStrong(p_isa + 2, zoneName);
+      objc_storeStrong(p_isa + 3, ownerName);
+      objc_storeStrong(p_isa + 4, recordName);
+      objc_storeStrong(p_isa + 5, d);
     }
 
     self = p_isa;
-    v20 = self;
+    selfCopy = self;
   }
 
   else
@@ -41,27 +41,27 @@
       [BRCUserNotificationRequestAccess initWithRecordName:zoneName:ownerName:userRecordName:accountID:];
     }
 
-    v20 = 0;
+    selfCopy = 0;
   }
 
-  return v20;
+  return selfCopy;
 }
 
-- (BRCUserNotificationRequestAccess)initWithCKShare:(id)a3 userRecordName:(id)a4 accountID:(id)a5
+- (BRCUserNotificationRequestAccess)initWithCKShare:(id)share userRecordName:(id)name accountID:(id)d
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v20 = [v9 recordID];
-  v10 = [v20 recordName];
-  v11 = [v9 recordID];
-  v12 = [v11 zoneID];
-  v13 = [v12 zoneName];
-  v14 = [v9 recordID];
+  dCopy = d;
+  nameCopy = name;
+  shareCopy = share;
+  recordID = [shareCopy recordID];
+  recordName = [recordID recordName];
+  recordID2 = [shareCopy recordID];
+  zoneID = [recordID2 zoneID];
+  zoneName = [zoneID zoneName];
+  recordID3 = [shareCopy recordID];
 
-  v15 = [v14 zoneID];
-  v16 = [v15 ownerName];
-  v17 = [(BRCUserNotificationRequestAccess *)self initWithRecordName:v10 zoneName:v13 ownerName:v16 userRecordName:v8 accountID:v7];
+  zoneID2 = [recordID3 zoneID];
+  ownerName = [zoneID2 ownerName];
+  v17 = [(BRCUserNotificationRequestAccess *)self initWithRecordName:recordName zoneName:zoneName ownerName:ownerName userRecordName:nameCopy accountID:dCopy];
 
   return v17;
 }

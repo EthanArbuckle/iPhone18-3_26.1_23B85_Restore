@@ -1,14 +1,14 @@
 @interface SUControllerProgress
-- (BOOL)isEqual:(id)a3;
-- (BOOL)sameProgress:(id)a3 portion:(float)a4 remaining:(double)a5 isDone:(BOOL)a6;
-- (BOOL)sameProgress:(id)a3 portion:(float)a4 remaining:(double)a5 isDone:(BOOL)a6 actionText:(id)a7;
-- (BOOL)sameProgress:(id)a3 portion:(float)a4 remaining:(double)a5 isDone:(BOOL)a6 actionText:(id)a7 isStalled:(BOOL)a8;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)sameProgress:(id)progress portion:(float)portion remaining:(double)remaining isDone:(BOOL)done;
+- (BOOL)sameProgress:(id)progress portion:(float)portion remaining:(double)remaining isDone:(BOOL)done actionText:(id)text;
+- (BOOL)sameProgress:(id)progress portion:(float)portion remaining:(double)remaining isDone:(BOOL)done actionText:(id)text isStalled:(BOOL)stalled;
 - (SUControllerProgress)init;
-- (SUControllerProgress)initWithCoder:(id)a3;
-- (SUControllerProgress)initWithPhase:(id)a3 portion:(float)a4 remaining:(double)a5 isDone:(BOOL)a6;
+- (SUControllerProgress)initWithCoder:(id)coder;
+- (SUControllerProgress)initWithPhase:(id)phase portion:(float)portion remaining:(double)remaining isDone:(BOOL)done;
 - (id)copy;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUControllerProgress
@@ -36,81 +36,81 @@
   return v2;
 }
 
-- (SUControllerProgress)initWithPhase:(id)a3 portion:(float)a4 remaining:(double)a5 isDone:(BOOL)a6
+- (SUControllerProgress)initWithPhase:(id)phase portion:(float)portion remaining:(double)remaining isDone:(BOOL)done
 {
-  v10 = a3;
+  phaseCopy = phase;
   v15.receiver = self;
   v15.super_class = SUControllerProgress;
   v11 = [(SUControllerProgress *)&v15 init];
   if (v11)
   {
-    v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@", v10];
+    phaseCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@", phaseCopy];
     phase = v11->_phase;
-    v11->_phase = v12;
+    v11->_phase = phaseCopy;
 
-    v11->_portionComplete = a4;
-    v11->_estimatedTimeRemaining = a5;
-    v11->_isDone = a6;
+    v11->_portionComplete = portion;
+    v11->_estimatedTimeRemaining = remaining;
+    v11->_isDone = done;
   }
 
   return v11;
 }
 
-- (SUControllerProgress)initWithCoder:(id)a3
+- (SUControllerProgress)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = SUControllerProgress;
   v5 = [(SUControllerProgress *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phase"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phase"];
     phase = v5->_phase;
     v5->_phase = v6;
 
-    [v4 decodeFloatForKey:@"portionComplete"];
+    [coderCopy decodeFloatForKey:@"portionComplete"];
     v5->_portionComplete = v8;
-    [v4 decodeFloatForKey:@"estimatedTimeRemaining"];
+    [coderCopy decodeFloatForKey:@"estimatedTimeRemaining"];
     v5->_estimatedTimeRemaining = v9;
-    v5->_isDone = [v4 decodeBoolForKey:@"isDone"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionText"];
+    v5->_isDone = [coderCopy decodeBoolForKey:@"isDone"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionText"];
     actionText = v5->_actionText;
     v5->_actionText = v10;
 
-    v5->_isStalled = [v4 decodeBoolForKey:@"isStalled"];
+    v5->_isStalled = [coderCopy decodeBoolForKey:@"isStalled"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(SUControllerProgress *)self phase];
-  [v7 encodeObject:v4 forKey:@"phase"];
+  coderCopy = coder;
+  phase = [(SUControllerProgress *)self phase];
+  [coderCopy encodeObject:phase forKey:@"phase"];
 
   [(SUControllerProgress *)self portionComplete];
-  [v7 encodeFloat:@"portionComplete" forKey:?];
+  [coderCopy encodeFloat:@"portionComplete" forKey:?];
   [(SUControllerProgress *)self estimatedTimeRemaining];
   *&v5 = v5;
-  [v7 encodeFloat:@"estimatedTimeRemaining" forKey:v5];
-  [v7 encodeBool:-[SUControllerProgress isDone](self forKey:{"isDone"), @"isDone"}];
-  v6 = [(SUControllerProgress *)self actionText];
-  [v7 encodeObject:v6 forKey:@"actionText"];
+  [coderCopy encodeFloat:@"estimatedTimeRemaining" forKey:v5];
+  [coderCopy encodeBool:-[SUControllerProgress isDone](self forKey:{"isDone"), @"isDone"}];
+  actionText = [(SUControllerProgress *)self actionText];
+  [coderCopy encodeObject:actionText forKey:@"actionText"];
 
-  [v7 encodeBool:-[SUControllerProgress isStalled](self forKey:{"isStalled"), @"isStalled"}];
+  [coderCopy encodeBool:-[SUControllerProgress isStalled](self forKey:{"isStalled"), @"isStalled"}];
 }
 
-- (BOOL)sameProgress:(id)a3 portion:(float)a4 remaining:(double)a5 isDone:(BOOL)a6
+- (BOOL)sameProgress:(id)progress portion:(float)portion remaining:(double)remaining isDone:(BOOL)done
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = [(SUControllerProgress *)self phase];
-  v12 = [v10 isEqualToString:v11];
+  doneCopy = done;
+  progressCopy = progress;
+  phase = [(SUControllerProgress *)self phase];
+  v12 = [progressCopy isEqualToString:phase];
 
-  if (v12 && ([(SUControllerProgress *)self portionComplete], v13 == a4) && ([(SUControllerProgress *)self estimatedTimeRemaining], v14 == a5))
+  if (v12 && ([(SUControllerProgress *)self portionComplete], v13 == portion) && ([(SUControllerProgress *)self estimatedTimeRemaining], v14 == remaining))
   {
-    v15 = [(SUControllerProgress *)self isDone]^ v6 ^ 1;
+    v15 = [(SUControllerProgress *)self isDone]^ doneCopy ^ 1;
   }
 
   else
@@ -121,17 +121,17 @@
   return v15;
 }
 
-- (BOOL)sameProgress:(id)a3 portion:(float)a4 remaining:(double)a5 isDone:(BOOL)a6 actionText:(id)a7
+- (BOOL)sameProgress:(id)progress portion:(float)portion remaining:(double)remaining isDone:(BOOL)done actionText:(id)text
 {
-  v7 = a6;
-  v12 = a7;
-  v13 = a3;
-  v14 = [(SUControllerProgress *)self phase];
-  v15 = [v13 isEqualToString:v14];
+  doneCopy = done;
+  textCopy = text;
+  progressCopy = progress;
+  phase = [(SUControllerProgress *)self phase];
+  v15 = [progressCopy isEqualToString:phase];
 
-  if (v15 && ([(SUControllerProgress *)self portionComplete], v16 == a4) && ([(SUControllerProgress *)self estimatedTimeRemaining], v17 == a5) && [(SUControllerProgress *)self isDone]== v7)
+  if (v15 && ([(SUControllerProgress *)self portionComplete], v16 == portion) && ([(SUControllerProgress *)self estimatedTimeRemaining], v17 == remaining) && [(SUControllerProgress *)self isDone]== doneCopy)
   {
-    v18 = [v12 isEqualToString:v12];
+    v18 = [textCopy isEqualToString:textCopy];
   }
 
   else
@@ -142,18 +142,18 @@
   return v18;
 }
 
-- (BOOL)sameProgress:(id)a3 portion:(float)a4 remaining:(double)a5 isDone:(BOOL)a6 actionText:(id)a7 isStalled:(BOOL)a8
+- (BOOL)sameProgress:(id)progress portion:(float)portion remaining:(double)remaining isDone:(BOOL)done actionText:(id)text isStalled:(BOOL)stalled
 {
-  v8 = a8;
-  v9 = a6;
-  v14 = a7;
-  v15 = a3;
-  v16 = [(SUControllerProgress *)self phase];
-  v17 = [v15 isEqualToString:v16];
+  stalledCopy = stalled;
+  doneCopy = done;
+  textCopy = text;
+  progressCopy = progress;
+  phase = [(SUControllerProgress *)self phase];
+  v17 = [progressCopy isEqualToString:phase];
 
-  if (v17 && ([(SUControllerProgress *)self portionComplete], v18 == a4) && ([(SUControllerProgress *)self estimatedTimeRemaining], v19 == a5) && [(SUControllerProgress *)self isDone]== v9 && [(SUControllerProgress *)self isStalled]== v8)
+  if (v17 && ([(SUControllerProgress *)self portionComplete], v18 == portion) && ([(SUControllerProgress *)self estimatedTimeRemaining], v19 == remaining) && [(SUControllerProgress *)self isDone]== doneCopy && [(SUControllerProgress *)self isStalled]== stalledCopy)
   {
-    v20 = [v14 isEqualToString:v14];
+    v20 = [textCopy isEqualToString:textCopy];
   }
 
   else
@@ -172,10 +172,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v16 = 1;
   }
@@ -185,10 +185,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SUControllerProgress *)v5 phase];
-      v7 = [(SUControllerProgress *)self phase];
-      if (![v6 isEqualToString:v7])
+      v5 = equalCopy;
+      phase = [(SUControllerProgress *)v5 phase];
+      phase2 = [(SUControllerProgress *)self phase];
+      if (![phase isEqualToString:phase2])
       {
         goto LABEL_8;
       }
@@ -206,9 +206,9 @@
       [(SUControllerProgress *)self estimatedTimeRemaining];
       if (v12 == v13 && (v14 = [(SUControllerProgress *)v5 isDone], v14 == [(SUControllerProgress *)self isDone]) && (v15 = [(SUControllerProgress *)v5 isStalled], v15 == [(SUControllerProgress *)self isStalled]))
       {
-        v18 = [(SUControllerProgress *)v5 actionText];
-        v19 = [(SUControllerProgress *)self actionText];
-        v16 = [v18 isEqualToString:v19];
+        actionText = [(SUControllerProgress *)v5 actionText];
+        actionText2 = [(SUControllerProgress *)self actionText];
+        v16 = [actionText isEqualToString:actionText2];
       }
 
       else
@@ -229,10 +229,10 @@ LABEL_8:
 
 - (id)description
 {
-  v3 = [(SUControllerProgress *)self actionText];
+  actionText = [(SUControllerProgress *)self actionText];
 
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(SUControllerProgress *)self phase];
+  phase = [(SUControllerProgress *)self phase];
   [(SUControllerProgress *)self portionComplete];
   v7 = v6;
   [(SUControllerProgress *)self estimatedTimeRemaining];
@@ -253,15 +253,15 @@ LABEL_8:
     v10 = @"YES";
   }
 
-  if (v3)
+  if (actionText)
   {
-    v12 = [(SUControllerProgress *)self actionText];
-    v13 = [v4 stringWithFormat:@"Phase: %@\nPortion complete: %f\nEstimated time remaining: %f\nIs done: %@\nIs stalled: %@\nActionText: %@", v5, *&v7, v9, v11, v10, v12];
+    actionText2 = [(SUControllerProgress *)self actionText];
+    v13 = [v4 stringWithFormat:@"Phase: %@\nPortion complete: %f\nEstimated time remaining: %f\nIs done: %@\nIs stalled: %@\nActionText: %@", phase, *&v7, v9, v11, v10, actionText2];
   }
 
   else
   {
-    v13 = [v4 stringWithFormat:@"Phase: %@\nPortion complete: %f\nEstimated time remaining: %f\nIs done: %@\nIs stalled: %@", v5, *&v7, v9, v11, v10];
+    v13 = [v4 stringWithFormat:@"Phase: %@\nPortion complete: %f\nEstimated time remaining: %f\nIs done: %@\nIs stalled: %@", phase, *&v7, v9, v11, v10];
   }
 
   return v13;

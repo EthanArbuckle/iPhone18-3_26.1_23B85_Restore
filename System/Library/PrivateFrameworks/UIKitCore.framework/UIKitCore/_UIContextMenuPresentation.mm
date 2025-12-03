@@ -1,33 +1,33 @@
 @interface _UIContextMenuPresentation
-- (BOOL)addDismissalCompletion:(id)a3;
-- (BOOL)contextMenuUIControllerShouldAllowSwipeToDismissForBeginningPanInteraction:(id)a3;
+- (BOOL)addDismissalCompletion:(id)completion;
+- (BOOL)contextMenuUIControllerShouldAllowSwipeToDismissForBeginningPanInteraction:(id)interaction;
 - (NSArray)visibleMenus;
-- (_UIContextMenuPresentation)initWithPresentingViewController:(id)a3 configuration:(id)a4 style:(id)a5 outgoingPresentation:(id)a6;
+- (_UIContextMenuPresentation)initWithPresentingViewController:(id)controller configuration:(id)configuration style:(id)style outgoingPresentation:(id)presentation;
 - (_UIContextMenuPresentationDelegate)delegate;
 - (_UIFulfilledContextMenuConfiguration)menuConfiguration;
 - (id)_platformMetrics;
-- (id)contextMenuUIController:(id)a3 dismissalPreviewForItem:(id)a4 clientReturnedPreview:(BOOL *)a5;
-- (id)contextMenuUIController:(id)a3 willDisplayMenu:(id)a4;
-- (id)livePreviewForDragItem:(id)a3 preferringFullSize:(BOOL)a4;
-- (id)preferredFocusEnvironmentsForContextMenuPreviewPresentationController:(id)a3;
-- (id)previewForCancellingDragItem:(id)a3;
+- (id)contextMenuUIController:(id)controller dismissalPreviewForItem:(id)item clientReturnedPreview:(BOOL *)preview;
+- (id)contextMenuUIController:(id)controller willDisplayMenu:(id)menu;
+- (id)livePreviewForDragItem:(id)item preferringFullSize:(BOOL)size;
+- (id)preferredFocusEnvironmentsForContextMenuPreviewPresentationController:(id)controller;
+- (id)previewForCancellingDragItem:(id)item;
 - (id)windowSceneActivationPreview;
-- (void)contextMenuPreviewPresentationController:(id)a3 didChangePreviewContentSize:(CGSize)a4;
-- (void)contextMenuUIController:(id)a3 didBeginDragWithTouch:(id)a4;
-- (void)contextMenuUIController:(id)a3 didRequestDismissalWithReason:(unint64_t)a4 alongsideActions:(id)a5 completion:(id)a6;
-- (void)contextMenuUIController:(id)a3 didSelectMenuLeaf:(id)a4;
-- (void)contextMenuUIControllerDidEndPanInteraction:(id)a3;
-- (void)contextMenuUIControllerWillPerformLayout:(id)a3 withPreviewSize:(CGSize)a4;
+- (void)contextMenuPreviewPresentationController:(id)controller didChangePreviewContentSize:(CGSize)size;
+- (void)contextMenuUIController:(id)controller didBeginDragWithTouch:(id)touch;
+- (void)contextMenuUIController:(id)controller didRequestDismissalWithReason:(unint64_t)reason alongsideActions:(id)actions completion:(id)completion;
+- (void)contextMenuUIController:(id)controller didSelectMenuLeaf:(id)leaf;
+- (void)contextMenuUIControllerDidEndPanInteraction:(id)interaction;
+- (void)contextMenuUIControllerWillPerformLayout:(id)layout withPreviewSize:(CGSize)size;
 - (void)dismiss;
-- (void)displayMenu:(id)a3 inPlaceOfMenu:(id)a4;
-- (void)dragWillCancelWithAnimator:(id)a3;
+- (void)displayMenu:(id)menu inPlaceOfMenu:(id)ofMenu;
+- (void)dragWillCancelWithAnimator:(id)animator;
 - (void)prepareToDismiss;
 - (void)prepareToPresent;
 - (void)present;
 - (void)requestMenuDismissal;
-- (void)retargetDismissingMenuToPreview:(id)a3;
-- (void)setAlongsideAnimatorForDismissal:(id)a3;
-- (void)setAlongsideAnimatorForPresentation:(id)a3;
+- (void)retargetDismissingMenuToPreview:(id)preview;
+- (void)setAlongsideAnimatorForDismissal:(id)dismissal;
+- (void)setAlongsideAnimatorForPresentation:(id)presentation;
 - (void)viewTraitCollectionDidChange;
 @end
 
@@ -35,33 +35,33 @@
 
 - (id)_platformMetrics
 {
-  v2 = [(_UIContextMenuPresentation *)self uiController];
-  v3 = [v2 platterContainerView];
-  v4 = [v3 traitCollection];
-  v5 = _UIContextMenuGetPlatformMetrics([v4 userInterfaceIdiom]);
+  uiController = [(_UIContextMenuPresentation *)self uiController];
+  platterContainerView = [uiController platterContainerView];
+  traitCollection = [platterContainerView traitCollection];
+  v5 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
   return v5;
 }
 
 - (void)prepareToPresent
 {
-  v3 = [(_UIContextMenuPresentation *)self uiController];
-  [v3 presentationTransitionWillBegin];
-  v4 = [(_UIClickPresentation *)self appearanceTransition];
-  [v4 setIsDismissTransition:0];
-  v5 = [(_UIClickPresentation *)self presentationController];
-  v6 = [v5 presentedViewController];
-  v7 = [v6 view];
-  [v4 prepareTransitionToView:v7];
+  uiController = [(_UIContextMenuPresentation *)self uiController];
+  [uiController presentationTransitionWillBegin];
+  appearanceTransition = [(_UIClickPresentation *)self appearanceTransition];
+  [appearanceTransition setIsDismissTransition:0];
+  presentationController = [(_UIClickPresentation *)self presentationController];
+  presentedViewController = [presentationController presentedViewController];
+  view = [presentedViewController view];
+  [appearanceTransition prepareTransitionToView:view];
 
-  v8 = [v4 presentationAlongsideAnimator];
+  presentationAlongsideAnimator = [appearanceTransition presentationAlongsideAnimator];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __46___UIContextMenuPresentation_prepareToPresent__block_invoke;
   v10[3] = &unk_1E70F3590;
-  v11 = v3;
-  v9 = v3;
-  [v8 addCompletion:v10];
+  v11 = uiController;
+  v9 = uiController;
+  [presentationAlongsideAnimator addCompletion:v10];
 }
 
 - (_UIContextMenuPresentationDelegate)delegate
@@ -73,64 +73,64 @@
 
 - (_UIFulfilledContextMenuConfiguration)menuConfiguration
 {
-  v2 = [(_UIContextMenuPresentation *)self uiController];
-  v3 = [v2 menuConfiguration];
+  uiController = [(_UIContextMenuPresentation *)self uiController];
+  menuConfiguration = [uiController menuConfiguration];
 
-  return v3;
+  return menuConfiguration;
 }
 
 - (void)present
 {
-  v8 = [(_UIClickPresentation *)self appearanceTransition];
-  if (([v8 isDismissTransition] & 1) == 0)
+  appearanceTransition = [(_UIClickPresentation *)self appearanceTransition];
+  if (([appearanceTransition isDismissTransition] & 1) == 0)
   {
-    [v8 performTransition];
-    v3 = [(_UIClickPresentation *)self presentationController];
-    v4 = [(_UIContextMenuUIController *)self->_uiController contentPlatterView];
-    [v3 menuDidPresentWithContentPlatterView:v4];
+    [appearanceTransition performTransition];
+    presentationController = [(_UIClickPresentation *)self presentationController];
+    contentPlatterView = [(_UIContextMenuUIController *)self->_uiController contentPlatterView];
+    [presentationController menuDidPresentWithContentPlatterView:contentPlatterView];
 
-    v5 = [(_UIContextMenuPresentation *)self uiController];
-    v6 = [v5 platterContainerView];
-    v7 = [_UIContextMenuSceneComponent sceneComponentForView:v6];
+    uiController = [(_UIContextMenuPresentation *)self uiController];
+    platterContainerView = [uiController platterContainerView];
+    v7 = [_UIContextMenuSceneComponent sceneComponentForView:platterContainerView];
     [v7 registerPresentation:self];
   }
 }
 
-- (_UIContextMenuPresentation)initWithPresentingViewController:(id)a3 configuration:(id)a4 style:(id)a5 outgoingPresentation:(id)a6
+- (_UIContextMenuPresentation)initWithPresentingViewController:(id)controller configuration:(id)configuration style:(id)style outgoingPresentation:(id)presentation
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
-  v14 = [v10 previewViewController];
-  if ([v11 preferredLayout] == 3 || objc_msgSend(v11, "preferredLayout") == 1 && !v14)
+  configurationCopy = configuration;
+  styleCopy = style;
+  presentationCopy = presentation;
+  controllerCopy = controller;
+  previewViewController = [configurationCopy previewViewController];
+  if ([styleCopy preferredLayout] == 3 || objc_msgSend(styleCopy, "preferredLayout") == 1 && !previewViewController)
   {
     v15 = [_UIContextMenuActionsOnlyViewController alloc];
-    v16 = [v10 sourcePreview];
-    v17 = [(_UIContextMenuActionsOnlyViewController *)v15 initWithTargetedPreview:v16];
+    sourcePreview = [configurationCopy sourcePreview];
+    v17 = [(_UIContextMenuActionsOnlyViewController *)v15 initWithTargetedPreview:sourcePreview];
 
-    v14 = v17;
+    previewViewController = v17;
   }
 
-  v18 = [(UIPresentationController *)[_UIContextMenuPreviewPresentationController alloc] initWithPresentedViewController:v14 presentingViewController:v13];
+  v18 = [(UIPresentationController *)[_UIContextMenuPreviewPresentationController alloc] initWithPresentedViewController:previewViewController presentingViewController:controllerCopy];
 
   [(_UIContextMenuPreviewPresentationController *)v18 setMenuPresentationDelegate:self];
-  [(_UIContextMenuPreviewPresentationController *)v18 setMenuStyle:v11];
+  [(_UIContextMenuPreviewPresentationController *)v18 setMenuStyle:styleCopy];
   v26.receiver = self;
   v26.super_class = _UIContextMenuPresentation;
-  v19 = [(_UIClickPresentation *)&v26 initWithPresentedViewController:v14 presentationController:v18];
+  v19 = [(_UIClickPresentation *)&v26 initWithPresentedViewController:previewViewController presentationController:v18];
   if (v19)
   {
-    v20 = [[_UIContextMenuUIController alloc] initWithConfiguration:v10 style:v11];
+    v20 = [[_UIContextMenuUIController alloc] initWithConfiguration:configurationCopy style:styleCopy];
     objc_storeStrong(&v19->_uiController, v20);
     [(_UIContextMenuUIController *)v19->_uiController setDelegate:v19];
-    v21 = [(_UIContextMenuUIController *)v20 platterContainerView];
-    [(_UIClickPresentation *)v19 setCustomViewForTouchContinuation:v21];
+    platterContainerView = [(_UIContextMenuUIController *)v20 platterContainerView];
+    [(_UIClickPresentation *)v19 setCustomViewForTouchContinuation:platterContainerView];
 
     if (_UIContextMenuMagicMorphAnimationEnabled())
     {
-      v22 = [v12 disappearanceTransition];
-      v23 = [[_UIContextMenuLiquidMorphPresentationAnimation alloc] initWithUIController:v20 previousAnimation:v22];
+      disappearanceTransition = [presentationCopy disappearanceTransition];
+      v23 = [[_UIContextMenuLiquidMorphPresentationAnimation alloc] initWithUIController:v20 previousAnimation:disappearanceTransition];
       [(_UIClickPresentation *)v19 setAppearanceTransition:v23];
       [(_UIClickPresentation *)v19 setDisappearanceTransition:v23];
     }
@@ -140,8 +140,8 @@
       v24 = [[_UIContextMenuBasicMorphPresentationAnimation alloc] initWithUIController:v20 asDismissal:0];
       [(_UIClickPresentation *)v19 setAppearanceTransition:v24];
 
-      v22 = [[_UIContextMenuBasicMorphPresentationAnimation alloc] initWithUIController:v20 asDismissal:1];
-      [(_UIClickPresentation *)v19 setDisappearanceTransition:v22];
+      disappearanceTransition = [[_UIContextMenuBasicMorphPresentationAnimation alloc] initWithUIController:v20 asDismissal:1];
+      [(_UIClickPresentation *)v19 setDisappearanceTransition:disappearanceTransition];
     }
   }
 
@@ -150,240 +150,240 @@
 
 - (NSArray)visibleMenus
 {
-  v2 = [(_UIContextMenuPresentation *)self uiController];
-  v3 = [v2 menuView];
-  v4 = [v3 visibleMenus];
+  uiController = [(_UIContextMenuPresentation *)self uiController];
+  menuView = [uiController menuView];
+  visibleMenus = [menuView visibleMenus];
 
-  return v4;
+  return visibleMenus;
 }
 
-- (void)setAlongsideAnimatorForPresentation:(id)a3
+- (void)setAlongsideAnimatorForPresentation:(id)presentation
 {
-  v4 = a3;
-  v5 = [(_UIClickPresentation *)self appearanceTransition];
-  [v5 setPresentationAlongsideAnimator:v4];
+  presentationCopy = presentation;
+  appearanceTransition = [(_UIClickPresentation *)self appearanceTransition];
+  [appearanceTransition setPresentationAlongsideAnimator:presentationCopy];
 
-  v6 = [(_UIContextMenuPresentation *)self _platformMetrics];
-  v7 = [v6 animateAlongsideTransition];
+  _platformMetrics = [(_UIContextMenuPresentation *)self _platformMetrics];
+  animateAlongsideTransition = [_platformMetrics animateAlongsideTransition];
 
-  if (v7)
+  if (animateAlongsideTransition)
   {
-    v8 = [v5 presentationAlongsideAnimator];
+    presentationAlongsideAnimator = [appearanceTransition presentationAlongsideAnimator];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __66___UIContextMenuPresentation_setAlongsideAnimatorForPresentation___block_invoke;
     v9[3] = &unk_1E70F4A50;
     v9[4] = self;
-    v10 = v7;
-    [v8 addAnimations:v9];
+    v10 = animateAlongsideTransition;
+    [presentationAlongsideAnimator addAnimations:v9];
   }
 }
 
-- (void)setAlongsideAnimatorForDismissal:(id)a3
+- (void)setAlongsideAnimatorForDismissal:(id)dismissal
 {
-  v4 = a3;
-  v5 = [(_UIClickPresentation *)self disappearanceTransition];
-  [v5 setDismissalAlongsideAnimator:v4];
+  dismissalCopy = dismissal;
+  disappearanceTransition = [(_UIClickPresentation *)self disappearanceTransition];
+  [disappearanceTransition setDismissalAlongsideAnimator:dismissalCopy];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __63___UIContextMenuPresentation_setAlongsideAnimatorForDismissal___block_invoke;
   v11[3] = &unk_1E70F3590;
   v11[4] = self;
-  [v4 addCompletion:v11];
+  [dismissalCopy addCompletion:v11];
 
-  v6 = [(_UIContextMenuPresentation *)self _platformMetrics];
-  v7 = [v6 animateAlongsideTransition];
+  _platformMetrics = [(_UIContextMenuPresentation *)self _platformMetrics];
+  animateAlongsideTransition = [_platformMetrics animateAlongsideTransition];
 
-  if (v7)
+  if (animateAlongsideTransition)
   {
-    v8 = [v5 dismissalAlongsideAnimator];
+    dismissalAlongsideAnimator = [disappearanceTransition dismissalAlongsideAnimator];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __63___UIContextMenuPresentation_setAlongsideAnimatorForDismissal___block_invoke_2;
     v9[3] = &unk_1E70F4A50;
     v9[4] = self;
-    v10 = v7;
-    [v8 addAnimations:v9];
+    v10 = animateAlongsideTransition;
+    [dismissalAlongsideAnimator addAnimations:v9];
   }
 }
 
 - (void)prepareToDismiss
 {
-  v9 = [(_UIContextMenuPresentation *)self uiController];
-  [v9 dismissalTransitionWillBegin];
-  v3 = [(_UIContextMenuPresentation *)self uiController];
-  v4 = [v3 platterContainerView];
-  v5 = [_UIContextMenuSceneComponent sceneComponentForView:v4];
+  uiController = [(_UIContextMenuPresentation *)self uiController];
+  [uiController dismissalTransitionWillBegin];
+  uiController2 = [(_UIContextMenuPresentation *)self uiController];
+  platterContainerView = [uiController2 platterContainerView];
+  v5 = [_UIContextMenuSceneComponent sceneComponentForView:platterContainerView];
   [v5 removePresentation:self];
 
-  v6 = [(_UIClickPresentation *)self disappearanceTransition];
-  [v6 setIsDismissTransition:1];
-  v7 = [v6 sourcePreview];
-  v8 = [v7 view];
-  [v6 prepareTransitionToView:v8];
+  disappearanceTransition = [(_UIClickPresentation *)self disappearanceTransition];
+  [disappearanceTransition setIsDismissTransition:1];
+  sourcePreview = [disappearanceTransition sourcePreview];
+  view = [sourcePreview view];
+  [disappearanceTransition prepareTransitionToView:view];
 }
 
 - (void)dismiss
 {
-  v2 = [(_UIClickPresentation *)self disappearanceTransition];
-  [v2 performTransition];
+  disappearanceTransition = [(_UIClickPresentation *)self disappearanceTransition];
+  [disappearanceTransition performTransition];
 }
 
-- (BOOL)addDismissalCompletion:(id)a3
+- (BOOL)addDismissalCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(_UIClickPresentation *)self disappearanceTransition];
-  v6 = [v5 addCompletion:v4];
+  completionCopy = completion;
+  disappearanceTransition = [(_UIClickPresentation *)self disappearanceTransition];
+  v6 = [disappearanceTransition addCompletion:completionCopy];
 
   return v6;
 }
 
-- (void)displayMenu:(id)a3 inPlaceOfMenu:(id)a4
+- (void)displayMenu:(id)menu inPlaceOfMenu:(id)ofMenu
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UIContextMenuPresentation *)self uiController];
-  [v8 displayMenu:v7 inPlaceOfMenu:v6];
+  ofMenuCopy = ofMenu;
+  menuCopy = menu;
+  uiController = [(_UIContextMenuPresentation *)self uiController];
+  [uiController displayMenu:menuCopy inPlaceOfMenu:ofMenuCopy];
 }
 
-- (void)retargetDismissingMenuToPreview:(id)a3
+- (void)retargetDismissingMenuToPreview:(id)preview
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuPresentation *)self uiController];
-  [v5 retargetDismissingMenuToPreview:v4];
+  previewCopy = preview;
+  uiController = [(_UIContextMenuPresentation *)self uiController];
+  [uiController retargetDismissingMenuToPreview:previewCopy];
 
-  v6 = [(_UIClickPresentation *)self disappearanceTransition];
-  [v6 retargetDismissingMenuToPreview:v4];
+  disappearanceTransition = [(_UIClickPresentation *)self disappearanceTransition];
+  [disappearanceTransition retargetDismissingMenuToPreview:previewCopy];
 }
 
 - (void)viewTraitCollectionDidChange
 {
-  v2 = [(_UIContextMenuPresentation *)self uiController];
-  [v2 viewTraitCollectionDidChange];
+  uiController = [(_UIContextMenuPresentation *)self uiController];
+  [uiController viewTraitCollectionDidChange];
 }
 
-- (id)livePreviewForDragItem:(id)a3 preferringFullSize:(BOOL)a4
+- (id)livePreviewForDragItem:(id)item preferringFullSize:(BOOL)size
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(_UIContextMenuPresentation *)self uiController];
-  v8 = [v7 livePreviewForDragItem:v6 preferringFullSize:v4];
+  sizeCopy = size;
+  itemCopy = item;
+  uiController = [(_UIContextMenuPresentation *)self uiController];
+  v8 = [uiController livePreviewForDragItem:itemCopy preferringFullSize:sizeCopy];
 
   return v8;
 }
 
-- (id)previewForCancellingDragItem:(id)a3
+- (id)previewForCancellingDragItem:(id)item
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuPresentation *)self uiController];
-  v6 = [v5 previewForCancellingDragItem:v4];
+  itemCopy = item;
+  uiController = [(_UIContextMenuPresentation *)self uiController];
+  v6 = [uiController previewForCancellingDragItem:itemCopy];
 
   return v6;
 }
 
-- (void)dragWillCancelWithAnimator:(id)a3
+- (void)dragWillCancelWithAnimator:(id)animator
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuPresentation *)self uiController];
-  [v5 dragWillCancelWithAnimator:v4];
+  animatorCopy = animator;
+  uiController = [(_UIContextMenuPresentation *)self uiController];
+  [uiController dragWillCancelWithAnimator:animatorCopy];
 }
 
 - (id)windowSceneActivationPreview
 {
-  v2 = [(_UIContextMenuPresentation *)self uiController];
-  v3 = [v2 windowSceneActivationPreview];
+  uiController = [(_UIContextMenuPresentation *)self uiController];
+  windowSceneActivationPreview = [uiController windowSceneActivationPreview];
 
-  return v3;
+  return windowSceneActivationPreview;
 }
 
 - (void)requestMenuDismissal
 {
-  v3 = [(_UIContextMenuPresentation *)self delegate];
-  [v3 contextMenuPresentation:self didRequestDismissalWithReason:5 alongsideActions:0 completion:0];
+  delegate = [(_UIContextMenuPresentation *)self delegate];
+  [delegate contextMenuPresentation:self didRequestDismissalWithReason:5 alongsideActions:0 completion:0];
 }
 
-- (id)contextMenuUIController:(id)a3 willDisplayMenu:(id)a4
+- (id)contextMenuUIController:(id)controller willDisplayMenu:(id)menu
 {
-  v5 = a4;
-  v6 = [(_UIContextMenuPresentation *)self delegate];
-  v7 = [v6 contextMenuPresentation:self willDisplayMenu:v5];
+  menuCopy = menu;
+  delegate = [(_UIContextMenuPresentation *)self delegate];
+  v7 = [delegate contextMenuPresentation:self willDisplayMenu:menuCopy];
 
   return v7;
 }
 
-- (void)contextMenuUIControllerWillPerformLayout:(id)a3 withPreviewSize:(CGSize)a4
+- (void)contextMenuUIControllerWillPerformLayout:(id)layout withPreviewSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = [(_UIClickPresentation *)self presentationController];
-  [v6 menuLayoutDidProducePreviewSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  presentationController = [(_UIClickPresentation *)self presentationController];
+  [presentationController menuLayoutDidProducePreviewSize:{width, height}];
 }
 
-- (void)contextMenuUIController:(id)a3 didSelectMenuLeaf:(id)a4
+- (void)contextMenuUIController:(id)controller didSelectMenuLeaf:(id)leaf
 {
-  v5 = a4;
-  v6 = [(_UIContextMenuPresentation *)self delegate];
-  [v6 contextMenuPresentation:self didSelectMenuLeaf:v5];
+  leafCopy = leaf;
+  delegate = [(_UIContextMenuPresentation *)self delegate];
+  [delegate contextMenuPresentation:self didSelectMenuLeaf:leafCopy];
 }
 
-- (void)contextMenuUIController:(id)a3 didRequestDismissalWithReason:(unint64_t)a4 alongsideActions:(id)a5 completion:(id)a6
+- (void)contextMenuUIController:(id)controller didRequestDismissalWithReason:(unint64_t)reason alongsideActions:(id)actions completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = [(_UIContextMenuPresentation *)self delegate];
-  [v11 contextMenuPresentation:self didRequestDismissalWithReason:a4 alongsideActions:v10 completion:v9];
+  completionCopy = completion;
+  actionsCopy = actions;
+  delegate = [(_UIContextMenuPresentation *)self delegate];
+  [delegate contextMenuPresentation:self didRequestDismissalWithReason:reason alongsideActions:actionsCopy completion:completionCopy];
 }
 
-- (BOOL)contextMenuUIControllerShouldAllowSwipeToDismissForBeginningPanInteraction:(id)a3
+- (BOOL)contextMenuUIControllerShouldAllowSwipeToDismissForBeginningPanInteraction:(id)interaction
 {
-  v3 = self;
-  v4 = [(_UIContextMenuPresentation *)self delegate];
-  LOBYTE(v3) = [v4 contextMenuPresentationShouldAllowSwipeToDismissForBeginningPanInteraction:v3];
+  selfCopy = self;
+  delegate = [(_UIContextMenuPresentation *)self delegate];
+  LOBYTE(selfCopy) = [delegate contextMenuPresentationShouldAllowSwipeToDismissForBeginningPanInteraction:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)contextMenuUIControllerDidEndPanInteraction:(id)a3
+- (void)contextMenuUIControllerDidEndPanInteraction:(id)interaction
 {
-  v4 = [(_UIContextMenuPresentation *)self delegate];
-  [v4 contextMenuPresentationDidEndPanInteraction:self];
+  delegate = [(_UIContextMenuPresentation *)self delegate];
+  [delegate contextMenuPresentationDidEndPanInteraction:self];
 }
 
-- (void)contextMenuUIController:(id)a3 didBeginDragWithTouch:(id)a4
+- (void)contextMenuUIController:(id)controller didBeginDragWithTouch:(id)touch
 {
-  v5 = a4;
-  v6 = [(_UIContextMenuPresentation *)self delegate];
-  [v6 contextMenuPresentation:self didBeginDragWithTouch:v5];
+  touchCopy = touch;
+  delegate = [(_UIContextMenuPresentation *)self delegate];
+  [delegate contextMenuPresentation:self didBeginDragWithTouch:touchCopy];
 }
 
-- (id)contextMenuUIController:(id)a3 dismissalPreviewForItem:(id)a4 clientReturnedPreview:(BOOL *)a5
+- (id)contextMenuUIController:(id)controller dismissalPreviewForItem:(id)item clientReturnedPreview:(BOOL *)preview
 {
-  v7 = a4;
-  v8 = [(_UIContextMenuPresentation *)self delegate];
-  v9 = [v8 contextMenuPresentation:self dismissalPreviewForItem:v7 clientReturnedPreview:a5];
+  itemCopy = item;
+  delegate = [(_UIContextMenuPresentation *)self delegate];
+  v9 = [delegate contextMenuPresentation:self dismissalPreviewForItem:itemCopy clientReturnedPreview:preview];
 
   return v9;
 }
 
-- (void)contextMenuPreviewPresentationController:(id)a3 didChangePreviewContentSize:(CGSize)a4
+- (void)contextMenuPreviewPresentationController:(id)controller didChangePreviewContentSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = [(_UIContextMenuPresentation *)self uiController];
-  [v6 previewSizeDidChange:{width, height}];
+  height = size.height;
+  width = size.width;
+  uiController = [(_UIContextMenuPresentation *)self uiController];
+  [uiController previewSizeDidChange:{width, height}];
 }
 
-- (id)preferredFocusEnvironmentsForContextMenuPreviewPresentationController:(id)a3
+- (id)preferredFocusEnvironmentsForContextMenuPreviewPresentationController:(id)controller
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = [(_UIContextMenuPresentation *)self uiController];
-  v5 = [v4 menuView];
+  uiController = [(_UIContextMenuPresentation *)self uiController];
+  menuView = [uiController menuView];
 
-  if (v5)
+  if (menuView)
   {
-    v6 = [(_UIContextMenuPresentation *)self uiController];
-    v7 = [v6 menuView];
-    v10[0] = v7;
+    uiController2 = [(_UIContextMenuPresentation *)self uiController];
+    menuView2 = [uiController2 menuView];
+    v10[0] = menuView2;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   }
 

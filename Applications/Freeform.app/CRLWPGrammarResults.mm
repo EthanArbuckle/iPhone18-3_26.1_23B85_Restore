@@ -1,50 +1,50 @@
 @interface CRLWPGrammarResults
-- (id)grammarResultForCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4;
-- (void)addResult:(id)a3 forRange:(_NSRange)a4;
+- (id)grammarResultForCharIndex:(unint64_t)index outRange:(_NSRange *)range;
+- (void)addResult:(id)result forRange:(_NSRange)range;
 @end
 
 @implementation CRLWPGrammarResults
 
-- (void)addResult:(id)a3 forRange:(_NSRange)a4
+- (void)addResult:(id)result forRange:(_NSRange)range
 {
   v4.receiver = self;
   v4.super_class = CRLWPGrammarResults;
-  [(CRLWPCheckingResults *)&v4 addResult:a3 forRange:a4.location, a4.length];
+  [(CRLWPCheckingResults *)&v4 addResult:result forRange:range.location, range.length];
 }
 
-- (id)grammarResultForCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4
+- (id)grammarResultForCharIndex:(unint64_t)index outRange:(_NSRange *)range
 {
-  *a4 = xmmword_101464828;
-  v7 = [(CRLWPCheckingResults *)self ranges];
-  v8 = [(CRLWPCheckingResults *)self results];
-  if ([v7 rangeCount])
+  *range = xmmword_101464828;
+  ranges = [(CRLWPCheckingResults *)self ranges];
+  results = [(CRLWPCheckingResults *)self results];
+  if ([ranges rangeCount])
   {
     v9 = 0;
     while (1)
     {
-      v10 = [v7 rangeAtIndex:v9];
-      if (a3 >= v10 && a3 - v10 < v11)
+      v10 = [ranges rangeAtIndex:v9];
+      if (index >= v10 && index - v10 < v11)
       {
         break;
       }
 
-      if (++v9 >= [v7 rangeCount])
+      if (++v9 >= [ranges rangeCount])
       {
         goto LABEL_18;
       }
     }
 
-    a4->location = v10;
-    a4->length = v11;
-    if ([v8 count] > v9)
+    range->location = v10;
+    range->length = v11;
+    if ([results count] > v9)
     {
       v12 = objc_opt_class();
-      v13 = [v8 objectAtIndexedSubscript:v9];
+      v13 = [results objectAtIndexedSubscript:v9];
       v14 = sub_100013F00(v12, v13);
 
       v15 = objc_opt_class();
-      v16 = [v14 first];
-      v17 = sub_100013F00(v15, v16);
+      first = [v14 first];
+      v17 = sub_100013F00(v15, first);
 
       goto LABEL_19;
     }

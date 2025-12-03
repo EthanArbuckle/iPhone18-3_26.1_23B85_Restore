@@ -1,12 +1,12 @@
 @interface OrgApacheLuceneCodecsStoredFieldsWriter
-- (int)mergeWithOrgApacheLuceneIndexMergeState:(id)a3;
+- (int)mergeWithOrgApacheLuceneIndexMergeState:(id)state;
 @end
 
 @implementation OrgApacheLuceneCodecsStoredFieldsWriter
 
-- (int)mergeWithOrgApacheLuceneIndexMergeState:(id)a3
+- (int)mergeWithOrgApacheLuceneIndexMergeState:(id)state
 {
-  if (!a3 || (v4 = *(a3 + 3)) == 0)
+  if (!state || (v4 = *(state + 3)) == 0)
   {
 LABEL_21:
     JreThrowNullPointerException();
@@ -22,9 +22,9 @@ LABEL_21:
     {
       [*(v8 + 8 * v6) checkIntegrity];
       v10 = [OrgApacheLuceneCodecsStoredFieldsWriter_MergeVisitor alloc];
-      OrgApacheLuceneCodecsStoredFieldsWriter_MergeVisitor_initWithOrgApacheLuceneCodecsStoredFieldsWriter_withOrgApacheLuceneIndexMergeState_withInt_(v10, self, a3, v6);
+      OrgApacheLuceneCodecsStoredFieldsWriter_MergeVisitor_initWithOrgApacheLuceneCodecsStoredFieldsWriter_withOrgApacheLuceneIndexMergeState_withInt_(v10, self, state, v6);
       v11 = v10;
-      v12 = *(a3 + 12);
+      v12 = *(state + 12);
       if (v12)
       {
         v13 = v11;
@@ -34,7 +34,7 @@ LABEL_21:
           IOSArray_throwOutOfBoundsWithMsg(v14, v6);
         }
 
-        v15 = *(a3 + 8);
+        v15 = *(state + 8);
         if (v15)
         {
           v16 = *(v12 + 12 + 4 * v6);
@@ -65,7 +65,7 @@ LABEL_21:
           }
 
           v6 = (v6 + 1);
-          v4 = *(a3 + 3);
+          v4 = *(state + 3);
           if (v4)
           {
             continue;
@@ -77,7 +77,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  [(OrgApacheLuceneCodecsStoredFieldsWriter *)self finishWithOrgApacheLuceneIndexFieldInfos:*(a3 + 2) withInt:v7];
+  [(OrgApacheLuceneCodecsStoredFieldsWriter *)self finishWithOrgApacheLuceneIndexFieldInfos:*(state + 2) withInt:v7];
   return v7;
 }
 

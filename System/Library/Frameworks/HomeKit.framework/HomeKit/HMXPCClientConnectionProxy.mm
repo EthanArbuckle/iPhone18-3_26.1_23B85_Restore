@@ -1,80 +1,80 @@
 @interface HMXPCClientConnectionProxy
-- (HMXPCClientConnectionProxy)initWithUserInfo:(id)a3 refreshHandler:(id)a4;
-- (void)handleMessage:(id)a3;
-- (void)handleMessage:(id)a3 responseHandler:(id)a4;
-- (void)sendMessage:(id)a3 completionHandler:(id)a4;
+- (HMXPCClientConnectionProxy)initWithUserInfo:(id)info refreshHandler:(id)handler;
+- (void)handleMessage:(id)message;
+- (void)handleMessage:(id)message responseHandler:(id)handler;
+- (void)sendMessage:(id)message completionHandler:(id)handler;
 @end
 
 @implementation HMXPCClientConnectionProxy
 
-- (void)handleMessage:(id)a3 responseHandler:(id)a4
+- (void)handleMessage:(id)message responseHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [a3 mutableCopy];
-  [v7 setResponseHandler:v6];
+  handlerCopy = handler;
+  v7 = [message mutableCopy];
+  [v7 setResponseHandler:handlerCopy];
 
   v9 = [v7 copy];
-  v8 = [(HMFMessageTransport *)self delegate];
-  [v8 messageTransport:self didReceiveMessage:v9];
+  delegate = [(HMFMessageTransport *)self delegate];
+  [delegate messageTransport:self didReceiveMessage:v9];
 }
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  v8 = a3;
-  v4 = [v8 name];
-  v5 = [v4 isEqualToString:@"HMXPCClientInitiateRefreshConfigMessage"];
+  messageCopy = message;
+  name = [messageCopy name];
+  v5 = [name isEqualToString:@"HMXPCClientInitiateRefreshConfigMessage"];
 
   if (v5)
   {
-    v6 = [(HMXPCClientConnectionProxy *)self refreshHandler];
+    refreshHandler = [(HMXPCClientConnectionProxy *)self refreshHandler];
 
-    if (!v6)
+    if (!refreshHandler)
     {
       goto LABEL_6;
     }
 
-    v7 = [(HMXPCClientConnectionProxy *)self refreshHandler];
-    v7[2]();
+    refreshHandler2 = [(HMXPCClientConnectionProxy *)self refreshHandler];
+    refreshHandler2[2]();
   }
 
   else
   {
-    v7 = [(HMFMessageTransport *)self delegate];
-    [v7 messageTransport:self didReceiveMessage:v8];
+    refreshHandler2 = [(HMFMessageTransport *)self delegate];
+    [refreshHandler2 messageTransport:self didReceiveMessage:messageCopy];
   }
 
 LABEL_6:
 }
 
-- (void)sendMessage:(id)a3 completionHandler:(id)a4
+- (void)sendMessage:(id)message completionHandler:(id)handler
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [v6 responseHandler];
-  [(HMXPCClientConnectionProxy *)self handleMessage:v6 responseHandler:v7];
+  handlerCopy = handler;
+  messageCopy = message;
+  responseHandler = [messageCopy responseHandler];
+  [(HMXPCClientConnectionProxy *)self handleMessage:messageCopy responseHandler:responseHandler];
 
-  v8 = v9;
-  if (v9)
+  v8 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v9 + 2))(v9, 0);
-    v8 = v9;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v8 = handlerCopy;
   }
 }
 
-- (HMXPCClientConnectionProxy)initWithUserInfo:(id)a3 refreshHandler:(id)a4
+- (HMXPCClientConnectionProxy)initWithUserInfo:(id)info refreshHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = HMXPCClientConnectionProxy;
   v8 = [(HMXPCClientConnectionProxy *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [infoCopy copy];
     userInfo = v8->_userInfo;
     v8->_userInfo = v9;
 
-    v11 = _Block_copy(v7);
+    v11 = _Block_copy(handlerCopy);
     refreshHandler = v8->_refreshHandler;
     v8->_refreshHandler = v11;
   }

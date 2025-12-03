@@ -1,39 +1,39 @@
 @interface PKPeerPaymentSession
 - (BOOL)deleteApplet;
-- (PKPeerPaymentSession)initWithInternalSession:(id)a3 targetQueue:(id)a4;
-- (id)authorizePeerPaymentQuote:(id)a3 forPaymentApplication:(id)a4 withAuthenticationCredential:(id)a5 shouldReregister:(BOOL *)a6;
+- (PKPeerPaymentSession)initWithInternalSession:(id)session targetQueue:(id)queue;
+- (id)authorizePeerPaymentQuote:(id)quote forPaymentApplication:(id)application withAuthenticationCredential:(id)credential shouldReregister:(BOOL *)reregister;
 @end
 
 @implementation PKPeerPaymentSession
 
-- (PKPeerPaymentSession)initWithInternalSession:(id)a3 targetQueue:(id)a4
+- (PKPeerPaymentSession)initWithInternalSession:(id)session targetQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 nfSession];
+  sessionCopy = session;
+  queueCopy = queue;
+  nfSession = [sessionCopy nfSession];
   PKGetClassNFPeerPaymentSession();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    [v6 endSession];
+    [sessionCopy endSession];
 
-    v6 = 0;
+    sessionCopy = 0;
   }
 
   v12.receiver = self;
   v12.super_class = PKPeerPaymentSession;
-  v10 = [(PKPaymentSession *)&v12 initWithInternalSession:v6 targetQueue:v7];
+  v10 = [(PKPaymentSession *)&v12 initWithInternalSession:sessionCopy targetQueue:queueCopy];
 
   return v10;
 }
 
-- (id)authorizePeerPaymentQuote:(id)a3 forPaymentApplication:(id)a4 withAuthenticationCredential:(id)a5 shouldReregister:(BOOL *)a6
+- (id)authorizePeerPaymentQuote:(id)quote forPaymentApplication:(id)application withAuthenticationCredential:(id)credential shouldReregister:(BOOL *)reregister
 {
   v82 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v65 = a4;
-  v11 = a5;
+  quoteCopy = quote;
+  applicationCopy = application;
+  credentialCopy = credential;
   v72 = 0;
   v73 = &v72;
   v74 = 0x3032000000;
@@ -46,11 +46,11 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v79 = v10;
+      v79 = quoteCopy;
       _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "Mocking Authorization of Peer Payment Quote: %@", buf, 0xCu);
     }
 
-    v13 = [[PKAuthorizedPeerPaymentQuote alloc] initWithQuote:v10 transactionData:0 certificates:0];
+    v13 = [[PKAuthorizedPeerPaymentQuote alloc] initWithQuote:quoteCopy transactionData:0 certificates:0];
     v14 = v73[5];
     v73[5] = v13;
     goto LABEL_22;
@@ -62,56 +62,56 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v79 = v10;
+      v79 = quoteCopy;
       _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "Mocking Signature of Peer Payment Quote: %@", buf, 0xCu);
     }
 
     v16 = [PKAuthorizedPeerPaymentQuote alloc];
     v14 = [@"000000000000000000000000000000000000000000000000" dataUsingEncoding:4];
-    v17 = [(PKAuthorizedPeerPaymentQuote *)v16 initWithQuote:v10 transactionData:v14 certificates:MEMORY[0x1E695E0F8]];
+    v17 = [(PKAuthorizedPeerPaymentQuote *)v16 initWithQuote:quoteCopy transactionData:v14 certificates:MEMORY[0x1E695E0F8]];
     v18 = v73[5];
     v73[5] = v17;
 
     goto LABEL_22;
   }
 
-  v58 = a6;
-  v59 = self;
-  v19 = v10;
-  v62 = v65;
+  reregisterCopy = reregister;
+  selfCopy = self;
+  v19 = quoteCopy;
+  v62 = applicationCopy;
   v64 = objc_alloc_init(PKGetClassNFPeerPaymentRequest());
   *(&v63 + 1) = [v19 firstQuoteItemOfType:1];
   v61 = [v19 firstQuoteItemOfType:2];
   v60 = [v19 firstQuoteItemOfType:3];
   *&v63 = [v19 firstQuoteItemOfType:4];
   v20 = objc_alloc_init(PKGetClassNFPeerPaymentTransferRequest());
-  v21 = [MEMORY[0x1E695DF00] date];
-  [v20 setTransactionDate:v21];
+  date = [MEMORY[0x1E695DF00] date];
+  [v20 setTransactionDate:date];
 
-  v22 = [v19 appleHash];
-  v23 = [v22 hexEncoding];
-  [v20 setAppleTransactionHash:v23];
+  appleHash = [v19 appleHash];
+  hexEncoding = [appleHash hexEncoding];
+  [v20 setAppleTransactionHash:hexEncoding];
 
-  v24 = [v19 externalHash];
-  v25 = [v24 hexEncoding];
-  [v20 setPublicTransactionHash:v25];
+  externalHash = [v19 externalHash];
+  hexEncoding2 = [externalHash hexEncoding];
+  [v20 setPublicTransactionHash:hexEncoding2];
 
-  v26 = [v19 totalReceiveAmount];
-  [v20 setTransactionAmount:v26];
+  totalReceiveAmount = [v19 totalReceiveAmount];
+  [v20 setTransactionAmount:totalReceiveAmount];
 
-  v27 = [v19 totalReceiveAmountCurrency];
-  [v20 setTransactionCurrency:v27];
+  totalReceiveAmountCurrency = [v19 totalReceiveAmountCurrency];
+  [v20 setTransactionCurrency:totalReceiveAmountCurrency];
 
   v28 = v61;
   if (!v61)
   {
     if (*(&v63 + 1))
     {
-      v31 = [*(&v63 + 1) countryCode];
-      [v20 setTransactionCountry:v31];
+      countryCode = [*(&v63 + 1) countryCode];
+      [v20 setTransactionCountry:countryCode];
 
-      v32 = [*(&v63 + 1) nonce];
-      [v20 setNonce:v32];
+      nonce = [*(&v63 + 1) nonce];
+      [v20 setNonce:nonce];
     }
 
     else
@@ -135,15 +135,15 @@
         goto LABEL_19;
       }
 
-      v54 = [v63 countryCode];
-      [v20 setTransactionCountry:v54];
+      countryCode2 = [v63 countryCode];
+      [v20 setTransactionCountry:countryCode2];
 
-      v55 = [v63 nonce];
-      [v20 setNonce:v55];
+      nonce2 = [v63 nonce];
+      [v20 setNonce:nonce2];
 
-      v32 = [v19 calculatedTotalAmount];
-      v56 = [v32 amount];
-      [v20 setTransactionAmount:v56];
+      nonce = [v19 calculatedTotalAmount];
+      amount = [nonce amount];
+      [v20 setTransactionAmount:amount];
     }
 
     [v64 setTransferRequest:v20];
@@ -151,11 +151,11 @@
   }
 
 LABEL_10:
-  v29 = [v28 countryCode];
-  [v20 setTransactionCountry:v29];
+  countryCode3 = [v28 countryCode];
+  [v20 setTransactionCountry:countryCode3];
 
-  v30 = [v28 nonce];
-  [v20 setNonce:v30];
+  nonce3 = [v28 nonce];
+  [v20 setNonce:nonce3];
 
   [v64 setTransferRequest:v20];
   if (v63 != 0)
@@ -169,43 +169,43 @@ LABEL_15:
 
     v34 = v33;
     v35 = objc_alloc_init(PKGetClassNFECommercePaymentRequest());
-    v36 = [v34 totalAmountCurrency];
-    [v35 setCurrencyCode:v36];
+    totalAmountCurrency = [v34 totalAmountCurrency];
+    [v35 setCurrencyCode:totalAmountCurrency];
 
-    v37 = [v34 totalAmount];
-    [v35 setTransactionAmount:v37];
+    totalAmount = [v34 totalAmount];
+    [v35 setTransactionAmount:totalAmount];
 
-    v38 = [MEMORY[0x1E695DF00] date];
-    [v35 setTransactionDate:v38];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [v35 setTransactionDate:date2];
 
-    v39 = [v62 applicationIdentifier];
-    [v35 setAppletIdentifier:v39];
+    applicationIdentifier = [v62 applicationIdentifier];
+    [v35 setAppletIdentifier:applicationIdentifier];
 
-    v40 = [v34 nonce];
+    nonce4 = [v34 nonce];
     *buf = 0;
-    [v40 getBytes:buf length:4];
+    [nonce4 getBytes:buf length:4];
     [v35 setUnpredictableNumber:bswap32(*buf)];
 
-    v41 = [v34 countryCode];
-    [v35 setCountryCode:v41];
+    countryCode4 = [v34 countryCode];
+    [v35 setCountryCode:countryCode4];
 
-    v42 = [MEMORY[0x1E695DF88] data];
-    v43 = [v19 externalHash];
-    [v42 appendData:v43];
+    data = [MEMORY[0x1E695DF88] data];
+    externalHash2 = [v19 externalHash];
+    [data appendData:externalHash2];
 
-    v44 = [v19 appleHash];
-    [v42 appendData:v44];
+    appleHash2 = [v19 appleHash];
+    [data appendData:appleHash2];
 
     v45 = [PKPaymentMerchantData alloc];
-    v46 = [v34 merchantIdentifier];
-    v47 = [v42 copy];
-    v48 = [(PKPaymentMerchantData *)v45 initWithMerchantIdentifier:v46 applicationData:v47 merchantSession:0];
+    merchantIdentifier = [v34 merchantIdentifier];
+    v47 = [data copy];
+    v48 = [(PKPaymentMerchantData *)v45 initWithMerchantIdentifier:merchantIdentifier applicationData:v47 merchantSession:0];
 
-    v49 = [(PKPaymentMerchantData *)v48 encode];
-    [v35 setMerchantData:v49];
+    encode = [(PKPaymentMerchantData *)v48 encode];
+    [v35 setMerchantData:encode];
 
-    LOBYTE(v49) = [v34 merchantCapabilities];
-    [v35 setMerchantCapabilities:v49 & 0x43];
+    LOBYTE(encode) = [v34 merchantCapabilities];
+    [v35 setMerchantCapabilities:encode & 0x43];
     [v64 setTopUpRequest:v35];
   }
 
@@ -226,13 +226,13 @@ LABEL_19:
   v66[1] = 3221225472;
   v66[2] = __118__PKPeerPaymentSession_authorizePeerPaymentQuote_forPaymentApplication_withAuthenticationCredential_shouldReregister___block_invoke;
   v66[3] = &unk_1E79CB368;
-  v67 = v11;
+  v67 = credentialCopy;
   v14 = v50;
   v68 = v14;
   v70 = &v72;
   v69 = v19;
-  v71 = v58;
-  [(PKPaymentSession *)v59 performBlockSyncOnInternalSession:v66];
+  v71 = reregisterCopy;
+  [(PKPaymentSession *)selfCopy performBlockSyncOnInternalSession:v66];
 
 LABEL_22:
   v52 = v73[5];

@@ -1,27 +1,27 @@
 @interface SISchemaGridCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaGridCardSection)initWithDictionary:(id)a3;
-- (SISchemaGridCardSection)initWithJSON:(id)a3;
+- (SISchemaGridCardSection)initWithDictionary:(id)dictionary;
+- (SISchemaGridCardSection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addResultIdentifiers:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addResultIdentifiers:(id)identifiers;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaGridCardSection
 
-- (SISchemaGridCardSection)initWithDictionary:(id)a3
+- (SISchemaGridCardSection)initWithDictionary:(id)dictionary
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = SISchemaGridCardSection;
   v5 = [(SISchemaGridCardSection *)&v21 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"resultIdentifiers"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"resultIdentifiers"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,7 +64,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:{@"cardSource", v17}];
+    v14 = [dictionaryCopy objectForKeyedSubscript:{@"cardSource", v17}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,30 +77,30 @@
   return v5;
 }
 
-- (SISchemaGridCardSection)initWithJSON:(id)a3
+- (SISchemaGridCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaGridCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaGridCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaGridCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -113,17 +113,17 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
-    v4 = [(SISchemaGridCardSection *)self cardSource];
+    cardSource = [(SISchemaGridCardSection *)self cardSource];
     v5 = @"CARDSOURCE_UNKNOWN_CARD_SOURCE";
-    if (v4 == 1)
+    if (cardSource == 1)
     {
       v5 = @"CARDSOURCE_BING";
     }
 
-    if (v4 == 2)
+    if (cardSource == 2)
     {
       v6 = @"CARDSOURCE_WEB_IMAGE";
     }
@@ -133,19 +133,19 @@
       v6 = v5;
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"cardSource"];
+    [dictionary setObject:v6 forKeyedSubscript:@"cardSource"];
   }
 
   if (self->_resultIdentifiers)
   {
-    v7 = [(SISchemaGridCardSection *)self resultIdentifiers];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"resultIdentifiers"];
+    resultIdentifiers = [(SISchemaGridCardSection *)self resultIdentifiers];
+    v8 = [resultIdentifiers copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"resultIdentifiers"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -164,18 +164,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(SISchemaGridCardSection *)self resultIdentifiers];
-  v6 = [v4 resultIdentifiers];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  resultIdentifiers = [(SISchemaGridCardSection *)self resultIdentifiers];
+  resultIdentifiers2 = [equalCopy resultIdentifiers];
+  v7 = resultIdentifiers2;
+  if ((resultIdentifiers != 0) == (resultIdentifiers2 == 0))
   {
 
 LABEL_12:
@@ -183,13 +183,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(SISchemaGridCardSection *)self resultIdentifiers];
-  if (v8)
+  resultIdentifiers3 = [(SISchemaGridCardSection *)self resultIdentifiers];
+  if (resultIdentifiers3)
   {
-    v9 = v8;
-    v10 = [(SISchemaGridCardSection *)self resultIdentifiers];
-    v11 = [v4 resultIdentifiers];
-    v12 = [v10 isEqual:v11];
+    v9 = resultIdentifiers3;
+    resultIdentifiers4 = [(SISchemaGridCardSection *)self resultIdentifiers];
+    resultIdentifiers5 = [equalCopy resultIdentifiers];
+    v12 = [resultIdentifiers4 isEqual:resultIdentifiers5];
 
     if (!v12)
     {
@@ -201,7 +201,7 @@ LABEL_12:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[20] & 1))
+  if ((*&self->_has & 1) != (equalCopy[20] & 1))
   {
     goto LABEL_12;
   }
@@ -209,7 +209,7 @@ LABEL_12:
   if (*&self->_has)
   {
     cardSource = self->_cardSource;
-    if (cardSource != [v4 cardSource])
+    if (cardSource != [equalCopy cardSource])
     {
       goto LABEL_12;
     }
@@ -221,10 +221,10 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -262,22 +262,22 @@ LABEL_13:
   }
 }
 
-- (void)addResultIdentifiers:(id)a3
+- (void)addResultIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   resultIdentifiers = self->_resultIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!resultIdentifiers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_resultIdentifiers;
-    self->_resultIdentifiers = v6;
+    self->_resultIdentifiers = array;
 
-    v4 = v8;
+    identifiersCopy = v8;
     resultIdentifiers = self->_resultIdentifiers;
   }
 
-  [(NSArray *)resultIdentifiers addObject:v4];
+  [(NSArray *)resultIdentifiers addObject:identifiersCopy];
 }
 
 - (id)suppressMessageUnderConditions

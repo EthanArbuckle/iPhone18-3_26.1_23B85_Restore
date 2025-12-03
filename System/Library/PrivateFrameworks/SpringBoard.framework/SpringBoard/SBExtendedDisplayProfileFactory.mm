@@ -1,9 +1,9 @@
 @interface SBExtendedDisplayProfileFactory
 - (id)createProfile;
-- (id)displayProfile:(id)a3 initialDisplayConfigurationRequestForDisplay:(id)a4;
-- (id)displayProfile:(id)a3 rootSceneWindowForDisplayConfiguration:(id)a4;
-- (id)initWithDefaults:(void *)a3 delegate:;
-- (void)displayProfile:(id)a3 modifyInitialSceneParameters:(id)a4;
+- (id)displayProfile:(id)profile initialDisplayConfigurationRequestForDisplay:(id)display;
+- (id)displayProfile:(id)profile rootSceneWindowForDisplayConfiguration:(id)configuration;
+- (id)initWithDefaults:(void *)defaults delegate:;
+- (void)displayProfile:(id)profile modifyInitialSceneParameters:(id)parameters;
 @end
 
 @implementation SBExtendedDisplayProfileFactory
@@ -20,28 +20,28 @@ void __48__SBExtendedDisplayProfileFactory_createProfile__block_invoke(uint64_t 
   [v4 deriveWithIdentifier:@"com.apple.springboard.shellui"];
 }
 
-- (id)displayProfile:(id)a3 rootSceneWindowForDisplayConfiguration:(id)a4
+- (id)displayProfile:(id)profile rootSceneWindowForDisplayConfiguration:(id)configuration
 {
-  v4 = a4;
-  v5 = [(SBRootSceneWindow *)[SBExtendedDisplayProfileFactoryRootSceneWindow alloc] initWithDisplayConfiguration:v4];
+  configurationCopy = configuration;
+  v5 = [(SBRootSceneWindow *)[SBExtendedDisplayProfileFactoryRootSceneWindow alloc] initWithDisplayConfiguration:configurationCopy];
 
   return v5;
 }
 
-- (void)displayProfile:(id)a3 modifyInitialSceneParameters:(id)a4
+- (void)displayProfile:(id)profile modifyInitialSceneParameters:(id)parameters
 {
-  v5 = a4;
+  parametersCopy = parameters;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained extendedFactory:self modifyInitialSceneParameters:v5];
+  [WeakRetained extendedFactory:self modifyInitialSceneParameters:parametersCopy];
 }
 
-- (id)displayProfile:(id)a3 initialDisplayConfigurationRequestForDisplay:(id)a4
+- (id)displayProfile:(id)profile initialDisplayConfigurationRequestForDisplay:(id)display
 {
   v5 = MEMORY[0x277D0AD40];
-  v6 = a4;
+  displayCopy = display;
   v7 = objc_alloc_init(v5);
-  v8 = [(SBExternalDisplayDefaults *)self->_defaults displayModeSettingsForDisplay:v6];
-  v9 = [MEMORY[0x277D65DB0] withDisplay:v6];
+  v8 = [(SBExternalDisplayDefaults *)self->_defaults displayModeSettingsForDisplay:displayCopy];
+  v9 = [MEMORY[0x277D65DB0] withDisplay:displayCopy];
 
   [v8 overscanCompensation];
   [v7 setOverscanCompensation:FBSDisplayOverscanCompensationForDisplayValue()];
@@ -53,35 +53,35 @@ void __48__SBExtendedDisplayProfileFactory_createProfile__block_invoke(uint64_t 
   return v7;
 }
 
-- (id)initWithDefaults:(void *)a3 delegate:
+- (id)initWithDefaults:(void *)defaults delegate:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  defaultsCopy = defaults;
+  if (self)
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = SBExtendedDisplayProfileFactory;
     v8 = objc_msgSendSuper2(&v10, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 1, a2);
-      objc_storeWeak(a1 + 2, v7);
+      objc_storeWeak(self + 2, defaultsCopy);
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (id)createProfile
 {
-  if (a1)
+  if (self)
   {
-    a1 = [MEMORY[0x277D54F98] sceneHostingProfileWithDelegate:a1 builder:&__block_literal_global_376];
+    self = [MEMORY[0x277D54F98] sceneHostingProfileWithDelegate:self builder:&__block_literal_global_376];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

@@ -2,8 +2,8 @@
 + (SBLockStateAggregator)sharedInstance;
 - (SBFAnalyticsClient)analyticsClient;
 - (SBLockStateAggregator)init;
-- (id)_descriptionForLockState:(unint64_t)a3;
-- (id)_initWithAnalyticsClient:(id)a3;
+- (id)_descriptionForLockState:(unint64_t)state;
+- (id)_initWithAnalyticsClient:(id)client;
 - (id)description;
 - (void)_updateLockState;
 - (void)dealloc;
@@ -15,17 +15,17 @@
 {
   v30 = *MEMORY[0x277D85DE8];
   v3 = +[SBLockScreenManager sharedInstanceIfExists];
-  v4 = [v3 isUILocked];
+  isUILocked = [v3 isUILocked];
 
-  v5 = v4;
-  v6 = [SBApp lockOutController];
-  v7 = [SBApp authenticationController];
-  if (![v7 isAuthenticated])
+  v5 = isUILocked;
+  lockOutController = [SBApp lockOutController];
+  authenticationController = [SBApp authenticationController];
+  if (![authenticationController isAuthenticated])
   {
     v5 |= 2uLL;
   }
 
-  if ([v6 isBlocked])
+  if ([lockOutController isBlocked])
   {
     v5 |= 4uLL;
   }
@@ -73,12 +73,12 @@
     }
 
     self->_lockState = v5;
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v26 = @"SBAggregateLockStateKey";
     v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_lockState];
     v27 = v19;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-    [v18 postNotificationName:@"SBAggregateLockStateDidChangeNotification" object:0 userInfo:v20];
+    [defaultCenter postNotificationName:@"SBAggregateLockStateDidChangeNotification" object:0 userInfo:v20];
 
     WeakRetained = objc_loadWeakRetained(&self->_analyticsClient);
     v24 = *MEMORY[0x277D675E0];
@@ -110,27 +110,27 @@ void __39__SBLockStateAggregator_sharedInstance__block_invoke()
 
 - (SBLockStateAggregator)init
 {
-  v3 = [MEMORY[0x277D65DD0] sharedInstance];
-  v4 = [(SBLockStateAggregator *)self _initWithAnalyticsClient:v3];
+  mEMORY[0x277D65DD0] = [MEMORY[0x277D65DD0] sharedInstance];
+  v4 = [(SBLockStateAggregator *)self _initWithAnalyticsClient:mEMORY[0x277D65DD0]];
 
   return v4;
 }
 
-- (id)_initWithAnalyticsClient:(id)a3
+- (id)_initWithAnalyticsClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v9.receiver = self;
   v9.super_class = SBLockStateAggregator;
   v5 = [(SBLockStateAggregator *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_analyticsClient, v4);
+    objc_storeWeak(&v5->_analyticsClient, clientCopy);
     v6->_lockState = 0;
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v6 selector:sel__updateLockState name:*MEMORY[0x277D67A48] object:0];
-    [v7 addObserver:v6 selector:sel__updateLockState name:*MEMORY[0x277D66078] object:0];
-    [v7 addObserver:v6 selector:sel__updateLockState name:*MEMORY[0x277D66030] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__updateLockState name:*MEMORY[0x277D67A48] object:0];
+    [defaultCenter addObserver:v6 selector:sel__updateLockState name:*MEMORY[0x277D66078] object:0];
+    [defaultCenter addObserver:v6 selector:sel__updateLockState name:*MEMORY[0x277D66030] object:0];
     [(SBLockStateAggregator *)v6 _updateLockState];
   }
 
@@ -139,32 +139,32 @@ void __39__SBLockStateAggregator_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBLockStateAggregator;
   [(SBLockStateAggregator *)&v4 dealloc];
 }
 
-- (id)_descriptionForLockState:(unint64_t)a3
+- (id)_descriptionForLockState:(unint64_t)state
 {
-  if (!a3)
+  if (!state)
   {
     v5 = @"none";
     goto LABEL_14;
   }
 
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAB68] string];
-  v5 = v4;
-  if (v3)
+  stateCopy = state;
+  string = [MEMORY[0x277CCAB68] string];
+  v5 = string;
+  if (stateCopy)
   {
-    [(__CFString *)v4 appendString:@"UILocked"];
-    if ((v3 & 2) == 0)
+    [(__CFString *)string appendString:@"UILocked"];
+    if ((stateCopy & 2) == 0)
     {
 LABEL_4:
-      if ((v3 & 4) == 0)
+      if ((stateCopy & 4) == 0)
       {
         goto LABEL_14;
       }
@@ -173,7 +173,7 @@ LABEL_4:
     }
   }
 
-  else if ((v3 & 2) == 0)
+  else if ((stateCopy & 2) == 0)
   {
     goto LABEL_4;
   }
@@ -184,7 +184,7 @@ LABEL_4:
   }
 
   [(__CFString *)v5 appendString:@"PasscodeLocked"];
-  if ((v3 & 4) != 0)
+  if ((stateCopy & 4) != 0)
   {
 LABEL_11:
     if ([(__CFString *)v5 length])

@@ -1,20 +1,20 @@
 @interface CBAlertManager
 + (id)sharedInstance;
 - (BOOL)_alertNotVisible;
-- (BOOL)_modalNotVisible:(unint64_t)a3;
+- (BOOL)_modalNotVisible:(unint64_t)visible;
 - (id)_init;
-- (id)_pointImageOfColor:(id)a3;
+- (id)_pointImageOfColor:(id)color;
 - (void)_dismissDebugInfo;
 - (void)_dismissWiFiPicker;
-- (void)dismissThermalWarningWithCompletion:(id)a3;
-- (void)powerDownViewRequestCancel:(id)a3;
-- (void)powerDownViewRequestPowerDown:(id)a3;
-- (void)showDebugInfoWithCompletion:(id)a3;
-- (void)showExitConfirmationWithCompletion:(id)a3 response:(id)a4;
-- (void)showMenuSheetWithOptions:(unint64_t)a3 completion:(id)a4 response:(id)a5;
-- (void)showPowerDownWithCompletion:(id)a3 response:(id)a4;
-- (void)showThermalWarningWithCompletion:(id)a3;
-- (void)showWiFiPickerWithCompletion:(id)a3;
+- (void)dismissThermalWarningWithCompletion:(id)completion;
+- (void)powerDownViewRequestCancel:(id)cancel;
+- (void)powerDownViewRequestPowerDown:(id)down;
+- (void)showDebugInfoWithCompletion:(id)completion;
+- (void)showExitConfirmationWithCompletion:(id)completion response:(id)response;
+- (void)showMenuSheetWithOptions:(unint64_t)options completion:(id)completion response:(id)response;
+- (void)showPowerDownWithCompletion:(id)completion response:(id)response;
+- (void)showThermalWarningWithCompletion:(id)completion;
+- (void)showWiFiPickerWithCompletion:(id)completion;
 @end
 
 @implementation CBAlertManager
@@ -51,11 +51,11 @@
   return v3;
 }
 
-- (void)showMenuSheetWithOptions:(unint64_t)a3 completion:(id)a4 response:(id)a5
+- (void)showMenuSheetWithOptions:(unint64_t)options completion:(id)completion response:(id)response
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  completionCopy = completion;
+  responseCopy = response;
   if ([(CBAlertManager *)self _alertNotVisible]&& [(CBAlertManager *)self _modalNotVisible:1]&& [(CBAlertManager *)self _modalNotVisible:2])
   {
     v10 = CheckerBoardLogHandleForCategory();
@@ -66,9 +66,9 @@
     }
 
     v11 = +[UIDevice currentDevice];
-    v12 = [v11 userInterfaceIdiom];
+    userInterfaceIdiom = [v11 userInterfaceIdiom];
 
-    v13 = [UIAlertController alertControllerWithTitle:0 message:0 preferredStyle:(v12 & 0xFFFFFFFFFFFFFFFBLL) == 1];
+    v13 = [UIAlertController alertControllerWithTitle:0 message:0 preferredStyle:(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1];
     v14 = +[NSBundle mainBundle];
     v15 = [v14 localizedStringForKey:@"EXIT_DIAGNOSTICS" value:&stru_10007EAB0 table:0];
     v43[0] = _NSConcreteStackBlock;
@@ -76,12 +76,12 @@
     v43[2] = sub_10002200C;
     v43[3] = &unk_10007E058;
     v43[4] = self;
-    v16 = v9;
+    v16 = responseCopy;
     v44 = v16;
     v17 = [UIAlertAction actionWithTitle:v15 style:2 handler:v43];
     [v13 addAction:v17];
 
-    if ((v6 & 1) != 0 && ![(CBAlertManager *)self wiFiPickerVisible])
+    if ((optionsCopy & 1) != 0 && ![(CBAlertManager *)self wiFiPickerVisible])
     {
       v18 = MGGetBoolAnswer();
       v19 = +[NSBundle mainBundle];
@@ -108,7 +108,7 @@
       [v13 addAction:v23];
     }
 
-    if ((v6 & 2) != 0)
+    if ((optionsCopy & 2) != 0)
     {
       v24 = +[NSBundle mainBundle];
       v25 = [v24 localizedStringForKey:@"SHUT_DOWN" value:&stru_10007EAB0 table:0];
@@ -122,7 +122,7 @@
       [v13 addAction:v26];
     }
 
-    if ((v6 & 4) != 0 && ![(CBAlertManager *)self debugInfoVisible])
+    if ((optionsCopy & 4) != 0 && ![(CBAlertManager *)self debugInfoVisible])
     {
       v37[0] = _NSConcreteStackBlock;
       v37[1] = 3221225472;
@@ -151,20 +151,20 @@
     v33[1] = 3221225472;
     v33[2] = sub_1000222DC;
     v33[3] = &unk_10007DC38;
-    v34 = v8;
+    v34 = completionCopy;
     v32 = [v31 presentViewController:v13 onLayer:2 backgroundTunnel:0 statusBarVisible:0 animated:1 completion:v33];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (*(v8 + 2))(v8, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)showExitConfirmationWithCompletion:(id)a3 response:(id)a4
+- (void)showExitConfirmationWithCompletion:(id)completion response:(id)response
 {
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  responseCopy = response;
   if ([(CBAlertManager *)self _alertNotVisible])
   {
     v8 = CheckerBoardLogHandleForCategory();
@@ -175,11 +175,11 @@
     }
 
     v9 = +[UIDevice currentDevice];
-    v10 = [v9 userInterfaceIdiom];
+    userInterfaceIdiom = [v9 userInterfaceIdiom];
 
     v11 = +[NSBundle mainBundle];
     v12 = [v11 localizedStringForKey:@"ARE_YOU_SURE" value:&stru_10007EAB0 table:0];
-    v13 = [UIAlertController alertControllerWithTitle:v12 message:0 preferredStyle:(v10 & 0xFFFFFFFFFFFFFFFBLL) == 1];
+    v13 = [UIAlertController alertControllerWithTitle:v12 message:0 preferredStyle:(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1];
 
     v14 = +[NSBundle mainBundle];
     v15 = [v14 localizedStringForKey:@"EXIT_DIAGNOSTICS" value:&stru_10007EAB0 table:0];
@@ -188,7 +188,7 @@
     v27[2] = sub_1000226F0;
     v27[3] = &unk_10007E058;
     v27[4] = self;
-    v16 = v7;
+    v16 = responseCopy;
     v28 = v16;
     v17 = [UIAlertAction actionWithTitle:v15 style:2 handler:v27];
     [v13 addAction:v17];
@@ -210,19 +210,19 @@
     v23[1] = 3221225472;
     v23[2] = sub_100022788;
     v23[3] = &unk_10007DC38;
-    v24 = v6;
+    v24 = completionCopy;
     v22 = [v21 presentViewController:v13 onLayer:2 backgroundTunnel:0 statusBarVisible:0 animated:1 completion:v23];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)showWiFiPickerWithCompletion:(id)a3
+- (void)showWiFiPickerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(CBAlertManager *)self _modalNotVisible:0])
   {
     v5 = CheckerBoardLogHandleForCategory();
@@ -234,8 +234,8 @@
 
     v6 = [[CBNetworkViewController alloc] initWithSetupPresentationTheme:0];
     v7 = +[UIColor whiteColor];
-    v8 = [(CBNetworkViewController *)v6 view];
-    [v8 setBackgroundColor:v7];
+    view = [(CBNetworkViewController *)v6 view];
+    [view setBackgroundColor:v7];
 
     v9 = [[UINavigationController alloc] initWithRootViewController:v6];
     [(CBAlertManager *)self setWiFiPickerVisible:1];
@@ -244,20 +244,20 @@
     v12[1] = 3221225472;
     v12[2] = sub_1000229E4;
     v12[3] = &unk_10007DC38;
-    v13 = v4;
+    v13 = completionCopy;
     v11 = [v10 presentViewController:v9 onLayer:2 backgroundTunnel:0 statusBarVisible:1 animated:1 completion:v12];
     [(CBAlertManager *)self setWiFiPickerWindow:v11];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)showThermalWarningWithCompletion:(id)a3
+- (void)showThermalWarningWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(CBAlertManager *)self _modalNotVisible:1])
   {
     v5 = CheckerBoardLogHandleForCategory();
@@ -274,8 +274,8 @@
     v8 = [UIColor colorWithWhite:0.0 alpha:1.0];
     v9 = [(CBAlertManager *)self _pointImageOfColor:v8];
 
-    v10 = [v7 navigationBar];
-    [v10 setBackgroundImage:v9 forBarMetrics:0];
+    navigationBar = [v7 navigationBar];
+    [navigationBar setBackgroundImage:v9 forBarMetrics:0];
 
     [(CBAlertManager *)self setThermalWarningVisible:1];
     v11 = +[CBWindowManager sharedInstance];
@@ -283,21 +283,21 @@
     v13[1] = 3221225472;
     v13[2] = sub_100022C78;
     v13[3] = &unk_10007DC38;
-    v14 = v4;
+    v14 = completionCopy;
     v12 = [v11 presentViewController:v7 onLayer:2 backgroundTunnel:0 statusBarVisible:0 animated:1 completion:v13];
     [(CBAlertManager *)self setThermalWarningWindow:v12];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)showPowerDownWithCompletion:(id)a3 response:(id)a4
+- (void)showPowerDownWithCompletion:(id)completion response:(id)response
 {
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  responseCopy = response;
   if ([(CBAlertManager *)self _modalNotVisible:2])
   {
     v8 = CheckerBoardLogHandleForCategory();
@@ -307,11 +307,11 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Presenting power down UI…", buf, 2u);
     }
 
-    [(CBAlertManager *)self setPowerDownResponse:v7];
+    [(CBAlertManager *)self setPowerDownResponse:responseCopy];
     v9 = +[SBUIPowerDownViewControllerFactory newPowerDownViewController];
     v10 = +[UIColor lightGrayColor];
-    v11 = [v9 view];
-    [v11 setBackgroundColor:v10];
+    view = [v9 view];
+    [view setBackgroundColor:v10];
 
     [v9 setPowerDownDelegate:self];
     [v9 setModalPresentationStyle:5];
@@ -322,20 +322,20 @@
     v14[1] = 3221225472;
     v14[2] = sub_100022EF0;
     v14[3] = &unk_10007DC38;
-    v15 = v6;
+    v15 = completionCopy;
     v13 = [v12 presentViewController:v9 onLayer:2 backgroundTunnel:0 statusBarVisible:0 animated:1 completion:v14];
     [(CBAlertManager *)self setPowerDownWindow:v13];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)showDebugInfoWithCompletion:(id)a3
+- (void)showDebugInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(CBAlertManager *)self _modalNotVisible:3])
   {
     v5 = CheckerBoardLogHandleForCategory();
@@ -347,8 +347,8 @@
 
     v6 = objc_alloc_init(CBDebugInfoViewController);
     v7 = +[UIColor whiteColor];
-    v8 = [(CBDebugInfoViewController *)v6 view];
-    [v8 setBackgroundColor:v7];
+    view = [(CBDebugInfoViewController *)v6 view];
+    [view setBackgroundColor:v7];
 
     v9 = [[UINavigationController alloc] initWithRootViewController:v6];
     [(CBAlertManager *)self setDebugInfoVisible:1];
@@ -357,25 +357,25 @@
     v12[1] = 3221225472;
     v12[2] = sub_100023144;
     v12[3] = &unk_10007DC38;
-    v13 = v4;
+    v13 = completionCopy;
     v11 = [v10 presentViewController:v9 onLayer:2 backgroundTunnel:0 statusBarVisible:1 animated:1 completion:v12];
     [(CBAlertManager *)self setDebugInfoWindow:v11];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)dismissThermalWarningWithCompletion:(id)a3
+- (void)dismissThermalWarningWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(CBAlertManager *)self _modalNotVisible:1])
   {
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -388,15 +388,15 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Dismissing thermal warning.", v7, 2u);
     }
 
-    v6 = [(CBAlertManager *)self thermalWarningWindow];
-    [v6 dismissViewControllerAnimated:1];
+    thermalWarningWindow = [(CBAlertManager *)self thermalWarningWindow];
+    [thermalWarningWindow dismissViewControllerAnimated:1];
 
     [(CBAlertManager *)self setThermalWarningVisible:0];
     [(CBAlertManager *)self setThermalWarningWindow:0];
   }
 }
 
-- (void)powerDownViewRequestCancel:(id)a3
+- (void)powerDownViewRequestCancel:(id)cancel
 {
   v4 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -406,15 +406,15 @@
   }
 
   [(CBAlertManager *)self setPowerDownVisible:0];
-  v5 = [(CBAlertManager *)self powerDownWindow];
-  [v5 dismissViewControllerAnimated:1];
+  powerDownWindow = [(CBAlertManager *)self powerDownWindow];
+  [powerDownWindow dismissViewControllerAnimated:1];
 
   [(CBAlertManager *)self setPowerDownWindow:0];
-  v6 = [(CBAlertManager *)self powerDownResponse];
-  v6[2](v6, 1);
+  powerDownResponse = [(CBAlertManager *)self powerDownResponse];
+  powerDownResponse[2](powerDownResponse, 1);
 }
 
-- (void)powerDownViewRequestPowerDown:(id)a3
+- (void)powerDownViewRequestPowerDown:(id)down
 {
   v4 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -424,17 +424,17 @@
   }
 
   [(CBAlertManager *)self setPowerDownVisible:0];
-  v5 = [(CBAlertManager *)self powerDownResponse];
-  v5[2](v5, 0);
+  powerDownResponse = [(CBAlertManager *)self powerDownResponse];
+  powerDownResponse[2](powerDownResponse, 0);
 }
 
-- (id)_pointImageOfColor:(id)a3
+- (id)_pointImageOfColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v7.width = 1.0;
   v7.height = 1.0;
   UIGraphicsBeginImageContext(v7);
-  [v3 set];
+  [colorCopy set];
 
   v8.origin.x = 0.0;
   v8.origin.y = 0.0;
@@ -457,8 +457,8 @@
   }
 
   [(CBAlertManager *)self setWiFiPickerVisible:0];
-  v4 = [(CBAlertManager *)self wiFiPickerWindow];
-  [v4 dismissViewControllerAnimated:1];
+  wiFiPickerWindow = [(CBAlertManager *)self wiFiPickerWindow];
+  [wiFiPickerWindow dismissViewControllerAnimated:1];
 
   [(CBAlertManager *)self setWiFiPickerWindow:0];
 }
@@ -473,8 +473,8 @@
   }
 
   [(CBAlertManager *)self setDebugInfoVisible:0];
-  v4 = [(CBAlertManager *)self debugInfoWindow];
-  [v4 dismissViewControllerAnimated:1];
+  debugInfoWindow = [(CBAlertManager *)self debugInfoWindow];
+  [debugInfoWindow dismissViewControllerAnimated:1];
 
   [(CBAlertManager *)self setDebugInfoWindow:0];
 }
@@ -494,9 +494,9 @@
   return ![(CBAlertManager *)self alertVisible];
 }
 
-- (BOOL)_modalNotVisible:(unint64_t)a3
+- (BOOL)_modalNotVisible:(unint64_t)visible
 {
-  if (!a3)
+  if (!visible)
   {
     if ([(CBAlertManager *)self wiFiPickerVisible])
     {
@@ -506,7 +506,7 @@
     return 1;
   }
 
-  if (a3 == 2)
+  if (visible == 2)
   {
     if ([(CBAlertManager *)self powerDownVisible])
     {
@@ -516,7 +516,7 @@
     return 1;
   }
 
-  if (a3 != 1 || ![(CBAlertManager *)self thermalWarningVisible])
+  if (visible != 1 || ![(CBAlertManager *)self thermalWarningVisible])
   {
     return 1;
   }
@@ -526,7 +526,7 @@ LABEL_7:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = a3;
+    visibleCopy = visible;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Modal (%ld) is already visible.", &v6, 0xCu);
   }
 

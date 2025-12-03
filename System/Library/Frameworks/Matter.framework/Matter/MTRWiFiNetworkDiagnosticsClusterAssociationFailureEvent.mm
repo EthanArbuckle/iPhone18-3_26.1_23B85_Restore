@@ -1,6 +1,6 @@
 @interface MTRWiFiNetworkDiagnosticsClusterAssociationFailureEvent
 - (MTRWiFiNetworkDiagnosticsClusterAssociationFailureEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRWiFiNetworkDiagnosticsClusterAssociationFailureEvent);
-  v5 = [(MTRWiFiNetworkDiagnosticsClusterAssociationFailureEvent *)self associationFailureCause];
-  [(MTRWiFiNetworkDiagnosticsClusterAssociationFailureEvent *)v4 setAssociationFailureCause:v5];
+  associationFailureCause = [(MTRWiFiNetworkDiagnosticsClusterAssociationFailureEvent *)self associationFailureCause];
+  [(MTRWiFiNetworkDiagnosticsClusterAssociationFailureEvent *)v4 setAssociationFailureCause:associationFailureCause];
 
-  v6 = [(MTRWiFiNetworkDiagnosticsClusterAssociationFailureEvent *)self status];
-  [(MTRWiFiNetworkDiagnosticsClusterAssociationFailureEvent *)v4 setStatus:v6];
+  status = [(MTRWiFiNetworkDiagnosticsClusterAssociationFailureEvent *)self status];
+  [(MTRWiFiNetworkDiagnosticsClusterAssociationFailureEvent *)v4 setStatus:status];
 
   return v4;
 }

@@ -9,130 +9,130 @@
 {
   v151 = *MEMORY[0x277D85DE8];
   v2 = objc_alloc_init(HDCodableMedicalIDData);
-  -[HDCodableMedicalIDData setIsDisabled:](v2, "setIsDisabled:", [a1 isDisabled]);
-  v3 = [a1 isDisabledModifiedDate];
+  -[HDCodableMedicalIDData setIsDisabled:](v2, "setIsDisabled:", [self isDisabled]);
+  isDisabledModifiedDate = [self isDisabledModifiedDate];
 
-  if (v3)
+  if (isDisabledModifiedDate)
   {
-    v4 = [a1 isDisabledModifiedDate];
-    [v4 timeIntervalSinceReferenceDate];
+    isDisabledModifiedDate2 = [self isDisabledModifiedDate];
+    [isDisabledModifiedDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setIsDisabledModifiedDate:?];
   }
 
-  -[HDCodableMedicalIDData setShareDuringEmergency:](v2, "setShareDuringEmergency:", [a1 shareDuringEmergency]);
-  v5 = [a1 shareDuringEmergencyModifiedDate];
+  -[HDCodableMedicalIDData setShareDuringEmergency:](v2, "setShareDuringEmergency:", [self shareDuringEmergency]);
+  shareDuringEmergencyModifiedDate = [self shareDuringEmergencyModifiedDate];
 
-  if (v5)
+  if (shareDuringEmergencyModifiedDate)
   {
-    v6 = [a1 shareDuringEmergencyModifiedDate];
-    [v6 timeIntervalSinceReferenceDate];
+    shareDuringEmergencyModifiedDate2 = [self shareDuringEmergencyModifiedDate];
+    [shareDuringEmergencyModifiedDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setShareDuringEmergencyModifiedDate:?];
   }
 
-  v7 = [a1 pictureData];
-  [(HDCodableMedicalIDData *)v2 setPictureData:v7];
+  pictureData = [self pictureData];
+  [(HDCodableMedicalIDData *)v2 setPictureData:pictureData];
 
-  v8 = [a1 pictureDataModifiedDate];
+  pictureDataModifiedDate = [self pictureDataModifiedDate];
 
-  if (v8)
+  if (pictureDataModifiedDate)
   {
-    v9 = [a1 pictureDataModifiedDate];
-    [v9 timeIntervalSinceReferenceDate];
+    pictureDataModifiedDate2 = [self pictureDataModifiedDate];
+    [pictureDataModifiedDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setPictureDataModifiedDate:?];
   }
 
-  v10 = [a1 name];
-  [(HDCodableMedicalIDData *)v2 setName:v10];
+  name = [self name];
+  [(HDCodableMedicalIDData *)v2 setName:name];
 
-  v11 = [a1 nameModifiedDate];
+  nameModifiedDate = [self nameModifiedDate];
 
-  if (v11)
+  if (nameModifiedDate)
   {
-    v12 = [a1 nameModifiedDate];
-    [v12 timeIntervalSinceReferenceDate];
+    nameModifiedDate2 = [self nameModifiedDate];
+    [nameModifiedDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setNameModifiedDate:?];
   }
 
-  v13 = [a1 gregorianBirthday];
-  v14 = [v13 hk_codableDateComponentsForCalendarUnits:*MEMORY[0x277CCDEB0]];
+  gregorianBirthday = [self gregorianBirthday];
+  v14 = [gregorianBirthday hk_codableDateComponentsForCalendarUnits:*MEMORY[0x277CCDEB0]];
   [(HDCodableMedicalIDData *)v2 setGregorianBirthday:v14];
 
-  v15 = [a1 gregorianBirthdayModifiedDate];
+  gregorianBirthdayModifiedDate = [self gregorianBirthdayModifiedDate];
 
-  if (v15)
+  if (gregorianBirthdayModifiedDate)
   {
-    v16 = [a1 gregorianBirthdayModifiedDate];
-    [v16 timeIntervalSinceReferenceDate];
+    gregorianBirthdayModifiedDate2 = [self gregorianBirthdayModifiedDate];
+    [gregorianBirthdayModifiedDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setGregorianBirthdayModifiedDate:?];
   }
 
-  v17 = [a1 primaryLanguageCode];
-  [(HDCodableMedicalIDData *)v2 setPrimaryLanguageCode:v17];
+  primaryLanguageCode = [self primaryLanguageCode];
+  [(HDCodableMedicalIDData *)v2 setPrimaryLanguageCode:primaryLanguageCode];
 
-  v18 = [a1 primaryLanguageCodeModifiedDate];
+  primaryLanguageCodeModifiedDate = [self primaryLanguageCodeModifiedDate];
 
-  if (v18)
+  if (primaryLanguageCodeModifiedDate)
   {
-    v19 = [a1 primaryLanguageCodeModifiedDate];
-    [v19 timeIntervalSinceReferenceDate];
+    primaryLanguageCodeModifiedDate2 = [self primaryLanguageCodeModifiedDate];
+    [primaryLanguageCodeModifiedDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setPrimaryLanguageCodeModifiedDate:?];
   }
 
-  v20 = [a1 height];
-  v21 = [v20 codableRepresentationForSync];
-  [(HDCodableMedicalIDData *)v2 setHeight:v21];
+  height = [self height];
+  codableRepresentationForSync = [height codableRepresentationForSync];
+  [(HDCodableMedicalIDData *)v2 setHeight:codableRepresentationForSync];
 
-  v22 = [a1 heightModifiedDate];
+  heightModifiedDate = [self heightModifiedDate];
 
-  if (v22)
+  if (heightModifiedDate)
   {
-    v23 = [a1 heightModifiedDate];
-    [v23 timeIntervalSinceReferenceDate];
+    heightModifiedDate2 = [self heightModifiedDate];
+    [heightModifiedDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setHeightModifiedDate:?];
   }
 
-  v24 = [a1 weight];
-  v25 = [v24 codableRepresentationForSync];
-  [(HDCodableMedicalIDData *)v2 setWeight:v25];
+  weight = [self weight];
+  codableRepresentationForSync2 = [weight codableRepresentationForSync];
+  [(HDCodableMedicalIDData *)v2 setWeight:codableRepresentationForSync2];
 
-  v26 = [a1 weightModifiedDate];
+  weightModifiedDate = [self weightModifiedDate];
 
-  if (v26)
+  if (weightModifiedDate)
   {
-    v27 = [a1 weightModifiedDate];
-    [v27 timeIntervalSinceReferenceDate];
+    weightModifiedDate2 = [self weightModifiedDate];
+    [weightModifiedDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setWeightModifiedDate:?];
   }
 
-  -[HDCodableMedicalIDData setBloodType:](v2, "setBloodType:", [a1 bloodType]);
-  v28 = [a1 bloodTypeModifiedDate];
+  -[HDCodableMedicalIDData setBloodType:](v2, "setBloodType:", [self bloodType]);
+  bloodTypeModifiedDate = [self bloodTypeModifiedDate];
 
-  if (v28)
+  if (bloodTypeModifiedDate)
   {
-    v29 = [a1 bloodTypeModifiedDate];
-    [v29 timeIntervalSinceReferenceDate];
+    bloodTypeModifiedDate2 = [self bloodTypeModifiedDate];
+    [bloodTypeModifiedDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setBloodTypeModifiedDate:?];
   }
 
-  v30 = [a1 isOrganDonor];
+  isOrganDonor = [self isOrganDonor];
 
-  if (v30)
+  if (isOrganDonor)
   {
-    v31 = [a1 isOrganDonor];
-    -[HDCodableMedicalIDData setIsOrganDonor:](v2, "setIsOrganDonor:", [v31 longLongValue]);
+    isOrganDonor2 = [self isOrganDonor];
+    -[HDCodableMedicalIDData setIsOrganDonor:](v2, "setIsOrganDonor:", [isOrganDonor2 longLongValue]);
   }
 
-  v32 = [a1 isOrganDonorModifiedDate];
+  isOrganDonorModifiedDate = [self isOrganDonorModifiedDate];
 
-  if (v32)
+  if (isOrganDonorModifiedDate)
   {
-    v33 = [a1 isOrganDonorModifiedDate];
-    [v33 timeIntervalSinceReferenceDate];
+    isOrganDonorModifiedDate2 = [self isOrganDonorModifiedDate];
+    [isOrganDonorModifiedDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setIsOrganDonorModifiedDate:?];
   }
 
-  v34 = [a1 emergencyContacts];
-  v35 = [v34 count];
+  emergencyContacts = [self emergencyContacts];
+  v35 = [emergencyContacts count];
 
   if (v35)
   {
@@ -141,8 +141,8 @@
     v143 = 0u;
     v144 = 0u;
     v145 = 0u;
-    v37 = [a1 emergencyContacts];
-    v38 = [v37 countByEnumeratingWithState:&v142 objects:v150 count:16];
+    emergencyContacts2 = [self emergencyContacts];
+    v38 = [emergencyContacts2 countByEnumeratingWithState:&v142 objects:v150 count:16];
     if (v38)
     {
       v39 = v38;
@@ -154,17 +154,17 @@
         {
           if (*v143 != v40)
           {
-            objc_enumerationMutation(v37);
+            objc_enumerationMutation(emergencyContacts2);
           }
 
-          v42 = [*(*(&v142 + 1) + 8 * v41) codableRepresentationForSync];
-          [v36 addObject:v42];
+          codableRepresentationForSync3 = [*(*(&v142 + 1) + 8 * v41) codableRepresentationForSync];
+          [v36 addObject:codableRepresentationForSync3];
 
           ++v41;
         }
 
         while (v39 != v41);
-        v39 = [v37 countByEnumeratingWithState:&v142 objects:v150 count:16];
+        v39 = [emergencyContacts2 countByEnumeratingWithState:&v142 objects:v150 count:16];
       }
 
       while (v39);
@@ -173,17 +173,17 @@
     [(HDCodableMedicalIDData *)v2 setEmergencyContacts:v36];
   }
 
-  v43 = [a1 emergencyContactsModifiedDate];
+  emergencyContactsModifiedDate = [self emergencyContactsModifiedDate];
 
-  if (v43)
+  if (emergencyContactsModifiedDate)
   {
-    v44 = [a1 emergencyContactsModifiedDate];
-    [v44 timeIntervalSinceReferenceDate];
+    emergencyContactsModifiedDate2 = [self emergencyContactsModifiedDate];
+    [emergencyContactsModifiedDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setEmergencyContactsModifiedDate:?];
   }
 
-  v45 = [a1 clinicalContacts];
-  v46 = [v45 count];
+  clinicalContacts = [self clinicalContacts];
+  v46 = [clinicalContacts count];
 
   if (v46)
   {
@@ -192,8 +192,8 @@
     v139 = 0u;
     v140 = 0u;
     v141 = 0u;
-    v48 = [a1 clinicalContacts];
-    v49 = [v48 countByEnumeratingWithState:&v138 objects:v149 count:16];
+    clinicalContacts2 = [self clinicalContacts];
+    v49 = [clinicalContacts2 countByEnumeratingWithState:&v138 objects:v149 count:16];
     if (v49)
     {
       v50 = v49;
@@ -205,17 +205,17 @@
         {
           if (*v139 != v51)
           {
-            objc_enumerationMutation(v48);
+            objc_enumerationMutation(clinicalContacts2);
           }
 
-          v53 = [*(*(&v138 + 1) + 8 * v52) codableRepresentationForSync];
-          [v47 addObject:v53];
+          codableRepresentationForSync4 = [*(*(&v138 + 1) + 8 * v52) codableRepresentationForSync];
+          [v47 addObject:codableRepresentationForSync4];
 
           ++v52;
         }
 
         while (v50 != v52);
-        v50 = [v48 countByEnumeratingWithState:&v138 objects:v149 count:16];
+        v50 = [clinicalContacts2 countByEnumeratingWithState:&v138 objects:v149 count:16];
       }
 
       while (v50);
@@ -224,101 +224,101 @@
     [(HDCodableMedicalIDData *)v2 setClinicalContacts:v47];
   }
 
-  v54 = [a1 clinicalContactsModifiedDate];
+  clinicalContactsModifiedDate = [self clinicalContactsModifiedDate];
 
-  if (v54)
+  if (clinicalContactsModifiedDate)
   {
-    v55 = [a1 clinicalContactsModifiedDate];
-    [v55 timeIntervalSinceReferenceDate];
+    clinicalContactsModifiedDate2 = [self clinicalContactsModifiedDate];
+    [clinicalContactsModifiedDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setClinicalContactsModifiedDate:?];
   }
 
-  v56 = [a1 medicalConditions];
-  [(HDCodableMedicalIDData *)v2 setMedicalConditions:v56];
+  medicalConditions = [self medicalConditions];
+  [(HDCodableMedicalIDData *)v2 setMedicalConditions:medicalConditions];
 
-  v57 = [a1 medicalConditionsModifiedDate];
+  medicalConditionsModifiedDate = [self medicalConditionsModifiedDate];
 
-  if (v57)
+  if (medicalConditionsModifiedDate)
   {
-    v58 = [a1 medicalConditionsModifiedDate];
-    [v58 timeIntervalSinceReferenceDate];
+    medicalConditionsModifiedDate2 = [self medicalConditionsModifiedDate];
+    [medicalConditionsModifiedDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setMedicalConditionsModifiedDate:?];
   }
 
-  v59 = [a1 medicalNotes];
-  [(HDCodableMedicalIDData *)v2 setMedicalNotes:v59];
+  medicalNotes = [self medicalNotes];
+  [(HDCodableMedicalIDData *)v2 setMedicalNotes:medicalNotes];
 
-  v60 = [a1 medicalNotesModifiedDate];
+  medicalNotesModifiedDate = [self medicalNotesModifiedDate];
 
-  if (v60)
+  if (medicalNotesModifiedDate)
   {
-    v61 = [a1 medicalNotesModifiedDate];
-    [v61 timeIntervalSinceReferenceDate];
+    medicalNotesModifiedDate2 = [self medicalNotesModifiedDate];
+    [medicalNotesModifiedDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setMedicalNotesModifiedDate:?];
   }
 
-  v62 = [a1 allergyInfo];
-  [(HDCodableMedicalIDData *)v2 setAllergyInfo:v62];
+  allergyInfo = [self allergyInfo];
+  [(HDCodableMedicalIDData *)v2 setAllergyInfo:allergyInfo];
 
-  v63 = [a1 allergyInfoModifiedDate];
+  allergyInfoModifiedDate = [self allergyInfoModifiedDate];
 
-  if (v63)
+  if (allergyInfoModifiedDate)
   {
-    v64 = [a1 allergyInfoModifiedDate];
-    [v64 timeIntervalSinceReferenceDate];
+    allergyInfoModifiedDate2 = [self allergyInfoModifiedDate];
+    [allergyInfoModifiedDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setAllergyInfoModifiedDate:?];
   }
 
-  v65 = [a1 medicationInfo];
-  [(HDCodableMedicalIDData *)v2 setMedicationInfo:v65];
+  medicationInfo = [self medicationInfo];
+  [(HDCodableMedicalIDData *)v2 setMedicationInfo:medicationInfo];
 
-  v66 = [a1 medicationInfoModifiedDate];
+  medicationInfoModifiedDate = [self medicationInfoModifiedDate];
 
-  if (v66)
+  if (medicationInfoModifiedDate)
   {
-    v67 = [a1 medicationInfoModifiedDate];
-    [v67 timeIntervalSinceReferenceDate];
+    medicationInfoModifiedDate2 = [self medicationInfoModifiedDate];
+    [medicationInfoModifiedDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setMedicationInfoModifiedDate:?];
   }
 
-  v68 = [a1 pregnancyStartDate];
+  pregnancyStartDate = [self pregnancyStartDate];
 
-  if (v68)
+  if (pregnancyStartDate)
   {
-    v69 = [a1 pregnancyStartDate];
-    [v69 timeIntervalSinceReferenceDate];
+    pregnancyStartDate2 = [self pregnancyStartDate];
+    [pregnancyStartDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setPregnancyStartDate:?];
   }
 
-  v70 = [a1 pregnancyStartDateModifiedDate];
+  pregnancyStartDateModifiedDate = [self pregnancyStartDateModifiedDate];
 
-  if (v70)
+  if (pregnancyStartDateModifiedDate)
   {
-    v71 = [a1 pregnancyStartDateModifiedDate];
-    [v71 timeIntervalSinceReferenceDate];
+    pregnancyStartDateModifiedDate2 = [self pregnancyStartDateModifiedDate];
+    [pregnancyStartDateModifiedDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setPregnancyStartDateModifiedDate:?];
   }
 
-  v72 = [a1 pregnancyEstimatedDueDate];
+  pregnancyEstimatedDueDate = [self pregnancyEstimatedDueDate];
 
-  if (v72)
+  if (pregnancyEstimatedDueDate)
   {
-    v73 = [a1 pregnancyEstimatedDueDate];
-    [v73 timeIntervalSinceReferenceDate];
+    pregnancyEstimatedDueDate2 = [self pregnancyEstimatedDueDate];
+    [pregnancyEstimatedDueDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setPregnancyEstimatedDueDate:?];
   }
 
-  v74 = [a1 pregnancyEstimatedDueDateModifiedDate];
+  pregnancyEstimatedDueDateModifiedDate = [self pregnancyEstimatedDueDateModifiedDate];
 
-  if (v74)
+  if (pregnancyEstimatedDueDateModifiedDate)
   {
-    v75 = [a1 pregnancyEstimatedDueDateModifiedDate];
-    [v75 timeIntervalSinceReferenceDate];
+    pregnancyEstimatedDueDateModifiedDate2 = [self pregnancyEstimatedDueDateModifiedDate];
+    [pregnancyEstimatedDueDateModifiedDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setPregnancyEstimatedDueDateModifiedDate:?];
   }
 
-  v76 = [a1 medicationsList];
-  v77 = [v76 count];
+  medicationsList = [self medicationsList];
+  v77 = [medicationsList count];
 
   if (v77)
   {
@@ -327,8 +327,8 @@
     v135 = 0u;
     v136 = 0u;
     v137 = 0u;
-    v79 = [a1 medicationsList];
-    v80 = [v79 countByEnumeratingWithState:&v134 objects:v148 count:16];
+    medicationsList2 = [self medicationsList];
+    v80 = [medicationsList2 countByEnumeratingWithState:&v134 objects:v148 count:16];
     if (v80)
     {
       v81 = v80;
@@ -340,17 +340,17 @@
         {
           if (*v135 != v82)
           {
-            objc_enumerationMutation(v79);
+            objc_enumerationMutation(medicationsList2);
           }
 
-          v84 = [*(*(&v134 + 1) + 8 * v83) codableRepresentationForSync];
-          [v78 addObject:v84];
+          codableRepresentationForSync5 = [*(*(&v134 + 1) + 8 * v83) codableRepresentationForSync];
+          [v78 addObject:codableRepresentationForSync5];
 
           ++v83;
         }
 
         while (v81 != v83);
-        v81 = [v79 countByEnumeratingWithState:&v134 objects:v148 count:16];
+        v81 = [medicationsList2 countByEnumeratingWithState:&v134 objects:v148 count:16];
       }
 
       while (v81);
@@ -359,34 +359,34 @@
     [(HDCodableMedicalIDData *)v2 setMedicationsLists:v78];
   }
 
-  v85 = [a1 medicationsListModifiedDate];
+  medicationsListModifiedDate = [self medicationsListModifiedDate];
 
-  if (v85)
+  if (medicationsListModifiedDate)
   {
-    v86 = [a1 medicationsListModifiedDate];
-    [v86 timeIntervalSinceReferenceDate];
+    medicationsListModifiedDate2 = [self medicationsListModifiedDate];
+    [medicationsListModifiedDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setMedicationsListModifiedDate:?];
   }
 
-  v87 = [a1 medicationsListVersion];
+  medicationsListVersion = [self medicationsListVersion];
 
-  if (v87)
+  if (medicationsListVersion)
   {
-    v88 = [a1 medicationsListVersion];
-    -[HDCodableMedicalIDData setMedicationsListVersion:](v2, "setMedicationsListVersion:", [v88 longLongValue]);
+    medicationsListVersion2 = [self medicationsListVersion];
+    -[HDCodableMedicalIDData setMedicationsListVersion:](v2, "setMedicationsListVersion:", [medicationsListVersion2 longLongValue]);
   }
 
-  v89 = [a1 medicationsListVersionModifiedDate];
+  medicationsListVersionModifiedDate = [self medicationsListVersionModifiedDate];
 
-  if (v89)
+  if (medicationsListVersionModifiedDate)
   {
-    v90 = [a1 medicationsListVersionModifiedDate];
-    [v90 timeIntervalSinceReferenceDate];
+    medicationsListVersionModifiedDate2 = [self medicationsListVersionModifiedDate];
+    [medicationsListVersionModifiedDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setMedicationsListVersionModifiedDate:?];
   }
 
-  v91 = [a1 allergiesList];
-  v92 = [v91 count];
+  allergiesList = [self allergiesList];
+  v92 = [allergiesList count];
 
   if (v92)
   {
@@ -395,8 +395,8 @@
     v131 = 0u;
     v132 = 0u;
     v133 = 0u;
-    v94 = [a1 allergiesList];
-    v95 = [v94 countByEnumeratingWithState:&v130 objects:v147 count:16];
+    allergiesList2 = [self allergiesList];
+    v95 = [allergiesList2 countByEnumeratingWithState:&v130 objects:v147 count:16];
     if (v95)
     {
       v96 = v95;
@@ -408,17 +408,17 @@
         {
           if (*v131 != v97)
           {
-            objc_enumerationMutation(v94);
+            objc_enumerationMutation(allergiesList2);
           }
 
-          v99 = [*(*(&v130 + 1) + 8 * v98) codableRepresentationForSync];
-          [v93 addObject:v99];
+          codableRepresentationForSync6 = [*(*(&v130 + 1) + 8 * v98) codableRepresentationForSync];
+          [v93 addObject:codableRepresentationForSync6];
 
           ++v98;
         }
 
         while (v96 != v98);
-        v96 = [v94 countByEnumeratingWithState:&v130 objects:v147 count:16];
+        v96 = [allergiesList2 countByEnumeratingWithState:&v130 objects:v147 count:16];
       }
 
       while (v96);
@@ -427,34 +427,34 @@
     [(HDCodableMedicalIDData *)v2 setAllergiesLists:v93];
   }
 
-  v100 = [a1 allergiesListModifiedDate];
+  allergiesListModifiedDate = [self allergiesListModifiedDate];
 
-  if (v100)
+  if (allergiesListModifiedDate)
   {
-    v101 = [a1 allergiesListModifiedDate];
-    [v101 timeIntervalSinceReferenceDate];
+    allergiesListModifiedDate2 = [self allergiesListModifiedDate];
+    [allergiesListModifiedDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setAllergiesListModifiedDate:?];
   }
 
-  v102 = [a1 allergiesListVersion];
+  allergiesListVersion = [self allergiesListVersion];
 
-  if (v102)
+  if (allergiesListVersion)
   {
-    v103 = [a1 allergiesListVersion];
-    -[HDCodableMedicalIDData setAllergiesListVersion:](v2, "setAllergiesListVersion:", [v103 longLongValue]);
+    allergiesListVersion2 = [self allergiesListVersion];
+    -[HDCodableMedicalIDData setAllergiesListVersion:](v2, "setAllergiesListVersion:", [allergiesListVersion2 longLongValue]);
   }
 
-  v104 = [a1 allergiesListVersionModifiedDate];
+  allergiesListVersionModifiedDate = [self allergiesListVersionModifiedDate];
 
-  if (v104)
+  if (allergiesListVersionModifiedDate)
   {
-    v105 = [a1 allergiesListVersionModifiedDate];
-    [v105 timeIntervalSinceReferenceDate];
+    allergiesListVersionModifiedDate2 = [self allergiesListVersionModifiedDate];
+    [allergiesListVersionModifiedDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setAllergiesListVersionModifiedDate:?];
   }
 
-  v106 = [a1 conditionsList];
-  v107 = [v106 count];
+  conditionsList = [self conditionsList];
+  v107 = [conditionsList count];
 
   if (v107)
   {
@@ -463,8 +463,8 @@
     v127 = 0u;
     v128 = 0u;
     v129 = 0u;
-    v109 = [a1 conditionsList];
-    v110 = [v109 countByEnumeratingWithState:&v126 objects:v146 count:16];
+    conditionsList2 = [self conditionsList];
+    v110 = [conditionsList2 countByEnumeratingWithState:&v126 objects:v146 count:16];
     if (v110)
     {
       v111 = v110;
@@ -476,17 +476,17 @@
         {
           if (*v127 != v112)
           {
-            objc_enumerationMutation(v109);
+            objc_enumerationMutation(conditionsList2);
           }
 
-          v114 = [*(*(&v126 + 1) + 8 * v113) codableRepresentationForSync];
-          [v108 addObject:v114];
+          codableRepresentationForSync7 = [*(*(&v126 + 1) + 8 * v113) codableRepresentationForSync];
+          [v108 addObject:codableRepresentationForSync7];
 
           ++v113;
         }
 
         while (v111 != v113);
-        v111 = [v109 countByEnumeratingWithState:&v126 objects:v146 count:16];
+        v111 = [conditionsList2 countByEnumeratingWithState:&v126 objects:v146 count:16];
       }
 
       while (v111);
@@ -495,38 +495,38 @@
     [(HDCodableMedicalIDData *)v2 setConditionsLists:v108];
   }
 
-  v115 = [a1 conditionsListModifiedDate];
+  conditionsListModifiedDate = [self conditionsListModifiedDate];
 
-  if (v115)
+  if (conditionsListModifiedDate)
   {
-    v116 = [a1 conditionsListModifiedDate];
-    [v116 timeIntervalSinceReferenceDate];
+    conditionsListModifiedDate2 = [self conditionsListModifiedDate];
+    [conditionsListModifiedDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setConditionsListModifiedDate:?];
   }
 
-  v117 = [a1 conditionsListVersion];
+  conditionsListVersion = [self conditionsListVersion];
 
-  if (v117)
+  if (conditionsListVersion)
   {
-    v118 = [a1 conditionsListVersion];
-    -[HDCodableMedicalIDData setConditionsListVersion:](v2, "setConditionsListVersion:", [v118 longLongValue]);
+    conditionsListVersion2 = [self conditionsListVersion];
+    -[HDCodableMedicalIDData setConditionsListVersion:](v2, "setConditionsListVersion:", [conditionsListVersion2 longLongValue]);
   }
 
-  v119 = [a1 conditionsListVersionModifiedDate];
+  conditionsListVersionModifiedDate = [self conditionsListVersionModifiedDate];
 
-  if (v119)
+  if (conditionsListVersionModifiedDate)
   {
-    v120 = [a1 conditionsListVersionModifiedDate];
-    [v120 timeIntervalSinceReferenceDate];
+    conditionsListVersionModifiedDate2 = [self conditionsListVersionModifiedDate];
+    [conditionsListVersionModifiedDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setConditionsListVersionModifiedDate:?];
   }
 
-  v121 = [a1 dateSaved];
+  dateSaved = [self dateSaved];
 
-  if (v121)
+  if (dateSaved)
   {
-    v122 = [a1 dateSaved];
-    [v122 timeIntervalSinceReferenceDate];
+    dateSaved2 = [self dateSaved];
+    [dateSaved2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicalIDData *)v2 setDateSaved:?];
   }
 
@@ -571,8 +571,8 @@
       [v5 setShareDuringEmergencyModifiedDate:0];
     }
 
-    v9 = [v4 pictureData];
-    [v5 setPictureData:v9];
+    pictureData = [v4 pictureData];
+    [v5 setPictureData:pictureData];
 
     if ([v4 hasPictureDataModifiedDate])
     {
@@ -586,8 +586,8 @@
       [v5 setPictureDataModifiedDate:0];
     }
 
-    v11 = [v4 name];
-    [v5 setName:v11];
+    name = [v4 name];
+    [v5 setName:name];
 
     if ([v4 hasNameModifiedDate])
     {
@@ -602,8 +602,8 @@
     }
 
     v13 = MEMORY[0x277CBEAB8];
-    v14 = [v4 gregorianBirthday];
-    v15 = [v13 hk_dateComponentsWithCodableDateComponents:v14 calendarUnits:*MEMORY[0x277CCDEB0]];
+    gregorianBirthday = [v4 gregorianBirthday];
+    v15 = [v13 hk_dateComponentsWithCodableDateComponents:gregorianBirthday calendarUnits:*MEMORY[0x277CCDEB0]];
     [v5 setGregorianBirthday:v15];
 
     if ([v4 hasGregorianBirthdayModifiedDate])
@@ -618,8 +618,8 @@
       [v5 setGregorianBirthdayModifiedDate:0];
     }
 
-    v17 = [v4 primaryLanguageCode];
-    [v5 setPrimaryLanguageCode:v17];
+    primaryLanguageCode = [v4 primaryLanguageCode];
+    [v5 setPrimaryLanguageCode:primaryLanguageCode];
 
     if ([v4 hasPrimaryLanguageCodeModifiedDate])
     {
@@ -634,8 +634,8 @@
     }
 
     v19 = MEMORY[0x277CCD7E8];
-    v20 = [v4 height];
-    v21 = [v19 createWithCodable:v20];
+    height = [v4 height];
+    v21 = [v19 createWithCodable:height];
     [v5 setHeight:v21];
 
     if ([v4 hasHeightModifiedDate])
@@ -651,8 +651,8 @@
     }
 
     v23 = MEMORY[0x277CCD7E8];
-    v24 = [v4 weight];
-    v25 = [v23 createWithCodable:v24];
+    weight = [v4 weight];
+    v25 = [v23 createWithCodable:weight];
     [v5 setWeight:v25];
 
     if ([v4 hasWeightModifiedDate])
@@ -669,15 +669,15 @@
 
     if ([v4 hasBloodType])
     {
-      v27 = [v4 bloodType];
+      bloodType = [v4 bloodType];
     }
 
     else
     {
-      v27 = 0;
+      bloodType = 0;
     }
 
-    [v5 setBloodType:v27];
+    [v5 setBloodType:bloodType];
     if ([v4 hasBloodTypeModifiedDate])
     {
       [v4 bloodTypeModifiedDate];
@@ -713,8 +713,8 @@
       [v5 setIsOrganDonorModifiedDate:0];
     }
 
-    v31 = [v4 emergencyContacts];
-    v32 = [v31 count];
+    emergencyContacts = [v4 emergencyContacts];
+    v32 = [emergencyContacts count];
 
     if (v32)
     {
@@ -723,8 +723,8 @@
       v119 = 0u;
       v120 = 0u;
       v121 = 0u;
-      v34 = [v4 emergencyContacts];
-      v35 = [v34 countByEnumeratingWithState:&v118 objects:v126 count:16];
+      emergencyContacts2 = [v4 emergencyContacts];
+      v35 = [emergencyContacts2 countByEnumeratingWithState:&v118 objects:v126 count:16];
       if (v35)
       {
         v36 = v35;
@@ -735,14 +735,14 @@
           {
             if (*v119 != v37)
             {
-              objc_enumerationMutation(v34);
+              objc_enumerationMutation(emergencyContacts2);
             }
 
             v39 = [MEMORY[0x277CCDDA0] createWithCodable:*(*(&v118 + 1) + 8 * i)];
             [v33 addObject:v39];
           }
 
-          v36 = [v34 countByEnumeratingWithState:&v118 objects:v126 count:16];
+          v36 = [emergencyContacts2 countByEnumeratingWithState:&v118 objects:v126 count:16];
         }
 
         while (v36);
@@ -763,8 +763,8 @@
       [v5 setEmergencyContactsModifiedDate:0];
     }
 
-    v41 = [v4 clinicalContacts];
-    v42 = [v41 count];
+    clinicalContacts = [v4 clinicalContacts];
+    v42 = [clinicalContacts count];
 
     if (v42)
     {
@@ -773,8 +773,8 @@
       v115 = 0u;
       v116 = 0u;
       v117 = 0u;
-      v44 = [v4 clinicalContacts];
-      v45 = [v44 countByEnumeratingWithState:&v114 objects:v125 count:16];
+      clinicalContacts2 = [v4 clinicalContacts];
+      v45 = [clinicalContacts2 countByEnumeratingWithState:&v114 objects:v125 count:16];
       if (v45)
       {
         v46 = v45;
@@ -785,14 +785,14 @@
           {
             if (*v115 != v47)
             {
-              objc_enumerationMutation(v44);
+              objc_enumerationMutation(clinicalContacts2);
             }
 
             v49 = [MEMORY[0x277CCDD40] createWithCodable:*(*(&v114 + 1) + 8 * j)];
             [v43 addObject:v49];
           }
 
-          v46 = [v44 countByEnumeratingWithState:&v114 objects:v125 count:16];
+          v46 = [clinicalContacts2 countByEnumeratingWithState:&v114 objects:v125 count:16];
         }
 
         while (v46);
@@ -813,8 +813,8 @@
       [v5 setClinicalContactsModifiedDate:0];
     }
 
-    v51 = [v4 medicalConditions];
-    [v5 setMedicalConditions:v51];
+    medicalConditions = [v4 medicalConditions];
+    [v5 setMedicalConditions:medicalConditions];
 
     if ([v4 hasMedicalConditionsModifiedDate])
     {
@@ -828,8 +828,8 @@
       [v5 setMedicalConditionsModifiedDate:0];
     }
 
-    v53 = [v4 medicalNotes];
-    [v5 setMedicalNotes:v53];
+    medicalNotes = [v4 medicalNotes];
+    [v5 setMedicalNotes:medicalNotes];
 
     if ([v4 hasMedicalNotesModifiedDate])
     {
@@ -843,8 +843,8 @@
       [v5 setMedicalNotesModifiedDate:0];
     }
 
-    v55 = [v4 allergyInfo];
-    [v5 setAllergyInfo:v55];
+    allergyInfo = [v4 allergyInfo];
+    [v5 setAllergyInfo:allergyInfo];
 
     if ([v4 hasAllergyInfoModifiedDate])
     {
@@ -858,8 +858,8 @@
       [v5 setAllergyInfoModifiedDate:0];
     }
 
-    v57 = [v4 medicationInfo];
-    [v5 setMedicationInfo:v57];
+    medicationInfo = [v4 medicationInfo];
+    [v5 setMedicationInfo:medicationInfo];
 
     if ([v4 hasMedicationInfoModifiedDate])
     {
@@ -921,8 +921,8 @@
       [v5 setPregnancyEstimatedDueDateModifiedDate:0];
     }
 
-    v63 = [v4 medicationsLists];
-    v64 = [v63 count];
+    medicationsLists = [v4 medicationsLists];
+    v64 = [medicationsLists count];
 
     if (v64)
     {
@@ -931,8 +931,8 @@
       v111 = 0u;
       v112 = 0u;
       v113 = 0u;
-      v66 = [v4 medicationsLists];
-      v67 = [v66 countByEnumeratingWithState:&v110 objects:v124 count:16];
+      medicationsLists2 = [v4 medicationsLists];
+      v67 = [medicationsLists2 countByEnumeratingWithState:&v110 objects:v124 count:16];
       if (v67)
       {
         v68 = v67;
@@ -943,14 +943,14 @@
           {
             if (*v111 != v69)
             {
-              objc_enumerationMutation(v66);
+              objc_enumerationMutation(medicationsLists2);
             }
 
             v71 = [MEMORY[0x277CCDDF8] createWithCodable:*(*(&v110 + 1) + 8 * k)];
             [v65 addObject:v71];
           }
 
-          v68 = [v66 countByEnumeratingWithState:&v110 objects:v124 count:16];
+          v68 = [medicationsLists2 countByEnumeratingWithState:&v110 objects:v124 count:16];
         }
 
         while (v68);
@@ -994,8 +994,8 @@
       [v5 setMedicationsListVersionModifiedDate:0];
     }
 
-    v75 = [v4 allergiesLists];
-    v76 = [v75 count];
+    allergiesLists = [v4 allergiesLists];
+    v76 = [allergiesLists count];
 
     if (v76)
     {
@@ -1004,8 +1004,8 @@
       v107 = 0u;
       v108 = 0u;
       v109 = 0u;
-      v78 = [v4 allergiesLists];
-      v79 = [v78 countByEnumeratingWithState:&v106 objects:v123 count:16];
+      allergiesLists2 = [v4 allergiesLists];
+      v79 = [allergiesLists2 countByEnumeratingWithState:&v106 objects:v123 count:16];
       if (v79)
       {
         v80 = v79;
@@ -1016,14 +1016,14 @@
           {
             if (*v107 != v81)
             {
-              objc_enumerationMutation(v78);
+              objc_enumerationMutation(allergiesLists2);
             }
 
             v83 = [MEMORY[0x277CCDDE0] createWithCodable:*(*(&v106 + 1) + 8 * m)];
             [v77 addObject:v83];
           }
 
-          v80 = [v78 countByEnumeratingWithState:&v106 objects:v123 count:16];
+          v80 = [allergiesLists2 countByEnumeratingWithState:&v106 objects:v123 count:16];
         }
 
         while (v80);
@@ -1067,8 +1067,8 @@
       [v5 setAllergiesListVersionModifiedDate:0];
     }
 
-    v87 = [v4 conditionsLists];
-    v88 = [v87 count];
+    conditionsLists = [v4 conditionsLists];
+    v88 = [conditionsLists count];
 
     if (v88)
     {
@@ -1077,8 +1077,8 @@
       v103 = 0u;
       v104 = 0u;
       v105 = 0u;
-      v90 = [v4 conditionsLists];
-      v91 = [v90 countByEnumeratingWithState:&v102 objects:v122 count:16];
+      conditionsLists2 = [v4 conditionsLists];
+      v91 = [conditionsLists2 countByEnumeratingWithState:&v102 objects:v122 count:16];
       if (v91)
       {
         v92 = v91;
@@ -1089,14 +1089,14 @@
           {
             if (*v103 != v93)
             {
-              objc_enumerationMutation(v90);
+              objc_enumerationMutation(conditionsLists2);
             }
 
             v95 = [MEMORY[0x277CCDDE8] createWithCodable:*(*(&v102 + 1) + 8 * n)];
             [v89 addObject:v95];
           }
 
-          v92 = [v90 countByEnumeratingWithState:&v102 objects:v122 count:16];
+          v92 = [conditionsLists2 countByEnumeratingWithState:&v102 objects:v122 count:16];
         }
 
         while (v92);

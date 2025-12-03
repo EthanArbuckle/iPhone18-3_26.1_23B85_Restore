@@ -1,25 +1,25 @@
 @interface SSVSAPSignaturePolicy
-- (SSVSAPSignaturePolicy)initWithPolicyType:(int64_t)a3 signatureComponents:(id)a4;
-- (SSVSAPSignaturePolicy)initWithSignedActionsDictionary:(id)a3;
-- (id)_dataToSignWithDataSource:(id)a3;
-- (id)dataToSignWithRequestProperties:(id)a3;
-- (id)dataToSignWithURLRequest:(id)a3;
-- (id)dataToSignWithURLResponse:(id)a3 responseData:(id)a4;
+- (SSVSAPSignaturePolicy)initWithPolicyType:(int64_t)type signatureComponents:(id)components;
+- (SSVSAPSignaturePolicy)initWithSignedActionsDictionary:(id)dictionary;
+- (id)_dataToSignWithDataSource:(id)source;
+- (id)dataToSignWithRequestProperties:(id)properties;
+- (id)dataToSignWithURLRequest:(id)request;
+- (id)dataToSignWithURLResponse:(id)response responseData:(id)data;
 @end
 
 @implementation SSVSAPSignaturePolicy
 
-- (SSVSAPSignaturePolicy)initWithPolicyType:(int64_t)a3 signatureComponents:(id)a4
+- (SSVSAPSignaturePolicy)initWithPolicyType:(int64_t)type signatureComponents:(id)components
 {
-  v6 = a4;
+  componentsCopy = components;
   v12.receiver = self;
   v12.super_class = SSVSAPSignaturePolicy;
   v7 = [(SSVSAPSignaturePolicy *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_policyType = a3;
-    v9 = [v6 copy];
+    v7->_policyType = type;
+    v9 = [componentsCopy copy];
     signatureComponents = v8->_signatureComponents;
     v8->_signatureComponents = v9;
   }
@@ -27,12 +27,12 @@
   return v8;
 }
 
-- (SSVSAPSignaturePolicy)initWithSignedActionsDictionary:(id)a3
+- (SSVSAPSignaturePolicy)initWithSignedActionsDictionary:(id)dictionary
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [v4 objectForKey:@"headers"];
+  v6 = [dictionaryCopy objectForKey:@"headers"];
   objc_opt_class();
   v25 = v6;
   if (objc_opt_isKindOfClass())
@@ -78,11 +78,11 @@
     v6 = v25;
   }
 
-  v14 = [v4 objectForKey:@"fields"];
+  v14 = [dictionaryCopy objectForKey:@"fields"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v24 = self;
+    selfCopy = self;
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
@@ -121,7 +121,7 @@
       while (v17);
     }
 
-    self = v24;
+    self = selfCopy;
     v6 = v25;
   }
 
@@ -139,31 +139,31 @@
   return v22;
 }
 
-- (id)dataToSignWithRequestProperties:(id)a3
+- (id)dataToSignWithRequestProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [[SSVSAPSignatureDataSource alloc] initWithURLRequestProperties:v4];
+  propertiesCopy = properties;
+  v5 = [[SSVSAPSignatureDataSource alloc] initWithURLRequestProperties:propertiesCopy];
 
   v6 = [(SSVSAPSignaturePolicy *)self _dataToSignWithDataSource:v5];
 
   return v6;
 }
 
-- (id)dataToSignWithURLRequest:(id)a3
+- (id)dataToSignWithURLRequest:(id)request
 {
-  v4 = a3;
-  v5 = [[SSVSAPSignatureDataSource alloc] initWithURLRequest:v4];
+  requestCopy = request;
+  v5 = [[SSVSAPSignatureDataSource alloc] initWithURLRequest:requestCopy];
 
   v6 = [(SSVSAPSignaturePolicy *)self _dataToSignWithDataSource:v5];
 
   return v6;
 }
 
-- (id)dataToSignWithURLResponse:(id)a3 responseData:(id)a4
+- (id)dataToSignWithURLResponse:(id)response responseData:(id)data
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[SSVSAPSignatureDataSource alloc] initWithURLResponse:v7 bodyData:v6];
+  dataCopy = data;
+  responseCopy = response;
+  v8 = [[SSVSAPSignatureDataSource alloc] initWithURLResponse:responseCopy bodyData:dataCopy];
 
   v9 = [(SSVSAPSignaturePolicy *)self _dataToSignWithDataSource:v8];
   objc_opt_class();
@@ -182,35 +182,35 @@
   return v11;
 }
 
-- (id)_dataToSignWithDataSource:(id)a3
+- (id)_dataToSignWithDataSource:(id)source
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 HTTPMethod];
-  v6 = [v5 isEqualToString:@"POST"];
+  sourceCopy = source;
+  hTTPMethod = [sourceCopy HTTPMethod];
+  v6 = [hTTPMethod isEqualToString:@"POST"];
 
   if (v6)
   {
-    v7 = [v4 HTTPBody];
+    hTTPBody = [sourceCopy HTTPBody];
   }
 
   else if (self->_policyType == 2)
   {
     if ([(NSArray *)self->_signatureComponents count]== 1)
     {
-      v8 = [(NSArray *)self->_signatureComponents firstObject];
-      v7 = [(NSArray *)v8 _dataToSignWithDataSource:v4];
+      firstObject = [(NSArray *)self->_signatureComponents firstObject];
+      hTTPBody = [(NSArray *)firstObject _dataToSignWithDataSource:sourceCopy];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DF88] data];
+      hTTPBody = [MEMORY[0x1E695DF88] data];
       v15 = 0u;
       v16 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v8 = self->_signatureComponents;
-      v9 = [(NSArray *)v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      firstObject = self->_signatureComponents;
+      v9 = [(NSArray *)firstObject countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v9)
       {
         v10 = v9;
@@ -221,17 +221,17 @@
           {
             if (*v16 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(firstObject);
             }
 
-            v13 = [*(*(&v15 + 1) + 8 * i) _dataToSignWithDataSource:{v4, v15}];
+            v13 = [*(*(&v15 + 1) + 8 * i) _dataToSignWithDataSource:{sourceCopy, v15}];
             if (v13)
             {
-              [v7 appendData:v13];
+              [hTTPBody appendData:v13];
             }
           }
 
-          v10 = [(NSArray *)v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v10 = [(NSArray *)firstObject countByEnumeratingWithState:&v15 objects:v19 count:16];
         }
 
         while (v10);
@@ -241,10 +241,10 @@
 
   else
   {
-    v7 = 0;
+    hTTPBody = 0;
   }
 
-  return v7;
+  return hTTPBody;
 }
 
 @end

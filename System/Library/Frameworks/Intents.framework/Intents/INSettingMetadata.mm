@@ -1,13 +1,13 @@
 @interface INSettingMetadata
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INSettingMetadata)initWithCoder:(id)a3;
-- (INSettingMetadata)initWithSettingId:(id)a3 targetDevice:(id)a4 targetApp:(id)a5;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INSettingMetadata)initWithCoder:(id)coder;
+- (INSettingMetadata)initWithSettingId:(id)id targetDevice:(id)device targetApp:(id)app;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INSettingMetadata
@@ -17,31 +17,31 @@
   v13[3] = *MEMORY[0x1E69E9840];
   v12[0] = @"settingId";
   settingId = self->_settingId;
-  v4 = settingId;
+  null = settingId;
   if (!settingId)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v4;
+  v13[0] = null;
   v12[1] = @"targetDevice";
   targetDevice = self->_targetDevice;
-  v6 = targetDevice;
+  null2 = targetDevice;
   if (!targetDevice)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v6;
+  v13[1] = null2;
   v12[2] = @"targetApp";
   targetApp = self->_targetApp;
-  v8 = targetApp;
+  null3 = targetApp;
   if (!targetApp)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
   if (targetApp)
   {
@@ -79,65 +79,65 @@ LABEL_10:
   return v9;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INSettingMetadata;
   v6 = [(INSettingMetadata *)&v11 description];
-  v7 = [(INSettingMetadata *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INSettingMetadata *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_settingId];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"settingId"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_settingId];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"settingId"];
 
-  v9 = [v6 encodeObject:self->_targetDevice];
-  [v7 if_setObjectIfNonNil:v9 forKey:@"targetDevice"];
+  v9 = [encoderCopy encodeObject:self->_targetDevice];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"targetDevice"];
 
-  v10 = [v6 encodeObject:self->_targetApp];
+  v10 = [encoderCopy encodeObject:self->_targetApp];
 
-  [v7 if_setObjectIfNonNil:v10 forKey:@"targetApp"];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"targetApp"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   settingId = self->_settingId;
-  v5 = a3;
-  [v5 encodeObject:settingId forKey:@"settingId"];
-  [v5 encodeObject:self->_targetDevice forKey:@"targetDevice"];
-  [v5 encodeObject:self->_targetApp forKey:@"targetApp"];
+  coderCopy = coder;
+  [coderCopy encodeObject:settingId forKey:@"settingId"];
+  [coderCopy encodeObject:self->_targetDevice forKey:@"targetDevice"];
+  [coderCopy encodeObject:self->_targetApp forKey:@"targetApp"];
 }
 
-- (INSettingMetadata)initWithCoder:(id)a3
+- (INSettingMetadata)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"settingId"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"settingId"];
 
-  v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"targetDevice"];
-  v10 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"targetApp"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"targetDevice"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"targetApp"];
 
   v11 = [(INSettingMetadata *)self initWithSettingId:v8 targetDevice:v9 targetApp:v10];
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -147,7 +147,7 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       settingId = self->_settingId;
       v9 = 0;
       if (settingId == v5->_settingId || [(NSString *)settingId isEqual:?])
@@ -180,25 +180,25 @@ LABEL_10:
   return v4 ^ [(INAppIdentifier *)self->_targetApp hash];
 }
 
-- (INSettingMetadata)initWithSettingId:(id)a3 targetDevice:(id)a4 targetApp:(id)a5
+- (INSettingMetadata)initWithSettingId:(id)id targetDevice:(id)device targetApp:(id)app
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  deviceCopy = device;
+  appCopy = app;
   v19.receiver = self;
   v19.super_class = INSettingMetadata;
   v11 = [(INSettingMetadata *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [idCopy copy];
     settingId = v11->_settingId;
     v11->_settingId = v12;
 
-    v14 = [v9 copy];
+    v14 = [deviceCopy copy];
     targetDevice = v11->_targetDevice;
     v11->_targetDevice = v14;
 
-    v16 = [v10 copy];
+    v16 = [appCopy copy];
     targetApp = v11->_targetApp;
     v11->_targetApp = v16;
   }
@@ -206,23 +206,23 @@ LABEL_10:
   return v11;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 objectForKeyedSubscript:@"settingId"];
+    v9 = [fromCopy objectForKeyedSubscript:@"settingId"];
     v10 = objc_opt_class();
-    v11 = [v8 objectForKeyedSubscript:@"targetDevice"];
-    v12 = [v7 decodeObjectOfClass:v10 from:v11];
+    v11 = [fromCopy objectForKeyedSubscript:@"targetDevice"];
+    v12 = [decoderCopy decodeObjectOfClass:v10 from:v11];
 
     v13 = objc_opt_class();
-    v14 = [v8 objectForKeyedSubscript:@"targetApp"];
-    v15 = [v7 decodeObjectOfClass:v13 from:v14];
+    v14 = [fromCopy objectForKeyedSubscript:@"targetApp"];
+    v15 = [decoderCopy decodeObjectOfClass:v13 from:v14];
 
-    v16 = [[a1 alloc] initWithSettingId:v9 targetDevice:v12 targetApp:v15];
+    v16 = [[self alloc] initWithSettingId:v9 targetDevice:v12 targetApp:v15];
   }
 
   else

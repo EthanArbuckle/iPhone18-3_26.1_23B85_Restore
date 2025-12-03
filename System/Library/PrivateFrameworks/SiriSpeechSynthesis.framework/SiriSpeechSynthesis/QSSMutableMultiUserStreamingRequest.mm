@@ -10,28 +10,28 @@
 - (QSSSetSpeechContext)contentAsQSSSetSpeechContext;
 - (QSSSetSpeechProfile)contentAsQSSSetSpeechProfile;
 - (QSSUpdateAudioInfo)contentAsQSSUpdateAudioInfo;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)content_type;
-- (void)setContentAsQSSAudioPacket:(id)a3;
-- (void)setContentAsQSSFinishAudio:(id)a3;
-- (void)setContentAsQSSMultiUserStartSpeechRequest:(id)a3;
-- (void)setContentAsQSSResetServerEndpointer:(id)a3;
-- (void)setContentAsQSSSetAlternateRecognitionSausage:(id)a3;
-- (void)setContentAsQSSSetEndpointerState:(id)a3;
-- (void)setContentAsQSSSetRequestOrigin:(id)a3;
-- (void)setContentAsQSSSetSpeechContext:(id)a3;
-- (void)setContentAsQSSSetSpeechProfile:(id)a3;
-- (void)setContentAsQSSUpdateAudioInfo:(id)a3;
-- (void)setContent_type:(int64_t)a3;
+- (void)setContentAsQSSAudioPacket:(id)packet;
+- (void)setContentAsQSSFinishAudio:(id)audio;
+- (void)setContentAsQSSMultiUserStartSpeechRequest:(id)request;
+- (void)setContentAsQSSResetServerEndpointer:(id)endpointer;
+- (void)setContentAsQSSSetAlternateRecognitionSausage:(id)sausage;
+- (void)setContentAsQSSSetEndpointerState:(id)state;
+- (void)setContentAsQSSSetRequestOrigin:(id)origin;
+- (void)setContentAsQSSSetSpeechContext:(id)context;
+- (void)setContentAsQSSSetSpeechProfile:(id)profile;
+- (void)setContentAsQSSUpdateAudioInfo:(id)info;
+- (void)setContent_type:(int64_t)content_type;
 @end
 
 @implementation QSSMutableMultiUserStreamingRequest
 
-- (void)setContentAsQSSSetAlternateRecognitionSausage:(id)a3
+- (void)setContentAsQSSSetAlternateRecognitionSausage:(id)sausage
 {
-  v5 = a3;
+  sausageCopy = sausage;
   [(QSSMutableMultiUserStreamingRequest *)self setContent_type:10];
-  v4 = [v5 copy];
+  v4 = [sausageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -50,11 +50,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSResetServerEndpointer:(id)a3
+- (void)setContentAsQSSResetServerEndpointer:(id)endpointer
 {
-  v5 = a3;
+  endpointerCopy = endpointer;
   [(QSSMutableMultiUserStreamingRequest *)self setContent_type:9];
-  v4 = [v5 copy];
+  v4 = [endpointerCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -73,11 +73,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSFinishAudio:(id)a3
+- (void)setContentAsQSSFinishAudio:(id)audio
 {
-  v5 = a3;
+  audioCopy = audio;
   [(QSSMutableMultiUserStreamingRequest *)self setContent_type:8];
-  v4 = [v5 copy];
+  v4 = [audioCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -96,11 +96,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSAudioPacket:(id)a3
+- (void)setContentAsQSSAudioPacket:(id)packet
 {
-  v5 = a3;
+  packetCopy = packet;
   [(QSSMutableMultiUserStreamingRequest *)self setContent_type:7];
-  v4 = [v5 copy];
+  v4 = [packetCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -119,11 +119,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSSetEndpointerState:(id)a3
+- (void)setContentAsQSSSetEndpointerState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   [(QSSMutableMultiUserStreamingRequest *)self setContent_type:6];
-  v4 = [v5 copy];
+  v4 = [stateCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -142,11 +142,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSSetSpeechProfile:(id)a3
+- (void)setContentAsQSSSetSpeechProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   [(QSSMutableMultiUserStreamingRequest *)self setContent_type:5];
-  v4 = [v5 copy];
+  v4 = [profileCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -165,11 +165,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSSetSpeechContext:(id)a3
+- (void)setContentAsQSSSetSpeechContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   [(QSSMutableMultiUserStreamingRequest *)self setContent_type:4];
-  v4 = [v5 copy];
+  v4 = [contextCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -188,11 +188,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSSetRequestOrigin:(id)a3
+- (void)setContentAsQSSSetRequestOrigin:(id)origin
 {
-  v5 = a3;
+  originCopy = origin;
   [(QSSMutableMultiUserStreamingRequest *)self setContent_type:3];
-  v4 = [v5 copy];
+  v4 = [originCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -211,11 +211,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSUpdateAudioInfo:(id)a3
+- (void)setContentAsQSSUpdateAudioInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   [(QSSMutableMultiUserStreamingRequest *)self setContent_type:2];
-  v4 = [v5 copy];
+  v4 = [infoCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -234,11 +234,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSMultiUserStartSpeechRequest:(id)a3
+- (void)setContentAsQSSMultiUserStartSpeechRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   [(QSSMutableMultiUserStreamingRequest *)self setContent_type:1];
-  v4 = [v5 copy];
+  v4 = [requestCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -257,23 +257,23 @@
   return v3;
 }
 
-- (void)setContent_type:(int64_t)a3
+- (void)setContent_type:(int64_t)content_type
 {
-  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:a3];
+  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:content_type];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
 - (int64_t)content_type
 {
   v2 = [(NSMutableDictionary *)self->super._storage objectForKeyedSubscript:@"content_type"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->super._storage copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -288,9 +288,9 @@
   v2 = [(QSSMutableMultiUserStreamingRequest *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v2->super._storage;
-    v2->super._storage = v3;
+    v2->super._storage = dictionary;
   }
 
   return v2;

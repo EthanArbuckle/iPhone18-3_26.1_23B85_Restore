@@ -3,13 +3,13 @@
 - (GEOComposedRoute)selectedRoute;
 - (NSString)debugDescription;
 - (NSString)description;
-- (RouteAnnotationsConfiguration)initWithRoute:(id)a3;
-- (RouteAnnotationsConfiguration)initWithRoutes:(id)a3 selectedRouteIndex:(unint64_t)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)_copyPropertiesTo:(id)a3;
-- (void)_maps_buildDescriptionWithBlock:(id)a3;
-- (void)_setRoutes:(id)a3 selectedRouteIndex:(unint64_t)a4;
-- (void)setRoutes:(id)a3;
+- (RouteAnnotationsConfiguration)initWithRoute:(id)route;
+- (RouteAnnotationsConfiguration)initWithRoutes:(id)routes selectedRouteIndex:(unint64_t)index;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)_copyPropertiesTo:(id)to;
+- (void)_maps_buildDescriptionWithBlock:(id)block;
+- (void)_setRoutes:(id)routes selectedRouteIndex:(unint64_t)index;
+- (void)setRoutes:(id)routes;
 @end
 
 @implementation RouteAnnotationsConfiguration
@@ -32,7 +32,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100A03F50;
@@ -40,8 +40,8 @@
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(RouteAnnotationsConfiguration *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(RouteAnnotationsConfiguration *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -89,17 +89,17 @@ LABEL_9:
   return v4;
 }
 
-- (void)_maps_buildDescriptionWithBlock:(id)a3
+- (void)_maps_buildDescriptionWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = sub_100021DB0(self->_routes, &stru_101631CB0);
   v6 = v5;
   if (v5)
   {
     if ([v5 count])
     {
-      v33 = self;
-      v34 = v4;
+      selfCopy = self;
+      v34 = blockCopy;
       v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count]);
       v35 = 0u;
       v36 = 0u;
@@ -169,8 +169,8 @@ LABEL_20:
           v20 = [v8 componentsJoinedByString:{@", "}];
           v21 = [NSString stringWithFormat:@"<%p> [%@]", v8, v20];
 
-          self = v33;
-          v4 = v34;
+          self = selfCopy;
+          blockCopy = v34;
           v6 = v32;
           goto LABEL_23;
         }
@@ -187,21 +187,21 @@ LABEL_20:
 
 LABEL_23:
 
-  v22 = (v4 + 16);
-  (*(v4 + 2))(v4, @"routes", v21);
+  v22 = (blockCopy + 16);
+  (*(blockCopy + 2))(blockCopy, @"routes", v21);
 
   v23 = [NSNumber numberWithUnsignedInteger:self->_selectedRouteIndex];
-  (*(v4 + 2))(v4, @"selectedRouteIndex", v23);
+  (*(blockCopy + 2))(blockCopy, @"selectedRouteIndex", v23);
 
   v24 = [NSNumber numberWithUnsignedInteger:self->_focusedRouteIndex];
-  (*(v4 + 2))(v4, @"focusedRouteIndex", v24);
+  (*(blockCopy + 2))(blockCopy, @"focusedRouteIndex", v24);
 
   v25 = [NSNumber numberWithUnsignedInteger:self->_style];
-  (*(v4 + 2))(v4, @"style", v25);
+  (*(blockCopy + 2))(blockCopy, @"style", v25);
 
-  (*(v4 + 2))(v4, @"selectedRouteCustomText", self->_selectedRouteCustomText);
+  (*(blockCopy + 2))(blockCopy, @"selectedRouteCustomText", self->_selectedRouteCustomText);
   v26 = [NSNumber numberWithUnsignedInteger:self->_routeMarkerOptions];
-  (*(v4 + 2))(v4, @"routeMarkerOptions", v26);
+  (*(blockCopy + 2))(blockCopy, @"routeMarkerOptions", v26);
 
   if (self->_selectPolyline)
   {
@@ -213,7 +213,7 @@ LABEL_23:
     v27 = @"NO";
   }
 
-  (*v22)(v4, @"selectPolyline", v27);
+  (*v22)(blockCopy, @"selectPolyline", v27);
   if (self->_alternateRoutesEnabled)
   {
     v28 = @"YES";
@@ -224,7 +224,7 @@ LABEL_23:
     v28 = @"NO";
   }
 
-  (*v22)(v4, @"alternateRoutesEnabled", v28);
+  (*v22)(blockCopy, @"alternateRoutesEnabled", v28);
   if (self->_routeTrafficFeaturesActive)
   {
     v29 = @"YES";
@@ -235,18 +235,18 @@ LABEL_23:
     v29 = @"NO";
   }
 
-  (*v22)(v4, @"routeTrafficFeaturesActive", v29);
+  (*v22)(blockCopy, @"routeTrafficFeaturesActive", v29);
   v30 = [NSNumber numberWithUnsignedInteger:[(GEOComposedRouteAnchorPointList *)self->_anchorPoints count]];
-  (*v22)(v4, @"anchorPoints", v30);
+  (*v22)(blockCopy, @"anchorPoints", v30);
 
-  (*v22)(v4, @"currentNavigationWaypoint", self->_currentNavigationWaypoint);
+  (*v22)(blockCopy, @"currentNavigationWaypoint", self->_currentNavigationWaypoint);
   v31 = [NSNumber numberWithUnsignedChar:self->_proximityToCurrentNavigationWaypoint];
-  (*v22)(v4, @"proximityToCurrentNavigationWaypoint", v31);
+  (*v22)(blockCopy, @"proximityToCurrentNavigationWaypoint", v31);
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100A03EE0;
@@ -254,8 +254,8 @@ LABEL_23:
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(RouteAnnotationsConfiguration *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(RouteAnnotationsConfiguration *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -287,54 +287,54 @@ LABEL_9:
   return v12;
 }
 
-- (void)_copyPropertiesTo:(id)a3
+- (void)_copyPropertiesTo:(id)to
 {
-  v11 = a3;
-  v4 = [(RouteAnnotationsConfiguration *)self routes];
-  [v11 setRoutes:v4];
+  toCopy = to;
+  routes = [(RouteAnnotationsConfiguration *)self routes];
+  [toCopy setRoutes:routes];
 
-  [v11 setSelectedRouteIndex:{-[RouteAnnotationsConfiguration selectedRouteIndex](self, "selectedRouteIndex")}];
-  v5 = [(RouteAnnotationsConfiguration *)self originalRouteID];
-  [v11 setOriginalRouteID:v5];
+  [toCopy setSelectedRouteIndex:{-[RouteAnnotationsConfiguration selectedRouteIndex](self, "selectedRouteIndex")}];
+  originalRouteID = [(RouteAnnotationsConfiguration *)self originalRouteID];
+  [toCopy setOriginalRouteID:originalRouteID];
 
-  [v11 setOriginalRouteDivergenceCoordinate:{-[RouteAnnotationsConfiguration originalRouteDivergenceCoordinate](self, "originalRouteDivergenceCoordinate")}];
-  v6 = [(RouteAnnotationsConfiguration *)self transitVehiclePositions];
-  [v11 setTransitVehiclePositions:v6];
+  [toCopy setOriginalRouteDivergenceCoordinate:{-[RouteAnnotationsConfiguration originalRouteDivergenceCoordinate](self, "originalRouteDivergenceCoordinate")}];
+  transitVehiclePositions = [(RouteAnnotationsConfiguration *)self transitVehiclePositions];
+  [toCopy setTransitVehiclePositions:transitVehiclePositions];
 
-  [v11 setStyle:{-[RouteAnnotationsConfiguration style](self, "style")}];
-  v7 = [(RouteAnnotationsConfiguration *)self selectedRouteCustomText];
-  [v11 setSelectedRouteCustomText:v7];
+  [toCopy setStyle:{-[RouteAnnotationsConfiguration style](self, "style")}];
+  selectedRouteCustomText = [(RouteAnnotationsConfiguration *)self selectedRouteCustomText];
+  [toCopy setSelectedRouteCustomText:selectedRouteCustomText];
 
-  [v11 setRouteMarkerOptions:{-[RouteAnnotationsConfiguration routeMarkerOptions](self, "routeMarkerOptions")}];
-  [v11 setAlternateRoutesEnabled:{-[RouteAnnotationsConfiguration alternateRoutesEnabled](self, "alternateRoutesEnabled")}];
-  [v11 setSelectPolyline:{-[RouteAnnotationsConfiguration selectsPolyline](self, "selectsPolyline")}];
-  [v11 setFocusedRouteIndex:{-[RouteAnnotationsConfiguration focusedRouteIndex](self, "focusedRouteIndex")}];
-  [v11 setRouteTrafficFeaturesActive:{-[RouteAnnotationsConfiguration routeTrafficFeaturesActive](self, "routeTrafficFeaturesActive")}];
-  v8 = [(RouteAnnotationsConfiguration *)self anchorPoints];
-  v9 = [v8 copy];
-  [v11 setAnchorPoints:v9];
+  [toCopy setRouteMarkerOptions:{-[RouteAnnotationsConfiguration routeMarkerOptions](self, "routeMarkerOptions")}];
+  [toCopy setAlternateRoutesEnabled:{-[RouteAnnotationsConfiguration alternateRoutesEnabled](self, "alternateRoutesEnabled")}];
+  [toCopy setSelectPolyline:{-[RouteAnnotationsConfiguration selectsPolyline](self, "selectsPolyline")}];
+  [toCopy setFocusedRouteIndex:{-[RouteAnnotationsConfiguration focusedRouteIndex](self, "focusedRouteIndex")}];
+  [toCopy setRouteTrafficFeaturesActive:{-[RouteAnnotationsConfiguration routeTrafficFeaturesActive](self, "routeTrafficFeaturesActive")}];
+  anchorPoints = [(RouteAnnotationsConfiguration *)self anchorPoints];
+  v9 = [anchorPoints copy];
+  [toCopy setAnchorPoints:v9];
 
-  v10 = [(RouteAnnotationsConfiguration *)self currentNavigationWaypoint];
-  [v11 setCurrentNavigationWaypoint:v10];
+  currentNavigationWaypoint = [(RouteAnnotationsConfiguration *)self currentNavigationWaypoint];
+  [toCopy setCurrentNavigationWaypoint:currentNavigationWaypoint];
 
-  [v11 setProximityToCurrentNavigationWaypoint:{-[RouteAnnotationsConfiguration proximityToCurrentNavigationWaypoint](self, "proximityToCurrentNavigationWaypoint")}];
+  [toCopy setProximityToCurrentNavigationWaypoint:{-[RouteAnnotationsConfiguration proximityToCurrentNavigationWaypoint](self, "proximityToCurrentNavigationWaypoint")}];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(RouteAnnotationsConfiguration *)[RouteAnnotationsMutableConfiguration allocWithZone:?], "initWithRoute:", 0];
   [(RouteAnnotationsConfiguration *)self _copyPropertiesTo:v4];
   return v4;
 }
 
-- (void)_setRoutes:(id)a3 selectedRouteIndex:(unint64_t)a4
+- (void)_setRoutes:(id)routes selectedRouteIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = v6;
-  if (self->_routes == v6)
+  routesCopy = routes;
+  v7 = routesCopy;
+  if (self->_routes == routesCopy)
   {
     p_selectedRouteIndex = &self->_selectedRouteIndex;
-    if (self->_selectedRouteIndex == a4)
+    if (self->_selectedRouteIndex == index)
     {
       goto LABEL_13;
     }
@@ -342,14 +342,14 @@ LABEL_9:
 
   else
   {
-    v14 = v6;
-    v8 = [(NSArray *)v6 isEqualToArray:?];
+    v14 = routesCopy;
+    v8 = [(NSArray *)routesCopy isEqualToArray:?];
     v7 = v14;
     p_selectedRouteIndex = &self->_selectedRouteIndex;
     selectedRouteIndex = self->_selectedRouteIndex;
     if (v8)
     {
-      v11 = selectedRouteIndex == a4;
+      v11 = selectedRouteIndex == index;
     }
 
     else
@@ -371,22 +371,22 @@ LABEL_9:
       v7 = v14;
     }
 
-    if (selectedRouteIndex == a4)
+    if (selectedRouteIndex == index)
     {
       goto LABEL_12;
     }
   }
 
-  *p_selectedRouteIndex = a4;
+  *p_selectedRouteIndex = index;
 LABEL_12:
   self->_focusedRouteIndex = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_13:
 }
 
-- (void)setRoutes:(id)a3
+- (void)setRoutes:(id)routes
 {
-  v5 = a3;
-  if ([v5 count])
+  routesCopy = routes;
+  if ([routesCopy count])
   {
     v4 = 0;
   }
@@ -396,28 +396,28 @@ LABEL_13:
     v4 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  [(RouteAnnotationsConfiguration *)self _setRoutes:v5 selectedRouteIndex:v4];
+  [(RouteAnnotationsConfiguration *)self _setRoutes:routesCopy selectedRouteIndex:v4];
 }
 
-- (RouteAnnotationsConfiguration)initWithRoutes:(id)a3 selectedRouteIndex:(unint64_t)a4
+- (RouteAnnotationsConfiguration)initWithRoutes:(id)routes selectedRouteIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [v6 count];
+  routesCopy = routes;
+  v7 = [routesCopy count];
   v12.receiver = self;
   v12.super_class = RouteAnnotationsConfiguration;
   v8 = [(RouteAnnotationsConfiguration *)&v12 init];
   if (v8)
   {
-    if (v7 <= a4)
+    if (v7 <= index)
     {
-      a4 = 0x7FFFFFFFFFFFFFFFLL;
+      index = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v9 = [v6 copy];
+    v9 = [routesCopy copy];
     routes = v8->_routes;
     v8->_routes = v9;
 
-    v8->_selectedRouteIndex = a4;
+    v8->_selectedRouteIndex = index;
     v8->_focusedRouteIndex = 0x7FFFFFFFFFFFFFFFLL;
     v8->_routeMarkerOptions = 3;
     *&v8->_selectPolyline = 257;
@@ -426,13 +426,13 @@ LABEL_13:
   return v8;
 }
 
-- (RouteAnnotationsConfiguration)initWithRoute:(id)a3
+- (RouteAnnotationsConfiguration)initWithRoute:(id)route
 {
-  if (a3)
+  if (route)
   {
-    v9 = a3;
-    v4 = a3;
-    v5 = [NSArray arrayWithObjects:&v9 count:1];
+    routeCopy = route;
+    routeCopy2 = route;
+    v5 = [NSArray arrayWithObjects:&routeCopy count:1];
 
     v6 = 0;
   }
@@ -443,9 +443,9 @@ LABEL_13:
     v6 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v7 = [(RouteAnnotationsConfiguration *)self initWithRoutes:v5 selectedRouteIndex:v6, v9];
+  routeCopy = [(RouteAnnotationsConfiguration *)self initWithRoutes:v5 selectedRouteIndex:v6, routeCopy];
 
-  return v7;
+  return routeCopy;
 }
 
 @end

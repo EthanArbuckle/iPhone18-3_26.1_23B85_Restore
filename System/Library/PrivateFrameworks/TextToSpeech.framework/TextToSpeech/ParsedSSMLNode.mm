@@ -14,7 +14,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   ParsedSSMLNode.description.getter();
 
   v3 = sub_1A957C0C8();

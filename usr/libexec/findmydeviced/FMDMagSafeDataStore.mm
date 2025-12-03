@@ -6,17 +6,17 @@
 + (id)magSafeContainerURL;
 + (id)sharedInstance;
 - (FMDMagSafeDataStore)init;
-- (id)_writeAccessoriesToDisk:(id)a3;
+- (id)_writeAccessoriesToDisk:(id)disk;
 - (id)readAllAccessoriesFromDisk;
 - (id)readLostModeAccessoriesList;
 - (id)readLostModeAccessoriesListVersion;
-- (id)writeLostModeInfo:(id)a3 version:(id)a4;
-- (void)addAccessory:(id)a3 withCompletion:(id)a4;
+- (id)writeLostModeInfo:(id)info version:(id)version;
+- (void)addAccessory:(id)accessory withCompletion:(id)completion;
 - (void)clearDataStore;
 - (void)migrateDataStore;
-- (void)removeAccessoryWithId:(id)a3 withCompletion:(id)a4;
-- (void)removeAccessoryWithSerialNumber:(id)a3 withCompletion:(id)a4;
-- (void)updateLostModeKeyRollTimeFor:(id)a3 lastLostModeKeyRollTime:(id)a4 withCompletion:(id)a5;
+- (void)removeAccessoryWithId:(id)id withCompletion:(id)completion;
+- (void)removeAccessoryWithSerialNumber:(id)number withCompletion:(id)completion;
+- (void)updateLostModeKeyRollTimeFor:(id)for lastLostModeKeyRollTime:(id)time withCompletion:(id)completion;
 @end
 
 @implementation FMDMagSafeDataStore
@@ -36,12 +36,12 @@
 - (id)readLostModeAccessoriesListVersion
 {
   [(FMDMagSafeDataStore *)self migrateDataStore];
-  v3 = [(FMDMagSafeDataStore *)self lostModeDataArchiver];
+  lostModeDataArchiver = [(FMDMagSafeDataStore *)self lostModeDataArchiver];
   v4 = objc_opt_class();
   v5 = objc_opt_class();
   v6 = [NSSet setWithObjects:v4, v5, objc_opt_class(), 0];
   v15 = 0;
-  v7 = [v3 readDictionaryAndClasses:v6 error:&v15];
+  v7 = [lostModeDataArchiver readDictionaryAndClasses:v6 error:&v15];
   v8 = v15;
 
   if (([v8 fm_isFileNotFoundError] & 1) == 0 && (!v7 || v8))
@@ -94,16 +94,16 @@
 
 + (id)defaultStorageLocation
 {
-  v2 = [a1 magSafeContainerURL];
-  v3 = [v2 fm_preferencesPathURLForDomain:@"fmdMagSafeDevices"];
+  magSafeContainerURL = [self magSafeContainerURL];
+  v3 = [magSafeContainerURL fm_preferencesPathURLForDomain:@"fmdMagSafeDevices"];
 
   return v3;
 }
 
 + (id)lostModeStorageLocation
 {
-  v2 = [a1 magSafeContainerURL];
-  v3 = [v2 fm_preferencesPathURLForDomain:@"fmdMagSafeLostDevices"];
+  magSafeContainerURL = [self magSafeContainerURL];
+  v3 = [magSafeContainerURL fm_preferencesPathURLForDomain:@"fmdMagSafeLostDevices"];
 
   return v3;
 }
@@ -139,32 +139,32 @@
     [(FMDMagSafeDataStore *)v2 setSerialQueue:v3];
 
     v4 = [FMDataArchiver alloc];
-    v5 = [objc_opt_class() defaultStorageLocation];
-    v6 = [v4 initWithFileURL:v5];
+    defaultStorageLocation = [objc_opt_class() defaultStorageLocation];
+    v6 = [v4 initWithFileURL:defaultStorageLocation];
     [(FMDMagSafeDataStore *)v2 setDataArchiver:v6];
 
-    v7 = [(FMDMagSafeDataStore *)v2 dataArchiver];
-    [v7 setDataProtectionClass:4];
+    dataArchiver = [(FMDMagSafeDataStore *)v2 dataArchiver];
+    [dataArchiver setDataProtectionClass:4];
 
-    v8 = [(FMDMagSafeDataStore *)v2 dataArchiver];
-    [v8 setBackedUp:0];
+    dataArchiver2 = [(FMDMagSafeDataStore *)v2 dataArchiver];
+    [dataArchiver2 setBackedUp:0];
 
-    v9 = [(FMDMagSafeDataStore *)v2 dataArchiver];
-    [v9 setCreateDirectories:1];
+    dataArchiver3 = [(FMDMagSafeDataStore *)v2 dataArchiver];
+    [dataArchiver3 setCreateDirectories:1];
 
     v10 = [FMDataArchiver alloc];
-    v11 = [objc_opt_class() lostModeStorageLocation];
-    v12 = [v10 initWithFileURL:v11];
+    lostModeStorageLocation = [objc_opt_class() lostModeStorageLocation];
+    v12 = [v10 initWithFileURL:lostModeStorageLocation];
     [(FMDMagSafeDataStore *)v2 setLostModeDataArchiver:v12];
 
-    v13 = [(FMDMagSafeDataStore *)v2 lostModeDataArchiver];
-    [v13 setDataProtectionClass:4];
+    lostModeDataArchiver = [(FMDMagSafeDataStore *)v2 lostModeDataArchiver];
+    [lostModeDataArchiver setDataProtectionClass:4];
 
-    v14 = [(FMDMagSafeDataStore *)v2 lostModeDataArchiver];
-    [v14 setBackedUp:0];
+    lostModeDataArchiver2 = [(FMDMagSafeDataStore *)v2 lostModeDataArchiver];
+    [lostModeDataArchiver2 setBackedUp:0];
 
-    v15 = [(FMDMagSafeDataStore *)v2 lostModeDataArchiver];
-    [v15 setCreateDirectories:1];
+    lostModeDataArchiver3 = [(FMDMagSafeDataStore *)v2 lostModeDataArchiver];
+    [lostModeDataArchiver3 setCreateDirectories:1];
 
     v16 = sub_100002880();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -178,74 +178,74 @@
 
 - (void)clearDataStore
 {
-  v3 = [(FMDMagSafeDataStore *)self serialQueue];
+  serialQueue = [(FMDMagSafeDataStore *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001DC05C;
   block[3] = &unk_1002CD4C8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(serialQueue, block);
 }
 
-- (void)addAccessory:(id)a3 withCompletion:(id)a4
+- (void)addAccessory:(id)accessory withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FMDMagSafeDataStore *)self serialQueue];
+  accessoryCopy = accessory;
+  completionCopy = completion;
+  serialQueue = [(FMDMagSafeDataStore *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001DC228;
   block[3] = &unk_1002CE278;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = accessoryCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = accessoryCopy;
+  dispatch_async(serialQueue, block);
 }
 
-- (void)removeAccessoryWithId:(id)a3 withCompletion:(id)a4
+- (void)removeAccessoryWithId:(id)id withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FMDMagSafeDataStore *)self serialQueue];
+  idCopy = id;
+  completionCopy = completion;
+  serialQueue = [(FMDMagSafeDataStore *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001DC448;
   block[3] = &unk_1002CE278;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = idCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = idCopy;
+  dispatch_async(serialQueue, block);
 }
 
-- (void)removeAccessoryWithSerialNumber:(id)a3 withCompletion:(id)a4
+- (void)removeAccessoryWithSerialNumber:(id)number withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FMDMagSafeDataStore *)self serialQueue];
+  numberCopy = number;
+  completionCopy = completion;
+  serialQueue = [(FMDMagSafeDataStore *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001DC64C;
   block[3] = &unk_1002CE278;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = numberCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = numberCopy;
+  dispatch_async(serialQueue, block);
 }
 
 - (id)readAllAccessoriesFromDisk
 {
   [(FMDMagSafeDataStore *)self migrateDataStore];
-  v3 = [(FMDMagSafeDataStore *)self dataArchiver];
+  dataArchiver = [(FMDMagSafeDataStore *)self dataArchiver];
   v4 = objc_opt_class();
   v5 = [NSSet setWithObjects:v4, objc_opt_class(), 0];
   v13 = 0;
-  v6 = [v3 readDictionaryAndClasses:v5 error:&v13];
+  v6 = [dataArchiver readDictionaryAndClasses:v5 error:&v13];
   v7 = v13;
 
   if (([v7 fm_isFileNotFoundError] & 1) == 0 && (!v6 || v7 != 0))
@@ -274,27 +274,27 @@
   return v6;
 }
 
-- (id)_writeAccessoriesToDisk:(id)a3
+- (id)_writeAccessoriesToDisk:(id)disk
 {
-  v4 = a3;
-  v5 = [(FMDMagSafeDataStore *)self dataArchiver];
-  v6 = [v5 saveDictionary:v4];
+  diskCopy = disk;
+  dataArchiver = [(FMDMagSafeDataStore *)self dataArchiver];
+  v6 = [dataArchiver saveDictionary:diskCopy];
 
   return v6;
 }
 
-- (id)writeLostModeInfo:(id)a3 version:(id)a4
+- (id)writeLostModeInfo:(id)info version:(id)version
 {
   v13[0] = @"accessoryList";
   v13[1] = @"version";
-  v14[0] = a3;
-  v14[1] = a4;
-  v6 = a4;
-  v7 = a3;
+  v14[0] = info;
+  v14[1] = version;
+  versionCopy = version;
+  infoCopy = info;
   v8 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:2];
 
-  v9 = [(FMDMagSafeDataStore *)self lostModeDataArchiver];
-  v10 = [v9 saveDictionary:v8];
+  lostModeDataArchiver = [(FMDMagSafeDataStore *)self lostModeDataArchiver];
+  v10 = [lostModeDataArchiver saveDictionary:v8];
 
   if (!v10)
   {
@@ -308,12 +308,12 @@
 - (id)readLostModeAccessoriesList
 {
   [(FMDMagSafeDataStore *)self migrateDataStore];
-  v3 = [(FMDMagSafeDataStore *)self lostModeDataArchiver];
+  lostModeDataArchiver = [(FMDMagSafeDataStore *)self lostModeDataArchiver];
   v4 = objc_opt_class();
   v5 = objc_opt_class();
   v6 = [NSSet setWithObjects:v4, v5, objc_opt_class(), 0];
   v15 = 0;
-  v7 = [v3 readDictionaryAndClasses:v6 error:&v15];
+  v7 = [lostModeDataArchiver readDictionaryAndClasses:v6 error:&v15];
   v8 = v15;
 
   if (([v8 fm_isFileNotFoundError] & 1) == 0 && (!v7 || v8))
@@ -342,39 +342,39 @@
   return v13;
 }
 
-- (void)updateLostModeKeyRollTimeFor:(id)a3 lastLostModeKeyRollTime:(id)a4 withCompletion:(id)a5
+- (void)updateLostModeKeyRollTimeFor:(id)for lastLostModeKeyRollTime:(id)time withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(FMDMagSafeDataStore *)self serialQueue];
+  forCopy = for;
+  timeCopy = time;
+  completionCopy = completion;
+  serialQueue = [(FMDMagSafeDataStore *)self serialQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1001DD030;
   v15[3] = &unk_1002D0F28;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = forCopy;
+  v17 = timeCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = timeCopy;
+  v14 = forCopy;
+  dispatch_async(serialQueue, v15);
 }
 
 - (void)migrateDataStore
 {
-  v2 = [objc_opt_class() deprecatedStorageLocation];
-  v3 = [objc_opt_class() defaultStorageLocation];
+  deprecatedStorageLocation = [objc_opt_class() deprecatedStorageLocation];
+  defaultStorageLocation = [objc_opt_class() defaultStorageLocation];
   v4 = +[NSFileManager defaultManager];
-  [v4 fm_migrateFileFromURL:v2 toURL:v3];
+  [v4 fm_migrateFileFromURL:deprecatedStorageLocation toURL:defaultStorageLocation];
 
-  v7 = [objc_opt_class() deprecatedLostModeStorageLocation];
+  deprecatedLostModeStorageLocation = [objc_opt_class() deprecatedLostModeStorageLocation];
 
-  v5 = [objc_opt_class() lostModeStorageLocation];
+  lostModeStorageLocation = [objc_opt_class() lostModeStorageLocation];
 
   v6 = +[NSFileManager defaultManager];
-  [v6 fm_migrateFileFromURL:v7 toURL:v5];
+  [v6 fm_migrateFileFromURL:deprecatedLostModeStorageLocation toURL:lostModeStorageLocation];
 }
 
 @end

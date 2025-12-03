@@ -27,12 +27,12 @@
 
 + (id)ic_applicationIconImageWithSize:()IC
 {
-  v4 = [MEMORY[0x1E69A8A00] applicationIcon];
+  applicationIcon = [MEMORY[0x1E69A8A00] applicationIcon];
   [MEMORY[0x1E69DCEB0] ic_scale];
   v6 = v5;
-  v7 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:a1 scale:{a2, v5}];
-  v8 = [v4 prepareImageForDescriptor:v7];
-  v9 = [v4 imageForDescriptor:v7];
+  v7 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:self scale:{a2, v5}];
+  v8 = [applicationIcon prepareImageForDescriptor:v7];
+  v9 = [applicationIcon imageForDescriptor:v7];
   v10 = [MEMORY[0x1E69DCAB8] imageWithCGImage:objc_msgSend(v9 scale:"CGImage") orientation:{0, v6}];
 
   return v10;
@@ -43,7 +43,7 @@
   v6 = MEMORY[0x1E69DCAD8];
   v7 = a3;
   v8 = [v6 configurationWithTextStyle:a4];
-  v9 = [a1 ic_systemImageNamed:v7 withConfiguration:v8];
+  v9 = [self ic_systemImageNamed:v7 withConfiguration:v8];
 
   return v9;
 }
@@ -53,7 +53,7 @@
   v8 = MEMORY[0x1E69DCAD8];
   v9 = a3;
   v10 = [v8 configurationWithTextStyle:a4 scale:a5];
-  v11 = [a1 ic_systemImageNamed:v9 withConfiguration:v10];
+  v11 = [self ic_systemImageNamed:v9 withConfiguration:v10];
 
   return v11;
 }
@@ -65,7 +65,7 @@
   v12 = a3;
   v13 = [objc_opt_class() symbolImageConfigurationWithTextStyle:v11 scale:a5 weight:4 maxContentSizeCategory:v10];
 
-  v14 = [a1 ic_systemImageNamed:v12 withConfiguration:v13];
+  v14 = [self ic_systemImageNamed:v12 withConfiguration:v13];
 
   return v14;
 }
@@ -75,7 +75,7 @@
   v6 = MEMORY[0x1E69DCAD8];
   v7 = a3;
   v8 = [v6 configurationWithFont:a4];
-  v9 = [a1 ic_systemImageNamed:v7 withConfiguration:v8];
+  v9 = [self ic_systemImageNamed:v7 withConfiguration:v8];
 
   return v9;
 }
@@ -85,7 +85,7 @@
   v6 = MEMORY[0x1E69DCAD8];
   v7 = a3;
   v8 = [v6 configurationWithScale:a4];
-  v9 = [a1 ic_systemImageNamed:v7 withConfiguration:v8];
+  v9 = [self ic_systemImageNamed:v7 withConfiguration:v8];
 
   return v9;
 }
@@ -95,7 +95,7 @@
   v8 = MEMORY[0x1E69DCAD8];
   v9 = a3;
   v10 = [v8 configurationWithFont:a4 scale:a5];
-  v11 = [a1 ic_systemImageNamed:v9 withConfiguration:v10];
+  v11 = [self ic_systemImageNamed:v9 withConfiguration:v10];
 
   return v11;
 }
@@ -104,7 +104,7 @@
 {
   v7 = MEMORY[0x1E69DCAD8];
   v8 = a4;
-  v9 = [v7 configurationWithPointSize:a5 weight:a1];
+  v9 = [v7 configurationWithPointSize:a5 weight:self];
   v10 = [MEMORY[0x1E69DCAB8] ic_systemImageNamed:v8 withConfiguration:v9];
 
   return v10;
@@ -208,8 +208,8 @@
 
   v22 = [v20 configurationByApplyingConfiguration:v21];
   v23 = MEMORY[0x1E69DCAB8];
-  v24 = [MEMORY[0x1E696AAE8] mainBundle];
-  v25 = [v23 imageNamed:v16 inBundle:v24 withConfiguration:v22];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v25 = [v23 imageNamed:v16 inBundle:mainBundle withConfiguration:v22];
 
   return v25;
 }
@@ -219,34 +219,34 @@
   v9 = a6;
   v10 = a5;
   y = 0.0;
-  v20.width = a1;
-  v20.height = a1;
+  v20.width = self;
+  v20.height = self;
   UIGraphicsBeginImageContextWithOptions(v20, 0, 0.0);
   if (v9 && a2 > 0.0)
   {
     v21.origin.x = 0.0;
     v21.origin.y = 0.0;
-    v21.size.width = a1;
-    v21.size.height = a1;
+    v21.size.width = self;
+    v21.size.height = self;
     v22 = CGRectInset(v21, a2, a2);
     x = v22.origin.x;
     y = v22.origin.y;
     width = v22.size.width;
     height = v22.size.height;
-    v15 = [MEMORY[0x1E69DC728] bezierPathWithOvalInRect:{0.0, 0.0, a1, a1}];
+    v15 = [MEMORY[0x1E69DC728] bezierPathWithOvalInRect:{0.0, 0.0, self, self}];
     [v9 setFill];
     [v15 fill];
 
-    a1 = height;
+    self = height;
   }
 
   else
   {
-    width = a1;
+    width = self;
     x = 0.0;
   }
 
-  v16 = [MEMORY[0x1E69DC728] bezierPathWithOvalInRect:{x, y, width, a1}];
+  v16 = [MEMORY[0x1E69DC728] bezierPathWithOvalInRect:{x, y, width, self}];
   [v10 setFill];
 
   [v16 fill];
@@ -259,7 +259,7 @@
 - (id)ic_imageWithFont:()IC
 {
   v2 = [MEMORY[0x1E69DCAD8] configurationWithFont:?];
-  v3 = [a1 imageWithConfiguration:v2];
+  v3 = [self imageWithConfiguration:v2];
 
   return v3;
 }
@@ -276,7 +276,7 @@
   }
 
   v9 = [MEMORY[0x1E69DCAD8] configurationWithFont:v6];
-  v10 = [a1 imageWithConfiguration:v9];
+  v10 = [self imageWithConfiguration:v9];
 
   return v10;
 }
@@ -284,7 +284,7 @@
 - (id)ic_imageWithScale:()IC
 {
   v2 = [MEMORY[0x1E69DCAD8] configurationWithScale:?];
-  v3 = [a1 imageWithConfiguration:v2];
+  v3 = [self imageWithConfiguration:v2];
 
   return v3;
 }
@@ -292,7 +292,7 @@
 - (id)ic_imageWithFont:()IC scale:
 {
   v2 = [MEMORY[0x1E69DCAD8] configurationWithFont:? scale:?];
-  v3 = [a1 imageWithConfiguration:v2];
+  v3 = [self imageWithConfiguration:v2];
 
   return v3;
 }
@@ -300,7 +300,7 @@
 - (id)ic_imageWithTextStyle:()IC
 {
   v2 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:?];
-  v3 = [a1 imageWithConfiguration:v2];
+  v3 = [self imageWithConfiguration:v2];
 
   return v3;
 }
@@ -308,7 +308,7 @@
 - (id)ic_imageWithTextStyle:()IC scale:
 {
   v2 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:? scale:?];
-  v3 = [a1 imageWithConfiguration:v2];
+  v3 = [self imageWithConfiguration:v2];
 
   return v3;
 }

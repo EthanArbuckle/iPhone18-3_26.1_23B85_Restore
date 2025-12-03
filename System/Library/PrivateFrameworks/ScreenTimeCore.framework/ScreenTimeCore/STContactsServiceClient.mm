@@ -1,10 +1,10 @@
 @interface STContactsServiceClient
 - (STContactsServiceClient)init;
-- (void)authenticateRestrictionsPasscode:(id)a3 completionHandler:(id)a4;
+- (void)authenticateRestrictionsPasscode:(id)passcode completionHandler:(id)handler;
 - (void)dealloc;
-- (void)isRestrictionsPasscodeSetWithCompletionHandler:(id)a3;
-- (void)presentRemotePINControllerWithCompletionHandler:(id)a3;
-- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:(id)a3;
+- (void)isRestrictionsPasscodeSetWithCompletionHandler:(id)handler;
+- (void)presentRemotePINControllerWithCompletionHandler:(id)handler;
+- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:(id)handler;
 @end
 
 @implementation STContactsServiceClient
@@ -57,9 +57,9 @@ void __31__STContactsServiceClient_init__block_invoke_13()
   [(STContactsServiceClient *)&v4 dealloc];
 }
 
-- (void)isRestrictionsPasscodeSetWithCompletionHandler:(id)a3
+- (void)isRestrictionsPasscodeSetWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -70,14 +70,14 @@ void __31__STContactsServiceClient_init__block_invoke_13()
   v11[2] = __Block_byref_object_copy__4;
   v11[3] = __Block_byref_object_dispose__4;
   v12 = 0;
-  v5 = [(STContactsServiceClient *)self connection];
+  connection = [(STContactsServiceClient *)self connection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __74__STContactsServiceClient_isRestrictionsPasscodeSetWithCompletionHandler___block_invoke;
   v9[3] = &unk_1E7CE71C8;
   v9[4] = &v10;
   v9[5] = &v13;
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v6 = [connection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -95,9 +95,9 @@ void __31__STContactsServiceClient_init__block_invoke_13()
     }
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    (*(v4 + 2))(v4, *(v14 + 24), *(v11[0] + 40));
+    (*(handlerCopy + 2))(handlerCopy, *(v14 + 24), *(v11[0] + 40));
   }
 
   _Block_object_dispose(&v10, 8);
@@ -125,23 +125,23 @@ void __74__STContactsServiceClient_isRestrictionsPasscodeSetWithCompletionHandle
   *(*(*(a1 + 40) + 8) + 24) = a2;
 }
 
-- (void)authenticateRestrictionsPasscode:(id)a3 completionHandler:(id)a4
+- (void)authenticateRestrictionsPasscode:(id)passcode completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  passcodeCopy = passcode;
+  handlerCopy = handler;
   v12 = 0;
   v13[0] = &v12;
   v13[1] = 0x3032000000;
   v13[2] = __Block_byref_object_copy__4;
   v13[3] = __Block_byref_object_dispose__4;
   v14 = 0;
-  v8 = [(STContactsServiceClient *)self connection];
+  connection = [(STContactsServiceClient *)self connection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __78__STContactsServiceClient_authenticateRestrictionsPasscode_completionHandler___block_invoke;
   v11[3] = &unk_1E7CE6BA8;
   v11[4] = &v12;
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v11];
+  v9 = [connection synchronousRemoteObjectProxyWithErrorHandler:v11];
 
   if (*(v13[0] + 40))
   {
@@ -151,33 +151,33 @@ void __74__STContactsServiceClient_isRestrictionsPasscodeSetWithCompletionHandle
       [STContactsServiceClient authenticateRestrictionsPasscode:v13 completionHandler:?];
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, *(v13[0] + 40));
+      handlerCopy[2](handlerCopy, *(v13[0] + 40));
     }
   }
 
-  [v9 authenticateRestrictionsPasscode:v6 completionHandler:v7];
+  [v9 authenticateRestrictionsPasscode:passcodeCopy completionHandler:handlerCopy];
 
   _Block_object_dispose(&v12, 8);
 }
 
-- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:(id)a3
+- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9 = 0;
   v10[0] = &v9;
   v10[1] = 0x3032000000;
   v10[2] = __Block_byref_object_copy__4;
   v10[3] = __Block_byref_object_dispose__4;
   v11 = 0;
-  v5 = [(STContactsServiceClient *)self connection];
+  connection = [(STContactsServiceClient *)self connection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __100__STContactsServiceClient_restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7CE6BA8;
   v8[4] = &v9;
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v8];
+  v6 = [connection synchronousRemoteObjectProxyWithErrorHandler:v8];
 
   if (*(v10[0] + 40))
   {
@@ -187,36 +187,36 @@ void __74__STContactsServiceClient_isRestrictionsPasscodeSetWithCompletionHandle
       [STContactsServiceClient restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:v10];
     }
 
-    if (v4)
+    if (handlerCopy)
     {
-      (*(v4 + 2))(v4, 0, 0, *(v10[0] + 40));
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, *(v10[0] + 40));
     }
   }
 
   else
   {
-    [v6 restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:v4];
+    [v6 restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:handlerCopy];
   }
 
   _Block_object_dispose(&v9, 8);
 }
 
-- (void)presentRemotePINControllerWithCompletionHandler:(id)a3
+- (void)presentRemotePINControllerWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9 = 0;
   v10[0] = &v9;
   v10[1] = 0x3032000000;
   v10[2] = __Block_byref_object_copy__4;
   v10[3] = __Block_byref_object_dispose__4;
   v11 = 0;
-  v5 = [(STContactsServiceClient *)self connection];
+  connection = [(STContactsServiceClient *)self connection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __75__STContactsServiceClient_presentRemotePINControllerWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7CE6BA8;
   v8[4] = &v9;
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v8];
+  v6 = [connection synchronousRemoteObjectProxyWithErrorHandler:v8];
 
   if (*(v10[0] + 40))
   {
@@ -226,15 +226,15 @@ void __74__STContactsServiceClient_isRestrictionsPasscodeSetWithCompletionHandle
       [STContactsServiceClient restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:v10];
     }
 
-    if (v4)
+    if (handlerCopy)
     {
-      v4[2](v4, *(v10[0] + 40));
+      handlerCopy[2](handlerCopy, *(v10[0] + 40));
     }
   }
 
   else
   {
-    [v6 presentRemotePINControllerWithCompletionHandler:v4];
+    [v6 presentRemotePINControllerWithCompletionHandler:handlerCopy];
   }
 
   _Block_object_dispose(&v9, 8);

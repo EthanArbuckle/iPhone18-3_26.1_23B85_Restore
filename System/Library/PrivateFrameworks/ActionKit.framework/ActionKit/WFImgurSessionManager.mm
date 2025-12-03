@@ -1,43 +1,43 @@
 @interface WFImgurSessionManager
-- (WFImgurSessionManager)initWithClientID:(id)a3 configuration:(id)a4;
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7;
-- (void)createAlbumWithIDs:(id)a3 title:(id)a4 description:(id)a5 layout:(id)a6 privacy:(id)a7 completionHandler:(id)a8;
-- (void)getAlbumLinkFromID:(id)a3 completionHandler:(id)a4;
-- (void)sendRequest:(id)a3 progress:(id)a4 completionHandler:(id)a5;
-- (void)uploadImage:(id)a3 title:(id)a4 description:(id)a5 progress:(id)a6 completionHandler:(id)a7;
+- (WFImgurSessionManager)initWithClientID:(id)d configuration:(id)configuration;
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send;
+- (void)createAlbumWithIDs:(id)ds title:(id)title description:(id)description layout:(id)layout privacy:(id)privacy completionHandler:(id)handler;
+- (void)getAlbumLinkFromID:(id)d completionHandler:(id)handler;
+- (void)sendRequest:(id)request progress:(id)progress completionHandler:(id)handler;
+- (void)uploadImage:(id)image title:(id)title description:(id)description progress:(id)progress completionHandler:(id)handler;
 @end
 
 @implementation WFImgurSessionManager
 
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send
 {
-  v10 = a4;
-  v11 = [(WFImgurSessionManager *)self progressTable];
-  v12 = [v11 objectForKey:v10];
+  taskCopy = task;
+  progressTable = [(WFImgurSessionManager *)self progressTable];
+  v12 = [progressTable objectForKey:taskCopy];
 
-  [v12 setTotalUnitCount:a7];
-  [v12 setCompletedUnitCount:a6];
+  [v12 setTotalUnitCount:send];
+  [v12 setCompletedUnitCount:sent];
 }
 
-- (void)sendRequest:(id)a3 progress:(id)a4 completionHandler:(id)a5
+- (void)sendRequest:(id)request progress:(id)progress completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFImgurSessionManager *)self credential];
+  requestCopy = request;
+  progressCopy = progress;
+  handlerCopy = handler;
+  credential = [(WFImgurSessionManager *)self credential];
 
-  if (v11)
+  if (credential)
   {
-    v12 = [(WFImgurSessionManager *)self credential];
-    [v8 wfo_setAuthorizationWithCredential:v12];
+    credential2 = [(WFImgurSessionManager *)self credential];
+    [requestCopy wfo_setAuthorizationWithCredential:credential2];
   }
 
   else
   {
     v13 = MEMORY[0x277CCACA8];
-    v12 = [(WFImgurSessionManager *)self clientID];
-    v14 = [v13 stringWithFormat:@"Client-ID %@", v12];
-    [v8 setValue:v14 forHTTPHeaderField:@"Authorization"];
+    credential2 = [(WFImgurSessionManager *)self clientID];
+    v14 = [v13 stringWithFormat:@"Client-ID %@", credential2];
+    [requestCopy setValue:v14 forHTTPHeaderField:@"Authorization"];
   }
 
   v23 = 0;
@@ -46,23 +46,23 @@
   v26 = __Block_byref_object_copy__8734;
   v27 = __Block_byref_object_dispose__8735;
   v28 = 0;
-  v15 = [(WFImgurSessionManager *)self session];
-  v16 = [v8 HTTPBody];
+  session = [(WFImgurSessionManager *)self session];
+  hTTPBody = [requestCopy HTTPBody];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __64__WFImgurSessionManager_sendRequest_progress_completionHandler___block_invoke;
   v20[3] = &unk_278C21E20;
   v20[4] = self;
   v22 = &v23;
-  v17 = v10;
+  v17 = handlerCopy;
   v21 = v17;
-  v18 = [v15 uploadTaskWithRequest:v8 fromData:v16 completionHandler:v20];
+  v18 = [session uploadTaskWithRequest:requestCopy fromData:hTTPBody completionHandler:v20];
 
   objc_storeWeak(v24 + 5, v18);
-  if (v9)
+  if (progressCopy)
   {
-    v19 = [(WFImgurSessionManager *)self progressTable];
-    [v19 setObject:v9 forKey:v18];
+    progressTable = [(WFImgurSessionManager *)self progressTable];
+    [progressTable setObject:progressCopy forKey:v18];
   }
 
   [v18 resume];
@@ -197,27 +197,27 @@ void __64__WFImgurSessionManager_sendRequest_progress_completionHandler___block_
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getAlbumLinkFromID:(id)a3 completionHandler:(id)a4
+- (void)getAlbumLinkFromID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = MEMORY[0x277CBAB50];
-  v8 = a3;
-  v9 = [(WFImgurSessionManager *)self baseURL];
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"album/%@", v8];
+  dCopy = d;
+  baseURL = [(WFImgurSessionManager *)self baseURL];
+  dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"album/%@", dCopy];
 
-  v11 = [v9 URLByAppendingPathComponent:v10];
+  v11 = [baseURL URLByAppendingPathComponent:dCopy];
   v12 = [v7 requestWithURL:v11];
 
   [v12 _setNonAppInitiated:1];
-  v13 = [MEMORY[0x277CBEA90] data];
-  [v12 setHTTPBody:v13];
+  data = [MEMORY[0x277CBEA90] data];
+  [v12 setHTTPBody:data];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __62__WFImgurSessionManager_getAlbumLinkFromID_completionHandler___block_invoke;
   v15[3] = &unk_278C21CE8;
-  v16 = v6;
-  v14 = v6;
+  v16 = handlerCopy;
+  v14 = handlerCopy;
   [(WFImgurSessionManager *)self sendRequest:v12 progress:0 completionHandler:v15];
 }
 
@@ -238,27 +238,27 @@ void __62__WFImgurSessionManager_getAlbumLinkFromID_completionHandler___block_in
   }
 }
 
-- (void)createAlbumWithIDs:(id)a3 title:(id)a4 description:(id)a5 layout:(id)a6 privacy:(id)a7 completionHandler:(id)a8
+- (void)createAlbumWithIDs:(id)ds title:(id)title description:(id)description layout:(id)layout privacy:(id)privacy completionHandler:(id)handler
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  handlerCopy = handler;
+  privacyCopy = privacy;
+  layoutCopy = layout;
+  descriptionCopy = description;
+  titleCopy = title;
+  dsCopy = ds;
   v20 = objc_opt_new();
-  [v20 setValue:v18 forKey:@"title"];
+  [v20 setValue:titleCopy forKey:@"title"];
 
-  [v20 setValue:v17 forKey:@"description"];
-  [v20 setValue:v16 forKey:@"layout"];
+  [v20 setValue:descriptionCopy forKey:@"description"];
+  [v20 setValue:layoutCopy forKey:@"layout"];
 
-  [v20 setValue:v15 forKey:@"privacy"];
-  v21 = [v19 componentsJoinedByString:{@", "}];
+  [v20 setValue:privacyCopy forKey:@"privacy"];
+  v21 = [dsCopy componentsJoinedByString:{@", "}];
 
   [v20 setValue:v21 forKey:@"ids"];
   v22 = MEMORY[0x277CCACE0];
-  v23 = [(WFImgurSessionManager *)self baseURL];
-  v24 = [v23 URLByAppendingPathComponent:@"album"];
+  baseURL = [(WFImgurSessionManager *)self baseURL];
+  v24 = [baseURL URLByAppendingPathComponent:@"album"];
   v25 = [v22 componentsWithURL:v24 resolvingAgainstBaseURL:0];
 
   v26 = [MEMORY[0x277CBEBC0] dc_queryStringWithQueryDictionary:v20];
@@ -279,8 +279,8 @@ void __62__WFImgurSessionManager_getAlbumLinkFromID_completionHandler___block_in
   v33[2] = __95__WFImgurSessionManager_createAlbumWithIDs_title_description_layout_privacy_completionHandler___block_invoke;
   v33[3] = &unk_278C1E6E8;
   v33[4] = self;
-  v34 = v14;
-  v32 = v14;
+  v34 = handlerCopy;
+  v32 = handlerCopy;
   [(WFImgurSessionManager *)self sendRequest:v29 progress:0 completionHandler:v33];
 }
 
@@ -299,49 +299,49 @@ void __95__WFImgurSessionManager_createAlbumWithIDs_title_description_layout_pri
   }
 }
 
-- (void)uploadImage:(id)a3 title:(id)a4 description:(id)a5 progress:(id)a6 completionHandler:(id)a7
+- (void)uploadImage:(id)image title:(id)title description:(id)description progress:(id)progress completionHandler:(id)handler
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  handlerCopy = handler;
+  progressCopy = progress;
+  descriptionCopy = description;
+  titleCopy = title;
+  imageCopy = image;
   v16 = objc_opt_new();
-  [v16 setValue:v14 forKey:@"title"];
+  [v16 setValue:titleCopy forKey:@"title"];
 
-  [v16 setValue:v13 forKey:@"description"];
+  [v16 setValue:descriptionCopy forKey:@"description"];
   v17 = MEMORY[0x277CCACA8];
   v18 = arc4random();
   v19 = [v17 stringWithFormat:@"Boundary+%08X%08X", v18, arc4random()];
-  v20 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
   v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"--%@\r\n", v19];
   v22 = [v21 dataUsingEncoding:4];
-  [v20 appendData:v22];
+  [data appendData:v22];
 
   v23 = MEMORY[0x277CCACA8];
-  v24 = [v15 filename];
-  v25 = [v23 stringWithFormat:@"Content-Disposition: form-data name=image; filename=%@\r\n", v24];;
+  filename = [imageCopy filename];
+  v25 = [v23 stringWithFormat:@"Content-Disposition: form-data name=image; filename=%@\r\n", filename];;
   v26 = [v25 dataUsingEncoding:4];
-  [v20 appendData:v26];
+  [data appendData:v26];
 
   v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"Content-Type: application/octet-stream\r\n\r\n"];
   v28 = [v27 dataUsingEncoding:4];
-  [v20 appendData:v28];
+  [data appendData:v28];
 
-  v29 = [v15 mappedData];
+  mappedData = [imageCopy mappedData];
 
-  [v20 appendData:v29];
+  [data appendData:mappedData];
   v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"\r\n"];
   v31 = [v30 dataUsingEncoding:4];
-  [v20 appendData:v31];
+  [data appendData:v31];
 
   v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"--%@--\r\n", v19];
   v33 = [v32 dataUsingEncoding:4];
-  [v20 appendData:v33];
+  [data appendData:v33];
 
   v34 = MEMORY[0x277CCACE0];
-  v35 = [(WFImgurSessionManager *)self baseURL];
-  v36 = [v35 URLByAppendingPathComponent:@"image"];
+  baseURL = [(WFImgurSessionManager *)self baseURL];
+  v36 = [baseURL URLByAppendingPathComponent:@"image"];
   v37 = [v34 componentsWithURL:v36 resolvingAgainstBaseURL:0];
 
   v38 = [MEMORY[0x277CBEBC0] dc_queryStringWithQueryDictionary:v16];
@@ -353,7 +353,7 @@ void __95__WFImgurSessionManager_createAlbumWithIDs_title_description_layout_pri
 
   [v41 _setNonAppInitiated:1];
   [v41 setHTTPMethod:@"POST"];
-  [v41 setHTTPBody:v20];
+  [v41 setHTTPBody:data];
   v42 = [MEMORY[0x277CCACA8] stringWithFormat:@"multipart/form-data boundary=%@", v19];;
   [v41 setValue:v42 forHTTPHeaderField:@"Content-Type"];
 
@@ -361,9 +361,9 @@ void __95__WFImgurSessionManager_createAlbumWithIDs_title_description_layout_pri
   v45[1] = 3221225472;
   v45[2] = __82__WFImgurSessionManager_uploadImage_title_description_progress_completionHandler___block_invoke;
   v45[3] = &unk_278C21CE8;
-  v46 = v11;
-  v43 = v11;
-  [(WFImgurSessionManager *)self sendRequest:v41 progress:v12 completionHandler:v45];
+  v46 = handlerCopy;
+  v43 = handlerCopy;
+  [(WFImgurSessionManager *)self sendRequest:v41 progress:progressCopy completionHandler:v45];
 }
 
 void __82__WFImgurSessionManager_uploadImage_title_description_progress_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -384,31 +384,31 @@ void __82__WFImgurSessionManager_uploadImage_title_description_progress_completi
   }
 }
 
-- (WFImgurSessionManager)initWithClientID:(id)a3 configuration:(id)a4
+- (WFImgurSessionManager)initWithClientID:(id)d configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  configurationCopy = configuration;
   v21.receiver = self;
   v21.super_class = WFImgurSessionManager;
   v8 = [(WFImgurSessionManager *)&v21 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     clientID = v8->_clientID;
     v8->_clientID = v9;
 
     v11 = MEMORY[0x277CBABB8];
-    v12 = v7;
-    if (!v7)
+    wf_defaultSessionConfiguration = configurationCopy;
+    if (!configurationCopy)
     {
-      v12 = [MEMORY[0x277CBABC8] wf_defaultSessionConfiguration];
+      wf_defaultSessionConfiguration = [MEMORY[0x277CBABC8] wf_defaultSessionConfiguration];
     }
 
-    v13 = [v11 sessionWithConfiguration:v12 delegate:v8 delegateQueue:0];
+    v13 = [v11 sessionWithConfiguration:wf_defaultSessionConfiguration delegate:v8 delegateQueue:0];
     session = v8->_session;
     v8->_session = v13;
 
-    if (!v7)
+    if (!configurationCopy)
     {
     }
 
@@ -416,9 +416,9 @@ void __82__WFImgurSessionManager_uploadImage_title_description_progress_completi
     baseURL = v8->_baseURL;
     v8->_baseURL = v15;
 
-    v17 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     progressTable = v8->_progressTable;
-    v8->_progressTable = v17;
+    v8->_progressTable = weakToStrongObjectsMapTable;
 
     v19 = v8;
   }

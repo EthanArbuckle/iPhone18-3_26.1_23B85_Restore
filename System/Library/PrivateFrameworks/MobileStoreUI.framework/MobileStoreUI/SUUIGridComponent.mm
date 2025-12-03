@@ -1,31 +1,31 @@
 @interface SUUIGridComponent
 - (SUUIEditorialStyle)editorialStyle;
-- (SUUIGridComponent)initWithBrickItems:(id)a3;
-- (SUUIGridComponent)initWithCustomPageContext:(id)a3;
-- (SUUIGridComponent)initWithFeaturedContentContext:(id)a3 kind:(int64_t)a4;
-- (SUUIGridComponent)initWithGridItems:(id)a3;
-- (SUUIGridComponent)initWithLockups:(id)a3;
-- (SUUIGridComponent)initWithRoomContext:(id)a3 gridType:(int64_t)a4;
-- (SUUIGridComponent)initWithViewElement:(id)a3;
-- (id)_newLockupComponentWithItem:(id)a3 defaultStyle:(SUUILockupStyle *)a4;
-- (id)_updateWithInvalidItemIdentifiers:(id)a3;
-- (id)_updateWithMissingItems:(id)a3;
+- (SUUIGridComponent)initWithBrickItems:(id)items;
+- (SUUIGridComponent)initWithCustomPageContext:(id)context;
+- (SUUIGridComponent)initWithFeaturedContentContext:(id)context kind:(int64_t)kind;
+- (SUUIGridComponent)initWithGridItems:(id)items;
+- (SUUIGridComponent)initWithLockups:(id)lockups;
+- (SUUIGridComponent)initWithRoomContext:(id)context gridType:(int64_t)type;
+- (SUUIGridComponent)initWithViewElement:(id)element;
+- (id)_newLockupComponentWithItem:(id)item defaultStyle:(SUUILockupStyle *)style;
+- (id)_updateWithInvalidItemIdentifiers:(id)identifiers;
+- (id)_updateWithMissingItems:(id)items;
 - (void)_reloadMissingItemCount;
-- (void)_setChildrenWithFeaturedContextContext:(id)a3;
-- (void)enumerateMissingItemIdentifiersFromIndex:(int64_t)a3 usingBlock:(id)a4;
+- (void)_setChildrenWithFeaturedContextContext:(id)context;
+- (void)enumerateMissingItemIdentifiersFromIndex:(int64_t)index usingBlock:(id)block;
 @end
 
 @implementation SUUIGridComponent
 
-- (SUUIGridComponent)initWithBrickItems:(id)a3
+- (SUUIGridComponent)initWithBrickItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v15.receiver = self;
   v15.super_class = SUUIGridComponent;
   v5 = [(SUUIGridComponent *)&v15 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [itemsCopy mutableCopy];
     children = v5->_children;
     v5->_children = v6;
 
@@ -46,20 +46,20 @@
   return v5;
 }
 
-- (SUUIGridComponent)initWithCustomPageContext:(id)a3
+- (SUUIGridComponent)initWithCustomPageContext:(id)context
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v43.receiver = self;
   v43.super_class = SUUIGridComponent;
-  v5 = [(SUUIPageComponent *)&v43 initWithCustomPageContext:v4];
+  v5 = [(SUUIPageComponent *)&v43 initWithCustomPageContext:contextCopy];
   if (!v5)
   {
     goto LABEL_55;
   }
 
-  v6 = [v4 componentDictionary];
-  v7 = [v6 objectForKey:@"childType"];
+  componentDictionary = [contextCopy componentDictionary];
+  v7 = [componentDictionary objectForKey:@"childType"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -91,14 +91,14 @@ LABEL_11:
   }
 
 LABEL_12:
-  v9 = [v6 objectForKey:@"ranked"];
+  v9 = [componentDictionary objectForKey:@"ranked"];
 
   if (objc_opt_respondsToSelector())
   {
     v5->_showsIndexNumbers = [v9 BOOLValue];
   }
 
-  v10 = [v6 objectForKey:@"editorialStyle"];
+  v10 = [componentDictionary objectForKey:@"editorialStyle"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -116,12 +116,12 @@ LABEL_12:
   *&v5->_editorialStyle.titleFontSize = v42;
   *&v5->_editorialStyle.alignment = v11;
   *&v5->_editorialStyle.bodyFontSize = v12;
-  v13 = [v6 objectForKey:@"lockupStyle"];
+  v13 = [componentDictionary objectForKey:@"lockupStyle"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    SUUILockupStyleForDictionary(v13, v4, &v40);
+    SUUILockupStyleForDictionary(v13, contextCopy, &v40);
   }
 
   else
@@ -132,7 +132,7 @@ LABEL_12:
   v14 = v40;
   v5->_lockupStyle.visibleFields = v41;
   *&v5->_lockupStyle.artworkSize = v14;
-  v15 = [v6 objectForKey:@"children"];
+  v15 = [componentDictionary objectForKey:@"children"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -177,7 +177,7 @@ LABEL_12:
                 continue;
               }
 
-              v25 = [v4 copy];
+              v25 = [contextCopy copy];
               [v25 setComponentDictionary:v23];
               v32 = SUUIEditorialComponent;
               break;
@@ -188,7 +188,7 @@ LABEL_12:
                 continue;
               }
 
-              v25 = [v4 copy];
+              v25 = [contextCopy copy];
               [v25 setComponentDictionary:v23];
               v32 = SUUIMediaComponent;
               break;
@@ -203,27 +203,27 @@ LABEL_34:
                   continue;
                 }
 
-                v25 = [v4 copy];
+                v25 = [contextCopy copy];
                 [v25 setComponentDictionary:v23];
                 v29 = [[SUUILockupComponent alloc] initWithCustomPageContext:v25];
                 if (v29)
                 {
-                  v30 = v4;
+                  v30 = contextCopy;
                   [(NSMutableArray *)v5->_children addObject:v29];
-                  v31 = [(SUUILockupComponent *)v29 editorial];
+                  editorial = [(SUUILockupComponent *)v29 editorial];
 
-                  if (v31)
+                  if (editorial)
                   {
                     v5->_gridType = 1;
                   }
 
-                  v4 = v30;
+                  contextCopy = v30;
                 }
 
                 goto LABEL_49;
               }
 
-              v25 = [v4 itemForItemIdentifier:v23];
+              v25 = [contextCopy itemForItemIdentifier:v23];
               if (v25)
               {
                 v27 = [SUUILockupComponent alloc];
@@ -262,7 +262,7 @@ LABEL_49:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v25 = [v4 copy];
+            v25 = [contextCopy copy];
             [v25 setComponentDictionary:v23];
             v26 = [[SUUIBrickItem alloc] initWithCustomPageContext:v25];
             goto LABEL_37;
@@ -287,12 +287,12 @@ LABEL_55:
   return v5;
 }
 
-- (SUUIGridComponent)initWithFeaturedContentContext:(id)a3 kind:(int64_t)a4
+- (SUUIGridComponent)initWithFeaturedContentContext:(id)context kind:(int64_t)kind
 {
-  v6 = a3;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = SUUIGridComponent;
-  v7 = [(SUUIPageComponent *)&v17 initWithFeaturedContentContext:v6 kind:a4];
+  v7 = [(SUUIPageComponent *)&v17 initWithFeaturedContentContext:contextCopy kind:kind];
   v8 = v7;
   if (v7)
   {
@@ -307,16 +307,16 @@ LABEL_55:
     v12 = v14;
     v8->_lockupStyle.visibleFields = v15;
     *&v8->_lockupStyle.artworkSize = v12;
-    [(SUUIGridComponent *)v8 _setChildrenWithFeaturedContextContext:v6];
+    [(SUUIGridComponent *)v8 _setChildrenWithFeaturedContextContext:contextCopy];
   }
 
   return v8;
 }
 
-- (SUUIGridComponent)initWithGridItems:(id)a3
+- (SUUIGridComponent)initWithGridItems:(id)items
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v30.receiver = self;
   v30.super_class = SUUIGridComponent;
   v5 = [(SUUIGridComponent *)&v30 init];
@@ -340,7 +340,7 @@ LABEL_55:
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v12 = v4;
+    v12 = itemsCopy;
     v13 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v13)
     {
@@ -379,10 +379,10 @@ LABEL_55:
   return v6;
 }
 
-- (SUUIGridComponent)initWithLockups:(id)a3
+- (SUUIGridComponent)initWithLockups:(id)lockups
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lockupsCopy = lockups;
   v27.receiver = self;
   v27.super_class = SUUIGridComponent;
   v5 = [(SUUIGridComponent *)&v27 init];
@@ -401,7 +401,7 @@ LABEL_55:
     v10 = v24;
     v6->_lockupStyle.visibleFields = v25;
     *&v6->_lockupStyle.artworkSize = v10;
-    v11 = [v4 mutableCopy];
+    v11 = [lockupsCopy mutableCopy];
     children = v6->_children;
     v6->_children = v11;
 
@@ -424,9 +424,9 @@ LABEL_55:
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v20 + 1) + 8 * i) editorial];
+          editorial = [*(*(&v20 + 1) + 8 * i) editorial];
 
-          if (v18)
+          if (editorial)
           {
             v6->_gridType = 1;
             goto LABEL_12;
@@ -451,9 +451,9 @@ LABEL_12:
   return v6;
 }
 
-- (SUUIGridComponent)initWithRoomContext:(id)a3 gridType:(int64_t)a4
+- (SUUIGridComponent)initWithRoomContext:(id)context gridType:(int64_t)type
 {
-  v6 = a3;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = SUUIGridComponent;
   v7 = [(SUUIGridComponent *)&v17 init];
@@ -467,7 +467,7 @@ LABEL_12:
     *&v8->_editorialStyle.titleFontSize = v16;
     *&p_editorialStyle->alignment = v10;
     *&v8->_editorialStyle.bodyFontSize = v11;
-    v8->_gridType = a4;
+    v8->_gridType = type;
     SUUILockupStyleDefault(&v14);
     v12 = v14;
     v8->_lockupStyle.visibleFields = v15;
@@ -478,17 +478,17 @@ LABEL_12:
       v8->_lockupStyle.visibleFields = 1054;
     }
 
-    [(SUUIGridComponent *)v8 _setChildrenWithFeaturedContextContext:v6];
+    [(SUUIGridComponent *)v8 _setChildrenWithFeaturedContextContext:contextCopy];
   }
 
   return v8;
 }
 
-- (SUUIGridComponent)initWithViewElement:(id)a3
+- (SUUIGridComponent)initWithViewElement:(id)element
 {
   v4.receiver = self;
   v4.super_class = SUUIGridComponent;
-  result = [(SUUIPageComponent *)&v4 initWithViewElement:a3];
+  result = [(SUUIPageComponent *)&v4 initWithViewElement:element];
   if (result)
   {
     result->_gridType = 6;
@@ -497,10 +497,10 @@ LABEL_12:
   return result;
 }
 
-- (void)enumerateMissingItemIdentifiersFromIndex:(int64_t)a3 usingBlock:(id)a4
+- (void)enumerateMissingItemIdentifiersFromIndex:(int64_t)index usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = v6;
+  blockCopy = block;
+  v7 = blockCopy;
   gridType = self->_gridType;
   if (gridType >= 2)
   {
@@ -509,31 +509,31 @@ LABEL_12:
       goto LABEL_6;
     }
 
-    v9 = v6;
-    v6 = [(SUUIPageComponent *)self _enumerateMissingItemIdentifiersFromBricks:self->_children startIndex:a3 usingBlock:v6];
+    v9 = blockCopy;
+    blockCopy = [(SUUIPageComponent *)self _enumerateMissingItemIdentifiersFromBricks:self->_children startIndex:index usingBlock:blockCopy];
   }
 
   else
   {
-    v9 = v6;
-    v6 = [(SUUIPageComponent *)self _enumerateMissingItemIdentifiersFromLockups:self->_children startIndex:a3 usingBlock:v6];
+    v9 = blockCopy;
+    blockCopy = [(SUUIPageComponent *)self _enumerateMissingItemIdentifiersFromLockups:self->_children startIndex:index usingBlock:blockCopy];
   }
 
   v7 = v9;
 LABEL_6:
 
-  MEMORY[0x2821F96F8](v6, v7);
+  MEMORY[0x2821F96F8](blockCopy, v7);
 }
 
-- (id)_updateWithInvalidItemIdentifiers:(id)a3
+- (id)_updateWithInvalidItemIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __55__SUUIGridComponent__updateWithInvalidItemIdentifiers___block_invoke;
   v14 = &unk_2798FBF80;
-  v6 = v4;
+  v6 = identifiersCopy;
   v15 = v6;
   v7 = v5;
   v16 = v7;
@@ -563,9 +563,9 @@ uint64_t __55__SUUIGridComponent__updateWithInvalidItemIdentifiers___block_invok
   return result;
 }
 
-- (id)_updateWithMissingItems:(id)a3
+- (id)_updateWithMissingItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v17 = 0uLL;
   v18 = 0;
@@ -574,13 +574,13 @@ uint64_t __55__SUUIGridComponent__updateWithInvalidItemIdentifiers___block_invok
   v11[1] = 3221225472;
   v11[2] = __45__SUUIGridComponent__updateWithMissingItems___block_invoke;
   v11[3] = &unk_2798FE668;
-  v12 = v4;
-  v13 = self;
+  v12 = itemsCopy;
+  selfCopy = self;
   v6 = v5;
   v14 = v6;
   v15 = v17;
   v16 = v18;
-  v7 = v4;
+  v7 = itemsCopy;
   [(SUUIGridComponent *)self enumerateMissingItemIdentifiersFromIndex:0 usingBlock:v11];
   v8 = v14;
   v9 = v6;
@@ -635,18 +635,18 @@ LABEL_10:
   }
 }
 
-- (id)_newLockupComponentWithItem:(id)a3 defaultStyle:(SUUILockupStyle *)a4
+- (id)_newLockupComponentWithItem:(id)item defaultStyle:(SUUILockupStyle *)style
 {
-  v5 = a3;
-  if ([v5 itemKind] == 17)
+  itemCopy = item;
+  if ([itemCopy itemKind] == 17)
   {
-    a4->visibleFields = 214;
+    style->visibleFields = 214;
   }
 
   v6 = [SUUILockupComponent alloc];
-  v9 = *&a4->artworkSize;
-  visibleFields = a4->visibleFields;
-  v7 = [(SUUILockupComponent *)v6 initWithItem:v5 style:&v9];
+  v9 = *&style->artworkSize;
+  visibleFields = style->visibleFields;
+  v7 = [(SUUILockupComponent *)v6 initWithItem:itemCopy style:&v9];
 
   return v7;
 }
@@ -682,12 +682,12 @@ LABEL_10:
             objc_enumerationMutation(v4);
           }
 
-          v15 = [*(*(&v21 + 1) + 8 * i) link];
-          if (([v15 isActionable] & 1) == 0)
+          link = [*(*(&v21 + 1) + 8 * i) link];
+          if (([link isActionable] & 1) == 0)
           {
-            v16 = [v15 itemIdentifier];
+            itemIdentifier = [link itemIdentifier];
 
-            if (v16)
+            if (itemIdentifier)
             {
               ++self->_missingItemCount;
             }
@@ -723,8 +723,8 @@ LABEL_10:
           }
 
           v9 = *(*(&v17 + 1) + 8 * j);
-          v10 = [v9 item];
-          if (v10)
+          item = [v9 item];
+          if (item)
           {
           }
 
@@ -742,16 +742,16 @@ LABEL_10:
   }
 }
 
-- (void)_setChildrenWithFeaturedContextContext:(id)a3
+- (void)_setChildrenWithFeaturedContextContext:(id)context
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 componentDictionary];
-  v6 = [v5 objectForKey:@"adamIds"];
+  contextCopy = context;
+  componentDictionary = [contextCopy componentDictionary];
+  v6 = [componentDictionary objectForKey:@"adamIds"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v26 = v5;
+    v26 = componentDictionary;
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v8 = 24;
     children = self->_children;
@@ -784,7 +784,7 @@ LABEL_10:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v16 = [v4 itemForItemIdentifier:v15];
+          v16 = [contextCopy itemForItemIdentifier:v15];
           if (v16)
           {
             v27 = *&self->_lockupStyle.artworkSize;
@@ -793,20 +793,20 @@ LABEL_10:
             goto LABEL_12;
           }
 
-          if (([v4 isUnavailableItemIdentifier:v15] & 1) == 0)
+          if (([contextCopy isUnavailableItemIdentifier:v15] & 1) == 0)
           {
             v18 = v10;
-            v19 = v4;
+            v19 = contextCopy;
             v20 = v8;
             v21 = [SUUILockupComponent alloc];
-            v22 = [v15 longLongValue];
+            longLongValue = [v15 longLongValue];
             v27 = *&self->_lockupStyle.artworkSize;
             visibleFields = self->_lockupStyle.visibleFields;
             v23 = v21;
             v8 = v20;
-            v4 = v19;
+            contextCopy = v19;
             v10 = v18;
-            v17 = [(SUUILockupComponent *)v23 initWithItemIdentifier:v22 style:&v27];
+            v17 = [(SUUILockupComponent *)v23 initWithItemIdentifier:longLongValue style:&v27];
 LABEL_12:
             v24 = v17;
             [*(&self->super.super.isa + v8) addObject:{v17, v25}];
@@ -823,7 +823,7 @@ LABEL_16:
 
         [(SUUIGridComponent *)self _reloadMissingItemCount];
         v6 = v25;
-        v5 = v26;
+        componentDictionary = v26;
         break;
       }
     }

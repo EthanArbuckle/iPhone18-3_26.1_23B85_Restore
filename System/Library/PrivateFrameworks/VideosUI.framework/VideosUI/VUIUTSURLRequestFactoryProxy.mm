@@ -1,17 +1,17 @@
 @interface VUIUTSURLRequestFactoryProxy
-+ (void)createRoute:(NSString *)a3 completion:(id)a4;
++ (void)createRoute:(NSString *)route completion:(id)completion;
 @end
 
 @implementation VUIUTSURLRequestFactoryProxy
 
-+ (void)createRoute:(NSString *)a3 completion:(id)a4
++ (void)createRoute:(NSString *)route completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = route;
   v7[3] = v6;
-  v7[4] = a1;
-  v8 = a3;
+  v7[4] = self;
+  routeCopy = route;
 
   sub_1E38364EC(&unk_1E42CAEE8, v7);
 }

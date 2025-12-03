@@ -1,7 +1,7 @@
 @interface BYSetupStateManager
 + (id)sharedManager;
 - (BOOL)didSetupUsingiTunes;
-- (id)buddyPrefsValueForKey:(id)a3;
+- (id)buddyPrefsValueForKey:(id)key;
 - (int64_t)restoreType;
 - (void)clearRestoreType;
 - (void)recordSetupUsingBuddy;
@@ -28,9 +28,9 @@ uint64_t __36__BYSetupStateManager_sharedManager__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)buddyPrefsValueForKey:(id)a3
+- (id)buddyPrefsValueForKey:(id)key
 {
-  v3 = CFPreferencesCopyAppValue(a3, @"com.apple.purplebuddy");
+  v3 = CFPreferencesCopyAppValue(key, @"com.apple.purplebuddy");
   v4 = v3;
   if (v3)
   {

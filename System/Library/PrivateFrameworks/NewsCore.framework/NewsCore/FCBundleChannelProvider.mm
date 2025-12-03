@@ -2,40 +2,40 @@
 - (FCBundleChannelProviderDelegate)delegate;
 - (NSArray)bundleChannelIDs;
 - (NSString)bundleChannelIDsVersion;
-- (id)initWithLocalStore:(void *)a3 appActivityMonitor:(void *)a4 configurationManager:(void *)a5 contentContext:;
+- (id)initWithLocalStore:(void *)store appActivityMonitor:(void *)monitor configurationManager:(void *)manager contentContext:;
 - (void)activityObservingApplicationWindowWillBecomeForeground;
-- (void)loadInitialBundleChannelIDsWithCompletion:(id)a3;
-- (void)refreshBundleChannelIDsWithCompletion:(id *)a1;
+- (void)loadInitialBundleChannelIDsWithCompletion:(id)completion;
+- (void)refreshBundleChannelIDsWithCompletion:(id *)completion;
 @end
 
 @implementation FCBundleChannelProvider
 
 - (NSArray)bundleChannelIDs
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_accessLock;
   }
 
   [(FCBundleChannelProvider *)self lock];
-  v3 = v2->_bundleChannelIDs;
-  [(NFUnfairLock *)v2->_accessLock unlock];
+  v3 = selfCopy->_bundleChannelIDs;
+  [(NFUnfairLock *)selfCopy->_accessLock unlock];
 
   return v3;
 }
 
 - (NSString)bundleChannelIDsVersion
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_accessLock;
   }
 
   [(FCBundleChannelProvider *)self lock];
-  v3 = v2->_bundleChannelIDsVersion;
-  [(NFUnfairLock *)v2->_accessLock unlock];
+  v3 = selfCopy->_bundleChannelIDsVersion;
+  [(NFUnfairLock *)selfCopy->_accessLock unlock];
 
   return v3;
 }
@@ -50,33 +50,33 @@
   [FCTaskScheduler scheduleLowPriorityBlockForMainThread:v2];
 }
 
-- (id)initWithLocalStore:(void *)a3 appActivityMonitor:(void *)a4 configurationManager:(void *)a5 contentContext:
+- (id)initWithLocalStore:(void *)store appActivityMonitor:(void *)monitor configurationManager:(void *)manager contentContext:
 {
   v48 = *MEMORY[0x1E69E9840];
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (a1 && (v42.receiver = a1, v42.super_class = FCBundleChannelProvider, (v14 = objc_msgSendSuper2(&v42, sel_init)) != 0))
+  storeCopy = store;
+  monitorCopy = monitor;
+  managerCopy = manager;
+  if (self && (v42.receiver = self, v42.super_class = FCBundleChannelProvider, (v14 = objc_msgSendSuper2(&v42, sel_init)) != 0))
   {
     v15 = v14;
-    v38 = v13;
-    v39 = v12;
+    v38 = managerCopy;
+    v39 = monitorCopy;
     v41 = v10;
     objc_storeStrong(v14 + 2, a2);
-    objc_storeStrong(v15 + 4, a4);
-    objc_storeStrong(v15 + 5, a5);
+    objc_storeStrong(v15 + 4, monitor);
+    objc_storeStrong(v15 + 5, manager);
     v16 = [objc_alloc(MEMORY[0x1E69B6920]) initWithOptions:1];
     v17 = v15[3];
     v15[3] = v16;
 
-    v40 = v11;
-    [v11 addObserver:v15];
-    v18 = [MEMORY[0x1E695DEC8] array];
-    [v15 setBundleChannelIDs:v18];
+    v40 = storeCopy;
+    [storeCopy addObserver:v15];
+    array = [MEMORY[0x1E695DEC8] array];
+    [v15 setBundleChannelIDs:array];
 
-    v19 = [MEMORY[0x1E696AEC0] string];
-    [v15 setBundleChannelIDsVersion:v19];
+    string = [MEMORY[0x1E696AEC0] string];
+    [v15 setBundleChannelIDsVersion:string];
 
     v20 = v15;
     v21 = v15[2];
@@ -84,8 +84,8 @@
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v22 = [v21 allKeys];
-    v23 = [v22 countByEnumeratingWithState:&v43 objects:v47 count:16];
+    allKeys = [v21 allKeys];
+    v23 = [allKeys countByEnumeratingWithState:&v43 objects:v47 count:16];
     if (v23)
     {
       v24 = v23;
@@ -96,7 +96,7 @@
         {
           if (*v44 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(allKeys);
           }
 
           v27 = *(*(&v43 + 1) + 8 * i);
@@ -157,16 +157,16 @@
           }
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v43 objects:v47 count:16];
+        v24 = [allKeys countByEnumeratingWithState:&v43 objects:v47 count:16];
       }
 
       while (v24);
     }
 
-    v11 = v40;
+    storeCopy = v40;
     v10 = v41;
-    v13 = v38;
-    v12 = v39;
+    managerCopy = v38;
+    monitorCopy = v39;
   }
 
   else
@@ -178,13 +178,13 @@
   return v20;
 }
 
-- (void)refreshBundleChannelIDsWithCompletion:(id *)a1
+- (void)refreshBundleChannelIDsWithCompletion:(id *)completion
 {
   v3 = a2;
-  if (a1)
+  if (completion)
   {
-    objc_initWeak(&location, a1);
-    v4 = a1[4];
+    objc_initWeak(&location, completion);
+    v4 = completion[4];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __65__FCBundleChannelProvider_refreshBundleChannelIDsWithCompletion___block_invoke;
@@ -198,21 +198,21 @@
   }
 }
 
-- (void)loadInitialBundleChannelIDsWithCompletion:(id)a3
+- (void)loadInitialBundleChannelIDsWithCompletion:(id)completion
 {
-  v5 = a3;
-  v4 = [(FCBundleChannelProvider *)self bundleChannelIDs];
-  if ([v4 count])
+  completionCopy = completion;
+  bundleChannelIDs = [(FCBundleChannelProvider *)self bundleChannelIDs];
+  if ([bundleChannelIDs count])
   {
-    if (v5)
+    if (completionCopy)
     {
-      v5[2]();
+      completionCopy[2]();
     }
   }
 
   else
   {
-    [(FCBundleChannelProvider *)&self->super.isa refreshBundleChannelIDsWithCompletion:v5];
+    [(FCBundleChannelProvider *)&self->super.isa refreshBundleChannelIDsWithCompletion:completionCopy];
   }
 }
 

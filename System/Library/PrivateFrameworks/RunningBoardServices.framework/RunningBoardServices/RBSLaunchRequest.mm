@@ -1,9 +1,9 @@
 @interface RBSLaunchRequest
-- (BOOL)execute:(id *)a3 assertion:(id *)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)execute:(id *)execute assertion:(id *)assertion error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (RBSLaunchRequest)initWithContext:(id)a3;
-- (RBSLaunchRequest)initWithRBSXPCCoder:(id)a3;
+- (RBSLaunchRequest)initWithContext:(id)context;
+- (RBSLaunchRequest)initWithRBSXPCCoder:(id)coder;
 - (id)executeRequest;
 @end
 
@@ -13,9 +13,9 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(RBSLaunchContext *)self->_context identity];
-  v6 = [(RBSLaunchContext *)self->_context explanation];
-  v7 = [v3 stringWithFormat:@"<%@| %@ %@>", v4, v5, v6];;
+  identity = [(RBSLaunchContext *)self->_context identity];
+  explanation = [(RBSLaunchContext *)self->_context explanation];
+  v7 = [v3 stringWithFormat:@"<%@| %@ %@>", v4, identity, explanation];;
 
   return v7;
 }
@@ -28,50 +28,50 @@
   return v4;
 }
 
-- (RBSLaunchRequest)initWithContext:(id)a3
+- (RBSLaunchRequest)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = RBSLaunchRequest;
-  v5 = [(RBSRequest *)&v9 _init];
-  if (v5)
+  _init = [(RBSRequest *)&v9 _init];
+  if (_init)
   {
-    v6 = [v4 copy];
-    context = v5->_context;
-    v5->_context = v6;
+    v6 = [contextCopy copy];
+    context = _init->_context;
+    _init->_context = v6;
   }
 
-  return v5;
+  return _init;
 }
 
-- (BOOL)execute:(id *)a3 assertion:(id *)a4 error:(id *)a5
+- (BOOL)execute:(id *)execute assertion:(id *)assertion error:(id *)error
 {
-  v10 = [(RBSLaunchContext *)self->_context attributes];
-  v11 = [v10 count];
+  attributes = [(RBSLaunchContext *)self->_context attributes];
+  v11 = [attributes count];
 
-  if (!a4 && v11)
+  if (!assertion && v11)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"RBSLaunchRequest.m" lineNumber:39 description:@"Cannot attempt to create an assertion during launch if the client will not retain the assertion"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"RBSLaunchRequest.m" lineNumber:39 description:@"Cannot attempt to create an assertion during launch if the client will not retain the assertion"];
   }
 
   v13 = +[RBSConnection sharedInstance];
   v14 = [v13 executeLaunchRequest:self];
 
-  v15 = [v14 process];
-  v16 = v15;
-  if (a3)
+  process = [v14 process];
+  v16 = process;
+  if (execute)
   {
-    v17 = v15;
-    *a3 = v16;
+    v17 = process;
+    *execute = v16;
   }
 
-  v18 = [v14 assertion];
-  v19 = v18;
-  if (!a4)
+  assertion = [v14 assertion];
+  v19 = assertion;
+  if (!assertion)
   {
-    [v18 invalidate];
-    if (!a5)
+    [assertion invalidate];
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -79,12 +79,12 @@
     goto LABEL_8;
   }
 
-  v20 = v18;
-  *a4 = v19;
-  if (a5)
+  v20 = assertion;
+  *assertion = v19;
+  if (error)
   {
 LABEL_8:
-    *a5 = [v14 error];
+    *error = [v14 error];
   }
 
 LABEL_9:
@@ -92,14 +92,14 @@ LABEL_9:
   return v16 != 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v6 = 1;
-  if (self != v4)
+  if (self != equalCopy)
   {
     v5 = objc_opt_class();
-    if (v5 != objc_opt_class() || (context = self->_context, context != v4->_context) && ![(RBSLaunchContext *)context isEqual:?])
+    if (v5 != objc_opt_class() || (context = self->_context, context != equalCopy->_context) && ![(RBSLaunchContext *)context isEqual:?])
     {
       v6 = 0;
     }
@@ -108,20 +108,20 @@ LABEL_9:
   return v6;
 }
 
-- (RBSLaunchRequest)initWithRBSXPCCoder:(id)a3
+- (RBSLaunchRequest)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = RBSLaunchRequest;
-  v5 = [(RBSRequest *)&v9 _init];
-  if (v5)
+  _init = [(RBSRequest *)&v9 _init];
+  if (_init)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_context"];
-    context = v5->_context;
-    v5->_context = v6;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_context"];
+    context = _init->_context;
+    _init->_context = v6;
   }
 
-  return v5;
+  return _init;
 }
 
 @end

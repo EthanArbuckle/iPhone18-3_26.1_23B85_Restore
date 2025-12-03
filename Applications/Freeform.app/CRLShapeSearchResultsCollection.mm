@@ -1,35 +1,35 @@
 @interface CRLShapeSearchResultsCollection
 - (BOOL)p_hasPartialMatches;
-- (BOOL)p_updateSearchResultsForSearchTerm:(id)a3;
-- (CRLShapeSearchResultsCollection)initWithBasicShapeLibrary:(id)a3 searchTerm:(id)a4;
-- (CRLShapeSearchResultsCollection)initWithShapeLibrary:(id)a3 basicShapeLibrary:(id)a4 searchTerm:(id)a5;
+- (BOOL)p_updateSearchResultsForSearchTerm:(id)term;
+- (CRLShapeSearchResultsCollection)initWithBasicShapeLibrary:(id)library searchTerm:(id)term;
+- (CRLShapeSearchResultsCollection)initWithShapeLibrary:(id)library basicShapeLibrary:(id)shapeLibrary searchTerm:(id)term;
 - (NSString)name;
-- (id)displayNameForShape:(id)a3;
-- (id)indexPathOfShape:(id)a3;
+- (id)displayNameForShape:(id)shape;
+- (id)indexPathOfShape:(id)shape;
 - (id)p_comparatorForSortingMatches;
-- (id)p_separateExactAndPartialMatchesFromResults:(id)a3 searchTerm:(id)a4 withProvider:(id)a5 shapeToDisplayNameDict:(id)a6;
-- (id)p_shapesByMappingSearchResults:(id)a3 withProvider:(id)a4 shapeToDisplayNameDict:(id)a5;
-- (id)shapeAtIndex:(unint64_t)a3;
-- (id)shapeAtIndexPath:(id)a3;
-- (int64_t)p_comparePositionOfShape:(id)a3 withOtherShape:(id)a4;
-- (int64_t)p_sequentialShapePosition:(id)a3;
+- (id)p_separateExactAndPartialMatchesFromResults:(id)results searchTerm:(id)term withProvider:(id)provider shapeToDisplayNameDict:(id)dict;
+- (id)p_shapesByMappingSearchResults:(id)results withProvider:(id)provider shapeToDisplayNameDict:(id)dict;
+- (id)shapeAtIndex:(unint64_t)index;
+- (id)shapeAtIndexPath:(id)path;
+- (int64_t)p_comparePositionOfShape:(id)shape withOtherShape:(id)otherShape;
+- (int64_t)p_sequentialShapePosition:(id)position;
 - (unint64_t)exactMatchCount;
 - (unint64_t)numberOfShapes;
-- (unint64_t)numberOfShapesInSection:(unint64_t)a3;
+- (unint64_t)numberOfShapesInSection:(unint64_t)section;
 - (void)resetSearchResults;
-- (void)setSearchTerm:(id)a3 forceUpdate:(BOOL)a4 completionHandler:(id)a5;
+- (void)setSearchTerm:(id)term forceUpdate:(BOOL)update completionHandler:(id)handler;
 @end
 
 @implementation CRLShapeSearchResultsCollection
 
-- (CRLShapeSearchResultsCollection)initWithShapeLibrary:(id)a3 basicShapeLibrary:(id)a4 searchTerm:(id)a5
+- (CRLShapeSearchResultsCollection)initWithShapeLibrary:(id)library basicShapeLibrary:(id)shapeLibrary searchTerm:(id)term
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 locale];
-  v13 = [v10 locale];
-  v14 = [v12 isEqual:v13];
+  libraryCopy = library;
+  shapeLibraryCopy = shapeLibrary;
+  termCopy = term;
+  locale = [libraryCopy locale];
+  locale2 = [shapeLibraryCopy locale];
+  v14 = [locale isEqual:locale2];
 
   if ((v14 & 1) == 0)
   {
@@ -60,35 +60,35 @@
     [CRLAssertionHandler handleFailureInFunction:v16 file:v17 lineNumber:58 isFatal:0 description:"The shape library and basic shape library must be in the same locale."];
   }
 
-  v18 = [(CRLShapeSearchResultsCollection *)self initWithBasicShapeLibrary:v10 searchTerm:v11];
+  v18 = [(CRLShapeSearchResultsCollection *)self initWithBasicShapeLibrary:shapeLibraryCopy searchTerm:termCopy];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_shapeLibrary, a3);
-    [(CRLShapeSearchResultsCollection *)v19 setSearchTerm:v11 completionHandler:0];
+    objc_storeStrong(&v18->_shapeLibrary, library);
+    [(CRLShapeSearchResultsCollection *)v19 setSearchTerm:termCopy completionHandler:0];
   }
 
   return v19;
 }
 
-- (CRLShapeSearchResultsCollection)initWithBasicShapeLibrary:(id)a3 searchTerm:(id)a4
+- (CRLShapeSearchResultsCollection)initWithBasicShapeLibrary:(id)library searchTerm:(id)term
 {
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  termCopy = term;
   v19.receiver = self;
   v19.super_class = CRLShapeSearchResultsCollection;
   v9 = [(CRLShapeSearchResultsCollection *)&v19 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [termCopy copy];
     searchTerm = v9->_searchTerm;
     v9->_searchTerm = v10;
 
-    v12 = [v7 locale];
+    locale = [libraryCopy locale];
     locale = v9->_locale;
-    v9->_locale = v12;
+    v9->_locale = locale;
 
-    objc_storeStrong(&v9->_basicShapeLibrary, a3);
+    objc_storeStrong(&v9->_basicShapeLibrary, library);
     v14 = +[NSMapTable strongToStrongObjectsMapTable];
     shapeToDisplayNameMap = v9->_shapeToDisplayNameMap;
     v9->_shapeToDisplayNameMap = v14;
@@ -97,21 +97,21 @@
     allShapes = v9->_allShapes;
     v9->_allShapes = v16;
 
-    [(CRLShapeSearchResultsCollection *)v9 setSearchTerm:v8 completionHandler:0];
+    [(CRLShapeSearchResultsCollection *)v9 setSearchTerm:termCopy completionHandler:0];
   }
 
   return v9;
 }
 
-- (void)setSearchTerm:(id)a3 forceUpdate:(BOOL)a4 completionHandler:(id)a5
+- (void)setSearchTerm:(id)term forceUpdate:(BOOL)update completionHandler:(id)handler
 {
-  v6 = a4;
-  v14 = a3;
-  v8 = a5;
-  v9 = [(CRLShapeSearchResultsCollection *)self searchTerm];
-  if (v14 | v9)
+  updateCopy = update;
+  termCopy = term;
+  handlerCopy = handler;
+  searchTerm = [(CRLShapeSearchResultsCollection *)self searchTerm];
+  if (termCopy | searchTerm)
   {
-    v10 = [v14 isEqual:v9];
+    v10 = [termCopy isEqual:searchTerm];
   }
 
   else
@@ -119,14 +119,14 @@
     v10 = 1;
   }
 
-  if (!v10 || v6)
+  if (!v10 || updateCopy)
   {
-    v11 = [(CRLShapeSearchResultsCollection *)self p_updateSearchResultsForSearchTerm:v14];
-    v12 = [v14 copy];
+    v11 = [(CRLShapeSearchResultsCollection *)self p_updateSearchResultsForSearchTerm:termCopy];
+    v12 = [termCopy copy];
     searchTerm = self->_searchTerm;
     self->_searchTerm = v12;
 
-    if (!v8)
+    if (!handlerCopy)
     {
       goto LABEL_10;
     }
@@ -134,7 +134,7 @@
 
   else
   {
-    if (!v8)
+    if (!handlerCopy)
     {
       goto LABEL_10;
     }
@@ -142,27 +142,27 @@
     v11 = 0;
   }
 
-  v8[2](v8, v11);
+  handlerCopy[2](handlerCopy, v11);
 LABEL_10:
 }
 
 - (void)resetSearchResults
 {
-  v3 = [(CRLShapeSearchResultsCollection *)self searchTerm];
-  [(CRLShapeSearchResultsCollection *)self p_updateSearchResultsForSearchTerm:v3];
+  searchTerm = [(CRLShapeSearchResultsCollection *)self searchTerm];
+  [(CRLShapeSearchResultsCollection *)self p_updateSearchResultsForSearchTerm:searchTerm];
 }
 
 - (unint64_t)exactMatchCount
 {
-  v2 = [(CRLShapeSearchResultsCollection *)self p_exactMatches];
-  v3 = [v2 count];
+  p_exactMatches = [(CRLShapeSearchResultsCollection *)self p_exactMatches];
+  v3 = [p_exactMatches count];
 
   return v3;
 }
 
-- (unint64_t)numberOfShapesInSection:(unint64_t)a3
+- (unint64_t)numberOfShapesInSection:(unint64_t)section
 {
-  if ([(CRLShapeSearchResultsCollection *)self numberOfSections]<= a3)
+  if ([(CRLShapeSearchResultsCollection *)self numberOfSections]<= section)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -188,25 +188,25 @@ LABEL_10:
 
     v9 = [NSString stringWithUTF8String:"[CRLShapeSearchResultsCollection numberOfShapesInSection:]"];
     v10 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLShapeSearchResultsCollection.m"];
-    [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:131 isFatal:0 description:"Tried to retrieve the number of shapes in a section (%lu) beyond the size of the number of sections in the search results", a3];
+    [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:131 isFatal:0 description:"Tried to retrieve the number of shapes in a section (%lu) beyond the size of the number of sections in the search results", section];
 
     return 0;
   }
 
   else
   {
-    v5 = [(CRLShapeSearchResultsCollection *)self p_allShapes];
-    v6 = [v5 count];
+    p_allShapes = [(CRLShapeSearchResultsCollection *)self p_allShapes];
+    v6 = [p_allShapes count];
 
     return v6;
   }
 }
 
-- (id)shapeAtIndexPath:(id)a3
+- (id)shapeAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 indexAtPosition:0];
-  v6 = [v4 indexAtPosition:1];
+  pathCopy = path;
+  v5 = [pathCopy indexAtPosition:0];
+  v6 = [pathCopy indexAtPosition:1];
 
   v7 = [(CRLShapeSearchResultsCollection *)self numberOfShapesInSection:v5];
   if (v5 >= [(CRLShapeSearchResultsCollection *)self numberOfSections]|| v6 >= v7)
@@ -260,18 +260,18 @@ LABEL_10:
 
   else
   {
-    v8 = [(CRLShapeSearchResultsCollection *)self p_allShapes];
-    v9 = [v8 objectAtIndexedSubscript:v6];
+    p_allShapes = [(CRLShapeSearchResultsCollection *)self p_allShapes];
+    v9 = [p_allShapes objectAtIndexedSubscript:v6];
   }
 
   return v9;
 }
 
-- (id)indexPathOfShape:(id)a3
+- (id)indexPathOfShape:(id)shape
 {
-  v4 = a3;
-  v5 = [(CRLShapeSearchResultsCollection *)self p_allShapes];
-  v6 = [v5 indexOfObject:v4];
+  shapeCopy = shape;
+  p_allShapes = [(CRLShapeSearchResultsCollection *)self p_allShapes];
+  v6 = [p_allShapes indexOfObject:shapeCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -288,11 +288,11 @@ LABEL_10:
   return v7;
 }
 
-- (id)displayNameForShape:(id)a3
+- (id)displayNameForShape:(id)shape
 {
-  v4 = a3;
-  v5 = [(CRLShapeSearchResultsCollection *)self p_shapeToDisplayNameMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  shapeCopy = shape;
+  p_shapeToDisplayNameMap = [(CRLShapeSearchResultsCollection *)self p_shapeToDisplayNameMap];
+  v6 = [p_shapeToDisplayNameMap objectForKeyedSubscript:shapeCopy];
 
   return v6;
 }
@@ -307,18 +307,18 @@ LABEL_10:
 
 - (unint64_t)numberOfShapes
 {
-  v3 = [(CRLShapeSearchResultsCollection *)self p_exactMatches];
-  v4 = [v3 count];
-  v5 = [(CRLShapeSearchResultsCollection *)self p_partialMatches];
-  v6 = [v5 count];
+  p_exactMatches = [(CRLShapeSearchResultsCollection *)self p_exactMatches];
+  v4 = [p_exactMatches count];
+  p_partialMatches = [(CRLShapeSearchResultsCollection *)self p_partialMatches];
+  v6 = [p_partialMatches count];
 
   return v4 + v6;
 }
 
-- (id)shapeAtIndex:(unint64_t)a3
+- (id)shapeAtIndex:(unint64_t)index
 {
-  v5 = [(CRLShapeSearchResultsCollection *)self p_allShapes];
-  if ([v5 count] <= a3)
+  p_allShapes = [(CRLShapeSearchResultsCollection *)self p_allShapes];
+  if ([p_allShapes count] <= index)
   {
     if ([(CRLShapeSearchResultsCollection *)self numberOfShapes])
     {
@@ -341,9 +341,9 @@ LABEL_10:
         v20 = 1024;
         v21 = 181;
         v22 = 2048;
-        v23 = a3;
+        indexCopy = index;
         v24 = 2048;
-        v25 = [(CRLShapeSearchResultsCollection *)self numberOfShapes];
+        numberOfShapes = [(CRLShapeSearchResultsCollection *)self numberOfShapes];
         _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d Tried to retrieve a shape at an index (%lu) beyond the size of the number of shapes in the search results: %lu", buf, 0x36u);
       }
 
@@ -360,7 +360,7 @@ LABEL_10:
 
       v10 = [NSString stringWithUTF8String:"[CRLShapeSearchResultsCollection shapeAtIndex:]"];
       v11 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLShapeSearchResultsCollection.m"];
-      [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:181 isFatal:0 description:"Tried to retrieve a shape at an index (%lu) beyond the size of the number of shapes in the search results: %lu", a3, [(CRLShapeSearchResultsCollection *)self numberOfShapes]];
+      [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:181 isFatal:0 description:"Tried to retrieve a shape at an index (%lu) beyond the size of the number of shapes in the search results: %lu", index, [(CRLShapeSearchResultsCollection *)self numberOfShapes]];
     }
 
     v6 = 0;
@@ -368,26 +368,26 @@ LABEL_10:
 
   else
   {
-    v6 = [v5 objectAtIndexedSubscript:a3];
+    v6 = [p_allShapes objectAtIndexedSubscript:index];
   }
 
   return v6;
 }
 
-- (BOOL)p_updateSearchResultsForSearchTerm:(id)a3
+- (BOOL)p_updateSearchResultsForSearchTerm:(id)term
 {
-  v4 = a3;
+  termCopy = term;
   v5 = +[NSMapTable strongToStrongObjectsMapTable];
   v6 = +[NSArray array];
   v7 = +[NSArray array];
   v8 = +[NSArray array];
   v9 = +[NSArray array];
-  v10 = [(CRLShapeSearchResultsCollection *)self p_basicShapeLibrary];
-  v11 = [v10 resultsForSearchTerm:v4];
-  v12 = [(CRLShapeSearchResultsCollection *)self p_basicShapeLibrary];
-  v59 = v4;
+  p_basicShapeLibrary = [(CRLShapeSearchResultsCollection *)self p_basicShapeLibrary];
+  v11 = [p_basicShapeLibrary resultsForSearchTerm:termCopy];
+  p_basicShapeLibrary2 = [(CRLShapeSearchResultsCollection *)self p_basicShapeLibrary];
+  v59 = termCopy;
   obj = v5;
-  v13 = [(CRLShapeSearchResultsCollection *)self p_separateExactAndPartialMatchesFromResults:v11 searchTerm:v4 withProvider:v12 shapeToDisplayNameDict:v5];
+  v13 = [(CRLShapeSearchResultsCollection *)self p_separateExactAndPartialMatchesFromResults:v11 searchTerm:termCopy withProvider:p_basicShapeLibrary2 shapeToDisplayNameDict:v5];
 
   if ([v13 count] != 4)
   {
@@ -430,14 +430,14 @@ LABEL_10:
   v23 = [v13 objectAtIndexedSubscript:3];
   v24 = [v9 arrayByAddingObjectsFromArray:v23];
 
-  v25 = [(CRLShapeSearchResultsCollection *)self p_shapeLibrary];
+  p_shapeLibrary = [(CRLShapeSearchResultsCollection *)self p_shapeLibrary];
 
-  if (v25)
+  if (p_shapeLibrary)
   {
-    v26 = [(CRLShapeSearchResultsCollection *)self p_shapeLibrary];
-    v27 = [v26 resultsForSearchTerm:v59];
-    v28 = [(CRLShapeSearchResultsCollection *)self p_shapeLibrary];
-    v29 = [(CRLShapeSearchResultsCollection *)self p_separateExactAndPartialMatchesFromResults:v27 searchTerm:v59 withProvider:v28 shapeToDisplayNameDict:obj];
+    p_shapeLibrary2 = [(CRLShapeSearchResultsCollection *)self p_shapeLibrary];
+    v27 = [p_shapeLibrary2 resultsForSearchTerm:v59];
+    p_shapeLibrary3 = [(CRLShapeSearchResultsCollection *)self p_shapeLibrary];
+    v29 = [(CRLShapeSearchResultsCollection *)self p_separateExactAndPartialMatchesFromResults:v27 searchTerm:v59 withProvider:p_shapeLibrary3 shapeToDisplayNameDict:obj];
 
     if ([v29 count] != 4)
     {
@@ -489,26 +489,26 @@ LABEL_10:
   v58 = v18;
   v41 = [v18 arrayByAddingObjectsFromArray:v20];
   v42 = [v22 arrayByAddingObjectsFromArray:v24];
-  v43 = [(CRLShapeSearchResultsCollection *)self p_exactMatches];
-  if (v41 | v43 && ![v41 isEqual:v43])
+  p_exactMatches = [(CRLShapeSearchResultsCollection *)self p_exactMatches];
+  if (v41 | p_exactMatches && ![v41 isEqual:p_exactMatches])
   {
     HIDWORD(v57) = 1;
   }
 
   else
   {
-    v44 = [(CRLShapeSearchResultsCollection *)self p_partialMatches];
-    if (v42 | v44 && ![v42 isEqual:v44])
+    p_partialMatches = [(CRLShapeSearchResultsCollection *)self p_partialMatches];
+    if (v42 | p_partialMatches && ![v42 isEqual:p_partialMatches])
     {
       HIDWORD(v57) = 1;
     }
 
     else
     {
-      v45 = [(CRLShapeSearchResultsCollection *)self p_shapeToDisplayNameMap];
-      if (obj | v45)
+      p_shapeToDisplayNameMap = [(CRLShapeSearchResultsCollection *)self p_shapeToDisplayNameMap];
+      if (obj | p_shapeToDisplayNameMap)
       {
-        HIDWORD(v57) = [obj isEqual:v45] ^ 1;
+        HIDWORD(v57) = [obj isEqual:p_shapeToDisplayNameMap] ^ 1;
       }
 
       else
@@ -519,11 +519,11 @@ LABEL_10:
   }
 
   objc_storeStrong(&self->_shapeToDisplayNameMap, obj);
-  v46 = [(CRLShapeSearchResultsCollection *)self p_comparatorForSortingMatches];
-  v47 = [v41 sortedArrayUsingComparator:v46];
+  p_comparatorForSortingMatches = [(CRLShapeSearchResultsCollection *)self p_comparatorForSortingMatches];
+  v47 = [v41 sortedArrayUsingComparator:p_comparatorForSortingMatches];
 
-  v48 = [(CRLShapeSearchResultsCollection *)self p_comparatorForSortingMatches];
-  v49 = [v42 sortedArrayUsingComparator:v48];
+  p_comparatorForSortingMatches2 = [(CRLShapeSearchResultsCollection *)self p_comparatorForSortingMatches];
+  v49 = [v42 sortedArrayUsingComparator:p_comparatorForSortingMatches2];
 
   objc_storeStrong(&self->_exactMatches, v47);
   objc_storeStrong(&self->_partialMatches, v49);
@@ -568,11 +568,11 @@ LABEL_10:
   return BYTE4(v57);
 }
 
-- (id)p_separateExactAndPartialMatchesFromResults:(id)a3 searchTerm:(id)a4 withProvider:(id)a5 shapeToDisplayNameDict:(id)a6
+- (id)p_separateExactAndPartialMatchesFromResults:(id)results searchTerm:(id)term withProvider:(id)provider shapeToDisplayNameDict:(id)dict
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
+  resultsCopy = results;
+  providerCopy = provider;
+  dictCopy = dict;
   v27 = +[NSMutableArray array];
   v26 = +[NSMutableArray array];
   v11 = +[NSMutableArray array];
@@ -581,7 +581,7 @@ LABEL_10:
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v12 = v8;
+  v12 = resultsCopy;
   v13 = [v12 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v13)
   {
@@ -597,28 +597,28 @@ LABEL_10:
         }
 
         v17 = *(*(&v28 + 1) + 8 * i);
-        v18 = [v9 shapeFromSearchResult:v17];
+        v18 = [providerCopy shapeFromSearchResult:v17];
         if (v18)
         {
           if ([v17 priority] && objc_msgSend(v17, "priority") != 1)
           {
-            v19 = [v17 matchingKeyword];
+            matchingKeyword = [v17 matchingKeyword];
           }
 
           else
           {
-            v19 = [v18 name];
+            matchingKeyword = [v18 name];
           }
 
-          v20 = v19;
-          [v10 setObject:v19 forKey:v18];
+          v20 = matchingKeyword;
+          [dictCopy setObject:matchingKeyword forKey:v18];
 
           LODWORD(v20) = [v17 isExactMatch];
-          v21 = [v17 priority];
+          priority = [v17 priority];
           if (v20)
           {
             v22 = v27;
-            if (v21 != 3)
+            if (priority != 3)
             {
               if ([v17 priority] == 1)
               {
@@ -635,7 +635,7 @@ LABEL_10:
           else
           {
             v22 = v11;
-            if (v21 != 3)
+            if (priority != 3)
             {
               if ([v17 priority] == 1)
               {
@@ -668,18 +668,18 @@ LABEL_10:
   return v23;
 }
 
-- (id)p_shapesByMappingSearchResults:(id)a3 withProvider:(id)a4 shapeToDisplayNameDict:(id)a5
+- (id)p_shapesByMappingSearchResults:(id)results withProvider:(id)provider shapeToDisplayNameDict:(id)dict
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100490A64;
   v12[3] = &unk_101866B70;
-  v13 = a4;
-  v14 = self;
-  v15 = a5;
-  v8 = v15;
-  v9 = v13;
-  v10 = [a3 crl_arrayByMappingObjectsUsingBlock:v12];
+  providerCopy = provider;
+  selfCopy = self;
+  dictCopy = dict;
+  v8 = dictCopy;
+  v9 = providerCopy;
+  v10 = [results crl_arrayByMappingObjectsUsingBlock:v12];
 
   return v10;
 }
@@ -696,16 +696,16 @@ LABEL_10:
   return v2;
 }
 
-- (int64_t)p_sequentialShapePosition:(id)a3
+- (int64_t)p_sequentialShapePosition:(id)position
 {
-  v4 = a3;
+  positionCopy = position;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, positionCopy);
   if (v6)
   {
-    v7 = [(CRLShapeSearchResultsCollection *)self p_shapeLibrary];
+    p_shapeLibrary = [(CRLShapeSearchResultsCollection *)self p_shapeLibrary];
 
-    if (!v7)
+    if (!p_shapeLibrary)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       v8 = v6;
@@ -737,8 +737,8 @@ LABEL_10:
       v6 = v8;
     }
 
-    v12 = [(CRLShapeSearchResultsCollection *)self p_shapeLibrary];
-    v34 = [v12 categories];
+    p_shapeLibrary2 = [(CRLShapeSearchResultsCollection *)self p_shapeLibrary];
+    categories = [p_shapeLibrary2 categories];
 
     v44 = 0u;
     v45 = 0u;
@@ -749,7 +749,7 @@ LABEL_10:
     if (v35)
     {
       v30 = v6;
-      v31 = v4;
+      v31 = positionCopy;
       v36 = 0;
       v33 = *v43;
       v13 = 0x7FFFFFFFFFFFFFFFLL;
@@ -767,7 +767,7 @@ LABEL_10:
           v39 = 0u;
           v40 = 0u;
           v41 = 0u;
-          v16 = v34;
+          v16 = categories;
           v17 = [v16 countByEnumeratingWithState:&v38 objects:v46 count:16];
           if (v17)
           {
@@ -785,8 +785,8 @@ LABEL_10:
                   objc_enumerationMutation(v16);
                 }
 
-                v22 = [*(*(&v38 + 1) + 8 * v21) categoryID];
-                v23 = [v15 isEqual:v22];
+                categoryID = [*(*(&v38 + 1) + 8 * v21) categoryID];
+                v23 = [v15 isEqual:categoryID];
 
                 if (v23)
                 {
@@ -828,7 +828,7 @@ LABEL_29:
       while (v35);
       v26 = (v13 << 16) + 0x10000;
       v6 = v30;
-      v4 = v31;
+      positionCopy = v31;
       v27 = v36;
     }
 
@@ -845,15 +845,15 @@ LABEL_29:
     v26 = 0;
   }
 
-  v28 = [v4 positionInCategoryWithID:v27];
+  v28 = [positionCopy positionInCategoryWithID:v27];
 
   return v28 + v26;
 }
 
-- (int64_t)p_comparePositionOfShape:(id)a3 withOtherShape:(id)a4
+- (int64_t)p_comparePositionOfShape:(id)shape withOtherShape:(id)otherShape
 {
-  v6 = a3;
-  v7 = a4;
+  shapeCopy = shape;
+  otherShapeCopy = otherShape;
   v8 = objc_opt_class();
   if (v8 != objc_opt_class())
   {
@@ -866,8 +866,8 @@ LABEL_29:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v11 = [v6 categoryIDs];
-    v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    categoryIDs = [shapeCopy categoryIDs];
+    v12 = [categoryIDs countByEnumeratingWithState:&v24 objects:v28 count:16];
     v10 = 0x7FFFFFFFFFFFFFFFLL;
     if (v12)
     {
@@ -879,21 +879,21 @@ LABEL_29:
         {
           if (*v25 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(categoryIDs);
           }
 
           v16 = *(*(&v24 + 1) + 8 * i);
-          v17 = [v7 positionInCategoryWithID:v16];
+          v17 = [otherShapeCopy positionInCategoryWithID:v16];
           if (v17 != 0x7FFFFFFFFFFFFFFFLL)
           {
             v18 = v17;
-            v9 = [v6 positionInCategoryWithID:v16];
+            v9 = [shapeCopy positionInCategoryWithID:v16];
             v10 = v18;
             goto LABEL_15;
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v13 = [categoryIDs countByEnumeratingWithState:&v24 objects:v28 count:16];
         if (v13)
         {
           continue;
@@ -911,15 +911,15 @@ LABEL_15:
 
   else
   {
-    v9 = [v6 positionInCategoryWithID:0];
-    v10 = [v7 positionInCategoryWithID:0];
+    v9 = [shapeCopy positionInCategoryWithID:0];
+    v10 = [otherShapeCopy positionInCategoryWithID:0];
   }
 
   if (v9 == v10)
   {
 LABEL_17:
-    v9 = [(CRLShapeSearchResultsCollection *)self p_sequentialShapePosition:v6];
-    v10 = [(CRLShapeSearchResultsCollection *)self p_sequentialShapePosition:v7];
+    v9 = [(CRLShapeSearchResultsCollection *)self p_sequentialShapePosition:shapeCopy];
+    v10 = [(CRLShapeSearchResultsCollection *)self p_sequentialShapePosition:otherShapeCopy];
   }
 
   if (v9 >= v10)
@@ -971,8 +971,8 @@ LABEL_17:
 
 - (BOOL)p_hasPartialMatches
 {
-  v2 = [(CRLShapeSearchResultsCollection *)self p_partialMatches];
-  v3 = [v2 count] != 0;
+  p_partialMatches = [(CRLShapeSearchResultsCollection *)self p_partialMatches];
+  v3 = [p_partialMatches count] != 0;
 
   return v3;
 }

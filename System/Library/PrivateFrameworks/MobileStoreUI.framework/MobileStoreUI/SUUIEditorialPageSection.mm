@@ -1,37 +1,37 @@
 @interface SUUIEditorialPageSection
-- (CGSize)cellSizeForIndexPath:(id)a3;
-- (SUUIEditorialPageSection)initWithPageComponent:(id)a3;
+- (CGSize)cellSizeForIndexPath:(id)path;
+- (SUUIEditorialPageSection)initWithPageComponent:(id)component;
 - (id)_colorScheme;
 - (id)_editorialLayout;
-- (id)cellForIndexPath:(id)a3;
-- (int64_t)applyUpdateType:(int64_t)a3;
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4;
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3;
-- (void)collectionViewDidSelectItemAtIndexPath:(id)a3;
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3;
-- (void)reloadCellWithIndexPath:(id)a3 reason:(int64_t)a4;
-- (void)willAppearInContext:(id)a3;
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (id)cellForIndexPath:(id)path;
+- (int64_t)applyUpdateType:(int64_t)type;
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session;
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path;
+- (void)collectionViewDidSelectItemAtIndexPath:(id)path;
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path;
+- (void)reloadCellWithIndexPath:(id)path reason:(int64_t)reason;
+- (void)willAppearInContext:(id)context;
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SUUIEditorialPageSection
 
-- (SUUIEditorialPageSection)initWithPageComponent:(id)a3
+- (SUUIEditorialPageSection)initWithPageComponent:(id)component
 {
   v4.receiver = self;
   v4.super_class = SUUIEditorialPageSection;
-  return [(SUUIStorePageSection *)&v4 initWithPageComponent:a3];
+  return [(SUUIStorePageSection *)&v4 initWithPageComponent:component];
 }
 
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session
 {
-  v5 = a4;
-  v7 = [(SUUIStorePageSection *)self pageComponent];
-  v6 = [v7 viewElement];
-  [v5 addItemViewElement:v6];
+  sessionCopy = session;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  [sessionCopy addItemViewElement:viewElement];
 }
 
-- (int64_t)applyUpdateType:(int64_t)a3
+- (int64_t)applyUpdateType:(int64_t)type
 {
   editorialLayout = self->_editorialLayout;
   self->_editorialLayout = 0;
@@ -42,45 +42,45 @@
   self->_hasValidColorScheme = 0;
   v8.receiver = self;
   v8.super_class = SUUIEditorialPageSection;
-  return [(SUUIStorePageSection *)&v8 applyUpdateType:a3];
+  return [(SUUIStorePageSection *)&v8 applyUpdateType:type];
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
-  v7 = [v6 dequeueReusableCellWithReuseIdentifier:0x286AFFD40 forIndexPath:v4];
+  pathCopy = path;
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  v7 = [collectionView dequeueReusableCellWithReuseIdentifier:0x286AFFD40 forIndexPath:pathCopy];
 
-  v8 = [v7 layout];
-  v9 = [(SUUIEditorialPageSection *)self _colorScheme];
-  [v8 setColoringWithColorScheme:v9];
+  layout = [v7 layout];
+  _colorScheme = [(SUUIEditorialPageSection *)self _colorScheme];
+  [layout setColoringWithColorScheme:_colorScheme];
 
-  [v8 resetContentInset];
+  [layout resetContentInset];
   if (![(SUUIStorePageSection *)self isTopSection])
   {
-    [v8 contentInset];
-    v10 = [(SUUIStorePageSection *)self context];
-    [v10 horizontalPadding];
+    [layout contentInset];
+    context2 = [(SUUIStorePageSection *)self context];
+    [context2 horizontalPadding];
     v12 = v11;
 
-    v13 = [(SUUIStorePageSection *)self context];
-    [v13 horizontalPadding];
+    context3 = [(SUUIStorePageSection *)self context];
+    [context3 horizontalPadding];
     v15 = v14;
 
-    [v8 setContentInset:{0.0, v15, 0.0, v12}];
+    [layout setContentInset:{0.0, v15, 0.0, v12}];
   }
 
-  v16 = [(SUUIEditorialPageSection *)self _editorialLayout];
-  [v8 applyEditorialLayout:v16 withOrientation:0 expanded:self->_isExpanded];
+  _editorialLayout = [(SUUIEditorialPageSection *)self _editorialLayout];
+  [layout applyEditorialLayout:_editorialLayout withOrientation:0 expanded:self->_isExpanded];
 
-  v17 = [v8 textBoxView];
-  v18 = [v5 parentViewController];
-  v19 = [v18 clientContext];
-  v20 = v19;
-  if (v19)
+  textBoxView = [layout textBoxView];
+  parentViewController = [context parentViewController];
+  clientContext = [parentViewController clientContext];
+  v20 = clientContext;
+  if (clientContext)
   {
-    [v19 localizedStringForKey:@"MORE_BUTTON"];
+    [clientContext localizedStringForKey:@"MORE_BUTTON"];
   }
 
   else
@@ -88,35 +88,35 @@
     [SUUIClientContext localizedStringForKey:@"MORE_BUTTON" inBundles:0];
   }
   v21 = ;
-  [v17 setMoreButtonTitle:v21];
+  [textBoxView setMoreButtonTitle:v21];
 
   if (self->_isExpanded)
   {
-    v22 = 0;
+    maximumBodyLines = 0;
   }
 
   else
   {
-    v23 = [(SUUIStorePageSection *)self pageComponent];
-    v22 = [v23 maximumBodyLines];
+    pageComponent = [(SUUIStorePageSection *)self pageComponent];
+    maximumBodyLines = [pageComponent maximumBodyLines];
   }
 
-  [v17 setNumberOfVisibleLines:v22];
+  [textBoxView setNumberOfVisibleLines:maximumBodyLines];
 
   return v7;
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
-  v4 = [(SUUIStorePageSection *)self context];
-  [v4 activePageWidth];
+  context = [(SUUIStorePageSection *)self context];
+  [context activePageWidth];
   v6 = v5;
 
-  v7 = [(SUUIEditorialPageSection *)self _editorialLayout];
-  [v7 layoutHeightForOrientation:0 expanded:self->_isExpanded];
+  _editorialLayout = [(SUUIEditorialPageSection *)self _editorialLayout];
+  [_editorialLayout layoutHeightForOrientation:0 expanded:self->_isExpanded];
   v9 = v8;
-  v10 = [v7 bodyTextLayoutForOrientation:0];
-  v11 = [v7 titleTextLayoutForOrientation:0];
+  v10 = [_editorialLayout bodyTextLayoutForOrientation:0];
+  v11 = [_editorialLayout titleTextLayoutForOrientation:0];
   if (v11)
   {
     v12 = v10 == 0;
@@ -139,14 +139,14 @@
   return result;
 }
 
-- (void)collectionViewDidSelectItemAtIndexPath:(id)a3
+- (void)collectionViewDidSelectItemAtIndexPath:(id)path
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = [(SUUIStorePageSection *)self context];
-  v5 = [v4 collectionView];
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
-  v6 = [(SUUIEditorialPageSection *)self _editorialLayout];
-  v7 = [v6 bodyTextLayoutForOrientation:0];
+  _editorialLayout = [(SUUIEditorialPageSection *)self _editorialLayout];
+  v7 = [_editorialLayout bodyTextLayoutForOrientation:0];
 
   if (!self->_isExpanded && [v7 requiresTruncation])
   {
@@ -154,104 +154,104 @@
     v8 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:{-[SUUIStorePageSection sectionIndex](self, "sectionIndex")}];
     v10[0] = v8;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-    [v5 reloadItemsAtIndexPaths:v9];
+    [collectionView reloadItemsAtIndexPaths:v9];
   }
 }
 
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
+  pathCopy = path;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v7 = [(SUUIStorePageSection *)self context];
-  v8 = [v7 activeMetricsImpressionSession];
-  [v8 beginActiveImpressionForViewElement:v6];
+  context = [(SUUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
+  [activeMetricsImpressionSession beginActiveImpressionForViewElement:viewElement];
 
   v9.receiver = self;
   v9.super_class = SUUIEditorialPageSection;
-  [(SUUIStorePageSection *)&v9 collectionViewWillDisplayCellForItemAtIndexPath:v4];
+  [(SUUIStorePageSection *)&v9 collectionViewWillDisplayCellForItemAtIndexPath:pathCopy];
 }
 
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
+  pathCopy = path;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v7 = [(SUUIStorePageSection *)self context];
-  v8 = [v7 activeMetricsImpressionSession];
-  [v8 endActiveImpressionForViewElement:v6];
+  context = [(SUUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
+  [activeMetricsImpressionSession endActiveImpressionForViewElement:viewElement];
 
   v9.receiver = self;
   v9.super_class = SUUIEditorialPageSection;
-  [(SUUIStorePageSection *)&v9 collectionViewDidEndDisplayingCellForItemAtIndexPath:v4];
+  [(SUUIStorePageSection *)&v9 collectionViewDidEndDisplayingCellForItemAtIndexPath:pathCopy];
 }
 
-- (void)reloadCellWithIndexPath:(id)a3 reason:(int64_t)a4
+- (void)reloadCellWithIndexPath:(id)path reason:(int64_t)reason
 {
-  v5 = a3;
-  v6 = [(SUUIStorePageSection *)self context];
-  v7 = [v6 collectionView];
-  v11 = [v7 cellForItemAtIndexPath:v5];
+  pathCopy = path;
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  v11 = [collectionView cellForItemAtIndexPath:pathCopy];
 
   v8 = v11;
   if (v11)
   {
-    v9 = [v11 layout];
-    v10 = [(SUUIEditorialPageSection *)self _editorialLayout];
-    [v9 applyEditorialLayout:v10 withOrientation:0 expanded:self->_isExpanded];
+    layout = [v11 layout];
+    _editorialLayout = [(SUUIEditorialPageSection *)self _editorialLayout];
+    [layout applyEditorialLayout:_editorialLayout withOrientation:0 expanded:self->_isExpanded];
 
     v8 = v11;
   }
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   colorScheme = self->_colorScheme;
   self->_colorScheme = 0;
 
   self->_hasValidColorScheme = 0;
-  v6 = [v4 collectionView];
-  [v6 registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AFFD40];
+  collectionView = [contextCopy collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AFFD40];
 
-  v7 = [v4 textLayoutCache];
-  v8 = [(SUUIEditorialLayout *)self->_editorialLayout layoutCache];
+  textLayoutCache = [contextCopy textLayoutCache];
+  layoutCache = [(SUUIEditorialLayout *)self->_editorialLayout layoutCache];
 
-  if (v8 != v7)
+  if (layoutCache != textLayoutCache)
   {
     editorialLayout = self->_editorialLayout;
     self->_editorialLayout = 0;
   }
 
-  v10 = [(SUUIEditorialPageSection *)self _editorialLayout];
-  [v10 enqueueLayoutRequests];
+  _editorialLayout = [(SUUIEditorialPageSection *)self _editorialLayout];
+  [_editorialLayout enqueueLayoutRequests];
 
   v11 = self->_layoutContext;
-  v12 = [[SUUIViewElementLayoutContext alloc] initWithStorePageSectionContext:v4 previousLayoutContext:v11];
+  v12 = [[SUUIViewElementLayoutContext alloc] initWithStorePageSectionContext:contextCopy previousLayoutContext:v11];
   layoutContext = self->_layoutContext;
   self->_layoutContext = v12;
 
   v14.receiver = self;
   v14.super_class = SUUIEditorialPageSection;
-  [(SUUIStorePageSection *)&v14 willAppearInContext:v4];
+  [(SUUIStorePageSection *)&v14 willAppearInContext:contextCopy];
 }
 
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   editorialLayout = self->_editorialLayout;
   self->_editorialLayout = 0;
-  v8 = a4;
+  coordinatorCopy = coordinator;
 
-  v9 = [(SUUIEditorialPageSection *)self _editorialLayout];
-  [v9 enqueueLayoutRequests];
+  _editorialLayout = [(SUUIEditorialPageSection *)self _editorialLayout];
+  [_editorialLayout enqueueLayoutRequests];
 
   v10.receiver = self;
   v10.super_class = SUUIEditorialPageSection;
-  [(SUUIStorePageSection *)&v10 willTransitionToSize:v8 withTransitionCoordinator:width, height];
+  [(SUUIStorePageSection *)&v10 willTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 - (id)_colorScheme
@@ -259,12 +259,12 @@
   if (!self->_hasValidColorScheme)
   {
     self->_hasValidColorScheme = 1;
-    v3 = [(SUUIStorePageSection *)self pageComponent];
-    v4 = [v3 viewElement];
-    v5 = [v4 style];
+    pageComponent = [(SUUIStorePageSection *)self pageComponent];
+    viewElement = [pageComponent viewElement];
+    style = [viewElement style];
 
-    v6 = [(SUUIViewElementLayoutContext *)self->_layoutContext tintColor];
-    v7 = SUUIViewElementPlainColorWithStyle(v5, v6);
+    tintColor = [(SUUIViewElementLayoutContext *)self->_layoutContext tintColor];
+    v7 = SUUIViewElementPlainColorWithStyle(style, tintColor);
 
     if (v7)
     {
@@ -277,10 +277,10 @@
 
     else
     {
-      v10 = [(SUUIStorePageSection *)self context];
-      v11 = [v10 colorScheme];
+      context = [(SUUIStorePageSection *)self context];
+      colorScheme = [context colorScheme];
       v12 = self->_colorScheme;
-      self->_colorScheme = v11;
+      self->_colorScheme = colorScheme;
     }
   }
 
@@ -294,20 +294,20 @@
   editorialLayout = self->_editorialLayout;
   if (!editorialLayout)
   {
-    v4 = [(SUUIStorePageSection *)self context];
+    context = [(SUUIStorePageSection *)self context];
     v5 = [SUUIEditorialLayout alloc];
-    v6 = [(SUUIStorePageSection *)self pageComponent];
-    v7 = [(SUUIStorePageSection *)self context];
-    v8 = [v7 textLayoutCache];
-    v9 = [(SUUIEditorialLayout *)v5 initWithEditorial:v6 layoutCache:v8];
+    pageComponent = [(SUUIStorePageSection *)self pageComponent];
+    context2 = [(SUUIStorePageSection *)self context];
+    textLayoutCache = [context2 textLayoutCache];
+    v9 = [(SUUIEditorialLayout *)v5 initWithEditorial:pageComponent layoutCache:textLayoutCache];
     v10 = self->_editorialLayout;
     self->_editorialLayout = v9;
 
     v11 = self->_editorialLayout;
-    [v4 activePageWidth];
+    [context activePageWidth];
     v13 = v12;
-    v14 = [(SUUIStorePageSection *)self context];
-    [v14 horizontalPadding];
+    context3 = [(SUUIStorePageSection *)self context];
+    [context3 horizontalPadding];
     [(SUUIEditorialLayout *)v11 setLayoutWidth:0 forOrientation:v13 + v15 * -2.0];
 
     editorialLayout = self->_editorialLayout;

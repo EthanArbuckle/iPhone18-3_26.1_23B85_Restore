@@ -1,17 +1,17 @@
 @interface NSUserActivity
 - (id)_syDocument;
-- (void)set_syDocument:(void *)a1;
+- (void)set_syDocument:(void *)document;
 @end
 
 @implementation NSUserActivity
 
 - (id)_syDocument
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    objc_sync_enter(v1);
-    v2 = [v1 _payloadForIdentifier:@"com.apple.synapse.document"];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v2 = [selfCopy _payloadForIdentifier:@"com.apple.synapse.document"];
     if (v2)
     {
       v3 = [SYDocument documentFromData:v2];
@@ -22,7 +22,7 @@
       v3 = 0;
     }
 
-    objc_sync_exit(v1);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -33,13 +33,13 @@
   return v3;
 }
 
-- (void)set_syDocument:(void *)a1
+- (void)set_syDocument:(void *)document
 {
   v3 = a2;
-  if (a1)
+  if (document)
   {
-    v4 = a1;
-    objc_sync_enter(v4);
+    documentCopy = document;
+    objc_sync_enter(documentCopy);
     v8 = 0;
     v5 = [v3 dataRepresentationWithError:&v8];
     v6 = v8;
@@ -54,10 +54,10 @@
 
     if (v5)
     {
-      [v4 _setPayload:v5 object:0 identifier:@"com.apple.synapse.document"];
+      [documentCopy _setPayload:v5 object:0 identifier:@"com.apple.synapse.document"];
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(documentCopy);
   }
 }
 

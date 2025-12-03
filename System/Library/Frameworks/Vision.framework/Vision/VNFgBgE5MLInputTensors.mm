@@ -1,38 +1,38 @@
 @interface VNFgBgE5MLInputTensors
-- (VNFgBgE5MLInputTensors)initWithTargetPoint:(CGPoint)a3 queryNumber:(int)a4 maxSpatialLength:(int)a5 inputSize:(CGSize)a6 radius:(int)a7 error:(id *)a8;
-- (VNFgBgE5MLInputTensors)initWithTargetPointList:(const void *)a3 queryNumber:(int)a4 maxSpatialLength:(int)a5 inputSize:(CGSize)a6 radius:(int)a7 error:(id *)a8;
+- (VNFgBgE5MLInputTensors)initWithTargetPoint:(CGPoint)point queryNumber:(int)number maxSpatialLength:(int)length inputSize:(CGSize)size radius:(int)radius error:(id *)error;
+- (VNFgBgE5MLInputTensors)initWithTargetPointList:(const void *)list queryNumber:(int)number maxSpatialLength:(int)length inputSize:(CGSize)size radius:(int)radius error:(id *)error;
 @end
 
 @implementation VNFgBgE5MLInputTensors
 
-- (VNFgBgE5MLInputTensors)initWithTargetPointList:(const void *)a3 queryNumber:(int)a4 maxSpatialLength:(int)a5 inputSize:(CGSize)a6 radius:(int)a7 error:(id *)a8
+- (VNFgBgE5MLInputTensors)initWithTargetPointList:(const void *)list queryNumber:(int)number maxSpatialLength:(int)length inputSize:(CGSize)size radius:(int)radius error:(id *)error
 {
-  v10 = a4;
+  numberCopy = number;
   v66[4] = *MEMORY[0x1E69E9840];
   v65.receiver = self;
   v65.super_class = VNFgBgE5MLInputTensors;
-  v12 = [(VNFgBgE5MLInputTensors *)&v65 init:a3];
+  v12 = [(VNFgBgE5MLInputTensors *)&v65 init:list];
   v13 = v12;
   if (v12)
   {
     v43 = v12;
     LODWORD(v61) = -1082130432;
-    std::vector<float>::vector[abi:ne200100](&v63, ((a5 + (a5 >> 31)) & 0xFFFFFFFE));
+    std::vector<float>::vector[abi:ne200100](&v63, ((length + (length >> 31)) & 0xFFFFFFFE));
     LODWORD(v59) = -1082130432;
-    std::vector<float>::vector[abi:ne200100](&v61, 2 * a5);
-    v14 = (a5 / 2);
+    std::vector<float>::vector[abi:ne200100](&v61, 2 * length);
+    v14 = (length / 2);
     v15 = v14;
     LODWORD(v57) = 1065353216;
     std::vector<float>::vector[abi:ne200100](&v59, v14);
-    v16 = a5 + v10;
+    v16 = length + numberCopy;
     v56 = -971227136;
     std::vector<float>::vector[abi:ne200100](&v57, (v16 * v16));
-    if (v14 != ((*(a3 + 1) - *a3) >> 3))
+    if (v14 != ((*(list + 1) - *list) >> 3))
     {
       __assert_rtn("[VNFgBgE5MLInputTensors initWithTargetPointList:queryNumber:maxSpatialLength:inputSize:radius:error:]", "VNFgBgE5MLProcess.mm", 198, "targetPointNum == positiveMaxSpatialLength");
     }
 
-    if (a5 <= 1)
+    if (length <= 1)
     {
       v17 = 0;
     }
@@ -41,7 +41,7 @@
     {
       v17 = 0;
       v18 = v59;
-      v19 = (*a3 + 4);
+      v19 = (*list + 4);
       v20 = v63 + 1;
       v21 = (v61 + 4);
       do
@@ -68,14 +68,14 @@
       while (v14);
     }
 
-    if (v10 >= 1)
+    if (numberCopy >= 1)
     {
       v26 = 0;
       v27 = v57;
-      v28 = v10;
+      v28 = numberCopy;
       do
       {
-        bzero(&v27[4 * v26], 4 * v10);
+        bzero(&v27[4 * v26], 4 * numberCopy);
         v26 += v16;
         --v28;
       }
@@ -86,9 +86,9 @@
     v13 = v43;
     if (v17 >= 1)
     {
-      v29 = v17 + v10;
+      v29 = v17 + numberCopy;
       v30 = v57;
-      v31 = v10 * v16;
+      v31 = numberCopy * v16;
       do
       {
         if (v29 >= 1)
@@ -96,18 +96,18 @@
           bzero(&v30[4 * v31], 4 * (v29 - 1) + 4);
         }
 
-        ++v10;
+        ++numberCopy;
         v31 += v16;
       }
 
-      while (v10 < v29);
+      while (numberCopy < v29);
     }
 
     __p = 0;
     v54 = 0;
     v55 = 0;
     std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&__p, v63, v64, v64 - v63);
-    v32 = createIOSurfaceWithInput(2, v15, 4, &__p, a8);
+    v32 = createIOSurfaceWithInput(2, v15, 4, &__p, error);
     if (__p)
     {
       v54 = __p;
@@ -121,7 +121,7 @@
       v51 = 0;
       v52 = 0;
       std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&v50, v61, v62, (v62 - v61) >> 2);
-      v34 = createIOSurfaceWithInput(2, a5, 4, &v50, a8);
+      v34 = createIOSurfaceWithInput(2, length, 4, &v50, error);
       if (v50)
       {
         v51 = v50;
@@ -135,7 +135,7 @@
         v48 = 0;
         v49 = 0;
         std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&v47, v59, v60, (v60 - v59) >> 2);
-        v36 = createIOSurfaceWithInput(1, v15, 2, &v47, a8);
+        v36 = createIOSurfaceWithInput(1, v15, 2, &v47, error);
         if (v47)
         {
           v48 = v47;
@@ -149,7 +149,7 @@
           v45 = 0;
           v46 = 0;
           std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&v44, v57, v58, (v58 - v57) >> 2);
-          v38 = createIOSurfaceWithInput(v16, v16, 2 * v16, &v44, a8);
+          v38 = createIOSurfaceWithInput(v16, v16, 2 * v16, &v44, error);
           if (v44)
           {
             v45 = v44;
@@ -237,12 +237,12 @@
   return v25;
 }
 
-- (VNFgBgE5MLInputTensors)initWithTargetPoint:(CGPoint)a3 queryNumber:(int)a4 maxSpatialLength:(int)a5 inputSize:(CGSize)a6 radius:(int)a7 error:(id *)a8
+- (VNFgBgE5MLInputTensors)initWithTargetPoint:(CGPoint)point queryNumber:(int)number maxSpatialLength:(int)length inputSize:(CGSize)size radius:(int)radius error:(id *)error
 {
-  height = a6.height;
-  width = a6.width;
-  y = a3.y;
-  x = a3.x;
+  height = size.height;
+  width = size.width;
+  y = point.y;
+  x = point.x;
   v74[4] = *MEMORY[0x1E69E9840];
   v73.receiver = self;
   v73.super_class = VNFgBgE5MLInputTensors;
@@ -251,40 +251,40 @@
   {
     LODWORD(v69) = -1082130432;
     v59 = v16;
-    std::vector<float>::vector[abi:ne200100](&v71, ((a5 + (a5 >> 31)) & 0xFFFFFFFE));
+    std::vector<float>::vector[abi:ne200100](&v71, ((length + (length >> 31)) & 0xFFFFFFFE));
     LODWORD(v67) = -1082130432;
-    std::vector<float>::vector[abi:ne200100](&v69, 2 * a5);
+    std::vector<float>::vector[abi:ne200100](&v69, 2 * length);
     LODWORD(v65) = 1065353216;
-    v58 = a5 / 2;
+    v58 = length / 2;
     std::vector<float>::vector[abi:ne200100](&v67, v58);
-    v17 = a8;
-    v18 = a5 + a4;
+    errorCopy = error;
+    v18 = length + number;
     v64 = -971227136;
     std::vector<float>::vector[abi:ne200100](&v65, (v18 * v18));
-    if (a4 >= 1)
+    if (number >= 1)
     {
       v19 = 0;
       v20 = v65;
-      v21 = a4;
+      numberCopy = number;
       do
       {
-        bzero(&v20[4 * v19], 4 * a4);
+        bzero(&v20[4 * v19], 4 * number);
         v19 += v18;
-        --v21;
+        --numberCopy;
       }
 
-      while (v21);
+      while (numberCopy);
     }
 
     v22 = x == -1.0 || y == -1.0;
-    v23 = v17;
+    v23 = errorCopy;
     if (!v22)
     {
-      if (a5 >= 2)
+      if (length >= 2)
       {
-        v24 = a5 / 2 + a4;
+        v24 = length / 2 + number;
         v25 = v65;
-        v26 = a4 * v18;
+        v26 = number * v18;
         do
         {
           if (v24 >= 1)
@@ -292,11 +292,11 @@
             bzero(&v25[4 * v26], 4 * (v24 - 1) + 4);
           }
 
-          ++a4;
+          ++number;
           v26 += v18;
         }
 
-        while (a4 < v24);
+        while (number < v24);
       }
 
       if (v68 != v67)
@@ -310,15 +310,15 @@
         bzero(v67, 4 * v27);
       }
 
-      v28 = a7;
-      v29 = fmax(x - a7, 0.0);
-      v30 = fmin(width + -2.0, x + a7);
+      radiusCopy = radius;
+      v29 = fmax(x - radius, 0.0);
+      v30 = fmin(width + -2.0, x + radius);
       v31 = v29;
       if (v30 > v29)
       {
         v32 = 0;
-        v33 = fmax(y - v28, 0.0);
-        v34 = y + v28;
+        v33 = fmax(y - radiusCopy, 0.0);
+        v34 = y + radiusCopy;
         v35 = v33;
         v36 = fmin(height + -2.0, v34);
         v37 = v69 + 4;
@@ -361,7 +361,7 @@
 
     memset(__p, 0, sizeof(__p));
     std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(__p, v71, v72, (v72 - v71) >> 2);
-    IOSurfaceWithInput = createIOSurfaceWithInput(2, v58, 4, __p, v17);
+    IOSurfaceWithInput = createIOSurfaceWithInput(2, v58, 4, __p, errorCopy);
     if (__p[0])
     {
       operator delete(__p[0]);
@@ -373,7 +373,7 @@
       CFRelease(IOSurfaceWithInput);
       memset(v62, 0, sizeof(v62));
       std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(v62, v69, v70, (v70 - v69) >> 2);
-      v49 = createIOSurfaceWithInput(2, a5, 4, v62, v17);
+      v49 = createIOSurfaceWithInput(2, length, 4, v62, errorCopy);
       if (v62[0])
       {
         operator delete(v62[0]);
@@ -385,7 +385,7 @@
         CFRelease(v49);
         memset(v61, 0, sizeof(v61));
         std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(v61, v67, v68, (v68 - v67) >> 2);
-        v51 = createIOSurfaceWithInput(1, v58, 2, v61, v17);
+        v51 = createIOSurfaceWithInput(1, v58, 2, v61, errorCopy);
         if (v61[0])
         {
           operator delete(v61[0]);

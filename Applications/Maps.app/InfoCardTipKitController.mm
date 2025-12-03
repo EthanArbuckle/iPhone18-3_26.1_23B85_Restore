@@ -1,7 +1,7 @@
 @interface InfoCardTipKitController
 - (_TtC4Maps24InfoCardTipKitController)init;
-- (void)presentAddToLibraryTipIfNeededWithSourceItem:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)presentAddToLibraryTipIfNeededWithSourceItem:(id)item;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 - (void)reset;
 - (void)usedAddToLibrary;
 @end
@@ -22,23 +22,23 @@
 
 - (void)reset
 {
-  v2 = self;
+  selfCopy = self;
   sub_10023CAC0();
 }
 
-- (void)presentAddToLibraryTipIfNeededWithSourceItem:(id)a3
+- (void)presentAddToLibraryTipIfNeededWithSourceItem:(id)item
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_10023CCB4(a3);
+  selfCopy = self;
+  sub_10023CCB4(item);
   swift_unknownObjectRelease();
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   *(&self->super.isa + OBJC_IVAR____TtC4Maps24InfoCardTipKitController_hasShownForCurrentPlacecard) = 1;
   v3 = qword_1019065F8;
-  v4 = self;
+  selfCopy = self;
   if (v3 != -1)
   {
     swift_once();

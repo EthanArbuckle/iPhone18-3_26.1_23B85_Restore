@@ -1,10 +1,10 @@
 @interface BRCEventsAnalytics
 + (id)sharedAnalytics;
-- (void)_sendDictionaryToCoreAnalytics:(id)a3 eventName:(id)a4;
-- (void)registerAndSendNewApplyFailureWithOutcome:(id)a3;
-- (void)registerAndSendNewContainerResetWithOutcome:(id)a3;
-- (void)registerAndSendNewPeriodicSyncWithOutcome:(id)a3;
-- (void)registerAndSendShareSaveError:(id)a3 analyticsReporter:(id)a4;
+- (void)_sendDictionaryToCoreAnalytics:(id)analytics eventName:(id)name;
+- (void)registerAndSendNewApplyFailureWithOutcome:(id)outcome;
+- (void)registerAndSendNewContainerResetWithOutcome:(id)outcome;
+- (void)registerAndSendNewPeriodicSyncWithOutcome:(id)outcome;
+- (void)registerAndSendShareSaveError:(id)error analyticsReporter:(id)reporter;
 @end
 
 @implementation BRCEventsAnalytics
@@ -28,55 +28,55 @@ uint64_t __37__BRCEventsAnalytics_sharedAnalytics__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)registerAndSendShareSaveError:(id)a3 analyticsReporter:(id)a4
+- (void)registerAndSendShareSaveError:(id)error analyticsReporter:(id)reporter
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = [v9 brc_telemetryReportableErrorWithRecordName:0];
+  errorCopy = error;
+  reporterCopy = reporter;
+  v6 = [errorCopy brc_telemetryReportableErrorWithRecordName:0];
   if (v6)
   {
     v7 = +[BRCAutoBugCaptureReporter sharedABCReporter];
     [v7 captureLogsForOperationType:@"FolderSharing" ofSubtype:@"ShareSave" forError:v6];
   }
 
-  v8 = [AppTelemetryTimeSeriesEvent newShareSaveEventWithError:v9];
-  [v5 postReportForDefaultSubCategoryWithCategory:8 telemetryTimeEvent:v8];
+  v8 = [AppTelemetryTimeSeriesEvent newShareSaveEventWithError:errorCopy];
+  [reporterCopy postReportForDefaultSubCategoryWithCategory:8 telemetryTimeEvent:v8];
 }
 
-- (void)registerAndSendNewPeriodicSyncWithOutcome:(id)a3
+- (void)registerAndSendNewPeriodicSyncWithOutcome:(id)outcome
 {
-  v4 = a3;
+  outcomeCopy = outcome;
   v5 = objc_opt_new();
-  [v5 setObject:v4 forKey:@"periodicSync"];
+  [v5 setObject:outcomeCopy forKey:@"periodicSync"];
 
   [(BRCEventsAnalytics *)self _sendDictionaryToCoreAnalytics:v5 eventName:@"com.apple.iCloudDrive.periodicSync"];
 }
 
-- (void)registerAndSendNewContainerResetWithOutcome:(id)a3
+- (void)registerAndSendNewContainerResetWithOutcome:(id)outcome
 {
-  v4 = a3;
+  outcomeCopy = outcome;
   v5 = objc_opt_new();
-  [v5 setObject:v4 forKey:@"containerReset"];
+  [v5 setObject:outcomeCopy forKey:@"containerReset"];
 
   [(BRCEventsAnalytics *)self _sendDictionaryToCoreAnalytics:v5 eventName:@"com.apple.iCloudDrive.containerReset"];
 }
 
-- (void)registerAndSendNewApplyFailureWithOutcome:(id)a3
+- (void)registerAndSendNewApplyFailureWithOutcome:(id)outcome
 {
-  v4 = a3;
+  outcomeCopy = outcome;
   v5 = objc_opt_new();
-  [v5 setObject:v4 forKey:@"applyFailure"];
+  [v5 setObject:outcomeCopy forKey:@"applyFailure"];
 
   [(BRCEventsAnalytics *)self _sendDictionaryToCoreAnalytics:v5 eventName:@"com.apple.iCloudDrive.applyFailure"];
 }
 
-- (void)_sendDictionaryToCoreAnalytics:(id)a3 eventName:(id)a4
+- (void)_sendDictionaryToCoreAnalytics:(id)analytics eventName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  analyticsCopy = analytics;
+  nameCopy = name;
   if (+[BRCAnalyticsReporter isTelemetryReportingEnabled])
   {
-    v7 = [v5 objectForKeyedSubscript:@"error"];
+    v7 = [analyticsCopy objectForKeyedSubscript:@"error"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -106,7 +106,7 @@ LABEL_9:
     }
 
     AnalyticsIsEventUsed();
-    v10 = v5;
+    v10 = analyticsCopy;
     AnalyticsSendEventLazy();
   }
 }

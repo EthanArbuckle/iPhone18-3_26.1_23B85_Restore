@@ -1,22 +1,22 @@
 @interface VMUFieldInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)typedDescription;
 - (VMUClassInfo)destinationLayout;
-- (VMUFieldInfo)initWithSerializer:(id)a3 classMap:(id)a4 version:(unsigned int)a5 returnedDestinationLayoutClassInfoIndex:(unsigned int *)a6 error:(id *)a7;
+- (VMUFieldInfo)initWithSerializer:(id)serializer classMap:(id)map version:(unsigned int)version returnedDestinationLayoutClassInfoIndex:(unsigned int *)index error:(id *)error;
 - (id)description;
-- (id)descriptionOfFieldValueInObjectMemory:(void *)a3 scanner:(id)a4;
-- (id)getLeafFieldAtOffset:(unsigned int)a3 leafOffset:(unsigned int *)a4;
+- (id)descriptionOfFieldValueInObjectMemory:(void *)memory scanner:(id)scanner;
+- (id)getLeafFieldAtOffset:(unsigned int)offset leafOffset:(unsigned int *)leafOffset;
 - (id)mutableCopy;
 - (unsigned)bitfieldWidth;
-- (void)_setFlags:(unsigned int)a3;
-- (void)_setIvarName:(id)a3;
-- (void)_setSize:(unsigned int)a3;
+- (void)_setFlags:(unsigned int)flags;
+- (void)_setIvarName:(id)name;
+- (void)_setSize:(unsigned int)size;
 - (void)dealloc;
-- (void)enumerateSublayoutsForSize:(int)a3 parentOffset:(unsigned int)a4 remotePointerSize:(uint64_t)a5 withBlock:;
+- (void)enumerateSublayoutsForSize:(int)size parentOffset:(unsigned int)offset remotePointerSize:(uint64_t)pointerSize withBlock:;
 - (void)initializeSubFieldArray;
-- (void)serializeWithClassMap:(id)a3 simpleSerializer:(id)a4 version:(unsigned int)a5;
-- (void)setDestinationLayout:(id)a3;
-- (void)setTypeName:(id)a3;
+- (void)serializeWithClassMap:(id)map simpleSerializer:(id)serializer version:(unsigned int)version;
+- (void)setDestinationLayout:(id)layout;
+- (void)setTypeName:(id)name;
 @end
 
 @implementation VMUFieldInfo
@@ -28,9 +28,9 @@
   self->_subFieldArray = v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v6) = 1;
   }
@@ -38,22 +38,22 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_offset == *(a3 + 7) && self->_scanType == *(a3 + 6) && self->_flags == *(a3 + 11) && self->_size == *(a3 + 8) && self->_scannable == *(a3 + 9) && self->_stride == *(a3 + 10))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_offset == *(equal + 7) && self->_scanType == *(equal + 6) && self->_flags == *(equal + 11) && self->_size == *(equal + 8) && self->_scannable == *(equal + 9) && self->_stride == *(equal + 10))
     {
       ivarName = self->_ivarName;
-      if (ivarName == *(a3 + 1) || (v6 = [(NSString *)ivarName isEqualToString:?]) != 0)
+      if (ivarName == *(equal + 1) || (v6 = [(NSString *)ivarName isEqualToString:?]) != 0)
       {
         typeName = self->_typeName;
-        if (typeName == *(a3 + 2) || (v6 = [(NSString *)typeName isEqualToString:?]) != 0)
+        if (typeName == *(equal + 2) || (v6 = [(NSString *)typeName isEqualToString:?]) != 0)
         {
           destinationLayout = self->_destinationLayout;
-          if (destinationLayout == *(a3 + 6) || (v6 = [(VMUClassInfo *)destinationLayout isEqual:?]) != 0)
+          if (destinationLayout == *(equal + 6) || (v6 = [(VMUClassInfo *)destinationLayout isEqual:?]) != 0)
           {
             subFieldArray = self->_subFieldArray;
-            if (subFieldArray == *(a3 + 7) || (v6 = [(NSMutableArray *)subFieldArray isEqual:?]) != 0)
+            if (subFieldArray == *(equal + 7) || (v6 = [(NSMutableArray *)subFieldArray isEqual:?]) != 0)
             {
               possibleEnumPayloadFieldArray = self->_possibleEnumPayloadFieldArray;
-              if (possibleEnumPayloadFieldArray == *(a3 + 8) || (v6 = [(NSArray *)possibleEnumPayloadFieldArray isEqual:?]) != 0)
+              if (possibleEnumPayloadFieldArray == *(equal + 8) || (v6 = [(NSArray *)possibleEnumPayloadFieldArray isEqual:?]) != 0)
               {
                 LOBYTE(v6) = 1;
               }
@@ -116,11 +116,11 @@
   [(VMUFieldInfo *)&v4 dealloc];
 }
 
-- (VMUFieldInfo)initWithSerializer:(id)a3 classMap:(id)a4 version:(unsigned int)a5 returnedDestinationLayoutClassInfoIndex:(unsigned int *)a6 error:(id *)a7
+- (VMUFieldInfo)initWithSerializer:(id)serializer classMap:(id)map version:(unsigned int)version returnedDestinationLayoutClassInfoIndex:(unsigned int *)index error:(id *)error
 {
   v35[3] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
+  serializerCopy = serializer;
+  mapCopy = map;
   v34.receiver = self;
   v34.super_class = VMUFieldInfo;
   v14 = [(VMUFieldInfo *)&v34 init];
@@ -130,20 +130,20 @@
   }
 
   v33 = 0;
-  if (!a7)
+  if (!error)
   {
-    a7 = &v33;
+    error = &v33;
   }
 
-  v15 = [v12 _deserializeValues:2 error:a7];
-  if (*a7)
+  v15 = [serializerCopy _deserializeValues:2 error:error];
+  if (*error)
   {
     goto LABEL_9;
   }
 
   v14->_offset = *v15;
   v14->_size = v15[1];
-  if (*a7)
+  if (*error)
   {
     goto LABEL_9;
   }
@@ -151,9 +151,9 @@
   v35[0] = &v14->_scanType;
   v35[1] = &v14->_flags;
   v35[2] = &v14->_scannable;
-  v16 = [v12 _deserializeValues:3 error:a7];
-  v17 = *a7;
-  if (*a7)
+  v16 = [serializerCopy _deserializeValues:3 error:error];
+  v17 = *error;
+  if (*error)
   {
     goto LABEL_9;
   }
@@ -165,64 +165,64 @@
   }
 
   while (v17 != 3);
-  if (*a7)
+  if (*error)
   {
     goto LABEL_9;
   }
 
-  if (a5 >= 4)
+  if (version >= 4)
   {
-    v19 = [v12 _deserializeValues:1 error:a7];
-    if (*a7)
+    v19 = [serializerCopy _deserializeValues:1 error:error];
+    if (*error)
     {
       goto LABEL_9;
     }
 
     v14->_stride = *v19;
-    if (*a7)
+    if (*error)
     {
       goto LABEL_9;
     }
   }
 
-  v20 = [v12 deserialize32WithError:a7];
-  if (*a7)
+  v20 = [serializerCopy deserialize32WithError:error];
+  if (*error)
   {
     goto LABEL_9;
   }
 
-  if (a6)
+  if (index)
   {
-    *a6 = v20;
+    *index = v20;
   }
 
-  v21 = [v12 copyDeserializedStringWithError:a7];
+  v21 = [serializerCopy copyDeserializedStringWithError:error];
   ivarName = v14->_ivarName;
   v14->_ivarName = v21;
 
-  if (*a7)
+  if (*error)
   {
     goto LABEL_9;
   }
 
-  v23 = [v12 copyDeserializedStringWithError:a7];
+  v23 = [serializerCopy copyDeserializedStringWithError:error];
   typeName = v14->_typeName;
   v14->_typeName = v23;
 
-  if (*a7)
+  if (*error)
   {
     goto LABEL_9;
   }
 
-  if (a5 < 4)
+  if (version < 4)
   {
 LABEL_31:
     v18 = v14;
     goto LABEL_32;
   }
 
-  v25 = [v12 deserialize32WithError:a7];
-  if (!*a7)
+  v25 = [serializerCopy deserialize32WithError:error];
+  if (!*error)
   {
     v26 = v25;
     if (v25)
@@ -230,14 +230,14 @@ LABEL_31:
       v27 = objc_opt_new();
       do
       {
-        v28 = [v12 deserialize32WithError:a7];
-        if (*a7)
+        v28 = [serializerCopy deserialize32WithError:error];
+        if (*error)
         {
 
           goto LABEL_9;
         }
 
-        v29 = [v13 fieldInfoForIndex:v28];
+        v29 = [mapCopy fieldInfoForIndex:v28];
         if (v29)
         {
           [v27 addObject:v29];
@@ -276,24 +276,24 @@ LABEL_32:
   return v18;
 }
 
-- (void)serializeWithClassMap:(id)a3 simpleSerializer:(id)a4 version:(unsigned int)a5
+- (void)serializeWithClassMap:(id)map simpleSerializer:(id)serializer version:(unsigned int)version
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  mapCopy = map;
+  serializerCopy = serializer;
   v23[0] = *&self->_offset;
-  [v8 _serializeValues:v23 count:2];
+  [serializerCopy _serializeValues:v23 count:2];
   flags = self->_flags;
   v22[0] = self->_scanType;
   v22[1] = flags;
   v22[2] = self->_scannable;
-  [v8 _serializeValues:v22 count:3];
+  [serializerCopy _serializeValues:v22 count:3];
   stride = self->_stride;
-  [v8 _serializeValues:&stride count:1];
-  [v8 serialize32:{objc_msgSend(v7, "indexForClassInfo:", self->_destinationLayout)}];
-  [v8 serializeString:self->_ivarName];
-  [v8 serializeString:self->_typeName];
-  [v8 serialize32:{-[NSMutableArray count](self->_subFieldArray, "count")}];
+  [serializerCopy _serializeValues:&stride count:1];
+  [serializerCopy serialize32:{objc_msgSend(mapCopy, "indexForClassInfo:", self->_destinationLayout)}];
+  [serializerCopy serializeString:self->_ivarName];
+  [serializerCopy serializeString:self->_typeName];
+  [serializerCopy serialize32:{-[NSMutableArray count](self->_subFieldArray, "count")}];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
@@ -314,7 +314,7 @@ LABEL_32:
           objc_enumerationMutation(v10);
         }
 
-        [v8 serialize32:{objc_msgSend(v7, "indexForFieldInfo:", *(*(&v16 + 1) + 8 * v14++), v16)}];
+        [serializerCopy serialize32:{objc_msgSend(mapCopy, "indexForFieldInfo:", *(*(&v16 + 1) + 8 * v14++), v16)}];
       }
 
       while (v12 != v14);
@@ -327,7 +327,7 @@ LABEL_32:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)getLeafFieldAtOffset:(unsigned int)a3 leafOffset:(unsigned int *)a4
+- (id)getLeafFieldAtOffset:(unsigned int)offset leafOffset:(unsigned int *)leafOffset
 {
   v25 = *MEMORY[0x1E69E9840];
   subFieldArray = self->_subFieldArray;
@@ -351,8 +351,8 @@ LABEL_3:
       }
 
       v13 = *(*(&v20 + 1) + 8 * v12);
-      v14 = [v13 offset];
-      if ([v13 size] + v14 > a3)
+      offset = [v13 offset];
+      if ([v13 size] + offset > offset)
       {
         break;
       }
@@ -369,7 +369,7 @@ LABEL_3:
       }
     }
 
-    if (v14 > a3)
+    if (offset > offset)
     {
       goto LABEL_11;
     }
@@ -379,11 +379,11 @@ LABEL_3:
     if (v18)
     {
       v24[0] = 0;
-      v15 = [v18 getLeafFieldAtOffset:a3 - objc_msgSend(v18 leafOffset:{"offset"), v24}];
-      if (a4)
+      selfCopy = [v18 getLeafFieldAtOffset:offset - objc_msgSend(v18 leafOffset:{"offset"), v24}];
+      if (leafOffset)
       {
-        v19 = [v18 offset];
-        *a4 = v24[0] + v19;
+        offset2 = [v18 offset];
+        *leafOffset = v24[0] + offset2;
       }
 
       goto LABEL_15;
@@ -395,16 +395,16 @@ LABEL_3:
 LABEL_11:
   }
 
-  if (a4)
+  if (leafOffset)
   {
-    *a4 = 0;
+    *leafOffset = 0;
   }
 
-  v15 = self;
+  selfCopy = self;
 LABEL_15:
   v16 = *MEMORY[0x1E69E9840];
 
-  return v15;
+  return selfCopy;
 }
 
 void __55__VMUFieldInfo__fullIvarNameAtOffset_leafOffset_depth___block_invoke()
@@ -414,42 +414,42 @@ void __55__VMUFieldInfo__fullIvarNameAtOffset_leafOffset_depth___block_invoke()
   _fullIvarNameAtOffset_leafOffset_depth__internalPartialIvarNames = v0;
 }
 
-- (void)_setIvarName:(id)a3
+- (void)_setIvarName:(id)name
 {
-  if (self->_ivarName != a3)
+  if (self->_ivarName != name)
   {
-    v5 = [a3 copy];
+    v5 = [name copy];
     ivarName = self->_ivarName;
     self->_ivarName = v5;
   }
 }
 
-- (void)setTypeName:(id)a3
+- (void)setTypeName:(id)name
 {
-  if (self->_typeName != a3)
+  if (self->_typeName != name)
   {
-    v5 = [a3 copy];
+    v5 = [name copy];
     typeName = self->_typeName;
     self->_typeName = v5;
   }
 }
 
-- (void)_setSize:(unsigned int)a3
+- (void)_setSize:(unsigned int)size
 {
   scannable = self->_scannable;
-  if (scannable >= a3)
+  if (scannable >= size)
   {
-    scannable = a3;
+    scannable = size;
   }
 
-  self->_size = a3;
+  self->_size = size;
   self->_scannable = scannable;
 }
 
-- (void)_setFlags:(unsigned int)a3
+- (void)_setFlags:(unsigned int)flags
 {
-  self->_flags = a3;
-  if ((a3 & 2) != 0)
+  self->_flags = flags;
+  if ((flags & 2) != 0)
   {
     v5 = +[VMUClassInfo _genericBlockByrefInfo];
     destinationLayout = self->_destinationLayout;
@@ -462,10 +462,10 @@ void __55__VMUFieldInfo__fullIvarNameAtOffset_leafOffset_depth___block_invoke()
   typeName = self->_typeName;
   if (typeName)
   {
-    v3 = [(NSString *)typeName UTF8String];
-    if (*v3 == 98)
+    uTF8String = [(NSString *)typeName UTF8String];
+    if (*uTF8String == 98)
     {
-      LODWORD(typeName) = strtol((v3 + 1), 0, 10);
+      LODWORD(typeName) = strtol((uTF8String + 1), 0, 10);
     }
 
     else
@@ -477,16 +477,16 @@ void __55__VMUFieldInfo__fullIvarNameAtOffset_leafOffset_depth___block_invoke()
   return typeName;
 }
 
-- (void)setDestinationLayout:(id)a3
+- (void)setDestinationLayout:(id)layout
 {
-  v5 = a3;
+  layoutCopy = layout;
   destinationLayout = self->_destinationLayout;
   p_destinationLayout = &self->_destinationLayout;
-  if (destinationLayout != v5)
+  if (destinationLayout != layoutCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_destinationLayout, a3);
-    v5 = v8;
+    v8 = layoutCopy;
+    objc_storeStrong(p_destinationLayout, layout);
+    layoutCopy = v8;
   }
 }
 
@@ -505,12 +505,12 @@ void __55__VMUFieldInfo__fullIvarNameAtOffset_leafOffset_depth___block_invoke()
   return v2;
 }
 
-- (id)descriptionOfFieldValueInObjectMemory:(void *)a3 scanner:(id)a4
+- (id)descriptionOfFieldValueInObjectMemory:(void *)memory scanner:(id)scanner
 {
   offset = self->_offset;
   typeName = self->_typeName;
-  v8 = a4;
-  v9 = descriptionOfValueAtAddressWithTypeEncoding(a3 + offset, [(NSString *)typeName UTF8String], self->_size, v8);
+  scannerCopy = scanner;
+  v9 = descriptionOfValueAtAddressWithTypeEncoding(memory + offset, [(NSString *)typeName UTF8String], self->_size, scannerCopy);
 
   return v9;
 }
@@ -520,45 +520,45 @@ void __55__VMUFieldInfo__fullIvarNameAtOffset_leafOffset_depth___block_invoke()
   destinationLayout = self->_destinationLayout;
   if (destinationLayout)
   {
-    v4 = [(VMUClassInfo *)destinationLayout className];
+    className = [(VMUClassInfo *)destinationLayout className];
   }
 
   else
   {
-    v4 = &stru_1F461F9C8;
+    className = &stru_1F461F9C8;
   }
 
   v10.receiver = self;
   v10.super_class = VMUFieldInfo;
   v5 = [(VMUFieldInfo *)&v10 description];
-  v6 = [(VMUFieldInfo *)self offset];
-  v7 = [(VMUFieldInfo *)self typedDescription];
-  v8 = [v5 stringByAppendingFormat:@"%+3d %@ size %u (%s)  %@", v6, v7, -[VMUFieldInfo size](self, "size"), VMUScanTypeScanDescription(-[VMUFieldInfo scanType](self, "scanType")), v4];
+  offset = [(VMUFieldInfo *)self offset];
+  typedDescription = [(VMUFieldInfo *)self typedDescription];
+  v8 = [v5 stringByAppendingFormat:@"%+3d %@ size %u (%s)  %@", offset, typedDescription, -[VMUFieldInfo size](self, "size"), VMUScanTypeScanDescription(-[VMUFieldInfo scanType](self, "scanType")), className];
 
   return v8;
 }
 
-- (void)enumerateSublayoutsForSize:(int)a3 parentOffset:(unsigned int)a4 remotePointerSize:(uint64_t)a5 withBlock:
+- (void)enumerateSublayoutsForSize:(int)size parentOffset:(unsigned int)offset remotePointerSize:(uint64_t)pointerSize withBlock:
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if ((v7 = *(a1 + 56)) != 0 && [v7 count] || *(a1 + 48))
+    if ((v7 = *(self + 56)) != 0 && [v7 count] || *(self + 48))
     {
-      v8 = *(a1 + 28) + a3;
-      v25 = a4 + v8 - 1;
-      v9 = v25 & -a4;
+      v8 = *(self + 28) + size;
+      v25 = offset + v8 - 1;
+      v9 = v25 & -offset;
       v27 = v8;
-      v10 = v8 + *(a1 + 36);
+      v10 = v8 + *(self + 36);
       if (v10 >= a2)
       {
         v10 = a2;
       }
 
-      v11 = v9 + a4;
-      for (i = v10; v11 <= i; v11 = v11 + a4)
+      v11 = v9 + offset;
+      for (i = v10; v11 <= i; v11 = v11 + offset)
       {
-        v13 = *(a1 + 56);
+        v13 = *(self + 56);
         v31 = 0u;
         v32 = 0u;
         v33 = 0u;
@@ -580,8 +580,8 @@ LABEL_11:
             }
 
             v20 = *(*(&v31 + 1) + 8 * v19);
-            v21 = [v20 offset];
-            if ([v20 size] + v21 > v17)
+            offset = [v20 offset];
+            if ([v20 size] + offset > v17)
             {
               break;
             }
@@ -598,7 +598,7 @@ LABEL_11:
             }
           }
 
-          if (v21 > v17)
+          if (offset > v17)
           {
             goto LABEL_19;
           }
@@ -607,9 +607,9 @@ LABEL_11:
 
           if (v22)
           {
-            [(VMUFieldInfo *)v22 enumerateSublayoutsForSize:a2 parentOffset:v27 remotePointerSize:a4 withBlock:a5];
-            v24 = [v22 offset];
-            v11 = (v25 + v24 + [v22 size]) & -a4;
+            [(VMUFieldInfo *)v22 enumerateSublayoutsForSize:a2 parentOffset:v27 remotePointerSize:offset withBlock:pointerSize];
+            offset2 = [v22 offset];
+            v11 = (v25 + offset2 + [v22 size]) & -offset;
 
             goto LABEL_23;
           }
@@ -620,10 +620,10 @@ LABEL_11:
 LABEL_19:
         }
 
-        v23 = *(a1 + 48);
+        v23 = *(self + 48);
         if (v23)
         {
-          (*(a5 + 16))(a5, v23, v9, *(a1 + 24));
+          (*(pointerSize + 16))(pointerSize, v23, v9, *(self + 24));
         }
 
 LABEL_23:

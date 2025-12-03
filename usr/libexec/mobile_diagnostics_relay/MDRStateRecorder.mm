@@ -1,12 +1,12 @@
 @interface MDRStateRecorder
 + (id)sharedInstance;
-- (BOOL)recordDeviceID:(id)a3;
-- (BOOL)recordParingVersion:(int64_t)a3;
-- (BOOL)recordState:(int64_t)a3;
-- (BOOL)recordTimestamp:(id)a3;
-- (BOOL)updateRecords:(id)a3;
+- (BOOL)recordDeviceID:(id)d;
+- (BOOL)recordParingVersion:(int64_t)version;
+- (BOOL)recordState:(int64_t)state;
+- (BOOL)recordTimestamp:(id)timestamp;
+- (BOOL)updateRecords:(id)records;
 - (MDRStateRecorder)init;
-- (id)returnSavedKey:(id)a3;
+- (id)returnSavedKey:(id)key;
 - (int64_t)returnSavedParingVersion;
 - (int64_t)returnSavedState;
 - (void)deleteAllRecords;
@@ -60,17 +60,17 @@
   return v3;
 }
 
-- (BOOL)updateRecords:(id)a3
+- (BOOL)updateRecords:(id)records
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  recordsCopy = records;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = +[NSFileManager defaultManager];
-  v7 = [(NSString *)v5->_filePath stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent = [(NSString *)selfCopy->_filePath stringByDeletingLastPathComponent];
   v29 = NSFileProtectionKey;
   v30 = NSFileProtectionCompleteUnlessOpen;
   v8 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1];
-  if ([v6 fileExistsAtPath:v7])
+  if ([v6 fileExistsAtPath:stringByDeletingLastPathComponent])
   {
     v9 = 0;
   }
@@ -78,16 +78,16 @@
   else
   {
     v28 = 0;
-    v14 = [v6 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v28];
+    v14 = [v6 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v28];
     v15 = v28;
     v12 = v15;
     if ((v14 & 1) == 0)
     {
-      v22 = [v15 localizedDescription];
-      v20 = [NSString stringWithFormat:@"Failed to create parent folder %@ with error: %@", v7, v22];
+      localizedDescription = [v15 localizedDescription];
+      v20 = [NSString stringWithFormat:@"Failed to create parent folder %@ with error: %@", stringByDeletingLastPathComponent, localizedDescription];
 
-      v21 = [(MDRBaseObject *)v5 logger];
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+      logger = [(MDRBaseObject *)selfCopy logger];
+      if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
       {
         sub_100013B04();
       }
@@ -97,28 +97,28 @@
     }
 
     v27 = v15;
-    v16 = [v6 setAttributes:v8 ofItemAtPath:v7 error:&v27];
+    v16 = [v6 setAttributes:v8 ofItemAtPath:stringByDeletingLastPathComponent error:&v27];
     v9 = v27;
 
     if ((v16 & 1) == 0)
     {
-      v17 = [v9 localizedDescription];
-      v18 = [NSString stringWithFormat:@"Failed to set attributes for %@ with error: %@", v7, v17];
+      localizedDescription2 = [v9 localizedDescription];
+      v18 = [NSString stringWithFormat:@"Failed to set attributes for %@ with error: %@", stringByDeletingLastPathComponent, localizedDescription2];
 
-      v19 = [(MDRBaseObject *)v5 logger];
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+      logger2 = [(MDRBaseObject *)selfCopy logger];
+      if (os_log_type_enabled(logger2, OS_LOG_TYPE_ERROR))
       {
         sub_100013B04();
       }
     }
   }
 
-  [(NSMutableDictionary *)v5->_cacheDB addEntriesFromDictionary:v4];
-  if (([(NSMutableDictionary *)v5->_cacheDB writeToFile:v5->_filePath atomically:1]& 1) == 0)
+  [(NSMutableDictionary *)selfCopy->_cacheDB addEntriesFromDictionary:recordsCopy];
+  if (([(NSMutableDictionary *)selfCopy->_cacheDB writeToFile:selfCopy->_filePath atomically:1]& 1) == 0)
   {
-    v20 = [NSString stringWithFormat:@"Failed to write %@", v5->_filePath];
-    v21 = [(MDRBaseObject *)v5 logger];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    v20 = [NSString stringWithFormat:@"Failed to write %@", selfCopy->_filePath];
+    logger = [(MDRBaseObject *)selfCopy logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
     {
       sub_100013B04();
     }
@@ -128,19 +128,19 @@
     goto LABEL_20;
   }
 
-  filePath = v5->_filePath;
+  filePath = selfCopy->_filePath;
   v26 = v9;
   v11 = [v6 setAttributes:v8 ofItemAtPath:filePath error:&v26];
   v12 = v26;
 
   if ((v11 & 1) == 0)
   {
-    v23 = v5->_filePath;
-    v24 = [v12 localizedDescription];
-    v20 = [NSString stringWithFormat:@"Failed to set attributes for %@ with error: %@", v23, v24];
+    v23 = selfCopy->_filePath;
+    localizedDescription3 = [v12 localizedDescription];
+    v20 = [NSString stringWithFormat:@"Failed to set attributes for %@ with error: %@", v23, localizedDescription3];
 
-    v21 = [(MDRBaseObject *)v5 logger];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    logger = [(MDRBaseObject *)selfCopy logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
     {
       sub_100013B04();
     }
@@ -154,93 +154,93 @@ LABEL_20:
   v13 = 1;
 LABEL_21:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v13;
 }
 
-- (id)returnSavedKey:(id)a3
+- (id)returnSavedKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([(NSMutableDictionary *)v5->_cacheDB count])
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSMutableDictionary *)selfCopy->_cacheDB count])
   {
-    v6 = [(NSMutableDictionary *)v5->_cacheDB objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)selfCopy->_cacheDB objectForKeyedSubscript:keyCopy];
 
     if (v6)
     {
-      v7 = [(NSMutableDictionary *)v5->_cacheDB objectForKeyedSubscript:v4];
+      v7 = [(NSMutableDictionary *)selfCopy->_cacheDB objectForKeyedSubscript:keyCopy];
       goto LABEL_10;
     }
 
-    v8 = [NSString stringWithFormat:@"Key %@ not exist", v4];
-    v9 = [(MDRBaseObject *)v5 logger];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    keyCopy = [NSString stringWithFormat:@"Key %@ not exist", keyCopy];
+    logger = [(MDRBaseObject *)selfCopy logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v12 = v8;
+      v12 = keyCopy;
       goto LABEL_8;
     }
   }
 
   else
   {
-    v8 = [NSString stringWithFormat:@"State DB is empty"];
-    v9 = [(MDRBaseObject *)v5 logger];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    keyCopy = [NSString stringWithFormat:@"State DB is empty"];
+    logger = [(MDRBaseObject *)selfCopy logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v12 = v8;
+      v12 = keyCopy;
 LABEL_8:
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
   }
 
   v7 = 0;
 LABEL_10:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (BOOL)recordState:(int64_t)a3
+- (BOOL)recordState:(int64_t)state
 {
   v5 = objc_alloc_init(NSMutableDictionary);
-  v6 = [NSNumber numberWithInteger:a3];
+  v6 = [NSNumber numberWithInteger:state];
   [v5 setObject:v6 forKeyedSubscript:@"StateNumber"];
 
-  v7 = sub_100008DF8(a3);
+  v7 = sub_100008DF8(state);
   [v5 setObject:v7 forKeyedSubscript:@"StateString"];
 
   LOBYTE(v7) = [(MDRStateRecorder *)self updateRecords:v5];
   return v7;
 }
 
-- (BOOL)recordParingVersion:(int64_t)a3
+- (BOOL)recordParingVersion:(int64_t)version
 {
   v5 = objc_alloc_init(NSMutableDictionary);
-  v6 = [NSNumber numberWithInteger:a3];
+  v6 = [NSNumber numberWithInteger:version];
   [v5 setObject:v6 forKeyedSubscript:@"ParingVersion"];
 
   LOBYTE(v6) = [(MDRStateRecorder *)self updateRecords:v5];
   return v6;
 }
 
-- (BOOL)recordDeviceID:(id)a3
+- (BOOL)recordDeviceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_alloc_init(NSMutableDictionary);
-  [v5 setObject:v4 forKeyedSubscript:@"DeviceID"];
+  [v5 setObject:dCopy forKeyedSubscript:@"DeviceID"];
 
   LOBYTE(self) = [(MDRStateRecorder *)self updateRecords:v5];
   return self;
 }
 
-- (BOOL)recordTimestamp:(id)a3
+- (BOOL)recordTimestamp:(id)timestamp
 {
-  v4 = a3;
+  timestampCopy = timestamp;
   v5 = objc_alloc_init(NSMutableDictionary);
-  [v5 setObject:v4 forKeyedSubscript:@"Timestamp"];
+  [v5 setObject:timestampCopy forKeyedSubscript:@"Timestamp"];
 
   LOBYTE(self) = [(MDRStateRecorder *)self updateRecords:v5];
   return self;
@@ -252,15 +252,15 @@ LABEL_10:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int64_t)returnSavedParingVersion
@@ -269,46 +269,46 @@ LABEL_10:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (void)deleteAllRecords
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSString *)v2->_filePath stringByDeletingLastPathComponent];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  stringByDeletingLastPathComponent = [(NSString *)selfCopy->_filePath stringByDeletingLastPathComponent];
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  v5 = [v4 fileExistsAtPath:stringByDeletingLastPathComponent];
 
   if (v5)
   {
     v6 = +[NSFileManager defaultManager];
     v12 = 0;
-    v7 = [v6 removeItemAtPath:v3 error:&v12];
+    v7 = [v6 removeItemAtPath:stringByDeletingLastPathComponent error:&v12];
     v8 = v12;
 
     if ((v7 & 1) == 0)
     {
-      v9 = [v8 localizedDescription];
-      v10 = [NSString stringWithFormat:@"Can't remove file %@ with error: %@", v3, v9];
+      localizedDescription = [v8 localizedDescription];
+      v10 = [NSString stringWithFormat:@"Can't remove file %@ with error: %@", stringByDeletingLastPathComponent, localizedDescription];
 
-      v11 = [(MDRBaseObject *)v2 logger];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      logger = [(MDRBaseObject *)selfCopy logger];
+      if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
       {
         sub_100013B78();
       }
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 @end

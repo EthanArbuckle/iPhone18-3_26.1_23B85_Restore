@@ -1,16 +1,16 @@
 @interface UAPingNotifier
-- (UAPingNotifier)initWithManager:(id)a3;
+- (UAPingNotifier)initWithManager:(id)manager;
 - (id)statusString;
-- (void)setItems:(id)a3;
+- (void)setItems:(id)items;
 @end
 
 @implementation UAPingNotifier
 
-- (UAPingNotifier)initWithManager:(id)a3
+- (UAPingNotifier)initWithManager:(id)manager
 {
   v7.receiver = self;
   v7.super_class = UAPingNotifier;
-  v3 = [(UAActivityNotifier *)&v7 initWithManager:a3 name:@"PingNotifier"];
+  v3 = [(UAActivityNotifier *)&v7 initWithManager:manager name:@"PingNotifier"];
   if (v3)
   {
     v4 = +[NSMutableSet set];
@@ -21,19 +21,19 @@
   return v3;
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = +[UAUserActivityDefaults sharedDefaults];
-  v6 = [v5 debugEnablePinging];
+  debugEnablePinging = [v5 debugEnablePinging];
 
-  if (v6)
+  if (debugEnablePinging)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = v4;
+    v7 = itemsCopy;
     v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
@@ -49,8 +49,8 @@
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
-          v13 = [v12 activityType];
-          v14 = [v13 isEqual:@"com.apple.ping"];
+          activityType = [v12 activityType];
+          v14 = [activityType isEqual:@"com.apple.ping"];
 
           if (v14)
           {
@@ -74,8 +74,8 @@
 
 - (id)statusString
 {
-  v3 = [(UAPingNotifier *)self pongItems];
-  v4 = +[NSMutableString stringWithFormat:](NSMutableString, "stringWithFormat:", @"PingNotifier: %ld outstanding PONG responses %ld total pongs sent.", [v3 count], -[UAPingNotifier pongCount](self, "pongCount"));;
+  pongItems = [(UAPingNotifier *)self pongItems];
+  v4 = +[NSMutableString stringWithFormat:](NSMutableString, "stringWithFormat:", @"PingNotifier: %ld outstanding PONG responses %ld total pongs sent.", [pongItems count], -[UAPingNotifier pongCount](self, "pongCount"));;
 
   v5 = [v4 copy];
 

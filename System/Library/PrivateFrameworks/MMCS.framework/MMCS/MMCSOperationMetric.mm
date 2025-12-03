@@ -1,37 +1,37 @@
 @interface MMCSOperationMetric
-- (MMCSOperationMetric)initWithDate:(id)a3;
+- (MMCSOperationMetric)initWithDate:(id)date;
 - (NSArray)rangesCopy;
 - (NSString)description;
 - (double)absoluteStart;
 - (double)absoluteStop;
 - (id)describeRanges;
-- (id)newRangeWithOperationState:(unint64_t)a3 startDate:(id)a4 duration:(double)a5;
-- (int64_t)compareExecutingStartTime:(id)a3;
-- (int64_t)compareStartTime:(id)a3;
-- (void)addRange:(id)a3;
+- (id)newRangeWithOperationState:(unint64_t)state startDate:(id)date duration:(double)duration;
+- (int64_t)compareExecutingStartTime:(id)time;
+- (int64_t)compareStartTime:(id)time;
+- (void)addRange:(id)range;
 - (void)rangesCompleted;
 @end
 
 @implementation MMCSOperationMetric
 
-- (id)newRangeWithOperationState:(unint64_t)a3 startDate:(id)a4 duration:(double)a5
+- (id)newRangeWithOperationState:(unint64_t)state startDate:(id)date duration:(double)duration
 {
-  v7 = a4;
-  v8 = [[MMCSOperationStateTimeRange alloc] initWithOperationState:a3 startDate:v7 duration:a5];
+  dateCopy = date;
+  v8 = [[MMCSOperationStateTimeRange alloc] initWithOperationState:state startDate:dateCopy duration:duration];
 
   return v8;
 }
 
-- (MMCSOperationMetric)initWithDate:(id)a3
+- (MMCSOperationMetric)initWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v16.receiver = self;
   v16.super_class = MMCSOperationMetric;
   v5 = [(MMCSOperationMetric *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    [(MMCSOperationMetric *)v5 setStartDate:v4];
+    [(MMCSOperationMetric *)v5 setStartDate:dateCopy];
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
     totalBytesByChunkProfile = v6->_totalBytesByChunkProfile;
     v6->_totalBytesByChunkProfile = v7;
@@ -58,19 +58,19 @@
   return v6;
 }
 
-- (void)addRange:(id)a3
+- (void)addRange:(id)range
 {
-  v4 = a3;
-  v5 = [(MMCSOperationMetric *)self ranges];
+  rangeCopy = range;
+  ranges = [(MMCSOperationMetric *)self ranges];
 
-  if (!v5)
+  if (!ranges)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
-    [(MMCSOperationMetric *)self setRanges:v6];
+    array = [MEMORY[0x277CBEB18] array];
+    [(MMCSOperationMetric *)self setRanges:array];
   }
 
-  v7 = [(MMCSOperationMetric *)self ranges];
-  [v7 addObject:v4];
+  ranges2 = [(MMCSOperationMetric *)self ranges];
+  [ranges2 addObject:rangeCopy];
 }
 
 - (void)rangesCompleted
@@ -80,8 +80,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(MMCSOperationMetric *)self ranges];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  ranges = [(MMCSOperationMetric *)self ranges];
+  v4 = [ranges countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -94,7 +94,7 @@
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(ranges);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -104,7 +104,7 @@
         v7 = v7 + v12;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [ranges countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -123,17 +123,17 @@
 
 - (NSArray)rangesCopy
 {
-  v2 = [(MMCSOperationMetric *)self ranges];
-  v3 = [v2 copy];
+  ranges = [(MMCSOperationMetric *)self ranges];
+  v3 = [ranges copy];
 
   return v3;
 }
 
 - (id)describeRanges
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = [(MMCSOperationMetric *)self ranges];
-  v5 = [v4 count];
+  string = [MEMORY[0x277CCAB68] string];
+  ranges = [(MMCSOperationMetric *)self ranges];
+  v5 = [ranges count];
   if (v5)
   {
     v6 = v5;
@@ -143,22 +143,22 @@
     do
     {
       v10 = v7;
-      v7 = [v4 objectAtIndexedSubscript:v8];
+      v7 = [ranges objectAtIndexedSubscript:v8];
 
       if (v8)
       {
         [v7 absoluteStart];
         if (v11 > v9)
         {
-          [v3 appendString:@" "];
+          [string appendString:@" "];
           [v7 absoluteStart];
           v13 = [MMCSOperationStateTimeRange descriptionWithOperationState:2 absoluteStart:v9 duration:v12 - v9];
-          [v3 appendString:v13];
+          [string appendString:v13];
         }
 
-        [v3 appendString:@" "];
+        [string appendString:@" "];
         v14 = [v7 description];
-        [v3 appendString:v14];
+        [string appendString:v14];
       }
 
       else
@@ -174,13 +174,13 @@
           v21 = v20;
           [(MMCSOperationMetric *)self absoluteStart];
           v23 = [MMCSOperationStateTimeRange descriptionWithOperationState:2 absoluteStart:v19 duration:v21 - v22];
-          [v3 appendString:v23];
+          [string appendString:v23];
 
-          [v3 appendString:@" "];
+          [string appendString:@" "];
         }
 
         v24 = [v7 description];
-        [v3 appendString:v24];
+        [string appendString:v24];
 
         [v7 absoluteStop];
         v9 = v25;
@@ -197,14 +197,14 @@
       [v7 absoluteStop];
       if (v27 > v28)
       {
-        [v3 appendString:@" "];
+        [string appendString:@" "];
         [v7 absoluteStop];
         v30 = v29;
         [(MMCSOperationMetric *)self absoluteStop];
         v32 = v31;
         [v7 absoluteStop];
         v34 = [MMCSOperationStateTimeRange descriptionWithOperationState:2 absoluteStart:v30 duration:v32 - v33];
-        [v3 appendString:v34];
+        [string appendString:v34];
       }
     }
   }
@@ -214,7 +214,7 @@
     v7 = 0;
   }
 
-  return v3;
+  return string;
 }
 
 - (NSString)description
@@ -228,19 +228,19 @@
 
 - (double)absoluteStart
 {
-  v2 = [(MMCSOperationMetric *)self startDate];
-  [v2 timeIntervalSinceReferenceDate];
+  startDate = [(MMCSOperationMetric *)self startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v4 = v3;
 
   return v4;
 }
 
-- (int64_t)compareStartTime:(id)a3
+- (int64_t)compareStartTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   [(MMCSOperationMetric *)self absoluteStart];
   v6 = v5;
-  [v4 absoluteStart];
+  [timeCopy absoluteStart];
   v8 = v7;
 
   if (v6 < v8)
@@ -254,12 +254,12 @@
   }
 }
 
-- (int64_t)compareExecutingStartTime:(id)a3
+- (int64_t)compareExecutingStartTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   [(MMCSOperationMetric *)self absoluteStart];
   v6 = v5;
-  [v4 absoluteStart];
+  [timeCopy absoluteStart];
   v8 = v7;
 
   if (v6 < v8)

@@ -6,9 +6,9 @@
 
 - (CGRect)pathBounds
 {
-  v2 = [(UIBezierPath *)self CGPath];
+  cGPath = [(UIBezierPath *)self CGPath];
 
-  return CGPathGetPathBoundingBox(v2);
+  return CGPathGetPathBoundingBox(cGPath);
 }
 
 @end

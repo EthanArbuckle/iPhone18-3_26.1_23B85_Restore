@@ -1,22 +1,22 @@
 @interface WPDPendingCompletions
-- (WPDPendingCompletions)initWithName:(id)a3;
+- (WPDPendingCompletions)initWithName:(id)name;
 - (id)description;
-- (unint64_t)addCompletion:(id)a3;
-- (void)completeID:(unint64_t)a3 success:(BOOL)a4;
+- (unint64_t)addCompletion:(id)completion;
+- (void)completeID:(unint64_t)d success:(BOOL)success;
 @end
 
 @implementation WPDPendingCompletions
 
-- (WPDPendingCompletions)initWithName:(id)a3
+- (WPDPendingCompletions)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = WPDPendingCompletions;
   v6 = [(WPDPendingCompletions *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
     v7->_lastID = 0;
     v8 = objc_opt_new();
     pendingCompletions = v7->_pendingCompletions;
@@ -28,23 +28,23 @@
 
 - (id)description
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ pending completions:%lu, last ID:%lu\n", v2->_name, -[NSMutableArray count](v2->_pendingCompletions, "count"), v2->_lastID];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ pending completions:%lu, last ID:%lu\n", selfCopy->_name, -[NSMutableArray count](selfCopy->_pendingCompletions, "count"), selfCopy->_lastID];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (unint64_t)addCompletion:(id)a3
+- (unint64_t)addCompletion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    if ([(WPDPendingCompletions *)v5 lastID]== -1)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if ([(WPDPendingCompletions *)selfCopy lastID]== -1)
     {
       if (WPLogInitOnce != -1)
       {
@@ -54,7 +54,7 @@
       v8 = WiProxLog;
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        [(WPDPendingCompletions *)v5->_name addCompletion:[(NSMutableArray *)v5->_pendingCompletions count], v8];
+        [(WPDPendingCompletions *)selfCopy->_name addCompletion:[(NSMutableArray *)selfCopy->_pendingCompletions count], v8];
       }
 
       v7 = 0;
@@ -62,11 +62,11 @@
 
     else
     {
-      v6 = [(WPDPendingCompletions *)v5 pendingCompletions];
-      [v6 addObject:v4];
+      pendingCompletions = [(WPDPendingCompletions *)selfCopy pendingCompletions];
+      [pendingCompletions addObject:completionCopy];
 
-      v7 = [(WPDPendingCompletions *)v5 lastID]+ 1;
-      [(WPDPendingCompletions *)v5 setLastID:v7];
+      v7 = [(WPDPendingCompletions *)selfCopy lastID]+ 1;
+      [(WPDPendingCompletions *)selfCopy setLastID:v7];
       if (WPLogInitOnce != -1)
       {
         [WPDPendingCompletions addCompletion:];
@@ -75,8 +75,8 @@
       v8 = WiProxLog;
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        name = v5->_name;
-        v10 = [(NSMutableArray *)v5->_pendingCompletions count];
+        name = selfCopy->_name;
+        v10 = [(NSMutableArray *)selfCopy->_pendingCompletions count];
         v13 = 138412802;
         v14 = name;
         v15 = 2048;
@@ -87,7 +87,7 @@
       }
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -99,23 +99,23 @@
   return v7;
 }
 
-- (void)completeID:(unint64_t)a3 success:(BOOL)a4
+- (void)completeID:(unint64_t)d success:(BOOL)success
 {
   v31 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (d)
   {
-    v5 = a4;
+    successCopy = success;
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
-    objc_sync_enter(v8);
-    v9 = a3 - v8->_lastID + [(NSMutableArray *)v8->_pendingCompletions count];
-    if (v9 <= [(NSMutableArray *)v8->_pendingCompletions count])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v9 = d - selfCopy->_lastID + [(NSMutableArray *)selfCopy->_pendingCompletions count];
+    if (v9 <= [(NSMutableArray *)selfCopy->_pendingCompletions count])
     {
-      v11 = [(NSMutableArray *)v8->_pendingCompletions subarrayWithRange:0, v9];
-      [(NSMutableArray *)v8->_pendingCompletions removeObjectsInRange:0, v9];
-      if (![(NSMutableArray *)v8->_pendingCompletions count])
+      v11 = [(NSMutableArray *)selfCopy->_pendingCompletions subarrayWithRange:0, v9];
+      [(NSMutableArray *)selfCopy->_pendingCompletions removeObjectsInRange:0, v9];
+      if (![(NSMutableArray *)selfCopy->_pendingCompletions count])
       {
-        v8->_lastID = 0;
+        selfCopy->_lastID = 0;
       }
 
       if (WPLogInitOnce != -1)
@@ -126,17 +126,17 @@
       v12 = WiProxLog;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
-        lastID = v8->_lastID;
-        name = v8->_name;
-        v19 = [(NSMutableArray *)v8->_pendingCompletions count];
+        lastID = selfCopy->_lastID;
+        name = selfCopy->_name;
+        v19 = [(NSMutableArray *)selfCopy->_pendingCompletions count];
         *buf = 138413570;
         v22 = name;
         v23 = 2048;
-        v24 = a3;
+        dCopy2 = d;
         v25 = 2048;
         v26 = v9;
         v27 = 1024;
-        *v28 = v5;
+        *v28 = successCopy;
         *&v28[4] = 2048;
         *&v28[6] = lastID;
         v29 = 2048;
@@ -144,14 +144,14 @@
         _os_log_debug_impl(&dword_272965000, v12, OS_LOG_TYPE_DEBUG, "WPDSearchPartyAgent %@ will complete ID:%lu (count %lu), success:%d, last ID:%lU pending:%lu", buf, 0x3Au);
       }
 
-      objc_sync_exit(v8);
+      objc_sync_exit(selfCopy);
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __44__WPDPendingCompletions_completeID_success___block_invoke_137;
       v20[3] = &__block_descriptor_40_e22_v32__0___v__q_8Q16_B24l;
-      v20[4] = !v5;
+      v20[4] = !successCopy;
       [(WPDPendingCompletions *)v11 enumerateObjectsUsingBlock:v20];
-      v8 = v11;
+      selfCopy = v11;
     }
 
     else
@@ -164,13 +164,13 @@
       v10 = WiProxLog;
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v14 = v8->_lastID;
-        v15 = v8->_name;
-        v16 = [(NSMutableArray *)v8->_pendingCompletions count];
+        v14 = selfCopy->_lastID;
+        v15 = selfCopy->_name;
+        v16 = [(NSMutableArray *)selfCopy->_pendingCompletions count];
         *buf = 138413058;
         v22 = v15;
         v23 = 2048;
-        v24 = a3;
+        dCopy2 = d;
         v25 = 2048;
         v26 = v14;
         v27 = 2048;
@@ -178,7 +178,7 @@
         _os_log_error_impl(&dword_272965000, v10, OS_LOG_TYPE_ERROR, "WPDSearchPartyAgent %@ NOOP unexpected completion ID:%lu, last known ID:%lu, pending count:%lu", buf, 0x2Au);
       }
 
-      objc_sync_exit(v8);
+      objc_sync_exit(selfCopy);
     }
 
     objc_autoreleasePoolPop(v7);

@@ -7,16 +7,16 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFAutoModeIntensityCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFAutoModeIntensityCharacteristic *)self autoModeIntensityValue];
+  autoModeIntensityValue = [(CAFAutoModeIntensityCharacteristic *)self autoModeIntensityValue];
 
-  return NSStringFromAutoModeIntensity(v2);
+  return NSStringFromAutoModeIntensity(autoModeIntensityValue);
 }
 
 @end

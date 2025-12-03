@@ -1,79 +1,79 @@
 @interface RMStoreDataFetcher
-- (BOOL)_moveDownloadedFile:(id)a3 downloadURL:(id)a4 error:(id *)a5;
-- (BOOL)_validateResponseForURL:(id)a3 statusCode:(id)a4 headers:(id)a5 fetchedData:(id)a6 downloadURL:(id)a7 error:(id *)a8;
-- (id)_createRequestWithURL:(id)a3 additionalHeaders:(id)a4;
-- (id)_dataTaskWithURL:(id)a3 additionalHeaders:(id)a4 completionHandler:(id)a5;
-- (id)_dictionaryForResponse:(id)a3 downloadedData:(id)a4 downloadedURL:(id)a5;
-- (id)_downloadTaskWithURL:(id)a3 additionalHeaders:(id)a4 completionHandler:(id)a5;
+- (BOOL)_moveDownloadedFile:(id)file downloadURL:(id)l error:(id *)error;
+- (BOOL)_validateResponseForURL:(id)l statusCode:(id)code headers:(id)headers fetchedData:(id)data downloadURL:(id)rL error:(id *)error;
+- (id)_createRequestWithURL:(id)l additionalHeaders:(id)headers;
+- (id)_dataTaskWithURL:(id)l additionalHeaders:(id)headers completionHandler:(id)handler;
+- (id)_dictionaryForResponse:(id)response downloadedData:(id)data downloadedURL:(id)l;
+- (id)_downloadTaskWithURL:(id)l additionalHeaders:(id)headers completionHandler:(id)handler;
 - (id)_makeSession;
 - (id)_userAgent;
-- (void)_downloadDataAtURL:(id)a3 downloadURL:(id)a4 additionalHeaders:(id)a5 completionHandler:(id)a6;
-- (void)_downloadMDMDataAtURL:(id)a3 downloadURL:(id)a4 completionHandler:(id)a5;
-- (void)_fetchDataAtURL:(id)a3 additionalHeaders:(id)a4 completionHandler:(id)a5;
-- (void)_fetchMDMDataAtURL:(id)a3 completionHandler:(id)a4;
-- (void)_processDataResponseWithURL:(id)a3 response:(id)a4 error:(id)a5 completionHandler:(id)a6;
-- (void)_processDownloadResponseWithURL:(id)a3 downloadURL:(id)a4 response:(id)a5 error:(id)a6 completionHandler:(id)a7;
-- (void)downloadResponseDataAtURL:(id)a3 downloadURL:(id)a4 extensionToken:(id)a5 useDDM:(BOOL)a6 additionalHeaders:(id)a7 completionHandler:(id)a8;
-- (void)fetchResponseDataAtURL:(id)a3 useDDM:(BOOL)a4 additionalHeaders:(id)a5 completionHandler:(id)a6;
+- (void)_downloadDataAtURL:(id)l downloadURL:(id)rL additionalHeaders:(id)headers completionHandler:(id)handler;
+- (void)_downloadMDMDataAtURL:(id)l downloadURL:(id)rL completionHandler:(id)handler;
+- (void)_fetchDataAtURL:(id)l additionalHeaders:(id)headers completionHandler:(id)handler;
+- (void)_fetchMDMDataAtURL:(id)l completionHandler:(id)handler;
+- (void)_processDataResponseWithURL:(id)l response:(id)response error:(id)error completionHandler:(id)handler;
+- (void)_processDownloadResponseWithURL:(id)l downloadURL:(id)rL response:(id)response error:(id)error completionHandler:(id)handler;
+- (void)downloadResponseDataAtURL:(id)l downloadURL:(id)rL extensionToken:(id)token useDDM:(BOOL)m additionalHeaders:(id)headers completionHandler:(id)handler;
+- (void)fetchResponseDataAtURL:(id)l useDDM:(BOOL)m additionalHeaders:(id)headers completionHandler:(id)handler;
 @end
 
 @implementation RMStoreDataFetcher
 
-- (void)fetchResponseDataAtURL:(id)a3 useDDM:(BOOL)a4 additionalHeaders:(id)a5 completionHandler:(id)a6
+- (void)fetchResponseDataAtURL:(id)l useDDM:(BOOL)m additionalHeaders:(id)headers completionHandler:(id)handler
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  mCopy = m;
+  lCopy = l;
+  headersCopy = headers;
+  handlerCopy = handler;
   v13 = +[RMLog storeDataFetcher];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     sub_100083DA0();
   }
 
-  if (([RMStoreUtility isValidURL:v10]& 1) != 0)
+  if (([RMStoreUtility isValidURL:lCopy]& 1) != 0)
   {
-    if (v8 && ([v10 scheme], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "caseInsensitiveCompare:", @"https"), v14, !v15))
+    if (mCopy && ([lCopy scheme], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "caseInsensitiveCompare:", @"https"), v14, !v15))
     {
-      [(RMStoreDataFetcher *)self _fetchMDMDataAtURL:v10 completionHandler:v12];
+      [(RMStoreDataFetcher *)self _fetchMDMDataAtURL:lCopy completionHandler:handlerCopy];
     }
 
     else
     {
-      [(RMStoreDataFetcher *)self _fetchDataAtURL:v10 additionalHeaders:v11 completionHandler:v12];
+      [(RMStoreDataFetcher *)self _fetchDataAtURL:lCopy additionalHeaders:headersCopy completionHandler:handlerCopy];
     }
   }
 
   else
   {
-    v16 = [RMErrorUtilities createAssetInvalidURLError:v10];
+    v16 = [RMErrorUtilities createAssetInvalidURLError:lCopy];
     v17 = +[RMLog storeDataFetcher];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       sub_100083E08();
     }
 
-    v12[2](v12, 0, v16);
+    handlerCopy[2](handlerCopy, 0, v16);
   }
 }
 
-- (void)downloadResponseDataAtURL:(id)a3 downloadURL:(id)a4 extensionToken:(id)a5 useDDM:(BOOL)a6 additionalHeaders:(id)a7 completionHandler:(id)a8
+- (void)downloadResponseDataAtURL:(id)l downloadURL:(id)rL extensionToken:(id)token useDDM:(BOOL)m additionalHeaders:(id)headers completionHandler:(id)handler
 {
-  v10 = a6;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  mCopy = m;
+  lCopy = l;
+  rLCopy = rL;
+  tokenCopy = token;
+  headersCopy = headers;
+  handlerCopy = handler;
   v19 = +[RMLog storeDataFetcher];
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
     sub_100083FDC();
   }
 
-  if (([RMStoreUtility isValidURL:v14]& 1) == 0)
+  if (([RMStoreUtility isValidURL:lCopy]& 1) == 0)
   {
-    v25 = [RMErrorUtilities createAssetInvalidURLError:v14];
+    v25 = [RMErrorUtilities createAssetInvalidURLError:lCopy];
     v26 = +[RMLog storeDataFetcher];
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
@@ -83,9 +83,9 @@
     goto LABEL_13;
   }
 
-  if (v16)
+  if (tokenCopy)
   {
-    v20 = [RMSandbox consumeToken:v16];
+    v20 = [RMSandbox consumeToken:tokenCopy];
     v21 = +[RMLog storeDataFetcher];
     v22 = v21;
     if (v20 != -1)
@@ -95,7 +95,7 @@
         sub_100083E7C();
       }
 
-      if (v10)
+      if (mCopy)
       {
         goto LABEL_9;
       }
@@ -112,20 +112,20 @@ LABEL_15:
 
     v25 = +[RMErrorUtilities createInternalError];
 LABEL_13:
-    v18[2](v18, 0, v25);
+    handlerCopy[2](handlerCopy, 0, v25);
 
     goto LABEL_20;
   }
 
   v20 = -1;
-  if (!v10)
+  if (!mCopy)
   {
     goto LABEL_15;
   }
 
 LABEL_9:
-  v23 = [v14 scheme];
-  v24 = [v23 caseInsensitiveCompare:@"https"] == 0;
+  scheme = [lCopy scheme];
+  v24 = [scheme caseInsensitiveCompare:@"https"] == 0;
 
 LABEL_16:
   v37[0] = _NSConcreteStackBlock;
@@ -134,10 +134,10 @@ LABEL_16:
   v37[3] = &unk_1000D3078;
   v41 = v24;
   v37[4] = self;
-  v27 = v15;
+  v27 = rLCopy;
   v38 = v27;
   v40 = v20;
-  v39 = v18;
+  v39 = handlerCopy;
   v28 = objc_retainBlock(v37);
   v29 = v28;
   if (v24)
@@ -149,7 +149,7 @@ LABEL_16:
     v30 = &v36;
     v36 = v28;
     v31 = v28;
-    [(RMStoreDataFetcher *)self _downloadMDMDataAtURL:v14 downloadURL:v27 completionHandler:v35];
+    [(RMStoreDataFetcher *)self _downloadMDMDataAtURL:lCopy downloadURL:v27 completionHandler:v35];
   }
 
   else
@@ -161,7 +161,7 @@ LABEL_16:
     v30 = &v34;
     v34 = v28;
     v32 = v28;
-    [(RMStoreDataFetcher *)self _downloadDataAtURL:v14 downloadURL:v27 additionalHeaders:v17 completionHandler:v33];
+    [(RMStoreDataFetcher *)self _downloadDataAtURL:lCopy downloadURL:v27 additionalHeaders:headersCopy completionHandler:v33];
   }
 
 LABEL_20:
@@ -175,41 +175,41 @@ LABEL_20:
   return v3;
 }
 
-- (void)_fetchMDMDataAtURL:(id)a3 completionHandler:(id)a4
+- (void)_fetchMDMDataAtURL:(id)l completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  lCopy = l;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100082740;
   v9[3] = &unk_1000D30C8;
   v10 = os_transaction_create();
-  v11 = v5;
+  v11 = handlerCopy;
   v7 = v10;
-  v8 = v5;
-  [RMMCAdapter fetchDataAtURL:v6 completionHandler:v9];
+  v8 = handlerCopy;
+  [RMMCAdapter fetchDataAtURL:lCopy completionHandler:v9];
 }
 
-- (void)_fetchDataAtURL:(id)a3 additionalHeaders:(id)a4 completionHandler:(id)a5
+- (void)_fetchDataAtURL:(id)l additionalHeaders:(id)headers completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  lCopy = l;
+  handlerCopy = handler;
+  headersCopy = headers;
   v11 = os_transaction_create();
-  v12 = [(RMStoreDataFetcher *)self _makeSession];
-  [(RMStoreDataFetcher *)self setURLSession:v12];
+  _makeSession = [(RMStoreDataFetcher *)self _makeSession];
+  [(RMStoreDataFetcher *)self setURLSession:_makeSession];
 
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1000828D0;
   v18[3] = &unk_1000D30F0;
-  v13 = v8;
+  v13 = lCopy;
   v19 = v13;
-  v14 = v9;
+  v14 = handlerCopy;
   v21 = v14;
   v15 = v11;
   v20 = v15;
-  v16 = [(RMStoreDataFetcher *)self _dataTaskWithURL:v13 additionalHeaders:v10 completionHandler:v18];
+  v16 = [(RMStoreDataFetcher *)self _dataTaskWithURL:v13 additionalHeaders:headersCopy completionHandler:v18];
 
   v17 = +[RMLog storeDataFetcher];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -220,50 +220,50 @@ LABEL_20:
   [v16 resume];
 }
 
-- (id)_dataTaskWithURL:(id)a3 additionalHeaders:(id)a4 completionHandler:(id)a5
+- (id)_dataTaskWithURL:(id)l additionalHeaders:(id)headers completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [(RMStoreDataFetcher *)self _createRequestWithURL:a3 additionalHeaders:a4];
-  v10 = [(RMStoreDataFetcher *)self URLSession];
+  handlerCopy = handler;
+  v9 = [(RMStoreDataFetcher *)self _createRequestWithURL:l additionalHeaders:headers];
+  uRLSession = [(RMStoreDataFetcher *)self URLSession];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100082A80;
   v14[3] = &unk_1000D3118;
   v14[4] = self;
-  v15 = v8;
-  v11 = v8;
-  v12 = [v10 dataTaskWithRequest:v9 completionHandler:v14];
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = [uRLSession dataTaskWithRequest:v9 completionHandler:v14];
 
   return v12;
 }
 
-- (void)_processDataResponseWithURL:(id)a3 response:(id)a4 error:(id)a5 completionHandler:(id)a6
+- (void)_processDataResponseWithURL:(id)l response:(id)response error:(id)error completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v12)
+  lCopy = l;
+  responseCopy = response;
+  errorCopy = error;
+  if (errorCopy)
   {
-    v13 = a6;
+    handlerCopy = handler;
     v14 = +[RMLog storeDataFetcher];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       sub_1000842DC();
     }
 
-    v15 = v12;
+    v15 = errorCopy;
     v16 = 0;
   }
 
   else
   {
     v17 = HTTPResponseKeyBody;
-    v18 = a6;
-    v19 = [v11 objectForKeyedSubscript:v17];
-    v20 = [v11 objectForKeyedSubscript:HTTPResponseKeyStatusCode];
-    v21 = [v11 objectForKeyedSubscript:HTTPResponseKeyHeaders];
+    handlerCopy2 = handler;
+    v19 = [responseCopy objectForKeyedSubscript:v17];
+    v20 = [responseCopy objectForKeyedSubscript:HTTPResponseKeyStatusCode];
+    v21 = [responseCopy objectForKeyedSubscript:HTTPResponseKeyHeaders];
     v29 = 0;
-    v22 = [(RMStoreDataFetcher *)self _validateResponseForURL:v10 statusCode:v20 headers:v21 fetchedData:v19 downloadURL:0 error:&v29];
+    v22 = [(RMStoreDataFetcher *)self _validateResponseForURL:lCopy statusCode:v20 headers:v21 fetchedData:v19 downloadURL:0 error:&v29];
     v23 = v29;
 
     if (v22)
@@ -271,7 +271,7 @@ LABEL_20:
       v24 = +[RMLog storeDataFetcher];
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
       {
-        sub_100084404(v10);
+        sub_100084404(lCopy);
       }
 
       v15 = 0;
@@ -281,10 +281,10 @@ LABEL_20:
 
     else
     {
-      v26 = [v23 code];
+      code = [v23 code];
       v24 = +[RMLog storeDataFetcher];
       v27 = os_log_type_enabled(v24, OS_LOG_TYPE_ERROR);
-      if (v26 == 1000)
+      if (code == 1000)
       {
         if (v27)
         {
@@ -305,45 +305,45 @@ LABEL_20:
     v28 = v25;
   }
 
-  (*(a6 + 2))(a6, v16, v15);
+  (*(handler + 2))(handler, v16, v15);
 }
 
-- (void)_downloadMDMDataAtURL:(id)a3 downloadURL:(id)a4 completionHandler:(id)a5
+- (void)_downloadMDMDataAtURL:(id)l downloadURL:(id)rL completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  rLCopy = rL;
+  lCopy = l;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100082E54;
   v12[3] = &unk_1000D30C8;
   v13 = os_transaction_create();
-  v14 = v7;
+  v14 = handlerCopy;
   v10 = v13;
-  v11 = v7;
-  [RMMCAdapter downloadDataAtURL:v9 downloadURL:v8 completionHandler:v12];
+  v11 = handlerCopy;
+  [RMMCAdapter downloadDataAtURL:lCopy downloadURL:rLCopy completionHandler:v12];
 }
 
-- (void)_downloadDataAtURL:(id)a3 downloadURL:(id)a4 additionalHeaders:(id)a5 completionHandler:(id)a6
+- (void)_downloadDataAtURL:(id)l downloadURL:(id)rL additionalHeaders:(id)headers completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = a5;
+  lCopy = l;
+  handlerCopy = handler;
+  headersCopy = headers;
   v12 = os_transaction_create();
-  v13 = [(RMStoreDataFetcher *)self _makeSession];
-  [(RMStoreDataFetcher *)self setURLSession:v13];
+  _makeSession = [(RMStoreDataFetcher *)self _makeSession];
+  [(RMStoreDataFetcher *)self setURLSession:_makeSession];
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100082FE4;
   v19[3] = &unk_1000D30F0;
-  v14 = v9;
+  v14 = lCopy;
   v20 = v14;
-  v15 = v10;
+  v15 = handlerCopy;
   v22 = v15;
   v16 = v12;
   v21 = v16;
-  v17 = [(RMStoreDataFetcher *)self _downloadTaskWithURL:v14 additionalHeaders:v11 completionHandler:v19];
+  v17 = [(RMStoreDataFetcher *)self _downloadTaskWithURL:v14 additionalHeaders:headersCopy completionHandler:v19];
 
   v18 = +[RMLog storeDataFetcher];
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -354,38 +354,38 @@ LABEL_20:
   [v17 resume];
 }
 
-- (id)_downloadTaskWithURL:(id)a3 additionalHeaders:(id)a4 completionHandler:(id)a5
+- (id)_downloadTaskWithURL:(id)l additionalHeaders:(id)headers completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [(RMStoreDataFetcher *)self _createRequestWithURL:a3 additionalHeaders:a4];
-  v10 = [(RMStoreDataFetcher *)self URLSession];
+  handlerCopy = handler;
+  v9 = [(RMStoreDataFetcher *)self _createRequestWithURL:l additionalHeaders:headers];
+  uRLSession = [(RMStoreDataFetcher *)self URLSession];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100083194;
   v14[3] = &unk_1000D3140;
   v14[4] = self;
-  v15 = v8;
-  v11 = v8;
-  v12 = [v10 downloadTaskWithRequest:v9 completionHandler:v14];
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = [uRLSession downloadTaskWithRequest:v9 completionHandler:v14];
 
   return v12;
 }
 
-- (BOOL)_moveDownloadedFile:(id)a3 downloadURL:(id)a4 error:(id *)a5
+- (BOOL)_moveDownloadedFile:(id)file downloadURL:(id)l error:(id *)error
 {
-  v7 = a4;
+  lCopy = l;
   v8 = HTTPResponseKeyStatusCode;
-  v9 = a3;
-  v10 = [v9 objectForKeyedSubscript:v8];
-  v11 = [v10 integerValue];
+  fileCopy = file;
+  v10 = [fileCopy objectForKeyedSubscript:v8];
+  integerValue = [v10 integerValue];
 
-  v12 = [v9 objectForKeyedSubscript:HTTPResponseKeyDownloadURL];
+  v12 = [fileCopy objectForKeyedSubscript:HTTPResponseKeyDownloadURL];
 
   if (v12)
   {
     v13 = +[NSFileManager defaultManager];
     v35 = 0;
-    v14 = [v13 removeItemAtURL:v7 error:&v35];
+    v14 = [v13 removeItemAtURL:lCopy error:&v35];
     v15 = v35;
 
     if (v14)
@@ -393,23 +393,23 @@ LABEL_20:
       v16 = +[RMLog storeDataFetcher];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
-        sub_1000846D8(v7);
+        sub_1000846D8(lCopy);
       }
 
       goto LABEL_6;
     }
 
-    v24 = [v15 domain];
-    if ([v24 isEqualToString:NSCocoaErrorDomain])
+    domain = [v15 domain];
+    if ([domain isEqualToString:NSCocoaErrorDomain])
     {
-      v25 = [v15 code];
+      code = [v15 code];
 
-      if (v25 == 4)
+      if (code == 4)
       {
 LABEL_6:
         v17 = +[NSFileManager defaultManager];
         v34 = v15;
-        v18 = [v17 moveItemAtURL:v12 toURL:v7 error:&v34];
+        v18 = [v17 moveItemAtURL:v12 toURL:lCopy error:&v34];
         v19 = v34;
 
         v20 = +[RMLog storeDataFetcher];
@@ -427,18 +427,18 @@ LABEL_6:
 
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
-          v32 = [v12 path];
-          v33 = [v7 path];
+          path = [v12 path];
+          path2 = [lCopy path];
           *buf = 138543874;
-          v37 = v32;
+          v37 = path;
           v38 = 2114;
-          v39 = v33;
+          v39 = path2;
           v40 = 2114;
           v41 = v19;
           _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Failed to relocate downloaded asset file from %{public}@ to %{public}@: %{public}@", buf, 0x20u);
         }
 
-        if (a5)
+        if (error)
         {
           v26 = [RMErrorUtilities createAssetCannotProcessFileErrorWithUnderlyingError:v19];
           v21 = v26;
@@ -446,7 +446,7 @@ LABEL_6:
           {
             v27 = v26;
             v22 = 0;
-            *a5 = v21;
+            *error = v21;
           }
 
           else
@@ -479,7 +479,7 @@ LABEL_35:
       sub_100084644();
     }
 
-    if (a5)
+    if (error)
     {
       v29 = [RMErrorUtilities createAssetCannotProcessFileErrorWithUnderlyingError:v15];
       v21 = v29;
@@ -487,7 +487,7 @@ LABEL_35:
       {
         v30 = v29;
         v22 = 0;
-        *a5 = v21;
+        *error = v21;
       }
 
       else
@@ -502,13 +502,13 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  if (a5)
+  if (error)
   {
-    v23 = [RMErrorUtilities createHTTPErrorWithStatusCode:v11 reason:&stru_1000D3680];
+    v23 = [RMErrorUtilities createHTTPErrorWithStatusCode:integerValue reason:&stru_1000D3680];
     if (v23)
     {
       v23 = v23;
-      *a5 = v23;
+      *error = v23;
     }
   }
 
@@ -518,32 +518,32 @@ LABEL_36:
   return v22;
 }
 
-- (void)_processDownloadResponseWithURL:(id)a3 downloadURL:(id)a4 response:(id)a5 error:(id)a6 completionHandler:(id)a7
+- (void)_processDownloadResponseWithURL:(id)l downloadURL:(id)rL response:(id)response error:(id)error completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v15)
+  lCopy = l;
+  rLCopy = rL;
+  responseCopy = response;
+  errorCopy = error;
+  if (errorCopy)
   {
-    v16 = a7;
+    handlerCopy = handler;
     v17 = +[RMLog storeDataFetcher];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       sub_10008480C();
     }
 
-    v18 = [RMErrorUtilities createAssetCannotBeDownloadedErrorWithUnderlyingError:v15];
+    v18 = [RMErrorUtilities createAssetCannotBeDownloadedErrorWithUnderlyingError:errorCopy];
   }
 
   else
   {
     v19 = HTTPResponseKeyStatusCode;
-    v20 = a7;
-    v21 = [v14 objectForKeyedSubscript:v19];
-    v22 = [v14 objectForKeyedSubscript:HTTPResponseKeyHeaders];
+    handlerCopy2 = handler;
+    v21 = [responseCopy objectForKeyedSubscript:v19];
+    v22 = [responseCopy objectForKeyedSubscript:HTTPResponseKeyHeaders];
     v29 = 0;
-    v23 = [(RMStoreDataFetcher *)self _validateResponseForURL:v12 statusCode:v21 headers:v22 fetchedData:0 downloadURL:v13 error:&v29];
+    v23 = [(RMStoreDataFetcher *)self _validateResponseForURL:lCopy statusCode:v21 headers:v22 fetchedData:0 downloadURL:rLCopy error:&v29];
     v24 = v29;
 
     if (v23)
@@ -559,10 +559,10 @@ LABEL_36:
 
     else
     {
-      v26 = [v24 code];
+      code = [v24 code];
       v27 = +[RMLog storeDataFetcher];
       v28 = os_log_type_enabled(v27, OS_LOG_TYPE_ERROR);
-      if (v26 == 1000)
+      if (code == 1000)
       {
         if (v28)
         {
@@ -579,25 +579,25 @@ LABEL_36:
     }
   }
 
-  (*(a7 + 2))(a7, v18);
+  (*(handler + 2))(handler, v18);
 }
 
-- (id)_dictionaryForResponse:(id)a3 downloadedData:(id)a4 downloadedURL:(id)a5
+- (id)_dictionaryForResponse:(id)response downloadedData:(id)data downloadedURL:(id)l
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  responseCopy = response;
+  lCopy = l;
+  dataCopy = data;
   v10 = [NSMutableDictionary dictionaryWithCapacity:4];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v7;
+    v11 = responseCopy;
     v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v11 statusCode]);
     [v10 setObject:v12 forKeyedSubscript:HTTPResponseKeyStatusCode];
 
-    v13 = [v11 allHeaderFields];
+    allHeaderFields = [v11 allHeaderFields];
 
-    [v10 setObject:v13 forKeyedSubscript:HTTPResponseKeyHeaders];
+    [v10 setObject:allHeaderFields forKeyedSubscript:HTTPResponseKeyHeaders];
   }
 
   else
@@ -606,33 +606,33 @@ LABEL_36:
     [v10 setObject:&__NSDictionary0__struct forKeyedSubscript:HTTPResponseKeyHeaders];
   }
 
-  [v10 setObject:v9 forKeyedSubscript:HTTPResponseKeyBody];
+  [v10 setObject:dataCopy forKeyedSubscript:HTTPResponseKeyBody];
 
-  [v10 setObject:v8 forKeyedSubscript:HTTPResponseKeyDownloadURL];
+  [v10 setObject:lCopy forKeyedSubscript:HTTPResponseKeyDownloadURL];
   v14 = [v10 copy];
 
   return v14;
 }
 
-- (id)_createRequestWithURL:(id)a3 additionalHeaders:(id)a4
+- (id)_createRequestWithURL:(id)l additionalHeaders:(id)headers
 {
-  if (a4)
+  if (headers)
   {
-    v7 = a3;
-    v8 = [a4 mutableCopy];
+    lCopy = l;
+    v8 = [headers mutableCopy];
   }
 
   else
   {
-    v9 = a3;
+    lCopy2 = l;
     v8 = [NSMutableDictionary dictionaryWithCapacity:1];
   }
 
   v10 = v8;
-  v11 = [(RMStoreDataFetcher *)self _userAgent];
-  [v10 setObject:v11 forKeyedSubscript:@"User-Agent"];
+  _userAgent = [(RMStoreDataFetcher *)self _userAgent];
+  [v10 setObject:_userAgent forKeyedSubscript:@"User-Agent"];
 
-  v12 = [NSMutableURLRequest requestWithURL:a3];
+  v12 = [NSMutableURLRequest requestWithURL:l];
 
   [v12 setAllHTTPHeaderFields:v10];
 
@@ -654,35 +654,35 @@ LABEL_36:
   return qword_1000E6B68;
 }
 
-- (BOOL)_validateResponseForURL:(id)a3 statusCode:(id)a4 headers:(id)a5 fetchedData:(id)a6 downloadURL:(id)a7 error:(id *)a8
+- (BOOL)_validateResponseForURL:(id)l statusCode:(id)code headers:(id)headers fetchedData:(id)data downloadURL:(id)rL error:(id *)error
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = a4;
+  lCopy = l;
+  dataCopy = data;
+  rLCopy = rL;
+  codeCopy = code;
   v16 = +[RMLog storeDataFetcher];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    sub_100084948(v12);
+    sub_100084948(lCopy);
   }
 
-  v17 = [v15 integerValue];
-  v18 = (v17 - 600);
-  if ((v17 - 600) >= 0xFFFFFFFFFFFFFF38)
+  integerValue = [codeCopy integerValue];
+  v18 = (integerValue - 600);
+  if ((integerValue - 600) >= 0xFFFFFFFFFFFFFF38)
   {
-    if (v14)
+    if (rLCopy)
     {
-      v19 = [NSData dataWithContentsOfURL:v14];
+      v19 = [NSData dataWithContentsOfURL:rLCopy];
 
       v20 = +[NSFileManager defaultManager];
-      [v20 removeItemAtURL:v14 error:0];
+      [v20 removeItemAtURL:rLCopy error:0];
 
-      v13 = v19;
+      dataCopy = v19;
     }
 
-    if (v13)
+    if (dataCopy)
     {
-      v21 = [v13 base64EncodedStringWithOptions:0];
+      v21 = [dataCopy base64EncodedStringWithOptions:0];
     }
 
     else
@@ -690,17 +690,17 @@ LABEL_36:
       v21 = @"Empty Response Body";
     }
 
-    v22 = [RMErrorUtilities createHTTPErrorWithStatusCode:v17 reason:v21];
+    v22 = [RMErrorUtilities createHTTPErrorWithStatusCode:integerValue reason:v21];
     v23 = +[RMLog storeDataFetcher];
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
       sub_1000849D4();
     }
 
-    if (a8 && v22)
+    if (error && v22)
     {
       v24 = v22;
-      *a8 = v22;
+      *error = v22;
     }
   }
 

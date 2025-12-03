@@ -2,16 +2,16 @@
 + (id)sharedStore;
 - (ANNotificationStore)init;
 - (BOOL)_unsafe_commitChangesInManagedObjectContext;
-- (BOOL)limitPendingNotificationsForAccountTypeID:(id)a3 toMaximumCount:(unint64_t)a4;
-- (BOOL)removeAllNotificationsForAccountTypeID:(id)a3;
-- (BOOL)removeNotificationWithIdentifier:(id)a3;
-- (BOOL)saveNotification:(id)a3;
+- (BOOL)limitPendingNotificationsForAccountTypeID:(id)d toMaximumCount:(unint64_t)count;
+- (BOOL)removeAllNotificationsForAccountTypeID:(id)d;
+- (BOOL)removeNotificationWithIdentifier:(id)identifier;
+- (BOOL)saveNotification:(id)notification;
 - (id)_copyPersistentStoreFilePath;
 - (id)_managedObjectModel;
-- (id)_notificationsMatchingPredicate:(id)a3 limit:(unint64_t)a4;
-- (id)notificationWithIdentifier:(id)a3;
-- (id)pendingNotificationsForAccountsWithTypeID:(id)a3;
-- (id)pendingNotificationsWithEventID:(id)a3;
+- (id)_notificationsMatchingPredicate:(id)predicate limit:(unint64_t)limit;
+- (id)notificationWithIdentifier:(id)identifier;
+- (id)pendingNotificationsForAccountsWithTypeID:(id)d;
+- (id)pendingNotificationsWithEventID:(id)d;
 - (id)typeIdentifiersOfAccountsWithPendingNotifications;
 - (void)_createManagedObjectContext;
 @end
@@ -44,26 +44,26 @@
   return v3;
 }
 
-- (id)pendingNotificationsForAccountsWithTypeID:(id)a3
+- (id)pendingNotificationsForAccountsWithTypeID:(id)d
 {
-  v4 = [NSPredicate predicateWithFormat:@"accountTypeID = %@", a3];
+  v4 = [NSPredicate predicateWithFormat:@"accountTypeID = %@", d];
   v5 = [(ANNotificationStore *)self _notificationsMatchingPredicate:v4];
 
   return v5;
 }
 
-- (id)notificationWithIdentifier:(id)a3
+- (id)notificationWithIdentifier:(id)identifier
 {
-  v4 = [NSPredicate predicateWithFormat:@"identifier = %@", a3];
-  v5 = [(ANNotificationStore *)self _notificationsMatchingPredicate:v4 limit:1];
-  v6 = [v5 firstObject];
+  identifier = [NSPredicate predicateWithFormat:@"identifier = %@", identifier];
+  v5 = [(ANNotificationStore *)self _notificationsMatchingPredicate:identifier limit:1];
+  firstObject = [v5 firstObject];
 
-  return v6;
+  return firstObject;
 }
 
-- (id)pendingNotificationsWithEventID:(id)a3
+- (id)pendingNotificationsWithEventID:(id)d
 {
-  v4 = [NSPredicate predicateWithFormat:@"eventID = %@", a3];
+  v4 = [NSPredicate predicateWithFormat:@"eventID = %@", d];
   v5 = [(ANNotificationStore *)self _notificationsMatchingPredicate:v4];
 
   return v5;
@@ -98,9 +98,9 @@
   return v6;
 }
 
-- (id)_notificationsMatchingPredicate:(id)a3 limit:(unint64_t)a4
+- (id)_notificationsMatchingPredicate:(id)predicate limit:(unint64_t)limit
 {
-  v6 = a3;
+  predicateCopy = predicate;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -108,11 +108,11 @@
   v19 = sub_1000012CC;
   v20 = objc_alloc_init(NSMutableArray);
   v7 = [NSFetchRequest fetchRequestWithEntityName:@"AccountNotification"];
-  [v7 setPredicate:v6];
+  [v7 setPredicate:predicateCopy];
   [v7 setReturnsObjectsAsFaults:0];
-  if (a4)
+  if (limit)
   {
-    [v7 setFetchLimit:a4];
+    [v7 setFetchLimit:limit];
   }
 
   managedObjectContext = self->_managedObjectContext;
@@ -132,11 +132,11 @@
   return v10;
 }
 
-- (BOOL)saveNotification:(id)a3
+- (BOOL)saveNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if (v5 && (v6 = v5, [v4 accountTypeID], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  notificationCopy = notification;
+  identifier = [notificationCopy identifier];
+  if (identifier && (v6 = identifier, [notificationCopy accountTypeID], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
     v16 = 0;
     v17 = &v16;
@@ -147,8 +147,8 @@
     v12[1] = 3221225472;
     v12[2] = sub_1000018C8;
     v12[3] = &unk_10000C320;
-    v13 = v4;
-    v14 = self;
+    v13 = notificationCopy;
+    selfCopy = self;
     v15 = &v16;
     [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v12];
     v9 = *(v17 + 24);
@@ -170,9 +170,9 @@
   return v9 & 1;
 }
 
-- (BOOL)limitPendingNotificationsForAccountTypeID:(id)a3 toMaximumCount:(unint64_t)a4
+- (BOOL)limitPendingNotificationsForAccountTypeID:(id)d toMaximumCount:(unint64_t)count
 {
-  v6 = a3;
+  dCopy = d;
   v7 = _ANLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -192,8 +192,8 @@
   v31 = 0x2020000000;
   v32 = 0;
   v8 = [NSFetchRequest fetchRequestWithEntityName:@"AccountNotification"];
-  v9 = [NSPredicate predicateWithFormat:@"accountTypeID = %@", v6];
-  [v8 setPredicate:v9];
+  dCopy = [NSPredicate predicateWithFormat:@"accountTypeID = %@", dCopy];
+  [v8 setPredicate:dCopy];
 
   managedObjectContext = self->_managedObjectContext;
   v26[0] = _NSConcreteStackBlock;
@@ -206,8 +206,8 @@
   v27 = v11;
   [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v26];
   v12 = v30[3];
-  v13 = v12 >= a4;
-  v14 = v12 - a4;
+  v13 = v12 >= count;
+  v14 = v12 - count;
   if (v13)
   {
     v17 = _ANLogSystem();
@@ -221,7 +221,7 @@
       v42 = 2112;
       v43 = v18;
       v44 = 2112;
-      v45 = v6;
+      v45 = dCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%s (%d) We need to remove %@ pending notifications for type %@", buf, 0x26u);
     }
 
@@ -255,7 +255,7 @@
       v40 = 1024;
       v41 = 211;
       v42 = 2112;
-      v43 = v6;
+      v43 = dCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s (%d) No need to limit pending notifications of type %@", buf, 0x1Cu);
     }
 
@@ -269,9 +269,9 @@
   return v16 & 1;
 }
 
-- (BOOL)removeAllNotificationsForAccountTypeID:(id)a3
+- (BOOL)removeAllNotificationsForAccountTypeID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = _ANLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -287,8 +287,8 @@
   *&buf[16] = 0x2020000000;
   v15 = 0;
   v6 = [NSFetchRequest fetchRequestWithEntityName:@"AccountNotification"];
-  v7 = [NSPredicate predicateWithFormat:@"accountTypeID = %@", v4];
-  [v6 setPredicate:v7];
+  dCopy = [NSPredicate predicateWithFormat:@"accountTypeID = %@", dCopy];
+  [v6 setPredicate:dCopy];
 
   [v6 setReturnsObjectsAsFaults:1];
   managedObjectContext = self->_managedObjectContext;
@@ -307,9 +307,9 @@
   return v6 & 1;
 }
 
-- (BOOL)removeNotificationWithIdentifier:(id)a3
+- (BOOL)removeNotificationWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = _ANLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -325,8 +325,8 @@
   *&buf[16] = 0x2020000000;
   v17 = 0;
   v6 = [NSFetchRequest fetchRequestWithEntityName:@"AccountNotification"];
-  v7 = [NSPredicate predicateWithFormat:@"identifier = %@", v4];
-  [v6 setPredicate:v7];
+  identifierCopy = [NSPredicate predicateWithFormat:@"identifier = %@", identifierCopy];
+  [v6 setPredicate:identifierCopy];
 
   [v6 setReturnsObjectsAsFaults:1];
   [v6 setFetchLimit:1];
@@ -338,7 +338,7 @@
   v12[4] = self;
   v9 = v6;
   v13 = v9;
-  v10 = v4;
+  v10 = identifierCopy;
   v14 = v10;
   v15 = buf;
   [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v12];
@@ -375,15 +375,15 @@
 - (void)_createManagedObjectContext
 {
   v3 = [NSPersistentStoreCoordinator alloc];
-  v4 = [(ANNotificationStore *)self _managedObjectModel];
-  v5 = [v3 initWithManagedObjectModel:v4];
+  _managedObjectModel = [(ANNotificationStore *)self _managedObjectModel];
+  v5 = [v3 initWithManagedObjectModel:_managedObjectModel];
   storeCoordinator = self->_storeCoordinator;
   self->_storeCoordinator = v5;
 
   if (self->_storeCoordinator)
   {
-    v7 = [(ANNotificationStore *)self _copyPersistentStoreFilePath];
-    v8 = [NSURL fileURLWithPath:v7];
+    _copyPersistentStoreFilePath = [(ANNotificationStore *)self _copyPersistentStoreFilePath];
+    v8 = [NSURL fileURLWithPath:_copyPersistentStoreFilePath];
 
     v19[0] = NSInferMappingModelAutomaticallyOption;
     v19[1] = NSMigratePersistentStoresAutomaticallyOption;

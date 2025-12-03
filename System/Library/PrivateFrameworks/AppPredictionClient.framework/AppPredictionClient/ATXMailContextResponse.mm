@@ -1,46 +1,46 @@
 @interface ATXMailContextResponse
-- (ATXMailContextResponse)initWithCoder:(id)a3;
-- (ATXMailContextResponse)initWithMailSenderImportance:(int)a3 importanceConfidenceScore:(double)a4 mailFeatureDictionary:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (ATXMailContextResponse)initWithCoder:(id)coder;
+- (ATXMailContextResponse)initWithMailSenderImportance:(int)importance importanceConfidenceScore:(double)score mailFeatureDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXMailContextResponse
 
-- (ATXMailContextResponse)initWithMailSenderImportance:(int)a3 importanceConfidenceScore:(double)a4 mailFeatureDictionary:(id)a5
+- (ATXMailContextResponse)initWithMailSenderImportance:(int)importance importanceConfidenceScore:(double)score mailFeatureDictionary:(id)dictionary
 {
-  v9 = a5;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = ATXMailContextResponse;
   v10 = [(ATXMailContextResponse *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_mailSenderImportance = a3;
-    v10->_importanceConfidenceScore = a4;
-    objc_storeStrong(&v10->_mailFeatureDictionary, a5);
+    v10->_mailSenderImportance = importance;
+    v10->_importanceConfidenceScore = score;
+    objc_storeStrong(&v10->_mailFeatureDictionary, dictionary);
   }
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:-[ATXMailContextResponse mailSenderImportance](self forKey:{"mailSenderImportance"), @"mailSenderImportance"}];
+  coderCopy = coder;
+  [coderCopy encodeInt32:-[ATXMailContextResponse mailSenderImportance](self forKey:{"mailSenderImportance"), @"mailSenderImportance"}];
   [(ATXMailContextResponse *)self importanceConfidenceScore];
-  [v4 encodeDouble:@"importanceConfidenceScore" forKey:?];
-  v5 = [(ATXMailContextResponse *)self mailFeatureDictionary];
-  [v4 encodeObject:v5 forKey:@"mailFeatureDictionary"];
+  [coderCopy encodeDouble:@"importanceConfidenceScore" forKey:?];
+  mailFeatureDictionary = [(ATXMailContextResponse *)self mailFeatureDictionary];
+  [coderCopy encodeObject:mailFeatureDictionary forKey:@"mailFeatureDictionary"];
 }
 
-- (ATXMailContextResponse)initWithCoder:(id)a3
+- (ATXMailContextResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt32ForKey:@"mailSenderImportance"];
-  [v4 decodeDoubleForKey:@"importanceConfidenceScore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt32ForKey:@"mailSenderImportance"];
+  [coderCopy decodeDoubleForKey:@"importanceConfidenceScore"];
   v7 = v6;
   v8 = objc_opt_class();
-  v9 = [v4 decodeDictionaryWithKeysOfClass:v8 objectsOfClass:objc_opt_class() forKey:@"mailFeatureDictionary"];
+  v9 = [coderCopy decodeDictionaryWithKeysOfClass:v8 objectsOfClass:objc_opt_class() forKey:@"mailFeatureDictionary"];
 
   v10 = [(ATXMailContextResponse *)self initWithMailSenderImportance:v5 importanceConfidenceScore:v9 mailFeatureDictionary:v7];
   return v10;

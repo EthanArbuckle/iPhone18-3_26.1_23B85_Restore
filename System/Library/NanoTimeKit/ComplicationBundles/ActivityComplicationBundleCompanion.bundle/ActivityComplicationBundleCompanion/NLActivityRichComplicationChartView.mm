@@ -1,39 +1,39 @@
 @interface NLActivityRichComplicationChartView
-- (double)_exercisePointRelativeHeightForValue:(double)a3;
-- (double)_movePointRelativeHeightForValue:(double)a3;
-- (id)_generateChartPointsForQuantityStatisticsInfo:(id)a3 withUnit:(id)a4 accumulateFractionalValues:(BOOL)a5;
-- (id)_generateStandChartPointsForStandHourInfo:(id)a3;
-- (id)_keyForDate:(id)a3;
-- (id)_timeStringByRemovingSpacesFromTimeString:(id)a3;
-- (id)initForDevice:(id)a3;
+- (double)_exercisePointRelativeHeightForValue:(double)value;
+- (double)_movePointRelativeHeightForValue:(double)value;
+- (id)_generateChartPointsForQuantityStatisticsInfo:(id)info withUnit:(id)unit accumulateFractionalValues:(BOOL)values;
+- (id)_generateStandChartPointsForStandHourInfo:(id)info;
+- (id)_keyForDate:(id)date;
+- (id)_timeStringByRemovingSpacesFromTimeString:(id)string;
+- (id)initForDevice:(id)device;
 - (void)_createHourFormatter;
 - (void)_currentLocaleChangeOccurred;
-- (void)_drawChartsBarsInContext:(CGContext *)a3 lineNumber:(unint64_t)a4 xPosition:(double)a5;
+- (void)_drawChartsBarsInContext:(CGContext *)context lineNumber:(unint64_t)number xPosition:(double)position;
 - (void)_registerForNotifications;
 - (void)_updateHourLabelsText;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setExerciseGraphData:(id)a3;
-- (void)setMoveGraphData:(id)a3 activityMoveMode:(int64_t)a4;
-- (void)setStandGraphData:(id)a3;
+- (void)setExerciseGraphData:(id)data;
+- (void)setMoveGraphData:(id)data activityMoveMode:(int64_t)mode;
+- (void)setStandGraphData:(id)data;
 @end
 
 @implementation NLActivityRichComplicationChartView
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v35.receiver = self;
   v35.super_class = NLActivityRichComplicationChartView;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v9 = [(NLActivityRichComplicationChartView *)&v35 initWithFrame:CGRectZero.origin.x, y, width, height];
-  v10 = v9;
-  if (v9)
+  height = [(NLActivityRichComplicationChartView *)&v35 initWithFrame:CGRectZero.origin.x, y, width, height];
+  v10 = height;
+  if (height)
   {
-    objc_storeStrong(&v9->_device, a3);
+    objc_storeStrong(&height->_device, device);
     v11 = +[UIColor clearColor];
     [(NLActivityRichComplicationChartView *)v10 setBackgroundColor:v11];
 
@@ -157,19 +157,19 @@
   [(UILabel *)self->_sixPMHourLabel setText:v15];
 }
 
-- (id)_timeStringByRemovingSpacesFromTimeString:(id)a3
+- (id)_timeStringByRemovingSpacesFromTimeString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = +[NSLocale currentLocale];
-  v5 = [v4 languageCode];
-  if ([@"hi" isEqualToString:v5])
+  languageCode = [v4 languageCode];
+  if ([@"hi" isEqualToString:languageCode])
   {
-    v6 = v3;
+    v6 = stringCopy;
   }
 
   else
   {
-    v6 = [v3 stringByReplacingOccurrencesOfString:@" " withString:&stru_108E8];
+    v6 = [stringCopy stringByReplacingOccurrencesOfString:@" " withString:&stru_108E8];
   }
 
   v7 = v6;
@@ -191,23 +191,23 @@
   [v3 addObserver:self selector:"_currentLocaleChangeOccurred" name:NSCurrentLocaleDidChangeNotification object:0];
 }
 
-- (void)setMoveGraphData:(id)a3 activityMoveMode:(int64_t)a4
+- (void)setMoveGraphData:(id)data activityMoveMode:(int64_t)mode
 {
-  if (a4 == 2)
+  if (mode == 2)
   {
-    v6 = a3;
-    v7 = +[HKUnit minuteUnit];
+    dataCopy = data;
+    userActiveEnergyBurnedUnit = +[HKUnit minuteUnit];
   }
 
   else
   {
-    v8 = a3;
+    dataCopy2 = data;
     v9 = +[FIUIActivityDataModel formattingManager];
-    v10 = [v9 unitManager];
-    v7 = [v10 userActiveEnergyBurnedUnit];
+    unitManager = [v9 unitManager];
+    userActiveEnergyBurnedUnit = [unitManager userActiveEnergyBurnedUnit];
   }
 
-  v11 = [(NLActivityRichComplicationChartView *)self _generateChartPointsForQuantityStatisticsInfo:a3 withUnit:v7 accumulateFractionalValues:0];
+  v11 = [(NLActivityRichComplicationChartView *)self _generateChartPointsForQuantityStatisticsInfo:data withUnit:userActiveEnergyBurnedUnit accumulateFractionalValues:0];
 
   moveChartPoints = self->_moveChartPoints;
   self->_moveChartPoints = v11;
@@ -216,22 +216,22 @@
   maxMoveValue = self->_maxMoveValue;
   self->_maxMoveValue = v13;
 
-  v15 = [(NSDictionary *)self->_moveChartPoints allValues];
+  allValues = [(NSDictionary *)self->_moveChartPoints allValues];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_38BC;
   v16[3] = &unk_10560;
   v16[4] = self;
-  [v15 enumerateObjectsUsingBlock:v16];
+  [allValues enumerateObjectsUsingBlock:v16];
 
   [(NLActivityRichComplicationChartView *)self setNeedsDisplay];
 }
 
-- (void)setExerciseGraphData:(id)a3
+- (void)setExerciseGraphData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = +[HKUnit minuteUnit];
-  v6 = [(NLActivityRichComplicationChartView *)self _generateChartPointsForQuantityStatisticsInfo:v4 withUnit:v5 accumulateFractionalValues:1];
+  v6 = [(NLActivityRichComplicationChartView *)self _generateChartPointsForQuantityStatisticsInfo:dataCopy withUnit:v5 accumulateFractionalValues:1];
 
   exerciseChartPoints = self->_exerciseChartPoints;
   self->_exerciseChartPoints = v6;
@@ -240,48 +240,48 @@
   maxExerciseValue = self->_maxExerciseValue;
   self->_maxExerciseValue = v8;
 
-  v10 = [(NSDictionary *)self->_exerciseChartPoints allValues];
+  allValues = [(NSDictionary *)self->_exerciseChartPoints allValues];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_3A50;
   v11[3] = &unk_10560;
   v11[4] = self;
-  [v10 enumerateObjectsUsingBlock:v11];
+  [allValues enumerateObjectsUsingBlock:v11];
 
   [(NLActivityRichComplicationChartView *)self setNeedsDisplay];
 }
 
-- (void)setStandGraphData:(id)a3
+- (void)setStandGraphData:(id)data
 {
-  v4 = [(NLActivityRichComplicationChartView *)self _generateStandChartPointsForStandHourInfo:a3];
+  v4 = [(NLActivityRichComplicationChartView *)self _generateStandChartPointsForStandHourInfo:data];
   standChartPoints = self->_standChartPoints;
   self->_standChartPoints = v4;
 
   [(NLActivityRichComplicationChartView *)self setNeedsDisplay];
 }
 
-- (id)_keyForDate:(id)a3
+- (id)_keyForDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[NSCalendar currentCalendar];
-  v5 = [v4 components:96 fromDate:v3];
+  v5 = [v4 components:96 fromDate:dateCopy];
 
   v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v5 hour] + objc_msgSend(v5, "minute"));
 
   return v6;
 }
 
-- (id)_generateChartPointsForQuantityStatisticsInfo:(id)a3 withUnit:(id)a4 accumulateFractionalValues:(BOOL)a5
+- (id)_generateChartPointsForQuantityStatisticsInfo:(id)info withUnit:(id)unit accumulateFractionalValues:(BOOL)values
 {
-  v5 = a5;
-  v8 = a3;
-  v40 = a4;
+  valuesCopy = values;
+  infoCopy = info;
+  unitCopy = unit;
   v9 = +[NSMutableDictionary dictionary];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v10 = v8;
+  v10 = infoCopy;
   v11 = [v10 countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (!v11)
   {
@@ -305,13 +305,13 @@
       }
 
       v17 = *(*(&v41 + 1) + 8 * i);
-      v18 = [v17 quantityValue];
-      [v18 doubleValueForUnit:v40];
+      quantityValue = [v17 quantityValue];
+      [quantityValue doubleValueForUnit:unitCopy];
       v20 = v19;
 
       v21 = floor(v20);
       v22 = v15 + v20 - v21;
-      if (!v5)
+      if (!valuesCopy)
       {
         v22 = v15;
       }
@@ -349,14 +349,14 @@
       }
 
       v26 = objc_alloc_init(NLActivityRichComplicationChartPoint);
-      v27 = [v17 startDate];
-      [(NLActivityRichComplicationChartPoint *)v26 setXValue:v27];
+      startDate = [v17 startDate];
+      [(NLActivityRichComplicationChartPoint *)v26 setXValue:startDate];
 
       v28 = [NSNumber numberWithDouble:v25];
       [(NLActivityRichComplicationChartPoint *)v26 setYValue:v28];
 
-      v29 = [v17 startDate];
-      v30 = [(NLActivityRichComplicationChartView *)self _keyForDate:v29];
+      startDate2 = [v17 startDate];
+      v30 = [(NLActivityRichComplicationChartView *)self _keyForDate:startDate2];
 
       [v9 setObject:v26 forKeyedSubscript:v30];
       if (v25 > 0.0)
@@ -373,10 +373,10 @@
 
   while (v12);
 
-  if (v15 > 0.7 && v5)
+  if (v15 > 0.7 && valuesCopy)
   {
-    v33 = [(NLActivityRichComplicationChartPoint *)v13 yValue];
-    [v33 doubleValue];
+    yValue = [(NLActivityRichComplicationChartPoint *)v13 yValue];
+    [yValue doubleValue];
     v35 = v34;
 
     v36 = [NSNumber numberWithDouble:v35 + 1.0];
@@ -389,15 +389,15 @@ LABEL_28:
   return v37;
 }
 
-- (id)_generateStandChartPointsForStandHourInfo:(id)a3
+- (id)_generateStandChartPointsForStandHourInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = +[NSMutableDictionary dictionary];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v4;
+  obj = infoCopy;
   v6 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -447,8 +447,8 @@ LABEL_28:
 {
   v36.receiver = self;
   v36.super_class = NLActivityRichComplicationChartView;
-  v3 = [(NLActivityRichComplicationChartView *)&v36 layoutSubviews];
-  sub_4EB4(v3, self->_device);
+  layoutSubviews = [(NLActivityRichComplicationChartView *)&v36 layoutSubviews];
+  sub_4EB4(layoutSubviews, self->_device);
   v4 = *&qword_166A0;
   v33 = *&qword_166A8;
   v34 = *&xmmword_166B0;
@@ -520,12 +520,12 @@ LABEL_28:
   [(NLActivityRichComplicationChartView *)self setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   CurrentContext = UIGraphicsGetCurrentContext();
   v9 = +[UIColor clearColor];
   [v9 setFill];
@@ -547,8 +547,8 @@ LABEL_28:
   v31 = qword_16728;
   v18 = *&qword_166F8;
   v19 = *&qword_16708;
-  v11 = [(NSArray *)self->_chartLineXPositions lastObject];
-  [v11 floatValue];
+  lastObject = [(NSArray *)self->_chartLineXPositions lastObject];
+  [lastObject floatValue];
   v13 = v12 - self->_chartLineStartPositionX;
 
   [(NLActivityRichComplicationChartView *)self bounds];
@@ -584,7 +584,7 @@ LABEL_28:
   [(NSArray *)chartLineXPositions enumerateObjectsUsingBlock:v20];
 }
 
-- (void)_drawChartsBarsInContext:(CGContext *)a3 lineNumber:(unint64_t)a4 xPosition:(double)a5
+- (void)_drawChartsBarsInContext:(CGContext *)context lineNumber:(unint64_t)number xPosition:(double)position
 {
   sub_4EB4(self, self->_device);
   v9 = xmmword_16690;
@@ -592,20 +592,20 @@ LABEL_28:
   v11 = *&qword_166C8;
   v12 = *&qword_166E0;
   v13 = *&qword_16710;
-  obj = a5;
+  obj = position;
   rect = *&qword_166A0;
   v14 = *&qword_166A8 + *&qword_166A0 + *&qword_16710;
   CLKRoundForDevice();
   v16 = v15;
-  v54 = [NSNumber numberWithUnsignedInteger:a4];
+  v54 = [NSNumber numberWithUnsignedInteger:number];
   v17 = [(NSDictionary *)self->_standChartPoints objectForKeyedSubscript:?];
   v18 = v17;
   if (v17)
   {
     *&v57 = v14;
     v19 = *&v10 + v13 + v14 - *&v9;
-    v20 = [v17 yValue];
-    v21 = [v20 integerValue];
+    yValue = [v17 yValue];
+    integerValue = [yValue integerValue];
 
     Mutable = CGPathCreateMutable();
     v74.origin.x = *(&v9 + 1) + obj;
@@ -613,32 +613,32 @@ LABEL_28:
     v74.origin.y = v19;
     v74.size.width = v12;
     CGPathAddRoundedRect(Mutable, 0, v74, v12 * 0.5, v12 * 0.5);
-    CGContextSaveGState(a3);
-    if (!v21)
+    CGContextSaveGState(context);
+    if (!integerValue)
     {
-      CGContextSetAlpha(a3, 0.3);
+      CGContextSetAlpha(context, 0.3);
     }
 
-    CGContextAddPath(a3, Mutable);
-    CGContextClip(a3);
+    CGContextAddPath(context, Mutable);
+    CGContextClip(context);
     v68.x = 1.0;
     v68.y = 0.0;
     v71.x = 1.0;
     v71.y = v19;
-    CGContextDrawLinearGradient(a3, self->_standBarGradient, v68, v71, 0);
-    CGContextRestoreGState(a3);
+    CGContextDrawLinearGradient(context, self->_standBarGradient, v68, v71, 0);
+    CGContextRestoreGState(context);
     CGPathRelease(Mutable);
     v14 = *&v57;
   }
 
   v53 = v18;
-  c = a3;
+  c = context;
   path = CGPathCreateMutable();
   v23 = CGPathCreateMutable();
   v58 = CGPathCreateMutable();
   v24 = CGPathCreateMutable();
-  v25 = [NSNumber numberWithUnsignedInteger:a4];
-  [NSNumber numberWithUnsignedInteger:a4 + 30];
+  v25 = [NSNumber numberWithUnsignedInteger:number];
+  [NSNumber numberWithUnsignedInteger:number + 30];
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
@@ -663,8 +663,8 @@ LABEL_28:
 
         v30 = *(*(&v62 + 1) + 8 * i);
         v31 = [(NSDictionary *)self->_moveChartPoints objectForKeyedSubscript:v30];
-        v32 = [v31 yValue];
-        [v32 doubleValue];
+        yValue2 = [v31 yValue];
+        [yValue2 doubleValue];
         v34 = v33;
 
         v35 = -v11;
@@ -686,8 +686,8 @@ LABEL_28:
         v40 = *(&v10 + 1);
         CGPathAddRoundedRect(v36, 0, *(&v35 - 3), *(&v10 + 1) * 0.5, *(&v10 + 1) * 0.5);
         v41 = [(NSDictionary *)self->_exerciseChartPoints objectForKeyedSubscript:v30];
-        v42 = [v41 yValue];
-        [v42 doubleValue];
+        yValue3 = [v41 yValue];
+        [yValue3 doubleValue];
         v44 = v43;
 
         v45 = -v11;
@@ -767,7 +767,7 @@ LABEL_28:
   CGPathRelease(v58);
 }
 
-- (double)_movePointRelativeHeightForValue:(double)a3
+- (double)_movePointRelativeHeightForValue:(double)value
 {
   sub_4EB4(self, self->_device);
   v5 = *&qword_166C0;
@@ -777,7 +777,7 @@ LABEL_28:
   result = 0.0;
   if (v8 > 0.00000011920929)
   {
-    result = v6 * (a3 / v8);
+    result = v6 * (value / v8);
     if (result < v5)
     {
       return v5;
@@ -787,7 +787,7 @@ LABEL_28:
   return result;
 }
 
-- (double)_exercisePointRelativeHeightForValue:(double)a3
+- (double)_exercisePointRelativeHeightForValue:(double)value
 {
   sub_4EB4(self, self->_device);
   v5 = *&qword_166C0;
@@ -797,7 +797,7 @@ LABEL_28:
   result = 0.0;
   if (v8 > 0.00000011920929)
   {
-    result = v6 * (a3 / v8);
+    result = v6 * (value / v8);
     if (result < v5)
     {
       return v5;

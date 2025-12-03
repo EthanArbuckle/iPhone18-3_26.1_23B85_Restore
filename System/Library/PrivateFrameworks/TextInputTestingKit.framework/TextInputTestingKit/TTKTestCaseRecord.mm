@@ -1,9 +1,9 @@
 @interface TTKTestCaseRecord
 - (TIContinuousPath)touchData;
-- (TTKTestCaseRecord)initWithDictionary:(id)a3;
-- (TTKTestCaseRecord)initWithIntendedText:(id)a3 additionalIntendedTexts:(id)a4 touchDataCollection:(id)a5 recordID:(id)a6 layoutName:(id)a7 inputText:(id)a8 transliteration:(id)a9 context:(id)a10 annotations:(id)a11;
+- (TTKTestCaseRecord)initWithDictionary:(id)dictionary;
+- (TTKTestCaseRecord)initWithIntendedText:(id)text additionalIntendedTexts:(id)texts touchDataCollection:(id)collection recordID:(id)d layoutName:(id)name inputText:(id)inputText transliteration:(id)transliteration context:(id)self0 annotations:(id)self1;
 - (id)toJsonDictionary;
-- (void)setAnnotation:(id)a3 forKey:(id)a4;
+- (void)setAnnotation:(id)annotation forKey:(id)key;
 @end
 
 @implementation TTKTestCaseRecord
@@ -19,31 +19,31 @@
   return v3;
 }
 
-- (void)setAnnotation:(id)a3 forKey:(id)a4
+- (void)setAnnotation:(id)annotation forKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
+  annotationCopy = annotation;
+  keyCopy = key;
   internalAnnotations = self->_internalAnnotations;
   if (!internalAnnotations)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v9 = self->_internalAnnotations;
-    self->_internalAnnotations = v8;
+    self->_internalAnnotations = dictionary;
 
     internalAnnotations = self->_internalAnnotations;
   }
 
-  [(NSMutableDictionary *)internalAnnotations setValue:v10 forKey:v6];
+  [(NSMutableDictionary *)internalAnnotations setValue:annotationCopy forKey:keyCopy];
 }
 
 - (id)toJsonDictionary
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [v3 setObject:self->_layoutName forKeyedSubscript:@"layout_name"];
-  [v3 setObject:self->_primaryIntendedText forKeyedSubscript:@"intended_text"];
-  [v3 setObject:self->_recordID forKeyedSubscript:@"record_id"];
-  v4 = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:self->_layoutName forKeyedSubscript:@"layout_name"];
+  [dictionary setObject:self->_primaryIntendedText forKeyedSubscript:@"intended_text"];
+  [dictionary setObject:self->_recordID forKeyedSubscript:@"record_id"];
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -63,8 +63,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v17 + 1) + 8 * i) toJsonDictionary];
-        [v4 addObject:v10];
+        toJsonDictionary = [*(*(&v17 + 1) + 8 * i) toJsonDictionary];
+        [array addObject:toJsonDictionary];
       }
 
       v7 = [(NSArray *)v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -73,58 +73,58 @@
     while (v7);
   }
 
-  [v3 setObject:v4 forKeyedSubscript:@"touch_events"];
+  [dictionary setObject:array forKeyedSubscript:@"touch_events"];
   additionalIntendedTexts = self->_additionalIntendedTexts;
   if (additionalIntendedTexts)
   {
-    [v3 setObject:additionalIntendedTexts forKeyedSubscript:@"additional_intended_texts"];
+    [dictionary setObject:additionalIntendedTexts forKeyedSubscript:@"additional_intended_texts"];
   }
 
   inputText = self->_inputText;
   if (inputText)
   {
-    [v3 setObject:inputText forKeyedSubscript:@"input_text"];
+    [dictionary setObject:inputText forKeyedSubscript:@"input_text"];
   }
 
   transliteration = self->_transliteration;
   if (transliteration)
   {
-    [v3 setObject:transliteration forKeyedSubscript:@"transliteration"];
+    [dictionary setObject:transliteration forKeyedSubscript:@"transliteration"];
   }
 
   context = self->_context;
   if (context)
   {
-    [v3 setObject:context forKeyedSubscript:@"context"];
+    [dictionary setObject:context forKeyedSubscript:@"context"];
   }
 
   internalAnnotations = self->_internalAnnotations;
   if (internalAnnotations)
   {
-    [v3 setObject:internalAnnotations forKeyedSubscript:@"annotations"];
+    [dictionary setObject:internalAnnotations forKeyedSubscript:@"annotations"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (TTKTestCaseRecord)initWithDictionary:(id)a3
+- (TTKTestCaseRecord)initWithDictionary:(id)dictionary
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v39.receiver = self;
   v39.super_class = TTKTestCaseRecord;
   v5 = [(TTKTestCaseRecord *)&v39 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"layout_name"];
+    v6 = [dictionaryCopy objectForKey:@"layout_name"];
     layoutName = v5->_layoutName;
     v5->_layoutName = v6;
 
-    v8 = [v4 objectForKey:@"intended_text"];
+    v8 = [dictionaryCopy objectForKey:@"intended_text"];
     primaryIntendedText = v5->_primaryIntendedText;
     v5->_primaryIntendedText = v8;
 
-    v10 = [v4 objectForKey:@"alternate_intended_texts"];
+    v10 = [dictionaryCopy objectForKey:@"alternate_intended_texts"];
     if (v10)
     {
       v11 = [MEMORY[0x277CBEA60] arrayWithArray:v10];
@@ -133,19 +133,19 @@
     }
 
     v34 = v10;
-    v13 = [v4 objectForKey:@"input_text"];
+    v13 = [dictionaryCopy objectForKey:@"input_text"];
     inputText = v5->_inputText;
     v5->_inputText = v13;
 
-    v15 = [v4 objectForKey:@"transliteration"];
+    v15 = [dictionaryCopy objectForKey:@"transliteration"];
     transliteration = v5->_transliteration;
     v5->_transliteration = v15;
 
-    v17 = [v4 objectForKey:@"record_id"];
+    v17 = [dictionaryCopy objectForKey:@"record_id"];
     recordID = v5->_recordID;
     v5->_recordID = v17;
 
-    v19 = [v4 objectForKey:@"annotations"];
+    v19 = [dictionaryCopy objectForKey:@"annotations"];
     if (v19)
     {
       v20 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v19];
@@ -153,12 +153,12 @@
       v5->_internalAnnotations = v20;
     }
 
-    v22 = [v4 objectForKey:@"context"];
+    v22 = [dictionaryCopy objectForKey:@"context"];
     context = v5->_context;
     v5->_context = v22;
 
-    v24 = [v4 objectForKey:@"touch_events"];
-    v25 = [MEMORY[0x277CBEB18] array];
+    v24 = [dictionaryCopy objectForKey:@"touch_events"];
+    array = [MEMORY[0x277CBEB18] array];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
@@ -180,7 +180,7 @@
           }
 
           v31 = [[TIContinuousPath alloc] initWithJsonDictionary:*(*(&v35 + 1) + 8 * v30)];
-          [(NSArray *)v25 addObject:v31];
+          [(NSArray *)array addObject:v31];
 
           ++v30;
         }
@@ -193,44 +193,44 @@
     }
 
     touchDataCollection = v5->_touchDataCollection;
-    v5->_touchDataCollection = v25;
+    v5->_touchDataCollection = array;
   }
 
   return v5;
 }
 
-- (TTKTestCaseRecord)initWithIntendedText:(id)a3 additionalIntendedTexts:(id)a4 touchDataCollection:(id)a5 recordID:(id)a6 layoutName:(id)a7 inputText:(id)a8 transliteration:(id)a9 context:(id)a10 annotations:(id)a11
+- (TTKTestCaseRecord)initWithIntendedText:(id)text additionalIntendedTexts:(id)texts touchDataCollection:(id)collection recordID:(id)d layoutName:(id)name inputText:(id)inputText transliteration:(id)transliteration context:(id)self0 annotations:(id)self1
 {
-  v34 = a3;
-  v18 = a4;
-  v33 = a5;
-  v32 = a6;
-  v31 = a7;
-  v30 = a8;
-  v29 = a9;
-  v28 = a10;
-  v19 = v18;
-  v20 = a11;
+  textCopy = text;
+  textsCopy = texts;
+  collectionCopy = collection;
+  dCopy = d;
+  nameCopy = name;
+  inputTextCopy = inputText;
+  transliterationCopy = transliteration;
+  contextCopy = context;
+  v19 = textsCopy;
+  annotationsCopy = annotations;
   v35.receiver = self;
   v35.super_class = TTKTestCaseRecord;
   v21 = [(TTKTestCaseRecord *)&v35 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_primaryIntendedText, a3);
+    objc_storeStrong(&v21->_primaryIntendedText, text);
     v23 = [MEMORY[0x277CBEA60] arrayWithArray:v19];
     additionalIntendedTexts = v22->_additionalIntendedTexts;
     v22->_additionalIntendedTexts = v23;
 
-    objc_storeStrong(&v22->_inputText, a8);
-    objc_storeStrong(&v22->_transliteration, a9);
-    objc_storeStrong(&v22->_context, a10);
-    objc_storeStrong(&v22->_touchDataCollection, a5);
-    objc_storeStrong(&v22->_recordID, a6);
-    objc_storeStrong(&v22->_layoutName, a7);
-    if (v20)
+    objc_storeStrong(&v22->_inputText, inputText);
+    objc_storeStrong(&v22->_transliteration, transliteration);
+    objc_storeStrong(&v22->_context, context);
+    objc_storeStrong(&v22->_touchDataCollection, collection);
+    objc_storeStrong(&v22->_recordID, d);
+    objc_storeStrong(&v22->_layoutName, name);
+    if (annotationsCopy)
     {
-      v25 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v20];
+      v25 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:annotationsCopy];
       internalAnnotations = v22->_internalAnnotations;
       v22->_internalAnnotations = v25;
     }

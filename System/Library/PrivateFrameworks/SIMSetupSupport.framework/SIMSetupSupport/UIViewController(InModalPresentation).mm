@@ -6,37 +6,37 @@
 
 - (uint64_t)isInModalPresentation
 {
-  v2 = [a1 navigationController];
+  navigationController = [self navigationController];
 
-  if (v2)
+  if (navigationController)
   {
-    v3 = a1;
-    v4 = [v3 parentViewController];
+    selfCopy = self;
+    parentViewController = [selfCopy parentViewController];
 
-    if (v4)
+    if (parentViewController)
     {
       do
       {
-        v5 = [v3 parentViewController];
+        parentViewController2 = [selfCopy parentViewController];
 
-        v6 = [v5 parentViewController];
+        v5ParentViewController = [parentViewController2 parentViewController];
 
-        v3 = v5;
+        selfCopy = parentViewController2;
       }
 
-      while (v6);
+      while (v5ParentViewController);
     }
 
     else
     {
-      v5 = v3;
+      parentViewController2 = selfCopy;
     }
 
-    v7 = [v5 presentingViewController];
-    v2 = v7 != 0;
+    presentingViewController = [parentViewController2 presentingViewController];
+    navigationController = presentingViewController != 0;
   }
 
-  return v2;
+  return navigationController;
 }
 
 @end

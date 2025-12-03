@@ -1,19 +1,19 @@
 @interface SHMusicalFeaturesExtractor
-- (BOOL)flowBuffer:(id)a3 error:(id *)a4;
-- (SHMusicalFeaturesExtractor)initWithConfiguration:(id)a3 sampleRate:(double)a4 error:(id *)a5 modelLoadCompletionHandler:(id)a6;
+- (BOOL)flowBuffer:(id)buffer error:(id *)error;
+- (SHMusicalFeaturesExtractor)initWithConfiguration:(id)configuration sampleRate:(double)rate error:(id *)error modelLoadCompletionHandler:(id)handler;
 - (double)duration;
-- (id)signatureWithError:(id *)a3;
+- (id)signatureWithError:(id *)error;
 - (void)dealloc;
 - (void)reset;
 @end
 
 @implementation SHMusicalFeaturesExtractor
 
-- (SHMusicalFeaturesExtractor)initWithConfiguration:(id)a3 sampleRate:(double)a4 error:(id *)a5 modelLoadCompletionHandler:(id)a6
+- (SHMusicalFeaturesExtractor)initWithConfiguration:(id)configuration sampleRate:(double)rate error:(id *)error modelLoadCompletionHandler:(id)handler
 {
   *&v43[5] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v41.receiver = self;
   v41.super_class = SHMusicalFeaturesExtractor;
   v12 = [(SHMusicalFeaturesExtractor *)&v41 init];
@@ -26,13 +26,13 @@
   featureConfiguration = v12->_featureConfiguration;
   v12->_featureConfiguration = v13;
 
-  [(SHFeatureConfiguration *)v12->_featureConfiguration setSampleRate:a4];
-  v15 = [v10 cremaModelURL];
-  v16 = [v15 copy];
+  [(SHFeatureConfiguration *)v12->_featureConfiguration setSampleRate:rate];
+  cremaModelURL = [configurationCopy cremaModelURL];
+  v16 = [cremaModelURL copy];
   [(SHFeatureConfiguration *)v12->_featureConfiguration setCremaModelURL:v16];
 
-  v17 = [v10 crepeModelURL];
-  v18 = [v17 copy];
+  crepeModelURL = [configurationCopy crepeModelURL];
+  v18 = [crepeModelURL copy];
   [(SHFeatureConfiguration *)v12->_featureConfiguration setCrepeModelURL:v18];
 
   v19 = os_log_create("com.apple.shazamkit", "feature-extraction");
@@ -41,17 +41,17 @@
   v22 = v21;
   if (v20 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v21))
   {
-    v23 = [v10 cremaModelURL];
-    v24 = [v10 crepeModelURL];
+    cremaModelURL2 = [configurationCopy cremaModelURL];
+    crepeModelURL2 = [configurationCopy crepeModelURL];
     *buf = 67109376;
-    v43[0] = v23 != 0;
+    v43[0] = cremaModelURL2 != 0;
     LOWORD(v43[1]) = 1024;
-    *(&v43[1] + 2) = v24 != 0;
+    *(&v43[1] + 2) = crepeModelURL2 != 0;
     _os_signpost_emit_with_name_impl(&dword_230F52000, v22, OS_SIGNPOST_INTERVAL_BEGIN, v20, "SHMusicalFeaturesExtractor_Async_Init", "CREMA=%d CREPE=%d", buf, 0xEu);
   }
 
   v25 = [SHFeatureExtractor alloc];
-  v26 = [(SHMusicalFeaturesExtractor *)v12 featureConfiguration];
+  featureConfiguration = [(SHMusicalFeaturesExtractor *)v12 featureConfiguration];
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __96__SHMusicalFeaturesExtractor_initWithConfiguration_sampleRate_error_modelLoadCompletionHandler___block_invoke;
@@ -59,13 +59,13 @@
   v27 = v22;
   v38 = v27;
   v40 = v20;
-  v39 = v11;
-  v28 = [(SHFeatureExtractor *)v25 initWithFeatureConfiguration:v26 error:a5 completionHandler:v37];
+  v39 = handlerCopy;
+  v28 = [(SHFeatureExtractor *)v25 initWithFeatureConfiguration:featureConfiguration error:error completionHandler:v37];
   featureExtractor = v12->_featureExtractor;
   v12->_featureExtractor = v28;
 
-  v30 = [(SHMusicalFeaturesExtractor *)v12 featureExtractor];
-  v31 = v30 == 0;
+  featureExtractor = [(SHMusicalFeaturesExtractor *)v12 featureExtractor];
+  v31 = featureExtractor == 0;
 
   if (!v31)
   {
@@ -75,12 +75,12 @@ LABEL_7:
     goto LABEL_13;
   }
 
-  if (a5)
+  if (error)
   {
     v33 = sh_log_object();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
-      v34 = *a5;
+      v34 = *error;
       *buf = 138412290;
       *v43 = v34;
       _os_log_impl(&dword_230F52000, v33, OS_LOG_TYPE_ERROR, "Feature extractor failed to initialize with error: %@", buf, 0xCu);
@@ -132,20 +132,20 @@ void __96__SHMusicalFeaturesExtractor_initWithConfiguration_sampleRate_error_mod
 - (void)reset
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(SHMusicalFeaturesExtractor *)self featureExtractor];
+  featureExtractor = [(SHMusicalFeaturesExtractor *)self featureExtractor];
 
-  if (v3)
+  if (featureExtractor)
   {
-    v4 = [(SHMusicalFeaturesExtractor *)self featureExtractor];
-    v5 = [v4 reset];
+    featureExtractor2 = [(SHMusicalFeaturesExtractor *)self featureExtractor];
+    reset = [featureExtractor2 reset];
 
-    if ((v5 & 1) == 0)
+    if ((reset & 1) == 0)
     {
       v6 = sh_log_object();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         v8 = 138412290;
-        v9 = self;
+        selfCopy = self;
         _os_log_impl(&dword_230F52000, v6, OS_LOG_TYPE_ERROR, "Could not reset musical features extractor %@", &v8, 0xCu);
       }
     }
@@ -156,27 +156,27 @@ void __96__SHMusicalFeaturesExtractor_initWithConfiguration_sampleRate_error_mod
 
 - (double)duration
 {
-  v3 = [(SHMusicalFeaturesExtractor *)self featureExtractor];
+  featureExtractor = [(SHMusicalFeaturesExtractor *)self featureExtractor];
 
-  if (!v3)
+  if (!featureExtractor)
   {
     return 0.0;
   }
 
-  v4 = [(SHMusicalFeaturesExtractor *)self featureExtractor];
-  v5 = [v4 audioDurationInMilliseconds] / 1000.0;
+  featureExtractor2 = [(SHMusicalFeaturesExtractor *)self featureExtractor];
+  v5 = [featureExtractor2 audioDurationInMilliseconds] / 1000.0;
 
   return v5;
 }
 
-- (id)signatureWithError:(id *)a3
+- (id)signatureWithError:(id *)error
 {
-  v5 = [(SHMusicalFeaturesExtractor *)self featureExtractor];
+  featureExtractor = [(SHMusicalFeaturesExtractor *)self featureExtractor];
 
-  if (v5)
+  if (featureExtractor)
   {
-    v6 = [(SHMusicalFeaturesExtractor *)self featureExtractor];
-    v7 = [v6 featuresWithError:a3];
+    featureExtractor2 = [(SHMusicalFeaturesExtractor *)self featureExtractor];
+    v7 = [featureExtractor2 featuresWithError:error];
   }
 
   else
@@ -187,15 +187,15 @@ void __96__SHMusicalFeaturesExtractor_initWithConfiguration_sampleRate_error_mod
   return v7;
 }
 
-- (BOOL)flowBuffer:(id)a3 error:(id *)a4
+- (BOOL)flowBuffer:(id)buffer error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 format];
-  [v7 sampleRate];
+  bufferCopy = buffer;
+  format = [bufferCopy format];
+  [format sampleRate];
   v9 = v8;
-  v10 = [(SHMusicalFeaturesExtractor *)self featureConfiguration];
-  [v10 sampleRate];
+  featureConfiguration = [(SHMusicalFeaturesExtractor *)self featureConfiguration];
+  [featureConfiguration sampleRate];
   v12 = v11;
 
   if (v9 == v12)
@@ -206,11 +206,11 @@ void __96__SHMusicalFeaturesExtractor_initWithConfiguration_sampleRate_error_mod
   v13 = sh_log_object();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [(SHMusicalFeaturesExtractor *)self featureConfiguration];
-    [v14 sampleRate];
+    featureConfiguration2 = [(SHMusicalFeaturesExtractor *)self featureConfiguration];
+    [featureConfiguration2 sampleRate];
     v16 = v15;
-    v17 = [v6 format];
-    [v17 sampleRate];
+    format2 = [bufferCopy format];
+    [format2 sampleRate];
     *buf = 134218240;
     v37 = v16;
     v38 = 2048;
@@ -222,29 +222,29 @@ void __96__SHMusicalFeaturesExtractor_initWithConfiguration_sampleRate_error_mod
   featureExtractor = self->_featureExtractor;
   self->_featureExtractor = 0;
 
-  v20 = [v6 format];
-  [v20 sampleRate];
+  format3 = [bufferCopy format];
+  [format3 sampleRate];
   v22 = v21;
-  v23 = [(SHMusicalFeaturesExtractor *)self featureConfiguration];
-  [v23 setSampleRate:v22];
+  featureConfiguration3 = [(SHMusicalFeaturesExtractor *)self featureConfiguration];
+  [featureConfiguration3 setSampleRate:v22];
 
   v24 = [SHFeatureExtractor alloc];
-  v25 = [(SHMusicalFeaturesExtractor *)self featureConfiguration];
+  featureConfiguration4 = [(SHMusicalFeaturesExtractor *)self featureConfiguration];
   v35 = 0;
-  v26 = [(SHFeatureExtractor *)v24 initWithFeatureConfiguration:v25 error:&v35 completionHandler:0];
-  v27 = v35;
+  v26 = [(SHFeatureExtractor *)v24 initWithFeatureConfiguration:featureConfiguration4 error:&v35 completionHandler:0];
+  featureExtractor2 = v35;
   v28 = self->_featureExtractor;
   self->_featureExtractor = v26;
 
-  v29 = [(SHMusicalFeaturesExtractor *)self featureExtractor];
-  LODWORD(v25) = v29 == 0;
+  featureExtractor = [(SHMusicalFeaturesExtractor *)self featureExtractor];
+  LODWORD(featureConfiguration4) = featureExtractor == 0;
 
-  if (!v25)
+  if (!featureConfiguration4)
   {
 
 LABEL_6:
-    v27 = [(SHMusicalFeaturesExtractor *)self featureExtractor];
-    v30 = [v27 flowBuffer:v6 error:a4];
+    featureExtractor2 = [(SHMusicalFeaturesExtractor *)self featureExtractor];
+    v30 = [featureExtractor2 flowBuffer:bufferCopy error:error];
     goto LABEL_7;
   }
 
@@ -252,15 +252,15 @@ LABEL_6:
   if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v37 = v27;
+    v37 = featureExtractor2;
     _os_log_impl(&dword_230F52000, v33, OS_LOG_TYPE_ERROR, "Musical features extractor failed to initialize with error: %@", buf, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
-    v34 = v27;
+    v34 = featureExtractor2;
     v30 = 0;
-    *a4 = v27;
+    *error = featureExtractor2;
   }
 
   else

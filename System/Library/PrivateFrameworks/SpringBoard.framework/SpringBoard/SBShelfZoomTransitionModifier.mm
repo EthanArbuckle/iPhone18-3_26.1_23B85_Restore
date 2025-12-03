@@ -1,50 +1,50 @@
 @interface SBShelfZoomTransitionModifier
 - (BOOL)_isEffectivelyInShelf;
-- (BOOL)_shouldDimLayoutRole:(int64_t)a3 inAppLayout:(id)a4 forZoomDirection:(unint64_t)a5;
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3;
+- (BOOL)_shouldDimLayoutRole:(int64_t)role inAppLayout:(id)layout forZoomDirection:(unint64_t)direction;
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index;
 - (CGRect)_frameForCenterWindowInShelf;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBShelfZoomTransitionModifier)initWithTransitionID:(id)a3 direction:(unint64_t)a4 fromAppLayout:(id)a5 toAppLayout:(id)a6 shelf:(id)a7;
-- (SBSwitcherShelfPresentationAttributes)presentationAttributesForShelf:(SEL)a3;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
-- (double)contentPageViewScaleForAppLayout:(id)a3 withScale:(double)a4;
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForIndex:(unint64_t)a3;
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4;
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3;
-- (double)titleOpacityForIndex:(unint64_t)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)appLayoutsToEnsureExistForMainTransitionEvent:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)handleGestureEvent:(id)a3;
-- (id)hiddenAppLayoutsInShelf:(id)a3;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBShelfZoomTransitionModifier)initWithTransitionID:(id)d direction:(unint64_t)direction fromAppLayout:(id)layout toAppLayout:(id)appLayout shelf:(id)shelf;
+- (SBSwitcherShelfPresentationAttributes)presentationAttributesForShelf:(SEL)shelf;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
+- (double)contentPageViewScaleForAppLayout:(id)layout withScale:(double)scale;
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index;
+- (double)titleAndIconOpacityForIndex:(unint64_t)index;
+- (double)titleOpacityForIndex:(unint64_t)index;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)appLayoutsToEnsureExistForMainTransitionEvent:(id)event;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)handleGestureEvent:(id)event;
+- (id)hiddenAppLayoutsInShelf:(id)shelf;
 - (id)topMostLayoutElements;
 - (id)transitionDidEnd;
 - (id)transitionWillBegin;
 - (id)visibleAppLayouts;
-- (int64_t)headerStyleForIndex:(unint64_t)a3;
-- (int64_t)shadowStyleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (int64_t)headerStyleForIndex:(unint64_t)index;
+- (int64_t)shadowStyleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 @end
 
 @implementation SBShelfZoomTransitionModifier
 
-- (SBShelfZoomTransitionModifier)initWithTransitionID:(id)a3 direction:(unint64_t)a4 fromAppLayout:(id)a5 toAppLayout:(id)a6 shelf:(id)a7
+- (SBShelfZoomTransitionModifier)initWithTransitionID:(id)d direction:(unint64_t)direction fromAppLayout:(id)layout toAppLayout:(id)appLayout shelf:(id)shelf
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
+  shelfCopy = shelf;
   v40.receiver = self;
   v40.super_class = SBShelfZoomTransitionModifier;
-  v16 = [(SBTransitionSwitcherModifier *)&v40 initWithTransitionID:a3];
+  v16 = [(SBTransitionSwitcherModifier *)&v40 initWithTransitionID:d];
   v17 = v16;
   if (v16)
   {
-    v16->_direction = a4;
-    objc_storeStrong(&v16->_fromAppLayout, a5);
-    objc_storeStrong(&v17->_toAppLayout, a6);
-    objc_storeStrong(&v17->_shelf, a7);
+    v16->_direction = direction;
+    objc_storeStrong(&v16->_fromAppLayout, layout);
+    objc_storeStrong(&v17->_toAppLayout, appLayout);
+    objc_storeStrong(&v17->_shelf, shelf);
     if (v17->_direction)
     {
       v18 = [(SBAppLayout *)v17->_toAppLayout leafAppLayoutForRole:4];
@@ -112,10 +112,10 @@ uint64_t __96__SBShelfZoomTransitionModifier_initWithTransitionID_direction_from
   return v5 ^ 1u;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBChainableModifier *)self succinctDescriptionBuilder];
-  v5 = v4;
+  succinctDescriptionBuilder = [(SBChainableModifier *)self succinctDescriptionBuilder];
+  v5 = succinctDescriptionBuilder;
   if (self->_direction)
   {
     v6 = @"ToSpace";
@@ -126,7 +126,7 @@ uint64_t __96__SBShelfZoomTransitionModifier_initWithTransitionID_direction_from
     v6 = @"ToShelf";
   }
 
-  v7 = [v4 appendObject:v6 withName:@"direction"];
+  v7 = [succinctDescriptionBuilder appendObject:v6 withName:@"direction"];
   v8 = [v5 appendObject:self->_fromAppLayout withName:@"fromAppLayout"];
   v9 = [v5 appendObject:self->_toAppLayout withName:@"toAppLayout"];
   v10 = [v5 appendObject:self->_shelf withName:@"shelf"];
@@ -137,13 +137,13 @@ uint64_t __96__SBShelfZoomTransitionModifier_initWithTransitionID_direction_from
   return v5;
 }
 
-- (id)handleGestureEvent:(id)a3
+- (id)handleGestureEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = SBShelfZoomTransitionModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v8 handleGestureEvent:a3];
-  v5 = [(SBTransitionSwitcherModifier *)self interruptAndEndTransition];
-  v6 = SBAppendSwitcherModifierResponse(v4, v5);
+  v4 = [(SBTransitionSwitcherModifier *)&v8 handleGestureEvent:event];
+  interruptAndEndTransition = [(SBTransitionSwitcherModifier *)self interruptAndEndTransition];
+  v6 = SBAppendSwitcherModifierResponse(v4, interruptAndEndTransition);
 
   return v6;
 }
@@ -152,10 +152,10 @@ uint64_t __96__SBShelfZoomTransitionModifier_initWithTransitionID_direction_from
 {
   v12.receiver = self;
   v12.super_class = SBShelfZoomTransitionModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v12 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v12 transitionWillBegin];
   direction = self->_direction;
   v5 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
-  v6 = SBAppendSwitcherModifierResponse(v5, v3);
+  v6 = SBAppendSwitcherModifierResponse(v5, transitionWillBegin);
 
   v7 = [SBUpdateLayoutSwitcherEventResponse alloc];
   if (direction == 1)
@@ -178,23 +178,23 @@ uint64_t __96__SBShelfZoomTransitionModifier_initWithTransitionID_direction_from
 {
   v7.receiver = self;
   v7.super_class = SBShelfZoomTransitionModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v7 transitionDidEnd];
+  transitionDidEnd = [(SBTransitionSwitcherModifier *)&v7 transitionDidEnd];
   if (self->_direction == 1)
   {
     v4 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
-    v5 = SBAppendSwitcherModifierResponse(v4, v3);
+    v5 = SBAppendSwitcherModifierResponse(v4, transitionDidEnd);
 
-    v3 = v5;
+    transitionDidEnd = v5;
   }
 
-  return v3;
+  return transitionDidEnd;
 }
 
-- (id)appLayoutsToEnsureExistForMainTransitionEvent:(id)a3
+- (id)appLayoutsToEnsureExistForMainTransitionEvent:(id)event
 {
   v12.receiver = self;
   v12.super_class = SBShelfZoomTransitionModifier;
-  v4 = [(SBShelfZoomTransitionModifier *)&v12 appLayoutsToEnsureExistForMainTransitionEvent:a3];
+  v4 = [(SBShelfZoomTransitionModifier *)&v12 appLayoutsToEnsureExistForMainTransitionEvent:event];
   v5 = v4;
   v6 = MEMORY[0x277CBEBF8];
   if (v4)
@@ -221,8 +221,8 @@ uint64_t __96__SBShelfZoomTransitionModifier_initWithTransitionID_direction_from
 {
   v8.receiver = self;
   v8.super_class = SBShelfZoomTransitionModifier;
-  v3 = [(SBShelfZoomTransitionModifier *)&v8 visibleAppLayouts];
-  v4 = [v3 mutableCopy];
+  visibleAppLayouts = [(SBShelfZoomTransitionModifier *)&v8 visibleAppLayouts];
+  v4 = [visibleAppLayouts mutableCopy];
 
   [v4 addObject:self->_centerWindowAppLayout];
   if (self->_fullScreenSpaceAppLayout)
@@ -251,10 +251,10 @@ uint64_t __96__SBShelfZoomTransitionModifier_initWithTransitionID_direction_from
   return v6;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
-  v5 = [(SBShelfZoomTransitionModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBShelfZoomTransitionModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (v6 == self->_centerWindowAppLayout && [(SBShelfZoomTransitionModifier *)self _isEffectivelyInShelf])
   {
@@ -272,7 +272,7 @@ uint64_t __96__SBShelfZoomTransitionModifier_initWithTransitionID_direction_from
   {
     v24.receiver = self;
     v24.super_class = SBShelfZoomTransitionModifier;
-    [(SBShelfZoomTransitionModifier *)&v24 frameForIndex:a3];
+    [(SBShelfZoomTransitionModifier *)&v24 frameForIndex:index];
   }
 
   v16 = v7;
@@ -306,10 +306,10 @@ uint64_t __96__SBShelfZoomTransitionModifier_initWithTransitionID_direction_from
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
-  v5 = [(SBShelfZoomTransitionModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBShelfZoomTransitionModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (v6 == self->_centerWindowAppLayout && [(SBShelfZoomTransitionModifier *)self _isEffectivelyInShelf])
   {
@@ -324,8 +324,8 @@ uint64_t __96__SBShelfZoomTransitionModifier_initWithTransitionID_direction_from
 
   else if (v6 == self->_centerWindowBeingReplacedAppLayout)
   {
-    v14 = [(SBShelfZoomTransitionModifier *)self medusaSettings];
-    [v14 switcherCenterWindowContentPushInScale];
+    medusaSettings = [(SBShelfZoomTransitionModifier *)self medusaSettings];
+    [medusaSettings switcherCenterWindowContentPushInScale];
     v12 = v15;
   }
 
@@ -333,35 +333,35 @@ uint64_t __96__SBShelfZoomTransitionModifier_initWithTransitionID_direction_from
   {
     v17.receiver = self;
     v17.super_class = SBShelfZoomTransitionModifier;
-    [(SBShelfZoomTransitionModifier *)&v17 scaleForIndex:a3];
+    [(SBShelfZoomTransitionModifier *)&v17 scaleForIndex:index];
     v12 = v13;
   }
 
   return v12;
 }
 
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  if (self->_fullScreenSpaceAppLayout == a4)
+  if (self->_fullScreenSpaceAppLayout == layout)
   {
-    [(SBShelfZoomTransitionModifier *)&v6 scaleForLayoutRole:a3 inAppLayout:self->_toAppLayout, v5.receiver, v5.super_class, self, SBShelfZoomTransitionModifier];
+    [(SBShelfZoomTransitionModifier *)&v6 scaleForLayoutRole:role inAppLayout:self->_toAppLayout, v5.receiver, v5.super_class, self, SBShelfZoomTransitionModifier];
   }
 
   else
   {
-    [(SBShelfZoomTransitionModifier *)&v5 scaleForLayoutRole:a3 inAppLayout:a4, self, SBShelfZoomTransitionModifier, v6.receiver, v6.super_class];
+    [(SBShelfZoomTransitionModifier *)&v5 scaleForLayoutRole:role inAppLayout:layout, self, SBShelfZoomTransitionModifier, v6.receiver, v6.super_class];
   }
 
   return result;
 }
 
-- (double)contentPageViewScaleForAppLayout:(id)a3 withScale:(double)a4
+- (double)contentPageViewScaleForAppLayout:(id)layout withScale:(double)scale
 {
-  v6 = a3;
-  if (self->_centerWindowAppLayout == v6 && [(SBShelfZoomTransitionModifier *)self _isEffectivelyInShelf])
+  layoutCopy = layout;
+  if (self->_centerWindowAppLayout == layoutCopy && [(SBShelfZoomTransitionModifier *)self _isEffectivelyInShelf])
   {
-    v7 = [(SBShelfZoomTransitionModifier *)self appLayouts];
-    v8 = [v7 indexOfObject:v6];
+    appLayouts = [(SBShelfZoomTransitionModifier *)self appLayouts];
+    v8 = [appLayouts indexOfObject:layoutCopy];
 
     [(SBShelfZoomTransitionModifier *)self scaleForIndex:v8];
   }
@@ -370,7 +370,7 @@ uint64_t __96__SBShelfZoomTransitionModifier_initWithTransitionID_direction_from
   {
     v12.receiver = self;
     v12.super_class = SBShelfZoomTransitionModifier;
-    [(SBShelfZoomTransitionModifier *)&v12 contentPageViewScaleForAppLayout:v6 withScale:a4];
+    [(SBShelfZoomTransitionModifier *)&v12 contentPageViewScaleForAppLayout:layoutCopy withScale:scale];
   }
 
   v10 = v9;
@@ -378,9 +378,9 @@ uint64_t __96__SBShelfZoomTransitionModifier_initWithTransitionID_direction_from
   return v10;
 }
 
-- (int64_t)shadowStyleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (int64_t)shadowStyleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  if (self->_centerWindowAppLayout == a4)
+  if (self->_centerWindowAppLayout == layout)
   {
     if ([(SBShelfZoomTransitionModifier *)self _isEffectivelyInShelf])
     {
@@ -397,14 +397,14 @@ uint64_t __96__SBShelfZoomTransitionModifier_initWithTransitionID_direction_from
   {
     v5.receiver = self;
     v5.super_class = SBShelfZoomTransitionModifier;
-    return [(SBShelfZoomTransitionModifier *)&v5 shadowStyleForLayoutRole:a3 inAppLayout:?];
+    return [(SBShelfZoomTransitionModifier *)&v5 shadowStyleForLayoutRole:role inAppLayout:?];
   }
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
-  v5 = [(SBShelfZoomTransitionModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBShelfZoomTransitionModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (v6 == self->_centerWindowAppLayout && [(SBShelfZoomTransitionModifier *)self _isEffectivelyInShelf])
   {
@@ -416,7 +416,7 @@ uint64_t __96__SBShelfZoomTransitionModifier_initWithTransitionID_direction_from
   {
     v19.receiver = self;
     v19.super_class = SBShelfZoomTransitionModifier;
-    [(SBShelfZoomTransitionModifier *)&v19 cornerRadiiForIndex:a3];
+    [(SBShelfZoomTransitionModifier *)&v19 cornerRadiiForIndex:index];
   }
 
   v11 = v7;
@@ -435,26 +435,26 @@ uint64_t __96__SBShelfZoomTransitionModifier_initWithTransitionID_direction_from
   return result;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
-  v9 = v8;
+  layoutCopy = layout;
+  v9 = layoutCopy;
   v10 = 1.0;
-  if (self->_centerWindowAppLayout != v8 && self->_fullScreenSpaceAppLayout != v8 && (self->_centerWindowBeingReplacedAppLayout != v8 || a3 != 4))
+  if (self->_centerWindowAppLayout != layoutCopy && self->_fullScreenSpaceAppLayout != layoutCopy && (self->_centerWindowBeingReplacedAppLayout != layoutCopy || role != 4))
   {
     v14.receiver = self;
     v14.super_class = SBShelfZoomTransitionModifier;
-    [(SBShelfZoomTransitionModifier *)&v14 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+    [(SBShelfZoomTransitionModifier *)&v14 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
     v10 = v12;
   }
 
   return v10;
 }
 
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index
 {
-  v7 = [(SBShelfZoomTransitionModifier *)self appLayouts];
-  v8 = [v7 objectAtIndex:a4];
+  appLayouts = [(SBShelfZoomTransitionModifier *)self appLayouts];
+  v8 = [appLayouts objectAtIndex:index];
 
   if (v8 == self->_centerWindowAppLayout)
   {
@@ -465,59 +465,59 @@ uint64_t __96__SBShelfZoomTransitionModifier_initWithTransitionID_direction_from
   {
     v12.receiver = self;
     v12.super_class = SBShelfZoomTransitionModifier;
-    [(SBShelfZoomTransitionModifier *)&v12 shadowOpacityForLayoutRole:a3 atIndex:a4];
+    [(SBShelfZoomTransitionModifier *)&v12 shadowOpacityForLayoutRole:role atIndex:index];
     v10 = v9;
   }
 
   return v10;
 }
 
-- (id)hiddenAppLayoutsInShelf:(id)a3
+- (id)hiddenAppLayoutsInShelf:(id)shelf
 {
   v7.receiver = self;
   v7.super_class = SBShelfZoomTransitionModifier;
-  v4 = [(SBShelfZoomTransitionModifier *)&v7 hiddenAppLayoutsInShelf:a3];
+  v4 = [(SBShelfZoomTransitionModifier *)&v7 hiddenAppLayoutsInShelf:shelf];
   v5 = [v4 setByAddingObject:self->_centerWindowAppLayout];
 
   return v5;
 }
 
-- (double)titleOpacityForIndex:(unint64_t)a3
+- (double)titleOpacityForIndex:(unint64_t)index
 {
-  v5 = [(SBShelfZoomTransitionModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBShelfZoomTransitionModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (v6 != self->_centerWindowAppLayout || (v7 = 1.0, ![(SBShelfZoomTransitionModifier *)self _isEffectivelyInShelf]))
   {
     v10.receiver = self;
     v10.super_class = SBShelfZoomTransitionModifier;
-    [(SBShelfZoomTransitionModifier *)&v10 titleOpacityForIndex:a3];
+    [(SBShelfZoomTransitionModifier *)&v10 titleOpacityForIndex:index];
     v7 = v8;
   }
 
   return v7;
 }
 
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3
+- (double)titleAndIconOpacityForIndex:(unint64_t)index
 {
-  v5 = [(SBShelfZoomTransitionModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBShelfZoomTransitionModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (v6 != self->_centerWindowAppLayout || (v7 = 1.0, ![(SBShelfZoomTransitionModifier *)self _isEffectivelyInShelf]))
   {
     v10.receiver = self;
     v10.super_class = SBShelfZoomTransitionModifier;
-    [(SBShelfZoomTransitionModifier *)&v10 titleAndIconOpacityForIndex:a3];
+    [(SBShelfZoomTransitionModifier *)&v10 titleAndIconOpacityForIndex:index];
     v7 = v8;
   }
 
   return v7;
 }
 
-- (int64_t)headerStyleForIndex:(unint64_t)a3
+- (int64_t)headerStyleForIndex:(unint64_t)index
 {
-  v5 = [(SBShelfZoomTransitionModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBShelfZoomTransitionModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (v6 == self->_centerWindowAppLayout)
   {
@@ -528,46 +528,46 @@ uint64_t __96__SBShelfZoomTransitionModifier_initWithTransitionID_direction_from
   {
     v9.receiver = self;
     v9.super_class = SBShelfZoomTransitionModifier;
-    v7 = [(SBShelfZoomTransitionModifier *)&v9 headerStyleForIndex:a3];
+    v7 = [(SBShelfZoomTransitionModifier *)&v9 headerStyleForIndex:index];
   }
 
   return v7;
 }
 
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v12.receiver = self;
   v12.super_class = SBShelfZoomTransitionModifier;
-  [(SBShelfZoomTransitionModifier *)&v12 dimmingAlphaForLayoutRole:a3 inAppLayout:v6];
+  [(SBShelfZoomTransitionModifier *)&v12 dimmingAlphaForLayoutRole:role inAppLayout:layoutCopy];
   v8 = v7;
-  if ([(SBShelfZoomTransitionModifier *)self _shouldDimLayoutRole:a3 inAppLayout:v6 forZoomDirection:self->_direction]|| self->_centerWindowBeingReplacedAppLayout == v6)
+  if ([(SBShelfZoomTransitionModifier *)self _shouldDimLayoutRole:role inAppLayout:layoutCopy forZoomDirection:self->_direction]|| self->_centerWindowBeingReplacedAppLayout == layoutCopy)
   {
-    v9 = [(SBShelfZoomTransitionModifier *)self medusaSettings];
-    [v9 defaultDimmingOpacity];
+    medusaSettings = [(SBShelfZoomTransitionModifier *)self medusaSettings];
+    [medusaSettings defaultDimmingOpacity];
     v8 = v10;
   }
 
   return v8;
 }
 
-- (BOOL)_shouldDimLayoutRole:(int64_t)a3 inAppLayout:(id)a4 forZoomDirection:(unint64_t)a5
+- (BOOL)_shouldDimLayoutRole:(int64_t)role inAppLayout:(id)layout forZoomDirection:(unint64_t)direction
 {
-  if (self->_centerWindowAppLayout == a4)
+  if (self->_centerWindowAppLayout == layout)
   {
     return 0;
   }
 
   v6 = ![(SBShelfZoomTransitionModifier *)self _isEffectivelyInShelf];
-  return a5 == 1 && v6;
+  return direction == 1 && v6;
 }
 
 - (id)topMostLayoutElements
 {
   v8.receiver = self;
   v8.super_class = SBShelfZoomTransitionModifier;
-  v3 = [(SBShelfZoomTransitionModifier *)&v8 topMostLayoutElements];
-  v4 = [v3 sb_arrayByInsertingOrMovingObject:self->_centerWindowAppLayout toIndex:0];
+  topMostLayoutElements = [(SBShelfZoomTransitionModifier *)&v8 topMostLayoutElements];
+  v4 = [topMostLayoutElements sb_arrayByInsertingOrMovingObject:self->_centerWindowAppLayout toIndex:0];
 
   centerWindowBeingReplacedAppLayout = self->_centerWindowBeingReplacedAppLayout;
   if (centerWindowBeingReplacedAppLayout)
@@ -580,10 +580,10 @@ uint64_t __96__SBShelfZoomTransitionModifier_initWithTransitionID_direction_from
   return v4;
 }
 
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index
 {
-  v5 = [(SBShelfZoomTransitionModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBShelfZoomTransitionModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if ([v6 isEqual:self->_centerWindowAppLayout] && -[SBShelfZoomTransitionModifier _isEffectivelyInShelf](self, "_isEffectivelyInShelf"))
   {
@@ -595,7 +595,7 @@ uint64_t __96__SBShelfZoomTransitionModifier_initWithTransitionID_direction_from
   {
     v13.receiver = self;
     v13.super_class = SBShelfZoomTransitionModifier;
-    [(SBShelfZoomTransitionModifier *)&v13 perspectiveAngleForIndex:a3];
+    [(SBShelfZoomTransitionModifier *)&v13 perspectiveAngleForIndex:index];
     v7 = v9;
     v8 = v10;
   }
@@ -607,38 +607,38 @@ uint64_t __96__SBShelfZoomTransitionModifier_initWithTransitionID_direction_from
   return result;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v12.receiver = self;
   v12.super_class = SBShelfZoomTransitionModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v12 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v12 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBShelfZoomTransitionModifier *)self switcherSettings];
-  v7 = [v6 animationSettings];
+  switcherSettings = [(SBShelfZoomTransitionModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
   if (self->_direction == 1)
   {
-    v8 = [v7 homeGestureEdgeRowZoomUpSettings];
-    [v5 setLayoutSettings:v8];
+    homeGestureEdgeRowZoomUpSettings = [animationSettings homeGestureEdgeRowZoomUpSettings];
+    [v5 setLayoutSettings:homeGestureEdgeRowZoomUpSettings];
   }
 
   else
   {
-    v9 = [v7 homeGestureTopRowZoomDownLayoutSettings];
-    [v5 setLayoutSettings:v9];
+    homeGestureTopRowZoomDownLayoutSettings = [animationSettings homeGestureTopRowZoomDownLayoutSettings];
+    [v5 setLayoutSettings:homeGestureTopRowZoomDownLayoutSettings];
 
-    v10 = [v7 homeGestureTopRowZoomDownPositionSettings];
-    [v5 setPositionSettings:v10];
+    homeGestureTopRowZoomDownPositionSettings = [animationSettings homeGestureTopRowZoomDownPositionSettings];
+    [v5 setPositionSettings:homeGestureTopRowZoomDownPositionSettings];
 
-    v8 = [v7 homeGestureTopRowZoomDownScaleSettings];
-    [v5 setScaleSettings:v8];
+    homeGestureEdgeRowZoomUpSettings = [animationSettings homeGestureTopRowZoomDownScaleSettings];
+    [v5 setScaleSettings:homeGestureEdgeRowZoomUpSettings];
   }
 
   return v5;
 }
 
-- (SBSwitcherShelfPresentationAttributes)presentationAttributesForShelf:(SEL)a3
+- (SBSwitcherShelfPresentationAttributes)presentationAttributesForShelf:(SEL)shelf
 {
   retstr->var3 = 0;
   *&retstr->var1.origin.y = 0u;

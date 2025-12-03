@@ -1,8 +1,8 @@
 @interface ARUIHashBuilder
 + (id)builder;
 - (ARUIHashBuilder)init;
-- (uint64_t)appendFloat4x4:(double)a3;
-- (void)appendCGRect:(CGRect)a3;
+- (uint64_t)appendFloat4x4:(double)float4x4;
+- (void)appendCGRect:(CGRect)rect;
 - (void)appendFloat2:(ARUIHashBuilder *)self;
 - (void)appendFloat4:(ARUIHashBuilder *)self;
 @end
@@ -29,12 +29,12 @@
   return result;
 }
 
-- (void)appendCGRect:(CGRect)a3
+- (void)appendCGRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  [(ARUIHashBuilder *)self appendCGFloat:a3.origin.x];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  [(ARUIHashBuilder *)self appendCGFloat:rect.origin.x];
   [(ARUIHashBuilder *)self appendCGFloat:y];
   [(ARUIHashBuilder *)self appendCGFloat:width];
 
@@ -63,13 +63,13 @@
   [(ARUIHashBuilder *)self appendFloat:COERCE_DOUBLE(__PAIR64__(DWORD1(v5), HIDWORD(v5)))];
 }
 
-- (uint64_t)appendFloat4x4:(double)a3
+- (uint64_t)appendFloat4x4:(double)float4x4
 {
-  [a1 appendFloat4:?];
-  [a1 appendFloat4:a3];
-  [a1 appendFloat4:a4];
+  [self appendFloat4:?];
+  [self appendFloat4:float4x4];
+  [self appendFloat4:a4];
 
-  return [a1 appendFloat4:a5];
+  return [self appendFloat4:a5];
 }
 
 @end

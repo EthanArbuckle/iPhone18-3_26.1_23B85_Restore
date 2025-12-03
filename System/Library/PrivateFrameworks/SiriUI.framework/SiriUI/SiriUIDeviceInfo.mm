@@ -1,6 +1,6 @@
 @interface SiriUIDeviceInfo
 + (id)sharedInstance;
-- (SiriUIDeviceInfo)initWithLargeFormatPhone:(BOOL)a3 gestaltModes:(id)a4 screenSize:(CGSize)a5;
+- (SiriUIDeviceInfo)initWithLargeFormatPhone:(BOOL)phone gestaltModes:(id)modes screenSize:(CGSize)size;
 - (void)_updateProductTypeDerivedProperties;
 @end
 
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __34__SiriUIDeviceInfo_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_2 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_2, block);
@@ -37,21 +37,21 @@ void __34__SiriUIDeviceInfo_sharedInstance__block_invoke(uint64_t a1)
   sharedInstance_sharedInstance_1 = v8;
 }
 
-- (SiriUIDeviceInfo)initWithLargeFormatPhone:(BOOL)a3 gestaltModes:(id)a4 screenSize:(CGSize)a5
+- (SiriUIDeviceInfo)initWithLargeFormatPhone:(BOOL)phone gestaltModes:(id)modes screenSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a4;
+  height = size.height;
+  width = size.width;
+  modesCopy = modes;
   v20.receiver = self;
   v20.super_class = SiriUIDeviceInfo;
   v10 = [(SiriUIDeviceInfo *)&v20 init];
   if (v10)
   {
     v10->_deviceSupportsProximitySensor = MGGetBoolAnswer();
-    v10->_largeFormatPhone = a3;
-    if (v9)
+    v10->_largeFormatPhone = phone;
+    if (modesCopy)
     {
-      v11 = [v9 objectForKeyedSubscript:@"zoomed"];
+      v11 = [modesCopy objectForKeyedSubscript:@"zoomed"];
       if ([v11 count] < 4)
       {
         v15 = 0;

@@ -1,32 +1,32 @@
 @interface WFSettingsManager
 + (WFSettingsManager)sharedInstance;
 + (id)userIdentifier;
-+ (void)setUserIdentifier:(id)a3;
++ (void)setUserIdentifier:(id)identifier;
 - (BOOL)clearConfigCacheOnLaunchIfRequested;
-- (BOOL)shouldReroutePermanentURLsForContainerIdentifier:(id)a3;
+- (BOOL)shouldReroutePermanentURLsForContainerIdentifier:(id)identifier;
 - (BOOL)useFallback;
 - (NSString)APIVersion;
 - (WFRemoteAppSettings)settings;
 - (WFSettingsManager)init;
-- (char)containerIDForContainerIdentifier:(id)a3;
+- (char)containerIDForContainerIdentifier:(id)identifier;
 - (id)containerIdentifier;
 - (id)debugOverrides;
-- (id)permanentURLForRecordID:(id)a3 containerIdentifier:(id)a4;
-- (id)urlSafeBase64EncodedStringWithData:(id)a3 options:(unint64_t)a4;
-- (unint64_t)debugEnvironmentFromOverride:(id)a3;
-- (void)addObserver:(id)a3;
+- (id)permanentURLForRecordID:(id)d containerIdentifier:(id)identifier;
+- (id)urlSafeBase64EncodedStringWithData:(id)data options:(unint64_t)options;
+- (unint64_t)debugEnvironmentFromOverride:(id)override;
+- (void)addObserver:(id)observer;
 - (void)clearConfigCacheOnLaunchIfRequested;
-- (void)completeOnQueue:(id)a3 error:(id)a4 completion:(id)a5;
+- (void)completeOnQueue:(id)queue error:(id)error completion:(id)completion;
 - (void)fetchAppConfigurationIfExpired;
-- (void)fetchAppConfigurationWithCompletionQueue:(id)a3 completion:(id)a4;
+- (void)fetchAppConfigurationWithCompletionQueue:(id)queue completion:(id)completion;
 - (void)forceFetchAppConfiguration;
 - (void)notifyObserversOfAppConfigRefresh;
-- (void)removeObserver:(id)a3;
-- (void)setSettings:(id)a3;
-- (void)setUseFallback:(BOOL)a3;
+- (void)removeObserver:(id)observer;
+- (void)setSettings:(id)settings;
+- (void)setUseFallback:(BOOL)fallback;
 - (void)setupRemoteSettings;
-- (void)updateAssetURLHostIfNeededWithComponents:(id)a3 containerIdentifier:(id)a4;
-- (void)userInfoManager:(id)a3 didSynchronizeUserIdentifier:(id)a4;
+- (void)updateAssetURLHostIfNeededWithComponents:(id)components containerIdentifier:(id)identifier;
+- (void)userInfoManager:(id)manager didSynchronizeUserIdentifier:(id)identifier;
 @end
 
 @implementation WFSettingsManager
@@ -83,13 +83,13 @@ uint64_t __35__WFSettingsManager_sharedInstance__block_invoke()
 
 - (void)setupRemoteSettings
 {
-  v3 = [(WFSettingsManager *)self requestSerialQueue];
+  requestSerialQueue = [(WFSettingsManager *)self requestSerialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__WFSettingsManager_setupRemoteSettings__block_invoke;
   block[3] = &unk_279E6D9A8;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(requestSerialQueue, block);
 }
 
 void __40__WFSettingsManager_setupRemoteSettings__block_invoke(uint64_t a1)
@@ -152,10 +152,10 @@ void __40__WFSettingsManager_setupRemoteSettings__block_invoke(uint64_t a1)
   return useFallback;
 }
 
-- (void)setUseFallback:(BOOL)a3
+- (void)setUseFallback:(BOOL)fallback
 {
   os_unfair_lock_lock_with_options();
-  self->_useFallback = a3;
+  self->_useFallback = fallback;
 
   os_unfair_lock_unlock(&self->_settingsLock);
 }
@@ -169,11 +169,11 @@ void __40__WFSettingsManager_setupRemoteSettings__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setSettings:(id)a3
+- (void)setSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   os_unfair_lock_lock_with_options();
-  v5 = [v4 copy];
+  v5 = [settingsCopy copy];
 
   settings = self->_settings;
   self->_settings = v5;
@@ -183,15 +183,15 @@ void __40__WFSettingsManager_setupRemoteSettings__block_invoke(uint64_t a1)
 
 - (NSString)APIVersion
 {
-  v3 = [(WFSettingsManager *)self settings];
+  settings = [(WFSettingsManager *)self settings];
   if ([(WFSettingsManager *)self useFallback])
   {
-    [v3 apiVersionFallback];
+    [settings apiVersionFallback];
   }
 
   else
   {
-    [v3 apiVersion];
+    [settings apiVersion];
   }
   v4 = ;
   v5 = WFLogForCategory(0xAuLL);
@@ -206,61 +206,61 @@ void __40__WFSettingsManager_setupRemoteSettings__block_invoke(uint64_t a1)
 + (id)userIdentifier
 {
   v2 = WeatherFoundationInternalUserDefaults();
-  v3 = [v2 stringForKey:@"userId"];
+  uUIDString = [v2 stringForKey:@"userId"];
 
-  if (!v3)
+  if (!uUIDString)
   {
-    v4 = [MEMORY[0x277CCAD78] UUID];
-    v3 = [v4 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
     v5 = WeatherFoundationInternalUserDefaults();
-    [v5 setValue:v3 forKey:@"userId"];
+    [v5 setValue:uUIDString forKey:@"userId"];
   }
 
-  return v3;
+  return uUIDString;
 }
 
-+ (void)setUserIdentifier:(id)a3
++ (void)setUserIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v3 = a3;
+    identifierCopy = identifier;
     v4 = WeatherFoundationInternalUserDefaults();
-    [v4 setValue:v3 forKey:@"userId"];
+    [v4 setValue:identifierCopy forKey:@"userId"];
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
+    observerCopy = observer;
     os_unfair_lock_lock_with_options();
-    v5 = [(WFSettingsManager *)self observers];
-    [v5 addObject:v4];
+    observers = [(WFSettingsManager *)self observers];
+    [observers addObject:observerCopy];
 
     os_unfair_lock_unlock(&self->_settingsLock);
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v8 = v4;
+    v8 = observerCopy;
     os_unfair_lock_lock_with_options();
-    v5 = [(WFSettingsManager *)self observers];
-    v6 = [v5 containsObject:v8];
+    observers = [(WFSettingsManager *)self observers];
+    v6 = [observers containsObject:v8];
 
     if (v6)
     {
-      v7 = [(WFSettingsManager *)self observers];
-      [v7 removeObject:v8];
+      observers2 = [(WFSettingsManager *)self observers];
+      [observers2 removeObject:v8];
     }
 
     os_unfair_lock_unlock(&self->_settingsLock);
-    v4 = v8;
+    observerCopy = v8;
   }
 }
 
@@ -277,15 +277,15 @@ void __40__WFSettingsManager_setupRemoteSettings__block_invoke(uint64_t a1)
   v4 = WeatherFoundationInternalUserDefaults();
   [v4 setBool:0 forKey:@"clearConfigCacheOnLaunch"];
 
-  v5 = [MEMORY[0x277CBEBC0] wf_cacheDirectory];
+  wf_cacheDirectory = [MEMORY[0x277CBEBC0] wf_cacheDirectory];
   v6 = WeatherFoundationInternalUserDefaults();
   [v6 removeObjectForKey:@"cachedAppConfig"];
 
   v7 = WeatherFoundationInternalUserDefaults();
   [v7 removeObjectForKey:@"cachedAppConfigLastSavedDate"];
 
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v8 removeItemAtURL:v5 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v9 = [defaultManager removeItemAtURL:wf_cacheDirectory error:0];
 
   v10 = WFLogForCategory(0xAuLL);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -298,30 +298,30 @@ void __40__WFSettingsManager_setupRemoteSettings__block_invoke(uint64_t a1)
 
 - (void)fetchAppConfigurationIfExpired
 {
-  v4 = [(WFSettingsManager *)self settings];
+  settings = [(WFSettingsManager *)self settings];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 isExpired])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [settings isExpired])
   {
-    v3 = [(WFSettingsManager *)self requestSerialQueue];
-    [(WFSettingsManager *)self fetchAppConfigurationWithCompletionQueue:v3 completion:0];
+    requestSerialQueue = [(WFSettingsManager *)self requestSerialQueue];
+    [(WFSettingsManager *)self fetchAppConfigurationWithCompletionQueue:requestSerialQueue completion:0];
   }
 }
 
 - (void)forceFetchAppConfiguration
 {
-  v3 = [(WFSettingsManager *)self requestSerialQueue];
-  [(WFSettingsManager *)self fetchAppConfigurationWithCompletionQueue:v3 completion:0];
+  requestSerialQueue = [(WFSettingsManager *)self requestSerialQueue];
+  [(WFSettingsManager *)self fetchAppConfigurationWithCompletionQueue:requestSerialQueue completion:0];
 }
 
-- (unint64_t)debugEnvironmentFromOverride:(id)a3
+- (unint64_t)debugEnvironmentFromOverride:(id)override
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"remoteconfig_staging"])
+  overrideCopy = override;
+  if ([overrideCopy isEqualToString:@"remoteconfig_staging"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"remoteconfig_qa"])
+  else if ([overrideCopy isEqualToString:@"remoteconfig_qa"])
   {
     v4 = 2;
   }
@@ -354,21 +354,21 @@ void __40__WFSettingsManager_setupRemoteSettings__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)fetchAppConfigurationWithCompletionQueue:(id)a3 completion:(id)a4
+- (void)fetchAppConfigurationWithCompletionQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFSettingsManager *)self requestSerialQueue];
+  queueCopy = queue;
+  completionCopy = completion;
+  requestSerialQueue = [(WFSettingsManager *)self requestSerialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__WFSettingsManager_fetchAppConfigurationWithCompletionQueue_completion___block_invoke;
   block[3] = &unk_279E6F998;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = queueCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = queueCopy;
+  dispatch_async(requestSerialQueue, block);
 }
 
 void __73__WFSettingsManager_fetchAppConfigurationWithCompletionQueue_completion___block_invoke(id *a1)
@@ -465,8 +465,8 @@ void __73__WFSettingsManager_fetchAppConfigurationWithCompletionQueue_completion
 {
   v17 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock_with_options();
-  v3 = [(WFSettingsManager *)self observers];
-  v4 = [v3 copy];
+  observers = [(WFSettingsManager *)self observers];
+  v4 = [observers copy];
 
   os_unfair_lock_unlock(&self->_settingsLock);
   v14 = 0u;
@@ -490,8 +490,8 @@ void __73__WFSettingsManager_fetchAppConfigurationWithCompletionQueue_completion
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
-        v11 = [(WFSettingsManager *)self settings];
-        [v10 settingsManager:self didRefreshWithSettings:v11];
+        settings = [(WFSettingsManager *)self settings];
+        [v10 settingsManager:self didRefreshWithSettings:settings];
 
         ++v9;
       }
@@ -504,21 +504,21 @@ void __73__WFSettingsManager_fetchAppConfigurationWithCompletionQueue_completion
   }
 }
 
-- (void)completeOnQueue:(id)a3 error:(id)a4 completion:(id)a5
+- (void)completeOnQueue:(id)queue error:(id)error completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  errorCopy = error;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (completionCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __54__WFSettingsManager_completeOnQueue_error_completion___block_invoke;
     block[3] = &unk_279E6F9C0;
-    v13 = v9;
+    v13 = completionCopy;
     block[4] = self;
-    v12 = v8;
-    dispatch_async(a3, block);
+    v12 = errorCopy;
+    dispatch_async(queue, block);
   }
 }
 
@@ -529,50 +529,50 @@ void __54__WFSettingsManager_completeOnQueue_error_completion___block_invoke(uin
   (*(v2 + 16))(v2, v3, *(a1 + 40));
 }
 
-- (id)permanentURLForRecordID:(id)a3 containerIdentifier:(id)a4
+- (id)permanentURLForRecordID:(id)d containerIdentifier:(id)identifier
 {
   v18 = 2;
   v17 = 0;
-  v6 = a4;
-  v7 = a3;
-  v16 = [v7 length];
-  v15 = [(WFSettingsManager *)self containerIDForContainerIdentifier:v6];
-  v8 = [MEMORY[0x277CBEB28] data];
-  [v8 appendBytes:&v18 length:1];
-  [v8 appendBytes:&v15 length:1];
-  [v8 appendBytes:&v16 length:1];
-  v9 = [v7 dataUsingEncoding:4];
+  identifierCopy = identifier;
+  dCopy = d;
+  v16 = [dCopy length];
+  v15 = [(WFSettingsManager *)self containerIDForContainerIdentifier:identifierCopy];
+  data = [MEMORY[0x277CBEB28] data];
+  [data appendBytes:&v18 length:1];
+  [data appendBytes:&v15 length:1];
+  [data appendBytes:&v16 length:1];
+  v9 = [dCopy dataUsingEncoding:4];
 
-  [v8 appendData:v9];
-  [v8 appendBytes:&v17 length:1];
-  [v8 appendBytes:"17" length:2];
-  v10 = [(WFSettingsManager *)self urlSafeBase64EncodedStringWithData:v8 options:0];
+  [data appendData:v9];
+  [data appendBytes:&v17 length:1];
+  [data appendBytes:"17" length:2];
+  v10 = [(WFSettingsManager *)self urlSafeBase64EncodedStringWithData:data options:0];
   v11 = objc_alloc_init(MEMORY[0x277CCACE0]);
   [v11 setScheme:@"https"];
   [v11 setHost:@"c.apple.news"];
   v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"/%@", v10];
   [v11 setPath:v12];
 
-  [(WFSettingsManager *)self updateAssetURLHostIfNeededWithComponents:v11 containerIdentifier:v6];
+  [(WFSettingsManager *)self updateAssetURLHostIfNeededWithComponents:v11 containerIdentifier:identifierCopy];
   v13 = [v11 URL];
 
   return v13;
 }
 
-- (char)containerIDForContainerIdentifier:(id)a3
+- (char)containerIDForContainerIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.news.public"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"com.apple.news.public"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.news.public.staging"])
+  else if ([identifierCopy isEqualToString:@"com.apple.news.public.staging"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.news.public.qa"])
+  else if ([identifierCopy isEqualToString:@"com.apple.news.public.qa"])
   {
     v4 = 3;
   }
@@ -608,9 +608,9 @@ void __54__WFSettingsManager_completeOnQueue_error_completion___block_invoke(uin
   return v4;
 }
 
-- (id)urlSafeBase64EncodedStringWithData:(id)a3 options:(unint64_t)a4
+- (id)urlSafeBase64EncodedStringWithData:(id)data options:(unint64_t)options
 {
-  v4 = [a3 base64EncodedStringWithOptions:a4];
+  v4 = [data base64EncodedStringWithOptions:options];
   v5 = [v4 mutableCopy];
 
   [v5 replaceOccurrencesOfString:@"+" withString:@"-" options:0 range:{0, objc_msgSend(v5, "length")}];
@@ -620,37 +620,37 @@ void __54__WFSettingsManager_completeOnQueue_error_completion___block_invoke(uin
   return v5;
 }
 
-- (BOOL)shouldReroutePermanentURLsForContainerIdentifier:(id)a3
+- (BOOL)shouldReroutePermanentURLsForContainerIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.news.public.staging"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"com.apple.news.public.staging"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"com.apple.news.public.qa"];
+    v4 = [identifierCopy isEqualToString:@"com.apple.news.public.qa"];
   }
 
   return v4;
 }
 
-- (void)updateAssetURLHostIfNeededWithComponents:(id)a3 containerIdentifier:(id)a4
+- (void)updateAssetURLHostIfNeededWithComponents:(id)components containerIdentifier:(id)identifier
 {
-  v6 = a3;
-  if ([(WFSettingsManager *)self shouldReroutePermanentURLsForContainerIdentifier:a4])
+  componentsCopy = components;
+  if ([(WFSettingsManager *)self shouldReroutePermanentURLsForContainerIdentifier:identifier])
   {
-    [v6 setHost:@"cvws-internal.icloud.com"];
+    [componentsCopy setHost:@"cvws-internal.icloud.com"];
   }
 }
 
-- (void)userInfoManager:(id)a3 didSynchronizeUserIdentifier:(id)a4
+- (void)userInfoManager:(id)manager didSynchronizeUserIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    v5 = a4;
-    [objc_opt_class() setUserIdentifier:v5];
+    identifierCopy = identifier;
+    [objc_opt_class() setUserIdentifier:identifierCopy];
 
     [(WFSettingsManager *)self setupRemoteSettings];
   }
@@ -668,7 +668,7 @@ void __40__WFSettingsManager_setupRemoteSettings__block_invoke_cold_2(id *a1, NS
 {
   v5 = *MEMORY[0x277D85DE8];
   v2 = @"NO";
-  if (a1)
+  if (self)
   {
     v2 = @"YES";
   }

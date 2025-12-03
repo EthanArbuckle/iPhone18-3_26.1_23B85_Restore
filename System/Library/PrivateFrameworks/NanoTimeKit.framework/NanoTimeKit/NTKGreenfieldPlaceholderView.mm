@@ -1,18 +1,18 @@
 @interface NTKGreenfieldPlaceholderView
 - (CLKMonochromeFilterProvider)filterProvider;
-- (NTKGreenfieldPlaceholderView)initWithFrame:(CGRect)a3;
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4;
+- (NTKGreenfieldPlaceholderView)initWithFrame:(CGRect)frame;
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason;
 - (void)layoutSubviews;
-- (void)setImageProvider:(id)a3;
+- (void)setImageProvider:(id)provider;
 @end
 
 @implementation NTKGreenfieldPlaceholderView
 
-- (NTKGreenfieldPlaceholderView)initWithFrame:(CGRect)a3
+- (NTKGreenfieldPlaceholderView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = NTKGreenfieldPlaceholderView;
-  v3 = [(NTKGreenfieldPlaceholderView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKGreenfieldPlaceholderView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D755E8]);
@@ -47,29 +47,29 @@
   [(_NTKPieChartView *)self->_uncompletedPieChartView setFrame:v8 * 0.25 * 0.5, v8 * 0.25 * 0.5, v12, v12];
 }
 
-- (void)setImageProvider:(id)a3
+- (void)setImageProvider:(id)provider
 {
-  v6 = a3;
+  providerCopy = provider;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v6;
+    v4 = providerCopy;
     [v4 progress];
     [(NTKGreenfieldPlaceholderView *)self setProgress:1 animated:?];
-    v5 = [v4 appIcon];
+    appIcon = [v4 appIcon];
 
-    [(NTKGreenfieldPlaceholderView *)self setAppIcon:v5];
+    [(NTKGreenfieldPlaceholderView *)self setAppIcon:appIcon];
   }
 }
 
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason
 {
-  v10 = [a3 metadata];
-  v6 = [v10 objectForKeyedSubscript:@"NTKGreenfieldPlaceholderTimelineEntryModelProgressKey"];
-  v7 = [(NTKGreenfieldPlaceholderView *)self _shouldAnimateWithTemplateUpdateReason:a4];
+  metadata = [provider metadata];
+  v6 = [metadata objectForKeyedSubscript:@"NTKGreenfieldPlaceholderTimelineEntryModelProgressKey"];
+  v7 = [(NTKGreenfieldPlaceholderView *)self _shouldAnimateWithTemplateUpdateReason:reason];
   [v6 floatValue];
   [(NTKGreenfieldPlaceholderView *)self setProgress:v7 animated:v8];
-  v9 = [v10 objectForKeyedSubscript:@"NTKGreenfieldPlaceholderTimelineEntryModelIconKey"];
+  v9 = [metadata objectForKeyedSubscript:@"NTKGreenfieldPlaceholderTimelineEntryModelIconKey"];
   if (v9)
   {
     [(NTKGreenfieldPlaceholderView *)self setAppIcon:v9];

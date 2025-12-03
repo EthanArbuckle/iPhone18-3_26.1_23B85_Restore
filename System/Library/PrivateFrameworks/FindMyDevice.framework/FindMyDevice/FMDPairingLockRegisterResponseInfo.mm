@@ -1,32 +1,32 @@
 @interface FMDPairingLockRegisterResponseInfo
-- (FMDPairingLockRegisterResponseInfo)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (FMDPairingLockRegisterResponseInfo)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FMDPairingLockRegisterResponseInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FMDPairingLockRegisterResponseInfo *)self serialNumber];
-  [v4 encodeObject:v5 forKey:@"serialNumber"];
+  coderCopy = coder;
+  serialNumber = [(FMDPairingLockRegisterResponseInfo *)self serialNumber];
+  [coderCopy encodeObject:serialNumber forKey:@"serialNumber"];
 
-  v6 = [(FMDPairingLockRegisterResponseInfo *)self pairingToken];
-  [v4 encodeObject:v6 forKey:@"pairingToken"];
+  pairingToken = [(FMDPairingLockRegisterResponseInfo *)self pairingToken];
+  [coderCopy encodeObject:pairingToken forKey:@"pairingToken"];
 }
 
-- (FMDPairingLockRegisterResponseInfo)initWithCoder:(id)a3
+- (FMDPairingLockRegisterResponseInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = FMDPairingLockRegisterResponseInfo;
   v5 = [(FMDPairingLockRegisterResponseInfo *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
     [(FMDPairingLockRegisterResponseInfo *)v5 setSerialNumber:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pairingToken"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pairingToken"];
     [(FMDPairingLockRegisterResponseInfo *)v5 setPairingToken:v7];
   }
 

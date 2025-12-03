@@ -1,55 +1,55 @@
 @interface ICQLocalBackupController
 + (BOOL)isiCloudPhotosEnabled;
-+ (id)cellValueStyleDateStringForDate:(id)a3;
-+ (id)currentDeviceBackupWithMBManager:(id)a3 filtering:(BOOL)a4 error:(id *)a5;
-+ (id)dateStringForSnapshot:(id)a3;
-+ (id)deviceImageURLFromAttributes:(id)a3;
++ (id)cellValueStyleDateStringForDate:(id)date;
++ (id)currentDeviceBackupWithMBManager:(id)manager filtering:(BOOL)filtering error:(id *)error;
++ (id)dateStringForSnapshot:(id)snapshot;
++ (id)deviceImageURLFromAttributes:(id)attributes;
 + (id)specifier;
-+ (id)specifierForAccount:(id)a3;
++ (id)specifierForAccount:(id)account;
 - (BOOL)beginScan;
-- (BOOL)isDomainWhitelisted:(id)a3;
+- (BOOL)isDomainWhitelisted:(id)whitelisted;
 - (ICQLocalBackupController)init;
-- (id)appSpecifierForBundleID:(id)a3;
-- (id)backupDomainEnabledForSpecifier:(id)a3;
+- (id)appSpecifierForBundleID:(id)d;
+- (id)backupDomainEnabledForSpecifier:(id)specifier;
 - (id)backupSizeString;
 - (id)currentDeviceBackup;
 - (id)dateStringOfLatestBackup;
-- (id)loadAppSpecifiersWithDomainInfo:(id)a3;
-- (id)nextBackupSizeStringWithSpecifier:(id)a3;
+- (id)loadAppSpecifiersWithDomainInfo:(id)info;
+- (id)nextBackupSizeStringWithSpecifier:(id)specifier;
 - (id)specifiers;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
 - (void)_backupDeletionSuccess;
-- (void)_updateTable:(id)a3 toMatchArray:(id)a4 withVisibleArray:(id)a5 maxVisible:(unint64_t)a6 inSection:(int64_t)a7 withRowOffset:(int64_t)a8;
+- (void)_updateTable:(id)table toMatchArray:(id)array withVisibleArray:(id)visibleArray maxVisible:(unint64_t)visible inSection:(int64_t)section withRowOffset:(int64_t)offset;
 - (void)animateAppSpecifierChanges;
-- (void)assignDisableBackupsConfirmationToSpecifier:(id)a3;
+- (void)assignDisableBackupsConfirmationToSpecifier:(id)specifier;
 - (void)dealloc;
 - (void)deleteBackupConfirmed;
 - (void)endDeletionBezel;
-- (void)firstDeleteConfirmation:(id)a3;
-- (void)insertDeleteBackupButtonIfNeeded:(BOOL)a3;
-- (void)loadFailed:(id)a3 withError:(id)a4;
-- (void)loadPropertyValuesFromDictionary:(id)a3;
+- (void)firstDeleteConfirmation:(id)confirmation;
+- (void)insertDeleteBackupButtonIfNeeded:(BOOL)needed;
+- (void)loadFailed:(id)failed withError:(id)error;
+- (void)loadPropertyValuesFromDictionary:(id)dictionary;
 - (void)loadQuotaInfo;
 - (void)loadView;
-- (void)manager:(id)a3 didFailScanWithError:(id)a4;
-- (void)managerDidFinishScan:(id)a3;
+- (void)manager:(id)manager didFailScanWithError:(id)error;
+- (void)managerDidFinishScan:(id)scan;
 - (void)reloadAfterFetch;
-- (void)reloadBackupInfoWithDeleteButton:(BOOL)a3;
+- (void)reloadBackupInfoWithDeleteButton:(BOOL)button;
 - (void)reloadQuotaInfo;
-- (void)secondDeleteConfirmationWithSender:(id)a3;
-- (void)setBackupDomainEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setSpecifier:(id)a3;
-- (void)showAllApps:(id)a3;
+- (void)secondDeleteConfirmationWithSender:(id)sender;
+- (void)setBackupDomainEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setSpecifier:(id)specifier;
+- (void)showAllApps:(id)apps;
 - (void)startDeletionBezel;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)turnOffAppBackupCancelled:(id)a3;
-- (void)turnOffAppBackupConfirmed:(id)a3;
-- (void)updateAppSpecifiersScanWhenComplete:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)turnOffAppBackupCancelled:(id)cancelled;
+- (void)turnOffAppBackupConfirmed:(id)confirmed;
+- (void)updateAppSpecifiersScanWhenComplete:(BOOL)complete;
 - (void)updateNextBackupSize;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ICQLocalBackupController
@@ -64,15 +64,15 @@
   return v5;
 }
 
-+ (id)specifierForAccount:(id)a3
++ (id)specifierForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [a1 specifier];
-  [v5 setObject:v4 forKeyedSubscript:@"ICQUISpecifierKeyAccount"];
+  accountCopy = account;
+  specifier = [self specifier];
+  [specifier setObject:accountCopy forKeyedSubscript:@"ICQUISpecifierKeyAccount"];
 
-  [v5 setObject:@"CURRENT_DEVICE_BACKUP" forKeyedSubscript:*MEMORY[0x277D3FFB8]];
+  [specifier setObject:@"CURRENT_DEVICE_BACKUP" forKeyedSubscript:*MEMORY[0x277D3FFB8]];
 
-  return v5;
+  return specifier;
 }
 
 - (ICQLocalBackupController)init
@@ -82,8 +82,8 @@
   v2 = [(ICQLocalBackupController *)&v21 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_reloadQuotaInfo name:@"QuotaInformationChanged" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_reloadQuotaInfo name:@"QuotaInformationChanged" object:0];
 
     v4 = MEMORY[0x277D3FAD8];
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -112,19 +112,19 @@
     visibleAppSpecifiers = v2->_visibleAppSpecifiers;
     v2->_visibleAppSpecifiers = v17;
 
-    v19 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v19 addObserver:v2 selector:sel_didEnterBackground_ name:*MEMORY[0x277D76660] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_didEnterBackground_ name:*MEMORY[0x277D76660] object:0];
   }
 
   return v2;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v5 = a3;
-  objc_storeStrong((&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]), a3);
-  v6 = [(ICQLocalBackupController *)self specifier];
-  v7 = [v6 objectForKeyedSubscript:@"ICQUISpecifierKeyAccount"];
+  specifierCopy = specifier;
+  objc_storeStrong((&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]), specifier);
+  specifier = [(ICQLocalBackupController *)self specifier];
+  v7 = [specifier objectForKeyedSubscript:@"ICQUISpecifierKeyAccount"];
   account = self->_account;
   self->_account = v7;
 
@@ -160,13 +160,13 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(MBManager *)self->_backupManager setDelegate:0];
-  v4 = [(ICQPreferencesRemoteUIDelegate *)self->_remoteDelegate delegate];
+  delegate = [(ICQPreferencesRemoteUIDelegate *)self->_remoteDelegate delegate];
 
-  if (v4 == self)
+  if (delegate == self)
   {
     [(ICQPreferencesRemoteUIDelegate *)self->_remoteDelegate setDelegate:0];
   }
@@ -176,9 +176,9 @@
   [(ICQLocalBackupController *)&v5 dealloc];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (self->_scanInProgress && self->_shouldCancelScanOnExit && [(ICQLocalBackupController *)self isMovingFromParentViewController])
   {
     self->_shouldCancelScanOnExit = 0;
@@ -187,12 +187,12 @@
 
   v5.receiver = self;
   v5.super_class = ICQLocalBackupController;
-  [(ICQLocalBackupController *)&v5 viewWillDisappear:v3];
+  [(ICQLocalBackupController *)&v5 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (self->_manageStorageReloadNeeded)
   {
     remoteDelegate = self->_remoteDelegate;
@@ -202,19 +202,19 @@
 
   v7.receiver = self;
   v7.super_class = ICQLocalBackupController;
-  [(ICQLocalBackupController *)&v7 viewDidDisappear:v3];
+  [(ICQLocalBackupController *)&v7 viewDidDisappear:disappearCopy];
 }
 
-+ (id)deviceImageURLFromAttributes:(id)a3
++ (id)deviceImageURLFromAttributes:(id)attributes
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 scale];
+  attributesCopy = attributes;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v6 = v5;
 
-  if (v6 <= 1.0 || ([@"largeImage" stringByAppendingString:@"2x"], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "objectForKey:", v7), v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
+  if (v6 <= 1.0 || ([@"largeImage" stringByAppendingString:@"2x"], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(attributesCopy, "objectForKey:", v7), v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
   {
-    v8 = [v3 objectForKey:@"largeImage"];
+    v8 = [attributesCopy objectForKey:@"largeImage"];
   }
 
   v9 = [MEMORY[0x277CBEBC0] URLWithString:v8];
@@ -222,22 +222,22 @@
   return v9;
 }
 
-- (void)loadPropertyValuesFromDictionary:(id)a3
+- (void)loadPropertyValuesFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"label"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"label"];
   [(ICQLocalBackupController *)self setDeviceName:v5];
 
-  v6 = [v4 objectForKey:@"deviceUdid"];
+  v6 = [dictionaryCopy objectForKey:@"deviceUdid"];
   [(ICQLocalBackupController *)self setDeviceIdentifier:v6];
 
-  v7 = [objc_opt_class() deviceImageURLFromAttributes:v4];
+  v7 = [objc_opt_class() deviceImageURLFromAttributes:dictionaryCopy];
   [(ICQLocalBackupController *)self setDeviceImageURL:v7];
 
-  v8 = [v4 objectForKey:@"backupSize"];
+  v8 = [dictionaryCopy objectForKey:@"backupSize"];
   -[ICQLocalBackupController setBackupSize:](self, "setBackupSize:", [v8 longLongValue]);
 
-  v10 = [v4 objectForKey:@"bytesRequiredForBackup"];
+  v10 = [dictionaryCopy objectForKey:@"bytesRequiredForBackup"];
 
   if (v10)
   {
@@ -256,20 +256,20 @@
   v15.receiver = self;
   v15.super_class = ICQLocalBackupController;
   [(ICQLocalBackupController *)&v15 loadView];
-  v3 = [(ICQLocalBackupController *)self specifier];
-  v4 = [v3 propertyForKey:@"attributes"];
+  specifier = [(ICQLocalBackupController *)self specifier];
+  v4 = [specifier propertyForKey:@"attributes"];
   [(ICQLocalBackupController *)self loadPropertyValuesFromDictionary:v4];
 
-  v5 = [(ICQLocalBackupController *)self specifier];
-  v6 = [v5 propertyForKey:@"remoteDelegate"];
+  specifier2 = [(ICQLocalBackupController *)self specifier];
+  v6 = [specifier2 propertyForKey:@"remoteDelegate"];
   [(ICQLocalBackupController *)self setRemoteDelegate:v6];
 
   [(ICQLocalBackupController *)self loadQuotaInfo];
   v7 = [ICQDeviceIdentificationView alloc];
   deviceName = self->_deviceName;
-  v9 = [(ICQLocalBackupController *)self deviceIdentifier];
-  v10 = [(ICQLocalBackupController *)self deviceImageURL];
-  v11 = [(ICQDeviceIdentificationView *)v7 initWithFrame:deviceName deviceName:v9 deviceIdentifier:v10 imageURL:1 isCurrentDevice:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+  deviceIdentifier = [(ICQLocalBackupController *)self deviceIdentifier];
+  deviceImageURL = [(ICQLocalBackupController *)self deviceImageURL];
+  v11 = [(ICQDeviceIdentificationView *)v7 initWithFrame:deviceName deviceName:deviceIdentifier deviceIdentifier:deviceImageURL imageURL:1 isCurrentDevice:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   deviceIdentificationView = self->_deviceIdentificationView;
   self->_deviceIdentificationView = v11;
 
@@ -281,13 +281,13 @@
   [(ICQLocalBackupController *)self setTitle:v14];
 }
 
-- (id)appSpecifierForBundleID:(id)a3
+- (id)appSpecifierForBundleID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(ICQLocalBackupController *)self specifiers];
-    v6 = [v5 specifierForID:v4];
+    specifiers = [(ICQLocalBackupController *)self specifiers];
+    v6 = [specifiers specifierForID:dCopy];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -302,19 +302,19 @@ LABEL_5:
   return v6;
 }
 
-- (void)turnOffAppBackupCancelled:(id)a3
+- (void)turnOffAppBackupCancelled:(id)cancelled
 {
-  v3 = [a3 propertyForKey:*MEMORY[0x277D40148]];
-  v4 = [v3 control];
+  v3 = [cancelled propertyForKey:*MEMORY[0x277D40148]];
+  control = [v3 control];
 
-  [v4 setOn:1 animated:1];
+  [control setOn:1 animated:1];
 }
 
-- (void)turnOffAppBackupConfirmed:(id)a3
+- (void)turnOffAppBackupConfirmed:(id)confirmed
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"MBDomainInfo"];
-  v6 = [v5 domainName];
+  confirmedCopy = confirmed;
+  v5 = [confirmedCopy propertyForKey:@"MBDomainInfo"];
+  domainName = [v5 domainName];
 
   v7 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
@@ -322,10 +322,10 @@ LABEL_5:
   block[2] = __54__ICQLocalBackupController_turnOffAppBackupConfirmed___block_invoke;
   block[3] = &unk_27A65B108;
   block[4] = self;
-  v11 = v6;
-  v12 = v4;
-  v8 = v4;
-  v9 = v6;
+  v11 = domainName;
+  v12 = confirmedCopy;
+  v8 = confirmedCopy;
+  v9 = domainName;
   dispatch_async(v7, block);
 }
 
@@ -423,17 +423,17 @@ void __54__ICQLocalBackupController_turnOffAppBackupConfirmed___block_invoke_2(u
   }
 }
 
-- (void)setBackupDomainEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setBackupDomainEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v10 = a4;
-  if ([a3 BOOLValue])
+  specifierCopy = specifier;
+  if ([enabled BOOLValue])
   {
-    v6 = [v10 propertyForKey:@"MBDomainInfo"];
+    v6 = [specifierCopy propertyForKey:@"MBDomainInfo"];
 
     [v6 setEnabled:1];
     backupManager = self->_backupManager;
-    v8 = [v6 domainName];
-    [(MBManager *)backupManager setBackupEnabled:1 forDomainName:v8];
+    domainName = [v6 domainName];
+    [(MBManager *)backupManager setBackupEnabled:1 forDomainName:domainName];
 
     [(ICQLocalBackupController *)self updateNextBackupSize];
     v9 = v6;
@@ -441,14 +441,14 @@ void __54__ICQLocalBackupController_turnOffAppBackupConfirmed___block_invoke_2(u
 
   else
   {
-    [(ICQLocalBackupController *)self showConfirmationViewForSpecifier:v10];
-    v9 = v10;
+    [(ICQLocalBackupController *)self showConfirmationViewForSpecifier:specifierCopy];
+    v9 = specifierCopy;
   }
 }
 
-- (id)backupDomainEnabledForSpecifier:(id)a3
+- (id)backupDomainEnabledForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:@"MBDomainInfo"];
+  v3 = [specifier propertyForKey:@"MBDomainInfo"];
   v4 = MEMORY[0x277CCABB0];
   if ([v3 isEnabled])
   {
@@ -465,40 +465,40 @@ void __54__ICQLocalBackupController_turnOffAppBackupConfirmed___block_invoke_2(u
   return v6;
 }
 
-- (void)showAllApps:(id)a3
+- (void)showAllApps:(id)apps
 {
-  v4 = a3;
+  appsCopy = apps;
   self->_showAllPressed = 1;
   if (!self->_appSpecifiers)
   {
     [ICQLocalBackupController showAllApps:];
   }
 
-  v5 = v4;
+  v5 = appsCopy;
   [(ICQLocalBackupController *)self animateAppSpecifierChanges];
 }
 
 + (BOOL)isiCloudPhotosEnabled
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [v2 fileExistsAtPath:@"/var/mobile/Media/PhotoData/CPL/initialsync_marker"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v3 = [defaultManager fileExistsAtPath:@"/var/mobile/Media/PhotoData/CPL/initialsync_marker"];
 
   return v3;
 }
 
-- (BOOL)isDomainWhitelisted:(id)a3
+- (BOOL)isDomainWhitelisted:(id)whitelisted
 {
   v3 = isDomainWhitelisted__onceToken;
-  v4 = a3;
+  whitelistedCopy = whitelisted;
   if (v3 != -1)
   {
     [ICQLocalBackupController isDomainWhitelisted:];
   }
 
   v5 = isDomainWhitelisted__whitelist;
-  v6 = [v4 bundleID];
+  bundleID = [whitelistedCopy bundleID];
 
-  v7 = [v5 containsObject:v6];
+  v7 = [v5 containsObject:bundleID];
   return v7;
 }
 
@@ -514,11 +514,11 @@ void __48__ICQLocalBackupController_isDomainWhitelisted___block_invoke()
   isDomainWhitelisted__whitelist = v1;
 }
 
-- (void)assignDisableBackupsConfirmationToSpecifier:(id)a3
+- (void)assignDisableBackupsConfirmationToSpecifier:(id)specifier
 {
   v20 = MEMORY[0x277CBEAC0];
   v3 = MEMORY[0x277CCA8D8];
-  v4 = a3;
+  specifierCopy = specifier;
   v19 = [v3 bundleForClass:objc_opt_class()];
   v17 = [v19 localizedStringForKey:@"CANCEL" value:&stru_28844FC60 table:@"BackupInfo"];
   v16 = *MEMORY[0x277D3FE78];
@@ -528,29 +528,29 @@ void __48__ICQLocalBackupController_isDomainWhitelisted___block_invoke()
   v6 = MEMORY[0x277CCACA8];
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"TURN_OFF_APP_PROMPT_TEXT" value:&stru_28844FC60 table:@"BackupInfo"];
-  v9 = [v4 name];
-  v10 = [v6 stringWithFormat:v8, v9];
+  name = [specifierCopy name];
+  v10 = [v6 stringWithFormat:v8, name];
   v11 = *MEMORY[0x277D3FE90];
   v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v13 = [v12 localizedStringForKey:@"TURN_OFF" value:&stru_28844FC60 table:@"BackupInfo"];
   v21 = [v20 dictionaryWithObjectsAndKeys:{v17, v16, v5, v15, v10, v11, v13, *MEMORY[0x277D3FE98], 0}];
 
-  [v4 setupWithDictionary:v21];
+  [specifierCopy setupWithDictionary:v21];
   v14 = [MEMORY[0x277CCABB0] numberWithBool:1];
-  [v4 setProperty:v14 forKey:*MEMORY[0x277D3FE80]];
+  [specifierCopy setProperty:v14 forKey:*MEMORY[0x277D3FE80]];
 }
 
-- (id)loadAppSpecifiersWithDomainInfo:(id)a3
+- (id)loadAppSpecifiersWithDomainInfo:(id)info
 {
   v63 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v40 = [MEMORY[0x277CBEB18] array];
-  v41 = [MEMORY[0x277CBEB18] array];
+  infoCopy = info;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = v4;
+  obj = infoCopy;
   v5 = [obj countByEnumeratingWithState:&v54 objects:v62 count:16];
   if (v5)
   {
@@ -562,7 +562,7 @@ void __48__ICQLocalBackupController_isDomainWhitelisted___block_invoke()
     v42 = *MEMORY[0x277D40160];
     v43 = *MEMORY[0x277D40020];
     v39 = *MEMORY[0x277D3FF38];
-    v47 = self;
+    selfCopy = self;
     v48 = *v55;
     do
     {
@@ -577,7 +577,7 @@ void __48__ICQLocalBackupController_isDomainWhitelisted___block_invoke()
 
         v9 = *(*(&v54 + 1) + 8 * v8);
         v10 = objc_autoreleasePoolPush();
-        v11 = [getPSGBackupUtilsClass() displayNameForDomainInfo:v9];
+        name = [getPSGBackupUtilsClass() displayNameForDomainInfo:v9];
         v12 = [getPSGBackupUtilsClass() bundleIdForDomainInfo:v9];
         if (([getPSGBackupUtilsClass() shouldIgnoreBundleId:v12] & 1) == 0)
         {
@@ -585,7 +585,7 @@ void __48__ICQLocalBackupController_isDomainWhitelisted___block_invoke()
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v59 = v11;
+            v59 = name;
             v60 = 2112;
             v61 = v12;
             _os_log_impl(&dword_275623000, v13, OS_LOG_TYPE_DEFAULT, "Attempting to show domain: %@:%@", buf, 0x16u);
@@ -593,12 +593,12 @@ void __48__ICQLocalBackupController_isDomainWhitelisted___block_invoke()
 
           v14 = [(ICQLocalBackupController *)self appSpecifierForBundleID:v12];
           v15 = v14;
-          if (v14 && !v11)
+          if (v14 && !name)
           {
-            v11 = [v14 name];
+            name = [v14 name];
           }
 
-          if (v11)
+          if (name)
           {
             v16 = 1;
           }
@@ -612,22 +612,22 @@ void __48__ICQLocalBackupController_isDomainWhitelisted___block_invoke()
           if (!v16)
           {
             v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-            v11 = [v18 localizedStringForKey:@"LOADING" value:&stru_28844FC60 table:@"BackupInfo"];
+            name = [v18 localizedStringForKey:@"LOADING" value:&stru_28844FC60 table:@"BackupInfo"];
 
-            [v41 addObject:v12];
+            [array2 addObject:v12];
           }
 
-          if (v11)
+          if (name)
           {
             if (v15)
             {
-              [v15 setName:v11];
+              [v15 setName:name];
               v19 = v15;
             }
 
             else
             {
-              v19 = [MEMORY[0x277D3F9C8] preferenceSpecifierNamed:v11 target:self set:sel_setBackupDomainEnabled_forSpecifier_ get:sel_backupDomainEnabledForSpecifier_ detail:0 cell:6 edit:0];
+              v19 = [MEMORY[0x277D3F9C8] preferenceSpecifierNamed:name target:self set:sel_setBackupDomainEnabled_forSpecifier_ get:sel_backupDomainEnabledForSpecifier_ detail:0 cell:6 edit:0];
             }
 
             [v19 setProperty:objc_opt_class() forKey:v46];
@@ -677,13 +677,13 @@ void __48__ICQLocalBackupController_isDomainWhitelisted___block_invoke()
                 v27 = [MEMORY[0x277CCABB0] numberWithBool:0];
                 [v19 setProperty:v27 forKey:v39];
 
-                v28 = v47;
+                v28 = selfCopy;
               }
 
               else
               {
-                v28 = v47;
-                [(ICQLocalBackupController *)v47 assignDisableBackupsConfirmationToSpecifier:v19];
+                v28 = selfCopy;
+                [(ICQLocalBackupController *)selfCopy assignDisableBackupsConfirmationToSpecifier:v19];
               }
 
               objc_storeWeak(&v19[*MEMORY[0x277D3FCB8]], v28);
@@ -694,17 +694,17 @@ void __48__ICQLocalBackupController_isDomainWhitelisted___block_invoke()
             v7 = v48;
             if ([v9 isCameraRollDomain])
             {
-              self = v47;
+              self = selfCopy;
               if (([objc_opt_class() isiCloudPhotosEnabled] & 1) == 0)
               {
-                [v40 insertObject:v19 atIndex:0];
+                [array insertObject:v19 atIndex:0];
               }
             }
 
             else
             {
-              [v40 addObject:v19];
-              self = v47;
+              [array addObject:v19];
+              self = selfCopy;
             }
           }
 
@@ -728,8 +728,8 @@ void __48__ICQLocalBackupController_isDomainWhitelisted___block_invoke()
     while (v6);
   }
 
-  v29 = v41;
-  if (ceilf([v41 count] / 10.0) > 0.0)
+  v29 = array2;
+  if (ceilf([array2 count] / 10.0) > 0.0)
   {
     v30 = 0;
     v31 = 0;
@@ -753,21 +753,21 @@ void __48__ICQLocalBackupController_isDomainWhitelisted___block_invoke()
       v51[1] = 3221225472;
       v51[2] = __60__ICQLocalBackupController_loadAppSpecifiersWithDomainInfo___block_invoke;
       v51[3] = &unk_27A65B130;
-      v52 = v40;
-      v53 = self;
+      v52 = array;
+      selfCopy2 = self;
       [v36 getAppDetailsForBundleIDs:v35 handler:v51];
 
-      v29 = v41;
+      v29 = array2;
       v37 = v32;
       v31 -= 10;
       v30 += 10;
       ++v32;
     }
 
-    while (ceilf([v41 count] / 10.0) > v37);
+    while (ceilf([array2 count] / 10.0) > v37);
   }
 
-  return v40;
+  return array;
 }
 
 void __60__ICQLocalBackupController_loadAppSpecifiersWithDomainInfo___block_invoke(uint64_t a1, void *a2)
@@ -850,24 +850,24 @@ void __60__ICQLocalBackupController_loadAppSpecifiersWithDomainInfo___block_invo
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)_updateTable:(id)a3 toMatchArray:(id)a4 withVisibleArray:(id)a5 maxVisible:(unint64_t)a6 inSection:(int64_t)a7 withRowOffset:(int64_t)a8
+- (void)_updateTable:(id)table toMatchArray:(id)array withVisibleArray:(id)visibleArray maxVisible:(unint64_t)visible inSection:(int64_t)section withRowOffset:(int64_t)offset
 {
   v57 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v39 = v13;
-  [v13 beginUpdates];
-  v16 = [MEMORY[0x277CBEB18] array];
-  v37 = [MEMORY[0x277CBEB18] array];
-  v49 = [v15 copy];
+  tableCopy = table;
+  arrayCopy = array;
+  visibleArrayCopy = visibleArray;
+  v39 = tableCopy;
+  [tableCopy beginUpdates];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  v49 = [visibleArrayCopy copy];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v17 = v14;
+  v17 = arrayCopy;
   v18 = 0x277CCA000uLL;
-  v38 = v16;
+  v38 = array;
   v41 = v17;
   v48 = [v17 countByEnumeratingWithState:&v52 objects:v56 count:16];
   v19 = 0;
@@ -878,9 +878,9 @@ void __60__ICQLocalBackupController_loadAppSpecifiersWithDomainInfo___block_invo
 
   v47 = *v53;
   v43 = *MEMORY[0x277D3FFB8];
-  v45 = a7;
-  v46 = a8;
-  v44 = a6;
+  sectionCopy = section;
+  offsetCopy = offset;
+  visibleCopy = visible;
   do
   {
     for (i = 0; i != v48; ++i)
@@ -891,17 +891,17 @@ void __60__ICQLocalBackupController_loadAppSpecifiersWithDomainInfo___block_invo
       }
 
       v21 = *(*(&v52 + 1) + 8 * i);
-      if (v19 >= [v15 count])
+      if (v19 >= [visibleArrayCopy count])
       {
-        v25 = [*(v18 + 2672) indexPathForRow:a8 + v19 inSection:a7];
-        [v16 addObject:v25];
+        v25 = [*(v18 + 2672) indexPathForRow:offset + v19 inSection:section];
+        [array addObject:v25];
 
         v18 = 0x277CCA000;
-        [v15 addObject:v21];
+        [visibleArrayCopy addObject:v21];
         goto LABEL_17;
       }
 
-      v22 = [v15 objectAtIndex:v19];
+      v22 = [visibleArrayCopy objectAtIndex:v19];
       v23 = [v22 propertyForKey:v43];
       v24 = [v21 propertyForKey:v43];
       if (([v24 isEqualToString:v23] & 1) == 0)
@@ -917,25 +917,25 @@ void __60__ICQLocalBackupController_loadAppSpecifiersWithDomainInfo___block_invo
         v28 = *(v18 + 2672);
         if (v27 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v29 = [v28 indexPathForRow:v46 + v19 inSection:v45];
-          [v16 addObject:v29];
+          v29 = [v28 indexPathForRow:offsetCopy + v19 inSection:sectionCopy];
+          [array addObject:v29];
 
           v17 = v41;
           goto LABEL_14;
         }
 
-        v40 = [v28 indexPathForRow:v27 + v46 inSection:v45];
-        v30 = [*(v18 + 2672) indexPathForRow:v46 + v19 inSection:v45];
+        v40 = [v28 indexPathForRow:v27 + offsetCopy inSection:sectionCopy];
+        v30 = [*(v18 + 2672) indexPathForRow:offsetCopy + v19 inSection:sectionCopy];
         [v39 moveRowAtIndexPath:v40 toIndexPath:v30];
 
-        v16 = v38;
-        v31 = [v15 indexOfObjectPassingTest:v26];
+        array = v38;
+        v31 = [visibleArrayCopy indexOfObjectPassingTest:v26];
         v17 = v41;
         if (v31 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          [v15 removeObjectAtIndex:v31];
+          [visibleArrayCopy removeObjectAtIndex:v31];
 LABEL_14:
-          [v15 insertObject:v21 atIndex:v19];
+          [visibleArrayCopy insertObject:v21 atIndex:v19];
         }
 
         v18 = 0x277CCA000;
@@ -943,14 +943,14 @@ LABEL_14:
         goto LABEL_16;
       }
 
-      [v15 replaceObjectAtIndex:v19 withObject:v21];
+      [visibleArrayCopy replaceObjectAtIndex:v19 withObject:v21];
 LABEL_16:
 
-      a7 = v45;
-      a8 = v46;
-      a6 = v44;
+      section = sectionCopy;
+      offset = offsetCopy;
+      visible = visibleCopy;
 LABEL_17:
-      if (++v19 >= a6)
+      if (++v19 >= visible)
       {
         goto LABEL_20;
       }
@@ -962,7 +962,7 @@ LABEL_17:
   while (v48);
 LABEL_20:
 
-  if ([v15 count] <= v19)
+  if ([visibleArrayCopy count] <= v19)
   {
     v33 = 0;
     v32 = 0;
@@ -970,26 +970,26 @@ LABEL_20:
 
   else
   {
-    v32 = [v15 count] - v19;
+    v32 = [visibleArrayCopy count] - v19;
     v33 = v19;
   }
 
-  for (; v19 < [v15 count]; ++v19)
+  for (; v19 < [visibleArrayCopy count]; ++v19)
   {
-    v34 = [v15 objectAtIndex:v19];
+    v34 = [visibleArrayCopy objectAtIndex:v19];
     v35 = [v49 indexOfObject:v34];
     if (v35 == 0x7FFFFFFFFFFFFFFFLL)
     {
       [ICQLocalBackupController _updateTable:toMatchArray:withVisibleArray:maxVisible:inSection:withRowOffset:];
     }
 
-    v36 = [MEMORY[0x277CCAA70] indexPathForRow:v35 + a8 inSection:a7];
-    [v37 addObject:v36];
+    v36 = [MEMORY[0x277CCAA70] indexPathForRow:v35 + offset inSection:section];
+    [array2 addObject:v36];
   }
 
-  [v15 removeObjectsInRange:{v33, v32}];
+  [visibleArrayCopy removeObjectsInRange:{v33, v32}];
   [v39 insertRowsAtIndexPaths:v38 withRowAnimation:0];
-  [v39 deleteRowsAtIndexPaths:v37 withRowAnimation:0];
+  [v39 deleteRowsAtIndexPaths:array2 withRowAnimation:0];
   [v39 endUpdates];
 }
 
@@ -1003,7 +1003,7 @@ uint64_t __106__ICQLocalBackupController__updateTable_toMatchArray_withVisibleAr
 
 - (void)animateAppSpecifierChanges
 {
-  v2 = self;
+  selfCopy = self;
   v64 = *MEMORY[0x277D85DE8];
   v57 = 0u;
   v58 = 0u;
@@ -1011,7 +1011,7 @@ uint64_t __106__ICQLocalBackupController__updateTable_toMatchArray_withVisibleAr
   v60 = 0u;
   obj = self->_visibleAppSpecifiers;
   v3 = [(NSMutableArray *)obj countByEnumeratingWithState:&v57 objects:v63 count:16];
-  v51 = v2;
+  v51 = selfCopy;
   if (v3)
   {
     v4 = v3;
@@ -1028,7 +1028,7 @@ uint64_t __106__ICQLocalBackupController__updateTable_toMatchArray_withVisibleAr
         }
 
         v9 = *(*(&v57 + 1) + 8 * i);
-        appSpecifiers = v2->_appSpecifiers;
+        appSpecifiers = selfCopy->_appSpecifiers;
         v11 = [v9 propertyForKey:v6];
         v12 = [(NSMutableArray *)appSpecifiers specifierForID:v11];
 
@@ -1046,7 +1046,7 @@ uint64_t __106__ICQLocalBackupController__updateTable_toMatchArray_withVisibleAr
             [(ICQLocalBackupController *)v51 reloadSpecifier:v9 animated:0];
           }
 
-          v2 = v51;
+          selfCopy = v51;
         }
       }
 
@@ -1057,8 +1057,8 @@ uint64_t __106__ICQLocalBackupController__updateTable_toMatchArray_withVisibleAr
   }
 
   v56 = 0;
-  [(ICQLocalBackupController *)v2 getGroup:&v56 row:0 ofSpecifierID:@"BACKED_UP_APPS"];
-  if (v2->_showAllPressed)
+  [(ICQLocalBackupController *)selfCopy getGroup:&v56 row:0 ofSpecifierID:@"BACKED_UP_APPS"];
+  if (selfCopy->_showAllPressed)
   {
     v17 = 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -1068,19 +1068,19 @@ uint64_t __106__ICQLocalBackupController__updateTable_toMatchArray_withVisibleAr
     v17 = 5;
   }
 
-  v18 = [(ICQLocalBackupController *)v2 specifiersInGroup:v56];
+  v18 = [(ICQLocalBackupController *)selfCopy specifiersInGroup:v56];
   if (![v18 count])
   {
     [ICQLocalBackupController animateAppSpecifierChanges];
   }
 
   v19 = [v18 objectAtIndex:0];
-  v20 = [(ICQLocalBackupController *)v2 indexOfSpecifier:v19];
+  v20 = [(ICQLocalBackupController *)selfCopy indexOfSpecifier:v19];
 
-  if ([(NSMutableArray *)v2->_visibleAppSpecifiers count])
+  if ([(NSMutableArray *)selfCopy->_visibleAppSpecifiers count])
   {
-    v21 = [(NSMutableArray *)v2->_visibleAppSpecifiers objectAtIndex:0];
-    v22 = [(ICQLocalBackupController *)v2 indexOfSpecifier:v21]+ ~v20;
+    v21 = [(NSMutableArray *)selfCopy->_visibleAppSpecifiers objectAtIndex:0];
+    v22 = [(ICQLocalBackupController *)selfCopy indexOfSpecifier:v21]+ ~v20;
   }
 
   else
@@ -1091,77 +1091,77 @@ uint64_t __106__ICQLocalBackupController__updateTable_toMatchArray_withVisibleAr
   if ([v18 count] < 2)
   {
     v26 = 0;
-    v24 = [(ICQLocalBackupController *)v2 indexOfGroup:v56]+ 1;
+    v24 = [(ICQLocalBackupController *)selfCopy indexOfGroup:v56]+ 1;
   }
 
   else
   {
     v23 = [v18 objectAtIndex:1];
-    v24 = [(ICQLocalBackupController *)v2 indexOfSpecifier:v23];
+    v24 = [(ICQLocalBackupController *)selfCopy indexOfSpecifier:v23];
 
-    v25 = [v18 lastObject];
-    v26 = [(ICQLocalBackupController *)v2 indexOfSpecifier:v25]- v24 + 1;
+    lastObject = [v18 lastObject];
+    v26 = [(ICQLocalBackupController *)selfCopy indexOfSpecifier:lastObject]- v24 + 1;
   }
 
-  [(ICQLocalBackupController *)v2 beginUpdates];
-  v27 = [(ICQLocalBackupController *)v2 indexOfSpecifierID:@"SPINNER_CELL"];
+  [(ICQLocalBackupController *)selfCopy beginUpdates];
+  v27 = [(ICQLocalBackupController *)selfCopy indexOfSpecifierID:@"SPINNER_CELL"];
   if (v27 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v28 = v27;
     if (v27 > v20 && v27 < [v18 count] + v20)
     {
       v29 = v28 + ~v20;
-      v30 = [(ICQLocalBackupController *)v2 table];
+      table = [(ICQLocalBackupController *)selfCopy table];
       v31 = [MEMORY[0x277CCAA70] indexPathForRow:v29 inSection:v56];
       v62 = v31;
       v32 = [MEMORY[0x277CBEA60] arrayWithObjects:&v62 count:1];
-      [v30 deleteRowsAtIndexPaths:v32 withRowAnimation:100];
+      [table deleteRowsAtIndexPaths:v32 withRowAnimation:100];
 
-      v2 = v51;
+      selfCopy = v51;
       v22 -= v22 > v29;
     }
   }
 
-  v33 = [(ICQLocalBackupController *)v2 table];
-  [(ICQLocalBackupController *)v2 _updateTable:v33 toMatchArray:v2->_appSpecifiers withVisibleArray:v2->_visibleAppSpecifiers maxVisible:v17 inSection:v56 withRowOffset:v22];
+  table2 = [(ICQLocalBackupController *)selfCopy table];
+  [(ICQLocalBackupController *)selfCopy _updateTable:table2 toMatchArray:selfCopy->_appSpecifiers withVisibleArray:selfCopy->_visibleAppSpecifiers maxVisible:v17 inSection:v56 withRowOffset:v22];
 
-  v34 = [(NSMutableArray *)v2->_visibleAppSpecifiers mutableCopy];
-  v35 = [(ICQLocalBackupController *)v2 indexPathForIndex:[(ICQLocalBackupController *)v2 indexOfSpecifier:v2->_showAllSpecifier]];
-  v36 = [(NSMutableArray *)v2->_visibleAppSpecifiers count];
-  v37 = [(NSMutableArray *)v2->_appSpecifiers count];
+  v34 = [(NSMutableArray *)selfCopy->_visibleAppSpecifiers mutableCopy];
+  v35 = [(ICQLocalBackupController *)selfCopy indexPathForIndex:[(ICQLocalBackupController *)selfCopy indexOfSpecifier:selfCopy->_showAllSpecifier]];
+  v36 = [(NSMutableArray *)selfCopy->_visibleAppSpecifiers count];
+  v37 = [(NSMutableArray *)selfCopy->_appSpecifiers count];
   if (v35 && v36 >= v37)
   {
-    v38 = [(ICQLocalBackupController *)v2 table];
+    table3 = [(ICQLocalBackupController *)selfCopy table];
     v39 = [MEMORY[0x277CBEA60] arrayWithObject:v35];
-    [v38 deleteRowsAtIndexPaths:v39 withRowAnimation:0];
+    [table3 deleteRowsAtIndexPaths:v39 withRowAnimation:0];
   }
 
   else if (v36 < v37)
   {
     if (!v35)
     {
-      v40 = [(ICQLocalBackupController *)v2 table];
+      table4 = [(ICQLocalBackupController *)selfCopy table];
       v41 = MEMORY[0x277CBEA60];
       v42 = [MEMORY[0x277CCAA70] indexPathForRow:5 inSection:v56];
       v43 = [v41 arrayWithObject:v42];
-      [v40 insertRowsAtIndexPaths:v43 withRowAnimation:0];
+      [table4 insertRowsAtIndexPaths:v43 withRowAnimation:0];
 
-      v2 = v51;
+      selfCopy = v51;
     }
 
-    [v34 addObject:v2->_showAllSpecifier];
+    [v34 addObject:selfCopy->_showAllSpecifier];
   }
 
-  v44 = [(ICQLocalBackupController *)v2 specifiers];
-  [v44 replaceObjectsInRange:v24 withObjectsFromArray:{v26, v34}];
+  specifiers = [(ICQLocalBackupController *)selfCopy specifiers];
+  [specifiers replaceObjectsInRange:v24 withObjectsFromArray:{v26, v34}];
 
-  [(ICQLocalBackupController *)v2 createGroupIndices];
-  [(ICQLocalBackupController *)v2 endUpdates];
+  [(ICQLocalBackupController *)selfCopy createGroupIndices];
+  [(ICQLocalBackupController *)selfCopy endUpdates];
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v45 = v2->_appSpecifiers;
+  v45 = selfCopy->_appSpecifiers;
   v46 = [(NSMutableArray *)v45 countByEnumeratingWithState:&v52 objects:v61 count:16];
   if (v46)
   {
@@ -1176,7 +1176,7 @@ uint64_t __106__ICQLocalBackupController__updateTable_toMatchArray_withVisibleAr
           objc_enumerationMutation(v45);
         }
 
-        [(ICQLocalBackupController *)v2 reloadSpecifier:*(*(&v52 + 1) + 8 * j)];
+        [(ICQLocalBackupController *)selfCopy reloadSpecifier:*(*(&v52 + 1) + 8 * j)];
       }
 
       v47 = [(NSMutableArray *)v45 countByEnumeratingWithState:&v52 objects:v61 count:16];
@@ -1208,12 +1208,12 @@ uint64_t __106__ICQLocalBackupController__updateTable_toMatchArray_withVisibleAr
         [ICQLocalBackupController beginScan];
       }
 
-      v8 = [v2 domain];
-      if ([v8 isEqualToString:@"MBErrorDomain"])
+      domain = [v2 domain];
+      if ([domain isEqualToString:@"MBErrorDomain"])
       {
-        v9 = [v2 code];
+        code = [v2 code];
 
-        if (v9 == 3)
+        if (code == 3)
         {
           v3 = 1;
           [(ICQLocalBackupController *)self setScanInProgress:1];
@@ -1239,7 +1239,7 @@ LABEL_12:
   return v3;
 }
 
-- (void)updateAppSpecifiersScanWhenComplete:(BOOL)a3
+- (void)updateAppSpecifiersScanWhenComplete:(BOOL)complete
 {
   v5 = dispatch_get_global_queue(0, 0);
   v6[0] = MEMORY[0x277D85DD0];
@@ -1247,7 +1247,7 @@ LABEL_12:
   v6[2] = __64__ICQLocalBackupController_updateAppSpecifiersScanWhenComplete___block_invoke;
   v6[3] = &unk_27A65A930;
   v6[4] = self;
-  v7 = a3;
+  completeCopy = complete;
   dispatch_async(v5, v6);
 }
 
@@ -1297,11 +1297,11 @@ void __64__ICQLocalBackupController_updateAppSpecifiersScanWhenComplete___block_
   }
 }
 
-- (void)insertDeleteBackupButtonIfNeeded:(BOOL)a3
+- (void)insertDeleteBackupButtonIfNeeded:(BOOL)needed
 {
   if (self->_deviceBackup)
   {
-    v3 = a3;
+    neededCopy = needed;
     v5 = [(ICQLocalBackupController *)self specifierForID:@"DELETE_BACKUP"];
 
     if (!v5)
@@ -1309,7 +1309,7 @@ void __64__ICQLocalBackupController_updateAppSpecifiersScanWhenComplete___block_
       v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v6 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"DELETE_BACKUP_BUTTON_GROUP"];
       v7 = @"DELETE_BACKUP_AND_TURN_OFF_BACKUP";
-      if (!v3)
+      if (!neededCopy)
       {
         v7 = @"DELETE_BACKUP";
       }
@@ -1333,9 +1333,9 @@ void __64__ICQLocalBackupController_updateAppSpecifiersScanWhenComplete___block_
   }
 }
 
-- (void)firstDeleteConfirmation:(id)a3
+- (void)firstDeleteConfirmation:(id)confirmation
 {
-  v4 = a3;
+  confirmationCopy = confirmation;
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"DELETE_BACKUP_TITLE" value:&stru_28844FC60 table:@"BackupInfo"];
 
@@ -1368,9 +1368,9 @@ void __64__ICQLocalBackupController_updateAppSpecifiersScanWhenComplete___block_
 
   v20 = [MEMORY[0x277D75110] sheetAlertControllerWithTitle:v17 message:v16];
 
-  v21 = [(ICQLocalBackupController *)self cachedCellForSpecifier:v4];
-  v22 = [v20 popoverPresentationController];
-  [v22 setSourceItem:v21];
+  v21 = [(ICQLocalBackupController *)self cachedCellForSpecifier:confirmationCopy];
+  popoverPresentationController = [v20 popoverPresentationController];
+  [popoverPresentationController setSourceItem:v21];
 
   v23 = MEMORY[0x277D750F8];
   v27[0] = MEMORY[0x277D85DD0];
@@ -1378,8 +1378,8 @@ void __64__ICQLocalBackupController_updateAppSpecifiersScanWhenComplete___block_
   v27[2] = __52__ICQLocalBackupController_firstDeleteConfirmation___block_invoke;
   v27[3] = &unk_27A65A848;
   v27[4] = self;
-  v28 = v4;
-  v24 = v4;
+  v28 = confirmationCopy;
+  v24 = confirmationCopy;
   v25 = [v23 actionWithTitle:v15 style:2 handler:v27];
 
   v26 = [MEMORY[0x277D750F8] actionWithTitle:v19 style:1 handler:&__block_literal_global_239];
@@ -1388,10 +1388,10 @@ void __64__ICQLocalBackupController_updateAppSpecifiersScanWhenComplete___block_
   [(ICQLocalBackupController *)self presentViewController:v20 animated:1 completion:0];
 }
 
-- (void)secondDeleteConfirmationWithSender:(id)a3
+- (void)secondDeleteConfirmationWithSender:(id)sender
 {
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
+  senderCopy = sender;
   v6 = [v4 bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"SECOND_DELETE_BACKUP_TITLE" value:&stru_28844FC60 table:@"BackupInfo"];
 
@@ -1405,10 +1405,10 @@ void __64__ICQLocalBackupController_updateAppSpecifiersScanWhenComplete___block_
   v13 = [v12 localizedStringForKey:@"CANCEL" value:&stru_28844FC60 table:@"BackupInfo"];
 
   v14 = [MEMORY[0x277D75110] sheetAlertControllerWithTitle:v7 message:v9];
-  v15 = [(ICQLocalBackupController *)self cachedCellForSpecifier:v5];
+  v15 = [(ICQLocalBackupController *)self cachedCellForSpecifier:senderCopy];
 
-  v16 = [v14 popoverPresentationController];
-  [v16 setSourceItem:v15];
+  popoverPresentationController = [v14 popoverPresentationController];
+  [popoverPresentationController setSourceItem:v15];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -1422,7 +1422,7 @@ void __64__ICQLocalBackupController_updateAppSpecifiersScanWhenComplete___block_
   [(ICQLocalBackupController *)self presentViewController:v14 animated:1 completion:0];
 }
 
-- (void)managerDidFinishScan:(id)a3
+- (void)managerDidFinishScan:(id)scan
 {
   if (self->_scanInProgress)
   {
@@ -1432,16 +1432,16 @@ void __64__ICQLocalBackupController_updateAppSpecifiersScanWhenComplete___block_
   }
 }
 
-- (void)manager:(id)a3 didFailScanWithError:(id)a4
+- (void)manager:(id)manager didFailScanWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = _ICQGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     [ICQLocalBackupController manager:didFailScanWithError:];
   }
 
-  if (self->_scanInProgress && [v5 code] != 202)
+  if (self->_scanInProgress && [errorCopy code] != 202)
   {
     [(ICQLocalBackupController *)self setScanInProgress:0];
     v7 = [(ICQLocalBackupController *)self specifierForID:@"BACKED_UP_APPS"];
@@ -1451,20 +1451,20 @@ void __64__ICQLocalBackupController_updateAppSpecifiersScanWhenComplete___block_
   }
 }
 
-+ (id)currentDeviceBackupWithMBManager:(id)a3 filtering:(BOOL)a4 error:(id *)a5
++ (id)currentDeviceBackupWithMBManager:(id)manager filtering:(BOOL)filtering error:(id *)error
 {
-  v6 = a4;
+  filteringCopy = filtering;
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  managerCopy = manager;
   v8 = objc_opt_new();
-  v9 = [v8 backupDeviceUUID];
+  backupDeviceUUID = [v8 backupDeviceUUID];
 
   v29 = 0;
-  v10 = [v7 getBackupListWithFiltering:v6 error:&v29];
+  v10 = [managerCopy getBackupListWithFiltering:filteringCopy error:&v29];
   v11 = v29;
   if (v10)
   {
-    v24 = v7;
+    v24 = managerCopy;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
@@ -1485,8 +1485,8 @@ void __64__ICQLocalBackupController_updateAppSpecifiersScanWhenComplete___block_
           }
 
           v17 = *(*(&v25 + 1) + 8 * i);
-          v18 = [v17 backupUUID];
-          v19 = [v18 isEqualToString:v9];
+          backupUUID = [v17 backupUUID];
+          v19 = [backupUUID isEqualToString:backupDeviceUUID];
 
           if (v19)
           {
@@ -1508,7 +1508,7 @@ void __64__ICQLocalBackupController_updateAppSpecifiersScanWhenComplete___block_
 
     v20 = 0;
 LABEL_12:
-    v7 = v24;
+    managerCopy = v24;
   }
 
   else
@@ -1519,11 +1519,11 @@ LABEL_12:
       +[ICQLocalBackupController currentDeviceBackupWithMBManager:filtering:error:];
     }
 
-    if (a5)
+    if (error)
     {
       v22 = v11;
       v20 = 0;
-      *a5 = v11;
+      *error = v11;
     }
 
     else
@@ -1546,8 +1546,8 @@ LABEL_12:
     v6 = self->_deviceBackup;
     self->_deviceBackup = v5;
 
-    v7 = [(MBManager *)self->_backupManager dateOfLastBackup];
-    v8 = [v7 copy];
+    dateOfLastBackup = [(MBManager *)self->_backupManager dateOfLastBackup];
+    v8 = [dateOfLastBackup copy];
     dateOfLastBackup = self->_dateOfLastBackup;
     self->_dateOfLastBackup = v8;
 
@@ -1561,44 +1561,44 @@ LABEL_12:
   return v10;
 }
 
-+ (id)cellValueStyleDateStringForDate:(id)a3
++ (id)cellValueStyleDateStringForDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = objc_alloc_init(MEMORY[0x277CCA968]);
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
-  v6 = [v3 isTodayWithCalendar:v5];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v6 = [dateCopy isTodayWithCalendar:currentCalendar];
 
   [v4 setDoesRelativeDateFormatting:1];
   [v4 setTimeStyle:v6];
   [v4 setDateStyle:1];
-  v7 = [v4 stringFromDate:v3];
+  v7 = [v4 stringFromDate:dateCopy];
 
   return v7;
 }
 
-+ (id)dateStringForSnapshot:(id)a3
++ (id)dateStringForSnapshot:(id)snapshot
 {
-  v3 = a3;
-  v4 = [v3 state];
-  if (v4 == 2)
+  snapshotCopy = snapshot;
+  state = [snapshotCopy state];
+  if (state == 2)
   {
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v6 = v8;
+    date = v8;
     v9 = @"INCOMPLETE";
   }
 
   else
   {
-    if (v4 == 3)
+    if (state == 3)
     {
       v5 = objc_opt_class();
-      v6 = [v3 date];
-      v7 = [v5 cellValueStyleDateStringForDate:v6];
+      date = [snapshotCopy date];
+      v7 = [v5 cellValueStyleDateStringForDate:date];
       goto LABEL_7;
     }
 
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v6 = v8;
+    date = v8;
     v9 = @"NEVER";
   }
 
@@ -1619,9 +1619,9 @@ LABEL_7:
       goto LABEL_10;
     }
 
-    v3 = [(MBBackup *)self->_deviceBackup snapshots];
-    v4 = [v3 lastObject];
-    if ([v4 state] == 3)
+    snapshots = [(MBBackup *)self->_deviceBackup snapshots];
+    lastObject = [snapshots lastObject];
+    if ([lastObject state] == 3)
     {
       v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v2 = [v5 localizedStringForKey:@"NEVER" value:&stru_28844FC60 table:@"BackupInfo"];
@@ -1629,14 +1629,14 @@ LABEL_7:
 
     else
     {
-      v2 = [objc_opt_class() dateStringForSnapshot:v4];
+      v2 = [objc_opt_class() dateStringForSnapshot:lastObject];
     }
   }
 
   else
   {
-    v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v2 = [v3 localizedStringForKey:@"LOADING" value:&stru_28844FC60 table:@"BackupInfo"];
+    snapshots = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+    v2 = [snapshots localizedStringForKey:@"LOADING" value:&stru_28844FC60 table:@"BackupInfo"];
   }
 
 LABEL_10:
@@ -1644,9 +1644,9 @@ LABEL_10:
   return v2;
 }
 
-- (id)nextBackupSizeStringWithSpecifier:(id)a3
+- (id)nextBackupSizeStringWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   if (self->_doneLoadingDeviceBackup)
   {
     nextBackupSizeString = self->_nextBackupSizeString;
@@ -1713,9 +1713,9 @@ void __62__ICQLocalBackupController_nextBackupSizeStringWithSpecifier___block_in
 - (id)backupSizeString
 {
   v2 = MEMORY[0x277CCA8E8];
-  v3 = [(ICQLocalBackupController *)self backupSize];
+  backupSize = [(ICQLocalBackupController *)self backupSize];
 
-  return [v2 stringFromByteCount:v3 countStyle:1];
+  return [v2 stringFromByteCount:backupSize countStyle:1];
 }
 
 - (void)reloadAfterFetch
@@ -1846,7 +1846,7 @@ uint64_t __43__ICQLocalBackupController_reloadQuotaInfo__block_invoke_2(uint64_t
   return [v2 updateNextBackupSize];
 }
 
-- (void)reloadBackupInfoWithDeleteButton:(BOOL)a3
+- (void)reloadBackupInfoWithDeleteButton:(BOOL)button
 {
   deviceBackup = self->_deviceBackup;
   self->_deviceBackup = 0;
@@ -1860,7 +1860,7 @@ uint64_t __43__ICQLocalBackupController_reloadQuotaInfo__block_invoke_2(uint64_t
   v8[2] = __61__ICQLocalBackupController_reloadBackupInfoWithDeleteButton___block_invoke;
   v8[3] = &unk_27A65A930;
   v8[4] = self;
-  v9 = a3;
+  buttonCopy = button;
   dispatch_async(v7, v8);
 }
 
@@ -1908,9 +1908,9 @@ uint64_t __61__ICQLocalBackupController_reloadBackupInfoWithDeleteButton___block
     v7 = [MEMORY[0x277D3FAD8] groupSpecifierWithName:0];
     v37 = *MEMORY[0x277D3FFB8];
     [v7 setProperty:@"BACKUP_INFO_GROUP" forKey:?];
-    v8 = [(MBManager *)self->_backupManager isBackupEnabled];
+    isBackupEnabled = [(MBManager *)self->_backupManager isBackupEnabled];
     v9 = MEMORY[0x277D3FF88];
-    if ((v8 & 1) == 0)
+    if ((isBackupEnabled & 1) == 0)
     {
       v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v11 = [v10 localizedStringForKey:@"DEVICE_BACKUP_TURNED_OFF_FOOTER" value:&stru_28844FC60 table:@"BackupInfo"];
@@ -1937,8 +1937,8 @@ uint64_t __61__ICQLocalBackupController_reloadBackupInfoWithDeleteButton___block
 
     [v23 setProperty:objc_opt_class() forKey:v17];
     [v6 addObject:v23];
-    v24 = [(MBManager *)self->_backupManager restoreState];
-    LODWORD(v17) = [v24 state];
+    restoreState = [(MBManager *)self->_backupManager restoreState];
+    LODWORD(v17) = [restoreState state];
 
     if ((v17 - 1) >= 2)
     {
@@ -2005,9 +2005,9 @@ uint64_t __61__ICQLocalBackupController_reloadBackupInfoWithDeleteButton___block
 
 - (void)startDeletionBezel
 {
-  v3 = [(ICQLocalBackupController *)self navigationController];
-  v4 = [v3 view];
-  [v4 bounds];
+  navigationController = [(ICQLocalBackupController *)self navigationController];
+  view = [navigationController view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
 
@@ -2015,10 +2015,10 @@ uint64_t __61__ICQLocalBackupController_reloadBackupInfoWithDeleteButton___block
   v10 = floorf(v9);
   v11 = (v8 + -126.0) * 0.5;
   v12 = floorf(v11);
-  v13 = [(ICQLocalBackupController *)self navigationController];
-  v14 = [v13 view];
-  v15 = [(ICQLocalBackupController *)self view];
-  [v14 convertRect:v15 toView:{v10, v12, 156.0, 126.0}];
+  navigationController2 = [(ICQLocalBackupController *)self navigationController];
+  view2 = [navigationController2 view];
+  view3 = [(ICQLocalBackupController *)self view];
+  [view2 convertRect:view3 toView:{v10, v12, 156.0, 126.0}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -2033,19 +2033,19 @@ uint64_t __61__ICQLocalBackupController_reloadBackupInfoWithDeleteButton___block
   v28 = [v27 localizedStringForKey:@"DELETING" value:&stru_28844FC60 table:@"BackupInfo"];
   [(ICQSpinnerBezel *)v26 setBezelText:v28];
 
-  v29 = [(ICQLocalBackupController *)self view];
-  [v29 addSubview:self->_deletionBezel];
+  view4 = [(ICQLocalBackupController *)self view];
+  [view4 addSubview:self->_deletionBezel];
 
-  v31 = [(ICQLocalBackupController *)self view];
-  v30 = [v31 window];
-  [v30 setUserInteractionEnabled:0];
+  view5 = [(ICQLocalBackupController *)self view];
+  window = [view5 window];
+  [window setUserInteractionEnabled:0];
 }
 
 - (void)endDeletionBezel
 {
-  v3 = [(ICQLocalBackupController *)self view];
-  v4 = [v3 window];
-  [v4 setUserInteractionEnabled:1];
+  view = [(ICQLocalBackupController *)self view];
+  window = [view window];
+  [window setUserInteractionEnabled:1];
 
   [(ICQSpinnerBezel *)self->_deletionBezel removeFromSuperview];
   deletionBezel = self->_deletionBezel;
@@ -2062,11 +2062,11 @@ uint64_t __61__ICQLocalBackupController_reloadBackupInfoWithDeleteButton___block
   }
 
   [(ICQLocalBackupController *)self endDeletionBezel];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"BackupInfoDidChange" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"BackupInfoDidChange" object:0];
 
-  v5 = [(ICQLocalBackupController *)self navigationController];
-  v6 = [v5 popViewControllerAnimated:1];
+  navigationController = [(ICQLocalBackupController *)self navigationController];
+  v6 = [navigationController popViewControllerAnimated:1];
 }
 
 - (void)deleteBackupConfirmed
@@ -2194,25 +2194,25 @@ void __49__ICQLocalBackupController_deleteBackupConfirmed__block_invoke_2(uint64
   }
 }
 
-- (void)loadFailed:(id)a3 withError:(id)a4
+- (void)loadFailed:(id)failed withError:(id)error
 {
-  [(ICQLocalBackupController *)self endDeletionBezel:a3];
-  v6 = [(ICQLocalBackupController *)self navigationController];
-  v5 = [v6 popViewControllerAnimated:1];
+  [(ICQLocalBackupController *)self endDeletionBezel:failed];
+  navigationController = [(ICQLocalBackupController *)self navigationController];
+  v5 = [navigationController popViewControllerAnimated:1];
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(ICQLocalBackupController *)self specifierAtIndex:[(ICQLocalBackupController *)self indexForIndexPath:v5]];
-  v7 = [v6 identifier];
+  pathCopy = path;
+  v6 = [(ICQLocalBackupController *)self specifierAtIndex:[(ICQLocalBackupController *)self indexForIndexPath:pathCopy]];
+  identifier = [v6 identifier];
 
-  v8 = [(ICQLocalBackupController *)self specifierAtIndex:[(ICQLocalBackupController *)self indexForIndexPath:v5]];
+  v8 = [(ICQLocalBackupController *)self specifierAtIndex:[(ICQLocalBackupController *)self indexForIndexPath:pathCopy]];
   v9 = [(ICQLocalBackupController *)self getGroupSpecifierForSpecifier:v8];
 
-  if (([v7 isEqualToString:@"SHOW_ALL_APPS"] & 1) != 0 || (objc_msgSend(v9, "identifier"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToString:", @"DELETE_BACKUP_BUTTON_GROUP"), v10, v11))
+  if (([identifier isEqualToString:@"SHOW_ALL_APPS"] & 1) != 0 || (objc_msgSend(v9, "identifier"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToString:", @"DELETE_BACKUP_BUTTON_GROUP"), v10, v11))
   {
-    v12 = v5;
+    v12 = pathCopy;
   }
 
   else
@@ -2223,93 +2223,93 @@ void __49__ICQLocalBackupController_deleteBackupConfirmed__block_invoke_2(uint64
   return v12;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  viewCopy = view;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   v8.receiver = self;
   v8.super_class = ICQLocalBackupController;
-  [(ICQLocalBackupController *)&v8 tableView:v7 didSelectRowAtIndexPath:v6];
+  [(ICQLocalBackupController *)&v8 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
   v19.receiver = self;
   v19.super_class = ICQLocalBackupController;
-  v6 = [(ICQLocalBackupController *)&v19 tableView:a3 viewForHeaderInSection:?];
-  v7 = [(ICQLocalBackupController *)self additionalSpaceRequiredString];
+  v6 = [(ICQLocalBackupController *)&v19 tableView:view viewForHeaderInSection:?];
+  additionalSpaceRequiredString = [(ICQLocalBackupController *)self additionalSpaceRequiredString];
 
-  if (v7)
+  if (additionalSpaceRequiredString)
   {
     v8 = [(ICQLocalBackupController *)self specifierForID:@"BACKED_UP_APPS"];
     v18 = 0;
     [(ICQLocalBackupController *)self getGroup:&v18 row:0 ofSpecifier:v8];
-    if (v18 == a4)
+    if (v18 == section)
     {
       v9 = [v8 propertyForKey:*MEMORY[0x277D3FFB0]];
-      v10 = [v9 subtitleAtIndex:1];
-      if (!v10)
+      addSubtitle = [v9 subtitleAtIndex:1];
+      if (!addSubtitle)
       {
-        v10 = [v9 addSubtitle];
+        addSubtitle = [v9 addSubtitle];
       }
 
       v11 = MEMORY[0x277CCACA8];
       v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v13 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"ADDITONAL_SPACE_NEEDED"];
       v14 = [v12 localizedStringForKey:v13 value:&stru_28844FC60 table:@"BackupInfo"];
-      v15 = [(ICQLocalBackupController *)self additionalSpaceRequiredString];
-      v16 = [v11 stringWithFormat:v14, v15];
-      [v10 setText:v16];
+      additionalSpaceRequiredString2 = [(ICQLocalBackupController *)self additionalSpaceRequiredString];
+      v16 = [v11 stringWithFormat:v14, additionalSpaceRequiredString2];
+      [addSubtitle setText:v16];
     }
   }
 
   return v6;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
   if ([MEMORY[0x277D3FA48] instancesRespondToSelector:sel_tableView_willDisplayCell_forRowAtIndexPath_])
   {
     v25.receiver = self;
     v25.super_class = ICQLocalBackupController;
-    [(ICQLocalBackupController *)&v25 tableView:v8 willDisplayCell:v9 forRowAtIndexPath:v10];
+    [(ICQLocalBackupController *)&v25 tableView:viewCopy willDisplayCell:cellCopy forRowAtIndexPath:pathCopy];
   }
 
-  v11 = [(ICQLocalBackupController *)self specifierAtIndex:[(ICQLocalBackupController *)self indexForIndexPath:v10]];
-  v12 = [v11 identifier];
-  v13 = [v12 isEqualToString:@"SHOW_ALL_APPS"];
+  v11 = [(ICQLocalBackupController *)self specifierAtIndex:[(ICQLocalBackupController *)self indexForIndexPath:pathCopy]];
+  identifier = [v11 identifier];
+  v13 = [identifier isEqualToString:@"SHOW_ALL_APPS"];
 
   if (v13)
   {
-    [v9 setIndentationLevel:1];
-    [v9 setIndentationWidth:36.0];
+    [cellCopy setIndentationLevel:1];
+    [cellCopy setIndentationWidth:36.0];
   }
 
   else
   {
-    v14 = [v11 identifier];
-    v15 = [v14 isEqualToString:@"NEXT_BACKUP_SIZE"];
+    identifier2 = [v11 identifier];
+    v15 = [identifier2 isEqualToString:@"NEXT_BACKUP_SIZE"];
 
     if (v15)
     {
-      v16 = [(ICQLocalBackupController *)self additionalSpaceRequiredString];
+      additionalSpaceRequiredString = [(ICQLocalBackupController *)self additionalSpaceRequiredString];
 
-      if (v16)
+      if (additionalSpaceRequiredString)
       {
         v17 = MEMORY[0x277D755D0];
-        v18 = [MEMORY[0x277D75348] systemRedColor];
-        v26[0] = v18;
+        systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+        v26[0] = systemRedColor;
         v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
         v20 = [v17 configurationWithPaletteColors:v19];
 
         v21 = [MEMORY[0x277D755B8] _systemImageNamed:@"exclamationmark.circle" withConfiguration:v20];
         v22 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v21];
-        [v9 setAccessoryView:v22];
+        [cellCopy setAccessoryView:v22];
       }
     }
   }
@@ -2317,8 +2317,8 @@ void __49__ICQLocalBackupController_deleteBackupConfirmed__block_invoke_2(uint64
   v23 = [v11 propertyForKey:*MEMORY[0x277D40160]];
   if (v23)
   {
-    v24 = [v9 detailTextLabel];
-    [v24 setText:v23];
+    detailTextLabel = [cellCopy detailTextLabel];
+    [detailTextLabel setText:v23];
   }
 }
 

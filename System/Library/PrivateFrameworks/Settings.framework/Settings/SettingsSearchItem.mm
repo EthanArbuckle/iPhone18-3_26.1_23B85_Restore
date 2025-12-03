@@ -1,14 +1,14 @@
 @interface SettingsSearchItem
 - (NSString)description;
 - (_TtC8Settings18SettingsSearchItem)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SettingsSearchItem
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   SettingsSearchItem.description.getter();
 
   v3 = sub_21CE6CC20();
@@ -16,11 +16,11 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SettingsSearchItem.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SettingsSearchItem.encode(with:)(coderCopy);
 }
 
 - (_TtC8Settings18SettingsSearchItem)init

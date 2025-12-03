@@ -71,9 +71,9 @@
   }
 
   os_unfair_lock_unlock(&dword_281401E90);
-  v2 = [objc_opt_self() shared];
+  shared = [objc_opt_self() shared];
 
-  return v2;
+  return shared;
 }
 
 @end

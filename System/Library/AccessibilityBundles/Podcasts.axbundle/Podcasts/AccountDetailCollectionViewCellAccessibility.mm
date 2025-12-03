@@ -1,16 +1,16 @@
 @interface AccountDetailCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation AccountDetailCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ShelfKitCollectionViews.AccountDetailCollectionViewCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.AccountDetailCollectionViewCell" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.AccountDetailCollectionViewCell" hasInstanceMethod:@"accessibilityDisabled" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.AccountDetailCollectionViewCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.AccountDetailCollectionViewCell" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.AccountDetailCollectionViewCell" hasInstanceMethod:@"accessibilityDisabled" withFullSignature:{"B", 0}];
 }
 
 - (unint64_t)accessibilityTraits

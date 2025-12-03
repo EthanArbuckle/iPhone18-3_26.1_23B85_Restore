@@ -1,9 +1,9 @@
 @interface DictionaryWordSelectionController
-- (_TtC17SequoiaTranslator33DictionaryWordSelectionController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC17SequoiaTranslator33DictionaryWordSelectionController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation DictionaryWordSelectionController
@@ -18,29 +18,29 @@
   sub_1000E3810();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   sub_1000E4C84();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1000E299C(a3);
+  selfCopy = self;
+  sub_1000E299C(appear);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_1000E3FF0(a4, width, height);
+  selfCopy = self;
+  sub_1000E3FF0(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (_TtC17SequoiaTranslator33DictionaryWordSelectionController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17SequoiaTranslator33DictionaryWordSelectionController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

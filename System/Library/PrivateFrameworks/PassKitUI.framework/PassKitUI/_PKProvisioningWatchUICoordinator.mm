@@ -1,12 +1,12 @@
 @interface _PKProvisioningWatchUICoordinator
 - (PKProvisioningWatchUICoordinatorDelegate)delegate;
 - (_PKProvisioningWatchUICoordinator)init;
-- (_PKProvisioningWatchUICoordinator)initWithManualEntrySetupContext:(int64_t)a3 provisioningController:(id)a4 skipRequirements:(BOOL)a5;
-- (_PKProvisioningWatchUICoordinator)initWithSetupContext:(int64_t)a3 provisioningController:(id)a4 credential:(id)a5;
+- (_PKProvisioningWatchUICoordinator)initWithManualEntrySetupContext:(int64_t)context provisioningController:(id)controller skipRequirements:(BOOL)requirements;
+- (_PKProvisioningWatchUICoordinator)initWithSetupContext:(int64_t)context provisioningController:(id)controller credential:(id)credential;
 - (void)cancel;
-- (void)continueWithFieldsModel:(id)a3;
+- (void)continueWithFieldsModel:(id)model;
 - (void)dealloc;
-- (void)preflightWithFieldModel:(id)a3 completion:(id)a4;
+- (void)preflightWithFieldModel:(id)model completion:(id)completion;
 - (void)reset;
 @end
 
@@ -20,59 +20,59 @@
   return Strong;
 }
 
-- (_PKProvisioningWatchUICoordinator)initWithSetupContext:(int64_t)a3 provisioningController:(id)a4 credential:(id)a5
+- (_PKProvisioningWatchUICoordinator)initWithSetupContext:(int64_t)context provisioningController:(id)controller credential:(id)credential
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = sub_1BD3F5998(a3, v7, v8);
+  controllerCopy = controller;
+  credentialCopy = credential;
+  v9 = sub_1BD3F5998(context, controllerCopy, credentialCopy);
 
   return v9;
 }
 
-- (_PKProvisioningWatchUICoordinator)initWithManualEntrySetupContext:(int64_t)a3 provisioningController:(id)a4 skipRequirements:(BOOL)a5
+- (_PKProvisioningWatchUICoordinator)initWithManualEntrySetupContext:(int64_t)context provisioningController:(id)controller skipRequirements:(BOOL)requirements
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = sub_1BD3F5D74(a3, v7, v5);
+  requirementsCopy = requirements;
+  controllerCopy = controller;
+  v8 = sub_1BD3F5D74(context, controllerCopy, requirementsCopy);
 
   return v8;
 }
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD3F1DCC();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for ProvisioningWatchUICoordinator();
   [(_PKProvisioningWatchUICoordinator *)&v3 dealloc];
 }
 
-- (void)continueWithFieldsModel:(id)a3
+- (void)continueWithFieldsModel:(id)model
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BD3F10E4(v4);
+  modelCopy = model;
+  selfCopy = self;
+  sub_1BD3F10E4(modelCopy);
 }
 
-- (void)preflightWithFieldModel:(id)a3 completion:(id)a4
+- (void)preflightWithFieldModel:(id)model completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_1BD3F11EC(v8, sub_1BD166E88, v7);
+  modelCopy = model;
+  selfCopy = self;
+  sub_1BD3F11EC(modelCopy, sub_1BD166E88, v7);
 }
 
 - (void)reset
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD3F1DCC();
 }
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD3F2628();
 }
 

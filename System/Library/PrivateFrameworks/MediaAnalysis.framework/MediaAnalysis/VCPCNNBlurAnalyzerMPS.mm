@@ -1,8 +1,8 @@
 @interface VCPCNNBlurAnalyzerMPS
 - (VCPCNNBlurAnalyzerMPS)init;
-- (float)getInputBuffer:(int)a3 srcWidth:(int)a4 cnnInputHeight:(int *)a5 cnnInputWidth:(int *)a6;
-- (int)computeSharpnessScore:(float *)a3 textureness:(char *)a4 contrast:(float)a5 imgWidth:(int)a6 cancel:(id)a7;
-- (int)prepareModelForSourceWidth:(int)a3 andSourceHeight:(int)a4;
+- (float)getInputBuffer:(int)buffer srcWidth:(int)width cnnInputHeight:(int *)height cnnInputWidth:(int *)inputWidth;
+- (int)computeSharpnessScore:(float *)score textureness:(char *)textureness contrast:(float)contrast imgWidth:(int)width cancel:(id)cancel;
+- (int)prepareModelForSourceWidth:(int)width andSourceHeight:(int)height;
 @end
 
 @implementation VCPCNNBlurAnalyzerMPS
@@ -14,10 +14,10 @@
   v2 = [(VCPCNNBlurAnalyzer *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-    v4 = [v3 resourceURL];
+    vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+    resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-    v5 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_blur.dat" relativeToURL:v4];
+    v5 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_blur.dat" relativeToURL:resourceURL];
     modelURL = v2->_modelURL;
     v2->_modelURL = v5;
   }
@@ -25,9 +25,9 @@
   return v2;
 }
 
-- (int)prepareModelForSourceWidth:(int)a3 andSourceHeight:(int)a4
+- (int)prepareModelForSourceWidth:(int)width andSourceHeight:(int)height
 {
-  if (![VCPCNNMetalContext supportGPU:*&a3])
+  if (![VCPCNNMetalContext supportGPU:*&width])
   {
     return -50;
   }
@@ -82,14 +82,14 @@
   return v8;
 }
 
-- (float)getInputBuffer:(int)a3 srcWidth:(int)a4 cnnInputHeight:(int *)a5 cnnInputWidth:(int *)a6
+- (float)getInputBuffer:(int)buffer srcWidth:(int)width cnnInputHeight:(int *)height cnnInputWidth:(int *)inputWidth
 {
-  v6 = *&a4;
-  *a5 = a3;
-  *a6 = a4;
-  v8 = *a5;
-  v9 = [(VCPCNNModel *)self->_model getGPUContext];
-  v10 = [VCPCNNData cnnDataWithPlane:1 height:v8 width:v6 context:v9];
+  v6 = *&width;
+  *height = buffer;
+  *inputWidth = width;
+  v8 = *height;
+  getGPUContext = [(VCPCNNModel *)self->_model getGPUContext];
+  v10 = [VCPCNNData cnnDataWithPlane:1 height:v8 width:v6 context:getGPUContext];
   input = self->_input;
   self->_input = v10;
 
@@ -99,29 +99,29 @@
   return [(VCPCNNData *)v12 data];
 }
 
-- (int)computeSharpnessScore:(float *)a3 textureness:(char *)a4 contrast:(float)a5 imgWidth:(int)a6 cancel:(id)a7
+- (int)computeSharpnessScore:(float *)score textureness:(char *)textureness contrast:(float)contrast imgWidth:(int)width cancel:(id)cancel
 {
-  v7 = *&a6;
-  v12 = [(VCPCNNModel *)self->_model dynamicForward:self->_input paramFileUrl:self->_modelURL cancel:a7];
+  v7 = *&width;
+  v12 = [(VCPCNNModel *)self->_model dynamicForward:self->_input paramFileUrl:self->_modelURL cancel:cancel];
   if (!v12)
   {
-    v29 = [(VCPCNNModel *)self->_model output];
-    v24 = [v29 data];
-    v28 = [(VCPCNNModel *)self->_model output];
-    v27 = [v28 size];
+    output = [(VCPCNNModel *)self->_model output];
+    data = [output data];
+    output2 = [(VCPCNNModel *)self->_model output];
+    v27 = [output2 size];
     v26 = [v27 objectAtIndexedSubscript:0];
-    v22 = [v26 intValue];
-    v25 = [(VCPCNNModel *)self->_model output];
-    v23 = [v25 size];
+    intValue = [v26 intValue];
+    output3 = [(VCPCNNModel *)self->_model output];
+    v23 = [output3 size];
     v13 = [v23 objectAtIndexedSubscript:1];
-    v14 = [v13 intValue];
-    v15 = [(VCPCNNModel *)self->_model output];
-    v16 = [v15 size];
+    intValue2 = [v13 intValue];
+    output4 = [(VCPCNNModel *)self->_model output];
+    v16 = [output4 size];
     v17 = [v16 objectAtIndexedSubscript:2];
-    v18 = [v17 intValue];
-    *&v19 = a5;
-    [(VCPCNNBlurAnalyzer *)self calculateScoreFromNetworkOutput:v24 outChannel:v22 outHeight:v14 outWidth:v18 textureness:a4 contrast:v7 imgWidth:v19];
-    *a3 = v20;
+    intValue3 = [v17 intValue];
+    *&v19 = contrast;
+    [(VCPCNNBlurAnalyzer *)self calculateScoreFromNetworkOutput:data outChannel:intValue outHeight:intValue2 outWidth:intValue3 textureness:textureness contrast:v7 imgWidth:v19];
+    *score = v20;
   }
 
   return v12;

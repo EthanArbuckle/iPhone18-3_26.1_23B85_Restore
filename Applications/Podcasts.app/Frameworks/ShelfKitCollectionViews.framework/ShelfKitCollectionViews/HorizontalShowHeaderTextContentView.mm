@@ -1,25 +1,25 @@
 @interface HorizontalShowHeaderTextContentView
-- (_TtC23ShelfKitCollectionViews35HorizontalShowHeaderTextContentView)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews35HorizontalShowHeaderTextContentView)initWithFrame:(CGRect)frame;
 - (void)benefitsLabelTapped;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HorizontalShowHeaderTextContentView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_141908();
 }
 
 - (void)benefitsLabelTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_141124();
 }
 
-- (_TtC23ShelfKitCollectionViews35HorizontalShowHeaderTextContentView)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews35HorizontalShowHeaderTextContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

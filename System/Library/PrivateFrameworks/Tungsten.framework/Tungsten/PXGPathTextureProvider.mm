@@ -1,21 +1,21 @@
 @interface PXGPathTextureProvider
-- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 inLayout:(id)a7;
-- (void)_requestTextureForPath:(id)a3 targetSize:(CGSize)a4 requestID:(int)a5;
+- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)range geometries:(id *)geometries styles:(id *)styles infos:(id *)infos inLayout:(id)layout;
+- (void)_requestTextureForPath:(id)path targetSize:(CGSize)size requestID:(int)d;
 @end
 
 @implementation PXGPathTextureProvider
 
-- (void)_requestTextureForPath:(id)a3 targetSize:(CGSize)a4 requestID:(int)a5
+- (void)_requestTextureForPath:(id)path targetSize:(CGSize)size requestID:(int)d
 {
-  v5 = *&a5;
-  height = a4.height;
-  width = a4.width;
+  v5 = *&d;
+  height = size.height;
+  width = size.width;
   v21[2] = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  pathCopy = path;
   if ([(PXGTextureProvider *)self isRequestActive:v5])
   {
     IsZero = PXPixelSizeAreaIsZero();
-    if (!v9 || IsZero)
+    if (!pathCopy || IsZero)
     {
       [(PXGTextureProvider *)self provideNothingForRequestID:v5];
     }
@@ -23,7 +23,7 @@
     else
     {
       v11 = objc_alloc(MEMORY[0x277D3CE08]);
-      v21[0] = v9;
+      v21[0] = pathCopy;
       v12 = [MEMORY[0x277CCAE60] valueWithCGSize:{width, height}];
       v21[1] = v12;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
@@ -35,7 +35,7 @@
       v17[3] = &unk_2782A9828;
       v19 = width;
       v20 = height;
-      v18 = v9;
+      v18 = pathCopy;
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __70__PXGPathTextureProvider__requestTextureForPath_targetSize_requestID___block_invoke_3;
@@ -71,32 +71,32 @@ void __70__PXGPathTextureProvider__requestTextureForPath_targetSize_requestID___
   CGContextDrawPath(a2, v7);
 }
 
-- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 inLayout:(id)a7
+- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)range geometries:(id *)geometries styles:(id *)styles infos:(id *)infos inLayout:(id)layout
 {
-  v12 = a7;
+  layoutCopy = layout;
   v35.receiver = self;
   v35.super_class = PXGPathTextureProvider;
-  v28 = a6;
-  v13 = [(PXGTextureProvider *)&v35 requestTexturesForSpritesInRange:a3 geometries:a4 styles:a5 infos:a6 inLayout:v12];
+  infosCopy = infos;
+  v13 = [(PXGTextureProvider *)&v35 requestTexturesForSpritesInRange:range geometries:geometries styles:styles infos:infos inLayout:layoutCopy];
   v26 = v14;
   v27 = v13;
-  v15 = [v12 contentSource];
-  v16 = HIDWORD(*&a3);
-  if (HIDWORD(*&a3))
+  contentSource = [layoutCopy contentSource];
+  v16 = HIDWORD(*&range);
+  if (HIDWORD(*&range))
   {
     v19 = v27;
     do
     {
-      v20 = *(&v28->var3 + 5 * a3.location);
-      v21 = [v15 pathForSpriteAtIndex:a3 inLayout:v12];
+      v20 = *(&infosCopy->var3 + 5 * range.location);
+      v21 = [contentSource pathForSpriteAtIndex:range inLayout:layoutCopy];
       if (!v21)
       {
-        v24 = [MEMORY[0x277CCA890] currentHandler];
-        [v24 handleFailureInMethod:a2 object:self file:@"PXGPathTextureProvider.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"path != nil"}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXGPathTextureProvider.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"path != nil"}];
       }
 
       objc_initWeak(&location, self);
-      v22 = [(PXGTextureProvider *)self requestQueue];
+      requestQueue = [(PXGTextureProvider *)self requestQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __92__PXGPathTextureProvider_requestTexturesForSpritesInRange_geometries_styles_infos_inLayout___block_invoke;
@@ -106,12 +106,12 @@ void __70__PXGPathTextureProvider__requestTextureForPath_targetSize_requestID___
       v32 = vcvtq_f64_f32(v20);
       v33 = v19;
       v23 = v21;
-      dispatch_async(v22, block);
+      dispatch_async(requestQueue, block);
 
       objc_destroyWeak(&v31);
       objc_destroyWeak(&location);
       ++v19;
-      a3 = (a3.location + 1);
+      range = (range.location + 1);
       --v16;
     }
 

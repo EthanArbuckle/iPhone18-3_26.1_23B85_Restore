@@ -2,7 +2,7 @@
 - (BOOL)containsNode:(SKNode *)node;
 - (NSSet)containedNodeSet;
 - (__n128)cameraBoundingBox;
-- (double)cameraBoundingBoxOverridingSceneSize:(double)a3;
+- (double)cameraBoundingBoxOverridingSceneSize:(double)size;
 @end
 
 @implementation SKCameraNode
@@ -10,15 +10,15 @@
 - (BOOL)containsNode:(SKNode *)node
 {
   v4 = node;
-  v5 = [(SKNode *)self scene];
-  if (v5 && ([(SKNode *)v4 scene], v6 = objc_claimAutoreleasedReturnValue(), [(SKNode *)self scene], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v5, v6 == v7))
+  scene = [(SKNode *)self scene];
+  if (scene && ([(SKNode *)v4 scene], v6 = objc_claimAutoreleasedReturnValue(), [(SKNode *)self scene], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, scene, v6 == v7))
   {
-    v9 = [(SKNode *)v4 _backingNode];
+    _backingNode = [(SKNode *)v4 _backingNode];
     [(SKCameraNode *)self cameraBoundingBox];
     v19 = v11;
     v20 = v10;
     v18 = v12;
-    *v13.i64 = SKCNode::getWorldBoundingBox(v9);
+    *v13.i64 = SKCNode::getWorldBoundingBox(_backingNode);
     v22.columns[0] = v13;
     v22.columns[1] = v14;
     v22.columns[2] = v15;
@@ -50,9 +50,9 @@
   v11 = __Block_byref_object_copy__0;
   v12 = __Block_byref_object_dispose__0;
   v13 = [MEMORY[0x277CBEB58] set];
-  v3 = [(SKNode *)self scene];
-  v4 = v3;
-  if (v3)
+  scene = [(SKNode *)self scene];
+  v4 = scene;
+  if (scene)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
@@ -60,7 +60,7 @@
     v7[3] = &unk_27830FDF0;
     v7[4] = self;
     v7[5] = &v8;
-    [v3 enumerateChildNodesWithName:@"//SKNode" usingBlock:v7];
+    [scene enumerateChildNodesWithName:@"//SKNode" usingBlock:v7];
   }
 
   v5 = v9[5];
@@ -81,20 +81,20 @@ void __32__SKCameraNode_containedNodeSet__block_invoke(uint64_t a1, void *a2)
 
 - (__n128)cameraBoundingBox
 {
-  v2 = [a1 scene];
-  [v2 frame];
-  [a1 cameraBoundingBoxOverridingSceneSize:{v3, v4}];
+  scene = [self scene];
+  [scene frame];
+  [self cameraBoundingBoxOverridingSceneSize:{v3, v4}];
   v7 = v5;
 
   return v7;
 }
 
-- (double)cameraBoundingBoxOverridingSceneSize:(double)a3
+- (double)cameraBoundingBoxOverridingSceneSize:(double)size
 {
   v3 = a2 * -0.5;
-  v4 = a3 * -0.5;
+  v4 = size * -0.5;
   v5 = a2 * 0.5;
-  v6 = a3 * 0.5;
+  v6 = size * 0.5;
   v7 = xmmword_21C4B84C0;
   v8 = xmmword_21C4B84C0;
   *&v8 = v3;
@@ -109,7 +109,7 @@ void __32__SKCameraNode_containedNodeSet__block_invoke(uint64_t a1, void *a2)
   *(&v8 + 1) = v6;
   v17 = v10;
   v18 = v8;
-  ConversionMatrixToWorld = SKCNode::getConversionMatrixToWorld([a1 _backingNode]);
+  ConversionMatrixToWorld = SKCNode::getConversionMatrixToWorld([self _backingNode]);
   v15 = 0;
   v21[0] = v19;
   v21[1] = v17;

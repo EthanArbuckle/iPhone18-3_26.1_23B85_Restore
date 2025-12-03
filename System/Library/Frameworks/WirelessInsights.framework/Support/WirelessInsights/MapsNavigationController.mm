@@ -1,30 +1,30 @@
 @interface MapsNavigationController
 - (_TtC17wirelessinsightsd24MapsNavigationController)init;
-- (void)navigationListener:(id)a3 didChangeNavigationState:(unint64_t)a4 transportType:(int)a5;
-- (void)navigationListener:(id)a3 didUpdateNoCellCoverage:(id)a4;
+- (void)navigationListener:(id)listener didChangeNavigationState:(unint64_t)state transportType:(int)type;
+- (void)navigationListener:(id)listener didUpdateNoCellCoverage:(id)coverage;
 @end
 
 @implementation MapsNavigationController
 
-- (void)navigationListener:(id)a3 didUpdateNoCellCoverage:(id)a4
+- (void)navigationListener:(id)listener didUpdateNoCellCoverage:(id)coverage
 {
-  v4 = a4;
-  if (a4)
+  coverageCopy = coverage;
+  if (coverage)
   {
     sub_100164AEC(0, &qword_1002D7B90, GEONavigationListenerNoCellCoverageInfo_ptr);
-    v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    coverageCopy = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v6 = a3;
+  listenerCopy = listener;
 
-  sub_1001BC050(v4);
+  sub_1001BC050(coverageCopy);
 }
 
-- (void)navigationListener:(id)a3 didChangeNavigationState:(unint64_t)a4 transportType:(int)a5
+- (void)navigationListener:(id)listener didChangeNavigationState:(unint64_t)state transportType:(int)type
 {
-  v7 = a3;
+  listenerCopy = listener;
 
-  sub_1001BC61C(a4, a5);
+  sub_1001BC61C(state, type);
 }
 
 - (_TtC17wirelessinsightsd24MapsNavigationController)init

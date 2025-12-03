@@ -1,52 +1,52 @@
 @interface PasscodeViewStyle
-+ (id)darkStyleWithBackgroundStyle:(int64_t)a3;
-+ (id)lightStyleWithBackgroundStyle:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (PasscodeViewStyle)initWithRawValue:(int64_t)a3 backgroundStyle:(int64_t)a4;
++ (id)darkStyleWithBackgroundStyle:(int64_t)style;
++ (id)lightStyleWithBackgroundStyle:(int64_t)style;
+- (BOOL)isEqual:(id)equal;
+- (PasscodeViewStyle)initWithRawValue:(int64_t)value backgroundStyle:(int64_t)style;
 @end
 
 @implementation PasscodeViewStyle
 
-- (PasscodeViewStyle)initWithRawValue:(int64_t)a3 backgroundStyle:(int64_t)a4
+- (PasscodeViewStyle)initWithRawValue:(int64_t)value backgroundStyle:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = PasscodeViewStyle;
   result = [(PasscodeViewStyle *)&v7 init];
   if (result)
   {
-    result->_rawValue = a3;
-    result->_backgroundStyle = a4;
+    result->_rawValue = value;
+    result->_backgroundStyle = style;
   }
 
   return result;
 }
 
-+ (id)darkStyleWithBackgroundStyle:(int64_t)a3
++ (id)darkStyleWithBackgroundStyle:(int64_t)style
 {
-  v3 = [[PasscodeViewStyle alloc] initWithRawValue:0 backgroundStyle:a3];
+  v3 = [[PasscodeViewStyle alloc] initWithRawValue:0 backgroundStyle:style];
 
   return v3;
 }
 
-+ (id)lightStyleWithBackgroundStyle:(int64_t)a3
++ (id)lightStyleWithBackgroundStyle:(int64_t)style
 {
-  v3 = [[PasscodeViewStyle alloc] initWithRawValue:1 backgroundStyle:a3];
+  v3 = [[PasscodeViewStyle alloc] initWithRawValue:1 backgroundStyle:style];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PasscodeViewStyle *)self rawValue];
-    if (v6 == [v5 rawValue])
+    v5 = equalCopy;
+    rawValue = [(PasscodeViewStyle *)self rawValue];
+    if (rawValue == [v5 rawValue])
     {
-      v7 = [(PasscodeViewStyle *)self backgroundStyle];
-      v8 = v7 == [v5 backgroundStyle];
+      backgroundStyle = [(PasscodeViewStyle *)self backgroundStyle];
+      v8 = backgroundStyle == [v5 backgroundStyle];
     }
 
     else

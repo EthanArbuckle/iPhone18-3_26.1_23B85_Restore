@@ -1,14 +1,14 @@
 @interface WorkoutLocationAnnotationView
-- (_TtC9WorkoutUI29WorkoutLocationAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
-- (_TtC9WorkoutUI29WorkoutLocationAnnotationView)initWithCoder:(id)a3;
-- (void)drawRect:(CGRect)a3;
+- (_TtC9WorkoutUI29WorkoutLocationAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
+- (_TtC9WorkoutUI29WorkoutLocationAnnotationView)initWithCoder:(id)coder;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation WorkoutLocationAnnotationView
 
-- (_TtC9WorkoutUI29WorkoutLocationAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (_TtC9WorkoutUI29WorkoutLocationAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -24,20 +24,20 @@
   return WorkoutLocationAnnotationView.init(annotation:reuseIdentifier:)(v7, v4, v6);
 }
 
-- (_TtC9WorkoutUI29WorkoutLocationAnnotationView)initWithCoder:(id)a3
+- (_TtC9WorkoutUI29WorkoutLocationAnnotationView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v9.origin.x = x;
   v9.origin.y = y;
   v9.size.width = width;

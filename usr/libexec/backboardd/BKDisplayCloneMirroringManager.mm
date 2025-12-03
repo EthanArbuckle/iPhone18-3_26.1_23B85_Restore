@@ -1,30 +1,30 @@
 @interface BKDisplayCloneMirroringManager
-- (BKDisplayCloneMirroringManager)initWithDisplayProvider:(id)a3;
-- (id)_lock_cloneMirroringOptionsFromSourceDisplay:(id)a3 destinationDisplay:(id)a4 virtualMode:(id)a5 isStevenote:(BOOL *)a6;
-- (id)_lock_cloneMirroringOptionsSteveNote:(BOOL)a3 contextIDs:(id)a4;
-- (id)_lock_virtualDisplayModeFromClientParametersForDisplay:(id)a3 shouldHide:(BOOL *)a4 shouldDisable:(BOOL *)a5;
-- (void)_lock_clearWindowServerDisplayTags:(id)a3;
-- (void)_lock_evaluateAllDisplaysForReason:(id)a3;
-- (void)_lock_evaluateCarPlayDisplay:(id)a3 label:(id)a4;
-- (void)_lock_evaluateConnectedDisplay:(id)a3 because:(id)a4;
-- (void)_lock_evaluateContinuityDisplay:(id)a3 label:(id)a4;
-- (void)_lock_evaluateDisplay:(id)a3 reason:(id)a4;
-- (void)_lock_evaluateExistingClonesForReason:(id)a3;
-- (void)_lock_recomputeTagsForDisplay:(id)a3 shouldHide:(BOOL)a4;
-- (void)_lock_removeClone:(id)a3 fromWindowServerDisplay:(id)a4;
-- (void)_lock_removeDisplayCloneDestination:(id)a3;
-- (void)_lock_setupCloningToDestination:(id)a3 fromVirtualMode:(id)a4 hideByDefault:(BOOL)a5;
+- (BKDisplayCloneMirroringManager)initWithDisplayProvider:(id)provider;
+- (id)_lock_cloneMirroringOptionsFromSourceDisplay:(id)display destinationDisplay:(id)destinationDisplay virtualMode:(id)mode isStevenote:(BOOL *)stevenote;
+- (id)_lock_cloneMirroringOptionsSteveNote:(BOOL)note contextIDs:(id)ds;
+- (id)_lock_virtualDisplayModeFromClientParametersForDisplay:(id)display shouldHide:(BOOL *)hide shouldDisable:(BOOL *)disable;
+- (void)_lock_clearWindowServerDisplayTags:(id)tags;
+- (void)_lock_evaluateAllDisplaysForReason:(id)reason;
+- (void)_lock_evaluateCarPlayDisplay:(id)display label:(id)label;
+- (void)_lock_evaluateConnectedDisplay:(id)display because:(id)because;
+- (void)_lock_evaluateContinuityDisplay:(id)display label:(id)label;
+- (void)_lock_evaluateDisplay:(id)display reason:(id)reason;
+- (void)_lock_evaluateExistingClonesForReason:(id)reason;
+- (void)_lock_recomputeTagsForDisplay:(id)display shouldHide:(BOOL)hide;
+- (void)_lock_removeClone:(id)clone fromWindowServerDisplay:(id)display;
+- (void)_lock_removeDisplayCloneDestination:(id)destination;
+- (void)_lock_setupCloningToDestination:(id)destination fromVirtualMode:(id)mode hideByDefault:(BOOL)default;
 - (void)cloneMirroringRequestsDidChange;
-- (void)evaluateDisplay:(id)a3 reason:(id)a4;
-- (void)removeDisplay:(id)a3;
+- (void)evaluateDisplay:(id)display reason:(id)reason;
+- (void)removeDisplay:(id)display;
 @end
 
 @implementation BKDisplayCloneMirroringManager
 
-- (void)removeDisplay:(id)a3
+- (void)removeDisplay:(id)display
 {
-  v19 = a3;
-  if (!v19)
+  displayCopy = display;
+  if (!displayCopy)
   {
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
@@ -40,7 +40,7 @@
       v22 = 2114;
       v23 = v10;
       v24 = 2048;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2114;
       v27 = @"BKDisplayCloneMirroringManager.m";
       v28 = 1024;
@@ -59,13 +59,13 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [v19 classForCoder];
-    if (!v11)
+    classForCoder = [displayCopy classForCoder];
+    if (!classForCoder)
     {
-      v11 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v12 = NSStringFromClass(v11);
+    v12 = NSStringFromClass(classForCoder);
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
     v15 = [NSString stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"display", v12, v14];
@@ -80,7 +80,7 @@
       v22 = 2114;
       v23 = v18;
       v24 = 2048;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2114;
       v27 = @"BKDisplayCloneMirroringManager.m";
       v28 = 1024;
@@ -97,16 +97,16 @@
   }
 
   os_unfair_lock_lock(&self->_lock);
-  [(BKDisplayCloneMirroringManager *)self _lock_removeDisplayCloneDestination:v19];
-  [(BKDisplayCloneMirroringManager *)self _lock_clearWindowServerDisplayTags:v19];
+  [(BKDisplayCloneMirroringManager *)self _lock_removeDisplayCloneDestination:displayCopy];
+  [(BKDisplayCloneMirroringManager *)self _lock_clearWindowServerDisplayTags:displayCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)evaluateDisplay:(id)a3 reason:(id)a4
+- (void)evaluateDisplay:(id)display reason:(id)reason
 {
-  v7 = a3;
-  v8 = a4;
-  v23 = v7;
+  displayCopy = display;
+  reasonCopy = reason;
+  v23 = displayCopy;
   if (!v23)
   {
     v9 = objc_opt_class();
@@ -123,7 +123,7 @@
       v26 = 2114;
       v27 = v14;
       v28 = 2048;
-      v29 = self;
+      selfCopy2 = self;
       v30 = 2114;
       v31 = @"BKDisplayCloneMirroringManager.m";
       v32 = 1024;
@@ -142,13 +142,13 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v15 = [v23 classForCoder];
-    if (!v15)
+    classForCoder = [v23 classForCoder];
+    if (!classForCoder)
     {
-      v15 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v16 = NSStringFromClass(v15);
+    v16 = NSStringFromClass(classForCoder);
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
     v19 = [NSString stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"display", v16, v18];
@@ -163,7 +163,7 @@
       v26 = 2114;
       v27 = v22;
       v28 = 2048;
-      v29 = self;
+      selfCopy2 = self;
       v30 = 2114;
       v31 = @"BKDisplayCloneMirroringManager.m";
       v32 = 1024;
@@ -180,7 +180,7 @@
   }
 
   os_unfair_lock_lock(&self->_lock);
-  [(BKDisplayCloneMirroringManager *)self _lock_evaluateDisplay:v23 reason:v8];
+  [(BKDisplayCloneMirroringManager *)self _lock_evaluateDisplay:v23 reason:reasonCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
@@ -192,34 +192,34 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_evaluateExistingClonesForReason:(id)a3
+- (void)_lock_evaluateExistingClonesForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   lock_destinationDisplayIdentifierToCloneRecord = self->_lock_destinationDisplayIdentifierToCloneRecord;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006AB80;
   v7[3] = &unk_1000FC040;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = reasonCopy;
+  v6 = reasonCopy;
   [(NSMutableDictionary *)lock_destinationDisplayIdentifierToCloneRecord enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (void)_lock_evaluateAllDisplaysForReason:(id)a3
+- (void)_lock_evaluateAllDisplaysForReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(BKDisplayCloneMirroringManagerInformationProvider *)self->_displayProvider windowServerDisplays];
-  v6 = [v5 firstObject];
-  if (v6)
+  reasonCopy = reason;
+  windowServerDisplays = [(BKDisplayCloneMirroringManagerInformationProvider *)self->_displayProvider windowServerDisplays];
+  firstObject = [windowServerDisplays firstObject];
+  if (firstObject)
   {
-    v14 = v6;
-    v15 = v5;
+    v14 = firstObject;
+    v15 = windowServerDisplays;
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = v5;
+    v7 = windowServerDisplays;
     v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
@@ -237,8 +237,8 @@
           v12 = *(*(&v16 + 1) + 8 * i);
           if ([(BKDisplayCloneMirroringManagerInformationProvider *)self->_displayProvider supportCloningToDisplay:v12])
           {
-            v13 = [NSString stringWithFormat:@"updateClonedDisplaysForSettingsChange(%@)", v4];
-            [(BKDisplayCloneMirroringManager *)self _lock_evaluateDisplay:v12 reason:v13];
+            reasonCopy = [NSString stringWithFormat:@"updateClonedDisplaysForSettingsChange(%@)", reasonCopy];
+            [(BKDisplayCloneMirroringManager *)self _lock_evaluateDisplay:v12 reason:reasonCopy];
           }
         }
 
@@ -248,58 +248,58 @@
       while (v9);
     }
 
-    v6 = v14;
-    v5 = v15;
+    firstObject = v14;
+    windowServerDisplays = v15;
   }
 }
 
-- (void)_lock_evaluateDisplay:(id)a3 reason:(id)a4
+- (void)_lock_evaluateDisplay:(id)display reason:(id)reason
 {
-  v7 = a3;
-  v6 = a4;
-  if ([(BKDisplayCloneMirroringManagerInformationProvider *)self->_displayProvider displayIsConnected:v7])
+  displayCopy = display;
+  reasonCopy = reason;
+  if ([(BKDisplayCloneMirroringManagerInformationProvider *)self->_displayProvider displayIsConnected:displayCopy])
   {
-    [(BKDisplayCloneMirroringManager *)self _lock_evaluateConnectedDisplay:v7 because:v6];
+    [(BKDisplayCloneMirroringManager *)self _lock_evaluateConnectedDisplay:displayCopy because:reasonCopy];
   }
 
   else
   {
-    [(BKDisplayCloneMirroringManager *)self _lock_removeDisplayCloneDestination:v7];
-    [v7 setProcessId:0];
-    [(BKDisplayCloneMirroringManager *)self _lock_clearWindowServerDisplayTags:v7];
+    [(BKDisplayCloneMirroringManager *)self _lock_removeDisplayCloneDestination:displayCopy];
+    [displayCopy setProcessId:0];
+    [(BKDisplayCloneMirroringManager *)self _lock_clearWindowServerDisplayTags:displayCopy];
   }
 }
 
-- (void)_lock_clearWindowServerDisplayTags:(id)a3
+- (void)_lock_clearWindowServerDisplayTags:(id)tags
 {
-  v3 = a3;
-  if ([v3 tag])
+  tagsCopy = tags;
+  if ([tagsCopy tag])
   {
     v4 = BKLogDisplay();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 138543362;
-      v6 = v3;
+      v6 = tagsCopy;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Untagging %{public}@", &v5, 0xCu);
     }
 
-    [v3 setTag:0];
-    [v3 setTracksCarPlayRegions:0];
+    [tagsCopy setTag:0];
+    [tagsCopy setTracksCarPlayRegions:0];
   }
 }
 
-- (void)_lock_removeClone:(id)a3 fromWindowServerDisplay:(id)a4
+- (void)_lock_removeClone:(id)clone fromWindowServerDisplay:(id)display
 {
-  v6 = a3;
-  v7 = a4;
+  cloneCopy = clone;
+  displayCopy = display;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (v6 && v7)
+  if (cloneCopy && displayCopy)
   {
-    v8 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v6 displayId]);
+    v8 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [cloneCopy displayId]);
     v9 = [(NSMutableDictionary *)self->_lock_destinationDisplayIdentifierToCloneRecord objectForKey:v8];
     [(NSMutableDictionary *)self->_lock_destinationDisplayIdentifierToCloneRecord removeObjectForKey:v8];
-    v10 = [v7 clones];
-    v11 = [v10 containsObject:v6];
+    clones = [displayCopy clones];
+    v11 = [clones containsObject:cloneCopy];
 
     if (v11)
     {
@@ -310,9 +310,9 @@
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           v15 = 138543618;
-          v16 = v6;
+          v16 = cloneCopy;
           v17 = 2114;
-          v18 = v7;
+          v18 = displayCopy;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Removing clone %{public}@ from %{public}@", &v15, 0x16u);
         }
       }
@@ -320,13 +320,13 @@
       else if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         v15 = 138543618;
-        v16 = v6;
+        v16 = cloneCopy;
         v17 = 2114;
-        v18 = v7;
+        v18 = displayCopy;
         _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Display %{public}@ cloning from %{public}@, but we're missing a record of the clone", &v15, 0x16u);
       }
 
-      [v7 removeClone:v6];
+      [displayCopy removeClone:cloneCopy];
     }
 
     else if (v9)
@@ -335,47 +335,47 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         v15 = 138543618;
-        v16 = v6;
+        v16 = cloneCopy;
         v17 = 2114;
-        v18 = v7;
+        v18 = displayCopy;
         _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Clone missing: expected to see %{public}@ cloning from %{public}@", &v15, 0x16u);
       }
     }
   }
 }
 
-- (void)_lock_removeDisplayCloneDestination:(id)a3
+- (void)_lock_removeDisplayCloneDestination:(id)destination
 {
-  v5 = a3;
-  v4 = [v5 cloneMaster];
-  if (v4)
+  destinationCopy = destination;
+  cloneMaster = [destinationCopy cloneMaster];
+  if (cloneMaster)
   {
-    [(BKDisplayCloneMirroringManager *)self _lock_removeClone:v5 fromWindowServerDisplay:v4];
+    [(BKDisplayCloneMirroringManager *)self _lock_removeClone:destinationCopy fromWindowServerDisplay:cloneMaster];
   }
 }
 
-- (void)_lock_recomputeTagsForDisplay:(id)a3 shouldHide:(BOOL)a4
+- (void)_lock_recomputeTagsForDisplay:(id)display shouldHide:(BOOL)hide
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 tag];
-  v7 = v6 & 0xFFFFFFFFFFFFFFFALL | v4 | (4 * ((v6 & 0xF8) == 0));
-  v8 = [v5 name];
-  v9 = [v8 isEqual:@"TVOut"];
+  hideCopy = hide;
+  displayCopy = display;
+  v6 = [displayCopy tag];
+  v7 = v6 & 0xFFFFFFFFFFFFFFFALL | hideCopy | (4 * ((v6 & 0xF8) == 0));
+  name = [displayCopy name];
+  v9 = [name isEqual:@"TVOut"];
 
   if (v9)
   {
     v10 = +[BKSDefaults externalDefaults];
-    v11 = [v10 iapDefaults];
+    iapDefaults = [v10 iapDefaults];
 
-    v12 = [v11 videoTVOutReservedForIPodOut];
-    v13 = [v11 videoTVOutReservedForRemoteUI];
-    if ([v12 isEqualToString:@"Yes"])
+    videoTVOutReservedForIPodOut = [iapDefaults videoTVOutReservedForIPodOut];
+    videoTVOutReservedForRemoteUI = [iapDefaults videoTVOutReservedForRemoteUI];
+    if ([videoTVOutReservedForIPodOut isEqualToString:@"Yes"])
     {
       v7 = v7 & 0xFFFFFFFFFFFFFFE5 | 0xA;
     }
 
-    else if ([v13 isEqualToString:@"Yes"])
+    else if ([videoTVOutReservedForRemoteUI isEqualToString:@"Yes"])
     {
       v7 = v7 & 0xFFFFFFFFFFFFFFE5 | 0x12;
     }
@@ -391,19 +391,19 @@
   {
     v15 = NSStringFromBKSDisplayTags();
     v16 = 138543618;
-    v17 = v5;
+    v17 = displayCopy;
     v18 = 2114;
     v19 = v15;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "tagging %{public}@ with %{public}@", &v16, 0x16u);
   }
 
-  [v5 setTag:v7];
+  [displayCopy setTag:v7];
 }
 
-- (id)_lock_virtualDisplayModeFromClientParametersForDisplay:(id)a3 shouldHide:(BOOL *)a4 shouldDisable:(BOOL *)a5
+- (id)_lock_virtualDisplayModeFromClientParametersForDisplay:(id)display shouldHide:(BOOL *)hide shouldDisable:(BOOL *)disable
 {
-  v9 = a3;
-  if (!v9)
+  displayCopy = display;
+  if (!displayCopy)
   {
     v28 = objc_opt_class();
     v29 = NSStringFromClass(v28);
@@ -419,7 +419,7 @@
       v44 = 2114;
       v45 = v33;
       v46 = 2048;
-      v47 = self;
+      selfCopy2 = self;
       v48 = 2114;
       v49 = @"BKDisplayCloneMirroringManager.m";
       v50 = 1024;
@@ -435,17 +435,17 @@
     JUMPOUT(0x10006B688);
   }
 
-  v10 = v9;
+  v10 = displayCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v34 = [v10 classForCoder];
-    if (!v34)
+    classForCoder = [v10 classForCoder];
+    if (!classForCoder)
     {
-      v34 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v35 = NSStringFromClass(v34);
+    v35 = NSStringFromClass(classForCoder);
     v36 = objc_opt_class();
     v37 = NSStringFromClass(v36);
     v38 = [NSString stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"display", v35, v37];
@@ -460,7 +460,7 @@
       v44 = 2114;
       v45 = v41;
       v46 = 2048;
-      v47 = self;
+      selfCopy2 = self;
       v48 = 2114;
       v49 = @"BKDisplayCloneMirroringManager.m";
       v50 = 1024;
@@ -477,11 +477,11 @@
   }
 
   v11 = objc_alloc_init(NSMutableDictionary);
-  v12 = [v10 virtualDisplayMode];
-  v13 = v12;
-  if (v12)
+  virtualDisplayMode = [v10 virtualDisplayMode];
+  v13 = virtualDisplayMode;
+  if (virtualDisplayMode)
   {
-    v14 = [v12 objectForKey:@"DisplayLabel"];
+    v14 = [virtualDisplayMode objectForKey:@"DisplayLabel"];
     if (v14)
     {
       [v11 setObject:v14 forKey:@"DisplayLabel"];
@@ -499,12 +499,12 @@
     }
   }
 
-  v16 = [v10 uniqueId];
-  v17 = v16;
+  uniqueId = [v10 uniqueId];
+  v17 = uniqueId;
   lock_cloneMirrorRequests = self->_lock_cloneMirrorRequests;
   if (lock_cloneMirrorRequests)
   {
-    v19 = v16;
+    v19 = uniqueId;
     os_unfair_lock_lock(&lock_cloneMirrorRequests->_lock);
     v20 = [(NSMutableDictionary *)lock_cloneMirrorRequests->_displayUUIDToModeRequest objectForKey:v19];
 
@@ -543,15 +543,15 @@ LABEL_17:
   }
 
   v23 = +[BKSDefaults localDefaults];
-  v24 = [v23 disableCloneMirroring];
+  disableCloneMirroring = [v23 disableCloneMirroring];
   if (v21 == 1)
   {
-    v25 = 1;
+    forceCloneMirroring = 1;
   }
 
   else
   {
-    v25 = [v23 forceCloneMirroring];
+    forceCloneMirroring = [v23 forceCloneMirroring];
   }
 
   if (v21 == 2)
@@ -561,28 +561,28 @@ LABEL_17:
 
   else
   {
-    v26 = v24;
+    v26 = disableCloneMirroring;
   }
 
-  *a4 = v25;
-  *a5 = v26;
+  *hide = forceCloneMirroring;
+  *disable = v26;
 
   return v11;
 }
 
-- (id)_lock_cloneMirroringOptionsSteveNote:(BOOL)a3 contextIDs:(id)a4
+- (id)_lock_cloneMirroringOptionsSteveNote:(BOOL)note contextIDs:(id)ds
 {
-  v4 = a3;
-  v6 = a4;
+  noteCopy = note;
+  dsCopy = ds;
   v7 = +[BKSDefaults localDefaults];
   v8 = [NSNumber numberWithBool:self->_lock_cloneRotationDisabled];
   v9 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v8, kCAWindowServerClone_DisableRotation, 0];
 
-  v10 = [v7 disableCAOverscan];
-  v11 = v10;
-  if (v4 || v10)
+  disableCAOverscan = [v7 disableCAOverscan];
+  v11 = disableCAOverscan;
+  if (noteCopy || disableCAOverscan)
   {
-    if (((v10 | !v4) & 1) == 0)
+    if (((disableCAOverscan | !noteCopy) & 1) == 0)
     {
       v11 = ([v7 isSteveNoteOverscanEnabled] ^ 1);
     }
@@ -597,27 +597,27 @@ LABEL_17:
     [v9 setObject:v13 forKey:kCAWindowServerClone_DisableScaling];
   }
 
-  v14 = [v7 disableCAYUV];
-  if (v4 || v14)
+  disableCAYUV = [v7 disableCAYUV];
+  if (noteCopy || disableCAYUV)
   {
     v15 = [NSNumber numberWithBool:1];
     [v9 setObject:v15 forKey:kCAWindowServerClone_DisableYUV];
   }
 
-  if ([v6 count])
+  if ([dsCopy count])
   {
-    [v9 setObject:v6 forKey:kCAWindowServerClone_ReplayContexts];
+    [v9 setObject:dsCopy forKey:kCAWindowServerClone_ReplayContexts];
   }
 
   return v9;
 }
 
-- (void)_lock_evaluateConnectedDisplay:(id)a3 because:(id)a4
+- (void)_lock_evaluateConnectedDisplay:(id)display because:(id)because
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 virtualDisplayMode];
-  v9 = [v8 objectForKey:@"MirroringMode"];
+  displayCopy = display;
+  becauseCopy = because;
+  virtualDisplayMode = [displayCopy virtualDisplayMode];
+  v9 = [virtualDisplayMode objectForKey:@"MirroringMode"];
   v10 = objc_opt_class();
   v11 = v9;
   if (v10)
@@ -640,27 +640,27 @@ LABEL_17:
 
   v13 = v12;
 
-  v14 = [v13 intValue];
-  v15 = [v6 uniqueId];
+  intValue = [v13 intValue];
+  uniqueId = [displayCopy uniqueId];
   v16 = BKLogDisplay();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v29 = v7;
+    v29 = becauseCopy;
     v30 = 2114;
-    v31 = v15;
+    v31 = uniqueId;
     v32 = 2114;
-    v33 = v8;
+    v33 = virtualDisplayMode;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "evaluateDisplay(%{public}@) incoming virtual display mode(%{public}@): %{public}@", buf, 0x20u);
   }
 
-  if (v14 - 1 >= 2)
+  if (intValue - 1 >= 2)
   {
-    if (v14 == 3)
+    if (intValue == 3)
     {
-      [(BKDisplayCloneMirroringManager *)self _lock_removeDisplayCloneDestination:v6];
-      [(BKDisplayCloneMirroringManager *)self _lock_clearWindowServerDisplayTags:v6];
-      v17 = [v8 objectForKey:@"DisplayLabel"];
+      [(BKDisplayCloneMirroringManager *)self _lock_removeDisplayCloneDestination:displayCopy];
+      [(BKDisplayCloneMirroringManager *)self _lock_clearWindowServerDisplayTags:displayCopy];
+      v17 = [virtualDisplayMode objectForKey:@"DisplayLabel"];
       v18 = objc_opt_class();
       v19 = v17;
       if (v18)
@@ -685,22 +685,22 @@ LABEL_17:
 
       if ([v21 isEqual:@"Continuity"])
       {
-        [v6 setProcessId:0];
-        [(BKDisplayCloneMirroringManager *)self _lock_evaluateContinuityDisplay:v6 label:v21];
+        [displayCopy setProcessId:0];
+        [(BKDisplayCloneMirroringManager *)self _lock_evaluateContinuityDisplay:displayCopy label:v21];
         goto LABEL_25;
       }
 
       if ([v21 hasPrefix:@"CarPlay"])
       {
-        [v6 setProcessId:0];
-        [(BKDisplayCloneMirroringManager *)self _lock_evaluateCarPlayDisplay:v6 label:v21];
+        [displayCopy setProcessId:0];
+        [(BKDisplayCloneMirroringManager *)self _lock_evaluateCarPlayDisplay:displayCopy label:v21];
         goto LABEL_25;
       }
 
-      v24 = [v8 objectForKey:@"ClientPID"];
-      v25 = [v24 intValue];
+      v24 = [virtualDisplayMode objectForKey:@"ClientPID"];
+      intValue2 = [v24 intValue];
 
-      if (v25 == [v6 processId])
+      if (intValue2 == [displayCopy processId])
       {
         goto LABEL_18;
       }
@@ -709,50 +709,50 @@ LABEL_17:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v29 = v6;
+        v29 = displayCopy;
         v30 = 1024;
-        LODWORD(v31) = v25;
+        LODWORD(v31) = intValue2;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "setting %{public}@ processID to %d", buf, 0x12u);
       }
 
-      v22 = v6;
-      v23 = v25;
+      v22 = displayCopy;
+      v23 = intValue2;
     }
 
     else
     {
       buf[0] = 0;
       v27 = 0;
-      v21 = [(BKDisplayCloneMirroringManager *)self _lock_virtualDisplayModeFromClientParametersForDisplay:v6 shouldHide:buf shouldDisable:&v27];
+      v21 = [(BKDisplayCloneMirroringManager *)self _lock_virtualDisplayModeFromClientParametersForDisplay:displayCopy shouldHide:buf shouldDisable:&v27];
       if (v27 != 1)
       {
-        [(BKDisplayCloneMirroringManager *)self _lock_setupCloningToDestination:v6 fromVirtualMode:v21 hideByDefault:buf[0]];
+        [(BKDisplayCloneMirroringManager *)self _lock_setupCloningToDestination:displayCopy fromVirtualMode:v21 hideByDefault:buf[0]];
         goto LABEL_25;
       }
 
-      [(BKDisplayCloneMirroringManager *)self _lock_removeDisplayCloneDestination:v6];
-      v22 = v6;
+      [(BKDisplayCloneMirroringManager *)self _lock_removeDisplayCloneDestination:displayCopy];
+      v22 = displayCopy;
       v23 = 0;
     }
 
     [v22 setProcessId:v23];
 LABEL_18:
-    [(BKDisplayCloneMirroringManager *)self _lock_recomputeTagsForDisplay:v6 shouldHide:0];
+    [(BKDisplayCloneMirroringManager *)self _lock_recomputeTagsForDisplay:displayCopy shouldHide:0];
 LABEL_25:
 
     goto LABEL_26;
   }
 
-  [(BKDisplayCloneMirroringManager *)self _lock_setupCloningToDestination:v6 fromVirtualMode:v8 hideByDefault:1];
+  [(BKDisplayCloneMirroringManager *)self _lock_setupCloningToDestination:displayCopy fromVirtualMode:virtualDisplayMode hideByDefault:1];
 LABEL_26:
 }
 
-- (void)_lock_setupCloningToDestination:(id)a3 fromVirtualMode:(id)a4 hideByDefault:(BOOL)a5
+- (void)_lock_setupCloningToDestination:(id)destination fromVirtualMode:(id)mode hideByDefault:(BOOL)default
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 objectForKey:@"MirroredDisplayID"];
+  defaultCopy = default;
+  destinationCopy = destination;
+  modeCopy = mode;
+  v10 = [modeCopy objectForKey:@"MirroredDisplayID"];
   v11 = objc_opt_class();
   v12 = v10;
   if (v11)
@@ -777,7 +777,7 @@ LABEL_26:
 
   if (v14)
   {
-    v15 = [v14 integerValue];
+    integerValue = [v14 integerValue];
     v16 = BKLogDisplay();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -786,8 +786,8 @@ LABEL_26:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "mirroring source display is %{public}@", buf, 0xCu);
     }
 
-    v17 = [(BKDisplayCloneMirroringManagerInformationProvider *)self->_displayProvider windowServerDisplayForDisplayIdentifier:v15];
-    if (v17)
+    firstObject = [(BKDisplayCloneMirroringManagerInformationProvider *)self->_displayProvider windowServerDisplayForDisplayIdentifier:integerValue];
+    if (firstObject)
     {
       goto LABEL_10;
     }
@@ -812,20 +812,20 @@ LABEL_22:
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v51 = v8;
+    v51 = destinationCopy;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "no mirroring source display specified for %{public}@; assuming main", buf, 0xCu);
   }
 
-  v22 = [(BKDisplayCloneMirroringManagerInformationProvider *)self->_displayProvider windowServerDisplays];
-  v17 = [v22 firstObject];
+  windowServerDisplays = [(BKDisplayCloneMirroringManagerInformationProvider *)self->_displayProvider windowServerDisplays];
+  firstObject = [windowServerDisplays firstObject];
 
-  if (!v17)
+  if (!firstObject)
   {
     goto LABEL_18;
   }
 
 LABEL_10:
-  if (v17 == v8)
+  if (firstObject == destinationCopy)
   {
     v19 = BKLogDisplay();
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -834,22 +834,22 @@ LABEL_10:
     }
 
     *buf = 138543362;
-    v51 = v8;
+    v51 = destinationCopy;
     v23 = "cannot clone display to itself: %{public}@";
     v24 = v19;
     v25 = 12;
     goto LABEL_22;
   }
 
-  v18 = [v17 cloneMaster];
-  if (!v18)
+  cloneMaster = [firstObject cloneMaster];
+  if (!cloneMaster)
   {
-    v48 = v5;
+    v48 = defaultCopy;
     v49 = 0;
-    v26 = [(BKDisplayCloneMirroringManager *)self _lock_cloneMirroringOptionsFromSourceDisplay:v17 destinationDisplay:v8 virtualMode:v9 isStevenote:&v49];
-    v27 = [v8 displayId];
+    v26 = [(BKDisplayCloneMirroringManager *)self _lock_cloneMirroringOptionsFromSourceDisplay:firstObject destinationDisplay:destinationCopy virtualMode:modeCopy isStevenote:&v49];
+    displayId = [destinationCopy displayId];
     lock_destinationDisplayIdentifierToCloneRecord = self->_lock_destinationDisplayIdentifierToCloneRecord;
-    v47 = v27;
+    v47 = displayId;
     v29 = [NSNumber numberWithUnsignedInt:?];
     v30 = [(NSMutableDictionary *)lock_destinationDisplayIdentifierToCloneRecord objectForKey:v29];
 
@@ -882,8 +882,8 @@ LABEL_43:
 
     else
     {
-      v34 = [v17 clones];
-      v35 = [v34 containsObject:v8];
+      clones = [firstObject clones];
+      v35 = [clones containsObject:destinationCopy];
 
       if (!v35)
       {
@@ -892,9 +892,9 @@ LABEL_36:
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v51 = v17;
+          v51 = firstObject;
           v52 = 2114;
-          v53 = v8;
+          v53 = destinationCopy;
           _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "cloning %{public}@ to %{public}@", buf, 0x16u);
         }
 
@@ -909,9 +909,9 @@ LABEL_36:
           v39 = 0;
         }
 
-        [v17 addClone:v8 options:v39];
-        v40 = [v8 name];
-        v41 = [v40 isEqualToString:@"TVOut"];
+        [firstObject addClone:destinationCopy options:v39];
+        name = [destinationCopy name];
+        v41 = [name isEqualToString:@"TVOut"];
 
         v42 = (v49 & v41);
         v43 = self->_lock_destinationDisplayIdentifierToCloneRecord;
@@ -928,8 +928,8 @@ LABEL_36:
           v45 = 0;
         }
 
-        [v8 setProcessId:v45];
-        [(BKDisplayCloneMirroringManager *)self _lock_recomputeTagsForDisplay:v8 shouldHide:v48 & ~v42];
+        [destinationCopy setProcessId:v45];
+        [(BKDisplayCloneMirroringManager *)self _lock_recomputeTagsForDisplay:destinationCopy shouldHide:v48 & ~v42];
         v30 = v46;
         goto LABEL_43;
       }
@@ -938,23 +938,23 @@ LABEL_36:
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v51 = v8;
+        v51 = destinationCopy;
         _os_log_error_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "no record, but source display is already cloned to %{public}@ -- will remove and reapply with current settings, which may result in flicker", buf, 0xCu);
       }
 
-      v37 = v17;
+      v37 = firstObject;
     }
 
-    [v37 removeClone:v8];
+    [v37 removeClone:destinationCopy];
     goto LABEL_36;
   }
 
-  v19 = v18;
+  v19 = cloneMaster;
   v20 = BKLogDisplay();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
-    v51 = v17;
+    v51 = firstObject;
     v52 = 2114;
     v53 = v19;
     _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "source display:%{public}@ is a clone of display:%{public}@; cannot clone a clone", buf, 0x16u);
@@ -963,13 +963,13 @@ LABEL_36:
 LABEL_44:
 }
 
-- (id)_lock_cloneMirroringOptionsFromSourceDisplay:(id)a3 destinationDisplay:(id)a4 virtualMode:(id)a5 isStevenote:(BOOL *)a6
+- (id)_lock_cloneMirroringOptionsFromSourceDisplay:(id)display destinationDisplay:(id)destinationDisplay virtualMode:(id)mode isStevenote:(BOOL *)stevenote
 {
-  v10 = a5;
-  obj = a4;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v10 objectForKey:@"ContextIDs"];
+  modeCopy = mode;
+  obj = destinationDisplay;
+  destinationDisplayCopy = destinationDisplay;
+  displayCopy = display;
+  v13 = [modeCopy objectForKey:@"ContextIDs"];
   v14 = objc_opt_class();
   v15 = v13;
   if (v14)
@@ -1002,7 +1002,7 @@ LABEL_44:
     v18 = 0;
   }
 
-  v19 = [v10 objectForKey:@"DisplayLabel"];
+  v19 = [modeCopy objectForKey:@"DisplayLabel"];
   v20 = objc_opt_class();
   v21 = v19;
   if (v20)
@@ -1026,14 +1026,14 @@ LABEL_44:
   v23 = v22;
 
   v24 = [v23 isEqual:@"Stevenote"];
-  *a6 = v24;
+  *stevenote = v24;
   v25 = [(BKDisplayCloneMirroringManager *)self _lock_cloneMirroringOptionsSteveNote:v24 contextIDs:v18];
-  v26 = [v10 objectForKey:@"ClientPID"];
-  v27 = [v26 intValue];
+  v26 = [modeCopy objectForKey:@"ClientPID"];
+  intValue = [v26 intValue];
 
   v28 = [BKDisplayCloneRecord alloc];
-  v29 = v12;
-  v30 = v11;
+  v29 = displayCopy;
+  v30 = destinationDisplayCopy;
   v31 = v25;
   if (v28)
   {
@@ -1043,9 +1043,9 @@ LABEL_44:
     v28 = v32;
     if (v32)
     {
-      objc_storeStrong(v32 + 2, a3);
+      objc_storeStrong(v32 + 2, display);
       objc_storeStrong(&v28->_destinationDisplay, obj);
-      v28->_clientPID = v27;
+      v28->_clientPID = intValue;
       objc_storeStrong(&v28->_options, v25);
     }
   }
@@ -1053,57 +1053,57 @@ LABEL_44:
   return v28;
 }
 
-- (void)_lock_evaluateContinuityDisplay:(id)a3 label:(id)a4
+- (void)_lock_evaluateContinuityDisplay:(id)display label:(id)label
 {
-  v5 = a3;
-  v6 = a4;
+  displayCopy = display;
+  labelCopy = label;
   v7 = BKLogDisplay();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 uniqueId];
+    uniqueId = [displayCopy uniqueId];
     v9 = NSStringFromBKSDisplayTags();
     v10 = 138543874;
-    v11 = v8;
+    v11 = uniqueId;
     v12 = 2114;
-    v13 = v6;
+    v13 = labelCopy;
     v14 = 2114;
     v15 = v9;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Tagging display %{public}@ with label %{public}@ as %{public}@", &v10, 0x20u);
   }
 
-  [v5 setTag:128];
+  [displayCopy setTag:128];
 }
 
-- (void)_lock_evaluateCarPlayDisplay:(id)a3 label:(id)a4
+- (void)_lock_evaluateCarPlayDisplay:(id)display label:(id)label
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [&off_100107C68 objectForKey:v6];
+  displayCopy = display;
+  labelCopy = label;
+  v7 = [&off_100107C68 objectForKey:labelCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 integerValue];
+    integerValue = [v7 integerValue];
     v10 = BKLogDisplay();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = NSStringFromBKSDisplayTags();
-      v12 = [v5 uniqueId];
+      uniqueId = [displayCopy uniqueId];
       v19 = 138543874;
-      v20 = v6;
+      v20 = labelCopy;
       v21 = 2114;
       v22 = v11;
       v23 = 2114;
-      v24 = v12;
+      v24 = uniqueId;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Tagging CarPlay display %{public}@ %{public}@ %{public}@", &v19, 0x20u);
     }
 
-    [v5 setTag:v9];
-    v13 = [v5 uniqueId];
+    [displayCopy setTag:integerValue];
+    uniqueId2 = [displayCopy uniqueId];
     v14 = [[CARSessionStatus alloc] initWithOptions:1];
-    v15 = [v14 currentSession];
+    currentSession = [v14 currentSession];
 
-    v16 = [v15 configuration];
-    v17 = [v16 screenInfoForScreenID:v13];
+    configuration = [currentSession configuration];
+    v17 = [configuration screenInfoForScreenID:uniqueId2];
 
     if ([v17 supportsLayerTracking])
     {
@@ -1111,45 +1111,45 @@ LABEL_44:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         v19 = 138543362;
-        v20 = v13;
+        v20 = uniqueId2;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Enabling layer tracking for CarPlay display %{public}@", &v19, 0xCu);
       }
 
-      [v5 setTracksCarPlayRegions:1];
+      [displayCopy setTracksCarPlayRegions:1];
     }
   }
 
   else
   {
-    v13 = BKLogDisplay();
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    uniqueId2 = BKLogDisplay();
+    if (!os_log_type_enabled(uniqueId2, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_11;
     }
 
-    v15 = [v5 uniqueId];
+    currentSession = [displayCopy uniqueId];
     v19 = 138543874;
-    v20 = v6;
+    v20 = labelCopy;
     v21 = 2114;
-    v22 = v15;
+    v22 = currentSession;
     v23 = 2114;
-    v24 = v5;
-    _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Unknown CarPlay display label %{public}@ for %{public}@ %{public}@", &v19, 0x20u);
+    v24 = displayCopy;
+    _os_log_error_impl(&_mh_execute_header, uniqueId2, OS_LOG_TYPE_ERROR, "Unknown CarPlay display label %{public}@ for %{public}@ %{public}@", &v19, 0x20u);
   }
 
 LABEL_11:
 }
 
-- (BKDisplayCloneMirroringManager)initWithDisplayProvider:(id)a3
+- (BKDisplayCloneMirroringManager)initWithDisplayProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = BKDisplayCloneMirroringManager;
   v6 = [(BKDisplayCloneMirroringManager *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_displayProvider, a3);
+    objc_storeStrong(&v6->_displayProvider, provider);
     v8 = objc_alloc_init(BKDisplayCloneMirrorRequestCache);
     lock_cloneMirrorRequests = v7->_lock_cloneMirrorRequests;
     v7->_lock_cloneMirrorRequests = v8;

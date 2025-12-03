@@ -1,8 +1,8 @@
 @interface DTTimerClient
-+ (id)fetchTimersAndReturnError:(id *)a3;
++ (id)fetchTimersAndReturnError:(id *)error;
 + (unint64_t)statusFlags;
-- (DTTimerClient)initWithDispatchQueue:(id)a3;
-- (DTTimerClient)initWithDispatchQueue:(id)a3 homeKitAccessoryID:(id)a4;
+- (DTTimerClient)initWithDispatchQueue:(id)queue;
+- (DTTimerClient)initWithDispatchQueue:(id)queue homeKitAccessoryID:(id)d;
 - (NSArray)mtAlarms;
 - (NSArray)mtTimers;
 - (NSArray)timers;
@@ -12,11 +12,11 @@
 - (id)eventHandler;
 - (void)activate;
 - (void)dealloc;
-- (void)fetchTimersWithCompletionHandler:(id)a3;
+- (void)fetchTimersWithCompletionHandler:(id)handler;
 - (void)invalidate;
-- (void)setEventHandler:(id)a3;
-- (void)set_error:(id)a3;
-- (void)set_timerMap:(id)a3;
+- (void)setEventHandler:(id)handler;
+- (void)set_error:(id)set_error;
+- (void)set_timerMap:(id)map;
 @end
 
 @implementation DTTimerClient
@@ -38,18 +38,18 @@
   return v4;
 }
 
-- (void)set_error:(id)a3
+- (void)set_error:(id)set_error
 {
   v4 = *(self + OBJC_IVAR___DTTimerClient__error);
-  *(self + OBJC_IVAR___DTTimerClient__error) = a3;
-  v6 = self;
-  v5 = a3;
+  *(self + OBJC_IVAR___DTTimerClient__error) = set_error;
+  selfCopy = self;
+  set_errorCopy = set_error;
 }
 
 - (NSError)error
 {
   v2 = *(self + OBJC_IVAR___DTTimerClient__lock);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2 + 4);
   sub_24906C388(&v7);
   os_unfair_lock_unlock(v2 + 4);
@@ -92,9 +92,9 @@
   return v4;
 }
 
-- (void)setEventHandler:(id)a3
+- (void)setEventHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -113,7 +113,7 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_24906A4F0(v7);
 }
 
@@ -127,7 +127,7 @@
   return v3;
 }
 
-- (void)set_timerMap:(id)a3
+- (void)set_timerMap:(id)map
 {
   type metadata accessor for DTTimer(0);
   v4 = sub_249076DEC();
@@ -135,20 +135,20 @@
   *(self + OBJC_IVAR___DTTimerClient__timerMap) = v4;
 }
 
-- (DTTimerClient)initWithDispatchQueue:(id)a3
+- (DTTimerClient)initWithDispatchQueue:(id)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   v4 = sub_24906A6B8();
 
   return v4;
 }
 
-- (DTTimerClient)initWithDispatchQueue:(id)a3 homeKitAccessoryID:(id)a4
+- (DTTimerClient)initWithDispatchQueue:(id)queue homeKitAccessoryID:(id)d
 {
   v5 = sub_249076E1C();
   v7 = v6;
-  v8 = a3;
-  v9 = sub_24906A8CC(v8, v5, v7);
+  queueCopy = queue;
+  v9 = sub_24906A8CC(queueCopy, v5, v7);
 
   return v9;
 }
@@ -157,34 +157,34 @@
 {
   v3 = OBJC_IVAR___DTTimerClient__monitorMode;
   v4 = *(self + OBJC_IVAR___DTTimerClient__monitorMode);
-  v5 = self;
+  selfCopy = self;
   if (v4 == 1)
   {
     sub_249064F58();
     *(self + v3) = 0;
   }
 
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = DTTimerClient;
   [(DTTimerClient *)&v6 dealloc];
 }
 
 - (void)activate
 {
-  v2 = self;
+  selfCopy = self;
   sub_2490657D4(&unk_285C1C560, sub_24906AB28, &block_descriptor);
 }
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_2490657D4(&unk_285C1C5D8, sub_24906AC34, &block_descriptor_9);
 }
 
 - (NSArray)timers
 {
   v2 = *(self + OBJC_IVAR___DTTimerClient__lock);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2 + 4);
   sub_24906C388(&v6);
   os_unfair_lock_unlock(v2 + 4);
@@ -198,7 +198,7 @@
 - (NSArray)mtAlarms
 {
   v2 = *(self + OBJC_IVAR___DTTimerClient__lock);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2 + 4);
   sub_24906C388(&v6);
   os_unfair_lock_unlock(v2 + 4);
@@ -212,7 +212,7 @@
 - (NSArray)mtTimers
 {
   v2 = *(self + OBJC_IVAR___DTTimerClient__lock);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2 + 4);
   sub_24906C388(&v6);
   os_unfair_lock_unlock(v2 + 4);
@@ -223,16 +223,16 @@
   return v4;
 }
 
-- (void)fetchTimersWithCompletionHandler:(id)a3
+- (void)fetchTimersWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_2490667C8(sub_24906BE8C, v5);
 }
 
-+ (id)fetchTimersAndReturnError:(id *)a3
++ (id)fetchTimersAndReturnError:(id *)error
 {
   sub_24906B968();
   type metadata accessor for DTTimer(0);

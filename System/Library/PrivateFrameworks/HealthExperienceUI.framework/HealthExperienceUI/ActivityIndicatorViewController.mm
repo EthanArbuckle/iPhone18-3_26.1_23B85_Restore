@@ -1,7 +1,7 @@
 @interface ActivityIndicatorViewController
-- (_TtC18HealthExperienceUI31ActivityIndicatorViewController)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI31ActivityIndicatorViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didTapCancel:(id)a3;
+- (_TtC18HealthExperienceUI31ActivityIndicatorViewController)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI31ActivityIndicatorViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didTapCancel:(id)cancel;
 - (void)viewDidLoad;
 @end
 
@@ -9,29 +9,29 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA16064C();
 }
 
-- (void)didTapCancel:(id)a3
+- (void)didTapCancel:(id)cancel
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1BA4A7BF8();
   swift_unknownObjectRelease();
-  [(ActivityIndicatorViewController *)v4 dismissViewControllerAnimated:1 completion:0];
+  [(ActivityIndicatorViewController *)selfCopy dismissViewControllerAnimated:1 completion:0];
 
   __swift_destroy_boxed_opaque_existential_1(&v5);
 }
 
-- (_TtC18HealthExperienceUI31ActivityIndicatorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18HealthExperienceUI31ActivityIndicatorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     _sSo19HKFeatureIdentifiera18HealthExperienceUIE2idSSvg_0();
     *(&self->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI31ActivityIndicatorViewController____lazy_storage___activityIndicatorView) = 0;
     *(&self->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI31ActivityIndicatorViewController____lazy_storage___cancelBarButtonItem) = 0;
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_1BA4A6758();
   }
 
@@ -39,25 +39,25 @@
   {
     *(&self->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI31ActivityIndicatorViewController____lazy_storage___activityIndicatorView) = 0;
     *(&self->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI31ActivityIndicatorViewController____lazy_storage___cancelBarButtonItem) = 0;
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for ActivityIndicatorViewController();
-  v9 = [(ActivityIndicatorViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(ActivityIndicatorViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC18HealthExperienceUI31ActivityIndicatorViewController)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI31ActivityIndicatorViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI31ActivityIndicatorViewController____lazy_storage___activityIndicatorView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI31ActivityIndicatorViewController____lazy_storage___cancelBarButtonItem) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for ActivityIndicatorViewController();
-  v4 = a3;
-  v5 = [(ActivityIndicatorViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ActivityIndicatorViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

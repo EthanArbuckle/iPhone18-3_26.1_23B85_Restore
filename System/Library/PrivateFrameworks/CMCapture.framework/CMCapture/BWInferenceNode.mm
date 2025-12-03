@@ -1,26 +1,26 @@
 @interface BWInferenceNode
 + (void)initialize;
-- (BWInferenceNode)initWithConvEngineSupportWithCaptureDevice:(id)a3 scheduler:(id)a4 priority:(unsigned int)a5;
-- (BWInferenceNode)initWithConvEngineSupportWithCaptureDevice:(id)a3 scheduler:(id)a4 priority:(unsigned int)a5 processingConfiguration:(id)a6;
-- (BWInferenceNode)initWithScheduler:(id)a3 priority:(unsigned int)a4;
-- (BWInferenceNode)initWithScheduler:(id)a3 priority:(unsigned int)a4 processingConfiguration:(id)a5 name:(id)a6;
+- (BWInferenceNode)initWithConvEngineSupportWithCaptureDevice:(id)device scheduler:(id)scheduler priority:(unsigned int)priority;
+- (BWInferenceNode)initWithConvEngineSupportWithCaptureDevice:(id)device scheduler:(id)scheduler priority:(unsigned int)priority processingConfiguration:(id)configuration;
+- (BWInferenceNode)initWithScheduler:(id)scheduler priority:(unsigned int)priority;
+- (BWInferenceNode)initWithScheduler:(id)scheduler priority:(unsigned int)priority processingConfiguration:(id)configuration name:(id)name;
 - (CMSampleBufferRef)createOutputSampleBufferFromInput:(CMSampleBufferRef)result;
 - (NSString)description;
-- (id)inputInferenceVideoFormatForAttachedMediaKey:(id)a3;
-- (id)inputVideoFormatForAttachedMediaKey:(id)a3;
-- (id)outputFormatForAttachedMediaKey:(id)a3;
-- (id)outputVideoFormatForAttachedMediaKey:(id)a3;
-- (id)preparedOutputPixelBufferPoolForAttachedMediaKey:(id)a3 format:(id)a4;
-- (int)addInferenceOfType:(int)a3 version:(id)a4;
-- (int)addInferenceOfType:(int)a3 version:(id)a4 configuration:(id)a5;
+- (id)inputInferenceVideoFormatForAttachedMediaKey:(id)key;
+- (id)inputVideoFormatForAttachedMediaKey:(id)key;
+- (id)outputFormatForAttachedMediaKey:(id)key;
+- (id)outputVideoFormatForAttachedMediaKey:(id)key;
+- (id)preparedOutputPixelBufferPoolForAttachedMediaKey:(id)key format:(id)format;
+- (int)addInferenceOfType:(int)type version:(id)version;
+- (int)addInferenceOfType:(int)type version:(id)version configuration:(id)configuration;
 - (void)_commonInit;
 - (void)_releaseResources;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)setInferencesToSkip:(id)a3;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)setInferencesToSkip:(id)skip;
 @end
 
 @implementation BWInferenceNode
@@ -36,18 +36,18 @@
     atomic_store(0, v1 + 172);
     *(v1 + 53) = 0;
     v2 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v1];
-    v3 = [(BWNodeInput *)v2 primaryMediaConfiguration];
+    primaryMediaConfiguration = [(BWNodeInput *)v2 primaryMediaConfiguration];
     v4 = objc_alloc_init(BWVideoFormatRequirements);
-    [(BWNodeInputMediaConfiguration *)v3 setFormatRequirements:v4];
-    [(BWNodeInputMediaConfiguration *)v3 setPassthroughMode:1];
+    [(BWNodeInputMediaConfiguration *)primaryMediaConfiguration setFormatRequirements:v4];
+    [(BWNodeInputMediaConfiguration *)primaryMediaConfiguration setPassthroughMode:1];
     v5 = objc_alloc_init(BWNodeInputMediaConfiguration);
     [(BWNodeInputMediaConfiguration *)v5 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
     [(BWNodeInputMediaConfiguration *)v5 setPassthroughMode:1];
     [(BWNodeInput *)v2 setUnspecifiedAttachedMediaConfiguration:v5];
     v6 = [[BWNodeOutput alloc] initWithMediaType:1986618469 node:v1];
-    v7 = [(BWNodeOutput *)v6 primaryMediaConfiguration];
-    [(BWNodeOutputMediaConfiguration *)v7 setFormatRequirements:v4];
-    [(BWNodeOutputMediaConfiguration *)v7 setPassthroughMode:1];
+    primaryMediaConfiguration2 = [(BWNodeOutput *)v6 primaryMediaConfiguration];
+    [(BWNodeOutputMediaConfiguration *)primaryMediaConfiguration2 setFormatRequirements:v4];
+    [(BWNodeOutputMediaConfiguration *)primaryMediaConfiguration2 setPassthroughMode:1];
     [v1 addInput:v2];
     result = [v1 addOutput:v6];
     *(v1 + 200) = 1;
@@ -58,7 +58,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -67,62 +67,62 @@
   }
 }
 
-- (BWInferenceNode)initWithConvEngineSupportWithCaptureDevice:(id)a3 scheduler:(id)a4 priority:(unsigned int)a5
+- (BWInferenceNode)initWithConvEngineSupportWithCaptureDevice:(id)device scheduler:(id)scheduler priority:(unsigned int)priority
 {
-  v5 = *&a5;
+  v5 = *&priority;
   v10.receiver = self;
   v10.super_class = BWInferenceNode;
   v8 = [(BWNode *)&v10 init];
   if (v8)
   {
-    v8->_captureDevice = a3;
-    v8->_inferenceEngine = [[BWInferenceEngine alloc] initWithScheduler:a4 priority:v5];
+    v8->_captureDevice = device;
+    v8->_inferenceEngine = [[BWInferenceEngine alloc] initWithScheduler:scheduler priority:v5];
     [(BWInferenceNode *)v8 _commonInit];
   }
 
   return v8;
 }
 
-- (BWInferenceNode)initWithConvEngineSupportWithCaptureDevice:(id)a3 scheduler:(id)a4 priority:(unsigned int)a5 processingConfiguration:(id)a6
+- (BWInferenceNode)initWithConvEngineSupportWithCaptureDevice:(id)device scheduler:(id)scheduler priority:(unsigned int)priority processingConfiguration:(id)configuration
 {
-  v7 = *&a5;
+  v7 = *&priority;
   v12.receiver = self;
   v12.super_class = BWInferenceNode;
   v10 = [(BWNode *)&v12 init];
   if (v10)
   {
-    v10->_captureDevice = a3;
-    v10->_inferenceEngine = [[BWInferenceEngine alloc] initWithScheduler:a4 priority:v7 processingConfiguration:a6 name:0];
+    v10->_captureDevice = device;
+    v10->_inferenceEngine = [[BWInferenceEngine alloc] initWithScheduler:scheduler priority:v7 processingConfiguration:configuration name:0];
     [(BWInferenceNode *)v10 _commonInit];
   }
 
   return v10;
 }
 
-- (BWInferenceNode)initWithScheduler:(id)a3 priority:(unsigned int)a4
+- (BWInferenceNode)initWithScheduler:(id)scheduler priority:(unsigned int)priority
 {
   v8.receiver = self;
   v8.super_class = BWInferenceNode;
   v6 = [(BWNode *)&v8 init];
   if (v6)
   {
-    [(BWInferenceNode *)a3 initWithScheduler:v6 priority:a4];
+    [(BWInferenceNode *)scheduler initWithScheduler:v6 priority:priority];
   }
 
   return v6;
 }
 
-- (BWInferenceNode)initWithScheduler:(id)a3 priority:(unsigned int)a4 processingConfiguration:(id)a5 name:(id)a6
+- (BWInferenceNode)initWithScheduler:(id)scheduler priority:(unsigned int)priority processingConfiguration:(id)configuration name:(id)name
 {
   v12.receiver = self;
   v12.super_class = BWInferenceNode;
   v10 = [(BWNode *)&v12 init];
   if (v10)
   {
-    v10->_inferenceScheduler = a3;
-    v10->_priority = a4;
-    [(BWNode *)v10 setName:a6];
-    v10->_inferenceEngine = [[BWInferenceEngine alloc] initWithScheduler:v10->_inferenceScheduler priority:v10->_priority processingConfiguration:a5 name:a6];
+    v10->_inferenceScheduler = scheduler;
+    v10->_priority = priority;
+    [(BWNode *)v10 setName:name];
+    v10->_inferenceEngine = [[BWInferenceEngine alloc] initWithScheduler:v10->_inferenceScheduler priority:v10->_priority processingConfiguration:configuration name:name];
     [(BWInferenceNode *)v10 _commonInit];
   }
 
@@ -138,14 +138,14 @@
   [(BWNode *)&v3 dealloc];
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
   if ((self->_endOfDataBehavior | 2) == 2)
   {
-    if (a3)
+    if (d)
     {
-      v7 = [objc_msgSend(a4 "videoFormat")];
-      v8 = [objc_msgSend(a4 "videoFormat")];
+      v7 = [objc_msgSend(input "videoFormat")];
+      v8 = [objc_msgSend(input "videoFormat")];
       if (self->_endOfDataBehavior == 2 && v7 != v8)
       {
         if (dword_1EB58E3C0)
@@ -170,17 +170,17 @@
 
   v13.receiver = self;
   v13.super_class = BWInferenceNode;
-  [(BWNode *)&v13 didReachEndOfDataForConfigurationID:a3 input:a4];
+  [(BWNode *)&v13 didReachEndOfDataForConfigurationID:d input:input];
 }
 
-- (void)setInferencesToSkip:(id)a3
+- (void)setInferencesToSkip:(id)skip
 {
   os_unfair_lock_lock(&self->_inferenceTypesToSkipLock);
   inferenceTypesToSkip = self->_inferenceTypesToSkip;
-  if (inferenceTypesToSkip != a3)
+  if (inferenceTypesToSkip != skip)
   {
 
-    self->_inferenceTypesToSkip = [a3 copy];
+    self->_inferenceTypesToSkip = [skip copy];
   }
 
   os_unfair_lock_unlock(&self->_inferenceTypesToSkipLock);
@@ -188,8 +188,8 @@
 
 - (NSString)description
 {
-  v3 = [(BWNode *)self name];
-  if (v3 && [(NSString *)v3 length])
+  name = [(BWNode *)self name];
+  if (name && [(NSString *)name length])
   {
     return [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@: %p>", -[BWNode name](self, "name"), self];
   }
@@ -199,18 +199,18 @@
   return [(BWNode *)&v5 description];
 }
 
-- (int)addInferenceOfType:(int)a3 version:(id)a4
+- (int)addInferenceOfType:(int)type version:(id)version
 {
-  v4 = *&a4.var0;
-  v5 = *&a3;
+  v4 = *&version.var0;
+  v5 = *&type;
   v7 = [[BWInferenceConfiguration alloc] initWithInferenceType:0];
 
   return [(BWInferenceNode *)self addInferenceOfType:v5 version:v4 & 0xFFFFFFFFFFFFLL configuration:v7];
 }
 
-- (int)addInferenceOfType:(int)a3 version:(id)a4 configuration:(id)a5
+- (int)addInferenceOfType:(int)type version:(id)version configuration:(id)configuration
 {
-  result = [(BWInferenceEngine *)self->_inferenceEngine addInferenceOfType:*&a3 version:*&a4.var0 & 0xFFFFFFFFFFFFLL configuration:a5];
+  result = [(BWInferenceEngine *)self->_inferenceEngine addInferenceOfType:*&type version:*&version.var0 & 0xFFFFFFFFFFFFLL configuration:configuration];
   if (result)
   {
     return -12780;
@@ -219,37 +219,37 @@
   return result;
 }
 
-- (id)inputVideoFormatForAttachedMediaKey:(id)a3
+- (id)inputVideoFormatForAttachedMediaKey:(id)key
 {
   v5 = [-[BWNodeInput mediaPropertiesForAttachedMediaKey:](self->super._input "mediaPropertiesForAttachedMediaKey:"resolvedVideoFormat"")];
-  if ([a3 isEqualToString:@"PrimaryFormat"])
+  if ([key isEqualToString:@"PrimaryFormat"])
   {
     p_maxInputDimensions = &self->_maxInputDimensions;
-    v7 = [v5 dimensions];
-    if (self->_maxInputDimensions.width > v7 || self->_maxInputDimensions.height > SHIDWORD(v7))
+    dimensions = [v5 dimensions];
+    if (self->_maxInputDimensions.width > dimensions || self->_maxInputDimensions.height > SHIDWORD(dimensions))
     {
       v9 = -[BWVideoFormatRequirements initWithPixelBufferAttributes:]([BWVideoFormatRequirements alloc], "initWithPixelBufferAttributes:", [v5 pixelBufferAttributes]);
-      v10 = [(BWVideoFormatRequirements *)v9 width];
-      if (v10 <= p_maxInputDimensions->width)
+      width = [(BWVideoFormatRequirements *)v9 width];
+      if (width <= p_maxInputDimensions->width)
       {
         width = p_maxInputDimensions->width;
       }
 
       else
       {
-        width = v10;
+        width = width;
       }
 
       [(BWVideoFormatRequirements *)v9 setWidth:width];
-      v12 = [(BWVideoFormatRequirements *)v9 height];
-      if (v12 <= self->_maxInputDimensions.height)
+      height = [(BWVideoFormatRequirements *)v9 height];
+      if (height <= self->_maxInputDimensions.height)
       {
         height = self->_maxInputDimensions.height;
       }
 
       else
       {
-        height = v12;
+        height = height;
       }
 
       [(BWVideoFormatRequirements *)v9 setHeight:height];
@@ -261,7 +261,7 @@
   return v5;
 }
 
-- (id)inputInferenceVideoFormatForAttachedMediaKey:(id)a3
+- (id)inputInferenceVideoFormatForAttachedMediaKey:(id)key
 {
   if (!self->_ignoreInvalidContentInformationForPrimaryMedia)
   {
@@ -270,12 +270,12 @@
 
   v9[3] = v3;
   v9[4] = v4;
-  if (![a3 isEqualToString:@"PrimaryFormat"])
+  if (![key isEqualToString:@"PrimaryFormat"])
   {
     return 0;
   }
 
-  result = [(BWInferenceNode *)self inputVideoFormatForAttachedMediaKey:a3];
+  result = [(BWInferenceNode *)self inputVideoFormatForAttachedMediaKey:key];
   if (result)
   {
     v8 = -[BWVideoFormatRequirements initWithPixelBufferAttributes:]([BWInferenceVideoFormatRequirements alloc], "initWithPixelBufferAttributes:", [result pixelBufferAttributes]);
@@ -287,30 +287,30 @@
   return result;
 }
 
-- (id)outputFormatForAttachedMediaKey:(id)a3
+- (id)outputFormatForAttachedMediaKey:(id)key
 {
-  v3 = [(BWNodeOutput *)self->super._output mediaPropertiesForAttachedMediaKey:a3];
+  v3 = [(BWNodeOutput *)self->super._output mediaPropertiesForAttachedMediaKey:key];
 
   return [v3 resolvedFormat];
 }
 
-- (id)outputVideoFormatForAttachedMediaKey:(id)a3
+- (id)outputVideoFormatForAttachedMediaKey:(id)key
 {
-  v3 = [(BWNodeOutput *)self->super._output mediaPropertiesForAttachedMediaKey:a3];
+  v3 = [(BWNodeOutput *)self->super._output mediaPropertiesForAttachedMediaKey:key];
 
   return [v3 resolvedVideoFormat];
 }
 
-- (id)preparedOutputPixelBufferPoolForAttachedMediaKey:(id)a3 format:(id)a4
+- (id)preparedOutputPixelBufferPoolForAttachedMediaKey:(id)key format:(id)format
 {
-  v4 = [(BWNodeOutput *)self->super._output mediaPropertiesForAttachedMediaKey:a3, a4];
+  format = [(BWNodeOutput *)self->super._output mediaPropertiesForAttachedMediaKey:key, format];
 
-  return [v4 preparedPixelBufferPool];
+  return [format preparedPixelBufferPool];
 }
 
 - (void)_releaseResources
 {
-  if (a1)
+  if (self)
   {
     if (dword_1EB58E3C0)
     {
@@ -326,8 +326,8 @@
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v2 = [a1[18] preparedWorkloadDescription];
-    v3 = [v2 componentsSeparatedByCharactersInSet:{objc_msgSend(MEMORY[0x1E696AB08], "newlineCharacterSet")}];
+    preparedWorkloadDescription = [self[18] preparedWorkloadDescription];
+    v3 = [preparedWorkloadDescription componentsSeparatedByCharactersInSet:{objc_msgSend(MEMORY[0x1E696AB08], "newlineCharacterSet")}];
     v4 = [v3 countByEnumeratingWithState:&v20 objects:v19 count:16];
     if (v4)
     {
@@ -361,7 +361,7 @@
 
             if (v11)
             {
-              [a1 name];
+              [self name];
               v16 = 136315650;
               OUTLINED_FUNCTION_1_130();
               v17 = v12;
@@ -380,92 +380,92 @@
       while (v5);
     }
 
-    a1[16] = 0;
-    a1[18] = 0;
+    self[16] = 0;
+    self[18] = 0;
 
-    a1[22] = 0;
-    a1[24] = 0;
+    self[22] = 0;
+    self[24] = 0;
   }
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
-  v6 = self;
-  v44 = [(BWNode *)self output];
-  if ([a4 mediaType] == 1986618469 && -[BWNodeOutput mediaType](v44, "mediaType") == 1986618469)
+  selfCopy = self;
+  output = [(BWNode *)self output];
+  if ([input mediaType] == 1986618469 && -[BWNodeOutput mediaType](output, "mediaType") == 1986618469)
   {
-    v7 = a3;
-    if ([a5 isEqualToString:@"PrimaryFormat"])
+    formatCopy3 = format;
+    if ([key isEqualToString:@"PrimaryFormat"])
     {
-      p_maxInputDimensions = &v6->_maxInputDimensions;
-      v9 = v6->_maxInputDimensions.width < 1 || v6->_maxInputDimensions.height < 1;
-      v7 = a3;
+      p_maxInputDimensions = &selfCopy->_maxInputDimensions;
+      v9 = selfCopy->_maxInputDimensions.width < 1 || selfCopy->_maxInputDimensions.height < 1;
+      formatCopy3 = format;
       if (!v9)
       {
-        v10 = [a3 dimensions];
-        v11 = p_maxInputDimensions->width <= v10 && v6->_maxInputDimensions.height <= SHIDWORD(v10);
-        v7 = a3;
+        dimensions = [format dimensions];
+        v11 = p_maxInputDimensions->width <= dimensions && selfCopy->_maxInputDimensions.height <= SHIDWORD(dimensions);
+        formatCopy3 = format;
         if (!v11)
         {
-          v12 = -[BWVideoFormatRequirements initWithPixelBufferAttributes:]([BWVideoFormatRequirements alloc], "initWithPixelBufferAttributes:", [a3 pixelBufferAttributes]);
-          v13 = [(BWVideoFormatRequirements *)v12 width];
-          if (v13 <= p_maxInputDimensions->width)
+          v12 = -[BWVideoFormatRequirements initWithPixelBufferAttributes:]([BWVideoFormatRequirements alloc], "initWithPixelBufferAttributes:", [format pixelBufferAttributes]);
+          width = [(BWVideoFormatRequirements *)v12 width];
+          if (width <= p_maxInputDimensions->width)
           {
             width = p_maxInputDimensions->width;
           }
 
           else
           {
-            width = v13;
+            width = width;
           }
 
           [(BWVideoFormatRequirements *)v12 setWidth:width];
-          v15 = [(BWVideoFormatRequirements *)v12 height];
-          if (v15 <= v6->_maxInputDimensions.height)
+          height = [(BWVideoFormatRequirements *)v12 height];
+          if (height <= selfCopy->_maxInputDimensions.height)
           {
-            height = v6->_maxInputDimensions.height;
+            height = selfCopy->_maxInputDimensions.height;
           }
 
           else
           {
-            height = v15;
+            height = height;
           }
 
           [(BWVideoFormatRequirements *)v12 setHeight:height];
           v50 = v12;
-          v7 = +[BWVideoFormat formatByResolvingRequirements:](BWVideoFormat, "formatByResolvingRequirements:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v50 count:1]);
+          formatCopy3 = +[BWVideoFormat formatByResolvingRequirements:](BWVideoFormat, "formatByResolvingRequirements:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v50 count:1]);
         }
       }
     }
 
-    inferenceEnginePrepared = v6->_inferenceEnginePrepared;
-    v18 = [objc_msgSend(a4 "videoFormat")];
-    v19 = [objc_msgSend(a4 "videoFormat")];
-    if (!inferenceEnginePrepared || (v6->_endOfDataBehavior == 2 ? (v20 = v18 == v19) : (v20 = 1), v20))
+    inferenceEnginePrepared = selfCopy->_inferenceEnginePrepared;
+    v18 = [objc_msgSend(input "videoFormat")];
+    v19 = [objc_msgSend(input "videoFormat")];
+    if (!inferenceEnginePrepared || (selfCopy->_endOfDataBehavior == 2 ? (v20 = v18 == v19) : (v20 = 1), v20))
     {
       v21 = 0;
     }
 
     else
     {
-      if ([a5 isEqualToString:@"PrimaryFormat"])
+      if ([key isEqualToString:@"PrimaryFormat"])
       {
-        [(BWInferenceEngine *)v6->_inferenceEngine prepareForReconfigurationWithInputFormat:v7];
+        [(BWInferenceEngine *)selfCopy->_inferenceEngine prepareForReconfigurationWithInputFormat:formatCopy3];
       }
 
       v21 = 1;
     }
 
-    [(BWInferenceEngine *)v6->_inferenceEngine prepareForInputVideoFormat:v7 attachedMediaKey:a5];
-    v23 = [(BWInferenceEngine *)v6->_inferenceEngine providedVideoRequirementsByAttachedMediaKey];
-    if (v23)
+    [(BWInferenceEngine *)selfCopy->_inferenceEngine prepareForInputVideoFormat:formatCopy3 attachedMediaKey:key];
+    providedVideoRequirementsByAttachedMediaKey = [(BWInferenceEngine *)selfCopy->_inferenceEngine providedVideoRequirementsByAttachedMediaKey];
+    if (providedVideoRequirementsByAttachedMediaKey)
     {
-      v24 = v23;
+      v24 = providedVideoRequirementsByAttachedMediaKey;
       v48 = 0u;
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v25 = [(NSDictionary *)v23 countByEnumeratingWithState:&v46 objects:v45 count:16];
+      v25 = [(NSDictionary *)providedVideoRequirementsByAttachedMediaKey countByEnumeratingWithState:&v46 objects:v45 count:16];
       if (v25)
       {
         v26 = v25;
@@ -473,7 +473,7 @@
         do
         {
           v28 = 0;
-          v29 = v44;
+          v29 = output;
           do
           {
             if (*v47 != v27)
@@ -490,20 +490,20 @@
                 goto LABEL_43;
               }
 
-              v32 = [v31 videoFormat];
-              if (!v32)
+              videoFormat = [v31 videoFormat];
+              if (!videoFormat)
               {
                 goto LABEL_43;
               }
 
-              v33 = v32;
+              v33 = videoFormat;
               v34 = objc_alloc_init(BWNodeOutputMediaConfiguration);
-              v35 = v6;
+              v35 = selfCopy;
               v36 = [BWVideoFormatRequirements alloc];
-              v37 = [v33 pixelBufferAttributes];
+              pixelBufferAttributes = [v33 pixelBufferAttributes];
               v38 = v36;
-              v6 = v35;
-              [(BWNodeOutputMediaConfiguration *)v34 setFormatRequirements:[(BWVideoFormatRequirements *)v38 initWithPixelBufferAttributes:v37]];
+              selfCopy = v35;
+              [(BWNodeOutputMediaConfiguration *)v34 setFormatRequirements:[(BWVideoFormatRequirements *)v38 initWithPixelBufferAttributes:pixelBufferAttributes]];
               [(BWNodeOutputMediaConfiguration *)v34 setPassthroughMode:0];
               [(BWNodeOutputMediaConfiguration *)v34 setProvidesPixelBufferPool:1];
               [(BWNodeOutputMediaConfiguration *)v34 setPixelBufferPoolProvidesBackPressure:v35->_backPressureDrivenPipelining];
@@ -513,9 +513,9 @@
                 [(BWNodeOutputMediaConfiguration *)v34 setOwningNodeRetainedBufferCount:?];
               }
 
-              v29 = v44;
-              [(BWNodeOutput *)v44 setMediaConfiguration:v34 forAttachedMediaKey:v30];
-              [-[BWNodeOutput mediaPropertiesForAttachedMediaKey:](v44 mediaPropertiesForAttachedMediaKey:{v30), "setResolvedFormat:", 0}];
+              v29 = output;
+              [(BWNodeOutput *)output setMediaConfiguration:v34 forAttachedMediaKey:v30];
+              [-[BWNodeOutput mediaPropertiesForAttachedMediaKey:](output mediaPropertiesForAttachedMediaKey:{v30), "setResolvedFormat:", 0}];
             }
 
             ++v28;
@@ -531,20 +531,20 @@
   }
 
 LABEL_43:
-  if ([(BWNodeOutput *)v44 _passthroughModeForAttachedMediaKey:a5])
+  if ([(BWNodeOutput *)output _passthroughModeForAttachedMediaKey:key])
   {
-    v39 = [(BWNodeOutput *)v44 mediaConfigurationForAttachedMediaKey:a5];
-    v40 = [(BWNodeOutput *)v44 primaryMediaConfiguration];
-    if (!v39 || v39 == v40)
+    v39 = [(BWNodeOutput *)output mediaConfigurationForAttachedMediaKey:key];
+    primaryMediaConfiguration = [(BWNodeOutput *)output primaryMediaConfiguration];
+    if (!v39 || v39 == primaryMediaConfiguration)
     {
-      v41 = [(BWNodeOutput *)v44 mediaPropertiesForAttachedMediaKey:a5];
+      v41 = [(BWNodeOutput *)output mediaPropertiesForAttachedMediaKey:key];
       if (!v41)
       {
         v41 = objc_alloc_init(BWNodeOutputMediaProperties);
-        [(BWNodeOutput *)v44 _setMediaProperties:v41 forAttachedMediaKey:a5];
+        [(BWNodeOutput *)output _setMediaProperties:v41 forAttachedMediaKey:key];
       }
 
-      [(BWNodeOutputMediaProperties *)v41 setResolvedFormat:a3];
+      [(BWNodeOutputMediaProperties *)v41 setResolvedFormat:format];
     }
   }
 }
@@ -578,18 +578,18 @@ LABEL_43:
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  v6 = CMGetAttachment(a3, *off_1E798A340, 0);
+  v6 = CMGetAttachment(buffer, *off_1E798A340, 0);
   v7 = v6;
   if (v6)
   {
     dispatch_group_enter(v6);
   }
 
-  if (a3)
+  if (buffer)
   {
-    v8 = CFRetain(a3);
+    v8 = CFRetain(buffer);
   }
 
   else
@@ -607,10 +607,10 @@ LABEL_43:
 
     if (self->_inferenceEngine)
     {
-      if (BWSampleBufferIsMarkerBuffer(a3))
+      if (BWSampleBufferIsMarkerBuffer(buffer))
       {
-        v10 = CMGetAttachment(a3, @"FileWriterAction", 0);
-        v11 = CMGetAttachment(a3, @"RecordingSettings", 0);
+        v10 = CMGetAttachment(buffer, @"FileWriterAction", 0);
+        v11 = CMGetAttachment(buffer, @"RecordingSettings", 0);
         if (v11)
         {
           if (v10)
@@ -638,12 +638,12 @@ LABEL_43:
 
       if (self->_applyRecommendedMasterPortType)
       {
-        AttachedMedia = BWSampleBufferGetAttachedMedia(a3, @"SynchronizedSlaveFrame");
+        AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, @"SynchronizedSlaveFrame");
         if (AttachedMedia)
         {
-          v15 = AttachedMedia;
+          bufferCopy = AttachedMedia;
           v16 = [CMGetAttachment(AttachedMedia *off_1E798A3C8];
-          v17 = CMGetAttachment(a3, @"RecommendedMasterPortType", 0);
+          v17 = CMGetAttachment(buffer, @"RecommendedMasterPortType", 0);
           if (v17)
           {
             recommendedMasterPortType = v17;
@@ -651,7 +651,7 @@ LABEL_43:
 
           else
           {
-            v18 = CMGetAttachment(v15, @"RecommendedMasterPortType", 0);
+            v18 = CMGetAttachment(bufferCopy, @"RecommendedMasterPortType", 0);
             if (v18)
             {
               recommendedMasterPortType = v18;
@@ -676,18 +676,18 @@ LABEL_43:
             goto LABEL_35;
           }
 
-          BWSampleBufferRemoveAllAttachedMedia(a3);
+          BWSampleBufferRemoveAllAttachedMedia(buffer);
         }
       }
 
-      v15 = a3;
+      bufferCopy = buffer;
 LABEL_35:
       if (v8)
       {
         CFRelease(v8);
       }
 
-      v8 = [(BWInferenceNode *)self createOutputSampleBufferFromInput:v15];
+      v8 = [(BWInferenceNode *)self createOutputSampleBufferFromInput:bufferCopy];
       inferenceEngine = self->_inferenceEngine;
       if (inferenceEngine && [(BWInferenceEngine *)inferenceEngine isConfiguredForInference])
       {
@@ -695,14 +695,14 @@ LABEL_35:
         inferenceTypesToSkipResolver = self->_inferenceTypesToSkipResolver;
         if (inferenceTypesToSkipResolver)
         {
-          v22 = [v22 setByAddingObjectsFromSet:{inferenceTypesToSkipResolver[2](inferenceTypesToSkipResolver, v15)}];
+          v22 = [v22 setByAddingObjectsFromSet:{inferenceTypesToSkipResolver[2](inferenceTypesToSkipResolver, bufferCopy)}];
         }
 
         os_unfair_lock_lock(&self->_inferenceTypesToSkipLock);
         v24 = [v22 setByAddingObjectsFromSet:self->_inferenceTypesToSkip];
         os_unfair_lock_unlock(&self->_inferenceTypesToSkipLock);
         [v24 count];
-        if (![(BWInferenceEngine *)self->_inferenceEngine performInferencesOnSampleBuffer:v15 attachingResultsToSampleBuffer:v8 skippingInferencesWithTypes:v24])
+        if (![(BWInferenceEngine *)self->_inferenceEngine performInferencesOnSampleBuffer:bufferCopy attachingResultsToSampleBuffer:v8 skippingInferencesWithTypes:v24])
         {
           if (self->_awaitAsynchronousOutputs)
           {
@@ -710,8 +710,8 @@ LABEL_35:
             v39 = 0u;
             v36 = 0u;
             v37 = 0u;
-            v25 = [(BWInferenceEngine *)self->_inferenceEngine providedVideoRequirementsByAttachedMediaKey];
-            v26 = [(NSDictionary *)v25 countByEnumeratingWithState:&v36 objects:v35 count:16];
+            providedVideoRequirementsByAttachedMediaKey = [(BWInferenceEngine *)self->_inferenceEngine providedVideoRequirementsByAttachedMediaKey];
+            v26 = [(NSDictionary *)providedVideoRequirementsByAttachedMediaKey countByEnumeratingWithState:&v36 objects:v35 count:16];
             if (v26)
             {
               v27 = v26;
@@ -722,7 +722,7 @@ LABEL_35:
                 {
                   if (*v37 != v28)
                   {
-                    objc_enumerationMutation(v25);
+                    objc_enumerationMutation(providedVideoRequirementsByAttachedMediaKey);
                   }
 
                   v30 = BWSampleBufferGetAttachedMedia(v8, *(*(&v36 + 1) + 8 * i));
@@ -739,7 +739,7 @@ LABEL_35:
                   }
                 }
 
-                v27 = [(NSDictionary *)v25 countByEnumeratingWithState:&v36 objects:v35 count:16];
+                v27 = [(NSDictionary *)providedVideoRequirementsByAttachedMediaKey countByEnumeratingWithState:&v36 objects:v35 count:16];
               }
 
               while (v27);
@@ -747,7 +747,7 @@ LABEL_35:
           }
 
           postprocessFilter = self->_postprocessFilter;
-          if (postprocessFilter && (postprocessFilter[2](postprocessFilter, v15, v8) & 1) == 0)
+          if (postprocessFilter && (postprocessFilter[2](postprocessFilter, bufferCopy, v8) & 1) == 0)
           {
             if (v8)
             {

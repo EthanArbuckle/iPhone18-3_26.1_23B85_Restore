@@ -1,43 +1,43 @@
 @interface NSMutableString
-- (void)crl_appendSeparator:(id)a3 format:(id)a4;
-- (void)crl_indentBy:(unint64_t)a3;
-- (void)crl_insertCharacter:(unsigned __int16)a3 atIndex:(unint64_t)a4;
+- (void)crl_appendSeparator:(id)separator format:(id)format;
+- (void)crl_indentBy:(unint64_t)by;
+- (void)crl_insertCharacter:(unsigned __int16)character atIndex:(unint64_t)index;
 @end
 
 @implementation NSMutableString
 
-- (void)crl_indentBy:(unint64_t)a3
+- (void)crl_indentBy:(unint64_t)by
 {
   v5 = [@"          " mutableCopy];
   v7 = v5;
-  while ([v5 length] < a3)
+  while ([v5 length] < by)
   {
     [v7 appendString:v7];
     v5 = v7;
   }
 
-  [v7 deleteCharactersInRange:{a3, objc_msgSend(v7, "length") - a3}];
+  [v7 deleteCharactersInRange:{by, objc_msgSend(v7, "length") - by}];
   [(NSMutableString *)self insertString:v7 atIndex:0];
   v6 = [NSString stringWithFormat:@"\n%@", v7];
   [(NSMutableString *)self replaceOccurrencesOfString:@"\n" withString:v6 options:0 range:0, [(NSMutableString *)self length]];
 }
 
-- (void)crl_insertCharacter:(unsigned __int16)a3 atIndex:(unint64_t)a4
+- (void)crl_insertCharacter:(unsigned __int16)character atIndex:(unint64_t)index
 {
-  v6 = [[NSString alloc] initWithFormat:@"%C", a3];
-  [(NSMutableString *)self insertString:v6 atIndex:a4];
+  character = [[NSString alloc] initWithFormat:@"%C", character];
+  [(NSMutableString *)self insertString:character atIndex:index];
 }
 
-- (void)crl_appendSeparator:(id)a3 format:(id)a4
+- (void)crl_appendSeparator:(id)separator format:(id)format
 {
-  v6 = a3;
-  v7 = a4;
+  separatorCopy = separator;
+  formatCopy = format;
   if ([(NSMutableString *)self length])
   {
-    [(NSMutableString *)self appendString:v6];
+    [(NSMutableString *)self appendString:separatorCopy];
   }
 
-  v8 = [NSString crl_stringWithFormat:v7 arguments:&v9];
+  v8 = [NSString crl_stringWithFormat:formatCopy arguments:&v9];
   [(NSMutableString *)self appendString:v8];
 }
 

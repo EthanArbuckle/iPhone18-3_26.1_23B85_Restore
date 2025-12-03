@@ -1,87 +1,87 @@
 @interface HMDCameraMediaParameterSelection
-- (BOOL)findBestMatchWithProtocolParameters:(id)a3 streamingCapabilities:(id)a4 videoTierParameters:(id)a5;
-- (void)setReselectedConfigParameters:(id)a3 videoTier:(id)a4;
-- (void)setSelectedConfigParameters:(id)a3;
-- (void)setSelectedEndPointSetupParameters:(id)a3 videoNetworkConfig:(id)a4 audioNetworkConfig:(id)a5;
+- (BOOL)findBestMatchWithProtocolParameters:(id)parameters streamingCapabilities:(id)capabilities videoTierParameters:(id)tierParameters;
+- (void)setReselectedConfigParameters:(id)parameters videoTier:(id)tier;
+- (void)setSelectedConfigParameters:(id)parameters;
+- (void)setSelectedEndPointSetupParameters:(id)parameters videoNetworkConfig:(id)config audioNetworkConfig:(id)networkConfig;
 @end
 
 @implementation HMDCameraMediaParameterSelection
 
-- (void)setReselectedConfigParameters:(id)a3 videoTier:(id)a4
+- (void)setReselectedConfigParameters:(id)parameters videoTier:(id)tier
 {
-  v6 = a4;
-  v7 = a3;
+  tierCopy = tier;
+  parametersCopy = parameters;
   v8 = [HMDSessionControl alloc];
   v9 = objc_alloc(MEMORY[0x277CCAD78]);
-  v10 = [(HMDCameraParameterSelection *)self sessionID];
-  v11 = [v10 sessionID];
-  v12 = [v9 initWithUUIDString:v11];
+  sessionID = [(HMDCameraParameterSelection *)self sessionID];
+  v10SessionID = [sessionID sessionID];
+  v12 = [v9 initWithUUIDString:v10SessionID];
   v16 = [(HMDSessionControl *)v8 initWithCommand:4 sessionIdentifier:v12];
 
-  v13 = [(HMDCameraMediaParameterSelection *)self videoParameterSelection];
-  v14 = [v13 createReselectedVideoParameters:v6];
+  videoParameterSelection = [(HMDCameraMediaParameterSelection *)self videoParameterSelection];
+  v14 = [videoParameterSelection createReselectedVideoParameters:tierCopy];
 
   v15 = [[HMDReselectedStreamConfigurationWrite alloc] initWithSessionControl:v16 videoParameters:v14];
-  [v7 setReselectedStreamConfigurationWrite:v15];
+  [parametersCopy setReselectedStreamConfigurationWrite:v15];
 }
 
-- (void)setSelectedConfigParameters:(id)a3
+- (void)setSelectedConfigParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = [HMDSessionControl alloc];
   v6 = objc_alloc(MEMORY[0x277CCAD78]);
-  v7 = [(HMDCameraParameterSelection *)self sessionID];
-  v8 = [v7 sessionID];
-  v9 = [v6 initWithUUIDString:v8];
+  sessionID = [(HMDCameraParameterSelection *)self sessionID];
+  v7SessionID = [sessionID sessionID];
+  v9 = [v6 initWithUUIDString:v7SessionID];
   v15 = [(HMDSessionControl *)v5 initWithCommand:1 sessionIdentifier:v9];
 
-  v10 = [(HMDCameraMediaParameterSelection *)self videoParameterSelection];
-  v11 = [v10 createSelectedVideoParameters];
+  videoParameterSelection = [(HMDCameraMediaParameterSelection *)self videoParameterSelection];
+  createSelectedVideoParameters = [videoParameterSelection createSelectedVideoParameters];
 
-  v12 = [(HMDCameraMediaParameterSelection *)self audioParameterSelection];
-  v13 = [v12 createSelectedAudioParameters];
+  audioParameterSelection = [(HMDCameraMediaParameterSelection *)self audioParameterSelection];
+  createSelectedAudioParameters = [audioParameterSelection createSelectedAudioParameters];
 
-  v14 = [[HMDSelectedStreamConfigurationWrite alloc] initWithSessionControl:v15 videoParameters:v11 audioParameters:v13];
-  [v4 setSelectedStreamConfigurationWrite:v14];
+  v14 = [[HMDSelectedStreamConfigurationWrite alloc] initWithSessionControl:v15 videoParameters:createSelectedVideoParameters audioParameters:createSelectedAudioParameters];
+  [parametersCopy setSelectedStreamConfigurationWrite:v14];
 }
 
-- (void)setSelectedEndPointSetupParameters:(id)a3 videoNetworkConfig:(id)a4 audioNetworkConfig:(id)a5
+- (void)setSelectedEndPointSetupParameters:(id)parameters videoNetworkConfig:(id)config audioNetworkConfig:(id)networkConfig
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  parametersCopy = parameters;
+  configCopy = config;
+  networkConfigCopy = networkConfig;
   v11 = [HMDEndPointAddress alloc];
-  v12 = [v9 ipAddress];
-  v13 = [v9 ipv6];
-  v14 = [v9 rtpPort];
-  v15 = [v10 rtpPort];
-  v16 = [(HMDEndPointAddress *)v11 initWithIPAddress:v12 isIPv6Address:v13 videoRTPPort:v14 audioRTPPort:v15];
+  ipAddress = [configCopy ipAddress];
+  ipv6 = [configCopy ipv6];
+  rtpPort = [configCopy rtpPort];
+  rtpPort2 = [networkConfigCopy rtpPort];
+  v16 = [(HMDEndPointAddress *)v11 initWithIPAddress:ipAddress isIPv6Address:ipv6 videoRTPPort:rtpPort audioRTPPort:rtpPort2];
 
-  v17 = [(HMDCameraMediaParameterSelection *)self videoParameterSelection];
-  v18 = [v17 createSRTPParamters];
+  videoParameterSelection = [(HMDCameraMediaParameterSelection *)self videoParameterSelection];
+  createSRTPParamters = [videoParameterSelection createSRTPParamters];
 
-  if (v18)
+  if (createSRTPParamters)
   {
-    v19 = [(HMDCameraMediaParameterSelection *)self audioParameterSelection];
-    v20 = [v19 createSRTPParamters];
+    audioParameterSelection = [(HMDCameraMediaParameterSelection *)self audioParameterSelection];
+    createSRTPParamters2 = [audioParameterSelection createSRTPParamters];
 
-    if (v20)
+    if (createSRTPParamters2)
     {
       v21 = [HMDSetupEndPointWrite alloc];
       v22 = objc_alloc(MEMORY[0x277CCAD78]);
-      v23 = [(HMDCameraParameterSelection *)self sessionID];
-      v24 = [v23 sessionID];
-      v25 = [v22 initWithUUIDString:v24];
-      v26 = [(HMDSetupEndPointWrite *)v21 initWithSessionIdentifier:v25 address:v16 videoSrtpParameters:v18 audioSrtpParameters:v20];
+      sessionID = [(HMDCameraParameterSelection *)self sessionID];
+      v23SessionID = [sessionID sessionID];
+      v25 = [v22 initWithUUIDString:v23SessionID];
+      v26 = [(HMDSetupEndPointWrite *)v21 initWithSessionIdentifier:v25 address:v16 videoSrtpParameters:createSRTPParamters audioSrtpParameters:createSRTPParamters2];
 
-      [v8 setSetupEndPointWrite:v26];
+      [parametersCopy setSetupEndPointWrite:v26];
     }
 
     else
     {
       v31 = objc_autoreleasePoolPush();
-      v32 = self;
+      selfCopy = self;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
@@ -98,7 +98,7 @@
   else
   {
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy2 = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -114,28 +114,28 @@
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)findBestMatchWithProtocolParameters:(id)a3 streamingCapabilities:(id)a4 videoTierParameters:(id)a5
+- (BOOL)findBestMatchWithProtocolParameters:(id)parameters streamingCapabilities:(id)capabilities videoTierParameters:(id)tierParameters
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  parametersCopy = parameters;
+  capabilitiesCopy = capabilities;
+  tierParametersCopy = tierParameters;
   v11 = [HMDCameraVideoParameterSelection alloc];
-  v12 = [(HMDCameraParameterSelection *)self sessionID];
-  v13 = [v8 supportedVideoStreamConfiguration];
-  v14 = [v8 supportedRTPConfiguration];
-  v15 = [(HMDCameraVideoParameterSelection *)v11 initWithSessionID:v12 videoTierParameters:v10 supportedVideoConfiguration:v13 supportedRTPConfiguration:v14 streamingCapabilities:v9];
+  sessionID = [(HMDCameraParameterSelection *)self sessionID];
+  supportedVideoStreamConfiguration = [parametersCopy supportedVideoStreamConfiguration];
+  supportedRTPConfiguration = [parametersCopy supportedRTPConfiguration];
+  v15 = [(HMDCameraVideoParameterSelection *)v11 initWithSessionID:sessionID videoTierParameters:tierParametersCopy supportedVideoConfiguration:supportedVideoStreamConfiguration supportedRTPConfiguration:supportedRTPConfiguration streamingCapabilities:capabilitiesCopy];
 
   if ([(HMDCameraVideoParameterSelection *)v15 selectVideoParameters])
   {
     v16 = [HMDCameraAudioParameterSelection alloc];
-    v17 = [(HMDCameraParameterSelection *)self sessionID];
-    v18 = [v8 supportedAudioStreamConfiguration];
-    v19 = [v8 supportedRTPConfiguration];
-    v20 = [(HMDCameraAudioParameterSelection *)v16 initWithSessionID:v17 supportedAudioConfiguration:v18 supportedRTPConfiguration:v19 streamingCapabilities:v9];
+    sessionID2 = [(HMDCameraParameterSelection *)self sessionID];
+    supportedAudioStreamConfiguration = [parametersCopy supportedAudioStreamConfiguration];
+    supportedRTPConfiguration2 = [parametersCopy supportedRTPConfiguration];
+    v20 = [(HMDCameraAudioParameterSelection *)v16 initWithSessionID:sessionID2 supportedAudioConfiguration:supportedAudioStreamConfiguration supportedRTPConfiguration:supportedRTPConfiguration2 streamingCapabilities:capabilitiesCopy];
 
-    v21 = [(HMDCameraAudioParameterSelection *)v20 selectAudioParameters];
-    if (v21)
+    selectAudioParameters = [(HMDCameraAudioParameterSelection *)v20 selectAudioParameters];
+    if (selectAudioParameters)
     {
       [(HMDCameraMediaParameterSelection *)self setVideoParameterSelection:v15];
       [(HMDCameraMediaParameterSelection *)self setAudioParameterSelection:v20];
@@ -144,7 +144,7 @@
     else
     {
       v26 = objc_autoreleasePoolPush();
-      v27 = self;
+      selfCopy = self;
       v28 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
@@ -161,7 +161,7 @@
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy2 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -172,11 +172,11 @@
     }
 
     objc_autoreleasePoolPop(v22);
-    v21 = 0;
+    selectAudioParameters = 0;
   }
 
   v30 = *MEMORY[0x277D85DE8];
-  return v21;
+  return selectAudioParameters;
 }
 
 @end

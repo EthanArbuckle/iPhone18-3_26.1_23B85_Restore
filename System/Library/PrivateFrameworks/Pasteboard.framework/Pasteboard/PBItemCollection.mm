@@ -1,9 +1,9 @@
 @interface PBItemCollection
 + (id)allowedClassesForSecureCoding;
-- ($115C4C562B26FF47E01F9F4EA65B5887)establishConnectionToDataProviderCompletionBlock:(SEL)a3;
-- (BOOL)canInstantiateObjectOfClass:(Class)a3;
-- (BOOL)hasItemWithRepresentationConformingToType:(id)a3;
-- (BOOL)hasItemWithRepresentationOfType:(id)a3;
+- ($115C4C562B26FF47E01F9F4EA65B5887)establishConnectionToDataProviderCompletionBlock:(SEL)block;
+- (BOOL)canInstantiateObjectOfClass:(Class)class;
+- (BOOL)hasItemWithRepresentationConformingToType:(id)type;
+- (BOOL)hasItemWithRepresentationOfType:(id)type;
 - (BOOL)isDataProvider;
 - (BOOL)isDeviceLockedPasteboard;
 - (BOOL)isGeneralPasteboard;
@@ -14,7 +14,7 @@
 - (BOOL)isRemoteDataLoaded;
 - (BOOL)isRemoteMetadataLoaded;
 - (BOOL)isSystemPasteboard;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (BOOL)loadsDataSynchronously;
 - (BOOL)originatorAllowedToCopyOnPaste;
 - (NSArray)items;
@@ -32,54 +32,54 @@
 - (NSUUID)UUID;
 - (NSUUID)saveBootSession;
 - (NSXPCListenerEndpoint)dataConsumersEndpoint;
-- (PBItemCollection)initWithCoder:(id)a3;
-- (PBItemCollection)initWithItems:(id)a3;
+- (PBItemCollection)initWithCoder:(id)coder;
+- (PBItemCollection)initWithItems:(id)items;
 - (PBItemCollectionDataTransferDelegate)dataTransferDelegate;
 - (PBItemCollectionDataTransferDelegate)itemQueue_dataTransferDelegate;
 - (UISPasteSharingToken)sharingToken;
 - (id)_remoteDataProviderConnection;
 - (id)availableRepresentationTypes;
 - (id)copyWithDoNothingLoaders;
-- (id)copyWithItems:(id)a3;
+- (id)copyWithItems:(id)items;
 - (id)dataConsumersListener;
 - (int64_t)changeCount;
 - (int64_t)originatorDataOwner;
 - (unint64_t)saveTimestamp;
-- (void)_setMetadataValue:(id)a3 forKey:(id)a4;
-- (void)addInvalidationDelegate:(id)a3;
-- (void)addItems:(id)a3;
+- (void)_setMetadataValue:(id)value forKey:(id)key;
+- (void)addInvalidationDelegate:(id)delegate;
+- (void)addItems:(id)items;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)item:(id)a3 representation:(id)a4 beganDataTransferWithProgress:(id)a5;
-- (void)item:(id)a3 representationFinishedDataTransfer:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)item:(id)item representation:(id)representation beganDataTransferWithProgress:(id)progress;
+- (void)item:(id)item representationFinishedDataTransfer:(id)transfer;
 - (void)registerLocalAvailableDerivedRepresentations;
-- (void)removeInvalidationDelegate:(id)a3;
-- (void)setChangeCount:(int64_t)a3;
-- (void)setDataProviderEndpoint:(id)a3;
-- (void)setDataTransferDelegate:(id)a3;
-- (void)setDeviceLockedPasteboard:(BOOL)a3;
-- (void)setIsOrWasRemote:(BOOL)a3;
-- (void)setIsRemote:(BOOL)a3;
-- (void)setItems:(id)a3;
-- (void)setLoadsDataSynchronously:(BOOL)a3;
-- (void)setMetadata:(id)a3;
-- (void)setOriginatorAllowedToCopyOnPaste:(BOOL)a3;
-- (void)setOriginatorBundleID:(id)a3;
-- (void)setOriginatorDataOwner:(int64_t)a3;
-- (void)setOriginatorLocalizedName:(id)a3;
-- (void)setOriginatorPersistentID:(id)a3;
-- (void)setOriginatorTeamID:(id)a3;
-- (void)setPrivateMetadata:(id)a3;
+- (void)removeInvalidationDelegate:(id)delegate;
+- (void)setChangeCount:(int64_t)count;
+- (void)setDataProviderEndpoint:(id)endpoint;
+- (void)setDataTransferDelegate:(id)delegate;
+- (void)setDeviceLockedPasteboard:(BOOL)pasteboard;
+- (void)setIsOrWasRemote:(BOOL)remote;
+- (void)setIsRemote:(BOOL)remote;
+- (void)setItems:(id)items;
+- (void)setLoadsDataSynchronously:(BOOL)synchronously;
+- (void)setMetadata:(id)metadata;
+- (void)setOriginatorAllowedToCopyOnPaste:(BOOL)paste;
+- (void)setOriginatorBundleID:(id)d;
+- (void)setOriginatorDataOwner:(int64_t)owner;
+- (void)setOriginatorLocalizedName:(id)name;
+- (void)setOriginatorPersistentID:(id)d;
+- (void)setOriginatorTeamID:(id)d;
+- (void)setPrivateMetadata:(id)metadata;
 - (void)setRemoteDataLoaded;
-- (void)setRemoteDeviceName:(id)a3;
+- (void)setRemoteDeviceName:(id)name;
 - (void)setRemoteMetadataLoaded;
-- (void)setSaveBootSession:(id)a3;
-- (void)setSaveTimestamp:(unint64_t)a3;
-- (void)setSharingToken:(id)a3;
-- (void)setUUID:(id)a3;
-- (void)setUsesServerConnectionToLoadDataWithAuthenticationBlock:(id)a3 dataOwnerBlock:(id)a4;
+- (void)setSaveBootSession:(id)session;
+- (void)setSaveTimestamp:(unint64_t)timestamp;
+- (void)setSharingToken:(id)token;
+- (void)setUUID:(id)d;
+- (void)setUsesServerConnectionToLoadDataWithAuthenticationBlock:(id)block dataOwnerBlock:(id)ownerBlock;
 - (void)shutdown;
-- (void)waitForItemRequestsDeliveryCompletion:(id)a3;
+- (void)waitForItemRequestsDeliveryCompletion:(id)completion;
 @end
 
 @implementation PBItemCollection
@@ -306,31 +306,31 @@ void __64__PBItemCollection_registerLocalAvailableDerivedRepresentations__block_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = PBItemQueue();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __29__PBItemCollection_setItems___block_invoke;
   v7[3] = &unk_279A064E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = itemsCopy;
+  v6 = itemsCopy;
   dispatch_sync(v5, v7);
 }
 
-- (void)setUUID:(id)a3
+- (void)setUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = PBItemQueue();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __28__PBItemCollection_setUUID___block_invoke;
   v7[3] = &unk_279A064E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_sync(v5, v7);
 }
 
@@ -367,17 +367,17 @@ uint64_t __28__PBItemCollection_metadata__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = PBItemQueue();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__PBItemCollection_setMetadata___block_invoke;
   v7[3] = &unk_279A064E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = metadataCopy;
+  v6 = metadataCopy;
   dispatch_sync(v5, v7);
 }
 
@@ -414,26 +414,26 @@ uint64_t __35__PBItemCollection_privateMetadata__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setPrivateMetadata:(id)a3
+- (void)setPrivateMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = PBItemQueue();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__PBItemCollection_setPrivateMetadata___block_invoke;
   v7[3] = &unk_279A064E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = metadataCopy;
+  v6 = metadataCopy;
   dispatch_sync(v5, v7);
 }
 
 - (NSXPCListenerEndpoint)dataConsumersEndpoint
 {
-  v2 = [(PBItemCollection *)self dataConsumersListener];
-  v3 = [v2 endpoint];
+  dataConsumersListener = [(PBItemCollection *)self dataConsumersListener];
+  endpoint = [dataConsumersListener endpoint];
 
-  return v3;
+  return endpoint;
 }
 
 - (BOOL)isDataProvider
@@ -496,17 +496,17 @@ uint64_t __35__PBItemCollection_saveBootSession__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setSaveBootSession:(id)a3
+- (void)setSaveBootSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = PBItemQueue();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__PBItemCollection_setSaveBootSession___block_invoke;
   v7[3] = &unk_279A064E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sessionCopy;
+  v6 = sessionCopy;
   dispatch_sync(v5, v7);
 }
 
@@ -537,7 +537,7 @@ uint64_t __33__PBItemCollection_saveTimestamp__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setSaveTimestamp:(unint64_t)a3
+- (void)setSaveTimestamp:(unint64_t)timestamp
 {
   v5 = PBItemQueue();
   v6[0] = MEMORY[0x277D85DD0];
@@ -545,7 +545,7 @@ uint64_t __33__PBItemCollection_saveTimestamp__block_invoke(uint64_t a1)
   v6[2] = __37__PBItemCollection_setSaveTimestamp___block_invoke;
   v6[3] = &unk_279A070A8;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = timestamp;
   dispatch_sync(v5, v6);
 }
 
@@ -582,17 +582,17 @@ uint64_t __42__PBItemCollection_originatorPersistentID__block_invoke(uint64_t a1
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setOriginatorPersistentID:(id)a3
+- (void)setOriginatorPersistentID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = PBItemQueue();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__PBItemCollection_setOriginatorPersistentID___block_invoke;
   v7[3] = &unk_279A064E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_sync(v5, v7);
 }
 
@@ -629,17 +629,17 @@ uint64_t __38__PBItemCollection_originatorBundleID__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setOriginatorBundleID:(id)a3
+- (void)setOriginatorBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = PBItemQueue();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__PBItemCollection_setOriginatorBundleID___block_invoke;
   v7[3] = &unk_279A064E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_sync(v5, v7);
 }
 
@@ -676,17 +676,17 @@ uint64_t __36__PBItemCollection_originatorTeamID__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setOriginatorTeamID:(id)a3
+- (void)setOriginatorTeamID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = PBItemQueue();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__PBItemCollection_setOriginatorTeamID___block_invoke;
   v7[3] = &unk_279A064E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_sync(v5, v7);
 }
 
@@ -723,17 +723,17 @@ uint64_t __43__PBItemCollection_originatorLocalizedName__block_invoke(uint64_t a
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setOriginatorLocalizedName:(id)a3
+- (void)setOriginatorLocalizedName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = PBItemQueue();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__PBItemCollection_setOriginatorLocalizedName___block_invoke;
   v7[3] = &unk_279A064E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nameCopy;
+  v6 = nameCopy;
   dispatch_sync(v5, v7);
 }
 
@@ -764,7 +764,7 @@ uint64_t __50__PBItemCollection_originatorAllowedToCopyOnPaste__block_invoke(uin
   return result;
 }
 
-- (void)setOriginatorAllowedToCopyOnPaste:(BOOL)a3
+- (void)setOriginatorAllowedToCopyOnPaste:(BOOL)paste
 {
   v5 = PBItemQueue();
   v6[0] = MEMORY[0x277D85DD0];
@@ -772,7 +772,7 @@ uint64_t __50__PBItemCollection_originatorAllowedToCopyOnPaste__block_invoke(uin
   v6[2] = __54__PBItemCollection_setOriginatorAllowedToCopyOnPaste___block_invoke;
   v6[3] = &unk_279A070D0;
   v6[4] = self;
-  v7 = a3;
+  pasteCopy = paste;
   dispatch_sync(v5, v6);
 }
 
@@ -803,7 +803,7 @@ uint64_t __39__PBItemCollection_originatorDataOwner__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setOriginatorDataOwner:(int64_t)a3
+- (void)setOriginatorDataOwner:(int64_t)owner
 {
   v5 = PBItemQueue();
   v6[0] = MEMORY[0x277D85DD0];
@@ -811,7 +811,7 @@ uint64_t __39__PBItemCollection_originatorDataOwner__block_invoke(uint64_t a1)
   v6[2] = __43__PBItemCollection_setOriginatorDataOwner___block_invoke;
   v6[3] = &unk_279A070A8;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = owner;
   dispatch_sync(v5, v6);
 }
 
@@ -842,7 +842,7 @@ uint64_t __44__PBItemCollection_isDeviceLockedPasteboard__block_invoke(uint64_t 
   return result;
 }
 
-- (void)setDeviceLockedPasteboard:(BOOL)a3
+- (void)setDeviceLockedPasteboard:(BOOL)pasteboard
 {
   v5 = PBItemQueue();
   v6[0] = MEMORY[0x277D85DD0];
@@ -850,7 +850,7 @@ uint64_t __44__PBItemCollection_isDeviceLockedPasteboard__block_invoke(uint64_t 
   v6[2] = __46__PBItemCollection_setDeviceLockedPasteboard___block_invoke;
   v6[3] = &unk_279A070D0;
   v6[4] = self;
-  v7 = a3;
+  pasteboardCopy = pasteboard;
   dispatch_sync(v5, v6);
 }
 
@@ -881,7 +881,7 @@ uint64_t __33__PBItemCollection_isOrWasRemote__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setIsOrWasRemote:(BOOL)a3
+- (void)setIsOrWasRemote:(BOOL)remote
 {
   v5 = PBItemQueue();
   v6[0] = MEMORY[0x277D85DD0];
@@ -889,7 +889,7 @@ uint64_t __33__PBItemCollection_isOrWasRemote__block_invoke(uint64_t a1)
   v6[2] = __37__PBItemCollection_setIsOrWasRemote___block_invoke;
   v6[3] = &unk_279A070D0;
   v6[4] = self;
-  v7 = a3;
+  remoteCopy = remote;
   dispatch_sync(v5, v6);
 }
 
@@ -926,17 +926,17 @@ uint64_t __36__PBItemCollection_remoteDeviceName__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setRemoteDeviceName:(id)a3
+- (void)setRemoteDeviceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = PBItemQueue();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__PBItemCollection_setRemoteDeviceName___block_invoke;
   v7[3] = &unk_279A064E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nameCopy;
+  v6 = nameCopy;
   dispatch_sync(v5, v7);
 }
 
@@ -973,17 +973,17 @@ uint64_t __32__PBItemCollection_sharingToken__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setSharingToken:(id)a3
+- (void)setSharingToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = PBItemQueue();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__PBItemCollection_setSharingToken___block_invoke;
   v7[3] = &unk_279A064E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = tokenCopy;
+  v6 = tokenCopy;
   dispatch_sync(v5, v7);
 }
 
@@ -1014,7 +1014,7 @@ uint64_t __42__PBItemCollection_loadsDataSynchronously__block_invoke(uint64_t a1
   return result;
 }
 
-- (void)setLoadsDataSynchronously:(BOOL)a3
+- (void)setLoadsDataSynchronously:(BOOL)synchronously
 {
   v5 = PBItemQueue();
   v6[0] = MEMORY[0x277D85DD0];
@@ -1022,7 +1022,7 @@ uint64_t __42__PBItemCollection_loadsDataSynchronously__block_invoke(uint64_t a1
   v6[2] = __46__PBItemCollection_setLoadsDataSynchronously___block_invoke;
   v6[3] = &unk_279A070D0;
   v6[4] = self;
-  v7 = a3;
+  synchronouslyCopy = synchronously;
   dispatch_sync(v5, v6);
 }
 
@@ -1073,25 +1073,25 @@ uint64_t __41__PBItemCollection_dataConsumersListener__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
 
-  [v5 resume];
+  [connectionCopy resume];
   return 1;
 }
 
-- (void)setDataProviderEndpoint:(id)a3
+- (void)setDataProviderEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v5 = PBItemQueue();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__PBItemCollection_setDataProviderEndpoint___block_invoke;
   v7[3] = &unk_279A064E0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = endpointCopy;
+  selfCopy = self;
+  v6 = endpointCopy;
   dispatch_sync(v5, v7);
 }
 
@@ -1312,10 +1312,10 @@ uint64_t __44__PBItemCollection_setDataProviderEndpoint___block_invoke_2_23(uint
   return result;
 }
 
-- (void)waitForItemRequestsDeliveryCompletion:(id)a3
+- (void)waitForItemRequestsDeliveryCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = PBItemQueue();
     v6[0] = MEMORY[0x277D85DD0];
@@ -1323,7 +1323,7 @@ uint64_t __44__PBItemCollection_setDataProviderEndpoint___block_invoke_2_23(uint
     v6[2] = __58__PBItemCollection_waitForItemRequestsDeliveryCompletion___block_invoke;
     v6[3] = &unk_279A06A10;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     dispatch_sync(v5, v6);
   }
 }
@@ -1461,7 +1461,7 @@ uint64_t __49__PBItemCollection__remoteDataProviderConnection__block_invoke_3(ui
   return [*(a1 + 32) setItemQueue_remoteDataProviderConnection:0];
 }
 
-- ($115C4C562B26FF47E01F9F4EA65B5887)establishConnectionToDataProviderCompletionBlock:(SEL)a3
+- ($115C4C562B26FF47E01F9F4EA65B5887)establishConnectionToDataProviderCompletionBlock:(SEL)block
 {
   v6 = a4;
   v20[0] = MEMORY[0x277D85DD0];
@@ -1471,21 +1471,21 @@ uint64_t __49__PBItemCollection__remoteDataProviderConnection__block_invoke_3(ui
   v21 = v6;
   v7 = v6;
   v8 = MEMORY[0x25F8AC430](v20);
-  v9 = [(PBItemCollection *)self _remoteDataProviderConnection];
+  _remoteDataProviderConnection = [(PBItemCollection *)self _remoteDataProviderConnection];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __69__PBItemCollection_establishConnectionToDataProviderCompletionBlock___block_invoke_2;
   v18 = &unk_279A06718;
   v10 = v8;
   v19 = v10;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:&v15];
+  v11 = [_remoteDataProviderConnection remoteObjectProxyWithErrorHandler:&v15];
 
   [v11 helloCompletionBlock:{v10, v15, v16, v17, v18}];
-  v12 = [(PBItemCollection *)self _remoteDataProviderConnection];
-  v13 = v12;
-  if (v12)
+  _remoteDataProviderConnection2 = [(PBItemCollection *)self _remoteDataProviderConnection];
+  v13 = _remoteDataProviderConnection2;
+  if (_remoteDataProviderConnection2)
   {
-    [v12 auditToken];
+    [_remoteDataProviderConnection2 auditToken];
   }
 
   else
@@ -1526,34 +1526,34 @@ void __69__PBItemCollection_establishConnectionToDataProviderCompletionBlock___b
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (PBItemCollection)initWithItems:(id)a3
+- (PBItemCollection)initWithItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v13.receiver = self;
   v13.super_class = PBItemCollection;
   v5 = [(PBItemCollection *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [itemsCopy copy];
     itemQueue_items = v5->_itemQueue_items;
     v5->_itemQueue_items = v6;
 
     v5->_itemQueue_isDataProvider = 1;
-    v8 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     itemQueue_UUID = v5->_itemQueue_UUID;
-    v5->_itemQueue_UUID = v8;
+    v5->_itemQueue_UUID = uUID;
 
-    v10 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     creationDate = v5->_creationDate;
-    v5->_creationDate = v10;
+    v5->_creationDate = date;
   }
 
   return v5;
 }
 
-- (id)copyWithItems:(id)a3
+- (id)copyWithItems:(id)items
 {
-  v7 = a3;
+  itemsCopy = items;
   v53 = 0;
   v54 = &v53;
   v55 = 0x3032000000;
@@ -1621,7 +1621,7 @@ void __69__PBItemCollection_establishConnectionToDataProviderCompletionBlock___b
   block[13] = &v9;
   dispatch_sync(v4, block);
 
-  v5 = [[PBItemCollection alloc] initWithItems:v7];
+  v5 = [[PBItemCollection alloc] initWithItems:itemsCopy];
   [(PBItemCollection *)v5 setMetadata:v54[5]];
   [(PBItemCollection *)v5 setPrivateMetadata:v48[5]];
   [(PBItemCollection *)v5 setOriginatorDataOwner:v44[3]];
@@ -1696,7 +1696,7 @@ uint64_t __34__PBItemCollection_copyWithItems___block_invoke(uint64_t a1)
   v9 = 0x3032000000;
   v10 = __Block_byref_object_copy__3;
   v11 = __Block_byref_object_dispose__3;
-  v12 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v3 = PBItemQueue();
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -1751,17 +1751,17 @@ void __44__PBItemCollection_copyWithDoNothingLoaders__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addItems:(id)a3
+- (void)addItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = PBItemQueue();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __29__PBItemCollection_addItems___block_invoke;
   v7[3] = &unk_279A064E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = itemsCopy;
+  v6 = itemsCopy;
   dispatch_sync(v5, v7);
 }
 
@@ -1774,10 +1774,10 @@ void __29__PBItemCollection_addItems___block_invoke(uint64_t a1)
   *(v3 + 48) = v2;
 }
 
-- (BOOL)hasItemWithRepresentationOfType:(id)a3
+- (BOOL)hasItemWithRepresentationOfType:(id)type
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   [(PBItemCollection *)self items];
   v11 = 0u;
   v12 = 0u;
@@ -1796,7 +1796,7 @@ void __29__PBItemCollection_addItems___block_invoke(uint64_t a1)
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) hasRepresentationOfType:{v4, v11}])
+        if ([*(*(&v11 + 1) + 8 * i) hasRepresentationOfType:{typeCopy, v11}])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -1819,10 +1819,10 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)hasItemWithRepresentationConformingToType:(id)a3
+- (BOOL)hasItemWithRepresentationConformingToType:(id)type
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   [(PBItemCollection *)self items];
   v11 = 0u;
   v12 = 0u;
@@ -1841,7 +1841,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) hasRepresentationConformingToType:{v4, v11}])
+        if ([*(*(&v11 + 1) + 8 * i) hasRepresentationConformingToType:{typeCopy, v11}])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -1864,7 +1864,7 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)canInstantiateObjectOfClass:(Class)a3
+- (BOOL)canInstantiateObjectOfClass:(Class)class
 {
   v17 = *MEMORY[0x277D85DE8];
   [(PBItemCollection *)self items];
@@ -1886,7 +1886,7 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        if ([*(*(&v12 + 1) + 8 * i) canInstantiateObjectOfClass:{a3, v12}])
+        if ([*(*(&v12 + 1) + 8 * i) canInstantiateObjectOfClass:{class, v12}])
         {
           v9 = 1;
           goto LABEL_11;
@@ -1913,13 +1913,13 @@ LABEL_11:
 - (id)availableRepresentationTypes
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [(PBItemCollection *)self items];
+  items = [(PBItemCollection *)self items];
   v3 = [MEMORY[0x277CBEB58] set];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = v2;
+  v4 = items;
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -1934,8 +1934,8 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) availableTypes];
-        [v3 addObjectsFromArray:v9];
+        availableTypes = [*(*(&v13 + 1) + 8 * i) availableTypes];
+        [v3 addObjectsFromArray:availableTypes];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -1944,16 +1944,16 @@ LABEL_11:
     while (v6);
   }
 
-  v10 = [v3 allObjects];
+  allObjects = [v3 allObjects];
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return allObjects;
 }
 
-- (PBItemCollection)initWithCoder:(id)a3
+- (PBItemCollection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v39.receiver = self;
   v39.super_class = PBItemCollection;
   v5 = [(PBItemCollection *)&v39 init];
@@ -1961,66 +1961,66 @@ LABEL_11:
   {
     v6 = +[PBItem allowedClassesForSecureCoding];
     v7 = [v6 setByAddingObject:objc_opt_class()];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"items"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"items"];
     itemQueue_items = v5->_itemQueue_items;
     v5->_itemQueue_items = v8;
 
     v10 = PBAllowedMetadataClasses();
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"privateMetadata"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"privateMetadata"];
     itemQueue_privateMetadata = v5->_itemQueue_privateMetadata;
     v5->_itemQueue_privateMetadata = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
     itemQueue_UUID = v5->_itemQueue_UUID;
     v5->_itemQueue_UUID = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
     creationDate = v5->_creationDate;
     v5->_creationDate = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"saveBootSession"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"saveBootSession"];
     itemQueue_saveBootSession = v5->_itemQueue_saveBootSession;
     v5->_itemQueue_saveBootSession = v17;
 
-    v5->_itemQueue_saveTimestamp = [v4 decodeInt64ForKey:@"saveTimestamp"];
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"persistentIdentifier"];
+    v5->_itemQueue_saveTimestamp = [coderCopy decodeInt64ForKey:@"saveTimestamp"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"persistentIdentifier"];
     itemQueue_originatorPersistentID = v5->_itemQueue_originatorPersistentID;
     v5->_itemQueue_originatorPersistentID = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
     itemQueue_originatorBundleID = v5->_itemQueue_originatorBundleID;
     v5->_itemQueue_originatorBundleID = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"teamIdentifier"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"teamIdentifier"];
     itemQueue_originatorTeamID = v5->_itemQueue_originatorTeamID;
     v5->_itemQueue_originatorTeamID = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedName"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedName"];
     itemQueue_originatorLocalizedName = v5->_itemQueue_originatorLocalizedName;
     v5->_itemQueue_originatorLocalizedName = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceLocked"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceLocked"];
     v5->_itemQueue_deviceLockedPasteboard = [v27 BOOLValue];
 
-    v5->_itemQueue_originatorAllowedToCopyOnPaste = [v4 decodeBoolForKey:@"allowedToCopyOnPaste"];
-    v5->_itemQueue_isOrWasRemote = [v4 decodeBoolForKey:@"isOrWasRemote"];
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remoteDeviceName"];
+    v5->_itemQueue_originatorAllowedToCopyOnPaste = [coderCopy decodeBoolForKey:@"allowedToCopyOnPaste"];
+    v5->_itemQueue_isOrWasRemote = [coderCopy decodeBoolForKey:@"isOrWasRemote"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteDeviceName"];
     itemQueue_remoteDeviceName = v5->_itemQueue_remoteDeviceName;
     v5->_itemQueue_remoteDeviceName = v28;
 
-    v5->_itemQueue_originatorDataOwner = [v4 decodeIntegerForKey:@"originatorDataOwner"];
+    v5->_itemQueue_originatorDataOwner = [coderCopy decodeIntegerForKey:@"originatorDataOwner"];
     v30 = PBAllowedMetadataClasses();
-    v31 = [v4 decodeObjectOfClasses:v30 forKey:@"metadata"];
+    v31 = [coderCopy decodeObjectOfClasses:v30 forKey:@"metadata"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v32 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v37[0] = MEMORY[0x277D85DD0];
       v37[1] = 3221225472;
       v37[2] = __34__PBItemCollection_initWithCoder___block_invoke;
       v37[3] = &unk_279A06E98;
-      v33 = v32;
+      v33 = dictionary;
       v38 = v33;
       [v31 enumerateKeysAndObjectsUsingBlock:v37];
       itemQueue_metadata = v5->_itemQueue_metadata;
@@ -2046,9 +2046,9 @@ void __34__PBItemCollection_initWithCoder___block_invoke(uint64_t a1, void *a2, 
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v94 = 0;
   v95 = &v94;
   v96 = 0x3032000000;
@@ -2155,81 +2155,81 @@ void __34__PBItemCollection_initWithCoder___block_invoke(uint64_t a1, void *a2, 
   v6 = v95[5];
   if (v6)
   {
-    [v4 encodeObject:v6 forKey:@"items"];
+    [coderCopy encodeObject:v6 forKey:@"items"];
   }
 
   v7 = v89[5];
   if (v7)
   {
-    [v4 encodeObject:v7 forKey:@"metadata"];
+    [coderCopy encodeObject:v7 forKey:@"metadata"];
   }
 
   v8 = v83[5];
   if (v8)
   {
-    [v4 encodeObject:v8 forKey:@"privateMetadata"];
+    [coderCopy encodeObject:v8 forKey:@"privateMetadata"];
   }
 
   v9 = v77[5];
   if (v9)
   {
-    [v4 encodeObject:v9 forKey:@"UUID"];
+    [coderCopy encodeObject:v9 forKey:@"UUID"];
   }
 
-  v10 = [(PBItemCollection *)self creationDate];
-  if (v10)
+  creationDate = [(PBItemCollection *)self creationDate];
+  if (creationDate)
   {
-    [v4 encodeObject:v10 forKey:@"creationDate"];
+    [coderCopy encodeObject:creationDate forKey:@"creationDate"];
   }
 
   v11 = v71[5];
   if (v11)
   {
-    [v4 encodeObject:v11 forKey:@"saveBootSession"];
+    [coderCopy encodeObject:v11 forKey:@"saveBootSession"];
   }
 
   v12 = v67[3];
   if (v12)
   {
-    [v4 encodeInt64:v12 forKey:@"saveTimestamp"];
+    [coderCopy encodeInt64:v12 forKey:@"saveTimestamp"];
   }
 
   v13 = v61[5];
   if (v13)
   {
-    [v4 encodeObject:v13 forKey:@"persistentIdentifier"];
+    [coderCopy encodeObject:v13 forKey:@"persistentIdentifier"];
   }
 
   v14 = v55[5];
   if (v14)
   {
-    [v4 encodeObject:v14 forKey:@"bundleIdentifier"];
+    [coderCopy encodeObject:v14 forKey:@"bundleIdentifier"];
   }
 
   v15 = v49[5];
   if (v15)
   {
-    [v4 encodeObject:v15 forKey:@"teamIdentifier"];
+    [coderCopy encodeObject:v15 forKey:@"teamIdentifier"];
   }
 
   v16 = v43[5];
   if (v16)
   {
-    [v4 encodeObject:v16 forKey:@"localizedName"];
+    [coderCopy encodeObject:v16 forKey:@"localizedName"];
   }
 
   v17 = v25[5];
   if (v17)
   {
-    [v4 encodeObject:v17 forKey:@"remoteDeviceName"];
+    [coderCopy encodeObject:v17 forKey:@"remoteDeviceName"];
   }
 
   v18 = [MEMORY[0x277CCABB0] numberWithBool:*(v35 + 24)];
-  [v4 encodeObject:v18 forKey:@"deviceLocked"];
+  [coderCopy encodeObject:v18 forKey:@"deviceLocked"];
 
-  [v4 encodeBool:*(v31 + 24) forKey:@"isOrWasRemote"];
-  [v4 encodeBool:*(v21 + 24) forKey:@"allowedToCopyOnPaste"];
-  [v4 encodeInteger:v39[3] forKey:@"originatorDataOwner"];
+  [coderCopy encodeBool:*(v31 + 24) forKey:@"isOrWasRemote"];
+  [coderCopy encodeBool:*(v21 + 24) forKey:@"allowedToCopyOnPaste"];
+  [coderCopy encodeInteger:v39[3] forKey:@"originatorDataOwner"];
 
   _Block_object_dispose(&v20, 8);
   _Block_object_dispose(&v24, 8);
@@ -2314,20 +2314,20 @@ uint64_t __36__PBItemCollection_encodeWithCoder___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setUsesServerConnectionToLoadDataWithAuthenticationBlock:(id)a3 dataOwnerBlock:(id)a4
+- (void)setUsesServerConnectionToLoadDataWithAuthenticationBlock:(id)block dataOwnerBlock:(id)ownerBlock
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  ownerBlockCopy = ownerBlock;
   v8 = PBItemQueue();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __92__PBItemCollection_setUsesServerConnectionToLoadDataWithAuthenticationBlock_dataOwnerBlock___block_invoke;
   block[3] = &unk_279A07260;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = blockCopy;
+  v13 = ownerBlockCopy;
+  v9 = ownerBlockCopy;
+  v10 = blockCopy;
   dispatch_sync(v8, block);
 }
 
@@ -2480,17 +2480,17 @@ uint64_t __92__PBItemCollection_setUsesServerConnectionToLoadDataWithAuthenticat
   return result;
 }
 
-- (void)addInvalidationDelegate:(id)a3
+- (void)addInvalidationDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = PBItemQueue();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__PBItemCollection_addInvalidationDelegate___block_invoke;
   v7[3] = &unk_279A064E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(v5, v7);
 }
 
@@ -2508,17 +2508,17 @@ void __44__PBItemCollection_addInvalidationDelegate___block_invoke(uint64_t a1)
   [v4 addObject:*(a1 + 40)];
 }
 
-- (void)removeInvalidationDelegate:(id)a3
+- (void)removeInvalidationDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = PBItemQueue();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__PBItemCollection_removeInvalidationDelegate___block_invoke;
   v7[3] = &unk_279A064E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(v5, v7);
 }
 
@@ -2528,7 +2528,7 @@ void __47__PBItemCollection_removeInvalidationDelegate___block_invoke(uint64_t a
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (void)setIsRemote:(BOOL)a3
+- (void)setIsRemote:(BOOL)remote
 {
   v5 = PBItemQueue();
   v6[0] = MEMORY[0x277D85DD0];
@@ -2536,7 +2536,7 @@ void __47__PBItemCollection_removeInvalidationDelegate___block_invoke(uint64_t a
   v6[2] = __32__PBItemCollection_setIsRemote___block_invoke;
   v6[3] = &unk_279A070D0;
   v6[4] = self;
-  v7 = a3;
+  remoteCopy = remote;
   dispatch_sync(v5, v6);
 }
 
@@ -2648,17 +2648,17 @@ uint64_t __38__PBItemCollection_isRemoteDataLoaded__block_invoke(uint64_t a1)
   dispatch_sync(v3, block);
 }
 
-- (void)setDataTransferDelegate:(id)a3
+- (void)setDataTransferDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = PBItemQueue();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__PBItemCollection_setDataTransferDelegate___block_invoke;
   v7[3] = &unk_279A064E0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = delegateCopy;
+  selfCopy = self;
+  v6 = delegateCopy;
   dispatch_sync(v5, v7);
 }
 
@@ -2739,21 +2739,21 @@ uint64_t __40__PBItemCollection_dataTransferDelegate__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)item:(id)a3 representation:(id)a4 beganDataTransferWithProgress:(id)a5
+- (void)item:(id)item representation:(id)representation beganDataTransferWithProgress:(id)progress
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PBItemCollection *)self dataTransferDelegate];
-  [v11 itemCollection:self item:v10 representation:v9 beganDataTransferWithProgress:v8];
+  progressCopy = progress;
+  representationCopy = representation;
+  itemCopy = item;
+  dataTransferDelegate = [(PBItemCollection *)self dataTransferDelegate];
+  [dataTransferDelegate itemCollection:self item:itemCopy representation:representationCopy beganDataTransferWithProgress:progressCopy];
 }
 
-- (void)item:(id)a3 representationFinishedDataTransfer:(id)a4
+- (void)item:(id)item representationFinishedDataTransfer:(id)transfer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PBItemCollection *)self dataTransferDelegate];
-  [v8 itemCollection:self item:v7 representationFinishedDataTransfer:v6];
+  transferCopy = transfer;
+  itemCopy = item;
+  dataTransferDelegate = [(PBItemCollection *)self dataTransferDelegate];
+  [dataTransferDelegate itemCollection:self item:itemCopy representationFinishedDataTransfer:transferCopy];
 }
 
 - (NSString)description
@@ -2764,46 +2764,46 @@ uint64_t __40__PBItemCollection_dataTransferDelegate__block_invoke(uint64_t a1)
   v3 = [(PBItemCollection *)&v27 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(PBItemCollection *)self name];
-  v6 = [(PBItemCollection *)self isSystemPasteboard];
+  name = [(PBItemCollection *)self name];
+  isSystemPasteboard = [(PBItemCollection *)self isSystemPasteboard];
   v7 = &stru_286FD7D38;
-  if (v6)
+  if (isSystemPasteboard)
   {
     v7 = @" (System)";
   }
 
-  [v4 appendFormat:@"\nName               : %@%@\n", v5, v7];
+  [v4 appendFormat:@"\nName               : %@%@\n", name, v7];
 
-  v8 = [(PBItemCollection *)self persistenceName];
-  [v4 appendFormat:@"Persistence name   : %@\n", v8];
+  persistenceName = [(PBItemCollection *)self persistenceName];
+  [v4 appendFormat:@"Persistence name   : %@\n", persistenceName];
 
-  v9 = [(PBItemCollection *)self UUID];
-  [v4 appendFormat:@"UUID               : %@\n", v9];
+  uUID = [(PBItemCollection *)self UUID];
+  [v4 appendFormat:@"UUID               : %@\n", uUID];
 
-  v10 = [(PBItemCollection *)self creationDate];
-  [v4 appendFormat:@"Creation date      : %@\n", v10];
+  creationDate = [(PBItemCollection *)self creationDate];
+  [v4 appendFormat:@"Creation date      : %@\n", creationDate];
 
-  v11 = [(PBItemCollection *)self originatorBundleID];
-  [v4 appendFormat:@"Originator BundleID: %@\n", v11];
+  originatorBundleID = [(PBItemCollection *)self originatorBundleID];
+  [v4 appendFormat:@"Originator BundleID: %@\n", originatorBundleID];
 
-  v12 = [(PBItemCollection *)self originatorTeamID];
-  [v4 appendFormat:@"Originator TeamID  : %@\n", v12];
+  originatorTeamID = [(PBItemCollection *)self originatorTeamID];
+  [v4 appendFormat:@"Originator TeamID  : %@\n", originatorTeamID];
 
-  v13 = [(PBItemCollection *)self originatorLocalizedName];
-  [v4 appendFormat:@"Originator localized name: %@\n", v13];
+  originatorLocalizedName = [(PBItemCollection *)self originatorLocalizedName];
+  [v4 appendFormat:@"Originator localized name: %@\n", originatorLocalizedName];
 
-  v14 = [(PBItemCollection *)self metadata];
-  [v4 appendFormat:@"Metadata           : %@\n", v14];
+  metadata = [(PBItemCollection *)self metadata];
+  [v4 appendFormat:@"Metadata           : %@\n", metadata];
 
-  v15 = [(PBItemCollection *)self items];
-  [v4 appendFormat:@"Items: %u\n", objc_msgSend(v15, "count")];
+  items = [(PBItemCollection *)self items];
+  [v4 appendFormat:@"Items: %u\n", objc_msgSend(items, "count")];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v16 = [(PBItemCollection *)self items];
-  v17 = [v16 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  items2 = [(PBItemCollection *)self items];
+  v17 = [items2 countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v17)
   {
     v18 = v17;
@@ -2814,13 +2814,13 @@ uint64_t __40__PBItemCollection_dataTransferDelegate__block_invoke(uint64_t a1)
       {
         if (*v24 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(items2);
         }
 
         [v4 appendFormat:@"%@\n", *(*(&v23 + 1) + 8 * i)];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v18 = [items2 countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v18);
@@ -2838,20 +2838,20 @@ uint64_t __40__PBItemCollection_dataTransferDelegate__block_invoke(uint64_t a1)
   return WeakRetained;
 }
 
-- (void)_setMetadataValue:(id)a3 forKey:(id)a4
+- (void)_setMetadataValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   v8 = PBItemQueue();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__PBItemCollection_Pasteboard___setMetadataValue_forKey___block_invoke;
   block[3] = &unk_279A06F10;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = valueCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = valueCopy;
   dispatch_sync(v8, block);
 }
 
@@ -2884,8 +2884,8 @@ void __57__PBItemCollection_Pasteboard___setMetadataValue_forKey___block_invoke(
 
 - (NSString)name
 {
-  v2 = [(PBItemCollection *)self metadata];
-  v3 = [v2 objectForKeyedSubscript:@"name"];
+  metadata = [(PBItemCollection *)self metadata];
+  v3 = [metadata objectForKeyedSubscript:@"name"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2903,51 +2903,51 @@ void __57__PBItemCollection_Pasteboard___setMetadataValue_forKey___block_invoke(
 
 - (BOOL)isSystemPasteboard
 {
-  v2 = [(PBItemCollection *)self name];
-  v3 = [v2 isEqualToString:@"com.apple.UIKit.pboard.general"];
+  name = [(PBItemCollection *)self name];
+  v3 = [name isEqualToString:@"com.apple.UIKit.pboard.general"];
 
   return v3;
 }
 
 - (NSString)persistenceName
 {
-  v3 = [(PBItemCollection *)self name];
-  v4 = [(PBItemCollection *)self originatorBundleID];
-  v5 = [(PBItemCollection *)self originatorTeamID];
-  v6 = PBPasteboardPersistenceName(v3, v4, v5, [(PBItemCollection *)self isDeviceLockedPasteboard]);
+  name = [(PBItemCollection *)self name];
+  originatorBundleID = [(PBItemCollection *)self originatorBundleID];
+  originatorTeamID = [(PBItemCollection *)self originatorTeamID];
+  v6 = PBPasteboardPersistenceName(name, originatorBundleID, originatorTeamID, [(PBItemCollection *)self isDeviceLockedPasteboard]);
 
   return v6;
 }
 
 - (int64_t)changeCount
 {
-  v2 = [(PBItemCollection *)self metadata];
-  v3 = [v2 objectForKeyedSubscript:@"changeCount"];
+  metadata = [(PBItemCollection *)self metadata];
+  v3 = [metadata objectForKeyedSubscript:@"changeCount"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setChangeCount:(int64_t)a3
+- (void)setChangeCount:(int64_t)count
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:count];
   [(PBItemCollection *)self _setMetadataValue:v4 forKey:@"changeCount"];
 }
 
 - (BOOL)isGeneralPasteboard
 {
-  v2 = [(PBItemCollection *)self name];
-  v3 = [v2 isEqualToString:@"com.apple.UIKit.pboard.general"];
+  name = [(PBItemCollection *)self name];
+  v3 = [name isEqualToString:@"com.apple.UIKit.pboard.general"];
 
   return v3;
 }
@@ -2959,28 +2959,28 @@ void __57__PBItemCollection_Pasteboard___setMetadataValue_forKey___block_invoke(
     return 1;
   }
 
-  v4 = [(PBItemCollection *)self metadata];
-  v5 = [v4 objectForKeyedSubscript:@"persistent"];
-  v6 = [v5 BOOLValue];
+  metadata = [(PBItemCollection *)self metadata];
+  v5 = [metadata objectForKeyedSubscript:@"persistent"];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
 - (NSDate)expirationDate
 {
-  v2 = [(PBItemCollection *)self metadata];
-  v3 = [v2 objectForKeyedSubscript:@"expirationDate"];
+  metadata = [(PBItemCollection *)self metadata];
+  v3 = [metadata objectForKeyedSubscript:@"expirationDate"];
 
   return v3;
 }
 
 - (BOOL)isLocalOnly
 {
-  v2 = [(PBItemCollection *)self metadata];
-  v3 = [v2 objectForKeyedSubscript:@"localOnly"];
-  v4 = [v3 BOOLValue];
+  metadata = [(PBItemCollection *)self metadata];
+  v3 = [metadata objectForKeyedSubscript:@"localOnly"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

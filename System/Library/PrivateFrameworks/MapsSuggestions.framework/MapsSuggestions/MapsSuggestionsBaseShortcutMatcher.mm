@@ -1,25 +1,25 @@
 @interface MapsSuggestionsBaseShortcutMatcher
 - (BOOL)_hasShortcuts;
-- (BOOL)hasShortcutOfType:(int64_t)a3;
-- (MapsSuggestionsBaseShortcutMatcher)initWithSync:(id)a3 matchingDistance:(double)a4;
+- (BOOL)hasShortcutOfType:(int64_t)type;
+- (MapsSuggestionsBaseShortcutMatcher)initWithSync:(id)sync matchingDistance:(double)distance;
 - (id)_getShortcuts;
-- (id)shortcutForEntry:(id)a3;
+- (id)shortcutForEntry:(id)entry;
 - (void)loadShortcuts;
 @end
 
 @implementation MapsSuggestionsBaseShortcutMatcher
 
-- (MapsSuggestionsBaseShortcutMatcher)initWithSync:(id)a3 matchingDistance:(double)a4
+- (MapsSuggestionsBaseShortcutMatcher)initWithSync:(id)sync matchingDistance:(double)distance
 {
-  v7 = a3;
+  syncCopy = sync;
   v13.receiver = self;
   v13.super_class = MapsSuggestionsBaseShortcutMatcher;
   v8 = [(MapsSuggestionsBaseShortcutMatcher *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    v8->_matchingDistance = a4;
-    objc_storeStrong(&v8->_mapsSync, a3);
+    v8->_matchingDistance = distance;
+    objc_storeStrong(&v8->_mapsSync, sync);
     v9->_hasLoadedShortcuts = 0;
     [(MapsSuggestionsMapsSync *)v9->_mapsSync addMapsSyncObserver:v9 forContentType:3];
     v10 = dispatch_queue_create("MapsSuggestionsShortcutMatcherQueue", 0);
@@ -32,11 +32,11 @@
 
 - (BOOL)_hasShortcuts
 {
-  v2 = [(MapsSuggestionsBaseShortcutMatcher *)self _getShortcuts];
-  v3 = v2;
-  if (v2)
+  _getShortcuts = [(MapsSuggestionsBaseShortcutMatcher *)self _getShortcuts];
+  v3 = _getShortcuts;
+  if (_getShortcuts)
   {
-    v4 = [v2 count] != 0;
+    v4 = [_getShortcuts count] != 0;
   }
 
   else
@@ -47,14 +47,14 @@
   return v4;
 }
 
-- (id)shortcutForEntry:(id)a3
+- (id)shortcutForEntry:(id)entry
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  entryCopy = entry;
+  if (!entryCopy)
   {
-    v5 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    _getShortcuts = GEOFindOrCreateLog();
+    if (os_log_type_enabled(_getShortcuts, OS_LOG_TYPE_ERROR))
     {
       *buf = 136446978;
       v33 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/MapsSuggestionsShortcutMatcher.m";
@@ -64,13 +64,13 @@
       v37 = "[MapsSuggestionsBaseShortcutMatcher shortcutForEntry:]";
       v38 = 2082;
       v39 = "nil == (entry)";
-      _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires an entry", buf, 0x26u);
+      _os_log_impl(&dword_1C5126000, _getShortcuts, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires an entry", buf, 0x26u);
     }
 
     goto LABEL_14;
   }
 
-  v5 = [(MapsSuggestionsBaseShortcutMatcher *)self _getShortcuts];
+  _getShortcuts = [(MapsSuggestionsBaseShortcutMatcher *)self _getShortcuts];
   if (![(MapsSuggestionsBaseShortcutMatcher *)self _hasShortcuts])
   {
 LABEL_14:
@@ -82,13 +82,13 @@ LABEL_14:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = v5;
-  v6 = [v5 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  _getShortcuts = _getShortcuts;
+  v6 = [_getShortcuts countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v28;
-    obj = v5;
+    obj = _getShortcuts;
     while (2)
     {
       for (i = 0; i != v7; ++i)
@@ -99,13 +99,13 @@ LABEL_14:
         }
 
         v10 = *(*(&v27 + 1) + 8 * i);
-        v11 = [v10 geoMapItem];
-        v12 = MapsSuggestionsLocationForMapItem(v11);
+        geoMapItem = [v10 geoMapItem];
+        v12 = MapsSuggestionsLocationForMapItem(geoMapItem);
         [v12 coordinate];
         v14 = v13;
         v16 = v15;
-        v17 = [v4 geoMapItem];
-        v18 = MapsSuggestionsLocationForMapItem(v17);
+        geoMapItem2 = [entryCopy geoMapItem];
+        v18 = MapsSuggestionsLocationForMapItem(geoMapItem2);
         [v18 coordinate];
         MapsSuggestionsDistanceBetweenCoordinates(v14, v16, v19, v20);
         v22 = v21;
@@ -114,12 +114,12 @@ LABEL_14:
         if (v22 <= matchingDistance)
         {
           v24 = v10;
-          v5 = obj;
+          _getShortcuts = obj;
           goto LABEL_16;
         }
       }
 
-      v5 = obj;
+      _getShortcuts = obj;
       v7 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v7)
       {
@@ -138,17 +138,17 @@ LABEL_17:
   return v24;
 }
 
-- (BOOL)hasShortcutOfType:(int64_t)a3
+- (BOOL)hasShortcutOfType:(int64_t)type
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [(MapsSuggestionsBaseShortcutMatcher *)self _getShortcuts];
+  _getShortcuts = [(MapsSuggestionsBaseShortcutMatcher *)self _getShortcuts];
   if ([(MapsSuggestionsBaseShortcutMatcher *)self _hasShortcuts])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v5;
+    v6 = _getShortcuts;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -163,7 +163,7 @@ LABEL_17:
             objc_enumerationMutation(v6);
           }
 
-          if ([*(*(&v13 + 1) + 8 * i) type] == a3)
+          if ([*(*(&v13 + 1) + 8 * i) type] == type)
           {
             v11 = 1;
             goto LABEL_13;
@@ -201,13 +201,13 @@ LABEL_13:
 
 - (void)loadShortcuts
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v2->_hasLoadedShortcuts = 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_hasLoadedShortcuts = 0;
+  objc_sync_exit(selfCopy);
 
-  objc_initWeak(&location, v2);
-  queue = v2->_queue;
+  objc_initWeak(&location, selfCopy);
+  queue = selfCopy->_queue;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __51__MapsSuggestionsBaseShortcutMatcher_loadShortcuts__block_invoke;

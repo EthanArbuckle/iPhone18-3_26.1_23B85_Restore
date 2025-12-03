@@ -1,17 +1,17 @@
 @interface HMMSiriSELFLogEventObserver
 + (id)logCategory;
-- (HMMSiriSELFLogEventObserver)initWithSiriAnalyticsStream:(id)a3 logEventDispatcher:(id)a4;
-- (void)observeEvent:(id)a3;
+- (HMMSiriSELFLogEventObserver)initWithSiriAnalyticsStream:(id)stream logEventDispatcher:(id)dispatcher;
+- (void)observeEvent:(id)event;
 @end
 
 @implementation HMMSiriSELFLogEventObserver
 
-- (void)observeEvent:(id)a3
+- (void)observeEvent:(id)event
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -24,28 +24,28 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v4 enabledForSiriSELFLogging])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [eventCopy enabledForSiriSELFLogging])
   {
-    v9 = [(HMMSiriSELFLogEventObserver *)v6 siriAnalyticsStream];
-    v10 = [v4 siriInstrumentationMessage];
-    [v9 emitMessage:v10];
+    siriAnalyticsStream = [(HMMSiriSELFLogEventObserver *)selfCopy siriAnalyticsStream];
+    siriInstrumentationMessage = [eventCopy siriInstrumentationMessage];
+    [siriAnalyticsStream emitMessage:siriInstrumentationMessage];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (HMMSiriSELFLogEventObserver)initWithSiriAnalyticsStream:(id)a3 logEventDispatcher:(id)a4
+- (HMMSiriSELFLogEventObserver)initWithSiriAnalyticsStream:(id)stream logEventDispatcher:(id)dispatcher
 {
-  v7 = a3;
-  v8 = a4;
+  streamCopy = stream;
+  dispatcherCopy = dispatcher;
   v12.receiver = self;
   v12.super_class = HMMSiriSELFLogEventObserver;
   v9 = [(HMMSiriSELFLogEventObserver *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_siriAnalyticsStream, a3);
-    [v8 addObserver:v10 forProtocol:&unk_283EFAEE8];
+    objc_storeStrong(&v9->_siriAnalyticsStream, stream);
+    [dispatcherCopy addObserver:v10 forProtocol:&unk_283EFAEE8];
   }
 
   return v10;

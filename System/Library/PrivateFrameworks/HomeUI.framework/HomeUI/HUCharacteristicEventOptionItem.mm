@@ -1,34 +1,34 @@
 @interface HUCharacteristicEventOptionItem
-- (BOOL)isValidThresholdValue:(id)a3;
+- (BOOL)isValidThresholdValue:(id)value;
 - (HMCharacteristic)mainCharacteristic;
 - (HMNumberRange)triggerValueRangeByApplyingThreshold;
 - (HUCharacteristicEventOptionItem)init;
-- (HUCharacteristicEventOptionItem)initWithCharacteristics:(id)a3 thresholdValueRange:(id)a4;
-- (HUCharacteristicEventOptionItem)initWithCharacteristics:(id)a3 triggerValue:(id)a4;
-- (HUCharacteristicEventOptionItem)initWithCharacteristics:(id)a3 triggerValueRange:(id)a4;
+- (HUCharacteristicEventOptionItem)initWithCharacteristics:(id)characteristics thresholdValueRange:(id)range;
+- (HUCharacteristicEventOptionItem)initWithCharacteristics:(id)characteristics triggerValue:(id)value;
+- (HUCharacteristicEventOptionItem)initWithCharacteristics:(id)characteristics triggerValueRange:(id)range;
 - (NSArray)validTriggerValues;
 - (NSArray)visibleTriggerValues;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)localizedDescriptionForThresholdValue:(id)a3;
-- (id)localizedListDescriptionForThresholdValue:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)localizedDescriptionForThresholdValue:(id)value;
+- (id)localizedListDescriptionForThresholdValue:(id)value;
 - (id)representativeTriggerValue;
-- (void)setThresholdValue:(id)a3;
+- (void)setThresholdValue:(id)value;
 @end
 
 @implementation HUCharacteristicEventOptionItem
 
-- (HUCharacteristicEventOptionItem)initWithCharacteristics:(id)a3 triggerValue:(id)a4
+- (HUCharacteristicEventOptionItem)initWithCharacteristics:(id)characteristics triggerValue:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  characteristicsCopy = characteristics;
+  valueCopy = value;
   v14.receiver = self;
   v14.super_class = HUCharacteristicEventOptionItem;
   v9 = [(HUCharacteristicEventOptionItem *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_characteristics, a3);
-    v11 = [v8 copyWithZone:0];
+    objc_storeStrong(&v9->_characteristics, characteristics);
+    v11 = [valueCopy copyWithZone:0];
     triggerValue = v10->_triggerValue;
     v10->_triggerValue = v11;
   }
@@ -36,35 +36,35 @@
   return v10;
 }
 
-- (HUCharacteristicEventOptionItem)initWithCharacteristics:(id)a3 triggerValueRange:(id)a4
+- (HUCharacteristicEventOptionItem)initWithCharacteristics:(id)characteristics triggerValueRange:(id)range
 {
-  v7 = a3;
-  v8 = a4;
+  characteristicsCopy = characteristics;
+  rangeCopy = range;
   v12.receiver = self;
   v12.super_class = HUCharacteristicEventOptionItem;
   v9 = [(HUCharacteristicEventOptionItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_characteristics, a3);
-    objc_storeStrong(&v10->_triggerValueRange, a4);
+    objc_storeStrong(&v9->_characteristics, characteristics);
+    objc_storeStrong(&v10->_triggerValueRange, range);
   }
 
   return v10;
 }
 
-- (HUCharacteristicEventOptionItem)initWithCharacteristics:(id)a3 thresholdValueRange:(id)a4
+- (HUCharacteristicEventOptionItem)initWithCharacteristics:(id)characteristics thresholdValueRange:(id)range
 {
-  v7 = a3;
-  v8 = a4;
+  characteristicsCopy = characteristics;
+  rangeCopy = range;
   v12.receiver = self;
   v12.super_class = HUCharacteristicEventOptionItem;
   v9 = [(HUCharacteristicEventOptionItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_characteristics, a3);
-    objc_storeStrong(&v10->_thresholdValueRange, a4);
+    objc_storeStrong(&v9->_characteristics, characteristics);
+    objc_storeStrong(&v10->_thresholdValueRange, range);
   }
 
   return v10;
@@ -72,39 +72,39 @@
 
 - (HUCharacteristicEventOptionItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HUCharacteristicEventOptionItem.m" lineNumber:56 description:@"Use -initWithCharacteristics:triggerValue:"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUCharacteristicEventOptionItem.m" lineNumber:56 description:@"Use -initWithCharacteristics:triggerValue:"];
 
   return 0;
 }
 
-- (void)setThresholdValue:(id)a3
+- (void)setThresholdValue:(id)value
 {
-  v7 = a3;
-  objc_storeStrong(&self->_thresholdValue, a3);
-  v5 = [(HUCharacteristicEventOptionItem *)self childItem];
+  valueCopy = value;
+  objc_storeStrong(&self->_thresholdValue, value);
+  childItem = [(HUCharacteristicEventOptionItem *)self childItem];
 
-  if (v5)
+  if (childItem)
   {
-    v6 = [(HUCharacteristicEventOptionItem *)self childItem];
-    [v6 setThresholdValue:v7];
+    childItem2 = [(HUCharacteristicEventOptionItem *)self childItem];
+    [childItem2 setThresholdValue:valueCopy];
   }
 }
 
 - (HMCharacteristic)mainCharacteristic
 {
-  v3 = [(HUCharacteristicEventOptionItem *)self characteristics];
-  v4 = [v3 anyObject];
+  characteristics = [(HUCharacteristicEventOptionItem *)self characteristics];
+  anyObject = [characteristics anyObject];
 
-  v5 = [(HMCharacteristic *)v4 characteristicType];
-  v6 = [(HUCharacteristicEventOptionItem *)self characteristics];
+  characteristicType = [(HMCharacteristic *)anyObject characteristicType];
+  characteristics2 = [(HUCharacteristicEventOptionItem *)self characteristics];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __53__HUCharacteristicEventOptionItem_mainCharacteristic__block_invoke;
   v12[3] = &unk_277DB9538;
-  v13 = v5;
-  v7 = v5;
-  v8 = [v6 na_any:v12];
+  v13 = characteristicType;
+  v7 = characteristicType;
+  v8 = [characteristics2 na_any:v12];
 
   if (v8)
   {
@@ -113,7 +113,7 @@
 
   else
   {
-    v9 = v4;
+    v9 = anyObject;
   }
 
   v10 = v9;
@@ -131,29 +131,29 @@ uint64_t __53__HUCharacteristicEventOptionItem_mainCharacteristic__block_invoke(
 
 - (NSArray)validTriggerValues
 {
-  v3 = [(HUCharacteristicEventOptionItem *)self mainCharacteristic];
-  if (v3)
+  mainCharacteristic = [(HUCharacteristicEventOptionItem *)self mainCharacteristic];
+  if (mainCharacteristic)
   {
-    v4 = [(HUCharacteristicEventOptionItem *)self mainCharacteristic];
-    v5 = [v4 hf_triggerValues];
+    mainCharacteristic2 = [(HUCharacteristicEventOptionItem *)self mainCharacteristic];
+    hf_triggerValues = [mainCharacteristic2 hf_triggerValues];
   }
 
   else
   {
-    v5 = 0;
+    hf_triggerValues = 0;
   }
 
-  return v5;
+  return hf_triggerValues;
 }
 
 - (NSArray)visibleTriggerValues
 {
-  v3 = [(HUCharacteristicEventOptionItem *)self mainCharacteristic];
-  v4 = [v3 hf_visibleTriggerValues];
+  mainCharacteristic = [(HUCharacteristicEventOptionItem *)self mainCharacteristic];
+  hf_visibleTriggerValues = [mainCharacteristic hf_visibleTriggerValues];
 
   v5 = MEMORY[0x277CD19F8];
-  v6 = [(HUCharacteristicEventOptionItem *)self characteristics];
-  v7 = [v5 hf_triggerValueNaturalLanguageDescriptionFormatterWithCharacteristics:v6];
+  characteristics = [(HUCharacteristicEventOptionItem *)self characteristics];
+  v7 = [v5 hf_triggerValueNaturalLanguageDescriptionFormatterWithCharacteristics:characteristics];
 
   if (v7)
   {
@@ -165,12 +165,12 @@ uint64_t __53__HUCharacteristicEventOptionItem_mainCharacteristic__block_invoke(
     v13 = v7;
     v14 = v8;
     v9 = v8;
-    v10 = [v4 na_filter:v12];
+    v10 = [hf_visibleTriggerValues na_filter:v12];
 
-    v4 = v10;
+    hf_visibleTriggerValues = v10;
   }
 
-  return v4;
+  return hf_visibleTriggerValues;
 }
 
 uint64_t __55__HUCharacteristicEventOptionItem_visibleTriggerValues__block_invoke(uint64_t a1, uint64_t a2)
@@ -187,186 +187,186 @@ uint64_t __55__HUCharacteristicEventOptionItem_visibleTriggerValues__block_invok
 
 - (HMNumberRange)triggerValueRangeByApplyingThreshold
 {
-  v3 = [(HUCharacteristicEventOptionItem *)self mainCharacteristic];
-  if (!v3)
+  mainCharacteristic = [(HUCharacteristicEventOptionItem *)self mainCharacteristic];
+  if (!mainCharacteristic)
   {
     goto LABEL_8;
   }
 
-  v4 = v3;
-  v5 = [(HUCharacteristicEventOptionItem *)self thresholdValue];
-  if (!v5)
+  v4 = mainCharacteristic;
+  thresholdValue = [(HUCharacteristicEventOptionItem *)self thresholdValue];
+  if (!thresholdValue)
   {
 
     goto LABEL_8;
   }
 
-  v6 = v5;
-  v7 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
-  v8 = [v7 minValue];
-  v9 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
-  v10 = [v9 maxValue];
+  v6 = thresholdValue;
+  thresholdValueRange = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
+  minValue = [thresholdValueRange minValue];
+  thresholdValueRange2 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
+  maxValue = [thresholdValueRange2 maxValue];
 
-  if (v8 == v10)
+  if (minValue == maxValue)
   {
     goto LABEL_8;
   }
 
-  v11 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
-  v12 = [v11 maxValue];
+  thresholdValueRange3 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
+  maxValue2 = [thresholdValueRange3 maxValue];
 
-  if (!v12)
+  if (!maxValue2)
   {
-    v26 = [(HUCharacteristicEventOptionItem *)self mainCharacteristic];
-    v27 = [(HUCharacteristicEventOptionItem *)self thresholdValue];
-    v17 = [v26 hf_valueBeforeTriggerValue:v27];
+    mainCharacteristic2 = [(HUCharacteristicEventOptionItem *)self mainCharacteristic];
+    thresholdValue2 = [(HUCharacteristicEventOptionItem *)self thresholdValue];
+    v17 = [mainCharacteristic2 hf_valueBeforeTriggerValue:thresholdValue2];
 
     v28 = MEMORY[0x277CD1CB0];
-    v19 = [(HUCharacteristicEventOptionItem *)self mainCharacteristic];
-    v20 = [v19 hf_minimumTriggerValue];
+    mainCharacteristic3 = [(HUCharacteristicEventOptionItem *)self mainCharacteristic];
+    hf_minimumTriggerValue = [mainCharacteristic3 hf_minimumTriggerValue];
     v21 = v28;
-    v22 = v20;
+    v22 = hf_minimumTriggerValue;
     v23 = v17;
     goto LABEL_13;
   }
 
-  v13 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
-  v14 = [v13 minValue];
+  thresholdValueRange4 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
+  minValue2 = [thresholdValueRange4 minValue];
 
-  if (v14)
+  if (minValue2)
   {
 LABEL_8:
-    v24 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
+    thresholdValueRange5 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
     goto LABEL_9;
   }
 
-  v15 = [(HUCharacteristicEventOptionItem *)self mainCharacteristic];
-  v16 = [(HUCharacteristicEventOptionItem *)self thresholdValue];
-  v17 = [v15 hf_valueAfterTriggerValue:v16];
+  mainCharacteristic4 = [(HUCharacteristicEventOptionItem *)self mainCharacteristic];
+  thresholdValue3 = [(HUCharacteristicEventOptionItem *)self thresholdValue];
+  v17 = [mainCharacteristic4 hf_valueAfterTriggerValue:thresholdValue3];
 
   v18 = MEMORY[0x277CD1CB0];
-  v19 = [(HUCharacteristicEventOptionItem *)self mainCharacteristic];
-  v20 = [v19 hf_maximumTriggerValue];
+  mainCharacteristic3 = [(HUCharacteristicEventOptionItem *)self mainCharacteristic];
+  hf_minimumTriggerValue = [mainCharacteristic3 hf_maximumTriggerValue];
   v21 = v18;
   v22 = v17;
-  v23 = v20;
+  v23 = hf_minimumTriggerValue;
 LABEL_13:
-  v24 = [v21 numberRangeWithMinValue:v22 maxValue:v23];
+  thresholdValueRange5 = [v21 numberRangeWithMinValue:v22 maxValue:v23];
 
 LABEL_9:
 
-  return v24;
+  return thresholdValueRange5;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = [(HUCharacteristicEventOptionItem *)self characteristics];
-  v5 = [v4 count];
+  characteristics = [(HUCharacteristicEventOptionItem *)self characteristics];
+  v5 = [characteristics count];
 
   if (!v5)
   {
     NSLog(&cfstr_MustHaveCharac.isa);
   }
 
-  v6 = [(HUCharacteristicEventOptionItem *)self characteristics];
+  characteristics2 = [(HUCharacteristicEventOptionItem *)self characteristics];
 
-  if (v6)
+  if (characteristics2)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
-    v8 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    thresholdValueRange = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
 
-    if (!v8)
+    if (!thresholdValueRange)
     {
       v17 = MEMORY[0x277CD19F8];
-      v18 = [(HUCharacteristicEventOptionItem *)self characteristics];
-      v19 = [(HUCharacteristicEventOptionItem *)self representativeTriggerValue];
-      v20 = [v17 hf_triggerValueNaturalLanguageDescriptionWithCharacteristics:v18 triggerValue:v19];
+      characteristics3 = [(HUCharacteristicEventOptionItem *)self characteristics];
+      representativeTriggerValue = [(HUCharacteristicEventOptionItem *)self representativeTriggerValue];
+      v20 = [v17 hf_triggerValueNaturalLanguageDescriptionWithCharacteristics:characteristics3 triggerValue:representativeTriggerValue];
       v21 = 0;
 LABEL_21:
 
       if (v20)
       {
-        [v7 setObject:v20 forKeyedSubscript:*MEMORY[0x277D13F60]];
+        [dictionary setObject:v20 forKeyedSubscript:*MEMORY[0x277D13F60]];
         v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"AccessoryDetails.%@", v20];
-        [v7 setObject:v37 forKeyedSubscript:*MEMORY[0x277D13DC8]];
+        [dictionary setObject:v37 forKeyedSubscript:*MEMORY[0x277D13DC8]];
       }
 
       else
       {
-        [v7 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D13FB8]];
+        [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D13FB8]];
       }
 
-      v38 = [(HUCharacteristicEventOptionItem *)self childItem];
-      if (v38)
+      childItem = [(HUCharacteristicEventOptionItem *)self childItem];
+      if (childItem)
       {
         v39 = MEMORY[0x277CBEB98];
-        v40 = [(HUCharacteristicEventOptionItem *)self childItem];
-        v41 = [v39 setWithObject:v40];
-        [v7 setObject:v41 forKeyedSubscript:*MEMORY[0x277D13D80]];
+        childItem2 = [(HUCharacteristicEventOptionItem *)self childItem];
+        v41 = [v39 setWithObject:childItem2];
+        [dictionary setObject:v41 forKeyedSubscript:*MEMORY[0x277D13D80]];
       }
 
       else
       {
-        [v7 setObject:0 forKeyedSubscript:*MEMORY[0x277D13D80]];
+        [dictionary setObject:0 forKeyedSubscript:*MEMORY[0x277D13D80]];
       }
 
-      v42 = [(HUCharacteristicEventOptionItem *)self visibleTriggerValues];
-      [v7 setObject:v42 forKeyedSubscript:*MEMORY[0x277D14140]];
+      visibleTriggerValues = [(HUCharacteristicEventOptionItem *)self visibleTriggerValues];
+      [dictionary setObject:visibleTriggerValues forKeyedSubscript:*MEMORY[0x277D14140]];
 
-      [v7 na_safeSetObject:v21 forKey:*MEMORY[0x277D13E30]];
+      [dictionary na_safeSetObject:v21 forKey:*MEMORY[0x277D13E30]];
       v43 = MEMORY[0x277D2C900];
-      v44 = [MEMORY[0x277D14780] outcomeWithResults:v7];
+      v44 = [MEMORY[0x277D14780] outcomeWithResults:dictionary];
       v16 = [v43 futureWithResult:v44];
 
       goto LABEL_28;
     }
 
-    v9 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
-    v10 = [v9 minValue];
+    thresholdValueRange2 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
+    minValue = [thresholdValueRange2 minValue];
 
-    if (v10)
+    if (minValue)
     {
       v11 = MEMORY[0x277CD1CB0];
-      v12 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
-      v13 = [v12 minValue];
-      v14 = [v11 numberRangeWithMinValue:v13];
+      thresholdValueRange3 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
+      minValue2 = [thresholdValueRange3 minValue];
+      v14 = [v11 numberRangeWithMinValue:minValue2];
     }
 
     else
     {
-      v22 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
-      v23 = [v22 maxValue];
+      thresholdValueRange4 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
+      maxValue = [thresholdValueRange4 maxValue];
 
-      if (!v23)
+      if (!maxValue)
       {
-        v18 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
+        characteristics3 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
         goto LABEL_12;
       }
 
       v24 = MEMORY[0x277CD1CB0];
-      v12 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
-      v13 = [v12 maxValue];
-      v14 = [v24 numberRangeWithMaxValue:v13];
+      thresholdValueRange3 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
+      minValue2 = [thresholdValueRange3 maxValue];
+      v14 = [v24 numberRangeWithMaxValue:minValue2];
     }
 
-    v18 = v14;
+    characteristics3 = v14;
 
 LABEL_12:
     v25 = MEMORY[0x277CD19F8];
-    v26 = [(HUCharacteristicEventOptionItem *)self characteristics];
-    v20 = [v25 hf_triggerValueNaturalLanguageDescriptionWithCharacteristics:v26 triggerValueRange:v18 thresholdValue:0];
+    characteristics4 = [(HUCharacteristicEventOptionItem *)self characteristics];
+    v20 = [v25 hf_triggerValueNaturalLanguageDescriptionWithCharacteristics:characteristics4 triggerValueRange:characteristics3 thresholdValue:0];
 
     v27 = MEMORY[0x277CD19F8];
-    v28 = [(HUCharacteristicEventOptionItem *)self characteristics];
-    v29 = [v27 hf_triggerValueNaturalLanguageDescriptionFormatterWithCharacteristics:v28];
+    characteristics5 = [(HUCharacteristicEventOptionItem *)self characteristics];
+    v29 = [v27 hf_triggerValueNaturalLanguageDescriptionFormatterWithCharacteristics:characteristics5];
 
-    v30 = [(HUCharacteristicEventOptionItem *)self thresholdValue];
-    v21 = [v29 stringForObjectValue:v30];
+    thresholdValue = [(HUCharacteristicEventOptionItem *)self thresholdValue];
+    v21 = [v29 stringForObjectValue:thresholdValue];
 
-    v19 = v29;
-    if ([v19 conformsToProtocol:&unk_2825BD8A0])
+    representativeTriggerValue = v29;
+    if ([representativeTriggerValue conformsToProtocol:&unk_2825BD8A0])
     {
-      v31 = v19;
+      v31 = representativeTriggerValue;
     }
 
     else
@@ -378,19 +378,19 @@ LABEL_12:
 
     if (v32 && ([v32 unitDescription], v33 = objc_claimAutoreleasedReturnValue(), v33, v33))
     {
-      v34 = [v32 unitDescription];
-      [v7 setObject:v34 forKeyedSubscript:*MEMORY[0x277D13F78]];
+      unitDescription = [v32 unitDescription];
+      [dictionary setObject:unitDescription forKeyedSubscript:*MEMORY[0x277D13F78]];
     }
 
     else
     {
-      v35 = [(HUCharacteristicEventOptionItem *)self mainCharacteristic];
-      v34 = [v35 characteristicType];
+      mainCharacteristic = [(HUCharacteristicEventOptionItem *)self mainCharacteristic];
+      unitDescription = [mainCharacteristic characteristicType];
 
-      if ([v34 isEqualToString:*MEMORY[0x277CCF830]])
+      if ([unitDescription isEqualToString:*MEMORY[0x277CCF830]])
       {
         v36 = HFLocalizedString();
-        [v7 setObject:v36 forKeyedSubscript:*MEMORY[0x277D13F78]];
+        [dictionary setObject:v36 forKeyedSubscript:*MEMORY[0x277D13F78]];
       }
     }
 
@@ -398,30 +398,30 @@ LABEL_12:
   }
 
   v15 = MEMORY[0x277D2C900];
-  v7 = [MEMORY[0x277CCA9B8] hf_errorWithCode:30];
-  v16 = [v15 futureWithError:v7];
+  dictionary = [MEMORY[0x277CCA9B8] hf_errorWithCode:30];
+  v16 = [v15 futureWithError:dictionary];
 LABEL_28:
 
   return v16;
 }
 
-- (BOOL)isValidThresholdValue:(id)a3
+- (BOOL)isValidThresholdValue:(id)value
 {
-  v4 = a3;
-  v5 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
-  v6 = [v5 minValue];
+  valueCopy = value;
+  thresholdValueRange = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
+  minValue = [thresholdValueRange minValue];
 
-  v7 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
-  v8 = [v7 maxValue];
+  thresholdValueRange2 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
+  maxValue = [thresholdValueRange2 maxValue];
 
-  if (v6 && [v4 compare:v6] == -1)
+  if (minValue && [valueCopy compare:minValue] == -1)
   {
     v9 = 0;
   }
 
-  else if (v8)
+  else if (maxValue)
   {
-    v9 = [v4 compare:v8] != 1;
+    v9 = [valueCopy compare:maxValue] != 1;
   }
 
   else
@@ -432,21 +432,21 @@ LABEL_28:
   return v9;
 }
 
-- (id)localizedDescriptionForThresholdValue:(id)a3
+- (id)localizedDescriptionForThresholdValue:(id)value
 {
   v4 = MEMORY[0x277CD19F8];
-  v5 = a3;
-  v6 = [(HUCharacteristicEventOptionItem *)self characteristics];
-  v7 = [v4 hf_triggerValueNaturalLanguageDescriptionWithCharacteristics:v6 triggerValue:v5];
+  valueCopy = value;
+  characteristics = [(HUCharacteristicEventOptionItem *)self characteristics];
+  v7 = [v4 hf_triggerValueNaturalLanguageDescriptionWithCharacteristics:characteristics triggerValue:valueCopy];
 
   return v7;
 }
 
-- (id)localizedListDescriptionForThresholdValue:(id)a3
+- (id)localizedListDescriptionForThresholdValue:(id)value
 {
-  v4 = a3;
-  v5 = [(HUCharacteristicEventOptionItem *)self latestResults];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D14140]];
+  valueCopy = value;
+  latestResults = [(HUCharacteristicEventOptionItem *)self latestResults];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14140]];
   v7 = objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -461,26 +461,26 @@ LABEL_28:
   v9 = v8;
 
   v10 = MEMORY[0x277CD19F8];
-  v11 = [(HUCharacteristicEventOptionItem *)self characteristics];
+  characteristics = [(HUCharacteristicEventOptionItem *)self characteristics];
   if (v9)
   {
-    [v10 hf_triggerValueNaturalLanguageDescriptionWithCharacteristics:v11 triggerValue:v4 visibleTriggerValues:v9];
+    [v10 hf_triggerValueNaturalLanguageDescriptionWithCharacteristics:characteristics triggerValue:valueCopy visibleTriggerValues:v9];
   }
 
   else
   {
-    [v10 hf_triggerValueNaturalLanguageDescriptionWithCharacteristics:v11 triggerValue:v4];
+    [v10 hf_triggerValueNaturalLanguageDescriptionWithCharacteristics:characteristics triggerValue:valueCopy];
   }
   v12 = ;
 
-  v13 = [(HUCharacteristicEventOptionItem *)self latestResults];
-  v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277D13F78]];
+  latestResults2 = [(HUCharacteristicEventOptionItem *)self latestResults];
+  v14 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13F78]];
 
   if (v14)
   {
     v15 = MEMORY[0x277CD19F8];
-    v16 = [(HUCharacteristicEventOptionItem *)self characteristics];
-    v17 = [v15 hf_triggerValueNaturalLanguageDescriptionFormatterWithCharacteristics:v16];
+    characteristics2 = [(HUCharacteristicEventOptionItem *)self characteristics];
+    v17 = [v15 hf_triggerValueNaturalLanguageDescriptionFormatterWithCharacteristics:characteristics2];
 
     v18 = v17;
     if ([v18 conformsToProtocol:&unk_2825BD8A0])
@@ -497,7 +497,7 @@ LABEL_28:
 
     if (v20)
     {
-      v21 = [v20 stringForObjectValue:v4 withUnit:0];
+      v21 = [v20 stringForObjectValue:valueCopy withUnit:0];
 
       v12 = v21;
     }
@@ -508,44 +508,44 @@ LABEL_28:
 
 - (id)representativeTriggerValue
 {
-  v3 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
+  thresholdValueRange = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
 
-  if (v3)
+  if (thresholdValueRange)
   {
-    v4 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
-    v5 = [v4 maxValue];
-    v6 = v5;
-    if (v5)
+    thresholdValueRange2 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
+    maxValue = [thresholdValueRange2 maxValue];
+    v6 = maxValue;
+    if (maxValue)
     {
-      v7 = v5;
+      minValue = maxValue;
     }
 
     else
     {
-      v9 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
-      v7 = [v9 minValue];
+      thresholdValueRange3 = [(HUCharacteristicEventOptionItem *)self thresholdValueRange];
+      minValue = [thresholdValueRange3 minValue];
     }
   }
 
   else
   {
-    v8 = [(HUCharacteristicEventOptionItem *)self triggerValue];
-    if (v8)
+    triggerValue = [(HUCharacteristicEventOptionItem *)self triggerValue];
+    if (triggerValue)
     {
-      v4 = v8;
-      v7 = v4;
+      thresholdValueRange2 = triggerValue;
+      minValue = thresholdValueRange2;
     }
 
     else
     {
-      v11 = [(HUCharacteristicEventOptionItem *)self triggerValueRange];
-      v7 = [v11 hf_representativeValue];
+      triggerValueRange = [(HUCharacteristicEventOptionItem *)self triggerValueRange];
+      minValue = [triggerValueRange hf_representativeValue];
 
-      v4 = 0;
+      thresholdValueRange2 = 0;
     }
   }
 
-  return v7;
+  return minValue;
 }
 
 @end

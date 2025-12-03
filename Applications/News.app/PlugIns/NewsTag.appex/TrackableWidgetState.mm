@@ -2,12 +2,12 @@
 - (NSDate)fetchDate;
 - (NSString)contentID;
 - (NSString)entryID;
-- (id)extentsOfSections:(id)a3;
-- (id)sectionForItem:(id)a3;
+- (id)extentsOfSections:(id)sections;
+- (id)sectionForItem:(id)item;
 - (id)visibleItems;
-- (id)visibleItemsOfType:(unint64_t)a3;
+- (id)visibleItemsOfType:(unint64_t)type;
 - (id)visibleSections;
-- (unint64_t)absoluteOrderOfSection:(id)a3;
+- (unint64_t)absoluteOrderOfSection:(id)section;
 - (unint64_t)activeDisplayMode;
 @end
 
@@ -37,11 +37,11 @@
   return v2;
 }
 
-- (unint64_t)absoluteOrderOfSection:(id)a3
+- (unint64_t)absoluteOrderOfSection:(id)section
 {
-  v3 = a3;
+  sectionCopy = section;
 
-  v4 = sub_10006692C(v3);
+  v4 = sub_10006692C(sectionCopy);
 
   return v4;
 }
@@ -57,11 +57,11 @@
   return v2.super.isa;
 }
 
-- (id)sectionForItem:(id)a3
+- (id)sectionForItem:(id)item
 {
   swift_unknownObjectRetain();
 
-  v4 = sub_100066E4C(a3);
+  v4 = sub_100066E4C(item);
   swift_unknownObjectRelease();
 
   return v4;
@@ -78,10 +78,10 @@
   return v2.super.isa;
 }
 
-- (id)visibleItemsOfType:(unint64_t)a3
+- (id)visibleItemsOfType:(unint64_t)type
 {
 
-  sub_100067410(a3);
+  sub_100067410(type);
 
   sub_100017A54(&unk_1000E6020);
   v4.super.isa = sub_1000A2F00().super.isa;
@@ -89,7 +89,7 @@
   return v4.super.isa;
 }
 
-- (id)extentsOfSections:(id)a3
+- (id)extentsOfSections:(id)sections
 {
   sub_100028E34(0, &qword_1000E5DF0);
   sub_1000A2F10();

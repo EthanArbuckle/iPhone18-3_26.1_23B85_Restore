@@ -1,18 +1,18 @@
 @interface PersonalizedCompoundItemGroup
-- (PersonalizedCompoundItemGroup)initWithItems:(id)a3;
+- (PersonalizedCompoundItemGroup)initWithItems:(id)items;
 @end
 
 @implementation PersonalizedCompoundItemGroup
 
-- (PersonalizedCompoundItemGroup)initWithItems:(id)a3
+- (PersonalizedCompoundItemGroup)initWithItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v9.receiver = self;
   v9.super_class = PersonalizedCompoundItemGroup;
   v5 = [(PersonalizedCompoundItemGroup *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [itemsCopy copy];
     items = v5->_items;
     v5->_items = v6;
   }

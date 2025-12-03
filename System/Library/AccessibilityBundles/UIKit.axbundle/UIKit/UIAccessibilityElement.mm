@@ -1,5 +1,5 @@
 @interface UIAccessibilityElement
-- (BOOL)elementMatchesSubview:(void *)a1;
+- (BOOL)elementMatchesSubview:(void *)subview;
 - (BOOL)representsSubview;
 @end
 
@@ -7,10 +7,10 @@
 
 - (BOOL)representsSubview
 {
-  v4 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    location = [v4 _accessibilityValueForKey:@"TableViewStorage"];
+    location = [selfCopy _accessibilityValueForKey:@"TableViewStorage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,14 +35,14 @@
   return v5;
 }
 
-- (BOOL)elementMatchesSubview:(void *)a1
+- (BOOL)elementMatchesSubview:(void *)subview
 {
-  v11 = a1;
+  subviewCopy = subview;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v11)
+  if (subviewCopy)
   {
-    v8 = [v11 _accessibilityValueForKey:@"TableViewStorage"];
+    v8 = [subviewCopy _accessibilityValueForKey:@"TableViewStorage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

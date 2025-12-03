@@ -9,7 +9,7 @@
   v10 = *MEMORY[0x277D85DE8];
   *md = 0u;
   v9 = 0u;
-  v1 = [a1 dataUsingEncoding:4];
+  v1 = [self dataUsingEncoding:4];
   if (!v1)
   {
     [NSString(C2MetricOptionsPrivateNSStringExtension) c2UniformlyDistributedIdentifier];

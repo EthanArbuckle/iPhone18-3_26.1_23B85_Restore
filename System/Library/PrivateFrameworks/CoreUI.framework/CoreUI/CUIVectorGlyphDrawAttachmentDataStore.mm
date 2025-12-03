@@ -1,16 +1,16 @@
 @interface CUIVectorGlyphDrawAttachmentDataStore
 + (unsigned)_customDataAtom;
-- (CUIVectorGlyphDrawAttachmentData)dataAtIndex:(SEL)a3;
+- (CUIVectorGlyphDrawAttachmentData)dataAtIndex:(SEL)index;
 - (CUIVectorGlyphDrawAttachmentDataStore)init;
-- (CUIVectorGlyphDrawAttachmentDataStore)initWithSVGNode:(CGSVGNode *)a3;
-- (CUIVectorGlyphDrawAttachmentDataStore)initWithSVGString:(id)a3;
-- (id)copyApplyingScaleFactor:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CUIVectorGlyphDrawAttachmentDataStore)initWithSVGNode:(CGSVGNode *)node;
+- (CUIVectorGlyphDrawAttachmentDataStore)initWithSVGString:(id)string;
+- (id)copyApplyingScaleFactor:(double)factor;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createSVGString;
-- (id)initAdoptingData:(id)a3 anchors:(id)a4;
-- (void)computeNumEntries:(unint64_t *)a3 withScanner:(id)a4 fieldDelimiter:(id)a5;
+- (id)initAdoptingData:(id)data anchors:(id)anchors;
+- (void)computeNumEntries:(unint64_t *)entries withScanner:(id)scanner fieldDelimiter:(id)delimiter;
 - (void)dealloc;
-- (void)encodeToSVGNode:(CGSVGNode *)a3;
+- (void)encodeToSVGNode:(CGSVGNode *)node;
 @end
 
 @implementation CUIVectorGlyphDrawAttachmentDataStore
@@ -24,34 +24,34 @@
   return [(CUIVectorGlyphDrawAttachmentDataStore *)self initAdoptingData:v4 anchors:v5];
 }
 
-- (void)computeNumEntries:(unint64_t *)a3 withScanner:(id)a4 fieldDelimiter:(id)a5
+- (void)computeNumEntries:(unint64_t *)entries withScanner:(id)scanner fieldDelimiter:(id)delimiter
 {
-  *a3 = 0;
+  *entries = 0;
   v9 = 0;
-  if ([a4 scanUnsignedLongLong:&v9] && !v9)
+  if ([scanner scanUnsignedLongLong:&v9] && !v9)
   {
-    if (([a4 isAtEnd] & 1) == 0)
+    if (([scanner isAtEnd] & 1) == 0)
     {
-      [a4 setScanLocation:{objc_msgSend(a4, "scanLocation") + 1}];
+      [scanner setScanLocation:{objc_msgSend(scanner, "scanLocation") + 1}];
     }
 
-    if ([a4 scanUpToCharactersFromSet:a5 intoString:0])
+    if ([scanner scanUpToCharactersFromSet:delimiter intoString:0])
     {
       v8 = 0;
       do
       {
-        if (([a4 isAtEnd] & 1) == 0)
+        if (([scanner isAtEnd] & 1) == 0)
         {
-          [a4 setScanLocation:{objc_msgSend(a4, "scanLocation") + 1}];
+          [scanner setScanLocation:{objc_msgSend(scanner, "scanLocation") + 1}];
         }
 
         ++v8;
       }
 
-      while (([a4 scanUpToCharactersFromSet:a5 intoString:0] & 1) != 0);
+      while (([scanner scanUpToCharactersFromSet:delimiter intoString:0] & 1) != 0);
       if (v8 + 1 >= 5 && (v8 & 3) == 0)
       {
-        *a3 = v8 >> 2;
+        *entries = v8 >> 2;
       }
     }
   }
@@ -74,13 +74,13 @@ uint64_t __56__CUIVectorGlyphDrawAttachmentDataStore__customDataAtom__block_invo
   return result;
 }
 
-- (CUIVectorGlyphDrawAttachmentDataStore)initWithSVGNode:(CGSVGNode *)a3
+- (CUIVectorGlyphDrawAttachmentDataStore)initWithSVGNode:(CGSVGNode *)node
 {
   ChildCount = CGSVGNodeGetChildCount();
   if (ChildCount)
   {
     v5 = ChildCount;
-    v6 = [[NSMutableData alloc] initWithLength:8 * ChildCount];
+    childCount = [[NSMutableData alloc] initWithLength:8 * ChildCount];
     v7 = [CUIVectorGlyphManagedPointArray createWithPointCount:v5];
     v8 = 0;
     v9 = 8;
@@ -95,7 +95,7 @@ uint64_t __56__CUIVectorGlyphDrawAttachmentDataStore__customDataAtom__block_invo
     }
 
     while (v5 != v8);
-    return [(CUIVectorGlyphDrawAttachmentDataStore *)self initAdoptingData:v6 anchors:v7];
+    return [(CUIVectorGlyphDrawAttachmentDataStore *)self initAdoptingData:childCount anchors:v7];
   }
 
   else if (CGSVGNodeGetAttributeMap() && (+[CUIVectorGlyphDrawAttachmentDataStore _customDataAtom], CGSVGAttributeMapGetAttribute()))
@@ -113,16 +113,16 @@ uint64_t __56__CUIVectorGlyphDrawAttachmentDataStore__customDataAtom__block_invo
   }
 }
 
-- (CUIVectorGlyphDrawAttachmentDataStore)initWithSVGString:(id)a3
+- (CUIVectorGlyphDrawAttachmentDataStore)initWithSVGString:(id)string
 {
   if (initWithSVGString__onceToken != -1)
   {
     [CUIVectorGlyphDrawAttachmentDataStore initWithSVGString:];
   }
 
-  if ([a3 length])
+  if ([string length])
   {
-    v5 = [[NSScanner alloc] initWithString:a3];
+    v5 = [[NSScanner alloc] initWithString:string];
     [v5 setCharactersToBeSkipped:0];
     v20 = 0;
     [(CUIVectorGlyphDrawAttachmentDataStore *)self computeNumEntries:&v20 withScanner:v5 fieldDelimiter:initWithSVGString__dataFieldDelimiter];
@@ -249,12 +249,12 @@ NSCharacterSet *__59__CUIVectorGlyphDrawAttachmentDataStore_initWithSVGString___
   return v3;
 }
 
-- (void)encodeToSVGNode:(CGSVGNode *)a3
+- (void)encodeToSVGNode:(CGSVGNode *)node
 {
-  v3 = [(CUIVectorGlyphDrawAttachmentDataStore *)self createSVGString];
-  if (v3)
+  createSVGString = [(CUIVectorGlyphDrawAttachmentDataStore *)self createSVGString];
+  if (createSVGString)
   {
-    v4 = v3;
+    v4 = createSVGString;
     +[CUIVectorGlyphDrawAttachmentDataStore _customDataAtom];
     CGSVGAttributeCreateWithString();
     CGSVGNodeSetAttribute();
@@ -262,15 +262,15 @@ NSCharacterSet *__59__CUIVectorGlyphDrawAttachmentDataStore_initWithSVGString___
   }
 }
 
-- (id)initAdoptingData:(id)a3 anchors:(id)a4
+- (id)initAdoptingData:(id)data anchors:(id)anchors
 {
   v7.receiver = self;
   v7.super_class = CUIVectorGlyphDrawAttachmentDataStore;
   result = [(CUIVectorGlyphDrawAttachmentDataStore *)&v7 init];
   if (result)
   {
-    *(result + 1) = a3;
-    *(result + 2) = a4;
+    *(result + 1) = data;
+    *(result + 2) = anchors;
   }
 
   return result;
@@ -283,7 +283,7 @@ NSCharacterSet *__59__CUIVectorGlyphDrawAttachmentDataStore_initWithSVGString___
   [(CUIVectorGlyphDrawAttachmentDataStore *)&v3 dealloc];
 }
 
-- (CUIVectorGlyphDrawAttachmentData)dataAtIndex:(SEL)a3
+- (CUIVectorGlyphDrawAttachmentData)dataAtIndex:(SEL)index
 {
   v11 = 0;
   [(NSData *)self->_data getBytes:&v11 + 4 range:8 * a4, 4];
@@ -299,18 +299,18 @@ NSCharacterSet *__59__CUIVectorGlyphDrawAttachmentDataStore_initWithSVGString___
   return result;
 }
 
-- (id)copyApplyingScaleFactor:(double)a3
+- (id)copyApplyingScaleFactor:(double)factor
 {
-  __B = a3;
+  __B = factor;
   v4 = [(CUIVectorGlyphManagedPointArray *)self->_anchors copy];
-  v5 = [v4 rawArray];
-  v6 = [v4 rawArray];
+  rawArray = [v4 rawArray];
+  rawArray2 = [v4 rawArray];
   [v4 rawArray];
-  vDSP_vsmulD(v5, 1, &__B, v6, 1, 2 * v7);
+  vDSP_vsmulD(rawArray, 1, &__B, rawArray2, 1, 2 * v7);
   return [[CUIVectorGlyphDrawAttachmentDataStore alloc] initAdoptingData:self->_data anchors:v4];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CUIVectorGlyphDrawAttachmentDataStore alloc];
   v5 = self->_data;

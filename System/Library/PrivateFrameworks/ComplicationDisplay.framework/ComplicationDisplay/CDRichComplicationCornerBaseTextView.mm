@@ -1,24 +1,24 @@
 @interface CDRichComplicationCornerBaseTextView
-- (CDRichComplicationCornerBaseTextView)initWithFontFallback:(int64_t)a3;
-- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)a3;
+- (CDRichComplicationCornerBaseTextView)initWithFontFallback:(int64_t)fallback;
+- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)configuration;
 - (void)layoutSubviews;
-- (void)setInnerLabelProviders:(id)a3;
+- (void)setInnerLabelProviders:(id)providers;
 @end
 
 @implementation CDRichComplicationCornerBaseTextView
 
-- (CDRichComplicationCornerBaseTextView)initWithFontFallback:(int64_t)a3
+- (CDRichComplicationCornerBaseTextView)initWithFontFallback:(int64_t)fallback
 {
   v11.receiver = self;
   v11.super_class = CDRichComplicationCornerBaseTextView;
-  v3 = [(CDRichComplicationCornerView *)&v11 initWithFontFallback:a3];
+  v3 = [(CDRichComplicationCornerView *)&v11 initWithFontFallback:fallback];
   v4 = v3;
   if (v3)
   {
     v10 = 0;
     memset(v9, 0, sizeof(v9));
-    v5 = [(CDRichComplicationView *)v3 device];
-    ___LayoutConstants_block_invoke_7(v5, v9);
+    device = [(CDRichComplicationView *)v3 device];
+    ___LayoutConstants_block_invoke_7(device, v9);
 
     v6 = [(CDRichComplicationCornerView *)v4 _createAndAddColoringLabelWithFontSize:*v9];
     innerLabel = v4->_innerLabel;
@@ -44,10 +44,10 @@
   v3 = [(CDRichComplicationView *)self device:0];
   ___LayoutConstants_block_invoke_7(v3, &v9);
 
-  v4 = [(CDRichComplicationCornerView *)self cornerComplicationPosition];
-  if (v4 <= 1)
+  cornerComplicationPosition = [(CDRichComplicationCornerView *)self cornerComplicationPosition];
+  if (cornerComplicationPosition <= 1)
   {
-    if (v4 > 1)
+    if (cornerComplicationPosition > 1)
     {
       goto LABEL_8;
     }
@@ -58,7 +58,7 @@
     goto LABEL_7;
   }
 
-  if (v4 == 2 || v4 == 3)
+  if (cornerComplicationPosition == 2 || cornerComplicationPosition == 3)
   {
     [(CLKUICurvedColoringLabel *)self->_innerLabel setCircleRadius:*&v11 + *&v12];
     [(CLKUICurvedColoringLabel *)self->_innerLabel setInterior:1];
@@ -74,24 +74,24 @@ LABEL_8:
   [(CDRichComplicationCornerView *)self _layoutCurvedLabel:innerLabel centerAngleInDegree:v7 editingRotationInDegree:v8];
 }
 
-- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)a3
+- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)configuration
 {
-  v9[0] = a3->var0;
-  v5 = a3->var1;
-  var2 = a3->var2;
+  v9[0] = configuration->var0;
+  v5 = configuration->var1;
+  var2 = configuration->var2;
   v10 = v5;
   v11 = var2;
   v8.receiver = self;
   v8.super_class = CDRichComplicationCornerBaseTextView;
   [(CDRichComplicationView *)&v8 _setFontConfiguration:v9];
-  if (a3->var1)
+  if (configuration->var1)
   {
-    [(CDRichComplicationView *)self _updateColoringLabel:self->_innerLabel withFontDescriptor:a3->var2 andSizeFactor:?];
+    [(CDRichComplicationView *)self _updateColoringLabel:self->_innerLabel withFontDescriptor:configuration->var2 andSizeFactor:?];
   }
 
   else
   {
-    if (a3->var0)
+    if (configuration->var0)
     {
       v7 = MEMORY[0x277D74410];
     }
@@ -105,14 +105,14 @@ LABEL_8:
   }
 }
 
-- (void)setInnerLabelProviders:(id)a3
+- (void)setInnerLabelProviders:(id)providers
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_innerLabelProviders, a3);
+  providersCopy = providers;
+  objc_storeStrong(&self->_innerLabelProviders, providers);
   if ([(NSArray *)self->_innerLabelProviders count])
   {
-    v21 = v5;
+    v21 = providersCopy;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
@@ -133,33 +133,33 @@ LABEL_4:
         }
 
         v9 = *(*(&v25 + 1) + 8 * v8);
-        v10 = [v9 imageProvider];
-        if ([v10 conformsToProtocol:&unk_285718B28])
+        imageProvider = [v9 imageProvider];
+        if ([imageProvider conformsToProtocol:&unk_285718B28])
         {
           innerLabel = self->_innerLabel;
-          v12 = v10;
-          v13 = [(CLKUICurvedColoringLabel *)innerLabel font];
-          [v12 setFont:v13];
+          v12 = imageProvider;
+          font = [(CLKUICurvedColoringLabel *)innerLabel font];
+          [v12 setFont:font];
 
           [v12 setScale:2];
         }
 
-        v14 = [(CLKUICurvedColoringLabel *)self->_innerLabel imageView];
-        if (![v14 conformsToProtocol:&unk_285717968] || !+[CDComplicationImageViewProvider existingImageView:supportsImageProvider:](CDComplicationImageViewProvider, "existingImageView:supportsImageProvider:", v14, v10))
+        imageView = [(CLKUICurvedColoringLabel *)self->_innerLabel imageView];
+        if (![imageView conformsToProtocol:&unk_285717968] || !+[CDComplicationImageViewProvider existingImageView:supportsImageProvider:](CDComplicationImageViewProvider, "existingImageView:supportsImageProvider:", imageView, imageProvider))
         {
-          v15 = [CDComplicationImageViewProvider viewForImageProvider:v10];
+          v15 = [CDComplicationImageViewProvider viewForImageProvider:imageProvider];
 
           v16 = self->_innerLabel;
-          v17 = [(CDRichComplicationView *)self device];
-          [(CLKUICurvedColoringLabel *)v16 setImageView:v15 placement:1 padding:CDRichComplicationCornerInnerImagePadding(v17)];
+          device = [(CDRichComplicationView *)self device];
+          [(CLKUICurvedColoringLabel *)v16 setImageView:v15 placement:1 padding:CDRichComplicationCornerInnerImagePadding(device)];
 
-          v14 = v15;
+          imageView = v15;
         }
 
-        [v14 setImageProvider:v10];
-        v18 = [v9 textProvider];
-        [(CLKUICurvedColoringLabel *)self->_innerLabel setTextProvider:v18];
-        if (v10 && !v18)
+        [imageView setImageProvider:imageProvider];
+        textProvider = [v9 textProvider];
+        [(CLKUICurvedColoringLabel *)self->_innerLabel setTextProvider:textProvider];
+        if (imageProvider && !textProvider)
         {
           [(CLKUICurvedColoringLabel *)self->_innerLabel setText:@"​"];
           [(CLKUICurvedColoringLabel *)self->_innerLabel setImagePadding:0.0];
@@ -171,9 +171,9 @@ LABEL_4:
         v24[3] = &unk_278DF3558;
         v24[4] = self;
         [MEMORY[0x277D75D18] performWithoutAnimation:v24];
-        v19 = [(CLKUICurvedColoringLabel *)self->_innerLabel isTextTruncated];
+        isTextTruncated = [(CLKUICurvedColoringLabel *)self->_innerLabel isTextTruncated];
 
-        if (!v19)
+        if (!isTextTruncated)
         {
           break;
         }
@@ -191,7 +191,7 @@ LABEL_4:
       }
     }
 
-    v5 = v21;
+    providersCopy = v21;
   }
 
   else

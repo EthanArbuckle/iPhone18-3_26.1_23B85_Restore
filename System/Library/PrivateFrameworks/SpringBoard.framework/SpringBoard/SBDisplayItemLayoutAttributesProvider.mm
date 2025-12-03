@@ -1,18 +1,18 @@
 @interface SBDisplayItemLayoutAttributesProvider
-- (BOOL)_shouldUpdateForDisplayOrdinal:(int64_t)a3;
+- (BOOL)_shouldUpdateForDisplayOrdinal:(int64_t)ordinal;
 - (SBDisplayItemLayoutAttributesProvider)init;
 - (SBDisplayItemLayoutAttributesProviderDelegate)delegate;
-- (id)_layoutAttributesForDisplayItem:(id)a3 inAppLayout:(id)a4 displayOrdinal:(int64_t)a5 orientation:(int64_t)a6;
-- (id)lastInteractedDisplayItemInAppLayout:(id)a3 orientation:(int64_t)a4 passingTest:(id)a5;
-- (id)lastInteractedDisplayItemsInAppLayout:(id)a3 orientation:(int64_t)a4;
-- (id)layoutAttributesEntriesForAppLayout:(id)a3;
-- (id)layoutAttributesForDisplayItem:(id)a3 inAppLayout:(id)a4 displayOrdinal:(int64_t)a5 orientation:(int64_t)a6;
-- (id)layoutAttributesMapForAppLayout:(id)a3 displayOrdinal:(int64_t)a4 orientation:(int64_t)a5;
-- (id)zOrderedItemsInAppLayout:(id)a3 orientation:(int64_t)a4;
-- (void)performBlockWithoutUpdating:(id)a3;
-- (void)updateLayoutAttributes:(id)a3 forKey:(id)a4;
-- (void)updateLayoutAttributes:(id)a3 ofDisplayItem:(id)a4 displayOrdinal:(int64_t)a5 orientation:(int64_t)a6;
-- (void)updateLayoutAttributesMap:(id)a3 forAppLayout:(id)a4 displayOrdinal:(int64_t)a5 orientation:(int64_t)a6;
+- (id)_layoutAttributesForDisplayItem:(id)item inAppLayout:(id)layout displayOrdinal:(int64_t)ordinal orientation:(int64_t)orientation;
+- (id)lastInteractedDisplayItemInAppLayout:(id)layout orientation:(int64_t)orientation passingTest:(id)test;
+- (id)lastInteractedDisplayItemsInAppLayout:(id)layout orientation:(int64_t)orientation;
+- (id)layoutAttributesEntriesForAppLayout:(id)layout;
+- (id)layoutAttributesForDisplayItem:(id)item inAppLayout:(id)layout displayOrdinal:(int64_t)ordinal orientation:(int64_t)orientation;
+- (id)layoutAttributesMapForAppLayout:(id)layout displayOrdinal:(int64_t)ordinal orientation:(int64_t)orientation;
+- (id)zOrderedItemsInAppLayout:(id)layout orientation:(int64_t)orientation;
+- (void)performBlockWithoutUpdating:(id)updating;
+- (void)updateLayoutAttributes:(id)attributes forKey:(id)key;
+- (void)updateLayoutAttributes:(id)attributes ofDisplayItem:(id)item displayOrdinal:(int64_t)ordinal orientation:(int64_t)orientation;
+- (void)updateLayoutAttributesMap:(id)map forAppLayout:(id)layout displayOrdinal:(int64_t)ordinal orientation:(int64_t)orientation;
 @end
 
 @implementation SBDisplayItemLayoutAttributesProvider
@@ -32,16 +32,16 @@
   return v2;
 }
 
-- (id)layoutAttributesMapForAppLayout:(id)a3 displayOrdinal:(int64_t)a4 orientation:(int64_t)a5
+- (id)layoutAttributesMapForAppLayout:(id)layout displayOrdinal:(int64_t)ordinal orientation:(int64_t)orientation
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  layoutCopy = layout;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = [v8 allItems];
+  obj = [layoutCopy allItems];
   v10 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -57,8 +57,8 @@
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
-        v15 = [(SBDisplayItemLayoutAttributesProvider *)self layoutAttributesForDisplayItem:v14 inAppLayout:v8 displayOrdinal:a4 orientation:a5];
-        [v9 setObject:v15 forKey:v14];
+        v15 = [(SBDisplayItemLayoutAttributesProvider *)self layoutAttributesForDisplayItem:v14 inAppLayout:layoutCopy displayOrdinal:ordinal orientation:orientation];
+        [dictionary setObject:v15 forKey:v14];
       }
 
       v11 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -67,23 +67,23 @@
     while (v11);
   }
 
-  v16 = [v9 copy];
+  v16 = [dictionary copy];
 
   return v16;
 }
 
-- (id)layoutAttributesForDisplayItem:(id)a3 inAppLayout:(id)a4 displayOrdinal:(int64_t)a5 orientation:(int64_t)a6
+- (id)layoutAttributesForDisplayItem:(id)item inAppLayout:(id)layout displayOrdinal:(int64_t)ordinal orientation:(int64_t)orientation
 {
-  v10 = a3;
-  v11 = a4;
+  itemCopy = item;
+  layoutCopy = layout;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBDisplayItemLayoutAttributesProvider layoutAttributesForDisplayItem:inAppLayout:displayOrdinal:orientation:];
   }
 
-  v12 = [(SBDisplayItemLayoutAttributesProvider *)self _layoutAttributesForDisplayItem:v10 inAppLayout:v11 displayOrdinal:a5 orientation:a6];
+  v12 = [(SBDisplayItemLayoutAttributesProvider *)self _layoutAttributesForDisplayItem:itemCopy inAppLayout:layoutCopy displayOrdinal:ordinal orientation:orientation];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v14 = [WeakRetained shouldForceFullscreenForDisplayOrdinal:a5];
+  v14 = [WeakRetained shouldForceFullscreenForDisplayOrdinal:ordinal];
 
   if (v14)
   {
@@ -95,11 +95,11 @@
   return v12;
 }
 
-- (id)_layoutAttributesForDisplayItem:(id)a3 inAppLayout:(id)a4 displayOrdinal:(int64_t)a5 orientation:(int64_t)a6
+- (id)_layoutAttributesForDisplayItem:(id)item inAppLayout:(id)layout displayOrdinal:(int64_t)ordinal orientation:(int64_t)orientation
 {
   v21 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = [[SBDisplayItemLayoutAttributesKey alloc] initWithDisplayItem:v9 displayOrdinal:a5 orientation:a6];
+  itemCopy = item;
+  v10 = [[SBDisplayItemLayoutAttributesKey alloc] initWithDisplayItem:itemCopy displayOrdinal:ordinal orientation:orientation];
   if (![(SBDisplayItemLayoutAttributesKey *)v10 orientation]|| ([(SBDisplayItemLayoutAttributesStorage *)self->_storage layoutAttributesForKey:v10], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v12 = [(SBDisplayItemLayoutAttributesStorage *)self->_storage bestEffortLayoutAttributesForKey:v10];
@@ -122,9 +122,9 @@
     {
       if (v14)
       {
-        v17 = [v9 bundleIdentifier];
+        bundleIdentifier = [itemCopy bundleIdentifier];
         v19 = 138412290;
-        v20 = v17;
+        v20 = bundleIdentifier;
         _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_INFO, "No layout attributes found for (%@), returning empty layout attributes.", &v19, 0xCu);
       }
 
@@ -137,17 +137,17 @@
   return v11;
 }
 
-- (void)updateLayoutAttributesMap:(id)a3 forAppLayout:(id)a4 displayOrdinal:(int64_t)a5 orientation:(int64_t)a6
+- (void)updateLayoutAttributesMap:(id)map forAppLayout:(id)layout displayOrdinal:(int64_t)ordinal orientation:(int64_t)orientation
 {
   v22 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if ([(SBDisplayItemLayoutAttributesProvider *)self _shouldUpdateForDisplayOrdinal:a5])
+  mapCopy = map;
+  if ([(SBDisplayItemLayoutAttributesProvider *)self _shouldUpdateForDisplayOrdinal:ordinal])
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = v9;
+    v10 = mapCopy;
     v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v11)
     {
@@ -164,7 +164,7 @@
 
           v15 = *(*(&v17 + 1) + 8 * i);
           v16 = [v10 objectForKey:{v15, v17}];
-          [(SBDisplayItemLayoutAttributesProvider *)self updateLayoutAttributes:v16 ofDisplayItem:v15 displayOrdinal:a5 orientation:a6];
+          [(SBDisplayItemLayoutAttributesProvider *)self updateLayoutAttributes:v16 ofDisplayItem:v15 displayOrdinal:ordinal orientation:orientation];
         }
 
         v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -175,13 +175,13 @@
   }
 }
 
-- (void)updateLayoutAttributes:(id)a3 ofDisplayItem:(id)a4 displayOrdinal:(int64_t)a5 orientation:(int64_t)a6
+- (void)updateLayoutAttributes:(id)attributes ofDisplayItem:(id)item displayOrdinal:(int64_t)ordinal orientation:(int64_t)orientation
 {
-  v11 = a3;
-  v12 = a4;
+  attributesCopy = attributes;
+  itemCopy = item;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    if (v12)
+    if (itemCopy)
     {
       goto LABEL_3;
     }
@@ -190,7 +190,7 @@
   else
   {
     [SBDisplayItemLayoutAttributesProvider updateLayoutAttributes:ofDisplayItem:displayOrdinal:orientation:];
-    if (v12)
+    if (itemCopy)
     {
       goto LABEL_3;
     }
@@ -198,16 +198,16 @@
 
   [SBDisplayItemLayoutAttributesProvider updateLayoutAttributes:a2 ofDisplayItem:self displayOrdinal:? orientation:?];
 LABEL_3:
-  if ([(SBDisplayItemLayoutAttributesProvider *)self _shouldUpdateForDisplayOrdinal:a5])
+  if ([(SBDisplayItemLayoutAttributesProvider *)self _shouldUpdateForDisplayOrdinal:ordinal])
   {
-    if (v11)
+    if (attributesCopy)
     {
-      v13 = [[SBDisplayItemLayoutAttributesKey alloc] initWithDisplayItem:v12 displayOrdinal:a5 orientation:a6];
-      v14 = [(SBDisplayItemLayoutAttributesStorage *)self->_storage lasInteractionTimeForDisplayItem:v12];
-      v15 = [(SBHomeScreenConfigurationServer *)v11 queue];
-      if (v15 > v14)
+      v13 = [[SBDisplayItemLayoutAttributesKey alloc] initWithDisplayItem:itemCopy displayOrdinal:ordinal orientation:orientation];
+      v14 = [(SBDisplayItemLayoutAttributesStorage *)self->_storage lasInteractionTimeForDisplayItem:itemCopy];
+      queue = [(SBHomeScreenConfigurationServer *)attributesCopy queue];
+      if (queue > v14)
       {
-        v16 = v15;
+        v16 = queue;
         storage = self->_storage;
         v50[0] = MEMORY[0x277D85DD0];
         v50[1] = 3221225472;
@@ -215,26 +215,26 @@ LABEL_3:
         v50[3] = &unk_2783B5E68;
         v50[4] = self;
         v50[5] = v16;
-        [(SBDisplayItemLayoutAttributesStorage *)storage enumarateLayoutAttributesForDisplayItem:v12 block:v50];
+        [(SBDisplayItemLayoutAttributesStorage *)storage enumarateLayoutAttributesForDisplayItem:itemCopy block:v50];
       }
 
-      v18 = [SBDisplayItemLayoutAttributes attributesByModifyingLastInteractionTime:v11];
+      v18 = [SBDisplayItemLayoutAttributes attributesByModifyingLastInteractionTime:attributesCopy];
 
       v19 = [(SBDisplayItemLayoutAttributesStorage *)self->_storage layoutAttributesForKey:v13];
-      v20 = [(SBHomeScreenConfigurationServer *)v19 connections];
-      if (v20 != [(SBHomeScreenConfigurationServer *)v18 connections]&& ([(SBHomeScreenConfigurationServer *)v18 connections]== 2 || [(SBHomeScreenConfigurationServer *)v19 connections]== 2))
+      connections = [(SBHomeScreenConfigurationServer *)v19 connections];
+      if (connections != [(SBHomeScreenConfigurationServer *)v18 connections]&& ([(SBHomeScreenConfigurationServer *)v18 connections]== 2 || [(SBHomeScreenConfigurationServer *)v19 connections]== 2))
       {
-        v21 = [(SBHomeScreenConfigurationServer *)v18 connections];
+        connections2 = [(SBHomeScreenConfigurationServer *)v18 connections];
         v22 = self->_storage;
         v45[0] = MEMORY[0x277D85DD0];
         v45[1] = 3221225472;
         v45[2] = __105__SBDisplayItemLayoutAttributesProvider_updateLayoutAttributes_ofDisplayItem_displayOrdinal_orientation___block_invoke_2;
         v45[3] = &unk_2783B5E90;
-        v48 = a5;
-        v49 = v21;
+        ordinalCopy = ordinal;
+        v49 = connections2;
         v46 = v13;
-        v47 = self;
-        [(SBDisplayItemLayoutAttributesStorage *)v22 enumarateLayoutAttributesForDisplayItem:v12 block:v45];
+        selfCopy = self;
+        [(SBDisplayItemLayoutAttributesStorage *)v22 enumarateLayoutAttributesForDisplayItem:itemCopy block:v45];
       }
 
       v44 = 0;
@@ -259,13 +259,13 @@ LABEL_3:
         v27 = __105__SBDisplayItemLayoutAttributesProvider_updateLayoutAttributes_ofDisplayItem_displayOrdinal_orientation___block_invoke_3;
         v28 = &unk_2783B5EB8;
         v24 = v13;
-        v30 = self;
-        v31 = a5;
+        selfCopy2 = self;
+        ordinalCopy2 = ordinal;
         v32 = v39;
         v33 = v40;
         v34 = v41;
         v29 = v24;
-        [(SBDisplayItemLayoutAttributesStorage *)v23 enumarateLayoutAttributesForDisplayItem:v12 block:&v25];
+        [(SBDisplayItemLayoutAttributesStorage *)v23 enumarateLayoutAttributesForDisplayItem:itemCopy block:&v25];
       }
 
       [(SBDisplayItemLayoutAttributesStorage *)self->_storage setLayoutAttributes:v18 forKey:v13, v25, v26, v27, v28];
@@ -276,13 +276,13 @@ LABEL_3:
       v13 = SBLogLayoutAttributes();
       if (os_log_type_enabled(&v13->super, OS_LOG_TYPE_ERROR))
       {
-        [SBDisplayItemLayoutAttributesProvider updateLayoutAttributes:v12 ofDisplayItem:&v13->super displayOrdinal:? orientation:?];
+        [SBDisplayItemLayoutAttributesProvider updateLayoutAttributes:itemCopy ofDisplayItem:&v13->super displayOrdinal:? orientation:?];
       }
 
       v18 = 0;
     }
 
-    v11 = v18;
+    attributesCopy = v18;
   }
 }
 
@@ -318,10 +318,10 @@ void __105__SBDisplayItemLayoutAttributesProvider_updateLayoutAttributes_ofDispl
   }
 }
 
-- (id)lastInteractedDisplayItemInAppLayout:(id)a3 orientation:(int64_t)a4 passingTest:(id)a5
+- (id)lastInteractedDisplayItemInAppLayout:(id)layout orientation:(int64_t)orientation passingTest:(id)test
 {
-  v8 = a3;
-  v9 = a5;
+  layoutCopy = layout;
+  testCopy = test;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -337,12 +337,12 @@ void __105__SBDisplayItemLayoutAttributesProvider_updateLayoutAttributes_ofDispl
   v14[2] = __102__SBDisplayItemLayoutAttributesProvider_lastInteractedDisplayItemInAppLayout_orientation_passingTest___block_invoke;
   v14[3] = &unk_2783B5EE0;
   v14[4] = self;
-  v10 = v8;
+  v10 = layoutCopy;
   v15 = v10;
   v17 = &v21;
   v18 = v20;
-  v19 = a4;
-  v11 = v9;
+  orientationCopy = orientation;
+  v11 = testCopy;
   v16 = v11;
   [v10 enumerate:v14];
   v12 = v22[5];
@@ -366,79 +366,79 @@ void __102__SBDisplayItemLayoutAttributesProvider_lastInteractedDisplayItemInApp
   }
 }
 
-- (id)zOrderedItemsInAppLayout:(id)a3 orientation:(int64_t)a4
+- (id)zOrderedItemsInAppLayout:(id)layout orientation:(int64_t)orientation
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  layoutCopy = layout;
+  v7 = layoutCopy;
+  if (layoutCopy)
   {
-    v8 = [v6 allItems];
-    v9 = [v8 count];
+    allItems = [layoutCopy allItems];
+    v9 = [allItems count];
 
     if (v9 == 1)
     {
-      v10 = [v7 allItems];
+      allItems2 = [v7 allItems];
     }
 
     else
     {
-      v11 = -[SBDisplayItemLayoutAttributesProvider layoutAttributesMapForAppLayout:displayOrdinal:orientation:](self, "layoutAttributesMapForAppLayout:displayOrdinal:orientation:", v7, [v7 preferredDisplayOrdinal], a4);
+      v11 = -[SBDisplayItemLayoutAttributesProvider layoutAttributesMapForAppLayout:displayOrdinal:orientation:](self, "layoutAttributesMapForAppLayout:displayOrdinal:orientation:", v7, [v7 preferredDisplayOrdinal], orientation);
       v12 = SBDisplayItemDescendingZOrderComparator(v11);
-      v13 = [v7 allItems];
-      v10 = [v13 sortedArrayUsingComparator:v12];
+      allItems3 = [v7 allItems];
+      allItems2 = [allItems3 sortedArrayUsingComparator:v12];
     }
   }
 
   else
   {
-    v10 = MEMORY[0x277CBEBF8];
+    allItems2 = MEMORY[0x277CBEBF8];
   }
 
-  return v10;
+  return allItems2;
 }
 
-- (id)lastInteractedDisplayItemsInAppLayout:(id)a3 orientation:(int64_t)a4
+- (id)lastInteractedDisplayItemsInAppLayout:(id)layout orientation:(int64_t)orientation
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  layoutCopy = layout;
+  v7 = layoutCopy;
+  if (layoutCopy)
   {
-    v8 = [v6 allItems];
-    v9 = [v8 count];
+    allItems = [layoutCopy allItems];
+    v9 = [allItems count];
 
     if (v9 == 1)
     {
-      v10 = [v7 allItems];
+      allItems2 = [v7 allItems];
     }
 
     else
     {
-      v11 = -[SBDisplayItemLayoutAttributesProvider layoutAttributesMapForAppLayout:displayOrdinal:orientation:](self, "layoutAttributesMapForAppLayout:displayOrdinal:orientation:", v7, [v7 preferredDisplayOrdinal], a4);
+      v11 = -[SBDisplayItemLayoutAttributesProvider layoutAttributesMapForAppLayout:displayOrdinal:orientation:](self, "layoutAttributesMapForAppLayout:displayOrdinal:orientation:", v7, [v7 preferredDisplayOrdinal], orientation);
       v12 = SBDisplayItemDescendingInteractionTimeComparator(v11);
-      v13 = [v7 allItems];
-      v10 = [v13 sortedArrayUsingComparator:v12];
+      allItems3 = [v7 allItems];
+      allItems2 = [allItems3 sortedArrayUsingComparator:v12];
     }
   }
 
   else
   {
-    v10 = MEMORY[0x277CBEBF8];
+    allItems2 = MEMORY[0x277CBEBF8];
   }
 
-  return v10;
+  return allItems2;
 }
 
-- (id)layoutAttributesEntriesForAppLayout:(id)a3
+- (id)layoutAttributesEntriesForAppLayout:(id)layout
 {
-  v4 = [a3 allItems];
-  v5 = [(SBDisplayItemLayoutAttributesStorage *)self->_storage layoutAttributesMap];
+  allItems = [layout allItems];
+  layoutAttributesMap = [(SBDisplayItemLayoutAttributesStorage *)self->_storage layoutAttributesMap];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __77__SBDisplayItemLayoutAttributesProvider_layoutAttributesEntriesForAppLayout___block_invoke;
   v9[3] = &unk_2783B5F08;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 bs_filter:v9];
+  v10 = allItems;
+  v6 = allItems;
+  v7 = [layoutAttributesMap bs_filter:v9];
 
   return v7;
 }
@@ -452,30 +452,30 @@ uint64_t __77__SBDisplayItemLayoutAttributesProvider_layoutAttributesEntriesForA
   return v4;
 }
 
-- (void)updateLayoutAttributes:(id)a3 forKey:(id)a4
+- (void)updateLayoutAttributes:(id)attributes forKey:(id)key
 {
-  v7 = a3;
-  v6 = a4;
-  if (-[SBDisplayItemLayoutAttributesProvider _shouldUpdateForDisplayOrdinal:](self, "_shouldUpdateForDisplayOrdinal:", [v6 displayOrdinal]))
+  attributesCopy = attributes;
+  keyCopy = key;
+  if (-[SBDisplayItemLayoutAttributesProvider _shouldUpdateForDisplayOrdinal:](self, "_shouldUpdateForDisplayOrdinal:", [keyCopy displayOrdinal]))
   {
-    [(SBDisplayItemLayoutAttributesStorage *)self->_storage setLayoutAttributes:v7 forKey:v6];
+    [(SBDisplayItemLayoutAttributesStorage *)self->_storage setLayoutAttributes:attributesCopy forKey:keyCopy];
   }
 }
 
-- (void)performBlockWithoutUpdating:(id)a3
+- (void)performBlockWithoutUpdating:(id)updating
 {
-  v4 = a3;
+  updatingCopy = updating;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBDisplayItemLayoutAttributesProvider performBlockWithoutUpdating:];
   }
 
   self->_isPerformingWithoutUpdating = 1;
-  v4[2]();
+  updatingCopy[2]();
   self->_isPerformingWithoutUpdating = 0;
 }
 
-- (BOOL)_shouldUpdateForDisplayOrdinal:(int64_t)a3
+- (BOOL)_shouldUpdateForDisplayOrdinal:(int64_t)ordinal
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = WeakRetained;
@@ -486,7 +486,7 @@ uint64_t __77__SBDisplayItemLayoutAttributesProvider_layoutAttributesEntriesForA
 
   else if (WeakRetained)
   {
-    v7 = [WeakRetained shouldUpdateLayoutAttributesForDisplayOrdinal:a3];
+    v7 = [WeakRetained shouldUpdateLayoutAttributesForDisplayOrdinal:ordinal];
   }
 
   else

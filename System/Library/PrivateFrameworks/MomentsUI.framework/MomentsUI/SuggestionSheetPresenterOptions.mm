@@ -2,8 +2,8 @@
 - (BOOL)onboardingOnlyPresentation;
 - (NSString)debugDescription;
 - (SuggestionSheetPresenterOptions)init;
-- (void)encodeWithCoder:(id)a3;
-- (void)setOnboardingOnlyPresentation:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setOnboardingOnlyPresentation:(BOOL)presentation;
 @end
 
 @implementation SuggestionSheetPresenterOptions
@@ -15,11 +15,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setOnboardingOnlyPresentation:(BOOL)a3
+- (void)setOnboardingOnlyPresentation:(BOOL)presentation
 {
   v5 = OBJC_IVAR___SuggestionSheetPresenterOptions_onboardingOnlyPresentation;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = presentation;
 }
 
 - (SuggestionSheetPresenterOptions)init
@@ -35,16 +35,16 @@
   return [(SuggestionSheetPresenterOptions *)&v3 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SuggestionSheetPresenterOptions.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SuggestionSheetPresenterOptions.encode(with:)(coderCopy);
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SuggestionSheetPresenterOptions.debugDescription.getter();
   v5 = v4;
 

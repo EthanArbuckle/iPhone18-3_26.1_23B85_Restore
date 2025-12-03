@@ -1,11 +1,11 @@
 @interface BulletedLabelView
-- (_TtC5Heart17BulletedLabelView)initWithCoder:(id)a3;
-- (_TtC5Heart17BulletedLabelView)initWithFrame:(CGRect)a3;
+- (_TtC5Heart17BulletedLabelView)initWithCoder:(id)coder;
+- (_TtC5Heart17BulletedLabelView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation BulletedLabelView
 
-- (_TtC5Heart17BulletedLabelView)initWithCoder:(id)a3
+- (_TtC5Heart17BulletedLabelView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC5Heart17BulletedLabelView____lazy_storage___bulletLabel) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC5Heart17BulletedLabelView____lazy_storage___textLabel) = 0;
@@ -15,7 +15,7 @@
   return result;
 }
 
-- (_TtC5Heart17BulletedLabelView)initWithFrame:(CGRect)a3
+- (_TtC5Heart17BulletedLabelView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

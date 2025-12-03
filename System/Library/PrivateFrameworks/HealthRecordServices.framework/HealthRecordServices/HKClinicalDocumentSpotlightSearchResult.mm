@@ -1,10 +1,10 @@
 @interface HKClinicalDocumentSpotlightSearchResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKClinicalDocumentSpotlightSearchResult)init;
-- (HKClinicalDocumentSpotlightSearchResult)initWithCoder:(id)a3;
-- (HKClinicalDocumentSpotlightSearchResult)initWithTitle:(id)a3 medicalRecord:(id)a4 attachmentUUID:(id)a5 previewString:(id)a6 previewStringMatchRanges:(id)a7;
+- (HKClinicalDocumentSpotlightSearchResult)initWithCoder:(id)coder;
+- (HKClinicalDocumentSpotlightSearchResult)initWithTitle:(id)title medicalRecord:(id)record attachmentUUID:(id)d previewString:(id)string previewStringMatchRanges:(id)ranges;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKClinicalDocumentSpotlightSearchResult
@@ -19,35 +19,35 @@
   return 0;
 }
 
-- (HKClinicalDocumentSpotlightSearchResult)initWithTitle:(id)a3 medicalRecord:(id)a4 attachmentUUID:(id)a5 previewString:(id)a6 previewStringMatchRanges:(id)a7
+- (HKClinicalDocumentSpotlightSearchResult)initWithTitle:(id)title medicalRecord:(id)record attachmentUUID:(id)d previewString:(id)string previewStringMatchRanges:(id)ranges
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  titleCopy = title;
+  recordCopy = record;
+  dCopy = d;
+  stringCopy = string;
+  rangesCopy = ranges;
   v29.receiver = self;
   v29.super_class = HKClinicalDocumentSpotlightSearchResult;
   v17 = [(HKClinicalDocumentSpotlightSearchResult *)&v29 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [titleCopy copy];
     title = v17->_title;
     v17->_title = v18;
 
-    v20 = [v13 copy];
+    v20 = [recordCopy copy];
     medicalRecord = v17->_medicalRecord;
     v17->_medicalRecord = v20;
 
-    v22 = [v14 copy];
+    v22 = [dCopy copy];
     attachmentUUID = v17->_attachmentUUID;
     v17->_attachmentUUID = v22;
 
-    v24 = [v15 copy];
+    v24 = [stringCopy copy];
     previewString = v17->_previewString;
     v17->_previewString = v24;
 
-    v26 = [v16 copy];
+    v26 = [rangesCopy copy];
     previewStringMatchRanges = v17->_previewStringMatchRanges;
     v17->_previewStringMatchRanges = v26;
   }
@@ -55,10 +55,10 @@
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -68,22 +68,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
       title = self->_title;
-      v8 = [(HKClinicalDocumentSpotlightSearchResult *)v6 title];
-      if (title != v8)
+      title = [(HKClinicalDocumentSpotlightSearchResult *)v6 title];
+      if (title != title)
       {
-        v9 = [(HKClinicalDocumentSpotlightSearchResult *)v6 title];
-        if (!v9)
+        title2 = [(HKClinicalDocumentSpotlightSearchResult *)v6 title];
+        if (!title2)
         {
           v13 = 0;
           goto LABEL_48;
         }
 
-        v10 = v9;
+        v10 = title2;
         v11 = self->_title;
-        v12 = [(HKClinicalDocumentSpotlightSearchResult *)v6 title];
-        if (![(NSString *)v11 isEqualToString:v12])
+        title3 = [(HKClinicalDocumentSpotlightSearchResult *)v6 title];
+        if (![(NSString *)v11 isEqualToString:title3])
         {
           v13 = 0;
 LABEL_47:
@@ -92,71 +92,71 @@ LABEL_47:
         }
 
         v55 = v10;
-        v54 = v12;
+        v54 = title3;
       }
 
       medicalRecord = self->_medicalRecord;
-      v15 = [(HKClinicalDocumentSpotlightSearchResult *)v6 medicalRecord];
-      if (medicalRecord != v15)
+      medicalRecord = [(HKClinicalDocumentSpotlightSearchResult *)v6 medicalRecord];
+      if (medicalRecord != medicalRecord)
       {
-        v16 = [(HKClinicalDocumentSpotlightSearchResult *)v6 medicalRecord];
-        if (!v16)
+        medicalRecord2 = [(HKClinicalDocumentSpotlightSearchResult *)v6 medicalRecord];
+        if (!medicalRecord2)
         {
           goto LABEL_35;
         }
 
-        v53 = v16;
+        v53 = medicalRecord2;
         v17 = self->_medicalRecord;
-        v3 = [(HKClinicalDocumentSpotlightSearchResult *)v6 medicalRecord];
-        if (([(HKMedicalRecord *)v17 isEqual:v3]& 1) == 0)
+        medicalRecord3 = [(HKClinicalDocumentSpotlightSearchResult *)v6 medicalRecord];
+        if (([(HKMedicalRecord *)v17 isEqual:medicalRecord3]& 1) == 0)
         {
           goto LABEL_34;
         }
       }
 
       attachmentUUID = self->_attachmentUUID;
-      v19 = [(HKClinicalDocumentSpotlightSearchResult *)v6 attachmentUUID];
+      attachmentUUID = [(HKClinicalDocumentSpotlightSearchResult *)v6 attachmentUUID];
       v52 = attachmentUUID;
-      if (attachmentUUID == v19)
+      if (attachmentUUID == attachmentUUID)
       {
         v51 = medicalRecord;
-        v26 = v15;
+        v26 = medicalRecord;
 LABEL_20:
         previewString = self->_previewString;
-        v28 = [(HKClinicalDocumentSpotlightSearchResult *)v6 previewString];
-        v29 = v28;
+        previewString = [(HKClinicalDocumentSpotlightSearchResult *)v6 previewString];
+        v29 = previewString;
         v48 = previewString;
-        v50 = v3;
-        if (previewString == v28)
+        v50 = medicalRecord3;
+        if (previewString == previewString)
         {
-          v46 = v28;
-          v47 = v19;
-          v15 = v26;
+          v46 = previewString;
+          v47 = attachmentUUID;
+          medicalRecord = v26;
         }
 
         else
         {
-          v30 = [(HKClinicalDocumentSpotlightSearchResult *)v6 previewString];
-          if (!v30)
+          previewString2 = [(HKClinicalDocumentSpotlightSearchResult *)v6 previewString];
+          if (!previewString2)
           {
             v13 = 0;
-            v15 = v26;
+            medicalRecord = v26;
             medicalRecord = v51;
             goto LABEL_37;
           }
 
-          v44 = v30;
-          v47 = v19;
+          v44 = previewString2;
+          v47 = attachmentUUID;
           v31 = self->_previewString;
-          v32 = [(HKClinicalDocumentSpotlightSearchResult *)v6 previewString];
+          previewString3 = [(HKClinicalDocumentSpotlightSearchResult *)v6 previewString];
           v33 = v31;
-          v34 = v32;
-          v15 = v26;
-          if (![(NSString *)v33 isEqualToString:v32])
+          v34 = previewString3;
+          medicalRecord = v26;
+          if (![(NSString *)v33 isEqualToString:previewString3])
           {
 
             v13 = 0;
-            v19 = v47;
+            attachmentUUID = v47;
             medicalRecord = v51;
             v41 = v52;
             goto LABEL_41;
@@ -168,17 +168,17 @@ LABEL_20:
 
         medicalRecord = v51;
         previewStringMatchRanges = self->_previewStringMatchRanges;
-        v36 = [(HKClinicalDocumentSpotlightSearchResult *)v6 previewStringMatchRanges];
-        v13 = previewStringMatchRanges == v36;
-        if (previewStringMatchRanges != v36)
+        previewStringMatchRanges = [(HKClinicalDocumentSpotlightSearchResult *)v6 previewStringMatchRanges];
+        v13 = previewStringMatchRanges == previewStringMatchRanges;
+        if (previewStringMatchRanges != previewStringMatchRanges)
         {
-          v37 = [(HKClinicalDocumentSpotlightSearchResult *)v6 previewStringMatchRanges];
-          if (v37)
+          previewStringMatchRanges2 = [(HKClinicalDocumentSpotlightSearchResult *)v6 previewStringMatchRanges];
+          if (previewStringMatchRanges2)
           {
-            v38 = v37;
+            v38 = previewStringMatchRanges2;
             v39 = self->_previewStringMatchRanges;
-            v40 = [(HKClinicalDocumentSpotlightSearchResult *)v6 previewStringMatchRanges];
-            v13 = [(NSArray *)v39 isEqual:v40];
+            previewStringMatchRanges3 = [(HKClinicalDocumentSpotlightSearchResult *)v6 previewStringMatchRanges];
+            v13 = [(NSArray *)v39 isEqual:previewStringMatchRanges3];
 
             if (v48 != v46)
             {
@@ -193,38 +193,38 @@ LABEL_20:
         {
 LABEL_39:
 
-          v19 = v47;
+          attachmentUUID = v47;
           goto LABEL_40;
         }
 
-        v19 = v47;
+        attachmentUUID = v47;
 LABEL_37:
 
 LABEL_40:
         v41 = v52;
 LABEL_41:
-        if (v41 != v19)
+        if (v41 != attachmentUUID)
         {
         }
 
         goto LABEL_43;
       }
 
-      v20 = [(HKClinicalDocumentSpotlightSearchResult *)v6 attachmentUUID];
-      if (!v20)
+      attachmentUUID2 = [(HKClinicalDocumentSpotlightSearchResult *)v6 attachmentUUID];
+      if (!attachmentUUID2)
       {
-        v50 = v3;
+        v50 = medicalRecord3;
         v13 = 0;
 LABEL_43:
 
-        if (medicalRecord != v15)
+        if (medicalRecord != medicalRecord)
         {
         }
 
 LABEL_46:
-        v12 = v54;
+        title3 = v54;
         v10 = v55;
-        if (title != v8)
+        if (title != title)
         {
           goto LABEL_47;
         }
@@ -234,22 +234,22 @@ LABEL_48:
         goto LABEL_49;
       }
 
-      v49 = v20;
+      v49 = attachmentUUID2;
       v51 = medicalRecord;
-      v21 = v19;
+      v21 = attachmentUUID;
       v22 = self->_attachmentUUID;
-      v23 = [(HKClinicalDocumentSpotlightSearchResult *)v6 attachmentUUID];
+      attachmentUUID3 = [(HKClinicalDocumentSpotlightSearchResult *)v6 attachmentUUID];
       v24 = v22;
-      v25 = v23;
-      if (([(NSUUID *)v24 isEqual:v23]& 1) != 0)
+      v25 = attachmentUUID3;
+      if (([(NSUUID *)v24 isEqual:attachmentUUID3]& 1) != 0)
       {
-        v26 = v15;
+        v26 = medicalRecord;
         v45 = v25;
-        v19 = v21;
+        attachmentUUID = v21;
         goto LABEL_20;
       }
 
-      if (medicalRecord != v15)
+      if (medicalRecord != medicalRecord)
       {
 LABEL_34:
       }
@@ -277,38 +277,38 @@ LABEL_49:
   return v6 ^ [(NSArray *)self->_previewStringMatchRanges hash];
 }
 
-- (HKClinicalDocumentSpotlightSearchResult)initWithCoder:(id)a3
+- (HKClinicalDocumentSpotlightSearchResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Title"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MedicalRecord"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AttachmentUUID"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PreviewString"];
-  v9 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"PreviewStringMatchRanges"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Title"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MedicalRecord"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AttachmentUUID"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PreviewString"];
+  v9 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"PreviewStringMatchRanges"];
   if (v5 && v6 && v7)
   {
     self = [(HKClinicalDocumentSpotlightSearchResult *)self initWithTitle:v5 medicalRecord:v6 attachmentUUID:v7 previewString:v8 previewStringMatchRanges:v9];
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v10 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"Title"];
-  [v5 encodeObject:self->_previewString forKey:@"PreviewString"];
-  [v5 encodeObject:self->_attachmentUUID forKey:@"AttachmentUUID"];
-  [v5 encodeObject:self->_medicalRecord forKey:@"MedicalRecord"];
-  [v5 encodeObject:self->_previewStringMatchRanges forKey:@"PreviewStringMatchRanges"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"Title"];
+  [coderCopy encodeObject:self->_previewString forKey:@"PreviewString"];
+  [coderCopy encodeObject:self->_attachmentUUID forKey:@"AttachmentUUID"];
+  [coderCopy encodeObject:self->_medicalRecord forKey:@"MedicalRecord"];
+  [coderCopy encodeObject:self->_previewStringMatchRanges forKey:@"PreviewStringMatchRanges"];
 }
 
 @end

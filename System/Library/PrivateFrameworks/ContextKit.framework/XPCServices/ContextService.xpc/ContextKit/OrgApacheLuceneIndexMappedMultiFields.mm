@@ -1,19 +1,19 @@
 @interface OrgApacheLuceneIndexMappedMultiFields
-- (OrgApacheLuceneIndexMappedMultiFields)initWithOrgApacheLuceneIndexMergeState:(id)a3 withOrgApacheLuceneIndexMultiFields:(id)a4;
-- (id)termsWithNSString:(id)a3;
+- (OrgApacheLuceneIndexMappedMultiFields)initWithOrgApacheLuceneIndexMergeState:(id)state withOrgApacheLuceneIndexMultiFields:(id)fields;
+- (id)termsWithNSString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneIndexMappedMultiFields
 
-- (OrgApacheLuceneIndexMappedMultiFields)initWithOrgApacheLuceneIndexMergeState:(id)a3 withOrgApacheLuceneIndexMultiFields:(id)a4
+- (OrgApacheLuceneIndexMappedMultiFields)initWithOrgApacheLuceneIndexMergeState:(id)state withOrgApacheLuceneIndexMultiFields:(id)fields
 {
-  OrgApacheLuceneIndexFilterLeafReader_FilterFields_initWithOrgApacheLuceneIndexFields_(self, a4);
-  JreStrongAssign(&self->mergeState_, a3);
+  OrgApacheLuceneIndexFilterLeafReader_FilterFields_initWithOrgApacheLuceneIndexFields_(self, fields);
+  JreStrongAssign(&self->mergeState_, state);
   return self;
 }
 
-- (id)termsWithNSString:(id)a3
+- (id)termsWithNSString:(id)string
 {
   in = self->super.in_;
   if (!in)
@@ -35,7 +35,7 @@
 
   mergeState = self->mergeState_;
   v8 = [OrgApacheLuceneIndexMappedMultiFields_MappedMultiTerms alloc];
-  sub_1000C3180(v8, a3, mergeState, v6);
+  sub_1000C3180(v8, string, mergeState, v6);
 
   return v8;
 }

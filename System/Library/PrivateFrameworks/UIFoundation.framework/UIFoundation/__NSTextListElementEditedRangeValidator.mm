@@ -1,22 +1,22 @@
 @interface __NSTextListElementEditedRangeValidator
-- (_NSRange)adjustedInvalidationRangeForRange:(_NSRange)a3 limitRange:(_NSRange)a4 textContentStorage:(id)a5;
+- (_NSRange)adjustedInvalidationRangeForRange:(_NSRange)range limitRange:(_NSRange)limitRange textContentStorage:(id)storage;
 @end
 
 @implementation __NSTextListElementEditedRangeValidator
 
-- (_NSRange)adjustedInvalidationRangeForRange:(_NSRange)a3 limitRange:(_NSRange)a4 textContentStorage:(id)a5
+- (_NSRange)adjustedInvalidationRangeForRange:(_NSRange)range limitRange:(_NSRange)limitRange textContentStorage:(id)storage
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3.length;
-  v8 = a3.location;
-  v9 = [a5 attributedString];
-  if (v8 < [v9 length])
+  length = limitRange.length;
+  location = limitRange.location;
+  v7 = range.length;
+  v8 = range.location;
+  attributedString = [storage attributedString];
+  if (v8 < [attributedString length])
   {
-    v10 = [objc_msgSend(objc_msgSend(v9 attribute:@"NSParagraphStyle" atIndex:v8 effectiveRange:{0), "textLists"), "firstObject"}];
+    v10 = [objc_msgSend(objc_msgSend(attributedString attribute:@"NSParagraphStyle" atIndex:v8 effectiveRange:{0), "textLists"), "firstObject"}];
     if (v10)
     {
-      v11 = [v9 rangeOfTextList:v10 atIndex:v8];
+      v11 = [attributedString rangeOfTextList:v10 atIndex:v8];
       if (v12)
       {
         v19.location = v11;

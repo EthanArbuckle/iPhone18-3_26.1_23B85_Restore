@@ -1,80 +1,80 @@
 @interface BAAppStoreEventDescriptor
-+ (id)descriptorWithAppBundleIdentifier:(id)a3 appBundleURL:(id)a4 event:(unint64_t)a5 client:(unint64_t)a6;
-- (BAAppStoreEventDescriptor)initWithCoder:(id)a3;
-- (id)initPrivatelyWithAppBundleIdentifier:(void *)a3 appBundleURL:(void *)a4 event:(void *)a5 client:;
-- (void)encodeWithCoder:(id)a3;
++ (id)descriptorWithAppBundleIdentifier:(id)identifier appBundleURL:(id)l event:(unint64_t)event client:(unint64_t)client;
+- (BAAppStoreEventDescriptor)initWithCoder:(id)coder;
+- (id)initPrivatelyWithAppBundleIdentifier:(void *)identifier appBundleURL:(void *)l event:(void *)event client:;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BAAppStoreEventDescriptor
 
-- (BAAppStoreEventDescriptor)initWithCoder:(id)a3
+- (BAAppStoreEventDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = BAAppStoreEventDescriptor;
   v5 = [(BAAppStoreEventDescriptor *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appBundleIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appBundleIdentifier"];
     appBundleIdentifier = v5->_appBundleIdentifier;
     v5->_appBundleIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appBundleURL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appBundleURL"];
     appBundleURL = v5->_appBundleURL;
     v5->_appBundleURL = v8;
 
-    v5->_eventType = [v4 decodeIntegerForKey:@"eventType"];
-    v5->_clientType = [v4 decodeIntegerForKey:@"clientType"];
-    v5->_userInitiated = [v4 decodeBoolForKey:@"userInitiated"];
-    v5->_automaticInstall = [v4 decodeBoolForKey:@"automaticInstall"];
+    v5->_eventType = [coderCopy decodeIntegerForKey:@"eventType"];
+    v5->_clientType = [coderCopy decodeIntegerForKey:@"clientType"];
+    v5->_userInitiated = [coderCopy decodeBoolForKey:@"userInitiated"];
+    v5->_automaticInstall = [coderCopy decodeBoolForKey:@"automaticInstall"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(BAAppStoreEventDescriptor *)self appBundleIdentifier];
-  [v6 encodeObject:v4 forKey:@"appBundleIdentifier"];
+  coderCopy = coder;
+  appBundleIdentifier = [(BAAppStoreEventDescriptor *)self appBundleIdentifier];
+  [coderCopy encodeObject:appBundleIdentifier forKey:@"appBundleIdentifier"];
 
-  v5 = [(BAAppStoreEventDescriptor *)self appBundleURL];
-  [v6 encodeObject:v5 forKey:@"appBundleURL"];
+  appBundleURL = [(BAAppStoreEventDescriptor *)self appBundleURL];
+  [coderCopy encodeObject:appBundleURL forKey:@"appBundleURL"];
 
-  [v6 encodeInteger:-[BAAppStoreEventDescriptor eventType](self forKey:{"eventType"), @"eventType"}];
-  [v6 encodeInteger:-[BAAppStoreEventDescriptor clientType](self forKey:{"clientType"), @"clientType"}];
-  [v6 encodeBool:-[BAAppStoreEventDescriptor userInitiated](self forKey:{"userInitiated"), @"userInitiated"}];
-  [v6 encodeBool:-[BAAppStoreEventDescriptor automaticInstall](self forKey:{"automaticInstall"), @"automaticInstall"}];
+  [coderCopy encodeInteger:-[BAAppStoreEventDescriptor eventType](self forKey:{"eventType"), @"eventType"}];
+  [coderCopy encodeInteger:-[BAAppStoreEventDescriptor clientType](self forKey:{"clientType"), @"clientType"}];
+  [coderCopy encodeBool:-[BAAppStoreEventDescriptor userInitiated](self forKey:{"userInitiated"), @"userInitiated"}];
+  [coderCopy encodeBool:-[BAAppStoreEventDescriptor automaticInstall](self forKey:{"automaticInstall"), @"automaticInstall"}];
 }
 
-- (id)initPrivatelyWithAppBundleIdentifier:(void *)a3 appBundleURL:(void *)a4 event:(void *)a5 client:
+- (id)initPrivatelyWithAppBundleIdentifier:(void *)identifier appBundleURL:(void *)l event:(void *)event client:
 {
   v10 = a2;
-  v11 = a3;
-  if (a1)
+  identifierCopy = identifier;
+  if (self)
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = BAAppStoreEventDescriptor;
     v12 = objc_msgSendSuper2(&v14, sel_init);
-    a1 = v12;
+    self = v12;
     if (v12)
     {
       objc_storeStrong(v12 + 2, a2);
-      objc_storeStrong(a1 + 3, a3);
-      a1[4] = a4;
-      a1[5] = a5;
-      *(a1 + 4) = 0;
+      objc_storeStrong(self + 3, identifier);
+      self[4] = l;
+      self[5] = event;
+      *(self + 4) = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)descriptorWithAppBundleIdentifier:(id)a3 appBundleURL:(id)a4 event:(unint64_t)a5 client:(unint64_t)a6
++ (id)descriptorWithAppBundleIdentifier:(id)identifier appBundleURL:(id)l event:(unint64_t)event client:(unint64_t)client
 {
-  v9 = a4;
-  v10 = a3;
-  v11 = [[BAAppStoreEventDescriptor alloc] initPrivatelyWithAppBundleIdentifier:v10 appBundleURL:v9 event:a5 client:a6];
+  lCopy = l;
+  identifierCopy = identifier;
+  v11 = [[BAAppStoreEventDescriptor alloc] initPrivatelyWithAppBundleIdentifier:identifierCopy appBundleURL:lCopy event:event client:client];
 
   return v11;
 }

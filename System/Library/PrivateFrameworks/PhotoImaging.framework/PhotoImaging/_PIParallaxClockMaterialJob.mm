@@ -1,5 +1,5 @@
 @interface _PIParallaxClockMaterialJob
-- (BOOL)render:(id *)a3;
+- (BOOL)render:(id *)render;
 - (id)result;
 - (id)scalePolicy;
 @end
@@ -9,17 +9,17 @@
 - (id)result
 {
   v3 = [_PIParallaxClockMaterialResult alloc];
-  v4 = [(_PIParallaxClockMaterialJob *)self luminanceValue];
-  [v4 doubleValue];
+  luminanceValue = [(_PIParallaxClockMaterialJob *)self luminanceValue];
+  [luminanceValue doubleValue];
   v5 = [(_PIParallaxClockMaterialResult *)v3 initWithLuminance:?];
 
   return v5;
 }
 
-- (BOOL)render:(id *)a3
+- (BOOL)render:(id *)render
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!render)
   {
     v17 = NUAssertLogger_3620();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -41,8 +41,8 @@
         v25 = dispatch_get_specific(*v19);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v28 = [v26 callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v31 = v25;
         v32 = 2114;
@@ -53,8 +53,8 @@
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v24;
       _os_log_error_impl(&dword_1C7694000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -66,41 +66,41 @@
   v5 = [(NURenderJob *)self renderer:?];
   if (v5)
   {
-    v6 = [(_PIParallaxClockMaterialJob *)self clockMaterialRequest];
+    clockMaterialRequest = [(_PIParallaxClockMaterialJob *)self clockMaterialRequest];
     v7 = objc_alloc_init(PIParallaxLuminanceCalculator);
-    v8 = [v6 layerStack];
+    layerStack = [clockMaterialRequest layerStack];
 
-    if (!v8)
+    if (!layerStack)
     {
-      [MEMORY[0x1E69B3A48] missingError:@"Request needs either a layerStack or a segmentationItem" object:v6];
-      *a3 = v13 = 0;
+      [MEMORY[0x1E69B3A48] missingError:@"Request needs either a layerStack or a segmentationItem" object:clockMaterialRequest];
+      *render = v13 = 0;
 LABEL_12:
 
       goto LABEL_13;
     }
 
-    v9 = [v6 luminanceCalculationType];
-    if (v9 == 1)
+    luminanceCalculationType = [clockMaterialRequest luminanceCalculationType];
+    if (luminanceCalculationType == 1)
     {
-      v10 = [v6 layerStack];
-      v11 = [v6 style];
-      v12 = [(PIParallaxLuminanceCalculator *)v7 calculateLuminanceValuesForBackdropLayerStack:v10 style:v11 renderer:v5 error:a3];
+      layerStack2 = [clockMaterialRequest layerStack];
+      style = [clockMaterialRequest style];
+      v12 = [(PIParallaxLuminanceCalculator *)v7 calculateLuminanceValuesForBackdropLayerStack:layerStack2 style:style renderer:v5 error:render];
     }
 
     else
     {
-      if (v9)
+      if (luminanceCalculationType)
       {
 LABEL_11:
-        v15 = [(_PIParallaxClockMaterialJob *)self luminanceValue];
-        v13 = v15 != 0;
+        luminanceValue = [(_PIParallaxClockMaterialJob *)self luminanceValue];
+        v13 = luminanceValue != 0;
 
         goto LABEL_12;
       }
 
-      v10 = [v6 layerStack];
-      v11 = [v6 style];
-      v12 = [(PIParallaxLuminanceCalculator *)v7 calculateClockLuminanceValuesForLayerStack:v10 style:v11 renderer:v5 error:a3];
+      layerStack2 = [clockMaterialRequest layerStack];
+      style = [clockMaterialRequest style];
+      v12 = [(PIParallaxLuminanceCalculator *)v7 calculateClockLuminanceValuesForLayerStack:layerStack2 style:style renderer:v5 error:render];
     }
 
     v14 = v12;

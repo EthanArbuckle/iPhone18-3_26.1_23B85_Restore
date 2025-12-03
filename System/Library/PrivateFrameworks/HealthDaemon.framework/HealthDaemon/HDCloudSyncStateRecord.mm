@@ -1,24 +1,24 @@
 @interface HDCloudSyncStateRecord
-+ (BOOL)hasFutureSchema:(id)a3;
-+ (BOOL)isStateRecord:(id)a3;
-+ (id)recordIDWithZoneID:(id)a3 recordIdentifier:(id)a4;
-+ (id)recordWithStateData:(id)a3 zoneID:(id)a4 recordIdentifier:(id)a5 error:(id *)a6;
-- (HDCloudSyncStateRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4;
++ (BOOL)hasFutureSchema:(id)schema;
++ (BOOL)isStateRecord:(id)record;
++ (id)recordIDWithZoneID:(id)d recordIdentifier:(id)identifier;
++ (id)recordWithStateData:(id)data zoneID:(id)d recordIdentifier:(id)identifier error:(id *)error;
+- (HDCloudSyncStateRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version;
 - (NSString)key;
 - (NSURL)stateDataAssetURL;
-- (id)_createAssetWithStateData:(id)a3 error:(id *)a4;
-- (id)_initWithStateData:(id)a3 zoneID:(id)a4 recordIdentifier:(id)a5 error:(id *)a6;
-- (id)initInZone:(id)a3 recordIdentifier:(id)a4;
-- (void)updateStateData:(id)a3;
+- (id)_createAssetWithStateData:(id)data error:(id *)error;
+- (id)_initWithStateData:(id)data zoneID:(id)d recordIdentifier:(id)identifier error:(id *)error;
+- (id)initInZone:(id)zone recordIdentifier:(id)identifier;
+- (void)updateStateData:(id)data;
 @end
 
 @implementation HDCloudSyncStateRecord
 
-- (id)initInZone:(id)a3 recordIdentifier:(id)a4
+- (id)initInZone:(id)zone recordIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() recordIDWithZoneID:v7 recordIdentifier:v6];
+  identifierCopy = identifier;
+  zoneCopy = zone;
+  v8 = [objc_opt_class() recordIDWithZoneID:zoneCopy recordIdentifier:identifierCopy];
 
   v9 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"CloudSyncStateRecord" recordID:v8];
   v10 = [(HDCloudSyncStateRecord *)self initWithCKRecord:v9 schemaVersion:1];
@@ -26,19 +26,19 @@
   return v10;
 }
 
-- (HDCloudSyncStateRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4
+- (HDCloudSyncStateRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version
 {
   v15.receiver = self;
   v15.super_class = HDCloudSyncStateRecord;
-  v4 = [(HDCloudSyncRecord *)&v15 initWithCKRecord:a3 schemaVersion:a4];
+  v4 = [(HDCloudSyncRecord *)&v15 initWithCKRecord:record schemaVersion:version];
   v5 = v4;
   if (!v4)
   {
     goto LABEL_9;
   }
 
-  v6 = [(HDCloudSyncRecord *)v4 underlyingMessage];
-  if (!v6)
+  underlyingMessage = [(HDCloudSyncRecord *)v4 underlyingMessage];
+  if (!underlyingMessage)
   {
     v11 = objc_alloc_init(HDCloudSyncCodableState);
     underlyingStateData = v5->_underlyingStateData;
@@ -47,7 +47,7 @@
     goto LABEL_8;
   }
 
-  v7 = [[HDCloudSyncCodableState alloc] initWithData:v6];
+  v7 = [[HDCloudSyncCodableState alloc] initWithData:underlyingMessage];
   v8 = v5->_underlyingStateData;
   v5->_underlyingStateData = v7;
 
@@ -74,30 +74,30 @@ LABEL_10:
   return v10;
 }
 
-+ (id)recordWithStateData:(id)a3 zoneID:(id)a4 recordIdentifier:(id)a5 error:(id *)a6
++ (id)recordWithStateData:(id)data zoneID:(id)d recordIdentifier:(id)identifier error:(id *)error
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[HDCloudSyncStateRecord alloc] _initWithStateData:v11 zoneID:v10 recordIdentifier:v9 error:a6];
+  identifierCopy = identifier;
+  dCopy = d;
+  dataCopy = data;
+  v12 = [[HDCloudSyncStateRecord alloc] _initWithStateData:dataCopy zoneID:dCopy recordIdentifier:identifierCopy error:error];
 
   return v12;
 }
 
-- (id)_initWithStateData:(id)a3 zoneID:(id)a4 recordIdentifier:(id)a5 error:(id *)a6
+- (id)_initWithStateData:(id)data zoneID:(id)d recordIdentifier:(id)identifier error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
-  v13 = [objc_opt_class() recordIDWithZoneID:v12 recordIdentifier:v11];
+  dataCopy = data;
+  identifierCopy = identifier;
+  dCopy = d;
+  v13 = [objc_opt_class() recordIDWithZoneID:dCopy recordIdentifier:identifierCopy];
 
   v14 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"CloudSyncStateRecord" recordID:v13];
   v15 = [(HDCloudSyncStateRecord *)self initWithCKRecord:v14 schemaVersion:1];
   if (v15)
   {
-    if ([v10 length] >> 20)
+    if ([dataCopy length] >> 20)
     {
-      v16 = [(HDCloudSyncStateRecord *)v15 _createAssetWithStateData:v10 error:a6];
+      v16 = [(HDCloudSyncStateRecord *)v15 _createAssetWithStateData:dataCopy error:error];
       if (v16)
       {
         [v14 setObject:v16 forKeyedSubscript:@"CloudSyncStateAsset"];
@@ -117,25 +117,25 @@ LABEL_10:
 
     else
     {
-      [(HDCloudSyncCodableState *)v15->_underlyingStateData setStateData:v10];
+      [(HDCloudSyncCodableState *)v15->_underlyingStateData setStateData:dataCopy];
     }
   }
 
   return v15;
 }
 
-- (id)_createAssetWithStateData:(id)a3 error:(id *)a4
+- (id)_createAssetWithStateData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(MEMORY[0x277CCAA00]);
-  v7 = [v6 temporaryDirectory];
-  v8 = [MEMORY[0x277CCAD78] UUID];
-  v9 = [v8 UUIDString];
-  v10 = [v7 URLByAppendingPathComponent:v9];
+  temporaryDirectory = [v6 temporaryDirectory];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v10 = [temporaryDirectory URLByAppendingPathComponent:uUIDString];
 
-  v11 = HDAssetFileHandleForFileURL(v10, v6, a4);
+  v11 = HDAssetFileHandleForFileURL(v10, v6, error);
   v12 = v11;
-  if (v11 && [v11 writeData:v5 error:a4])
+  if (v11 && [v11 writeData:dataCopy error:error])
   {
     v13 = _HDIsUnitTesting;
     v14 = objc_alloc(MEMORY[0x277CBC190]);
@@ -160,20 +160,20 @@ LABEL_10:
   return v16;
 }
 
-+ (BOOL)isStateRecord:(id)a3
++ (BOOL)isStateRecord:(id)record
 {
-  v3 = [a3 recordType];
-  v4 = [v3 isEqualToString:@"CloudSyncStateRecord"];
+  recordType = [record recordType];
+  v4 = [recordType isEqualToString:@"CloudSyncStateRecord"];
 
   return v4;
 }
 
-+ (id)recordIDWithZoneID:(id)a3 recordIdentifier:(id)a4
++ (id)recordIDWithZoneID:(id)d recordIdentifier:(id)identifier
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a3;
-  v7 = [v5 stringWithFormat:@"%@%@%@", @"CloudSyncState", @"/", a4];
-  v8 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v7 zoneID:v6];
+  dCopy = d;
+  identifier = [v5 stringWithFormat:@"%@%@%@", @"CloudSyncState", @"/", identifier];
+  v8 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:identifier zoneID:dCopy];
 
   return v8;
 }
@@ -181,14 +181,14 @@ LABEL_10:
 - (NSString)key
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(HDCloudSyncRecord *)self record];
-  v4 = [v3 recordID];
-  v5 = [v4 recordName];
-  v6 = [v5 componentsSeparatedByString:@"/"];
+  record = [(HDCloudSyncRecord *)self record];
+  recordID = [record recordID];
+  recordName = [recordID recordName];
+  v6 = [recordName componentsSeparatedByString:@"/"];
 
   if ([v6 count] == 2)
   {
-    v7 = [v6 lastObject];
+    lastObject = [v6 lastObject];
   }
 
   else
@@ -198,52 +198,52 @@ LABEL_10:
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_FAULT))
     {
       v11 = 138412290;
-      v12 = self;
+      selfCopy = self;
       _os_log_fault_impl(&dword_228986000, v8, OS_LOG_TYPE_FAULT, "Error fetching key from State Sync record %@", &v11, 0xCu);
     }
 
-    v7 = 0;
+    lastObject = 0;
   }
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return lastObject;
 }
 
 - (NSURL)stateDataAssetURL
 {
-  v2 = [(HDCloudSyncRecord *)self record];
-  v3 = [v2 objectForKeyedSubscript:@"CloudSyncStateAsset"];
+  record = [(HDCloudSyncRecord *)self record];
+  v3 = [record objectForKeyedSubscript:@"CloudSyncStateAsset"];
 
-  v4 = [v3 fileURL];
+  fileURL = [v3 fileURL];
 
-  return v4;
+  return fileURL;
 }
 
-- (void)updateStateData:(id)a3
+- (void)updateStateData:(id)data
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length] <= 0x100000)
+  dataCopy = data;
+  if ([dataCopy length] <= 0x100000)
   {
-    [(HDCloudSyncCodableState *)self->_underlyingStateData setStateData:v4];
+    [(HDCloudSyncCodableState *)self->_underlyingStateData setStateData:dataCopy];
 
-    v12 = [(HDCloudSyncRecord *)self record];
-    [v12 setObject:0 forKeyedSubscript:@"CloudSyncStateAsset"];
+    record = [(HDCloudSyncRecord *)self record];
+    [record setObject:0 forKeyedSubscript:@"CloudSyncStateAsset"];
     v9 = *MEMORY[0x277D85DE8];
   }
 
   else
   {
     v13 = 0;
-    v5 = [(HDCloudSyncStateRecord *)self _createAssetWithStateData:v4 error:&v13];
+    v5 = [(HDCloudSyncStateRecord *)self _createAssetWithStateData:dataCopy error:&v13];
 
     v6 = v13;
     v7 = v6;
     if (v5 || !v6)
     {
-      v10 = [(HDCloudSyncRecord *)self record];
-      [v10 setObject:v5 forKeyedSubscript:@"CloudSyncStateAsset"];
+      record2 = [(HDCloudSyncRecord *)self record];
+      [record2 setObject:v5 forKeyedSubscript:@"CloudSyncStateAsset"];
 
       [(HDCloudSyncCodableState *)self->_underlyingStateData setStateData:0];
     }
@@ -255,7 +255,7 @@ LABEL_10:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v15 = self;
+        selfCopy = self;
         v16 = 2114;
         v17 = v7;
         _os_log_error_impl(&dword_228986000, v8, OS_LOG_TYPE_ERROR, "%{public}@ Failed to update asset on HDCloudSyncStateRecord, %{public}@", buf, 0x16u);
@@ -266,10 +266,10 @@ LABEL_10:
   }
 }
 
-+ (BOOL)hasFutureSchema:(id)a3
++ (BOOL)hasFutureSchema:(id)schema
 {
-  v3 = [a3 encryptedValues];
-  v4 = [v3 objectForKeyedSubscript:@"Version"];
+  encryptedValues = [schema encryptedValues];
+  v4 = [encryptedValues objectForKeyedSubscript:@"Version"];
 
   v5 = v4 && [v4 integerValue] > 1;
   return v5;

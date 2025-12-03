@@ -1,20 +1,20 @@
 @interface ComAppleProactiveLuceneNSDataDirectory_NSDataIndexInput
 - (char)readByte;
-- (id)sliceWithNSString:(id)a3 withLong:(int64_t)a4 withLong:(int64_t)a5;
+- (id)sliceWithNSString:(id)string withLong:(int64_t)long withLong:(int64_t)withLong;
 - (void)dealloc;
 @end
 
 @implementation ComAppleProactiveLuceneNSDataDirectory_NSDataIndexInput
 
-- (id)sliceWithNSString:(id)a3 withLong:(int64_t)a4 withLong:(int64_t)a5
+- (id)sliceWithNSString:(id)string withLong:(int64_t)long withLong:(int64_t)withLong
 {
   if (self->this$0_->useMadvise_)
   {
-    madvise([self->nsData_ bytes] + a4, a5, 3);
+    madvise([self->nsData_ bytes] + long, withLong, 3);
   }
 
   v9 = [ComAppleProactiveLuceneNSDataDirectory_SlicedIndexInput alloc];
-  sub_100041024(v9, a3, self, a4, a5);
+  sub_100041024(v9, string, self, long, withLong);
 
   return v9;
 }

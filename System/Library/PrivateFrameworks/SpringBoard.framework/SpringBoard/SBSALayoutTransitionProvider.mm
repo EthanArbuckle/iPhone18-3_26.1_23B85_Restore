@@ -1,9 +1,9 @@
 @interface SBSALayoutTransitionProvider
 - (NSString)description;
-- (id)_adjunctElementIdentificationInContext:(id)a3;
+- (id)_adjunctElementIdentificationInContext:(id)context;
 - (id)_elementLayoutModeSupportingChildProvider;
-- (id)_layoutProviderForLayoutMode:(int64_t)a3;
-- (id)preferencesFromContext:(id)a3;
+- (id)_layoutProviderForLayoutMode:(int64_t)mode;
+- (id)preferencesFromContext:(id)context;
 - (void)_removeChildMitosisAndRecombinationProviders;
 - (void)removeFromParentProvider;
 @end
@@ -35,13 +35,13 @@
 
 - (NSString)description
 {
-  v3 = [(SBSALayoutTransitionProvider *)self isInitialized];
+  isInitialized = [(SBSALayoutTransitionProvider *)self isInitialized];
   v4 = objc_alloc(MEMORY[0x277CCAB68]);
   v5 = objc_opt_class();
   v6 = NSStringFromBOOL();
   v7 = [v4 initWithFormat:@"<%@: %p; initialized: %@", v5, self, v6];
 
-  if (v3)
+  if (isInitialized)
   {
     [(SBSALayoutTransitionProvider *)self previousElementLayoutMode];
     v8 = SAUIStringFromElementViewLayoutMode();
@@ -55,12 +55,12 @@
   return v7;
 }
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
   v114 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  contextCopy = context;
   v6 = objc_opt_class();
-  v7 = v5;
+  v7 = contextCopy;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -103,33 +103,33 @@ LABEL_74:
     }
 
     [(SBSABasePreferencesProvider *)v11 removeFromParentProvider];
-    v15 = [v9 elementContexts];
-    v16 = [v15 bs_filter:&__block_literal_global_179];
+    elementContexts = [v9 elementContexts];
+    v16 = [elementContexts bs_filter:&__block_literal_global_179];
 
-    v17 = [v16 firstObject];
-    v18 = [v17 layoutMode];
-    if (v18 == 3)
+    firstObject = [v16 firstObject];
+    layoutMode = [firstObject layoutMode];
+    if (layoutMode == 3)
     {
-      if ([v17 systemApertureCustomLayout] == 5)
+      if ([firstObject systemApertureCustomLayout] == 5)
       {
         if ([v16 count] > 1)
         {
-          v18 = 1;
+          layoutMode = 1;
         }
 
         else
         {
-          v18 = 2;
+          layoutMode = 2;
         }
       }
 
       else
       {
-        v18 = 3;
+        layoutMode = 3;
       }
     }
 
-    v19 = [(SBSALayoutTransitionProvider *)self _layoutProviderForLayoutMode:v18];
+    v19 = [(SBSALayoutTransitionProvider *)self _layoutProviderForLayoutMode:layoutMode];
     v20 = self->_targetLayoutProvider;
     self->_targetLayoutProvider = v19;
 
@@ -139,13 +139,13 @@ LABEL_74:
       [SBSALayoutTransitionProvider preferencesFromContext:];
     }
 
-    v22 = [(SBSALayoutTransitionProvider *)self _elementLayoutModeSupportingChildProvider];
+    _elementLayoutModeSupportingChildProvider = [(SBSALayoutTransitionProvider *)self _elementLayoutModeSupportingChildProvider];
     previousLayoutProvider = self->_previousLayoutProvider;
-    self->_previousLayoutProvider = v22;
-    v24 = v22;
+    self->_previousLayoutProvider = _elementLayoutModeSupportingChildProvider;
+    v24 = _elementLayoutModeSupportingChildProvider;
 
-    v25 = [v9 preferences];
-    self->_awaitingCollision = [v25 isCollisionImminent];
+    preferences = [v9 preferences];
+    self->_awaitingCollision = [preferences isCollisionImminent];
 
     v26 = SBLogSystemAperturePreferencesStackElements();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -154,19 +154,19 @@ LABEL_74:
     }
 
     [(SBSAElementLayoutModeSupporting *)v24 removeFromParentProvider];
-    v27 = [v9 preferences];
-    v28 = [v27 lastChangingElementLayoutTransition];
-    v29 = [SBSAElementContentProvider disappearanceTransitionElementContentProviderWithParentProvider:self staticLayoutTransition:v28];
+    preferences2 = [v9 preferences];
+    lastChangingElementLayoutTransition = [preferences2 lastChangingElementLayoutTransition];
+    v29 = [SBSAElementContentProvider disappearanceTransitionElementContentProviderWithParentProvider:self staticLayoutTransition:lastChangingElementLayoutTransition];
 
     targetLayoutProvider = self->_targetLayoutProvider;
     v11 = v29;
     v12 = &OBJC_IVAR___SBAlwaysOnTelemetryEmitter__mq_deferredLoggingTimer;
   }
 
-  v30 = [(SBSAElementLayoutModeSupporting *)targetLayoutProvider parentProvider];
-  v31 = v30 != 0;
+  parentProvider = [(SBSAElementLayoutModeSupporting *)targetLayoutProvider parentProvider];
+  v31 = parentProvider != 0;
 
-  if (v30)
+  if (parentProvider)
   {
     if (![v9 containsAnyOfSignals:2])
     {
@@ -174,8 +174,8 @@ LABEL_74:
       goto LABEL_52;
     }
 
-    v32 = SBLogSystemAperturePreferencesStackElements();
-    if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
+    _elementLayoutModeSupportingChildProvider2 = SBLogSystemAperturePreferencesStackElements();
+    if (os_log_type_enabled(_elementLayoutModeSupportingChildProvider2, OS_LOG_TYPE_DEBUG))
     {
       [SBSALayoutTransitionProvider preferencesFromContext:];
     }
@@ -190,25 +190,25 @@ LABEL_74:
     [SBSALayoutTransitionProvider preferencesFromContext:];
   }
 
-  v99 = v30 != 0;
+  v99 = parentProvider != 0;
   v35 = self->_awaitingCollision && ([v9 signals] & 1) == 0;
   self->_awaitingCollision = v35;
-  v36 = [v9 preferences];
-  v37 = [v36 elementLayoutTransition];
-  v38 = [v37 isSingleElementExpansion];
+  preferences3 = [v9 preferences];
+  elementLayoutTransition = [preferences3 elementLayoutTransition];
+  isSingleElementExpansion = [elementLayoutTransition isSingleElementExpansion];
 
-  if (!self->_awaitingCollision && ((self->_initialized | v38) & 1) != 0)
+  if (!self->_awaitingCollision && ((self->_initialized | isSingleElementExpansion) & 1) != 0)
   {
     v39 = SBLogSystemAperturePreferencesStackElements();
-    v97 = v38;
+    v97 = isSingleElementExpansion;
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
     {
-      v88 = [v9 queryIteration];
+      queryIteration = [v9 queryIteration];
       v89 = NSStringFromBOOL();
       v90 = NSStringFromBOOL();
       v91 = NSStringFromBOOL();
       *buf = 134349826;
-      v105 = v88;
+      v105 = queryIteration;
       v106 = 2112;
       v107 = v89;
       v108 = 2112;
@@ -219,15 +219,15 @@ LABEL_74:
     }
 
     [(SBSABasePreferencesProvider *)v11 removeFromParentProvider];
-    if (v38)
+    if (isSingleElementExpansion)
     {
       [(SBSABasePreferencesProvider *)self->_childRecombinationProvider removeFromParentProvider];
       childRecombinationProvider = self->_childRecombinationProvider;
       self->_childRecombinationProvider = 0;
     }
 
-    v32 = [(SBSALayoutTransitionProvider *)self _elementLayoutModeSupportingChildProvider];
-    [v32 removeFromParentProvider];
+    _elementLayoutModeSupportingChildProvider2 = [(SBSALayoutTransitionProvider *)self _elementLayoutModeSupportingChildProvider];
+    [_elementLayoutModeSupportingChildProvider2 removeFromParentProvider];
     childMitosisProvider = self->_childMitosisProvider;
     if (!childMitosisProvider)
     {
@@ -241,17 +241,17 @@ LABEL_74:
     v95 = childMitosisProvider;
     [v95 setChildProvider:self->_targetLayoutProvider];
     v42 = self->_targetLayoutProvider;
-    v43 = [v9 preferences];
-    v44 = [v43 lastChangingElementLayoutTransition];
-    v33 = [SBSAElementContentProvider appearanceTransitionElementContentProviderWithParentProvider:v42 staticLayoutTransition:v44];
+    preferences4 = [v9 preferences];
+    lastChangingElementLayoutTransition2 = [preferences4 lastChangingElementLayoutTransition];
+    v33 = [SBSAElementContentProvider appearanceTransitionElementContentProviderWithParentProvider:v42 staticLayoutTransition:lastChangingElementLayoutTransition2];
 
     v31 = v99;
     if (v97)
     {
       if ([(SBSAElementLayoutModeSupporting *)self->_targetLayoutProvider supportedElementLayoutMode]== 3)
       {
-        v45 = [v9 elementInteractionResults];
-        v46 = [v45 bs_containsObjectPassingTest:&__block_literal_global_13];
+        elementInteractionResults = [v9 elementInteractionResults];
+        v46 = [elementInteractionResults bs_containsObjectPassingTest:&__block_literal_global_13];
 
         if (v46)
         {
@@ -272,14 +272,14 @@ LABEL_74:
     v12 = &OBJC_IVAR___SBAlwaysOnTelemetryEmitter__mq_deferredLoggingTimer;
     if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
     {
-      v92 = [v9 queryIteration];
+      queryIteration2 = [v9 queryIteration];
       v93 = self->_targetLayoutProvider;
       *buf = 134350082;
-      v105 = v92;
+      v105 = queryIteration2;
       v106 = 2112;
       v107 = v33;
       v108 = 2112;
-      v109 = v32;
+      v109 = _elementLayoutModeSupportingChildProvider2;
       v110 = 2112;
       v111 = v93;
       v112 = 2112;
@@ -299,18 +299,18 @@ LABEL_52:
     goto LABEL_63;
   }
 
-  v51 = [v9 preferences];
-  v52 = [v51 isCollisionImminent];
+  preferences5 = [v9 preferences];
+  isCollisionImminent = [preferences5 isCollisionImminent];
 
-  v53 = [(SBSALayoutTransitionProvider *)self targetElementLayoutMode];
-  if (!v52)
+  targetElementLayoutMode = [(SBSALayoutTransitionProvider *)self targetElementLayoutMode];
+  if (!isCollisionImminent)
   {
-    if (v53 == 1)
+    if (targetElementLayoutMode == 1)
     {
-      v57 = [v9 preferences];
-      v58 = [v57 elementLayoutTransition];
-      v59 = [v58 targetElementContexts];
-      if ([v59 count] >= 2)
+      preferences6 = [v9 preferences];
+      elementLayoutTransition2 = [preferences6 elementLayoutTransition];
+      targetElementContexts = [elementLayoutTransition2 targetElementContexts];
+      if ([targetElementContexts count] >= 2)
       {
 
 LABEL_62:
@@ -331,11 +331,11 @@ LABEL_63:
         goto LABEL_64;
       }
 
-      v98 = [v9 preferences];
-      v94 = [v98 elementLayoutTransition];
-      v60 = [v94 targetElementContexts];
-      [v60 firstObject];
-      v61 = v100 = v57;
+      preferences7 = [v9 preferences];
+      elementLayoutTransition3 = [preferences7 elementLayoutTransition];
+      targetElementContexts2 = [elementLayoutTransition3 targetElementContexts];
+      [targetElementContexts2 firstObject];
+      v61 = v100 = preferences6;
       v96 = [v61 interfaceOrientation] - 3;
 
       v12 = &OBJC_IVAR___SBAlwaysOnTelemetryEmitter__mq_deferredLoggingTimer;
@@ -355,7 +355,7 @@ LABEL_63:
   }
 
   v54 = 3;
-  if (v53 == 1)
+  if (targetElementLayoutMode == 1)
   {
     v54 = 4;
   }
@@ -387,19 +387,19 @@ LABEL_68:
       }
     }
 
-    v75 = [objc_opt_class() settings];
-    v76 = [v75 highlightTransitions];
+    settings = [objc_opt_class() settings];
+    highlightTransitions = [settings highlightTransitions];
 
-    if (v76)
+    if (highlightTransitions)
     {
-      v77 = [v9 preferences];
+      preferences8 = [v9 preferences];
       v103[0] = MEMORY[0x277D85DD0];
       v103[1] = 3221225472;
       v103[2] = __55__SBSALayoutTransitionProvider_preferencesFromContext___block_invoke_17;
       v103[3] = &unk_2783A93E8;
       v103[4] = self;
       v103[5] = v101;
-      v78 = [v77 copyWithBlock:v103];
+      v78 = [preferences8 copyWithBlock:v103];
       v79 = [v9 copyByUpdatingPreferences:v78];
 
       v68 = 0;
@@ -419,9 +419,9 @@ LABEL_64:
   v67 = SBLogSystemAperturePreferencesStackElements();
   if (os_log_type_enabled(v67, OS_LOG_TYPE_DEBUG))
   {
-    v87 = [v9 queryIteration];
+    queryIteration3 = [v9 queryIteration];
     *buf = 134349570;
-    v105 = v87;
+    v105 = queryIteration3;
     v106 = 2112;
     v107 = v66;
     v108 = 2112;
@@ -596,16 +596,16 @@ void __55__SBSALayoutTransitionProvider_preferencesFromContext___block_invoke_2(
   [v9 setAnimatedTransitionDescription:v10 forProperty:v13 withMilestones:0];
 }
 
-- (id)_layoutProviderForLayoutMode:(int64_t)a3
+- (id)_layoutProviderForLayoutMode:(int64_t)mode
 {
-  if (a3 < 1)
+  if (mode < 1)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [[SBSALayoutModeLayoutProvider alloc] initWithLayoutMode:a3];
+    v4 = [[SBSALayoutModeLayoutProvider alloc] initWithLayoutMode:mode];
   }
 
   return v4;
@@ -619,21 +619,21 @@ void __55__SBSALayoutTransitionProvider_preferencesFromContext___block_invoke_2(
   return v4;
 }
 
-- (id)_adjunctElementIdentificationInContext:(id)a3
+- (id)_adjunctElementIdentificationInContext:(id)context
 {
-  v3 = [a3 elementContexts];
-  if ([v3 count])
+  elementContexts = [context elementContexts];
+  if ([elementContexts count])
   {
     v4 = 0;
-    while (SBSAIsElementInCollectionSensorAttached(v4, v3))
+    while (SBSAIsElementInCollectionSensorAttached(v4, elementContexts))
     {
-      if (++v4 >= [v3 count])
+      if (++v4 >= [elementContexts count])
       {
         goto LABEL_5;
       }
     }
 
-    v5 = [v3 objectAtIndex:v4];
+    v5 = [elementContexts objectAtIndex:v4];
   }
 
   else

@@ -1,13 +1,13 @@
 @interface ATXSendToDigestSuggestion
 - (ATXSendToDigestSuggestion)init;
-- (ATXSendToDigestSuggestion)initWithCoder:(id)a3;
-- (ATXSendToDigestSuggestion)initWithProto:(id)a3;
-- (ATXSendToDigestSuggestion)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ATXSendToDigestSuggestion)initWithCoder:(id)coder;
+- (ATXSendToDigestSuggestion)initWithProto:(id)proto;
+- (ATXSendToDigestSuggestion)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)encodeAsProto;
 - (id)proto;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXSendToDigestSuggestion
@@ -19,64 +19,64 @@
   return [(ATXSendToDigestSuggestion *)&v3 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXSendToDigestSuggestion *)self isEqualToATXSendToDigestSuggestion:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXSendToDigestSuggestion *)self isEqualToATXSendToDigestSuggestion:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [ATXSendToDigestSuggestion allocWithZone:a3];
+  v3 = [ATXSendToDigestSuggestion allocWithZone:zone];
 
   return [(ATXSendToDigestSuggestion *)v3 init];
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXSendToDigestSuggestion *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXSendToDigestSuggestion *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXSendToDigestSuggestion)initWithProtoData:(id)a3
+- (ATXSendToDigestSuggestion)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBSendToDigestSuggestion alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBSendToDigestSuggestion alloc] initWithData:dataCopy];
 
     self = [(ATXSendToDigestSuggestion *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXSendToDigestSuggestion)initWithProto:(id)a3
+- (ATXSendToDigestSuggestion)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v5 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -93,10 +93,10 @@ LABEL_7:
   }
 
   self = [(ATXSendToDigestSuggestion *)self init];
-  v5 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)proto
@@ -106,17 +106,17 @@ LABEL_8:
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXSendToDigestSuggestion *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXSendToDigestSuggestion *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXSendToDigestSuggestion)initWithCoder:(id)a3
+- (ATXSendToDigestSuggestion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXSendToDigestSuggestion *)self initWithProtoData:v5];
   return v6;

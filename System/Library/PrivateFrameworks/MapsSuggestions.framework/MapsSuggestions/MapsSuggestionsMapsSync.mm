@@ -1,27 +1,27 @@
 @interface MapsSuggestionsMapsSync
-- (MapsSuggestionsEntry)_createEntryFromRecentHistoryMultiPointRoute:(MapsSuggestionsEntry *)a1;
-- (MapsSuggestionsEntry)_createEntryFromRecentHistoryPlace:(uint64_t)a1;
-- (MapsSuggestionsEntry)_createEntryFromRecentHistoryRoute:(MapsSuggestionsEntry *)a1;
-- (MapsSuggestionsMapsSync)initWithMapsSyncConnector:(id)a3;
+- (MapsSuggestionsEntry)_createEntryFromRecentHistoryMultiPointRoute:(MapsSuggestionsEntry *)route;
+- (MapsSuggestionsEntry)_createEntryFromRecentHistoryPlace:(uint64_t)place;
+- (MapsSuggestionsEntry)_createEntryFromRecentHistoryRoute:(MapsSuggestionsEntry *)route;
+- (MapsSuggestionsMapsSync)initWithMapsSyncConnector:(id)connector;
 - (NSString)uniqueName;
-- (char)canProduceRatingRequestForMapItem:(id)a3 maxAge:(double)a4 handler:(id)a5;
-- (char)deleteEntry:(id)a3 handler:(id)a4;
-- (char)didProduceRatingRequestForMapItem:(id)a3 handler:(id)a4;
-- (char)durationSinceLastTransitHistoryRoute:(id)a3;
-- (char)entriesFromHistoryWithHandler:(id)a3;
-- (char)homeWorkSchoolShortcutsFromFavoritesWithHandler:(id)a3;
-- (char)mapItemsForHistoricPlaces:(BOOL)a3 routes:(BOOL)a4 maxAge:(double)a5 handler:(id)a6;
-- (char)shortcutsFromFavoritesWithHandler:(id)a3;
-- (char)userHasFavoriteTransitLinesWithHandler:(id)a3;
-- (char)userHasFavoriteTransitPOIsWithHandler:(id)a3;
+- (char)canProduceRatingRequestForMapItem:(id)item maxAge:(double)age handler:(id)handler;
+- (char)deleteEntry:(id)entry handler:(id)handler;
+- (char)didProduceRatingRequestForMapItem:(id)item handler:(id)handler;
+- (char)durationSinceLastTransitHistoryRoute:(id)route;
+- (char)entriesFromHistoryWithHandler:(id)handler;
+- (char)homeWorkSchoolShortcutsFromFavoritesWithHandler:(id)handler;
+- (char)mapItemsForHistoricPlaces:(BOOL)places routes:(BOOL)routes maxAge:(double)age handler:(id)handler;
+- (char)shortcutsFromFavoritesWithHandler:(id)handler;
+- (char)userHasFavoriteTransitLinesWithHandler:(id)handler;
+- (char)userHasFavoriteTransitPOIsWithHandler:(id)handler;
 - (id).cxx_construct;
-- (id)initFromResourceDepot:(id)a3;
-- (uint64_t)_addFieldsToSuggestionsEntry:(uint64_t)a1;
-- (void)_updateEntry:(void *)a3 withEvInfo:;
-- (void)addMapsSyncObserver:(id)a3 forContentType:(int64_t)a4;
-- (void)mapsSyncDidChangeForType:(int64_t)a3;
-- (void)removeMapsSyncObserver:(id)a3 forContentType:(int64_t)a4;
-- (void)removeMapsSyncObserverForAllContentTypes:(id)a3;
+- (id)initFromResourceDepot:(id)depot;
+- (uint64_t)_addFieldsToSuggestionsEntry:(uint64_t)entry;
+- (void)_updateEntry:(void *)entry withEvInfo:;
+- (void)addMapsSyncObserver:(id)observer forContentType:(int64_t)type;
+- (void)mapsSyncDidChangeForType:(int64_t)type;
+- (void)removeMapsSyncObserver:(id)observer forContentType:(int64_t)type;
+- (void)removeMapsSyncObserverForAllContentTypes:(id)types;
 @end
 
 @implementation MapsSuggestionsMapsSync
@@ -33,10 +33,10 @@
   return self;
 }
 
-- (MapsSuggestionsMapsSync)initWithMapsSyncConnector:(id)a3
+- (MapsSuggestionsMapsSync)initWithMapsSyncConnector:(id)connector
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  connectorCopy = connector;
   v28.receiver = self;
   v28.super_class = MapsSuggestionsMapsSync;
   v6 = [(MapsSuggestionsMapsSync *)&v28 init];
@@ -54,7 +54,7 @@
     name = v6->_queue._name;
     v6->_queue._name = v10;
 
-    objc_storeStrong(&v6->_connector, a3);
+    objc_storeStrong(&v6->_connector, connector);
     [(MapsSuggestionsMapsSyncConnector *)v6->_connector setDelegate:v6];
     v12 = [MapsSuggestionsObservers alloc];
     v13 = v6->_queue._innerQueue;
@@ -77,12 +77,12 @@
     v24 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      v25 = [(MapsSuggestionsMapsSync *)v6 uniqueName];
-      v26 = [(MapsSuggestionsMapsSyncConnector *)v6->_connector uniqueName];
+      uniqueName = [(MapsSuggestionsMapsSync *)v6 uniqueName];
+      uniqueName2 = [(MapsSuggestionsMapsSyncConnector *)v6->_connector uniqueName];
       *buf = 138412546;
-      *&buf[4] = v25;
+      *&buf[4] = uniqueName;
       *&buf[12] = 2112;
-      *&buf[14] = v26;
+      *&buf[14] = uniqueName2;
       _os_log_impl(&dword_1C5126000, v24, OS_LOG_TYPE_DEBUG, "%@ is using %@", buf, 0x16u);
     }
   }
@@ -90,12 +90,12 @@
   return v6;
 }
 
-- (id)initFromResourceDepot:(id)a3
+- (id)initFromResourceDepot:(id)depot
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  depotCopy = depot;
+  v5 = depotCopy;
+  if (!depotCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -114,9 +114,9 @@
     goto LABEL_9;
   }
 
-  v6 = [v4 oneMapsSyncConnector];
+  oneMapsSyncConnector = [depotCopy oneMapsSyncConnector];
 
-  if (!v6)
+  if (!oneMapsSyncConnector)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -134,24 +134,24 @@
 
 LABEL_9:
 
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
-  v7 = [v5 oneMapsSyncConnector];
-  self = [(MapsSuggestionsMapsSync *)self initWithMapsSyncConnector:v7];
+  oneMapsSyncConnector2 = [v5 oneMapsSyncConnector];
+  self = [(MapsSuggestionsMapsSync *)self initWithMapsSyncConnector:oneMapsSyncConnector2];
 
-  v8 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v8;
+  return selfCopy;
 }
 
-- (char)userHasFavoriteTransitLinesWithHandler:(id)a3
+- (char)userHasFavoriteTransitLinesWithHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     objc_initWeak(location, self);
     connector = self->_connector;
@@ -160,7 +160,7 @@ LABEL_10:
     v9[2] = __66__MapsSuggestionsMapsSync_userHasFavoriteTransitLinesWithHandler___block_invoke;
     v9[3] = &unk_1E81F7228;
     objc_copyWeak(&v11, location);
-    v10 = v4;
+    v10 = handlerCopy;
     v6 = [(MapsSuggestionsMapsSyncConnector *)connector allContentOfType:2 handler:v9];
 
     objc_destroyWeak(&v11);
@@ -269,11 +269,11 @@ LABEL_11:
   return (*(*(a1 + 40) + 16))(*(a1 + 40), v3);
 }
 
-- (char)userHasFavoriteTransitPOIsWithHandler:(id)a3
+- (char)userHasFavoriteTransitPOIsWithHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     objc_initWeak(location, self);
     connector = self->_connector;
@@ -282,7 +282,7 @@ LABEL_11:
     v9[2] = __65__MapsSuggestionsMapsSync_userHasFavoriteTransitPOIsWithHandler___block_invoke;
     v9[3] = &unk_1E81F7228;
     objc_copyWeak(&v11, location);
-    v10 = v4;
+    v10 = handlerCopy;
     v6 = [(MapsSuggestionsMapsSyncConnector *)connector allContentOfType:3 handler:v9];
 
     objc_destroyWeak(&v11);
@@ -410,11 +410,11 @@ LABEL_16:
   return (*(*(a1 + 40) + 16))();
 }
 
-- (char)durationSinceLastTransitHistoryRoute:(id)a3
+- (char)durationSinceLastTransitHistoryRoute:(id)route
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  routeCopy = route;
+  if (routeCopy)
   {
     objc_initWeak(location, self);
     connector = self->_connector;
@@ -423,7 +423,7 @@ LABEL_16:
     v9[2] = __64__MapsSuggestionsMapsSync_durationSinceLastTransitHistoryRoute___block_invoke;
     v9[3] = &unk_1E81F7228;
     objc_copyWeak(&v11, location);
-    v10 = v4;
+    v10 = routeCopy;
     v6 = [(MapsSuggestionsMapsSyncConnector *)connector allContentOfType:1 handler:v9];
 
     objc_destroyWeak(&v11);
@@ -576,10 +576,10 @@ void __64__MapsSuggestionsMapsSync_durationSinceLastTransitHistoryRoute___block_
 LABEL_17:
 }
 
-- (char)entriesFromHistoryWithHandler:(id)a3
+- (char)entriesFromHistoryWithHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -587,7 +587,7 @@ LABEL_17:
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "entriesFromHistoryWithHandler", buf, 2u);
   }
 
-  if (v4)
+  if (handlerCopy)
   {
     objc_initWeak(buf, self);
     v6 = self->_queue._innerQueue;
@@ -599,7 +599,7 @@ LABEL_17:
     v8 = v6;
     v13 = v8;
     objc_copyWeak(&v15, buf);
-    v14 = v4;
+    v14 = handlerCopy;
     v9 = [(MapsSuggestionsMapsSyncConnector *)connector allContentOfType:1 handler:v12];
 
     objc_destroyWeak(&v15);
@@ -991,48 +991,48 @@ LABEL_75:
   }
 }
 
-- (MapsSuggestionsEntry)_createEntryFromRecentHistoryMultiPointRoute:(MapsSuggestionsEntry *)a1
+- (MapsSuggestionsEntry)_createEntryFromRecentHistoryMultiPointRoute:(MapsSuggestionsEntry *)route
 {
   v37 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (route)
   {
     v4 = [[MapsSuggestionsEntry alloc] initWithType:11 title:&stru_1F444C108];
-    v5 = [v3 identifier];
-    v6 = [v5 UUIDString];
-    [(MapsSuggestionsEntry *)v4 setString:v6 forKey:@"MapsSuggestionsMapsSyncSourcePK"];
+    identifier = [v3 identifier];
+    uUIDString = [identifier UUIDString];
+    [(MapsSuggestionsEntry *)v4 setString:uUIDString forKey:@"MapsSuggestionsMapsSyncSourcePK"];
 
     [(MapsSuggestionsEntry *)v4 setString:@"MapsSuggestionsMapsSyncSourcePK" forKey:@"MapsSuggestionsPrimaryKey"];
-    v7 = [v3 routeRequestStorage];
-    v8 = [v7 waypoints];
-    v9 = [v8 lastObject];
-    v10 = [v9 mapItemStorage];
-    [(MapsSuggestionsEntry *)v4 setGeoMapItem:v10];
+    routeRequestStorage = [v3 routeRequestStorage];
+    waypoints = [routeRequestStorage waypoints];
+    lastObject = [waypoints lastObject];
+    mapItemStorage = [lastObject mapItemStorage];
+    [(MapsSuggestionsEntry *)v4 setGeoMapItem:mapItemStorage];
 
-    v11 = [(MapsSuggestionsEntry *)v4 geoMapItem];
+    geoMapItem = [(MapsSuggestionsEntry *)v4 geoMapItem];
 
-    if (v11)
+    if (geoMapItem)
     {
-      v12 = [v3 createTime];
+      createTime = [v3 createTime];
 
-      if (v12)
+      if (createTime)
       {
-        v13 = [v3 createTime];
-        [(MapsSuggestionsEntry *)v4 setDate:v13 forKey:@"MapsSuggestionsWhenItHappenedKey"];
+        createTime2 = [v3 createTime];
+        [(MapsSuggestionsEntry *)v4 setDate:createTime2 forKey:@"MapsSuggestionsWhenItHappenedKey"];
 
         GEOConfigGetDouble();
         [(MapsSuggestionsEntry *)v4 setWeight:?];
-        [(MapsSuggestionsMapsSync *)a1 _addFieldsToSuggestionsEntry:v4];
-        v14 = [v3 createTime];
+        [(MapsSuggestionsMapsSync *)route _addFieldsToSuggestionsEntry:v4];
+        createTime3 = [v3 createTime];
         GEOConfigGetDouble();
-        v15 = [v14 dateByAddingTimeInterval:?];
+        v15 = [createTime3 dateByAddingTimeInterval:?];
         [(MapsSuggestionsEntry *)v4 setExpires:v15];
 
         [(MapsSuggestionsEntry *)v4 setBoolean:0 forKey:@"MapsSuggestionsIsResumingAnEVRoute"];
-        v16 = [(MapsSuggestionsEntry *)v4 geoMapItem];
+        geoMapItem2 = [(MapsSuggestionsEntry *)v4 geoMapItem];
         GEOConfigGetDouble();
         v18 = v17;
-        v19 = v16;
+        v19 = geoMapItem2;
         v20 = v19;
         if (v19)
         {
@@ -1061,28 +1061,28 @@ LABEL_75:
         }
 
         [(MapsSuggestionsEntry *)v4 setBoolean:v22 forKey:@"MapsSuggestionsAlreadyThereKey"];
-        if ([v7 hasTransportType])
+        if ([routeRequestStorage hasTransportType])
         {
-          v26 = [v7 transportType];
-          if (v26 != 4)
+          transportType = [routeRequestStorage transportType];
+          if (transportType != 4)
           {
-            v27 = [MEMORY[0x1E696AD98] numberWithInt:v26];
+            v27 = [MEMORY[0x1E696AD98] numberWithInt:transportType];
             [(MapsSuggestionsEntry *)v4 setNumber:v27 forKey:@"MapsSuggestionsTransportTypeKey"];
           }
         }
 
-        [(MapsSuggestionsEntry *)v4 setRouteRequestStorage:v7 forKey:@"MapsSuggestionsResumeRouteRouteRequestStorage"];
+        [(MapsSuggestionsEntry *)v4 setRouteRequestStorage:routeRequestStorage forKey:@"MapsSuggestionsResumeRouteRouteRequestStorage"];
         -[MapsSuggestionsEntry setInteger:forKey:](v4, "setInteger:forKey:", [v3 routeProgressWaypointIndex], @"MapsSuggestionsResumeRouteWaypointIndex");
-        v28 = [v3 sharedETAData];
-        [(MapsSuggestionsEntry *)v4 setData:v28 forKey:@"MapsSuggestionsResumeRouteRouteSharedETAData"];
+        sharedETAData = [v3 sharedETAData];
+        [(MapsSuggestionsEntry *)v4 setData:sharedETAData forKey:@"MapsSuggestionsResumeRouteRouteSharedETAData"];
 
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 || [v3 conformsToProtocol:&unk_1F4483110])
         {
-          [(MapsSuggestionsMapsSync *)a1 _updateEntry:v4 withEvInfo:v3];
+          [(MapsSuggestionsMapsSync *)route _updateEntry:v4 withEvInfo:v3];
         }
 
-        a1 = v4;
+        route = v4;
         goto LABEL_21;
       }
 
@@ -1096,55 +1096,55 @@ LABEL_75:
       [MapsSuggestionsMapsSync _createEntryFromRecentHistoryMultiPointRoute:v23];
     }
 
-    a1 = 0;
+    route = 0;
 LABEL_21:
   }
 
-  return a1;
+  return route;
 }
 
-- (MapsSuggestionsEntry)_createEntryFromRecentHistoryRoute:(MapsSuggestionsEntry *)a1
+- (MapsSuggestionsEntry)_createEntryFromRecentHistoryRoute:(MapsSuggestionsEntry *)route
 {
   v37 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (route)
   {
     v4 = [[MapsSuggestionsEntry alloc] initWithType:11 title:&stru_1F444C108];
-    v5 = [v3 identifier];
-    v6 = [v5 UUIDString];
-    [(MapsSuggestionsEntry *)v4 setString:v6 forKey:@"MapsSuggestionsMapsSyncSourcePK"];
+    identifier = [v3 identifier];
+    uUIDString = [identifier UUIDString];
+    [(MapsSuggestionsEntry *)v4 setString:uUIDString forKey:@"MapsSuggestionsMapsSyncSourcePK"];
 
     [(MapsSuggestionsEntry *)v4 setString:@"MapsSuggestionsMapsSyncSourcePK" forKey:@"MapsSuggestionsPrimaryKey"];
-    v7 = [v3 routeRequestStorage];
-    v8 = [v7 waypoints];
-    v9 = [v8 lastObject];
-    v10 = [v9 mapItemStorage];
-    [(MapsSuggestionsEntry *)v4 setGeoMapItem:v10];
+    routeRequestStorage = [v3 routeRequestStorage];
+    waypoints = [routeRequestStorage waypoints];
+    lastObject = [waypoints lastObject];
+    mapItemStorage = [lastObject mapItemStorage];
+    [(MapsSuggestionsEntry *)v4 setGeoMapItem:mapItemStorage];
 
-    v11 = [(MapsSuggestionsEntry *)v4 geoMapItem];
+    geoMapItem = [(MapsSuggestionsEntry *)v4 geoMapItem];
 
-    if (v11)
+    if (geoMapItem)
     {
-      v12 = [v3 createTime];
+      createTime = [v3 createTime];
 
-      if (v12)
+      if (createTime)
       {
-        v13 = [v3 createTime];
-        [(MapsSuggestionsEntry *)v4 setDate:v13 forKey:@"MapsSuggestionsWhenItHappenedKey"];
+        createTime2 = [v3 createTime];
+        [(MapsSuggestionsEntry *)v4 setDate:createTime2 forKey:@"MapsSuggestionsWhenItHappenedKey"];
 
         GEOConfigGetDouble();
         [(MapsSuggestionsEntry *)v4 setWeight:?];
-        [(MapsSuggestionsMapsSync *)a1 _addFieldsToSuggestionsEntry:v4];
-        v14 = [v3 createTime];
+        [(MapsSuggestionsMapsSync *)route _addFieldsToSuggestionsEntry:v4];
+        createTime3 = [v3 createTime];
         GEOConfigGetDouble();
-        v15 = [v14 dateByAddingTimeInterval:?];
+        v15 = [createTime3 dateByAddingTimeInterval:?];
         [(MapsSuggestionsEntry *)v4 setExpires:v15];
 
         [(MapsSuggestionsEntry *)v4 setBoolean:0 forKey:@"MapsSuggestionsIsResumingAnEVRoute"];
-        v16 = [(MapsSuggestionsEntry *)v4 geoMapItem];
+        geoMapItem2 = [(MapsSuggestionsEntry *)v4 geoMapItem];
         GEOConfigGetDouble();
         v18 = v17;
-        v19 = v16;
+        v19 = geoMapItem2;
         v20 = v19;
         if (v19)
         {
@@ -1173,27 +1173,27 @@ LABEL_21:
         }
 
         [(MapsSuggestionsEntry *)v4 setBoolean:v22 forKey:@"MapsSuggestionsAlreadyThereKey"];
-        v26 = [v3 sharedETAData];
-        [(MapsSuggestionsEntry *)v4 setData:v26 forKey:@"MapsSuggestionsResumeRouteRouteSharedETAData"];
+        sharedETAData = [v3 sharedETAData];
+        [(MapsSuggestionsEntry *)v4 setData:sharedETAData forKey:@"MapsSuggestionsResumeRouteRouteSharedETAData"];
 
-        if ([v7 hasTransportType])
+        if ([routeRequestStorage hasTransportType])
         {
-          v27 = [v7 transportType];
-          if (v27 != 4)
+          transportType = [routeRequestStorage transportType];
+          if (transportType != 4)
           {
-            v28 = [MEMORY[0x1E696AD98] numberWithInt:v27];
+            v28 = [MEMORY[0x1E696AD98] numberWithInt:transportType];
             [(MapsSuggestionsEntry *)v4 setNumber:v28 forKey:@"MapsSuggestionsTransportTypeKey"];
           }
         }
 
-        [(MapsSuggestionsEntry *)v4 setRouteRequestStorage:v7 forKey:@"MapsSuggestionsResumeRouteRouteRequestStorage"];
+        [(MapsSuggestionsEntry *)v4 setRouteRequestStorage:routeRequestStorage forKey:@"MapsSuggestionsResumeRouteRouteRequestStorage"];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 || [v3 conformsToProtocol:&unk_1F4483110])
         {
-          [(MapsSuggestionsMapsSync *)a1 _updateEntry:v4 withEvInfo:v3];
+          [(MapsSuggestionsMapsSync *)route _updateEntry:v4 withEvInfo:v3];
         }
 
-        a1 = v4;
+        route = v4;
         goto LABEL_21;
       }
 
@@ -1207,45 +1207,45 @@ LABEL_21:
       [MapsSuggestionsMapsSync _createEntryFromRecentHistoryRoute:v23];
     }
 
-    a1 = 0;
+    route = 0;
 LABEL_21:
   }
 
-  return a1;
+  return route;
 }
 
-- (MapsSuggestionsEntry)_createEntryFromRecentHistoryPlace:(uint64_t)a1
+- (MapsSuggestionsEntry)_createEntryFromRecentHistoryPlace:(uint64_t)place
 {
   v3 = a2;
-  if (a1)
+  if (place)
   {
     v4 = [[MapsSuggestionsEntry alloc] initWithType:5 title:&stru_1F444C108];
-    v5 = [v3 identifier];
-    v6 = [v5 UUIDString];
-    [(MapsSuggestionsEntry *)v4 setString:v6 forKey:@"MapsSuggestionsMapsSyncSourcePK"];
+    identifier = [v3 identifier];
+    uUIDString = [identifier UUIDString];
+    [(MapsSuggestionsEntry *)v4 setString:uUIDString forKey:@"MapsSuggestionsMapsSyncSourcePK"];
 
     [(MapsSuggestionsEntry *)v4 setString:@"MapsSuggestionsMapsSyncSourcePK" forKey:@"MapsSuggestionsPrimaryKey"];
-    v7 = [v3 mapItemStorage];
-    v8 = MapsSuggestionsMapItemConvertIfNeeded(v7);
+    mapItemStorage = [v3 mapItemStorage];
+    v8 = MapsSuggestionsMapItemConvertIfNeeded(mapItemStorage);
     [(MapsSuggestionsEntry *)v4 setGeoMapItem:v8];
 
-    v9 = [(MapsSuggestionsEntry *)v4 geoMapItem];
+    geoMapItem = [(MapsSuggestionsEntry *)v4 geoMapItem];
 
-    if (v9)
+    if (geoMapItem)
     {
-      v10 = [v3 createTime];
+      createTime = [v3 createTime];
 
-      if (v10)
+      if (createTime)
       {
-        v11 = [v3 createTime];
-        [(MapsSuggestionsEntry *)v4 setDate:v11 forKey:@"MapsSuggestionsWhenItHappenedKey"];
+        createTime2 = [v3 createTime];
+        [(MapsSuggestionsEntry *)v4 setDate:createTime2 forKey:@"MapsSuggestionsWhenItHappenedKey"];
 
         GEOConfigGetDouble();
         [(MapsSuggestionsEntry *)v4 setWeight:?];
-        [(MapsSuggestionsMapsSync *)a1 _addFieldsToSuggestionsEntry:v4];
-        v12 = [v3 createTime];
+        [(MapsSuggestionsMapsSync *)place _addFieldsToSuggestionsEntry:v4];
+        createTime3 = [v3 createTime];
         GEOConfigGetDouble();
-        v13 = [v12 dateByAddingTimeInterval:?];
+        v13 = [createTime3 dateByAddingTimeInterval:?];
         [(MapsSuggestionsEntry *)v4 setExpires:v13];
 
         GEOConfigGetDouble();
@@ -1280,17 +1280,17 @@ LABEL_6:
   return v19;
 }
 
-- (char)mapItemsForHistoricPlaces:(BOOL)a3 routes:(BOOL)a4 maxAge:(double)a5 handler:(id)a6
+- (char)mapItemsForHistoricPlaces:(BOOL)places routes:(BOOL)routes maxAge:(double)age handler:(id)handler
 {
-  v7 = a4;
-  v8 = a3;
+  routesCopy = routes;
+  placesCopy = places;
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a6;
+  handlerCopy = handler;
   v11 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v12 = "NO";
-    if (v8)
+    if (placesCopy)
     {
       v13 = "YES";
     }
@@ -1302,7 +1302,7 @@ LABEL_6:
 
     *buf = 136315650;
     v23 = v13;
-    if (v7)
+    if (routesCopy)
     {
       v12 = "YES";
     }
@@ -1310,20 +1310,20 @@ LABEL_6:
     v24 = 2080;
     *v25 = v12;
     *&v25[8] = 2048;
-    *&v25[10] = a5;
+    *&v25[10] = age;
     _os_log_impl(&dword_1C5126000, v11, OS_LOG_TYPE_DEBUG, "mapItemsForHistoricPlaces:%s routes:%s maxAge:%.1f", buf, 0x20u);
   }
 
-  if (v10)
+  if (handlerCopy)
   {
     connector = self->_connector;
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __75__MapsSuggestionsMapsSync_mapItemsForHistoricPlaces_routes_maxAge_handler___block_invoke;
     v18[3] = &unk_1E81F7298;
-    v19 = v10;
-    v20 = a5;
-    v21 = v8;
+    v19 = handlerCopy;
+    ageCopy = age;
+    v21 = placesCopy;
     v15 = [(MapsSuggestionsMapsSyncConnector *)connector allContentOfType:1 handler:v18];
     v16 = v19;
   }
@@ -1479,12 +1479,12 @@ LABEL_29:
   }
 }
 
-- (char)deleteEntry:(id)a3 handler:(id)a4
+- (char)deleteEntry:(id)entry handler:(id)handler
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  entryCopy = entry;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v11 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1506,7 +1506,7 @@ LABEL_11:
     goto LABEL_18;
   }
 
-  if (!v6)
+  if (!entryCopy)
   {
     v11 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1526,12 +1526,12 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v8 = [v6 type];
-  if (v8 == 5 || v8 == 11)
+  type = [entryCopy type];
+  if (type == 5 || type == 11)
   {
     v9 = objc_alloc(MEMORY[0x1E696AFB0]);
-    v10 = [v6 uniqueIdentifier];
-    v11 = [v9 initWithUUIDString:v10];
+    uniqueIdentifier = [entryCopy uniqueIdentifier];
+    v11 = [v9 initWithUUIDString:uniqueIdentifier];
 
     if (v11)
     {
@@ -1544,7 +1544,7 @@ LABEL_11:
       objc_copyWeak(&v23, location);
       v13 = v11;
       v21 = v13;
-      v22 = v7;
+      v22 = handlerCopy;
       v14 = [(MapsSuggestionsMapsSyncConnector *)connector allContentOfType:1 handler:v20];
 
       objc_destroyWeak(&v23);
@@ -1577,13 +1577,13 @@ LABEL_18:
   v16 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    v17 = NSStringFromMapsSuggestionsEntryType([v6 type]);
+    v17 = NSStringFromMapsSuggestionsEntryType([entryCopy type]);
     *location = 138412290;
     *&location[4] = v17;
     _os_log_impl(&dword_1C5126000, v16, OS_LOG_TYPE_DEBUG, "Cannot remove entries of type %@", location, 0xCu);
   }
 
-  (*(v7 + 2))(v7, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0);
   v14 = 1;
 LABEL_20:
 
@@ -1666,29 +1666,29 @@ void __47__MapsSuggestionsMapsSync_deleteEntry_handler___block_invoke(uint64_t a
 LABEL_15:
 }
 
-- (char)canProduceRatingRequestForMapItem:(id)a3 maxAge:(double)a4 handler:(id)a5
+- (char)canProduceRatingRequestForMapItem:(id)item maxAge:(double)age handler:(id)handler
 {
   v54 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  itemCopy = item;
+  handlerCopy = handler;
   v10 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [v8 name];
+    name = [itemCopy name];
     *buf = 138412546;
-    v49 = v11;
+    v49 = name;
     v50 = 2048;
-    *v51 = a4;
+    *v51 = age;
     _os_log_impl(&dword_1C5126000, v10, OS_LOG_TYPE_DEBUG, "Checking canProduceRatingRequestForMapItem:'%@' maxAge:%.1f", buf, 0x16u);
   }
 
-  if (v9)
+  if (handlerCopy)
   {
-    if (v8)
+    if (itemCopy)
     {
-      v12 = [v8 _muid];
+      _muid = [itemCopy _muid];
       connector = self->_connector;
-      v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v12];
+      v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:_muid];
       v47 = v14;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v47 count:1];
       v16 = [(MapsSuggestionsMapsSyncConnector *)connector MapsSyncReviewedPlace_fetchWithMuids:v15];
@@ -1710,35 +1710,35 @@ LABEL_15:
           v41[2] = __76__MapsSuggestionsMapsSync_canProduceRatingRequestForMapItem_maxAge_handler___block_invoke_294;
           v41[3] = &unk_1E81F72E8;
           v18 = &v42;
-          v42 = v8;
-          v43[1] = v12;
+          v42 = itemCopy;
+          v43[1] = _muid;
           v19 = v43;
-          v43[0] = v9;
+          v43[0] = handlerCopy;
           innerQueue = self->_queue._innerQueue;
           v21 = v41;
         }
 
         else
         {
-          v24 = [v16 lastSuggestedReviewDate];
-          v25 = v24 == 0;
+          lastSuggestedReviewDate = [v16 lastSuggestedReviewDate];
+          v25 = lastSuggestedReviewDate == 0;
 
           if (!v25)
           {
-            v26 = [v16 lastSuggestedReviewDate];
-            v27 = MapsSuggestionsSecondsSince(v26);
+            lastSuggestedReviewDate2 = [v16 lastSuggestedReviewDate];
+            v27 = MapsSuggestionsSecondsSince(lastSuggestedReviewDate2);
 
-            if (v27 >= a4)
+            if (v27 >= age)
             {
               v29[0] = MEMORY[0x1E69E9820];
               v29[1] = 3221225472;
               v29[2] = __76__MapsSuggestionsMapsSync_canProduceRatingRequestForMapItem_maxAge_handler___block_invoke_297;
               v29[3] = &unk_1E81F7338;
-              v30 = v8;
-              v32[1] = v12;
-              *&v32[2] = a4;
+              v30 = itemCopy;
+              v32[1] = _muid;
+              *&v32[2] = age;
               *&v32[3] = v27;
-              v32[0] = v9;
+              v32[0] = handlerCopy;
               v31 = v16;
               dispatch_async(self->_queue._innerQueue, v29);
 
@@ -1752,10 +1752,10 @@ LABEL_15:
               block[1] = 3221225472;
               block[2] = __76__MapsSuggestionsMapsSync_canProduceRatingRequestForMapItem_maxAge_handler___block_invoke_296;
               block[3] = &unk_1E81F7310;
-              v34 = v8;
-              v37 = v12;
+              v34 = itemCopy;
+              v37 = _muid;
               v35 = v16;
-              v36 = v9;
+              v36 = handlerCopy;
               dispatch_async(self->_queue._innerQueue, block);
 
               v18 = &v34;
@@ -1770,10 +1770,10 @@ LABEL_15:
           v38[2] = __76__MapsSuggestionsMapsSync_canProduceRatingRequestForMapItem_maxAge_handler___block_invoke_295;
           v38[3] = &unk_1E81F72E8;
           v18 = &v39;
-          v39 = v8;
-          v40[1] = v12;
+          v39 = itemCopy;
+          v40[1] = _muid;
           v19 = v40;
-          v40[0] = v9;
+          v40[0] = handlerCopy;
           innerQueue = self->_queue._innerQueue;
           v21 = v38;
         }
@@ -1786,10 +1786,10 @@ LABEL_15:
         v44[2] = __76__MapsSuggestionsMapsSync_canProduceRatingRequestForMapItem_maxAge_handler___block_invoke;
         v44[3] = &unk_1E81F72E8;
         v18 = &v45;
-        v45 = v8;
-        v46[1] = v12;
+        v45 = itemCopy;
+        v46[1] = _muid;
         v19 = v46;
-        v46[0] = v9;
+        v46[0] = handlerCopy;
         innerQueue = self->_queue._innerQueue;
         v21 = v44;
       }
@@ -1942,21 +1942,21 @@ void __76__MapsSuggestionsMapsSync_canProduceRatingRequestForMapItem_maxAge_hand
   (*(v6 + 16))(v6, 0, v7);
 }
 
-- (char)didProduceRatingRequestForMapItem:(id)a3 handler:(id)a4
+- (char)didProduceRatingRequestForMapItem:(id)item handler:(id)handler
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  handlerCopy = handler;
   v8 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [v6 name];
+    name = [itemCopy name];
     *buf = 138412290;
-    v41 = v9;
+    v41 = name;
     _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_DEBUG, "didProduceRatingRequestForMapItem:'%@'", buf, 0xCu);
   }
 
-  if (!v7)
+  if (!handlerCopy)
   {
     v16 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -1978,7 +1978,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v6)
+  if (!itemCopy)
   {
     v16 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -1998,9 +1998,9 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v10 = [v6 _muid];
+  _muid = [itemCopy _muid];
   connector = self->_connector;
-  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v10];
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:_muid];
   v39 = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v39 count:1];
   v14 = [(MapsSuggestionsMapsSyncConnector *)connector MapsSyncReviewedPlace_fetchWithMuids:v13];
@@ -2011,10 +2011,10 @@ LABEL_11:
     block[1] = 3221225472;
     block[2] = __69__MapsSuggestionsMapsSync_didProduceRatingRequestForMapItem_handler___block_invoke;
     block[3] = &unk_1E81F7360;
-    v34 = v6;
-    v37 = v10;
+    v34 = itemCopy;
+    v37 = _muid;
     v35 = v14;
-    v36 = v7;
+    v36 = handlerCopy;
     innerQueue = self->_queue._innerQueue;
     v16 = v14;
     dispatch_async(innerQueue, block);
@@ -2026,37 +2026,37 @@ LABEL_17:
 
   v19 = self->_connector;
   v20 = MapsSuggestionsNow();
-  v21 = [(MapsSuggestionsMapsSyncConnector *)v19 saveNewReviewedPlaceWithMuid:v10 lastSuggestedReviewDate:v20];
+  v21 = [(MapsSuggestionsMapsSyncConnector *)v19 saveNewReviewedPlaceWithMuid:_muid lastSuggestedReviewDate:v20];
 
   v22 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
   {
-    v23 = [v6 name];
-    v24 = [v21 lastSuggestedReviewDate];
+    name2 = [itemCopy name];
+    lastSuggestedReviewDate = [v21 lastSuggestedReviewDate];
     *buf = 138412802;
-    v41 = v23;
+    v41 = name2;
     v42 = 2048;
-    *v43 = v10;
+    *v43 = _muid;
     *&v43[8] = 2112;
-    *&v43[10] = v24;
+    *&v43[10] = lastSuggestedReviewDate;
     _os_log_impl(&dword_1C5126000, v22, OS_LOG_TYPE_DEBUG, "Creating a new reviewedPlace for %@ (%llu) with lastSuggestedReviewDate of %@", buf, 0x20u);
   }
 
   if (v21)
   {
-    v25 = [MEMORY[0x1E69AE100] sharedStore];
+    mEMORY[0x1E69AE100] = [MEMORY[0x1E69AE100] sharedStore];
     v38 = v21;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v38 count:1];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __69__MapsSuggestionsMapsSync_didProduceRatingRequestForMapItem_handler___block_invoke_300;
     v28[3] = &unk_1E81F7388;
-    v31 = v7;
-    v29 = v6;
-    v32 = v10;
+    v31 = handlerCopy;
+    v29 = itemCopy;
+    v32 = _muid;
     v16 = v21;
     v30 = v16;
-    [v25 saveWithObjects:v26 completionHandler:v28];
+    [mEMORY[0x1E69AE100] saveWithObjects:v26 completionHandler:v28];
 
     goto LABEL_17;
   }
@@ -2152,21 +2152,21 @@ LABEL_10:
   }
 }
 
-- (void)addMapsSyncObserver:(id)a3 forContentType:(int64_t)a4
+- (void)addMapsSyncObserver:(id)observer forContentType:(int64_t)type
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    if (a4 > 1)
+    if (type > 1)
     {
-      if (a4 == 2)
+      if (type == 2)
       {
         v7 = 40;
         goto LABEL_18;
       }
 
-      if (a4 == 3)
+      if (type == 3)
       {
         v7 = 48;
         goto LABEL_18;
@@ -2175,7 +2175,7 @@ LABEL_10:
 
     else
     {
-      if (!a4)
+      if (!type)
       {
         v8 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -2195,11 +2195,11 @@ LABEL_10:
         goto LABEL_16;
       }
 
-      if (a4 == 1)
+      if (type == 1)
       {
         v7 = 32;
 LABEL_18:
-        [*(&self->super.isa + v7) registerObserver:v6 handler:0];
+        [*(&self->super.isa + v7) registerObserver:observerCopy handler:0];
         goto LABEL_19;
       }
     }
@@ -2244,21 +2244,21 @@ LABEL_16:
 LABEL_19:
 }
 
-- (void)removeMapsSyncObserver:(id)a3 forContentType:(int64_t)a4
+- (void)removeMapsSyncObserver:(id)observer forContentType:(int64_t)type
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    if (a4 > 1)
+    if (type > 1)
     {
-      if (a4 == 2)
+      if (type == 2)
       {
         v7 = 40;
         goto LABEL_18;
       }
 
-      if (a4 == 3)
+      if (type == 3)
       {
         v7 = 48;
         goto LABEL_18;
@@ -2267,7 +2267,7 @@ LABEL_19:
 
     else
     {
-      if (!a4)
+      if (!type)
       {
         v8 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -2287,11 +2287,11 @@ LABEL_19:
         goto LABEL_16;
       }
 
-      if (a4 == 1)
+      if (type == 1)
       {
         v7 = 32;
 LABEL_18:
-        [*(&self->super.isa + v7) unregisterObserver:v6 handler:0];
+        [*(&self->super.isa + v7) unregisterObserver:observerCopy handler:0];
         goto LABEL_19;
       }
     }
@@ -2336,15 +2336,15 @@ LABEL_16:
 LABEL_19:
 }
 
-- (void)removeMapsSyncObserverForAllContentTypes:(id)a3
+- (void)removeMapsSyncObserverForAllContentTypes:(id)types
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  typesCopy = types;
+  if (typesCopy)
   {
-    [(MapsSuggestionsMapsSync *)self removeMapsSyncObserver:v4 forContentType:1];
-    [(MapsSuggestionsMapsSync *)self removeMapsSyncObserver:v4 forContentType:2];
-    [(MapsSuggestionsMapsSync *)self removeMapsSyncObserver:v4 forContentType:3];
+    [(MapsSuggestionsMapsSync *)self removeMapsSyncObserver:typesCopy forContentType:1];
+    [(MapsSuggestionsMapsSync *)self removeMapsSyncObserver:typesCopy forContentType:2];
+    [(MapsSuggestionsMapsSync *)self removeMapsSyncObserver:typesCopy forContentType:3];
   }
 
   else
@@ -2365,10 +2365,10 @@ LABEL_19:
   }
 }
 
-- (char)shortcutsFromFavoritesWithHandler:(id)a3
+- (char)shortcutsFromFavoritesWithHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -2376,7 +2376,7 @@ LABEL_19:
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "entriesFromFavoritesWithHandler", buf, 2u);
   }
 
-  if (v4)
+  if (handlerCopy)
   {
     v6 = self->_queue._innerQueue;
     connector = self->_connector;
@@ -2385,7 +2385,7 @@ LABEL_19:
     v11[2] = __61__MapsSuggestionsMapsSync_shortcutsFromFavoritesWithHandler___block_invoke;
     v11[3] = &unk_1E81F73B0;
     v12 = v6;
-    v13 = v4;
+    v13 = handlerCopy;
     v8 = v6;
     v9 = [(MapsSuggestionsMapsSyncConnector *)connector allContentOfType:3 handler:v11];
   }
@@ -2488,10 +2488,10 @@ void __61__MapsSuggestionsMapsSync_shortcutsFromFavoritesWithHandler___block_inv
   (*(v10 + 16))(v10, v11, 0);
 }
 
-- (char)homeWorkSchoolShortcutsFromFavoritesWithHandler:(id)a3
+- (char)homeWorkSchoolShortcutsFromFavoritesWithHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -2499,7 +2499,7 @@ void __61__MapsSuggestionsMapsSync_shortcutsFromFavoritesWithHandler___block_inv
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "homeWorkSchoolShortcutsFromFavoritesWithHandler", buf, 2u);
   }
 
-  if (v4)
+  if (handlerCopy)
   {
     v6 = self->_queue._innerQueue;
     v7 = [MEMORY[0x1E69AE110] queryPredicateWithFormat:@"type IN {2 argumentArray:3, 5} AND version == 2 AND (hidden == nil OR hidden == 0)", 0];
@@ -2510,7 +2510,7 @@ void __61__MapsSuggestionsMapsSync_shortcutsFromFavoritesWithHandler___block_inv
     v12[3] = &unk_1E81F73B0;
     v9 = v6;
     v13 = v9;
-    v14 = v4;
+    v14 = handlerCopy;
     v10 = [(MapsSuggestionsMapsSyncConnector *)connector allContentOfType:3 withPredicate:v7 handler:v12];
   }
 
@@ -2609,19 +2609,19 @@ void __75__MapsSuggestionsMapsSync_homeWorkSchoolShortcutsFromFavoritesWithHandl
   (*(v1 + 16))(v1);
 }
 
-- (void)mapsSyncDidChangeForType:(int64_t)a3
+- (void)mapsSyncDidChangeForType:(int64_t)type
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       v5 = 40;
     }
 
     else
     {
-      if (a3 != 3)
+      if (type != 3)
       {
         goto LABEL_13;
       }
@@ -2640,7 +2640,7 @@ LABEL_11:
       v9[2] = __52__MapsSuggestionsMapsSync_mapsSyncDidChangeForType___block_invoke;
       v9[3] = &unk_1E81F73D8;
       objc_copyWeak(v10, location);
-      v10[1] = a3;
+      v10[1] = type;
       [v6 callBlock:v9];
       objc_destroyWeak(v10);
       objc_destroyWeak(location);
@@ -2650,9 +2650,9 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  if (a3)
+  if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v5 = 32;
       goto LABEL_11;
@@ -2730,32 +2730,32 @@ void __52__MapsSuggestionsMapsSync_mapsSyncDidChangeForType___block_invoke(uint6
   return [v2 description];
 }
 
-- (uint64_t)_addFieldsToSuggestionsEntry:(uint64_t)a1
+- (uint64_t)_addFieldsToSuggestionsEntry:(uint64_t)entry
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (entry)
   {
     if (v3)
     {
-      v5 = [v3 geoMapItem];
+      geoMapItem = [v3 geoMapItem];
 
-      if (v5)
+      if (geoMapItem)
       {
         v6 = MEMORY[0x1E696AD98];
-        v7 = [v4 geoMapItem];
-        [v7 centerCoordinate];
+        geoMapItem2 = [v4 geoMapItem];
+        [geoMapItem2 centerCoordinate];
         v8 = [v6 numberWithDouble:?];
         [v4 setNumber:v8 forKey:@"MapsSuggestionsLatitudeKey"];
 
         v9 = MEMORY[0x1E696AD98];
-        v10 = [v4 geoMapItem];
-        [v10 centerCoordinate];
+        geoMapItem3 = [v4 geoMapItem];
+        [geoMapItem3 centerCoordinate];
         v12 = [v9 numberWithDouble:v11];
         [v4 setNumber:v12 forKey:@"MapsSuggestionsLongitudeKey"];
 
         [v4 setNumber:&unk_1F4470F60 forKey:@"MapsSuggestionsGEOMapItemOriginKey"];
-        a1 = 1;
+        entry = 1;
         goto LABEL_5;
       }
 
@@ -2769,35 +2769,35 @@ void __52__MapsSuggestionsMapsSync_mapsSyncDidChangeForType___block_invoke(uint6
       [(MapsSuggestionsMapsSync *)v14 _addFieldsToSuggestionsEntry:?];
     }
 
-    a1 = 0;
+    entry = 0;
   }
 
 LABEL_5:
 
-  return a1;
+  return entry;
 }
 
-- (void)_updateEntry:(void *)a3 withEvInfo:
+- (void)_updateEntry:(void *)entry withEvInfo:
 {
   v14 = a2;
-  v5 = a3;
-  v6 = v5;
-  if (a1)
+  entryCopy = entry;
+  v6 = entryCopy;
+  if (self)
   {
-    [v5 requiredBatteryCharge];
+    [entryCopy requiredBatteryCharge];
     if (v7 > 0.0)
     {
-      v8 = [v6 vehicleIdentifier];
-      if (v8)
+      vehicleIdentifier = [v6 vehicleIdentifier];
+      if (vehicleIdentifier)
       {
-        v9 = [v6 vehicleIdentifier];
-        v10 = [v9 length];
+        vehicleIdentifier2 = [v6 vehicleIdentifier];
+        v10 = [vehicleIdentifier2 length];
 
         if (v10)
         {
           [v14 setBoolean:1 forKey:@"MapsSuggestionsIsResumingAnEVRoute"];
-          v11 = [v6 vehicleIdentifier];
-          [v14 setString:v11 forKey:@"MapsSuggestionsVehicleIdentifierKey"];
+          vehicleIdentifier3 = [v6 vehicleIdentifier];
+          [v14 setString:vehicleIdentifier3 forKey:@"MapsSuggestionsVehicleIdentifierKey"];
 
           v12 = MEMORY[0x1E696AD98];
           [v6 requiredBatteryCharge];

@@ -2,7 +2,7 @@
 + (id)new;
 - (CATState)state;
 - (CATTransition)init;
-- (CATTransition)initWithState:(id)a3 action:(SEL)a4;
+- (CATTransition)initWithState:(id)state action:(SEL)action;
 - (SEL)action;
 - (id)description;
 @end
@@ -11,44 +11,44 @@
 
 + (id)new
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:a1 file:@"CATTransition.m" lineNumber:21 description:{@"%@ cannot call %@", a1, v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CATTransition.m" lineNumber:21 description:{@"%@ cannot call %@", self, v5}];
 
   return 0;
 }
 
 - (CATTransition)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"CATTransition.m" lineNumber:28 description:{@"%@ cannot call %@", v5, v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CATTransition.m" lineNumber:28 description:{@"%@ cannot call %@", v5, v6}];
 
   return 0;
 }
 
-- (CATTransition)initWithState:(id)a3 action:(SEL)a4
+- (CATTransition)initWithState:(id)state action:(SEL)action
 {
-  v6 = a3;
+  stateCopy = state;
   v11.receiver = self;
   v11.super_class = CATTransition;
   v7 = [(CATTransition *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_state, v6);
-    if (a4)
+    objc_storeWeak(&v7->_state, stateCopy);
+    if (action)
     {
-      v9 = a4;
+      actionCopy = action;
     }
 
     else
     {
-      v9 = 0;
+      actionCopy = 0;
     }
 
-    v8->_action = v9;
+    v8->_action = actionCopy;
   }
 
   return v8;
@@ -69,9 +69,9 @@
   }
 
   v6 = NSStringFromSelector(action);
-  v7 = [(CATTransition *)self state];
-  v8 = [v7 name];
-  v9 = [v3 stringWithFormat:@"<%@: %p { action = %@, state = %@ }>", v4, self, v6, v8];
+  state = [(CATTransition *)self state];
+  name = [state name];
+  v9 = [v3 stringWithFormat:@"<%@: %p { action = %@, state = %@ }>", v4, self, v6, name];
 
   return v9;
 }

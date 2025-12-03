@@ -87,10 +87,10 @@ double __40__SBElasticHUDSettings_setDefaultValues__block_invoke(int a1, CFTypeR
   v30 = [v28 sectionWithRows:v29 title:@"General Landscape"];
 
   [v2 addObject:v30];
-  v31 = [MEMORY[0x277D75418] currentDevice];
-  v32 = [v31 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v32 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v33 = MEMORY[0x277D43210];
     v34 = __48__SBElasticHUDSettings_settingsControllerModule__block_invoke_7();
@@ -104,10 +104,10 @@ double __40__SBElasticHUDSettings_setDefaultValues__block_invoke(int a1, CFTypeR
   v38 = [v36 sectionWithRows:v37 title:@"Initial State Landscape"];
 
   [v2 addObject:v38];
-  v39 = [MEMORY[0x277D75418] currentDevice];
-  v40 = [v39 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  if ((v40 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v41 = MEMORY[0x277D43210];
     v42 = __48__SBElasticHUDSettings_settingsControllerModule__block_invoke_9();
@@ -121,10 +121,10 @@ double __40__SBElasticHUDSettings_setDefaultValues__block_invoke(int a1, CFTypeR
   v46 = [v44 sectionWithRows:v45 title:@"Compact State Landscape"];
 
   [v2 addObject:v46];
-  v47 = [MEMORY[0x277D75418] currentDevice];
-  v48 = [v47 userInterfaceIdiom];
+  currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
-  if ((v48 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v49 = MEMORY[0x277D43210];
     v50 = __48__SBElasticHUDSettings_settingsControllerModule__block_invoke_11();
@@ -138,10 +138,10 @@ double __40__SBElasticHUDSettings_setDefaultValues__block_invoke(int a1, CFTypeR
   v54 = [v52 sectionWithRows:v53 title:@"Interacting State Landscape"];
 
   [v2 addObject:v54];
-  v55 = [MEMORY[0x277D75418] currentDevice];
-  v56 = [v55 userInterfaceIdiom];
+  currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom4 = [currentDevice4 userInterfaceIdiom];
 
-  if ((v56 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom4 & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v57 = MEMORY[0x277D43210];
     v58 = __48__SBElasticHUDSettings_settingsControllerModule__block_invoke_13();

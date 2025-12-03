@@ -1,33 +1,33 @@
 @interface KmlCachedAuthorization
-+ (id)decodeWithData:(id)a3 error:(id *)a4;
-- (KmlCachedAuthorization)initWithAuthorizationInfo:(id)a3;
-- (KmlCachedAuthorization)initWithCoder:(id)a3;
++ (id)decodeWithData:(id)data error:(id *)error;
+- (KmlCachedAuthorization)initWithAuthorizationInfo:(id)info;
+- (KmlCachedAuthorization)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KmlCachedAuthorization
 
-- (KmlCachedAuthorization)initWithAuthorizationInfo:(id)a3
+- (KmlCachedAuthorization)initWithAuthorizationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = KmlCachedAuthorization;
   v5 = [(KmlCachedAuthorization *)&v15 init];
   if (v5)
   {
-    v5->_state = [v4 state];
-    v6 = [v4 authorizationID];
+    v5->_state = [infoCopy state];
+    authorizationID = [infoCopy authorizationID];
     authorizationID = v5->_authorizationID;
-    v5->_authorizationID = v6;
+    v5->_authorizationID = authorizationID;
 
-    v8 = [v4 remainingTime];
+    remainingTime = [infoCopy remainingTime];
 
-    if (v8)
+    if (remainingTime)
     {
       v9 = (clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW) / 0x3B9ACA00);
-      v10 = [v4 remainingTime];
-      [v10 doubleValue];
+      remainingTime2 = [infoCopy remainingTime];
+      [remainingTime2 doubleValue];
       v12 = [NSNumber numberWithDouble:v11 + v9];
       authExpirationTime = v5->_authExpirationTime;
       v5->_authExpirationTime = v12;
@@ -35,7 +35,7 @@
 
     else
     {
-      v10 = v5->_authExpirationTime;
+      remainingTime2 = v5->_authExpirationTime;
       v5->_authExpirationTime = 0;
     }
   }
@@ -43,50 +43,50 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(KmlCachedAuthorization *)self authExpirationTime];
-  [v6 encodeObject:v4 forKey:@"authExpirationTime"];
+  coderCopy = coder;
+  authExpirationTime = [(KmlCachedAuthorization *)self authExpirationTime];
+  [coderCopy encodeObject:authExpirationTime forKey:@"authExpirationTime"];
 
-  v5 = [(KmlCachedAuthorization *)self authorizationID];
-  [v6 encodeObject:v5 forKey:@"authorizationID"];
+  authorizationID = [(KmlCachedAuthorization *)self authorizationID];
+  [coderCopy encodeObject:authorizationID forKey:@"authorizationID"];
 
-  [v6 encodeInteger:-[KmlCachedAuthorization state](self forKey:{"state"), @"state"}];
+  [coderCopy encodeInteger:-[KmlCachedAuthorization state](self forKey:{"state"), @"state"}];
 }
 
-- (KmlCachedAuthorization)initWithCoder:(id)a3
+- (KmlCachedAuthorization)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = KmlCachedAuthorization;
   v5 = [(KmlCachedAuthorization *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"authExpirationTime"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"authExpirationTime"];
     authExpirationTime = v5->_authExpirationTime;
     v5->_authExpirationTime = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"authorizationID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"authorizationID"];
     authorizationID = v5->_authorizationID;
     v5->_authorizationID = v8;
 
-    v5->_state = [v4 decodeIntegerForKey:@"state"];
+    v5->_state = [coderCopy decodeIntegerForKey:@"state"];
   }
 
   return v5;
 }
 
-+ (id)decodeWithData:(id)a3 error:(id *)a4
++ (id)decodeWithData:(id)data error:(id *)error
 {
   v5 = qword_10051B080;
-  v6 = a3;
+  dataCopy = data;
   if (v5 != -1)
   {
     sub_10037A378();
   }
 
-  v7 = [NSKeyedUnarchiver unarchivedObjectOfClasses:qword_10051B088 fromData:v6 error:a4];
+  v7 = [NSKeyedUnarchiver unarchivedObjectOfClasses:qword_10051B088 fromData:dataCopy error:error];
 
   return v7;
 }

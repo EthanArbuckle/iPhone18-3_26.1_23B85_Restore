@@ -1,35 +1,35 @@
 @interface STUIStatusBarTestData
-+ (id)dependentDataKeyForDisplayItemIdentifier:(id)a3;
-+ (id)dependentDataKeyForItemIdentifier:(id)a3;
++ (id)dependentDataKeyForDisplayItemIdentifier:(id)identifier;
++ (id)dependentDataKeyForItemIdentifier:(id)identifier;
 + (id)emptyTestData;
-+ (id)testDataWithUpdatedKeys:(id)a3 enabledKeys:(id)a4;
++ (id)testDataWithUpdatedKeys:(id)keys enabledKeys:(id)enabledKeys;
 - (BOOL)isEmpty;
 - (STUIStatusBarTestData)init;
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 forDebug:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix forDebug:(BOOL)debug;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)existingEntryKeys;
-- (id)valueForKey:(id)a3;
-- (void)applyUpdate:(id)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (id)valueForKey:(id)key;
+- (void)applyUpdate:(id)update;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation STUIStatusBarTestData
 
-+ (id)testDataWithUpdatedKeys:(id)a3 enabledKeys:(id)a4
++ (id)testDataWithUpdatedKeys:(id)keys enabledKeys:(id)enabledKeys
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = objc_alloc_init(a1);
+  keysCopy = keys;
+  enabledKeysCopy = enabledKeys;
+  v8 = objc_alloc_init(self);
   v9 = v8;
-  if (v6)
+  if (keysCopy)
   {
-    v10 = [MEMORY[0x277CBEB98] setWithArray:v6];
+    v10 = [MEMORY[0x277CBEB98] setWithArray:keysCopy];
     [v9 setUpdatedKeys:v10];
 
-    if (v7)
+    if (enabledKeysCopy)
     {
 LABEL_3:
-      v11 = [MEMORY[0x277CBEB98] setWithArray:v7];
+      v11 = [MEMORY[0x277CBEB98] setWithArray:enabledKeysCopy];
       [v9 setEnabledKeys:v11];
 
       goto LABEL_6;
@@ -39,7 +39,7 @@ LABEL_3:
   else
   {
     [v8 setUpdatedKeys:0];
-    if (v7)
+    if (enabledKeysCopy)
     {
       goto LABEL_3;
     }
@@ -53,27 +53,27 @@ LABEL_6:
 
 + (id)emptyTestData
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)dependentDataKeyForItemIdentifier:(id)a3
++ (id)dependentDataKeyForItemIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
-  v5 = NSStringFromClass([v4 object]);
-  v6 = [v4 string];
+  identifierCopy = identifier;
+  v5 = NSStringFromClass([identifierCopy object]);
+  string = [identifierCopy string];
 
-  v7 = [v3 stringWithFormat:@"%@/%@", v5, v6];
+  v7 = [v3 stringWithFormat:@"%@/%@", v5, string];
 
   return v7;
 }
 
-+ (id)dependentDataKeyForDisplayItemIdentifier:(id)a3
++ (id)dependentDataKeyForDisplayItemIdentifier:(id)identifier
 {
-  v4 = [STUIStatusBarItem itemIdentifierForDisplayItemIdentifier:a3];
-  v5 = [a1 dependentDataKeyForItemIdentifier:v4];
+  v4 = [STUIStatusBarItem itemIdentifierForDisplayItemIdentifier:identifier];
+  v5 = [self dependentDataKeyForItemIdentifier:v4];
 
   return v5;
 }
@@ -83,8 +83,8 @@ LABEL_6:
   v7.receiver = self;
   v7.super_class = STUIStatusBarTestData;
   v2 = [(STUIStatusBarTestData *)&v7 init];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [(STUIStatusBarTestData *)v2 setTestEntries:v3];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(STUIStatusBarTestData *)v2 setTestEntries:dictionary];
 
   v4 = [MEMORY[0x277CBEB98] set];
   [(STUIStatusBarTestData *)v2 setUpdatedKeys:v4];
@@ -95,11 +95,11 @@ LABEL_6:
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = STUIStatusBarTestData;
-  v4 = [(STStatusBarData *)&v9 copyWithZone:a3];
+  v4 = [(STStatusBarData *)&v9 copyWithZone:zone];
   v5 = [(NSSet *)self->_updatedKeys copy];
   [v4 setUpdatedKeys:v5];
 
@@ -131,14 +131,14 @@ LABEL_6:
   return updatedKeys;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_testEntries objectForKey:v4];
+  keyCopy = key;
+  v5 = [(NSMutableDictionary *)self->_testEntries objectForKey:keyCopy];
   if (!v5)
   {
     updatedKeys = self->_updatedKeys;
-    if (updatedKeys && ![(NSSet *)updatedKeys containsObject:v4])
+    if (updatedKeys && ![(NSSet *)updatedKeys containsObject:keyCopy])
     {
       v5 = 0;
     }
@@ -146,7 +146,7 @@ LABEL_6:
     else
     {
       enabledKeys = self->_enabledKeys;
-      if (enabledKeys && ![(NSSet *)enabledKeys containsObject:v4])
+      if (enabledKeys && ![(NSSet *)enabledKeys containsObject:keyCopy])
       {
         v8 = +[STStatusBarDataTestEntry disabledEntry];
       }
@@ -163,22 +163,22 @@ LABEL_6:
   return v5;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  if (a3)
+  if (value)
   {
-    v10 = a4;
-    [(STUIStatusBarTestData *)self setDataEntry:a3 forKey:v10];
-    updatedKeys = v10;
+    keyCopy = key;
+    [(STUIStatusBarTestData *)self setDataEntry:value forKey:keyCopy];
+    updatedKeys = keyCopy;
   }
 
   else
   {
     testEntries = self->_testEntries;
-    v8 = a4;
-    [(NSMutableDictionary *)testEntries removeObjectForKey:v8];
+    keyCopy2 = key;
+    [(NSMutableDictionary *)testEntries removeObjectForKey:keyCopy2];
     v9 = [(NSSet *)self->_updatedKeys mutableCopy];
-    [(NSSet *)v9 removeObject:v8];
+    [(NSSet *)v9 removeObject:keyCopy2];
 
     updatedKeys = self->_updatedKeys;
     self->_updatedKeys = v9;
@@ -188,8 +188,8 @@ LABEL_6:
 - (id)existingEntryKeys
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(NSMutableDictionary *)self->_testEntries allKeys];
-  [v3 addObjectsFromArray:v4];
+  allKeys = [(NSMutableDictionary *)self->_testEntries allKeys];
+  [v3 addObjectsFromArray:allKeys];
 
   if (self->_updatedKeys)
   {
@@ -199,27 +199,27 @@ LABEL_6:
   return v3;
 }
 
-- (void)applyUpdate:(id)a3
+- (void)applyUpdate:(id)update
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v23.receiver = self;
   v23.super_class = STUIStatusBarTestData;
-  [(STUIStatusBarTestData *)&v23 applyUpdate:v4];
-  v5 = v4;
+  [(STUIStatusBarTestData *)&v23 applyUpdate:updateCopy];
+  v5 = updateCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 testEntries];
+    testEntries = [v5 testEntries];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __37__STUIStatusBarTestData_applyUpdate___block_invoke;
     v22[3] = &unk_279D381C8;
     v22[4] = self;
-    [v6 enumerateKeysAndObjectsUsingBlock:v22];
+    [testEntries enumerateKeysAndObjectsUsingBlock:v22];
 
-    v7 = [(NSMutableDictionary *)self->_testEntries allKeys];
-    v8 = [v7 copy];
+    allKeys = [(NSMutableDictionary *)self->_testEntries allKeys];
+    v8 = [allKeys copy];
 
     v20 = 0u;
     v21 = 0u;
@@ -254,28 +254,28 @@ LABEL_6:
       while (v11);
     }
 
-    v16 = [v5 updatedKeys];
-    [(STUIStatusBarTestData *)self setUpdatedKeys:v16];
+    updatedKeys = [v5 updatedKeys];
+    [(STUIStatusBarTestData *)self setUpdatedKeys:updatedKeys];
 
-    v17 = [v5 enabledKeys];
-    [(STUIStatusBarTestData *)self setEnabledKeys:v17];
+    enabledKeys = [v5 enabledKeys];
+    [(STUIStatusBarTestData *)self setEnabledKeys:enabledKeys];
   }
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 forDebug:(BOOL)a4
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix forDebug:(BOOL)debug
 {
   v13.receiver = self;
   v13.super_class = STUIStatusBarTestData;
-  v5 = [(STStatusBarData *)&v13 _descriptionBuilderWithMultilinePrefix:a3 forDebug:a4];
-  v6 = [v5 activeMultilinePrefix];
+  v5 = [(STStatusBarData *)&v13 _descriptionBuilderWithMultilinePrefix:prefix forDebug:debug];
+  activeMultilinePrefix = [v5 activeMultilinePrefix];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __73__STUIStatusBarTestData__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
   v10[3] = &unk_279D38150;
   v7 = v5;
   v11 = v7;
-  v12 = self;
-  [v7 appendBodySectionWithName:@"testing" multilinePrefix:v6 block:v10];
+  selfCopy = self;
+  [v7 appendBodySectionWithName:@"testing" multilinePrefix:activeMultilinePrefix block:v10];
 
   v8 = v7;
   return v7;

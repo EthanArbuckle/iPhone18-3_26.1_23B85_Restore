@@ -2,21 +2,21 @@
 - (BOOL)_shouldBeBackdropAware;
 - (BOOL)_updateTraitBasedBackdropAwareness;
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (PLKLegibilityView)init;
-- (PLKLegibilityView)initWithFrame:(CGRect)a3;
+- (PLKLegibilityView)initWithFrame:(CGRect)frame;
 - (void)_commonInit;
-- (void)_setLegibilityNeedsUpdate:(id)a3;
+- (void)_setLegibilityNeedsUpdate:(id)update;
 - (void)_updateContentViewForLegibilityChanges;
 - (void)_updateShadowViewForLegibilityChanges;
 - (void)layoutSubviews;
 - (void)noteBackdropAwarenessTraitDidUpdate;
-- (void)setBackdropAware:(BOOL)a3;
-- (void)setContent:(id)a3;
-- (void)setHideForegroundContent:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setShadowImage:(id)a3;
-- (void)setTraitBasedBackdropAwarenessEnabled:(BOOL)a3;
+- (void)setBackdropAware:(BOOL)aware;
+- (void)setContent:(id)content;
+- (void)setHideForegroundContent:(BOOL)content;
+- (void)setImage:(id)image;
+- (void)setShadowImage:(id)image;
+- (void)setTraitBasedBackdropAwarenessEnabled:(BOOL)enabled;
 - (void)sizeToFit;
 @end
 
@@ -32,8 +32,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PLKLegibilityView *)self traitCollection];
-  [v11 displayScale];
+  traitCollection = [(PLKLegibilityView *)self traitCollection];
+  [traitCollection displayScale];
   v13 = v12;
 
   [(_PFTImageView *)self->_contentView bounds];
@@ -47,8 +47,8 @@
 
 - (void)_updateContentViewForLegibilityChanges
 {
-  v3 = [(PLKLegibilityView *)self _currentOptions];
-  v11 = [(PLKLegibilityContent *)self->_content legibilityDescriptor];
+  _currentOptions = [(PLKLegibilityView *)self _currentOptions];
+  legibilityDescriptor = [(PLKLegibilityContent *)self->_content legibilityDescriptor];
   if (self->_hideForegroundContent || !self->_content)
   {
     p_contentView = &self->_contentView;
@@ -60,12 +60,12 @@ LABEL_9:
   }
 
   p_contentView = &self->_contentView;
-  v5 = [(_PFTImageView *)self->_contentView image];
+  image = [(_PFTImageView *)self->_contentView image];
 
-  if (v5)
+  if (image)
   {
-    v6 = [(_PFTImageView *)*p_contentView image];
-    if ([v6 plk_isAlphaMask])
+    image2 = [(_PFTImageView *)*p_contentView image];
+    if ([image2 plk_isAlphaMask])
     {
       v7 = 4;
     }
@@ -81,21 +81,21 @@ LABEL_9:
 
   v7 = 4;
 LABEL_10:
-  v9 = [v11 foreground];
-  v10 = [(_PFTImageView *)self->_contentView layer];
-  [v9 configureCALayer:v10 forContentRenderedWithContextType:v7 options:v3];
+  foreground = [legibilityDescriptor foreground];
+  layer = [(_PFTImageView *)self->_contentView layer];
+  [foreground configureCALayer:layer forContentRenderedWithContextType:v7 options:_currentOptions];
 }
 
 - (void)_updateShadowViewForLegibilityChanges
 {
-  v9 = [(PLKLegibilityContent *)self->_content legibilityDescriptor];
-  v3 = [(PLKLegibilityView *)self _currentOptions];
-  v4 = [(_PFTImageView *)self->_shadowView image];
+  legibilityDescriptor = [(PLKLegibilityContent *)self->_content legibilityDescriptor];
+  _currentOptions = [(PLKLegibilityView *)self _currentOptions];
+  image = [(_PFTImageView *)self->_shadowView image];
 
-  if (v4)
+  if (image)
   {
-    v5 = [(_PFTImageView *)self->_shadowView image];
-    if ([v5 plk_isAlphaMask])
+    image2 = [(_PFTImageView *)self->_shadowView image];
+    if ([image2 plk_isAlphaMask])
     {
       v6 = 4;
     }
@@ -111,9 +111,9 @@ LABEL_10:
     v6 = 4;
   }
 
-  v7 = [v9 background];
-  v8 = [(_PFTImageView *)self->_shadowView layer];
-  [v7 configureCALayer:v8 forContentRenderedWithContextType:v6 options:v3];
+  background = [legibilityDescriptor background];
+  layer = [(_PFTImageView *)self->_shadowView layer];
+  [background configureCALayer:layer forContentRenderedWithContextType:v6 options:_currentOptions];
 }
 
 - (PLKLegibilityView)init
@@ -130,11 +130,11 @@ LABEL_10:
   return v3;
 }
 
-- (PLKLegibilityView)initWithFrame:(CGRect)a3
+- (PLKLegibilityView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PLKLegibilityView;
-  v3 = [(PLKLegibilityView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PLKLegibilityView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -173,12 +173,12 @@ LABEL_10:
 - (void)sizeToFit
 {
   [(_PFTImageView *)self->_contentView sizeToFit];
-  v3 = [(_PFTImageView *)self->_contentView image];
-  [v3 size];
+  image = [(_PFTImageView *)self->_contentView image];
+  [image size];
   BSRectWithSize();
   [(PLKLegibilityView *)self center];
-  v4 = [(PLKLegibilityView *)self traitCollection];
-  [v4 displayScale];
+  traitCollection = [(PLKLegibilityView *)self traitCollection];
+  [traitCollection displayScale];
   UIRectCenteredAboutPointScale();
   v6 = v5;
   v8 = v7;
@@ -190,53 +190,53 @@ LABEL_10:
   [(PLKLegibilityView *)self layoutIfNeeded];
 }
 
-- (void)setHideForegroundContent:(BOOL)a3
+- (void)setHideForegroundContent:(BOOL)content
 {
-  if (self->_hideForegroundContent != a3)
+  if (self->_hideForegroundContent != content)
   {
-    self->_hideForegroundContent = a3;
+    self->_hideForegroundContent = content;
     [(PLKLegibilityView *)self _updateContentViewForLegibilityChanges];
   }
 }
 
-- (void)setBackdropAware:(BOOL)a3
+- (void)setBackdropAware:(BOOL)aware
 {
-  if (self->_isBackdropAware != a3)
+  if (self->_isBackdropAware != aware)
   {
-    self->_isBackdropAware = a3;
+    self->_isBackdropAware = aware;
     [(PLKLegibilityView *)self noteBackdropAwarenessTraitDidUpdate];
   }
 }
 
-- (void)setTraitBasedBackdropAwarenessEnabled:(BOOL)a3
+- (void)setTraitBasedBackdropAwarenessEnabled:(BOOL)enabled
 {
-  if (self->_isTraitBasedBackdropAwarenessEnabled != a3)
+  if (self->_isTraitBasedBackdropAwarenessEnabled != enabled)
   {
-    self->_isTraitBasedBackdropAwarenessEnabled = a3;
+    self->_isTraitBasedBackdropAwarenessEnabled = enabled;
     [(PLKLegibilityView *)self noteBackdropAwarenessTraitDidUpdate];
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v10 = a3;
-  v4 = [(_PFTImageView *)self->_contentView image];
-  v5 = v4;
-  if (v4 == v10 || [v10 isEqual:v4])
+  imageCopy = image;
+  image = [(_PFTImageView *)self->_contentView image];
+  v5 = image;
+  if (image == imageCopy || [imageCopy isEqual:image])
   {
     [(PLKLegibilityView *)self _updateContentViewForLegibilityChanges];
   }
 
   else
   {
-    [(_PFTImageView *)self->_contentView setImage:v10];
-    v6 = [(PLKLegibilityView *)self traitCollection];
-    [v6 displayScale];
+    [(_PFTImageView *)self->_contentView setImage:imageCopy];
+    traitCollection = [(PLKLegibilityView *)self traitCollection];
+    [traitCollection displayScale];
     v8 = v7;
 
     [(PLKLegibilityView *)self bounds];
     [(UIView *)self->_containerView plk_setBoundsAndPositionFromFrame:?];
-    [v10 size];
+    [imageCopy size];
     BSRectWithSize();
     UIRectCenteredIntegralRectScale();
     [(UIView *)self->_contentView plk_setBoundsAndPositionFromFrame:v8];
@@ -247,21 +247,21 @@ LABEL_10:
   }
 }
 
-- (void)setShadowImage:(id)a3
+- (void)setShadowImage:(id)image
 {
-  v27 = a3;
-  v4 = [(_PFTImageView *)self->_shadowView image];
-  v5 = v4;
-  if (v4 == v27 || [v27 isEqual:v4])
+  imageCopy = image;
+  image = [(_PFTImageView *)self->_shadowView image];
+  v5 = image;
+  if (image == imageCopy || [imageCopy isEqual:image])
   {
     [(PLKLegibilityView *)self _updateShadowViewForLegibilityChanges];
   }
 
   else
   {
-    [(_PFTImageView *)self->_shadowView setImage:v27];
-    v6 = [(PLKLegibilityView *)self traitCollection];
-    [v6 displayScale];
+    [(_PFTImageView *)self->_shadowView setImage:imageCopy];
+    traitCollection = [(PLKLegibilityView *)self traitCollection];
+    [traitCollection displayScale];
     v8 = v7;
 
     [(PLKLegibilityView *)self bounds];
@@ -269,7 +269,7 @@ LABEL_10:
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    [v27 size];
+    [imageCopy size];
     BSRectWithSize();
     v26 = v8;
     UIRectCenteredIntegralRectScale();
@@ -285,9 +285,9 @@ LABEL_10:
   }
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
-  if (self->_content != a3)
+  if (self->_content != content)
   {
     [(PLKLegibilityView *)self _setLegibilityNeedsUpdate:?];
   }
@@ -300,24 +300,24 @@ LABEL_10:
     return self->_isBackdropAware;
   }
 
-  v3 = [(PLKLegibilityView *)self traitCollection];
-  v4 = [v3 plk_shouldBeBackdropAware];
+  traitCollection = [(PLKLegibilityView *)self traitCollection];
+  plk_shouldBeBackdropAware = [traitCollection plk_shouldBeBackdropAware];
 
-  if (!v4)
+  if (!plk_shouldBeBackdropAware)
   {
     return self->_isBackdropAware;
   }
 
-  v5 = [v4 BOOLValue];
+  bOOLValue = [plk_shouldBeBackdropAware BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)_setLegibilityNeedsUpdate:(id)a3
+- (void)_setLegibilityNeedsUpdate:(id)update
 {
-  v5 = a3;
+  updateCopy = update;
   BSDispatchQueueAssertMain();
-  if (([v5 isEqualToLegibilityContent:self->_content] & 1) == 0)
+  if (([updateCopy isEqualToLegibilityContent:self->_content] & 1) == 0)
   {
     v6 = PLKLogCommon();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
@@ -327,14 +327,14 @@ LABEL_10:
       v8 = PLKLogCommon();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        [(PLKLegibilityView *)self _setLegibilityNeedsUpdate:v5, v8];
+        [(PLKLegibilityView *)self _setLegibilityNeedsUpdate:updateCopy, v8];
       }
     }
 
     v9 = (self->_asyncUpdateCounter + 1);
     self->_asyncUpdateCounter = v9;
-    objc_storeStrong(&self->_content, a3);
-    if (!self->_content || (+[PLKLegibilityContent noContent], v10 = objc_claimAutoreleasedReturnValue(), v10, v10 == v5))
+    objc_storeStrong(&self->_content, update);
+    if (!self->_content || (+[PLKLegibilityContent noContent], v10 = objc_claimAutoreleasedReturnValue(), v10, v10 == updateCopy))
     {
       activeLegibilityImageFuture = self->_activeLegibilityImageFuture;
       self->_activeLegibilityImageFuture = 0;
@@ -353,15 +353,15 @@ LABEL_10:
       v25[1] = v25;
       v25[2] = 0x2020000000;
       v26 = 0;
-      v11 = [v5 contentImageFuture];
-      if (v11 == self->_activeContentImageFuture)
+      contentImageFuture = [updateCopy contentImageFuture];
+      if (contentImageFuture == self->_activeContentImageFuture)
       {
         [(PLKLegibilityView *)self setImage:0];
       }
 
       else
       {
-        objc_storeStrong(&self->_activeContentImageFuture, v11);
+        objc_storeStrong(&self->_activeContentImageFuture, contentImageFuture);
         v12 = self->_activeContentImageFuture;
         v23[0] = MEMORY[0x277D85DD0];
         v23[1] = 3221225472;
@@ -370,8 +370,8 @@ LABEL_10:
         objc_copyWeak(v24, location);
         v24[1] = v9;
         v23[4] = v25;
-        v13 = [MEMORY[0x277D3EC60] mainThreadScheduler];
-        [(PFTFuture *)v12 addCompletionBlock:v23 scheduler:v13];
+        mainThreadScheduler = [MEMORY[0x277D3EC60] mainThreadScheduler];
+        [(PFTFuture *)v12 addCompletionBlock:v23 scheduler:mainThreadScheduler];
 
         objc_destroyWeak(v24);
       }
@@ -380,21 +380,21 @@ LABEL_10:
       v21[1] = v21;
       v21[2] = 0x2020000000;
       v22 = 0;
-      v16 = [v5 legibilityImageFuture];
-      if (v16 == self->_activeLegibilityImageFuture)
+      legibilityImageFuture = [updateCopy legibilityImageFuture];
+      if (legibilityImageFuture == self->_activeLegibilityImageFuture)
       {
         [(PLKLegibilityView *)self setShadowImage:0];
       }
 
       else
       {
-        objc_storeStrong(&self->_activeLegibilityImageFuture, v16);
+        objc_storeStrong(&self->_activeLegibilityImageFuture, legibilityImageFuture);
         v17 = self->_activeLegibilityImageFuture;
         v19 = MEMORY[0x277D85DD0];
         objc_copyWeak(v20, location);
         v20[1] = v9;
-        v18 = [MEMORY[0x277D3EC60] mainThreadScheduler];
-        [(PFTFuture *)v17 addCompletionBlock:&v19 scheduler:v18];
+        mainThreadScheduler2 = [MEMORY[0x277D3EC60] mainThreadScheduler];
+        [(PFTFuture *)v17 addCompletionBlock:&v19 scheduler:mainThreadScheduler2];
 
         objc_destroyWeak(v20);
       }
@@ -484,9 +484,9 @@ LABEL_7:
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  [(_PFTImageView *)self->_contentView systemLayoutSizeFittingSize:a3.width withHorizontalFittingPriority:a3.height verticalFittingPriority:?];
+  [(_PFTImageView *)self->_contentView systemLayoutSizeFittingSize:size.width withHorizontalFittingPriority:size.height verticalFittingPriority:?];
   result.height = v6;
   result.width = v5;
   return result;

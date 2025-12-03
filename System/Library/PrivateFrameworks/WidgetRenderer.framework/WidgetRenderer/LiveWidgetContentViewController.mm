@@ -1,10 +1,10 @@
 @interface LiveWidgetContentViewController
-- (_TtC14WidgetRenderer31LiveWidgetContentViewController)initWithCoder:(id)a3;
+- (_TtC14WidgetRenderer31LiveWidgetContentViewController)initWithCoder:(id)coder;
 @end
 
 @implementation LiveWidgetContentViewController
 
-- (_TtC14WidgetRenderer31LiveWidgetContentViewController)initWithCoder:(id)a3
+- (_TtC14WidgetRenderer31LiveWidgetContentViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC14WidgetRenderer31LiveWidgetContentViewController__isSnapshotting) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC14WidgetRenderer31LiveWidgetContentViewController_hasAnimatableContent) = 0;

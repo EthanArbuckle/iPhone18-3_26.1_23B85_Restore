@@ -1,43 +1,43 @@
 @interface ICSApplication
-- (BOOL)runEndCallTestWithOptions:(id)a3;
-- (BOOL)runIncomingCallTestWithOptions:(id)a3;
-- (BOOL)runOutgoingCallTestWithOptions:(id)a3;
-- (BOOL)runSwapCameraTestWithOptions:(id)a3;
-- (BOOL)runTest:(id)a3 options:(id)a4;
-- (id)_keyWindowForScreen:(id)a3;
-- (id)pptOutgoingDialRequestWithDestinationID:(id)a3;
-- (unint64_t)beginBackgroundTaskWithExpirationHandler:(id)a3;
-- (unint64_t)beginBackgroundTaskWithName:(id)a3 expirationHandler:(id)a4;
-- (void)connection:(id)a3 didFailWithError:(id)a4;
-- (void)endBackgroundTask:(unint64_t)a3;
-- (void)handleCallStatusChangedNotification:(id)a3;
-- (void)sendEvent:(id)a3;
-- (void)setUpTestNamed:(id)a3;
+- (BOOL)runEndCallTestWithOptions:(id)options;
+- (BOOL)runIncomingCallTestWithOptions:(id)options;
+- (BOOL)runOutgoingCallTestWithOptions:(id)options;
+- (BOOL)runSwapCameraTestWithOptions:(id)options;
+- (BOOL)runTest:(id)test options:(id)options;
+- (id)_keyWindowForScreen:(id)screen;
+- (id)pptOutgoingDialRequestWithDestinationID:(id)d;
+- (unint64_t)beginBackgroundTaskWithExpirationHandler:(id)handler;
+- (unint64_t)beginBackgroundTaskWithName:(id)name expirationHandler:(id)handler;
+- (void)connection:(id)connection didFailWithError:(id)error;
+- (void)endBackgroundTask:(unint64_t)task;
+- (void)handleCallStatusChangedNotification:(id)notification;
+- (void)sendEvent:(id)event;
+- (void)setUpTestNamed:(id)named;
 @end
 
 @implementation ICSApplication
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v6.receiver = self;
   v6.super_class = ICSApplication;
-  [(ICSApplication *)&v6 sendEvent:v4];
-  if (![v4 type])
+  [(ICSApplication *)&v6 sendEvent:eventCopy];
+  if (![eventCopy type])
   {
     v5 = sub_100004F84();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v8 = v4;
+      v8 = eventCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
     }
   }
 }
 
-- (unint64_t)beginBackgroundTaskWithExpirationHandler:(id)a3
+- (unint64_t)beginBackgroundTaskWithExpirationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -48,33 +48,33 @@
 
   v8.receiver = self;
   v8.super_class = ICSApplication;
-  v6 = [(ICSApplication *)&v8 beginBackgroundTaskWithExpirationHandler:v4];
+  v6 = [(ICSApplication *)&v8 beginBackgroundTaskWithExpirationHandler:handlerCopy];
 
   return v6;
 }
 
-- (unint64_t)beginBackgroundTaskWithName:(id)a3 expirationHandler:(id)a4
+- (unint64_t)beginBackgroundTaskWithName:(id)name expirationHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
   v8 = sub_100004F84();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v13 = objc_opt_class();
     v14 = 2114;
-    v15 = v6;
+    v15 = nameCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ beginBackgroundTaskWithName:expirationHandler %{public}@", buf, 0x16u);
   }
 
   v11.receiver = self;
   v11.super_class = ICSApplication;
-  v9 = [(ICSApplication *)&v11 beginBackgroundTaskWithName:v6 expirationHandler:v7];
+  v9 = [(ICSApplication *)&v11 beginBackgroundTaskWithName:nameCopy expirationHandler:handlerCopy];
 
   return v9;
 }
 
-- (void)endBackgroundTask:(unint64_t)a3
+- (void)endBackgroundTask:(unint64_t)task
 {
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -82,33 +82,33 @@
     *buf = 138543618;
     v8 = objc_opt_class();
     v9 = 2048;
-    v10 = a3;
+    taskCopy = task;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ endBackgroundTask %lu", buf, 0x16u);
   }
 
   v6.receiver = self;
   v6.super_class = ICSApplication;
-  [(ICSApplication *)&v6 endBackgroundTask:a3];
+  [(ICSApplication *)&v6 endBackgroundTask:task];
 }
 
-- (id)_keyWindowForScreen:(id)a3
+- (id)_keyWindowForScreen:(id)screen
 {
-  v4 = a3;
-  if ([v4 _userInterfaceIdiom] == 3)
+  screenCopy = screen;
+  if ([screenCopy _userInterfaceIdiom] == 3)
   {
     v5 = +[_TtC13InCallService20CarPlayBannerManager shared];
-    v6 = [v5 bannerWindow];
-    v7 = v6;
-    if (v6)
+    bannerWindow = [v5 bannerWindow];
+    v7 = bannerWindow;
+    if (bannerWindow)
     {
-      v8 = v6;
+      v8 = bannerWindow;
     }
 
     else
     {
       v12.receiver = self;
       v12.super_class = ICSApplication;
-      v8 = [(ICSApplication *)&v12 _keyWindowForScreen:v4];
+      v8 = [(ICSApplication *)&v12 _keyWindowForScreen:screenCopy];
     }
 
     v9 = v8;
@@ -118,52 +118,52 @@
   {
     v11.receiver = self;
     v11.super_class = ICSApplication;
-    v9 = [(ICSApplication *)&v11 _keyWindowForScreen:v4];
+    v9 = [(ICSApplication *)&v11 _keyWindowForScreen:screenCopy];
   }
 
   return v9;
 }
 
-- (BOOL)runTest:(id)a3 options:(id)a4
+- (BOOL)runTest:(id)test options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  testCopy = test;
+  optionsCopy = options;
   v8 = sub_100004F84();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v14 = v6;
+    v14 = testCopy;
     v15 = 2112;
-    v16 = v7;
+    v16 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Asked to run testName: %@ with options: %@", buf, 0x16u);
   }
 
-  [(ICSApplication *)self setUpTestNamed:v6];
-  if (([v6 isEqualToString:@"PlaceOutgoingCall"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"FaceTimePlaceOutgoingCall"))
+  [(ICSApplication *)self setUpTestNamed:testCopy];
+  if (([testCopy isEqualToString:@"PlaceOutgoingCall"] & 1) != 0 || objc_msgSend(testCopy, "isEqualToString:", @"FaceTimePlaceOutgoingCall"))
   {
-    v9 = [(ICSApplication *)self runOutgoingCallTestWithOptions:v7];
+    v9 = [(ICSApplication *)self runOutgoingCallTestWithOptions:optionsCopy];
   }
 
-  else if (([v6 isEqualToString:@"AnswerIncomingCall"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"FaceTimeAnswerIncomingCall"))
+  else if (([testCopy isEqualToString:@"AnswerIncomingCall"] & 1) != 0 || objc_msgSend(testCopy, "isEqualToString:", @"FaceTimeAnswerIncomingCall"))
   {
-    v9 = [(ICSApplication *)self runIncomingCallTestWithOptions:v7];
+    v9 = [(ICSApplication *)self runIncomingCallTestWithOptions:optionsCopy];
   }
 
-  else if (([v6 isEqualToString:@"FaceTimeEndActiveCall"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"EndActiveCall"))
+  else if (([testCopy isEqualToString:@"FaceTimeEndActiveCall"] & 1) != 0 || objc_msgSend(testCopy, "isEqualToString:", @"EndActiveCall"))
   {
-    v9 = [(ICSApplication *)self runEndCallTestWithOptions:v7];
+    v9 = [(ICSApplication *)self runEndCallTestWithOptions:optionsCopy];
   }
 
-  else if ([v6 isEqualToString:@"FaceTimeSwapCamera"])
+  else if ([testCopy isEqualToString:@"FaceTimeSwapCamera"])
   {
-    v9 = [(ICSApplication *)self runSwapCameraTestWithOptions:v7];
+    v9 = [(ICSApplication *)self runSwapCameraTestWithOptions:optionsCopy];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = ICSApplication;
-    v9 = [(ICSApplication *)&v12 runTest:v6 options:v7];
+    v9 = [(ICSApplication *)&v12 runTest:testCopy options:optionsCopy];
   }
 
   v10 = v9;
@@ -171,10 +171,10 @@
   return v10;
 }
 
-- (void)setUpTestNamed:(id)a3
+- (void)setUpTestNamed:(id)named
 {
-  objc_storeStrong(&qword_1003B8808, a3);
-  v5 = a3;
+  objc_storeStrong(&qword_1003B8808, named);
+  namedCopy = named;
   v6 = +[NSNotificationCenter defaultCenter];
   [v6 addObserver:self selector:"handleCallStatusChangedNotification:" name:TUCallCenterCallStatusChangedNotification object:0];
 
@@ -182,41 +182,41 @@
   [v7 addObserver:self selector:"handleCallStatusChangedNotification:" name:TUCallCenterVideoCallStatusChangedNotification object:0];
 }
 
-- (void)handleCallStatusChangedNotification:(id)a3
+- (void)handleCallStatusChangedNotification:(id)notification
 {
   if (qword_1003B8810)
   {
-    v3 = [a3 object];
-    (*(qword_1003B8810 + 16))(qword_1003B8810, v3);
+    object = [notification object];
+    (*(qword_1003B8810 + 16))(qword_1003B8810, object);
   }
 }
 
-- (id)pptOutgoingDialRequestWithDestinationID:(id)a3
+- (id)pptOutgoingDialRequestWithDestinationID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v5 = [TUHandle handleWithDestinationID:v4];
+    dCopy = [TUHandle handleWithDestinationID:dCopy];
 
     v6 = +[TUCallCenter sharedInstance];
-    v7 = [v6 providerManager];
+    providerManager = [v6 providerManager];
 
-    v8 = [v7 superboxProvider];
-    if ([(ICSApplication *)self currentTestIsFaceTime]|| v8)
+    superboxProvider = [providerManager superboxProvider];
+    if ([(ICSApplication *)self currentTestIsFaceTime]|| superboxProvider)
     {
-      v9 = v8;
+      telephonyProvider = superboxProvider;
     }
 
     else
     {
-      v9 = [v7 telephonyProvider];
+      telephonyProvider = [providerManager telephonyProvider];
     }
 
-    v11 = v9;
-    if (v9)
+    v11 = telephonyProvider;
+    if (telephonyProvider)
     {
-      v10 = [[TUDialRequest alloc] initWithProvider:v9];
-      [v10 setHandle:v5];
+      v10 = [[TUDialRequest alloc] initWithProvider:telephonyProvider];
+      [v10 setHandle:dCopy];
       [v10 setVideo:{-[ICSApplication currentTestIsFaceTime](self, "currentTestIsFaceTime")}];
       [v10 setOriginatingUIType:36];
     }
@@ -224,7 +224,7 @@
     else
     {
       v12 = qword_1003B8808;
-      v13 = [NSString stringWithFormat:@"Could not create a call provider using the call provider manager %@.", v7];
+      v13 = [NSString stringWithFormat:@"Could not create a call provider using the call provider manager %@.", providerManager];
       [(ICSApplication *)self failedTest:v12 withFailure:v13];
 
       v10 = 0;
@@ -233,21 +233,21 @@
 
   else
   {
-    v5 = [NSString stringWithFormat:@"Invalid destination ID: %@.  Did you remember to set the defaults?", v4];
+    dCopy = [NSString stringWithFormat:@"Invalid destination ID: %@.  Did you remember to set the defaults?", dCopy];
 
-    [(ICSApplication *)self failedTest:qword_1003B8808 withFailure:v5];
+    [(ICSApplication *)self failedTest:qword_1003B8808 withFailure:dCopy];
     v10 = 0;
   }
 
   return v10;
 }
 
-- (BOOL)runOutgoingCallTestWithOptions:(id)a3
+- (BOOL)runOutgoingCallTestWithOptions:(id)options
 {
-  v4 = [(ICSApplication *)self currentTestIsFaceTime];
+  currentTestIsFaceTime = [(ICSApplication *)self currentTestIsFaceTime];
   v5 = +[ICSPreferences sharedPreferences];
   v6 = v5;
-  if (v4)
+  if (currentTestIsFaceTime)
   {
     [v5 pptOutgoingFaceTimeCallHandleValue];
   }
@@ -272,7 +272,7 @@
   return 1;
 }
 
-- (BOOL)runIncomingCallTestWithOptions:(id)a3
+- (BOOL)runIncomingCallTestWithOptions:(id)options
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -299,12 +299,12 @@
   return 1;
 }
 
-- (BOOL)runEndCallTestWithOptions:(id)a3
+- (BOOL)runEndCallTestWithOptions:(id)options
 {
-  v4 = [(ICSApplication *)self currentTestIsFaceTime];
+  currentTestIsFaceTime = [(ICSApplication *)self currentTestIsFaceTime];
   v5 = +[ICSPreferences sharedPreferences];
   v6 = v5;
-  if (v4)
+  if (currentTestIsFaceTime)
   {
     [v5 pptOutgoingFaceTimeCallHandleValue];
   }
@@ -323,11 +323,11 @@
   return 1;
 }
 
-- (BOOL)runSwapCameraTestWithOptions:(id)a3
+- (BOOL)runSwapCameraTestWithOptions:(id)options
 {
   v4 = +[ICSPreferences sharedPreferences];
-  v5 = [v4 pptOutgoingFaceTimeCallHandleValue];
-  v6 = [(ICSApplication *)self pptOutgoingDialRequestWithDestinationID:v5];
+  pptOutgoingFaceTimeCallHandleValue = [v4 pptOutgoingFaceTimeCallHandleValue];
+  v6 = [(ICSApplication *)self pptOutgoingDialRequestWithDestinationID:pptOutgoingFaceTimeCallHandleValue];
 
   v7 = [v6 URL];
 
@@ -343,9 +343,9 @@
   return 1;
 }
 
-- (void)connection:(id)a3 didFailWithError:(id)a4
+- (void)connection:(id)connection didFailWithError:(id)error
 {
-  if (([UIApp isRunningTest:{@"AnswerIncomingCall", a4}] & 1) != 0 || objc_msgSend(UIApp, "isRunningTest:", @"FaceTimeAnswerIncomingCall"))
+  if (([UIApp isRunningTest:{@"AnswerIncomingCall", error}] & 1) != 0 || objc_msgSend(UIApp, "isRunningTest:", @"FaceTimeAnswerIncomingCall"))
   {
     v5 = qword_1003B8808;
 

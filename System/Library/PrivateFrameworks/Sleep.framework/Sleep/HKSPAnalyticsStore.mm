@@ -1,31 +1,31 @@
 @interface HKSPAnalyticsStore
-- (HKSPAnalyticsStore)initWithUserDefaults:(id)a3 diagnosticsOptInStatusProvider:(id)a4;
+- (HKSPAnalyticsStore)initWithUserDefaults:(id)defaults diagnosticsOptInStatusProvider:(id)provider;
 - (id)readAllWindDownActions;
 - (id)uncollectedWindDownActions;
-- (id)windDownActionsAfterMorningIndex:(int64_t)a3;
-- (id)windDownActionsForMorningIndex:(int64_t)a3;
-- (void)_setWindDownActions:(id)a3 forMorningIndex:(int64_t)a4 overwriteExisting:(BOOL)a5;
+- (id)windDownActionsAfterMorningIndex:(int64_t)index;
+- (id)windDownActionsForMorningIndex:(int64_t)index;
+- (void)_setWindDownActions:(id)actions forMorningIndex:(int64_t)index overwriteExisting:(BOOL)existing;
 - (void)markAllActionsAsCollected;
-- (void)removeAllWindDownActionsBeforeMorningIndex:(int64_t)a3;
-- (void)setBaselineForWindDownActions:(id)a3 onMorningIndex:(int64_t)a4;
-- (void)updateWindDownActions:(id)a3 onMorningIndex:(int64_t)a4;
-- (void)writeWindDownActions:(id)a3;
+- (void)removeAllWindDownActionsBeforeMorningIndex:(int64_t)index;
+- (void)setBaselineForWindDownActions:(id)actions onMorningIndex:(int64_t)index;
+- (void)updateWindDownActions:(id)actions onMorningIndex:(int64_t)index;
+- (void)writeWindDownActions:(id)actions;
 @end
 
 @implementation HKSPAnalyticsStore
 
-- (HKSPAnalyticsStore)initWithUserDefaults:(id)a3 diagnosticsOptInStatusProvider:(id)a4
+- (HKSPAnalyticsStore)initWithUserDefaults:(id)defaults diagnosticsOptInStatusProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  defaultsCopy = defaults;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = HKSPAnalyticsStore;
   v9 = [(HKSPAnalyticsStore *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_userDefaults, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_userDefaults, defaults);
+    v11 = [providerCopy copy];
     diagnosticsOptInStatusProvider = v10->_diagnosticsOptInStatusProvider;
     v10->_diagnosticsOptInStatusProvider = v11;
 
@@ -35,33 +35,33 @@
   return v10;
 }
 
-- (void)writeWindDownActions:(id)a3
+- (void)writeWindDownActions:(id)actions
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionsCopy = actions;
   v5 = HKSPLogForCategory(0x11uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v33 = objc_opt_class();
     v34 = 2114;
-    v35 = v4;
+    v35 = actionsCopy;
     _os_log_impl(&dword_269A84000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Writing wind down actions to defaults: %{public}@", buf, 0x16u);
   }
 
-  if (v4 && [v4 count])
+  if (actionsCopy && [actionsCopy count])
   {
-    v25 = self;
+    selfCopy = self;
     v6 = objc_alloc(MEMORY[0x277CBEB38]);
-    v7 = [v4 allKeys];
-    v8 = [v6 initWithCapacity:{objc_msgSend(v7, "count")}];
+    allKeys = [actionsCopy allKeys];
+    userDefaults2 = [v6 initWithCapacity:{objc_msgSend(allKeys, "count")}];
 
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v9 = [v4 allKeys];
-    v10 = [v9 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    allKeys2 = [actionsCopy allKeys];
+    v10 = [allKeys2 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v10)
     {
       v11 = v10;
@@ -72,43 +72,43 @@
         {
           if (*v28 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allKeys2);
           }
 
           v14 = *(*(&v27 + 1) + 8 * i);
           v15 = [HKSPAnalyticsWindDownEventDataWrapper alloc];
-          v16 = [v4 objectForKeyedSubscript:v14];
+          v16 = [actionsCopy objectForKeyedSubscript:v14];
           v17 = [(HKSPAnalyticsWindDownEventDataWrapper *)v15 initWithEventDatums:v16];
-          [v8 setObject:v17 forKeyedSubscript:v14];
+          [userDefaults2 setObject:v17 forKeyedSubscript:v14];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v11 = [allKeys2 countByEnumeratingWithState:&v27 objects:v31 count:16];
       }
 
       while (v11);
     }
 
     v26 = 0;
-    v18 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v8 requiringSecureCoding:0 error:&v26];
+    v18 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:userDefaults2 requiringSecureCoding:0 error:&v26];
     v19 = v26;
     if (v19)
     {
-      v20 = HKSPLogForCategory(0x11uLL);
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+      userDefaults = HKSPLogForCategory(0x11uLL);
+      if (os_log_type_enabled(userDefaults, OS_LOG_TYPE_ERROR))
       {
         v21 = objc_opt_class();
         *buf = 138543618;
         v33 = v21;
         v34 = 2114;
         v35 = v19;
-        _os_log_error_impl(&dword_269A84000, v20, OS_LOG_TYPE_ERROR, "[%{public}@] Unabled to archive wind down actions with error: %{public}@", buf, 0x16u);
+        _os_log_error_impl(&dword_269A84000, userDefaults, OS_LOG_TYPE_ERROR, "[%{public}@] Unabled to archive wind down actions with error: %{public}@", buf, 0x16u);
       }
     }
 
     else
     {
-      v20 = [(HKSPAnalyticsStore *)v25 userDefaults];
-      [v20 hksp_setObject:v18 forKey:@"sleepAnalyticWindDownActions"];
+      userDefaults = [(HKSPAnalyticsStore *)selfCopy userDefaults];
+      [userDefaults hksp_setObject:v18 forKey:@"sleepAnalyticWindDownActions"];
     }
   }
 
@@ -123,8 +123,8 @@
       _os_log_impl(&dword_269A84000, v22, OS_LOG_TYPE_DEFAULT, "[%{public}@] Removing all wind down actions", buf, 0xCu);
     }
 
-    v8 = [(HKSPAnalyticsStore *)self userDefaults];
-    [v8 hksp_removeObjectForKey:@"sleepAnalyticWindDownActions"];
+    userDefaults2 = [(HKSPAnalyticsStore *)self userDefaults];
+    [userDefaults2 hksp_removeObjectForKey:@"sleepAnalyticWindDownActions"];
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -133,13 +133,13 @@
 - (id)readAllWindDownActions
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = [(HKSPAnalyticsStore *)self diagnosticsOptInStatusProvider];
-  v4 = v3[2]();
+  diagnosticsOptInStatusProvider = [(HKSPAnalyticsStore *)self diagnosticsOptInStatusProvider];
+  v4 = diagnosticsOptInStatusProvider[2]();
 
   if (v4)
   {
-    v5 = [(HKSPAnalyticsStore *)self userDefaults];
-    v6 = [v5 hksp_dataForKey:@"sleepAnalyticWindDownActions"];
+    userDefaults = [(HKSPAnalyticsStore *)self userDefaults];
+    v6 = [userDefaults hksp_dataForKey:@"sleepAnalyticWindDownActions"];
 
     if (v6)
     {
@@ -164,15 +164,15 @@
         v27 = v10;
         v28 = v6;
         v12 = objc_alloc(MEMORY[0x277CBEB38]);
-        v13 = [v9 allKeys];
-        v14 = [v12 initWithCapacity:{objc_msgSend(v13, "count")}];
+        allKeys = [v9 allKeys];
+        v14 = [v12 initWithCapacity:{objc_msgSend(allKeys, "count")}];
 
         v31 = 0u;
         v32 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v15 = [v9 allKeys];
-        v16 = [v15 countByEnumeratingWithState:&v29 objects:v38 count:16];
+        allKeys2 = [v9 allKeys];
+        v16 = [allKeys2 countByEnumeratingWithState:&v29 objects:v38 count:16];
         if (v16)
         {
           v17 = v16;
@@ -183,16 +183,16 @@
             {
               if (*v30 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(allKeys2);
               }
 
               v20 = *(*(&v29 + 1) + 8 * i);
               v21 = [v9 objectForKeyedSubscript:{v20, v27, v28}];
-              v22 = [v21 eventDatums];
-              [v14 setObject:v22 forKeyedSubscript:v20];
+              eventDatums = [v21 eventDatums];
+              [v14 setObject:eventDatums forKeyedSubscript:v20];
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v29 objects:v38 count:16];
+            v17 = [allKeys2 countByEnumeratingWithState:&v29 objects:v38 count:16];
           }
 
           while (v17);
@@ -251,62 +251,62 @@
   return v14;
 }
 
-- (void)setBaselineForWindDownActions:(id)a3 onMorningIndex:(int64_t)a4
+- (void)setBaselineForWindDownActions:(id)actions onMorningIndex:(int64_t)index
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  actionsCopy = actions;
   v7 = HKSPLogForCategory(0x11uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:index];
     v11 = 138543874;
     v12 = v8;
     v13 = 2114;
     v14 = v9;
     v15 = 2114;
-    v16 = v6;
+    v16 = actionsCopy;
     _os_log_impl(&dword_269A84000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Setting baseline wind down actions for morning index %{public}@: %{public}@", &v11, 0x20u);
   }
 
-  [(HKSPAnalyticsStore *)self _setWindDownActions:v6 forMorningIndex:a4 overwriteExisting:0];
+  [(HKSPAnalyticsStore *)self _setWindDownActions:actionsCopy forMorningIndex:index overwriteExisting:0];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWindDownActions:(id)a3 onMorningIndex:(int64_t)a4
+- (void)updateWindDownActions:(id)actions onMorningIndex:(int64_t)index
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  actionsCopy = actions;
   v7 = HKSPLogForCategory(0x11uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:index];
     v11 = 138543874;
     v12 = v8;
     v13 = 2114;
     v14 = v9;
     v15 = 2114;
-    v16 = v6;
+    v16 = actionsCopy;
     _os_log_impl(&dword_269A84000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Updating wind down actions for morning index %{public}@: %{public}@", &v11, 0x20u);
   }
 
-  [(HKSPAnalyticsStore *)self _setWindDownActions:v6 forMorningIndex:a4 overwriteExisting:1];
+  [(HKSPAnalyticsStore *)self _setWindDownActions:actionsCopy forMorningIndex:index overwriteExisting:1];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)windDownActionsForMorningIndex:(int64_t)a3
+- (id)windDownActionsForMorningIndex:(int64_t)index
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = [(HKSPAnalyticsStore *)self readAllWindDownActions];
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  readAllWindDownActions = [(HKSPAnalyticsStore *)self readAllWindDownActions];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:index];
+  v6 = [readAllWindDownActions objectForKeyedSubscript:v5];
 
   v7 = HKSPLogForCategory(0x11uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:index];
     v16 = 138543874;
     v17 = v8;
     v18 = 2114;
@@ -337,14 +337,14 @@
 - (id)uncollectedWindDownActions
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [(HKSPAnalyticsStore *)self readAllWindDownActions];
+  readAllWindDownActions = [(HKSPAnalyticsStore *)self readAllWindDownActions];
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v2 allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allKeys = [readAllWindDownActions allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -355,10 +355,10 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
-        v9 = [v2 objectForKeyedSubscript:*(*(&v14 + 1) + 8 * i)];
+        v9 = [readAllWindDownActions objectForKeyedSubscript:*(*(&v14 + 1) + 8 * i)];
         v10 = v9;
         if (v9)
         {
@@ -367,7 +367,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -378,23 +378,23 @@
   return v3;
 }
 
-- (id)windDownActionsAfterMorningIndex:(int64_t)a3
+- (id)windDownActionsAfterMorningIndex:(int64_t)index
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [(HKSPAnalyticsStore *)self readAllWindDownActions];
-  if ([v4 count])
+  readAllWindDownActions = [(HKSPAnalyticsStore *)self readAllWindDownActions];
+  if ([readAllWindDownActions count])
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __55__HKSPAnalyticsStore_windDownActionsAfterMorningIndex___block_invoke;
     v11[3] = &__block_descriptor_40_e30_B24__0__NSNumber_8__NSArray_16l;
-    v11[4] = a3;
-    v5 = [v4 na_filter:v11];
+    v11[4] = index;
+    v5 = [readAllWindDownActions na_filter:v11];
     v6 = HKSPLogForCategory(0x11uLL);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = objc_opt_class();
-      v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+      v8 = [MEMORY[0x277CCABB0] numberWithInteger:index];
       *buf = 138543874;
       v13 = v7;
       v14 = 2114;
@@ -415,15 +415,15 @@
   return v5;
 }
 
-- (void)removeAllWindDownActionsBeforeMorningIndex:(int64_t)a3
+- (void)removeAllWindDownActionsBeforeMorningIndex:(int64_t)index
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = [(HKSPAnalyticsStore *)self windDownActionsAfterMorningIndex:a3 - 1];
+  v5 = [(HKSPAnalyticsStore *)self windDownActionsAfterMorningIndex:index - 1];
   v6 = HKSPLogForCategory(0x11uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:index];
     v10 = 138543874;
     v11 = v7;
     v12 = 2114;
@@ -440,15 +440,15 @@
 - (void)markAllActionsAsCollected
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(HKSPAnalyticsStore *)self readAllWindDownActions];
-  v4 = [v3 mutableCopy];
+  readAllWindDownActions = [(HKSPAnalyticsStore *)self readAllWindDownActions];
+  v4 = [readAllWindDownActions mutableCopy];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allKeys = [v4 allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -459,7 +459,7 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -468,7 +468,7 @@
         [v4 setObject:v12 forKeyedSubscript:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -496,21 +496,21 @@ id __47__HKSPAnalyticsStore_markAllActionsAsCollected__block_invoke(uint64_t a1,
   return v4;
 }
 
-- (void)_setWindDownActions:(id)a3 forMorningIndex:(int64_t)a4 overwriteExisting:(BOOL)a5
+- (void)_setWindDownActions:(id)actions forMorningIndex:(int64_t)index overwriteExisting:(BOOL)existing
 {
-  v5 = a5;
+  existingCopy = existing;
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(HKSPAnalyticsStore *)self diagnosticsOptInStatusProvider];
-  v10 = v9[2]();
+  actionsCopy = actions;
+  diagnosticsOptInStatusProvider = [(HKSPAnalyticsStore *)self diagnosticsOptInStatusProvider];
+  v10 = diagnosticsOptInStatusProvider[2]();
 
   if (v10)
   {
-    v11 = [(HKSPAnalyticsStore *)self readAllWindDownActions];
-    v12 = [v11 mutableCopy];
+    readAllWindDownActions = [(HKSPAnalyticsStore *)self readAllWindDownActions];
+    v12 = [readAllWindDownActions mutableCopy];
 
     v13 = 0x277CCA000uLL;
-    v14 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v14 = [MEMORY[0x277CCABB0] numberWithInteger:index];
     v15 = [v12 objectForKeyedSubscript:v14];
 
     if (v15)
@@ -521,8 +521,8 @@ id __47__HKSPAnalyticsStore_markAllActionsAsCollected__block_invoke(uint64_t a1,
       v32 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v30 = v8;
-      v17 = v8;
+      v30 = actionsCopy;
+      v17 = actionsCopy;
       v18 = [v17 countByEnumeratingWithState:&v31 objects:v35 count:16];
       if (v18)
       {
@@ -539,7 +539,7 @@ id __47__HKSPAnalyticsStore_markAllActionsAsCollected__block_invoke(uint64_t a1,
 
             v22 = *(*(&v31 + 1) + 8 * i);
             v23 = [v16 indexOfObject:v22];
-            if (v23 == 0x7FFFFFFFFFFFFFFFLL || !v5)
+            if (v23 == 0x7FFFFFFFFFFFFFFFLL || !existingCopy)
             {
               if (v23 == 0x7FFFFFFFFFFFFFFFLL)
               {
@@ -560,16 +560,16 @@ id __47__HKSPAnalyticsStore_markAllActionsAsCollected__block_invoke(uint64_t a1,
       }
 
       v25 = [v16 copy];
-      v8 = v30;
+      actionsCopy = v30;
       v13 = 0x277CCA000;
     }
 
     else
     {
-      v25 = [v8 copy];
+      v25 = [actionsCopy copy];
     }
 
-    v26 = [*(v13 + 2992) numberWithInteger:a4];
+    v26 = [*(v13 + 2992) numberWithInteger:index];
     [v12 setObject:v25 forKeyedSubscript:v26];
 
     v27 = [v12 copy];

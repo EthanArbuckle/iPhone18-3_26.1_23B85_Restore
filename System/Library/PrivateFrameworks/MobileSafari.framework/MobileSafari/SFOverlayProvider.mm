@@ -1,31 +1,31 @@
 @interface SFOverlayProvider
 + (BOOL)alwaysShowOverlayForDebug;
-- (SFOverlayProvider)initWithURL:(id)a3 bundleIdentifier:(id)a4;
+- (SFOverlayProvider)initWithURL:(id)l bundleIdentifier:(id)identifier;
 - (SFOverlayProviderDelegate)delegate;
 - (_SFPerSitePreferencesVendor)_preferencesVendor;
-- (void)cardViewControllerDidDisappear:(id)a3 clipDidOpen:(BOOL)a4 persistUserSettings:(BOOL)a5;
-- (void)hideOverlayAnimated:(BOOL)a3;
-- (void)showOverlayInScrollView:(id)a3 viewController:(id)a4;
+- (void)cardViewControllerDidDisappear:(id)disappear clipDidOpen:(BOOL)open persistUserSettings:(BOOL)settings;
+- (void)hideOverlayAnimated:(BOOL)animated;
+- (void)showOverlayInScrollView:(id)view viewController:(id)controller;
 - (void)webViewBackforwardGestureNavigationDidEnd;
 - (void)webViewBackforwardGestureNavigationWillBegin;
 @end
 
 @implementation SFOverlayProvider
 
-- (SFOverlayProvider)initWithURL:(id)a3 bundleIdentifier:(id)a4
+- (SFOverlayProvider)initWithURL:(id)l bundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = SFOverlayProvider;
   v8 = [(SFOverlayProvider *)&v13 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [lCopy copy];
     url = v8->_url;
     v8->_url = v9;
 
-    objc_storeStrong(&v8->_bundleIdentifier, a4);
+    objc_storeStrong(&v8->_bundleIdentifier, identifier);
     v11 = v8;
   }
 
@@ -48,10 +48,10 @@ void __46__SFOverlayProvider_alwaysShowOverlayForDebug__block_invoke()
   alwaysShowOverlayForDebug_alwaysShowOverlay = [v0 BOOLForKey:@"DebugAlwaysShowAppclipOverlay"];
 }
 
-- (void)showOverlayInScrollView:(id)a3 viewController:(id)a4
+- (void)showOverlayInScrollView:(id)view viewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  controllerCopy = controller;
   if (self->_available)
   {
     cardViewController = self->_cardViewController;
@@ -82,44 +82,44 @@ void __46__SFOverlayProvider_alwaysShowOverlayForDebug__block_invoke()
       cardViewController = self->_cardViewController;
     }
 
-    v13 = [(CPSInlineCardViewController *)cardViewController view];
-    [v6 addSubview:v13];
+    view = [(CPSInlineCardViewController *)cardViewController view];
+    [viewCopy addSubview:view];
 
-    [v7 addChildViewController:self->_cardViewController];
-    [(CPSInlineCardViewController *)self->_cardViewController didMoveToParentViewController:v7];
-    v14 = [(CPSInlineCardViewController *)self->_cardViewController view];
-    [v14 setAlpha:0.0];
+    [controllerCopy addChildViewController:self->_cardViewController];
+    [(CPSInlineCardViewController *)self->_cardViewController didMoveToParentViewController:controllerCopy];
+    view2 = [(CPSInlineCardViewController *)self->_cardViewController view];
+    [view2 setAlpha:0.0];
     v15 = MEMORY[0x1E69DD250];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __60__SFOverlayProvider_showOverlayInScrollView_viewController___block_invoke;
     v19[3] = &unk_1E721B360;
-    v20 = v14;
+    v20 = view2;
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __60__SFOverlayProvider_showOverlayInScrollView_viewController___block_invoke_2;
     v17[3] = &unk_1E721B510;
-    v18 = v6;
-    v16 = v14;
+    v18 = viewCopy;
+    v16 = view2;
     [v15 _animateUsingDefaultTimingWithOptions:2 animations:v19 completion:v17];
     [(CPSInlineCardViewController *)self->_cardViewController setDelegate:self];
   }
 }
 
-- (void)hideOverlayAnimated:(BOOL)a3
+- (void)hideOverlayAnimated:(BOOL)animated
 {
   [(CPSInlineCardViewController *)self->_cardViewController setDelegate:0];
-  v5 = [(CPSInlineCardViewController *)self->_cardViewController view];
+  view = [(CPSInlineCardViewController *)self->_cardViewController view];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __41__SFOverlayProvider_hideOverlayAnimated___block_invoke;
   aBlock[3] = &unk_1E721B400;
-  v6 = v5;
+  v6 = view;
   v15 = v6;
-  v16 = self;
+  selfCopy = self;
   v7 = _Block_copy(aBlock);
   v8 = v7;
-  if (a3)
+  if (animated)
   {
     v9 = MEMORY[0x1E69DD250];
     v12[0] = MEMORY[0x1E69E9820];
@@ -162,9 +162,9 @@ void __41__SFOverlayProvider_hideOverlayAnimated___block_invoke(uint64_t a1)
 
 - (void)webViewBackforwardGestureNavigationWillBegin
 {
-  v3 = [(CPSInlineCardViewController *)self->_cardViewController parentViewController];
+  parentViewController = [(CPSInlineCardViewController *)self->_cardViewController parentViewController];
   cachedOwningViewController = self->_cachedOwningViewController;
-  self->_cachedOwningViewController = v3;
+  self->_cachedOwningViewController = parentViewController;
 
   [(UIViewController *)self->_cachedOwningViewController removeChildViewController:self->_cardViewController];
   cardViewController = self->_cardViewController;
@@ -180,14 +180,14 @@ void __41__SFOverlayProvider_hideOverlayAnimated___block_invoke(uint64_t a1)
   self->_cachedOwningViewController = 0;
 }
 
-- (void)cardViewControllerDidDisappear:(id)a3 clipDidOpen:(BOOL)a4 persistUserSettings:(BOOL)a5
+- (void)cardViewControllerDidDisappear:(id)disappear clipDidOpen:(BOOL)open persistUserSettings:(BOOL)settings
 {
-  v5 = a5;
-  v8 = a3;
-  if (self->_cardViewController == v8)
+  settingsCopy = settings;
+  disappearCopy = disappear;
+  if (self->_cardViewController == disappearCopy)
   {
     self->_available = 0;
-    if (v5 && !a4)
+    if (settingsCopy && !open)
     {
       v10 = WBS_LOG_CHANNEL_PREFIXBanners();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))

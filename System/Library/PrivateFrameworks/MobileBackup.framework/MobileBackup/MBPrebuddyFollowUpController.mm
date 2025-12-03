@@ -2,21 +2,21 @@
 + (id)connection;
 - (MBPrebuddyFollowUpController)init;
 - (id)_expirationExtensionFollowUpAction;
-- (id)_initialFollowUpActionTitle:(id)a3;
-- (id)_initialFollowUpMessage:(id)a3 needsTemporaryStorage:(BOOL)a4;
-- (id)_initialFollowUpTitle:(id)a3;
-- (id)_initialNotificationMessage:(id)a3;
-- (id)_initialNotificationTitle:(id)a3;
-- (id)_newPrebuddyNotification:(id)a3;
+- (id)_initialFollowUpActionTitle:(id)title;
+- (id)_initialFollowUpMessage:(id)message needsTemporaryStorage:(BOOL)storage;
+- (id)_initialFollowUpTitle:(id)title;
+- (id)_initialNotificationMessage:(id)message;
+- (id)_initialNotificationTitle:(id)title;
+- (id)_newPrebuddyNotification:(id)notification;
 - (id)_trackOrderFollowUpAction;
 - (id)_turnOnAppsBackingUpFollowUpAction;
 - (id)_turnOnAppsUsingiCloudFollowUpAction;
-- (void)_finishXPCWithError:(id)a3;
-- (void)_postNewFollowup:(id)a3;
-- (void)_updateFollowUpActions:(id)a3 hasDisabledSyncCategories:(BOOL)a4 hasDisabledBackupDomains:(BOOL)a5 canTrackOrder:(BOOL)a6 allowsExpirationExtension:(BOOL)a7;
+- (void)_finishXPCWithError:(id)error;
+- (void)_postNewFollowup:(id)followup;
+- (void)_updateFollowUpActions:(id)actions hasDisabledSyncCategories:(BOOL)categories hasDisabledBackupDomains:(BOOL)domains canTrackOrder:(BOOL)order allowsExpirationExtension:(BOOL)extension;
 - (void)reset;
-- (void)startFollowup:(id)a3;
-- (void)updateFollowupWithBackupProgress:(id)a3 account:(id)a4;
+- (void)startFollowup:(id)followup;
+- (void)updateFollowupWithBackupProgress:(id)progress account:(id)account;
 @end
 
 @implementation MBPrebuddyFollowUpController
@@ -37,13 +37,13 @@
     v2->_percentageFormatter = v5;
 
     [(NSNumberFormatter *)v2->_percentageFormatter setNumberStyle:3];
-    v7 = [objc_opt_class() connection];
-    if (!v7)
+    connection = [objc_opt_class() connection];
+    if (!connection)
     {
       __assert_rtn("[MBPrebuddyFollowUpController init]", "MBPrebuddyFollowUpController.m", 57, "connection");
     }
 
-    v8 = v7;
+    v8 = connection;
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1001AFE18;
@@ -63,9 +63,9 @@
   return v2;
 }
 
-- (void)startFollowup:(id)a3
+- (void)startFollowup:(id)followup
 {
-  v4 = a3;
+  followupCopy = followup;
   if ((+[MBPrebuddyManager hasPrebuddyFollowUp]& 1) != 0)
   {
     v5 = MBGetDefaultLog();
@@ -79,13 +79,13 @@
 
   else
   {
-    [(MBPrebuddyFollowUpController *)self _postNewFollowup:v4];
+    [(MBPrebuddyFollowUpController *)self _postNewFollowup:followupCopy];
   }
 }
 
-- (id)_initialFollowUpTitle:(id)a3
+- (id)_initialFollowUpTitle:(id)title
 {
-  v3 = [a3 objectForKeyedSubscript:@"MBServerInitialFollowUpTitleKey"];
+  v3 = [title objectForKeyedSubscript:@"MBServerInitialFollowUpTitleKey"];
   v4 = v3;
   if (v3)
   {
@@ -102,9 +102,9 @@
   return v6;
 }
 
-- (id)_initialFollowUpMessage:(id)a3 needsTemporaryStorage:(BOOL)a4
+- (id)_initialFollowUpMessage:(id)message needsTemporaryStorage:(BOOL)storage
 {
-  v4 = [a3 objectForKeyedSubscript:@"MBServerInitialFollowUpMessageKey"];
+  v4 = [message objectForKeyedSubscript:@"MBServerInitialFollowUpMessageKey"];
   v5 = v4;
   if (v4)
   {
@@ -121,9 +121,9 @@
   return v7;
 }
 
-- (id)_initialFollowUpActionTitle:(id)a3
+- (id)_initialFollowUpActionTitle:(id)title
 {
-  v3 = [a3 objectForKeyedSubscript:@"MBServerInitialFollowUpActionTitleKey"];
+  v3 = [title objectForKeyedSubscript:@"MBServerInitialFollowUpActionTitleKey"];
   v4 = v3;
   if (v3)
   {
@@ -140,31 +140,31 @@
   return v6;
 }
 
-- (void)_postNewFollowup:(id)a3
+- (void)_postNewFollowup:(id)followup
 {
-  v4 = a3;
+  followupCopy = followup;
   v5 = objc_alloc_init(MBMegaBackupEligibilityManager);
   v6 = MBDeviceUUID();
-  v7 = [v6 mb_backupIDByAddingCKPrefix];
+  mb_backupIDByAddingCKPrefix = [v6 mb_backupIDByAddingCKPrefix];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1001B0130;
   v9[3] = &unk_1003C0CA8;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [(MBMegaBackupEligibilityManager *)v5 checkMegaBackupEligibility:1 deepLinkURL:0 backupDeviceUUID:v7 queue:&_dispatch_main_q completion:v9];
+  v10 = followupCopy;
+  v8 = followupCopy;
+  [(MBMegaBackupEligibilityManager *)v5 checkMegaBackupEligibility:1 deepLinkURL:0 backupDeviceUUID:mb_backupIDByAddingCKPrefix queue:&_dispatch_main_q completion:v9];
 }
 
-- (void)updateFollowupWithBackupProgress:(id)a3 account:(id)a4
+- (void)updateFollowupWithBackupProgress:(id)progress account:(id)account
 {
-  v6 = a3;
-  v64 = a4;
+  progressCopy = progress;
+  accountCopy = account;
   v62 = [[FLFollowUpController alloc] initWithClientIdentifier:@"com.apple.backupd"];
-  v7 = [(MBPrebuddyFollowUpController *)self megaBackupExpirationDate];
-  if (v7)
+  megaBackupExpirationDate = [(MBPrebuddyFollowUpController *)self megaBackupExpirationDate];
+  if (megaBackupExpirationDate)
   {
-    [v6 progress];
+    [progressCopy progress];
     v9 = v8;
   }
 
@@ -173,24 +173,24 @@
     v9 = 0.0;
   }
 
-  v10 = [v6 state];
+  state = [progressCopy state];
   v11 = MBGetDefaultLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 134218498;
     *&buf[4] = v9;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = megaBackupExpirationDate;
     *&buf[22] = 1024;
-    LODWORD(v74) = v10;
+    LODWORD(v74) = state;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "=prebuddy-cfu= Updating prebuddy CFU with progress: %.2f expiration:%@ state:%d", buf, 0x1Cu);
-    v51 = v7;
-    v53 = v10;
+    v51 = megaBackupExpirationDate;
+    v53 = state;
     v48 = v9;
     _MBLog();
   }
 
-  v12 = 60 * [v6 estimatedTimeRemaining];
+  v12 = 60 * [progressCopy estimatedTimeRemaining];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
@@ -214,11 +214,11 @@
   }
 
   v14 = [MBCKManager sharedInstance:*&v48];
-  v63 = [v14 disabledDomainInfosForAccount:v64];
+  v63 = [v14 disabledDomainInfosForAccount:accountCopy];
 
   if ([v63 count])
   {
-    v15 = v10 == 6;
+    v15 = state == 6;
   }
 
   else
@@ -249,13 +249,13 @@
   }
 
   v22 = [v18 count] != 0;
-  if (v10 == 6)
+  if (state == 6)
   {
     v22 = 0;
   }
 
   v60 = v22;
-  if (v10 == 6)
+  if (state == 6)
   {
     v23 = MBLocalizedStringFromTable();
     v28 = MBLocalizedStringFromTable();
@@ -291,8 +291,8 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  v29 = [(MBPrebuddyFollowUpController *)self megaBackupExpirationDate];
-  if (!v29)
+  megaBackupExpirationDate2 = [(MBPrebuddyFollowUpController *)self megaBackupExpirationDate];
+  if (!megaBackupExpirationDate2)
   {
     __assert_rtn("[MBPrebuddyFollowUpController updateFollowupWithBackupProgress:account:]", "MBPrebuddyFollowUpController.m", 207, "self.megaBackupExpirationDate != nil");
   }
@@ -301,8 +301,8 @@ LABEL_37:
   v31 = +[NSDate date];
   v59 = [v30 components:28 fromDate:v31];
 
-  v32 = [(MBPrebuddyFollowUpController *)self megaBackupExpirationDate];
-  v58 = [v30 components:28 fromDate:v32];
+  megaBackupExpirationDate3 = [(MBPrebuddyFollowUpController *)self megaBackupExpirationDate];
+  v58 = [v30 components:28 fromDate:megaBackupExpirationDate3];
 
   v33 = [v30 dateFromComponents:v59];
   v57 = [v30 dateFromComponents:v58];
@@ -401,9 +401,9 @@ LABEL_45:
   _Block_object_dispose(buf, 8);
 }
 
-- (id)_initialNotificationTitle:(id)a3
+- (id)_initialNotificationTitle:(id)title
 {
-  v3 = [a3 objectForKeyedSubscript:@"MBServerInitialNotificationTitleKey"];
+  v3 = [title objectForKeyedSubscript:@"MBServerInitialNotificationTitleKey"];
   v4 = v3;
   if (v3)
   {
@@ -420,9 +420,9 @@ LABEL_45:
   return v6;
 }
 
-- (id)_initialNotificationMessage:(id)a3
+- (id)_initialNotificationMessage:(id)message
 {
-  v3 = [a3 objectForKeyedSubscript:@"MBServerInitialNotificationMessageKey"];
+  v3 = [message objectForKeyedSubscript:@"MBServerInitialNotificationMessageKey"];
   v4 = v3;
   if (v3)
   {
@@ -439,14 +439,14 @@ LABEL_45:
   return v6;
 }
 
-- (id)_newPrebuddyNotification:(id)a3
+- (id)_newPrebuddyNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_alloc_init(FLFollowUpNotification);
-  v6 = [(MBPrebuddyFollowUpController *)self _initialNotificationTitle:v4];
+  v6 = [(MBPrebuddyFollowUpController *)self _initialNotificationTitle:notificationCopy];
   [v5 setTitle:v6];
 
-  v7 = [(MBPrebuddyFollowUpController *)self _initialNotificationMessage:v4];
+  v7 = [(MBPrebuddyFollowUpController *)self _initialNotificationMessage:notificationCopy];
 
   [v5 setInformativeText:v7];
   [v5 setFrequency:0.0];
@@ -489,23 +489,23 @@ LABEL_45:
   }
 }
 
-- (void)_updateFollowUpActions:(id)a3 hasDisabledSyncCategories:(BOOL)a4 hasDisabledBackupDomains:(BOOL)a5 canTrackOrder:(BOOL)a6 allowsExpirationExtension:(BOOL)a7
+- (void)_updateFollowUpActions:(id)actions hasDisabledSyncCategories:(BOOL)categories hasDisabledBackupDomains:(BOOL)domains canTrackOrder:(BOOL)order allowsExpirationExtension:(BOOL)extension
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
-  v17 = a3;
+  extensionCopy = extension;
+  orderCopy = order;
+  domainsCopy = domains;
+  categoriesCopy = categories;
+  actionsCopy = actions;
   v12 = objc_alloc_init(NSMutableArray);
-  if (v7)
+  if (extensionCopy)
   {
-    v14 = [(MBPrebuddyFollowUpController *)self _expirationExtensionFollowUpAction];
-    [v12 addObject:v14];
+    _expirationExtensionFollowUpAction = [(MBPrebuddyFollowUpController *)self _expirationExtensionFollowUpAction];
+    [v12 addObject:_expirationExtensionFollowUpAction];
 
-    if (!v10)
+    if (!categoriesCopy)
     {
 LABEL_3:
-      if (!v9)
+      if (!domainsCopy)
       {
         goto LABEL_4;
       }
@@ -514,18 +514,18 @@ LABEL_3:
     }
   }
 
-  else if (!v10)
+  else if (!categoriesCopy)
   {
     goto LABEL_3;
   }
 
-  v15 = [(MBPrebuddyFollowUpController *)self _turnOnAppsUsingiCloudFollowUpAction];
-  [v12 addObject:v15];
+  _turnOnAppsUsingiCloudFollowUpAction = [(MBPrebuddyFollowUpController *)self _turnOnAppsUsingiCloudFollowUpAction];
+  [v12 addObject:_turnOnAppsUsingiCloudFollowUpAction];
 
-  if (!v9)
+  if (!domainsCopy)
   {
 LABEL_4:
-    if (!v8)
+    if (!orderCopy)
     {
       goto LABEL_6;
     }
@@ -534,18 +534,18 @@ LABEL_4:
   }
 
 LABEL_11:
-  v16 = [(MBPrebuddyFollowUpController *)self _turnOnAppsBackingUpFollowUpAction];
-  [v12 addObject:v16];
+  _turnOnAppsBackingUpFollowUpAction = [(MBPrebuddyFollowUpController *)self _turnOnAppsBackingUpFollowUpAction];
+  [v12 addObject:_turnOnAppsBackingUpFollowUpAction];
 
-  if (v8)
+  if (orderCopy)
   {
 LABEL_5:
-    v13 = [(MBPrebuddyFollowUpController *)self _trackOrderFollowUpAction];
-    [v12 addObject:v13];
+    _trackOrderFollowUpAction = [(MBPrebuddyFollowUpController *)self _trackOrderFollowUpAction];
+    [v12 addObject:_trackOrderFollowUpAction];
   }
 
 LABEL_6:
-  [v17 setActions:v12];
+  [actionsCopy setActions:v12];
 }
 
 - (id)_expirationExtensionFollowUpAction
@@ -590,8 +590,8 @@ LABEL_6:
 
 + (id)connection
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (qword_1004219A0)
   {
     v3 = qword_1004219A0;
@@ -610,26 +610,26 @@ LABEL_6:
     v6[1] = 3221225472;
     v6[2] = sub_1001B18D8;
     v6[3] = &unk_1003BBFE8;
-    v6[4] = v2;
+    v6[4] = selfCopy;
     [v4 setInvalidationHandler:v6];
     objc_storeStrong(&qword_1004219A0, v4);
     [v4 resume];
     v3 = qword_1004219A0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_finishXPCWithError:(id)a3
+- (void)_finishXPCWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = MBGetDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v6 = v3;
+    v6 = errorCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_ERROR, "=prebuddy-cfu= MBPrebuddyFollowUpController finish XPC with error: %{public}@", buf, 0xCu);
     _MBLog();
   }

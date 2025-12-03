@@ -32,7 +32,7 @@
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(CIRandomGenerator *)self _kernel];
+  _kernel = [(CIRandomGenerator *)self _kernel];
   v15 = *MEMORY[0x1E695F040];
   v16 = *(MEMORY[0x1E695F040] + 8);
   v17 = *(MEMORY[0x1E695F040] + 16);
@@ -46,7 +46,7 @@
   v20[6] = v11;
   v20[7] = v13;
   v21[0] = [CIVector vectorWithX:v5 Y:v5 Z:1.0 / v5 W:1.0 / v5];
-  return [v14 applyWithExtent:v20 roiCallback:v3 inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v21, 1), v15, v16, v17, v19}];
+  return [_kernel applyWithExtent:v20 roiCallback:v3 inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v21, 1), v15, v16, v17, v19}];
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface MPCMRRemoteArtworkDataSource
-- (BOOL)areRepresentationsAvailableForCatalog:(id)a3;
-- (BOOL)isRepresentation:(id)a3 bestRepresentationForArtworkCatalog:(id)a4;
-- (MPCMRRemoteArtworkDataSource)initWithController:(id)a3;
+- (BOOL)areRepresentationsAvailableForCatalog:(id)catalog;
+- (BOOL)isRepresentation:(id)representation bestRepresentationForArtworkCatalog:(id)catalog;
+- (MPCMRRemoteArtworkDataSource)initWithController:(id)controller;
 - (MPCMediaRemoteController)controller;
-- (id)existingRepresentationForArtworkCatalog:(id)a3;
-- (id)visualIdenticalityIdentifierForCatalog:(id)a3;
-- (void)cancelLoadingRepresentationForArtworkCatalog:(id)a3;
-- (void)loadRepresentationForArtworkCatalog:(id)a3 completionHandler:(id)a4;
+- (id)existingRepresentationForArtworkCatalog:(id)catalog;
+- (id)visualIdenticalityIdentifierForCatalog:(id)catalog;
+- (void)cancelLoadingRepresentationForArtworkCatalog:(id)catalog;
+- (void)loadRepresentationForArtworkCatalog:(id)catalog completionHandler:(id)handler;
 @end
 
 @implementation MPCMRRemoteArtworkDataSource
@@ -18,34 +18,34 @@
   return WeakRetained;
 }
 
-- (void)loadRepresentationForArtworkCatalog:(id)a3 completionHandler:(id)a4
+- (void)loadRepresentationForArtworkCatalog:(id)catalog completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 token];
-  v9 = [v8 storeArtworkCatalog];
-  if (v9)
+  catalogCopy = catalog;
+  handlerCopy = handler;
+  token = [catalogCopy token];
+  storeArtworkCatalog = [token storeArtworkCatalog];
+  if (storeArtworkCatalog)
   {
-    v10 = [MEMORY[0x1E6970980] sharedStoreArtworkDataSource];
-    [v10 loadRepresentationForArtworkCatalog:v9 completionHandler:v7];
+    mEMORY[0x1E6970980] = [MEMORY[0x1E6970980] sharedStoreArtworkDataSource];
+    [mEMORY[0x1E6970980] loadRepresentationForArtworkCatalog:storeArtworkCatalog completionHandler:handlerCopy];
   }
 
   else
   {
-    [v6 scaledFittingSize];
+    [catalogCopy scaledFittingSize];
     v12 = v11;
     v14 = v13;
-    v15 = [(MPCMRRemoteArtworkDataSource *)self controller];
-    v16 = [v8 identifier];
-    v17 = [v8 artworkIdentifier];
-    v18 = [v15 contentItemRemoteArtworkForContentItemIdentifier:v16 artworkIdentifier:v17 size:*MEMORY[0x1E6970298] artworkFormat:v12, v14];
+    controller = [(MPCMRRemoteArtworkDataSource *)self controller];
+    identifier = [token identifier];
+    artworkIdentifier = [token artworkIdentifier];
+    v18 = [controller contentItemRemoteArtworkForContentItemIdentifier:identifier artworkIdentifier:artworkIdentifier size:*MEMORY[0x1E6970298] artworkFormat:v12, v14];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __86__MPCMRRemoteArtworkDataSource_loadRepresentationForArtworkCatalog_completionHandler___block_invoke;
     v20[3] = &unk_1E82388C0;
-    v23 = v7;
-    v21 = v6;
-    v22 = v8;
+    v23 = handlerCopy;
+    v21 = catalogCopy;
+    v22 = token;
     v19 = [v18 onCompletion:v20];
   }
 }
@@ -137,43 +137,43 @@ LABEL_11:
 LABEL_16:
 }
 
-- (id)visualIdenticalityIdentifierForCatalog:(id)a3
+- (id)visualIdenticalityIdentifierForCatalog:(id)catalog
 {
-  v3 = [a3 token];
-  v4 = [v3 storeArtworkCatalog];
-  if (v4)
+  token = [catalog token];
+  storeArtworkCatalog = [token storeArtworkCatalog];
+  if (storeArtworkCatalog)
   {
-    v5 = [MEMORY[0x1E6970980] sharedStoreArtworkDataSource];
-    v6 = [v5 visualIdenticalityIdentifierForCatalog:v4];
+    mEMORY[0x1E6970980] = [MEMORY[0x1E6970980] sharedStoreArtworkDataSource];
+    identifier = [mEMORY[0x1E6970980] visualIdenticalityIdentifierForCatalog:storeArtworkCatalog];
   }
 
   else
   {
-    v6 = [v3 identifier];
+    identifier = [token identifier];
   }
 
-  return v6;
+  return identifier;
 }
 
-- (void)cancelLoadingRepresentationForArtworkCatalog:(id)a3
+- (void)cancelLoadingRepresentationForArtworkCatalog:(id)catalog
 {
-  v5 = [a3 token];
-  v3 = [v5 storeArtworkCatalog];
-  if (v3)
+  token = [catalog token];
+  storeArtworkCatalog = [token storeArtworkCatalog];
+  if (storeArtworkCatalog)
   {
-    v4 = [MEMORY[0x1E6970980] sharedStoreArtworkDataSource];
-    [v4 cancelLoadingRepresentationForArtworkCatalog:v3];
+    mEMORY[0x1E6970980] = [MEMORY[0x1E6970980] sharedStoreArtworkDataSource];
+    [mEMORY[0x1E6970980] cancelLoadingRepresentationForArtworkCatalog:storeArtworkCatalog];
   }
 }
 
-- (id)existingRepresentationForArtworkCatalog:(id)a3
+- (id)existingRepresentationForArtworkCatalog:(id)catalog
 {
-  v3 = [a3 token];
-  v4 = [v3 storeArtworkCatalog];
-  if (v4)
+  token = [catalog token];
+  storeArtworkCatalog = [token storeArtworkCatalog];
+  if (storeArtworkCatalog)
   {
-    v5 = [MEMORY[0x1E6970980] sharedStoreArtworkDataSource];
-    v6 = [v5 existingRepresentationForArtworkCatalog:v4];
+    mEMORY[0x1E6970980] = [MEMORY[0x1E6970980] sharedStoreArtworkDataSource];
+    v6 = [mEMORY[0x1E6970980] existingRepresentationForArtworkCatalog:storeArtworkCatalog];
   }
 
   else
@@ -184,33 +184,33 @@ LABEL_16:
   return v6;
 }
 
-- (BOOL)isRepresentation:(id)a3 bestRepresentationForArtworkCatalog:(id)a4
+- (BOOL)isRepresentation:(id)representation bestRepresentationForArtworkCatalog:(id)catalog
 {
-  v5 = a3;
-  v6 = [a4 token];
-  v7 = [v6 storeArtworkCatalog];
-  if (v7)
+  representationCopy = representation;
+  token = [catalog token];
+  storeArtworkCatalog = [token storeArtworkCatalog];
+  if (storeArtworkCatalog)
   {
-    v8 = [MEMORY[0x1E6970980] sharedStoreArtworkDataSource];
-    v9 = [v8 isRepresentation:v5 bestRepresentationForArtworkCatalog:v7];
+    mEMORY[0x1E6970980] = [MEMORY[0x1E6970980] sharedStoreArtworkDataSource];
+    v9 = [mEMORY[0x1E6970980] isRepresentation:representationCopy bestRepresentationForArtworkCatalog:storeArtworkCatalog];
   }
 
   else
   {
-    v9 = v5 != 0;
+    v9 = representationCopy != 0;
   }
 
   return v9;
 }
 
-- (BOOL)areRepresentationsAvailableForCatalog:(id)a3
+- (BOOL)areRepresentationsAvailableForCatalog:(id)catalog
 {
-  v3 = [a3 token];
-  v4 = [v3 storeArtworkCatalog];
-  if (v4)
+  token = [catalog token];
+  storeArtworkCatalog = [token storeArtworkCatalog];
+  if (storeArtworkCatalog)
   {
-    v5 = [MEMORY[0x1E6970980] sharedStoreArtworkDataSource];
-    v6 = [v5 areRepresentationsAvailableForCatalog:v4];
+    mEMORY[0x1E6970980] = [MEMORY[0x1E6970980] sharedStoreArtworkDataSource];
+    v6 = [mEMORY[0x1E6970980] areRepresentationsAvailableForCatalog:storeArtworkCatalog];
   }
 
   else
@@ -221,16 +221,16 @@ LABEL_16:
   return v6;
 }
 
-- (MPCMRRemoteArtworkDataSource)initWithController:(id)a3
+- (MPCMRRemoteArtworkDataSource)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = MPCMRRemoteArtworkDataSource;
   v5 = [(MPCMRRemoteArtworkDataSource *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_controller, v4);
+    objc_storeWeak(&v5->_controller, controllerCopy);
   }
 
   return v6;

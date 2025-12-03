@@ -1,34 +1,34 @@
 @interface EKImageKey
-- (BOOL)isEqual:(id)a3;
-- (EKImageKey)initWithSourceID:(id)a3 identifier:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (EKImageKey)initWithSourceID:(id)d identifier:(id)identifier;
 @end
 
 @implementation EKImageKey
 
-- (EKImageKey)initWithSourceID:(id)a3 identifier:(id)a4
+- (EKImageKey)initWithSourceID:(id)d identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = EKImageKey;
   v9 = [(EKImageKey *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sourceID, a3);
-    objc_storeStrong(&v10->_identifier, a4);
+    objc_storeStrong(&v9->_sourceID, d);
+    objc_storeStrong(&v10->_identifier, identifier);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
+    v7 = equalCopy;
     if ([v7[1] isEqual:self->_sourceID])
     {
       v6 = [v7[2] isEqualToString:self->_identifier];

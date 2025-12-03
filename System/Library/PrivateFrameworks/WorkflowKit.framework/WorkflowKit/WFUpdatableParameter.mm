@@ -2,9 +2,9 @@
 - (Class)singleStateClass;
 - (Class)toolkitStateClass;
 - (WFParameter)underlyingParameter;
-- (id)localizedLabelWithContext:(id)a3;
-- (id)parameterStateFromDialogResponse:(id)a3;
-- (void)createDialogRequestWithAttribution:(WFDialogAttribution *)a3 defaultState:(WFParameterState *)a4 prompt:(NSString *)a5 completionHandler:(id)a6;
+- (id)localizedLabelWithContext:(id)context;
+- (id)parameterStateFromDialogResponse:(id)response;
+- (void)createDialogRequestWithAttribution:(WFDialogAttribution *)attribution defaultState:(WFParameterState *)state prompt:(NSString *)prompt completionHandler:(id)handler;
 @end
 
 @implementation WFUpdatableParameter
@@ -16,11 +16,11 @@
   return v2;
 }
 
-- (id)localizedLabelWithContext:(id)a3
+- (id)localizedLabelWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_1CA2DA320(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_1CA2DA320(contextCopy);
 
   v6 = sub_1CA94C368();
 
@@ -34,35 +34,35 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)createDialogRequestWithAttribution:(WFDialogAttribution *)a3 defaultState:(WFParameterState *)a4 prompt:(NSString *)a5 completionHandler:(id)a6
+- (void)createDialogRequestWithAttribution:(WFDialogAttribution *)attribution defaultState:(WFParameterState *)state prompt:(NSString *)prompt completionHandler:(id)handler
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
-  v11[3] = a4;
-  v11[4] = a5;
+  v11[2] = attribution;
+  v11[3] = state;
+  v11[4] = prompt;
   v11[5] = v10;
   v11[6] = self;
-  v12 = a3;
+  attributionCopy = attribution;
   swift_unknownObjectRetain();
-  v13 = a5;
-  v14 = self;
+  promptCopy = prompt;
+  selfCopy = self;
 
   sub_1CA67052C(&unk_1CA9821C0, v11);
 }
 
-- (id)parameterStateFromDialogResponse:(id)a3
+- (id)parameterStateFromDialogResponse:(id)response
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1CA2DB118(v4);
+  responseCopy = response;
+  selfCopy = self;
+  v6 = sub_1CA2DB118(responseCopy);
 
   return v6;
 }
 
 - (Class)toolkitStateClass
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CA2DB644();
 
   return swift_getObjCClassFromMetadata();

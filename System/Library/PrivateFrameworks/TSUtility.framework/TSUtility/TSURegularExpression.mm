@@ -1,13 +1,13 @@
 @interface TSURegularExpression
-+ (id)regularExpressionWithString:(id)a3;
++ (id)regularExpressionWithString:(id)string;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (TSURegularExpression)initWithCoder:(id)a3;
-- (TSURegularExpression)initWithExpressionString:(id)a3 options:(unsigned int)a4;
-- (_NSRange)matchedRangeForCString:(const char *)a3 range:(_NSRange)a4 subexpressionRanges:(_NSRange *)a5 count:(unsigned int)a6;
-- (_NSRange)matchedRangeForString:(id)a3 range:(_NSRange)a4 subexpressionRanges:(_NSRange *)a5 count:(unsigned int)a6;
-- (const)getBytesForString:(id)a3 lossByte:(unsigned __int8)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TSURegularExpression)initWithCoder:(id)coder;
+- (TSURegularExpression)initWithExpressionString:(id)string options:(unsigned int)options;
+- (_NSRange)matchedRangeForCString:(const char *)string range:(_NSRange)range subexpressionRanges:(_NSRange *)ranges count:(unsigned int)count;
+- (_NSRange)matchedRangeForString:(id)string range:(_NSRange)range subexpressionRanges:(_NSRange *)ranges count:(unsigned int)count;
+- (const)getBytesForString:(id)string lossByte:(unsigned __int8)byte;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
@@ -15,16 +15,16 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    [a1 setVersion:1];
+    [self setVersion:1];
   }
 }
 
-+ (id)regularExpressionWithString:(id)a3
++ (id)regularExpressionWithString:(id)string
 {
-  v3 = [[a1 alloc] initWithExpressionString:a3];
+  v3 = [[self alloc] initWithExpressionString:string];
 
   return v3;
 }
@@ -42,7 +42,7 @@
   [(TSURegularExpression *)&v3 dealloc];
 }
 
-- (TSURegularExpression)initWithExpressionString:(id)a3 options:(unsigned int)a4
+- (TSURegularExpression)initWithExpressionString:(id)string options:(unsigned int)options
 {
   v16 = *MEMORY[0x277D85DE8];
   v14.receiver = self;
@@ -50,7 +50,7 @@
   v6 = [(TSURegularExpression *)&v14 init];
   if (v6)
   {
-    v7 = [a3 length];
+    v7 = [string length];
     v8 = v7;
     v9 = buffer;
     if (v7 >= 0x40)
@@ -60,11 +60,11 @@
 
     v17.location = 0;
     v17.length = v8;
-    CFStringGetBytes(a3, v17, 0x600u, 0x20u, 0, v9, v8, 0);
+    CFStringGetBytes(string, v17, 0x600u, 0x20u, 0, v9, v8, 0);
     v10 = NSZoneMalloc([v6 zone], 0x20uLL);
     *(v6 + 2) = v10;
     v10[2] = &v9[v8];
-    if (a4)
+    if (options)
     {
       v11 = 34;
     }
@@ -74,7 +74,7 @@
       v11 = 32;
     }
 
-    v12 = regcomp(*(v6 + 2), v9, ((4 * a4) & 8 | (a4 >> 2) & 1 | v11) ^ 9);
+    v12 = regcomp(*(v6 + 2), v9, ((4 * options) & 8 | (options >> 2) & 1 | v11) ^ 9);
     if (v9 != buffer)
     {
       free(v9);
@@ -91,16 +91,16 @@
 
     else
     {
-      *(v6 + 1) = [a3 copyWithZone:{objc_msgSend(v6, "zone")}];
+      *(v6 + 1) = [string copyWithZone:{objc_msgSend(v6, "zone")}];
     }
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  if ([(TSURegularExpression *)self zone]== a3)
+  if ([(TSURegularExpression *)self zone]== zone)
   {
 
     return self;
@@ -108,21 +108,21 @@
 
   else
   {
-    v4 = [objc_opt_class() allocWithZone:a3];
+    v4 = [objc_opt_class() allocWithZone:zone];
     expressionString = self->_expressionString;
 
     return [v4 initWithExpressionString:expressionString];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -134,25 +134,25 @@
   }
 
   expressionString = self->_expressionString;
-  v6 = [a3 expressionString];
+  expressionString = [equal expressionString];
 
-  return [(NSString *)expressionString isEqualToString:v6];
+  return [(NSString *)expressionString isEqualToString:expressionString];
 }
 
-- (_NSRange)matchedRangeForCString:(const char *)a3 range:(_NSRange)a4 subexpressionRanges:(_NSRange *)a5 count:(unsigned int)a6
+- (_NSRange)matchedRangeForCString:(const char *)string range:(_NSRange)range subexpressionRanges:(_NSRange *)ranges count:(unsigned int)count
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v29 = *MEMORY[0x277D85DE8];
-  v11 = a6;
-  v12 = a6;
-  if ([(TSURegularExpression *)self numberOfSubexpressions]< a6)
+  countCopy = count;
+  countCopy2 = count;
+  if ([(TSURegularExpression *)self numberOfSubexpressions]< count)
   {
-    v12 = [(TSURegularExpression *)self numberOfSubexpressions];
+    countCopy2 = [(TSURegularExpression *)self numberOfSubexpressions];
   }
 
-  v13 = v12 + 1;
-  if (v12 + 1 >= 6)
+  v13 = countCopy2 + 1;
+  if (countCopy2 + 1 >= 6)
   {
     p_pmatch = malloc_type_malloc(16 * v13, 0x1000040451B5BE8uLL);
   }
@@ -177,7 +177,7 @@
 
   p_pmatch->rm_so = v17;
   p_pmatch->rm_eo = v15;
-  if (regexec(self->_reserved, a3, v12 + 1, p_pmatch, 4))
+  if (regexec(self->_reserved, string, countCopy2 + 1, p_pmatch, 4))
   {
     v18 = 0;
   }
@@ -193,8 +193,8 @@
     if (v13 >= 2)
     {
       p_rm_eo = &p_pmatch[1].rm_eo;
-      p_length = &a5->length;
-      v21 = v12;
+      p_length = &ranges->length;
+      v21 = countCopy2;
       do
       {
         v22 = *(p_rm_eo - 1);
@@ -214,10 +214,10 @@
       while (v21);
     }
 
-    if (v13 < v11)
+    if (v13 < countCopy)
     {
-      v24 = ~v12 + v11;
-      v25 = &a5[v12 + 1];
+      v24 = ~countCopy2 + countCopy;
+      v25 = &ranges[countCopy2 + 1];
       do
       {
         *v25++ = xmmword_26CBEEB80;
@@ -240,13 +240,13 @@
   return result;
 }
 
-- (_NSRange)matchedRangeForString:(id)a3 range:(_NSRange)a4 subexpressionRanges:(_NSRange *)a5 count:(unsigned int)a6
+- (_NSRange)matchedRangeForString:(id)string range:(_NSRange)range subexpressionRanges:(_NSRange *)ranges count:(unsigned int)count
 {
-  v6 = *&a6;
-  length = a4.length;
-  location = a4.location;
-  ASCIIData = _createASCIIData(a3, 0x3Fu, a4.location, a4.length);
-  v12 = [(TSURegularExpression *)self matchedRangeForCString:[(__CFData *)ASCIIData bytes] range:location subexpressionRanges:length count:a5, v6];
+  v6 = *&count;
+  length = range.length;
+  location = range.location;
+  ASCIIData = _createASCIIData(string, 0x3Fu, range.location, range.length);
+  v12 = [(TSURegularExpression *)self matchedRangeForCString:[(__CFData *)ASCIIData bytes] range:location subexpressionRanges:length count:ranges, v6];
   v14 = v13;
 
   v15 = v12;
@@ -256,9 +256,9 @@
   return result;
 }
 
-- (TSURegularExpression)initWithCoder:(id)a3
+- (TSURegularExpression)initWithCoder:(id)coder
 {
-  v6 = [a3 versionForClassName:@"TSURegularExpression"];
+  v6 = [coder versionForClassName:@"TSURegularExpression"];
   v7 = v6;
   if (v6 >= 2)
   {
@@ -273,14 +273,14 @@
     return self;
   }
 
-  v9 = [a3 decodeObject];
+  decodeObject = [coder decodeObject];
 
-  return [(TSURegularExpression *)self initWithExpressionString:v9];
+  return [(TSURegularExpression *)self initWithExpressionString:decodeObject];
 }
 
-- (const)getBytesForString:(id)a3 lossByte:(unsigned __int8)a4
+- (const)getBytesForString:(id)string lossByte:(unsigned __int8)byte
 {
-  ASCIIData = _createASCIIData(a3, a4, 0, [a3 length]);
+  ASCIIData = _createASCIIData(string, byte, 0, [string length]);
   v5 = ASCIIData;
 
   return [(__CFData *)ASCIIData bytes];

@@ -1,20 +1,20 @@
 @interface PMParagraphMapper
-- (PMParagraphMapper)initWithOadParagraph:(id)a3 parent:(id)a4;
-- (id)copyParagraphStyleWithState:(id)a3 isFirstParagraph:(BOOL)a4;
+- (PMParagraphMapper)initWithOadParagraph:(id)paragraph parent:(id)parent;
+- (id)copyParagraphStyleWithState:(id)state isFirstParagraph:(BOOL)paragraph;
 - (id)fontScheme;
 - (int)firstTextRunFontSize;
-- (void)addEndCharacterStyleToStyle:(id)a3;
-- (void)mapAt:(id)a3 withState:(id)a4 isFirstParagraph:(BOOL)a5;
+- (void)addEndCharacterStyleToStyle:(id)style;
+- (void)mapAt:(id)at withState:(id)state isFirstParagraph:(BOOL)paragraph;
 @end
 
 @implementation PMParagraphMapper
 
 - (id)fontScheme
 {
-  v2 = [(CMMapper *)self parent];
-  if (v2)
+  parent = [(CMMapper *)self parent];
+  if (parent)
   {
-    v3 = v2;
+    v3 = parent;
     while (1)
     {
       objc_opt_class();
@@ -23,36 +23,36 @@
         break;
       }
 
-      v4 = [v3 parent];
+      parent2 = [v3 parent];
 
-      v3 = v4;
-      if (!v4)
+      v3 = parent2;
+      if (!parent2)
       {
         goto LABEL_5;
       }
     }
 
-    v6 = [v3 defaultTheme];
-    v7 = v6;
-    if (v6)
+    defaultTheme = [v3 defaultTheme];
+    v7 = defaultTheme;
+    if (defaultTheme)
     {
-      v8 = [v6 baseStyles];
-      v5 = [v8 fontScheme];
+      baseStyles = [defaultTheme baseStyles];
+      fontScheme = [baseStyles fontScheme];
     }
 
     else
     {
-      v5 = 0;
+      fontScheme = 0;
     }
   }
 
   else
   {
 LABEL_5:
-    v5 = 0;
+    fontScheme = 0;
   }
 
-  return v5;
+  return fontScheme;
 }
 
 - (int)firstTextRunFontSize
@@ -66,10 +66,10 @@ LABEL_5:
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 properties];
-    if ([v5 hasSize])
+    properties = [v3 properties];
+    if ([properties hasSize])
     {
-      [v5 size];
+      [properties size];
       v7 = v6;
     }
 
@@ -87,26 +87,26 @@ LABEL_5:
   return v7;
 }
 
-- (PMParagraphMapper)initWithOadParagraph:(id)a3 parent:(id)a4
+- (PMParagraphMapper)initWithOadParagraph:(id)paragraph parent:(id)parent
 {
-  v7 = a3;
+  paragraphCopy = paragraph;
   v11.receiver = self;
   v11.super_class = PMParagraphMapper;
-  v8 = [(CMMapper *)&v11 initWithParent:a4];
+  v8 = [(CMMapper *)&v11 initWithParent:parent];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->mParagraph, a3);
+    objc_storeStrong(&v8->mParagraph, paragraph);
   }
 
   return v9;
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4 isFirstParagraph:(BOOL)a5
+- (void)mapAt:(id)at withState:(id)state isFirstParagraph:(BOOL)paragraph
 {
-  v5 = a5;
-  v22 = a3;
-  v8 = a4;
+  paragraphCopy = paragraph;
+  atCopy = at;
+  stateCopy = state;
   if (!self->mParagraph)
   {
     goto LABEL_14;
@@ -114,8 +114,8 @@ LABEL_5:
 
   v9 = objc_autoreleasePoolPush();
   v10 = [OIXMLElement elementWithType:14];
-  [v22 addChild:v10];
-  v21 = [(PMParagraphMapper *)self copyParagraphStyleWithState:v8 isFirstParagraph:v5];
+  [atCopy addChild:v10];
+  v21 = [(PMParagraphMapper *)self copyParagraphStyleWithState:stateCopy isFirstParagraph:paragraphCopy];
   if (![v10 childrenCount])
   {
     [(PMParagraphMapper *)self addEndCharacterStyleToStyle:v21];
@@ -124,21 +124,21 @@ LABEL_5:
   [(CMMapper *)self addStyleUsingGlobalCacheTo:v10 style:v21];
   v11 = v10;
 
-  v12 = [(OADParagraph *)self->mParagraph properties];
-  if ([(PMBulletMapper *)v12 hasBulletProperties])
+  properties = [(OADParagraph *)self->mParagraph properties];
+  if ([(PMBulletMapper *)properties hasBulletProperties])
   {
-    v13 = [(OADParagraph *)self->mParagraph isEmpty];
+    isEmpty = [(OADParagraph *)self->mParagraph isEmpty];
 
-    if (v13)
+    if (isEmpty)
     {
       goto LABEL_8;
     }
 
     v14 = [PMBulletMapper alloc];
-    v15 = [(OADParagraph *)self->mParagraph properties];
-    v12 = [(PMBulletMapper *)v14 initWithOadProperties:v15 fontSize:[(PMParagraphMapper *)self firstTextRunFontSize] parent:self];
+    properties2 = [(OADParagraph *)self->mParagraph properties];
+    properties = [(PMBulletMapper *)v14 initWithOadProperties:properties2 fontSize:[(PMParagraphMapper *)self firstTextRunFontSize] parent:self];
 
-    [(PMBulletMapper *)v12 mapAt:v11 withState:v8];
+    [(PMBulletMapper *)properties mapAt:v11 withState:stateCopy];
   }
 
 LABEL_8:
@@ -148,7 +148,7 @@ LABEL_8:
     v18 = [(OADParagraph *)self->mParagraph textRunAtIndex:i];
     v19 = [(PMTextRunMapper *)v17 initWithOadTextRun:v18 parent:self];
 
-    [(PMTextRunMapper *)v19 mapAt:v11 withState:v8];
+    [(PMTextRunMapper *)v19 mapAt:v11 withState:stateCopy];
   }
 
   if (![v11 childrenCount])
@@ -158,19 +158,19 @@ LABEL_8:
   }
 
   objc_autoreleasePoolPop(v9);
-  v22 = v11;
+  atCopy = v11;
 LABEL_14:
 }
 
-- (id)copyParagraphStyleWithState:(id)a3 isFirstParagraph:(BOOL)a4
+- (id)copyParagraphStyleWithState:(id)state isFirstParagraph:(BOOL)paragraph
 {
-  v6 = [(OADParagraph *)self->mParagraph properties];
+  properties = [(OADParagraph *)self->mParagraph properties];
   v7 = objc_alloc_init(CMStyle);
-  if ([v6 hasAlign])
+  if ([properties hasAlign])
   {
-    if ([v6 align])
+    if ([properties align])
     {
-      v8 = [v6 align] - 1;
+      v8 = [properties align] - 1;
       if (v8 < 3)
       {
         [(CMStyle *)v7 appendPropertyForName:0x286F08230 stringValue:*(&off_2799CE240)[v8]];
@@ -178,12 +178,12 @@ LABEL_14:
     }
   }
 
-  if ([v6 hasLeftMargin])
+  if ([properties hasLeftMargin])
   {
-    [v6 leftMargin];
+    [properties leftMargin];
     if (v9 != 0.0)
     {
-      [v6 leftMargin];
+      [properties leftMargin];
       [(CMStyle *)v7 appendPropertyForName:0x286EF67B0 length:1 unit:v10];
     }
   }
@@ -193,9 +193,9 @@ LABEL_14:
   if (objc_opt_isKindOfClass())
   {
     v12 = objc_loadWeakRetained(&self->super.mParent);
-    v13 = [v12 isTableCellContent];
+    isTableCellContent = [v12 isTableCellContent];
 
-    if (v13)
+    if (isTableCellContent)
     {
       goto LABEL_15;
     }
@@ -205,73 +205,73 @@ LABEL_14:
   {
   }
 
-  if ([v6 hasIndent])
+  if ([properties hasIndent])
   {
-    [v6 indent];
+    [properties indent];
     if (v14 != 0.0)
     {
-      [v6 indent];
+      [properties indent];
       [(CMStyle *)v7 appendPropertyForName:0x286F08250 length:1 unit:v15];
     }
   }
 
 LABEL_15:
-  if ([v6 hasLineSpacing])
+  if ([properties hasLineSpacing])
   {
-    v16 = [v6 lineSpacing];
-    [(CMStyle *)v7 appendPropertyForName:0x286F08090 oadTextSpacing:v16];
+    lineSpacing = [properties lineSpacing];
+    [(CMStyle *)v7 appendPropertyForName:0x286F08090 oadTextSpacing:lineSpacing];
   }
 
-  if ([v6 hasBeforeSpacing] && !a4)
+  if ([properties hasBeforeSpacing] && !paragraph)
   {
-    v17 = [v6 beforeSpacing];
-    [v6 size];
-    [(CMStyle *)v7 appendPropertyForName:0x286F081F0 oadTextSpacing:v17 lineHeight:1 unit:?];
+    beforeSpacing = [properties beforeSpacing];
+    [properties size];
+    [(CMStyle *)v7 appendPropertyForName:0x286F081F0 oadTextSpacing:beforeSpacing lineHeight:1 unit:?];
   }
 
-  if ([v6 hasAfterSpacing])
+  if ([properties hasAfterSpacing])
   {
-    v18 = [v6 afterSpacing];
-    [v6 size];
-    [(CMStyle *)v7 appendPropertyForName:0x286F08190 oadTextSpacing:v18 lineHeight:1 unit:?];
+    afterSpacing = [properties afterSpacing];
+    [properties size];
+    [(CMStyle *)v7 appendPropertyForName:0x286F08190 oadTextSpacing:afterSpacing lineHeight:1 unit:?];
   }
 
   return v7;
 }
 
-- (void)addEndCharacterStyleToStyle:(id)a3
+- (void)addEndCharacterStyleToStyle:(id)style
 {
-  v18 = a3;
-  v4 = [(OADParagraph *)self->mParagraph paragraphEndCharacterProperties];
-  v5 = [(PMParagraphMapper *)self fontScheme];
-  if ([v4 hasLatinFont])
+  styleCopy = style;
+  paragraphEndCharacterProperties = [(OADParagraph *)self->mParagraph paragraphEndCharacterProperties];
+  fontScheme = [(PMParagraphMapper *)self fontScheme];
+  if ([paragraphEndCharacterProperties hasLatinFont])
   {
-    v6 = [v4 latinFont];
+    latinFont = [paragraphEndCharacterProperties latinFont];
 
-    if (v6)
+    if (latinFont)
     {
-      v7 = [v4 latinFont];
-      v9 = OADSchemeFontReference::schemeFontReferenceWithString(v7, v8);
+      latinFont2 = [paragraphEndCharacterProperties latinFont];
+      v9 = OADSchemeFontReference::schemeFontReferenceWithString(latinFont2, v8);
       v10 = HIDWORD(v9);
       if (v9 != -1 && v10 != 0xFFFFFFFF)
       {
-        v12 = [v5 fontForId:?];
+        v12 = [fontScheme fontForId:?];
         v13 = [v12 baseFontForId:v10];
 
-        v7 = v13;
+        latinFont2 = v13;
       }
 
-      v14 = [[CMStringProperty alloc] initWithString:v7];
-      [v18 addProperty:v14 forKey:0x286EF73B0];
+      v14 = [[CMStringProperty alloc] initWithString:latinFont2];
+      [styleCopy addProperty:v14 forKey:0x286EF73B0];
     }
   }
 
-  if ([v4 hasSize])
+  if ([paragraphEndCharacterProperties hasSize])
   {
     v15 = [CMLengthProperty alloc];
-    [v4 size];
+    [paragraphEndCharacterProperties size];
     v17 = [(CMLengthProperty *)v15 initWithNumber:1 unit:v16];
-    [v18 addProperty:v17 forKey:0x286EF73D0];
+    [styleCopy addProperty:v17 forKey:0x286EF73D0];
   }
 }
 

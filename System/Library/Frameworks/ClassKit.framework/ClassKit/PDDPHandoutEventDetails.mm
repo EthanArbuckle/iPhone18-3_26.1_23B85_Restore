@@ -1,52 +1,52 @@
 @interface PDDPHandoutEventDetails
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAttachmentDetails:(id)a3;
-- (void)addRecipientIds:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAttachmentDetails:(id)details;
+- (void)addRecipientIds:(id)ids;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPHandoutEventDetails
 
-- (void)addAttachmentDetails:(id)a3
+- (void)addAttachmentDetails:(id)details
 {
-  v4 = a3;
+  detailsCopy = details;
   attachmentDetails = self->_attachmentDetails;
-  v8 = v4;
+  v8 = detailsCopy;
   if (!attachmentDetails)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_attachmentDetails;
     self->_attachmentDetails = v6;
 
-    v4 = v8;
+    detailsCopy = v8;
     attachmentDetails = self->_attachmentDetails;
   }
 
-  [(NSMutableArray *)attachmentDetails addObject:v4];
+  [(NSMutableArray *)attachmentDetails addObject:detailsCopy];
 }
 
-- (void)addRecipientIds:(id)a3
+- (void)addRecipientIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   recipientIds = self->_recipientIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!recipientIds)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_recipientIds;
     self->_recipientIds = v6;
 
-    v4 = v8;
+    idsCopy = v8;
     recipientIds = self->_recipientIds;
   }
 
-  [(NSMutableArray *)recipientIds addObject:v4];
+  [(NSMutableArray *)recipientIds addObject:idsCopy];
 }
 
 - (id)description
@@ -54,8 +54,8 @@
   v7.receiver = self;
   v7.super_class = PDDPHandoutEventDetails;
   v3 = [(PDDPHandoutEventDetails *)&v7 description];
-  v4 = [(PDDPHandoutEventDetails *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPHandoutEventDetails *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -98,8 +98,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -114,8 +114,8 @@
   dueDate = self->_dueDate;
   if (dueDate)
   {
-    v15 = [(PDDPDate *)dueDate dictionaryRepresentation];
-    [v4 setObject:v15 forKey:@"due_date"];
+    dictionaryRepresentation2 = [(PDDPDate *)dueDate dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"due_date"];
   }
 
   recipientIds = self->_recipientIds;
@@ -127,9 +127,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_classId)
   {
     PBDataWriterWriteStringField();
@@ -210,63 +210,63 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if (self->_classId)
   {
-    [v12 setClassId:?];
+    [toCopy setClassId:?];
   }
 
   if (self->_handoutId)
   {
-    [v12 setHandoutId:?];
+    [toCopy setHandoutId:?];
   }
 
   if ([(PDDPHandoutEventDetails *)self attachmentDetailsCount])
   {
-    [v12 clearAttachmentDetails];
-    v4 = [(PDDPHandoutEventDetails *)self attachmentDetailsCount];
-    if (v4)
+    [toCopy clearAttachmentDetails];
+    attachmentDetailsCount = [(PDDPHandoutEventDetails *)self attachmentDetailsCount];
+    if (attachmentDetailsCount)
     {
-      v5 = v4;
+      v5 = attachmentDetailsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PDDPHandoutEventDetails *)self attachmentDetailsAtIndex:i];
-        [v12 addAttachmentDetails:v7];
+        [toCopy addAttachmentDetails:v7];
       }
     }
   }
 
   if (self->_dueDate)
   {
-    [v12 setDueDate:?];
+    [toCopy setDueDate:?];
   }
 
   if ([(PDDPHandoutEventDetails *)self recipientIdsCount])
   {
-    [v12 clearRecipientIds];
-    v8 = [(PDDPHandoutEventDetails *)self recipientIdsCount];
-    if (v8)
+    [toCopy clearRecipientIds];
+    recipientIdsCount = [(PDDPHandoutEventDetails *)self recipientIdsCount];
+    if (recipientIdsCount)
     {
-      v9 = v8;
+      v9 = recipientIdsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(PDDPHandoutEventDetails *)self recipientIdsAtIndex:j];
-        [v12 addRecipientIds:v11];
+        [toCopy addRecipientIds:v11];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_classId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_classId copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_handoutId copyWithZone:a3];
+  v8 = [(NSString *)self->_handoutId copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
@@ -290,7 +290,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v29 + 1) + 8 * v14) copyWithZone:a3];
+        v15 = [*(*(&v29 + 1) + 8 * v14) copyWithZone:zone];
         [v5 addAttachmentDetails:v15];
 
         v14 = v14 + 1;
@@ -303,7 +303,7 @@
     while (v12);
   }
 
-  v16 = [(PDDPDate *)self->_dueDate copyWithZone:a3];
+  v16 = [(PDDPDate *)self->_dueDate copyWithZone:zone];
   v17 = v5[3];
   v5[3] = v16;
 
@@ -327,7 +327,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v25 + 1) + 8 * v22) copyWithZone:{a3, v25}];
+        v23 = [*(*(&v25 + 1) + 8 * v22) copyWithZone:{zone, v25}];
         [v5 addRecipientIds:v23];
 
         v22 = v22 + 1;
@@ -343,13 +343,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((classId = self->_classId, !(classId | v4[2])) || -[NSString isEqual:](classId, "isEqual:")) && ((handoutId = self->_handoutId, !(handoutId | v4[4])) || -[NSString isEqual:](handoutId, "isEqual:")) && ((attachmentDetails = self->_attachmentDetails, !(attachmentDetails | v4[1])) || -[NSMutableArray isEqual:](attachmentDetails, "isEqual:")) && ((dueDate = self->_dueDate, !(dueDate | v4[3])) || -[PDDPDate isEqual:](dueDate, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((classId = self->_classId, !(classId | equalCopy[2])) || -[NSString isEqual:](classId, "isEqual:")) && ((handoutId = self->_handoutId, !(handoutId | equalCopy[4])) || -[NSString isEqual:](handoutId, "isEqual:")) && ((attachmentDetails = self->_attachmentDetails, !(attachmentDetails | equalCopy[1])) || -[NSMutableArray isEqual:](attachmentDetails, "isEqual:")) && ((dueDate = self->_dueDate, !(dueDate | equalCopy[3])) || -[PDDPDate isEqual:](dueDate, "isEqual:")))
   {
     recipientIds = self->_recipientIds;
-    if (recipientIds | v4[5])
+    if (recipientIds | equalCopy[5])
     {
       v10 = [(NSMutableArray *)recipientIds isEqual:?];
     }
@@ -377,15 +377,15 @@
   return v6 ^ [(NSMutableArray *)self->_recipientIds hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(PDDPHandoutEventDetails *)self setClassId:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(PDDPHandoutEventDetails *)self setHandoutId:?];
   }
@@ -394,7 +394,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v6)
   {
@@ -419,7 +419,7 @@
   }
 
   dueDate = self->_dueDate;
-  v11 = *(v4 + 3);
+  v11 = *(fromCopy + 3);
   if (dueDate)
   {
     if (v11)
@@ -437,7 +437,7 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v12 = *(v4 + 5);
+  v12 = *(fromCopy + 5);
   v13 = [v12 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v13)
   {

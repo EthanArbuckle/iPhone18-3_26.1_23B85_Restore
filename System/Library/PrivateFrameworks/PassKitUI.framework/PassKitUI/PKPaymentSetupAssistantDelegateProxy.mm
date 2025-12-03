@@ -1,57 +1,57 @@
 @interface PKPaymentSetupAssistantDelegateProxy
-- (PKPaymentSetupAssistantDelegateProxy)initWithDelegate:(id)a3 provisioningController:(id)a4;
-- (void)_setExternalDelegate:(id)a3;
-- (void)viewController:(id)a3 didShowProvisioningError:(id)a4;
-- (void)viewControllerDidBeginSetupFlow:(id)a3;
-- (void)viewControllerDidTerminateSetupFlow:(id)a3;
+- (PKPaymentSetupAssistantDelegateProxy)initWithDelegate:(id)delegate provisioningController:(id)controller;
+- (void)_setExternalDelegate:(id)delegate;
+- (void)viewController:(id)controller didShowProvisioningError:(id)error;
+- (void)viewControllerDidBeginSetupFlow:(id)flow;
+- (void)viewControllerDidTerminateSetupFlow:(id)flow;
 @end
 
 @implementation PKPaymentSetupAssistantDelegateProxy
 
-- (PKPaymentSetupAssistantDelegateProxy)initWithDelegate:(id)a3 provisioningController:(id)a4
+- (PKPaymentSetupAssistantDelegateProxy)initWithDelegate:(id)delegate provisioningController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = PKPaymentSetupAssistantDelegateProxy;
   v8 = [(PKPaymentSetupAssistantDelegateProxy *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_provisioningController, a4);
-    [(PKPaymentSetupAssistantDelegateProxy *)v9 _setExternalDelegate:v6];
+    objc_storeStrong(&v8->_provisioningController, controller);
+    [(PKPaymentSetupAssistantDelegateProxy *)v9 _setExternalDelegate:delegateCopy];
   }
 
   return v9;
 }
 
-- (void)_setExternalDelegate:(id)a3
+- (void)_setExternalDelegate:(id)delegate
 {
-  v6 = a3;
+  delegateCopy = delegate;
   externalDelegate = self->_externalDelegate;
-  if (externalDelegate != v6)
+  if (externalDelegate != delegateCopy)
   {
-    object = v6;
+    object = delegateCopy;
     if (externalDelegate)
     {
       objc_setAssociatedObject(externalDelegate, a2, 0, 1);
-      v6 = object;
+      delegateCopy = object;
     }
 
-    if (v6)
+    if (delegateCopy)
     {
       objc_setAssociatedObject(object, a2, self, 1);
     }
 
-    objc_storeStrong(&self->_externalDelegate, a3);
-    v6 = object;
+    objc_storeStrong(&self->_externalDelegate, delegate);
+    delegateCopy = object;
   }
 }
 
-- (void)viewControllerDidBeginSetupFlow:(id)a3
+- (void)viewControllerDidBeginSetupFlow:(id)flow
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  flowCopy = flow;
   self->_didTerminateSetupFlow = 0;
   v6 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -59,7 +59,7 @@
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     v9 = NSStringFromSelector(a2);
-    v10 = [v5 description];
+    v10 = [flowCopy description];
     v11 = 138412802;
     v12 = v8;
     v13 = 2112;
@@ -71,14 +71,14 @@
 
   if (objc_opt_respondsToSelector())
   {
-    [(PKPaymentSetupViewControllerDelegate *)self->_externalDelegate viewControllerDidBeginSetupFlow:v5];
+    [(PKPaymentSetupViewControllerDelegate *)self->_externalDelegate viewControllerDidBeginSetupFlow:flowCopy];
   }
 }
 
-- (void)viewControllerDidTerminateSetupFlow:(id)a3
+- (void)viewControllerDidTerminateSetupFlow:(id)flow
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  flowCopy = flow;
   didTerminateSetupFlow = self->_didTerminateSetupFlow;
   v7 = PKLogFacilityTypeGetObject();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -89,7 +89,7 @@
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
       v11 = NSStringFromSelector(a2);
-      v12 = [v5 description];
+      v12 = [flowCopy description];
       v17 = 138412802;
       v18 = v10;
       v19 = 2112;
@@ -107,7 +107,7 @@
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
       v15 = NSStringFromSelector(a2);
-      v16 = [v5 description];
+      v16 = [flowCopy description];
       v17 = 138412802;
       v18 = v14;
       v19 = 2112;
@@ -118,15 +118,15 @@
     }
 
     self->_didTerminateSetupFlow = 1;
-    [(PKPaymentSetupViewControllerDelegate *)self->_externalDelegate viewControllerDidTerminateSetupFlow:v5];
+    [(PKPaymentSetupViewControllerDelegate *)self->_externalDelegate viewControllerDidTerminateSetupFlow:flowCopy];
   }
 }
 
-- (void)viewController:(id)a3 didShowProvisioningError:(id)a4
+- (void)viewController:(id)controller didShowProvisioningError:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  errorCopy = error;
   v9 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -142,7 +142,7 @@
 
   if (objc_opt_respondsToSelector())
   {
-    [(PKPaymentSetupViewControllerDelegate *)self->_externalDelegate viewController:v7 didShowProvisioningError:v8];
+    [(PKPaymentSetupViewControllerDelegate *)self->_externalDelegate viewController:controllerCopy didShowProvisioningError:errorCopy];
   }
 }
 

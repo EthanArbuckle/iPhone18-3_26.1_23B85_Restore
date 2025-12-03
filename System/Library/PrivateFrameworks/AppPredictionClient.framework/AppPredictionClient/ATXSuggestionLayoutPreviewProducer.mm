@@ -1,9 +1,9 @@
 @interface ATXSuggestionLayoutPreviewProducer
 + (id)_clientModelSpecForPreview;
-+ (id)_executableSpecForAppPredictionWithBundleId:(id)a3;
-+ (id)_proactiveSuggestionWithBundleId:(id)a3 layoutType:(int64_t)a4 title:(id)a5;
++ (id)_executableSpecForAppPredictionWithBundleId:(id)id;
++ (id)_proactiveSuggestionWithBundleId:(id)id layoutType:(int64_t)type title:(id)title;
 + (id)_scoreSpecForPreview;
-+ (id)_uiSpecForPreviewWithLayoutType:(int64_t)a3 title:(id)a4 subtitle:(id)a5;
++ (id)_uiSpecForPreviewWithLayoutType:(int64_t)type title:(id)title subtitle:(id)subtitle;
 + (id)previewLayoutFor2x2SuggestionWidget;
 + (id)previewLayoutFor2x4SuggestionWidget;
 + (id)previewLayoutFor4x4SuggestionWidget;
@@ -107,27 +107,27 @@
   return v2;
 }
 
-+ (id)_executableSpecForAppPredictionWithBundleId:(id)a3
++ (id)_executableSpecForAppPredictionWithBundleId:(id)id
 {
   v3 = MEMORY[0x1E69C5BC8];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithExecutableObject:v4 executableDescription:v4 executableIdentifier:v4 suggestionExecutableType:1];
+  idCopy = id;
+  v5 = [[v3 alloc] initWithExecutableObject:idCopy executableDescription:idCopy executableIdentifier:idCopy suggestionExecutableType:1];
 
   return v5;
 }
 
-+ (id)_uiSpecForPreviewWithLayoutType:(int64_t)a3 title:(id)a4 subtitle:(id)a5
++ (id)_uiSpecForPreviewWithLayoutType:(int64_t)type title:(id)title subtitle:(id)subtitle
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E69C5BD0];
-  v8 = a5;
-  v9 = a4;
-  v10 = [[v7 alloc] initWithApplicableSuggestionLayout:a3];
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  v10 = [[v7 alloc] initWithApplicableSuggestionLayout:type];
   v15[0] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
 
   LOWORD(v14) = 0;
-  v12 = [objc_alloc(MEMORY[0x1E69C5BE0]) initWithTitle:v9 subtitle:v8 predictionReason:@"Preview Suggestion" preferredLayoutConfigs:v11 allowedOnLockscreen:0 allowedOnHomeScreen:1 allowedOnSpotlight:v14 shouldClearOnEngagement:?];
+  v12 = [objc_alloc(MEMORY[0x1E69C5BE0]) initWithTitle:titleCopy subtitle:subtitleCopy predictionReason:@"Preview Suggestion" preferredLayoutConfigs:v11 allowedOnLockscreen:0 allowedOnHomeScreen:1 allowedOnSpotlight:v14 shouldClearOnEngagement:?];
 
   return v12;
 }
@@ -139,14 +139,14 @@
   return v2;
 }
 
-+ (id)_proactiveSuggestionWithBundleId:(id)a3 layoutType:(int64_t)a4 title:(id)a5
++ (id)_proactiveSuggestionWithBundleId:(id)id layoutType:(int64_t)type title:(id)title
 {
-  v7 = a5;
-  v8 = a3;
+  titleCopy = title;
+  idCopy = id;
   v9 = +[ATXSuggestionLayoutPreviewProducer _clientModelSpecForPreview];
-  v10 = [ATXSuggestionLayoutPreviewProducer _executableSpecForAppPredictionWithBundleId:v8];
+  v10 = [ATXSuggestionLayoutPreviewProducer _executableSpecForAppPredictionWithBundleId:idCopy];
 
-  v11 = [ATXSuggestionLayoutPreviewProducer _uiSpecForPreviewWithLayoutType:a4 title:v7 subtitle:0];
+  v11 = [ATXSuggestionLayoutPreviewProducer _uiSpecForPreviewWithLayoutType:type title:titleCopy subtitle:0];
 
   v12 = +[ATXSuggestionLayoutPreviewProducer _scoreSpecForPreview];
   v13 = [objc_alloc(MEMORY[0x1E69C5BB0]) initWithClientModelSpecification:v9 executableSpecification:v10 uiSpecification:v11 scoreSpecification:v12];

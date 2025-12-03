@@ -24,30 +24,30 @@
 - (void)beginInterruption;
 - (void)dealloc;
 - (void)endInterruption;
-- (void)endInterruptionWithFlags:(id)a3;
+- (void)endInterruptionWithFlags:(id)flags;
 - (void)finalize;
-- (void)finishedRecording:(id)a3;
-- (void)handleInterruption:(id)a3;
+- (void)finishedRecording:(id)recording;
+- (void)handleInterruption:(id)interruption;
 - (void)pause;
 - (void)privCommonCleanup;
 - (void)privRemoveSessionPropertyListeners;
-- (void)privSetDelegate:(id)a3;
-- (void)setAudioSession:(id)a3;
+- (void)privSetDelegate:(id)delegate;
+- (void)setAudioSession:(id)session;
 - (void)setChannelAssignments:(NSArray *)channelAssignments;
 - (void)setDelegate:(id)delegate;
-- (void)setInstantaneousMetering:(BOOL)a3;
+- (void)setInstantaneousMetering:(BOOL)metering;
 - (void)setMeteringEnabled:(BOOL)meteringEnabled;
-- (void)setProcessToTap:(int)a3;
+- (void)setProcessToTap:(int)tap;
 - (void)stop;
 - (void)updateMeters;
 @end
 
 @implementation AVAudioRecorder
 
-- (void)handleInterruption:(id)a3
+- (void)handleInterruption:(id)interruption
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E698D580]];
+  userInfo = [interruption userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E698D580]];
   impl = self->_impl;
   os_unfair_lock_lock(impl + 64);
   v7 = self->_impl;
@@ -74,7 +74,7 @@
     stopAndDisposeRecordQueue(v7, 0);
     if (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector())
     {
-      v10 = [v4 objectForKey:*MEMORY[0x1E698D568]];
+      v10 = [userInfo objectForKey:*MEMORY[0x1E698D568]];
       if (v10)
       {
         v11 = [v10 unsignedLongValue] == 1;
@@ -101,17 +101,17 @@
   os_unfair_lock_unlock(impl + 64);
 }
 
-- (void)setInstantaneousMetering:(BOOL)a3
+- (void)setInstantaneousMetering:(BOOL)metering
 {
-  v3 = a3;
+  meteringCopy = metering;
   impl = self->_impl;
   os_unfair_lock_lock(impl + 64);
   v6 = self->_impl;
-  *(v6 + 191) = v3;
+  *(v6 + 191) = meteringCopy;
   v7 = *(v6 + 14);
   if (v7)
   {
-    inData = v3;
+    inData = meteringCopy;
     AudioQueueSetProperty(v7, 0x71696E6Du, &inData, 4u);
   }
 
@@ -120,24 +120,24 @@
 
 - (BOOL)instantaneousMetering
 {
-  v2 = self;
+  selfCopy = self;
   impl = self->_impl;
   os_unfair_lock_lock(impl + 64);
-  LOBYTE(v2) = *(v2->_impl + 191);
+  LOBYTE(selfCopy) = *(selfCopy->_impl + 191);
   os_unfair_lock_unlock(impl + 64);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setAudioSession:(id)a3
+- (void)setAudioSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   [(AVAudioRecorder *)self stop];
   impl = self->_impl;
   os_unfair_lock_lock(impl + 64);
   [(AVAudioRecorder *)self privRemoveSessionPropertyListeners];
   v7 = self->_impl;
 
-  v7->var33 = a3;
+  v7->var33 = session;
   tryToSetRecorderSessionListener(self, v7);
 
   os_unfair_lock_unlock(impl + 64);
@@ -154,19 +154,19 @@
 
 - (int)processToTap
 {
-  v2 = self;
+  selfCopy = self;
   impl = self->_impl;
   os_unfair_lock_lock(impl + 64);
-  LODWORD(v2) = *(v2->_impl + 61);
+  LODWORD(selfCopy) = *(selfCopy->_impl + 61);
   os_unfair_lock_unlock(impl + 64);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setProcessToTap:(int)a3
+- (void)setProcessToTap:(int)tap
 {
   impl = self->_impl;
   os_unfair_lock_lock(impl + 64);
-  *(self->_impl + 61) = a3;
+  *(self->_impl + 61) = tap;
 
   os_unfair_lock_unlock(impl + 64);
 }
@@ -231,18 +231,18 @@
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)endInterruptionWithFlags:(id)a3
+- (void)endInterruptionWithFlags:(id)flags
 {
   v4 = objc_autoreleasePoolPush();
-  v5 = [(AVAudioRecorder *)self delegate];
+  delegate = [(AVAudioRecorder *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 audioRecorderEndInterruption:self withOptions:{objc_msgSend(a3, "unsignedIntegerValue")}];
+    [delegate audioRecorderEndInterruption:self withOptions:{objc_msgSend(flags, "unsignedIntegerValue")}];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v5 audioRecorderEndInterruption:self withFlags:{objc_msgSend(a3, "unsignedIntegerValue")}];
+    [delegate audioRecorderEndInterruption:self withFlags:{objc_msgSend(flags, "unsignedIntegerValue")}];
   }
 
   objc_autoreleasePoolPop(v4);
@@ -364,12 +364,12 @@ LABEL_12:
 
 - (BOOL)isMeteringEnabled
 {
-  v2 = self;
+  selfCopy = self;
   impl = self->_impl;
   os_unfair_lock_lock(impl + 64);
-  LOBYTE(v2) = *(v2->_impl + 190);
+  LOBYTE(selfCopy) = *(selfCopy->_impl + 190);
   os_unfair_lock_unlock(impl + 64);
-  return v2;
+  return selfCopy;
 }
 
 - (void)setDelegate:(id)delegate
@@ -417,8 +417,8 @@ LABEL_12:
     goto LABEL_6;
   }
 
-  v5 = [*(v4 + 5) path];
-  if (!v5)
+  path = [*(v4 + 5) path];
+  if (!path)
   {
     goto LABEL_7;
   }
@@ -426,13 +426,13 @@ LABEL_12:
   if (*(v4 + 189) != 1)
   {
 LABEL_6:
-    LOBYTE(v5) = 0;
+    LOBYTE(path) = 0;
     goto LABEL_7;
   }
 
   v7 = 0;
   [objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")];
-  LOBYTE(v5) = v7 == 0;
+  LOBYTE(path) = v7 == 0;
   if (v7)
   {
   }
@@ -444,7 +444,7 @@ LABEL_6:
 
 LABEL_7:
   os_unfair_lock_unlock(impl + 64);
-  return v5;
+  return path;
 }
 
 - (void)stop
@@ -455,7 +455,7 @@ LABEL_7:
   if (stopAndDisposeRecordQueue(v4, 1))
   {
     v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:BYTE4(v4[11]._impl)];
-    v6 = self;
+    selfCopy = self;
     [(AVAudioRecorder *)self performSelectorOnMainThread:sel_finishedRecording_ withObject:v5 waitUntilDone:0];
   }
 
@@ -478,60 +478,60 @@ LABEL_7:
 
 - (BOOL)recordAtTime:(NSTimeInterval)time forDuration:(NSTimeInterval)duration
 {
-  v5 = self;
+  selfCopy = self;
   v8.mSampleTime = 0.0;
   memset(&v8.mRateScalar, 0, 48);
   v8.mFlags = 2;
   v8.mHostTime = (time * 24000000.0);
   impl = self->_impl;
   os_unfair_lock_lock(impl + 64);
-  LOBYTE(v5) = recordQueue(v5, v5->_impl, duration, &v8) == 0;
+  LOBYTE(selfCopy) = recordQueue(selfCopy, selfCopy->_impl, duration, &v8) == 0;
   os_unfair_lock_unlock(impl + 64);
-  return v5;
+  return selfCopy;
 }
 
 - (BOOL)recordForDuration:(NSTimeInterval)duration
 {
-  v4 = self;
+  selfCopy = self;
   impl = self->_impl;
   os_unfair_lock_lock(impl + 64);
-  LOBYTE(v4) = recordQueue(v4, v4->_impl, duration, 0) == 0;
+  LOBYTE(selfCopy) = recordQueue(selfCopy, selfCopy->_impl, duration, 0) == 0;
   os_unfair_lock_unlock(impl + 64);
-  return v4;
+  return selfCopy;
 }
 
 - (BOOL)recordAtTime:(NSTimeInterval)time
 {
-  v3 = self;
+  selfCopy = self;
   v6.mSampleTime = 0.0;
   memset(&v6.mRateScalar, 0, 48);
   v6.mFlags = 2;
   v6.mHostTime = (time * 24000000.0);
   impl = self->_impl;
   os_unfair_lock_lock(impl + 64);
-  LOBYTE(v3) = recordQueue(v3, v3->_impl, -1.0, &v6) == 0;
+  LOBYTE(selfCopy) = recordQueue(selfCopy, selfCopy->_impl, -1.0, &v6) == 0;
   os_unfair_lock_unlock(impl + 64);
-  return v3;
+  return selfCopy;
 }
 
 - (BOOL)record
 {
-  v2 = self;
+  selfCopy = self;
   impl = self->_impl;
   os_unfair_lock_lock(impl + 64);
-  LOBYTE(v2) = recordQueue(v2, v2->_impl, -1.0, 0) == 0;
+  LOBYTE(selfCopy) = recordQueue(selfCopy, selfCopy->_impl, -1.0, 0) == 0;
   os_unfair_lock_unlock(impl + 64);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)prepareToRecord
 {
-  v2 = self;
+  selfCopy = self;
   impl = self->_impl;
   os_unfair_lock_lock(impl + 64);
-  LOBYTE(v2) = prepareToRecordQueue(v2, v2->_impl) == 0;
+  LOBYTE(selfCopy) = prepareToRecordQueue(selfCopy, selfCopy->_impl) == 0;
   os_unfair_lock_unlock(impl + 64);
-  return v2;
+  return selfCopy;
 }
 
 - (AVAudioFormat)format
@@ -563,24 +563,24 @@ LABEL_7:
 
 - (BOOL)isRecording
 {
-  v2 = self;
+  selfCopy = self;
   impl = self->_impl;
   os_unfair_lock_lock(impl + 64);
-  LOBYTE(v2) = *(v2->_impl + 186);
+  LOBYTE(selfCopy) = *(selfCopy->_impl + 186);
   os_unfair_lock_unlock(impl + 64);
-  return v2;
+  return selfCopy;
 }
 
 - (AVAudioRecorder)initWithURL:(NSURL *)url settings:(NSDictionary *)settings error:(NSError *)outError
 {
-  v8 = self;
+  selfCopy = self;
   if (outError)
   {
     *outError = 0;
   }
 
   [(AVAudioRecorder *)self baseInit];
-  impl = v8->_impl;
+  impl = selfCopy->_impl;
   *(impl + 5) = url;
   v10 = url;
   *(impl + 2) = settings;
@@ -588,16 +588,16 @@ LABEL_7:
   v12 = [(NSDictionary *)settings objectForKey:@"AVAudioFileTypeKey"];
   if (v12)
   {
-    v13 = [v12 unsignedIntValue];
+    unsignedIntValue = [v12 unsignedIntValue];
   }
 
   else
   {
-    v13 = fileTypeFromExtension([(NSString *)[(NSURL *)url path] pathExtension]);
+    unsignedIntValue = fileTypeFromExtension([(NSString *)[(NSURL *)url path] pathExtension]);
   }
 
-  *(impl + 14) = v13;
-  v14 = asbdFromSettingsAndFileType2(settings, 0, v13, (impl + 64));
+  *(impl + 14) = unsignedIntValue;
+  v14 = asbdFromSettingsAndFileType2(settings, 0, unsignedIntValue, (impl + 64));
   if (v14)
   {
     if (outError)
@@ -608,7 +608,7 @@ LABEL_7:
     return 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (AVAudioRecorder)initWithURL:(NSURL *)url format:(AVAudioFormat *)format error:(NSError *)outError
@@ -643,9 +643,9 @@ LABEL_8:
   v3->var3 = 0;
   v3->var4 = 0;
   v3->var2 = 0;
-  v4 = [MEMORY[0x1E698D708] sharedInstance];
-  v3->var33 = v4;
-  v5 = v4;
+  mEMORY[0x1E698D708] = [MEMORY[0x1E698D708] sharedInstance];
+  v3->var33 = mEMORY[0x1E698D708];
+  v5 = mEMORY[0x1E698D708];
   tryToSetRecorderSessionListener(self, v3);
   return self;
 }
@@ -699,8 +699,8 @@ LABEL_8:
   impl = self->_impl;
   if (*(impl + 240) == 1)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self name:*MEMORY[0x1E698D550] object:impl[31]];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E698D550] object:impl[31]];
   }
 
   *(impl + 240) = 0;
@@ -721,24 +721,24 @@ LABEL_8:
   objc_storeWeak(&impl->_impl, 0);
 }
 
-- (void)privSetDelegate:(id)a3
+- (void)privSetDelegate:(id)delegate
 {
   impl = self->_impl;
-  if (!a3 || objc_loadWeak(self->_impl) != a3)
+  if (!delegate || objc_loadWeak(self->_impl) != delegate)
   {
-    objc_storeWeak(&impl->var0, a3);
+    objc_storeWeak(&impl->var0, delegate);
 
     tryToSetRecorderSessionListener(self, impl);
   }
 }
 
-- (void)finishedRecording:(id)a3
+- (void)finishedRecording:(id)recording
 {
   v4 = objc_autoreleasePoolPush();
-  v5 = [(AVAudioRecorder *)self delegate];
+  delegate = [(AVAudioRecorder *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 audioRecorderDidFinishRecording:self successfully:{objc_msgSend(a3, "BOOLValue")}];
+    [delegate audioRecorderDidFinishRecording:self successfully:{objc_msgSend(recording, "BOOLValue")}];
   }
 
   objc_autoreleasePoolPop(v4);

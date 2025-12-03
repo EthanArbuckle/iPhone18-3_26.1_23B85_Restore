@@ -1,14 +1,14 @@
 @interface TappableTableViewFooter
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (_TtC24MenstrualCyclesAppPlugin23TappableTableViewFooter)initWithCoder:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin23TappableTableViewFooter)initWithReuseIdentifier:(id)a3;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (_TtC24MenstrualCyclesAppPlugin23TappableTableViewFooter)initWithCoder:(id)coder;
+- (_TtC24MenstrualCyclesAppPlugin23TappableTableViewFooter)initWithReuseIdentifier:(id)identifier;
 @end
 
 @implementation TappableTableViewFooter
 
-- (_TtC24MenstrualCyclesAppPlugin23TappableTableViewFooter)initWithReuseIdentifier:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin23TappableTableViewFooter)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = _sSo25HKMCDisplayTypeIdentifiera24MenstrualCyclesAppPluginE2idSSvg_0();
   }
@@ -22,7 +22,7 @@
   return sub_29E1052E8(v3, v4);
 }
 
-- (_TtC24MenstrualCyclesAppPlugin23TappableTableViewFooter)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin23TappableTableViewFooter)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC24MenstrualCyclesAppPlugin23TappableTableViewFooter_footerTextView;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x29EDC7D60]) init];
@@ -37,17 +37,17 @@
   return result;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v10 = sub_29E2BC904();
   v11 = *(v10 - 8);
   MEMORY[0x2A1C7C4A8](v10);
   v13 = &v17 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_29E2BC8D4();
-  v14 = a3;
-  v15 = self;
+  viewCopy = view;
+  selfCopy = self;
   LOBYTE(length) = sub_29E1060BC(v13, location, length);
 
   (*(v11 + 8))(v13, v10);

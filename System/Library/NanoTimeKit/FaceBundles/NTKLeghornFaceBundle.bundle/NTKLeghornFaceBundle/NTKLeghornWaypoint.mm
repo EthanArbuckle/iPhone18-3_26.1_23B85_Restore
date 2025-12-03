@@ -1,109 +1,109 @@
 @interface NTKLeghornWaypoint
-+ (CGRect)adjustDrawRect:(CGRect)a3 forSFSymbol:(id)a4;
-+ (id)iconImageForSFSymbol:(id)a3;
++ (CGRect)adjustDrawRect:(CGRect)rect forSFSymbol:(id)symbol;
++ (id)iconImageForSFSymbol:(id)symbol;
 + (id)testAppleParkLocation;
 + (id)testAppleParkWaypoints;
-- (CGRect)adjustDrawRect:(CGRect)a3;
-- (NTKLeghornWaypoint)initWithLabelText:(id)a3 labelColor:(id)a4 glyphColor:(id)a5 fillColor:(id)a6 sfSymbolName:(id)a7 location:(id)a8 waypointCategory:(unint64_t)a9;
-- (NTKLeghornWaypoint)initWithLabelText:(id)a3 labelColor:(id)a4 glyphColor:(id)a5 fillColor:(id)a6 sfSymbolName:(id)a7 location:(id)a8 waypointCategory:(unint64_t)a9 timestampOfCreation:(id)a10;
-- (NTKLeghornWaypoint)initWithLabelText:(id)a3 labelColor:(id)a4 sfSymbolName:(id)a5 location:(id)a6;
-- (NTKLeghornWaypoint)initWithLabelText:(id)a3 labelColor:(id)a4 sfSymbolName:(id)a5 location:(id)a6 timestampOfCreation:(id)a7;
-- (NTKLeghornWaypoint)initWithLabelText:(id)a3 labelColor:(id)a4 sfSymbolName:(id)a5 location:(id)a6 waypointCategory:(unint64_t)a7;
+- (CGRect)adjustDrawRect:(CGRect)rect;
+- (NTKLeghornWaypoint)initWithLabelText:(id)text labelColor:(id)color glyphColor:(id)glyphColor fillColor:(id)fillColor sfSymbolName:(id)name location:(id)location waypointCategory:(unint64_t)category;
+- (NTKLeghornWaypoint)initWithLabelText:(id)text labelColor:(id)color glyphColor:(id)glyphColor fillColor:(id)fillColor sfSymbolName:(id)name location:(id)location waypointCategory:(unint64_t)category timestampOfCreation:(id)self0;
+- (NTKLeghornWaypoint)initWithLabelText:(id)text labelColor:(id)color sfSymbolName:(id)name location:(id)location;
+- (NTKLeghornWaypoint)initWithLabelText:(id)text labelColor:(id)color sfSymbolName:(id)name location:(id)location timestampOfCreation:(id)creation;
+- (NTKLeghornWaypoint)initWithLabelText:(id)text labelColor:(id)color sfSymbolName:(id)name location:(id)location waypointCategory:(unint64_t)category;
 - (UIImage)glyphImage;
 @end
 
 @implementation NTKLeghornWaypoint
 
-- (NTKLeghornWaypoint)initWithLabelText:(id)a3 labelColor:(id)a4 glyphColor:(id)a5 fillColor:(id)a6 sfSymbolName:(id)a7 location:(id)a8 waypointCategory:(unint64_t)a9 timestampOfCreation:(id)a10
+- (NTKLeghornWaypoint)initWithLabelText:(id)text labelColor:(id)color glyphColor:(id)glyphColor fillColor:(id)fillColor sfSymbolName:(id)name location:(id)location waypointCategory:(unint64_t)category timestampOfCreation:(id)self0
 {
-  v26 = a3;
-  v25 = a4;
-  v24 = a5;
-  v23 = a6;
-  v22 = a7;
-  v17 = a8;
-  v18 = a10;
+  textCopy = text;
+  colorCopy = color;
+  glyphColorCopy = glyphColor;
+  fillColorCopy = fillColor;
+  nameCopy = name;
+  locationCopy = location;
+  creationCopy = creation;
   v27.receiver = self;
   v27.super_class = NTKLeghornWaypoint;
   v19 = [(NTKLeghornWaypoint *)&v27 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_labelText, a3);
-    objc_storeStrong(&v20->_labelColor, a4);
-    objc_storeStrong(&v20->_glyphColor, a5);
-    objc_storeStrong(&v20->_fillColor, a6);
-    objc_storeStrong(&v20->_sfSymbolName, a7);
-    objc_storeStrong(&v20->_waypointLocation, a8);
-    objc_storeStrong(&v20->_timestampOfCreation, a10);
-    v20->_waypointCategory = a9;
+    objc_storeStrong(&v19->_labelText, text);
+    objc_storeStrong(&v20->_labelColor, color);
+    objc_storeStrong(&v20->_glyphColor, glyphColor);
+    objc_storeStrong(&v20->_fillColor, fillColor);
+    objc_storeStrong(&v20->_sfSymbolName, name);
+    objc_storeStrong(&v20->_waypointLocation, location);
+    objc_storeStrong(&v20->_timestampOfCreation, creation);
+    v20->_waypointCategory = category;
   }
 
   return v20;
 }
 
-- (NTKLeghornWaypoint)initWithLabelText:(id)a3 labelColor:(id)a4 glyphColor:(id)a5 fillColor:(id)a6 sfSymbolName:(id)a7 location:(id)a8 waypointCategory:(unint64_t)a9
+- (NTKLeghornWaypoint)initWithLabelText:(id)text labelColor:(id)color glyphColor:(id)glyphColor fillColor:(id)fillColor sfSymbolName:(id)name location:(id)location waypointCategory:(unint64_t)category
 {
   v15 = MEMORY[0x277CBEAA8];
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
+  locationCopy = location;
+  nameCopy = name;
+  fillColorCopy = fillColor;
+  glyphColorCopy = glyphColor;
+  colorCopy = color;
+  textCopy = text;
   v24 = objc_msgSend_now(v15, v22, v23);
-  v27 = objc_msgSend_initWithLabelText_labelColor_glyphColor_fillColor_sfSymbolName_location_waypointCategory_timestampOfCreation_(self, v25, v26, v21, v20, v19, v18, v17, v16, a9, v24);
+  v27 = objc_msgSend_initWithLabelText_labelColor_glyphColor_fillColor_sfSymbolName_location_waypointCategory_timestampOfCreation_(self, v25, v26, textCopy, colorCopy, glyphColorCopy, fillColorCopy, nameCopy, locationCopy, category, v24);
 
   return v27;
 }
 
-- (NTKLeghornWaypoint)initWithLabelText:(id)a3 labelColor:(id)a4 sfSymbolName:(id)a5 location:(id)a6 waypointCategory:(unint64_t)a7
+- (NTKLeghornWaypoint)initWithLabelText:(id)text labelColor:(id)color sfSymbolName:(id)name location:(id)location waypointCategory:(unint64_t)category
 {
   v12 = MEMORY[0x277D75348];
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  locationCopy = location;
+  nameCopy = name;
+  colorCopy = color;
+  textCopy = text;
   v19 = objc_msgSend_blackColor(v12, v17, v18);
   v22 = objc_msgSend_now(MEMORY[0x277CBEAA8], v20, v21);
-  v25 = objc_msgSend_initWithLabelText_labelColor_glyphColor_fillColor_sfSymbolName_location_waypointCategory_timestampOfCreation_(self, v23, v24, v16, v15, v19, v15, v14, v13, a7, v22);
+  v25 = objc_msgSend_initWithLabelText_labelColor_glyphColor_fillColor_sfSymbolName_location_waypointCategory_timestampOfCreation_(self, v23, v24, textCopy, colorCopy, v19, colorCopy, nameCopy, locationCopy, category, v22);
 
   return v25;
 }
 
-- (NTKLeghornWaypoint)initWithLabelText:(id)a3 labelColor:(id)a4 sfSymbolName:(id)a5 location:(id)a6 timestampOfCreation:(id)a7
+- (NTKLeghornWaypoint)initWithLabelText:(id)text labelColor:(id)color sfSymbolName:(id)name location:(id)location timestampOfCreation:(id)creation
 {
   v12 = MEMORY[0x277D75348];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  creationCopy = creation;
+  locationCopy = location;
+  nameCopy = name;
+  colorCopy = color;
+  textCopy = text;
   v20 = objc_msgSend_blackColor(v12, v18, v19);
-  v23 = objc_msgSend_initWithLabelText_labelColor_glyphColor_fillColor_sfSymbolName_location_waypointCategory_timestampOfCreation_(self, v21, v22, v17, v16, v20, v16, v15, v14, 0, v13);
+  v23 = objc_msgSend_initWithLabelText_labelColor_glyphColor_fillColor_sfSymbolName_location_waypointCategory_timestampOfCreation_(self, v21, v22, textCopy, colorCopy, v20, colorCopy, nameCopy, locationCopy, 0, creationCopy);
 
   return v23;
 }
 
-- (NTKLeghornWaypoint)initWithLabelText:(id)a3 labelColor:(id)a4 sfSymbolName:(id)a5 location:(id)a6
+- (NTKLeghornWaypoint)initWithLabelText:(id)text labelColor:(id)color sfSymbolName:(id)name location:(id)location
 {
   v10 = MEMORY[0x277CBEAA8];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  locationCopy = location;
+  nameCopy = name;
+  colorCopy = color;
+  textCopy = text;
   v16 = objc_msgSend_dateWithTimeIntervalSinceNow_(v10, v15, -259200.0);
-  v19 = objc_msgSend_initWithLabelText_labelColor_sfSymbolName_location_timestampOfCreation_(self, v17, v18, v14, v13, v12, v11, v16);
+  v19 = objc_msgSend_initWithLabelText_labelColor_sfSymbolName_location_timestampOfCreation_(self, v17, v18, textCopy, colorCopy, nameCopy, locationCopy, v16);
 
   return v19;
 }
 
-+ (id)iconImageForSFSymbol:(id)a3
++ (id)iconImageForSFSymbol:(id)symbol
 {
   v4 = MEMORY[0x277D75348];
-  v5 = a3;
+  symbolCopy = symbol;
   v8 = objc_msgSend_cyanColor(v4, v6, v7);
-  v11 = objc_msgSend_iconImageForSFSymbol_color_(a1, v9, v10, v5, v8);
+  v11 = objc_msgSend_iconImageForSFSymbol_color_(self, v9, v10, symbolCopy, v8);
 
   return v11;
 }
@@ -117,9 +117,9 @@
   return v7;
 }
 
-+ (CGRect)adjustDrawRect:(CGRect)a3 forSFSymbol:(id)a4
++ (CGRect)adjustDrawRect:(CGRect)rect forSFSymbol:(id)symbol
 {
-  MEMORY[0x2821F9670](a3.origin.x);
+  MEMORY[0x2821F9670](rect.origin.x);
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -127,13 +127,13 @@
   return result;
 }
 
-- (CGRect)adjustDrawRect:(CGRect)a3
+- (CGRect)adjustDrawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = objc_msgSend_sfSymbolName(self, a2, a3.origin.x);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v7 = objc_msgSend_sfSymbolName(self, a2, rect.origin.x);
   v8 = objc_opt_class();
   objc_msgSend_adjustDrawRect_forSFSymbol_(v8, v9, x, v7, y, width, height);
   v11 = v10;

@@ -1,61 +1,61 @@
 @interface HUCharacteristicTriggerEventViewController
 - (BOOL)_canCommitTriggerBuilder;
 - (BOOL)_canContinue;
-- (BOOL)pickerViewCell:(id)a3 canSelectValueAtIndex:(int64_t)a4;
-- (BOOL)shouldHideFooterBelowSection:(int64_t)a3;
-- (BOOL)shouldHideHeaderAboveSection:(int64_t)a3;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HUCharacteristicTriggerEventViewController)initWithCharacteristicEventBuilderItem:(id)a3 triggerBuilder:(id)a4 mode:(unint64_t)a5 delegate:(id)a6;
+- (BOOL)pickerViewCell:(id)cell canSelectValueAtIndex:(int64_t)index;
+- (BOOL)shouldHideFooterBelowSection:(int64_t)section;
+- (BOOL)shouldHideHeaderAboveSection:(int64_t)section;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HUCharacteristicTriggerEventViewController)initWithCharacteristicEventBuilderItem:(id)item triggerBuilder:(id)builder mode:(unint64_t)mode delegate:(id)delegate;
 - (HUTriggerEditorDelegate)delegate;
 - (id)_commitTriggerBuilder;
-- (id)buildItemModuleControllerForModule:(id)a3;
-- (id)pickerViewCell:(id)a3 attributedTitleForValueAtIndex:(int64_t)a4;
-- (id)visibleTriggerValuesForItem:(id)a3;
-- (int64_t)numberOfValuesForPickerViewCell:(id)a3;
-- (void)_cancel:(id)a3;
-- (void)_showActionEditor:(id)a3;
-- (void)_showSummary:(id)a3;
+- (id)buildItemModuleControllerForModule:(id)module;
+- (id)pickerViewCell:(id)cell attributedTitleForValueAtIndex:(int64_t)index;
+- (id)visibleTriggerValuesForItem:(id)item;
+- (int64_t)numberOfValuesForPickerViewCell:(id)cell;
+- (void)_cancel:(id)_cancel;
+- (void)_showActionEditor:(id)editor;
+- (void)_showSummary:(id)summary;
 - (void)_updateTriggerBuilder;
 - (void)_updateVisibleCellCheckmarks;
 - (void)_validateNextButton;
-- (void)itemManagerDidUpdate:(id)a3;
-- (void)pickerViewCell:(id)a3 didSelectValueAtIndex:(int64_t)a4;
-- (void)setSelectedEventOptionItem:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)itemManagerDidUpdate:(id)update;
+- (void)pickerViewCell:(id)cell didSelectValueAtIndex:(int64_t)index;
+- (void)setSelectedEventOptionItem:(id)item;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUCharacteristicTriggerEventViewController
 
-- (HUCharacteristicTriggerEventViewController)initWithCharacteristicEventBuilderItem:(id)a3 triggerBuilder:(id)a4 mode:(unint64_t)a5 delegate:(id)a6
+- (HUCharacteristicTriggerEventViewController)initWithCharacteristicEventBuilderItem:(id)item triggerBuilder:(id)builder mode:(unint64_t)mode delegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [[HUCharacteristicTriggerEventItemManager alloc] initWithTriggerBuilder:v11 eventBuilderItem:v10 delegate:self];
+  itemCopy = item;
+  builderCopy = builder;
+  delegateCopy = delegate;
+  v13 = [[HUCharacteristicTriggerEventItemManager alloc] initWithTriggerBuilder:builderCopy eventBuilderItem:itemCopy delegate:self];
   v26.receiver = self;
   v26.super_class = HUCharacteristicTriggerEventViewController;
   v14 = [(HUItemTableViewController *)&v26 initWithItemManager:v13 tableViewStyle:1];
   v15 = v14;
   if (v14)
   {
-    [(HUCharacteristicTriggerEventViewController *)v14 setEventBuilderItem:v10];
-    [(HUCharacteristicTriggerEventViewController *)v15 setTriggerBuilder:v11];
-    [(HUCharacteristicTriggerEventViewController *)v15 setMode:a5];
-    [(HUCharacteristicTriggerEventViewController *)v15 setDelegate:v12];
+    [(HUCharacteristicTriggerEventViewController *)v14 setEventBuilderItem:itemCopy];
+    [(HUCharacteristicTriggerEventViewController *)v15 setTriggerBuilder:builderCopy];
+    [(HUCharacteristicTriggerEventViewController *)v15 setMode:mode];
+    [(HUCharacteristicTriggerEventViewController *)v15 setDelegate:delegateCopy];
     v16 = _HULocalizedStringWithDefaultValue(@"HUCharacteristicTriggerEventOptionTitle", @"HUCharacteristicTriggerEventOptionTitle", 1);
     [(HUCharacteristicTriggerEventViewController *)v15 setTitle:v16];
 
-    if (!a5)
+    if (!mode)
     {
-      v17 = [v11 triggerActionSets];
-      v18 = [v17 hasActions];
+      triggerActionSets = [builderCopy triggerActionSets];
+      hasActions = [triggerActionSets hasActions];
       v19 = &selRef__showSummary_;
-      if (!v18)
+      if (!hasActions)
       {
         v19 = &selRef__showActionEditor_;
       }
@@ -65,8 +65,8 @@
       v21 = objc_alloc(MEMORY[0x277D751E0]);
       v22 = _HULocalizedStringWithDefaultValue(@"HUTimerTriggerEditorNextButton", @"HUTimerTriggerEditorNextButton", 1);
       v23 = [v21 initWithTitle:v22 style:2 target:v15 action:v20];
-      v24 = [(HUCharacteristicTriggerEventViewController *)v15 navigationItem];
-      [v24 setRightBarButtonItem:v23];
+      navigationItem = [(HUCharacteristicTriggerEventViewController *)v15 navigationItem];
+      [navigationItem setRightBarButtonItem:v23];
 
       [(HUCharacteristicTriggerEventViewController *)v15 _validateNextButton];
     }
@@ -75,59 +75,59 @@
   return v15;
 }
 
-- (void)setSelectedEventOptionItem:(id)a3
+- (void)setSelectedEventOptionItem:(id)item
 {
-  v6 = a3;
-  if (([v6 isEqual:self->_selectedEventOptionItem] & 1) == 0)
+  itemCopy = item;
+  if (([itemCopy isEqual:self->_selectedEventOptionItem] & 1) == 0)
   {
-    objc_storeStrong(&self->_selectedEventOptionItem, a3);
-    v5 = [(HUItemTableViewController *)self itemManager];
-    [v5 setActiveOptionItem:v6];
+    objc_storeStrong(&self->_selectedEventOptionItem, item);
+    itemManager = [(HUItemTableViewController *)self itemManager];
+    [itemManager setActiveOptionItem:itemCopy];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v22.receiver = self;
   v22.super_class = HUCharacteristicTriggerEventViewController;
-  [(HUItemTableViewController *)&v22 viewWillAppear:a3];
-  v5 = [(HUCharacteristicTriggerEventViewController *)self eventBuilderItem];
-  v6 = [(HUCharacteristicTriggerEventViewController *)self triggerBuilder];
-  v7 = [v6 home];
-  v8 = [HUCharacteristicTriggerEventItemManager serviceVendorItemForEventBuilderItem:v5 inHome:v7];
+  [(HUItemTableViewController *)&v22 viewWillAppear:appear];
+  eventBuilderItem = [(HUCharacteristicTriggerEventViewController *)self eventBuilderItem];
+  triggerBuilder = [(HUCharacteristicTriggerEventViewController *)self triggerBuilder];
+  home = [triggerBuilder home];
+  v8 = [HUCharacteristicTriggerEventItemManager serviceVendorItemForEventBuilderItem:eventBuilderItem inHome:home];
 
-  v9 = [v8 services];
-  v10 = [(HUItemTableViewController *)self itemManager];
-  v11 = [v10 serviceVendingItem];
-  v12 = [v11 services];
-  v13 = [v9 isEqual:v12];
+  services = [v8 services];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  serviceVendingItem = [itemManager serviceVendingItem];
+  services2 = [serviceVendingItem services];
+  v13 = [services isEqual:services2];
 
   if ((v13 & 1) == 0)
   {
-    v14 = [(HUItemTableViewController *)self itemManager];
-    [v14 setServiceVendingItem:v8];
+    itemManager2 = [(HUItemTableViewController *)self itemManager];
+    [itemManager2 setServiceVendingItem:v8];
 
-    v15 = [(HUItemTableViewController *)self itemManager];
-    [v15 resetItemProvidersAndModules];
+    itemManager3 = [(HUItemTableViewController *)self itemManager];
+    [itemManager3 resetItemProvidersAndModules];
 
-    v16 = [(HUItemTableViewController *)self itemManager];
-    v17 = [v16 reloadAndUpdateAllItemsFromSenderSelector:a2];
+    itemManager4 = [(HUItemTableViewController *)self itemManager];
+    v17 = [itemManager4 reloadAndUpdateAllItemsFromSenderSelector:a2];
 
     [(HUCharacteristicTriggerEventViewController *)self setSelectedEventOptionItem:0];
   }
 
-  v18 = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
+  selectedEventOptionItem = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
 
-  if (!v18)
+  if (!selectedEventOptionItem)
   {
-    v19 = [(HUItemTableViewController *)self itemManager];
-    v20 = [v19 allDisplayedItems];
+    itemManager5 = [(HUItemTableViewController *)self itemManager];
+    allDisplayedItems = [itemManager5 allDisplayedItems];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __61__HUCharacteristicTriggerEventViewController_viewWillAppear___block_invoke;
     v21[3] = &unk_277DBAF68;
     v21[4] = self;
-    [v20 na_each:v21];
+    [allDisplayedItems na_each:v21];
   }
 }
 
@@ -244,50 +244,50 @@ uint64_t __61__HUCharacteristicTriggerEventViewController_viewWillAppear___block
   return v7;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = HUCharacteristicTriggerEventViewController;
-  [(HUItemTableViewController *)&v4 viewWillDisappear:a3];
+  [(HUItemTableViewController *)&v4 viewWillDisappear:disappear];
   [(HUCharacteristicTriggerEventViewController *)self _updateTriggerBuilder];
 }
 
-- (void)_cancel:(id)a3
+- (void)_cancel:(id)_cancel
 {
-  v4 = [(HUCharacteristicTriggerEventViewController *)self delegate];
-  [v4 triggerEditor:self didFinishWithTriggerBuilder:0];
+  delegate = [(HUCharacteristicTriggerEventViewController *)self delegate];
+  [delegate triggerEditor:self didFinishWithTriggerBuilder:0];
 }
 
-- (void)_showActionEditor:(id)a3
+- (void)_showActionEditor:(id)editor
 {
   [(HUCharacteristicTriggerEventViewController *)self _updateTriggerBuilder];
   v4 = [HUTriggerActionPickerViewController alloc];
-  v5 = [(HUCharacteristicTriggerEventViewController *)self triggerBuilder];
-  v6 = [(HUCharacteristicTriggerEventViewController *)self mode];
-  v7 = [(HUCharacteristicTriggerEventViewController *)self delegate];
-  v10 = [(HUTriggerActionPickerViewController *)v4 initWithTriggerBuilder:v5 mode:v6 delegate:v7];
+  triggerBuilder = [(HUCharacteristicTriggerEventViewController *)self triggerBuilder];
+  mode = [(HUCharacteristicTriggerEventViewController *)self mode];
+  delegate = [(HUCharacteristicTriggerEventViewController *)self delegate];
+  v10 = [(HUTriggerActionPickerViewController *)v4 initWithTriggerBuilder:triggerBuilder mode:mode delegate:delegate];
 
-  v8 = [(HUCharacteristicTriggerEventViewController *)self navigationController];
-  v9 = [v8 hu_pushPreloadableViewController:v10 animated:1];
+  navigationController = [(HUCharacteristicTriggerEventViewController *)self navigationController];
+  v9 = [navigationController hu_pushPreloadableViewController:v10 animated:1];
 }
 
-- (void)_showSummary:(id)a3
+- (void)_showSummary:(id)summary
 {
   [(HUCharacteristicTriggerEventViewController *)self _updateTriggerBuilder];
   v4 = [HUTriggerSummaryViewController alloc];
-  v5 = [(HUCharacteristicTriggerEventViewController *)self triggerBuilder];
-  v6 = [(HUCharacteristicTriggerEventViewController *)self mode];
-  v7 = [(HUCharacteristicTriggerEventViewController *)self delegate];
-  v10 = [(HUTriggerSummaryViewController *)v4 initWithTriggerBuilder:v5 mode:v6 isPresentedModally:0 delegate:v7];
+  triggerBuilder = [(HUCharacteristicTriggerEventViewController *)self triggerBuilder];
+  mode = [(HUCharacteristicTriggerEventViewController *)self mode];
+  delegate = [(HUCharacteristicTriggerEventViewController *)self delegate];
+  v10 = [(HUTriggerSummaryViewController *)v4 initWithTriggerBuilder:triggerBuilder mode:mode isPresentedModally:0 delegate:delegate];
 
-  v8 = [(HUCharacteristicTriggerEventViewController *)self navigationController];
-  v9 = [v8 hu_pushPreloadableViewController:v10 animated:1];
+  navigationController = [(HUCharacteristicTriggerEventViewController *)self navigationController];
+  v9 = [navigationController hu_pushPreloadableViewController:v10 animated:1];
 }
 
-- (id)buildItemModuleControllerForModule:(id)a3
+- (id)buildItemModuleControllerForModule:(id)module
 {
-  v4 = a3;
-  v5 = [[HUTriggerConditionEditorItemModuleController alloc] initWithModule:v4 delegate:self];
+  moduleCopy = module;
+  v5 = [[HUTriggerConditionEditorItemModuleController alloc] initWithModule:moduleCopy delegate:self];
 
   conditionModuleController = self->_conditionModuleController;
   self->_conditionModuleController = v5;
@@ -297,34 +297,34 @@ uint64_t __61__HUCharacteristicTriggerEventViewController_viewWillAppear___block
   return v7;
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v5 = a3;
+  itemCopy = item;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 || (-[HUItemTableViewController itemManager](self, "itemManager"), v6 = objc_claimAutoreleasedReturnValue(), [v6 serviceNameItem], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v5, "isEqual:", v7), v7, v6, v8) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if ((objc_opt_isKindOfClass() & 1) != 0 || (-[HUItemTableViewController itemManager](self, "itemManager"), v6 = objc_claimAutoreleasedReturnValue(), [v6 serviceNameItem], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(itemCopy, "isEqual:", v7), v7, v6, v8) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v15 = objc_opt_class();
   }
 
   else
   {
-    v9 = v5;
-    v10 = [MEMORY[0x277CD1970] hf_valueRangeCharacteristicTypes];
-    v11 = [v9 mainCharacteristic];
-    v12 = [v11 characteristicType];
-    v13 = [v10 containsObject:v12];
+    v9 = itemCopy;
+    hf_valueRangeCharacteristicTypes = [MEMORY[0x277CD1970] hf_valueRangeCharacteristicTypes];
+    mainCharacteristic = [v9 mainCharacteristic];
+    characteristicType = [mainCharacteristic characteristicType];
+    v13 = [hf_valueRangeCharacteristicTypes containsObject:characteristicType];
 
     if (v13)
     {
-      v14 = [v9 childItem];
-      if (v14)
+      childItem = [v9 childItem];
+      if (childItem)
       {
         v15 = objc_opt_class();
       }
 
       else
       {
-        v18 = [v9 thresholdValueRange];
+        thresholdValueRange = [v9 thresholdValueRange];
         v15 = objc_opt_class();
       }
     }
@@ -340,13 +340,13 @@ uint64_t __61__HUCharacteristicTriggerEventViewController_viewWillAppear___block
   return v15;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HUItemTableViewController *)self itemManager];
-  v11 = [v10 serviceNameItem];
-  v12 = [v9 isEqual:v11];
+  cellCopy = cell;
+  itemCopy = item;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  serviceNameItem = [itemManager serviceNameItem];
+  v12 = [itemCopy isEqual:serviceNameItem];
 
   if (!v12)
   {
@@ -359,16 +359,16 @@ uint64_t __61__HUCharacteristicTriggerEventViewController_viewWillAppear___block
         goto LABEL_54;
       }
 
-      v22 = [HUListContentConfigurationUtilities instructionsConfigurationForItem:v9];
-      [v8 setContentConfiguration:v22];
-      v30 = [MEMORY[0x277D751C0] clearConfiguration];
-      [v8 setBackgroundConfiguration:v30];
+      v22 = [HUListContentConfigurationUtilities instructionsConfigurationForItem:itemCopy];
+      [cellCopy setContentConfiguration:v22];
+      clearConfiguration = [MEMORY[0x277D751C0] clearConfiguration];
+      [cellCopy setBackgroundConfiguration:clearConfiguration];
 
       goto LABEL_53;
     }
 
     objc_opt_class();
-    v20 = v9;
+    v20 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v21 = v20;
@@ -381,23 +381,23 @@ uint64_t __61__HUCharacteristicTriggerEventViewController_viewWillAppear___block
 
     v22 = v21;
 
-    v23 = [v22 childItem];
-    if (v23)
+    childItem = [v22 childItem];
+    if (childItem)
     {
 
       goto LABEL_16;
     }
 
-    v37 = [v22 thresholdValueRange];
+    thresholdValueRange = [v22 thresholdValueRange];
 
-    if (!v37)
+    if (!thresholdValueRange)
     {
 LABEL_16:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v24 = objc_opt_class();
-        v25 = v8;
+        v25 = cellCopy;
         if (v25)
         {
           if (objc_opt_isKindOfClass())
@@ -416,9 +416,9 @@ LABEL_16:
             goto LABEL_24;
           }
 
-          v28 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
           v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-          [v28 handleFailureInFunction:v29 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v24, objc_opt_class()}];
+          [currentHandler handleFailureInFunction:v29 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v24, objc_opt_class()}];
         }
 
         v27 = 0;
@@ -435,7 +435,7 @@ LABEL_36:
       if (objc_opt_isKindOfClass())
       {
         v31 = objc_opt_class();
-        v32 = v8;
+        v32 = cellCopy;
         if (v32)
         {
           if (objc_opt_isKindOfClass())
@@ -454,9 +454,9 @@ LABEL_36:
             goto LABEL_35;
           }
 
-          v34 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
           v35 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-          [v34 handleFailureInFunction:v35 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v31, objc_opt_class()}];
+          [currentHandler2 handleFailureInFunction:v35 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v31, objc_opt_class()}];
         }
 
         v27 = 0;
@@ -464,8 +464,8 @@ LABEL_35:
 
         [v27 setHideIcon:1];
         [v27 setValueColorFollowsTintColor:1];
-        v36 = [MEMORY[0x277D75348] hf_keyColor];
-        [v27 setTintColor:v36];
+        hf_keyColor = [MEMORY[0x277D75348] hf_keyColor];
+        [v27 setTintColor:hf_keyColor];
 
         goto LABEL_36;
       }
@@ -476,7 +476,7 @@ LABEL_53:
     }
 
     v38 = objc_opt_class();
-    v39 = v8;
+    v39 = cellCopy;
     if (v39)
     {
       if (objc_opt_isKindOfClass())
@@ -495,9 +495,9 @@ LABEL_53:
         goto LABEL_45;
       }
 
-      v42 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
       v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v42 handleFailureInFunction:v5 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v38, objc_opt_class()}];
+      [currentHandler3 handleFailureInFunction:v5 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v38, objc_opt_class()}];
     }
 
     v41 = 0;
@@ -506,11 +506,11 @@ LABEL_45:
     [v41 setDelegate:self];
     [v41 setItem:v22];
     v43 = [(HUCharacteristicTriggerEventViewController *)self visibleTriggerValuesForItem:v22];
-    v44 = [v22 thresholdValue];
-    v45 = v44;
-    if (v44)
+    thresholdValue = [v22 thresholdValue];
+    v45 = thresholdValue;
+    if (thresholdValue)
     {
-      v46 = v44;
+      v46 = thresholdValue;
     }
 
     else
@@ -538,7 +538,7 @@ LABEL_45:
   }
 
   v13 = objc_opt_class();
-  v14 = v8;
+  v14 = cellCopy;
   if (v14)
   {
     if (objc_opt_isKindOfClass())
@@ -557,9 +557,9 @@ LABEL_45:
       goto LABEL_9;
     }
 
-    v17 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
     v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v17 handleFailureInFunction:v18 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v13, objc_opt_class()}];
+    [currentHandler4 handleFailureInFunction:v18 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v13, objc_opt_class()}];
   }
 
   v16 = 0;
@@ -575,22 +575,22 @@ LABEL_9:
 LABEL_54:
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
+  pathCopy = path;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = v10;
-      v14 = [v13 item];
-      v15 = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
-      if (v14 == v15)
+      v13 = cellCopy;
+      item = [v13 item];
+      selectedEventOptionItem = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
+      if (item == selectedEventOptionItem)
       {
         v16 = 3;
       }
@@ -609,7 +609,7 @@ LABEL_54:
     if (objc_opt_isKindOfClass())
     {
       objc_opt_class();
-      v17 = v11;
+      v17 = itemCopy;
       if (objc_opt_isKindOfClass())
       {
         v18 = v17;
@@ -620,10 +620,10 @@ LABEL_54:
         v18 = 0;
       }
 
-      v14 = v18;
+      item = v18;
 
       objc_opt_class();
-      v19 = v10;
+      v19 = cellCopy;
       if (objc_opt_isKindOfClass())
       {
         v20 = v19;
@@ -636,15 +636,15 @@ LABEL_54:
 
       v21 = v20;
 
-      [v21 setItem:v14];
-      v22 = [(HUCharacteristicTriggerEventViewController *)self visibleTriggerValuesForItem:v14];
-      v23 = [v14 thresholdValue];
+      [v21 setItem:item];
+      v22 = [(HUCharacteristicTriggerEventViewController *)self visibleTriggerValuesForItem:item];
+      thresholdValue = [item thresholdValue];
 
-      if (v23)
+      if (thresholdValue)
       {
         v24 = MEMORY[0x277CD1970];
-        v25 = [v14 thresholdValue];
-        v26 = [v24 hf_indexOfSortedValues:v22 closestToValue:v25];
+        thresholdValue2 = [item thresholdValue];
+        v26 = [v24 hf_indexOfSortedValues:v22 closestToValue:thresholdValue2];
 
         [v21 setSelectedIndex:v26 animated:0];
       }
@@ -655,70 +655,70 @@ LABEL_54:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = v10;
-      v27 = [v14 item];
-      v28 = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
-      v29 = v27 == v28;
-      v30 = v27 != v28;
+      item = cellCopy;
+      v14Item = [item item];
+      selectedEventOptionItem2 = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
+      v29 = v14Item == selectedEventOptionItem2;
+      v30 = v14Item != selectedEventOptionItem2;
 
-      [v14 setHideValue:v30];
-      [v14 setChecked:v29];
+      [item setHideValue:v30];
+      [item setChecked:v29];
 LABEL_19:
     }
   }
 
   v31.receiver = self;
   v31.super_class = HUCharacteristicTriggerEventViewController;
-  [(HUItemTableViewController *)&v31 updateCell:v10 forItem:v11 indexPath:v12 animated:v6];
+  [(HUItemTableViewController *)&v31 updateCell:cellCopy forItem:itemCopy indexPath:pathCopy animated:animatedCopy];
 }
 
-- (void)itemManagerDidUpdate:(id)a3
+- (void)itemManagerDidUpdate:(id)update
 {
   v4.receiver = self;
   v4.super_class = HUCharacteristicTriggerEventViewController;
-  [(HUItemTableViewController *)&v4 itemManagerDidUpdate:a3];
+  [(HUItemTableViewController *)&v4 itemManagerDidUpdate:update];
   [(HUCharacteristicTriggerEventViewController *)self _validateNextButton];
 }
 
-- (BOOL)shouldHideHeaderAboveSection:(int64_t)a3
+- (BOOL)shouldHideHeaderAboveSection:(int64_t)section
 {
-  v4 = [(HUItemTableViewController *)self itemManager];
-  v5 = [v4 displayedSectionIdentifierForSectionIndex:a3];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v5 = [itemManager displayedSectionIdentifierForSectionIndex:section];
   v6 = [v5 isEqualToString:@"HUCharacteristicTriggerEventSectionIdentifierInstructions"];
 
   return v6;
 }
 
-- (BOOL)shouldHideFooterBelowSection:(int64_t)a3
+- (BOOL)shouldHideFooterBelowSection:(int64_t)section
 {
-  v4 = [(HUItemTableViewController *)self itemManager];
-  v5 = [v4 displayedSectionIdentifierForSectionIndex:a3];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v5 = [itemManager displayedSectionIdentifierForSectionIndex:section];
   v6 = [v5 isEqualToString:@"HUCharacteristicTriggerEventSectionIdentifierInstructions"];
 
   return v6;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
-  v10 = [(HUItemTableViewController *)self itemManager];
-  v11 = [v10 instructionsItem];
+  itemManager2 = [(HUItemTableViewController *)self itemManager];
+  instructionsItem = [itemManager2 instructionsItem];
 
-  if (v9 == v11)
+  if (v9 == instructionsItem)
   {
     v14 = 0;
   }
 
   else
   {
-    v12 = [(HUItemTableViewController *)self itemManager];
-    v13 = [v12 serviceNameItem];
+    itemManager3 = [(HUItemTableViewController *)self itemManager];
+    serviceNameItem = [itemManager3 serviceNameItem];
 
-    if (v9 == v13)
+    if (v9 == serviceNameItem)
     {
       v14 = [(HUCharacteristicTriggerEventViewController *)self mode]== 1;
     }
@@ -727,45 +727,45 @@ LABEL_19:
     {
       v16.receiver = self;
       v16.super_class = HUCharacteristicTriggerEventViewController;
-      v14 = [(HUItemTableViewController *)&v16 tableView:v6 shouldHighlightRowAtIndexPath:v7];
+      v14 = [(HUItemTableViewController *)&v16 tableView:viewCopy shouldHighlightRowAtIndexPath:pathCopy];
     }
   }
 
   return v14;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v24.receiver = self;
   v24.super_class = HUCharacteristicTriggerEventViewController;
-  [(HUItemTableViewController *)&v24 tableView:v6 didSelectRowAtIndexPath:v7];
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v7];
+  [(HUItemTableViewController *)&v24 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
   v10 = [(HUItemTableViewController *)self moduleControllerForItem:v9];
 
   if (!v10)
   {
-    v11 = [(HUItemTableViewController *)self itemManager];
-    v12 = [v11 serviceNameItem];
-    v13 = [v9 isEqual:v12];
+    itemManager2 = [(HUItemTableViewController *)self itemManager];
+    serviceNameItem = [itemManager2 serviceNameItem];
+    v13 = [v9 isEqual:serviceNameItem];
 
     if (v13)
     {
-      v14 = [(HUCharacteristicTriggerEventViewController *)self triggerBuilder];
-      v15 = [HUCharacteristicTriggerServicePickerViewController sourceForTriggerBuilder:v14];
+      triggerBuilder = [(HUCharacteristicTriggerEventViewController *)self triggerBuilder];
+      v15 = [HUCharacteristicTriggerServicePickerViewController sourceForTriggerBuilder:triggerBuilder];
 
       v16 = [HUAccessoryEventPickerViewController alloc];
-      v17 = [(HUCharacteristicTriggerEventViewController *)self eventBuilderItem];
-      v18 = [(HUCharacteristicTriggerEventViewController *)self triggerBuilder];
-      v19 = [(HUCharacteristicTriggerEventViewController *)self mode];
-      v20 = [(HUCharacteristicTriggerEventViewController *)self delegate];
-      v21 = [(HUAccessoryEventPickerViewController *)v16 initWithEventBuilderItem:v17 triggerBuilder:v18 mode:v19 source:v15 delegate:v20];
+      eventBuilderItem = [(HUCharacteristicTriggerEventViewController *)self eventBuilderItem];
+      triggerBuilder2 = [(HUCharacteristicTriggerEventViewController *)self triggerBuilder];
+      mode = [(HUCharacteristicTriggerEventViewController *)self mode];
+      delegate = [(HUCharacteristicTriggerEventViewController *)self delegate];
+      v21 = [(HUAccessoryEventPickerViewController *)v16 initWithEventBuilderItem:eventBuilderItem triggerBuilder:triggerBuilder2 mode:mode source:v15 delegate:delegate];
 
-      v22 = [(HUCharacteristicTriggerEventViewController *)self navigationController];
-      v23 = [v22 hu_pushPreloadableViewController:v21 animated:1];
+      navigationController = [(HUCharacteristicTriggerEventViewController *)self navigationController];
+      v23 = [navigationController hu_pushPreloadableViewController:v21 animated:1];
     }
 
     else
@@ -773,7 +773,7 @@ LABEL_19:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v6 deselectRowAtIndexPath:v7 animated:1];
+        [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
         [(HUCharacteristicTriggerEventViewController *)self setSelectedEventOptionItem:v9];
         [(HUCharacteristicTriggerEventViewController *)self _updateVisibleCellCheckmarks];
       }
@@ -781,12 +781,12 @@ LABEL_19:
   }
 }
 
-- (id)visibleTriggerValuesForItem:(id)a3
+- (id)visibleTriggerValuesForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v4 = [v3 latestResults];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D14140]];
+  latestResults = [itemCopy latestResults];
+  v5 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14140]];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -800,15 +800,15 @@ LABEL_19:
   v7 = v6;
   if (v7)
   {
-    v8 = v5;
+    visibleTriggerValues = v5;
   }
 
   else
   {
-    v8 = [v3 visibleTriggerValues];
+    visibleTriggerValues = [itemCopy visibleTriggerValues];
   }
 
-  v9 = v8;
+  v9 = visibleTriggerValues;
 
   return v9;
 }
@@ -820,10 +820,10 @@ LABEL_19:
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v2 = [(HUCharacteristicTriggerEventViewController *)self tableView];
-  v3 = [v2 visibleCells];
+  tableView = [(HUCharacteristicTriggerEventViewController *)self tableView];
+  visibleCells = [tableView visibleCells];
 
-  v4 = [v3 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  v4 = [visibleCells countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v4)
   {
     v5 = v4;
@@ -836,7 +836,7 @@ LABEL_19:
       {
         if (*v32 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(visibleCells);
         }
 
         v10 = *(*(&v31 + 1) + 8 * i);
@@ -844,25 +844,25 @@ LABEL_19:
         if (objc_opt_isKindOfClass())
         {
           v11 = v10;
-          v12 = [v11 item];
+          item = [v11 item];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v14 = [v11 item];
-            v15 = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
-            v30 = v14 == v15;
+            item2 = [v11 item];
+            selectedEventOptionItem = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
+            v30 = item2 == selectedEventOptionItem;
             v16 = v5;
             v17 = v6;
             v18 = v7;
-            v19 = v3;
+            v19 = visibleCells;
             v20 = v8;
-            v21 = v14 != v15;
+            v21 = item2 != selectedEventOptionItem;
 
             v22 = v21;
             v8 = v20;
-            v3 = v19;
+            visibleCells = v19;
             v7 = v18;
             v6 = v17;
             v5 = v16;
@@ -880,15 +880,15 @@ LABEL_19:
           }
 
           v23 = v10;
-          v24 = [v23 item];
+          item3 = [v23 item];
           objc_opt_class();
           v25 = objc_opt_isKindOfClass();
 
           if (v25)
           {
-            v26 = [v23 item];
-            v27 = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
-            if (v26 == v27)
+            item4 = [v23 item];
+            selectedEventOptionItem2 = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
+            if (item4 == selectedEventOptionItem2)
             {
               v28 = 3;
             }
@@ -903,7 +903,7 @@ LABEL_19:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v5 = [visibleCells countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v5);
@@ -914,36 +914,36 @@ LABEL_19:
 
 - (BOOL)_canContinue
 {
-  v2 = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
-  v3 = v2 != 0;
+  selectedEventOptionItem = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
+  v3 = selectedEventOptionItem != 0;
 
   return v3;
 }
 
 - (BOOL)_canCommitTriggerBuilder
 {
-  v3 = [(HUCharacteristicTriggerEventViewController *)self _canContinue];
-  if (v3)
+  _canContinue = [(HUCharacteristicTriggerEventViewController *)self _canContinue];
+  if (_canContinue)
   {
-    v4 = [(HUCharacteristicTriggerEventViewController *)self delegate];
+    delegate = [(HUCharacteristicTriggerEventViewController *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(HUCharacteristicTriggerEventViewController *)self delegate];
-      v7 = [(HUCharacteristicTriggerEventViewController *)self triggerBuilder];
-      v8 = [v6 triggerEditor:self shouldCommitTriggerBuilder:v7];
+      delegate2 = [(HUCharacteristicTriggerEventViewController *)self delegate];
+      triggerBuilder = [(HUCharacteristicTriggerEventViewController *)self triggerBuilder];
+      v8 = [delegate2 triggerEditor:self shouldCommitTriggerBuilder:triggerBuilder];
 
-      LOBYTE(v3) = v8;
+      LOBYTE(_canContinue) = v8;
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(_canContinue) = 1;
     }
   }
 
-  return v3;
+  return _canContinue;
 }
 
 - (id)_commitTriggerBuilder
@@ -955,10 +955,10 @@ LABEL_19:
   if ([(HUCharacteristicTriggerEventViewController *)self _canCommitTriggerBuilder])
   {
     [(HUCharacteristicTriggerEventViewController *)self _updateTriggerBuilder];
-    v6 = [(HUCharacteristicTriggerEventViewController *)self triggerBuilder];
-    v7 = [v6 commitItem];
+    triggerBuilder = [(HUCharacteristicTriggerEventViewController *)self triggerBuilder];
+    commitItem = [triggerBuilder commitItem];
 
-    v5 = v7;
+    v5 = commitItem;
   }
 
   return v5;
@@ -966,53 +966,53 @@ LABEL_19:
 
 - (void)_validateNextButton
 {
-  v3 = [(HUCharacteristicTriggerEventViewController *)self _canContinue];
-  v5 = [(HUCharacteristicTriggerEventViewController *)self navigationItem];
-  v4 = [v5 rightBarButtonItem];
-  [v4 setEnabled:v3];
+  _canContinue = [(HUCharacteristicTriggerEventViewController *)self _canContinue];
+  navigationItem = [(HUCharacteristicTriggerEventViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:_canContinue];
 }
 
 - (void)_updateTriggerBuilder
 {
-  v3 = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
+  selectedEventOptionItem = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
 
-  if (v3)
+  if (selectedEventOptionItem)
   {
-    v4 = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
-    v5 = [v4 characteristics];
+    selectedEventOptionItem2 = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
+    characteristics = [selectedEventOptionItem2 characteristics];
 
-    v6 = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
-    v7 = [v6 triggerValue];
+    selectedEventOptionItem3 = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
+    triggerValue = [selectedEventOptionItem3 triggerValue];
 
-    v8 = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
-    v9 = [v8 triggerValueRange];
+    selectedEventOptionItem4 = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
+    triggerValueRange = [selectedEventOptionItem4 triggerValueRange];
 
-    v10 = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
-    v11 = [v10 thresholdValueRange];
-    if (v11)
+    selectedEventOptionItem5 = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
+    thresholdValueRange = [selectedEventOptionItem5 thresholdValueRange];
+    if (thresholdValueRange)
     {
-      v12 = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
-      v13 = [v12 triggerValueRangeByApplyingThreshold];
+      selectedEventOptionItem6 = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
+      triggerValueRangeByApplyingThreshold = [selectedEventOptionItem6 triggerValueRangeByApplyingThreshold];
     }
 
     else
     {
-      v13 = 0;
+      triggerValueRangeByApplyingThreshold = 0;
     }
 
-    if (v9)
+    if (triggerValueRange)
     {
-      v14 = v9;
+      v14 = triggerValueRange;
     }
 
     else
     {
-      v14 = v13;
+      v14 = triggerValueRangeByApplyingThreshold;
     }
 
-    if (v7)
+    if (triggerValue)
     {
-      v15 = v7;
+      v15 = triggerValue;
     }
 
     else
@@ -1022,24 +1022,24 @@ LABEL_19:
 
     v16 = v15;
     v17 = v14;
-    v18 = [(HUCharacteristicTriggerEventViewController *)self eventBuilderItem];
-    v19 = [v18 setCharacteristics:v5 triggerValue:v16];
+    eventBuilderItem = [(HUCharacteristicTriggerEventViewController *)self eventBuilderItem];
+    v19 = [eventBuilderItem setCharacteristics:characteristics triggerValue:v16];
 
-    v20 = [v19 deletions];
+    deletions = [v19 deletions];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __67__HUCharacteristicTriggerEventViewController__updateTriggerBuilder__block_invoke;
     v23[3] = &unk_277DBB5D8;
     v23[4] = self;
-    [v20 na_each:v23];
+    [deletions na_each:v23];
 
-    v21 = [v19 additions];
+    additions = [v19 additions];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __67__HUCharacteristicTriggerEventViewController__updateTriggerBuilder__block_invoke_2;
     v22[3] = &unk_277DBB5D8;
     v22[4] = self;
-    [v21 na_each:v22];
+    [additions na_each:v22];
   }
 }
 
@@ -1059,15 +1059,15 @@ void __67__HUCharacteristicTriggerEventViewController__updateTriggerBuilder__blo
   [v4 addEventBuilder:v3];
 }
 
-- (int64_t)numberOfValuesForPickerViewCell:(id)a3
+- (int64_t)numberOfValuesForPickerViewCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   objc_opt_class();
-  v5 = [v4 item];
+  item = [cellCopy item];
 
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = item;
   }
 
   else
@@ -1091,15 +1091,15 @@ void __67__HUCharacteristicTriggerEventViewController__updateTriggerBuilder__blo
   return v9;
 }
 
-- (BOOL)pickerViewCell:(id)a3 canSelectValueAtIndex:(int64_t)a4
+- (BOOL)pickerViewCell:(id)cell canSelectValueAtIndex:(int64_t)index
 {
-  v6 = a3;
+  cellCopy = cell;
   objc_opt_class();
-  v7 = [v6 item];
+  item = [cellCopy item];
 
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = item;
   }
 
   else
@@ -1112,7 +1112,7 @@ void __67__HUCharacteristicTriggerEventViewController__updateTriggerBuilder__blo
   if (v9)
   {
     v10 = [(HUCharacteristicTriggerEventViewController *)self visibleTriggerValuesForItem:v9];
-    v11 = [v10 objectAtIndexedSubscript:a4];
+    v11 = [v10 objectAtIndexedSubscript:index];
 
     v12 = [v9 isValidThresholdValue:v11];
   }
@@ -1125,15 +1125,15 @@ void __67__HUCharacteristicTriggerEventViewController__updateTriggerBuilder__blo
   return v12;
 }
 
-- (id)pickerViewCell:(id)a3 attributedTitleForValueAtIndex:(int64_t)a4
+- (id)pickerViewCell:(id)cell attributedTitleForValueAtIndex:(int64_t)index
 {
-  v6 = a3;
+  cellCopy = cell;
   objc_opt_class();
-  v7 = [v6 item];
+  item = [cellCopy item];
 
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = item;
   }
 
   else
@@ -1148,9 +1148,9 @@ void __67__HUCharacteristicTriggerEventViewController__updateTriggerBuilder__blo
     v10 = [(HUCharacteristicTriggerEventViewController *)self visibleTriggerValuesForItem:v9];
     v11 = [v10 count];
     v12 = 0;
-    if ((a4 & 0x8000000000000000) == 0 && v11 > a4)
+    if ((index & 0x8000000000000000) == 0 && v11 > index)
     {
-      v13 = [v10 objectAtIndexedSubscript:a4];
+      v13 = [v10 objectAtIndexedSubscript:index];
       v14 = objc_alloc(MEMORY[0x277CCAB48]);
       v15 = [v9 localizedListDescriptionForThresholdValue:v13];
       v12 = [v14 initWithString:v15];
@@ -1158,8 +1158,8 @@ void __67__HUCharacteristicTriggerEventViewController__updateTriggerBuilder__blo
       if (([v9 isValidThresholdValue:v13] & 1) == 0)
       {
         v16 = *MEMORY[0x277D740C0];
-        v17 = [MEMORY[0x277D75348] systemGrayColor];
-        [v12 addAttribute:v16 value:v17 range:{0, objc_msgSend(v12, "length")}];
+        systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+        [v12 addAttribute:v16 value:systemGrayColor range:{0, objc_msgSend(v12, "length")}];
       }
     }
   }
@@ -1172,15 +1172,15 @@ void __67__HUCharacteristicTriggerEventViewController__updateTriggerBuilder__blo
   return v12;
 }
 
-- (void)pickerViewCell:(id)a3 didSelectValueAtIndex:(int64_t)a4
+- (void)pickerViewCell:(id)cell didSelectValueAtIndex:(int64_t)index
 {
-  v7 = a3;
+  cellCopy = cell;
   objc_opt_class();
-  v8 = [v7 item];
+  item = [cellCopy item];
 
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = item;
   }
 
   else
@@ -1194,17 +1194,17 @@ void __67__HUCharacteristicTriggerEventViewController__updateTriggerBuilder__blo
   if (v19)
   {
     v11 = [(HUCharacteristicTriggerEventViewController *)self visibleTriggerValuesForItem:v19];
-    v12 = [v11 objectAtIndexedSubscript:a4];
+    v12 = [v11 objectAtIndexedSubscript:index];
 
-    v13 = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
-    [v13 setThresholdValue:v12];
+    selectedEventOptionItem = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
+    [selectedEventOptionItem setThresholdValue:v12];
 
     [(HUCharacteristicTriggerEventViewController *)self _updateTriggerBuilder];
-    v14 = [(HUItemTableViewController *)self itemManager];
+    itemManager = [(HUItemTableViewController *)self itemManager];
     v15 = MEMORY[0x277CBEB98];
-    v16 = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
-    v17 = [v15 na_setWithSafeObject:v16];
-    v18 = [v14 updateResultsForItems:v17 senderSelector:a2];
+    selectedEventOptionItem2 = [(HUCharacteristicTriggerEventViewController *)self selectedEventOptionItem];
+    v17 = [v15 na_setWithSafeObject:selectedEventOptionItem2];
+    v18 = [itemManager updateResultsForItems:v17 senderSelector:a2];
 
     v10 = v19;
   }

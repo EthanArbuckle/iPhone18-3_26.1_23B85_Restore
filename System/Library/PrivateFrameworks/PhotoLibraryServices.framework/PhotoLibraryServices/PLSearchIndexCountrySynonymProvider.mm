@@ -1,32 +1,32 @@
 @interface PLSearchIndexCountrySynonymProvider
 + (id)_loadAllSynonymsData;
-- (PLSearchIndexCountrySynonymProvider)initWithLocalizationPreferences:(id)a3;
+- (PLSearchIndexCountrySynonymProvider)initWithLocalizationPreferences:(id)preferences;
 @end
 
 @implementation PLSearchIndexCountrySynonymProvider
 
-- (PLSearchIndexCountrySynonymProvider)initWithLocalizationPreferences:(id)a3
+- (PLSearchIndexCountrySynonymProvider)initWithLocalizationPreferences:(id)preferences
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  preferencesCopy = preferences;
   v47.receiver = self;
   v47.super_class = PLSearchIndexCountrySynonymProvider;
   v5 = [(PLSearchIndexCountrySynonymProvider *)&v47 init];
   if (v5)
   {
-    v6 = [objc_opt_class() _loadAllSynonymsData];
+    _loadAllSynonymsData = [objc_opt_class() _loadAllSynonymsData];
     v7 = MEMORY[0x1E696AAE8];
-    v36 = v6;
-    v8 = [v6 allKeys];
-    v9 = [v7 preferredLocalizationsFromArray:v8 forPreferences:v4];
+    v36 = _loadAllSynonymsData;
+    allKeys = [_loadAllSynonymsData allKeys];
+    v9 = [v7 preferredLocalizationsFromArray:allKeys forPreferences:preferencesCopy];
 
     v34 = v5;
     v10 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v11 = MEMORY[0x1E696AAE8];
     v33 = v10;
-    v12 = [v10 localizations];
-    v35 = v4;
-    v13 = [v11 preferredLocalizationsFromArray:v12 forPreferences:v4];
+    localizations = [v10 localizations];
+    v35 = preferencesCopy;
+    v13 = [v11 preferredLocalizationsFromArray:localizations forPreferences:preferencesCopy];
 
     v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v43 = 0u;
@@ -109,7 +109,7 @@
     v34->_countrySynonymsByCountryCode = v29;
 
     v31 = v34;
-    v4 = v35;
+    preferencesCopy = v35;
   }
 
   return v5;

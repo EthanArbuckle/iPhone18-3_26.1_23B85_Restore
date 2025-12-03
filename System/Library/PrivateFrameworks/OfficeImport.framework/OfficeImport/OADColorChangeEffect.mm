@@ -1,9 +1,9 @@
 @interface OADColorChangeEffect
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADColorChangeEffect)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)setStyleColor:(id)a3;
+- (void)setStyleColor:(id)color;
 @end
 
 @implementation OADColorChangeEffect
@@ -15,24 +15,24 @@
   return [(OADBlipEffect *)&v3 initWithType:3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(OADColor *)self->mFromColor copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(OADColor *)self->mFromColor copyWithZone:zone];
   [v5 setFromColor:v6];
-  v7 = [(OADColor *)self->mToColor copyWithZone:a3];
+  v7 = [(OADColor *)self->mToColor copyWithZone:zone];
   [v5 setToColor:v7];
 
   return v5;
 }
 
-- (void)setStyleColor:(id)a3
+- (void)setStyleColor:(id)color
 {
-  v6 = a3;
+  colorCopy = color;
   v4 = [(OADColor *)self->mFromColor colorForStyleColor:?];
   [(OADColorChangeEffect *)self setFromColor:v4];
 
-  v5 = [(OADColor *)self->mToColor colorForStyleColor:v6];
+  v5 = [(OADColor *)self->mToColor colorForStyleColor:colorCopy];
   [(OADColorChangeEffect *)self setToColor:v5];
 }
 
@@ -45,23 +45,23 @@
   return v4 ^ [(OADBlipEffect *)&v6 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     mFromColor = self->mFromColor;
-    v6 = [v4 fromColor];
-    if ([(OADColor *)mFromColor isEqual:v6])
+    fromColor = [equalCopy fromColor];
+    if ([(OADColor *)mFromColor isEqual:fromColor])
     {
       mToColor = self->mToColor;
-      v8 = [v4 toColor];
-      if ([(OADColor *)mToColor isEqual:v8])
+      toColor = [equalCopy toColor];
+      if ([(OADColor *)mToColor isEqual:toColor])
       {
         v11.receiver = self;
         v11.super_class = OADColorChangeEffect;
-        v9 = [(OADBlipEffect *)&v11 isEqual:v4];
+        v9 = [(OADBlipEffect *)&v11 isEqual:equalCopy];
       }
 
       else

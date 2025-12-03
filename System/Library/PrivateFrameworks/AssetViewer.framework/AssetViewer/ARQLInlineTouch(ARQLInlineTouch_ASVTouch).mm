@@ -7,14 +7,14 @@
 
 - (float64_t)location
 {
-  [a1 cgLocation];
+  [self cgLocation];
 
   return pointToFloat2(v1, v2);
 }
 
 - (float64_t)previousLocation
 {
-  [a1 cgPreviousLocation];
+  [self cgPreviousLocation];
 
   return pointToFloat2(v1, v2);
 }

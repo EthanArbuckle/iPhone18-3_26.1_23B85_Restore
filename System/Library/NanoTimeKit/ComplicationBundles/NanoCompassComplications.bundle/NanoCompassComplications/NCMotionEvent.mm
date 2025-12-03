@@ -1,34 +1,34 @@
 @interface NCMotionEvent
 + (id)dateFormatter;
-+ (id)eventWithType:(int64_t)a3 timestamp:(id)a4 stationary:(BOOL)a5;
-- (NCMotionEvent)initWithType:(int64_t)a3 timestamp:(id)a4 stationary:(BOOL)a5;
++ (id)eventWithType:(int64_t)type timestamp:(id)timestamp stationary:(BOOL)stationary;
+- (NCMotionEvent)initWithType:(int64_t)type timestamp:(id)timestamp stationary:(BOOL)stationary;
 - (id)description;
 @end
 
 @implementation NCMotionEvent
 
-+ (id)eventWithType:(int64_t)a3 timestamp:(id)a4 stationary:(BOOL)a5
++ (id)eventWithType:(int64_t)type timestamp:(id)timestamp stationary:(BOOL)stationary
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [a1 alloc];
-  v11 = objc_msgSend_initWithType_timestamp_stationary_(v9, v10, a3, v8, v5);
+  stationaryCopy = stationary;
+  timestampCopy = timestamp;
+  v9 = [self alloc];
+  v11 = objc_msgSend_initWithType_timestamp_stationary_(v9, v10, type, timestampCopy, stationaryCopy);
 
   return v11;
 }
 
-- (NCMotionEvent)initWithType:(int64_t)a3 timestamp:(id)a4 stationary:(BOOL)a5
+- (NCMotionEvent)initWithType:(int64_t)type timestamp:(id)timestamp stationary:(BOOL)stationary
 {
-  v9 = a4;
+  timestampCopy = timestamp;
   v13.receiver = self;
   v13.super_class = NCMotionEvent;
   v10 = [(NCMotionEvent *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_timestamp, a4);
-    v11->_motionType = a3;
-    v11->_isStationary = a5;
+    objc_storeStrong(&v10->_timestamp, timestamp);
+    v11->_motionType = type;
+    v11->_isStationary = stationary;
   }
 
   return v11;

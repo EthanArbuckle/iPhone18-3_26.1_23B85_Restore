@@ -1,31 +1,31 @@
 @interface AKAppleIDCheckInHelperService
 + (id)sharedService;
-+ (void)_setCheckInAllowedToValue:(BOOL)a3 forAccount:(id)a4;
-+ (void)setCheckInAllowedForAllAccountsToValue:(BOOL)a3;
++ (void)_setCheckInAllowedToValue:(BOOL)value forAccount:(id)account;
++ (void)setCheckInAllowedForAllAccountsToValue:(BOOL)value;
 - (AKAppleIDCheckInHelperService)init;
-- (BOOL)_validateMachineID:(id)a3;
+- (BOOL)_validateMachineID:(id)d;
 - (id)_livenessEligibleAccounts;
-- (id)_serviceControllerWithProvider:(id)a3;
-- (void)_checkInWithIDMSWithAccount:(id)a3 pushToken:(id)a4 event:(id)a5 reason:(unint64_t)a6 completion:(id)a7;
-- (void)_clearBirthDayForAltDSID:(id)a3;
-- (void)_clearDeviceListCacheForAccount:(id)a3;
-- (void)_handleCheckInResponse:(id)a3 data:(id)a4 context:(id)a5 account:(id)a6 error:(id)a7 completion:(id)a8;
-- (void)_performCheckInActionForAccount:(id)a3 withResponse:(id)a4;
-- (void)_performLivenessCheckInForAllEligibleAccountsWithReason:(unint64_t)a3 completion:(id)a4;
-- (void)_performLivenessCheckInForAllEligibleAccountsWithToken:(id)a3 reason:(unint64_t)a4 completion:(id)a5;
-- (void)_performSignoutCleanupForAccount:(id)a3;
-- (void)_sendAttestedOSVersionWithContext:(id)a3 attestationNonce:(id)a4;
-- (void)ackWithPayload:(id)a3 account:(id)a4 completion:(id)a5;
-- (void)didReceiveNewPublicToken:(id)a3;
-- (void)didRespondToMessage:(id)a3 result:(unint64_t)a4 payload:(id)a5;
-- (void)didRespondToMessage:(id)a3 withResult:(unint64_t)a4;
-- (void)performCheckInForAccount:(id)a3 event:(id)a4 reason:(unint64_t)a5 completion:(id)a6;
-- (void)performLivenessCheckInForAllEligibleAccountsWithReason:(unint64_t)a3 completion:(id)a4;
-- (void)processPushMessage:(id)a3;
-- (void)reportFinalSignOutEventForAccount:(id)a3 completion:(id)a4;
-- (void)reportSignOutEventForService:(int64_t)a3 account:(id)a4 completion:(id)a5;
+- (id)_serviceControllerWithProvider:(id)provider;
+- (void)_checkInWithIDMSWithAccount:(id)account pushToken:(id)token event:(id)event reason:(unint64_t)reason completion:(id)completion;
+- (void)_clearBirthDayForAltDSID:(id)d;
+- (void)_clearDeviceListCacheForAccount:(id)account;
+- (void)_handleCheckInResponse:(id)response data:(id)data context:(id)context account:(id)account error:(id)error completion:(id)completion;
+- (void)_performCheckInActionForAccount:(id)account withResponse:(id)response;
+- (void)_performLivenessCheckInForAllEligibleAccountsWithReason:(unint64_t)reason completion:(id)completion;
+- (void)_performLivenessCheckInForAllEligibleAccountsWithToken:(id)token reason:(unint64_t)reason completion:(id)completion;
+- (void)_performSignoutCleanupForAccount:(id)account;
+- (void)_sendAttestedOSVersionWithContext:(id)context attestationNonce:(id)nonce;
+- (void)ackWithPayload:(id)payload account:(id)account completion:(id)completion;
+- (void)didReceiveNewPublicToken:(id)token;
+- (void)didRespondToMessage:(id)message result:(unint64_t)result payload:(id)payload;
+- (void)didRespondToMessage:(id)message withResult:(unint64_t)result;
+- (void)performCheckInForAccount:(id)account event:(id)event reason:(unint64_t)reason completion:(id)completion;
+- (void)performLivenessCheckInForAllEligibleAccountsWithReason:(unint64_t)reason completion:(id)completion;
+- (void)processPushMessage:(id)message;
+- (void)reportFinalSignOutEventForAccount:(id)account completion:(id)completion;
+- (void)reportSignOutEventForService:(int64_t)service account:(id)account completion:(id)completion;
 - (void)start;
-- (void)storeLivenessNonce:(id)a3 nonce:(id)a4;
+- (void)storeLivenessNonce:(id)nonce nonce:(id)a4;
 @end
 
 @implementation AKAppleIDCheckInHelperService
@@ -77,11 +77,11 @@
   return v2;
 }
 
-+ (void)setCheckInAllowedForAllAccountsToValue:(BOOL)a3
++ (void)setCheckInAllowedForAllAccountsToValue:(BOOL)value
 {
-  v14 = a1;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  valueCopy = value;
   v4 = +[AKAccountManager sharedInstance];
   v3 = [(AKAccountManager *)v4 allAuthKitAccountsWithError:0];
   v5 = _NSConcreteStackBlock;
@@ -89,25 +89,25 @@
   v7 = 0;
   v8 = sub_10012E430;
   v9 = &unk_100324138;
-  v10 = v14;
-  v11 = v12;
+  v10 = selfCopy;
+  v11 = valueCopy;
   [v3 enumerateObjectsUsingBlock:?];
   _objc_release(v3);
   _objc_release(v4);
 }
 
-- (void)performLivenessCheckInForAllEligibleAccountsWithReason:(unint64_t)a3 completion:(id)a4
+- (void)performLivenessCheckInForAllEligibleAccountsWithReason:(unint64_t)reason completion:(id)completion
 {
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
-  v17 = a3;
+  reasonCopy = reason;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, completion);
   v15 = os_transaction_create();
-  v5 = v19;
+  v5 = selfCopy;
   v7 = +[AKAppleIDPushHelperService sharedService];
-  v6 = [v7 publicAPSTokenString];
-  v4 = v17;
+  publicAPSTokenString = [v7 publicAPSTokenString];
+  v4 = reasonCopy;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
@@ -115,8 +115,8 @@
   v12 = &unk_100320878;
   v13 = _objc_retain(v15);
   v14 = _objc_retain(location);
-  [(AKAppleIDCheckInHelperService *)v5 _performLivenessCheckInForAllEligibleAccountsWithToken:v6 reason:v4 completion:?];
-  _objc_release(v6);
+  [(AKAppleIDCheckInHelperService *)v5 _performLivenessCheckInForAllEligibleAccountsWithToken:publicAPSTokenString reason:v4 completion:?];
+  _objc_release(publicAPSTokenString);
   _objc_release(v7);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v13, 0);
@@ -124,28 +124,28 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)performCheckInForAccount:(id)a3 event:(id)a4 reason:(unint64_t)a5 completion:(id)a6
+- (void)performCheckInForAccount:(id)account event:(id)event reason:(unint64_t)reason completion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
-  v22 = a5;
+  objc_storeStrong(&v23, event);
+  reasonCopy = reason;
   v21 = 0;
-  objc_storeStrong(&v21, a6);
+  objc_storeStrong(&v21, completion);
   v20 = os_transaction_create();
-  queue = v25->_checkInQueue;
+  queue = selfCopy->_checkInQueue;
   v10 = _NSConcreteStackBlock;
   v11 = -1073741824;
   v12 = 0;
   v13 = sub_10012E8C4;
   v14 = &unk_100324160;
-  v15 = _objc_retain(v25);
+  v15 = _objc_retain(selfCopy);
   v16 = _objc_retain(location[0]);
   v17 = _objc_retain(v23);
-  v19[1] = v22;
+  v19[1] = reasonCopy;
   v19[0] = _objc_retain(v21);
   v18 = _objc_retain(v20);
   dispatch_async(queue, &v10);
@@ -160,28 +160,28 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)processPushMessage:(id)a3
+- (void)processPushMessage:(id)message
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = v17;
-  v12 = [location[0] serverMachineId];
+  objc_storeStrong(location, message);
+  v11 = selfCopy;
+  serverMachineId = [location[0] serverMachineId];
   v13 = [(AKAppleIDCheckInHelperService *)v11 _validateMachineID:?];
-  _objc_release(v12);
+  _objc_release(serverMachineId);
   if (v13)
   {
-    accountManager = v17->_accountManager;
-    v10 = [location[0] altDSID];
+    accountManager = selfCopy->_accountManager;
+    altDSID = [location[0] altDSID];
     v15 = [AKAccountManager authKitAccountWithAltDSID:"authKitAccountWithAltDSID:error:" error:?];
-    _objc_release(v10);
+    _objc_release(altDSID);
     if (v15)
     {
       v14 = +[NSMutableDictionary dictionary];
-      v7 = [location[0] messageId];
+      messageId = [location[0] messageId];
       [v14 setObject:? forKeyedSubscript:?];
-      _objc_release(v7);
+      _objc_release(messageId);
       v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [location[0] command]);
       [v14 setObject:? forKeyedSubscript:?];
       _objc_release(v8);
@@ -192,17 +192,17 @@
 
       else if ([location[0] command] == 2200)
       {
-        v6 = [location[0] idmsData];
-        _objc_release(v6);
-        if (v6)
+        idmsData = [location[0] idmsData];
+        _objc_release(idmsData);
+        if (idmsData)
         {
-          v5 = [location[0] idmsData];
+          idmsData2 = [location[0] idmsData];
           [v14 setObject:? forKeyedSubscript:?];
-          _objc_release(v5);
+          _objc_release(idmsData2);
         }
       }
 
-      [(AKAppleIDCheckInHelperService *)v17 ackWithPayload:v14 account:v15 completion:&v14, 0];
+      [(AKAppleIDCheckInHelperService *)selfCopy ackWithPayload:v14 account:v15 completion:&v14, 0];
       objc_storeStrong(v3, obj);
     }
 
@@ -212,40 +212,40 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)didRespondToMessage:(id)a3 withResult:(unint64_t)a4
+- (void)didRespondToMessage:(id)message withResult:(unint64_t)result
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKAppleIDCheckInHelperService *)v6 didRespondToMessage:location[0] result:a4 payload:0];
+  objc_storeStrong(location, message);
+  [(AKAppleIDCheckInHelperService *)selfCopy didRespondToMessage:location[0] result:result payload:0];
   objc_storeStrong(location, 0);
 }
 
-- (void)didRespondToMessage:(id)a3 result:(unint64_t)a4 payload:(id)a5
+- (void)didRespondToMessage:(id)message result:(unint64_t)result payload:(id)payload
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v26 = a4;
+  objc_storeStrong(location, message);
+  resultCopy = result;
   v25 = 0;
-  objc_storeStrong(&v25, a5);
-  if (v26 == 2)
+  objc_storeStrong(&v25, payload);
+  if (resultCopy == 2)
   {
     v24 = 1;
   }
 
   else
   {
-    v14 = [location[0] messageId];
-    _objc_release(v14);
-    if (v14)
+    messageId = [location[0] messageId];
+    _objc_release(messageId);
+    if (messageId)
     {
       v20 = 0;
-      if (v26)
+      if (resultCopy)
       {
-        if (v26 == 1)
+        if (resultCopy == 1)
         {
           objc_storeStrong(&v20, @"defbtn");
         }
@@ -261,10 +261,10 @@
         objc_storeStrong(&v20, @"albtn");
       }
 
-      accountManager = v28->_accountManager;
-      v11 = [location[0] altDSID];
+      accountManager = selfCopy->_accountManager;
+      altDSID = [location[0] altDSID];
       v19 = [AKAccountManager authKitAccountWithAltDSID:"authKitAccountWithAltDSID:error:" error:?];
-      _objc_release(v11);
+      _objc_release(altDSID);
       if (v19)
       {
         v18 = objc_alloc_init(NSMutableDictionary);
@@ -273,14 +273,14 @@
           [v18 addEntriesFromDictionary:v25];
         }
 
-        v6 = [location[0] messageId];
+        messageId2 = [location[0] messageId];
         [v18 setObject:? forKeyedSubscript:?];
-        _objc_release(v6);
+        _objc_release(messageId2);
         v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [location[0] command]);
         [v18 setObject:? forKeyedSubscript:?];
         _objc_release(v7);
         [v18 setObject:v20 forKeyedSubscript:@"action"];
-        v8 = v28;
+        v8 = selfCopy;
         v9 = [v18 copy];
         [AKAppleIDCheckInHelperService ackWithPayload:v8 account:"ackWithPayload:account:completion:" completion:?];
         _objc_release(v9);
@@ -292,10 +292,10 @@
         v17 = _AKLogSystem();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
-          v5 = [location[0] altDSID];
-          sub_10001CE98(v29, 1752392040, v5);
+          altDSID2 = [location[0] altDSID];
+          sub_10001CE98(v29, 1752392040, altDSID2);
           _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Unable to respond to message without AK account for altDSID %{mask.hash}@", v29, 0x16u);
-          _objc_release(v5);
+          _objc_release(altDSID2);
         }
 
         objc_storeStrong(&v17, 0);
@@ -327,14 +327,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)didReceiveNewPublicToken:(id)a3
+- (void)didReceiveNewPublicToken:(id)token
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, token);
   v11 = os_transaction_create();
-  v4 = v13;
+  v4 = selfCopy;
   v3 = location[0];
   v5 = _NSConcreteStackBlock;
   v6 = -1073741824;
@@ -348,18 +348,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)ackWithPayload:(id)a3 account:(id)a4 completion:(id)a5
+- (void)ackWithPayload:(id)payload account:(id)account completion:(id)completion
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, payload);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, account);
   v19 = 0;
-  objc_storeStrong(&v19, a5);
+  objc_storeStrong(&v19, completion);
   v18 = os_transaction_create();
-  queue = v22->_checkInQueue;
+  queue = selfCopy->_checkInQueue;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
@@ -367,7 +367,7 @@
   v12 = &unk_100324188;
   v13 = _objc_retain(location[0]);
   v14 = _objc_retain(v20);
-  v15 = _objc_retain(v22);
+  v15 = _objc_retain(selfCopy);
   v17 = _objc_retain(v19);
   v16 = _objc_retain(v18);
   dispatch_async(queue, &v8);
@@ -384,7 +384,7 @@
 
 - (void)start
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v9 = OS_LOG_TYPE_DEFAULT;
@@ -401,19 +401,19 @@
   v5 = 0;
   v6 = sub_10012FB9C;
   v7 = &unk_100320E78;
-  v8 = _objc_retain(v11);
+  v8 = _objc_retain(selfCopy);
   xpc_activity_register(identifier, XPC_ACTIVITY_CHECK_IN, &v3);
   objc_storeStrong(&v8, 0);
 }
 
-- (void)reportFinalSignOutEventForAccount:(id)a3 completion:(id)a4
+- (void)reportFinalSignOutEventForAccount:(id)account completion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, completion);
   v21 = _os_activity_create(&_mh_execute_header, "authkit/sign-out", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v22 = v21;
   state.opaque[0] = 0;
@@ -423,7 +423,7 @@
   v15[1] = 3221225472;
   v15[2] = sub_100130218;
   v15[3] = &unk_1003217F8;
-  v16 = _objc_retain(v25);
+  v16 = _objc_retain(selfCopy);
   v17 = _objc_retain(location[0]);
   v18 = _objc_retain(v23);
   v19 = objc_retainBlock(v15);
@@ -434,7 +434,7 @@
   v9 = 0;
   v10 = sub_1001302B0;
   v11 = &unk_100323998;
-  v12 = _objc_retain(v25);
+  v12 = _objc_retain(selfCopy);
   v13 = _objc_retain(location[0]);
   v14 = _objc_retain(v19);
   [v5 urlForKey:v4 completion:&v7];
@@ -452,16 +452,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_performSignoutCleanupForAccount:(id)a3
+- (void)_performSignoutCleanupForAccount:(id)account
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v11 = +[AKFeatureManager sharedManager];
-  v12 = [v11 isDeviceListCacheEnableDryMode];
+  isDeviceListCacheEnableDryMode = [v11 isDeviceListCacheEnableDryMode];
   _objc_release(v11);
-  if (v12)
+  if (isDeviceListCacheEnableDryMode)
   {
     queue = dispatch_get_global_queue(9, 0);
     v22 = _NSConcreteStackBlock;
@@ -469,7 +469,7 @@
     v24 = 0;
     v25 = sub_100130C3C;
     v26 = &unk_10031F078;
-    v27 = _objc_retain(v30);
+    v27 = _objc_retain(selfCopy);
     v28 = _objc_retain(location[0]);
     dispatch_async(queue, &v22);
     _objc_release(queue);
@@ -481,9 +481,9 @@
   v21 = [(AKAccountManager *)v7 altDSIDForAccount:location[0]];
   _objc_release(v7);
   v8 = +[AKFeatureManager sharedManager];
-  v9 = [v8 isTokenCacheEnabled];
+  isTokenCacheEnabled = [v8 isTokenCacheEnabled];
   _objc_release(v8);
-  if (v9)
+  if (isTokenCacheEnabled)
   {
     if (v21)
     {
@@ -512,7 +512,7 @@
     }
   }
 
-  [(AKAppleIDCheckInHelperService *)v30 _clearBirthDayForAltDSID:v21];
+  [(AKAppleIDCheckInHelperService *)selfCopy _clearBirthDayForAltDSID:v21];
   v15 = 0;
   v3 = +[AKSecurePakeManager sharedManager];
   v14 = v15;
@@ -536,12 +536,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_clearBirthDayForAltDSID:(id)a3
+- (void)_clearBirthDayForAltDSID:(id)d
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v6 = 0;
   v5 = objc_alloc_init(AKBirthDayKeychain);
   obj = v6;
@@ -564,15 +564,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)reportSignOutEventForService:(int64_t)a3 account:(id)a4 completion:(id)a5
+- (void)reportSignOutEventForService:(int64_t)service account:(id)account completion:(id)completion
 {
-  v35 = self;
+  selfCopy = self;
   v34 = a2;
-  v33 = a3;
+  serviceCopy = service;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v31 = 0;
-  objc_storeStrong(&v31, a5);
+  objc_storeStrong(&v31, completion);
   v29 = _os_activity_create(&_mh_execute_header, "authkit/sign-out", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v30 = v29;
   state.opaque[0] = 0;
@@ -582,19 +582,19 @@
   v26 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [NSNumber numberWithInteger:v33];
+    v11 = [NSNumber numberWithInteger:serviceCopy];
     sub_10001B098(v37, v11, location);
     _os_log_impl(&_mh_execute_header, v27, v26, "Reporting signout for service %@ with account %@", v37, 0x16u);
     _objc_release(v11);
   }
 
   objc_storeStrong(&v27, 0);
-  v25 = [AKAccountManager stringRepresentationForService:v33];
+  v25 = [AKAccountManager stringRepresentationForService:serviceCopy];
   if (v25)
   {
     v21 = [AKPostDataEventServiceSignOut stringByAppendingString:v25];
     v20 = os_transaction_create();
-    v7 = v35;
+    v7 = selfCopy;
     v5 = location;
     v6 = v21;
     v13 = _NSConcreteStackBlock;
@@ -618,7 +618,7 @@
     v23 = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      v10 = [NSNumber numberWithInteger:v33];
+      v10 = [NSNumber numberWithInteger:serviceCopy];
       sub_1000194D4(v36, v10);
       _os_log_error_impl(&_mh_execute_header, v24, v23, "Invalid service %@ for reporting", v36, 0xCu);
       _objc_release(v10);
@@ -639,15 +639,15 @@
   objc_storeStrong(&location, 0);
 }
 
-+ (void)_setCheckInAllowedToValue:(BOOL)a3 forAccount:(id)a4
++ (void)_setCheckInAllowedToValue:(BOOL)value forAccount:(id)account
 {
-  v13 = a1;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  valueCopy = value;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v4 = location;
-  v5 = [NSNumber numberWithBool:v11];
+  v5 = [NSNumber numberWithBool:valueCopy];
   [v4 setAccountProperty:? forKey:?];
   _objc_release(v5);
   v9 = 0;
@@ -672,13 +672,13 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)_performLivenessCheckInForAllEligibleAccountsWithReason:(unint64_t)a3 completion:(id)a4
+- (void)_performLivenessCheckInForAllEligibleAccountsWithReason:(unint64_t)reason completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
+  reasonCopy = reason;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, completion);
   v13 = objc_opt_new();
   v4 = v13;
   v5 = _NSConcreteStackBlock;
@@ -687,8 +687,8 @@
   v8 = sub_1001316B0;
   v9 = &unk_1003241D8;
   v10 = _objc_retain(v13);
-  v11 = _objc_retain(v17);
-  v12[1] = v15;
+  v11 = _objc_retain(selfCopy);
+  v12[1] = reasonCopy;
   v12[0] = _objc_retain(location);
   [v4 cleanupStaleAccountsWithCompletion:?];
   objc_storeStrong(v12, 0);
@@ -698,28 +698,28 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)_performLivenessCheckInForAllEligibleAccountsWithToken:(id)a3 reason:(unint64_t)a4 completion:(id)a5
+- (void)_performLivenessCheckInForAllEligibleAccountsWithToken:(id)token reason:(unint64_t)reason completion:(id)completion
 {
-  v47 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v45 = a4;
+  objc_storeStrong(location, token);
+  reasonCopy = reason;
   v44 = 0;
-  objc_storeStrong(&v44, a5);
+  objc_storeStrong(&v44, completion);
   v43 = 0;
-  if (v45 == 1)
+  if (reasonCopy == 1)
   {
-    v5 = [(AKAppleIDCheckInHelperService *)v47 _livenessEligibleAccounts];
+    _livenessEligibleAccounts = [(AKAppleIDCheckInHelperService *)selfCopy _livenessEligibleAccounts];
   }
 
   else
   {
-    v5 = [(AKAccountManager *)v47->_accountManager allAuthKitAccountsWithError:0];
+    _livenessEligibleAccounts = [(AKAccountManager *)selfCopy->_accountManager allAuthKitAccountsWithError:0];
   }
 
   v6 = v43;
-  v43 = v5;
+  v43 = _livenessEligibleAccounts;
   _objc_release(v6);
   v41 = _os_activity_create(&_mh_execute_header, "authkit/check-in", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v42 = v41;
@@ -752,23 +752,23 @@
         {
           v12 = v32;
           v13 = v31;
-          sub_100131DBC(v48, v45, v34);
+          sub_100131DBC(v48, reasonCopy, v34);
           _os_log_impl(&_mh_execute_header, v12, v13, "Performing liveness check-in %{public}lu with account: %@", v48, 0x16u);
         }
 
         objc_storeStrong(&v32, 0);
         dispatch_group_enter(group);
-        v11 = v47;
+        v11 = selfCopy;
         v7 = v34;
         v8 = location[0];
         v9 = AKPostDataEventLiveness;
-        v10 = v45;
+        v10 = reasonCopy;
         v24 = _NSConcreteStackBlock;
         v25 = -1073741824;
         v26 = 0;
         v27 = sub_100131E0C;
         v28 = &unk_100324200;
-        v30[1] = v45;
+        v30[1] = reasonCopy;
         v29 = _objc_retain(v34);
         v30[0] = _objc_retain(group);
         [(AKAppleIDCheckInHelperService *)v11 _checkInWithIDMSWithAccount:v7 pushToken:v8 event:v9 reason:v10 completion:&v24];
@@ -788,7 +788,7 @@
     }
 
     _objc_release(v18);
-    dispatch_group_notify(group, v47->_checkInQueue, v44);
+    dispatch_group_notify(group, selfCopy->_checkInQueue, v44);
     objc_storeStrong(&group, 0);
     v36 = 0;
   }
@@ -836,19 +836,19 @@
   return v5;
 }
 
-- (void)_checkInWithIDMSWithAccount:(id)a3 pushToken:(id)a4 event:(id)a5 reason:(unint64_t)a6 completion:(id)a7
+- (void)_checkInWithIDMSWithAccount:(id)account pushToken:(id)token event:(id)event reason:(unint64_t)reason completion:(id)completion
 {
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v33 = 0;
-  objc_storeStrong(&v33, a4);
+  objc_storeStrong(&v33, token);
   v32 = 0;
-  objc_storeStrong(&v32, a5);
-  v31 = a6;
+  objc_storeStrong(&v32, event);
+  reasonCopy = reason;
   v30 = 0;
-  objc_storeStrong(&v30, a7);
+  objc_storeStrong(&v30, completion);
   v28 = _os_activity_create(&_mh_execute_header, "authkit/check-in", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v29 = v28;
   state.opaque[0] = 0;
@@ -867,15 +867,15 @@
   _objc_release(v8);
   [v25 setPushToken:v33];
   [v25 setEvent:v32];
-  [v25 setLivenessReason:v31];
-  v7 = [(AKAppleIDCheckInHelperService *)v35 _serviceControllerWithProvider:v25];
+  [v25 setLivenessReason:reasonCopy];
+  v7 = [(AKAppleIDCheckInHelperService *)selfCopy _serviceControllerWithProvider:v25];
   v16 = _NSConcreteStackBlock;
   v17 = -1073741824;
   v18 = 0;
   v19 = sub_100132580;
   v20 = &unk_100323190;
   v21 = _objc_retain(location[0]);
-  v22 = _objc_retain(v35);
+  v22 = _objc_retain(selfCopy);
   v23 = _objc_retain(v26);
   v24 = _objc_retain(v30);
   [v7 executeRequestWithCompletion:&v16];
@@ -894,22 +894,22 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleCheckInResponse:(id)a3 data:(id)a4 context:(id)a5 account:(id)a6 error:(id)a7 completion:(id)a8
+- (void)_handleCheckInResponse:(id)response data:(id)data context:(id)context account:(id)account error:(id)error completion:(id)completion
 {
-  v47 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v45 = 0;
-  objc_storeStrong(&v45, a4);
+  objc_storeStrong(&v45, data);
   v44 = 0;
-  objc_storeStrong(&v44, a5);
+  objc_storeStrong(&v44, context);
   v43 = 0;
-  objc_storeStrong(&v43, a6);
+  objc_storeStrong(&v43, account);
   v42 = 0;
-  objc_storeStrong(&v42, a7);
+  objc_storeStrong(&v42, error);
   v41 = 0;
-  objc_storeStrong(&v41, a8);
+  objc_storeStrong(&v41, completion);
   v40 = _AKLogSystem();
   v39 = 2;
   if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
@@ -932,30 +932,30 @@
 
   objc_storeStrong(&v36, 0);
   v15 = [v37 objectForKey:@"livenessNonce"];
-  v34 = [v15 aaf_base64Padded];
+  aaf_base64Padded = [v15 aaf_base64Padded];
   _objc_release(v15);
   v16 = [v37 objectForKey:@"attestationNonce"];
-  v33 = [v16 aaf_base64Padded];
+  aaf_base64Padded2 = [v16 aaf_base64Padded];
   _objc_release(v16);
   v17 = [v37 objectForKey:@"sendAttestationOSVersion"];
-  v18 = [v17 BOOLValue];
+  bOOLValue = [v17 BOOLValue];
   _objc_release(v17);
-  v32 = v18;
+  v32 = bOOLValue;
   v31 = _AKLogSystem();
   v30 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100132C88(v48, v34, v33, v32 & 1);
+    sub_100132C88(v48, aaf_base64Padded, aaf_base64Padded2, v32 & 1);
     _os_log_impl(&_mh_execute_header, v31, v30, "Received liveness nonce %@, attestation Nonce %@ sendAttestedOSVersion %d", v48, 0x1Cu);
   }
 
   objc_storeStrong(&v31, 0);
-  if (v34)
+  if (aaf_base64Padded)
   {
-    [(AKAppleIDCheckInHelperService *)v47 storeLivenessNonce:v43 nonce:v34];
+    [(AKAppleIDCheckInHelperService *)selfCopy storeLivenessNonce:v43 nonce:aaf_base64Padded];
   }
 
-  if ((v32 & 1) == 1 && v33)
+  if ((v32 & 1) == 1 && aaf_base64Padded2)
   {
     v29 = [AAFAnalyticsEvent ak_analyticsEventWithContext:v44 eventName:@"com.apple.authkit.osVersionAttestationReq" error:0];
     v14 = +[AKAnalyticsReporterRTC rtcAnalyticsReporter];
@@ -972,30 +972,30 @@
     }
 
     objc_storeStrong(&v28, 0);
-    [(AKAppleIDCheckInHelperService *)v47 _sendAttestedOSVersionWithContext:v44 attestationNonce:v33];
+    [(AKAppleIDCheckInHelperService *)selfCopy _sendAttestedOSVersionWithContext:v44 attestationNonce:aaf_base64Padded2];
     objc_storeStrong(&v29, 0);
   }
 
   v10 = +[AKFeatureManager sharedManager];
-  v11 = [v10 isPRKHealingEnabled];
+  isPRKHealingEnabled = [v10 isPRKHealingEnabled];
   _objc_release(v10);
-  if (v11)
+  if (isPRKHealingEnabled)
   {
-    [(AKAppleIDCheckInHelperService *)v47 _performCheckInActionForAccount:v43 withResponse:v37];
+    [(AKAppleIDCheckInHelperService *)selfCopy _performCheckInActionForAccount:v43 withResponse:v37];
   }
 
   v9 = +[AKBAATimeProvider sharedInstance];
-  v8 = [location[0] allHeaderFields];
+  allHeaderFields = [location[0] allHeaderFields];
   [(AKBAATimeProvider *)v9 updateTimeFromResponseHeaders:?];
-  _objc_release(v8);
+  _objc_release(allHeaderFields);
   _objc_release(v9);
   if (v41)
   {
     (*(v41 + 2))(v41, 1, 0);
   }
 
-  objc_storeStrong(&v33, 0);
-  objc_storeStrong(&v34, 0);
+  objc_storeStrong(&aaf_base64Padded2, 0);
+  objc_storeStrong(&aaf_base64Padded, 0);
   objc_storeStrong(&v37, 0);
   objc_storeStrong(&v41, 0);
   objc_storeStrong(&v42, 0);
@@ -1005,14 +1005,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_performCheckInActionForAccount:(id)a3 withResponse:(id)a4
+- (void)_performCheckInActionForAccount:(id)account withResponse:(id)response
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
+  objc_storeStrong(&v34, response);
   v33 = [v34 valueForKey:@"actionNeeded"];
   if (v33)
   {
@@ -1096,12 +1096,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)storeLivenessNonce:(id)a3 nonce:(id)a4
+- (void)storeLivenessNonce:(id)nonce nonce:(id)a4
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, nonce);
   v14 = 0;
   objc_storeStrong(&v14, a4);
   v13 = 0;
@@ -1133,14 +1133,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_sendAttestedOSVersionWithContext:(id)a3 attestationNonce:(id)a4
+- (void)_sendAttestedOSVersionWithContext:(id)context attestationNonce:(id)nonce
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v31 = 0;
-  objc_storeStrong(&v31, a4);
+  objc_storeStrong(&v31, nonce);
   v30 = 0uLL;
   v12 = _AKSignpostLogSystem();
   *&v29 = _AKSignpostCreate();
@@ -1170,7 +1170,7 @@
   objc_storeStrong(&v24, 0);
   v30 = v29;
   v22 = [AAFAnalyticsEvent ak_analyticsEventWithContext:location[0] eventName:@"com.apple.authkit.sendAttestedOSVersion" error:0];
-  strongDeviceIdentitySigner = v33->_strongDeviceIdentitySigner;
+  strongDeviceIdentitySigner = selfCopy->_strongDeviceIdentitySigner;
   v5 = location[0];
   v6 = v31;
   v13 = _NSConcreteStackBlock;
@@ -1191,12 +1191,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)_serviceControllerWithProvider:(id)a3
+- (id)_serviceControllerWithProvider:(id)provider
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, provider);
   v3 = [AKServiceControllerImpl alloc];
   v5 = [(AKServiceControllerImpl *)v3 initWithRequestProvider:location[0]];
   objc_storeStrong(location, 0);
@@ -1204,43 +1204,43 @@
   return v5;
 }
 
-- (BOOL)_validateMachineID:(id)a3
+- (BOOL)_validateMachineID:(id)d
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v4 = objc_alloc_init(AKAnisetteProvisioningController);
   v9 = [v4 anisetteDataWithError:0];
   _objc_release(v4);
-  v5 = [v9 machineID];
+  machineID = [v9 machineID];
   v7 = 0;
   v6 = 0;
-  if (v5)
+  if (machineID)
   {
-    v8 = [v9 machineID];
+    machineID2 = [v9 machineID];
     v7 = 1;
-    v6 = [v8 isEqualToString:location[0]];
+    v6 = [machineID2 isEqualToString:location[0]];
   }
 
   v11 = v6 & 1;
   if (v7)
   {
-    _objc_release(v8);
+    _objc_release(machineID2);
   }
 
-  _objc_release(v5);
+  _objc_release(machineID);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
   return v11 & 1;
 }
 
-- (void)_clearDeviceListCacheForAccount:(id)a3
+- (void)_clearDeviceListCacheForAccount:(id)account
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v20 = +[AKAccountManager sharedInstance];
   v19 = [v20 altDSIDForAccount:location[0]];
   if (v19)

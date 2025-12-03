@@ -1,13 +1,13 @@
 @interface NUManagerAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation NUManagerAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v4 = [a3 publicContainer];
-  v3 = [v4 registerProtocol:&unk_286E350C0 factory:&__block_literal_global_1];
+  publicContainer = [registry publicContainer];
+  v3 = [publicContainer registerProtocol:&unk_286E350C0 factory:&__block_literal_global_1];
 }
 
 NUArticleContentSizeManager *__36__NUManagerAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2)

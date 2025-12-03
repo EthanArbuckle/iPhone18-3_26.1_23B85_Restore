@@ -1,27 +1,27 @@
 @interface NIBluetoothHostTimeSyncResponse
-- (NIBluetoothHostTimeSyncResponse)initWithCoder:(id)a3;
-- (NIBluetoothHostTimeSyncResponse)initWithDeviceEventCount:(unint64_t)a3 uwbDeviceTimeUs:(unint64_t)a4 uwbDeviceTimeUncertainty:(unsigned __int8)a5 uwbClockSkewMeasurementAvailable:(unsigned __int8)a6 deviceMaxPpm:(unsigned __int16)a7 success:(unsigned __int8)a8 retryDelay:(unsigned __int16)a9;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NIBluetoothHostTimeSyncResponse)initWithCoder:(id)coder;
+- (NIBluetoothHostTimeSyncResponse)initWithDeviceEventCount:(unint64_t)count uwbDeviceTimeUs:(unint64_t)us uwbDeviceTimeUncertainty:(unsigned __int8)uncertainty uwbClockSkewMeasurementAvailable:(unsigned __int8)available deviceMaxPpm:(unsigned __int16)ppm success:(unsigned __int8)success retryDelay:(unsigned __int16)delay;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NIBluetoothHostTimeSyncResponse
 
-- (NIBluetoothHostTimeSyncResponse)initWithDeviceEventCount:(unint64_t)a3 uwbDeviceTimeUs:(unint64_t)a4 uwbDeviceTimeUncertainty:(unsigned __int8)a5 uwbClockSkewMeasurementAvailable:(unsigned __int8)a6 deviceMaxPpm:(unsigned __int16)a7 success:(unsigned __int8)a8 retryDelay:(unsigned __int16)a9
+- (NIBluetoothHostTimeSyncResponse)initWithDeviceEventCount:(unint64_t)count uwbDeviceTimeUs:(unint64_t)us uwbDeviceTimeUncertainty:(unsigned __int8)uncertainty uwbClockSkewMeasurementAvailable:(unsigned __int8)available deviceMaxPpm:(unsigned __int16)ppm success:(unsigned __int8)success retryDelay:(unsigned __int16)delay
 {
   v16.receiver = self;
   v16.super_class = NIBluetoothHostTimeSyncResponse;
   result = [(NIBluetoothHostTimeSyncResponse *)&v16 init];
   if (result)
   {
-    result->_deviceEventCount = a3;
-    result->_uwbDeviceTimeUs = a4;
-    result->_uwbDeviceTimeUncertainty = a5;
-    result->_uwbClockSkewMeasurementAvailable = a6;
-    result->_deviceMaxPpm = a7;
-    result->_success = a8;
-    result->_retryDelay = a9;
+    result->_deviceEventCount = count;
+    result->_uwbDeviceTimeUs = us;
+    result->_uwbDeviceTimeUncertainty = uncertainty;
+    result->_uwbClockSkewMeasurementAvailable = available;
+    result->_deviceMaxPpm = ppm;
+    result->_success = success;
+    result->_retryDelay = delay;
   }
 
   return result;
@@ -44,32 +44,32 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   LOWORD(v6) = self->_retryDelay;
   return [v4 initWithDeviceEventCount:self->_deviceEventCount uwbDeviceTimeUs:self->_uwbDeviceTimeUs uwbDeviceTimeUncertainty:self->_uwbDeviceTimeUncertainty uwbClockSkewMeasurementAvailable:self->_uwbClockSkewMeasurementAvailable deviceMaxPpm:self->_deviceMaxPpm success:self->_success retryDelay:v6];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:self->_deviceEventCount forKey:@"deviceEventCount"];
-  [v4 encodeInt64:self->_uwbDeviceTimeUs forKey:@"uwbDeviceTimeUs"];
-  [v4 encodeInt:self->_uwbDeviceTimeUncertainty forKey:@"uwbDeviceTimeUncertainty"];
-  [v4 encodeInt:self->_uwbClockSkewMeasurementAvailable forKey:@"uwbClockSkewMeasurementAvailable"];
-  [v4 encodeInt:self->_deviceMaxPpm forKey:@"deviceMaxPpm"];
-  [v4 encodeInt:self->_success forKey:@"success"];
-  [v4 encodeInt:self->_retryDelay forKey:@"retryDelay"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:self->_deviceEventCount forKey:@"deviceEventCount"];
+  [coderCopy encodeInt64:self->_uwbDeviceTimeUs forKey:@"uwbDeviceTimeUs"];
+  [coderCopy encodeInt:self->_uwbDeviceTimeUncertainty forKey:@"uwbDeviceTimeUncertainty"];
+  [coderCopy encodeInt:self->_uwbClockSkewMeasurementAvailable forKey:@"uwbClockSkewMeasurementAvailable"];
+  [coderCopy encodeInt:self->_deviceMaxPpm forKey:@"deviceMaxPpm"];
+  [coderCopy encodeInt:self->_success forKey:@"success"];
+  [coderCopy encodeInt:self->_retryDelay forKey:@"retryDelay"];
 }
 
-- (NIBluetoothHostTimeSyncResponse)initWithCoder:(id)a3
+- (NIBluetoothHostTimeSyncResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = v4;
+  coderCopy = coder;
+  v5 = coderCopy;
   if (self)
   {
-    self->_deviceEventCount = [v4 decodeInt64ForKey:@"deviceEventCount"];
+    self->_deviceEventCount = [coderCopy decodeInt64ForKey:@"deviceEventCount"];
     self->_uwbDeviceTimeUs = [v5 decodeInt64ForKey:@"uwbDeviceTimeUs"];
     self->_uwbDeviceTimeUncertainty = [v5 decodeIntForKey:@"uwbDeviceTimeUncertainty"];
     self->_uwbClockSkewMeasurementAvailable = [v5 decodeIntForKey:@"uwbClockSkewMeasurementAvailable"];

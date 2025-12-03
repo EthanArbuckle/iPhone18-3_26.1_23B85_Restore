@@ -1,11 +1,11 @@
 @interface BYChronicle
 - (BYChronicle)init;
-- (id)_dictionaryRepresentationForBackedUpFeatures:(BOOL)a3;
-- (id)entryForFeature:(unint64_t)a3;
-- (void)addEntry:(id)a3 forFeature:(unint64_t)a4;
-- (void)recordFeatureShown:(unint64_t)a3;
-- (void)removeRecordForFeature:(unint64_t)a3;
-- (void)setProductVersion:(id)a3 forFeature:(unint64_t)a4;
+- (id)_dictionaryRepresentationForBackedUpFeatures:(BOOL)features;
+- (id)entryForFeature:(unint64_t)feature;
+- (void)addEntry:(id)entry forFeature:(unint64_t)feature;
+- (void)recordFeatureShown:(unint64_t)shown;
+- (void)removeRecordForFeature:(unint64_t)feature;
+- (void)setProductVersion:(id)version forFeature:(unint64_t)feature;
 @end
 
 @implementation BYChronicle
@@ -25,70 +25,70 @@
   return v2;
 }
 
-- (void)recordFeatureShown:(unint64_t)a3
+- (void)recordFeatureShown:(unint64_t)shown
 {
   obj = [(BYChronicle *)self featureEntries];
   objc_sync_enter(obj);
   v5 = objc_alloc_init(BYChronicleEntry);
-  [(BYChronicle *)self addEntry:v5 forFeature:a3];
+  [(BYChronicle *)self addEntry:v5 forFeature:shown];
 
   objc_sync_exit(obj);
 }
 
-- (void)setProductVersion:(id)a3 forFeature:(unint64_t)a4
+- (void)setProductVersion:(id)version forFeature:(unint64_t)feature
 {
-  v6 = a3;
-  v7 = [[BYChronicleEntry alloc] initWithProductVersion:v6];
+  versionCopy = version;
+  v7 = [[BYChronicleEntry alloc] initWithProductVersion:versionCopy];
 
-  [(BYChronicle *)self addEntry:v7 forFeature:a4];
+  [(BYChronicle *)self addEntry:v7 forFeature:feature];
 }
 
-- (void)removeRecordForFeature:(unint64_t)a3
+- (void)removeRecordForFeature:(unint64_t)feature
 {
   obj = [(BYChronicle *)self featureEntries];
   objc_sync_enter(obj);
-  v5 = [(BYChronicle *)self featureEntries];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v5 removeObjectForKey:v6];
+  featureEntries = [(BYChronicle *)self featureEntries];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:feature];
+  [featureEntries removeObjectForKey:v6];
 
   objc_sync_exit(obj);
 }
 
-- (void)addEntry:(id)a3 forFeature:(unint64_t)a4
+- (void)addEntry:(id)entry forFeature:(unint64_t)feature
 {
-  v9 = a3;
-  v6 = [(BYChronicle *)self featureEntries];
-  objc_sync_enter(v6);
-  v7 = [(BYChronicle *)self featureEntries];
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  [v7 setObject:v9 forKeyedSubscript:v8];
+  entryCopy = entry;
+  featureEntries = [(BYChronicle *)self featureEntries];
+  objc_sync_enter(featureEntries);
+  featureEntries2 = [(BYChronicle *)self featureEntries];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:feature];
+  [featureEntries2 setObject:entryCopy forKeyedSubscript:v8];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(featureEntries);
 }
 
-- (id)entryForFeature:(unint64_t)a3
+- (id)entryForFeature:(unint64_t)feature
 {
-  v5 = [(BYChronicle *)self featureEntries];
-  objc_sync_enter(v5);
-  v6 = [(BYChronicle *)self featureEntries];
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  featureEntries = [(BYChronicle *)self featureEntries];
+  objc_sync_enter(featureEntries);
+  featureEntries2 = [(BYChronicle *)self featureEntries];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:feature];
+  v8 = [featureEntries2 objectForKeyedSubscript:v7];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(featureEntries);
 
   return v8;
 }
 
-- (id)_dictionaryRepresentationForBackedUpFeatures:(BOOL)a3
+- (id)_dictionaryRepresentationForBackedUpFeatures:(BOOL)features
 {
-  v3 = a3;
+  featuresCopy = features;
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [(BYChronicle *)self featureEntries];
-  objc_sync_enter(v5);
-  v6 = [(BYChronicle *)self featureEntries];
-  v7 = [v6 copy];
+  featureEntries = [(BYChronicle *)self featureEntries];
+  objc_sync_enter(featureEntries);
+  featureEntries2 = [(BYChronicle *)self featureEntries];
+  v7 = [featureEntries2 copy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(featureEntries);
   v19 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v21 = 0u;
@@ -96,8 +96,8 @@
   v23 = 0u;
   v24 = 0u;
   v20 = v7;
-  v9 = [v7 allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v27 count:16];
+  allKeys = [v7 allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v10)
   {
     v11 = *v22;
@@ -107,24 +107,24 @@
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        if (-[BYChronicle _isBackedUpFeature:](self, "_isBackedUpFeature:", [v13 unsignedIntValue]) == v3)
+        if (-[BYChronicle _isBackedUpFeature:](self, "_isBackedUpFeature:", [v13 unsignedIntValue]) == featuresCopy)
         {
           v14 = [v20 objectForKeyedSubscript:v13];
           v25[0] = @"type";
           v25[1] = @"data";
           v26[0] = v13;
-          v15 = [v14 dictionaryRepresentation];
-          v26[1] = v15;
+          dictionaryRepresentation = [v14 dictionaryRepresentation];
+          v26[1] = dictionaryRepresentation;
           v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:2];
           [v8 addObject:v16];
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v21 objects:v27 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v21 objects:v27 count:16];
     }
 
     while (v10);

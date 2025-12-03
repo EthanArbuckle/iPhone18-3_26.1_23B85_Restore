@@ -1,13 +1,13 @@
 @interface CLKComplicationTemplateGraphicExtraLargeCircularClosedGaugeViewBridge
-- (id)serializableCopyWithImageProviders:(id)a3;
-- (id)viewDataKeyForSwiftUIViewKey:(id)a3;
+- (id)serializableCopyWithImageProviders:(id)providers;
+- (id)viewDataKeyForSwiftUIViewKey:(id)key;
 @end
 
 @implementation CLKComplicationTemplateGraphicExtraLargeCircularClosedGaugeViewBridge
 
-- (id)viewDataKeyForSwiftUIViewKey:(id)a3
+- (id)viewDataKeyForSwiftUIViewKey:(id)key
 {
-  if ([a3 isEqualToString:@"label"])
+  if ([key isEqualToString:@"label"])
   {
     return @"labelData";
   }
@@ -18,14 +18,14 @@
   }
 }
 
-- (id)serializableCopyWithImageProviders:(id)a3
+- (id)serializableCopyWithImageProviders:(id)providers
 {
-  v4 = a3;
+  providersCopy = providers;
   v5 = [CLKComplicationTemplateGraphicExtraLargeCircularClosedGaugeImage alloc];
-  v6 = [(CLKComplicationTemplateGraphicExtraLargeCircularClosedGaugeViewBridge *)self gaugeProvider];
-  v7 = [v4 objectForKeyedSubscript:@"labelData"];
+  gaugeProvider = [(CLKComplicationTemplateGraphicExtraLargeCircularClosedGaugeViewBridge *)self gaugeProvider];
+  v7 = [providersCopy objectForKeyedSubscript:@"labelData"];
 
-  v8 = [(CLKComplicationTemplateGraphicExtraLargeCircularClosedGaugeImage *)v5 initWithGaugeProvider:v6 imageProvider:v7];
+  v8 = [(CLKComplicationTemplateGraphicExtraLargeCircularClosedGaugeImage *)v5 initWithGaugeProvider:gaugeProvider imageProvider:v7];
   [(CLKComplicationTemplate *)v8 setSdkVersion:[(CLKComplicationTemplate *)self sdkVersion]];
 
   return v8;

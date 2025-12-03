@@ -11,11 +11,11 @@
 - (id)completionLabel;
 - (id)extensionLabel;
 - (void)didFailToLoadImage;
-- (void)didUpdateWithImage:(id)a3;
-- (void)setFontForCompletionLabel:(id)a3;
-- (void)setSearchFieldModel:(id)a3;
-- (void)setSelectionHighlightColor:(id)a3;
-- (void)setTextColorForCompletionLabel:(id)a3;
+- (void)didUpdateWithImage:(id)image;
+- (void)setFontForCompletionLabel:(id)label;
+- (void)setSearchFieldModel:(id)model;
+- (void)setSelectionHighlightColor:(id)color;
+- (void)setTextColorForCompletionLabel:(id)label;
 - (void)updateFields;
 - (void)updateLayoutMargins;
 @end
@@ -33,22 +33,22 @@
     v3 = objc_opt_new();
     [(SPUICompletionStringView *)v2 setLabelsStackView:v3];
 
-    v4 = [(SPUICompletionStringView *)v2 labelsStackView];
-    [v4 setHidden:1];
+    labelsStackView = [(SPUICompletionStringView *)v2 labelsStackView];
+    [labelsStackView setHidden:1];
 
-    v5 = [(SPUICompletionStringView *)v2 completionLabel];
-    [v5 setAlpha:0.0];
+    completionLabel = [(SPUICompletionStringView *)v2 completionLabel];
+    [completionLabel setAlpha:0.0];
 
-    v6 = [(SPUICompletionStringView *)v2 labelsStackView];
+    labelsStackView2 = [(SPUICompletionStringView *)v2 labelsStackView];
     LODWORD(v7) = 1148846080;
-    [v6 setContentCompressionResistancePriority:1 forAxis:v7];
+    [labelsStackView2 setContentCompressionResistancePriority:1 forAxis:v7];
 
     [(SPUICompletionStringView *)v2 setUserInteractionEnabled:0];
     [(SPUICompletionStringView *)v2 setLayoutMarginsRelativeArrangement:1];
     [(NUIContainerStackView *)v2 setAlignment:3];
     [(NUIContainerStackView *)v2 setSpacing:0.0];
-    v8 = [(SPUICompletionStringView *)v2 labelsStackView];
-    v23[0] = v8;
+    labelsStackView3 = [(SPUICompletionStringView *)v2 labelsStackView];
+    v23[0] = labelsStackView3;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
 
     if ([MEMORY[0x277D65D28] enableFloatingWindow])
@@ -56,15 +56,15 @@
       v10 = objc_opt_new();
       [(SPUICompletionStringView *)v2 setImageView:v10];
 
-      v11 = [(SPUICompletionStringView *)v2 imageView];
-      [v11 setDelegate:v2];
+      imageView = [(SPUICompletionStringView *)v2 imageView];
+      [imageView setDelegate:v2];
 
       v12 = MEMORY[0x277D4C828];
-      v13 = [(SPUICompletionStringView *)v2 imageView];
-      [v12 requireIntrinsicSizeForView:v13];
+      imageView2 = [(SPUICompletionStringView *)v2 imageView];
+      [v12 requireIntrinsicSizeForView:imageView2];
 
-      v14 = [(SPUICompletionStringView *)v2 imageView];
-      v15 = [v9 arrayByAddingObject:v14];
+      imageView3 = [(SPUICompletionStringView *)v2 imageView];
+      v15 = [v9 arrayByAddingObject:imageView3];
 
       if (_UISolariumEnabled())
       {
@@ -76,18 +76,18 @@
         v16 = 33.0;
       }
 
-      v17 = [(SPUICompletionStringView *)v2 imageView];
-      [v17 setMaximumLayoutSize:{v16, v16}];
+      imageView4 = [(SPUICompletionStringView *)v2 imageView];
+      [imageView4 setMaximumLayoutSize:{v16, v16}];
 
-      v18 = [(SPUICompletionStringView *)v2 imageView];
-      [v18 setMinimumLayoutSize:{v16, v16}];
+      imageView5 = [(SPUICompletionStringView *)v2 imageView];
+      [imageView5 setMinimumLayoutSize:{v16, v16}];
 
       v9 = v15;
     }
 
     [(SPUICompletionStringView *)v2 setArrangedSubviews:v9];
-    v19 = [MEMORY[0x277D75348] systemFillColor];
-    [(SPUICompletionStringView *)v2 setSelectionHighlightColor:v19];
+    systemFillColor = [MEMORY[0x277D75348] systemFillColor];
+    [(SPUICompletionStringView *)v2 setSelectionHighlightColor:systemFillColor];
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -96,64 +96,64 @@
 
 - (id)completionLabel
 {
-  v2 = [(SPUICompletionStringView *)self labelsStackView];
-  v3 = [v2 completionLabel];
+  labelsStackView = [(SPUICompletionStringView *)self labelsStackView];
+  completionLabel = [labelsStackView completionLabel];
 
-  return v3;
+  return completionLabel;
 }
 
 - (void)updateFields
 {
   v58[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SPUICompletionStringView *)self searchFieldModel];
-  if (([v3 searchFieldHasTokens] & 1) != 0 || (-[SPUICompletionStringView result](self, "result"), (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  searchFieldModel = [(SPUICompletionStringView *)self searchFieldModel];
+  if (([searchFieldModel searchFieldHasTokens] & 1) != 0 || (-[SPUICompletionStringView result](self, "result"), (v4 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 
     goto LABEL_7;
   }
 
   v5 = v4;
-  v6 = [(SPUICompletionStringView *)self searchFieldModel];
-  v7 = [v6 hasMarkedText];
+  searchFieldModel2 = [(SPUICompletionStringView *)self searchFieldModel];
+  hasMarkedText = [searchFieldModel2 hasMarkedText];
 
-  if (v7)
+  if (hasMarkedText)
   {
 LABEL_7:
-    v21 = [(SPUICompletionStringView *)self labelsStackView];
-    [v21 setHidden:1];
+    labelsStackView = [(SPUICompletionStringView *)self labelsStackView];
+    [labelsStackView setHidden:1];
 
-    v22 = [(SPUICompletionStringView *)self imageView];
-    [v22 setHidden:1];
+    imageView = [(SPUICompletionStringView *)self imageView];
+    [imageView setHidden:1];
 
-    v23 = [(SPUICompletionStringView *)self imageView];
-    [v23 updateWithImage:0];
+    imageView2 = [(SPUICompletionStringView *)self imageView];
+    [imageView2 updateWithImage:0];
 
     v24 = 0;
     goto LABEL_8;
   }
 
-  v8 = [(SPUICompletionStringView *)self extensionLabel];
-  [v8 setAttributedText:0];
+  extensionLabel = [(SPUICompletionStringView *)self extensionLabel];
+  [extensionLabel setAttributedText:0];
 
-  v9 = [(SPUICompletionStringView *)self labelsStackView];
-  v10 = [(SPUICompletionStringView *)self searchFieldModel];
-  v11 = [v10 displayedText];
-  [v9 setTypedString:v11];
+  labelsStackView2 = [(SPUICompletionStringView *)self labelsStackView];
+  searchFieldModel3 = [(SPUICompletionStringView *)self searchFieldModel];
+  displayedText = [searchFieldModel3 displayedText];
+  [labelsStackView2 setTypedString:displayedText];
 
-  v12 = [(SPUICompletionStringView *)self searchFieldModel];
-  v13 = [v12 displayedText];
+  searchFieldModel4 = [(SPUICompletionStringView *)self searchFieldModel];
+  displayedText2 = [searchFieldModel4 displayedText];
 
-  if (v13)
+  if (displayedText2)
   {
     v14 = objc_alloc(MEMORY[0x277CCA898]);
-    v15 = [(SPUICompletionStringView *)self searchFieldModel];
-    v16 = [v15 displayedText];
+    searchFieldModel5 = [(SPUICompletionStringView *)self searchFieldModel];
+    displayedText3 = [searchFieldModel5 displayedText];
     v57 = *MEMORY[0x277D740A8];
-    v17 = [(SPUICompletionStringView *)self completionLabel];
-    v18 = [v17 font];
-    v58[0] = v18;
+    completionLabel = [(SPUICompletionStringView *)self completionLabel];
+    font = [completionLabel font];
+    v58[0] = font;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v58 forKeys:&v57 count:1];
-    v20 = [v14 initWithString:v16 attributes:v19];
+    v20 = [v14 initWithString:displayedText3 attributes:v19];
   }
 
   else
@@ -162,25 +162,25 @@ LABEL_7:
   }
 
   v27 = MEMORY[0x277D4C858];
-  v28 = [(SPUICompletionStringView *)self result];
-  v29 = [(SPUICompletionStringView *)self cardSection];
-  v24 = [v27 initWithAttributedTypedString:v20 result:v28 cardSection:v29];
+  result = [(SPUICompletionStringView *)self result];
+  cardSection = [(SPUICompletionStringView *)self cardSection];
+  v24 = [v27 initWithAttributedTypedString:v20 result:result cardSection:cardSection];
 
-  v30 = [v24 completionString];
-  if (v30)
+  completionString = [v24 completionString];
+  if (completionString)
   {
     v31 = 0;
   }
 
   else
   {
-    v32 = [v24 extensionString];
-    if (v32)
+    extensionString = [v24 extensionString];
+    if (extensionString)
     {
-      v33 = [(SPUICompletionStringView *)self searchFieldModel];
-      v34 = [v33 queryId];
-      v35 = [(SPUICompletionStringView *)self result];
-      v31 = v34 == [v35 queryId];
+      searchFieldModel6 = [(SPUICompletionStringView *)self searchFieldModel];
+      queryId = [searchFieldModel6 queryId];
+      result2 = [(SPUICompletionStringView *)self result];
+      v31 = queryId == [result2 queryId];
     }
 
     else
@@ -189,20 +189,20 @@ LABEL_7:
     }
   }
 
-  v36 = [v24 completionString];
-  v37 = [(SPUICompletionStringView *)self completionLabel];
-  [v37 setAttributedText:v36];
+  completionString2 = [v24 completionString];
+  completionLabel2 = [(SPUICompletionStringView *)self completionLabel];
+  [completionLabel2 setAttributedText:completionString2];
 
   if (v31)
   {
-    v38 = [(SPUICompletionStringView *)self searchFieldModel];
-    v39 = [v38 displayedText];
-    v40 = [(SPUICompletionStringView *)self completionLabel];
-    [v40 setText:v39];
+    searchFieldModel7 = [(SPUICompletionStringView *)self searchFieldModel];
+    displayedText4 = [searchFieldModel7 displayedText];
+    completionLabel3 = [(SPUICompletionStringView *)self completionLabel];
+    [completionLabel3 setText:displayedText4];
   }
 
-  v41 = [v24 completionString];
-  if (v41)
+  completionString3 = [v24 completionString];
+  if (completionString3)
   {
     v42 = 1.0;
   }
@@ -212,45 +212,45 @@ LABEL_7:
     v42 = 0.0;
   }
 
-  v43 = [(SPUICompletionStringView *)self completionLabel];
-  [v43 setAlpha:v42];
+  completionLabel4 = [(SPUICompletionStringView *)self completionLabel];
+  [completionLabel4 setAlpha:v42];
 
-  v44 = [v24 completionString];
-  v45 = v44 != 0 || v31;
+  completionString4 = [v24 completionString];
+  v45 = completionString4 != 0 || v31;
 
   if (v45)
   {
-    v46 = [v24 extensionString];
-    v47 = [(SPUICompletionStringView *)self extensionLabel];
-    [v47 setText:v46];
+    extensionString2 = [v24 extensionString];
+    extensionLabel2 = [(SPUICompletionStringView *)self extensionLabel];
+    [extensionLabel2 setText:extensionString2];
 
-    v48 = [v24 bridgeString];
-    v49 = [(SPUICompletionStringView *)self bridgeLabel];
-    [v49 setText:v48];
+    bridgeString = [v24 bridgeString];
+    bridgeLabel = [(SPUICompletionStringView *)self bridgeLabel];
+    [bridgeLabel setText:bridgeString];
   }
 
-  v50 = [(SPUICompletionStringView *)self extensionLabel];
-  [v50 setHidden:!v45];
+  extensionLabel3 = [(SPUICompletionStringView *)self extensionLabel];
+  [extensionLabel3 setHidden:!v45];
 
-  v51 = [(SPUICompletionStringView *)self bridgeLabel];
-  [v51 setHidden:!v45];
+  bridgeLabel2 = [(SPUICompletionStringView *)self bridgeLabel];
+  [bridgeLabel2 setHidden:!v45];
 
   if ([MEMORY[0x277D65D28] enableFloatingWindow])
   {
     v52 = MEMORY[0x277D4C868];
-    v53 = [v24 image];
-    v54 = [v52 imageWithSFImage:v53 variantForAppIcon:2];
+    image = [v24 image];
+    v54 = [v52 imageWithSFImage:image variantForAppIcon:2];
 
-    v55 = [(SPUICompletionStringView *)self imageView];
-    v56 = v55;
+    imageView3 = [(SPUICompletionStringView *)self imageView];
+    v56 = imageView3;
     if (v54)
     {
-      [v55 updateWithImage:v54];
+      [imageView3 updateWithImage:v54];
     }
 
     else
     {
-      [v55 setHidden:1];
+      [imageView3 setHidden:1];
     }
   }
 
@@ -258,19 +258,19 @@ LABEL_7:
 
 LABEL_8:
   [(SPUICompletionStringView *)self setCompletion:v24];
-  v25 = [(SPUICompletionStringView *)self superview];
-  [v25 setNeedsLayout];
+  superview = [(SPUICompletionStringView *)self superview];
+  [superview setNeedsLayout];
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)hasContent
 {
-  v4 = [(SPUICompletionStringView *)self hasPrefix];
-  if (!v4)
+  hasPrefix = [(SPUICompletionStringView *)self hasPrefix];
+  if (!hasPrefix)
   {
-    v2 = [(SPUICompletionStringView *)self extensionLabel];
-    if ([v2 isHidden])
+    extensionLabel = [(SPUICompletionStringView *)self extensionLabel];
+    if ([extensionLabel isHidden])
     {
       LOBYTE(v5) = 0;
 LABEL_5:
@@ -279,10 +279,10 @@ LABEL_5:
     }
   }
 
-  v6 = [(SPUICompletionStringView *)self labelsStackView];
-  v5 = [v6 isHidden] ^ 1;
+  labelsStackView = [(SPUICompletionStringView *)self labelsStackView];
+  v5 = [labelsStackView isHidden] ^ 1;
 
-  if (!v4)
+  if (!hasPrefix)
   {
     goto LABEL_5;
   }
@@ -292,8 +292,8 @@ LABEL_5:
 
 - (BOOL)hasPrefix
 {
-  v3 = [(SPUICompletionStringView *)self completionLabel];
-  [v3 alpha];
+  completionLabel = [(SPUICompletionStringView *)self completionLabel];
+  [completionLabel alpha];
   if (v4 == 0.0)
   {
     LOBYTE(v6) = 0;
@@ -301,8 +301,8 @@ LABEL_5:
 
   else
   {
-    v5 = [(SPUICompletionStringView *)self labelsStackView];
-    v6 = [v5 isHidden] ^ 1;
+    labelsStackView = [(SPUICompletionStringView *)self labelsStackView];
+    v6 = [labelsStackView isHidden] ^ 1;
   }
 
   return v6;
@@ -310,111 +310,111 @@ LABEL_5:
 
 - (id)extensionLabel
 {
-  v2 = [(SPUICompletionStringView *)self labelsStackView];
-  v3 = [v2 extensionLabel];
+  labelsStackView = [(SPUICompletionStringView *)self labelsStackView];
+  extensionLabel = [labelsStackView extensionLabel];
 
-  return v3;
+  return extensionLabel;
 }
 
 - (id)bridgeLabel
 {
-  v2 = [(SPUICompletionStringView *)self labelsStackView];
-  v3 = [v2 bridgeLabel];
+  labelsStackView = [(SPUICompletionStringView *)self labelsStackView];
+  bridgeLabel = [labelsStackView bridgeLabel];
 
-  return v3;
+  return bridgeLabel;
 }
 
-- (void)setTextColorForCompletionLabel:(id)a3
+- (void)setTextColorForCompletionLabel:(id)label
 {
-  v4 = a3;
-  v5 = [(SPUICompletionStringView *)self completionLabel];
-  [v5 setTextColor:v4];
+  labelCopy = label;
+  completionLabel = [(SPUICompletionStringView *)self completionLabel];
+  [completionLabel setTextColor:labelCopy];
 
   [(SPUICompletionStringView *)self updateFields];
 }
 
 - (UIColor)textColorForCompletionLabel
 {
-  v2 = [(SPUICompletionStringView *)self completionLabel];
-  v3 = [v2 textColor];
+  completionLabel = [(SPUICompletionStringView *)self completionLabel];
+  textColor = [completionLabel textColor];
 
-  return v3;
+  return textColor;
 }
 
-- (void)setFontForCompletionLabel:(id)a3
+- (void)setFontForCompletionLabel:(id)label
 {
-  v4 = a3;
-  v5 = [(SPUICompletionStringView *)self labelsStackView];
-  [v5 setFont:v4];
+  labelCopy = label;
+  labelsStackView = [(SPUICompletionStringView *)self labelsStackView];
+  [labelsStackView setFont:labelCopy];
 }
 
 - (UIFont)fontForCompletionLabel
 {
-  v2 = [(SPUICompletionStringView *)self completionLabel];
-  v3 = [v2 font];
+  completionLabel = [(SPUICompletionStringView *)self completionLabel];
+  font = [completionLabel font];
 
-  return v3;
+  return font;
 }
 
-- (void)setSearchFieldModel:(id)a3
+- (void)setSearchFieldModel:(id)model
 {
-  v5 = a3;
-  if (self->_searchFieldModel != v5)
+  modelCopy = model;
+  if (self->_searchFieldModel != modelCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_searchFieldModel, a3);
+    v6 = modelCopy;
+    objc_storeStrong(&self->_searchFieldModel, model);
     [(SPUICompletionStringView *)self updateFields];
-    v5 = v6;
+    modelCopy = v6;
   }
 }
 
-- (void)setSelectionHighlightColor:(id)a3
+- (void)setSelectionHighlightColor:(id)color
 {
-  v5 = a3;
-  if (v5 && self->_selectionHighlightColor != v5)
+  colorCopy = color;
+  if (colorCopy && self->_selectionHighlightColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_selectionHighlightColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_selectionHighlightColor, color);
     [(SPUICompletionStringView *)self updateFields];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)didUpdateWithImage:(id)a3
+- (void)didUpdateWithImage:(id)image
 {
-  v4 = [(SPUICompletionStringView *)self imageView];
-  [v4 setHidden:0];
+  imageView = [(SPUICompletionStringView *)self imageView];
+  [imageView setHidden:0];
 
   [(SPUICompletionStringView *)self updateLayoutMargins];
 }
 
 - (void)didFailToLoadImage
 {
-  v3 = [(SPUICompletionStringView *)self imageView];
-  [v3 setHidden:1];
+  imageView = [(SPUICompletionStringView *)self imageView];
+  [imageView setHidden:1];
 
   [(SPUICompletionStringView *)self updateLayoutMargins];
 }
 
 - (BOOL)completionResultIsPotentiallyPunchout
 {
-  v2 = [(SPUICompletionStringView *)self completion];
-  v3 = [v2 completionResultIsPotentiallyPunchout];
+  completion = [(SPUICompletionStringView *)self completion];
+  completionResultIsPotentiallyPunchout = [completion completionResultIsPotentiallyPunchout];
 
-  return v3;
+  return completionResultIsPotentiallyPunchout;
 }
 
 - (void)updateLayoutMargins
 {
-  v4 = [(SPUICompletionStringView *)self imageView];
-  if (v4)
+  imageView = [(SPUICompletionStringView *)self imageView];
+  if (imageView)
   {
-    v2 = [(SPUICompletionStringView *)self imageView];
-    v5 = [v2 currentImage];
-    if (v5)
+    imageView2 = [(SPUICompletionStringView *)self imageView];
+    currentImage = [imageView2 currentImage];
+    if (currentImage)
     {
-      v6 = [(SPUICompletionStringView *)self imageView];
-      v7 = [v6 isHidden] ^ 1;
+      imageView3 = [(SPUICompletionStringView *)self imageView];
+      v7 = [imageView3 isHidden] ^ 1;
     }
 
     else
@@ -428,13 +428,13 @@ LABEL_5:
     v7 = 0;
   }
 
-  v8 = [(SPUICompletionStringView *)self completionLabel];
-  [v8 alpha];
+  completionLabel = [(SPUICompletionStringView *)self completionLabel];
+  [completionLabel alpha];
   v10 = v9;
   if (v9 == 0.0)
   {
-    v2 = [(SPUICompletionStringView *)self extensionLabel];
-    v11 = [v2 isHidden] & (v7 ^ 1);
+    imageView2 = [(SPUICompletionStringView *)self extensionLabel];
+    v11 = [imageView2 isHidden] & (v7 ^ 1);
   }
 
   else
@@ -442,8 +442,8 @@ LABEL_5:
     v11 = 0;
   }
 
-  v12 = [(SPUICompletionStringView *)self labelsStackView];
-  [v12 setHidden:v11];
+  labelsStackView = [(SPUICompletionStringView *)self labelsStackView];
+  [labelsStackView setHidden:v11];
 
   if (v10 == 0.0)
   {
@@ -477,33 +477,33 @@ LABEL_5:
 {
   if ([(SPUICompletionStringView *)self hasPrefix])
   {
-    v3 = [(SPUICompletionStringView *)self completionLabel];
-    v4 = [v3 text];
+    completionLabel = [(SPUICompletionStringView *)self completionLabel];
+    text = [completionLabel text];
   }
 
   else
   {
-    v4 = 0;
+    text = 0;
   }
 
-  return v4;
+  return text;
 }
 
 - (double)trailingPaddingForFieldEditor
 {
-  v3 = [(SPUICompletionStringView *)self imageView];
-  v4 = [v3 currentImage];
+  imageView = [(SPUICompletionStringView *)self imageView];
+  currentImage = [imageView currentImage];
 
-  if (!v4)
+  if (!currentImage)
   {
     return 0.0;
   }
 
   [(NUIContainerStackView *)self spacing];
   v6 = v5;
-  v7 = [(SPUICompletionStringView *)self imageView];
-  v8 = [v7 currentImage];
-  [v8 size];
+  imageView2 = [(SPUICompletionStringView *)self imageView];
+  currentImage2 = [imageView2 currentImage];
+  [currentImage2 size];
   v10 = v6 + v9;
 
   return v10;

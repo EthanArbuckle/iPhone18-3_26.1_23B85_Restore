@@ -1,6 +1,6 @@
 @interface VCMediaControlInfo
 - (VCMediaControlInfo)init;
-- (VCMediaControlInfo)initWithBuffer:(const char *)a3 length:(unint64_t)a4 optionalControlInfo:(id *)a5 version:(unsigned __int8)a6;
+- (VCMediaControlInfo)initWithBuffer:(const char *)buffer length:(unint64_t)length optionalControlInfo:(id *)info version:(unsigned __int8)version;
 @end
 
 @implementation VCMediaControlInfo
@@ -20,14 +20,14 @@
   return result;
 }
 
-- (VCMediaControlInfo)initWithBuffer:(const char *)a3 length:(unint64_t)a4 optionalControlInfo:(id *)a5 version:(unsigned __int8)a6
+- (VCMediaControlInfo)initWithBuffer:(const char *)buffer length:(unint64_t)length optionalControlInfo:(id *)info version:(unsigned __int8)version
 {
   v10 = [(VCMediaControlInfo *)self init];
   v11 = v10;
   if (v10)
   {
-    v10->_version = a6;
-    if ([(VCMediaControlInfo *)v10 configureWithBuffer:a3 length:a4 optionalControlInfo:a5]< 0)
+    v10->_version = version;
+    if ([(VCMediaControlInfo *)v10 configureWithBuffer:buffer length:length optionalControlInfo:info]< 0)
     {
 
       return 0;

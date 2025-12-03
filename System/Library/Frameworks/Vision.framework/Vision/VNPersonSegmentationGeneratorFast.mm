@@ -1,5 +1,5 @@
 @interface VNPersonSegmentationGeneratorFast
-+ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)a3;
++ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)options;
 + (id)outputMaskBlobNameToRequestKey;
 + (id)outputMaskBlobNames;
 @end
@@ -51,11 +51,11 @@ void __56__VNPersonSegmentationGeneratorFast_outputMaskBlobNames__block_invoke()
   +[VNPersonSegmentationGeneratorFast outputMaskBlobNames]::outputMaskBlobNames = v0;
 }
 
-+ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)a3
++ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)options
 {
-  v3 = [a1 inputImageBlobName];
+  inputImageBlobName = [self inputImageBlobName];
 
-  return v3;
+  return inputImageBlobName;
 }
 
 @end

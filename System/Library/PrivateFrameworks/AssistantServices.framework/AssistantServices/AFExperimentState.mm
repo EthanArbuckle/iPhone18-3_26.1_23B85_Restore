@@ -1,15 +1,15 @@
 @interface AFExperimentState
-+ (id)newWithBuilder:(id)a3;
-- (AFExperimentState)initWithBuilder:(id)a3;
-- (AFExperimentState)initWithCoder:(id)a3;
-- (AFExperimentState)initWithDictionaryRepresentation:(id)a3;
-- (AFExperimentState)initWithLastSyncDate:(id)a3 didEnd:(BOOL)a4 endingGroupIdentifier:(id)a5 version:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFExperimentState)initWithBuilder:(id)builder;
+- (AFExperimentState)initWithCoder:(id)coder;
+- (AFExperimentState)initWithDictionaryRepresentation:(id)representation;
+- (AFExperimentState)initWithLastSyncDate:(id)date didEnd:(BOOL)end endingGroupIdentifier:(id)identifier version:(id)version;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFExperimentState
@@ -44,13 +44,13 @@
   return v9;
 }
 
-- (AFExperimentState)initWithDictionaryRepresentation:(id)a3
+- (AFExperimentState)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy)
   {
-    v6 = [v4 objectForKey:@"lastSyncDate"];
+    v6 = [representationCopy objectForKey:@"lastSyncDate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       v10 = 0;
     }
 
-    v11 = [v10 BOOLValue];
+    bOOLValue = [v10 BOOLValue];
     v12 = [v5 objectForKey:@"endingGroupIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -99,48 +99,48 @@
       v15 = 0;
     }
 
-    self = [(AFExperimentState *)self initWithLastSyncDate:v7 didEnd:v11 endingGroupIdentifier:v13 version:v15];
-    v8 = self;
+    self = [(AFExperimentState *)self initWithLastSyncDate:v7 didEnd:bOOLValue endingGroupIdentifier:v13 version:v15];
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   lastSyncDate = self->_lastSyncDate;
-  v6 = a3;
-  [v6 encodeObject:lastSyncDate forKey:@"AFExperimentState::lastSyncDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:lastSyncDate forKey:@"AFExperimentState::lastSyncDate"];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_didEnd];
-  [v6 encodeObject:v5 forKey:@"AFExperimentState::didEnd"];
+  [coderCopy encodeObject:v5 forKey:@"AFExperimentState::didEnd"];
 
-  [v6 encodeObject:self->_endingGroupIdentifier forKey:@"AFExperimentState::endingGroupIdentifier"];
-  [v6 encodeObject:self->_version forKey:@"AFExperimentState::version"];
+  [coderCopy encodeObject:self->_endingGroupIdentifier forKey:@"AFExperimentState::endingGroupIdentifier"];
+  [coderCopy encodeObject:self->_version forKey:@"AFExperimentState::version"];
 }
 
-- (AFExperimentState)initWithCoder:(id)a3
+- (AFExperimentState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFExperimentState::lastSyncDate"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFExperimentState::didEnd"];
-  v7 = [v6 BOOLValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFExperimentState::lastSyncDate"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFExperimentState::didEnd"];
+  bOOLValue = [v6 BOOLValue];
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFExperimentState::endingGroupIdentifier"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFExperimentState::version"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFExperimentState::endingGroupIdentifier"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFExperimentState::version"];
 
-  v10 = [(AFExperimentState *)self initWithLastSyncDate:v5 didEnd:v7 endingGroupIdentifier:v8 version:v9];
+  v10 = [(AFExperimentState *)self initWithLastSyncDate:v5 didEnd:bOOLValue endingGroupIdentifier:v8 version:v9];
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -150,21 +150,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       didEnd = self->_didEnd;
       if (didEnd == [(AFExperimentState *)v5 didEnd])
       {
-        v7 = [(AFExperimentState *)v5 lastSyncDate];
+        lastSyncDate = [(AFExperimentState *)v5 lastSyncDate];
         lastSyncDate = self->_lastSyncDate;
-        if (lastSyncDate == v7 || [(NSDate *)lastSyncDate isEqual:v7])
+        if (lastSyncDate == lastSyncDate || [(NSDate *)lastSyncDate isEqual:lastSyncDate])
         {
-          v9 = [(AFExperimentState *)v5 endingGroupIdentifier];
+          endingGroupIdentifier = [(AFExperimentState *)v5 endingGroupIdentifier];
           endingGroupIdentifier = self->_endingGroupIdentifier;
-          if (endingGroupIdentifier == v9 || [(NSString *)endingGroupIdentifier isEqual:v9])
+          if (endingGroupIdentifier == endingGroupIdentifier || [(NSString *)endingGroupIdentifier isEqual:endingGroupIdentifier])
           {
-            v11 = [(AFExperimentState *)v5 version];
+            version = [(AFExperimentState *)v5 version];
             version = self->_version;
-            v13 = version == v11 || [(NSString *)version isEqual:v11];
+            v13 = version == version || [(NSString *)version isEqual:version];
           }
 
           else
@@ -205,7 +205,7 @@
   return v5 ^ v7;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v11.receiver = self;
@@ -224,22 +224,22 @@
   return v9;
 }
 
-- (AFExperimentState)initWithLastSyncDate:(id)a3 didEnd:(BOOL)a4 endingGroupIdentifier:(id)a5 version:(id)a6
+- (AFExperimentState)initWithLastSyncDate:(id)date didEnd:(BOOL)end endingGroupIdentifier:(id)identifier version:(id)version
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dateCopy = date;
+  identifierCopy = identifier;
+  versionCopy = version;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __79__AFExperimentState_initWithLastSyncDate_didEnd_endingGroupIdentifier_version___block_invoke;
   v18[3] = &unk_1E7345EA8;
-  v22 = a4;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  endCopy = end;
+  v19 = dateCopy;
+  v20 = identifierCopy;
+  v21 = versionCopy;
+  v13 = versionCopy;
+  v14 = identifierCopy;
+  v15 = dateCopy;
   v16 = [(AFExperimentState *)self initWithBuilder:v18];
 
   return v16;
@@ -255,32 +255,32 @@ void __79__AFExperimentState_initWithLastSyncDate_didEnd_endingGroupIdentifier_v
   [v4 setVersion:*(a1 + 48)];
 }
 
-- (AFExperimentState)initWithBuilder:(id)a3
+- (AFExperimentState)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v18.receiver = self;
   v18.super_class = AFExperimentState;
   v5 = [(AFExperimentState *)&v18 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFExperimentStateMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFExperimentStateMutation *)v7 isDirty])
     {
-      v8 = [(_AFExperimentStateMutation *)v7 getLastSyncDate];
-      v9 = [v8 copy];
+      getLastSyncDate = [(_AFExperimentStateMutation *)v7 getLastSyncDate];
+      v9 = [getLastSyncDate copy];
       lastSyncDate = v6->_lastSyncDate;
       v6->_lastSyncDate = v9;
 
       v6->_didEnd = [(_AFExperimentStateMutation *)v7 getDidEnd];
-      v11 = [(_AFExperimentStateMutation *)v7 getEndingGroupIdentifier];
-      v12 = [v11 copy];
+      getEndingGroupIdentifier = [(_AFExperimentStateMutation *)v7 getEndingGroupIdentifier];
+      v12 = [getEndingGroupIdentifier copy];
       endingGroupIdentifier = v6->_endingGroupIdentifier;
       v6->_endingGroupIdentifier = v12;
 
-      v14 = [(_AFExperimentStateMutation *)v7 getVersion];
-      v15 = [v14 copy];
+      getVersion = [(_AFExperimentStateMutation *)v7 getVersion];
+      v15 = [getVersion copy];
       version = v6->_version;
       v6->_version = v15;
     }
@@ -289,37 +289,37 @@ void __79__AFExperimentState_initWithLastSyncDate_didEnd_endingGroupIdentifier_v
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFExperimentStateMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFExperimentStateMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFExperimentState);
-      v7 = [(_AFExperimentStateMutation *)v5 getLastSyncDate];
-      v8 = [v7 copy];
+      getLastSyncDate = [(_AFExperimentStateMutation *)v5 getLastSyncDate];
+      v8 = [getLastSyncDate copy];
       lastSyncDate = v6->_lastSyncDate;
       v6->_lastSyncDate = v8;
 
       v6->_didEnd = [(_AFExperimentStateMutation *)v5 getDidEnd];
-      v10 = [(_AFExperimentStateMutation *)v5 getEndingGroupIdentifier];
-      v11 = [v10 copy];
+      getEndingGroupIdentifier = [(_AFExperimentStateMutation *)v5 getEndingGroupIdentifier];
+      v11 = [getEndingGroupIdentifier copy];
       endingGroupIdentifier = v6->_endingGroupIdentifier;
       v6->_endingGroupIdentifier = v11;
 
-      v13 = [(_AFExperimentStateMutation *)v5 getVersion];
-      v14 = [v13 copy];
+      getVersion = [(_AFExperimentStateMutation *)v5 getVersion];
+      v14 = [getVersion copy];
       version = v6->_version;
       v6->_version = v14;
     }

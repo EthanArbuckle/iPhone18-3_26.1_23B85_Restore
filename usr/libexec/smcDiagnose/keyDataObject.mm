@@ -1,23 +1,23 @@
 @interface keyDataObject
-- (double)valueDouble:(int64_t)a3;
-- (id)valueStr:(int64_t)a3;
-- (keyDataObject)initWith:(id)a3;
-- (keyDataObject)initWithT:(id)a3;
-- (void)addToTimeArray:(double)a3 idx:(int64_t)a4;
-- (void)addToValueArray:(id)a3 idx:(int64_t)a4;
+- (double)valueDouble:(int64_t)double;
+- (id)valueStr:(int64_t)str;
+- (keyDataObject)initWith:(id)with;
+- (keyDataObject)initWithT:(id)t;
+- (void)addToTimeArray:(double)array idx:(int64_t)idx;
+- (void)addToValueArray:(id)array idx:(int64_t)idx;
 @end
 
 @implementation keyDataObject
 
-- (keyDataObject)initWith:(id)a3
+- (keyDataObject)initWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   v11.receiver = self;
   v11.super_class = keyDataObject;
   v5 = [(keyDataObject *)&v11 init];
   if (v5)
   {
-    v6 = [NSString stringWithString:v4];
+    v6 = [NSString stringWithString:withCopy];
     keyString = v5->keyString;
     v5->keyString = v6;
 
@@ -31,15 +31,15 @@
   return v5;
 }
 
-- (keyDataObject)initWithT:(id)a3
+- (keyDataObject)initWithT:(id)t
 {
-  v4 = a3;
+  tCopy = t;
   v11.receiver = self;
   v11.super_class = keyDataObject;
   v5 = [(keyDataObject *)&v11 init];
   if (v5)
   {
-    v6 = [NSString stringWithString:v4];
+    v6 = [NSString stringWithString:tCopy];
     keyString = v5->keyString;
     v5->keyString = v6;
 
@@ -53,18 +53,18 @@
   return v5;
 }
 
-- (id)valueStr:(int64_t)a3
+- (id)valueStr:(int64_t)str
 {
   if (self->type == 1)
   {
-    if ([(NSMutableArray *)self->valueArray count]<= a3)
+    if ([(NSMutableArray *)self->valueArray count]<= str)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = [(NSMutableArray *)self->valueArray objectAtIndex:a3];
+      v6 = [(NSMutableArray *)self->valueArray objectAtIndex:str];
     }
   }
 
@@ -76,30 +76,30 @@
   return v6;
 }
 
-- (double)valueDouble:(int64_t)a3
+- (double)valueDouble:(int64_t)double
 {
-  if (self->type != 2 || [(NSMutableArray *)self->valueArray count]<= a3)
+  if (self->type != 2 || [(NSMutableArray *)self->valueArray count]<= double)
   {
     return -1.0;
   }
 
-  v5 = [(NSMutableArray *)self->valueArray objectAtIndex:a3];
+  v5 = [(NSMutableArray *)self->valueArray objectAtIndex:double];
   [v5 doubleValue];
   v7 = v6;
 
   return v7;
 }
 
-- (void)addToValueArray:(id)a3 idx:(int64_t)a4
+- (void)addToValueArray:(id)array idx:(int64_t)idx
 {
-  v5 = [NSString stringWithString:a3, a4];
+  v5 = [NSString stringWithString:array, idx];
   [(NSMutableArray *)self->valueArray addObject:v5];
 }
 
-- (void)addToTimeArray:(double)a3 idx:(int64_t)a4
+- (void)addToTimeArray:(double)array idx:(int64_t)idx
 {
-  v5 = [NSNumber numberWithDouble:a4, a3];
-  [(NSMutableArray *)self->valueArray addObject:v5];
+  array = [NSNumber numberWithDouble:idx, array];
+  [(NSMutableArray *)self->valueArray addObject:array];
 }
 
 @end

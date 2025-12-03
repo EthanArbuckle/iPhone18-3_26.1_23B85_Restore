@@ -10,18 +10,18 @@
 
 - (uint64_t)cal_isCertificateError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:*MEMORY[0x1E696A978]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A978]])
   {
-    if ([a1 code] == -1203 || objc_msgSend(a1, "code") == -1201 || objc_msgSend(a1, "code") == -1204)
+    if ([self code] == -1203 || objc_msgSend(self, "code") == -1201 || objc_msgSend(self, "code") == -1204)
     {
 
       return 1;
     }
 
-    v7 = [a1 code];
+    code = [self code];
 
-    if (v7 == -1202)
+    if (code == -1202)
     {
       return 1;
     }
@@ -31,13 +31,13 @@
   {
   }
 
-  v4 = [a1 domain];
-  v5 = v4;
-  if (v4 == @"kEKAccountErrorDomain")
+  domain2 = [self domain];
+  v5 = domain2;
+  if (domain2 == @"kEKAccountErrorDomain")
   {
-    v6 = [a1 code];
+    code2 = [self code];
 
-    if (v6 == 6)
+    if (code2 == 6)
     {
       return 1;
     }
@@ -53,7 +53,7 @@
 - (void)cal_trustInfoCopy
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = *a1;
+  v2 = *self;
   v4 = 138412290;
   v5 = v2;
   _os_log_error_impl(&dword_1A805E000, a2, OS_LOG_TYPE_ERROR, "Deserialization of trust error [%@]", &v4, 0xCu);
@@ -99,14 +99,14 @@
       }
 
       v17 = v10;
-      v20 = [v17 cal_serializableError];
-      v15 = v20 != v17;
-      if (v20 != v17)
+      cal_serializableError = [v17 cal_serializableError];
+      v15 = cal_serializableError != v17;
+      if (cal_serializableError != v17)
       {
         v21 = v19;
         *a5 = v19;
-        v22 = v20;
-        *a6 = v20;
+        v22 = cal_serializableError;
+        *a6 = cal_serializableError;
       }
     }
 
@@ -135,7 +135,7 @@ LABEL_14:
 - (id)cal_serializableUserInfo
 {
   v23[7] = *MEMORY[0x1E69E9840];
-  v1 = [a1 userInfo];
+  userInfo = [self userInfo];
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -162,7 +162,7 @@ LABEL_14:
   v7 = v6;
   v14 = v7;
   v16 = &v17;
-  v8 = v1;
+  v8 = userInfo;
   v15 = v8;
   [v8 enumerateKeysAndObjectsUsingBlock:v13];
   v9 = v18[5];
@@ -181,21 +181,21 @@ LABEL_14:
 
 - (id)cal_serializableError
 {
-  v2 = [a1 userInfo];
-  v3 = [a1 cal_serializableUserInfo];
-  if (v2 == v3)
+  userInfo = [self userInfo];
+  cal_serializableUserInfo = [self cal_serializableUserInfo];
+  if (userInfo == cal_serializableUserInfo)
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
   else
   {
     v4 = MEMORY[0x1E696ABC0];
-    v5 = [a1 domain];
-    v6 = [v4 errorWithDomain:v5 code:objc_msgSend(a1 userInfo:{"code"), v3}];
+    domain = [self domain];
+    selfCopy = [v4 errorWithDomain:domain code:objc_msgSend(self userInfo:{"code"), cal_serializableUserInfo}];
   }
 
-  return v6;
+  return selfCopy;
 }
 
 + (void)_cal_serializedEntryForKey:()EKAdditions value:outKey:outValue:.cold.1(uint64_t *a1, NSObject *a2)

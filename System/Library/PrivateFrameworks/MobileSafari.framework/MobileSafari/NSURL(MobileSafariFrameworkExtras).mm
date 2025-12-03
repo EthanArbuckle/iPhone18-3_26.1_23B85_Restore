@@ -10,22 +10,22 @@
 - (uint64_t)sf_isOfflineReadingListURL
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (![a1 isFileURL])
+  if (![self isFileURL])
   {
     return 0;
   }
 
-  v2 = [a1 path];
-  v3 = [v2 length];
+  path = [self path];
+  v3 = [path length];
 
-  if (!v3 || ![a1 getFileSystemRepresentation:__s maxLength:1024])
+  if (!v3 || ![self getFileSystemRepresentation:__s maxLength:1024])
   {
     return 0;
   }
 
   v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:__s length:strlen(__s) encoding:4 freeWhenDone:0];
-  v5 = [MEMORY[0x1E69E20F8] readingListArchivesDirectoryPath];
-  v6 = [v4 safari_hasCaseInsensitivePrefix:v5];
+  readingListArchivesDirectoryPath = [MEMORY[0x1E69E20F8] readingListArchivesDirectoryPath];
+  v6 = [v4 safari_hasCaseInsensitivePrefix:readingListArchivesDirectoryPath];
 
   return v6;
 }
@@ -33,15 +33,15 @@
 - (uint64_t)sf_isTestWebArchiveURL
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (![a1 isFileURL])
+  if (![self isFileURL])
   {
     return 0;
   }
 
-  v2 = [a1 path];
-  v3 = [v2 length];
+  path = [self path];
+  v3 = [path length];
 
-  if (!v3 || ![a1 getFileSystemRepresentation:__s maxLength:1024])
+  if (!v3 || ![self getFileSystemRepresentation:__s maxLength:1024])
   {
     return 0;
   }
@@ -55,12 +55,12 @@
 
 - (uint64_t)sf_isFacetimeURL
 {
-  if ([a1 isFaceTimeURL] & 1) != 0 || (objc_msgSend(a1, "isFaceTimePromptURL") & 1) != 0 || (objc_msgSend(a1, "isFaceTimeAudioURL"))
+  if ([self isFaceTimeURL] & 1) != 0 || (objc_msgSend(self, "isFaceTimePromptURL") & 1) != 0 || (objc_msgSend(self, "isFaceTimeAudioURL"))
   {
     return 1;
   }
 
-  return [a1 isFaceTimeAudioPromptURL];
+  return [self isFaceTimeAudioPromptURL];
 }
 
 + (BOOL)_sf_canCreateURLsFromDropSession:()MobileSafariFrameworkExtras

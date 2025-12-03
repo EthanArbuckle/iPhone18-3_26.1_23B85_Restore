@@ -1,16 +1,16 @@
 @interface NUReachabilityProvider
 - (BOOL)isNetworkReachable;
-- (NUReachabilityProvider)initWithNetworkReachability:(id)a3;
-- (void)addReachabilityObserver:(id)a3;
-- (void)networkReachabilityDidChange:(id)a3;
-- (void)removeReachabilityObserver:(id)a3;
+- (NUReachabilityProvider)initWithNetworkReachability:(id)reachability;
+- (void)addReachabilityObserver:(id)observer;
+- (void)networkReachabilityDidChange:(id)change;
+- (void)removeReachabilityObserver:(id)observer;
 @end
 
 @implementation NUReachabilityProvider
 
-- (NUReachabilityProvider)initWithNetworkReachability:(id)a3
+- (NUReachabilityProvider)initWithNetworkReachability:(id)reachability
 {
-  v5 = a3;
+  reachabilityCopy = reachability;
   v10.receiver = self;
   v10.super_class = NUReachabilityProvider;
   v6 = [(NUReachabilityProvider *)&v10 init];
@@ -20,8 +20,8 @@
     observers = v6->_observers;
     v6->_observers = v7;
 
-    objc_storeStrong(&v6->_networkReachability, a3);
-    [v5 addObserver:v6];
+    objc_storeStrong(&v6->_networkReachability, reachability);
+    [reachabilityCopy addObserver:v6];
   }
 
   return v6;
@@ -29,36 +29,36 @@
 
 - (BOOL)isNetworkReachable
 {
-  v2 = [(NUReachabilityProvider *)self networkReachability];
-  v3 = [v2 isNetworkReachable];
+  networkReachability = [(NUReachabilityProvider *)self networkReachability];
+  isNetworkReachable = [networkReachability isNetworkReachable];
 
-  return v3;
+  return isNetworkReachable;
 }
 
-- (void)addReachabilityObserver:(id)a3
+- (void)addReachabilityObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(NUReachabilityProvider *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(NUReachabilityProvider *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeReachabilityObserver:(id)a3
+- (void)removeReachabilityObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(NUReachabilityProvider *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(NUReachabilityProvider *)self observers];
+  [observers removeObject:observerCopy];
 }
 
-- (void)networkReachabilityDidChange:(id)a3
+- (void)networkReachabilityDidChange:(id)change
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [a3 isNetworkReachable];
+  isNetworkReachable = [change isNetworkReachable];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NUReachabilityProvider *)self observers];
-  v6 = [v5 copy];
+  observers = [(NUReachabilityProvider *)self observers];
+  v6 = [observers copy];
 
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
@@ -75,7 +75,7 @@
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v12 + 1) + 8 * v10++) reachabilityChanged:v4];
+        [*(*(&v12 + 1) + 8 * v10++) reachabilityChanged:isNetworkReachable];
       }
 
       while (v8 != v10);

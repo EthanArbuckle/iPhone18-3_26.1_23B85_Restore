@@ -16,8 +16,8 @@
     while ([(_SearchResultChildItemGridView *)self numberOfRows]> 0);
   }
 
-  v3 = [(_SearchResultChildItemGridView *)self subviews];
-  [v3 makeObjectsPerformSelector:"removeFromSuperview"];
+  subviews = [(_SearchResultChildItemGridView *)self subviews];
+  [subviews makeObjectsPerformSelector:"removeFromSuperview"];
 }
 
 @end

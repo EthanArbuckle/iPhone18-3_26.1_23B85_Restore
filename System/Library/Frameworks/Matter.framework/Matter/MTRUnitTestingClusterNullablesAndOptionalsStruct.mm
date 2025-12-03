@@ -1,6 +1,6 @@
 @interface MTRUnitTestingClusterNullablesAndOptionalsStruct
 - (MTRUnitTestingClusterNullablesAndOptionalsStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -54,44 +54,44 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUnitTestingClusterNullablesAndOptionalsStruct);
-  v5 = [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)self nullableInt];
-  [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)v4 setNullableInt:v5];
+  nullableInt = [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)self nullableInt];
+  [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)v4 setNullableInt:nullableInt];
 
-  v6 = [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)self optionalInt];
-  [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)v4 setOptionalInt:v6];
+  optionalInt = [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)self optionalInt];
+  [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)v4 setOptionalInt:optionalInt];
 
-  v7 = [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)self nullableOptionalInt];
-  [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)v4 setNullableOptionalInt:v7];
+  nullableOptionalInt = [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)self nullableOptionalInt];
+  [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)v4 setNullableOptionalInt:nullableOptionalInt];
 
-  v8 = [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)self nullableString];
-  [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)v4 setNullableString:v8];
+  nullableString = [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)self nullableString];
+  [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)v4 setNullableString:nullableString];
 
-  v9 = [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)self optionalString];
-  [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)v4 setOptionalString:v9];
+  optionalString = [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)self optionalString];
+  [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)v4 setOptionalString:optionalString];
 
-  v10 = [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)self nullableOptionalString];
-  [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)v4 setNullableOptionalString:v10];
+  nullableOptionalString = [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)self nullableOptionalString];
+  [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)v4 setNullableOptionalString:nullableOptionalString];
 
-  v11 = [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)self nullableStruct];
-  [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)v4 setNullableStruct:v11];
+  nullableStruct = [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)self nullableStruct];
+  [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)v4 setNullableStruct:nullableStruct];
 
-  v12 = [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)self optionalStruct];
-  [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)v4 setOptionalStruct:v12];
+  optionalStruct = [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)self optionalStruct];
+  [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)v4 setOptionalStruct:optionalStruct];
 
-  v13 = [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)self nullableOptionalStruct];
-  [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)v4 setNullableOptionalStruct:v13];
+  nullableOptionalStruct = [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)self nullableOptionalStruct];
+  [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)v4 setNullableOptionalStruct:nullableOptionalStruct];
 
-  v14 = [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)self nullableList];
-  [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)v4 setNullableList:v14];
+  nullableList = [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)self nullableList];
+  [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)v4 setNullableList:nullableList];
 
-  v15 = [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)self optionalList];
-  [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)v4 setOptionalList:v15];
+  optionalList = [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)self optionalList];
+  [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)v4 setOptionalList:optionalList];
 
-  v16 = [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)self nullableOptionalList];
-  [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)v4 setNullableOptionalList:v16];
+  nullableOptionalList = [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)self nullableOptionalList];
+  [(MTRUnitTestingClusterNullablesAndOptionalsStruct *)v4 setNullableOptionalList:nullableOptionalList];
 
   return v4;
 }

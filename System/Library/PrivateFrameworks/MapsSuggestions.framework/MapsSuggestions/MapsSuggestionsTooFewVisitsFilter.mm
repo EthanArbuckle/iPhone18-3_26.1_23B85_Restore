@@ -1,33 +1,33 @@
 @interface MapsSuggestionsTooFewVisitsFilter
-- (BOOL)shouldKeepEntry:(id)a3;
+- (BOOL)shouldKeepEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsTooFewVisitsFilter
 
-- (BOOL)shouldKeepEntry:(id)a3
+- (BOOL)shouldKeepEntry:(id)entry
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  entryCopy = entry;
+  if (entryCopy)
   {
-    if (!GEOConfigGetBOOL() || ([v3 isShortcut] & 1) != 0)
+    if (!GEOConfigGetBOOL() || ([entryCopy isShortcut] & 1) != 0)
     {
 LABEL_4:
       v4 = 1;
       goto LABEL_11;
     }
 
-    v6 = [v3 type];
+    type = [entryCopy type];
     Integer = 0;
     v4 = 1;
-    if (v6 <= 2)
+    if (type <= 2)
     {
-      if (!v6)
+      if (!type)
       {
         goto LABEL_11;
       }
 
-      if (v6 != 1 && v6 != 2)
+      if (type != 1 && type != 2)
       {
         goto LABEL_19;
       }
@@ -35,17 +35,17 @@ LABEL_4:
 
     else
     {
-      if (v6 > 0x19)
+      if (type > 0x19)
       {
         goto LABEL_19;
       }
 
-      if (((1 << v6) & 0x3F7FFE8) != 0)
+      if (((1 << type) & 0x3F7FFE8) != 0)
       {
         goto LABEL_11;
       }
 
-      if (v6 != 4 && v6 != 19)
+      if (type != 4 && type != 19)
       {
         goto LABEL_19;
       }
@@ -53,14 +53,14 @@ LABEL_4:
 
     Integer = GEOConfigGetInteger();
 LABEL_19:
-    v9 = [v3 originatingSourceName];
-    v10 = [v9 hasSuffix:@"MapsSuggestionsRoutineSource"];
+    originatingSourceName = [entryCopy originatingSourceName];
+    v10 = [originatingSourceName hasSuffix:@"MapsSuggestionsRoutineSource"];
 
     if (v10)
     {
-      if ([v3 containsKey:@"MapsSuggestionsCoreRoutineVisitsCountKey"])
+      if ([entryCopy containsKey:@"MapsSuggestionsCoreRoutineVisitsCountKey"])
       {
-        v11 = [v3 numberForKey:@"MapsSuggestionsCoreRoutineVisitsCountKey"];
+        v11 = [entryCopy numberForKey:@"MapsSuggestionsCoreRoutineVisitsCountKey"];
         v4 = [v11 integerValue] >= Integer;
 
         goto LABEL_11;
@@ -70,7 +70,7 @@ LABEL_19:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
         v13 = 138412290;
-        v14 = v3;
+        v14 = entryCopy;
         _os_log_impl(&dword_1C5126000, v12, OS_LOG_TYPE_DEBUG, "Weird that we didn't have a MapsSuggestionsCoreRoutineVisitsCountKey: %@", &v13, 0xCu);
       }
     }

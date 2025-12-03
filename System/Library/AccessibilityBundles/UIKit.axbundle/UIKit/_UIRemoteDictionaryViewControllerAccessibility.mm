@@ -1,19 +1,19 @@
 @interface _UIRemoteDictionaryViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_handleDownloadButton:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_handleDownloadButton:(id)button;
 @end
 
 @implementation _UIRemoteDictionaryViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   v5 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = "@";
   v3 = @"_UIRemoteDictionaryViewController";
   [location[0] validateClass:"@" hasInstanceMethod:"@" withFullSignature:0];
@@ -24,28 +24,28 @@
   objc_storeStrong(v6, v5);
 }
 
-- (void)_handleDownloadButton:(id)a3
+- (void)_handleDownloadButton:(id)button
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, button);
+  v3.receiver = selfCopy;
   v3.super_class = _UIRemoteDictionaryViewControllerAccessibility;
   [(_UIRemoteDictionaryViewControllerAccessibility *)&v3 _handleDownloadButton:location[0]];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v46 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v44 = 0;
-  objc_storeStrong(&v44, a4);
-  v42.receiver = v46;
+  objc_storeStrong(&v44, path);
+  v42.receiver = selfCopy;
   v42.super_class = _UIRemoteDictionaryViewControllerAccessibility;
   v43 = [(_UIRemoteDictionaryViewControllerAccessibility *)&v42 tableView:location[0] cellForRowAtIndexPath:v44];
   v40[1] = MEMORY[0x29EDCA5F8];
@@ -56,7 +56,7 @@
   AXPerformSafeBlock();
   v39 = 0;
   objc_opt_class();
-  v11 = [(_UIRemoteDictionaryViewControllerAccessibility *)v46 safeValueForKey:@"_availableDictionaries"];
+  v11 = [(_UIRemoteDictionaryViewControllerAccessibility *)selfCopy safeValueForKey:@"_availableDictionaries"];
   v38 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v11);
   v37 = MEMORY[0x29EDC9748](v38);
@@ -101,15 +101,15 @@
   v14 = MEMORY[0x29EDC9748](v15);
   objc_storeStrong(&v15, 0);
   v17 = v14;
-  v6 = [v14 attributes];
-  v13 = [v6 objectForKey:@"IndexLanguages"];
-  *&v4 = MEMORY[0x29EDC9740](v6).n128_u64[0];
-  v12 = [v13 firstObject];
-  v7 = [v43 detailTextLabel];
-  [v7 setAccessibilityLanguage:v12];
-  MEMORY[0x29EDC9740](v7);
+  attributes = [v14 attributes];
+  v13 = [attributes objectForKey:@"IndexLanguages"];
+  *&v4 = MEMORY[0x29EDC9740](attributes).n128_u64[0];
+  firstObject = [v13 firstObject];
+  detailTextLabel = [v43 detailTextLabel];
+  [detailTextLabel setAccessibilityLanguage:firstObject];
+  MEMORY[0x29EDC9740](detailTextLabel);
   v8 = MEMORY[0x29EDC9748](v43);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&firstObject, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v36, 0);

@@ -1,41 +1,41 @@
 @interface PPSQLDatabase
 + (PPSQLDatabase)sharedInstance;
-+ (id)createTempTableContainingRowsFromQuery:(id)a3 descriptiveTableName:(id)a4 txnWitness:(id)a5 bind:(id)a6;
-+ (id)createTempViewContainingRowsFromQuery:(id)a3 descriptiveTableName:(id)a4 txnWitness:(id)a5;
++ (id)createTempTableContainingRowsFromQuery:(id)query descriptiveTableName:(id)name txnWitness:(id)witness bind:(id)bind;
++ (id)createTempViewContainingRowsFromQuery:(id)query descriptiveTableName:(id)name txnWitness:(id)witness;
 + (id)nonMigratingToolsInstance;
-+ (id)nonMigratingToolsInstanceWithParentDirectory:(id)a3;
-+ (void)dropTableWithName:(id)a3 txnWitness:(id)a4;
-+ (void)dropViewWithName:(id)a3 txnWitness:(id)a4;
++ (id)nonMigratingToolsInstanceWithParentDirectory:(id)directory;
++ (void)dropTableWithName:(id)name txnWitness:(id)witness;
++ (void)dropViewWithName:(id)name txnWitness:(id)witness;
 - (BOOL)_handleCorruption;
 - (BOOL)_isCorruptionMarkerPresent;
 - (BOOL)_prepareDatabaseHandleForMigration;
 - (BOOL)_removeCorruptionMarker;
-- (BOOL)optimizeDatabaseWithShouldContinueBlock:(id)a3;
+- (BOOL)optimizeDatabaseWithShouldContinueBlock:(id)block;
 - (BOOL)unmigrate;
-- (BOOL)vacuumDatabaseWithShouldContinueBlock:(id)a3;
+- (BOOL)vacuumDatabaseWithShouldContinueBlock:(id)block;
 - (id)_allTables;
-- (id)_initWithPath:(id)a3 performMigrations:(BOOL)a4;
-- (id)_openFreshHandleForClient:(unsigned __int8)a3;
-- (id)checkWithError:(id *)a3;
+- (id)_initWithPath:(id)path performMigrations:(BOOL)migrations;
+- (id)_openFreshHandleForClient:(unsigned __int8)client;
+- (id)checkWithError:(id *)error;
 - (id)migrations;
-- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)a3;
-- (id)sourceStats:(unint64_t)a3;
-- (id)sourceStats:(unint64_t)a3 forTableWithName:(id)a4 txnWitness:(id)a5;
+- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)version;
+- (id)sourceStats:(unint64_t)stats;
+- (id)sourceStats:(unint64_t)stats forTableWithName:(id)name txnWitness:(id)witness;
 - (id)stats;
 - (unint64_t)maxSchemaVersion;
 - (unsigned)migration_ConvertLocationDescriptionsToLowercase;
-- (void)_disableQueryLoggingForHandle:(id)a3;
-- (void)_enableQueryLoggingForHandle:(id)a3;
-- (void)_releaseReadOnlyHandle:(id)a3 client:(unsigned __int8)a4;
+- (void)_disableQueryLoggingForHandle:(id)handle;
+- (void)_enableQueryLoggingForHandle:(id)handle;
+- (void)_releaseReadOnlyHandle:(id)handle client:(unsigned __int8)client;
 @end
 
 @implementation PPSQLDatabase
 
-- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)a3
+- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)version
 {
-  if (a3)
+  if (version)
   {
-    *a3 = 0;
+    *version = 0;
   }
 
   return MEMORY[0x277CBEBF8];
@@ -216,8 +216,8 @@
 
 - (unsigned)migration_ConvertLocationDescriptionsToLowercase
 {
-  v4 = [(PPSQLDatabase *)self databaseHandle];
-  v5 = [v4 numberOfRowsInTable:@"loc_records"];
+  databaseHandle = [(PPSQLDatabase *)self databaseHandle];
+  v5 = [databaseHandle numberOfRowsInTable:@"loc_records"];
   v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v5];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -227,14 +227,14 @@
   v15 = a2;
   v13[4] = self;
   v7 = v6;
-  [v4 prepAndRunQuery:@"SELECT id onPrep:uuid onRow:hex(uuid) AS uuid_hex onError:{lc_description FROM loc_records", 0, v13, &__block_literal_global_200}];
+  [databaseHandle prepAndRunQuery:@"SELECT id onPrep:uuid onRow:hex(uuid) AS uuid_hex onError:{lc_description FROM loc_records", 0, v13, &__block_literal_global_200}];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__PPSQLDatabase_migration_ConvertLocationDescriptionsToLowercase__block_invoke_204;
   v10[3] = &unk_278974DC0;
-  v11 = v4;
+  v11 = databaseHandle;
   v12 = @"UPDATE loc_records SET lc_description = :lcDescription WHERE id = :id";
-  v8 = v4;
+  v8 = databaseHandle;
   [v7 enumerateObjectsUsingBlock:v10];
 
   return 4;
@@ -337,8 +337,8 @@ uint64_t __65__PPSQLDatabase_migration_ConvertLocationDescriptionsToLowercase__b
 
 - (unint64_t)maxSchemaVersion
 {
-  v2 = [(PPSQLDatabase *)self migrations];
-  v3 = [v2 count];
+  migrations = [(PPSQLDatabase *)self migrations];
+  v3 = [migrations count];
 
   return v3;
 }
@@ -394,11 +394,11 @@ uint64_t __65__PPSQLDatabase_migration_ConvertLocationDescriptionsToLowercase__b
     [(NSMutableArray *)self->_handlePool->availableReadOnlyHandles removeAllObjects];
     self->_handlePool->totalReadOnlyHandles = 0;
     [MEMORY[0x277D42630] truncateDatabaseAtPath:self->_path];
-    v3 = [(PPSQLDatabase *)self _removeCorruptionMarker];
+    _removeCorruptionMarker = [(PPSQLDatabase *)self _removeCorruptionMarker];
     [(NSCondition *)self->_handlePoolCond unlock];
   }
 
-  return v3;
+  return _removeCorruptionMarker;
 }
 
 - (BOOL)_removeCorruptionMarker
@@ -412,9 +412,9 @@ uint64_t __65__PPSQLDatabase_migration_ConvertLocationDescriptionsToLowercase__b
   else
   {
     v4 = [MEMORY[0x277D42630] corruptionMarkerPathForPath:self->_path];
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v10 = 0;
-    v3 = [v5 removeItemAtPath:v4 error:&v10];
+    v3 = [defaultManager removeItemAtPath:v4 error:&v10];
     v6 = v10;
 
     if ((v3 & 1) == 0)
@@ -443,15 +443,15 @@ uint64_t __65__PPSQLDatabase_migration_ConvertLocationDescriptionsToLowercase__b
   }
 
   v4 = [MEMORY[0x277D42630] corruptionMarkerPathForPath:self->_path];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v5 fileExistsAtPath:v4 isDirectory:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v6 = [defaultManager fileExistsAtPath:v4 isDirectory:0];
 
   return v6;
 }
 
-- (BOOL)vacuumDatabaseWithShouldContinueBlock:(id)a3
+- (BOOL)vacuumDatabaseWithShouldContinueBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(PPSQLDatabase *)self isInMemory])
   {
     v5 = 1;
@@ -463,7 +463,7 @@ uint64_t __65__PPSQLDatabase_migration_ConvertLocationDescriptionsToLowercase__b
     v14 = &v13;
     v15 = 0x2020000000;
     v16 = 0;
-    while ((v14[3] & 1) == 0 && v4[2](v4))
+    while ((v14[3] & 1) == 0 && blockCopy[2](blockCopy))
     {
       v6 = pp_default_log_handle();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -476,7 +476,7 @@ uint64_t __65__PPSQLDatabase_migration_ConvertLocationDescriptionsToLowercase__b
       v9[1] = 3221225472;
       v9[2] = __55__PPSQLDatabase_vacuumDatabaseWithShouldContinueBlock___block_invoke;
       v9[3] = &unk_278974D50;
-      v10 = v4;
+      v10 = blockCopy;
       v11 = &v13;
       v7 = [(PPSQLDatabase *)self writeTransactionWithClient:0 timeoutInSeconds:v9 block:3.0];
 
@@ -520,10 +520,10 @@ void __55__PPSQLDatabase_vacuumDatabaseWithShouldContinueBlock___block_invoke(ui
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)optimizeDatabaseWithShouldContinueBlock:(id)a3
+- (BOOL)optimizeDatabaseWithShouldContinueBlock:(id)block
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   if ([(PPSQLDatabase *)self isInMemory])
   {
     LOBYTE(v5) = 1;
@@ -537,7 +537,7 @@ void __55__PPSQLDatabase_vacuumDatabaseWithShouldContinueBlock___block_invoke(ui
     aBlock[2] = __57__PPSQLDatabase_optimizeDatabaseWithShouldContinueBlock___block_invoke;
     aBlock[3] = &unk_278974D28;
     aBlock[4] = self;
-    v7 = v4;
+    v7 = blockCopy;
     v27 = v7;
     v19 = v6;
     v26 = v19;
@@ -698,7 +698,7 @@ uint64_t __27__PPSQLDatabase__allTables__block_invoke_2(uint64_t a1, void *a2)
   return *MEMORY[0x277D42698];
 }
 
-- (id)checkWithError:(id *)a3
+- (id)checkWithError:(id *)error
 {
   v21 = 0;
   v22 = &v21;
@@ -738,12 +738,12 @@ uint64_t __27__PPSQLDatabase__allTables__block_invoke_2(uint64_t a1, void *a2)
   v15[3] = &unk_278974D00;
   v15[4] = &v21;
   [v6 prepAndRunQuery:@"pragma foreign_key_check" onPrep:0 onRow:v16 onError:v15];
-  if (a3)
+  if (error)
   {
     v11 = v22[5];
     if (v11)
     {
-      *a3 = v11;
+      *error = v11;
     }
   }
 
@@ -862,7 +862,7 @@ LABEL_13:
   return *MEMORY[0x277D42690];
 }
 
-- (id)sourceStats:(unint64_t)a3
+- (id)sourceStats:(unint64_t)stats
 {
   v6 = 0;
   v7 = &v6;
@@ -876,7 +876,7 @@ LABEL_13:
   v5[3] = &unk_278974CD8;
   v5[4] = self;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = stats;
   [(PPSQLDatabase *)self readTransactionWithClient:8 block:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -894,24 +894,24 @@ uint64_t __29__PPSQLDatabase_sourceStats___block_invoke(uint64_t a1, uint64_t a2
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)sourceStats:(unint64_t)a3 forTableWithName:(id)a4 txnWitness:(id)a5
+- (id)sourceStats:(unint64_t)stats forTableWithName:(id)name txnWitness:(id)witness
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 db];
+  statsCopy = stats;
+  nameCopy = name;
+  witnessCopy = witness;
+  v9 = [witnessCopy db];
   v10 = [v9 hasTableNamed:@"sources"];
 
   if (v10)
   {
-    if (v7)
+    if (nameCopy)
     {
-      v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@" INNER JOIN %@ ON (sources.id = %@.source_id)", v7, v7];
+      nameCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@" INNER JOIN %@ ON (sources.id = %@.source_id)", nameCopy, nameCopy];
     }
 
     else
     {
-      v11 = &stru_284759D38;
+      nameCopy = &stru_284759D38;
     }
 
     v82 = 0;
@@ -954,12 +954,12 @@ uint64_t __29__PPSQLDatabase_sourceStats___block_invoke(uint64_t a1, uint64_t a2
     aBlock[1] = 3221225472;
     aBlock[2] = __57__PPSQLDatabase_sourceStats_forTableWithName_txnWitness___block_invoke;
     aBlock[3] = &unk_278974CB0;
-    v13 = v11;
+    v13 = nameCopy;
     v49 = v13;
     v14 = _Block_copy(aBlock);
-    if (v6)
+    if (statsCopy)
     {
-      v15 = [v8 db];
+      v15 = [witnessCopy db];
       v16 = v14[2](v14, @"ref_count", 0);
       v47[0] = MEMORY[0x277D85DD0];
       v47[1] = 3221225472;
@@ -969,9 +969,9 @@ uint64_t __29__PPSQLDatabase_sourceStats___block_invoke(uint64_t a1, uint64_t a2
       [v15 prepAndRunQuery:v16 onPrep:0 onRow:v47 onError:0];
     }
 
-    if ((v6 & 2) != 0)
+    if ((statsCopy & 2) != 0)
     {
-      v17 = [v8 db];
+      v17 = [witnessCopy db];
       v18 = v14[2](v14, @"ref_count", 1);
       v46[0] = MEMORY[0x277D85DD0];
       v46[1] = 3221225472;
@@ -981,9 +981,9 @@ uint64_t __29__PPSQLDatabase_sourceStats___block_invoke(uint64_t a1, uint64_t a2
       [v17 prepAndRunQuery:v18 onPrep:0 onRow:v46 onError:0];
     }
 
-    if ((v6 & 0x10) != 0)
+    if ((statsCopy & 0x10) != 0)
     {
-      v19 = [v8 db];
+      v19 = [witnessCopy db];
       v20 = v14[2](v14, @"seconds_from_1970", 0);
       v45[0] = MEMORY[0x277D85DD0];
       v45[1] = 3221225472;
@@ -993,9 +993,9 @@ uint64_t __29__PPSQLDatabase_sourceStats___block_invoke(uint64_t a1, uint64_t a2
       [v19 prepAndRunQuery:v20 onPrep:0 onRow:v45 onError:0];
     }
 
-    if ((v6 & 0x20) != 0)
+    if ((statsCopy & 0x20) != 0)
     {
-      v21 = [v8 db];
+      v21 = [witnessCopy db];
       v22 = v14[2](v14, @"seconds_from_1970", 1);
       v44[0] = MEMORY[0x277D85DD0];
       v44[1] = 3221225472;
@@ -1005,9 +1005,9 @@ uint64_t __29__PPSQLDatabase_sourceStats___block_invoke(uint64_t a1, uint64_t a2
       [v21 prepAndRunQuery:v22 onPrep:0 onRow:v44 onError:0];
     }
 
-    if ((v6 & 0x40) != 0)
+    if ((statsCopy & 0x40) != 0)
     {
-      v23 = [v8 db];
+      v23 = [witnessCopy db];
       v24 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT COUNT(DISTINCT bundle_id) AS bundle_id_count FROM sources%@", v13];
       v43[0] = MEMORY[0x277D85DD0];
       v43[1] = 3221225472;
@@ -1017,9 +1017,9 @@ uint64_t __29__PPSQLDatabase_sourceStats___block_invoke(uint64_t a1, uint64_t a2
       [v23 prepAndRunQuery:v24 onPrep:0 onRow:v43 onError:0];
     }
 
-    if ((v6 & 0x80) != 0)
+    if ((statsCopy & 0x80) != 0)
     {
-      v25 = [v8 db];
+      v25 = [witnessCopy db];
       v26 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT COUNT(*) AS doc_id_count FROM (SELECT DISTINCT bundle_id, doc_id FROM sources%@)", v13];
       v42[0] = MEMORY[0x277D85DD0];
       v42[1] = 3221225472;
@@ -1029,21 +1029,21 @@ uint64_t __29__PPSQLDatabase_sourceStats___block_invoke(uint64_t a1, uint64_t a2
       [v25 prepAndRunQuery:v26 onPrep:0 onRow:v42 onError:0];
     }
 
-    if ((v6 & 0x100) != 0 && v7)
+    if ((statsCopy & 0x100) != 0 && nameCopy)
     {
-      v27 = [v8 db];
-      v28 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT COUNT(DISTINCT source_id) AS record_count FROM %@", v7];
+      v27 = [witnessCopy db];
+      nameCopy2 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT COUNT(DISTINCT source_id) AS record_count FROM %@", nameCopy];
       v41[0] = MEMORY[0x277D85DD0];
       v41[1] = 3221225472;
       v41[2] = __57__PPSQLDatabase_sourceStats_forTableWithName_txnWitness___block_invoke_8;
       v41[3] = &unk_278976450;
       v41[4] = &v50;
-      [v27 prepAndRunQuery:v28 onPrep:0 onRow:v41 onError:0];
+      [v27 prepAndRunQuery:nameCopy2 onPrep:0 onRow:v41 onError:0];
     }
 
-    if ((v6 & 4) != 0)
+    if ((statsCopy & 4) != 0)
     {
-      if (v7)
+      if (nameCopy)
       {
         v29 = objc_autoreleasePoolPush();
         v30 = [@"SELECT AVG(ref_count) FROM sources" stringByAppendingString:v13];
@@ -1055,7 +1055,7 @@ uint64_t __29__PPSQLDatabase_sourceStats___block_invoke(uint64_t a1, uint64_t a2
         v30 = @"SELECT AVG(ref_count) FROM sources";
       }
 
-      v31 = [v8 db];
+      v31 = [witnessCopy db];
       v40[0] = MEMORY[0x277D85DD0];
       v40[1] = 3221225472;
       v40[2] = __57__PPSQLDatabase_sourceStats_forTableWithName_txnWitness___block_invoke_9;
@@ -1064,9 +1064,9 @@ uint64_t __29__PPSQLDatabase_sourceStats___block_invoke(uint64_t a1, uint64_t a2
       [v31 prepAndRunQuery:v30 onPrep:0 onRow:v40 onError:0];
     }
 
-    if ((v6 & 8) != 0)
+    if ((statsCopy & 8) != 0)
     {
-      v32 = [v8 db];
+      v32 = [witnessCopy db];
       v39[0] = MEMORY[0x277D85DD0];
       v39[1] = 3221225472;
       v39[2] = __57__PPSQLDatabase_sourceStats_forTableWithName_txnWitness___block_invoke_10;
@@ -1180,7 +1180,7 @@ uint64_t __57__PPSQLDatabase_sourceStats_forTableWithName_txnWitness___block_inv
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v27 = self;
+  selfCopy = self;
   obj = [(PPSQLDatabase *)self _allTables];
   v8 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v8)
@@ -1231,9 +1231,9 @@ uint64_t __57__PPSQLDatabase_sourceStats_forTableWithName_txnWitness___block_inv
   v20[2](v20, v22);
 
   objc_autoreleasePoolPop(v17);
-  v23 = [(PPSQLDatabase *)v27 sourceStats:-1];
-  v24 = [v23 toDictionary];
-  [v19 setObject:v24 forKeyedSubscript:@"sources"];
+  v23 = [(PPSQLDatabase *)selfCopy sourceStats:-1];
+  toDictionary = [v23 toDictionary];
+  [v19 setObject:toDictionary forKeyedSubscript:@"sources"];
 
   v25 = *MEMORY[0x277D85DE8];
 
@@ -1292,28 +1292,28 @@ uint64_t __22__PPSQLDatabase_stats__block_invoke_3(uint64_t a1, void *a2)
   return *MEMORY[0x277D42690];
 }
 
-- (void)_releaseReadOnlyHandle:(id)a3 client:(unsigned __int8)a4
+- (void)_releaseReadOnlyHandle:(id)handle client:(unsigned __int8)client
 {
-  v14 = a3;
-  v5 = [MEMORY[0x277CCACC8] currentThread];
-  v6 = [v5 threadDictionary];
-  v7 = [v6 objectForKeyedSubscript:@"readOnlyHandleCountTLSKey"];
+  handleCopy = handle;
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v7 = [threadDictionary objectForKeyedSubscript:@"readOnlyHandleCountTLSKey"];
 
   if ([v7 intValue] < 2)
   {
-    v10 = [v5 threadDictionary];
-    [v10 removeObjectForKey:@"readOnlyHandleTLSKey"];
+    threadDictionary2 = [currentThread threadDictionary];
+    [threadDictionary2 removeObjectForKey:@"readOnlyHandleTLSKey"];
 
-    v11 = [v5 threadDictionary];
-    [v11 removeObjectForKey:@"readOnlyHandleCountTLSKey"];
+    threadDictionary3 = [currentThread threadDictionary];
+    [threadDictionary3 removeObjectForKey:@"readOnlyHandleCountTLSKey"];
 
-    v12 = [v5 threadDictionary];
-    v13 = [v12 objectForKeyedSubscript:@"writeTxnOpenTLSKey"];
+    threadDictionary4 = [currentThread threadDictionary];
+    v13 = [threadDictionary4 objectForKeyedSubscript:@"writeTxnOpenTLSKey"];
 
-    if (v13 != v14)
+    if (v13 != handleCopy)
     {
       [(NSCondition *)self->_handlePoolCond lock];
-      [(NSMutableArray *)self->_handlePool->availableReadOnlyHandles addObject:v14];
+      [(NSMutableArray *)self->_handlePool->availableReadOnlyHandles addObject:handleCopy];
       [(NSCondition *)self->_handlePoolCond signal];
       [(NSCondition *)self->_handlePoolCond unlock];
     }
@@ -1322,45 +1322,45 @@ uint64_t __22__PPSQLDatabase_stats__block_invoke_3(uint64_t a1, void *a2)
   else
   {
     v8 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v7, "intValue") - 1}];
-    v9 = [v5 threadDictionary];
-    [v9 setObject:v8 forKeyedSubscript:@"readOnlyHandleCountTLSKey"];
+    threadDictionary5 = [currentThread threadDictionary];
+    [threadDictionary5 setObject:v8 forKeyedSubscript:@"readOnlyHandleCountTLSKey"];
   }
 }
 
-- (void)_disableQueryLoggingForHandle:(id)a3
+- (void)_disableQueryLoggingForHandle:(id)handle
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  [v3 disableQueryPlanLogging];
+  handleCopy = handle;
+  [handleCopy disableQueryPlanLogging];
   v4 = pp_default_log_handle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = v3;
+    v7 = handleCopy;
     _os_log_impl(&dword_23224A000, v4, OS_LOG_TYPE_DEFAULT, "PPSQLDatabase: disable EXPLAIN QUERY PLAN log for handle %p", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enableQueryLoggingForHandle:(id)a3
+- (void)_enableQueryLoggingForHandle:(id)handle
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  handleCopy = handle;
   v4 = objc_opt_new();
   [v4 setFormatOptions:51];
   v5 = objc_alloc(MEMORY[0x277CCACA8]);
   v6 = objc_opt_new();
   v7 = [v4 stringFromDate:v6];
-  v8 = [MEMORY[0x277CCAC38] processInfo];
-  v9 = [v5 initWithFormat:@"explainQueryPlan-%@-pid_%d-handle_%p.log", v7, objc_msgSend(v8, "processIdentifier"), v3];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  handleCopy = [v5 initWithFormat:@"explainQueryPlan-%@-pid_%d-handle_%p.log", v7, objc_msgSend(processInfo, "processIdentifier"), handleCopy];
 
   v10 = objc_autoreleasePoolPush();
   v11 = +[PPPaths logDirectory];
-  v12 = [v11 stringByAppendingPathComponent:v9];
+  v12 = [v11 stringByAppendingPathComponent:handleCopy];
 
   objc_autoreleasePoolPop(v10);
-  LODWORD(v11) = [v3 enableQueryPlanLoggingWithPath:v12];
+  LODWORD(v11) = [handleCopy enableQueryPlanLoggingWithPath:v12];
   v13 = pp_default_log_handle();
   v14 = v13;
   if (v11)
@@ -1383,9 +1383,9 @@ uint64_t __22__PPSQLDatabase_stats__block_invoke_3(uint64_t a1, void *a2)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_openFreshHandleForClient:(unsigned __int8)a3
+- (id)_openFreshHandleForClient:(unsigned __int8)client
 {
-  v3 = a3;
+  clientCopy = client;
   v29 = *MEMORY[0x277D85DE8];
   v24 = 0;
   v5 = MEMORY[0x277D42630];
@@ -1405,7 +1405,7 @@ uint64_t __22__PPSQLDatabase_stats__block_invoke_3(uint64_t a1, void *a2)
         *buf = 138412546;
         v26 = v10;
         v27 = 1024;
-        v28 = v3;
+        v28 = clientCopy;
         _os_log_impl(&dword_23224A000, v9, OS_LOG_TYPE_DEFAULT, "PPSQLDatabase: creating new database at %@ for client %d", buf, 0x12u);
       }
     }
@@ -1483,10 +1483,10 @@ uint64_t __43__PPSQLDatabase__openFreshHandleForClient___block_invoke(uint64_t a
   return *MEMORY[0x277D42698];
 }
 
-- (id)_initWithPath:(id)a3 performMigrations:(BOOL)a4
+- (id)_initWithPath:(id)path performMigrations:(BOOL)migrations
 {
-  v4 = a4;
-  v7 = a3;
+  migrationsCopy = migrations;
+  pathCopy = path;
   if ([MEMORY[0x277D42598] isClassCLocked])
   {
     v8 = pp_default_log_handle();
@@ -1505,21 +1505,21 @@ uint64_t __43__PPSQLDatabase__openFreshHandleForClient___block_invoke(uint64_t a
   self = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_path, a3);
+    objc_storeStrong(&v9->_path, path);
     if ([(PPSQLDatabase *)self isInMemory])
     {
-      v10 = NSTemporaryDirectory();
+      stringByDeletingLastPathComponent = NSTemporaryDirectory();
     }
 
     else
     {
       v11 = objc_autoreleasePoolPush();
-      v10 = [(NSString *)self->_path stringByDeletingLastPathComponent];
+      stringByDeletingLastPathComponent = [(NSString *)self->_path stringByDeletingLastPathComponent];
       objc_autoreleasePoolPop(v11);
     }
 
     parentDirectory = self->_parentDirectory;
-    self->_parentDirectory = v10;
+    self->_parentDirectory = stringByDeletingLastPathComponent;
 
     v13 = objc_opt_new();
     writeLock = self->_writeLock;
@@ -1543,7 +1543,7 @@ uint64_t __43__PPSQLDatabase__openFreshHandleForClient___block_invoke(uint64_t a
       [(PPSQLDatabase *)self _handleCorruption];
     }
 
-    if (v4)
+    if (migrationsCopy)
     {
       if ([(PPSQLDatabase *)self _prepareDatabaseHandleForMigration])
       {
@@ -1557,7 +1557,7 @@ uint64_t __43__PPSQLDatabase__openFreshHandleForClient___block_invoke(uint64_t a
         {
 LABEL_17:
 
-          v22 = 0;
+          selfCopy = 0;
           goto LABEL_18;
         }
 
@@ -1584,33 +1584,33 @@ LABEL_17:
 
 LABEL_13:
   self = self;
-  v22 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v22;
+  return selfCopy;
 }
 
-+ (id)createTempTableContainingRowsFromQuery:(id)a3 descriptiveTableName:(id)a4 txnWitness:(id)a5 bind:(id)a6
++ (id)createTempTableContainingRowsFromQuery:(id)query descriptiveTableName:(id)name txnWitness:(id)witness bind:(id)bind
 {
-  v9 = a6;
+  bindCopy = bind;
   v10 = MEMORY[0x277CCACA8];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  witnessCopy = witness;
+  nameCopy = name;
+  queryCopy = query;
   v14 = [v10 alloc];
-  v15 = [MEMORY[0x277D3A578] hexUUID];
-  v16 = [v14 initWithFormat:@"temp.%@_%@", v12, v15];
+  hexUUID = [MEMORY[0x277D3A578] hexUUID];
+  v16 = [v14 initWithFormat:@"temp.%@_%@", nameCopy, hexUUID];
 
-  v17 = [v11 db];
+  v17 = [witnessCopy db];
 
-  v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"CREATE TABLE %@ AS %@", v16, v13];
+  queryCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"CREATE TABLE %@ AS %@", v16, queryCopy];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __93__PPSQLDatabase_createTempTableContainingRowsFromQuery_descriptiveTableName_txnWitness_bind___block_invoke;
   v21[3] = &unk_278974DE8;
-  v22 = v9;
-  v19 = v9;
-  [v17 prepAndRunQuery:v18 onPrep:v21 onRow:0 onError:0];
+  v22 = bindCopy;
+  v19 = bindCopy;
+  [v17 prepAndRunQuery:queryCopy onPrep:v21 onRow:0 onError:0];
 
   return v16;
 }
@@ -1626,46 +1626,46 @@ uint64_t __93__PPSQLDatabase_createTempTableContainingRowsFromQuery_descriptiveT
   return result;
 }
 
-+ (id)createTempViewContainingRowsFromQuery:(id)a3 descriptiveTableName:(id)a4 txnWitness:(id)a5
++ (id)createTempViewContainingRowsFromQuery:(id)query descriptiveTableName:(id)name txnWitness:(id)witness
 {
   v7 = MEMORY[0x277CCACA8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  witnessCopy = witness;
+  nameCopy = name;
+  queryCopy = query;
   v11 = [v7 alloc];
-  v12 = [MEMORY[0x277D3A578] hexUUID];
-  v13 = [v11 initWithFormat:@"temp.%@_%@", v9, v12];
+  hexUUID = [MEMORY[0x277D3A578] hexUUID];
+  v13 = [v11 initWithFormat:@"temp.%@_%@", nameCopy, hexUUID];
 
-  v14 = [v8 db];
+  v14 = [witnessCopy db];
 
-  v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"CREATE TEMP VIEW %@ AS %@", v13, v10];
-  [v14 prepAndRunQuery:v15 onPrep:0 onRow:0 onError:0];
+  queryCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"CREATE TEMP VIEW %@ AS %@", v13, queryCopy];
+  [v14 prepAndRunQuery:queryCopy onPrep:0 onRow:0 onError:0];
 
   return v13;
 }
 
-+ (void)dropTableWithName:(id)a3 txnWitness:(id)a4
++ (void)dropTableWithName:(id)name txnWitness:(id)witness
 {
-  v5 = a3;
-  v7 = [a4 db];
-  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"DROP TABLE %@", v5];
+  nameCopy = name;
+  v7 = [witness db];
+  nameCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"DROP TABLE %@", nameCopy];
 
-  [v7 prepAndRunQuery:v6 onPrep:0 onRow:0 onError:0];
+  [v7 prepAndRunQuery:nameCopy onPrep:0 onRow:0 onError:0];
 }
 
-+ (void)dropViewWithName:(id)a3 txnWitness:(id)a4
++ (void)dropViewWithName:(id)name txnWitness:(id)witness
 {
-  v5 = a3;
-  v7 = [a4 db];
-  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"DROP VIEW %@", v5];
+  nameCopy = name;
+  v7 = [witness db];
+  nameCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"DROP VIEW %@", nameCopy];
 
-  [v7 prepAndRunQuery:v6 onPrep:0 onRow:0 onError:0];
+  [v7 prepAndRunQuery:nameCopy onPrep:0 onRow:0 onError:0];
 }
 
-+ (id)nonMigratingToolsInstanceWithParentDirectory:(id)a3
++ (id)nonMigratingToolsInstanceWithParentDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithParentDirectory:v4 performMigrations:0];
+  directoryCopy = directory;
+  v5 = [[self alloc] initWithParentDirectory:directoryCopy performMigrations:0];
 
   return v5;
 }
@@ -1673,7 +1673,7 @@ uint64_t __93__PPSQLDatabase_createTempTableContainingRowsFromQuery_descriptiveT
 + (id)nonMigratingToolsInstance
 {
   v3 = +[PPPaths topDirectory];
-  v4 = [a1 nonMigratingToolsInstanceWithParentDirectory:v3];
+  v4 = [self nonMigratingToolsInstanceWithParentDirectory:v3];
 
   return v4;
 }
@@ -1683,7 +1683,7 @@ uint64_t __93__PPSQLDatabase_createTempTableContainingRowsFromQuery_descriptiveT
   pthread_mutex_lock(&sharedInstance_lock);
   if (!sharedInstance_instance)
   {
-    v3 = [[a1 alloc] _initInStandardParentDirectoryWithPerformMigrations:1];
+    v3 = [[self alloc] _initInStandardParentDirectoryWithPerformMigrations:1];
     v4 = sharedInstance_instance;
     sharedInstance_instance = v3;
 

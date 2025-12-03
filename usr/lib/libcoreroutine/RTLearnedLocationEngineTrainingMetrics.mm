@@ -5,9 +5,9 @@
 - (id)description;
 - (void)startTrainingVisits;
 - (void)stopTrainingVisits;
-- (void)submitPlace:(id)a3 nearbyPlaces:(id)a4;
+- (void)submitPlace:(id)place nearbyPlaces:(id)places;
 - (void)submitToCoreAnalytics;
-- (void)submitVisit:(id)a3 possibleMapItems:(id)a4 selectedMapItem:(id)a5;
+- (void)submitVisit:(id)visit possibleMapItems:(id)items selectedMapItem:(id)item;
 @end
 
 @implementation RTLearnedLocationEngineTrainingMetrics
@@ -19,46 +19,46 @@
   v2 = [(RTLearnedLocationEngineTrainingMetrics *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     awdVisits = v2->_awdVisits;
-    v2->_awdVisits = v3;
+    v2->_awdVisits = array;
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     awdPlaces = v2->_awdPlaces;
-    v2->_awdPlaces = v5;
+    v2->_awdPlaces = array2;
 
-    v7 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     visits = v2->_visits;
-    v2->_visits = v7;
+    v2->_visits = array3;
 
-    v9 = [MEMORY[0x277CBEB18] array];
+    array4 = [MEMORY[0x277CBEB18] array];
     places = v2->_places;
-    v2->_places = v9;
+    v2->_places = array4;
   }
 
   return v2;
 }
 
-- (void)submitVisit:(id)a3 possibleMapItems:(id)a4 selectedMapItem:(id)a5
+- (void)submitVisit:(id)visit possibleMapItems:(id)items selectedMapItem:(id)item
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  visitCopy = visit;
+  itemsCopy = items;
+  itemCopy = item;
+  if (visitCopy)
   {
-    v23 = self;
+    selfCopy = self;
     v11 = objc_opt_new();
-    v12 = [v8 exitDate];
-    v13 = [v8 entryDate];
-    [v12 timeIntervalSinceDate:v13];
+    exitDate = [visitCopy exitDate];
+    entryDate = [visitCopy entryDate];
+    [exitDate timeIntervalSinceDate:entryDate];
     [v11 setDwellTime:v14];
 
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v15 = v9;
+    v15 = itemsCopy;
     v16 = [v15 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v16)
     {
@@ -90,27 +90,27 @@
       while (v17);
     }
 
-    if (v10)
+    if (itemCopy)
     {
-      v21 = [objc_alloc(MEMORY[0x277D81880]) initWithMapItem:v10];
+      v21 = [objc_alloc(MEMORY[0x277D81880]) initWithMapItem:itemCopy];
       [v11 setSelectedMapItem:v21];
     }
 
-    v22 = [(RTLearnedLocationEngineTrainingMetrics *)v23 awdVisits];
-    [v22 addObject:v11];
+    awdVisits = [(RTLearnedLocationEngineTrainingMetrics *)selfCopy awdVisits];
+    [awdVisits addObject:v11];
   }
 }
 
-- (void)submitPlace:(id)a3 nearbyPlaces:(id)a4
+- (void)submitPlace:(id)place nearbyPlaces:(id)places
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  placeCopy = place;
+  placesCopy = places;
   v7 = objc_opt_new();
   v8 = objc_alloc(MEMORY[0x277D81880]);
-  v33 = v5;
-  v9 = [v5 mapItem];
-  v10 = [v8 initWithMapItem:v9];
+  v33 = placeCopy;
+  mapItem = [placeCopy mapItem];
+  v10 = [v8 initWithMapItem:mapItem];
   v30 = v7;
   [v7 setMapItem:v10];
 
@@ -120,7 +120,7 @@
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v6;
+  obj = placesCopy;
   v13 = [obj countByEnumeratingWithState:&v38 objects:v44 count:16];
   if (v13)
   {
@@ -138,12 +138,12 @@
 
         v18 = *(*(&v38 + 1) + 8 * i);
 
-        v19 = [v18 mapItem];
-        v20 = [v19 location];
-        v21 = [v33 mapItem];
-        v22 = [v21 location];
+        mapItem2 = [v18 mapItem];
+        location = [mapItem2 location];
+        mapItem3 = [v33 mapItem];
+        location2 = [mapItem3 location];
         v37 = 0;
-        [v12 distanceFromLocation:v20 toLocation:v22 error:&v37];
+        [v12 distanceFromLocation:location toLocation:location2 error:&v37];
         v24 = v23;
         v15 = v37;
 
@@ -182,8 +182,8 @@
   v27 = v30;
   v28 = v11;
   [v28 enumerateObjectsUsingBlock:v34];
-  v29 = [(RTLearnedLocationEngineTrainingMetrics *)self awdPlaces];
-  [v29 addObject:v27];
+  awdPlaces = [(RTLearnedLocationEngineTrainingMetrics *)self awdPlaces];
+  [awdPlaces addObject:v27];
 }
 
 void __67__RTLearnedLocationEngineTrainingMetrics_submitPlace_nearbyPlaces___block_invoke(uint64_t a1, void *a2)
@@ -203,9 +203,9 @@ void __67__RTLearnedLocationEngineTrainingMetrics_submitPlace_nearbyPlaces___blo
 - (void)startTrainingVisits
 {
   self->_trainedVisits = 1;
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   trainVisitsStart = self->_trainVisitsStart;
-  self->_trainVisitsStart = v3;
+  self->_trainVisitsStart = date;
 
   self->_wasDeferred = 0;
 }
@@ -239,9 +239,9 @@ void __67__RTLearnedLocationEngineTrainingMetrics_submitPlace_nearbyPlaces___blo
   v20 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
   v19 = NSStringFromClass(v3);
-  v4 = [(RTLearnedLocationEngineTrainingMetrics *)self trainedVisits];
+  trainedVisits = [(RTLearnedLocationEngineTrainingMetrics *)self trainedVisits];
   v5 = @"NO";
-  if (v4)
+  if (trainedVisits)
   {
     v5 = @"YES";
   }
@@ -251,13 +251,13 @@ void __67__RTLearnedLocationEngineTrainingMetrics_submitPlace_nearbyPlaces___blo
   v7 = v6;
   [(RTLearnedLocationEngineTrainingMetrics *)self intervalSinceLastAttempt];
   v9 = v8;
-  v17 = [(RTLearnedLocationEngineTrainingMetrics *)self locationsProcessed];
+  locationsProcessed = [(RTLearnedLocationEngineTrainingMetrics *)self locationsProcessed];
   [(RTLearnedLocationEngineTrainingMetrics *)self maxIntervalBetweenLocations];
   v11 = v10;
-  v12 = [(RTLearnedLocationEngineTrainingMetrics *)self awdVisits];
-  v13 = [v12 count];
-  v14 = [(RTLearnedLocationEngineTrainingMetrics *)self awdPlaces];
-  v15 = [v20 stringWithFormat:@"%@, trainedVisits, %@, latency, %.2f, intervalSinceLastAttempt, %.2f, locationsProcessed, %u, maxIntervalBetweenLocations, %.2f, new visits, %lu, places from visits, %lu, visitCountDevice, %lu, visitCountTotal, %lu, placeCountDevice, %lu, placeCountTotal, %lu, mode, %lu, reason, %lu", v19, v18, v7, v9, v17, v11, v13, objc_msgSend(v14, "count"), -[RTLearnedLocationEngineTrainingMetrics visitCountDevice](self, "visitCountDevice"), -[RTLearnedLocationEngineTrainingMetrics visitCountTotal](self, "visitCountTotal"), -[RTLearnedLocationEngineTrainingMetrics placeCountDevice](self, "placeCountDevice"), -[RTLearnedLocationEngineTrainingMetrics placeCountTotal](self, "placeCountTotal"), -[RTLearnedLocationEngineTrainingMetrics mode](self, "mode"), -[RTLearnedLocationEngineTrainingMetrics reason](self, "reason")];
+  awdVisits = [(RTLearnedLocationEngineTrainingMetrics *)self awdVisits];
+  v13 = [awdVisits count];
+  awdPlaces = [(RTLearnedLocationEngineTrainingMetrics *)self awdPlaces];
+  v15 = [v20 stringWithFormat:@"%@, trainedVisits, %@, latency, %.2f, intervalSinceLastAttempt, %.2f, locationsProcessed, %u, maxIntervalBetweenLocations, %.2f, new visits, %lu, places from visits, %lu, visitCountDevice, %lu, visitCountTotal, %lu, placeCountDevice, %lu, placeCountTotal, %lu, mode, %lu, reason, %lu", v19, v18, v7, v9, locationsProcessed, v11, v13, objc_msgSend(awdPlaces, "count"), -[RTLearnedLocationEngineTrainingMetrics visitCountDevice](self, "visitCountDevice"), -[RTLearnedLocationEngineTrainingMetrics visitCountTotal](self, "visitCountTotal"), -[RTLearnedLocationEngineTrainingMetrics placeCountDevice](self, "placeCountDevice"), -[RTLearnedLocationEngineTrainingMetrics placeCountTotal](self, "placeCountTotal"), -[RTLearnedLocationEngineTrainingMetrics mode](self, "mode"), -[RTLearnedLocationEngineTrainingMetrics reason](self, "reason")];
 
   return v15;
 }
@@ -280,13 +280,13 @@ void __67__RTLearnedLocationEngineTrainingMetrics_submitPlace_nearbyPlaces___blo
   [v3 setObject:v8 forKeyedSubscript:@"_duration"];
 
   v9 = MEMORY[0x277CCABB0];
-  v10 = [(RTLearnedLocationEngineTrainingMetrics *)self visits];
-  v11 = [v9 numberWithUnsignedInteger:{objc_msgSend(v10, "count")}];
+  visits = [(RTLearnedLocationEngineTrainingMetrics *)self visits];
+  v11 = [v9 numberWithUnsignedInteger:{objc_msgSend(visits, "count")}];
   [v3 setObject:v11 forKeyedSubscript:@"_visitCountTrainingEvent"];
 
   v12 = MEMORY[0x277CCABB0];
-  v13 = [(RTLearnedLocationEngineTrainingMetrics *)self places];
-  v14 = [v12 numberWithUnsignedInteger:{objc_msgSend(v13, "count")}];
+  places = [(RTLearnedLocationEngineTrainingMetrics *)self places];
+  v14 = [v12 numberWithUnsignedInteger:{objc_msgSend(places, "count")}];
   [v3 setObject:v14 forKeyedSubscript:@"_placeCountTrainingEvent"];
 
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RTLearnedLocationEngineTrainingMetrics visitCountDevice](self, "visitCountDevice")}];
@@ -352,10 +352,10 @@ void __67__RTLearnedLocationEngineTrainingMetrics_submitPlace_nearbyPlaces___blo
 
 - (void)submitToCoreAnalytics
 {
-  v5 = [(RTLearnedLocationEngineTrainingMetrics *)self collectCoreAnalyticsMetrics];
+  collectCoreAnalyticsMetrics = [(RTLearnedLocationEngineTrainingMetrics *)self collectCoreAnalyticsMetrics];
   v2 = objc_alloc(MEMORY[0x277CCACA8]);
   v3 = [v2 initWithCString:RTAnalyticsEventTraining encoding:1];
-  log_analytics_submission(v3, v5);
+  log_analytics_submission(v3, collectCoreAnalyticsMetrics);
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v3];
   AnalyticsSendEvent();
 }

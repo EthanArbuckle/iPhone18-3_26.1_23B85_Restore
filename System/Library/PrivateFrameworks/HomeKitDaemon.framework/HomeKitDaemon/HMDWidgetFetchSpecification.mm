@@ -3,7 +3,7 @@
 + (NSSet)allOtherHomesSingleAccessorySecurityFetchSpecifications;
 + (NSSet)lightsFetchSpecifications;
 + (NSSet)mainHomeSecurityFetchSpecifications;
-- (HMDWidgetFetchSpecification)initWithName:(id)a3 serviceTypes:(id)a4 associatedServiceTypes:(id)a5 characteristicTypes:(id)a6 affectedWidgetKinds:(id)a7;
+- (HMDWidgetFetchSpecification)initWithName:(id)name serviceTypes:(id)types associatedServiceTypes:(id)serviceTypes characteristicTypes:(id)characteristicTypes affectedWidgetKinds:(id)kinds;
 - (id)attributeDescriptions;
 @end
 
@@ -13,20 +13,20 @@
 {
   v18[4] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDWidgetFetchSpecification *)self serviceTypes];
-  v5 = [v3 initWithName:@"Service Types" value:v4];
+  serviceTypes = [(HMDWidgetFetchSpecification *)self serviceTypes];
+  v5 = [v3 initWithName:@"Service Types" value:serviceTypes];
   v18[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDWidgetFetchSpecification *)self associatedServiceTypes];
-  v8 = [v6 initWithName:@"Associated Service Types" value:v7];
+  associatedServiceTypes = [(HMDWidgetFetchSpecification *)self associatedServiceTypes];
+  v8 = [v6 initWithName:@"Associated Service Types" value:associatedServiceTypes];
   v18[1] = v8;
   v9 = objc_alloc(MEMORY[0x277D0F778]);
-  v10 = [(HMDWidgetFetchSpecification *)self characteristicTypes];
-  v11 = [v9 initWithName:@"Characteristic Types" value:v10];
+  characteristicTypes = [(HMDWidgetFetchSpecification *)self characteristicTypes];
+  v11 = [v9 initWithName:@"Characteristic Types" value:characteristicTypes];
   v18[2] = v11;
   v12 = objc_alloc(MEMORY[0x277D0F778]);
-  v13 = [(HMDWidgetFetchSpecification *)self affectedWidgetKinds];
-  v14 = [v12 initWithName:@"Affected Widget Kinds" value:v13];
+  affectedWidgetKinds = [(HMDWidgetFetchSpecification *)self affectedWidgetKinds];
+  v14 = [v12 initWithName:@"Affected Widget Kinds" value:affectedWidgetKinds];
   v18[3] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:4];
 
@@ -35,34 +35,34 @@
   return v15;
 }
 
-- (HMDWidgetFetchSpecification)initWithName:(id)a3 serviceTypes:(id)a4 associatedServiceTypes:(id)a5 characteristicTypes:(id)a6 affectedWidgetKinds:(id)a7
+- (HMDWidgetFetchSpecification)initWithName:(id)name serviceTypes:(id)types associatedServiceTypes:(id)serviceTypes characteristicTypes:(id)characteristicTypes affectedWidgetKinds:(id)kinds
 {
   v28.receiver = self;
   v28.super_class = HMDWidgetFetchSpecification;
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  kindsCopy = kinds;
+  characteristicTypesCopy = characteristicTypes;
+  serviceTypesCopy = serviceTypes;
+  typesCopy = types;
+  nameCopy = name;
   v16 = [(HMDWidgetFetchSpecification *)&v28 init];
-  v17 = [v15 copy];
+  v17 = [nameCopy copy];
 
   name = v16->_name;
   v16->_name = v17;
 
-  v19 = [v14 copy];
+  v19 = [typesCopy copy];
   serviceTypes = v16->_serviceTypes;
   v16->_serviceTypes = v19;
 
-  v21 = [v13 copy];
+  v21 = [serviceTypesCopy copy];
   associatedServiceTypes = v16->_associatedServiceTypes;
   v16->_associatedServiceTypes = v21;
 
-  v23 = [v12 copy];
+  v23 = [characteristicTypesCopy copy];
   characteristicTypes = v16->_characteristicTypes;
   v16->_characteristicTypes = v23;
 
-  v25 = [v11 copy];
+  v25 = [kindsCopy copy];
   affectedWidgetKinds = v16->_affectedWidgetKinds;
   v16->_affectedWidgetKinds = v25;
 

@@ -1,55 +1,55 @@
 @interface AKIDPHandler
-- (AKIDPHandler)initWithConfiguration:(id)a3 withCompletionHandler:(id)a4;
+- (AKIDPHandler)initWithConfiguration:(id)configuration withCompletionHandler:(id)handler;
 - (AKIDPHandlerDelegate)delegate;
-- (id)_safeACSDictionaryFromResult:(id)a3;
+- (id)_safeACSDictionaryFromResult:(id)result;
 - (id)_samlJavaScriptQuery;
-- (id)_sanitizeError:(id)a3;
-- (void)_completeFlowWithError:(id)a3;
-- (void)_completeWithACSPostRequestFromWebView:(id)a3;
+- (id)_sanitizeError:(id)error;
+- (void)_completeFlowWithError:(id)error;
+- (void)_completeWithACSPostRequestFromWebView:(id)view;
 - (void)cancel;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
-- (void)webView:(id)a3 didReceiveAuthenticationChallenge:(id)a4 completionHandler:(id)a5;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
+- (void)webView:(id)view didReceiveAuthenticationChallenge:(id)challenge completionHandler:(id)handler;
 @end
 
 @implementation AKIDPHandler
 
-- (AKIDPHandler)initWithConfiguration:(id)a3 withCompletionHandler:(id)a4
+- (AKIDPHandler)initWithConfiguration:(id)configuration withCompletionHandler:(id)handler
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, configuration);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  v4 = v18;
-  v18 = 0;
+  objc_storeStrong(&v16, handler);
+  v4 = selfCopy;
+  selfCopy = 0;
   v15.receiver = v4;
   v15.super_class = AKIDPHandler;
   v14 = [(AKIDPHandler *)&v15 init];
-  v18 = v14;
-  objc_storeStrong(&v18, v14);
+  selfCopy = v14;
+  objc_storeStrong(&selfCopy, v14);
   if (v14)
   {
-    objc_storeStrong(&v18->_configuration, location[0]);
+    objc_storeStrong(&selfCopy->_configuration, location[0]);
     v5 = MEMORY[0x223DB6C90](v16);
-    completion = v18->_completion;
-    v18->_completion = v5;
+    completion = selfCopy->_completion;
+    selfCopy->_completion = v5;
     MEMORY[0x277D82BD8](completion);
     v11 = [AKURLRequestApprover alloc];
-    v12 = [location[0] whitelistedPathURLs];
+    whitelistedPathURLs = [location[0] whitelistedPathURLs];
     v7 = [(AKURLRequestApprover *)v11 initWithWhitelistedPaths:?];
-    redirectApprover = v18->_redirectApprover;
-    v18->_redirectApprover = v7;
+    redirectApprover = selfCopy->_redirectApprover;
+    selfCopy->_redirectApprover = v7;
     MEMORY[0x277D82BD8](redirectApprover);
-    MEMORY[0x277D82BD8](v12);
+    MEMORY[0x277D82BD8](whitelistedPathURLs);
   }
 
-  v10 = MEMORY[0x277D82BE0](v18);
+  v10 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 
@@ -60,12 +60,12 @@
   MEMORY[0x277D82BD8](v3);
 }
 
-- (id)_safeACSDictionaryFromResult:(id)a3
+- (id)_safeACSDictionaryFromResult:(id)result
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, result);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -83,21 +83,21 @@
   return v3;
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5 = [(AKIDPHandler *)v8 delegate];
+  objc_storeStrong(&v6, navigation);
+  delegate = [(AKIDPHandler *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 IDPHandler:v8 didFinishLoadingPageInWebView:location[0]];
+    [delegate IDPHandler:selfCopy didFinishLoadingPageInWebView:location[0]];
   }
 
-  objc_storeStrong(&v5, 0);
+  objc_storeStrong(&delegate, 0);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
@@ -109,12 +109,12 @@
   v6 = MEMORY[0x277CCACA8];
   v5 = v10[0];
   v8 = [MEMORY[0x277CF02F0] bagForAltDSID:?];
-  v7 = [v8 acsURL];
-  v2 = [v6 stringWithFormat:v5, v7];
+  acsURL = [v8 acsURL];
+  v2 = [v6 stringWithFormat:v5, acsURL];
   v3 = v10[0];
   v10[0] = v2;
   MEMORY[0x277D82BD8](v3);
-  MEMORY[0x277D82BD8](v7);
+  MEMORY[0x277D82BD8](acsURL);
   MEMORY[0x277D82BD8](v8);
   v9 = MEMORY[0x277D82BE0](v10[0]);
   objc_storeStrong(v10, 0);
@@ -122,46 +122,46 @@
   return v9;
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
   v45 = *MEMORY[0x277D85DE8];
-  v41 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v39 = 0;
-  objc_storeStrong(&v39, a4);
+  objc_storeStrong(&v39, action);
   v38 = 0;
-  objc_storeStrong(&v38, a5);
-  redirectApprover = v41->_redirectApprover;
-  v29 = [v39 request];
+  objc_storeStrong(&v38, handler);
+  redirectApprover = selfCopy->_redirectApprover;
+  request = [v39 request];
   v30 = [(AKURLRequestApprover *)redirectApprover shouldAllowRequest:?];
-  MEMORY[0x277D82BD8](v29);
+  MEMORY[0x277D82BD8](request);
   v37 = v30;
   v36 = _AKLogSystem();
   v35 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
   {
-    v25 = [v39 request];
-    __os_log_helper_16_2_1_8_64(v44, v25);
+    request2 = [v39 request];
+    __os_log_helper_16_2_1_8_64(v44, request2);
     _os_log_debug_impl(&dword_222379000, v36, v35, "Processing IDP URL navigation: %@", v44, 0xCu);
-    MEMORY[0x277D82BD8](v25);
+    MEMORY[0x277D82BD8](request2);
   }
 
   objc_storeStrong(&v36, 0);
-  v23 = [v39 request];
-  v22 = [v23 URL];
-  v21 = [v22 absoluteString];
+  request3 = [v39 request];
+  v22 = [request3 URL];
+  absoluteString = [v22 absoluteString];
   v20 = [MEMORY[0x277CF02F0] bagForAltDSID:0];
-  v19 = [v20 acsURL];
-  v18 = [v19 absoluteString];
-  v24 = [v21 hasPrefix:?];
-  MEMORY[0x277D82BD8](v18);
-  MEMORY[0x277D82BD8](v19);
+  acsURL = [v20 acsURL];
+  absoluteString2 = [acsURL absoluteString];
+  v24 = [absoluteString hasPrefix:?];
+  MEMORY[0x277D82BD8](absoluteString2);
+  MEMORY[0x277D82BD8](acsURL);
   MEMORY[0x277D82BD8](v20);
-  MEMORY[0x277D82BD8](v21);
+  MEMORY[0x277D82BD8](absoluteString);
   MEMORY[0x277D82BD8](v22);
-  v5 = MEMORY[0x277D82BD8](v23).n128_u64[0];
+  v5 = MEMORY[0x277D82BD8](request3).n128_u64[0];
   if (v24)
   {
     v34 = _AKLogSystem();
@@ -176,102 +176,102 @@
 
     objc_storeStrong(&v34, 0);
     v37 = 0;
-    v14 = [v39 request];
-    v13 = [v14 HTTPMethod];
-    v15 = [v13 isEqualToString:@"GET"];
-    MEMORY[0x277D82BD8](v13);
-    *&v6 = MEMORY[0x277D82BD8](v14).n128_u64[0];
+    request4 = [v39 request];
+    hTTPMethod = [request4 HTTPMethod];
+    v15 = [hTTPMethod isEqualToString:@"GET"];
+    MEMORY[0x277D82BD8](hTTPMethod);
+    *&v6 = MEMORY[0x277D82BD8](request4).n128_u64[0];
     if (v15)
     {
-      v12 = [(AKIDPHandler *)v41 completion];
-      v5 = MEMORY[0x277D82BD8](v12).n128_u64[0];
-      if (v12)
+      completion = [(AKIDPHandler *)selfCopy completion];
+      v5 = MEMORY[0x277D82BD8](completion).n128_u64[0];
+      if (completion)
       {
-        v11 = [(AKIDPHandler *)v41 completion];
+        completion2 = [(AKIDPHandler *)selfCopy completion];
         v42 = *MEMORY[0x277CF0088];
-        v10 = [v39 request];
-        v9 = [v10 URL];
+        request5 = [v39 request];
+        v9 = [request5 URL];
         v43 = v9;
         v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
-        v11[2](v11, 0);
+        completion2[2](completion2, 0);
         MEMORY[0x277D82BD8](v8);
         MEMORY[0x277D82BD8](v9);
-        MEMORY[0x277D82BD8](v10);
-        *&v7 = MEMORY[0x277D82BD8](v11).n128_u64[0];
-        [(AKIDPHandler *)v41 setCompletion:0, v7];
+        MEMORY[0x277D82BD8](request5);
+        *&v7 = MEMORY[0x277D82BD8](completion2).n128_u64[0];
+        [(AKIDPHandler *)selfCopy setCompletion:0, v7];
       }
     }
 
     else
     {
-      [(AKIDPHandler *)v41 _completeWithACSPostRequestFromWebView:location[0], v6];
+      [(AKIDPHandler *)selfCopy _completeWithACSPostRequestFromWebView:location[0], v6];
     }
   }
 
-  v31 = [(AKIDPHandler *)v41 delegate];
+  delegate = [(AKIDPHandler *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v31 IDPHandler:v41 didStartLoadingPageInWebView:location[0]];
+    [delegate IDPHandler:selfCopy didStartLoadingPageInWebView:location[0]];
   }
 
   (*(v38 + 2))(v38, v37);
-  objc_storeStrong(&v31, 0);
+  objc_storeStrong(&delegate, 0);
   objc_storeStrong(&v38, 0);
   objc_storeStrong(&v39, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, navigation);
   v7 = 0;
-  objc_storeStrong(&v7, a5);
-  [(AKIDPHandler *)v10 _completeFlowWithError:v7];
+  objc_storeStrong(&v7, error);
+  [(AKIDPHandler *)selfCopy _completeFlowWithError:v7];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)webView:(id)a3 didReceiveAuthenticationChallenge:(id)a4 completionHandler:(id)a5
+- (void)webView:(id)view didReceiveAuthenticationChallenge:(id)challenge completionHandler:(id)handler
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, challenge);
   v7 = 0;
-  objc_storeStrong(&v7, a5);
+  objc_storeStrong(&v7, handler);
   (*(v7 + 2))(v7, 1, 0);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_completeWithACSPostRequestFromWebView:(id)a3
+- (void)_completeWithACSPostRequestFromWebView:(id)view
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = [(AKIDPHandler *)v13 _samlJavaScriptQuery];
+  objc_storeStrong(location, view);
+  _samlJavaScriptQuery = [(AKIDPHandler *)selfCopy _samlJavaScriptQuery];
   v4 = location[0];
-  v3 = v11;
+  v3 = _samlJavaScriptQuery;
   v5 = MEMORY[0x277D85DD0];
   v6 = -1073741824;
   v7 = 0;
   v8 = __55__AKIDPHandler__completeWithACSPostRequestFromWebView___block_invoke;
   v9 = &unk_2784A7628;
-  v10 = MEMORY[0x277D82BE0](v13);
+  v10 = MEMORY[0x277D82BE0](selfCopy);
   [v4 evaluateJavaScript:v3 completionHandler:?];
   objc_storeStrong(&v10, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&_samlJavaScriptQuery, 0);
   objc_storeStrong(location, 0);
 }
 
@@ -339,13 +339,13 @@ void __55__AKIDPHandler__completeWithACSPostRequestFromWebView___block_invoke(id
   *MEMORY[0x277D85DE8];
 }
 
-- (id)_sanitizeError:(id)a3
+- (id)_sanitizeError:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v14 = MEMORY[0x277D82BE0](location[0]);
   if (v14)
   {
@@ -358,10 +358,10 @@ void __55__AKIDPHandler__completeWithACSPostRequestFromWebView___block_invoke(id
     }
 
     objc_storeStrong(&v12, 0);
-    v10 = [(AKIDPHandler *)v16 delegate];
+    delegate = [(AKIDPHandler *)selfCopy delegate];
     if (objc_opt_respondsToSelector())
     {
-      v3 = [v10 IDPHandler:v16 sanitizeError:v14];
+      v3 = [delegate IDPHandler:selfCopy sanitizeError:v14];
       v4 = v14;
       v14 = v3;
       MEMORY[0x277D82BD8](v4);
@@ -385,7 +385,7 @@ void __55__AKIDPHandler__completeWithACSPostRequestFromWebView___block_invoke(id
     objc_storeStrong(&oslog, 0);
     v17 = MEMORY[0x277D82BE0](v14);
     v13 = 1;
-    objc_storeStrong(&v10, 0);
+    objc_storeStrong(&delegate, 0);
   }
 
   else
@@ -402,22 +402,22 @@ void __55__AKIDPHandler__completeWithACSPostRequestFromWebView___block_invoke(id
   return v7;
 }
 
-- (void)_completeFlowWithError:(id)a3
+- (void)_completeFlowWithError:(id)error
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [(AKIDPHandler *)v9 completion];
-  *&v3 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-  if (v7)
+  objc_storeStrong(location, error);
+  completion = [(AKIDPHandler *)selfCopy completion];
+  *&v3 = MEMORY[0x277D82BD8](completion).n128_u64[0];
+  if (completion)
   {
-    v6 = [(AKIDPHandler *)v9 completion];
-    v5 = [(AKIDPHandler *)v9 _sanitizeError:location[0]];
-    v6[2](v6, 0);
+    completion2 = [(AKIDPHandler *)selfCopy completion];
+    v5 = [(AKIDPHandler *)selfCopy _sanitizeError:location[0]];
+    completion2[2](completion2, 0);
     MEMORY[0x277D82BD8](v5);
-    *&v4 = MEMORY[0x277D82BD8](v6).n128_u64[0];
-    [(AKIDPHandler *)v9 setCompletion:0, v4];
+    *&v4 = MEMORY[0x277D82BD8](completion2).n128_u64[0];
+    [(AKIDPHandler *)selfCopy setCompletion:0, v4];
   }
 
   objc_storeStrong(location, 0);

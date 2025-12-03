@@ -1,8 +1,8 @@
 @interface OADShape3D
 + (id)nullShape3D;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADShape3D)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -53,23 +53,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(OADBevel *)self->mTopBevel copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(OADBevel *)self->mTopBevel copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(OADBevel *)self->mBottomBevel copyWithZone:a3];
+  v8 = [(OADBevel *)self->mBottomBevel copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
-  v10 = [(OADColor *)self->mExtrusionColor copyWithZone:a3];
+  v10 = [(OADColor *)self->mExtrusionColor copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
   *(v5 + 32) = self->mExtrusionHeight;
-  v12 = [(OADColor *)self->mContourColor copyWithZone:a3];
+  v12 = [(OADColor *)self->mContourColor copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 
@@ -87,28 +87,28 @@
   return v4 ^ v3 ^ v5 ^ [(OADColor *)self->mContourColor hash]^ self->mExtrusionHeight ^ self->mContourWidth ^ self->mShapeDepth ^ self->mMaterial;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = v4) != 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = equalCopy) != 0)
   {
     v6 = v5;
     mTopBevel = self->mTopBevel;
-    v8 = [v5 topBevel];
-    if ([(OADBevel *)mTopBevel isEqual:v8])
+    topBevel = [v5 topBevel];
+    if ([(OADBevel *)mTopBevel isEqual:topBevel])
     {
       mBottomBevel = self->mBottomBevel;
-      v10 = [v6 bottomBevel];
-      if ([(OADBevel *)mBottomBevel isEqual:v10])
+      bottomBevel = [v6 bottomBevel];
+      if ([(OADBevel *)mBottomBevel isEqual:bottomBevel])
       {
         mExtrusionColor = self->mExtrusionColor;
-        v12 = [v6 extrusionColor];
-        if ([(OADColor *)mExtrusionColor isEqual:v12])
+        extrusionColor = [v6 extrusionColor];
+        if ([(OADColor *)mExtrusionColor isEqual:extrusionColor])
         {
           mContourColor = self->mContourColor;
-          v14 = [v6 contourColor];
-          if (-[OADColor isEqual:](mContourColor, "isEqual:", v14) && (mExtrusionHeight = self->mExtrusionHeight, [v6 extrusionHeight], mExtrusionHeight == v16) && (mContourWidth = self->mContourWidth, objc_msgSend(v6, "contourWidth"), mContourWidth == v18) && (mShapeDepth = self->mShapeDepth, objc_msgSend(v6, "shapeDepth"), mShapeDepth == v20))
+          contourColor = [v6 contourColor];
+          if (-[OADColor isEqual:](mContourColor, "isEqual:", contourColor) && (mExtrusionHeight = self->mExtrusionHeight, [v6 extrusionHeight], mExtrusionHeight == v16) && (mContourWidth = self->mContourWidth, objc_msgSend(v6, "contourWidth"), mContourWidth == v18) && (mShapeDepth = self->mShapeDepth, objc_msgSend(v6, "shapeDepth"), mShapeDepth == v20))
           {
             mMaterial = self->mMaterial;
             v22 = mMaterial == [v6 material];

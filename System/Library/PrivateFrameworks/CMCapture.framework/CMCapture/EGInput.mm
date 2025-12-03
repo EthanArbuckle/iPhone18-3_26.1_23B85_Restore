@@ -1,22 +1,22 @@
 @interface EGInput
-- (EGInput)initWithName:(id)a3;
+- (EGInput)initWithName:(id)name;
 - (NSString)description;
 - (void)dealloc;
-- (void)handleData:(id)a3;
-- (void)registerSource:(id)a3;
-- (void)setInputHandler:(id)a3;
+- (void)handleData:(id)data;
+- (void)registerSource:(id)source;
+- (void)setInputHandler:(id)handler;
 @end
 
 @implementation EGInput
 
-- (EGInput)initWithName:(id)a3
+- (EGInput)initWithName:(id)name
 {
   v6.receiver = self;
   v6.super_class = EGInput;
   v4 = [(EGInput *)&v6 init];
   if (v4)
   {
-    v4->_name = [a3 copy];
+    v4->_name = [name copy];
   }
 
   return v4;
@@ -43,41 +43,41 @@
   return v3;
 }
 
-- (void)handleData:(id)a3
+- (void)handleData:(id)data
 {
   Weak = objc_loadWeak(&self->_inputHandler);
 
-  [Weak receiveData:a3 fromInput:self];
+  [Weak receiveData:data fromInput:self];
 }
 
-- (void)registerSource:(id)a3
+- (void)registerSource:(id)source
 {
-  if (!a3)
+  if (!source)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to register a nil source! Forbidden", self, v5, v6];
+    source = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to register a nil source! Forbidden", self, v5, v6];
     goto LABEL_6;
   }
 
   source = self->_source;
   if (source)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to register %@ when it was already connected via %@! Forbidden", self, a3, source];
+    source = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to register %@ when it was already connected via %@! Forbidden", self, source, source];
 LABEL_6:
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v4 userInfo:0]);
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:source userInfo:0]);
   }
 
-  self->_source = a3;
+  self->_source = source;
 }
 
-- (void)setInputHandler:(id)a3
+- (void)setInputHandler:(id)handler
 {
   if (objc_loadWeak(&self->_inputHandler))
   {
-    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"%@ tried to install inputHandler %@ when it already had inputHandler %@! Forbidden", self, a3, objc_loadWeak(&self->_inputHandler)), 0}];
+    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"%@ tried to install inputHandler %@ when it already had inputHandler %@! Forbidden", self, handler, objc_loadWeak(&self->_inputHandler)), 0}];
     objc_exception_throw(v5);
   }
 
-  objc_storeWeak(&self->_inputHandler, a3);
+  objc_storeWeak(&self->_inputHandler, handler);
 }
 
 @end

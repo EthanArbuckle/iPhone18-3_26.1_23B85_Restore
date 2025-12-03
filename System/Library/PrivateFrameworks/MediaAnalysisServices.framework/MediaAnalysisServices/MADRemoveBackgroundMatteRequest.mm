@@ -1,9 +1,9 @@
 @interface MADRemoveBackgroundMatteRequest
 - (MADRemoveBackgroundMatteRequest)init;
-- (MADRemoveBackgroundMatteRequest)initWithCoder:(id)a3;
+- (MADRemoveBackgroundMatteRequest)initWithCoder:(id)coder;
 - (MADRemoveBackgroundMatteResult)result;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADRemoveBackgroundMatteRequest
@@ -15,29 +15,29 @@
   v2 = [(MADRemoveBackgroundMatteRequest *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC90] indexSet];
+    indexSet = [MEMORY[0x1E696AC90] indexSet];
     instances = v2->_instances;
-    v2->_instances = v3;
+    v2->_instances = indexSet;
   }
 
   return v2;
 }
 
-- (MADRemoveBackgroundMatteRequest)initWithCoder:(id)a3
+- (MADRemoveBackgroundMatteRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MADRemoveBackgroundMatteRequest;
-  v5 = [(MADRequest *)&v11 initWithCoder:v4];
+  v5 = [(MADRequest *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Instances"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Instances"];
     instances = v5->_instances;
     v5->_instances = v6;
 
-    v5->_inPlace = [v4 decodeBoolForKey:@"InPlace"];
-    v5->_cropResult = [v4 decodeBoolForKey:@"CropResult"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ImageType"];
+    v5->_inPlace = [coderCopy decodeBoolForKey:@"InPlace"];
+    v5->_cropResult = [coderCopy decodeBoolForKey:@"CropResult"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ImageType"];
     imageType = v5->_imageType;
     v5->_imageType = v8;
   }
@@ -45,52 +45,52 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MADRemoveBackgroundMatteRequest;
-  v4 = a3;
-  [(MADRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_instances forKey:{@"Instances", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_inPlace forKey:@"InPlace"];
-  [v4 encodeBool:self->_cropResult forKey:@"CropResult"];
-  [v4 encodeObject:self->_imageType forKey:@"ImageType"];
+  coderCopy = coder;
+  [(MADRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_instances forKey:{@"Instances", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_inPlace forKey:@"InPlace"];
+  [coderCopy encodeBool:self->_cropResult forKey:@"CropResult"];
+  [coderCopy encodeObject:self->_imageType forKey:@"ImageType"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
   if (self->_instances)
   {
-    [v3 appendFormat:@"instances: %@, ", self->_instances];
+    [string appendFormat:@"instances: %@, ", self->_instances];
   }
 
-  [v3 appendFormat:@"inPlace: %d, ", self->_inPlace];
-  [v3 appendFormat:@"cropResult: %d, ", self->_cropResult];
+  [string appendFormat:@"inPlace: %d, ", self->_inPlace];
+  [string appendFormat:@"cropResult: %d, ", self->_cropResult];
   if (self->_imageType)
   {
-    [v3 appendFormat:@"imageType: %@, ", self->_imageType];
+    [string appendFormat:@"imageType: %@, ", self->_imageType];
   }
 
-  v6 = [(MADRequest *)self results];
-  [v3 appendFormat:@"results: %@, ", v6];
+  results = [(MADRequest *)self results];
+  [string appendFormat:@"results: %@, ", results];
 
-  v7 = [(MADRequest *)self error];
-  [v3 appendFormat:@"error: %@>", v7];
+  error = [(MADRequest *)self error];
+  [string appendFormat:@"error: %@>", error];
 
-  return v3;
+  return string;
 }
 
 - (MADRemoveBackgroundMatteResult)result
 {
-  v2 = [(MADRequest *)self results];
-  v3 = [v2 firstObject];
+  results = [(MADRequest *)self results];
+  firstObject = [results firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 @end

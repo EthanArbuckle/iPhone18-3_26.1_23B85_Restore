@@ -1,21 +1,21 @@
 @interface TIDPEventDispatcher
-- (TIDPEventDispatcher)initWithReportingDelegate:(id)a3;
-- (void)sessionDidEnd:(id)a3 aligned:(id)a4;
+- (TIDPEventDispatcher)initWithReportingDelegate:(id)delegate;
+- (void)sessionDidEnd:(id)end aligned:(id)aligned;
 @end
 
 @implementation TIDPEventDispatcher
 
-- (void)sessionDidEnd:(id)a3 aligned:(id)a4
+- (void)sessionDidEnd:(id)end aligned:(id)aligned
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  endCopy = end;
+  alignedCopy = aligned;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v8 = [v7 alignedEntries];
-  v9 = [v8 countByEnumeratingWithState:&v40 objects:v45 count:16];
+  alignedEntries = [alignedCopy alignedEntries];
+  v9 = [alignedEntries countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v9)
   {
     v10 = v9;
@@ -26,21 +26,21 @@
       {
         if (*v41 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(alignedEntries);
         }
 
         v13 = *(*(&v40 + 1) + 8 * i);
-        v14 = [v13 originalWord];
-        if (!v14)
+        originalWord = [v13 originalWord];
+        if (!originalWord)
         {
           goto LABEL_22;
         }
 
-        v15 = v14;
-        v16 = [v13 originalWord];
-        v17 = [v16 acceptedString];
+        v15 = originalWord;
+        originalWord2 = [v13 originalWord];
+        acceptedString = [originalWord2 acceptedString];
 
-        if (!v17)
+        if (!acceptedString)
         {
 LABEL_22:
 
@@ -48,7 +48,7 @@ LABEL_22:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v40 objects:v45 count:16];
+      v10 = [alignedEntries countByEnumeratingWithState:&v40 objects:v45 count:16];
       if (v10)
       {
         continue;
@@ -59,27 +59,27 @@ LABEL_22:
   }
 
   v18 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:5];
-  v19 = [(TIDPRecorder *)[TIDPUnknownTokenRecorder alloc] initWithTypingSession:v6 aligned:v7];
-  v20 = [(TIDPRecorder *)[TIDPNamedEntityTokenRecorder alloc] initWithTypingSession:v6 aligned:v7];
+  v19 = [(TIDPRecorder *)[TIDPUnknownTokenRecorder alloc] initWithTypingSession:endCopy aligned:alignedCopy];
+  v20 = [(TIDPRecorder *)[TIDPNamedEntityTokenRecorder alloc] initWithTypingSession:endCopy aligned:alignedCopy];
   v35 = v19;
   [v18 addObject:v19];
   v34 = v20;
   [v18 addObject:v20];
-  v21 = [v7 alignedEntries];
-  v22 = [v21 lastObject];
+  alignedEntries2 = [alignedCopy alignedEntries];
+  lastObject = [alignedEntries2 lastObject];
 
-  LODWORD(v21) = [v22 inSessionAlignmentConfidence];
-  if (v21 == 3)
+  LODWORD(alignedEntries2) = [lastObject inSessionAlignmentConfidence];
+  if (alignedEntries2 == 3)
   {
-    v23 = [[TIDPNgramRecorderRandom alloc] initWithTypingSession:v6 aligned:v7 n:5];
+    v23 = [[TIDPNgramRecorderRandom alloc] initWithTypingSession:endCopy aligned:alignedCopy n:5];
     [v18 addObject:v23];
   }
 
-  v33 = [(TIDPRecorder *)[TIDPBiomeUnigramTokenRecorder alloc] initWithTypingSession:v6 aligned:v7];
+  v33 = [(TIDPRecorder *)[TIDPBiomeUnigramTokenRecorder alloc] initWithTypingSession:endCopy aligned:alignedCopy];
   [v18 addObject:?];
-  v24 = [(TIDPRecorder *)[TIDPBiomeEmojiTokenRecorder alloc] initWithTypingSession:v6 aligned:v7];
+  v24 = [(TIDPRecorder *)[TIDPBiomeEmojiTokenRecorder alloc] initWithTypingSession:endCopy aligned:alignedCopy];
   [v18 addObject:v24];
-  v25 = [(TIDPRecorder *)[TIDPBiomeNamedEntityTokenRecorder alloc] initWithTypingSession:v6 aligned:v7];
+  v25 = [(TIDPRecorder *)[TIDPBiomeNamedEntityTokenRecorder alloc] initWithTypingSession:endCopy aligned:alignedCopy];
   [v18 addObject:v25];
   v38 = 0u;
   v39 = 0u;
@@ -119,14 +119,14 @@ LABEL_23:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (TIDPEventDispatcher)initWithReportingDelegate:(id)a3
+- (TIDPEventDispatcher)initWithReportingDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v6 = [(TIDPEventDispatcher *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_reportingDelegate, a3);
+    objc_storeStrong(&v6->_reportingDelegate, delegate);
   }
 
   return v7;

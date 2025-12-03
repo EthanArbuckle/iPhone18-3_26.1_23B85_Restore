@@ -18,24 +18,24 @@
     v7 = 1.0;
   }
 
-  result = [a1 alpha];
+  result = [self alpha];
   if (v9 != v7)
   {
     if (a4)
     {
-      [a1 setHidden:0];
+      [self setHidden:0];
       [objc_opt_class() pl_setHiddenAnimationDuration];
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __61__UIView_PhotoLibraryAdditions__pl_setHidden_delay_animated___block_invoke;
       v12[3] = &unk_2782A22F0;
-      v12[4] = a1;
+      v12[4] = self;
       *&v12[5] = v7;
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __61__UIView_PhotoLibraryAdditions__pl_setHidden_delay_animated___block_invoke_2;
       v10[3] = &unk_2782A2318;
-      v10[4] = a1;
+      v10[4] = self;
       *&v10[5] = v7;
       v11 = a3;
       return [MEMORY[0x277D75D18] animateWithDuration:0 delay:v12 options:v10 animations:? completion:?];
@@ -43,10 +43,10 @@
 
     else
     {
-      [objc_msgSend(a1 "layer")];
-      [a1 setHidden:a3];
+      [objc_msgSend(self "layer")];
+      [self setHidden:a3];
 
-      return [a1 setAlpha:v7];
+      return [self setAlpha:v7];
     }
   }
 
@@ -55,16 +55,16 @@
 
 - (uint64_t)pl_drawBorderWithColor:()PhotoLibraryAdditions width:
 {
-  v6 = [a1 layer];
-  [v6 setBorderColor:{objc_msgSend(a4, "CGColor")}];
+  layer = [self layer];
+  [layer setBorderColor:{objc_msgSend(a4, "CGColor")}];
 
-  return [v6 setBorderWidth:a2];
+  return [layer setBorderWidth:a2];
 }
 
 - (uint64_t)pl_isOnScreen:()PhotoLibraryAdditions
 {
-  [a1 bounds];
-  [a1 convertRect:0 toView:?];
+  [self bounds];
+  [self convertRect:0 toView:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -74,7 +74,7 @@
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  result = [a1 window];
+  result = [self window];
   if (result)
   {
     v22 = v6;

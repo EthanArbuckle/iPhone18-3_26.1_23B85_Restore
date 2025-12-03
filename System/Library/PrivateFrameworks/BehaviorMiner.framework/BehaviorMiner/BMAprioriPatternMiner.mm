@@ -1,16 +1,16 @@
 @interface BMAprioriPatternMiner
-- (BMAprioriPatternMiner)initWithBaskets:(id)a3;
-- (id)getItemIndexSetsWithMinSupport:(double)a3 itemIndexSets:(id)a4;
-- (id)minePatternsWithMinSupport:(unint64_t)a3 constrainedToPatternsWithTypes:(id)a4;
-- (id)supportOfItemIndexSet:(id)a3;
+- (BMAprioriPatternMiner)initWithBaskets:(id)baskets;
+- (id)getItemIndexSetsWithMinSupport:(double)support itemIndexSets:(id)sets;
+- (id)minePatternsWithMinSupport:(unint64_t)support constrainedToPatternsWithTypes:(id)types;
+- (id)supportOfItemIndexSet:(id)set;
 @end
 
 @implementation BMAprioriPatternMiner
 
-- (BMAprioriPatternMiner)initWithBaskets:(id)a3
+- (BMAprioriPatternMiner)initWithBaskets:(id)baskets
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  basketsCopy = baskets;
   v41.receiver = self;
   v41.super_class = BMAprioriPatternMiner;
   v5 = [(BMAprioriPatternMiner *)&v41 init];
@@ -19,15 +19,15 @@
   {
     v26 = v5;
     v5->_maxItemsetSize = 0;
-    v7 = [MEMORY[0x277CBEB18] array];
-    v30 = [MEMORY[0x277CBEB18] array];
-    v8 = [MEMORY[0x277CBEB40] orderedSet];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v27 = v4;
-    obj = v4;
+    v27 = basketsCopy;
+    obj = basketsCopy;
     v31 = [obj countByEnumeratingWithState:&v37 objects:v43 count:16];
     if (v31)
     {
@@ -44,7 +44,7 @@
 
           v32 = v9;
           v10 = *(*(&v37 + 1) + 8 * v9);
-          v11 = [MEMORY[0x277CCAB58] indexSet];
+          indexSet = [MEMORY[0x277CCAB58] indexSet];
           v33 = 0u;
           v34 = 0u;
           v35 = 0u;
@@ -65,15 +65,15 @@
                 }
 
                 v17 = *(*(&v33 + 1) + 8 * i);
-                v18 = [v8 indexOfObject:v17];
+                v18 = [orderedSet indexOfObject:v17];
                 if (v18 == 0x7FFFFFFFFFFFFFFFLL)
                 {
-                  [v8 addObject:v17];
-                  v18 = [v8 indexOfObject:v17];
-                  [v7 addObject:v17];
+                  [orderedSet addObject:v17];
+                  v18 = [orderedSet indexOfObject:v17];
+                  [array addObject:v17];
                 }
 
-                [v11 addIndex:v18];
+                [indexSet addIndex:v18];
               }
 
               v14 = [v12 countByEnumeratingWithState:&v33 objects:v42 count:16];
@@ -82,8 +82,8 @@
             while (v14);
           }
 
-          v19 = [v11 copy];
-          [v30 addObject:v19];
+          v19 = [indexSet copy];
+          [array2 addObject:v19];
 
           v9 = v32 + 1;
         }
@@ -95,33 +95,33 @@
       while (v31);
     }
 
-    v20 = [v7 copy];
+    v20 = [array copy];
     v6 = v26;
     items = v26->_items;
     v26->_items = v20;
 
-    v22 = [v30 copy];
+    v22 = [array2 copy];
     indexBaskets = v26->_indexBaskets;
     v26->_indexBaskets = v22;
 
     v26->_shouldStop = 0;
-    v4 = v27;
+    basketsCopy = v27;
   }
 
   v24 = *MEMORY[0x277D85DE8];
   return v6;
 }
 
-- (id)supportOfItemIndexSet:(id)a3
+- (id)supportOfItemIndexSet:(id)set
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  setCopy = set;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(BMAprioriPatternMiner *)self indexBaskets];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  indexBaskets = [(BMAprioriPatternMiner *)self indexBaskets];
+  v6 = [indexBaskets countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -133,13 +133,13 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(indexBaskets);
         }
 
-        v8 += [*(*(&v14 + 1) + 8 * i) containsIndexes:v4];
+        v8 += [*(*(&v14 + 1) + 8 * i) containsIndexes:setCopy];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [indexBaskets countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -157,16 +157,16 @@
   return v11;
 }
 
-- (id)getItemIndexSetsWithMinSupport:(double)a3 itemIndexSets:(id)a4
+- (id)getItemIndexSetsWithMinSupport:(double)support itemIndexSets:(id)sets
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  setsCopy = sets;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v6;
+  v8 = setsCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -190,10 +190,10 @@
         }
 
         v14 = [(BMAprioriPatternMiner *)self supportOfItemIndexSet:v13];
-        v15 = [v14 integerValue];
-        if (v15 >= a3)
+        integerValue = [v14 integerValue];
+        if (integerValue >= support)
         {
-          [v7 setObject:v14 forKey:{v13, v15}];
+          [dictionary setObject:v14 forKey:{v13, integerValue}];
         }
       }
 
@@ -207,7 +207,7 @@
     }
   }
 
-  v16 = v7;
+  v16 = dictionary;
 LABEL_13:
 
   v17 = *MEMORY[0x277D85DE8];
@@ -215,27 +215,27 @@ LABEL_13:
   return v16;
 }
 
-- (id)minePatternsWithMinSupport:(unint64_t)a3 constrainedToPatternsWithTypes:(id)a4
+- (id)minePatternsWithMinSupport:(unint64_t)support constrainedToPatternsWithTypes:(id)types
 {
-  v6 = a4;
-  v7 = [MEMORY[0x277CCAB58] indexSet];
-  v8 = [(BMAprioriPatternMiner *)self items];
+  typesCopy = types;
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  items = [(BMAprioriPatternMiner *)self items];
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v46[2] = __83__BMAprioriPatternMiner_minePatternsWithMinSupport_constrainedToPatternsWithTypes___block_invoke;
   v46[3] = &unk_278D065F8;
-  v40 = v6;
+  v40 = typesCopy;
   v47 = v40;
-  v9 = v7;
+  v9 = indexSet;
   v48 = v9;
-  [v8 enumerateObjectsUsingBlock:v46];
+  [items enumerateObjectsUsingBlock:v46];
 
   v39 = v9;
   v45 = [v9 copy];
   v10 = 0x277CBE000uLL;
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v12 = [(BMAprioriPatternMiner *)self items];
-  v13 = [v12 count];
+  items2 = [(BMAprioriPatternMiner *)self items];
+  v13 = [items2 count];
 
   if (v13)
   {
@@ -246,31 +246,31 @@ LABEL_13:
       [v11 addObject:v15];
 
       ++v14;
-      v16 = [(BMAprioriPatternMiner *)self items];
-      v17 = [v16 count];
+      items3 = [(BMAprioriPatternMiner *)self items];
+      v17 = [items3 count];
     }
 
     while (v17 > v14);
   }
 
-  v18 = [MEMORY[0x277CBEB38] dictionary];
-  v19 = a3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  supportCopy = support;
   v38 = v11;
-  v20 = [(BMAprioriPatternMiner *)self getItemIndexSetsWithMinSupport:v11 itemIndexSets:a3];
+  v20 = [(BMAprioriPatternMiner *)self getItemIndexSetsWithMinSupport:v11 itemIndexSets:support];
   v21 = 0;
   if ([v20 count])
   {
     v22 = 2;
     v23 = v20;
-    v37 = v18;
+    v37 = dictionary;
     while (1)
     {
-      [v18 addEntriesFromDictionary:v23];
+      [dictionary addEntriesFromDictionary:v23];
       v43 = objc_alloc_init(*(v10 + 2840));
 
       v41 = v23;
-      v24 = [v23 allKeys];
-      if ([v24 count])
+      allKeys = [v23 allKeys];
+      if ([allKeys count])
       {
         break;
       }
@@ -286,17 +286,17 @@ LABEL_17:
         }
 
         v20 = v41;
-        v18 = v37;
+        dictionary = v37;
         goto LABEL_25;
       }
 
       v21 = v43;
-      v20 = [(BMAprioriPatternMiner *)self getItemIndexSetsWithMinSupport:v43 itemIndexSets:v19];
+      v20 = [(BMAprioriPatternMiner *)self getItemIndexSetsWithMinSupport:v43 itemIndexSets:supportCopy];
 
       ++v22;
       v23 = v20;
       v10 = 0x277CBE000;
-      v18 = v37;
+      dictionary = v37;
       if (![v20 count])
       {
         goto LABEL_25;
@@ -304,18 +304,18 @@ LABEL_17:
     }
 
     v25 = 0;
-    v44 = v24;
+    v44 = allKeys;
     while (1)
     {
       v42 = v25 + 1;
-      if (v25 + 1 < [v24 count])
+      if (v25 + 1 < [allKeys count])
       {
         break;
       }
 
 LABEL_16:
       v25 = v42;
-      if (v42 >= [v24 count])
+      if (v42 >= [allKeys count])
       {
         goto LABEL_17;
       }
@@ -324,8 +324,8 @@ LABEL_16:
     v26 = v25 + 1;
     while (![(BMAprioriPatternMiner *)self shouldStop])
     {
-      v27 = [v24 objectAtIndexedSubscript:v25];
-      v28 = [v24 objectAtIndexedSubscript:v26];
+      v27 = [allKeys objectAtIndexedSubscript:v25];
+      v28 = [allKeys objectAtIndexedSubscript:v26];
       v29 = objc_alloc_init(MEMORY[0x277CCAB58]);
       [v29 addIndexes:v27];
       [v29 addIndexes:v28];
@@ -343,17 +343,17 @@ LABEL_16:
 
         v22 = v31;
         v25 = v30;
-        v24 = v44;
+        allKeys = v44;
       }
 
-      if (++v26 >= [v24 count])
+      if (++v26 >= [allKeys count])
       {
         goto LABEL_16;
       }
     }
 
     v34 = MEMORY[0x277CBEC10];
-    v18 = v37;
+    dictionary = v37;
     v21 = v43;
     v20 = v41;
   }
@@ -361,7 +361,7 @@ LABEL_16:
   else
   {
 LABEL_25:
-    v34 = v18;
+    v34 = dictionary;
   }
 
   return v34;

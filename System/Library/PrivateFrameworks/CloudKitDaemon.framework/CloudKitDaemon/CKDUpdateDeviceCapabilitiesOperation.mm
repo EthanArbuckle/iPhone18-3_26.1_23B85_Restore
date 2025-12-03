@@ -1,8 +1,8 @@
 @interface CKDUpdateDeviceCapabilitiesOperation
-+ (id)nameForState:(unint64_t)a3;
++ (id)nameForState:(unint64_t)state;
 - (BOOL)makeStateTransition;
 - (id)activityCreate;
-- (id)errorForResult:(id)a3 fallbackDescription:(id)a4;
+- (id)errorForResult:(id)result fallbackDescription:(id)description;
 - (id)lastSentCapabilities;
 - (id)operationGroupID;
 - (id)operationGroupName;
@@ -11,7 +11,7 @@
 - (id)shareUsages;
 - (id)supportedCapabilities;
 - (id)zoneUsages;
-- (void)handleRequestCompleted:(id)a3;
+- (void)handleRequestCompleted:(id)completed;
 - (void)invokeCompletionHandlers;
 - (void)main;
 - (void)sendSupportedCapabilitiesToServer;
@@ -20,20 +20,20 @@
 
 @implementation CKDUpdateDeviceCapabilitiesOperation
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 - 2 >= 3)
+  if (state - 2 >= 3)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDUpdateDeviceCapabilitiesOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }
 
   else
   {
-    v5 = off_27854B3B0[a3 - 2];
+    v5 = off_27854B3B0[state - 2];
   }
 
   return v5;
@@ -126,7 +126,7 @@
     v19 = 138544130;
     v20 = v8;
     v21 = 2048;
-    v22 = self;
+    selfCopy = self;
     v23 = 2114;
     v24 = v13;
     v25 = 2112;
@@ -244,17 +244,17 @@ LABEL_14:
   objc_destroyWeak(&location);
 }
 
-- (id)errorForResult:(id)a3 fallbackDescription:(id)a4
+- (id)errorForResult:(id)result fallbackDescription:(id)description
 {
-  v6 = a3;
-  v7 = a4;
-  if (objc_msgSend_code(v6, v8, v9) == 1)
+  resultCopy = result;
+  descriptionCopy = description;
+  if (objc_msgSend_code(resultCopy, v8, v9) == 1)
   {
     v12 = 0;
     goto LABEL_10;
   }
 
-  v13 = objc_msgSend_error(v6, v10, v11);
+  v13 = objc_msgSend_error(resultCopy, v10, v11);
   v16 = objc_msgSend_clientError(v13, v14, v15);
   hasType = objc_msgSend_hasType(v16, v17, v18);
 
@@ -263,7 +263,7 @@ LABEL_14:
     goto LABEL_9;
   }
 
-  v22 = objc_msgSend_error(v6, v20, v21);
+  v22 = objc_msgSend_error(resultCopy, v20, v21);
   if ((objc_msgSend_hasExtensionError(v22, v23, v24) & 1) == 0)
   {
 
@@ -271,13 +271,13 @@ LABEL_9:
     v39 = MEMORY[0x277CBC560];
     v40 = *MEMORY[0x277CBBF50];
     v41 = objc_msgSend_request(self, v20, v21);
-    v42 = sub_225395734(v41, v6);
-    v12 = objc_msgSend_errorWithDomain_code_userInfo_format_(v39, v43, v40, 1, v42, @"%@", v7);
+    v42 = sub_225395734(v41, resultCopy);
+    v12 = objc_msgSend_errorWithDomain_code_userInfo_format_(v39, v43, v40, 1, v42, @"%@", descriptionCopy);
 
     goto LABEL_10;
   }
 
-  v27 = objc_msgSend_error(v6, v25, v26);
+  v27 = objc_msgSend_error(resultCopy, v25, v26);
   v30 = objc_msgSend_extensionError(v27, v28, v29);
   hasTypeCode = objc_msgSend_hasTypeCode(v30, v31, v32);
 
@@ -289,7 +289,7 @@ LABEL_9:
   v34 = MEMORY[0x277CBC560];
   v35 = *MEMORY[0x277CBC120];
   v36 = objc_msgSend_request(self, v20, v21);
-  v37 = sub_225395734(v36, v6);
+  v37 = sub_225395734(v36, resultCopy);
   v12 = objc_msgSend_errorWithDomain_code_userInfo_format_(v34, v38, v35, 6000, v37, @"Plugin-Specific Error");
 
   if (!v12)
@@ -341,10 +341,10 @@ LABEL_10:
   return v3;
 }
 
-- (void)handleRequestCompleted:(id)a3
+- (void)handleRequestCompleted:(id)completed
 {
   v68 = *MEMORY[0x277D85DE8];
-  v6 = objc_msgSend_error(a3, a2, a3);
+  v6 = objc_msgSend_error(completed, a2, completed);
   if (*MEMORY[0x277CBC810] == 1)
   {
     v7 = objc_msgSend_unitTestOverrides(self, v4, v5);

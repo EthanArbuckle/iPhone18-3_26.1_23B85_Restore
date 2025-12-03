@@ -51,21 +51,21 @@
     [UIFont(IC) ic_fontWithSingleLineA];
   }
 
-  v2 = [[ICFontCacheKey alloc] initWithFont:a1];
-  if (ic_fontWithSingleLineA_disableSingleLineA != 1 || (([a1 ic_fontHasSingleLineA] & 1) == 0 ? (v3 = a1) : (objc_msgSend(a1, "ic_fontWithoutSingleLineA"), v3 = objc_claimAutoreleasedReturnValue()), (v4 = v3) == 0))
+  v2 = [[ICFontCacheKey alloc] initWithFont:self];
+  if (ic_fontWithSingleLineA_disableSingleLineA != 1 || (([self ic_fontHasSingleLineA] & 1) == 0 ? (v3 = self) : (objc_msgSend(self, "ic_fontWithoutSingleLineA"), v3 = objc_claimAutoreleasedReturnValue()), (v4 = v3) == 0))
   {
-    if ([a1 ic_fontHasSingleLineA])
+    if ([self ic_fontHasSingleLineA])
     {
-      v5 = a1;
+      selfCopy = self;
     }
 
     else
     {
-      v5 = [ic_fontWithSingleLineA_singleLineACache objectForKey:v2];
+      selfCopy = [ic_fontWithSingleLineA_singleLineACache objectForKey:v2];
     }
 
-    v4 = v5;
-    if (!v5)
+    v4 = selfCopy;
+    if (!selfCopy)
     {
       v16 = *MEMORY[0x1E69DB8B0];
       v6 = *MEMORY[0x1E69DB900];
@@ -79,8 +79,8 @@
       v17[0] = v8;
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
 
-      v10 = [a1 fontDescriptor];
-      v11 = [v10 fontDescriptorByAddingAttributes:v9];
+      fontDescriptor = [self fontDescriptor];
+      v11 = [fontDescriptor fontDescriptorByAddingAttributes:v9];
 
       v4 = [MEMORY[0x1E69DB878] fontWithDescriptor:v11 size:0.0];
       [ic_fontWithSingleLineA_singleLineACache setObject:v4 forKey:v2];
@@ -97,35 +97,35 @@
 
 - (id)ic_fontWithoutSingleLineA
 {
-  v1 = a1;
-  if ([v1 ic_fontHasSingleLineA])
+  selfCopy = self;
+  if ([selfCopy ic_fontHasSingleLineA])
   {
-    v2 = [v1 fontDescriptor];
-    v3 = [v2 fontAttributes];
-    v4 = [v3 mutableCopy];
+    fontDescriptor = [selfCopy fontDescriptor];
+    fontAttributes = [fontDescriptor fontAttributes];
+    v4 = [fontAttributes mutableCopy];
 
     [v4 removeObjectForKey:*MEMORY[0x1E69DB8B0]];
     v5 = [MEMORY[0x1E69DB880] fontDescriptorWithFontAttributes:v4];
     v6 = [MEMORY[0x1E69DB878] fontWithDescriptor:v5 size:0.0];
 
-    v1 = v6;
+    selfCopy = v6;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 + (id)ic_preferredSingleLineAFontForTextStyle:()IC
 {
-  v1 = [a1 preferredFontForTextStyle:?];
-  v2 = [v1 ic_fontWithSingleLineA];
+  v1 = [self preferredFontForTextStyle:?];
+  ic_fontWithSingleLineA = [v1 ic_fontWithSingleLineA];
 
-  return v2;
+  return ic_fontWithSingleLineA;
 }
 
 - (id)ic_fontWithTabularNumbers
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v1 = [a1 fontDescriptor];
+  fontDescriptor = [self fontDescriptor];
   v12 = *MEMORY[0x1E69DB8B0];
   v2 = *MEMORY[0x1E69DB900];
   v9[0] = *MEMORY[0x1E69DB908];
@@ -137,7 +137,7 @@
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v11 count:1];
   v13[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  v6 = [v1 fontDescriptorByAddingAttributes:v5];
+  v6 = [fontDescriptor fontDescriptorByAddingAttributes:v5];
 
   v7 = [MEMORY[0x1E69DB878] fontWithDescriptor:v6 size:0.0];
 
@@ -146,16 +146,16 @@
 
 - (id)ic_fontConvertedToSize:()IC
 {
-  v4 = [a1 ic_fontHasSingleLineA];
+  ic_fontHasSingleLineA = [self ic_fontHasSingleLineA];
   v5 = MEMORY[0x1E69DB878];
-  v6 = [a1 fontDescriptor];
-  v7 = [v5 fontWithDescriptor:v6 size:a2];
+  fontDescriptor = [self fontDescriptor];
+  v7 = [v5 fontWithDescriptor:fontDescriptor size:a2];
 
-  if (v4)
+  if (ic_fontHasSingleLineA)
   {
-    v8 = [v7 ic_fontWithSingleLineA];
+    ic_fontWithSingleLineA = [v7 ic_fontWithSingleLineA];
 
-    v7 = v8;
+    v7 = ic_fontWithSingleLineA;
   }
 
   return v7;
@@ -166,10 +166,10 @@
   v2 = [objc_opt_class() preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   v3 = MEMORY[0x1E69DB878];
   [v2 pointSize];
-  v5 = [v3 systemFontOfSize:round(v4 * 0.882352941 * a1)];
-  v6 = [v5 ic_fontWithSingleLineA];
+  v5 = [v3 systemFontOfSize:round(v4 * 0.882352941 * self)];
+  ic_fontWithSingleLineA = [v5 ic_fontWithSingleLineA];
 
-  return v6;
+  return ic_fontWithSingleLineA;
 }
 
 + (id)ic_preferredFontForCompatibilityBannerText
@@ -188,7 +188,7 @@
   v7 = a4;
   v8 = a3;
   v9 = [v6 preferredFontDescriptorWithTextStyle:v8];
-  [a1 ic_pointSizeForTextStyle:v8 contentSizeCategory:v7];
+  [self ic_pointSizeForTextStyle:v8 contentSizeCategory:v7];
   v11 = v10;
 
   v12 = MEMORY[0x1E69DB878];
@@ -220,17 +220,17 @@
 + (id)ic_listViewTitleFont
 {
   v0 = [objc_opt_class() preferredFontForTextStyle:*MEMORY[0x1E69DDD40]];
-  v1 = [v0 ic_fontWithSingleLineA];
+  ic_fontWithSingleLineA = [v0 ic_fontWithSingleLineA];
 
-  return v1;
+  return ic_fontWithSingleLineA;
 }
 
 + (id)ic_listViewDetailFont
 {
   v0 = [objc_opt_class() preferredFontForTextStyle:*MEMORY[0x1E69DDD78]];
-  v1 = [v0 ic_fontWithSingleLineA];
+  ic_fontWithSingleLineA = [v0 ic_fontWithSingleLineA];
 
-  return v1;
+  return ic_fontWithSingleLineA;
 }
 
 + (id)ic_attachmentBrowserTitleFont
@@ -244,29 +244,29 @@
 + (id)ic_attachmentBrowserSeeAllButtonFont
 {
   v0 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
-  v1 = [v0 ic_fontWithSingleLineA];
+  ic_fontWithSingleLineA = [v0 ic_fontWithSingleLineA];
 
-  return v1;
+  return ic_fontWithSingleLineA;
 }
 
 + (id)ic_gridViewSectionTitleFont
 {
   v0 = [MEMORY[0x1E69DB878] systemFontOfSize:17.0 weight:*MEMORY[0x1E69DB980]];
-  v1 = [MEMORY[0x1E69DCA40] defaultMetrics];
-  v2 = [v1 scaledFontForFont:v0];
+  defaultMetrics = [MEMORY[0x1E69DCA40] defaultMetrics];
+  v2 = [defaultMetrics scaledFontForFont:v0];
 
-  v3 = [v2 ic_fontWithSingleLineA];
+  ic_fontWithSingleLineA = [v2 ic_fontWithSingleLineA];
 
-  return v3;
+  return ic_fontWithSingleLineA;
 }
 
 + (id)ic_gridViewNoteTitleFont
 {
   v0 = [objc_opt_class() systemFontOfSize:15.0];
-  v1 = [v0 ic_fontWithSingleLineA];
+  ic_fontWithSingleLineA = [v0 ic_fontWithSingleLineA];
 
-  v2 = [MEMORY[0x1E69DCA40] defaultMetrics];
-  v3 = [v2 scaledFontForFont:v1];
+  defaultMetrics = [MEMORY[0x1E69DCA40] defaultMetrics];
+  v3 = [defaultMetrics scaledFontForFont:ic_fontWithSingleLineA];
 
   return v3;
 }
@@ -274,10 +274,10 @@
 + (id)ic_gridViewNoteSubtitleFont
 {
   v0 = [objc_opt_class() systemFontOfSize:12.0];
-  v1 = [v0 ic_fontWithSingleLineA];
+  ic_fontWithSingleLineA = [v0 ic_fontWithSingleLineA];
 
-  v2 = [MEMORY[0x1E69DCA40] defaultMetrics];
-  v3 = [v2 scaledFontForFont:v1];
+  defaultMetrics = [MEMORY[0x1E69DCA40] defaultMetrics];
+  v3 = [defaultMetrics scaledFontForFont:ic_fontWithSingleLineA];
 
   return v3;
 }
@@ -288,9 +288,9 @@
   v1 = MEMORY[0x1E69DB878];
   [v0 pointSize];
   v2 = [v1 systemFontOfSize:? weight:?];
-  v3 = [v2 ic_fontWithSingleLineA];
+  ic_fontWithSingleLineA = [v2 ic_fontWithSingleLineA];
 
-  return v3;
+  return ic_fontWithSingleLineA;
 }
 
 + (id)ic_navBarButtonFontUsingSingleLineA:()IC
@@ -299,15 +299,15 @@
   v5 = v4;
   if (a3)
   {
-    v6 = [v4 ic_fontWithSingleLineA];
+    ic_fontWithSingleLineA = [v4 ic_fontWithSingleLineA];
   }
 
   else
   {
-    v6 = v4;
+    ic_fontWithSingleLineA = v4;
   }
 
-  v7 = v6;
+  v7 = ic_fontWithSingleLineA;
 
   return v7;
 }
@@ -315,12 +315,12 @@
 + (id)ic_recentlyDeletedHeaderFont
 {
   v0 = MEMORY[0x1E69DB878];
-  v1 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  v2 = [v0 ic_preferredSystemFontWithBaseSize:v1 withContentSizeCategory:13.0 minSize:13.0];
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  v2 = [v0 ic_preferredSystemFontWithBaseSize:preferredContentSizeCategory withContentSizeCategory:13.0 minSize:13.0];
 
-  v3 = [v2 ic_fontWithSingleLineA];
+  ic_fontWithSingleLineA = [v2 ic_fontWithSingleLineA];
 
-  return v3;
+  return ic_fontWithSingleLineA;
 }
 
 + (id)ic_fontDescriptorTextStyle:()IC withContentSizeCategory:useSingleLineA:bold:
@@ -379,7 +379,7 @@
 
 + (double)ic_pointSizeForBodyTextWithContentSizeCategory:()IC
 {
-  v3 = [a1 ic_fontDescriptorForBodyTextWithContentSizeCategory:a3 useSingleLineA:0 bold:0];
+  v3 = [self ic_fontDescriptorForBodyTextWithContentSizeCategory:a3 useSingleLineA:0 bold:0];
   [v3 pointSize];
   v5 = v4;
 
@@ -407,7 +407,7 @@
 
 + (id)ic_preferredFontForTitleTextWithContentSizeCategory:()IC isForPrint:isReducedSize:
 {
-  v7 = [a1 ic_fontDescriptorForBodyTextWithContentSizeCategory:a3 useSingleLineA:1 bold:1];
+  v7 = [self ic_fontDescriptorForBodyTextWithContentSizeCategory:a3 useSingleLineA:1 bold:1];
   [v7 pointSize];
   if ((a4 & 1) == 0)
   {
@@ -431,7 +431,7 @@
 
 + (id)ic_preferredFontForHeadingTextWithContentSizeCategory:()IC isForPrint:
 {
-  v5 = [a1 ic_fontDescriptorForBodyTextWithContentSizeCategory:a3 useSingleLineA:1 bold:1];
+  v5 = [self ic_fontDescriptorForBodyTextWithContentSizeCategory:a3 useSingleLineA:1 bold:1];
   [v5 pointSize];
   v7 = round(v6 * 1.29411765);
   if (a4)
@@ -446,7 +446,7 @@
 
 + (id)ic_preferredFontForSubheadingTextWithContentSizeCategory:()IC isForPrint:
 {
-  v5 = [a1 ic_fontDescriptorForBodyTextWithContentSizeCategory:a3 useSingleLineA:1 bold:1];
+  v5 = [self ic_fontDescriptorForBodyTextWithContentSizeCategory:a3 useSingleLineA:1 bold:1];
   v6 = 0.0;
   if (a4)
   {
@@ -460,7 +460,7 @@
 
 + (id)ic_preferredFontForBodyTextWithContentSizeCategory:()IC isForPrint:
 {
-  v5 = [a1 ic_fontDescriptorForBodyTextWithContentSizeCategory:a3 useSingleLineA:1 bold:0];
+  v5 = [self ic_fontDescriptorForBodyTextWithContentSizeCategory:a3 useSingleLineA:1 bold:0];
   v6 = 0.0;
   if (a4)
   {
@@ -474,7 +474,7 @@
 
 + (id)ic_preferredFontForBodyTextWithContentSizeCategory:()IC useSingleLineA:
 {
-  v4 = [a1 ic_fontDescriptorForBodyTextWithContentSizeCategory:a3 useSingleLineA:a4 bold:0];
+  v4 = [self ic_fontDescriptorForBodyTextWithContentSizeCategory:a3 useSingleLineA:a4 bold:0];
   v5 = [MEMORY[0x1E69DB878] fontWithDescriptor:v4 size:0.0];
 
   return v5;
@@ -483,7 +483,7 @@
 + (id)ic_preferredFontForBodyTextWithMaximumContentSizeCategory:()IC
 {
   v4 = ICContentSizeCategoryMinSystemPreferenceAnd(a3);
-  [a1 ic_pointSizeForBodyTextWithContentSizeCategory:v4];
+  [self ic_pointSizeForBodyTextWithContentSizeCategory:v4];
   v5 = [MEMORY[0x1E69DB878] systemFontOfSize:?];
 
   return v5;
@@ -491,7 +491,7 @@
 
 + (uint64_t)ic_preferredFontForFixedWidthTextWithContentSizeCategory:()IC
 {
-  [a1 ic_pointSizeForBodyTextWithContentSizeCategory:?];
+  [self ic_pointSizeForBodyTextWithContentSizeCategory:?];
   v2 = v1 * 0.882352941;
   v3 = MEMORY[0x1E69DB878];
   v4 = *MEMORY[0x1E69DB978];
@@ -501,8 +501,8 @@
 
 + (double)ic_fontSizeForHeaderImport
 {
-  v1 = [a1 ic_preferredFontForSubheadingText];
-  [v1 pointSize];
+  ic_preferredFontForSubheadingText = [self ic_preferredFontForSubheadingText];
+  [ic_preferredFontForSubheadingText pointSize];
   v3 = v2;
 
   return v3;
@@ -510,8 +510,8 @@
 
 + (double)ic_fontSizeForSubheaderImport
 {
-  v1 = [a1 ic_preferredFontForBodyText];
-  [v1 pointSize];
+  ic_preferredFontForBodyText = [self ic_preferredFontForBodyText];
+  [ic_preferredFontForBodyText pointSize];
   v3 = v2;
 
   return v3;
@@ -522,7 +522,7 @@
   v7 = a5;
   v8 = CTFontDescriptorCreateWithTextStyle();
   [v8 pointSize];
-  v10 = a1 - v9;
+  v10 = self - v9;
   v11 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v7];
 
   [v11 pointSize];
@@ -542,20 +542,20 @@
   v6 = MEMORY[0x1E69DCA40];
   v7 = a4;
   v8 = a3;
-  v9 = [v6 defaultMetrics];
-  [a1 ic_pointSizeForTextStyle:v8 contentSizeCategory:v7];
+  defaultMetrics = [v6 defaultMetrics];
+  [self ic_pointSizeForTextStyle:v8 contentSizeCategory:v7];
   v11 = v10;
 
   v12 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v8];
 
-  v13 = [v9 scaledFontForFont:v12 maximumPointSize:v11];
+  v13 = [defaultMetrics scaledFontForFont:v12 maximumPointSize:v11];
 
   return v13;
 }
 
 + (id)ic_preferredSystemFontWithBaseSize:()IC withContentSizeCategory:minSize:
 {
-  [a1 ic_preferredFontSizeWithBaseSize:a2 withContentSizeCategory:a3 minSize:a2 * 1.8 maxSize:?];
+  [self ic_preferredFontSizeWithBaseSize:a2 withContentSizeCategory:a3 minSize:a2 * 1.8 maxSize:?];
   v5 = v4;
   v6 = [objc_opt_class() systemFontOfSize:a2];
   v7 = [v6 fontWithSize:v5];
@@ -575,12 +575,12 @@
     v14 = v12 >= v13;
     if (v12 >= v13)
     {
-      v15 = a3 - a1;
+      v15 = a3 - self;
     }
 
     else
     {
-      v15 = a1 - a2;
+      v15 = self - a2;
     }
 
     v16 = MEMORY[0x1E69DDC68];
@@ -597,28 +597,28 @@
     }
 
     v19 = v15 / ICContentSizeCategoryStepsBetweenCategories(v17, *v18);
-    v20 = a1 + v19 * ICContentSizeCategoryStepsBetweenCategories(v10, v9);
-    a1 = roundf(v20);
+    v20 = self + v19 * ICContentSizeCategoryStepsBetweenCategories(v10, v9);
+    self = roundf(v20);
   }
 
-  return a1;
+  return self;
 }
 
 - (BOOL)ic_hasSymbolicTrait:()IC
 {
-  v4 = [a1 fontDescriptor];
-  v5 = [v4 symbolicTraits];
+  fontDescriptor = [self fontDescriptor];
+  symbolicTraits = [fontDescriptor symbolicTraits];
 
-  return (v5 & a3) != 0;
+  return (symbolicTraits & a3) != 0;
 }
 
 - (id)ic_fontByAddingSymbolicTraits:()IC
 {
-  v5 = [a1 fontDescriptor];
-  v6 = [v5 fontDescriptorWithSymbolicTraits:a3];
+  fontDescriptor = [self fontDescriptor];
+  v6 = [fontDescriptor fontDescriptorWithSymbolicTraits:a3];
 
   v7 = MEMORY[0x1E69DB878];
-  [a1 pointSize];
+  [self pointSize];
   v8 = [v7 fontWithDescriptor:v6 size:?];
 
   return v8;
@@ -626,8 +626,8 @@
 
 - (id)ic_fontWithRoundedDesign
 {
-  v1 = [a1 fontDescriptor];
-  v2 = [v1 fontDescriptorWithDesign:*MEMORY[0x1E69DB8D8]];
+  fontDescriptor = [self fontDescriptor];
+  v2 = [fontDescriptor fontDescriptorWithDesign:*MEMORY[0x1E69DB8D8]];
 
   v3 = [MEMORY[0x1E69DB878] fontWithDescriptor:v2 size:0.0];
 

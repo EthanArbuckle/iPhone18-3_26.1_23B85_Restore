@@ -1,28 +1,28 @@
 @interface ENExposureClassification
-- (ENExposureClassification)initWithCoder:(id)a3;
+- (ENExposureClassification)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ENExposureClassification
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_name forKey:@"name"];
-  [v4 encodeObject:self->_date forKey:@"date"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_date forKey:@"date"];
   if (self->_index)
   {
-    [v4 encodeInteger:? forKey:?];
+    [coderCopy encodeInteger:? forKey:?];
   }
 
-  [v4 encodeObject:self->_region forKey:@"reg"];
+  [coderCopy encodeObject:self->_region forKey:@"reg"];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__ENExposureClassification_encodeWithCoder___block_invoke;
   v7[3] = &unk_278A4B148;
-  v8 = v4;
-  v5 = v4;
+  v8 = coderCopy;
+  v5 = coderCopy;
   v6 = MEMORY[0x2383EE560](v7);
   (v6)[2](v6, self->_confirmedTestPerDaySumERVAboveThreshold, @"ctestS");
   (v6)[2](v6, self->_clinicalDiagnosisPerDaySumERVAboveThreshold, @"cdiagS");
@@ -113,19 +113,19 @@ void __39__ENExposureClassification_description__block_invoke(uint64_t a1, uint6
   }
 }
 
-- (ENExposureClassification)initWithCoder:(id)a3
+- (ENExposureClassification)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = ENExposureClassification;
   v5 = [(ENExposureClassification *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     if (v6)
     {
       objc_storeStrong(&v5->_name, v6);
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
       if (v7)
       {
         objc_storeStrong(&v5->_date, v7);
@@ -136,7 +136,7 @@ void __39__ENExposureClassification_description__block_invoke(uint64_t a1, uint6
           v5->_index = v15;
         }
 
-        v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reg"];
+        v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reg"];
         if (v8)
         {
           objc_storeStrong(&v5->_region, v8);
@@ -144,7 +144,7 @@ void __39__ENExposureClassification_description__block_invoke(uint64_t a1, uint6
           v12[1] = 3221225472;
           v12[2] = __42__ENExposureClassification_initWithCoder___block_invoke;
           v12[3] = &unk_278A4B120;
-          v13 = v4;
+          v13 = coderCopy;
           v9 = MEMORY[0x2383EE560](v12);
           (v9)[2](v9, &v5->_confirmedTestPerDaySumERVAboveThreshold, @"ctestS");
           (v9)[2](v9, &v5->_clinicalDiagnosisPerDaySumERVAboveThreshold, @"cdiagS");

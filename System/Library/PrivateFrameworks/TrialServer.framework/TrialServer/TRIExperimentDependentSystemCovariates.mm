@@ -1,71 +1,71 @@
 @interface TRIExperimentDependentSystemCovariates
-- (TRIExperimentDependentSystemCovariates)initWithPaths:(id)a3 baseSystemCovariates:(id)a4 clientExperiment:(id)a5 experimentEndDate:(id)a6;
-- (TRIExperimentDependentSystemCovariates)initWithPaths:(id)a3 baseSystemCovariates:(id)a4 clientExperiment:(id)a5 systemConfiguration:(id)a6;
+- (TRIExperimentDependentSystemCovariates)initWithPaths:(id)paths baseSystemCovariates:(id)covariates clientExperiment:(id)experiment experimentEndDate:(id)date;
+- (TRIExperimentDependentSystemCovariates)initWithPaths:(id)paths baseSystemCovariates:(id)covariates clientExperiment:(id)experiment systemConfiguration:(id)configuration;
 - (id)dictionary;
-- (id)objectForKey:(id)a3;
-- (id)tri_checkAIUseCaseEnabled:(id)a3;
-- (id)tri_contextValueWithName:(id)a3;
+- (id)objectForKey:(id)key;
+- (id)tri_checkAIUseCaseEnabled:(id)enabled;
+- (id)tri_contextValueWithName:(id)name;
 @end
 
 @implementation TRIExperimentDependentSystemCovariates
 
-- (TRIExperimentDependentSystemCovariates)initWithPaths:(id)a3 baseSystemCovariates:(id)a4 clientExperiment:(id)a5 experimentEndDate:(id)a6
+- (TRIExperimentDependentSystemCovariates)initWithPaths:(id)paths baseSystemCovariates:(id)covariates clientExperiment:(id)experiment experimentEndDate:(id)date
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  pathsCopy = paths;
+  covariatesCopy = covariates;
+  experimentCopy = experiment;
+  dateCopy = date;
   v18.receiver = self;
   v18.super_class = TRIExperimentDependentSystemCovariates;
   v14 = [(TRIExperimentDependentSystemCovariates *)&v18 init];
   if (v14)
   {
-    v15 = [[TRISystemConfiguration alloc] initWithPaths:v10];
+    v15 = [[TRISystemConfiguration alloc] initWithPaths:pathsCopy];
     sysConfig = v14->_sysConfig;
     v14->_sysConfig = v15;
 
-    objc_storeStrong(&v14->_clientExperiment, a5);
-    objc_storeStrong(&v14->_baseSystemCovariates, a4);
-    objc_storeStrong(&v14->_experimentEndDate, a6);
+    objc_storeStrong(&v14->_clientExperiment, experiment);
+    objc_storeStrong(&v14->_baseSystemCovariates, covariates);
+    objc_storeStrong(&v14->_experimentEndDate, date);
   }
 
   return v14;
 }
 
-- (TRIExperimentDependentSystemCovariates)initWithPaths:(id)a3 baseSystemCovariates:(id)a4 clientExperiment:(id)a5 systemConfiguration:(id)a6
+- (TRIExperimentDependentSystemCovariates)initWithPaths:(id)paths baseSystemCovariates:(id)covariates clientExperiment:(id)experiment systemConfiguration:(id)configuration
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  covariatesCopy = covariates;
+  experimentCopy = experiment;
+  configurationCopy = configuration;
   v19.receiver = self;
   v19.super_class = TRIExperimentDependentSystemCovariates;
   v13 = [(TRIExperimentDependentSystemCovariates *)&v19 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_sysConfig, a6);
-    objc_storeStrong(&v14->_clientExperiment, a5);
-    objc_storeStrong(&v14->_baseSystemCovariates, a4);
-    v15 = [(TRIClientExperiment *)v14->_clientExperiment endDate];
-    v16 = [v15 date];
+    objc_storeStrong(&v13->_sysConfig, configuration);
+    objc_storeStrong(&v14->_clientExperiment, experiment);
+    objc_storeStrong(&v14->_baseSystemCovariates, covariates);
+    endDate = [(TRIClientExperiment *)v14->_clientExperiment endDate];
+    date = [endDate date];
     experimentEndDate = v14->_experimentEndDate;
-    v14->_experimentEndDate = v16;
+    v14->_experimentEndDate = date;
   }
 
   return v14;
 }
 
-- (id)tri_contextValueWithName:(id)a3
+- (id)tri_contextValueWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(TRIExperimentDependentSystemCovariates *)self dictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  dictionary = [(TRIExperimentDependentSystemCovariates *)self dictionary];
+  v6 = [dictionary objectForKeyedSubscript:nameCopy];
 
   if (!v6)
   {
     v8 = MEMORY[0x277CBEAD8];
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"The system covariates do not contain the key %@", v4];
-    v10 = [v8 exceptionWithName:@"KeyNotFoundException" reason:v9 userInfo:0];
+    nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"The system covariates do not contain the key %@", nameCopy];
+    v10 = [v8 exceptionWithName:@"KeyNotFoundException" reason:nameCopy userInfo:0];
     v11 = v10;
 
     objc_exception_throw(v10);
@@ -76,13 +76,13 @@
 
 - (id)dictionary
 {
-  v3 = [(TRISystemCovariateProviding *)self->_baseSystemCovariates dictionary];
-  v4 = [v3 mutableCopy];
+  dictionary = [(TRISystemCovariateProviding *)self->_baseSystemCovariates dictionary];
+  v4 = [dictionary mutableCopy];
 
-  v5 = [(TRISystemConfiguration *)self->_sysConfig siriDeviceAggregationIdRotationDate];
-  if (v5)
+  siriDeviceAggregationIdRotationDate = [(TRISystemConfiguration *)self->_sysConfig siriDeviceAggregationIdRotationDate];
+  if (siriDeviceAggregationIdRotationDate)
   {
-    v6 = [(NSDate *)self->_experimentEndDate compare:v5]== NSOrderedAscending;
+    v6 = [(NSDate *)self->_experimentEndDate compare:siriDeviceAggregationIdRotationDate]== NSOrderedAscending;
   }
 
   else
@@ -98,21 +98,21 @@
   return v8;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(TRIExperimentDependentSystemCovariates *)self dictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  dictionary = [(TRIExperimentDependentSystemCovariates *)self dictionary];
+  v6 = [dictionary objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
-- (id)tri_checkAIUseCaseEnabled:(id)a3
+- (id)tri_checkAIUseCaseEnabled:(id)enabled
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ![v3 isEqualToString:&stru_287FA0430])
+  enabledCopy = enabled;
+  v4 = enabledCopy;
+  if (enabledCopy && ![enabledCopy isEqualToString:&stru_287FA0430])
   {
     v5 = objc_alloc_init(TRIXPCCovariateFetcher);
     v11 = v4;

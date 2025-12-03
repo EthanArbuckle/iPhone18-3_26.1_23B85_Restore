@@ -4,17 +4,17 @@
 - (NSArray)simpleBeacons;
 - (SPBeaconManagerSimpleBeaconUpdateInterface)init;
 - (SPBeaconManagerXPCProtocol)proxy;
-- (void)_processRemovals:(id)a3;
+- (void)_processRemovals:(id)removals;
 - (void)dealloc;
 - (void)handleReconnection;
-- (void)interruptionHandler:(id)a3;
-- (void)invalidationHandler:(id)a3;
-- (void)receivedSimpleBeaconRemovals:(id)a3;
-- (void)receivedSimpleBeaconUpdates:(id)a3;
+- (void)interruptionHandler:(id)handler;
+- (void)invalidationHandler:(id)handler;
+- (void)receivedSimpleBeaconRemovals:(id)removals;
+- (void)receivedSimpleBeaconUpdates:(id)updates;
 - (void)removeObservers;
-- (void)setSimpleBeaconDifferenceBlock:(id)a3;
-- (void)startUpdatingSimpleBeaconsWithContext:(id)a3 completion:(id)a4;
-- (void)stopUpdatingSimpleBeaconsWithCompletion:(id)a3;
+- (void)setSimpleBeaconDifferenceBlock:(id)block;
+- (void)startUpdatingSimpleBeaconsWithContext:(id)context completion:(id)completion;
+- (void)stopUpdatingSimpleBeaconsWithCompletion:(id)completion;
 @end
 
 @implementation SPBeaconManagerSimpleBeaconUpdateInterface
@@ -62,14 +62,14 @@
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = 0;
-  v3 = [(SPBeaconManagerSimpleBeaconUpdateInterface *)self serialQueue];
+  serialQueue = [(SPBeaconManagerSimpleBeaconUpdateInterface *)self serialQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__SPBeaconManagerSimpleBeaconUpdateInterface_simpleBeacons__block_invoke;
   v6[3] = &unk_279B58D60;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(serialQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -77,10 +77,10 @@
   return v4;
 }
 
-- (void)setSimpleBeaconDifferenceBlock:(id)a3
+- (void)setSimpleBeaconDifferenceBlock:(id)block
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v5 = LogCategory_BeaconManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -89,29 +89,29 @@
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "SPBeaconManagerSimpleBeaconUpdateInterface: SPI: %{public}s", &v9, 0xCu);
   }
 
-  v6 = _Block_copy(v4);
+  v6 = _Block_copy(blockCopy);
   collectionDifferenceBlock = self->_collectionDifferenceBlock;
   self->_collectionDifferenceBlock = v6;
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startUpdatingSimpleBeaconsWithContext:(id)a3 completion:(id)a4
+- (void)startUpdatingSimpleBeaconsWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(SPBeaconManagerSimpleBeaconUpdateInterface *)self serialQueue];
+  serialQueue = [(SPBeaconManagerSimpleBeaconUpdateInterface *)self serialQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __95__SPBeaconManagerSimpleBeaconUpdateInterface_startUpdatingSimpleBeaconsWithContext_completion___block_invoke;
   v11[3] = &unk_279B58BA8;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = contextCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = contextCopy;
+  dispatch_async(serialQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -139,10 +139,10 @@ void __95__SPBeaconManagerSimpleBeaconUpdateInterface_startUpdatingSimpleBeacons
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopUpdatingSimpleBeaconsWithCompletion:(id)a3
+- (void)stopUpdatingSimpleBeaconsWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = LogCategory_BeaconManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -153,20 +153,20 @@ void __95__SPBeaconManagerSimpleBeaconUpdateInterface_startUpdatingSimpleBeacons
 
   [(SPBeaconManagerSimpleBeaconUpdateInterface *)self removeObservers];
   [(SPBeaconManagerSimpleBeaconUpdateInterface *)self setCollectionDifferenceBlock:0];
-  v6 = [(SPBeaconManagerSimpleBeaconUpdateInterface *)self session];
-  [v6 invalidate];
+  session = [(SPBeaconManagerSimpleBeaconUpdateInterface *)self session];
+  [session invalidate];
 
   [(SPBeaconManagerSimpleBeaconUpdateInterface *)self setSession:0];
   objc_initWeak(buf, self);
-  v7 = [(SPBeaconManagerSimpleBeaconUpdateInterface *)self serialQueue];
+  serialQueue = [(SPBeaconManagerSimpleBeaconUpdateInterface *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __86__SPBeaconManagerSimpleBeaconUpdateInterface_stopUpdatingSimpleBeaconsWithCompletion___block_invoke;
   block[3] = &unk_279B58D88;
   objc_copyWeak(&v10, buf);
-  dispatch_async(v7, block);
+  dispatch_async(serialQueue, block);
 
-  v4[2](v4, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
 
@@ -186,10 +186,10 @@ void __86__SPBeaconManagerSimpleBeaconUpdateInterface_stopUpdatingSimpleBeaconsW
   }
 }
 
-- (void)interruptionHandler:(id)a3
+- (void)interruptionHandler:(id)handler
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = LogCategory_BeaconManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -205,9 +205,9 @@ void __86__SPBeaconManagerSimpleBeaconUpdateInterface_stopUpdatingSimpleBeaconsW
     v6[2](v6, 0, v7);
   }
 
-  v8 = [(SPBeaconManagerSimpleBeaconUpdateInterface *)self session];
+  session = [(SPBeaconManagerSimpleBeaconUpdateInterface *)self session];
 
-  if (v8)
+  if (session)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -216,8 +216,8 @@ void __86__SPBeaconManagerSimpleBeaconUpdateInterface_stopUpdatingSimpleBeaconsW
     block[4] = self;
     dispatch_async(MEMORY[0x277D85CD0], block);
     v9 = objc_autoreleasePoolPush();
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:self selector:sel_handleReconnection name:SPSimpleBeaconUpdateInterfaceReconnect object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_handleReconnection name:SPSimpleBeaconUpdateInterfaceReconnect object:0];
 
     objc_autoreleasePoolPop(v9);
   }
@@ -234,7 +234,7 @@ void __66__SPBeaconManagerSimpleBeaconUpdateInterface_interruptionHandler___bloc
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)invalidationHandler:(id)a3
+- (void)invalidationHandler:(id)handler
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = LogCategory_BeaconManager();
@@ -257,9 +257,9 @@ void __66__SPBeaconManagerSimpleBeaconUpdateInterface_interruptionHandler___bloc
 
 - (SPBeaconManagerXPCProtocol)proxy
 {
-  v3 = [(SPBeaconManagerSimpleBeaconUpdateInterface *)self session];
+  session = [(SPBeaconManagerSimpleBeaconUpdateInterface *)self session];
 
-  if (!v3)
+  if (!session)
   {
     objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -282,18 +282,18 @@ void __66__SPBeaconManagerSimpleBeaconUpdateInterface_interruptionHandler___bloc
     v10 = [objc_alloc(MEMORY[0x277D07BA8]) initWithServiceDescription:v9];
     [(SPBeaconManagerSimpleBeaconUpdateInterface *)self setSession:v10];
 
-    v11 = [(SPBeaconManagerSimpleBeaconUpdateInterface *)self session];
-    [v11 resume];
+    session2 = [(SPBeaconManagerSimpleBeaconUpdateInterface *)self session];
+    [session2 resume];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
   }
 
-  v12 = [(SPBeaconManagerSimpleBeaconUpdateInterface *)self session];
-  v13 = [v12 proxy];
+  session3 = [(SPBeaconManagerSimpleBeaconUpdateInterface *)self session];
+  proxy = [session3 proxy];
 
-  return v13;
+  return proxy;
 }
 
 void __51__SPBeaconManagerSimpleBeaconUpdateInterface_proxy__block_invoke(uint64_t a1, void *a2)
@@ -367,10 +367,10 @@ uint64_t __61__SPBeaconManagerSimpleBeaconUpdateInterface_remoteInterface__block
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)receivedSimpleBeaconUpdates:(id)a3
+- (void)receivedSimpleBeaconUpdates:(id)updates
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updatesCopy = updates;
   v5 = LogCategory_BeaconManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -379,15 +379,15 @@ uint64_t __61__SPBeaconManagerSimpleBeaconUpdateInterface_remoteInterface__block
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "SPBeaconManagerSimpleBeaconUpdateInterface: SPI: %{public}s", buf, 0xCu);
   }
 
-  v6 = [(SPBeaconManagerSimpleBeaconUpdateInterface *)self serialQueue];
+  serialQueue = [(SPBeaconManagerSimpleBeaconUpdateInterface *)self serialQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __74__SPBeaconManagerSimpleBeaconUpdateInterface_receivedSimpleBeaconUpdates___block_invoke;
   v9[3] = &unk_279B58C78;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  dispatch_async(v6, v9);
+  v10 = updatesCopy;
+  v7 = updatesCopy;
+  dispatch_async(serialQueue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -566,10 +566,10 @@ uint64_t __74__SPBeaconManagerSimpleBeaconUpdateInterface_receivedSimpleBeaconUp
   return v8;
 }
 
-- (void)receivedSimpleBeaconRemovals:(id)a3
+- (void)receivedSimpleBeaconRemovals:(id)removals
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  removalsCopy = removals;
   v5 = LogCategory_BeaconManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -578,37 +578,37 @@ uint64_t __74__SPBeaconManagerSimpleBeaconUpdateInterface_receivedSimpleBeaconUp
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "SPBeaconManagerSimpleBeaconUpdateInterface: SPI: %{public}s", buf, 0xCu);
   }
 
-  v6 = [(SPBeaconManagerSimpleBeaconUpdateInterface *)self serialQueue];
+  serialQueue = [(SPBeaconManagerSimpleBeaconUpdateInterface *)self serialQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __75__SPBeaconManagerSimpleBeaconUpdateInterface_receivedSimpleBeaconRemovals___block_invoke;
   v9[3] = &unk_279B58C78;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  dispatch_async(v6, v9);
+  v10 = removalsCopy;
+  v7 = removalsCopy;
+  dispatch_async(serialQueue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processRemovals:(id)a3
+- (void)_processRemovals:(id)removals
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SPBeaconManagerSimpleBeaconUpdateInterface *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  removalsCopy = removals;
+  serialQueue = [(SPBeaconManagerSimpleBeaconUpdateInterface *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  if ([v4 count])
+  if ([removalsCopy count])
   {
-    v24 = self;
+    selfCopy = self;
     v6 = self->_simpleBeacons;
     v26 = [MEMORY[0x277CBEBF8] mutableCopy];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v25 = v4;
-    obj = v4;
+    v25 = removalsCopy;
+    obj = removalsCopy;
     v7 = [obj countByEnumeratingWithState:&v29 objects:v37 count:16];
     if (v7)
     {
@@ -629,8 +629,8 @@ uint64_t __74__SPBeaconManagerSimpleBeaconUpdateInterface_receivedSimpleBeaconUp
           v28[2] = __63__SPBeaconManagerSimpleBeaconUpdateInterface__processRemovals___block_invoke;
           v28[3] = &unk_279B58DD0;
           v28[4] = v11;
-          v12 = [(NSArray *)v6 indexOfObjectPassingTest:v28, v24];
-          if (v12 == 0x7FFFFFFFFFFFFFFFLL)
+          selfCopy = [(NSArray *)v6 indexOfObjectPassingTest:v28, selfCopy];
+          if (selfCopy == 0x7FFFFFFFFFFFFFFFLL)
           {
             v13 = LogCategory_BeaconManager();
             if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -643,7 +643,7 @@ uint64_t __74__SPBeaconManagerSimpleBeaconUpdateInterface_receivedSimpleBeaconUp
 
           else
           {
-            v14 = v12;
+            v14 = selfCopy;
             v15 = objc_alloc(MEMORY[0x277CCABE8]);
             v16 = [(NSArray *)v6 objectAtIndexedSubscript:v14];
             v17 = [v15 initWithObject:v16 type:1 index:v14];
@@ -669,18 +669,18 @@ uint64_t __74__SPBeaconManagerSimpleBeaconUpdateInterface_receivedSimpleBeaconUp
 
     v18 = [objc_alloc(MEMORY[0x277CCABF0]) initWithChanges:v26];
     v19 = [(NSArray *)v6 arrayByApplyingDifference:v18];
-    simpleBeacons = v24->_simpleBeacons;
-    v24->_simpleBeacons = v19;
+    simpleBeacons = selfCopy->_simpleBeacons;
+    selfCopy->_simpleBeacons = v19;
 
-    v21 = [(SPBeaconManagerSimpleBeaconUpdateInterface *)v24 collectionDifferenceBlock];
+    collectionDifferenceBlock = [(SPBeaconManagerSimpleBeaconUpdateInterface *)selfCopy collectionDifferenceBlock];
 
-    if (v21)
+    if (collectionDifferenceBlock)
     {
-      v22 = [(SPBeaconManagerSimpleBeaconUpdateInterface *)v24 collectionDifferenceBlock];
-      (v22)[2](v22, v18, 0);
+      collectionDifferenceBlock2 = [(SPBeaconManagerSimpleBeaconUpdateInterface *)selfCopy collectionDifferenceBlock];
+      (collectionDifferenceBlock2)[2](collectionDifferenceBlock2, v18, 0);
     }
 
-    v4 = v25;
+    removalsCopy = v25;
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -713,8 +713,8 @@ uint64_t __63__SPBeaconManagerSimpleBeaconUpdateInterface__processRemovals___blo
   block[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], block);
   v4 = objc_autoreleasePoolPush();
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:SPSimpleBeaconUpdateInterfaceReconnect object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:SPSimpleBeaconUpdateInterfaceReconnect object:0];
 
   objc_autoreleasePoolPop(v4);
   v6 = *MEMORY[0x277D85DE8];
@@ -741,13 +741,13 @@ void __61__SPBeaconManagerSimpleBeaconUpdateInterface_removeObservers__block_inv
   }
 
   [(SPBeaconManagerSimpleBeaconUpdateInterface *)self removeObservers];
-  v4 = [(SPBeaconManagerSimpleBeaconUpdateInterface *)self serialQueue];
+  serialQueue = [(SPBeaconManagerSimpleBeaconUpdateInterface *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__SPBeaconManagerSimpleBeaconUpdateInterface_handleReconnection__block_invoke;
   block[3] = &unk_279B58AE8;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(serialQueue, block);
 
   v5 = *MEMORY[0x277D85DE8];
 }

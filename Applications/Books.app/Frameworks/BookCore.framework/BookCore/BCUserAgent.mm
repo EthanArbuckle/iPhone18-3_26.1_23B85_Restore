@@ -3,19 +3,19 @@
 + (id)_macOSXVersionString;
 + (id)_userVisibleWebKitVersionString;
 + (id)audibleUserAgent;
-+ (id)clientUserAgentWithOverrideVersion:(id)a3;
-+ (void)_getSystemVersionMajor:(int *)a3 minor:(int *)a4 bugfix:(int *)a5;
++ (id)clientUserAgentWithOverrideVersion:(id)version;
++ (void)_getSystemVersionMajor:(int *)major minor:(int *)minor bugfix:(int *)bugfix;
 @end
 
 @implementation BCUserAgent
 
-+ (id)clientUserAgentWithOverrideVersion:(id)a3
++ (id)clientUserAgentWithOverrideVersion:(id)version
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  versionCopy = version;
+  v4 = versionCopy;
+  if (versionCopy)
   {
-    v5 = v3;
+    v5 = versionCopy;
   }
 
   else
@@ -30,16 +30,16 @@
 
   [v9 setClientName:@"iBooks"];
   [v9 setClientVersion:v5];
-  v10 = [v9 compile];
+  compile = [v9 compile];
 
-  return v10;
+  return compile;
 }
 
-+ (void)_getSystemVersionMajor:(int *)a3 minor:(int *)a4 bugfix:(int *)a5
++ (void)_getSystemVersionMajor:(int *)major minor:(int *)minor bugfix:(int *)bugfix
 {
   if (qword_345EB8 == -1)
   {
-    if (!a3)
+    if (!major)
     {
       goto LABEL_4;
     }
@@ -48,21 +48,21 @@
   }
 
   sub_1EAB18();
-  if (a3)
+  if (major)
   {
 LABEL_3:
-    *a3 = dword_33EFC8;
+    *major = dword_33EFC8;
   }
 
 LABEL_4:
-  if (a4)
+  if (minor)
   {
-    *a4 = dword_33EFCC;
+    *minor = dword_33EFCC;
   }
 
-  if (a5)
+  if (bugfix)
   {
-    *a5 = dword_345EB0;
+    *bugfix = dword_345EB0;
   }
 }
 
@@ -72,7 +72,7 @@ LABEL_4:
   block[1] = 3221225472;
   block[2] = sub_132668;
   block[3] = &unk_2C7CA8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_345EC8 != -1)
   {
     dispatch_once(&qword_345EC8, block);
@@ -112,10 +112,10 @@ LABEL_4:
   v2 = +[NSBundle mainBundle];
   v3 = [v2 objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
 
-  v4 = [objc_opt_class() _macOSXVersionString];
-  v5 = [objc_opt_class() _userVisibleWebKitVersionString];
-  v6 = [objc_opt_class() _macOSXBuildString];
-  v7 = [NSString stringWithFormat:@"Books/%@ (Macintosh OS X %@; %@) AppleWebKit/%@", v3, v4, v6, v5];;
+  _macOSXVersionString = [objc_opt_class() _macOSXVersionString];
+  _userVisibleWebKitVersionString = [objc_opt_class() _userVisibleWebKitVersionString];
+  _macOSXBuildString = [objc_opt_class() _macOSXBuildString];
+  v7 = [NSString stringWithFormat:@"Books/%@ (Macintosh OS X %@; %@) AppleWebKit/%@", v3, _macOSXVersionString, _macOSXBuildString, _userVisibleWebKitVersionString];;
 
   return v7;
 }

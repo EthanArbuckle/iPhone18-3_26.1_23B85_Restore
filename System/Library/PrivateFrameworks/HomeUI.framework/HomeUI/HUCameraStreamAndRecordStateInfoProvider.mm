@@ -1,10 +1,10 @@
 @interface HUCameraStreamAndRecordStateInfoProvider
-- (HUCameraStreamAndRecordStateInfoProvider)initWithDisplayStyle:(unint64_t)a3;
+- (HUCameraStreamAndRecordStateInfoProvider)initWithDisplayStyle:(unint64_t)style;
 @end
 
 @implementation HUCameraStreamAndRecordStateInfoProvider
 
-- (HUCameraStreamAndRecordStateInfoProvider)initWithDisplayStyle:(unint64_t)a3
+- (HUCameraStreamAndRecordStateInfoProvider)initWithDisplayStyle:(unint64_t)style
 {
   v28 = *MEMORY[0x277D85DE8];
   v4 = objc_opt_new();
@@ -12,7 +12,7 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __65__HUCameraStreamAndRecordStateInfoProvider_initWithDisplayStyle___block_invoke;
   aBlock[3] = &__block_descriptor_40_e38___NSAttributedString_16__0__NSNumber_8l;
-  aBlock[4] = a3;
+  aBlock[4] = style;
   v5 = _Block_copy(aBlock);
   v22 = 0u;
   v23 = 0u;

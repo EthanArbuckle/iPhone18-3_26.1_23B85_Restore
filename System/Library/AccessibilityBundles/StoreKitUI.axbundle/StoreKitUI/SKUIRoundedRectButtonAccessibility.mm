@@ -11,10 +11,10 @@
 
   v9.receiver = self;
   v9.super_class = SKUIRoundedRectButtonAccessibility;
-  v5 = [(SKUIRoundedRectButtonAccessibility *)&v9 accessibilityLabel];
+  accessibilityLabel = [(SKUIRoundedRectButtonAccessibility *)&v9 accessibilityLabel];
   if ([v4 _accessibilityViewIsVisible])
   {
-    v8 = [v4 accessibilityLabel];
+    accessibilityLabel2 = [v4 accessibilityLabel];
     v6 = __UIAXStringForVariables();
   }
 

@@ -1,31 +1,31 @@
 @interface TBDataSource
-- (void)executeFetchRequest:(id)a3;
-- (void)submitAnalyticsEventForFetchRequest:(id)a3 duration:(double)a4 error:(id)a5 resultCount:(int64_t)a6;
+- (void)executeFetchRequest:(id)request;
+- (void)submitAnalyticsEventForFetchRequest:(id)request duration:(double)duration error:(id)error resultCount:(int64_t)count;
 @end
 
 @implementation TBDataSource
 
-- (void)executeFetchRequest:(id)a3
+- (void)executeFetchRequest:(id)request
 {
-  v3 = a3;
-  NSLog(&cfstr_UnsupportedFet.isa, v3);
+  requestCopy = request;
+  NSLog(&cfstr_UnsupportedFet.isa, requestCopy);
   v5 = [TBError fetchUnsupportedErrorWithUserInfo:0];
   v4 = [TBErrorFetchResponse responseWithError:v5];
-  [v3 handleResponse:v4];
+  [requestCopy handleResponse:v4];
 }
 
-- (void)submitAnalyticsEventForFetchRequest:(id)a3 duration:(double)a4 error:(id)a5 resultCount:(int64_t)a6
+- (void)submitAnalyticsEventForFetchRequest:(id)request duration:(double)duration error:(id)error resultCount:(int64_t)count
 {
-  v29 = a3;
-  v10 = a5;
-  v11 = [v29 descriptor];
-  v12 = [v11 type];
+  requestCopy = request;
+  errorCopy = error;
+  descriptor = [requestCopy descriptor];
+  type = [descriptor type];
 
-  v13 = [(TBDataSource *)self type];
-  v14 = [v29 descriptor];
-  if ([v14 type] == 1)
+  type2 = [(TBDataSource *)self type];
+  descriptor2 = [requestCopy descriptor];
+  if ([descriptor2 type] == 1)
   {
-    v15 = [v29 descriptor];
+    descriptor3 = [requestCopy descriptor];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -36,9 +36,9 @@
     }
 
     v17 = MEMORY[0x277CCABB0];
-    v14 = [v29 descriptor];
-    v18 = [v14 bssids];
-    v19 = [v17 numberWithUnsignedInteger:{objc_msgSend(v18, "count")}];
+    descriptor2 = [requestCopy descriptor];
+    bssids = [descriptor2 bssids];
+    v19 = [v17 numberWithUnsignedInteger:{objc_msgSend(bssids, "count")}];
   }
 
   else
@@ -47,26 +47,26 @@
   }
 
 LABEL_7:
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v29 userInfo], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "objectForKeyedSubscript:", @"trigger"), v21 = objc_claimAutoreleasedReturnValue(), v21, v20, v21))
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([requestCopy userInfo], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "objectForKeyedSubscript:", @"trigger"), v21 = objc_claimAutoreleasedReturnValue(), v21, v20, v21))
   {
-    v22 = [v29 userInfo];
-    v23 = [v22 objectForKeyedSubscript:@"trigger"];
-    v24 = [v23 unsignedIntegerValue];
+    userInfo = [requestCopy userInfo];
+    v23 = [userInfo objectForKeyedSubscript:@"trigger"];
+    unsignedIntegerValue = [v23 unsignedIntegerValue];
   }
 
   else
   {
-    v24 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  if ((v12 - 1) >= 3)
+  if ((type - 1) >= 3)
   {
-    v12 = 0;
+    type = 0;
   }
 
-  if (v13)
+  if (type2)
   {
-    v25 = 2 * (v13 == 1);
+    v25 = 2 * (type2 == 1);
   }
 
   else
@@ -74,9 +74,9 @@ LABEL_7:
     v25 = 1;
   }
 
-  v26 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-  v27 = [MEMORY[0x277CCABB0] numberWithInteger:a6];
-  v28 = [TBFetchAnalyticsEvent fetchEventWithSource:v25 type:v12 trigger:v24 duration:v26 requestCount:v19 resultCount:v27 error:v10 tileKey:0];
+  v26 = [MEMORY[0x277CCABB0] numberWithDouble:duration];
+  v27 = [MEMORY[0x277CCABB0] numberWithInteger:count];
+  v28 = [TBFetchAnalyticsEvent fetchEventWithSource:v25 type:type trigger:unsignedIntegerValue duration:v26 requestCount:v19 resultCount:v27 error:errorCopy tileKey:0];
 
   [TBAnalytics captureEvent:v28];
 }

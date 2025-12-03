@@ -1,6 +1,6 @@
 @interface MTiOSPlaylistSettingsViewController
 - (void)addDeleteButtonInFooter;
-- (void)updateTitle:(id)a3;
+- (void)updateTitle:(id)title;
 - (void)viewDidLoad;
 @end
 
@@ -16,12 +16,12 @@
   v4 = [v3 localizedStringForKey:@"Station Settings" value:&stru_1004F3018 table:0];
   [(MTiOSPlaylistSettingsViewController *)self setTitle:v4];
 
-  v5 = [(MTiOSPlaylistSettingsViewController *)self navigationController];
-  v6 = [v5 navigationBar];
-  [v6 setPrefersLargeTitles:0];
+  navigationController = [(MTiOSPlaylistSettingsViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setPrefersLargeTitles:0];
 
-  v7 = [(MTiOSPlaylistSettingsViewController *)self navigationItem];
-  [v7 setLargeTitleDisplayMode:2];
+  navigationItem = [(MTiOSPlaylistSettingsViewController *)self navigationItem];
+  [navigationItem setLargeTitleDisplayMode:2];
 }
 
 - (void)addDeleteButtonInFooter
@@ -29,45 +29,45 @@
   v3 = [UIButton buttonWithType:1];
   [(MTiOSPlaylistSettingsViewController *)self setDeleteButton:v3];
 
-  v4 = [(MTiOSPlaylistSettingsViewController *)self deleteButton];
+  deleteButton = [(MTiOSPlaylistSettingsViewController *)self deleteButton];
   v5 = +[UIColor redColor];
-  [v4 setTintColor:v5];
+  [deleteButton setTintColor:v5];
 
-  v6 = [(MTiOSPlaylistSettingsViewController *)self deleteButton];
+  deleteButton2 = [(MTiOSPlaylistSettingsViewController *)self deleteButton];
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"Delete Station" value:&stru_1004F3018 table:0];
-  [v6 setTitle:v8 forState:0];
+  [deleteButton2 setTitle:v8 forState:0];
 
-  v9 = [(MTiOSPlaylistSettingsViewController *)self deleteButton];
-  v10 = [v9 titleLabel];
+  deleteButton3 = [(MTiOSPlaylistSettingsViewController *)self deleteButton];
+  titleLabel = [deleteButton3 titleLabel];
   v11 = +[UIFont buttonFont];
-  [v10 setFont:v11];
+  [titleLabel setFont:v11];
 
-  v12 = [(MTiOSPlaylistSettingsViewController *)self deleteButton];
-  [v12 addTarget:self action:"deletePlaylist:" forControlEvents:64];
+  deleteButton4 = [(MTiOSPlaylistSettingsViewController *)self deleteButton];
+  [deleteButton4 addTarget:self action:"deletePlaylist:" forControlEvents:64];
 
-  v13 = [(MTiOSPlaylistSettingsViewController *)self deleteButton];
-  [v13 setFrame:{10.0, 0.0, 300.0, 44.0}];
+  deleteButton5 = [(MTiOSPlaylistSettingsViewController *)self deleteButton];
+  [deleteButton5 setFrame:{10.0, 0.0, 300.0, 44.0}];
 
-  v14 = [(MTiOSPlaylistSettingsViewController *)self deleteButton];
-  [v14 setAutoresizingMask:2];
+  deleteButton6 = [(MTiOSPlaylistSettingsViewController *)self deleteButton];
+  [deleteButton6 setAutoresizingMask:2];
 
   v17 = [[UIView alloc] initWithFrame:{0.0, 0.0, 320.0, 64.0}];
-  v15 = [(MTiOSPlaylistSettingsViewController *)self deleteButton];
-  [v17 addSubview:v15];
+  deleteButton7 = [(MTiOSPlaylistSettingsViewController *)self deleteButton];
+  [v17 addSubview:deleteButton7];
 
-  v16 = [(MTiOSPlaylistSettingsViewController *)self tableView];
-  [v16 setTableFooterView:v17];
+  tableView = [(MTiOSPlaylistSettingsViewController *)self tableView];
+  [tableView setTableFooterView:v17];
 }
 
-- (void)updateTitle:(id)a3
+- (void)updateTitle:(id)title
 {
   v7.receiver = self;
   v7.super_class = MTiOSPlaylistSettingsViewController;
-  [(MTPlaylistSettingsViewController *)&v7 updateTitle:a3];
+  [(MTPlaylistSettingsViewController *)&v7 updateTitle:title];
   v4 = +[MTCoreSpotlightController sharedInstance];
-  v5 = [(MTPlaylistSettingsViewController *)self playlistUuid];
-  v6 = [NSSet setWithObject:v5];
+  playlistUuid = [(MTPlaylistSettingsViewController *)self playlistUuid];
+  v6 = [NSSet setWithObject:playlistUuid];
   [v4 updateStationsWithUUIDs:v6];
 }
 

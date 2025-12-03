@@ -1,15 +1,15 @@
 @interface FigThreadSafeCALayer
-- (FigThreadSafeCALayer)initWithDeferredTransaction:(OpaqueFigDeferredTransaction *)a3;
+- (FigThreadSafeCALayer)initWithDeferredTransaction:(OpaqueFigDeferredTransaction *)transaction;
 - (FigThreadSafeCALayer)initWithoutDeferredTransaction;
 @end
 
 @implementation FigThreadSafeCALayer
 
-- (FigThreadSafeCALayer)initWithDeferredTransaction:(OpaqueFigDeferredTransaction *)a3
+- (FigThreadSafeCALayer)initWithDeferredTransaction:(OpaqueFigDeferredTransaction *)transaction
 {
   v4.receiver = self;
   v4.super_class = FigThreadSafeCALayer;
-  return [(FigBaseCALayer *)&v4 initWithDeferredTransaction:a3];
+  return [(FigBaseCALayer *)&v4 initWithDeferredTransaction:transaction];
 }
 
 - (FigThreadSafeCALayer)initWithoutDeferredTransaction

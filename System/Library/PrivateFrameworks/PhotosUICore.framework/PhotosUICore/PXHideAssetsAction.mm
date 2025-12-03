@@ -1,37 +1,37 @@
 @interface PXHideAssetsAction
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4;
-+ (BOOL)currentValueForAssets:(id)a3;
-- (PXHideAssetsAction)initWithAssets:(id)a3;
-- (PXHideAssetsAction)initWithAssets:(id)a3 hidden:(BOOL)a4;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection;
++ (BOOL)currentValueForAssets:(id)assets;
+- (PXHideAssetsAction)initWithAssets:(id)assets;
+- (PXHideAssetsAction)initWithAssets:(id)assets hidden:(BOOL)hidden;
 - (id)actionNameLocalizationKey;
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXHideAssetsAction
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
-  v4 = a3;
-  v5 = [(PXHideAssetsAction *)self isHidden];
+  undoCopy = undo;
+  isHidden = [(PXHideAssetsAction *)self isHidden];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34__PXHideAssetsAction_performUndo___block_invoke;
   v6[3] = &__block_descriptor_33_e30_v16__0__PHAssetChangeRequest_8l;
-  v7 = !v5;
-  [(PXAssetsAction *)self performAssetChanges:v6 completionHandler:v4];
+  v7 = !isHidden;
+  [(PXAssetsAction *)self performAssetChanges:v6 completionHandler:undoCopy];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
-  v5 = [(PXHideAssetsAction *)self isHidden];
+  actionCopy = action;
+  isHidden = [(PXHideAssetsAction *)self isHidden];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __36__PXHideAssetsAction_performAction___block_invoke;
   v6[3] = &__block_descriptor_33_e30_v16__0__PHAssetChangeRequest_8l;
-  v7 = v5;
-  [(PXAssetsAction *)self performAssetChanges:v6 completionHandler:v4];
+  v7 = isHidden;
+  [(PXAssetsAction *)self performAssetChanges:v6 completionHandler:actionCopy];
 }
 
 - (id)actionNameLocalizationKey
@@ -49,22 +49,22 @@
   return v2;
 }
 
-- (PXHideAssetsAction)initWithAssets:(id)a3
+- (PXHideAssetsAction)initWithAssets:(id)assets
 {
-  v4 = a3;
-  v5 = -[PXHideAssetsAction initWithAssets:hidden:](self, "initWithAssets:hidden:", v4, [objc_opt_class() toggledValueForAssets:v4]);
+  assetsCopy = assets;
+  v5 = -[PXHideAssetsAction initWithAssets:hidden:](self, "initWithAssets:hidden:", assetsCopy, [objc_opt_class() toggledValueForAssets:assetsCopy]);
 
   return v5;
 }
 
-- (PXHideAssetsAction)initWithAssets:(id)a3 hidden:(BOOL)a4
+- (PXHideAssetsAction)initWithAssets:(id)assets hidden:(BOOL)hidden
 {
   v5 = MEMORY[0x1E69E9820];
   v6 = 3221225472;
   v7 = __44__PXHideAssetsAction_initWithAssets_hidden___block_invoke;
   v8 = &unk_1E773DB78;
-  v10 = a4;
-  v9 = self;
+  hiddenCopy = hidden;
+  selfCopy = self;
   PXFilter();
 }
 
@@ -84,12 +84,12 @@ uint64_t __44__PXHideAssetsAction_initWithAssets_hidden___block_invoke(uint64_t 
   return v4;
 }
 
-+ (BOOL)currentValueForAssets:(id)a3
++ (BOOL)currentValueForAssets:(id)assets
 {
-  v4 = a3;
-  if ([v4 count])
+  assetsCopy = assets;
+  if ([assetsCopy count])
   {
-    v5 = [a1 toggledValueForAssets:v4] ^ 1;
+    v5 = [self toggledValueForAssets:assetsCopy] ^ 1;
   }
 
   else
@@ -100,21 +100,21 @@ uint64_t __44__PXHideAssetsAction_initWithAssets_hidden___block_invoke(uint64_t 
   return v5;
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection
 {
-  v4 = a3;
-  if (([v4 isTrashed] & 1) != 0 || (objc_msgSend(v4, "isRecoveredAsset") & 1) != 0 || objc_msgSend(v4, "sourceType") == 2 || objc_msgSend(v4, "sourceType") == 8)
+  assetCopy = asset;
+  if (([assetCopy isTrashed] & 1) != 0 || (objc_msgSend(assetCopy, "isRecoveredAsset") & 1) != 0 || objc_msgSend(assetCopy, "sourceType") == 2 || objc_msgSend(assetCopy, "sourceType") == 8)
   {
     goto LABEL_5;
   }
 
-  if (![v4 px_isSyndicatedAsset])
+  if (![assetCopy px_isSyndicatedAsset])
   {
     LOBYTE(v5) = 1;
     goto LABEL_6;
   }
 
-  if (![v4 px_isUnsavedSyndicatedAsset])
+  if (![assetCopy px_isUnsavedSyndicatedAsset])
   {
 LABEL_5:
     LOBYTE(v5) = 0;
@@ -122,7 +122,7 @@ LABEL_5:
 
   else
   {
-    v5 = [v4 px_isSyndicationPhotoLibraryAsset] ^ 1;
+    v5 = [assetCopy px_isSyndicationPhotoLibraryAsset] ^ 1;
   }
 
 LABEL_6:

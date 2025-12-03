@@ -1,19 +1,19 @@
 @interface AKRectangularAnnotationEventHandler
-- (CGRect)_rectForModifiedRotatedRect:(CGRect)a3 withOriginal:(CGRect)a4 andRotation:(double)a5;
-- (void)_updateModelFlippednessWithCurrentPoint:(CGPoint)a3;
-- (void)getInitialDraggedPoint:(CGPoint *)a3 otherPoint:(CGPoint *)a4 center:(CGPoint *)a5 forEvent:(id)a6 orRecognizer:(id)a7;
+- (CGRect)_rectForModifiedRotatedRect:(CGRect)rect withOriginal:(CGRect)original andRotation:(double)rotation;
+- (void)_updateModelFlippednessWithCurrentPoint:(CGPoint)point;
+- (void)getInitialDraggedPoint:(CGPoint *)point otherPoint:(CGPoint *)otherPoint center:(CGPoint *)center forEvent:(id)event orRecognizer:(id)recognizer;
 - (void)setupDraggingConstraints;
-- (void)updateModelWithCurrentPoint:(CGPoint)a3 options:(unint64_t)a4;
+- (void)updateModelWithCurrentPoint:(CGPoint)point options:(unint64_t)options;
 @end
 
 @implementation AKRectangularAnnotationEventHandler
 
-- (void)getInitialDraggedPoint:(CGPoint *)a3 otherPoint:(CGPoint *)a4 center:(CGPoint *)a5 forEvent:(id)a6 orRecognizer:(id)a7
+- (void)getInitialDraggedPoint:(CGPoint *)point otherPoint:(CGPoint *)otherPoint center:(CGPoint *)center forEvent:(id)event orRecognizer:(id)recognizer
 {
   v54 = *(MEMORY[0x277CBF348] + 8);
   v55 = *MEMORY[0x277CBF348];
-  v63 = [(AKAnnotationEventHandler *)self annotation:a3];
-  v11 = [(AKAnnotationEventHandler *)self pageController];
+  v63 = [(AKAnnotationEventHandler *)self annotation:point];
+  pageController = [(AKAnnotationEventHandler *)self pageController];
   [v63 rectangle];
   v13 = v12;
   v15 = v14;
@@ -31,7 +31,7 @@
   y = v66.origin.y;
   x = v66.origin.x;
   width = v66.size.width;
-  [AKGeometryHelper convertModelToScreenOrientationForRect:v11 withPageController:?];
+  [AKGeometryHelper convertModelToScreenOrientationForRect:pageController withPageController:?];
   v25 = v67.origin.x;
   v26 = v67.origin.y;
   v27 = v67.size.width;
@@ -41,7 +41,7 @@
   v68.origin.y = v26;
   v68.size.width = v27;
   v68.size.height = v28;
-  [AKGeometryHelper convertScreenToModelOrientationForPoint:v11 relativeToRect:MinX withPageController:CGRectGetMinY(v68), v25, v26, v27, v28];
+  [AKGeometryHelper convertScreenToModelOrientationForPoint:pageController relativeToRect:MinX withPageController:CGRectGetMinY(v68), v25, v26, v27, v28];
   v56 = v31;
   v57 = v30;
   v69.origin.x = v25;
@@ -53,7 +53,7 @@
   v70.origin.y = v26;
   v70.size.width = v27;
   v70.size.height = v28;
-  [AKGeometryHelper convertScreenToModelOrientationForPoint:v11 relativeToRect:MaxX withPageController:CGRectGetMinY(v70), v25, v26, v27, v28];
+  [AKGeometryHelper convertScreenToModelOrientationForPoint:pageController relativeToRect:MaxX withPageController:CGRectGetMinY(v70), v25, v26, v27, v28];
   v62 = v33;
   v58 = v34;
   v71.origin.x = v25;
@@ -65,7 +65,7 @@
   v72.origin.y = v26;
   v72.size.width = v27;
   v72.size.height = v28;
-  [AKGeometryHelper convertScreenToModelOrientationForPoint:v11 relativeToRect:v35 withPageController:CGRectGetMaxY(v72), v25, v26, v27, v28];
+  [AKGeometryHelper convertScreenToModelOrientationForPoint:pageController relativeToRect:v35 withPageController:CGRectGetMaxY(v72), v25, v26, v27, v28];
   v37 = v36;
   v39 = v38;
   v73.origin.x = v25;
@@ -77,13 +77,13 @@
   v74.origin.y = v26;
   v74.size.width = v27;
   v74.size.height = v28;
-  [AKGeometryHelper convertScreenToModelOrientationForPoint:v11 relativeToRect:v40 withPageController:CGRectGetMaxY(v74), v25, v26, v27, v28];
+  [AKGeometryHelper convertScreenToModelOrientationForPoint:pageController relativeToRect:v40 withPageController:CGRectGetMaxY(v74), v25, v26, v27, v28];
   v42 = v41;
   v44 = v43;
-  v45 = [(AKAnnotationEventHandler *)self initiallyDraggedArea];
-  if (v45 > 4)
+  initiallyDraggedArea = [(AKAnnotationEventHandler *)self initiallyDraggedArea];
+  if (initiallyDraggedArea > 4)
   {
-    if ((v45 - 5) < 2)
+    if ((initiallyDraggedArea - 5) < 2)
     {
       v46 = v56;
       v47 = v57;
@@ -92,7 +92,7 @@
       goto LABEL_11;
     }
 
-    if (v45 == 7)
+    if (initiallyDraggedArea == 7)
     {
       v46 = v58;
       v47 = v62;
@@ -105,7 +105,7 @@
     v47 = v55;
     v48 = v54;
     v62 = v55;
-    if (v45 != 8)
+    if (initiallyDraggedArea != 8)
     {
       goto LABEL_11;
     }
@@ -121,13 +121,13 @@ LABEL_8:
   v46 = v39;
   v47 = v37;
   v48 = v58;
-  if ((v45 - 2) >= 3)
+  if ((initiallyDraggedArea - 2) >= 3)
   {
     v46 = v54;
     v47 = v55;
     v48 = v54;
     v62 = v55;
-    if (v45 == 1)
+    if (initiallyDraggedArea == 1)
     {
       goto LABEL_8;
     }
@@ -149,44 +149,44 @@ LABEL_11:
     v51 = v63;
     if (objc_opt_respondsToSelector())
     {
-      v52 = [v51 horizontallyFlipped];
+      horizontallyFlipped = [v51 horizontallyFlipped];
     }
 
     else
     {
-      v52 = 0;
+      horizontallyFlipped = 0;
     }
 
-    [(AKRectangularAnnotationEventHandler *)self setInitialHorizontalFlip:v52];
+    [(AKRectangularAnnotationEventHandler *)self setInitialHorizontalFlip:horizontallyFlipped];
     if (objc_opt_respondsToSelector())
     {
-      v53 = [v51 verticallyFlipped];
+      verticallyFlipped = [v51 verticallyFlipped];
     }
 
     else
     {
-      v53 = 0;
+      verticallyFlipped = 0;
     }
 
-    [(AKRectangularAnnotationEventHandler *)self setInitialVerticalFlip:v53];
+    [(AKRectangularAnnotationEventHandler *)self setInitialVerticalFlip:verticallyFlipped];
   }
 
-  a3->x = v62;
-  a3->y = v48;
-  a4->x = v47;
-  a4->y = v46;
-  a5->x = MidX;
-  a5->y = MidY;
+  point->x = v62;
+  point->y = v48;
+  otherPoint->x = v47;
+  otherPoint->y = v46;
+  center->x = MidX;
+  center->y = MidY;
 }
 
 - (void)setupDraggingConstraints
 {
-  v5 = [(AKAnnotationEventHandler *)self pageController];
-  v3 = +[AKGeometryHelper exifOrientationHasReversedAxes:](AKGeometryHelper, "exifOrientationHasReversedAxes:", [v5 currentModelToScreenExifOrientation]);
-  v4 = [(AKAnnotationEventHandler *)self initiallyDraggedArea];
-  if (v4 > 5)
+  pageController = [(AKAnnotationEventHandler *)self pageController];
+  v3 = +[AKGeometryHelper exifOrientationHasReversedAxes:](AKGeometryHelper, "exifOrientationHasReversedAxes:", [pageController currentModelToScreenExifOrientation]);
+  initiallyDraggedArea = [(AKAnnotationEventHandler *)self initiallyDraggedArea];
+  if (initiallyDraggedArea > 5)
   {
-    if (v4 == 8)
+    if (initiallyDraggedArea == 8)
     {
 LABEL_9:
       if (!v3)
@@ -197,7 +197,7 @@ LABEL_9:
       goto LABEL_8;
     }
 
-    if (v4 != 6)
+    if (initiallyDraggedArea != 6)
     {
       goto LABEL_11;
     }
@@ -215,12 +215,12 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  if (v4 == 2)
+  if (initiallyDraggedArea == 2)
   {
     goto LABEL_7;
   }
 
-  if (v4 == 4)
+  if (initiallyDraggedArea == 4)
   {
     goto LABEL_9;
   }
@@ -228,23 +228,23 @@ LABEL_8:
 LABEL_11:
 }
 
-- (CGRect)_rectForModifiedRotatedRect:(CGRect)a3 withOriginal:(CGRect)a4 andRotation:(double)a5
+- (CGRect)_rectForModifiedRotatedRect:(CGRect)rect withOriginal:(CGRect)original andRotation:(double)rotation
 {
-  width = a4.size.width;
-  height = a4.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v6 = a3.size.height;
-  v7 = a3.size.width;
-  v8 = a3.origin.y;
-  v9 = a3.origin.x;
-  MidX = CGRectGetMidX(a3);
+  width = original.size.width;
+  height = original.size.height;
+  y = original.origin.y;
+  x = original.origin.x;
+  v6 = rect.size.height;
+  v7 = rect.size.width;
+  v8 = rect.origin.y;
+  v9 = rect.origin.x;
+  MidX = CGRectGetMidX(rect);
   v23.origin.x = v9;
   v23.origin.y = v8;
   v23.size.width = v7;
   v23.size.height = v6;
   MidY = CGRectGetMidY(v23);
-  [AKGeometryHelper rotationTransformForRect:x withAngle:y, width, height, a5];
+  [AKGeometryHelper rotationTransformForRect:x withAngle:y, width, height, rotation];
   v12 = MidY * 0.0 + 0.0 * MidX + 0.0;
   v24.origin.x = v9;
   v24.origin.y = v8;
@@ -276,29 +276,29 @@ LABEL_11:
   return result;
 }
 
-- (void)updateModelWithCurrentPoint:(CGPoint)a3 options:(unint64_t)a4
+- (void)updateModelWithCurrentPoint:(CGPoint)point options:(unint64_t)options
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = [(AKAnnotationEventHandler *)self pageController];
-  v9 = [(AKAnnotationEventHandler *)self annotation];
-  [v9 rectangle];
+  optionsCopy = options;
+  y = point.y;
+  x = point.x;
+  pageController = [(AKAnnotationEventHandler *)self pageController];
+  annotation = [(AKAnnotationEventHandler *)self annotation];
+  [annotation rectangle];
   v99 = v11;
   v100 = v10;
   v97 = v13;
   v98 = v12;
   v14 = 0.0;
-  if ([v9 conformsToAKRotatableAnnotationProtocol])
+  if ([annotation conformsToAKRotatableAnnotationProtocol])
   {
-    [v9 rotationAngle];
+    [annotation rotationAngle];
     v14 = v15;
   }
 
   v103 = 0u;
   v104 = 0u;
   v102 = 0u;
-  [v9 rectangle];
+  [annotation rectangle];
   [AKGeometryHelper rotationTransformForRect:"rotationTransformForRect:withAngle:" withAngle:?];
   v16 = y * 0.0 + 0.0 * x + 0.0;
   if ([(AKAnnotationEventHandler *)self draggingHorizontalOnly])
@@ -317,14 +317,14 @@ LABEL_11:
     }
   }
 
-  if (v4)
+  if (optionsCopy)
   {
     [(AKAnnotationEventHandler *)self initialCenter];
     v41 = v40;
     v43 = v42;
     v44 = v16 - v40;
     v45 = v18 - v42;
-    if ([(AKAnnotationEventHandler *)self canLockAspectRatio]&& ([(AKAnnotationEventHandler *)self alwaysLockAspectRatio]|| ((((v4 & 2) == 0) ^ [(AKAnnotationEventHandler *)self lockAspectRatioByDefault]) & 1) == 0))
+    if ([(AKAnnotationEventHandler *)self canLockAspectRatio]&& ([(AKAnnotationEventHandler *)self alwaysLockAspectRatio]|| ((((optionsCopy & 2) == 0) ^ [(AKAnnotationEventHandler *)self lockAspectRatioByDefault]) & 1) == 0))
     {
       [(AKAnnotationEventHandler *)self naturalAspectRatioForAnnotation];
       [AKGeometryHelper snapVector:[(AKAnnotationEventHandler *)self draggingVerticalOnly] toDiagonalForAspectRatio:[(AKAnnotationEventHandler *)self draggingHorizontalOnly] ignoreWidth:v44 ignoreHeight:v45, v46];
@@ -350,12 +350,12 @@ LABEL_11:
         [(AKAnnotationEventHandler *)self naturalSizeForAnnotation];
         v25 = v24;
         v27 = v26;
-        v28 = +[AKGeometryHelper inverseExifOrientation:](AKGeometryHelper, "inverseExifOrientation:", [v9 originalExifOrientation]);
+        v28 = +[AKGeometryHelper inverseExifOrientation:](AKGeometryHelper, "inverseExifOrientation:", [annotation originalExifOrientation]);
         [AKGeometryHelper adjustPoint:v28 forExifOrientation:v25 aboutCenter:v27, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
         v30 = v29;
         v32 = v31;
-        v33 = [(AKAnnotationEventHandler *)self initiallyDraggedArea];
-        if (v33 == 3)
+        initiallyDraggedArea = [(AKAnnotationEventHandler *)self initiallyDraggedArea];
+        if (initiallyDraggedArea == 3)
         {
           v34 = -v32;
         }
@@ -365,7 +365,7 @@ LABEL_11:
           v34 = v32;
         }
 
-        if (v33 == 7)
+        if (initiallyDraggedArea == 7)
         {
           v34 = v32;
           v35 = -v30;
@@ -376,7 +376,7 @@ LABEL_11:
           v35 = v30;
         }
 
-        if (v33 == 1)
+        if (initiallyDraggedArea == 1)
         {
           v36 = -v32;
         }
@@ -386,7 +386,7 @@ LABEL_11:
           v36 = v34;
         }
 
-        if (v33 == 1)
+        if (initiallyDraggedArea == 1)
         {
           v37 = -v30;
         }
@@ -401,7 +401,7 @@ LABEL_11:
         v18 = v23 + v39;
       }
 
-      else if (((((v4 & 2) == 0) ^ [(AKAnnotationEventHandler *)self lockAspectRatioByDefault]) & 1) == 0)
+      else if (((((optionsCopy & 2) == 0) ^ [(AKAnnotationEventHandler *)self lockAspectRatioByDefault]) & 1) == 0)
       {
         [(AKAnnotationEventHandler *)self naturalAspectRatioForAnnotation];
         [AKGeometryHelper snapVector:[(AKAnnotationEventHandler *)self draggingVerticalOnly] toDiagonalForAspectRatio:[(AKAnnotationEventHandler *)self draggingHorizontalOnly] ignoreWidth:v16 - v21 ignoreHeight:v18 - v23, v82];
@@ -456,15 +456,15 @@ LABEL_11:
     MidY = CGRectGetMidY(v107);
     v56 = objc_opt_class();
     [(AKAnnotationEventHandler *)self initialCenter];
-    [v56 annotationRectangleForDraggingBounds:v9 forAnnotation:v8 onPageController:v50 withOriginalCenter:{v51, width, height, v57, v58}];
+    [v56 annotationRectangleForDraggingBounds:annotation forAnnotation:pageController onPageController:v50 withOriginalCenter:{v51, width, height, v57, v58}];
     v60 = v59;
     v62 = v61;
     v64 = v63;
     v66 = v65;
     if (vabdd_f64(round(v14 / 1.57079633), v14 / 1.57079633) < 0.0005)
     {
-      v67 = [v8 geometryHelper];
-      [v67 contentAlignedRectForRect:{v60, v62, v64, v66}];
+      geometryHelper = [pageController geometryHelper];
+      [geometryHelper contentAlignedRectForRect:{v60, v62, v64, v66}];
       v60 = v68;
       v62 = v69;
       v64 = v70;
@@ -494,22 +494,22 @@ LABEL_11:
 
     if (![AKGeometryHelper isUnpresentableRect:v60, v62, v64, v66])
     {
-      [v9 rectangle];
+      [annotation rectangle];
       v111.origin.x = v60;
       v111.origin.y = v62;
       v111.size.width = v64;
       v111.size.height = v66;
       if (!CGRectEqualToRect(v110, v111))
       {
-        [v9 setRectangle:{v60, v62, v64, v66}];
-        if ([v9 conformsToAKTextAnnotationProtocol])
+        [annotation setRectangle:{v60, v62, v64, v66}];
+        if ([annotation conformsToAKTextAnnotationProtocol])
         {
-          v80 = v9;
+          v80 = annotation;
           v101 = 0;
           LOBYTE(v96) = 0;
-          [AKTextAnnotationRenderHelper getAnnotationRectangle:0 textBounds:0 containerSize:0 exclusionPaths:0 isTextClipped:&v101 forAnnotation:v80 onPageController:*MEMORY[0x277CBF348] orInContext:*(MEMORY[0x277CBF348] + 8) shouldAlignToPixels:*MEMORY[0x277CBF3A0] optionalText:*(MEMORY[0x277CBF3A0] + 8) optionalCenter:*(MEMORY[0x277CBF3A0] + 16) optionalProposedRectangle:*(MEMORY[0x277CBF3A0] + 24), v8, 0, v96, 0];
-          v81 = [v80 textIsClipped];
-          if (v101 != v81)
+          [AKTextAnnotationRenderHelper getAnnotationRectangle:0 textBounds:0 containerSize:0 exclusionPaths:0 isTextClipped:&v101 forAnnotation:v80 onPageController:*MEMORY[0x277CBF348] orInContext:*(MEMORY[0x277CBF348] + 8) shouldAlignToPixels:*MEMORY[0x277CBF3A0] optionalText:*(MEMORY[0x277CBF3A0] + 8) optionalCenter:*(MEMORY[0x277CBF3A0] + 16) optionalProposedRectangle:*(MEMORY[0x277CBF3A0] + 24), pageController, 0, v96, 0];
+          textIsClipped = [v80 textIsClipped];
+          if (v101 != textIsClipped)
           {
             [v80 setTextIsClipped:?];
           }
@@ -519,22 +519,22 @@ LABEL_11:
   }
 }
 
-- (void)_updateModelFlippednessWithCurrentPoint:(CGPoint)a3
+- (void)_updateModelFlippednessWithCurrentPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(AKAnnotationEventHandler *)self annotation];
-  v7 = [v6 conformsToAKFlippableAnnotationProtocol];
+  y = point.y;
+  x = point.x;
+  annotation = [(AKAnnotationEventHandler *)self annotation];
+  conformsToAKFlippableAnnotationProtocol = [annotation conformsToAKFlippableAnnotationProtocol];
 
-  if (v7)
+  if (conformsToAKFlippableAnnotationProtocol)
   {
-    v8 = [(AKAnnotationEventHandler *)self annotation];
-    if ([v8 conformsToAKRotatableAnnotationProtocol])
+    annotation2 = [(AKAnnotationEventHandler *)self annotation];
+    if ([annotation2 conformsToAKRotatableAnnotationProtocol])
     {
-      [v8 rotationAngle];
+      [annotation2 rotationAngle];
     }
 
-    [v8 rectangle];
+    [annotation2 rectangle];
     [AKGeometryHelper rotationTransformForRect:"rotationTransformForRect:withAngle:" withAngle:?];
     [(AKAnnotationEventHandler *)self initialOtherPoint];
     v15 = v10;
@@ -544,12 +544,12 @@ LABEL_11:
     v13 = v12;
     if (![(AKAnnotationEventHandler *)self draggingVerticalOnly]&& (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v8 setHorizontallyFlipped:{-[AKRectangularAnnotationEventHandler initialHorizontalFlip](self, "initialHorizontalFlip") ^ (((COERCE_UNSIGNED_INT64(y * 0.0 + 0.0 * x + 0.0 - (v15 * 0.0 + 0.0 * v16 + 0.0)) ^ COERCE_UNSIGNED_INT64(v13 * 0.0 + 0.0 * v14 + 0.0 - (v15 * 0.0 + 0.0 * v16 + 0.0))) & 0x8000000000000000) != 0)}];
+      [annotation2 setHorizontallyFlipped:{-[AKRectangularAnnotationEventHandler initialHorizontalFlip](self, "initialHorizontalFlip") ^ (((COERCE_UNSIGNED_INT64(y * 0.0 + 0.0 * x + 0.0 - (v15 * 0.0 + 0.0 * v16 + 0.0)) ^ COERCE_UNSIGNED_INT64(v13 * 0.0 + 0.0 * v14 + 0.0 - (v15 * 0.0 + 0.0 * v16 + 0.0))) & 0x8000000000000000) != 0)}];
     }
 
     if (![(AKAnnotationEventHandler *)self draggingHorizontalOnly]&& (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v8 setVerticallyFlipped:{-[AKRectangularAnnotationEventHandler initialVerticalFlip](self, "initialVerticalFlip") ^ (((COERCE_UNSIGNED_INT64(y * 0.0 + 0.0 * x + 0.0 - (v15 * 0.0 + 0.0 * v16 + 0.0)) ^ COERCE_UNSIGNED_INT64(v13 * 0.0 + 0.0 * v14 + 0.0 - (v15 * 0.0 + 0.0 * v16 + 0.0))) & 0x8000000000000000) != 0)}];
+      [annotation2 setVerticallyFlipped:{-[AKRectangularAnnotationEventHandler initialVerticalFlip](self, "initialVerticalFlip") ^ (((COERCE_UNSIGNED_INT64(y * 0.0 + 0.0 * x + 0.0 - (v15 * 0.0 + 0.0 * v16 + 0.0)) ^ COERCE_UNSIGNED_INT64(v13 * 0.0 + 0.0 * v14 + 0.0 - (v15 * 0.0 + 0.0 * v16 + 0.0))) & 0x8000000000000000) != 0)}];
     }
   }
 }

@@ -1,31 +1,31 @@
 @interface UAFAssetSetSubscriptionManager
-+ (id)getSubscribers:(id)a3 storeManager:(id)a4 error:(id *)a5;
-+ (id)getSubscription:(id)a3 subscriber:(id)a4 user:(id)a5 storeManager:(id)a6 error:(id *)a7;
-+ (id)getSubscriptions:(id)a3 user:(id)a4 storeManager:(id)a5 error:(id *)a6;
++ (id)getSubscribers:(id)subscribers storeManager:(id)manager error:(id *)error;
++ (id)getSubscription:(id)subscription subscriber:(id)subscriber user:(id)user storeManager:(id)manager error:(id *)error;
++ (id)getSubscriptions:(id)subscriptions user:(id)user storeManager:(id)manager error:(id *)error;
 + (void)daemonSubscriptionMigration;
-+ (void)migrateSubscriptions:(id)a3 user:(id)a4 completion:(id)a5;
++ (void)migrateSubscriptions:(id)subscriptions user:(id)user completion:(id)completion;
 @end
 
 @implementation UAFAssetSetSubscriptionManager
 
-+ (id)getSubscriptions:(id)a3 user:(id)a4 storeManager:(id)a5 error:(id *)a6
++ (id)getSubscriptions:(id)subscriptions user:(id)user storeManager:(id)manager error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  subscriptionsCopy = subscriptions;
+  userCopy = user;
+  managerCopy = manager;
+  if (!managerCopy)
   {
-    v11 = +[UAFSubscriptionStoreManager defaultManager];
+    managerCopy = +[UAFSubscriptionStoreManager defaultManager];
   }
 
   v34 = 0;
-  v12 = [v11 getSubscriptions:v9 user:v10 error:&v34];
+  v12 = [managerCopy getSubscriptions:subscriptionsCopy user:userCopy error:&v34];
   v13 = v34;
   v14 = v13;
   if (v12 || !v13)
   {
-    if (!+[UAFUser isMultiUser]|| [UAFUser isSystemUser:v10 error:0])
+    if (!+[UAFUser isMultiUser]|| [UAFUser isSystemUser:userCopy error:0])
     {
       goto LABEL_28;
     }
@@ -54,7 +54,7 @@
     else
     {
       v32 = 0;
-      v19 = [v11 getSubscriptions:v9 user:v17 error:&v32];
+      v19 = [managerCopy getSubscriptions:subscriptionsCopy user:v17 error:&v32];
       v20 = v32;
       v18 = v20;
       if (v19 || !v20)
@@ -81,11 +81,11 @@
       {
 LABEL_21:
 
-        if (a6)
+        if (error)
         {
           v25 = v18;
           v26 = 0;
-          *a6 = v18;
+          *error = v18;
         }
 
         else
@@ -105,7 +105,7 @@ LABEL_27:
       v37 = 2112;
       v38 = v17;
       v39 = 2114;
-      v40 = v9;
+      v40 = subscriptionsCopy;
       v41 = 2114;
       v42 = v18;
       v22 = "%s Could not get subscriptions for User: '%@', Subscriber: '%{public}@': %{public}@";
@@ -123,19 +123,19 @@ LABEL_27:
     *buf = 136315906;
     v36 = "+[UAFAssetSetSubscriptionManager getSubscriptions:user:storeManager:error:]";
     v37 = 2112;
-    v38 = v10;
+    v38 = userCopy;
     v39 = 2114;
-    v40 = v9;
+    v40 = subscriptionsCopy;
     v41 = 2114;
     v42 = v14;
     _os_log_impl(&dword_1BCF2C000, v15, OS_LOG_TYPE_DEFAULT, "%s Could not get subscriptions for User: '%@', Subscriber: '%{public}@': %{public}@", buf, 0x2Au);
   }
 
-  if (a6)
+  if (error)
   {
     v16 = v14;
     v12 = 0;
-    *a6 = v14;
+    *error = v14;
   }
 
   else
@@ -188,16 +188,16 @@ void __75__UAFAssetSetSubscriptionManager_getSubscriptions_user_storeManager_err
   }
 }
 
-+ (id)getSubscription:(id)a3 subscriber:(id)a4 user:(id)a5 storeManager:(id)a6 error:(id *)a7
++ (id)getSubscription:(id)subscription subscriber:(id)subscriber user:(id)user storeManager:(id)manager error:(id *)error
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v14)
+  subscriptionCopy = subscription;
+  subscriberCopy = subscriber;
+  userCopy = user;
+  managerCopy = manager;
+  if (managerCopy)
   {
-    if (v11)
+    if (subscriptionCopy)
     {
       goto LABEL_3;
     }
@@ -205,19 +205,19 @@ void __75__UAFAssetSetSubscriptionManager_getSubscriptions_user_storeManager_err
 
   else
   {
-    v14 = +[UAFSubscriptionStoreManager defaultManager];
-    if (v11)
+    managerCopy = +[UAFSubscriptionStoreManager defaultManager];
+    if (subscriptionCopy)
     {
 LABEL_3:
-      if (!v12)
+      if (!subscriberCopy)
       {
-        if (a7)
+        if (error)
         {
           v24 = MEMORY[0x1E696ABC0];
           v40 = *MEMORY[0x1E696A588];
           v41[0] = @"Both subscriptionName and subscriber must be provided";
           v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:&v40 count:1];
-          *a7 = [v24 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:5000 userInfo:v25];
+          *error = [v24 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:5000 userInfo:v25];
         }
 
         v26 = UAFGetLogCategory(&UAFLogContextClient);
@@ -233,15 +233,15 @@ LABEL_3:
       }
 
       v37 = 0;
-      v15 = [v14 getSubscription:v11 subscriber:v12 user:v13 error:&v37];
+      v15 = [managerCopy getSubscription:subscriptionCopy subscriber:subscriberCopy user:userCopy error:&v37];
       v16 = v37;
-      if (v16 || (v36 = 0, v17 = [UAFUser isSystemUser:v13 error:&v36], (v16 = v36) != 0))
+      if (v16 || (v36 = 0, v17 = [UAFUser isSystemUser:userCopy error:&v36], (v16 = v36) != 0))
       {
         v18 = v16;
-        if (a7)
+        if (error)
         {
           v19 = v16;
-          *a7 = v18;
+          *error = v18;
         }
 
         goto LABEL_8;
@@ -266,7 +266,7 @@ LABEL_23:
       if (!v29 || v30)
       {
         v15 = 0;
-        if (!a7)
+        if (!error)
         {
           goto LABEL_35;
         }
@@ -275,7 +275,7 @@ LABEL_23:
       else
       {
         v34 = 0;
-        v15 = [v14 getSubscription:v11 subscriber:v12 user:v29 error:&v34];
+        v15 = [managerCopy getSubscription:subscriptionCopy subscriber:subscriberCopy user:v29 error:&v34];
         v31 = v34;
         if (!v31)
         {
@@ -292,7 +292,7 @@ LABEL_21:
         }
 
         v18 = v31;
-        if (!a7)
+        if (!error)
         {
 LABEL_35:
 
@@ -306,22 +306,22 @@ LABEL_19:
       }
 
       v32 = v18;
-      *a7 = v18;
+      *error = v18;
       goto LABEL_35;
     }
   }
 
   v33 = 0;
-  v20 = [UAFAssetSetSubscriptionManager getSubscriptions:v12 user:v13 storeManager:v14 error:&v33];
+  v20 = [UAFAssetSetSubscriptionManager getSubscriptions:subscriberCopy user:userCopy storeManager:managerCopy error:&v33];
   v21 = v33;
   if (v21)
   {
     v18 = v21;
-    if (a7)
+    if (error)
     {
       v22 = v21;
       v23 = 0;
-      *a7 = v18;
+      *error = v18;
       goto LABEL_25;
     }
 
@@ -339,21 +339,21 @@ LABEL_25:
   return v23;
 }
 
-+ (id)getSubscribers:(id)a3 storeManager:(id)a4 error:(id *)a5
++ (id)getSubscribers:(id)subscribers storeManager:(id)manager error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  subscribersCopy = subscribers;
+  managerCopy = manager;
   v27 = 0;
-  v9 = [v8 getSubscribers:v7 error:&v27];
+  v9 = [managerCopy getSubscribers:subscribersCopy error:&v27];
   v10 = v27;
-  if (v10 || (v26 = 0, v11 = [UAFUser isSystemUser:v7 error:&v26], (v10 = v26) != 0))
+  if (v10 || (v26 = 0, v11 = [UAFUser isSystemUser:subscribersCopy error:&v26], (v10 = v26) != 0))
   {
     v12 = v10;
-    if (a5)
+    if (error)
     {
       v13 = v10;
       v14 = 0;
-      *a5 = v12;
+      *error = v12;
       goto LABEL_17;
     }
 
@@ -375,33 +375,33 @@ LABEL_6:
   v12 = v16;
   if (!v15 || v16)
   {
-    if (a5)
+    if (error)
     {
       v20 = v16;
-      *a5 = v12;
+      *error = v12;
     }
   }
 
   else
   {
     v24 = 0;
-    v17 = [v8 getSubscribers:v15 error:&v24];
+    v17 = [managerCopy getSubscribers:v15 error:&v24];
     v18 = v24;
     if (!v18)
     {
       v22 = [MEMORY[0x1E695DFA8] setWithArray:v9];
       [v22 addObjectsFromArray:v17];
-      v23 = [v22 allObjects];
+      allObjects = [v22 allObjects];
 
-      v9 = v23;
+      v9 = allObjects;
       goto LABEL_6;
     }
 
     v12 = v18;
-    if (a5)
+    if (error)
     {
       v19 = v18;
-      *a5 = v12;
+      *error = v12;
     }
   }
 
@@ -563,19 +563,19 @@ void __61__UAFAssetSetSubscriptionManager_daemonSubscriptionMigration__block_inv
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)migrateSubscriptions:(id)a3 user:(id)a4 completion:(id)a5
++ (void)migrateSubscriptions:(id)subscriptions user:(id)user completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  subscriptionsCopy = subscriptions;
+  userCopy = user;
+  completionCopy = completion;
   v10 = UAFGetLogCategory(&UAFLogContextXPCService);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v31 = "+[UAFAssetSetSubscriptionManager migrateSubscriptions:user:completion:]";
     v32 = 2112;
-    v33 = v8;
+    v33 = userCopy;
     _os_log_impl(&dword_1BCF2C000, v10, OS_LOG_TYPE_DEFAULT, "%s Received request to migrate subscriptions for user '%@'", buf, 0x16u);
   }
 
@@ -596,14 +596,14 @@ void __61__UAFAssetSetSubscriptionManager_daemonSubscriptionMigration__block_inv
       _os_log_error_impl(&dword_1BCF2C000, v14, OS_LOG_TYPE_ERROR, "%s Error getting all system subscriptions for migration: %{public}@", buf, 0x16u);
     }
 
-    v9[2](v9, v13);
+    completionCopy[2](completionCopy, v13);
     v15 = 0;
   }
 
   else
   {
     v28 = 0;
-    v15 = [UAFUser nodeForUser:v8 error:&v28];
+    v15 = [UAFUser nodeForUser:userCopy error:&v28];
     v16 = v28;
     if (v16)
     {
@@ -614,13 +614,13 @@ void __61__UAFAssetSetSubscriptionManager_daemonSubscriptionMigration__block_inv
         *buf = 136315650;
         v31 = "+[UAFAssetSetSubscriptionManager migrateSubscriptions:user:completion:]";
         v32 = 2112;
-        v33 = v8;
+        v33 = userCopy;
         v34 = 2114;
         v35 = v13;
         _os_log_error_impl(&dword_1BCF2C000, v17, OS_LOG_TYPE_ERROR, "%s Failed to determine node for user '%@': %{public}@", buf, 0x20u);
       }
 
-      v9[2](v9, v13);
+      completionCopy[2](completionCopy, v13);
     }
 
     else
@@ -631,11 +631,11 @@ void __61__UAFAssetSetSubscriptionManager_daemonSubscriptionMigration__block_inv
       v24[3] = &unk_1E7FFDF90;
       v18 = v12;
       v25 = v18;
-      v19 = v8;
+      v19 = userCopy;
       v26 = v19;
       v15 = v15;
       v27 = v15;
-      [v7 enumerateKeysAndObjectsUsingBlock:v24];
+      [subscriptionsCopy enumerateKeysAndObjectsUsingBlock:v24];
       v20 = UAFGetLogCategory(&UAFLogContextXPCService);
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
@@ -661,7 +661,7 @@ void __61__UAFAssetSetSubscriptionManager_daemonSubscriptionMigration__block_inv
       [v22 setBool:0 forKey:@"InhibitRemoval"];
 
       [UAFAssetSetManager configureAssetDelivery:0 configurationManager:0 lockIfUnchanged:0 oldSubscriptions:0 newSubscriptions:0 userInitiated:1];
-      v9[2](v9, 0);
+      completionCopy[2](completionCopy, 0);
 
       v13 = 0;
     }

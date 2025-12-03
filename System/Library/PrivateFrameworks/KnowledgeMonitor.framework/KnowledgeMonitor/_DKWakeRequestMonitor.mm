@@ -31,8 +31,8 @@
   v12.super_class = _DKWakeRequestMonitor;
   if ([(_DKMonitor *)&v12 instantMonitorNeedsActivation])
   {
-    v3 = [(_DKMonitor *)self queue];
-    v4 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v3);
+    queue = [(_DKMonitor *)self queue];
+    v4 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue);
     updateTimer = self->_updateTimer;
     self->_updateTimer = v4;
 
@@ -48,13 +48,13 @@
     dispatch_source_set_event_handler(v8, handler);
     self->_updateTimerResumed = 1;
     dispatch_resume(self->_updateTimer);
-    v9 = [(_DKMonitor *)self queue];
+    queue2 = [(_DKMonitor *)self queue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __30___DKWakeRequestMonitor_start__block_invoke_2;
     v10[3] = &unk_27856F408;
     v10[4] = self;
-    notify_register_dispatch("com.apple.system.powermanagement.uservisiblepowerevent", &self->_wakeRequestToken, v9, v10);
+    notify_register_dispatch("com.apple.system.powermanagement.uservisiblepowerevent", &self->_wakeRequestToken, queue2, v10);
   }
 }
 
@@ -82,13 +82,13 @@
 
 - (void)synchronouslyReflectCurrentValue
 {
-  v3 = [(_DKMonitor *)self queue];
+  queue = [(_DKMonitor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57___DKWakeRequestMonitor_synchronouslyReflectCurrentValue__block_invoke;
   block[3] = &unk_27856F060;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 - (void)obtainNextUserVisibleWakeRequest
@@ -106,29 +106,29 @@
     CFRelease(cf);
 LABEL_23:
     cf = [MEMORY[0x277CBEAA8] distantFuture];
-    v25 = [MEMORY[0x277CFE318] userContext];
-    v23 = [MEMORY[0x277CFE338] keyPathForNextUserVisibleWakeDate];
-    [v25 setObject:cf forKeyedSubscript:v23];
+    userContext = [MEMORY[0x277CFE318] userContext];
+    keyPathForNextUserVisibleWakeDate = [MEMORY[0x277CFE338] keyPathForNextUserVisibleWakeDate];
+    [userContext setObject:cf forKeyedSubscript:keyPathForNextUserVisibleWakeDate];
     goto LABEL_42;
   }
 
-  v5 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v6 = self->_nextUserVisibleWakeRequestDate;
   nextUserVisibleWakeRequestor = self->_nextUserVisibleWakeRequestor;
   if (!nextUserVisibleWakeRequestor)
   {
-    v8 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
 
     nextUserVisibleWakeRequestor = self->_nextUserVisibleWakeRequestor;
-    v6 = v8;
+    v6 = distantFuture;
   }
 
   v42 = v6;
   v40 = nextUserVisibleWakeRequestor;
   if (self->_nextUserVisibleWakeRequestDate)
   {
-    [v5 timeIntervalSinceDate:?];
-    if (v9 >= 120.0 || ([v5 timeIntervalSinceDate:self->_nextUserVisibleWakeRequestDate], v10 < 0.0))
+    [date timeIntervalSinceDate:?];
+    if (v9 >= 120.0 || ([date timeIntervalSinceDate:self->_nextUserVisibleWakeRequestDate], v10 < 0.0))
     {
       nextUserVisibleWakeRequestDate = self->_nextUserVisibleWakeRequestDate;
       self->_nextUserVisibleWakeRequestDate = 0;
@@ -138,7 +138,7 @@ LABEL_23:
     }
   }
 
-  v43 = v5;
+  v43 = date;
   if ([cf count])
   {
     v13 = 0;
@@ -152,7 +152,7 @@ LABEL_23:
         v17 = self->_nextUserVisibleWakeRequestDate;
         if (!v17 || ([(NSDate *)v17 timeIntervalSinceDate:v16], v18 > 0.0))
         {
-          [v5 timeIntervalSinceDate:v16];
+          [date timeIntervalSinceDate:v16];
           if (v19 < 120.0)
           {
             objc_storeStrong(&self->_nextUserVisibleWakeRequestDate, v16);
@@ -170,7 +170,7 @@ LABEL_23:
   }
 
   v22 = self->_nextUserVisibleWakeRequestDate;
-  v23 = v42;
+  keyPathForNextUserVisibleWakeDate = v42;
   if (v42)
   {
     if (v22)
@@ -187,7 +187,7 @@ LABEL_23:
   {
     v32 = 900.0;
     v33 = v41;
-    v25 = v5;
+    userContext = date;
     goto LABEL_33;
   }
 
@@ -195,21 +195,21 @@ LABEL_23:
   {
 LABEL_26:
     v26 = self->_nextUserVisibleWakeRequestDate;
-    v27 = [MEMORY[0x277CFE318] userContext];
-    v28 = [MEMORY[0x277CFE338] keyPathForNextUserVisibleWakeDate];
-    [v27 setObject:v26 forKeyedSubscript:v28];
+    userContext2 = [MEMORY[0x277CFE318] userContext];
+    keyPathForNextUserVisibleWakeDate2 = [MEMORY[0x277CFE338] keyPathForNextUserVisibleWakeDate];
+    [userContext2 setObject:v26 forKeyedSubscript:keyPathForNextUserVisibleWakeDate2];
 
     v29 = self->_nextUserVisibleWakeRequestDate;
     goto LABEL_28;
   }
 
-  v30 = [MEMORY[0x277CFE318] userContext];
-  v31 = [MEMORY[0x277CFE338] keyPathForNextUserVisibleWakeDate];
-  [v30 setObject:v42 forKeyedSubscript:v31];
+  userContext3 = [MEMORY[0x277CFE318] userContext];
+  keyPathForNextUserVisibleWakeDate3 = [MEMORY[0x277CFE338] keyPathForNextUserVisibleWakeDate];
+  [userContext3 setObject:v42 forKeyedSubscript:keyPathForNextUserVisibleWakeDate3];
 
   v29 = v42;
 LABEL_28:
-  v25 = v43;
+  userContext = v43;
   [(NSDate *)v29 timeIntervalSinceDate:v43];
   v33 = v41;
   if (v32 > 900.0)
@@ -249,9 +249,9 @@ LABEL_34:
   if (v37)
   {
 LABEL_40:
-    v38 = [MEMORY[0x277CFE318] userContext];
+    userContext4 = [MEMORY[0x277CFE318] userContext];
     v39 = [MEMORY[0x277CFE358] keyPathWithKey:@"/system/nextUserVisibleWakeRequestor"];
-    [v38 setObject:v37 forKeyedSubscript:v39];
+    [userContext4 setObject:v37 forKeyedSubscript:v39];
   }
 
 LABEL_42:

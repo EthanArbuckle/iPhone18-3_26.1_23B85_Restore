@@ -1,5 +1,5 @@
 @interface NSCloudKitMirroringResult
-- (NSCloudKitMirroringResult)initWithRequest:(id)a3 storeIdentifier:(id)a4 success:(BOOL)a5 madeChanges:(BOOL)a6 error:(id)a7;
+- (NSCloudKitMirroringResult)initWithRequest:(id)request storeIdentifier:(id)identifier success:(BOOL)success madeChanges:(BOOL)changes error:(id)error;
 - (id)description;
 - (void)dealloc;
 @end
@@ -14,7 +14,7 @@
   [(NSCloudKitMirroringResult *)&v3 dealloc];
 }
 
-- (NSCloudKitMirroringResult)initWithRequest:(id)a3 storeIdentifier:(id)a4 success:(BOOL)a5 madeChanges:(BOOL)a6 error:(id)a7
+- (NSCloudKitMirroringResult)initWithRequest:(id)request storeIdentifier:(id)identifier success:(BOOL)success madeChanges:(BOOL)changes error:(id)error
 {
   v28 = *MEMORY[0x1E69E9840];
   v12 = [(NSCloudKitMirroringResult *)self init];
@@ -23,20 +23,20 @@
     goto LABEL_16;
   }
 
-  v12->_request = a3;
-  v12->_storeIdentifier = a4;
-  v12->_success = a5;
-  v12->_madeChanges = a6;
-  v13 = a7;
-  v12->_error = v13;
+  v12->_request = request;
+  v12->_storeIdentifier = identifier;
+  v12->_success = success;
+  v12->_madeChanges = changes;
+  errorCopy = error;
+  v12->_error = errorCopy;
   success = v12->_success;
-  if (success && v13 != 0)
+  if (success && errorCopy != 0)
   {
     LogStream = _PFLogGetLogStream(17);
     if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
     {
       v26 = 138412290;
-      v27 = a7;
+      errorCopy3 = error;
       _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: initWithRequest passed an error (%@) on a succes condition\n", &v26, 0xCu);
     }
 
@@ -47,7 +47,7 @@
     }
 
     v26 = 138412290;
-    v27 = a7;
+    errorCopy3 = error;
     v18 = "CoreData: initWithRequest passed an error (%@) on a succes condition";
     v19 = v23;
     v20 = 12;
@@ -56,7 +56,7 @@ LABEL_18:
     goto LABEL_16;
   }
 
-  if (!success && !v13)
+  if (!success && !errorCopy)
   {
     v16 = _PFLogGetLogStream(17);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))

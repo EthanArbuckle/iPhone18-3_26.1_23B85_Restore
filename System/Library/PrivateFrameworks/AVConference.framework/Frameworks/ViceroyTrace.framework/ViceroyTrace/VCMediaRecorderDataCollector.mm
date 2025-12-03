@@ -1,15 +1,15 @@
 @interface VCMediaRecorderDataCollector
-- (VCMediaRecorderDataCollector)initWithDispatchQueue:(id)a3;
-- (void)addAggregatedMediaRecorderMetricsToReport:(id)a3;
+- (VCMediaRecorderDataCollector)initWithDispatchQueue:(id)queue;
+- (void)addAggregatedMediaRecorderMetricsToReport:(id)report;
 - (void)dealloc;
-- (void)updateLivePhotoMediaRecorderEventStats:(id)a3;
-- (void)updateMediaRecorderEventStats:(id)a3;
-- (void)updateMediaRecordingMediaRecorderEventStats:(id)a3;
+- (void)updateLivePhotoMediaRecorderEventStats:(id)stats;
+- (void)updateMediaRecorderEventStats:(id)stats;
+- (void)updateMediaRecordingMediaRecorderEventStats:(id)stats;
 @end
 
 @implementation VCMediaRecorderDataCollector
 
-- (VCMediaRecorderDataCollector)initWithDispatchQueue:(id)a3
+- (VCMediaRecorderDataCollector)initWithDispatchQueue:(id)queue
 {
   v6.receiver = self;
   v6.super_class = VCMediaRecorderDataCollector;
@@ -22,14 +22,14 @@ LABEL_7:
     return 0;
   }
 
-  if (!a3)
+  if (!queue)
   {
     [VCMediaRecorderDataCollector initWithDispatchQueue:];
     goto LABEL_7;
   }
 
-  dispatch_retain(a3);
-  v4->_stateQueue = a3;
+  dispatch_retain(queue);
+  v4->_stateQueue = queue;
   v4->_mediaRecorderMediaTypeHistogram = [[VCReportingHistogram alloc] initWithType:54 bucketValues:0];
   v4->_mediaRecorderResultsHistogram = [[VCReportingHistogram alloc] initWithType:55 bucketValues:0];
   v4->_mediaRecorderFileSizeHistogram = [[VCReportingHistogram alloc] initWithType:56 bucketValues:0];
@@ -52,12 +52,12 @@ LABEL_7:
   [(VCMediaRecorderDataCollector *)&v4 dealloc];
 }
 
-- (void)updateMediaRecordingMediaRecorderEventStats:(id)a3
+- (void)updateMediaRecordingMediaRecorderEventStats:(id)stats
 {
   dispatch_assert_queue_V2(self->_stateQueue);
-  if ([a3 objectForKeyedSubscript:@"VCMRFileSize"])
+  if ([stats objectForKeyedSubscript:@"VCMRFileSize"])
   {
-    v5 = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMRFileSize", "unsignedLongLongValue"}];
+    v5 = [objc_msgSend(stats objectForKeyedSubscript:{@"VCMRFileSize", "unsignedLongLongValue"}];
     if (v5 >= 0xFFFFFFFF)
     {
       v6 = 0xFFFFFFFFLL;
@@ -69,18 +69,18 @@ LABEL_7:
     }
 
     [(VCHistogram *)self->_mediaRecorderFileSizeHistogram addValue:v6];
-    -[VCHistogram addValue:](self->_mediaRecorderMediaTypeHistogram, "addValue:", [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMRMediaType", "intValue"}]);
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMRFileLength", "doubleValue"}];
+    -[VCHistogram addValue:](self->_mediaRecorderMediaTypeHistogram, "addValue:", [objc_msgSend(stats objectForKeyedSubscript:{@"VCMRMediaType", "intValue"}]);
+    [objc_msgSend(stats objectForKeyedSubscript:{@"VCMRFileLength", "doubleValue"}];
     [(VCHistogram *)self->_mediaRecorderMessageLengthHistogram addValue:v7];
     ++self->_mediaRecorderCaptureTotal;
   }
 
-  else if ([a3 objectForKeyedSubscript:@"VCMRFinishDidSucceed"])
+  else if ([stats objectForKeyedSubscript:@"VCMRFinishDidSucceed"])
   {
-    -[VCHistogram addValue:](self->_mediaRecorderResultsHistogram, "addValue:", [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMRFinishDidSucceed", "BOOLValue"}]);
+    -[VCHistogram addValue:](self->_mediaRecorderResultsHistogram, "addValue:", [objc_msgSend(stats objectForKeyedSubscript:{@"VCMRFinishDidSucceed", "BOOLValue"}]);
   }
 
-  v8 = [a3 objectForKeyedSubscript:@"VCMRFinishDidSucceed"];
+  v8 = [stats objectForKeyedSubscript:@"VCMRFinishDidSucceed"];
   if (v8)
   {
     if (([v8 BOOLValue] & 1) == 0)
@@ -90,10 +90,10 @@ LABEL_7:
   }
 }
 
-- (void)updateLivePhotoMediaRecorderEventStats:(id)a3
+- (void)updateLivePhotoMediaRecorderEventStats:(id)stats
 {
   dispatch_assert_queue_V2(self->_stateQueue);
-  v5 = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMRFileSize", "unsignedLongLongValue"}];
+  v5 = [objc_msgSend(stats objectForKeyedSubscript:{@"VCMRFileSize", "unsignedLongLongValue"}];
   if (v5 >= 0xFFFFFFFF)
   {
     v6 = 0xFFFFFFFFLL;
@@ -105,8 +105,8 @@ LABEL_7:
   }
 
   [(VCHistogram *)self->_mediaRecorderFileSizeHistogram addValue:v6];
-  -[VCHistogram addValue:](self->_mediaRecorderMediaTypeHistogram, "addValue:", [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMRMediaType", "intValue"}]);
-  v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMRFinishDidSucceed", "BOOLValue"}];
+  -[VCHistogram addValue:](self->_mediaRecorderMediaTypeHistogram, "addValue:", [objc_msgSend(stats objectForKeyedSubscript:{@"VCMRMediaType", "intValue"}]);
+  v7 = [objc_msgSend(stats objectForKeyedSubscript:{@"VCMRFinishDidSucceed", "BOOLValue"}];
   [(VCHistogram *)self->_mediaRecorderResultsHistogram addValue:v7];
   [(VCHistogram *)self->_mediaRecorderThermalHistogram addValue:self->_thermalLevel];
   ++self->_mediaRecorderCaptureTotal;
@@ -116,37 +116,37 @@ LABEL_7:
   }
 }
 
-- (void)updateMediaRecorderEventStats:(id)a3
+- (void)updateMediaRecorderEventStats:(id)stats
 {
-  if ([a3 objectForKeyedSubscript:@"VCMRMode"])
+  if ([stats objectForKeyedSubscript:@"VCMRMode"])
   {
-    v5 = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMRMode", "charValue"}];
+    v5 = [objc_msgSend(stats objectForKeyedSubscript:{@"VCMRMode", "charValue"}];
     if (v5 == 1)
     {
 
-      [(VCMediaRecorderDataCollector *)self updateLivePhotoMediaRecorderEventStats:a3];
+      [(VCMediaRecorderDataCollector *)self updateLivePhotoMediaRecorderEventStats:stats];
     }
 
     else if (!v5)
     {
 
-      [(VCMediaRecorderDataCollector *)self updateMediaRecordingMediaRecorderEventStats:a3];
+      [(VCMediaRecorderDataCollector *)self updateMediaRecordingMediaRecorderEventStats:stats];
     }
   }
 }
 
-- (void)addAggregatedMediaRecorderMetricsToReport:(id)a3
+- (void)addAggregatedMediaRecorderMetricsToReport:(id)report
 {
   dispatch_assert_queue_V2(self->_stateQueue);
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedChar:", self->_mediaRecorderCaptureTotal), @"LPhotoT"}];
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedChar:", self->_mediaRecorderCaptureFailure), @"LPhotoF"}];
-  [a3 setObject:-[VCHistogram description](self->_mediaRecorderFileSizeHistogram forKeyedSubscript:{"description"), @"MRFS"}];
-  [a3 setObject:-[VCHistogram description](self->_mediaRecorderMessageLengthHistogram forKeyedSubscript:{"description"), @"MRML"}];
-  [a3 setObject:-[VCHistogram description](self->_mediaRecorderMediaTypeHistogram forKeyedSubscript:{"description"), @"MRType"}];
-  [a3 setObject:-[VCHistogram description](self->_mediaRecorderResultsHistogram forKeyedSubscript:{"description"), @"MRSuccess"}];
+  [report setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedChar:", self->_mediaRecorderCaptureTotal), @"LPhotoT"}];
+  [report setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedChar:", self->_mediaRecorderCaptureFailure), @"LPhotoF"}];
+  [report setObject:-[VCHistogram description](self->_mediaRecorderFileSizeHistogram forKeyedSubscript:{"description"), @"MRFS"}];
+  [report setObject:-[VCHistogram description](self->_mediaRecorderMessageLengthHistogram forKeyedSubscript:{"description"), @"MRML"}];
+  [report setObject:-[VCHistogram description](self->_mediaRecorderMediaTypeHistogram forKeyedSubscript:{"description"), @"MRType"}];
+  [report setObject:-[VCHistogram description](self->_mediaRecorderResultsHistogram forKeyedSubscript:{"description"), @"MRSuccess"}];
   v5 = [(VCHistogram *)self->_mediaRecorderThermalHistogram description];
 
-  [a3 setObject:v5 forKeyedSubscript:@"MRTHRM"];
+  [report setObject:v5 forKeyedSubscript:@"MRTHRM"];
 }
 
 - (void)initWithDispatchQueue:.cold.1()

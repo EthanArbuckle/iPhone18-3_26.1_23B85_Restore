@@ -1,34 +1,34 @@
 @interface AWDMETRICSKCellularPowerLogSystemEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsMode:(id)a3;
-- (int)StringAsPrevMode:(id)a3;
-- (int)StringAsPrevRat:(id)a3;
-- (int)StringAsRat:(id)a3;
+- (int)StringAsMode:(id)mode;
+- (int)StringAsPrevMode:(id)mode;
+- (int)StringAsPrevRat:(id)rat;
+- (int)StringAsRat:(id)rat;
 - (int)mode;
 - (int)prevMode;
 - (int)prevRat;
 - (int)rat;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMode:(BOOL)a3;
-- (void)setHasOosPlmnSearchTimerActive:(BOOL)a3;
-- (void)setHasPrevMode:(BOOL)a3;
-- (void)setHasPrevRat:(BOOL)a3;
-- (void)setHasPrevStateDurationMs:(BOOL)a3;
-- (void)setHasRat:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMode:(BOOL)mode;
+- (void)setHasOosPlmnSearchTimerActive:(BOOL)active;
+- (void)setHasPrevMode:(BOOL)mode;
+- (void)setHasPrevRat:(BOOL)rat;
+- (void)setHasPrevStateDurationMs:(BOOL)ms;
+- (void)setHasRat:(BOOL)rat;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMETRICSKCellularPowerLogSystemEvent
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 64;
   }
@@ -41,9 +41,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasOosPlmnSearchTimerActive:(BOOL)a3
+- (void)setHasOosPlmnSearchTimerActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     v3 = 0x80;
   }
@@ -69,9 +69,9 @@
   }
 }
 
-- (void)setHasMode:(BOOL)a3
+- (void)setHasMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 2;
   }
@@ -84,75 +84,75 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsMode:(id)a3
+- (int)StringAsMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"POWER_OFF"])
+  else if ([modeCopy isEqualToString:@"POWER_OFF"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"DEV_REGISTRATION"])
+  else if ([modeCopy isEqualToString:@"DEV_REGISTRATION"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DEV_REG_CNF"])
+  else if ([modeCopy isEqualToString:@"DEV_REG_CNF"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"AIRPLANE"])
+  else if ([modeCopy isEqualToString:@"AIRPLANE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"POWER_ON"])
+  else if ([modeCopy isEqualToString:@"POWER_ON"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SILENT_RESET"])
+  else if ([modeCopy isEqualToString:@"SILENT_RESET"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"DEACTIVATE_AS"])
+  else if ([modeCopy isEqualToString:@"DEACTIVATE_AS"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"REACTIVATE_AS"])
+  else if ([modeCopy isEqualToString:@"REACTIVATE_AS"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"FAST_DETACH"])
+  else if ([modeCopy isEqualToString:@"FAST_DETACH"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ON_OTA_SUBSCRIPTION"])
+  else if ([modeCopy isEqualToString:@"ON_OTA_SUBSCRIPTION"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"UNCHANGE_MODE"])
+  else if ([modeCopy isEqualToString:@"UNCHANGE_MODE"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"CHANGE_FEATURE_LIST"])
+  else if ([modeCopy isEqualToString:@"CHANGE_FEATURE_LIST"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"FAST_STACK_RESET"])
+  else if ([modeCopy isEqualToString:@"FAST_STACK_RESET"])
   {
     v4 = 13;
   }
@@ -178,9 +178,9 @@
   }
 }
 
-- (void)setHasRat:(BOOL)a3
+- (void)setHasRat:(BOOL)rat
 {
-  if (a3)
+  if (rat)
   {
     v3 = 32;
   }
@@ -193,30 +193,30 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (int)StringAsRat:(id)a3
+- (int)StringAsRat:(id)rat
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SYS_RAT_NOT_AVAILABLE"])
+  ratCopy = rat;
+  if ([ratCopy isEqualToString:@"SYS_RAT_NOT_AVAILABLE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SYS_RAT_GSM"])
+  else if ([ratCopy isEqualToString:@"SYS_RAT_GSM"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SYS_RAT_UMTS"])
+  else if ([ratCopy isEqualToString:@"SYS_RAT_UMTS"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SYS_RAT_LTE"])
+  else if ([ratCopy isEqualToString:@"SYS_RAT_LTE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SYS_RAT_NR"])
+  else if ([ratCopy isEqualToString:@"SYS_RAT_NR"])
   {
     v4 = 4;
   }
@@ -242,9 +242,9 @@
   }
 }
 
-- (void)setHasPrevMode:(BOOL)a3
+- (void)setHasPrevMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 4;
   }
@@ -257,75 +257,75 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsPrevMode:(id)a3
+- (int)StringAsPrevMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"POWER_OFF"])
+  else if ([modeCopy isEqualToString:@"POWER_OFF"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"DEV_REGISTRATION"])
+  else if ([modeCopy isEqualToString:@"DEV_REGISTRATION"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DEV_REG_CNF"])
+  else if ([modeCopy isEqualToString:@"DEV_REG_CNF"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"AIRPLANE"])
+  else if ([modeCopy isEqualToString:@"AIRPLANE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"POWER_ON"])
+  else if ([modeCopy isEqualToString:@"POWER_ON"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SILENT_RESET"])
+  else if ([modeCopy isEqualToString:@"SILENT_RESET"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"DEACTIVATE_AS"])
+  else if ([modeCopy isEqualToString:@"DEACTIVATE_AS"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"REACTIVATE_AS"])
+  else if ([modeCopy isEqualToString:@"REACTIVATE_AS"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"FAST_DETACH"])
+  else if ([modeCopy isEqualToString:@"FAST_DETACH"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ON_OTA_SUBSCRIPTION"])
+  else if ([modeCopy isEqualToString:@"ON_OTA_SUBSCRIPTION"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"UNCHANGE_MODE"])
+  else if ([modeCopy isEqualToString:@"UNCHANGE_MODE"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"CHANGE_FEATURE_LIST"])
+  else if ([modeCopy isEqualToString:@"CHANGE_FEATURE_LIST"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"FAST_STACK_RESET"])
+  else if ([modeCopy isEqualToString:@"FAST_STACK_RESET"])
   {
     v4 = 13;
   }
@@ -351,9 +351,9 @@
   }
 }
 
-- (void)setHasPrevRat:(BOOL)a3
+- (void)setHasPrevRat:(BOOL)rat
 {
-  if (a3)
+  if (rat)
   {
     v3 = 8;
   }
@@ -366,30 +366,30 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsPrevRat:(id)a3
+- (int)StringAsPrevRat:(id)rat
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SYS_RAT_NOT_AVAILABLE"])
+  ratCopy = rat;
+  if ([ratCopy isEqualToString:@"SYS_RAT_NOT_AVAILABLE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SYS_RAT_GSM"])
+  else if ([ratCopy isEqualToString:@"SYS_RAT_GSM"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SYS_RAT_UMTS"])
+  else if ([ratCopy isEqualToString:@"SYS_RAT_UMTS"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SYS_RAT_LTE"])
+  else if ([ratCopy isEqualToString:@"SYS_RAT_LTE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SYS_RAT_NR"])
+  else if ([ratCopy isEqualToString:@"SYS_RAT_NR"])
   {
     v4 = 4;
   }
@@ -402,9 +402,9 @@
   return v4;
 }
 
-- (void)setHasPrevStateDurationMs:(BOOL)a3
+- (void)setHasPrevStateDurationMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 16;
   }
@@ -423,20 +423,20 @@
   v8.receiver = self;
   v8.super_class = AWDMETRICSKCellularPowerLogSystemEvent;
   v4 = [(AWDMETRICSKCellularPowerLogSystemEvent *)&v8 description];
-  v5 = [(AWDMETRICSKCellularPowerLogSystemEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDMETRICSKCellularPowerLogSystemEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v7 forKey:@"timestamp"];
+    [dictionary setObject:v7 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 0x40) == 0)
@@ -457,7 +457,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_subsId];
-  [v3 setObject:v8 forKey:@"subs_id"];
+  [dictionary setObject:v8 forKey:@"subs_id"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -473,7 +473,7 @@ LABEL_4:
 
 LABEL_15:
   v9 = [MEMORY[0x277CCABB0] numberWithBool:self->_oosPlmnSearchTimerActive];
-  [v3 setObject:v9 forKey:@"oos_plmn_search_timer_active"];
+  [dictionary setObject:v9 forKey:@"oos_plmn_search_timer_active"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -499,7 +499,7 @@ LABEL_16:
     v11 = off_279A10578[mode];
   }
 
-  [v3 setObject:v11 forKey:@"mode"];
+  [dictionary setObject:v11 forKey:@"mode"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -525,7 +525,7 @@ LABEL_20:
     v13 = off_279A105E8[rat];
   }
 
-  [v3 setObject:v13 forKey:@"rat"];
+  [dictionary setObject:v13 forKey:@"rat"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -551,7 +551,7 @@ LABEL_24:
     v15 = off_279A10578[prevMode];
   }
 
-  [v3 setObject:v15 forKey:@"prev_mode"];
+  [dictionary setObject:v15 forKey:@"prev_mode"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -577,7 +577,7 @@ LABEL_28:
     v17 = off_279A105E8[prevRat];
   }
 
-  [v3 setObject:v17 forKey:@"prev_rat"];
+  [dictionary setObject:v17 forKey:@"prev_rat"];
 
   if ((*&self->_has & 0x10) == 0)
   {
@@ -586,16 +586,16 @@ LABEL_28:
 
 LABEL_9:
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_prevStateDurationMs];
-  [v3 setObject:v5 forKey:@"prev_state_duration_ms"];
+  [dictionary setObject:v5 forKey:@"prev_state_duration_ms"];
 
 LABEL_10:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -706,14 +706,14 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 44) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 44) |= 1u;
     has = self->_has;
     if ((has & 0x40) == 0)
     {
@@ -732,8 +732,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 9) = self->_subsId;
-  *(v4 + 44) |= 0x40u;
+  *(toCopy + 9) = self->_subsId;
+  *(toCopy + 44) |= 0x40u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -747,8 +747,8 @@ LABEL_4:
   }
 
 LABEL_15:
-  *(v4 + 40) = self->_oosPlmnSearchTimerActive;
-  *(v4 + 44) |= 0x80u;
+  *(toCopy + 40) = self->_oosPlmnSearchTimerActive;
+  *(toCopy + 44) |= 0x80u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -762,8 +762,8 @@ LABEL_5:
   }
 
 LABEL_16:
-  *(v4 + 4) = self->_mode;
-  *(v4 + 44) |= 2u;
+  *(toCopy + 4) = self->_mode;
+  *(toCopy + 44) |= 2u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -777,8 +777,8 @@ LABEL_6:
   }
 
 LABEL_17:
-  *(v4 + 8) = self->_rat;
-  *(v4 + 44) |= 0x20u;
+  *(toCopy + 8) = self->_rat;
+  *(toCopy + 44) |= 0x20u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -792,8 +792,8 @@ LABEL_7:
   }
 
 LABEL_18:
-  *(v4 + 5) = self->_prevMode;
-  *(v4 + 44) |= 4u;
+  *(toCopy + 5) = self->_prevMode;
+  *(toCopy + 44) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -807,21 +807,21 @@ LABEL_8:
   }
 
 LABEL_19:
-  *(v4 + 6) = self->_prevRat;
-  *(v4 + 44) |= 8u;
+  *(toCopy + 6) = self->_prevRat;
+  *(toCopy + 44) |= 8u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_9:
-    *(v4 + 7) = self->_prevStateDurationMs;
-    *(v4 + 44) |= 0x10u;
+    *(toCopy + 7) = self->_prevStateDurationMs;
+    *(toCopy + 44) |= 0x10u;
   }
 
 LABEL_10:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -933,43 +933,43 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_44;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_44;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_44;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 44) & 0x40) == 0 || self->_subsId != *(v4 + 9))
+    if ((*(equalCopy + 44) & 0x40) == 0 || self->_subsId != *(equalCopy + 9))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(v4 + 44) & 0x40) != 0)
+  else if ((*(equalCopy + 44) & 0x40) != 0)
   {
     goto LABEL_44;
   }
 
   if ((*&self->_has & 0x80) == 0)
   {
-    if ((*(v4 + 44) & 0x80) == 0)
+    if ((*(equalCopy + 44) & 0x80) == 0)
     {
       goto LABEL_14;
     }
@@ -979,21 +979,21 @@ LABEL_44:
     goto LABEL_45;
   }
 
-  if ((*(v4 + 44) & 0x80) == 0)
+  if ((*(equalCopy + 44) & 0x80) == 0)
   {
     goto LABEL_44;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(equalCopy + 40);
   if (self->_oosPlmnSearchTimerActive)
   {
-    if ((*(v4 + 40) & 1) == 0)
+    if ((*(equalCopy + 40) & 1) == 0)
     {
       goto LABEL_44;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_44;
   }
@@ -1001,60 +1001,60 @@ LABEL_44:
 LABEL_14:
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_mode != *(v4 + 4))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_mode != *(equalCopy + 4))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_44;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 44) & 0x20) == 0 || self->_rat != *(v4 + 8))
+    if ((*(equalCopy + 44) & 0x20) == 0 || self->_rat != *(equalCopy + 8))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(v4 + 44) & 0x20) != 0)
+  else if ((*(equalCopy + 44) & 0x20) != 0)
   {
     goto LABEL_44;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) == 0 || self->_prevMode != *(v4 + 5))
+    if ((*(equalCopy + 44) & 4) == 0 || self->_prevMode != *(equalCopy + 5))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(v4 + 44) & 4) != 0)
+  else if ((*(equalCopy + 44) & 4) != 0)
   {
     goto LABEL_44;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 44) & 8) == 0 || self->_prevRat != *(v4 + 6))
+    if ((*(equalCopy + 44) & 8) == 0 || self->_prevRat != *(equalCopy + 6))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(v4 + 44) & 8) != 0)
+  else if ((*(equalCopy + 44) & 8) != 0)
   {
     goto LABEL_44;
   }
 
-  v6 = (*(v4 + 44) & 0x10) == 0;
+  v6 = (*(equalCopy + 44) & 0x10) == 0;
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 44) & 0x10) == 0 || self->_prevStateDurationMs != *(v4 + 7))
+    if ((*(equalCopy + 44) & 0x10) == 0 || self->_prevStateDurationMs != *(equalCopy + 7))
     {
       goto LABEL_44;
     }
@@ -1177,15 +1177,15 @@ LABEL_9:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 44);
+  fromCopy = from;
+  v5 = *(fromCopy + 44);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
     if ((v5 & 0x40) == 0)
     {
 LABEL_3:
@@ -1198,14 +1198,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 44) & 0x40) == 0)
+  else if ((*(fromCopy + 44) & 0x40) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_subsId = *(v4 + 9);
+  self->_subsId = *(fromCopy + 9);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x80) == 0)
   {
 LABEL_4:
@@ -1218,9 +1218,9 @@ LABEL_4:
   }
 
 LABEL_15:
-  self->_oosPlmnSearchTimerActive = *(v4 + 40);
+  self->_oosPlmnSearchTimerActive = *(fromCopy + 40);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 2) == 0)
   {
 LABEL_5:
@@ -1233,9 +1233,9 @@ LABEL_5:
   }
 
 LABEL_16:
-  self->_mode = *(v4 + 4);
+  self->_mode = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x20) == 0)
   {
 LABEL_6:
@@ -1248,9 +1248,9 @@ LABEL_6:
   }
 
 LABEL_17:
-  self->_rat = *(v4 + 8);
+  self->_rat = *(fromCopy + 8);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 4) == 0)
   {
 LABEL_7:
@@ -1263,9 +1263,9 @@ LABEL_7:
   }
 
 LABEL_18:
-  self->_prevMode = *(v4 + 5);
+  self->_prevMode = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 8) == 0)
   {
 LABEL_8:
@@ -1278,12 +1278,12 @@ LABEL_8:
   }
 
 LABEL_19:
-  self->_prevRat = *(v4 + 6);
+  self->_prevRat = *(fromCopy + 6);
   *&self->_has |= 8u;
-  if ((*(v4 + 44) & 0x10) != 0)
+  if ((*(fromCopy + 44) & 0x10) != 0)
   {
 LABEL_9:
-    self->_prevStateDurationMs = *(v4 + 7);
+    self->_prevStateDurationMs = *(fromCopy + 7);
     *&self->_has |= 0x10u;
   }
 

@@ -1,23 +1,23 @@
 @interface CLSLRUMemoryCache
-- (BOOL)loadFromURL:(id)a3;
-- (BOOL)writeToURL:(id)a3;
+- (BOOL)loadFromURL:(id)l;
+- (BOOL)writeToURL:(id)l;
 - (CLSLRUMemoryCache)init;
 - (id)allKeys;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (unint64_t)currentUsedSlots;
-- (void)_promoteListElement:(_CLSLRUMemoryCacheListElement *)a3;
-- (void)_removeListElement:(_CLSLRUMemoryCacheListElement *)a3;
+- (void)_promoteListElement:(_CLSLRUMemoryCacheListElement *)element;
+- (void)_removeListElement:(_CLSLRUMemoryCacheListElement *)element;
 - (void)dealloc;
-- (void)evictSlots:(unint64_t)a3;
+- (void)evictSlots:(unint64_t)slots;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setNumberOfSlots:(unint64_t)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setNumberOfSlots:(unint64_t)slots;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation CLSLRUMemoryCache
 
-- (BOOL)writeToURL:(id)a3
+- (BOOL)writeToURL:(id)l
 {
   v24 = *MEMORY[0x277D85DE8];
   [(NSRecursiveLock *)self->_recursiveLock lock];
@@ -41,13 +41,13 @@
     v12 = [+[CLSLogging sharedLogging](CLSLogging "sharedLogging")];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v15 = [v17 localizedDescription];
+      localizedDescription = [v17 localizedDescription];
       *buf = 138412802;
-      v19 = a3;
+      lCopy2 = l;
       v20 = 2112;
       v21 = v9;
       v22 = 2112;
-      v23 = v15;
+      v23 = localizedDescription;
       _os_log_error_impl(&dword_22F907000, v12, OS_LOG_TYPE_ERROR, "Failed to save cache to %@ (%@): %@", buf, 0x20u);
     }
 
@@ -58,17 +58,17 @@
 
   [v10 close];
 
-  [v8 removeItemAtURL:a3 error:0];
-  if (([v8 moveItemAtURL:v9 toURL:a3 error:&v17] & 1) == 0)
+  [v8 removeItemAtURL:l error:0];
+  if (([v8 moveItemAtURL:v9 toURL:l error:&v17] & 1) == 0)
   {
     v13 = [+[CLSLogging sharedLogging](CLSLogging "sharedLogging")];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v17 localizedDescription];
+      localizedDescription2 = [v17 localizedDescription];
       *buf = 138412546;
-      v19 = a3;
+      lCopy2 = l;
       v20 = 2112;
-      v21 = v16;
+      v21 = localizedDescription2;
       _os_log_error_impl(&dword_22F907000, v13, OS_LOG_TYPE_ERROR, "Failed to save cache to %@: %@", buf, 0x16u);
     }
 
@@ -85,12 +85,12 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)loadFromURL:(id)a3
+- (BOOL)loadFromURL:(id)l
 {
   v45 = *MEMORY[0x277D85DE8];
   v29 = objc_autoreleasePoolPush();
   [(CLSLRUMemoryCache *)self removeAllObjects];
-  v5 = [objc_alloc(MEMORY[0x277CBEAE0]) initWithURL:a3];
+  v5 = [objc_alloc(MEMORY[0x277CBEAE0]) initWithURL:l];
   v38 = 0;
   [v5 open];
   v6 = [MEMORY[0x277CCAC58] propertyListWithStream:v5 options:0 format:0 error:&v38];
@@ -183,11 +183,11 @@ LABEL_12:
     v25 = [+[CLSLogging sharedLogging](CLSLogging "sharedLogging")];
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      v27 = [v38 localizedDescription];
+      localizedDescription = [v38 localizedDescription];
       *buf = 138412546;
-      v42 = a3;
+      lCopy = l;
       v43 = 2112;
-      v44 = v27;
+      v44 = localizedDescription;
       _os_log_error_impl(&dword_22F907000, v25, OS_LOG_TYPE_ERROR, "Failed to load cache from %@: %@", buf, 0x16u);
     }
   }
@@ -196,10 +196,10 @@ LABEL_12:
   return v28 != 0;
 }
 
-- (void)evictSlots:(unint64_t)a3
+- (void)evictSlots:(unint64_t)slots
 {
   [(NSRecursiveLock *)self->_recursiveLock lock];
-  for (; a3; --a3)
+  for (; slots; --slots)
   {
     var2 = self->_leastRecentUsedList->var2;
     if (var2)
@@ -246,27 +246,27 @@ LABEL_12:
   [(NSRecursiveLock *)recursiveLock unlock];
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
   [(NSRecursiveLock *)self->_recursiveLock lock];
-  v5 = [(NSMapTable *)self->_leastRecentUsedDictionary objectForKey:a3];
+  v5 = [(NSMapTable *)self->_leastRecentUsedDictionary objectForKey:key];
   if (v5)
   {
     -[CLSLRUMemoryCache _removeListElement:](self, "_removeListElement:", [v5 pointerValue]);
   }
 
-  [(NSMapTable *)self->_cacheDictionary removeObjectForKey:a3];
+  [(NSMapTable *)self->_cacheDictionary removeObjectForKey:key];
   recursiveLock = self->_recursiveLock;
 
   [(NSRecursiveLock *)recursiveLock unlock];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
   if (self->_numberOfSlots)
   {
     [(NSRecursiveLock *)self->_recursiveLock lock];
-    v7 = [(NSMapTable *)self->_leastRecentUsedDictionary objectForKey:a4];
+    v7 = [(NSMapTable *)self->_leastRecentUsedDictionary objectForKey:key];
     if (v7)
     {
       -[CLSLRUMemoryCache _promoteListElement:](self, "_promoteListElement:", [v7 pointerValue]);
@@ -275,9 +275,9 @@ LABEL_12:
     else
     {
       v8 = malloc_type_malloc(0x18uLL, 0xA00409BE6959DuLL);
-      v9 = a4;
+      keyCopy = key;
       var1 = self->_leastRecentUsedList->var1;
-      v8->var0 = v9;
+      v8->var0 = keyCopy;
       v8->var1 = var1;
       v8->var2 = 0;
       leastRecentUsedList = self->_leastRecentUsedList;
@@ -295,7 +295,7 @@ LABEL_12:
         v13->var2 = v8;
       }
 
-      -[NSMapTable setObject:forKey:](self->_leastRecentUsedDictionary, "setObject:forKey:", [MEMORY[0x277CCAE60] valueWithPointer:v8], a4);
+      -[NSMapTable setObject:forKey:](self->_leastRecentUsedDictionary, "setObject:forKey:", [MEMORY[0x277CCAE60] valueWithPointer:v8], key);
     }
 
     v15 = self->_leastRecentUsedList;
@@ -309,7 +309,7 @@ LABEL_12:
       }
     }
 
-    [(NSMapTable *)self->_cacheDictionary setObject:a3 forKey:a4];
+    [(NSMapTable *)self->_cacheDictionary setObject:object forKey:key];
     recursiveLock = self->_recursiveLock;
 
     [(NSRecursiveLock *)recursiveLock unlock];
@@ -335,13 +335,13 @@ LABEL_12:
   return v4;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   [(NSRecursiveLock *)self->_recursiveLock lock];
-  v5 = [(NSMapTable *)self->_cacheDictionary objectForKey:a3];
+  v5 = [(NSMapTable *)self->_cacheDictionary objectForKey:key];
   if (v5)
   {
-    v6 = [(NSMapTable *)self->_leastRecentUsedDictionary objectForKey:a3];
+    v6 = [(NSMapTable *)self->_leastRecentUsedDictionary objectForKey:key];
     if (v6)
     {
       -[CLSLRUMemoryCache _promoteListElement:](self, "_promoteListElement:", [v6 pointerValue]);
@@ -362,14 +362,14 @@ LABEL_12:
   return var0;
 }
 
-- (void)setNumberOfSlots:(unint64_t)a3
+- (void)setNumberOfSlots:(unint64_t)slots
 {
   [(NSRecursiveLock *)self->_recursiveLock lock];
-  if (self->_numberOfSlots > a3)
+  if (self->_numberOfSlots > slots)
   {
 LABEL_2:
     leastRecentUsedList = self->_leastRecentUsedList;
-    while (leastRecentUsedList->var0 > a3)
+    while (leastRecentUsedList->var0 > slots)
     {
       var2 = leastRecentUsedList->var2;
       if (var2)
@@ -381,21 +381,21 @@ LABEL_2:
     }
   }
 
-  self->_numberOfSlots = a3;
+  self->_numberOfSlots = slots;
   recursiveLock = self->_recursiveLock;
 
   [(NSRecursiveLock *)recursiveLock unlock];
 }
 
-- (void)_removeListElement:(_CLSLRUMemoryCacheListElement *)a3
+- (void)_removeListElement:(_CLSLRUMemoryCacheListElement *)element
 {
-  var1 = a3->var1;
-  var2 = a3->var2;
+  var1 = element->var1;
+  var2 = element->var2;
   if (var2)
   {
     var2->var1 = var1;
     leastRecentUsedList = self->_leastRecentUsedList;
-    if (leastRecentUsedList->var1 == a3)
+    if (leastRecentUsedList->var1 == element)
     {
       leastRecentUsedList->var1 = 0;
     }
@@ -419,31 +419,31 @@ LABEL_8:
 LABEL_5:
   var1->var2 = var2;
   v8 = self->_leastRecentUsedList;
-  if (v8->var2 == a3)
+  if (v8->var2 == element)
   {
     v8->var2 = 0;
   }
 
 LABEL_9:
-  [(NSMapTable *)self->_leastRecentUsedDictionary removeObjectForKey:a3->var0];
-  if (a3->var0)
+  [(NSMapTable *)self->_leastRecentUsedDictionary removeObjectForKey:element->var0];
+  if (element->var0)
   {
   }
 
-  free(a3);
+  free(element);
   --self->_leastRecentUsedList->var0;
 }
 
-- (void)_promoteListElement:(_CLSLRUMemoryCacheListElement *)a3
+- (void)_promoteListElement:(_CLSLRUMemoryCacheListElement *)element
 {
   p_var0 = &self->_leastRecentUsedList->var0;
   if (*p_var0 >= 2uLL)
   {
-    v5 = &a3->var1->var0;
-    var2 = a3->var2;
+    v5 = &element->var1->var0;
+    var2 = element->var2;
     if (var2)
     {
-      p_var0 = &a3->var2->var0;
+      p_var0 = &element->var2->var0;
     }
 
     p_var0[1] = v5;
@@ -453,17 +453,17 @@ LABEL_9:
     }
 
     v5[2] = var2;
-    a3->var1 = self->_leastRecentUsedList->var1;
-    a3->var2 = 0;
+    element->var1 = self->_leastRecentUsedList->var1;
+    element->var2 = 0;
     leastRecentUsedList = self->_leastRecentUsedList;
     var1 = leastRecentUsedList->var1;
     if (var1)
     {
-      var1->var2 = a3;
+      var1->var2 = element;
       leastRecentUsedList = self->_leastRecentUsedList;
     }
 
-    leastRecentUsedList->var1 = a3;
+    leastRecentUsedList->var1 = element;
   }
 }
 

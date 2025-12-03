@@ -1,7 +1,7 @@
 @interface VCPVideoTrackDecoder
-+ ($2825F4736939C4A6D3AD43837233062D)decodeDimensionsForTrack:(id)a3;
-- (BOOL)validateDecodedFrame:(__CVBuffer *)a3 withSettings:(id)a4;
-- (VCPVideoTrackDecoder)initWithTrack:(id)a3;
++ ($2825F4736939C4A6D3AD43837233062D)decodeDimensionsForTrack:(id)track;
+- (BOOL)validateDecodedFrame:(__CVBuffer *)frame withSettings:(id)settings;
+- (VCPVideoTrackDecoder)initWithTrack:(id)track;
 - (id)settings;
 - (int64_t)status;
 - (opaqueCMSampleBuffer)copyNextSampleBuffer;
@@ -10,15 +10,15 @@
 
 @implementation VCPVideoTrackDecoder
 
-+ ($2825F4736939C4A6D3AD43837233062D)decodeDimensionsForTrack:(id)a3
++ ($2825F4736939C4A6D3AD43837233062D)decodeDimensionsForTrack:(id)track
 {
-  v3 = a3;
-  [v3 naturalSize];
+  trackCopy = track;
+  [trackCopy naturalSize];
   v5 = v4;
   v7 = v6;
-  if (v3)
+  if (trackCopy)
   {
-    [v3 preferredTransform];
+    [trackCopy preferredTransform];
     v9 = *v18;
     v8 = *&v18[1];
     v11 = *&v18[2];
@@ -66,29 +66,29 @@
   return (v16 | v15);
 }
 
-- (VCPVideoTrackDecoder)initWithTrack:(id)a3
+- (VCPVideoTrackDecoder)initWithTrack:(id)track
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 mediaType];
-  if ([v6 isEqualToString:*MEMORY[0x1E6987608]])
+  trackCopy = track;
+  mediaType = [trackCopy mediaType];
+  if ([mediaType isEqualToString:*MEMORY[0x1E6987608]])
   {
   }
 
   else
   {
-    v7 = [v5 mediaType];
-    v8 = [v7 isEqualToString:*MEMORY[0x1E69875B0]];
+    mediaType2 = [trackCopy mediaType];
+    v8 = [mediaType2 isEqualToString:*MEMORY[0x1E69875B0]];
 
     if ((v8 & 1) == 0)
     {
 LABEL_12:
-      v14 = 0;
+      selfCopy = 0;
       goto LABEL_13;
     }
   }
 
-  v9 = [VCPVideoTrackDecoder decodeDimensionsForTrack:v5];
+  v9 = [VCPVideoTrackDecoder decodeDimensionsForTrack:trackCopy];
   var0 = v9.var0;
   v11 = HIDWORD(*&v9);
   if (v9.var0 < 192 || v9.var1 <= 95)
@@ -109,14 +109,14 @@ LABEL_12:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_track, a3);
+    objc_storeStrong(&v12->_track, track);
   }
 
   self = v13;
-  v14 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v14;
+  return selfCopy;
 }
 
 - (id)settings
@@ -145,20 +145,20 @@ LABEL_13:
   return v10;
 }
 
-- (BOOL)validateDecodedFrame:(__CVBuffer *)a3 withSettings:(id)a4
+- (BOOL)validateDecodedFrame:(__CVBuffer *)frame withSettings:(id)settings
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 objectForKey:*MEMORY[0x1E6966090]];
-  v7 = [v6 unsignedIntValue];
+  settingsCopy = settings;
+  v6 = [settingsCopy objectForKey:*MEMORY[0x1E6966090]];
+  unsignedIntValue = [v6 unsignedIntValue];
 
-  v8 = [v5 objectForKey:*MEMORY[0x1E6966078]];
-  v9 = [v8 unsignedIntValue];
+  v8 = [settingsCopy objectForKey:*MEMORY[0x1E6966078]];
+  unsignedIntValue2 = [v8 unsignedIntValue];
 
   v13 = 0;
   extraColumnsOnRight = 0;
-  CVPixelBufferGetExtendedPixels(a3, 0, &extraColumnsOnRight, 0, &v13);
-  v10 = extraColumnsOnRight == v7 && v13 == v9;
+  CVPixelBufferGetExtendedPixels(frame, 0, &extraColumnsOnRight, 0, &v13);
+  v10 = extraColumnsOnRight == unsignedIntValue && v13 == unsignedIntValue2;
   v11 = v10;
   if (!v10 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -167,9 +167,9 @@ LABEL_13:
     v17 = 2048;
     v18 = v13;
     v19 = 2048;
-    v20 = v7;
+    v20 = unsignedIntValue;
     v21 = 2048;
-    v22 = v9;
+    v22 = unsignedIntValue2;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[VideoTrackDecoder] Decoded frame and setting mismatch: actual padding right: %zupx, bottom: %zupx (expected right: %zupx, bottom: %zupx)", buf, 0x2Au);
   }
 

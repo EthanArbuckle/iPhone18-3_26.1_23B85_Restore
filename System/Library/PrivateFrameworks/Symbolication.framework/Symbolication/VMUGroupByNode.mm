@@ -1,22 +1,22 @@
 @interface VMUGroupByNode
-- (void)enumerateGroups:(void *)a3 withBlock:(id)a4;
+- (void)enumerateGroups:(void *)groups withBlock:(id)block;
 @end
 
 @implementation VMUGroupByNode
 
-- (void)enumerateGroups:(void *)a3 withBlock:(id)a4
+- (void)enumerateGroups:(void *)groups withBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v17 = __44__VMUGroupByNode_enumerateGroups_withBlock___block_invoke;
   v18 = &unk_1E8279DE0;
-  v19 = self;
-  v7 = v6;
+  selfCopy = self;
+  v7 = blockCopy;
   v20 = v7;
   v8 = v16;
-  v11 = *a3;
-  v9 = a3 + 4;
+  v11 = *groups;
+  v9 = groups + 4;
   v10 = v11;
   if (v11)
   {

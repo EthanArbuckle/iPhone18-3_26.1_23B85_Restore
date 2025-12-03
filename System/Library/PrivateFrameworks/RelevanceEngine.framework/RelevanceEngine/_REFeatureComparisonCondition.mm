@@ -1,28 +1,28 @@
 @interface _REFeatureComparisonCondition
-- (BOOL)_acceptsLeftFeatureMap:(id)a3 rightFeatureMap:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (_REFeatureComparisonCondition)initWithLeftFeature:(id)a3 relation:(int64_t)a4 rightFeature:(id)a5;
+- (BOOL)_acceptsLeftFeatureMap:(id)map rightFeatureMap:(id)featureMap;
+- (BOOL)isEqual:(id)equal;
+- (_REFeatureComparisonCondition)initWithLeftFeature:(id)feature relation:(int64_t)relation rightFeature:(id)rightFeature;
 - (id)_dependentFeatures;
 - (id)_inflectionFeatureValuePairs;
 - (id)_notCondition;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _REFeatureComparisonCondition
 
-- (_REFeatureComparisonCondition)initWithLeftFeature:(id)a3 relation:(int64_t)a4 rightFeature:(id)a5
+- (_REFeatureComparisonCondition)initWithLeftFeature:(id)feature relation:(int64_t)relation rightFeature:(id)rightFeature
 {
-  v9 = a3;
-  v10 = a5;
+  featureCopy = feature;
+  rightFeatureCopy = rightFeature;
   v14.receiver = self;
   v14.super_class = _REFeatureComparisonCondition;
   v11 = [(_REFeatureComparisonCondition *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_leftFeature, a3);
-    v12->_relation = a4;
-    objc_storeStrong(&v12->_rightFeature, a5);
+    objc_storeStrong(&v11->_leftFeature, feature);
+    v12->_relation = relation;
+    objc_storeStrong(&v12->_rightFeature, rightFeature);
   }
 
   return v12;
@@ -49,18 +49,18 @@
   return v2;
 }
 
-- (BOOL)_acceptsLeftFeatureMap:(id)a3 rightFeatureMap:(id)a4
+- (BOOL)_acceptsLeftFeatureMap:(id)map rightFeatureMap:(id)featureMap
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 hasValueForFeature:self->_leftFeature] || !objc_msgSend(v7, "hasValueForFeature:", self->_rightFeature))
+  mapCopy = map;
+  featureMapCopy = featureMap;
+  if (![mapCopy hasValueForFeature:self->_leftFeature] || !objc_msgSend(featureMapCopy, "hasValueForFeature:", self->_rightFeature))
   {
     LOBYTE(self) = 0;
     goto LABEL_9;
   }
 
-  v8 = [v6 valueForFeature:self->_leftFeature];
-  v9 = [v7 valueForFeature:self->_rightFeature];
+  v8 = [mapCopy valueForFeature:self->_leftFeature];
+  v9 = [featureMapCopy valueForFeature:self->_rightFeature];
   relation = self->_relation;
   v11 = RECompareFeatureValues(v8, v9);
   if (relation > 0)
@@ -129,10 +129,10 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -142,7 +142,7 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       leftFeature = v5->_leftFeature;
       v7 = self->_leftFeature;
       v8 = v7;
@@ -193,9 +193,9 @@ LABEL_15:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   leftFeature = self->_leftFeature;
   relation = self->_relation;
   rightFeature = self->_rightFeature;

@@ -1,9 +1,9 @@
 @interface AssetResultsViewDelegateManager
 - (_TtC12PhotosUICoreP33_6550EC013705D4178B218B443D955D0031AssetResultsViewDelegateManager)init;
-- (id)photosViewController:(id)a3 animationForProposedAnimation:(id)a4;
-- (void)photosViewController:(id)a3 didPresentOneUp:(BOOL)a4 forAsset:(id)a5;
-- (void)photosViewController:(id)a3 didReceiveUserInteraction:(BOOL)a4;
-- (void)photosViewController:(id)a3 scrollViewControllerWillBeginScrolling:(id)a4;
+- (id)photosViewController:(id)controller animationForProposedAnimation:(id)animation;
+- (void)photosViewController:(id)controller didPresentOneUp:(BOOL)up forAsset:(id)asset;
+- (void)photosViewController:(id)controller didReceiveUserInteraction:(BOOL)interaction;
+- (void)photosViewController:(id)controller scrollViewControllerWillBeginScrolling:(id)scrolling;
 @end
 
 @implementation AssetResultsViewDelegateManager
@@ -15,43 +15,43 @@
   return result;
 }
 
-- (void)photosViewController:(id)a3 scrollViewControllerWillBeginScrolling:(id)a4
+- (void)photosViewController:(id)controller scrollViewControllerWillBeginScrolling:(id)scrolling
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC12PhotosUICoreP33_6550EC013705D4178B218B443D955D0031AssetResultsViewDelegateManager_resignSearchBarFirstResponder);
-  v5 = self;
+  selfCopy = self;
   v4();
 }
 
-- (void)photosViewController:(id)a3 didReceiveUserInteraction:(BOOL)a4
+- (void)photosViewController:(id)controller didReceiveUserInteraction:(BOOL)interaction
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC12PhotosUICoreP33_6550EC013705D4178B218B443D955D0031AssetResultsViewDelegateManager_resignSearchBarFirstResponder);
-  v5 = self;
+  selfCopy = self;
   v4();
 }
 
-- (void)photosViewController:(id)a3 didPresentOneUp:(BOOL)a4 forAsset:(id)a5
+- (void)photosViewController:(id)controller didPresentOneUp:(BOOL)up forAsset:(id)asset
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = self;
-  sub_1A466A71C(v8);
+  controllerCopy = controller;
+  assetCopy = asset;
+  selfCopy = self;
+  sub_1A466A71C(assetCopy);
 }
 
-- (id)photosViewController:(id)a3 animationForProposedAnimation:(id)a4
+- (id)photosViewController:(id)controller animationForProposedAnimation:(id)animation
 {
   sub_1A3C52C70(0, &qword_1EB126A10);
   ObjCClassFromMetadata = swift_getObjCClassFromMetadata();
-  v6 = a4;
-  v7 = [ObjCClassFromMetadata sharedInstance];
-  v8 = [v7 enableSearchResultDiffAnimation];
+  animationCopy = animation;
+  objCClassFromMetadata = [ObjCClassFromMetadata sharedInstance];
+  enableSearchResultDiffAnimation = [objCClassFromMetadata enableSearchResultDiffAnimation];
 
-  if ((v8 & 1) == 0)
+  if ((enableSearchResultDiffAnimation & 1) == 0)
   {
 
-    v6 = 0;
+    animationCopy = 0;
   }
 
-  return v6;
+  return animationCopy;
 }
 
 @end

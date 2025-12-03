@@ -1,14 +1,14 @@
 @interface PXPhotoKitAssetCopyInternalURLActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitAssetCopyInternalURLActionPerformer
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager
 {
-  if (a3 == 2)
+  if (case == 2)
   {
     return @"(Internal) Copy URL";
   }
@@ -19,13 +19,13 @@
   }
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
-  v7 = [PXRootSettings sharedInstance:a3];
-  v8 = [v7 canShowInternalUI];
-  if (a3)
+  v7 = [PXRootSettings sharedInstance:asset];
+  canShowInternalUI = [v7 canShowInternalUI];
+  if (asset)
   {
-    v9 = v8;
+    v9 = canShowInternalUI;
   }
 
   else
@@ -38,15 +38,15 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotoKitAssetActionPerformer *)self assetsByAssetCollection];
-  v4 = [v3 allKeys];
-  v28 = [v4 firstObject];
+  assetsByAssetCollection = [(PXPhotoKitAssetActionPerformer *)self assetsByAssetCollection];
+  allKeys = [assetsByAssetCollection allKeys];
+  firstObject = [allKeys firstObject];
 
-  v5 = [(PXPhotoKitAssetActionPerformer *)self assetsByAssetCollection];
-  v6 = [v5 objectForKeyedSubscript:v28];
-  v7 = [v6 firstObject];
+  assetsByAssetCollection2 = [(PXPhotoKitAssetActionPerformer *)self assetsByAssetCollection];
+  v6 = [assetsByAssetCollection2 objectForKeyedSubscript:firstObject];
+  firstObject2 = [v6 firstObject];
 
-  if (!v7)
+  if (!firstObject2)
   {
     v13 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:{@"No asset available in %@", self}];
     [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:0 error:v13];
@@ -54,21 +54,21 @@
   }
 
   v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
-  v9 = [v28 transientIdentifier];
-  v10 = [v9 componentsSeparatedByString:@":"];
-  v11 = [v10 firstObject];
+  transientIdentifier = [firstObject transientIdentifier];
+  v10 = [transientIdentifier componentsSeparatedByString:@":"];
+  firstObject3 = [v10 firstObject];
 
-  if ([v28 px_isSuggestion])
+  if ([firstObject px_isSuggestion])
   {
-    v12 = [v28 localIdentifier];
-    if (!v12)
+    localIdentifier = [firstObject localIdentifier];
+    if (!localIdentifier)
     {
       goto LABEL_9;
     }
 
 LABEL_8:
     v13 = [MEMORY[0x1E696AF20] componentsWithString:@"photos://featuredPhoto"];
-    v16 = [MEMORY[0x1E696AF60] queryItemWithName:@"identifier" value:v12];
+    v16 = [MEMORY[0x1E696AF60] queryItemWithName:@"identifier" value:localIdentifier];
     [v8 addObject:v16];
 
     v17 = MEMORY[0x1E696AF60];
@@ -81,13 +81,13 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v11 isEqualToString:@"PXFeaturedPhotosVirtualCollection"])
+  if ([firstObject3 isEqualToString:@"PXFeaturedPhotosVirtualCollection"])
   {
-    v14 = [(PXPhotoKitAssetActionPerformer *)self dataSourceUserInfo];
-    v15 = [v7 uuid];
-    v12 = [v14 objectForKeyedSubscript:v15];
+    dataSourceUserInfo = [(PXPhotoKitAssetActionPerformer *)self dataSourceUserInfo];
+    uuid = [firstObject2 uuid];
+    localIdentifier = [dataSourceUserInfo objectForKeyedSubscript:uuid];
 
-    if (v12)
+    if (localIdentifier)
     {
       goto LABEL_8;
     }
@@ -96,27 +96,27 @@ LABEL_11:
 LABEL_9:
   v13 = [MEMORY[0x1E696AF20] componentsWithString:@"photos://asset"];
   v20 = MEMORY[0x1E696AF60];
-  v21 = [v7 uuid];
-  v22 = [v20 queryItemWithName:@"uuid" value:v21];
+  uuid2 = [firstObject2 uuid];
+  v22 = [v20 queryItemWithName:@"uuid" value:uuid2];
   [v8 addObject:v22];
 
-  v23 = [v28 uuid];
+  uuid3 = [firstObject uuid];
 
-  if (v23)
+  if (uuid3)
   {
     v24 = MEMORY[0x1E696AF60];
-    v12 = [v28 uuid];
+    localIdentifier = [firstObject uuid];
     v18 = @"albumuuid";
     v17 = v24;
-    v19 = v12;
+    v19 = localIdentifier;
     goto LABEL_11;
   }
 
 LABEL_12:
   [v13 setQueryItems:v8];
   v26 = [v13 URL];
-  v27 = [MEMORY[0x1E69DCD50] generalPasteboard];
-  [v27 setURL:v26];
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+  [generalPasteboard setURL:v26];
 
   [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:1 error:0];
 LABEL_13:

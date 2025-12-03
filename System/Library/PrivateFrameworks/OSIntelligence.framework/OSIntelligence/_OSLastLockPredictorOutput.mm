@@ -1,13 +1,13 @@
 @interface _OSLastLockPredictorOutput
-- (_OSLastLockPredictorOutput)initWithCoder:(id)a3;
-- (_OSLastLockPredictorOutput)initWithConfidenceLevel:(int64_t)a3 andConfidenceValue:(double)a4 andPredictedDuration:(double)a5 andReason:(int64_t)a6;
-- (_OSLastLockPredictorOutput)initWithConfidenceValue:(double)a3 andRelaxedThreshold:(double)a4 andStrictThreshold:(double)a5 andPredictedDuration:(double)a6 andReason:(int64_t)a7;
+- (_OSLastLockPredictorOutput)initWithCoder:(id)coder;
+- (_OSLastLockPredictorOutput)initWithConfidenceLevel:(int64_t)level andConfidenceValue:(double)value andPredictedDuration:(double)duration andReason:(int64_t)reason;
+- (_OSLastLockPredictorOutput)initWithConfidenceValue:(double)value andRelaxedThreshold:(double)threshold andStrictThreshold:(double)strictThreshold andPredictedDuration:(double)duration andReason:(int64_t)reason;
 - (id)confidenceLevelString;
 - (id)description;
 - (id)initInvalidOutput;
 - (id)outputReasonString;
 - (id)predictedDurationString;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _OSLastLockPredictorOutput
@@ -26,29 +26,29 @@
   return result;
 }
 
-- (_OSLastLockPredictorOutput)initWithConfidenceLevel:(int64_t)a3 andConfidenceValue:(double)a4 andPredictedDuration:(double)a5 andReason:(int64_t)a6
+- (_OSLastLockPredictorOutput)initWithConfidenceLevel:(int64_t)level andConfidenceValue:(double)value andPredictedDuration:(double)duration andReason:(int64_t)reason
 {
   v12.receiver = self;
   v12.super_class = _OSLastLockPredictorOutput;
   result = [(_OSLastLockPredictorOutput *)&v12 init];
   if (result)
   {
-    result->_confidenceLevel = a3;
-    v11 = 0.0;
-    if (a5 >= 0.0)
+    result->_confidenceLevel = level;
+    durationCopy = 0.0;
+    if (duration >= 0.0)
     {
-      v11 = a5;
+      durationCopy = duration;
     }
 
-    result->_confidenceValue = a4;
-    result->_predictedDuration = v11;
-    result->_outputReason = a6;
+    result->_confidenceValue = value;
+    result->_predictedDuration = durationCopy;
+    result->_outputReason = reason;
   }
 
   return result;
 }
 
-- (_OSLastLockPredictorOutput)initWithConfidenceValue:(double)a3 andRelaxedThreshold:(double)a4 andStrictThreshold:(double)a5 andPredictedDuration:(double)a6 andReason:(int64_t)a7
+- (_OSLastLockPredictorOutput)initWithConfidenceValue:(double)value andRelaxedThreshold:(double)threshold andStrictThreshold:(double)strictThreshold andPredictedDuration:(double)duration andReason:(int64_t)reason
 {
   v15.receiver = self;
   v15.super_class = _OSLastLockPredictorOutput;
@@ -58,11 +58,11 @@
     return result;
   }
 
-  result->_confidenceValue = a3;
+  result->_confidenceValue = value;
   result->_confidenceLevel = 0;
-  if (a6 > 0.0)
+  if (duration > 0.0)
   {
-    if (a3 > a5)
+    if (value > strictThreshold)
     {
       v13 = 2;
 LABEL_7:
@@ -70,7 +70,7 @@ LABEL_7:
       goto LABEL_8;
     }
 
-    if (a3 > a4)
+    if (value > threshold)
     {
       v13 = 1;
       goto LABEL_7;
@@ -78,25 +78,25 @@ LABEL_7:
   }
 
 LABEL_8:
-  v14 = 0.0;
-  if (a6 >= 0.0)
+  durationCopy = 0.0;
+  if (duration >= 0.0)
   {
-    v14 = a6;
+    durationCopy = duration;
   }
 
-  result->_predictedDuration = v14;
-  result->_outputReason = a7;
+  result->_predictedDuration = durationCopy;
+  result->_outputReason = reason;
   return result;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(_OSLastLockPredictorOutput *)self confidenceLevelString];
-  v5 = [(_OSLastLockPredictorOutput *)self confidenceValueString];
-  v6 = [(_OSLastLockPredictorOutput *)self predictedDurationString];
-  v7 = [(_OSLastLockPredictorOutput *)self outputReasonString];
-  v8 = [v3 stringWithFormat:@"[Last Lock Prediction] <Level: %@ | Value: %@ | Duration: %@ | Reason: %@>", v4, v5, v6, v7];
+  confidenceLevelString = [(_OSLastLockPredictorOutput *)self confidenceLevelString];
+  confidenceValueString = [(_OSLastLockPredictorOutput *)self confidenceValueString];
+  predictedDurationString = [(_OSLastLockPredictorOutput *)self predictedDurationString];
+  outputReasonString = [(_OSLastLockPredictorOutput *)self outputReasonString];
+  v8 = [v3 stringWithFormat:@"[Last Lock Prediction] <Level: %@ | Value: %@ | Duration: %@ | Reason: %@>", confidenceLevelString, confidenceValueString, predictedDurationString, outputReasonString];
 
   return v8;
 }
@@ -107,15 +107,15 @@ LABEL_8:
   if (outputReason >= 4)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithInteger:?];
-    v3 = [v4 stringValue];
+    stringValue = [v4 stringValue];
   }
 
   else
   {
-    v3 = off_2799C1B40[outputReason];
+    stringValue = off_2799C1B40[outputReason];
   }
 
-  return v3;
+  return stringValue;
 }
 
 - (id)confidenceLevelString
@@ -148,30 +148,30 @@ LABEL_8:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   confidenceLevel = self->_confidenceLevel;
-  v5 = a3;
-  [v5 encodeInteger:confidenceLevel forKey:@"confidenceLevel"];
-  [v5 encodeDouble:@"confidenceValue" forKey:self->_confidenceValue];
-  [v5 encodeDouble:@"predictedDuration" forKey:self->_predictedDuration];
-  [v5 encodeInteger:self->_outputReason forKey:@"outputReason"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:confidenceLevel forKey:@"confidenceLevel"];
+  [coderCopy encodeDouble:@"confidenceValue" forKey:self->_confidenceValue];
+  [coderCopy encodeDouble:@"predictedDuration" forKey:self->_predictedDuration];
+  [coderCopy encodeInteger:self->_outputReason forKey:@"outputReason"];
 }
 
-- (_OSLastLockPredictorOutput)initWithCoder:(id)a3
+- (_OSLastLockPredictorOutput)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = _OSLastLockPredictorOutput;
   v5 = [(_OSLastLockPredictorOutput *)&v10 init];
   if (v5)
   {
-    v5->_confidenceLevel = [v4 decodeIntegerForKey:@"confidenceLevel"];
-    [v4 decodeDoubleForKey:@"confidenceValue"];
+    v5->_confidenceLevel = [coderCopy decodeIntegerForKey:@"confidenceLevel"];
+    [coderCopy decodeDoubleForKey:@"confidenceValue"];
     v5->_confidenceValue = v6;
-    [v4 decodeDoubleForKey:@"predictedDuration"];
+    [coderCopy decodeDoubleForKey:@"predictedDuration"];
     v5->_predictedDuration = v7;
-    v5->_outputReason = [v4 decodeIntegerForKey:@"outputReason"];
+    v5->_outputReason = [coderCopy decodeIntegerForKey:@"outputReason"];
     v8 = v5;
   }
 

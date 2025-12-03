@@ -1,46 +1,46 @@
 @interface MTActionController
-- (void)setAvailableActions:(id)a3;
-- (void)setColorTheme:(id)a3;
+- (void)setAvailableActions:(id)actions;
+- (void)setColorTheme:(id)theme;
 - (void)setupActions;
 @end
 
 @implementation MTActionController
 
-- (void)setColorTheme:(id)a3
+- (void)setColorTheme:(id)theme
 {
-  v5 = a3;
+  themeCopy = theme;
   colorTheme = self->_colorTheme;
-  if (colorTheme != v5)
+  if (colorTheme != themeCopy)
   {
-    v8 = v5;
-    v7 = [(MTColorTheme *)colorTheme isEqual:v5];
-    v5 = v8;
+    v8 = themeCopy;
+    v7 = [(MTColorTheme *)colorTheme isEqual:themeCopy];
+    themeCopy = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_colorTheme, a3);
+      objc_storeStrong(&self->_colorTheme, theme);
       [(MTActionController *)self setupActions];
-      v5 = v8;
+      themeCopy = v8;
     }
   }
 }
 
-- (void)setAvailableActions:(id)a3
+- (void)setAvailableActions:(id)actions
 {
   v4.receiver = self;
   v4.super_class = MTActionController;
-  [(IMActionController *)&v4 setAvailableActions:a3];
+  [(IMActionController *)&v4 setAvailableActions:actions];
   [(MTActionController *)self setupActions];
 }
 
 - (void)setupActions
 {
-  v3 = [(IMActionController *)self availableActions];
+  availableActions = [(IMActionController *)self availableActions];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10006EDD8;
   v4[3] = &unk_1004D8F40;
   v4[4] = self;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [availableActions enumerateObjectsUsingBlock:v4];
 }
 
 @end

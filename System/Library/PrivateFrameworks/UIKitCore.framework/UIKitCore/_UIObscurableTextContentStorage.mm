@@ -1,14 +1,14 @@
 @interface _UIObscurableTextContentStorage
 - (NSAttributedString)obscuredAttributedString;
 - (_NSRange)unobscuredRange;
-- (_UIObscurableTextContentStorage)initWithTextStorage:(id)a3;
+- (_UIObscurableTextContentStorage)initWithTextStorage:(id)storage;
 - (id)attributedString;
 - (void)_invalidateObscuredAttributedString;
 - (void)_validateUnobscuredRange;
-- (void)processEditingForTextStorage:(id)a3 edited:(unint64_t)a4 range:(_NSRange)a5 changeInLength:(int64_t)a6 invalidatedRange:(_NSRange)a7;
-- (void)setObscured:(BOOL)a3;
-- (void)setTextStorage:(id)a3;
-- (void)setUnobscuredRange:(_NSRange)a3;
+- (void)processEditingForTextStorage:(id)storage edited:(unint64_t)edited range:(_NSRange)range changeInLength:(int64_t)length invalidatedRange:(_NSRange)invalidatedRange;
+- (void)setObscured:(BOOL)obscured;
+- (void)setTextStorage:(id)storage;
+- (void)setUnobscuredRange:(_NSRange)range;
 @end
 
 @implementation _UIObscurableTextContentStorage
@@ -17,17 +17,17 @@
 {
   if ([(_UIObscurableTextContentStorage *)self isObscured])
   {
-    v3 = [(_UIObscurableTextContentStorage *)self obscuredAttributedString];
+    obscuredAttributedString = [(_UIObscurableTextContentStorage *)self obscuredAttributedString];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = _UIObscurableTextContentStorage;
-    v3 = [(_UIObscurableTextContentStorage *)&v5 attributedString];
+    obscuredAttributedString = [(_UIObscurableTextContentStorage *)&v5 attributedString];
   }
 
-  return v3;
+  return obscuredAttributedString;
 }
 
 - (_NSRange)unobscuredRange
@@ -48,8 +48,8 @@
 
 - (void)_validateUnobscuredRange
 {
-  v3 = [(_UIObscurableTextContentStorage *)self textStorage];
-  v4 = [v3 length];
+  textStorage = [(_UIObscurableTextContentStorage *)self textStorage];
+  v4 = [textStorage length];
 
   location = self->_unobscuredRange.location;
   if (self->_unobscuredRange.length + location > v4)
@@ -71,20 +71,20 @@
   {
     v27.receiver = self;
     v27.super_class = _UIObscurableTextContentStorage;
-    v4 = [(_UIObscurableTextContentStorage *)&v27 attributedString];
+    attributedString = [(_UIObscurableTextContentStorage *)&v27 attributedString];
     v5 = objc_opt_new();
-    v24 = self;
-    v6 = [(_UIObscurableTextContentStorage *)self unobscuredRange];
+    selfCopy = self;
+    unobscuredRange = [(_UIObscurableTextContentStorage *)self unobscuredRange];
     v25 = v7;
-    if ([v4 length])
+    if ([attributedString length])
     {
       v8 = 0;
       v9 = *off_1E70EC918;
       do
       {
-        if (v6 > v8 || v8 - v6 >= v25)
+        if (unobscuredRange > v8 || v8 - unobscuredRange >= v25)
         {
-          v11 = [v4 attributesAtIndex:v8 effectiveRange:0];
+          v11 = [attributedString attributesAtIndex:v8 effectiveRange:0];
           v10 = [v11 mutableCopy];
 
           v12 = [v10 objectForKeyedSubscript:v9];
@@ -96,11 +96,11 @@
 
           else
           {
-            v15 = [(_UICascadingTextStorage *)v24->_cascadingTextStorage font];
-            v16 = v15;
-            if (v15)
+            font = [(_UICascadingTextStorage *)selfCopy->_cascadingTextStorage font];
+            v16 = font;
+            if (font)
             {
-              v17 = v15;
+              v17 = font;
             }
 
             else
@@ -126,62 +126,62 @@
 
         else
         {
-          v10 = [v4 attributedSubstringFromRange:{v8, 1}];
+          v10 = [attributedString attributedSubstringFromRange:{v8, 1}];
           [v5 appendAttributedString:v10];
         }
 
         ++v8;
       }
 
-      while (v8 < [v4 length]);
+      while (v8 < [attributedString length]);
     }
 
     v21 = [v5 copy];
-    v22 = v24->_obscuredAttributedString;
-    v24->_obscuredAttributedString = v21;
+    v22 = selfCopy->_obscuredAttributedString;
+    selfCopy->_obscuredAttributedString = v21;
 
-    obscuredAttributedString = v24->_obscuredAttributedString;
+    obscuredAttributedString = selfCopy->_obscuredAttributedString;
   }
 
   return obscuredAttributedString;
 }
 
-- (_UIObscurableTextContentStorage)initWithTextStorage:(id)a3
+- (_UIObscurableTextContentStorage)initWithTextStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   v8.receiver = self;
   v8.super_class = _UIObscurableTextContentStorage;
   v5 = [(_UIObscurableTextContentStorage *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(_UIObscurableTextContentStorage *)v5 setTextStorage:v4];
+    [(_UIObscurableTextContentStorage *)v5 setTextStorage:storageCopy];
   }
 
   return v6;
 }
 
-- (void)setObscured:(BOOL)a3
+- (void)setObscured:(BOOL)obscured
 {
-  if (self->_obscured != a3)
+  if (self->_obscured != obscured)
   {
-    self->_obscured = a3;
-    v6 = [(_UIObscurableTextContentStorage *)self textStorage];
-    v5 = [v6 length];
-    [(_UIObscurableTextContentStorage *)self processEditingForTextStorage:v6 edited:2 range:0 changeInLength:v5 invalidatedRange:0, 0, v5];
+    self->_obscured = obscured;
+    textStorage = [(_UIObscurableTextContentStorage *)self textStorage];
+    v5 = [textStorage length];
+    [(_UIObscurableTextContentStorage *)self processEditingForTextStorage:textStorage edited:2 range:0 changeInLength:v5 invalidatedRange:0, 0, v5];
   }
 }
 
-- (void)setUnobscuredRange:(_NSRange)a3
+- (void)setUnobscuredRange:(_NSRange)range
 {
   p_unobscuredRange = &self->_unobscuredRange;
   unobscuredRange = self->_unobscuredRange;
-  if (unobscuredRange.location != a3.location || unobscuredRange.length != a3.length)
+  if (unobscuredRange.location != range.location || unobscuredRange.length != range.length)
   {
-    *p_unobscuredRange = a3;
+    *p_unobscuredRange = range;
     if (unobscuredRange.length)
     {
-      v7 = a3.length == 0;
+      v7 = range.length == 0;
     }
 
     else
@@ -191,9 +191,9 @@
 
     if (v7)
     {
-      if (a3.length)
+      if (range.length)
       {
-        length = a3.length;
+        length = range.length;
       }
 
       else
@@ -201,9 +201,9 @@
         length = unobscuredRange.length;
       }
 
-      if (a3.length)
+      if (range.length)
       {
-        location = a3.location;
+        location = range.location;
       }
 
       else
@@ -214,23 +214,23 @@
 
     else
     {
-      v8 = NSUnionRange(unobscuredRange, a3);
+      v8 = NSUnionRange(unobscuredRange, range);
       location = v8.location;
       length = v8.length;
     }
 
-    v11 = [(_UIObscurableTextContentStorage *)self textStorage];
-    [(_UIObscurableTextContentStorage *)self processEditingForTextStorage:v11 edited:2 range:location changeInLength:length invalidatedRange:0, location, length];
+    textStorage = [(_UIObscurableTextContentStorage *)self textStorage];
+    [(_UIObscurableTextContentStorage *)self processEditingForTextStorage:textStorage edited:2 range:location changeInLength:length invalidatedRange:0, location, length];
   }
 }
 
-- (void)setTextStorage:(id)a3
+- (void)setTextStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   v5 = objc_opt_self();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
+    v6 = storageCopy;
   }
 
   else
@@ -242,19 +242,19 @@
 
   v7.receiver = self;
   v7.super_class = _UIObscurableTextContentStorage;
-  [(_UIObscurableTextContentStorage *)&v7 setTextStorage:v4];
+  [(_UIObscurableTextContentStorage *)&v7 setTextStorage:storageCopy];
 }
 
-- (void)processEditingForTextStorage:(id)a3 edited:(unint64_t)a4 range:(_NSRange)a5 changeInLength:(int64_t)a6 invalidatedRange:(_NSRange)a7
+- (void)processEditingForTextStorage:(id)storage edited:(unint64_t)edited range:(_NSRange)range changeInLength:(int64_t)length invalidatedRange:(_NSRange)invalidatedRange
 {
-  length = a5.length;
-  location = a5.location;
-  v12 = a3;
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
   [(_UIObscurableTextContentStorage *)self _validateUnobscuredRange];
   [(_UIObscurableTextContentStorage *)self _invalidateObscuredAttributedString];
   v13.receiver = self;
   v13.super_class = _UIObscurableTextContentStorage;
-  [(_UIObscurableTextContentStorage *)&v13 processEditingForTextStorage:v12 edited:a4 range:location changeInLength:length invalidatedRange:a6, a7.location, a7.length];
+  [(_UIObscurableTextContentStorage *)&v13 processEditingForTextStorage:storageCopy edited:edited range:location changeInLength:length invalidatedRange:length, invalidatedRange.location, invalidatedRange.length];
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface MTKOffscreenDrawable
 - (CGSize)size;
-- (MTKOffscreenDrawable)initWithDevice:(id)a3 pixelFormat:(unint64_t)a4 size:(CGSize)a5 drawableID:(unint64_t)a6;
+- (MTKOffscreenDrawable)initWithDevice:(id)device pixelFormat:(unint64_t)format size:(CGSize)size drawableID:(unint64_t)d;
 - (MTLTexture)texture;
-- (void)setDevice:(id)a3;
-- (void)setPixelFormat:(unint64_t)a3;
-- (void)setSize:(CGSize)a3;
+- (void)setDevice:(id)device;
+- (void)setPixelFormat:(unint64_t)format;
+- (void)setSize:(CGSize)size;
 @end
 
 @implementation MTKOffscreenDrawable
 
-- (MTKOffscreenDrawable)initWithDevice:(id)a3 pixelFormat:(unint64_t)a4 size:(CGSize)a5 drawableID:(unint64_t)a6
+- (MTKOffscreenDrawable)initWithDevice:(id)device pixelFormat:(unint64_t)format size:(CGSize)size drawableID:(unint64_t)d
 {
-  height = a5.height;
-  width = a5.width;
-  v12 = a3;
+  height = size.height;
+  width = size.width;
+  deviceCopy = device;
   v16.receiver = self;
   v16.super_class = MTKOffscreenDrawable;
   v13 = [(MTKOffscreenDrawable *)&v16 init];
@@ -23,9 +23,9 @@
     v13->_textureDirty = 1;
     v13->_size.width = width;
     v13->_size.height = height;
-    v13->_pixelFormat = a4;
-    objc_storeStrong(&v13->_device, a3);
-    v14->_drawableID = a6;
+    v13->_pixelFormat = format;
+    objc_storeStrong(&v13->_device, device);
+    v14->_drawableID = d;
   }
 
   return v14;
@@ -53,35 +53,35 @@
   return v6;
 }
 
-- (void)setPixelFormat:(unint64_t)a3
+- (void)setPixelFormat:(unint64_t)format
 {
-  if (self->_pixelFormat != a3)
+  if (self->_pixelFormat != format)
   {
-    self->_pixelFormat = a3;
+    self->_pixelFormat = format;
     self->_textureDirty = 1;
   }
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   p_device = &self->_device;
-  if (self->_device != v5)
+  if (self->_device != deviceCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_device, a3);
-    v5 = v7;
+    v7 = deviceCopy;
+    objc_storeStrong(p_device, device);
+    deviceCopy = v7;
     self->_textureDirty = 1;
   }
 
-  MEMORY[0x1EEE66BB8](p_device, v5);
+  MEMORY[0x1EEE66BB8](p_device, deviceCopy);
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  if (self->_size.width != a3.width || self->_size.height != a3.height)
+  if (self->_size.width != size.width || self->_size.height != size.height)
   {
-    self->_size = a3;
+    self->_size = size;
     self->_textureDirty = 1;
   }
 }

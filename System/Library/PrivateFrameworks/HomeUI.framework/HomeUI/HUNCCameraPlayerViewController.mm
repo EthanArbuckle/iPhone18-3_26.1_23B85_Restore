@@ -3,30 +3,30 @@
 - (BOOL)shouldDisplayMicrophoneControl;
 - (HMCameraClip)currentClip;
 - (HUCameraLiveButtonView)liveButtonView;
-- (HUNCCameraPlayerViewController)initWithCameraProfile:(id)a3 notificationUUID:(id)a4 clipUUID:(id)a5 imageURL:(id)a6;
-- (double)currentScrubberResolutionForBehavior:(id)a3;
+- (HUNCCameraPlayerViewController)initWithCameraProfile:(id)profile notificationUUID:(id)d clipUUID:(id)iD imageURL:(id)l;
+- (double)currentScrubberResolutionForBehavior:(id)behavior;
 - (id)home;
 - (void)_setupConstraintSets;
 - (void)_setupPlaybackEngine;
 - (void)_updateCameraStatus;
 - (void)_updateLivePreviewAspectRatio;
 - (void)_updatePlayerVolumeSliderState;
-- (void)_updateRecordedClipInterfaceAvailabilityWithAnimation:(BOOL)a3;
-- (void)_updateStateForPlaybackPosition:(id)a3 animated:(BOOL)a4;
-- (void)_updateStateForScrubbingStatus:(BOOL)a3 animated:(BOOL)a4;
+- (void)_updateRecordedClipInterfaceAvailabilityWithAnimation:(BOOL)animation;
+- (void)_updateStateForPlaybackPosition:(id)position animated:(BOOL)animated;
+- (void)_updateStateForScrubbingStatus:(BOOL)status animated:(BOOL)animated;
 - (void)addPlaybackEngineObservation;
 - (void)dealloc;
-- (void)itemManager:(id)a3 didUpdateResultsForSourceItem:(id)a4;
+- (void)itemManager:(id)manager didUpdateResultsForSourceItem:(id)item;
 - (void)loadCameraClip;
-- (void)playbackControlsDidChangePlayerVolume:(float)a3;
-- (void)playbackControlsDidToggleMuted:(BOOL)a3;
-- (void)playbackControlsDidUpdateVisibilityOfLoadingIndicator:(BOOL)a3;
-- (void)playbackEngine:(id)a3 didUpdateEventCache:(id)a4;
-- (void)playbackEngine:(id)a3 didUpdateLiveCameraSource:(id)a4;
-- (void)playbackEngine:(id)a3 didUpdatePlaybackError:(id)a4;
-- (void)playbackEngine:(id)a3 didUpdatePlaybackPosition:(id)a4;
-- (void)playbackEngine:(id)a3 didUpdateTimeControlStatus:(unint64_t)a4;
-- (void)playerViewController:(id)a3 willTransitionToVisibilityOfPlaybackControls:(BOOL)a4 withAnimationCoordinator:(id)a5;
+- (void)playbackControlsDidChangePlayerVolume:(float)volume;
+- (void)playbackControlsDidToggleMuted:(BOOL)muted;
+- (void)playbackControlsDidUpdateVisibilityOfLoadingIndicator:(BOOL)indicator;
+- (void)playbackEngine:(id)engine didUpdateEventCache:(id)cache;
+- (void)playbackEngine:(id)engine didUpdateLiveCameraSource:(id)source;
+- (void)playbackEngine:(id)engine didUpdatePlaybackError:(id)error;
+- (void)playbackEngine:(id)engine didUpdatePlaybackPosition:(id)position;
+- (void)playbackEngine:(id)engine didUpdateTimeControlStatus:(unint64_t)status;
+- (void)playerViewController:(id)controller willTransitionToVisibilityOfPlaybackControls:(BOOL)controls withAnimationCoordinator:(id)coordinator;
 - (void)reloadAfterNotificationUpdate;
 - (void)reloadForCurrentClip;
 - (void)toggleLive;
@@ -36,23 +36,23 @@
 - (void)updateMicrophoneVisibility;
 - (void)updateViewConstraints;
 - (void)updateVolumeControlVisibility;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation HUNCCameraPlayerViewController
 
-- (HUNCCameraPlayerViewController)initWithCameraProfile:(id)a3 notificationUUID:(id)a4 clipUUID:(id)a5 imageURL:(id)a6
+- (HUNCCameraPlayerViewController)initWithCameraProfile:(id)profile notificationUUID:(id)d clipUUID:(id)iD imageURL:(id)l
 {
   v58 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  profileCopy = profile;
+  dCopy = d;
+  iDCopy = iD;
+  lCopy = l;
   v51.receiver = self;
   v51.super_class = HUNCCameraPlayerViewController;
   v15 = [(HUNCCameraPlayerViewController *)&v51 init];
@@ -64,9 +64,9 @@
       *buf = 134218498;
       v53 = v15;
       v54 = 2112;
-      v55 = v12;
+      v55 = dCopy;
       v56 = 2112;
-      v57 = v13;
+      v57 = iDCopy;
       _os_log_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_DEFAULT, "(NC) Launching Camera Player <%p> for notificationUUID:%@ clipUUID:%@", buf, 0x20u);
     }
 
@@ -74,14 +74,14 @@
     launchEvent = v15->_launchEvent;
     v15->_launchEvent = v17;
 
-    objc_storeStrong(&v15->_cameraProfile, a3);
-    objc_storeStrong(&v15->_notificationUUID, a4);
-    objc_storeStrong(&v15->_clipUUID, a5);
+    objc_storeStrong(&v15->_cameraProfile, profile);
+    objc_storeStrong(&v15->_notificationUUID, d);
+    objc_storeStrong(&v15->_clipUUID, iD);
     v19 = objc_alloc(MEMORY[0x277D144A0]);
-    v20 = [v11 accessory];
-    v21 = [v20 home];
-    v22 = [v21 hf_characteristicValueManager];
-    v23 = [v19 initWithProfile:v11 valueSource:v22];
+    accessory = [profileCopy accessory];
+    home = [accessory home];
+    hf_characteristicValueManager = [home hf_characteristicValueManager];
+    v23 = [v19 initWithProfile:profileCopy valueSource:hf_characteristicValueManager];
     cameraItem = v15->_cameraItem;
     v15->_cameraItem = v23;
 
@@ -90,17 +90,17 @@
     v15->_behavior = v25;
 
     [(HUNCCameraPlayerViewController *)v15 addBehavior:v15->_behavior];
-    v27 = [(AVHomeIPCameraBehavior *)v15->_behavior behaviorContext];
-    [v27 setPlaybackControlsIncludeTransportControls:0];
+    behaviorContext = [(AVHomeIPCameraBehavior *)v15->_behavior behaviorContext];
+    [behaviorContext setPlaybackControlsIncludeTransportControls:0];
 
-    v28 = [(AVHomeIPCameraBehavior *)v15->_behavior behaviorContext];
-    [v28 setPlaybackControlsIncludeDisplayModeControls:0];
+    behaviorContext2 = [(AVHomeIPCameraBehavior *)v15->_behavior behaviorContext];
+    [behaviorContext2 setPlaybackControlsIncludeDisplayModeControls:0];
 
-    v29 = [(AVHomeIPCameraBehavior *)v15->_behavior behaviorContext];
-    [v29 setZoomingEnabled:0];
+    behaviorContext3 = [(AVHomeIPCameraBehavior *)v15->_behavior behaviorContext];
+    [behaviorContext3 setZoomingEnabled:0];
 
     [(HUNCCameraPlayerViewController *)v15 _setupPlaybackEngine];
-    if (v13)
+    if (iDCopy)
     {
       [(HUNCCameraPlayerViewController *)v15 loadCameraClip];
     }
@@ -110,19 +110,19 @@
     v15->_blurViewController = v30;
 
     v32 = [HUCameraPlayerAccessoryViewController alloc];
-    v33 = [(HUNCCameraPlayerViewController *)v15 playbackEngine];
-    v34 = [(HUCameraPlayerAccessoryViewController *)v32 initWithPlaybackEngine:v33];
+    playbackEngine = [(HUNCCameraPlayerViewController *)v15 playbackEngine];
+    v34 = [(HUCameraPlayerAccessoryViewController *)v32 initWithPlaybackEngine:playbackEngine];
     accessoryViewController = v15->_accessoryViewController;
     v15->_accessoryViewController = v34;
 
     [(HUCameraPlayerAccessoryViewController *)v15->_accessoryViewController setForceLoadingIndicatorToDisplay:1];
     v36 = [HUCameraPlayerLiveContentViewController alloc];
-    v37 = [(HUNCCameraPlayerViewController *)v15 playbackEngine];
-    v38 = [(HUCameraPlayerLiveContentViewController *)v36 initWithPlaybackEngine:v37];
+    playbackEngine2 = [(HUNCCameraPlayerViewController *)v15 playbackEngine];
+    v38 = [(HUCameraPlayerLiveContentViewController *)v36 initWithPlaybackEngine:playbackEngine2];
     liveContentViewController = v15->_liveContentViewController;
     v15->_liveContentViewController = v38;
 
-    v40 = [[HUNCCameraPlayerPlaceholderContentViewController alloc] initWithImageURL:v14];
+    v40 = [[HUNCCameraPlayerPlaceholderContentViewController alloc] initWithImageURL:lCopy];
     placeholderContentViewController = v15->_placeholderContentViewController;
     v15->_placeholderContentViewController = v40;
 
@@ -133,10 +133,10 @@
     [(HFItemManager *)v15->_itemManager disableExternalUpdatesWithReason:@"kDisableUpdatesReasonHUNCCameraPlayerViewControllerNotVisible"];
     [(HUNCCameraPlayerViewController *)v15 setDelegate:v15];
     [(HUNCCameraPlayerViewController *)v15 setUpdatesNowPlayingInfoCenter:0];
-    v44 = [MEMORY[0x277CB83F8] sharedInstance];
+    mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
     v45 = *MEMORY[0x277CB8030];
     v50 = 0;
-    [v44 setCategory:v45 error:&v50];
+    [mEMORY[0x277CB83F8] setCategory:v45 error:&v50];
     v46 = v50;
 
     if (v46)
@@ -151,7 +151,7 @@
     }
 
     [(HUNCCameraPlayerViewController *)v15 updateVolumeControlVisibility];
-    v48 = [MEMORY[0x277D14468] sharedDecorator];
+    mEMORY[0x277D14468] = [MEMORY[0x277D14468] sharedDecorator];
   }
 
   return v15;
@@ -163,130 +163,130 @@
   v84.receiver = self;
   v84.super_class = HUNCCameraPlayerViewController;
   [(HUNCCameraPlayerViewController *)&v84 viewDidLoad];
-  v3 = [(HUNCCameraPlayerViewController *)self placeholderContentViewController];
-  [(HUNCCameraPlayerViewController *)self addChildViewController:v3];
+  placeholderContentViewController = [(HUNCCameraPlayerViewController *)self placeholderContentViewController];
+  [(HUNCCameraPlayerViewController *)self addChildViewController:placeholderContentViewController];
 
-  v4 = [(HUNCCameraPlayerViewController *)self accessoryViewController];
-  [(HUNCCameraPlayerViewController *)self addChildViewController:v4];
+  accessoryViewController = [(HUNCCameraPlayerViewController *)self accessoryViewController];
+  [(HUNCCameraPlayerViewController *)self addChildViewController:accessoryViewController];
 
-  v5 = [(HUNCCameraPlayerViewController *)self blurViewController];
-  [(HUNCCameraPlayerViewController *)self addChildViewController:v5];
+  blurViewController = [(HUNCCameraPlayerViewController *)self blurViewController];
+  [(HUNCCameraPlayerViewController *)self addChildViewController:blurViewController];
 
-  v6 = [(HUNCCameraPlayerViewController *)self contentOverlayView];
-  v7 = [(HUNCCameraPlayerViewController *)self placeholderContentViewController];
-  v8 = [v7 view];
-  [v6 naui_addAutoLayoutSubview:v8];
+  contentOverlayView = [(HUNCCameraPlayerViewController *)self contentOverlayView];
+  placeholderContentViewController2 = [(HUNCCameraPlayerViewController *)self placeholderContentViewController];
+  view = [placeholderContentViewController2 view];
+  [contentOverlayView naui_addAutoLayoutSubview:view];
 
-  v9 = [(HUNCCameraPlayerViewController *)self contentOverlayView];
-  v10 = [(HUNCCameraPlayerViewController *)self blurViewController];
-  v11 = [v10 view];
-  [v9 naui_addAutoLayoutSubview:v11];
+  contentOverlayView2 = [(HUNCCameraPlayerViewController *)self contentOverlayView];
+  blurViewController2 = [(HUNCCameraPlayerViewController *)self blurViewController];
+  view2 = [blurViewController2 view];
+  [contentOverlayView2 naui_addAutoLayoutSubview:view2];
 
-  v12 = [(HUNCCameraPlayerViewController *)self contentOverlayView];
-  v13 = [(HUNCCameraPlayerViewController *)self accessoryViewController];
-  v14 = [v13 view];
-  [v12 addSubview:v14];
+  contentOverlayView3 = [(HUNCCameraPlayerViewController *)self contentOverlayView];
+  accessoryViewController2 = [(HUNCCameraPlayerViewController *)self accessoryViewController];
+  view3 = [accessoryViewController2 view];
+  [contentOverlayView3 addSubview:view3];
 
-  v15 = [(HUNCCameraPlayerViewController *)self accessoryViewController];
-  v16 = [v15 view];
-  [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+  accessoryViewController3 = [(HUNCCameraPlayerViewController *)self accessoryViewController];
+  view4 = [accessoryViewController3 view];
+  [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v17 = [(HUNCCameraPlayerViewController *)self accessoryViewController];
-  v18 = [v17 view];
-  v19 = [v18 leftAnchor];
-  v20 = [(HUNCCameraPlayerViewController *)self contentOverlayView];
-  v21 = [v20 leftAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  accessoryViewController4 = [(HUNCCameraPlayerViewController *)self accessoryViewController];
+  view5 = [accessoryViewController4 view];
+  leftAnchor = [view5 leftAnchor];
+  contentOverlayView4 = [(HUNCCameraPlayerViewController *)self contentOverlayView];
+  leftAnchor2 = [contentOverlayView4 leftAnchor];
+  v22 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   [v22 setActive:1];
 
-  v23 = [(HUNCCameraPlayerViewController *)self accessoryViewController];
-  v24 = [v23 view];
-  v25 = [v24 rightAnchor];
-  v26 = [(HUNCCameraPlayerViewController *)self contentOverlayView];
-  v27 = [v26 rightAnchor];
-  v28 = [v25 constraintEqualToAnchor:v27];
+  accessoryViewController5 = [(HUNCCameraPlayerViewController *)self accessoryViewController];
+  view6 = [accessoryViewController5 view];
+  rightAnchor = [view6 rightAnchor];
+  contentOverlayView5 = [(HUNCCameraPlayerViewController *)self contentOverlayView];
+  rightAnchor2 = [contentOverlayView5 rightAnchor];
+  v28 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   [v28 setActive:1];
 
-  v29 = [(HUNCCameraPlayerViewController *)self accessoryViewController];
-  v30 = [v29 view];
-  v31 = [v30 topAnchor];
-  v32 = [(HUNCCameraPlayerViewController *)self contentOverlayView];
-  v33 = [v32 topAnchor];
-  v34 = [v31 constraintEqualToAnchor:v33];
+  accessoryViewController6 = [(HUNCCameraPlayerViewController *)self accessoryViewController];
+  view7 = [accessoryViewController6 view];
+  topAnchor = [view7 topAnchor];
+  contentOverlayView6 = [(HUNCCameraPlayerViewController *)self contentOverlayView];
+  topAnchor2 = [contentOverlayView6 topAnchor];
+  v34 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v34 setActive:1];
 
-  v35 = [(HUNCCameraPlayerViewController *)self accessoryViewController];
-  v36 = [v35 view];
-  v37 = [v36 bottomAnchor];
-  v38 = [(HUNCCameraPlayerViewController *)self contentOverlayView];
-  v39 = [v38 bottomAnchor];
-  v40 = [v37 constraintEqualToAnchor:v39];
+  accessoryViewController7 = [(HUNCCameraPlayerViewController *)self accessoryViewController];
+  view8 = [accessoryViewController7 view];
+  bottomAnchor = [view8 bottomAnchor];
+  contentOverlayView7 = [(HUNCCameraPlayerViewController *)self contentOverlayView];
+  bottomAnchor2 = [contentOverlayView7 bottomAnchor];
+  v40 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v40 setActive:1];
 
-  v41 = [(HUNCCameraPlayerViewController *)self blurViewController];
-  [v41 didMoveToParentViewController:self];
+  blurViewController3 = [(HUNCCameraPlayerViewController *)self blurViewController];
+  [blurViewController3 didMoveToParentViewController:self];
 
-  v42 = [(HUNCCameraPlayerViewController *)self placeholderContentViewController];
-  [v42 didMoveToParentViewController:self];
+  placeholderContentViewController3 = [(HUNCCameraPlayerViewController *)self placeholderContentViewController];
+  [placeholderContentViewController3 didMoveToParentViewController:self];
 
-  v43 = [(HUNCCameraPlayerViewController *)self accessoryViewController];
-  [v43 didMoveToParentViewController:self];
+  accessoryViewController8 = [(HUNCCameraPlayerViewController *)self accessoryViewController];
+  [accessoryViewController8 didMoveToParentViewController:self];
 
-  v44 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-  LODWORD(v36) = [v44 prefersAudioEnabled];
-  v45 = [(HUNCCameraPlayerViewController *)self playerController];
-  [v45 setMuted:v36 ^ 1];
+  playbackEngine = [(HUNCCameraPlayerViewController *)self playbackEngine];
+  LODWORD(view8) = [playbackEngine prefersAudioEnabled];
+  playerController = [(HUNCCameraPlayerViewController *)self playerController];
+  [playerController setMuted:view8 ^ 1];
 
-  v46 = [(HUNCCameraPlayerViewController *)self cameraProfile];
-  LODWORD(v36) = [v46 hf_supportsBidirectionalAudio];
+  cameraProfile = [(HUNCCameraPlayerViewController *)self cameraProfile];
+  LODWORD(view8) = [cameraProfile hf_supportsBidirectionalAudio];
 
-  if (v36)
+  if (view8)
   {
     [(HUNCCameraPlayerViewController *)self setHu_playbackControlsAreVisible:1];
-    v47 = [(HUNCCameraPlayerViewController *)self customControlsView];
-    v48 = [(HUNCCameraPlayerViewController *)self liveContentViewController];
-    v49 = [v48 microphoneControl];
-    [v47 addSubview:v49];
+    customControlsView = [(HUNCCameraPlayerViewController *)self customControlsView];
+    liveContentViewController = [(HUNCCameraPlayerViewController *)self liveContentViewController];
+    microphoneControl = [liveContentViewController microphoneControl];
+    [customControlsView addSubview:microphoneControl];
 
-    v50 = [(HUNCCameraPlayerViewController *)self liveContentViewController];
-    v51 = [v50 microphoneControl];
-    [v51 addTarget:self action:sel_toggleMicrophoneState forControlEvents:64];
+    liveContentViewController2 = [(HUNCCameraPlayerViewController *)self liveContentViewController];
+    microphoneControl2 = [liveContentViewController2 microphoneControl];
+    [microphoneControl2 addTarget:self action:sel_toggleMicrophoneState forControlEvents:64];
 
     v52 = HFLogForCategory();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
     {
-      v53 = [(HUNCCameraPlayerViewController *)self cameraProfile];
-      v54 = [v53 accessory];
-      v55 = [v54 name];
-      v56 = [(HUNCCameraPlayerViewController *)self clipUUID];
+      cameraProfile2 = [(HUNCCameraPlayerViewController *)self cameraProfile];
+      accessory = [cameraProfile2 accessory];
+      name = [accessory name];
+      clipUUID = [(HUNCCameraPlayerViewController *)self clipUUID];
       *buf = 138412546;
-      v86 = v55;
+      v86 = name;
       v87 = 1024;
-      v88 = v56 != 0;
+      v88 = clipUUID != 0;
       _os_log_impl(&dword_20CEB6000, v52, OS_LOG_TYPE_DEFAULT, "Speaker is supported by camera:%@. Microphone control displayed at top:%{BOOL}d.", buf, 0x12u);
     }
 
-    v57 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-    v58 = [v57 isMicrophoneEnabled];
-    v59 = [(HUNCCameraPlayerViewController *)self liveContentViewController];
-    v60 = [v59 microphoneControl];
-    [v60 setTalking:v58];
+    playbackEngine2 = [(HUNCCameraPlayerViewController *)self playbackEngine];
+    isMicrophoneEnabled = [playbackEngine2 isMicrophoneEnabled];
+    liveContentViewController3 = [(HUNCCameraPlayerViewController *)self liveContentViewController];
+    microphoneControl3 = [liveContentViewController3 microphoneControl];
+    [microphoneControl3 setTalking:isMicrophoneEnabled];
 
-    v61 = [(HUNCCameraPlayerViewController *)self liveContentViewController];
-    v62 = [v61 microphoneControl];
-    v63 = [v62 leftAnchor];
-    v64 = [(HUNCCameraPlayerViewController *)self customControlsView];
-    v65 = [v64 leftAnchor];
-    v66 = [v63 constraintEqualToAnchor:v65 constant:8.0];
+    liveContentViewController4 = [(HUNCCameraPlayerViewController *)self liveContentViewController];
+    microphoneControl4 = [liveContentViewController4 microphoneControl];
+    leftAnchor3 = [microphoneControl4 leftAnchor];
+    customControlsView2 = [(HUNCCameraPlayerViewController *)self customControlsView];
+    leftAnchor4 = [customControlsView2 leftAnchor];
+    v66 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4 constant:8.0];
     [v66 setActive:1];
 
-    v67 = [(HUNCCameraPlayerViewController *)self liveContentViewController];
-    v68 = [v67 microphoneControl];
-    v69 = [v68 bottomAnchor];
-    v70 = [(HUNCCameraPlayerViewController *)self customControlsView];
-    v71 = [v70 safeAreaLayoutGuide];
-    v72 = [v71 bottomAnchor];
-    v73 = [v69 constraintEqualToAnchor:v72 constant:-8.0];
+    liveContentViewController5 = [(HUNCCameraPlayerViewController *)self liveContentViewController];
+    microphoneControl5 = [liveContentViewController5 microphoneControl];
+    bottomAnchor3 = [microphoneControl5 bottomAnchor];
+    customControlsView3 = [(HUNCCameraPlayerViewController *)self customControlsView];
+    safeAreaLayoutGuide = [customControlsView3 safeAreaLayoutGuide];
+    bottomAnchor4 = [safeAreaLayoutGuide bottomAnchor];
+    v73 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-8.0];
     [v73 setActive:1];
 
     [(HUNCCameraPlayerViewController *)self updateMicrophone];
@@ -294,17 +294,17 @@
 
   else
   {
-    v74 = [(HUNCCameraPlayerViewController *)self liveContentViewController];
-    v75 = [v74 microphoneControl];
-    [v75 setAlpha:0.0];
+    liveContentViewController6 = [(HUNCCameraPlayerViewController *)self liveContentViewController];
+    microphoneControl6 = [liveContentViewController6 microphoneControl];
+    [microphoneControl6 setAlpha:0.0];
 
     v76 = HFLogForCategory();
     if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
     {
-      v77 = [(HUNCCameraPlayerViewController *)self cameraProfile];
-      v78 = [v77 accessory];
+      cameraProfile3 = [(HUNCCameraPlayerViewController *)self cameraProfile];
+      accessory2 = [cameraProfile3 accessory];
       *buf = 138412290;
-      v86 = v78;
+      v86 = accessory2;
       _os_log_impl(&dword_20CEB6000, v76, OS_LOG_TYPE_DEFAULT, "Speaker not supported by camera:%@. Will not display microphone control.", buf, 0xCu);
     }
   }
@@ -316,42 +316,42 @@
     _os_log_impl(&dword_20CEB6000, v79, OS_LOG_TYPE_DEFAULT, "Notification scrubber viewDidLoad.", buf, 2u);
   }
 
-  v80 = [(HUNCCameraPlayerViewController *)self accessoryViewController];
-  [v80 setShouldShowLoadingIndicatorForClipPlayback:1];
+  accessoryViewController9 = [(HUNCCameraPlayerViewController *)self accessoryViewController];
+  [accessoryViewController9 setShouldShowLoadingIndicatorForClipPlayback:1];
 
-  v81 = [(HUNCCameraPlayerViewController *)self accessoryViewController];
-  [v81 setCanShowOverlayContent:1];
+  accessoryViewController10 = [(HUNCCameraPlayerViewController *)self accessoryViewController];
+  [accessoryViewController10 setCanShowOverlayContent:1];
 
-  v82 = [(HUNCCameraPlayerViewController *)self customControlsView];
-  v83 = [(HUNCCameraPlayerViewController *)self liveButtonView];
-  [v82 addSubview:v83];
+  customControlsView4 = [(HUNCCameraPlayerViewController *)self customControlsView];
+  liveButtonView = [(HUNCCameraPlayerViewController *)self liveButtonView];
+  [customControlsView4 addSubview:liveButtonView];
 
   [(HUNCCameraPlayerViewController *)self _setupConstraintSets];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v19 = *MEMORY[0x277D85DE8];
   v14.receiver = self;
   v14.super_class = HUNCCameraPlayerViewController;
-  [(HUNCCameraPlayerViewController *)&v14 viewWillAppear:a3];
+  [(HUNCCameraPlayerViewController *)&v14 viewWillAppear:appear];
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = v6;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@: %@", buf, 0x16u);
   }
 
-  v7 = [(HUNCCameraPlayerViewController *)self itemManager];
-  [v7 endDisableExternalUpdatesWithReason:@"kDisableUpdatesReasonHUNCCameraPlayerViewControllerNotVisible"];
+  itemManager = [(HUNCCameraPlayerViewController *)self itemManager];
+  [itemManager endDisableExternalUpdatesWithReason:@"kDisableUpdatesReasonHUNCCameraPlayerViewControllerNotVisible"];
 
-  v8 = [(HUNCCameraPlayerViewController *)self clipUUID];
+  clipUUID = [(HUNCCameraPlayerViewController *)self clipUUID];
 
-  if (!v8)
+  if (!clipUUID)
   {
     v9 = HFLogForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -360,69 +360,69 @@
       _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "(NC) Starting Live Stream since there is no clipUUID.", buf, 2u);
     }
 
-    v10 = [MEMORY[0x277D144D0] livePosition];
-    v11 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-    [v11 setPlaybackPosition:v10];
+    livePosition = [MEMORY[0x277D144D0] livePosition];
+    playbackEngine = [(HUNCCameraPlayerViewController *)self playbackEngine];
+    [playbackEngine setPlaybackPosition:livePosition];
 
-    v12 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-    [v12 play];
+    playbackEngine2 = [(HUNCCameraPlayerViewController *)self playbackEngine];
+    [playbackEngine2 play];
 
-    v13 = [MEMORY[0x277D144D0] livePosition];
-    [(HUNCCameraPlayerViewController *)self _updateStateForPlaybackPosition:v13 animated:1];
+    livePosition2 = [MEMORY[0x277D144D0] livePosition];
+    [(HUNCCameraPlayerViewController *)self _updateStateForPlaybackPosition:livePosition2 animated:1];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v12 = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HUNCCameraPlayerViewController;
-  [(HUNCCameraPlayerViewController *)&v7 viewDidAppear:a3];
+  [(HUNCCameraPlayerViewController *)&v7 viewDidAppear:appear];
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = v6;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@ : %@", buf, 0x16u);
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v13 = *MEMORY[0x277D85DE8];
   v8.receiver = self;
   v8.super_class = HUNCCameraPlayerViewController;
-  [(HUNCCameraPlayerViewController *)&v8 viewWillDisappear:a3];
+  [(HUNCCameraPlayerViewController *)&v8 viewWillDisappear:disappear];
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = v6;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@ : %@", buf, 0x16u);
   }
 
-  v7 = [(HUNCCameraPlayerViewController *)self itemManager];
-  [v7 disableExternalUpdatesWithReason:@"kDisableUpdatesReasonHUNCCameraPlayerViewControllerNotVisible"];
+  itemManager = [(HUNCCameraPlayerViewController *)self itemManager];
+  [itemManager disableExternalUpdatesWithReason:@"kDisableUpdatesReasonHUNCCameraPlayerViewControllerNotVisible"];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v12 = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HUNCCameraPlayerViewController;
-  [(HUNCCameraPlayerViewController *)&v7 viewDidDisappear:a3];
+  [(HUNCCameraPlayerViewController *)&v7 viewDidDisappear:disappear];
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = v6;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@ : %@", buf, 0x16u);
@@ -434,9 +434,9 @@
   v10.receiver = self;
   v10.super_class = HUNCCameraPlayerViewController;
   [(HUNCCameraPlayerViewController *)&v10 viewWillLayoutSubviews];
-  v3 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-  v4 = [v3 liveCameraSource];
-  [v4 aspectRatio];
+  playbackEngine = [(HUNCCameraPlayerViewController *)self playbackEngine];
+  liveCameraSource = [playbackEngine liveCameraSource];
+  [liveCameraSource aspectRatio];
   if (v5 == 0.0)
   {
     v6 = 1.77777778;
@@ -447,8 +447,8 @@
     v6 = v5;
   }
 
-  v7 = [(HUNCCameraPlayerViewController *)self view];
-  [v7 bounds];
+  view = [(HUNCCameraPlayerViewController *)self view];
+  [view bounds];
   v9 = v8;
 
   if (v6 < 1.0 && v6 > 0.0 && [(HUNCCameraPlayerViewController *)self numberOfAssociatedAccessoriesDisplayed])
@@ -459,7 +459,7 @@
   [(HUNCCameraPlayerViewController *)self setPreferredContentSize:v9, round(v9 / v6)];
 }
 
-- (void)_updateRecordedClipInterfaceAvailabilityWithAnimation:(BOOL)a3
+- (void)_updateRecordedClipInterfaceAvailabilityWithAnimation:(BOOL)animation
 {
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -481,7 +481,7 @@
   v8[2] = __88__HUNCCameraPlayerViewController__updateRecordedClipInterfaceAvailabilityWithAnimation___block_invoke_2;
   v8[3] = &unk_277DB7EE0;
   v8[4] = self;
-  v9 = a3;
+  animationCopy = animation;
   dispatch_async(v7, v8);
 }
 
@@ -569,11 +569,11 @@ void __88__HUNCCameraPlayerViewController__updateRecordedClipInterfaceAvailabili
 
 - (id)home
 {
-  v2 = [(HUNCCameraPlayerViewController *)self cameraProfile];
-  v3 = [v2 accessory];
-  v4 = [v3 home];
+  cameraProfile = [(HUNCCameraPlayerViewController *)self cameraProfile];
+  accessory = [cameraProfile accessory];
+  home = [accessory home];
 
-  return v4;
+  return home;
 }
 
 - (void)_setupConstraintSets
@@ -581,51 +581,51 @@ void __88__HUNCCameraPlayerViewController__updateRecordedClipInterfaceAvailabili
   v36[4] = *MEMORY[0x277D85DE8];
   objc_initWeak(&location, self);
   v18 = MEMORY[0x277CCAAD0];
-  v30 = [(HUNCCameraPlayerViewController *)self liveButtonView];
-  v27 = [v30 rightAnchor];
-  v29 = [(HUNCCameraPlayerViewController *)self customControlsView];
-  v28 = [v29 transportControlsAreaLayoutGuide];
-  v26 = [v28 rightAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  liveButtonView = [(HUNCCameraPlayerViewController *)self liveButtonView];
+  rightAnchor = [liveButtonView rightAnchor];
+  customControlsView = [(HUNCCameraPlayerViewController *)self customControlsView];
+  transportControlsAreaLayoutGuide = [customControlsView transportControlsAreaLayoutGuide];
+  rightAnchor2 = [transportControlsAreaLayoutGuide rightAnchor];
+  v25 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v36[0] = v25;
-  v24 = [(HUNCCameraPlayerViewController *)self liveButtonView];
-  v23 = [v24 heightAnchor];
-  v22 = [v23 constraintEqualToConstant:44.0];
+  liveButtonView2 = [(HUNCCameraPlayerViewController *)self liveButtonView];
+  heightAnchor = [liveButtonView2 heightAnchor];
+  v22 = [heightAnchor constraintEqualToConstant:44.0];
   v36[1] = v22;
-  v21 = [(HUNCCameraPlayerViewController *)self liveButtonView];
-  v19 = [v21 widthAnchor];
-  v20 = [(HUNCCameraPlayerViewController *)self liveButtonView];
-  v3 = [v20 liveButton];
-  v4 = [v3 widthAnchor];
-  v5 = [v19 constraintEqualToAnchor:v4];
+  liveButtonView3 = [(HUNCCameraPlayerViewController *)self liveButtonView];
+  widthAnchor = [liveButtonView3 widthAnchor];
+  liveButtonView4 = [(HUNCCameraPlayerViewController *)self liveButtonView];
+  liveButton = [liveButtonView4 liveButton];
+  widthAnchor2 = [liveButton widthAnchor];
+  v5 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v36[2] = v5;
-  v6 = [(HUNCCameraPlayerViewController *)self liveButtonView];
-  v7 = [v6 bottomAnchor];
-  v8 = [(HUNCCameraPlayerViewController *)self customControlsView];
-  v9 = [v8 bottomAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9 constant:-8.0];
+  liveButtonView5 = [(HUNCCameraPlayerViewController *)self liveButtonView];
+  bottomAnchor = [liveButtonView5 bottomAnchor];
+  customControlsView2 = [(HUNCCameraPlayerViewController *)self customControlsView];
+  bottomAnchor2 = [customControlsView2 bottomAnchor];
+  v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-8.0];
   v36[3] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:4];
   [v18 activateConstraints:v11];
 
   v12 = objc_alloc(MEMORY[0x277D2C958]);
-  v13 = [(HUNCCameraPlayerViewController *)self view];
+  view = [(HUNCCameraPlayerViewController *)self view];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __54__HUNCCameraPlayerViewController__setupConstraintSets__block_invoke;
   v33[3] = &unk_277DC2030;
   objc_copyWeak(&v34, &location);
-  v14 = [v12 initWithOwningView:v13 constraintBuilder:v33];
+  v14 = [v12 initWithOwningView:view constraintBuilder:v33];
   [(HUNCCameraPlayerViewController *)self setStaticConstraintSet:v14];
 
   v15 = objc_alloc(MEMORY[0x277D2C958]);
-  v16 = [(HUNCCameraPlayerViewController *)self view];
+  view2 = [(HUNCCameraPlayerViewController *)self view];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __54__HUNCCameraPlayerViewController__setupConstraintSets__block_invoke_2;
   v31[3] = &unk_277DC2030;
   objc_copyWeak(&v32, &location);
-  v17 = [v15 initWithOwningView:v16 constraintBuilder:v31];
+  v17 = [v15 initWithOwningView:view2 constraintBuilder:v31];
   [(HUNCCameraPlayerViewController *)self setScrubberConstraintSet:v17];
 
   objc_destroyWeak(&v32);
@@ -705,11 +705,11 @@ id __54__HUNCCameraPlayerViewController__setupConstraintSets__block_invoke_2(uin
 
 - (void)updateViewConstraints
 {
-  v3 = [(HUNCCameraPlayerViewController *)self staticConstraintSet];
-  [v3 activateIfNeeded];
+  staticConstraintSet = [(HUNCCameraPlayerViewController *)self staticConstraintSet];
+  [staticConstraintSet activateIfNeeded];
 
-  v4 = [(HUNCCameraPlayerViewController *)self scrubberConstraintSet];
-  [v4 activateIfNeeded];
+  scrubberConstraintSet = [(HUNCCameraPlayerViewController *)self scrubberConstraintSet];
+  [scrubberConstraintSet activateIfNeeded];
 
   v5.receiver = self;
   v5.super_class = HUNCCameraPlayerViewController;
@@ -722,9 +722,9 @@ id __54__HUNCCameraPlayerViewController__setupConstraintSets__block_invoke_2(uin
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HUNCCameraPlayerViewController *)self currentClip];
+    currentClip = [(HUNCCameraPlayerViewController *)self currentClip];
     v5 = 138412290;
-    v6 = v4;
+    v6 = currentClip;
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "(NC) reloading after Notification Update for currentClip:%@.", &v5, 0xCu);
   }
 
@@ -734,44 +734,44 @@ id __54__HUNCCameraPlayerViewController__setupConstraintSets__block_invoke_2(uin
 - (void)reloadForCurrentClip
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(HUNCCameraPlayerViewController *)self accessoryViewController];
-  [v3 setForceLoadingIndicatorToDisplay:0];
+  accessoryViewController = [(HUNCCameraPlayerViewController *)self accessoryViewController];
+  [accessoryViewController setForceLoadingIndicatorToDisplay:0];
 
-  v4 = [(HUNCCameraPlayerViewController *)self currentClip];
+  currentClip = [(HUNCCameraPlayerViewController *)self currentClip];
 
   v5 = HFLogForCategory();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (currentClip)
   {
     if (v6)
     {
-      v7 = [(HUNCCameraPlayerViewController *)self currentClip];
-      v8 = [(HUNCCameraPlayerViewController *)self playbackStartDateFromSignificantEvent];
+      currentClip2 = [(HUNCCameraPlayerViewController *)self currentClip];
+      playbackStartDateFromSignificantEvent = [(HUNCCameraPlayerViewController *)self playbackStartDateFromSignificantEvent];
       v18 = 138412546;
-      v19 = v7;
+      v19 = currentClip2;
       v20 = 2112;
-      v21 = v8;
+      v21 = playbackStartDateFromSignificantEvent;
       _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "(NC) reloading for currentClip:%@ at start position:%@.", &v18, 0x16u);
     }
 
-    v9 = [(HUNCCameraPlayerViewController *)self currentClip];
-    v10 = [v9 isComplete];
+    currentClip3 = [(HUNCCameraPlayerViewController *)self currentClip];
+    isComplete = [currentClip3 isComplete];
 
     v11 = MEMORY[0x277D144D0];
-    if (v10)
+    if (isComplete)
     {
-      v12 = [(HUNCCameraPlayerViewController *)self playbackStartDateFromSignificantEvent];
-      v13 = [v11 clipPositionWithDate:v12];
-      v14 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-      [v14 setPlaybackPosition:v13];
+      playbackStartDateFromSignificantEvent2 = [(HUNCCameraPlayerViewController *)self playbackStartDateFromSignificantEvent];
+      v13 = [v11 clipPositionWithDate:playbackStartDateFromSignificantEvent2];
+      playbackEngine = [(HUNCCameraPlayerViewController *)self playbackEngine];
+      [playbackEngine setPlaybackPosition:v13];
 
       [(HUNCCameraPlayerViewController *)self _updateRecordedClipInterfaceAvailabilityWithAnimation:1];
       return;
     }
 
-    v15 = [MEMORY[0x277D144D0] livePosition];
-    v17 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-    [v17 setPlaybackPosition:v15];
+    livePosition = [MEMORY[0x277D144D0] livePosition];
+    playbackEngine2 = [(HUNCCameraPlayerViewController *)self playbackEngine];
+    [playbackEngine2 setPlaybackPosition:livePosition];
   }
 
   else
@@ -782,26 +782,26 @@ id __54__HUNCCameraPlayerViewController__setupConstraintSets__block_invoke_2(uin
       _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "(NC) reloading while missing clip. Starting Live Stream.", &v18, 2u);
     }
 
-    v15 = [MEMORY[0x277D144D0] livePosition];
-    v16 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-    [v16 setPlaybackPosition:v15];
+    livePosition = [MEMORY[0x277D144D0] livePosition];
+    playbackEngine3 = [(HUNCCameraPlayerViewController *)self playbackEngine];
+    [playbackEngine3 setPlaybackPosition:livePosition];
 
-    [(HUNCCameraPlayerViewController *)self _updateStateForPlaybackPosition:v15 animated:1];
+    [(HUNCCameraPlayerViewController *)self _updateStateForPlaybackPosition:livePosition animated:1];
   }
 }
 
 - (void)loadCameraClip
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(HUNCCameraPlayerViewController *)self notificationUUID];
+  notificationUUID = [(HUNCCameraPlayerViewController *)self notificationUUID];
   v4 = HFLogForCategory();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (notificationUUID)
   {
     if (v5)
     {
       *buf = 138412290;
-      v18 = v3;
+      v18 = notificationUUID;
       _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "(NC) Perform cloud pull:%@.", buf, 0xCu);
     }
 
@@ -818,7 +818,7 @@ id __54__HUNCCameraPlayerViewController__setupConstraintSets__block_invoke_2(uin
     v12[2] = __48__HUNCCameraPlayerViewController_loadCameraClip__block_invoke_2;
     v12[3] = &unk_277DC20A8;
     objc_copyWeak(&v14, buf);
-    v13 = v3;
+    v13 = notificationUUID;
     v8 = [v7 addSuccessBlock:v12];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -1013,22 +1013,22 @@ void __48__HUNCCameraPlayerViewController_loadCameraClip__block_invoke_44(uint64
 - (void)_setupPlaybackEngine
 {
   v3 = objc_alloc(MEMORY[0x277D144C0]);
-  v4 = [(HUNCCameraPlayerViewController *)self home];
-  v5 = [(HUNCCameraPlayerViewController *)self cameraProfile];
-  v14 = [v3 initWithHome:v4 cameraProfile:v5];
+  home = [(HUNCCameraPlayerViewController *)self home];
+  cameraProfile = [(HUNCCameraPlayerViewController *)self cameraProfile];
+  v14 = [v3 initWithHome:home cameraProfile:cameraProfile];
 
-  v6 = [(HUNCCameraPlayerViewController *)self behavior];
-  [v14 setClipScrubber:v6];
+  behavior = [(HUNCCameraPlayerViewController *)self behavior];
+  [v14 setClipScrubber:behavior];
 
-  v7 = [(HUNCCameraPlayerViewController *)self notificationUUID];
-  [v14 setNotificationUUID:v7];
+  notificationUUID = [(HUNCCameraPlayerViewController *)self notificationUUID];
+  [v14 setNotificationUUID:notificationUUID];
 
-  v8 = [(HUNCCameraPlayerViewController *)self clipUUID];
-  [v14 setNotificationClipUUID:v8];
+  clipUUID = [(HUNCCameraPlayerViewController *)self clipUUID];
+  [v14 setNotificationClipUUID:clipUUID];
 
-  v9 = [(HUNCCameraPlayerViewController *)self clipUUID];
+  clipUUID2 = [(HUNCCameraPlayerViewController *)self clipUUID];
 
-  if (v9)
+  if (clipUUID2)
   {
     v10 = MEMORY[0x277D144D0];
     v11 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:0.0];
@@ -1046,64 +1046,64 @@ void __48__HUNCCameraPlayerViewController_loadCameraClip__block_invoke_44(uint64
 {
   v4 = objc_alloc_init(MEMORY[0x277D144C8]);
   [v4 setPeriodicTimeUpdateInterval:&unk_282493560];
-  v3 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-  [v3 addObserver:self withOptions:v4];
+  playbackEngine = [(HUNCCameraPlayerViewController *)self playbackEngine];
+  [playbackEngine addObserver:self withOptions:v4];
 }
 
-- (void)_updateStateForPlaybackPosition:(id)a3 animated:(BOOL)a4
+- (void)_updateStateForPlaybackPosition:(id)position animated:(BOOL)animated
 {
-  v5 = [a3 contentType];
-  v6 = [(HUNCCameraPlayerViewController *)self accessoryViewController];
-  [v6 setForceLoadingIndicatorToDisplay:0];
+  contentType = [position contentType];
+  accessoryViewController = [(HUNCCameraPlayerViewController *)self accessoryViewController];
+  [accessoryViewController setForceLoadingIndicatorToDisplay:0];
 
-  if (v5)
+  if (contentType)
   {
-    v7 = [(HUNCCameraPlayerViewController *)self liveContentViewController];
-    v8 = [v7 viewIfLoaded];
-    [v8 removeFromSuperview];
+    liveContentViewController = [(HUNCCameraPlayerViewController *)self liveContentViewController];
+    viewIfLoaded = [liveContentViewController viewIfLoaded];
+    [viewIfLoaded removeFromSuperview];
   }
 
   else
   {
-    v9 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-    v10 = [v9 cameraProfile];
-    v11 = [v10 hf_shouldDisableLiveStream];
+    playbackEngine = [(HUNCCameraPlayerViewController *)self playbackEngine];
+    cameraProfile = [playbackEngine cameraProfile];
+    hf_shouldDisableLiveStream = [cameraProfile hf_shouldDisableLiveStream];
 
-    if (v11)
+    if (hf_shouldDisableLiveStream)
     {
       goto LABEL_6;
     }
 
-    v12 = [(HUNCCameraPlayerViewController *)self behavior];
-    v13 = [v12 behaviorContext];
-    v7 = [v13 livePreviewContainerView];
+    behavior = [(HUNCCameraPlayerViewController *)self behavior];
+    behaviorContext = [behavior behaviorContext];
+    liveContentViewController = [behaviorContext livePreviewContainerView];
 
-    v14 = [(HUNCCameraPlayerViewController *)self liveContentViewController];
-    v15 = [v14 view];
-    [v7 naui_addAutoLayoutSubview:v15];
+    liveContentViewController2 = [(HUNCCameraPlayerViewController *)self liveContentViewController];
+    view = [liveContentViewController2 view];
+    [liveContentViewController naui_addAutoLayoutSubview:view];
 
     v16 = MEMORY[0x277CCAAD0];
-    v17 = [(HUNCCameraPlayerViewController *)self liveContentViewController];
-    v18 = [v17 view];
-    v19 = [v16 hu_constraintsSizingAnchorProvider:v18 toAnchorProvider:v7];
+    liveContentViewController3 = [(HUNCCameraPlayerViewController *)self liveContentViewController];
+    view2 = [liveContentViewController3 view];
+    v19 = [v16 hu_constraintsSizingAnchorProvider:view2 toAnchorProvider:liveContentViewController];
     [v16 activateConstraints:v19];
 
     [(HUNCCameraPlayerViewController *)self _updateLivePreviewAspectRatio];
-    v8 = [(HUNCCameraPlayerViewController *)self liveContentViewController];
-    v20 = [v8 cameraView];
-    [v20 setBadgeHidden:1];
+    viewIfLoaded = [(HUNCCameraPlayerViewController *)self liveContentViewController];
+    cameraView = [viewIfLoaded cameraView];
+    [cameraView setBadgeHidden:1];
   }
 
 LABEL_6:
-  v21 = [(HUNCCameraPlayerViewController *)self behavior];
-  v22 = [v21 behaviorContext];
-  [v22 setLivePreviewActive:v5 == 0];
+  behavior2 = [(HUNCCameraPlayerViewController *)self behavior];
+  behaviorContext2 = [behavior2 behaviorContext];
+  [behaviorContext2 setLivePreviewActive:contentType == 0];
 
-  if (v5)
+  if (contentType)
   {
-    v23 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-    v24 = [v23 player];
-    [(HUNCCameraPlayerViewController *)self setPlayer:v24];
+    playbackEngine2 = [(HUNCCameraPlayerViewController *)self playbackEngine];
+    player = [playbackEngine2 player];
+    [(HUNCCameraPlayerViewController *)self setPlayer:player];
   }
 
   else
@@ -1111,39 +1111,39 @@ LABEL_6:
     [(HUNCCameraPlayerViewController *)self setPlayer:0];
   }
 
-  v25 = [(HUNCCameraPlayerViewController *)self player];
+  player2 = [(HUNCCameraPlayerViewController *)self player];
 
-  if (v25)
+  if (player2)
   {
-    v26 = [(HUNCCameraPlayerViewController *)self player];
-    [v26 setAllowsExternalPlayback:0];
+    player3 = [(HUNCCameraPlayerViewController *)self player];
+    [player3 setAllowsExternalPlayback:0];
   }
 
-  v29 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-  v27 = [v29 prefersAudioEnabled];
-  v28 = [(HUNCCameraPlayerViewController *)self playerController];
-  [v28 setMuted:v27 ^ 1u];
+  playbackEngine3 = [(HUNCCameraPlayerViewController *)self playbackEngine];
+  prefersAudioEnabled = [playbackEngine3 prefersAudioEnabled];
+  playerController = [(HUNCCameraPlayerViewController *)self playerController];
+  [playerController setMuted:prefersAudioEnabled ^ 1u];
 }
 
-- (void)_updateStateForScrubbingStatus:(BOOL)a3 animated:(BOOL)a4
+- (void)_updateStateForScrubbingStatus:(BOOL)status animated:(BOOL)animated
 {
-  if (a3)
+  if (status)
   {
-    v5 = [(HUNCCameraPlayerViewController *)self behavior:a3];
-    v6 = [v5 behaviorContext];
-    [v6 setPlaybackControlsIncludeDisplayModeControls:0];
+    v5 = [(HUNCCameraPlayerViewController *)self behavior:status];
+    behaviorContext = [v5 behaviorContext];
+    [behaviorContext setPlaybackControlsIncludeDisplayModeControls:0];
 
-    v8 = [(HUNCCameraPlayerViewController *)self behavior];
-    v7 = [v8 behaviorContext];
-    [v7 setPlaybackControlsIncludeVolumeControls:0];
+    behavior = [(HUNCCameraPlayerViewController *)self behavior];
+    behaviorContext2 = [behavior behaviorContext];
+    [behaviorContext2 setPlaybackControlsIncludeVolumeControls:0];
   }
 }
 
 - (void)_updateLivePreviewAspectRatio
 {
-  v3 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-  v4 = [v3 liveCameraSource];
-  [v4 aspectRatio];
+  playbackEngine = [(HUNCCameraPlayerViewController *)self playbackEngine];
+  liveCameraSource = [playbackEngine liveCameraSource];
+  [liveCameraSource aspectRatio];
   if (v5 == 0.0)
   {
     v6 = 1.77777778;
@@ -1154,50 +1154,50 @@ LABEL_6:
     v6 = v5;
   }
 
-  v8 = [(HUNCCameraPlayerViewController *)self behavior];
-  v7 = [v8 behaviorContext];
-  [v7 setLivePreviewAspectRatio:{v6, 1.0}];
+  behavior = [(HUNCCameraPlayerViewController *)self behavior];
+  behaviorContext = [behavior behaviorContext];
+  [behaviorContext setLivePreviewAspectRatio:{v6, 1.0}];
 }
 
 - (void)_updatePlayerVolumeSliderState
 {
-  v6 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-  [v6 streamAudioVolume];
+  playbackEngine = [(HUNCCameraPlayerViewController *)self playbackEngine];
+  [playbackEngine streamAudioVolume];
   v4 = v3;
-  v5 = [(HUNCCameraPlayerViewController *)self playerController];
-  [v5 setVolume:v4];
+  playerController = [(HUNCCameraPlayerViewController *)self playerController];
+  [playerController setVolume:v4];
 }
 
 - (BOOL)_shouldAutoPlayOnViewAppearance
 {
-  v3 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-  v4 = [v3 playbackPosition];
-  v5 = [MEMORY[0x277D144D0] livePosition];
-  v6 = [v4 isEqual:v5];
+  playbackEngine = [(HUNCCameraPlayerViewController *)self playbackEngine];
+  playbackPosition = [playbackEngine playbackPosition];
+  livePosition = [MEMORY[0x277D144D0] livePosition];
+  v6 = [playbackPosition isEqual:livePosition];
 
   result = 1;
   if ((v6 & 1) == 0)
   {
-    v8 = [(HUNCCameraPlayerViewController *)self playbackStartDateFromSignificantEvent];
+    playbackStartDateFromSignificantEvent = [(HUNCCameraPlayerViewController *)self playbackStartDateFromSignificantEvent];
 
-    if (!v8)
+    if (!playbackStartDateFromSignificantEvent)
     {
       return 0;
     }
 
-    v9 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-    v10 = [v9 currentClip];
+    playbackEngine2 = [(HUNCCameraPlayerViewController *)self playbackEngine];
+    currentClip = [playbackEngine2 currentClip];
 
-    if (!v10)
+    if (!currentClip)
     {
       return 0;
     }
 
-    v11 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-    v12 = [v11 currentClip];
-    v13 = [v12 hf_dateInterval];
-    v14 = [(HUNCCameraPlayerViewController *)self playbackStartDateFromSignificantEvent];
-    v15 = [v13 hf_searchResultForDate:v14];
+    playbackEngine3 = [(HUNCCameraPlayerViewController *)self playbackEngine];
+    currentClip2 = [playbackEngine3 currentClip];
+    hf_dateInterval = [currentClip2 hf_dateInterval];
+    playbackStartDateFromSignificantEvent2 = [(HUNCCameraPlayerViewController *)self playbackStartDateFromSignificantEvent];
+    v15 = [hf_dateInterval hf_searchResultForDate:playbackStartDateFromSignificantEvent2];
 
     if (v15 != 1)
     {
@@ -1217,25 +1217,25 @@ LABEL_6:
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "Toggle live using button", v6, 2u);
   }
 
-  v4 = [(HUNCCameraPlayerViewController *)self accessoryViewController];
-  [v4 setShouldShowLoadingIndicatorForClipPlayback:1];
+  accessoryViewController = [(HUNCCameraPlayerViewController *)self accessoryViewController];
+  [accessoryViewController setShouldShowLoadingIndicatorForClipPlayback:1];
 
   [(HUNCCameraPlayerViewController *)self updateMicrophone];
-  v5 = [(HUNCCameraPlayerViewController *)self miniScrubberViewController];
-  [v5 toggleLive];
+  miniScrubberViewController = [(HUNCCameraPlayerViewController *)self miniScrubberViewController];
+  [miniScrubberViewController toggleLive];
 }
 
-- (void)playerViewController:(id)a3 willTransitionToVisibilityOfPlaybackControls:(BOOL)a4 withAnimationCoordinator:(id)a5
+- (void)playerViewController:(id)controller willTransitionToVisibilityOfPlaybackControls:(BOOL)controls withAnimationCoordinator:(id)coordinator
 {
-  v5 = a4;
+  controlsCopy = controls;
   v13 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  [(HUNCCameraPlayerViewController *)self setHu_playbackControlsAreVisible:v5];
+  coordinatorCopy = coordinator;
+  [(HUNCCameraPlayerViewController *)self setHu_playbackControlsAreVisible:controlsCopy];
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v12 = v5;
+    v12 = controlsCopy;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "Transitioning visibility of playback controls:%{BOOL}d", buf, 8u);
   }
 
@@ -1244,8 +1244,8 @@ LABEL_6:
   v9[2] = __125__HUNCCameraPlayerViewController_playerViewController_willTransitionToVisibilityOfPlaybackControls_withAnimationCoordinator___block_invoke;
   v9[3] = &unk_277DB7EE0;
   v9[4] = self;
-  v10 = v5;
-  [v7 addCoordinatedAnimations:v9 completion:0];
+  v10 = controlsCopy;
+  [coordinatorCopy addCoordinatedAnimations:v9 completion:0];
 }
 
 void __125__HUNCCameraPlayerViewController_playerViewController_willTransitionToVisibilityOfPlaybackControls_withAnimationCoordinator___block_invoke(uint64_t a1)
@@ -1284,36 +1284,36 @@ void __125__HUNCCameraPlayerViewController_playerViewController_willTransitionTo
   }
 }
 
-- (void)playbackEngine:(id)a3 didUpdatePlaybackPosition:(id)a4
+- (void)playbackEngine:(id)engine didUpdatePlaybackPosition:(id)position
 {
-  [(HUNCCameraPlayerViewController *)self _updateStateForPlaybackPosition:a4 animated:1];
+  [(HUNCCameraPlayerViewController *)self _updateStateForPlaybackPosition:position animated:1];
 
   [(HUNCCameraPlayerViewController *)self updateMicrophone];
 }
 
-- (void)playbackEngine:(id)a3 didUpdateLiveCameraSource:(id)a4
+- (void)playbackEngine:(id)engine didUpdateLiveCameraSource:(id)source
 {
-  [(HUNCCameraPlayerViewController *)self _updateLivePreviewAspectRatio:a3];
+  [(HUNCCameraPlayerViewController *)self _updateLivePreviewAspectRatio:engine];
   [(HUNCCameraPlayerViewController *)self updateMicrophone];
 
   [(HUNCCameraPlayerViewController *)self updateVolumeControlVisibility];
 }
 
-- (void)playbackEngine:(id)a3 didUpdateTimeControlStatus:(unint64_t)a4
+- (void)playbackEngine:(id)engine didUpdateTimeControlStatus:(unint64_t)status
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  engineCopy = engine;
   [(HUNCCameraPlayerViewController *)self updateMicrophone];
   [(HUNCCameraPlayerViewController *)self updateVolumeControlVisibility];
-  v7 = [(HUNCCameraPlayerViewController *)self launchEvent];
+  launchEvent = [(HUNCCameraPlayerViewController *)self launchEvent];
 
-  if (a4 == 2 && v7)
+  if (status == 2 && launchEvent)
   {
-    v8 = [(HUNCCameraPlayerViewController *)self clipUUID];
+    clipUUID = [(HUNCCameraPlayerViewController *)self clipUUID];
 
     v9 = HFLogForCategory();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-    if (v8)
+    if (clipUUID)
     {
       if (v10)
       {
@@ -1321,12 +1321,12 @@ void __125__HUNCCameraPlayerViewController_playerViewController_willTransitionTo
         _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "(NC) Send Clip playback launch event after time control update.", &v20, 2u);
       }
 
-      v11 = [v6 currentClip];
-      v12 = [(HUNCCameraPlayerViewController *)self launchEvent];
-      [v12 setCameraClip:v11];
+      currentClip = [engineCopy currentClip];
+      launchEvent2 = [(HUNCCameraPlayerViewController *)self launchEvent];
+      [launchEvent2 setCameraClip:currentClip];
 
-      v13 = [(HUNCCameraPlayerViewController *)self launchEvent];
-      [v13 launchedRecordingWithError:0];
+      launchEvent3 = [(HUNCCameraPlayerViewController *)self launchEvent];
+      [launchEvent3 launchedRecordingWithError:0];
     }
 
     else
@@ -1337,35 +1337,35 @@ void __125__HUNCCameraPlayerViewController_playerViewController_willTransitionTo
         _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "(NC) Send Live Stream launch event after time control update.", &v20, 2u);
       }
 
-      v13 = [(HUNCCameraPlayerViewController *)self launchEvent];
-      [v13 launchedStreamWithError:0];
+      launchEvent3 = [(HUNCCameraPlayerViewController *)self launchEvent];
+      [launchEvent3 launchedStreamWithError:0];
     }
 
     [(HUNCCameraPlayerViewController *)self setLaunchEvent:0];
     goto LABEL_15;
   }
 
-  if (a4 == 2)
+  if (status == 2)
   {
 LABEL_15:
-    v18 = [(HUNCCameraPlayerViewController *)self accessoryViewController];
-    [v18 setShouldShowLoadingIndicatorForClipPlayback:0];
+    accessoryViewController = [(HUNCCameraPlayerViewController *)self accessoryViewController];
+    [accessoryViewController setShouldShowLoadingIndicatorForClipPlayback:0];
 
-    v14 = [(HUNCCameraPlayerViewController *)self placeholderContentViewController];
-    v15 = [v14 view];
-    v16 = v15;
+    placeholderContentViewController = [(HUNCCameraPlayerViewController *)self placeholderContentViewController];
+    view = [placeholderContentViewController view];
+    v16 = view;
     v17 = 1;
     goto LABEL_16;
   }
 
-  if (a4 == 1 && [v6 engineMode] == 1)
+  if (status == 1 && [engineCopy engineMode] == 1)
   {
-    v14 = [(HUNCCameraPlayerViewController *)self placeholderContentViewController];
-    v15 = [v14 view];
-    v16 = v15;
+    placeholderContentViewController = [(HUNCCameraPlayerViewController *)self placeholderContentViewController];
+    view = [placeholderContentViewController view];
+    v16 = view;
     v17 = 0;
 LABEL_16:
-    [v15 setHidden:v17];
+    [view setHidden:v17];
   }
 
   [(HUNCCameraPlayerViewController *)self updateLiveButton];
@@ -1373,30 +1373,30 @@ LABEL_16:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
     v20 = 134218242;
-    v21 = a4;
+    statusCopy = status;
     v22 = 2112;
-    v23 = v6;
+    v23 = engineCopy;
     _os_log_debug_impl(&dword_20CEB6000, v19, OS_LOG_TYPE_DEBUG, "Updated timecontrol status:%lu for %@", &v20, 0x16u);
   }
 }
 
-- (void)playbackEngine:(id)a3 didUpdatePlaybackError:(id)a4
+- (void)playbackEngine:(id)engine didUpdatePlaybackError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUNCCameraPlayerViewController *)self blurViewController];
-  v9 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-  [v8 updateBlurWithPlaybackEngine:v9 completionHandler:0];
+  engineCopy = engine;
+  errorCopy = error;
+  blurViewController = [(HUNCCameraPlayerViewController *)self blurViewController];
+  playbackEngine = [(HUNCCameraPlayerViewController *)self playbackEngine];
+  [blurViewController updateBlurWithPlaybackEngine:playbackEngine completionHandler:0];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__HUNCCameraPlayerViewController_playbackEngine_didUpdatePlaybackError___block_invoke;
   block[3] = &unk_277DB8810;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = engineCopy;
+  v14 = errorCopy;
+  v10 = errorCopy;
+  v11 = engineCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1452,20 +1452,20 @@ LABEL_11:
   }
 }
 
-- (void)playbackEngine:(id)a3 didUpdateEventCache:(id)a4
+- (void)playbackEngine:(id)engine didUpdateEventCache:(id)cache
 {
   v5 = objc_opt_class();
-  v6 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-  v7 = [v6 cameraClips];
-  v8 = [v7 firstObject];
-  if (!v8)
+  playbackEngine = [(HUNCCameraPlayerViewController *)self playbackEngine];
+  cameraClips = [playbackEngine cameraClips];
+  firstObject = [cameraClips firstObject];
+  if (!firstObject)
   {
     goto LABEL_7;
   }
 
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = firstObject;
   }
 
   else
@@ -1473,21 +1473,21 @@ LABEL_11:
     v9 = 0;
   }
 
-  v10 = v8;
+  v10 = firstObject;
   if (!v9)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v11 handleFailureInFunction:v12 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v12 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
 
 LABEL_7:
     v10 = 0;
   }
 
   [(HUNCCameraPlayerViewController *)self setCurrentClip:v10];
-  v13 = [(HUNCCameraPlayerViewController *)self playbackStartDateFromSignificantEvent];
+  playbackStartDateFromSignificantEvent = [(HUNCCameraPlayerViewController *)self playbackStartDateFromSignificantEvent];
 
-  if (v13)
+  if (playbackStartDateFromSignificantEvent)
   {
     [(HUNCCameraPlayerViewController *)self reloadForCurrentClip];
   }
@@ -1503,58 +1503,58 @@ LABEL_7:
   }
 }
 
-- (double)currentScrubberResolutionForBehavior:(id)a3
+- (double)currentScrubberResolutionForBehavior:(id)behavior
 {
-  v3 = [(HUNCCameraPlayerViewController *)self miniScrubberViewController];
-  [v3 currentScrubberResolution];
+  miniScrubberViewController = [(HUNCCameraPlayerViewController *)self miniScrubberViewController];
+  [miniScrubberViewController currentScrubberResolution];
   v5 = v4;
 
   return v5;
 }
 
-- (void)playbackControlsDidToggleMuted:(BOOL)a3
+- (void)playbackControlsDidToggleMuted:(BOOL)muted
 {
-  v3 = a3;
-  v4 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-  [v4 setPrefersAudioEnabled:!v3];
+  mutedCopy = muted;
+  playbackEngine = [(HUNCCameraPlayerViewController *)self playbackEngine];
+  [playbackEngine setPrefersAudioEnabled:!mutedCopy];
 }
 
-- (void)playbackControlsDidUpdateVisibilityOfLoadingIndicator:(BOOL)a3
+- (void)playbackControlsDidUpdateVisibilityOfLoadingIndicator:(BOOL)indicator
 {
-  v3 = a3;
-  v4 = [(HUNCCameraPlayerViewController *)self accessoryViewController];
-  [v4 setShouldShowLoadingIndicatorForClipPlayback:v3];
+  indicatorCopy = indicator;
+  accessoryViewController = [(HUNCCameraPlayerViewController *)self accessoryViewController];
+  [accessoryViewController setShouldShowLoadingIndicatorForClipPlayback:indicatorCopy];
 }
 
-- (void)playbackControlsDidChangePlayerVolume:(float)a3
+- (void)playbackControlsDidChangePlayerVolume:(float)volume
 {
-  v5 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-  *&v4 = a3;
-  [v5 setStreamAudioVolume:v4];
+  playbackEngine = [(HUNCCameraPlayerViewController *)self playbackEngine];
+  *&v4 = volume;
+  [playbackEngine setStreamAudioVolume:v4];
 }
 
 - (void)_updateCameraStatus
 {
-  v3 = [(HUNCCameraPlayerViewController *)self accessoryViewController];
-  [v3 hu_reloadData];
+  accessoryViewController = [(HUNCCameraPlayerViewController *)self accessoryViewController];
+  [accessoryViewController hu_reloadData];
 
-  v4 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-  v5 = [v4 engineMode];
+  playbackEngine = [(HUNCCameraPlayerViewController *)self playbackEngine];
+  engineMode = [playbackEngine engineMode];
 
-  if (!v5)
+  if (!engineMode)
   {
-    v6 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-    [v6 play];
+    playbackEngine2 = [(HUNCCameraPlayerViewController *)self playbackEngine];
+    [playbackEngine2 play];
   }
 }
 
-- (void)itemManager:(id)a3 didUpdateResultsForSourceItem:(id)a4
+- (void)itemManager:(id)manager didUpdateResultsForSourceItem:(id)item
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUNCCameraPlayerViewController *)self cameraItem];
-  v9 = [v7 isEqual:v8];
+  managerCopy = manager;
+  itemCopy = item;
+  cameraItem = [(HUNCCameraPlayerViewController *)self cameraItem];
+  v9 = [itemCopy isEqual:cameraItem];
 
   if (v9)
   {
@@ -1562,9 +1562,9 @@ LABEL_7:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v11 = 138412546;
-      v12 = v6;
+      v12 = managerCopy;
       v13 = 2112;
-      v14 = v7;
+      v14 = itemCopy;
       _os_log_debug_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEBUG, "Updated camera itemManager:%@ for item:%@", &v11, 0x16u);
     }
 
@@ -1575,143 +1575,143 @@ LABEL_7:
 - (void)updateMicrophone
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(HUNCCameraPlayerViewController *)self cameraProfile];
-  v4 = [v3 hf_supportsBidirectionalAudio];
+  cameraProfile = [(HUNCCameraPlayerViewController *)self cameraProfile];
+  hf_supportsBidirectionalAudio = [cameraProfile hf_supportsBidirectionalAudio];
 
-  if (v4)
+  if (hf_supportsBidirectionalAudio)
   {
-    v5 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-    v6 = [v5 isMicrophoneEnabled];
-    v7 = [(HUNCCameraPlayerViewController *)self liveContentViewController];
-    v8 = [v7 microphoneControl];
-    [v8 setTalking:v6];
+    playbackEngine = [(HUNCCameraPlayerViewController *)self playbackEngine];
+    isMicrophoneEnabled = [playbackEngine isMicrophoneEnabled];
+    liveContentViewController = [(HUNCCameraPlayerViewController *)self liveContentViewController];
+    microphoneControl = [liveContentViewController microphoneControl];
+    [microphoneControl setTalking:isMicrophoneEnabled];
 
     [(HUNCCameraPlayerViewController *)self updateMicrophoneVisibility];
   }
 
   else
   {
-    v9 = [(HUNCCameraPlayerViewController *)self liveContentViewController];
-    v10 = [v9 microphoneControl];
-    [v10 setAlpha:0.0];
+    liveContentViewController2 = [(HUNCCameraPlayerViewController *)self liveContentViewController];
+    microphoneControl2 = [liveContentViewController2 microphoneControl];
+    [microphoneControl2 setAlpha:0.0];
   }
 
   v11 = HFLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [(HUNCCameraPlayerViewController *)self cameraProfile];
-    v13 = [v12 hf_supportsBidirectionalAudio];
-    v14 = [(HUNCCameraPlayerViewController *)self liveContentViewController];
-    v15 = [v14 microphoneControl];
-    [v15 alpha];
+    cameraProfile2 = [(HUNCCameraPlayerViewController *)self cameraProfile];
+    hf_supportsBidirectionalAudio2 = [cameraProfile2 hf_supportsBidirectionalAudio];
+    liveContentViewController3 = [(HUNCCameraPlayerViewController *)self liveContentViewController];
+    microphoneControl3 = [liveContentViewController3 microphoneControl];
+    [microphoneControl3 alpha];
     v17 = v16 == 0.0;
-    v18 = [(HUNCCameraPlayerViewController *)self playbackEngine];
+    playbackEngine2 = [(HUNCCameraPlayerViewController *)self playbackEngine];
     v19[0] = 67109632;
-    v19[1] = v13;
+    v19[1] = hf_supportsBidirectionalAudio2;
     v20 = 1024;
     v21 = v17;
     v22 = 1024;
-    v23 = [v18 isLiveStreamPlaying];
+    isLiveStreamPlaying = [playbackEngine2 isLiveStreamPlaying];
     _os_log_debug_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEBUG, "MicrophoneDisplay: BiDirectionalAudio:%{BOOL}d PortraitHidden:%{BOOL}d LiveStreaming:%{BOOL}d", v19, 0x14u);
   }
 }
 
 - (void)updateMicrophoneVisibility
 {
-  v3 = [(HUNCCameraPlayerViewController *)self shouldDisplayMicrophoneControl];
-  v7 = [(HUNCCameraPlayerViewController *)self liveContentViewController];
-  v4 = [v7 microphoneControl];
-  v5 = v4;
+  shouldDisplayMicrophoneControl = [(HUNCCameraPlayerViewController *)self shouldDisplayMicrophoneControl];
+  liveContentViewController = [(HUNCCameraPlayerViewController *)self liveContentViewController];
+  microphoneControl = [liveContentViewController microphoneControl];
+  v5 = microphoneControl;
   v6 = 0.0;
-  if (v3)
+  if (shouldDisplayMicrophoneControl)
   {
     v6 = 1.0;
   }
 
-  [v4 setAlpha:v6];
+  [microphoneControl setAlpha:v6];
 }
 
 - (BOOL)shouldDisplayMicrophoneControl
 {
-  v3 = [(HUNCCameraPlayerViewController *)self cameraProfile];
-  if ([v3 hf_supportsBidirectionalAudio])
+  cameraProfile = [(HUNCCameraPlayerViewController *)self cameraProfile];
+  if ([cameraProfile hf_supportsBidirectionalAudio])
   {
-    v4 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-    if ([v4 isLiveStreamPlaying])
+    playbackEngine = [(HUNCCameraPlayerViewController *)self playbackEngine];
+    if ([playbackEngine isLiveStreamPlaying])
     {
-      v5 = [(HUNCCameraPlayerViewController *)self hu_playbackControlsAreVisible];
+      hu_playbackControlsAreVisible = [(HUNCCameraPlayerViewController *)self hu_playbackControlsAreVisible];
     }
 
     else
     {
-      v5 = 0;
+      hu_playbackControlsAreVisible = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    hu_playbackControlsAreVisible = 0;
   }
 
-  return v5;
+  return hu_playbackControlsAreVisible;
 }
 
 - (void)toggleMicrophoneState
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-  v4 = [v3 isMicrophoneEnabled];
-  v5 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-  [v5 setMicrophoneEnabled:v4 ^ 1u];
+  playbackEngine = [(HUNCCameraPlayerViewController *)self playbackEngine];
+  isMicrophoneEnabled = [playbackEngine isMicrophoneEnabled];
+  playbackEngine2 = [(HUNCCameraPlayerViewController *)self playbackEngine];
+  [playbackEngine2 setMicrophoneEnabled:isMicrophoneEnabled ^ 1u];
 
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(HUNCCameraPlayerViewController *)self playbackEngine];
+    playbackEngine3 = [(HUNCCameraPlayerViewController *)self playbackEngine];
     v16[0] = 67109120;
-    v16[1] = [v7 isMicrophoneEnabled];
+    v16[1] = [playbackEngine3 isMicrophoneEnabled];
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "Toggled microphone state:%{BOOL}d.", v16, 8u);
   }
 
-  v8 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-  v9 = [v8 isMicrophoneEnabled];
+  playbackEngine4 = [(HUNCCameraPlayerViewController *)self playbackEngine];
+  isMicrophoneEnabled2 = [playbackEngine4 isMicrophoneEnabled];
 
-  v10 = [(HUNCCameraPlayerViewController *)self liveContentViewController];
-  v11 = [v10 microphoneControl];
-  v12 = v11;
-  if (v9)
+  liveContentViewController = [(HUNCCameraPlayerViewController *)self liveContentViewController];
+  microphoneControl = [liveContentViewController microphoneControl];
+  v12 = microphoneControl;
+  if (isMicrophoneEnabled2)
   {
-    [v11 setTalking:1];
+    [microphoneControl setTalking:1];
 
-    v13 = [(HUNCCameraPlayerViewController *)self playerController];
-    [v13 setMuted:0];
+    playerController = [(HUNCCameraPlayerViewController *)self playerController];
+    [playerController setMuted:0];
   }
 
   else
   {
-    [v11 setTalking:0];
+    [microphoneControl setTalking:0];
 
-    v13 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-    v14 = [v13 prefersAudioEnabled];
-    v15 = [(HUNCCameraPlayerViewController *)self playerController];
-    [v15 setMuted:v14 ^ 1u];
+    playerController = [(HUNCCameraPlayerViewController *)self playbackEngine];
+    prefersAudioEnabled = [playerController prefersAudioEnabled];
+    playerController2 = [(HUNCCameraPlayerViewController *)self playerController];
+    [playerController2 setMuted:prefersAudioEnabled ^ 1u];
   }
 }
 
 - (void)updateVolumeControlVisibility
 {
-  v6 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-  v3 = [v6 shouldDisplayVolumeControls];
-  v4 = [(HUNCCameraPlayerViewController *)self behavior];
-  v5 = [v4 behaviorContext];
-  [v5 setPlaybackControlsIncludeVolumeControls:v3];
+  playbackEngine = [(HUNCCameraPlayerViewController *)self playbackEngine];
+  shouldDisplayVolumeControls = [playbackEngine shouldDisplayVolumeControls];
+  behavior = [(HUNCCameraPlayerViewController *)self behavior];
+  behaviorContext = [behavior behaviorContext];
+  [behaviorContext setPlaybackControlsIncludeVolumeControls:shouldDisplayVolumeControls];
 }
 
 - (void)updateLiveButton
 {
-  v4 = [(HUNCCameraPlayerViewController *)self liveButtonView];
-  v3 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-  [v4 updateDisplayForStreaming:{objc_msgSend(v3, "isLiveStreamPlaying")}];
+  liveButtonView = [(HUNCCameraPlayerViewController *)self liveButtonView];
+  playbackEngine = [(HUNCCameraPlayerViewController *)self playbackEngine];
+  [liveButtonView updateDisplayForStreaming:{objc_msgSend(playbackEngine, "isLiveStreamPlaying")}];
 }
 
 - (HUCameraLiveButtonView)liveButtonView
@@ -1733,25 +1733,25 @@ LABEL_7:
 - (void)dealloc
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-  [v4 pause];
+  playbackEngine = [(HUNCCameraPlayerViewController *)self playbackEngine];
+  [playbackEngine pause];
 
-  v5 = [(HUNCCameraPlayerViewController *)self playbackEngine];
-  [v5 removeObserver:self];
+  playbackEngine2 = [(HUNCCameraPlayerViewController *)self playbackEngine];
+  [playbackEngine2 removeObserver:self];
 
-  v6 = [(HUNCCameraPlayerViewController *)self miniScrubberViewController];
-  v7 = [v6 view];
-  [v7 removeFromSuperview];
+  miniScrubberViewController = [(HUNCCameraPlayerViewController *)self miniScrubberViewController];
+  view = [miniScrubberViewController view];
+  [view removeFromSuperview];
 
-  v8 = [(HUNCCameraPlayerViewController *)self miniScrubberViewController];
-  [(HUNCCameraPlayerViewController *)self removeChildViewController:v8];
+  miniScrubberViewController2 = [(HUNCCameraPlayerViewController *)self miniScrubberViewController];
+  [(HUNCCameraPlayerViewController *)self removeChildViewController:miniScrubberViewController2];
 
   [(HUNCCameraPlayerViewController *)self setMiniScrubberViewController:0];
   [(HUNCCameraPlayerViewController *)self setDelegate:0];
   [(HUNCCameraPlayerViewController *)self setPlaybackEngine:0];
-  v9 = [(HUNCCameraPlayerViewController *)self liveContentViewController];
-  v10 = [v9 viewIfLoaded];
-  [v10 removeFromSuperview];
+  liveContentViewController = [(HUNCCameraPlayerViewController *)self liveContentViewController];
+  viewIfLoaded = [liveContentViewController viewIfLoaded];
+  [viewIfLoaded removeFromSuperview];
 
   [(HUNCCameraPlayerViewController *)self setLiveContentViewController:0];
   v11 = HFLogForCategory();
@@ -1759,7 +1759,7 @@ LABEL_7:
   {
     v12 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
     v17 = v12;
     _os_log_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEFAULT, "%@: %@", buf, 0x16u);

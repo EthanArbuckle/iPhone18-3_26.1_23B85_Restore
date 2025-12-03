@@ -1,12 +1,12 @@
 @interface CMFoundationModelClient
-- (BOOL)requestPrewarmAndReturnError:(id *)a3;
-- (_TtC15CoreMotionFDNML23CMFoundationModelClient)initWithSupportedAssetBundleIdentifiers:(id)a3 useCaseID:(id)a4 onBehalfOfPID:(int64_t)a5 loggingIdentifier:(id)a6;
-- (void)sendAsyncWithRequest:(_TtC15CoreMotionFDNML24CMFoundationModelRequest *)a3 loggingID:(NSString *)a4 completionHandler:(id)a5;
+- (BOOL)requestPrewarmAndReturnError:(id *)error;
+- (_TtC15CoreMotionFDNML23CMFoundationModelClient)initWithSupportedAssetBundleIdentifiers:(id)identifiers useCaseID:(id)d onBehalfOfPID:(int64_t)iD loggingIdentifier:(id)identifier;
+- (void)sendAsyncWithRequest:(_TtC15CoreMotionFDNML24CMFoundationModelRequest *)request loggingID:(NSString *)d completionHandler:(id)handler;
 @end
 
 @implementation CMFoundationModelClient
 
-- (_TtC15CoreMotionFDNML23CMFoundationModelClient)initWithSupportedAssetBundleIdentifiers:(id)a3 useCaseID:(id)a4 onBehalfOfPID:(int64_t)a5 loggingIdentifier:(id)a6
+- (_TtC15CoreMotionFDNML23CMFoundationModelClient)initWithSupportedAssetBundleIdentifiers:(id)identifiers useCaseID:(id)d onBehalfOfPID:(int64_t)iD loggingIdentifier:(id)identifier
 {
   sub_245F768E8();
   sub_245F76878();
@@ -23,11 +23,11 @@
   return [(CMFoundationModelClient *)&v11 init];
 }
 
-- (BOOL)requestPrewarmAndReturnError:(id *)a3
+- (BOOL)requestPrewarmAndReturnError:(id *)error
 {
   if (*(&self->super.isa + OBJC_IVAR____TtC15CoreMotionFDNML23CMFoundationModelClient_maybeSession))
   {
-    v3 = self;
+    selfCopy = self;
 
     sub_245F76578();
   }
@@ -35,16 +35,16 @@
   return 1;
 }
 
-- (void)sendAsyncWithRequest:(_TtC15CoreMotionFDNML24CMFoundationModelRequest *)a3 loggingID:(NSString *)a4 completionHandler:(id)a5
+- (void)sendAsyncWithRequest:(_TtC15CoreMotionFDNML24CMFoundationModelRequest *)request loggingID:(NSString *)d completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE38D38, &qword_245F798B0);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = request;
+  v14[3] = d;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_245F76928();
@@ -59,9 +59,9 @@
   v17[3] = 0;
   v17[4] = &unk_245F798C8;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  requestCopy = request;
+  dCopy = d;
+  selfCopy = self;
   sub_245F73DE0(0, 0, v12, &unk_245F798D0, v17);
 }
 

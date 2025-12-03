@@ -1,9 +1,9 @@
 @interface SSVPlayActivityEventItemIDs
-- (SSVPlayActivityEventItemIDs)initWithCoder:(id)a3;
-- (id)_copyWithClass:(Class)a3;
+- (SSVPlayActivityEventItemIDs)initWithCoder:(id)coder;
+- (id)_copyWithClass:(Class)class;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SSVPlayActivityEventItemIDs
@@ -60,52 +60,52 @@
   return v6;
 }
 
-- (SSVPlayActivityEventItemIDs)initWithCoder:(id)a3
+- (SSVPlayActivityEventItemIDs)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SSVPlayActivityEventItemIDs *)self init];
   if (v5)
   {
-    v5->_cloudID = [v4 decodeInt64ForKey:@"SSVPlayActivityEventItemIDsCloudID"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SSVPlayActivityEventItemIDsLyricsID"];
+    v5->_cloudID = [coderCopy decodeInt64ForKey:@"SSVPlayActivityEventItemIDsCloudID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SSVPlayActivityEventItemIDsLyricsID"];
     lyricsID = v5->_lyricsID;
     v5->_lyricsID = v6;
 
-    v5->_purchasedAdamID = [v4 decodeInt64ForKey:@"SSVPlayActivityEventItemIDsPurchasedAdamID"];
-    v5->_radioAdamID = [v4 decodeInt64ForKey:@"SSVPlayActivityEventItemIDsRadioAdamID"];
-    v5->_equivalencySourceAdamID = [v4 decodeInt64ForKey:@"SSVPlayActivityEventItemIDsEquivalencySourceAdamID"];
-    v5->_subscriptionAdamID = [v4 decodeInt64ForKey:@"SSVPlayActivityEventItemIDsSubscriptionAdamID"];
-    v5->_tvShowPurchasedAdamID = [v4 decodeInt64ForKey:@"SSVPlayActivityEventItemIDsTVShowPurchasedAdamID"];
-    v5->_tvShowSubscriptionAdamID = [v4 decodeInt64ForKey:@"SSVPlayActivityEventItemIDsTVShowSubscriptionAdamID"];
+    v5->_purchasedAdamID = [coderCopy decodeInt64ForKey:@"SSVPlayActivityEventItemIDsPurchasedAdamID"];
+    v5->_radioAdamID = [coderCopy decodeInt64ForKey:@"SSVPlayActivityEventItemIDsRadioAdamID"];
+    v5->_equivalencySourceAdamID = [coderCopy decodeInt64ForKey:@"SSVPlayActivityEventItemIDsEquivalencySourceAdamID"];
+    v5->_subscriptionAdamID = [coderCopy decodeInt64ForKey:@"SSVPlayActivityEventItemIDsSubscriptionAdamID"];
+    v5->_tvShowPurchasedAdamID = [coderCopy decodeInt64ForKey:@"SSVPlayActivityEventItemIDsTVShowPurchasedAdamID"];
+    v5->_tvShowSubscriptionAdamID = [coderCopy decodeInt64ForKey:@"SSVPlayActivityEventItemIDsTVShowSubscriptionAdamID"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   cloudID = self->_cloudID;
-  v5 = a3;
-  [v5 encodeInt64:cloudID forKey:@"SSVPlayActivityEventItemIDsCloudID"];
-  [v5 encodeObject:self->_lyricsID forKey:@"SSVPlayActivityEventItemIDsLyricsID"];
-  [v5 encodeInt64:self->_purchasedAdamID forKey:@"SSVPlayActivityEventItemIDsPurchasedAdamID"];
-  [v5 encodeInt64:self->_radioAdamID forKey:@"SSVPlayActivityEventItemIDsRadioAdamID"];
-  [v5 encodeInt64:self->_equivalencySourceAdamID forKey:@"SSVPlayActivityEventItemIDsEquivalencySourceAdamID"];
-  [v5 encodeInt64:self->_subscriptionAdamID forKey:@"SSVPlayActivityEventItemIDsSubscriptionAdamID"];
-  [v5 encodeInt64:self->_tvShowPurchasedAdamID forKey:@"SSVPlayActivityEventItemIDsTVShowPurchasedAdamID"];
-  [v5 encodeInt64:self->_tvShowSubscriptionAdamID forKey:@"SSVPlayActivityEventItemIDsTVShowSubscriptionAdamID"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:cloudID forKey:@"SSVPlayActivityEventItemIDsCloudID"];
+  [coderCopy encodeObject:self->_lyricsID forKey:@"SSVPlayActivityEventItemIDsLyricsID"];
+  [coderCopy encodeInt64:self->_purchasedAdamID forKey:@"SSVPlayActivityEventItemIDsPurchasedAdamID"];
+  [coderCopy encodeInt64:self->_radioAdamID forKey:@"SSVPlayActivityEventItemIDsRadioAdamID"];
+  [coderCopy encodeInt64:self->_equivalencySourceAdamID forKey:@"SSVPlayActivityEventItemIDsEquivalencySourceAdamID"];
+  [coderCopy encodeInt64:self->_subscriptionAdamID forKey:@"SSVPlayActivityEventItemIDsSubscriptionAdamID"];
+  [coderCopy encodeInt64:self->_tvShowPurchasedAdamID forKey:@"SSVPlayActivityEventItemIDsTVShowPurchasedAdamID"];
+  [coderCopy encodeInt64:self->_tvShowSubscriptionAdamID forKey:@"SSVPlayActivityEventItemIDsTVShowSubscriptionAdamID"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
 
   return [(SSVPlayActivityEventItemIDs *)self _copyWithClass:v4];
 }
 
-- (id)_copyWithClass:(Class)a3
+- (id)_copyWithClass:(Class)class
 {
-  v4 = objc_alloc_init(a3);
+  v4 = objc_alloc_init(class);
   v5 = v4;
   if (v4)
   {

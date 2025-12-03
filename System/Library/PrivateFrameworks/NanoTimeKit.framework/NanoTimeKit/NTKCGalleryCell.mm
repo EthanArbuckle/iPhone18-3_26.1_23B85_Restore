@@ -3,28 +3,28 @@
 + (id)reuseIdentifier;
 - (CGPoint)_contentInsetPoint;
 - (CGPoint)contentOffset;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section;
 - (NTKCGalleryCell)init;
-- (NTKCGalleryCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (NTKCGalleryCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (NTKCGalleryCellDelegate)delegate;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)containerViewForFace:(id)a3;
-- (id)faceForLocation:(CGPoint)a3;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)containerViewForFace:(id)face;
+- (id)faceForLocation:(CGPoint)location;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)_configureViews;
 - (void)_fontSizeDidChange;
 - (void)_resetSnapshotRequests;
 - (void)clearSelectedFaces;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)selectFace:(id)a3;
-- (void)setAllSnapshotsLoaded:(BOOL)a3;
-- (void)setCollection:(id)a3;
-- (void)setContentOffset:(CGPoint)a3;
-- (void)updateFaceAtIndex:(unint64_t)a3;
+- (void)selectFace:(id)face;
+- (void)setAllSnapshotsLoaded:(BOOL)loaded;
+- (void)setCollection:(id)collection;
+- (void)setContentOffset:(CGPoint)offset;
+- (void)updateFaceAtIndex:(unint64_t)index;
 @end
 
 @implementation NTKCGalleryCell
@@ -38,10 +38,10 @@
 
 + (double)estimatedRowHeight
 {
-  v2 = [MEMORY[0x277D756E0] prominentInsetGroupedHeaderConfiguration];
-  v3 = [v2 textProperties];
-  v4 = [v3 font];
-  [v4 lineHeight];
+  prominentInsetGroupedHeaderConfiguration = [MEMORY[0x277D756E0] prominentInsetGroupedHeaderConfiguration];
+  textProperties = [prominentInsetGroupedHeaderConfiguration textProperties];
+  font = [textProperties font];
+  [font lineHeight];
   v6 = v5 + 9.0;
 
   [NTKCFaceContainerView sizeForFaceSize:1 style:FaceSize()];
@@ -50,18 +50,18 @@
 
 - (NTKCGalleryCell)init
 {
-  v3 = [objc_opt_class() reuseIdentifier];
-  v4 = [(NTKCGalleryCell *)self initWithStyle:0 reuseIdentifier:v3];
+  reuseIdentifier = [objc_opt_class() reuseIdentifier];
+  v4 = [(NTKCGalleryCell *)self initWithStyle:0 reuseIdentifier:reuseIdentifier];
 
   return v4;
 }
 
-- (NTKCGalleryCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (NTKCGalleryCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v73[3] = *MEMORY[0x277D85DE8];
   v71.receiver = self;
   v71.super_class = NTKCGalleryCell;
-  v4 = [(NTKCGalleryCell *)&v71 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(NTKCGalleryCell *)&v71 initWithStyle:0 reuseIdentifier:identifier];
   if (v4)
   {
     v5 = BPSBackgroundColor();
@@ -119,9 +119,9 @@
     v19 = [v18 initWithFrame:v4->_layout collectionViewLayout:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [(NTKCGalleryCell *)v4 setCollectionView:v19];
 
-    v20 = [(NTKCGalleryCell *)v4 collectionView];
-    v21 = [v20 layer];
-    [v21 setAllowsGroupOpacity:0];
+    collectionView = [(NTKCGalleryCell *)v4 collectionView];
+    layer = [collectionView layer];
+    [layer setAllowsGroupOpacity:0];
 
     collectionView = v4->_collectionView;
     v23 = objc_opt_class();
@@ -180,33 +180,33 @@
     [(UIStackView *)v4->_contentStack setCustomSpacing:v4->_titleStack afterView:11.0];
     [(UIStackView *)v4->_contentStack setCustomSpacing:v4->_collectionView afterView:15.0];
     [(UIStackView *)v4->_contentStack setTranslatesAutoresizingMaskIntoConstraints:0];
-    v47 = [(NTKCGalleryCell *)v4 contentView];
-    [v47 addSubview:v4->_contentStack];
+    contentView = [(NTKCGalleryCell *)v4 contentView];
+    [contentView addSubview:v4->_contentStack];
 
-    v48 = [(NTKCGalleryCell *)v4 contentView];
-    v49 = [v48 leadingAnchor];
-    v50 = [(UIStackView *)v4->_contentStack leadingAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50];
+    contentView2 = [(NTKCGalleryCell *)v4 contentView];
+    leadingAnchor = [contentView2 leadingAnchor];
+    leadingAnchor2 = [(UIStackView *)v4->_contentStack leadingAnchor];
+    v51 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-    v52 = [(NTKCGalleryCell *)v4 contentView];
-    v53 = [v52 trailingAnchor];
-    v54 = [(UIStackView *)v4->_contentStack trailingAnchor];
-    v55 = [v53 constraintEqualToAnchor:v54];
+    contentView3 = [(NTKCGalleryCell *)v4 contentView];
+    trailingAnchor = [contentView3 trailingAnchor];
+    trailingAnchor2 = [(UIStackView *)v4->_contentStack trailingAnchor];
+    v55 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
-    v56 = [(UIStackView *)v4->_contentStack topAnchor];
-    v57 = [(NTKCGalleryCell *)v4 contentView];
-    v58 = [v57 topAnchor];
-    v59 = [v56 constraintEqualToAnchor:v58 constant:9.0];
+    topAnchor = [(UIStackView *)v4->_contentStack topAnchor];
+    contentView4 = [(NTKCGalleryCell *)v4 contentView];
+    topAnchor2 = [contentView4 topAnchor];
+    v59 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:9.0];
 
-    v60 = [(NTKCGalleryCell *)v4 contentView];
-    v61 = [v60 bottomAnchor];
-    v62 = [(UIStackView *)v4->_contentStack bottomAnchor];
-    v63 = [v61 constraintEqualToAnchor:v62 constant:25.0];
+    contentView5 = [(NTKCGalleryCell *)v4 contentView];
+    bottomAnchor = [contentView5 bottomAnchor];
+    bottomAnchor2 = [(UIStackView *)v4->_contentStack bottomAnchor];
+    v63 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:25.0];
 
     LODWORD(v64) = 1132068864;
     [v63 setPriority:v64];
-    v65 = [(UICollectionView *)v4->_collectionView heightAnchor];
-    v66 = [v65 constraintEqualToConstant:0.0];
+    heightAnchor = [(UICollectionView *)v4->_collectionView heightAnchor];
+    v66 = [heightAnchor constraintEqualToConstant:0.0];
     cvHeightConstraint = v4->_cvHeightConstraint;
     v4->_cvHeightConstraint = v66;
 
@@ -217,8 +217,8 @@
     v72[4] = v4->_cvHeightConstraint;
     v68 = [MEMORY[0x277CBEA60] arrayWithObjects:v72 count:5];
     [MEMORY[0x277CCAAD0] activateConstraints:v68];
-    v69 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v69 addObserver:v4 selector:sel__fontSizeDidChange name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__fontSizeDidChange name:*MEMORY[0x277D76810] object:0];
 
     [(NTKCGalleryCell *)v4 _fontSizeDidChange];
   }
@@ -231,27 +231,27 @@
   collection = self->_collection;
   if (collection)
   {
-    v4 = [(NTKGalleryCollection *)collection title];
-    [(UILabel *)self->_title setText:v4];
+    title = [(NTKGalleryCollection *)collection title];
+    [(UILabel *)self->_title setText:title];
 
-    v5 = [(NTKGalleryCollection *)self->_collection descriptionText];
-    [(UILabel *)self->_footer setText:v5];
+    descriptionText = [(NTKGalleryCollection *)self->_collection descriptionText];
+    [(UILabel *)self->_footer setText:descriptionText];
 
     [NTKCFaceContainerView sizeForFaceSize:1 style:FaceSize()];
     v7 = v6;
     v9 = v8;
     v10 = MEMORY[0x277D76620];
-    v11 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v11);
+    preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (IsAccessibilityCategory)
     {
       v7 = v7 * 1.5;
     }
 
-    v13 = [(NTKGalleryCollection *)self->_collection calloutName];
+    calloutName = [(NTKGalleryCollection *)self->_collection calloutName];
 
-    if (v13)
+    if (calloutName)
     {
       v14 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769C0]];
       LODWORD(v15) = 0.5;
@@ -265,8 +265,8 @@
     if (-[NTKGalleryCollection numberOfFaces](self->_collection, "numberOfFaces") == 1 && (-[NTKGalleryCollection descriptionText](self->_collection, "descriptionText"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 length], v18, v19))
     {
       v20 = *MEMORY[0x277D76838];
-      v21 = [*v10 preferredContentSizeCategory];
-      v22 = UIContentSizeCategoryCompareToCategory(v20, v21) != NSOrderedAscending;
+      preferredContentSizeCategory2 = [*v10 preferredContentSizeCategory];
+      v22 = UIContentSizeCategoryCompareToCategory(v20, preferredContentSizeCategory2) != NSOrderedAscending;
 
       self->_showFooterInCollectionView = v22;
     }
@@ -284,23 +284,23 @@
   }
 }
 
-- (void)setAllSnapshotsLoaded:(BOOL)a3
+- (void)setAllSnapshotsLoaded:(BOOL)loaded
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (self->_allSnapshotsLoaded != a3)
+  if (self->_allSnapshotsLoaded != loaded)
   {
-    v3 = a3;
-    self->_allSnapshotsLoaded = a3;
+    loadedCopy = loaded;
+    self->_allSnapshotsLoaded = loaded;
     v5 = _NTKLoggingObjectForDomain(24, "NTKLoggingDomainCompanionApp");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(NTKGalleryCollection *)self->_collection title];
+      title = [(NTKGalleryCollection *)self->_collection title];
       v7 = 134218498;
-      v8 = self;
+      selfCopy = self;
       v9 = 2112;
-      v10 = v6;
+      v10 = title;
       v11 = 2048;
-      v12 = v3;
+      v12 = loadedCopy;
       _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "Cell %p (%@) - snapshots loaded %lu", &v7, 0x20u);
     }
   }
@@ -312,28 +312,28 @@
   v3 = _NTKLoggingObjectForDomain(24, "NTKLoggingDomainCompanionApp");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(NTKGalleryCollection *)self->_collection title];
+    title = [(NTKGalleryCollection *)self->_collection title];
     *buf = 134218242;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v4;
+    v12 = title;
     _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "Cell %p (%@) preparing for reuse", buf, 0x16u);
   }
 
   v8.receiver = self;
   v8.super_class = NTKCGalleryCell;
   [(NTKCGalleryCell *)&v8 prepareForReuse];
-  v5 = [(NTKGalleryCollection *)self->_collection delegate];
+  delegate = [(NTKGalleryCollection *)self->_collection delegate];
 
-  if (v5 == self)
+  if (delegate == self)
   {
     [(NTKGalleryCollection *)self->_collection setDelegate:0];
   }
 
-  v6 = [(NTKCGalleryCell *)self collectionView];
-  v7 = [(NTKCGalleryCell *)self collectionView];
-  [v7 contentOffset];
-  [v6 setContentOffset:0 animated:?];
+  collectionView = [(NTKCGalleryCell *)self collectionView];
+  collectionView2 = [(NTKCGalleryCell *)self collectionView];
+  [collectionView2 contentOffset];
+  [collectionView setContentOffset:0 animated:?];
 
   [(NTKCGalleryCell *)self _resetSnapshotRequests];
 }
@@ -344,11 +344,11 @@
   v3 = _NTKLoggingObjectForDomain(24, "NTKLoggingDomainCompanionApp");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(NTKGalleryCollection *)self->_collection title];
+    title = [(NTKGalleryCollection *)self->_collection title];
     *buf = 134218242;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
-    v20 = v4;
+    v20 = title;
     _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "Resetting snapshot requests for cell %p (%@)", buf, 0x16u);
   }
 
@@ -389,8 +389,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76810] object:0];
 
   v4.receiver = self;
   v4.super_class = NTKCGalleryCell;
@@ -415,51 +415,51 @@
   }
 }
 
-- (void)setCollection:(id)a3
+- (void)setCollection:(id)collection
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  collectionCopy = collection;
   v5 = _NTKLoggingObjectForDomain(24, "NTKLoggingDomainCompanionApp");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218754;
-    v48 = self;
+    selfCopy3 = self;
     v49 = 2112;
-    v50 = self;
+    selfCopy2 = self;
     v51 = 2112;
-    v52 = v4;
+    v52 = collectionCopy;
     v53 = 2048;
-    v54 = v4;
+    v54 = collectionCopy;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "Cell %p (%@) setting collection to %@ (%p)", buf, 0x2Au);
   }
 
-  objc_storeStrong(&self->_collection, a3);
-  v6 = [v4 delegate];
-  v7 = v6 == 0;
+  objc_storeStrong(&self->_collection, collection);
+  delegate = [collectionCopy delegate];
+  v7 = delegate == 0;
 
   if (v7)
   {
-    [v4 setDelegate:self];
+    [collectionCopy setDelegate:self];
   }
 
   [(NTKCGalleryCell *)self _configureViews];
   [(NTKCGalleryCell *)self _resetSnapshotRequests];
   v8 = +[NTKFaceSnapshotCache snapshotCache];
-  v9 = [v4 numberOfFaces];
-  v10 = v9;
-  if (v9 >= 4)
+  numberOfFaces = [collectionCopy numberOfFaces];
+  v10 = numberOfFaces;
+  if (numberOfFaces >= 4)
   {
     v11 = 4;
   }
 
   else
   {
-    v11 = v9;
+    v11 = numberOfFaces;
   }
 
-  if (v9)
+  if (numberOfFaces)
   {
-    v12 = [v4 faceAtIndex:0];
+    v12 = [collectionCopy faceAtIndex:0];
     v13 = [v8 cachedSnapshotOfFace:v12];
     v14 = v13 == 0;
 
@@ -479,7 +479,7 @@
           break;
         }
 
-        v17 = [v4 faceAtIndex:v15];
+        v17 = [collectionCopy faceAtIndex:v15];
         v18 = [v8 cachedSnapshotOfFace:v17];
         v19 = v18 == 0;
 
@@ -500,11 +500,11 @@
   v21 = _NTKLoggingObjectForDomain(24, "NTKLoggingDomainCompanionApp");
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [*(&self->super.super.super.super.isa + v36) title];
+    title = [*(&self->super.super.super.super.isa + v36) title];
     *buf = 134218242;
-    v48 = self;
+    selfCopy3 = self;
     v49 = 2112;
-    v50 = v22;
+    selfCopy2 = title;
     _os_log_impl(&dword_22D9C5000, v21, OS_LOG_TYPE_DEFAULT, "Cell %p (%@) - reloading data", buf, 0x16u);
   }
 
@@ -520,7 +520,7 @@
 
   [(UICollectionView *)self->_collectionView setAlpha:v23];
   [(UILabel *)self->_footer setAlpha:v23];
-  v37 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (!v20)
   {
     v24 = dispatch_group_create();
@@ -530,7 +530,7 @@
       v25 = 0;
       do
       {
-        v26 = [v4 faceAtIndex:v25];
+        v26 = [collectionCopy faceAtIndex:v25];
         v27 = [v8 cachedSnapshotOfFace:v26];
         if (!v27)
         {
@@ -543,7 +543,7 @@
           v45[3] = &unk_278781EF8;
           v46 = v24;
           v30 = [(NTKFaceSnapshotCacheRequest *)v29 initWithFace:v26 options:v28 completion:v45];
-          [v37 addObject:v30];
+          [array addObject:v30];
           [v8 fetchSnapshotWithRequest:v30];
         }
 
@@ -554,18 +554,18 @@
     }
 
     objc_initWeak(buf, self);
-    v31 = [*(&self->super.super.super.super.isa + v36) title];
+    title2 = [*(&self->super.super.super.super.isa + v36) title];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __33__NTKCGalleryCell_setCollection___block_invoke_2;
     block[3] = &unk_278781F40;
     objc_copyWeak(v44, buf);
-    v40 = v4;
-    v32 = v31;
+    v40 = collectionCopy;
+    v32 = title2;
     v41 = v32;
     v44[1] = v11;
     v42 = v8;
-    v33 = v37;
+    v33 = array;
     v43 = v33;
     dispatch_group_notify(v24, MEMORY[0x277D85CD0], block);
     v34 = [v33 copy];
@@ -678,10 +678,10 @@ uint64_t __33__NTKCGalleryCell_setCollection___block_invoke_2_90(uint64_t a1)
   return result;
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   [(NTKCGalleryCell *)self layoutIfNeeded];
   [(NTKCGalleryCell *)self _contentInsetPoint];
   v7 = x - v6;
@@ -703,21 +703,21 @@ uint64_t __33__NTKCGalleryCell_setCollection___block_invoke_2_90(uint64_t a1)
   return result;
 }
 
-- (void)updateFaceAtIndex:(unint64_t)a3
+- (void)updateFaceAtIndex:(unint64_t)index
 {
   v6[1] = *MEMORY[0x277D85DE8];
   collectionView = self->_collectionView;
-  v4 = [MEMORY[0x277CCAA70] indexPathForItem:a3 inSection:0];
+  v4 = [MEMORY[0x277CCAA70] indexPathForItem:index inSection:0];
   v6[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
   [(UICollectionView *)collectionView reloadItemsAtIndexPaths:v5];
 }
 
-- (void)selectFace:(id)a3
+- (void)selectFace:(id)face
 {
-  v4 = a3;
-  v5 = [(NTKCGalleryCell *)self collection];
-  v6 = [v5 indexOfFace:v4];
+  faceCopy = face;
+  collection = [(NTKCGalleryCell *)self collection];
+  v6 = [collection indexOfFace:faceCopy];
 
   collectionView = self->_collectionView;
   v8 = [MEMORY[0x277CCAA70] indexPathForItem:v6 inSection:0];
@@ -727,12 +727,12 @@ uint64_t __33__NTKCGalleryCell_setCollection___block_invoke_2_90(uint64_t a1)
 - (void)clearSelectedFaces
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
+  indexPathsForSelectedItems = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [indexPathsForSelectedItems countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -744,24 +744,24 @@ uint64_t __33__NTKCGalleryCell_setCollection___block_invoke_2_90(uint64_t a1)
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
         [(UICollectionView *)self->_collectionView deselectItemAtIndexPath:*(*(&v8 + 1) + 8 * v7++) animated:1];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [indexPathsForSelectedItems countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (id)faceForLocation:(CGPoint)a3
+- (id)faceForLocation:(CGPoint)location
 {
   collectionView = self->_collectionView;
-  [(NTKCGalleryCell *)self convertPoint:collectionView toView:a3.x, a3.y];
+  [(NTKCGalleryCell *)self convertPoint:collectionView toView:location.x, location.y];
   v5 = [(UICollectionView *)collectionView indexPathForItemAtPoint:?];
   v6 = v5;
   if (v5)
@@ -777,31 +777,31 @@ uint64_t __33__NTKCGalleryCell_setCollection___block_invoke_2_90(uint64_t a1)
   return v7;
 }
 
-- (id)containerViewForFace:(id)a3
+- (id)containerViewForFace:(id)face
 {
-  v4 = [MEMORY[0x277CCAA70] indexPathForItem:-[NTKGalleryCollection indexOfFace:](self->_collection inSection:{"indexOfFace:", a3), 0}];
+  v4 = [MEMORY[0x277CCAA70] indexPathForItem:-[NTKGalleryCollection indexOfFace:](self->_collection inSection:{"indexOfFace:", face), 0}];
   v5 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:v4];
-  v6 = [v5 faceContainerView];
+  faceContainerView = [v5 faceContainerView];
 
-  return v6;
+  return faceContainerView;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   v16 = *MEMORY[0x277D85DE8];
-  if ([(NTKCGalleryCell *)self allSnapshotsLoaded:a3])
+  if ([(NTKCGalleryCell *)self allSnapshotsLoaded:view])
   {
-    v5 = [(NTKGalleryCollection *)self->_collection numberOfFaces];
+    numberOfFaces = [(NTKGalleryCollection *)self->_collection numberOfFaces];
     v6 = _NTKLoggingObjectForDomain(24, "NTKLoggingDomainCompanionApp");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(NTKGalleryCollection *)self->_collection title];
+      title = [(NTKGalleryCollection *)self->_collection title];
       v10 = 134218498;
-      v11 = self;
+      selfCopy2 = self;
       v12 = 2112;
-      v13 = v7;
+      v13 = title;
       v14 = 2048;
-      v15 = v5;
+      v15 = numberOfFaces;
       _os_log_impl(&dword_22D9C5000, v6, OS_LOG_TYPE_DEFAULT, "Cell %p (%@)- number of items - %ld", &v10, 0x20u);
     }
   }
@@ -811,39 +811,39 @@ uint64_t __33__NTKCGalleryCell_setCollection___block_invoke_2_90(uint64_t a1)
     v6 = _NTKLoggingObjectForDomain(24, "NTKLoggingDomainCompanionApp");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(NTKGalleryCollection *)self->_collection title];
+      title2 = [(NTKGalleryCollection *)self->_collection title];
       v10 = 134218242;
-      v11 = self;
+      selfCopy2 = self;
       v12 = 2112;
-      v13 = v8;
+      v13 = title2;
       _os_log_impl(&dword_22D9C5000, v6, OS_LOG_TYPE_DEFAULT, "Cell %p (%@) - number of items - NOT loaded", &v10, 0x16u);
     }
 
-    v5 = 0;
+    numberOfFaces = 0;
   }
 
-  return v5;
+  return numberOfFaces;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   collectionView = self->_collectionView;
   v7 = +[_NTKCGalleryCollectionCell reuseIdentifier];
-  v8 = [(UICollectionView *)collectionView dequeueReusableCellWithReuseIdentifier:v7 forIndexPath:v5];
+  v8 = [(UICollectionView *)collectionView dequeueReusableCellWithReuseIdentifier:v7 forIndexPath:pathCopy];
 
-  v9 = [v5 item];
-  v10 = [(NTKGalleryCollection *)self->_collection faceAtIndex:v9];
-  v11 = [(NTKCGalleryCell *)self delegate];
-  v12 = [v11 galleryCell:self viewForFace:v10 atIndex:v9];
+  item = [pathCopy item];
+  v10 = [(NTKGalleryCollection *)self->_collection faceAtIndex:item];
+  delegate = [(NTKCGalleryCell *)self delegate];
+  v12 = [delegate galleryCell:self viewForFace:v10 atIndex:item];
   [v8 setFaceView:v12];
 
-  v13 = [(NTKGalleryCollection *)self->_collection calloutName];
+  calloutName = [(NTKGalleryCollection *)self->_collection calloutName];
 
-  if (v13)
+  if (calloutName)
   {
-    v14 = [(NTKGalleryCollection *)self->_collection calloutName];
-    v15 = (v14)[2](v14, v10);
+    calloutName2 = [(NTKGalleryCollection *)self->_collection calloutName];
+    v15 = (calloutName2)[2](calloutName2, v10);
     [v8 setCalloutName:v15];
   }
 
@@ -852,49 +852,49 @@ uint64_t __33__NTKCGalleryCell_setCollection___block_invoke_2_90(uint64_t a1)
     [v8 setCalloutName:0];
   }
 
-  [v8 setActive:{objc_msgSend(v5, "item") == self->_selectedIndex}];
+  [v8 setActive:{objc_msgSend(pathCopy, "item") == self->_selectedIndex}];
 
   return v8;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  pathCopy = path;
+  kindCopy = kind;
+  viewCopy = view;
   v11 = +[_NTKCGalleryCollectionFooter reuseIdentifier];
-  v12 = [v10 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:v11 forIndexPath:v8];
+  v12 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v11 forIndexPath:pathCopy];
 
-  v13 = [(NTKGalleryCollection *)self->_collection descriptionText];
-  [v12 setText:v13];
+  descriptionText = [(NTKGalleryCollection *)self->_collection descriptionText];
+  [v12 setText:descriptionText];
 
   return v12;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[NTKGalleryCollection faceAtIndex:](self->_collection, "faceAtIndex:", [v7 item]);
-  v9 = [(NTKCGalleryCell *)self delegate];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[NTKGalleryCollection faceAtIndex:](self->_collection, "faceAtIndex:", [pathCopy item]);
+  delegate = [(NTKCGalleryCell *)self delegate];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __59__NTKCGalleryCell_collectionView_didSelectItemAtIndexPath___block_invoke;
   v12[3] = &unk_27877E438;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  [v9 galleryCell:self didSelectFace:v8 finishedSelectionHandler:v12];
+  v13 = viewCopy;
+  v14 = pathCopy;
+  v10 = pathCopy;
+  v11 = viewCopy;
+  [delegate galleryCell:self didSelectFace:v8 finishedSelectionHandler:v12];
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = v6;
+  viewCopy = view;
+  v7 = viewCopy;
   if (self->_showFooterInCollectionView)
   {
-    [v6 bounds];
+    [viewCopy bounds];
     Width = CGRectGetWidth(v19);
     [v7 contentInset];
     v10 = v9;
@@ -920,10 +920,10 @@ uint64_t __33__NTKCGalleryCell_setCollection___block_invoke_2_90(uint64_t a1)
 
 - (void)_fontSizeDidChange
 {
-  v10 = [MEMORY[0x277D756E0] prominentInsetGroupedHeaderConfiguration];
-  v3 = [v10 textProperties];
-  v4 = [v3 font];
-  [(UILabel *)self->_title setFont:v4];
+  prominentInsetGroupedHeaderConfiguration = [MEMORY[0x277D756E0] prominentInsetGroupedHeaderConfiguration];
+  textProperties = [prominentInsetGroupedHeaderConfiguration textProperties];
+  font = [textProperties font];
+  [(UILabel *)self->_title setFont:font];
 
   v5 = NTKCScreenStyle();
   v6 = MEMORY[0x277D76968];

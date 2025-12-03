@@ -1,11 +1,11 @@
 @interface VNFaceGazeDetector
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-+ (id)supportedImageSizeSetForOptions:(id)a3 error:(id *)a4;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
++ (id)computeStagesToBindForConfigurationOptions:(id)options;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
++ (id)supportedImageSizeSetForOptions:(id)options error:(id *)error;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
 - (id).cxx_construct;
-- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8;
+- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 @end
 
 @implementation VNFaceGazeDetector
@@ -19,12 +19,12 @@
   return self;
 }
 
-- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8
+- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  v12 = a4;
-  v13 = a6;
-  v23 = a8;
-  v14 = [VNValidationUtilities requiredFaceObservationsInOptions:v12 error:a7];
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
+  v14 = [VNValidationUtilities requiredFaceObservationsInOptions:optionsCopy error:error];
   v15 = v14;
   if (!v14)
   {
@@ -40,18 +40,18 @@
 
   *(&v28 + 5) = 0;
   *&v28 = 0;
-  if (![VNValidationUtilities getFloatValue:&v28 forKey:@"VNFaceGazeDetectorProcessOption_GazeHeatMapThreshold" inOptions:v12 error:a7])
+  if (![VNValidationUtilities getFloatValue:&v28 forKey:@"VNFaceGazeDetectorProcessOption_GazeHeatMapThreshold" inOptions:optionsCopy error:error])
   {
     goto LABEL_15;
   }
 
-  if (![VNValidationUtilities getFloatValue:&v28 + 8 forKey:@"VNFaceGazeDetectorProcessOption_MinimumFaceDimension" inOptions:v12 error:a7])
+  if (![VNValidationUtilities getFloatValue:&v28 + 8 forKey:@"VNFaceGazeDetectorProcessOption_MinimumFaceDimension" inOptions:optionsCopy error:error])
   {
     goto LABEL_15;
   }
 
   v27 = 0.0;
-  if (![VNValidationUtilities getFloatValue:&v27 forKey:@"VNFaceGazeDetectorProcessOption_CommonGazeLocationRadius" inOptions:v12 error:a7])
+  if (![VNValidationUtilities getFloatValue:&v27 forKey:@"VNFaceGazeDetectorProcessOption_CommonGazeLocationRadius" inOptions:optionsCopy error:error])
   {
     goto LABEL_15;
   }
@@ -76,7 +76,7 @@
   }
 
   v26 = 0;
-  if (![VNValidationUtilities getBOOLValue:&v26 forKey:@"VNFaceGazeDetectorProcessOption_DontFollowGaze" inOptions:v12 withDefaultValue:0 error:a7, v17])
+  if (![VNValidationUtilities getBOOLValue:&v26 forKey:@"VNFaceGazeDetectorProcessOption_DontFollowGaze" inOptions:optionsCopy withDefaultValue:0 error:error, v17])
   {
 LABEL_15:
     v21 = 0;
@@ -84,7 +84,7 @@ LABEL_15:
   }
 
   BYTE12(v28) = v26;
-  v20 = [(VNDetector *)self validatedImageBufferFromOptions:v12 error:a7];
+  v20 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   v21 = v20;
   if (v20)
   {
@@ -515,31 +515,31 @@ LABEL_38:
   return *(*(*(a1 + 72) + 8) + 24);
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v16 = a4;
-  v17 = [(VNDetector *)self validatedImageBufferFromOptions:v16 error:a8];
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  optionsCopy = options;
+  v17 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   v18 = v17;
   if (v17)
   {
-    v19 = [v17 width];
-    v20 = [v18 height];
+    width = [v17 width];
+    height = [v18 height];
     ptr = self->_gazePredictor.__ptr_;
     v22 = *ptr;
     v23 = *(ptr + 1);
-    [v16 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
+    [optionsCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
     v28 = 0;
-    v24 = [v18 croppedBufferWithWidth:v22 height:v23 format:1111970369 cropRect:v16 options:a8 error:&v28 pixelBufferRepsCacheKey:{x * v19, y * v20, width * v19, height * v20}];
+    v24 = [v18 croppedBufferWithWidth:v22 height:v23 format:1111970369 cropRect:optionsCopy options:error error:&v28 pixelBufferRepsCacheKey:{x * width, y * height, width * width, height * height}];
     v25 = v28;
-    *a7 = v24;
+    *buffer = v24;
     v26 = v24 != 0;
     if (v24)
     {
-      [(VNDetector *)self recordImageCropQuickLookInfoToOptionsSafe:v16 cacheKey:v25 imageBuffer:v18];
+      [(VNDetector *)self recordImageCropQuickLookInfoToOptionsSafe:optionsCopy cacheKey:v25 imageBuffer:v18];
     }
   }
 
@@ -551,31 +551,31 @@ LABEL_38:
   return v26;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
   v15.receiver = self;
   v15.super_class = VNFaceGazeDetector;
-  if ([(VNDetector *)&v15 completeInitializationForSession:a3 error:?])
+  if ([(VNDetector *)&v15 completeInitializationForSession:session error:?])
   {
-    v6 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStageMain" error:a4];
+    v6 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStageMain" error:error];
     if (v6)
     {
       [VNEspressoHelpers espressoEngineForComputeDevice:v6];
       [VNEspressoHelpers espressoStorageTypeForComputeDevice:v6];
       [VNEspressoHelpers espressoDeviceIDForComputeDevice:v6];
-      v7 = [MEMORY[0x1E69DF8C8] camGazeV2AndReturnError:a4];
+      v7 = [MEMORY[0x1E69DF8C8] camGazeV2AndReturnError:error];
       v8 = v7;
       if (v7)
       {
         v9 = [v7 URL];
-        v10 = [v9 VisionCoreFileSystemPathAndReturnError:a4];
+        v10 = [v9 VisionCoreFileSystemPathAndReturnError:error];
 
         if (v10)
         {
           std::string::basic_string[abi:ne200100]<0>(v14, [v10 UTF8String]);
           [v10 lastPathComponent];
-          v11 = [objc_claimAutoreleasedReturnValue() UTF8String];
-          std::string::basic_string[abi:ne200100]<0>(&__p, v11);
+          uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+          std::string::basic_string[abi:ne200100]<0>(&__p, uTF8String);
           operator new();
         }
       }
@@ -585,13 +585,13 @@ LABEL_38:
   return 0;
 }
 
-+ (id)supportedImageSizeSetForOptions:(id)a3 error:(id *)a4
++ (id)supportedImageSizeSetForOptions:(id)options error:(id *)error
 {
   v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:"image"];
-  v7 = [VNEspressoHelpers pathForEspressoNetworkModelFileWithName:@"gazefollowingflow-u67ev5hbea_50540_fp16.espresso" error:a4];
+  v7 = [VNEspressoHelpers pathForEspressoNetworkModelFileWithName:@"gazefollowingflow-u67ev5hbea_50540_fp16.espresso" error:error];
   if (v7)
   {
-    v8 = [a1 supportedImageSizeSetForEspressoModelAtPath:v7 inputImageBlobName:v6 analysisPixelFormatType:1111970369 error:a4];
+    v8 = [self supportedImageSizeSetForEspressoModelAtPath:v7 inputImageBlobName:v6 analysisPixelFormatType:1111970369 error:error];
   }
 
   else
@@ -602,18 +602,18 @@ LABEL_38:
   return v8;
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities espressoV1ModelComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities espressoV1ModelComputeDevices:options];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   return v5;
 }
 
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3
++ (id)computeStagesToBindForConfigurationOptions:(id)options
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v5[0] = @"VNComputeStageMain";

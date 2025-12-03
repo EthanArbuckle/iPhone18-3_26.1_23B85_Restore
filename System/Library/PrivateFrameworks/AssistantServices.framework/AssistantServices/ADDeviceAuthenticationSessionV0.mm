@@ -1,16 +1,16 @@
 @interface ADDeviceAuthenticationSessionV0
-- (BOOL)completeWithHandshakeResponse:(id)a3 error:(id *)a4;
-- (id)handshakeRequestWithCertificateData:(id)a3 error:(id *)a4;
-- (id)signData:(id)a3 error:(id *)a4;
+- (BOOL)completeWithHandshakeResponse:(id)response error:(id *)error;
+- (id)handshakeRequestWithCertificateData:(id)data error:(id *)error;
+- (id)signData:(id)data error:(id *)error;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation ADDeviceAuthenticationSessionV0
 
-- (id)signData:(id)a3 error:(id *)a4
+- (id)signData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
   {
@@ -22,7 +22,7 @@
   sessionState = self->_sessionState;
   if (sessionState != 2)
   {
-    if (a4)
+    if (error)
     {
       v12 = @"com.apple.assistant.deviceAuth.session.StateError";
       v13 = 0;
@@ -33,7 +33,7 @@
   }
 
   v19 = 0;
-  sub_10006F82C(self->_nacContext, [v6 bytes], objc_msgSend(v6, "length"), &v19);
+  sub_10006F82C(self->_nacContext, [dataCopy bytes], objc_msgSend(dataCopy, "length"), &v19);
   if (v9)
   {
     v10 = v9;
@@ -48,14 +48,14 @@
     }
 
     [(ADDeviceAuthenticationSessionV0 *)self invalidate];
-    if (a4)
+    if (error)
     {
       sessionState = v10;
       v12 = @"com.apple.assistant.deviceAuth.session.GenericError";
       v13 = &off_100534298;
 LABEL_11:
       [NSError errorWithDomain:v12 code:sessionState userInfo:v13];
-      *a4 = v14 = 0;
+      *error = v14 = 0;
       goto LABEL_16;
     }
 
@@ -85,9 +85,9 @@ LABEL_16:
   return v14;
 }
 
-- (BOOL)completeWithHandshakeResponse:(id)a3 error:(id *)a4
+- (BOOL)completeWithHandshakeResponse:(id)response error:(id *)error
 {
-  v6 = a3;
+  responseCopy = response;
   v7 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
   {
@@ -99,7 +99,7 @@ LABEL_16:
   sessionState = self->_sessionState;
   if (sessionState != 1)
   {
-    if (a4)
+    if (error)
     {
       v12 = @"com.apple.assistant.deviceAuth.session.StateError";
       v13 = 0;
@@ -111,7 +111,7 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  sub_10006F4D8(self->_nacContext, [v6 bytes], objc_msgSend(v6, "length"));
+  sub_10006F4D8(self->_nacContext, [responseCopy bytes], objc_msgSend(responseCopy, "length"));
   if (!v9)
   {
     self->_sessionState = 2;
@@ -131,7 +131,7 @@ LABEL_12:
   }
 
   [(ADDeviceAuthenticationSessionV0 *)self invalidate];
-  if (!a4)
+  if (!error)
   {
     goto LABEL_12;
   }
@@ -141,15 +141,15 @@ LABEL_12:
   v13 = &off_100534270;
 LABEL_11:
   [NSError errorWithDomain:v12 code:sessionState userInfo:v13];
-  *a4 = v14 = 0;
+  *error = v14 = 0;
 LABEL_14:
 
   return v14;
 }
 
-- (id)handshakeRequestWithCertificateData:(id)a3 error:(id *)a4
+- (id)handshakeRequestWithCertificateData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
   {
@@ -163,7 +163,7 @@ LABEL_14:
     [(ADDeviceAuthenticationSessionV0 *)self invalidate];
   }
 
-  sub_10006F678([v6 bytes], objc_msgSend(v6, "length"));
+  sub_10006F678([dataCopy bytes], objc_msgSend(dataCopy, "length"));
   v9 = AFSiriLogContextSession;
   if (v8)
   {
@@ -178,7 +178,7 @@ LABEL_14:
     }
 
     [(ADDeviceAuthenticationSessionV0 *)self invalidate];
-    if (a4)
+    if (error)
     {
       v11 = (v10 & 0xFFFFFFEE) == 0xFFFF540A || v10 == -44204;
       v12 = @"com.apple.assistant.deviceAuth.session.GenericError";
@@ -192,7 +192,7 @@ LABEL_14:
       v15 = v14;
 
       v16 = 0;
-      *a4 = v14;
+      *error = v14;
     }
 
     else

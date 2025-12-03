@@ -1,5 +1,5 @@
 @interface TGITextGenerationInferenceRunner
-- (TGITextGenerationInferenceRunner)initWithQueue:(id)a3 executionUUID:(id)a4 operation:(id)a5 session:(id)a6;
+- (TGITextGenerationInferenceRunner)initWithQueue:(id)queue executionUUID:(id)d operation:(id)operation session:(id)session;
 - (TGITextGenerationInferenceWordFragment)runIncrementalInferenceWithTokenIDs:(TGITextGenerationInferenceWordFragment *__return_ptr)retstr;
 - (id).cxx_construct;
 - (shared_ptr<TGITextGenerationInferenceDecodingPolicy>)decodingPolicy;
@@ -10,25 +10,25 @@
 
 @implementation TGITextGenerationInferenceRunner
 
-- (TGITextGenerationInferenceRunner)initWithQueue:(id)a3 executionUUID:(id)a4 operation:(id)a5 session:(id)a6
+- (TGITextGenerationInferenceRunner)initWithQueue:(id)queue executionUUID:(id)d operation:(id)operation session:(id)session
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  queueCopy = queue;
+  dCopy = d;
+  operationCopy = operation;
+  sessionCopy = session;
   v22.receiver = self;
   v22.super_class = TGITextGenerationInferenceRunner;
   v15 = [(TGITextGenerationInferenceRunner *)&v22 init];
   if (v15)
   {
-    v16 = [v13 copy];
+    v16 = [operationCopy copy];
     operation = v15->_operation;
     v15->_operation = v16;
 
-    objc_storeStrong(&v15->_session, a6);
-    objc_storeStrong(&v15->_workQueue, a3);
+    objc_storeStrong(&v15->_session, session);
+    objc_storeStrong(&v15->_workQueue, queue);
     *&v15->_canceled = 256;
-    v18 = [v12 copy];
+    v18 = [dCopy copy];
     executionUUID = v15->_executionUUID;
     v15->_executionUUID = v18;
 
@@ -41,7 +41,7 @@
 - (void)run
 {
   *buf = 138412290;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_26D3C1000, log, OS_LOG_TYPE_ERROR, "Failed to run operation: %@, model is nil", buf, 0xCu);
 }
 
@@ -49,8 +49,8 @@
 {
   v3 = v2;
   v4 = v1;
-  v6 = [v1 workQueue];
-  dispatch_assert_queue_V2(v6);
+  workQueue = [v1 workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if (!v3[1])
   {
@@ -59,12 +59,12 @@
 
   if ([v4 shouldDoCacheLookUp])
   {
-    v7 = [v4 session];
-    v8 = v7;
-    if (v7)
+    session = [v4 session];
+    v8 = session;
+    if (session)
     {
-      [v7 stateCache];
-      v7 = __p[0];
+      [session stateCache];
+      session = __p[0];
     }
 
     else
@@ -73,7 +73,7 @@
       __p[1] = 0;
     }
 
-    TGITextGenerationInferenceSessionStateCache::cacheEntryForTokenIDs(v7, v3, &v25);
+    TGITextGenerationInferenceSessionStateCache::cacheEntryForTokenIDs(session, v3, &v25);
     if (__p[1])
     {
       std::__shared_weak_count::__release_shared[abi:ne200100](__p[1]);
@@ -144,11 +144,11 @@
     std::__shared_weak_count::__release_shared[abi:ne200100](v24);
   }
 
-  v12 = [v4 session];
-  v13 = v12;
-  if (v12)
+  session2 = [v4 session];
+  v13 = session2;
+  if (session2)
   {
-    [v12 stateCache];
+    [session2 stateCache];
     v14 = v23;
   }
 
@@ -203,15 +203,15 @@ LABEL_38:
 
 - (void)cancel
 {
-  v6 = [(TGITextGenerationInferenceRunner *)self workQueue];
-  dispatch_assert_queue_not_V2(v6);
+  workQueue = [(TGITextGenerationInferenceRunner *)self workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
   [(TGITextGenerationInferenceRunner *)self setCanceled:1];
   v7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:89 userInfo:0];
-  v3 = [(TGITextGenerationInferenceRunner *)self session];
-  v4 = [v3 delegate];
-  v5 = [(TGITextGenerationInferenceRunner *)self executionUUID];
-  [v4 operationWithExecutionUUID:v5 didFailWithError:v7];
+  session = [(TGITextGenerationInferenceRunner *)self session];
+  delegate = [session delegate];
+  executionUUID = [(TGITextGenerationInferenceRunner *)self executionUUID];
+  [delegate operationWithExecutionUUID:executionUUID didFailWithError:v7];
 }
 
 - (shared_ptr<TGITextGenerationInferenceModelInterface>)model

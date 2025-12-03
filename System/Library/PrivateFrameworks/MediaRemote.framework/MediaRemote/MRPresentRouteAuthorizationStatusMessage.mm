@@ -1,36 +1,36 @@
 @interface MRPresentRouteAuthorizationStatusMessage
 - (MRAVOutputDevice)route;
-- (MRPresentRouteAuthorizationStatusMessage)initWithRoute:(id)a3 status:(int)a4;
+- (MRPresentRouteAuthorizationStatusMessage)initWithRoute:(id)route status:(int)status;
 - (int)status;
 @end
 
 @implementation MRPresentRouteAuthorizationStatusMessage
 
-- (MRPresentRouteAuthorizationStatusMessage)initWithRoute:(id)a3 status:(int)a4
+- (MRPresentRouteAuthorizationStatusMessage)initWithRoute:(id)route status:(int)status
 {
-  v7 = a3;
+  routeCopy = route;
   v14.receiver = self;
   v14.super_class = MRPresentRouteAuthorizationStatusMessage;
   v8 = [(MRProtocolMessage *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_route, a3);
+    objc_storeStrong(&v8->_route, route);
     v10 = objc_alloc_init(_MRPresentRouteAuthorizationStatusMessageProtobuf);
-    v11 = [(MRAVOutputDevice *)v9->_route descriptor];
-    [(_MRPresentRouteAuthorizationStatusMessageProtobuf *)v10 setRoute:v11];
+    descriptor = [(MRAVOutputDevice *)v9->_route descriptor];
+    [(_MRPresentRouteAuthorizationStatusMessageProtobuf *)v10 setRoute:descriptor];
 
-    if (a4 >= 0xA)
+    if (status >= 0xA)
     {
-      v12 = 0xFFFFFFFFLL;
+      statusCopy = 0xFFFFFFFFLL;
     }
 
     else
     {
-      v12 = a4;
+      statusCopy = status;
     }
 
-    [(_MRPresentRouteAuthorizationStatusMessageProtobuf *)v10 setStatus:v12];
+    [(_MRPresentRouteAuthorizationStatusMessageProtobuf *)v10 setStatus:statusCopy];
     [(MRProtocolMessage *)v9 setUnderlyingCodableMessage:v10];
   }
 
@@ -43,9 +43,9 @@
   if (!route)
   {
     v4 = [MRAVDistantOutputDevice alloc];
-    v5 = [(MRProtocolMessage *)self underlyingCodableMessage];
-    v6 = [v5 route];
-    v7 = [(MRAVDistantOutputDevice *)v4 initWithDescriptor:v6];
+    underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+    route = [underlyingCodableMessage route];
+    v7 = [(MRAVDistantOutputDevice *)v4 initWithDescriptor:route];
     v8 = self->_route;
     self->_route = v7;
 
@@ -57,16 +57,16 @@
 
 - (int)status
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 status];
-  if (v3 >= 0xA)
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  status = [underlyingCodableMessage status];
+  if (status >= 0xA)
   {
     v4 = -1;
   }
 
   else
   {
-    v4 = v3;
+    v4 = status;
   }
 
   return v4;

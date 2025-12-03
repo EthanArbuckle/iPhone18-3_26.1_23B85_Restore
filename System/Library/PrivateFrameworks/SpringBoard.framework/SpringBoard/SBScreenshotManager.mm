@@ -1,38 +1,38 @@
 @interface SBScreenshotManager
-- (SBScreenshotManager)initWithDataSource:(id)a3;
+- (SBScreenshotManager)initWithDataSource:(id)source;
 - (id)_fetchEligibleScreenshotProvidersForSnapshotting;
-- (id)_initWithDataSource:(id)a3 persistenceCoordinator:(id)a4 sceneManagerCoordinator:(id)a5;
-- (id)_providerForScreen:(id)a3;
+- (id)_initWithDataSource:(id)source persistenceCoordinator:(id)coordinator sceneManagerCoordinator:(id)managerCoordinator;
+- (id)_providerForScreen:(id)screen;
 - (void)saveScreenshots;
-- (void)saveScreenshotsWithCompletion:(id)a3;
+- (void)saveScreenshotsWithCompletion:(id)completion;
 @end
 
 @implementation SBScreenshotManager
 
-- (SBScreenshotManager)initWithDataSource:(id)a3
+- (SBScreenshotManager)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = objc_alloc_init(_SBScreenshotPersistenceCoordinator);
   v6 = +[SBSceneManagerCoordinator sharedInstance];
-  v7 = [(SBScreenshotManager *)self _initWithDataSource:v4 persistenceCoordinator:v5 sceneManagerCoordinator:v6];
+  v7 = [(SBScreenshotManager *)self _initWithDataSource:sourceCopy persistenceCoordinator:v5 sceneManagerCoordinator:v6];
 
   return v7;
 }
 
-- (id)_initWithDataSource:(id)a3 persistenceCoordinator:(id)a4 sceneManagerCoordinator:(id)a5
+- (id)_initWithDataSource:(id)source persistenceCoordinator:(id)coordinator sceneManagerCoordinator:(id)managerCoordinator
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sourceCopy = source;
+  coordinatorCopy = coordinator;
+  managerCoordinatorCopy = managerCoordinator;
   v15.receiver = self;
   v15.super_class = SBScreenshotManager;
   v12 = [(SBScreenshotManager *)&v15 init];
   p_isa = &v12->super.isa;
   if (v12)
   {
-    objc_storeStrong(&v12->_dataSource, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 1, a5);
+    objc_storeStrong(&v12->_dataSource, source);
+    objc_storeStrong(p_isa + 2, coordinator);
+    objc_storeStrong(p_isa + 1, managerCoordinator);
   }
 
   return p_isa;
@@ -40,15 +40,15 @@
 
 - (void)saveScreenshots
 {
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBScreenshotManager saveScreenshots]"];
-  [v1 handleFailureInFunction:v0 file:@"SBScreenshotManager.m" lineNumber:62 description:@"this call must be made on the main thread"];
+  [currentHandler handleFailureInFunction:v0 file:@"SBScreenshotManager.m" lineNumber:62 description:@"this call must be made on the main thread"];
 }
 
-- (void)saveScreenshotsWithCompletion:(id)a3
+- (void)saveScreenshotsWithCompletion:(id)completion
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBScreenshotManager saveScreenshotsWithCompletion:];
@@ -68,8 +68,8 @@
       v36 = 0;
       v9 = 0;
       v10 = *v48;
-      v32 = self;
-      v33 = v4;
+      selfCopy = self;
+      v33 = completionCopy;
       v31 = *v48;
       do
       {
@@ -83,12 +83,12 @@
           }
 
           v12 = *(*(&v47 + 1) + 8 * v11);
-          v13 = [v12 captureScreenshot];
-          v14 = [v12 screen];
-          v15 = [v14 displayIdentity];
-          if (v13)
+          captureScreenshot = [v12 captureScreenshot];
+          screen = [v12 screen];
+          displayIdentity = [screen displayIdentity];
+          if (captureScreenshot)
           {
-            v16 = v15 == 0;
+            v16 = displayIdentity == 0;
           }
 
           else
@@ -98,9 +98,9 @@
 
           if (!v16)
           {
-            v42 = v15;
-            v17 = [v12 flasher];
-            [v17 flashWhiteWithCompletion:0];
+            v42 = displayIdentity;
+            flasher = [v12 flasher];
+            [flasher flashWhiteWithCompletion:0];
 
             if ((v9 & 1) == 0)
             {
@@ -109,18 +109,18 @@
 
             v41 = v9;
             v40 = v11;
-            v38 = v14;
-            if (v4)
+            v38 = screen;
+            if (completionCopy)
             {
-              v18 = v36;
+              dictionary = v36;
               if (!v36)
               {
-                v18 = [MEMORY[0x277CBEB38] dictionary];
+                dictionary = [MEMORY[0x277CBEB38] dictionary];
               }
 
-              v36 = v18;
+              v36 = dictionary;
               v19 = v42;
-              [v18 setObject:v13 forKey:v42];
+              [dictionary setObject:captureScreenshot forKey:v42];
             }
 
             else
@@ -128,15 +128,15 @@
               v19 = v42;
             }
 
-            v39 = v13;
-            [(_SBScreenshotPersistenceCoordinator *)self->_persistenceCoordinator saveScreenshot:v13 withCompletion:0];
+            v39 = captureScreenshot;
+            [(_SBScreenshotPersistenceCoordinator *)self->_persistenceCoordinator saveScreenshot:captureScreenshot withCompletion:0];
             v37 = [(SBSceneManagerCoordinator *)self->_sceneManagerCoordinator sceneManagerForDisplayIdentity:v19];
-            v20 = [v37 externalForegroundApplicationSceneHandles];
+            externalForegroundApplicationSceneHandles = [v37 externalForegroundApplicationSceneHandles];
             v43 = 0u;
             v44 = 0u;
             v45 = 0u;
             v46 = 0u;
-            v21 = [v20 countByEnumeratingWithState:&v43 objects:v53 count:16];
+            v21 = [externalForegroundApplicationSceneHandles countByEnumeratingWithState:&v43 objects:v53 count:16];
             if (v21)
             {
               v22 = v21;
@@ -147,12 +147,12 @@
                 {
                   if (*v44 != v23)
                   {
-                    objc_enumerationMutation(v20);
+                    objc_enumerationMutation(externalForegroundApplicationSceneHandles);
                   }
 
                   v25 = *(*(&v43 + 1) + 8 * i);
-                  v26 = [v25 sceneIfExists];
-                  if (v26)
+                  sceneIfExists = [v25 sceneIfExists];
+                  if (sceneIfExists)
                   {
                     v27 = objc_alloc_init(MEMORY[0x277D75438]);
                     v28 = [MEMORY[0x277CBEB98] setWithObject:v27];
@@ -164,25 +164,25 @@
                       _os_log_error_impl(&dword_21ED4E000, v29, OS_LOG_TYPE_ERROR, "sending screenshot action to scene: %{public}@", buf, 0xCu);
                     }
 
-                    [v26 sendActions:v28];
+                    [sceneIfExists sendActions:v28];
                   }
                 }
 
-                v22 = [v20 countByEnumeratingWithState:&v43 objects:v53 count:16];
+                v22 = [externalForegroundApplicationSceneHandles countByEnumeratingWithState:&v43 objects:v53 count:16];
               }
 
               while (v22);
             }
 
-            self = v32;
-            v4 = v33;
+            self = selfCopy;
+            completionCopy = v33;
             v9 = v41;
             v10 = v31;
             v8 = v34;
-            v13 = v39;
+            captureScreenshot = v39;
             v11 = v40;
-            v14 = v38;
-            v15 = v42;
+            screen = v38;
+            displayIdentity = v42;
           }
 
           ++v11;
@@ -198,30 +198,30 @@
         AudioServicesPlaySystemSoundWithCompletion(0x454u, 0);
       }
 
-      if (!v4)
+      if (!completionCopy)
       {
         goto LABEL_46;
       }
 
       if (v36)
       {
-        (v4)[2](v4, v36);
+        (completionCopy)[2](completionCopy, v36);
 LABEL_46:
 
-        v6 = v36;
+        dictionary3 = v36;
         goto LABEL_47;
       }
     }
 
-    else if (!v4)
+    else if (!completionCopy)
     {
 LABEL_45:
       v36 = 0;
       goto LABEL_46;
     }
 
-    v30 = [MEMORY[0x277CBEB38] dictionary];
-    (v4)[2](v4, v30);
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    (completionCopy)[2](completionCopy, dictionary2);
 
     goto LABEL_45;
   }
@@ -232,10 +232,10 @@ LABEL_45:
     [SBScreenshotManager saveScreenshotsWithCompletion:v5];
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
-    (v4)[2](v4, v6);
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+    (completionCopy)[2](completionCopy, dictionary3);
 LABEL_47:
   }
 }
@@ -252,7 +252,7 @@ LABEL_47:
   if (v4)
   {
     v5 = v4;
-    v6 = 0;
+    array = 0;
     v7 = *v12;
     do
     {
@@ -266,12 +266,12 @@ LABEL_47:
         v9 = [(SBScreenshotManager *)self _providerForScreen:*(*(&v11 + 1) + 8 * i)];
         if (v9)
         {
-          if (!v6)
+          if (!array)
           {
-            v6 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
           }
 
-          [v6 addObject:v9];
+          [array addObject:v9];
         }
       }
 
@@ -283,24 +283,24 @@ LABEL_47:
 
   else
   {
-    v6 = 0;
+    array = 0;
   }
 
-  return v6;
+  return array;
 }
 
-- (id)_providerForScreen:(id)a3
+- (id)_providerForScreen:(id)screen
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D759A0] mainScreen];
+  screenCopy = screen;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
 
   v5 = off_2783A3038;
-  if (v4 != v3)
+  if (mainScreen != screenCopy)
   {
     v5 = off_2783A2E78;
   }
 
-  v6 = [objc_alloc(*v5) initWithScreen:v3];
+  v6 = [objc_alloc(*v5) initWithScreen:screenCopy];
 
   return v6;
 }

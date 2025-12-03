@@ -1,18 +1,18 @@
 @interface PXStoryErrorRepository
-+ (id)analyticsNameForComponent:(id)a3;
++ (id)analyticsNameForComponent:(id)component;
 - (NSArray)errors;
 - (NSDictionary)errorsByComponent;
-- (PXStoryErrorRepository)initWithQueue:(id)a3;
-- (void)setError:(id)a3 forComponent:(id)a4;
+- (PXStoryErrorRepository)initWithQueue:(id)queue;
+- (void)setError:(id)error forComponent:(id)component;
 @end
 
 @implementation PXStoryErrorRepository
 
-- (void)setError:(id)a3 forComponent:(id)a4
+- (void)setError:(id)error forComponent:(id)component
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  componentCopy = component;
   v8 = [(PXStoryErrorRepository *)self log];
   v9 = os_signpost_id_make_with_pointer(v8, self);
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
@@ -21,26 +21,26 @@
     if (os_signpost_enabled(v8))
     {
       *buf = 134218498;
-      v18 = [(PXStoryErrorRepository *)self logContext];
+      logContext = [(PXStoryErrorRepository *)self logContext];
       v19 = 2114;
-      v20 = v7;
+      v20 = componentCopy;
       v21 = 2112;
-      v22 = v6;
+      v22 = errorCopy;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXStoryError", "Context=%{signpost.telemetry:string2}lu Component=%{signpost.description:attribute,public}@ Error=%{signpost.description:attribute}@ ", buf, 0x20u);
     }
   }
 
-  v11 = [(PXStoryErrorRepository *)self storyQueue];
+  storyQueue = [(PXStoryErrorRepository *)self storyQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__PXStoryErrorRepository_setError_forComponent___block_invoke;
   block[3] = &unk_1E774A1B8;
   block[4] = self;
-  v15 = v7;
-  v16 = v6;
-  v12 = v6;
-  v13 = v7;
-  dispatch_async(v11, block);
+  v15 = componentCopy;
+  v16 = errorCopy;
+  v12 = errorCopy;
+  v13 = componentCopy;
+  dispatch_async(storyQueue, block);
 }
 
 void __48__PXStoryErrorRepository_setError_forComponent___block_invoke(uint64_t a1)
@@ -133,9 +133,9 @@ void __48__PXStoryErrorRepository_setError_forComponent___block_invoke_13(uint64
   return v2;
 }
 
-- (PXStoryErrorRepository)initWithQueue:(id)a3
+- (PXStoryErrorRepository)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = PXStoryErrorRepository;
   v5 = [(PXStoryErrorRepository *)&v15 init];
@@ -149,9 +149,9 @@ void __48__PXStoryErrorRepository_setError_forComponent___block_invoke_13(uint64
     errors = v5->_errors;
     v5->_errors = v8;
 
-    if (v4)
+    if (queueCopy)
     {
-      v10 = v4;
+      v10 = queueCopy;
       storyQueue = v5->_storyQueue;
       v5->_storyQueue = v10;
     }
@@ -168,12 +168,12 @@ void __48__PXStoryErrorRepository_setError_forComponent___block_invoke_13(uint64
   return v5;
 }
 
-+ (id)analyticsNameForComponent:(id)a3
++ (id)analyticsNameForComponent:(id)component
 {
   v3 = MEMORY[0x1E696AB08];
-  v4 = a3;
+  componentCopy = component;
   [v3 whitespaceCharacterSet];
-  [v4 componentsSeparatedByCharactersInSet:objc_claimAutoreleasedReturnValue()];
+  [componentCopy componentsSeparatedByCharactersInSet:objc_claimAutoreleasedReturnValue()];
   objc_claimAutoreleasedReturnValue();
 
   PXMap();

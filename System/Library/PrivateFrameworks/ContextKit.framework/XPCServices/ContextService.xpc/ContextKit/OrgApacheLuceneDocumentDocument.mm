@@ -2,18 +2,18 @@
 + (void)initialize;
 - (NSString)description;
 - (OrgApacheLuceneDocumentDocument)init;
-- (id)getBinaryValueWithNSString:(id)a3;
-- (id)getBinaryValuesWithNSString:(id)a3;
-- (id)getFieldWithNSString:(id)a3;
-- (id)getFieldsWithNSString:(id)a3;
-- (id)getValuesWithNSString:(id)a3;
-- (id)getWithNSString:(id)a3;
+- (id)getBinaryValueWithNSString:(id)string;
+- (id)getBinaryValuesWithNSString:(id)string;
+- (id)getFieldWithNSString:(id)string;
+- (id)getFieldsWithNSString:(id)string;
+- (id)getValuesWithNSString:(id)string;
+- (id)getWithNSString:(id)string;
 - (id)iterator;
-- (void)addWithOrgApacheLuceneIndexIndexableField:(id)a3;
+- (void)addWithOrgApacheLuceneIndexIndexableField:(id)field;
 - (void)dealloc;
 - (void)removeAllFields;
-- (void)removeFieldWithNSString:(id)a3;
-- (void)removeFieldsWithNSString:(id)a3;
+- (void)removeFieldWithNSString:(id)string;
+- (void)removeFieldsWithNSString:(id)string;
 @end
 
 @implementation OrgApacheLuceneDocumentDocument
@@ -36,7 +36,7 @@
   return [(JavaUtilList *)fields iterator];
 }
 
-- (void)addWithOrgApacheLuceneIndexIndexableField:(id)a3
+- (void)addWithOrgApacheLuceneIndexIndexableField:(id)field
 {
   fields = self->fields_;
   if (!fields)
@@ -44,7 +44,7 @@
     JreThrowNullPointerException();
   }
 
-  [(JavaUtilList *)fields addWithId:a3];
+  [(JavaUtilList *)fields addWithId:field];
 }
 
 - (void)removeAllFields
@@ -58,7 +58,7 @@
   [(JavaUtilList *)fields clear];
 }
 
-- (void)removeFieldWithNSString:(id)a3
+- (void)removeFieldWithNSString:(id)string
 {
   fields = self->fields_;
   if (!fields || (v5 = [(JavaUtilList *)fields iterator]) == 0)
@@ -70,19 +70,19 @@ LABEL_12:
   v6 = v5;
   while (([v6 hasNext] & 1) != 0)
   {
-    v7 = [v6 next];
-    if (!v7)
+    next = [v6 next];
+    if (!next)
     {
       goto LABEL_12;
     }
 
-    v8 = [v7 name];
-    if (!v8)
+    name = [next name];
+    if (!name)
     {
       goto LABEL_12;
     }
 
-    if ([v8 isEqual:a3])
+    if ([name isEqual:string])
     {
 
       [v6 remove];
@@ -91,7 +91,7 @@ LABEL_12:
   }
 }
 
-- (void)removeFieldsWithNSString:(id)a3
+- (void)removeFieldsWithNSString:(id)string
 {
   fields = self->fields_;
   if (!fields)
@@ -99,30 +99,30 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  v5 = [(JavaUtilList *)fields iterator];
-  if (!v5)
+  iterator = [(JavaUtilList *)fields iterator];
+  if (!iterator)
   {
     goto LABEL_10;
   }
 
-  v6 = v5;
-  if ([v5 hasNext])
+  v6 = iterator;
+  if ([iterator hasNext])
   {
     while (1)
     {
-      v7 = [v6 next];
-      if (!v7)
+      next = [v6 next];
+      if (!next)
       {
         break;
       }
 
-      v8 = [v7 name];
-      if (!v8)
+      name = [next name];
+      if (!name)
       {
         break;
       }
 
-      if ([v8 isEqual:a3])
+      if ([name isEqual:string])
       {
         [v6 remove];
       }
@@ -138,7 +138,7 @@ LABEL_10:
   }
 }
 
-- (id)getBinaryValuesWithNSString:(id)a3
+- (id)getBinaryValuesWithNSString:(id)string
 {
   v5 = new_JavaUtilArrayList_init();
   v16 = 0u;
@@ -173,18 +173,18 @@ LABEL_15:
           goto LABEL_15;
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) name];
-        if (!v13)
+        name = [*(*(&v16 + 1) + 8 * i) name];
+        if (!name)
         {
           goto LABEL_15;
         }
 
-        if ([v13 isEqual:a3])
+        if ([name isEqual:string])
         {
-          v14 = [v12 binaryValue];
-          if (v14)
+          binaryValue = [v12 binaryValue];
+          if (binaryValue)
           {
-            [(JavaUtilArrayList *)v7 addWithId:v14];
+            [(JavaUtilArrayList *)v7 addWithId:binaryValue];
           }
         }
       }
@@ -198,7 +198,7 @@ LABEL_15:
   return [(JavaUtilArrayList *)v7 toArrayWithNSObjectArray:[IOSObjectArray arrayWithLength:[(JavaUtilArrayList *)v7 size] type:OrgApacheLuceneUtilBytesRef_class_()]];
 }
 
-- (id)getBinaryValueWithNSString:(id)a3
+- (id)getBinaryValueWithNSString:(id)string
 {
   v11 = 0u;
   v12 = 0u;
@@ -232,13 +232,13 @@ LABEL_14:
           goto LABEL_14;
         }
 
-        v10 = [*(*(&v11 + 1) + 8 * v8) name];
-        if (!v10)
+        name = [*(*(&v11 + 1) + 8 * v8) name];
+        if (!name)
         {
           goto LABEL_14;
         }
 
-        if ([v10 isEqual:a3])
+        if ([name isEqual:string])
         {
           result = [v9 binaryValue];
           if (result)
@@ -261,7 +261,7 @@ LABEL_14:
   return result;
 }
 
-- (id)getFieldWithNSString:(id)a3
+- (id)getFieldWithNSString:(id)string
 {
   v12 = 0u;
   v13 = 0u;
@@ -294,13 +294,13 @@ LABEL_14:
           goto LABEL_14;
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) name];
-        if (!v10)
+        name = [*(*(&v12 + 1) + 8 * i) name];
+        if (!name)
         {
           goto LABEL_14;
         }
 
-        if ([v10 isEqual:a3])
+        if ([name isEqual:string])
         {
           return v9;
         }
@@ -315,7 +315,7 @@ LABEL_14:
   return 0;
 }
 
-- (id)getFieldsWithNSString:(id)a3
+- (id)getFieldsWithNSString:(id)string
 {
   v5 = new_JavaUtilArrayList_init();
   v15 = 0u;
@@ -350,13 +350,13 @@ LABEL_14:
           goto LABEL_14;
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * i) name];
-        if (!v13)
+        name = [*(*(&v15 + 1) + 8 * i) name];
+        if (!name)
         {
           goto LABEL_14;
         }
 
-        if ([v13 isEqual:a3])
+        if ([name isEqual:string])
         {
           [(JavaUtilArrayList *)v7 addWithId:v12];
         }
@@ -371,7 +371,7 @@ LABEL_14:
   return [(JavaUtilArrayList *)v7 toArrayWithNSObjectArray:[IOSObjectArray arrayWithLength:[(JavaUtilArrayList *)v7 size] type:OrgApacheLuceneIndexIndexableField_class_()]];
 }
 
-- (id)getValuesWithNSString:(id)a3
+- (id)getValuesWithNSString:(id)string
 {
   v5 = new_JavaUtilArrayList_init();
   v15 = 0u;
@@ -406,13 +406,13 @@ LABEL_16:
           goto LABEL_16;
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * i) name];
-        if (!v13)
+        name = [*(*(&v15 + 1) + 8 * i) name];
+        if (!name)
         {
           goto LABEL_16;
         }
 
-        if ([v13 isEqual:a3] && objc_msgSend(v12, "stringValue"))
+        if ([name isEqual:string] && objc_msgSend(v12, "stringValue"))
         {
           -[JavaUtilArrayList addWithId:](v7, "addWithId:", [v12 stringValue]);
         }
@@ -435,7 +435,7 @@ LABEL_16:
   }
 }
 
-- (id)getWithNSString:(id)a3
+- (id)getWithNSString:(id)string
 {
   v11 = 0u;
   v12 = 0u;
@@ -469,13 +469,13 @@ LABEL_16:
           goto LABEL_16;
         }
 
-        v10 = [*(*(&v11 + 1) + 8 * v8) name];
-        if (!v10)
+        name = [*(*(&v11 + 1) + 8 * v8) name];
+        if (!name)
         {
           goto LABEL_16;
         }
 
-        if ([v10 isEqual:a3] && objc_msgSend(v9, "stringValue"))
+        if ([name isEqual:string] && objc_msgSend(v9, "stringValue"))
         {
           return [v9 stringValue];
         }
@@ -546,7 +546,7 @@ LABEL_8:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [IOSObjectArray newArrayWithLength:0 type:NSString_class_()];
     JreStrongAssignAndConsume(&qword_100554790, v2);

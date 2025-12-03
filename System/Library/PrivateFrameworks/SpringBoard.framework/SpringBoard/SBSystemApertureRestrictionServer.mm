@@ -1,19 +1,19 @@
 @interface SBSystemApertureRestrictionServer
-- (SBSystemApertureRestrictionServer)initWithDelegate:(id)a3;
-- (id)acquireRestrictSystemApertureLayoutToInertAssertionIdentifierWithReason:(id)a3;
-- (id)acquireSuppressHidingEmptySystemApertureOnClonedDisplaysAssertionIdentifierWithReason:(id)a3;
-- (id)acquireSystemApertureCompleteSuppressionAssertionIdentifierWithReason:(id)a3;
-- (void)invalidateRestrictSystemApertureLayoutToInertAssertionWithIdentifier:(id)a3;
-- (void)invalidateSuppressHidingEmptySystemApertureOnClonedDisplaysAssertionWithIdentifier:(id)a3;
-- (void)invalidateSystemApertureCompleteSuppressionAssertionWithIdentifier:(id)a3;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (SBSystemApertureRestrictionServer)initWithDelegate:(id)delegate;
+- (id)acquireRestrictSystemApertureLayoutToInertAssertionIdentifierWithReason:(id)reason;
+- (id)acquireSuppressHidingEmptySystemApertureOnClonedDisplaysAssertionIdentifierWithReason:(id)reason;
+- (id)acquireSystemApertureCompleteSuppressionAssertionIdentifierWithReason:(id)reason;
+- (void)invalidateRestrictSystemApertureLayoutToInertAssertionWithIdentifier:(id)identifier;
+- (void)invalidateSuppressHidingEmptySystemApertureOnClonedDisplaysAssertionWithIdentifier:(id)identifier;
+- (void)invalidateSystemApertureCompleteSuppressionAssertionWithIdentifier:(id)identifier;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 @end
 
 @implementation SBSystemApertureRestrictionServer
 
-- (SBSystemApertureRestrictionServer)initWithDelegate:(id)a3
+- (SBSystemApertureRestrictionServer)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = SBSystemApertureRestrictionServer;
   v5 = [(SBSystemApertureRestrictionServer *)&v18 init];
@@ -21,11 +21,11 @@
   {
     dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
     v5->_isValid = 1;
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v5->_clientServiceCollectionLock._os_unfair_lock_opaque = 0;
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     connections = v5->_connections;
-    v5->_connections = v6;
+    v5->_connections = array;
 
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = BSDispatchQueueCreateWithQualityOfService();
@@ -59,33 +59,33 @@ void __54__SBSystemApertureRestrictionServer_initWithDelegate___block_invoke(uin
   [v4 setDelegate:*(a1 + 32)];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = SBLogSystemApertureHosting();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v6;
+    v20 = connectionCopy;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "SBSystemApertureRestrictionServer received connection %@", buf, 0xCu);
   }
 
-  v8 = [v6 remoteProcess];
-  v9 = [v8 pid];
+  remoteProcess = [connectionCopy remoteProcess];
+  v9 = [remoteProcess pid];
   if (v9 != getpid())
   {
-    v11 = [v6 remoteProcess];
-    v12 = [v11 auditToken];
-    if (([v12 hasEntitlement:@"com.apple.springboard.system-component-restriction"] & 1) == 0)
+    remoteProcess2 = [connectionCopy remoteProcess];
+    auditToken = [remoteProcess2 auditToken];
+    if (([auditToken hasEntitlement:@"com.apple.springboard.system-component-restriction"] & 1) == 0)
     {
-      v13 = [v6 remoteProcess];
-      v14 = [v13 auditToken];
-      if (([v14 hasEntitlement:@"com.apple.springboard.system-component-complete-suppression"] & 1) == 0)
+      remoteProcess3 = [connectionCopy remoteProcess];
+      auditToken2 = [remoteProcess3 auditToken];
+      if (([auditToken2 hasEntitlement:@"com.apple.springboard.system-component-complete-suppression"] & 1) == 0)
       {
-        v15 = [v6 remoteProcess];
-        v16 = [v15 auditToken];
-        v17 = [v16 hasEntitlement:@"com.apple.springboard.system-component-suppress-hide-empty-clone"];
+        remoteProcess4 = [connectionCopy remoteProcess];
+        auditToken3 = [remoteProcess4 auditToken];
+        v17 = [auditToken3 hasEntitlement:@"com.apple.springboard.system-component-suppress-hide-empty-clone"];
 
         if ((v17 & 1) == 0)
         {
@@ -98,11 +98,11 @@ LABEL_12:
         v18[2] = __79__SBSystemApertureRestrictionServer_listener_didReceiveConnection_withContext___block_invoke;
         v18[3] = &unk_2783AB730;
         v18[4] = self;
-        [v6 configureConnection:v18];
+        [connectionCopy configureConnection:v18];
         os_unfair_lock_lock(&self->_clientServiceCollectionLock);
-        [(NSMutableArray *)self->_connections addObject:v6];
+        [(NSMutableArray *)self->_connections addObject:connectionCopy];
         os_unfair_lock_unlock(&self->_clientServiceCollectionLock);
-        [v6 activate];
+        [connectionCopy activate];
         goto LABEL_13;
       }
     }
@@ -115,11 +115,11 @@ LABEL_5:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v6;
+    v20 = connectionCopy;
     _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "SBSystemApertureRestrictionServer invalidating connection because client process is missing required entitlement %@ .", buf, 0xCu);
   }
 
-  [v6 invalidate];
+  [connectionCopy invalidate];
 LABEL_13:
 }
 
@@ -254,29 +254,29 @@ void __79__SBSystemApertureRestrictionServer_listener_didReceiveConnection_withC
   }
 }
 
-- (id)acquireRestrictSystemApertureLayoutToInertAssertionIdentifierWithReason:(id)a3
+- (id)acquireRestrictSystemApertureLayoutToInertAssertionIdentifierWithReason:(id)reason
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CF3280] currentContext];
-  v5 = [v4 remoteProcess];
-  v6 = [v5 auditToken];
+  reasonCopy = reason;
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  remoteProcess = [currentContext remoteProcess];
+  auditToken = [remoteProcess auditToken];
 
-  if ([v6 hasEntitlement:@"com.apple.springboard.system-component-restriction"])
+  if ([auditToken hasEntitlement:@"com.apple.springboard.system-component-restriction"])
   {
-    v7 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     v8 = MEMORY[0x277CCACA8];
-    v9 = [v7 UUIDString];
-    v10 = [v8 stringWithFormat:@"%@: %@", v9, v3];
+    uUIDString = [uUID UUIDString];
+    reasonCopy = [v8 stringWithFormat:@"%@: %@", uUIDString, reasonCopy];
 
     v11 = [_SBSystemApertureRestrictionServerAssertionWrapper alloc];
-    v12 = [v7 UUIDString];
-    v13 = [(BSSimpleAssertion *)v11 initWithIdentifier:v12 forReason:v10 invalidationBlock:&__block_literal_global_19];
+    uUIDString2 = [uUID UUIDString];
+    v13 = [(BSSimpleAssertion *)v11 initWithIdentifier:uUIDString2 forReason:reasonCopy invalidationBlock:&__block_literal_global_19];
 
-    v14 = [MEMORY[0x277CF3280] currentContext];
-    [(_SBSystemApertureRestrictionServerAssertionWrapper *)v13 setAssociatedConnection:v14];
+    currentContext2 = [MEMORY[0x277CF3280] currentContext];
+    [(_SBSystemApertureRestrictionServerAssertionWrapper *)v13 setAssociatedConnection:currentContext2];
 
-    v3 = v10;
+    reasonCopy = reasonCopy;
     v15 = v13;
     BSDispatchMain();
   }
@@ -287,14 +287,14 @@ void __79__SBSystemApertureRestrictionServer_listener_didReceiveConnection_withC
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v4;
+      v18 = currentContext;
       _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "SBSystemApertureRestrictionServer invalidating connection because client process is missing required entitlement %@ .", buf, 0xCu);
     }
 
-    v7 = 0;
+    uUID = 0;
   }
 
-  return v7;
+  return uUID;
 }
 
 void __109__SBSystemApertureRestrictionServer_acquireRestrictSystemApertureLayoutToInertAssertionIdentifierWithReason___block_invoke(uint64_t a1, void *a2)
@@ -353,10 +353,10 @@ void __109__SBSystemApertureRestrictionServer_acquireRestrictSystemApertureLayou
   }
 }
 
-- (void)invalidateRestrictSystemApertureLayoutToInertAssertionWithIdentifier:(id)a3
+- (void)invalidateRestrictSystemApertureLayoutToInertAssertionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v3 = v4;
+  identifierCopy = identifier;
+  v3 = identifierCopy;
   BSDispatchMain();
 }
 
@@ -381,29 +381,29 @@ uint64_t __106__SBSystemApertureRestrictionServer_invalidateRestrictSystemApertu
   return v4;
 }
 
-- (id)acquireSystemApertureCompleteSuppressionAssertionIdentifierWithReason:(id)a3
+- (id)acquireSystemApertureCompleteSuppressionAssertionIdentifierWithReason:(id)reason
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CF3280] currentContext];
-  v5 = [v4 remoteProcess];
-  v6 = [v5 auditToken];
+  reasonCopy = reason;
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  remoteProcess = [currentContext remoteProcess];
+  auditToken = [remoteProcess auditToken];
 
-  if ([v6 hasEntitlement:@"com.apple.springboard.system-component-complete-suppression"])
+  if ([auditToken hasEntitlement:@"com.apple.springboard.system-component-complete-suppression"])
   {
-    v7 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     v8 = MEMORY[0x277CCACA8];
-    v9 = [v7 UUIDString];
-    v10 = [v8 stringWithFormat:@"%@: %@", v9, v3];
+    uUIDString = [uUID UUIDString];
+    reasonCopy = [v8 stringWithFormat:@"%@: %@", uUIDString, reasonCopy];
 
     v11 = [_SBSystemApertureRestrictionServerAssertionWrapper alloc];
-    v12 = [v7 UUIDString];
-    v13 = [(BSSimpleAssertion *)v11 initWithIdentifier:v12 forReason:v10 invalidationBlock:&__block_literal_global_59];
+    uUIDString2 = [uUID UUIDString];
+    v13 = [(BSSimpleAssertion *)v11 initWithIdentifier:uUIDString2 forReason:reasonCopy invalidationBlock:&__block_literal_global_59];
 
-    v14 = [MEMORY[0x277CF3280] currentContext];
-    [(_SBSystemApertureRestrictionServerAssertionWrapper *)v13 setAssociatedConnection:v14];
+    currentContext2 = [MEMORY[0x277CF3280] currentContext];
+    [(_SBSystemApertureRestrictionServerAssertionWrapper *)v13 setAssociatedConnection:currentContext2];
 
-    v3 = v10;
+    reasonCopy = reasonCopy;
     v15 = v13;
     BSDispatchMain();
   }
@@ -414,14 +414,14 @@ uint64_t __106__SBSystemApertureRestrictionServer_invalidateRestrictSystemApertu
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v4;
+      v18 = currentContext;
       _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "SBSystemApertureRestrictionServer invalidating connection because client process is missing required entitlement %@ .", buf, 0xCu);
     }
 
-    v7 = 0;
+    uUID = 0;
   }
 
-  return v7;
+  return uUID;
 }
 
 void __107__SBSystemApertureRestrictionServer_acquireSystemApertureCompleteSuppressionAssertionIdentifierWithReason___block_invoke(uint64_t a1, void *a2)
@@ -480,10 +480,10 @@ void __107__SBSystemApertureRestrictionServer_acquireSystemApertureCompleteSuppr
   }
 }
 
-- (void)invalidateSystemApertureCompleteSuppressionAssertionWithIdentifier:(id)a3
+- (void)invalidateSystemApertureCompleteSuppressionAssertionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v3 = v4;
+  identifierCopy = identifier;
+  v3 = identifierCopy;
   BSDispatchMain();
 }
 
@@ -508,29 +508,29 @@ uint64_t __104__SBSystemApertureRestrictionServer_invalidateSystemApertureComple
   return v4;
 }
 
-- (id)acquireSuppressHidingEmptySystemApertureOnClonedDisplaysAssertionIdentifierWithReason:(id)a3
+- (id)acquireSuppressHidingEmptySystemApertureOnClonedDisplaysAssertionIdentifierWithReason:(id)reason
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CF3280] currentContext];
-  v5 = [v4 remoteProcess];
-  v6 = [v5 auditToken];
+  reasonCopy = reason;
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  remoteProcess = [currentContext remoteProcess];
+  auditToken = [remoteProcess auditToken];
 
-  if ([v6 hasEntitlement:@"com.apple.springboard.system-component-suppress-hide-empty-clone"])
+  if ([auditToken hasEntitlement:@"com.apple.springboard.system-component-suppress-hide-empty-clone"])
   {
-    v7 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     v8 = MEMORY[0x277CCACA8];
-    v9 = [v7 UUIDString];
-    v10 = [v8 stringWithFormat:@"%@: %@", v9, v3];
+    uUIDString = [uUID UUIDString];
+    reasonCopy = [v8 stringWithFormat:@"%@: %@", uUIDString, reasonCopy];
 
     v11 = [_SBSystemApertureRestrictionServerAssertionWrapper alloc];
-    v12 = [v7 UUIDString];
-    v13 = [(BSSimpleAssertion *)v11 initWithIdentifier:v12 forReason:v10 invalidationBlock:&__block_literal_global_61_0];
+    uUIDString2 = [uUID UUIDString];
+    v13 = [(BSSimpleAssertion *)v11 initWithIdentifier:uUIDString2 forReason:reasonCopy invalidationBlock:&__block_literal_global_61_0];
 
-    v14 = [MEMORY[0x277CF3280] currentContext];
-    [(_SBSystemApertureRestrictionServerAssertionWrapper *)v13 setAssociatedConnection:v14];
+    currentContext2 = [MEMORY[0x277CF3280] currentContext];
+    [(_SBSystemApertureRestrictionServerAssertionWrapper *)v13 setAssociatedConnection:currentContext2];
 
-    v3 = v10;
+    reasonCopy = reasonCopy;
     v15 = v13;
     BSDispatchMain();
   }
@@ -541,14 +541,14 @@ uint64_t __104__SBSystemApertureRestrictionServer_invalidateSystemApertureComple
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v4;
+      v18 = currentContext;
       _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "SBSystemApertureRestrictionServer invalidating connection because client process is missing required entitlement %@ .", buf, 0xCu);
     }
 
-    v7 = 0;
+    uUID = 0;
   }
 
-  return v7;
+  return uUID;
 }
 
 void __123__SBSystemApertureRestrictionServer_acquireSuppressHidingEmptySystemApertureOnClonedDisplaysAssertionIdentifierWithReason___block_invoke(uint64_t a1, void *a2)
@@ -607,10 +607,10 @@ void __123__SBSystemApertureRestrictionServer_acquireSuppressHidingEmptySystemAp
   }
 }
 
-- (void)invalidateSuppressHidingEmptySystemApertureOnClonedDisplaysAssertionWithIdentifier:(id)a3
+- (void)invalidateSuppressHidingEmptySystemApertureOnClonedDisplaysAssertionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v3 = v4;
+  identifierCopy = identifier;
+  v3 = identifierCopy;
   BSDispatchMain();
 }
 

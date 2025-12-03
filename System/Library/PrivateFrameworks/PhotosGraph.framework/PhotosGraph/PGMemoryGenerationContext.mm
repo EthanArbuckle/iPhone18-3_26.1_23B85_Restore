@@ -1,26 +1,26 @@
 @interface PGMemoryGenerationContext
-- (PGMemoryGenerationContext)initWithPhotoLibrary:(id)a3 userFeedbackCalculator:(id)a4 graph:(id)a5 serviceManager:(id)a6 loggingConnection:(id)a7;
-- (PGMemoryGenerationContext)initWithProcessedScenesAndFacesCache:(id)a3 momentNodesWithBlockedFeatureCache:(id)a4 locationHelper:(id)a5 serviceManager:(id)a6 loggingConnection:(id)a7;
-- (double)averageContentScoreForMomentNodes:(id)a3;
-- (id)_yearNodesInGraph:(id)a3;
-- (id)interestingForMemoriesSubsetFromMomentNodes:(id)a3;
-- (id)interestingWithAlternateJunkingSubsetFromMomentNodes:(id)a3;
-- (id)momentNodesAtSensitiveLocationsInGraph:(id)a3;
-- (id)momentNodesForProcessingWindow:(id)a3 inGraph:(id)a4;
-- (id)yearNodesByMomentNodeInGraph:(id)a3;
-- (id)yearNodesForMomentNodes:(id)a3;
-- (id)yearsForYearNodes:(id)a3;
-- (unint64_t)numberOfAssetsInExtendedCurationForMomentNodes:(id)a3;
+- (PGMemoryGenerationContext)initWithPhotoLibrary:(id)library userFeedbackCalculator:(id)calculator graph:(id)graph serviceManager:(id)manager loggingConnection:(id)connection;
+- (PGMemoryGenerationContext)initWithProcessedScenesAndFacesCache:(id)cache momentNodesWithBlockedFeatureCache:(id)featureCache locationHelper:(id)helper serviceManager:(id)manager loggingConnection:(id)connection;
+- (double)averageContentScoreForMomentNodes:(id)nodes;
+- (id)_yearNodesInGraph:(id)graph;
+- (id)interestingForMemoriesSubsetFromMomentNodes:(id)nodes;
+- (id)interestingWithAlternateJunkingSubsetFromMomentNodes:(id)nodes;
+- (id)momentNodesAtSensitiveLocationsInGraph:(id)graph;
+- (id)momentNodesForProcessingWindow:(id)window inGraph:(id)graph;
+- (id)yearNodesByMomentNodeInGraph:(id)graph;
+- (id)yearNodesForMomentNodes:(id)nodes;
+- (id)yearsForYearNodes:(id)nodes;
+- (unint64_t)numberOfAssetsInExtendedCurationForMomentNodes:(id)nodes;
 @end
 
 @implementation PGMemoryGenerationContext
 
-- (id)_yearNodesInGraph:(id)a3
+- (id)_yearNodesInGraph:(id)graph
 {
   yearNodes = self->_yearNodes;
   if (!yearNodes)
   {
-    v5 = [(PGGraphNodeCollection *)PGGraphYearNodeCollection nodesInGraph:a3];
+    v5 = [(PGGraphNodeCollection *)PGGraphYearNodeCollection nodesInGraph:graph];
     v6 = self->_yearNodes;
     self->_yearNodes = v5;
 
@@ -30,15 +30,15 @@
   return yearNodes;
 }
 
-- (id)yearsForYearNodes:(id)a3
+- (id)yearsForYearNodes:(id)nodes
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  nodesCopy = nodes;
+  v5 = nodesCopy;
   if (!self->_yearByYearNodeIdentifier)
   {
-    v6 = [v4 graph];
-    v7 = [(PGMemoryGenerationContext *)self _yearNodesInGraph:v6];
+    graph = [nodesCopy graph];
+    v7 = [(PGMemoryGenerationContext *)self _yearNodesInGraph:graph];
 
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v26[0] = MEMORY[0x277D85DD0];
@@ -58,10 +58,10 @@
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v13 = [v5 elementIdentifiers];
-  v14 = [v13 indexArray];
+  elementIdentifiers = [v5 elementIdentifiers];
+  indexArray = [elementIdentifiers indexArray];
 
-  v15 = [v14 countByEnumeratingWithState:&v22 objects:v28 count:16];
+  v15 = [indexArray countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v15)
   {
     v16 = v15;
@@ -72,14 +72,14 @@
       {
         if (*v23 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(indexArray);
         }
 
         v19 = [(NSDictionary *)self->_yearByYearNodeIdentifier objectForKeyedSubscript:*(*(&v22 + 1) + 8 * i)];
         [v12 addObject:v19];
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v22 objects:v28 count:16];
+      v16 = [indexArray countByEnumeratingWithState:&v22 objects:v28 count:16];
     }
 
     while (v16);
@@ -98,23 +98,23 @@ void __47__PGMemoryGenerationContext_yearsForYearNodes___block_invoke(uint64_t a
   [v4 setObject:v6 forKeyedSubscript:v5];
 }
 
-- (id)yearNodesForMomentNodes:(id)a3
+- (id)yearNodesForMomentNodes:(id)nodes
 {
-  v4 = a3;
-  v5 = [v4 graph];
-  v6 = [(PGMemoryGenerationContext *)self yearNodesByMomentNodeInGraph:v5];
-  v7 = [v6 targetsForSources:v4];
+  nodesCopy = nodes;
+  graph = [nodesCopy graph];
+  v6 = [(PGMemoryGenerationContext *)self yearNodesByMomentNodeInGraph:graph];
+  v7 = [v6 targetsForSources:nodesCopy];
 
   return v7;
 }
 
-- (id)yearNodesByMomentNodeInGraph:(id)a3
+- (id)yearNodesByMomentNodeInGraph:(id)graph
 {
   v16[2] = *MEMORY[0x277D85DE8];
   yearNodesByMomentNode = self->_yearNodesByMomentNode;
   if (!yearNodesByMomentNode)
   {
-    v5 = [(PGMemoryGenerationContext *)self _yearNodesInGraph:a3];
+    v5 = [(PGMemoryGenerationContext *)self _yearNodesInGraph:graph];
     v6 = MEMORY[0x277D22C90];
     v7 = +[PGGraphYearNodeCollection dateOfYear];
     v16[0] = v7;
@@ -124,9 +124,9 @@ void __47__PGMemoryGenerationContext_yearsForYearNodes___block_invoke(uint64_t a
     v10 = [v6 chain:v9];
 
     v11 = [MEMORY[0x277D22BF8] adjacencyWithSources:v5 relation:v10 targetsClass:objc_opt_class()];
-    v12 = [v11 transposed];
+    transposed = [v11 transposed];
     v13 = self->_yearNodesByMomentNode;
-    self->_yearNodesByMomentNode = v12;
+    self->_yearNodesByMomentNode = transposed;
 
     yearNodesByMomentNode = self->_yearNodesByMomentNode;
   }
@@ -136,16 +136,16 @@ void __47__PGMemoryGenerationContext_yearsForYearNodes___block_invoke(uint64_t a
   return yearNodesByMomentNode;
 }
 
-- (double)averageContentScoreForMomentNodes:(id)a3
+- (double)averageContentScoreForMomentNodes:(id)nodes
 {
-  v4 = a3;
-  if ([v4 count])
+  nodesCopy = nodes;
+  if ([nodesCopy count])
   {
     if (!self->_contentScoreByMomentNodeIdentifier)
     {
       v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v6 = [v4 graph];
-      v7 = [(PGGraphNodeCollection *)PGGraphMomentNodeCollection nodesInGraph:v6];
+      graph = [nodesCopy graph];
+      v7 = [(PGGraphNodeCollection *)PGGraphMomentNodeCollection nodesInGraph:graph];
 
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
@@ -169,9 +169,9 @@ void __47__PGMemoryGenerationContext_yearsForYearNodes___block_invoke(uint64_t a
     v14[3] = &unk_278889540;
     v14[4] = self;
     v14[5] = &v15;
-    [v4 enumerateIdentifiersAsCollectionsWithBlock:v14];
+    [nodesCopy enumerateIdentifiersAsCollectionsWithBlock:v14];
     v11 = v16[3];
-    v12 = v11 / [v4 count];
+    v12 = v11 / [nodesCopy count];
     _Block_object_dispose(&v15, 8);
   }
 
@@ -200,16 +200,16 @@ void __63__PGMemoryGenerationContext_averageContentScoreForMomentNodes___block_i
   *(*(*(a1 + 40) + 8) + 24) = v5 + *(*(*(a1 + 40) + 8) + 24);
 }
 
-- (unint64_t)numberOfAssetsInExtendedCurationForMomentNodes:(id)a3
+- (unint64_t)numberOfAssetsInExtendedCurationForMomentNodes:(id)nodes
 {
-  v4 = a3;
-  if ([v4 count])
+  nodesCopy = nodes;
+  if ([nodesCopy count])
   {
     if (!self->_numberOfAssetsInExtendedCurationByMomentNodeIdentifier)
     {
       v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v6 = [v4 graph];
-      v7 = [(PGGraphNodeCollection *)PGGraphMomentNodeCollection nodesInGraph:v6];
+      graph = [nodesCopy graph];
+      v7 = [(PGGraphNodeCollection *)PGGraphMomentNodeCollection nodesInGraph:graph];
 
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
@@ -233,7 +233,7 @@ void __63__PGMemoryGenerationContext_averageContentScoreForMomentNodes___block_i
     v13[3] = &unk_278889540;
     v13[4] = self;
     v13[5] = &v14;
-    [v4 enumerateIdentifiersAsCollectionsWithBlock:v13];
+    [nodesCopy enumerateIdentifiersAsCollectionsWithBlock:v13];
     v11 = v15[3];
     _Block_object_dispose(&v14, 8);
   }
@@ -262,79 +262,79 @@ void __76__PGMemoryGenerationContext_numberOfAssetsInExtendedCurationForMomentNo
   *(*(*(a1 + 40) + 8) + 24) += [v4 unsignedIntegerValue];
 }
 
-- (id)interestingForMemoriesSubsetFromMomentNodes:(id)a3
+- (id)interestingForMemoriesSubsetFromMomentNodes:(id)nodes
 {
-  v4 = a3;
-  if ([v4 count])
+  nodesCopy = nodes;
+  if ([nodesCopy count])
   {
     momentNodesInterestingForMemories = self->_momentNodesInterestingForMemories;
     if (!momentNodesInterestingForMemories)
     {
-      v6 = [v4 graph];
-      v7 = [PGGraphMomentNodeCollection momentNodesInterestingForMemoriesInGraph:v6];
+      graph = [nodesCopy graph];
+      v7 = [PGGraphMomentNodeCollection momentNodesInterestingForMemoriesInGraph:graph];
       v8 = self->_momentNodesInterestingForMemories;
       self->_momentNodesInterestingForMemories = v7;
 
       momentNodesInterestingForMemories = self->_momentNodesInterestingForMemories;
     }
 
-    v9 = [v4 collectionByIntersecting:momentNodesInterestingForMemories];
+    v9 = [nodesCopy collectionByIntersecting:momentNodesInterestingForMemories];
   }
 
   else
   {
     v10 = [PGGraphMomentNodeCollection alloc];
-    v11 = [v4 graph];
-    v9 = [(MAElementCollection *)v10 initWithGraph:v11];
+    graph2 = [nodesCopy graph];
+    v9 = [(MAElementCollection *)v10 initWithGraph:graph2];
   }
 
   return v9;
 }
 
-- (id)interestingWithAlternateJunkingSubsetFromMomentNodes:(id)a3
+- (id)interestingWithAlternateJunkingSubsetFromMomentNodes:(id)nodes
 {
-  v4 = a3;
-  if ([v4 count])
+  nodesCopy = nodes;
+  if ([nodesCopy count])
   {
     momentNodesInterestingWithAlternateJunking = self->_momentNodesInterestingWithAlternateJunking;
     if (!momentNodesInterestingWithAlternateJunking)
     {
-      v6 = [v4 graph];
-      v7 = [PGGraphMomentNodeCollection momentNodesInterestingWithAlternateJunkingInGraph:v6];
+      graph = [nodesCopy graph];
+      v7 = [PGGraphMomentNodeCollection momentNodesInterestingWithAlternateJunkingInGraph:graph];
       v8 = self->_momentNodesInterestingWithAlternateJunking;
       self->_momentNodesInterestingWithAlternateJunking = v7;
 
       momentNodesInterestingWithAlternateJunking = self->_momentNodesInterestingWithAlternateJunking;
     }
 
-    v9 = [v4 collectionByIntersecting:momentNodesInterestingWithAlternateJunking];
+    v9 = [nodesCopy collectionByIntersecting:momentNodesInterestingWithAlternateJunking];
   }
 
   else
   {
     v10 = [PGGraphMomentNodeCollection alloc];
-    v11 = [v4 graph];
-    v9 = [(MAElementCollection *)v10 initWithGraph:v11];
+    graph2 = [nodesCopy graph];
+    v9 = [(MAElementCollection *)v10 initWithGraph:graph2];
   }
 
   return v9;
 }
 
-- (id)momentNodesForProcessingWindow:(id)a3 inGraph:(id)a4
+- (id)momentNodesForProcessingWindow:(id)window inGraph:(id)graph
 {
-  v6 = a3;
-  v7 = a4;
+  windowCopy = window;
+  graphCopy = graph;
   momentNodesForProcessingWindow = self->_momentNodesForProcessingWindow;
   if (!momentNodesForProcessingWindow)
   {
-    if (v6)
+    if (windowCopy)
     {
-      [PGGraphMomentNodeCollection momentNodesInUniversalDateInterval:v6 inGraph:v7];
+      [PGGraphMomentNodeCollection momentNodesInUniversalDateInterval:windowCopy inGraph:graphCopy];
     }
 
     else
     {
-      [(PGGraphNodeCollection *)PGGraphMomentNodeCollection nodesInGraph:v7];
+      [(PGGraphNodeCollection *)PGGraphMomentNodeCollection nodesInGraph:graphCopy];
     }
     v9 = ;
     v10 = self->_momentNodesForProcessingWindow;
@@ -348,14 +348,14 @@ void __76__PGMemoryGenerationContext_numberOfAssetsInExtendedCurationForMomentNo
   return momentNodesForProcessingWindow;
 }
 
-- (id)momentNodesAtSensitiveLocationsInGraph:(id)a3
+- (id)momentNodesAtSensitiveLocationsInGraph:(id)graph
 {
   momentNodesAtSensitiveLocations = self->_momentNodesAtSensitiveLocations;
   if (!momentNodesAtSensitiveLocations)
   {
-    v5 = a3;
-    v6 = [PGGraphMomentNodeCollection momentNodesHappeningAtSensitiveLocationInGraph:v5];
-    v7 = [PGMemoryGeneratorUtils momentNodesAtHomeOrWorkOrFrequentLocationInGraph:v5];
+    graphCopy = graph;
+    v6 = [PGGraphMomentNodeCollection momentNodesHappeningAtSensitiveLocationInGraph:graphCopy];
+    v7 = [PGMemoryGeneratorUtils momentNodesAtHomeOrWorkOrFrequentLocationInGraph:graphCopy];
 
     v8 = [v6 collectionBySubtracting:v7];
     v9 = self->_momentNodesAtSensitiveLocations;
@@ -367,42 +367,42 @@ void __76__PGMemoryGenerationContext_numberOfAssetsInExtendedCurationForMomentNo
   return momentNodesAtSensitiveLocations;
 }
 
-- (PGMemoryGenerationContext)initWithProcessedScenesAndFacesCache:(id)a3 momentNodesWithBlockedFeatureCache:(id)a4 locationHelper:(id)a5 serviceManager:(id)a6 loggingConnection:(id)a7
+- (PGMemoryGenerationContext)initWithProcessedScenesAndFacesCache:(id)cache momentNodesWithBlockedFeatureCache:(id)featureCache locationHelper:(id)helper serviceManager:(id)manager loggingConnection:(id)connection
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  cacheCopy = cache;
+  featureCacheCopy = featureCache;
+  helperCopy = helper;
+  managerCopy = manager;
+  connectionCopy = connection;
   v21.receiver = self;
   v21.super_class = PGMemoryGenerationContext;
   v17 = [(PGMemoryGenerationContext *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_processedScenesAndFacesCache, a3);
-    objc_storeStrong(&v18->_momentNodesWithBlockedFeatureCache, a4);
-    objc_storeStrong(&v18->_locationHelper, a5);
-    objc_storeStrong(&v18->_serviceManager, a6);
-    objc_storeStrong(&v18->_loggingConnection, a7);
+    objc_storeStrong(&v17->_processedScenesAndFacesCache, cache);
+    objc_storeStrong(&v18->_momentNodesWithBlockedFeatureCache, featureCache);
+    objc_storeStrong(&v18->_locationHelper, helper);
+    objc_storeStrong(&v18->_serviceManager, manager);
+    objc_storeStrong(&v18->_loggingConnection, connection);
   }
 
   return v18;
 }
 
-- (PGMemoryGenerationContext)initWithPhotoLibrary:(id)a3 userFeedbackCalculator:(id)a4 graph:(id)a5 serviceManager:(id)a6 loggingConnection:(id)a7
+- (PGMemoryGenerationContext)initWithPhotoLibrary:(id)library userFeedbackCalculator:(id)calculator graph:(id)graph serviceManager:(id)manager loggingConnection:(id)connection
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[PGMemoryProcessedScenesAndFacesCache alloc] initWithPhotoLibrary:v16];
+  connectionCopy = connection;
+  managerCopy = manager;
+  graphCopy = graph;
+  calculatorCopy = calculator;
+  libraryCopy = library;
+  v17 = [[PGMemoryProcessedScenesAndFacesCache alloc] initWithPhotoLibrary:libraryCopy];
 
-  v18 = [[PGMemoryMomentNodesWithBlockedFeatureCache alloc] initWithUserFeedbackCalculator:v15 loggingConnection:v12];
-  v19 = [[PGGraphLocationHelper alloc] initWithGraph:v14];
+  v18 = [[PGMemoryMomentNodesWithBlockedFeatureCache alloc] initWithUserFeedbackCalculator:calculatorCopy loggingConnection:connectionCopy];
+  v19 = [[PGGraphLocationHelper alloc] initWithGraph:graphCopy];
 
-  v20 = [(PGMemoryGenerationContext *)self initWithProcessedScenesAndFacesCache:v17 momentNodesWithBlockedFeatureCache:v18 locationHelper:v19 serviceManager:v13 loggingConnection:v12];
+  v20 = [(PGMemoryGenerationContext *)self initWithProcessedScenesAndFacesCache:v17 momentNodesWithBlockedFeatureCache:v18 locationHelper:v19 serviceManager:managerCopy loggingConnection:connectionCopy];
   return v20;
 }
 

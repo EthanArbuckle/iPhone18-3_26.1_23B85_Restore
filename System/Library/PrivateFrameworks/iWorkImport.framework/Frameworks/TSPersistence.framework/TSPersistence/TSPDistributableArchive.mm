@@ -1,32 +1,32 @@
 @interface TSPDistributableArchive
-+ (BOOL)_checkFileHeader:(const char *)a3 length:(unint64_t)a4 dffVersion:(unsigned __int16 *)a5 archivedVersions:(id *)a6 defaultObjectVersion:(unsigned int *)a7 hasDescriptors:(BOOL *)a8 hasToc:(BOOL *)a9 otherDataLength:(unsigned int *)a10 closedCleanly:(BOOL *)a11;
-+ (BOOL)readArchivedVersionsFromStream:(id)a3 versions:(id *)a4 error:(id *)a5;
-+ (BOOL)readCheckCrcFromArchiveInputStream:(id)a3 crc:(unsigned int *)a4 error:(id *)a5;
-+ (BOOL)streamDistributableArchive:(id)a3 estimatedDataLength:(int64_t)a4 toUnarchiver:(id)a5 supplementalDataBundle:(id)a6 closedCleanly:(BOOL *)a7 context:(id)a8 error:(id *)a9;
-+ (id)_newStringFromUtf8DataInStream:(id)a3 length:(unint64_t)a4;
++ (BOOL)_checkFileHeader:(const char *)header length:(unint64_t)length dffVersion:(unsigned __int16 *)version archivedVersions:(id *)versions defaultObjectVersion:(unsigned int *)objectVersion hasDescriptors:(BOOL *)descriptors hasToc:(BOOL *)toc otherDataLength:(unsigned int *)self0 closedCleanly:(BOOL *)self1;
++ (BOOL)readArchivedVersionsFromStream:(id)stream versions:(id *)versions error:(id *)error;
++ (BOOL)readCheckCrcFromArchiveInputStream:(id)stream crc:(unsigned int *)crc error:(id *)error;
++ (BOOL)streamDistributableArchive:(id)archive estimatedDataLength:(int64_t)length toUnarchiver:(id)unarchiver supplementalDataBundle:(id)bundle closedCleanly:(BOOL *)cleanly context:(id)context error:(id *)error;
++ (id)_newStringFromUtf8DataInStream:(id)stream length:(unint64_t)length;
 - ($7DEDF3842AEFB7F1E6DF5AF62E424A02)archivedVersions;
-- (BOOL)_readEntriesFromToc:(id)a3 error:(id *)a4;
-- (BOOL)containsObjectWithIdentifier:(int64_t)a3;
-- (TSPDistributableArchive)initWithDffData:(id)a3 error:(id *)a4;
-- (id)_createInputStreamWithOffset:(int64_t)a3 length:(int64_t)a4;
-- (id)createStreamForObject:(int64_t)a3 length:(int64_t *)a4;
-- (int64_t)lengthOfObject:(int64_t)a3;
+- (BOOL)_readEntriesFromToc:(id)toc error:(id *)error;
+- (BOOL)containsObjectWithIdentifier:(int64_t)identifier;
+- (TSPDistributableArchive)initWithDffData:(id)data error:(id *)error;
+- (id)_createInputStreamWithOffset:(int64_t)offset length:(int64_t)length;
+- (id)createStreamForObject:(int64_t)object length:(int64_t *)length;
+- (int64_t)lengthOfObject:(int64_t)object;
 - (void)dealloc;
 @end
 
 @implementation TSPDistributableArchive
 
-+ (BOOL)readArchivedVersionsFromStream:(id)a3 versions:(id *)a4 error:(id *)a5
++ (BOOL)readArchivedVersionsFromStream:(id)stream versions:(id *)versions error:(id *)error
 {
-  v7 = a3;
+  streamCopy = stream;
   v8 = objc_autoreleasePoolPush();
   v15 = 0;
-  if (objc_msgSend_readToOwnBuffer_size_(v7, v9, &v15, 36) == 36 && (v10 = v15, *v15 == 1179010153))
+  if (objc_msgSend_readToOwnBuffer_size_(streamCopy, v9, &v15, 36) == 36 && (v10 = v15, *v15 == 1179010153))
   {
-    if (a4)
+    if (versions)
     {
-      a4->var0 = *(v15 + 10);
-      a4->var1 = *(v10 + 18);
+      versions->var0 = *(v15 + 10);
+      versions->var1 = *(v10 + 18);
     }
 
     v11 = 1;
@@ -38,7 +38,7 @@
   }
 
   objc_autoreleasePoolPop(v8);
-  if (a5)
+  if (error)
   {
     v12 = v11;
   }
@@ -51,22 +51,22 @@
   if ((v12 & 1) == 0)
   {
     v13 = 0;
-    *a5 = 0;
+    *error = 0;
   }
 
   return v11;
 }
 
-+ (BOOL)readCheckCrcFromArchiveInputStream:(id)a3 crc:(unsigned int *)a4 error:(id *)a5
++ (BOOL)readCheckCrcFromArchiveInputStream:(id)stream crc:(unsigned int *)crc error:(id *)error
 {
-  v7 = a3;
+  streamCopy = stream;
   v8 = objc_autoreleasePoolPush();
   v14 = 0;
-  if (objc_msgSend_readToOwnBuffer_size_(v7, v9, &v14, 36) == 36 && *v14 == 1179010153)
+  if (objc_msgSend_readToOwnBuffer_size_(streamCopy, v9, &v14, 36) == 36 && *v14 == 1179010153)
   {
-    if (a4)
+    if (crc)
     {
-      *a4 = v14[1];
+      *crc = v14[1];
     }
 
     v10 = 1;
@@ -78,7 +78,7 @@
   }
 
   objc_autoreleasePoolPop(v8);
-  if (a5)
+  if (error)
   {
     v11 = v10;
   }
@@ -91,29 +91,29 @@
   if ((v11 & 1) == 0)
   {
     v12 = 0;
-    *a5 = 0;
+    *error = 0;
   }
 
   return v10;
 }
 
-+ (BOOL)streamDistributableArchive:(id)a3 estimatedDataLength:(int64_t)a4 toUnarchiver:(id)a5 supplementalDataBundle:(id)a6 closedCleanly:(BOOL *)a7 context:(id)a8 error:(id *)a9
++ (BOOL)streamDistributableArchive:(id)archive estimatedDataLength:(int64_t)length toUnarchiver:(id)unarchiver supplementalDataBundle:(id)bundle closedCleanly:(BOOL *)cleanly context:(id)context error:(id *)error
 {
-  v14 = a3;
-  v133 = a5;
-  v132 = a6;
-  v15 = a8;
+  archiveCopy = archive;
+  unarchiverCopy = unarchiver;
+  bundleCopy = bundle;
+  contextCopy = context;
   context = objc_autoreleasePoolPush();
-  v18 = a4 + 1023;
-  v135 = a4;
-  v136 = v15;
-  if (a4 >= 0)
+  lengthCopy2 = length + 1023;
+  lengthCopy = length;
+  v136 = contextCopy;
+  if (length >= 0)
   {
-    v18 = a4;
+    lengthCopy2 = length;
   }
 
-  v137 = v14;
-  objc_msgSend_createStageWithSteps_(v15, v16, v17, (v18 >> 10));
+  v137 = archiveCopy;
+  objc_msgSend_createStageWithSteps_(contextCopy, v16, v17, (lengthCopy2 >> 10));
   v149[0] = 0;
   v148 = 0;
   v147 = 0;
@@ -121,19 +121,19 @@
   v145 = 0;
   v144 = 0;
   v143 = 0;
-  if (objc_msgSend_readToOwnBuffer_size_(v14, v19, v149, 36) == 36)
+  if (objc_msgSend_readToOwnBuffer_size_(archiveCopy, v19, v149, 36) == 36)
   {
     v22 = 1;
-    v23 = objc_msgSend__checkFileHeader_length_dffVersion_archivedVersions_defaultObjectVersion_hasDescriptors_hasToc_otherDataLength_closedCleanly_(a1, v20, v149[0], 36, &v144, &v146, &v145, &v148, 0, &v147, &v143);
+    v23 = objc_msgSend__checkFileHeader_length_dffVersion_archivedVersions_defaultObjectVersion_hasDescriptors_hasToc_otherDataLength_closedCleanly_(self, v20, v149[0], 36, &v144, &v146, &v145, &v148, 0, &v147, &v143);
     v24 = v23 ^ 1;
-    if (!a7)
+    if (!cleanly)
     {
       v24 = 1;
     }
 
     if ((v24 & 1) == 0)
     {
-      *a7 = v143;
+      *cleanly = v143;
       goto LABEL_9;
     }
 
@@ -141,7 +141,7 @@
     {
 LABEL_9:
       v142 = 0;
-      v25 = objc_msgSend_handleArchivedVersions_error_(v133, v20, v146, *(&v146 + 1), &v142);
+      v25 = objc_msgSend_handleArchivedVersions_error_(unarchiverCopy, v20, v146, *(&v146 + 1), &v142);
       v138 = v142;
       if (v147)
       {
@@ -155,10 +155,10 @@ LABEL_9:
 
       if (v26 == 1)
       {
-        if (objc_msgSend_canSeek(v14, v20, v21))
+        if (objc_msgSend_canSeek(archiveCopy, v20, v21))
         {
-          v29 = objc_msgSend_offset(v14, v27, v28);
-          objc_msgSend_seekToOffset_(v14, v30, v29 + v147);
+          v29 = objc_msgSend_offset(archiveCopy, v27, v28);
+          objc_msgSend_seekToOffset_(archiveCopy, v30, v29 + v147);
         }
 
         else
@@ -171,7 +171,7 @@ LABEL_9:
               break;
             }
 
-            v32 = objc_msgSend_readToOwnBuffer_size_(v14, v27, v149, v147);
+            v32 = objc_msgSend_readToOwnBuffer_size_(archiveCopy, v27, v149, v147);
             if (!v32 || v147 == 0)
             {
               break;
@@ -183,14 +183,14 @@ LABEL_9:
           v22 = v147 == 0;
         }
 
-        v34 = objc_msgSend_offset(v14, v27, v28);
-        v37 = a4;
-        if (v34 < a4)
+        v34 = objc_msgSend_offset(archiveCopy, v27, v28);
+        lengthCopy3 = length;
+        if (v34 < length)
         {
-          v37 = v34;
+          lengthCopy3 = v34;
         }
 
-        objc_msgSend_setProgress_(v15, v35, v36, (v37 / 1024));
+        objc_msgSend_setProgress_(contextCopy, v35, v36, (lengthCopy3 / 1024));
       }
 
       else
@@ -220,7 +220,7 @@ LABEL_29:
   {
     v39 = atomic_load(byte_280A52B10);
     v40 = v22 ^ 1;
-    if ((v39 & 1) != 0 || (v40 & 1) != 0 || objc_msgSend_readToOwnBuffer_size_(v14, v20, v149, 4) != 4 || *"TocE " == *v149[0] || *"FdpE\b" == *v149[0])
+    if ((v39 & 1) != 0 || (v40 & 1) != 0 || objc_msgSend_readToOwnBuffer_size_(archiveCopy, v20, v149, 4) != 4 || *"TocE " == *v149[0] || *"FdpE\b" == *v149[0])
     {
       v81 = atomic_load(byte_280A52B10);
       if (((v81 | v40) & 1) != 0 || v148 != 1 || (v82 = v149[0], *"FdpE\b" != *v149[0]) || *"ClsE\r" == *v149[0])
@@ -232,17 +232,17 @@ LABEL_80:
           v84 = v149[0];
           if (*"ClsE\r" == *v149[0] && *"TocE " != *v149[0])
           {
-            while (*"ClsE\r" == *v84 && objc_msgSend_readToOwnBuffer_size_(v14, v20, v149, (*"\r" - 4)) == *"\r" - 4)
+            while (*"ClsE\r" == *v84 && objc_msgSend_readToOwnBuffer_size_(archiveCopy, v20, v149, (*"\r" - 4)) == *"\r" - 4)
             {
               v85 = *v149[0];
               v86 = *(v149[0] + 4);
               v87 = *(v149[0] + 5);
-              if (objc_msgSend_readToOwnBuffer_size_(v14, v20, v149, v87) == v87)
+              if (objc_msgSend_readToOwnBuffer_size_(archiveCopy, v20, v149, v87) == v87)
               {
                 v89 = objc_alloc(MEMORY[0x277CCACA8]);
                 v91 = objc_msgSend_initWithBytes_length_encoding_(v89, v90, v149[0], v87, 4);
                 v139 = v138;
-                isProtobufClass_error = objc_msgSend_handleClassInfoWithClassType_className_isProtobufClass_error_(v133, v92, v85, v91, v86 == 1, &v139);
+                isProtobufClass_error = objc_msgSend_handleClassInfoWithClassType_className_isProtobufClass_error_(unarchiverCopy, v92, v85, v91, v86 == 1, &v139);
                 v94 = v139;
 
                 v138 = v94;
@@ -256,16 +256,16 @@ LABEL_80:
                 v138 = v91 = v138;
               }
 
-              v97 = objc_msgSend_offset(v14, v95, v96);
-              v100 = v135;
-              if (v97 < v135)
+              v97 = objc_msgSend_offset(archiveCopy, v95, v96);
+              v100 = lengthCopy;
+              if (v97 < lengthCopy)
               {
                 v100 = v97;
               }
 
               objc_msgSend_setProgress_(v136, v98, v99, (v100 / 1024));
               v101 = atomic_load(byte_280A52B10);
-              if ((v101 & 1) == 0 && ((v22 ^ 1) & 1) == 0 && objc_msgSend_readToOwnBuffer_size_(v14, v20, v149, 4) == 4)
+              if ((v101 & 1) == 0 && ((v22 ^ 1) & 1) == 0 && objc_msgSend_readToOwnBuffer_size_(archiveCopy, v20, v149, 4) == 4)
               {
                 v84 = v149[0];
                 if (*"TocE " != *v149[0])
@@ -292,15 +292,15 @@ LABEL_80:
         }
 
         v22 = 1;
-        if (objc_msgSend_readToOwnBuffer_size_(v14, v20, v149, (*"\b" - 4)) != *"\b" - 4)
+        if (objc_msgSend_readToOwnBuffer_size_(archiveCopy, v20, v149, (*"\b" - 4)) != *"\b" - 4)
         {
           goto LABEL_98;
         }
 
         v107 = *v149[0];
-        v108 = objc_msgSend_offset(v14, v20, v21);
+        v108 = objc_msgSend_offset(archiveCopy, v20, v21);
         v140 = v138;
-        v110 = objc_msgSend_handleFileDescriptorProtoWithInputStream_length_error_(v133, v109, v14, v107, &v140);
+        v110 = objc_msgSend_handleFileDescriptorProtoWithInputStream_length_error_(unarchiverCopy, v109, archiveCopy, v107, &v140);
         v111 = v140;
 
         if (!v110)
@@ -309,14 +309,14 @@ LABEL_80:
         }
 
         v116 = v108 + v107;
-        if (objc_msgSend_offset(v14, v112, v113) <= v116)
+        if (objc_msgSend_offset(archiveCopy, v112, v113) <= v116)
         {
-          if (objc_msgSend_offset(v14, v114, v115) < v116)
+          if (objc_msgSend_offset(archiveCopy, v114, v115) < v116)
           {
-            if (objc_msgSend_canSeek(v14, v112, v113))
+            if (objc_msgSend_canSeek(archiveCopy, v112, v113))
             {
               v118 = v111;
-              objc_msgSend_seekToOffset_(v14, v112, v116);
+              objc_msgSend_seekToOffset_(archiveCopy, v112, v116);
               goto LABEL_116;
             }
 
@@ -325,7 +325,7 @@ LABEL_80:
             {
               while (1)
               {
-                v125 = objc_msgSend_readToOwnBuffer_size_(v14, v112, v149, v107);
+                v125 = objc_msgSend_readToOwnBuffer_size_(archiveCopy, v112, v149, v107);
                 if (!v125 || v107 == 0)
                 {
                   break;
@@ -353,16 +353,16 @@ LABEL_80:
         v118 = v117;
 LABEL_116:
         v138 = v118;
-        v119 = objc_msgSend_offset(v14, v112, v113);
-        v122 = v135;
-        if (v119 < v135)
+        v119 = objc_msgSend_offset(archiveCopy, v112, v113);
+        v122 = lengthCopy;
+        if (v119 < lengthCopy)
         {
           v122 = v119;
         }
 
         objc_msgSend_setProgress_(v136, v120, v121, (v122 / 1024));
         v123 = atomic_load(byte_280A52B10);
-        if ((v123 & 1) == 0 && ((v22 ^ 1) & 1) == 0 && objc_msgSend_readToOwnBuffer_size_(v14, v20, v149, 4) == 4)
+        if ((v123 & 1) == 0 && ((v22 ^ 1) & 1) == 0 && objc_msgSend_readToOwnBuffer_size_(archiveCopy, v20, v149, 4) == 4)
         {
           v82 = v149[0];
           if (*"ClsE\r" != *v149[0])
@@ -380,7 +380,7 @@ LABEL_115:
       goto LABEL_116;
     }
 
-    if (*"ObjE" != *v149[0] || objc_msgSend_readToOwnBuffer_size_(v14, v20, v149, v38) != v38)
+    if (*"ObjE" != *v149[0] || objc_msgSend_readToOwnBuffer_size_(archiveCopy, v20, v149, v38) != v38)
     {
       break;
     }
@@ -393,7 +393,7 @@ LABEL_115:
     v47 = *(v149[0] + 20);
     if (*(v149[0] + 14))
     {
-      v48 = objc_msgSend__newStringFromUtf8DataInStream_length_(a1, v41, v14);
+      v48 = objc_msgSend__newStringFromUtf8DataInStream_length_(self, v41, archiveCopy);
     }
 
     else
@@ -416,7 +416,7 @@ LABEL_56:
     if (v46)
     {
       v51 = 0;
-      while (objc_msgSend_readToOwnBuffer_size_(v14, v49, v149, 8) == 8)
+      while (objc_msgSend_readToOwnBuffer_size_(archiveCopy, v49, v149, 8) == 8)
       {
         v50[v51++] = *v149[0];
         if (v51 >= v46)
@@ -436,7 +436,7 @@ LABEL_56:
 LABEL_45:
       if (v45)
       {
-        if (objc_msgSend_readToOwnBuffer_size_(v14, v49, v149, 4) != 4)
+        if (objc_msgSend_readToOwnBuffer_size_(archiveCopy, v49, v149, 4) != 4)
         {
           v53 = objc_msgSend_tsp_readCorruptedDocumentErrorWithUserInfo_(MEMORY[0x277CCA9B8], v49, 0);
           goto LABEL_56;
@@ -455,7 +455,7 @@ LABEL_45:
       v56 = v45 & 2;
       if (v56)
       {
-        if (!v48 || (objc_msgSend_bufferedInputStreamForEntry_(v132, v49, v48), (v55 = objc_claimAutoreleasedReturnValue()) == 0))
+        if (!v48 || (objc_msgSend_bufferedInputStreamForEntry_(bundleCopy, v49, v48), (v55 = objc_claimAutoreleasedReturnValue()) == 0))
         {
           v59 = objc_msgSend_tsp_readCorruptedDocumentErrorWithUserInfo_(MEMORY[0x277CCA9B8], v49, 0);
           v55 = 0;
@@ -466,7 +466,7 @@ LABEL_64:
           goto LABEL_70;
         }
 
-        v47 = objc_msgSend_lengthOfEntry_(v132, v49, v48);
+        v47 = objc_msgSend_lengthOfEntry_(bundleCopy, v49, v48);
         v129 = v56;
       }
 
@@ -479,7 +479,7 @@ LABEL_64:
       v60 = objc_msgSend_offset(v55, v57, v58);
       v141 = v138;
       LODWORD(v128) = v46;
-      v22 = objc_msgSend_handleObjectWithIdentifier_fileStateIdentifier_version_classType_stream_length_relationshipTargets_relationshipCount_error_(v133, v61, v43, v48, v131, v44, v55, v47, v50, v128, &v141);
+      v22 = objc_msgSend_handleObjectWithIdentifier_fileStateIdentifier_version_classType_stream_length_relationshipTargets_relationshipCount_error_(unarchiverCopy, v61, v43, v48, v131, v44, v55, v47, v50, v128, &v141);
       v62 = v141;
 
       v138 = v62;
@@ -544,8 +544,8 @@ LABEL_70:
 
     free(v50);
     v74 = objc_msgSend_offset(v137, v72, v73);
-    v77 = v135;
-    if (v74 < v135)
+    v77 = lengthCopy;
+    if (v74 < lengthCopy)
     {
       v77 = v74;
     }
@@ -553,7 +553,7 @@ LABEL_70:
     objc_msgSend_setProgress_(v136, v75, v76, (v77 / 1024));
     v38 = (*" " - 4);
     v78 = v54;
-    v14 = v137;
+    archiveCopy = v137;
     objc_autoreleasePoolPop(v78);
   }
 
@@ -571,7 +571,7 @@ LABEL_99:
   }
 
   objc_autoreleasePoolPop(context);
-  if (!((a9 == 0) | v22 & 1))
+  if (!((error == 0) | v22 & 1))
   {
     v104 = atomic_load(byte_280A52B10);
     if ((v104 & 1) == 0)
@@ -586,16 +586,16 @@ LABEL_99:
         v105 = objc_msgSend_tsp_unknownReadErrorWithUserInfo_(MEMORY[0x277CCA9B8], v103, 0);
       }
 
-      *a9 = v105;
+      *error = v105;
     }
   }
 
   return v22 & 1;
 }
 
-- (TSPDistributableArchive)initWithDffData:(id)a3 error:(id *)a4
+- (TSPDistributableArchive)initWithDffData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v8.receiver = self;
   v8.super_class = TSPDistributableArchive;
   if ([(TSPDistributableArchive *)&v8 init])
@@ -631,7 +631,7 @@ LABEL_99:
   return result;
 }
 
-- (id)createStreamForObject:(int64_t)a3 length:(int64_t *)a4
+- (id)createStreamForObject:(int64_t)object length:(int64_t *)length
 {
   entries = self->_entries;
   v7 = entries[1];
@@ -645,31 +645,31 @@ LABEL_99:
   v9 = v5;
   do
   {
-    if (v6[4] >= a3)
+    if (v6[4] >= object)
     {
       v9 = v6;
     }
 
-    v6 = v6[v6[4] < a3];
+    v6 = v6[v6[4] < object];
   }
 
   while (v6);
-  if (v9 == v5 || v9[4] > a3)
+  if (v9 == v5 || v9[4] > object)
   {
     return 0;
   }
 
   v11 = v9[6];
   result = objc_msgSend__createInputStreamWithOffset_length_(self, a2, v9[5], v11);
-  if (a4)
+  if (length)
   {
-    *a4 = v11;
+    *length = v11;
   }
 
   return result;
 }
 
-- (int64_t)lengthOfObject:(int64_t)a3
+- (int64_t)lengthOfObject:(int64_t)object
 {
   entries = self->_entries;
   v7 = entries[1];
@@ -680,16 +680,16 @@ LABEL_99:
     v8 = v5;
     do
     {
-      if (*(v6 + 4) >= a3)
+      if (*(v6 + 4) >= object)
       {
         v8 = v6;
       }
 
-      v6 = *&v6[8 * (*(v6 + 4) < a3)];
+      v6 = *&v6[8 * (*(v6 + 4) < object)];
     }
 
     while (v6);
-    if (v8 != v5 && *(v8 + 4) <= a3)
+    if (v8 != v5 && *(v8 + 4) <= object)
     {
       return *(v8 + 6);
     }
@@ -698,13 +698,13 @@ LABEL_99:
   v9 = MEMORY[0x277D81150];
   v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSPDistributableArchive lengthOfObject:]");
   v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPDistributableArchive.mm");
-  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v9, v13, v10, v12, 563, 0, "Asked for length of missing object %llu", a3);
+  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v9, v13, v10, v12, 563, 0, "Asked for length of missing object %llu", object);
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
   return 0;
 }
 
-- (BOOL)containsObjectWithIdentifier:(int64_t)a3
+- (BOOL)containsObjectWithIdentifier:(int64_t)identifier
 {
   entries = self->_entries;
   v6 = entries[1];
@@ -718,16 +718,16 @@ LABEL_99:
   v7 = v4;
   do
   {
-    if (*(v5 + 4) >= a3)
+    if (*(v5 + 4) >= identifier)
     {
       v7 = v5;
     }
 
-    v5 = *&v5[8 * (*(v5 + 4) < a3)];
+    v5 = *&v5[8 * (*(v5 + 4) < identifier)];
   }
 
   while (v5);
-  if (v7 == v4 || *(v7 + 4) > a3)
+  if (v7 == v4 || *(v7 + 4) > identifier)
   {
 LABEL_8:
     v7 = v4;
@@ -736,17 +736,17 @@ LABEL_8:
   return v7 != v4;
 }
 
-+ (BOOL)_checkFileHeader:(const char *)a3 length:(unint64_t)a4 dffVersion:(unsigned __int16 *)a5 archivedVersions:(id *)a6 defaultObjectVersion:(unsigned int *)a7 hasDescriptors:(BOOL *)a8 hasToc:(BOOL *)a9 otherDataLength:(unsigned int *)a10 closedCleanly:(BOOL *)a11
++ (BOOL)_checkFileHeader:(const char *)header length:(unint64_t)length dffVersion:(unsigned __int16 *)version archivedVersions:(id *)versions defaultObjectVersion:(unsigned int *)objectVersion hasDescriptors:(BOOL *)descriptors hasToc:(BOOL *)toc otherDataLength:(unsigned int *)self0 closedCleanly:(BOOL *)self1
 {
-  if (*a3 != 1179010153)
+  if (*header != 1179010153)
   {
     return 0;
   }
 
-  v11 = *(a3 + 4);
-  if (a5)
+  v11 = *(header + 4);
+  if (version)
   {
-    *a5 = v11;
+    *version = v11;
   }
 
   if (v11 != 1)
@@ -754,44 +754,44 @@ LABEL_8:
     return 0;
   }
 
-  if (a6)
+  if (versions)
   {
-    *a6 = *(a3 + 10);
+    *versions = *(header + 10);
   }
 
-  if (a7)
+  if (objectVersion)
   {
-    *a7 = *(a3 + 26);
+    *objectVersion = *(header + 26);
   }
 
-  v12 = *(a3 + 15);
-  if (a8)
+  v12 = *(header + 15);
+  if (descriptors)
   {
-    *a8 = (v12 & 1) != 0;
+    *descriptors = (v12 & 1) != 0;
   }
 
-  if (a9)
+  if (toc)
   {
-    *a9 = (~v12 & 2) == 0;
+    *toc = (~v12 & 2) == 0;
   }
 
-  if (a11)
+  if (cleanly)
   {
-    *a11 = (~v12 & 4) == 0;
+    *cleanly = (~v12 & 4) == 0;
   }
 
-  if (a10)
+  if (dataLength)
   {
-    *a10 = *(a3 + 8);
+    *dataLength = *(header + 8);
   }
 
   return 1;
 }
 
-+ (id)_newStringFromUtf8DataInStream:(id)a3 length:(unint64_t)a4
++ (id)_newStringFromUtf8DataInStream:(id)stream length:(unint64_t)length
 {
-  v5 = a3;
-  if (a4 == -1 || (v6 = malloc_type_malloc(a4 + 1, 0x100004077774924uLL), (v8 = v6) == 0))
+  streamCopy = stream;
+  if (length == -1 || (v6 = malloc_type_malloc(length + 1, 0x100004077774924uLL), (v8 = v6) == 0))
   {
     v13 = 0;
   }
@@ -799,13 +799,13 @@ LABEL_8:
   else
   {
     v9 = v6;
-    if (a4)
+    if (length)
     {
       v9 = v6;
       while (1)
       {
         __src = 0;
-        v10 = objc_msgSend_readToOwnBuffer_size_(v5, v7, &__src, a4);
+        v10 = objc_msgSend_readToOwnBuffer_size_(streamCopy, v7, &__src, length);
         if (!v10)
         {
           break;
@@ -813,8 +813,8 @@ LABEL_8:
 
         memcpy(v9, __src, v10);
         v9 += v10;
-        a4 -= v10;
-        if (!a4)
+        length -= v10;
+        if (!length)
         {
           goto LABEL_7;
         }
@@ -837,16 +837,16 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)_readEntriesFromToc:(id)a3 error:(id *)a4
+- (BOOL)_readEntriesFromToc:(id)toc error:(id *)error
 {
-  v6 = a3;
+  tocCopy = toc;
   v7 = objc_autoreleasePoolPush();
-  v10 = objc_msgSend_bufferedInputStream(v6, v8, v9);
+  v10 = objc_msgSend_bufferedInputStream(tocCopy, v8, v9);
   if (objc_msgSend_canSeek(v10, v11, v12))
   {
     v40 = 0;
     LOBYTE(v38[0]) = 0;
-    if (objc_msgSend_readToOwnBuffer_size_(v10, v13, &v40, 36) == 36 && (v15 = objc_opt_class(), v17 = objc_msgSend__checkFileHeader_length_dffVersion_archivedVersions_defaultObjectVersion_hasDescriptors_hasToc_otherDataLength_closedCleanly_(v15, v16, v40, 36, 0, &self->_archivedVersions, 0, 0, v38, 0, 0), (v17 & v38[0] & 1) != 0) && (v19 = objc_msgSend_dataLength(v6, v14, v18), v19 >= 16) && (objc_msgSend_seekToOffset_(v10, v14, v19 - 16), objc_msgSend_readToOwnBuffer_size_(v10, v20, &v40, 16) == 16) && *v40 == 1381253964)
+    if (objc_msgSend_readToOwnBuffer_size_(v10, v13, &v40, 36) == 36 && (v15 = objc_opt_class(), v17 = objc_msgSend__checkFileHeader_length_dffVersion_archivedVersions_defaultObjectVersion_hasDescriptors_hasToc_otherDataLength_closedCleanly_(v15, v16, v40, 36, 0, &self->_archivedVersions, 0, 0, v38, 0, 0), (v17 & v38[0] & 1) != 0) && (v19 = objc_msgSend_dataLength(tocCopy, v14, v18), v19 >= 16) && (objc_msgSend_seekToOffset_(v10, v14, v19 - 16), objc_msgSend_readToOwnBuffer_size_(v10, v20, &v40, 16) == 16) && *v40 == 1381253964)
     {
       objc_msgSend_seekToOffset_(v10, v14, *(v40 + 4));
       while (objc_msgSend_readToOwnBuffer_size_(v10, v34, &v40, *" ") == *" ")
@@ -891,7 +891,7 @@ LABEL_9:
   }
 
   objc_autoreleasePoolPop(v7);
-  if (a4)
+  if (error)
   {
     v31 = v30;
   }
@@ -904,19 +904,19 @@ LABEL_9:
   if ((v31 & 1) == 0)
   {
     v32 = v29;
-    *a4 = v29;
+    *error = v29;
   }
 
   return v30;
 }
 
-- (id)_createInputStreamWithOffset:(int64_t)a3 length:(int64_t)a4
+- (id)_createInputStreamWithOffset:(int64_t)offset length:(int64_t)length
 {
   if (self->_archiveMemoryRep)
   {
     v7 = objc_alloc(MEMORY[0x277D81120]);
     v10 = objc_msgSend_data(self->_archiveMemoryRep, v8, v9);
-    v12 = objc_msgSend_initWithData_offset_length_(v7, v11, v10, a3, a4);
+    v12 = objc_msgSend_initWithData_offset_length_(v7, v11, v10, offset, length);
 LABEL_7:
     v20 = v12;
 
@@ -927,16 +927,16 @@ LABEL_7:
   {
     v13 = objc_alloc(MEMORY[0x277D81108]);
     v10 = objc_msgSend_path(self->_archiveFileRep, v14, v15);
-    v12 = objc_msgSend_initWithPath_offset_length_(v13, v16, v10, a3, a4);
+    v12 = objc_msgSend_initWithPath_offset_length_(v13, v16, v10, offset, length);
     goto LABEL_7;
   }
 
   archiveZipEntryRep = self->_archiveZipEntryRep;
   if (archiveZipEntryRep)
   {
-    v10 = objc_msgSend_inputStream(archiveZipEntryRep, a2, a3);
+    v10 = objc_msgSend_inputStream(archiveZipEntryRep, a2, offset);
     v18 = objc_alloc(MEMORY[0x277D81128]);
-    v12 = objc_msgSend_initWithInputStream_initialOffset_(v18, v19, v10, a3);
+    v12 = objc_msgSend_initWithInputStream_initialOffset_(v18, v19, v10, offset);
     goto LABEL_7;
   }
 

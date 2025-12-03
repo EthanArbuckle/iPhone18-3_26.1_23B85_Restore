@@ -14,7 +14,7 @@
   v7 = a3;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [a1 _cnui_userActivityWithActivityType:v9 handle:v7 contact:v6 intentWithPerson:&__block_literal_global_36];
+  v10 = [self _cnui_userActivityWithActivityType:v9 handle:v7 contact:v6 intentWithPerson:&__block_literal_global_36];
 
   return v10;
 }
@@ -25,7 +25,7 @@
   v7 = a3;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [a1 _cnui_userActivityWithActivityType:v9 handle:v7 contact:v6 intentWithPerson:&__block_literal_global_3_1];
+  v10 = [self _cnui_userActivityWithActivityType:v9 handle:v7 contact:v6 intentWithPerson:&__block_literal_global_3_1];
 
   return v10;
 }
@@ -36,7 +36,7 @@
   v7 = a3;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [a1 _cnui_userActivityWithActivityType:v9 handle:v7 contact:v6 intentWithPerson:&__block_literal_global_6_0];
+  v10 = [self _cnui_userActivityWithActivityType:v9 handle:v7 contact:v6 intentWithPerson:&__block_literal_global_6_0];
 
   return v10;
 }
@@ -49,19 +49,19 @@
   v12 = a4;
   if ([v10 hasBeenPersisted])
   {
-    v13 = [v10 identifier];
+    identifier = [v10 identifier];
   }
 
   else
   {
-    v13 = 0;
+    identifier = 0;
   }
 
   v14 = objc_alloc(MEMORY[0x1E696E940]);
   v15 = [CNHandle inPersonHandleForHandle:v12];
-  v16 = [v12 customIdentifier];
+  customIdentifier = [v12 customIdentifier];
 
-  v17 = [v14 initWithPersonHandle:v15 nameComponents:0 displayName:0 image:0 contactIdentifier:v13 customIdentifier:v16];
+  v17 = [v14 initWithPersonHandle:v15 nameComponents:0 displayName:0 image:0 contactIdentifier:identifier customIdentifier:customIdentifier];
   v18 = v11[2](v11, v17);
 
   if (v18)

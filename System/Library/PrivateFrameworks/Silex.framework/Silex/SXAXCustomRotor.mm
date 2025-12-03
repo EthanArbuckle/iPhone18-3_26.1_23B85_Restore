@@ -1,43 +1,43 @@
 @interface SXAXCustomRotor
-+ (id)rotorWithName:(id)a3;
-- (SXAXCustomRotor)initWithName:(id)a3;
++ (id)rotorWithName:(id)name;
+- (SXAXCustomRotor)initWithName:(id)name;
 - (id)description;
-- (id)rotorItemAfter:(id)a3;
-- (id)rotorItemBefore:(id)a3;
-- (int64_t)indexOfRotorItem:(id)a3;
+- (id)rotorItemAfter:(id)after;
+- (id)rotorItemBefore:(id)before;
+- (int64_t)indexOfRotorItem:(id)item;
 @end
 
 @implementation SXAXCustomRotor
 
-+ (id)rotorWithName:(id)a3
++ (id)rotorWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = __rotors;
   if (!__rotors)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v6 = __rotors;
-    __rotors = v5;
+    __rotors = dictionary;
 
     v4 = __rotors;
   }
 
-  v7 = [v4 objectForKey:v3];
+  v7 = [v4 objectForKey:nameCopy];
   if (!v7)
   {
-    v7 = [[SXAXCustomRotor alloc] initWithName:v3];
-    [__rotors setObject:v7 forKey:v3];
+    v7 = [[SXAXCustomRotor alloc] initWithName:nameCopy];
+    [__rotors setObject:v7 forKey:nameCopy];
   }
 
   return v7;
 }
 
-- (SXAXCustomRotor)initWithName:(id)a3
+- (SXAXCustomRotor)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = SXAXCustomRotor;
-  v5 = [(SXAXCustomRotor *)&v10 initWithName:v4 itemSearchBlock:&__block_literal_global_62];
+  v5 = [(SXAXCustomRotor *)&v10 initWithName:nameCopy itemSearchBlock:&__block_literal_global_62];
   objc_initWeak(&location, v5);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -80,14 +80,14 @@ LABEL_7:
   return v8;
 }
 
-- (id)rotorItemBefore:(id)a3
+- (id)rotorItemBefore:(id)before
 {
-  v4 = [(SXAXCustomRotor *)self indexOfRotorItem:a3];
+  v4 = [(SXAXCustomRotor *)self indexOfRotorItem:before];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [(SXAXCustomRotor *)self rotorItems];
-    v6 = [(SXAXCustomRotor *)self rotorItems];
-    v7 = [v5 objectAtIndexedSubscript:{objc_msgSend(v6, "count") - 1}];
+    rotorItems = [(SXAXCustomRotor *)self rotorItems];
+    rotorItems2 = [(SXAXCustomRotor *)self rotorItems];
+    v7 = [rotorItems objectAtIndexedSubscript:{objc_msgSend(rotorItems2, "count") - 1}];
 
 LABEL_5:
     goto LABEL_6;
@@ -96,16 +96,16 @@ LABEL_5:
   v8 = v4 - 1;
   if (v4 >= 1)
   {
-    v5 = [(SXAXCustomRotor *)self rotorItems];
-    v7 = [v5 objectAtIndexedSubscript:v8];
+    rotorItems = [(SXAXCustomRotor *)self rotorItems];
+    v7 = [rotorItems objectAtIndexedSubscript:v8];
     goto LABEL_5;
   }
 
   v7 = 0;
 LABEL_6:
-  v9 = [v7 targetElement];
+  targetElement = [v7 targetElement];
 
-  if (!v9)
+  if (!targetElement)
   {
 
     v7 = 0;
@@ -114,22 +114,22 @@ LABEL_6:
   return v7;
 }
 
-- (id)rotorItemAfter:(id)a3
+- (id)rotorItemAfter:(id)after
 {
-  v4 = [(SXAXCustomRotor *)self indexOfRotorItem:a3];
+  v4 = [(SXAXCustomRotor *)self indexOfRotorItem:after];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
 LABEL_4:
-    v8 = [(SXAXCustomRotor *)self rotorItems];
-    v9 = [v8 objectAtIndexedSubscript:v5];
+    rotorItems = [(SXAXCustomRotor *)self rotorItems];
+    v9 = [rotorItems objectAtIndexedSubscript:v5];
 
     goto LABEL_6;
   }
 
   v5 = v4 + 1;
-  v6 = [(SXAXCustomRotor *)self rotorItems];
-  v7 = [v6 count];
+  rotorItems2 = [(SXAXCustomRotor *)self rotorItems];
+  v7 = [rotorItems2 count];
 
   if (v5 < v7)
   {
@@ -138,9 +138,9 @@ LABEL_4:
 
   v9 = 0;
 LABEL_6:
-  v10 = [v9 targetElement];
+  targetElement = [v9 targetElement];
 
-  if (!v10)
+  if (!targetElement)
   {
 
     v9 = 0;
@@ -149,22 +149,22 @@ LABEL_6:
   return v9;
 }
 
-- (int64_t)indexOfRotorItem:(id)a3
+- (int64_t)indexOfRotorItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0x7FFFFFFFFFFFFFFFLL;
-  v5 = [(SXAXCustomRotor *)self rotorItems];
+  rotorItems = [(SXAXCustomRotor *)self rotorItems];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __36__SXAXCustomRotor_indexOfRotorItem___block_invoke;
   v9[3] = &unk_1E8500EA8;
-  v6 = v4;
+  v6 = itemCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [rotorItems enumerateObjectsUsingBlock:v9];
 
   v7 = v13[3];
   _Block_object_dispose(&v12, 8);
@@ -212,9 +212,9 @@ LABEL_5:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SXAXCustomRotor *)self name];
-  v7 = [(SXAXCustomRotor *)self rotorItems];
-  v8 = [v3 stringWithFormat:@"<%@: %p %@; items={%@}>", v5, self, v6, v7];;
+  name = [(SXAXCustomRotor *)self name];
+  rotorItems = [(SXAXCustomRotor *)self rotorItems];
+  v8 = [v3 stringWithFormat:@"<%@: %p %@; items={%@}>", v5, self, name, rotorItems];;
 
   return v8;
 }

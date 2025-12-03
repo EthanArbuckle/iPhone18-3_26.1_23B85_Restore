@@ -1,33 +1,33 @@
 @interface _WKWebExtensionDeclarativeNetRequestSQLiteStore
 - (BOOL)_isDatabaseEmpty;
-- (_WKWebExtensionDeclarativeNetRequestSQLiteStore)initWithUniqueIdentifier:(id)a3 storageType:(BOOL)a4 directory:(id)a5 usesInMemoryDatabase:(BOOL)a6;
+- (_WKWebExtensionDeclarativeNetRequestSQLiteStore)initWithUniqueIdentifier:(id)identifier storageType:(BOOL)type directory:(id)directory usesInMemoryDatabase:(BOOL)database;
 - (id)_databaseURL;
-- (id)_getKeysAndValuesFromRowEnumerator:(id)a3;
-- (id)_getRulesWithRuleIDs:(id)a3 errorMessage:(id *)a4;
-- (id)_insertRule:(id)a3 inDatabase:(id)a4;
+- (id)_getKeysAndValuesFromRowEnumerator:(id)enumerator;
+- (id)_getRulesWithRuleIDs:(id)ds errorMessage:(id *)message;
+- (id)_insertRule:(id)rule inDatabase:(id)database;
 - (int)_createFreshDatabaseSchema;
 - (int)_resetDatabaseSchema;
-- (void)addRules:(id)a3 completionHandler:(id)a4;
-- (void)deleteRules:(id)a3 completionHandler:(id)a4;
-- (void)getRulesWithRuleIDs:(id)a3 completionHandler:(id)a4;
-- (void)updateRulesByRemovingIDs:(id)a3 addRules:(id)a4 completionHandler:(id)a5;
+- (void)addRules:(id)rules completionHandler:(id)handler;
+- (void)deleteRules:(id)rules completionHandler:(id)handler;
+- (void)getRulesWithRuleIDs:(id)ds completionHandler:(id)handler;
+- (void)updateRulesByRemovingIDs:(id)ds addRules:(id)rules completionHandler:(id)handler;
 @end
 
 @implementation _WKWebExtensionDeclarativeNetRequestSQLiteStore
 
-- (_WKWebExtensionDeclarativeNetRequestSQLiteStore)initWithUniqueIdentifier:(id)a3 storageType:(BOOL)a4 directory:(id)a5 usesInMemoryDatabase:(BOOL)a6
+- (_WKWebExtensionDeclarativeNetRequestSQLiteStore)initWithUniqueIdentifier:(id)identifier storageType:(BOOL)type directory:(id)directory usesInMemoryDatabase:(BOOL)database
 {
-  v6 = a6;
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
+  databaseCopy = database;
+  typeCopy = type;
+  identifierCopy = identifier;
+  directoryCopy = directory;
   v19.receiver = self;
   v19.super_class = _WKWebExtensionDeclarativeNetRequestSQLiteStore;
-  v12 = [(_WKWebExtensionSQLiteStore *)&v19 initWithUniqueIdentifier:v10 directory:v11 usesInMemoryDatabase:v6];
+  v12 = [(_WKWebExtensionSQLiteStore *)&v19 initWithUniqueIdentifier:identifierCopy directory:directoryCopy usesInMemoryDatabase:databaseCopy];
   v13 = v12;
   if (v12)
   {
-    if (v8)
+    if (typeCopy)
     {
       v14 = @"session";
     }
@@ -48,32 +48,32 @@
   return v13;
 }
 
-- (void)updateRulesByRemovingIDs:(id)a3 addRules:(id)a4 completionHandler:(id)a5
+- (void)updateRulesByRemovingIDs:(id)ds addRules:(id)rules completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  rulesCopy = rules;
+  handlerCopy = handler;
+  dsCopy = ds;
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3321888768;
   v13[2] = __103___WKWebExtensionDeclarativeNetRequestSQLiteStore_updateRulesByRemovingIDs_addRules_completionHandler___block_invoke;
   v13[3] = &unk_1F10E60A0;
   objc_copyWeak(&v16, &location);
-  v14 = v8;
-  v15 = v9;
-  v11 = v8;
-  v12 = v9;
-  [(_WKWebExtensionDeclarativeNetRequestSQLiteStore *)self deleteRules:v10 completionHandler:v13];
+  v14 = rulesCopy;
+  v15 = handlerCopy;
+  v11 = rulesCopy;
+  v12 = handlerCopy;
+  [(_WKWebExtensionDeclarativeNetRequestSQLiteStore *)self deleteRules:dsCopy completionHandler:v13];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 }
 
-- (void)addRules:(id)a3 completionHandler:(id)a4
+- (void)addRules:(id)rules completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  rulesCopy = rules;
+  handlerCopy = handler;
+  if ([rulesCopy count])
   {
     objc_initWeak(&location, self);
     databaseQueue = self->super._databaseQueue;
@@ -82,8 +82,8 @@
     v9[2] = __78___WKWebExtensionDeclarativeNetRequestSQLiteStore_addRules_completionHandler___block_invoke;
     v9[3] = &unk_1F10E60D8;
     objc_copyWeak(&v12, &location);
-    v11 = v7;
-    v10 = v6;
+    v11 = handlerCopy;
+    v10 = rulesCopy;
     dispatch_async(databaseQueue, v9);
 
     objc_destroyWeak(&v12);
@@ -92,15 +92,15 @@
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)deleteRules:(id)a3 completionHandler:(id)a4
+- (void)deleteRules:(id)rules completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  rulesCopy = rules;
+  handlerCopy = handler;
+  if ([rulesCopy count])
   {
     objc_initWeak(&location, self);
     databaseQueue = self->super._databaseQueue;
@@ -109,8 +109,8 @@
     v9[2] = __81___WKWebExtensionDeclarativeNetRequestSQLiteStore_deleteRules_completionHandler___block_invoke;
     v9[3] = &unk_1F10E60D8;
     objc_copyWeak(&v12, &location);
-    v11 = v7;
-    v10 = v6;
+    v11 = handlerCopy;
+    v10 = rulesCopy;
     dispatch_async(databaseQueue, v9);
 
     objc_destroyWeak(&v12);
@@ -119,14 +119,14 @@
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)getRulesWithRuleIDs:(id)a3 completionHandler:(id)a4
+- (void)getRulesWithRuleIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   databaseQueue = self->super._databaseQueue;
   v11[0] = MEMORY[0x1E69E9820];
@@ -134,51 +134,51 @@
   v11[2] = __89___WKWebExtensionDeclarativeNetRequestSQLiteStore_getRulesWithRuleIDs_completionHandler___block_invoke;
   v11[3] = &unk_1F10E60D8;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dsCopy;
   dispatch_async(databaseQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (id)_getRulesWithRuleIDs:(id)a3 errorMessage:(id *)a4
+- (id)_getRulesWithRuleIDs:(id)ds errorMessage:(id *)message
 {
-  v6 = a3;
+  dsCopy = ds;
   dispatch_assert_queue_V2(self->super._databaseQueue);
-  if ([(_WKWebExtensionSQLiteStore *)self _openDatabaseIfNecessaryReturningErrorMessage:a4 createIfNecessary:0])
+  if ([(_WKWebExtensionSQLiteStore *)self _openDatabaseIfNecessaryReturningErrorMessage:message createIfNecessary:0])
   {
-    if ([v6 count])
+    if ([dsCopy count])
     {
-      v7 = [MEMORY[0x1E695DF70] array];
-      for (i = 0; i < [v6 count]; ++i)
+      array = [MEMORY[0x1E695DF70] array];
+      for (i = 0; i < [dsCopy count]; ++i)
       {
-        [v7 addObject:@"?"];
+        [array addObject:@"?"];
       }
 
-      v10 = [v7 componentsJoinedByString:{@", "}];
+      v10 = [array componentsJoinedByString:{@", "}];
       v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"SELECT * FROM %@ WHERE id IN (%@)", self->_tableName, v10];
       v12 = [[_WKWebExtensionSQLiteStatement alloc] initWithDatabase:self->super._database query:v11];
       v13 = 0;
-      while (v13 < [v6 count])
+      while (v13 < [dsCopy count])
       {
-        v14 = [v6 objectAtIndexedSubscript:v13];
+        v14 = [dsCopy objectAtIndexedSubscript:v13];
         -[_WKWebExtensionSQLiteStatement bindInt64:atParameterIndex:](v12, "bindInt64:atParameterIndex:", [v14 integerValue], ++v13);
       }
 
-      v15 = [(_WKWebExtensionSQLiteStatement *)v12 fetch];
+      fetch = [(_WKWebExtensionSQLiteStatement *)v12 fetch];
     }
 
     else
     {
       database = self->super._database;
-      v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"SELECT * FROM %@", self->_tableName];
-      v15 = WebKit::SQLiteDatabaseFetch<>(database, v7);
+      array = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"SELECT * FROM %@", self->_tableName];
+      fetch = WebKit::SQLiteDatabaseFetch<>(database, array);
     }
 
-    v9 = [(_WKWebExtensionDeclarativeNetRequestSQLiteStore *)self _getKeysAndValuesFromRowEnumerator:v15];
+    v9 = [(_WKWebExtensionDeclarativeNetRequestSQLiteStore *)self _getKeysAndValuesFromRowEnumerator:fetch];
   }
 
   else
@@ -189,10 +189,10 @@
   return v9;
 }
 
-- (id)_getKeysAndValuesFromRowEnumerator:(id)a3
+- (id)_getKeysAndValuesFromRowEnumerator:(id)enumerator
 {
   v30 = *MEMORY[0x1E69E9840];
-  v19 = a3;
+  enumeratorCopy = enumerator;
   if ((_MergedGlobals_12 & 1) == 0)
   {
     v15 = MEMORY[0x1E695DFD8];
@@ -203,12 +203,12 @@
     _MergedGlobals_12 = 1;
   }
 
-  v21 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v3 = v19;
+  v3 = enumeratorCopy;
   v4 = [v3 countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v4)
   {
@@ -243,7 +243,7 @@
 
         else
         {
-          [v21 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -253,20 +253,20 @@
     while (v4);
   }
 
-  return v21;
+  return array;
 }
 
-- (id)_insertRule:(id)a3 inDatabase:(id)a4
+- (id)_insertRule:(id)rule inDatabase:(id)database
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v21 = a4;
+  ruleCopy = rule;
+  databaseCopy = database;
   dispatch_assert_queue_V2(self->super._databaseQueue);
-  v22 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
-  v7 = WebKit::objectForKey<NSNumber>(v6, @"id");
+  v22 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:ruleCopy requiringSecureCoding:1 error:0];
+  v7 = WebKit::objectForKey<NSNumber>(ruleCopy, @"id");
   v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"INSERT INTO %@ (id, rule) VALUES (?, ?)", self->_tableName];
-  v9 = [v7 integerValue];
-  v10 = v21;
+  integerValue = [v7 integerValue];
+  v10 = databaseCopy;
   v11 = v8;
   *buf = 0;
   v12 = [[_WKWebExtensionSQLiteStatement alloc] initWithDatabase:v10 query:v11 error:buf];
@@ -275,23 +275,23 @@
   if (v12)
   {
     v15 = v12;
-    [(_WKWebExtensionSQLiteStatement *)v15 bindInt64:v9 atParameterIndex:1];
+    [(_WKWebExtensionSQLiteStatement *)v15 bindInt64:integerValue atParameterIndex:1];
     [(_WKWebExtensionSQLiteStatement *)v15 bindData:v22 atParameterIndex:2];
 
-    v16 = [(_WKWebExtensionSQLiteStatement *)v15 execute];
+    execute = [(_WKWebExtensionSQLiteStatement *)v15 execute];
     [(_WKWebExtensionSQLiteStatement *)v15 invalidate];
-    if ((v16 - 100) >= 2 && v16)
+    if ((execute - 100) >= 2 && execute)
     {
-      [v10 reportErrorWithCode:v16 statement:-[_WKWebExtensionSQLiteStatement handle](v15 error:{"handle"), 0}];
+      [v10 reportErrorWithCode:execute statement:-[_WKWebExtensionSQLiteStatement handle](v15 error:{"handle"), 0}];
     }
   }
 
   else
   {
-    LODWORD(v16) = [v13 code];
+    LODWORD(execute) = [v13 code];
   }
 
-  if (v16 == 101)
+  if (execute == 101)
   {
     v17 = 0;
   }
@@ -344,13 +344,13 @@
     {
       tableName = self->_tableName;
       uniqueIdentifier = self->super._uniqueIdentifier;
-      v10 = [(_WKWebExtensionSQLiteDatabase *)self->super._database lastErrorMessage];
+      lastErrorMessage = [(_WKWebExtensionSQLiteDatabase *)self->super._database lastErrorMessage];
       *buf = 138413059;
       v12 = tableName;
       v13 = 2113;
       v14 = uniqueIdentifier;
       v15 = 2114;
-      v16 = v10;
+      v16 = lastErrorMessage;
       v17 = 1024;
       v18 = v5;
       _os_log_error_impl(&dword_19D52D000, v6, OS_LOG_TYPE_ERROR, "Failed to create %@ database for extension %{private}@: %{public}@ (%d)", buf, 0x26u);
@@ -375,13 +375,13 @@
     {
       tableName = self->_tableName;
       uniqueIdentifier = self->super._uniqueIdentifier;
-      v10 = [(_WKWebExtensionSQLiteDatabase *)self->super._database lastErrorMessage];
+      lastErrorMessage = [(_WKWebExtensionSQLiteDatabase *)self->super._database lastErrorMessage];
       *buf = 138413059;
       v12 = tableName;
       v13 = 2113;
       v14 = uniqueIdentifier;
       v15 = 2114;
-      v16 = v10;
+      v16 = lastErrorMessage;
       v17 = 1024;
       v18 = v5;
       _os_log_error_impl(&dword_19D52D000, v6, OS_LOG_TYPE_ERROR, "Failed to reset %@ database schema for extension %{private}@: %{public}@ (%d)", buf, 0x26u);
@@ -398,8 +398,8 @@
   v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"SELECT COUNT(*) FROM %@", self->_tableName];
   v5 = WebKit::SQLiteDatabaseFetch<>(database, v4);
 
-  v6 = [v5 nextObject];
-  LOBYTE(database) = [v6 int64AtIndex:0] == 0;
+  nextObject = [v5 nextObject];
+  LOBYTE(database) = [nextObject int64AtIndex:0] == 0;
 
   return database;
 }

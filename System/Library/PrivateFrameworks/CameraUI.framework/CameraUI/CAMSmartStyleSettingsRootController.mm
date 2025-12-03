@@ -1,33 +1,33 @@
 @interface CAMSmartStyleSettingsRootController
-- (BOOL)_validateIsCurrentPicker:(id)a3;
+- (BOOL)_validateIsCurrentPicker:(id)picker;
 - (NSArray)_assetIdentifiersToDisplay;
 - (id)_cancelButtonItem;
 - (id)_doneButtonItem;
 - (id)_readSelectedAssetIdentifiers;
-- (id)_readSystemStyleFromDefaultsWritesDefaultStyle:(int64_t)a3;
+- (id)_readSystemStyleFromDefaultsWritesDefaultStyle:(int64_t)style;
 - (id)_stockAssetIdentifiers;
-- (id)_styleForPresetType:(int64_t)a3;
-- (id)previewViewController:(id)a3 requestsLoadResultForGridIndex:(int64_t)a4;
-- (id)settingsView:(id)a3 requestsViewControllerForPresetType:(int64_t)a4 pageIndex:(unint64_t)a5 parentViewController:(id *)a6;
+- (id)_styleForPresetType:(int64_t)type;
+- (id)previewViewController:(id)controller requestsLoadResultForGridIndex:(int64_t)index;
+- (id)settingsView:(id)view requestsViewControllerForPresetType:(int64_t)type pageIndex:(unint64_t)index parentViewController:(id *)controller;
 - (void)_applicationDidEnterBackground;
 - (void)_confirmCurrentStyle;
-- (void)_didFinishPickingFromPicker:(id)a3;
-- (void)_dismissFromCancelAction:(BOOL)a3 withCompletion:(id)a4;
+- (void)_didFinishPickingFromPicker:(id)picker;
+- (void)_dismissFromCancelAction:(BOOL)action withCompletion:(id)completion;
 - (void)_dismissPicker;
-- (void)_persistSystemStyle:(id)a3;
+- (void)_persistSystemStyle:(id)style;
 - (void)_pickerDidCancel;
 - (void)_presentPicker;
-- (void)_writeSelectedAssetIdentifiers:(id)a3;
-- (void)addChildViewController:(id)a3 toView:(id)a4;
+- (void)_writeSelectedAssetIdentifiers:(id)identifiers;
+- (void)addChildViewController:(id)controller toView:(id)view;
 - (void)loadView;
-- (void)previewViewControllerDidFinishRendering:(id)a3;
-- (void)settingsView:(id)a3 didUpdateStyle:(id)a4 forPresetType:(int64_t)a5;
-- (void)settingsView:(id)a3 requestsTitle:(id)a4 showDoneButton:(BOOL)a5;
-- (void)smartStyleSettingsPickerDidConfirmSelection:(id)a3;
-- (void)smartStyleSettingsPickerDidUpdateSelectedAssetIdentifiers:(id)a3;
-- (void)smartStyleSettingsResourceLoadingManager:(id)a3 didFinishLoadingForAssetIdentifier:(id)a4;
+- (void)previewViewControllerDidFinishRendering:(id)rendering;
+- (void)settingsView:(id)view didUpdateStyle:(id)style forPresetType:(int64_t)type;
+- (void)settingsView:(id)view requestsTitle:(id)title showDoneButton:(BOOL)button;
+- (void)smartStyleSettingsPickerDidConfirmSelection:(id)selection;
+- (void)smartStyleSettingsPickerDidUpdateSelectedAssetIdentifiers:(id)identifiers;
+- (void)smartStyleSettingsResourceLoadingManager:(id)manager didFinishLoadingForAssetIdentifier:(id)identifier;
 - (void)speedUpFadeInAnimations;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation CAMSmartStyleSettingsRootController
@@ -39,22 +39,22 @@
   v41.super_class = CAMSmartStyleSettingsRootController;
   [(CAMSmartStyleSettingsRootController *)&v41 loadView];
   v3 = CEKSmartStyleSystemStylePresetTypes();
-  v4 = [v3 reverseObjectEnumerator];
-  v5 = [v4 allObjects];
+  reverseObjectEnumerator = [v3 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   cachedStyles = self->__cachedStyles;
-  self->__cachedStyles = v6;
+  self->__cachedStyles = dictionary;
 
-  v8 = [(CAMSmartStyleSettingsRootController *)self _readSelectedAssetIdentifiers];
+  _readSelectedAssetIdentifiers = [(CAMSmartStyleSettingsRootController *)self _readSelectedAssetIdentifiers];
   selectedAssetIdentifiers = self->__selectedAssetIdentifiers;
-  self->__selectedAssetIdentifiers = v8;
+  self->__selectedAssetIdentifiers = _readSelectedAssetIdentifiers;
 
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v10 = v5;
+  v10 = allObjects;
   v11 = [v10 countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v11)
   {
@@ -80,10 +80,10 @@
     while (v12);
   }
 
-  v17 = [v10 firstObject];
-  v18 = [v17 integerValue];
+  firstObject = [v10 firstObject];
+  integerValue = [firstObject integerValue];
 
-  v19 = [(CAMSmartStyleSettingsRootController *)self _readSystemStyleFromDefaultsWritesDefaultStyle:v18];
+  v19 = [(CAMSmartStyleSettingsRootController *)self _readSystemStyleFromDefaultsWritesDefaultStyle:integerValue];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __47__CAMSmartStyleSettingsRootController_loadView__block_invoke;
@@ -117,37 +117,37 @@
 
   [(CAMSmartStyleSettingsResourceLoadingManager *)self->__resourceLoadingManager setDelegate:self];
   v30 = self->__resourceLoadingManager;
-  v31 = [(CAMSmartStyleSettingsRootController *)self _assetIdentifiersToDisplay];
-  [(CAMSmartStyleSettingsResourceLoadingManager *)v30 loadResourcesForAssetIdentifiers:v31 unloadAllOthers:1];
+  _assetIdentifiersToDisplay = [(CAMSmartStyleSettingsRootController *)self _assetIdentifiersToDisplay];
+  [(CAMSmartStyleSettingsResourceLoadingManager *)v30 loadResourcesForAssetIdentifiers:_assetIdentifiersToDisplay unloadAllOthers:1];
 
   v32 = [[CAMSmartStyleSettingsView alloc] initWithDelegate:self stylePresets:v10 selectedIndex:v22];
   settingsView = self->__settingsView;
   self->__settingsView = v32;
 
   [(CAMSmartStyleSettingsRootController *)self setView:self->__settingsView];
-  v34 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v34 addObserver:self selector:sel__applicationDidEnterBackground name:*MEMORY[0x1E69DDAC8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__applicationDidEnterBackground name:*MEMORY[0x1E69DDAC8] object:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = CAMSmartStyleSettingsRootController;
-  [(CAMSmartStyleSettingsRootController *)&v8 viewDidAppear:a3];
-  v4 = [(CAMSmartStyleSettingsRootController *)self _settingsView];
-  [v4 flashScrollIndicators];
+  [(CAMSmartStyleSettingsRootController *)&v8 viewDidAppear:appear];
+  _settingsView = [(CAMSmartStyleSettingsRootController *)self _settingsView];
+  [_settingsView flashScrollIndicators];
 
-  v5 = [(CAMSmartStyleSettingsRootController *)self _assetIdentifiersToDisplay];
-  if ([v5 count])
+  _assetIdentifiersToDisplay = [(CAMSmartStyleSettingsRootController *)self _assetIdentifiersToDisplay];
+  if ([_assetIdentifiersToDisplay count])
   {
   }
 
   else
   {
     v6 = +[CAMCaptureCapabilities capabilities];
-    v7 = [v6 hostProcess];
+    hostProcess = [v6 hostProcess];
 
-    if (v7)
+    if (hostProcess)
     {
       [(CAMSmartStyleSettingsRootController *)self _presentPicker];
     }
@@ -156,19 +156,19 @@
 
 - (NSArray)_assetIdentifiersToDisplay
 {
-  v3 = [(CAMSmartStyleSettingsRootController *)self _selectedAssetIdentifiers];
-  v4 = 4 - [v3 count];
+  _selectedAssetIdentifiers = [(CAMSmartStyleSettingsRootController *)self _selectedAssetIdentifiers];
+  v4 = 4 - [_selectedAssetIdentifiers count];
   v5 = [CAMPreferencesUtilities BOOLInCameraDomainForKey:@"CAMFeatureDevelopmentAllowStockAssets" defaultValue:1];
   if (v4 >= 1 && v5)
   {
-    v6 = [(CAMSmartStyleSettingsRootController *)self _stockAssetIdentifiers];
-    v7 = [v6 subarrayWithRange:{0, v4}];
-    v8 = [v3 arrayByAddingObjectsFromArray:v7];
+    _stockAssetIdentifiers = [(CAMSmartStyleSettingsRootController *)self _stockAssetIdentifiers];
+    v7 = [_stockAssetIdentifiers subarrayWithRange:{0, v4}];
+    v8 = [_selectedAssetIdentifiers arrayByAddingObjectsFromArray:v7];
   }
 
   else
   {
-    v8 = v3;
+    v8 = _selectedAssetIdentifiers;
   }
 
   return v8;
@@ -228,8 +228,8 @@
     _os_log_impl(&dword_1A3640000, v3, OS_LOG_TYPE_DEFAULT, "Settings: stopping all animations for DidEnterBackground", v5, 2u);
   }
 
-  v4 = [(CAMSmartStyleSettingsRootController *)self _settingsView];
-  [v4 stopAllAnimations];
+  _settingsView = [(CAMSmartStyleSettingsRootController *)self _settingsView];
+  [_settingsView stopAllAnimations];
 }
 
 - (id)_cancelButtonItem
@@ -301,118 +301,118 @@ void __54__CAMSmartStyleSettingsRootController__doneButtonItem__block_invoke(uin
 
 - (void)speedUpFadeInAnimations
 {
-  v2 = [(CAMSmartStyleSettingsRootController *)self _settingsView];
-  [v2 speedUpFadeInAnimations];
+  _settingsView = [(CAMSmartStyleSettingsRootController *)self _settingsView];
+  [_settingsView speedUpFadeInAnimations];
 }
 
-- (id)previewViewController:(id)a3 requestsLoadResultForGridIndex:(int64_t)a4
+- (id)previewViewController:(id)controller requestsLoadResultForGridIndex:(int64_t)index
 {
-  v6 = [(CAMSmartStyleSettingsRootController *)self _assetIdentifiersToDisplay];
-  if ([v6 count] <= a4)
+  _assetIdentifiersToDisplay = [(CAMSmartStyleSettingsRootController *)self _assetIdentifiersToDisplay];
+  if ([_assetIdentifiersToDisplay count] <= index)
   {
-    v9 = 0;
+    resourceLoadResult = 0;
   }
 
   else
   {
-    v7 = [v6 objectAtIndexedSubscript:a4];
+    v7 = [_assetIdentifiersToDisplay objectAtIndexedSubscript:index];
     v8 = [(CAMSmartStyleSettingsResourceLoadingManager *)self->__resourceLoadingManager resourceLoaderForAssetIdentifier:v7];
-    v9 = [v8 resourceLoadResult];
+    resourceLoadResult = [v8 resourceLoadResult];
   }
 
-  return v9;
+  return resourceLoadResult;
 }
 
-- (void)previewViewControllerDidFinishRendering:(id)a3
+- (void)previewViewControllerDidFinishRendering:(id)rendering
 {
-  v3 = [(CAMSmartStyleSettingsRootController *)self _settingsView];
-  [v3 updateImageViews];
+  _settingsView = [(CAMSmartStyleSettingsRootController *)self _settingsView];
+  [_settingsView updateImageViews];
 }
 
-- (void)settingsView:(id)a3 requestsTitle:(id)a4 showDoneButton:(BOOL)a5
+- (void)settingsView:(id)view requestsTitle:(id)title showDoneButton:(BOOL)button
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = [(CAMSmartStyleSettingsRootController *)self navigationItem];
-  [v8 setTitle:v7];
+  buttonCopy = button;
+  titleCopy = title;
+  navigationItem = [(CAMSmartStyleSettingsRootController *)self navigationItem];
+  [navigationItem setTitle:titleCopy];
 
-  v9 = [(CAMSmartStyleSettingsRootController *)self navigationItem];
-  [v9 setBackAction:0];
+  navigationItem2 = [(CAMSmartStyleSettingsRootController *)self navigationItem];
+  [navigationItem2 setBackAction:0];
 
-  v10 = [(CAMSmartStyleSettingsRootController *)self _cancelButtonItem];
-  v11 = [(CAMSmartStyleSettingsRootController *)self navigationItem];
-  [v11 setLeftBarButtonItem:v10];
+  _cancelButtonItem = [(CAMSmartStyleSettingsRootController *)self _cancelButtonItem];
+  navigationItem3 = [(CAMSmartStyleSettingsRootController *)self navigationItem];
+  [navigationItem3 setLeftBarButtonItem:_cancelButtonItem];
 
-  if (v5)
+  if (buttonCopy)
   {
-    v13 = [(CAMSmartStyleSettingsRootController *)self _doneButtonItem];
+    _doneButtonItem = [(CAMSmartStyleSettingsRootController *)self _doneButtonItem];
   }
 
   else
   {
-    v13 = 0;
+    _doneButtonItem = 0;
   }
 
-  v12 = [(CAMSmartStyleSettingsRootController *)self navigationItem];
-  [v12 setRightBarButtonItem:v13];
+  navigationItem4 = [(CAMSmartStyleSettingsRootController *)self navigationItem];
+  [navigationItem4 setRightBarButtonItem:_doneButtonItem];
 
-  if (v5)
+  if (buttonCopy)
   {
   }
 }
 
-- (void)_dismissFromCancelAction:(BOOL)a3 withCompletion:(id)a4
+- (void)_dismissFromCancelAction:(BOOL)action withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  actionCopy = action;
+  completionCopy = completion;
   v7 = +[CAMCaptureCapabilities capabilities];
-  v8 = [v7 hostProcess];
+  hostProcess = [v7 hostProcess];
 
   v9 = CAMSmartStylesOnboardingCameraAppDidTapCancel;
-  if (!v4)
+  if (!actionCopy)
   {
     v9 = &CAMSmartStylesOnboardingCameraAppDidTapComplete;
   }
 
   v10 = CAMSmartStylesOnboardingSettingsDidTapCancel;
-  if (!v4)
+  if (!actionCopy)
   {
     v10 = CAMSmartStylesOnboardingSettingsDidTapComplete;
   }
 
-  if (v8)
+  if (hostProcess)
   {
     v9 = v10;
   }
 
   v14 = *v9;
   [CAMPreferencesUtilities setBool:1 inCameraDomainForKey:?];
-  v11 = [(CAMSmartStyleSettingsRootController *)self completionBlock];
+  completionBlock = [(CAMSmartStyleSettingsRootController *)self completionBlock];
 
-  if (v11)
+  if (completionBlock)
   {
-    v12 = [(CAMSmartStyleSettingsRootController *)self completionBlock];
-    v12[2]();
+    completionBlock2 = [(CAMSmartStyleSettingsRootController *)self completionBlock];
+    completionBlock2[2]();
   }
 
-  v13 = [(CAMSmartStyleSettingsRootController *)self navigationController];
-  [v13 dismissViewControllerAnimated:1 completion:v6];
+  navigationController = [(CAMSmartStyleSettingsRootController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:completionCopy];
 }
 
 - (void)_presentPicker
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69790E0]);
-  v4 = [MEMORY[0x1E69789A8] sharedPhotoLibrary];
-  v5 = [v3 initWithPhotoLibrary:v4];
+  mEMORY[0x1E69789A8] = [MEMORY[0x1E69789A8] sharedPhotoLibrary];
+  v5 = [v3 initWithPhotoLibrary:mEMORY[0x1E69789A8]];
 
   [v5 setPreferredAssetRepresentationMode:1];
   [v5 setSelectionLimit:4];
   v6 = MEMORY[0x1E69790E8];
-  v7 = [MEMORY[0x1E69790E8] _styleabilityFilter];
-  v14[0] = v7;
-  v8 = [MEMORY[0x1E69790E8] imagesFilter];
-  v14[1] = v8;
+  _styleabilityFilter = [MEMORY[0x1E69790E8] _styleabilityFilter];
+  v14[0] = _styleabilityFilter;
+  imagesFilter = [MEMORY[0x1E69790E8] imagesFilter];
+  v14[1] = imagesFilter;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
   v10 = [v6 allFilterMatchingSubfilters:v9];
   [v5 setFilter:v10];
@@ -426,61 +426,61 @@ void __54__CAMSmartStyleSettingsRootController__doneButtonItem__block_invoke(uin
   [(CAMSmartStyleSettingsRootController *)self presentViewController:v13 animated:1 completion:0];
 }
 
-- (id)settingsView:(id)a3 requestsViewControllerForPresetType:(int64_t)a4 pageIndex:(unint64_t)a5 parentViewController:(id *)a6
+- (id)settingsView:(id)view requestsViewControllerForPresetType:(int64_t)type pageIndex:(unint64_t)index parentViewController:(id *)controller
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a6)
+  if (controller)
   {
-    v10 = self;
-    *a6 = self;
+    selfCopy = self;
+    *controller = self;
   }
 
-  v11 = [(CAMSmartStyleSettingsRootController *)self _assetIdentifiersToDisplay];
-  v12 = [v11 count] != 1;
+  _assetIdentifiersToDisplay = [(CAMSmartStyleSettingsRootController *)self _assetIdentifiersToDisplay];
+  v12 = [_assetIdentifiersToDisplay count] != 1;
 
-  v13 = [[CAMSmartStylePreviewViewController alloc] initWithDelegate:self gridLayout:v12 pageIndex:a5];
+  v13 = [[CAMSmartStylePreviewViewController alloc] initWithDelegate:self gridLayout:v12 pageIndex:index];
   v14 = os_log_create("com.apple.camera", "SmartStyleSettings");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = CEKDebugStringForSmartStylePresetType();
     v20 = 134218242;
-    v21 = a5;
+    indexCopy = index;
     v22 = 2114;
     v23 = v15;
     _os_log_impl(&dword_1A3640000, v14, OS_LOG_TYPE_DEFAULT, "Settings: created new view controller for page=%lu/%{public}@", &v20, 0x16u);
   }
 
-  v16 = [(CAMSmartStyleSettingsRootController *)self _cachedStyles];
-  v17 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  v18 = [v16 objectForKeyedSubscript:v17];
+  _cachedStyles = [(CAMSmartStyleSettingsRootController *)self _cachedStyles];
+  v17 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  v18 = [_cachedStyles objectForKeyedSubscript:v17];
 
   [(CAMSmartStylePreviewViewController *)v13 updateWithStyle:v18];
 
   return v13;
 }
 
-- (id)_styleForPresetType:(int64_t)a3
+- (id)_styleForPresetType:(int64_t)type
 {
   cachedStyles = self->__cachedStyles;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v5 = [(NSMutableDictionary *)cachedStyles objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)settingsView:(id)a3 didUpdateStyle:(id)a4 forPresetType:(int64_t)a5
+- (void)settingsView:(id)view didUpdateStyle:(id)style forPresetType:(int64_t)type
 {
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->__cachedStyles allKeys];
+  styleCopy = style;
+  allKeys = [(NSMutableDictionary *)self->__cachedStyles allKeys];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __81__CAMSmartStyleSettingsRootController_settingsView_didUpdateStyle_forPresetType___block_invoke;
   v10[3] = &unk_1E76FB178;
-  v11 = v7;
-  v12 = a5;
+  v11 = styleCopy;
+  typeCopy = type;
   v10[4] = self;
-  v9 = v7;
-  [v8 enumerateObjectsUsingBlock:v10];
+  v9 = styleCopy;
+  [allKeys enumerateObjectsUsingBlock:v10];
 }
 
 void __81__CAMSmartStyleSettingsRootController_settingsView_didUpdateStyle_forPresetType___block_invoke(void *a1, void *a2)
@@ -501,34 +501,34 @@ void __81__CAMSmartStyleSettingsRootController_settingsView_didUpdateStyle_forPr
   [(CAMSmartStyleSettingsRootController *)self _persistSystemStyle:v5];
 }
 
-- (void)addChildViewController:(id)a3 toView:(id)a4
+- (void)addChildViewController:(id)controller toView:(id)view
 {
-  v6 = a4;
-  v8 = a3;
-  [(CAMSmartStyleSettingsRootController *)self addChildViewController:v8];
-  v7 = [v8 view];
-  [v6 addSubview:v7];
+  viewCopy = view;
+  controllerCopy = controller;
+  [(CAMSmartStyleSettingsRootController *)self addChildViewController:controllerCopy];
+  view = [controllerCopy view];
+  [viewCopy addSubview:view];
 
-  [v8 didMoveToParentViewController:self];
+  [controllerCopy didMoveToParentViewController:self];
 }
 
-- (void)_persistSystemStyle:(id)a3
+- (void)_persistSystemStyle:(id)style
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->__persistedSystemStyle, a3);
-  v6 = [CAMCaptureConversions AVCaptureSmartStyleForCEKSmartStyle:v5];
+  styleCopy = style;
+  objc_storeStrong(&self->__persistedSystemStyle, style);
+  v6 = [CAMCaptureConversions AVCaptureSmartStyleForCEKSmartStyle:styleCopy];
   [CAMSmartStyleUtilities writeAVCaptureSystemStyle:v6];
   v7 = os_log_create("com.apple.camera", "SmartStyleSettings");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v5;
+    v9 = styleCopy;
     _os_log_impl(&dword_1A3640000, v7, OS_LOG_TYPE_DEFAULT, "Settings: set SystemStyle: %{public}@", &v8, 0xCu);
   }
 }
 
-- (id)_readSystemStyleFromDefaultsWritesDefaultStyle:(int64_t)a3
+- (id)_readSystemStyleFromDefaultsWritesDefaultStyle:(int64_t)style
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = [CAMSmartStyleUtilities readAVCaptureSystemStyleBypassXPC:0 allowNil:1];
@@ -536,8 +536,8 @@ void __81__CAMSmartStyleSettingsRootController_settingsView_didUpdateStyle_forPr
   v6 = v5;
   if (v4)
   {
-    v7 = [v4 cast];
-    v8 = [CAMCaptureConversions CEKSmartStylePresetTypeForAVSmartStyleCastType:v7];
+    cast = [v4 cast];
+    v8 = [CAMCaptureConversions CEKSmartStylePresetTypeForAVSmartStyleCastType:cast];
     [v4 intensity];
     v10 = v9;
     [v4 toneBias];
@@ -558,7 +558,7 @@ void __81__CAMSmartStyleSettingsRootController_settingsView_didUpdateStyle_forPr
 
   else
   {
-    v14 = [v5 initWithPresetType:a3];
+    v14 = [v5 initWithPresetType:style];
     v15 = os_log_create("com.apple.camera", "SmartStyleSettings");
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
@@ -576,118 +576,118 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)_validateIsCurrentPicker:(id)a3
+- (BOOL)_validateIsCurrentPicker:(id)picker
 {
-  v4 = a3;
-  v5 = [(CAMSmartStyleSettingsRootController *)self _pickerViewController];
+  pickerCopy = picker;
+  _pickerViewController = [(CAMSmartStyleSettingsRootController *)self _pickerViewController];
 
-  if (v5 != v4)
+  if (_pickerViewController != pickerCopy)
   {
     v6 = os_log_create("com.apple.camera", "SmartStyleSettings");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(CAMSmartStyleSettingsRootController *)v4 _validateIsCurrentPicker:v6];
+      [(CAMSmartStyleSettingsRootController *)pickerCopy _validateIsCurrentPicker:v6];
     }
   }
 
-  return v5 == v4;
+  return _pickerViewController == pickerCopy;
 }
 
-- (void)smartStyleSettingsPickerDidUpdateSelectedAssetIdentifiers:(id)a3
+- (void)smartStyleSettingsPickerDidUpdateSelectedAssetIdentifiers:(id)identifiers
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(CAMSmartStyleSettingsRootController *)self _validateIsCurrentPicker:v4])
+  identifiersCopy = identifiers;
+  if ([(CAMSmartStyleSettingsRootController *)self _validateIsCurrentPicker:identifiersCopy])
   {
-    v5 = [v4 selectedAssetIdentifiers];
-    v6 = [v4 initialSelectedAssetIdentifiers];
+    selectedAssetIdentifiers = [identifiersCopy selectedAssetIdentifiers];
+    initialSelectedAssetIdentifiers = [identifiersCopy initialSelectedAssetIdentifiers];
     v7 = os_log_create("com.apple.camera", "SmartStyleSettings");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(CAMSmartStyleSettingsResourceLoadingManager *)self->__resourceLoadingManager logIdentifierForAssetIdentifiers:v5];
+      v8 = [(CAMSmartStyleSettingsResourceLoadingManager *)self->__resourceLoadingManager logIdentifierForAssetIdentifiers:selectedAssetIdentifiers];
       v12 = 138543362;
       v13 = v8;
       _os_log_impl(&dword_1A3640000, v7, OS_LOG_TYPE_DEFAULT, "Settings: didUpdateSelectedAssetIdentifiers %{public}@", &v12, 0xCu);
     }
 
-    if (![(NSArray *)self->__selectedAssetIdentifiers isEqualToArray:v5])
+    if (![(NSArray *)self->__selectedAssetIdentifiers isEqualToArray:selectedAssetIdentifiers])
     {
-      objc_storeStrong(&self->__selectedAssetIdentifiers, v5);
-      v9 = [(CAMSmartStyleSettingsRootController *)self _assetIdentifiersToDisplay];
-      v10 = [v9 arrayByAddingObjectsFromArray:v6];
+      objc_storeStrong(&self->__selectedAssetIdentifiers, selectedAssetIdentifiers);
+      _assetIdentifiersToDisplay = [(CAMSmartStyleSettingsRootController *)self _assetIdentifiersToDisplay];
+      v10 = [_assetIdentifiersToDisplay arrayByAddingObjectsFromArray:initialSelectedAssetIdentifiers];
       [(CAMSmartStyleSettingsResourceLoadingManager *)self->__resourceLoadingManager loadResourcesForAssetIdentifiers:v10 unloadAllOthers:1];
-      v11 = [(CAMSmartStyleSettingsRootController *)self _settingsView];
-      [v11 updateImageViews];
+      _settingsView = [(CAMSmartStyleSettingsRootController *)self _settingsView];
+      [_settingsView updateImageViews];
     }
   }
 }
 
-- (void)smartStyleSettingsPickerDidConfirmSelection:(id)a3
+- (void)smartStyleSettingsPickerDidConfirmSelection:(id)selection
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(CAMSmartStyleSettingsRootController *)self _validateIsCurrentPicker:v4])
+  selectionCopy = selection;
+  if ([(CAMSmartStyleSettingsRootController *)self _validateIsCurrentPicker:selectionCopy])
   {
-    v5 = [v4 selectedAssetIdentifiers];
-    if ([(CAMSmartStyleSettingsResourceLoadingManager *)self->__resourceLoadingManager isWaitingOnLoadingForAssetIdentifiers:v5])
+    selectedAssetIdentifiers = [selectionCopy selectedAssetIdentifiers];
+    if ([(CAMSmartStyleSettingsResourceLoadingManager *)self->__resourceLoadingManager isWaitingOnLoadingForAssetIdentifiers:selectedAssetIdentifiers])
     {
       v6 = os_log_create("com.apple.camera", "SmartStyleSettings");
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(CAMSmartStyleSettingsResourceLoadingManager *)self->__resourceLoadingManager logIdentifierForAssetIdentifiers:v5];
+        v7 = [(CAMSmartStyleSettingsResourceLoadingManager *)self->__resourceLoadingManager logIdentifierForAssetIdentifiers:selectedAssetIdentifiers];
         v8 = 138543362;
         v9 = v7;
         _os_log_impl(&dword_1A3640000, v6, OS_LOG_TYPE_DEFAULT, "Settings: didFinishPicking %{public}@ (waiting on loading)", &v8, 0xCu);
       }
 
-      [v4 setWaitingOnLoading:1];
+      [selectionCopy setWaitingOnLoading:1];
     }
 
     else
     {
-      [(CAMSmartStyleSettingsRootController *)self _didFinishPickingFromPicker:v4];
+      [(CAMSmartStyleSettingsRootController *)self _didFinishPickingFromPicker:selectionCopy];
     }
   }
 }
 
-- (void)_didFinishPickingFromPicker:(id)a3
+- (void)_didFinishPickingFromPicker:(id)picker
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = [a3 selectedAssetIdentifiers];
+  selectedAssetIdentifiers = [picker selectedAssetIdentifiers];
   v5 = os_log_create("com.apple.camera", "SmartStyleSettings");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CAMSmartStyleSettingsResourceLoadingManager *)self->__resourceLoadingManager logIdentifierForAssetIdentifiers:v4];
+    v6 = [(CAMSmartStyleSettingsResourceLoadingManager *)self->__resourceLoadingManager logIdentifierForAssetIdentifiers:selectedAssetIdentifiers];
     v11 = 138543362;
     v12 = v6;
     _os_log_impl(&dword_1A3640000, v5, OS_LOG_TYPE_DEFAULT, "Settings: didFinishPicking %{public}@", &v11, 0xCu);
   }
 
-  if (![(NSArray *)self->__selectedAssetIdentifiers isEqualToArray:v4])
+  if (![(NSArray *)self->__selectedAssetIdentifiers isEqualToArray:selectedAssetIdentifiers])
   {
-    objc_storeStrong(&self->__selectedAssetIdentifiers, v4);
-    v7 = [(CAMSmartStyleSettingsRootController *)self _settingsView];
-    [v7 updateImageViews];
+    objc_storeStrong(&self->__selectedAssetIdentifiers, selectedAssetIdentifiers);
+    _settingsView = [(CAMSmartStyleSettingsRootController *)self _settingsView];
+    [_settingsView updateImageViews];
   }
 
   resourceLoadingManager = self->__resourceLoadingManager;
-  v9 = [(CAMSmartStyleSettingsRootController *)self _assetIdentifiersToDisplay];
-  [(CAMSmartStyleSettingsResourceLoadingManager *)resourceLoadingManager loadResourcesForAssetIdentifiers:v9 unloadAllOthers:1];
+  _assetIdentifiersToDisplay = [(CAMSmartStyleSettingsRootController *)self _assetIdentifiersToDisplay];
+  [(CAMSmartStyleSettingsResourceLoadingManager *)resourceLoadingManager loadResourcesForAssetIdentifiers:_assetIdentifiersToDisplay unloadAllOthers:1];
 
-  [(CAMSmartStyleSettingsRootController *)self _writeSelectedAssetIdentifiers:v4];
-  v10 = [(CAMSmartStyleSettingsRootController *)self _settingsView];
-  [v10 zoomOutToGridAnimated:0];
+  [(CAMSmartStyleSettingsRootController *)self _writeSelectedAssetIdentifiers:selectedAssetIdentifiers];
+  _settingsView2 = [(CAMSmartStyleSettingsRootController *)self _settingsView];
+  [_settingsView2 zoomOutToGridAnimated:0];
 
   [(CAMSmartStyleSettingsRootController *)self _dismissPicker];
 }
 
 - (void)_pickerDidCancel
 {
-  v3 = [(CAMSmartStyleSettingsRootController *)self _pickerViewController];
-  v4 = [v3 isWaitingOnLoading];
+  _pickerViewController = [(CAMSmartStyleSettingsRootController *)self _pickerViewController];
+  isWaitingOnLoading = [_pickerViewController isWaitingOnLoading];
   v5 = os_log_create("com.apple.camera", "SmartStyleSettings");
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (isWaitingOnLoading)
   {
     if (!v6)
     {
@@ -714,12 +714,12 @@ LABEL_7:
   _os_log_impl(&dword_1A3640000, v5, OS_LOG_TYPE_DEFAULT, v7, v8, 2u);
 LABEL_7:
 
-  v9 = [v3 initialSelectedAssetIdentifiers];
-  if (![(NSArray *)self->__selectedAssetIdentifiers isEqualToArray:v9])
+  initialSelectedAssetIdentifiers = [_pickerViewController initialSelectedAssetIdentifiers];
+  if (![(NSArray *)self->__selectedAssetIdentifiers isEqualToArray:initialSelectedAssetIdentifiers])
   {
-    objc_storeStrong(&self->__selectedAssetIdentifiers, v9);
-    v10 = [(CAMSmartStyleSettingsRootController *)self _settingsView];
-    [v10 updateImageViews];
+    objc_storeStrong(&self->__selectedAssetIdentifiers, initialSelectedAssetIdentifiers);
+    _settingsView = [(CAMSmartStyleSettingsRootController *)self _settingsView];
+    [_settingsView updateImageViews];
   }
 
   [(CAMSmartStyleSettingsRootController *)self _dismissPicker];
@@ -734,19 +734,19 @@ LABEL_7:
   [(CAMSmartStyleSettingsRootController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)smartStyleSettingsResourceLoadingManager:(id)a3 didFinishLoadingForAssetIdentifier:(id)a4
+- (void)smartStyleSettingsResourceLoadingManager:(id)manager didFinishLoadingForAssetIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = [(CAMSmartStyleSettingsRootController *)self _pickerViewController:a3];
+  v5 = [(CAMSmartStyleSettingsRootController *)self _pickerViewController:manager];
   if ([v5 isWaitingOnLoading])
   {
-    v6 = [v5 selectedAssetIdentifiers];
-    if (![(CAMSmartStyleSettingsResourceLoadingManager *)self->__resourceLoadingManager isWaitingOnLoadingForAssetIdentifiers:v6])
+    selectedAssetIdentifiers = [v5 selectedAssetIdentifiers];
+    if (![(CAMSmartStyleSettingsResourceLoadingManager *)self->__resourceLoadingManager isWaitingOnLoadingForAssetIdentifiers:selectedAssetIdentifiers])
     {
       v7 = os_log_create("com.apple.camera", "SmartStyleSettings");
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(CAMSmartStyleSettingsResourceLoadingManager *)self->__resourceLoadingManager logIdentifierForAssetIdentifiers:v6];
+        v8 = [(CAMSmartStyleSettingsResourceLoadingManager *)self->__resourceLoadingManager logIdentifierForAssetIdentifiers:selectedAssetIdentifiers];
         v10 = 138543362;
         v11 = v8;
         _os_log_impl(&dword_1A3640000, v7, OS_LOG_TYPE_DEFAULT, "Settings: did finish waiting for loading %{public}@", &v10, 0xCu);
@@ -756,8 +756,8 @@ LABEL_7:
     }
   }
 
-  v9 = [(CAMSmartStyleSettingsRootController *)self _settingsView];
-  [v9 updateImageViews];
+  _settingsView = [(CAMSmartStyleSettingsRootController *)self _settingsView];
+  [_settingsView updateImageViews];
 }
 
 - (id)_readSelectedAssetIdentifiers
@@ -811,8 +811,8 @@ LABEL_11:
   if ([v2 count])
   {
     v3 = objc_alloc_init(MEMORY[0x1E6978830]);
-    v4 = [MEMORY[0x1E69BE540] predicateForStyleableAssets];
-    [v3 setInternalPredicate:v4];
+    predicateForStyleableAssets = [MEMORY[0x1E69BE540] predicateForStyleableAssets];
+    [v3 setInternalPredicate:predicateForStyleableAssets];
 
     Current = CFAbsoluteTimeGetCurrent();
     v6 = [MEMORY[0x1E6978630] fetchAssetsWithLocalIdentifiers:v2 options:v3];
@@ -844,8 +844,8 @@ LABEL_11:
             objc_enumerationMutation(v10);
           }
 
-          v14 = [*(*(&v21 + 1) + 8 * i) localIdentifier];
-          [v9 addObject:v14];
+          localIdentifier = [*(*(&v21 + 1) + 8 * i) localIdentifier];
+          [v9 addObject:localIdentifier];
         }
 
         v11 = [v10 countByEnumeratingWithState:&v21 objects:v26 count:16];
@@ -890,9 +890,9 @@ void __68__CAMSmartStyleSettingsRootController__readSelectedAssetIdentifiers__bl
   }
 }
 
-- (void)_writeSelectedAssetIdentifiers:(id)a3
+- (void)_writeSelectedAssetIdentifiers:(id)identifiers
 {
-  CFPreferencesSetAppValue(@"CAMUserPreferencesSmartStylesSettingsSelectedAssetIdentifiers", a3, @"com.apple.camera");
+  CFPreferencesSetAppValue(@"CAMUserPreferencesSmartStylesSettingsSelectedAssetIdentifiers", identifiers, @"com.apple.camera");
 
   CFPreferencesAppSynchronize(@"com.apple.camera");
 }

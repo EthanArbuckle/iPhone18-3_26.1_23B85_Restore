@@ -1,47 +1,47 @@
 @interface KNRecordingNavigationEvent
 - (BOOL)canPrecedeDiscontinuity;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isIgnoredWhenSeeking;
-- (KNRecordingNavigationEvent)initWithStartTime:(double)a3 targetSlideNode:(id)a4 targetEventIndex:(unint64_t)a5 animationPhase:(int64_t)a6;
+- (KNRecordingNavigationEvent)initWithStartTime:(double)time targetSlideNode:(id)node targetEventIndex:(unint64_t)index animationPhase:(int64_t)phase;
 - (KNSlideNode)targetSlideNode;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)loadFromMessage:(const void *)a3 unarchiver:(id)a4 parentEventTrack:(id)a5;
-- (void)saveToMessage:(void *)a3 archiver:(id)a4;
+- (void)loadFromMessage:(const void *)message unarchiver:(id)unarchiver parentEventTrack:(id)track;
+- (void)saveToMessage:(void *)message archiver:(id)archiver;
 @end
 
 @implementation KNRecordingNavigationEvent
 
-- (KNRecordingNavigationEvent)initWithStartTime:(double)a3 targetSlideNode:(id)a4 targetEventIndex:(unint64_t)a5 animationPhase:(int64_t)a6
+- (KNRecordingNavigationEvent)initWithStartTime:(double)time targetSlideNode:(id)node targetEventIndex:(unint64_t)index animationPhase:(int64_t)phase
 {
-  v10 = a4;
+  nodeCopy = node;
   v23.receiver = self;
   v23.super_class = KNRecordingNavigationEvent;
-  v13 = [(KNRecordingEvent *)&v23 initWithStartTime:a3];
+  v13 = [(KNRecordingEvent *)&v23 initWithStartTime:time];
   if (v13)
   {
-    if (v10)
+    if (nodeCopy)
     {
-      v14 = objc_msgSend_context(v10, v11, v12);
+      v14 = objc_msgSend_context(nodeCopy, v11, v12);
       objc_storeWeak(&v13->_targetSlideNodeContextReference, v14);
 
-      v17 = objc_msgSend_objectUUID(v10, v15, v16);
+      v17 = objc_msgSend_objectUUID(nodeCopy, v15, v16);
       v20 = objc_msgSend_copy(v17, v18, v19);
       targetSlideNodeUUID = v13->_targetSlideNodeUUID;
       v13->_targetSlideNodeUUID = v20;
     }
 
-    v13->_targetEventIndex = a5;
-    v13->_animationPhase = a6;
+    v13->_targetEventIndex = index;
+    v13->_animationPhase = phase;
   }
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(KNRecordingNavigationEvent, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(KNRecordingNavigationEvent, a2, zone);
   objc_msgSend_startTime(self, v5, v6);
   v8 = v7;
   v11 = objc_msgSend_targetSlideNode(self, v9, v10);
@@ -67,12 +67,12 @@
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v24.receiver = self;
   v24.super_class = KNRecordingNavigationEvent;
-  if ([(KNRecordingEvent *)&v24 isEqual:v4])
+  if ([(KNRecordingEvent *)&v24 isEqual:equalCopy])
   {
     objc_opt_class();
     v7 = TSUDynamicCast();
@@ -160,16 +160,16 @@
   return v6;
 }
 
-- (void)loadFromMessage:(const void *)a3 unarchiver:(id)a4 parentEventTrack:(id)a5
+- (void)loadFromMessage:(const void *)message unarchiver:(id)unarchiver parentEventTrack:(id)track
 {
-  v8 = a4;
-  v9 = a5;
+  unarchiverCopy = unarchiver;
+  trackCopy = track;
   v31.receiver = self;
   v31.super_class = KNRecordingNavigationEvent;
-  [(KNRecordingEvent *)&v31 loadFromMessage:a3 unarchiver:v8 parentEventTrack:v9];
-  if (*(a3 + 3))
+  [(KNRecordingEvent *)&v31 loadFromMessage:message unarchiver:unarchiverCopy parentEventTrack:trackCopy];
+  if (*(message + 3))
   {
-    v11 = *(a3 + 3);
+    v11 = *(message + 3);
   }
 
   else
@@ -180,7 +180,7 @@
   v12 = *(v11 + 4);
   if ((v12 & 2) != 0)
   {
-    v17 = objc_msgSend_readWeakObjectUUIDReferenceMessage_(v8, v10, v11[4]);
+    v17 = objc_msgSend_readWeakObjectUUIDReferenceMessage_(unarchiverCopy, v10, v11[4]);
     v20 = objc_msgSend_copy(v17, v18, v19);
     targetSlideNodeUUID = self->_targetSlideNodeUUID;
     self->_targetSlideNodeUUID = v20;
@@ -198,9 +198,9 @@
     v28[1] = 3221225472;
     v28[2] = sub_275DC6928;
     v28[3] = &unk_27A698C00;
-    v29 = v9;
-    v30 = self;
-    v14 = v8;
+    v29 = trackCopy;
+    selfCopy = self;
+    v14 = unarchiverCopy;
     v15 = objc_opt_class();
     objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(v14, v16, v13, v15, 0, v28);
 
@@ -222,29 +222,29 @@ LABEL_9:
   v26[2] = sub_275DC69CC;
   v26[3] = &unk_27A698BD8;
   v26[4] = self;
-  v24 = v9;
+  v24 = trackCopy;
   v27 = v24;
-  objc_msgSend_addFinalizeHandler_(v8, v25, v26);
+  objc_msgSend_addFinalizeHandler_(unarchiverCopy, v25, v26);
 }
 
-- (void)saveToMessage:(void *)a3 archiver:(id)a4
+- (void)saveToMessage:(void *)message archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v26.receiver = self;
   v26.super_class = KNRecordingNavigationEvent;
-  [(KNRecordingEvent *)&v26 saveToMessage:a3 archiver:v6];
-  *(a3 + 4) |= 1u;
-  v9 = *(a3 + 3);
+  [(KNRecordingEvent *)&v26 saveToMessage:message archiver:archiverCopy];
+  *(message + 4) |= 1u;
+  v9 = *(message + 3);
   if (!v9)
   {
-    v10 = *(a3 + 1);
+    v10 = *(message + 1);
     if (v10)
     {
       v10 = *(v10 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v9 = sub_275E20E60(v10);
-    *(a3 + 3) = v9;
+    *(message + 3) = v9;
   }
 
   targetSlideNodeUUID = self->_targetSlideNodeUUID;
@@ -264,7 +264,7 @@ LABEL_9:
       *(v9 + 32) = v12;
     }
 
-    objc_msgSend_setWeakReferenceToObjectUUID_message_(v6, v7, targetSlideNodeUUID, v12);
+    objc_msgSend_setWeakReferenceToObjectUUID_message_(archiverCopy, v7, targetSlideNodeUUID, v12);
     objc_opt_class();
     WeakRetained = objc_loadWeakRetained(&self->_targetSlideNodeContextReference);
     v16 = objc_msgSend_objectWithUUIDIfAvailableAndLoaded_(WeakRetained, v15, self->_targetSlideNodeUUID);
@@ -286,7 +286,7 @@ LABEL_9:
         *(v9 + 24) = v19;
       }
 
-      objc_msgSend_setWeakReference_message_(v6, v18, v17, v19);
+      objc_msgSend_setWeakReference_message_(archiverCopy, v18, v17, v19);
     }
   }
 

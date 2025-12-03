@@ -1,20 +1,20 @@
 @interface PKSharingMessageExtensionAppViewController
-- (CGSize)contentSizeThatFits:(CGSize)a3;
+- (CGSize)contentSizeThatFits:(CGSize)fits;
 - (NSString)presentationSceneIdentifier;
 - (PKSharingMessageExtensionAppViewController)init;
-- (id)_viewControllerForPresentationStyle:(unint64_t)a3 withConversation:(id)a4;
-- (id)presenterForMessage:(id)a3;
-- (void)_configureCurrentStateForMessage:(id)a3;
+- (id)_viewControllerForPresentationStyle:(unint64_t)style withConversation:(id)conversation;
+- (id)presenterForMessage:(id)message;
+- (void)_configureCurrentStateForMessage:(id)message;
 - (void)_requestResizeIfNeeded;
-- (void)_setContentViewController:(id)a3;
-- (void)_validateMessageForSending:(id)a3 conversation:(id)a4 associatedText:(id)a5 completionHandler:(id)a6;
+- (void)_setContentViewController:(id)controller;
+- (void)_validateMessageForSending:(id)sending conversation:(id)conversation associatedText:(id)text completionHandler:(id)handler;
 - (void)messageDidUpdate;
-- (void)messageExtensionMessageBubbleViewControllerDidTapMessage:(id)a3;
-- (void)openAppURL:(id)a3;
-- (void)showAlertWithTitle:(id)a3 message:(id)a4 button:(id)a5;
-- (void)showAlertWithTitle:(id)a3 message:(id)a4 button:(id)a5 destructiveButton:(id)a6 completion:(id)a7;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willBecomeActiveWithConversation:(id)a3;
+- (void)messageExtensionMessageBubbleViewControllerDidTapMessage:(id)message;
+- (void)openAppURL:(id)l;
+- (void)showAlertWithTitle:(id)title message:(id)message button:(id)button;
+- (void)showAlertWithTitle:(id)title message:(id)message button:(id)button destructiveButton:(id)destructiveButton completion:(id)completion;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willBecomeActiveWithConversation:(id)conversation;
 @end
 
 @implementation PKSharingMessageExtensionAppViewController
@@ -37,15 +37,15 @@
 
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AD18] pk_copiedToWeakObjectsMapTable];
+    pk_copiedToWeakObjectsMapTable = [MEMORY[0x1E696AD18] pk_copiedToWeakObjectsMapTable];
     v6 = _messageBubbleViewControllers;
-    _messageBubbleViewControllers = v5;
+    _messageBubbleViewControllers = pk_copiedToWeakObjectsMapTable;
   }
 
   return v3;
 }
 
-- (CGSize)contentSizeThatFits:(CGSize)a3
+- (CGSize)contentSizeThatFits:(CGSize)fits
 {
   if (self->_messageBubbleViewController)
   {
@@ -60,7 +60,7 @@
   {
     v10.receiver = self;
     v10.super_class = PKSharingMessageExtensionAppViewController;
-    [(MSMessagesAppViewController *)&v10 contentSizeThatFits:a3.width, a3.height];
+    [(MSMessagesAppViewController *)&v10 contentSizeThatFits:fits.width, fits.height];
     v5 = v8;
   }
 
@@ -70,25 +70,25 @@
   return result;
 }
 
-- (void)willBecomeActiveWithConversation:(id)a3
+- (void)willBecomeActiveWithConversation:(id)conversation
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  conversationCopy = conversation;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 recipientAddresses];
+    recipientAddresses = [conversationCopy recipientAddresses];
     *buf = 138543619;
-    v10 = v4;
+    v10 = conversationCopy;
     v11 = 2113;
-    v12 = v6;
+    v12 = recipientAddresses;
     _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_INFO, "iMessage Extension: Will become active with conversation: %{public}@, recipientAddresses:%{private}@", buf, 0x16u);
   }
 
   v8.receiver = self;
   v8.super_class = PKSharingMessageExtensionAppViewController;
-  [(MSMessagesAppViewController *)&v8 willBecomeActiveWithConversation:v4];
-  v7 = [(PKSharingMessageExtensionAppViewController *)self _viewControllerForPresentationStyle:[(MSMessagesAppViewController *)self presentationStyle] withConversation:v4];
+  [(MSMessagesAppViewController *)&v8 willBecomeActiveWithConversation:conversationCopy];
+  v7 = [(PKSharingMessageExtensionAppViewController *)self _viewControllerForPresentationStyle:[(MSMessagesAppViewController *)self presentationStyle] withConversation:conversationCopy];
   if (v7)
   {
     [(PKSharingMessageExtensionAppViewController *)self _setContentViewController:v7];
@@ -97,25 +97,25 @@
   [(PKSharingMessageExtensionPresenter *)self->_presenter extensionWillAppear];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKSharingMessageExtensionAppViewController;
-  [(MSMessagesAppViewController *)&v4 viewWillAppear:a3];
+  [(MSMessagesAppViewController *)&v4 viewWillAppear:appear];
   [(PKSharingMessageExtensionAppViewController *)self _requestResizeIfNeeded];
 }
 
-- (id)_viewControllerForPresentationStyle:(unint64_t)a3 withConversation:(id)a4
+- (id)_viewControllerForPresentationStyle:(unint64_t)style withConversation:(id)conversation
 {
-  if (a3 == 2)
+  if (style == 2)
   {
-    v6 = [a4 selectedMessage];
-    [(PKSharingMessageExtensionAppViewController *)self _configureCurrentStateForMessage:v6];
+    selectedMessage = [conversation selectedMessage];
+    [(PKSharingMessageExtensionAppViewController *)self _configureCurrentStateForMessage:selectedMessage];
 
     v7 = [(MSMessage *)self->_currentMessage URL];
-    v8 = [v7 absoluteString];
+    absoluteString = [v7 absoluteString];
     v9 = [PKSharingMessageExtensionCommonMessage messageTypeFromURL:v7];
-    if (([v8 containsString:PKFlightShareMessageAbsoluteDataURLPrefix] & 1) == 0)
+    if (([absoluteString containsString:PKFlightShareMessageAbsoluteDataURLPrefix] & 1) == 0)
     {
       [v9 isEqualToString:@"pkflightsharemessage"];
     }
@@ -136,8 +136,8 @@
     [(PKMessageExtensionMessageBubbleViewControllerProtocol *)self->_messageBubbleViewController willBecomeContentViewControllerForAppViewController:self withMessageFromMe:[(MSMessage *)self->_currentMessage isFromMe]];
     v15 = self->_messageBubbleViewController;
     v16 = objc_opt_class();
-    v17 = [(PKSharingMessageExtensionPresenter *)self->_presenter message];
-    v18 = [v16 propertiesForMessage:v17];
+    message = [(PKSharingMessageExtensionPresenter *)self->_presenter message];
+    v18 = [v16 propertiesForMessage:message];
     [(PKMessageExtensionMessageBubbleViewControllerProtocol *)v15 setProperties:v18];
 
     v19 = self->_messageBubbleViewController;
@@ -151,19 +151,19 @@
   return v19;
 }
 
-- (void)_setContentViewController:(id)a3
+- (void)_setContentViewController:(id)controller
 {
-  if (a3)
+  if (controller)
   {
-    v4 = a3;
-    [(PKSharingMessageExtensionAppViewController *)self addChildViewController:v4];
-    v6 = [(PKSharingMessageExtensionAppViewController *)self view];
-    v5 = [v4 view];
-    [v6 bounds];
-    [v5 setFrame:?];
-    [v5 setAutoresizingMask:18];
-    [v6 addSubview:v5];
-    [v4 didMoveToParentViewController:self];
+    controllerCopy = controller;
+    [(PKSharingMessageExtensionAppViewController *)self addChildViewController:controllerCopy];
+    view = [(PKSharingMessageExtensionAppViewController *)self view];
+    view2 = [controllerCopy view];
+    [view bounds];
+    [view2 setFrame:?];
+    [view2 setAutoresizingMask:18];
+    [view addSubview:view2];
+    [controllerCopy didMoveToParentViewController:self];
   }
 }
 
@@ -172,8 +172,8 @@
   messageBubbleViewController = self->_messageBubbleViewController;
   if (messageBubbleViewController)
   {
-    v4 = [(PKMessageExtensionMessageBubbleViewControllerProtocol *)messageBubbleViewController view];
-    [v4 bounds];
+    view = [(PKMessageExtensionMessageBubbleViewControllerProtocol *)messageBubbleViewController view];
+    [view bounds];
     v6 = v5;
     v8 = v7;
 
@@ -186,11 +186,11 @@
   }
 }
 
-- (void)_validateMessageForSending:(id)a3 conversation:(id)a4 associatedText:(id)a5 completionHandler:(id)a6
+- (void)_validateMessageForSending:(id)sending conversation:(id)conversation associatedText:(id)text completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  sendingCopy = sending;
+  conversationCopy = conversation;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v12 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -199,21 +199,21 @@
     _os_log_impl(&dword_1BD026000, v12, OS_LOG_TYPE_DEFAULT, "iMessage Extension: Validating message for sending", buf, 2u);
   }
 
-  v13 = [v10 recipientAddresses];
-  v14 = v13;
-  if (v13 && [v13 count])
+  recipientAddresses = [conversationCopy recipientAddresses];
+  v14 = recipientAddresses;
+  if (recipientAddresses && [recipientAddresses count])
   {
-    [(PKSharingMessageExtensionAppViewController *)self _configureCurrentStateForMessage:v9];
+    [(PKSharingMessageExtensionAppViewController *)self _configureCurrentStateForMessage:sendingCopy];
     [(PKMessageExtensionMessageBubbleViewControllerProtocol *)self->_messageBubbleViewController beginValidateMessage];
     presenter = self->_presenter;
-    v16 = [v10 senderAddress];
+    senderAddress = [conversationCopy senderAddress];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __119__PKSharingMessageExtensionAppViewController__validateMessageForSending_conversation_associatedText_completionHandler___block_invoke;
     v17[3] = &unk_1E80121D8;
     v17[4] = self;
-    v18 = v11;
-    [(PKSharingMessageExtensionPresenter *)presenter validateForRecipients:v14 senderAddress:v16 completion:v17];
+    v18 = handlerCopy;
+    [(PKSharingMessageExtensionPresenter *)presenter validateForRecipients:v14 senderAddress:senderAddress completion:v17];
   }
 
   else
@@ -224,7 +224,7 @@
       _os_log_impl(&dword_1BD026000, v12, OS_LOG_TYPE_DEFAULT, "iMessage Extension: no recipients to validate", buf, 2u);
     }
 
-    (*(v11 + 2))(v11, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -260,11 +260,11 @@ LABEL_6:
   (*(*(a1 + 40) + 16))(*(a1 + 40));
 }
 
-- (void)_configureCurrentStateForMessage:(id)a3
+- (void)_configureCurrentStateForMessage:(id)message
 {
-  v20 = a3;
-  objc_storeStrong(&self->_currentMessage, a3);
-  v5 = [(PKSharingMessageExtensionAppViewController *)self presenterForMessage:v20];
+  messageCopy = message;
+  objc_storeStrong(&self->_currentMessage, message);
+  v5 = [(PKSharingMessageExtensionAppViewController *)self presenterForMessage:messageCopy];
   presenter = self->_presenter;
   self->_presenter = v5;
 
@@ -273,22 +273,22 @@ LABEL_6:
   {
     v8 = MEMORY[0x1E695DF30];
     v9 = *MEMORY[0x1E695D930];
-    v10 = [v20 URL];
+    v10 = [messageCopy URL];
     [v8 raise:v9 format:{@"Sharing message URL must always resolve to presenter! URL: %@", v10}];
 
     v7 = self->_presenter;
   }
 
   [(PKSharingMessageExtensionPresenter *)v7 setRenderer:self];
-  v11 = [v20 isPending];
-  if ((v11 & 1) != 0 || (+[PKMessagesAppSharedContext sharedContext](PKMessagesAppSharedContext, "sharedContext"), v12 = objc_claimAutoreleasedReturnValue(), [v20 session], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "identifier"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "externalizedControllerStateForMessageIdentifier:", v14), v15 = objc_claimAutoreleasedReturnValue(), v14, v13, v12, !v15) || (v16 = objc_msgSend(objc_alloc(MEMORY[0x1E695DFF8]), "initWithDataRepresentation:relativeToURL:", v15, 0), v15, !v16))
+  isPending = [messageCopy isPending];
+  if ((isPending & 1) != 0 || (+[PKMessagesAppSharedContext sharedContext](PKMessagesAppSharedContext, "sharedContext"), v12 = objc_claimAutoreleasedReturnValue(), [messageCopy session], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "identifier"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "externalizedControllerStateForMessageIdentifier:", v14), v15 = objc_claimAutoreleasedReturnValue(), v14, v13, v12, !v15) || (v16 = objc_msgSend(objc_alloc(MEMORY[0x1E695DFF8]), "initWithDataRepresentation:relativeToURL:", v15, 0), v15, !v16))
   {
     v16 = [(MSMessage *)self->_currentMessage URL];
   }
 
   v17 = [objc_alloc(objc_msgSend(objc_opt_class() "messageClass"))];
-  [v17 setIsFromMe:{objc_msgSend(v20, "isFromMe")}];
-  [v17 setIsPending:v11];
+  [v17 setIsFromMe:{objc_msgSend(messageCopy, "isFromMe")}];
+  [v17 setIsPending:isPending];
   [(PKSharingMessageExtensionPresenter *)self->_presenter setMessage:v17];
   if (!self->_messageBubbleViewController)
   {
@@ -298,23 +298,23 @@ LABEL_6:
   }
 }
 
-- (id)presenterForMessage:(id)a3
+- (id)presenterForMessage:(id)message
 {
-  v3 = [a3 URL];
+  v3 = [message URL];
   v4 = PKSharingMessageExtensionPresenterForURL(v3);
 
   return v4;
 }
 
-- (void)messageExtensionMessageBubbleViewControllerDidTapMessage:(id)a3
+- (void)messageExtensionMessageBubbleViewControllerDidTapMessage:(id)message
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = messageCopy;
     _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "iMessage Extension: Subcredential invitation message view controller: %@ did tap message", &v6, 0xCu);
   }
 
@@ -323,12 +323,12 @@ LABEL_6:
 
 - (NSString)presentationSceneIdentifier
 {
-  v2 = [(PKSharingMessageExtensionAppViewController *)self view];
-  v3 = [v2 window];
-  v4 = [v3 windowScene];
-  v5 = [v4 _sceneIdentifier];
+  view = [(PKSharingMessageExtensionAppViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  _sceneIdentifier = [windowScene _sceneIdentifier];
 
-  return v5;
+  return _sceneIdentifier;
 }
 
 - (void)messageDidUpdate
@@ -338,45 +338,45 @@ LABEL_6:
   v5 = [(MSMessage *)self->_currentMessage URL];
   [v3 setObject:messageBubbleViewController forKey:v5];
 
-  v14 = [(PKSharingMessageExtensionPresenter *)self->_presenter message];
-  v6 = [objc_opt_class() propertiesForMessage:v14];
+  message = [(PKSharingMessageExtensionPresenter *)self->_presenter message];
+  v6 = [objc_opt_class() propertiesForMessage:message];
   [(PKMessageExtensionMessageBubbleViewControllerProtocol *)self->_messageBubbleViewController setProperties:v6];
   [(PKSharingMessageExtensionAppViewController *)self _requestResizeIfNeeded];
   v7 = _messageBubbleViewControllers;
   v8 = [(MSMessage *)self->_currentMessage URL];
   [v7 removeObjectForKey:v8];
 
-  v9 = [v14 urlRepresentation];
-  [(MSMessage *)self->_currentMessage setURL:v9];
+  urlRepresentation = [message urlRepresentation];
+  [(MSMessage *)self->_currentMessage setURL:urlRepresentation];
   if (![(MSMessage *)self->_currentMessage isPending])
   {
     v10 = +[PKMessagesAppSharedContext sharedContext];
-    v11 = [v9 dataRepresentation];
-    v12 = [(MSMessage *)self->_currentMessage session];
-    v13 = [v12 identifier];
-    [v10 persistExternalizedControllerState:v11 forMessageIdentifier:v13];
+    dataRepresentation = [urlRepresentation dataRepresentation];
+    session = [(MSMessage *)self->_currentMessage session];
+    identifier = [session identifier];
+    [v10 persistExternalizedControllerState:dataRepresentation forMessageIdentifier:identifier];
   }
 
-  [_messageBubbleViewControllers setObject:self->_messageBubbleViewController forKey:v9];
+  [_messageBubbleViewControllers setObject:self->_messageBubbleViewController forKey:urlRepresentation];
 }
 
-- (void)showAlertWithTitle:(id)a3 message:(id)a4 button:(id)a5
+- (void)showAlertWithTitle:(id)title message:(id)message button:(id)button
 {
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  titleCopy = title;
+  messageCopy = message;
+  buttonCopy = button;
   v10 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    if (v7)
+    if (titleCopy)
     {
-      v11 = v7;
+      v11 = titleCopy;
     }
 
     else
     {
-      v11 = v8;
+      v11 = messageCopy;
     }
 
     v14 = 138412290;
@@ -388,31 +388,31 @@ LABEL_6:
   v13 = MEMORY[0x1E695E118];
   [v12 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E69BC6B0]];
   [v12 setObject:v13 forKeyedSubscript:*MEMORY[0x1E69BC6A8]];
-  [v12 setObject:v7 forKeyedSubscript:*MEMORY[0x1E695EE58]];
-  [v12 setObject:v8 forKeyedSubscript:*MEMORY[0x1E695EE60]];
-  [v12 setObject:v9 forKeyedSubscript:*MEMORY[0x1E695EE78]];
+  [v12 setObject:titleCopy forKeyedSubscript:*MEMORY[0x1E695EE58]];
+  [v12 setObject:messageCopy forKeyedSubscript:*MEMORY[0x1E695EE60]];
+  [v12 setObject:buttonCopy forKeyedSubscript:*MEMORY[0x1E695EE78]];
   [MEMORY[0x1E69B9320] presentNotificationWithParameters:v12 responseHandler:&__block_literal_global_12];
 }
 
-- (void)showAlertWithTitle:(id)a3 message:(id)a4 button:(id)a5 destructiveButton:(id)a6 completion:(id)a7
+- (void)showAlertWithTitle:(id)title message:(id)message button:(id)button destructiveButton:(id)destructiveButton completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  titleCopy = title;
+  messageCopy = message;
+  buttonCopy = button;
+  destructiveButtonCopy = destructiveButton;
+  completionCopy = completion;
   v16 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    if (v11)
+    if (titleCopy)
     {
-      v17 = v11;
+      v17 = titleCopy;
     }
 
     else
     {
-      v17 = v12;
+      v17 = messageCopy;
     }
 
     *buf = 138412290;
@@ -424,23 +424,23 @@ LABEL_6:
   v19 = MEMORY[0x1E695E118];
   [v18 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E69BC6B0]];
   [v18 setObject:v19 forKeyedSubscript:*MEMORY[0x1E69BC6A8]];
-  [v18 setObject:v11 forKeyedSubscript:*MEMORY[0x1E695EE58]];
-  [v18 setObject:v12 forKeyedSubscript:*MEMORY[0x1E695EE60]];
-  [v18 setObject:v13 forKeyedSubscript:*MEMORY[0x1E695EE78]];
-  [v18 setObject:v14 forKeyedSubscript:*MEMORY[0x1E695EE98]];
+  [v18 setObject:titleCopy forKeyedSubscript:*MEMORY[0x1E695EE58]];
+  [v18 setObject:messageCopy forKeyedSubscript:*MEMORY[0x1E695EE60]];
+  [v18 setObject:buttonCopy forKeyedSubscript:*MEMORY[0x1E695EE78]];
+  [v18 setObject:destructiveButtonCopy forKeyedSubscript:*MEMORY[0x1E695EE98]];
   v20 = MEMORY[0x1E69B9320];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __109__PKSharingMessageExtensionAppViewController_showAlertWithTitle_message_button_destructiveButton_completion___block_invoke;
   v22[3] = &unk_1E8012220;
-  v23 = v15;
-  v21 = v15;
+  v23 = completionCopy;
+  v21 = completionCopy;
   [v20 presentNotificationWithParameters:v18 responseHandler:v22];
 }
 
-- (void)openAppURL:(id)a3
+- (void)openAppURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -450,17 +450,17 @@ LABEL_6:
 
   if (PKPassbookIsCurrentlyDeletedByUser())
   {
-    v6 = PKLocalizedDeletableString(&cfstr_WalletUninstal.isa);
+    defaultWorkspace = PKLocalizedDeletableString(&cfstr_WalletUninstal.isa);
     v7 = PKLocalizedDeletableString(&cfstr_WalletUninstal_0.isa);
     v8 = PKLocalizedDeletableString(&cfstr_WalletUninstal_1.isa);
     v9 = PKLocalizedDeletableString(&cfstr_WalletUninstal_2.isa);
-    [(PKSharingMessageExtensionAppViewController *)self showAlertWithTitle:v6 message:v7 button:v8 destructiveButton:v9 completion:&__block_literal_global_54];
+    [(PKSharingMessageExtensionAppViewController *)self showAlertWithTitle:defaultWorkspace message:v7 button:v8 destructiveButton:v9 completion:&__block_literal_global_54];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E6963608] defaultWorkspace];
-    [v6 openSensitiveURL:v4 withOptions:0];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+    [defaultWorkspace openSensitiveURL:lCopy withOptions:0];
   }
 }
 

@@ -9,7 +9,7 @@
 {
   v20 = a10;
   v21 = a11;
-  v32.receiver = a1;
+  v32.receiver = self;
   v32.super_class = &off_2828108D8;
   objc_msgSendSuper2(&v32, sel_attachmentBoundsForAttributes_location_textContainer_proposedLineFragment_position_, a9, v20, v21, a2, a3, a4, a5, a6, a7);
   v23 = v22;
@@ -18,16 +18,16 @@
   {
     objc_opt_class();
     v24 = ICDynamicCast();
-    v25 = [v24 tk2TextView];
+    tk2TextView = [v24 tk2TextView];
 
     if (objc_opt_respondsToSelector())
     {
-      v26 = [v21 textLayoutManager];
-      v27 = [v26 documentRange];
-      v28 = [v27 location];
-      v29 = [v26 offsetFromLocation:v28 toLocation:v20];
+      textLayoutManager = [v21 textLayoutManager];
+      documentRange = [textLayoutManager documentRange];
+      location = [documentRange location];
+      v29 = [textLayoutManager offsetFromLocation:location toLocation:v20];
 
-      [v25 _pk_boundsForDrawingTextAttachment:a1 characterIndex:v29];
+      [tk2TextView _pk_boundsForDrawingTextAttachment:self characterIndex:v29];
       x = v33.origin.x;
       if (!CGRectIsEmpty(v33))
       {
@@ -47,23 +47,23 @@
   v19 = *(MEMORY[0x277CBF398] + 16);
   v20 = *(MEMORY[0x277CBF398] + 24);
   objc_opt_class();
-  v21 = [v16 layoutManager];
+  layoutManager = [v16 layoutManager];
   v22 = ICDynamicCast();
 
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    v23 = [v22 textView];
+    textView = [v22 textView];
 
-    if (v23)
+    if (textView)
     {
       objc_opt_class();
-      v24 = [v22 textView];
+      textView2 = [v22 textView];
       v25 = ICDynamicCast();
 
       if (objc_opt_respondsToSelector())
       {
-        v26 = [v16 layoutManager];
-        [v25 _boundsForDrawingTextAttachment:a1 characterIndex:a10 layoutManager:v26];
+        layoutManager2 = [v16 layoutManager];
+        [v25 _boundsForDrawingTextAttachment:self characterIndex:a10 layoutManager:layoutManager2];
         v17 = v27;
         v18 = v28;
         v19 = v29;
@@ -78,7 +78,7 @@
   v36.size.height = v20;
   if (CGRectIsEmpty(v36))
   {
-    v35.receiver = a1;
+    v35.receiver = self;
     v35.super_class = &off_2828108D8;
     objc_msgSendSuper2(&v35, sel_attachmentBoundsForTextContainer_proposedLineFragment_glyphPosition_characterIndex_, v16, a10, a2, a3, a4, a5, a6, a7);
     v17 = v31;

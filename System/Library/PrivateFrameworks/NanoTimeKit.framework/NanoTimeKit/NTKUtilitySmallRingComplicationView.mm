@@ -1,33 +1,33 @@
 @interface NTKUtilitySmallRingComplicationView
-- (NTKUtilitySmallRingComplicationView)initWithFrame:(CGRect)a3;
+- (NTKUtilitySmallRingComplicationView)initWithFrame:(CGRect)frame;
 - (void)_applyForegroundAlpha;
 - (void)layoutSubviews;
-- (void)updateRingWithRingDescription:(id)a3;
-- (void)updateRingWithRingDescription:(id)a3 backgroundRingAlpha:(double)a4;
+- (void)updateRingWithRingDescription:(id)description;
+- (void)updateRingWithRingDescription:(id)description backgroundRingAlpha:(double)alpha;
 @end
 
 @implementation NTKUtilitySmallRingComplicationView
 
-- (NTKUtilitySmallRingComplicationView)initWithFrame:(CGRect)a3
+- (NTKUtilitySmallRingComplicationView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = NTKUtilitySmallRingComplicationView;
-  v3 = [(NTKUtilityCircularComplicationView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKUtilityCircularComplicationView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(NTKUtilityComplicationView *)v3 device];
-    ___LayoutConstants_block_invoke_70(v5, v13);
+    device = [(NTKUtilityComplicationView *)v3 device];
+    ___LayoutConstants_block_invoke_70(device, v13);
     v6 = [(NTKUtilityComplicationView *)v4 _newImageViewSubviewWithAlpha:v14];
     fillFractionRing = v4->_fillFractionRing;
     v4->_fillFractionRing = v6;
 
     v8 = v4->_fillFractionRing;
-    v9 = [MEMORY[0x277D75348] whiteColor];
-    [(CLKUIColoringImageView *)v8 setColor:v9];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(CLKUIColoringImageView *)v8 setColor:whiteColor];
 
-    v10 = [(NTKUtilityCircularComplicationView *)v4 contentView];
-    [v10 addSubview:v4->_fillFractionRing];
+    contentView = [(NTKUtilityCircularComplicationView *)v4 contentView];
+    [contentView addSubview:v4->_fillFractionRing];
   }
 
   return v4;
@@ -41,8 +41,8 @@
   if (![(NTKUtilityComplicationView *)self editing])
   {
     fillFractionRing = self->_fillFractionRing;
-    v4 = [(NTKUtilityComplicationView *)self device];
-    ___LayoutConstants_block_invoke_70(v4, v6);
+    device = [(NTKUtilityComplicationView *)self device];
+    ___LayoutConstants_block_invoke_70(device, v6);
     [(CLKUIColoringImageView *)fillFractionRing setAlpha:v7];
   }
 }
@@ -52,12 +52,12 @@
   v13.receiver = self;
   v13.super_class = NTKUtilitySmallRingComplicationView;
   [(NTKUtilityCircularComplicationView *)&v13 layoutSubviews];
-  v3 = [(NTKUtilityCircularComplicationView *)self contentView];
-  [v3 bounds];
+  contentView = [(NTKUtilityCircularComplicationView *)self contentView];
+  [contentView bounds];
 
   [(CLKUIColoringImageView *)self->_fillFractionRing sizeToFit];
   [(CLKUIColoringImageView *)self->_fillFractionRing frame];
-  v4 = [(NTKUtilityComplicationView *)self device];
+  device = [(NTKUtilityComplicationView *)self device];
   CLKRectCenteredIntegralRectForDevice();
   v6 = v5;
   v8 = v7;
@@ -67,49 +67,49 @@
   [(CLKUIColoringImageView *)self->_fillFractionRing setFrame:v6, v8, v10, v12];
 }
 
-- (void)updateRingWithRingDescription:(id)a3
+- (void)updateRingWithRingDescription:(id)description
 {
-  v8 = a3;
-  v4 = [(NTKUtilityComplicationView *)self device];
-  ___LayoutConstants_block_invoke_70(v4, v9);
+  descriptionCopy = description;
+  device = [(NTKUtilityComplicationView *)self device];
+  ___LayoutConstants_block_invoke_70(device, v9);
   v5 = v11;
-  v6 = [(NTKUtilityComplicationView *)self device];
-  ___LayoutConstants_block_invoke_70(v6, v9);
+  device2 = [(NTKUtilityComplicationView *)self device];
+  ___LayoutConstants_block_invoke_70(device2, v9);
   v7 = v5 / v10;
 
-  [(NTKUtilitySmallRingComplicationView *)self updateRingWithRingDescription:v8 backgroundRingAlpha:v7];
+  [(NTKUtilitySmallRingComplicationView *)self updateRingWithRingDescription:descriptionCopy backgroundRingAlpha:v7];
 }
 
-- (void)updateRingWithRingDescription:(id)a3 backgroundRingAlpha:(double)a4
+- (void)updateRingWithRingDescription:(id)description backgroundRingAlpha:(double)alpha
 {
-  v13 = a3;
-  [v13 fillFraction];
+  descriptionCopy = description;
+  [descriptionCopy fillFraction];
   if (!CLKFloatEqualsFloat() || !self->_didDrawOnce)
   {
-    [v13 fillFraction];
+    [descriptionCopy fillFraction];
     *&v6 = v6;
     self->_fillFraction = *&v6;
-    v7 = [(NTKUtilityComplicationView *)self device];
-    ___LayoutConstants_block_invoke_70(v7, v14);
-    [v13 setRadius:v15 * 0.5];
+    device = [(NTKUtilityComplicationView *)self device];
+    ___LayoutConstants_block_invoke_70(device, v14);
+    [descriptionCopy setRadius:v15 * 0.5];
 
-    v8 = [(NTKUtilityComplicationView *)self device];
-    ___LayoutConstants_block_invoke_70(v8, v14);
-    [v13 setStrokeWidth:v16];
+    device2 = [(NTKUtilityComplicationView *)self device];
+    ___LayoutConstants_block_invoke_70(device2, v14);
+    [descriptionCopy setStrokeWidth:v16];
 
-    [v13 setBackgroundRingAlpha:a4];
-    v9 = [v13 ringImage];
-    [(CLKUIColoringImageView *)self->_fillFractionRing setImage:v9];
+    [descriptionCopy setBackgroundRingAlpha:alpha];
+    ringImage = [descriptionCopy ringImage];
+    [(CLKUIColoringImageView *)self->_fillFractionRing setImage:ringImage];
 
-    v10 = [(NTKUtilitySmallRingComplicationView *)self ringColor];
-    if (v10)
+    ringColor = [(NTKUtilitySmallRingComplicationView *)self ringColor];
+    if (ringColor)
     {
-      v11 = [(NTKUtilityComplicationView *)self colorScheme];
-      v12 = [v11 containsOverrideFaceColor];
+      colorScheme = [(NTKUtilityComplicationView *)self colorScheme];
+      containsOverrideFaceColor = [colorScheme containsOverrideFaceColor];
 
-      if (v12)
+      if (containsOverrideFaceColor)
       {
-        [(CLKUIColoringImageView *)self->_fillFractionRing setColor:v10];
+        [(CLKUIColoringImageView *)self->_fillFractionRing setColor:ringColor];
       }
     }
 

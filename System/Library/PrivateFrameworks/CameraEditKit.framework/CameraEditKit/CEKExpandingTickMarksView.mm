@@ -1,21 +1,21 @@
 @interface CEKExpandingTickMarksView
-- (CEKExpandingTickMarksView)initWithFrame:(CGRect)a3;
+- (CEKExpandingTickMarksView)initWithFrame:(CGRect)frame;
 - (CGSize)intrinsicContentSize;
 - (_NSRange)_selectedRange;
-- (unint64_t)_collapsedTickIndexForIndex:(unint64_t)a3;
+- (unint64_t)_collapsedTickIndexForIndex:(unint64_t)index;
 - (void)layoutSubviews;
-- (void)setExpanded:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSelectedValue:(double)a3 animated:(BOOL)a4;
+- (void)setExpanded:(BOOL)expanded animated:(BOOL)animated;
+- (void)setSelectedValue:(double)value animated:(BOOL)animated;
 - (void)tintColorDidChange;
 @end
 
 @implementation CEKExpandingTickMarksView
 
-- (CEKExpandingTickMarksView)initWithFrame:(CGRect)a3
+- (CEKExpandingTickMarksView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = CEKExpandingTickMarksView;
-  v3 = [(CEKExpandingTickMarksView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CEKExpandingTickMarksView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -38,38 +38,38 @@
   return v3;
 }
 
-- (void)setSelectedValue:(double)a3 animated:(BOOL)a4
+- (void)setSelectedValue:(double)value animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(CEKExpandingTickMarksView *)self _middleTickIndex];
-  v8 = (a3 + 1.0) * 0.5;
+  animatedCopy = animated;
+  _middleTickIndex = [(CEKExpandingTickMarksView *)self _middleTickIndex];
+  v8 = (value + 1.0) * 0.5;
   if (v8 <= 0.5)
   {
     if (v8 >= 0.5)
     {
       v11 = 0;
       p_selectedRange = &self->__selectedRange;
-      self->__selectedRange.location = v7;
+      self->__selectedRange.location = _middleTickIndex;
       goto LABEL_7;
     }
 
     v10 = vcvtpd_s64_f64(v8 * 40);
     p_selectedRange = &self->__selectedRange;
-    v11 = v7 - v10;
+    v11 = _middleTickIndex - v10;
   }
 
   else
   {
     p_selectedRange = &self->__selectedRange;
-    v10 = v7 + 1;
-    v11 = vcvtmd_s64_f64(v8 * 40) - v7;
+    v10 = _middleTickIndex + 1;
+    v11 = vcvtmd_s64_f64(v8 * 40) - _middleTickIndex;
   }
 
   p_selectedRange->location = v10;
 LABEL_7:
   p_selectedRange->length = v11;
   [(CEKExpandingTickMarksView *)self setNeedsLayout];
-  if (v4)
+  if (animatedCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -80,16 +80,16 @@ LABEL_7:
   }
 }
 
-- (void)setExpanded:(BOOL)a3 animated:(BOOL)a4
+- (void)setExpanded:(BOOL)expanded animated:(BOOL)animated
 {
-  if (self->_expanded != a3)
+  if (self->_expanded != expanded)
   {
     v8[7] = v4;
     v8[8] = v5;
-    v6 = a4;
-    self->_expanded = a3;
+    animatedCopy = animated;
+    self->_expanded = expanded;
     [(CEKExpandingTickMarksView *)self setNeedsLayout];
-    if (v6)
+    if (animatedCopy)
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
@@ -110,13 +110,13 @@ LABEL_7:
   return result;
 }
 
-- (unint64_t)_collapsedTickIndexForIndex:(unint64_t)a3
+- (unint64_t)_collapsedTickIndexForIndex:(unint64_t)index
 {
-  v4 = [(CEKExpandingTickMarksView *)self _middleTickIndex];
-  v5 = a3 / 5;
+  _middleTickIndex = [(CEKExpandingTickMarksView *)self _middleTickIndex];
+  v5 = index / 5;
   v6 = floor(v5);
   v7 = ceil(v5);
-  if (v4 <= a3)
+  if (_middleTickIndex <= index)
   {
     return v6;
   }
@@ -134,7 +134,7 @@ LABEL_7:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CEKExpandingTickMarksView *)self _tickViews];
+  _tickViews = [(CEKExpandingTickMarksView *)self _tickViews];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __43__CEKExpandingTickMarksView_layoutSubviews__block_invoke;
@@ -144,7 +144,7 @@ LABEL_7:
   v12[6] = v6;
   v12[7] = v8;
   v12[8] = v10;
-  [v11 enumerateObjectsUsingBlock:v12];
+  [_tickViews enumerateObjectsUsingBlock:v12];
 }
 
 void __43__CEKExpandingTickMarksView_layoutSubviews__block_invoke(uint64_t a1, void *a2, unint64_t a3)

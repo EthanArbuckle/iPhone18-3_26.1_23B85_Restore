@@ -1,9 +1,9 @@
 @interface UIPrintLayoutDirectionOption
-- (UIPrintLayoutDirectionOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4;
+- (UIPrintLayoutDirectionOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller;
 - (id)createPrintOptionTableViewCell;
 - (id)summaryString;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)updateFromPrintInfo;
 @end
 
@@ -11,25 +11,25 @@
 
 - (void)dealloc
 {
-  v3 = [(UIPrintOption *)self printInfo];
-  [v3 removeObserver:self forKeyPath:0x2871AF2F0];
+  printInfo = [(UIPrintOption *)self printInfo];
+  [printInfo removeObserver:self forKeyPath:0x2871AF2F0];
 
-  v4 = [(UIPrintOption *)self printInfo];
-  [v4 removeObserver:self forKeyPath:0x2871AF290];
+  printInfo2 = [(UIPrintOption *)self printInfo];
+  [printInfo2 removeObserver:self forKeyPath:0x2871AF290];
 
   v5.receiver = self;
   v5.super_class = UIPrintLayoutDirectionOption;
   [(UIPrintLayoutDirectionOption *)&v5 dealloc];
 }
 
-- (UIPrintLayoutDirectionOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4
+- (UIPrintLayoutDirectionOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller
 {
   v49[4] = *MEMORY[0x277D85DE8];
   v48.receiver = self;
   v48.super_class = UIPrintLayoutDirectionOption;
-  v37 = a3;
-  v38 = a4;
-  v5 = [(UIPrintOption *)&v48 initWithPrintInfo:v37 printPanelViewController:?];
+  infoCopy = info;
+  controllerCopy = controller;
+  v5 = [(UIPrintOption *)&v48 initWithPrintInfo:infoCopy printPanelViewController:?];
   if (v5)
   {
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -86,22 +86,22 @@
     v28 = [v24 actionWithTitle:v26 image:v27 identifier:0 handler:v39];
     [(UIPrintLayoutDirectionOption *)v5 setTopBottomRightLeftAction:v28];
 
-    v29 = [(UIPrintLayoutDirectionOption *)v5 leftRightTopBottomAction];
-    v49[0] = v29;
-    v30 = [(UIPrintLayoutDirectionOption *)v5 rightLeftTopBottomAction];
-    v49[1] = v30;
-    v31 = [(UIPrintLayoutDirectionOption *)v5 topBottomLeftRightAction];
-    v49[2] = v31;
-    v32 = [(UIPrintLayoutDirectionOption *)v5 topBottomRightLeftAction];
-    v49[3] = v32;
+    leftRightTopBottomAction = [(UIPrintLayoutDirectionOption *)v5 leftRightTopBottomAction];
+    v49[0] = leftRightTopBottomAction;
+    rightLeftTopBottomAction = [(UIPrintLayoutDirectionOption *)v5 rightLeftTopBottomAction];
+    v49[1] = rightLeftTopBottomAction;
+    topBottomLeftRightAction = [(UIPrintLayoutDirectionOption *)v5 topBottomLeftRightAction];
+    v49[2] = topBottomLeftRightAction;
+    topBottomRightLeftAction = [(UIPrintLayoutDirectionOption *)v5 topBottomRightLeftAction];
+    v49[3] = topBottomRightLeftAction;
     v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:4];
     [(UIPrintLayoutDirectionOption *)v5 setLayoutDirectionActions:v33];
 
-    v34 = [(UIPrintOption *)v5 printInfo];
-    [v34 addObserver:v5 forKeyPath:0x2871AF2F0 options:0 context:0];
+    printInfo = [(UIPrintOption *)v5 printInfo];
+    [printInfo addObserver:v5 forKeyPath:0x2871AF2F0 options:0 context:0];
 
-    v35 = [(UIPrintOption *)v5 printInfo];
-    [v35 addObserver:v5 forKeyPath:0x2871AF290 options:0 context:0];
+    printInfo2 = [(UIPrintOption *)v5 printInfo];
+    [printInfo2 addObserver:v5 forKeyPath:0x2871AF290 options:0 context:0];
 
     objc_destroyWeak(&v40);
     objc_destroyWeak(&v42);
@@ -142,7 +142,7 @@ void __75__UIPrintLayoutDirectionOption_initWithPrintInfo_printPanelViewControll
   [v1 setNUpLayoutDirection:3];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -154,14 +154,14 @@ void __75__UIPrintLayoutDirectionOption_initWithPrintInfo_printPanelViewControll
 
 - (id)createPrintOptionTableViewCell
 {
-  v3 = [(UIPrintOption *)self printPanelViewController];
-  v4 = [v3 printOptionsTableView];
-  v5 = [v4 dequeueReusableCellWithIdentifier:@"UIPrintOptionPopupCell"];
+  printPanelViewController = [(UIPrintOption *)self printPanelViewController];
+  printOptionsTableView = [printPanelViewController printOptionsTableView];
+  v5 = [printOptionsTableView dequeueReusableCellWithIdentifier:@"UIPrintOptionPopupCell"];
 
   [(UIPrintOption *)self setTableViewCell:v5];
-  v6 = [(UIPrintOption *)self title];
-  v7 = [v5 textLabel];
-  [v7 setText:v6];
+  title = [(UIPrintOption *)self title];
+  textLabel = [v5 textLabel];
+  [textLabel setText:title];
 
   [v5 setSelectionStyle:0];
   [(UIPrintLayoutDirectionOption *)self updateFromPrintInfo];
@@ -172,82 +172,82 @@ void __75__UIPrintLayoutDirectionOption_initWithPrintInfo_printPanelViewControll
 - (void)updateFromPrintInfo
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v3 = [(UIPrintLayoutDirectionOption *)self summaryString];
-  [(UIPrintOption *)self setSummary:v3];
+  summaryString = [(UIPrintLayoutDirectionOption *)self summaryString];
+  [(UIPrintOption *)self setSummary:summaryString];
 
-  v4 = [(UIPrintOption *)self printInfo];
-  v5 = [v4 nUpLayoutDirection];
+  printInfo = [(UIPrintOption *)self printInfo];
+  nUpLayoutDirection = [printInfo nUpLayoutDirection];
 
   v6 = 0;
-  if (v5 > 1)
+  if (nUpLayoutDirection > 1)
   {
-    if (v5 == 2)
+    if (nUpLayoutDirection == 2)
     {
-      v7 = [(UIPrintLayoutDirectionOption *)self topBottomLeftRightAction];
+      topBottomLeftRightAction = [(UIPrintLayoutDirectionOption *)self topBottomLeftRightAction];
     }
 
     else
     {
-      if (v5 != 3)
+      if (nUpLayoutDirection != 3)
       {
         goto LABEL_11;
       }
 
-      v7 = [(UIPrintLayoutDirectionOption *)self topBottomRightLeftAction];
+      topBottomLeftRightAction = [(UIPrintLayoutDirectionOption *)self topBottomRightLeftAction];
     }
   }
 
-  else if (v5)
+  else if (nUpLayoutDirection)
   {
-    if (v5 != 1)
+    if (nUpLayoutDirection != 1)
     {
       goto LABEL_11;
     }
 
-    v7 = [(UIPrintLayoutDirectionOption *)self rightLeftTopBottomAction];
+    topBottomLeftRightAction = [(UIPrintLayoutDirectionOption *)self rightLeftTopBottomAction];
   }
 
   else
   {
-    v7 = [(UIPrintLayoutDirectionOption *)self leftRightTopBottomAction];
+    topBottomLeftRightAction = [(UIPrintLayoutDirectionOption *)self leftRightTopBottomAction];
   }
 
-  v6 = v7;
+  v6 = topBottomLeftRightAction;
 LABEL_11:
-  v8 = [(UIPrintLayoutDirectionOption *)self leftRightTopBottomAction];
-  v9 = [(UIPrintLayoutDirectionOption *)self leftRightTopBottomAction];
-  [v9 setState:v6 == v8];
+  leftRightTopBottomAction = [(UIPrintLayoutDirectionOption *)self leftRightTopBottomAction];
+  leftRightTopBottomAction2 = [(UIPrintLayoutDirectionOption *)self leftRightTopBottomAction];
+  [leftRightTopBottomAction2 setState:v6 == leftRightTopBottomAction];
 
-  v10 = [(UIPrintLayoutDirectionOption *)self rightLeftTopBottomAction];
-  v11 = [(UIPrintLayoutDirectionOption *)self rightLeftTopBottomAction];
-  [v11 setState:v6 == v10];
+  rightLeftTopBottomAction = [(UIPrintLayoutDirectionOption *)self rightLeftTopBottomAction];
+  rightLeftTopBottomAction2 = [(UIPrintLayoutDirectionOption *)self rightLeftTopBottomAction];
+  [rightLeftTopBottomAction2 setState:v6 == rightLeftTopBottomAction];
 
-  v12 = [(UIPrintLayoutDirectionOption *)self topBottomLeftRightAction];
-  v13 = [(UIPrintLayoutDirectionOption *)self topBottomLeftRightAction];
-  [v13 setState:v6 == v12];
+  topBottomLeftRightAction2 = [(UIPrintLayoutDirectionOption *)self topBottomLeftRightAction];
+  topBottomLeftRightAction3 = [(UIPrintLayoutDirectionOption *)self topBottomLeftRightAction];
+  [topBottomLeftRightAction3 setState:v6 == topBottomLeftRightAction2];
 
-  v14 = [(UIPrintLayoutDirectionOption *)self topBottomRightLeftAction];
-  v15 = [(UIPrintLayoutDirectionOption *)self topBottomRightLeftAction];
-  [v15 setState:v6 == v14];
+  topBottomRightLeftAction = [(UIPrintLayoutDirectionOption *)self topBottomRightLeftAction];
+  topBottomRightLeftAction2 = [(UIPrintLayoutDirectionOption *)self topBottomRightLeftAction];
+  [topBottomRightLeftAction2 setState:v6 == topBottomRightLeftAction];
 
-  v16 = [(UIPrintOption *)self tableViewCell];
-  if (v16)
+  tableViewCell = [(UIPrintOption *)self tableViewCell];
+  if (tableViewCell)
   {
-    v17 = [(UIPrintLayoutDirectionOption *)self layoutDirectionActions];
-    v19[0] = v17;
+    layoutDirectionActions = [(UIPrintLayoutDirectionOption *)self layoutDirectionActions];
+    v19[0] = layoutDirectionActions;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-    [v16 setPopupActions:v18];
+    [tableViewCell setPopupActions:v18];
   }
 }
 
 - (id)summaryString
 {
-  v2 = [(UIPrintOption *)self printInfo];
-  v3 = [v2 nUpLayoutDirection];
+  printInfo = [(UIPrintOption *)self printInfo];
+  nUpLayoutDirection = [printInfo nUpLayoutDirection];
 
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = v4;
-  switch(v3)
+  switch(nUpLayoutDirection)
   {
     case 1:
       v6 = @"Right-Left-Top-Bottom";

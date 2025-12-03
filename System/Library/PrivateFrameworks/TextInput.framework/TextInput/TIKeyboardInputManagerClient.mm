@@ -1,77 +1,77 @@
 @interface TIKeyboardInputManagerClient
-+ (BOOL)instancesRespondToSelector:(SEL)a3;
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isKindOfClass:(Class)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (TIKeyboardInputManagerClient)initWithImplProxy:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
++ (BOOL)instancesRespondToSelector:(SEL)selector;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isKindOfClass:(Class)class;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (TIKeyboardInputManagerClient)initWithImplProxy:(id)proxy;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
-- (void)handleError:(id)a3 forRequest:(id)a4;
-- (void)handleRequest:(id)a3;
+- (void)forwardInvocation:(id)invocation;
+- (void)handleError:(id)error forRequest:(id)request;
+- (void)handleRequest:(id)request;
 @end
 
 @implementation TIKeyboardInputManagerClient
 
-- (void)handleError:(id)a3 forRequest:(id)a4
+- (void)handleError:(id)error forRequest:(id)request
 {
-  v10 = a3;
-  v6 = a4;
-  [v6 setErrorCount:{objc_msgSend(v6, "errorCount") + 1}];
-  if ([v6 errorCount] > 1)
+  errorCopy = error;
+  requestCopy = request;
+  [requestCopy setErrorCount:{objc_msgSend(requestCopy, "errorCount") + 1}];
+  if ([requestCopy errorCount] > 1)
   {
-    v9 = [(TIKeyboardInputManagerClient *)self connection];
-    [v9 invalidate];
+    connection = [(TIKeyboardInputManagerClient *)self connection];
+    [connection invalidate];
 
     [(TIKeyboardInputManagerClient *)self setConnection:0];
-    v7 = [v6 invocation];
-    v8 = NSStringFromSelector([v7 selector]);
+    invocation = [requestCopy invocation];
+    v8 = NSStringFromSelector([invocation selector]);
     NSLog(&cfstr_PleaseCheckFor.isa, "[TIKeyboardInputManagerClient handleError:forRequest:]", v8);
   }
 
   else
   {
-    v7 = [v6 invocation];
-    v8 = NSStringFromSelector([v7 selector]);
-    NSLog(&cfstr_SWillRetrySend.isa, "[TIKeyboardInputManagerClient handleError:forRequest:]", v8, v10);
+    invocation = [requestCopy invocation];
+    v8 = NSStringFromSelector([invocation selector]);
+    NSLog(&cfstr_SWillRetrySend.isa, "[TIKeyboardInputManagerClient handleError:forRequest:]", v8, errorCopy);
   }
 
-  [(TIKeyboardInputManagerClient *)self handleRequest:v6];
+  [(TIKeyboardInputManagerClient *)self handleRequest:requestCopy];
 }
 
-- (void)handleRequest:(id)a3
+- (void)handleRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManagerClient *)self connection];
+  requestCopy = request;
+  connection = [(TIKeyboardInputManagerClient *)self connection];
 
-  if (v5)
+  if (connection)
   {
-    v6 = [v4 invocation];
-    v7 = [(TIKeyboardInputManagerClient *)self connection];
+    invocation = [requestCopy invocation];
+    connection2 = [(TIKeyboardInputManagerClient *)self connection];
     v11 = MEMORY[0x1E69E9820];
     v12 = 3221225472;
     v13 = __46__TIKeyboardInputManagerClient_handleRequest___block_invoke;
     v14 = &unk_1E6F4C058;
-    v15 = self;
-    v16 = v4;
-    v8 = [v7 remoteObjectProxyWithErrorHandler:&v11];
-    [v6 invokeWithTarget:{v8, v11, v12, v13, v14, v15}];
+    selfCopy = self;
+    v16 = requestCopy;
+    v8 = [connection2 remoteObjectProxyWithErrorHandler:&v11];
+    [invocation invokeWithTarget:{v8, v11, v12, v13, v14, selfCopy}];
   }
 
   else
   {
     v9 = objc_opt_new();
-    v10 = [v4 invocation];
-    [v10 invokeWithTarget:v9];
+    invocation2 = [requestCopy invocation];
+    [invocation2 invokeWithTarget:v9];
   }
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  if (+[TIKeyboardInputManagerStub instancesRespondToSelector:](TIKeyboardInputManagerStub, "instancesRespondToSelector:", [v4 selector]))
+  invocationCopy = invocation;
+  if (+[TIKeyboardInputManagerStub instancesRespondToSelector:](TIKeyboardInputManagerStub, "instancesRespondToSelector:", [invocationCopy selector]))
   {
-    v5 = [[TIKeyboardInputManagerClientRequest alloc] initWithInvocation:v4];
+    v5 = [[TIKeyboardInputManagerClientRequest alloc] initWithInvocation:invocationCopy];
     [(TIKeyboardInputManagerClient *)self handleRequest:v5];
   }
 
@@ -79,11 +79,11 @@
   {
     v6.receiver = self;
     v6.super_class = TIKeyboardInputManagerClient;
-    [(TIKeyboardInputManagerClient *)&v6 forwardInvocation:v4];
+    [(TIKeyboardInputManagerClient *)&v6 forwardInvocation:invocationCopy];
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v9.receiver = self;
   v9.super_class = TIKeyboardInputManagerClient;
@@ -96,7 +96,7 @@
 
   else
   {
-    v6 = [TIKeyboardInputManagerStub instanceMethodSignatureForSelector:a3];
+    v6 = [TIKeyboardInputManagerStub instanceMethodSignatureForSelector:selector];
   }
 
   v7 = v6;
@@ -104,25 +104,25 @@
   return v7;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = a3;
+  protocolCopy = protocol;
   v7.receiver = self;
   v7.super_class = TIKeyboardInputManagerClient;
-  if ([(TIKeyboardInputManagerClient *)&v7 conformsToProtocol:v4])
+  if ([(TIKeyboardInputManagerClient *)&v7 conformsToProtocol:protocolCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [TIKeyboardInputManagerStub conformsToProtocol:v4];
+    v5 = [TIKeyboardInputManagerStub conformsToProtocol:protocolCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v5.receiver = self;
   v5.super_class = TIKeyboardInputManagerClient;
@@ -133,11 +133,11 @@
 
   else
   {
-    return [(objc_class *)a3 isSubclassOfClass:objc_opt_class()];
+    return [(objc_class *)class isSubclassOfClass:objc_opt_class()];
   }
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v5.receiver = self;
   v5.super_class = TIKeyboardInputManagerClient;
@@ -148,13 +148,13 @@
 
   else
   {
-    return [TIKeyboardInputManagerStub instancesRespondToSelector:a3];
+    return [TIKeyboardInputManagerStub instancesRespondToSelector:selector];
   }
 }
 
-- (TIKeyboardInputManagerClient)initWithImplProxy:(id)a3
+- (TIKeyboardInputManagerClient)initWithImplProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   v14.receiver = self;
   v14.super_class = TIKeyboardInputManagerClient;
   v5 = [(TIKeyboardInputManagerClient *)&v14 init];
@@ -167,7 +167,7 @@
     v8 = +[TIKeyboardInputManagerStub serverInterface];
     [(NSXPCConnection *)v5->_connection setRemoteObjectInterface:v8];
 
-    [(NSXPCConnection *)v5->_connection setExportedObject:v4];
+    [(NSXPCConnection *)v5->_connection setExportedObject:proxyCopy];
     v9 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1EF7F7FB8];
     [(NSXPCConnection *)v5->_connection setExportedInterface:v9];
 
@@ -195,9 +195,9 @@
   [(TIKeyboardInputManagerClient *)&v3 dealloc];
 }
 
-+ (BOOL)instancesRespondToSelector:(SEL)a3
++ (BOOL)instancesRespondToSelector:(SEL)selector
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___TIKeyboardInputManagerClient;
   if (objc_msgSendSuper2(&v5, sel_instancesRespondToSelector_))
   {
@@ -206,7 +206,7 @@
 
   else
   {
-    return [TIKeyboardInputManagerStub instancesRespondToSelector:a3];
+    return [TIKeyboardInputManagerStub instancesRespondToSelector:selector];
   }
 }
 

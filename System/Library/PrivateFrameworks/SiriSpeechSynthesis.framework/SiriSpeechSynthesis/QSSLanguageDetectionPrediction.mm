@@ -1,8 +1,8 @@
 @interface QSSLanguageDetectionPrediction
 - (BOOL)is_low_confidence;
 - (NSString)locale;
-- (Offset<siri::speech::schema_fb::LanguageDetectionPrediction>)addObjectToBuffer:(void *)a3;
-- (QSSLanguageDetectionPrediction)initWithFlatbuffData:(id)a3 root:(const LanguageDetectionPrediction *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::LanguageDetectionPrediction>)addObjectToBuffer:(void *)buffer;
+- (QSSLanguageDetectionPrediction)initWithFlatbuffData:(id)data root:(const LanguageDetectionPrediction *)root verify:(BOOL)verify;
 - (float)confidence;
 - (float)threshold;
 - (id)flatbuffData;
@@ -39,34 +39,34 @@ flatbuffers::DetachedBuffer *__46__QSSLanguageDetectionPrediction_flatbuffData__
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::LanguageDetectionPrediction>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::LanguageDetectionPrediction>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(QSSLanguageDetectionPrediction *)self locale];
-  v6 = v5;
-  if (!v5)
+  locale = [(QSSLanguageDetectionPrediction *)self locale];
+  v6 = locale;
+  if (!locale)
   {
-    v5 = &stru_2879AE8E0;
+    locale = &stru_2879AE8E0;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  LODWORD(v7) = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)locale UTF8String];
+  v8 = strlen(uTF8String);
+  LODWORD(uTF8String) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
   [(QSSLanguageDetectionPrediction *)self confidence];
   v10 = v9;
   [(QSSLanguageDetectionPrediction *)self threshold];
   v12 = v11;
-  v13 = [(QSSLanguageDetectionPrediction *)self is_low_confidence];
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v14 = *(a3 + 10);
-  v15 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, v7);
-  flatbuffers::FlatBufferBuilder::AddElement<float>(a3, 6, v10);
-  flatbuffers::FlatBufferBuilder::AddElement<float>(a3, 8, v12);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 10, v13);
+  is_low_confidence = [(QSSLanguageDetectionPrediction *)self is_low_confidence];
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v14 = *(buffer + 10);
+  v15 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, uTF8String);
+  flatbuffers::FlatBufferBuilder::AddElement<float>(buffer, 6, v10);
+  flatbuffers::FlatBufferBuilder::AddElement<float>(buffer, 8, v12);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 10, is_low_confidence);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v15 + v14);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v15 + v14);
 }
 
 - (BOOL)is_low_confidence
@@ -133,42 +133,42 @@ flatbuffers::DetachedBuffer *__46__QSSLanguageDetectionPrediction_flatbuffData__
   return v6;
 }
 
-- (QSSLanguageDetectionPrediction)initWithFlatbuffData:(id)a3 root:(const LanguageDetectionPrediction *)a4 verify:(BOOL)a5
+- (QSSLanguageDetectionPrediction)initWithFlatbuffData:(id)data root:(const LanguageDetectionPrediction *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSLanguageDetectionPrediction;
   v10 = [(QSSLanguageDetectionPrediction *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -190,9 +190,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

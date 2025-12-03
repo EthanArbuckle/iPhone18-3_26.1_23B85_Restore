@@ -1,6 +1,6 @@
 @interface ProvisioningExternalVerificationFlowItem
 - (_TtC9PassKitUI40ProvisioningExternalVerificationFlowItem)init;
-- (void)productViewControllerDidFinish:(id)a3;
+- (void)productViewControllerDidFinish:(id)finish;
 @end
 
 @implementation ProvisioningExternalVerificationFlowItem
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)productViewControllerDidFinish:(id)a3
+- (void)productViewControllerDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BD889688(v4);
+  finishCopy = finish;
+  selfCopy = self;
+  sub_1BD889688(finishCopy);
 }
 
 @end

@@ -3,7 +3,7 @@
 + (BOOL)consumeShouldResetMigrationStateInternalSetting;
 + (BOOL)hasShownWelcomeScreen;
 + (BOOL)isCurrentStartupVersionNewerThanLastSeenVersion;
-+ (BOOL)isOSVersion:(id *)a3 newerThanVersion:(id *)a4;
++ (BOOL)isOSVersion:(id *)version newerThanVersion:(id *)thanVersion;
 + (BOOL)shouldBypassICloudAlert;
 + (BOOL)shouldBypassWelcomeAndWhatsNewScreen;
 + (BOOL)shouldShowUpdateICloudAccountView;
@@ -12,25 +12,25 @@
 + (BOOL)shouldShowWhatsNewScreen;
 + (id)copyExchangeAccountAlertMessage;
 + (id)copyIMAPAccountAlertMessage;
-+ (id)hostedAppKeyWithBaseKey:(id)a3;
++ (id)hostedAppKeyWithBaseKey:(id)key;
 + (id)importantDisclaimerAttributedString;
 + (id)moveLocalNotesAlertMessage;
-+ (void)setHasShownWelcomeScreen:(BOOL)a3;
++ (void)setHasShownWelcomeScreen:(BOOL)screen;
 + (void)setLastShownStartupWelcomeScreenVersionToCurrentVersion;
-- (ICStartupController)initWithDelegate:(id)a3;
+- (ICStartupController)initWithDelegate:(id)delegate;
 - (ICStartupControllerDelegate)delegate;
 - (unint64_t)getStartupMigrationType;
-- (unint64_t)getStartupMigrationTypeWithAccounts:(id)a3;
-- (void)checkStatusIfNecessaryWithDeviceCheckIndicator:(id)a3;
+- (unint64_t)getStartupMigrationTypeWithAccounts:(id)accounts;
+- (void)checkStatusIfNecessaryWithDeviceCheckIndicator:(id)indicator;
 - (void)dealloc;
-- (void)deviceCheckTimeout:(id)a3;
+- (void)deviceCheckTimeout:(id)timeout;
 - (void)didContinueFromStartupView;
-- (void)didUpgradeFromStartupView:(BOOL)a3;
-- (void)migrationStateDidChange:(id)a3;
-- (void)reachabilityChanged:(id)a3;
-- (void)startIndicatorAnimationIfNecessaryForDeviceCheckIndicator:(id)a3;
-- (void)startTimeoutTimerIfNecessaryWithDeviceCheckIndicator:(id)a3;
-- (void)stopIndicatorAnimationIfNecessaryForDeviceCheckIndicator:(id)a3;
+- (void)didUpgradeFromStartupView:(BOOL)view;
+- (void)migrationStateDidChange:(id)change;
+- (void)reachabilityChanged:(id)changed;
+- (void)startIndicatorAnimationIfNecessaryForDeviceCheckIndicator:(id)indicator;
+- (void)startTimeoutTimerIfNecessaryWithDeviceCheckIndicator:(id)indicator;
+- (void)stopIndicatorAnimationIfNecessaryForDeviceCheckIndicator:(id)indicator;
 @end
 
 @implementation ICStartupController
@@ -49,17 +49,17 @@
 
 + (BOOL)shouldShowWelcomeOrWhatsNewScreen
 {
-  if ([a1 shouldShowWelcomeScreen])
+  if ([self shouldShowWelcomeScreen])
   {
     return 1;
   }
 
-  return [a1 shouldShowWhatsNewScreen];
+  return [self shouldShowWhatsNewScreen];
 }
 
 + (BOOL)shouldShowWelcomeScreen
 {
-  if ([a1 shouldBypassWelcomeAndWhatsNewScreen])
+  if ([self shouldBypassWelcomeAndWhatsNewScreen])
   {
     v3 = 0;
     return v3 & 1;
@@ -68,37 +68,37 @@
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 BOOLForKey:kICEnableForcediCloudMigrationDefaultsKey];
 
-  if ([a1 hasShownWelcomeScreen])
+  if ([self hasShownWelcomeScreen])
   {
-    if ([a1 isCurrentStartupVersionNewerThanLastSeenVersion])
+    if ([self isCurrentStartupVersionNewerThanLastSeenVersion])
     {
       v6 = +[ICAccountUtilities sharedInstance];
-      v7 = [v6 primaryICloudAccountEnabled];
+      primaryICloudAccountEnabled = [v6 primaryICloudAccountEnabled];
 
       v8 = +[ICAccountUtilities sharedInstance];
-      v9 = [v8 didChooseToMigratePrimaryICloudAccount];
+      didChooseToMigratePrimaryICloudAccount = [v8 didChooseToMigratePrimaryICloudAccount];
 
       v10 = +[ICAccountUtilities sharedInstance];
-      v11 = [v10 primaryICloudACAccount];
-      v12 = [v11 ic_isNotesMigrated];
+      primaryICloudACAccount = [v10 primaryICloudACAccount];
+      ic_isNotesMigrated = [primaryICloudACAccount ic_isNotesMigrated];
 
       v13 = +[ICMigrationController didChooseToMigrateLocalAccount];
-      v3 = (v7 ^ 1 | v9 | v12) & v13 ^ 1;
+      v3 = (primaryICloudAccountEnabled ^ 1 | didChooseToMigratePrimaryICloudAccount | ic_isNotesMigrated) & v13 ^ 1;
       v14 = os_log_create("com.apple.notes", "Migration");
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109888;
-        v35 = v7;
+        v35 = primaryICloudAccountEnabled;
         v36 = 1024;
-        v37 = v9 & 1;
+        v37 = didChooseToMigratePrimaryICloudAccount & 1;
         v38 = 1024;
-        v39 = v12 & 1;
+        v39 = ic_isNotesMigrated & 1;
         v40 = 1024;
         v41 = v13 & 1;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "shouldShowWelcomeScreen: primaryiCloudAccountEnabled=%d didChooseToMigratePrimaryiCloudAccount=%d primaryiCloudAccountMigrated=%d didChooseToMigrateLocalAccount=%d", buf, 0x1Au);
       }
 
-      if (((v7 ^ 1 | v9 | v12) & v13 ^ 1))
+      if (((primaryICloudAccountEnabled ^ 1 | didChooseToMigratePrimaryICloudAccount | ic_isNotesMigrated) & v13 ^ 1))
       {
         goto LABEL_30;
       }
@@ -119,13 +119,13 @@
       }
 
       v16 = +[ICAccountUtilities sharedInstance];
-      v17 = [v16 allICloudACAccounts];
+      allICloudACAccounts = [v16 allICloudACAccounts];
 
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v18 = v17;
+      v18 = allICloudACAccounts;
       v19 = [v18 countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v19)
       {
@@ -188,9 +188,9 @@ LABEL_30:
 + (BOOL)shouldBypassWelcomeAndWhatsNewScreen
 {
   v2 = +[ICLaunchConfiguration currentConfiguration];
-  v3 = [v2 environment];
+  environment = [v2 environment];
 
-  if ((v3 - 1) < 2)
+  if ((environment - 1) < 2)
   {
     return 1;
   }
@@ -203,27 +203,27 @@ LABEL_30:
 
 + (BOOL)shouldShowWhatsNewScreen
 {
-  if ([a1 shouldBypassWelcomeAndWhatsNewScreen])
+  if ([self shouldBypassWelcomeAndWhatsNewScreen])
   {
-    LOBYTE(v3) = 0;
+    LOBYTE(isCurrentStartupVersionNewerThanLastSeenVersion) = 0;
   }
 
   else
   {
-    v3 = [a1 isCurrentStartupVersionNewerThanLastSeenVersion];
-    if (v3)
+    isCurrentStartupVersionNewerThanLastSeenVersion = [self isCurrentStartupVersionNewerThanLastSeenVersion];
+    if (isCurrentStartupVersionNewerThanLastSeenVersion)
     {
-      LOBYTE(v3) = [a1 shouldShowWelcomeScreen] ^ 1;
+      LOBYTE(isCurrentStartupVersionNewerThanLastSeenVersion) = [self shouldShowWelcomeScreen] ^ 1;
     }
   }
 
-  return v3;
+  return isCurrentStartupVersionNewerThanLastSeenVersion;
 }
 
 - (void)dealloc
 {
-  v3 = [(ICStartupController *)self previousCheckStatusCancellationObject];
-  [v3 setValue:1];
+  previousCheckStatusCancellationObject = [(ICStartupController *)self previousCheckStatusCancellationObject];
+  [previousCheckStatusCancellationObject setValue:1];
 
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self];
@@ -235,15 +235,15 @@ LABEL_30:
 
 + (BOOL)hasShownWelcomeScreen
 {
-  v2 = [a1 hasShowWelcomeScreenDefaultsKey];
+  hasShowWelcomeScreenDefaultsKey = [self hasShowWelcomeScreenDefaultsKey];
   v3 = +[NSUserDefaults standardUserDefaults];
-  v4 = [v3 BOOLForKey:v2];
+  v4 = [v3 BOOLForKey:hasShowWelcomeScreenDefaultsKey];
 
   v5 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412546;
-    v8 = v2;
+    v8 = hasShowWelcomeScreenDefaultsKey;
     v9 = 1024;
     v10 = v4;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%@=%d", &v7, 0x12u);
@@ -252,29 +252,29 @@ LABEL_30:
   return v4;
 }
 
-+ (void)setHasShownWelcomeScreen:(BOOL)a3
++ (void)setHasShownWelcomeScreen:(BOOL)screen
 {
-  v3 = a3;
+  screenCopy = screen;
   v5 = +[NSUserDefaults standardUserDefaults];
-  v6 = [a1 hasShowWelcomeScreenDefaultsKey];
-  [v5 setBool:v3 forKey:v6];
+  hasShowWelcomeScreenDefaultsKey = [self hasShowWelcomeScreenDefaultsKey];
+  [v5 setBool:screenCopy forKey:hasShowWelcomeScreenDefaultsKey];
 
-  [a1 setLastShownStartupWelcomeScreenVersionToCurrentVersion];
+  [self setLastShownStartupWelcomeScreenVersionToCurrentVersion];
 }
 
-+ (id)hostedAppKeyWithBaseKey:(id)a3
++ (id)hostedAppKeyWithBaseKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 ic_hasConnectedHostedWindowScene];
+  ic_hasConnectedHostedWindowScene = [v4 ic_hasConnectedHostedWindowScene];
 
-  v6 = v3;
-  if (v5)
+  keyCopy = keyCopy;
+  if (ic_hasConnectedHostedWindowScene)
   {
-    v6 = [NSString stringWithFormat:@"%@-%@", @"Calculator", v3];
+    keyCopy = [NSString stringWithFormat:@"%@-%@", @"Calculator", keyCopy];
   }
 
-  return v6;
+  return keyCopy;
 }
 
 + (BOOL)shouldBypassICloudAlert
@@ -288,30 +288,30 @@ LABEL_30:
 + (BOOL)isCurrentStartupVersionNewerThanLastSeenVersion
 {
   v3 = +[UMUserManager sharedManager];
-  v4 = [v3 currentUser];
+  currentUser = [v3 currentUser];
 
-  if ([v4 userType] == 1)
+  if ([currentUser userType] == 1)
   {
-    a1 = os_log_create("com.apple.notes", "UI");
-    if (os_log_type_enabled(a1, OS_LOG_TYPE_INFO))
+    self = os_log_create("com.apple.notes", "UI");
+    if (os_log_type_enabled(self, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, a1, OS_LOG_TYPE_INFO, "isCurrentStartupVersionNewerThanLastSeenVersion: UMUserTypeEphemeral", buf, 2u);
+      _os_log_impl(&_mh_execute_header, self, OS_LOG_TYPE_INFO, "isCurrentStartupVersionNewerThanLastSeenVersion: UMUserTypeEphemeral", buf, 2u);
     }
 
-    LOBYTE(a1) = 0;
+    LOBYTE(self) = 0;
   }
 
   else
   {
     memset(buf, 0, sizeof(buf));
     v15 = 0;
-    [a1 lastShownStartupWelcomeScreenVersion];
+    [self lastShownStartupWelcomeScreenVersion];
     v5 = +[UIApplication sharedApplication];
-    v6 = [v5 ic_hasConnectedHostedWindowScene];
+    ic_hasConnectedHostedWindowScene = [v5 ic_hasConnectedHostedWindowScene];
 
     v13 = 0;
-    if (v6)
+    if (ic_hasConnectedHostedWindowScene)
     {
       v7 = &xmmword_100531BE0;
     }
@@ -326,17 +326,17 @@ LABEL_30:
     v17 = v13;
     v10 = *buf;
     v11 = v15;
-    LODWORD(a1) = [a1 isOSVersion:v16 newerThanVersion:&v10];
+    LODWORD(self) = [self isOSVersion:v16 newerThanVersion:&v10];
     v8 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *v16 = 67109120;
-      *&v16[4] = a1;
+      *&v16[4] = self;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "isCurrentStartupVersionNewerThanLastSeenVersion=%d", v16, 8u);
     }
   }
 
-  return a1;
+  return self;
 }
 
 + ($9FE6E10C8CE45DBC9A88DFDEA39A390D)lastShownStartupWelcomeScreenVersion
@@ -345,8 +345,8 @@ LABEL_30:
   retstr->var1 = 0;
   retstr->var2 = 0;
   v5 = +[NSUserDefaults standardUserDefaults];
-  v6 = [a2 lastShownStartupDefaultsKey];
-  v15 = [v5 objectForKey:v6];
+  lastShownStartupDefaultsKey = [a2 lastShownStartupDefaultsKey];
+  v15 = [v5 objectForKey:lastShownStartupDefaultsKey];
 
   objc_opt_class();
   v7 = ICDynamicCast();
@@ -371,17 +371,17 @@ LABEL_30:
   return result;
 }
 
-+ (BOOL)isOSVersion:(id *)a3 newerThanVersion:(id *)a4
++ (BOOL)isOSVersion:(id *)version newerThanVersion:(id *)thanVersion
 {
-  v4 = a3->var0 <= a4->var0;
-  if (a3->var0 == a4->var0)
+  v4 = version->var0 <= thanVersion->var0;
+  if (version->var0 == thanVersion->var0)
   {
-    var1 = a3->var1;
-    v6 = a4->var1;
+    var1 = version->var1;
+    v6 = thanVersion->var1;
     v4 = var1 <= v6;
     if (var1 == v6)
     {
-      v4 = a3->var2 <= a4->var2;
+      v4 = version->var2 <= thanVersion->var2;
     }
   }
 
@@ -406,8 +406,8 @@ LABEL_30:
   v8 = [NSArray arrayWithObjects:v11 count:3];
 
   v9 = +[NSUserDefaults standardUserDefaults];
-  v10 = [a1 lastShownStartupDefaultsKey];
-  [v9 setObject:v8 forKey:v10];
+  lastShownStartupDefaultsKey = [self lastShownStartupDefaultsKey];
+  [v9 setObject:v8 forKey:lastShownStartupDefaultsKey];
 }
 
 + (BOOL)shouldShowUpdateICloudAccountView
@@ -417,8 +417,8 @@ LABEL_30:
   v13 = 0u;
   v14 = 0u;
   v2 = +[ICNoteContext sharedContext];
-  v3 = [v2 managedObjectContext];
-  v4 = [ICAccount allCloudKitAccountsInContext:v3];
+  managedObjectContext = [v2 managedObjectContext];
+  v4 = [ICAccount allCloudKitAccountsInContext:managedObjectContext];
 
   v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
@@ -458,16 +458,16 @@ LABEL_11:
   return v9;
 }
 
-- (ICStartupController)initWithDelegate:(id)a3
+- (ICStartupController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = ICStartupController;
   v5 = [(ICStartupController *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(ICStartupController *)v5 setDelegate:v4];
+    [(ICStartupController *)v5 setDelegate:delegateCopy];
     v7 = +[NSNotificationCenter defaultCenter];
     [v7 addObserver:v6 selector:"migrationStateDidChange:" name:ICMigrationStateDidChangeNotification object:0];
   }
@@ -482,9 +482,9 @@ LABEL_11:
   [(ICStartupController *)self setUserDidContinue:1];
 }
 
-- (void)didUpgradeFromStartupView:(BOOL)a3
+- (void)didUpgradeFromStartupView:(BOOL)view
 {
-  v3 = a3;
+  viewCopy = view;
   [(ICStartupController *)self didContinueFromStartupView];
   if ([(ICStartupController *)self didAddReachabilityObserver])
   {
@@ -500,17 +500,17 @@ LABEL_11:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v56 = v3;
+    v56 = viewCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "User made upgrade choice (%d) from startup view", buf, 8u);
   }
 
-  v9 = [(ICStartupController *)self targetAccountID];
+  targetAccountID = [(ICStartupController *)self targetAccountID];
   v10 = objc_alloc_init(NSMutableArray);
   v11 = +[ICAccountUtilities sharedInstance];
   v12 = v11;
-  if (v9)
+  if (targetAccountID)
   {
-    v13 = [v11 iCloudACAccountWithIdentifier:v9];
+    v13 = [v11 iCloudACAccountWithIdentifier:targetAccountID];
 
     if (!v13)
     {
@@ -522,14 +522,14 @@ LABEL_11:
 
   else
   {
-    v39 = v3;
-    v14 = [v11 allICloudACAccounts];
+    v39 = viewCopy;
+    allICloudACAccounts = [v11 allICloudACAccounts];
 
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v13 = v14;
+    v13 = allICloudACAccounts;
     v15 = [v13 countByEnumeratingWithState:&v48 objects:v54 count:16];
     if (v15)
     {
@@ -551,9 +551,9 @@ LABEL_11:
             if ([v20 ic_supportsModernNotes])
             {
               v21 = [v20 objectForKeyedSubscript:v18];
-              v22 = [v21 BOOLValue];
+              bOOLValue = [v21 BOOLValue];
 
-              if ((v22 & 1) == 0)
+              if ((bOOLValue & 1) == 0)
               {
                 [v10 addObject:v20];
               }
@@ -567,11 +567,11 @@ LABEL_11:
       while (v16);
     }
 
-    v3 = v39;
+    viewCopy = v39;
   }
 
 LABEL_21:
-  if (v3)
+  if (viewCopy)
   {
     [ICMigrationController setDidChooseToMigrateLocalAccount:1];
     v46 = 0u;
@@ -588,7 +588,7 @@ LABEL_21:
       {
         for (j = 0; j != v25; j = j + 1)
         {
-          v28 = v9;
+          v28 = targetAccountID;
           if (*v45 != v26)
           {
             objc_enumerationMutation(v23);
@@ -596,13 +596,13 @@ LABEL_21:
 
           v29 = *(*(&v44 + 1) + 8 * j);
           v30 = [ICMigrationController legacyAccountForICloudACAccount:v29];
-          v9 = [v29 identifier];
+          targetAccountID = [v29 identifier];
 
-          v31 = [ICMigrationController currentMigrationStateForAccountID:v9];
+          v31 = [ICMigrationController currentMigrationStateForAccountID:targetAccountID];
           if (v30 && (v31 < 2 || ([v30 didChooseToMigrate] & 1) == 0))
           {
             v32 = +[ICMigrationController sharedController];
-            [v32 startMigrationForICloudAccountID:v9];
+            [v32 startMigrationForICloudAccountID:targetAccountID];
           }
 
           +[ICMigrationController migrateLocalAccountIfNecessary];
@@ -630,7 +630,7 @@ LABEL_21:
       do
       {
         v37 = 0;
-        v38 = v9;
+        v38 = targetAccountID;
         do
         {
           if (*v41 != v36)
@@ -638,11 +638,11 @@ LABEL_21:
             objc_enumerationMutation(v33);
           }
 
-          v9 = [*(*(&v40 + 1) + 8 * v37) identifier];
+          targetAccountID = [*(*(&v40 + 1) + 8 * v37) identifier];
 
-          [ICMigrationController setCurrentMigrationState:1 forAccountID:v9];
+          [ICMigrationController setCurrentMigrationState:1 forAccountID:targetAccountID];
           v37 = v37 + 1;
-          v38 = v9;
+          v38 = targetAccountID;
         }
 
         while (v35 != v37);
@@ -654,9 +654,9 @@ LABEL_21:
   }
 }
 
-- (void)checkStatusIfNecessaryWithDeviceCheckIndicator:(id)a3
+- (void)checkStatusIfNecessaryWithDeviceCheckIndicator:(id)indicator
 {
-  v4 = a3;
+  indicatorCopy = indicator;
   v5 = os_log_create("com.apple.notes", "Migration");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -664,9 +664,9 @@ LABEL_21:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Check device and migration status.", buf, 2u);
   }
 
-  v6 = [(ICStartupController *)self previousCheckStatusCancellationObject];
+  previousCheckStatusCancellationObject = [(ICStartupController *)self previousCheckStatusCancellationObject];
 
-  if (v6)
+  if (previousCheckStatusCancellationObject)
   {
     v7 = os_log_create("com.apple.notes", "Migration");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -675,8 +675,8 @@ LABEL_21:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "cancelling previous status check.", buf, 2u);
     }
 
-    v8 = [(ICStartupController *)self previousCheckStatusCancellationObject];
-    [v8 setValue:1];
+    previousCheckStatusCancellationObject2 = [(ICStartupController *)self previousCheckStatusCancellationObject];
+    [previousCheckStatusCancellationObject2 setValue:1];
 
     [(ICStartupController *)self setPreviousCheckStatusCancellationObject:0];
   }
@@ -684,38 +684,38 @@ LABEL_21:
   [(ICStartupController *)self setPrimaryAccountDevices:0];
   v9 = objc_alloc_init(ICMutableBool);
   [(ICStartupController *)self setPreviousCheckStatusCancellationObject:v9];
-  v10 = [(ICStartupController *)self timeoutTimer];
+  timeoutTimer = [(ICStartupController *)self timeoutTimer];
 
-  if (v10)
+  if (timeoutTimer)
   {
-    v11 = [(ICStartupController *)self timeoutTimer];
-    [v11 invalidate];
+    timeoutTimer2 = [(ICStartupController *)self timeoutTimer];
+    [timeoutTimer2 invalidate];
 
     [(ICStartupController *)self setTimeoutTimer:0];
     [(ICStartupController *)self setDeviceCheckIndicatorAnimationLevel:1];
-    [(ICStartupController *)self startTimeoutTimerIfNecessaryWithDeviceCheckIndicator:v4];
+    [(ICStartupController *)self startTimeoutTimerIfNecessaryWithDeviceCheckIndicator:indicatorCopy];
   }
 
   else
   {
     [(ICStartupController *)self setDeviceCheckIndicatorAnimationLevel:0];
-    [(ICStartupController *)self startIndicatorAnimationIfNecessaryForDeviceCheckIndicator:v4];
+    [(ICStartupController *)self startIndicatorAnimationIfNecessaryForDeviceCheckIndicator:indicatorCopy];
   }
 
   objc_initWeak(buf, self);
   v12 = +[ICNoteContext sharedContext];
-  v13 = [v12 primaryICloudACAccount];
-  v14 = [v13 identifier];
+  primaryICloudACAccount = [v12 primaryICloudACAccount];
+  identifier = [primaryICloudACAccount identifier];
 
-  if (v14)
+  if (identifier)
   {
     v15 = +[ICNoteContext sharedContext];
-    v16 = [v15 managedObjectContext];
-    v17 = [ICAccount accountWithIdentifier:v14 context:v16];
+    managedObjectContext = [v15 managedObjectContext];
+    v17 = [ICAccount accountWithIdentifier:identifier context:managedObjectContext];
 
     if (v17)
     {
-      [(ICStartupController *)self startIndicatorAnimationIfNecessaryForDeviceCheckIndicator:v4];
+      [(ICStartupController *)self startIndicatorAnimationIfNecessaryForDeviceCheckIndicator:indicatorCopy];
       v18 = +[ICCompatibilityController sharedController];
       v26[0] = _NSConcreteStackBlock;
       v26[1] = 3221225472;
@@ -723,7 +723,7 @@ LABEL_21:
       v26[3] = &unk_100649460;
       v27 = v9;
       objc_copyWeak(&v29, buf);
-      v28 = v4;
+      v28 = indicatorCopy;
       [v18 devicesForAccount:v17 completionHandler:v26];
 
       objc_destroyWeak(&v29);
@@ -735,29 +735,29 @@ LABEL_21:
     v17 = 0;
   }
 
-  if (![ICMigrationController currentMigrationStateForAccountID:v14])
+  if (![ICMigrationController currentMigrationStateForAccountID:identifier])
   {
-    [(ICStartupController *)self startIndicatorAnimationIfNecessaryForDeviceCheckIndicator:v4];
+    [(ICStartupController *)self startIndicatorAnimationIfNecessaryForDeviceCheckIndicator:indicatorCopy];
     v19 = _NSConcreteStackBlock;
     v20 = 3221225472;
     v21 = sub_1000DFE94;
     v22 = &unk_100649488;
     v23 = v9;
     objc_copyWeak(&v25, buf);
-    v24 = v4;
+    v24 = indicatorCopy;
     [ICMigrationUtilities fetchAndSetMigrationStateForAccountID:0 withCompletionHandler:&v19];
 
     objc_destroyWeak(&v25);
   }
 
-  [(ICStartupController *)self stopIndicatorAnimationIfNecessaryForDeviceCheckIndicator:v4, v19, v20, v21, v22];
+  [(ICStartupController *)self stopIndicatorAnimationIfNecessaryForDeviceCheckIndicator:indicatorCopy, v19, v20, v21, v22];
 
   objc_destroyWeak(buf);
 }
 
-- (void)deviceCheckTimeout:(id)a3
+- (void)deviceCheckTimeout:(id)timeout
 {
-  v4 = a3;
+  timeoutCopy = timeout;
   v5 = os_log_create("com.apple.notes", "Migration");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -765,16 +765,16 @@ LABEL_21:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Timeout waiting for device list or migration state", v11, 2u);
   }
 
-  v6 = [(ICStartupController *)self previousCheckStatusCancellationObject];
-  [v6 setValue:1];
+  previousCheckStatusCancellationObject = [(ICStartupController *)self previousCheckStatusCancellationObject];
+  [previousCheckStatusCancellationObject setValue:1];
 
   [(ICStartupController *)self setPreviousCheckStatusCancellationObject:0];
-  v7 = [v4 userInfo];
-  v8 = [v7 conformsToProtocol:&OBJC_PROTOCOL___ICStartupDeviceCheckIndicator];
+  userInfo = [timeoutCopy userInfo];
+  v8 = [userInfo conformsToProtocol:&OBJC_PROTOCOL___ICStartupDeviceCheckIndicator];
 
   if (v8)
   {
-    v9 = [v4 userInfo];
+    userInfo2 = [timeoutCopy userInfo];
   }
 
   else
@@ -782,62 +782,62 @@ LABEL_21:
     v10 = os_log_create("com.apple.notes", "Migration");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      sub_1004DF378(v4, v10);
+      sub_1004DF378(timeoutCopy, v10);
     }
 
-    v9 = 0;
+    userInfo2 = 0;
   }
 
   [(ICStartupController *)self setTimeoutTimer:0];
-  [v9 stopIndicatorAnimation];
+  [userInfo2 stopIndicatorAnimation];
 }
 
-- (void)startTimeoutTimerIfNecessaryWithDeviceCheckIndicator:(id)a3
+- (void)startTimeoutTimerIfNecessaryWithDeviceCheckIndicator:(id)indicator
 {
-  v9 = a3;
-  v4 = [(ICStartupController *)self timeoutTimer];
+  indicatorCopy = indicator;
+  timeoutTimer = [(ICStartupController *)self timeoutTimer];
 
-  if (!v4)
+  if (!timeoutTimer)
   {
-    v5 = [NSTimer timerWithTimeInterval:self target:"deviceCheckTimeout:" selector:v9 userInfo:0 repeats:4.0];
+    v5 = [NSTimer timerWithTimeInterval:self target:"deviceCheckTimeout:" selector:indicatorCopy userInfo:0 repeats:4.0];
     [(ICStartupController *)self setTimeoutTimer:v5];
 
     v6 = +[NSRunLoop currentRunLoop];
-    v7 = [(ICStartupController *)self timeoutTimer];
-    v8 = [(ICStartupController *)self timerRunLoopMode];
-    [v6 addTimer:v7 forMode:v8];
+    timeoutTimer2 = [(ICStartupController *)self timeoutTimer];
+    timerRunLoopMode = [(ICStartupController *)self timerRunLoopMode];
+    [v6 addTimer:timeoutTimer2 forMode:timerRunLoopMode];
   }
 }
 
-- (void)startIndicatorAnimationIfNecessaryForDeviceCheckIndicator:(id)a3
+- (void)startIndicatorAnimationIfNecessaryForDeviceCheckIndicator:(id)indicator
 {
-  v4 = a3;
+  indicatorCopy = indicator;
   if (![(ICStartupController *)self deviceCheckIndicatorAnimationLevel])
   {
-    [v4 startIndicatorAnimation];
+    [indicatorCopy startIndicatorAnimation];
   }
 
   [(ICStartupController *)self setDeviceCheckIndicatorAnimationLevel:[(ICStartupController *)self deviceCheckIndicatorAnimationLevel]+ 1];
-  [(ICStartupController *)self startTimeoutTimerIfNecessaryWithDeviceCheckIndicator:v4];
+  [(ICStartupController *)self startTimeoutTimerIfNecessaryWithDeviceCheckIndicator:indicatorCopy];
 }
 
-- (void)stopIndicatorAnimationIfNecessaryForDeviceCheckIndicator:(id)a3
+- (void)stopIndicatorAnimationIfNecessaryForDeviceCheckIndicator:(id)indicator
 {
-  v6 = a3;
+  indicatorCopy = indicator;
   if ([(ICStartupController *)self deviceCheckIndicatorAnimationLevel])
   {
     [(ICStartupController *)self setDeviceCheckIndicatorAnimationLevel:[(ICStartupController *)self deviceCheckIndicatorAnimationLevel]- 1];
     if (![(ICStartupController *)self deviceCheckIndicatorAnimationLevel])
     {
-      v4 = [(ICStartupController *)self timeoutTimer];
+      timeoutTimer = [(ICStartupController *)self timeoutTimer];
 
-      if (v4)
+      if (timeoutTimer)
       {
-        v5 = [(ICStartupController *)self timeoutTimer];
-        [v5 invalidate];
+        timeoutTimer2 = [(ICStartupController *)self timeoutTimer];
+        [timeoutTimer2 invalidate];
 
         [(ICStartupController *)self setTimeoutTimer:0];
-        [v6 stopIndicatorAnimation];
+        [indicatorCopy stopIndicatorAnimation];
       }
     }
   }
@@ -867,20 +867,20 @@ LABEL_21:
   return v3;
 }
 
-- (void)migrationStateDidChange:(id)a3
+- (void)migrationStateDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if ([(ICStartupController *)self userDidContinue]&& !+[ICStartupController hasAccountForMigration])
   {
-    v10 = [(ICStartupController *)self delegate];
-    [v10 startupControllerShouldCloseDeviceListView];
+    delegate = [(ICStartupController *)self delegate];
+    [delegate startupControllerShouldCloseDeviceListView];
   }
 
   else if (![(ICStartupController *)self userDidContinue])
   {
     objc_opt_class();
-    v5 = [v4 userInfo];
-    v6 = [v5 objectForKeyedSubscript:@"ICCurrentDeviceMigrationStateChangeWasForLocalAccountKey"];
+    userInfo = [changeCopy userInfo];
+    v6 = [userInfo objectForKeyedSubscript:@"ICCurrentDeviceMigrationStateChangeWasForLocalAccountKey"];
     v7 = ICDynamicCast();
 
     if (([v7 BOOLValue] & 1) == 0)
@@ -892,13 +892,13 @@ LABEL_21:
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Startup migration type might have changed from migration state did change.", v11, 2u);
       }
 
-      v9 = [(ICStartupController *)self delegate];
-      [v9 startupMigrationTypeMightHaveChanged];
+      delegate2 = [(ICStartupController *)self delegate];
+      [delegate2 startupMigrationTypeMightHaveChanged];
     }
   }
 }
 
-- (void)reachabilityChanged:(id)a3
+- (void)reachabilityChanged:(id)changed
 {
   if (![(ICStartupController *)self userDidContinue])
   {
@@ -909,8 +909,8 @@ LABEL_21:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Startup migration type might have changed from reachability changed.", v6, 2u);
     }
 
-    v5 = [(ICStartupController *)self delegate];
-    [v5 startupMigrationTypeMightHaveChanged];
+    delegate = [(ICStartupController *)self delegate];
+    [delegate startupMigrationTypeMightHaveChanged];
   }
 }
 
@@ -948,23 +948,23 @@ LABEL_21:
 - (unint64_t)getStartupMigrationType
 {
   v3 = +[ICAccountUtilities sharedInstance];
-  v4 = [v3 allICloudACAccounts];
+  allICloudACAccounts = [v3 allICloudACAccounts];
 
-  v5 = [(ICStartupController *)self getStartupMigrationTypeWithAccounts:v4];
+  v5 = [(ICStartupController *)self getStartupMigrationTypeWithAccounts:allICloudACAccounts];
   return v5;
 }
 
-- (unint64_t)getStartupMigrationTypeWithAccounts:(id)a3
+- (unint64_t)getStartupMigrationTypeWithAccounts:(id)accounts
 {
-  v4 = a3;
+  accountsCopy = accounts;
   +[ICMigrationController upgradeEmptyLocalLegacyAccountIfNecessary];
-  v39 = [objc_opt_class() hasShownWelcomeScreen];
-  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  hasShownWelcomeScreen = [objc_opt_class() hasShownWelcomeScreen];
+  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(accountsCopy, "count")}];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v6 = v4;
+  v6 = accountsCopy;
   v7 = [v6 countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v7)
   {
@@ -1059,8 +1059,8 @@ LABEL_22:
   v26 = +[ICMigrationController legacyAccountContext];
   if ([v12 count])
   {
-    v27 = [(ICStartupController *)self primaryAccountDevices];
-    v28 = [v27 ic_containsObjectPassingTest:&stru_1006494C8];
+    primaryAccountDevices = [(ICStartupController *)self primaryAccountDevices];
+    v28 = [primaryAccountDevices ic_containsObjectPassingTest:&stru_1006494C8];
 
     if (v20)
     {
@@ -1078,8 +1078,8 @@ LABEL_33:
         goto LABEL_61;
       }
 
-      v29 = [v24 objectID];
-      if (![v26 nonEmptyNoteExistsForLegacyAccountWithObjectID:v29] || +[ICMigrationController didChooseToMigrateLocalAccount](ICMigrationController, "didChooseToMigrateLocalAccount"))
+      objectID = [v24 objectID];
+      if (![v26 nonEmptyNoteExistsForLegacyAccountWithObjectID:objectID] || +[ICMigrationController didChooseToMigrateLocalAccount](ICMigrationController, "didChooseToMigrateLocalAccount"))
       {
 
         goto LABEL_33;
@@ -1094,7 +1094,7 @@ LABEL_33:
 
       v30 = os_log_create("com.apple.notes", "Migration");
       v38 = os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT);
-      if (v39)
+      if (hasShownWelcomeScreen)
       {
         if (v38)
         {

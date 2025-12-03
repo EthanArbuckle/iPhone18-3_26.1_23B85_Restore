@@ -1,22 +1,22 @@
 @interface SPMembership
-+ (BOOL)isLocalAccountUUID:(id)a3;
++ (BOOL)isLocalAccountUUID:(id)d;
 + (id)currentMachineUserUUID;
 @end
 
 @implementation SPMembership
 
-+ (BOOL)isLocalAccountUUID:(id)a3
++ (BOOL)isLocalAccountUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = v3;
+    v7 = dCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "SPMembership isLocalAccountUUID: %@", buf, 0xCu);
   }
 
   memset(uu, 0, sizeof(uu));
-  uuid_parse([v3 UTF8String], uu);
+  uuid_parse([dCopy UTF8String], uu);
   if (mbr_check_membership_by_id())
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -32,7 +32,7 @@
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v7 = v3;
+      v7 = dCopy;
       v8 = 1024;
       v9 = 0;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "SPMembership isLocalAccountUUID: %@, LocalGroup: staff(20), result: %i", buf, 0x12u);

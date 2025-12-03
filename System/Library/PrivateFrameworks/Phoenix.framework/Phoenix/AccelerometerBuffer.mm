@@ -1,22 +1,22 @@
 @interface AccelerometerBuffer
 - ($01BB1521EC52D44A8E7628F5261DCEC8)data;
-- (AccelerometerBuffer)bufferWithMovingSum:(id *)a3;
-- (AccelerometerBuffer)initWithCapacity:(unint64_t)a3 accelerometerSampleRateInHz:(unint64_t)a4;
+- (AccelerometerBuffer)bufferWithMovingSum:(id *)sum;
+- (AccelerometerBuffer)initWithCapacity:(unint64_t)capacity accelerometerSampleRateInHz:(unint64_t)hz;
 - (id)csv;
 - (id)description;
 - (id)logBuffer;
-- (void)_fillAccelBufferBeforeFirstSampleTimestamp:(double)a3;
-- (void)addData:(id)a3 timestamp:(double)a4;
+- (void)_fillAccelBufferBeforeFirstSampleTimestamp:(double)timestamp;
+- (void)addData:(id)data timestamp:(double)timestamp;
 - (void)resetMovingSum;
 @end
 
 @implementation AccelerometerBuffer
 
-- (AccelerometerBuffer)initWithCapacity:(unint64_t)a3 accelerometerSampleRateInHz:(unint64_t)a4
+- (AccelerometerBuffer)initWithCapacity:(unint64_t)capacity accelerometerSampleRateInHz:(unint64_t)hz
 {
   v12 = a2;
-  v11 = a3;
-  v10 = a4;
+  capacityCopy = capacity;
+  hzCopy = hz;
   v13 = 0;
   v9.receiver = self;
   v9.super_class = AccelerometerBuffer;
@@ -25,12 +25,12 @@
   if (v13)
   {
     v4 = objc_alloc(MEMORY[0x277CBEB18]);
-    v5 = [v4 initWithCapacity:v11];
+    v5 = [v4 initWithCapacity:capacityCopy];
     accelBuffer = v13->_accelBuffer;
     v13->_accelBuffer = v5;
     MEMORY[0x277D82BD8](accelBuffer);
-    v13->_bufferSize = v11;
-    v13->_sampleRate = v10;
+    v13->_bufferSize = capacityCopy;
+    v13->_sampleRate = hzCopy;
     v13->_movingSum.x = 0.0;
     v13->_movingSum.y = 0.0;
     v13->_movingSum.z = 0.0;
@@ -41,34 +41,34 @@
   return v8;
 }
 
-- (AccelerometerBuffer)bufferWithMovingSum:(id *)a3
+- (AccelerometerBuffer)bufferWithMovingSum:(id *)sum
 {
-  if (a3)
+  if (sum)
   {
-    *a3 = self->_movingSum;
+    *sum = self->_movingSum;
   }
 
   return self->_accelBuffer;
 }
 
-- (void)addData:(id)a3 timestamp:(double)a4
+- (void)addData:(id)data timestamp:(double)timestamp
 {
-  v19 = a3;
-  v18 = self;
+  dataCopy = data;
+  selfCopy = self;
   v17 = a2;
-  v16 = a4;
+  timestampCopy = timestamp;
   if ([(NSMutableArray *)self->_accelBuffer count]>= self->_bufferSize)
   {
-    location = [(NSMutableArray *)v18->_accelBuffer firstObject];
+    location = [(NSMutableArray *)selfCopy->_accelBuffer firstObject];
     if (location)
     {
       [location x];
-      v18->_movingSum.x = v18->_movingSum.x - v4;
+      selfCopy->_movingSum.x = selfCopy->_movingSum.x - v4;
       [location y];
-      v18->_movingSum.y = v18->_movingSum.y - v5;
+      selfCopy->_movingSum.y = selfCopy->_movingSum.y - v5;
       [location z];
-      v18->_movingSum.z = v18->_movingSum.z - v6;
-      [(NSMutableArray *)v18->_accelBuffer removeObject:location];
+      selfCopy->_movingSum.z = selfCopy->_movingSum.z - v6;
+      [(NSMutableArray *)selfCopy->_accelBuffer removeObject:location];
     }
 
     objc_storeStrong(&location, 0);
@@ -76,35 +76,35 @@
 
   else
   {
-    [(AccelerometerBuffer *)v18 _fillAccelBufferBeforeFirstSampleTimestamp:v16];
+    [(AccelerometerBuffer *)selfCopy _fillAccelBufferBeforeFirstSampleTimestamp:timestampCopy];
   }
 
-  v18->_movingSum.x = v18->_movingSum.x + v19.var0;
-  v18->_movingSum.y = v18->_movingSum.y + v19.var1;
-  v18->_movingSum.z = v18->_movingSum.z + v19.var2;
-  v14 = v18->_movingSum.z / v18->_bufferSize;
-  [(AccelerometerBuffer *)v18 localMaxAboveAverage];
-  [(AccelerometerBuffer *)v18 setLocalMaxAboveAverage:fmax(v7, v19.var2 - v14)];
-  [(AccelerometerBuffer *)v18 localMinBelowAverage];
-  [(AccelerometerBuffer *)v18 setLocalMinBelowAverage:fmin(v8, v19.var2 - v14)];
-  [(AccelerometerBuffer *)v18 localMax];
-  [(AccelerometerBuffer *)v18 setLocalMax:fmax(v9, v19.var2)];
-  [(AccelerometerBuffer *)v18 localMin];
-  [(AccelerometerBuffer *)v18 setLocalMin:fmin(v10, v19.var2)];
-  accelBuffer = v18->_accelBuffer;
+  selfCopy->_movingSum.x = selfCopy->_movingSum.x + dataCopy.var0;
+  selfCopy->_movingSum.y = selfCopy->_movingSum.y + dataCopy.var1;
+  selfCopy->_movingSum.z = selfCopy->_movingSum.z + dataCopy.var2;
+  v14 = selfCopy->_movingSum.z / selfCopy->_bufferSize;
+  [(AccelerometerBuffer *)selfCopy localMaxAboveAverage];
+  [(AccelerometerBuffer *)selfCopy setLocalMaxAboveAverage:fmax(v7, dataCopy.var2 - v14)];
+  [(AccelerometerBuffer *)selfCopy localMinBelowAverage];
+  [(AccelerometerBuffer *)selfCopy setLocalMinBelowAverage:fmin(v8, dataCopy.var2 - v14)];
+  [(AccelerometerBuffer *)selfCopy localMax];
+  [(AccelerometerBuffer *)selfCopy setLocalMax:fmax(v9, dataCopy.var2)];
+  [(AccelerometerBuffer *)selfCopy localMin];
+  [(AccelerometerBuffer *)selfCopy setLocalMin:fmin(v10, dataCopy.var2)];
+  accelBuffer = selfCopy->_accelBuffer;
   v11 = [AccelerometerData alloc];
-  v13 = [(AccelerometerData *)v11 initWithData:v19.var0 timestamp:v19.var1, v19.var2, v16];
+  timestampCopy = [(AccelerometerData *)v11 initWithData:dataCopy.var0 timestamp:dataCopy.var1, dataCopy.var2, timestampCopy];
   [(NSMutableArray *)accelBuffer addObject:?];
-  MEMORY[0x277D82BD8](v13);
+  MEMORY[0x277D82BD8](timestampCopy);
 }
 
-- (void)_fillAccelBufferBeforeFirstSampleTimestamp:(double)a3
+- (void)_fillAccelBufferBeforeFirstSampleTimestamp:(double)timestamp
 {
   v6 = self->_bufferSize - 1;
   for (i = 0; i < v6; ++i)
   {
     accelBuffer = self->_accelBuffer;
-    v4 = [[AccelerometerData alloc] initWithData:0.0 timestamp:0.0, 0.0, a3 - ((v6 - i) / self->_sampleRate)];
+    v4 = [[AccelerometerData alloc] initWithData:0.0 timestamp:0.0, 0.0, timestamp - ((v6 - i) / self->_sampleRate)];
     [(NSMutableArray *)accelBuffer addObject:?];
     MEMORY[0x277D82BD8](v4);
   }
@@ -123,11 +123,11 @@
 
 - ($01BB1521EC52D44A8E7628F5261DCEC8)data
 {
-  v15 = [(NSMutableArray *)self->_accelBuffer firstObject];
-  [v15 timestamp];
+  firstObject = [(NSMutableArray *)self->_accelBuffer firstObject];
+  [firstObject timestamp];
   v17 = v2;
-  v13 = [(NSMutableArray *)self->_accelBuffer lastObject];
-  [v13 timestamp];
+  lastObject = [(NSMutableArray *)self->_accelBuffer lastObject];
+  [lastObject timestamp];
   v18 = v3;
   [(AccelerometerBuffer *)self localMaxAboveAverage];
   v12 = v4;
@@ -137,8 +137,8 @@
   v14 = v6;
   [(AccelerometerBuffer *)self localMin];
   v20 = v14 - v7;
-  MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v15);
+  MEMORY[0x277D82BD8](lastObject);
+  MEMORY[0x277D82BD8](firstObject);
   v8 = v17;
   v9 = v18;
   v10 = v19;
@@ -153,7 +153,7 @@
 - (id)logBuffer
 {
   v35 = *MEMORY[0x277D85DE8];
-  v33 = self;
+  selfCopy = self;
   v32 = a2;
   v31 = 25;
   v26 = 0;
@@ -163,7 +163,7 @@
   v30 = 0;
   v8 = objc_alloc(MEMORY[0x277CBEB18]);
   v25 = [v8 initWithCapacity:v31];
-  accelBuffer = v33->_accelBuffer;
+  accelBuffer = selfCopy->_accelBuffer;
   v19 = MEMORY[0x277D85DD0];
   v20 = -1073741824;
   v21 = 0;
@@ -193,7 +193,7 @@
   }
 
   v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = v33->_accelBuffer;
+  v4 = selfCopy->_accelBuffer;
   v9 = MEMORY[0x277D85DD0];
   v10 = -1073741824;
   v11 = 0;
@@ -300,11 +300,11 @@ void __32__AccelerometerBuffer_logBuffer__block_invoke_41(id *a1, void *a2, void
 
 - (id)csv
 {
-  v7 = self;
+  selfCopy = self;
   v6[1] = a2;
   v6[0] = objc_alloc_init(MEMORY[0x277CCAB68]);
   [v6[0] appendString:{@"timestamp, x, y, z\n"}];
-  accelBuffer = v7->_accelBuffer;
+  accelBuffer = selfCopy->_accelBuffer;
   v5 = MEMORY[0x277D82BE0](v6[0]);
   [(NSMutableArray *)accelBuffer enumerateObjectsUsingBlock:?];
   v4 = MEMORY[0x277D82BE0](v6[0]);
@@ -342,10 +342,10 @@ void __26__AccelerometerBuffer_csv__block_invoke(void *a1, void *a2)
 
 - (id)description
 {
-  v7 = self;
+  selfCopy = self;
   v6[1] = a2;
   v6[0] = objc_alloc_init(MEMORY[0x277CCAB68]);
-  accelBuffer = v7->_accelBuffer;
+  accelBuffer = selfCopy->_accelBuffer;
   v5 = MEMORY[0x277D82BE0](v6[0]);
   [(NSMutableArray *)accelBuffer enumerateObjectsUsingBlock:?];
   v4 = MEMORY[0x277D82BE0](v6[0]);

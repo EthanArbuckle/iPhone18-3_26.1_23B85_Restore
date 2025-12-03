@@ -1,31 +1,31 @@
 @interface ULHomeSlamTimer
-- (ULHomeSlamTimer)initWithTimeout:(double)a3 andStartTime:(id)a4;
-- (id)checkTimeoutAtDate:(id)a3;
+- (ULHomeSlamTimer)initWithTimeout:(double)timeout andStartTime:(id)time;
+- (id)checkTimeoutAtDate:(id)date;
 @end
 
 @implementation ULHomeSlamTimer
 
-- (ULHomeSlamTimer)initWithTimeout:(double)a3 andStartTime:(id)a4
+- (ULHomeSlamTimer)initWithTimeout:(double)timeout andStartTime:(id)time
 {
-  v6 = a4;
+  timeCopy = time;
   v10.receiver = self;
   v10.super_class = ULHomeSlamTimer;
   v7 = [(ULHomeSlamTimer *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(ULHomeSlamTimer *)v7 setTimeoutSeconds:a3];
-    [(ULHomeSlamTimer *)v8 setStartTime:v6];
+    [(ULHomeSlamTimer *)v7 setTimeoutSeconds:timeout];
+    [(ULHomeSlamTimer *)v8 setStartTime:timeCopy];
   }
 
   return v8;
 }
 
-- (id)checkTimeoutAtDate:(id)a3
+- (id)checkTimeoutAtDate:(id)date
 {
-  v4 = a3;
-  v5 = [(ULHomeSlamTimer *)self startTime];
-  [v4 timeIntervalSinceDate:v5];
+  dateCopy = date;
+  startTime = [(ULHomeSlamTimer *)self startTime];
+  [dateCopy timeIntervalSinceDate:startTime];
   v7 = v6;
 
   [(ULHomeSlamTimer *)self timeoutSeconds];
@@ -38,9 +38,9 @@
 
   else
   {
-    v10 = [(ULHomeSlamTimer *)self startTime];
+    startTime2 = [(ULHomeSlamTimer *)self startTime];
     [(ULHomeSlamTimer *)self timeoutSeconds];
-    v11 = [v10 dateByAddingTimeInterval:?];
+    v11 = [startTime2 dateByAddingTimeInterval:?];
   }
 
   return v11;

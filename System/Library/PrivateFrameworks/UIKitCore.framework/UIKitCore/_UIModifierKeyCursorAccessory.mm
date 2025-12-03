@@ -1,20 +1,20 @@
 @interface _UIModifierKeyCursorAccessory
-- (_UIModifierKeyCursorAccessory)initWithCoder:(id)a3;
+- (_UIModifierKeyCursorAccessory)initWithCoder:(id)coder;
 - (id)descriptionBuilder;
 - (id)identifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIModifierKeyCursorAccessory
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _UIModifierKeyCursorAccessory;
-  v4 = a3;
-  [(_UICursorAccessory *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_modifierType forKey:{@"modifierType", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(_UICursorAccessory *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_modifierType forKey:{@"modifierType", v5.receiver, v5.super_class}];
 }
 
 - (unint64_t)hash
@@ -24,15 +24,15 @@
   return self->_modifierType ^ [(_UICursorAccessory *)&v3 hash];
 }
 
-- (_UIModifierKeyCursorAccessory)initWithCoder:(id)a3
+- (_UIModifierKeyCursorAccessory)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = _UIModifierKeyCursorAccessory;
-  v5 = [(_UICursorAccessory *)&v7 initWithCoder:v4];
+  v5 = [(_UICursorAccessory *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_modifierType = [v4 decodeIntegerForKey:@"modifierType"];
+    v5->_modifierType = [coderCopy decodeIntegerForKey:@"modifierType"];
   }
 
   return v5;
@@ -42,24 +42,24 @@
 {
   v6.receiver = self;
   v6.super_class = _UIModifierKeyCursorAccessory;
-  v3 = [(_UICursorAccessory *)&v6 descriptionBuilder];
-  v4 = [v3 appendInt:LODWORD(self->_modifierType) withName:@"modifierType"];
+  descriptionBuilder = [(_UICursorAccessory *)&v6 descriptionBuilder];
+  v4 = [descriptionBuilder appendInt:LODWORD(self->_modifierType) withName:@"modifierType"];
 
-  return v3;
+  return descriptionBuilder;
 }
 
 - (id)identifier
 {
   v5.receiver = self;
   v5.super_class = _UIModifierKeyCursorAccessory;
-  v3 = [(_UICursorAccessory *)&v5 identifier];
-  if (!v3)
+  identifier = [(_UICursorAccessory *)&v5 identifier];
+  if (!identifier)
   {
-    v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"mod:%ld", self->_modifierType];
-    [(_UICursorAccessory *)self setIdentifier:v3];
+    identifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"mod:%ld", self->_modifierType];
+    [(_UICursorAccessory *)self setIdentifier:identifier];
   }
 
-  return v3;
+  return identifier;
 }
 
 @end

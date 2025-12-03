@@ -2,13 +2,13 @@
 - (ACMAppleConnectImpl)init;
 - (BOOL)shouldReleaseOnMemoryWarning;
 - (NSMutableSet)handlers;
-- (void)authenticate:(id)a3;
-- (void)changeUserPasswordWithRequest:(id)a3 isGesture:(BOOL)a4;
+- (void)authenticate:(id)authenticate;
+- (void)changeUserPasswordWithRequest:(id)request isGesture:(BOOL)gesture;
 - (void)dealloc;
-- (void)scheduleHandler:(id)a3 withCompletionBlock:(id)a4;
-- (void)setLogLevel:(int64_t)a3;
+- (void)scheduleHandler:(id)handler withCompletionBlock:(id)block;
+- (void)setLogLevel:(int64_t)level;
 - (void)unscheduleAllHandlers;
-- (void)unscheduleHandler:(id)a3;
+- (void)unscheduleHandler:(id)handler;
 @end
 
 @implementation ACMAppleConnectImpl
@@ -89,17 +89,17 @@
   return handlers;
 }
 
-- (void)scheduleHandler:(id)a3 withCompletionBlock:(id)a4
+- (void)scheduleHandler:(id)handler withCompletionBlock:(id)block
 {
   if (qword_2A1EB8FA8)
   {
     if ((ACFLogSettingsGetLevelMask() & 0x80) != 0)
     {
-      ACFLog(7, "-[ACMAppleConnectImpl scheduleHandler:withCompletionBlock:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMAppleConnectImpl.m", 112, 0, "Scheduling HTTP handler %p for url %@", a3, [objc_msgSend(a3 "transport")]);
+      ACFLog(7, "-[ACMAppleConnectImpl scheduleHandler:withCompletionBlock:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMAppleConnectImpl.m", 112, 0, "Scheduling HTTP handler %p for url %@", handler, [objc_msgSend(handler "transport")]);
     }
 
     objc_sync_enter(self);
-    if (!a3)
+    if (!handler)
     {
       if ((ACFLogSettingsGetLevelMask() & 8) != 0)
       {
@@ -113,7 +113,7 @@
   else
   {
     objc_sync_enter(self);
-    if (!a3)
+    if (!handler)
     {
       goto LABEL_11;
     }
@@ -124,26 +124,26 @@
     [objc_msgSend(MEMORY[0x29EDC7938] "sharedApplication")];
   }
 
-  [(NSMutableSet *)[(ACMAppleConnectImpl *)self handlers] addObject:a3];
-  [a3 performRequestWithCompletionBlock:a4];
+  [(NSMutableSet *)[(ACMAppleConnectImpl *)self handlers] addObject:handler];
+  [handler performRequestWithCompletionBlock:block];
   v7[0] = MEMORY[0x29EDCA5F8];
   v7[1] = 3221225472;
   v7[2] = __59__ACMAppleConnectImpl_scheduleHandler_withCompletionBlock___block_invoke;
   v7[3] = &unk_29EE918B0;
   v7[4] = self;
-  v7[5] = a3;
-  [a3 setFinalizeBlock:v7];
+  v7[5] = handler;
+  [handler setFinalizeBlock:v7];
 LABEL_11:
   objc_sync_exit(self);
 }
 
-- (void)unscheduleHandler:(id)a3
+- (void)unscheduleHandler:(id)handler
 {
   objc_sync_enter(self);
-  if ([(NSMutableSet *)[(ACMAppleConnectImpl *)self handlers] containsObject:a3])
+  if ([(NSMutableSet *)[(ACMAppleConnectImpl *)self handlers] containsObject:handler])
   {
-    [(NSMutableSet *)[(ACMAppleConnectImpl *)self handlers] removeObject:a3];
-    [a3 setFinalizeBlock:0];
+    [(NSMutableSet *)[(ACMAppleConnectImpl *)self handlers] removeObject:handler];
+    [handler setFinalizeBlock:0];
     if (![(NSMutableSet *)[(ACMAppleConnectImpl *)self handlers] count])
     {
       [objc_msgSend(MEMORY[0x29EDC7938] "sharedApplication")];
@@ -154,7 +154,7 @@ LABEL_11:
 
   else if (qword_2A1EB8FA8 && (ACFLogSettingsGetLevelMask() & 0x40) != 0)
   {
-    ACFLog(6, "[ACMAppleConnectImpl unscheduleHandler:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMAppleConnectImpl.m", 152, 0, "HTTP handler %p is not found, probably it was already removed", a3);
+    ACFLog(6, "[ACMAppleConnectImpl unscheduleHandler:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMAppleConnectImpl.m", 152, 0, "HTTP handler %p is not found, probably it was already removed", handler);
   }
 
   objc_sync_exit(self);
@@ -162,29 +162,29 @@ LABEL_11:
 
 - (void)unscheduleAllHandlers
 {
-  v2 = self;
+  selfCopy = self;
   while ([(NSMutableSet *)[(ACMAppleConnectImpl *)self handlers] count])
   {
-    [(ACMAppleConnectImpl *)v2 unscheduleHandler:[(NSMutableSet *)[(ACMAppleConnectImpl *)v2 handlers] anyObject]];
-    self = v2;
+    [(ACMAppleConnectImpl *)selfCopy unscheduleHandler:[(NSMutableSet *)[(ACMAppleConnectImpl *)selfCopy handlers] anyObject]];
+    self = selfCopy;
   }
 
-  handlers = v2->_handlers;
+  handlers = selfCopy->_handlers;
   if (handlers)
   {
 
-    v2->_handlers = 0;
+    selfCopy->_handlers = 0;
   }
 }
 
-- (void)authenticate:(id)a3
+- (void)authenticate:(id)authenticate
 {
   if (qword_2A1EB8FB8 && (ACFLogSettingsGetLevelMask() & 0x100) != 0)
   {
     ACFProfileStart("[ACMAppleConnectImpl authenticate:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMAppleConnectImpl.m", 174, 0, 0);
   }
 
-  [(ACMAppleConnectImpl *)self performSelectorOnMainThread:sel_authenticateRunningOnMainThreadWithRequest_ withObject:a3 waitUntilDone:1];
+  [(ACMAppleConnectImpl *)self performSelectorOnMainThread:sel_authenticateRunningOnMainThreadWithRequest_ withObject:authenticate waitUntilDone:1];
   if (qword_2A1EB8FB0)
   {
     if ((ACFLogSettingsGetLevelMask() & 0x100) != 0)
@@ -194,21 +194,21 @@ LABEL_11:
   }
 }
 
-- (void)changeUserPasswordWithRequest:(id)a3 isGesture:(BOOL)a4
+- (void)changeUserPasswordWithRequest:(id)request isGesture:(BOOL)gesture
 {
-  v4 = a4;
+  gestureCopy = gesture;
   if (qword_2A1EB8FB8 && (ACFLogSettingsGetLevelMask() & 0x100) != 0)
   {
     ACFProfileStart("[ACMAppleConnectImpl changeUserPasswordWithRequest:isGesture:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMAppleConnectImpl.m", 201, 0, 0);
   }
 
   v7 = &selRef_changeGestureRunningOnMainThreadWithRequest_;
-  if (!v4)
+  if (!gestureCopy)
   {
     v7 = &selRef_changePasswordRunningOnMainThreadWithRequest_;
   }
 
-  [(ACMAppleConnectImpl *)self performSelectorOnMainThread:*v7 withObject:a3 waitUntilDone:1];
+  [(ACMAppleConnectImpl *)self performSelectorOnMainThread:*v7 withObject:request waitUntilDone:1];
   if (qword_2A1EB8FB0)
   {
     if ((ACFLogSettingsGetLevelMask() & 0x100) != 0)
@@ -218,11 +218,11 @@ LABEL_11:
   }
 }
 
-- (void)setLogLevel:(int64_t)a3
+- (void)setLogLevel:(int64_t)level
 {
-  v4 = [(ACMAppleConnectImplComponents *)[(ACMAppleConnectImpl *)self components] preferences];
+  preferences = [(ACMAppleConnectImplComponents *)[(ACMAppleConnectImpl *)self components] preferences];
 
-  [(ACMAppleConnectPreferences *)v4 setLogLevel:a3];
+  [(ACMAppleConnectPreferences *)preferences setLogLevel:level];
 }
 
 @end

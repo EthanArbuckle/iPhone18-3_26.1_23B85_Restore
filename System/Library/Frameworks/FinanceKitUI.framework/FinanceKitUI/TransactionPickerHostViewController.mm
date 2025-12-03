@@ -1,12 +1,12 @@
 @interface TransactionPickerHostViewController
-- (_TtC12FinanceKitUIP33_6287C40558B61A6945C038C9D260157B35TransactionPickerHostViewController)initWithCoder:(id)a3;
-- (_TtC12FinanceKitUIP33_6287C40558B61A6945C038C9D260157B35TransactionPickerHostViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC12FinanceKitUIP33_6287C40558B61A6945C038C9D260157B35TransactionPickerHostViewController)initWithCoder:(id)coder;
+- (_TtC12FinanceKitUIP33_6287C40558B61A6945C038C9D260157B35TransactionPickerHostViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_UIRemoteViewController)_containedRemoteViewController;
 @end
 
 @implementation TransactionPickerHostViewController
 
-- (_TtC12FinanceKitUIP33_6287C40558B61A6945C038C9D260157B35TransactionPickerHostViewController)initWithCoder:(id)a3
+- (_TtC12FinanceKitUIP33_6287C40558B61A6945C038C9D260157B35TransactionPickerHostViewController)initWithCoder:(id)coder
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -26,7 +26,7 @@
   return result;
 }
 
-- (_TtC12FinanceKitUIP33_6287C40558B61A6945C038C9D260157B35TransactionPickerHostViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12FinanceKitUIP33_6287C40558B61A6945C038C9D260157B35TransactionPickerHostViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_23875ED50();
   sub_23875ED40();

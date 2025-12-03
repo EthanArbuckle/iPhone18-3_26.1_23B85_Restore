@@ -1,15 +1,15 @@
 @interface PGGraphPOINode
-+ (id)_localizationKeyForPOINode:(id)a3;
++ (id)_localizationKeyForPOINode:(id)node;
 + (id)filter;
-+ (id)filterWithLabel:(id)a3;
-+ (id)filterWithLabels:(id)a3;
++ (id)filterWithLabel:(id)label;
++ (id)filterWithLabels:(id)labels;
 + (id)momentOfPOI;
 + (id)validPOILabels;
 - (NSArray)localizedSynonyms;
 - (NSString)featureIdentifier;
 - (NSString)localizedName;
 - (NSString)pg_topic;
-- (PGGraphPOINode)initWithLabel:(id)a3;
+- (PGGraphPOINode)initWithLabel:(id)label;
 - (PGGraphPOINodeCollection)collection;
 @end
 
@@ -17,13 +17,13 @@
 
 - (NSString)pg_topic
 {
-  v2 = [(PGGraphPOINode *)self label];
+  label = [(PGGraphPOINode *)self label];
   v3 = +[PGGraphPOINode validPOILabels];
-  v4 = [v3 containsObject:v2];
+  v4 = [v3 containsObject:label];
 
   if (v4)
   {
-    v5 = v2;
+    v5 = label;
   }
 
   else
@@ -39,8 +39,8 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PGGraphPOINode *)self label];
-  v7 = [v3 stringWithFormat:@"%@|%@", v5, v6];
+  label = [(PGGraphPOINode *)self label];
+  v7 = [v3 stringWithFormat:@"%@|%@", v5, label];
 
   return v7;
 }
@@ -69,15 +69,15 @@
   return v2;
 }
 
-- (PGGraphPOINode)initWithLabel:(id)a3
+- (PGGraphPOINode)initWithLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v9.receiver = self;
   v9.super_class = PGGraphPOINode;
   v5 = [(PGGraphNode *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [labelCopy copy];
     label = v5->_label;
     v5->_label = v6;
   }
@@ -88,46 +88,46 @@
 + (id)momentOfPOI
 {
   v2 = +[PGGraphPOIEdge filter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
-+ (id)filterWithLabels:(id)a3
++ (id)filterWithLabels:(id)labels
 {
   v3 = MEMORY[0x277D22C78];
-  v4 = a3;
+  labelsCopy = labels;
   v5 = [v3 alloc];
-  v6 = [v5 initWithLabels:v4 domain:501 properties:MEMORY[0x277CBEC10]];
+  v6 = [v5 initWithLabels:labelsCopy domain:501 properties:MEMORY[0x277CBEC10]];
 
   return v6;
 }
 
-+ (id)filterWithLabel:(id)a3
++ (id)filterWithLabel:(id)label
 {
   v3 = MEMORY[0x277D22C78];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithLabel:v4 domain:501];
+  labelCopy = label;
+  v5 = [[v3 alloc] initWithLabel:labelCopy domain:501];
 
   return v5;
 }
 
-+ (id)_localizationKeyForPOINode:(id)a3
++ (id)_localizationKeyForPOINode:(id)node
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 label];
-  v5 = localizationKeyForPOILabel(v4);
+  nodeCopy = node;
+  label = [nodeCopy label];
+  v5 = localizationKeyForPOILabel(label);
   if (!v5)
   {
     v6 = +[PGLogging sharedLogging];
-    v7 = [v6 loggingConnection];
+    loggingConnection = [v6 loggingConnection];
 
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412290;
-      v11 = v3;
-      _os_log_error_impl(&dword_22F0FC000, v7, OS_LOG_TYPE_ERROR, "Trying to localize node with unsupported label/domain: %@", &v10, 0xCu);
+      v11 = nodeCopy;
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Trying to localize node with unsupported label/domain: %@", &v10, 0xCu);
     }
   }
 

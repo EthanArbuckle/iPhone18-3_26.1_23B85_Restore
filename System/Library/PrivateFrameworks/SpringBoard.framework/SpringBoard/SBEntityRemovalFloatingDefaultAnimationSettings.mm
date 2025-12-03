@@ -12,11 +12,11 @@
   v3 = SBEntityRemovalDefaultFluidAnimationSettings();
   [(SBEntityRemovalMedusaDefaultAnimationSettings *)self setToBeRemovedScaleAnimationSettings:v3];
 
-  v4 = [(SBEntityRemovalMedusaDefaultAnimationSettings *)self toBeRemovedScaleAnimationSettings];
-  [v4 setResponse:0.550000012];
+  toBeRemovedScaleAnimationSettings = [(SBEntityRemovalMedusaDefaultAnimationSettings *)self toBeRemovedScaleAnimationSettings];
+  [toBeRemovedScaleAnimationSettings setResponse:0.550000012];
 
-  v5 = [(SBEntityRemovalMedusaDefaultAnimationSettings *)self toBeRemovedAlphaAnimationSettings];
-  [v5 setResponse:0.550000012];
+  toBeRemovedAlphaAnimationSettings = [(SBEntityRemovalMedusaDefaultAnimationSettings *)self toBeRemovedAlphaAnimationSettings];
+  [toBeRemovedAlphaAnimationSettings setResponse:0.550000012];
 
   v6 = SBEntityRemovalDefaultFluidAnimationSettings();
   [(SBEntityRemovalMedusaDefaultAnimationSettings *)self setToBeRemovedAlphaAnimationSettings:v6];

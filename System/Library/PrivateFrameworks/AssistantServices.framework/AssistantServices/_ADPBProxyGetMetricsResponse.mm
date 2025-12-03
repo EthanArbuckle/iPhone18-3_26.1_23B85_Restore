@@ -1,125 +1,125 @@
 @interface _ADPBProxyGetMetricsResponse
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
 - (SiriCoreConnectionMetrics)_ad_metrics;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)_ad_setMetrics:(id)a3;
-- (void)addTcpInfoMetrics:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAttemptCount:(BOOL)a3;
-- (void)setHasConnectedSubflowCount:(BOOL)a3;
-- (void)setHasConnectionFallbackReason:(BOOL)a3;
-- (void)setHasMetricsCount:(BOOL)a3;
-- (void)setHasOpenInterval:(BOOL)a3;
-- (void)setHasPingCount:(BOOL)a3;
-- (void)setHasPingMean:(BOOL)a3;
-- (void)setHasPrimarySubflowSwitchCount:(BOOL)a3;
-- (void)setHasRttBest:(BOOL)a3;
-- (void)setHasRttCurrent:(BOOL)a3;
-- (void)setHasRttSmoothed:(BOOL)a3;
-- (void)setHasRttVariance:(BOOL)a3;
-- (void)setHasRxBytes:(BOOL)a3;
-- (void)setHasRxDuplicateBytes:(BOOL)a3;
-- (void)setHasRxOooBytes:(BOOL)a3;
-- (void)setHasRxPackets:(BOOL)a3;
-- (void)setHasSndBandwidth:(BOOL)a3;
-- (void)setHasSubflowCount:(BOOL)a3;
-- (void)setHasSynRetransmits:(BOOL)a3;
-- (void)setHasTuscanyConnectionDelay:(BOOL)a3;
-- (void)setHasTxBytes:(BOOL)a3;
-- (void)setHasTxPackets:(BOOL)a3;
-- (void)setHasTxRetransmitBytes:(BOOL)a3;
-- (void)setHasTxUnacked:(BOOL)a3;
-- (void)setHasUnacknowledgedPingCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)_ad_setMetrics:(id)metrics;
+- (void)addTcpInfoMetrics:(id)metrics;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAttemptCount:(BOOL)count;
+- (void)setHasConnectedSubflowCount:(BOOL)count;
+- (void)setHasConnectionFallbackReason:(BOOL)reason;
+- (void)setHasMetricsCount:(BOOL)count;
+- (void)setHasOpenInterval:(BOOL)interval;
+- (void)setHasPingCount:(BOOL)count;
+- (void)setHasPingMean:(BOOL)mean;
+- (void)setHasPrimarySubflowSwitchCount:(BOOL)count;
+- (void)setHasRttBest:(BOOL)best;
+- (void)setHasRttCurrent:(BOOL)current;
+- (void)setHasRttSmoothed:(BOOL)smoothed;
+- (void)setHasRttVariance:(BOOL)variance;
+- (void)setHasRxBytes:(BOOL)bytes;
+- (void)setHasRxDuplicateBytes:(BOOL)bytes;
+- (void)setHasRxOooBytes:(BOOL)bytes;
+- (void)setHasRxPackets:(BOOL)packets;
+- (void)setHasSndBandwidth:(BOOL)bandwidth;
+- (void)setHasSubflowCount:(BOOL)count;
+- (void)setHasSynRetransmits:(BOOL)retransmits;
+- (void)setHasTuscanyConnectionDelay:(BOOL)delay;
+- (void)setHasTxBytes:(BOOL)bytes;
+- (void)setHasTxPackets:(BOOL)packets;
+- (void)setHasTxRetransmitBytes:(BOOL)bytes;
+- (void)setHasTxUnacked:(BOOL)unacked;
+- (void)setHasUnacknowledgedPingCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _ADPBProxyGetMetricsResponse
 
-- (void)_ad_setMetrics:(id)a3
+- (void)_ad_setMetrics:(id)metrics
 {
-  v4 = a3;
-  v5 = [v4 timeUntilOpen];
-  v6 = v5;
-  if (v5)
+  metricsCopy = metrics;
+  timeUntilOpen = [metricsCopy timeUntilOpen];
+  v6 = timeUntilOpen;
+  if (timeUntilOpen)
   {
-    [v5 doubleValue];
+    [timeUntilOpen doubleValue];
     [(_ADPBProxyGetMetricsResponse *)self setOpenInterval:?];
   }
 
-  v7 = [v4 timeUntilFirstByteRead];
-  v8 = v7;
-  if (v7)
+  timeUntilFirstByteRead = [metricsCopy timeUntilFirstByteRead];
+  v8 = timeUntilFirstByteRead;
+  if (timeUntilFirstByteRead)
   {
-    [v7 doubleValue];
+    [timeUntilFirstByteRead doubleValue];
     [(_ADPBProxyGetMetricsResponse *)self setFirstByteReadInterval:?];
   }
 
-  v9 = [v4 attemptCount];
-  v10 = v9;
-  if (v9)
+  attemptCount = [metricsCopy attemptCount];
+  v10 = attemptCount;
+  if (attemptCount)
   {
-    -[_ADPBProxyGetMetricsResponse setAttemptCount:](self, "setAttemptCount:", [v9 intValue]);
+    -[_ADPBProxyGetMetricsResponse setAttemptCount:](self, "setAttemptCount:", [attemptCount intValue]);
   }
 
-  v11 = [v4 metricsCount];
-  v12 = v11;
-  if (v11)
+  metricsCount = [metricsCopy metricsCount];
+  v12 = metricsCount;
+  if (metricsCount)
   {
-    -[_ADPBProxyGetMetricsResponse setMetricsCount:](self, "setMetricsCount:", [v11 intValue]);
+    -[_ADPBProxyGetMetricsResponse setMetricsCount:](self, "setMetricsCount:", [metricsCount intValue]);
   }
 
-  v13 = [v4 pingCount];
-  v14 = v13;
-  if (v13)
+  pingCount = [metricsCopy pingCount];
+  v14 = pingCount;
+  if (pingCount)
   {
-    -[_ADPBProxyGetMetricsResponse setPingCount:](self, "setPingCount:", [v13 intValue]);
+    -[_ADPBProxyGetMetricsResponse setPingCount:](self, "setPingCount:", [pingCount intValue]);
   }
 
-  v15 = [v4 meanPing];
-  v16 = v15;
-  if (v15)
+  meanPing = [metricsCopy meanPing];
+  v16 = meanPing;
+  if (meanPing)
   {
-    [v15 doubleValue];
+    [meanPing doubleValue];
     [(_ADPBProxyGetMetricsResponse *)self setPingMean:?];
   }
 
-  v17 = [v4 unacknowledgedPingCount];
-  v18 = v17;
-  if (v17)
+  unacknowledgedPingCount = [metricsCopy unacknowledgedPingCount];
+  v18 = unacknowledgedPingCount;
+  if (unacknowledgedPingCount)
   {
-    -[_ADPBProxyGetMetricsResponse setUnacknowledgedPingCount:](self, "setUnacknowledgedPingCount:", [v17 intValue]);
+    -[_ADPBProxyGetMetricsResponse setUnacknowledgedPingCount:](self, "setUnacknowledgedPingCount:", [unacknowledgedPingCount intValue]);
   }
 
-  v19 = [v4 subflowCount];
-  v20 = v19;
-  if (v19)
+  subflowCount = [metricsCopy subflowCount];
+  v20 = subflowCount;
+  if (subflowCount)
   {
-    -[_ADPBProxyGetMetricsResponse setSubflowCount:](self, "setSubflowCount:", [v19 intValue]);
+    -[_ADPBProxyGetMetricsResponse setSubflowCount:](self, "setSubflowCount:", [subflowCount intValue]);
   }
 
-  v21 = [v4 connectedSubflowCount];
-  v22 = v21;
-  if (v21)
+  connectedSubflowCount = [metricsCopy connectedSubflowCount];
+  v22 = connectedSubflowCount;
+  if (connectedSubflowCount)
   {
-    -[_ADPBProxyGetMetricsResponse setConnectedSubflowCount:](self, "setConnectedSubflowCount:", [v21 intValue]);
+    -[_ADPBProxyGetMetricsResponse setConnectedSubflowCount:](self, "setConnectedSubflowCount:", [connectedSubflowCount intValue]);
   }
 
-  v23 = [v4 primarySubflowInterfaceName];
-  if (v23)
+  primarySubflowInterfaceName = [metricsCopy primarySubflowInterfaceName];
+  if (primarySubflowInterfaceName)
   {
-    [(_ADPBProxyGetMetricsResponse *)self setPrimarySubflowIface:v23];
+    [(_ADPBProxyGetMetricsResponse *)self setPrimarySubflowIface:primarySubflowInterfaceName];
   }
 
-  v24 = [v4 primarySubflowInterfaceName];
-  if (v24)
+  primarySubflowInterfaceName2 = [metricsCopy primarySubflowInterfaceName];
+  if (primarySubflowInterfaceName2)
   {
-    v25 = [v4 subflowSwitchCounts];
-    v26 = [v25 objectForKeyedSubscript:v24];
+    subflowSwitchCounts = [metricsCopy subflowSwitchCounts];
+    v26 = [subflowSwitchCounts objectForKeyedSubscript:primarySubflowInterfaceName2];
 
     if (v26)
     {
@@ -127,122 +127,122 @@
     }
   }
 
-  v27 = [v4 tcpInfoMetricsByInterfaceName];
+  tcpInfoMetricsByInterfaceName = [metricsCopy tcpInfoMetricsByInterfaceName];
   v72[0] = _NSConcreteStackBlock;
   v72[1] = 3221225472;
   v72[2] = sub_1001922DC;
   v72[3] = &unk_100514550;
   v72[4] = self;
-  [v27 enumerateKeysAndObjectsUsingBlock:v72];
-  if ([v27 count] == 1)
+  [tcpInfoMetricsByInterfaceName enumerateKeysAndObjectsUsingBlock:v72];
+  if ([tcpInfoMetricsByInterfaceName count] == 1)
   {
-    v28 = [v27 allValues];
-    v29 = [v28 firstObject];
+    allValues = [tcpInfoMetricsByInterfaceName allValues];
+    firstObject = [allValues firstObject];
 
-    v30 = v29;
-    v31 = self;
-    v32 = v31;
+    v30 = firstObject;
+    selfCopy = self;
+    v32 = selfCopy;
     if (v30)
     {
-      if (v31)
+      if (selfCopy)
       {
 LABEL_28:
-        v33 = [v30 rttCurrent];
-        v34 = v33;
-        if (v33)
+        rttCurrent = [v30 rttCurrent];
+        v34 = rttCurrent;
+        if (rttCurrent)
         {
-          -[_ADPBProxyGetMetricsResponse setRttCurrent:](v32, "setRttCurrent:", [v33 unsignedIntValue]);
+          -[_ADPBProxyGetMetricsResponse setRttCurrent:](v32, "setRttCurrent:", [rttCurrent unsignedIntValue]);
         }
 
-        v35 = [v30 rttSmoothed];
-        v36 = v35;
-        if (v35)
+        rttSmoothed = [v30 rttSmoothed];
+        v36 = rttSmoothed;
+        if (rttSmoothed)
         {
-          -[_ADPBProxyGetMetricsResponse setRttSmoothed:](v32, "setRttSmoothed:", [v35 unsignedIntValue]);
+          -[_ADPBProxyGetMetricsResponse setRttSmoothed:](v32, "setRttSmoothed:", [rttSmoothed unsignedIntValue]);
         }
 
-        v37 = [v30 rttVariance];
-        v38 = v37;
-        if (v37)
+        rttVariance = [v30 rttVariance];
+        v38 = rttVariance;
+        if (rttVariance)
         {
-          -[_ADPBProxyGetMetricsResponse setRttVariance:](v32, "setRttVariance:", [v37 unsignedIntValue]);
+          -[_ADPBProxyGetMetricsResponse setRttVariance:](v32, "setRttVariance:", [rttVariance unsignedIntValue]);
         }
 
-        v39 = [v30 rttBest];
-        v40 = v39;
-        if (v39)
+        rttBest = [v30 rttBest];
+        v40 = rttBest;
+        if (rttBest)
         {
-          -[_ADPBProxyGetMetricsResponse setRttBest:](v32, "setRttBest:", [v39 unsignedIntValue]);
+          -[_ADPBProxyGetMetricsResponse setRttBest:](v32, "setRttBest:", [rttBest unsignedIntValue]);
         }
 
-        v41 = [v30 packetsSent];
-        v42 = v41;
-        if (v41)
+        packetsSent = [v30 packetsSent];
+        v42 = packetsSent;
+        if (packetsSent)
         {
-          -[_ADPBProxyGetMetricsResponse setTxPackets:](v32, "setTxPackets:", [v41 unsignedLongLongValue]);
+          -[_ADPBProxyGetMetricsResponse setTxPackets:](v32, "setTxPackets:", [packetsSent unsignedLongLongValue]);
         }
 
-        v43 = [v30 bytesSent];
-        v44 = v43;
-        if (v43)
+        bytesSent = [v30 bytesSent];
+        v44 = bytesSent;
+        if (bytesSent)
         {
-          -[_ADPBProxyGetMetricsResponse setTxBytes:](v32, "setTxBytes:", [v43 unsignedLongLongValue]);
+          -[_ADPBProxyGetMetricsResponse setTxBytes:](v32, "setTxBytes:", [bytesSent unsignedLongLongValue]);
         }
 
-        v45 = [v30 bytesRetransmitted];
-        v46 = v45;
-        if (v45)
+        bytesRetransmitted = [v30 bytesRetransmitted];
+        v46 = bytesRetransmitted;
+        if (bytesRetransmitted)
         {
-          -[_ADPBProxyGetMetricsResponse setTxRetransmitBytes:](v32, "setTxRetransmitBytes:", [v45 unsignedLongLongValue]);
+          -[_ADPBProxyGetMetricsResponse setTxRetransmitBytes:](v32, "setTxRetransmitBytes:", [bytesRetransmitted unsignedLongLongValue]);
         }
 
-        v47 = [v30 bytesUnacked];
-        v48 = v47;
-        if (v47)
+        bytesUnacked = [v30 bytesUnacked];
+        v48 = bytesUnacked;
+        if (bytesUnacked)
         {
-          -[_ADPBProxyGetMetricsResponse setTxUnacked:](v32, "setTxUnacked:", [v47 unsignedLongLongValue]);
+          -[_ADPBProxyGetMetricsResponse setTxUnacked:](v32, "setTxUnacked:", [bytesUnacked unsignedLongLongValue]);
         }
 
-        v49 = [v30 packetsReceived];
-        v50 = v49;
-        if (v49)
+        packetsReceived = [v30 packetsReceived];
+        v50 = packetsReceived;
+        if (packetsReceived)
         {
-          -[_ADPBProxyGetMetricsResponse setRxPackets:](v32, "setRxPackets:", [v49 unsignedLongLongValue]);
+          -[_ADPBProxyGetMetricsResponse setRxPackets:](v32, "setRxPackets:", [packetsReceived unsignedLongLongValue]);
         }
 
-        v51 = [v30 bytesReceived];
-        v52 = v51;
-        if (v51)
+        bytesReceived = [v30 bytesReceived];
+        v52 = bytesReceived;
+        if (bytesReceived)
         {
-          -[_ADPBProxyGetMetricsResponse setRxBytes:](v32, "setRxBytes:", [v51 unsignedLongLongValue]);
+          -[_ADPBProxyGetMetricsResponse setRxBytes:](v32, "setRxBytes:", [bytesReceived unsignedLongLongValue]);
         }
 
-        v53 = [v30 duplicateBytesReceived];
-        v54 = v53;
-        if (v53)
+        duplicateBytesReceived = [v30 duplicateBytesReceived];
+        v54 = duplicateBytesReceived;
+        if (duplicateBytesReceived)
         {
-          -[_ADPBProxyGetMetricsResponse setRxDuplicateBytes:](v32, "setRxDuplicateBytes:", [v53 unsignedLongLongValue]);
+          -[_ADPBProxyGetMetricsResponse setRxDuplicateBytes:](v32, "setRxDuplicateBytes:", [duplicateBytesReceived unsignedLongLongValue]);
         }
 
-        v55 = [v30 outOfOrderBytesReceived];
-        v56 = v55;
-        if (v55)
+        outOfOrderBytesReceived = [v30 outOfOrderBytesReceived];
+        v56 = outOfOrderBytesReceived;
+        if (outOfOrderBytesReceived)
         {
-          -[_ADPBProxyGetMetricsResponse setRxOooBytes:](v32, "setRxOooBytes:", [v55 unsignedLongLongValue]);
+          -[_ADPBProxyGetMetricsResponse setRxOooBytes:](v32, "setRxOooBytes:", [outOfOrderBytesReceived unsignedLongLongValue]);
         }
 
-        v57 = [v30 sendBandwidth];
-        v58 = v57;
-        if (v57)
+        sendBandwidth = [v30 sendBandwidth];
+        v58 = sendBandwidth;
+        if (sendBandwidth)
         {
-          -[_ADPBProxyGetMetricsResponse setSndBandwidth:](v32, "setSndBandwidth:", [v57 unsignedLongLongValue]);
+          -[_ADPBProxyGetMetricsResponse setSndBandwidth:](v32, "setSndBandwidth:", [sendBandwidth unsignedLongLongValue]);
         }
 
-        v59 = [v30 synRetransmits];
-        v60 = v59;
-        if (v59)
+        synRetransmits = [v30 synRetransmits];
+        v60 = synRetransmits;
+        if (synRetransmits)
         {
-          -[_ADPBProxyGetMetricsResponse setSynRetransmits:](v32, "setSynRetransmits:", [v59 unsignedIntValue]);
+          -[_ADPBProxyGetMetricsResponse setSynRetransmits:](v32, "setSynRetransmits:", [synRetransmits unsignedIntValue]);
         }
 
         goto LABEL_57;
@@ -269,36 +269,36 @@ LABEL_28:
   }
 
 LABEL_57:
-  v61 = [v4 connectionMethod];
-  if (v61)
+  connectionMethod = [metricsCopy connectionMethod];
+  if (connectionMethod)
   {
-    [(_ADPBProxyGetMetricsResponse *)self setConnectionMethodName:v61];
+    [(_ADPBProxyGetMetricsResponse *)self setConnectionMethodName:connectionMethod];
   }
 
-  v62 = [v4 connectionEdgeType];
-  if (v62)
+  connectionEdgeType = [metricsCopy connectionEdgeType];
+  if (connectionEdgeType)
   {
-    [(_ADPBProxyGetMetricsResponse *)self setConnectionEdgeType:v62];
+    [(_ADPBProxyGetMetricsResponse *)self setConnectionEdgeType:connectionEdgeType];
   }
 
-  v63 = [v4 connectionEdgeID];
-  if (v63)
+  connectionEdgeID = [metricsCopy connectionEdgeID];
+  if (connectionEdgeID)
   {
-    [(_ADPBProxyGetMetricsResponse *)self setConnectionEdgeIDName:v63];
+    [(_ADPBProxyGetMetricsResponse *)self setConnectionEdgeIDName:connectionEdgeID];
   }
 
-  v64 = [v4 connectionFallbackReason];
-  v65 = v64;
-  if (v64)
+  connectionFallbackReason = [metricsCopy connectionFallbackReason];
+  v65 = connectionFallbackReason;
+  if (connectionFallbackReason)
   {
-    -[_ADPBProxyGetMetricsResponse setHasConnectionFallbackReason:](self, "setHasConnectionFallbackReason:", [v64 intValue] != 0);
+    -[_ADPBProxyGetMetricsResponse setHasConnectionFallbackReason:](self, "setHasConnectionFallbackReason:", [connectionFallbackReason intValue] != 0);
   }
 
-  v66 = [v4 connectionDelay];
-  v67 = v66;
-  if (v66)
+  connectionDelay = [metricsCopy connectionDelay];
+  v67 = connectionDelay;
+  if (connectionDelay)
   {
-    [v66 doubleValue];
+    [connectionDelay doubleValue];
     [(_ADPBProxyGetMetricsResponse *)self setTuscanyConnectionDelay:?];
   }
 }
@@ -380,8 +380,8 @@ LABEL_57:
 
   if ([(_ADPBProxyGetMetricsResponse *)self hasPrimarySubflowIface])
   {
-    v13 = [(_ADPBProxyGetMetricsResponse *)self primarySubflowIface];
-    [v3 setPrimarySubflowInterfaceName:v13];
+    primarySubflowIface = [(_ADPBProxyGetMetricsResponse *)self primarySubflowIface];
+    [v3 setPrimarySubflowInterfaceName:primarySubflowIface];
   }
 
   if ([(_ADPBProxyGetMetricsResponse *)self hasPrimarySubflowSwitchCount])
@@ -395,20 +395,20 @@ LABEL_57:
 
   if ([(_ADPBProxyGetMetricsResponse *)self hasConnectionMethodName])
   {
-    v16 = [(_ADPBProxyGetMetricsResponse *)self connectionMethodName];
-    [v3 setConnectionMethod:v16];
+    connectionMethodName = [(_ADPBProxyGetMetricsResponse *)self connectionMethodName];
+    [v3 setConnectionMethod:connectionMethodName];
   }
 
   if ([(_ADPBProxyGetMetricsResponse *)self hasConnectionEdgeType])
   {
-    v17 = [(_ADPBProxyGetMetricsResponse *)self connectionEdgeType];
-    [v3 setConnectionEdgeType:v17];
+    connectionEdgeType = [(_ADPBProxyGetMetricsResponse *)self connectionEdgeType];
+    [v3 setConnectionEdgeType:connectionEdgeType];
   }
 
   if ([(_ADPBProxyGetMetricsResponse *)self hasConnectionEdgeIDName])
   {
-    v18 = [(_ADPBProxyGetMetricsResponse *)self connectionEdgeIDName];
-    [v3 setConnectionEdgeID:v18];
+    connectionEdgeIDName = [(_ADPBProxyGetMetricsResponse *)self connectionEdgeIDName];
+    [v3 setConnectionEdgeID:connectionEdgeIDName];
   }
 
   if ([(_ADPBProxyGetMetricsResponse *)self hasConnectionFallbackReason])
@@ -424,16 +424,16 @@ LABEL_57:
     [v3 setConnectionDelay:v20];
   }
 
-  v21 = [(_ADPBProxyGetMetricsResponse *)self tcpInfoMetricsCount];
+  tcpInfoMetricsCount = [(_ADPBProxyGetMetricsResponse *)self tcpInfoMetricsCount];
   v57 = v3;
-  if (v21)
+  if (tcpInfoMetricsCount)
   {
-    v22 = v21;
-    v23 = [[NSMutableDictionary alloc] initWithCapacity:v21];
+    v22 = tcpInfoMetricsCount;
+    v23 = [[NSMutableDictionary alloc] initWithCapacity:tcpInfoMetricsCount];
     v24 = 0;
     v25 = &CRCopyCountryCode_ptr;
     v58 = v22;
-    v59 = self;
+    selfCopy = self;
     while (1)
     {
       v79 = v24;
@@ -448,19 +448,19 @@ LABEL_57:
       }
 
       v69 = [SiriCoreConnectionTCPInfoMetrics alloc];
-      v77 = [v26 hasInterfaceName];
-      if (v77)
+      hasInterfaceName = [v26 hasInterfaceName];
+      if (hasInterfaceName)
       {
-        v104 = [v26 interfaceName];
+        interfaceName = [v26 interfaceName];
       }
 
       else
       {
-        v104 = 0;
+        interfaceName = 0;
       }
 
-      v75 = [v26 hasRttCurrent];
-      if (v75)
+      hasRttCurrent = [v26 hasRttCurrent];
+      if (hasRttCurrent)
       {
         v102 = [v25[394] numberWithUnsignedInt:{objc_msgSend(v26, "rttCurrent")}];
       }
@@ -470,8 +470,8 @@ LABEL_57:
         v102 = 0;
       }
 
-      v73 = [v26 hasRttSmoothed];
-      if (v73)
+      hasRttSmoothed = [v26 hasRttSmoothed];
+      if (hasRttSmoothed)
       {
         v100 = [v25[394] numberWithUnsignedInt:{objc_msgSend(v26, "rttSmoothed")}];
       }
@@ -481,8 +481,8 @@ LABEL_57:
         v100 = 0;
       }
 
-      v71 = [v26 hasRttVariance];
-      if (v71)
+      hasRttVariance = [v26 hasRttVariance];
+      if (hasRttVariance)
       {
         v98 = [v25[394] numberWithUnsignedInt:{objc_msgSend(v26, "rttVariance")}];
       }
@@ -492,8 +492,8 @@ LABEL_57:
         v98 = 0;
       }
 
-      v67 = [v26 hasRttBest];
-      if (v67)
+      hasRttBest = [v26 hasRttBest];
+      if (hasRttBest)
       {
         v96 = [v25[394] numberWithUnsignedInt:{objc_msgSend(v26, "rttBest")}];
       }
@@ -503,8 +503,8 @@ LABEL_57:
         v96 = 0;
       }
 
-      v66 = [v26 hasTxPackets];
-      if (v66)
+      hasTxPackets = [v26 hasTxPackets];
+      if (hasTxPackets)
       {
         v94 = [v25[394] numberWithUnsignedLongLong:{objc_msgSend(v26, "txPackets")}];
       }
@@ -514,8 +514,8 @@ LABEL_57:
         v94 = 0;
       }
 
-      v65 = [v26 hasTxBytes];
-      if (v65)
+      hasTxBytes = [v26 hasTxBytes];
+      if (hasTxBytes)
       {
         v92 = [v25[394] numberWithUnsignedLongLong:{objc_msgSend(v26, "txBytes")}];
       }
@@ -525,8 +525,8 @@ LABEL_57:
         v92 = 0;
       }
 
-      v64 = [v26 hasTxRetransmitBytes];
-      if (v64)
+      hasTxRetransmitBytes = [v26 hasTxRetransmitBytes];
+      if (hasTxRetransmitBytes)
       {
         v90 = [v25[394] numberWithUnsignedLongLong:{objc_msgSend(v26, "txRetransmitBytes")}];
       }
@@ -536,8 +536,8 @@ LABEL_57:
         v90 = 0;
       }
 
-      v63 = [v26 hasTxUnacked];
-      if (v63)
+      hasTxUnacked = [v26 hasTxUnacked];
+      if (hasTxUnacked)
       {
         v88 = [v25[394] numberWithUnsignedLongLong:{objc_msgSend(v26, "txUnacked")}];
       }
@@ -547,8 +547,8 @@ LABEL_57:
         v88 = 0;
       }
 
-      v62 = [v26 hasRxPackets];
-      if (v62)
+      hasRxPackets = [v26 hasRxPackets];
+      if (hasRxPackets)
       {
         v85 = [v25[394] numberWithUnsignedLongLong:{objc_msgSend(v26, "rxPackets")}];
       }
@@ -558,8 +558,8 @@ LABEL_57:
         v85 = 0;
       }
 
-      v61 = [v26 hasRxBytes];
-      if (v61)
+      hasRxBytes = [v26 hasRxBytes];
+      if (hasRxBytes)
       {
         v83 = [v25[394] numberWithUnsignedLongLong:{objc_msgSend(v26, "rxBytes")}];
       }
@@ -569,8 +569,8 @@ LABEL_57:
         v83 = 0;
       }
 
-      v60 = [v26 hasRxDuplicateBytes];
-      if (v60)
+      hasRxDuplicateBytes = [v26 hasRxDuplicateBytes];
+      if (hasRxDuplicateBytes)
       {
         v81 = [v25[394] numberWithUnsignedLongLong:{objc_msgSend(v26, "rxDuplicateBytes")}];
       }
@@ -580,8 +580,8 @@ LABEL_57:
         v81 = 0;
       }
 
-      v27 = [v26 hasRxOooBytes];
-      if (v27)
+      hasRxOooBytes = [v26 hasRxOooBytes];
+      if (hasRxOooBytes)
       {
         v28 = [v25[394] numberWithUnsignedLongLong:{objc_msgSend(v26, "rxOooBytes")}];
       }
@@ -591,8 +591,8 @@ LABEL_57:
         v28 = 0;
       }
 
-      v29 = [v26 hasSndBandwidth];
-      if (v29)
+      hasSndBandwidth = [v26 hasSndBandwidth];
+      if (hasSndBandwidth)
       {
         v30 = [v25[394] numberWithUnsignedLongLong:{objc_msgSend(v26, "sndBandwidth")}];
       }
@@ -602,8 +602,8 @@ LABEL_57:
         v30 = 0;
       }
 
-      v31 = [v26 hasSynRetransmits];
-      if (v31)
+      hasSynRetransmits = [v26 hasSynRetransmits];
+      if (hasSynRetransmits)
       {
         v32 = [v25[394] numberWithUnsignedInt:{objc_msgSend(v26, "synRetransmits")}];
       }
@@ -620,75 +620,75 @@ LABEL_57:
 
       [v25[394] numberWithUnsignedInt:{objc_msgSend(v26, "tfoSynDataAcked")}];
       v34 = v33 = v23;
-      v35 = [v69 initWithInterfaceName:v104 rttCurrent:v102 rttSmoothed:v100 rttVariance:v98 rttBest:v96 packetsSent:v94 bytesSent:v92 bytesRetransmitted:v90 bytesUnacked:v88 packetsReceived:v85 bytesReceived:v83 duplicateBytesReceived:v81 outOfOrderBytesReceived:v28 sendBufferBytes:0 sendBandwidth:v30 synRetransmits:v32 tfoSynDataAcked:v34];
+      v35 = [v69 initWithInterfaceName:interfaceName rttCurrent:v102 rttSmoothed:v100 rttVariance:v98 rttBest:v96 packetsSent:v94 bytesSent:v92 bytesRetransmitted:v90 bytesUnacked:v88 packetsReceived:v85 bytesReceived:v83 duplicateBytesReceived:v81 outOfOrderBytesReceived:v28 sendBufferBytes:0 sendBandwidth:v30 synRetransmits:v32 tfoSynDataAcked:v34];
 
       v23 = v33;
       v22 = v58;
-      if (v31)
+      if (hasSynRetransmits)
       {
         goto LABEL_87;
       }
 
 LABEL_88:
-      if (v29)
+      if (hasSndBandwidth)
       {
       }
 
-      self = v59;
-      if (v27)
+      self = selfCopy;
+      if (hasRxOooBytes)
       {
       }
 
-      if (v60)
+      if (hasRxDuplicateBytes)
       {
       }
 
-      if (v61)
+      if (hasRxBytes)
       {
       }
 
-      if (v62)
+      if (hasRxPackets)
       {
       }
 
-      if (v63)
+      if (hasTxUnacked)
       {
       }
 
-      if (v64)
+      if (hasTxRetransmitBytes)
       {
       }
 
-      if (v65)
+      if (hasTxBytes)
       {
       }
 
-      if (v66)
+      if (hasTxPackets)
       {
       }
 
-      if (v67)
+      if (hasRttBest)
       {
       }
 
-      if (v71)
+      if (hasRttVariance)
       {
       }
 
-      if (v73)
+      if (hasRttSmoothed)
       {
       }
 
-      if (v75)
+      if (hasRttCurrent)
       {
       }
 
-      if (v77)
+      if (hasInterfaceName)
       {
       }
 
-      v36 = [v35 interfaceName];
-      [v23 setObject:v35 forKey:v36];
+      interfaceName2 = [v35 interfaceName];
+      [v23 setObject:v35 forKey:interfaceName2];
 
       v24 = v79 + 1;
       v25 = &CRCopyCountryCode_ptr;
@@ -701,8 +701,8 @@ LABEL_88:
       }
     }
 
-    v35 = [v69 initWithInterfaceName:v104 rttCurrent:v102 rttSmoothed:v100 rttVariance:v98 rttBest:v96 packetsSent:v94 bytesSent:v92 bytesRetransmitted:v90 bytesUnacked:v88 packetsReceived:v85 bytesReceived:v83 duplicateBytesReceived:v81 outOfOrderBytesReceived:v28 sendBufferBytes:0 sendBandwidth:v30 synRetransmits:v32 tfoSynDataAcked:0];
-    if (!v31)
+    v35 = [v69 initWithInterfaceName:interfaceName rttCurrent:v102 rttSmoothed:v100 rttVariance:v98 rttBest:v96 packetsSent:v94 bytesSent:v92 bytesRetransmitted:v90 bytesUnacked:v88 packetsReceived:v85 bytesReceived:v83 duplicateBytesReceived:v81 outOfOrderBytesReceived:v28 sendBufferBytes:0 sendBandwidth:v30 synRetransmits:v32 tfoSynDataAcked:0];
+    if (!hasSynRetransmits)
     {
       goto LABEL_88;
     }
@@ -712,15 +712,15 @@ LABEL_87:
     goto LABEL_88;
   }
 
-  v40 = self;
-  if (!v40)
+  selfCopy2 = self;
+  if (!selfCopy2)
   {
     v55 = +[NSAssertionHandler currentHandler];
     v56 = [NSString stringWithUTF8String:"SiriCoreConnectionTCPInfoMetrics *ADConnectionTCPInfoMetricsCreateWithLegacyProtocolBufferProxy(_ADPBProxyGetMetricsResponse *__strong)"];
     [v55 handleFailureInFunction:v56 file:@"ADConnectionTCPInfoMetricsUtilities.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"legacyProtocolBufferProxy != nil"}];
   }
 
-  if (![(_ADPBProxyGetMetricsResponse *)v40 hasRttCurrent]&& ![(_ADPBProxyGetMetricsResponse *)v40 hasRttSmoothed]&& ![(_ADPBProxyGetMetricsResponse *)v40 hasRttVariance]&& ![(_ADPBProxyGetMetricsResponse *)v40 hasRttBest]&& ![(_ADPBProxyGetMetricsResponse *)v40 hasTxPackets]&& ![(_ADPBProxyGetMetricsResponse *)v40 hasTxBytes]&& ![(_ADPBProxyGetMetricsResponse *)v40 hasTxRetransmitBytes]&& ![(_ADPBProxyGetMetricsResponse *)v40 hasTxUnacked]&& ![(_ADPBProxyGetMetricsResponse *)v40 hasRxPackets]&& ![(_ADPBProxyGetMetricsResponse *)v40 hasRxBytes]&& ![(_ADPBProxyGetMetricsResponse *)v40 hasRxDuplicateBytes]&& ![(_ADPBProxyGetMetricsResponse *)v40 hasRxOooBytes]&& ![(_ADPBProxyGetMetricsResponse *)v40 hasSndBandwidth]&& ![(_ADPBProxyGetMetricsResponse *)v40 hasSynRetransmits])
+  if (![(_ADPBProxyGetMetricsResponse *)selfCopy2 hasRttCurrent]&& ![(_ADPBProxyGetMetricsResponse *)selfCopy2 hasRttSmoothed]&& ![(_ADPBProxyGetMetricsResponse *)selfCopy2 hasRttVariance]&& ![(_ADPBProxyGetMetricsResponse *)selfCopy2 hasRttBest]&& ![(_ADPBProxyGetMetricsResponse *)selfCopy2 hasTxPackets]&& ![(_ADPBProxyGetMetricsResponse *)selfCopy2 hasTxBytes]&& ![(_ADPBProxyGetMetricsResponse *)selfCopy2 hasTxRetransmitBytes]&& ![(_ADPBProxyGetMetricsResponse *)selfCopy2 hasTxUnacked]&& ![(_ADPBProxyGetMetricsResponse *)selfCopy2 hasRxPackets]&& ![(_ADPBProxyGetMetricsResponse *)selfCopy2 hasRxBytes]&& ![(_ADPBProxyGetMetricsResponse *)selfCopy2 hasRxDuplicateBytes]&& ![(_ADPBProxyGetMetricsResponse *)selfCopy2 hasRxOooBytes]&& ![(_ADPBProxyGetMetricsResponse *)selfCopy2 hasSndBandwidth]&& ![(_ADPBProxyGetMetricsResponse *)selfCopy2 hasSynRetransmits])
   {
 
     v39 = 0;
@@ -728,10 +728,10 @@ LABEL_87:
   }
 
   v86 = [SiriCoreConnectionTCPInfoMetrics alloc];
-  v41 = [(_ADPBProxyGetMetricsResponse *)v40 hasRttCurrent];
-  if (v41)
+  hasRttCurrent2 = [(_ADPBProxyGetMetricsResponse *)selfCopy2 hasRttCurrent];
+  if (hasRttCurrent2)
   {
-    v105 = [NSNumber numberWithUnsignedInt:[(_ADPBProxyGetMetricsResponse *)v40 rttCurrent]];
+    v105 = [NSNumber numberWithUnsignedInt:[(_ADPBProxyGetMetricsResponse *)selfCopy2 rttCurrent]];
   }
 
   else
@@ -739,10 +739,10 @@ LABEL_87:
     v105 = 0;
   }
 
-  v42 = [(_ADPBProxyGetMetricsResponse *)v40 hasRttSmoothed];
-  if (v42)
+  hasRttSmoothed2 = [(_ADPBProxyGetMetricsResponse *)selfCopy2 hasRttSmoothed];
+  if (hasRttSmoothed2)
   {
-    v43 = [NSNumber numberWithUnsignedInt:[(_ADPBProxyGetMetricsResponse *)v40 rttSmoothed]];
+    v43 = [NSNumber numberWithUnsignedInt:[(_ADPBProxyGetMetricsResponse *)selfCopy2 rttSmoothed]];
   }
 
   else
@@ -750,10 +750,10 @@ LABEL_87:
     v43 = 0;
   }
 
-  v44 = [(_ADPBProxyGetMetricsResponse *)v40 hasRttVariance];
-  if (v44)
+  hasRttVariance2 = [(_ADPBProxyGetMetricsResponse *)selfCopy2 hasRttVariance];
+  if (hasRttVariance2)
   {
-    v45 = [NSNumber numberWithUnsignedInt:[(_ADPBProxyGetMetricsResponse *)v40 rttVariance]];
+    v45 = [NSNumber numberWithUnsignedInt:[(_ADPBProxyGetMetricsResponse *)selfCopy2 rttVariance]];
   }
 
   else
@@ -761,10 +761,10 @@ LABEL_87:
     v45 = 0;
   }
 
-  v84 = [(_ADPBProxyGetMetricsResponse *)v40 hasRttBest];
-  if (v84)
+  hasRttBest2 = [(_ADPBProxyGetMetricsResponse *)selfCopy2 hasRttBest];
+  if (hasRttBest2)
   {
-    v103 = [NSNumber numberWithUnsignedInt:[(_ADPBProxyGetMetricsResponse *)v40 rttBest]];
+    v103 = [NSNumber numberWithUnsignedInt:[(_ADPBProxyGetMetricsResponse *)selfCopy2 rttBest]];
   }
 
   else
@@ -772,10 +772,10 @@ LABEL_87:
     v103 = 0;
   }
 
-  v82 = [(_ADPBProxyGetMetricsResponse *)v40 hasTxPackets];
-  if (v82)
+  hasTxPackets2 = [(_ADPBProxyGetMetricsResponse *)selfCopy2 hasTxPackets];
+  if (hasTxPackets2)
   {
-    v101 = [NSNumber numberWithUnsignedLongLong:[(_ADPBProxyGetMetricsResponse *)v40 txPackets]];
+    v101 = [NSNumber numberWithUnsignedLongLong:[(_ADPBProxyGetMetricsResponse *)selfCopy2 txPackets]];
   }
 
   else
@@ -783,10 +783,10 @@ LABEL_87:
     v101 = 0;
   }
 
-  v80 = [(_ADPBProxyGetMetricsResponse *)v40 hasTxBytes];
-  if (v80)
+  hasTxBytes2 = [(_ADPBProxyGetMetricsResponse *)selfCopy2 hasTxBytes];
+  if (hasTxBytes2)
   {
-    v99 = [NSNumber numberWithUnsignedLongLong:[(_ADPBProxyGetMetricsResponse *)v40 txBytes]];
+    v99 = [NSNumber numberWithUnsignedLongLong:[(_ADPBProxyGetMetricsResponse *)selfCopy2 txBytes]];
   }
 
   else
@@ -794,10 +794,10 @@ LABEL_87:
     v99 = 0;
   }
 
-  v78 = [(_ADPBProxyGetMetricsResponse *)v40 hasTxRetransmitBytes];
-  if (v78)
+  hasTxRetransmitBytes2 = [(_ADPBProxyGetMetricsResponse *)selfCopy2 hasTxRetransmitBytes];
+  if (hasTxRetransmitBytes2)
   {
-    v97 = [NSNumber numberWithUnsignedLongLong:[(_ADPBProxyGetMetricsResponse *)v40 txRetransmitBytes]];
+    v97 = [NSNumber numberWithUnsignedLongLong:[(_ADPBProxyGetMetricsResponse *)selfCopy2 txRetransmitBytes]];
   }
 
   else
@@ -805,10 +805,10 @@ LABEL_87:
     v97 = 0;
   }
 
-  v76 = [(_ADPBProxyGetMetricsResponse *)v40 hasTxUnacked];
-  if (v76)
+  hasTxUnacked2 = [(_ADPBProxyGetMetricsResponse *)selfCopy2 hasTxUnacked];
+  if (hasTxUnacked2)
   {
-    v95 = [NSNumber numberWithUnsignedLongLong:[(_ADPBProxyGetMetricsResponse *)v40 txUnacked]];
+    v95 = [NSNumber numberWithUnsignedLongLong:[(_ADPBProxyGetMetricsResponse *)selfCopy2 txUnacked]];
   }
 
   else
@@ -816,10 +816,10 @@ LABEL_87:
     v95 = 0;
   }
 
-  v74 = [(_ADPBProxyGetMetricsResponse *)v40 hasRxPackets];
-  if (v74)
+  hasRxPackets2 = [(_ADPBProxyGetMetricsResponse *)selfCopy2 hasRxPackets];
+  if (hasRxPackets2)
   {
-    v93 = [NSNumber numberWithUnsignedLongLong:[(_ADPBProxyGetMetricsResponse *)v40 rxPackets]];
+    v93 = [NSNumber numberWithUnsignedLongLong:[(_ADPBProxyGetMetricsResponse *)selfCopy2 rxPackets]];
   }
 
   else
@@ -827,10 +827,10 @@ LABEL_87:
     v93 = 0;
   }
 
-  v72 = [(_ADPBProxyGetMetricsResponse *)v40 hasRxBytes];
-  if (v72)
+  hasRxBytes2 = [(_ADPBProxyGetMetricsResponse *)selfCopy2 hasRxBytes];
+  if (hasRxBytes2)
   {
-    v91 = [NSNumber numberWithUnsignedLongLong:[(_ADPBProxyGetMetricsResponse *)v40 rxBytes]];
+    v91 = [NSNumber numberWithUnsignedLongLong:[(_ADPBProxyGetMetricsResponse *)selfCopy2 rxBytes]];
   }
 
   else
@@ -838,10 +838,10 @@ LABEL_87:
     v91 = 0;
   }
 
-  v70 = [(_ADPBProxyGetMetricsResponse *)v40 hasRxDuplicateBytes];
-  if (v70)
+  hasRxDuplicateBytes2 = [(_ADPBProxyGetMetricsResponse *)selfCopy2 hasRxDuplicateBytes];
+  if (hasRxDuplicateBytes2)
   {
-    v89 = [NSNumber numberWithUnsignedLongLong:[(_ADPBProxyGetMetricsResponse *)v40 rxDuplicateBytes]];
+    v89 = [NSNumber numberWithUnsignedLongLong:[(_ADPBProxyGetMetricsResponse *)selfCopy2 rxDuplicateBytes]];
   }
 
   else
@@ -849,10 +849,10 @@ LABEL_87:
     v89 = 0;
   }
 
-  v46 = [(_ADPBProxyGetMetricsResponse *)v40 hasRxOooBytes];
-  if (v46)
+  hasRxOooBytes2 = [(_ADPBProxyGetMetricsResponse *)selfCopy2 hasRxOooBytes];
+  if (hasRxOooBytes2)
   {
-    v47 = [NSNumber numberWithUnsignedLongLong:[(_ADPBProxyGetMetricsResponse *)v40 rxOooBytes]];
+    v47 = [NSNumber numberWithUnsignedLongLong:[(_ADPBProxyGetMetricsResponse *)selfCopy2 rxOooBytes]];
   }
 
   else
@@ -860,10 +860,10 @@ LABEL_87:
     v47 = 0;
   }
 
-  v48 = [(_ADPBProxyGetMetricsResponse *)v40 hasSndBandwidth];
-  if (v48)
+  hasSndBandwidth2 = [(_ADPBProxyGetMetricsResponse *)selfCopy2 hasSndBandwidth];
+  if (hasSndBandwidth2)
   {
-    v49 = [NSNumber numberWithUnsignedLongLong:[(_ADPBProxyGetMetricsResponse *)v40 sndBandwidth]];
+    v49 = [NSNumber numberWithUnsignedLongLong:[(_ADPBProxyGetMetricsResponse *)selfCopy2 sndBandwidth]];
   }
 
   else
@@ -871,10 +871,10 @@ LABEL_87:
     v49 = 0;
   }
 
-  if (![(_ADPBProxyGetMetricsResponse *)v40 hasSynRetransmits])
+  if (![(_ADPBProxyGetMetricsResponse *)selfCopy2 hasSynRetransmits])
   {
     v87 = [v86 initWithInterfaceName:@"default" rttCurrent:v105 rttSmoothed:v43 rttVariance:v45 rttBest:v103 packetsSent:v101 bytesSent:v99 bytesRetransmitted:v97 bytesUnacked:v95 packetsReceived:v93 bytesReceived:v91 duplicateBytesReceived:v89 outOfOrderBytesReceived:v47 sendBufferBytes:0 sendBandwidth:v49 synRetransmits:0 tfoSynDataAcked:0];
-    if (!v48)
+    if (!hasSndBandwidth2)
     {
       goto LABEL_180;
     }
@@ -882,59 +882,59 @@ LABEL_87:
     goto LABEL_179;
   }
 
-  v68 = v42;
-  v50 = v41;
-  v51 = [NSNumber numberWithUnsignedInt:[(_ADPBProxyGetMetricsResponse *)v40 synRetransmits]];
+  v68 = hasRttSmoothed2;
+  v50 = hasRttCurrent2;
+  v51 = [NSNumber numberWithUnsignedInt:[(_ADPBProxyGetMetricsResponse *)selfCopy2 synRetransmits]];
   v87 = [v86 initWithInterfaceName:@"default" rttCurrent:v105 rttSmoothed:v43 rttVariance:v45 rttBest:v103 packetsSent:v101 bytesSent:v99 bytesRetransmitted:v97 bytesUnacked:v95 packetsReceived:v93 bytesReceived:v91 duplicateBytesReceived:v89 outOfOrderBytesReceived:v47 sendBufferBytes:0 sendBandwidth:v49 synRetransmits:v51 tfoSynDataAcked:0];
 
-  v41 = v50;
-  v42 = v68;
-  if (v48)
+  hasRttCurrent2 = v50;
+  hasRttSmoothed2 = v68;
+  if (hasSndBandwidth2)
   {
 LABEL_179:
   }
 
 LABEL_180:
-  if (v46)
+  if (hasRxOooBytes2)
   {
   }
 
-  if (v70)
+  if (hasRxDuplicateBytes2)
   {
   }
 
-  if (v72)
+  if (hasRxBytes2)
   {
   }
 
-  if (v74)
+  if (hasRxPackets2)
   {
   }
 
   v3 = v57;
-  if (v76)
+  if (hasTxUnacked2)
   {
   }
 
-  if (v78)
+  if (hasTxRetransmitBytes2)
   {
   }
 
-  if (v80)
+  if (hasTxBytes2)
   {
   }
 
-  if (v82)
+  if (hasTxPackets2)
   {
   }
 
-  if (v84)
+  if (hasRttBest2)
   {
 
-    if (!v44)
+    if (!hasRttVariance2)
     {
 LABEL_198:
-      if (!v42)
+      if (!hasRttSmoothed2)
       {
         goto LABEL_199;
       }
@@ -943,15 +943,15 @@ LABEL_198:
     }
   }
 
-  else if (!v44)
+  else if (!hasRttVariance2)
   {
     goto LABEL_198;
   }
 
-  if (!v42)
+  if (!hasRttSmoothed2)
   {
 LABEL_199:
-    if (!v41)
+    if (!hasRttCurrent2)
     {
       goto LABEL_201;
     }
@@ -961,7 +961,7 @@ LABEL_199:
 
 LABEL_208:
 
-  if (v41)
+  if (hasRttCurrent2)
   {
 LABEL_200:
   }
@@ -971,8 +971,8 @@ LABEL_201:
   v39 = v87;
   if (v87)
   {
-    v52 = [v87 interfaceName];
-    v106 = v52;
+    interfaceName3 = [v87 interfaceName];
+    v106 = interfaceName3;
     v107 = v87;
     v53 = [NSDictionary dictionaryWithObjects:&v107 forKeys:&v106 count:1];
 
@@ -984,16 +984,16 @@ LABEL_203:
   return v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 53);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 53);
   if ((v6 & 2) != 0)
   {
-    self->_openInterval = *(v4 + 2);
+    self->_openInterval = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v6 = *(v4 + 53);
+    v6 = *(fromCopy + 53);
     if ((v6 & 1) == 0)
     {
 LABEL_3:
@@ -1011,9 +1011,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_firstByteReadInterval = *(v4 + 1);
+  self->_firstByteReadInterval = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v6 = *(v4 + 53);
+  v6 = *(fromCopy + 53);
   if ((v6 & 0x2000) == 0)
   {
 LABEL_4:
@@ -1026,9 +1026,9 @@ LABEL_4:
   }
 
 LABEL_49:
-  self->_attemptCount = *(v4 + 28);
+  self->_attemptCount = *(fromCopy + 28);
   *&self->_has |= 0x2000u;
-  v6 = *(v4 + 53);
+  v6 = *(fromCopy + 53);
   if ((v6 & 0x10000) == 0)
   {
 LABEL_5:
@@ -1041,9 +1041,9 @@ LABEL_5:
   }
 
 LABEL_50:
-  self->_metricsCount = *(v4 + 38);
+  self->_metricsCount = *(fromCopy + 38);
   *&self->_has |= 0x10000u;
-  v6 = *(v4 + 53);
+  v6 = *(fromCopy + 53);
   if ((v6 & 4) == 0)
   {
 LABEL_6:
@@ -1056,9 +1056,9 @@ LABEL_6:
   }
 
 LABEL_51:
-  self->_pingMean = *(v4 + 3);
+  self->_pingMean = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v6 = *(v4 + 53);
+  v6 = *(fromCopy + 53);
   if ((v6 & 0x20000) == 0)
   {
 LABEL_7:
@@ -1071,9 +1071,9 @@ LABEL_7:
   }
 
 LABEL_52:
-  self->_pingCount = *(v4 + 39);
+  self->_pingCount = *(fromCopy + 39);
   *&self->_has |= 0x20000u;
-  v6 = *(v4 + 53);
+  v6 = *(fromCopy + 53);
   if ((v6 & 0x2000000) == 0)
   {
 LABEL_8:
@@ -1086,9 +1086,9 @@ LABEL_8:
   }
 
 LABEL_53:
-  self->_unacknowledgedPingCount = *(v4 + 52);
+  self->_unacknowledgedPingCount = *(fromCopy + 52);
   *&self->_has |= 0x2000000u;
-  v6 = *(v4 + 53);
+  v6 = *(fromCopy + 53);
   if ((v6 & 0x100000) == 0)
   {
 LABEL_9:
@@ -1101,9 +1101,9 @@ LABEL_9:
   }
 
 LABEL_54:
-  self->_rttCurrent = *(v4 + 44);
+  self->_rttCurrent = *(fromCopy + 44);
   *&self->_has |= 0x100000u;
-  v6 = *(v4 + 53);
+  v6 = *(fromCopy + 53);
   if ((v6 & 0x200000) == 0)
   {
 LABEL_10:
@@ -1116,9 +1116,9 @@ LABEL_10:
   }
 
 LABEL_55:
-  self->_rttSmoothed = *(v4 + 45);
+  self->_rttSmoothed = *(fromCopy + 45);
   *&self->_has |= 0x200000u;
-  v6 = *(v4 + 53);
+  v6 = *(fromCopy + 53);
   if ((v6 & 0x400000) == 0)
   {
 LABEL_11:
@@ -1131,9 +1131,9 @@ LABEL_11:
   }
 
 LABEL_56:
-  self->_rttVariance = *(v4 + 46);
+  self->_rttVariance = *(fromCopy + 46);
   *&self->_has |= 0x400000u;
-  v6 = *(v4 + 53);
+  v6 = *(fromCopy + 53);
   if ((v6 & 0x80000) == 0)
   {
 LABEL_12:
@@ -1146,9 +1146,9 @@ LABEL_12:
   }
 
 LABEL_57:
-  self->_rttBest = *(v4 + 43);
+  self->_rttBest = *(fromCopy + 43);
   *&self->_has |= 0x80000u;
-  v6 = *(v4 + 53);
+  v6 = *(fromCopy + 53);
   if ((v6 & 0x400) == 0)
   {
 LABEL_13:
@@ -1161,9 +1161,9 @@ LABEL_13:
   }
 
 LABEL_58:
-  self->_txPackets = *(v4 + 11);
+  self->_txPackets = *(fromCopy + 11);
   *&self->_has |= 0x400u;
-  v6 = *(v4 + 53);
+  v6 = *(fromCopy + 53);
   if ((v6 & 0x200) == 0)
   {
 LABEL_14:
@@ -1176,9 +1176,9 @@ LABEL_14:
   }
 
 LABEL_59:
-  self->_txBytes = *(v4 + 10);
+  self->_txBytes = *(fromCopy + 10);
   *&self->_has |= 0x200u;
-  v6 = *(v4 + 53);
+  v6 = *(fromCopy + 53);
   if ((v6 & 0x800) == 0)
   {
 LABEL_15:
@@ -1191,9 +1191,9 @@ LABEL_15:
   }
 
 LABEL_60:
-  self->_txRetransmitBytes = *(v4 + 12);
+  self->_txRetransmitBytes = *(fromCopy + 12);
   *&self->_has |= 0x800u;
-  v6 = *(v4 + 53);
+  v6 = *(fromCopy + 53);
   if ((v6 & 0x1000) == 0)
   {
 LABEL_16:
@@ -1206,9 +1206,9 @@ LABEL_16:
   }
 
 LABEL_61:
-  self->_txUnacked = *(v4 + 13);
+  self->_txUnacked = *(fromCopy + 13);
   *&self->_has |= 0x1000u;
-  v6 = *(v4 + 53);
+  v6 = *(fromCopy + 53);
   if ((v6 & 0x40) == 0)
   {
 LABEL_17:
@@ -1221,9 +1221,9 @@ LABEL_17:
   }
 
 LABEL_62:
-  self->_rxPackets = *(v4 + 7);
+  self->_rxPackets = *(fromCopy + 7);
   *&self->_has |= 0x40u;
-  v6 = *(v4 + 53);
+  v6 = *(fromCopy + 53);
   if ((v6 & 8) == 0)
   {
 LABEL_18:
@@ -1236,9 +1236,9 @@ LABEL_18:
   }
 
 LABEL_63:
-  self->_rxBytes = *(v4 + 4);
+  self->_rxBytes = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v6 = *(v4 + 53);
+  v6 = *(fromCopy + 53);
   if ((v6 & 0x10) == 0)
   {
 LABEL_19:
@@ -1251,9 +1251,9 @@ LABEL_19:
   }
 
 LABEL_64:
-  self->_rxDuplicateBytes = *(v4 + 5);
+  self->_rxDuplicateBytes = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v6 = *(v4 + 53);
+  v6 = *(fromCopy + 53);
   if ((v6 & 0x20) == 0)
   {
 LABEL_20:
@@ -1266,9 +1266,9 @@ LABEL_20:
   }
 
 LABEL_65:
-  self->_rxOooBytes = *(v4 + 6);
+  self->_rxOooBytes = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v6 = *(v4 + 53);
+  v6 = *(fromCopy + 53);
   if ((v6 & 0x80) == 0)
   {
 LABEL_21:
@@ -1281,9 +1281,9 @@ LABEL_21:
   }
 
 LABEL_66:
-  self->_sndBandwidth = *(v4 + 8);
+  self->_sndBandwidth = *(fromCopy + 8);
   *&self->_has |= 0x80u;
-  v6 = *(v4 + 53);
+  v6 = *(fromCopy + 53);
   if ((v6 & 0x1000000) == 0)
   {
 LABEL_22:
@@ -1296,9 +1296,9 @@ LABEL_22:
   }
 
 LABEL_67:
-  self->_synRetransmits = *(v4 + 48);
+  self->_synRetransmits = *(fromCopy + 48);
   *&self->_has |= 0x1000000u;
-  v6 = *(v4 + 53);
+  v6 = *(fromCopy + 53);
   if ((v6 & 0x800000) == 0)
   {
 LABEL_23:
@@ -1311,17 +1311,17 @@ LABEL_23:
   }
 
 LABEL_68:
-  self->_subflowCount = *(v4 + 47);
+  self->_subflowCount = *(fromCopy + 47);
   *&self->_has |= 0x800000u;
-  if ((*(v4 + 53) & 0x4000) != 0)
+  if ((*(fromCopy + 53) & 0x4000) != 0)
   {
 LABEL_24:
-    self->_connectedSubflowCount = *(v4 + 29);
+    self->_connectedSubflowCount = *(fromCopy + 29);
     *&self->_has |= 0x4000u;
   }
 
 LABEL_25:
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
     [(_ADPBProxyGetMetricsResponse *)self setPrimarySubflowIface:?];
   }
@@ -1830,19 +1830,19 @@ LABEL_69:
   return v10 ^ v6 ^ v51 ^ v50 ^ v17 ^ v49 ^ v48 ^ v47 ^ v46 ^ v45 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v19 ^ v18 ^ v20 ^ v21 ^ v22 ^ v26 ^ v30 ^ [(NSMutableArray *)self->_tcpInfoMetrics hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_143;
   }
 
   has = self->_has;
-  v6 = *(v4 + 53);
+  v6 = *(equalCopy + 53);
   if ((*&has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_openInterval != *(v4 + 2))
+    if ((v6 & 2) == 0 || self->_openInterval != *(equalCopy + 2))
     {
       goto LABEL_143;
     }
@@ -1855,7 +1855,7 @@ LABEL_69:
 
   if (*&has)
   {
-    if ((v6 & 1) == 0 || self->_firstByteReadInterval != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_firstByteReadInterval != *(equalCopy + 1))
     {
       goto LABEL_143;
     }
@@ -1868,7 +1868,7 @@ LABEL_69:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v6 & 0x2000) == 0 || self->_attemptCount != *(v4 + 28))
+    if ((v6 & 0x2000) == 0 || self->_attemptCount != *(equalCopy + 28))
     {
       goto LABEL_143;
     }
@@ -1881,7 +1881,7 @@ LABEL_69:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v6 & 0x10000) == 0 || self->_metricsCount != *(v4 + 38))
+    if ((v6 & 0x10000) == 0 || self->_metricsCount != *(equalCopy + 38))
     {
       goto LABEL_143;
     }
@@ -1894,7 +1894,7 @@ LABEL_69:
 
   if ((*&has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_pingMean != *(v4 + 3))
+    if ((v6 & 4) == 0 || self->_pingMean != *(equalCopy + 3))
     {
       goto LABEL_143;
     }
@@ -1907,7 +1907,7 @@ LABEL_69:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v6 & 0x20000) == 0 || self->_pingCount != *(v4 + 39))
+    if ((v6 & 0x20000) == 0 || self->_pingCount != *(equalCopy + 39))
     {
       goto LABEL_143;
     }
@@ -1920,7 +1920,7 @@ LABEL_69:
 
   if ((*&has & 0x2000000) != 0)
   {
-    if ((v6 & 0x2000000) == 0 || self->_unacknowledgedPingCount != *(v4 + 52))
+    if ((v6 & 0x2000000) == 0 || self->_unacknowledgedPingCount != *(equalCopy + 52))
     {
       goto LABEL_143;
     }
@@ -1933,7 +1933,7 @@ LABEL_69:
 
   if ((*&has & 0x100000) != 0)
   {
-    if ((v6 & 0x100000) == 0 || self->_rttCurrent != *(v4 + 44))
+    if ((v6 & 0x100000) == 0 || self->_rttCurrent != *(equalCopy + 44))
     {
       goto LABEL_143;
     }
@@ -1946,7 +1946,7 @@ LABEL_69:
 
   if ((*&has & 0x200000) != 0)
   {
-    if ((v6 & 0x200000) == 0 || self->_rttSmoothed != *(v4 + 45))
+    if ((v6 & 0x200000) == 0 || self->_rttSmoothed != *(equalCopy + 45))
     {
       goto LABEL_143;
     }
@@ -1959,7 +1959,7 @@ LABEL_69:
 
   if ((*&has & 0x400000) != 0)
   {
-    if ((v6 & 0x400000) == 0 || self->_rttVariance != *(v4 + 46))
+    if ((v6 & 0x400000) == 0 || self->_rttVariance != *(equalCopy + 46))
     {
       goto LABEL_143;
     }
@@ -1972,7 +1972,7 @@ LABEL_69:
 
   if ((*&has & 0x80000) != 0)
   {
-    if ((v6 & 0x80000) == 0 || self->_rttBest != *(v4 + 43))
+    if ((v6 & 0x80000) == 0 || self->_rttBest != *(equalCopy + 43))
     {
       goto LABEL_143;
     }
@@ -1985,7 +1985,7 @@ LABEL_69:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v6 & 0x400) == 0 || self->_txPackets != *(v4 + 11))
+    if ((v6 & 0x400) == 0 || self->_txPackets != *(equalCopy + 11))
     {
       goto LABEL_143;
     }
@@ -1998,7 +1998,7 @@ LABEL_69:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v6 & 0x200) == 0 || self->_txBytes != *(v4 + 10))
+    if ((v6 & 0x200) == 0 || self->_txBytes != *(equalCopy + 10))
     {
       goto LABEL_143;
     }
@@ -2011,7 +2011,7 @@ LABEL_69:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v6 & 0x800) == 0 || self->_txRetransmitBytes != *(v4 + 12))
+    if ((v6 & 0x800) == 0 || self->_txRetransmitBytes != *(equalCopy + 12))
     {
       goto LABEL_143;
     }
@@ -2024,7 +2024,7 @@ LABEL_69:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v6 & 0x1000) == 0 || self->_txUnacked != *(v4 + 13))
+    if ((v6 & 0x1000) == 0 || self->_txUnacked != *(equalCopy + 13))
     {
       goto LABEL_143;
     }
@@ -2037,7 +2037,7 @@ LABEL_69:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_rxPackets != *(v4 + 7))
+    if ((v6 & 0x40) == 0 || self->_rxPackets != *(equalCopy + 7))
     {
       goto LABEL_143;
     }
@@ -2050,7 +2050,7 @@ LABEL_69:
 
   if ((*&has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_rxBytes != *(v4 + 4))
+    if ((v6 & 8) == 0 || self->_rxBytes != *(equalCopy + 4))
     {
       goto LABEL_143;
     }
@@ -2063,7 +2063,7 @@ LABEL_69:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_rxDuplicateBytes != *(v4 + 5))
+    if ((v6 & 0x10) == 0 || self->_rxDuplicateBytes != *(equalCopy + 5))
     {
       goto LABEL_143;
     }
@@ -2076,7 +2076,7 @@ LABEL_69:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_rxOooBytes != *(v4 + 6))
+    if ((v6 & 0x20) == 0 || self->_rxOooBytes != *(equalCopy + 6))
     {
       goto LABEL_143;
     }
@@ -2089,7 +2089,7 @@ LABEL_69:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_sndBandwidth != *(v4 + 8))
+    if ((v6 & 0x80) == 0 || self->_sndBandwidth != *(equalCopy + 8))
     {
       goto LABEL_143;
     }
@@ -2102,7 +2102,7 @@ LABEL_69:
 
   if ((*&has & 0x1000000) != 0)
   {
-    if ((v6 & 0x1000000) == 0 || self->_synRetransmits != *(v4 + 48))
+    if ((v6 & 0x1000000) == 0 || self->_synRetransmits != *(equalCopy + 48))
     {
       goto LABEL_143;
     }
@@ -2115,7 +2115,7 @@ LABEL_69:
 
   if ((*&has & 0x800000) != 0)
   {
-    if ((v6 & 0x800000) == 0 || self->_subflowCount != *(v4 + 47))
+    if ((v6 & 0x800000) == 0 || self->_subflowCount != *(equalCopy + 47))
     {
       goto LABEL_143;
     }
@@ -2128,7 +2128,7 @@ LABEL_69:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v6 & 0x4000) == 0 || self->_connectedSubflowCount != *(v4 + 29))
+    if ((v6 & 0x4000) == 0 || self->_connectedSubflowCount != *(equalCopy + 29))
     {
       goto LABEL_143;
     }
@@ -2140,7 +2140,7 @@ LABEL_69:
   }
 
   primarySubflowIface = self->_primarySubflowIface;
-  if (primarySubflowIface | *(v4 + 20))
+  if (primarySubflowIface | *(equalCopy + 20))
   {
     if (![(NSString *)primarySubflowIface isEqual:?])
     {
@@ -2150,12 +2150,12 @@ LABEL_143:
     }
 
     has = self->_has;
-    v6 = *(v4 + 53);
+    v6 = *(equalCopy + 53);
   }
 
   if ((*&has & 0x40000) != 0)
   {
-    if ((v6 & 0x40000) == 0 || self->_primarySubflowSwitchCount != *(v4 + 42))
+    if ((v6 & 0x40000) == 0 || self->_primarySubflowSwitchCount != *(equalCopy + 42))
     {
       goto LABEL_143;
     }
@@ -2167,13 +2167,13 @@ LABEL_143:
   }
 
   connectionMethodName = self->_connectionMethodName;
-  if (connectionMethodName | *(v4 + 18) && ![(NSString *)connectionMethodName isEqual:?])
+  if (connectionMethodName | *(equalCopy + 18) && ![(NSString *)connectionMethodName isEqual:?])
   {
     goto LABEL_143;
   }
 
   connectionEdgeIDName = self->_connectionEdgeIDName;
-  if (connectionEdgeIDName | *(v4 + 15))
+  if (connectionEdgeIDName | *(equalCopy + 15))
   {
     if (![(NSString *)connectionEdgeIDName isEqual:?])
     {
@@ -2182,7 +2182,7 @@ LABEL_143:
   }
 
   connectionEdgeType = self->_connectionEdgeType;
-  if (connectionEdgeType | *(v4 + 16))
+  if (connectionEdgeType | *(equalCopy + 16))
   {
     if (![(NSString *)connectionEdgeType isEqual:?])
     {
@@ -2191,10 +2191,10 @@ LABEL_143:
   }
 
   v11 = self->_has;
-  v12 = *(v4 + 53);
+  v12 = *(equalCopy + 53);
   if ((*&v11 & 0x8000) != 0)
   {
-    if ((v12 & 0x8000) == 0 || self->_connectionFallbackReason != *(v4 + 34))
+    if ((v12 & 0x8000) == 0 || self->_connectionFallbackReason != *(equalCopy + 34))
     {
       goto LABEL_143;
     }
@@ -2207,7 +2207,7 @@ LABEL_143:
 
   if ((*&v11 & 0x100) != 0)
   {
-    if ((v12 & 0x100) == 0 || self->_tuscanyConnectionDelay != *(v4 + 9))
+    if ((v12 & 0x100) == 0 || self->_tuscanyConnectionDelay != *(equalCopy + 9))
     {
       goto LABEL_143;
     }
@@ -2219,7 +2219,7 @@ LABEL_143:
   }
 
   tcpInfoMetrics = self->_tcpInfoMetrics;
-  if (tcpInfoMetrics | *(v4 + 25))
+  if (tcpInfoMetrics | *(equalCopy + 25))
   {
     v14 = [(NSMutableArray *)tcpInfoMetrics isEqual:?];
   }
@@ -2234,9 +2234,9 @@ LABEL_144:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((*&has & 2) != 0)
@@ -2571,7 +2571,7 @@ LABEL_24:
   }
 
 LABEL_25:
-  v8 = [(NSString *)self->_primarySubflowIface copyWithZone:a3];
+  v8 = [(NSString *)self->_primarySubflowIface copyWithZone:zone];
   v9 = v6[20];
   v6[20] = v8;
 
@@ -2581,15 +2581,15 @@ LABEL_25:
     *(v6 + 53) |= 0x40000u;
   }
 
-  v10 = [(NSString *)self->_connectionMethodName copyWithZone:a3];
+  v10 = [(NSString *)self->_connectionMethodName copyWithZone:zone];
   v11 = v6[18];
   v6[18] = v10;
 
-  v12 = [(NSString *)self->_connectionEdgeIDName copyWithZone:a3];
+  v12 = [(NSString *)self->_connectionEdgeIDName copyWithZone:zone];
   v13 = v6[15];
   v6[15] = v12;
 
-  v14 = [(NSString *)self->_connectionEdgeType copyWithZone:a3];
+  v14 = [(NSString *)self->_connectionEdgeType copyWithZone:zone];
   v15 = v6[16];
   v6[16] = v14;
 
@@ -2627,7 +2627,7 @@ LABEL_25:
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v24 + 1) + 8 * v21) copyWithZone:{a3, v24}];
+        v22 = [*(*(&v24 + 1) + 8 * v21) copyWithZone:{zone, v24}];
         [v6 addTcpInfoMetrics:v22];
 
         v21 = v21 + 1;
@@ -2643,14 +2643,14 @@ LABEL_25:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 2) != 0)
   {
-    v4[2] = *&self->_openInterval;
-    *(v4 + 53) |= 2u;
+    toCopy[2] = *&self->_openInterval;
+    *(toCopy + 53) |= 2u;
     has = self->_has;
     if ((*&has & 1) == 0)
     {
@@ -2669,8 +2669,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[1] = *&self->_firstByteReadInterval;
-  *(v4 + 53) |= 1u;
+  toCopy[1] = *&self->_firstByteReadInterval;
+  *(toCopy + 53) |= 1u;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -2684,8 +2684,8 @@ LABEL_4:
   }
 
 LABEL_48:
-  *(v4 + 28) = self->_attemptCount;
-  *(v4 + 53) |= 0x2000u;
+  *(toCopy + 28) = self->_attemptCount;
+  *(toCopy + 53) |= 0x2000u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -2699,8 +2699,8 @@ LABEL_5:
   }
 
 LABEL_49:
-  *(v4 + 38) = self->_metricsCount;
-  *(v4 + 53) |= 0x10000u;
+  *(toCopy + 38) = self->_metricsCount;
+  *(toCopy + 53) |= 0x10000u;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -2714,8 +2714,8 @@ LABEL_6:
   }
 
 LABEL_50:
-  v4[3] = *&self->_pingMean;
-  *(v4 + 53) |= 4u;
+  toCopy[3] = *&self->_pingMean;
+  *(toCopy + 53) |= 4u;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -2729,8 +2729,8 @@ LABEL_7:
   }
 
 LABEL_51:
-  *(v4 + 39) = self->_pingCount;
-  *(v4 + 53) |= 0x20000u;
+  *(toCopy + 39) = self->_pingCount;
+  *(toCopy + 53) |= 0x20000u;
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
   {
@@ -2744,8 +2744,8 @@ LABEL_8:
   }
 
 LABEL_52:
-  *(v4 + 52) = self->_unacknowledgedPingCount;
-  *(v4 + 53) |= 0x2000000u;
+  *(toCopy + 52) = self->_unacknowledgedPingCount;
+  *(toCopy + 53) |= 0x2000000u;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -2759,8 +2759,8 @@ LABEL_9:
   }
 
 LABEL_53:
-  *(v4 + 44) = self->_rttCurrent;
-  *(v4 + 53) |= 0x100000u;
+  *(toCopy + 44) = self->_rttCurrent;
+  *(toCopy + 53) |= 0x100000u;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -2774,8 +2774,8 @@ LABEL_10:
   }
 
 LABEL_54:
-  *(v4 + 45) = self->_rttSmoothed;
-  *(v4 + 53) |= 0x200000u;
+  *(toCopy + 45) = self->_rttSmoothed;
+  *(toCopy + 53) |= 0x200000u;
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -2789,8 +2789,8 @@ LABEL_11:
   }
 
 LABEL_55:
-  *(v4 + 46) = self->_rttVariance;
-  *(v4 + 53) |= 0x400000u;
+  *(toCopy + 46) = self->_rttVariance;
+  *(toCopy + 53) |= 0x400000u;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -2804,8 +2804,8 @@ LABEL_12:
   }
 
 LABEL_56:
-  *(v4 + 43) = self->_rttBest;
-  *(v4 + 53) |= 0x80000u;
+  *(toCopy + 43) = self->_rttBest;
+  *(toCopy + 53) |= 0x80000u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -2819,8 +2819,8 @@ LABEL_13:
   }
 
 LABEL_57:
-  v4[11] = self->_txPackets;
-  *(v4 + 53) |= 0x400u;
+  toCopy[11] = self->_txPackets;
+  *(toCopy + 53) |= 0x400u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -2834,8 +2834,8 @@ LABEL_14:
   }
 
 LABEL_58:
-  v4[10] = self->_txBytes;
-  *(v4 + 53) |= 0x200u;
+  toCopy[10] = self->_txBytes;
+  *(toCopy + 53) |= 0x200u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -2849,8 +2849,8 @@ LABEL_15:
   }
 
 LABEL_59:
-  v4[12] = self->_txRetransmitBytes;
-  *(v4 + 53) |= 0x800u;
+  toCopy[12] = self->_txRetransmitBytes;
+  *(toCopy + 53) |= 0x800u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -2864,8 +2864,8 @@ LABEL_16:
   }
 
 LABEL_60:
-  v4[13] = self->_txUnacked;
-  *(v4 + 53) |= 0x1000u;
+  toCopy[13] = self->_txUnacked;
+  *(toCopy + 53) |= 0x1000u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -2879,8 +2879,8 @@ LABEL_17:
   }
 
 LABEL_61:
-  v4[7] = self->_rxPackets;
-  *(v4 + 53) |= 0x40u;
+  toCopy[7] = self->_rxPackets;
+  *(toCopy + 53) |= 0x40u;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -2894,8 +2894,8 @@ LABEL_18:
   }
 
 LABEL_62:
-  v4[4] = self->_rxBytes;
-  *(v4 + 53) |= 8u;
+  toCopy[4] = self->_rxBytes;
+  *(toCopy + 53) |= 8u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -2909,8 +2909,8 @@ LABEL_19:
   }
 
 LABEL_63:
-  v4[5] = self->_rxDuplicateBytes;
-  *(v4 + 53) |= 0x10u;
+  toCopy[5] = self->_rxDuplicateBytes;
+  *(toCopy + 53) |= 0x10u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -2924,8 +2924,8 @@ LABEL_20:
   }
 
 LABEL_64:
-  v4[6] = self->_rxOooBytes;
-  *(v4 + 53) |= 0x20u;
+  toCopy[6] = self->_rxOooBytes;
+  *(toCopy + 53) |= 0x20u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -2939,8 +2939,8 @@ LABEL_21:
   }
 
 LABEL_65:
-  v4[8] = self->_sndBandwidth;
-  *(v4 + 53) |= 0x80u;
+  toCopy[8] = self->_sndBandwidth;
+  *(toCopy + 53) |= 0x80u;
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
   {
@@ -2954,8 +2954,8 @@ LABEL_22:
   }
 
 LABEL_66:
-  *(v4 + 48) = self->_synRetransmits;
-  *(v4 + 53) |= 0x1000000u;
+  *(toCopy + 48) = self->_synRetransmits;
+  *(toCopy + 53) |= 0x1000000u;
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -2969,68 +2969,68 @@ LABEL_23:
   }
 
 LABEL_67:
-  *(v4 + 47) = self->_subflowCount;
-  *(v4 + 53) |= 0x800000u;
+  *(toCopy + 47) = self->_subflowCount;
+  *(toCopy + 53) |= 0x800000u;
   if ((*&self->_has & 0x4000) != 0)
   {
 LABEL_24:
-    *(v4 + 29) = self->_connectedSubflowCount;
-    *(v4 + 53) |= 0x4000u;
+    *(toCopy + 29) = self->_connectedSubflowCount;
+    *(toCopy + 53) |= 0x4000u;
   }
 
 LABEL_25:
-  v11 = v4;
+  v11 = toCopy;
   if (self->_primarySubflowIface)
   {
-    [v4 setPrimarySubflowIface:?];
-    v4 = v11;
+    [toCopy setPrimarySubflowIface:?];
+    toCopy = v11;
   }
 
   if ((*(&self->_has + 2) & 4) != 0)
   {
-    *(v4 + 42) = self->_primarySubflowSwitchCount;
-    *(v4 + 53) |= 0x40000u;
+    *(toCopy + 42) = self->_primarySubflowSwitchCount;
+    *(toCopy + 53) |= 0x40000u;
   }
 
   if (self->_connectionMethodName)
   {
     [v11 setConnectionMethodName:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_connectionEdgeIDName)
   {
     [v11 setConnectionEdgeIDName:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_connectionEdgeType)
   {
     [v11 setConnectionEdgeType:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   v6 = self->_has;
   if ((*&v6 & 0x8000) != 0)
   {
-    *(v4 + 34) = self->_connectionFallbackReason;
-    *(v4 + 53) |= 0x8000u;
+    *(toCopy + 34) = self->_connectionFallbackReason;
+    *(toCopy + 53) |= 0x8000u;
     v6 = self->_has;
   }
 
   if ((*&v6 & 0x100) != 0)
   {
-    v4[9] = *&self->_tuscanyConnectionDelay;
-    *(v4 + 53) |= 0x100u;
+    toCopy[9] = *&self->_tuscanyConnectionDelay;
+    *(toCopy + 53) |= 0x100u;
   }
 
   if ([(_ADPBProxyGetMetricsResponse *)self tcpInfoMetricsCount])
   {
     [v11 clearTcpInfoMetrics];
-    v7 = [(_ADPBProxyGetMetricsResponse *)self tcpInfoMetricsCount];
-    if (v7)
+    tcpInfoMetricsCount = [(_ADPBProxyGetMetricsResponse *)self tcpInfoMetricsCount];
+    if (tcpInfoMetricsCount)
     {
-      v8 = v7;
+      v8 = tcpInfoMetricsCount;
       for (i = 0; i != v8; ++i)
       {
         v10 = [(_ADPBProxyGetMetricsResponse *)self tcpInfoMetricsAtIndex:i];
@@ -3040,9 +3040,9 @@ LABEL_25:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 2) != 0)
   {
@@ -3422,15 +3422,15 @@ LABEL_25:
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = a3;
+  fromCopy2 = from;
   while (2)
   {
-    v6 = [v5 position];
-    if (v6 >= [a3 length] || (objc_msgSend(a3, "hasError") & 1) != 0)
+    position = [fromCopy2 position];
+    if (position >= [from length] || (objc_msgSend(from, "hasError") & 1) != 0)
     {
-      return [a3 hasError] ^ 1;
+      return [from hasError] ^ 1;
     }
 
     v7 = 0;
@@ -3439,18 +3439,18 @@ LABEL_25:
     while (1)
     {
       LOBYTE(v170[0]) = 0;
-      v10 = [a3 position] + 1;
-      if (v10 >= [a3 position] && (v11 = objc_msgSend(a3, "position") + 1, v11 <= objc_msgSend(a3, "length")))
+      v10 = [from position] + 1;
+      if (v10 >= [from position] && (v11 = objc_msgSend(from, "position") + 1, v11 <= objc_msgSend(from, "length")))
       {
-        v12 = [a3 data];
-        [v12 getBytes:v170 range:{objc_msgSend(a3, "position"), 1}];
+        data = [from data];
+        [data getBytes:v170 range:{objc_msgSend(from, "position"), 1}];
 
-        [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+        [from setPosition:{objc_msgSend(from, "position") + 1}];
       }
 
       else
       {
-        [a3 _setError];
+        [from _setError];
       }
 
       v9 |= (v170[0] & 0x7F) << v7;
@@ -3468,11 +3468,11 @@ LABEL_25:
       }
     }
 
-    v14 = [a3 hasError] ? 0 : v9;
+    v14 = [from hasError] ? 0 : v9;
 LABEL_16:
-    if (([a3 hasError] & 1) != 0 || (v14 & 7) == 4)
+    if (([from hasError] & 1) != 0 || (v14 & 7) == 4)
     {
-      return [a3 hasError] ^ 1;
+      return [from hasError] ^ 1;
     }
 
     switch((v14 >> 3))
@@ -3480,18 +3480,18 @@ LABEL_16:
       case 1u:
         *&self->_has |= 2u;
         v170[0] = 0;
-        v15 = [a3 position] + 8;
-        if (v15 >= [a3 position] && (v16 = objc_msgSend(a3, "position") + 8, v16 <= objc_msgSend(a3, "length")))
+        v15 = [from position] + 8;
+        if (v15 >= [from position] && (v16 = objc_msgSend(from, "position") + 8, v16 <= objc_msgSend(from, "length")))
         {
-          v166 = [a3 data];
-          [v166 getBytes:v170 range:{objc_msgSend(a3, "position"), 8}];
+          data2 = [from data];
+          [data2 getBytes:v170 range:{objc_msgSend(from, "position"), 8}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 8}];
+          [from setPosition:{objc_msgSend(from, "position") + 8}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v164 = v170[0];
@@ -3500,18 +3500,18 @@ LABEL_16:
       case 2u:
         *&self->_has |= 1u;
         v170[0] = 0;
-        v95 = [a3 position] + 8;
-        if (v95 >= [a3 position] && (v96 = objc_msgSend(a3, "position") + 8, v96 <= objc_msgSend(a3, "length")))
+        v95 = [from position] + 8;
+        if (v95 >= [from position] && (v96 = objc_msgSend(from, "position") + 8, v96 <= objc_msgSend(from, "length")))
         {
-          v167 = [a3 data];
-          [v167 getBytes:v170 range:{objc_msgSend(a3, "position"), 8}];
+          data3 = [from data];
+          [data3 getBytes:v170 range:{objc_msgSend(from, "position"), 8}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 8}];
+          [from setPosition:{objc_msgSend(from, "position") + 8}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v164 = v170[0];
@@ -3525,18 +3525,18 @@ LABEL_16:
         while (1)
         {
           LOBYTE(v170[0]) = 0;
-          v72 = [a3 position] + 1;
-          if (v72 >= [a3 position] && (v73 = objc_msgSend(a3, "position") + 1, v73 <= objc_msgSend(a3, "length")))
+          v72 = [from position] + 1;
+          if (v72 >= [from position] && (v73 = objc_msgSend(from, "position") + 1, v73 <= objc_msgSend(from, "length")))
           {
-            v74 = [a3 data];
-            [v74 getBytes:v170 range:{objc_msgSend(a3, "position"), 1}];
+            data4 = [from data];
+            [data4 getBytes:v170 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v71 |= (v170[0] & 0x7F) << v69;
@@ -3554,7 +3554,7 @@ LABEL_16:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v30 = 0;
         }
@@ -3575,18 +3575,18 @@ LABEL_274:
         while (1)
         {
           LOBYTE(v170[0]) = 0;
-          v125 = [a3 position] + 1;
-          if (v125 >= [a3 position] && (v126 = objc_msgSend(a3, "position") + 1, v126 <= objc_msgSend(a3, "length")))
+          v125 = [from position] + 1;
+          if (v125 >= [from position] && (v126 = objc_msgSend(from, "position") + 1, v126 <= objc_msgSend(from, "length")))
           {
-            v127 = [a3 data];
-            [v127 getBytes:v170 range:{objc_msgSend(a3, "position"), 1}];
+            data5 = [from data];
+            [data5 getBytes:v170 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v124 |= (v170[0] & 0x7F) << v122;
@@ -3604,7 +3604,7 @@ LABEL_274:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v30 = 0;
         }
@@ -3620,18 +3620,18 @@ LABEL_306:
       case 5u:
         *&self->_has |= 4u;
         v170[0] = 0;
-        v128 = [a3 position] + 8;
-        if (v128 >= [a3 position] && (v129 = objc_msgSend(a3, "position") + 8, v129 <= objc_msgSend(a3, "length")))
+        v128 = [from position] + 8;
+        if (v128 >= [from position] && (v129 = objc_msgSend(from, "position") + 8, v129 <= objc_msgSend(from, "length")))
         {
-          v168 = [a3 data];
-          [v168 getBytes:v170 range:{objc_msgSend(a3, "position"), 8}];
+          data6 = [from data];
+          [data6 getBytes:v170 range:{objc_msgSend(from, "position"), 8}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 8}];
+          [from setPosition:{objc_msgSend(from, "position") + 8}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v164 = v170[0];
@@ -3645,18 +3645,18 @@ LABEL_306:
         while (1)
         {
           LOBYTE(v170[0]) = 0;
-          v80 = [a3 position] + 1;
-          if (v80 >= [a3 position] && (v81 = objc_msgSend(a3, "position") + 1, v81 <= objc_msgSend(a3, "length")))
+          v80 = [from position] + 1;
+          if (v80 >= [from position] && (v81 = objc_msgSend(from, "position") + 1, v81 <= objc_msgSend(from, "length")))
           {
-            v82 = [a3 data];
-            [v82 getBytes:v170 range:{objc_msgSend(a3, "position"), 1}];
+            data7 = [from data];
+            [data7 getBytes:v170 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v79 |= (v170[0] & 0x7F) << v77;
@@ -3674,7 +3674,7 @@ LABEL_306:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v30 = 0;
         }
@@ -3695,18 +3695,18 @@ LABEL_278:
         while (1)
         {
           LOBYTE(v170[0]) = 0;
-          v100 = [a3 position] + 1;
-          if (v100 >= [a3 position] && (v101 = objc_msgSend(a3, "position") + 1, v101 <= objc_msgSend(a3, "length")))
+          v100 = [from position] + 1;
+          if (v100 >= [from position] && (v101 = objc_msgSend(from, "position") + 1, v101 <= objc_msgSend(from, "length")))
           {
-            v102 = [a3 data];
-            [v102 getBytes:v170 range:{objc_msgSend(a3, "position"), 1}];
+            data8 = [from data];
+            [data8 getBytes:v170 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v99 |= (v170[0] & 0x7F) << v97;
@@ -3724,7 +3724,7 @@ LABEL_278:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v30 = 0;
         }
@@ -3745,18 +3745,18 @@ LABEL_290:
         while (1)
         {
           LOBYTE(v170[0]) = 0;
-          v106 = [a3 position] + 1;
-          if (v106 >= [a3 position] && (v107 = objc_msgSend(a3, "position") + 1, v107 <= objc_msgSend(a3, "length")))
+          v106 = [from position] + 1;
+          if (v106 >= [from position] && (v107 = objc_msgSend(from, "position") + 1, v107 <= objc_msgSend(from, "length")))
           {
-            v108 = [a3 data];
-            [v108 getBytes:v170 range:{objc_msgSend(a3, "position"), 1}];
+            data9 = [from data];
+            [data9 getBytes:v170 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v105 |= (v170[0] & 0x7F) << v103;
@@ -3774,7 +3774,7 @@ LABEL_290:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v30 = 0;
         }
@@ -3795,18 +3795,18 @@ LABEL_294:
         while (1)
         {
           LOBYTE(v170[0]) = 0;
-          v139 = [a3 position] + 1;
-          if (v139 >= [a3 position] && (v140 = objc_msgSend(a3, "position") + 1, v140 <= objc_msgSend(a3, "length")))
+          v139 = [from position] + 1;
+          if (v139 >= [from position] && (v140 = objc_msgSend(from, "position") + 1, v140 <= objc_msgSend(from, "length")))
           {
-            v141 = [a3 data];
-            [v141 getBytes:v170 range:{objc_msgSend(a3, "position"), 1}];
+            data10 = [from data];
+            [data10 getBytes:v170 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v138 |= (v170[0] & 0x7F) << v136;
@@ -3824,7 +3824,7 @@ LABEL_294:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v30 = 0;
         }
@@ -3845,18 +3845,18 @@ LABEL_314:
         while (1)
         {
           LOBYTE(v170[0]) = 0;
-          v133 = [a3 position] + 1;
-          if (v133 >= [a3 position] && (v134 = objc_msgSend(a3, "position") + 1, v134 <= objc_msgSend(a3, "length")))
+          v133 = [from position] + 1;
+          if (v133 >= [from position] && (v134 = objc_msgSend(from, "position") + 1, v134 <= objc_msgSend(from, "length")))
           {
-            v135 = [a3 data];
-            [v135 getBytes:v170 range:{objc_msgSend(a3, "position"), 1}];
+            data11 = [from data];
+            [data11 getBytes:v170 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v132 |= (v170[0] & 0x7F) << v130;
@@ -3874,7 +3874,7 @@ LABEL_314:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v30 = 0;
         }
@@ -3895,18 +3895,18 @@ LABEL_310:
         while (1)
         {
           LOBYTE(v170[0]) = 0;
-          v42 = [a3 position] + 1;
-          if (v42 >= [a3 position] && (v43 = objc_msgSend(a3, "position") + 1, v43 <= objc_msgSend(a3, "length")))
+          v42 = [from position] + 1;
+          if (v42 >= [from position] && (v43 = objc_msgSend(from, "position") + 1, v43 <= objc_msgSend(from, "length")))
           {
-            v44 = [a3 data];
-            [v44 getBytes:v170 range:{objc_msgSend(a3, "position"), 1}];
+            data12 = [from data];
+            [data12 getBytes:v170 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v41 |= (v170[0] & 0x7F) << v39;
@@ -3924,7 +3924,7 @@ LABEL_310:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v30 = 0;
         }
@@ -3945,18 +3945,18 @@ LABEL_254:
         while (1)
         {
           LOBYTE(v170[0]) = 0;
-          v86 = [a3 position] + 1;
-          if (v86 >= [a3 position] && (v87 = objc_msgSend(a3, "position") + 1, v87 <= objc_msgSend(a3, "length")))
+          v86 = [from position] + 1;
+          if (v86 >= [from position] && (v87 = objc_msgSend(from, "position") + 1, v87 <= objc_msgSend(from, "length")))
           {
-            v88 = [a3 data];
-            [v88 getBytes:v170 range:{objc_msgSend(a3, "position"), 1}];
+            data13 = [from data];
+            [data13 getBytes:v170 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v85 |= (v170[0] & 0x7F) << v83;
@@ -3974,7 +3974,7 @@ LABEL_254:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v23 = 0;
         }
@@ -3995,18 +3995,18 @@ LABEL_282:
         while (1)
         {
           LOBYTE(v170[0]) = 0;
-          v60 = [a3 position] + 1;
-          if (v60 >= [a3 position] && (v61 = objc_msgSend(a3, "position") + 1, v61 <= objc_msgSend(a3, "length")))
+          v60 = [from position] + 1;
+          if (v60 >= [from position] && (v61 = objc_msgSend(from, "position") + 1, v61 <= objc_msgSend(from, "length")))
           {
-            v62 = [a3 data];
-            [v62 getBytes:v170 range:{objc_msgSend(a3, "position"), 1}];
+            data14 = [from data];
+            [data14 getBytes:v170 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v59 |= (v170[0] & 0x7F) << v57;
@@ -4024,7 +4024,7 @@ LABEL_282:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v23 = 0;
         }
@@ -4045,18 +4045,18 @@ LABEL_266:
         while (1)
         {
           LOBYTE(v170[0]) = 0;
-          v34 = [a3 position] + 1;
-          if (v34 >= [a3 position] && (v35 = objc_msgSend(a3, "position") + 1, v35 <= objc_msgSend(a3, "length")))
+          v34 = [from position] + 1;
+          if (v34 >= [from position] && (v35 = objc_msgSend(from, "position") + 1, v35 <= objc_msgSend(from, "length")))
           {
-            v36 = [a3 data];
-            [v36 getBytes:v170 range:{objc_msgSend(a3, "position"), 1}];
+            data15 = [from data];
+            [data15 getBytes:v170 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v33 |= (v170[0] & 0x7F) << v31;
@@ -4074,7 +4074,7 @@ LABEL_266:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v23 = 0;
         }
@@ -4095,18 +4095,18 @@ LABEL_250:
         while (1)
         {
           LOBYTE(v170[0]) = 0;
-          v112 = [a3 position] + 1;
-          if (v112 >= [a3 position] && (v113 = objc_msgSend(a3, "position") + 1, v113 <= objc_msgSend(a3, "length")))
+          v112 = [from position] + 1;
+          if (v112 >= [from position] && (v113 = objc_msgSend(from, "position") + 1, v113 <= objc_msgSend(from, "length")))
           {
-            v114 = [a3 data];
-            [v114 getBytes:v170 range:{objc_msgSend(a3, "position"), 1}];
+            data16 = [from data];
+            [data16 getBytes:v170 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v111 |= (v170[0] & 0x7F) << v109;
@@ -4124,7 +4124,7 @@ LABEL_250:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v23 = 0;
         }
@@ -4145,18 +4145,18 @@ LABEL_298:
         while (1)
         {
           LOBYTE(v170[0]) = 0;
-          v118 = [a3 position] + 1;
-          if (v118 >= [a3 position] && (v119 = objc_msgSend(a3, "position") + 1, v119 <= objc_msgSend(a3, "length")))
+          v118 = [from position] + 1;
+          if (v118 >= [from position] && (v119 = objc_msgSend(from, "position") + 1, v119 <= objc_msgSend(from, "length")))
           {
-            v120 = [a3 data];
-            [v120 getBytes:v170 range:{objc_msgSend(a3, "position"), 1}];
+            data17 = [from data];
+            [data17 getBytes:v170 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v117 |= (v170[0] & 0x7F) << v115;
@@ -4174,7 +4174,7 @@ LABEL_298:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v23 = 0;
         }
@@ -4195,18 +4195,18 @@ LABEL_302:
         while (1)
         {
           LOBYTE(v170[0]) = 0;
-          v151 = [a3 position] + 1;
-          if (v151 >= [a3 position] && (v152 = objc_msgSend(a3, "position") + 1, v152 <= objc_msgSend(a3, "length")))
+          v151 = [from position] + 1;
+          if (v151 >= [from position] && (v152 = objc_msgSend(from, "position") + 1, v152 <= objc_msgSend(from, "length")))
           {
-            v153 = [a3 data];
-            [v153 getBytes:v170 range:{objc_msgSend(a3, "position"), 1}];
+            data18 = [from data];
+            [data18 getBytes:v170 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v150 |= (v170[0] & 0x7F) << v148;
@@ -4224,7 +4224,7 @@ LABEL_302:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v23 = 0;
         }
@@ -4245,18 +4245,18 @@ LABEL_322:
         while (1)
         {
           LOBYTE(v170[0]) = 0;
-          v145 = [a3 position] + 1;
-          if (v145 >= [a3 position] && (v146 = objc_msgSend(a3, "position") + 1, v146 <= objc_msgSend(a3, "length")))
+          v145 = [from position] + 1;
+          if (v145 >= [from position] && (v146 = objc_msgSend(from, "position") + 1, v146 <= objc_msgSend(from, "length")))
           {
-            v147 = [a3 data];
-            [v147 getBytes:v170 range:{objc_msgSend(a3, "position"), 1}];
+            data19 = [from data];
+            [data19 getBytes:v170 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v144 |= (v170[0] & 0x7F) << v142;
@@ -4274,7 +4274,7 @@ LABEL_322:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v23 = 0;
         }
@@ -4295,18 +4295,18 @@ LABEL_318:
         while (1)
         {
           LOBYTE(v170[0]) = 0;
-          v20 = [a3 position] + 1;
-          if (v20 >= [a3 position] && (v21 = objc_msgSend(a3, "position") + 1, v21 <= objc_msgSend(a3, "length")))
+          v20 = [from position] + 1;
+          if (v20 >= [from position] && (v21 = objc_msgSend(from, "position") + 1, v21 <= objc_msgSend(from, "length")))
           {
-            v22 = [a3 data];
-            [v22 getBytes:v170 range:{objc_msgSend(a3, "position"), 1}];
+            data20 = [from data];
+            [data20 getBytes:v170 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v19 |= (v170[0] & 0x7F) << v17;
@@ -4324,7 +4324,7 @@ LABEL_318:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v23 = 0;
         }
@@ -4345,18 +4345,18 @@ LABEL_242:
         while (1)
         {
           LOBYTE(v170[0]) = 0;
-          v66 = [a3 position] + 1;
-          if (v66 >= [a3 position] && (v67 = objc_msgSend(a3, "position") + 1, v67 <= objc_msgSend(a3, "length")))
+          v66 = [from position] + 1;
+          if (v66 >= [from position] && (v67 = objc_msgSend(from, "position") + 1, v67 <= objc_msgSend(from, "length")))
           {
-            v68 = [a3 data];
-            [v68 getBytes:v170 range:{objc_msgSend(a3, "position"), 1}];
+            data21 = [from data];
+            [data21 getBytes:v170 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v65 |= (v170[0] & 0x7F) << v63;
@@ -4374,7 +4374,7 @@ LABEL_242:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v23 = 0;
         }
@@ -4397,18 +4397,18 @@ LABEL_323:
         while (1)
         {
           LOBYTE(v170[0]) = 0;
-          v157 = [a3 position] + 1;
-          if (v157 >= [a3 position] && (v158 = objc_msgSend(a3, "position") + 1, v158 <= objc_msgSend(a3, "length")))
+          v157 = [from position] + 1;
+          if (v157 >= [from position] && (v158 = objc_msgSend(from, "position") + 1, v158 <= objc_msgSend(from, "length")))
           {
-            v159 = [a3 data];
-            [v159 getBytes:v170 range:{objc_msgSend(a3, "position"), 1}];
+            data22 = [from data];
+            [data22 getBytes:v170 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v156 |= (v170[0] & 0x7F) << v154;
@@ -4426,7 +4426,7 @@ LABEL_323:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v30 = 0;
         }
@@ -4447,18 +4447,18 @@ LABEL_327:
         while (1)
         {
           LOBYTE(v170[0]) = 0;
-          v27 = [a3 position] + 1;
-          if (v27 >= [a3 position] && (v28 = objc_msgSend(a3, "position") + 1, v28 <= objc_msgSend(a3, "length")))
+          v27 = [from position] + 1;
+          if (v27 >= [from position] && (v28 = objc_msgSend(from, "position") + 1, v28 <= objc_msgSend(from, "length")))
           {
-            v29 = [a3 data];
-            [v29 getBytes:v170 range:{objc_msgSend(a3, "position"), 1}];
+            data23 = [from data];
+            [data23 getBytes:v170 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v26 |= (v170[0] & 0x7F) << v24;
@@ -4476,7 +4476,7 @@ LABEL_327:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v30 = 0;
         }
@@ -4497,18 +4497,18 @@ LABEL_246:
         while (1)
         {
           LOBYTE(v170[0]) = 0;
-          v54 = [a3 position] + 1;
-          if (v54 >= [a3 position] && (v55 = objc_msgSend(a3, "position") + 1, v55 <= objc_msgSend(a3, "length")))
+          v54 = [from position] + 1;
+          if (v54 >= [from position] && (v55 = objc_msgSend(from, "position") + 1, v55 <= objc_msgSend(from, "length")))
           {
-            v56 = [a3 data];
-            [v56 getBytes:v170 range:{objc_msgSend(a3, "position"), 1}];
+            data24 = [from data];
+            [data24 getBytes:v170 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v53 |= (v170[0] & 0x7F) << v51;
@@ -4526,7 +4526,7 @@ LABEL_246:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v30 = 0;
         }
@@ -4551,18 +4551,18 @@ LABEL_262:
         while (1)
         {
           LOBYTE(v170[0]) = 0;
-          v92 = [a3 position] + 1;
-          if (v92 >= [a3 position] && (v93 = objc_msgSend(a3, "position") + 1, v93 <= objc_msgSend(a3, "length")))
+          v92 = [from position] + 1;
+          if (v92 >= [from position] && (v93 = objc_msgSend(from, "position") + 1, v93 <= objc_msgSend(from, "length")))
           {
-            v94 = [a3 data];
-            [v94 getBytes:v170 range:{objc_msgSend(a3, "position"), 1}];
+            data25 = [from data];
+            [data25 getBytes:v170 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v91 |= (v170[0] & 0x7F) << v89;
@@ -4580,7 +4580,7 @@ LABEL_262:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v30 = 0;
         }
@@ -4617,18 +4617,18 @@ LABEL_238:
         while (1)
         {
           LOBYTE(v170[0]) = 0;
-          v48 = [a3 position] + 1;
-          if (v48 >= [a3 position] && (v49 = objc_msgSend(a3, "position") + 1, v49 <= objc_msgSend(a3, "length")))
+          v48 = [from position] + 1;
+          if (v48 >= [from position] && (v49 = objc_msgSend(from, "position") + 1, v49 <= objc_msgSend(from, "length")))
           {
-            v50 = [a3 data];
-            [v50 getBytes:v170 range:{objc_msgSend(a3, "position"), 1}];
+            data26 = [from data];
+            [data26 getBytes:v170 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v47 |= (v170[0] & 0x7F) << v45;
@@ -4646,7 +4646,7 @@ LABEL_238:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v30 = 0;
         }
@@ -4664,18 +4664,18 @@ LABEL_328:
       case 0x3Au:
         *&self->_has |= 0x100u;
         v170[0] = 0;
-        v75 = [a3 position] + 8;
-        if (v75 >= [a3 position] && (v76 = objc_msgSend(a3, "position") + 8, v76 <= objc_msgSend(a3, "length")))
+        v75 = [from position] + 8;
+        if (v75 >= [from position] && (v76 = objc_msgSend(from, "position") + 8, v76 <= objc_msgSend(from, "length")))
         {
-          v163 = [a3 data];
-          [v163 getBytes:v170 range:{objc_msgSend(a3, "position"), 8}];
+          data27 = [from data];
+          [data27 getBytes:v170 range:{objc_msgSend(from, "position"), 8}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 8}];
+          [from setPosition:{objc_msgSend(from, "position") + 8}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v164 = v170[0];
@@ -4688,12 +4688,12 @@ LABEL_337:
         [(_ADPBProxyGetMetricsResponse *)self addTcpInfoMetrics:v121];
         v170[0] = 0;
         v170[1] = 0;
-        if (PBReaderPlaceMark() && sub_1000912DC(v121, a3))
+        if (PBReaderPlaceMark() && sub_1000912DC(v121, from))
         {
           PBReaderRecallMark();
 
 LABEL_338:
-          v5 = a3;
+          fromCopy2 = from;
           continue;
         }
 
@@ -5134,8 +5134,8 @@ LABEL_25:
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v45 + 1) + 8 * i) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation = [*(*(&v45 + 1) + 8 * i) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v45 objects:v49 count:16];
@@ -5157,33 +5157,33 @@ LABEL_25:
   v7.receiver = self;
   v7.super_class = _ADPBProxyGetMetricsResponse;
   v3 = [(_ADPBProxyGetMetricsResponse *)&v7 description];
-  v4 = [(_ADPBProxyGetMetricsResponse *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(_ADPBProxyGetMetricsResponse *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)addTcpInfoMetrics:(id)a3
+- (void)addTcpInfoMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   tcpInfoMetrics = self->_tcpInfoMetrics;
-  v8 = v4;
+  v8 = metricsCopy;
   if (!tcpInfoMetrics)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_tcpInfoMetrics;
     self->_tcpInfoMetrics = v6;
 
-    v4 = v8;
+    metricsCopy = v8;
     tcpInfoMetrics = self->_tcpInfoMetrics;
   }
 
-  [(NSMutableArray *)tcpInfoMetrics addObject:v4];
+  [(NSMutableArray *)tcpInfoMetrics addObject:metricsCopy];
 }
 
-- (void)setHasTuscanyConnectionDelay:(BOOL)a3
+- (void)setHasTuscanyConnectionDelay:(BOOL)delay
 {
-  if (a3)
+  if (delay)
   {
     v3 = 256;
   }
@@ -5196,9 +5196,9 @@ LABEL_25:
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasConnectionFallbackReason:(BOOL)a3
+- (void)setHasConnectionFallbackReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 0x8000;
   }
@@ -5211,9 +5211,9 @@ LABEL_25:
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasPrimarySubflowSwitchCount:(BOOL)a3
+- (void)setHasPrimarySubflowSwitchCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x40000;
   }
@@ -5226,9 +5226,9 @@ LABEL_25:
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasConnectedSubflowCount:(BOOL)a3
+- (void)setHasConnectedSubflowCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x4000;
   }
@@ -5241,9 +5241,9 @@ LABEL_25:
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasSubflowCount:(BOOL)a3
+- (void)setHasSubflowCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x800000;
   }
@@ -5256,9 +5256,9 @@ LABEL_25:
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasSynRetransmits:(BOOL)a3
+- (void)setHasSynRetransmits:(BOOL)retransmits
 {
-  if (a3)
+  if (retransmits)
   {
     v3 = 0x1000000;
   }
@@ -5271,9 +5271,9 @@ LABEL_25:
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasSndBandwidth:(BOOL)a3
+- (void)setHasSndBandwidth:(BOOL)bandwidth
 {
-  if (a3)
+  if (bandwidth)
   {
     v3 = 128;
   }
@@ -5286,9 +5286,9 @@ LABEL_25:
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasRxOooBytes:(BOOL)a3
+- (void)setHasRxOooBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 32;
   }
@@ -5301,9 +5301,9 @@ LABEL_25:
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasRxDuplicateBytes:(BOOL)a3
+- (void)setHasRxDuplicateBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 16;
   }
@@ -5316,9 +5316,9 @@ LABEL_25:
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasRxBytes:(BOOL)a3
+- (void)setHasRxBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 8;
   }
@@ -5331,9 +5331,9 @@ LABEL_25:
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasRxPackets:(BOOL)a3
+- (void)setHasRxPackets:(BOOL)packets
 {
-  if (a3)
+  if (packets)
   {
     v3 = 64;
   }
@@ -5346,9 +5346,9 @@ LABEL_25:
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasTxUnacked:(BOOL)a3
+- (void)setHasTxUnacked:(BOOL)unacked
 {
-  if (a3)
+  if (unacked)
   {
     v3 = 4096;
   }
@@ -5361,9 +5361,9 @@ LABEL_25:
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasTxRetransmitBytes:(BOOL)a3
+- (void)setHasTxRetransmitBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 2048;
   }
@@ -5376,9 +5376,9 @@ LABEL_25:
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasTxBytes:(BOOL)a3
+- (void)setHasTxBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 512;
   }
@@ -5391,9 +5391,9 @@ LABEL_25:
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasTxPackets:(BOOL)a3
+- (void)setHasTxPackets:(BOOL)packets
 {
-  if (a3)
+  if (packets)
   {
     v3 = 1024;
   }
@@ -5406,9 +5406,9 @@ LABEL_25:
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasRttBest:(BOOL)a3
+- (void)setHasRttBest:(BOOL)best
 {
-  if (a3)
+  if (best)
   {
     v3 = 0x80000;
   }
@@ -5421,9 +5421,9 @@ LABEL_25:
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasRttVariance:(BOOL)a3
+- (void)setHasRttVariance:(BOOL)variance
 {
-  if (a3)
+  if (variance)
   {
     v3 = 0x400000;
   }
@@ -5436,9 +5436,9 @@ LABEL_25:
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasRttSmoothed:(BOOL)a3
+- (void)setHasRttSmoothed:(BOOL)smoothed
 {
-  if (a3)
+  if (smoothed)
   {
     v3 = 0x200000;
   }
@@ -5451,9 +5451,9 @@ LABEL_25:
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasRttCurrent:(BOOL)a3
+- (void)setHasRttCurrent:(BOOL)current
 {
-  if (a3)
+  if (current)
   {
     v3 = 0x100000;
   }
@@ -5466,9 +5466,9 @@ LABEL_25:
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasUnacknowledgedPingCount:(BOOL)a3
+- (void)setHasUnacknowledgedPingCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x2000000;
   }
@@ -5481,9 +5481,9 @@ LABEL_25:
   self->_has = (*&self->_has & 0xFDFFFFFF | v3);
 }
 
-- (void)setHasPingCount:(BOOL)a3
+- (void)setHasPingCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x20000;
   }
@@ -5496,9 +5496,9 @@ LABEL_25:
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasPingMean:(BOOL)a3
+- (void)setHasPingMean:(BOOL)mean
 {
-  if (a3)
+  if (mean)
   {
     v3 = 4;
   }
@@ -5511,9 +5511,9 @@ LABEL_25:
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasMetricsCount:(BOOL)a3
+- (void)setHasMetricsCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x10000;
   }
@@ -5526,9 +5526,9 @@ LABEL_25:
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasAttemptCount:(BOOL)a3
+- (void)setHasAttemptCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x2000;
   }
@@ -5541,9 +5541,9 @@ LABEL_25:
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasOpenInterval:(BOOL)a3
+- (void)setHasOpenInterval:(BOOL)interval
 {
-  if (a3)
+  if (interval)
   {
     v3 = 2;
   }

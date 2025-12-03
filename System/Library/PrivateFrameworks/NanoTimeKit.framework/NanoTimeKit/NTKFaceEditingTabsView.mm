@@ -1,13 +1,13 @@
 @interface NTKFaceEditingTabsView
 + (id)labelFont;
-- (double)_containerOffsetForLabelAtIndex:(int64_t)a3;
+- (double)_containerOffsetForLabelAtIndex:(int64_t)index;
 - (void)_addOrRemoveLabelsAsNeeded;
 - (void)_applyOrderedTabsAndLayout;
-- (void)_applySelectedTab:(unint64_t)a3;
-- (void)applyTransitionFraction:(double)a3 fromTab:(unint64_t)a4 toTab:(unint64_t)a5;
+- (void)_applySelectedTab:(unint64_t)tab;
+- (void)applyTransitionFraction:(double)fraction fromTab:(unint64_t)tab toTab:(unint64_t)toTab;
 - (void)layoutSubviews;
-- (void)setOrderedTabs:(id)a3;
-- (void)setSelectedTab:(unint64_t)a3;
+- (void)setOrderedTabs:(id)tabs;
+- (void)setSelectedTab:(unint64_t)tab;
 @end
 
 @implementation NTKFaceEditingTabsView
@@ -21,9 +21,9 @@
   return [v2 systemFontOfSize:v3 weight:v4];
 }
 
-- (void)setOrderedTabs:(id)a3
+- (void)setOrderedTabs:(id)tabs
 {
-  objc_storeStrong(&self->_orderedTabs, a3);
+  objc_storeStrong(&self->_orderedTabs, tabs);
 
   [(NTKFaceEditingTabsView *)self _applyOrderedTabsAndLayout];
 }
@@ -110,8 +110,8 @@ void __52__NTKFaceEditingTabsView__applyOrderedTabsAndLayout__block_invoke(uint6
           break;
         }
 
-        v15 = [(NSMutableArray *)self->_labels lastObject];
-        [v15 removeFromSuperview];
+        lastObject = [(NSMutableArray *)self->_labels lastObject];
+        [lastObject removeFromSuperview];
         [(NSMutableArray *)self->_labels removeLastObject];
       }
     }
@@ -136,14 +136,14 @@ void __52__NTKFaceEditingTabsView__applyOrderedTabsAndLayout__block_invoke(uint6
   }
 }
 
-- (void)setSelectedTab:(unint64_t)a3
+- (void)setSelectedTab:(unint64_t)tab
 {
   v11 = *MEMORY[0x277D85DE8];
-  self->_selectedTab = a3;
-  if ([(NSMutableArray *)self->_labels count]>= a3)
+  self->_selectedTab = tab;
+  if ([(NSMutableArray *)self->_labels count]>= tab)
   {
 
-    [(NTKFaceEditingTabsView *)self _applySelectedTab:a3];
+    [(NTKFaceEditingTabsView *)self _applySelectedTab:tab];
   }
 
   else
@@ -153,7 +153,7 @@ void __52__NTKFaceEditingTabsView__applyOrderedTabsAndLayout__block_invoke(uint6
     {
       v6 = [(NSMutableArray *)self->_labels count];
       v7 = 134218240;
-      v8 = a3;
+      tabCopy = tab;
       v9 = 2048;
       v10 = v6;
       _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "Set selected tab (%lu) outside of label count (%lu)", &v7, 0x16u);
@@ -161,16 +161,16 @@ void __52__NTKFaceEditingTabsView__applyOrderedTabsAndLayout__block_invoke(uint6
   }
 }
 
-- (void)_applySelectedTab:(unint64_t)a3
+- (void)_applySelectedTab:(unint64_t)tab
 {
   v8 = [(NSMutableArray *)self->_labels objectAtIndexedSubscript:?];
-  [(NTKFaceEditingTabsView *)self _containerOffsetForLabelAtIndex:a3];
+  [(NTKFaceEditingTabsView *)self _containerOffsetForLabelAtIndex:tab];
   v6 = v5;
   [(UIView *)self->_labelContainer frame];
   [(UIView *)self->_labelContainer setFrame:v6];
   [(NSMutableArray *)self->_labels enumerateObjectsUsingBlock:&__block_literal_global_124];
-  v7 = [MEMORY[0x277D75348] whiteColor];
-  [v8 setColor:v7];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v8 setColor:whiteColor];
 }
 
 void __44__NTKFaceEditingTabsView__applySelectedTab___block_invoke(uint64_t a1, void *a2)
@@ -181,28 +181,28 @@ void __44__NTKFaceEditingTabsView__applySelectedTab___block_invoke(uint64_t a1, 
   [v3 setColor:v4];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromTab:(unint64_t)a4 toTab:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromTab:(unint64_t)tab toTab:(unint64_t)toTab
 {
-  if (a3 != 0.0 && a4 != a5)
+  if (fraction != 0.0 && tab != toTab)
   {
     [(UIView *)self->_labelContainer frame];
-    [(NTKFaceEditingTabsView *)self _containerOffsetForLabelAtIndex:a4];
-    [(NTKFaceEditingTabsView *)self _containerOffsetForLabelAtIndex:a5];
+    [(NTKFaceEditingTabsView *)self _containerOffsetForLabelAtIndex:tab];
+    [(NTKFaceEditingTabsView *)self _containerOffsetForLabelAtIndex:toTab];
     CLKInterpolateBetweenFloatsUnclipped();
     [(UIView *)self->_labelContainer setFrame:?];
-    v13 = [(NSMutableArray *)self->_labels objectAtIndexedSubscript:a4];
+    v13 = [(NSMutableArray *)self->_labels objectAtIndexedSubscript:tab];
     CLKInterpolateBetweenFloatsClipped();
     v10 = [MEMORY[0x277D75348] colorWithWhite:? alpha:?];
     [v13 setColor:v10];
 
-    v11 = [(NSMutableArray *)self->_labels objectAtIndexedSubscript:a5];
+    v11 = [(NSMutableArray *)self->_labels objectAtIndexedSubscript:toTab];
     CLKInterpolateBetweenFloatsClipped();
     v12 = [MEMORY[0x277D75348] colorWithWhite:? alpha:?];
     [v11 setColor:v12];
   }
 }
 
-- (double)_containerOffsetForLabelAtIndex:(int64_t)a3
+- (double)_containerOffsetForLabelAtIndex:(int64_t)index
 {
   if (![(NSMutableArray *)self->_labels count])
   {
@@ -210,10 +210,10 @@ void __44__NTKFaceEditingTabsView__applySelectedTab___block_invoke(uint64_t a1, 
   }
 
   labels = self->_labels;
-  if (a3 < 0)
+  if (index < 0)
   {
-    v8 = [(NSMutableArray *)labels firstObject];
-    [v8 frame];
+    firstObject = [(NSMutableArray *)labels firstObject];
+    [firstObject frame];
     MidX = -CGRectGetMidX(v14);
   }
 
@@ -221,19 +221,19 @@ void __44__NTKFaceEditingTabsView__applySelectedTab___block_invoke(uint64_t a1, 
   {
     v6 = [(NSMutableArray *)labels count];
     v7 = self->_labels;
-    if (v6 >= a3)
+    if (v6 >= index)
     {
-      v8 = [(NSMutableArray *)v7 objectAtIndexedSubscript:a3];
-      [v8 frame];
+      firstObject = [(NSMutableArray *)v7 objectAtIndexedSubscript:index];
+      [firstObject frame];
       MidX = CGRectGetMidX(v15);
     }
 
     else
     {
-      v8 = [(NSMutableArray *)v7 lastObject];
-      [v8 frame];
+      firstObject = [(NSMutableArray *)v7 lastObject];
+      [firstObject frame];
       MaxX = CGRectGetMaxX(v12);
-      [v8 frame];
+      [firstObject frame];
       MidX = MaxX + CGRectGetWidth(v13) * 0.5;
     }
   }

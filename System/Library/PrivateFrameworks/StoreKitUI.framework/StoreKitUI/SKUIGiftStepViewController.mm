@@ -1,16 +1,16 @@
 @interface SKUIGiftStepViewController
-- (SKUIGiftStepViewController)initWithGift:(id)a3 configuration:(id)a4;
-- (void)_finishImageLoadWithImage:(id)a3 error:(id)a4 block:(id)a5;
-- (void)finishGiftingWithResult:(BOOL)a3;
-- (void)loadItemArtworkWithArtworkContext:(id)a3 completionBlock:(id)a4;
+- (SKUIGiftStepViewController)initWithGift:(id)gift configuration:(id)configuration;
+- (void)_finishImageLoadWithImage:(id)image error:(id)error block:(id)block;
+- (void)finishGiftingWithResult:(BOOL)result;
+- (void)loadItemArtworkWithArtworkContext:(id)context completionBlock:(id)block;
 @end
 
 @implementation SKUIGiftStepViewController
 
-- (SKUIGiftStepViewController)initWithGift:(id)a3 configuration:(id)a4
+- (SKUIGiftStepViewController)initWithGift:(id)gift configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  giftCopy = gift;
+  configurationCopy = configuration;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIGiftStepViewController initWithGift:configuration:];
@@ -21,58 +21,58 @@
   v8 = [(SKUIGiftStepViewController *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [giftCopy copy];
     gift = v8->_gift;
     v8->_gift = v9;
 
-    objc_storeStrong(&v8->_giftConfiguration, a4);
+    objc_storeStrong(&v8->_giftConfiguration, configuration);
   }
 
   return v8;
 }
 
-- (void)finishGiftingWithResult:(BOOL)a3
+- (void)finishGiftingWithResult:(BOOL)result
 {
-  v3 = a3;
-  v5 = [(SKUIGiftStepViewController *)self navigationController];
+  resultCopy = result;
+  navigationController = [(SKUIGiftStepViewController *)self navigationController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 giftDelegate];
+    giftDelegate = [navigationController giftDelegate];
   }
 
   else
   {
-    v6 = 0;
+    giftDelegate = 0;
   }
 
-  v9 = v6;
+  v9 = giftDelegate;
   if (objc_opt_respondsToSelector())
   {
-    [v9 giftViewController:v5 didFinishWithResult:v3];
+    [v9 giftViewController:navigationController didFinishWithResult:resultCopy];
   }
 
   else
   {
-    v7 = [(SKUIGiftStepViewController *)self parentViewController];
-    v8 = v7;
-    if (!v7)
+    selfCopy = [(SKUIGiftStepViewController *)self parentViewController];
+    v8 = selfCopy;
+    if (!selfCopy)
     {
-      v7 = self;
+      selfCopy = self;
     }
 
-    [v7 dismissViewControllerAnimated:1 completion:0];
+    [selfCopy dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)loadItemArtworkWithArtworkContext:(id)a3 completionBlock:(id)a4
+- (void)loadItemArtworkWithArtworkContext:(id)context completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SKUIGift *)self->_gift item];
-  if (v8 && !self->_loadOperation)
+  contextCopy = context;
+  blockCopy = block;
+  item = [(SKUIGift *)self->_gift item];
+  if (item && !self->_loadOperation)
   {
-    v9 = [v6 URLForItem:v8];
+    v9 = [contextCopy URLForItem:item];
     if (v9)
     {
       v10 = [objc_alloc(MEMORY[0x277D69CD8]) initWithURL:v9];
@@ -80,7 +80,7 @@
       self->_loadOperation = v10;
 
       v12 = self->_loadOperation;
-      v13 = [v6 dataConsumerForItem:v8];
+      v13 = [contextCopy dataConsumerForItem:item];
       [(SSVLoadURLOperation *)v12 setDataConsumer:v13];
 
       [(SSVLoadURLOperation *)self->_loadOperation setITunesStoreRequest:0];
@@ -91,10 +91,10 @@
       v16[2] = __80__SKUIGiftStepViewController_loadItemArtworkWithArtworkContext_completionBlock___block_invoke;
       v16[3] = &unk_2781FB400;
       objc_copyWeak(&v18, &location);
-      v17 = v7;
+      v17 = blockCopy;
       [(SSVLoadURLOperation *)v14 setOutputBlock:v16];
-      v15 = [(SKUIGiftStepViewController *)self operationQueue];
-      [v15 addOperation:self->_loadOperation];
+      operationQueue = [(SKUIGiftStepViewController *)self operationQueue];
+      [operationQueue addOperation:self->_loadOperation];
 
       objc_destroyWeak(&v18);
       objc_destroyWeak(&location);
@@ -127,18 +127,18 @@ void __80__SKUIGiftStepViewController_loadItemArtworkWithArtworkContext_completi
   [WeakRetained _finishImageLoadWithImage:*(a1 + 32) error:*(a1 + 40) block:*(a1 + 48)];
 }
 
-- (void)_finishImageLoadWithImage:(id)a3 error:(id)a4 block:(id)a5
+- (void)_finishImageLoadWithImage:(id)image error:(id)error block:(id)block
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  imageCopy = image;
+  errorCopy = error;
+  blockCopy = block;
   [(SSVLoadURLOperation *)self->_loadOperation setOutputBlock:0];
   loadOperation = self->_loadOperation;
   self->_loadOperation = 0;
 
-  if (v9)
+  if (blockCopy)
   {
-    v9[2](v9, v11, v8);
+    blockCopy[2](blockCopy, imageCopy, errorCopy);
   }
 }
 

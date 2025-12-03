@@ -1,38 +1,38 @@
 @interface WebPolicyDecisionListenerPrivate
-- (WebPolicyDecisionListenerPrivate)initWithTarget:(id)a3 action:(SEL)a4;
+- (WebPolicyDecisionListenerPrivate)initWithTarget:(id)target action:(SEL)action;
 @end
 
 @implementation WebPolicyDecisionListenerPrivate
 
-- (WebPolicyDecisionListenerPrivate)initWithTarget:(id)a3 action:(SEL)a4
+- (WebPolicyDecisionListenerPrivate)initWithTarget:(id)target action:(SEL)action
 {
   v11.receiver = self;
   v11.super_class = WebPolicyDecisionListenerPrivate;
   v6 = [(WebPolicyDecisionListenerPrivate *)&v11 init];
   if (v6)
   {
-    if (a3)
+    if (target)
     {
-      v7 = a3;
+      targetCopy = target;
     }
 
     m_ptr = v6->target.m_ptr;
-    v6->target.m_ptr = a3;
+    v6->target.m_ptr = target;
     if (m_ptr)
     {
     }
 
-    if (a4)
+    if (action)
     {
-      v9 = a4;
+      actionCopy = action;
     }
 
     else
     {
-      v9 = 0;
+      actionCopy = 0;
     }
 
-    v6->action = v9;
+    v6->action = actionCopy;
   }
 
   return v6;

@@ -1,8 +1,8 @@
 @interface SBIconsOccludedAssertion
-- (SBIconsOccludedAssertion)initWithInvalidator:(id)a3 reason:(id)a4;
+- (SBIconsOccludedAssertion)initWithInvalidator:(id)invalidator reason:(id)reason;
 - (SBIconsOccludedAssertionInvalidating)invalidator;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)dealloc;
 - (void)invalidate;
@@ -10,18 +10,18 @@
 
 @implementation SBIconsOccludedAssertion
 
-- (SBIconsOccludedAssertion)initWithInvalidator:(id)a3 reason:(id)a4
+- (SBIconsOccludedAssertion)initWithInvalidator:(id)invalidator reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  invalidatorCopy = invalidator;
+  reasonCopy = reason;
   v13.receiver = self;
   v13.super_class = SBIconsOccludedAssertion;
   v8 = [(SBIconsOccludedAssertion *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_invalidator, v6);
-    v10 = [v7 copy];
+    objc_storeWeak(&v8->_invalidator, invalidatorCopy);
+    v10 = [reasonCopy copy];
     reason = v9->_reason;
     v9->_reason = v10;
   }
@@ -50,24 +50,24 @@
   if (![(SBIconsOccludedAssertion *)self isInvalidated])
   {
     [(SBIconsOccludedAssertion *)self setInvalidated:1];
-    v3 = [(SBIconsOccludedAssertion *)self invalidator];
-    [v3 removeIconsOccludedAssertion:self];
+    invalidator = [(SBIconsOccludedAssertion *)self invalidator];
+    [invalidator removeIconsOccludedAssertion:self];
   }
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIconsOccludedAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIconsOccludedAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v5 = [(SBIconsOccludedAssertion *)self reason];
-  v6 = [v4 appendObject:v5 withName:@"reason"];
+  reason = [(SBIconsOccludedAssertion *)self reason];
+  v6 = [v4 appendObject:reason withName:@"reason"];
 
   v7 = [v4 appendBool:-[SBIconsOccludedAssertion isInvalidated](self withName:{"isInvalidated"), @"invalidated"}];
 
@@ -76,10 +76,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBIconsOccludedAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIconsOccludedAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (SBIconsOccludedAssertionInvalidating)invalidator

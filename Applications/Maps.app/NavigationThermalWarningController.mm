@@ -9,8 +9,8 @@
 - (void)_sendNotificationIfNeccessary;
 - (void)_tearDownNotificationIfNeeded;
 - (void)dealloc;
-- (void)didUpdateMitigationNamed:(id)a3;
-- (void)setActive:(BOOL)a3;
+- (void)didUpdateMitigationNamed:(id)named;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation NavigationThermalWarningController
@@ -21,7 +21,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v5 = 134349314;
-    v6 = self;
+    selfCopy = self;
     v7 = 2080;
     v8 = "[NavigationThermalWarningController _checkIfLockScreenMitigationShouldActivate]";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] %s", &v5, 0x16u);
@@ -31,9 +31,9 @@
   -[NavigationThermalWarningController setActive:](self, "setActive:", [v4 shouldActivateMitigationNamed:@"NavigationDisableLockScreen"]);
 }
 
-- (void)didUpdateMitigationNamed:(id)a3
+- (void)didUpdateMitigationNamed:(id)named
 {
-  if ([a3 isEqualToString:@"NavigationDisableLockScreen"])
+  if ([named isEqualToString:@"NavigationDisableLockScreen"])
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -47,9 +47,9 @@
 - (void)_sendNotificationIfNeccessary
 {
   v3 = +[MapsScreenLayoutMonitor sharedMonitor];
-  v4 = [v3 isLocked];
+  isLocked = [v3 isLocked];
 
-  if (v4)
+  if (isLocked)
   {
     if (![(NavigationThermalWarningController *)self isActive]|| self->_notification)
     {
@@ -62,7 +62,7 @@ LABEL_7:
       }
 
       v11 = 134349056;
-      v12 = self;
+      selfCopy4 = self;
       v6 = "[%{public}p] Screen is locked";
 LABEL_6:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, v6, &v11, 0xCu);
@@ -70,11 +70,11 @@ LABEL_6:
     }
 
     v8 = +[CarDisplayController sharedInstance];
-    v9 = [v8 isCurrentlyConnectedToAnyCarScene];
+    isCurrentlyConnectedToAnyCarScene = [v8 isCurrentlyConnectedToAnyCarScene];
 
     v5 = sub_1005A8514();
     v10 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
-    if (v9)
+    if (isCurrentlyConnectedToAnyCarScene)
     {
       if (!v10)
       {
@@ -82,7 +82,7 @@ LABEL_6:
       }
 
       v11 = 134349056;
-      v12 = self;
+      selfCopy4 = self;
       v6 = "[%{public}p] Screen is locked and the phone is still hot but CarPlay is connected; not showing notification";
       goto LABEL_6;
     }
@@ -90,7 +90,7 @@ LABEL_6:
     if (v10)
     {
       v11 = 134349056;
-      v12 = self;
+      selfCopy4 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Screen is locked and the phone is still hot; showing notification", &v11, 0xCu);
     }
 
@@ -103,7 +103,7 @@ LABEL_6:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v11 = 134349056;
-      v12 = self;
+      selfCopy4 = self;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Device is unlocked; tearing down notification", &v11, 0xCu);
     }
 
@@ -148,7 +148,7 @@ LABEL_6:
     {
       notification = self->_notification;
       v9 = 134349314;
-      v10 = self;
+      selfCopy2 = self;
       v11 = 2112;
       v12 = notification;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Cancelling notification: %@", &v9, 0x16u);
@@ -163,7 +163,7 @@ LABEL_6:
       {
         v8 = self->_notification;
         v9 = 134349570;
-        v10 = self;
+        selfCopy2 = self;
         v11 = 2112;
         v12 = v8;
         v13 = 1024;
@@ -186,7 +186,7 @@ LABEL_6:
     {
       idleTimerAssertion = self->_idleTimerAssertion;
       v6 = 134349314;
-      v7 = self;
+      selfCopy = self;
       v8 = 2112;
       v9 = idleTimerAssertion;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Clearing previous idle timer assertion: %@", &v6, 0x16u);
@@ -202,19 +202,19 @@ LABEL_6:
 {
   [(NavigationThermalWarningController *)self _tearDownNotificationIfNeeded];
   v22[0] = kCFUserNotificationAlertHeaderKey;
-  v3 = [(NavigationThermalWarningController *)self _localizedTitle];
-  v23[0] = v3;
+  _localizedTitle = [(NavigationThermalWarningController *)self _localizedTitle];
+  v23[0] = _localizedTitle;
   v22[1] = kCFUserNotificationAlertMessageKey;
-  v4 = [(NavigationThermalWarningController *)self _localizedMessage];
-  v23[1] = v4;
+  _localizedMessage = [(NavigationThermalWarningController *)self _localizedMessage];
+  v23[1] = _localizedMessage;
   v23[2] = &__kCFBooleanTrue;
   v22[2] = kCFUserNotificationAlertTopMostKey;
   v22[3] = SBUserNotificationLockScreenAlertHeaderKey;
-  v5 = [(NavigationThermalWarningController *)self _localizedTitle];
-  v23[3] = v5;
+  _localizedTitle2 = [(NavigationThermalWarningController *)self _localizedTitle];
+  v23[3] = _localizedTitle2;
   v22[4] = SBUserNotificationLockScreenAlertMessageKey;
-  v6 = [(NavigationThermalWarningController *)self _localizedMessage];
-  v23[4] = v6;
+  _localizedMessage2 = [(NavigationThermalWarningController *)self _localizedMessage];
+  v23[4] = _localizedMessage2;
   v23[5] = &__kCFBooleanTrue;
   v22[5] = SBUserNotificationAllowInSetupKey;
   v22[6] = SBUserNotificationAllowInLoginWindow;
@@ -233,15 +233,15 @@ LABEL_6:
 
   error = 0;
   self->_notification = CFUserNotificationCreate(0, 0.0, 0x20uLL, &error, v7);
-  LODWORD(v4) = error;
+  LODWORD(_localizedMessage) = error;
   v8 = sub_1005A8514();
   v9 = v8;
-  if (v4)
+  if (_localizedMessage)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
     {
       *buf = 134349570;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2112;
       v19 = v7;
       v20 = 1024;
@@ -259,7 +259,7 @@ LABEL_6:
   {
     notification = self->_notification;
     *buf = 134349314;
-    v17 = self;
+    selfCopy2 = self;
     v18 = 2112;
     v19 = notification;
     v10 = "[%{public}p] Successfully created notification: %@";
@@ -276,7 +276,7 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v19 = self;
+    selfCopy4 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Force lock the screen", buf, 0xCu);
   }
 
@@ -287,7 +287,7 @@ LABEL_6:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v19 = self;
+      selfCopy4 = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Taking timer assertion", buf, 0xCu);
     }
 
@@ -308,7 +308,7 @@ LABEL_6:
       {
         v13 = self->_idleTimerAssertion;
         *buf = 134349314;
-        v19 = self;
+        selfCopy4 = self;
         v20 = 2112;
         v21 = v13;
         v14 = "[%{public}p] Successfully acquired idle time assertion: %@";
@@ -322,7 +322,7 @@ LABEL_11:
     else if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 134349314;
-      v19 = self;
+      selfCopy4 = self;
       v20 = 2112;
       v21 = v8;
       v14 = "[%{public}p] Error acquiring idle timer assertion: %@";
@@ -333,41 +333,41 @@ LABEL_11:
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v3 = a3;
+    activeCopy = active;
     v5 = sub_1005A8514();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       active = self->_active;
       v11 = 134349568;
-      v12 = self;
+      selfCopy3 = self;
       v13 = 1024;
-      v14 = active;
+      activeCopy2 = active;
       v15 = 1024;
-      v16 = v3;
+      v16 = activeCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Active state changed: %d => %d", &v11, 0x18u);
     }
 
-    self->_active = v3;
-    v7 = [(NavigationThermalWarningController *)self changeHandler];
+    self->_active = activeCopy;
+    changeHandler = [(NavigationThermalWarningController *)self changeHandler];
 
-    if (v7)
+    if (changeHandler)
     {
-      v8 = [(NavigationThermalWarningController *)self changeHandler];
-      v8[2](v8, v3);
+      changeHandler2 = [(NavigationThermalWarningController *)self changeHandler];
+      changeHandler2[2](changeHandler2, activeCopy);
     }
 
     v9 = sub_1005A8514();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-    if (v3)
+    if (activeCopy)
     {
       if (v10)
       {
         v11 = 134349056;
-        v12 = self;
+        selfCopy3 = self;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] Thermal level is dangerous", &v11, 0xCu);
       }
 
@@ -380,7 +380,7 @@ LABEL_11:
       if (v10)
       {
         v11 = 134349056;
-        v12 = self;
+        selfCopy3 = self;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] Thermal level is normal", &v11, 0xCu);
       }
 
@@ -396,7 +396,7 @@ LABEL_11:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Disabling thermal level monitoring", buf, 0xCu);
   }
 

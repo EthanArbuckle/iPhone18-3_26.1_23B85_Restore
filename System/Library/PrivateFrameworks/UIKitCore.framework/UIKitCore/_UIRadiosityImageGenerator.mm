@@ -1,6 +1,6 @@
 @interface _UIRadiosityImageGenerator
 + (id)sharedInstance;
-- (void)imageWithImage:(CGImage *)a3 completionHandler:(id)a4;
+- (void)imageWithImage:(CGImage *)image completionHandler:(id)handler;
 @end
 
 @implementation _UIRadiosityImageGenerator
@@ -17,13 +17,13 @@
   return v3;
 }
 
-- (void)imageWithImage:(CGImage *)a3 completionHandler:(id)a4
+- (void)imageWithImage:(CGImage *)image completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = v5;
+  handlerCopy = handler;
+  v6 = handlerCopy;
   if (qword_1ED4A2AA8 == -1)
   {
-    if (!v5)
+    if (!handlerCopy)
     {
       goto LABEL_8;
     }
@@ -38,12 +38,12 @@
     }
   }
 
-  if (a3)
+  if (image)
   {
     if (_MergedGlobals_1379)
     {
-      Width = CGImageGetWidth(a3);
-      Height = CGImageGetHeight(a3);
+      Width = CGImageGetWidth(image);
+      Height = CGImageGetHeight(image);
       if (Width)
       {
         if (Height)
@@ -57,7 +57,7 @@
           v13 = v9;
           v14 = Height;
           v12 = v6;
-          [v10 radiosityImageWithImage:a3 displayScale:1 completionHandler:v11];
+          [v10 radiosityImageWithImage:image displayScale:1 completionHandler:v11];
         }
       }
     }

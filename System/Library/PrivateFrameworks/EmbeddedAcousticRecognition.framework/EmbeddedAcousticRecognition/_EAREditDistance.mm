@@ -1,30 +1,30 @@
 @interface _EAREditDistance
-- (_EAREditDistance)editDistanceWithRefText:(id)a3 hypText:(id)a4 caseInsensitive:(BOOL)a5 removeWordSense:(BOOL)a6;
-- (_EAREditDistance)editDistanceWithRefTokens:(id)a3 hypTokens:(id)a4 caseInsensitive:(BOOL)a5 removeWordSense:(BOOL)a6;
-- (void)editAlignmentWithRefText:(id)a3 hypText:(id)a4 placeholderSymbol:(id)a5 caseInsensitive:(BOOL)a6 removeWordSense:(BOOL)a7 completion:(id)a8;
-- (void)editAlignmentWithRefTokens:(id)a3 hypTokens:(id)a4 placeholderSymbol:(id)a5 caseInsensitive:(BOOL)a6 removeWordSense:(BOOL)a7 completion:(id)a8;
+- (_EAREditDistance)editDistanceWithRefText:(id)text hypText:(id)hypText caseInsensitive:(BOOL)insensitive removeWordSense:(BOOL)sense;
+- (_EAREditDistance)editDistanceWithRefTokens:(id)tokens hypTokens:(id)hypTokens caseInsensitive:(BOOL)insensitive removeWordSense:(BOOL)sense;
+- (void)editAlignmentWithRefText:(id)text hypText:(id)hypText placeholderSymbol:(id)symbol caseInsensitive:(BOOL)insensitive removeWordSense:(BOOL)sense completion:(id)completion;
+- (void)editAlignmentWithRefTokens:(id)tokens hypTokens:(id)hypTokens placeholderSymbol:(id)symbol caseInsensitive:(BOOL)insensitive removeWordSense:(BOOL)sense completion:(id)completion;
 @end
 
 @implementation _EAREditDistance
 
-- (_EAREditDistance)editDistanceWithRefTokens:(id)a3 hypTokens:(id)a4 caseInsensitive:(BOOL)a5 removeWordSense:(BOOL)a6
+- (_EAREditDistance)editDistanceWithRefTokens:(id)tokens hypTokens:(id)hypTokens caseInsensitive:(BOOL)insensitive removeWordSense:(BOOL)sense
 {
-  v6 = a6;
-  v7 = a5;
-  v9 = a3;
-  v10 = a4;
+  senseCopy = sense;
+  insensitiveCopy = insensitive;
+  tokensCopy = tokens;
+  hypTokensCopy = hypTokens;
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v76 = 0;
   v12 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:@"\\\\\\S*$" options:0 error:&v76];
   if (!v76)
   {
-    v74 = v7;
-    v75 = v6;
+    v74 = insensitiveCopy;
+    v75 = senseCopy;
     v69 = v12;
     v66 = v11;
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if ([v9 count] != -1)
+    if ([tokensCopy count] != -1)
     {
       v15 = 0;
       do
@@ -41,14 +41,14 @@
         ++v15;
       }
 
-      while (v15 < [v9 count] + 1);
+      while (v15 < [tokensCopy count] + 1);
     }
 
-    if ([v10 count])
+    if ([hypTokensCopy count])
     {
       v68 = 1;
-      v72 = v10;
-      v73 = v9;
+      v72 = hypTokensCopy;
+      v73 = tokensCopy;
       v70 = v13;
       v71 = v14;
       do
@@ -63,31 +63,31 @@
         v21 = [v14 objectAtIndexedSubscript:0];
         [v21 incrementCost];
 
-        if ([v9 count])
+        if ([tokensCopy count])
         {
           v22 = 1;
           do
           {
             v23 = [v13 objectAtIndexedSubscript:v22];
-            v24 = [v23 totalCost];
+            totalCost = [v23 totalCost];
 
             v25 = [v14 objectAtIndexedSubscript:v22 - 1];
             v26 = v13;
-            v27 = [v25 totalCost];
+            totalCost2 = [v25 totalCost];
 
             v28 = [v26 objectAtIndexedSubscript:v22 - 1];
-            v29 = [v28 totalCost];
+            totalCost3 = [v28 totalCost];
 
-            v30 = [v10 objectAtIndexedSubscript:v68 - 1];
-            v31 = [v9 objectAtIndexedSubscript:v22 - 1];
+            v30 = [hypTokensCopy objectAtIndexedSubscript:v68 - 1];
+            v31 = [tokensCopy objectAtIndexedSubscript:v22 - 1];
             if (v74)
             {
-              v32 = [v30 lowercaseString];
+              lowercaseString = [v30 lowercaseString];
 
-              v33 = [v31 lowercaseString];
+              lowercaseString2 = [v31 lowercaseString];
 
-              v30 = v32;
-              v31 = v33;
+              v30 = lowercaseString;
+              v31 = lowercaseString2;
             }
 
             if (v75)
@@ -100,11 +100,11 @@
               v31 = v35;
             }
 
-            v10 = v72;
-            v36 = v29 + ([v30 isEqualToString:v31] ^ 1);
-            if (v36 > v24 || v36 > v27)
+            hypTokensCopy = v72;
+            v36 = totalCost3 + ([v30 isEqualToString:v31] ^ 1);
+            if (v36 > totalCost || v36 > totalCost2)
             {
-              if (v27 >= v24)
+              if (totalCost2 >= totalCost)
               {
                 v13 = v70;
                 v44 = [v70 objectAtIndexedSubscript:v22];
@@ -113,7 +113,7 @@
                 [v71 setObject:v45 atIndexedSubscript:v22];
 
                 v46 = [v71 objectAtIndexedSubscript:v22];
-                [v46 setTotalCost:v24 + 1];
+                [v46 setTotalCost:totalCost + 1];
 
                 v40 = [v71 objectAtIndexedSubscript:v22];
                 [v40 incrementInsertions];
@@ -127,7 +127,7 @@
                 [v71 setObject:v42 atIndexedSubscript:v22];
 
                 v43 = [v71 objectAtIndexedSubscript:v22];
-                [v43 setTotalCost:v27 + 1];
+                [v43 setTotalCost:totalCost2 + 1];
 
                 v40 = [v71 objectAtIndexedSubscript:v22];
                 [v40 incrementDeletions];
@@ -154,7 +154,7 @@
             }
 
             ++v22;
-            v9 = v73;
+            tokensCopy = v73;
           }
 
           while (v22 <= [v73 count]);
@@ -178,7 +178,7 @@
         ++v68;
       }
 
-      while (v68 <= [v10 count]);
+      while (v68 <= [hypTokensCopy count]);
     }
 
     if ([v13 count])
@@ -217,7 +217,7 @@
       [v67 setObject:&unk_1F2D541E8 forKeyedSubscript:@"EditDistance"];
     }
 
-    v64 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v9, "count")}];
+    v64 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(tokensCopy, "count")}];
     [v11 setObject:v64 forKeyedSubscript:@"ReferenceSize"];
 
     v12 = v69;
@@ -226,41 +226,41 @@
   return v11;
 }
 
-- (_EAREditDistance)editDistanceWithRefText:(id)a3 hypText:(id)a4 caseInsensitive:(BOOL)a5 removeWordSense:(BOOL)a6
+- (_EAREditDistance)editDistanceWithRefText:(id)text hypText:(id)hypText caseInsensitive:(BOOL)insensitive removeWordSense:(BOOL)sense
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a4;
-  v11 = a3;
+  senseCopy = sense;
+  insensitiveCopy = insensitive;
+  hypTextCopy = hypText;
+  textCopy = text;
   v12 = objc_alloc_init(_EARNLTokenizer);
   [(_EARNLTokenizer *)v12 setToLowerCase:0];
   [(_EARNLTokenizer *)v12 setReplacePunctuation:0];
-  v13 = [(_EARNLTokenizer *)v12 tokenize:v11];
+  v13 = [(_EARNLTokenizer *)v12 tokenize:textCopy];
 
-  v14 = [(_EARNLTokenizer *)v12 tokenize:v10];
+  v14 = [(_EARNLTokenizer *)v12 tokenize:hypTextCopy];
 
-  v15 = [(_EAREditDistance *)self editDistanceWithRefTokens:v13 hypTokens:v14 caseInsensitive:v7 removeWordSense:v6];
+  v15 = [(_EAREditDistance *)self editDistanceWithRefTokens:v13 hypTokens:v14 caseInsensitive:insensitiveCopy removeWordSense:senseCopy];
 
   return v15;
 }
 
-- (void)editAlignmentWithRefTokens:(id)a3 hypTokens:(id)a4 placeholderSymbol:(id)a5 caseInsensitive:(BOOL)a6 removeWordSense:(BOOL)a7 completion:(id)a8
+- (void)editAlignmentWithRefTokens:(id)tokens hypTokens:(id)hypTokens placeholderSymbol:(id)symbol caseInsensitive:(BOOL)insensitive removeWordSense:(BOOL)sense completion:(id)completion
 {
-  v94 = a6;
-  v95 = a7;
+  insensitiveCopy = insensitive;
+  senseCopy = sense;
   v98[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a8;
-  v97 = v11;
-  v15 = [v11 count];
-  v96 = v12;
-  v16 = [v12 count];
+  tokensCopy = tokens;
+  hypTokensCopy = hypTokens;
+  symbolCopy = symbol;
+  completionCopy = completion;
+  v97 = tokensCopy;
+  v15 = [tokensCopy count];
+  v96 = hypTokensCopy;
+  v16 = [hypTokensCopy count];
   if (!v15 || (v17 = v16) == 0)
   {
 LABEL_11:
-    (*(v14 + 2))(v14, &unk_1F2D54200, 0, 0);
+    (*(completionCopy + 2))(completionCopy, &unk_1F2D54200, 0, 0);
     goto LABEL_12;
   }
 
@@ -268,7 +268,7 @@ LABEL_11:
   {
     v19 = [v97 objectAtIndexedSubscript:i];
 
-    if (v19 == v13)
+    if (v19 == symbolCopy)
     {
       goto LABEL_11;
     }
@@ -279,7 +279,7 @@ LABEL_11:
   {
     v21 = [v96 objectAtIndexedSubscript:v20];
 
-    if (v21 == v13)
+    if (v21 == symbolCopy)
     {
       goto LABEL_11;
     }
@@ -294,7 +294,7 @@ LABEL_11:
   v23 = v22;
   if (v98[0])
   {
-    (*(v14 + 2))(v14, &unk_1F2D54200, 0, 0);
+    (*(completionCopy + 2))(completionCopy, &unk_1F2D54200, 0, 0);
     goto LABEL_67;
   }
 
@@ -338,8 +338,8 @@ LABEL_11:
   }
 
   while (v29 != v26);
-  v83 = v14;
-  v85 = v13;
+  v83 = completionCopy;
+  v85 = symbolCopy;
   v35 = &v90[8 * v17 + 16];
   v87 = 8 * v17 + 8;
   v36 = (v90 + 8);
@@ -357,17 +357,17 @@ LABEL_11:
     {
       v41 = [v96 objectAtIndexedSubscript:v40 - 1];
       v42 = [v97 objectAtIndexedSubscript:v38];
-      if (v94)
+      if (insensitiveCopy)
       {
-        v43 = [v41 lowercaseString];
+        lowercaseString = [v41 lowercaseString];
 
-        v44 = [v42 lowercaseString];
+        lowercaseString2 = [v42 lowercaseString];
 
-        v42 = v44;
-        v41 = v43;
+        v42 = lowercaseString2;
+        v41 = lowercaseString;
       }
 
-      if (v95)
+      if (senseCopy)
       {
         v45 = [v23 stringByReplacingMatchesInString:v41 options:0 range:0 withTemplate:{objc_msgSend(v41, "length"), &stru_1F2D44B60}];
 
@@ -409,7 +409,7 @@ LABEL_11:
   v93 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v53 = v88;
   v54 = v17;
-  v13 = v85;
+  symbolCopy = v85;
   v55 = v52;
   v84 = v52;
   do
@@ -428,17 +428,17 @@ LABEL_11:
       v57 = v53 - 1;
       v58 = [v97 objectAtIndexedSubscript:v53 - 1];
       v92 = v53;
-      if (v94)
+      if (insensitiveCopy)
       {
-        v59 = [v56 lowercaseString];
+        lowercaseString3 = [v56 lowercaseString];
 
-        v60 = [v58 lowercaseString];
+        lowercaseString4 = [v58 lowercaseString];
 
-        v56 = v59;
-        v58 = v60;
+        v56 = lowercaseString3;
+        v58 = lowercaseString4;
       }
 
-      if (v95)
+      if (senseCopy)
       {
         v61 = [v23 stringByReplacingMatchesInString:v56 options:0 range:0 withTemplate:{objc_msgSend(v56, "length"), &stru_1F2D44B60}];
 
@@ -501,7 +501,7 @@ LABEL_11:
       }
 
       v55 = v84;
-      v13 = v85;
+      symbolCopy = v85;
     }
 
     else
@@ -512,7 +512,7 @@ LABEL_11:
 
     if (v63 == v53)
     {
-      v77 = v13;
+      v77 = symbolCopy;
       goto LABEL_62;
     }
 
@@ -522,7 +522,7 @@ LABEL_61:
 LABEL_62:
     if (v64 == v54)
     {
-      v78 = v13;
+      v78 = symbolCopy;
     }
 
     else
@@ -542,29 +542,29 @@ LABEL_62:
   v80 = v93;
   ReverseArray(v93);
   v81 = [MEMORY[0x1E696AD98] numberWithInteger:*&v90[8 * v89 * v88 + 8 * v17]];
-  v14 = v83;
+  completionCopy = v83;
   v83[2](v83, v81, v55, v80);
 
 LABEL_67:
 LABEL_12:
 }
 
-- (void)editAlignmentWithRefText:(id)a3 hypText:(id)a4 placeholderSymbol:(id)a5 caseInsensitive:(BOOL)a6 removeWordSense:(BOOL)a7 completion:(id)a8
+- (void)editAlignmentWithRefText:(id)text hypText:(id)hypText placeholderSymbol:(id)symbol caseInsensitive:(BOOL)insensitive removeWordSense:(BOOL)sense completion:(id)completion
 {
-  v8 = a7;
-  v9 = a6;
-  v14 = a8;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  senseCopy = sense;
+  insensitiveCopy = insensitive;
+  completionCopy = completion;
+  symbolCopy = symbol;
+  hypTextCopy = hypText;
+  textCopy = text;
   v20 = objc_alloc_init(_EARNLTokenizer);
   [(_EARNLTokenizer *)v20 setToLowerCase:0];
   [(_EARNLTokenizer *)v20 setReplacePunctuation:0];
-  v18 = [(_EARNLTokenizer *)v20 tokenize:v17];
+  v18 = [(_EARNLTokenizer *)v20 tokenize:textCopy];
 
-  v19 = [(_EARNLTokenizer *)v20 tokenize:v16];
+  v19 = [(_EARNLTokenizer *)v20 tokenize:hypTextCopy];
 
-  [(_EAREditDistance *)self editAlignmentWithRefTokens:v18 hypTokens:v19 placeholderSymbol:v15 caseInsensitive:v9 removeWordSense:v8 completion:v14];
+  [(_EAREditDistance *)self editAlignmentWithRefTokens:v18 hypTokens:v19 placeholderSymbol:symbolCopy caseInsensitive:insensitiveCopy removeWordSense:senseCopy completion:completionCopy];
 }
 
 @end

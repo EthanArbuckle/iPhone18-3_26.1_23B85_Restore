@@ -1,29 +1,29 @@
 @interface PKCreditBalanceCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKCreditBalanceCell)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKCreditBalanceCell)initWithFrame:(CGRect)frame;
 - (void)_createSubviews;
 - (void)_updateDefaultValues;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAmountFont:(id)a3;
-- (void)setAmountText:(id)a3;
-- (void)setBalanceFont:(id)a3;
-- (void)setBalanceLabelNumberOfLines:(int64_t)a3;
-- (void)setBalanceText:(id)a3;
-- (void)setCreditAvailableFont:(id)a3;
-- (void)setCreditAvailableText:(id)a3;
-- (void)setCreditAvailableTextColor:(id)a3;
-- (void)setItem:(id)a3;
-- (void)setUseAccessibilityLayout:(BOOL)a3;
+- (void)setAmountFont:(id)font;
+- (void)setAmountText:(id)text;
+- (void)setBalanceFont:(id)font;
+- (void)setBalanceLabelNumberOfLines:(int64_t)lines;
+- (void)setBalanceText:(id)text;
+- (void)setCreditAvailableFont:(id)font;
+- (void)setCreditAvailableText:(id)text;
+- (void)setCreditAvailableTextColor:(id)color;
+- (void)setItem:(id)item;
+- (void)setUseAccessibilityLayout:(BOOL)layout;
 @end
 
 @implementation PKCreditBalanceCell
 
-- (PKCreditBalanceCell)initWithFrame:(CGRect)a3
+- (PKCreditBalanceCell)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = PKCreditBalanceCell;
-  v3 = [(PKDashboardCollectionViewCell *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardCollectionViewCell *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v3->_isCompactUI = PKUIGetMinScreenWidthType() == 0;
@@ -35,23 +35,23 @@
 
 - (void)_createSubviews
 {
-  v17 = [(PKCreditBalanceCell *)self contentView];
+  contentView = [(PKCreditBalanceCell *)self contentView];
   v3 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   labelBalance = self->_labelBalance;
   self->_labelBalance = v3;
 
-  v5 = [(UILabel *)self->_labelBalance font];
+  font = [(UILabel *)self->_labelBalance font];
   defaultFont = self->_defaultFont;
-  self->_defaultFont = v5;
+  self->_defaultFont = font;
 
   [(UILabel *)self->_labelBalance setNumberOfLines:1];
   [(UILabel *)self->_labelBalance setAdjustsFontSizeToFitWidth:1];
   v7 = self->_labelBalance;
-  v8 = [MEMORY[0x1E69DC888] labelColor];
-  [(UILabel *)v7 setTextColor:v8];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(UILabel *)v7 setTextColor:labelColor];
 
   [(UILabel *)self->_labelBalance setAccessibilityIdentifier:*MEMORY[0x1E69B9840]];
-  [v17 addSubview:self->_labelBalance];
+  [contentView addSubview:self->_labelBalance];
   v9 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   labelAmount = self->_labelAmount;
   self->_labelAmount = v9;
@@ -59,11 +59,11 @@
   [(UILabel *)self->_labelAmount setNumberOfLines:1];
   [(UILabel *)self->_labelAmount setAdjustsFontSizeToFitWidth:1];
   v11 = self->_labelAmount;
-  v12 = [MEMORY[0x1E69DC888] labelColor];
-  [(UILabel *)v11 setTextColor:v12];
+  labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+  [(UILabel *)v11 setTextColor:labelColor2];
 
   [(UILabel *)self->_labelAmount setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
-  [v17 addSubview:self->_labelAmount];
+  [contentView addSubview:self->_labelAmount];
   v13 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   labelCreditAvailable = self->_labelCreditAvailable;
   self->_labelCreditAvailable = v13;
@@ -71,11 +71,11 @@
   [(UILabel *)self->_labelCreditAvailable setNumberOfLines:1];
   [(UILabel *)self->_labelCreditAvailable setAdjustsFontSizeToFitWidth:1];
   v15 = self->_labelCreditAvailable;
-  v16 = [MEMORY[0x1E69DC888] labelColor];
-  [(UILabel *)v15 setTextColor:v16];
+  labelColor3 = [MEMORY[0x1E69DC888] labelColor];
+  [(UILabel *)v15 setTextColor:labelColor3];
 
   [(UILabel *)self->_labelCreditAvailable setAccessibilityIdentifier:*MEMORY[0x1E69B9CC8]];
-  [v17 addSubview:self->_labelCreditAvailable];
+  [contentView addSubview:self->_labelCreditAvailable];
   [(PKCreditBalanceCell *)self _updateDefaultValues];
   [(PKCreditBalanceCell *)self setAccessibilityIdentifier:*MEMORY[0x1E69B9500]];
 }
@@ -97,8 +97,8 @@
   [(PKCreditBalanceCell *)self setAmountFont:self->_defaultFont];
   [(PKCreditBalanceCell *)self setCreditAvailableText:0];
   [(PKCreditBalanceCell *)self setCreditAvailableFont:self->_defaultFont];
-  v3 = [MEMORY[0x1E69DC888] labelColor];
-  [(PKCreditBalanceCell *)self setCreditAvailableTextColor:v3];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(PKCreditBalanceCell *)self setCreditAvailableTextColor:labelColor];
 }
 
 - (void)layoutSubviews
@@ -169,10 +169,10 @@
   [(UILabel *)labelCreditAvailable setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = 8.0;
   if (!self->_isCompactUI)
   {
@@ -210,11 +210,11 @@
   return result;
 }
 
-- (void)setBalanceText:(id)a3
+- (void)setBalanceText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   v6 = self->_balanceText;
-  v7 = v5;
+  v7 = textCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -233,7 +233,7 @@
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_balanceText, a3);
+    objc_storeStrong(&self->_balanceText, text);
     [(UILabel *)self->_labelBalance setText:self->_balanceText];
     [(PKCreditBalanceCell *)self setNeedsLayout];
   }
@@ -241,33 +241,33 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setBalanceFont:(id)a3
+- (void)setBalanceFont:(id)font
 {
-  v5 = a3;
+  fontCopy = font;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_balanceFont, a3);
-    [(UILabel *)self->_labelBalance setFont:v5];
+    objc_storeStrong(&self->_balanceFont, font);
+    [(UILabel *)self->_labelBalance setFont:fontCopy];
     [(PKCreditBalanceCell *)self setNeedsLayout];
   }
 }
 
-- (void)setBalanceLabelNumberOfLines:(int64_t)a3
+- (void)setBalanceLabelNumberOfLines:(int64_t)lines
 {
-  if (self->_balanceLabelNumberOfLines != a3)
+  if (self->_balanceLabelNumberOfLines != lines)
   {
-    self->_balanceLabelNumberOfLines = a3;
+    self->_balanceLabelNumberOfLines = lines;
     [(UILabel *)self->_labelBalance setNumberOfLines:?];
 
     [(PKCreditBalanceCell *)self setNeedsLayout];
   }
 }
 
-- (void)setAmountText:(id)a3
+- (void)setAmountText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   v6 = self->_amountText;
-  v7 = v5;
+  v7 = textCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -286,7 +286,7 @@ LABEL_9:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_amountText, a3);
+    objc_storeStrong(&self->_amountText, text);
     [(UILabel *)self->_labelAmount setText:self->_amountText];
     [(PKCreditBalanceCell *)self setNeedsLayout];
   }
@@ -294,22 +294,22 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setAmountFont:(id)a3
+- (void)setAmountFont:(id)font
 {
-  v5 = a3;
+  fontCopy = font;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_amountFont, a3);
+    objc_storeStrong(&self->_amountFont, font);
     [(UILabel *)self->_labelAmount setFont:self->_amountFont];
     [(PKCreditBalanceCell *)self setNeedsLayout];
   }
 }
 
-- (void)setCreditAvailableText:(id)a3
+- (void)setCreditAvailableText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   v6 = self->_creditAvailableText;
-  v7 = v5;
+  v7 = textCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -328,7 +328,7 @@ LABEL_9:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_creditAvailableText, a3);
+    objc_storeStrong(&self->_creditAvailableText, text);
     [(UILabel *)self->_labelCreditAvailable setText:self->_creditAvailableText];
     [(PKCreditBalanceCell *)self setNeedsLayout];
   }
@@ -336,42 +336,42 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setCreditAvailableFont:(id)a3
+- (void)setCreditAvailableFont:(id)font
 {
-  v5 = a3;
+  fontCopy = font;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_creditAvailableFont, a3);
+    objc_storeStrong(&self->_creditAvailableFont, font);
     [(UILabel *)self->_labelCreditAvailable setFont:self->_creditAvailableFont];
     [(PKCreditBalanceCell *)self setNeedsLayout];
   }
 }
 
-- (void)setCreditAvailableTextColor:(id)a3
+- (void)setCreditAvailableTextColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_creditAvailableTextColor, a3);
+    objc_storeStrong(&self->_creditAvailableTextColor, color);
     [(UILabel *)self->_labelCreditAvailable setTextColor:self->_creditAvailableTextColor];
   }
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_item, a3);
+    objc_storeStrong(&self->_item, item);
     [(PKCreditBalanceCell *)self setNeedsLayout];
   }
 }
 
-- (void)setUseAccessibilityLayout:(BOOL)a3
+- (void)setUseAccessibilityLayout:(BOOL)layout
 {
-  if (self->_useAccessibilityLayout != a3)
+  if (self->_useAccessibilityLayout != layout)
   {
-    self->_useAccessibilityLayout = a3;
+    self->_useAccessibilityLayout = layout;
     [(PKCreditBalanceCell *)self setNeedsLayout];
   }
 }

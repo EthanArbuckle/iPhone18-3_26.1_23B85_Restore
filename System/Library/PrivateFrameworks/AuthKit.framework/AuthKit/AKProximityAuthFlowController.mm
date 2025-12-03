@@ -1,12 +1,12 @@
 @interface AKProximityAuthFlowController
 + (AKProximityAuthFlowController)shared;
-- (id)beginAuthenticationWithClient:(id)a3 context:(id)a4 server:(id)a5 completion:(id)a6;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)endAuthenticationWithCompletion:(id)a3;
-- (void)endAuthenticationWithToken:(id)a3;
-- (void)endProximityBroadcastWith:(id)a3;
+- (id)beginAuthenticationWithClient:(id)client context:(id)context server:(id)server completion:(id)completion;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)endAuthenticationWithCompletion:(id)completion;
+- (void)endAuthenticationWithToken:(id)token;
+- (void)endProximityBroadcastWith:(id)with;
 - (void)performAuthentication;
-- (void)showVisualPairingWithEvent:(id)a3;
+- (void)showVisualPairingWithEvent:(id)event;
 @end
 
 @implementation AKProximityAuthFlowController
@@ -23,64 +23,64 @@
   return v3;
 }
 
-- (id)beginAuthenticationWithClient:(id)a3 context:(id)a4 server:(id)a5 completion:(id)a6
+- (id)beginAuthenticationWithClient:(id)client context:(id)context server:(id)server completion:(id)completion
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(completion);
   _Block_copy(v10);
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = self;
-  v15 = sub_1001C4908(v11, v12, v13, v14, v10);
+  clientCopy = client;
+  contextCopy = context;
+  serverCopy = server;
+  selfCopy = self;
+  v15 = sub_1001C4908(clientCopy, contextCopy, serverCopy, selfCopy, v10);
   _Block_release(v10);
   _Block_release(v10);
 
   return v15;
 }
 
-- (void)endAuthenticationWithCompletion:(id)a3
+- (void)endAuthenticationWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
-  sub_1001C4EC4(v5, v4);
+  selfCopy = self;
+  sub_1001C4EC4(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (void)endAuthenticationWithToken:(id)a3
+- (void)endAuthenticationWithToken:(id)token
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1001C1814(a3);
+  selfCopy = self;
+  sub_1001C1814(token);
   swift_unknownObjectRelease();
 }
 
-- (void)showVisualPairingWithEvent:(id)a3
+- (void)showVisualPairingWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001C1F60(v4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_1001C1F60(eventCopy);
 }
 
-- (void)endProximityBroadcastWith:(id)a3
+- (void)endProximityBroadcastWith:(id)with
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001C23C8(v4);
+  withCopy = with;
+  selfCopy = self;
+  sub_1001C23C8(withCopy);
 }
 
 - (void)performAuthentication
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001C27D4();
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  ProximityAuthFlowController.centralManagerDidUpdateState(_:)(v4);
+  stateCopy = state;
+  selfCopy = self;
+  ProximityAuthFlowController.centralManagerDidUpdateState(_:)(stateCopy);
 }
 
 @end

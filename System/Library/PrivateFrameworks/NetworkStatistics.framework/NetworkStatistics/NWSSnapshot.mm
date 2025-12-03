@@ -1,42 +1,42 @@
 @interface NWSSnapshot
-- (id)_createCountsForProvider:(int)a3;
-- (id)_initWithCounts:(const nstat_counts *)a3 sourceIdent:(unint64_t)a4 seqno:(unint64_t)a5;
+- (id)_createCountsForProvider:(int)provider;
+- (id)_initWithCounts:(const nstat_counts *)counts sourceIdent:(unint64_t)ident seqno:(unint64_t)seqno;
 @end
 
 @implementation NWSSnapshot
 
-- (id)_initWithCounts:(const nstat_counts *)a3 sourceIdent:(unint64_t)a4 seqno:(unint64_t)a5
+- (id)_initWithCounts:(const nstat_counts *)counts sourceIdent:(unint64_t)ident seqno:(unint64_t)seqno
 {
   v14.receiver = self;
   v14.super_class = NWSSnapshot;
   result = [(NWSSnapshot *)&v14 init];
   if (result)
   {
-    v9 = *&a3->nstat_rxpackets;
-    v10 = *&a3->nstat_txpackets;
-    *(result + 40) = *&a3->nstat_cell_rxbytes;
+    v9 = *&counts->nstat_rxpackets;
+    v10 = *&counts->nstat_txpackets;
+    *(result + 40) = *&counts->nstat_cell_rxbytes;
     *(result + 24) = v10;
     *(result + 8) = v9;
-    v11 = *&a3->nstat_wifi_rxbytes;
-    v12 = *&a3->nstat_wired_rxbytes;
-    v13 = *&a3->nstat_rxduplicatebytes;
-    *(result + 104) = *&a3->nstat_connectsuccesses;
+    v11 = *&counts->nstat_wifi_rxbytes;
+    v12 = *&counts->nstat_wired_rxbytes;
+    v13 = *&counts->nstat_rxduplicatebytes;
+    *(result + 104) = *&counts->nstat_connectsuccesses;
     *(result + 88) = v13;
     *(result + 72) = v12;
     *(result + 56) = v11;
-    *(result + 15) = a5;
-    *(result + 16) = a4;
+    *(result + 15) = seqno;
+    *(result + 16) = ident;
   }
 
   return result;
 }
 
-- (id)_createCountsForProvider:(int)a3
+- (id)_createCountsForProvider:(int)provider
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   if (v5)
   {
-    if ((a3 - 1) < 3)
+    if ((provider - 1) < 3)
     {
       v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_counts.nstat_connectattempts];
       [v5 setObject:v7 forKeyedSubscript:kNStatSrcKeyConnectAttempt];
@@ -56,7 +56,7 @@
 
     else
     {
-      if ((a3 - 4) < 2)
+      if ((provider - 4) < 2)
       {
 LABEL_8:
         v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_counts.nstat_cell_rxbytes];
@@ -94,7 +94,7 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      if (a3 != 8)
+      if (provider != 8)
       {
         goto LABEL_9;
       }

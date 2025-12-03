@@ -1,24 +1,24 @@
 @interface _UIContextMenuSceneComponent
-+ (id)sceneComponentForView:(id)a3;
++ (id)sceneComponentForView:(id)view;
 - (UIScene)_scene;
-- (_UIContextMenuSceneComponent)initWithScene:(id)a3;
+- (_UIContextMenuSceneComponent)initWithScene:(id)scene;
 - (void)dismissActiveMenus;
-- (void)registerPresentation:(id)a3;
-- (void)removePresentation:(id)a3;
+- (void)registerPresentation:(id)presentation;
+- (void)removePresentation:(id)presentation;
 @end
 
 @implementation _UIContextMenuSceneComponent
 
-- (_UIContextMenuSceneComponent)initWithScene:(id)a3
+- (_UIContextMenuSceneComponent)initWithScene:(id)scene
 {
-  v5 = a3;
+  sceneCopy = scene;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    [v11 handleFailureInMethod:a2 object:self file:@"_UIContextMenuSceneComponent.m" lineNumber:37 description:{@"Only UIWindowScene is supported by %@.", v13}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIContextMenuSceneComponent.m" lineNumber:37 description:{@"Only UIWindowScene is supported by %@.", v13}];
   }
 
   v14.receiver = self;
@@ -27,7 +27,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_scene, v5);
+    objc_storeWeak(&v6->_scene, sceneCopy);
     v8 = [MEMORY[0x1E695DFA8] set];
     activePresentations = v7->_activePresentations;
     v7->_activePresentations = v8;
@@ -36,18 +36,18 @@
   return v7;
 }
 
-- (void)registerPresentation:(id)a3
+- (void)registerPresentation:(id)presentation
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuSceneComponent *)self activePresentations];
-  [v5 addObject:v4];
+  presentationCopy = presentation;
+  activePresentations = [(_UIContextMenuSceneComponent *)self activePresentations];
+  [activePresentations addObject:presentationCopy];
 }
 
-- (void)removePresentation:(id)a3
+- (void)removePresentation:(id)presentation
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuSceneComponent *)self activePresentations];
-  [v5 removeObject:v4];
+  presentationCopy = presentation;
+  activePresentations = [(_UIContextMenuSceneComponent *)self activePresentations];
+  [activePresentations removeObject:presentationCopy];
 }
 
 - (void)dismissActiveMenus
@@ -57,8 +57,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(_UIContextMenuSceneComponent *)self activePresentations];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  activePresentations = [(_UIContextMenuSceneComponent *)self activePresentations];
+  v3 = [activePresentations countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -70,27 +70,27 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(activePresentations);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) requestMenuDismissal];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [activePresentations countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-+ (id)sceneComponentForView:(id)a3
++ (id)sceneComponentForView:(id)view
 {
-  v3 = [a3 _window];
-  v4 = [v3 windowScene];
-  v5 = [v4 _contextMenuSceneComponent];
+  _window = [view _window];
+  windowScene = [_window windowScene];
+  _contextMenuSceneComponent = [windowScene _contextMenuSceneComponent];
 
-  return v5;
+  return _contextMenuSceneComponent;
 }
 
 - (UIScene)_scene

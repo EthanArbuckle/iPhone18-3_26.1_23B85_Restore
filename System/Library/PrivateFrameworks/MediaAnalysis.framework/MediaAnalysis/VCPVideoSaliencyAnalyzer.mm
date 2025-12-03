@@ -1,30 +1,30 @@
 @interface VCPVideoSaliencyAnalyzer
-- (BOOL)isOutOfBoundary:(CGRect)a3;
-- (VCPVideoSaliencyAnalyzer)initWithTransform:(CGAffineTransform *)a3;
-- (float)boundDistance:(CGRect)a3 relativeTo:(CGRect)a4 landscape:(BOOL)a5;
-- (float)updateConfidence:(float)a3 prevBound:(CGRect)a4 newBound:(CGRect)a5 width:(int)a6 height:(int)a7;
-- (id)pruneRegions:(id)a3 withOverlapRatio:(float)a4;
+- (BOOL)isOutOfBoundary:(CGRect)boundary;
+- (VCPVideoSaliencyAnalyzer)initWithTransform:(CGAffineTransform *)transform;
+- (float)boundDistance:(CGRect)distance relativeTo:(CGRect)to landscape:(BOOL)landscape;
+- (float)updateConfidence:(float)confidence prevBound:(CGRect)bound newBound:(CGRect)newBound width:(int)width height:(int)height;
+- (id)pruneRegions:(id)regions withOverlapRatio:(float)ratio;
 - (id)results;
-- (int)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 flags:(unint64_t *)a6;
-- (int)finishAnalysisPass:(id *)a3;
+- (int)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration flags:(unint64_t *)flags;
+- (int)finishAnalysisPass:(id *)pass;
 @end
 
 @implementation VCPVideoSaliencyAnalyzer
 
-- (VCPVideoSaliencyAnalyzer)initWithTransform:(CGAffineTransform *)a3
+- (VCPVideoSaliencyAnalyzer)initWithTransform:(CGAffineTransform *)transform
 {
   v23.receiver = self;
   v23.super_class = VCPVideoSaliencyAnalyzer;
   v3 = [(VCPVideoSaliencyAnalyzer *)&v23 init];
   if (v3)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5 = *(v3 + 1);
-    *(v3 + 1) = v4;
+    *(v3 + 1) = array;
 
-    v6 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v7 = *(v3 + 2);
-    *(v3 + 2) = v6;
+    *(v3 + 2) = array2;
 
     v8 = MEMORY[0x1E6960C80];
     v9 = *MEMORY[0x1E6960C80];
@@ -43,17 +43,17 @@
     v14 = *(v3 + 12);
     if (v14)
     {
-      v15 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v16 = *(v3 + 13);
-      *(v3 + 13) = v15;
+      *(v3 + 13) = dictionary;
 
-      v17 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
       v18 = *(v3 + 14);
-      *(v3 + 14) = v17;
+      *(v3 + 14) = dictionary2;
 
-      v19 = [MEMORY[0x1E695DEC8] array];
+      array3 = [MEMORY[0x1E695DEC8] array];
       v20 = *(v3 + 15);
-      *(v3 + 15) = v19;
+      *(v3 + 15) = array3;
 
       v14 = v3;
     }
@@ -69,24 +69,24 @@
   return v21;
 }
 
-- (float)updateConfidence:(float)a3 prevBound:(CGRect)a4 newBound:(CGRect)a5 width:(int)a6 height:(int)a7
+- (float)updateConfidence:(float)confidence prevBound:(CGRect)bound newBound:(CGRect)newBound width:(int)width height:(int)height
 {
-  v11.f64[0] = a5.origin.x;
-  v10.f64[0] = a5.origin.y;
-  *v7.i32 = vcvts_n_f32_s32(a6, 1uLL);
-  v13.f64[0] = a5.size.width;
-  v12.f64[0] = a5.size.height;
-  *v8.i32 = vcvts_n_f32_s32(a7, 1uLL);
-  v13.f64[1] = a4.size.width;
+  v11.f64[0] = newBound.origin.x;
+  v10.f64[0] = newBound.origin.y;
+  *v7.i32 = vcvts_n_f32_s32(width, 1uLL);
+  v13.f64[0] = newBound.size.width;
+  v12.f64[0] = newBound.size.height;
+  *v8.i32 = vcvts_n_f32_s32(height, 1uLL);
+  v13.f64[1] = bound.size.width;
   __asm { FMOV            V3.2D, #0.5 }
 
-  v11.f64[1] = a4.origin.x;
-  v12.f64[1] = a4.size.height;
-  v10.f64[1] = a4.origin.y;
+  v11.f64[1] = bound.origin.x;
+  v12.f64[1] = bound.size.height;
+  v10.f64[1] = bound.origin.y;
   v19 = vsub_f32(vcvt_f32_f64(vaddq_f64(v11, vmulq_f64(v13, _Q3))), vdup_lane_s32(v7, 0));
   *&v10.f64[0] = vsub_f32(vcvt_f32_f64(vaddq_f64(v10, vmulq_f64(v12, _Q3))), vdup_lane_s32(v8, 0));
   *&v10.f64[0] = vmla_f32(vmul_f32(*&v10.f64[0], *&v10.f64[0]), v19, v19);
-  v20 = expf((-2.0 * vsub_f32(*&v10.f64[0], vdup_lane_s32(*&v10.f64[0], 1)).f32[0]) / (a6 * a6 + a7 * a7)) * a3;
+  v20 = expf((-2.0 * vsub_f32(*&v10.f64[0], vdup_lane_s32(*&v10.f64[0], 1)).f32[0]) / (width * width + height * height)) * confidence;
   v21 = 1.0;
   if (v20 < 1.0)
   {
@@ -103,10 +103,10 @@
   return result;
 }
 
-- (BOOL)isOutOfBoundary:(CGRect)a3
+- (BOOL)isOutOfBoundary:(CGRect)boundary
 {
-  v3 = a3.origin.x + a3.size.width * 0.5;
-  v4 = a3.origin.y + a3.size.height * 0.5;
+  v3 = boundary.origin.x + boundary.size.width * 0.5;
+  v4 = boundary.origin.y + boundary.size.height * 0.5;
   if (v4 >= v3)
   {
     v5 = v3;
@@ -125,15 +125,15 @@
   return v3 > 0.9 || v5 < 0.1;
 }
 
-- (id)pruneRegions:(id)a3 withOverlapRatio:(float)a4
+- (id)pruneRegions:(id)regions withOverlapRatio:(float)ratio
 {
   v43 = *MEMORY[0x1E69E9840];
-  v35 = a3;
-  v34 = [MEMORY[0x1E695DF70] array];
-  v4 = [MEMORY[0x1E695DF70] arrayWithArray:v35];
+  regionsCopy = regions;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = [MEMORY[0x1E695DF70] arrayWithArray:regionsCopy];
   v5 = 0;
   v6 = MEMORY[0x1E695F058];
-  while ([v35 count] > v5)
+  while ([regionsCopy count] > v5)
   {
     if (v5 >= 2)
     {
@@ -150,12 +150,12 @@
     rect[0] = *v6;
     width = v6[2];
     height = v6[3];
-    v11 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v40 = 0u;
     v41 = 0u;
     memset(&rect[1], 0, 32);
-    v12 = [v4 reverseObjectEnumerator];
-    v13 = [v12 countByEnumeratingWithState:&rect[1] objects:v42 count:16];
+    reverseObjectEnumerator = [v4 reverseObjectEnumerator];
+    v13 = [reverseObjectEnumerator countByEnumeratingWithState:&rect[1] objects:v42 count:16];
     if (v13)
     {
       v14 = **&rect[3];
@@ -166,7 +166,7 @@
         {
           if (**&rect[3] != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v16 = *(*&rect[2] + 8 * i);
@@ -185,7 +185,7 @@
             v45.size.height = height;
             if (CGRectIsEmpty(v45))
             {
-              [v11 addObject:v16];
+              [array2 addObject:v16];
               v37 = v18;
               rect[0] = v20;
               y = v22;
@@ -221,7 +221,7 @@
                 }
 
                 v28 = v27;
-                if (v48.size.width * v48.size.height > (v28 * a4))
+                if (v48.size.width * v48.size.height > (v28 * ratio))
                 {
                   v49.origin.x = rect[0];
                   v49.origin.y = y;
@@ -243,14 +243,14 @@
                   }
 
                   v37 = v29;
-                  [v11 addObject:v16];
+                  [array2 addObject:v16];
                 }
               }
             }
           }
         }
 
-        v13 = [v12 countByEnumeratingWithState:&rect[1] objects:v42 count:16];
+        v13 = [reverseObjectEnumerator countByEnumeratingWithState:&rect[1] objects:v42 count:16];
       }
 
       while (v13);
@@ -275,10 +275,10 @@
         goto LABEL_30;
       }
 
-      [v34 addObject:v32];
+      [array addObject:v32];
     }
 
-    [v4 removeObjectsInArray:v11];
+    [v4 removeObjectsInArray:array2];
     if (![v4 count])
     {
 LABEL_30:
@@ -289,39 +289,39 @@ LABEL_30:
     ++v5;
   }
 
-  return v34;
+  return array;
 }
 
-- (float)boundDistance:(CGRect)a3 relativeTo:(CGRect)a4 landscape:(BOOL)a5
+- (float)boundDistance:(CGRect)distance relativeTo:(CGRect)to landscape:(BOOL)landscape
 {
-  if (!a5)
+  if (!landscape)
   {
     return 0.0;
   }
 
-  v5 = a3.origin.x + a3.size.width * 0.5 - (a4.origin.x + a4.size.width * 0.5);
+  v5 = distance.origin.x + distance.size.width * 0.5 - (to.origin.x + to.size.width * 0.5);
   return fabsf(v5);
 }
 
-- (int)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 flags:(unint64_t *)a6
+- (int)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration flags:(unint64_t *)flags
 {
   v128 = *MEMORY[0x1E69E9840];
-  v92 = a4;
+  timestampCopy = timestamp;
   p_timeLastTracking = &self->_timeLastTracking;
-  *&lhs.a = *&a4->var0;
-  *&lhs.c = a4->var3;
+  *&lhs.a = *&timestamp->var0;
+  *&lhs.c = timestamp->var3;
   rhs = self->_timeLastTracking;
   CMTimeSubtract(&time, &lhs, &rhs);
-  if (CMTimeGetSeconds(&time) >= 0.200000003 || (*&lhs.a = *&v92->var0, *&lhs.c = v92->var3, rhs = self->_timeLastDetection, CMTimeSubtract(&time, &lhs, &rhs), CMTimeGetSeconds(&time) >= 1.0))
+  if (CMTimeGetSeconds(&time) >= 0.200000003 || (*&lhs.a = *&timestampCopy->var0, *&lhs.c = timestampCopy->var3, rhs = self->_timeLastDetection, CMTimeSubtract(&time, &lhs, &rhs), CMTimeGetSeconds(&time) >= 1.0))
   {
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
+    Width = CVPixelBufferGetWidth(frame);
+    Height = CVPixelBufferGetHeight(frame);
     context = objc_autoreleasePoolPush();
     v118 = 0;
-    v81 = [MEMORY[0x1E695DF70] array];
-    v83 = [MEMORY[0x1E695DF70] array];
-    v10 = self;
-    v11 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    selfCopy2 = self;
+    array3 = [MEMORY[0x1E695DF70] array];
     v12 = Width;
     v112 = 0u;
     v117 = 0uLL;
@@ -333,22 +333,22 @@ LABEL_30:
     v111 = (1.0 / Width);
     v113 = (-1.0 / Height);
     v114 = xmmword_1C9F61010;
-    v110 = a3;
+    frameCopy = frame;
     v107[4] = self;
-    v14 = v11;
+    v14 = array3;
     v108 = v14;
     v115 = Width;
     v116 = Height;
-    v15 = v81;
+    v15 = array;
     v109 = v15;
     v80 = v14;
     [(NSMutableDictionary *)trackers enumerateKeysAndObjectsUsingBlock:v107];
-    v16 = *&v92->var0;
-    p_timeLastTracking->epoch = v92->var3;
+    v16 = *&timestampCopy->var0;
+    p_timeLastTracking->epoch = timestampCopy->var3;
     *&p_timeLastTracking->value = v16;
     [(NSMutableDictionary *)self->_trackers removeObjectsForKeys:v14];
-    *&lhs.a = *&v92->var0;
-    *&lhs.c = v92->var3;
+    *&lhs.a = *&timestampCopy->var0;
+    *&lhs.c = timestampCopy->var3;
     rhs = self->_timeLastDetection;
     CMTimeSubtract(&time, &lhs, &rhs);
     v78 = v15;
@@ -357,7 +357,7 @@ LABEL_30:
       [(NSMutableDictionary *)self->_trackers removeAllObjects];
       saliencyAnalyer = self->_saliencyAnalyer;
       v106 = 0;
-      v8 = [(VCPImageSaliencyAnalyzer *)saliencyAnalyer analyzePixelBuffer:a3 flags:&v118 results:&v106 cancel:&__block_literal_global_26];
+      v8 = [(VCPImageSaliencyAnalyzer *)saliencyAnalyer analyzePixelBuffer:frame flags:&v118 results:&v106 cancel:&__block_literal_global_26];
       v82 = v106;
       if (v8)
       {
@@ -478,9 +478,9 @@ LABEL_24:
           v51 = v131.size.width;
           v52 = v131.size.height;
           v53 = [VCPVideoObjectTracker alloc];
-          *&lhs.a = *&v92->var0;
-          *&lhs.c = v92->var3;
-          v54 = [(VCPVideoObjectTracker *)v53 initWithObjectBounds:a3 inFrame:&lhs timestamp:x, y, v51, v52];
+          *&lhs.a = *&timestampCopy->var0;
+          *&lhs.c = timestampCopy->var3;
+          v54 = [(VCPVideoObjectTracker *)v53 initWithObjectBounds:frame inFrame:&lhs timestamp:x, y, v51, v52];
           if (!v54)
           {
 
@@ -498,7 +498,7 @@ LABEL_24:
           v60 = [MEMORY[0x1E696AD98] numberWithInt:v41];
           [(NSMutableDictionary *)confidences setObject:v59 forKey:v60];
 
-          [v83 addObject:v48];
+          [array2 addObject:v48];
           v41 = (v41 + 1);
           if (v40 == ++v45)
           {
@@ -513,40 +513,40 @@ LABEL_24:
         }
       }
 
-      v61 = *&v92->var0;
-      self->_timeLastDetection.epoch = v92->var3;
+      v61 = *&timestampCopy->var0;
+      self->_timeLastDetection.epoch = timestampCopy->var3;
       *&self->_timeLastDetection.value = v61;
 
-      v10 = self;
+      selfCopy2 = self;
     }
 
     else
     {
-      [v83 addObjectsFromArray:v15];
+      [array2 addObjectsFromArray:v15];
       v82 = 0;
     }
 
     LODWORD(v17) = 1045220557;
-    obj = [(VCPVideoSaliencyAnalyzer *)v10 pruneRegions:v83 withOverlapRatio:v17];
-    [(NSMutableArray *)v10->_latestRegions removeAllObjects];
-    [(NSMutableArray *)v10->_latestRegions addObjectsFromArray:obj];
+    obj = [(VCPVideoSaliencyAnalyzer *)selfCopy2 pruneRegions:array2 withOverlapRatio:v17];
+    [(NSMutableArray *)selfCopy2->_latestRegions removeAllObjects];
+    [(NSMutableArray *)selfCopy2->_latestRegions addObjectsFromArray:obj];
     v18 = [obj copy];
-    [VCPSaliencyRegion attachSalientRegions:v18 toPixelBuffer:a3];
+    [VCPSaliencyRegion attachSalientRegions:v18 toPixelBuffer:frame];
 
-    v19 = self;
+    selfCopy4 = self;
     if ([obj count] && !-[NSArray count](self->_activeRegions, "count"))
     {
       objc_storeStrong(&self->_activeRegions, obj);
-      v19 = self;
-      var3 = v92->var3;
-      *&self->_start.value = *&v92->var0;
+      selfCopy4 = self;
+      var3 = timestampCopy->var3;
+      *&self->_start.value = *&timestampCopy->var0;
       self->_start.epoch = var3;
     }
 
-    p_start = &v19->_start;
-    *&lhs.a = *&v92->var0;
-    *&lhs.c = v92->var3;
-    rhs = v19->_start;
+    p_start = &selfCopy4->_start;
+    *&lhs.a = *&timestampCopy->var0;
+    *&lhs.c = timestampCopy->var3;
+    rhs = selfCopy4->_start;
     CMTimeSubtract(&time, &lhs, &rhs);
     if (CMTimeGetSeconds(&time) >= 1.0)
     {
@@ -555,7 +555,7 @@ LABEL_24:
       v93 = 0u;
       v94 = 0u;
       v77 = 120;
-      v85 = v19->_activeRegions;
+      v85 = selfCopy4->_activeRegions;
       v62 = [(NSArray *)v85 countByEnumeratingWithState:&v93 objects:v125 count:16];
       if (v62)
       {
@@ -588,8 +588,8 @@ LABEL_24:
             v70 = CMTimeCopyAsDictionary(&lhs, 0);
             v122[0] = v70;
             v121[1] = @"duration";
-            *&lhs.a = *&v92->var0;
-            *&lhs.c = v92->var3;
+            *&lhs.a = *&timestampCopy->var0;
+            *&lhs.c = timestampCopy->var3;
             rhs = *p_start;
             CMTimeSubtract(&time, &lhs, &rhs);
             *&lhs.a = *&time.value;
@@ -610,21 +610,21 @@ LABEL_24:
 
       if ([obj count])
       {
-        v73 = obj;
+        array4 = obj;
       }
 
       else
       {
-        v73 = [MEMORY[0x1E695DEC8] array];
-        v92 = MEMORY[0x1E6960C70];
+        array4 = [MEMORY[0x1E695DEC8] array];
+        timestampCopy = MEMORY[0x1E6960C70];
       }
 
       v74 = *(&self->super.super.isa + v77);
-      *(&self->super.super.isa + v77) = v73;
+      *(&self->super.super.isa + v77) = array4;
 
       v8 = 0;
-      v75 = *&v92->var0;
-      p_start->epoch = v92->var3;
+      v75 = *&timestampCopy->var0;
+      p_start->epoch = timestampCopy->var3;
       *&p_start->value = v75;
     }
 
@@ -639,7 +639,7 @@ LABEL_48:
   }
 
   v7 = [(NSMutableArray *)self->_latestRegions copy];
-  [VCPSaliencyRegion attachSalientRegions:v7 toPixelBuffer:a3];
+  [VCPSaliencyRegion attachSalientRegions:v7 toPixelBuffer:frame];
 
   return 0;
 }
@@ -717,16 +717,16 @@ uint64_t __73__VCPVideoSaliencyAnalyzer_analyzeFrame_withTimestamp_andDuration_f
   return v9;
 }
 
-- (int)finishAnalysisPass:(id *)a3
+- (int)finishAnalysisPass:(id *)pass
 {
   v35 = *MEMORY[0x1E69E9840];
   if ([(NSArray *)self->_activeRegions count])
   {
     memset(&v28, 0, sizeof(v28));
-    v4 = *&a3->var0.var3;
-    *&range.start.value = *&a3->var0.var0;
+    v4 = *&pass->var0.var3;
+    *&range.start.value = *&pass->var0.var0;
     *&range.start.epoch = v4;
-    *&range.duration.timescale = *&a3->var1.var1;
+    *&range.duration.timescale = *&pass->var1.var1;
     CMTimeRangeGetEnd(&v27, &range);
     range.start = v27;
     rhs = self->_start;
@@ -787,9 +787,9 @@ uint64_t __73__VCPVideoSaliencyAnalyzer_analyzeFrame_withTimestamp_andDuration_f
       }
     }
 
-    v16 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
     activeRegions = self->_activeRegions;
-    self->_activeRegions = v16;
+    self->_activeRegions = array;
   }
 
   return 0;

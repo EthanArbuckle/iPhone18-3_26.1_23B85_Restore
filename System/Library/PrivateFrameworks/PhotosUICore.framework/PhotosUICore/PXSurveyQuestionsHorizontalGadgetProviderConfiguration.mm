@@ -10,7 +10,7 @@
 - (NSString)sectionTitle;
 - (PXRadarConfiguration)radarConfiguration;
 - (PXSurveyQuestionsHorizontalGadgetProviderConfiguration)init;
-- (id)_initWithCategory:(int64_t)a3 gadgetProvider:(id)a4;
+- (id)_initWithCategory:(int64_t)category gadgetProvider:(id)provider;
 @end
 
 @implementation PXSurveyQuestionsHorizontalGadgetProviderConfiguration
@@ -148,13 +148,13 @@
   }
 }
 
-- (id)_initWithCategory:(int64_t)a3 gadgetProvider:(id)a4
+- (id)_initWithCategory:(int64_t)category gadgetProvider:(id)provider
 {
-  v8 = a4;
-  if (!v8)
+  providerCopy = provider;
+  if (!providerCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionsHorizontalGadgetProviderConfiguration.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"gadgetProvider"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionsHorizontalGadgetProviderConfiguration.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"gadgetProvider"}];
   }
 
   v13.receiver = self;
@@ -163,8 +163,8 @@
   v10 = v9;
   if (v9)
   {
-    v9->_category = a3;
-    objc_storeStrong(&v9->_gadgetProvider, a4);
+    v9->_category = category;
+    objc_storeStrong(&v9->_gadgetProvider, provider);
   }
 
   return v10;
@@ -172,8 +172,8 @@
 
 - (PXSurveyQuestionsHorizontalGadgetProviderConfiguration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionsHorizontalGadgetProviderConfiguration.m" lineNumber:68 description:{@"%s is not available as initializer", "-[PXSurveyQuestionsHorizontalGadgetProviderConfiguration init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionsHorizontalGadgetProviderConfiguration.m" lineNumber:68 description:{@"%s is not available as initializer", "-[PXSurveyQuestionsHorizontalGadgetProviderConfiguration init]"}];
 
   abort();
 }
@@ -188,10 +188,10 @@
   v6 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v3];
 
   v7 = v6;
-  v8 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  if (v8)
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  if (px_deprecated_appPhotoLibrary)
   {
-    v9 = [[PXSurveyQuestionsDataSource alloc] initWithPhotoLibrary:v8 predicate:v7];
+    v9 = [[PXSurveyQuestionsDataSource alloc] initWithPhotoLibrary:px_deprecated_appPhotoLibrary predicate:v7];
     v10 = [[PXSurveyQuestionsGadgetProvider alloc] initWithDataSource:v9 gadgetType:1];
   }
 
@@ -209,7 +209,7 @@
 
   if (v10)
   {
-    v12 = [[a1 alloc] _initWithCategory:0 gadgetProvider:v10];
+    v12 = [[self alloc] _initWithCategory:0 gadgetProvider:v10];
   }
 
   else

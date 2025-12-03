@@ -1,6 +1,6 @@
 @interface BKHUDTrack
-- (BKHUDTrack)initWithCoder:(id)a3;
-- (BKHUDTrack)initWithFrame:(CGRect)a3;
+- (BKHUDTrack)initWithCoder:(id)coder;
+- (BKHUDTrack)initWithFrame:(CGRect)frame;
 - (BOOL)hudWidthChangeRequired;
 - (CGSize)textSize;
 - (UIColor)textColor;
@@ -11,43 +11,43 @@
 - (void)_updateBubblePosition;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setFont:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setValue:(float)a3;
+- (void)setFont:(id)font;
+- (void)setTextColor:(id)color;
+- (void)setTitle:(id)title;
+- (void)setValue:(float)value;
 @end
 
 @implementation BKHUDTrack
 
 - (id)title
 {
-  v2 = [(BKHUDTrack *)self textLabel];
-  v3 = [v2 text];
+  textLabel = [(BKHUDTrack *)self textLabel];
+  text = [textLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v10 = a3;
-  if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  titleCopy = title;
+  if (!titleCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [(BKHUDTrack *)self textLabel];
-    v5 = [v4 text];
-    if (v5 == v10)
+    textLabel = [(BKHUDTrack *)self textLabel];
+    text = [textLabel text];
+    if (text == titleCopy)
     {
     }
 
     else
     {
-      v6 = [(BKHUDTrack *)self textLabel];
-      v7 = [v6 text];
-      v8 = [v7 isEqualToString:v10];
+      textLabel2 = [(BKHUDTrack *)self textLabel];
+      text2 = [textLabel2 text];
+      v8 = [text2 isEqualToString:titleCopy];
 
       if ((v8 & 1) == 0)
       {
-        v9 = [(BKHUDTrack *)self textLabel];
-        [v9 setText:v10];
+        textLabel3 = [(BKHUDTrack *)self textLabel];
+        [textLabel3 setText:titleCopy];
 
         [(BKHUDTrack *)self _invalidateTextSize];
         [(BKHUDTrack *)self setNeedsLayout];
@@ -64,8 +64,8 @@
 - (UIFont)font
 {
   objc_opt_class();
-  v3 = [(BKHUDTrack *)self textLabel];
-  v4 = [v3 font];
+  textLabel = [(BKHUDTrack *)self textLabel];
+  font = [textLabel font];
   v5 = BUDynamicCast();
 
   if (v5)
@@ -83,35 +83,35 @@
   return v7;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v4 = a3;
-  v5 = [(BKHUDTrack *)self textLabel];
-  [v5 setFont:v4];
+  fontCopy = font;
+  textLabel = [(BKHUDTrack *)self textLabel];
+  [textLabel setFont:fontCopy];
 
   [(BKHUDTrack *)self _invalidateTextSize];
 }
 
 - (UIColor)textColor
 {
-  v2 = [(BKHUDTrack *)self textLabel];
-  v3 = [v2 textColor];
+  textLabel = [(BKHUDTrack *)self textLabel];
+  textColor = [textLabel textColor];
 
-  return v3;
+  return textColor;
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = a3;
-  v5 = [(BKHUDTrack *)self textLabel];
-  [v5 setTextColor:v4];
+  colorCopy = color;
+  textLabel = [(BKHUDTrack *)self textLabel];
+  [textLabel setTextColor:colorCopy];
 }
 
-- (void)setValue:(float)a3
+- (void)setValue:(float)value
 {
-  if (self->_value != a3)
+  if (self->_value != value)
   {
-    self->_value = a3;
+    self->_value = value;
     [(BKHUDTrack *)self setNeedsLayout];
   }
 }
@@ -135,11 +135,11 @@
   return result;
 }
 
-- (BKHUDTrack)initWithFrame:(CGRect)a3
+- (BKHUDTrack)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = BKHUDTrack;
-  v3 = [(BKHUDTrack *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BKHUDTrack *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -149,11 +149,11 @@
   return v4;
 }
 
-- (BKHUDTrack)initWithCoder:(id)a3
+- (BKHUDTrack)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = BKHUDTrack;
-  v3 = [(BKHUDTrack *)&v6 initWithCoder:a3];
+  v3 = [(BKHUDTrack *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -182,8 +182,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(BKHUDTrack *)self textLabel];
-  [v11 setBounds:{v4, v6, v8, v10}];
+  textLabel = [(BKHUDTrack *)self textLabel];
+  [textLabel setBounds:{v4, v6, v8, v10}];
 
   if ([(BKHUDTrack *)self hudWidthChangeRequired])
   {
@@ -191,13 +191,13 @@
     v13 = v8 + v12 * 2.0;
     [(BKHUDTrack *)self verticalMargin];
     v15 = v10 + v14 * 2.0;
-    v16 = [(BKHUDTrack *)self visualEffectView];
-    [v16 setBounds:{0.0, 0.0, v13, v15}];
+    visualEffectView = [(BKHUDTrack *)self visualEffectView];
+    [visualEffectView setBounds:{0.0, 0.0, v13, v15}];
 
     [(BKHUDTrack *)self cornerRadius];
     v18 = v17;
-    v19 = [(BKHUDTrack *)self visualEffectView];
-    [v19 _setContinuousCornerRadius:v18];
+    visualEffectView2 = [(BKHUDTrack *)self visualEffectView];
+    [visualEffectView2 _setContinuousCornerRadius:v18];
   }
 
   [(BKHUDTrack *)self _updateBubblePosition];
@@ -211,11 +211,11 @@
   v4 = v3 * 2.5;
   [(BKHUDTrack *)self horizontalMargin];
   v6 = v5 * 1.5;
-  v7 = [(BKHUDTrack *)self visualEffectView];
-  [v7 bounds];
+  visualEffectView = [(BKHUDTrack *)self visualEffectView];
+  [visualEffectView bounds];
   Width = CGRectGetWidth(v12);
-  v9 = [(BKHUDTrack *)self textLabel];
-  [v9 bounds];
+  textLabel = [(BKHUDTrack *)self textLabel];
+  [textLabel bounds];
   v10 = Width - CGRectGetWidth(v13);
 
   return v10 > v4 || v10 < v6;
@@ -250,8 +250,8 @@
 
 - (void)_updateBubblePosition
 {
-  v3 = [(BKHUDTrack *)self visualEffectView];
-  [v3 bounds];
+  visualEffectView = [(BKHUDTrack *)self visualEffectView];
+  [visualEffectView bounds];
   if (CGRectIsEmpty(v34))
   {
     [(BKHUDTrack *)self horizontalMargin];
@@ -260,11 +260,11 @@
 
   else
   {
-    v6 = [(BKHUDTrack *)self visualEffectView];
-    [v6 bounds];
+    visualEffectView2 = [(BKHUDTrack *)self visualEffectView];
+    [visualEffectView2 bounds];
     Width = CGRectGetWidth(v35);
-    v8 = [(BKHUDTrack *)self textLabel];
-    [v8 bounds];
+    textLabel = [(BKHUDTrack *)self textLabel];
+    [textLabel bounds];
     v5 = (Width - CGRectGetWidth(v36)) * 0.5;
   }
 
@@ -274,11 +274,11 @@
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(BKHUDTrack *)self visualEffectView];
-  [v17 bounds];
+  visualEffectView3 = [(BKHUDTrack *)self visualEffectView];
+  [visualEffectView3 bounds];
 
-  v18 = [(BKHUDTrack *)self traitCollection];
-  [v18 displayScale];
+  traitCollection = [(BKHUDTrack *)self traitCollection];
+  [traitCollection displayScale];
   if (v19 == 0.0)
   {
     v20 = +[UIScreen mainScreen];
@@ -299,11 +299,11 @@
   v28 = v27;
   [(BKHUDTrack *)self verticalMargin];
   v30 = round(v29 + -1.0);
-  v31 = [(BKHUDTrack *)self visualEffectView];
-  [v31 setPosition:{v22, v24}];
+  visualEffectView4 = [(BKHUDTrack *)self visualEffectView];
+  [visualEffectView4 setPosition:{v22, v24}];
 
-  v32 = [(BKHUDTrack *)self textLabel];
-  [v32 setFrame:{round(v5), v30, v26, v28}];
+  textLabel2 = [(BKHUDTrack *)self textLabel];
+  [textLabel2 setFrame:{round(v5), v30, v26, v28}];
 }
 
 - (void)_setupCommon
@@ -332,8 +332,8 @@
   [(UILabel *)self->_textLabel setFont:v11];
 
   [(UILabel *)self->_textLabel setUserInteractionEnabled:0];
-  v12 = [(UIVisualEffectView *)self->_visualEffectView contentView];
-  [v12 addSubview:self->_textLabel];
+  contentView = [(UIVisualEffectView *)self->_visualEffectView contentView];
+  [contentView addSubview:self->_textLabel];
 
   [(BKHUDTrack *)self addSubview:self->_visualEffectView];
   self->_horizontalMargin = 20.0;

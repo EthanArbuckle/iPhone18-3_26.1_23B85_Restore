@@ -1,50 +1,50 @@
 @interface VTKFileReferenceItemsSource
-- (id)referenceImageWithID:(id)a3 testCase:(id)a4 error:(id *)a5;
-- (void)setItemsDirectory:(id)a3;
+- (id)referenceImageWithID:(id)d testCase:(id)case error:(id *)error;
+- (void)setItemsDirectory:(id)directory;
 @end
 
 @implementation VTKFileReferenceItemsSource
 
-- (void)setItemsDirectory:(id)a3
+- (void)setItemsDirectory:(id)directory
 {
-  v4 = a3;
-  if (self->_itemsDirectory != v4)
+  directoryCopy = directory;
+  if (self->_itemsDirectory != directoryCopy)
   {
-    v10 = v4;
-    v5 = v4;
+    v10 = directoryCopy;
+    v5 = directoryCopy;
     if ([(NSString *)v5 length])
     {
-      v6 = [(NSString *)v5 stringByStandardizingPath];
+      stringByStandardizingPath = [(NSString *)v5 stringByStandardizingPath];
 
-      v7 = [NSURL URLWithString:v6];
+      v7 = [NSURL URLWithString:stringByStandardizingPath];
       if (!v7)
       {
-        [NSException raise:NSInvalidArgumentException format:@"given itemsDirectory:%@ is not valid", v6];
+        [NSException raise:NSInvalidArgumentException format:@"given itemsDirectory:%@ is not valid", stringByStandardizingPath];
       }
     }
 
     else
     {
-      v6 = v5;
+      stringByStandardizingPath = v5;
     }
 
-    v8 = [v6 copy];
+    v8 = [stringByStandardizingPath copy];
 
     itemsDirectory = self->_itemsDirectory;
     self->_itemsDirectory = v8;
 
-    v4 = v10;
+    directoryCopy = v10;
   }
 }
 
-- (id)referenceImageWithID:(id)a3 testCase:(id)a4 error:(id *)a5
+- (id)referenceImageWithID:(id)d testCase:(id)case error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v7 = [NSBundle bundleForClass:objc_opt_class()];
-  v8 = NSStringFromVTKAssertID(v6);
+  v8 = NSStringFromVTKAssertID(dCopy);
 
-  v9 = [(VTKFileReferenceItemsSource *)self itemsDirectory];
-  v10 = [v7 URLForResource:v8 withExtension:@"PNG" subdirectory:v9];
+  itemsDirectory = [(VTKFileReferenceItemsSource *)self itemsDirectory];
+  v10 = [v7 URLForResource:v8 withExtension:@"PNG" subdirectory:itemsDirectory];
 
   v11 = [NSData dataWithContentsOfURL:v10];
   v12 = [UIImage imageWithData:v11];

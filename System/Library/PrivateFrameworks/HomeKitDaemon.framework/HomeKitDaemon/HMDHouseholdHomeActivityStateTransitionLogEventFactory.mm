@@ -1,13 +1,13 @@
 @interface HMDHouseholdHomeActivityStateTransitionLogEventFactory
 - (HMDHomeActivityStateLogEventAnalyzer)analyzer;
-- (HMDHouseholdHomeActivityStateTransitionLogEventFactory)initWithAnalyzer:(id)a3;
-- (id)coalescedLogEventsFromLogEvents:(id)a3 homeUUID:(id)a4;
-- (id)logEventsFromDictionary:(id)a3;
-- (id)logEventsPopulatedForHomeWithUUID:(id)a3 associatedWithDate:(id)a4;
-- (id)serializeLogEvents:(id)a3;
-- (id)serializedLogEvent:(id)a3;
-- (void)deleteCountersAfterDate:(id)a3;
-- (void)deleteCountersBeforeDate:(id)a3;
+- (HMDHouseholdHomeActivityStateTransitionLogEventFactory)initWithAnalyzer:(id)analyzer;
+- (id)coalescedLogEventsFromLogEvents:(id)events homeUUID:(id)d;
+- (id)logEventsFromDictionary:(id)dictionary;
+- (id)logEventsPopulatedForHomeWithUUID:(id)d associatedWithDate:(id)date;
+- (id)serializeLogEvents:(id)events;
+- (id)serializedLogEvent:(id)event;
+- (void)deleteCountersAfterDate:(id)date;
+- (void)deleteCountersBeforeDate:(id)date;
 @end
 
 @implementation HMDHouseholdHomeActivityStateTransitionLogEventFactory
@@ -19,35 +19,35 @@
   return WeakRetained;
 }
 
-- (id)serializedLogEvent:(id)a3
+- (id)serializedLogEvent:(id)event
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionary];
-  v6 = [v4 homeUUID];
-  v7 = [v6 UUIDString];
+  eventCopy = event;
+  dictionary = [v3 dictionary];
+  homeUUID = [eventCopy homeUUID];
+  uUIDString = [homeUUID UUIDString];
 
-  [v5 setObject:v7 forKeyedSubscript:@"homeUUID"];
-  v8 = [v4 coreAnalyticsEventDictionary];
+  [dictionary setObject:uUIDString forKeyedSubscript:@"homeUUID"];
+  coreAnalyticsEventDictionary = [eventCopy coreAnalyticsEventDictionary];
 
-  [v5 addEntriesFromDictionary:v8];
-  v9 = [v5 copy];
+  [dictionary addEntriesFromDictionary:coreAnalyticsEventDictionary];
+  v9 = [dictionary copy];
 
   return v9;
 }
 
-- (id)serializeLogEvents:(id)a3
+- (id)serializeLogEvents:(id)events
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  eventsCopy = events;
+  if ([eventsCopy count])
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v6 = v4;
+    v6 = eventsCopy;
     v7 = [v6 countByEnumeratingWithState:&v22 objects:v32 count:16];
     if (v7)
     {
@@ -79,7 +79,7 @@
           if (!v13)
           {
             v16 = objc_autoreleasePoolPush();
-            v17 = self;
+            selfCopy = self;
             v18 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
             {
@@ -97,7 +97,7 @@
           }
 
           v14 = [(HMDHouseholdHomeActivityStateTransitionLogEventFactory *)self serializedLogEvent:v13, v22];
-          [v5 addObject:v14];
+          [array addObject:v14];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v22 objects:v32 count:16];
@@ -111,7 +111,7 @@
     }
 
     v26 = @"HMDHouseholdHomeActivityStateTransitionLogEvent";
-    v6 = [v5 copy];
+    v6 = [array copy];
     v27 = v6;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
 LABEL_17:
@@ -127,11 +127,11 @@ LABEL_17:
   return v15;
 }
 
-- (id)logEventsFromDictionary:(id)a3
+- (id)logEventsFromDictionary:(id)dictionary
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"HMDHouseholdHomeActivityStateTransitionLogEvent"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"HMDHouseholdHomeActivityStateTransitionLogEvent"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -147,9 +147,9 @@ LABEL_17:
 
   if (v7)
   {
-    v30 = self;
-    v31 = v4;
-    v8 = [MEMORY[0x277CBEB18] array];
+    selfCopy = self;
+    v31 = dictionaryCopy;
+    array = [MEMORY[0x277CBEB18] array];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
@@ -189,7 +189,7 @@ LABEL_17:
             if (!v17)
             {
               v24 = objc_autoreleasePoolPush();
-              v25 = v30;
+              v25 = selfCopy;
               v26 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
               {
@@ -207,7 +207,7 @@ LABEL_17:
             }
 
             v18 = v17;
-            [v8 addObject:v17];
+            [array addObject:v17];
           }
         }
 
@@ -221,15 +221,15 @@ LABEL_17:
       }
     }
 
-    v19 = [v8 copy];
+    v19 = [array copy];
 LABEL_25:
-    v4 = v31;
+    dictionaryCopy = v31;
   }
 
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy2 = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -237,7 +237,7 @@ LABEL_25:
       *buf = 138543618;
       v38 = v23;
       v39 = 2112;
-      v40 = v4;
+      v40 = dictionaryCopy;
       _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_ERROR, "%{public}@HMDHouseholdHomeActivityStateTransitionLogEventKey is not an array in dictionary: %@", buf, 0x16u);
     }
 
@@ -250,17 +250,17 @@ LABEL_25:
   return v19;
 }
 
-- (id)coalescedLogEventsFromLogEvents:(id)a3 homeUUID:(id)a4
+- (id)coalescedLogEventsFromLogEvents:(id)events homeUUID:(id)d
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v30 = a4;
+  eventsCopy = events;
+  dCopy = d;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  obj = eventsCopy;
+  v6 = [eventsCopy countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v6)
   {
     v7 = v6;
@@ -300,8 +300,8 @@ LABEL_25:
 
         if (v16)
         {
-          v17 = [v16 homeUUID];
-          v18 = [v17 isEqual:v30];
+          homeUUID = [v16 homeUUID];
+          v18 = [homeUUID isEqual:dCopy];
 
           if (v18)
           {
@@ -339,7 +339,7 @@ LABEL_25:
     v11 = 0;
   }
 
-  v19 = [[HMDHouseholdHomeActivityStateTransitionLogEvent alloc] initWithHomeUUID:v30 homeCount:v11 awayCount:v10 vacationCount:v9 comingHomeCount:v25 comingHomeFromVacationCount:v27 automatedCount:v29 automatedHoldEndCount:v28 manualHoldEndCount:v26 manualHoldStartCount:v24 otherCount:v8];
+  v19 = [[HMDHouseholdHomeActivityStateTransitionLogEvent alloc] initWithHomeUUID:dCopy homeCount:v11 awayCount:v10 vacationCount:v9 comingHomeCount:v25 comingHomeFromVacationCount:v27 automatedCount:v29 automatedHoldEndCount:v28 manualHoldEndCount:v26 manualHoldStartCount:v24 otherCount:v8];
   v35 = v19;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v35 count:1];
 
@@ -348,13 +348,13 @@ LABEL_25:
   return v20;
 }
 
-- (id)logEventsPopulatedForHomeWithUUID:(id)a3 associatedWithDate:(id)a4
+- (id)logEventsPopulatedForHomeWithUUID:(id)d associatedWithDate:(id)date
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDHouseholdHomeActivityStateTransitionLogEventFactory *)self analyzer];
-  v9 = [v8 householdTransitionLogEventForHomeWithUUID:v7 date:v6];
+  dateCopy = date;
+  dCopy = d;
+  analyzer = [(HMDHouseholdHomeActivityStateTransitionLogEventFactory *)self analyzer];
+  v9 = [analyzer householdTransitionLogEventForHomeWithUUID:dCopy date:dateCopy];
 
   if (v9)
   {
@@ -372,30 +372,30 @@ LABEL_25:
   return v10;
 }
 
-- (void)deleteCountersAfterDate:(id)a3
+- (void)deleteCountersAfterDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HMDHouseholdHomeActivityStateTransitionLogEventFactory *)self analyzer];
-  [v5 removeHouseholdCounterGroupsForKey:@"HMDHouseholdHomeActivityStateTransitionLogEventCounterGroup" afterDate:v4];
+  dateCopy = date;
+  analyzer = [(HMDHouseholdHomeActivityStateTransitionLogEventFactory *)self analyzer];
+  [analyzer removeHouseholdCounterGroupsForKey:@"HMDHouseholdHomeActivityStateTransitionLogEventCounterGroup" afterDate:dateCopy];
 }
 
-- (void)deleteCountersBeforeDate:(id)a3
+- (void)deleteCountersBeforeDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HMDHouseholdHomeActivityStateTransitionLogEventFactory *)self analyzer];
-  [v5 removeHouseholdCounterGroupsForKey:@"HMDHouseholdHomeActivityStateTransitionLogEventCounterGroup" beforeDate:v4];
+  dateCopy = date;
+  analyzer = [(HMDHouseholdHomeActivityStateTransitionLogEventFactory *)self analyzer];
+  [analyzer removeHouseholdCounterGroupsForKey:@"HMDHouseholdHomeActivityStateTransitionLogEventCounterGroup" beforeDate:dateCopy];
 }
 
-- (HMDHouseholdHomeActivityStateTransitionLogEventFactory)initWithAnalyzer:(id)a3
+- (HMDHouseholdHomeActivityStateTransitionLogEventFactory)initWithAnalyzer:(id)analyzer
 {
-  v4 = a3;
+  analyzerCopy = analyzer;
   v8.receiver = self;
   v8.super_class = HMDHouseholdHomeActivityStateTransitionLogEventFactory;
   v5 = [(HMDHouseholdHomeActivityStateTransitionLogEventFactory *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_analyzer, v4);
+    objc_storeWeak(&v5->_analyzer, analyzerCopy);
   }
 
   return v6;

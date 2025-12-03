@@ -1,5 +1,5 @@
 @interface MapsSuggestionsContactActivityImprover
-- (BOOL)improveEntry:(id)a3;
+- (BOOL)improveEntry:(id)entry;
 - (_TtC15MapsSuggestions38MapsSuggestionsContactActivityImprover)init;
 @end
 
@@ -12,11 +12,11 @@
   return [(MapsSuggestionsContactActivityImprover *)&v3 init];
 }
 
-- (BOOL)improveEntry:(id)a3
+- (BOOL)improveEntry:(id)entry
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1C5136F08(v4);
+  entryCopy = entry;
+  selfCopy = self;
+  LOBYTE(self) = sub_1C5136F08(entryCopy);
 
   return self & 1;
 }

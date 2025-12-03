@@ -1,15 +1,15 @@
 @interface StoryViewControllerDefaultChromeBarsController
-- (void)initialSetupForNavigationItem:(id)a3 viewModel:(id)a4;
+- (void)initialSetupForNavigationItem:(id)item viewModel:(id)model;
 @end
 
 @implementation StoryViewControllerDefaultChromeBarsController
 
-- (void)initialSetupForNavigationItem:(id)a3 viewModel:(id)a4
+- (void)initialSetupForNavigationItem:(id)item viewModel:(id)model
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1A42ABC84(v6, v7);
+  itemCopy = item;
+  modelCopy = model;
+  selfCopy = self;
+  sub_1A42ABC84(itemCopy, modelCopy);
 }
 
 @end

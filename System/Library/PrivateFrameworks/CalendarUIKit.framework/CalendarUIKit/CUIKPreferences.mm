@@ -22,10 +22,10 @@
 - (unint64_t)monthViewEventScaleSize;
 - (unint64_t)monthViewScaleSize;
 - (unint64_t)promptForCommentWhenDeclining;
-- (void)setMonthViewEventScaleSize:(unint64_t)a3;
-- (void)setMonthViewScaleSize:(unint64_t)a3;
-- (void)setPromptForCommentWhenDeclining:(unint64_t)a3;
-- (void)setSimulatedCurrentDate:(id)a3;
+- (void)setMonthViewEventScaleSize:(unint64_t)size;
+- (void)setMonthViewScaleSize:(unint64_t)size;
+- (void)setPromptForCommentWhenDeclining:(unint64_t)declining;
+- (void)setSimulatedCurrentDate:(id)date;
 @end
 
 @implementation CUIKPreferences
@@ -188,15 +188,15 @@ uint64_t __36__CUIKPreferences_sharedPreferences__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 3;
+    integerValue = 3;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (NSNumber)dayViewHourScale
@@ -215,9 +215,9 @@ uint64_t __36__CUIKPreferences_sharedPreferences__block_invoke()
     if ([MEMORY[0x1E69AAE08] isLunarCalendarDefaultOn])
     {
       v3 = MEMORY[0x1E69AAE08];
-      v4 = [MEMORY[0x1E695DF58] currentLocale];
-      v5 = [v4 localeIdentifier];
-      v2 = [v3 preferredLunarCalendarForLocaleID:v5];
+      currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+      localeIdentifier = [currentLocale localeIdentifier];
+      v2 = [v3 preferredLunarCalendarForLocaleID:localeIdentifier];
     }
 
     else
@@ -248,12 +248,12 @@ uint64_t __36__CUIKPreferences_sharedPreferences__block_invoke()
   return v5;
 }
 
-- (void)setSimulatedCurrentDate:(id)a3
+- (void)setSimulatedCurrentDate:(id)date
 {
-  if (a3)
+  if (date)
   {
     v4 = MEMORY[0x1E696AD98];
-    [a3 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
     v5 = [v4 numberWithDouble:?];
   }
 
@@ -282,10 +282,10 @@ uint64_t __36__CUIKPreferences_sharedPreferences__block_invoke()
   return [(CalPreferences *)preferences getValueForPreference:@"WeekViewHourScale" expectedClass:v3];
 }
 
-- (void)setMonthViewScaleSize:(unint64_t)a3
+- (void)setMonthViewScaleSize:(unint64_t)size
 {
   preferences = self->_preferences;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
   [(CalPreferences *)preferences setValueForPreference:@"MonthViewScaleSize" value:v4 notificationName:@"com.apple.mobilecal.preference.notification.monthWeekScale"];
 }
 
@@ -295,15 +295,15 @@ uint64_t __36__CUIKPreferences_sharedPreferences__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
-    if (v4 <= 3)
+    integerValue = [v2 integerValue];
+    if (integerValue <= 3)
     {
       v5 = 3;
     }
 
     else
     {
-      v5 = v4;
+      v5 = integerValue;
     }
   }
 
@@ -315,10 +315,10 @@ uint64_t __36__CUIKPreferences_sharedPreferences__block_invoke()
   return v5;
 }
 
-- (void)setMonthViewEventScaleSize:(unint64_t)a3
+- (void)setMonthViewEventScaleSize:(unint64_t)size
 {
   preferences = self->_preferences;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
   [(CalPreferences *)preferences setValueForPreference:@"MonthViewEventScaleSize" value:v4 notificationName:0];
 }
 
@@ -332,13 +332,13 @@ uint64_t __36__CUIKPreferences_sharedPreferences__block_invoke()
 
 - (NSArray)calendarUUIDsExcludedFromNotifications
 {
-  v2 = [(CalPreferences *)self->_preferences getValueForPreference:@"CalendarsExcludedFromNotifications" expectedClass:objc_opt_class()];
-  if (!v2)
+  array = [(CalPreferences *)self->_preferences getValueForPreference:@"CalendarsExcludedFromNotifications" expectedClass:objc_opt_class()];
+  if (!array)
   {
-    v2 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
-  return v2;
+  return array;
 }
 
 - (unint64_t)promptForCommentWhenDeclining
@@ -347,30 +347,30 @@ uint64_t __36__CUIKPreferences_sharedPreferences__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 1;
+    integerValue = 1;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setPromptForCommentWhenDeclining:(unint64_t)a3
+- (void)setPromptForCommentWhenDeclining:(unint64_t)declining
 {
   preferences = self->_preferences;
-  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a3];
+  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:declining];
   [(CalPreferences *)preferences setValueForPreference:@"PromptForCommentWhenDeclining" value:v4 notificationName:@"com.apple.mobilecal.preference.notification.PromptForCommentWhenDeclining"];
 }
 
 - (NSArray)deselectedCalendarSyncHashes
 {
-  v2 = [MEMORY[0x1E6966A98] shared];
-  v3 = [v2 deselectedCalendarSyncHashes];
+  mEMORY[0x1E6966A98] = [MEMORY[0x1E6966A98] shared];
+  deselectedCalendarSyncHashes = [mEMORY[0x1E6966A98] deselectedCalendarSyncHashes];
 
-  return v3;
+  return deselectedCalendarSyncHashes;
 }
 
 - (NSString)lastViewedOccurrenceUID

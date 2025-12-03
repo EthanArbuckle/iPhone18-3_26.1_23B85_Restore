@@ -1,8 +1,8 @@
 @interface MFScannedDocumentConverter
 + (OS_os_log)log;
 - (MFScannedDocumentConverter)init;
-- (id)_pdfConverterFromScannedDocument:(id)a3;
-- (id)pdfDocumentFromScannedDocument:(id)a3;
+- (id)_pdfConverterFromScannedDocument:(id)document;
+- (id)pdfDocumentFromScannedDocument:(id)document;
 @end
 
 @implementation MFScannedDocumentConverter
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __33__MFScannedDocumentConverter_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_12 != -1)
   {
     dispatch_once(&log_onceToken_12, block);
@@ -48,23 +48,23 @@ void __33__MFScannedDocumentConverter_log__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)pdfDocumentFromScannedDocument:(id)a3
+- (id)pdfDocumentFromScannedDocument:(id)document
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E699B868] promise];
+  documentCopy = document;
+  promise = [MEMORY[0x1E699B868] promise];
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__MFScannedDocumentConverter_pdfDocumentFromScannedDocument___block_invoke;
   block[3] = &unk_1E806CC80;
   block[4] = self;
-  v7 = v4;
+  v7 = documentCopy;
   v13 = v7;
-  v8 = v5;
+  v8 = promise;
   v14 = v8;
   dispatch_async(queue, block);
-  v9 = [v8 future];
-  v10 = [v9 map:&__block_literal_global_32];
+  future = [v8 future];
+  v10 = [future map:&__block_literal_global_32];
 
   return v10;
 }
@@ -92,13 +92,13 @@ id __61__MFScannedDocumentConverter_pdfDocumentFromScannedDocument___block_invok
   return v2;
 }
 
-- (id)_pdfConverterFromScannedDocument:(id)a3
+- (id)_pdfConverterFromScannedDocument:(id)document
 {
-  v3 = a3;
+  documentCopy = document;
   v4 = objc_alloc_init(MEMORY[0x1E6978028]);
-  for (i = 0; i < [v3 pageCount]; ++i)
+  for (i = 0; i < [documentCopy pageCount]; ++i)
   {
-    v6 = [v3 imageOfPageAtIndex:i];
+    v6 = [documentCopy imageOfPageAtIndex:i];
     if (v6)
     {
       v7 = [objc_alloc(MEMORY[0x1E6978038]) initWithImage:v6];

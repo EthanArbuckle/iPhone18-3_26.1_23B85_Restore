@@ -8,7 +8,7 @@
 + (id)crystalMigrateCardioFitnessEnabledToNotificationDetailsEnteredWithUserDefaults:()HeartHealthDaemon
 {
   v4 = a3;
-  v5 = [a1 alloc];
+  v5 = [self alloc];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __125__HDSettingsMigrationStep_HeartHealthDaemon__crystalMigrateCardioFitnessEnabledToNotificationDetailsEnteredWithUserDefaults___block_invoke;
@@ -23,7 +23,7 @@
 + (id)crystalMigrateCardioFitnessOnboardingTileDismissalDateToKeyValueStorageWithUserDefaults:()HeartHealthDaemon
 {
   v4 = a3;
-  v5 = [a1 alloc];
+  v5 = [self alloc];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __134__HDSettingsMigrationStep_HeartHealthDaemon__crystalMigrateCardioFitnessOnboardingTileDismissalDateToKeyValueStorageWithUserDefaults___block_invoke;

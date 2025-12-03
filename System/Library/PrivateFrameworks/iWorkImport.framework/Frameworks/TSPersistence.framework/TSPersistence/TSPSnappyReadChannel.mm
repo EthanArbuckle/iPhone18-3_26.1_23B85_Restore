@@ -1,25 +1,25 @@
 @interface TSPSnappyReadChannel
-- (BOOL)processData:(id *)a3 isDone:(BOOL)a4 handler:(id)a5;
-- (TSPSnappyReadChannel)initWithReadChannel:(id)a3;
-- (id)uncompressData:(id)a3;
-- (id)uncompressDataFromSource:(SnappySource *)a3;
+- (BOOL)processData:(id *)data isDone:(BOOL)done handler:(id)handler;
+- (TSPSnappyReadChannel)initWithReadChannel:(id)channel;
+- (id)uncompressData:(id)data;
+- (id)uncompressDataFromSource:(SnappySource *)source;
 - (void)close;
 - (void)dealloc;
-- (void)readWithHandler:(id)a3;
+- (void)readWithHandler:(id)handler;
 @end
 
 @implementation TSPSnappyReadChannel
 
-- (TSPSnappyReadChannel)initWithReadChannel:(id)a3
+- (TSPSnappyReadChannel)initWithReadChannel:(id)channel
 {
-  v5 = a3;
+  channelCopy = channel;
   v10.receiver = self;
   v10.super_class = TSPSnappyReadChannel;
   v6 = [(TSPSnappyReadChannel *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_readChannel, a3);
+    objc_storeStrong(&v6->_readChannel, channel);
     v8 = v7;
   }
 
@@ -34,9 +34,9 @@
   [(TSPSnappyReadChannel *)&v4 dealloc];
 }
 
-- (void)readWithHandler:(id)a3
+- (void)readWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   readChannel = self->_readChannel;
   if (!readChannel)
   {
@@ -64,7 +64,7 @@
   v16[2] = sub_276AFA874;
   v16[3] = &unk_27A6E7560;
   v18 = v20;
-  v14 = v5;
+  v14 = handlerCopy;
   v19 = v22;
   v16[4] = self;
   v17 = v14;
@@ -81,12 +81,12 @@
   self->_readChannel = 0;
 }
 
-- (BOOL)processData:(id *)a3 isDone:(BOOL)a4 handler:(id)a5
+- (BOOL)processData:(id *)data isDone:(BOOL)done handler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = *a3;
-  if (!*a3)
+  doneCopy = done;
+  handlerCopy = handler;
+  v9 = *data;
+  if (!*data)
   {
     TSUSetCrashReporterInfo();
     v23 = MEMORY[0x277D81150];
@@ -98,9 +98,9 @@
     abort();
   }
 
-  size = dispatch_data_get_size(*a3);
+  size = dispatch_data_get_size(*data);
   sub_276AFCE58(v34, v9);
-  v29 = a3;
+  dataCopy = data;
   v11 = 0;
   if (size)
   {
@@ -108,7 +108,7 @@
     {
       if (sub_276AFCF28(v34) <= 3)
       {
-        if (!v5)
+        if (!doneCopy)
         {
           goto LABEL_31;
         }
@@ -160,8 +160,8 @@
       v18 = objc_msgSend_uncompressDataFromSource_(self, v17, v34);
       if (v18)
       {
-        v19 = v11 == size && v5;
-        v8[2](v8, v19, v18, 0);
+        v19 = v11 == size && doneCopy;
+        handlerCopy[2](handlerCopy, v19, v18, 0);
       }
 
       sub_276AFD154(v34, size);
@@ -178,7 +178,7 @@
       }
     }
 
-    if (!v5)
+    if (!doneCopy)
     {
       goto LABEL_31;
     }
@@ -190,7 +190,7 @@
 
 LABEL_30:
     v20 = objc_msgSend_tsp_readCorruptedDocumentErrorWithUserInfo_(MEMORY[0x277CCA9B8], v12, 0);
-    (v8)[2](v8, 1, 0, v20);
+    (handlerCopy)[2](handlerCopy, 1, 0, v20);
 
     v21 = 0;
   }
@@ -198,16 +198,16 @@ LABEL_30:
   else
   {
 LABEL_19:
-    if (!size && v5)
+    if (!size && doneCopy)
     {
-      v8[2](v8, 1, 0, 0);
+      handlerCopy[2](handlerCopy, 1, 0, 0);
     }
 
 LABEL_31:
     v21 = 1;
-    if (v11 && !v5)
+    if (v11 && !doneCopy)
     {
-      *v29 = dispatch_data_create_subrange(*v29, v11, size - v11);
+      *dataCopy = dispatch_data_create_subrange(*dataCopy, v11, size - v11);
     }
   }
 
@@ -216,15 +216,15 @@ LABEL_31:
   return v21;
 }
 
-- (id)uncompressDataFromSource:(SnappySource *)a3
+- (id)uncompressDataFromSource:(SnappySource *)source
 {
   LODWORD(size) = 0;
-  v4 = sub_276AFD14C(a3);
-  if (snappy::GetUncompressedLength(a3, &size, v5))
+  v4 = sub_276AFD14C(source);
+  if (snappy::GetUncompressedLength(source, &size, v5))
   {
-    sub_276AFD0FC(a3, v4);
+    sub_276AFD0FC(source, v4);
     v6 = malloc_type_malloc(size, 0x100004077774924uLL);
-    if (snappy::RawUncompress(a3, v6, v7))
+    if (snappy::RawUncompress(source, v6, v7))
     {
       v8 = dispatch_data_create(v6, size, 0, *MEMORY[0x277D85CB0]);
       goto LABEL_10;
@@ -255,15 +255,15 @@ LABEL_10:
   return v8;
 }
 
-- (id)uncompressData:(id)a3
+- (id)uncompressData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v10 = 0;
-  sub_276AFCE58(v9, v3);
+  sub_276AFCE58(v9, dataCopy);
   if (snappy::GetUncompressedLength(v9, &v10, v4))
   {
     sub_276AFCEEC(v9);
-    sub_276AFCE58(v9, v3);
+    sub_276AFCE58(v9, dataCopy);
     v5 = malloc_type_malloc(v10, 0x100004077774924uLL);
     if (snappy::RawUncompress(v9, v5, v6))
     {

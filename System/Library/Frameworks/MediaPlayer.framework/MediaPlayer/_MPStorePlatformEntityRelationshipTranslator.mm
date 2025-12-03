@@ -1,30 +1,30 @@
 @interface _MPStorePlatformEntityRelationshipTranslator
-- (_MPStorePlatformEntityRelationshipTranslator)initWithRelatedMPModelClass:(Class)a3 payloadTransformBlock:(id)a4;
-- (id)prepareSource:(id)a3 context:(id)a4;
+- (_MPStorePlatformEntityRelationshipTranslator)initWithRelatedMPModelClass:(Class)class payloadTransformBlock:(id)block;
+- (id)prepareSource:(id)source context:(id)context;
 @end
 
 @implementation _MPStorePlatformEntityRelationshipTranslator
 
-- (id)prepareSource:(id)a3 context:(id)a4
+- (id)prepareSource:(id)source context:(id)context
 {
   v6 = MEMORY[0x1E695DF90];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 dictionary];
+  contextCopy = context;
+  sourceCopy = source;
+  dictionary = [v6 dictionary];
   (*(self->_payloadTransformBlock + 2))();
 
-  return v9;
+  return dictionary;
 }
 
-- (_MPStorePlatformEntityRelationshipTranslator)initWithRelatedMPModelClass:(Class)a3 payloadTransformBlock:(id)a4
+- (_MPStorePlatformEntityRelationshipTranslator)initWithRelatedMPModelClass:(Class)class payloadTransformBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v11.receiver = self;
   v11.super_class = _MPStorePlatformEntityRelationshipTranslator;
-  v7 = [(_MPKeyPathEntityRelationshipTranslator *)&v11 initWithRelatedMPModelClass:a3];
+  v7 = [(_MPKeyPathEntityRelationshipTranslator *)&v11 initWithRelatedMPModelClass:class];
   if (v7)
   {
-    v8 = _Block_copy(v6);
+    v8 = _Block_copy(blockCopy);
     payloadTransformBlock = v7->_payloadTransformBlock;
     v7->_payloadTransformBlock = v8;
   }

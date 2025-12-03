@@ -1,10 +1,10 @@
 @interface HKSpokenLanguagesViewController
 + (id)defaultCheckmarkImage;
-- (HKSpokenLanguagesViewController)initWithCurrentLanguage:(id)a3 preferredLanguages:(id)a4 andAllSpokenLanguages:(id)a5;
+- (HKSpokenLanguagesViewController)initWithCurrentLanguage:(id)language preferredLanguages:(id)languages andAllSpokenLanguages:(id)spokenLanguages;
 - (HKSpokenLanguagesViewControllerDelegate)pickerDelegate;
 - (id)snapshotForCurrentState;
-- (id)snapshotForSearchResults:(id)a3;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
+- (id)snapshotForSearchResults:(id)results;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
 - (void)cancelAction;
 - (void)configureCancelButton;
 - (void)configureDataSource;
@@ -12,28 +12,28 @@
 - (void)doneAction;
 - (void)handleSearchSelection;
 - (void)setConfirmButtonEnabledIfNeeded;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
 @end
 
 @implementation HKSpokenLanguagesViewController
 
-- (HKSpokenLanguagesViewController)initWithCurrentLanguage:(id)a3 preferredLanguages:(id)a4 andAllSpokenLanguages:(id)a5
+- (HKSpokenLanguagesViewController)initWithCurrentLanguage:(id)language preferredLanguages:(id)languages andAllSpokenLanguages:(id)spokenLanguages
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  languageCopy = language;
+  languagesCopy = languages;
+  spokenLanguagesCopy = spokenLanguages;
   v17.receiver = self;
   v17.super_class = HKSpokenLanguagesViewController;
   v12 = [(HKSpokenLanguagesViewController *)&v17 initWithStyle:1];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_mostLikelyLanguages, a4);
-    objc_storeStrong(&v13->_allSpokenLanguages, a5);
-    objc_storeStrong(&v13->_currentLanguage, a3);
+    objc_storeStrong(&v12->_mostLikelyLanguages, languages);
+    objc_storeStrong(&v13->_allSpokenLanguages, spokenLanguages);
+    objc_storeStrong(&v13->_currentLanguage, language);
     v14 = [objc_alloc(MEMORY[0x1E69DCF10]) initWithSearchResultsController:0];
     searchController = v13->_searchController;
     v13->_searchController = v14;
@@ -55,24 +55,24 @@
 - (void)configureCancelButton
 {
   v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_cancelAction];
-  v3 = [(HKSpokenLanguagesViewController *)self navigationItem];
-  [v3 setLeftBarButtonItem:v4];
+  navigationItem = [(HKSpokenLanguagesViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v4];
 }
 
 - (void)setConfirmButtonEnabledIfNeeded
 {
-  v3 = [(HKSpokenLanguagesViewController *)self navigationItem];
-  v4 = [v3 rightBarButtonItem];
+  navigationItem = [(HKSpokenLanguagesViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-  if (!v4)
+  if (!rightBarButtonItem)
   {
     v5 = objc_alloc(MEMORY[0x1E69DC708]);
     v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v7 = [v6 localizedStringForKey:@"confirm" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
     v9 = [v5 initWithTitle:v7 style:2 target:self action:sel_doneAction];
 
-    v8 = [(HKSpokenLanguagesViewController *)self navigationItem];
-    [v8 setRightBarButtonItem:v9 animated:1];
+    navigationItem2 = [(HKSpokenLanguagesViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:v9 animated:1];
   }
 }
 
@@ -81,16 +81,16 @@
   [(UISearchController *)self->_searchController setSearchResultsUpdater:self];
   [(UISearchController *)self->_searchController setObscuresBackgroundDuringPresentation:0];
   [(UISearchController *)self->_searchController setAutomaticallyShowsCancelButton:1];
-  v3 = [(UISearchController *)self->_searchController searchBar];
-  [v3 sizeToFit];
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  [searchBar sizeToFit];
 
   [(HKSpokenLanguagesViewController *)self setDefinesPresentationContext:1];
   searchController = self->_searchController;
-  v5 = [(HKSpokenLanguagesViewController *)self navigationItem];
-  [v5 setSearchController:searchController];
+  navigationItem = [(HKSpokenLanguagesViewController *)self navigationItem];
+  [navigationItem setSearchController:searchController];
 
-  v6 = [(HKSpokenLanguagesViewController *)self navigationItem];
-  [v6 setHidesSearchBarWhenScrolling:0];
+  navigationItem2 = [(HKSpokenLanguagesViewController *)self navigationItem];
+  [navigationItem2 setHidesSearchBarWhenScrolling:0];
 }
 
 + (id)defaultCheckmarkImage
@@ -108,21 +108,21 @@
 - (void)configureDataSource
 {
   v3 = [HKSpokenLanguageDiffableDataSource alloc];
-  v4 = [(HKSpokenLanguagesViewController *)self tableView];
+  tableView = [(HKSpokenLanguagesViewController *)self tableView];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __54__HKSpokenLanguagesViewController_configureDataSource__block_invoke;
   v9[3] = &unk_1E81B9220;
   v9[4] = self;
-  v5 = [(UITableViewDiffableDataSource *)v3 initWithTableView:v4 cellProvider:v9];
+  v5 = [(UITableViewDiffableDataSource *)v3 initWithTableView:tableView cellProvider:v9];
   [(HKSpokenLanguagesViewController *)self setDataSource:v5];
 
-  v6 = [(HKSpokenLanguagesViewController *)self dataSource];
-  [v6 setDefaultRowAnimation:0];
+  dataSource = [(HKSpokenLanguagesViewController *)self dataSource];
+  [dataSource setDefaultRowAnimation:0];
 
-  v7 = [(HKSpokenLanguagesViewController *)self snapshotForCurrentState];
-  v8 = [(HKSpokenLanguagesViewController *)self dataSource];
-  [v8 applySnapshot:v7 animatingDifferences:0];
+  snapshotForCurrentState = [(HKSpokenLanguagesViewController *)self snapshotForCurrentState];
+  dataSource2 = [(HKSpokenLanguagesViewController *)self dataSource];
+  [dataSource2 applySnapshot:snapshotForCurrentState animatingDifferences:0];
 }
 
 id __54__HKSpokenLanguagesViewController_configureDataSource__block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -181,26 +181,26 @@ id __54__HKSpokenLanguagesViewController_configureDataSource__block_invoke(uint6
   return v3;
 }
 
-- (id)snapshotForSearchResults:(id)a3
+- (id)snapshotForSearchResults:(id)results
 {
   v3 = MEMORY[0x1E69955A0];
-  v4 = a3;
+  resultsCopy = results;
   v5 = objc_alloc_init(v3);
   [v5 appendSectionsWithIdentifiers:&unk_1F4381420];
-  [v5 appendItemsWithIdentifiers:v4 intoSectionWithIdentifier:&unk_1F4383E08];
+  [v5 appendItemsWithIdentifiers:resultsCopy intoSectionWithIdentifier:&unk_1F4383E08];
 
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v12 = [a3 cellForRowAtIndexPath:v6];
-  v7 = [v12 accessoryView];
-  [v7 setHidden:0];
+  pathCopy = path;
+  v12 = [view cellForRowAtIndexPath:pathCopy];
+  accessoryView = [v12 accessoryView];
+  [accessoryView setHidden:0];
 
-  v8 = [(HKSpokenLanguagesViewController *)self dataSource];
-  v9 = [v8 itemIdentifierForIndexPath:v6];
+  dataSource = [(HKSpokenLanguagesViewController *)self dataSource];
+  v9 = [dataSource itemIdentifierForIndexPath:pathCopy];
 
   currentLanguage = self->_currentLanguage;
   self->_currentLanguage = v9;
@@ -217,102 +217,102 @@ id __54__HKSpokenLanguagesViewController_configureDataSource__block_invoke(uint6
 
 - (void)handleSearchSelection
 {
-  v3 = [(UISearchController *)self->_searchController searchBar];
-  [v3 setText:0];
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  [searchBar setText:0];
 
   [(UISearchController *)self->_searchController dismissViewControllerAnimated:1 completion:0];
-  v12 = [(HKSpokenLanguagesViewController *)self snapshotForCurrentState];
-  v4 = [(HKSpokenLanguagesViewController *)self dataSource];
-  [v4 applySnapshot:v12 animatingDifferences:1];
+  snapshotForCurrentState = [(HKSpokenLanguagesViewController *)self snapshotForCurrentState];
+  dataSource = [(HKSpokenLanguagesViewController *)self dataSource];
+  [dataSource applySnapshot:snapshotForCurrentState animatingDifferences:1];
 
   v5 = [HKSpokenLanguage alloc];
-  v6 = [(HKSpokenLanguage *)self->_currentLanguage identifier];
-  v7 = [(HKSpokenLanguage *)v5 initWithLanguageIdentifier:v6 forCategory:1];
+  identifier = [(HKSpokenLanguage *)self->_currentLanguage identifier];
+  v7 = [(HKSpokenLanguage *)v5 initWithLanguageIdentifier:identifier forCategory:1];
 
-  v8 = [(HKSpokenLanguagesViewController *)self dataSource];
-  v9 = [v8 indexPathForItemIdentifier:v7];
+  dataSource2 = [(HKSpokenLanguagesViewController *)self dataSource];
+  v9 = [dataSource2 indexPathForItemIdentifier:v7];
 
   if (!v9)
   {
     [(HKSpokenLanguage *)v7 setLanguageCategoryType:2];
-    v10 = [(HKSpokenLanguagesViewController *)self dataSource];
-    v9 = [v10 indexPathForItemIdentifier:v7];
+    dataSource3 = [(HKSpokenLanguagesViewController *)self dataSource];
+    v9 = [dataSource3 indexPathForItemIdentifier:v7];
   }
 
-  v11 = [(HKSpokenLanguagesViewController *)self tableView];
-  [v11 selectRowAtIndexPath:v9 animated:1 scrollPosition:2];
+  tableView = [(HKSpokenLanguagesViewController *)self tableView];
+  [tableView selectRowAtIndexPath:v9 animated:1 scrollPosition:2];
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HKSpokenLanguagesViewController *)self tableView];
-  v9 = [v7 indexPathForSelectedRow];
+  pathCopy = path;
+  viewCopy = view;
+  tableView = [(HKSpokenLanguagesViewController *)self tableView];
+  indexPathForSelectedRow = [viewCopy indexPathForSelectedRow];
 
-  v10 = [v8 cellForRowAtIndexPath:v9];
+  v10 = [tableView cellForRowAtIndexPath:indexPathForSelectedRow];
 
-  v11 = [v10 accessoryView];
-  [v11 setHidden:1];
+  accessoryView = [v10 accessoryView];
+  [accessoryView setHidden:1];
 
-  return v6;
+  return pathCopy;
 }
 
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section
 {
   v5 = MEMORY[0x1E69DC888];
-  v6 = a4;
-  v7 = [v5 labelColor];
-  v8 = [v6 textLabel];
-  [v8 setTextColor:v7];
+  headerViewCopy = headerView;
+  labelColor = [v5 labelColor];
+  textLabel = [headerViewCopy textLabel];
+  [textLabel setTextColor:labelColor];
 
   v9 = MEMORY[0x1E69DB878];
   v10 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDCF8] addingSymbolicTraits:32770 options:0];
   v11 = [v9 fontWithDescriptor:v10 size:0.0];
-  v12 = [v6 textLabel];
-  [v12 setFont:v11];
+  textLabel2 = [headerViewCopy textLabel];
+  [textLabel2 setFont:v11];
 
-  [v6 frame];
+  [headerViewCopy frame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [v6 textLabel];
+  textLabel3 = [headerViewCopy textLabel];
 
-  [v21 setFrame:{v14, v16, v18, v20}];
+  [textLabel3 setFrame:{v14, v16, v18, v20}];
 }
 
 - (void)doneAction
 {
-  v3 = [(HKSpokenLanguagesViewController *)self pickerDelegate];
-  [v3 didSelectCellWithLanguage:self->_currentLanguage];
+  pickerDelegate = [(HKSpokenLanguagesViewController *)self pickerDelegate];
+  [pickerDelegate didSelectCellWithLanguage:self->_currentLanguage];
 
   [(HKSpokenLanguagesViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)cancelAction
 {
-  v3 = [(HKSpokenLanguagesViewController *)self pickerDelegate];
-  [v3 didCancelLanguageSelection];
+  pickerDelegate = [(HKSpokenLanguagesViewController *)self pickerDelegate];
+  [pickerDelegate didCancelLanguageSelection];
 
   [(HKSpokenLanguagesViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 searchBar];
-  v6 = [v5 text];
-  v7 = [v6 length];
+  controllerCopy = controller;
+  searchBar = [controllerCopy searchBar];
+  text = [searchBar text];
+  v7 = [text length];
 
   if (v7)
   {
     v27 = [(NSArray *)self->_allSpokenLanguages mutableCopy];
-    v8 = [v4 searchBar];
-    v9 = [v8 text];
-    v10 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v11 = [v9 stringByTrimmingCharactersInSet:v10];
+    searchBar2 = [controllerCopy searchBar];
+    text2 = [searchBar2 text];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v11 = [text2 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
     v12 = [v11 componentsSeparatedByString:@" "];
 
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -353,15 +353,15 @@ id __54__HKSpokenLanguagesViewController_configureDataSource__block_invoke(uint6
     v22 = [objc_alloc(MEMORY[0x1E696AB28]) initWithType:2 subpredicates:v13];
     [v27 filterUsingPredicate:v22];
     v23 = [(HKSpokenLanguagesViewController *)self snapshotForSearchResults:v27];
-    v24 = [(HKSpokenLanguagesViewController *)self dataSource];
-    [v24 applySnapshot:v23 animatingDifferences:1];
+    dataSource = [(HKSpokenLanguagesViewController *)self dataSource];
+    [dataSource applySnapshot:v23 animatingDifferences:1];
   }
 
   else
   {
-    v25 = [(HKSpokenLanguagesViewController *)self snapshotForCurrentState];
-    v26 = [(HKSpokenLanguagesViewController *)self dataSource];
-    [v26 applySnapshot:v25 animatingDifferences:1];
+    snapshotForCurrentState = [(HKSpokenLanguagesViewController *)self snapshotForCurrentState];
+    dataSource2 = [(HKSpokenLanguagesViewController *)self dataSource];
+    [dataSource2 applySnapshot:snapshotForCurrentState animatingDifferences:1];
   }
 }
 

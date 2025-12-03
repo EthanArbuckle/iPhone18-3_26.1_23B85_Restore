@@ -1,23 +1,23 @@
 @interface CPSLabelWithPlaceholder
 - (CGSize)_desiredPlaceholderSize;
 - (CGSize)intrinsicContentSize;
-- (CPSLabelWithPlaceholder)initWithCoder:(id)a3;
-- (CPSLabelWithPlaceholder)initWithFrame:(CGRect)a3;
+- (CPSLabelWithPlaceholder)initWithCoder:(id)coder;
+- (CPSLabelWithPlaceholder)initWithFrame:(CGRect)frame;
 - (void)_commonInit;
 - (void)_placeholderInputsDidChange;
 - (void)layoutSubviews;
-- (void)setAttributedText:(id)a3;
-- (void)setPlaceholderColor:(id)a3;
-- (void)setText:(id)a3;
+- (void)setAttributedText:(id)text;
+- (void)setPlaceholderColor:(id)color;
+- (void)setText:(id)text;
 @end
 
 @implementation CPSLabelWithPlaceholder
 
-- (CPSLabelWithPlaceholder)initWithFrame:(CGRect)a3
+- (CPSLabelWithPlaceholder)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CPSLabelWithPlaceholder;
-  v3 = [(CPSLabelWithPlaceholder *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CPSLabelWithPlaceholder *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -29,20 +29,20 @@
   return v4;
 }
 
-- (CPSLabelWithPlaceholder)initWithCoder:(id)a3
+- (CPSLabelWithPlaceholder)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = CPSLabelWithPlaceholder;
-  v3 = [(CPSLabelWithPlaceholder *)&v10 initWithCoder:a3];
+  v3 = [(CPSLabelWithPlaceholder *)&v10 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
     [(CPSLabelWithPlaceholder *)v3 _commonInit];
     v9.receiver = v4;
     v9.super_class = CPSLabelWithPlaceholder;
-    v5 = [(CPSLabelWithPlaceholder *)&v9 text];
+    text = [(CPSLabelWithPlaceholder *)&v9 text];
     text = v4->_text;
-    v4->_text = v5;
+    v4->_text = text;
 
     [(CPSLabelWithPlaceholder *)v4 _placeholderInputsDidChange];
     v7 = v4;
@@ -53,8 +53,8 @@
 
 - (void)_commonInit
 {
-  v3 = [(CPSLabelWithPlaceholder *)self placeholderColor];
-  [(CPSLabelWithPlaceholder *)self setPlaceholderColor:v3];
+  placeholderColor = [(CPSLabelWithPlaceholder *)self placeholderColor];
+  [(CPSLabelWithPlaceholder *)self setPlaceholderColor:placeholderColor];
 
   if (self->_placeholderWidth == 0.0)
   {
@@ -85,8 +85,8 @@
   else
   {
     placeholderWidth = self->_placeholderWidth;
-    v7 = [(CPSLabelWithPlaceholder *)self font];
-    [v7 _bodyLeading];
+    font = [(CPSLabelWithPlaceholder *)self font];
+    [font _bodyLeading];
     v6 = v8;
   }
 
@@ -146,21 +146,21 @@
   }
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   v4 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"CPSLabelWithPlacement does not support attributed text." userInfo:0];
   objc_exception_throw(v4);
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   text = self->_text;
-  if (text != v4)
+  if (text != textCopy)
   {
-    v8 = v4;
-    if (![(NSString *)text isEqualToString:v4])
+    v8 = textCopy;
+    if (![(NSString *)text isEqualToString:textCopy])
     {
       v6 = [(NSString *)v8 copy];
       v7 = self->_text;
@@ -173,16 +173,16 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setPlaceholderColor:(id)a3
+- (void)setPlaceholderColor:(id)color
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  colorCopy = color;
+  v5 = colorCopy;
+  if (!colorCopy)
   {
-    v4 = [MEMORY[0x277D75348] systemFillColor];
+    colorCopy = [MEMORY[0x277D75348] systemFillColor];
   }
 
-  objc_storeStrong(&self->_placeholderColor, v4);
+  objc_storeStrong(&self->_placeholderColor, colorCopy);
   if (!v5)
   {
   }
@@ -226,9 +226,9 @@ LABEL_3:
 
 - (CGSize)_desiredPlaceholderSize
 {
-  v3 = [(CPSLabelWithPlaceholder *)self font];
-  v4 = [(CPSLabelWithPlaceholder *)self traitCollection];
-  v5 = [v3 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v4];
+  font = [(CPSLabelWithPlaceholder *)self font];
+  traitCollection = [(CPSLabelWithPlaceholder *)self traitCollection];
+  v5 = [font _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:traitCollection];
   [v5 capHeight];
   v7 = round(v6);
 

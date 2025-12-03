@@ -1,14 +1,14 @@
 @interface TVRCAnalytics
 + (id)sharedInstance;
-- (id)_connectionDictionaryForType:(id)a3 status:(id)a4 reason:(id)a5;
-- (id)_presentationSourceEventDictionaryFor:(id)a3;
-- (id)_spinnerShownDictionaryFor:(id)a3;
-- (void)logConnectingSpinnerShown:(id)a3;
-- (void)logConnectionStatus:(int64_t)a3 type:(int64_t)a4 reason:(int64_t)a5;
-- (void)logFindingSessionStatistics:(id)a3;
-- (void)logPresentationFrom:(id)a3;
-- (void)logSessionStatistics:(id)a3;
-- (void)logShortcutActionRunWithType:(id)a3;
+- (id)_connectionDictionaryForType:(id)type status:(id)status reason:(id)reason;
+- (id)_presentationSourceEventDictionaryFor:(id)for;
+- (id)_spinnerShownDictionaryFor:(id)for;
+- (void)logConnectingSpinnerShown:(id)shown;
+- (void)logConnectionStatus:(int64_t)status type:(int64_t)type reason:(int64_t)reason;
+- (void)logFindingSessionStatistics:(id)statistics;
+- (void)logPresentationFrom:(id)from;
+- (void)logSessionStatistics:(id)statistics;
+- (void)logShortcutActionRunWithType:(id)type;
 @end
 
 @implementation TVRCAnalytics
@@ -32,20 +32,20 @@ uint64_t __31__TVRCAnalytics_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)logPresentationFrom:(id)a3
+- (void)logPresentationFrom:(id)from
 {
-  v4 = a3;
-  v3 = v4;
+  fromCopy = from;
+  v3 = fromCopy;
   AnalyticsSendEventLazy();
 }
 
-- (id)_presentationSourceEventDictionaryFor:(id)a3
+- (id)_presentationSourceEventDictionaryFor:(id)for
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v8 = @"source";
-  v9[0] = a3;
+  v9[0] = for;
   v3 = MEMORY[0x277CBEAC0];
-  v4 = a3;
+  forCopy = for;
   v5 = [v3 dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -53,10 +53,10 @@ uint64_t __31__TVRCAnalytics_sharedInstance__block_invoke()
   return v5;
 }
 
-- (void)logConnectingSpinnerShown:(id)a3
+- (void)logConnectingSpinnerShown:(id)shown
 {
-  v4 = a3;
-  v3 = v4;
+  shownCopy = shown;
+  v3 = shownCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -77,13 +77,13 @@ id __43__TVRCAnalytics_logConnectingSpinnerShown___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)_spinnerShownDictionaryFor:(id)a3
+- (id)_spinnerShownDictionaryFor:(id)for
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v8 = @"type";
-  v9[0] = a3;
+  v9[0] = for;
   v3 = MEMORY[0x277CBEAC0];
-  v4 = a3;
+  forCopy = for;
   v5 = [v3 dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -104,29 +104,29 @@ id __37__TVRCAnalytics_logDeviceQueryCount___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)logConnectionStatus:(int64_t)a3 type:(int64_t)a4 reason:(int64_t)a5
+- (void)logConnectionStatus:(int64_t)status type:(int64_t)type reason:(int64_t)reason
 {
-  if ((a3 - 1) > 2)
+  if ((status - 1) > 2)
   {
     v7 = &stru_287E5AB30;
   }
 
   else
   {
-    v7 = off_279D82868[a3 - 1];
+    v7 = off_279D82868[status - 1];
   }
 
-  v8 = TVRCDeviceConnectionTypeDescription(a4);
-  if (a3 == 1)
+  v8 = TVRCDeviceConnectionTypeDescription(type);
+  if (status == 1)
   {
-    if ((a5 - 1) > 3)
+    if ((reason - 1) > 3)
     {
       v9 = @"undefinedReason";
     }
 
     else
     {
-      v9 = off_279D82880[a5 - 1];
+      v9 = off_279D82880[reason - 1];
     }
   }
 
@@ -141,35 +141,35 @@ id __37__TVRCAnalytics_logDeviceQueryCount___block_invoke(uint64_t a1)
   AnalyticsSendEventLazy();
 }
 
-- (id)_connectionDictionaryForType:(id)a3 status:(id)a4 reason:(id)a5
+- (id)_connectionDictionaryForType:(id)type status:(id)status reason:(id)reason
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  typeCopy = type;
+  statusCopy = status;
+  reasonCopy = reason;
   v10 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
   v11 = v10;
-  if (v7)
+  if (typeCopy)
   {
-    [v10 setObject:v7 forKeyedSubscript:@"type"];
+    [v10 setObject:typeCopy forKeyedSubscript:@"type"];
   }
 
-  if (v8)
+  if (statusCopy)
   {
-    [v11 setObject:v8 forKeyedSubscript:@"status"];
+    [v11 setObject:statusCopy forKeyedSubscript:@"status"];
   }
 
-  if (v9)
+  if (reasonCopy)
   {
-    [v11 setObject:v9 forKeyedSubscript:@"reason"];
+    [v11 setObject:reasonCopy forKeyedSubscript:@"reason"];
   }
 
   return v11;
 }
 
-- (void)logShortcutActionRunWithType:(id)a3
+- (void)logShortcutActionRunWithType:(id)type
 {
-  v4 = a3;
-  v3 = v4;
+  typeCopy = type;
+  v3 = typeCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -185,40 +185,40 @@ id __46__TVRCAnalytics_logShortcutActionRunWithType___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)logSessionStatistics:(id)a3
+- (void)logSessionStatistics:(id)statistics
 {
-  v3 = a3;
+  statisticsCopy = statistics;
   v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:5];
-  v5 = [v3 sessionStartTime];
+  sessionStartTime = [statisticsCopy sessionStartTime];
 
-  if (v5)
+  if (sessionStartTime)
   {
-    v6 = [v3 sessionStartTime];
-    [v6 timeIntervalSinceNow];
+    sessionStartTime2 = [statisticsCopy sessionStartTime];
+    [sessionStartTime2 timeIntervalSinceNow];
     v8 = fabs(v7);
 
     v9 = [MEMORY[0x277CCABB0] numberWithDouble:v8];
     [v4 setObject:v9 forKeyedSubscript:@"duration"];
   }
 
-  v10 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "usedRTI")}];
+  v10 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(statisticsCopy, "usedRTI")}];
   [v4 setObject:v10 forKeyedSubscript:@"usedRTI"];
 
-  v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "usedSiri")}];
+  v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(statisticsCopy, "usedSiri")}];
   [v4 setObject:v11 forKeyedSubscript:@"usedSiri"];
 
-  v12 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "requiredPairing")}];
+  v12 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(statisticsCopy, "requiredPairing")}];
   [v4 setObject:v12 forKeyedSubscript:@"requiredPairing"];
 
-  v13 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "directionalControlsEnabled")}];
+  v13 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(statisticsCopy, "directionalControlsEnabled")}];
   [v4 setObject:v13 forKeyedSubscript:@"dcontrolsEnabled"];
 
-  v14 = [v3 launchContextDesc];
+  launchContextDesc = [statisticsCopy launchContextDesc];
 
-  if (v14)
+  if (launchContextDesc)
   {
-    v15 = [v3 launchContextDesc];
-    [v4 setObject:v15 forKeyedSubscript:@"launchContext"];
+    launchContextDesc2 = [statisticsCopy launchContextDesc];
+    [v4 setObject:launchContextDesc2 forKeyedSubscript:@"launchContext"];
   }
 
   v17 = v4;
@@ -226,49 +226,49 @@ id __46__TVRCAnalytics_logShortcutActionRunWithType___block_invoke(uint64_t a1)
   AnalyticsSendEventLazy();
 }
 
-- (void)logFindingSessionStatistics:(id)a3
+- (void)logFindingSessionStatistics:(id)statistics
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  statisticsCopy = statistics;
   v5 = [v3 dictionaryWithCapacity:10];
   v6 = MEMORY[0x277CCABB0];
-  v7 = [v4 sessionEndTime];
-  v8 = [v4 sessionStartTime];
-  [v7 timeIntervalSinceDate:v8];
+  sessionEndTime = [statisticsCopy sessionEndTime];
+  sessionStartTime = [statisticsCopy sessionStartTime];
+  [sessionEndTime timeIntervalSinceDate:sessionStartTime];
   v9 = [v6 numberWithDouble:?];
   [v5 setObject:v9 forKeyedSubscript:@"sessionDuration"];
 
   v10 = MEMORY[0x277CCABB0];
-  v11 = [v4 firstMeasurementTime];
-  v12 = [v4 sessionStartTime];
-  [v11 timeIntervalSinceDate:v12];
+  firstMeasurementTime = [statisticsCopy firstMeasurementTime];
+  sessionStartTime2 = [statisticsCopy sessionStartTime];
+  [firstMeasurementTime timeIntervalSinceDate:sessionStartTime2];
   v13 = [v10 numberWithDouble:?];
   [v5 setObject:v13 forKeyedSubscript:@"timeToFirstMeasurement"];
 
-  v14 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "remoteIsConnectedToATV")}];
+  v14 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(statisticsCopy, "remoteIsConnectedToATV")}];
   [v5 setObject:v14 forKeyedSubscript:@"remoteIsConnectedToATV"];
 
   v15 = MEMORY[0x277CCABB0];
-  [v4 startingProximityMeasurement];
+  [statisticsCopy startingProximityMeasurement];
   v16 = [v15 numberWithDouble:?];
   [v5 setObject:v16 forKeyedSubscript:@"startingProximityMeasurement"];
 
   v17 = MEMORY[0x277CCABB0];
-  [v4 endingProximityMeasurement];
+  [statisticsCopy endingProximityMeasurement];
   v18 = [v17 numberWithDouble:?];
   [v5 setObject:v18 forKeyedSubscript:@"endingProximityMeasurement"];
 
-  v19 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "numberOfGotCloserRegionTransitions")}];
+  v19 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(statisticsCopy, "numberOfGotCloserRegionTransitions")}];
   [v5 setObject:v19 forKeyedSubscript:@"numberOfGotCloserRegionTransitions"];
 
-  v20 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "numberOfGotFartherRegionTransitions")}];
+  v20 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(statisticsCopy, "numberOfGotFartherRegionTransitions")}];
   [v5 setObject:v20 forKeyedSubscript:@"numberOfGotFartherRegionTransitions"];
 
-  v21 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "gotToHere")}];
+  v21 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(statisticsCopy, "gotToHere")}];
   [v5 setObject:v21 forKeyedSubscript:@"gotToHere"];
 
   v22 = MEMORY[0x277CCABB0];
-  [v4 timeToHere];
+  [statisticsCopy timeToHere];
   v24 = v23;
 
   v25 = [v22 numberWithDouble:v24];

@@ -1,89 +1,89 @@
 @interface MRMarimbaLayer
-+ (MRMarimbaLayer)allocWithZone:(_NSZone *)a3;
-+ (MRMarimbaLayer)layerWithDocument:(id)a3;
-+ (MRMarimbaLayer)layerWithDocument:(id)a3 size:(CGSize)a4;
++ (MRMarimbaLayer)allocWithZone:(_NSZone *)zone;
++ (MRMarimbaLayer)layerWithDocument:(id)document;
++ (MRMarimbaLayer)layerWithDocument:(id)document size:(CGSize)size;
 + (void)releaseResources;
-- (BOOL)_effectRequestedSlides:(id)a3;
-- (BOOL)_nearingEndForSerializer:(id)a3;
-- (BOOL)beginLiveUpdateForHitBlob:(id)a3;
-- (BOOL)effect:(id)a3 requestedNumberOfSlides:(unint64_t)a4 firstSlideIndexStillNeeded:(unint64_t)a5;
-- (BOOL)endLiveUpdateForHitBlob:(id)a3;
-- (BOOL)getOnScreenVertices:(CGPoint)a3[4] forHitBlob:(id)a4;
+- (BOOL)_effectRequestedSlides:(id)slides;
+- (BOOL)_nearingEndForSerializer:(id)serializer;
+- (BOOL)beginLiveUpdateForHitBlob:(id)blob;
+- (BOOL)effect:(id)effect requestedNumberOfSlides:(unint64_t)slides firstSlideIndexStillNeeded:(unint64_t)needed;
+- (BOOL)endLiveUpdateForHitBlob:(id)blob;
+- (BOOL)getOnScreenVertices:(CGPoint)vertices[4] forHitBlob:(id)blob;
 - (BOOL)isInTransition;
-- (BOOL)nearingEndForSerializer:(id)a3;
+- (BOOL)nearingEndForSerializer:(id)serializer;
 - (BOOL)updateFramebuffer;
-- (CGImage)snapshotAsCGImageForTime:(double)a3 withSize:(CGSize)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 toHitBlob:(id)a4;
+- (CGImage)snapshotAsCGImageForTime:(double)time withSize:(CGSize)size;
+- (CGPoint)convertPoint:(CGPoint)point toHitBlob:(id)blob;
 - (CGSize)size;
 - (MRMarimbaLayer)init;
 - (MRRenderer)renderer;
 - (double)relativeTime;
 - (double)relativeTimeForBackgroundAudio;
-- (double)relativeTimeForLayer:(id)a3;
-- (double)startTimeForSlide:(id)a3;
-- (double)timeForSlide:(id)a3;
+- (double)relativeTimeForLayer:(id)layer;
+- (double)startTimeForSlide:(id)slide;
+- (double)timeForSlide:(id)slide;
 - (double)timeRemaining;
 - (id)_currentEffectContainer;
 - (id)_currentEffectLayer;
-- (id)_effectContainerForTime:(double)a3;
+- (id)_effectContainerForTime:(double)time;
 - (id)_firstEffectContainer;
-- (id)blobHitAtPoint:(CGPoint)a3 fromObjectsForObjectIDs:(id)a4 localPoint:(CGPoint *)a5;
+- (id)blobHitAtPoint:(CGPoint)point fromObjectsForObjectIDs:(id)ds localPoint:(CGPoint *)localPoint;
 - (id)currentSlide;
 - (id)currentSlides;
 - (id)displayedEffectContainers;
 - (int64_t)_mainLayerIndex;
-- (void)_postNotificationForSlideChange:(id)a3;
+- (void)_postNotificationForSlideChange:(id)change;
 - (void)_reauthorForAspectRatioChange;
-- (void)_slideDidAppear:(id)a3;
-- (void)beginEditingOfText:(id)a3;
-- (void)beginGesture:(id)a3;
-- (void)beginMorphingToAspectRatio:(double)a3 andOrientation:(int)a4 withDuration:(double)a5 switchToDocument:(id)a6;
-- (void)callbackThread:(id)a3;
-- (void)cancelGesture:(id)a3;
+- (void)_slideDidAppear:(id)appear;
+- (void)beginEditingOfText:(id)text;
+- (void)beginGesture:(id)gesture;
+- (void)beginMorphingToAspectRatio:(double)ratio andOrientation:(int)orientation withDuration:(double)duration switchToDocument:(id)document;
+- (void)callbackThread:(id)thread;
+- (void)cancelGesture:(id)gesture;
 - (void)cleanup;
 - (void)dealloc;
 - (void)destroyFramebuffer;
-- (void)didAddEffects:(id)a3;
-- (void)didApplyStyle:(id)a3;
-- (void)didLiveChanged:(id)a3;
-- (void)doGesture:(id)a3;
-- (void)endGesture:(id)a3;
+- (void)didAddEffects:(id)effects;
+- (void)didApplyStyle:(id)style;
+- (void)didLiveChanged:(id)changed;
+- (void)doGesture:(id)gesture;
+- (void)endGesture:(id)gesture;
 - (void)endMorphing;
 - (void)gotoBeginning;
 - (void)gotoEnd;
-- (void)gotoNextSlide:(BOOL)a3;
+- (void)gotoNextSlide:(BOOL)slide;
 - (void)gotoNextSlideLegacy;
-- (void)gotoPreviousSlide:(BOOL)a3;
+- (void)gotoPreviousSlide:(BOOL)slide;
 - (void)gotoPreviousSlideLegacy;
-- (void)gotoSlide:(id)a3;
-- (void)gotoSlideLegacy:(id)a3;
-- (void)gotoText:(id)a3;
-- (void)moveToEffectContainer:(id)a3 withStartOffset:(double)a4 toStopOffset:(double)a5 blocking:(BOOL)a6;
+- (void)gotoSlide:(id)slide;
+- (void)gotoSlideLegacy:(id)legacy;
+- (void)gotoText:(id)text;
+- (void)moveToEffectContainer:(id)container withStartOffset:(double)offset toStopOffset:(double)stopOffset blocking:(BOOL)blocking;
 - (void)moveToNextEffectContainer;
 - (void)moveToPreviousEffectContainer;
-- (void)moveToSubtitleForSlide:(id)a3;
+- (void)moveToSubtitleForSlide:(id)slide;
 - (void)moveToTitleSlide;
 - (void)nextFrame;
 - (void)pause;
 - (void)play;
 - (void)prevFrame;
-- (void)removeEffectContainersBeforeTime:(double)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentsScale:(double)a3;
-- (void)setDocument:(id)a3;
-- (void)setEnableSlideDidChangeNotification:(BOOL)a3;
-- (void)setInteractivityIsEnabled:(BOOL)a3;
-- (void)setLastSlideChange:(id)a3;
-- (void)setRendererSizeIsLocked:(BOOL)a3;
-- (void)setStopWithVideo:(BOOL)a3;
-- (void)setSuspended:(BOOL)a3;
-- (void)setTime:(double)a3;
+- (void)removeEffectContainersBeforeTime:(double)time;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentsScale:(double)scale;
+- (void)setDocument:(id)document;
+- (void)setEnableSlideDidChangeNotification:(BOOL)notification;
+- (void)setInteractivityIsEnabled:(BOOL)enabled;
+- (void)setLastSlideChange:(id)change;
+- (void)setRendererSizeIsLocked:(BOOL)locked;
+- (void)setStopWithVideo:(BOOL)video;
+- (void)setSuspended:(BOOL)suspended;
+- (void)setTime:(double)time;
 - (void)setupFaceDetection;
 - (void)togglePlayback;
-- (void)updateSizeOfRenderer:(id)a3;
+- (void)updateSizeOfRenderer:(id)renderer;
 - (void)warmupRenderer;
-- (void)watcherThread:(id)a3;
-- (void)whenTransitionIsFinishedSendAction:(SEL)a3 toTarget:(id)a4;
+- (void)watcherThread:(id)thread;
+- (void)whenTransitionIsFinishedSendAction:(SEL)action toTarget:(id)target;
 @end
 
 @implementation MRMarimbaLayer
@@ -120,15 +120,15 @@
   return result;
 }
 
-- (double)relativeTimeForLayer:(id)a3
+- (double)relativeTimeForLayer:(id)layer
 {
   if ([(MPDocument *)[(MRMarimbaLayer *)self document] loopingMode]== &dword_0 + 2)
   {
     [(MRMarimbaLayer *)self time];
     v6 = v5;
-    [a3 timeIn];
+    [layer timeIn];
     v8 = v7;
-    [a3 duration];
+    [layer duration];
 
     return fmod(v6, v8 + v9);
   }
@@ -146,45 +146,45 @@
 {
   [(MRMarimbaLayer *)self relativeTime];
   v4 = v3;
-  v5 = [(MRMarimbaLayer *)self document];
+  document = [(MRMarimbaLayer *)self document];
 
-  return [MPUtilities effectContainersForTime:v5 inDocument:v4];
+  return [MPUtilities effectContainersForTime:document inDocument:v4];
 }
 
-- (void)moveToEffectContainer:(id)a3 withStartOffset:(double)a4 toStopOffset:(double)a5 blocking:(BOOL)a6
+- (void)moveToEffectContainer:(id)container withStartOffset:(double)offset toStopOffset:(double)stopOffset blocking:(BOOL)blocking
 {
-  v6 = a6;
-  [a3 startTime];
-  if (a4 == -1.0)
+  blockingCopy = blocking;
+  [container startTime];
+  if (offset == -1.0)
   {
-    v11 = v10 + 0.00001 + a5;
+    v11 = v10 + 0.00001 + stopOffset;
 
     [(MRMarimbaLayer *)self setTime:v11];
   }
 
   else
   {
-    v12 = v10 - a4;
+    v12 = v10 - offset;
     v13 = v10 + 0.00001;
     [(MRMarimbaLayer *)self setTime:v12];
-    v14 = [(MRMarimbaLayer *)self isPlaying];
+    isPlaying = [(MRMarimbaLayer *)self isPlaying];
     if (![(MRMarimbaLayer *)self isPlaying])
     {
       [(MRMarimbaLayer *)self play];
     }
 
-    v15 = v13 + a5;
+    v15 = v13 + stopOffset;
     [(MRMarimbaLayer *)self setBailTimeWatcher:0];
-    if (v6)
+    if (blockingCopy)
     {
-      v16 = [NSArray arrayWithObjects:[NSNumber numberWithDouble:v15], [NSNumber numberWithBool:v14], 0];
+      v16 = [NSArray arrayWithObjects:[NSNumber numberWithDouble:v15], [NSNumber numberWithBool:isPlaying], 0];
 
       [(MRMarimbaLayer *)self performSelector:"watcherThread:" withObject:v16];
     }
 
     else
     {
-      v17 = [NSArray arrayWithObjects:[NSNumber numberWithDouble:v15], [NSNumber numberWithBool:v14], 0];
+      v17 = [NSArray arrayWithObjects:[NSNumber numberWithDouble:v15], [NSNumber numberWithBool:isPlaying], 0];
 
       [NSThread detachNewThreadSelector:"watcherThread:" toTarget:self withObject:v17];
     }
@@ -193,13 +193,13 @@
 
 - (void)moveToNextEffectContainer
 {
-  v3 = [(MRMarimbaLayer *)self _currentEffectContainer];
-  if (v3)
+  _currentEffectContainer = [(MRMarimbaLayer *)self _currentEffectContainer];
+  if (_currentEffectContainer)
   {
-    v4 = v3;
-    v5 = [objc_msgSend(v3 "parentLayer")];
-    v6 = [v4 index];
-    v7 = v6 < ([v5 count] - 1) ? (v6 + 1) : 0;
+    v4 = _currentEffectContainer;
+    v5 = [objc_msgSend(_currentEffectContainer "parentLayer")];
+    index = [v4 index];
+    v7 = index < ([v5 count] - 1) ? (index + 1) : 0;
     v8 = [v5 objectAtIndex:v7];
     if (v8)
     {
@@ -213,18 +213,18 @@
 
 - (void)moveToPreviousEffectContainer
 {
-  v3 = [(MRMarimbaLayer *)self _currentEffectContainer];
-  if (v3)
+  _currentEffectContainer = [(MRMarimbaLayer *)self _currentEffectContainer];
+  if (_currentEffectContainer)
   {
-    v4 = v3;
-    v5 = [objc_msgSend(v3 "parentLayer")];
-    v6 = [v4 index];
-    if (v6 <= 0)
+    v4 = _currentEffectContainer;
+    v5 = [objc_msgSend(_currentEffectContainer "parentLayer")];
+    index = [v4 index];
+    if (index <= 0)
     {
-      v6 = [v5 count];
+      index = [v5 count];
     }
 
-    v7 = [v5 objectAtIndex:v6 - 1];
+    v7 = [v5 objectAtIndex:index - 1];
     if (v7)
     {
       v8 = v7;
@@ -237,22 +237,22 @@
 
 - (void)moveToTitleSlide
 {
-  v3 = [(MPDocument *)[(MRMarimbaLayer *)self document] titleEffect];
-  if (v3)
+  titleEffect = [(MPDocument *)[(MRMarimbaLayer *)self document] titleEffect];
+  if (titleEffect)
   {
-    v4 = v3;
-    v5 = [v3 effectID];
+    v4 = titleEffect;
+    effectID = [titleEffect effectID];
     [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
     v7 = v6;
     if (([+[MPEffectManager sharedManager](MPEffectManager "sharedManager")] & 1) == 0)
     {
       v8 = +[MREffectManager sharedManager];
-      v9 = [v4 formattedAttributes];
-      v10 = [v4 effectID];
-      v11 = [v4 slides];
-      v12 = [v4 texts];
+      formattedAttributes = [v4 formattedAttributes];
+      effectID2 = [v4 effectID];
+      slides = [v4 slides];
+      texts = [v4 texts];
       [(MPDocument *)[(MRMarimbaLayer *)self document] aspectRatio];
-      v13 = [v8 customTimingWithEffectID:v10 effectAttributes:v9 slideInformation:v11 textInformation:v12 inAspectRatio:?];
+      v13 = [v8 customTimingWithEffectID:effectID2 effectAttributes:formattedAttributes slideInformation:slides textInformation:texts inAspectRatio:?];
       if (v13)
       {
         v14 = v13;
@@ -268,11 +268,11 @@
 
       else
       {
-        [v8 defaultMainDurationForEffectID:v5];
+        [v8 defaultMainDurationForEffectID:effectID];
         v24 = v23;
-        [v8 defaultPhaseInDurationForEffectID:v5];
+        [v8 defaultPhaseInDurationForEffectID:effectID];
         v26 = v25;
-        [v8 defaultPhaseOutDurationForEffectID:v5];
+        [v8 defaultPhaseOutDurationForEffectID:effectID];
         v28 = v27;
         [v4 fullDuration];
         v22 = v29 / (v24 + v26 + v28);
@@ -285,22 +285,22 @@
   }
 }
 
-- (void)moveToSubtitleForSlide:(id)a3
+- (void)moveToSubtitleForSlide:(id)slide
 {
-  v4 = [a3 parentSubtitleEffect];
-  if (v4)
+  parentSubtitleEffect = [slide parentSubtitleEffect];
+  if (parentSubtitleEffect)
   {
-    v5 = v4;
-    v6 = [v4 effectID];
+    v5 = parentSubtitleEffect;
+    effectID = [parentSubtitleEffect effectID];
     [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
     v8 = v7;
     v9 = +[MREffectManager sharedManager];
-    v10 = [v5 formattedAttributes];
-    v11 = [v5 effectID];
-    v12 = [v5 slides];
-    v13 = [v5 texts];
+    formattedAttributes = [v5 formattedAttributes];
+    effectID2 = [v5 effectID];
+    slides = [v5 slides];
+    texts = [v5 texts];
     [(MPDocument *)[(MRMarimbaLayer *)self document] aspectRatio];
-    v14 = [v9 customTimingWithEffectID:v11 effectAttributes:v10 slideInformation:v12 textInformation:v13 inAspectRatio:?];
+    v14 = [v9 customTimingWithEffectID:effectID2 effectAttributes:formattedAttributes slideInformation:slides textInformation:texts inAspectRatio:?];
     if (v14)
     {
       v15 = v14;
@@ -316,11 +316,11 @@
 
     else
     {
-      [v9 defaultMainDurationForEffectID:v6];
+      [v9 defaultMainDurationForEffectID:effectID];
       v25 = v24;
-      [v9 defaultPhaseInDurationForEffectID:v6];
+      [v9 defaultPhaseInDurationForEffectID:effectID];
       v27 = v26;
-      [v9 defaultPhaseOutDurationForEffectID:v6];
+      [v9 defaultPhaseOutDurationForEffectID:effectID];
       v29 = v28;
       [v5 fullDuration];
       v23 = v30 / (v25 + v27 + v29);
@@ -341,21 +341,21 @@
 
 - (id)_currentEffectLayer
 {
-  v3 = [(MRMarimbaLayer *)self document];
-  v4 = [(MRMarimbaLayer *)self _mainLayerIndex];
-  result = [(MPDocument *)v3 layers];
+  document = [(MRMarimbaLayer *)self document];
+  _mainLayerIndex = [(MRMarimbaLayer *)self _mainLayerIndex];
+  result = [(MPDocument *)document layers];
   if (result)
   {
     v6 = result;
     result = [result count];
     if (result)
     {
-      if (v4 >= [v6 count])
+      if (_mainLayerIndex >= [v6 count])
       {
-        v4 = [v6 count] - 1;
+        _mainLayerIndex = [v6 count] - 1;
       }
 
-      v7 = [v6 objectAtIndex:v4];
+      v7 = [v6 objectAtIndex:_mainLayerIndex];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -374,38 +374,38 @@
 
 - (id)_currentEffectContainer
 {
-  v3 = [(MRMarimbaLayer *)self document];
-  v4 = [(MRMarimbaLayer *)self displayedEffectContainers];
-  if (!v4)
+  document = [(MRMarimbaLayer *)self document];
+  displayedEffectContainers = [(MRMarimbaLayer *)self displayedEffectContainers];
+  if (!displayedEffectContainers)
   {
     return 0;
   }
 
-  v5 = v4;
-  if (![v4 count])
+  v5 = displayedEffectContainers;
+  if (![displayedEffectContainers count])
   {
     return 0;
   }
 
-  v6 = [(MRMarimbaLayer *)self _mainLayerIndex];
-  v7 = [(MPDocument *)v3 layers];
-  if (!v7)
+  _mainLayerIndex = [(MRMarimbaLayer *)self _mainLayerIndex];
+  layers = [(MPDocument *)document layers];
+  if (!layers)
   {
     return 0;
   }
 
-  v8 = v7;
-  if (![v7 count])
+  v8 = layers;
+  if (![layers count])
   {
     return 0;
   }
 
-  if (v6 >= [v8 count])
+  if (_mainLayerIndex >= [v8 count])
   {
-    v6 = [v8 count] - 1;
+    _mainLayerIndex = [v8 count] - 1;
   }
 
-  v9 = [v8 objectAtIndex:v6];
+  v9 = [v8 objectAtIndex:_mainLayerIndex];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -417,7 +417,7 @@
   }
 
   v11 = v10;
-  v12 = 0;
+  _firstEffectContainer = 0;
   v13 = *v21;
   v14 = -1.0;
   do
@@ -437,7 +437,7 @@
         {
           [v16 startTime];
           v14 = v18;
-          v12 = v16;
+          _firstEffectContainer = v16;
         }
       }
     }
@@ -446,36 +446,36 @@
   }
 
   while (v11);
-  if (!v12)
+  if (!_firstEffectContainer)
   {
 LABEL_18:
-    v12 = [(MRMarimbaLayer *)self _firstEffectContainer];
-    if (!v12)
+    _firstEffectContainer = [(MRMarimbaLayer *)self _firstEffectContainer];
+    if (!_firstEffectContainer)
     {
       return [(MRMarimbaLayer *)self _effectContainerForTime:0.0];
     }
   }
 
-  return v12;
+  return _firstEffectContainer;
 }
 
 - (BOOL)isInTransition
 {
-  v3 = [(MRMarimbaLayer *)self _currentEffectContainer];
-  if (v3)
+  _currentEffectContainer = [(MRMarimbaLayer *)self _currentEffectContainer];
+  if (_currentEffectContainer)
   {
-    v4 = v3;
-    v3 = [v3 countOfEffects];
-    if (v3)
+    v4 = _currentEffectContainer;
+    _currentEffectContainer = [_currentEffectContainer countOfEffects];
+    if (_currentEffectContainer)
     {
-      v3 = [v4 transition];
-      if (v3)
+      _currentEffectContainer = [v4 transition];
+      if (_currentEffectContainer)
       {
-        v5 = v3;
-        [v3 duration];
+        v5 = _currentEffectContainer;
+        [_currentEffectContainer duration];
         if (v6 == 0.0)
         {
-          LOBYTE(v3) = 0;
+          LOBYTE(_currentEffectContainer) = 0;
         }
 
         else
@@ -487,29 +487,29 @@ LABEL_18:
           [objc_msgSend(v4 "parentLayer")];
           v12 = v10 - v11;
           [v5 duration];
-          LOBYTE(v3) = v12 < v13;
+          LOBYTE(_currentEffectContainer) = v12 < v13;
         }
       }
     }
   }
 
-  return v3;
+  return _currentEffectContainer;
 }
 
-- (void)whenTransitionIsFinishedSendAction:(SEL)a3 toTarget:(id)a4
+- (void)whenTransitionIsFinishedSendAction:(SEL)action toTarget:(id)target
 {
   [(MRMarimbaLayer *)self setBailTimeWatcher:1];
-  v7 = [(MRMarimbaLayer *)self _currentEffectContainer];
-  if ([v7 countOfEffects] && (v8 = objc_msgSend(v7, "transition")) != 0 && (v9 = v8, objc_msgSend(v8, "duration"), v10 != 0.0) && (-[MRMarimbaLayer time](self, "time"), v12 = v11, objc_msgSend(v7, "startTime"), v14 = v12 - v13, objc_msgSend(objc_msgSend(v7, "parentLayer"), "timeIn"), v16 = v14 - v15, objc_msgSend(v9, "duration"), v16 <= v17) && v16 >= 0.0)
+  _currentEffectContainer = [(MRMarimbaLayer *)self _currentEffectContainer];
+  if ([_currentEffectContainer countOfEffects] && (v8 = objc_msgSend(_currentEffectContainer, "transition")) != 0 && (v9 = v8, objc_msgSend(v8, "duration"), v10 != 0.0) && (-[MRMarimbaLayer time](self, "time"), v12 = v11, objc_msgSend(_currentEffectContainer, "startTime"), v14 = v12 - v13, objc_msgSend(objc_msgSend(_currentEffectContainer, "parentLayer"), "timeIn"), v16 = v14 - v15, objc_msgSend(v9, "duration"), v16 <= v17) && v16 >= 0.0)
   {
-    [objc_msgSend(v7 "parentLayer")];
+    [objc_msgSend(_currentEffectContainer "parentLayer")];
     v19 = v18;
-    [v7 startTime];
+    [_currentEffectContainer startTime];
     v21 = v19 + v20;
     [v9 duration];
     v23 = v21 + v22;
     [(MRMarimbaLayer *)self setBailTimeWatcher:0];
-    v24 = [NSArray arrayWithObjects:[NSNumber numberWithDouble:v23], a4, NSStringFromSelector(a3), 0];
+    v24 = [NSArray arrayWithObjects:[NSNumber numberWithDouble:v23], target, NSStringFromSelector(action), 0];
 
     [NSThread detachNewThreadSelector:"callbackThread:" toTarget:self withObject:v24];
   }
@@ -517,35 +517,35 @@ LABEL_18:
   else
   {
 
-    [a4 performSelector:a3 withObject:self];
+    [target performSelector:action withObject:self];
   }
 }
 
 - (id)_firstEffectContainer
 {
-  v3 = [(MRMarimbaLayer *)self document];
-  v4 = [(MRMarimbaLayer *)self _mainLayerIndex];
-  if (v4 >= [-[MPDocument layers](v3 "layers")])
+  document = [(MRMarimbaLayer *)self document];
+  _mainLayerIndex = [(MRMarimbaLayer *)self _mainLayerIndex];
+  if (_mainLayerIndex >= [-[MPDocument layers](document "layers")])
   {
     return 0;
   }
 
-  v5 = [-[MPDocument layers](v3 "layers")];
+  v5 = [-[MPDocument layers](document "layers")];
   if ([v5 countOfEffectContainers] < 1)
   {
     return 0;
   }
 
-  v6 = [v5 effectContainers];
+  effectContainers = [v5 effectContainers];
 
-  return [v6 objectAtIndex:0];
+  return [effectContainers objectAtIndex:0];
 }
 
-- (id)_effectContainerForTime:(double)a3
+- (id)_effectContainerForTime:(double)time
 {
-  v5 = [(MRMarimbaLayer *)self document];
-  v6 = [MPUtilities effectContainersForTime:v5 inDocument:a3];
-  v7 = [-[MPDocument layers](v5 "layers")];
+  document = [(MRMarimbaLayer *)self document];
+  v6 = [MPUtilities effectContainersForTime:document inDocument:time];
+  v7 = [-[MPDocument layers](document "layers")];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -597,13 +597,13 @@ LABEL_3:
   return v3;
 }
 
-- (void)callbackThread:(id)a3
+- (void)callbackThread:(id)thread
 {
   v5 = objc_autoreleasePoolPush();
-  [objc_msgSend(a3 objectAtIndex:{0), "doubleValue"}];
+  [objc_msgSend(thread objectAtIndex:{0), "doubleValue"}];
   v7 = v6;
-  v8 = [a3 objectAtIndex:1];
-  v9 = NSSelectorFromString([a3 objectAtIndex:2]);
+  v8 = [thread objectAtIndex:1];
+  v9 = NSSelectorFromString([thread objectAtIndex:2]);
   while (1)
   {
     [(MRMarimbaLayer *)self time];
@@ -624,10 +624,10 @@ LABEL_7:
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)watcherThread:(id)a3
+- (void)watcherThread:(id)thread
 {
   v5 = objc_autoreleasePoolPush();
-  [objc_msgSend(a3 objectAtIndex:{0), "doubleValue"}];
+  [objc_msgSend(thread objectAtIndex:{0), "doubleValue"}];
   v7 = v6;
   while (1)
   {
@@ -643,7 +643,7 @@ LABEL_7:
     }
   }
 
-  if (([objc_msgSend(a3 "lastObject")] & 1) == 0)
+  if (([objc_msgSend(thread "lastObject")] & 1) == 0)
   {
     [(MRMarimbaLayer *)self pause];
   }
@@ -656,16 +656,16 @@ LABEL_8:
 - (id)currentSlides
 {
   v3 = +[NSMutableArray array];
-  v4 = [(MRMarimbaLayer *)self _currentEffectContainer];
-  if (!v4)
+  _currentEffectContainer = [(MRMarimbaLayer *)self _currentEffectContainer];
+  if (!_currentEffectContainer)
   {
-    v13 = [(MRMarimbaLayer *)self _currentEffectLayer];
-    if (!v13)
+    _currentEffectLayer = [(MRMarimbaLayer *)self _currentEffectLayer];
+    if (!_currentEffectLayer)
     {
       return v3;
     }
 
-    v8 = v13;
+    v8 = _currentEffectLayer;
     [(MRMarimbaLayer *)self relativeTime];
     v10 = v14;
     v12 = 0.0;
@@ -673,18 +673,18 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  v5 = v4;
-  if (![objc_msgSend(v4 "effects")])
+  v5 = _currentEffectContainer;
+  if (![objc_msgSend(_currentEffectContainer "effects")])
   {
     [v5 parentLayer];
     return v3;
   }
 
   v6 = [objc_msgSend(v5 "effects")];
-  v7 = [v5 parentLayer];
+  parentLayer = [v5 parentLayer];
   if (v6)
   {
-    v8 = v7;
+    v8 = parentLayer;
     [(MRMarimbaLayer *)self relativeTime];
     v10 = v9;
     [v5 startTime];
@@ -738,17 +738,17 @@ LABEL_7:
 
 - (id)currentSlide
 {
-  v3 = [(MRMarimbaLayer *)self _currentEffectContainer];
-  v4 = v3;
-  if (v3)
+  _currentEffectContainer = [(MRMarimbaLayer *)self _currentEffectContainer];
+  v4 = _currentEffectContainer;
+  if (_currentEffectContainer)
   {
-    if ([objc_msgSend(v3 "effects")])
+    if ([objc_msgSend(_currentEffectContainer "effects")])
     {
       v5 = [objc_msgSend(v4 "effects")];
-      v6 = [v4 parentLayer];
+      parentLayer = [v4 parentLayer];
       if (v5)
       {
-        v7 = v6;
+        v7 = parentLayer;
         [(MRMarimbaLayer *)self relativeTime];
         v9 = v8;
         [v4 startTime];
@@ -765,13 +765,13 @@ LABEL_7:
     return 0;
   }
 
-  v12 = [(MRMarimbaLayer *)self _currentEffectLayer];
-  if (!v12)
+  _currentEffectLayer = [(MRMarimbaLayer *)self _currentEffectLayer];
+  if (!_currentEffectLayer)
   {
     return 0;
   }
 
-  v5 = v12;
+  v5 = _currentEffectLayer;
   [(MRMarimbaLayer *)self relativeTime];
   v9 = v13;
   v11 = 0.0;
@@ -790,7 +790,7 @@ LABEL_7:
   }
 
   v16 = v15;
-  v17 = 0;
+  lastObject = 0;
   v18 = v9 - v11;
   v19 = *v29;
   v20 = -1.0;
@@ -815,7 +815,7 @@ LABEL_9:
 
     if (v20 != v22 || v4 == 0)
     {
-      v17 = v23;
+      lastObject = v23;
     }
 
     v21 = v21 + 1;
@@ -832,32 +832,32 @@ LABEL_9:
     }
   }
 
-  if (!v17)
+  if (!lastObject)
   {
 LABEL_31:
     if ([v14 count])
     {
-      v17 = [v14 lastObject];
+      lastObject = [v14 lastObject];
     }
 
     else
     {
-      v17 = 0;
+      lastObject = 0;
     }
   }
 
   [objc_msgSend(objc_msgSend(v7 "parent")];
-  return v17;
+  return lastObject;
 }
 
-- (void)removeEffectContainersBeforeTime:(double)a3
+- (void)removeEffectContainersBeforeTime:(double)time
 {
-  v4 = [(MRMarimbaLayer *)self _effectContainerForTime:a3];
+  v4 = [(MRMarimbaLayer *)self _effectContainerForTime:time];
   if (v4)
   {
     v5 = v4;
-    v6 = [v4 parentLayer];
-    if ([v6 countOfEffectContainers] >= 40)
+    parentLayer = [v4 parentLayer];
+    if ([parentLayer countOfEffectContainers] >= 40)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -865,26 +865,26 @@ LABEL_31:
       block[3] = &unk_1AB848;
       block[4] = v5;
       block[5] = self;
-      block[6] = v6;
+      block[6] = parentLayer;
       dispatch_async([(MRRenderer *)[(MRMarimbaLayer *)self renderer] renderDispatchQueue], block);
     }
   }
 }
 
-- (void)gotoNextSlide:(BOOL)a3
+- (void)gotoNextSlide:(BOOL)slide
 {
-  v3 = a3;
+  slideCopy = slide;
   if ([(MRRenderer *)[(MRMarimbaLayer *)self renderer] currentFocusedSlideAsset])
   {
-    v5 = [(MRMarimbaLayer *)self renderer];
+    renderer = [(MRMarimbaLayer *)self renderer];
 
-    [(MRRenderer *)v5 gotoNextFocusedSlide:v3];
+    [(MRRenderer *)renderer gotoNextFocusedSlide:slideCopy];
   }
 
   else
   {
-    v6 = [(MPDocument *)[(MRMarimbaLayer *)self document] styleID];
-    if (([v6 isEqualToString:@"Floating"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"ShiftingTiles") & 1) != 0 || (objc_msgSend(v6, "hasSuffix:", @"Mobile") & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"PhotoWall"))
+    styleID = [(MPDocument *)[(MRMarimbaLayer *)self document] styleID];
+    if (([styleID isEqualToString:@"Floating"] & 1) != 0 || (objc_msgSend(styleID, "isEqualToString:", @"ShiftingTiles") & 1) != 0 || (objc_msgSend(styleID, "hasSuffix:", @"Mobile") & 1) != 0 || objc_msgSend(styleID, "isEqualToString:", @"PhotoWall"))
     {
 
       [(MRMarimbaLayer *)self gotoNextSlideLegacy];
@@ -892,27 +892,27 @@ LABEL_31:
 
     else
     {
-      v8 = [(MRMarimbaLayer *)self renderer];
+      renderer2 = [(MRMarimbaLayer *)self renderer];
 
-      [(MRRenderer *)v8 gotoNextInterestingTime:v3];
+      [(MRRenderer *)renderer2 gotoNextInterestingTime:slideCopy];
     }
   }
 }
 
-- (void)gotoPreviousSlide:(BOOL)a3
+- (void)gotoPreviousSlide:(BOOL)slide
 {
-  v3 = a3;
+  slideCopy = slide;
   if ([(MRRenderer *)[(MRMarimbaLayer *)self renderer] currentFocusedSlideAsset])
   {
-    v5 = [(MRMarimbaLayer *)self renderer];
+    renderer = [(MRMarimbaLayer *)self renderer];
 
-    [(MRRenderer *)v5 gotoPreviousFocusedSlide:v3];
+    [(MRRenderer *)renderer gotoPreviousFocusedSlide:slideCopy];
   }
 
   else
   {
-    v6 = [(MPDocument *)[(MRMarimbaLayer *)self document] styleID];
-    if (([v6 isEqualToString:@"Floating"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"ShiftingTiles") & 1) != 0 || (objc_msgSend(v6, "hasSuffix:", @"Mobile") & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"PhotoWall"))
+    styleID = [(MPDocument *)[(MRMarimbaLayer *)self document] styleID];
+    if (([styleID isEqualToString:@"Floating"] & 1) != 0 || (objc_msgSend(styleID, "isEqualToString:", @"ShiftingTiles") & 1) != 0 || (objc_msgSend(styleID, "hasSuffix:", @"Mobile") & 1) != 0 || objc_msgSend(styleID, "isEqualToString:", @"PhotoWall"))
     {
 
       [(MRMarimbaLayer *)self gotoPreviousSlideLegacy];
@@ -920,45 +920,45 @@ LABEL_31:
 
     else
     {
-      v8 = [(MRMarimbaLayer *)self renderer];
+      renderer2 = [(MRMarimbaLayer *)self renderer];
 
-      [(MRRenderer *)v8 gotoPreviousInterestingTime:v3];
+      [(MRRenderer *)renderer2 gotoPreviousInterestingTime:slideCopy];
     }
   }
 }
 
-- (void)gotoSlide:(id)a3
+- (void)gotoSlide:(id)slide
 {
-  v5 = [(MRMarimbaLayer *)self isAboutToPlay];
-  if (((v5 & 1) != 0 || -[MRMarimbaLayer isPlaying](self, "isPlaying")) && [a3 hasMovie])
+  isAboutToPlay = [(MRMarimbaLayer *)self isAboutToPlay];
+  if (((isAboutToPlay & 1) != 0 || -[MRMarimbaLayer isPlaying](self, "isPlaying")) && [slide hasMovie])
   {
-    [(MRMarimbaLayer *)self startTimeForSlide:a3];
+    [(MRMarimbaLayer *)self startTimeForSlide:slide];
   }
 
   else
   {
-    [(MRMarimbaLayer *)self timeForSlide:a3];
+    [(MRMarimbaLayer *)self timeForSlide:slide];
   }
 
   v7 = v6;
-  if (v5)
+  if (isAboutToPlay)
   {
     [(MRRenderer *)[(MRMarimbaLayer *)self renderer] setTime:v6];
   }
 
-  v8 = [(MRMarimbaLayer *)self renderer];
+  renderer = [(MRMarimbaLayer *)self renderer];
 
-  [(MRRenderer *)v8 setSlideshowTime:v7];
+  [(MRRenderer *)renderer setSlideshowTime:v7];
 }
 
-- (void)gotoText:(id)a3
+- (void)gotoText:(id)text
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [objc_msgSend(objc_msgSend(a3 parentEffect];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  parentEffect = [objc_msgSend(objc_msgSend(text parentEffect];
+  v6 = [parentEffect countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -970,13 +970,13 @@ LABEL_31:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(parentEffect);
         }
 
         v8 |= [*(*(&v12 + 1) + 8 * i) hasMovies];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [parentEffect countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -989,22 +989,22 @@ LABEL_31:
 
   if (([-[MPDocument styleID](-[MRMarimbaLayer document](self "document")] & 1) != 0 || (v8) && (-[MRMarimbaLayer isAboutToPlay](self, "isAboutToPlay") || -[MRMarimbaLayer isPlaying](self, "isPlaying")))
   {
-    v11 = [(MRMarimbaLayer *)self renderer];
-    [objc_msgSend(objc_msgSend(a3 "parentEffect")];
+    renderer = [(MRMarimbaLayer *)self renderer];
+    [objc_msgSend(objc_msgSend(text "parentEffect")];
   }
 
   else
   {
-    v11 = [(MRMarimbaLayer *)self renderer];
-    [MPUtilities displayTimeForText:a3];
+    renderer = [(MRMarimbaLayer *)self renderer];
+    [MPUtilities displayTimeForText:text];
   }
 
-  [(MRRenderer *)v11 setSlideshowTime:?];
+  [(MRRenderer *)renderer setSlideshowTime:?];
 }
 
-- (double)timeForSlide:(id)a3
+- (double)timeForSlide:(id)slide
 {
-  if (!a3)
+  if (!slide)
   {
     v6 = 0.0;
 LABEL_15:
@@ -1013,26 +1013,26 @@ LABEL_15:
     result = v6;
     if (v21)
     {
-      v22 = [(MRMarimbaLayer *)self document];
+      document = [(MRMarimbaLayer *)self document];
 
-      [(MPDocument *)v22 fadeInDuration];
+      [(MPDocument *)document fadeInDuration];
     }
 
     return result;
   }
 
-  [a3 parentEffect];
+  [slide parentEffect];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a3 showDisplayTime];
+    [slide showDisplayTime];
     v6 = v5;
   }
 
   else
   {
-    v7 = [objc_msgSend(a3 "parentEffect")];
-    if ([a3 hasMovie] && objc_msgSend(objc_msgSend(objc_msgSend(a3, "parentEffect"), "effectID"), "isEqualToString:", @"JustASlide"))
+    v7 = [objc_msgSend(slide "parentEffect")];
+    if ([slide hasMovie] && objc_msgSend(objc_msgSend(objc_msgSend(slide, "parentEffect"), "effectID"), "isEqualToString:", @"JustASlide"))
     {
       [+[MPAssetManager sharedManager](MPAssetManager "sharedManager")];
       v9 = v8;
@@ -1053,12 +1053,12 @@ LABEL_15:
 
     else
     {
-      v14 = [a3 hasMovie];
+      hasMovie = [slide hasMovie];
       [v7 startTime];
       v16 = v15;
-      [a3 showDisplayTime];
+      [slide showDisplayTime];
       v18 = v16 + v17;
-      if (v14)
+      if (hasMovie)
       {
         v6 = v18;
       }
@@ -1079,23 +1079,23 @@ LABEL_15:
   return result;
 }
 
-- (double)startTimeForSlide:(id)a3
+- (double)startTimeForSlide:(id)slide
 {
   result = 0.0;
-  if (a3)
+  if (slide)
   {
-    [a3 parentEffect];
+    [slide parentEffect];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a3 showDisplayStartTime];
+      [slide showDisplayStartTime];
     }
 
     else
     {
-      [objc_msgSend(objc_msgSend(a3 "parentEffect")];
+      [objc_msgSend(objc_msgSend(slide "parentEffect")];
       v6 = v5;
-      [a3 showDisplayStartTime];
+      [slide showDisplayStartTime];
       result = v6 + v7;
     }
   }
@@ -1110,9 +1110,9 @@ LABEL_15:
 
 - (void)gotoNextSlideLegacy
 {
-  v3 = [(MPDocument *)[(MRMarimbaLayer *)self document] styleID];
-  v4 = [(MRMarimbaLayer *)self isPlaying];
-  if (v4)
+  styleID = [(MPDocument *)[(MRMarimbaLayer *)self document] styleID];
+  isPlaying = [(MRMarimbaLayer *)self isPlaying];
+  if (isPlaying)
   {
     [(MRMarimbaLayer *)self pause];
   }
@@ -1122,18 +1122,18 @@ LABEL_15:
   {
     [(MRMarimbaLayer *)self relativeTime];
     v9 = v8;
-    v10 = [(MRMarimbaLayer *)self currentSlide];
-    v11 = v10 == 0;
-    if (v10)
+    currentSlide = [(MRMarimbaLayer *)self currentSlide];
+    v11 = currentSlide == 0;
+    if (currentSlide)
     {
       do
       {
-        v12 = [v10 parentEffect];
-        v13 = [v10 index];
-        if (v13 == [objc_msgSend(objc_msgSend(v10 "parentEffect")] - 1)
+        parentEffect = [currentSlide parentEffect];
+        index = [currentSlide index];
+        if (index == [objc_msgSend(objc_msgSend(currentSlide "parentEffect")] - 1)
         {
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) != 0 || (v14 = [v12 parentContainer]) == 0)
+          if ((objc_opt_isKindOfClass() & 1) != 0 || (v14 = [parentEffect parentContainer]) == 0)
           {
             v18 = 1;
           }
@@ -1141,10 +1141,10 @@ LABEL_15:
           else
           {
             v15 = v14;
-            v16 = [v14 index];
+            index2 = [v14 index];
             v17 = [objc_msgSend(objc_msgSend(v15 "parentLayer")] - 1;
-            v18 = v16 == v17;
-            if (v16 == v17)
+            v18 = index2 == v17;
+            if (index2 == v17)
             {
               v19 = [objc_msgSend(objc_msgSend(v15 "parentLayer")];
             }
@@ -1169,16 +1169,16 @@ LABEL_15:
               }
             }
 
-            v12 = [objc_msgSend(v19 "effects")];
+            parentEffect = [objc_msgSend(v19 "effects")];
           }
 
-          if (![objc_msgSend(v12 "slides")])
+          if (![objc_msgSend(parentEffect "slides")])
           {
             goto LABEL_33;
           }
 
-          v10 = [objc_msgSend(v12 "slides")];
-          if (!v10)
+          currentSlide = [objc_msgSend(parentEffect "slides")];
+          if (!currentSlide)
           {
             goto LABEL_33;
           }
@@ -1186,26 +1186,26 @@ LABEL_15:
 
         else
         {
-          v10 = [objc_msgSend(v12 "slides")];
+          currentSlide = [objc_msgSend(parentEffect "slides")];
           v18 = 0;
-          if (!v10)
+          if (!currentSlide)
           {
             goto LABEL_33;
           }
         }
 
-        v20 = [v10 parentEffect];
+        parentEffect2 = [currentSlide parentEffect];
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 || (v21 = [v20 parentContainer]) == 0)
+        if ((objc_opt_isKindOfClass() & 1) != 0 || (v21 = [parentEffect2 parentContainer]) == 0)
         {
-          [v10 showDisplayTime];
+          [currentSlide showDisplayTime];
         }
 
         else
         {
           [v21 startTime];
           v23 = v22;
-          [v10 showDisplayTime];
+          [currentSlide showDisplayTime];
           v25 = v23 + v24 + 0.00001;
         }
 
@@ -1223,16 +1223,16 @@ LABEL_15:
     if (v11)
     {
 LABEL_33:
-      v31 = [(MRMarimbaLayer *)self _currentEffectContainer];
-      if (v31)
+      _currentEffectContainer = [(MRMarimbaLayer *)self _currentEffectContainer];
+      if (_currentEffectContainer)
       {
-        v32 = v31;
-        v33 = [v31 parentLayer];
-        v34 = [v32 index];
-        v35 = [objc_msgSend(v33 "effectContainers")];
-        for (i = 0; ; i = [v37 objectAtIndex:v34 - v38])
+        v32 = _currentEffectContainer;
+        parentLayer = [_currentEffectContainer parentLayer];
+        index3 = [v32 index];
+        v35 = [objc_msgSend(parentLayer "effectContainers")];
+        for (i = 0; ; i = [effectContainers objectAtIndex:index3 - v38])
         {
-          ++v34;
+          ++index3;
           if (i)
           {
             if ([objc_msgSend(i "effects")])
@@ -1241,8 +1241,8 @@ LABEL_33:
             }
           }
 
-          v37 = [v33 effectContainers];
-          if (v34 >= v35)
+          effectContainers = [parentLayer effectContainers];
+          if (index3 >= v35)
           {
             v38 = v35;
           }
@@ -1259,8 +1259,8 @@ LABEL_33:
           v51 = 0u;
           v48 = 0u;
           v49 = 0u;
-          v39 = [i effects];
-          v40 = [v39 countByEnumeratingWithState:&v48 objects:v52 count:16];
+          effects = [i effects];
+          v40 = [effects countByEnumeratingWithState:&v48 objects:v52 count:16];
           if (v40)
           {
             v41 = v40;
@@ -1271,7 +1271,7 @@ LABEL_33:
               {
                 if (*v49 != v42)
                 {
-                  objc_enumerationMutation(v39);
+                  objc_enumerationMutation(effects);
                 }
 
                 v44 = *(*(&v48 + 1) + 8 * j);
@@ -1282,7 +1282,7 @@ LABEL_33:
                 }
               }
 
-              v41 = [v39 countByEnumeratingWithState:&v48 objects:v52 count:16];
+              v41 = [effects countByEnumeratingWithState:&v48 objects:v52 count:16];
               if (v41)
               {
                 continue;
@@ -1295,7 +1295,7 @@ LABEL_33:
 
 LABEL_59:
         [(MRMarimbaLayer *)self moveToNextEffectContainer];
-        if (!v4)
+        if (!isPlaying)
         {
           return;
         }
@@ -1305,29 +1305,29 @@ LABEL_57:
         return;
       }
 
-      v45 = [(MRMarimbaLayer *)self _currentEffectLayer];
-      if (!v45)
+      _currentEffectLayer = [(MRMarimbaLayer *)self _currentEffectLayer];
+      if (!_currentEffectLayer)
       {
         goto LABEL_59;
       }
 
-      v46 = v45;
-      if (![objc_msgSend(v45 "slides")])
+      v46 = _currentEffectLayer;
+      if (![objc_msgSend(_currentEffectLayer "slides")])
       {
         goto LABEL_59;
       }
 
       v47 = v46;
 LABEL_55:
-      v10 = [objc_msgSend(v47 "slides")];
-      if (!v10)
+      currentSlide = [objc_msgSend(v47 "slides")];
+      if (!currentSlide)
       {
         goto LABEL_59;
       }
     }
 
-    [(MRMarimbaLayer *)self gotoSlideLegacy:v10];
-    if (!v4)
+    [(MRMarimbaLayer *)self gotoSlideLegacy:currentSlide];
+    if (!isPlaying)
     {
       return;
     }
@@ -1338,7 +1338,7 @@ LABEL_55:
   v6 = v5;
   [(MRMarimbaLayer *)self time];
   [(MRMarimbaLayer *)self setTime:v6 + v7];
-  if (v4)
+  if (isPlaying)
   {
 
     [(MRMarimbaLayer *)self play];
@@ -1347,9 +1347,9 @@ LABEL_55:
 
 - (void)gotoPreviousSlideLegacy
 {
-  v3 = [(MPDocument *)[(MRMarimbaLayer *)self document] styleID];
-  v4 = [(MRMarimbaLayer *)self isPlaying];
-  if (v4)
+  styleID = [(MPDocument *)[(MRMarimbaLayer *)self document] styleID];
+  isPlaying = [(MRMarimbaLayer *)self isPlaying];
+  if (isPlaying)
   {
     [(MRMarimbaLayer *)self pause];
   }
@@ -1372,7 +1372,7 @@ LABEL_55:
     }
 
     [(MRMarimbaLayer *)self setTime:v9];
-    if (v4)
+    if (isPlaying)
     {
       goto LABEL_57;
     }
@@ -1382,11 +1382,11 @@ LABEL_55:
 
   [(MRMarimbaLayer *)self relativeTime];
   v11 = v10;
-  v12 = [(MRMarimbaLayer *)self currentSlides];
-  v13 = v12;
-  if (v12)
+  currentSlides = [(MRMarimbaLayer *)self currentSlides];
+  v13 = currentSlides;
+  if (currentSlides)
   {
-    if ([v12 count])
+    if ([currentSlides count])
     {
       v13 = [v13 objectAtIndex:0];
     }
@@ -1399,21 +1399,21 @@ LABEL_55:
 
   if ([+[MPEffectManager sharedManager](MPEffectManager "sharedManager")])
   {
-    v14 = [-[MRMarimbaLayer currentSlides](self "currentSlides")];
+    currentSlide = [-[MRMarimbaLayer currentSlides](self "currentSlides")];
   }
 
   else
   {
-    v14 = [(MRMarimbaLayer *)self currentSlide];
+    currentSlide = [(MRMarimbaLayer *)self currentSlide];
   }
 
-  v15 = v14;
+  v15 = currentSlide;
   v16 = v11;
-  if (v14)
+  if (currentSlide)
   {
-    v17 = [v14 parentEffect];
+    parentEffect = [currentSlide parentEffect];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 || (v18 = [v17 parentContainer]) == 0)
+    if ((objc_opt_isKindOfClass() & 1) != 0 || (v18 = [parentEffect parentContainer]) == 0)
     {
       [v15 showDisplayTime];
       v16 = v22;
@@ -1437,10 +1437,10 @@ LABEL_55:
       goto LABEL_51;
     }
 
-    v25 = [v15 parentEffect];
+    parentEffect2 = [v15 parentEffect];
     if ([v15 index])
     {
-      v15 = [objc_msgSend(v25 "slides")];
+      v15 = [objc_msgSend(parentEffect2 "slides")];
       v23 = 0;
       if (!v15)
       {
@@ -1451,22 +1451,22 @@ LABEL_55:
     else
     {
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 || (v26 = [v25 parentContainer]) == 0)
+      if ((objc_opt_isKindOfClass() & 1) != 0 || (v26 = [parentEffect2 parentContainer]) == 0)
       {
         v23 = 1;
-        v31 = v25;
+        v31 = parentEffect2;
       }
 
       else
       {
         v27 = v26;
-        v28 = [v26 index];
-        v23 = v28 == 0;
-        if (v28)
+        index = [v26 index];
+        v23 = index == 0;
+        if (index)
         {
-          v29 = [v27 index];
+          index2 = [v27 index];
           v30 = [objc_msgSend(objc_msgSend(v27 "parentLayer")];
-          if (v29 >= 2)
+          if (index2 >= 2)
           {
             do
             {
@@ -1476,10 +1476,10 @@ LABEL_55:
               }
 
               v30 = [objc_msgSend(objc_msgSend(v30 "parentLayer")];
-              --v29;
+              --index2;
             }
 
-            while (v29 > 1);
+            while (index2 > 1);
           }
         }
 
@@ -1504,9 +1504,9 @@ LABEL_55:
       }
     }
 
-    v32 = [v15 parentEffect];
+    parentEffect3 = [v15 parentEffect];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 || (v33 = [v32 parentContainer]) == 0)
+    if ((objc_opt_isKindOfClass() & 1) != 0 || (v33 = [parentEffect3 parentContainer]) == 0)
     {
       [v15 showDisplayTime];
     }
@@ -1521,18 +1521,18 @@ LABEL_55:
 
     v11 = v37 + 0.00001;
 LABEL_49:
-    [v25 lowestDisplayTime];
+    [parentEffect2 lowestDisplayTime];
   }
 
   while (v11 >= v38);
-  [v25 lowestDisplayTime];
+  [parentEffect2 lowestDisplayTime];
   if (v39 < 0.0)
   {
 LABEL_51:
     if (v15)
     {
       [(MRMarimbaLayer *)self gotoSlideLegacy:v15];
-      if (!v4)
+      if (!isPlaying)
       {
         return;
       }
@@ -1541,7 +1541,7 @@ LABEL_51:
     else
     {
       [(MRMarimbaLayer *)self moveToPreviousEffectContainer];
-      if (!v4)
+      if (!isPlaying)
       {
         return;
       }
@@ -1551,7 +1551,7 @@ LABEL_51:
   }
 
   [(MRMarimbaLayer *)self setTime:?];
-  if (!v4)
+  if (!isPlaying)
   {
     return;
   }
@@ -1561,22 +1561,22 @@ LABEL_57:
   [(MRMarimbaLayer *)self play];
 }
 
-- (void)gotoSlideLegacy:(id)a3
+- (void)gotoSlideLegacy:(id)legacy
 {
   v4 = 0.0;
-  if (a3)
+  if (legacy)
   {
-    [a3 parentEffect];
+    [legacy parentEffect];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a3 showDisplayTime];
+      [legacy showDisplayTime];
     }
 
     else
     {
-      v6 = [objc_msgSend(a3 "parentEffect")];
-      if ([a3 hasMovie] && objc_msgSend(objc_msgSend(objc_msgSend(a3, "parentEffect"), "effectID"), "isEqualToString:", @"JustASlide"))
+      v6 = [objc_msgSend(legacy "parentEffect")];
+      if ([legacy hasMovie] && objc_msgSend(objc_msgSend(objc_msgSend(legacy, "parentEffect"), "effectID"), "isEqualToString:", @"JustASlide"))
       {
         [+[MPAssetManager sharedManager](MPAssetManager "sharedManager")];
         v8 = v7;
@@ -1600,7 +1600,7 @@ LABEL_57:
       {
         [v6 startTime];
         v16 = v15;
-        [a3 showDisplayTime];
+        [legacy showDisplayTime];
         v13 = v16 + v17;
         v14 = 0.1;
       }
@@ -1617,36 +1617,36 @@ LABEL_57:
   [(MRMarimbaLayer *)self setTime:v4];
 }
 
-- (void)_slideDidAppear:(id)a3
+- (void)_slideDidAppear:(id)appear
 {
-  v5 = [a3 object];
-  if (v5 == [(MRMarimbaLayer *)self renderer])
+  object = [appear object];
+  if (object == [(MRMarimbaLayer *)self renderer])
   {
-    v6 = [a3 userInfo];
-    [v6 objectForKey:@"layer"];
+    userInfo = [appear userInfo];
+    [userInfo objectForKey:@"layer"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [objc_msgSend(objc_msgSend(v6 objectForKey:{@"slide", "asset"), "path"}];
+      v7 = [objc_msgSend(objc_msgSend(userInfo objectForKey:{@"slide", "asset"), "path"}];
       if (([v7 isEqualToString:{-[MRMarimbaLayer lastSlideChange](self, "lastSlideChange")}] & 1) == 0)
       {
         [(MRMarimbaLayer *)self setLastSlideChange:v7];
 
-        [NSThread detachNewThreadSelector:"_postNotificationForSlideChange:" toTarget:self withObject:v6];
+        [NSThread detachNewThreadSelector:"_postNotificationForSlideChange:" toTarget:self withObject:userInfo];
       }
     }
   }
 }
 
-- (void)_postNotificationForSlideChange:(id)a3
+- (void)_postNotificationForSlideChange:(id)change
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [a3 objectForKey:@"layer"];
-  v7 = [a3 objectForKey:@"slide"];
-  v8 = [(MPDocument *)[(MRMarimbaLayer *)self document] montage];
-  [v8 lock];
+  v6 = [change objectForKey:@"layer"];
+  v7 = [change objectForKey:@"slide"];
+  montage = [(MPDocument *)[(MRMarimbaLayer *)self document] montage];
+  [montage lock];
   v9 = [+[MPUtilities effectForMCContainerEffect:inDocument:](MPUtilities effectForMCContainerEffect:objc_msgSend(v6 inDocument:{"container"), -[MRMarimbaLayer document](self, "document")), "slideForMCSlide:", v7}];
-  [v8 unlock];
+  [montage unlock];
   if (v9)
   {
     [+[NSNotificationCenter defaultCenter](NSNotificationCenter postNotificationName:"postNotificationName:object:userInfo:" object:@"kMRNotificationSlideDidChange" userInfo:self, [NSDictionary dictionaryWithObject:v9 forKey:@"slide"]];
@@ -1655,38 +1655,38 @@ LABEL_57:
   objc_autoreleasePoolPop(v5);
 }
 
-- (id)blobHitAtPoint:(CGPoint)a3 fromObjectsForObjectIDs:(id)a4 localPoint:(CGPoint *)a5
+- (id)blobHitAtPoint:(CGPoint)point fromObjectsForObjectIDs:(id)ds localPoint:(CGPoint *)localPoint
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(MRMarimbaLayer *)self size];
-  v11 = [(MRRenderer *)[(MRMarimbaLayer *)self renderer] layerHitAtPoint:1 onlyIfHitElement:a5 localPoint:x, v10 - y];
+  v11 = [(MRRenderer *)[(MRMarimbaLayer *)self renderer] layerHitAtPoint:1 onlyIfHitElement:localPoint localPoint:x, v10 - y];
   if (!v11)
   {
     return 0;
   }
 
   v12 = v11;
-  v13 = [v11 elementHitAtPoint:a5 localPoint:{a5->x, a5->y}];
+  v13 = [v11 elementHitAtPoint:localPoint localPoint:{localPoint->x, localPoint->y}];
   if (!v13)
   {
     return 0;
   }
 
   v14 = v13;
-  v15 = v12;
+  superlayer = v12;
   v16 = v13;
   while (1)
   {
-    v17 = [a4 objectForKey:{objc_msgSend(objc_msgSend(v15, "plug"), "objectID")}];
+    v17 = [ds objectForKey:{objc_msgSend(objc_msgSend(superlayer, "plug"), "objectID")}];
     if (v17)
     {
       break;
     }
 
-    v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@.%@", [objc_msgSend(v15 "plugAsParallel")], v16);
-    v15 = [v15 superlayer];
-    if (!v15)
+    v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@.%@", [objc_msgSend(superlayer "plugAsParallel")], v16);
+    superlayer = [superlayer superlayer];
+    if (!superlayer)
     {
       return 0;
     }
@@ -1695,19 +1695,19 @@ LABEL_57:
   v20 = v17;
   v18 = objc_alloc_init(MRHitBlob);
   [(MRHitBlob *)v18 setEffectLayer:v12];
-  [(MRHitBlob *)v18 setOuterLayer:v15];
+  [(MRHitBlob *)v18 setOuterLayer:superlayer];
   [(MRHitBlob *)v18 setClientObject:v20];
   [(MRHitBlob *)v18 setInnerPath:v16];
   [(MRHitBlob *)v18 setElementID:v14];
   return v18;
 }
 
-- (BOOL)getOnScreenVertices:(CGPoint)a3[4] forHitBlob:(id)a4
+- (BOOL)getOnScreenVertices:(CGPoint)vertices[4] forHitBlob:(id)blob
 {
-  v6 = [a4 outerLayer];
-  if (a3)
+  outerLayer = [blob outerLayer];
+  if (vertices)
   {
-    v7 = v6 == 0;
+    v7 = outerLayer == 0;
   }
 
   else
@@ -1718,36 +1718,36 @@ LABEL_57:
   v8 = !v7;
   if (!v7)
   {
-    v9 = v6;
+    v9 = outerLayer;
     [(MRMarimbaLayer *)self size];
     v11 = v10 * 0.5;
     [(MRMarimbaLayer *)self size];
     v13 = v12 * 0.5;
     [v9 convertLocalPoint:{-1.0, -1.0}];
-    a3->x = v11 * (v14 + 1.0);
-    a3->y = v13 * (1.0 - v15);
+    vertices->x = v11 * (v14 + 1.0);
+    vertices->y = v13 * (1.0 - v15);
     [v9 convertLocalPoint:{1.0, -1.0}];
-    a3[1].x = v11 * (v16 + 1.0);
-    a3[1].y = v13 * (1.0 - v17);
+    vertices[1].x = v11 * (v16 + 1.0);
+    vertices[1].y = v13 * (1.0 - v17);
     [v9 convertLocalPoint:{1.0, 1.0}];
-    a3[2].x = v11 * (v18 + 1.0);
-    a3[2].y = v13 * (1.0 - v19);
+    vertices[2].x = v11 * (v18 + 1.0);
+    vertices[2].y = v13 * (1.0 - v19);
     [v9 convertLocalPoint:{-1.0, 1.0}];
-    a3[3].x = v11 * (v20 + 1.0);
-    a3[3].y = v13 * (1.0 - v21);
+    vertices[3].x = v11 * (v20 + 1.0);
+    vertices[3].y = v13 * (1.0 - v21);
   }
 
   return v8;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toHitBlob:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point toHitBlob:(id)blob
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [a4 outerLayer];
-  if (v7)
+  y = point.y;
+  x = point.x;
+  outerLayer = [blob outerLayer];
+  if (outerLayer)
   {
-    v8 = v7;
+    v8 = outerLayer;
     [(MRMarimbaLayer *)self size];
     v10 = v9 * 0.5;
     [(MRMarimbaLayer *)self size];
@@ -1765,15 +1765,15 @@ LABEL_57:
   return result;
 }
 
-- (BOOL)beginLiveUpdateForHitBlob:(id)a3
+- (BOOL)beginLiveUpdateForHitBlob:(id)blob
 {
-  v5 = [a3 effectLayer];
-  if (!v5)
+  effectLayer = [blob effectLayer];
+  if (!effectLayer)
   {
     return 0;
   }
 
-  v6 = v5;
+  v6 = effectLayer;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1793,13 +1793,13 @@ LABEL_57:
     return 0;
   }
 
-  v7 = [a3 elementID];
-  if ([v7 hasPrefix:@"image"])
+  elementID = [blob elementID];
+  if ([elementID hasPrefix:@"image"])
   {
     v8 = [objc_msgSend(v6 "slideProvidersForElementIDs")];
     if (!v8)
     {
-      NSLog(@"No slide provider for elementID %@", v7);
+      NSLog(@"No slide provider for elementID %@", elementID);
       return 0;
     }
 
@@ -1808,24 +1808,24 @@ LABEL_57:
 
   else
   {
-    if (![v7 hasPrefix:@"text"])
+    if (![elementID hasPrefix:@"text"])
     {
-      NSLog(@"Invalid element ID %@", v7);
+      NSLog(@"Invalid element ID %@", elementID);
       return 0;
     }
 
-    v10 = [(MRMarimbaLayer *)self renderer];
+    renderer = [(MRMarimbaLayer *)self renderer];
 
-    return [(MRRenderer *)v10 beginTextEditingOfElement:v7 inLayer:v6 callDelegate:1];
+    return [(MRRenderer *)renderer beginTextEditingOfElement:elementID inLayer:v6 callDelegate:1];
   }
 }
 
-- (BOOL)endLiveUpdateForHitBlob:(id)a3
+- (BOOL)endLiveUpdateForHitBlob:(id)blob
 {
-  v5 = [a3 effectLayer];
-  if (!v5)
+  effectLayer = [blob effectLayer];
+  if (!effectLayer)
   {
-    return v5;
+    return effectLayer;
   }
 
   objc_opt_class();
@@ -1842,43 +1842,43 @@ LABEL_57:
     v9[3] = &unk_1AACC0;
     v9[4] = v10;
     v10[5] = v9;
-    sub_1230D8(v9, v5);
+    sub_1230D8(v9, effectLayer);
     _Block_object_dispose(v10, 8);
     goto LABEL_13;
   }
 
-  v6 = [a3 elementID];
-  if (![v6 hasPrefix:@"image"])
+  elementID = [blob elementID];
+  if (![elementID hasPrefix:@"image"])
   {
-    if ([v6 hasPrefix:@"text"])
+    if ([elementID hasPrefix:@"text"])
     {
-      LOBYTE(v5) = 1;
+      LOBYTE(effectLayer) = 1;
       [(MRRenderer *)[(MRMarimbaLayer *)self renderer] endTextEditing:1];
-      return v5;
+      return effectLayer;
     }
 
-    NSLog(@"Invalid element ID %@", v6);
+    NSLog(@"Invalid element ID %@", elementID);
 LABEL_13:
-    LOBYTE(v5) = 0;
-    return v5;
+    LOBYTE(effectLayer) = 0;
+    return effectLayer;
   }
 
-  v7 = [objc_msgSend(v5 "slideProvidersForElementIDs")];
+  v7 = [objc_msgSend(effectLayer "slideProvidersForElementIDs")];
   if (!v7)
   {
-    NSLog(@"No slide provider for elementID %@", v6);
+    NSLog(@"No slide provider for elementID %@", elementID);
     goto LABEL_13;
   }
 
   return [v7 endLiveUpdate];
 }
 
-- (void)beginGesture:(id)a3
+- (void)beginGesture:(id)gesture
 {
-  v5 = [a3 hitBlob];
-  [(MRMarimbaLayer *)self beginLiveUpdateForHitBlob:v5];
-  v6 = [v5 proxyForSlide];
-  -[MZMediaManagement resolutionForAssetAtPath:](-[MRRenderer assetManagementDelegate](-[MRMarimbaLayer renderer](self, "renderer"), "assetManagementDelegate"), "resolutionForAssetAtPath:", [v6 path]);
+  hitBlob = [gesture hitBlob];
+  [(MRMarimbaLayer *)self beginLiveUpdateForHitBlob:hitBlob];
+  proxyForSlide = [hitBlob proxyForSlide];
+  -[MZMediaManagement resolutionForAssetAtPath:](-[MRRenderer assetManagementDelegate](-[MRMarimbaLayer renderer](self, "renderer"), "assetManagementDelegate"), "resolutionForAssetAtPath:", [proxyForSlide path]);
   v9 = v8 <= 0.0 || v7 <= 0.0;
   v10 = v7 / v8;
   if (v9)
@@ -1891,68 +1891,68 @@ LABEL_13:
     v11 = v10;
   }
 
-  [a3 locationInViewAtStart];
-  [(MRMarimbaLayer *)self convertPoint:v5 toHitBlob:?];
+  [gesture locationInViewAtStart];
+  [(MRMarimbaLayer *)self convertPoint:hitBlob toHitBlob:?];
   v13 = v12;
   v15 = v14;
-  [v6 center];
+  [proxyForSlide center];
   v17 = v16;
   v19 = v18;
-  [a3 setSlideCenterAtStart:?];
-  [v6 rotation];
+  [gesture setSlideCenterAtStart:?];
+  [proxyForSlide rotation];
   v21 = v20;
-  [a3 setSlideRotationAtStart:?];
-  [v6 scale];
+  [gesture setSlideRotationAtStart:?];
+  [proxyForSlide scale];
   v23 = v22;
-  [a3 setSlideScaleAtStart:?];
-  [a3 setLinearScaleAtStart:v23];
-  v24 = [v6 sizingMode];
-  if (!v24 || [v24 isEqualToString:@"Crop to Fit"])
+  [gesture setSlideScaleAtStart:?];
+  [gesture setLinearScaleAtStart:v23];
+  sizingMode = [proxyForSlide sizingMode];
+  if (!sizingMode || [sizingMode isEqualToString:@"Crop to Fit"])
   {
-    [v5 aspectRatio];
+    [hitBlob aspectRatio];
     v26 = v25;
-    [a3 linearScaleAtStart];
+    [gesture linearScaleAtStart];
     v28 = v27;
     if (v26 >= v11)
     {
-      [a3 linearScaleAtStart];
+      [gesture linearScaleAtStart];
       v33 = v32;
-      [v5 aspectRatio];
+      [hitBlob aspectRatio];
       v31 = v33 * v34 / v11;
     }
 
     else
     {
-      [v5 aspectRatio];
+      [hitBlob aspectRatio];
       v28 = v11 * v28 / v29;
-      [a3 linearScaleAtStart];
+      [gesture linearScaleAtStart];
       v31 = v30;
     }
 
-    [a3 setLinearScaleAtStart:v28];
+    [gesture setLinearScaleAtStart:v28];
     v17 = v17 + (0.5 - v17) / v28;
     v19 = v19 + (0.5 - v19) / v31;
   }
 
   v35 = v21;
   v36 = __sincosf_stret(v35);
-  [a3 linearScaleAtStart];
+  [gesture linearScaleAtStart];
   v38 = v36.__cosval * 0.5 / v37;
-  [a3 linearScaleAtStart];
+  [gesture linearScaleAtStart];
   v40 = v36.__sinval * 0.5 / v39;
-  [v5 aspectRatio];
-  [a3 setLocationInSlideAtStart:{v17 + v13 * v38 + v15 * v40 * (1.0 / v41), v19 + (v15 * v38 * (1.0 / v41) - v13 * v40) * v11}];
-  [a3 setCurrentTranslation:{CGPointZero.x, CGPointZero.y}];
-  [a3 setCurrentRotation:0.0];
+  [hitBlob aspectRatio];
+  [gesture setLocationInSlideAtStart:{v17 + v13 * v38 + v15 * v40 * (1.0 / v41), v19 + (v15 * v38 * (1.0 / v41) - v13 * v40) * v11}];
+  [gesture setCurrentTranslation:{CGPointZero.x, CGPointZero.y}];
+  [gesture setCurrentRotation:0.0];
 
-  [a3 setCurrentScale:1.0];
+  [gesture setCurrentScale:1.0];
 }
 
-- (void)doGesture:(id)a3
+- (void)doGesture:(id)gesture
 {
-  v5 = [a3 hitBlob];
-  v6 = [v5 proxyForSlide];
-  -[MZMediaManagement resolutionForAssetAtPath:](-[MRRenderer assetManagementDelegate](-[MRMarimbaLayer renderer](self, "renderer"), "assetManagementDelegate"), "resolutionForAssetAtPath:", [v6 path]);
+  hitBlob = [gesture hitBlob];
+  proxyForSlide = [hitBlob proxyForSlide];
+  -[MZMediaManagement resolutionForAssetAtPath:](-[MRRenderer assetManagementDelegate](-[MRMarimbaLayer renderer](self, "renderer"), "assetManagementDelegate"), "resolutionForAssetAtPath:", [proxyForSlide path]);
   v9 = v8 <= 0.0 || v7 <= 0.0;
   v10 = v7 / v8;
   if (v9)
@@ -1966,28 +1966,28 @@ LABEL_13:
   }
 
   v63 = v11;
-  [a3 locationInViewAtStart];
+  [gesture locationInViewAtStart];
   v13 = v12;
-  [a3 currentTranslation];
+  [gesture currentTranslation];
   v15 = v13 + v14;
-  [a3 locationInViewAtStart];
+  [gesture locationInViewAtStart];
   v17 = v16;
-  [a3 currentTranslation];
-  [(MRMarimbaLayer *)self convertPoint:v5 toHitBlob:v15, v17 + v18];
+  [gesture currentTranslation];
+  [(MRMarimbaLayer *)self convertPoint:hitBlob toHitBlob:v15, v17 + v18];
   v64 = v20;
   v65 = v19;
-  [a3 slideRotationAtStart];
+  [gesture slideRotationAtStart];
   v22 = v21;
-  [a3 currentRotation];
+  [gesture currentRotation];
   v24 = v22 - v23;
-  [v5 aspectRatio];
+  [hitBlob aspectRatio];
   v66 = v24;
   v25 = v24;
   v27 = 1.0 / v26;
   v28 = __sincosf_stret(v25);
-  [a3 linearScaleAtStart];
+  [gesture linearScaleAtStart];
   v30 = v29;
-  [a3 currentScale];
+  [gesture currentScale];
   v32 = v30 * v31;
   v33 = fabs(v28.__cosval);
   v34 = fabs(v28.__sinval);
@@ -2016,9 +2016,9 @@ LABEL_13:
 
   v40 = v28.__cosval * 0.5 / v39;
   v41 = v28.__sinval * 0.5 / v39;
-  [a3 locationInSlideAtStart];
+  [gesture locationInSlideAtStart];
   v62 = v42 - (v27 * (v64 * v41) + v65 * v40);
-  [a3 locationInSlideAtStart];
+  [gesture locationInSlideAtStart];
   v44 = v43 - (v27 * (v64 * v40) - v65 * v41) * v11;
   v45 = v35 * 0.5;
   v46 = v62;
@@ -2034,17 +2034,17 @@ LABEL_13:
     v44 = v48;
   }
 
-  v49 = [v6 sizingMode];
-  if (v49 && ![v49 isEqualToString:@"Crop to Fit"])
+  sizingMode = [proxyForSlide sizingMode];
+  if (sizingMode && ![sizingMode isEqualToString:@"Crop to Fit"])
   {
     v54 = v46;
   }
 
   else
   {
-    [v5 aspectRatio];
+    [hitBlob aspectRatio];
     v51 = v50;
-    [v5 aspectRatio];
+    [hitBlob aspectRatio];
     v53 = 0.5;
     v54 = 0.5;
     v55 = v39 * v52 / v63;
@@ -2066,64 +2066,64 @@ LABEL_13:
     v44 = v53;
   }
 
-  [v6 rotation];
+  [proxyForSlide rotation];
   if (v66 != v56)
   {
-    [v6 setRotation:v66];
+    [proxyForSlide setRotation:v66];
   }
 
-  [v6 scale];
+  [proxyForSlide scale];
   if (v39 != v57)
   {
-    [v6 setScale:v39];
+    [proxyForSlide setScale:v39];
   }
 
-  [v6 center];
+  [proxyForSlide center];
   if (v54 != v59 || v44 != v58)
   {
-    [v6 setCenter:{v54, v44}];
+    [proxyForSlide setCenter:{v54, v44}];
   }
 
-  v61 = [(MRMarimbaLayer *)self renderer];
+  renderer = [(MRMarimbaLayer *)self renderer];
 
-  [(MRRenderer *)v61 requestRendering:0];
+  [(MRRenderer *)renderer requestRendering:0];
 }
 
-- (void)endGesture:(id)a3
+- (void)endGesture:(id)gesture
 {
-  -[MRMarimbaLayer endLiveUpdateForHitBlob:](self, "endLiveUpdateForHitBlob:", [a3 hitBlob]);
-  v4 = [(MRMarimbaLayer *)self renderer];
+  -[MRMarimbaLayer endLiveUpdateForHitBlob:](self, "endLiveUpdateForHitBlob:", [gesture hitBlob]);
+  renderer = [(MRMarimbaLayer *)self renderer];
 
-  [(MRRenderer *)v4 requestRendering:0];
+  [(MRRenderer *)renderer requestRendering:0];
 }
 
-- (void)cancelGesture:(id)a3
+- (void)cancelGesture:(id)gesture
 {
-  v5 = [objc_msgSend(a3 "hitBlob")];
-  [a3 slideCenterAtStart];
+  v5 = [objc_msgSend(gesture "hitBlob")];
+  [gesture slideCenterAtStart];
   [v5 setCenter:?];
-  [a3 slideRotationAtStart];
+  [gesture slideRotationAtStart];
   [v5 setRotation:?];
-  [a3 slideScaleAtStart];
+  [gesture slideScaleAtStart];
   [v5 setScale:?];
 
-  [(MRMarimbaLayer *)self endGesture:a3];
+  [(MRMarimbaLayer *)self endGesture:gesture];
 }
 
-+ (MRMarimbaLayer)layerWithDocument:(id)a3 size:(CGSize)a4
++ (MRMarimbaLayer)layerWithDocument:(id)document size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v7 = +[MRMarimbaLayer layer];
   [(MRMarimbaLayer *)v7 setFrame:0.0, 0.0, width, height];
-  [(MRMarimbaLayer *)v7 setDocument:a3];
+  [(MRMarimbaLayer *)v7 setDocument:document];
   return v7;
 }
 
-+ (MRMarimbaLayer)layerWithDocument:(id)a3
++ (MRMarimbaLayer)layerWithDocument:(id)document
 {
   v4 = +[MRMarimbaLayer layer];
-  [(MRMarimbaLayer *)v4 setDocument:a3];
+  [(MRMarimbaLayer *)v4 setDocument:document];
   return v4;
 }
 
@@ -2146,15 +2146,15 @@ LABEL_13:
   objc_sync_exit(v2);
 }
 
-+ (MRMarimbaLayer)allocWithZone:(_NSZone *)a3
++ (MRMarimbaLayer)allocWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
   objc_sync_enter(v5);
   ++qword_1EF3E8;
   objc_sync_exit(v5);
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___MRMarimbaLayer;
-  return objc_msgSendSuper2(&v7, "allocWithZone:", a3);
+  return objc_msgSendSuper2(&v7, "allocWithZone:", zone);
 }
 
 - (MRMarimbaLayer)init
@@ -2244,12 +2244,12 @@ LABEL_13:
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(MRMarimbaLayer *)self bounds];
   v10 = height != v9 || width != v8;
   v13.receiver = self;
@@ -2266,13 +2266,13 @@ LABEL_13:
     {
       if (v10)
       {
-        v11 = [(MRRenderer *)self->_renderer renderDispatchQueue];
+        renderDispatchQueue = [(MRRenderer *)self->_renderer renderDispatchQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_123EEC;
         block[3] = &unk_1AA700;
         block[4] = self;
-        dispatch_async(v11, block);
+        dispatch_async(renderDispatchQueue, block);
       }
 
       else
@@ -2293,7 +2293,7 @@ LABEL_13:
   return result;
 }
 
-- (void)updateSizeOfRenderer:(id)a3
+- (void)updateSizeOfRenderer:(id)renderer
 {
   width = self->_frameBufferSize.width;
   height = self->_frameBufferSize.height;
@@ -2318,9 +2318,9 @@ LABEL_13:
     v6 = 1;
   }
 
-  if (![a3 orientation])
+  if (![renderer orientation])
   {
-    [a3 setOrientation:v6];
+    [renderer setOrientation:v6];
   }
 
   if (v6 >= 3)
@@ -2343,27 +2343,27 @@ LABEL_13:
     v8 = height;
   }
 
-  [a3 setSize:{v8, v7}];
+  [renderer setSize:{v8, v7}];
 }
 
-- (void)setRendererSizeIsLocked:(BOOL)a3
+- (void)setRendererSizeIsLocked:(BOOL)locked
 {
-  if (self->_rendererSizeIsLocked != a3)
+  if (self->_rendererSizeIsLocked != locked)
   {
     block[7] = v3;
     block[8] = v4;
-    self->_rendererSizeIsLocked = a3;
-    if (!a3 && self->_document)
+    self->_rendererSizeIsLocked = locked;
+    if (!locked && self->_document)
     {
       if (self->_sizeChangedWhileRendererSizeWasLocked)
       {
-        v6 = [(MRRenderer *)self->_renderer renderDispatchQueue];
+        renderDispatchQueue = [(MRRenderer *)self->_renderer renderDispatchQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_124100;
         block[3] = &unk_1AA700;
         block[4] = self;
-        dispatch_async(v6, block);
+        dispatch_async(renderDispatchQueue, block);
       }
 
       else
@@ -2376,14 +2376,14 @@ LABEL_13:
   }
 }
 
-- (void)setContentsScale:(double)a3
+- (void)setContentsScale:(double)scale
 {
   [(MRMarimbaLayer *)self contentsScale];
-  if (v5 != a3)
+  if (v5 != scale)
   {
     v8.receiver = self;
     v8.super_class = MRMarimbaLayer;
-    [(MRMarimbaLayer *)&v8 setContentsScale:a3];
+    [(MRMarimbaLayer *)&v8 setContentsScale:scale];
     if (self->_document)
     {
       renderer = self->_renderer;
@@ -2400,7 +2400,7 @@ LABEL_13:
   }
 }
 
-- (void)setDocument:(id)a3
+- (void)setDocument:(id)document
 {
   if (self->_document)
   {
@@ -2415,11 +2415,11 @@ LABEL_13:
     self->_document = 0;
   }
 
-  v5 = a3;
-  self->_document = v5;
-  if (v5)
+  documentCopy = document;
+  self->_document = documentCopy;
+  if (documentCopy)
   {
-    document = v5;
+    document = documentCopy;
     renderer = self->_renderer;
     v8 = renderer;
     if (!renderer)
@@ -2435,7 +2435,7 @@ LABEL_13:
     [(MRRenderer *)v8 setIsEditing:0];
     LODWORD(v9) = 1.0;
     [(MRRenderer *)v8 setVolume:v9];
-    -[MRRenderer setMontage:](v8, "setMontage:", [a3 montage]);
+    -[MRRenderer setMontage:](v8, "setMontage:", [document montage]);
     [(MRRenderer *)v8 setRequestRenderingOnChanges:1];
     [(MRRenderer *)v8 setInteractivityIsEnabled:self->_interactivityIsEnabled];
     [objc_msgSend(objc_msgSend(-[MPDocument mainLayers](self->_document "mainLayers")];
@@ -2532,7 +2532,7 @@ LABEL_13:
   }
 }
 
-- (void)didLiveChanged:(id)a3
+- (void)didLiveChanged:(id)changed
 {
   [objc_msgSend(objc_msgSend(-[MPDocument mainLayers](self->_document mainLayers];
   objc_opt_class();
@@ -2561,9 +2561,9 @@ LABEL_13:
   }
 }
 
-- (void)setInteractivityIsEnabled:(BOOL)a3
+- (void)setInteractivityIsEnabled:(BOOL)enabled
 {
-  self->_interactivityIsEnabled = a3;
+  self->_interactivityIsEnabled = enabled;
   renderer = self->_renderer;
   if (renderer)
   {
@@ -2605,11 +2605,11 @@ LABEL_13:
   }
 }
 
-- (void)setStopWithVideo:(BOOL)a3
+- (void)setStopWithVideo:(BOOL)video
 {
-  self->_stopWithVideo = a3;
+  self->_stopWithVideo = video;
   renderer = self->_renderer;
-  if (a3)
+  if (video)
   {
     [(MPDocument *)self->_document videoDuration];
     v5 = v4;
@@ -2627,12 +2627,12 @@ LABEL_13:
   [(MRRenderer *)v6 setMasterStartTime:v7 andDuration:0.0 mode:v5];
 }
 
-- (void)setTime:(double)a3
+- (void)setTime:(double)time
 {
   [(MRMarimbaLayer *)self setBailTimeWatcher:1];
   renderer = self->_renderer;
 
-  [(MRRenderer *)renderer setTime:a3];
+  [(MRRenderer *)renderer setTime:time];
 }
 
 - (double)timeRemaining
@@ -2643,10 +2643,10 @@ LABEL_13:
   return v4 - v5;
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
   faceDetector = self->_faceDetector;
-  if (a3)
+  if (suspended)
   {
     [(MPFaceDetector *)faceDetector suspend];
   }
@@ -2704,25 +2704,25 @@ LABEL_13:
 
 - (void)warmupRenderer
 {
-  v2 = [(MRMarimbaLayer *)self renderer];
+  renderer = [(MRMarimbaLayer *)self renderer];
 
-  [(MRRenderer *)v2 warmupVideo:1];
+  [(MRRenderer *)renderer warmupVideo:1];
 }
 
-- (void)beginMorphingToAspectRatio:(double)a3 andOrientation:(int)a4 withDuration:(double)a5 switchToDocument:(id)a6
+- (void)beginMorphingToAspectRatio:(double)ratio andOrientation:(int)orientation withDuration:(double)duration switchToDocument:(id)document
 {
-  if ((a4 - 1) <= 3)
+  if ((orientation - 1) <= 3)
   {
-    v8 = *&a4;
+    v8 = *&orientation;
     [(MRRenderer *)self->_renderer size];
-    if (v11 / v12 != a3 || [(MRRenderer *)self->_renderer orientation]!= v8)
+    if (v11 / v12 != ratio || [(MRRenderer *)self->_renderer orientation]!= v8)
     {
       if (self->_morphingToAspectRatio == 0.0)
       {
         if (self->_correctsForAutorotation)
         {
           +[CATransaction begin];
-          [CATransaction setAnimationDuration:a5];
+          [CATransaction setAnimationDuration:duration];
           v23 = 0;
           v24 = xmmword_1635B0;
           v25 = 0x400921FB54442D18;
@@ -2740,14 +2740,14 @@ LABEL_13:
           block[1] = 3221225472;
           block[2] = sub_1250B4;
           block[3] = &unk_1AAC48;
-          block[4] = a6;
+          block[4] = document;
           block[5] = self;
-          *&block[6] = a3;
-          *&block[7] = a5;
+          *&block[6] = ratio;
+          *&block[7] = duration;
           dispatch_async([(MRRenderer *)renderer renderDispatchQueue], block);
         }
 
-        self->_morphingToAspectRatio = a3;
+        self->_morphingToAspectRatio = ratio;
       }
 
       else
@@ -2758,11 +2758,11 @@ LABEL_13:
         }
 
         v14 = [NSDictionary alloc];
-        *&v15 = a3;
+        *&v15 = ratio;
         v16 = [NSNumber numberWithFloat:v15];
         v17 = [NSNumber numberWithInt:v8];
-        *&v18 = a5;
-        self->_nextMorphInfo = [v14 initWithObjectsAndKeys:{v16, @"aspectRatio", v17, @"orientation", +[NSNumber numberWithFloat:](NSNumber, "numberWithFloat:", v18), @"duration", a6, @"nextDocument", 0}];
+        *&v18 = duration;
+        self->_nextMorphInfo = [v14 initWithObjectsAndKeys:{v16, @"aspectRatio", v17, @"orientation", +[NSNumber numberWithFloat:](NSNumber, "numberWithFloat:", v18), @"duration", document, @"nextDocument", 0}];
       }
     }
   }
@@ -2802,17 +2802,17 @@ LABEL_13:
   }
 }
 
-- (BOOL)nearingEndForSerializer:(id)a3
+- (BOOL)nearingEndForSerializer:(id)serializer
 {
   if ([(MRMarimbaLayer *)self isPlaying])
   {
     if ([(MPDocument *)self->_document isLive])
     {
-      v5 = [(MRMarimbaLayer *)self _currentEffectContainer];
-      if (v5)
+      _currentEffectContainer = [(MRMarimbaLayer *)self _currentEffectContainer];
+      if (_currentEffectContainer)
       {
-        v6 = v5;
-        [v5 introTransitionDuration];
+        v6 = _currentEffectContainer;
+        [_currentEffectContainer introTransitionDuration];
         if (v7 != 0.0 || ([v6 outroTransitionDuration], v8 != 0.0))
         {
           [(MRMarimbaLayer *)self relativeTime];
@@ -2826,7 +2826,7 @@ LABEL_13:
           {
             [v6 introTransitionDuration];
 LABEL_10:
-            [(MRMarimbaLayer *)self performSelector:"_nearingEndForSerializer:" withObject:a3 afterDelay:v16 - v14 + 0.1];
+            [(MRMarimbaLayer *)self performSelector:"_nearingEndForSerializer:" withObject:serializer afterDelay:v16 - v14 + 0.1];
             return 0;
           }
 
@@ -2843,14 +2843,14 @@ LABEL_10:
     }
   }
 
-  return [(MRMarimbaLayer *)self _nearingEndForSerializer:a3];
+  return [(MRMarimbaLayer *)self _nearingEndForSerializer:serializer];
 }
 
-- (BOOL)_nearingEndForSerializer:(id)a3
+- (BOOL)_nearingEndForSerializer:(id)serializer
 {
   if ([(MPDocument *)self->_document isLive])
   {
-    v5 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{a3, @"container", 0}];
+    v5 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{serializer, @"container", 0}];
     v6 = [(MPDocument *)self->_document nearingEndWithOptions:v5];
   }
 
@@ -2869,16 +2869,16 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)effect:(id)a3 requestedNumberOfSlides:(unint64_t)a4 firstSlideIndexStillNeeded:(unint64_t)a5
+- (BOOL)effect:(id)effect requestedNumberOfSlides:(unint64_t)slides firstSlideIndexStillNeeded:(unint64_t)needed
 {
-  v6 = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:a4], @"requestedNumberOfSlides", [NSNumber numberWithInteger:a5], @"firstSlideIndexStillNeeded", a3, @"container", 0];
+  v6 = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:slides], @"requestedNumberOfSlides", [NSNumber numberWithInteger:needed], @"firstSlideIndexStillNeeded", effect, @"container", 0];
   if ([(MRMarimbaLayer *)self isPlaying])
   {
-    v7 = [(MRMarimbaLayer *)self _currentEffectContainer];
-    if (v7)
+    _currentEffectContainer = [(MRMarimbaLayer *)self _currentEffectContainer];
+    if (_currentEffectContainer)
     {
-      v8 = v7;
-      [v7 introTransitionDuration];
+      v8 = _currentEffectContainer;
+      [_currentEffectContainer introTransitionDuration];
       if (v9 != 0.0 || ([v8 outroTransitionDuration], v10 != 0.0))
       {
         [(MRMarimbaLayer *)self relativeTime];
@@ -2911,9 +2911,9 @@ LABEL_9:
   return [(MRMarimbaLayer *)self _effectRequestedSlides:v6];
 }
 
-- (BOOL)_effectRequestedSlides:(id)a3
+- (BOOL)_effectRequestedSlides:(id)slides
 {
-  v4 = [(MPDocument *)self->_document nearingEndWithOptions:a3];
+  v4 = [(MPDocument *)self->_document nearingEndWithOptions:slides];
   if (self->_stopWithVideo)
   {
     renderer = self->_renderer;
@@ -2924,11 +2924,11 @@ LABEL_9:
   return v4;
 }
 
-- (void)didApplyStyle:(id)a3
+- (void)didApplyStyle:(id)style
 {
-  v4 = [a3 object];
+  object = [style object];
   document = self->_document;
-  if (v4 == document)
+  if (object == document)
   {
     if ([(MPDocument *)document detectFacesInBackground])
     {
@@ -2975,7 +2975,7 @@ LABEL_9:
   }
 }
 
-- (void)didAddEffects:(id)a3
+- (void)didAddEffects:(id)effects
 {
   if (self->_stopWithVideo)
   {
@@ -2986,25 +2986,25 @@ LABEL_9:
   }
 }
 
-- (CGImage)snapshotAsCGImageForTime:(double)a3 withSize:(CGSize)a4
+- (CGImage)snapshotAsCGImageForTime:(double)time withSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v7 = [[MRSnapshotter alloc] initWithMontage:[(MPDocument *)self->_document montage] andAssetManagementDelegate:self->_document isReadOnly:1];
   [(MRSnapshotter *)v7 setSize:width, height];
-  v8 = [(MRSnapshotter *)v7 CGImageSnapshotAtTime:a3];
+  v8 = [(MRSnapshotter *)v7 CGImageSnapshotAtTime:time];
 
   return v8;
 }
 
-- (void)setEnableSlideDidChangeNotification:(BOOL)a3
+- (void)setEnableSlideDidChangeNotification:(BOOL)notification
 {
-  if (self->_enableSlideDidChangeNotification != a3)
+  if (self->_enableSlideDidChangeNotification != notification)
   {
-    v3 = a3;
-    self->_enableSlideDidChangeNotification = a3;
+    notificationCopy = notification;
+    self->_enableSlideDidChangeNotification = notification;
     v5 = +[NSNotificationCenter defaultCenter];
-    if (v3)
+    if (notificationCopy)
     {
       v6 = kMRNotificationSlideIsOn;
 
@@ -3020,17 +3020,17 @@ LABEL_9:
   }
 }
 
-- (void)beginEditingOfText:(id)a3
+- (void)beginEditingOfText:(id)text
 {
-  v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"text%d", [a3 index]);
-  v6 = [a3 nearestPlug];
+  v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"text%d", [text index]);
+  nearestPlug = [text nearestPlug];
   [(MRRenderer *)self->_renderer requestRenderingWithin:10.0];
   renderer = self->_renderer;
 
-  [(MRRenderer *)renderer beginTextEditingOfElement:v5 inPlug:v6 callDelegate:1];
+  [(MRRenderer *)renderer beginTextEditingOfElement:v5 inPlug:nearestPlug callDelegate:1];
 }
 
-- (void)setLastSlideChange:(id)a3
+- (void)setLastSlideChange:(id)change
 {
   lastSlideChange = self->_lastSlideChange;
   if (lastSlideChange)
@@ -3039,7 +3039,7 @@ LABEL_9:
     self->_lastSlideChange = 0;
   }
 
-  self->_lastSlideChange = [a3 copy];
+  self->_lastSlideChange = [change copy];
 }
 
 - (void)destroyFramebuffer

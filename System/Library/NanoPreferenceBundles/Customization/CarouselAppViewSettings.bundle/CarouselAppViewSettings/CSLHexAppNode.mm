@@ -1,41 +1,41 @@
 @interface CSLHexAppNode
 + (id)fakeBundle;
-+ (id)unarchiveFromDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isExactlyEqual:(id)a3;
++ (id)unarchiveFromDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isExactlyEqual:(id)equal;
 - (BOOL)valid;
 - (CSLHexAppNode)init;
-- (CSLHexAppNode)initWithBundleIdentifier:(id)a3 hex:(Hex)a4 placementReason:(unint64_t)a5;
-- (CSLHexAppNode)initWithCoder:(id)a3;
+- (CSLHexAppNode)initWithBundleIdentifier:(id)identifier hex:(Hex)hex placementReason:(unint64_t)reason;
+- (CSLHexAppNode)initWithCoder:(id)coder;
 - (id).cxx_construct;
 - (id)archiveToDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
-- (id)initFromDictionary:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
 - (unint64_t)allPropertiesHash;
-- (void)commitHexForReason:(unint64_t)a3 isDirect:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)commitHexForReason:(unint64_t)reason isDirect:(BOOL)direct;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CSLHexAppNode
 
-- (CSLHexAppNode)initWithBundleIdentifier:(id)a3 hex:(Hex)a4 placementReason:(unint64_t)a5
+- (CSLHexAppNode)initWithBundleIdentifier:(id)identifier hex:(Hex)hex placementReason:(unint64_t)reason
 {
-  v8 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = CSLHexAppNode;
   v9 = [(CSLHexAppNode *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [identifierCopy copy];
     bundleIdentifier = v9->_bundleIdentifier;
     v9->_bundleIdentifier = v10;
 
-    v9->_hex = a4;
-    v9->_savedHex = a4;
-    v9->_directPlacementReason = a5;
-    v9->_placementReason = a5;
+    v9->_hex = hex;
+    v9->_savedHex = hex;
+    v9->_directPlacementReason = reason;
+    v9->_placementReason = reason;
   }
 
   return v9;
@@ -52,38 +52,38 @@
 + (id)fakeBundle
 {
   v2 = +[NSUUID UUID];
-  v3 = [v2 UUIDString];
-  v4 = [NSString stringWithFormat:@"com.apple.unknown.%@", v3];
+  uUIDString = [v2 UUIDString];
+  v4 = [NSString stringWithFormat:@"com.apple.unknown.%@", uUIDString];
 
   return v4;
 }
 
 - (BOOL)valid
 {
-  v2 = [(CSLHexAppNode *)self bundleIdentifier];
-  v3 = v2 != 0;
+  bundleIdentifier = [(CSLHexAppNode *)self bundleIdentifier];
+  v3 = bundleIdentifier != 0;
 
   return v3;
 }
 
-- (void)commitHexForReason:(unint64_t)a3 isDirect:(BOOL)a4
+- (void)commitHexForReason:(unint64_t)reason isDirect:(BOOL)direct
 {
   if (self->_savedHex.q != self->_hex.q || self->_savedHex.r != self->_hex.r)
   {
     self->_savedHex = self->_hex;
-    if (a4)
+    if (direct)
     {
-      self->_directPlacementReason = a3;
+      self->_directPlacementReason = reason;
     }
 
-    self->_placementReason = a3;
+    self->_placementReason = reason;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -94,8 +94,8 @@
     if (objc_opt_isKindOfClass())
     {
       bundleIdentifier = self->_bundleIdentifier;
-      v6 = [(CSLHexAppNode *)v4 bundleIdentifier];
-      v7 = [(NSString *)bundleIdentifier isEqual:v6];
+      bundleIdentifier = [(CSLHexAppNode *)equalCopy bundleIdentifier];
+      v7 = [(NSString *)bundleIdentifier isEqual:bundleIdentifier];
     }
 
     else
@@ -116,16 +116,16 @@
   return v5;
 }
 
-- (BOOL)isExactlyEqual:(id)a3
+- (BOOL)isExactlyEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [BSEqualsBuilder builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [BSEqualsBuilder builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   bundleIdentifier = self->_bundleIdentifier;
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_1ACB8;
   v27[3] = &unk_3CD28;
-  v7 = v4;
+  v7 = equalCopy;
   v28 = v7;
   v8 = [v5 appendObject:bundleIdentifier counterpart:v27];
   v25[0] = _NSConcreteStackBlock;
@@ -167,37 +167,37 @@
 
 - (id)description
 {
-  v3 = [(CSLHexAppNode *)self bundleIdentifier];
-  v4 = [NSString stringWithFormat:@"%@ @ {%d, %d}", v3, self->_hex.q, self->_hex.r];
+  bundleIdentifier = [(CSLHexAppNode *)self bundleIdentifier];
+  v4 = [NSString stringWithFormat:@"%@ @ {%d, %d}", bundleIdentifier, self->_hex.q, self->_hex.r];
 
   return v4;
 }
 
 - (id)debugDescription
 {
-  v3 = [(CSLHexAppNode *)self wasReflowed];
-  v4 = [(CSLHexAppNode *)self bundleIdentifier];
+  wasReflowed = [(CSLHexAppNode *)self wasReflowed];
+  bundleIdentifier = [(CSLHexAppNode *)self bundleIdentifier];
   q = self->_hex.q;
   r = self->_hex.r;
   v7 = NSStringFromCSLHexAppPlacementReason(self->_placementReason);
   v8 = v7;
-  if (v3)
+  if (wasReflowed)
   {
     v9 = NSStringFromCSLHexAppPlacementReason(self->_directPlacementReason);
-    v10 = [NSString stringWithFormat:@"%@ @ {%d, %d} %@(direct:%@)", v4, q, r, v8, v9];
+    v10 = [NSString stringWithFormat:@"%@ @ {%d, %d} %@(direct:%@)", bundleIdentifier, q, r, v8, v9];
   }
 
   else
   {
-    v10 = [NSString stringWithFormat:@"%@ @ {%d, %d} %@", v4, q, r, v7];
+    v10 = [NSString stringWithFormat:@"%@ @ {%d, %d} %@", bundleIdentifier, q, r, v7];
   }
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithBundleIdentifier:hex:placementReason:", self->_bundleIdentifier, *&self->_hex, self->_directPlacementReason}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithBundleIdentifier:hex:placementReason:", self->_bundleIdentifier, *&self->_hex, self->_directPlacementReason}];
   [(Hex *)v4 setPlacementReason:self->_placementReason];
   if (v4)
   {
@@ -207,37 +207,37 @@
   return v4;
 }
 
-- (CSLHexAppNode)initWithCoder:(id)a3
+- (CSLHexAppNode)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Bundle"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Bundle"];
   v6 = [NSSet alloc];
   v7 = objc_opt_class();
   v8 = [v6 initWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"Hex"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"Hex"];
   if (!v9)
   {
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"Position"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"Position"];
   }
 
-  v10 = [v4 decodeIntegerForKey:@"DirectReason"];
-  v11 = [v4 decodeIntegerForKey:@"Reason"];
+  v10 = [coderCopy decodeIntegerForKey:@"DirectReason"];
+  v11 = [coderCopy decodeIntegerForKey:@"Reason"];
   v12 = -[CSLHexAppNode initWithBundleIdentifier:hex:placementReason:](self, "initWithBundleIdentifier:hex:placementReason:", v5, [v9 hex], v10);
   [(CSLHexAppNode *)v12 setPlacementReason:v11];
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(CSLHexAppNode *)self bundleIdentifier];
-  [v6 encodeObject:v4 forKey:@"Bundle"];
+  coderCopy = coder;
+  bundleIdentifier = [(CSLHexAppNode *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"Bundle"];
 
   v5 = [[CSLObjCHex alloc] initWithHex:*&self->_hex];
-  [v6 encodeObject:v5 forKey:@"Hex"];
-  [v6 encodeInteger:self->_placementReason forKey:@"Reason"];
-  [v6 encodeInteger:self->_directPlacementReason forKey:@"DirectReason"];
+  [coderCopy encodeObject:v5 forKey:@"Hex"];
+  [coderCopy encodeInteger:self->_placementReason forKey:@"Reason"];
+  [coderCopy encodeInteger:self->_directPlacementReason forKey:@"DirectReason"];
 }
 
 - (id)archiveToDictionary
@@ -262,13 +262,13 @@
   return v8;
 }
 
-+ (id)unarchiveFromDictionary:(id)a3
++ (id)unarchiveFromDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [objc_alloc(objc_opt_class()) initFromDictionary:v3];
+    v4 = [objc_alloc(objc_opt_class()) initFromDictionary:dictionaryCopy];
   }
 
   else
@@ -285,18 +285,18 @@
   return v4;
 }
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 bs_safeStringForKey:@"Bundle"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy bs_safeStringForKey:@"Bundle"];
   if (v5)
   {
-    v6 = [v4 bs_safeArrayForKey:@"Hex"];
+    v6 = [dictionaryCopy bs_safeArrayForKey:@"Hex"];
     if ([v6 count]== &dword_0 + 2)
     {
-      v7 = [v6 firstObject];
+      firstObject = [v6 firstObject];
       v8 = objc_opt_class();
-      v9 = v7;
+      v9 = firstObject;
       if (v8)
       {
         if (objc_opt_isKindOfClass())
@@ -317,9 +317,9 @@
 
       v12 = v10;
 
-      v13 = [v6 lastObject];
+      lastObject = [v6 lastObject];
       v14 = objc_opt_class();
-      v15 = v13;
+      v15 = lastObject;
       if (v14)
       {
         if (objc_opt_isKindOfClass())
@@ -342,18 +342,18 @@
 
       if (v12 && v17)
       {
-        v26 = [v12 intValue];
-        v18 = [v17 intValue];
-        v19 = [v4 bs_safeNumberForKey:@"DirectReason"];
-        v20 = [v19 integerValue];
+        intValue = [v12 intValue];
+        intValue2 = [v17 intValue];
+        v19 = [dictionaryCopy bs_safeNumberForKey:@"DirectReason"];
+        integerValue = [v19 integerValue];
 
-        v21 = [v4 bs_safeNumberForKey:@"Reason"];
-        v22 = [v21 integerValue];
+        v21 = [dictionaryCopy bs_safeNumberForKey:@"Reason"];
+        integerValue2 = [v21 integerValue];
 
-        v23 = [(CSLHexAppNode *)self initWithBundleIdentifier:v5 hex:v26 | (v18 << 32) placementReason:v20];
-        [(CSLHexAppNode *)v23 setPlacementReason:v22];
+        v23 = [(CSLHexAppNode *)self initWithBundleIdentifier:v5 hex:intValue | (intValue2 << 32) placementReason:integerValue];
+        [(CSLHexAppNode *)v23 setPlacementReason:integerValue2];
         self = v23;
-        v11 = self;
+        selfCopy = self;
       }
 
       else
@@ -364,7 +364,7 @@
           sub_24C90();
         }
 
-        v11 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -376,7 +376,7 @@
         sub_24C28();
       }
 
-      v11 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -388,10 +388,10 @@
       sub_24CF8();
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (id).cxx_construct

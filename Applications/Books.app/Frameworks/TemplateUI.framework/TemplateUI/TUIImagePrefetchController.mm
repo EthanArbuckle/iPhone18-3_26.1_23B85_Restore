@@ -1,18 +1,18 @@
 @interface TUIImagePrefetchController
-- (TUIImagePrefetchController)initWithResourceLoader:(id)a3;
+- (TUIImagePrefetchController)initWithResourceLoader:(id)loader;
 - (TUIImagePrefetchControllerDelegate)delegate;
 - (float)_adjustedPriority:(float)result;
 - (void)_checkInitialResourcesAndInvokeDelegateIfNeeded;
 - (void)dealloc;
-- (void)updatePrioritiesForRenderModel:(id)a3 visibleRect:(CGRect)a4 viewState:(id)a5;
-- (void)urlLoaded:(id)a3;
+- (void)updatePrioritiesForRenderModel:(id)model visibleRect:(CGRect)rect viewState:(id)state;
+- (void)urlLoaded:(id)loaded;
 @end
 
 @implementation TUIImagePrefetchController
 
-- (TUIImagePrefetchController)initWithResourceLoader:(id)a3
+- (TUIImagePrefetchController)initWithResourceLoader:(id)loader
 {
-  v5 = a3;
+  loaderCopy = loader;
   v19.receiver = self;
   v19.super_class = TUIImagePrefetchController;
   v6 = [(TUIImagePrefetchController *)&v19 init];
@@ -29,7 +29,7 @@
     access = v7->_access;
     v7->_access = v11;
 
-    objc_storeStrong(&v7->_resourceLoader, a3);
+    objc_storeStrong(&v7->_resourceLoader, loader);
     v13 = +[NSUUID UUID];
     controllerID = v7->_controllerID;
     v7->_controllerID = v13;
@@ -73,14 +73,14 @@
   return result;
 }
 
-- (void)updatePrioritiesForRenderModel:(id)a3 visibleRect:(CGRect)a4 viewState:(id)a5
+- (void)updatePrioritiesForRenderModel:(id)model visibleRect:(CGRect)rect viewState:(id)state
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  v12 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  modelCopy = model;
+  stateCopy = state;
   [(NSDate *)self->_lastUpdate timeIntervalSinceNow];
   if (v13 >= 0.0)
   {
@@ -102,35 +102,35 @@
     lastUpdate = self->_lastUpdate;
     self->_lastUpdate = v15;
 
-    v17 = [v12 copy];
+    v17 = [stateCopy copy];
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_6AE8;
     block[3] = &unk_25DC50;
-    v20 = v11;
+    v20 = modelCopy;
     v23 = x;
     v24 = y;
     v25 = width;
     v26 = height;
-    v12 = v17;
-    v21 = v12;
-    v22 = self;
+    stateCopy = v17;
+    v21 = stateCopy;
+    selfCopy = self;
     dispatch_async(queue, block);
   }
 }
 
-- (void)urlLoaded:(id)a3
+- (void)urlLoaded:(id)loaded
 {
-  v4 = a3;
+  loadedCopy = loaded;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_72E4;
   v7[3] = &unk_25DCA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = loadedCopy;
+  v6 = loadedCopy;
   dispatch_async(queue, v7);
 }
 

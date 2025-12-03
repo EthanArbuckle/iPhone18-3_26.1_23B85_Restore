@@ -1,57 +1,57 @@
 @interface TUIKeyboardTrackingCoordinator
-+ (id)trackingCoordinatorForScene:(id)a3;
-- (BOOL)shouldUpdateExternalTrackerForWindow:(id)a3;
++ (id)trackingCoordinatorForScene:(id)scene;
+- (BOOL)shouldUpdateExternalTrackerForWindow:(id)window;
 - (CGPoint)hostedOriginOffset;
-- (CGRect)convertSceneCoordinateSpaceFrame:(CGRect)a3 toWindow:(id)a4;
+- (CGRect)convertSceneCoordinateSpaceFrame:(CGRect)frame toWindow:(id)window;
 - (CGRect)incomingFrame;
 - (CGRect)incomingKeyboardFrame;
-- (CGRect)intersectionOfSceneRect:(CGRect)a3 withWindow:(id)a4;
+- (CGRect)intersectionOfSceneRect:(CGRect)rect withWindow:(id)window;
 - (CGRect)knownIAVBounds;
 - (CGRect)lastKnownFrame;
 - (CGRect)lastKnownKeyboardFrame;
 - (CGRect)lastPostedEndNotificationFrame;
 - (CGRect)notificationBeginFrame;
-- (CGSize)_filteredStartingSizeDiff:(CGSize)a3 sizeUpdate:(CGSize)a4;
-- (CGSize)_lastKnownSizeForWindow:(id)a3;
-- (CGSize)_updatedSizeFromSize:(CGSize)a3 diff:(CGSize)a4 forWindow:(id)a5;
+- (CGSize)_filteredStartingSizeDiff:(CGSize)diff sizeUpdate:(CGSize)update;
+- (CGSize)_lastKnownSizeForWindow:(id)window;
+- (CGSize)_updatedSizeFromSize:(CGSize)size diff:(CGSize)diff forWindow:(id)window;
 - (CGSize)startingSizeForInteraction;
-- (TUIKeyboardTrackingCoordinator)initWithWindowScene:(id)a3;
-- (UIOffset)_lastKnownOffsetForWindow:(id)a3;
-- (UIOffset)_updatedOffsetFromOffset:(UIOffset)a3 diff:(UIOffset)a4 forWindow:(id)a5;
+- (TUIKeyboardTrackingCoordinator)initWithWindowScene:(id)scene;
+- (UIOffset)_lastKnownOffsetForWindow:(id)window;
+- (UIOffset)_updatedOffsetFromOffset:(UIOffset)offset diff:(UIOffset)diff forWindow:(id)window;
 - (UIOffset)startingOffsetForInteraction;
 - (id)description;
-- (id)privateUserInfoForUserInfo:(id)a3 animationInfo:(id)a4 stateInfo:(id)a5;
-- (id)userInfoForBeginFrame:(CGRect)a3 endFrame:(CGRect)a4 animationInfo:(id)a5;
-- (int64_t)notificationTypeFromState:(id)a3 previousState:(id)a4;
-- (void)_postNotificationsWithAnimationInfo:(id)a3 type:(int64_t)a4 start:(BOOL)a5;
-- (void)_updateIAVBounds:(CGRect)a3 forWindow:(id)a4;
-- (void)_updateOffset:(UIOffset)a3 forWindow:(id)a4;
-- (void)_updateSize:(CGSize)a3 forWindow:(id)a4;
-- (void)addTracker:(id)a3;
-- (void)addTrackingWindow:(id)a3;
+- (id)privateUserInfoForUserInfo:(id)info animationInfo:(id)animationInfo stateInfo:(id)stateInfo;
+- (id)userInfoForBeginFrame:(CGRect)frame endFrame:(CGRect)endFrame animationInfo:(id)info;
+- (int64_t)notificationTypeFromState:(id)state previousState:(id)previousState;
+- (void)_postNotificationsWithAnimationInfo:(id)info type:(int64_t)type start:(BOOL)start;
+- (void)_updateIAVBounds:(CGRect)bounds forWindow:(id)window;
+- (void)_updateOffset:(UIOffset)offset forWindow:(id)window;
+- (void)_updateSize:(CGSize)size forWindow:(id)window;
+- (void)addTracker:(id)tracker;
+- (void)addTrackingWindow:(id)window;
 - (void)dealloc;
-- (void)interactiveOffsetUpdate:(UIOffset)a3;
-- (void)interactiveSizeUpdate:(CGSize)a3;
-- (void)interactiveUpdateChangingOffset:(UIOffset)a3 size:(CGSize)a4;
+- (void)interactiveOffsetUpdate:(UIOffset)update;
+- (void)interactiveSizeUpdate:(CGSize)update;
+- (void)interactiveUpdateChangingOffset:(UIOffset)offset size:(CGSize)size;
 - (void)moveGuidesOffscreen;
-- (void)postEndNotificationOnlyWithEndFrame:(CGRect)a3 state:(id)a4 animationInfo:(id)a5;
-- (void)postEndNotificationsFromState:(id)a3 toState:(id)a4;
-- (void)postNotificationType:(unint64_t)a3 forStart:(BOOL)a4;
-- (void)postNotificationWithName:(id)a3 userInfo:(id)a4;
-- (void)postNotificationsOnlyWithEndFrame:(CGRect)a3 animationInfo:(id)a4;
-- (void)postNotificationsWithInfo:(id)a3 type:(int64_t)a4 start:(BOOL)a5;
-- (void)postStartNotificationsFromState:(id)a3 toState:(id)a4;
-- (void)removeTracker:(id)a3;
-- (void)removeTrackingWindow:(id)a3;
+- (void)postEndNotificationOnlyWithEndFrame:(CGRect)frame state:(id)state animationInfo:(id)info;
+- (void)postEndNotificationsFromState:(id)state toState:(id)toState;
+- (void)postNotificationType:(unint64_t)type forStart:(BOOL)start;
+- (void)postNotificationWithName:(id)name userInfo:(id)info;
+- (void)postNotificationsOnlyWithEndFrame:(CGRect)frame animationInfo:(id)info;
+- (void)postNotificationsWithInfo:(id)info type:(int64_t)type start:(BOOL)start;
+- (void)postStartNotificationsFromState:(id)state toState:(id)toState;
+- (void)removeTracker:(id)tracker;
+- (void)removeTrackingWindow:(id)window;
 - (void)resetForTesting;
 - (void)sendUpdateCompleteWithExistingInfo;
-- (void)updateAccessoryViewBounds:(CGRect)a3 forWindow:(id)a4;
-- (void)updateClientsForState:(id)a3 finalFrame:(CGRect)a4 animationInfo:(id)a5 forStart:(BOOL)a6;
-- (void)updateGuideInWindow:(id)a3 withSceneFrame:(CGRect)a4 accessoryBounds:(CGRect)a5 state:(id)a6 updatedInfo:(id)a7;
-- (void)updateKeyboardTrackingState:(id)a3;
-- (void)updateNotificationsOnly:(id)a3;
-- (void)updateTEWHostingOrigin:(CGPoint)a3;
-- (void)updatedIAVBounds:(CGRect)a3 previousBounds:(CGRect)a4;
+- (void)updateAccessoryViewBounds:(CGRect)bounds forWindow:(id)window;
+- (void)updateClientsForState:(id)state finalFrame:(CGRect)frame animationInfo:(id)info forStart:(BOOL)start;
+- (void)updateGuideInWindow:(id)window withSceneFrame:(CGRect)frame accessoryBounds:(CGRect)bounds state:(id)state updatedInfo:(id)info;
+- (void)updateKeyboardTrackingState:(id)state;
+- (void)updateNotificationsOnly:(id)only;
+- (void)updateTEWHostingOrigin:(CGPoint)origin;
+- (void)updatedIAVBounds:(CGRect)bounds previousBounds:(CGRect)previousBounds;
 @end
 
 @implementation TUIKeyboardTrackingCoordinator
@@ -185,8 +185,8 @@
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
-  v8 = [v7 countByEnumeratingWithState:&v34 objects:v40 count:16];
+  trackingWindows = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
+  v8 = [trackingWindows countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v8)
   {
     v9 = v8;
@@ -197,13 +197,13 @@
       {
         if (*v35 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(trackingWindows);
         }
 
         __49__TUIKeyboardTrackingCoordinator_resetForTesting__block_invoke(*(*(&v34 + 1) + 8 * i));
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v34 objects:v40 count:16];
+      v9 = [trackingWindows countByEnumeratingWithState:&v34 objects:v40 count:16];
     }
 
     while (v9);
@@ -213,8 +213,8 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v12 = [(TUIKeyboardTrackingCoordinator *)self trackingElements];
-  v13 = [v12 countByEnumeratingWithState:&v30 objects:v39 count:16];
+  trackingElements = [(TUIKeyboardTrackingCoordinator *)self trackingElements];
+  v13 = [trackingElements countByEnumeratingWithState:&v30 objects:v39 count:16];
   if (v13)
   {
     v14 = v13;
@@ -225,7 +225,7 @@
       {
         if (*v31 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(trackingElements);
         }
 
         v17 = *(*(&v30 + 1) + 8 * j);
@@ -233,10 +233,10 @@
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v18 = [v17 sceneForTracker];
-        v19 = [v18 windows];
+        sceneForTracker = [v17 sceneForTracker];
+        windows = [sceneForTracker windows];
 
-        v20 = [v19 countByEnumeratingWithState:&v26 objects:v38 count:16];
+        v20 = [windows countByEnumeratingWithState:&v26 objects:v38 count:16];
         if (v20)
         {
           v21 = v20;
@@ -247,30 +247,30 @@
             {
               if (*v27 != v22)
               {
-                objc_enumerationMutation(v19);
+                objc_enumerationMutation(windows);
               }
 
               __49__TUIKeyboardTrackingCoordinator_resetForTesting__block_invoke(*(*(&v26 + 1) + 8 * k));
             }
 
-            v21 = [v19 countByEnumeratingWithState:&v26 objects:v38 count:16];
+            v21 = [windows countByEnumeratingWithState:&v26 objects:v38 count:16];
           }
 
           while (v21);
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v30 objects:v39 count:16];
+      v14 = [trackingElements countByEnumeratingWithState:&v30 objects:v39 count:16];
     }
 
     while (v14);
   }
 
-  v24 = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
-  [v24 removeAllObjects];
+  trackingWindows2 = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
+  [trackingWindows2 removeAllObjects];
 
-  v25 = [(TUIKeyboardTrackingCoordinator *)self trackingElements];
-  [v25 removeAllObjects];
+  trackingElements2 = [(TUIKeyboardTrackingCoordinator *)self trackingElements];
+  [trackingElements2 removeAllObjects];
 
   [(TUIKeyboardTrackingCoordinator *)self setTrackingWindows:0];
   [(TUIKeyboardTrackingCoordinator *)self setTrackingElements:0];
@@ -284,14 +284,14 @@ void __49__TUIKeyboardTrackingCoordinator_resetForTesting__block_invoke(void *a1
   objc_setAssociatedObject(object, &_TUIOverlapOffsetKey, 0, 1);
 }
 
-- (id)privateUserInfoForUserInfo:(id)a3 animationInfo:(id)a4 stateInfo:(id)a5
+- (id)privateUserInfoForUserInfo:(id)info animationInfo:(id)animationInfo stateInfo:(id)stateInfo
 {
-  v7 = a4;
-  v8 = [a3 mutableCopy];
+  animationInfoCopy = animationInfo;
+  v8 = [info mutableCopy];
   v9 = MEMORY[0x1E696AD98];
-  v10 = [v7 isRotating];
+  isRotating = [animationInfoCopy isRotating];
 
-  v11 = [v9 numberWithBool:v10];
+  v11 = [v9 numberWithBool:isRotating];
   [v8 setObject:v11 forKey:*MEMORY[0x1E69DDFE0]];
 
   [(TUIKeyboardTrackingCoordinator *)self knownIAVBounds];
@@ -315,38 +315,38 @@ void __49__TUIKeyboardTrackingCoordinator_resetForTesting__block_invoke(void *a1
   return v8;
 }
 
-- (id)userInfoForBeginFrame:(CGRect)a3 endFrame:(CGRect)a4 animationInfo:(id)a5
+- (id)userInfoForBeginFrame:(CGRect)frame endFrame:(CGRect)endFrame animationInfo:(id)info
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3.size.height;
-  v10 = a3.size.width;
-  v11 = a3.origin.y;
-  v12 = a3.origin.x;
+  height = endFrame.size.height;
+  width = endFrame.size.width;
+  y = endFrame.origin.y;
+  x = endFrame.origin.x;
+  v9 = frame.size.height;
+  v10 = frame.size.width;
+  v11 = frame.origin.y;
+  v12 = frame.origin.x;
   v14 = MEMORY[0x1E695DF90];
-  v15 = a5;
+  infoCopy = info;
   v16 = [v14 dictionaryWithCapacity:8];
-  v17 = [(TUIKeyboardTrackingCoordinator *)self primaryScene];
-  v18 = [v17 effectiveGeometry];
-  v19 = [v18 coordinateSpace];
-  v20 = [(TUIKeyboardTrackingCoordinator *)self primaryScene];
-  v21 = [v20 screen];
-  v22 = [v21 coordinateSpace];
-  [v19 convertRect:v22 toCoordinateSpace:{v12, v11, v10, v9}];
+  primaryScene = [(TUIKeyboardTrackingCoordinator *)self primaryScene];
+  effectiveGeometry = [primaryScene effectiveGeometry];
+  coordinateSpace = [effectiveGeometry coordinateSpace];
+  primaryScene2 = [(TUIKeyboardTrackingCoordinator *)self primaryScene];
+  screen = [primaryScene2 screen];
+  coordinateSpace2 = [screen coordinateSpace];
+  [coordinateSpace convertRect:coordinateSpace2 toCoordinateSpace:{v12, v11, v10, v9}];
   v24 = v23;
   v26 = v25;
   v28 = v27;
   v30 = v29;
 
-  v31 = [(TUIKeyboardTrackingCoordinator *)self primaryScene];
-  v32 = [v31 effectiveGeometry];
-  v33 = [v32 coordinateSpace];
-  v34 = [(TUIKeyboardTrackingCoordinator *)self primaryScene];
-  v35 = [v34 screen];
-  v36 = [v35 coordinateSpace];
-  [v33 convertRect:v36 toCoordinateSpace:{x, y, width, height}];
+  primaryScene3 = [(TUIKeyboardTrackingCoordinator *)self primaryScene];
+  effectiveGeometry2 = [primaryScene3 effectiveGeometry];
+  coordinateSpace3 = [effectiveGeometry2 coordinateSpace];
+  primaryScene4 = [(TUIKeyboardTrackingCoordinator *)self primaryScene];
+  screen2 = [primaryScene4 screen];
+  coordinateSpace4 = [screen2 coordinateSpace];
+  [coordinateSpace3 convertRect:coordinateSpace4 toCoordinateSpace:{x, y, width, height}];
   v38 = v37;
   v65 = v37;
   v40 = v39;
@@ -362,18 +362,18 @@ void __49__TUIKeyboardTrackingCoordinator_resetForTesting__block_invoke(void *a1
   [v16 setObject:v48 forKey:*MEMORY[0x1E69DDFA0]];
 
   v49 = MEMORY[0x1E696AD98];
-  [v15 duration];
+  [infoCopy duration];
   v50 = [v49 numberWithDouble:?];
   [v16 setObject:v50 forKey:*MEMORY[0x1E69DDF40]];
 
-  v51 = [v15 options];
-  v52 = [MEMORY[0x1E696AD98] numberWithInteger:(v51 >> 16) & 0xF];
+  options = [infoCopy options];
+  v52 = [MEMORY[0x1E696AD98] numberWithInteger:(options >> 16) & 0xF];
   [v16 setObject:v52 forKey:*MEMORY[0x1E69DDF38]];
 
   v53 = MEMORY[0x1E696AD98];
-  v54 = [v15 isLocalKeyboard];
+  isLocalKeyboard = [infoCopy isLocalKeyboard];
 
-  v55 = [v53 numberWithBool:v54];
+  v55 = [v53 numberWithBool:isLocalKeyboard];
   [v16 setObject:v55 forKey:*MEMORY[0x1E69DDFC8]];
 
   v56 = [MEMORY[0x1E696B098] valueWithCGRect:{0.0, 0.0, v42, v44}];
@@ -409,29 +409,29 @@ void __49__TUIKeyboardTrackingCoordinator_resetForTesting__block_invoke(void *a1
   return v16;
 }
 
-- (int64_t)notificationTypeFromState:(id)a3 previousState:(id)a4
+- (int64_t)notificationTypeFromState:(id)state previousState:(id)previousState
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  stateCopy = state;
+  previousStateCopy = previousState;
+  v7 = previousStateCopy;
   v8 = 0;
-  if (!v5 || !v6)
+  if (!stateCopy || !previousStateCopy)
   {
     goto LABEL_35;
   }
 
-  v9 = [v6 showsInputViews];
-  v10 = [v5 showsInputViews];
-  v11 = v10;
+  showsInputViews = [previousStateCopy showsInputViews];
+  showsInputViews2 = [stateCopy showsInputViews];
+  v11 = showsInputViews2;
   v12 = 0;
-  if ((v9 & 1) == 0 && (v10 & 1) == 0)
+  if ((showsInputViews & 1) == 0 && (showsInputViews2 & 1) == 0)
   {
-    v13 = [v7 showsInputOrAssistantViews];
-    v12 = v13 ^ [v5 showsInputOrAssistantViews] ^ 1;
+    showsInputOrAssistantViews = [v7 showsInputOrAssistantViews];
+    v12 = showsInputOrAssistantViews ^ [stateCopy showsInputOrAssistantViews] ^ 1;
   }
 
-  if ([v5 isDocked])
+  if ([stateCopy isDocked])
   {
     v8 = 0;
     if (v12)
@@ -440,7 +440,7 @@ void __49__TUIKeyboardTrackingCoordinator_resetForTesting__block_invoke(void *a1
     }
   }
 
-  else if ([v5 hasFloatingAssistantView])
+  else if ([stateCopy hasFloatingAssistantView])
   {
     v8 = 2;
     if (v12)
@@ -475,26 +475,26 @@ void __49__TUIKeyboardTrackingCoordinator_resetForTesting__block_invoke(void *a1
     }
   }
 
-  else if (!(v11 & 1 | (([v5 isRotating] & 1) == 0)))
+  else if (!(v11 & 1 | (([stateCopy isRotating] & 1) == 0)))
   {
     goto LABEL_33;
   }
 
-  if (((v9 | v11 ^ 1) & 1) == 0)
+  if (((showsInputViews | v11 ^ 1) & 1) == 0)
   {
     goto LABEL_34;
   }
 
-  if (((v9 ^ 1 | v11) & 1) == 0)
+  if (((showsInputViews ^ 1 | v11) & 1) == 0)
   {
 LABEL_33:
     v8 = 3;
     goto LABEL_35;
   }
 
-  if (((v9 ^ 1 | v11 ^ 1) & 1) == 0)
+  if (((showsInputViews ^ 1 | v11 ^ 1) & 1) == 0)
   {
-    if ([v7 hasInputView] && objc_msgSend(v5, "isOffscreen") && (objc_msgSend(v5, "hasAccessoryView") & 1) != 0 || objc_msgSend(v7, "isInteractive") && (objc_msgSend(v5, "isOffscreen") & 1) != 0)
+    if ([v7 hasInputView] && objc_msgSend(stateCopy, "isOffscreen") && (objc_msgSend(stateCopy, "hasAccessoryView") & 1) != 0 || objc_msgSend(v7, "isInteractive") && (objc_msgSend(stateCopy, "isOffscreen") & 1) != 0)
     {
       goto LABEL_33;
     }
@@ -504,7 +504,7 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if ([v5 isOffscreen] && !objc_msgSend(v7, "isOffscreen"))
+  if ([stateCopy isOffscreen] && !objc_msgSend(v7, "isOffscreen"))
   {
     goto LABEL_33;
   }
@@ -515,7 +515,7 @@ LABEL_34:
     v16 = 138412546;
     v17 = v7;
     v18 = 2112;
-    v19 = v5;
+    v19 = stateCopy;
     _os_log_debug_impl(&dword_18FFDC000, v14, OS_LOG_TYPE_DEBUG, "[Notifications] Transition from %@ to %@ will send only frame change", &v16, 0x16u);
   }
 
@@ -525,25 +525,25 @@ LABEL_35:
   return v8;
 }
 
-- (void)_postNotificationsWithAnimationInfo:(id)a3 type:(int64_t)a4 start:(BOOL)a5
+- (void)_postNotificationsWithAnimationInfo:(id)info type:(int64_t)type start:(BOOL)start
 {
-  v5 = a5;
+  startCopy = start;
   v42 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [MEMORY[0x1E69DC938] currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  infoCopy = info;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (a4 && v10 != 6)
+  if (type && userInterfaceIdiom != 6)
   {
-    v11 = [v8 notificationInfo];
-    v12 = v11;
-    if (!v11 || ![v11 count])
+    notificationInfo = [infoCopy notificationInfo];
+    v12 = notificationInfo;
+    if (!notificationInfo || ![notificationInfo count])
     {
       v15 = _TUIKeyboardTrackingLogger();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         v20 = @"did";
-        if (v5)
+        if (startCopy)
         {
           v20 = @"will";
         }
@@ -556,13 +556,13 @@ LABEL_35:
       goto LABEL_54;
     }
 
-    v13 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-    v14 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
-    v15 = [(TUIKeyboardTrackingCoordinator *)self privateUserInfoForUserInfo:v12 animationInfo:v13 stateInfo:v14];
+    animationInfo = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+    keyboardState = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
+    v15 = [(TUIKeyboardTrackingCoordinator *)self privateUserInfoForUserInfo:v12 animationInfo:animationInfo stateInfo:keyboardState];
 
     v16 = keyboardPerfLog();
     v17 = os_signpost_enabled(v16);
-    if (v5)
+    if (startCopy)
     {
       if (v17)
       {
@@ -601,13 +601,13 @@ LABEL_18:
       }
     }
 
-    if (a4 != 3)
+    if (type != 3)
     {
-      if (a4 == 2)
+      if (type == 2)
       {
         v21 = keyboardPerfLog();
         v22 = os_signpost_enabled(v21);
-        if (v5)
+        if (startCopy)
         {
           if (v22)
           {
@@ -656,7 +656,7 @@ LABEL_41:
           goto LABEL_52;
         }
 
-        if (v5)
+        if (startCopy)
         {
           v34 = @"will";
         }
@@ -666,14 +666,14 @@ LABEL_41:
           v34 = @"did";
         }
 
-        v31 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-        v32 = [v31 notificationsDebugString];
+        animationInfo2 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+        notificationsDebugString = [animationInfo2 notificationsDebugString];
         *v37 = 138412802;
         *&v37[4] = v34;
         v38 = 2112;
         v39 = v12;
         v40 = 2112;
-        v41 = v32;
+        v41 = notificationsDebugString;
         v33 = "Posted notification %@Show with %@ %@";
         goto LABEL_60;
       }
@@ -684,7 +684,7 @@ LABEL_41:
         goto LABEL_52;
       }
 
-      if (v5)
+      if (startCopy)
       {
         v30 = @"will";
       }
@@ -694,20 +694,20 @@ LABEL_41:
         v30 = @"did";
       }
 
-      v31 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-      v32 = [v31 notificationsDebugString];
+      animationInfo2 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+      notificationsDebugString = [animationInfo2 notificationsDebugString];
       *v37 = 138412802;
       *&v37[4] = v30;
       v38 = 2112;
       v39 = v12;
       v40 = 2112;
-      v41 = v32;
+      v41 = notificationsDebugString;
       v33 = "Posted notification %@ChangeFrame with %@ %@";
 LABEL_60:
       _os_log_debug_impl(&dword_18FFDC000, v29, OS_LOG_TYPE_DEBUG, v33, v37, 0x20u);
 
 LABEL_52:
-      if (!v5)
+      if (!startCopy)
       {
         v35 = [v12 objectForKey:*MEMORY[0x1E69DDFA0]];
         [v35 CGRectValue];
@@ -721,7 +721,7 @@ LABEL_54:
 
     v25 = keyboardPerfLog();
     v26 = os_signpost_enabled(v25);
-    if (v5)
+    if (startCopy)
     {
       if (v26)
       {
@@ -770,7 +770,7 @@ LABEL_51:
       goto LABEL_52;
     }
 
-    if (v5)
+    if (startCopy)
     {
       v36 = @"will";
     }
@@ -780,14 +780,14 @@ LABEL_51:
       v36 = @"did";
     }
 
-    v31 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-    v32 = [v31 notificationsDebugString];
+    animationInfo2 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+    notificationsDebugString = [animationInfo2 notificationsDebugString];
     *v37 = 138412802;
     *&v37[4] = v36;
     v38 = 2112;
     v39 = v12;
     v40 = 2112;
-    v41 = v32;
+    v41 = notificationsDebugString;
     v33 = "Posted notification %@Hide with %@ %@";
     goto LABEL_60;
   }
@@ -795,96 +795,96 @@ LABEL_51:
 LABEL_55:
 }
 
-- (void)postNotificationsWithInfo:(id)a3 type:(int64_t)a4 start:(BOOL)a5
+- (void)postNotificationsWithInfo:(id)info type:(int64_t)type start:(BOOL)start
 {
-  v5 = a5;
-  v8 = a3;
+  startCopy = start;
+  infoCopy = info;
   v9 = +[TUIKeyboardAnimationInfo defaultInfo];
-  [v9 setNotificationInfo:v8];
+  [v9 setNotificationInfo:infoCopy];
 
-  [(TUIKeyboardTrackingCoordinator *)self _postNotificationsWithAnimationInfo:v9 type:a4 start:v5];
+  [(TUIKeyboardTrackingCoordinator *)self _postNotificationsWithAnimationInfo:v9 type:type start:startCopy];
 }
 
-- (void)postNotificationWithName:(id)a3 userInfo:(id)a4
+- (void)postNotificationWithName:(id)name userInfo:(id)info
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TUIKeyboardTrackingCoordinator *)self primaryScene];
-  v9 = [v8 screen];
-  if (v9)
+  infoCopy = info;
+  nameCopy = name;
+  primaryScene = [(TUIKeyboardTrackingCoordinator *)self primaryScene];
+  screen = [primaryScene screen];
+  if (screen)
   {
-    v10 = v9;
+    screen2 = screen;
   }
 
   else
   {
-    v11 = [(TUIKeyboardTrackingCoordinator *)self localTEW];
-    v12 = [v11 windowScene];
-    v10 = [v12 screen];
+    localTEW = [(TUIKeyboardTrackingCoordinator *)self localTEW];
+    windowScene = [localTEW windowScene];
+    screen2 = [windowScene screen];
 
-    if (!v10)
+    if (!screen2)
     {
       v13 = _TUIKeyboardTrackingLogger();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v15 = [(TUIKeyboardTrackingCoordinator *)self primaryScene];
+        primaryScene2 = [(TUIKeyboardTrackingCoordinator *)self primaryScene];
         v16 = 138412290;
-        v17 = v15;
+        v17 = primaryScene2;
         _os_log_error_impl(&dword_18FFDC000, v13, OS_LOG_TYPE_ERROR, "[Notifications]: Screen not found for %@", &v16, 0xCu);
       }
 
-      v10 = 0;
+      screen2 = 0;
     }
   }
 
-  v14 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v14 postNotificationName:v7 object:v10 userInfo:v6];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:nameCopy object:screen2 userInfo:infoCopy];
 }
 
-- (void)postNotificationType:(unint64_t)a3 forStart:(BOOL)a4
+- (void)postNotificationType:(unint64_t)type forStart:(BOOL)start
 {
-  if (a3)
+  if (type)
   {
-    v4 = a4;
-    v7 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-    if (v7)
+    startCopy = start;
+    animationInfo = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+    if (animationInfo)
     {
-      v8 = v7;
-      v9 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-      v10 = [v9 notificationInfo];
+      v8 = animationInfo;
+      animationInfo2 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+      notificationInfo = [animationInfo2 notificationInfo];
 
-      if (v10)
+      if (notificationInfo)
       {
-        v11 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-        [(TUIKeyboardTrackingCoordinator *)self _postNotificationsWithAnimationInfo:v11 type:a3 start:v4];
+        animationInfo3 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+        [(TUIKeyboardTrackingCoordinator *)self _postNotificationsWithAnimationInfo:animationInfo3 type:type start:startCopy];
       }
     }
   }
 }
 
-- (void)postEndNotificationsFromState:(id)a3 toState:(id)a4
+- (void)postEndNotificationsFromState:(id)state toState:(id)toState
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-  if (v7)
+  stateCopy = state;
+  toStateCopy = toState;
+  animationInfo = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+  if (animationInfo)
   {
-    v8 = v7;
-    v9 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-    v10 = [v9 notificationInfo];
+    v8 = animationInfo;
+    animationInfo2 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+    notificationInfo = [animationInfo2 notificationInfo];
 
-    if (v10)
+    if (notificationInfo)
     {
-      v11 = [(TUIKeyboardTrackingCoordinator *)self notificationTypeFromState:v6 previousState:v13];
+      v11 = [(TUIKeyboardTrackingCoordinator *)self notificationTypeFromState:toStateCopy previousState:stateCopy];
       if (!v11)
       {
-        if ([v13 isRotating])
+        if ([stateCopy isRotating])
         {
           v11 = 0;
         }
 
-        else if ([v6 isOffscreen])
+        else if ([toStateCopy isOffscreen])
         {
           v11 = 3;
         }
@@ -895,34 +895,34 @@ LABEL_55:
         }
       }
 
-      v12 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-      [(TUIKeyboardTrackingCoordinator *)self _postNotificationsWithAnimationInfo:v12 type:v11 start:0];
+      animationInfo3 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+      [(TUIKeyboardTrackingCoordinator *)self _postNotificationsWithAnimationInfo:animationInfo3 type:v11 start:0];
     }
   }
 }
 
-- (void)postStartNotificationsFromState:(id)a3 toState:(id)a4
+- (void)postStartNotificationsFromState:(id)state toState:(id)toState
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-  if (v7)
+  stateCopy = state;
+  toStateCopy = toState;
+  animationInfo = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+  if (animationInfo)
   {
-    v8 = v7;
-    v9 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-    v10 = [v9 notificationInfo];
+    v8 = animationInfo;
+    animationInfo2 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+    notificationInfo = [animationInfo2 notificationInfo];
 
-    if (v10)
+    if (notificationInfo)
     {
-      v11 = [(TUIKeyboardTrackingCoordinator *)self notificationTypeFromState:v6 previousState:v13];
+      v11 = [(TUIKeyboardTrackingCoordinator *)self notificationTypeFromState:toStateCopy previousState:stateCopy];
       if (!v11)
       {
-        if ([v13 isRotating])
+        if ([stateCopy isRotating])
         {
           v11 = 0;
         }
 
-        else if ([v6 isOffscreen])
+        else if ([toStateCopy isOffscreen])
         {
           v11 = 3;
         }
@@ -933,27 +933,27 @@ LABEL_55:
         }
       }
 
-      v12 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-      [(TUIKeyboardTrackingCoordinator *)self _postNotificationsWithAnimationInfo:v12 type:v11 start:1];
+      animationInfo3 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+      [(TUIKeyboardTrackingCoordinator *)self _postNotificationsWithAnimationInfo:animationInfo3 type:v11 start:1];
     }
   }
 }
 
-- (void)interactiveUpdateChangingOffset:(UIOffset)a3 size:(CGSize)a4
+- (void)interactiveUpdateChangingOffset:(UIOffset)offset size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  [(TUIKeyboardTrackingCoordinator *)self interactiveOffsetUpdate:a3.horizontal, a3.vertical];
+  height = size.height;
+  width = size.width;
+  [(TUIKeyboardTrackingCoordinator *)self interactiveOffsetUpdate:offset.horizontal, offset.vertical];
 
   [(TUIKeyboardTrackingCoordinator *)self interactiveSizeUpdate:width, height];
 }
 
-- (void)interactiveOffsetUpdate:(UIOffset)a3
+- (void)interactiveOffsetUpdate:(UIOffset)update
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = update.vertical;
+  horizontal = update.horizontal;
   v75 = *MEMORY[0x1E69E9840];
-  if (a3.vertical != 0.0 || a3.horizontal != 0.0 || ([(TUIKeyboardTrackingCoordinator *)self startingOffsetForInteraction], v6 != 0.0) || ([(TUIKeyboardTrackingCoordinator *)self startingOffsetForInteraction], v7 != 0.0))
+  if (update.vertical != 0.0 || update.horizontal != 0.0 || ([(TUIKeyboardTrackingCoordinator *)self startingOffsetForInteraction], v6 != 0.0) || ([(TUIKeyboardTrackingCoordinator *)self startingOffsetForInteraction], v7 != 0.0))
   {
     [(TUIKeyboardTrackingCoordinator *)self setIsTransitioning:1];
     [(TUIKeyboardTrackingCoordinator *)self startingOffsetForInteraction];
@@ -966,11 +966,11 @@ LABEL_55:
       {
         [(TUIKeyboardTrackingCoordinator *)self startingOffsetForInteraction];
         v52 = NSStringFromUIOffset(v77);
-        v53 = [(TUIKeyboardTrackingCoordinator *)self primaryScene];
+        primaryScene = [(TUIKeyboardTrackingCoordinator *)self primaryScene];
         *buf = 138412546;
         v72 = v52;
         v73 = 2112;
-        v74 = v53;
+        v74 = primaryScene;
         _os_log_debug_impl(&dword_18FFDC000, v10, OS_LOG_TYPE_DEBUG, "Initial offset set to %@ for %@", buf, 0x16u);
       }
     }
@@ -998,8 +998,8 @@ LABEL_55:
     v65 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v19 = [(TUIKeyboardTrackingCoordinator *)self trackingElements];
-    v20 = [v19 copy];
+    trackingElements = [(TUIKeyboardTrackingCoordinator *)self trackingElements];
+    v20 = [trackingElements copy];
 
     obj = v20;
     v21 = [v20 countByEnumeratingWithState:&v64 objects:v70 count:16];
@@ -1019,8 +1019,8 @@ LABEL_55:
           v24 = *(*(&v64 + 1) + 8 * i);
           if (v9 < 0.0)
           {
-            v25 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
-            v26 = [TUIKeyboardState interactiveStateForState:v25];
+            keyboardState = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
+            v26 = [TUIKeyboardState interactiveStateForState:keyboardState];
 
             [(TUIKeyboardTrackingCoordinator *)self lastKnownFrame];
             [v24 keyboardWillChangeToState:v26 trackingFrame:v18 animationInfo:?];
@@ -1028,9 +1028,9 @@ LABEL_55:
             [v24 keyboardDidChangeToState:v26 trackingFrame:?];
           }
 
-          v27 = [v24 sceneForTracker];
-          v28 = [v27 _allWindows];
-          v29 = [v28 copy];
+          sceneForTracker = [v24 sceneForTracker];
+          _allWindows = [sceneForTracker _allWindows];
+          v29 = [_allWindows copy];
 
           v62 = 0u;
           v63 = 0u;
@@ -1079,8 +1079,8 @@ LABEL_55:
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v40 = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
-    v41 = [v40 countByEnumeratingWithState:&v56 objects:v68 count:16];
+    trackingWindows = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
+    v41 = [trackingWindows countByEnumeratingWithState:&v56 objects:v68 count:16];
     if (v41)
     {
       v42 = v41;
@@ -1091,7 +1091,7 @@ LABEL_55:
         {
           if (*v57 != v43)
           {
-            objc_enumerationMutation(v40);
+            objc_enumerationMutation(trackingWindows);
           }
 
           v45 = *(*(&v56 + 1) + 8 * k);
@@ -1102,13 +1102,13 @@ LABEL_55:
               [(TUIKeyboardTrackingCoordinator *)self _updatedOffsetFromOffset:v45 diff:horizontal forWindow:vertical, v16, v17];
               v47 = v46;
               v49 = v48;
-              v50 = [v45 _primaryKeyboardTrackingGuide];
-              [v50 changeOffsetConstants:{v47, v49}];
+              _primaryKeyboardTrackingGuide = [v45 _primaryKeyboardTrackingGuide];
+              [_primaryKeyboardTrackingGuide changeOffsetConstants:{v47, v49}];
             }
           }
         }
 
-        v42 = [v40 countByEnumeratingWithState:&v56 objects:v68 count:16];
+        v42 = [trackingWindows countByEnumeratingWithState:&v56 objects:v68 count:16];
       }
 
       while (v42);
@@ -1116,10 +1116,10 @@ LABEL_55:
   }
 }
 
-- (CGSize)_filteredStartingSizeDiff:(CGSize)a3 sizeUpdate:(CGSize)a4
+- (CGSize)_filteredStartingSizeDiff:(CGSize)diff sizeUpdate:(CGSize)update
 {
-  v4 = a3.width - a4.width;
-  if (a3.width == 0.0)
+  v4 = diff.width - update.width;
+  if (diff.width == 0.0)
   {
     v5 = 0.0;
   }
@@ -1129,14 +1129,14 @@ LABEL_55:
     v5 = v4;
   }
 
-  if (a3.height == 0.0)
+  if (diff.height == 0.0)
   {
     v6 = 0.0;
   }
 
   else
   {
-    v6 = a3.height - a4.height;
+    v6 = diff.height - update.height;
   }
 
   result.height = v6;
@@ -1144,16 +1144,16 @@ LABEL_55:
   return result;
 }
 
-- (void)interactiveSizeUpdate:(CGSize)a3
+- (void)interactiveSizeUpdate:(CGSize)update
 {
-  height = a3.height;
-  width = a3.width;
+  height = update.height;
+  width = update.width;
   v79 = *MEMORY[0x1E69E9840];
   v6 = *(MEMORY[0x1E695F060] + 8);
-  if (*MEMORY[0x1E695F060] == a3.width && v6 == height)
+  if (*MEMORY[0x1E695F060] == update.width && v6 == height)
   {
 
-    [(TUIKeyboardTrackingCoordinator *)self setStartingSizeForInteraction:a3.width, height];
+    [(TUIKeyboardTrackingCoordinator *)self setStartingSizeForInteraction:update.width, height];
   }
 
   else
@@ -1169,11 +1169,11 @@ LABEL_55:
       {
         [(TUIKeyboardTrackingCoordinator *)self startingSizeForInteraction];
         v55 = NSStringFromCGSize(v82);
-        v56 = [(TUIKeyboardTrackingCoordinator *)self primaryScene];
+        primaryScene = [(TUIKeyboardTrackingCoordinator *)self primaryScene];
         *buf = 138412546;
         v76 = v55;
         v77 = 2112;
-        v78 = v56;
+        v78 = primaryScene;
         _os_log_debug_impl(&dword_18FFDC000, v10, OS_LOG_TYPE_DEBUG, "Initial size set to %@ for %@", buf, 0x16u);
       }
 
@@ -1203,8 +1203,8 @@ LABEL_55:
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
-    v17 = [(TUIKeyboardTrackingCoordinator *)self trackingElements];
-    v18 = [v17 copy];
+    trackingElements = [(TUIKeyboardTrackingCoordinator *)self trackingElements];
+    v18 = [trackingElements copy];
 
     obj = v18;
     v19 = [v18 countByEnumeratingWithState:&v68 objects:v74 count:16];
@@ -1224,8 +1224,8 @@ LABEL_55:
           v22 = *(*(&v68 + 1) + 8 * i);
           if (v9 <= 0.0)
           {
-            v23 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
-            v24 = [TUIKeyboardState interactiveStateForState:v23];
+            keyboardState = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
+            v24 = [TUIKeyboardState interactiveStateForState:keyboardState];
 
             [(TUIKeyboardTrackingCoordinator *)self lastKnownFrame];
             [v22 keyboardWillChangeToState:v24 trackingFrame:v16 animationInfo:?];
@@ -1233,9 +1233,9 @@ LABEL_55:
             [v22 keyboardDidChangeToState:v24 trackingFrame:?];
           }
 
-          v25 = [v22 sceneForTracker];
-          v26 = [v25 _allWindows];
-          v27 = [v26 copy];
+          sceneForTracker = [v22 sceneForTracker];
+          _allWindows = [sceneForTracker _allWindows];
+          v27 = [_allWindows copy];
 
           v66 = 0u;
           v67 = 0u;
@@ -1284,8 +1284,8 @@ LABEL_55:
     v63 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v38 = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
-    v39 = [v38 countByEnumeratingWithState:&v60 objects:v72 count:16];
+    trackingWindows = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
+    v39 = [trackingWindows countByEnumeratingWithState:&v60 objects:v72 count:16];
     if (v39)
     {
       v40 = v39;
@@ -1296,7 +1296,7 @@ LABEL_55:
         {
           if (*v61 != v41)
           {
-            objc_enumerationMutation(v38);
+            objc_enumerationMutation(trackingWindows);
           }
 
           v43 = *(*(&v60 + 1) + 8 * k);
@@ -1314,9 +1314,9 @@ LABEL_55:
 
           if ([v43 isTrackingKeyboard])
           {
-            v46 = [v43 _primaryKeyboardTrackingGuide];
+            _primaryKeyboardTrackingGuide = [v43 _primaryKeyboardTrackingGuide];
             v47 = 0.0;
-            if ([v46 usesBottomSafeArea])
+            if ([_primaryKeyboardTrackingGuide usesBottomSafeArea])
             {
               [v43 safeAreaInsets];
               v47 = v48;
@@ -1329,12 +1329,12 @@ LABEL_55:
               v47 = v49;
             }
 
-            v52 = [v43 _primaryKeyboardTrackingGuide];
-            [v52 changeSizingConstants:{v51, v47}];
+            _primaryKeyboardTrackingGuide2 = [v43 _primaryKeyboardTrackingGuide];
+            [_primaryKeyboardTrackingGuide2 changeSizingConstants:{v51, v47}];
           }
         }
 
-        v40 = [v38 countByEnumeratingWithState:&v60 objects:v72 count:16];
+        v40 = [trackingWindows countByEnumeratingWithState:&v60 objects:v72 count:16];
       }
 
       while (v40);
@@ -1342,11 +1342,11 @@ LABEL_55:
   }
 }
 
-- (UIOffset)_updatedOffsetFromOffset:(UIOffset)a3 diff:(UIOffset)a4 forWindow:(id)a5
+- (UIOffset)_updatedOffsetFromOffset:(UIOffset)offset diff:(UIOffset)diff forWindow:(id)window
 {
-  vertical = a4.vertical;
-  horizontal = a4.horizontal;
-  [(TUIKeyboardTrackingCoordinator *)self _lastKnownOffsetForWindow:a5, a3.horizontal, a3.vertical];
+  vertical = diff.vertical;
+  horizontal = diff.horizontal;
+  [(TUIKeyboardTrackingCoordinator *)self _lastKnownOffsetForWindow:window, offset.horizontal, offset.vertical];
   v8 = horizontal + v7;
   v10 = vertical + v9;
   if (v8 < 0.0)
@@ -1364,13 +1364,13 @@ LABEL_55:
   return result;
 }
 
-- (CGSize)_updatedSizeFromSize:(CGSize)a3 diff:(CGSize)a4 forWindow:(id)a5
+- (CGSize)_updatedSizeFromSize:(CGSize)size diff:(CGSize)diff forWindow:(id)window
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3.height;
-  v9 = a5;
-  [(TUIKeyboardTrackingCoordinator *)self _lastKnownSizeForWindow:v9];
+  height = diff.height;
+  width = diff.width;
+  v7 = size.height;
+  windowCopy = window;
+  [(TUIKeyboardTrackingCoordinator *)self _lastKnownSizeForWindow:windowCopy];
   v11 = v10;
   v13 = v12;
   if ((v12 == 0.0 || ([(TUIKeyboardTrackingCoordinator *)self lastKnownFrame], v13 >= v14)) && height > 0.0)
@@ -1380,7 +1380,7 @@ LABEL_55:
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    if (([v9 _isTextEffectsWindow] & 1) == 0)
+    if (([windowCopy _isTextEffectsWindow] & 1) == 0)
     {
       [(TUIKeyboardTrackingCoordinator *)self knownIAVBounds];
       v18 = v18 - v23;
@@ -1388,7 +1388,7 @@ LABEL_55:
       v22 = v22 + v24;
     }
 
-    [(TUIKeyboardTrackingCoordinator *)self intersectionOfSceneRect:v9 withWindow:v16, height + v18, v20, v22];
+    [(TUIKeyboardTrackingCoordinator *)self intersectionOfSceneRect:windowCopy withWindow:v16, height + v18, v20, v22];
     if (v26 <= v7)
     {
       v27 = v26;
@@ -1433,9 +1433,9 @@ LABEL_55:
   return result;
 }
 
-- (UIOffset)_lastKnownOffsetForWindow:(id)a3
+- (UIOffset)_lastKnownOffsetForWindow:(id)window
 {
-  v3 = objc_getAssociatedObject(a3, &_TUIOverlapOffsetKey);
+  v3 = objc_getAssociatedObject(window, &_TUIOverlapOffsetKey);
   v4 = v3;
   if (v3)
   {
@@ -1457,19 +1457,19 @@ LABEL_55:
   return result;
 }
 
-- (void)_updateOffset:(UIOffset)a3 forWindow:(id)a4
+- (void)_updateOffset:(UIOffset)offset forWindow:(id)window
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = offset.vertical;
+  horizontal = offset.horizontal;
   v6 = MEMORY[0x1E696B098];
-  v7 = a4;
+  windowCopy = window;
   v8 = [v6 valueWithUIOffset:{horizontal, vertical}];
-  objc_setAssociatedObject(v7, &_TUIOverlapOffsetKey, v8, 1);
+  objc_setAssociatedObject(windowCopy, &_TUIOverlapOffsetKey, v8, 1);
 }
 
-- (CGSize)_lastKnownSizeForWindow:(id)a3
+- (CGSize)_lastKnownSizeForWindow:(id)window
 {
-  v3 = objc_getAssociatedObject(a3, &_TUIOverlapSizeKey);
+  v3 = objc_getAssociatedObject(window, &_TUIOverlapSizeKey);
   v4 = v3;
   if (v3)
   {
@@ -1491,23 +1491,23 @@ LABEL_55:
   return result;
 }
 
-- (void)_updateSize:(CGSize)a3 forWindow:(id)a4
+- (void)_updateSize:(CGSize)size forWindow:(id)window
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = MEMORY[0x1E696B098];
-  v7 = a4;
+  windowCopy = window;
   v8 = [v6 valueWithCGSize:{width, height}];
-  objc_setAssociatedObject(v7, &_TUIOverlapSizeKey, v8, 1);
+  objc_setAssociatedObject(windowCopy, &_TUIOverlapSizeKey, v8, 1);
 }
 
-- (void)_updateIAVBounds:(CGRect)a3 forWindow:(id)a4
+- (void)_updateIAVBounds:(CGRect)bounds forWindow:(id)window
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  object = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  object = window;
   v8 = [MEMORY[0x1E696B098] valueWithCGRect:{x, y, width, height}];
   v9 = v8;
   if (width == 0.0 && height == 0.0)
@@ -1519,16 +1519,16 @@ LABEL_55:
   objc_setAssociatedObject(object, &_TUIIAVBoundsKey, v9, 1);
 }
 
-- (void)updatedIAVBounds:(CGRect)a3 previousBounds:(CGRect)a4
+- (void)updatedIAVBounds:(CGRect)bounds previousBounds:(CGRect)previousBounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  x = a4.origin.x;
-  y = a4.origin.y;
-  v6 = a3.size.height;
-  v7 = a3.size.width;
-  v109 = a3.origin.x;
-  v110 = a3.origin.y;
+  height = previousBounds.size.height;
+  width = previousBounds.size.width;
+  x = previousBounds.origin.x;
+  y = previousBounds.origin.y;
+  v6 = bounds.size.height;
+  v7 = bounds.size.width;
+  v109 = bounds.origin.x;
+  v110 = bounds.origin.y;
   v144 = *MEMORY[0x1E69E9840];
   [(TUIKeyboardTrackingCoordinator *)self incomingFrame];
   rect1.origin.x = v9;
@@ -1554,7 +1554,7 @@ LABEL_55:
     *buf = 138413058;
     v137 = v88;
     v138 = 2048;
-    v139 = self;
+    selfCopy2 = self;
     v140 = 2112;
     v141 = v89;
     v142 = 2112;
@@ -1567,12 +1567,12 @@ LABEL_55:
   v114 = v14;
   if (v14 != 0.0)
   {
-    v16 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-    if (!v16)
+    animationInfo = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+    if (!animationInfo)
     {
-      v16 = +[TUIKeyboardAnimationInfo defaultInfo];
-      [v16 setDuration:0.0];
-      [v16 setShouldAnimate:0];
+      animationInfo = +[TUIKeyboardAnimationInfo defaultInfo];
+      [animationInfo setDuration:0.0];
+      [animationInfo setShouldAnimate:0];
     }
 
     v17 = v6 + v113;
@@ -1581,8 +1581,8 @@ LABEL_55:
     v132 = 0u;
     v129 = 0u;
     v130 = 0u;
-    v19 = [(TUIKeyboardTrackingCoordinator *)self trackingElements];
-    v20 = [v19 copy];
+    trackingElements = [(TUIKeyboardTrackingCoordinator *)self trackingElements];
+    v20 = [trackingElements copy];
 
     *&rect1.origin.y = v20;
     v21 = [v20 countByEnumeratingWithState:&v129 objects:v135 count:16];
@@ -1600,9 +1600,9 @@ LABEL_55:
           }
 
           v24 = *(*(&v129 + 1) + 8 * i);
-          v25 = [v24 sceneForTracker];
-          v26 = [v25 _allWindows];
-          v27 = [v26 copy];
+          sceneForTracker = [v24 sceneForTracker];
+          _allWindows = [sceneForTracker _allWindows];
+          v27 = [_allWindows copy];
 
           v127 = 0u;
           v128 = 0u;
@@ -1629,8 +1629,8 @@ LABEL_55:
                   [(TUIKeyboardTrackingCoordinator *)self _updatedSizeFromSize:v33 diff:v12 forWindow:v17, 0.0, v18];
                   v35 = v34;
                   v37 = v36;
-                  [v24 trackingSizeWillChange:v33 inWindow:v16 animationInfo:?];
-                  [v24 trackingSizeDidChange:v33 inWindow:v16 animationInfo:{v35, v37}];
+                  [v24 trackingSizeWillChange:v33 inWindow:animationInfo animationInfo:?];
+                  [v24 trackingSizeDidChange:v33 inWindow:animationInfo animationInfo:{v35, v37}];
                 }
               }
 
@@ -1651,8 +1651,8 @@ LABEL_55:
     v124 = 0u;
     v121 = 0u;
     v122 = 0u;
-    v38 = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
-    v39 = [v38 countByEnumeratingWithState:&v121 objects:v133 count:16];
+    trackingWindows = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
+    v39 = [trackingWindows countByEnumeratingWithState:&v121 objects:v133 count:16];
     if (v39)
     {
       v40 = v39;
@@ -1663,15 +1663,15 @@ LABEL_55:
         {
           if (*v122 != v41)
           {
-            objc_enumerationMutation(v38);
+            objc_enumerationMutation(trackingWindows);
           }
 
           v43 = *(*(&v121 + 1) + 8 * k);
           if ([v43 isTrackingKeyboard] && (objc_msgSend(v43, "_isTextEffectsWindow") & 1) == 0)
           {
-            v44 = [v43 _primaryKeyboardTrackingGuide];
+            _primaryKeyboardTrackingGuide = [v43 _primaryKeyboardTrackingGuide];
             v45 = 0.0;
-            if ([v44 usesBottomSafeArea])
+            if ([_primaryKeyboardTrackingGuide usesBottomSafeArea])
             {
               [v43 safeAreaInsets];
               v45 = v46;
@@ -1684,8 +1684,8 @@ LABEL_55:
               v45 = v47;
             }
 
-            v50 = [v43 _primaryKeyboardTrackingGuide];
-            v51 = [v50 changeSizingConstants:{v49, v45}];
+            _primaryKeyboardTrackingGuide2 = [v43 _primaryKeyboardTrackingGuide];
+            v51 = [_primaryKeyboardTrackingGuide2 changeSizingConstants:{v49, v45}];
 
             if (v51)
             {
@@ -1705,7 +1705,7 @@ LABEL_55:
           }
         }
 
-        v40 = [v38 countByEnumeratingWithState:&v121 objects:v133 count:16];
+        v40 = [trackingWindows countByEnumeratingWithState:&v121 objects:v133 count:16];
       }
 
       while (v40);
@@ -1727,9 +1727,9 @@ LABEL_55:
   v145.size.height = v113;
   if (CGRectEqualToRect(v145, *MEMORY[0x1E695F058]))
   {
-    v62 = [(TUIKeyboardTrackingCoordinator *)self localTEW];
-    v63 = [v62 _primaryKeyboardTrackingGuide];
-    [v63 layoutFrame];
+    localTEW = [(TUIKeyboardTrackingCoordinator *)self localTEW];
+    _primaryKeyboardTrackingGuide3 = [localTEW _primaryKeyboardTrackingGuide];
+    [_primaryKeyboardTrackingGuide3 layoutFrame];
     rect1.origin.x = v64;
     v60 = v65;
     v12 = v66;
@@ -1751,8 +1751,8 @@ LABEL_55:
 
   v71 = MaxY - v52;
   v72 = v52 + v61;
-  v73 = [(TUIKeyboardTrackingCoordinator *)self localTEW];
-  [v73 bounds];
+  localTEW2 = [(TUIKeyboardTrackingCoordinator *)self localTEW];
+  [localTEW2 bounds];
   v153.origin.x = v74;
   v153.origin.y = v75;
   v153.size.width = v76;
@@ -1763,11 +1763,11 @@ LABEL_55:
   v147.size.height = v72;
   CGRectIntersection(v147, v153);
 
-  v78 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
-  [v78 isOffscreen];
+  keyboardState = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
+  [keyboardState isOffscreen];
 
-  v79 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-  v80 = [(TUIKeyboardTrackingCoordinator *)self userInfoForBeginFrame:v79 endFrame:rect1.size.width animationInfo:v57, rect1.origin.y, v59, rect1.origin.x, v71, v12, v72];
+  animationInfo2 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+  v80 = [(TUIKeyboardTrackingCoordinator *)self userInfoForBeginFrame:animationInfo2 endFrame:rect1.size.width animationInfo:v57, rect1.origin.y, v59, rect1.origin.x, v71, v12, v72];
 
   v81 = fmax(vabdd_f64(v53, v112), fabs(v114)) > 1.0;
   if (v70 <= 0.0 || v72 <= 0.0 && v12 <= 0.0)
@@ -1775,20 +1775,20 @@ LABEL_55:
     goto LABEL_62;
   }
 
-  v82 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-  v83 = [v82 notificationInfo];
-  if (v83)
+  animationInfo3 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+  notificationInfo = [animationInfo3 notificationInfo];
+  if (notificationInfo)
   {
-    v84 = v83;
+    v84 = notificationInfo;
     if ([(TUIKeyboardTrackingCoordinator *)self isChangingState])
     {
-      v85 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
-      if ([v85 isOffscreen])
+      keyboardState2 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
+      if ([keyboardState2 isOffscreen])
       {
-        v86 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
-        v87 = [v86 hasAccessoryView];
+        keyboardState3 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
+        hasAccessoryView = [keyboardState3 hasAccessoryView];
 
-        if (v87)
+        if (hasAccessoryView)
         {
           goto LABEL_63;
         }
@@ -1815,7 +1815,7 @@ LABEL_56:
       *buf = 138413058;
       v137 = v103;
       v138 = 2048;
-      v139 = self;
+      selfCopy2 = self;
       v140 = 2112;
       v141 = v104;
       v142 = 2112;
@@ -1823,22 +1823,22 @@ LABEL_56:
       _os_log_debug_impl(&dword_18FFDC000, v91, OS_LOG_TYPE_DEBUG, "[Notifications]: Updating notifications for IAV bounds change: <%@:%p previousBounds=%@; updatedBounds=%@>", buf, 0x2Au);
     }
 
-    v92 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-    v93 = [v92 notificationInfo];
-    v94 = [v93 mutableCopy];
+    animationInfo4 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+    notificationInfo2 = [animationInfo4 notificationInfo];
+    v94 = [notificationInfo2 mutableCopy];
 
     v95 = [MEMORY[0x1E696B098] valueWithCGRect:{rect1.origin.x, v71, v12, v72}];
     [v94 setObject:v95 forKey:*MEMORY[0x1E69DDFA0]];
 
     v96 = MEMORY[0x1E696AEC0];
-    v97 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-    v98 = [v97 notificationsDebugString];
+    animationInfo5 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+    notificationsDebugString = [animationInfo5 notificationsDebugString];
     v150.origin.x = v109;
     v150.origin.y = v110;
     v150.size.width = v53;
     v150.size.height = v70;
     v99 = NSStringFromCGRect(v150);
-    v100 = [v96 stringWithFormat:@"%@ Update from coordinator for IAV bounds change to %@", v98, v99];;
+    v100 = [v96 stringWithFormat:@"%@ Update from coordinator for IAV bounds change to %@", notificationsDebugString, v99];;
     [v94 setObject:v100 forKey:@"DebugString"];
 
     if (v81 && ![(TUIKeyboardTrackingCoordinator *)self isChangingState])
@@ -1848,8 +1848,8 @@ LABEL_56:
 
     v101 = v94;
 
-    v102 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-    [v102 setNotificationInfo:v101];
+    animationInfo6 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+    [animationInfo6 setNotificationInfo:v101];
 
     v80 = v101;
 LABEL_62:
@@ -1860,20 +1860,20 @@ LABEL_62:
 LABEL_63:
 }
 
-- (void)postNotificationsOnlyWithEndFrame:(CGRect)a3 animationInfo:(id)a4
+- (void)postNotificationsOnlyWithEndFrame:(CGRect)frame animationInfo:(id)info
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v31 = a4;
-  v9 = [v31 notificationInfo];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  infoCopy = info;
+  notificationInfo = [infoCopy notificationInfo];
   [(TUIKeyboardTrackingCoordinator *)self lastPostedEndNotificationFrame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [v9 objectForKey:*MEMORY[0x1E69DDFA0]];
+  v18 = [notificationInfo objectForKey:*MEMORY[0x1E69DDFA0]];
   [v18 CGRectValue];
   v34.origin.x = v19;
   v34.origin.y = v20;
@@ -1885,41 +1885,41 @@ LABEL_63:
   v33.size.height = v17;
   v23 = CGRectEqualToRect(v33, v34);
 
-  if ([v31 isInteractive])
+  if ([infoCopy isInteractive])
   {
     v24 = 1;
   }
 
   else
   {
-    v25 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
-    v26 = [(TUIKeyboardTrackingCoordinator *)self previousKeyboardState];
-    if (v26)
+    keyboardState = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
+    previousKeyboardState = [(TUIKeyboardTrackingCoordinator *)self previousKeyboardState];
+    if (previousKeyboardState)
     {
-      v24 = [(TUIKeyboardTrackingCoordinator *)self notificationTypeFromState:v25 previousState:v26];
+      v24 = [(TUIKeyboardTrackingCoordinator *)self notificationTypeFromState:keyboardState previousState:previousKeyboardState];
     }
 
     else
     {
-      v27 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
-      v24 = [(TUIKeyboardTrackingCoordinator *)self notificationTypeFromState:v25 previousState:v27];
+      keyboardState2 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
+      v24 = [(TUIKeyboardTrackingCoordinator *)self notificationTypeFromState:keyboardState previousState:keyboardState2];
     }
   }
 
   [(TUIKeyboardTrackingCoordinator *)self setNotificationBeginFrame:x, y, width, height];
   if (!v23)
   {
-    [(TUIKeyboardTrackingCoordinator *)self _postNotificationsWithAnimationInfo:v31 type:v24 start:1];
+    [(TUIKeyboardTrackingCoordinator *)self _postNotificationsWithAnimationInfo:infoCopy type:v24 start:1];
   }
 
-  [(TUIKeyboardTrackingCoordinator *)self _postNotificationsWithAnimationInfo:v31 type:v24 start:0];
-  v28 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
-  if ([v28 isOffscreen])
+  [(TUIKeyboardTrackingCoordinator *)self _postNotificationsWithAnimationInfo:infoCopy type:v24 start:0];
+  keyboardState3 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
+  if ([keyboardState3 isOffscreen])
   {
-    v29 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-    v30 = [v29 animationType];
+    animationInfo = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+    animationType = [animationInfo animationType];
 
-    if (v30 == 4)
+    if (animationType == 4)
     {
       [(TUIKeyboardTrackingCoordinator *)self moveGuidesOffscreen];
     }
@@ -1930,22 +1930,22 @@ LABEL_63:
   }
 }
 
-- (void)postEndNotificationOnlyWithEndFrame:(CGRect)a3 state:(id)a4 animationInfo:(id)a5
+- (void)postEndNotificationOnlyWithEndFrame:(CGRect)frame state:(id)state animationInfo:(id)info
 {
-  height = a3.size.height;
-  v35 = a4;
-  v8 = a5;
-  v9 = [v8 notificationInfo];
+  height = frame.size.height;
+  stateCopy = state;
+  infoCopy = info;
+  notificationInfo = [infoCopy notificationInfo];
 
-  if (v9)
+  if (notificationInfo)
   {
     [(TUIKeyboardTrackingCoordinator *)self lastPostedEndNotificationFrame];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [v8 notificationInfo];
-    v19 = [v18 objectForKey:*MEMORY[0x1E69DDFA0]];
+    notificationInfo2 = [infoCopy notificationInfo];
+    v19 = [notificationInfo2 objectForKey:*MEMORY[0x1E69DDFA0]];
     [v19 CGRectValue];
     v38.origin.x = v20;
     v38.origin.y = v21;
@@ -1959,27 +1959,27 @@ LABEL_63:
 
     if (!v24)
     {
-      v25 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
-      if (v25)
+      keyboardState = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
+      if (keyboardState)
       {
-        v26 = v25;
+        v26 = keyboardState;
       }
 
       else
       {
-        v26 = v35;
+        v26 = stateCopy;
       }
 
-      v27 = [(TUIKeyboardTrackingCoordinator *)self previousKeyboardState];
-      if (v27)
+      previousKeyboardState = [(TUIKeyboardTrackingCoordinator *)self previousKeyboardState];
+      if (previousKeyboardState)
       {
-        v28 = [(TUIKeyboardTrackingCoordinator *)self notificationTypeFromState:v26 previousState:v27];
+        v28 = [(TUIKeyboardTrackingCoordinator *)self notificationTypeFromState:v26 previousState:previousKeyboardState];
       }
 
       else
       {
-        v29 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
-        v28 = [(TUIKeyboardTrackingCoordinator *)self notificationTypeFromState:v26 previousState:v29];
+        keyboardState2 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
+        v28 = [(TUIKeyboardTrackingCoordinator *)self notificationTypeFromState:v26 previousState:keyboardState2];
       }
 
       if (v28 == 2 && height == 0.0)
@@ -1996,24 +1996,24 @@ LABEL_63:
         }
       }
 
-      v31 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-      [(TUIKeyboardTrackingCoordinator *)self _postNotificationsWithAnimationInfo:v31 type:v28 start:0];
+      animationInfo = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+      [(TUIKeyboardTrackingCoordinator *)self _postNotificationsWithAnimationInfo:animationInfo type:v28 start:0];
     }
   }
 
-  v32 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
-  if ([v32 isOffscreen] & 1) != 0 || (objc_msgSend(v35, "isOffscreen"))
+  keyboardState3 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
+  if ([keyboardState3 isOffscreen] & 1) != 0 || (objc_msgSend(stateCopy, "isOffscreen"))
   {
-    v33 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-    if ([v33 animationType] == 4)
+    animationInfo2 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+    if ([animationInfo2 animationType] == 4)
     {
     }
 
     else
     {
-      v34 = [v8 animationType];
+      animationType = [infoCopy animationType];
 
-      if (v34 != 4)
+      if (animationType != 4)
       {
         goto LABEL_22;
       }
@@ -2031,9 +2031,9 @@ LABEL_22:
 
 - (void)sendUpdateCompleteWithExistingInfo
 {
-  v3 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
-  v4 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
-  v5 = [(TUIKeyboardTrackingCoordinator *)self notificationTypeFromState:v3 previousState:v4];
+  keyboardState = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
+  keyboardState2 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
+  v5 = [(TUIKeyboardTrackingCoordinator *)self notificationTypeFromState:keyboardState previousState:keyboardState2];
 
   [(TUIKeyboardTrackingCoordinator *)self lastKnownFrame];
   v7 = v6;
@@ -2045,8 +2045,8 @@ LABEL_22:
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  v22 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-  v23 = [(TUIKeyboardTrackingCoordinator *)self userInfoForBeginFrame:v22 endFrame:v7 animationInfo:v9, v11, v13, v15, v17, v19, v21];
+  animationInfo = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+  v23 = [(TUIKeyboardTrackingCoordinator *)self userInfoForBeginFrame:animationInfo endFrame:v7 animationInfo:v9, v11, v13, v15, v17, v19, v21];
 
   [(TUIKeyboardTrackingCoordinator *)self postNotificationsWithInfo:v23 type:v5 start:0];
 }
@@ -2056,8 +2056,8 @@ LABEL_22:
   v28 = *MEMORY[0x1E69E9840];
   if (![(TUIKeyboardTrackingCoordinator *)self isTransitioning])
   {
-    v3 = [(TUIKeyboardTrackingCoordinator *)self localTEW];
-    v4 = [(TUIKeyboardTrackingCoordinator *)self _lastKnownIAVBoundsForWindow:v3];
+    localTEW = [(TUIKeyboardTrackingCoordinator *)self localTEW];
+    v4 = [(TUIKeyboardTrackingCoordinator *)self _lastKnownIAVBoundsForWindow:localTEW];
 
     v5 = MEMORY[0x1E695F058];
     v6 = *(MEMORY[0x1E695F058] + 24);
@@ -2072,8 +2072,8 @@ LABEL_22:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v9 = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
-    v10 = [v9 copy];
+    trackingWindows = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
+    v10 = [trackingWindows copy];
 
     v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v11)
@@ -2104,11 +2104,11 @@ LABEL_22:
             v20 = v7;
           }
 
-          v21 = [v17 _primaryKeyboardTrackingGuide];
-          [v21 changeSizingConstants:{v19, v20}];
+          _primaryKeyboardTrackingGuide = [v17 _primaryKeyboardTrackingGuide];
+          [_primaryKeyboardTrackingGuide changeSizingConstants:{v19, v20}];
 
-          v22 = [v17 _primaryKeyboardTrackingGuide];
-          [v22 changeOffsetConstants:{v14, v15}];
+          _primaryKeyboardTrackingGuide2 = [v17 _primaryKeyboardTrackingGuide];
+          [_primaryKeyboardTrackingGuide2 changeOffsetConstants:{v14, v15}];
         }
 
         v12 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -2121,20 +2121,20 @@ LABEL_22:
   }
 }
 
-- (void)updateClientsForState:(id)a3 finalFrame:(CGRect)a4 animationInfo:(id)a5 forStart:(BOOL)a6
+- (void)updateClientsForState:(id)state finalFrame:(CGRect)frame animationInfo:(id)info forStart:(BOOL)start
 {
-  v119 = a6;
-  height = a4.size.height;
-  y = a4.origin.y;
-  rect = a4.size.width;
-  x = a4.origin.x;
+  startCopy = start;
+  height = frame.size.height;
+  y = frame.origin.y;
+  rect = frame.size.width;
+  x = frame.origin.x;
   v174[5] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  stateCopy = state;
+  infoCopy = info;
   v11 = _TUIKeyboardTrackingLogger();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    if (v119)
+    if (startCopy)
     {
       v12 = @"start";
     }
@@ -2155,29 +2155,29 @@ LABEL_22:
     *&buf[12] = 2112;
     *&buf[14] = v13;
     *&buf[22] = 2048;
-    v173 = self;
+    selfCopy = self;
     LOWORD(v174[0]) = 2112;
-    *(v174 + 2) = v9;
+    *(v174 + 2) = stateCopy;
     WORD1(v174[1]) = 2112;
     *(&v174[1] + 4) = v14;
     WORD2(v174[2]) = 2112;
-    *(&v174[2] + 6) = v10;
+    *(&v174[2] + 6) = infoCopy;
     _os_log_impl(&dword_18FFDC000, v11, OS_LOG_TYPE_DEFAULT, "Updating tracking clients for %@ <%@:%p state=%@; frame=%@; animation=%@>", buf, 0x3Eu);
   }
 
-  v15 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
-  v120 = v15;
-  if ([(TUIKeyboardTrackingCoordinator *)v9 isNonKeyboard])
+  keyboardState = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
+  v120 = keyboardState;
+  if ([(TUIKeyboardTrackingCoordinator *)stateCopy isNonKeyboard])
   {
-    if (([v15 isNonKeyboard] & 1) == 0 && ((objc_msgSend(v15, "hasInputView") & 1) != 0 || (objc_msgSend(v15, "hasFloatingAssistantView") & 1) != 0 || objc_msgSend(v15, "hasAccessoryView")))
+    if (([keyboardState isNonKeyboard] & 1) == 0 && ((objc_msgSend(keyboardState, "hasInputView") & 1) != 0 || (objc_msgSend(keyboardState, "hasFloatingAssistantView") & 1) != 0 || objc_msgSend(keyboardState, "hasAccessoryView")))
     {
-      if (([(TUIKeyboardTrackingCoordinator *)v9 isOffscreen]& 1) != 0)
+      if (([(TUIKeyboardTrackingCoordinator *)stateCopy isOffscreen]& 1) != 0)
       {
         goto LABEL_66;
       }
 
-      v83 = [(TUIKeyboardTrackingCoordinator *)self localTEW];
-      [v83 safeAreaInsets];
+      localTEW = [(TUIKeyboardTrackingCoordinator *)self localTEW];
+      [localTEW safeAreaInsets];
       v85 = v84;
 
       if (height < v85)
@@ -2186,36 +2186,36 @@ LABEL_22:
       }
     }
 
-    v16 = [(TUIKeyboardTrackingCoordinator *)self primaryScene];
-    v17 = [v16 screen];
-    v18 = [v17 coordinateSpace];
-    v19 = [(TUIKeyboardTrackingCoordinator *)self primaryScene];
-    v20 = [v19 effectiveGeometry];
-    v21 = [v20 coordinateSpace];
-    [v18 convertRect:v21 toCoordinateSpace:{x, y, rect, height}];
+    primaryScene = [(TUIKeyboardTrackingCoordinator *)self primaryScene];
+    screen = [primaryScene screen];
+    coordinateSpace = [screen coordinateSpace];
+    primaryScene2 = [(TUIKeyboardTrackingCoordinator *)self primaryScene];
+    effectiveGeometry = [primaryScene2 effectiveGeometry];
+    coordinateSpace2 = [effectiveGeometry coordinateSpace];
+    [coordinateSpace convertRect:coordinateSpace2 toCoordinateSpace:{x, y, rect, height}];
     x = v22;
     y = v23;
     rect = v24;
     height = v25;
   }
 
-  [(TUIKeyboardTrackingCoordinator *)self setKeyboardState:v9];
+  [(TUIKeyboardTrackingCoordinator *)self setKeyboardState:stateCopy];
   [(TUIKeyboardTrackingCoordinator *)self setIncomingFrame:x, y, rect, height];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x4010000000;
-  v173 = &unk_1900D41E9;
+  selfCopy = &unk_1900D41E9;
   memset(v174, 0, 32);
   [(TUIKeyboardTrackingCoordinator *)self knownIAVBounds];
   v174[0] = v26;
   v174[1] = v27;
   v174[2] = v28;
   v174[3] = v29;
-  v30 = [v10 notificationInfo];
-  v31 = v30;
-  if (v30)
+  notificationInfo = [infoCopy notificationInfo];
+  v31 = notificationInfo;
+  if (notificationInfo)
   {
-    v32 = [v30 objectForKey:*MEMORY[0x1E69DDFA0]];
+    v32 = [notificationInfo objectForKey:*MEMORY[0x1E69DDFA0]];
     v33 = v32;
     if (v32)
     {
@@ -2235,7 +2235,7 @@ LABEL_22:
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
     {
       *v166 = 138412290;
-      v167 = v9;
+      selfCopy2 = stateCopy;
       _os_log_debug_impl(&dword_18FFDC000, v33, OS_LOG_TYPE_DEBUG, "State change arrived without notification info for %@", v166, 0xCu);
     }
   }
@@ -2247,10 +2247,10 @@ LABEL_22:
   v35 = x;
 LABEL_15:
 
-  v42 = [v10 animationType];
-  if (v42 == 4)
+  animationType = [infoCopy animationType];
+  if (animationType == 4)
   {
-    if ([(TUIKeyboardTrackingCoordinator *)v9 isOffscreen])
+    if ([(TUIKeyboardTrackingCoordinator *)stateCopy isOffscreen])
     {
       [(TUIKeyboardTrackingCoordinator *)self setIncomingFrame:x, y + height, rect, height];
     }
@@ -2259,7 +2259,7 @@ LABEL_15:
     v43 = 8;
   }
 
-  else if (v42 == 3)
+  else if (animationType == 3)
   {
     v115 = 1;
     v43 = 2;
@@ -2271,26 +2271,26 @@ LABEL_15:
     v43 = 4;
   }
 
-  v44 = [(TUIKeyboardTrackingCoordinator *)self localTEW];
+  localTEW2 = [(TUIKeyboardTrackingCoordinator *)self localTEW];
 
-  if (v44)
+  if (localTEW2)
   {
-    v45 = [(TUIKeyboardTrackingCoordinator *)self localTEW];
-    [v45 hostedViewOrigin];
+    localTEW3 = [(TUIKeyboardTrackingCoordinator *)self localTEW];
+    [localTEW3 hostedViewOrigin];
     [(TUIKeyboardTrackingCoordinator *)self setHostedOriginOffset:?];
   }
 
   v118 = v31;
-  if (![(TUIKeyboardTrackingCoordinator *)v9 hasAccessoryView]|| ([(TUIKeyboardTrackingCoordinator *)self localTEW], v46 = objc_claimAutoreleasedReturnValue(), [(TUIKeyboardTrackingCoordinator *)self _lastKnownIAVBoundsForWindow:v46], v47 = objc_claimAutoreleasedReturnValue(), v46, !v47))
+  if (![(TUIKeyboardTrackingCoordinator *)stateCopy hasAccessoryView]|| ([(TUIKeyboardTrackingCoordinator *)self localTEW], v46 = objc_claimAutoreleasedReturnValue(), [(TUIKeyboardTrackingCoordinator *)self _lastKnownIAVBoundsForWindow:v46], v47 = objc_claimAutoreleasedReturnValue(), v46, !v47))
   {
-    if (([(TUIKeyboardTrackingCoordinator *)v9 hasAccessoryView]& 1) != 0)
+    if (([(TUIKeyboardTrackingCoordinator *)stateCopy hasAccessoryView]& 1) != 0)
     {
       v116 = 0;
     }
 
     else
     {
-      v70 = [(TUIKeyboardTrackingCoordinator *)self localTEW];
+      localTEW4 = [(TUIKeyboardTrackingCoordinator *)self localTEW];
       v71 = MEMORY[0x1E695F058];
       v114 = height;
       v72 = v35;
@@ -2299,7 +2299,7 @@ LABEL_15:
       v75 = v39;
       v76 = *(MEMORY[0x1E695F058] + 16);
       v77 = *(MEMORY[0x1E695F058] + 24);
-      [(TUIKeyboardTrackingCoordinator *)self _updateIAVBounds:v70 forWindow:*MEMORY[0x1E695F058], v74, v76, v77];
+      [(TUIKeyboardTrackingCoordinator *)self _updateIAVBounds:localTEW4 forWindow:*MEMORY[0x1E695F058], v74, v76, v77];
 
       v78 = v73;
       height = v114;
@@ -2316,7 +2316,7 @@ LABEL_15:
     }
 
 LABEL_42:
-    v53 = v119;
+    v53 = startCopy;
     goto LABEL_43;
   }
 
@@ -2339,7 +2339,7 @@ LABEL_42:
       v176.size.height = v117;
       v111 = NSStringFromCGRect(v176);
       *v166 = 138412802;
-      v167 = self;
+      selfCopy2 = self;
       v168 = 2048;
       v169 = v110;
       v170 = 2112;
@@ -2353,8 +2353,8 @@ LABEL_42:
     goto LABEL_42;
   }
 
-  v53 = v119;
-  if (v48 > 0.0 && [(TUIKeyboardTrackingCoordinator *)v9 isNonKeyboard])
+  v53 = startCopy;
+  if (v48 > 0.0 && [(TUIKeyboardTrackingCoordinator *)stateCopy isNonKeyboard])
   {
     v54 = *MEMORY[0x1E69DDF98];
     v55 = [v31 objectForKey:*MEMORY[0x1E69DDF98]];
@@ -2376,8 +2376,8 @@ LABEL_42:
     [v65 setObject:v68 forKey:*MEMORY[0x1E69DDFA0]];
 
     v69 = v65;
-    v53 = v119;
-    [v10 setNotificationInfo:v69];
+    v53 = startCopy;
+    [infoCopy setNotificationInfo:v69];
 
     v118 = v69;
   }
@@ -2388,9 +2388,9 @@ LABEL_43:
   aBlock[2] = __90__TUIKeyboardTrackingCoordinator_updateClientsForState_finalFrame_animationInfo_forStart___block_invoke;
   aBlock[3] = &unk_1E72D7760;
   v165 = v53;
-  v88 = v9;
+  v88 = stateCopy;
   v158 = v88;
-  v159 = self;
+  selfCopy3 = self;
   v161 = x;
   v162 = y;
   v163 = rect;
@@ -2410,7 +2410,7 @@ LABEL_43:
   v148[4] = self;
   v90 = v88;
   v149 = v90;
-  v91 = v10;
+  v91 = infoCopy;
   v150 = v91;
   v92 = _Block_copy(v148);
   if (([(TUIKeyboardTrackingCoordinator *)v90 isNonKeyboard]& 1) != 0)
@@ -2430,14 +2430,14 @@ LABEL_47:
     goto LABEL_52;
   }
 
-  v94 = [v91 isLocalKeyboard];
-  v93 = v94 ^ 1;
+  isLocalKeyboard = [v91 isLocalKeyboard];
+  v93 = isLocalKeyboard ^ 1;
   if (v41)
   {
     goto LABEL_47;
   }
 
-  if ((v94 & 1) == 0)
+  if ((isLocalKeyboard & 1) == 0)
   {
 LABEL_51:
     [(TUIKeyboardTrackingCoordinator *)self lastPostedEndNotificationFrame];
@@ -2505,11 +2505,11 @@ LABEL_52:
     v134 = rect;
     v135 = height;
     v105 = _Block_copy(v128);
-    v106 = [v104 options];
+    options = [v104 options];
     v107 = 0.0;
     if ([v104 shouldAnimate])
     {
-      v15 = v120;
+      keyboardState = v120;
       if (([v104 isRotating] & 1) == 0)
       {
         [v104 duration];
@@ -2519,7 +2519,7 @@ LABEL_52:
 
     else
     {
-      v15 = v120;
+      keyboardState = v120;
     }
 
     if ([MEMORY[0x1E69DD250] _isInAnimationBlock])
@@ -2535,7 +2535,7 @@ LABEL_52:
       v124[2] = __90__TUIKeyboardTrackingCoordinator_updateClientsForState_finalFrame_animationInfo_forStart___block_invoke_2_29;
       v124[3] = &unk_1E72D8160;
       v125 = v105;
-      [v109 _animateWithDuration:v106 | 2 delay:v126 options:0 animations:v124 start:v107 completion:0.0];
+      [v109 _animateWithDuration:options | 2 delay:v126 options:0 animations:v124 start:v107 completion:0.0];
     }
 
     else
@@ -2551,7 +2551,7 @@ LABEL_52:
     [(TUIKeyboardTrackingCoordinator *)self setIsTransitioning:0];
     [(TUIKeyboardTrackingCoordinator *)self setIsChangingState:0];
     [(TUIKeyboardTrackingCoordinator *)self setLastKnownFrame:x, y, rect, height];
-    v15 = v120;
+    keyboardState = v120;
   }
 
   _Block_object_dispose(buf, 8);
@@ -3049,43 +3049,43 @@ void __90__TUIKeyboardTrackingCoordinator_updateClientsForState_finalFrame_anima
   [v5 updateTrackingElementsForOffset:{a1[6], a1[7]}];
 }
 
-- (void)updateNotificationsOnly:(id)a3
+- (void)updateNotificationsOnly:(id)only
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  onlyCopy = only;
+  v5 = onlyCopy;
+  if (onlyCopy)
   {
-    v7 = v4;
-    v6 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+    v7 = onlyCopy;
+    animationInfo = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
 
     v5 = v7;
-    if (v6)
+    if (animationInfo)
     {
-      v4 = [(TUIKeyboardTrackingCoordinator *)self setAnimationInfo:v7];
+      onlyCopy = [(TUIKeyboardTrackingCoordinator *)self setAnimationInfo:v7];
       v5 = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](onlyCopy, v5);
 }
 
-- (void)updateAccessoryViewBounds:(CGRect)a3 forWindow:(id)a4
+- (void)updateAccessoryViewBounds:(CGRect)bounds forWindow:(id)window
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v21 = a4;
-  if ([v21 _isTextEffectsWindow] && !-[TUIKeyboardTrackingCoordinator isTransitioning](self, "isTransitioning"))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  windowCopy = window;
+  if ([windowCopy _isTextEffectsWindow] && !-[TUIKeyboardTrackingCoordinator isTransitioning](self, "isTransitioning"))
   {
-    v9 = [(TUIKeyboardTrackingCoordinator *)self _lastKnownIAVBoundsForWindow:v21];
-    v10 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
-    v11 = v10;
+    v9 = [(TUIKeyboardTrackingCoordinator *)self _lastKnownIAVBoundsForWindow:windowCopy];
+    keyboardState = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
+    v11 = keyboardState;
     if (v9)
     {
-      v12 = [v10 isInteractive];
+      isInteractive = [keyboardState isInteractive];
 
-      if ((v12 & 1) == 0)
+      if ((isInteractive & 1) == 0)
       {
         [v9 CGRectValue];
 LABEL_13:
@@ -3094,7 +3094,7 @@ LABEL_13:
         v19 = v15;
         v20 = v16;
 LABEL_14:
-        [(TUIKeyboardTrackingCoordinator *)self _updateIAVBounds:v21 forWindow:x, y, width, height];
+        [(TUIKeyboardTrackingCoordinator *)self _updateIAVBounds:windowCopy forWindow:x, y, width, height];
         [(TUIKeyboardTrackingCoordinator *)self setKnownIAVBounds:x, y, width, height];
         [(TUIKeyboardTrackingCoordinator *)self updatedIAVBounds:x previousBounds:y, width, height, v17, v18, v19, v20];
 LABEL_15:
@@ -3123,7 +3123,7 @@ LABEL_9:
       goto LABEL_14;
     }
 
-    if (([v10 hasAccessoryView] & 1) != 0 || height > 0.0)
+    if (([keyboardState hasAccessoryView] & 1) != 0 || height > 0.0)
     {
     }
 
@@ -3143,19 +3143,19 @@ LABEL_9:
 LABEL_16:
 }
 
-- (CGRect)intersectionOfSceneRect:(CGRect)a3 withWindow:(id)a4
+- (CGRect)intersectionOfSceneRect:(CGRect)rect withWindow:(id)window
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  [(TUIKeyboardTrackingCoordinator *)self convertSceneCoordinateSpaceFrame:v9 toWindow:x, y, width, height];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  windowCopy = window;
+  [(TUIKeyboardTrackingCoordinator *)self convertSceneCoordinateSpaceFrame:windowCopy toWindow:x, y, width, height];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  [v9 bounds];
+  [windowCopy bounds];
   v32.origin.x = v11;
   v32.origin.y = v13;
   v32.size.width = v15;
@@ -3167,11 +3167,11 @@ LABEL_16:
   v21 = v27.size.height;
   if (CGRectIsEmpty(v27))
   {
-    [v9 frame];
+    [windowCopy frame];
     MinX = CGRectGetMinX(v28);
-    [v9 frame];
+    [windowCopy frame];
     MaxY = CGRectGetMaxY(v29);
-    [v9 frame];
+    [windowCopy frame];
     v20 = CGRectGetWidth(v30);
     v21 = 0.0;
   }
@@ -3187,16 +3187,16 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)convertSceneCoordinateSpaceFrame:(CGRect)a3 toWindow:(id)a4
+- (CGRect)convertSceneCoordinateSpaceFrame:(CGRect)frame toWindow:(id)window
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  if ([v9 _isTextEffectsWindow])
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  windowCopy = window;
+  if ([windowCopy _isTextEffectsWindow])
   {
-    [v9 convertRect:0 fromWindow:{x, y, width, height}];
+    [windowCopy convertRect:0 fromWindow:{x, y, width, height}];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -3205,11 +3205,11 @@ LABEL_16:
 
   else
   {
-    v18 = [(TUIKeyboardTrackingCoordinator *)self primaryScene];
-    v19 = [v18 effectiveGeometry];
-    v20 = [v19 coordinateSpace];
-    v21 = [v9 coordinateSpace];
-    [v20 convertRect:v21 toCoordinateSpace:{x, y, width, height}];
+    primaryScene = [(TUIKeyboardTrackingCoordinator *)self primaryScene];
+    effectiveGeometry = [primaryScene effectiveGeometry];
+    coordinateSpace = [effectiveGeometry coordinateSpace];
+    coordinateSpace2 = [windowCopy coordinateSpace];
+    [coordinateSpace convertRect:coordinateSpace2 toCoordinateSpace:{x, y, width, height}];
     v11 = v22;
     v13 = v23;
     v15 = v24;
@@ -3227,17 +3227,17 @@ LABEL_16:
   return result;
 }
 
-- (void)updateGuideInWindow:(id)a3 withSceneFrame:(CGRect)a4 accessoryBounds:(CGRect)a5 state:(id)a6 updatedInfo:(id)a7
+- (void)updateGuideInWindow:(id)window withSceneFrame:(CGRect)frame accessoryBounds:(CGRect)bounds state:(id)state updatedInfo:(id)info
 {
-  height = a5.size.height;
-  v10 = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  v10 = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v67 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
+  windowCopy = window;
+  stateCopy = state;
+  infoCopy = info;
   v57 = y;
   if (height <= 0.0)
   {
@@ -3246,9 +3246,9 @@ LABEL_16:
 
   else
   {
-    v18 = [v15 _isTextEffectsWindow];
+    _isTextEffectsWindow = [windowCopy _isTextEffectsWindow];
     v19 = y - height;
-    if (v18)
+    if (_isTextEffectsWindow)
     {
       v20 = v10;
     }
@@ -3258,7 +3258,7 @@ LABEL_16:
       v20 = v10 + height;
     }
 
-    if ((v18 & 1) == 0)
+    if ((_isTextEffectsWindow & 1) == 0)
     {
       y = v19;
     }
@@ -3274,20 +3274,20 @@ LABEL_16:
   }
 
   rect = width;
-  [(TUIKeyboardTrackingCoordinator *)self intersectionOfSceneRect:v15 withWindow:x, y, width, v20];
+  [(TUIKeyboardTrackingCoordinator *)self intersectionOfSceneRect:windowCopy withWindow:x, y, width, v20];
   v23 = v70.origin.x;
   v24 = v70.origin.y;
   v25 = v70.size.width;
   v26 = v70.size.height;
   MinX = CGRectGetMinX(v70);
-  [v15 bounds];
+  [windowCopy bounds];
   MaxY = CGRectGetMaxY(v71);
   v72.origin.x = v23;
   v72.origin.y = v24;
   v72.size.width = v25;
   v72.size.height = v26;
   v29 = CGRectGetMaxY(v72);
-  if (![v15 isTrackingKeyboard])
+  if (![windowCopy isTrackingKeyboard])
   {
     v31 = MaxY - v29;
     goto LABEL_43;
@@ -3298,7 +3298,7 @@ LABEL_16:
   v73.size.width = v25;
   v73.size.height = v26;
   MinX = CGRectGetMinX(v73);
-  [v15 bounds];
+  [windowCopy bounds];
   v30 = CGRectGetMaxY(v74);
   v75.origin.x = v23;
   v75.origin.y = v24;
@@ -3306,10 +3306,10 @@ LABEL_16:
   v75.size.height = v26;
   v31 = v30 - CGRectGetMaxY(v75);
   rect1 = v10;
-  if (v16 && [v16 isDocked])
+  if (stateCopy && [stateCopy isDocked])
   {
-    v32 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-    if (![v32 isRotating])
+    animationInfo = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+    if (![animationInfo isRotating])
     {
 
       v52 = *(MEMORY[0x1E69DE258] + 8);
@@ -3327,29 +3327,29 @@ LABEL_16:
   v52 = *(MEMORY[0x1E69DE258] + 8);
   v54 = *MEMORY[0x1E69DE258];
 LABEL_16:
-  v33 = [v15 _isTextEffectsWindow];
+  _isTextEffectsWindow2 = [windowCopy _isTextEffectsWindow];
   v34 = v25;
   v35 = v26;
   v36 = MinX;
   v37 = v31;
-  if (v16)
+  if (stateCopy)
   {
     v34 = v25;
     v35 = v26;
     v36 = MinX;
     v37 = v31;
-    if (v33)
+    if (_isTextEffectsWindow2)
     {
       v34 = v25;
       v35 = v26;
       v36 = MinX;
       v37 = v31;
-      if ([v16 isFloating])
+      if ([stateCopy isFloating])
       {
-        [v15 bounds];
+        [windowCopy bounds];
         v34 = v38;
-        v39 = [v16 hasFloatingAssistantView];
-        if (v39)
+        hasFloatingAssistantView = [stateCopy hasFloatingAssistantView];
+        if (hasFloatingAssistantView)
         {
           v35 = v26;
         }
@@ -3359,7 +3359,7 @@ LABEL_16:
           v35 = 0.0;
         }
 
-        if (v39)
+        if (hasFloatingAssistantView)
         {
           v36 = MinX;
         }
@@ -3369,7 +3369,7 @@ LABEL_16:
           v36 = v54;
         }
 
-        if (v39)
+        if (hasFloatingAssistantView)
         {
           v37 = v31;
         }
@@ -3382,12 +3382,12 @@ LABEL_16:
     }
   }
 
-  if ([v16 hasFloatingAssistantView])
+  if ([stateCopy hasFloatingAssistantView])
   {
-    v40 = [v15 _primaryKeyboardTrackingGuide];
-    v41 = [v40 shouldFollowCurrentKeyboard];
+    _primaryKeyboardTrackingGuide = [windowCopy _primaryKeyboardTrackingGuide];
+    shouldFollowCurrentKeyboard = [_primaryKeyboardTrackingGuide shouldFollowCurrentKeyboard];
 
-    if ((v41 & 1) == 0)
+    if ((shouldFollowCurrentKeyboard & 1) == 0)
     {
       v35 = v31 + v35;
       v36 = 0.0;
@@ -3395,19 +3395,19 @@ LABEL_16:
     }
   }
 
-  v42 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-  v43 = [v42 animationType];
+  animationInfo2 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+  animationType = [animationInfo2 animationType];
 
-  if (v43 == 4)
+  if (animationType == 4)
   {
     v36 = v25 + v36;
   }
 
-  v44 = [v15 _primaryKeyboardTrackingGuide];
-  v45 = [v44 changeSizingConstants:{v34, v35}];
+  _primaryKeyboardTrackingGuide2 = [windowCopy _primaryKeyboardTrackingGuide];
+  v45 = [_primaryKeyboardTrackingGuide2 changeSizingConstants:{v34, v35}];
 
-  v46 = [v15 _primaryKeyboardTrackingGuide];
-  v47 = [v46 changeOffsetConstants:{v36, v37}];
+  _primaryKeyboardTrackingGuide3 = [windowCopy _primaryKeyboardTrackingGuide];
+  v47 = [_primaryKeyboardTrackingGuide3 changeOffsetConstants:{v36, v37}];
 
   if ((v45 & 1) != 0 || v47)
   {
@@ -3432,47 +3432,47 @@ LABEL_16:
       v63 = 2112;
       v64 = v51;
       v65 = 2112;
-      v66 = v15;
+      v66 = windowCopy;
       _os_log_debug_impl(&dword_18FFDC000, v48, OS_LOG_TYPE_DEBUG, "Update size to %@; offset to %@ from %@ for %@", buf, 0x2Au);
     }
 
-    if (![v15 _isTextEffectsWindow] || (v76.origin.x = v56, v76.origin.y = v57, v76.size.width = rect, v76.size.height = rect1, !CGRectEqualToRect(v76, *MEMORY[0x1E695F058])))
+    if (![windowCopy _isTextEffectsWindow] || (v76.origin.x = v56, v76.origin.y = v57, v76.size.width = rect, v76.size.height = rect1, !CGRectEqualToRect(v76, *MEMORY[0x1E695F058])))
     {
-      [v15 layoutViewsForTrackedGuides];
+      [windowCopy layoutViewsForTrackedGuides];
     }
   }
 
-  if (v17)
+  if (infoCopy)
   {
-    v17[2](v17, v34, v35, v36, v37);
+    infoCopy[2](infoCopy, v34, v35, v36, v37);
   }
 
 LABEL_43:
-  [(TUIKeyboardTrackingCoordinator *)self _updateSize:v15 forWindow:v25, v26];
-  [(TUIKeyboardTrackingCoordinator *)self _updateOffset:v15 forWindow:MinX, v31];
+  [(TUIKeyboardTrackingCoordinator *)self _updateSize:windowCopy forWindow:v25, v26];
+  [(TUIKeyboardTrackingCoordinator *)self _updateOffset:windowCopy forWindow:MinX, v31];
 }
 
-- (void)updateKeyboardTrackingState:(id)a3
+- (void)updateKeyboardTrackingState:(id)state
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  stateCopy = state;
   p_keyboardState = &self->_keyboardState;
-  if (self->_keyboardState != v5)
+  if (self->_keyboardState != stateCopy)
   {
-    v7 = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
-    if ([v7 count])
+    trackingWindows = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
+    if ([trackingWindows count])
     {
     }
 
     else
     {
-      v8 = [(TUIKeyboardTrackingCoordinator *)self trackingElements];
-      v9 = [v8 count];
+      trackingElements = [(TUIKeyboardTrackingCoordinator *)self trackingElements];
+      v9 = [trackingElements count];
 
       if (!v9)
       {
 LABEL_8:
-        objc_storeStrong(p_keyboardState, a3);
+        objc_storeStrong(p_keyboardState, state);
         goto LABEL_9;
       }
     }
@@ -3480,11 +3480,11 @@ LABEL_8:
     v10 = _TUIKeyboardTrackingLogger();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
+      keyboardState = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
       v12 = 138412546;
-      v13 = v5;
+      v13 = stateCopy;
       v14 = 2112;
-      v15 = v11;
+      v15 = keyboardState;
       _os_log_debug_impl(&dword_18FFDC000, v10, OS_LOG_TYPE_DEBUG, "Updating state from keyboard: %@ [Previous: %@]", &v12, 0x16u);
     }
 
@@ -3494,46 +3494,46 @@ LABEL_8:
 LABEL_9:
 }
 
-- (BOOL)shouldUpdateExternalTrackerForWindow:(id)a3
+- (BOOL)shouldUpdateExternalTrackerForWindow:(id)window
 {
-  v3 = a3;
-  if ([v3 _isTextEffectsWindow] & 1) != 0 || (objc_msgSend(v3, "_isTextEffectsWindowHosting"))
+  windowCopy = window;
+  if ([windowCopy _isTextEffectsWindow] & 1) != 0 || (objc_msgSend(windowCopy, "_isTextEffectsWindowHosting"))
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = [v3 _isRemoteKeyboardWindow] ^ 1;
+    v4 = [windowCopy _isRemoteKeyboardWindow] ^ 1;
   }
 
   return v4;
 }
 
-- (void)removeTrackingWindow:(id)a3
+- (void)removeTrackingWindow:(id)window
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  windowCopy = window;
   v5 = _TUIKeyboardTrackingLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
+    trackingWindows = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
     v11 = 134218498;
-    v12 = [v10 count];
+    v12 = [trackingWindows count];
     v13 = 2112;
     v14 = objc_opt_class();
     v15 = 2048;
-    v16 = v4;
+    v16 = windowCopy;
     _os_log_debug_impl(&dword_18FFDC000, v5, OS_LOG_TYPE_DEBUG, "Removing tracking window [%lu current windows]: <%@: %p>", &v11, 0x20u);
   }
 
-  v6 = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
-  [v6 containsObject:v4];
+  trackingWindows2 = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
+  [trackingWindows2 containsObject:windowCopy];
 
-  if ([v4 _isTextEffectsWindow])
+  if ([windowCopy _isTextEffectsWindow])
   {
-    v7 = [(TUIKeyboardTrackingCoordinator *)self localTEW];
-    v8 = [v4 isEqual:v7];
+    localTEW = [(TUIKeyboardTrackingCoordinator *)self localTEW];
+    v8 = [windowCopy isEqual:localTEW];
 
     if (v8)
     {
@@ -3541,29 +3541,29 @@ LABEL_9:
     }
   }
 
-  v9 = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
-  [v9 removeObject:v4];
+  trackingWindows3 = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
+  [trackingWindows3 removeObject:windowCopy];
 }
 
-- (void)addTrackingWindow:(id)a3
+- (void)addTrackingWindow:(id)window
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
+  windowCopy = window;
+  trackingWindows = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
 
-  if (!v5)
+  if (!trackingWindows)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     [(TUIKeyboardTrackingCoordinator *)self setTrackingWindows:v6];
   }
 
-  v7 = [v4 isTrackingKeyboard];
-  v8 = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
-  v9 = [v8 containsObject:v4];
+  isTrackingKeyboard = [windowCopy isTrackingKeyboard];
+  trackingWindows2 = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
+  v9 = [trackingWindows2 containsObject:windowCopy];
 
   if (!v9)
   {
-    if (!v7)
+    if (!isTrackingKeyboard)
     {
       goto LABEL_19;
     }
@@ -3571,27 +3571,27 @@ LABEL_9:
     v11 = _TUIKeyboardTrackingLogger();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v39 = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
+      trackingWindows3 = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
       *buf = 134218498;
-      v44 = [v39 count];
+      v44 = [trackingWindows3 count];
       v45 = 2112;
       v46 = objc_opt_class();
       v47 = 2048;
-      v48 = v4;
+      v48 = windowCopy;
       _os_log_debug_impl(&dword_18FFDC000, v11, OS_LOG_TYPE_DEBUG, "Adding new tracking window [%lu current windows]: <%@: %p>", buf, 0x20u);
     }
 
-    if ([v4 _isTextEffectsWindow])
+    if ([windowCopy _isTextEffectsWindow])
     {
-      [(TUIKeyboardTrackingCoordinator *)self setLocalTEW:v4];
-      v12 = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
-      [v12 addObject:v4];
+      [(TUIKeyboardTrackingCoordinator *)self setLocalTEW:windowCopy];
+      trackingWindows4 = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
+      [trackingWindows4 addObject:windowCopy];
     }
 
     else
     {
-      v12 = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
-      [v12 insertObject:v4 atIndex:0];
+      trackingWindows4 = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
+      [trackingWindows4 insertObject:windowCopy atIndex:0];
     }
 
     goto LABEL_15;
@@ -3603,31 +3603,31 @@ LABEL_9:
     *buf = 138412546;
     v44 = objc_opt_class();
     v45 = 2048;
-    v46 = v4;
+    v46 = windowCopy;
     _os_log_debug_impl(&dword_18FFDC000, v10, OS_LOG_TYPE_DEBUG, "Adding tracking window again: <%@: %p>", buf, 0x16u);
   }
 
-  if (v7)
+  if (isTrackingKeyboard)
   {
 LABEL_15:
-    v13 = [v4 _primaryKeyboardTrackingGuide];
-    [v13 layoutFrame];
+    _primaryKeyboardTrackingGuide = [windowCopy _primaryKeyboardTrackingGuide];
+    [_primaryKeyboardTrackingGuide layoutFrame];
     v15 = v14;
 
     [(TUIKeyboardTrackingCoordinator *)self incomingFrame];
     if (v16 > 0.0)
     {
-      [v4 safeAreaInsets];
+      [windowCopy safeAreaInsets];
       if (v15 <= v17)
       {
-        v18 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
-        v19 = [v18 isOffscreen];
+        keyboardState = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
+        isOffscreen = [keyboardState isOffscreen];
 
-        if ((v19 & 1) == 0)
+        if ((isOffscreen & 1) == 0)
         {
-          v20 = [v4 _primaryKeyboardTrackingGuide];
-          v21 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
-          [v20 setKeyboardTrackingState:v21];
+          _primaryKeyboardTrackingGuide2 = [windowCopy _primaryKeyboardTrackingGuide];
+          keyboardState2 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
+          [_primaryKeyboardTrackingGuide2 setKeyboardTrackingState:keyboardState2];
 
           [(TUIKeyboardTrackingCoordinator *)self incomingFrame];
           v23 = v22;
@@ -3639,14 +3639,14 @@ LABEL_15:
           v33 = v32;
           v35 = v34;
           v37 = v36;
-          v38 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
+          keyboardState3 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
           v40[0] = MEMORY[0x1E69E9820];
           v40[1] = 3221225472;
           v40[2] = __52__TUIKeyboardTrackingCoordinator_addTrackingWindow___block_invoke;
           v40[3] = &unk_1E72D76F0;
-          v41 = v4;
-          v42 = self;
-          [(TUIKeyboardTrackingCoordinator *)self updateGuideInWindow:v41 withSceneFrame:v38 accessoryBounds:v40 state:v23 updatedInfo:v25, v27, v29, v31, v33, v35, v37];
+          v41 = windowCopy;
+          selfCopy = self;
+          [(TUIKeyboardTrackingCoordinator *)self updateGuideInWindow:v41 withSceneFrame:keyboardState3 accessoryBounds:v40 state:v23 updatedInfo:v25, v27, v29, v31, v33, v35, v37];
         }
       }
     }
@@ -3675,81 +3675,81 @@ void __52__TUIKeyboardTrackingCoordinator_addTrackingWindow___block_invoke(uint6
   }
 }
 
-- (void)removeTracker:(id)a3
+- (void)removeTracker:(id)tracker
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  trackerCopy = tracker;
   v5 = _TUIKeyboardTrackingLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(TUIKeyboardTrackingCoordinator *)self trackingElements];
+    trackingElements = [(TUIKeyboardTrackingCoordinator *)self trackingElements];
     v8 = 134218498;
-    v9 = [v7 count];
+    v9 = [trackingElements count];
     v10 = 2112;
     v11 = objc_opt_class();
     v12 = 2048;
-    v13 = v4;
+    v13 = trackerCopy;
     _os_log_debug_impl(&dword_18FFDC000, v5, OS_LOG_TYPE_DEBUG, "Removing tracker [%lu current trackers]: <%@: %p>", &v8, 0x20u);
   }
 
-  v6 = [(TUIKeyboardTrackingCoordinator *)self trackingElements];
-  [v6 removeObject:v4];
+  trackingElements2 = [(TUIKeyboardTrackingCoordinator *)self trackingElements];
+  [trackingElements2 removeObject:trackerCopy];
 }
 
-- (void)addTracker:(id)a3
+- (void)addTracker:(id)tracker
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  trackerCopy = tracker;
   v5 = _TUIKeyboardTrackingLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [(TUIKeyboardTrackingCoordinator *)self trackingElements];
+    trackingElements = [(TUIKeyboardTrackingCoordinator *)self trackingElements];
     v10 = 134218498;
-    v11 = [v9 count];
+    v11 = [trackingElements count];
     v12 = 2112;
     v13 = objc_opt_class();
     v14 = 2048;
-    v15 = v4;
+    v15 = trackerCopy;
     _os_log_debug_impl(&dword_18FFDC000, v5, OS_LOG_TYPE_DEBUG, "Adding new tracker [%lu current trackers]: <%@: %p>", &v10, 0x20u);
   }
 
-  v6 = [(TUIKeyboardTrackingCoordinator *)self trackingElements];
+  trackingElements2 = [(TUIKeyboardTrackingCoordinator *)self trackingElements];
 
-  if (!v6)
+  if (!trackingElements2)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     [(TUIKeyboardTrackingCoordinator *)self setTrackingElements:v7];
   }
 
-  v8 = [(TUIKeyboardTrackingCoordinator *)self trackingElements];
-  [v8 addObject:v4];
+  trackingElements3 = [(TUIKeyboardTrackingCoordinator *)self trackingElements];
+  [trackingElements3 addObject:trackerCopy];
 }
 
-- (void)updateTEWHostingOrigin:(CGPoint)a3
+- (void)updateTEWHostingOrigin:(CGPoint)origin
 {
-  y = a3.y;
-  x = a3.x;
+  y = origin.y;
+  x = origin.x;
   [(TUIKeyboardTrackingCoordinator *)self hostedOriginOffset];
   if (v7 != x || v6 != y)
   {
     [(TUIKeyboardTrackingCoordinator *)self setHostedOriginOffset:x, y];
     if (![(TUIKeyboardTrackingCoordinator *)self isChangingState])
     {
-      v19 = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
+      keyboardState = [(TUIKeyboardTrackingCoordinator *)self keyboardState];
       [(TUIKeyboardTrackingCoordinator *)self incomingFrame];
       v10 = v9;
       v12 = v11;
       v14 = v13;
       v16 = v15;
-      v17 = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
-      v18 = v17;
-      if (!v17)
+      animationInfo = [(TUIKeyboardTrackingCoordinator *)self animationInfo];
+      v18 = animationInfo;
+      if (!animationInfo)
       {
         v18 = +[TUIKeyboardAnimationInfo defaultInfo];
       }
 
-      [(TUIKeyboardTrackingCoordinator *)self updateClientsForState:v19 finalFrame:v18 animationInfo:1 forStart:v10, v12, v14, v16];
-      if (!v17)
+      [(TUIKeyboardTrackingCoordinator *)self updateClientsForState:keyboardState finalFrame:v18 animationInfo:1 forStart:v10, v12, v14, v16];
+      if (!animationInfo)
       {
       }
     }
@@ -3787,11 +3787,11 @@ void __52__TUIKeyboardTrackingCoordinator_addTrackingWindow___block_invoke(uint6
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(TUIKeyboardTrackingCoordinator *)self primaryScene];
-  v6 = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
-  v7 = [v6 count];
-  v8 = [(TUIKeyboardTrackingCoordinator *)self trackingElements];
-  v9 = [v3 stringWithFormat:@"<%@:%p scene=%@ windowCount=%li; trackerCount=%li>", v4, self, v5, v7, objc_msgSend(v8, "count")];;
+  primaryScene = [(TUIKeyboardTrackingCoordinator *)self primaryScene];
+  trackingWindows = [(TUIKeyboardTrackingCoordinator *)self trackingWindows];
+  v7 = [trackingWindows count];
+  trackingElements = [(TUIKeyboardTrackingCoordinator *)self trackingElements];
+  v9 = [v3 stringWithFormat:@"<%@:%p scene=%@ windowCount=%li; trackerCount=%li>", v4, self, primaryScene, v7, objc_msgSend(trackingElements, "count")];;
 
   return v9;
 }
@@ -3814,16 +3814,16 @@ void __52__TUIKeyboardTrackingCoordinator_addTrackingWindow___block_invoke(uint6
   [(TUIKeyboardTrackingCoordinator *)&v6 dealloc];
 }
 
-- (TUIKeyboardTrackingCoordinator)initWithWindowScene:(id)a3
+- (TUIKeyboardTrackingCoordinator)initWithWindowScene:(id)scene
 {
-  v5 = a3;
+  sceneCopy = scene;
   v13.receiver = self;
   v13.super_class = TUIKeyboardTrackingCoordinator;
   v6 = [(TUIKeyboardTrackingCoordinator *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_primaryScene, a3);
+    objc_storeStrong(&v6->_primaryScene, scene);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     trackingWindows = v7->_trackingWindows;
     v7->_trackingWindows = v8;
@@ -3838,10 +3838,10 @@ void __52__TUIKeyboardTrackingCoordinator_addTrackingWindow___block_invoke(uint6
   return v7;
 }
 
-+ (id)trackingCoordinatorForScene:(id)a3
++ (id)trackingCoordinatorForScene:(id)scene
 {
-  v3 = a3;
-  v4 = [[TUIKeyboardTrackingCoordinator alloc] initWithWindowScene:v3];
+  sceneCopy = scene;
+  v4 = [[TUIKeyboardTrackingCoordinator alloc] initWithWindowScene:sceneCopy];
 
   return v4;
 }

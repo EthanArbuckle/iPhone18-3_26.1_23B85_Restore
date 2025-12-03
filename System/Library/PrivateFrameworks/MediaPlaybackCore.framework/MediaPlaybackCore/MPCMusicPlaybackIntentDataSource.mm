@@ -1,30 +1,30 @@
 @interface MPCMusicPlaybackIntentDataSource
-+ (BOOL)isValidInsertionIntent:(id)a3 atPosition:(int)a4 forDestination:(int64_t)a5 supportedQueueTypes:(unint64_t)a6 supportedCustomDataQueueIdentifiers:(id)a7;
-+ (BOOL)isValidReplaceIntent:(id)a3 forDestination:(int64_t)a4 supportedQueueTypes:(unint64_t)a5 supportedCustomDataQueueIdentifiers:(id)a6;
-- (void)_getPlaybackContextForIntent:(id)a3 withCompletion:(id)a4;
-- (void)getArchiveFromIntent:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (void)getRemotePlaybackQueueFromIntent:(id)a3 destination:(int64_t)a4 completion:(id)a5;
-- (void)getRepresentativeObjectFromIntent:(id)a3 properties:(id)a4 completion:(id)a5;
-- (void)getSharedListeningTracklistFromIntent:(id)a3 withCompletion:(id)a4;
++ (BOOL)isValidInsertionIntent:(id)intent atPosition:(int)position forDestination:(int64_t)destination supportedQueueTypes:(unint64_t)types supportedCustomDataQueueIdentifiers:(id)identifiers;
++ (BOOL)isValidReplaceIntent:(id)intent forDestination:(int64_t)destination supportedQueueTypes:(unint64_t)types supportedCustomDataQueueIdentifiers:(id)identifiers;
+- (void)_getPlaybackContextForIntent:(id)intent withCompletion:(id)completion;
+- (void)getArchiveFromIntent:(id)intent configuration:(id)configuration completion:(id)completion;
+- (void)getRemotePlaybackQueueFromIntent:(id)intent destination:(int64_t)destination completion:(id)completion;
+- (void)getRepresentativeObjectFromIntent:(id)intent properties:(id)properties completion:(id)completion;
+- (void)getSharedListeningTracklistFromIntent:(id)intent withCompletion:(id)completion;
 @end
 
 @implementation MPCMusicPlaybackIntentDataSource
 
-- (void)getRepresentativeObjectFromIntent:(id)a3 properties:(id)a4 completion:(id)a5
+- (void)getRepresentativeObjectFromIntent:(id)intent properties:(id)properties completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
+  propertiesCopy = properties;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __92__MPCMusicPlaybackIntentDataSource_getRepresentativeObjectFromIntent_properties_completion___block_invoke;
   v13[3] = &unk_1E8237E70;
-  v16 = v10;
+  v16 = completionCopy;
   v17 = a2;
-  v14 = v9;
-  v15 = self;
-  v11 = v9;
-  v12 = v10;
-  [(MPCMusicPlaybackIntentDataSource *)self _getPlaybackContextForIntent:a3 withCompletion:v13];
+  v14 = propertiesCopy;
+  selfCopy = self;
+  v11 = propertiesCopy;
+  v12 = completionCopy;
+  [(MPCMusicPlaybackIntentDataSource *)self _getPlaybackContextForIntent:intent withCompletion:v13];
 }
 
 void __92__MPCMusicPlaybackIntentDataSource_getRepresentativeObjectFromIntent_properties_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -104,21 +104,21 @@ void __92__MPCMusicPlaybackIntentDataSource_getRepresentativeObjectFromIntent_pr
   }
 }
 
-- (void)getRemotePlaybackQueueFromIntent:(id)a3 destination:(int64_t)a4 completion:(id)a5
+- (void)getRemotePlaybackQueueFromIntent:(id)intent destination:(int64_t)destination completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 actionAfterQueueLoad];
+  intentCopy = intent;
+  completionCopy = completion;
+  actionAfterQueueLoad = [intentCopy actionAfterQueueLoad];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __92__MPCMusicPlaybackIntentDataSource_getRemotePlaybackQueueFromIntent_destination_completion___block_invoke;
   v13[3] = &unk_1E8237E20;
-  v15 = v9;
-  v16 = a4;
-  v14 = v8;
-  v17 = v10 == 20;
-  v11 = v9;
-  v12 = v8;
+  v15 = completionCopy;
+  destinationCopy = destination;
+  v14 = intentCopy;
+  v17 = actionAfterQueueLoad == 20;
+  v11 = completionCopy;
+  v12 = intentCopy;
   [(MPCMusicPlaybackIntentDataSource *)self _getPlaybackContextForIntent:v12 withCompletion:v13];
 }
 
@@ -225,19 +225,19 @@ void __92__MPCMusicPlaybackIntentDataSource_getRemotePlaybackQueueFromIntent_des
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getArchiveFromIntent:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)getArchiveFromIntent:(id)intent configuration:(id)configuration completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  intentCopy = intent;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v11 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v20 = v8;
+    v20 = intentCopy;
     v21 = 2114;
-    v22 = v8;
+    v22 = intentCopy;
     _os_log_impl(&dword_1C5C61000, v11, OS_LOG_TYPE_DEFAULT, "[MPCPlaybackIntent:%p] getArchiveFromIntent: | intent=%{public}@", buf, 0x16u);
   }
 
@@ -245,12 +245,12 @@ void __92__MPCMusicPlaybackIntentDataSource_getRemotePlaybackQueueFromIntent_des
   v15[1] = 3221225472;
   v15[2] = __82__MPCMusicPlaybackIntentDataSource_getArchiveFromIntent_configuration_completion___block_invoke;
   v15[3] = &unk_1E8237DD0;
-  v17 = v9;
-  v18 = v10;
-  v16 = v8;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v17 = configurationCopy;
+  v18 = completionCopy;
+  v16 = intentCopy;
+  v12 = configurationCopy;
+  v13 = completionCopy;
+  v14 = intentCopy;
   [(MPCMusicPlaybackIntentDataSource *)self _getPlaybackContextForIntent:v14 withCompletion:v15];
 }
 
@@ -1313,18 +1313,18 @@ void __82__MPCMusicPlaybackIntentDataSource_getArchiveFromIntent_configuration_c
   [v10 setArtworkImageURL:*(*(*(a1 + 48) + 8) + 40)];
 }
 
-- (void)getSharedListeningTracklistFromIntent:(id)a3 withCompletion:(id)a4
+- (void)getSharedListeningTracklistFromIntent:(id)intent withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  intentCopy = intent;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __89__MPCMusicPlaybackIntentDataSource_getSharedListeningTracklistFromIntent_withCompletion___block_invoke;
   v10[3] = &unk_1E8237C68;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = intentCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = intentCopy;
   [(MPCMusicPlaybackIntentDataSource *)self _getPlaybackContextForIntent:v9 withCompletion:v10];
 }
 
@@ -1354,44 +1354,44 @@ void __89__MPCMusicPlaybackIntentDataSource_getSharedListeningTracklistFromInten
   }
 }
 
-- (void)_getPlaybackContextForIntent:(id)a3 withCompletion:(id)a4
+- (void)_getPlaybackContextForIntent:(id)intent withCompletion:(id)completion
 {
   v6 = [objc_opt_class() instanceMethodForSelector:a2];
   if (v6 == [objc_opt_class() instanceMethodForSelector:a2])
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     v9 = NSStringFromSelector(a2);
-    [v10 handleFailureInMethod:a2 object:self file:@"MPCMusicPlaybackIntentDataSource.m" lineNumber:45 description:{@"Subclass %@ must implement -%@ defined in %@.", v8, v9, @"[MPCMusicPlaybackIntentDataSource class]"}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCMusicPlaybackIntentDataSource.m" lineNumber:45 description:{@"Subclass %@ must implement -%@ defined in %@.", v8, v9, @"[MPCMusicPlaybackIntentDataSource class]"}];
   }
 }
 
-+ (BOOL)isValidInsertionIntent:(id)a3 atPosition:(int)a4 forDestination:(int64_t)a5 supportedQueueTypes:(unint64_t)a6 supportedCustomDataQueueIdentifiers:(id)a7
++ (BOOL)isValidInsertionIntent:(id)intent atPosition:(int)position forDestination:(int64_t)destination supportedQueueTypes:(unint64_t)types supportedCustomDataQueueIdentifiers:(id)identifiers
 {
-  v9 = [a1 instanceMethodForSelector:{a2, *&a4, a5, a6, a7}];
+  v9 = [self instanceMethodForSelector:{a2, *&position, destination, types, identifiers}];
   if (v9 == [objc_opt_class() instanceMethodForSelector:a2])
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
     v14 = NSStringFromSelector(a2);
-    [v11 handleFailureInMethod:a2 object:a1 file:@"MPCMusicPlaybackIntentDataSource.m" lineNumber:40 description:{@"Subclass %@ must implement -%@ defined in %@.", v13, v14, @"self"}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCMusicPlaybackIntentDataSource.m" lineNumber:40 description:{@"Subclass %@ must implement -%@ defined in %@.", v13, v14, @"self"}];
   }
 
   return 0;
 }
 
-+ (BOOL)isValidReplaceIntent:(id)a3 forDestination:(int64_t)a4 supportedQueueTypes:(unint64_t)a5 supportedCustomDataQueueIdentifiers:(id)a6
++ (BOOL)isValidReplaceIntent:(id)intent forDestination:(int64_t)destination supportedQueueTypes:(unint64_t)types supportedCustomDataQueueIdentifiers:(id)identifiers
 {
-  v8 = [a1 instanceMethodForSelector:{a2, a4, a5, a6}];
+  v8 = [self instanceMethodForSelector:{a2, destination, types, identifiers}];
   if (v8 == [objc_opt_class() instanceMethodForSelector:a2])
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
     v13 = NSStringFromSelector(a2);
-    [v10 handleFailureInMethod:a2 object:a1 file:@"MPCMusicPlaybackIntentDataSource.m" lineNumber:31 description:{@"Subclass %@ must implement -%@ defined in %@.", v12, v13, @"self"}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCMusicPlaybackIntentDataSource.m" lineNumber:31 description:{@"Subclass %@ must implement -%@ defined in %@.", v12, v13, @"self"}];
   }
 
   return 0;

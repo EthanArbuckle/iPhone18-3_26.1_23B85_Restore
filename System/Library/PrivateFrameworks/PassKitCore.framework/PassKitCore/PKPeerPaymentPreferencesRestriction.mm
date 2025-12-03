@@ -1,33 +1,33 @@
 @interface PKPeerPaymentPreferencesRestriction
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPreferencesRestriction:(id)a3;
-- (PKPeerPaymentPreferencesRestriction)initWithCoder:(id)a3;
-- (PKPeerPaymentPreferencesRestriction)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPreferencesRestriction:(id)restriction;
+- (PKPeerPaymentPreferencesRestriction)initWithCoder:(id)coder;
+- (PKPeerPaymentPreferencesRestriction)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPeerPaymentPreferencesRestriction
 
-- (PKPeerPaymentPreferencesRestriction)initWithDictionary:(id)a3
+- (PKPeerPaymentPreferencesRestriction)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = PKPeerPaymentPreferencesRestriction;
   v5 = [(PKPeerPaymentPreferencesRestriction *)&v11 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"altDSID"];
+    v6 = [dictionaryCopy PKStringForKey:@"altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v6;
 
-    v8 = [v4 PKStringForKey:@"restrictionType"];
+    v8 = [dictionaryCopy PKStringForKey:@"restrictionType"];
     v5->_sendRestrictionType = PKPeerPaymentPreferencesSendRestrictionTypeFromString(v8);
 
-    v9 = [v4 PKStringForKey:@"receiveRestrictionType"];
+    v9 = [dictionaryCopy PKStringForKey:@"receiveRestrictionType"];
     v5->_receiveRestrictionType = PKPeerPaymentPreferencesReceiveRestrictionTypeFromString(v9);
   }
 
@@ -36,8 +36,8 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:self->_altDSID forKey:@"altDSID"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:self->_altDSID forKey:@"altDSID"];
   sendRestrictionType = self->_sendRestrictionType;
   if (sendRestrictionType > 4)
   {
@@ -49,7 +49,7 @@
     v5 = off_1E79E4AA0[sendRestrictionType];
   }
 
-  [v3 setObject:v5 forKey:@"restrictionType"];
+  [dictionary setObject:v5 forKey:@"restrictionType"];
   receiveRestrictionType = self->_receiveRestrictionType;
   if (receiveRestrictionType > 3)
   {
@@ -61,50 +61,50 @@
     v7 = off_1E79E4AC8[receiveRestrictionType];
   }
 
-  [v3 setObject:v7 forKey:@"receiveRestrictionType"];
-  v8 = [v3 copy];
+  [dictionary setObject:v7 forKey:@"receiveRestrictionType"];
+  v8 = [dictionary copy];
 
   return v8;
 }
 
-- (PKPeerPaymentPreferencesRestriction)initWithCoder:(id)a3
+- (PKPeerPaymentPreferencesRestriction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPeerPaymentPreferencesRestriction;
   v5 = [(PKPeerPaymentPreferencesRestriction *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"restrictionType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"restrictionType"];
     v5->_sendRestrictionType = [v8 integerValue];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"receiveRestrictionType"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"receiveRestrictionType"];
     v5->_receiveRestrictionType = [v9 integerValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   altDSID = self->_altDSID;
-  v5 = a3;
-  [v5 encodeObject:altDSID forKey:@"altDSID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:altDSID forKey:@"altDSID"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_sendRestrictionType];
-  [v5 encodeObject:v6 forKey:@"restrictionType"];
+  [coderCopy encodeObject:v6 forKey:@"restrictionType"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_receiveRestrictionType];
-  [v5 encodeObject:v7 forKey:@"receiveRestrictionType"];
+  [coderCopy encodeObject:v7 forKey:@"receiveRestrictionType"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPeerPaymentPreferencesRestriction allocWithZone:](PKPeerPaymentPreferencesRestriction init];
-  v6 = [(NSString *)self->_altDSID copyWithZone:a3];
+  v6 = [(NSString *)self->_altDSID copyWithZone:zone];
   altDSID = v5->_altDSID;
   v5->_altDSID = v6;
 
@@ -113,28 +113,28 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPeerPaymentPreferencesRestriction *)self isEqualToPreferencesRestriction:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPeerPaymentPreferencesRestriction *)self isEqualToPreferencesRestriction:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPreferencesRestriction:(id)a3
+- (BOOL)isEqualToPreferencesRestriction:(id)restriction
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_sendRestrictionType == v4[2] && self->_receiveRestrictionType == v4[3])
+  restrictionCopy = restriction;
+  v5 = restrictionCopy;
+  if (restrictionCopy && self->_sendRestrictionType == restrictionCopy[2] && self->_receiveRestrictionType == restrictionCopy[3])
   {
     altDSID = self->_altDSID;
     v7 = v5[1];
@@ -159,9 +159,9 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_altDSID];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_altDSID];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_sendRestrictionType - v4 + 32 * v4;
   v6 = self->_receiveRestrictionType - v5 + 32 * v5;
 

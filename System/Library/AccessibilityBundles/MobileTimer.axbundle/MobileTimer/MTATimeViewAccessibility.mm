@@ -7,7 +7,7 @@
 - (id)accessibilityLabel
 {
   v2 = [(MTATimeViewAccessibility *)self safeValueForKey:@"_timeLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
   v4 = AXLocalizeDurationTime();
 

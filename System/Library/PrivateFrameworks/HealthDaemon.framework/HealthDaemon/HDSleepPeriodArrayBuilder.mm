@@ -1,23 +1,23 @@
 @interface HDSleepPeriodArrayBuilder
-- (HDSleepPeriodArrayBuilder)initWithInfo:(id)a3 options:(unint64_t)a4;
+- (HDSleepPeriodArrayBuilder)initWithInfo:(id)info options:(unint64_t)options;
 - (id)_createPeriodAndReset;
 - (id)_currentPeriodInterval;
 - (id)finish;
-- (void)addOrderedSegment:(id)a3;
+- (void)addOrderedSegment:(id)segment;
 @end
 
 @implementation HDSleepPeriodArrayBuilder
 
-- (HDSleepPeriodArrayBuilder)initWithInfo:(id)a3 options:(unint64_t)a4
+- (HDSleepPeriodArrayBuilder)initWithInfo:(id)info options:(unint64_t)options
 {
-  v6 = a3;
+  infoCopy = info;
   v26.receiver = self;
   v26.super_class = HDSleepPeriodArrayBuilder;
   v7 = [(HDSleepPeriodArrayBuilder *)&v26 init];
   v8 = v7;
   if (v7)
   {
-    v7->_options = a4;
+    v7->_options = options;
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     periods = v8->_periods;
     v8->_periods = v9;
@@ -27,20 +27,20 @@
     v8->_currentPeriodSegments = v11;
 
     v13 = [HDDateIntervalIterator alloc];
-    v14 = [v6 userSetSchedules];
-    v15 = [(HDDateIntervalIterator *)v13 initWithDateIntervals:v14];
+    userSetSchedules = [infoCopy userSetSchedules];
+    v15 = [(HDDateIntervalIterator *)v13 initWithDateIntervals:userSetSchedules];
     userSetScheduleIterator = v8->_userSetScheduleIterator;
     v8->_userSetScheduleIterator = v15;
 
     v17 = [HDDateIntervalIterator alloc];
-    v18 = [v6 incompleteSessions];
-    v19 = [(HDDateIntervalIterator *)v17 initWithDateIntervals:v18];
+    incompleteSessions = [infoCopy incompleteSessions];
+    v19 = [(HDDateIntervalIterator *)v17 initWithDateIntervals:incompleteSessions];
     incompleteSessionIterator = v8->_incompleteSessionIterator;
     v8->_incompleteSessionIterator = v19;
 
     v21 = [HDMappedDateIntervalIterator alloc];
-    v22 = [v6 mappedTimezones];
-    v23 = [(HDMappedDateIntervalIterator *)v21 initWithDateIntervalMap:v22];
+    mappedTimezones = [infoCopy mappedTimezones];
+    v23 = [(HDMappedDateIntervalIterator *)v21 initWithDateIntervalMap:mappedTimezones];
     timezoneIterator = v8->_timezoneIterator;
     v8->_timezoneIterator = v23;
   }
@@ -60,11 +60,11 @@ uint64_t __68__HDSleepPeriodArrayBuilder__segmentIsPartOfCurrentUserSetSchedule_
 
 - (id)_currentPeriodInterval
 {
-  if (*(a1 + 32))
+  if (*(self + 32))
   {
-    if (*(a1 + 40))
+    if (*(self + 40))
     {
-      v2 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:*(a1 + 32) endDate:*(a1 + 40)];
+      v2 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:*(self + 32) endDate:*(self + 40)];
     }
 
     else
@@ -81,44 +81,44 @@ uint64_t __68__HDSleepPeriodArrayBuilder__segmentIsPartOfCurrentUserSetSchedule_
   return v2;
 }
 
-- (void)addOrderedSegment:(id)a3
+- (void)addOrderedSegment:(id)segment
 {
-  v4 = a3;
-  v5 = v4;
-  v28 = v4;
+  segmentCopy = segment;
+  _createPeriodAndReset = segmentCopy;
+  v28 = segmentCopy;
   if (self)
   {
-    v5 = v4;
+    _createPeriodAndReset = segmentCopy;
     if (self->_currentPeriodEndDate)
     {
-      v6 = [v4 dateInterval];
-      v7 = [v6 startDate];
-      [v7 timeIntervalSinceDate:self->_currentPeriodEndDate];
+      dateInterval = [segmentCopy dateInterval];
+      startDate = [dateInterval startDate];
+      [startDate timeIntervalSinceDate:self->_currentPeriodEndDate];
       v9 = v8;
 
-      v5 = v28;
+      _createPeriodAndReset = v28;
       if (v9 >= 3600.0)
       {
         if ((self->_options & 4) != 0)
         {
-          v5 = v28;
-          v10 = [(HDDateIntervalIterator *)self->_userSetScheduleIterator currentDateInterval];
-          if (v10)
+          _createPeriodAndReset = v28;
+          currentDateInterval = [(HDDateIntervalIterator *)self->_userSetScheduleIterator currentDateInterval];
+          if (currentDateInterval)
           {
-            v11 = v10;
+            v11 = currentDateInterval;
             userSetScheduleIterator = self->_userSetScheduleIterator;
             v29 = MEMORY[0x277D85DD0];
             v30 = 3221225472;
             v31 = __68__HDSleepPeriodArrayBuilder__segmentIsPartOfCurrentUserSetSchedule___block_invoke;
             v32 = &unk_278630048;
-            v5 = v5;
-            v33 = v5;
+            _createPeriodAndReset = _createPeriodAndReset;
+            v33 = _createPeriodAndReset;
             v13 = [(HDDateIntervalIterator *)userSetScheduleIterator nextDateIntervalPassingTest:&v29];
             v14 = v13;
             if (v11 == v13)
             {
-              v26 = [(HDSleepPeriodArrayBuilder *)self _currentPeriodInterval];
-              v27 = [v26 intersectsDateInterval:v11];
+              _currentPeriodInterval = [(HDSleepPeriodArrayBuilder *)self _currentPeriodInterval];
+              v27 = [_currentPeriodInterval intersectsDateInterval:v11];
 
               if (v27)
               {
@@ -133,23 +133,23 @@ uint64_t __68__HDSleepPeriodArrayBuilder__segmentIsPartOfCurrentUserSetSchedule_
 LABEL_9:
 
         periods = self->_periods;
-        v5 = [(HDSleepPeriodArrayBuilder *)self _createPeriodAndReset];
-        [(NSMutableArray *)periods hk_addNonNilObject:v5];
+        _createPeriodAndReset = [(HDSleepPeriodArrayBuilder *)self _createPeriodAndReset];
+        [(NSMutableArray *)periods hk_addNonNilObject:_createPeriodAndReset];
       }
     }
   }
 
 LABEL_10:
 
-  v16 = [v28 dateInterval];
-  v17 = [v16 endDate];
+  dateInterval2 = [v28 dateInterval];
+  endDate = [dateInterval2 endDate];
   currentPeriodEndDate = self->_currentPeriodEndDate;
   v19 = HKDateMax();
   v20 = self->_currentPeriodEndDate;
   self->_currentPeriodEndDate = v19;
 
-  v21 = [v28 dateInterval];
-  v22 = [v21 startDate];
+  dateInterval3 = [v28 dateInterval];
+  startDate2 = [dateInterval3 startDate];
   currentPeriodStartDate = self->_currentPeriodStartDate;
   v24 = HKDateMin();
   v25 = self->_currentPeriodStartDate;
@@ -163,20 +163,20 @@ LABEL_10:
 
 - (id)_createPeriodAndReset
 {
-  if (a1 && *(a1 + 32) && *(a1 + 40) && [*(a1 + 24) count])
+  if (self && *(self + 32) && *(self + 40) && [*(self + 24) count])
   {
-    v2 = [(HDSleepPeriodArrayBuilder *)a1 _currentPeriodInterval];
-    v3 = v2;
-    v4 = *(a1 + 8);
+    _currentPeriodInterval = [(HDSleepPeriodArrayBuilder *)self _currentPeriodInterval];
+    v3 = _currentPeriodInterval;
+    v4 = *(self + 8);
     if ((v4 & 2) != 0)
     {
-      v7 = *(a1 + 56);
+      v7 = *(self + 56);
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __50__HDSleepPeriodArrayBuilder__createPeriodAndReset__block_invoke;
       v24[3] = &unk_278630048;
       v23 = &v25;
-      v25 = v2;
+      v25 = _currentPeriodInterval;
       v8 = [v7 nextDateIntervalPassingTest:v24];
       v5 = v8 != 0;
     }
@@ -194,33 +194,33 @@ LABEL_10:
     v10 = v9;
     v27 = v10;
     v11 = _Block_copy(aBlock);
-    v12 = [*(a1 + 64) nextItemWithDateIntervalPassingTest:v11];
+    v12 = [*(self + 64) nextItemWithDateIntervalPassingTest:v11];
     if (v12)
     {
       v13 = v12;
-      v14 = [*(a1 + 64) nextDateInterval];
-      if (v11[2](v11, v14))
+      nextDateInterval = [*(self + 64) nextDateInterval];
+      if (v11[2](v11, nextDateInterval))
       {
         do
         {
-          v15 = [*(a1 + 64) currentItem];
+          currentItem = [*(self + 64) currentItem];
 
-          v16 = [*(a1 + 64) nextDateInterval];
+          nextDateInterval2 = [*(self + 64) nextDateInterval];
 
-          v14 = v16;
-          v13 = v15;
+          nextDateInterval = nextDateInterval2;
+          v13 = currentItem;
         }
 
-        while ((v11[2](v11, v16) & 1) != 0);
+        while ((v11[2](v11, nextDateInterval2) & 1) != 0);
       }
 
       else
       {
-        v15 = v13;
-        v16 = v14;
+        currentItem = v13;
+        nextDateInterval2 = nextDateInterval;
       }
 
-      v17 = v15;
+      v17 = currentItem;
     }
 
     else
@@ -228,16 +228,16 @@ LABEL_10:
       v17 = 0;
     }
 
-    v6 = [MEMORY[0x277CCD9D8] sleepPeriodWithDateInterval:v10 segments:*(a1 + 24) isIncomplete:v5 timezoneName:v17];
-    v18 = *(a1 + 32);
-    *(a1 + 32) = 0;
+    v6 = [MEMORY[0x277CCD9D8] sleepPeriodWithDateInterval:v10 segments:*(self + 24) isIncomplete:v5 timezoneName:v17];
+    v18 = *(self + 32);
+    *(self + 32) = 0;
 
-    v19 = *(a1 + 40);
-    *(a1 + 40) = 0;
+    v19 = *(self + 40);
+    *(self + 40) = 0;
 
     v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v21 = *(a1 + 24);
-    *(a1 + 24) = v20;
+    v21 = *(self + 24);
+    *(self + 24) = v20;
 
     if ((v4 & 2) != 0)
     {
@@ -255,8 +255,8 @@ LABEL_10:
 - (id)finish
 {
   periods = self->_periods;
-  v4 = [(HDSleepPeriodArrayBuilder *)self _createPeriodAndReset];
-  [(NSMutableArray *)periods hk_addNonNilObject:v4];
+  _createPeriodAndReset = [(HDSleepPeriodArrayBuilder *)self _createPeriodAndReset];
+  [(NSMutableArray *)periods hk_addNonNilObject:_createPeriodAndReset];
 
   v5 = [(NSMutableArray *)self->_periods copy];
 

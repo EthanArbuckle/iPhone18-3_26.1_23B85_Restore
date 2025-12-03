@@ -20,26 +20,26 @@
 {
   v3 = ICAccessibilityAccessibilityLargerTextSizesEnabled();
   v4 = MEMORY[0x1E696ACD8];
-  v5 = [(ICPasswordChangeView *)self parentViewController];
-  v6 = v5;
+  parentViewController = [(ICPasswordChangeView *)self parentViewController];
+  v6 = parentViewController;
   if (v3)
   {
-    v7 = [v5 defaultConstraints];
-    [v4 deactivateConstraints:v7];
+    defaultConstraints = [parentViewController defaultConstraints];
+    [v4 deactivateConstraints:defaultConstraints];
 
     v8 = MEMORY[0x1E696ACD8];
-    v9 = [(ICPasswordChangeView *)self parentViewController];
-    [v9 alternateConstraintsForAXLargerTextSizes];
+    parentViewController2 = [(ICPasswordChangeView *)self parentViewController];
+    [parentViewController2 alternateConstraintsForAXLargerTextSizes];
   }
 
   else
   {
-    v10 = [v5 alternateConstraintsForAXLargerTextSizes];
-    [v4 deactivateConstraints:v10];
+    alternateConstraintsForAXLargerTextSizes = [parentViewController alternateConstraintsForAXLargerTextSizes];
+    [v4 deactivateConstraints:alternateConstraintsForAXLargerTextSizes];
 
     v8 = MEMORY[0x1E696ACD8];
-    v9 = [(ICPasswordChangeView *)self parentViewController];
-    [v9 defaultConstraints];
+    parentViewController2 = [(ICPasswordChangeView *)self parentViewController];
+    [parentViewController2 defaultConstraints];
   }
   v11 = ;
   [v8 activateConstraints:v11];

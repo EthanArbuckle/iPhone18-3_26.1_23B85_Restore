@@ -1,5 +1,5 @@
 @interface AccountPSSyncController
-- (BOOL)shouldAutomaticallyTryEnablingDataclassDuringSetup:(id)a3;
+- (BOOL)shouldAutomaticallyTryEnablingDataclassDuringSetup:(id)setup;
 - (MailAccount)mailAccount;
 - (id)specifiers;
 - (id)valueForAccountSummaryCell;
@@ -10,10 +10,10 @@
 
 - (void)viewDidLoad
 {
-  v3 = [(AccountPSSyncController *)self mailAccount];
-  v4 = [v3 isManaged];
+  mailAccount = [(AccountPSSyncController *)self mailAccount];
+  isManaged = [mailAccount isManaged];
 
-  if (v4)
+  if (isManaged)
   {
     [(AccountPSSyncController *)self setShouldShowDeleteAccountButton:0];
   }
@@ -27,18 +27,18 @@
 {
   v10.receiver = self;
   v10.super_class = AccountPSSyncController;
-  v3 = [(AccountPSSyncController *)&v10 specifiers];
-  v4 = [v3 mutableCopy];
+  specifiers = [(AccountPSSyncController *)&v10 specifiers];
+  v4 = [specifiers mutableCopy];
 
-  v5 = [(AccountPSSyncController *)self mailAccount];
-  v6 = [v5 otherTopLevelSpecifiers];
-  [v4 addObjectsFromArray:v6];
+  mailAccount = [(AccountPSSyncController *)self mailAccount];
+  otherTopLevelSpecifiers = [mailAccount otherTopLevelSpecifiers];
+  [v4 addObjectsFromArray:otherTopLevelSpecifiers];
 
-  v7 = [v5 managedAccountFooterText];
-  if (v7)
+  managedAccountFooterText = [mailAccount managedAccountFooterText];
+  if (managedAccountFooterText)
   {
     v8 = +[PSSpecifier emptyGroupSpecifier];
-    [v8 setProperty:v7 forKey:PSFooterTextGroupKey];
+    [v8 setProperty:managedAccountFooterText forKey:PSFooterTextGroupKey];
     [v4 addObject:v8];
   }
 
@@ -51,43 +51,43 @@
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [(AccountPSSyncController *)self account];
-    v4 = [v3 accountDescription];
+    account = [(AccountPSSyncController *)self account];
+    accountDescription = [account accountDescription];
   }
 
   else
   {
-    v3 = [(AccountPSSyncController *)self mailAccount];
-    v5 = [v3 defaultEmailAddress];
-    v6 = v5;
-    if (v5)
+    account = [(AccountPSSyncController *)self mailAccount];
+    defaultEmailAddress = [account defaultEmailAddress];
+    v6 = defaultEmailAddress;
+    if (defaultEmailAddress)
     {
-      v7 = v5;
+      firstEmailAddress = defaultEmailAddress;
     }
 
     else
     {
-      v7 = [v3 firstEmailAddress];
+      firstEmailAddress = [account firstEmailAddress];
     }
 
-    v4 = v7;
+    accountDescription = firstEmailAddress;
   }
 
-  return v4;
+  return accountDescription;
 }
 
 - (MailAccount)mailAccount
 {
-  v2 = [(AccountPSSyncController *)self account];
-  v3 = [MFAccount accountWithPersistentAccount:v2];
+  account = [(AccountPSSyncController *)self account];
+  v3 = [MFAccount accountWithPersistentAccount:account];
 
   return v3;
 }
 
-- (BOOL)shouldAutomaticallyTryEnablingDataclassDuringSetup:(id)a3
+- (BOOL)shouldAutomaticallyTryEnablingDataclassDuringSetup:(id)setup
 {
-  v4 = a3;
-  if ([v4 isEqualToString:kAccountDataclassNotes])
+  setupCopy = setup;
+  if ([setupCopy isEqualToString:kAccountDataclassNotes])
   {
     v5 = 0;
   }
@@ -96,7 +96,7 @@
   {
     v7.receiver = self;
     v7.super_class = AccountPSSyncController;
-    v5 = [(AccountPSSyncController *)&v7 shouldAutomaticallyTryEnablingDataclassDuringSetup:v4];
+    v5 = [(AccountPSSyncController *)&v7 shouldAutomaticallyTryEnablingDataclassDuringSetup:setupCopy];
   }
 
   return v5;

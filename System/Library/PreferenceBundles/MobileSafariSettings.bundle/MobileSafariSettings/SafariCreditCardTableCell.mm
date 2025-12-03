@@ -1,6 +1,6 @@
 @interface SafariCreditCardTableCell
 - (void)layoutSubviews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation SafariCreditCardTableCell
@@ -10,46 +10,46 @@
   v6.receiver = self;
   v6.super_class = SafariCreditCardTableCell;
   [(SafariCreditCardTableCell *)&v6 layoutSubviews];
-  v3 = [(SafariCreditCardTableCell *)self titleLabel];
-  [v3 frame];
-  [v3 setFrame:?];
-  v4 = [(SafariCreditCardTableCell *)self valueLabel];
-  [v4 frame];
-  [v4 setFrame:?];
-  v5 = [(SafariCreditCardTableCell *)self iconImageView];
-  [v5 frame];
-  [v5 setFrame:?];
+  titleLabel = [(SafariCreditCardTableCell *)self titleLabel];
+  [titleLabel frame];
+  [titleLabel setFrame:?];
+  valueLabel = [(SafariCreditCardTableCell *)self valueLabel];
+  [valueLabel frame];
+  [valueLabel setFrame:?];
+  iconImageView = [(SafariCreditCardTableCell *)self iconImageView];
+  [iconImageView frame];
+  [iconImageView setFrame:?];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v12.receiver = self;
   v12.super_class = SafariCreditCardTableCell;
-  v4 = a3;
-  [(SafariCreditCardTableCell *)&v12 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 userInfo];
+  specifierCopy = specifier;
+  [(SafariCreditCardTableCell *)&v12 refreshCellContentsWithSpecifier:specifierCopy];
+  userInfo = [specifierCopy userInfo];
 
-  v6 = [v5 balance];
-  v7 = [v6 formattedStringValue];
+  balance = [userInfo balance];
+  formattedStringValue = [balance formattedStringValue];
 
-  if ([v7 length])
+  if ([formattedStringValue length])
   {
-    v8 = SafariSettingsLocalizedString(@"Balance: %@", @"AppleCashAutoFill");
-    [NSString localizedStringWithFormat:v8, v7];
+    cardNumber = SafariSettingsLocalizedString(@"Balance: %@", @"AppleCashAutoFill");
+    [NSString localizedStringWithFormat:cardNumber, formattedStringValue];
   }
 
   else
   {
-    v8 = [v5 cardNumber];
+    cardNumber = [userInfo cardNumber];
     WBSDisplayTextForCreditCardNumber();
   }
   v9 = ;
-  v10 = [(SafariCreditCardTableCell *)self valueLabel];
-  [v10 setText:v9];
+  valueLabel = [(SafariCreditCardTableCell *)self valueLabel];
+  [valueLabel setText:v9];
 
-  v11 = [v5 virtualCard];
+  virtualCard = [userInfo virtualCard];
 
-  if (v11)
+  if (virtualCard)
   {
     [(SafariCreditCardTableCell *)self setUserInteractionEnabled:0];
   }

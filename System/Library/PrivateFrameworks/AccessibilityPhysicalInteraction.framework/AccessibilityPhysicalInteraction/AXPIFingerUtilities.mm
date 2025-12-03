@@ -1,30 +1,30 @@
 @interface AXPIFingerUtilities
 + (BOOL)laserEnabled;
-+ (id)_points:(id)a3 adjustedForBounds:(CGRect)a4;
-+ (id)defaultLocationsForNumberOfFingers:(unint64_t)a3 aroundPoint:(CGPoint)a4 withinBounds:(CGRect)a5;
-+ (id)defaultPinchLocationsAroundPoint:(CGPoint)a3 withinBounds:(CGRect)a4;
-+ (id)fingerModelsForPointStrings:(id)a3;
-+ (id)pointStringsForFingerModels:(id)a3;
++ (id)_points:(id)_points adjustedForBounds:(CGRect)bounds;
++ (id)defaultLocationsForNumberOfFingers:(unint64_t)fingers aroundPoint:(CGPoint)point withinBounds:(CGRect)bounds;
++ (id)defaultPinchLocationsAroundPoint:(CGPoint)point withinBounds:(CGRect)bounds;
++ (id)fingerModelsForPointStrings:(id)strings;
++ (id)pointStringsForFingerModels:(id)models;
 + (id)pointerAnimationSettings;
-+ (id)pointerFiltersForLuminanceLevel:(unint64_t)a3;
-+ (unint64_t)fingerShapeForCorner:(unint64_t)a3;
-+ (void)updateFirstLocation:(CGPoint *)a3 secondLocation:(CGPoint *)a4 forPinchWithRadiusDelta:(double)a5 angleDelta:(double)a6;
++ (id)pointerFiltersForLuminanceLevel:(unint64_t)level;
++ (unint64_t)fingerShapeForCorner:(unint64_t)corner;
++ (void)updateFirstLocation:(CGPoint *)location secondLocation:(CGPoint *)secondLocation forPinchWithRadiusDelta:(double)delta angleDelta:(double)angleDelta;
 @end
 
 @implementation AXPIFingerUtilities
 
-+ (id)defaultLocationsForNumberOfFingers:(unint64_t)a3 aroundPoint:(CGPoint)a4 withinBounds:(CGRect)a5
++ (id)defaultLocationsForNumberOfFingers:(unint64_t)fingers aroundPoint:(CGPoint)point withinBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.y;
-  v10 = a4.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v9 = point.y;
+  v10 = point.x;
   v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:?];
-  if (a3 <= 3)
+  if (fingers <= 3)
   {
-    if (a3 == 2)
+    if (fingers == 2)
     {
       v34 = height;
       v16 = 20.0;
@@ -35,7 +35,7 @@
 
     else
     {
-      if (a3 != 3)
+      if (fingers != 3)
       {
         goto LABEL_17;
       }
@@ -55,7 +55,7 @@
     goto LABEL_16;
   }
 
-  if (a3 == 4)
+  if (fingers == 4)
   {
     v34 = height;
     if (AXDeviceIsPad())
@@ -94,7 +94,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (a3 != 5)
+  if (fingers != 5)
   {
     goto LABEL_17;
   }
@@ -146,20 +146,20 @@ LABEL_17:
   v31 = NSStringFromCGPoint(v44);
   [v13 addObject:v31];
 
-  v32 = [a1 _points:v13 adjustedForBounds:{x, y, width, height}];
+  v32 = [self _points:v13 adjustedForBounds:{x, y, width, height}];
 
   return v32;
 }
 
-+ (id)defaultPinchLocationsAroundPoint:(CGPoint)a3 withinBounds:(CGRect)a4
++ (id)defaultPinchLocationsAroundPoint:(CGPoint)point withinBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.y;
-  v9 = a3.x;
-  v11 = [MEMORY[0x277CBEB18] array];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v8 = point.y;
+  v9 = point.x;
+  array = [MEMORY[0x277CBEB18] array];
   if (AXDeviceIsPad())
   {
     v12 = 75.0;
@@ -185,7 +185,7 @@ LABEL_17:
   v24.x = v13;
   v24.y = v15;
   v16 = NSStringFromCGPoint(v24);
-  [v11 addObject:v16];
+  [array addObject:v16];
 
   if (AXDeviceIsPad())
   {
@@ -211,41 +211,41 @@ LABEL_17:
   v25.y = v15 - v19;
   v25.x = v18;
   v20 = NSStringFromCGPoint(v25);
-  [v11 addObject:v20];
+  [array addObject:v20];
 
-  v21 = [a1 _points:v11 adjustedForBounds:{x, y, width, height}];
+  v21 = [self _points:array adjustedForBounds:{x, y, width, height}];
 
   return v21;
 }
 
-+ (void)updateFirstLocation:(CGPoint *)a3 secondLocation:(CGPoint *)a4 forPinchWithRadiusDelta:(double)a5 angleDelta:(double)a6
++ (void)updateFirstLocation:(CGPoint *)location secondLocation:(CGPoint *)secondLocation forPinchWithRadiusDelta:(double)delta angleDelta:(double)angleDelta
 {
-  x = a3->x;
-  y = a3->y;
+  x = location->x;
+  y = location->y;
   AX_CGPointGetMidpointToPoint();
   v13 = v12;
   v15 = v14;
   AX_CGPointGetDistanceToPoint();
-  v17 = v16 + a5;
-  v18 = atan2(y - v15, x - v13) + a6;
+  v17 = v16 + delta;
+  v18 = atan2(y - v15, x - v13) + angleDelta;
   v19 = __sincos_stret(v18);
   v20 = __sincos_stret(v18 + 3.14159265);
-  a3->x = v13 + v17 * v19.__cosval;
-  a3->y = v15 + v17 * v19.__sinval;
-  a4->x = v13 + v17 * v20.__cosval;
-  a4->y = v15 + v17 * v20.__sinval;
+  location->x = v13 + v17 * v19.__cosval;
+  location->y = v15 + v17 * v19.__sinval;
+  secondLocation->x = v13 + v17 * v20.__cosval;
+  secondLocation->y = v15 + v17 * v20.__sinval;
 }
 
-+ (id)fingerModelsForPointStrings:(id)a3
++ (id)fingerModelsForPointStrings:(id)strings
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  stringsCopy = strings;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(stringsCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = stringsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -274,16 +274,16 @@ LABEL_17:
   return v4;
 }
 
-+ (id)pointStringsForFingerModels:(id)a3
++ (id)pointStringsForFingerModels:(id)models
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  modelsCopy = models;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(modelsCopy, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = modelsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -312,14 +312,14 @@ LABEL_17:
   return v4;
 }
 
-+ (id)_points:(id)a3 adjustedForBounds:(CGRect)a4
++ (id)_points:(id)_points adjustedForBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  _pointsCopy = _points;
   v50.origin.x = x;
   v50.origin.y = y;
   v35 = width;
@@ -334,7 +334,7 @@ LABEL_17:
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v11 = v8;
+    v11 = _pointsCopy;
     v12 = [v11 countByEnumeratingWithState:&v42 objects:v47 count:16];
     v33 = v9;
     v34 = v10;
@@ -413,12 +413,12 @@ LABEL_17:
 
     if (v10 == v34 && v9 == v33)
     {
-      v8 = v11;
+      _pointsCopy = v11;
     }
 
     else
     {
-      v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v11, "count")}];
+      _pointsCopy = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v11, "count")}];
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
@@ -442,7 +442,7 @@ LABEL_17:
             v49.x = v10 + v29.x;
             v49.y = v9 + v29.y;
             v30 = NSStringFromCGPoint(v49);
-            [v8 addObject:v30];
+            [_pointsCopy addObject:v30];
           }
 
           v26 = [v24 countByEnumeratingWithState:&v38 objects:v46 count:16];
@@ -453,21 +453,21 @@ LABEL_17:
     }
   }
 
-  v31 = v8;
+  v31 = _pointsCopy;
 
-  return v8;
+  return _pointsCopy;
 }
 
-+ (unint64_t)fingerShapeForCorner:(unint64_t)a3
++ (unint64_t)fingerShapeForCorner:(unint64_t)corner
 {
-  if (a3 - 1 > 7)
+  if (corner - 1 > 7)
   {
     return 0;
   }
 
   else
   {
-    return qword_23D75AC80[a3 - 1];
+    return qword_23D75AC80[corner - 1];
   }
 }
 
@@ -487,7 +487,7 @@ void __35__AXPIFingerUtilities_laserEnabled__block_invoke()
   laserEnabled__LaserEnabled = [v0 laserEnabled];
 }
 
-+ (id)pointerFiltersForLuminanceLevel:(unint64_t)a3
++ (id)pointerFiltersForLuminanceLevel:(unint64_t)level
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA2C0]];

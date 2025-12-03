@@ -1,20 +1,20 @@
 @interface TRAArbiterUpdateContext
 - (TRAArbiterDrawingDataSource)_drawingConfigProvider;
-- (TRAArbiterUpdateContext)initWithBuilder:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (TRAArbiterUpdateContext)initWithBuilder:(id)builder;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)_setDrawingConfigurationProvider:(id)a3;
-- (void)setOrientationActuationContext:(id)a3;
-- (void)setReason:(id)a3;
+- (void)_setDrawingConfigurationProvider:(id)provider;
+- (void)setOrientationActuationContext:(id)context;
+- (void)setReason:(id)reason;
 @end
 
 @implementation TRAArbiterUpdateContext
 
-- (TRAArbiterUpdateContext)initWithBuilder:(id)a3
+- (TRAArbiterUpdateContext)initWithBuilder:(id)builder
 {
-  v4 = a3;
-  if (!v4)
+  builderCopy = builder;
+  if (!builderCopy)
   {
     [TRAArbiterUpdateContext initWithBuilder:];
   }
@@ -24,7 +24,7 @@
   v5 = [(TRAArbiterUpdateContext *)&v7 init];
   if (v5)
   {
-    v4[2](v4, v5);
+    builderCopy[2](builderCopy, v5);
     if (!v5->_reason)
     {
       [TRAArbiterUpdateContext initWithBuilder:];
@@ -34,11 +34,11 @@
   return v5;
 }
 
-- (void)setReason:(id)a3
+- (void)setReason:(id)reason
 {
-  if (self->_reason != a3)
+  if (self->_reason != reason)
   {
-    v5 = [a3 copy];
+    v5 = [reason copy];
     reason = self->_reason;
     self->_reason = v5;
 
@@ -46,29 +46,29 @@
   }
 }
 
-- (void)_setDrawingConfigurationProvider:(id)a3
+- (void)_setDrawingConfigurationProvider:(id)provider
 {
-  v9 = a3;
+  providerCopy = provider;
   WeakRetained = objc_loadWeakRetained(&self->__drawingConfigProvider);
 
-  v5 = v9;
-  if (WeakRetained != v9 && !self->_orientationActuationContext)
+  v5 = providerCopy;
+  if (WeakRetained != providerCopy && !self->_orientationActuationContext)
   {
-    v6 = [v9 defaultOrientationAnimationSettingsAnimatable:1];
+    v6 = [providerCopy defaultOrientationAnimationSettingsAnimatable:1];
     v7 = [[TRASettingsActuationContext alloc] initWithAnimationSettings:v6 drawingFence:0];
     orientationActuationContext = self->_orientationActuationContext;
     self->_orientationActuationContext = v7;
 
     self->__hasDefaultOrientationActuationContext = 1;
-    v5 = v9;
+    v5 = providerCopy;
   }
 }
 
-- (void)setOrientationActuationContext:(id)a3
+- (void)setOrientationActuationContext:(id)context
 {
-  if (self->_orientationActuationContext != a3)
+  if (self->_orientationActuationContext != context)
   {
-    v4 = [a3 copy];
+    v4 = [context copy];
     orientationActuationContext = self->_orientationActuationContext;
     self->_orientationActuationContext = v4;
 
@@ -78,32 +78,32 @@
 
 - (id)succinctDescription
 {
-  v2 = [(TRAArbiterUpdateContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(TRAArbiterUpdateContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(TRAArbiterUpdateContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(TRAArbiterUpdateContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(TRAArbiterUpdateContext *)self succinctDescriptionBuilder];
-  [v4 appendString:self->_reason withName:@"reason"];
-  v5 = [(TRAArbiterUpdateContext *)self requestingParticipantsUniqueIdentifiers];
-  [v4 appendArraySection:v5 withName:@"Requesting Participants" skipIfEmpty:0];
+  succinctDescriptionBuilder = [(TRAArbiterUpdateContext *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder appendString:self->_reason withName:@"reason"];
+  requestingParticipantsUniqueIdentifiers = [(TRAArbiterUpdateContext *)self requestingParticipantsUniqueIdentifiers];
+  [succinctDescriptionBuilder appendArraySection:requestingParticipantsUniqueIdentifiers withName:@"Requesting Participants" skipIfEmpty:0];
 
-  v6 = [v4 appendObject:self->_userInterfaceStyleActuationContext withName:@"UserInterfaceStyle actuation context"];
-  v7 = [v4 appendBool:self->_forceOrientationResolution withName:@"Force Orientation resolution"];
-  v8 = [v4 appendObject:self->_orientationActuationContext withName:@"Orientation actuation context"];
+  v6 = [succinctDescriptionBuilder appendObject:self->_userInterfaceStyleActuationContext withName:@"UserInterfaceStyle actuation context"];
+  v7 = [succinctDescriptionBuilder appendBool:self->_forceOrientationResolution withName:@"Force Orientation resolution"];
+  v8 = [succinctDescriptionBuilder appendObject:self->_orientationActuationContext withName:@"Orientation actuation context"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (TRAArbiterDrawingDataSource)_drawingConfigProvider

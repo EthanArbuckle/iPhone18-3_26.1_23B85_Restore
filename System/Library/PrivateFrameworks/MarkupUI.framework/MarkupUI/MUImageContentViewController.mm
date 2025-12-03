@@ -2,106 +2,106 @@
 - (AKPageController)pageController;
 - (AKRectAnnotation)editingAnnotaiton;
 - (BOOL)_imageIsSmallerThanView;
-- (BOOL)_placeholderCanBeUsedForBaseImageOfSize:(CGSize)a3;
+- (BOOL)_placeholderCanBeUsedForBaseImageOfSize:(CGSize)size;
 - (BOOL)canEditContent;
-- (BOOL)scrollViewShouldScrollToTop:(id)a3;
+- (BOOL)scrollViewShouldScrollToTop:(id)top;
 - (CGPoint)_maximumContentOffset;
 - (CGPoint)_minimumContentOffset;
-- (CGPoint)convertPoint:(CGPoint)a3 fromModelToOverlayWithPageIndex:(unint64_t)a4 forAnnotationController:(id)a5;
-- (CGPoint)convertPoint:(CGPoint)a3 fromOverlayToModelWithPageIndex:(unint64_t)a4 forAnnotationController:(id)a5;
-- (CGRect)_annotationRectInOverlay:(id)a3 pageIndex:(unint64_t)a4;
-- (CGRect)_zoomRectForScale:(double)a3 withCenter:(CGPoint)a4;
-- (CGRect)maxPageRectWithPageIndex:(unint64_t)a3 forAnnotationController:(id)a4;
+- (CGPoint)convertPoint:(CGPoint)point fromModelToOverlayWithPageIndex:(unint64_t)index forAnnotationController:(id)controller;
+- (CGPoint)convertPoint:(CGPoint)point fromOverlayToModelWithPageIndex:(unint64_t)index forAnnotationController:(id)controller;
+- (CGRect)_annotationRectInOverlay:(id)overlay pageIndex:(unint64_t)index;
+- (CGRect)_zoomRectForScale:(double)scale withCenter:(CGPoint)center;
+- (CGRect)maxPageRectWithPageIndex:(unint64_t)index forAnnotationController:(id)controller;
 - (CGRect)visibleContentRect;
-- (CGRect)visibleContentRectInCoordinateSpace:(id)a3;
-- (CGSize)idealContentSizeForScreenSize:(CGSize)a3 windowDecorationSize:(CGSize)a4;
+- (CGRect)visibleContentRectInCoordinateSpace:(id)space;
+- (CGSize)idealContentSizeForScreenSize:(CGSize)size windowDecorationSize:(CGSize)decorationSize;
 - (CGSize)sourceImagePixelSize;
-- (MUImageContentViewController)initWithSourceContent:(id)a3 archivedDataModel:(id)a4 delegate:(id)a5;
+- (MUImageContentViewController)initWithSourceContent:(id)content archivedDataModel:(id)model delegate:(id)delegate;
 - (NSString)originalImageDescription;
 - (UIEdgeInsets)edgeInsets;
 - (UIImage)imageForAnalysis;
 - (UIScrollViewDelegate)scrollViewDelegate;
-- (double)_zoomToFitZoomFactorInBounds:(CGRect)a3;
+- (double)_zoomToFitZoomFactorInBounds:(CGRect)bounds;
 - (double)_zoomToFitZoomFactorIncludingScrollViewEdgeInsets;
-- (double)modelBaseScaleFactorOfPageAtIndex:(unint64_t)a3 forAnnotationController:(id)a4;
+- (double)modelBaseScaleFactorOfPageAtIndex:(unint64_t)index forAnnotationController:(id)controller;
 - (id)contentSnapshot;
-- (id)controller:(id)a3 willSetToolbarItems:(id)a4;
-- (id)layerContainingQuickBackgroundForLoupeOnOverlayAtPageIndex:(unint64_t)a3 forAnnotationController:(id)a4;
-- (id)newContentSnapshotPDFDataIncludingAdornments:(BOOL)a3 atScale:(double)a4 inRect:(CGRect)a5 onOverlayAtPageIndex:(unint64_t)a6 forAnnotationController:(id)a7;
-- (id)popoverPresentingViewControllerForAnnotationController:(id)a3;
-- (id)undoManagerForAnnotationController:(id)a3;
-- (unint64_t)_pageIndexForAnnotation:(id)a3;
-- (void)_adjustScrollViewForKeyboardNotification:(id)a3;
-- (void)_annotationWillBeginEditing:(id)a3;
-- (void)_doubleTap:(id)a3;
-- (void)_downsampleImageForDisplay:(CGImage *)a3 fromImageSource:(CGImageSource *)a4 withCompletionHandler:(id)a5;
-- (void)_installOverlayOfController:(id)a3 forPageAtIndex:(unint64_t)a4;
-- (void)_keyboardWillHide:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
+- (id)controller:(id)controller willSetToolbarItems:(id)items;
+- (id)layerContainingQuickBackgroundForLoupeOnOverlayAtPageIndex:(unint64_t)index forAnnotationController:(id)controller;
+- (id)newContentSnapshotPDFDataIncludingAdornments:(BOOL)adornments atScale:(double)scale inRect:(CGRect)rect onOverlayAtPageIndex:(unint64_t)index forAnnotationController:(id)controller;
+- (id)popoverPresentingViewControllerForAnnotationController:(id)controller;
+- (id)undoManagerForAnnotationController:(id)controller;
+- (unint64_t)_pageIndexForAnnotation:(id)annotation;
+- (void)_adjustScrollViewForKeyboardNotification:(id)notification;
+- (void)_annotationWillBeginEditing:(id)editing;
+- (void)_doubleTap:(id)tap;
+- (void)_downsampleImageForDisplay:(CGImage *)display fromImageSource:(CGImageSource *)source withCompletionHandler:(id)handler;
+- (void)_installOverlayOfController:(id)controller forPageAtIndex:(unint64_t)index;
+- (void)_keyboardWillHide:(id)hide;
+- (void)_keyboardWillShow:(id)show;
 - (void)_prepareToRotate;
 - (void)_recoverFromRotation;
-- (void)_setImage:(id)a3 withCompletionHandler:(id)a4;
-- (void)_setupScrollViewForImageOfScaledSize:(CGSize)a3;
-- (void)_uninstallOverlayOfController:(id)a3 forPageAtIndex:(unint64_t)a4;
+- (void)_setImage:(id)image withCompletionHandler:(id)handler;
+- (void)_setupScrollViewForImageOfScaledSize:(CGSize)size;
+- (void)_uninstallOverlayOfController:(id)controller forPageAtIndex:(unint64_t)index;
 - (void)_updateMinMaxZoomFactor;
-- (void)adjustScrollViewToAccomodateKeyboardStartingFrame:(double)a3 endingFrame:(double)a4 annotationFrame:(double)a5 inOverlayView:(CGFloat)a6 withAnimationDuration:(CGFloat)a7 curve:(CGFloat)a8;
-- (void)controllerDidEnterToolMode:(id)a3;
-- (void)controllerDidExitToolMode:(id)a3;
-- (void)controllerWillDismissSignatureCaptureView:(id)a3;
-- (void)controllerWillDismissSignatureManagerView:(id)a3;
-- (void)controllerWillShowSignatureCaptureView:(id)a3;
-- (void)controllerWillShowSignatureManagerView:(id)a3;
+- (void)adjustScrollViewToAccomodateKeyboardStartingFrame:(double)frame endingFrame:(double)endingFrame annotationFrame:(double)annotationFrame inOverlayView:(CGFloat)view withAnimationDuration:(CGFloat)duration curve:(CGFloat)curve;
+- (void)controllerDidEnterToolMode:(id)mode;
+- (void)controllerDidExitToolMode:(id)mode;
+- (void)controllerWillDismissSignatureCaptureView:(id)view;
+- (void)controllerWillDismissSignatureManagerView:(id)view;
+- (void)controllerWillShowSignatureCaptureView:(id)view;
+- (void)controllerWillShowSignatureManagerView:(id)view;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
-- (void)editCheckpointReachedForAnnotationController:(id)a3;
-- (void)editDetectedForAnnotationController:(id)a3;
+- (void)editCheckpointReachedForAnnotationController:(id)controller;
+- (void)editDetectedForAnnotationController:(id)controller;
 - (void)enableHDRAnnotations;
-- (void)installDrawingGestureRecognizer:(id)a3 forPageAtIndex:(unint64_t)a4 forAnnotationController:(id)a5;
-- (void)loadContentWithCompletionBlock:(id)a3;
-- (void)penStrokeCompletedForAnnotationController:(id)a3;
-- (void)positionSketchOverlay:(id)a3 forAnnotationController:(id)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewDidZoom:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4;
-- (void)setEdgeInsets:(UIEdgeInsets)a3;
-- (void)setInkStyle:(unint64_t)a3;
+- (void)installDrawingGestureRecognizer:(id)recognizer forPageAtIndex:(unint64_t)index forAnnotationController:(id)controller;
+- (void)loadContentWithCompletionBlock:(id)block;
+- (void)penStrokeCompletedForAnnotationController:(id)controller;
+- (void)positionSketchOverlay:(id)overlay forAnnotationController:(id)controller;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewDidZoom:(id)zoom;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view;
+- (void)setEdgeInsets:(UIEdgeInsets)insets;
+- (void)setInkStyle:(unint64_t)style;
 - (void)setup;
 - (void)teardown;
 - (void)uninstallAllAnnotationControllerOverlays;
-- (void)uninstallDrawingGestureRecognizer:(id)a3 forPageAtIndex:(unint64_t)a4 forAnnotationController:(id)a5;
-- (void)updateDrawingGestureRecognizer:(id)a3 forPageAtIndex:(unint64_t)a4 withPriority:(BOOL)a5 forAnnotationController:(id)a6;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)uninstallDrawingGestureRecognizer:(id)recognizer forPageAtIndex:(unint64_t)index forAnnotationController:(id)controller;
+- (void)updateDrawingGestureRecognizer:(id)recognizer forPageAtIndex:(unint64_t)index withPriority:(BOOL)priority forAnnotationController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MUImageContentViewController
 
-- (MUImageContentViewController)initWithSourceContent:(id)a3 archivedDataModel:(id)a4 delegate:(id)a5
+- (MUImageContentViewController)initWithSourceContent:(id)content archivedDataModel:(id)model delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
+  contentCopy = content;
+  modelCopy = model;
   v18.receiver = self;
   v18.super_class = MUImageContentViewController;
-  v11 = [(MUContentViewController *)&v18 initWithNibName:0 bundle:0 delegate:a5];
+  v11 = [(MUContentViewController *)&v18 initWithNibName:0 bundle:0 delegate:delegate];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_sourceContent, a3);
+    objc_storeStrong(&v11->_sourceContent, content);
     v12->_downsampledImageScale = 1.0;
     v12->_maxImageDimension = 1.79769313e308;
-    v12->_usePlaceholderAsDisplayImageIfPossible = v10 == 0;
+    v12->_usePlaceholderAsDisplayImageIfPossible = modelCopy == 0;
     v13 = [MEMORY[0x277CEA698] controllerWithDelegate:v12];
     [(MUContentViewController *)v12 setAnnotationController:v13];
 
     [(MUImageContentViewController *)v12 setInkStyle:0];
-    if (v10)
+    if (modelCopy)
     {
       v14 = objc_alloc_init(MUImageReader);
-      v15 = [(MUContentViewController *)v12 annotationController];
-      v16 = [(MUImageReader *)v14 readAnnotationsFromArchivedModelData:v10 toController:v15];
+      annotationController = [(MUContentViewController *)v12 annotationController];
+      v16 = [(MUImageReader *)v14 readAnnotationsFromArchivedModelData:modelCopy toController:annotationController];
 
       if (!v16)
       {
@@ -114,20 +114,20 @@
   return v12;
 }
 
-- (void)setInkStyle:(unint64_t)a3
+- (void)setInkStyle:(unint64_t)style
 {
-  self->_inkStyle = a3;
-  v3 = a3 == 0;
-  v4 = [(MUContentViewController *)self annotationController];
-  [v4 setUseHighVisibilityDefaultInks:v3];
+  self->_inkStyle = style;
+  v3 = style == 0;
+  annotationController = [(MUContentViewController *)self annotationController];
+  [annotationController setUseHighVisibilityDefaultInks:v3];
 }
 
 - (UIImage)imageForAnalysis
 {
-  v2 = [(MUImageContentViewController *)self imageView];
-  v3 = [v2 image];
+  imageView = [(MUImageContentViewController *)self imageView];
+  image = [imageView image];
 
-  return v3;
+  return image;
 }
 
 - (void)dealloc
@@ -143,46 +143,46 @@
   v46.receiver = self;
   v46.super_class = MUImageContentViewController;
   [(MUImageContentViewController *)&v46 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] darkGrayColor];
-  v4 = [(MUImageContentViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  darkGrayColor = [MEMORY[0x277D75348] darkGrayColor];
+  view = [(MUImageContentViewController *)self view];
+  [view setBackgroundColor:darkGrayColor];
 
   v5 = [MUImageScrollView alloc];
-  v6 = [(MUImageContentViewController *)self view];
-  [v6 bounds];
+  view2 = [(MUImageContentViewController *)self view];
+  [view2 bounds];
   v7 = [(MUImageScrollView *)v5 initWithFrame:?];
   [(MUImageContentViewController *)self setScrollView:v7];
 
-  v8 = [(MUImageContentViewController *)self scrollView];
-  [v8 setPreservesCenterDuringRotation:1];
+  scrollView = [(MUImageContentViewController *)self scrollView];
+  [scrollView setPreservesCenterDuringRotation:1];
 
-  v9 = [(MUImageContentViewController *)self scrollView];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  scrollView2 = [(MUImageContentViewController *)self scrollView];
+  [scrollView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v10 = [(MUImageContentViewController *)self scrollView];
-  [v10 setDelegate:self];
+  scrollView3 = [(MUImageContentViewController *)self scrollView];
+  [scrollView3 setDelegate:self];
 
   [(MUImageContentViewController *)self edgeInsets];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(MUImageContentViewController *)self scrollView];
-  [v19 setContentInset:{v12, v14, v16, v18}];
+  scrollView4 = [(MUImageContentViewController *)self scrollView];
+  [scrollView4 setContentInset:{v12, v14, v16, v18}];
 
   v20 = *MEMORY[0x277D76EB8];
-  v21 = [(MUImageContentViewController *)self scrollView];
-  [v21 setDecelerationRate:v20];
+  scrollView5 = [(MUImageContentViewController *)self scrollView];
+  [scrollView5 setDecelerationRate:v20];
 
-  v22 = [(MUImageContentViewController *)self scrollView];
-  [v22 setMaximumZoomScale:1.3];
+  scrollView6 = [(MUImageContentViewController *)self scrollView];
+  [scrollView6 setMaximumZoomScale:1.3];
 
-  v23 = [(MUImageContentViewController *)self scrollView];
-  [v23 setMinimumZoomScale:0.1];
+  scrollView7 = [(MUImageContentViewController *)self scrollView];
+  [scrollView7 setMinimumZoomScale:0.1];
 
-  v24 = [(MUImageContentViewController *)self view];
-  v25 = [(MUImageContentViewController *)self scrollView];
-  [v24 addSubview:v25];
+  view3 = [(MUImageContentViewController *)self view];
+  scrollView8 = [(MUImageContentViewController *)self scrollView];
+  [view3 addSubview:scrollView8];
 
   v26 = _NSDictionaryOfVariableBindings(&cfstr_Scrollview.isa, self->_scrollView, 0);
   v27 = MEMORY[0x277CCAAD0];
@@ -194,39 +194,39 @@
   [v29 activateConstraints:v30];
 
   v31 = objc_alloc(MEMORY[0x277D75D18]);
-  v32 = [(MUImageContentViewController *)self scrollView];
-  [v32 bounds];
+  scrollView9 = [(MUImageContentViewController *)self scrollView];
+  [scrollView9 bounds];
   v33 = [v31 initWithFrame:?];
   [(MUImageContentViewController *)self setCombinedContentView:v33];
 
-  v34 = [(MUImageContentViewController *)self scrollView];
-  v35 = [(MUImageContentViewController *)self combinedContentView];
-  [v34 addSubview:v35];
+  scrollView10 = [(MUImageContentViewController *)self scrollView];
+  combinedContentView = [(MUImageContentViewController *)self combinedContentView];
+  [scrollView10 addSubview:combinedContentView];
 
   v36 = objc_alloc(MEMORY[0x277D755E8]);
-  v37 = [(MUImageContentViewController *)self combinedContentView];
-  [v37 bounds];
+  combinedContentView2 = [(MUImageContentViewController *)self combinedContentView];
+  [combinedContentView2 bounds];
   v38 = [v36 initWithFrame:?];
   [(MUImageContentViewController *)self setImageView:v38];
 
-  v39 = [(MUImageContentViewController *)self imageView];
-  [v39 setUserInteractionEnabled:1];
+  imageView = [(MUImageContentViewController *)self imageView];
+  [imageView setUserInteractionEnabled:1];
 
-  v40 = [(MUImageContentViewController *)self combinedContentView];
-  v41 = [(MUImageContentViewController *)self imageView];
-  [v40 addSubview:v41];
+  combinedContentView3 = [(MUImageContentViewController *)self combinedContentView];
+  imageView2 = [(MUImageContentViewController *)self imageView];
+  [combinedContentView3 addSubview:imageView2];
 
-  v42 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v42 addObserver:self selector:sel__annotationWillBeginEditing_ name:*MEMORY[0x277CEA670] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__annotationWillBeginEditing_ name:*MEMORY[0x277CEA670] object:0];
 
-  v43 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v43 addObserver:self selector:sel__annotationDidEndEditing_ name:*MEMORY[0x277CEA650] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__annotationDidEndEditing_ name:*MEMORY[0x277CEA650] object:0];
 
-  v44 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v44 addObserver:self selector:sel__keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
 
-  v45 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v45 addObserver:self selector:sel__keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel__keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
 
   [(MUImageContentViewController *)self setFirstLoadZoomToFit:1];
   [(MUImageContentViewController *)self setZoomToFitRestoreValue:1];
@@ -234,9 +234,9 @@
 
 - (CGRect)visibleContentRect
 {
-  v3 = [(MUImageContentViewController *)self view];
-  v4 = [v3 window];
-  [(MUImageContentViewController *)self visibleContentRectInCoordinateSpace:v4];
+  view = [(MUImageContentViewController *)self view];
+  window = [view window];
+  [(MUImageContentViewController *)self visibleContentRectInCoordinateSpace:window];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -253,13 +253,13 @@
   return result;
 }
 
-- (CGRect)visibleContentRectInCoordinateSpace:(id)a3
+- (CGRect)visibleContentRectInCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(MUImageContentViewController *)self imageView];
-  v6 = [(MUImageContentViewController *)self imageView];
-  [v6 bounds];
-  [v5 convertRect:v4 toCoordinateSpace:?];
+  spaceCopy = space;
+  imageView = [(MUImageContentViewController *)self imageView];
+  imageView2 = [(MUImageContentViewController *)self imageView];
+  [imageView2 bounds];
+  [imageView convertRect:spaceCopy toCoordinateSpace:?];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -278,17 +278,17 @@
 
 - (id)contentSnapshot
 {
-  v2 = [(MUImageContentViewController *)self combinedContentView];
-  v3 = [v2 snapshotViewAfterScreenUpdates:1];
+  combinedContentView = [(MUImageContentViewController *)self combinedContentView];
+  v3 = [combinedContentView snapshotViewAfterScreenUpdates:1];
 
   return v3;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = MUImageContentViewController;
-  [(MUImageContentViewController *)&v3 viewDidAppear:a3];
+  [(MUImageContentViewController *)&v3 viewDidAppear:appear];
 }
 
 - (void)didReceiveMemoryWarning
@@ -302,116 +302,116 @@
 {
   NSLog(&cfstr_S_0.isa, a2, "[MUImageContentViewController setup]");
   [(MUImageContentViewController *)self setDidSetup:1];
-  v36 = [(MUContentViewController *)self annotationController];
+  annotationController = [(MUContentViewController *)self annotationController];
   v3 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__doubleTap_];
   [v3 setNumberOfTapsRequired:2];
   [(MUImageContentViewController *)self setLocalDoubleTapRecognizer:v3];
-  v4 = [(MUImageContentViewController *)self view];
-  [v4 addGestureRecognizer:v3];
+  view = [(MUImageContentViewController *)self view];
+  [view addGestureRecognizer:v3];
 
-  v5 = [(MUImageContentViewController *)self view];
-  v6 = [v36 tapGestureRecognizer];
-  [v5 addGestureRecognizer:v6];
+  view2 = [(MUImageContentViewController *)self view];
+  tapGestureRecognizer = [annotationController tapGestureRecognizer];
+  [view2 addGestureRecognizer:tapGestureRecognizer];
 
-  v7 = [(MUImageContentViewController *)self view];
-  v8 = [v36 doubleTapGestureRecognizer];
-  [v7 addGestureRecognizer:v8];
+  view3 = [(MUImageContentViewController *)self view];
+  doubleTapGestureRecognizer = [annotationController doubleTapGestureRecognizer];
+  [view3 addGestureRecognizer:doubleTapGestureRecognizer];
 
-  v9 = [(MUImageContentViewController *)self view];
-  v10 = [v36 pressGestureRecognizer];
-  [v9 addGestureRecognizer:v10];
+  view4 = [(MUImageContentViewController *)self view];
+  pressGestureRecognizer = [annotationController pressGestureRecognizer];
+  [view4 addGestureRecognizer:pressGestureRecognizer];
 
-  v11 = [(MUImageContentViewController *)self view];
-  v12 = [v36 panGestureRecognizer];
-  [v11 addGestureRecognizer:v12];
+  view5 = [(MUImageContentViewController *)self view];
+  panGestureRecognizer = [annotationController panGestureRecognizer];
+  [view5 addGestureRecognizer:panGestureRecognizer];
 
-  v13 = [(MUImageContentViewController *)self view];
-  v14 = [v36 rotationGestureRecognizer];
-  [v13 addGestureRecognizer:v14];
+  view6 = [(MUImageContentViewController *)self view];
+  rotationGestureRecognizer = [annotationController rotationGestureRecognizer];
+  [view6 addGestureRecognizer:rotationGestureRecognizer];
 
-  v15 = [v36 tapGestureRecognizer];
-  [v15 requireGestureRecognizerToFail:v3];
+  tapGestureRecognizer2 = [annotationController tapGestureRecognizer];
+  [tapGestureRecognizer2 requireGestureRecognizerToFail:v3];
 
-  v16 = [v36 doubleTapGestureRecognizer];
-  [v3 requireGestureRecognizerToFail:v16];
+  doubleTapGestureRecognizer2 = [annotationController doubleTapGestureRecognizer];
+  [v3 requireGestureRecognizerToFail:doubleTapGestureRecognizer2];
 
-  v17 = [v36 panGestureRecognizer];
-  [v3 requireGestureRecognizerToFail:v17];
+  panGestureRecognizer2 = [annotationController panGestureRecognizer];
+  [v3 requireGestureRecognizerToFail:panGestureRecognizer2];
 
-  v18 = [(MUImageContentViewController *)self scrollView];
-  v19 = [v18 panGestureRecognizer];
-  v20 = [v36 panGestureRecognizer];
-  [v19 requireGestureRecognizerToFail:v20];
+  scrollView = [(MUImageContentViewController *)self scrollView];
+  panGestureRecognizer3 = [scrollView panGestureRecognizer];
+  panGestureRecognizer4 = [annotationController panGestureRecognizer];
+  [panGestureRecognizer3 requireGestureRecognizerToFail:panGestureRecognizer4];
 
-  v21 = [(MUImageContentViewController *)self scrollView];
-  v22 = [v21 panGestureRecognizer];
-  v23 = [v36 rotationGestureRecognizer];
-  [v22 requireGestureRecognizerToFail:v23];
+  scrollView2 = [(MUImageContentViewController *)self scrollView];
+  panGestureRecognizer5 = [scrollView2 panGestureRecognizer];
+  rotationGestureRecognizer2 = [annotationController rotationGestureRecognizer];
+  [panGestureRecognizer5 requireGestureRecognizerToFail:rotationGestureRecognizer2];
 
-  v24 = [(MUImageContentViewController *)self scrollView];
-  v25 = [v24 pinchGestureRecognizer];
-  v26 = [v36 panGestureRecognizer];
-  [v25 requireGestureRecognizerToFail:v26];
+  scrollView3 = [(MUImageContentViewController *)self scrollView];
+  pinchGestureRecognizer = [scrollView3 pinchGestureRecognizer];
+  panGestureRecognizer6 = [annotationController panGestureRecognizer];
+  [pinchGestureRecognizer requireGestureRecognizerToFail:panGestureRecognizer6];
 
-  v27 = [(MUImageContentViewController *)self scrollView];
-  v28 = [v27 pinchGestureRecognizer];
-  v29 = [v36 rotationGestureRecognizer];
-  [v28 requireGestureRecognizerToFail:v29];
+  scrollView4 = [(MUImageContentViewController *)self scrollView];
+  pinchGestureRecognizer2 = [scrollView4 pinchGestureRecognizer];
+  rotationGestureRecognizer3 = [annotationController rotationGestureRecognizer];
+  [pinchGestureRecognizer2 requireGestureRecognizerToFail:rotationGestureRecognizer3];
 
-  v30 = [v36 modelController];
-  v31 = [v30 pageModelControllers];
-  v32 = [v31 count];
+  modelController = [annotationController modelController];
+  pageModelControllers = [modelController pageModelControllers];
+  v32 = [pageModelControllers count];
 
   if (!v32)
   {
     v33 = objc_opt_new();
-    v34 = [v36 modelController];
-    v35 = [v34 mutableArrayValueForKey:@"pageModelControllers"];
+    modelController2 = [annotationController modelController];
+    v35 = [modelController2 mutableArrayValueForKey:@"pageModelControllers"];
     [v35 addObject:v33];
   }
 
-  [v36 setCurrentPageIndex:0];
+  [annotationController setCurrentPageIndex:0];
 }
 
 - (void)teardown
 {
   NSLog(&cfstr_S_0.isa, a2, "[MUImageContentViewController teardown]");
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   if ([(MUImageContentViewController *)self didSetup])
   {
     [(MUImageContentViewController *)self setDidSetup:0];
     if ([(MUImageContentViewController *)self isViewLoaded])
     {
-      v4 = [(MUImageContentViewController *)self view];
-      v5 = [(MUImageContentViewController *)self localDoubleTapRecognizer];
-      [v4 removeGestureRecognizer:v5];
+      view = [(MUImageContentViewController *)self view];
+      localDoubleTapRecognizer = [(MUImageContentViewController *)self localDoubleTapRecognizer];
+      [view removeGestureRecognizer:localDoubleTapRecognizer];
 
-      v6 = [(MUContentViewController *)self annotationController];
-      if (v6)
+      annotationController = [(MUContentViewController *)self annotationController];
+      if (annotationController)
       {
-        v7 = [(MUImageContentViewController *)self view];
-        v8 = [v6 tapGestureRecognizer];
-        [v7 removeGestureRecognizer:v8];
+        view2 = [(MUImageContentViewController *)self view];
+        tapGestureRecognizer = [annotationController tapGestureRecognizer];
+        [view2 removeGestureRecognizer:tapGestureRecognizer];
 
-        v9 = [(MUImageContentViewController *)self view];
-        v10 = [v6 doubleTapGestureRecognizer];
-        [v9 removeGestureRecognizer:v10];
+        view3 = [(MUImageContentViewController *)self view];
+        doubleTapGestureRecognizer = [annotationController doubleTapGestureRecognizer];
+        [view3 removeGestureRecognizer:doubleTapGestureRecognizer];
 
-        v11 = [(MUImageContentViewController *)self view];
-        v12 = [v6 pressGestureRecognizer];
-        [v11 removeGestureRecognizer:v12];
+        view4 = [(MUImageContentViewController *)self view];
+        pressGestureRecognizer = [annotationController pressGestureRecognizer];
+        [view4 removeGestureRecognizer:pressGestureRecognizer];
 
-        v13 = [(MUImageContentViewController *)self view];
-        v14 = [v6 panGestureRecognizer];
-        [v13 removeGestureRecognizer:v14];
+        view5 = [(MUImageContentViewController *)self view];
+        panGestureRecognizer = [annotationController panGestureRecognizer];
+        [view5 removeGestureRecognizer:panGestureRecognizer];
 
-        v15 = [(MUImageContentViewController *)self view];
-        v16 = [v6 rotationGestureRecognizer];
-        [v15 removeGestureRecognizer:v16];
+        view6 = [(MUImageContentViewController *)self view];
+        rotationGestureRecognizer = [annotationController rotationGestureRecognizer];
+        [view6 removeGestureRecognizer:rotationGestureRecognizer];
 
-        [v6 teardown];
+        [annotationController teardown];
         [(MUContentViewController *)self setAnnotationController:0];
       }
     }
@@ -421,27 +421,27 @@
 
   if ([(MUImageContentViewController *)self isViewLoaded])
   {
-    v17 = [(MUImageContentViewController *)self scrollView];
-    [v17 setDelegate:0];
+    scrollView = [(MUImageContentViewController *)self scrollView];
+    [scrollView setDelegate:0];
 
-    v18 = [(MUImageContentViewController *)self scrollView];
-    [v18 removeFromSuperview];
+    scrollView2 = [(MUImageContentViewController *)self scrollView];
+    [scrollView2 removeFromSuperview];
 
     [(MUImageContentViewController *)self setScrollView:0];
   }
 }
 
-- (void)loadContentWithCompletionBlock:(id)a3
+- (void)loadContentWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MUImageContentViewController *)self sourceContent];
-  [(MUImageContentViewController *)self _setImage:v5 withCompletionHandler:v4];
+  blockCopy = block;
+  sourceContent = [(MUImageContentViewController *)self sourceContent];
+  [(MUImageContentViewController *)self _setImage:sourceContent withCompletionHandler:blockCopy];
 }
 
-- (CGSize)idealContentSizeForScreenSize:(CGSize)a3 windowDecorationSize:(CGSize)a4
+- (CGSize)idealContentSizeForScreenSize:(CGSize)size windowDecorationSize:(CGSize)decorationSize
 {
-  v4 = a3.width - a4.width;
-  v5 = a3.height - a4.height;
+  v4 = size.width - decorationSize.width;
+  v5 = size.height - decorationSize.height;
   [(MUImageContentViewController *)self contentSize];
   v8 = v7 * (v4 / v6);
   v9 = v6 * (v5 / v7);
@@ -474,22 +474,22 @@
   return result;
 }
 
-- (void)setEdgeInsets:(UIEdgeInsets)a3
+- (void)setEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   p_edgeInsets = &self->_edgeInsets;
   v9 = self->_edgeInsets.top;
-  if (self->_edgeInsets.left == a3.left && v9 == top && self->_edgeInsets.right == a3.right)
+  if (self->_edgeInsets.left == insets.left && v9 == top && self->_edgeInsets.right == insets.right)
   {
     v9 = self->_edgeInsets.bottom;
     p_edgeInsets->top = top;
-    self->_edgeInsets.left = a3.left;
-    self->_edgeInsets.bottom = a3.bottom;
-    self->_edgeInsets.right = a3.right;
-    if (v9 == a3.bottom)
+    self->_edgeInsets.left = insets.left;
+    self->_edgeInsets.bottom = insets.bottom;
+    self->_edgeInsets.right = insets.right;
+    if (v9 == insets.bottom)
     {
       goto LABEL_11;
     }
@@ -498,39 +498,39 @@
   else
   {
     p_edgeInsets->top = top;
-    self->_edgeInsets.left = a3.left;
-    self->_edgeInsets.bottom = a3.bottom;
-    self->_edgeInsets.right = a3.right;
+    self->_edgeInsets.left = insets.left;
+    self->_edgeInsets.bottom = insets.bottom;
+    self->_edgeInsets.right = insets.right;
   }
 
-  v12 = [(MUImageContentViewController *)self scrollView];
-  [v12 setContentInset:{top, left, bottom, right}];
+  scrollView = [(MUImageContentViewController *)self scrollView];
+  [scrollView setContentInset:{top, left, bottom, right}];
 
-  v13 = [(MUImageContentViewController *)self scrollView];
-  [v13 setScrollIndicatorInsets:{top, left, bottom, right}];
+  scrollView2 = [(MUImageContentViewController *)self scrollView];
+  [scrollView2 setScrollIndicatorInsets:{top, left, bottom, right}];
 
 LABEL_11:
 
   [(MUImageContentViewController *)self _updateMinMaxZoomFactor];
 }
 
-- (void)_installOverlayOfController:(id)a3 forPageAtIndex:(unint64_t)a4
+- (void)_installOverlayOfController:(id)controller forPageAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  [v6 setOverlayShouldPixelate:1];
-  if (([v6 isOverlayViewLoadedAtIndex:a4] & 1) == 0)
+  controllerCopy = controller;
+  [controllerCopy setOverlayShouldPixelate:1];
+  if (([controllerCopy isOverlayViewLoadedAtIndex:index] & 1) == 0)
   {
-    [v6 prepareOverlayAtIndex:a4];
+    [controllerCopy prepareOverlayAtIndex:index];
   }
 
-  v7 = [v6 overlayViewAtIndex:a4];
-  v8 = [(MUImageContentViewController *)self combinedContentView];
-  v9 = [v7 superview];
+  v7 = [controllerCopy overlayViewAtIndex:index];
+  combinedContentView = [(MUImageContentViewController *)self combinedContentView];
+  superview = [v7 superview];
 
-  if (v9 != v8)
+  if (superview != combinedContentView)
   {
     [(UIImageView *)self->_imageView bounds];
-    [(UIImageView *)self->_imageView convertRect:v8 toView:?];
+    [(UIImageView *)self->_imageView convertRect:combinedContentView toView:?];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -546,33 +546,33 @@ LABEL_11:
     *&t1.c = v20;
     *&t1.tx = v19;
     CGAffineTransformConcat(&v24, &t1, &t2);
-    v18 = [v7 layer];
-    [v18 setAnchorPoint:{0.5, 0.5}];
+    layer = [v7 layer];
+    [layer setAnchorPoint:{0.5, 0.5}];
 
     t2 = v24;
     [v7 setTransform:&t2];
     [v7 setFrame:{v11, v13, v15, v17}];
-    [v8 addSubview:v7];
+    [combinedContentView addSubview:v7];
   }
 }
 
-- (void)_uninstallOverlayOfController:(id)a3 forPageAtIndex:(unint64_t)a4
+- (void)_uninstallOverlayOfController:(id)controller forPageAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  if ([v6 isOverlayViewLoadedAtIndex:a4])
+  controllerCopy = controller;
+  if ([controllerCopy isOverlayViewLoadedAtIndex:index])
   {
-    v5 = [v6 overlayViewAtIndex:a4];
-    [v6 relinquishOverlayAtIndex:a4];
+    v5 = [controllerCopy overlayViewAtIndex:index];
+    [controllerCopy relinquishOverlayAtIndex:index];
     [v5 removeFromSuperview];
   }
 }
 
 - (void)uninstallAllAnnotationControllerOverlays
 {
-  v7 = [(MUContentViewController *)self annotationController];
-  v3 = [v7 modelController];
-  v4 = [v3 pageModelControllers];
-  v5 = [v4 count];
+  annotationController = [(MUContentViewController *)self annotationController];
+  modelController = [annotationController modelController];
+  pageModelControllers = [modelController pageModelControllers];
+  v5 = [pageModelControllers count];
 
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
@@ -580,7 +580,7 @@ LABEL_11:
   {
     for (i = 0; i != v5; ++i)
     {
-      [(MUImageContentViewController *)self _uninstallOverlayOfController:v7 forPageAtIndex:i];
+      [(MUImageContentViewController *)self _uninstallOverlayOfController:annotationController forPageAtIndex:i];
     }
   }
 
@@ -594,18 +594,18 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(MUImageContentViewController *)self imageView];
-  v4 = [v3 image];
-  v5 = v4 != 0;
+  imageView = [(MUImageContentViewController *)self imageView];
+  image = [imageView image];
+  v5 = image != 0;
 
   return v5;
 }
 
-- (void)_setImage:(id)a3 withCompletionHandler:(id)a4
+- (void)_setImage:(id)image withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  imageCopy = image;
+  handlerCopy = handler;
+  if (!imageCopy)
   {
     NSLog(&cfstr_SCouldNotSetIm.isa, "[MUImageContentViewController _setImage:withCompletionHandler:]", 0);
     goto LABEL_29;
@@ -622,7 +622,7 @@ LABEL_11:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = CGImageSourceCreateWithData(v6, 0);
+    v8 = CGImageSourceCreateWithData(imageCopy, 0);
   }
 
   else
@@ -633,15 +633,15 @@ LABEL_11:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v23 = [(__CFData *)v6 CGImage];
-        v34[3] = v23;
-        CGImageRetain(v23);
+        cGImage = [(__CFData *)imageCopy CGImage];
+        v34[3] = cGImage;
+        CGImageRetain(cGImage);
       }
 
       goto LABEL_8;
     }
 
-    v8 = CGImageSourceCreateWithURL(v6, 0);
+    v8 = CGImageSourceCreateWithURL(imageCopy, 0);
   }
 
   v30[3] = v8;
@@ -703,7 +703,7 @@ LABEL_8:
     v26 = &v33;
     v27 = &v29;
     v24[4] = self;
-    v25 = v7;
+    v25 = handlerCopy;
     [(MUImageContentViewController *)self _downsampleImageForDisplay:v19 fromImageSource:v20 withCompletionHandler:v24];
   }
 
@@ -829,27 +829,27 @@ void __64__MUImageContentViewController__setImage_withCompletionHandler___block_
   v24.receiver = self;
   v24.super_class = MUImageContentViewController;
   [(MUImageContentViewController *)&v24 viewDidLayoutSubviews];
-  v3 = [(MUImageContentViewController *)self loadCompletionBlock];
-  if (v3)
+  loadCompletionBlock = [(MUImageContentViewController *)self loadCompletionBlock];
+  if (loadCompletionBlock)
   {
-    v4 = v3;
-    v5 = [(MUImageContentViewController *)self parentViewController];
-    v6 = [v5 view];
-    [v6 safeAreaInsets];
+    v4 = loadCompletionBlock;
+    parentViewController = [(MUImageContentViewController *)self parentViewController];
+    view = [parentViewController view];
+    [view safeAreaInsets];
     v8 = v7;
 
     if (v8 != 0.0)
     {
-      v9 = [(MUImageContentViewController *)self loadCompletionBlock];
+      loadCompletionBlock2 = [(MUImageContentViewController *)self loadCompletionBlock];
       [(MUImageContentViewController *)self setLoadCompletionBlock:0];
       v10 = dispatch_time(0, 0);
       v18 = MEMORY[0x277D85DD0];
       v19 = 3221225472;
       v20 = __53__MUImageContentViewController_viewDidLayoutSubviews__block_invoke;
       v21 = &unk_27986E7B8;
-      v22 = self;
-      v23 = v9;
-      v11 = v9;
+      selfCopy = self;
+      v23 = loadCompletionBlock2;
+      v11 = loadCompletionBlock2;
       dispatch_after(v10, MEMORY[0x277D85CD0], &v18);
     }
   }
@@ -857,9 +857,9 @@ void __64__MUImageContentViewController__setImage_withCompletionHandler___block_
   [(MUImageContentViewController *)self _updateMinMaxZoomFactor:v18];
   if ([(MUImageContentViewController *)self firstLoadZoomToFit])
   {
-    v12 = [(MUImageContentViewController *)self _imageIsSmallerThanView];
+    _imageIsSmallerThanView = [(MUImageContentViewController *)self _imageIsSmallerThanView];
     v13 = 1.0;
-    if (!v12)
+    if (!_imageIsSmallerThanView)
     {
       [(MUImageContentViewController *)self _zoomToFitZoomFactor];
     }
@@ -900,36 +900,36 @@ uint64_t __53__MUImageContentViewController_viewDidLayoutSubviews__block_invoke(
   return [v4 setZoomScale:v3];
 }
 
-- (void)_setupScrollViewForImageOfScaledSize:(CGSize)a3
+- (void)_setupScrollViewForImageOfScaledSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(MUImageContentViewController *)self imageView];
-  [v6 setFrame:{0.0, 0.0, width, height}];
+  height = size.height;
+  width = size.width;
+  imageView = [(MUImageContentViewController *)self imageView];
+  [imageView setFrame:{0.0, 0.0, width, height}];
 
-  v7 = [(MUImageContentViewController *)self combinedContentView];
-  [v7 setFrame:{0.0, 0.0, width, height}];
+  combinedContentView = [(MUImageContentViewController *)self combinedContentView];
+  [combinedContentView setFrame:{0.0, 0.0, width, height}];
 
-  v13 = [(MUImageContentViewController *)self scrollView];
-  v8 = [(MUImageContentViewController *)self combinedContentView];
-  [v8 frame];
-  [v13 setContentSize:{v9, v10}];
+  scrollView = [(MUImageContentViewController *)self scrollView];
+  combinedContentView2 = [(MUImageContentViewController *)self combinedContentView];
+  [combinedContentView2 frame];
+  [scrollView setContentSize:{v9, v10}];
 
   [(MUImageContentViewController *)self _updateMinMaxZoomFactor];
-  v11 = [(MUImageContentViewController *)self _imageIsSmallerThanView];
+  _imageIsSmallerThanView = [(MUImageContentViewController *)self _imageIsSmallerThanView];
   v12 = 1.0;
-  if (!v11)
+  if (!_imageIsSmallerThanView)
   {
     [(MUImageContentViewController *)self _zoomToFitZoomFactor];
   }
 
-  [v13 setZoomScale:v12];
+  [scrollView setZoomScale:v12];
   [(MUImageContentViewController *)self setFirstLoadZoomToFit:1];
 }
 
-- (void)_downsampleImageForDisplay:(CGImage *)a3 fromImageSource:(CGImageSource *)a4 withCompletionHandler:(id)a5
+- (void)_downsampleImageForDisplay:(CGImage *)display fromImageSource:(CGImageSource *)source withCompletionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   [(MUImageContentViewController *)self sourceImagePixelSize];
   v11 = v9;
   v12 = v10;
@@ -944,7 +944,7 @@ uint64_t __53__MUImageContentViewController_viewDidLayoutSubviews__block_invoke(
   }
 
   v14 = [(MUImageContentViewController *)self _placeholderCanBeUsedForBaseImageOfSize:?];
-  v15 = 0;
+  tentativePlaceholderImage = 0;
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
@@ -952,10 +952,10 @@ uint64_t __53__MUImageContentViewController_viewDidLayoutSubviews__block_invoke(
   v47 = __Block_byref_object_dispose__0;
   if (v14)
   {
-    v15 = [(MUImageContentViewController *)self tentativePlaceholderImage];
+    tentativePlaceholderImage = [(MUImageContentViewController *)self tentativePlaceholderImage];
   }
 
-  v48 = v15;
+  v48 = tentativePlaceholderImage;
   [(MUImageContentViewController *)self setTentativePlaceholderImage:0];
   if (v14)
   {
@@ -990,12 +990,12 @@ uint64_t __53__MUImageContentViewController_viewDidLayoutSubviews__block_invoke(
   v22 = v11 * v21;
   v12 = v12 * v21;
 LABEL_14:
-  v23 = [(MUContentViewController *)self delegate];
+  delegate = [(MUContentViewController *)self delegate];
   v24 = objc_opt_respondsToSelector();
   v26 = v21;
   if (v24)
   {
-    [v23 adjustedSourceImageSize];
+    [delegate adjustedSourceImageSize];
     v25 = v27;
     v28 = v27 == 0.0;
     v26 = v21;
@@ -1007,25 +1007,25 @@ LABEL_14:
 
   [(MUImageContentViewController *)self setDownsampledImageScale:v26, v25];
   [(MUImageContentViewController *)self _setupScrollViewForImageOfScaledSize:v22, v12];
-  if (v8)
+  if (handlerCopy)
   {
     if (v14)
     {
-      v8[2](v8, v44[5], 0);
+      handlerCopy[2](handlerCopy, v44[5], 0);
     }
 
     else
     {
-      v29 = CGImageSourceCopyPropertiesAtIndex(a4, 0, 0);
+      v29 = CGImageSourceCopyPropertiesAtIndex(source, 0, 0);
       v30 = [(__CFDictionary *)v29 valueForKey:*MEMORY[0x277CD3410]];
       v31 = v30;
       if (v21 >= 1.0 && [v30 longLongValue] < 2)
       {
-        v33 = [MEMORY[0x277D755B8] imageWithCGImage:a3];
+        v33 = [MEMORY[0x277D755B8] imageWithCGImage:display];
         v34 = v44[5];
         v44[5] = v33;
 
-        v8[2](v8, v44[5], 0);
+        handlerCopy[2](handlerCopy, v44[5], 0);
       }
 
       else
@@ -1039,9 +1039,9 @@ LABEL_14:
         v40 = v12;
         v41 = v21;
         v37 = &v43;
-        v38 = a4;
-        v42 = a3;
-        v36 = v8;
+        sourceCopy = source;
+        displayCopy = display;
+        v36 = handlerCopy;
         dispatch_async(v32, block);
       }
     }
@@ -1130,17 +1130,17 @@ void __97__MUImageContentViewController__downsampleImageForDisplay_fromImageSour
   dispatch_async(MEMORY[0x277D85CD0], v25);
 }
 
-- (BOOL)_placeholderCanBeUsedForBaseImageOfSize:(CGSize)a3
+- (BOOL)_placeholderCanBeUsedForBaseImageOfSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(MUImageContentViewController *)self tentativePlaceholderImage];
-  [v6 size];
+  height = size.height;
+  width = size.width;
+  tentativePlaceholderImage = [(MUImageContentViewController *)self tentativePlaceholderImage];
+  [tentativePlaceholderImage size];
   v8 = v7;
   v10 = v9;
   [(MUImageContentViewController *)self maxImageDimension];
   usePlaceholderAsDisplayImageIfPossible = 0;
-  if (v6)
+  if (tentativePlaceholderImage)
   {
     if (v8 >= v10)
     {
@@ -1174,13 +1174,13 @@ void __97__MUImageContentViewController__downsampleImageForDisplay_fromImageSour
   return result;
 }
 
-- (double)_zoomToFitZoomFactorInBounds:(CGRect)a3
+- (double)_zoomToFitZoomFactorInBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = CGRectGetWidth(a3);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v8 = CGRectGetWidth(bounds);
   [(UIImageView *)self->_imageView bounds];
   v9 = v8 / CGRectGetWidth(v12);
   v13.origin.x = x;
@@ -1203,13 +1203,13 @@ void __97__MUImageContentViewController__downsampleImageForDisplay_fromImageSour
   return result;
 }
 
-- (void)_doubleTap:(id)a3
+- (void)_doubleTap:(id)tap
 {
-  v14 = a3;
-  v4 = [(MUImageContentViewController *)self scrollView];
-  [v4 zoomScale];
+  tapCopy = tap;
+  scrollView = [(MUImageContentViewController *)self scrollView];
+  [scrollView zoomScale];
   v6 = v5;
-  [v4 maximumZoomScale];
+  [scrollView maximumZoomScale];
   v8 = v7;
   [(MUImageContentViewController *)self _zoomToFitZoomFactor];
   v10 = v9;
@@ -1224,7 +1224,7 @@ void __97__MUImageContentViewController__downsampleImageForDisplay_fromImageSour
 
   else
   {
-    [v4 setScrollEnabled:1];
+    [scrollView setScrollEnabled:1];
     if (vabdd_f64(v6, v10) >= 0.0005)
     {
       v11 = v10;
@@ -1243,23 +1243,23 @@ void __97__MUImageContentViewController__downsampleImageForDisplay_fromImageSour
 
   if (vabdd_f64(v8, v6) >= 0.0005)
   {
-    [v14 locationInView:self->_imageView];
+    [tapCopy locationInView:self->_imageView];
     [(MUImageContentViewController *)self _zoomRectForScale:v8 withCenter:v12, v13];
     self->_inDoubleTapZoom = 1;
-    [v4 zoomToRect:1 animated:?];
+    [scrollView zoomToRect:1 animated:?];
     self->_inDoubleTapZoom = 0;
   }
 }
 
-- (CGRect)_zoomRectForScale:(double)a3 withCenter:(CGPoint)a4
+- (CGRect)_zoomRectForScale:(double)scale withCenter:(CGPoint)center
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(MUImageContentViewController *)self scrollView];
-  [v7 frame];
-  v9 = v8 / a3;
-  [v7 frame];
-  v11 = v10 / a3;
+  y = center.y;
+  x = center.x;
+  scrollView = [(MUImageContentViewController *)self scrollView];
+  [scrollView frame];
+  v9 = v8 / scale;
+  [scrollView frame];
+  v11 = v10 / scale;
 
   v12 = x - v11 * 0.5;
   v13 = y - v9 * 0.5;
@@ -1282,11 +1282,11 @@ void __97__MUImageContentViewController__downsampleImageForDisplay_fromImageSour
   return [(MUImageContentViewController *)self _imageIsSize:v4 isSmallerThanSize:v6];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   [(MUImageContentViewController *)self _prepareToRotate];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -1295,10 +1295,10 @@ void __97__MUImageContentViewController__downsampleImageForDisplay_fromImageSour
   *&v9[5] = width;
   *&v9[6] = height;
   v9[4] = self;
-  [v7 animateAlongsideTransition:v9 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v9 completion:0];
   v8.receiver = self;
   v8.super_class = MUImageContentViewController;
-  [(MUImageContentViewController *)&v8 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(MUImageContentViewController *)&v8 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 void __83__MUImageContentViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -1328,8 +1328,8 @@ void __83__MUImageContentViewController_viewWillTransitionToSize_withTransitionC
   self->_pointToCenterAfterRotation.y = v5;
   [(MUImageContentViewController *)self _zoomToFitZoomFactor];
   v7 = v6;
-  v9 = [(MUImageContentViewController *)self scrollView];
-  [v9 zoomScale];
+  scrollView = [(MUImageContentViewController *)self scrollView];
+  [scrollView zoomScale];
   self->_wasZoomToFit = vabdd_f64(v7, v8) < 0.0005;
 }
 
@@ -1421,10 +1421,10 @@ void __83__MUImageContentViewController_viewWillTransitionToSize_withTransitionC
   v4 = v3;
   [(MUImageContentViewController *)self _zoomToFitZoomFactorIncludingScrollViewEdgeInsets];
   v6 = v5;
-  v7 = [(MUImageContentViewController *)self _imageIsSmallerThanView];
+  _imageIsSmallerThanView = [(MUImageContentViewController *)self _imageIsSmallerThanView];
   v8 = fmax(v4, 1.0);
   v9 = fmin(v6, 1.3);
-  if (v7)
+  if (_imageIsSmallerThanView)
   {
     v10 = v8;
   }
@@ -1434,7 +1434,7 @@ void __83__MUImageContentViewController_viewWillTransitionToSize_withTransitionC
     v10 = 1.3;
   }
 
-  if (v7)
+  if (_imageIsSmallerThanView)
   {
     v11 = 1.0;
   }
@@ -1464,9 +1464,9 @@ void __83__MUImageContentViewController_viewWillTransitionToSize_withTransitionC
   return result;
 }
 
-- (CGRect)_annotationRectInOverlay:(id)a3 pageIndex:(unint64_t)a4
+- (CGRect)_annotationRectInOverlay:(id)overlay pageIndex:(unint64_t)index
 {
-  [a3 rectangle];
+  [overlay rectangle];
   x = v29.origin.x;
   y = v29.origin.y;
   width = v29.size.width;
@@ -1487,13 +1487,13 @@ void __83__MUImageContentViewController_viewWillTransitionToSize_withTransitionC
   v32.size.width = width;
   v32.size.height = height;
   MaxY = CGRectGetMaxY(v32);
-  v14 = [(MUContentViewController *)self annotationController];
-  [(MUImageContentViewController *)self convertPoint:a4 fromModelToOverlayWithPageIndex:v14 forAnnotationController:MinX, MinY];
+  annotationController = [(MUContentViewController *)self annotationController];
+  [(MUImageContentViewController *)self convertPoint:index fromModelToOverlayWithPageIndex:annotationController forAnnotationController:MinX, MinY];
   v16 = v15;
   v18 = v17;
 
-  v19 = [(MUContentViewController *)self annotationController];
-  [(MUImageContentViewController *)self convertPoint:a4 fromModelToOverlayWithPageIndex:v19 forAnnotationController:MaxX, MaxY];
+  annotationController2 = [(MUContentViewController *)self annotationController];
+  [(MUImageContentViewController *)self convertPoint:index fromModelToOverlayWithPageIndex:annotationController2 forAnnotationController:MaxX, MaxY];
   v21 = v20;
   v23 = v22;
 
@@ -1505,98 +1505,98 @@ void __83__MUImageContentViewController_viewWillTransitionToSize_withTransitionC
   return CGRectStandardize(*&v26);
 }
 
-- (void)_annotationWillBeginEditing:(id)a3
+- (void)_annotationWillBeginEditing:(id)editing
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277CEA658]];
+  userInfo = [editing userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277CEA658]];
 
   [(MUImageContentViewController *)self setEditingAnnotaiton:v5];
 }
 
-- (unint64_t)_pageIndexForAnnotation:(id)a3
+- (unint64_t)_pageIndexForAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [(MUContentViewController *)self annotationController];
-  v6 = [v5 modelController];
-  v7 = [v6 pageModelControllerForAnnotation:v4];
+  annotationCopy = annotation;
+  annotationController = [(MUContentViewController *)self annotationController];
+  modelController = [annotationController modelController];
+  v7 = [modelController pageModelControllerForAnnotation:annotationCopy];
 
-  v8 = [v5 modelController];
-  v9 = [v8 pageModelControllers];
-  v10 = [v9 indexOfObject:v7];
+  modelController2 = [annotationController modelController];
+  pageModelControllers = [modelController2 pageModelControllers];
+  v10 = [pageModelControllers indexOfObject:v7];
 
   return v10;
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
-  [(MUImageContentViewController *)self _adjustScrollViewForKeyboardNotification:a3];
-  v4 = [(MUImageContentViewController *)self view];
-  [v4 setNeedsLayout];
+  [(MUImageContentViewController *)self _adjustScrollViewForKeyboardNotification:show];
+  view = [(MUImageContentViewController *)self view];
+  [view setNeedsLayout];
 
   [(MUImageContentViewController *)self setZoomToFitRestoreValue:[(MUImageContentViewController *)self firstLoadZoomToFit]];
 
   [(MUImageContentViewController *)self setFirstLoadZoomToFit:0];
 }
 
-- (void)_keyboardWillHide:(id)a3
+- (void)_keyboardWillHide:(id)hide
 {
-  [(MUImageContentViewController *)self _adjustScrollViewForKeyboardNotification:a3];
-  v4 = [(MUImageContentViewController *)self view];
-  [v4 setNeedsLayout];
+  [(MUImageContentViewController *)self _adjustScrollViewForKeyboardNotification:hide];
+  view = [(MUImageContentViewController *)self view];
+  [view setNeedsLayout];
 
-  v5 = [(MUImageContentViewController *)self zoomToFitRestoreValue];
+  zoomToFitRestoreValue = [(MUImageContentViewController *)self zoomToFitRestoreValue];
 
-  [(MUImageContentViewController *)self setFirstLoadZoomToFit:v5];
+  [(MUImageContentViewController *)self setFirstLoadZoomToFit:zoomToFitRestoreValue];
 }
 
-- (void)_adjustScrollViewForKeyboardNotification:(id)a3
+- (void)_adjustScrollViewForKeyboardNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 valueForKey:*MEMORY[0x277D76BB0]];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo valueForKey:*MEMORY[0x277D76BB0]];
   [v6 CGRectValue];
   v38 = v7;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [v4 userInfo];
-  v15 = [v14 valueForKey:*MEMORY[0x277D76BB8]];
+  userInfo2 = [notificationCopy userInfo];
+  v15 = [userInfo2 valueForKey:*MEMORY[0x277D76BB8]];
   [v15 CGRectValue];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
 
-  v24 = [v4 userInfo];
-  v25 = [v24 valueForKey:*MEMORY[0x277D76B78]];
+  userInfo3 = [notificationCopy userInfo];
+  v25 = [userInfo3 valueForKey:*MEMORY[0x277D76B78]];
   [v25 floatValue];
   v27 = v26;
 
-  v28 = [v4 userInfo];
+  userInfo4 = [notificationCopy userInfo];
 
-  v29 = [v28 valueForKey:*MEMORY[0x277D76B70]];
-  v30 = [v29 unsignedIntegerValue];
+  v29 = [userInfo4 valueForKey:*MEMORY[0x277D76B70]];
+  unsignedIntegerValue = [v29 unsignedIntegerValue];
 
-  v39 = [(MUImageContentViewController *)self editingAnnotaiton];
-  v31 = [(MUImageContentViewController *)self _pageIndexForAnnotation:v39];
-  if (v39 && v31 != 0x7FFFFFFFFFFFFFFFLL)
+  editingAnnotaiton = [(MUImageContentViewController *)self editingAnnotaiton];
+  v31 = [(MUImageContentViewController *)self _pageIndexForAnnotation:editingAnnotaiton];
+  if (editingAnnotaiton && v31 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v32 = [(MUContentViewController *)self annotationController];
-    v33 = [v32 overlayViewAtIndex:v31];
+    annotationController = [(MUContentViewController *)self annotationController];
+    v33 = [annotationController overlayViewAtIndex:v31];
 
-    [(MUImageContentViewController *)self _annotationRectInOverlay:v39 pageIndex:v31];
+    [(MUImageContentViewController *)self _annotationRectInOverlay:editingAnnotaiton pageIndex:v31];
     [v33 convertRect:0 toView:?];
-    [(MUImageContentViewController *)self adjustScrollViewToAccomodateKeyboardStartingFrame:v33 endingFrame:v30 annotationFrame:v38 inOverlayView:v9 withAnimationDuration:v11 curve:v13, v17, v19, v21, v23, v34, v35, v36, v37, v27];
+    [(MUImageContentViewController *)self adjustScrollViewToAccomodateKeyboardStartingFrame:v33 endingFrame:unsignedIntegerValue annotationFrame:v38 inOverlayView:v9 withAnimationDuration:v11 curve:v13, v17, v19, v21, v23, v34, v35, v36, v37, v27];
   }
 }
 
-- (void)adjustScrollViewToAccomodateKeyboardStartingFrame:(double)a3 endingFrame:(double)a4 annotationFrame:(double)a5 inOverlayView:(CGFloat)a6 withAnimationDuration:(CGFloat)a7 curve:(CGFloat)a8
+- (void)adjustScrollViewToAccomodateKeyboardStartingFrame:(double)frame endingFrame:(double)endingFrame annotationFrame:(double)annotationFrame inOverlayView:(CGFloat)view withAnimationDuration:(CGFloat)duration curve:(CGFloat)curve
 {
-  v25 = [a1 scrollView];
-  v26 = [v25 superview];
-  [v25 frame];
-  [v26 convertRect:0 toView:?];
+  scrollView = [self scrollView];
+  superview = [scrollView superview];
+  [scrollView frame];
+  [superview convertRect:0 toView:?];
   v28 = v27;
   v30 = v29;
   v32 = v31;
@@ -1606,20 +1606,20 @@ void __83__MUImageContentViewController_viewWillTransitionToSize_withTransitionC
   v88.origin.y = v30;
   v88.size.width = v32;
   v88.size.height = v34;
-  v71 = -(a7 - CGRectGetMaxY(v88));
+  v71 = -(duration - CGRectGetMaxY(v88));
   v67 = *MEMORY[0x277CBF398];
   v70 = *(MEMORY[0x277CBF398] + 8);
   v69 = *(MEMORY[0x277CBF398] + 16);
   v68 = *(MEMORY[0x277CBF398] + 24);
-  [v25 bounds];
-  [v25 convertRect:0 toView:?];
+  [scrollView bounds];
+  [scrollView convertRect:0 toView:?];
   x = v89.origin.x;
   y = v89.origin.y;
   width = v89.size.width;
   height = v89.size.height;
-  v94.origin.x = a6;
-  v94.origin.y = a7;
-  v94.size.width = a8;
+  v94.origin.x = view;
+  v94.origin.y = duration;
+  v94.size.width = curve;
   v94.size.height = a9;
   if (CGRectIntersectsRect(v89, v94))
   {
@@ -1627,13 +1627,13 @@ void __83__MUImageContentViewController_viewWillTransitionToSize_withTransitionC
     v90.origin.y = y;
     v90.size.width = width;
     v90.size.height = height;
-    v95.origin.x = a6;
-    v95.origin.y = a7;
-    v95.size.width = a8;
+    v95.origin.x = view;
+    v95.origin.y = duration;
+    v95.size.width = curve;
     v95.size.height = a9;
     v91 = CGRectIntersection(v90, v95);
     v64 = height - (CGRectGetHeight(v91) + 0.0);
-    [v25 convertRect:0 fromView:{a13, a14, a15, a16}];
+    [scrollView convertRect:0 fromView:{a13, a14, a15, a16}];
     rect2a = v39;
     v41 = v40;
     v43 = v42;
@@ -1676,9 +1676,9 @@ void __83__MUImageContentViewController_viewWillTransitionToSize_withTransitionC
     v50 = v67;
   }
 
-  [v25 contentInset];
+  [scrollView contentInset];
   v52 = v51;
-  [v25 _contentScrollInset];
+  [scrollView _contentScrollInset];
   v54 = v53;
   v56 = v55;
   v58 = v57;
@@ -1700,7 +1700,7 @@ void __83__MUImageContentViewController_viewWillTransitionToSize_withTransitionC
   {
     if (v59 <= 0.0)
     {
-      [v25 _setContentScrollInset:{v54, v56, v59, v58}];
+      [scrollView _setContentScrollInset:{v54, v56, v59, v58}];
       goto LABEL_21;
     }
 
@@ -1709,7 +1709,7 @@ void __83__MUImageContentViewController_viewWillTransitionToSize_withTransitionC
     block[1] = 3221225472;
     block[2] = __152__MUImageContentViewController_adjustScrollViewToAccomodateKeyboardStartingFrame_endingFrame_annotationFrame_inOverlayView_withAnimationDuration_curve___block_invoke_2;
     block[3] = &unk_27986E880;
-    v73 = v25;
+    v73 = scrollView;
     v74 = v54;
     v75 = v56;
     v76 = v59;
@@ -1735,7 +1735,7 @@ void __83__MUImageContentViewController_viewWillTransitionToSize_withTransitionC
     v78[1] = 3221225472;
     v78[2] = __152__MUImageContentViewController_adjustScrollViewToAccomodateKeyboardStartingFrame_endingFrame_annotationFrame_inOverlayView_withAnimationDuration_curve___block_invoke;
     v78[3] = &unk_27986E858;
-    v79 = v25;
+    v79 = scrollView;
     v80 = v54;
     v81 = v56;
     v82 = v59;
@@ -1763,61 +1763,61 @@ uint64_t __152__MUImageContentViewController_adjustScrollViewToAccomodateKeyboar
   return [v2 scrollRectToVisible:0 animated:{v3, v4, v5, v6}];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v7 = a3;
-  v4 = [(MUImageContentViewController *)self scrollView];
+  draggingCopy = dragging;
+  scrollView = [(MUImageContentViewController *)self scrollView];
 
-  v5 = v7;
-  if (v4 == v7)
+  v5 = draggingCopy;
+  if (scrollView == draggingCopy)
   {
     [(MUImageContentViewController *)self setFirstLoadZoomToFit:0];
     [(MUImageContentViewController *)self setCentersIgnoringContentInsets:0];
-    v6 = [(MUImageContentViewController *)self scrollViewDelegate];
-    if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+    scrollViewDelegate = [(MUImageContentViewController *)self scrollViewDelegate];
+    if (scrollViewDelegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v6 scrollViewWillBeginDragging:v7];
+      [scrollViewDelegate scrollViewWillBeginDragging:draggingCopy];
     }
 
-    v5 = v7;
+    v5 = draggingCopy;
   }
 }
 
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(MUImageContentViewController *)self scrollView];
+  zoomingCopy = zooming;
+  viewCopy = view;
+  scrollView = [(MUImageContentViewController *)self scrollView];
 
-  if (v7 == v9)
+  if (scrollView == zoomingCopy)
   {
     [(MUImageContentViewController *)self setFirstLoadZoomToFit:0];
     [(MUImageContentViewController *)self setCentersIgnoringContentInsets:0];
     if (!self->_inDoubleTapZoom)
     {
-      [v9 setScrollEnabled:1];
+      [zoomingCopy setScrollEnabled:1];
     }
 
-    v8 = [(MUImageContentViewController *)self scrollViewDelegate];
-    if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+    scrollViewDelegate = [(MUImageContentViewController *)self scrollViewDelegate];
+    if (scrollViewDelegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v8 scrollViewWillBeginZooming:v9 withView:v6];
+      [scrollViewDelegate scrollViewWillBeginZooming:zoomingCopy withView:viewCopy];
     }
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v7 = a3;
-  v4 = [(MUImageContentViewController *)self scrollViewDelegate];
-  v5 = [(MUImageContentViewController *)self scrollView];
-  if (v5 == v7 && v4)
+  scrollCopy = scroll;
+  scrollViewDelegate = [(MUImageContentViewController *)self scrollViewDelegate];
+  scrollView = [(MUImageContentViewController *)self scrollView];
+  if (scrollView == scrollCopy && scrollViewDelegate)
   {
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      [v4 scrollViewDidScroll:v7];
+      [scrollViewDelegate scrollViewDidScroll:scrollCopy];
     }
   }
 
@@ -1826,18 +1826,18 @@ uint64_t __152__MUImageContentViewController_adjustScrollViewToAccomodateKeyboar
   }
 }
 
-- (void)scrollViewDidZoom:(id)a3
+- (void)scrollViewDidZoom:(id)zoom
 {
-  v7 = a3;
-  v4 = [(MUImageContentViewController *)self scrollViewDelegate];
-  v5 = [(MUImageContentViewController *)self scrollView];
-  if (v5 == v7 && v4)
+  zoomCopy = zoom;
+  scrollViewDelegate = [(MUImageContentViewController *)self scrollViewDelegate];
+  scrollView = [(MUImageContentViewController *)self scrollView];
+  if (scrollView == zoomCopy && scrollViewDelegate)
   {
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      [v4 scrollViewDidZoom:v7];
+      [scrollViewDelegate scrollViewDidZoom:zoomCopy];
     }
   }
 
@@ -1846,18 +1846,18 @@ uint64_t __152__MUImageContentViewController_adjustScrollViewToAccomodateKeyboar
   }
 }
 
-- (BOOL)scrollViewShouldScrollToTop:(id)a3
+- (BOOL)scrollViewShouldScrollToTop:(id)top
 {
-  v4 = a3;
-  v5 = [(MUImageContentViewController *)self scrollView];
+  topCopy = top;
+  scrollView = [(MUImageContentViewController *)self scrollView];
 
-  if (v5 == v4)
+  if (scrollView == topCopy)
   {
     [(MUImageContentViewController *)self setCentersIgnoringContentInsets:0];
-    v7 = [(MUImageContentViewController *)self scrollViewDelegate];
-    if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+    scrollViewDelegate = [(MUImageContentViewController *)self scrollViewDelegate];
+    if (scrollViewDelegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v6 = [v7 scrollViewShouldScrollToTop:v4];
+      v6 = [scrollViewDelegate scrollViewShouldScrollToTop:topCopy];
     }
 
     else
@@ -1874,11 +1874,11 @@ uint64_t __152__MUImageContentViewController_adjustScrollViewToAccomodateKeyboar
   return v6;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromOverlayToModelWithPageIndex:(unint64_t)a4 forAnnotationController:(id)a5
+- (CGPoint)convertPoint:(CGPoint)point fromOverlayToModelWithPageIndex:(unint64_t)index forAnnotationController:(id)controller
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [a5 overlayViewAtIndex:a4];
+  y = point.y;
+  x = point.x;
+  v8 = [controller overlayViewAtIndex:index];
   [v8 convertPoint:self->_imageView toView:{x, y}];
   v10 = v9;
   v12 = v11;
@@ -1896,11 +1896,11 @@ uint64_t __152__MUImageContentViewController_adjustScrollViewToAccomodateKeyboar
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromModelToOverlayWithPageIndex:(unint64_t)a4 forAnnotationController:(id)a5
+- (CGPoint)convertPoint:(CGPoint)point fromModelToOverlayWithPageIndex:(unint64_t)index forAnnotationController:(id)controller
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [a5 overlayViewAtIndex:a4];
+  y = point.y;
+  x = point.x;
+  v8 = [controller overlayViewAtIndex:index];
   [(MUImageContentViewController *)self downsampledImageScale];
   v10 = x * v9;
   [(MUImageContentViewController *)self downsampledImageScale];
@@ -1917,9 +1917,9 @@ uint64_t __152__MUImageContentViewController_adjustScrollViewToAccomodateKeyboar
   return result;
 }
 
-- (CGRect)maxPageRectWithPageIndex:(unint64_t)a3 forAnnotationController:(id)a4
+- (CGRect)maxPageRectWithPageIndex:(unint64_t)index forAnnotationController:(id)controller
 {
-  v5 = [(MUImageContentViewController *)self imageView:a3];
+  v5 = [(MUImageContentViewController *)self imageView:index];
   [v5 bounds];
   v7 = v6;
   v9 = v8;
@@ -1940,21 +1940,21 @@ uint64_t __152__MUImageContentViewController_adjustScrollViewToAccomodateKeyboar
   return result;
 }
 
-- (id)newContentSnapshotPDFDataIncludingAdornments:(BOOL)a3 atScale:(double)a4 inRect:(CGRect)a5 onOverlayAtPageIndex:(unint64_t)a6 forAnnotationController:(id)a7
+- (id)newContentSnapshotPDFDataIncludingAdornments:(BOOL)adornments atScale:(double)scale inRect:(CGRect)rect onOverlayAtPageIndex:(unint64_t)index forAnnotationController:(id)controller
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v14 = a7;
-  v15 = [(MUImageContentViewController *)self imageView];
-  v16 = [v15 image];
-  v17 = [v16 CGImage];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  imageView = [(MUImageContentViewController *)self imageView];
+  image = [imageView image];
+  cGImage = [image CGImage];
 
-  v18 = [v14 overlayViewAtIndex:a6];
+  v18 = [controllerCopy overlayViewAtIndex:index];
 
-  v19 = [(MUImageContentViewController *)self imageView];
-  [v19 convertRect:v18 fromView:{x, y, width, height}];
+  imageView2 = [(MUImageContentViewController *)self imageView];
+  [imageView2 convertRect:v18 fromView:{x, y, width, height}];
   v21 = v20;
   v23 = v22;
   v25 = v24;
@@ -1968,10 +1968,10 @@ uint64_t __152__MUImageContentViewController_adjustScrollViewToAccomodateKeyboar
   v59.size.height = v27;
   v29 = MaxY - CGRectGetMaxY(v59);
   mediaBox.origin = *MEMORY[0x277CBF348];
-  mediaBox.size.width = v25 * a4;
-  mediaBox.size.height = v27 * a4;
-  v30 = CGImageGetWidth(v17);
-  v31 = CGImageGetHeight(v17);
+  mediaBox.size.width = v25 * scale;
+  mediaBox.size.height = v27 * scale;
+  v30 = CGImageGetWidth(cGImage);
+  v31 = CGImageGetHeight(cGImage);
   v60.origin.x = v21;
   v60.origin.y = v29;
   v60.size.width = v25;
@@ -1999,7 +1999,7 @@ uint64_t __152__MUImageContentViewController_adjustScrollViewToAccomodateKeyboar
 
   v36 = vcvtad_u64_f64(v56);
   v37 = vcvtad_u64_f64(v35);
-  ColorSpace = CGImageGetColorSpace(v17);
+  ColorSpace = CGImageGetColorSpace(cGImage);
   if (!ColorSpace || (v39 = ColorSpace, CGColorSpaceUsesExtendedRange(ColorSpace)) || CGColorSpaceIsWideGamutRGB(v39))
   {
     v40 = CGColorSpaceCreateWithName(*MEMORY[0x277CBF4B8]);
@@ -2017,8 +2017,8 @@ uint64_t __152__MUImageContentViewController_adjustScrollViewToAccomodateKeyboar
   {
     v43 = v42;
     v44 = v30;
-    v45 = [MEMORY[0x277D75348] whiteColor];
-    CGContextSetFillColorWithColor(v43, [v45 CGColor]);
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    CGContextSetFillColorWithColor(v43, [whiteColor CGColor]);
 
     v64.size.height = v54;
     v64.origin.x = v55;
@@ -2031,7 +2031,7 @@ uint64_t __152__MUImageContentViewController_adjustScrollViewToAccomodateKeyboar
     v65.origin.y = 0.0;
     v65.size.width = v44;
     v65.size.height = v31;
-    CGContextDrawImage(v43, v65, v17);
+    CGContextDrawImage(v43, v65, cGImage);
     Image = CGBitmapContextCreateImage(v43);
     CGContextRelease(v43);
     if (!v40)
@@ -2071,7 +2071,7 @@ LABEL_16:
         v52 = v51;
         CGPDFContextBeginPage(v51, 0);
         CGContextSaveGState(v52);
-        CGContextScaleCTM(v52, a4, a4);
+        CGContextScaleCTM(v52, scale, scale);
         CGContextTranslateCTM(v52, -(v21 - v55), -(v29 - v32));
         CGContextSetInterpolationQuality(v52, kCGInterpolationNone);
         v66.origin.x = 0.0;
@@ -2095,67 +2095,67 @@ LABEL_17:
   return v48;
 }
 
-- (id)undoManagerForAnnotationController:(id)a3
+- (id)undoManagerForAnnotationController:(id)controller
 {
-  v4 = [(MUContentViewController *)self delegate];
-  v5 = [v4 undoManagerForContentViewController:self];
+  delegate = [(MUContentViewController *)self delegate];
+  v5 = [delegate undoManagerForContentViewController:self];
 
   return v5;
 }
 
-- (id)popoverPresentingViewControllerForAnnotationController:(id)a3
+- (id)popoverPresentingViewControllerForAnnotationController:(id)controller
 {
-  v4 = a3;
-  v5 = [(MUContentViewController *)self delegate];
-  v6 = [v5 popoverPresentingViewControllerForAnnotationController:v4];
+  controllerCopy = controller;
+  delegate = [(MUContentViewController *)self delegate];
+  v6 = [delegate popoverPresentingViewControllerForAnnotationController:controllerCopy];
 
   return v6;
 }
 
-- (void)installDrawingGestureRecognizer:(id)a3 forPageAtIndex:(unint64_t)a4 forAnnotationController:(id)a5
+- (void)installDrawingGestureRecognizer:(id)recognizer forPageAtIndex:(unint64_t)index forAnnotationController:(id)controller
 {
-  v6 = a3;
-  v7 = [(MUImageContentViewController *)self view];
-  [v7 addGestureRecognizer:v6];
+  recognizerCopy = recognizer;
+  view = [(MUImageContentViewController *)self view];
+  [view addGestureRecognizer:recognizerCopy];
 }
 
-- (void)uninstallDrawingGestureRecognizer:(id)a3 forPageAtIndex:(unint64_t)a4 forAnnotationController:(id)a5
+- (void)uninstallDrawingGestureRecognizer:(id)recognizer forPageAtIndex:(unint64_t)index forAnnotationController:(id)controller
 {
-  v5 = a3;
-  v6 = [v5 view];
-  [v6 removeGestureRecognizer:v5];
+  recognizerCopy = recognizer;
+  view = [recognizerCopy view];
+  [view removeGestureRecognizer:recognizerCopy];
 }
 
-- (void)updateDrawingGestureRecognizer:(id)a3 forPageAtIndex:(unint64_t)a4 withPriority:(BOOL)a5 forAnnotationController:(id)a6
+- (void)updateDrawingGestureRecognizer:(id)recognizer forPageAtIndex:(unint64_t)index withPriority:(BOOL)priority forAnnotationController:(id)controller
 {
-  v7 = a5;
+  priorityCopy = priority;
   v55[4] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a6;
-  v11 = [v10 tapGestureRecognizer];
-  v55[0] = v11;
-  v12 = [v10 pressGestureRecognizer];
-  v55[1] = v12;
-  v13 = [v10 panGestureRecognizer];
-  v55[2] = v13;
-  v39 = v10;
-  v14 = [v10 rotationGestureRecognizer];
-  v55[3] = v14;
+  recognizerCopy = recognizer;
+  controllerCopy = controller;
+  tapGestureRecognizer = [controllerCopy tapGestureRecognizer];
+  v55[0] = tapGestureRecognizer;
+  pressGestureRecognizer = [controllerCopy pressGestureRecognizer];
+  v55[1] = pressGestureRecognizer;
+  panGestureRecognizer = [controllerCopy panGestureRecognizer];
+  v55[2] = panGestureRecognizer;
+  v39 = controllerCopy;
+  rotationGestureRecognizer = [controllerCopy rotationGestureRecognizer];
+  v55[3] = rotationGestureRecognizer;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:4];
 
   v16 = [MEMORY[0x277CBEB58] set];
-  v17 = [(MUImageContentViewController *)self view];
-  v18 = [v17 gestureRecognizers];
-  [v16 addObjectsFromArray:v18];
+  view = [(MUImageContentViewController *)self view];
+  gestureRecognizers = [view gestureRecognizers];
+  [v16 addObjectsFromArray:gestureRecognizers];
 
-  v19 = [(MUImageContentViewController *)self scrollView];
-  v20 = [v19 gestureRecognizers];
-  [v16 addObjectsFromArray:v20];
+  scrollView = [(MUImageContentViewController *)self scrollView];
+  gestureRecognizers2 = [scrollView gestureRecognizers];
+  [v16 addObjectsFromArray:gestureRecognizers2];
 
   v21 = [MEMORY[0x277CBEB98] setWithArray:v15];
   [v16 minusSet:v21];
 
-  [v16 removeObject:v9];
+  [v16 removeObject:recognizerCopy];
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
@@ -2175,7 +2175,7 @@ LABEL_17:
           objc_enumerationMutation(v22);
         }
 
-        [v9 requireGestureRecognizerToFail:*(*(&v48 + 1) + 8 * i)];
+        [recognizerCopy requireGestureRecognizerToFail:*(*(&v48 + 1) + 8 * i)];
       }
 
       v24 = [v22 countByEnumeratingWithState:&v48 objects:v54 count:16];
@@ -2184,7 +2184,7 @@ LABEL_17:
     while (v24);
   }
 
-  if (v7)
+  if (priorityCopy)
   {
     v46 = 0uLL;
     v47 = 0uLL;
@@ -2206,10 +2206,10 @@ LABEL_17:
           }
 
           v32 = *(*(&v44 + 1) + 8 * j);
-          [v9 removeFailureRequirement:v32];
+          [recognizerCopy removeFailureRequirement:v32];
           if ((objc_opt_respondsToSelector() & 1) == 0 || [v32 _acceptsFailureRequirements])
           {
-            [v32 requireGestureRecognizerToFail:v9];
+            [v32 requireGestureRecognizerToFail:recognizerCopy];
           }
         }
 
@@ -2242,10 +2242,10 @@ LABEL_17:
           }
 
           v38 = *(*(&v40 + 1) + 8 * k);
-          [v38 removeFailureRequirement:v9];
+          [v38 removeFailureRequirement:recognizerCopy];
           if ((objc_opt_respondsToSelector() & 1) == 0 || [v38 _acceptsFailureRequirements])
           {
-            [v9 requireGestureRecognizerToFail:v38];
+            [recognizerCopy requireGestureRecognizerToFail:v38];
           }
         }
 
@@ -2257,130 +2257,130 @@ LABEL_17:
   }
 }
 
-- (double)modelBaseScaleFactorOfPageAtIndex:(unint64_t)a3 forAnnotationController:(id)a4
+- (double)modelBaseScaleFactorOfPageAtIndex:(unint64_t)index forAnnotationController:(id)controller
 {
-  v6 = [(MUContentViewController *)self delegate:a3];
-  [v6 modelBaseScaleFactorOfPageAtIndex:a3 forContentViewController:self];
+  v6 = [(MUContentViewController *)self delegate:index];
+  [v6 modelBaseScaleFactorOfPageAtIndex:index forContentViewController:self];
   v8 = v7;
 
   return v8;
 }
 
-- (id)controller:(id)a3 willSetToolbarItems:(id)a4
+- (id)controller:(id)controller willSetToolbarItems:(id)items
 {
-  v5 = a4;
-  v6 = [(MUContentViewController *)self delegate];
-  v7 = [v6 annotationControllerOfContentViewController:self willSetToolbarItems:v5];
+  itemsCopy = items;
+  delegate = [(MUContentViewController *)self delegate];
+  v7 = [delegate annotationControllerOfContentViewController:self willSetToolbarItems:itemsCopy];
 
   return v7;
 }
 
-- (void)positionSketchOverlay:(id)a3 forAnnotationController:(id)a4
+- (void)positionSketchOverlay:(id)overlay forAnnotationController:(id)controller
 {
-  v5 = a3;
-  v6 = [(MUContentViewController *)self delegate];
-  [v6 positionSketchOverlay:v5 forContentViewController:self];
+  overlayCopy = overlay;
+  delegate = [(MUContentViewController *)self delegate];
+  [delegate positionSketchOverlay:overlayCopy forContentViewController:self];
 }
 
-- (id)layerContainingQuickBackgroundForLoupeOnOverlayAtPageIndex:(unint64_t)a3 forAnnotationController:(id)a4
+- (id)layerContainingQuickBackgroundForLoupeOnOverlayAtPageIndex:(unint64_t)index forAnnotationController:(id)controller
 {
-  v4 = [(MUImageContentViewController *)self imageView:a3];
-  v5 = [v4 layer];
+  v4 = [(MUImageContentViewController *)self imageView:index];
+  layer = [v4 layer];
 
-  return v5;
+  return layer;
 }
 
-- (void)controllerDidEnterToolMode:(id)a3
+- (void)controllerDidEnterToolMode:(id)mode
 {
-  v4 = [(MUImageContentViewController *)self scrollView];
-  v5 = [v4 panGestureRecognizer];
-  [v5 setMinimumNumberOfTouches:2];
+  scrollView = [(MUImageContentViewController *)self scrollView];
+  panGestureRecognizer = [scrollView panGestureRecognizer];
+  [panGestureRecognizer setMinimumNumberOfTouches:2];
 
-  v6 = [(MUImageContentViewController *)self localDoubleTapRecognizer];
-  [v6 setEnabled:0];
+  localDoubleTapRecognizer = [(MUImageContentViewController *)self localDoubleTapRecognizer];
+  [localDoubleTapRecognizer setEnabled:0];
 }
 
-- (void)controllerDidExitToolMode:(id)a3
+- (void)controllerDidExitToolMode:(id)mode
 {
-  v4 = [(MUImageContentViewController *)self scrollView];
-  v5 = [v4 panGestureRecognizer];
-  [v5 setMinimumNumberOfTouches:1];
+  scrollView = [(MUImageContentViewController *)self scrollView];
+  panGestureRecognizer = [scrollView panGestureRecognizer];
+  [panGestureRecognizer setMinimumNumberOfTouches:1];
 
-  v6 = [(MUImageContentViewController *)self localDoubleTapRecognizer];
-  [v6 setEnabled:1];
+  localDoubleTapRecognizer = [(MUImageContentViewController *)self localDoubleTapRecognizer];
+  [localDoubleTapRecognizer setEnabled:1];
 }
 
-- (void)editDetectedForAnnotationController:(id)a3
+- (void)editDetectedForAnnotationController:(id)controller
 {
-  v4 = a3;
-  v5 = [(MUContentViewController *)self delegate];
-  [v5 editDetectedForAnnotationController:v4];
+  controllerCopy = controller;
+  delegate = [(MUContentViewController *)self delegate];
+  [delegate editDetectedForAnnotationController:controllerCopy];
 }
 
-- (void)editCheckpointReachedForAnnotationController:(id)a3
+- (void)editCheckpointReachedForAnnotationController:(id)controller
 {
-  v4 = a3;
-  v5 = [(MUContentViewController *)self delegate];
-  [v5 editCheckpointReachedForAnnotationController:v4];
+  controllerCopy = controller;
+  delegate = [(MUContentViewController *)self delegate];
+  [delegate editCheckpointReachedForAnnotationController:controllerCopy];
 }
 
-- (void)penStrokeCompletedForAnnotationController:(id)a3
+- (void)penStrokeCompletedForAnnotationController:(id)controller
 {
-  v4 = a3;
-  v5 = [(MUContentViewController *)self delegate];
-  [v5 penStrokeCompletedForAnnotationController:v4];
+  controllerCopy = controller;
+  delegate = [(MUContentViewController *)self delegate];
+  [delegate penStrokeCompletedForAnnotationController:controllerCopy];
 }
 
-- (void)controllerWillShowSignatureCaptureView:(id)a3
+- (void)controllerWillShowSignatureCaptureView:(id)view
 {
-  v4 = a3;
-  v5 = [(MUContentViewController *)self delegate];
-  [v5 controllerWillShowSignatureCaptureView:v4];
+  viewCopy = view;
+  delegate = [(MUContentViewController *)self delegate];
+  [delegate controllerWillShowSignatureCaptureView:viewCopy];
 }
 
-- (void)controllerWillDismissSignatureCaptureView:(id)a3
+- (void)controllerWillDismissSignatureCaptureView:(id)view
 {
-  v4 = a3;
-  v5 = [(MUContentViewController *)self delegate];
-  [v5 controllerWillDismissSignatureCaptureView:v4];
+  viewCopy = view;
+  delegate = [(MUContentViewController *)self delegate];
+  [delegate controllerWillDismissSignatureCaptureView:viewCopy];
 }
 
-- (void)controllerWillShowSignatureManagerView:(id)a3
+- (void)controllerWillShowSignatureManagerView:(id)view
 {
-  v4 = a3;
-  v5 = [(MUContentViewController *)self delegate];
-  [v5 controllerWillShowSignatureManagerView:v4];
+  viewCopy = view;
+  delegate = [(MUContentViewController *)self delegate];
+  [delegate controllerWillShowSignatureManagerView:viewCopy];
 }
 
-- (void)controllerWillDismissSignatureManagerView:(id)a3
+- (void)controllerWillDismissSignatureManagerView:(id)view
 {
-  v4 = a3;
-  v5 = [(MUContentViewController *)self delegate];
-  [v5 controllerWillDismissSignatureManagerView:v4];
+  viewCopy = view;
+  delegate = [(MUContentViewController *)self delegate];
+  [delegate controllerWillDismissSignatureManagerView:viewCopy];
 }
 
 - (NSString)originalImageDescription
 {
-  v2 = [(MUContentViewController *)self delegate];
-  if (v2 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(MUContentViewController *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v3 = [v2 originalImageDescription];
+    originalImageDescription = [delegate originalImageDescription];
   }
 
   else
   {
-    v3 = 0;
+    originalImageDescription = 0;
   }
 
-  return v3;
+  return originalImageDescription;
 }
 
 - (void)enableHDRAnnotations
 {
   [MEMORY[0x277CEA698] defaultMaxHDRGain];
   v4 = v3;
-  v5 = [(MUContentViewController *)self annotationController];
-  [v5 setMaxHDRGain:v4];
+  annotationController = [(MUContentViewController *)self annotationController];
+  [annotationController setMaxHDRGain:v4];
 }
 
 - (UIEdgeInsets)edgeInsets

@@ -1,109 +1,109 @@
 @interface MTLLegacySVDevice
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)accelerationStructureSizesWithDescriptor:(SEL)a3;
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)accelerationStructureSizesWithDescriptor:(SEL)descriptor;
 - (BOOL)areWritableHeapsEnabled;
 - (BOOL)supportsCMPIndirectCommandBuffers;
 - (BOOL)supportsRaytracingFromRender;
 - (BOOL)supportsRenderDynamicLibraries;
-- (MTLLegacySVDevice)initWithBaseObject:(id)a3 parent:(id)a4;
+- (MTLLegacySVDevice)initWithBaseObject:(id)object parent:(id)parent;
 - (id).cxx_construct;
-- (id)_modifyComputePipelineDescriptor:(id)a3 options:(unint64_t *)a4;
-- (id)_modifyRenderPipelineDescriptor:(id)a3 options:(unint64_t *)a4;
-- (id)_modifyTilePipelineDescriptor:(id)a3 options:(unint64_t *)a4;
-- (id)deserializeInstanceAccelerationStructureFromBytes:(void *)a3 primitiveAccelerationStructures:(id)a4 withDescriptor:(id)a5;
-- (id)deserializePrimitiveAccelerationStructureFromBytes:(void *)a3 withDescriptor:(id)a4;
-- (id)getDynamicLibraryForBaseObject:(id)a3;
-- (id)getFunctionForBaseObject:(id)a3 library:(id)a4;
-- (id)loadDynamicLibrariesForComputeDescriptor:(id)a3 error:(id *)a4;
-- (id)loadDynamicLibrariesForComputeDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)loadDynamicLibrariesForFunction:(id)a3 insertLibraries:(id)a4 options:(unint64_t)a5 error:(id *)a6;
-- (id)newAccelerationStructureWithBuffer:(id)a3 offset:(unint64_t)a4;
-- (id)newAccelerationStructureWithBuffer:(id)a3 offset:(unint64_t)a4 resourceIndex:(unint64_t)a5;
-- (id)newAccelerationStructureWithDescriptor:(id)a3;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 resourceIndex:(unint64_t)a4;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 withDescriptor:(id)a4;
-- (id)newArgumentEncoderWithArguments:(id)a3;
-- (id)newArgumentEncoderWithArguments:(id)a3 structType:(id *)a4;
-- (id)newBinaryArchiveWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newBinaryLibraryWithOptions:(unint64_t)a3 url:(id)a4 error:(id *)a5;
-- (id)newBufferWithBytes:(const void *)a3 length:(unint64_t)a4 options:(unint64_t)a5;
-- (id)newBufferWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 options:(unint64_t)a5 deallocator:(id)a6;
-- (id)newBufferWithDescriptor:(id)a3;
-- (id)newBufferWithIOSurface:(__IOSurface *)a3;
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4;
+- (id)_modifyComputePipelineDescriptor:(id)descriptor options:(unint64_t *)options;
+- (id)_modifyRenderPipelineDescriptor:(id)descriptor options:(unint64_t *)options;
+- (id)_modifyTilePipelineDescriptor:(id)descriptor options:(unint64_t *)options;
+- (id)deserializeInstanceAccelerationStructureFromBytes:(void *)bytes primitiveAccelerationStructures:(id)structures withDescriptor:(id)descriptor;
+- (id)deserializePrimitiveAccelerationStructureFromBytes:(void *)bytes withDescriptor:(id)descriptor;
+- (id)getDynamicLibraryForBaseObject:(id)object;
+- (id)getFunctionForBaseObject:(id)object library:(id)library;
+- (id)loadDynamicLibrariesForComputeDescriptor:(id)descriptor error:(id *)error;
+- (id)loadDynamicLibrariesForComputeDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error;
+- (id)loadDynamicLibrariesForFunction:(id)function insertLibraries:(id)libraries options:(unint64_t)options error:(id *)error;
+- (id)newAccelerationStructureWithBuffer:(id)buffer offset:(unint64_t)offset;
+- (id)newAccelerationStructureWithBuffer:(id)buffer offset:(unint64_t)offset resourceIndex:(unint64_t)index;
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor;
+- (id)newAccelerationStructureWithSize:(unint64_t)size;
+- (id)newAccelerationStructureWithSize:(unint64_t)size resourceIndex:(unint64_t)index;
+- (id)newAccelerationStructureWithSize:(unint64_t)size withDescriptor:(id)descriptor;
+- (id)newArgumentEncoderWithArguments:(id)arguments;
+- (id)newArgumentEncoderWithArguments:(id)arguments structType:(id *)type;
+- (id)newBinaryArchiveWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newBinaryLibraryWithOptions:(unint64_t)options url:(id)url error:(id *)error;
+- (id)newBufferWithBytes:(const void *)bytes length:(unint64_t)length options:(unint64_t)options;
+- (id)newBufferWithBytesNoCopy:(void *)copy length:(unint64_t)length options:(unint64_t)options deallocator:(id)deallocator;
+- (id)newBufferWithDescriptor:(id)descriptor;
+- (id)newBufferWithIOSurface:(__IOSurface *)surface;
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options;
 - (id)newCommandQueue;
-- (id)newCommandQueueWithDescriptor:(id)a3;
-- (id)newCommandQueueWithMaxCommandBufferCount:(unint64_t)a3;
-- (id)newComputePipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
-- (id)newComputePipelineStateWithFunction:(id)a3 error:(id *)a4;
-- (id)newComputePipelineStateWithFunction:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
+- (id)newCommandQueueWithDescriptor:(id)descriptor;
+- (id)newCommandQueueWithMaxCommandBufferCount:(unint64_t)count;
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
+- (id)newComputePipelineStateWithFunction:(id)function error:(id *)error;
+- (id)newComputePipelineStateWithFunction:(id)function options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
 - (id)newDefaultLibrary;
-- (id)newDefaultLibraryWithBundle:(id)a3 error:(id *)a4;
-- (id)newDynamicLibrary:(id)a3 computeDescriptor:(id)a4 error:(id *)a5;
-- (id)newDynamicLibrary:(id)a3 error:(id *)a4;
-- (id)newDynamicLibraryWithURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)newHeapWithDescriptor:(id)a3;
-- (id)newIndirectCommandBufferWithDescriptor:(id)a3 maxCommandCount:(unint64_t)a4 options:(unint64_t)a5;
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3;
-- (id)newLibraryWithCIFilters:(id)a3 imageFilterFunctionInfo:(id *)a4 error:(id *)a5;
-- (id)newLibraryWithCIFiltersForComputePipeline:(id)a3 imageFilterFunctionInfo:(id *)a4 error:(id *)a5;
-- (id)newLibraryWithDAG:(id)a3 functions:(id)a4 error:(id *)a5;
-- (id)newLibraryWithData:(id)a3 error:(id *)a4;
-- (id)newLibraryWithFile:(id)a3 error:(id *)a4;
-- (id)newLibraryWithImageFilterFunctionsSPI:(id)a3 imageFilterFunctionInfo:(id *)a4 error:(id *)a5;
-- (id)newLibraryWithSource:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)newLibraryWithStitchedDescriptor:(id)a3 error:(id *)a4;
-- (id)newLibraryWithStitchedDescriptorSPI:(id)a3 error:(id *)a4;
-- (id)newLibraryWithURL:(id)a3 error:(id *)a4;
-- (id)newModifyPluginData:(id)a3;
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
-- (id)newRenderPipelineStateWithMeshDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
-- (id)newRenderPipelineStateWithTileDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
-- (id)newResidencySetWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newSharedTextureWithDescriptor:(id)a3;
-- (id)newSharedTextureWithHandle:(id)a3;
-- (id)newTextureWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 descriptor:(id)a5 deallocator:(id)a6;
-- (id)newTextureWithDescriptor:(id)a3;
-- (id)newTextureWithDescriptor:(id)a3 iosurface:(__IOSurface *)a4 plane:(unint64_t)a5;
-- (id)newTextureWithDescriptor:(id)a3 iosurface:(__IOSurface *)a4 plane:(unint64_t)a5 slice:(unint64_t)a6;
-- (id)newVisibleFunctionTableWithDescriptor:(id)a3;
-- (id)setGpuCompilerSPIOptionShaderValidation:(id)a3 options:(unint64_t)a4;
-- (id)unwrapAndModifyComputePipelineDescriptor:(id *)a3 options:(unint64_t *)a4;
-- (id)unwrapAndModifyMeshRenderPipelineDescriptor:(id)a3 options:(unint64_t *)a4;
-- (id)unwrapAndModifyRenderPipelineDescriptor:(id *)a3 options:(unint64_t *)a4;
-- (id)unwrapAndModifyTileRenderPipelineDescriptor:(id *)a3 options:(unint64_t *)a4;
-- (id)unwrapStitchedLibraryDescriptor:(id)a3;
-- (void)_modifyCompileOptions:(unint64_t *)a3;
-- (void)_modifyMeshRenderPipelineDescriptor:(id)a3 options:(unint64_t *)a4;
-- (void)_prepareBinaryLinkedFunctions:(id)a3;
-- (void)_prepareInsertLibraries:(id)a3;
+- (id)newDefaultLibraryWithBundle:(id)bundle error:(id *)error;
+- (id)newDynamicLibrary:(id)library computeDescriptor:(id)descriptor error:(id *)error;
+- (id)newDynamicLibrary:(id)library error:(id *)error;
+- (id)newDynamicLibraryWithURL:(id)l options:(unint64_t)options error:(id *)error;
+- (id)newHeapWithDescriptor:(id)descriptor;
+- (id)newIndirectCommandBufferWithDescriptor:(id)descriptor maxCommandCount:(unint64_t)count options:(unint64_t)options;
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor;
+- (id)newLibraryWithCIFilters:(id)filters imageFilterFunctionInfo:(id *)info error:(id *)error;
+- (id)newLibraryWithCIFiltersForComputePipeline:(id)pipeline imageFilterFunctionInfo:(id *)info error:(id *)error;
+- (id)newLibraryWithDAG:(id)g functions:(id)functions error:(id *)error;
+- (id)newLibraryWithData:(id)data error:(id *)error;
+- (id)newLibraryWithFile:(id)file error:(id *)error;
+- (id)newLibraryWithImageFilterFunctionsSPI:(id)i imageFilterFunctionInfo:(id *)info error:(id *)error;
+- (id)newLibraryWithSource:(id)source options:(id)options error:(id *)error;
+- (id)newLibraryWithStitchedDescriptor:(id)descriptor error:(id *)error;
+- (id)newLibraryWithStitchedDescriptorSPI:(id)i error:(id *)error;
+- (id)newLibraryWithURL:(id)l error:(id *)error;
+- (id)newModifyPluginData:(id)data;
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
+- (id)newRenderPipelineStateWithMeshDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
+- (id)newRenderPipelineStateWithTileDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
+- (id)newResidencySetWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newSharedTextureWithDescriptor:(id)descriptor;
+- (id)newSharedTextureWithHandle:(id)handle;
+- (id)newTextureWithBytesNoCopy:(void *)copy length:(unint64_t)length descriptor:(id)descriptor deallocator:(id)deallocator;
+- (id)newTextureWithDescriptor:(id)descriptor;
+- (id)newTextureWithDescriptor:(id)descriptor iosurface:(__IOSurface *)iosurface plane:(unint64_t)plane;
+- (id)newTextureWithDescriptor:(id)descriptor iosurface:(__IOSurface *)iosurface plane:(unint64_t)plane slice:(unint64_t)slice;
+- (id)newVisibleFunctionTableWithDescriptor:(id)descriptor;
+- (id)setGpuCompilerSPIOptionShaderValidation:(id)validation options:(unint64_t)options;
+- (id)unwrapAndModifyComputePipelineDescriptor:(id *)descriptor options:(unint64_t *)options;
+- (id)unwrapAndModifyMeshRenderPipelineDescriptor:(id)descriptor options:(unint64_t *)options;
+- (id)unwrapAndModifyRenderPipelineDescriptor:(id *)descriptor options:(unint64_t *)options;
+- (id)unwrapAndModifyTileRenderPipelineDescriptor:(id *)descriptor options:(unint64_t *)options;
+- (id)unwrapStitchedLibraryDescriptor:(id)descriptor;
+- (void)_modifyCompileOptions:(unint64_t *)options;
+- (void)_modifyMeshRenderPipelineDescriptor:(id)descriptor options:(unint64_t *)options;
+- (void)_prepareBinaryLinkedFunctions:(id)functions;
+- (void)_prepareInsertLibraries:(id)libraries;
 - (void)dealloc;
-- (void)modifyFunctionDescriptor:(id)a3;
-- (void)newComputePipelineStateWithDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)newComputePipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)newComputePipelineStateWithFunction:(id)a3 completionHandler:(id)a4;
-- (void)newComputePipelineStateWithFunction:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)newLibraryWithSource:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)newLibraryWithStitchedDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)newRenderPipelineStateWithDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)newRenderPipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)newRenderPipelineStateWithMeshDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)newRenderPipelineStateWithMeshDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)newRenderPipelineStateWithTileDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)newRenderPipelineStateWithTileDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)onComputePipelineCreated:(id)a3;
-- (void)onRenderPipelineCreated:(id)a3;
+- (void)modifyFunctionDescriptor:(id)descriptor;
+- (void)newComputePipelineStateWithDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)newComputePipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler;
+- (void)newComputePipelineStateWithFunction:(id)function completionHandler:(id)handler;
+- (void)newComputePipelineStateWithFunction:(id)function options:(unint64_t)options completionHandler:(id)handler;
+- (void)newLibraryWithSource:(id)source options:(id)options completionHandler:(id)handler;
+- (void)newLibraryWithStitchedDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)newRenderPipelineStateWithDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)newRenderPipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler;
+- (void)newRenderPipelineStateWithMeshDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)newRenderPipelineStateWithMeshDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler;
+- (void)newRenderPipelineStateWithTileDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)newRenderPipelineStateWithTileDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler;
+- (void)onComputePipelineCreated:(id)created;
+- (void)onRenderPipelineCreated:(id)created;
 - (void)validateRaytracing;
 @end
 
 @implementation MTLLegacySVDevice
 
-- (MTLLegacySVDevice)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTLLegacySVDevice)initWithBaseObject:(id)object parent:(id)parent
 {
   v18 = *MEMORY[0x277D85DE8];
   v17.receiver = self;
   v17.super_class = MTLLegacySVDevice;
-  v5 = [(MTLToolsDevice *)&v17 initWithBaseObject:a3 parent:a4];
+  v5 = [(MTLToolsDevice *)&v17 initWithBaseObject:object parent:parent];
   if (v5)
   {
     if (MTLLegacySVLog(void)::onceToken != -1)
@@ -120,7 +120,7 @@
     *(v5 + 33) = 0x100000008;
     *(v5 + 68) = 3;
     *(v5 + 70) = 1;
-    [a3 supportsFamily:1001];
+    [object supportsFamily:1001];
     v6 = MTLGetEnvDefault();
     *(v5 + 69) = v6 != 0;
     v7 = (v5 + 284);
@@ -131,25 +131,25 @@
     }
 
     *v7 = v8 | *(v5 + 284) & 0xFFFFFFFFE8000200;
-    v9 = [a3 supportsArgumentBuffersTier2];
+    supportsArgumentBuffersTier2 = [object supportsArgumentBuffersTier2];
     v10 = 0x1080000000;
-    if (v9)
+    if (supportsArgumentBuffersTier2)
     {
       v10 = 0x10A0000000;
     }
 
     *v7 = v10 | *v7 & 0xFFFFFFEF5FFFFFFFLL;
-    v11 = [a3 supportsRaytracing];
+    supportsRaytracing = [object supportsRaytracing];
     v12 = 0x100000000;
-    if (!v11)
+    if (!supportsRaytracing)
     {
       v12 = 0;
     }
 
     *v7 = *v7 & 0xFFFFFFFEFFFFFFFFLL | v12;
-    v13 = [a3 supportsFunctionPointers];
+    supportsFunctionPointers = [object supportsFunctionPointers];
     v14 = 0x400000000;
-    if (!v13)
+    if (!supportsFunctionPointers)
     {
       v14 = 0;
     }
@@ -181,28 +181,28 @@
   [(MTLToolsDevice *)&v3 dealloc];
 }
 
-- (void)modifyFunctionDescriptor:(id)a3
+- (void)modifyFunctionDescriptor:(id)descriptor
 {
-  v5 = [a3 pipelineOptions];
-  [(MTLLegacySVDevice *)self _modifyCompileOptions:&v5];
-  [a3 setPipelineOptions:v5 & 0xFFFFFFFFFFFEFFFCLL];
+  pipelineOptions = [descriptor pipelineOptions];
+  [(MTLLegacySVDevice *)self _modifyCompileOptions:&pipelineOptions];
+  [descriptor setPipelineOptions:pipelineOptions & 0xFFFFFFFFFFFEFFFCLL];
 }
 
-- (void)_modifyCompileOptions:(unint64_t *)a3
+- (void)_modifyCompileOptions:(unint64_t *)options
 {
-  v3 = *a3;
-  *a3 |= 0x1800003uLL;
+  v3 = *options;
+  *options |= 0x1800003uLL;
   if ((*(self + 284) & 0x10) != 0)
   {
-    *a3 = v3 | 0x11800003;
+    *options = v3 | 0x11800003;
   }
 }
 
-- (id)newModifyPluginData:(id)a3
+- (id)newModifyPluginData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:a3];
+    v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:data];
   }
 
   else
@@ -215,15 +215,15 @@
   return v5;
 }
 
-- (void)_prepareBinaryLinkedFunctions:(id)a3
+- (void)_prepareBinaryLinkedFunctions:(id)functions
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [a3 binaryFunctions];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  binaryFunctions = [functions binaryFunctions];
+  v4 = [binaryFunctions countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -235,14 +235,14 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(binaryFunctions);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) prepareForBinaryFunctionUsage];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [binaryFunctions countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -251,14 +251,14 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_prepareInsertLibraries:(id)a3
+- (void)_prepareInsertLibraries:(id)libraries
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [libraries countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -270,14 +270,14 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(libraries);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) prepareForUsage];
       }
 
       while (v5 != v7);
-      v5 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [libraries countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -286,21 +286,21 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_modifyRenderPipelineDescriptor:(id)a3 options:(unint64_t *)a4
+- (id)_modifyRenderPipelineDescriptor:(id)descriptor options:(unint64_t *)options
 {
   v23[1] = *MEMORY[0x277D85DE8];
   v21 = 0;
-  [a3 setForceSoftwareVertexFetch:1];
-  [objc_msgSend(a3 "vertexFunction")];
-  [objc_msgSend(a3 "fragmentFunction")];
-  -[MTLLegacySVDevice _prepareBinaryLinkedFunctions:](self, "_prepareBinaryLinkedFunctions:", [a3 vertexLinkedFunctions]);
-  -[MTLLegacySVDevice _prepareBinaryLinkedFunctions:](self, "_prepareBinaryLinkedFunctions:", [a3 fragmentLinkedFunctions]);
-  [objc_msgSend(a3 "meshFunction")];
-  [objc_msgSend(a3 "objectFunction")];
-  -[MTLLegacySVDevice _prepareBinaryLinkedFunctions:](self, "_prepareBinaryLinkedFunctions:", [a3 meshLinkedFunctions]);
-  -[MTLLegacySVDevice _prepareBinaryLinkedFunctions:](self, "_prepareBinaryLinkedFunctions:", [a3 objectLinkedFunctions]);
+  [descriptor setForceSoftwareVertexFetch:1];
+  [objc_msgSend(descriptor "vertexFunction")];
+  [objc_msgSend(descriptor "fragmentFunction")];
+  -[MTLLegacySVDevice _prepareBinaryLinkedFunctions:](self, "_prepareBinaryLinkedFunctions:", [descriptor vertexLinkedFunctions]);
+  -[MTLLegacySVDevice _prepareBinaryLinkedFunctions:](self, "_prepareBinaryLinkedFunctions:", [descriptor fragmentLinkedFunctions]);
+  [objc_msgSend(descriptor "meshFunction")];
+  [objc_msgSend(descriptor "objectFunction")];
+  -[MTLLegacySVDevice _prepareBinaryLinkedFunctions:](self, "_prepareBinaryLinkedFunctions:", [descriptor meshLinkedFunctions]);
+  -[MTLLegacySVDevice _prepareBinaryLinkedFunctions:](self, "_prepareBinaryLinkedFunctions:", [descriptor objectLinkedFunctions]);
   v7 = objc_autoreleasePoolPush();
-  v8 = -[MTLLegacySVDevice loadDynamicLibrariesForFunction:insertLibraries:error:](self, "loadDynamicLibrariesForFunction:insertLibraries:error:", [a3 vertexFunction], objc_msgSend(a3, "vertexPreloadedLibraries"), &v21);
+  v8 = -[MTLLegacySVDevice loadDynamicLibrariesForFunction:insertLibraries:error:](self, "loadDynamicLibrariesForFunction:insertLibraries:error:", [descriptor vertexFunction], objc_msgSend(descriptor, "vertexPreloadedLibraries"), &v21);
   v9 = v21;
   if (v21)
   {
@@ -308,9 +308,9 @@
   }
 
   v10 = v8;
-  [a3 setVertexPreloadedLibraries:v8];
+  [descriptor setVertexPreloadedLibraries:v8];
   [(MTLLegacySVDevice *)self _prepareInsertLibraries:v10];
-  v11 = -[MTLLegacySVDevice loadDynamicLibrariesForFunction:insertLibraries:error:](self, "loadDynamicLibrariesForFunction:insertLibraries:error:", [a3 fragmentFunction], objc_msgSend(a3, "fragmentPreloadedLibraries"), &v21);
+  v11 = -[MTLLegacySVDevice loadDynamicLibrariesForFunction:insertLibraries:error:](self, "loadDynamicLibrariesForFunction:insertLibraries:error:", [descriptor fragmentFunction], objc_msgSend(descriptor, "fragmentPreloadedLibraries"), &v21);
   v9 = v21;
   if (v21)
   {
@@ -318,11 +318,11 @@
   }
 
   v12 = v11;
-  [a3 setFragmentPreloadedLibraries:v11];
+  [descriptor setFragmentPreloadedLibraries:v11];
   [(MTLLegacySVDevice *)self _prepareInsertLibraries:v12];
-  v13 = -[MTLLegacySVDevice loadDynamicLibrariesForFunction:insertLibraries:error:](self, "loadDynamicLibrariesForFunction:insertLibraries:error:", [a3 meshFunction], objc_msgSend(a3, "meshPreloadedLibraries"), &v21);
+  v13 = -[MTLLegacySVDevice loadDynamicLibrariesForFunction:insertLibraries:error:](self, "loadDynamicLibrariesForFunction:insertLibraries:error:", [descriptor meshFunction], objc_msgSend(descriptor, "meshPreloadedLibraries"), &v21);
   v9 = v21;
-  if (v21 || (v14 = v13, [a3 setMeshPreloadedLibraries:v13], -[MTLLegacySVDevice _prepareInsertLibraries:](self, "_prepareInsertLibraries:", v14), v15 = -[MTLLegacySVDevice loadDynamicLibrariesForFunction:insertLibraries:error:](self, "loadDynamicLibrariesForFunction:insertLibraries:error:", objc_msgSend(a3, "objectFunction"), objc_msgSend(a3, "objectPreloadedLibraries"), &v21), (v9 = v21) != 0))
+  if (v21 || (v14 = v13, [descriptor setMeshPreloadedLibraries:v13], -[MTLLegacySVDevice _prepareInsertLibraries:](self, "_prepareInsertLibraries:", v14), v15 = -[MTLLegacySVDevice loadDynamicLibrariesForFunction:insertLibraries:error:](self, "loadDynamicLibrariesForFunction:insertLibraries:error:", objc_msgSend(descriptor, "objectFunction"), objc_msgSend(descriptor, "objectPreloadedLibraries"), &v21), (v9 = v21) != 0))
   {
 LABEL_5:
     objc_autoreleasePoolPop(v7);
@@ -331,21 +331,21 @@ LABEL_5:
   else
   {
     v18 = v15;
-    [a3 setObjectPreloadedLibraries:v15];
+    [descriptor setObjectPreloadedLibraries:v15];
     [(MTLLegacySVDevice *)self _prepareInsertLibraries:v18];
     objc_autoreleasePoolPop(v7);
     v19 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:20];
-    v20 = [v19 bytes];
-    *v20 = [a3 isAlphaToCoverageEnabled];
-    *(v20 + 4) = [a3 maxVertexCallStackDepth];
-    *(v20 + 8) = [a3 maxFragmentCallStackDepth];
-    *(v20 + 12) = [a3 maxMeshCallStackDepth];
-    *(v20 + 16) = [a3 maxObjectCallStackDepth];
+    bytes = [v19 bytes];
+    *bytes = [descriptor isAlphaToCoverageEnabled];
+    *(bytes + 4) = [descriptor maxVertexCallStackDepth];
+    *(bytes + 8) = [descriptor maxFragmentCallStackDepth];
+    *(bytes + 12) = [descriptor maxMeshCallStackDepth];
+    *(bytes + 16) = [descriptor maxObjectCallStackDepth];
     v22 = @"MTLBoundsCheck::RenderPipelineData";
     v23[0] = v19;
-    [a3 setPluginData:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v23, &v22, 1)}];
+    [descriptor setPluginData:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v23, &v22, 1)}];
 
-    [a3 setGpuCompilerSPIOptions:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithDictionary:", -[MTLLegacySVDevice setGpuCompilerSPIOptionShaderValidation:options:](self, "setGpuCompilerSPIOptionShaderValidation:options:", objc_msgSend(a3, "gpuCompilerSPIOptions"), *a4))}];
+    [descriptor setGpuCompilerSPIOptions:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithDictionary:", -[MTLLegacySVDevice setGpuCompilerSPIOptionShaderValidation:options:](self, "setGpuCompilerSPIOptionShaderValidation:options:", objc_msgSend(descriptor, "gpuCompilerSPIOptions"), *options))}];
     v9 = v21;
   }
 
@@ -353,17 +353,17 @@ LABEL_5:
   return v9;
 }
 
-- (id)unwrapAndModifyRenderPipelineDescriptor:(id *)a3 options:(unint64_t *)a4
+- (id)unwrapAndModifyRenderPipelineDescriptor:(id *)descriptor options:(unint64_t *)options
 {
-  *a3 = [*a3 copy];
-  [(MTLLegacySVDevice *)self _modifyCompileOptions:a4];
-  [(MTLLegacySVDevice *)self _modifyRenderPipelineDescriptor:*a3 options:a4];
-  v7 = *a3;
+  *descriptor = [*descriptor copy];
+  [(MTLLegacySVDevice *)self _modifyCompileOptions:options];
+  [(MTLLegacySVDevice *)self _modifyRenderPipelineDescriptor:*descriptor options:options];
+  v7 = *descriptor;
 
   return [(MTLToolsDevice *)self unwrapMTLRenderPipelineDescriptor:v7];
 }
 
-- (id)setGpuCompilerSPIOptionShaderValidation:(id)a3 options:(unint64_t)a4
+- (id)setGpuCompilerSPIOptionShaderValidation:(id)validation options:(unint64_t)options
 {
   v19 = *MEMORY[0x277D85DE8];
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -371,7 +371,7 @@ LABEL_5:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [validation countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -383,27 +383,27 @@ LABEL_5:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(validation);
         }
 
-        [v6 setObject:objc_msgSend(a3 forKey:{"objectForKeyedSubscript:", *(*(&v14 + 1) + 8 * v10)), *(*(&v14 + 1) + 8 * v10)}];
+        [v6 setObject:objc_msgSend(validation forKey:{"objectForKeyedSubscript:", *(*(&v14 + 1) + 8 * v10)), *(*(&v14 + 1) + 8 * v10)}];
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [validation countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 
-  if ((a4 & 0x800000000) != 0)
+  if ((options & 0x800000000) != 0)
   {
     v11 = @"enable-shader-validation";
     goto LABEL_12;
   }
 
-  if ((a4 & 0x1000000000) != 0)
+  if ((options & 0x1000000000) != 0)
   {
     v11 = @"disable-shader-validation";
 LABEL_12:
@@ -415,12 +415,12 @@ LABEL_12:
   return result;
 }
 
-- (id)_modifyComputePipelineDescriptor:(id)a3 options:(unint64_t *)a4
+- (id)_modifyComputePipelineDescriptor:(id)descriptor options:(unint64_t *)options
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v13 = 0;
-  [objc_msgSend(a3 "computeFunction")];
-  v7 = [(MTLLegacySVDevice *)self loadDynamicLibrariesForComputeDescriptor:a3 error:&v13];
+  [objc_msgSend(descriptor "computeFunction")];
+  v7 = [(MTLLegacySVDevice *)self loadDynamicLibrariesForComputeDescriptor:descriptor error:&v13];
   v8 = v7;
   if (v13)
   {
@@ -428,18 +428,18 @@ LABEL_12:
 
   else
   {
-    [a3 setPreloadedLibraries:v7];
+    [descriptor setPreloadedLibraries:v7];
 
     v9 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:4];
-    v10 = [v9 bytes];
-    *v10 = [a3 maxCallStackDepth];
+    bytes = [v9 bytes];
+    *bytes = [descriptor maxCallStackDepth];
     v14 = @"MTLBoundsCheck::ComputePipelineData";
     v15[0] = v9;
-    [a3 setPluginData:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v15, &v14, 1)}];
+    [descriptor setPluginData:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v15, &v14, 1)}];
 
-    -[MTLLegacySVDevice _prepareInsertLibraries:](self, "_prepareInsertLibraries:", [a3 preloadedLibraries]);
-    -[MTLLegacySVDevice _prepareBinaryLinkedFunctions:](self, "_prepareBinaryLinkedFunctions:", [a3 linkedFunctions]);
-    [a3 setGpuCompilerSPIOptions:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithDictionary:", -[MTLLegacySVDevice setGpuCompilerSPIOptionShaderValidation:options:](self, "setGpuCompilerSPIOptionShaderValidation:options:", objc_msgSend(a3, "gpuCompilerSPIOptions"), *a4))}];
+    -[MTLLegacySVDevice _prepareInsertLibraries:](self, "_prepareInsertLibraries:", [descriptor preloadedLibraries]);
+    -[MTLLegacySVDevice _prepareBinaryLinkedFunctions:](self, "_prepareBinaryLinkedFunctions:", [descriptor linkedFunctions]);
+    [descriptor setGpuCompilerSPIOptions:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithDictionary:", -[MTLLegacySVDevice setGpuCompilerSPIOptionShaderValidation:options:](self, "setGpuCompilerSPIOptionShaderValidation:options:", objc_msgSend(descriptor, "gpuCompilerSPIOptions"), *options))}];
   }
 
   result = v13;
@@ -447,24 +447,24 @@ LABEL_12:
   return result;
 }
 
-- (id)unwrapAndModifyComputePipelineDescriptor:(id *)a3 options:(unint64_t *)a4
+- (id)unwrapAndModifyComputePipelineDescriptor:(id *)descriptor options:(unint64_t *)options
 {
-  v7 = [*a3 copy];
-  *a3 = v7;
-  [(MTLLegacySVDevice *)self _modifyComputePipelineDescriptor:v7 options:a4];
-  [(MTLLegacySVDevice *)self _modifyCompileOptions:a4];
-  v8 = *a3;
+  v7 = [*descriptor copy];
+  *descriptor = v7;
+  [(MTLLegacySVDevice *)self _modifyComputePipelineDescriptor:v7 options:options];
+  [(MTLLegacySVDevice *)self _modifyCompileOptions:options];
+  v8 = *descriptor;
 
   return [(MTLToolsDevice *)self unwrapMTLComputePipelineDescriptor:v8];
 }
 
-- (id)_modifyTilePipelineDescriptor:(id)a3 options:(unint64_t *)a4
+- (id)_modifyTilePipelineDescriptor:(id)descriptor options:(unint64_t *)options
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v13 = 0;
-  [objc_msgSend(a3 "tileFunction")];
-  -[MTLLegacySVDevice _prepareBinaryLinkedFunctions:](self, "_prepareBinaryLinkedFunctions:", [a3 linkedFunctions]);
-  v7 = -[MTLLegacySVDevice loadDynamicLibrariesForFunction:insertLibraries:error:](self, "loadDynamicLibrariesForFunction:insertLibraries:error:", [a3 tileFunction], objc_msgSend(a3, "preloadedLibraries"), &v13);
+  [objc_msgSend(descriptor "tileFunction")];
+  -[MTLLegacySVDevice _prepareBinaryLinkedFunctions:](self, "_prepareBinaryLinkedFunctions:", [descriptor linkedFunctions]);
+  v7 = -[MTLLegacySVDevice loadDynamicLibrariesForFunction:insertLibraries:error:](self, "loadDynamicLibrariesForFunction:insertLibraries:error:", [descriptor tileFunction], objc_msgSend(descriptor, "preloadedLibraries"), &v13);
   v8 = v7;
   if (v13)
   {
@@ -472,17 +472,17 @@ LABEL_12:
 
   else
   {
-    [a3 setPreloadedLibraries:v7];
+    [descriptor setPreloadedLibraries:v7];
 
-    -[MTLLegacySVDevice _prepareInsertLibraries:](self, "_prepareInsertLibraries:", [a3 preloadedLibraries]);
+    -[MTLLegacySVDevice _prepareInsertLibraries:](self, "_prepareInsertLibraries:", [descriptor preloadedLibraries]);
     v9 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:4];
-    v10 = [v9 bytes];
-    *v10 = [a3 maxCallStackDepth];
+    bytes = [v9 bytes];
+    *bytes = [descriptor maxCallStackDepth];
     v14 = @"MTLBoundsCheck::ComputePipelineData";
     v15[0] = v9;
-    [a3 setPluginData:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v15, &v14, 1)}];
+    [descriptor setPluginData:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v15, &v14, 1)}];
 
-    [a3 setGpuCompilerSPIOptions:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithDictionary:", -[MTLLegacySVDevice setGpuCompilerSPIOptionShaderValidation:options:](self, "setGpuCompilerSPIOptionShaderValidation:options:", objc_msgSend(a3, "gpuCompilerSPIOptions"), *a4))}];
+    [descriptor setGpuCompilerSPIOptions:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithDictionary:", -[MTLLegacySVDevice setGpuCompilerSPIOptionShaderValidation:options:](self, "setGpuCompilerSPIOptionShaderValidation:options:", objc_msgSend(descriptor, "gpuCompilerSPIOptions"), *options))}];
   }
 
   result = v13;
@@ -490,59 +490,59 @@ LABEL_12:
   return result;
 }
 
-- (id)unwrapAndModifyTileRenderPipelineDescriptor:(id *)a3 options:(unint64_t *)a4
+- (id)unwrapAndModifyTileRenderPipelineDescriptor:(id *)descriptor options:(unint64_t *)options
 {
-  v7 = [*a3 copy];
-  *a3 = v7;
-  [(MTLLegacySVDevice *)self _modifyTilePipelineDescriptor:v7 options:a4];
-  [(MTLLegacySVDevice *)self _modifyCompileOptions:a4];
-  v8 = *a3;
+  v7 = [*descriptor copy];
+  *descriptor = v7;
+  [(MTLLegacySVDevice *)self _modifyTilePipelineDescriptor:v7 options:options];
+  [(MTLLegacySVDevice *)self _modifyCompileOptions:options];
+  v8 = *descriptor;
 
   return [(MTLToolsDevice *)self unwrapMTLTileRenderPipelineDescriptor:v8];
 }
 
-- (void)_modifyMeshRenderPipelineDescriptor:(id)a3 options:(unint64_t *)a4
+- (void)_modifyMeshRenderPipelineDescriptor:(id)descriptor options:(unint64_t *)options
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v7 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:20];
-  v8 = [v7 bytes];
-  *v8 = [a3 isAlphaToCoverageEnabled];
+  bytes = [v7 bytes];
+  *bytes = [descriptor isAlphaToCoverageEnabled];
   v10 = @"MTLBoundsCheck::RenderPipelineData";
   v11[0] = v7;
-  [a3 setPluginData:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v11, &v10, 1)}];
+  [descriptor setPluginData:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v11, &v10, 1)}];
 
-  [a3 setGpuCompilerSPIOptions:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithDictionary:", -[MTLLegacySVDevice setGpuCompilerSPIOptionShaderValidation:options:](self, "setGpuCompilerSPIOptionShaderValidation:options:", objc_msgSend(a3, "gpuCompilerSPIOptions"), *a4))}];
+  [descriptor setGpuCompilerSPIOptions:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithDictionary:", -[MTLLegacySVDevice setGpuCompilerSPIOptionShaderValidation:options:](self, "setGpuCompilerSPIOptionShaderValidation:options:", objc_msgSend(descriptor, "gpuCompilerSPIOptions"), *options))}];
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)unwrapAndModifyMeshRenderPipelineDescriptor:(id)a3 options:(unint64_t *)a4
+- (id)unwrapAndModifyMeshRenderPipelineDescriptor:(id)descriptor options:(unint64_t *)options
 {
-  v6 = [a3 copy];
-  [(MTLLegacySVDevice *)self _modifyCompileOptions:a4];
-  [(MTLLegacySVDevice *)self _modifyMeshRenderPipelineDescriptor:v6 options:a4];
+  v6 = [descriptor copy];
+  [(MTLLegacySVDevice *)self _modifyCompileOptions:options];
+  [(MTLLegacySVDevice *)self _modifyMeshRenderPipelineDescriptor:v6 options:options];
 
   return [(MTLToolsDevice *)self unwrapMTLMeshRenderPipelineDescriptor:v6];
 }
 
-- (void)onRenderPipelineCreated:(id)a3
+- (void)onRenderPipelineCreated:(id)created
 {
-  LogInstrumentationFailures([a3 vertexFunctionData], objc_msgSend(a3, "vertexDebugInstrumentationData"));
-  LogInstrumentationFailures([a3 fragmentFunctionData], objc_msgSend(a3, "fragmentDebugInstrumentationData"));
-  v4 = [a3 tileFunctionData];
-  v5 = [a3 tileDebugInstrumentationData];
+  LogInstrumentationFailures([created vertexFunctionData], objc_msgSend(created, "vertexDebugInstrumentationData"));
+  LogInstrumentationFailures([created fragmentFunctionData], objc_msgSend(created, "fragmentDebugInstrumentationData"));
+  tileFunctionData = [created tileFunctionData];
+  tileDebugInstrumentationData = [created tileDebugInstrumentationData];
 
-  LogInstrumentationFailures(v4, v5);
+  LogInstrumentationFailures(tileFunctionData, tileDebugInstrumentationData);
 }
 
-- (void)onComputePipelineCreated:(id)a3
+- (void)onComputePipelineCreated:(id)created
 {
-  v4 = [a3 kernelFunctionData];
-  v5 = [a3 debugInstrumentationData];
+  kernelFunctionData = [created kernelFunctionData];
+  debugInstrumentationData = [created debugInstrumentationData];
 
-  LogInstrumentationFailures(v4, v5);
+  LogInstrumentationFailures(kernelFunctionData, debugInstrumentationData);
 }
 
-- (id)newCommandQueueWithDescriptor:(id)a3
+- (id)newCommandQueueWithDescriptor:(id)descriptor
 {
   instrumentationHeapInit(self);
   v5 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -553,44 +553,44 @@ LABEL_12:
 
 - (id)newCommandQueue
 {
-  v3 = [MEMORY[0x277CD6CF8] commandQueueDescriptor];
+  commandQueueDescriptor = [MEMORY[0x277CD6CF8] commandQueueDescriptor];
 
-  return [(MTLLegacySVDevice *)self newCommandQueueWithDescriptor:v3];
+  return [(MTLLegacySVDevice *)self newCommandQueueWithDescriptor:commandQueueDescriptor];
 }
 
-- (id)newCommandQueueWithMaxCommandBufferCount:(unint64_t)a3
+- (id)newCommandQueueWithMaxCommandBufferCount:(unint64_t)count
 {
-  v5 = [MEMORY[0x277CD6CF8] commandQueueDescriptor];
-  [v5 setMaxCommandBufferCount:a3];
+  commandQueueDescriptor = [MEMORY[0x277CD6CF8] commandQueueDescriptor];
+  [commandQueueDescriptor setMaxCommandBufferCount:count];
 
-  return [(MTLLegacySVDevice *)self newCommandQueueWithDescriptor:v5];
+  return [(MTLLegacySVDevice *)self newCommandQueueWithDescriptor:commandQueueDescriptor];
 }
 
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
-  v8 = a4;
-  v24 = a4;
-  v25 = a3;
+  optionsCopy = options;
+  optionsCopy2 = options;
+  descriptorCopy = descriptor;
   instrumentationHeapInit(self);
   v11 = objc_autoreleasePoolPush();
-  v12 = [a3 vertexFunction];
-  v13 = [a3 fragmentFunction];
-  v14 = [a3 label];
-  v15 = [a3 shaderValidation];
-  [a3 shaderValidationState];
-  MTLLegacySVSetValidationChecksOptions(self, v12, v13, 0, v14, v15, &v24);
-  v16 = [(MTLLegacySVDevice *)self unwrapAndModifyRenderPipelineDescriptor:&v25 options:&v24];
+  vertexFunction = [descriptor vertexFunction];
+  fragmentFunction = [descriptor fragmentFunction];
+  label = [descriptor label];
+  shaderValidation = [descriptor shaderValidation];
+  [descriptor shaderValidationState];
+  MTLLegacySVSetValidationChecksOptions(self, vertexFunction, fragmentFunction, 0, label, shaderValidation, &optionsCopy2);
+  v16 = [(MTLLegacySVDevice *)self unwrapAndModifyRenderPipelineDescriptor:&descriptorCopy options:&optionsCopy2];
   v23 = 0;
-  v17 = [*(self + 2) newRenderPipelineStateWithDescriptor:v16 options:v24 reflection:&v23 error:a6];
-  if (a6 && *a6)
+  v17 = [*(self + 2) newRenderPipelineStateWithDescriptor:v16 options:optionsCopy2 reflection:&v23 error:error];
+  if (error && *error)
   {
-    v18 = *a6;
+    v18 = *error;
   }
 
   if (v17)
   {
     v19 = [MTLLegacySVRenderPipelineState alloc];
-    v20 = [(MTLLegacySVRenderPipelineState *)v19 initWithRenderPipelineState:v17 descriptor:v25 unwrappedDescriptor:v16 reflection:v23 device:self pipelineOptions:v24];
+    v20 = [(MTLLegacySVRenderPipelineState *)v19 initWithRenderPipelineState:v17 descriptor:descriptorCopy unwrappedDescriptor:v16 reflection:v23 device:self pipelineOptions:optionsCopy2];
   }
 
   else
@@ -599,16 +599,16 @@ LABEL_12:
   }
 
   objc_autoreleasePoolPop(v11);
-  if (a6 && *a6)
+  if (error && *error)
   {
-    v21 = *a6;
+    v21 = *error;
   }
 
   if (v20)
   {
-    if (a5 && (*&v8 & 0x40003) != 0)
+    if (reflection && (*&optionsCopy & 0x40003) != 0)
     {
-      *a5 = [(MTLLegacySVRenderPipelineState *)v20 userReflection];
+      *reflection = [(MTLLegacySVRenderPipelineState *)v20 userReflection];
     }
 
     else if ((*(self + 292) & 1) == 0)
@@ -622,34 +622,34 @@ LABEL_12:
   return v20;
 }
 
-- (void)newRenderPipelineStateWithDescriptor:(id)a3 completionHandler:(id)a4
+- (void)newRenderPipelineStateWithDescriptor:(id)descriptor completionHandler:(id)handler
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __76__MTLLegacySVDevice_newRenderPipelineStateWithDescriptor_completionHandler___block_invoke;
   v4[3] = &unk_2787B3AE0;
-  v4[4] = a4;
-  [(MTLLegacySVDevice *)self newRenderPipelineStateWithDescriptor:a3 options:0 completionHandler:v4];
+  v4[4] = handler;
+  [(MTLLegacySVDevice *)self newRenderPipelineStateWithDescriptor:descriptor options:0 completionHandler:v4];
 }
 
-- (void)newRenderPipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)newRenderPipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler
 {
-  v6 = a4;
-  v18 = a4;
-  v19 = a3;
+  optionsCopy = options;
+  optionsCopy2 = options;
+  descriptorCopy = descriptor;
   instrumentationHeapInit(self);
-  v9 = (*&v6 & 0x40003) != 0;
+  v9 = (*&optionsCopy & 0x40003) != 0;
   v10 = objc_autoreleasePoolPush();
-  v11 = [a3 vertexFunction];
-  v12 = [a3 fragmentFunction];
-  v13 = [a3 label];
-  v14 = [a3 shaderValidation];
-  [a3 shaderValidationState];
-  MTLLegacySVSetValidationChecksOptions(self, v11, v12, 0, v13, v14, &v18);
-  v15 = [(MTLLegacySVDevice *)self unwrapAndModifyRenderPipelineDescriptor:&v19 options:&v18];
+  vertexFunction = [descriptor vertexFunction];
+  fragmentFunction = [descriptor fragmentFunction];
+  label = [descriptor label];
+  shaderValidation = [descriptor shaderValidation];
+  [descriptor shaderValidationState];
+  MTLLegacySVSetValidationChecksOptions(self, vertexFunction, fragmentFunction, 0, label, shaderValidation, &optionsCopy2);
+  v15 = [(MTLLegacySVDevice *)self unwrapAndModifyRenderPipelineDescriptor:&descriptorCopy options:&optionsCopy2];
   v16 = *(self + 2);
   LOBYTE(v17) = v9;
-  [v16 newRenderPipelineStateWithDescriptor:MEMORY[0x277D85DD0] options:3221225472 completionHandler:{__84__MTLLegacySVDevice_newRenderPipelineStateWithDescriptor_options_completionHandler___block_invoke, &unk_2787B3B30, v19, v15, self, a5, v18, v17}];
+  [v16 newRenderPipelineStateWithDescriptor:MEMORY[0x277D85DD0] options:3221225472 completionHandler:{__84__MTLLegacySVDevice_newRenderPipelineStateWithDescriptor_options_completionHandler___block_invoke, &unk_2787B3B30, descriptorCopy, v15, self, handler, optionsCopy2, v17}];
   objc_autoreleasePoolPop(v10);
 }
 
@@ -681,20 +681,20 @@ uint64_t __84__MTLLegacySVDevice_newRenderPipelineStateWithDescriptor_options_co
   return v5();
 }
 
-- (id)newRenderPipelineStateWithTileDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)newRenderPipelineStateWithTileDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
-  v8 = a4;
-  v21 = a4;
-  v22 = a3;
+  optionsCopy = options;
+  optionsCopy2 = options;
+  descriptorCopy = descriptor;
   instrumentationHeapInit(self);
-  v11 = [a3 tileFunction];
-  v12 = [a3 label];
-  v13 = [a3 shaderValidation];
-  [a3 shaderValidationState];
-  MTLLegacySVSetValidationChecksOptions(self, v11, 0, 0, v12, v13, &v21);
-  v14 = [(MTLLegacySVDevice *)self unwrapAndModifyTileRenderPipelineDescriptor:&v22 options:&v21];
+  tileFunction = [descriptor tileFunction];
+  label = [descriptor label];
+  shaderValidation = [descriptor shaderValidation];
+  [descriptor shaderValidationState];
+  MTLLegacySVSetValidationChecksOptions(self, tileFunction, 0, 0, label, shaderValidation, &optionsCopy2);
+  v14 = [(MTLLegacySVDevice *)self unwrapAndModifyTileRenderPipelineDescriptor:&descriptorCopy options:&optionsCopy2];
   v20 = 0;
-  v15 = [*(self + 2) newRenderPipelineStateWithTileDescriptor:v14 options:v21 reflection:&v20 error:a6];
+  v15 = [*(self + 2) newRenderPipelineStateWithTileDescriptor:v14 options:optionsCopy2 reflection:&v20 error:error];
   if (!v15)
   {
     return 0;
@@ -702,11 +702,11 @@ uint64_t __84__MTLLegacySVDevice_newRenderPipelineStateWithDescriptor_options_co
 
   v16 = v15;
   v17 = [MTLLegacySVRenderPipelineState alloc];
-  v18 = [(MTLLegacySVRenderPipelineState *)v17 initWithRenderPipelineState:v16 tileDescriptor:v22 reflection:v20 device:self pipelineOptions:v21];
+  v18 = [(MTLLegacySVRenderPipelineState *)v17 initWithRenderPipelineState:v16 tileDescriptor:descriptorCopy reflection:v20 device:self pipelineOptions:optionsCopy2];
 
-  if (a5 && (*&v8 & 0x40003) != 0)
+  if (reflection && (*&optionsCopy & 0x40003) != 0)
   {
-    *a5 = [(MTLLegacySVRenderPipelineState *)v18 userReflection];
+    *reflection = [(MTLLegacySVRenderPipelineState *)v18 userReflection];
   }
 
   else if ((*(self + 292) & 1) == 0)
@@ -718,27 +718,27 @@ uint64_t __84__MTLLegacySVDevice_newRenderPipelineStateWithDescriptor_options_co
   return v18;
 }
 
-- (void)newRenderPipelineStateWithTileDescriptor:(id)a3 completionHandler:(id)a4
+- (void)newRenderPipelineStateWithTileDescriptor:(id)descriptor completionHandler:(id)handler
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __80__MTLLegacySVDevice_newRenderPipelineStateWithTileDescriptor_completionHandler___block_invoke;
   v4[3] = &unk_2787B3AE0;
-  v4[4] = a4;
-  [(MTLLegacySVDevice *)self newRenderPipelineStateWithTileDescriptor:a3 options:0 completionHandler:v4];
+  v4[4] = handler;
+  [(MTLLegacySVDevice *)self newRenderPipelineStateWithTileDescriptor:descriptor options:0 completionHandler:v4];
 }
 
-- (void)newRenderPipelineStateWithTileDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)newRenderPipelineStateWithTileDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler
 {
-  v11 = a3;
-  v10 = a4;
+  descriptorCopy = descriptor;
+  optionsCopy = options;
   instrumentationHeapInit(self);
-  v7 = [a3 tileFunction];
-  v8 = [a3 label];
-  v9 = [a3 shaderValidation];
-  [a3 shaderValidationState];
-  MTLLegacySVSetValidationChecksOptions(self, v7, 0, 0, v8, v9, &v10);
-  [*(self + 2) newRenderPipelineStateWithTileDescriptor:-[MTLLegacySVDevice unwrapAndModifyTileRenderPipelineDescriptor:options:](self options:"unwrapAndModifyTileRenderPipelineDescriptor:options:" completionHandler:{&v11, &v10)}];
+  tileFunction = [descriptor tileFunction];
+  label = [descriptor label];
+  shaderValidation = [descriptor shaderValidation];
+  [descriptor shaderValidationState];
+  MTLLegacySVSetValidationChecksOptions(self, tileFunction, 0, 0, label, shaderValidation, &optionsCopy);
+  [*(self + 2) newRenderPipelineStateWithTileDescriptor:-[MTLLegacySVDevice unwrapAndModifyTileRenderPipelineDescriptor:options:](self options:"unwrapAndModifyTileRenderPipelineDescriptor:options:" completionHandler:{&descriptorCopy, &optionsCopy)}];
 }
 
 void __88__MTLLegacySVDevice_newRenderPipelineStateWithTileDescriptor_options_completionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -768,21 +768,21 @@ void __88__MTLLegacySVDevice_newRenderPipelineStateWithTileDescriptor_options_co
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)newRenderPipelineStateWithMeshDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)newRenderPipelineStateWithMeshDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
-  v8 = a4;
-  v23 = a4;
+  optionsCopy = options;
+  optionsCopy2 = options;
   instrumentationHeapInit(self);
-  v11 = [a3 meshFunction];
-  v12 = [a3 fragmentFunction];
-  v13 = [a3 objectFunction];
-  v14 = [a3 label];
-  v15 = [a3 shaderValidation];
-  [a3 shaderValidationState];
-  MTLLegacySVSetValidationChecksOptions(self, v11, v12, v13, v14, v15, &v23);
-  v16 = [(MTLLegacySVDevice *)self unwrapAndModifyMeshRenderPipelineDescriptor:a3 options:&v23];
+  meshFunction = [descriptor meshFunction];
+  fragmentFunction = [descriptor fragmentFunction];
+  objectFunction = [descriptor objectFunction];
+  label = [descriptor label];
+  shaderValidation = [descriptor shaderValidation];
+  [descriptor shaderValidationState];
+  MTLLegacySVSetValidationChecksOptions(self, meshFunction, fragmentFunction, objectFunction, label, shaderValidation, &optionsCopy2);
+  v16 = [(MTLLegacySVDevice *)self unwrapAndModifyMeshRenderPipelineDescriptor:descriptor options:&optionsCopy2];
   v22 = 0;
-  v17 = [*(self + 2) newRenderPipelineStateWithMeshDescriptor:v16 options:v23 reflection:&v22 error:a6];
+  v17 = [*(self + 2) newRenderPipelineStateWithMeshDescriptor:v16 options:optionsCopy2 reflection:&v22 error:error];
   if (!v17)
   {
     return 0;
@@ -790,11 +790,11 @@ void __88__MTLLegacySVDevice_newRenderPipelineStateWithTileDescriptor_options_co
 
   v18 = v17;
   v19 = [MTLLegacySVRenderPipelineState alloc];
-  v20 = [(MTLLegacySVRenderPipelineState *)v19 initWithRenderPipelineState:v18 meshDescriptor:a3 unwrappedDescriptor:v16 reflection:v22 device:self pipelineOptions:v23];
+  v20 = [(MTLLegacySVRenderPipelineState *)v19 initWithRenderPipelineState:v18 meshDescriptor:descriptor unwrappedDescriptor:v16 reflection:v22 device:self pipelineOptions:optionsCopy2];
 
-  if (a5 && (*&v8 & 0x40003) != 0)
+  if (reflection && (*&optionsCopy & 0x40003) != 0)
   {
-    *a5 = [(MTLLegacySVRenderPipelineState *)v20 userReflection];
+    *reflection = [(MTLLegacySVRenderPipelineState *)v20 userReflection];
   }
 
   else if ((*(self + 292) & 1) == 0)
@@ -806,28 +806,28 @@ void __88__MTLLegacySVDevice_newRenderPipelineStateWithTileDescriptor_options_co
   return v20;
 }
 
-- (void)newRenderPipelineStateWithMeshDescriptor:(id)a3 completionHandler:(id)a4
+- (void)newRenderPipelineStateWithMeshDescriptor:(id)descriptor completionHandler:(id)handler
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __80__MTLLegacySVDevice_newRenderPipelineStateWithMeshDescriptor_completionHandler___block_invoke;
   v4[3] = &unk_2787B3AE0;
-  v4[4] = a4;
-  [(MTLLegacySVDevice *)self newRenderPipelineStateWithMeshDescriptor:a3 options:0 completionHandler:v4];
+  v4[4] = handler;
+  [(MTLLegacySVDevice *)self newRenderPipelineStateWithMeshDescriptor:descriptor options:0 completionHandler:v4];
 }
 
-- (void)newRenderPipelineStateWithMeshDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)newRenderPipelineStateWithMeshDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler
 {
-  v12 = a4;
+  optionsCopy = options;
   instrumentationHeapInit(self);
-  v7 = [a3 meshFunction];
-  v8 = [a3 fragmentFunction];
-  v9 = [a3 objectFunction];
-  v10 = [a3 label];
-  v11 = [a3 shaderValidation];
-  [a3 shaderValidationState];
-  MTLLegacySVSetValidationChecksOptions(self, v7, v8, v9, v10, v11, &v12);
-  [(MTLLegacySVDevice *)self unwrapAndModifyMeshRenderPipelineDescriptor:a3 options:&v12];
+  meshFunction = [descriptor meshFunction];
+  fragmentFunction = [descriptor fragmentFunction];
+  objectFunction = [descriptor objectFunction];
+  label = [descriptor label];
+  shaderValidation = [descriptor shaderValidation];
+  [descriptor shaderValidationState];
+  MTLLegacySVSetValidationChecksOptions(self, meshFunction, fragmentFunction, objectFunction, label, shaderValidation, &optionsCopy);
+  [(MTLLegacySVDevice *)self unwrapAndModifyMeshRenderPipelineDescriptor:descriptor options:&optionsCopy];
   [*(self + 2) newRenderPipelineStateWithMeshDescriptor:? options:? completionHandler:?];
 }
 
@@ -858,20 +858,20 @@ void __88__MTLLegacySVDevice_newRenderPipelineStateWithMeshDescriptor_options_co
   (*(*(a1 + 56) + 16))();
 }
 
-- (id)newComputePipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
-  v8 = a4;
-  v21 = a4;
-  v22 = a3;
+  optionsCopy = options;
+  optionsCopy2 = options;
+  descriptorCopy = descriptor;
   instrumentationHeapInit(self);
-  v11 = [a3 computeFunction];
-  v12 = [a3 label];
-  v13 = [a3 shaderValidation];
-  [a3 shaderValidationState];
-  MTLLegacySVSetValidationChecksOptions(self, v11, 0, 0, v12, v13, &v21);
-  v14 = [(MTLLegacySVDevice *)self unwrapAndModifyComputePipelineDescriptor:&v22 options:&v21];
+  computeFunction = [descriptor computeFunction];
+  label = [descriptor label];
+  shaderValidation = [descriptor shaderValidation];
+  [descriptor shaderValidationState];
+  MTLLegacySVSetValidationChecksOptions(self, computeFunction, 0, 0, label, shaderValidation, &optionsCopy2);
+  v14 = [(MTLLegacySVDevice *)self unwrapAndModifyComputePipelineDescriptor:&descriptorCopy options:&optionsCopy2];
   v20 = 0;
-  v15 = [*(self + 2) newComputePipelineStateWithDescriptor:v14 options:v21 reflection:&v20 error:a6];
+  v15 = [*(self + 2) newComputePipelineStateWithDescriptor:v14 options:optionsCopy2 reflection:&v20 error:error];
   if (!v15)
   {
     return 0;
@@ -879,11 +879,11 @@ void __88__MTLLegacySVDevice_newRenderPipelineStateWithMeshDescriptor_options_co
 
   v16 = v15;
   v17 = [MTLLegacySVComputePipelineState alloc];
-  v18 = [(MTLLegacySVComputePipelineState *)v17 initWithComputePipelineState:v16 descriptor:v22 unwrappedDescriptor:v14 reflection:v20 device:self pipelineOptions:v21];
+  v18 = [(MTLLegacySVComputePipelineState *)v17 initWithComputePipelineState:v16 descriptor:descriptorCopy unwrappedDescriptor:v14 reflection:v20 device:self pipelineOptions:optionsCopy2];
 
-  if (a5 && (*&v8 & 0x40003) != 0)
+  if (reflection && (*&optionsCopy & 0x40003) != 0)
   {
-    *a5 = [(MTLLegacySVComputePipelineState *)v18 userReflection];
+    *reflection = [(MTLLegacySVComputePipelineState *)v18 userReflection];
   }
 
   else if ((*(self + 292) & 1) == 0)
@@ -895,31 +895,31 @@ void __88__MTLLegacySVDevice_newRenderPipelineStateWithMeshDescriptor_options_co
   return v18;
 }
 
-- (void)newComputePipelineStateWithDescriptor:(id)a3 completionHandler:(id)a4
+- (void)newComputePipelineStateWithDescriptor:(id)descriptor completionHandler:(id)handler
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __77__MTLLegacySVDevice_newComputePipelineStateWithDescriptor_completionHandler___block_invoke;
   v4[3] = &unk_2787B3B58;
-  v4[4] = a4;
-  [(MTLLegacySVDevice *)self newComputePipelineStateWithDescriptor:a3 options:0 completionHandler:v4];
+  v4[4] = handler;
+  [(MTLLegacySVDevice *)self newComputePipelineStateWithDescriptor:descriptor options:0 completionHandler:v4];
 }
 
-- (void)newComputePipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)newComputePipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler
 {
-  v6 = a4;
-  v16 = a3;
-  v15 = a4;
+  optionsCopy = options;
+  descriptorCopy = descriptor;
+  optionsCopy2 = options;
   instrumentationHeapInit(self);
-  v9 = (*&v6 & 0x40003) != 0;
-  v10 = [a3 computeFunction];
-  v11 = [a3 label];
-  v12 = [a3 shaderValidation];
-  [a3 shaderValidationState];
-  MTLLegacySVSetValidationChecksOptions(self, v10, 0, 0, v11, v12, &v15);
-  v13 = [(MTLLegacySVDevice *)self unwrapAndModifyComputePipelineDescriptor:&v16 options:&v15];
+  v9 = (*&optionsCopy & 0x40003) != 0;
+  computeFunction = [descriptor computeFunction];
+  label = [descriptor label];
+  shaderValidation = [descriptor shaderValidation];
+  [descriptor shaderValidationState];
+  MTLLegacySVSetValidationChecksOptions(self, computeFunction, 0, 0, label, shaderValidation, &optionsCopy2);
+  v13 = [(MTLLegacySVDevice *)self unwrapAndModifyComputePipelineDescriptor:&descriptorCopy options:&optionsCopy2];
   LOBYTE(v14) = v9;
-  [*(self + 2) newComputePipelineStateWithDescriptor:MEMORY[0x277D85DD0] options:3221225472 completionHandler:{__85__MTLLegacySVDevice_newComputePipelineStateWithDescriptor_options_completionHandler___block_invoke, &unk_2787B4900, v16, v13, self, a5, v15, v14}];
+  [*(self + 2) newComputePipelineStateWithDescriptor:MEMORY[0x277D85DD0] options:3221225472 completionHandler:{__85__MTLLegacySVDevice_newComputePipelineStateWithDescriptor_options_completionHandler___block_invoke, &unk_2787B4900, descriptorCopy, v13, self, handler, optionsCopy2, v14}];
 }
 
 void __85__MTLLegacySVDevice_newComputePipelineStateWithDescriptor_options_completionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -949,44 +949,44 @@ void __85__MTLLegacySVDevice_newComputePipelineStateWithDescriptor_options_compl
   (*(*(a1 + 56) + 16))();
 }
 
-- (id)newComputePipelineStateWithFunction:(id)a3 error:(id *)a4
+- (id)newComputePipelineStateWithFunction:(id)function error:(id *)error
 {
   v7 = objc_opt_new();
-  [v7 setComputeFunction:a3];
-  v8 = [(MTLLegacySVDevice *)self newComputePipelineStateWithDescriptor:v7 error:a4];
+  [v7 setComputeFunction:function];
+  v8 = [(MTLLegacySVDevice *)self newComputePipelineStateWithDescriptor:v7 error:error];
 
   return v8;
 }
 
-- (void)newComputePipelineStateWithFunction:(id)a3 completionHandler:(id)a4
+- (void)newComputePipelineStateWithFunction:(id)function completionHandler:(id)handler
 {
   v7 = objc_opt_new();
-  [v7 setComputeFunction:a3];
-  [(MTLLegacySVDevice *)self newComputePipelineStateWithDescriptor:v7 completionHandler:a4];
+  [v7 setComputeFunction:function];
+  [(MTLLegacySVDevice *)self newComputePipelineStateWithDescriptor:v7 completionHandler:handler];
 }
 
-- (void)newComputePipelineStateWithFunction:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)newComputePipelineStateWithFunction:(id)function options:(unint64_t)options completionHandler:(id)handler
 {
   v9 = objc_opt_new();
-  [v9 setComputeFunction:a3];
-  [(MTLLegacySVDevice *)self newComputePipelineStateWithDescriptor:v9 options:a4 completionHandler:a5];
+  [v9 setComputeFunction:function];
+  [(MTLLegacySVDevice *)self newComputePipelineStateWithDescriptor:v9 options:options completionHandler:handler];
 }
 
-- (id)newComputePipelineStateWithFunction:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)newComputePipelineStateWithFunction:(id)function options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
   v11 = objc_opt_new();
-  [v11 setComputeFunction:a3];
-  v12 = [(MTLLegacySVDevice *)self newComputePipelineStateWithDescriptor:v11 options:a4 reflection:a5 error:a6];
+  [v11 setComputeFunction:function];
+  v12 = [(MTLLegacySVDevice *)self newComputePipelineStateWithDescriptor:v11 options:options reflection:reflection error:error];
 
   return v12;
 }
 
-- (id)newIndirectCommandBufferWithDescriptor:(id)a3 maxCommandCount:(unint64_t)a4 options:(unint64_t)a5
+- (id)newIndirectCommandBufferWithDescriptor:(id)descriptor maxCommandCount:(unint64_t)count options:(unint64_t)options
 {
   if ((*(self + 287) & 0x20) != 0)
   {
     indirectCommandBufferPipelineInit(self);
-    v10 = [a3 copy];
+    v10 = [descriptor copy];
     [v10 setMaxVertexBufferBindCount:31];
     [v10 setMaxFragmentBufferBindCount:31];
     [v10 setMaxKernelBufferBindCount:31];
@@ -1000,8 +1000,8 @@ void __85__MTLLegacySVDevice_newComputePipelineStateWithDescriptor_options_compl
       [v10 setInheritBuffers:0];
     }
 
-    v11 = [*(self + 2) newIndirectCommandBufferWithDescriptor:v10 maxCommandCount:a4 options:a5 & 0xFFFFFFFFFFFFFF0FLL];
-    v12 = [[MTLLegacySVIndirectCommandBuffer alloc] initWithIndirectCommandBuffer:v11 descriptor:a3 maxCommandCount:a4 resourceOptions:a5 device:self];
+    0xFFFFFFFFFFFFFF0FLL = [*(self + 2) newIndirectCommandBufferWithDescriptor:v10 maxCommandCount:count options:options & 0xFFFFFFFFFFFFFF0FLL];
+    v12 = [[MTLLegacySVIndirectCommandBuffer alloc] initWithIndirectCommandBuffer:0xFFFFFFFFFFFFFF0FLL descriptor:descriptor maxCommandCount:count resourceOptions:options device:self];
 
     return v12;
   }
@@ -1013,16 +1013,16 @@ void __85__MTLLegacySVDevice_newComputePipelineStateWithDescriptor_options_compl
   }
 }
 
-- (id)newLibraryWithCIFiltersForComputePipeline:(id)a3 imageFilterFunctionInfo:(id *)a4 error:(id *)a5
+- (id)newLibraryWithCIFiltersForComputePipeline:(id)pipeline imageFilterFunctionInfo:(id *)info error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
   instrumentationHeapInit(self);
-  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a3, "count")}];
+  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(pipeline, "count")}];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = [a3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v10 = [pipeline countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1033,13 +1033,13 @@ void __85__MTLLegacySVDevice_newComputePipelineStateWithDescriptor_options_compl
       {
         if (*v23 != v12)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(pipeline);
         }
 
         [v9 addObject:{objc_msgSend(*(*(&v22 + 1) + 8 * i), "baseObject")}];
       }
 
-      v11 = [a3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v11 = [pipeline countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v11);
@@ -1050,12 +1050,12 @@ void __85__MTLLegacySVDevice_newComputePipelineStateWithDescriptor_options_compl
   v16 = *(self + 2);
   if (v15)
   {
-    v17 = [v16 newLibraryWithCIFiltersForComputePipeline:v9 imageFilterFunctionInfo:a4 error:a5];
+    v17 = [v16 newLibraryWithCIFiltersForComputePipeline:v9 imageFilterFunctionInfo:info error:error];
   }
 
   else
   {
-    v17 = [v16 newLibraryWithCIFilters:v9 imageFilterFunctionInfo:a4 error:a5];
+    v17 = [v16 newLibraryWithCIFilters:v9 imageFilterFunctionInfo:info error:error];
   }
 
   v18 = v17;
@@ -1074,16 +1074,16 @@ void __85__MTLLegacySVDevice_newComputePipelineStateWithDescriptor_options_compl
   return v19;
 }
 
-- (id)newLibraryWithImageFilterFunctionsSPI:(id)a3 imageFilterFunctionInfo:(id *)a4 error:(id *)a5
+- (id)newLibraryWithImageFilterFunctionsSPI:(id)i imageFilterFunctionInfo:(id *)info error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
   instrumentationHeapInit(self);
-  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a3, "count")}];
+  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(i, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = [a3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v10 = [i countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1095,20 +1095,20 @@ void __85__MTLLegacySVDevice_newComputePipelineStateWithDescriptor_options_compl
       {
         if (*v20 != v12)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(i);
         }
 
         [v9 addObject:{objc_msgSend(*(*(&v19 + 1) + 8 * v13++), "baseObject")}];
       }
 
       while (v11 != v13);
-      v11 = [a3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v11 = [i countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v11);
   }
 
-  v14 = [*(self + 2) newLibraryWithImageFilterFunctionsSPI:v9 imageFilterFunctionInfo:a4 error:a5];
+  v14 = [*(self + 2) newLibraryWithImageFilterFunctionsSPI:v9 imageFilterFunctionInfo:info error:error];
   if (v14)
   {
     v15 = v14;
@@ -1125,16 +1125,16 @@ void __85__MTLLegacySVDevice_newComputePipelineStateWithDescriptor_options_compl
   return v16;
 }
 
-- (id)newLibraryWithCIFilters:(id)a3 imageFilterFunctionInfo:(id *)a4 error:(id *)a5
+- (id)newLibraryWithCIFilters:(id)filters imageFilterFunctionInfo:(id *)info error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
   instrumentationHeapInit(self);
-  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a3, "count")}];
+  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(filters, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = [a3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v10 = [filters countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1146,20 +1146,20 @@ void __85__MTLLegacySVDevice_newComputePipelineStateWithDescriptor_options_compl
       {
         if (*v20 != v12)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(filters);
         }
 
         [v9 addObject:{objc_msgSend(*(*(&v19 + 1) + 8 * v13++), "baseObject")}];
       }
 
       while (v11 != v13);
-      v11 = [a3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v11 = [filters countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v11);
   }
 
-  v14 = [*(self + 2) newLibraryWithCIFilters:v9 imageFilterFunctionInfo:a4 error:a5];
+  v14 = [*(self + 2) newLibraryWithCIFilters:v9 imageFilterFunctionInfo:info error:error];
   if (v14)
   {
     v15 = v14;
@@ -1192,10 +1192,10 @@ void __85__MTLLegacySVDevice_newComputePipelineStateWithDescriptor_options_compl
   return result;
 }
 
-- (id)newDefaultLibraryWithBundle:(id)a3 error:(id *)a4
+- (id)newDefaultLibraryWithBundle:(id)bundle error:(id *)error
 {
   instrumentationHeapInit(self);
-  result = [*(self + 2) newDefaultLibraryWithBundle:a3 error:a4];
+  result = [*(self + 2) newDefaultLibraryWithBundle:bundle error:error];
   if (result)
   {
     v8 = result;
@@ -1208,9 +1208,9 @@ void __85__MTLLegacySVDevice_newComputePipelineStateWithDescriptor_options_compl
   return result;
 }
 
-- (id)newLibraryWithDAG:(id)a3 functions:(id)a4 error:(id *)a5
+- (id)newLibraryWithDAG:(id)g functions:(id)functions error:(id *)error
 {
-  v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:a4];
+  v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:functions];
   if ([v8 count])
   {
     v9 = 0;
@@ -1225,7 +1225,7 @@ void __85__MTLLegacySVDevice_newComputePipelineStateWithDescriptor_options_compl
   }
 
   instrumentationHeapInit(self);
-  v12 = [*(self + 2) newLibraryWithDAG:a3 functions:v8 error:a5];
+  v12 = [*(self + 2) newLibraryWithDAG:g functions:v8 error:error];
   if (v12)
   {
     v13 = v12;
@@ -1241,9 +1241,9 @@ void __85__MTLLegacySVDevice_newComputePipelineStateWithDescriptor_options_compl
   return v14;
 }
 
-- (id)unwrapStitchedLibraryDescriptor:(id)a3
+- (id)unwrapStitchedLibraryDescriptor:(id)descriptor
 {
-  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:{objc_msgSend(a3, "functions")}];
+  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:{objc_msgSend(descriptor, "functions")}];
   if ([v4 count])
   {
     v5 = 0;
@@ -1257,16 +1257,16 @@ void __85__MTLLegacySVDevice_newComputePipelineStateWithDescriptor_options_compl
     while ([v4 count] > v6++);
   }
 
-  [a3 setFunctions:v4];
+  [descriptor setFunctions:v4];
 
-  return a3;
+  return descriptor;
 }
 
-- (id)newLibraryWithStitchedDescriptor:(id)a3 error:(id *)a4
+- (id)newLibraryWithStitchedDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = [(MTLLegacySVDevice *)self unwrapStitchedLibraryDescriptor:a3];
+  v6 = [(MTLLegacySVDevice *)self unwrapStitchedLibraryDescriptor:descriptor];
   instrumentationHeapInit(self);
-  result = [*(self + 2) newLibraryWithStitchedDescriptor:v6 error:a4];
+  result = [*(self + 2) newLibraryWithStitchedDescriptor:v6 error:error];
   if (result)
   {
     v8 = result;
@@ -1279,16 +1279,16 @@ void __85__MTLLegacySVDevice_newComputePipelineStateWithDescriptor_options_compl
   return result;
 }
 
-- (void)newLibraryWithStitchedDescriptor:(id)a3 completionHandler:(id)a4
+- (void)newLibraryWithStitchedDescriptor:(id)descriptor completionHandler:(id)handler
 {
-  v6 = [(MTLLegacySVDevice *)self unwrapStitchedLibraryDescriptor:a3];
+  v6 = [(MTLLegacySVDevice *)self unwrapStitchedLibraryDescriptor:descriptor];
   v7 = *(self + 2);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __72__MTLLegacySVDevice_newLibraryWithStitchedDescriptor_completionHandler___block_invoke;
   v8[3] = &unk_2787B3768;
   v8[4] = self;
-  v8[5] = a4;
+  v8[5] = handler;
   [v7 newLibraryWithStitchedDescriptor:v6 completionHandler:v8];
 }
 
@@ -1305,11 +1305,11 @@ uint64_t __72__MTLLegacySVDevice_newLibraryWithStitchedDescriptor_completionHand
   return v4();
 }
 
-- (id)newLibraryWithStitchedDescriptorSPI:(id)a3 error:(id *)a4
+- (id)newLibraryWithStitchedDescriptorSPI:(id)i error:(id *)error
 {
-  v6 = [(MTLLegacySVDevice *)self unwrapStitchedLibraryDescriptor:a3];
+  v6 = [(MTLLegacySVDevice *)self unwrapStitchedLibraryDescriptor:i];
   instrumentationHeapInit(self);
-  result = [*(self + 2) newLibraryWithStitchedDescriptorSPI:v6 error:a4];
+  result = [*(self + 2) newLibraryWithStitchedDescriptorSPI:v6 error:error];
   if (result)
   {
     v8 = result;
@@ -1322,10 +1322,10 @@ uint64_t __72__MTLLegacySVDevice_newLibraryWithStitchedDescriptor_completionHand
   return result;
 }
 
-- (id)newLibraryWithFile:(id)a3 error:(id *)a4
+- (id)newLibraryWithFile:(id)file error:(id *)error
 {
   instrumentationHeapInit(self);
-  result = [*(self + 2) newLibraryWithFile:a3 error:a4];
+  result = [*(self + 2) newLibraryWithFile:file error:error];
   if (result)
   {
     v8 = result;
@@ -1338,10 +1338,10 @@ uint64_t __72__MTLLegacySVDevice_newLibraryWithStitchedDescriptor_completionHand
   return result;
 }
 
-- (id)newLibraryWithData:(id)a3 error:(id *)a4
+- (id)newLibraryWithData:(id)data error:(id *)error
 {
   instrumentationHeapInit(self);
-  result = [*(self + 2) newLibraryWithData:a3 error:a4];
+  result = [*(self + 2) newLibraryWithData:data error:error];
   if (result)
   {
     v8 = result;
@@ -1354,10 +1354,10 @@ uint64_t __72__MTLLegacySVDevice_newLibraryWithStitchedDescriptor_completionHand
   return result;
 }
 
-- (id)newLibraryWithURL:(id)a3 error:(id *)a4
+- (id)newLibraryWithURL:(id)l error:(id *)error
 {
   instrumentationHeapInit(self);
-  result = [*(self + 2) newLibraryWithURL:a3 error:a4];
+  result = [*(self + 2) newLibraryWithURL:l error:error];
   if (result)
   {
     v8 = result;
@@ -1370,11 +1370,11 @@ uint64_t __72__MTLLegacySVDevice_newLibraryWithStitchedDescriptor_completionHand
   return result;
 }
 
-- (id)newLibraryWithSource:(id)a3 options:(id)a4 error:(id *)a5
+- (id)newLibraryWithSource:(id)source options:(id)options error:(id *)error
 {
-  v8 = DebugCompileOptions(self, a4);
+  v8 = DebugCompileOptions(self, options);
   instrumentationHeapInit(self);
-  result = [*(self + 2) newLibraryWithSource:a3 options:v8 error:a5];
+  result = [*(self + 2) newLibraryWithSource:source options:v8 error:error];
   if (result)
   {
     v10 = result;
@@ -1387,17 +1387,17 @@ uint64_t __72__MTLLegacySVDevice_newLibraryWithStitchedDescriptor_completionHand
   return result;
 }
 
-- (void)newLibraryWithSource:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)newLibraryWithSource:(id)source options:(id)options completionHandler:(id)handler
 {
-  v8 = DebugCompileOptions(self, a4);
+  v8 = DebugCompileOptions(self, options);
   v9 = *(self + 2);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler___block_invoke;
   v10[3] = &unk_2787B3768;
   v10[4] = self;
-  v10[5] = a5;
-  [v9 newLibraryWithSource:a3 options:v8 completionHandler:v10];
+  v10[5] = handler;
+  [v9 newLibraryWithSource:source options:v8 completionHandler:v10];
 }
 
 uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -1412,11 +1412,11 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return v3();
 }
 
-- (id)newDynamicLibraryWithURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)newDynamicLibraryWithURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  v14 = self;
+  selfCopy = self;
   instrumentationHeapInit(self);
-  v9 = [*(self + 2) newDynamicLibraryWithURL:a3 options:a4 | 2 error:a5];
+  v9 = [*(self + 2) newDynamicLibraryWithURL:l options:options | 2 error:error];
   if (!v9)
   {
     return 0;
@@ -1429,17 +1429,17 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   v15[2] = ___ZZL18WrapDynamicLibraryIZ60__MTLLegacySVDevice_newDynamicLibraryWithURL_options_error__E4__13EP25MTLLegacySVDynamicLibraryP17MTLLegacySVDeviceT_ENKUlS5_E_clIPU28objcproto17MTLDynamicLibrary11objc_objectEEDaS5__block_invoke;
   v15[3] = &unk_2787B38F8;
   v15[4] = v10;
-  v15[5] = &v14;
+  v15[5] = &selfCopy;
   v12 = [v11 getCachedObjectForKey:v10 onMiss:v15];
 
   return v12;
 }
 
-- (id)newDynamicLibrary:(id)a3 error:(id *)a4
+- (id)newDynamicLibrary:(id)library error:(id *)error
 {
-  v12 = self;
+  selfCopy = self;
   instrumentationHeapInit(self);
-  v7 = [*(self + 2) newDynamicLibrary:objc_msgSend(a3 error:{"baseObject"), a4}];
+  v7 = [*(self + 2) newDynamicLibrary:objc_msgSend(library error:{"baseObject"), error}];
   if (!v7)
   {
     return 0;
@@ -1452,21 +1452,21 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   v13[2] = ___ZZL18WrapDynamicLibraryIZ45__MTLLegacySVDevice_newDynamicLibrary_error__E4__14EP25MTLLegacySVDynamicLibraryP17MTLLegacySVDeviceT_ENKUlS5_E_clIPU28objcproto17MTLDynamicLibrary11objc_objectEEDaS5__block_invoke;
   v13[3] = &unk_2787B38F8;
   v13[4] = v8;
-  v13[5] = &v12;
+  v13[5] = &selfCopy;
   v10 = [v9 getCachedObjectForKey:v8 onMiss:v13];
 
   return v10;
 }
 
-- (id)newDynamicLibrary:(id)a3 computeDescriptor:(id)a4 error:(id *)a5
+- (id)newDynamicLibrary:(id)library computeDescriptor:(id)descriptor error:(id *)error
 {
-  v14 = a4;
-  v15 = self;
+  descriptorCopy = descriptor;
+  selfCopy = self;
   instrumentationHeapInit(self);
   v16[0] = 0;
-  v8 = [(MTLLegacySVDevice *)self unwrapAndModifyComputePipelineDescriptor:&v14 options:v16];
+  v8 = [(MTLLegacySVDevice *)self unwrapAndModifyComputePipelineDescriptor:&descriptorCopy options:v16];
   MTLDynamicLibraryLoadOptionsFromPipelineOptions();
-  v9 = [*(self + 2) newDynamicLibrary:objc_msgSend(a3 computeDescriptor:"baseObject" error:{v14, v15), v8, a5}];
+  v9 = [*(self + 2) newDynamicLibrary:objc_msgSend(library computeDescriptor:"baseObject" error:{descriptorCopy, selfCopy), v8, error}];
   if (!v9)
   {
     return 0;
@@ -1479,42 +1479,42 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   v16[2] = ___ZZL18WrapDynamicLibraryIZ63__MTLLegacySVDevice_newDynamicLibrary_computeDescriptor_error__E4__15EP25MTLLegacySVDynamicLibraryP17MTLLegacySVDeviceT_ENKUlS5_E_clIPU28objcproto17MTLDynamicLibrary11objc_objectEEDaS5__block_invoke;
   v16[3] = &unk_2787B38F8;
   v16[4] = v10;
-  v16[5] = &v15;
+  v16[5] = &selfCopy;
   v12 = [v11 getCachedObjectForKey:v10 onMiss:v16];
 
   return v12;
 }
 
-- (id)loadDynamicLibrariesForComputeDescriptor:(id)a3 error:(id *)a4
+- (id)loadDynamicLibrariesForComputeDescriptor:(id)descriptor error:(id *)error
 {
-  v7 = [a3 computeFunction];
-  v8 = [a3 preloadedLibraries];
+  computeFunction = [descriptor computeFunction];
+  preloadedLibraries = [descriptor preloadedLibraries];
 
-  return [(MTLLegacySVDevice *)self loadDynamicLibrariesForFunction:v7 insertLibraries:v8 options:0 error:a4];
+  return [(MTLLegacySVDevice *)self loadDynamicLibrariesForFunction:computeFunction insertLibraries:preloadedLibraries options:0 error:error];
 }
 
-- (id)loadDynamicLibrariesForComputeDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)loadDynamicLibrariesForComputeDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error
 {
-  v8 = [a3 computeFunction];
-  v9 = [a3 preloadedLibraries];
+  computeFunction = [descriptor computeFunction];
+  preloadedLibraries = [descriptor preloadedLibraries];
 
-  return [(MTLLegacySVDevice *)self loadDynamicLibrariesForFunction:v8 insertLibraries:v9 options:0 error:a5];
+  return [(MTLLegacySVDevice *)self loadDynamicLibrariesForFunction:computeFunction insertLibraries:preloadedLibraries options:0 error:error];
 }
 
-- (id)loadDynamicLibrariesForFunction:(id)a3 insertLibraries:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (id)loadDynamicLibrariesForFunction:(id)function insertLibraries:(id)libraries options:(unint64_t)options error:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (function)
   {
     context = objc_autoreleasePoolPush();
-    if (a4)
+    if (libraries)
     {
-      v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(a4, "count")}];
+      v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(libraries, "count")}];
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v12 = [a4 countByEnumeratingWithState:&v35 objects:v42 count:16];
+      v12 = [libraries countByEnumeratingWithState:&v35 objects:v42 count:16];
       if (v12)
       {
         v13 = v12;
@@ -1525,13 +1525,13 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
           {
             if (*v36 != v14)
             {
-              objc_enumerationMutation(a4);
+              objc_enumerationMutation(libraries);
             }
 
             [v11 addObject:{objc_msgSend(*(*(&v35 + 1) + 8 * i), "baseObject")}];
           }
 
-          v13 = [a4 countByEnumeratingWithState:&v35 objects:v42 count:16];
+          v13 = [libraries countByEnumeratingWithState:&v35 objects:v42 count:16];
         }
 
         while (v13);
@@ -1543,7 +1543,7 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
       v11 = 0;
     }
 
-    v17 = [*(self + 2) loadDynamicLibrariesForFunction:objc_msgSend(a3 insertLibraries:"baseObject") options:v11 error:{a5 | 2, a6}];
+    v17 = [*(self + 2) loadDynamicLibrariesForFunction:objc_msgSend(function insertLibraries:"baseObject") options:v11 error:{options | 2, error}];
     if (v17)
     {
       v18 = v17;
@@ -1567,7 +1567,7 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
             }
 
             v23 = *(*(&v31 + 1) + 8 * j);
-            v39 = self;
+            selfCopy = self;
             instrumentationHeapInit(self);
             v24 = v23;
             if (v24)
@@ -1579,7 +1579,7 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
               v40[2] = ___ZZL18WrapDynamicLibraryIZ83__MTLLegacySVDevice_loadDynamicLibrariesForFunction_insertLibraries_options_error__E4__16EP25MTLLegacySVDynamicLibraryP17MTLLegacySVDeviceT_ENKUlS5_E_clIPU28objcproto17MTLDynamicLibrary11objc_objectEEDaS5__block_invoke;
               v40[3] = &unk_2787B38F8;
               v40[4] = v25;
-              v40[5] = &v39;
+              v40[5] = &selfCopy;
               v27 = [v26 getCachedObjectForKey:v25 onMiss:v40];
             }
 
@@ -1615,7 +1615,7 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return v16;
 }
 
-- (id)newBinaryArchiveWithDescriptor:(id)a3 error:(id *)a4
+- (id)newBinaryArchiveWithDescriptor:(id)descriptor error:(id *)error
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
@@ -1629,7 +1629,7 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return result;
 }
 
-- (id)newBinaryLibraryWithOptions:(unint64_t)a3 url:(id)a4 error:(id *)a5
+- (id)newBinaryLibraryWithOptions:(unint64_t)options url:(id)url error:(id *)error
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
@@ -1643,10 +1643,10 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return result;
 }
 
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options
 {
   instrumentationHeapInit(self);
-  result = [*(self + 2) newBufferWithLength:a3 options:a4];
+  result = [*(self + 2) newBufferWithLength:length options:options];
   if (result)
   {
     v8 = result;
@@ -1658,10 +1658,10 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return result;
 }
 
-- (id)newBufferWithBytes:(const void *)a3 length:(unint64_t)a4 options:(unint64_t)a5
+- (id)newBufferWithBytes:(const void *)bytes length:(unint64_t)length options:(unint64_t)options
 {
   instrumentationHeapInit(self);
-  result = [*(self + 2) newBufferWithBytes:a3 length:a4 options:a5];
+  result = [*(self + 2) newBufferWithBytes:bytes length:length options:options];
   if (result)
   {
     v10 = result;
@@ -1673,10 +1673,10 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return result;
 }
 
-- (id)newBufferWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 options:(unint64_t)a5 deallocator:(id)a6
+- (id)newBufferWithBytesNoCopy:(void *)copy length:(unint64_t)length options:(unint64_t)options deallocator:(id)deallocator
 {
   instrumentationHeapInit(self);
-  result = [*(self + 2) newBufferWithBytesNoCopy:a3 length:a4 options:a5 deallocator:a6];
+  result = [*(self + 2) newBufferWithBytesNoCopy:copy length:length options:options deallocator:deallocator];
   if (result)
   {
     v12 = result;
@@ -1688,10 +1688,10 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return result;
 }
 
-- (id)newBufferWithIOSurface:(__IOSurface *)a3
+- (id)newBufferWithIOSurface:(__IOSurface *)surface
 {
   instrumentationHeapInit(self);
-  result = [*(self + 2) newBufferWithIOSurface:a3];
+  result = [*(self + 2) newBufferWithIOSurface:surface];
   if (result)
   {
     v6 = result;
@@ -1703,10 +1703,10 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return result;
 }
 
-- (id)newBufferWithDescriptor:(id)a3
+- (id)newBufferWithDescriptor:(id)descriptor
 {
   instrumentationHeapInit(self);
-  result = [*(self + 2) newBufferWithDescriptor:a3];
+  result = [*(self + 2) newBufferWithDescriptor:descriptor];
   if (result)
   {
     v6 = result;
@@ -1718,14 +1718,14 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return result;
 }
 
-- (id)newHeapWithDescriptor:(id)a3
+- (id)newHeapWithDescriptor:(id)descriptor
 {
   instrumentationHeapInit(self);
-  result = [*(self + 2) newHeapWithDescriptor:a3];
+  result = [*(self + 2) newHeapWithDescriptor:descriptor];
   if (result)
   {
     v6 = result;
-    v7 = [[MTLLegacySVHeap alloc] initWithHeap:result descriptor:a3 device:self];
+    v7 = [[MTLLegacySVHeap alloc] initWithHeap:result descriptor:descriptor device:self];
 
     return v7;
   }
@@ -1733,9 +1733,9 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return result;
 }
 
-- (id)newTextureWithDescriptor:(id)a3
+- (id)newTextureWithDescriptor:(id)descriptor
 {
-  result = [*(self + 2) newTextureWithDescriptor:a3];
+  result = [*(self + 2) newTextureWithDescriptor:descriptor];
   if (result)
   {
     v5 = result;
@@ -1747,9 +1747,9 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return result;
 }
 
-- (id)newTextureWithDescriptor:(id)a3 iosurface:(__IOSurface *)a4 plane:(unint64_t)a5
+- (id)newTextureWithDescriptor:(id)descriptor iosurface:(__IOSurface *)iosurface plane:(unint64_t)plane
 {
-  result = [*(self + 2) newTextureWithDescriptor:a3 iosurface:a4 plane:a5];
+  result = [*(self + 2) newTextureWithDescriptor:descriptor iosurface:iosurface plane:plane];
   if (result)
   {
     v7 = result;
@@ -1761,9 +1761,9 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return result;
 }
 
-- (id)newSharedTextureWithHandle:(id)a3
+- (id)newSharedTextureWithHandle:(id)handle
 {
-  result = [*(self + 2) newSharedTextureWithHandle:a3];
+  result = [*(self + 2) newSharedTextureWithHandle:handle];
   if (result)
   {
     v5 = result;
@@ -1775,9 +1775,9 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return result;
 }
 
-- (id)newSharedTextureWithDescriptor:(id)a3
+- (id)newSharedTextureWithDescriptor:(id)descriptor
 {
-  result = [*(self + 2) newSharedTextureWithDescriptor:a3];
+  result = [*(self + 2) newSharedTextureWithDescriptor:descriptor];
   if (result)
   {
     v5 = result;
@@ -1789,9 +1789,9 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return result;
 }
 
-- (id)newTextureWithDescriptor:(id)a3 iosurface:(__IOSurface *)a4 plane:(unint64_t)a5 slice:(unint64_t)a6
+- (id)newTextureWithDescriptor:(id)descriptor iosurface:(__IOSurface *)iosurface plane:(unint64_t)plane slice:(unint64_t)slice
 {
-  result = [*(self + 2) newTextureWithDescriptor:a3 iosurface:a4 plane:a5 slice:a6];
+  result = [*(self + 2) newTextureWithDescriptor:descriptor iosurface:iosurface plane:plane slice:slice];
   if (result)
   {
     v8 = result;
@@ -1803,9 +1803,9 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return result;
 }
 
-- (id)newTextureWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 descriptor:(id)a5 deallocator:(id)a6
+- (id)newTextureWithBytesNoCopy:(void *)copy length:(unint64_t)length descriptor:(id)descriptor deallocator:(id)deallocator
 {
-  result = [*(self + 2) newTextureWithBytesNoCopy:a3 length:a4 descriptor:a5 deallocator:a6];
+  result = [*(self + 2) newTextureWithBytesNoCopy:copy length:length descriptor:descriptor deallocator:deallocator];
   if (result)
   {
     v8 = result;
@@ -1817,31 +1817,31 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return result;
 }
 
-- (id)newArgumentEncoderWithArguments:(id)a3 structType:(id *)a4
+- (id)newArgumentEncoderWithArguments:(id)arguments structType:(id *)type
 {
   if ((*(self + 286) & 0x80) != 0)
   {
-    if (a4)
+    if (type)
     {
-      *a4 = MTLCreateStructTypeFromArgumentDescriptors();
+      *type = MTLCreateStructTypeFromArgumentDescriptors();
     }
 
-    return [(MTLLegacySVDevice *)self newArgumentEncoderWithArguments:a3];
+    return [(MTLLegacySVDevice *)self newArgumentEncoderWithArguments:arguments];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = MTLLegacySVDevice;
-    return [(MTLToolsDevice *)&v7 newArgumentEncoderWithArguments:a3 structType:a4];
+    return [(MTLToolsDevice *)&v7 newArgumentEncoderWithArguments:arguments structType:type];
   }
 }
 
-- (id)newArgumentEncoderWithArguments:(id)a3
+- (id)newArgumentEncoderWithArguments:(id)arguments
 {
   if ((*(self + 286) & 0x80) != 0)
   {
-    v5 = [a3 mutableCopy];
+    v5 = [arguments mutableCopy];
     if ([v5 count])
     {
       v6 = 0;
@@ -1850,8 +1850,8 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
       {
         v8 = [v5 objectAtIndexedSubscript:v6];
         v9 = [v8 constantBlockAlignment] != 0;
-        v10 = [v8 dataType];
-        if ((v10 - 60) <= 0x3A && ((1 << (v10 - 60)) & 0x600000000000001) != 0)
+        dataType = [v8 dataType];
+        if ((dataType - 60) <= 0x3A && ((1 << (dataType - 60)) & 0x600000000000001) != 0)
         {
           [v8 setDataType:30];
         }
@@ -1869,9 +1869,9 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
         {
           v14 = v13 + 1;
           v15 = [v5 objectAtIndexedSubscript:v13];
-          v16 = [v15 dataType];
-          v17 = (v16 - 78) > 0x3D || ((1 << (v16 - 78)) & 0x2000000000000007) == 0;
-          if (v17 && (v16 - 58) >= 3)
+          dataType2 = [v15 dataType];
+          v17 = (dataType2 - 78) > 0x3D || ((1 << (dataType2 - 78)) & 0x2000000000000007) == 0;
+          if (v17 && (dataType2 - 58) >= 3)
           {
             Alignment = [v15 constantBlockAlignment];
             [v15 setConstantBlockAlignment:0];
@@ -1927,7 +1927,7 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   {
     v25.receiver = self;
     v25.super_class = MTLLegacySVDevice;
-    return [(MTLToolsDevice *)&v25 newArgumentEncoderWithArguments:a3];
+    return [(MTLToolsDevice *)&v25 newArgumentEncoderWithArguments:arguments];
   }
 }
 
@@ -1939,15 +1939,15 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   }
 }
 
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)accelerationStructureSizesWithDescriptor:(SEL)a3
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)accelerationStructureSizesWithDescriptor:(SEL)descriptor
 {
   [(MTLLegacySVDevice *)self validateRaytracing];
-  v7 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
   result = unwrapAccelerationStructureDescriptor(a4);
-  if (v7)
+  if (baseObject)
   {
 
-    return [v7 accelerationStructureSizesWithDescriptor:result];
+    return [baseObject accelerationStructureSizesWithDescriptor:result];
   }
 
   else
@@ -1960,11 +1960,11 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return result;
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3
+- (id)newAccelerationStructureWithSize:(unint64_t)size
 {
   [(MTLLegacySVDevice *)self validateRaytracing];
   v5 = objc_autoreleasePoolPush();
-  v6 = [*(self + 2) newAccelerationStructureWithSize:a3];
+  v6 = [*(self + 2) newAccelerationStructureWithSize:size];
   if (v6)
   {
     v7 = v6;
@@ -1980,11 +1980,11 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return v8;
 }
 
-- (id)newAccelerationStructureWithDescriptor:(id)a3
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor
 {
   [(MTLLegacySVDevice *)self validateRaytracing];
   v5 = objc_autoreleasePoolPush();
-  v6 = [*(self + 2) newAccelerationStructureWithDescriptor:unwrapAccelerationStructureDescriptor(a3)];
+  v6 = [*(self + 2) newAccelerationStructureWithDescriptor:unwrapAccelerationStructureDescriptor(descriptor)];
   if (v6)
   {
     v7 = v6;
@@ -2000,11 +2000,11 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return v8;
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 resourceIndex:(unint64_t)a4
+- (id)newAccelerationStructureWithSize:(unint64_t)size resourceIndex:(unint64_t)index
 {
   [(MTLLegacySVDevice *)self validateRaytracing];
   v7 = objc_autoreleasePoolPush();
-  v8 = [*(self + 2) newAccelerationStructureWithSize:a3 resourceIndex:a4];
+  v8 = [*(self + 2) newAccelerationStructureWithSize:size resourceIndex:index];
   if (v8)
   {
     v9 = v8;
@@ -2020,11 +2020,11 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return v10;
 }
 
-- (id)newAccelerationStructureWithBuffer:(id)a3 offset:(unint64_t)a4
+- (id)newAccelerationStructureWithBuffer:(id)buffer offset:(unint64_t)offset
 {
   [(MTLLegacySVDevice *)self validateRaytracing];
   v7 = objc_autoreleasePoolPush();
-  v8 = [*(self + 2) newAccelerationStructureWithBuffer:objc_msgSend(a3 offset:{"baseObject"), a4}];
+  v8 = [*(self + 2) newAccelerationStructureWithBuffer:objc_msgSend(buffer offset:{"baseObject"), offset}];
   if (v8)
   {
     v9 = v8;
@@ -2040,11 +2040,11 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return v10;
 }
 
-- (id)newAccelerationStructureWithBuffer:(id)a3 offset:(unint64_t)a4 resourceIndex:(unint64_t)a5
+- (id)newAccelerationStructureWithBuffer:(id)buffer offset:(unint64_t)offset resourceIndex:(unint64_t)index
 {
   [(MTLLegacySVDevice *)self validateRaytracing];
   v9 = objc_autoreleasePoolPush();
-  v10 = [*(self + 2) newAccelerationStructureWithBuffer:objc_msgSend(a3 offset:"baseObject") resourceIndex:{a4, a5}];
+  v10 = [*(self + 2) newAccelerationStructureWithBuffer:objc_msgSend(buffer offset:"baseObject") resourceIndex:{offset, index}];
   if (v10)
   {
     v11 = v10;
@@ -2060,10 +2060,10 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return v12;
 }
 
-- (id)deserializePrimitiveAccelerationStructureFromBytes:(void *)a3 withDescriptor:(id)a4
+- (id)deserializePrimitiveAccelerationStructureFromBytes:(void *)bytes withDescriptor:(id)descriptor
 {
   v7 = objc_autoreleasePoolPush();
-  v8 = [*(self + 2) deserializePrimitiveAccelerationStructureFromBytes:a3 withDescriptor:unwrapAccelerationStructureDescriptor(a4)];
+  v8 = [*(self + 2) deserializePrimitiveAccelerationStructureFromBytes:bytes withDescriptor:unwrapAccelerationStructureDescriptor(descriptor)];
   if (v8)
   {
     v9 = v8;
@@ -2079,16 +2079,16 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return v10;
 }
 
-- (id)deserializeInstanceAccelerationStructureFromBytes:(void *)a3 primitiveAccelerationStructures:(id)a4 withDescriptor:(id)a5
+- (id)deserializeInstanceAccelerationStructureFromBytes:(void *)bytes primitiveAccelerationStructures:(id)structures withDescriptor:(id)descriptor
 {
   v24 = *MEMORY[0x277D85DE8];
   v9 = objc_autoreleasePoolPush();
-  v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(a4, "count")}];
+  v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(structures, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = [a4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v11 = [structures countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
     v12 = v11;
@@ -2100,20 +2100,20 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
       {
         if (*v20 != v13)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(structures);
         }
 
         [v10 addObject:{objc_msgSend(*(*(&v19 + 1) + 8 * v14++), "baseObject")}];
       }
 
       while (v12 != v14);
-      v12 = [a4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v12 = [structures countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v12);
   }
 
-  v15 = [*(self + 2) deserializeInstanceAccelerationStructureFromBytes:a3 primitiveAccelerationStructures:v10 withDescriptor:unwrapAccelerationStructureDescriptor(a5)];
+  v15 = [*(self + 2) deserializeInstanceAccelerationStructureFromBytes:bytes primitiveAccelerationStructures:v10 withDescriptor:unwrapAccelerationStructureDescriptor(descriptor)];
 
   if (v15)
   {
@@ -2130,9 +2130,9 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return v16;
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 withDescriptor:(id)a4
+- (id)newAccelerationStructureWithSize:(unint64_t)size withDescriptor:(id)descriptor
 {
-  result = [*(self + 2) newAccelerationStructureWithSize:a3 withDescriptor:a4];
+  result = [*(self + 2) newAccelerationStructureWithSize:size withDescriptor:descriptor];
   if (result)
   {
     v6 = result;
@@ -2144,13 +2144,13 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return result;
 }
 
-- (id)newVisibleFunctionTableWithDescriptor:(id)a3
+- (id)newVisibleFunctionTableWithDescriptor:(id)descriptor
 {
   result = [*(self + 2) newVisibleFunctionTableWithDescriptor:?];
   if (result)
   {
     v6 = result;
-    v7 = [[MTLLegacySVVisibleFunctionTable alloc] initWithVisibleFunctionTable:result descriptor:a3 device:self];
+    v7 = [[MTLLegacySVVisibleFunctionTable alloc] initWithVisibleFunctionTable:result descriptor:descriptor device:self];
 
     return v7;
   }
@@ -2158,14 +2158,14 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return result;
 }
 
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor
 {
   [(MTLLegacySVDevice *)self validateRaytracing];
-  result = [*(self + 2) newIntersectionFunctionTableWithDescriptor:a3];
+  result = [*(self + 2) newIntersectionFunctionTableWithDescriptor:descriptor];
   if (result)
   {
     v6 = result;
-    v7 = [[MTLLegacySVIntersectionFunctionTable alloc] initWithIntersectionFunctionTable:result device:self descriptor:a3];
+    v7 = [[MTLLegacySVIntersectionFunctionTable alloc] initWithIntersectionFunctionTable:result device:self descriptor:descriptor];
 
     return v7;
   }
@@ -2173,12 +2173,12 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   return result;
 }
 
-- (id)newResidencySetWithDescriptor:(id)a3 error:(id *)a4
+- (id)newResidencySetWithDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = [*(self + 2) newResidencySetWithDescriptor:a3 error:a4];
+  v6 = [*(self + 2) newResidencySetWithDescriptor:descriptor error:error];
   if (v6)
   {
-    v7 = [[MTLLegacySVResidencySet alloc] initWithResidencySet:v6 device:self descriptor:a3];
+    v7 = [[MTLLegacySVResidencySet alloc] initWithResidencySet:v6 device:self descriptor:descriptor];
   }
 
   else
@@ -2206,15 +2206,15 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
 {
   v6.receiver = self;
   v6.super_class = MTLLegacySVDevice;
-  v3 = [(MTLToolsDevice *)&v6 supportsRenderDynamicLibraries];
-  if (v3)
+  supportsRenderDynamicLibraries = [(MTLToolsDevice *)&v6 supportsRenderDynamicLibraries];
+  if (supportsRenderDynamicLibraries)
   {
     v5.receiver = self;
     v5.super_class = MTLLegacySVDevice;
-    LOBYTE(v3) = [(MTLToolsDevice *)&v5 supportsGlobalVariableRelocationRender];
+    LOBYTE(supportsRenderDynamicLibraries) = [(MTLToolsDevice *)&v5 supportsGlobalVariableRelocationRender];
   }
 
-  return v3;
+  return supportsRenderDynamicLibraries;
 }
 
 - (BOOL)supportsRaytracingFromRender
@@ -2230,16 +2230,16 @@ uint64_t __68__MTLLegacySVDevice_newLibraryWithSource_options_completionHandler_
   }
 }
 
-- (id)getDynamicLibraryForBaseObject:(id)a3
+- (id)getDynamicLibraryForBaseObject:(id)object
 {
   v3 = *(self + 7);
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __52__MTLLegacySVDevice_getDynamicLibraryForBaseObject___block_invoke;
   v5[3] = &unk_2787B3BA8;
-  v5[4] = a3;
+  v5[4] = object;
   v5[5] = self;
-  return [v3 getCachedObjectForKey:a3 onMiss:v5];
+  return [v3 getCachedObjectForKey:object onMiss:v5];
 }
 
 uint64_t __52__MTLLegacySVDevice_getDynamicLibraryForBaseObject___block_invoke(uint64_t a1)
@@ -2251,16 +2251,16 @@ uint64_t __52__MTLLegacySVDevice_getDynamicLibraryForBaseObject___block_invoke(u
   return [(MTLLegacySVDynamicLibrary *)v2 initWithDynamicLibrary:v3 device:v4];
 }
 
-- (id)getFunctionForBaseObject:(id)a3 library:(id)a4
+- (id)getFunctionForBaseObject:(id)object library:(id)library
 {
   v4 = *(self + 9);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__MTLLegacySVDevice_getFunctionForBaseObject_library___block_invoke;
   v6[3] = &unk_2787B3BD0;
-  v6[4] = a3;
-  v6[5] = a4;
-  return [v4 getCachedObjectForKey:a3 onMiss:v6];
+  v6[4] = object;
+  v6[5] = library;
+  return [v4 getCachedObjectForKey:object onMiss:v6];
 }
 
 uint64_t __54__MTLLegacySVDevice_getFunctionForBaseObject_library___block_invoke(uint64_t a1)
@@ -2274,9 +2274,9 @@ uint64_t __54__MTLLegacySVDevice_getFunctionForBaseObject_library___block_invoke
 
 - (BOOL)areWritableHeapsEnabled
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 areWritableHeapsEnabled];
+  return [baseObject areWritableHeapsEnabled];
 }
 
 - (id).cxx_construct

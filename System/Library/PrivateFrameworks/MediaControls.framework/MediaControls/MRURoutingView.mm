@@ -1,18 +1,18 @@
 @interface MRURoutingView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MRURoutingView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MRURoutingView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentEdgeInsets;
 - (void)layoutSubviews;
 @end
 
 @implementation MRURoutingView
 
-- (MRURoutingView)initWithFrame:(CGRect)a3
+- (MRURoutingView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v14.receiver = self;
   v14.super_class = MRURoutingView;
   v7 = [(MRURoutingView *)&v14 initWithFrame:?];
@@ -25,8 +25,8 @@
     [(UITableView *)v7->_tableView setSeparatorStyle:0];
     [(UITableView *)v7->_tableView setIndicatorStyle:2];
     [(UITableView *)v7->_tableView setAlwaysBounceVertical:1];
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    [(UITableView *)v7->_tableView setBackgroundColor:v10];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UITableView *)v7->_tableView setBackgroundColor:clearColor];
 
     [(UITableView *)v7->_tableView setRowHeight:52.0];
     [(UITableView *)v7->_tableView _setHeaderAndFooterViewsFloat:0];
@@ -50,10 +50,10 @@
   [(UITableView *)self->_tableView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UITableView *)self->_tableView _contentSize];
   if (52.0 * 3.0 >= v6)
   {

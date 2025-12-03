@@ -1,8 +1,8 @@
 @interface FBSSetting
-+ (id)settingWithName:(uint64_t)a3 settingsClass:(void *)a4 extension:(char)a5 local:(char)a6 type:(uint64_t)a7 legacySetting:(void *)a8 expectedClass:;
++ (id)settingWithName:(uint64_t)name settingsClass:(void *)class extension:(char)extension local:(char)local type:(uint64_t)type legacySetting:(void *)setting expectedClass:;
 - (BOOL)indirect_isPropagating;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesProperty:(SEL)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesProperty:(SEL)property;
 - (NSString)description;
 - (uint64_t)expectedClass;
 - (uint64_t)extension;
@@ -21,13 +21,13 @@
 - (void)_finishInitializing;
 - (void)defaultValue;
 - (void)descriptionProvider;
-- (void)setDefaultValue:(id)a3;
-- (void)setDescriptionProvider:(id)a3;
-- (void)setNullPreserving:(BOOL)a3;
-- (void)setPrivacySensitive:(BOOL)a3;
-- (void)setPropagating:(BOOL)a3;
-- (void)setSpecialCollection:(uint64_t)a1;
-- (void)setVolatile:(BOOL)a3;
+- (void)setDefaultValue:(id)value;
+- (void)setDescriptionProvider:(id)provider;
+- (void)setNullPreserving:(BOOL)preserving;
+- (void)setPrivacySensitive:(BOOL)sensitive;
+- (void)setPropagating:(BOOL)propagating;
+- (void)setSpecialCollection:(uint64_t)collection;
+- (void)setVolatile:(BOOL)volatile;
 @end
 
 @implementation FBSSetting
@@ -44,9 +44,9 @@
 
 - (uint64_t)isLocal
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 25);
+    v1 = *(self + 25);
   }
 
   else
@@ -69,21 +69,21 @@
 
 - (void)defaultValue
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    [a1 _finishInitializing];
-    v3 = v2[12];
+    selfCopy = self;
+    [self _finishInitializing];
+    v3 = selfCopy[12];
     if (v3 == *MEMORY[0x1E695E738])
     {
       v3 = 0;
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_finishInitializing
@@ -100,10 +100,10 @@
 
 - (uint64_t)isNullPreserving
 {
-  if (a1)
+  if (self)
   {
-    [a1 _finishInitializing];
-    v2 = a1[32];
+    [self _finishInitializing];
+    v2 = self[32];
   }
 
   else
@@ -126,9 +126,9 @@
 
 - (uint64_t)isBSSettings
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 28);
+    v1 = *(self + 28);
   }
 
   else
@@ -151,22 +151,22 @@
 
 - (uint64_t)specialCollection
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  os_unfair_lock_lock((a1 + 8));
-  v2 = *(a1 + 88);
-  os_unfair_lock_unlock((a1 + 8));
+  os_unfair_lock_lock((self + 8));
+  v2 = *(self + 88);
+  os_unfair_lock_unlock((self + 8));
   return v2;
 }
 
 - (uint64_t)isLegacy
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 26);
+    v1 = *(self + 26);
   }
 
   else
@@ -179,9 +179,9 @@
 
 - (uint64_t)type
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 27);
+    return *(self + 27);
   }
 
   else
@@ -216,10 +216,10 @@
 
 - (uint64_t)isRedacted
 {
-  if (a1)
+  if (self)
   {
-    [a1 _finishInitializing];
-    v2 = a1[29];
+    [self _finishInitializing];
+    v2 = self[29];
   }
 
   else
@@ -232,23 +232,23 @@
 
 - (void)descriptionProvider
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    [a1 _finishInitializing];
-    a1 = MEMORY[0x1A58E80F0](v2[13]);
+    selfCopy = self;
+    [self _finishInitializing];
+    self = MEMORY[0x1A58E80F0](selfCopy[13]);
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)isVolatile
 {
-  if (a1)
+  if (self)
   {
-    [a1 _finishInitializing];
-    v2 = a1[30];
+    [self _finishInitializing];
+    v2 = self[30];
   }
 
   else
@@ -259,13 +259,13 @@
   return v2 & 1;
 }
 
-+ (id)settingWithName:(uint64_t)a3 settingsClass:(void *)a4 extension:(char)a5 local:(char)a6 type:(uint64_t)a7 legacySetting:(void *)a8 expectedClass:
++ (id)settingWithName:(uint64_t)name settingsClass:(void *)class extension:(char)extension local:(char)local type:(uint64_t)type legacySetting:(void *)setting expectedClass:
 {
   v14 = a2;
   objc_opt_self();
-  if (([a4 isSubclassOfClass:objc_opt_class()] & 1) == 0)
+  if (([class isSubclassOfClass:objc_opt_class()] & 1) == 0)
   {
-    [FBSSetting settingWithName:a4 settingsClass:sel_settingWithName_settingsClass_extension_local_type_legacySetting_expectedClass_ extension:? local:? type:? legacySetting:? expectedClass:?];
+    [FBSSetting settingWithName:class settingsClass:sel_settingWithName_settingsClass_extension_local_type_legacySetting_expectedClass_ extension:? local:? type:? legacySetting:? expectedClass:?];
   }
 
   v15 = v14;
@@ -280,50 +280,50 @@
     [FBSSetting settingWithName:? settingsClass:? extension:? local:? type:? legacySetting:? expectedClass:?];
   }
 
-  v16 = NSStringFromClass(a4);
-  if ([a4 isSubclassOfClass:objc_opt_class()])
+  v16 = NSStringFromClass(class);
+  if ([class isSubclassOfClass:objc_opt_class()])
   {
 
     v16 = 0;
   }
 
   v17 = objc_opt_new();
-  *(v17 + 16) = a3;
+  *(v17 + 16) = name;
   *(v17 + 8) = 0;
   v18 = [v15 copy];
   v19 = *(v17 + 40);
   *(v17 + 40) = v18;
 
   v20 = MEMORY[0x1A58E7820](v15);
-  *(v17 + 26) = a7 != 0x7FFFFFFFFFFFFFFFLL;
+  *(v17 + 26) = type != 0x7FFFFFFFFFFFFFFFLL;
   *(v17 + 48) = v20;
-  *(v17 + 56) = a7;
-  objc_storeStrong((v17 + 64), a4);
+  *(v17 + 56) = type;
+  objc_storeStrong((v17 + 64), class);
   v21 = [v16 copy];
   v22 = *(v17 + 72);
   *(v17 + 72) = v21;
 
-  *(v17 + 25) = a5;
-  *(v17 + 27) = a6;
-  objc_storeStrong((v17 + 80), a8);
+  *(v17 + 25) = extension;
+  *(v17 + 27) = local;
+  objc_storeStrong((v17 + 80), setting);
   *(v17 + 88) = 0x7FFFFFFFFFFFFFFFLL;
-  *(v17 + 28) = [a8 isSubclassOfClass:objc_opt_class()];
+  *(v17 + 28) = [setting isSubclassOfClass:objc_opt_class()];
 
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       v5 = 1;
       goto LABEL_11;
     }
 
-    if (self->_type == v4->_type && self->_setting == v4->_setting && self->_legacySetting == v4->_legacySetting && self->_expectedClass == v4->_expectedClass && self->_settingsClass == v4->_settingsClass)
+    if (self->_type == equalCopy->_type && self->_setting == equalCopy->_setting && self->_legacySetting == equalCopy->_legacySetting && self->_expectedClass == equalCopy->_expectedClass && self->_settingsClass == equalCopy->_settingsClass)
     {
       BSEqualBools();
     }
@@ -354,11 +354,11 @@ LABEL_11:
     extensionID = @"<FBSCore>";
   }
 
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<FBSSetting: %p %@ (%@) %@", self, self->_name, v4, extensionID];;
-  v7 = v6;
+  extensionID = [MEMORY[0x1E696AEC0] stringWithFormat:@"<FBSSetting: %p %@ (%@) %@", self, self->_name, v4, extensionID];;
+  v7 = extensionID;
   if (self->_local)
   {
-    v8 = [v6 stringByAppendingString:@" local"];;
+    v8 = [extensionID stringByAppendingString:@" local"];;
 
     v7 = v8;
   }
@@ -375,16 +375,16 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)matchesProperty:(SEL)a3
+- (BOOL)matchesProperty:(SEL)property
 {
-  v3 = self;
-  v4 = FBSSettingForSelector(self->_settingsClass, a3);
-  LOBYTE(v3) = v4 == v3;
+  selfCopy = self;
+  v4 = FBSSettingForSelector(self->_settingsClass, property);
+  LOBYTE(selfCopy) = v4 == selfCopy;
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)setPrivacySensitive:(BOOL)a3
+- (void)setPrivacySensitive:(BOOL)sensitive
 {
   os_unfair_lock_assert_owner(&self->_lock);
   if (self->_lock_initialized)
@@ -392,40 +392,40 @@ LABEL_11:
     [FBSSetting setPrivacySensitive:a2];
   }
 
-  self->_redacted = a3;
+  self->_redacted = sensitive;
 }
 
-- (void)setDescriptionProvider:(id)a3
+- (void)setDescriptionProvider:(id)provider
 {
-  v7 = a3;
+  providerCopy = provider;
   os_unfair_lock_assert_owner(&self->_lock);
   if (self->_lock_initialized)
   {
     [FBSSetting setDescriptionProvider:a2];
   }
 
-  v5 = [v7 copy];
+  v5 = [providerCopy copy];
   descriptionProvider = self->_descriptionProvider;
   self->_descriptionProvider = v5;
 }
 
-- (void)setDefaultValue:(id)a3
+- (void)setDefaultValue:(id)value
 {
-  v6 = a3;
+  valueCopy = value;
   os_unfair_lock_assert_owner(&self->_lock);
   if (self->_lock_initialized)
   {
     [FBSSetting setDefaultValue:a2];
   }
 
-  if (*MEMORY[0x1E695E738] == v6)
+  if (*MEMORY[0x1E695E738] == valueCopy)
   {
     [(FBSSetting *)a2 setDefaultValue:?];
   }
 
-  if (v6)
+  if (valueCopy)
   {
-    v5 = v6;
+    v5 = valueCopy;
   }
 
   else
@@ -436,7 +436,7 @@ LABEL_11:
   objc_storeStrong(&self->_defaultValue, v5);
 }
 
-- (void)setPropagating:(BOOL)a3
+- (void)setPropagating:(BOOL)propagating
 {
   os_unfair_lock_assert_owner(&self->_lock);
   if (self->_lock_initialized)
@@ -444,10 +444,10 @@ LABEL_11:
     [FBSSetting setPropagating:a2];
   }
 
-  self->_propagating = a3;
+  self->_propagating = propagating;
 }
 
-- (void)setNullPreserving:(BOOL)a3
+- (void)setNullPreserving:(BOOL)preserving
 {
   os_unfair_lock_assert_owner(&self->_lock);
   if (self->_lock_initialized)
@@ -455,10 +455,10 @@ LABEL_11:
     [FBSSetting setNullPreserving:a2];
   }
 
-  self->_nullPreserving = a3;
+  self->_nullPreserving = preserving;
 }
 
-- (void)setVolatile:(BOOL)a3
+- (void)setVolatile:(BOOL)volatile
 {
   os_unfair_lock_assert_owner(&self->_lock);
   if (self->_lock_initialized)
@@ -466,17 +466,17 @@ LABEL_11:
     [FBSSetting setVolatile:a2];
   }
 
-  self->_volatile = a3;
+  self->_volatile = volatile;
 }
 
-- (void)setSpecialCollection:(uint64_t)a1
+- (void)setSpecialCollection:(uint64_t)collection
 {
-  if (a1)
+  if (collection)
   {
-    os_unfair_lock_lock((a1 + 8));
-    *(a1 + 88) = a2;
+    os_unfair_lock_lock((collection + 8));
+    *(collection + 88) = a2;
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((collection + 8));
   }
 }
 

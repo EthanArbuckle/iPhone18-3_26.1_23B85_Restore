@@ -1,15 +1,15 @@
 @interface SUUIGiftComposeViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)loadView;
 @end
 
 @implementation SUUIGiftComposeViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIGiftComposeViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SUUIGiftComposeViewController" hasInstanceVariable:@"_tableView" withType:"UITableView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIGiftComposeViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SUUIGiftComposeViewController" hasInstanceVariable:@"_tableView" withType:"UITableView"];
 }
 
 - (void)loadView

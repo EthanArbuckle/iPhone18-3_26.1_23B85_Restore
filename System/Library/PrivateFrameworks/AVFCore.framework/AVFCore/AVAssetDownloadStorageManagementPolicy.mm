@@ -1,9 +1,9 @@
 @interface AVAssetDownloadStorageManagementPolicy
 - (AVAssetDownloadStorageManagementPolicy)init;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)_setPolicyDictionary:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)_setPolicyDictionary:(id)dictionary;
 - (void)dealloc;
 @end
 
@@ -52,7 +52,7 @@
   return [v3 stringWithFormat:@"<%@: %p, ExpirationDate: %@ Priority: %@>", NSStringFromClass(v4), self, -[AVAssetDownloadStorageManagementPolicy expirationDate](self, "expirationDate"), -[AVAssetDownloadStorageManagementPolicy priority](self, "priority")];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(AVAssetDownloadStorageManagementPolicy *)[AVMutableAssetDownloadStorageManagementPolicy allocWithZone:?]];
   v5 = v4;
@@ -64,7 +64,7 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -83,13 +83,13 @@
   return v5;
 }
 
-- (void)_setPolicyDictionary:(id)a3
+- (void)_setPolicyDictionary:(id)dictionary
 {
   policyDictionary = self->_storageManagementPolicy->policyDictionary;
-  if (policyDictionary != a3)
+  if (policyDictionary != dictionary)
   {
 
-    self->_storageManagementPolicy->policyDictionary = [a3 copy];
+    self->_storageManagementPolicy->policyDictionary = [dictionary copy];
   }
 }
 

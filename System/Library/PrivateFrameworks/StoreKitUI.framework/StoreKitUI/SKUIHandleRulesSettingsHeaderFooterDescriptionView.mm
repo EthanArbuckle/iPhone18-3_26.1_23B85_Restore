@@ -1,17 +1,17 @@
 @interface SKUIHandleRulesSettingsHeaderFooterDescriptionView
-+ (BOOL)prefetchResourcesForSettingsHeaderFooterDescription:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForSettingsHeaderFooterDescription:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingsHeaderFooterDescription:(id)a4 context:(id)a5;
-+ (id)_labelWithDescription:(id)a3 forWidth:(double)a4;
-+ (void)requestLayoutForSettingsHeaderFooterDescription:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
++ (BOOL)prefetchResourcesForSettingsHeaderFooterDescription:(id)description reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForSettingsHeaderFooterDescription:(id)description context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width settingsHeaderFooterDescription:(id)description context:(id)context;
++ (id)_labelWithDescription:(id)description forWidth:(double)width;
++ (void)requestLayoutForSettingsHeaderFooterDescription:(id)description width:(double)width context:(id)context;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
 - (void)layoutSubviews;
-- (void)reloadWithSettingsHeaderFooterDescription:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithSettingsHeaderFooterDescription:(id)description width:(double)width context:(id)context;
 @end
 
 @implementation SKUIHandleRulesSettingsHeaderFooterDescriptionView
 
-+ (BOOL)prefetchResourcesForSettingsHeaderFooterDescription:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForSettingsHeaderFooterDescription:(id)description reason:(int64_t)reason context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -28,7 +28,7 @@
   return 0;
 }
 
-+ (CGSize)preferredSizeForSettingsHeaderFooterDescription:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForSettingsHeaderFooterDescription:(id)description context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -49,7 +49,7 @@
   return result;
 }
 
-+ (void)requestLayoutForSettingsHeaderFooterDescription:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForSettingsHeaderFooterDescription:(id)description width:(double)width context:(id)context
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {
@@ -61,9 +61,9 @@
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingsHeaderFooterDescription:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width settingsHeaderFooterDescription:(id)description context:(id)context
 {
-  v7 = a4;
+  descriptionCopy = description;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -79,22 +79,22 @@
   v16 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769E0]];
   [v16 _scaledValueForValue:22.0];
   v18 = v17;
-  v19 = [a1 _labelWithDescription:v7 forWidth:a3];
+  v19 = [self _labelWithDescription:descriptionCopy forWidth:width];
   [v19 _firstLineBaselineFrameOriginY];
   v21 = v18 - v20;
   [v19 _lastLineBaselineFrameOriginY];
   v23 = v21 + v22;
 
-  v24 = a3;
+  widthCopy = width;
   v25 = v23;
   result.height = v25;
-  result.width = v24;
+  result.width = widthCopy;
   return result;
 }
 
-- (void)reloadWithSettingsHeaderFooterDescription:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithSettingsHeaderFooterDescription:(id)description width:(double)width context:(id)context
 {
-  v7 = a3;
+  descriptionCopy = description;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -108,17 +108,17 @@
   }
 
   description = self->_description;
-  self->_description = v7;
-  v17 = v7;
+  self->_description = descriptionCopy;
+  v17 = descriptionCopy;
 
-  v18 = [objc_opt_class() _labelWithDescription:self->_description forWidth:a4];
+  v18 = [objc_opt_class() _labelWithDescription:self->_description forWidth:width];
   label = self->_label;
   self->_label = v18;
 
   [(SKUIHandleRulesSettingsHeaderFooterDescriptionView *)self addSubview:self->_label];
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -187,19 +187,19 @@
   [(UILabel *)self->_label setTextAlignment:v31];
 }
 
-+ (id)_labelWithDescription:(id)a3 forWidth:(double)a4
++ (id)_labelWithDescription:(id)description forWidth:(double)width
 {
   v5 = MEMORY[0x277D756B8];
-  v6 = a3;
+  descriptionCopy = description;
   v7 = objc_alloc_init(v5);
-  v8 = [v6 text];
-  [v7 setText:v8];
+  text = [descriptionCopy text];
+  [v7 setText:text];
   [v7 setNumberOfLines:0];
   v9 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769E0]];
   [v7 setFont:v9];
-  v10 = [v6 showInvalid];
+  showInvalid = [descriptionCopy showInvalid];
 
-  if (v10)
+  if (showInvalid)
   {
     [MEMORY[0x277D75348] systemRedColor];
   }
@@ -210,8 +210,8 @@
   }
   v11 = ;
   [v7 setColor:v11];
-  [v7 sizeThatFits:{a4, 1.0}];
-  [v7 setFrame:{0.0, 0.0, a4, v12}];
+  [v7 sizeThatFits:{width, 1.0}];
+  [v7 setFrame:{0.0, 0.0, width, v12}];
 
   return v7;
 }

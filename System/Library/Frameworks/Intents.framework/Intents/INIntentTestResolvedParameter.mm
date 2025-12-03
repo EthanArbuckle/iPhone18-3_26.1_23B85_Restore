@@ -1,6 +1,6 @@
 @interface INIntentTestResolvedParameter
-- (INIntentTestResolvedParameter)initWithParameter:(id)a3 forIntent:(id)a4 extensionContextResolutionResult:(id)a5;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (INIntentTestResolvedParameter)initWithParameter:(id)parameter forIntent:(id)intent extensionContextResolutionResult:(id)result;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (id)dictionaryRepresentation;
 @end
 
@@ -11,22 +11,22 @@
   v12[3] = *MEMORY[0x1E69E9840];
   v11[0] = @"parameter";
   parameter = self->_parameter;
-  v4 = parameter;
+  null = parameter;
   if (!parameter)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v12[0] = v4;
+  v12[0] = null;
   v11[1] = @"results";
   results = self->_results;
-  v6 = results;
+  null2 = results;
   if (!results)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v12[1] = v6;
+  v12[1] = null2;
   v11[2] = @"resolveImplemented";
   v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_resolveImplemented];
   v12[2] = v7;
@@ -55,45 +55,45 @@ LABEL_7:
   return v8;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INIntentTestResolvedParameter;
   v6 = [(INIntentTestResolvedParameter *)&v11 description];
-  v7 = [(INIntentTestResolvedParameter *)self dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  dictionaryRepresentation = [(INIntentTestResolvedParameter *)self dictionaryRepresentation];
+  v8 = [dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (INIntentTestResolvedParameter)initWithParameter:(id)a3 forIntent:(id)a4 extensionContextResolutionResult:(id)a5
+- (INIntentTestResolvedParameter)initWithParameter:(id)parameter forIntent:(id)intent extensionContextResolutionResult:(id)result
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  parameterCopy = parameter;
+  intentCopy = intent;
+  resultCopy = result;
   v27.receiver = self;
   v27.super_class = INIntentTestResolvedParameter;
   v12 = [(INIntentTestResolvedParameter *)&v27 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_parameter, a3);
-    objc_storeStrong(&v13->_extensionContextResolutionResult, a5);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_parameter, parameter);
+    objc_storeStrong(&v13->_extensionContextResolutionResult, result);
+    v14 = [intentCopy copy];
     intent = v13->_intent;
     v13->_intent = v14;
 
-    v13->_resolveImplemented = [v11 result] != 2;
-    v16 = [v10 _intentInstanceDescription];
-    v17 = [v16 slotByName:v9];
+    v13->_resolveImplemented = [resultCopy result] != 2;
+    _intentInstanceDescription = [intentCopy _intentInstanceDescription];
+    v17 = [_intentInstanceDescription slotByName:parameterCopy];
     slotDescription = v13->_slotDescription;
     v13->_slotDescription = v17;
 
-    v19 = [v11 data];
-    if (!v19)
+    data = [resultCopy data];
+    if (!data)
     {
       goto LABEL_10;
     }
@@ -105,8 +105,8 @@ LABEL_7:
       goto LABEL_10;
     }
 
-    v21 = [v11 data];
-    v22 = [INIntentResolutionResult _resolutionResultWithData:v21 slotDescription:v13->_slotDescription];
+    data2 = [resultCopy data];
+    v22 = [INIntentResolutionResult _resolutionResultWithData:data2 slotDescription:v13->_slotDescription];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

@@ -1,7 +1,7 @@
 @interface SagaCollaborationBeginOperation
-- (SagaCollaborationBeginOperation)initWithCoder:(id)a3;
-- (SagaCollaborationBeginOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 playlistPersistentID:(int64_t)a5 sharingMode:(unint64_t)a6;
-- (void)encodeWithCoder:(id)a3;
+- (SagaCollaborationBeginOperation)initWithCoder:(id)coder;
+- (SagaCollaborationBeginOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity playlistPersistentID:(int64_t)d sharingMode:(unint64_t)mode;
+- (void)encodeWithCoder:(id)coder;
 - (void)start;
 @end
 
@@ -13,7 +13,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting operation to begin collaboration", buf, 0xCu);
   }
 
@@ -27,12 +27,12 @@
   [v6 beginTransaction];
   v7 = [ML3Container alloc];
   v8 = *(&self->super._finished + 1);
-  v9 = [(CloudLibraryOperation *)self musicLibrary];
-  v10 = [v7 initWithPersistentID:v8 inLibrary:v9];
+  musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+  v10 = [v7 initWithPersistentID:v8 inLibrary:musicLibrary];
 
   v11 = [v10 valueForProperty:ML3ContainerPropertyStoreCloudID];
-  v12 = [(CloudLibraryOperation *)self connection];
-  v13 = -[ICCollaborationBeginRequest initWithDatabaseID:playlistSagaID:sharingMode:]([ICCollaborationBeginRequest alloc], "initWithDatabaseID:playlistSagaID:sharingMode:", [v12 databaseID], objc_msgSend(v11, "longLongValue"), *(&self->_persistentID + 2));
+  connection = [(CloudLibraryOperation *)self connection];
+  v13 = -[ICCollaborationBeginRequest initWithDatabaseID:playlistSagaID:sharingMode:]([ICCollaborationBeginRequest alloc], "initWithDatabaseID:playlistSagaID:sharingMode:", [connection databaseID], objc_msgSend(v11, "longLongValue"), *(&self->_persistentID + 2));
   [(ICDRequest *)v13 setVerificationInteractionLevel:2];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
@@ -43,43 +43,43 @@
   v18 = v6;
   v14 = v6;
   v15 = v10;
-  [v12 sendRequest:v13 withResponseHandler:v16];
+  [connection sendRequest:v13 withResponseHandler:v16];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SagaCollaborationBeginOperation;
-  v4 = a3;
-  [(CloudLibraryOperation *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt64:*(&self->super._finished + 1) forKey:{@"SagaCollaborationBeginOperationPlaylistPersistentIDIDKey", v5.receiver, v5.super_class}];
-  [v4 encodeInt:*(&self->_persistentID + 2) forKey:@"SagaCollaborationBeginOperationPlaylistSharingModeKey"];
+  coderCopy = coder;
+  [(CloudLibraryOperation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:*(&self->super._finished + 1) forKey:{@"SagaCollaborationBeginOperationPlaylistPersistentIDIDKey", v5.receiver, v5.super_class}];
+  [coderCopy encodeInt:*(&self->_persistentID + 2) forKey:@"SagaCollaborationBeginOperationPlaylistSharingModeKey"];
 }
 
-- (SagaCollaborationBeginOperation)initWithCoder:(id)a3
+- (SagaCollaborationBeginOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SagaCollaborationBeginOperation;
-  v5 = [(CloudLibraryOperation *)&v7 initWithCoder:v4];
+  v5 = [(CloudLibraryOperation *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    *(v5 + 90) = [v4 decodeInt64ForKey:@"SagaCollaborationBeginOperationPlaylistPersistentIDIDKey"];
-    *(v5 + 98) = [v4 decodeIntForKey:@"SagaCollaborationBeginOperationPlaylistSharingModeKey"];
+    *(v5 + 90) = [coderCopy decodeInt64ForKey:@"SagaCollaborationBeginOperationPlaylistPersistentIDIDKey"];
+    *(v5 + 98) = [coderCopy decodeIntForKey:@"SagaCollaborationBeginOperationPlaylistSharingModeKey"];
   }
 
   return v5;
 }
 
-- (SagaCollaborationBeginOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 playlistPersistentID:(int64_t)a5 sharingMode:(unint64_t)a6
+- (SagaCollaborationBeginOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity playlistPersistentID:(int64_t)d sharingMode:(unint64_t)mode
 {
   v9.receiver = self;
   v9.super_class = SagaCollaborationBeginOperation;
-  result = [(CloudLibraryOperation *)&v9 initWithConfiguration:a3 clientIdentity:a4];
+  result = [(CloudLibraryOperation *)&v9 initWithConfiguration:configuration clientIdentity:identity];
   if (result)
   {
-    *(&result->super._finished + 1) = a5;
-    *(&result->_persistentID + 2) = a6;
+    *(&result->super._finished + 1) = d;
+    *(&result->_persistentID + 2) = mode;
   }
 
   return result;

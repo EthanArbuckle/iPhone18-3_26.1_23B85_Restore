@@ -1,7 +1,7 @@
 @interface MFMessageComposeViewController
 + (BOOL)_canSendText;
 + (BOOL)canSendAttachments;
-+ (BOOL)canSendPhotos:(int)a3 videos:(int)a4 audioClips:(int)a5;
++ (BOOL)canSendPhotos:(int)photos videos:(int)videos audioClips:(int)clips;
 + (BOOL)canSendSubject;
 + (BOOL)canSendText;
 + (BOOL)isSupportedAttachmentUTI:(NSString *)uti;
@@ -11,63 +11,63 @@
 + (void)_startListeningForAvailabilityNotifications;
 + (void)_updateServiceAvailability;
 + (void)initialize;
-- (BOOL)_isAudioMIMEType:(id)a3;
-- (BOOL)_isImageMIMEType:(id)a3;
-- (BOOL)_isVideoMIMEType:(id)a3;
+- (BOOL)_isAudioMIMEType:(id)type;
+- (BOOL)_isImageMIMEType:(id)type;
+- (BOOL)_isVideoMIMEType:(id)type;
 - (BOOL)addAttachmentData:(NSData *)attachmentData typeIdentifier:(NSString *)uti filename:(NSString *)filename;
-- (BOOL)addAttachmentData:(id)a3 withAlternateFilename:(id)a4;
+- (BOOL)addAttachmentData:(id)data withAlternateFilename:(id)filename;
 - (BOOL)addAttachmentURL:(NSURL *)attachmentURL withAlternateFilename:(NSString *)alternateFilename;
-- (BOOL)addRichLinkData:(id)a3 withWebpageURL:(id)a4;
-- (BOOL)canAddAttachmentURL:(id)a3;
+- (BOOL)addRichLinkData:(id)data withWebpageURL:(id)l;
+- (BOOL)canAddAttachmentURL:(id)l;
 - (BOOL)insertCollaborationItemProvider:(NSItemProvider *)itemProvider;
-- (BOOL)insertCollaborationItemProvider:(id)a3 collaborationOptions:(id)a4 collaborationMetadata:(id)a5 isCollaboration:(BOOL)a6;
-- (BOOL)insertCollaborationItemProvider:(id)a3 collaborationShareOptions:(id)a4 collaborationMetadata:(id)a5 isCollaboration:(BOOL)a6;
-- (BOOL)insertGroupActivity:(id)a3;
-- (MFMessageComposeViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_MIMETypeForURL:(id)a3;
-- (id)_contentTypeForMIMEType:(id)a3;
+- (BOOL)insertCollaborationItemProvider:(id)provider collaborationOptions:(id)options collaborationMetadata:(id)metadata isCollaboration:(BOOL)collaboration;
+- (BOOL)insertCollaborationItemProvider:(id)provider collaborationShareOptions:(id)options collaborationMetadata:(id)metadata isCollaboration:(BOOL)collaboration;
+- (BOOL)insertGroupActivity:(id)activity;
+- (MFMessageComposeViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_MIMETypeForURL:(id)l;
+- (id)_contentTypeForMIMEType:(id)type;
 - (id)messageComposeDelegate;
-- (void)_insertCKSMSComposeFileDataForItemProvider:(id)a3 collaborationShareOptions:(id)a4 collaborationMetadata:(id)a5 sendAsCopyURL:(id)a6 isCollaboration:(BOOL)a7 outReturnResult:(BOOL *)a8;
-- (void)_loadSWCopyRepresentationForItemProvider:(id)a3 completionHandler:(id)a4;
-- (void)_loadSWCopyRepresentationForItemProvider:(id)a3 forTypeIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)_setCanEditRecipients:(BOOL)a3;
-- (void)_setNavBarTitle:(id)a3;
-- (void)_setShouldDisableEntryField:(BOOL)a3;
-- (void)_setShouldIgnoreEmailsWhenSending:(BOOL)a3;
-- (void)_updateAttachmentCountForAttachmentURL:(id)a3;
+- (void)_insertCKSMSComposeFileDataForItemProvider:(id)provider collaborationShareOptions:(id)options collaborationMetadata:(id)metadata sendAsCopyURL:(id)l isCollaboration:(BOOL)collaboration outReturnResult:(BOOL *)result;
+- (void)_loadSWCopyRepresentationForItemProvider:(id)provider completionHandler:(id)handler;
+- (void)_loadSWCopyRepresentationForItemProvider:(id)provider forTypeIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)_setCanEditRecipients:(BOOL)recipients;
+- (void)_setNavBarTitle:(id)title;
+- (void)_setShouldDisableEntryField:(BOOL)field;
+- (void)_setShouldIgnoreEmailsWhenSending:(BOOL)sending;
+- (void)_updateAttachmentCountForAttachmentURL:(id)l;
 - (void)dealloc;
 - (void)disableUserAttachments;
-- (void)insertSharedItemAndReturnEntryViewFrame:(id)a3 withAlternateFilename:(id)a4 completion:(id)a5;
-- (void)setMessage:(id)a3 withExtensionBundleIdentifier:(id)a4;
-- (void)setModalPresentationStyle:(int64_t)a3;
-- (void)setUPIVerificationCodeSendCompletion:(id)a3;
+- (void)insertSharedItemAndReturnEntryViewFrame:(id)frame withAlternateFilename:(id)filename completion:(id)completion;
+- (void)setMessage:(id)message withExtensionBundleIdentifier:(id)identifier;
+- (void)setModalPresentationStyle:(int64_t)style;
+- (void)setUPIVerificationCodeSendCompletion:(id)completion;
 - (void)showSharedItemInEntryView;
-- (void)smsComposeControllerCancelled:(id)a3;
-- (void)smsComposeControllerEntryViewContentInserted:(id)a3;
-- (void)smsComposeControllerSendStarted:(id)a3;
-- (void)smsComposeControllerSendStarted:(id)a3 withText:(id)a4 messageGUID:(id)a5;
-- (void)smsComposeControllerShouldSendMessageWithText:(id)a3 toRecipients:(id)a4 completion:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)smsComposeControllerCancelled:(id)cancelled;
+- (void)smsComposeControllerEntryViewContentInserted:(id)inserted;
+- (void)smsComposeControllerSendStarted:(id)started;
+- (void)smsComposeControllerSendStarted:(id)started withText:(id)text messageGUID:(id)d;
+- (void)smsComposeControllerShouldSendMessageWithText:(id)text toRecipients:(id)recipients completion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MFMessageComposeViewController
 
 + (BOOL)canSendText
 {
-  v3 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v4 = [v3 effectiveWhitelistedAppBundleIDs];
-  v5 = v4;
-  if (v4 && ![v4 containsObject:@"com.apple.MobileSMS"])
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  effectiveWhitelistedAppBundleIDs = [mEMORY[0x1E69ADFB8] effectiveWhitelistedAppBundleIDs];
+  v5 = effectiveWhitelistedAppBundleIDs;
+  if (effectiveWhitelistedAppBundleIDs && ![effectiveWhitelistedAppBundleIDs containsObject:@"com.apple.MobileSMS"])
   {
     v6 = 0;
   }
 
   else
   {
-    [a1 _updateServiceAvailability];
+    [self _updateServiceAvailability];
     v6 = 1;
   }
 
@@ -87,16 +87,16 @@
 + (void)_updateServiceAvailability
 {
   v2 = sServiceAvailability;
-  v3 = [a1 _canSendText];
-  if (sServiceAvailability != v3)
+  _canSendText = [self _canSendText];
+  if (sServiceAvailability != _canSendText)
   {
-    sServiceAvailability = v3;
+    sServiceAvailability = _canSendText;
     if (v2 != -1)
     {
-      v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v3];
+      v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:_canSendText];
       v4 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v6, @"__kMFMessageComposeViewControllerTextMessageAvailabilityKey", 0}];
-      v5 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v5 postNotificationName:@"__kMFMessageComposeViewControllerTextMessageAvailabilityDidChangeNotification" object:0 userInfo:v4];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"__kMFMessageComposeViewControllerTextMessageAvailabilityDidChangeNotification" object:0 userInfo:v4];
     }
   }
 }
@@ -117,7 +117,7 @@
   block[1] = 3221225472;
   block[2] = __37__MFMessageComposeViewController_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_8 != -1)
   {
     dispatch_once(&log_onceToken_8, block);
@@ -215,7 +215,7 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = __77__MFMessageComposeViewController__startListeningForAvailabilityNotifications__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_startListeningForAvailabilityNotifications_listenerToken != -1)
   {
     dispatch_once(&_startListeningForAvailabilityNotifications_listenerToken, block);
@@ -232,11 +232,11 @@ void __77__MFMessageComposeViewController__startListeningForAvailabilityNotifica
   [v4 addObserver:*(a1 + 32) selector:sel__serviceAvailabilityChanged_ name:*MEMORY[0x1E699BE60] object:0];
 }
 
-+ (BOOL)canSendPhotos:(int)a3 videos:(int)a4 audioClips:(int)a5
++ (BOOL)canSendPhotos:(int)photos videos:(int)videos audioClips:(int)clips
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  v7 = *&a3;
+  v5 = *&clips;
+  v6 = *&videos;
+  v7 = *&photos;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -259,9 +259,9 @@ void __77__MFMessageComposeViewController__startListeningForAvailabilityNotifica
     return v8(v7, v6, v5);
   }
 
-  v10 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"BOOL soft_IMSPIShareSheetCanSendMedia(int, int, int)"}];
-  [v10 handleFailureInFunction:v11 file:@"MFMessageComposeViewController.m" lineNumber:67 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v11 file:@"MFMessageComposeViewController.m" lineNumber:67 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;
@@ -273,20 +273,20 @@ void __77__MFMessageComposeViewController__startListeningForAvailabilityNotifica
   block[1] = 3221225472;
   block[2] = __44__MFMessageComposeViewController_initialize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (MFMessageComposeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MFMessageComposeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   if ([objc_opt_class() canSendText])
   {
     v17.receiver = self;
     v17.super_class = MFMessageComposeViewController;
-    v8 = [(MFMessageComposeViewController *)&v17 initWithNibName:v6 bundle:v7];
+    v8 = [(MFMessageComposeViewController *)&v17 initWithNibName:nameCopy bundle:bundleCopy];
     v9 = v8;
     if (v8)
     {
@@ -306,7 +306,7 @@ void __77__MFMessageComposeViewController__startListeningForAvailabilityNotifica
     }
 
     self = v9;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
@@ -318,18 +318,18 @@ void __77__MFMessageComposeViewController__startListeningForAvailabilityNotifica
       [(MFMessageComposeViewController *)v15 initWithNibName:buf bundle:v14];
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (BOOL)canAddAttachmentURL:(id)a3
+- (BOOL)canAddAttachmentURL:(id)l
 {
-  v5 = a3;
-  if ([v5 isFileURL])
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
-    v6 = [(MFMessageComposeViewController *)self _MIMETypeForURL:v5];
+    v6 = [(MFMessageComposeViewController *)self _MIMETypeForURL:lCopy];
     gotLoadHelper_x25__OBJC_CLASS___CKSMSComposeController(v7);
     v8 = [*(v3 + 3184) acceptsMIMEType:v6];
     v9 = [(MFMessageComposeViewController *)self _isVideoMIMEType:v6];
@@ -356,19 +356,19 @@ void __77__MFMessageComposeViewController__startListeningForAvailabilityNotifica
   return v13;
 }
 
-- (id)_MIMETypeForURL:(id)a3
+- (id)_MIMETypeForURL:(id)l
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AF48] sharedMappings];
-  v5 = [v3 pathExtension];
-  v6 = [v4 MIMETypeForExtension:v5];
+  lCopy = l;
+  mEMORY[0x1E696AF48] = [MEMORY[0x1E696AF48] sharedMappings];
+  pathExtension = [lCopy pathExtension];
+  v6 = [mEMORY[0x1E696AF48] MIMETypeForExtension:pathExtension];
 
   return v6;
 }
 
-- (id)_contentTypeForMIMEType:(id)a3
+- (id)_contentTypeForMIMEType:(id)type
 {
-  v3 = [a3 componentsSeparatedByString:@"/"];
+  v3 = [type componentsSeparatedByString:@"/"];
   if ([v3 count] < 2)
   {
     v4 = 0;
@@ -382,25 +382,25 @@ void __77__MFMessageComposeViewController__startListeningForAvailabilityNotifica
   return v4;
 }
 
-- (BOOL)_isVideoMIMEType:(id)a3
+- (BOOL)_isVideoMIMEType:(id)type
 {
-  v3 = [(MFMessageComposeViewController *)self _contentTypeForMIMEType:a3];
+  v3 = [(MFMessageComposeViewController *)self _contentTypeForMIMEType:type];
   v4 = [v3 isEqualToIgnoringCase:@"video"];
 
   return v4;
 }
 
-- (BOOL)_isAudioMIMEType:(id)a3
+- (BOOL)_isAudioMIMEType:(id)type
 {
-  v3 = [(MFMessageComposeViewController *)self _contentTypeForMIMEType:a3];
+  v3 = [(MFMessageComposeViewController *)self _contentTypeForMIMEType:type];
   v4 = [v3 isEqualToIgnoringCase:@"audio"];
 
   return v4;
 }
 
-- (BOOL)_isImageMIMEType:(id)a3
+- (BOOL)_isImageMIMEType:(id)type
 {
-  v3 = [(MFMessageComposeViewController *)self _contentTypeForMIMEType:a3];
+  v3 = [(MFMessageComposeViewController *)self _contentTypeForMIMEType:type];
   v4 = [v3 isEqualToIgnoringCase:@"image"];
 
   return v4;
@@ -412,9 +412,9 @@ void __77__MFMessageComposeViewController__startListeningForAvailabilityNotifica
   v7 = alternateFilename;
   if (-[NSURL isFileURL](v6, "isFileURL") || (-[NSURL scheme](v6, "scheme"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isEqualToString:@"assets-library"], v8, (v9 & 1) != 0))
   {
-    v10 = [(MFMessageComposeViewController *)self topViewController];
-    v11 = v10;
-    if (v10 && [v10 insertAttachmentWithURL:v6 andDescription:v7])
+    topViewController = [(MFMessageComposeViewController *)self topViewController];
+    v11 = topViewController;
+    if (topViewController && [topViewController insertAttachmentWithURL:v6 andDescription:v7])
     {
       [(MFMessageComposeViewController *)self _updateAttachmentCountForAttachmentURL:v6];
       v12 = 1;
@@ -458,12 +458,12 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  v13 = [(MFMessageComposeViewController *)self topViewController];
-  if (v13)
+  topViewController = [(MFMessageComposeViewController *)self topViewController];
+  if (topViewController)
   {
     v14 = [MEMORY[0x1E6982C40] typeWithIdentifier:v9];
-    v15 = [v14 preferredMIMEType];
-    v12 = [v13 insertData:v8 MIMEType:v15 exportedFilename:v10];
+    preferredMIMEType = [v14 preferredMIMEType];
+    v12 = [topViewController insertData:v8 MIMEType:preferredMIMEType exportedFilename:v10];
   }
 
   else
@@ -475,20 +475,20 @@ LABEL_10:
   return v12;
 }
 
-- (BOOL)addAttachmentData:(id)a3 withAlternateFilename:(id)a4
+- (BOOL)addAttachmentData:(id)data withAlternateFilename:(id)filename
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 length])
+  dataCopy = data;
+  filenameCopy = filename;
+  if (dataCopy && [dataCopy length])
   {
-    v8 = [(MFMessageComposeViewController *)self topViewController];
-    if (v8)
+    topViewController = [(MFMessageComposeViewController *)self topViewController];
+    if (topViewController)
     {
-      v9 = [MEMORY[0x1E696AF48] sharedMappings];
-      v10 = [v7 pathExtension];
-      v11 = [v9 MIMETypeForExtension:v10];
+      mEMORY[0x1E696AF48] = [MEMORY[0x1E696AF48] sharedMappings];
+      pathExtension = [filenameCopy pathExtension];
+      v11 = [mEMORY[0x1E696AF48] MIMETypeForExtension:pathExtension];
 
-      v12 = [v8 insertData:v6 MIMEType:v11 exportedFilename:v7];
+      v12 = [topViewController insertData:dataCopy MIMEType:v11 exportedFilename:filenameCopy];
     }
 
     else
@@ -505,20 +505,20 @@ LABEL_10:
   return v12;
 }
 
-- (void)insertSharedItemAndReturnEntryViewFrame:(id)a3 withAlternateFilename:(id)a4 completion:(id)a5
+- (void)insertSharedItemAndReturnEntryViewFrame:(id)frame withAlternateFilename:(id)filename completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MFMessageComposeViewController *)self topViewController];
-  if (v11)
+  frameCopy = frame;
+  filenameCopy = filename;
+  completionCopy = completion;
+  topViewController = [(MFMessageComposeViewController *)self topViewController];
+  if (topViewController)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __107__MFMessageComposeViewController_insertSharedItemAndReturnEntryViewFrame_withAlternateFilename_completion___block_invoke;
     v12[3] = &unk_1E806FFF0;
-    v13 = v10;
-    [v11 insertItemForSendingAndCalculateEntryViewFrame:v8 withAlternateFilename:v9 completion:v12];
+    v13 = completionCopy;
+    [topViewController insertItemForSendingAndCalculateEntryViewFrame:frameCopy withAlternateFilename:filenameCopy completion:v12];
   }
 }
 
@@ -531,14 +531,14 @@ void __107__MFMessageComposeViewController_insertSharedItemAndReturnEntryViewFra
   (*(v4 + 16))(v4);
 }
 
-- (void)_insertCKSMSComposeFileDataForItemProvider:(id)a3 collaborationShareOptions:(id)a4 collaborationMetadata:(id)a5 sendAsCopyURL:(id)a6 isCollaboration:(BOOL)a7 outReturnResult:(BOOL *)a8
+- (void)_insertCKSMSComposeFileDataForItemProvider:(id)provider collaborationShareOptions:(id)options collaborationMetadata:(id)metadata sendAsCopyURL:(id)l isCollaboration:(BOOL)collaboration outReturnResult:(BOOL *)result
 {
-  v9 = a7;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = [(MFMessageComposeViewController *)self topViewController];
+  collaborationCopy = collaboration;
+  providerCopy = provider;
+  optionsCopy = options;
+  metadataCopy = metadata;
+  lCopy = l;
+  topViewController = [(MFMessageComposeViewController *)self topViewController];
   v19 = objc_opt_respondsToSelector();
 
   if (v19)
@@ -550,19 +550,19 @@ void __107__MFMessageComposeViewController_insertSharedItemAndReturnEntryViewFra
       _os_log_impl(&dword_1BE819000, v20, OS_LOG_TYPE_DEFAULT, "Calling new compose SPI with nil URL for spinner.", buf, 2u);
     }
 
-    v21 = [(MFMessageComposeViewController *)self topViewController];
+    topViewController2 = [(MFMessageComposeViewController *)self topViewController];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __171__MFMessageComposeViewController__insertCKSMSComposeFileDataForItemProvider_collaborationShareOptions_collaborationMetadata_sendAsCopyURL_isCollaboration_outReturnResult___block_invoke;
     v32[3] = &unk_1E8070088;
-    v33 = v14;
-    v34 = self;
-    v35 = v15;
-    v36 = v16;
-    v39 = v9;
-    v37 = v17;
-    v38 = a8;
-    [v21 insertFileURLForCollaboration:0 collaborationShareOptions:v35 metadata:v36 sendAsCopyURL:v37 isCollaboration:v9 completionHandler:v32];
+    v33 = providerCopy;
+    selfCopy = self;
+    v35 = optionsCopy;
+    v36 = metadataCopy;
+    v39 = collaborationCopy;
+    v37 = lCopy;
+    resultCopy = result;
+    [topViewController2 insertFileURLForCollaboration:0 collaborationShareOptions:v35 metadata:v36 sendAsCopyURL:v37 isCollaboration:collaborationCopy completionHandler:v32];
 
     v22 = v33;
 LABEL_9:
@@ -570,7 +570,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v23 = [(MFMessageComposeViewController *)self topViewController];
+  topViewController3 = [(MFMessageComposeViewController *)self topViewController];
   v24 = objc_opt_respondsToSelector();
 
   if (v24)
@@ -588,10 +588,10 @@ LABEL_9:
     v28[2] = __171__MFMessageComposeViewController__insertCKSMSComposeFileDataForItemProvider_collaborationShareOptions_collaborationMetadata_sendAsCopyURL_isCollaboration_outReturnResult___block_invoke_272;
     v28[3] = &unk_1E80700B0;
     v28[4] = self;
-    v29 = v15;
-    v30 = v16;
-    v31 = v9;
-    v27 = [v14 loadObjectOfClass:v26 completionHandler:v28];
+    v29 = optionsCopy;
+    v30 = metadataCopy;
+    v31 = collaborationCopy;
+    v27 = [providerCopy loadObjectOfClass:v26 completionHandler:v28];
 
     v22 = v29;
     goto LABEL_9;
@@ -696,24 +696,24 @@ void __171__MFMessageComposeViewController__insertCKSMSComposeFileDataForItemPro
   [v5 insertFileURLForCollaboration:v3 collaborationShareOptions:*(a1 + 40) metadata:*(a1 + 48) isCollaboration:*(a1 + 56)];
 }
 
-- (void)_loadSWCopyRepresentationForItemProvider:(id)a3 completionHandler:(id)a4
+- (void)_loadSWCopyRepresentationForItemProvider:(id)provider completionHandler:(id)handler
 {
-  v8 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  handlerCopy = handler;
   v7 = getSWCopyRepresentationTypeIdentifier_0();
-  [(MFMessageComposeViewController *)self _loadSWCopyRepresentationForItemProvider:v8 forTypeIdentifier:v7 completionHandler:v6];
+  [(MFMessageComposeViewController *)self _loadSWCopyRepresentationForItemProvider:providerCopy forTypeIdentifier:v7 completionHandler:handlerCopy];
 }
 
-- (void)_loadSWCopyRepresentationForItemProvider:(id)a3 forTypeIdentifier:(id)a4 completionHandler:(id)a5
+- (void)_loadSWCopyRepresentationForItemProvider:(id)provider forTypeIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __111__MFMessageComposeViewController__loadSWCopyRepresentationForItemProvider_forTypeIdentifier_completionHandler___block_invoke;
   v10[3] = &unk_1E8070100;
-  v11 = v7;
-  v8 = v7;
-  v9 = [a3 loadInPlaceFileRepresentationForTypeIdentifier:a4 completionHandler:v10];
+  v11 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = [provider loadInPlaceFileRepresentationForTypeIdentifier:identifier completionHandler:v10];
 }
 
 void __111__MFMessageComposeViewController__loadSWCopyRepresentationForItemProvider_forTypeIdentifier_completionHandler___block_invoke(uint64_t a1, void *a2, char a3, void *a4)
@@ -854,22 +854,22 @@ void __111__MFMessageComposeViewController__loadSWCopyRepresentationForItemProvi
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)insertCollaborationItemProvider:(id)a3 collaborationShareOptions:(id)a4 collaborationMetadata:(id)a5 isCollaboration:(BOOL)a6
+- (BOOL)insertCollaborationItemProvider:(id)provider collaborationShareOptions:(id)options collaborationMetadata:(id)metadata isCollaboration:(BOOL)collaboration
 {
-  v6 = a6;
+  collaborationCopy = collaboration;
   v84 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  providerCopy = provider;
+  optionsCopy = options;
+  metadataCopy = metadata;
   v13 = +[MFMessageComposeViewController log];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v12;
+    *(&buf + 4) = metadataCopy;
     _os_log_impl(&dword_1BE819000, v13, OS_LOG_TYPE_DEFAULT, "Invoking insertCollaborationItemProvider with metadata: %@{public}", &buf, 0xCu);
   }
 
-  if (v10)
+  if (providerCopy)
   {
     *&v81 = 0;
     *(&v81 + 1) = &v81;
@@ -893,10 +893,10 @@ void __111__MFMessageComposeViewController__loadSWCopyRepresentationForItemProvi
     *(&buf + 1) = &buf;
     v78 = 0x2020000000;
     LOBYTE(v79) = 0;
-    if ([v10 canLoadObjectOfClass:objc_opt_class()])
+    if ([providerCopy canLoadObjectOfClass:objc_opt_class()])
     {
       v16 = getSWCopyRepresentationTypeIdentifier_0();
-      v17 = [v10 hasItemConformingToTypeIdentifier:v16];
+      v17 = [providerCopy hasItemConformingToTypeIdentifier:v16];
 
       if (v17)
       {
@@ -905,10 +905,10 @@ void __111__MFMessageComposeViewController__loadSWCopyRepresentationForItemProvi
         v71[2] = __130__MFMessageComposeViewController_insertCollaborationItemProvider_collaborationShareOptions_collaborationMetadata_isCollaboration___block_invoke;
         v71[3] = &unk_1E8070128;
         v71[4] = self;
-        v72 = v10;
-        v73 = v11;
-        v76 = v6;
-        v74 = v12;
+        v72 = providerCopy;
+        v73 = optionsCopy;
+        v76 = collaborationCopy;
+        v74 = metadataCopy;
         p_buf = &buf;
         [(MFMessageComposeViewController *)self _loadSWCopyRepresentationForItemProvider:v72 completionHandler:v71];
       }
@@ -918,20 +918,20 @@ void __111__MFMessageComposeViewController__loadSWCopyRepresentationForItemProvi
         v25 = +[MFMessageComposeViewController log];
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
-          v26 = [v10 registeredTypeIdentifiers];
+          registeredTypeIdentifiers = [providerCopy registeredTypeIdentifiers];
           LODWORD(v81) = 138412290;
-          *(&v81 + 4) = v26;
+          *(&v81 + 4) = registeredTypeIdentifiers;
           _os_log_impl(&dword_1BE819000, v25, OS_LOG_TYPE_DEFAULT, "Item provider does not have item conforming to UTCopyRepresentationTypeIdentifier. Registered type identifiers are: %@", &v81, 0xCu);
         }
 
-        [(MFMessageComposeViewController *)self _insertCKSMSComposeFileDataForItemProvider:v10 collaborationShareOptions:v11 collaborationMetadata:v12 sendAsCopyURL:0 isCollaboration:v6 outReturnResult:*(&buf + 1) + 24];
+        [(MFMessageComposeViewController *)self _insertCKSMSComposeFileDataForItemProvider:providerCopy collaborationShareOptions:optionsCopy collaborationMetadata:metadataCopy sendAsCopyURL:0 isCollaboration:collaborationCopy outReturnResult:*(&buf + 1) + 24];
       }
 
       v19 = *(*(&buf + 1) + 24);
       goto LABEL_39;
     }
 
-    if ([v10 canLoadObjectOfClass:objc_opt_class()])
+    if ([providerCopy canLoadObjectOfClass:objc_opt_class()])
     {
       v20 = +[MFMessageComposeViewController log];
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -940,7 +940,7 @@ void __111__MFMessageComposeViewController__loadSWCopyRepresentationForItemProvi
         _os_log_impl(&dword_1BE819000, v20, OS_LOG_TYPE_DEFAULT, "Loading item provider for SWShareableContent", &v81, 2u);
       }
 
-      v21 = [(MFMessageComposeViewController *)self topViewController];
+      topViewController = [(MFMessageComposeViewController *)self topViewController];
       v22 = objc_opt_respondsToSelector();
 
       if (v22)
@@ -949,19 +949,19 @@ void __111__MFMessageComposeViewController__loadSWCopyRepresentationForItemProvi
         *(&v81 + 1) = &v81;
         v82 = 0x2020000000;
         LOBYTE(v83) = 0;
-        v23 = [(MFMessageComposeViewController *)self topViewController];
+        topViewController2 = [(MFMessageComposeViewController *)self topViewController];
         v63[0] = MEMORY[0x1E69E9820];
         v63[1] = 3221225472;
         v63[2] = __130__MFMessageComposeViewController_insertCollaborationItemProvider_collaborationShareOptions_collaborationMetadata_isCollaboration___block_invoke_280;
         v63[3] = &unk_1E80701C8;
         v69 = v14;
-        v64 = v10;
-        v65 = self;
-        v66 = v11;
-        v70 = v6;
-        v67 = v12;
+        v64 = providerCopy;
+        selfCopy = self;
+        v66 = optionsCopy;
+        v70 = collaborationCopy;
+        v67 = metadataCopy;
         v68 = &v81;
-        [v23 insertSWYPendingCollaboration:0 collaborationShareOptions:0 collaborationMetadata:0 sendAsCopyURL:0 isCollaboration:v6 completionHandler:v63];
+        [topViewController2 insertSWYPendingCollaboration:0 collaborationShareOptions:0 collaborationMetadata:0 sendAsCopyURL:0 isCollaboration:collaborationCopy completionHandler:v63];
 
         v19 = *(*(&v81 + 1) + 24);
 LABEL_29:
@@ -971,7 +971,7 @@ LABEL_39:
         goto LABEL_40;
       }
 
-      v33 = [(MFMessageComposeViewController *)self topViewController];
+      topViewController3 = [(MFMessageComposeViewController *)self topViewController];
       v34 = objc_opt_respondsToSelector();
 
       if (v34)
@@ -980,18 +980,18 @@ LABEL_39:
         *(&v81 + 1) = &v81;
         v82 = 0x2020000000;
         LOBYTE(v83) = 0;
-        v35 = [(MFMessageComposeViewController *)self topViewController];
+        topViewController4 = [(MFMessageComposeViewController *)self topViewController];
         v56[0] = MEMORY[0x1E69E9820];
         v56[1] = 3221225472;
         v56[2] = __130__MFMessageComposeViewController_insertCollaborationItemProvider_collaborationShareOptions_collaborationMetadata_isCollaboration___block_invoke_4;
         v56[3] = &unk_1E8070240;
         v62 = v14;
-        v57 = v10;
-        v58 = self;
-        v59 = v11;
-        v60 = v12;
+        v57 = providerCopy;
+        selfCopy2 = self;
+        v59 = optionsCopy;
+        v60 = metadataCopy;
         v61 = &v81;
-        [v35 insertSWYPendingCollaboration:0 collaborationShareOptions:0 collaborationMetadata:0 completionHandler:v56];
+        [topViewController4 insertSWYPendingCollaboration:0 collaborationShareOptions:0 collaborationMetadata:0 completionHandler:v56];
 
         v19 = *(*(&v81 + 1) + 24);
         goto LABEL_29;
@@ -1003,10 +1003,10 @@ LABEL_30:
     }
 
     v24 = *MEMORY[0x1E695BB00];
-    if (![v10 hasItemConformingToTypeIdentifier:*MEMORY[0x1E695BB00]])
+    if (![providerCopy hasItemConformingToTypeIdentifier:*MEMORY[0x1E695BB00]])
     {
       v24 = *MEMORY[0x1E695BAF8];
-      if (![v10 hasItemConformingToTypeIdentifier:*MEMORY[0x1E695BAF8]])
+      if (![providerCopy hasItemConformingToTypeIdentifier:*MEMORY[0x1E695BAF8]])
       {
         goto LABEL_30;
       }
@@ -1023,35 +1023,35 @@ LABEL_30:
     *(&v81 + 1) = &v81;
     v82 = 0x2020000000;
     LOBYTE(v83) = 0;
-    v29 = [(MFMessageComposeViewController *)self topViewController];
+    topViewController5 = [(MFMessageComposeViewController *)self topViewController];
     v30 = objc_opt_respondsToSelector();
 
     if (v30)
     {
-      v31 = [(MFMessageComposeViewController *)self topViewController];
+      topViewController6 = [(MFMessageComposeViewController *)self topViewController];
       v48[0] = MEMORY[0x1E69E9820];
       v48[1] = 3221225472;
       v48[2] = __130__MFMessageComposeViewController_insertCollaborationItemProvider_collaborationShareOptions_collaborationMetadata_isCollaboration___block_invoke_2_295;
       v48[3] = &unk_1E80701C8;
-      v49 = v10;
+      v49 = providerCopy;
       v54 = v28;
       v50 = v27;
-      v51 = self;
-      v55 = v6;
-      v52 = v11;
+      selfCopy3 = self;
+      v55 = collaborationCopy;
+      v52 = optionsCopy;
       v53 = &v81;
-      [v31 insertCKShareForCollaboration:0 containerSetupInfo:0 collaborationShareOptions:v52 isCollaboration:v6 completionHandler:v48];
+      [topViewController6 insertCKShareForCollaboration:0 containerSetupInfo:0 collaborationShareOptions:v52 isCollaboration:collaborationCopy completionHandler:v48];
 
       v19 = *(*(&v81 + 1) + 24);
-      v32 = v49;
+      topViewController7 = v49;
     }
 
     else
     {
-      v32 = [(MFMessageComposeViewController *)self topViewController];
+      topViewController7 = [(MFMessageComposeViewController *)self topViewController];
       if (objc_opt_respondsToSelector())
       {
-        v36 = [v10 canLoadObjectOfClass:objc_opt_class()];
+        v36 = [providerCopy canLoadObjectOfClass:objc_opt_class()];
 
         if (!v36)
         {
@@ -1072,14 +1072,14 @@ LABEL_30:
         v41[2] = __130__MFMessageComposeViewController_insertCollaborationItemProvider_collaborationShareOptions_collaborationMetadata_isCollaboration___block_invoke_301;
         v41[3] = &unk_1E80702B8;
         v42 = v27;
-        v43 = self;
-        v46 = v6;
-        v44 = v11;
+        selfCopy4 = self;
+        v46 = collaborationCopy;
+        v44 = optionsCopy;
         v45 = v28;
-        v39 = [v10 loadObjectOfClass:v38 completionHandler:v41];
+        v39 = [providerCopy loadObjectOfClass:v38 completionHandler:v41];
 
         v19 = 1;
-        v32 = v42;
+        topViewController7 = v42;
       }
 
       else
@@ -1420,12 +1420,12 @@ void __130__MFMessageComposeViewController_insertCollaborationItemProvider_colla
   }
 }
 
-- (BOOL)insertCollaborationItemProvider:(id)a3 collaborationOptions:(id)a4 collaborationMetadata:(id)a5 isCollaboration:(BOOL)a6
+- (BOOL)insertCollaborationItemProvider:(id)provider collaborationOptions:(id)options collaborationMetadata:(id)metadata isCollaboration:(BOOL)collaboration
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  collaborationCopy = collaboration;
+  providerCopy = provider;
+  optionsCopy = options;
+  metadataCopy = metadata;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2050000000;
@@ -1444,28 +1444,28 @@ void __130__MFMessageComposeViewController_insertCollaborationItemProvider_colla
 
   v14 = v13;
   _Block_object_dispose(&v19, 8);
-  v15 = [[v13 alloc] initWithOptionsGroups:v11];
-  v16 = [(MFMessageComposeViewController *)self insertCollaborationItemProvider:v10 collaborationShareOptions:v15 collaborationMetadata:v12 isCollaboration:v6];
+  v15 = [[v13 alloc] initWithOptionsGroups:optionsCopy];
+  v16 = [(MFMessageComposeViewController *)self insertCollaborationItemProvider:providerCopy collaborationShareOptions:v15 collaborationMetadata:metadataCopy isCollaboration:collaborationCopy];
 
   return v16;
 }
 
-- (BOOL)insertGroupActivity:(id)a3
+- (BOOL)insertGroupActivity:(id)activity
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4 != 0;
-  if (v4)
+  activityCopy = activity;
+  v5 = activityCopy != 0;
+  if (activityCopy)
   {
     v6 = +[MFMessageComposeViewController log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = activityCopy;
       _os_log_impl(&dword_1BE819000, v6, OS_LOG_TYPE_DEFAULT, "Inserting groupActivity %@{public}", &v11, 0xCu);
     }
 
-    v7 = [(MFMessageComposeViewController *)self topViewController];
+    topViewController = [(MFMessageComposeViewController *)self topViewController];
     v8 = objc_opt_respondsToSelector();
 
     if ((v8 & 1) == 0)
@@ -1474,14 +1474,14 @@ void __130__MFMessageComposeViewController_insertCollaborationItemProvider_colla
       goto LABEL_10;
     }
 
-    v9 = [(MFMessageComposeViewController *)self topViewController];
-    [v9 insertGroupActivity:v4];
+    topViewController2 = [(MFMessageComposeViewController *)self topViewController];
+    [topViewController2 insertGroupActivity:activityCopy];
   }
 
   else
   {
-    v9 = +[MFMessageComposeViewController log];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    topViewController2 = +[MFMessageComposeViewController log];
+    if (os_log_type_enabled(topViewController2, OS_LOG_TYPE_ERROR))
     {
       [MFMessageComposeViewController insertGroupActivity:];
     }
@@ -1493,24 +1493,24 @@ LABEL_10:
 
 - (void)showSharedItemInEntryView
 {
-  v2 = [(MFMessageComposeViewController *)self topViewController];
-  if (v2)
+  topViewController = [(MFMessageComposeViewController *)self topViewController];
+  if (topViewController)
   {
-    [v2 showInsertedItemInEntryView];
+    [topViewController showInsertedItemInEntryView];
   }
 }
 
-- (BOOL)addRichLinkData:(id)a3 withWebpageURL:(id)a4
+- (BOOL)addRichLinkData:(id)data withWebpageURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dataCopy = data;
+  lCopy = l;
+  if (lCopy)
   {
-    v8 = [(MFMessageComposeViewController *)self topViewController];
-    v9 = v8;
-    if (v8)
+    topViewController = [(MFMessageComposeViewController *)self topViewController];
+    v9 = topViewController;
+    if (topViewController)
     {
-      v10 = [v8 insertRichLinkWithURL:v7 andData:v6];
+      v10 = [topViewController insertRichLinkWithURL:lCopy andData:dataCopy];
     }
 
     else
@@ -1527,48 +1527,48 @@ LABEL_10:
   return v10;
 }
 
-- (void)setMessage:(id)a3 withExtensionBundleIdentifier:(id)a4
+- (void)setMessage:(id)message withExtensionBundleIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (self->_message != v7)
+  messageCopy = message;
+  identifierCopy = identifier;
+  if (self->_message != messageCopy)
   {
-    objc_storeStrong(&self->_message, a3);
+    objc_storeStrong(&self->_message, message);
     if (self->_message)
     {
-      v9 = [(MFMessageComposeViewController *)self topViewController];
-      v10 = v9;
-      if (v9)
+      topViewController = [(MFMessageComposeViewController *)self topViewController];
+      v10 = topViewController;
+      if (topViewController)
       {
-        if (v8)
+        if (identifierCopy)
         {
           v11 = +[MFMessageComposeViewController log];
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
           {
             v12 = 138412290;
-            v13 = v8;
+            v13 = identifierCopy;
             _os_log_impl(&dword_1BE819000, v11, OS_LOG_TYPE_DEFAULT, "Passing override extensionBundleIdentifier: '%@' to CKSMSComposeController.", &v12, 0xCu);
           }
 
           if (objc_opt_respondsToSelector())
           {
-            [v10 insertMessage:self->_message extensionBundleIdentifier:v8];
+            [v10 insertMessage:self->_message extensionBundleIdentifier:identifierCopy];
           }
         }
 
         else
         {
-          [v9 insertMessage:self->_message];
+          [topViewController insertMessage:self->_message];
         }
       }
     }
   }
 }
 
-- (void)_updateAttachmentCountForAttachmentURL:(id)a3
+- (void)_updateAttachmentCountForAttachmentURL:(id)l
 {
-  v4 = [(MFMessageComposeViewController *)self _MIMETypeForURL:a3];
+  v4 = [(MFMessageComposeViewController *)self _MIMETypeForURL:l];
   if ([(MFMessageComposeViewController *)self _isAudioMIMEType:?])
   {
     ++self->_currentAttachedAudioCount;
@@ -1587,15 +1587,15 @@ LABEL_10:
 
 - (void)disableUserAttachments
 {
-  v2 = [(MFMessageComposeViewController *)self topViewController];
-  [v2 disableCameraAttachments];
+  topViewController = [(MFMessageComposeViewController *)self topViewController];
+  [topViewController disableCameraAttachments];
 }
 
 - (void)dealloc
 {
-  v3 = [(MFMessageComposeViewController *)self topViewController];
-  [v3 removeFromParentViewController];
-  [v3 setDelegate:0];
+  topViewController = [(MFMessageComposeViewController *)self topViewController];
+  [topViewController removeFromParentViewController];
+  [topViewController setDelegate:0];
   [(MFMessageComposeViewController *)self setMessageComposeDelegate:0];
   [(MFMessageComposeViewController *)self setBody:0];
   [(MFMessageComposeViewController *)self setRecipients:0];
@@ -1605,7 +1605,7 @@ LABEL_10:
   [(MFMessageComposeViewController *)&v4 dealloc];
 }
 
-- (void)setModalPresentationStyle:(int64_t)a3
+- (void)setModalPresentationStyle:(int64_t)style
 {
   v3.receiver = self;
   v3.super_class = MFMessageComposeViewController;
@@ -1617,21 +1617,21 @@ LABEL_10:
   v5.receiver = self;
   v5.super_class = MFMessageComposeViewController;
   [(MFMessageComposeViewController *)&v5 viewDidLoad];
-  v3 = [(MFMessageComposeViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] whiteColor];
-  [v3 setBackgroundColor:v4];
+  view = [(MFMessageComposeViewController *)self view];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [view setBackgroundColor:whiteColor];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(MFMessageComposeViewController *)self topViewController];
-  [v5 setServiceId:self->_serviceId];
-  [v5 setSuggestions:self->_suggestions];
-  v6 = [(UIViewController *)self mf_dataForUICustomization];
-  [v5 setUICustomizationData:v6];
+  appearCopy = appear;
+  topViewController = [(MFMessageComposeViewController *)self topViewController];
+  [topViewController setServiceId:self->_serviceId];
+  [topViewController setSuggestions:self->_suggestions];
+  mf_dataForUICustomization = [(UIViewController *)self mf_dataForUICustomization];
+  [topViewController setUICustomizationData:mf_dataForUICustomization];
 
-  [v5 setShareSheetSessionID:self->_shareSheetSessionID];
+  [topViewController setShareSheetSessionID:self->_shareSheetSessionID];
   if (self->_shareSheetSessionID || !self->_chatGUID)
   {
     v7 = objc_opt_respondsToSelector();
@@ -1640,18 +1640,18 @@ LABEL_10:
     recipients = self->_recipients;
     if (v7)
     {
-      [v5 setText:body subject:subject addresses:recipients shouldHideClearPluginButton:self->_shouldHideClearPluginButton];
+      [topViewController setText:body subject:subject addresses:recipients shouldHideClearPluginButton:self->_shouldHideClearPluginButton];
     }
 
     else
     {
-      [v5 setText:body subject:subject addresses:recipients];
+      [topViewController setText:body subject:subject addresses:recipients];
     }
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v5 setText:self->_body subject:self->_subject addresses:self->_recipients shouldHideClearPluginButton:self->_shouldHideClearPluginButton chatGUID:self->_chatGUID];
+    [topViewController setText:self->_body subject:self->_subject addresses:self->_recipients shouldHideClearPluginButton:self->_shouldHideClearPluginButton chatGUID:self->_chatGUID];
   }
 
   else
@@ -1663,25 +1663,25 @@ LABEL_10:
     }
   }
 
-  [v5 setUTIs:self->_UTITypes];
-  [v5 setPhotoIDs:self->_photoIDs];
-  [v5 setCloudPhotoIDs:self->_cloudPhotoIDs];
-  [v5 setContentURLs:self->_contentURLs];
-  [v5 setContentText:self->_contentText];
+  [topViewController setUTIs:self->_UTITypes];
+  [topViewController setPhotoIDs:self->_photoIDs];
+  [topViewController setCloudPhotoIDs:self->_cloudPhotoIDs];
+  [topViewController setContentURLs:self->_contentURLs];
+  [topViewController setContentText:self->_contentText];
   v12.receiver = self;
   v12.super_class = MFMessageComposeViewController;
-  [(MFMessageComposeViewController *)&v12 viewWillAppear:v3];
+  [(MFMessageComposeViewController *)&v12 viewWillAppear:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = MFMessageComposeViewController;
-  [(MFMessageComposeViewController *)&v5 viewDidAppear:a3];
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 isPPTAvailable];
+  [(MFMessageComposeViewController *)&v5 viewDidAppear:appear];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  isPPTAvailable = [mEMORY[0x1E69DC668] isPPTAvailable];
 
-  if (v4)
+  if (isPPTAvailable)
   {
     dispatch_async(MEMORY[0x1E69E96A0], &__block_literal_global_324);
   }
@@ -1693,11 +1693,11 @@ void __48__MFMessageComposeViewController_viewDidAppear___block_invoke()
   [v0 postNotificationName:@"MFMessageShareComposeViewDidShow" object:0 userInfo:0 deliverImmediately:1];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = MFMessageComposeViewController;
-  [(MFMessageComposeViewController *)&v5 viewWillDisappear:a3];
+  [(MFMessageComposeViewController *)&v5 viewWillDisappear:disappear];
   if ([(MFMessageComposeViewController *)self isBeingDismissed])
   {
     block[0] = MEMORY[0x1E69E9820];
@@ -1715,7 +1715,7 @@ void __52__MFMessageComposeViewController_viewWillDisappear___block_invoke(uint6
   [v2 postNotificationName:@"MFMessageComposeViewControllerIsBeingDismissed" object:*(a1 + 32)];
 }
 
-- (void)smsComposeControllerCancelled:(id)a3
+- (void)smsComposeControllerCancelled:(id)cancelled
 {
   WeakRetained = objc_loadWeakRetained(&self->_messageComposeDelegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
@@ -1724,18 +1724,18 @@ void __52__MFMessageComposeViewController_viewWillDisappear___block_invoke(uint6
   }
 }
 
-- (void)smsComposeControllerSendStarted:(id)a3 withText:(id)a4 messageGUID:(id)a5
+- (void)smsComposeControllerSendStarted:(id)started withText:(id)text messageGUID:(id)d
 {
-  v10 = a3;
-  v7 = a5;
-  v8 = [(MFMessageComposeViewController *)self _deviceValidationSendCompletion];
+  startedCopy = started;
+  dCopy = d;
+  _deviceValidationSendCompletion = [(MFMessageComposeViewController *)self _deviceValidationSendCompletion];
 
-  if (v8)
+  if (_deviceValidationSendCompletion)
   {
-    if (v7)
+    if (dCopy)
     {
-      v9 = [(MFMessageComposeViewController *)self _deviceValidationSendCompletion];
-      [_MFMessageObserver observeMessageGUID:v7 completion:v9];
+      _deviceValidationSendCompletion2 = [(MFMessageComposeViewController *)self _deviceValidationSendCompletion];
+      [_MFMessageObserver observeMessageGUID:dCopy completion:_deviceValidationSendCompletion2];
     }
 
     else
@@ -1746,10 +1746,10 @@ void __52__MFMessageComposeViewController_viewWillDisappear___block_invoke(uint6
     [(MFMessageComposeViewController *)self set_deviceValidationSendCompletion:0];
   }
 
-  [(MFMessageComposeViewController *)self smsComposeControllerSendStarted:v10];
+  [(MFMessageComposeViewController *)self smsComposeControllerSendStarted:startedCopy];
 }
 
-- (void)smsComposeControllerSendStarted:(id)a3
+- (void)smsComposeControllerSendStarted:(id)started
 {
   WeakRetained = objc_loadWeakRetained(&self->_messageComposeDelegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
@@ -1758,7 +1758,7 @@ void __52__MFMessageComposeViewController_viewWillDisappear___block_invoke(uint6
   }
 }
 
-- (void)smsComposeControllerEntryViewContentInserted:(id)a3
+- (void)smsComposeControllerEntryViewContentInserted:(id)inserted
 {
   WeakRetained = objc_loadWeakRetained(&self->_messageComposeDelegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
@@ -1767,75 +1767,75 @@ void __52__MFMessageComposeViewController_viewWillDisappear___block_invoke(uint6
   }
 }
 
-- (void)smsComposeControllerShouldSendMessageWithText:(id)a3 toRecipients:(id)a4 completion:(id)a5
+- (void)smsComposeControllerShouldSendMessageWithText:(id)text toRecipients:(id)recipients completion:(id)completion
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  textCopy = text;
+  recipientsCopy = recipients;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_messageComposeDelegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [WeakRetained messageComposeViewController:self shouldSendMessage:v11 toRecipients:v8 completion:v9];
+    [WeakRetained messageComposeViewController:self shouldSendMessage:textCopy toRecipients:recipientsCopy completion:completionCopy];
   }
 
   else
   {
-    v9[2](v9, 1);
+    completionCopy[2](completionCopy, 1);
   }
 }
 
 + (BOOL)isiMessageEnabled
 {
-  [a1 _setupAccountMonitor];
-  v2 = [MEMORY[0x1E699BE68] sharedInstance];
-  v3 = [v2 availabilityForListenerID:sMFListenerName forService:1];
+  [self _setupAccountMonitor];
+  mEMORY[0x1E699BE68] = [MEMORY[0x1E699BE68] sharedInstance];
+  v3 = [mEMORY[0x1E699BE68] availabilityForListenerID:sMFListenerName forService:1];
 
   return v3 == 1;
 }
 
-- (void)_setCanEditRecipients:(BOOL)a3
+- (void)_setCanEditRecipients:(BOOL)recipients
 {
-  v3 = a3;
-  v4 = [(MFMessageComposeViewController *)self topViewController];
-  [v4 setCanEditRecipients:v3];
+  recipientsCopy = recipients;
+  topViewController = [(MFMessageComposeViewController *)self topViewController];
+  [topViewController setCanEditRecipients:recipientsCopy];
 }
 
-- (void)_setShouldDisableEntryField:(BOOL)a3
+- (void)_setShouldDisableEntryField:(BOOL)field
 {
-  v3 = a3;
-  v6 = [(MFMessageComposeViewController *)self topViewController];
+  fieldCopy = field;
+  topViewController = [(MFMessageComposeViewController *)self topViewController];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v7 = [(MFMessageComposeViewController *)self topViewController];
-    [v7 setShouldDisableEntryField:v3];
+    topViewController2 = [(MFMessageComposeViewController *)self topViewController];
+    [topViewController2 setShouldDisableEntryField:fieldCopy];
   }
 }
 
-- (void)_setNavBarTitle:(id)a3
+- (void)_setNavBarTitle:(id)title
 {
-  v7 = a3;
-  v4 = [(MFMessageComposeViewController *)self topViewController];
+  titleCopy = title;
+  topViewController = [(MFMessageComposeViewController *)self topViewController];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(MFMessageComposeViewController *)self topViewController];
-    [v6 setNavBarTitle:v7];
+    topViewController2 = [(MFMessageComposeViewController *)self topViewController];
+    [topViewController2 setNavBarTitle:titleCopy];
   }
 }
 
-- (void)_setShouldIgnoreEmailsWhenSending:(BOOL)a3
+- (void)_setShouldIgnoreEmailsWhenSending:(BOOL)sending
 {
-  v3 = a3;
-  v6 = [(MFMessageComposeViewController *)self topViewController];
+  sendingCopy = sending;
+  topViewController = [(MFMessageComposeViewController *)self topViewController];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v7 = [(MFMessageComposeViewController *)self topViewController];
-    [v7 setShouldIgnoreEmailsWhenSending:v3];
+    topViewController2 = [(MFMessageComposeViewController *)self topViewController];
+    [topViewController2 setShouldIgnoreEmailsWhenSending:sendingCopy];
   }
 }
 
@@ -1890,20 +1890,20 @@ void __66__MFMessageComposeViewController_insertCollaborationItemProvider___bloc
   *(*(a1[6] + 8) + 24) = [v10 insertCollaborationItemProvider:v11 collaborationShareOptions:v12 collaborationMetadata:v9 isCollaboration:1];
 }
 
-- (void)setUPIVerificationCodeSendCompletion:(id)a3
+- (void)setUPIVerificationCodeSendCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (MGGetBoolAnswer())
   {
-    v5 = [(MFMessageComposeViewController *)self topViewController];
+    topViewController = [(MFMessageComposeViewController *)self topViewController];
     if (objc_opt_respondsToSelector())
     {
-      [v5 configureForDeviceValidation];
+      [topViewController configureForDeviceValidation];
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __71__MFMessageComposeViewController_setUPIVerificationCodeSendCompletion___block_invoke;
       aBlock[3] = &unk_1E806EF08;
-      v8 = v4;
+      v8 = completionCopy;
       v6 = _Block_copy(aBlock);
       [(MFMessageComposeViewController *)self set_deviceValidationSendCompletion:v6];
     }

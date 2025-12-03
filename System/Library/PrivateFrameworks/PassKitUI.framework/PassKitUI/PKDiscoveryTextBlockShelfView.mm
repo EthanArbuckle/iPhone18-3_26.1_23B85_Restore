@@ -1,7 +1,7 @@
 @interface PKDiscoveryTextBlockShelfView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKDiscoveryTextBlockShelfView)initWithShelf:(id)a3;
-- (id)_attributedStringForBody:(id)a3 lede:(id)a4 headerline:(id)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKDiscoveryTextBlockShelfView)initWithShelf:(id)shelf;
+- (id)_attributedStringForBody:(id)body lede:(id)lede headerline:(id)headerline;
 - (id)_textColorForBody;
 - (id)_textColorForHeaderline;
 - (id)_textColorForLede;
@@ -11,9 +11,9 @@
 
 @implementation PKDiscoveryTextBlockShelfView
 
-- (PKDiscoveryTextBlockShelfView)initWithShelf:(id)a3
+- (PKDiscoveryTextBlockShelfView)initWithShelf:(id)shelf
 {
-  v5 = a3;
+  shelfCopy = shelf;
   v25.receiver = self;
   v25.super_class = PKDiscoveryTextBlockShelfView;
   v6 = *MEMORY[0x1E695F058];
@@ -24,30 +24,30 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_shelf, a3);
-    v12 = [v5 localizedBody];
-    v13 = [v5 localizedLede];
-    v14 = [v5 localizedSectionHeaderLine];
+    objc_storeStrong(&v10->_shelf, shelf);
+    localizedBody = [shelfCopy localizedBody];
+    localizedLede = [shelfCopy localizedLede];
+    localizedSectionHeaderLine = [shelfCopy localizedSectionHeaderLine];
     v15 = [[PKNoHighlightTextView alloc] initWithFrame:v6, v7, v8, v9];
     textView = v11->_textView;
     v11->_textView = &v15->super;
 
     [(UITextView *)v11->_textView setTextContainerInset:*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)];
     v17 = v11->_textView;
-    v18 = [MEMORY[0x1E69DC888] clearColor];
-    [(UITextView *)v17 setBackgroundColor:v18];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UITextView *)v17 setBackgroundColor:clearColor];
 
     v19 = v11->_textView;
-    v20 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UITextView *)v19 setTextColor:v20];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UITextView *)v19 setTextColor:secondaryLabelColor];
 
-    v21 = [(UITextView *)v11->_textView textContainer];
-    [v21 setLineFragmentPadding:0.0];
+    textContainer = [(UITextView *)v11->_textView textContainer];
+    [textContainer setLineFragmentPadding:0.0];
 
     [(UITextView *)v11->_textView setEditable:0];
     [(UITextView *)v11->_textView setScrollEnabled:0];
     [(UITextView *)v11->_textView setDelegate:v11];
-    v22 = [(PKDiscoveryTextBlockShelfView *)v11 _attributedStringForBody:v12 lede:v13 headerline:v14];
+    v22 = [(PKDiscoveryTextBlockShelfView *)v11 _attributedStringForBody:localizedBody lede:localizedLede headerline:localizedSectionHeaderLine];
     attributedText = v11->_attributedText;
     v11->_attributedText = v22;
 
@@ -58,10 +58,10 @@
   return v11;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(PKDiscoveryShelfView *)self contentInsets];
   [(UITextView *)self->_textView sizeThatFits:width - (v6 + v7), height];
   v9 = width;
@@ -84,23 +84,23 @@
   [(UITextView *)self->_textView setFrame:v4 + v14, v6 + v11, v8 - (v14 + v12), v10 - (v11 + v13)];
 }
 
-- (id)_attributedStringForBody:(id)a3 lede:(id)a4 headerline:(id)a5
+- (id)_attributedStringForBody:(id)body lede:(id)lede headerline:(id)headerline
 {
   v39[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  bodyCopy = body;
+  ledeCopy = lede;
+  headerlineCopy = headerline;
   v11 = MEMORY[0x1E69DB650];
-  if (v8)
+  if (bodyCopy)
   {
     v38[0] = *MEMORY[0x1E69DB648];
-    v12 = [(PKDiscoveryTextBlockShelfView *)self _uiFontTextStyle];
-    v13 = PKFontForDefaultDesign(v12, 0);
+    _uiFontTextStyle = [(PKDiscoveryTextBlockShelfView *)self _uiFontTextStyle];
+    v13 = PKFontForDefaultDesign(_uiFontTextStyle, 0);
     v14 = v11;
     v38[1] = *v11;
     v39[0] = v13;
-    v15 = [(PKDiscoveryTextBlockShelfView *)self _textColorForBody];
-    v39[1] = v15;
+    _textColorForBody = [(PKDiscoveryTextBlockShelfView *)self _textColorForBody];
+    v39[1] = _textColorForBody;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:2];
 
     v17 = PKAttributedStringByParsingLinksInString();
@@ -113,20 +113,20 @@
     v18 = 0;
   }
 
-  if (v9)
+  if (ledeCopy)
   {
-    v19 = [(PKDiscoveryTextBlockShelfView *)self _uiFontTextStyle];
-    v20 = PKFontForDefaultDesign(v19, 0, 2, 0);
+    _uiFontTextStyle2 = [(PKDiscoveryTextBlockShelfView *)self _uiFontTextStyle];
+    v20 = PKFontForDefaultDesign(_uiFontTextStyle2, 0, 2, 0);
 
     v21 = *v14;
     v36[0] = *MEMORY[0x1E69DB648];
     v36[1] = v21;
     v37[0] = v20;
-    v22 = [(PKDiscoveryTextBlockShelfView *)self _textColorForLede];
-    v37[1] = v22;
+    _textColorForLede = [(PKDiscoveryTextBlockShelfView *)self _textColorForLede];
+    v37[1] = _textColorForLede;
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:2];
 
-    v24 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v9 attributes:v23];
+    v24 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:ledeCopy attributes:v23];
     if (v18)
     {
       [v18 insertAttributedString:v24 atIndex:0];
@@ -138,31 +138,31 @@
     }
   }
 
-  if (v10)
+  if (headerlineCopy)
   {
-    v25 = [(PKDiscoveryTextBlockShelfView *)self _uiFontTextStyle];
-    v26 = PKFontForDefaultDesign(v25, 0, 2, 0);
+    _uiFontTextStyle3 = [(PKDiscoveryTextBlockShelfView *)self _uiFontTextStyle];
+    v26 = PKFontForDefaultDesign(_uiFontTextStyle3, 0, 2, 0);
 
     v27 = *v14;
     v34[0] = *MEMORY[0x1E69DB648];
     v34[1] = v27;
     v35[0] = v26;
-    v28 = [(PKDiscoveryTextBlockShelfView *)self _textColorForHeaderline];
-    v35[1] = v28;
+    _textColorForHeaderline = [(PKDiscoveryTextBlockShelfView *)self _textColorForHeaderline];
+    v35[1] = _textColorForHeaderline;
     v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:2];
 
     if (v18)
     {
       v30 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n", v10];
-      v32 = [v30 initWithString:v31 attributes:v29];
+      headerlineCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n", headerlineCopy];
+      v32 = [v30 initWithString:headerlineCopy attributes:v29];
 
       [v18 insertAttributedString:v32 atIndex:0];
     }
 
     else
     {
-      v18 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v10 attributes:v29];
+      v18 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:headerlineCopy attributes:v29];
     }
   }
 
@@ -173,57 +173,57 @@
 {
   if ([(PKDiscoveryTextBlockShelf *)self->_shelf style]> 1)
   {
-    v2 = 0;
+    secondaryLabelColor = 0;
   }
 
   else
   {
-    v2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
   }
 
-  return v2;
+  return secondaryLabelColor;
 }
 
 - (id)_textColorForLede
 {
-  v2 = [(PKDiscoveryTextBlockShelf *)self->_shelf style];
-  if (v2 == 1)
+  style = [(PKDiscoveryTextBlockShelf *)self->_shelf style];
+  if (style == 1)
   {
-    v3 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
   }
 
-  else if (v2)
+  else if (style)
   {
-    v3 = 0;
+    secondaryLabelColor = 0;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DC888] labelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] labelColor];
   }
 
-  return v3;
+  return secondaryLabelColor;
 }
 
 - (id)_textColorForHeaderline
 {
-  v2 = [(PKDiscoveryTextBlockShelf *)self->_shelf style];
-  if (v2 == 1)
+  style = [(PKDiscoveryTextBlockShelf *)self->_shelf style];
+  if (style == 1)
   {
-    v3 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
   }
 
-  else if (v2)
+  else if (style)
   {
-    v3 = 0;
+    secondaryLabelColor = 0;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DC888] labelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] labelColor];
   }
 
-  return v3;
+  return secondaryLabelColor;
 }
 
 - (id)_uiFontTextStyle

@@ -1,11 +1,11 @@
 @interface ClimateTargetTemperatureZoneSelectionButton
 - (BOOL)isHighlighted;
 - (_TtC7Climate43ClimateTargetTemperatureZoneSelectionButton)init;
-- (void)dimensionManager:(id)a3 didUpdateTemperatureUnit:(id)a4;
-- (void)setHighlighted:(BOOL)a3;
-- (void)temperatureService:(id)a3 didUpdateCurrentTemperature:(id)a4;
-- (void)temperatureService:(id)a3 didUpdateTargetTemperature:(id)a4;
-- (void)zonesSyncedService:(void *)a1 didUpdateOn:;
+- (void)dimensionManager:(id)manager didUpdateTemperatureUnit:(id)unit;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)temperatureService:(id)service didUpdateCurrentTemperature:(id)temperature;
+- (void)temperatureService:(id)service didUpdateTargetTemperature:(id)temperature;
+- (void)zonesSyncedService:(void *)service didUpdateOn:;
 @end
 
 @implementation ClimateTargetTemperatureZoneSelectionButton
@@ -17,17 +17,17 @@
   return [(ClimateButton *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v8.receiver = self;
   v8.super_class = type metadata accessor for ClimateTargetTemperatureZoneSelectionButton();
   v4 = v8.receiver;
-  [(ClimateButton *)&v8 setHighlighted:v3];
+  [(ClimateButton *)&v8 setHighlighted:highlightedCopy];
   v5 = *&v4[OBJC_IVAR____TtC7Climate43ClimateTargetTemperatureZoneSelectionButton_labelsView];
-  v6 = [v4 isHighlighted];
+  isHighlighted = [v4 isHighlighted];
   v7 = 0.2;
-  if (!v6)
+  if (!isHighlighted)
   {
     v7 = 1.0;
   }
@@ -43,7 +43,7 @@
   return result;
 }
 
-- (void)temperatureService:(id)a3 didUpdateTargetTemperature:(id)a4
+- (void)temperatureService:(id)service didUpdateTargetTemperature:(id)temperature
 {
   v5 = sub_1000040E8(&unk_100114790);
   v6 = *(v5 - 8);
@@ -51,18 +51,18 @@
   v8 = &v10 - v7;
   sub_10000827C(0, &qword_100114AB0);
   static Measurement._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   sub_10000BF88();
 
   (*(v6 + 8))(v8, v5);
 }
 
-- (void)temperatureService:(id)a3 didUpdateCurrentTemperature:(id)a4
+- (void)temperatureService:(id)service didUpdateCurrentTemperature:(id)temperature
 {
   v6 = sub_1000040E8(&unk_1001153F0);
   __chkstk_darwin(v6 - 8);
   v8 = &v12 - v7;
-  if (a4)
+  if (temperature)
   {
     sub_10000827C(0, &qword_100114AB0);
     static Measurement._unconditionallyBridgeFromObjectiveC(_:)();
@@ -76,21 +76,21 @@
     (*(*(v10 - 8) + 56))(v8, 1, 1, v10);
   }
 
-  v11 = self;
+  selfCopy = self;
   sub_10000BF88();
 
   sub_10000D894(v8);
 }
 
-- (void)zonesSyncedService:(void *)a1 didUpdateOn:
+- (void)zonesSyncedService:(void *)service didUpdateOn:
 {
-  v1 = a1;
+  serviceCopy = service;
   sub_10000BF88();
 }
 
-- (void)dimensionManager:(id)a3 didUpdateTemperatureUnit:(id)a4
+- (void)dimensionManager:(id)manager didUpdateTemperatureUnit:(id)unit
 {
-  v4 = self;
+  selfCopy = self;
   sub_10000BF88();
 }
 

@@ -1,5 +1,5 @@
 @interface MXDuckingSource
-- (MXDuckingSource)initWithType:(unsigned int)a3 ID:(unint64_t)a4 duckVolume:(float)a5 duckFadeDuration:(float)a6;
+- (MXDuckingSource)initWithType:(unsigned int)type ID:(unint64_t)d duckVolume:(float)volume duckFadeDuration:(float)duration;
 - (id)typeAsAString;
 - (void)dealloc;
 @end
@@ -8,29 +8,29 @@
 
 - (id)typeAsAString
 {
-  v3 = [(MXDuckingSource *)self type];
-  if (v3 >= 9)
+  type = [(MXDuckingSource *)self type];
+  if (type >= 9)
   {
     return [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknow(%d)", -[MXDuckingSource type](self, "type")];
   }
 
   else
   {
-    return off_1E7AEADF8[v3];
+    return off_1E7AEADF8[type];
   }
 }
 
-- (MXDuckingSource)initWithType:(unsigned int)a3 ID:(unint64_t)a4 duckVolume:(float)a5 duckFadeDuration:(float)a6
+- (MXDuckingSource)initWithType:(unsigned int)type ID:(unint64_t)d duckVolume:(float)volume duckFadeDuration:(float)duration
 {
   v11.receiver = self;
   v11.super_class = MXDuckingSource;
   result = [(MXDuckingSource *)&v11 init];
   if (result)
   {
-    result->_type = a3;
-    result->_ID = a4;
-    result->_duckVolume = a5;
-    result->_duckFadeDuration = a6;
+    result->_type = type;
+    result->_ID = d;
+    result->_duckVolume = volume;
+    result->_duckFadeDuration = duration;
   }
 
   return result;

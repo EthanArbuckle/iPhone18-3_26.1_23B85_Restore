@@ -1,45 +1,45 @@
 @interface PKSharingInvitationRequestMessage
-- (BOOL)configureWithContent:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKSharingInvitationRequestMessage)initWithPassTypeIdentifier:(id)a3 passSerialNumber:(id)a4 personalizedVehicleIdentifier:(id)a5;
+- (BOOL)configureWithContent:(id)content;
+- (BOOL)isEqual:(id)equal;
+- (PKSharingInvitationRequestMessage)initWithPassTypeIdentifier:(id)identifier passSerialNumber:(id)number personalizedVehicleIdentifier:(id)vehicleIdentifier;
 - (id)description;
 @end
 
 @implementation PKSharingInvitationRequestMessage
 
-- (PKSharingInvitationRequestMessage)initWithPassTypeIdentifier:(id)a3 passSerialNumber:(id)a4 personalizedVehicleIdentifier:(id)a5
+- (PKSharingInvitationRequestMessage)initWithPassTypeIdentifier:(id)identifier passSerialNumber:(id)number personalizedVehicleIdentifier:(id)vehicleIdentifier
 {
-  v6 = 0;
-  if (a3 && a4)
+  selfCopy = 0;
+  if (identifier && number)
   {
     v9 = MEMORY[0x1E695DF90];
-    v10 = a5;
-    v11 = a4;
-    v12 = a3;
+    vehicleIdentifierCopy = vehicleIdentifier;
+    numberCopy = number;
+    identifierCopy = identifier;
     v13 = objc_alloc_init(v9);
-    [v13 setObject:v12 forKeyedSubscript:@"passTypeIdentifier"];
+    [v13 setObject:identifierCopy forKeyedSubscript:@"passTypeIdentifier"];
 
-    [v13 setObject:v11 forKeyedSubscript:@"serialNumber"];
-    [v13 setObject:v10 forKeyedSubscript:@"personalizedVehicleIdentifier"];
+    [v13 setObject:numberCopy forKeyedSubscript:@"serialNumber"];
+    [v13 setObject:vehicleIdentifierCopy forKeyedSubscript:@"personalizedVehicleIdentifier"];
 
     v15.receiver = self;
     v15.super_class = PKSharingInvitationRequestMessage;
     self = [(PKSharingGenericMessage *)&v15 initWithFormat:3 type:1001 genericSharingDict:MEMORY[0x1E695E0F8] appleSharingDict:v13];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (BOOL)configureWithContent:(id)a3
+- (BOOL)configureWithContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v14.receiver = self;
   v14.super_class = PKSharingInvitationRequestMessage;
-  if ([(PKSharingGenericMessage *)&v14 configureWithContent:v4])
+  if ([(PKSharingGenericMessage *)&v14 configureWithContent:contentCopy])
   {
-    v5 = [v4 PKDictionaryForKey:@"apple"];
+    v5 = [contentCopy PKDictionaryForKey:@"apple"];
     v6 = [v5 PKStringForKey:@"passTypeIdentifier"];
     passTypeIdentifier = self->_passTypeIdentifier;
     self->_passTypeIdentifier = v6;
@@ -66,8 +66,8 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
-  v4 = [(PKSharingMessage *)self identifier];
-  [v3 appendFormat:@"identifier: '%@'; ", v4];
+  identifier = [(PKSharingMessage *)self identifier];
+  [v3 appendFormat:@"identifier: '%@'; ", identifier];
 
   v5 = PKSharingMessageTypeToString([(PKSharingMessage *)self type]);
   [v3 appendFormat:@"type: '%@'; ", v5];
@@ -81,17 +81,17 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(self) = 1;
     goto LABEL_16;
   }
 
-  if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!equalCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     LOBYTE(self) = 0;
     goto LABEL_16;

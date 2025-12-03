@@ -1,13 +1,13 @@
 @interface UITextMagnifierTimeWeightedPoint
-- (BOOL)historyCovers:(double)a3;
+- (BOOL)historyCovers:(double)covers;
 - (BOOL)isPlacedCarefully;
 - (CGPoint)diffFromLastPoint;
 - (CGPoint)weightedPoint;
-- (CGSize)displacementInInterval:(double)a3;
-- (CGSize)displacementInInterval:(double)a3 priorTo:(double)a4;
-- (float)distanceCoveredInInterval:(double)a3;
-- (float)distanceCoveredInInterval:(double)a3 priorTo:(double)a4;
-- (void)addPoint:(CGPoint)a3;
+- (CGSize)displacementInInterval:(double)interval;
+- (CGSize)displacementInInterval:(double)interval priorTo:(double)to;
+- (float)distanceCoveredInInterval:(double)interval;
+- (float)distanceCoveredInInterval:(double)interval priorTo:(double)to;
+- (void)addPoint:(CGPoint)point;
 - (void)clearHistory;
 @end
 
@@ -29,10 +29,10 @@
   while (v3);
 }
 
-- (void)addPoint:(CGPoint)a3
+- (void)addPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   Current = CFAbsoluteTimeGetCurrent();
   m_index = self->m_index;
   v8 = (self + 24 * m_index);
@@ -101,7 +101,7 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)historyCovers:(double)a3
+- (BOOL)historyCovers:(double)covers
 {
   Current = CFAbsoluteTimeGetCurrent();
   v6 = self->m_index - 1;
@@ -120,7 +120,7 @@ LABEL_14:
       return 0;
     }
 
-    if (Current - time > a3)
+    if (Current - time > covers)
     {
       break;
     }
@@ -135,25 +135,25 @@ LABEL_14:
   return 1;
 }
 
-- (float)distanceCoveredInInterval:(double)a3
+- (float)distanceCoveredInInterval:(double)interval
 {
   Current = CFAbsoluteTimeGetCurrent();
 
-  [(UITextMagnifierTimeWeightedPoint *)self distanceCoveredInInterval:a3 priorTo:Current];
+  [(UITextMagnifierTimeWeightedPoint *)self distanceCoveredInInterval:interval priorTo:Current];
   return result;
 }
 
-- (CGSize)displacementInInterval:(double)a3
+- (CGSize)displacementInInterval:(double)interval
 {
   Current = CFAbsoluteTimeGetCurrent();
 
-  [(UITextMagnifierTimeWeightedPoint *)self displacementInInterval:a3 priorTo:Current];
+  [(UITextMagnifierTimeWeightedPoint *)self displacementInInterval:interval priorTo:Current];
   result.height = v7;
   result.width = v6;
   return result;
 }
 
-- (CGSize)displacementInInterval:(double)a3 priorTo:(double)a4
+- (CGSize)displacementInInterval:(double)interval priorTo:(double)to
 {
   v6 = 0;
   v7 = *MEMORY[0x1E695F060];
@@ -173,8 +173,8 @@ LABEL_14:
     x = v12->point.x;
     y = v12->point.y;
     v16 = y == *(MEMORY[0x1E695EFF8] + 8) && x == *MEMORY[0x1E695EFF8];
-    v17 = a4 - time;
-    if (v16 || v17 > a3)
+    v17 = to - time;
+    if (v16 || v17 > interval)
     {
       break;
     }
@@ -204,7 +204,7 @@ LABEL_14:
   return result;
 }
 
-- (float)distanceCoveredInInterval:(double)a3 priorTo:(double)a4
+- (float)distanceCoveredInInterval:(double)interval priorTo:(double)to
 {
   v4 = 0;
   v5 = self->m_index - 1;
@@ -223,8 +223,8 @@ LABEL_14:
     x = v9->point.x;
     y = v9->point.y;
     v13 = y == *(MEMORY[0x1E695EFF8] + 8) && x == *MEMORY[0x1E695EFF8];
-    v14 = a4 - time;
-    if (v13 || v14 > a3)
+    v14 = to - time;
+    if (v13 || v14 > interval)
     {
       break;
     }

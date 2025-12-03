@@ -1,41 +1,41 @@
 @interface DummyRemoteDeviceSecretValidator
-- (DummyRemoteDeviceSecretValidator)initWithExpectedSecret:(id)a3;
+- (DummyRemoteDeviceSecretValidator)initWithExpectedSecret:(id)secret;
 - (unint64_t)supportedEscapeOfferMask;
-- (void)approveFromAnotherDeviceWithCompletion:(id)a3;
-- (void)supportedEscapeOfferMaskCompletion:(id)a3;
-- (void)validateRecoveryKey:(id)a3 withCompletion:(id)a4;
-- (void)validateSecret:(id)a3 devices:(id)a4 type:(unint64_t)a5 withCompletion:(id)a6;
+- (void)approveFromAnotherDeviceWithCompletion:(id)completion;
+- (void)supportedEscapeOfferMaskCompletion:(id)completion;
+- (void)validateRecoveryKey:(id)key withCompletion:(id)completion;
+- (void)validateSecret:(id)secret devices:(id)devices type:(unint64_t)type withCompletion:(id)completion;
 @end
 
 @implementation DummyRemoteDeviceSecretValidator
 
-- (DummyRemoteDeviceSecretValidator)initWithExpectedSecret:(id)a3
+- (DummyRemoteDeviceSecretValidator)initWithExpectedSecret:(id)secret
 {
-  v5 = a3;
+  secretCopy = secret;
   v6 = [(DummyRemoteDeviceSecretValidator *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_expectedString, a3);
+    objc_storeStrong(&v6->_expectedString, secret);
   }
 
   return v7;
 }
 
-- (void)validateSecret:(id)a3 devices:(id)a4 type:(unint64_t)a5 withCompletion:(id)a6
+- (void)validateSecret:(id)secret devices:(id)devices type:(unint64_t)type withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a6;
+  secretCopy = secret;
+  completionCopy = completion;
   v10 = dispatch_time(0, 1500000000);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__DummyRemoteDeviceSecretValidator_validateSecret_devices_type_withCompletion___block_invoke;
   block[3] = &unk_278E2F9B8;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = secretCopy;
+  selfCopy = self;
+  v16 = completionCopy;
+  v11 = completionCopy;
+  v12 = secretCopy;
   dispatch_after(v10, MEMORY[0x277D85CD0], block);
 }
 
@@ -56,16 +56,16 @@ void __79__DummyRemoteDeviceSecretValidator_validateSecret_devices_type_withComp
   }
 }
 
-- (void)validateRecoveryKey:(id)a3 withCompletion:(id)a4
+- (void)validateRecoveryKey:(id)key withCompletion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = dispatch_time(0, 3000000000);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__DummyRemoteDeviceSecretValidator_validateRecoveryKey_withCompletion___block_invoke;
   block[3] = &unk_278E2F9E0;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_after(v5, MEMORY[0x277D85CD0], block);
 }
 
@@ -80,16 +80,16 @@ uint64_t __71__DummyRemoteDeviceSecretValidator_validateRecoveryKey_withCompleti
   return result;
 }
 
-- (void)approveFromAnotherDeviceWithCompletion:(id)a3
+- (void)approveFromAnotherDeviceWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = dispatch_time(0, 100000000000);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__DummyRemoteDeviceSecretValidator_approveFromAnotherDeviceWithCompletion___block_invoke;
   block[3] = &unk_278E2F9E0;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_after(v4, MEMORY[0x277D85CD0], block);
 }
 
@@ -153,10 +153,10 @@ uint64_t __75__DummyRemoteDeviceSecretValidator_approveFromAnotherDeviceWithComp
   }
 }
 
-- (void)supportedEscapeOfferMaskCompletion:(id)a3
+- (void)supportedEscapeOfferMaskCompletion:(id)completion
 {
-  v5 = a3;
-  (*(a3 + 2))(v5, [(DummyRemoteDeviceSecretValidator *)self supportedEscapeOfferMask]);
+  completionCopy = completion;
+  (*(completion + 2))(completionCopy, [(DummyRemoteDeviceSecretValidator *)self supportedEscapeOfferMask]);
 }
 
 @end

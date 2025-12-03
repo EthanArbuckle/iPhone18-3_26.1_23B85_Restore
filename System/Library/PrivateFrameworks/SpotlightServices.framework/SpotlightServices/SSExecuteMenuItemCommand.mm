@@ -1,48 +1,48 @@
 @interface SSExecuteMenuItemCommand
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation SSExecuteMenuItemCommand
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = SSExecuteMenuItemCommand;
-  v4 = [(SFExecuteMenuItemCommand *)&v12 copyWithZone:a3];
+  v4 = [(SFExecuteMenuItemCommand *)&v12 copyWithZone:zone];
   v5 = [(SSExecuteMenuItemCommand *)self pid];
   v6 = [v5 copy];
   [v4 setPid:v6];
 
-  v7 = [(SSExecuteMenuItemCommand *)self title];
-  v8 = [v7 copy];
+  title = [(SSExecuteMenuItemCommand *)self title];
+  v8 = [title copy];
   [v4 setTitle:v8];
 
-  v9 = [(SSExecuteMenuItemCommand *)self menuItemPathComponents];
-  v10 = [v9 copy];
+  menuItemPathComponents = [(SSExecuteMenuItemCommand *)self menuItemPathComponents];
+  v10 = [menuItemPathComponents copy];
   [v4 setMenuItemPathComponents:v10];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SSExecuteMenuItemCommand *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SSExecuteMenuItemCommand *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v32.receiver = self;
       v32.super_class = SSExecuteMenuItemCommand;
-      if ([(SFExecuteMenuItemCommand *)&v32 isEqual:v5])
+      if ([(SFExecuteMenuItemCommand *)&v32 isEqual:equalCopy])
       {
-        v6 = v5;
+        v6 = equalCopy;
         v7 = [(SSExecuteMenuItemCommand *)self pid];
         v8 = [(SSExecuteMenuItemCommand *)v6 pid];
         if ((v7 != 0) == (v8 == 0))
@@ -67,33 +67,33 @@ LABEL_31:
           v31 = v10;
         }
 
-        v12 = [(SSExecuteMenuItemCommand *)self title];
-        v13 = [(SSExecuteMenuItemCommand *)v6 title];
-        v14 = v13;
-        if ((v12 != 0) == (v13 == 0))
+        title = [(SSExecuteMenuItemCommand *)self title];
+        title2 = [(SSExecuteMenuItemCommand *)v6 title];
+        v14 = title2;
+        if ((title != 0) == (title2 == 0))
         {
 
           v11 = 0;
           goto LABEL_28;
         }
 
-        v15 = [(SSExecuteMenuItemCommand *)self title];
-        if (v15)
+        title3 = [(SSExecuteMenuItemCommand *)self title];
+        if (title3)
         {
-          v25 = v12;
-          v16 = [(SSExecuteMenuItemCommand *)self title];
-          v27 = [(SSExecuteMenuItemCommand *)v6 title];
-          v28 = v16;
-          if (![v16 isEqual:?])
+          v25 = title;
+          title4 = [(SSExecuteMenuItemCommand *)self title];
+          title5 = [(SSExecuteMenuItemCommand *)v6 title];
+          v28 = title4;
+          if (![title4 isEqual:?])
           {
             v11 = 0;
-            v12 = v25;
+            title = v25;
             goto LABEL_26;
           }
 
-          v29 = v15;
+          v29 = title3;
           v30 = v3;
-          v12 = v25;
+          title = v25;
         }
 
         else
@@ -102,13 +102,13 @@ LABEL_31:
           v30 = v3;
         }
 
-        v17 = [(SSExecuteMenuItemCommand *)self menuItemPathComponents];
-        v18 = [(SSExecuteMenuItemCommand *)v6 menuItemPathComponents];
-        if ((v17 != 0) == (v18 == 0))
+        menuItemPathComponents = [(SSExecuteMenuItemCommand *)self menuItemPathComponents];
+        menuItemPathComponents2 = [(SSExecuteMenuItemCommand *)v6 menuItemPathComponents];
+        if ((menuItemPathComponents != 0) == (menuItemPathComponents2 == 0))
         {
 
           v11 = 0;
-          v15 = v29;
+          title3 = v29;
           v3 = v30;
           if (!v29)
           {
@@ -118,16 +118,16 @@ LABEL_31:
 
         else
         {
-          v24 = v17;
-          v26 = v18;
-          v19 = [(SSExecuteMenuItemCommand *)self menuItemPathComponents];
-          v15 = v29;
-          if (v19)
+          v24 = menuItemPathComponents;
+          v26 = menuItemPathComponents2;
+          menuItemPathComponents3 = [(SSExecuteMenuItemCommand *)self menuItemPathComponents];
+          title3 = v29;
+          if (menuItemPathComponents3)
           {
-            v23 = v19;
-            v22 = [(SSExecuteMenuItemCommand *)self menuItemPathComponents];
-            v20 = [(SSExecuteMenuItemCommand *)v6 menuItemPathComponents];
-            v11 = [v22 isEqual:?];
+            v23 = menuItemPathComponents3;
+            menuItemPathComponents4 = [(SSExecuteMenuItemCommand *)self menuItemPathComponents];
+            menuItemPathComponents5 = [(SSExecuteMenuItemCommand *)v6 menuItemPathComponents];
+            v11 = [menuItemPathComponents4 isEqual:?];
           }
 
           else
@@ -176,10 +176,10 @@ LABEL_32:
   v3 = [(SFExecuteMenuItemCommand *)&v11 hash];
   v4 = [(SSExecuteMenuItemCommand *)self pid];
   v5 = [v4 hash];
-  v6 = [(SSExecuteMenuItemCommand *)self title];
-  v7 = v5 ^ [v6 hash];
-  v8 = [(SSExecuteMenuItemCommand *)self menuItemPathComponents];
-  v9 = v7 ^ [v8 hash];
+  title = [(SSExecuteMenuItemCommand *)self title];
+  v7 = v5 ^ [title hash];
+  menuItemPathComponents = [(SSExecuteMenuItemCommand *)self menuItemPathComponents];
+  v9 = v7 ^ [menuItemPathComponents hash];
 
   return v9 ^ v3;
 }

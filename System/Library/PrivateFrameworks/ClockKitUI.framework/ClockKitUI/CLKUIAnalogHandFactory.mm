@@ -1,58 +1,58 @@
 @interface CLKUIAnalogHandFactory
-+ (CGPath)newPathForHourMinuteWithConfiguration:(id)a3 inset:(double)a4 includePeg:(BOOL)a5;
-+ (CGPath)newPathForInlayWithConfiguration:(id)a3 inset:(double)a4;
-+ (CGPath)newPathForPeg:(id)a3 inset:(double)a4;
-+ (CGPath)newPathForSecondWithConfiguration:(id)a3 inset:(double)a4;
-+ (CGPath)newPathWithConfiguration:(id)a3;
-+ (id)_createHandImageWithSize:(CGSize)a3 paths:(id)a4 colors:(id)a5;
-+ (id)_createHandOutlineImageWithSize:(CGSize)a3 paths:(id)a4 colors:(id)a5 configuration:(id)a6;
-+ (id)_createMaskedShadowImageFromShadow:(id)a3 size:(CGSize)a4 maskPath:(CGPath *)a5 radius:(double)a6 opacity:(double)a7;
-+ (id)_createShadowImageSize:(CGSize)a3 path:(CGPath *)a4 radius:(double)a5 opacity:(double)a6;
-+ (id)_getDropShadowImageWithConfiguration:(id)a3;
-+ (id)_getHandImageWithConfiguration:(id)a3;
-+ (id)_getInlayImageWithConfiguration:(id)a3;
-+ (id)_getMaskedDropShadowImageWithConfiguration:(id)a3 shadowImage:(id)a4;
-+ (id)_getRadialShadowImageWithConfiguration:(id)a3;
-+ (id)_getShadowImageWithConfiguration:(id)a3 radius:(double)a4 opacity:(double)a5 key:(id)a6;
-+ (id)getAssets:(unint64_t)a3 forConfiguration:(id)a4;
++ (CGPath)newPathForHourMinuteWithConfiguration:(id)configuration inset:(double)inset includePeg:(BOOL)peg;
++ (CGPath)newPathForInlayWithConfiguration:(id)configuration inset:(double)inset;
++ (CGPath)newPathForPeg:(id)peg inset:(double)inset;
++ (CGPath)newPathForSecondWithConfiguration:(id)configuration inset:(double)inset;
++ (CGPath)newPathWithConfiguration:(id)configuration;
++ (id)_createHandImageWithSize:(CGSize)size paths:(id)paths colors:(id)colors;
++ (id)_createHandOutlineImageWithSize:(CGSize)size paths:(id)paths colors:(id)colors configuration:(id)configuration;
++ (id)_createMaskedShadowImageFromShadow:(id)shadow size:(CGSize)size maskPath:(CGPath *)path radius:(double)radius opacity:(double)opacity;
++ (id)_createShadowImageSize:(CGSize)size path:(CGPath *)path radius:(double)radius opacity:(double)opacity;
++ (id)_getDropShadowImageWithConfiguration:(id)configuration;
++ (id)_getHandImageWithConfiguration:(id)configuration;
++ (id)_getInlayImageWithConfiguration:(id)configuration;
++ (id)_getMaskedDropShadowImageWithConfiguration:(id)configuration shadowImage:(id)image;
++ (id)_getRadialShadowImageWithConfiguration:(id)configuration;
++ (id)_getShadowImageWithConfiguration:(id)configuration radius:(double)radius opacity:(double)opacity key:(id)key;
++ (id)getAssets:(unint64_t)assets forConfiguration:(id)configuration;
 @end
 
 @implementation CLKUIAnalogHandFactory
 
-+ (id)getAssets:(unint64_t)a3 forConfiguration:(id)a4
++ (id)getAssets:(unint64_t)assets forConfiguration:(id)configuration
 {
-  v6 = a4;
+  configurationCopy = configuration;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v7 = +[CLKUIAnalogHandFactoryCache sharedInstance];
-  if (!a3)
+  if (!assets)
   {
     v21 = MEMORY[0x1E695E0F8];
     goto LABEL_47;
   }
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [v6 handCacheIdentifier];
-  v10 = [v8 stringWithFormat:@"hand-%@", v9];
+  handCacheIdentifier = [configurationCopy handCacheIdentifier];
+  v10 = [v8 stringWithFormat:@"hand-%@", handCacheIdentifier];
 
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [v6 dropShadowCacheIdentifier];
-  v43 = [v11 stringWithFormat:@"hand-%@", v12];
+  dropShadowCacheIdentifier = [configurationCopy dropShadowCacheIdentifier];
+  v43 = [v11 stringWithFormat:@"hand-%@", dropShadowCacheIdentifier];
 
   v13 = MEMORY[0x1E696AEC0];
-  v14 = [v6 radialShadowCacheIdentifier];
-  v15 = [v13 stringWithFormat:@"hand-%@", v14];
+  radialShadowCacheIdentifier = [configurationCopy radialShadowCacheIdentifier];
+  v15 = [v13 stringWithFormat:@"hand-%@", radialShadowCacheIdentifier];
 
   v16 = MEMORY[0x1E696AEC0];
-  v17 = [v6 dropShadowCacheIdentifier];
-  v41 = [v16 stringWithFormat:@"maskedShadow-%@", v17];
+  dropShadowCacheIdentifier2 = [configurationCopy dropShadowCacheIdentifier];
+  v41 = [v16 stringWithFormat:@"maskedShadow-%@", dropShadowCacheIdentifier2];
 
   v18 = MEMORY[0x1E696AEC0];
-  v19 = [v6 handCacheIdentifier];
-  v42 = [v18 stringWithFormat:@"inlay-%@", v19];
+  handCacheIdentifier2 = [configurationCopy handCacheIdentifier];
+  v42 = [v18 stringWithFormat:@"inlay-%@", handCacheIdentifier2];
 
-  if (a3)
+  if (assets)
   {
-    v20 = [a1 newPathWithConfiguration:v6];
+    v20 = [self newPathWithConfiguration:configurationCopy];
   }
 
   else
@@ -61,14 +61,14 @@
   }
 
   arg = v20;
-  if ((a3 & 2) != 0)
+  if ((assets & 2) != 0)
   {
     v23 = +[CLKUIAnalogHandFactoryCache sharedInstance];
     v22 = [v23 imageForKey:v10];
 
     if (!v22)
     {
-      v22 = [a1 _getHandImageWithConfiguration:v6];
+      v22 = [self _getHandImageWithConfiguration:configurationCopy];
     }
   }
 
@@ -78,14 +78,14 @@
   }
 
   v40 = v15;
-  if ((a3 & 4) != 0)
+  if ((assets & 4) != 0)
   {
     v25 = +[CLKUIAnalogHandFactoryCache sharedInstance];
     v24 = [v25 imageForKey:v15];
 
     if (!v24)
     {
-      v24 = [a1 _getRadialShadowImageWithConfiguration:v6];
+      v24 = [self _getRadialShadowImageWithConfiguration:configurationCopy];
     }
   }
 
@@ -94,12 +94,12 @@
     v24 = 0;
   }
 
-  if ((a3 & 0x18) != 0)
+  if ((assets & 0x18) != 0)
   {
     v26 = +[CLKUIAnalogHandFactoryCache sharedInstance];
     v27 = [v26 imageForKey:v43];
 
-    if ((a3 & 0x10) != 0)
+    if ((assets & 0x10) != 0)
     {
       v29 = +[CLKUIAnalogHandFactoryCache sharedInstance];
       v28 = [v29 imageForKey:v41];
@@ -107,7 +107,7 @@
       if (v27)
       {
 LABEL_17:
-        if ((a3 & 0x10) == 0)
+        if ((assets & 0x10) == 0)
         {
           goto LABEL_24;
         }
@@ -115,7 +115,7 @@ LABEL_17:
 LABEL_22:
         if (!v28)
         {
-          v28 = [a1 _getMaskedDropShadowImageWithConfiguration:v6 shadowImage:v27];
+          v28 = [self _getMaskedDropShadowImageWithConfiguration:configurationCopy shadowImage:v27];
         }
 
         goto LABEL_24;
@@ -131,8 +131,8 @@ LABEL_22:
       }
     }
 
-    v27 = [a1 _getDropShadowImageWithConfiguration:v6];
-    if ((a3 & 0x10) != 0)
+    v27 = [self _getDropShadowImageWithConfiguration:configurationCopy];
+    if ((assets & 0x10) != 0)
     {
       goto LABEL_22;
     }
@@ -145,7 +145,7 @@ LABEL_22:
   }
 
 LABEL_24:
-  if ((a3 & 0x20) != 0)
+  if ((assets & 0x20) != 0)
   {
     +[CLKUIAnalogHandFactoryCache sharedInstance];
     v32 = v31 = v10;
@@ -154,7 +154,7 @@ LABEL_24:
     v10 = v31;
     if (!v30)
     {
-      v30 = [a1 _getInlayImageWithConfiguration:v6];
+      v30 = [self _getInlayImageWithConfiguration:configurationCopy];
     }
   }
 
@@ -164,40 +164,40 @@ LABEL_24:
   }
 
   v21 = objc_opt_new();
-  if ((a3 & 1) != 0 && arg)
+  if ((assets & 1) != 0 && arg)
   {
     [v21 setObject:CFAutorelease(arg) forKey:&unk_1F5E96E40];
   }
 
-  if ((a3 & 2) != 0 && v22)
+  if ((assets & 2) != 0 && v22)
   {
     [v21 setObject:v22 forKey:&unk_1F5E96E58];
     v33 = +[CLKUIAnalogHandFactoryCache sharedInstance];
     [v33 setImage:v22 forKey:v10];
   }
 
-  if ((a3 & 4) != 0 && v24)
+  if ((assets & 4) != 0 && v24)
   {
     [v21 setObject:v24 forKey:&unk_1F5E96E70];
     v34 = +[CLKUIAnalogHandFactoryCache sharedInstance];
     [v34 setImage:v24 forKey:v40];
   }
 
-  if ((a3 & 0x18) != 0 && v27)
+  if ((assets & 0x18) != 0 && v27)
   {
     [v21 setObject:v27 forKey:&unk_1F5E96E88];
     v35 = +[CLKUIAnalogHandFactoryCache sharedInstance];
     [v35 setImage:v27 forKey:v43];
   }
 
-  if ((a3 & 0x10) != 0 && v28)
+  if ((assets & 0x10) != 0 && v28)
   {
     [v21 setObject:v28 forKey:&unk_1F5E96EA0];
     v36 = +[CLKUIAnalogHandFactoryCache sharedInstance];
     [v36 setImage:v28 forKey:v41];
   }
 
-  if ((a3 & 0x20) != 0 && v30)
+  if ((assets & 0x20) != 0 && v30)
   {
     [v21 setObject:v30 forKey:&unk_1F5E96EB8];
     v37 = +[CLKUIAnalogHandFactoryCache sharedInstance];
@@ -209,24 +209,24 @@ LABEL_47:
   return v21;
 }
 
-+ (CGPath)newPathWithConfiguration:(id)a3
++ (CGPath)newPathWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  [v4 hash];
+  configurationCopy = configuration;
+  [configurationCopy hash];
   kdebug_trace();
-  if ([v4 type] == 1)
+  if ([configurationCopy type] == 1)
   {
-    v5 = [a1 newPathForSecondWithConfiguration:v4 inset:0.0];
+    v5 = [self newPathForSecondWithConfiguration:configurationCopy inset:0.0];
 LABEL_6:
     v6 = v5;
-    [v4 hash];
+    [configurationCopy hash];
     kdebug_trace();
     goto LABEL_7;
   }
 
-  if (![v4 type])
+  if (![configurationCopy type])
   {
-    v5 = [a1 newPathForHourMinuteWithConfiguration:v4 inset:objc_msgSend(v4 includePeg:{"excludePeg") ^ 1, 0.0}];
+    v5 = [self newPathForHourMinuteWithConfiguration:configurationCopy inset:objc_msgSend(configurationCopy includePeg:{"excludePeg") ^ 1, 0.0}];
     goto LABEL_6;
   }
 
@@ -236,17 +236,17 @@ LABEL_7:
   return v6;
 }
 
-+ (id)_getHandImageWithConfiguration:(id)a3
++ (id)_getHandImageWithConfiguration:(id)configuration
 {
   v22[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 hash];
+  configurationCopy = configuration;
+  [configurationCopy hash];
   kdebug_trace();
-  if ([v4 type] == 1)
+  if ([configurationCopy type] == 1)
   {
-    v5 = [a1 newPathForSecondWithConfiguration:v4 inset:0.0];
-    v6 = [a1 newPathForSecondWithConfiguration:v4 inset:1.0];
-    v7 = [a1 newPathForSecondWithConfiguration:v4 inset:2.0];
+    v5 = [self newPathForSecondWithConfiguration:configurationCopy inset:0.0];
+    v6 = [self newPathForSecondWithConfiguration:configurationCopy inset:1.0];
+    v7 = [self newPathForSecondWithConfiguration:configurationCopy inset:2.0];
 LABEL_6:
     v9 = v7;
     v22[0] = v5;
@@ -257,38 +257,38 @@ LABEL_6:
     v21[0] = v11;
     v12 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.752941176];
     v21[1] = v12;
-    v13 = [MEMORY[0x1E69DC888] blackColor];
-    v21[2] = v13;
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    v21[2] = blackColor;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:3];
 
-    [v4 bounds];
+    [configurationCopy bounds];
     v16 = v15;
     v18 = v17;
-    if ([v4 outlineOnly])
+    if ([configurationCopy outlineOnly])
     {
-      [a1 _createHandOutlineImageWithSize:v10 paths:v14 colors:v4 configuration:{v16, v18}];
+      [self _createHandOutlineImageWithSize:v10 paths:v14 colors:configurationCopy configuration:{v16, v18}];
     }
 
     else
     {
-      [a1 _createHandImageWithSize:v10 paths:v14 colors:{v16, v18}];
+      [self _createHandImageWithSize:v10 paths:v14 colors:{v16, v18}];
     }
     v19 = ;
     CGPathRelease(v6);
     CGPathRelease(v9);
     CGPathRelease(v5);
-    [v4 hash];
+    [configurationCopy hash];
     kdebug_trace();
     v8 = v19;
 
     goto LABEL_10;
   }
 
-  if (![v4 type])
+  if (![configurationCopy type])
   {
-    v5 = [a1 newPathForHourMinuteWithConfiguration:v4 inset:objc_msgSend(v4 includePeg:{"excludePeg") ^ 1, 0.0}];
-    v6 = [a1 newPathForHourMinuteWithConfiguration:v4 inset:objc_msgSend(v4 includePeg:{"excludePeg") ^ 1, 1.0}];
-    v7 = [a1 newPathForHourMinuteWithConfiguration:v4 inset:objc_msgSend(v4 includePeg:{"excludePeg") ^ 1, 2.0}];
+    v5 = [self newPathForHourMinuteWithConfiguration:configurationCopy inset:objc_msgSend(configurationCopy includePeg:{"excludePeg") ^ 1, 0.0}];
+    v6 = [self newPathForHourMinuteWithConfiguration:configurationCopy inset:objc_msgSend(configurationCopy includePeg:{"excludePeg") ^ 1, 1.0}];
+    v7 = [self newPathForHourMinuteWithConfiguration:configurationCopy inset:objc_msgSend(configurationCopy includePeg:{"excludePeg") ^ 1, 2.0}];
     goto LABEL_6;
   }
 
@@ -298,22 +298,22 @@ LABEL_10:
   return v8;
 }
 
-+ (id)_getInlayImageWithConfiguration:(id)a3
++ (id)_getInlayImageWithConfiguration:(id)configuration
 {
   v19[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 hash];
+  configurationCopy = configuration;
+  [configurationCopy hash];
   kdebug_trace();
-  if ([v4 type] == 1 || objc_msgSend(v4, "type"))
+  if ([configurationCopy type] == 1 || objc_msgSend(configurationCopy, "type"))
   {
     v5 = 0;
   }
 
   else
   {
-    v7 = [a1 newPathForInlayWithConfiguration:v4 inset:0.0];
-    v8 = [a1 newPathForInlayWithConfiguration:v4 inset:1.0];
-    v9 = [a1 newPathForInlayWithConfiguration:v4 inset:2.0];
+    v7 = [self newPathForInlayWithConfiguration:configurationCopy inset:0.0];
+    v8 = [self newPathForInlayWithConfiguration:configurationCopy inset:1.0];
+    v9 = [self newPathForInlayWithConfiguration:configurationCopy inset:2.0];
     v19[0] = v7;
     v19[1] = v8;
     v19[2] = v9;
@@ -322,16 +322,16 @@ LABEL_10:
     v18[0] = v11;
     v12 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.752941176];
     v18[1] = v12;
-    v13 = [MEMORY[0x1E69DC888] blackColor];
-    v18[2] = v13;
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    v18[2] = blackColor;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:3];
 
-    [v4 bounds];
-    v17 = [a1 _createHandImageWithSize:v10 paths:v14 colors:{v15, v16}];
+    [configurationCopy bounds];
+    v17 = [self _createHandImageWithSize:v10 paths:v14 colors:{v15, v16}];
     CGPathRelease(v8);
     CGPathRelease(v9);
     CGPathRelease(v7);
-    [v4 hash];
+    [configurationCopy hash];
     kdebug_trace();
     v5 = v17;
   }
@@ -339,96 +339,96 @@ LABEL_10:
   return v5;
 }
 
-+ (id)_getDropShadowImageWithConfiguration:(id)a3
++ (id)_getDropShadowImageWithConfiguration:(id)configuration
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [v5 dropShadowCacheIdentifier];
-  v7 = [v4 stringWithFormat:@"shadow-%@", v6];
+  configurationCopy = configuration;
+  dropShadowCacheIdentifier = [configurationCopy dropShadowCacheIdentifier];
+  v7 = [v4 stringWithFormat:@"shadow-%@", dropShadowCacheIdentifier];
 
-  [v5 dropShadowRadius];
+  [configurationCopy dropShadowRadius];
   v9 = v8;
-  [v5 dropShadowOpacity];
-  v11 = [a1 _getShadowImageWithConfiguration:v5 radius:v7 opacity:v9 key:v10];
+  [configurationCopy dropShadowOpacity];
+  v11 = [self _getShadowImageWithConfiguration:configurationCopy radius:v7 opacity:v9 key:v10];
 
   return v11;
 }
 
-+ (id)_getRadialShadowImageWithConfiguration:(id)a3
++ (id)_getRadialShadowImageWithConfiguration:(id)configuration
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [v5 radialShadowCacheIdentifier];
-  v7 = [v4 stringWithFormat:@"shadow-%@", v6];
+  configurationCopy = configuration;
+  radialShadowCacheIdentifier = [configurationCopy radialShadowCacheIdentifier];
+  v7 = [v4 stringWithFormat:@"shadow-%@", radialShadowCacheIdentifier];
 
-  [v5 radialShadowRadius];
+  [configurationCopy radialShadowRadius];
   v9 = v8;
-  [v5 radialShadowOpacity];
-  v11 = [a1 _getShadowImageWithConfiguration:v5 radius:v7 opacity:v9 key:v10];
+  [configurationCopy radialShadowOpacity];
+  v11 = [self _getShadowImageWithConfiguration:configurationCopy radius:v7 opacity:v9 key:v10];
 
   return v11;
 }
 
-+ (id)_getShadowImageWithConfiguration:(id)a3 radius:(double)a4 opacity:(double)a5 key:(id)a6
++ (id)_getShadowImageWithConfiguration:(id)configuration radius:(double)radius opacity:(double)opacity key:(id)key
 {
-  v9 = a3;
-  [v9 hash];
+  configurationCopy = configuration;
+  [configurationCopy hash];
   kdebug_trace();
-  if ([v9 type] == 1)
+  if ([configurationCopy type] == 1)
   {
-    v10 = [a1 newPathForSecondWithConfiguration:v9 inset:0.0];
+    v10 = [self newPathForSecondWithConfiguration:configurationCopy inset:0.0];
   }
 
   else
   {
-    if ([v9 type])
+    if ([configurationCopy type])
     {
       v11 = 0;
       goto LABEL_7;
     }
 
-    v10 = [a1 newPathForHourMinuteWithConfiguration:v9 inset:1 includePeg:0.0];
+    v10 = [self newPathForHourMinuteWithConfiguration:configurationCopy inset:1 includePeg:0.0];
   }
 
   v12 = v10;
-  [v9 bounds];
-  v11 = [a1 _createShadowImageSize:v12 path:v13 radius:v14 opacity:{a4 * 0.5, a5}];
+  [configurationCopy bounds];
+  v11 = [self _createShadowImageSize:v12 path:v13 radius:v14 opacity:{radius * 0.5, opacity}];
   CGPathRelease(v12);
-  [v9 hash];
+  [configurationCopy hash];
   kdebug_trace();
 LABEL_7:
 
   return v11;
 }
 
-+ (id)_getMaskedDropShadowImageWithConfiguration:(id)a3 shadowImage:(id)a4
++ (id)_getMaskedDropShadowImageWithConfiguration:(id)configuration shadowImage:(id)image
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 hash];
+  imageCopy = image;
+  configurationCopy = configuration;
+  [configurationCopy hash];
   kdebug_trace();
-  [v7 dropShadowRadius];
+  [configurationCopy dropShadowRadius];
   v9 = v8 * 0.5;
-  [v7 dropShadowOpacity];
+  [configurationCopy dropShadowOpacity];
   v11 = v10;
-  v12 = [a1 newPathForPeg:v7 inset:0.0];
-  [v7 bounds];
-  v15 = [a1 _createMaskedShadowImageFromShadow:v6 size:v12 maskPath:v13 radius:v14 opacity:{v9, v11}];
+  v12 = [self newPathForPeg:configurationCopy inset:0.0];
+  [configurationCopy bounds];
+  v15 = [self _createMaskedShadowImageFromShadow:imageCopy size:v12 maskPath:v13 radius:v14 opacity:{v9, v11}];
 
   CGPathRelease(v12);
-  [v7 hash];
+  [configurationCopy hash];
 
   kdebug_trace();
 
   return v15;
 }
 
-+ (id)_createHandImageWithSize:(CGSize)a3 paths:(id)a4 colors:(id)a5
++ (id)_createHandImageWithSize:(CGSize)size paths:(id)paths colors:(id)colors
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = a4;
-  v9 = a5;
+  height = size.height;
+  width = size.width;
+  pathsCopy = paths;
+  colorsCopy = colors;
   if (width == 0.0 || height == 0.0)
   {
     v21 = CLKLoggingObjectForDomain();
@@ -447,12 +447,12 @@ LABEL_7:
     UIGraphicsBeginImageContextWithOptions(v24, 0, 4.0);
     CurrentContext = UIGraphicsGetCurrentContext();
     CGContextSetBlendMode(CurrentContext, kCGBlendModeCopy);
-    v11 = [MEMORY[0x1E69794A0] layer];
-    [v11 setFillRule:*MEMORY[0x1E6979800]];
-    [v11 setBounds:{0.0, 0.0, width, height}];
-    [v11 setContentsScale:4.0];
-    v12 = [v8 count];
-    v13 = [v9 count];
+    layer = [MEMORY[0x1E69794A0] layer];
+    [layer setFillRule:*MEMORY[0x1E6979800]];
+    [layer setBounds:{0.0, 0.0, width, height}];
+    [layer setContentsScale:4.0];
+    v12 = [pathsCopy count];
+    v13 = [colorsCopy count];
     if (v12 >= v13)
     {
       v14 = v13;
@@ -468,14 +468,14 @@ LABEL_7:
       v15 = 0;
       do
       {
-        [v11 setPath:{objc_msgSend(v8, "objectAtIndex:", v15)}];
-        v16 = [v9 objectAtIndex:v15];
-        [v11 setFillColor:{objc_msgSend(v16, "CGColor")}];
+        [layer setPath:{objc_msgSend(pathsCopy, "objectAtIndex:", v15)}];
+        v16 = [colorsCopy objectAtIndex:v15];
+        [layer setFillColor:{objc_msgSend(v16, "CGColor")}];
 
-        [v11 renderInContext:UIGraphicsGetCurrentContext()];
+        [layer renderInContext:UIGraphicsGetCurrentContext()];
         ++v15;
-        v17 = [v8 count];
-        v18 = [v9 count];
+        v17 = [pathsCopy count];
+        v18 = [colorsCopy count];
         if (v17 >= v18)
         {
           v19 = v18;
@@ -497,13 +497,13 @@ LABEL_7:
   return v20;
 }
 
-+ (id)_createHandOutlineImageWithSize:(CGSize)a3 paths:(id)a4 colors:(id)a5 configuration:(id)a6
++ (id)_createHandOutlineImageWithSize:(CGSize)size paths:(id)paths colors:(id)colors configuration:(id)configuration
 {
-  height = a3.height;
-  width = a3.width;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  height = size.height;
+  width = size.width;
+  pathsCopy = paths;
+  colorsCopy = colors;
+  configurationCopy = configuration;
   if (width == 0.0 || height == 0.0)
   {
     v29 = CLKLoggingObjectForDomain();
@@ -522,12 +522,12 @@ LABEL_7:
     UIGraphicsBeginImageContextWithOptions(v32, 0, 4.0);
     CurrentContext = UIGraphicsGetCurrentContext();
     CGContextSetBlendMode(CurrentContext, kCGBlendModeCopy);
-    v15 = [MEMORY[0x1E69794A0] layer];
-    [v15 setFillRule:*MEMORY[0x1E6979800]];
-    [v15 setBounds:{0.0, 0.0, width, height}];
-    [v15 setContentsScale:4.0];
-    v16 = [v11 count];
-    v17 = [v12 count];
+    layer = [MEMORY[0x1E69794A0] layer];
+    [layer setFillRule:*MEMORY[0x1E6979800]];
+    [layer setBounds:{0.0, 0.0, width, height}];
+    [layer setContentsScale:4.0];
+    v16 = [pathsCopy count];
+    v17 = [colorsCopy count];
     if (v16 >= v17)
     {
       v18 = v17;
@@ -544,24 +544,24 @@ LABEL_7:
       v20 = *MEMORY[0x1E69797F8];
       do
       {
-        [v15 setPath:{objc_msgSend(v11, "objectAtIndex:", v19)}];
-        v21 = [v12 objectAtIndex:v19];
-        [v15 setFillColor:{objc_msgSend(v21, "CGColor")}];
+        [layer setPath:{objc_msgSend(pathsCopy, "objectAtIndex:", v19)}];
+        v21 = [colorsCopy objectAtIndex:v19];
+        [layer setFillColor:{objc_msgSend(v21, "CGColor")}];
 
-        v22 = [a1 newPathForInlayWithConfiguration:v13 inset:2.0];
+        v22 = [self newPathForInlayWithConfiguration:configurationCopy inset:2.0];
         if (v22)
         {
           v23 = [MEMORY[0x1E69DC728] bezierPathWithCGPath:v22];
-          v24 = [MEMORY[0x1E69DC728] bezierPathWithCGPath:{objc_msgSend(v15, "path")}];
+          v24 = [MEMORY[0x1E69DC728] bezierPathWithCGPath:{objc_msgSend(layer, "path")}];
           [v24 appendPath:v23];
-          [v15 setPath:{objc_msgSend(v24, "CGPath")}];
-          [v15 setFillRule:v20];
+          [layer setPath:{objc_msgSend(v24, "CGPath")}];
+          [layer setFillRule:v20];
         }
 
-        [v15 renderInContext:UIGraphicsGetCurrentContext()];
+        [layer renderInContext:UIGraphicsGetCurrentContext()];
         ++v19;
-        v25 = [v11 count];
-        v26 = [v12 count];
+        v25 = [pathsCopy count];
+        v26 = [colorsCopy count];
         if (v25 >= v26)
         {
           v27 = v26;
@@ -583,66 +583,66 @@ LABEL_7:
   return v28;
 }
 
-+ (id)_createShadowImageSize:(CGSize)a3 path:(CGPath *)a4 radius:(double)a5 opacity:(double)a6
++ (id)_createShadowImageSize:(CGSize)size path:(CGPath *)path radius:(double)radius opacity:(double)opacity
 {
-  height = a3.height;
-  width = a3.width;
-  v20.width = a3.width + a5 * 2.0;
-  v20.height = a3.height + a5 * 2.0;
+  height = size.height;
+  width = size.width;
+  v20.width = size.width + radius * 2.0;
+  v20.height = size.height + radius * 2.0;
   UIGraphicsBeginImageContextWithOptions(v20, 0, 2.0);
-  v11 = [MEMORY[0x1E69794A0] layer];
-  [v11 setBounds:{0.0, 0.0, width, height}];
-  [v11 setContentsScale:2.0];
-  [v11 setPath:a4];
-  [v11 setFillRule:*MEMORY[0x1E6979800]];
-  v12 = [MEMORY[0x1E69DC888] blackColor];
-  [v11 setFillColor:{objc_msgSend(v12, "CGColor")}];
+  layer = [MEMORY[0x1E69794A0] layer];
+  [layer setBounds:{0.0, 0.0, width, height}];
+  [layer setContentsScale:2.0];
+  [layer setPath:path];
+  [layer setFillRule:*MEMORY[0x1E6979800]];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [layer setFillColor:{objc_msgSend(blackColor, "CGColor")}];
 
-  [v11 setShadowPath:a4];
-  [v11 frame];
-  [v11 setShadowOffset:{CGRectGetWidth(v21) + a5, 0.0}];
-  *&v13 = a6;
-  [v11 setShadowOpacity:v13];
-  [v11 setShadowRadius:a5 * 0.5];
-  v14 = [MEMORY[0x1E69DC888] blackColor];
-  [v11 setShadowColor:{objc_msgSend(v14, "CGColor")}];
+  [layer setShadowPath:path];
+  [layer frame];
+  [layer setShadowOffset:{CGRectGetWidth(v21) + radius, 0.0}];
+  *&v13 = opacity;
+  [layer setShadowOpacity:v13];
+  [layer setShadowRadius:radius * 0.5];
+  blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+  [layer setShadowColor:{objc_msgSend(blackColor2, "CGColor")}];
 
   CurrentContext = UIGraphicsGetCurrentContext();
-  [v11 frame];
+  [layer frame];
   v16 = CGRectGetWidth(v22);
-  CGContextTranslateCTM(CurrentContext, -v16, a5);
-  [v11 renderInContext:UIGraphicsGetCurrentContext()];
+  CGContextTranslateCTM(CurrentContext, -v16, radius);
+  [layer renderInContext:UIGraphicsGetCurrentContext()];
   v17 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 
   return v17;
 }
 
-+ (id)_createMaskedShadowImageFromShadow:(id)a3 size:(CGSize)a4 maskPath:(CGPath *)a5 radius:(double)a6 opacity:(double)a7
++ (id)_createMaskedShadowImageFromShadow:(id)shadow size:(CGSize)size maskPath:(CGPath *)path radius:(double)radius opacity:(double)opacity
 {
-  height = a4.height;
-  width = a4.width;
-  v12 = a3;
-  CGPathRetain(a5);
-  v13 = [MEMORY[0x1E69794A0] layer];
-  [v13 setBounds:{0.0, 0.0, width, height}];
-  [v13 setContentsScale:2.0];
-  path = a5;
-  [v13 setPath:a5];
-  [v13 setFillRule:*MEMORY[0x1E6979800]];
-  v14 = [MEMORY[0x1E69DC888] blackColor];
-  [v13 setShadowColor:{objc_msgSend(v14, "CGColor")}];
+  height = size.height;
+  width = size.width;
+  shadowCopy = shadow;
+  CGPathRetain(path);
+  layer = [MEMORY[0x1E69794A0] layer];
+  [layer setBounds:{0.0, 0.0, width, height}];
+  [layer setContentsScale:2.0];
+  path = path;
+  [layer setPath:path];
+  [layer setFillRule:*MEMORY[0x1E6979800]];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [layer setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
-  [v13 frame];
+  [layer frame];
   v15 = CGRectGetWidth(v36);
-  [v13 setShadowOffset:{v15 + a6 + v15 + a6, 0.0}];
-  *&v16 = a7;
-  [v13 setShadowOpacity:v16];
-  [v13 setShadowRadius:a6];
-  v33 = v12;
-  v17 = [v12 CGImage];
-  v18 = CGImageGetWidth(v17);
-  v19 = CGImageGetHeight(v17);
+  [layer setShadowOffset:{v15 + radius + v15 + radius, 0.0}];
+  *&v16 = opacity;
+  [layer setShadowOpacity:v16];
+  [layer setShadowRadius:radius];
+  v33 = shadowCopy;
+  cGImage = [shadowCopy CGImage];
+  v18 = CGImageGetWidth(cGImage);
+  v19 = CGImageGetHeight(cGImage);
   v20 = 4 * v18 * v19;
   v21 = malloc_type_calloc(v20, 1uLL, 0x100004077774924uLL);
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
@@ -654,10 +654,10 @@ LABEL_7:
   transform.ty = v19;
   CGContextConcatCTM(v23, &transform);
   CGContextScaleCTM(v23, 2.0, 2.0);
-  [v13 frame];
+  [layer frame];
   v24 = CGRectGetWidth(v37);
-  CGContextTranslateCTM(v23, -v24, a6);
-  [v13 renderInContext:v23];
+  CGContextTranslateCTM(v23, -v24, radius);
+  [layer renderInContext:v23];
   Image = CGBitmapContextCreateImage(v23);
   CGContextRelease(v23);
   v26 = malloc_type_calloc(v20, 1uLL, 0x100004077774924uLL);
@@ -665,9 +665,9 @@ LABEL_7:
   CGContextScaleCTM(v27, 2.0, 2.0);
   v38.origin.x = 0.0;
   v38.origin.y = 0.0;
-  v38.size.width = width + a6 * 2.0;
-  v38.size.height = height + a6 * 2.0;
-  CGContextDrawImage(v27, v38, v17);
+  v38.size.width = width + radius * 2.0;
+  v38.size.height = height + radius * 2.0;
+  CGContextDrawImage(v27, v38, cGImage);
   if (v20)
   {
     for (i = 0; i < v20; i += 4)
@@ -689,11 +689,11 @@ LABEL_7:
   return v30;
 }
 
-+ (CGPath)newPathForHourMinuteWithConfiguration:(id)a3 inset:(double)a4 includePeg:(BOOL)a5
++ (CGPath)newPathForHourMinuteWithConfiguration:(id)configuration inset:(double)inset includePeg:(BOOL)peg
 {
-  v5 = a5;
-  v6 = a4 * 0.25;
-  v7 = [a3 configurationByApplyingInset:a4 * 0.25];
+  pegCopy = peg;
+  v6 = inset * 0.25;
+  v7 = [configuration configurationByApplyingInset:inset * 0.25];
   Mutable = CGPathCreateMutable();
   [v7 pegRadius];
   v10 = v9;
@@ -724,7 +724,7 @@ LABEL_7:
     v28 = v17;
     v29 = v21;
     v30 = v12;
-    if (v5)
+    if (pegCopy)
     {
       v31 = 0;
       goto LABEL_8;
@@ -747,7 +747,7 @@ LABEL_7:
     v6 = v70;
     [v7 smoothingRadius];
     CGPathAddArc(Mutable, 0, v17 + v35, v40, v41, 3.14159265, 3.14159265 - v39, 1);
-    CGPathAddArc(Mutable, 0, v17, y, v12, -v39, v39 + 3.14159265, !v5);
+    CGPathAddArc(Mutable, 0, v17, y, v12, -v39, v39 + 3.14159265, !pegCopy);
     v42 = v17 - v35;
     v21 = y;
     [v7 smoothingRadius];
@@ -810,7 +810,7 @@ LABEL_8:
   }
 
   [v7 pegRadius];
-  if (v65 > 0.0 && v5)
+  if (v65 > 0.0 && pegCopy)
   {
     [v7 pegRadius];
     CGPathMoveToPoint(Mutable, 0, v17 + v66, v21);
@@ -822,10 +822,10 @@ LABEL_8:
   return Mutable;
 }
 
-+ (CGPath)newPathForInlayWithConfiguration:(id)a3 inset:(double)a4
++ (CGPath)newPathForInlayWithConfiguration:(id)configuration inset:(double)inset
 {
-  v4 = a4 * 0.25;
-  v5 = [a3 configurationByApplyingInset:a4 * 0.25];
+  v4 = inset * 0.25;
+  v5 = [configuration configurationByApplyingInset:inset * 0.25];
   Mutable = CGPathCreateMutable();
   [v5 pegRadius];
   v8 = v7;
@@ -855,11 +855,11 @@ LABEL_8:
   return Mutable;
 }
 
-+ (CGPath)newPathForSecondWithConfiguration:(id)a3 inset:(double)a4
++ (CGPath)newPathForSecondWithConfiguration:(id)configuration inset:(double)inset
 {
-  v5 = a3;
-  v6 = a4 * 0.25;
-  v7 = [v5 configurationByApplyingInset:a4 * 0.25];
+  configurationCopy = configuration;
+  v6 = inset * 0.25;
+  v7 = [configurationCopy configurationByApplyingInset:inset * 0.25];
   Mutable = CGPathCreateMutable();
   [v7 pegRadius];
   v10 = v9;
@@ -895,10 +895,10 @@ LABEL_8:
   v29 = v13 - v21;
   v30 = v25;
   CGPathAddArc(Mutable, 0, v29, v17 - v24, v28, v25, 0.0, 1);
-  v31 = [v5 roundedSecondHand];
+  roundedSecondHand = [configurationCopy roundedSecondHand];
   [v7 handWidth];
   v33 = v32 * 0.5;
-  if (v31)
+  if (roundedSecondHand)
   {
     v34 = v6 + v33;
     [v7 handWidth];
@@ -928,7 +928,7 @@ LABEL_8:
     CGPathAddArc(Mutable, 0, v13, v73, v74, 0.0, v30, 0);
     [v7 smoothingRadius];
     CGPathAddArc(Mutable, 0, v38, v73 + v24, v43, startAngle, 3.14159265, 1);
-    if ([v5 roundedSecondHand])
+    if ([configurationCopy roundedSecondHand])
     {
       [v7 handLength];
       v45 = v44;
@@ -980,10 +980,10 @@ LABEL_8:
   return Mutable;
 }
 
-+ (CGPath)newPathForPeg:(id)a3 inset:(double)a4
++ (CGPath)newPathForPeg:(id)peg inset:(double)inset
 {
-  v4 = a4 * 0.25;
-  v5 = [a3 configurationByApplyingInset:a4 * 0.25];
+  v4 = inset * 0.25;
+  v5 = [peg configurationByApplyingInset:inset * 0.25];
   Mutable = CGPathCreateMutable();
   [v5 pegRadius];
   v8 = v7;

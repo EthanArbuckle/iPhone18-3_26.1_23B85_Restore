@@ -1,9 +1,9 @@
 @interface SBFocusAppConfigurationContextMonitor
 + (id)sharedInstance;
 - (SBFocusAppConfigurationContextMonitor)init;
-- (id)targetContentIdentifierPrefixForBundleIdentifier:(id)a3;
-- (void)_updatePrefixes:(id)a3;
-- (void)modeConfigurationService:(id)a3 didReceiveAppConfigurationContextUpdateForModeIdentifier:(id)a4;
+- (id)targetContentIdentifierPrefixForBundleIdentifier:(id)identifier;
+- (void)_updatePrefixes:(id)prefixes;
+- (void)modeConfigurationService:(id)service didReceiveAppConfigurationContextUpdateForModeIdentifier:(id)identifier;
 @end
 
 @implementation SBFocusAppConfigurationContextMonitor
@@ -41,9 +41,9 @@ void __55__SBFocusAppConfigurationContextMonitor_sharedInstance__block_invoke()
 
     v2->_lock._os_unfair_lock_opaque = 0;
     os_unfair_lock_lock(&v2->_lock);
-    v6 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
     lock_prefixes = v2->_lock_prefixes;
-    v2->_lock_prefixes = v6;
+    v2->_lock_prefixes = dictionary;
 
     os_unfair_lock_unlock(&v2->_lock);
     v8 = [MEMORY[0x277D059C8] serviceForClientIdentifier:@"com.apple.springboard.focusappconfigurationcontextmonitor"];
@@ -84,13 +84,13 @@ void __45__SBFocusAppConfigurationContextMonitor_init__block_invoke(uint64_t a1)
   }
 }
 
-- (id)targetContentIdentifierPrefixForBundleIdentifier:(id)a3
+- (id)targetContentIdentifierPrefixForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (_os_feature_enabled_impl())
   {
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(NSDictionary *)self->_lock_prefixes objectForKey:v4];
+    v5 = [(NSDictionary *)self->_lock_prefixes objectForKey:identifierCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 
@@ -102,17 +102,17 @@ void __45__SBFocusAppConfigurationContextMonitor_init__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)modeConfigurationService:(id)a3 didReceiveAppConfigurationContextUpdateForModeIdentifier:(id)a4
+- (void)modeConfigurationService:(id)service didReceiveAppConfigurationContextUpdateForModeIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __123__SBFocusAppConfigurationContextMonitor_modeConfigurationService_didReceiveAppConfigurationContextUpdateForModeIdentifier___block_invoke;
   v8[3] = &unk_2783A92D8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = identifierCopy;
+  v7 = identifierCopy;
   dispatch_async(queue, v8);
 }
 
@@ -138,11 +138,11 @@ void __123__SBFocusAppConfigurationContextMonitor_modeConfigurationService_didRe
   }
 }
 
-- (void)_updatePrefixes:(id)a3
+- (void)_updatePrefixes:(id)prefixes
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = [a3 copy];
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  v4 = [prefixes copy];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -163,13 +163,13 @@ void __123__SBFocusAppConfigurationContextMonitor_modeConfigurationService_didRe
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 bundleID];
+        bundleID = [v11 bundleID];
         v13 = [v6 objectForKey:v11];
-        v14 = [v13 anyObject];
+        anyObject = [v13 anyObject];
 
-        if (v14)
+        if (anyObject)
         {
-          [v5 setObject:v14 forKey:v12];
+          [dictionary setObject:anyObject forKey:bundleID];
         }
       }
 
@@ -180,7 +180,7 @@ void __123__SBFocusAppConfigurationContextMonitor_modeConfigurationService_didRe
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v15 = [v5 copy];
+  v15 = [dictionary copy];
   lock_prefixes = self->_lock_prefixes;
   self->_lock_prefixes = v15;
 
@@ -189,7 +189,7 @@ void __123__SBFocusAppConfigurationContextMonitor_modeConfigurationService_didRe
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v23 = v5;
+    v23 = dictionary;
     _os_log_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEFAULT, "FocusAppConfigurationContextMonitor updated prefixes. prefixes=%@", buf, 0xCu);
   }
 }

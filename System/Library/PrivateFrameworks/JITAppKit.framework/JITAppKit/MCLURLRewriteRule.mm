@@ -1,21 +1,21 @@
 @interface MCLURLRewriteRule
-+ (id)urlRewriteRuleFromHost:(id)a3 toHost:(id)a4 ignoreHosts:(id)a5;
-- (MCLURLRewriteRule)initWithMatchPattern:(id)a3 replacePattern:(id)a4 replaceTemplate:(id)a5 ignoreHosts:(id)a6;
-- (void)rewriteURLRequest:(id)a3;
++ (id)urlRewriteRuleFromHost:(id)host toHost:(id)toHost ignoreHosts:(id)hosts;
+- (MCLURLRewriteRule)initWithMatchPattern:(id)pattern replacePattern:(id)replacePattern replaceTemplate:(id)template ignoreHosts:(id)hosts;
+- (void)rewriteURLRequest:(id)request;
 @end
 
 @implementation MCLURLRewriteRule
 
-+ (id)urlRewriteRuleFromHost:(id)a3 toHost:(id)a4 ignoreHosts:(id)a5
++ (id)urlRewriteRuleFromHost:(id)host toHost:(id)toHost ignoreHosts:(id)hosts
 {
-  v36 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, host);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
+  objc_storeStrong(&v34, toHost);
   v33 = 0;
-  objc_storeStrong(&v33, a5);
+  objc_storeStrong(&v33, hosts);
   v5 = [location[0] stringByReplacingOccurrencesOfString:@"." withString:@"\\."];
   v6 = location[0];
   location[0] = v5;
@@ -56,7 +56,7 @@
   v27 = &unk_2797EDFB8;
   v28 = MEMORY[0x277D82BE0](v29);
   [v18 enumerateObjectsUsingBlock:&v23];
-  v15 = [v36 alloc];
+  v15 = [selfCopy alloc];
   v19 = [v15 initWithMatchPattern:v31 replacePattern:v31 replaceTemplate:v34 ignoreHosts:v29];
   objc_storeStrong(&v28, 0);
   objc_storeStrong(&v29, 0);
@@ -108,56 +108,56 @@ void __63__MCLURLRewriteRule_urlRewriteRuleFromHost_toHost_ignoreHosts___block_i
   objc_storeStrong(location, 0);
 }
 
-- (MCLURLRewriteRule)initWithMatchPattern:(id)a3 replacePattern:(id)a4 replaceTemplate:(id)a5 ignoreHosts:(id)a6
+- (MCLURLRewriteRule)initWithMatchPattern:(id)pattern replacePattern:(id)replacePattern replaceTemplate:(id)template ignoreHosts:(id)hosts
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, pattern);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, replacePattern);
   v18 = 0;
-  objc_storeStrong(&v18, a5);
+  objc_storeStrong(&v18, template);
   v17 = 0;
-  objc_storeStrong(&v17, a6);
-  v6 = v21;
-  v21 = 0;
+  objc_storeStrong(&v17, hosts);
+  v6 = selfCopy;
+  selfCopy = 0;
   v16.receiver = v6;
   v16.super_class = MCLURLRewriteRule;
-  v21 = [(MCLURLRequestRewriteRule *)&v16 initWithMatchExpression:location[0] block:0];
-  objc_storeStrong(&v21, v21);
-  if (v21)
+  selfCopy = [(MCLURLRequestRewriteRule *)&v16 initWithMatchExpression:location[0] block:0];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v21->_replacePattern, v19);
+    objc_storeStrong(&selfCopy->_replacePattern, v19);
     v7 = [v18 copy];
-    replaceTemplate = v21->_replaceTemplate;
-    v21->_replaceTemplate = v7;
+    replaceTemplate = selfCopy->_replaceTemplate;
+    selfCopy->_replaceTemplate = v7;
     MEMORY[0x277D82BD8](replaceTemplate);
     v9 = [v17 copy];
-    ignoreHosts = v21->_ignoreHosts;
-    v21->_ignoreHosts = v9;
+    ignoreHosts = selfCopy->_ignoreHosts;
+    selfCopy->_ignoreHosts = v9;
     MEMORY[0x277D82BD8](ignoreHosts);
   }
 
-  v12 = MEMORY[0x277D82BE0](v21);
+  v12 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v12;
 }
 
-- (void)rewriteURLRequest:(id)a3
+- (void)rewriteURLRequest:(id)request
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v6 = [location[0] URL];
-  v23 = [v6 absoluteString];
+  absoluteString = [v6 absoluteString];
   MEMORY[0x277D82BD8](v6);
-  v3 = [v23 length];
+  v3 = [absoluteString length];
   v27 = 0;
   v26 = v3;
   v28 = 0;
@@ -169,13 +169,13 @@ void __63__MCLURLRewriteRule_urlRewriteRuleFromHost_toHost_ignoreHosts___block_i
   v19 = 0x20000000;
   v20 = 32;
   v21 = 0;
-  ignoreHosts = v25->_ignoreHosts;
+  ignoreHosts = selfCopy->_ignoreHosts;
   v10 = MEMORY[0x277D85DD0];
   v11 = -1073741824;
   v12 = 0;
   v13 = __39__MCLURLRewriteRule_rewriteURLRequest___block_invoke;
   v14 = &unk_2797EDFE0;
-  v15[0] = MEMORY[0x277D82BE0](v23);
+  v15[0] = MEMORY[0x277D82BE0](absoluteString);
   v16 = v22;
   v15[1] = &v17;
   [(NSSet *)ignoreHosts enumerateObjectsUsingBlock:&v10];
@@ -186,11 +186,11 @@ void __63__MCLURLRewriteRule_urlRewriteRuleFromHost_toHost_ignoreHosts___block_i
 
   else
   {
-    v4 = [(NSRegularExpression *)v25->_replacePattern stringByReplacingMatchesInString:v23 options:0 range:v22 withTemplate:v25->_replaceTemplate];
-    v5 = v23;
-    v23 = v4;
+    v4 = [(NSRegularExpression *)selfCopy->_replacePattern stringByReplacingMatchesInString:absoluteString options:0 range:v22 withTemplate:selfCopy->_replaceTemplate];
+    v5 = absoluteString;
+    absoluteString = v4;
     MEMORY[0x277D82BD8](v5);
-    v8 = [MEMORY[0x277CBEBC0] URLWithString:v23];
+    v8 = [MEMORY[0x277CBEBC0] URLWithString:absoluteString];
     if (v8)
     {
       [location[0] setURL:v8];
@@ -202,7 +202,7 @@ void __63__MCLURLRewriteRule_urlRewriteRuleFromHost_toHost_ignoreHosts___block_i
 
   objc_storeStrong(v15, 0);
   _Block_object_dispose(&v17, 8);
-  objc_storeStrong(&v23, 0);
+  objc_storeStrong(&absoluteString, 0);
   objc_storeStrong(location, 0);
 }
 

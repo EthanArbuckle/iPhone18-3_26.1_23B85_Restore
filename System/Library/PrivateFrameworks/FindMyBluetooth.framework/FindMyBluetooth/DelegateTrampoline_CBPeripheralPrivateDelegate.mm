@@ -1,42 +1,42 @@
 @interface DelegateTrampoline_CBPeripheralPrivateDelegate
 - (_TtC15FindMyBluetooth46DelegateTrampoline_CBPeripheralPrivateDelegate)init;
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4;
-- (void)peripheral:(id)a3 didModifyServices:(id)a4;
-- (void)peripheralDidUpdateName:(id)a3;
-- (void)peripheralIsReadyToSendWriteWithoutResponse:(id)a3;
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services;
+- (void)peripheral:(id)peripheral didModifyServices:(id)services;
+- (void)peripheralDidUpdateName:(id)name;
+- (void)peripheralIsReadyToSendWriteWithoutResponse:(id)response;
 @end
 
 @implementation DelegateTrampoline_CBPeripheralPrivateDelegate
 
-- (void)peripheralDidUpdateName:(id)a3
+- (void)peripheralDidUpdateName:(id)name
 {
-  v4 = a3;
-  v5 = self;
-  sub_24AC42210(v4);
+  nameCopy = name;
+  selfCopy = self;
+  sub_24AC42210(nameCopy);
 }
 
-- (void)peripheral:(id)a3 didModifyServices:(id)a4
+- (void)peripheral:(id)peripheral didModifyServices:(id)services
 {
   sub_24AC2B8F8(0, &qword_27EF9E0F8, 0x277CBE098);
   v6 = sub_24ACD0700();
-  v7 = a3;
-  v8 = self;
-  sub_24AC425B0(v7, v6);
+  peripheralCopy = peripheral;
+  selfCopy = self;
+  sub_24AC425B0(peripheralCopy, v6);
 }
 
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_24AC42C54(v6, a4);
+  peripheralCopy = peripheral;
+  selfCopy = self;
+  servicesCopy = services;
+  sub_24AC42C54(peripheralCopy, services);
 }
 
-- (void)peripheralIsReadyToSendWriteWithoutResponse:(id)a3
+- (void)peripheralIsReadyToSendWriteWithoutResponse:(id)response
 {
-  v4 = a3;
-  v5 = self;
-  sub_24AC44688(v4);
+  responseCopy = response;
+  selfCopy = self;
+  sub_24AC44688(responseCopy);
 }
 
 - (_TtC15FindMyBluetooth46DelegateTrampoline_CBPeripheralPrivateDelegate)init

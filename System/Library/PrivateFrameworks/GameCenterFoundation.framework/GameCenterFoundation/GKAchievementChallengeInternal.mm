@@ -1,7 +1,7 @@
 @interface GKAchievementChallengeInternal
 + (id)internalRepresentation;
 + (id)secureCodedPropertyKeys;
-- (id)serverRepresentationForReceivingPlayer:(id)a3;
+- (id)serverRepresentationForReceivingPlayer:(id)player;
 - (id)titleText;
 @end
 
@@ -9,7 +9,7 @@
 
 + (id)internalRepresentation
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __57__GKAchievementChallengeInternal_secureCodedPropertyKeys__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (secureCodedPropertyKeys_onceToken_215 != -1)
   {
     dispatch_once(&secureCodedPropertyKeys_onceToken_215, block);
@@ -43,28 +43,28 @@ void __57__GKAchievementChallengeInternal_secureCodedPropertyKeys__block_invoke(
   secureCodedPropertyKeys_sSecureCodedKeys_214 = v2;
 }
 
-- (id)serverRepresentationForReceivingPlayer:(id)a3
+- (id)serverRepresentationForReceivingPlayer:(id)player
 {
-  v4 = self;
+  selfCopy = self;
   v17[2] = *MEMORY[0x277D85DE8];
   v15.receiver = self;
   v15.super_class = GKAchievementChallengeInternal;
-  v5 = [(GKChallengeInternal *)&v15 serverRepresentationForReceivingPlayer:a3];
+  v5 = [(GKChallengeInternal *)&v15 serverRepresentationForReceivingPlayer:player];
   v6 = [v5 mutableCopy];
 
   [v6 setObject:&unk_283B33430 forKey:@"challenge-type"];
   v16[0] = @"achievement-id";
-  v7 = [v4 achievement];
-  v8 = [v7 identifier];
+  achievement = [selfCopy achievement];
+  identifier = [achievement identifier];
   v16[1] = @"timestamp";
-  v17[0] = v8;
-  v9 = [v4 achievement];
-  v10 = [v9 lastReportedDate];
-  if (v10)
+  v17[0] = identifier;
+  achievement2 = [selfCopy achievement];
+  lastReportedDate = [achievement2 lastReportedDate];
+  if (lastReportedDate)
   {
-    v4 = [v4 achievement];
-    v3 = [v4 lastReportedDate];
-    [v3 _gkServerTimestamp];
+    selfCopy = [selfCopy achievement];
+    lastReportedDate2 = [selfCopy lastReportedDate];
+    [lastReportedDate2 _gkServerTimestamp];
   }
 
   else
@@ -74,10 +74,10 @@ void __57__GKAchievementChallengeInternal_secureCodedPropertyKeys__block_invoke(
   v11 = ;
   v17[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
-  if (v10)
+  if (lastReportedDate)
   {
 
-    v11 = v4;
+    v11 = selfCopy;
   }
 
   [v6 setObject:v12 forKey:@"achievement"];
@@ -90,9 +90,9 @@ void __57__GKAchievementChallengeInternal_secureCodedPropertyKeys__block_invoke(
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = +[_TtC20GameCenterFoundation19GCFLocalizedStrings SHORT_CHALLENGE_ACHIEVEMENT_TITLE_FORMAT];
-  v5 = [(GKAchievementChallengeInternal *)self achievement];
-  v6 = [v5 title];
-  v7 = [v3 stringWithFormat:v4, v6];
+  achievement = [(GKAchievementChallengeInternal *)self achievement];
+  title = [achievement title];
+  v7 = [v3 stringWithFormat:v4, title];
 
   return v7;
 }

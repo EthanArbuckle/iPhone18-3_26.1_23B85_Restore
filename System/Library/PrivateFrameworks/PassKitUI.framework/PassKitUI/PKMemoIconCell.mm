@@ -1,21 +1,21 @@
 @interface PKMemoIconCell
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
 - (PKMemoIconCellDelegate)delegate;
 - (void)layoutSubviews;
-- (void)setItem:(id)a3;
+- (void)setItem:(id)item;
 - (void)showEmojiKeyboardIfNeeded;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation PKMemoIconCell
 
 - (void)showEmojiKeyboardIfNeeded
 {
-  v3 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-  v4 = [v3 currentInputMode];
-  v5 = [v4 normalizedIdentifier];
+  mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+  currentInputMode = [mEMORY[0x1E69DCBF0] currentInputMode];
+  normalizedIdentifier = [currentInputMode normalizedIdentifier];
 
-  if (([v5 isEqualToString:*MEMORY[0x1E69DDFB8]] & 1) == 0)
+  if (([normalizedIdentifier isEqualToString:*MEMORY[0x1E69DDFB8]] & 1) == 0)
   {
     [(UITextView *)self->_emojiTextView resignFirstResponder];
   }
@@ -23,17 +23,17 @@
   [(UITextView *)self->_emojiTextView becomeFirstResponder];
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v29 = a3;
-  objc_storeStrong(&self->_item, a3);
-  v5 = [(PKMemoItem *)self->_item type];
-  v6 = v5;
-  if (v5 <= 1)
+  itemCopy = item;
+  objc_storeStrong(&self->_item, item);
+  type = [(PKMemoItem *)self->_item type];
+  v6 = type;
+  if (type <= 1)
   {
-    if (v5)
+    if (type)
     {
-      if (v5 == 1)
+      if (type == 1)
       {
         [(UILabel *)self->_emojiLabel removeFromSuperview];
         emojiLabel = self->_emojiLabel;
@@ -43,7 +43,7 @@
         emojiTextView = self->_emojiTextView;
         self->_emojiTextView = 0;
 
-        v9 = [(PKMemoIconCell *)self contentView];
+        contentView = [(PKMemoIconCell *)self contentView];
         goto LABEL_21;
       }
 
@@ -53,22 +53,22 @@
     goto LABEL_7;
   }
 
-  if (v5 == 2)
+  if (type == 2)
   {
     [(UILabel *)self->_emojiLabel removeFromSuperview];
     v19 = self->_emojiLabel;
     self->_emojiLabel = 0;
 
-    v9 = [(PKMemoIconCell *)self contentView];
+    contentView = [(PKMemoIconCell *)self contentView];
     goto LABEL_18;
   }
 
-  if (v5 == 3)
+  if (type == 3)
   {
 LABEL_7:
-    v10 = [(PKMemoItem *)self->_item memo];
-    v11 = [v10 emoji];
-    v12 = [v11 length];
+    memo = [(PKMemoItem *)self->_item memo];
+    emoji = [memo emoji];
+    v12 = [emoji length];
 
     if (!v12)
     {
@@ -83,24 +83,24 @@ LABEL_7:
   }
 
 LABEL_10:
-  v9 = [(PKMemoIconCell *)self contentView];
+  contentView = [(PKMemoIconCell *)self contentView];
   if (v6 == 3)
   {
 LABEL_13:
-    v15 = [(PKMemoItem *)self->_item memo];
-    v16 = [v15 emoji];
+    memo2 = [(PKMemoItem *)self->_item memo];
+    emoji2 = [memo2 emoji];
 
-    if (!self->_emojiLabel && [v16 length])
+    if (!self->_emojiLabel && [emoji2 length])
     {
       v17 = objc_alloc_init(MEMORY[0x1E69DCC10]);
       v18 = self->_emojiLabel;
       self->_emojiLabel = v17;
 
       [(UILabel *)self->_emojiLabel setTextAlignment:1];
-      [v9 addSubview:self->_emojiLabel];
+      [contentView addSubview:self->_emojiLabel];
     }
 
-    [(UILabel *)self->_emojiLabel setText:v16];
+    [(UILabel *)self->_emojiLabel setText:emoji2];
 
     goto LABEL_21;
   }
@@ -124,25 +124,25 @@ LABEL_18:
     self->_emojiTextView = v21;
 
     v23 = self->_emojiTextView;
-    v24 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UITextView *)v23 setTintColor:v24];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UITextView *)v23 setTintColor:whiteColor];
 
     v25 = self->_emojiTextView;
-    v26 = [MEMORY[0x1E69DC888] clearColor];
-    [(UITextView *)v25 setBackgroundColor:v26];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UITextView *)v25 setBackgroundColor:clearColor];
 
     [(UITextView *)self->_emojiTextView setScrollEnabled:0];
     [(UITextView *)self->_emojiTextView setTextAlignment:1];
     [(UITextView *)self->_emojiTextView setDelegate:self];
     [(UITextView *)self->_emojiTextView setKeyboardType:124];
     [(UITextView *)self->_emojiTextView setAutocorrectionType:1];
-    [v9 addSubview:self->_emojiTextView];
+    [contentView addSubview:self->_emojiTextView];
     v20 = self->_emojiTextView;
   }
 
-  v27 = [(PKMemoItem *)self->_item memo];
-  v28 = [v27 emoji];
-  [(UITextView *)v20 setText:v28];
+  memo3 = [(PKMemoItem *)self->_item memo];
+  emoji3 = [memo3 emoji];
+  [(UITextView *)v20 setText:emoji3];
 
 LABEL_21:
   [(PKMemoIconCell *)self setNeedsUpdateConfiguration];
@@ -162,8 +162,8 @@ LABEL_21:
     [(PKMemoIconCell *)self setNeedsUpdateConfiguration];
   }
 
-  v6 = [(PKMemoIconCell *)self contentView];
-  [v6 bounds];
+  contentView = [(PKMemoIconCell *)self contentView];
+  [contentView bounds];
   v8 = v7;
   PKSizeAlignedInRect();
   v10 = v9;
@@ -171,39 +171,39 @@ LABEL_21:
   v14 = v13;
   v16 = v15;
   v17 = v8 * 0.55;
-  v18 = [(PKMemoItem *)self->_item type];
-  switch(v18)
+  type = [(PKMemoItem *)self->_item type];
+  switch(type)
   {
     case 3uLL:
       goto LABEL_9;
     case 2uLL:
       [(UITextView *)self->_emojiTextView setFrame:v10, v12, v14, v16];
       v21 = [MEMORY[0x1E69DB878] systemFontOfSize:v17];
-      v22 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-      v23 = [v22 currentInputMode];
-      v24 = [v23 isDefaultRightToLeft];
+      mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+      currentInputMode = [mEMORY[0x1E69DCBF0] currentInputMode];
+      isDefaultRightToLeft = [currentInputMode isDefaultRightToLeft];
 
       v25 = objc_alloc_init(MEMORY[0x1E69DB7E0]);
-      v26 = [(UITextView *)self->_emojiTextView text];
-      [v6 bounds];
+      text = [(UITextView *)self->_emojiTextView text];
+      [contentView bounds];
       v28 = v27;
       v30 = v29;
       v31 = *MEMORY[0x1E69DB778];
       v47[0] = *MEMORY[0x1E69DB648];
       v47[1] = v31;
       v48[0] = v21;
-      v32 = [MEMORY[0x1E696AD98] numberWithInteger:v24];
+      v32 = [MEMORY[0x1E696AD98] numberWithInteger:isDefaultRightToLeft];
       v46 = v32;
       v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v46 count:1];
       v48[1] = v33;
       v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:v47 count:2];
-      [v26 boundingRectWithSize:33 options:v34 attributes:v25 context:{v28, v30}];
+      [text boundingRectWithSize:33 options:v34 attributes:v25 context:{v28, v30}];
       v36 = v35;
 
       [(UITextView *)self->_emojiTextView contentOffset];
       v38 = v37;
-      v39 = [(UITextView *)self->_emojiTextView textContainer];
-      [v39 size];
+      textContainer = [(UITextView *)self->_emojiTextView textContainer];
+      [textContainer size];
       v41 = v40;
       [(UITextView *)self->_emojiTextView zoomScale];
       v43 = v41 - v36 * v42;
@@ -229,28 +229,28 @@ LABEL_9:
   }
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
   v33[1] = *MEMORY[0x1E69E9840];
   v32.receiver = self;
   v32.super_class = PKMemoIconCell;
-  [(PKMemoIconCell *)&v32 updateConfigurationUsingState:a3];
-  v4 = [(PKMemoIconCell *)self backgroundConfiguration];
-  v5 = v4;
-  if (v4)
+  [(PKMemoIconCell *)&v32 updateConfigurationUsingState:state];
+  backgroundConfiguration = [(PKMemoIconCell *)self backgroundConfiguration];
+  v5 = backgroundConfiguration;
+  if (backgroundConfiguration)
   {
-    v6 = v4;
+    defaultBackgroundConfiguration = backgroundConfiguration;
   }
 
   else
   {
-    v6 = [(PKMemoIconCell *)self defaultBackgroundConfiguration];
+    defaultBackgroundConfiguration = [(PKMemoIconCell *)self defaultBackgroundConfiguration];
   }
 
-  v7 = v6;
+  v7 = defaultBackgroundConfiguration;
 
-  v8 = [(PKMemoItem *)self->_item memo];
-  v9 = [v8 color];
+  memo = [(PKMemoItem *)self->_item memo];
+  color = [memo color];
   v10 = _UISolariumFeatureFlagEnabled();
   v11 = 10.0;
   if (v10)
@@ -259,9 +259,9 @@ LABEL_9:
   }
 
   [v7 setCornerRadius:v11];
-  if (v9)
+  if (color)
   {
-    PKPeerPaymentMessageColorFromSemanticColor(v9);
+    PKPeerPaymentMessageColorFromSemanticColor(color);
   }
 
   else
@@ -271,27 +271,27 @@ LABEL_9:
   v12 = ;
   [v7 setBackgroundColor:v12];
 
-  v13 = [(PKMemoItem *)self->_item type];
-  v14 = v13;
+  type = [(PKMemoItem *)self->_item type];
+  v14 = type;
   v15 = 0;
-  if (v13 > 1)
+  if (type > 1)
   {
-    if (v13 == 2)
+    if (type == 2)
     {
 LABEL_22:
       [v7 setStrokeWidth:0.0];
       goto LABEL_23;
     }
 
-    if (v13 != 3)
+    if (type != 3)
     {
       goto LABEL_23;
     }
 
 LABEL_15:
-    v16 = [(PKMemoItem *)self->_item memo];
-    v17 = [v16 emoji];
-    v18 = [v17 length];
+    memo2 = [(PKMemoItem *)self->_item memo];
+    emoji = [memo2 emoji];
+    v18 = [emoji length];
 
     if (v18)
     {
@@ -302,8 +302,8 @@ LABEL_15:
     {
       v20 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:self->_priorBoundsSize.height * 0.6];
       v21 = MEMORY[0x1E69DCAD8];
-      v22 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      v33[0] = v22;
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      v33[0] = secondaryLabelColor;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
       v24 = [v21 configurationWithPaletteColors:v23];
       v25 = [v20 configurationByApplyingConfiguration:v24];
@@ -325,17 +325,17 @@ LABEL_15:
     goto LABEL_22;
   }
 
-  if (!v13)
+  if (!type)
   {
-    v19 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [v7 setStrokeColor:v19];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [v7 setStrokeColor:systemBlueColor];
 
     [v7 setStrokeOutset:1.0];
     v15 = 0;
     goto LABEL_23;
   }
 
-  if (v13 == 1)
+  if (type == 1)
   {
     goto LABEL_15;
   }
@@ -363,14 +363,14 @@ LABEL_23:
   [(PKMemoIconCell *)self setBackgroundConfiguration:v7];
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  v11 = [v9 text];
-  v12 = [v11 stringByReplacingCharactersInRange:location withString:{length, v10}];
+  length = range.length;
+  location = range.location;
+  viewCopy = view;
+  textCopy = text;
+  text = [viewCopy text];
+  v12 = [text stringByReplacingCharactersInRange:location withString:{length, textCopy}];
 
   if ([v12 length] && !CEMStringIsSingleEmoji())
   {
@@ -380,9 +380,9 @@ LABEL_23:
       goto LABEL_6;
     }
 
-    [v9 setText:v10];
-    v19 = [(PKMemoItem *)self->_item memo];
-    [v19 setEmoji:v10];
+    [viewCopy setText:textCopy];
+    memo = [(PKMemoItem *)self->_item memo];
+    [memo setEmoji:textCopy];
 
     p_delegate = &self->_delegate;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -396,8 +396,8 @@ LABEL_23:
 
   else
   {
-    v13 = [(PKMemoItem *)self->_item memo];
-    [v13 setEmoji:v12];
+    memo2 = [(PKMemoItem *)self->_item memo];
+    [memo2 setEmoji:v12];
 
     p_delegate = &self->_delegate;
     v15 = objc_loadWeakRetained(&self->_delegate);

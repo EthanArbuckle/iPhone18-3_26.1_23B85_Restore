@@ -1,13 +1,13 @@
 @interface TextFieldTableViewCell
-- (_TtC5TeaUI22TextFieldTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)textFieldDidEndEditing:(id)a3;
+- (_TtC5TeaUI22TextFieldTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation TextFieldTableViewCell
 
-- (_TtC5TeaUI22TextFieldTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC5TeaUI22TextFieldTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = sub_1D8190F14();
     v6 = v5;
@@ -22,11 +22,11 @@
   return sub_1D7FF96F4(v4, v4, v6);
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D7FF99CC(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_1D7FF99CC(editingCopy);
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface MIOWriterSampleBufferStreamInput
-- (BOOL)appendSampleBuffer:(opaqueCMSampleBuffer *)a3 attachments:(id)a4 error:(id *)a5;
-- (BOOL)appendSampleBuffer:(opaqueCMSampleBuffer *)a3 metadataGroup:(id)a4 error:(id *)a5;
+- (BOOL)appendSampleBuffer:(opaqueCMSampleBuffer *)buffer attachments:(id)attachments error:(id *)error;
+- (BOOL)appendSampleBuffer:(opaqueCMSampleBuffer *)buffer metadataGroup:(id)group error:(id *)error;
 - (MIOWriterSampleBufferStreamInput)init;
-- (MIOWriterSampleBufferStreamInput)initWithStreamId:(id)a3 format:(opaqueCMFormatDescription *)a4;
+- (MIOWriterSampleBufferStreamInput)initWithStreamId:(id)id format:(opaqueCMFormatDescription *)format;
 - (void)dealloc;
 @end
 
@@ -17,18 +17,18 @@
   return 0;
 }
 
-- (MIOWriterSampleBufferStreamInput)initWithStreamId:(id)a3 format:(opaqueCMFormatDescription *)a4
+- (MIOWriterSampleBufferStreamInput)initWithStreamId:(id)id format:(opaqueCMFormatDescription *)format
 {
-  v6 = a3;
+  idCopy = id;
   v14.receiver = self;
   v14.super_class = MIOWriterSampleBufferStreamInput;
   v7 = [(MIOWriterBufferStreamInput *)&v14 init];
   v8 = v7;
   if (v7)
   {
-    [(MIOWriterStreamInput *)v7 setStreamId:v6];
-    v8->_inputFormatDesc = a4;
-    CFRetain(a4);
+    [(MIOWriterStreamInput *)v7 setStreamId:idCopy];
+    v8->_inputFormatDesc = format;
+    CFRetain(format);
     inputFormatDesc = v8->_inputFormatDesc;
     if (inputFormatDesc)
     {
@@ -63,28 +63,28 @@
   [(MIOWriterSampleBufferStreamInput *)&v4 dealloc];
 }
 
-- (BOOL)appendSampleBuffer:(opaqueCMSampleBuffer *)a3 metadataGroup:(id)a4 error:(id *)a5
+- (BOOL)appendSampleBuffer:(opaqueCMSampleBuffer *)buffer metadataGroup:(id)group error:(id *)error
 {
-  v8 = a4;
+  groupCopy = group;
   memset(&v18, 0, sizeof(v18));
-  CMSampleBufferGetPresentationTimeStamp(&v18, a3);
+  CMSampleBufferGetPresentationTimeStamp(&v18, buffer);
   location = v18;
-  if ([(MIOWriterStreamInput *)self prepareForAppendWithTimeStamp:&location error:a5])
+  if ([(MIOWriterStreamInput *)self prepareForAppendWithTimeStamp:&location error:error])
   {
-    CFRetain(a3);
+    CFRetain(buffer);
     objc_initWeak(&location, self);
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __75__MIOWriterSampleBufferStreamInput_appendSampleBuffer_metadataGroup_error___block_invoke;
     v14[3] = &unk_279847D10;
     objc_copyWeak(v16, &location);
-    v16[1] = a3;
-    v15 = v8;
+    v16[1] = buffer;
+    v15 = groupCopy;
     v9 = MEMORY[0x259C68980](v14);
-    v10 = [(MIOWriterStreamInput *)self threadingOption];
-    if (v10)
+    threadingOption = [(MIOWriterStreamInput *)self threadingOption];
+    if (threadingOption)
     {
-      if (v10 == 1)
+      if (threadingOption == 1)
       {
         LOBYTE(self) = v9[2](v9);
       }
@@ -158,29 +158,29 @@ uint64_t __75__MIOWriterSampleBufferStreamInput_appendSampleBuffer_metadataGroup
   return v7;
 }
 
-- (BOOL)appendSampleBuffer:(opaqueCMSampleBuffer *)a3 attachments:(id)a4 error:(id *)a5
+- (BOOL)appendSampleBuffer:(opaqueCMSampleBuffer *)buffer attachments:(id)attachments error:(id *)error
 {
-  v8 = a4;
+  attachmentsCopy = attachments;
   memset(&v19, 0, sizeof(v19));
-  CMSampleBufferGetPresentationTimeStamp(&v19, a3);
+  CMSampleBufferGetPresentationTimeStamp(&v19, buffer);
   location = v19;
-  if ([(MIOWriterStreamInput *)self prepareForAppendWithTimeStamp:&location error:a5])
+  if ([(MIOWriterStreamInput *)self prepareForAppendWithTimeStamp:&location error:error])
   {
-    CFRetain(a3);
+    CFRetain(buffer);
     objc_initWeak(&location, self);
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __73__MIOWriterSampleBufferStreamInput_appendSampleBuffer_attachments_error___block_invoke;
     v14[3] = &unk_279847D60;
     objc_copyWeak(v16, &location);
-    v16[1] = a3;
-    v15 = v8;
+    v16[1] = buffer;
+    v15 = attachmentsCopy;
     v17 = v19;
     v9 = MEMORY[0x259C68980](v14);
-    v10 = [(MIOWriterStreamInput *)self threadingOption];
-    if (v10)
+    threadingOption = [(MIOWriterStreamInput *)self threadingOption];
+    if (threadingOption)
     {
-      if (v10 == 1)
+      if (threadingOption == 1)
       {
         LOBYTE(self) = v9[2](v9);
       }

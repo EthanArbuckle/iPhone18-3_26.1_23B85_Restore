@@ -1,5 +1,5 @@
 @interface CTBuddyMigrationSourceFinishedStringProvider
-- (CTBuddyMigrationSourceFinishedStringProvider)initWithClient:(id)a3;
+- (CTBuddyMigrationSourceFinishedStringProvider)initWithClient:(id)client;
 - (NSString)buttonText;
 - (NSString)detailText;
 - (void)_refreshPlanStatus;
@@ -7,31 +7,31 @@
 
 @implementation CTBuddyMigrationSourceFinishedStringProvider
 
-- (CTBuddyMigrationSourceFinishedStringProvider)initWithClient:(id)a3
+- (CTBuddyMigrationSourceFinishedStringProvider)initWithClient:(id)client
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v11;
-  v11 = 0;
+  objc_storeStrong(location, client);
+  v3 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v3;
   v9.super_class = CTBuddyMigrationSourceFinishedStringProvider;
   v4 = [(CTBuddyMigrationSourceFinishedStringProvider *)&v9 init];
-  v11 = v4;
-  objc_storeStrong(&v11, v4);
+  selfCopy = v4;
+  objc_storeStrong(&selfCopy, v4);
   if (v4)
   {
-    objc_storeStrong(v11 + 2, location[0]);
-    [v11 _refreshPlanStatus];
+    objc_storeStrong(selfCopy + 2, location[0]);
+    [selfCopy _refreshPlanStatus];
     v5 = +[CTCellularPlanManager sharedManager];
     v6 = +[NSNotificationCenter defaultCenter];
-    [(NSNotificationCenter *)v6 addObserver:v11 selector:"_refreshPlanStatus" name:CTCellularPlanLocalInfoDidChangeNotification object:0];
+    [(NSNotificationCenter *)v6 addObserver:selfCopy selector:"_refreshPlanStatus" name:CTCellularPlanLocalInfoDidChangeNotification object:0];
   }
 
-  v7 = v11;
+  v7 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
@@ -73,7 +73,7 @@
 
 - (void)_refreshPlanStatus
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   client = self->_client;
@@ -83,7 +83,7 @@
   v5 = v3 & 1;
   if (!location[0])
   {
-    v7->_hasSIM = v5 & 1;
+    selfCopy->_hasSIM = v5 & 1;
   }
 
   objc_storeStrong(location, 0);

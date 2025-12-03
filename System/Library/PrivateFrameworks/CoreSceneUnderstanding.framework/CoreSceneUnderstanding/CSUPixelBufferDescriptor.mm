@@ -1,12 +1,12 @@
 @interface CSUPixelBufferDescriptor
-- (__CVBuffer)createNewBuffer:(id *)a3;
+- (__CVBuffer)createNewBuffer:(id *)buffer;
 @end
 
 @implementation CSUPixelBufferDescriptor
 
-- (__CVBuffer)createNewBuffer:(id *)a3
+- (__CVBuffer)createNewBuffer:(id *)buffer
 {
-  v35 = objc_msgSend_width(self, a2, a3, v3, v4);
+  v35 = objc_msgSend_width(self, a2, buffer, v3, v4);
   v10 = objc_msgSend_height(self, v6, v7, v8, v9);
   v36 = v10;
   pixelFormatType = objc_msgSend_pixelFormat(self, v11, v12, v13, v14);

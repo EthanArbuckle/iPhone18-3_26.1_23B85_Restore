@@ -6,7 +6,7 @@
 
 + (id)interface
 {
-  v2 = [a1 interfaceWithProtocol:&unk_283B6B350];
+  v2 = [self interfaceWithProtocol:&unk_283B6B350];
   v3 = MEMORY[0x277CBEB98];
   v4 = objc_opt_class();
   v5 = [v3 setWithObjects:{v4, objc_opt_class(), 0}];

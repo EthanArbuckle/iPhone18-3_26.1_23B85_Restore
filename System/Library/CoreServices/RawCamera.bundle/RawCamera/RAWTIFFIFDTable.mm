@@ -1,31 +1,31 @@
 @interface RAWTIFFIFDTable
-- (RAWTIFFIFDTable)initWithValueBlock:(id)a3 forwardNamespace:(id)a4 reverseNamespace:(id)a5;
-- (id)objectAtIndexedSubscript:(unint64_t)a3;
-- (id)objectForKeyedSubscript:(id)a3;
+- (RAWTIFFIFDTable)initWithValueBlock:(id)block forwardNamespace:(id)namespace reverseNamespace:(id)reverseNamespace;
+- (id)objectAtIndexedSubscript:(unint64_t)subscript;
+- (id)objectForKeyedSubscript:(id)subscript;
 @end
 
 @implementation RAWTIFFIFDTable
 
-- (RAWTIFFIFDTable)initWithValueBlock:(id)a3 forwardNamespace:(id)a4 reverseNamespace:(id)a5
+- (RAWTIFFIFDTable)initWithValueBlock:(id)block forwardNamespace:(id)namespace reverseNamespace:(id)reverseNamespace
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  blockCopy = block;
+  namespaceCopy = namespace;
+  reverseNamespaceCopy = reverseNamespace;
   v23.receiver = self;
   v23.super_class = RAWTIFFIFDTable;
   v11 = [(RAWTIFFIFDTable *)&v23 init];
   v15 = v11;
   if (v11)
   {
-    objc_msgSend_setMValueBlock_(v11, v12, v8, v13, v14);
-    objc_msgSend_setMNamespace_(v15, v16, v9, v17, v18);
-    objc_msgSend_setMNamespaceReverse_(v15, v19, v10, v20, v21);
+    objc_msgSend_setMValueBlock_(v11, v12, blockCopy, v13, v14);
+    objc_msgSend_setMNamespace_(v15, v16, namespaceCopy, v17, v18);
+    objc_msgSend_setMNamespaceReverse_(v15, v19, reverseNamespaceCopy, v20, v21);
   }
 
   return v15;
 }
 
-- (id)objectAtIndexedSubscript:(unint64_t)a3
+- (id)objectAtIndexedSubscript:(unint64_t)subscript
 {
   v4 = (*(self->mValueBlock + 2))();
   objc_opt_class();
@@ -36,7 +36,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = objc_msgSend_objectAtIndexedSubscript_(v6, v7, a3, v8, v9);
+      v5 = objc_msgSend_objectAtIndexedSubscript_(v6, v7, subscript, v8, v9);
     }
 
     else
@@ -48,11 +48,11 @@
   return v5;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
+  subscriptCopy = subscript;
   v9 = objc_msgSend_mNamespaceReverse(self, v5, v6, v7, v8);
-  v13 = objc_msgSend_objectForKeyedSubscript_(v9, v10, v4, v11, v12);
+  v13 = objc_msgSend_objectForKeyedSubscript_(v9, v10, subscriptCopy, v11, v12);
 
   v17 = objc_msgSend_objectForKeyedSubscript_(v13, v14, @"TagID", v15, v16);
   v18 = (*(self->mValueBlock + 2))();

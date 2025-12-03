@@ -1,32 +1,32 @@
 @interface ICFilterAttachmentActivityItemSource
-- (id)activityItemSourceForSelector:(SEL)a3;
-- (id)activityViewController:(id)a3 attachmentNameForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
-- (id)initAttachmentItem:(id)a3;
+- (id)activityItemSourceForSelector:(SEL)selector;
+- (id)activityViewController:(id)controller attachmentNameForActivityType:(id)type;
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewControllerPlaceholderItem:(id)item;
+- (id)initAttachmentItem:(id)item;
 @end
 
 @implementation ICFilterAttachmentActivityItemSource
 
-- (id)initAttachmentItem:(id)a3
+- (id)initAttachmentItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v8.receiver = self;
   v8.super_class = ICFilterAttachmentActivityItemSource;
   v5 = [(ICFilterAttachmentActivityItemSource *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ICFilterAttachmentActivityItemSource *)v5 setAttachmentItem:v4];
+    [(ICFilterAttachmentActivityItemSource *)v5 setAttachmentItem:itemCopy];
   }
 
   return v6;
 }
 
-- (id)activityItemSourceForSelector:(SEL)a3
+- (id)activityItemSourceForSelector:(SEL)selector
 {
-  v3 = [(ICFilterAttachmentActivityItemSource *)self attachmentItem];
+  attachmentItem = [(ICFilterAttachmentActivityItemSource *)self attachmentItem];
   v4 = ICProtocolCast();
 
   if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
@@ -42,14 +42,14 @@
   return v5;
 }
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = [(ICFilterAttachmentActivityItemSource *)self activityItemSourceForSelector:sel_activityViewControllerPlaceholderItem_];
   v6 = v5;
   if (v5)
   {
-    [v5 activityViewControllerPlaceholderItem:v4];
+    [v5 activityViewControllerPlaceholderItem:itemCopy];
   }
 
   else
@@ -61,23 +61,23 @@
   return v7;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqual:*MEMORY[0x1E69CDA78]] & 1) != 0 || (objc_msgSend(v7, "isEqual:", *MEMORY[0x1E69CDA90]) & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"com.apple.mobilenotes.lock-note") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", *MEMORY[0x1E69CDAA8]) & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", *MEMORY[0x1E69CDAF0]))
+  controllerCopy = controller;
+  typeCopy = type;
+  if ([typeCopy isEqual:*MEMORY[0x1E69CDA78]] & 1) != 0 || (objc_msgSend(typeCopy, "isEqual:", *MEMORY[0x1E69CDA90]) & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"com.apple.mobilenotes.lock-note") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x1E69CDAA8]) & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x1E69CDAF0]))
   {
     goto LABEL_6;
   }
 
-  if (![v7 isEqualToString:*MEMORY[0x1E69CDAA0]])
+  if (![typeCopy isEqualToString:*MEMORY[0x1E69CDAA0]])
   {
 LABEL_15:
     v15 = [(ICFilterAttachmentActivityItemSource *)self activityItemSourceForSelector:sel_activityViewController_itemForActivityType_];
     v16 = v15;
     if (v15)
     {
-      [v15 activityViewController:v6 itemForActivityType:v7];
+      [v15 activityViewController:controllerCopy itemForActivityType:typeCopy];
     }
 
     else
@@ -89,7 +89,7 @@ LABEL_15:
     goto LABEL_7;
   }
 
-  v10 = [(ICFilterAttachmentActivityItemSource *)self attachmentItem];
+  attachmentItem = [(ICFilterAttachmentActivityItemSource *)self attachmentItem];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -97,12 +97,12 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v11 = [(ICFilterAttachmentActivityItemSource *)self attachmentItem];
-  v12 = [v11 attachment];
-  v13 = [v12 attachmentModel];
-  v14 = [v13 canConvertToHTMLForSharing];
+  attachmentItem2 = [(ICFilterAttachmentActivityItemSource *)self attachmentItem];
+  attachment = [attachmentItem2 attachment];
+  attachmentModel = [attachment attachmentModel];
+  canConvertToHTMLForSharing = [attachmentModel canConvertToHTMLForSharing];
 
-  if ((v14 & 1) == 0)
+  if ((canConvertToHTMLForSharing & 1) == 0)
   {
     goto LABEL_15;
   }
@@ -114,15 +114,15 @@ LABEL_7:
   return v8;
 }
 
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  typeCopy = type;
   v8 = [(ICFilterAttachmentActivityItemSource *)self activityItemSourceForSelector:sel_activityViewController_dataTypeIdentifierForActivityType_];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 activityViewController:v6 dataTypeIdentifierForActivityType:v7];
+    v10 = [v8 activityViewController:controllerCopy dataTypeIdentifierForActivityType:typeCopy];
   }
 
   else
@@ -133,17 +133,17 @@ LABEL_7:
   return v10;
 }
 
-- (id)activityViewController:(id)a3 attachmentNameForActivityType:(id)a4
+- (id)activityViewController:(id)controller attachmentNameForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICFilterAttachmentActivityItemSource *)self attachmentItem];
+  controllerCopy = controller;
+  typeCopy = type;
+  attachmentItem = [(ICFilterAttachmentActivityItemSource *)self attachmentItem];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(ICFilterAttachmentActivityItemSource *)self attachmentItem];
-    v11 = [v10 activityViewController:v6 attachmentNameForActivityType:v7];
+    attachmentItem2 = [(ICFilterAttachmentActivityItemSource *)self attachmentItem];
+    v11 = [attachmentItem2 activityViewController:controllerCopy attachmentNameForActivityType:typeCopy];
   }
 
   else

@@ -13,9 +13,9 @@
 - (id)aaf_filter:()AAAFoundation
 {
   v4 = a3;
-  if ([a1 count])
+  if ([self count])
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a1, "count")}];
+    v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(self, "count")}];
     v9 = MEMORY[0x1E69E9820];
     v10 = 3221225472;
     v11 = __42__NSDictionary_AAAFoundation__aaf_filter___block_invoke;
@@ -23,16 +23,16 @@
     v13 = v5;
     v14 = v4;
     v6 = v5;
-    [a1 enumerateKeysAndObjectsUsingBlock:&v9];
-    v7 = [v6 copy];
+    [self enumerateKeysAndObjectsUsingBlock:&v9];
+    aaf_empty = [v6 copy];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DF20] aaf_empty];
+    aaf_empty = [MEMORY[0x1E695DF20] aaf_empty];
   }
 
-  return v7;
+  return aaf_empty;
 }
 
 - (id)aaf_map:()AAAFoundation
@@ -44,7 +44,7 @@
   v8[3] = &unk_1E831B978;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 aaf_mapStoppable:v8];
+  v6 = [self aaf_mapStoppable:v8];
 
   return v6;
 }
@@ -52,9 +52,9 @@
 - (id)aaf_mapStoppable:()AAAFoundation
 {
   v4 = a3;
-  if ([a1 count])
+  if ([self count])
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a1, "count")}];
+    v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(self, "count")}];
     v9 = MEMORY[0x1E69E9820];
     v10 = 3221225472;
     v11 = __48__NSDictionary_AAAFoundation__aaf_mapStoppable___block_invoke;
@@ -62,16 +62,16 @@
     v13 = v5;
     v14 = v4;
     v6 = v5;
-    [a1 enumerateKeysAndObjectsUsingBlock:&v9];
-    v7 = [v6 copy];
+    [self enumerateKeysAndObjectsUsingBlock:&v9];
+    aaf_empty = [v6 copy];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DF20] aaf_empty];
+    aaf_empty = [MEMORY[0x1E695DF20] aaf_empty];
   }
 
-  return v7;
+  return aaf_empty;
 }
 
 - (id)aaf_dictionaryByAddingValue:()AAAFoundation forKey:
@@ -80,53 +80,53 @@
   {
     v6 = a4;
     v7 = a3;
-    v8 = [a1 mutableCopy];
+    v8 = [self mutableCopy];
     [v8 setValue:v7 forKey:v6];
 
-    v9 = [v8 copy];
+    selfCopy = [v8 copy];
   }
 
   else
   {
-    v9 = a1;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)aaf_dictionaryByAddingEntriesFromDictionary:()AAAFoundation
 {
   v4 = a3;
-  v5 = [a1 count];
+  v5 = [self count];
   v6 = [v4 count];
   if (v5)
   {
     if (v6)
     {
-      v7 = [a1 mutableCopy];
+      v7 = [self mutableCopy];
       [v7 addEntriesFromDictionary:v4];
       v8 = [v7 copy];
 
       goto LABEL_10;
     }
 
-    v9 = a1;
+    selfCopy = self;
   }
 
   else
   {
     if (!v6)
     {
-      v10 = [MEMORY[0x1E695DF20] aaf_empty];
+      aaf_empty = [MEMORY[0x1E695DF20] aaf_empty];
       goto LABEL_9;
     }
 
-    v9 = v4;
+    selfCopy = v4;
   }
 
-  v10 = [v9 copy];
+  aaf_empty = [selfCopy copy];
 LABEL_9:
-  v8 = v10;
+  v8 = aaf_empty;
 LABEL_10:
 
   return v8;
@@ -134,14 +134,14 @@ LABEL_10:
 
 - (id)aaf_toUrlQueryString
 {
-  if ([a1 count])
+  if ([self count])
   {
     v2 = [objc_alloc(MEMORY[0x1E696AF20]) initWithString:@"/"];
-    v3 = [a1 aaf_toUrlQueryItems];
-    [v2 setQueryItems:v3];
+    aaf_toUrlQueryItems = [self aaf_toUrlQueryItems];
+    [v2 setQueryItems:aaf_toUrlQueryItems];
 
-    v4 = [v2 percentEncodedQuery];
-    v5 = [v4 stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
+    percentEncodedQuery = [v2 percentEncodedQuery];
+    v5 = [percentEncodedQuery stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
   }
 
   else
@@ -154,7 +154,7 @@ LABEL_10:
 
 - (id)aaf_toUrlQueryItems
 {
-  if ([a1 count])
+  if ([self count])
   {
     v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v6[0] = MEMORY[0x1E69E9820];
@@ -163,16 +163,16 @@ LABEL_10:
     v6[3] = &unk_1E831B9A0;
     v7 = v2;
     v3 = v2;
-    [a1 enumerateKeysAndObjectsUsingBlock:v6];
-    v4 = [v3 copy];
+    [self enumerateKeysAndObjectsUsingBlock:v6];
+    aaf_empty = [v3 copy];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DEC8] aaf_empty];
+    aaf_empty = [MEMORY[0x1E695DEC8] aaf_empty];
   }
 
-  return v4;
+  return aaf_empty;
 }
 
 @end

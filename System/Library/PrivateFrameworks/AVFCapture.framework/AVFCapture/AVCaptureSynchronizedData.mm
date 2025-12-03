@@ -1,14 +1,14 @@
 @interface AVCaptureSynchronizedData
 - (CMTime)timestamp;
-- (id)_initWithTimestamp:(id *)a3;
+- (id)_initWithTimestamp:(id *)timestamp;
 - (void)dealloc;
-- (void)setAdjustedTimestamp:(id *)a3;
-- (void)setTimestampOverride:(id *)a3;
+- (void)setAdjustedTimestamp:(id *)timestamp;
+- (void)setTimestampOverride:(id *)override;
 @end
 
 @implementation AVCaptureSynchronizedData
 
-- (id)_initWithTimestamp:(id *)a3
+- (id)_initWithTimestamp:(id *)timestamp
 {
   v10.receiver = self;
   v10.super_class = AVCaptureSynchronizedData;
@@ -19,8 +19,8 @@
     v4->_synchronizedDataInternal = v5;
     if (v5)
     {
-      v6 = *&a3->var0;
-      v5->timestamp.epoch = a3->var3;
+      v6 = *&timestamp->var0;
+      v5->timestamp.epoch = timestamp->var3;
       *&v5->timestamp.value = v6;
       synchronizedDataInternal = v4->_synchronizedDataInternal;
       v8 = MEMORY[0x1E6960C70];
@@ -58,19 +58,19 @@
   return self;
 }
 
-- (void)setTimestampOverride:(id *)a3
+- (void)setTimestampOverride:(id *)override
 {
   synchronizedDataInternal = self->_synchronizedDataInternal;
-  v4 = *&a3->var0;
-  synchronizedDataInternal->timestamp.epoch = a3->var3;
+  v4 = *&override->var0;
+  synchronizedDataInternal->timestamp.epoch = override->var3;
   *&synchronizedDataInternal->timestamp.value = v4;
 }
 
-- (void)setAdjustedTimestamp:(id *)a3
+- (void)setAdjustedTimestamp:(id *)timestamp
 {
   synchronizedDataInternal = self->_synchronizedDataInternal;
-  v4 = *&a3->var0;
-  synchronizedDataInternal->adjustedTimestamp.epoch = a3->var3;
+  v4 = *&timestamp->var0;
+  synchronizedDataInternal->adjustedTimestamp.epoch = timestamp->var3;
   *&synchronizedDataInternal->adjustedTimestamp.value = v4;
 }
 

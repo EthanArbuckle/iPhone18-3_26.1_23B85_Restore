@@ -3,30 +3,30 @@
 - (BOOL)_shouldAttemptToReconnect;
 - (WBTabGroupSyncAgentProxy)init;
 - (id)_remoteObjectProxy;
-- (void)_enumerateSyncObserversUsingBlock:(id)a3;
+- (void)_enumerateSyncObserversUsingBlock:(id)block;
 - (void)_setUpConnection;
 - (void)_setUpConnectionIfNeeded;
 - (void)_setUpSyncObserverIfNeeded;
-- (void)acceptShareForURL:(id)a3 invitationTokenData:(id)a4 completionHandler:(id)a5;
-- (void)activeParticipantsDidUpdateInTabGroupWithUUID:(id)a3;
-- (void)activeParticipantsDidUpdateInTabWithUUID:(id)a3;
-- (void)addSyncObserver:(id)a3;
-- (void)beginSharingTabGroupWithUUID:(id)a3 completionHandler:(id)a4;
+- (void)acceptShareForURL:(id)l invitationTokenData:(id)data completionHandler:(id)handler;
+- (void)activeParticipantsDidUpdateInTabGroupWithUUID:(id)d;
+- (void)activeParticipantsDidUpdateInTabWithUUID:(id)d;
+- (void)addSyncObserver:(id)observer;
+- (void)beginSharingTabGroupWithUUID:(id)d completionHandler:(id)handler;
 - (void)dealloc;
-- (void)didAddTabWithUUID:(id)a3 title:(id)a4 inSharedTabGroupWithUUID:(id)a5 byParticipantWithRecordID:(id)a6;
-- (void)didChangeBackgroundImageInSharedTabGroupWithUUID:(id)a3 byParticipantWithRecordID:(id)a4;
-- (void)didChangeScopedFavoritesInSharedTabGroupWithUUID:(id)a3 byParticipantWithRecordID:(id)a4;
-- (void)didFetchRecentlyAcceptedSharedTabGroupWithUUID:(id)a3 acceptedShareDate:(id)a4;
-- (void)didNavigateInTabWithUUID:(id)a3 title:(id)a4 inSharedTabGroupWithUUID:(id)a5 byParticipantWithRecordID:(id)a6;
-- (void)didRemoveTabWithUUID:(id)a3 title:(id)a4 inSharedTabGroupWithUUID:(id)a5 byParticipantWithRecordID:(id)a6;
-- (void)movePresenceForParticipantToTabWithUUID:(id)a3;
-- (void)participants:(id)a3 didJoinSharedTabGroupWithUUID:(id)a4;
-- (void)participants:(id)a3 didLeaveSharedTabGroupWithUUID:(id)a4;
-- (void)removeSyncObserver:(id)a3;
+- (void)didAddTabWithUUID:(id)d title:(id)title inSharedTabGroupWithUUID:(id)iD byParticipantWithRecordID:(id)recordID;
+- (void)didChangeBackgroundImageInSharedTabGroupWithUUID:(id)d byParticipantWithRecordID:(id)iD;
+- (void)didChangeScopedFavoritesInSharedTabGroupWithUUID:(id)d byParticipantWithRecordID:(id)iD;
+- (void)didFetchRecentlyAcceptedSharedTabGroupWithUUID:(id)d acceptedShareDate:(id)date;
+- (void)didNavigateInTabWithUUID:(id)d title:(id)title inSharedTabGroupWithUUID:(id)iD byParticipantWithRecordID:(id)recordID;
+- (void)didRemoveTabWithUUID:(id)d title:(id)title inSharedTabGroupWithUUID:(id)iD byParticipantWithRecordID:(id)recordID;
+- (void)movePresenceForParticipantToTabWithUUID:(id)d;
+- (void)participants:(id)participants didJoinSharedTabGroupWithUUID:(id)d;
+- (void)participants:(id)participants didLeaveSharedTabGroupWithUUID:(id)d;
+- (void)removeSyncObserver:(id)observer;
 - (void)scheduleSyncIfNeeded;
-- (void)sentinelDidDeallocateWithContext:(id)a3;
-- (void)shareDidUpdateForTabGroupWithUUID:(id)a3;
-- (void)userDidAcceptTabGroupShareWithMetadata:(id)a3 inProfileWithIdentifier:(id)a4 completionHandler:(id)a5;
+- (void)sentinelDidDeallocateWithContext:(id)context;
+- (void)shareDidUpdateForTabGroupWithUUID:(id)d;
+- (void)userDidAcceptTabGroupShareWithMetadata:(id)metadata inProfileWithIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation WBTabGroupSyncAgentProxy
@@ -59,9 +59,9 @@ uint64_t __39__WBTabGroupSyncAgentProxy_sharedProxy__block_invoke()
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     syncObservers = v3->_syncObservers;
-    v3->_syncObservers = v4;
+    v3->_syncObservers = weakObjectsHashTable;
 
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.WebBookmarks.WBTabGroupSyncAgentProxy.%@.%p._syncObserverQueue", objc_opt_class(), v3];
@@ -69,8 +69,8 @@ uint64_t __39__WBTabGroupSyncAgentProxy_sharedProxy__block_invoke()
     syncObserverQueue = v3->_syncObserverQueue;
     v3->_syncObserverQueue = v8;
 
-    v10 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v10 addObserver:v3 selector:sel__syncAgentDidLaunch_ name:*MEMORY[0x277D49D28] object:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__syncAgentDidLaunch_ name:*MEMORY[0x277D49D28] object:0];
 
     [(WBTabGroupSyncAgentProxy *)v3 _setUpConnectionIfNeeded];
     v11 = v3;
@@ -169,8 +169,8 @@ void __54__WBTabGroupSyncAgentProxy__setUpSyncObserverIfNeeded__block_invoke(uin
 
 - (void)scheduleSyncIfNeeded
 {
-  v2 = [(WBTabGroupSyncAgentProxy *)self _remoteObjectProxy];
-  [v2 scheduleSyncIfNeeded];
+  _remoteObjectProxy = [(WBTabGroupSyncAgentProxy *)self _remoteObjectProxy];
+  [_remoteObjectProxy scheduleSyncIfNeeded];
 }
 
 - (id)_remoteObjectProxy
@@ -318,17 +318,17 @@ void __54__WBTabGroupSyncAgentProxy__setUpSyncObserverIfNeeded__block_invoke_75(
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enumerateSyncObserversUsingBlock:(id)a3
+- (void)_enumerateSyncObserversUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   syncObserverQueue = self->_syncObserverQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__WBTabGroupSyncAgentProxy__enumerateSyncObserversUsingBlock___block_invoke;
   v7[3] = &unk_279E75530;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(syncObserverQueue, v7);
 }
 
@@ -409,14 +409,14 @@ void __62__WBTabGroupSyncAgentProxy__enumerateSyncObserversUsingBlock___block_in
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addSyncObserver:(id)a3
+- (void)addSyncObserver:(id)observer
 {
   v7[0] = 0;
   v7[1] = v7;
   v7[2] = 0x3032000000;
   v7[3] = __Block_byref_object_copy__0;
   v7[4] = __Block_byref_object_dispose__0;
-  v8 = a3;
+  observerCopy = observer;
   syncObserverQueue = self->_syncObserverQueue;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -424,7 +424,7 @@ void __62__WBTabGroupSyncAgentProxy__enumerateSyncObserversUsingBlock___block_in
   v6[3] = &unk_279E75260;
   v6[4] = self;
   v6[5] = v7;
-  v5 = v8;
+  v5 = observerCopy;
   dispatch_async(syncObserverQueue, v6);
   _Block_object_dispose(v7, 8);
 }
@@ -487,17 +487,17 @@ void *__44__WBTabGroupSyncAgentProxy_addSyncObserver___block_invoke_2(uint64_t a
   return result;
 }
 
-- (void)removeSyncObserver:(id)a3
+- (void)removeSyncObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   syncObserverQueue = self->_syncObserverQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__WBTabGroupSyncAgentProxy_removeSyncObserver___block_invoke;
   v7[3] = &unk_279E753F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   dispatch_sync(syncObserverQueue, v7);
 }
 
@@ -519,48 +519,48 @@ void __47__WBTabGroupSyncAgentProxy_removeSyncObserver___block_invoke(uint64_t a
   }
 }
 
-- (void)userDidAcceptTabGroupShareWithMetadata:(id)a3 inProfileWithIdentifier:(id)a4 completionHandler:(id)a5
+- (void)userDidAcceptTabGroupShareWithMetadata:(id)metadata inProfileWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(WBTabGroupSyncAgentProxy *)self _remoteObjectProxy];
-  [v11 userDidAcceptTabGroupShareWithMetadata:v10 inProfileWithIdentifier:v9 completionHandler:v8];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  metadataCopy = metadata;
+  _remoteObjectProxy = [(WBTabGroupSyncAgentProxy *)self _remoteObjectProxy];
+  [_remoteObjectProxy userDidAcceptTabGroupShareWithMetadata:metadataCopy inProfileWithIdentifier:identifierCopy completionHandler:handlerCopy];
 }
 
-- (void)beginSharingTabGroupWithUUID:(id)a3 completionHandler:(id)a4
+- (void)beginSharingTabGroupWithUUID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  dCopy = d;
   [(WBTabGroupSyncAgentProxy *)self _setUpConnectionIfNeeded];
   connection = self->_connection;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __75__WBTabGroupSyncAgentProxy_beginSharingTabGroupWithUUID_completionHandler___block_invoke;
   v11[3] = &unk_279E75558;
-  v12 = v6;
-  v9 = v6;
+  v12 = handlerCopy;
+  v9 = handlerCopy;
   v10 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v11];
-  [v10 beginSharingTabGroupWithUUID:v7 completionHandler:v9];
+  [v10 beginSharingTabGroupWithUUID:dCopy completionHandler:v9];
 }
 
-- (void)movePresenceForParticipantToTabWithUUID:(id)a3
+- (void)movePresenceForParticipantToTabWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(WBTabGroupSyncAgentProxy *)self _remoteObjectProxy];
-  [v5 movePresenceForParticipantToTabWithUUID:v4];
+  dCopy = d;
+  _remoteObjectProxy = [(WBTabGroupSyncAgentProxy *)self _remoteObjectProxy];
+  [_remoteObjectProxy movePresenceForParticipantToTabWithUUID:dCopy];
 }
 
-- (void)acceptShareForURL:(id)a3 invitationTokenData:(id)a4 completionHandler:(id)a5
+- (void)acceptShareForURL:(id)l invitationTokenData:(id)data completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(WBTabGroupSyncAgentProxy *)self _remoteObjectProxy];
-  [v11 acceptShareForURL:v10 invitationTokenData:v9 completionHandler:v8];
+  handlerCopy = handler;
+  dataCopy = data;
+  lCopy = l;
+  _remoteObjectProxy = [(WBTabGroupSyncAgentProxy *)self _remoteObjectProxy];
+  [_remoteObjectProxy acceptShareForURL:lCopy invitationTokenData:dataCopy completionHandler:handlerCopy];
 }
 
-- (void)sentinelDidDeallocateWithContext:(id)a3
+- (void)sentinelDidDeallocateWithContext:(id)context
 {
   syncObserverQueue = self->_syncObserverQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -580,16 +580,16 @@ void __61__WBTabGroupSyncAgentProxy_sentinelDidDeallocateWithContext___block_inv
   }
 }
 
-- (void)shareDidUpdateForTabGroupWithUUID:(id)a3
+- (void)shareDidUpdateForTabGroupWithUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__WBTabGroupSyncAgentProxy_shareDidUpdateForTabGroupWithUUID___block_invoke;
   v7[3] = &unk_279E75580;
-  v8 = v5;
+  v8 = dCopy;
   v9 = a2;
-  v6 = v5;
+  v6 = dCopy;
   [(WBTabGroupSyncAgentProxy *)self _enumerateSyncObserversUsingBlock:v7];
 }
 
@@ -604,19 +604,19 @@ void __62__WBTabGroupSyncAgentProxy_shareDidUpdateForTabGroupWithUUID___block_in
   }
 }
 
-- (void)participants:(id)a3 didJoinSharedTabGroupWithUUID:(id)a4
+- (void)participants:(id)participants didJoinSharedTabGroupWithUUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  participantsCopy = participants;
+  dCopy = d;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __71__WBTabGroupSyncAgentProxy_participants_didJoinSharedTabGroupWithUUID___block_invoke;
   v11[3] = &unk_279E755A8;
-  v13 = v8;
+  v13 = dCopy;
   v14 = a2;
-  v12 = v7;
-  v9 = v8;
-  v10 = v7;
+  v12 = participantsCopy;
+  v9 = dCopy;
+  v10 = participantsCopy;
   [(WBTabGroupSyncAgentProxy *)self _enumerateSyncObserversUsingBlock:v11];
 }
 
@@ -631,19 +631,19 @@ void __71__WBTabGroupSyncAgentProxy_participants_didJoinSharedTabGroupWithUUID__
   }
 }
 
-- (void)participants:(id)a3 didLeaveSharedTabGroupWithUUID:(id)a4
+- (void)participants:(id)participants didLeaveSharedTabGroupWithUUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  participantsCopy = participants;
+  dCopy = d;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __72__WBTabGroupSyncAgentProxy_participants_didLeaveSharedTabGroupWithUUID___block_invoke;
   v11[3] = &unk_279E755A8;
-  v13 = v8;
+  v13 = dCopy;
   v14 = a2;
-  v12 = v7;
-  v9 = v8;
-  v10 = v7;
+  v12 = participantsCopy;
+  v9 = dCopy;
+  v10 = participantsCopy;
   [(WBTabGroupSyncAgentProxy *)self _enumerateSyncObserversUsingBlock:v11];
 }
 
@@ -658,16 +658,16 @@ void __72__WBTabGroupSyncAgentProxy_participants_didLeaveSharedTabGroupWithUUID_
   }
 }
 
-- (void)activeParticipantsDidUpdateInTabGroupWithUUID:(id)a3
+- (void)activeParticipantsDidUpdateInTabGroupWithUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__WBTabGroupSyncAgentProxy_activeParticipantsDidUpdateInTabGroupWithUUID___block_invoke;
   v7[3] = &unk_279E75580;
-  v8 = v5;
+  v8 = dCopy;
   v9 = a2;
-  v6 = v5;
+  v6 = dCopy;
   [(WBTabGroupSyncAgentProxy *)self _enumerateSyncObserversUsingBlock:v7];
 }
 
@@ -682,16 +682,16 @@ void __74__WBTabGroupSyncAgentProxy_activeParticipantsDidUpdateInTabGroupWithUUI
   }
 }
 
-- (void)activeParticipantsDidUpdateInTabWithUUID:(id)a3
+- (void)activeParticipantsDidUpdateInTabWithUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__WBTabGroupSyncAgentProxy_activeParticipantsDidUpdateInTabWithUUID___block_invoke;
   v7[3] = &unk_279E75580;
-  v8 = v5;
+  v8 = dCopy;
   v9 = a2;
-  v6 = v5;
+  v6 = dCopy;
   [(WBTabGroupSyncAgentProxy *)self _enumerateSyncObserversUsingBlock:v7];
 }
 
@@ -706,25 +706,25 @@ void __69__WBTabGroupSyncAgentProxy_activeParticipantsDidUpdateInTabWithUUID___b
   }
 }
 
-- (void)didAddTabWithUUID:(id)a3 title:(id)a4 inSharedTabGroupWithUUID:(id)a5 byParticipantWithRecordID:(id)a6
+- (void)didAddTabWithUUID:(id)d title:(id)title inSharedTabGroupWithUUID:(id)iD byParticipantWithRecordID:(id)recordID
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  titleCopy = title;
+  iDCopy = iD;
+  recordIDCopy = recordID;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __103__WBTabGroupSyncAgentProxy_didAddTabWithUUID_title_inSharedTabGroupWithUUID_byParticipantWithRecordID___block_invoke;
   v19[3] = &unk_279E755D0;
-  v23 = v14;
+  v23 = recordIDCopy;
   v24 = a2;
-  v20 = v11;
-  v21 = v12;
-  v22 = v13;
-  v15 = v14;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
+  v20 = dCopy;
+  v21 = titleCopy;
+  v22 = iDCopy;
+  v15 = recordIDCopy;
+  v16 = iDCopy;
+  v17 = titleCopy;
+  v18 = dCopy;
   [(WBTabGroupSyncAgentProxy *)self _enumerateSyncObserversUsingBlock:v19];
 }
 
@@ -739,25 +739,25 @@ void __103__WBTabGroupSyncAgentProxy_didAddTabWithUUID_title_inSharedTabGroupWit
   }
 }
 
-- (void)didNavigateInTabWithUUID:(id)a3 title:(id)a4 inSharedTabGroupWithUUID:(id)a5 byParticipantWithRecordID:(id)a6
+- (void)didNavigateInTabWithUUID:(id)d title:(id)title inSharedTabGroupWithUUID:(id)iD byParticipantWithRecordID:(id)recordID
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  titleCopy = title;
+  iDCopy = iD;
+  recordIDCopy = recordID;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __110__WBTabGroupSyncAgentProxy_didNavigateInTabWithUUID_title_inSharedTabGroupWithUUID_byParticipantWithRecordID___block_invoke;
   v19[3] = &unk_279E755D0;
-  v23 = v14;
+  v23 = recordIDCopy;
   v24 = a2;
-  v20 = v11;
-  v21 = v12;
-  v22 = v13;
-  v15 = v14;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
+  v20 = dCopy;
+  v21 = titleCopy;
+  v22 = iDCopy;
+  v15 = recordIDCopy;
+  v16 = iDCopy;
+  v17 = titleCopy;
+  v18 = dCopy;
   [(WBTabGroupSyncAgentProxy *)self _enumerateSyncObserversUsingBlock:v19];
 }
 
@@ -772,25 +772,25 @@ void __110__WBTabGroupSyncAgentProxy_didNavigateInTabWithUUID_title_inSharedTabG
   }
 }
 
-- (void)didRemoveTabWithUUID:(id)a3 title:(id)a4 inSharedTabGroupWithUUID:(id)a5 byParticipantWithRecordID:(id)a6
+- (void)didRemoveTabWithUUID:(id)d title:(id)title inSharedTabGroupWithUUID:(id)iD byParticipantWithRecordID:(id)recordID
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  titleCopy = title;
+  iDCopy = iD;
+  recordIDCopy = recordID;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __106__WBTabGroupSyncAgentProxy_didRemoveTabWithUUID_title_inSharedTabGroupWithUUID_byParticipantWithRecordID___block_invoke;
   v19[3] = &unk_279E755D0;
-  v23 = v14;
+  v23 = recordIDCopy;
   v24 = a2;
-  v20 = v11;
-  v21 = v12;
-  v22 = v13;
-  v15 = v14;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
+  v20 = dCopy;
+  v21 = titleCopy;
+  v22 = iDCopy;
+  v15 = recordIDCopy;
+  v16 = iDCopy;
+  v17 = titleCopy;
+  v18 = dCopy;
   [(WBTabGroupSyncAgentProxy *)self _enumerateSyncObserversUsingBlock:v19];
 }
 
@@ -805,19 +805,19 @@ void __106__WBTabGroupSyncAgentProxy_didRemoveTabWithUUID_title_inSharedTabGroup
   }
 }
 
-- (void)didChangeScopedFavoritesInSharedTabGroupWithUUID:(id)a3 byParticipantWithRecordID:(id)a4
+- (void)didChangeScopedFavoritesInSharedTabGroupWithUUID:(id)d byParticipantWithRecordID:(id)iD
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __103__WBTabGroupSyncAgentProxy_didChangeScopedFavoritesInSharedTabGroupWithUUID_byParticipantWithRecordID___block_invoke;
   v11[3] = &unk_279E755A8;
-  v13 = v8;
+  v13 = iDCopy;
   v14 = a2;
-  v12 = v7;
-  v9 = v8;
-  v10 = v7;
+  v12 = dCopy;
+  v9 = iDCopy;
+  v10 = dCopy;
   [(WBTabGroupSyncAgentProxy *)self _enumerateSyncObserversUsingBlock:v11];
 }
 
@@ -832,19 +832,19 @@ void __103__WBTabGroupSyncAgentProxy_didChangeScopedFavoritesInSharedTabGroupWit
   }
 }
 
-- (void)didChangeBackgroundImageInSharedTabGroupWithUUID:(id)a3 byParticipantWithRecordID:(id)a4
+- (void)didChangeBackgroundImageInSharedTabGroupWithUUID:(id)d byParticipantWithRecordID:(id)iD
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __103__WBTabGroupSyncAgentProxy_didChangeBackgroundImageInSharedTabGroupWithUUID_byParticipantWithRecordID___block_invoke;
   v11[3] = &unk_279E755A8;
-  v13 = v8;
+  v13 = iDCopy;
   v14 = a2;
-  v12 = v7;
-  v9 = v8;
-  v10 = v7;
+  v12 = dCopy;
+  v9 = iDCopy;
+  v10 = dCopy;
   [(WBTabGroupSyncAgentProxy *)self _enumerateSyncObserversUsingBlock:v11];
 }
 
@@ -859,19 +859,19 @@ void __103__WBTabGroupSyncAgentProxy_didChangeBackgroundImageInSharedTabGroupWit
   }
 }
 
-- (void)didFetchRecentlyAcceptedSharedTabGroupWithUUID:(id)a3 acceptedShareDate:(id)a4
+- (void)didFetchRecentlyAcceptedSharedTabGroupWithUUID:(id)d acceptedShareDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  dateCopy = date;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __93__WBTabGroupSyncAgentProxy_didFetchRecentlyAcceptedSharedTabGroupWithUUID_acceptedShareDate___block_invoke;
   v11[3] = &unk_279E755A8;
-  v13 = v8;
+  v13 = dateCopy;
   v14 = a2;
-  v12 = v7;
-  v9 = v8;
-  v10 = v7;
+  v12 = dCopy;
+  v9 = dateCopy;
+  v10 = dCopy;
   [(WBTabGroupSyncAgentProxy *)self _enumerateSyncObserversUsingBlock:v11];
 }
 

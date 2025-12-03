@@ -1,44 +1,44 @@
 @interface TRIExperimentPostLaunchLogger
-- (TRIExperimentPostLaunchLogger)initWithClient:(id)a3;
-- (id)_metricForEvent:(id)a3;
-- (void)logExperimentPostLaunchEvent:(id)a3;
+- (TRIExperimentPostLaunchLogger)initWithClient:(id)client;
+- (id)_metricForEvent:(id)event;
+- (void)logExperimentPostLaunchEvent:(id)event;
 @end
 
 @implementation TRIExperimentPostLaunchLogger
 
-- (TRIExperimentPostLaunchLogger)initWithClient:(id)a3
+- (TRIExperimentPostLaunchLogger)initWithClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v9.receiver = self;
   v9.super_class = TRIExperimentPostLaunchLogger;
   v6 = [(TRIExperimentPostLaunchLogger *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_client, a3);
+    objc_storeStrong(&v6->_client, client);
   }
 
   return v7;
 }
 
-- (id)_metricForEvent:(id)a3
+- (id)_metricForEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 experimentStateName];
-  if (v4)
+  eventCopy = event;
+  experimentStateName = [eventCopy experimentStateName];
+  if (experimentStateName)
   {
-    v5 = [v3 errorOrDeactivationReason];
+    errorOrDeactivationReason = [eventCopy errorOrDeactivationReason];
 
     v6 = MEMORY[0x277D73B40];
-    if (v5)
+    if (errorOrDeactivationReason)
     {
-      v7 = [v3 errorOrDeactivationReason];
-      v8 = [v6 metricWithName:v4 categoricalValue:v7];
+      errorOrDeactivationReason2 = [eventCopy errorOrDeactivationReason];
+      v8 = [v6 metricWithName:experimentStateName categoricalValue:errorOrDeactivationReason2];
     }
 
     else
     {
-      v8 = [MEMORY[0x277D73B40] metricWithName:v4];
+      v8 = [MEMORY[0x277D73B40] metricWithName:experimentStateName];
     }
   }
 
@@ -50,63 +50,63 @@
   return v8;
 }
 
-- (void)logExperimentPostLaunchEvent:(id)a3
+- (void)logExperimentPostLaunchEvent:(id)event
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  eventCopy = event;
+  if (!eventCopy)
   {
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"TRIExperimentPostLaunchLogger.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"event"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIExperimentPostLaunchLogger.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"event"}];
   }
 
-  v6 = [(TRIExperimentPostLaunchLogger *)self _metricForEvent:v5];
+  v6 = [(TRIExperimentPostLaunchLogger *)self _metricForEvent:eventCopy];
   if (v6)
   {
     v7 = objc_opt_new();
-    v8 = [v5 treatmentTriple];
-    v9 = [v8 experimentId];
-    v10 = [v7 ensureExperimentFields];
-    [v10 setClientExperimentId:v9];
+    treatmentTriple = [eventCopy treatmentTriple];
+    experimentId = [treatmentTriple experimentId];
+    ensureExperimentFields = [v7 ensureExperimentFields];
+    [ensureExperimentFields setClientExperimentId:experimentId];
 
-    v11 = [v8 treatmentId];
-    LOBYTE(v10) = [v11 isEqual:@"unspecified-or-default-treatment"];
+    treatmentId = [treatmentTriple treatmentId];
+    LOBYTE(ensureExperimentFields) = [treatmentId isEqual:@"unspecified-or-default-treatment"];
 
-    if ((v10 & 1) == 0)
+    if ((ensureExperimentFields & 1) == 0)
     {
-      v12 = [v8 treatmentId];
-      v13 = [v7 ensureExperimentFields];
-      [v13 setClientTreatmentId:v12];
+      treatmentId2 = [treatmentTriple treatmentId];
+      ensureExperimentFields2 = [v7 ensureExperimentFields];
+      [ensureExperimentFields2 setClientTreatmentId:treatmentId2];
     }
 
-    v14 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v8, "deploymentId")}];
-    v15 = [v14 stringValue];
-    [v7 setClientDeploymentId:v15];
+    v14 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(treatmentTriple, "deploymentId")}];
+    stringValue = [v14 stringValue];
+    [v7 setClientDeploymentId:stringValue];
 
     v16 = TRIDeploymentEnvironment_EnumDescriptor();
-    v17 = [v16 textFormatNameForValue:{objc_msgSend(v5, "deploymentEnvironment")}];
+    v17 = [v16 textFormatNameForValue:{objc_msgSend(eventCopy, "deploymentEnvironment")}];
 
     if (!v17)
     {
-      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%ld", objc_msgSend(v5, "deploymentEnvironment")];
+      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%ld", objc_msgSend(eventCopy, "deploymentEnvironment")];
     }
 
     [v7 setClientDeploymentEnv:v17];
-    v18 = [v5 additionalTelemetry];
+    additionalTelemetry = [eventCopy additionalTelemetry];
 
-    if (v18)
+    if (additionalTelemetry)
     {
-      v19 = [v5 additionalTelemetry];
-      [v7 mergeFrom:v19];
+      additionalTelemetry2 = [eventCopy additionalTelemetry];
+      [v7 mergeFrom:additionalTelemetry2];
     }
 
-    v20 = [(TRIExperimentPostLaunchLogger *)self client];
-    v21 = [v20 logger];
-    v22 = [(TRIExperimentPostLaunchLogger *)self client];
-    v23 = [v22 trackingId];
+    client = [(TRIExperimentPostLaunchLogger *)self client];
+    logger = [client logger];
+    client2 = [(TRIExperimentPostLaunchLogger *)self client];
+    trackingId = [client2 trackingId];
     v27[0] = v6;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
-    [v21 logWithTrackingId:v23 metrics:v24 dimensions:0 trialSystemTelemetry:v7];
+    [logger logWithTrackingId:trackingId metrics:v24 dimensions:0 trialSystemTelemetry:v7];
   }
 
   v25 = *MEMORY[0x277D85DE8];

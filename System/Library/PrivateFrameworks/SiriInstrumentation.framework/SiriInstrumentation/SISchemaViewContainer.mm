@@ -1,25 +1,25 @@
 @interface SISchemaViewContainer
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaViewContainer)initWithDictionary:(id)a3;
-- (SISchemaViewContainer)initWithJSON:(id)a3;
+- (SISchemaViewContainer)initWithDictionary:(id)dictionary;
+- (SISchemaViewContainer)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaViewContainer
 
-- (SISchemaViewContainer)initWithDictionary:(id)a3
+- (SISchemaViewContainer)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = SISchemaViewContainer;
   v5 = [(SISchemaViewContainer *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"viewID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"viewID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(SISchemaViewContainer *)v5 setViewID:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"snippetClass"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"snippetClass"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(SISchemaViewContainer *)v5 setSnippetClass:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"dialogIdentifier"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"dialogIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
       [(SISchemaViewContainer *)v5 setDialogIdentifier:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"dialogPhase"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"dialogPhase"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (SISchemaViewContainer)initWithJSON:(id)a3
+- (SISchemaViewContainer)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaViewContainer *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaViewContainer *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaViewContainer *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,38 +93,38 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_dialogIdentifier)
   {
-    v4 = [(SISchemaViewContainer *)self dialogIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"dialogIdentifier"];
+    dialogIdentifier = [(SISchemaViewContainer *)self dialogIdentifier];
+    v5 = [dialogIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"dialogIdentifier"];
   }
 
   if (self->_dialogPhase)
   {
-    v6 = [(SISchemaViewContainer *)self dialogPhase];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"dialogPhase"];
+    dialogPhase = [(SISchemaViewContainer *)self dialogPhase];
+    v7 = [dialogPhase copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"dialogPhase"];
   }
 
   if (self->_snippetClass)
   {
-    v8 = [(SISchemaViewContainer *)self snippetClass];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"snippetClass"];
+    snippetClass = [(SISchemaViewContainer *)self snippetClass];
+    v9 = [snippetClass copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"snippetClass"];
   }
 
   if (self->_viewID)
   {
-    v10 = [(SISchemaViewContainer *)self viewID];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"viewID"];
+    viewID = [(SISchemaViewContainer *)self viewID];
+    v11 = [viewID copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"viewID"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -135,28 +135,28 @@
   return v4 ^ v5 ^ [(NSString *)self->_dialogPhase hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(SISchemaViewContainer *)self viewID];
-  v6 = [v4 viewID];
-  if ((v5 != 0) == (v6 == 0))
+  viewID = [(SISchemaViewContainer *)self viewID];
+  viewID2 = [equalCopy viewID];
+  if ((viewID != 0) == (viewID2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(SISchemaViewContainer *)self viewID];
-  if (v7)
+  viewID3 = [(SISchemaViewContainer *)self viewID];
+  if (viewID3)
   {
-    v8 = v7;
-    v9 = [(SISchemaViewContainer *)self viewID];
-    v10 = [v4 viewID];
-    v11 = [v9 isEqual:v10];
+    v8 = viewID3;
+    viewID4 = [(SISchemaViewContainer *)self viewID];
+    viewID5 = [equalCopy viewID];
+    v11 = [viewID4 isEqual:viewID5];
 
     if (!v11)
     {
@@ -168,20 +168,20 @@
   {
   }
 
-  v5 = [(SISchemaViewContainer *)self snippetClass];
-  v6 = [v4 snippetClass];
-  if ((v5 != 0) == (v6 == 0))
+  viewID = [(SISchemaViewContainer *)self snippetClass];
+  viewID2 = [equalCopy snippetClass];
+  if ((viewID != 0) == (viewID2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(SISchemaViewContainer *)self snippetClass];
-  if (v12)
+  snippetClass = [(SISchemaViewContainer *)self snippetClass];
+  if (snippetClass)
   {
-    v13 = v12;
-    v14 = [(SISchemaViewContainer *)self snippetClass];
-    v15 = [v4 snippetClass];
-    v16 = [v14 isEqual:v15];
+    v13 = snippetClass;
+    snippetClass2 = [(SISchemaViewContainer *)self snippetClass];
+    snippetClass3 = [equalCopy snippetClass];
+    v16 = [snippetClass2 isEqual:snippetClass3];
 
     if (!v16)
     {
@@ -193,20 +193,20 @@
   {
   }
 
-  v5 = [(SISchemaViewContainer *)self dialogIdentifier];
-  v6 = [v4 dialogIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  viewID = [(SISchemaViewContainer *)self dialogIdentifier];
+  viewID2 = [equalCopy dialogIdentifier];
+  if ((viewID != 0) == (viewID2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(SISchemaViewContainer *)self dialogIdentifier];
-  if (v17)
+  dialogIdentifier = [(SISchemaViewContainer *)self dialogIdentifier];
+  if (dialogIdentifier)
   {
-    v18 = v17;
-    v19 = [(SISchemaViewContainer *)self dialogIdentifier];
-    v20 = [v4 dialogIdentifier];
-    v21 = [v19 isEqual:v20];
+    v18 = dialogIdentifier;
+    dialogIdentifier2 = [(SISchemaViewContainer *)self dialogIdentifier];
+    dialogIdentifier3 = [equalCopy dialogIdentifier];
+    v21 = [dialogIdentifier2 isEqual:dialogIdentifier3];
 
     if (!v21)
     {
@@ -218,12 +218,12 @@
   {
   }
 
-  v5 = [(SISchemaViewContainer *)self dialogPhase];
-  v6 = [v4 dialogPhase];
-  if ((v5 != 0) != (v6 == 0))
+  viewID = [(SISchemaViewContainer *)self dialogPhase];
+  viewID2 = [equalCopy dialogPhase];
+  if ((viewID != 0) != (viewID2 == 0))
   {
-    v22 = [(SISchemaViewContainer *)self dialogPhase];
-    if (!v22)
+    dialogPhase = [(SISchemaViewContainer *)self dialogPhase];
+    if (!dialogPhase)
     {
 
 LABEL_25:
@@ -231,10 +231,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(SISchemaViewContainer *)self dialogPhase];
-    v25 = [v4 dialogPhase];
-    v26 = [v24 isEqual:v25];
+    v23 = dialogPhase;
+    dialogPhase2 = [(SISchemaViewContainer *)self dialogPhase];
+    dialogPhase3 = [equalCopy dialogPhase];
+    v26 = [dialogPhase2 isEqual:dialogPhase3];
 
     if (v26)
     {
@@ -254,37 +254,37 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(SISchemaViewContainer *)self viewID];
+  toCopy = to;
+  viewID = [(SISchemaViewContainer *)self viewID];
 
-  if (v4)
+  if (viewID)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(SISchemaViewContainer *)self snippetClass];
+  snippetClass = [(SISchemaViewContainer *)self snippetClass];
 
-  if (v5)
+  if (snippetClass)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(SISchemaViewContainer *)self dialogIdentifier];
+  dialogIdentifier = [(SISchemaViewContainer *)self dialogIdentifier];
 
-  if (v6)
+  if (dialogIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(SISchemaViewContainer *)self dialogPhase];
+  dialogPhase = [(SISchemaViewContainer *)self dialogPhase];
 
-  v8 = v9;
-  if (v7)
+  v8 = toCopy;
+  if (dialogPhase)
   {
     PBDataWriterWriteStringField();
-    v8 = v9;
+    v8 = toCopy;
   }
 }
 

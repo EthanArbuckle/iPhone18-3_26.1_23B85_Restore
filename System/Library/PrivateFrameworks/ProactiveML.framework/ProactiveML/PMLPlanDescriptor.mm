@@ -1,30 +1,30 @@
 @interface PMLPlanDescriptor
-+ (BOOL)isValidPlanId:(id)a3;
-+ (id)descriptorFromPlanId:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PMLPlanDescriptor)initWithName:(id)a3 version:(id)a4 locale:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (BOOL)isValidPlanId:(id)id;
++ (id)descriptorFromPlanId:(id)id;
+- (BOOL)isEqual:(id)equal;
+- (PMLPlanDescriptor)initWithName:(id)name version:(id)version locale:(id)locale;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation PMLPlanDescriptor
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     name = self->_name;
-    v6 = [v4 name];
-    if ([(NSString *)name isEqual:v6])
+    name = [equalCopy name];
+    if ([(NSString *)name isEqual:name])
     {
       version = self->_version;
-      v8 = [v4 version];
-      if ([(NSString *)version isEqual:v8])
+      version = [equalCopy version];
+      if ([(NSString *)version isEqual:version])
       {
         locale = self->_locale;
-        v10 = [v4 locale];
-        v11 = [(NSString *)locale isEqual:v10];
+        locale = [equalCopy locale];
+        v11 = [(NSString *)locale isEqual:locale];
       }
 
       else
@@ -54,34 +54,34 @@
   return v4 ^ [(NSString *)self->_locale hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PMLPlanDescriptor alloc];
-  v5 = [(PMLPlanDescriptor *)self name];
-  v6 = [(PMLPlanDescriptor *)self version];
-  v7 = [(PMLPlanDescriptor *)self locale];
-  v8 = [(PMLPlanDescriptor *)v4 initWithName:v5 version:v6 locale:v7];
+  name = [(PMLPlanDescriptor *)self name];
+  version = [(PMLPlanDescriptor *)self version];
+  locale = [(PMLPlanDescriptor *)self locale];
+  v8 = [(PMLPlanDescriptor *)v4 initWithName:name version:version locale:locale];
 
   return v8;
 }
 
-- (PMLPlanDescriptor)initWithName:(id)a3 version:(id)a4 locale:(id)a5
+- (PMLPlanDescriptor)initWithName:(id)name version:(id)version locale:(id)locale
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  nameCopy = name;
+  versionCopy = version;
+  localeCopy = locale;
+  if (nameCopy)
   {
-    if (v11)
+    if (versionCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PMLPlanDescriptor.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"version"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLPlanDescriptor.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"version"}];
 
-    if (v12)
+    if (localeCopy)
     {
       goto LABEL_4;
     }
@@ -89,23 +89,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v16 = [MEMORY[0x277CCA890] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"PMLPlanDescriptor.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PMLPlanDescriptor.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
-  if (!v11)
+  if (!versionCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v12)
+  if (localeCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v18 = [MEMORY[0x277CCA890] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"PMLPlanDescriptor.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"locale"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PMLPlanDescriptor.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"locale"}];
 
 LABEL_4:
   v19.receiver = self;
@@ -114,23 +114,23 @@ LABEL_4:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_name, a3);
-    objc_storeStrong(&v14->_version, a4);
-    objc_storeStrong(&v14->_locale, a5);
+    objc_storeStrong(&v13->_name, name);
+    objc_storeStrong(&v14->_version, version);
+    objc_storeStrong(&v14->_locale, locale);
   }
 
   return v14;
 }
 
-+ (id)descriptorFromPlanId:(id)a3
++ (id)descriptorFromPlanId:(id)id
 {
-  v5 = a3;
+  idCopy = id;
   v6 = objc_autoreleasePoolPush();
-  v7 = [v5 componentsSeparatedByString:@"-"];
+  v7 = [idCopy componentsSeparatedByString:@"-"];
   if ([v7 count] != 3)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"PMLPlanDescriptor.m" lineNumber:39 description:{@"Invalid planId. Must be <name>-<version>-<locale> but got %@", v5}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLPlanDescriptor.m" lineNumber:39 description:{@"Invalid planId. Must be <name>-<version>-<locale> but got %@", idCopy}];
   }
 
   v8 = [PMLPlanDescriptor alloc];
@@ -144,11 +144,11 @@ LABEL_4:
   return v12;
 }
 
-+ (BOOL)isValidPlanId:(id)a3
++ (BOOL)isValidPlanId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 componentsSeparatedByString:@"-"];
+  v5 = [idCopy componentsSeparatedByString:@"-"];
   v6 = [v5 count] == 3;
 
   objc_autoreleasePoolPop(v4);

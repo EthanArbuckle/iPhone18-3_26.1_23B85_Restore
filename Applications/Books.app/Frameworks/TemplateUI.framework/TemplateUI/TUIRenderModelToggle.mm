@@ -1,43 +1,43 @@
 @interface TUIRenderModelToggle
-- (BOOL)isEqualToRenderModel:(id)a3;
-- (TUIRenderModelToggle)initWithReuseIdentifier:(id)a3 identifier:(id)a4 elementStates:(id)a5 actionHandler:(id)a6 viewState:(id)a7 enabled:(BOOL)a8 name:(id)a9 title:(id)a10 isOn:(BOOL)a11;
-- (id)_copyAppearanceWithFlags:(unint64_t)a3 statesCopyProc:(void *)a4;
+- (BOOL)isEqualToRenderModel:(id)model;
+- (TUIRenderModelToggle)initWithReuseIdentifier:(id)identifier identifier:(id)a4 elementStates:(id)states actionHandler:(id)handler viewState:(id)state enabled:(BOOL)enabled name:(id)name title:(id)self0 isOn:(BOOL)self1;
+- (id)_copyAppearanceWithFlags:(unint64_t)flags statesCopyProc:(void *)proc;
 @end
 
 @implementation TUIRenderModelToggle
 
-- (TUIRenderModelToggle)initWithReuseIdentifier:(id)a3 identifier:(id)a4 elementStates:(id)a5 actionHandler:(id)a6 viewState:(id)a7 enabled:(BOOL)a8 name:(id)a9 title:(id)a10 isOn:(BOOL)a11
+- (TUIRenderModelToggle)initWithReuseIdentifier:(id)identifier identifier:(id)a4 elementStates:(id)states actionHandler:(id)handler viewState:(id)state enabled:(BOOL)enabled name:(id)name title:(id)self0 isOn:(BOOL)self1
 {
-  v18 = a10;
+  titleCopy = title;
   v24.receiver = self;
   v24.super_class = TUIRenderModelToggle;
-  v23 = a8;
-  v19 = [(TUIRenderModelInteractive *)&v24 initWithReuseIdentifier:a3 identifier:a4 style:0 elementStates:a5 imageModelIDToResource:0 actionHandler:a6 viewState:1.0 enabled:UIEdgeInsetsZero.top pressScale:UIEdgeInsetsZero.left touchInsets:UIEdgeInsetsZero.bottom pointer:UIEdgeInsetsZero.right focusStyle:a7 menu:v23 name:0, 0, 0, a9];
-  if (v19)
+  enabledCopy = enabled;
+  name = [(TUIRenderModelInteractive *)&v24 initWithReuseIdentifier:identifier identifier:a4 style:0 elementStates:states imageModelIDToResource:0 actionHandler:handler viewState:1.0 enabled:UIEdgeInsetsZero.top pressScale:UIEdgeInsetsZero.left touchInsets:UIEdgeInsetsZero.bottom pointer:UIEdgeInsetsZero.right focusStyle:state menu:enabledCopy name:0, 0, 0, name];
+  if (name)
   {
-    v20 = [v18 copy];
-    title = v19->_title;
-    v19->_title = v20;
+    v20 = [titleCopy copy];
+    title = name->_title;
+    name->_title = v20;
 
-    v19->_isOn = a11;
+    name->_isOn = on;
   }
 
-  return v19;
+  return name;
 }
 
-- (BOOL)isEqualToRenderModel:(id)a3
+- (BOOL)isEqualToRenderModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = objc_opt_class();
-  v6 = TUIDynamicCast(v5, v4);
+  v6 = TUIDynamicCast(v5, modelCopy);
 
   v14.receiver = self;
   v14.super_class = TUIRenderModelToggle;
   if (-[TUIRenderModelInteractive isEqualToRenderModel:](&v14, "isEqualToRenderModel:", v6) && (isOn = self->_isOn, isOn == [v6 isOn]))
   {
     title = self->_title;
-    v9 = [v6 title];
-    if (title == v9)
+    title = [v6 title];
+    if (title == title)
     {
       v12 = 1;
     }
@@ -45,8 +45,8 @@
     else
     {
       v10 = self->_title;
-      v11 = [v6 title];
-      v12 = [(NSString *)v10 isEqualToString:v11];
+      title2 = [v6 title];
+      v12 = [(NSString *)v10 isEqualToString:title2];
     }
   }
 
@@ -58,20 +58,20 @@
   return v12;
 }
 
-- (id)_copyAppearanceWithFlags:(unint64_t)a3 statesCopyProc:(void *)a4
+- (id)_copyAppearanceWithFlags:(unint64_t)flags statesCopyProc:(void *)proc
 {
   v18 = objc_alloc(objc_opt_class());
-  v6 = [(TUIRenderModelInteractive *)self reuseIdentifier];
-  v7 = [(TUIRenderModelInteractive *)self identifier];
-  v8 = [(TUIRenderModelInteractive *)self stateToModel];
-  v9 = sub_15CE70(v8, a3, &stru_262DA0);
-  v10 = [(TUIRenderModelInteractive *)self actionHandler];
-  v11 = [(TUIRenderModelInteractive *)self viewState];
-  v12 = [(TUIRenderModelInteractive *)self enabled];
-  v13 = [(TUIRenderModelInteractive *)self name];
-  v14 = [(TUIRenderModelToggle *)self title];
+  reuseIdentifier = [(TUIRenderModelInteractive *)self reuseIdentifier];
+  identifier = [(TUIRenderModelInteractive *)self identifier];
+  stateToModel = [(TUIRenderModelInteractive *)self stateToModel];
+  v9 = sub_15CE70(stateToModel, flags, &stru_262DA0);
+  actionHandler = [(TUIRenderModelInteractive *)self actionHandler];
+  viewState = [(TUIRenderModelInteractive *)self viewState];
+  enabled = [(TUIRenderModelInteractive *)self enabled];
+  name = [(TUIRenderModelInteractive *)self name];
+  title = [(TUIRenderModelToggle *)self title];
   LOBYTE(v17) = self->_isOn;
-  v15 = [v18 initWithReuseIdentifier:v6 identifier:v7 elementStates:v9 actionHandler:v10 viewState:v11 enabled:v12 name:v13 title:v14 isOn:v17];
+  v15 = [v18 initWithReuseIdentifier:reuseIdentifier identifier:identifier elementStates:v9 actionHandler:actionHandler viewState:viewState enabled:enabled name:name title:title isOn:v17];
 
   TUIRenderModelCopyProperties(v15, self);
   return v15;

@@ -1,21 +1,21 @@
 @interface VCVideoFrameUtil
-+ ($3CC8671D27C23BF42ADDB32F2B5E48AE)CMTimeFromXPCDictionary:(SEL)a3;
-+ (__CVBuffer)newCVPixelBufferFromXPCDictionary:(id)a3 isDepth:(BOOL)a4;
-+ (id)newXPCDictionaryWithCVPixelBuffer:(__CVBuffer *)a3 depthPixelBuffer:(__CVBuffer *)a4 time:(id *)a5;
++ ($3CC8671D27C23BF42ADDB32F2B5E48AE)CMTimeFromXPCDictionary:(SEL)dictionary;
++ (__CVBuffer)newCVPixelBufferFromXPCDictionary:(id)dictionary isDepth:(BOOL)depth;
++ (id)newXPCDictionaryWithCVPixelBuffer:(__CVBuffer *)buffer depthPixelBuffer:(__CVBuffer *)pixelBuffer time:(id *)time;
 @end
 
 @implementation VCVideoFrameUtil
 
-+ (id)newXPCDictionaryWithCVPixelBuffer:(__CVBuffer *)a3 depthPixelBuffer:(__CVBuffer *)a4 time:(id *)a5
++ (id)newXPCDictionaryWithCVPixelBuffer:(__CVBuffer *)buffer depthPixelBuffer:(__CVBuffer *)pixelBuffer time:(id *)time
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!buffer)
   {
     [VCVideoFrameUtil newXPCDictionaryWithCVPixelBuffer:? depthPixelBuffer:? time:?];
     return v17.var0;
   }
 
-  IOSurface = CVPixelBufferGetIOSurface(a3);
+  IOSurface = CVPixelBufferGetIOSurface(buffer);
   if (!IOSurface)
   {
     [VCVideoFrameUtil newXPCDictionaryWithCVPixelBuffer:? depthPixelBuffer:? time:?];
@@ -31,15 +31,15 @@
 
   v9 = XPCObject;
   v10 = *MEMORY[0x1E695E480];
-  v17 = *a5;
+  v17 = *time;
   v11 = CMTimeCopyAsDictionary(&v17, v10);
   v12 = _CFXPCCreateXPCObjectFromCFObject();
   v13 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_value(v13, "vcEffectsXPCIOSurface", v9);
   xpc_dictionary_set_value(v13, "vcEffectsXPCCMTime", v12);
-  if (a4)
+  if (pixelBuffer)
   {
-    v14 = CVPixelBufferGetIOSurface(a4);
+    v14 = CVPixelBufferGetIOSurface(pixelBuffer);
     v15 = IOSurfaceCreateXPCObject(v14);
     xpc_dictionary_set_value(v13, "vcEffectsXPCDepthIOSurface", v15);
     xpc_release(v15);
@@ -59,11 +59,11 @@
   return v13;
 }
 
-+ (__CVBuffer)newCVPixelBufferFromXPCDictionary:(id)a3 isDepth:(BOOL)a4
++ (__CVBuffer)newCVPixelBufferFromXPCDictionary:(id)dictionary isDepth:(BOOL)depth
 {
   v21 = *MEMORY[0x1E69E9840];
   pixelBufferOut = 0;
-  if (a4)
+  if (depth)
   {
     v4 = "vcEffectsXPCDepthIOSurface";
   }
@@ -73,7 +73,7 @@
     v4 = "vcEffectsXPCIOSurface";
   }
 
-  value = xpc_dictionary_get_value(a3, v4);
+  value = xpc_dictionary_get_value(dictionary, v4);
   result = IOSurfaceLookupFromXPCObject(value);
   if (result)
   {
@@ -108,7 +108,7 @@
   return result;
 }
 
-+ ($3CC8671D27C23BF42ADDB32F2B5E48AE)CMTimeFromXPCDictionary:(SEL)a3
++ ($3CC8671D27C23BF42ADDB32F2B5E48AE)CMTimeFromXPCDictionary:(SEL)dictionary
 {
   xpc_dictionary_get_value(a4, "vcEffectsXPCCMTime");
   v5 = _CFXPCCreateCFObjectFromXPCObject();

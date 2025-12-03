@@ -1,49 +1,49 @@
 @interface BKSystemProtectedConfiguration
-- (BKSystemProtectedConfiguration)initWithDictionary:(id)a3;
+- (BKSystemProtectedConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 - (id)dictionary;
 @end
 
 @implementation BKSystemProtectedConfiguration
 
-- (BKSystemProtectedConfiguration)initWithDictionary:(id)a3
+- (BKSystemProtectedConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = BKSystemProtectedConfiguration;
   v5 = [(BKSystemProtectedConfiguration *)&v24 init];
   v6 = v5;
-  if (v4 && v5)
+  if (dictionaryCopy && v5)
   {
-    v7 = [v4 objectForKeyedSubscript:@"BKSysCfgTouchIDEnabled"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"BKSysCfgTouchIDEnabled"];
     biometryEnabled = v6->_biometryEnabled;
     v6->_biometryEnabled = v7;
 
-    v9 = [v4 objectForKeyedSubscript:@"BKSysCfgTouchIDUnlockEnabled"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"BKSysCfgTouchIDUnlockEnabled"];
     unlockEnabled = v6->_unlockEnabled;
     v6->_unlockEnabled = v9;
 
-    v11 = [v4 objectForKeyedSubscript:@"BKSysCfgTouchIDIdentificationEnabled"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"BKSysCfgTouchIDIdentificationEnabled"];
     identificationEnabled = v6->_identificationEnabled;
     v6->_identificationEnabled = v11;
 
-    v13 = [v4 objectForKeyedSubscript:@"BKSysCfgTouchIDLoginEnabled"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"BKSysCfgTouchIDLoginEnabled"];
     loginEnabled = v6->_loginEnabled;
     v6->_loginEnabled = v13;
 
-    v15 = [v4 objectForKeyedSubscript:@"BKSysCfgTouchIDUnlockTokenMaxLifetime"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"BKSysCfgTouchIDUnlockTokenMaxLifetime"];
     unlockTokenMaxLifetime = v6->_unlockTokenMaxLifetime;
     v6->_unlockTokenMaxLifetime = v15;
 
-    v17 = [v4 objectForKeyedSubscript:@"BKSysCfgTouchIDBioMatchLifespan"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"BKSysCfgTouchIDBioMatchLifespan"];
     bioMatchLifespan = v6->_bioMatchLifespan;
     v6->_bioMatchLifespan = v17;
 
-    v19 = [v4 objectForKeyedSubscript:@"BKSysCfgTouchIDPasscodeInputLifespan"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"BKSysCfgTouchIDPasscodeInputLifespan"];
     passcodeInputLifespan = v6->_passcodeInputLifespan;
     v6->_passcodeInputLifespan = v19;
 
-    v21 = [v4 objectForKeyedSubscript:@"BKSysCfgPeriocularMatchEnabled"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"BKSysCfgPeriocularMatchEnabled"];
     periocularFaceIDMatchEnabled = v6->_periocularFaceIDMatchEnabled;
     v6->_periocularFaceIDMatchEnabled = v21;
   }
@@ -53,12 +53,12 @@
 
 - (id)dictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   biometryEnabled = self->_biometryEnabled;
   if (biometryEnabled)
   {
-    [v3 setObject:biometryEnabled forKey:@"BKSysCfgTouchIDEnabled"];
+    [dictionary setObject:biometryEnabled forKey:@"BKSysCfgTouchIDEnabled"];
   }
 
   unlockEnabled = self->_unlockEnabled;

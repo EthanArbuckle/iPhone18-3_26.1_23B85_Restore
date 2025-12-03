@@ -1,34 +1,34 @@
 @interface SWScriptsManager
-- (SWScriptsManager)initWithWebView:(id)a3 documentStateProvider:(id)a4 logger:(id)a5;
+- (SWScriptsManager)initWithWebView:(id)view documentStateProvider:(id)provider logger:(id)logger;
 - (void)_resumeScriptExecution;
-- (void)addScript:(id)a3;
+- (void)addScript:(id)script;
 - (void)executeQueuedScripts;
-- (void)executeScript:(id)a3 completion:(id)a4;
-- (void)executeScriptWithReturnObject:(id)a3 completion:(id)a4;
-- (void)queueExecutableScript:(id)a3 scriptExecutionCompletion:(id)a4;
+- (void)executeScript:(id)script completion:(id)completion;
+- (void)executeScriptWithReturnObject:(id)object completion:(id)completion;
+- (void)queueExecutableScript:(id)script scriptExecutionCompletion:(id)completion;
 - (void)removeAllScripts;
-- (void)removeScript:(id)a3;
-- (void)removeScriptByIdentifier:(id)a3;
+- (void)removeScript:(id)script;
+- (void)removeScriptByIdentifier:(id)identifier;
 @end
 
 @implementation SWScriptsManager
 
-- (SWScriptsManager)initWithWebView:(id)a3 documentStateProvider:(id)a4 logger:(id)a5
+- (SWScriptsManager)initWithWebView:(id)view documentStateProvider:(id)provider logger:(id)logger
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  viewCopy = view;
+  providerCopy = provider;
+  loggerCopy = logger;
   v26.receiver = self;
   v26.super_class = SWScriptsManager;
   v12 = [(SWScriptsManager *)&v26 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_webView, a3);
-    objc_storeStrong(&v13->_logger, a5);
-    v14 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v12->_webView, view);
+    objc_storeStrong(&v13->_logger, logger);
+    array = [MEMORY[0x1E695DF70] array];
     queuedExecutableScripts = v13->_queuedExecutableScripts;
-    v13->_queuedExecutableScripts = v14;
+    v13->_queuedExecutableScripts = array;
 
     v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
     scripts = v13->_scripts;
@@ -40,19 +40,19 @@
     v23[2] = __65__SWScriptsManager_initWithWebView_documentStateProvider_logger___block_invoke;
     v23[3] = &unk_1E84DB2B8;
     objc_copyWeak(&v24, &location);
-    [v10 onUnload:v23];
+    [providerCopy onUnload:v23];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __65__SWScriptsManager_initWithWebView_documentStateProvider_logger___block_invoke_2;
     v21[3] = &unk_1E84DB2B8;
     objc_copyWeak(&v22, &location);
-    [v10 onLoad:v21];
+    [providerCopy onLoad:v21];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __65__SWScriptsManager_initWithWebView_documentStateProvider_logger___block_invoke_3;
     v19[3] = &unk_1E84DB2B8;
     objc_copyWeak(&v20, &location);
-    [v10 onReady:v19];
+    [providerCopy onReady:v19];
     objc_destroyWeak(&v20);
     objc_destroyWeak(&v22);
     objc_destroyWeak(&v24);
@@ -80,60 +80,60 @@ void __65__SWScriptsManager_initWithWebView_documentStateProvider_logger___block
   [WeakRetained _resumeScriptExecution];
 }
 
-- (void)addScript:(id)a3
+- (void)addScript:(id)script
 {
-  v11 = a3;
-  v4 = [v11 userScript];
+  scriptCopy = script;
+  userScript = [scriptCopy userScript];
 
-  if (v4)
+  if (userScript)
   {
-    v5 = [(SWScriptsManager *)self scripts];
-    v6 = [v11 identifier];
-    [v5 setObject:v11 forKey:v6];
+    scripts = [(SWScriptsManager *)self scripts];
+    identifier = [scriptCopy identifier];
+    [scripts setObject:scriptCopy forKey:identifier];
 
-    v7 = [(SWScriptsManager *)self webView];
-    v8 = [v7 configuration];
-    v9 = [v8 userContentController];
-    v10 = [v11 userScript];
-    [v9 addUserScript:v10];
+    webView = [(SWScriptsManager *)self webView];
+    configuration = [webView configuration];
+    userContentController = [configuration userContentController];
+    userScript2 = [scriptCopy userScript];
+    [userContentController addUserScript:userScript2];
   }
 }
 
 - (void)removeAllScripts
 {
-  v3 = [(SWScriptsManager *)self scripts];
-  [v3 removeAllObjects];
+  scripts = [(SWScriptsManager *)self scripts];
+  [scripts removeAllObjects];
 
-  v6 = [(SWScriptsManager *)self webView];
-  v4 = [v6 configuration];
-  v5 = [v4 userContentController];
-  [v5 removeAllUserScripts];
+  webView = [(SWScriptsManager *)self webView];
+  configuration = [webView configuration];
+  userContentController = [configuration userContentController];
+  [userContentController removeAllUserScripts];
 }
 
-- (void)removeScript:(id)a3
+- (void)removeScript:(id)script
 {
-  v11 = a3;
-  v4 = [v11 userScript];
+  scriptCopy = script;
+  userScript = [scriptCopy userScript];
 
-  if (v4)
+  if (userScript)
   {
-    v5 = [(SWScriptsManager *)self scripts];
-    v6 = [v11 identifier];
-    [v5 removeObjectForKey:v6];
+    scripts = [(SWScriptsManager *)self scripts];
+    identifier = [scriptCopy identifier];
+    [scripts removeObjectForKey:identifier];
 
-    v7 = [(SWScriptsManager *)self webView];
-    v8 = [v7 configuration];
-    v9 = [v8 userContentController];
-    v10 = [v11 userScript];
-    [v9 _removeUserScript:v10];
+    webView = [(SWScriptsManager *)self webView];
+    configuration = [webView configuration];
+    userContentController = [configuration userContentController];
+    userScript2 = [scriptCopy userScript];
+    [userContentController _removeUserScript:userScript2];
   }
 }
 
-- (void)removeScriptByIdentifier:(id)a3
+- (void)removeScriptByIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SWScriptsManager *)self scripts];
-  v7 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  scripts = [(SWScriptsManager *)self scripts];
+  v7 = [scripts objectForKey:identifierCopy];
 
   v6 = v7;
   if (v7)
@@ -150,16 +150,16 @@ void __65__SWScriptsManager_initWithWebView_documentStateProvider_logger___block
   [(SWScriptsManager *)self executeQueuedScripts];
 }
 
-- (void)executeScript:(id)a3 completion:(id)a4
+- (void)executeScript:(id)script completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __45__SWScriptsManager_executeScript_completion___block_invoke;
   v8[3] = &unk_1E84DB2E0;
-  v9 = v6;
-  v7 = v6;
-  [(SWScriptsManager *)self executeScriptWithReturnObject:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(SWScriptsManager *)self executeScriptWithReturnObject:script completion:v8];
 }
 
 uint64_t __45__SWScriptsManager_executeScript_completion___block_invoke(uint64_t a1)
@@ -173,43 +173,43 @@ uint64_t __45__SWScriptsManager_executeScript_completion___block_invoke(uint64_t
   return result;
 }
 
-- (void)executeScriptWithReturnObject:(id)a3 completion:(id)a4
+- (void)executeScriptWithReturnObject:(id)object completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 executableScript];
-  if (v8)
+  objectCopy = object;
+  completionCopy = completion;
+  executableScript = [objectCopy executableScript];
+  if (executableScript)
   {
-    v9 = [(SWScriptsManager *)self readyToExecuteScripts];
-    v10 = [(SWScriptsManager *)self logger];
+    readyToExecuteScripts = [(SWScriptsManager *)self readyToExecuteScripts];
+    logger = [(SWScriptsManager *)self logger];
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [v6 identifier];
-    v13 = v12;
-    if (v9)
+    identifier = [objectCopy identifier];
+    v13 = identifier;
+    if (readyToExecuteScripts)
     {
       v14 = objc_opt_class();
       v15 = NSStringFromClass(v14);
       v16 = [v11 stringWithFormat:@"Script: Executing script with identifier: %@ script: %@", v13, v15];;
-      [v10 log:v16];
+      [logger log:v16];
 
-      v17 = [(SWScriptsManager *)self webView];
+      webView = [(SWScriptsManager *)self webView];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __61__SWScriptsManager_executeScriptWithReturnObject_completion___block_invoke;
       v19[3] = &unk_1E84DBC20;
       v19[4] = self;
-      v20 = v6;
-      v21 = v8;
-      v22 = v7;
-      [v17 evaluateJavaScript:v21 completionHandler:v19];
+      v20 = objectCopy;
+      v21 = executableScript;
+      v22 = completionCopy;
+      [webView evaluateJavaScript:v21 completionHandler:v19];
     }
 
     else
     {
-      v18 = [v11 stringWithFormat:@"Script: Queuing script with identifier: %@", v12];
-      [v10 log:v18];
+      v18 = [v11 stringWithFormat:@"Script: Queuing script with identifier: %@", identifier];
+      [logger log:v18];
 
-      [(SWScriptsManager *)self queueExecutableScript:v6 scriptExecutionCompletion:v7];
+      [(SWScriptsManager *)self queueExecutableScript:objectCopy scriptExecutionCompletion:completionCopy];
     }
   }
 }
@@ -243,21 +243,21 @@ void __61__SWScriptsManager_executeScriptWithReturnObject_completion___block_inv
   }
 }
 
-- (void)queueExecutableScript:(id)a3 scriptExecutionCompletion:(id)a4
+- (void)queueExecutableScript:(id)script scriptExecutionCompletion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (([v6 queueable] & 1) == 0)
+  scriptCopy = script;
+  completionCopy = completion;
+  if (([scriptCopy queueable] & 1) == 0)
   {
-    v23 = v7;
-    v24 = self;
+    v23 = completionCopy;
+    selfCopy = self;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v8 = [(SWScriptsManager *)self queuedExecutableScripts];
-    v9 = [v8 copy];
+    queuedExecutableScripts = [(SWScriptsManager *)self queuedExecutableScripts];
+    v9 = [queuedExecutableScripts copy];
 
     v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v10)
@@ -275,15 +275,15 @@ void __61__SWScriptsManager_executeScriptWithReturnObject_completion___block_inv
           }
 
           v14 = *(*(&v25 + 1) + 8 * v13);
-          v15 = [v6 identifier];
-          v16 = [v14 script];
-          v17 = [v16 identifier];
-          v18 = [v15 isEqualToString:v17];
+          identifier = [scriptCopy identifier];
+          script = [v14 script];
+          identifier2 = [script identifier];
+          v18 = [identifier isEqualToString:identifier2];
 
           if (v18)
           {
-            v19 = [(SWScriptsManager *)v24 queuedExecutableScripts];
-            [v19 removeObject:v14];
+            queuedExecutableScripts2 = [(SWScriptsManager *)selfCopy queuedExecutableScripts];
+            [queuedExecutableScripts2 removeObject:v14];
           }
 
           ++v13;
@@ -296,17 +296,17 @@ void __61__SWScriptsManager_executeScriptWithReturnObject_completion___block_inv
       while (v11);
     }
 
-    v7 = v23;
-    self = v24;
+    completionCopy = v23;
+    self = selfCopy;
     if (v23)
     {
       (*(v23 + 2))(v23, 0);
     }
   }
 
-  v20 = [[SWQueueableScriptWithCompletion alloc] initWithScript:v6 completion:v7];
-  v21 = [(SWScriptsManager *)self queuedExecutableScripts];
-  [v21 addObject:v20];
+  v20 = [[SWQueueableScriptWithCompletion alloc] initWithScript:scriptCopy completion:completionCopy];
+  queuedExecutableScripts3 = [(SWScriptsManager *)self queuedExecutableScripts];
+  [queuedExecutableScripts3 addObject:v20];
 
   v22 = *MEMORY[0x1E69E9840];
 }
@@ -314,11 +314,11 @@ void __61__SWScriptsManager_executeScriptWithReturnObject_completion___block_inv
 - (void)executeQueuedScripts
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(SWScriptsManager *)self queuedExecutableScripts];
-  v4 = [v3 copy];
+  queuedExecutableScripts = [(SWScriptsManager *)self queuedExecutableScripts];
+  v4 = [queuedExecutableScripts copy];
 
-  v5 = [(SWScriptsManager *)self queuedExecutableScripts];
-  [v5 removeAllObjects];
+  queuedExecutableScripts2 = [(SWScriptsManager *)self queuedExecutableScripts];
+  [queuedExecutableScripts2 removeAllObjects];
 
   v17 = 0u;
   v18 = 0u;
@@ -340,9 +340,9 @@ void __61__SWScriptsManager_executeScriptWithReturnObject_completion___block_inv
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 script];
-        v13 = [v11 completion];
-        [(SWScriptsManager *)self executeScriptWithReturnObject:v12 completion:v13];
+        script = [v11 script];
+        completion = [v11 completion];
+        [(SWScriptsManager *)self executeScriptWithReturnObject:script completion:completion];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];

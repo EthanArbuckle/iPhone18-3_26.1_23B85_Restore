@@ -1,5 +1,5 @@
 @interface _UITabHostedSearchContainer
-- (_TtC5UIKit27_UITabHostedSearchContainer)initWithFrame:(CGRect)a3;
+- (_TtC5UIKit27_UITabHostedSearchContainer)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_189199DD4();
 }
 
-- (_TtC5UIKit27_UITabHostedSearchContainer)initWithFrame:(CGRect)a3
+- (_TtC5UIKit27_UITabHostedSearchContainer)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

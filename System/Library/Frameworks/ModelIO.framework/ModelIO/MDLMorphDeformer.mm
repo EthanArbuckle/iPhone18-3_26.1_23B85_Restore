@@ -1,47 +1,47 @@
 @interface MDLMorphDeformer
-- (MDLMorphDeformer)initWithOther:(id)a3;
-- (MDLMorphDeformer)initWithTargetShapes:(id)a3 shapeSetTargetWeights:(const float *)a4 count:(unint64_t)a5 shapeSetTargetCounts:(const unsigned int *)a6 count:(unint64_t)a7;
-- (MDLMorphDeformer)initWithTargetShapes:(id)a3 shapeSetTargetWeights:(id)a4 shapeSetTargetCounts:(id)a5;
+- (MDLMorphDeformer)initWithOther:(id)other;
+- (MDLMorphDeformer)initWithTargetShapes:(id)shapes shapeSetTargetWeights:(const float *)weights count:(unint64_t)count shapeSetTargetCounts:(const unsigned int *)counts count:(unint64_t)a7;
+- (MDLMorphDeformer)initWithTargetShapes:(id)shapes shapeSetTargetWeights:(id)weights shapeSetTargetCounts:(id)counts;
 - (NSArray)shapeSetTargetCounts;
 - (NSArray)shapeSetTargetWeights;
-- (id)copyWithZone:(_NSZone *)a3;
-- (unint64_t)copyShapeSetTargetCountsInto:(unsigned int *)a3 maxCount:(unint64_t)a4;
-- (unint64_t)copyShapeSetTargetWeightsInto:(float *)a3 maxCount:(unint64_t)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (unint64_t)copyShapeSetTargetCountsInto:(unsigned int *)into maxCount:(unint64_t)count;
+- (unint64_t)copyShapeSetTargetWeightsInto:(float *)into maxCount:(unint64_t)count;
 @end
 
 @implementation MDLMorphDeformer
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(MDLMorphDeformer, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(MDLMorphDeformer, a2, zone);
 
   return MEMORY[0x2821F9670](v4, sel_initWithOther_, self);
 }
 
-- (MDLMorphDeformer)initWithOther:(id)a3
+- (MDLMorphDeformer)initWithOther:(id)other
 {
-  v4 = a3;
+  otherCopy = other;
   v36.receiver = self;
   v36.super_class = MDLMorphDeformer;
   v7 = [(MDLMorphDeformer *)&v36 init];
   if (v7)
   {
-    v8 = objc_msgSend_targetShapes(v4, v5, v6);
+    v8 = objc_msgSend_targetShapes(otherCopy, v5, v6);
     v11 = objc_msgSend_copy(v8, v9, v10);
     targetShapes = v7->_targetShapes;
     v7->_targetShapes = v11;
 
-    v15 = objc_msgSend_shapeSetTargetWeights(v4, v13, v14);
+    v15 = objc_msgSend_shapeSetTargetWeights(otherCopy, v13, v14);
     v18 = objc_msgSend_copy(v15, v16, v17);
     targetWeights = v7->_targetWeights;
     v7->_targetWeights = v18;
 
-    v22 = objc_msgSend_shapeSetTargetCounts(v4, v20, v21);
+    v22 = objc_msgSend_shapeSetTargetCounts(otherCopy, v20, v21);
     v25 = objc_msgSend_copy(v22, v23, v24);
     v26 = v7->_targetWeights;
     v7->_targetWeights = v25;
 
-    v29 = objc_msgSend_weights(v4, v27, v28);
+    v29 = objc_msgSend_weights(otherCopy, v27, v28);
     v32 = objc_msgSend_copy(v29, v30, v31);
     weights = v7->_weights;
     v7->_weights = v32;
@@ -52,22 +52,22 @@
   return v7;
 }
 
-- (MDLMorphDeformer)initWithTargetShapes:(id)a3 shapeSetTargetWeights:(id)a4 shapeSetTargetCounts:(id)a5
+- (MDLMorphDeformer)initWithTargetShapes:(id)shapes shapeSetTargetWeights:(id)weights shapeSetTargetCounts:(id)counts
 {
   v103 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v84 = a5;
+  shapesCopy = shapes;
+  weightsCopy = weights;
+  countsCopy = counts;
   v100.receiver = self;
   v100.super_class = MDLMorphDeformer;
-  v83 = v8;
+  v83 = shapesCopy;
   v85 = [(MDLMorphDeformer *)&v100 init];
   if (v85)
   {
-    if (v9 && v84)
+    if (weightsCopy && countsCopy)
     {
-      v12 = objc_msgSend_count(v8, v10, v11);
-      if (v12 == objc_msgSend_count(v9, v13, v14))
+      v12 = objc_msgSend_count(shapesCopy, v10, v11);
+      if (v12 == objc_msgSend_count(weightsCopy, v13, v14))
       {
         __src = 0;
         v98 = 0;
@@ -76,8 +76,8 @@
         v94 = 0u;
         v95 = 0u;
         v96 = 0u;
-        v82 = v9;
-        v15 = v9;
+        v82 = weightsCopy;
+        v15 = weightsCopy;
         v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(v15, v16, &v93, v102, 16);
         if (v19)
         {
@@ -153,7 +153,7 @@
           while (v19);
         }
 
-        v9 = v82;
+        weightsCopy = v82;
         __p = 0;
         v91 = 0;
         v92 = 0;
@@ -161,7 +161,7 @@
         v87 = 0u;
         v88 = 0u;
         v89 = 0u;
-        v32 = v84;
+        v32 = countsCopy;
         v36 = objc_msgSend_countByEnumeratingWithState_objects_count_(v32, v33, &v86, v101, 16);
         if (v36)
         {
@@ -238,7 +238,7 @@
           }
 
           while (v36);
-          v9 = v82;
+          weightsCopy = v82;
         }
 
         else
@@ -300,14 +300,14 @@
 
     else
     {
-      if (!(v9 | v84))
+      if (!(weightsCopy | countsCopy))
       {
-        v51 = objc_msgSend_copy(v8, v10, v11);
+        v51 = objc_msgSend_copy(shapesCopy, v10, v11);
         v52 = v85->_targetShapes;
         v85->_targetShapes = v51;
 
         v53 = [MDLAnimatedScalarArray alloc];
-        v56 = objc_msgSend_count(v8, v54, v55);
+        v56 = objc_msgSend_count(shapesCopy, v54, v55);
         v58 = objc_msgSend_initWithElementCount_(v53, v57, v56);
         v59 = v85->_weights;
         v85->_weights = v58;
@@ -328,26 +328,26 @@ LABEL_59:
   return v60;
 }
 
-- (MDLMorphDeformer)initWithTargetShapes:(id)a3 shapeSetTargetWeights:(const float *)a4 count:(unint64_t)a5 shapeSetTargetCounts:(const unsigned int *)a6 count:(unint64_t)a7
+- (MDLMorphDeformer)initWithTargetShapes:(id)shapes shapeSetTargetWeights:(const float *)weights count:(unint64_t)count shapeSetTargetCounts:(const unsigned int *)counts count:(unint64_t)a7
 {
-  v12 = a3;
+  shapesCopy = shapes;
   v48.receiver = self;
   v48.super_class = MDLMorphDeformer;
   v15 = [(MDLMorphDeformer *)&v48 init];
   if (v15)
   {
-    if (a4 && a6)
+    if (weights && counts)
     {
-      if (objc_msgSend_count(v12, v13, v14) == a5)
+      if (objc_msgSend_count(shapesCopy, v13, v14) == count)
       {
         if (a7)
         {
           LODWORD(v18) = 0;
           v19 = 1;
-          v20 = a6;
+          countsCopy = counts;
           do
           {
-            v21 = *v20++;
+            v21 = *countsCopy++;
             v18 = (v21 + v18);
             v22 = v19++;
           }
@@ -360,19 +360,19 @@ LABEL_59:
           v18 = 0;
         }
 
-        if (objc_msgSend_count(v12, v16, v17) == v18)
+        if (objc_msgSend_count(shapesCopy, v16, v17) == v18)
         {
-          v34 = objc_msgSend_copy(v12, v32, v33);
+          v34 = objc_msgSend_copy(shapesCopy, v32, v33);
           targetShapes = v15->_targetShapes;
           v15->_targetShapes = v34;
 
           v36 = objc_alloc(MEMORY[0x277CBEA90]);
-          v38 = objc_msgSend_initWithBytes_length_(v36, v37, a4, 4 * a5);
+          v38 = objc_msgSend_initWithBytes_length_(v36, v37, weights, 4 * count);
           targetWeights = v15->_targetWeights;
           v15->_targetWeights = v38;
 
           v40 = objc_alloc(MEMORY[0x277CBEA90]);
-          v42 = objc_msgSend_initWithBytes_length_(v40, v41, a6, 4 * a7);
+          v42 = objc_msgSend_initWithBytes_length_(v40, v41, counts, 4 * a7);
           targetCounts = v15->_targetCounts;
           v15->_targetCounts = v42;
 
@@ -392,14 +392,14 @@ LABEL_59:
 
     else
     {
-      if (!(a4 | a6))
+      if (!(weights | counts))
       {
-        v23 = objc_msgSend_copy(v12, v13, v14);
+        v23 = objc_msgSend_copy(shapesCopy, v13, v14);
         v24 = v15->_targetShapes;
         v15->_targetShapes = v23;
 
         v25 = [MDLAnimatedScalarArray alloc];
-        v28 = objc_msgSend_count(v12, v26, v27);
+        v28 = objc_msgSend_count(shapesCopy, v26, v27);
         v30 = objc_msgSend_initWithElementCount_(v25, v29, v28);
 LABEL_17:
         weights = v15->_weights;
@@ -474,40 +474,40 @@ LABEL_18:
   return v19;
 }
 
-- (unint64_t)copyShapeSetTargetWeightsInto:(float *)a3 maxCount:(unint64_t)a4
+- (unint64_t)copyShapeSetTargetWeightsInto:(float *)into maxCount:(unint64_t)count
 {
-  v7 = objc_msgSend_length(self->_targetWeights, a2, a3);
+  v7 = objc_msgSend_length(self->_targetWeights, a2, into);
   v10 = v7 >> 2;
-  if (v7 >> 2 <= a4)
+  if (v7 >> 2 <= count)
   {
     v11 = objc_msgSend_bytes(self->_targetWeights, v8, v9);
     v14 = objc_msgSend_length(self->_targetWeights, v12, v13);
-    memcpy(a3, v11, v14);
+    memcpy(into, v11, v14);
   }
 
   else
   {
-    NSLog(&cfstr_Targetweightsa.isa, a4, v7 >> 2);
+    NSLog(&cfstr_Targetweightsa.isa, count, v7 >> 2);
     return 0;
   }
 
   return v10;
 }
 
-- (unint64_t)copyShapeSetTargetCountsInto:(unsigned int *)a3 maxCount:(unint64_t)a4
+- (unint64_t)copyShapeSetTargetCountsInto:(unsigned int *)into maxCount:(unint64_t)count
 {
-  v7 = objc_msgSend_length(self->_targetCounts, a2, a3);
+  v7 = objc_msgSend_length(self->_targetCounts, a2, into);
   v10 = v7 >> 1;
-  if (v7 >> 1 <= a4)
+  if (v7 >> 1 <= count)
   {
     v11 = objc_msgSend_bytes(self->_targetCounts, v8, v9);
     v14 = objc_msgSend_length(self->_targetCounts, v12, v13);
-    memcpy(a3, v11, v14);
+    memcpy(into, v11, v14);
   }
 
   else
   {
-    NSLog(&cfstr_Targetcountsar.isa, a4, v7 >> 1);
+    NSLog(&cfstr_Targetcountsar.isa, count, v7 >> 1);
     return 0;
   }
 

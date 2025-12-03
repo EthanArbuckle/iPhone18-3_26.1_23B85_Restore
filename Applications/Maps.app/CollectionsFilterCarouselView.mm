@@ -1,23 +1,23 @@
 @interface CollectionsFilterCarouselView
-+ (double)defaultHeightForDisplayStyle:(int64_t)a3 inContext:(int64_t)a4;
++ (double)defaultHeightForDisplayStyle:(int64_t)style inContext:(int64_t)context;
 - (AllCollectinsFilterRoutingDelegate)allCollectionsRoutingDelegate;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (CollectionsFilterCarouselView)initWithFrame:(CGRect)a3;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (CollectionsFilterCarouselView)initWithFrame:(CGRect)frame;
 - (CollectionsFilterRoutingDelegate)routingDelegate;
 - (GuidesHomeFilterRoutingDelegate)guidesHomeRoutingDelegate;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (double)collectionView:(id)a3 layout:(id)a4 minimumInteritemSpacingForSectionAtIndex:(int64_t)a5;
-- (double)collectionView:(id)a3 layout:(id)a4 minimumLineSpacingForSectionAtIndex:(int64_t)a5;
-- (id)titleForFilterAtIndexPath:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (double)collectionView:(id)view layout:(id)layout minimumInteritemSpacingForSectionAtIndex:(int64_t)index;
+- (double)collectionView:(id)view layout:(id)layout minimumLineSpacingForSectionAtIndex:(int64_t)index;
+- (id)titleForFilterAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)configureCarouselFilterView;
-- (void)configureFiltersCarouselMetadata:(int64_t)a3;
-- (void)configureWithContext:(int64_t)a3 routingDelegate:(id)a4 guidesHomeFilters:(id)a5 selectedFilterIndex:(id)a6;
-- (void)configureWithContext:(int64_t)a3 withRoutingDelegate:(id)a4 withAllCollectionsResultFilters:(id)a5 withSelectedFilterIndex:(id)a6;
-- (void)configureWithContext:(int64_t)a3 withRoutingDelegate:(id)a4 withPublishersResultFilters:(id)a5 withSelectedFilterIndex:(id)a6;
+- (void)configureFiltersCarouselMetadata:(int64_t)metadata;
+- (void)configureWithContext:(int64_t)context routingDelegate:(id)delegate guidesHomeFilters:(id)filters selectedFilterIndex:(id)index;
+- (void)configureWithContext:(int64_t)context withRoutingDelegate:(id)delegate withAllCollectionsResultFilters:(id)filters withSelectedFilterIndex:(id)index;
+- (void)configureWithContext:(int64_t)context withRoutingDelegate:(id)delegate withPublishersResultFilters:(id)filters withSelectedFilterIndex:(id)index;
 - (void)displayFilters;
 - (void)scrollToSelectedFilter;
-- (void)setUpCarouselDependenciesUsingSelectedFilterIndexPath:(id)a3;
+- (void)setUpCarouselDependenciesUsingSelectedFilterIndexPath:(id)path;
 - (void)setupSubviews;
 @end
 
@@ -44,39 +44,39 @@
   return WeakRetained;
 }
 
-- (id)titleForFilterAtIndexPath:(id)a3
+- (id)titleForFilterAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CollectionsFilterCarouselView *)self logicController];
-  v6 = [v5 filterAtIndexPath:v4];
+  pathCopy = path;
+  logicController = [(CollectionsFilterCarouselView *)self logicController];
+  v6 = [logicController filterAtIndexPath:pathCopy];
 
-  v7 = [v6 filterTitle];
+  filterTitle = [v6 filterTitle];
 
-  return v7;
+  return filterTitle;
 }
 
-- (double)collectionView:(id)a3 layout:(id)a4 minimumInteritemSpacingForSectionAtIndex:(int64_t)a5
+- (double)collectionView:(id)view layout:(id)layout minimumInteritemSpacingForSectionAtIndex:(int64_t)index
 {
-  v6 = [(CollectionsFilterCarouselView *)self sizeController:a3];
-  [v6 minimumInterItemSpacingForSectionAtIndex:a5];
+  v6 = [(CollectionsFilterCarouselView *)self sizeController:view];
+  [v6 minimumInterItemSpacingForSectionAtIndex:index];
   v8 = v7;
 
   return v8;
 }
 
-- (double)collectionView:(id)a3 layout:(id)a4 minimumLineSpacingForSectionAtIndex:(int64_t)a5
+- (double)collectionView:(id)view layout:(id)layout minimumLineSpacingForSectionAtIndex:(int64_t)index
 {
   IsEnabled_Maps269 = MapsFeature_IsEnabled_Maps269();
-  v8 = [(CollectionsFilterCarouselView *)self sizeController];
-  v9 = v8;
+  sizeController = [(CollectionsFilterCarouselView *)self sizeController];
+  v9 = sizeController;
   if (IsEnabled_Maps269)
   {
-    [v8 minimumInterItemSpacingForSectionAtIndex:a5];
+    [sizeController minimumInterItemSpacingForSectionAtIndex:index];
   }
 
   else
   {
-    [v8 minimumLineSpacingForSectionAtIndex:a5];
+    [sizeController minimumLineSpacingForSectionAtIndex:index];
   }
 
   v11 = v10;
@@ -84,10 +84,10 @@
   return v11;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v6 = [(CollectionsFilterCarouselView *)self sizeController:a3];
-  [v6 insetForFilterAtIndex:a5];
+  v6 = [(CollectionsFilterCarouselView *)self sizeController:view];
+  [v6 insetForFilterAtIndex:index];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -104,14 +104,14 @@
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = [(CollectionsFilterCarouselView *)self sizeController];
-  v8 = [(CollectionsFilterCarouselView *)self logicController];
-  v9 = [v8 filterAtIndexPath:v6];
+  pathCopy = path;
+  sizeController = [(CollectionsFilterCarouselView *)self sizeController];
+  logicController = [(CollectionsFilterCarouselView *)self logicController];
+  v9 = [logicController filterAtIndexPath:pathCopy];
 
-  [v7 sizeForFilter:v9];
+  [sizeController sizeForFilter:v9];
   v11 = v10;
   v13 = v12;
 
@@ -122,45 +122,45 @@
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v20 = a4;
-  v5 = [(CollectionsFilterCarouselView *)self logicController];
-  v6 = [v5 selectedFilterIndexPath];
+  pathCopy = path;
+  logicController = [(CollectionsFilterCarouselView *)self logicController];
+  selectedFilterIndexPath = [logicController selectedFilterIndexPath];
 
-  v7 = v20;
+  v7 = pathCopy;
   context = self->_context;
-  if (v6 == v20)
+  if (selectedFilterIndexPath == pathCopy)
   {
     if (context != 2)
     {
       goto LABEL_18;
     }
 
-    v10 = [(CollectionsFilterCarouselView *)self guidesHomeRoutingDelegate];
-    [v10 didRouteToConceptFilter:0 atIndexPath:0];
+    guidesHomeRoutingDelegate = [(CollectionsFilterCarouselView *)self guidesHomeRoutingDelegate];
+    [guidesHomeRoutingDelegate didRouteToConceptFilter:0 atIndexPath:0];
   }
 
   else if (context == 1)
   {
-    v14 = [(CollectionsFilterCarouselView *)self logicController];
-    v10 = [v14 routeToSelectedAllCollectionsFilterAtIndexPath:v20];
+    logicController2 = [(CollectionsFilterCarouselView *)self logicController];
+    guidesHomeRoutingDelegate = [logicController2 routeToSelectedAllCollectionsFilterAtIndexPath:pathCopy];
 
-    v15 = [v10 allCollectionsAddressFilter];
+    allCollectionsAddressFilter = [guidesHomeRoutingDelegate allCollectionsAddressFilter];
 
-    if (v15)
+    if (allCollectionsAddressFilter)
     {
-      v12 = [(CollectionsFilterCarouselView *)self allCollectionsRoutingDelegate];
-      v13 = [v10 allCollectionsAddressFilter];
+      allCollectionsRoutingDelegate = [(CollectionsFilterCarouselView *)self allCollectionsRoutingDelegate];
+      allCollectionsAddressFilter2 = [guidesHomeRoutingDelegate allCollectionsAddressFilter];
       goto LABEL_10;
     }
 
-    v19 = [v10 allCollectionsKeywordFilter];
+    allCollectionsKeywordFilter = [guidesHomeRoutingDelegate allCollectionsKeywordFilter];
 
-    if (v19)
+    if (allCollectionsKeywordFilter)
     {
-      v12 = [(CollectionsFilterCarouselView *)self allCollectionsRoutingDelegate];
-      v18 = [v10 allCollectionsKeywordFilter];
+      allCollectionsRoutingDelegate = [(CollectionsFilterCarouselView *)self allCollectionsRoutingDelegate];
+      allCollectionsKeywordFilter2 = [guidesHomeRoutingDelegate allCollectionsKeywordFilter];
       goto LABEL_15;
     }
   }
@@ -172,108 +172,108 @@
       goto LABEL_18;
     }
 
-    v9 = [(CollectionsFilterCarouselView *)self logicController];
-    v10 = [v9 routeToSelectedFilterAtIndexPath:v20];
+    logicController3 = [(CollectionsFilterCarouselView *)self logicController];
+    guidesHomeRoutingDelegate = [logicController3 routeToSelectedFilterAtIndexPath:pathCopy];
 
-    v11 = [v10 addressFilter];
+    addressFilter = [guidesHomeRoutingDelegate addressFilter];
 
-    if (v11)
+    if (addressFilter)
     {
-      v12 = [(CollectionsFilterCarouselView *)self routingDelegate];
-      v13 = [v10 addressFilter];
+      allCollectionsRoutingDelegate = [(CollectionsFilterCarouselView *)self routingDelegate];
+      allCollectionsAddressFilter2 = [guidesHomeRoutingDelegate addressFilter];
 LABEL_10:
-      v16 = v13;
-      [v12 didRouteToAddressFilter:v13 atIndexPath:v20];
+      v16 = allCollectionsAddressFilter2;
+      [allCollectionsRoutingDelegate didRouteToAddressFilter:allCollectionsAddressFilter2 atIndexPath:pathCopy];
 LABEL_16:
 
       goto LABEL_17;
     }
 
-    v17 = [v10 keywordFilter];
+    keywordFilter = [guidesHomeRoutingDelegate keywordFilter];
 
-    if (v17)
+    if (keywordFilter)
     {
-      v12 = [(CollectionsFilterCarouselView *)self routingDelegate];
-      v18 = [v10 keywordFilter];
+      allCollectionsRoutingDelegate = [(CollectionsFilterCarouselView *)self routingDelegate];
+      allCollectionsKeywordFilter2 = [guidesHomeRoutingDelegate keywordFilter];
 LABEL_15:
-      v16 = v18;
-      [v12 didRouteToKeywordFilter:v18 atIndexPath:v20];
+      v16 = allCollectionsKeywordFilter2;
+      [allCollectionsRoutingDelegate didRouteToKeywordFilter:allCollectionsKeywordFilter2 atIndexPath:pathCopy];
       goto LABEL_16;
     }
   }
 
 LABEL_17:
 
-  v7 = v20;
+  v7 = pathCopy;
 LABEL_18:
 }
 
 - (void)configureCarouselFilterView
 {
-  v3 = [(CollectionsFilterCarouselView *)self collectionView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  collectionView = [(CollectionsFilterCarouselView *)self collectionView];
+  [collectionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(CollectionsFilterCarouselView *)self collectionView];
-  [v4 setDelegate:self];
+  collectionView2 = [(CollectionsFilterCarouselView *)self collectionView];
+  [collectionView2 setDelegate:self];
 
-  v5 = [(CollectionsFilterCarouselView *)self collectionView];
+  collectionView3 = [(CollectionsFilterCarouselView *)self collectionView];
   v6 = +[UIColor clearColor];
-  [v5 setBackgroundColor:v6];
+  [collectionView3 setBackgroundColor:v6];
 
-  v7 = [(CollectionsFilterCarouselView *)self collectionView];
-  [(CollectionsFilterCarouselView *)self addSubview:v7];
+  collectionView4 = [(CollectionsFilterCarouselView *)self collectionView];
+  [(CollectionsFilterCarouselView *)self addSubview:collectionView4];
 
-  v24 = [(CollectionsFilterCarouselView *)self collectionView];
-  v23 = [v24 leadingAnchor];
-  v22 = [(CollectionsFilterCarouselView *)self leadingAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  collectionView5 = [(CollectionsFilterCarouselView *)self collectionView];
+  leadingAnchor = [collectionView5 leadingAnchor];
+  leadingAnchor2 = [(CollectionsFilterCarouselView *)self leadingAnchor];
+  v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v25[0] = v21;
-  v20 = [(CollectionsFilterCarouselView *)self collectionView];
-  v19 = [v20 trailingAnchor];
-  v18 = [(CollectionsFilterCarouselView *)self trailingAnchor];
-  v8 = [v19 constraintEqualToAnchor:v18];
+  collectionView6 = [(CollectionsFilterCarouselView *)self collectionView];
+  trailingAnchor = [collectionView6 trailingAnchor];
+  trailingAnchor2 = [(CollectionsFilterCarouselView *)self trailingAnchor];
+  v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v25[1] = v8;
-  v9 = [(CollectionsFilterCarouselView *)self collectionView];
-  v10 = [v9 topAnchor];
-  v11 = [(CollectionsFilterCarouselView *)self topAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  collectionView7 = [(CollectionsFilterCarouselView *)self collectionView];
+  topAnchor = [collectionView7 topAnchor];
+  topAnchor2 = [(CollectionsFilterCarouselView *)self topAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v25[2] = v12;
-  v13 = [(CollectionsFilterCarouselView *)self collectionView];
-  v14 = [v13 bottomAnchor];
-  v15 = [(CollectionsFilterCarouselView *)self bottomAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  collectionView8 = [(CollectionsFilterCarouselView *)self collectionView];
+  bottomAnchor = [collectionView8 bottomAnchor];
+  bottomAnchor2 = [(CollectionsFilterCarouselView *)self bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v25[3] = v16;
   v17 = [NSArray arrayWithObjects:v25 count:4];
   [NSLayoutConstraint activateConstraints:v17];
 }
 
-- (void)configureFiltersCarouselMetadata:(int64_t)a3
+- (void)configureFiltersCarouselMetadata:(int64_t)metadata
 {
-  if (a3 <= 2)
+  if (metadata <= 2)
   {
-    v4 = [(CollectionsFilterCarouselView *)self flowLayout];
-    [v4 setScrollDirection:1];
+    flowLayout = [(CollectionsFilterCarouselView *)self flowLayout];
+    [flowLayout setScrollDirection:1];
   }
 }
 
-- (void)setUpCarouselDependenciesUsingSelectedFilterIndexPath:(id)a3
+- (void)setUpCarouselDependenciesUsingSelectedFilterIndexPath:(id)path
 {
-  v13 = a3;
+  pathCopy = path;
   context = self->_context;
   if (context == 2)
   {
     v10 = [CollectionsFilterLogicController alloc];
-    v6 = [(CollectionsFilterCarouselView *)self collectionView];
-    v7 = [(CollectionsFilterCarouselView *)self guidesHomeResultFilter];
-    v8 = [(CollectionsFilterLogicController *)v10 initWithCollectionView:v6 withGuidesHomeResultFilters:v7 withSelectedFilterIndexPath:v13];
+    collectionView = [(CollectionsFilterCarouselView *)self collectionView];
+    guidesHomeResultFilter = [(CollectionsFilterCarouselView *)self guidesHomeResultFilter];
+    v8 = [(CollectionsFilterLogicController *)v10 initWithCollectionView:collectionView withGuidesHomeResultFilters:guidesHomeResultFilter withSelectedFilterIndexPath:pathCopy];
   }
 
   else if (context == 1)
   {
     v9 = [CollectionsFilterLogicController alloc];
-    v6 = [(CollectionsFilterCarouselView *)self collectionView];
-    v7 = [(CollectionsFilterCarouselView *)self allCollectionsResultFilter];
-    v8 = [(CollectionsFilterLogicController *)v9 initWithCollectionView:v6 withAllCollectionsResultFilters:v7 withSelectedFilterIndexPath:v13];
+    collectionView = [(CollectionsFilterCarouselView *)self collectionView];
+    guidesHomeResultFilter = [(CollectionsFilterCarouselView *)self allCollectionsResultFilter];
+    v8 = [(CollectionsFilterLogicController *)v9 initWithCollectionView:collectionView withAllCollectionsResultFilters:guidesHomeResultFilter withSelectedFilterIndexPath:pathCopy];
   }
 
   else
@@ -284,9 +284,9 @@ LABEL_18:
     }
 
     v5 = [CollectionsFilterLogicController alloc];
-    v6 = [(CollectionsFilterCarouselView *)self collectionView];
-    v7 = [(CollectionsFilterCarouselView *)self resultFilters];
-    v8 = [(CollectionsFilterLogicController *)v5 initWithCollectionView:v6 withResultFilters:v7 withSelectedFilterIndexPath:v13];
+    collectionView = [(CollectionsFilterCarouselView *)self collectionView];
+    guidesHomeResultFilter = [(CollectionsFilterCarouselView *)self resultFilters];
+    v8 = [(CollectionsFilterLogicController *)v5 initWithCollectionView:collectionView withResultFilters:guidesHomeResultFilter withSelectedFilterIndexPath:pathCopy];
   }
 
   v11 = v8;
@@ -304,85 +304,85 @@ LABEL_8:
   [(CollectionsFilterCarouselView *)self setFlowLayout:v3];
 
   v4 = [UICollectionView alloc];
-  v5 = [(CollectionsFilterCarouselView *)self flowLayout];
-  v6 = [v4 initWithFrame:v5 collectionViewLayout:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+  flowLayout = [(CollectionsFilterCarouselView *)self flowLayout];
+  v6 = [v4 initWithFrame:flowLayout collectionViewLayout:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [(CollectionsFilterCarouselView *)self setCollectionView:v6];
 
-  v7 = [(CollectionsFilterCarouselView *)self collectionView];
-  [v7 setAccessibilityIdentifier:@"CollectionsFilterCarouselCollectionView"];
+  collectionView = [(CollectionsFilterCarouselView *)self collectionView];
+  [collectionView setAccessibilityIdentifier:@"CollectionsFilterCarouselCollectionView"];
 
-  v8 = [(CollectionsFilterCarouselView *)self collectionView];
-  [v8 setShowsVerticalScrollIndicator:0];
+  collectionView2 = [(CollectionsFilterCarouselView *)self collectionView];
+  [collectionView2 setShowsVerticalScrollIndicator:0];
 
-  v9 = [(CollectionsFilterCarouselView *)self collectionView];
-  [v9 setShowsHorizontalScrollIndicator:0];
+  collectionView3 = [(CollectionsFilterCarouselView *)self collectionView];
+  [collectionView3 setShowsHorizontalScrollIndicator:0];
 
-  v10 = [(CollectionsFilterCarouselView *)self collectionView];
-  [v10 setAllowsSelection:1];
+  collectionView4 = [(CollectionsFilterCarouselView *)self collectionView];
+  [collectionView4 setAllowsSelection:1];
 
-  v11 = [(CollectionsFilterCarouselView *)self collectionView];
-  [v11 setAllowsMultipleSelection:0];
+  collectionView5 = [(CollectionsFilterCarouselView *)self collectionView];
+  [collectionView5 setAllowsMultipleSelection:0];
 }
 
 - (void)scrollToSelectedFilter
 {
-  v2 = [(CollectionsFilterCarouselView *)self logicController];
-  [v2 scrollToSelectedFilter];
+  logicController = [(CollectionsFilterCarouselView *)self logicController];
+  [logicController scrollToSelectedFilter];
 }
 
 - (void)displayFilters
 {
-  v3 = [(CollectionsFilterCarouselView *)self logicController];
+  logicController = [(CollectionsFilterCarouselView *)self logicController];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1006E78C8;
   v4[3] = &unk_101661B18;
   v4[4] = self;
-  [v3 getFilters:v4];
+  [logicController getFilters:v4];
 }
 
-- (void)configureWithContext:(int64_t)a3 routingDelegate:(id)a4 guidesHomeFilters:(id)a5 selectedFilterIndex:(id)a6
+- (void)configureWithContext:(int64_t)context routingDelegate:(id)delegate guidesHomeFilters:(id)filters selectedFilterIndex:(id)index
 {
-  v10 = a5;
-  self->_context = a3;
-  v12 = a6;
-  objc_storeWeak(&self->_guidesHomeRoutingDelegate, a4);
+  filtersCopy = filters;
+  self->_context = context;
+  indexCopy = index;
+  objc_storeWeak(&self->_guidesHomeRoutingDelegate, delegate);
   guidesHomeResultFilter = self->_guidesHomeResultFilter;
-  self->_guidesHomeResultFilter = v10;
+  self->_guidesHomeResultFilter = filtersCopy;
 
   [(CollectionsFilterCarouselView *)self configureFiltersCarouselMetadata:self->_context];
-  [(CollectionsFilterCarouselView *)self setUpCarouselDependenciesUsingSelectedFilterIndexPath:v12];
+  [(CollectionsFilterCarouselView *)self setUpCarouselDependenciesUsingSelectedFilterIndexPath:indexCopy];
 }
 
-- (void)configureWithContext:(int64_t)a3 withRoutingDelegate:(id)a4 withPublishersResultFilters:(id)a5 withSelectedFilterIndex:(id)a6
+- (void)configureWithContext:(int64_t)context withRoutingDelegate:(id)delegate withPublishersResultFilters:(id)filters withSelectedFilterIndex:(id)index
 {
-  self->_context = a3;
-  v10 = a6;
-  v9 = a5;
-  [(CollectionsFilterCarouselView *)self setRoutingDelegate:a4];
-  [(CollectionsFilterCarouselView *)self setResultFilters:v9];
+  self->_context = context;
+  indexCopy = index;
+  filtersCopy = filters;
+  [(CollectionsFilterCarouselView *)self setRoutingDelegate:delegate];
+  [(CollectionsFilterCarouselView *)self setResultFilters:filtersCopy];
 
   [(CollectionsFilterCarouselView *)self configureFiltersCarouselMetadata:self->_context];
-  [(CollectionsFilterCarouselView *)self setUpCarouselDependenciesUsingSelectedFilterIndexPath:v10];
+  [(CollectionsFilterCarouselView *)self setUpCarouselDependenciesUsingSelectedFilterIndexPath:indexCopy];
 }
 
-- (void)configureWithContext:(int64_t)a3 withRoutingDelegate:(id)a4 withAllCollectionsResultFilters:(id)a5 withSelectedFilterIndex:(id)a6
+- (void)configureWithContext:(int64_t)context withRoutingDelegate:(id)delegate withAllCollectionsResultFilters:(id)filters withSelectedFilterIndex:(id)index
 {
-  self->_context = a3;
-  v10 = a6;
-  v9 = a5;
-  [(CollectionsFilterCarouselView *)self setAllCollectionsRoutingDelegate:a4];
-  [(CollectionsFilterCarouselView *)self setAllCollectionsResultFilter:v9];
+  self->_context = context;
+  indexCopy = index;
+  filtersCopy = filters;
+  [(CollectionsFilterCarouselView *)self setAllCollectionsRoutingDelegate:delegate];
+  [(CollectionsFilterCarouselView *)self setAllCollectionsResultFilter:filtersCopy];
 
   [(CollectionsFilterCarouselView *)self configureFiltersCarouselMetadata:self->_context];
-  [(CollectionsFilterCarouselView *)self setUpCarouselDependenciesUsingSelectedFilterIndexPath:v10];
+  [(CollectionsFilterCarouselView *)self setUpCarouselDependenciesUsingSelectedFilterIndexPath:indexCopy];
 }
 
-- (CollectionsFilterCarouselView)initWithFrame:(CGRect)a3
+- (CollectionsFilterCarouselView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CollectionsFilterCarouselView;
-  v3 = [(CollectionsFilterCarouselView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CollectionsFilterCarouselView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_class();
@@ -396,9 +396,9 @@ LABEL_8:
   return v3;
 }
 
-+ (double)defaultHeightForDisplayStyle:(int64_t)a3 inContext:(int64_t)a4
++ (double)defaultHeightForDisplayStyle:(int64_t)style inContext:(int64_t)context
 {
-  v4 = [[CollectionsFilterSizeController alloc] initWithCollectionsFilterDisplayStyle:a3 inContext:a4];
+  v4 = [[CollectionsFilterSizeController alloc] initWithCollectionsFilterDisplayStyle:style inContext:context];
   [(CollectionsFilterSizeController *)v4 defaultHeight];
   v6 = v5;
 

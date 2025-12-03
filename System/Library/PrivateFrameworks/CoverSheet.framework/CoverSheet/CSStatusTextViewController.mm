@@ -3,7 +3,7 @@
 - (CSStatusTextViewControllerDelegate)delegate;
 - (id)_legalContact;
 - (id)_legalString;
-- (void)_profileStateChangedNotification:(id)a3;
+- (void)_profileStateChangedNotification:(id)notification;
 - (void)_updateText;
 - (void)_updateTextForDeviceInformation;
 - (void)_updateTextForLegal;
@@ -12,12 +12,12 @@
 - (void)_updateTextForSupervision;
 - (void)_updateTribecaText;
 - (void)dealloc;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)loadView;
-- (void)setOverrideFooterText:(id)a3;
-- (void)setTribecaText:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setOverrideFooterText:(id)text;
+- (void)setTribecaText:(id)text;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CSStatusTextViewController
@@ -29,13 +29,13 @@
   v2 = [(CSStatusTextViewController *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D262A0] sharedConnection];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
     profileConnection = v2->_profileConnection;
-    v2->_profileConnection = v3;
+    v2->_profileConnection = mEMORY[0x277D262A0];
 
-    v5 = [MEMORY[0x277D65F18] sharedInstance];
+    mEMORY[0x277D65F18] = [MEMORY[0x277D65F18] sharedInstance];
     basebandLoggingManager = v2->_basebandLoggingManager;
-    v2->_basebandLoggingManager = v5;
+    v2->_basebandLoggingManager = mEMORY[0x277D65F18];
 
     [(SBFRemoteBasebandLoggingManager *)v2->_basebandLoggingManager addObserver:v2];
     v7 = objc_alloc_init(MEMORY[0x277D65FF0]);
@@ -56,27 +56,27 @@
   [(CSCoverSheetViewControllerBase *)&v3 dealloc];
 }
 
-- (void)setOverrideFooterText:(id)a3
+- (void)setOverrideFooterText:(id)text
 {
-  v5 = a3;
-  if (self->_overrideFooterText != v5)
+  textCopy = text;
+  if (self->_overrideFooterText != textCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_overrideFooterText, a3);
+    v6 = textCopy;
+    objc_storeStrong(&self->_overrideFooterText, text);
     [(CSStatusTextViewController *)self _updateText];
-    v5 = v6;
+    textCopy = v6;
   }
 }
 
-- (void)setTribecaText:(id)a3
+- (void)setTribecaText:(id)text
 {
-  v5 = a3;
-  if (self->_tribecaText != v5)
+  textCopy = text;
+  if (self->_tribecaText != textCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_tribecaText, a3);
+    v6 = textCopy;
+    objc_storeStrong(&self->_tribecaText, text);
     [(CSStatusTextViewController *)self _updateText];
-    v5 = v6;
+    textCopy = v6;
   }
 }
 
@@ -93,14 +93,14 @@
   [(CSStatusTextViewController *)self setView:v6];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v15.receiver = self;
   v15.super_class = CSStatusTextViewController;
-  [(CSCoverSheetViewControllerBase *)&v15 viewWillAppear:a3];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__profileStateChangedNotification_ name:*MEMORY[0x277D26148] object:0];
-  [v4 addObserver:self selector:sel__profileStateChangedNotification_ name:*MEMORY[0x277D25C90] object:0];
+  [(CSCoverSheetViewControllerBase *)&v15 viewWillAppear:appear];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__profileStateChangedNotification_ name:*MEMORY[0x277D26148] object:0];
+  [defaultCenter addObserver:self selector:sel__profileStateChangedNotification_ name:*MEMORY[0x277D25C90] object:0];
   v5 = tribeca_supported_text();
 
   if (v5)
@@ -108,7 +108,7 @@
     if (self->_activationLockNotifyToken < 0)
     {
       objc_initWeak(&location, self);
-      v6 = [*MEMORY[0x277D08FA0] UTF8String];
+      uTF8String = [*MEMORY[0x277D08FA0] UTF8String];
       v7 = MEMORY[0x277D85CD0];
       v8 = MEMORY[0x277D85CD0];
       v9 = MEMORY[0x277D85DD0];
@@ -116,7 +116,7 @@
       v11 = __45__CSStatusTextViewController_viewWillAppear___block_invoke;
       v12 = &unk_27838C9F8;
       objc_copyWeak(&v13, &location);
-      notify_register_dispatch(v6, &self->_activationLockNotifyToken, v7, &v9);
+      notify_register_dispatch(uTF8String, &self->_activationLockNotifyToken, v7, &v9);
 
       objc_destroyWeak(&v13);
       objc_destroyWeak(&location);
@@ -134,11 +134,11 @@ void __45__CSStatusTextViewController_viewWillAppear___block_invoke(uint64_t a1)
   [WeakRetained _updateTribecaText];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  disappearCopy = disappear;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   activationLockNotifyToken = self->_activationLockNotifyToken;
   if ((activationLockNotifyToken & 0x80000000) == 0)
@@ -149,23 +149,23 @@ void __45__CSStatusTextViewController_viewWillAppear___block_invoke(uint64_t a1)
 
   v7.receiver = self;
   v7.super_class = CSStatusTextViewController;
-  [(CSCoverSheetViewControllerBase *)&v7 viewDidDisappear:v3];
+  [(CSCoverSheetViewControllerBase *)&v7 viewDidDisappear:disappearCopy];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     [(CSStatusTextViewController *)self _updateText];
   }
 
   v5.receiver = self;
   v5.super_class = CSStatusTextViewController;
-  [(CSStatusTextViewController *)&v5 didMoveToParentViewController:v4];
+  [(CSStatusTextViewController *)&v5 didMoveToParentViewController:controllerCopy];
 }
 
-- (void)_profileStateChangedNotification:(id)a3
+- (void)_profileStateChangedNotification:(id)notification
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -177,13 +177,13 @@ void __45__CSStatusTextViewController_viewWillAppear___block_invoke(uint64_t a1)
 
 - (void)_updateTribecaText
 {
-  v3 = [MEMORY[0x277D08F78] sharedInstance];
+  mEMORY[0x277D08F78] = [MEMORY[0x277D08F78] sharedInstance];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __48__CSStatusTextViewController__updateTribecaText__block_invoke;
   v4[3] = &unk_27838CA20;
   v4[4] = self;
-  [v3 fmipStateWithCompletion:v4];
+  [mEMORY[0x277D08F78] fmipStateWithCompletion:v4];
 }
 
 void __48__CSStatusTextViewController__updateTribecaText__block_invoke(uint64_t a1, unint64_t a2, void *a3)
@@ -281,16 +281,16 @@ uint64_t __52__CSStatusTextViewController__updateTextForProfiles__block_invoke(u
 
   else
   {
-    v3 = [(MCProfileConnection *)self->_profileConnection deviceLockScreenFootnote];
-    v4 = [(MCProfileConnection *)self->_profileConnection deviceAssetTag];
-    if ([v3 length])
+    deviceLockScreenFootnote = [(MCProfileConnection *)self->_profileConnection deviceLockScreenFootnote];
+    deviceAssetTag = [(MCProfileConnection *)self->_profileConnection deviceAssetTag];
+    if ([deviceLockScreenFootnote length])
     {
-      [v5 addObject:v3];
+      [v5 addObject:deviceLockScreenFootnote];
     }
 
-    if ([v4 length])
+    if ([deviceAssetTag length])
     {
-      [v5 addObject:v4];
+      [v5 addObject:deviceAssetTag];
     }
   }
 
@@ -302,8 +302,8 @@ uint64_t __52__CSStatusTextViewController__updateTextForProfiles__block_invoke(u
   if ([(SBLockScreenDefaults *)self->_lockScreenDefaults showSupervisionText]&& [(MCProfileConnection *)self->_profileConnection isSupervised])
   {
     v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v4 = [(MCProfileConnection *)self->_profileConnection cloudConfigurationDetails];
-    v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D26360]];
+    cloudConfigurationDetails = [(MCProfileConnection *)self->_profileConnection cloudConfigurationDetails];
+    v5 = [cloudConfigurationDetails objectForKeyedSubscript:*MEMORY[0x277D26360]];
 
     if ([v5 length])
     {
@@ -334,8 +334,8 @@ uint64_t __52__CSStatusTextViewController__updateTextForProfiles__block_invoke(u
 - (void)_updateTextForProvisionalEnrollment
 {
   view = self->_view;
-  v3 = [(MCProfileConnection *)self->_profileConnection deviceProvisionalEnrollmentFootnote];
-  [(CSStatusTextView *)view setProvisionalEnrollmentText:v3];
+  deviceProvisionalEnrollmentFootnote = [(MCProfileConnection *)self->_profileConnection deviceProvisionalEnrollmentFootnote];
+  [(CSStatusTextView *)view setProvisionalEnrollmentText:deviceProvisionalEnrollmentFootnote];
 }
 
 - (void)_updateTextForLegal
@@ -343,8 +343,8 @@ uint64_t __52__CSStatusTextViewController__updateTextForProfiles__block_invoke(u
   if ([(CSStatusTextViewController *)self _isSecurityResearchDevice]|| os_variant_has_internal_content() && [(SBLockScreenDefaults *)self->_lockScreenDefaults showLegalText])
   {
     view = self->_view;
-    v5 = [(CSStatusTextViewController *)self _legalString];
-    [(CSStatusTextView *)view setInternalLegalText:v5];
+    _legalString = [(CSStatusTextViewController *)self _legalString];
+    [(CSStatusTextView *)view setInternalLegalText:_legalString];
   }
 
   else
@@ -367,8 +367,8 @@ uint64_t __52__CSStatusTextViewController__updateTextForProfiles__block_invoke(u
     v3 = @"Confidential & Proprietary";
   }
 
-  v4 = [(CSStatusTextViewController *)self _legalContact];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@, %@ %@", v3, @"Call", v4];
+  _legalContact = [(CSStatusTextViewController *)self _legalContact];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@, %@ %@", v3, @"Call", _legalContact];
 
   return v5;
 }

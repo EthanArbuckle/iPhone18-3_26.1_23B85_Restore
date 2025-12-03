@@ -1,12 +1,12 @@
 @interface DDMoneyPreviewAction
-+ (BOOL)actionAvailableForResult:(__DDResult *)a3 url:(id)a4 context:(id)a5;
++ (BOOL)actionAvailableForResult:(__DDResult *)result url:(id)url context:(id)context;
 - (id)menuActions;
-- (void)performFromView:(id)a3;
+- (void)performFromView:(id)view;
 @end
 
 @implementation DDMoneyPreviewAction
 
-- (void)performFromView:(id)a3
+- (void)performFromView:(id)view
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v10 = 0;
@@ -36,10 +36,10 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)actionAvailableForResult:(__DDResult *)a3 url:(id)a4 context:(id)a5
++ (BOOL)actionAvailableForResult:(__DDResult *)result url:(id)url context:(id)context
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a5;
+  contextCopy = context;
   v6 = +[DDAction clientActionsDelegate];
   if (!v6 || (objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -48,7 +48,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v7 = [v5 objectForKeyedSubscript:@"shouldShowMoneyActionWithAmount"];
+  v7 = [contextCopy objectForKeyedSubscript:@"shouldShowMoneyActionWithAmount"];
   v8 = [v7 isEqualToString:@"YES"];
 
   if ((v8 & 1) == 0)
@@ -99,9 +99,9 @@ LABEL_8:
   {
     v13 = [(DDAction *)DDConversionAction actionWithURL:url result:v11 context:context];
     [(DDActionGroup *)v8 appendAction:v13];
-    v14 = [v13 specialCaseActions];
-    [(DDActionGroup *)v14 setInlinedGroup:?];
-    [(DDActionGroup *)v8 appendGroup:v14];
+    specialCaseActions = [v13 specialCaseActions];
+    [(DDActionGroup *)specialCaseActions setInlinedGroup:?];
+    [(DDActionGroup *)v8 appendGroup:specialCaseActions];
   }
 
   else

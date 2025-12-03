@@ -1,16 +1,16 @@
 @interface PassthroughView
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation PassthroughView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v15.value.super.isa = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v15.value.super.isa = event;
   PassthroughView.hitTest(_:with:)(v10, __PAIR128__(*&y, *&x), v15);
   v12 = v11;
 
